@@ -13,10 +13,6 @@ export async function POST(request: Request) {
       );
     }
 
-    if (!prisma) {
-      return NextResponse.json({ error: "Database not configured" }, { status: 503 });
-    }
-
     const existingUser = await prisma.user.findUnique({
       where: { email },
     });

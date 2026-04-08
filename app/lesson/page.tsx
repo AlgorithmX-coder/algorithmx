@@ -9,7 +9,6 @@ const nunito = Nunito({ subsets: ["latin"] });
 export default async function LessonPage() {
   const session = await auth();
   if (!session?.user) redirect("/login");
-  if (!prisma) redirect("/dashboard");
 
   const module = await prisma.module.findFirst({
     where: { weekNumber: 1 },
