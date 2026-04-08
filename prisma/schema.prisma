@@ -7,12 +7,57 @@ datasource db {
   provider = "postgresql"
 }
 
+enum ProgressStatus {
+  NOT_STARTED
+  IN_PROGRESS
+  COMPLETED
+}
+
 model User {
-  id             String    @id @default(cuid())
+  id             String     @id @default(cuid())
   name           String?
-  email          String    @unique
+  email          String     @unique
   hashedPassword String?
-  role           String    @default("learner")
-  createdAt      DateTime  @default(now())
-  updatedAt      DateTime  @updatedAt
+  role           String     @default("learner")
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt
+  progress       Progress[]
+}
+
+model Course {
+  id          String   @id @default(cuid())
+  title       String
+  description String
+  ageRange    String
+  duration    String
+  weeksCount  Int
+  emoji       String
+  color       String
+  createdAt   DateTime @default(now())
+  modules     Module[]
+}
+
+model Module {
+  id          String     @id @default(cuid())
+  courseId    String
+  course      Course     @relation(fields: [courseId], references: [id])
+  weekNumber  Int
+  title       String
+  description String
+  order       Int
+  createdAt   DateTime   @default(now())
+  progress    Progress[]
+}
+
+model Progress {
+  id          String         @id @default(cuid())
+  userId      String
+  user        User           @relation(fields: [userId], references: [id])
+  moduleId    String
+  module      Module         @relation(fields: [moduleId], references: [id])
+  status      ProgressStatus @default(NOT_STARTED)
+  completedAt DateTime?
+  createdAt   DateTime       @default(now())
+
+  @@unique([userId, moduleId])
 }
