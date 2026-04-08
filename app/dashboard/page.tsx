@@ -25,7 +25,8 @@ export default async function DashboardPage() {
 
   const completedCount =
     course?.modules.filter(
-      (m) => m.progress[0]?.status === "COMPLETED"
+      (m: NonNullable<typeof course>["modules"][number]) =>
+        m.progress[0]?.status === "COMPLETED"
     ).length ?? 0;
 
   const totalModules = course?.modules.length ?? 0;
