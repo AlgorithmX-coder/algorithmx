@@ -99,7 +99,7 @@ export default async function DashboardPage() {
 
             {/* Module list */}
             <div className="space-y-3 max-h-[560px] overflow-y-auto pr-1">
-              {course.modules.map((module: NonNullable<typeof course>["modules"][number], idx) => {
+              {course.modules.map((module: NonNullable<typeof course>["modules"][number], idx: number) => {
                 const status = module.progress[0]?.status ?? "NOT_STARTED";
                 const isCompleted = status === "COMPLETED";
                 const isInProgress = status === "IN_PROGRESS";
