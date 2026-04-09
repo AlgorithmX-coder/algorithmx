@@ -10,6 +10,38 @@ const DotLottieReact = dynamic(
 
 // ─── DATA ────────────────────────────────────────────────────────────────────
 
+const KEYWORDS: Record<string, string> = {
+  "password":      "A secret code that only YOU know, like a magic spell to open your stuff!",
+  "passwords":     "A secret code that only YOU know, like a magic spell to open your stuff!",
+  "hacker":        "A sneaky person who tries to get into other people's stuff without permission",
+  "hackers":       "Sneaky people who try to get into other people's stuff without permission",
+  "phishing":      "A trick where bad guys pretend to be someone else to steal your secret codes",
+  "encrypt":       "Scrambling your message so only the right person can read it — like a secret language!",
+  "encryption":    "Scrambling your message so only the right person can read it — like a secret language!",
+  "cybersecurity": "Keeping yourself and your stuff safe on the internet and computers",
+  "mit":           "A very famous university (school for grown-ups) in America where lots of clever inventions happen!",
+  "virus":         "A sneaky programme that can break or slow down your computer",
+  "account":       "Your personal space on a website or app — like your own room in a digital house!",
+};
+
+const S1_OBJECTS = [
+  { id:"gaming", emoji:"🎮", label:"Your Gaming Account", desc:"Your gaming account is now LOCKED! No one can steal your coins or skins! 🔒" },
+  { id:"tablet", emoji:"📱", label:"Your Tablet",         desc:"Your tablet is now LOCKED! Your apps and saved games are safe! 🔒" },
+  { id:"school", emoji:"🎒", label:"Your School Portal",  desc:"Your school portal is now LOCKED! Your homework and grades are private! 🔒" },
+];
+
+const S1_QUIZ = [
+  { q:"What IS a password?",                   opts:["A magic spell on paper","A secret code only YOU know! 🔐","Your favourite colour","Your pet's name"],   correct:1 },
+  { q:"What does a password protect?",          opts:["Nothing important","Your digital stuff from strangers! 🛡️","Only your emails","The weather"],           correct:1 },
+  { q:"When were computer passwords invented?", opts:["In 2024","In 1985","In 1961 at MIT! 🖥️","Nobody knows"],                                              correct:2 },
+];
+
+const WHY_QUIZ = [
+  { q:"What happens if you have NO password?",        opts:["Nothing bad","Anyone can get into your stuff! 😱","Your device goes faster","You get more friends"], correct:1 },
+  { q:"A password on your gaming account protects…",  opts:["Nothing","Your coins and skins from hackers! 🎮","The internet","Your homework"],                    correct:1 },
+  { q:"A strong password is like…",                   opts:["A thin curtain","A sticky note on your door","A super-strong lock! 🔒","An open gate"],             correct:2 },
+];
+
 const PASSWORDS_8 = [
   { id:"q1", text:"Tr0phy$tar99",  isStrong:true,  bg:"#dbeafe", border:"#60a5fa", color:"#1e40af" },
   { id:"q2", text:"MyD0g&Runs!",   isStrong:true,  bg:"#ede9fe", border:"#a78bfa", color:"#5b21b6" },
@@ -48,7 +80,7 @@ const BUILDER_LABELS = ["A CAPITAL LETTER","A SECRET WORD","A NUMBER","A SYMBOL"
 
 const WHY_SCENARIOS = [
   { emoji:"🎮", bad:"Oh no! A hacker got into your game account — all your coins are GONE! 😢", good:"With a strong password your game account stays LOCKED and safe! 🔒✨" },
-  { emoji:"📸", bad:"A stranger is looking at ALL your private photos! 😱",                    good:"A strong password keeps your photos private and yours alone! 🔒✨" },
+  { emoji:"👨‍👩‍👧‍👦", bad:"A stranger is looking at ALL your family photos! 😱",                    good:"A strong password keeps your family photos safe and just for you! 🔒✨" },
   { emoji:"💬", bad:"Someone is reading all your secret messages! 😨",                         good:"A strong password keeps every message safe and secret! 🔒✨" },
 ];
 
@@ -78,11 +110,6 @@ const WYD = [
   { emoji:"🌐", situation:"A website asks you to create a new password",                    opts:["Use 'password123' 😴","Use your birthday 🎂","Create a strong one! 💪"],correct:2, why:"Always make a strong password with letters, numbers, and symbols!" },
   { emoji:"😨", situation:"You think someone else knows your password",                     opts:["Ignore it 🙈","Change it right away! 🔄","Use the same one 🤷"],       correct:1, why:"Change your password IMMEDIATELY if you think someone knows it!" },
 ];
-
-const TYPING_PWS = ["Tr0phy$tar","C@tLov3r2!","Sup3r$afe!"];
-
-const DECODE_PHRASE = "STAY SAFE";
-const DECODE_ENCODED = Array.from(DECODE_PHRASE).map(c => c === " " ? null : c.charCodeAt(0) - 64);
 
 const BOSS_QUIZ = [
   { q:"What makes a password STRONG?",                  opts:["Your pet's name","Mix of letters, numbers & symbols 💪","Just numbers","Your birthday"],   correct:1 },
@@ -142,9 +169,124 @@ const CSS = `
   @keyframes raccoonHit{0%,100%{transform:translateX(0)}25%{transform:translateX(-10px)}75%{transform:translateX(10px)}}
   @keyframes raccoonRun{from{transform:translateX(0) rotate(0)}to{transform:translateX(150%) rotate(30deg)}}
   @keyframes glowRing {0%,100%{box-shadow:0 0 0 0 rgba(139,92,246,0.4)}50%{box-shadow:0 0 0 12px rgba(139,92,246,0)}}
+  @keyframes slideInL   {from{opacity:0;transform:translateX(-70px) scale(0.97)}to{opacity:1;transform:translateX(0) scale(1)}}
+  @keyframes screenFlash{0%,100%{opacity:1}50%{opacity:0.2}}
+  @keyframes handBounce {0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+  @keyframes glowPulse  {0%,100%{box-shadow:0 0 0 0 rgba(139,92,246,0.5)}50%{box-shadow:0 0 0 16px rgba(139,92,246,0)}}
+  @keyframes bugCrawl   {from{opacity:0;transform:translateX(80px) rotate(20deg) scale(0.6)}to{opacity:1;transform:translateX(0) rotate(0) scale(1)}}
+  @keyframes roboHit    {0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
   .slide-in  {animation:slideInR  0.45s ${SPRING} both}
   .slide-out {animation:slideOutL 0.25s ease-in  forwards}
 `;
+
+// ─── KEYWORD ─────────────────────────────────────────────────────────────────
+
+function Keyword({ word }: { word: string }) {
+  const [pos, setPos] = useState<{ x: number; y: number } | null>(null);
+  const def = KEYWORDS[word.toLowerCase()] ?? "";
+  const handleClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (pos) { setPos(null); return; }
+    const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
+    setPos({ x: rect.left + rect.width / 2, y: rect.top - 10 });
+  };
+  return (
+    <span style={{ position: "relative", display: "inline-block" }}>
+      <button type="button" onClick={handleClick} style={{
+        background: "none", border: "none", padding: 0, cursor: "pointer", font: "inherit",
+        color: "#7c3aed", fontWeight: 900, borderBottom: "2px dotted #a78bfa", lineHeight: "inherit",
+      }}>{word}<sup style={{ fontSize: "0.6em", marginLeft: 1, color: "#a78bfa" }}>?</sup></button>
+      {pos && (
+        <span style={{
+          position: "fixed",
+          left: Math.max(16, Math.min(pos.x - 115, typeof window !== "undefined" ? window.innerWidth - 246 : 200)),
+          top: pos.y - 90,
+          background: "#1e1b4b", color: "white", borderRadius: 14,
+          padding: "10px 14px", width: 230, fontSize: 12, fontWeight: 600, zIndex: 300,
+          lineHeight: 1.5, boxShadow: "0 6px 28px rgba(0,0,0,0.4)", display: "block",
+          animation: `popIn 0.3s ${SPRING} both`, pointerEvents: "none", textAlign: "left",
+        }}>
+          <span style={{ color: "#a78bfa", fontWeight: 900, display: "block", marginBottom: 4, fontSize: 13 }}>{word}</span>
+          {def}
+        </span>
+      )}
+    </span>
+  );
+}
+
+// ─── ROBOCHAR ────────────────────────────────────────────────────────────────
+
+type RoboMood = "happy" | "worried" | "hacked" | "safe";
+
+function RoboChar({ mood = "happy", size = 90 }: { mood?: RoboMood; size?: number }) {
+  const screenColor = mood === "hacked" ? "#dc2626" : mood === "safe" ? "#22c55e" : "#1e293b";
+  return (
+    <svg viewBox="0 0 100 140" width={size} height={size * 1.4}
+      style={{
+        animation: mood === "hacked" ? `roboHit 0.4s ease-in-out` : `bobble 2.5s ease-in-out infinite`,
+        filter: "drop-shadow(0 4px 12px rgba(0,0,0,0.15))"
+      }}>
+      <line x1="50" y1="5" x2="50" y2="22" stroke="#64748b" strokeWidth="3" strokeLinecap="round"/>
+      <circle cx="50" cy="4" r="5" fill={mood === "hacked" ? "#ef4444" : "#60a5fa"}/>
+      <rect x="22" y="22" width="56" height="42" rx="12" fill="#94a3b8"/>
+      <rect x="27" y="27" width="46" height="32" rx="8" fill="#cbd5e1"/>
+      {(mood === "happy" || mood === "worried") && <>
+        <circle cx="38" cy="38" r="7" fill="white"/>
+        <circle cx="62" cy="38" r="7" fill="white"/>
+        <circle cx={mood === "worried" ? 37 : 38} cy={mood === "worried" ? 40 : 38} r={4}
+          fill={mood === "worried" ? "#f97316" : "#22c55e"}/>
+        <circle cx={mood === "worried" ? 61 : 62} cy={mood === "worried" ? 40 : 38} r={4}
+          fill={mood === "worried" ? "#f97316" : "#22c55e"}/>
+        <circle cx="40" cy="36" r="1.5" fill="white"/>
+        <circle cx="64" cy="36" r="1.5" fill="white"/>
+      </>}
+      {mood === "hacked" && <>
+        <text x="30" y="44" fontSize="13" fill="#dc2626" fontWeight="900" fontFamily="sans-serif">✕</text>
+        <text x="54" y="44" fontSize="13" fill="#dc2626" fontWeight="900" fontFamily="sans-serif">✕</text>
+      </>}
+      {mood === "safe" && <>
+        <text x="29" y="44" fontSize="14" fill="#ec4899" fontFamily="sans-serif">♥</text>
+        <text x="53" y="44" fontSize="14" fill="#ec4899" fontFamily="sans-serif">♥</text>
+        <circle cx="40" cy="37" r="1.5" fill="rgba(255,255,255,0.8)"/>
+        <circle cx="64" cy="37" r="1.5" fill="rgba(255,255,255,0.8)"/>
+      </>}
+      {(mood === "happy" || mood === "safe") &&
+        <path d="M35 50 Q50 60 65 50" fill="none" stroke="#475569" strokeWidth="2.5" strokeLinecap="round"/>}
+      {(mood === "worried" || mood === "hacked") &&
+        <path d="M35 54 Q50 47 65 54" fill="none" stroke={mood === "hacked" ? "#dc2626" : "#475569"} strokeWidth="2.5" strokeLinecap="round"/>}
+      <rect x="18" y="68" width="64" height="48" rx="10" fill="#94a3b8"/>
+      <rect x="27" y="75" width="46" height="32" rx="7" fill={screenColor}
+        style={mood === "hacked" ? { animation: "screenFlash 0.5s ease-in-out 4" } : undefined}/>
+      {mood === "happy" && <text x="39" y="96" fontSize="14" fill="rgba(255,255,255,0.85)">🎮</text>}
+      {mood === "safe" && <text x="39" y="96" fontSize="14" fill="rgba(255,255,255,0.9)">🛡️</text>}
+      <rect x="4" y="70" width="12" height="34" rx="6" fill="#94a3b8"
+        style={mood === "happy" ? { animation: "wiggle 0.7s ease-in-out infinite", transformOrigin: "10px 70px" } : undefined}/>
+      <rect x="84" y="70" width="12" height="34" rx="6" fill="#94a3b8"
+        style={mood === "happy" ? { animation: "wiggle 0.7s ease-in-out infinite 0.35s", transformOrigin: "90px 70px" } : undefined}/>
+      <rect x="30" y="118" width="16" height="20" rx="8" fill="#64748b"/>
+      <rect x="54" y="118" width="16" height="20" rx="8" fill="#64748b"/>
+    </svg>
+  );
+}
+
+// ─── BUGCHAR ─────────────────────────────────────────────────────────────────
+
+function BugChar({ size = 60 }: { size?: number }) {
+  return (
+    <svg viewBox="0 0 80 80" width={size} height={size}
+      style={{ animation: `bugCrawl 0.8s ${SPRING} both`, filter: "drop-shadow(0 3px 8px rgba(239,68,68,0.4))" }}>
+      <polygon points="40,4 47,18 62,12 56,26 72,32 57,38 62,54 47,48 40,64 33,48 18,54 24,38 8,32 24,26 18,12 33,18"
+        fill="#ef4444"/>
+      <circle cx="33" cy="34" r="6" fill="white"/>
+      <circle cx="47" cy="34" r="6" fill="white"/>
+      <circle cx="34" cy="36" r="3.5" fill="#111"/>
+      <circle cx="48" cy="36" r="3.5" fill="#111"/>
+      <line x1="27" y1="26" x2="37" y2="31" stroke="#111" strokeWidth="2.5" strokeLinecap="round"/>
+      <line x1="43" y1="31" x2="53" y2="26" stroke="#111" strokeWidth="2.5" strokeLinecap="round"/>
+      <path d="M32 44 Q40 40 48 44" fill="none" stroke="#111" strokeWidth="2" strokeLinecap="round"/>
+    </svg>
+  );
+}
 
 // ─── BYTEBOT ─────────────────────────────────────────────────────────────────
 
@@ -398,25 +540,37 @@ export default function LessonGame({userName,moduleId}:{userName:string;moduleId
   const screenRef=useRef(0);
   useEffect(()=>{screenRef.current=screen;},[screen]);
 
-  // S1: Interactive objects
+  // S1: Robo story + interactive objects
+  const [roboScene,setRoboScene]=useState(0);
+  const [roboStoryDone,setRoboStoryDone]=useState(false);
   const [clickedObjs,setClickedObjs]=useState<Set<string>>(new Set());
 
-  // S2: Why scenarios
+  // S2: Mini quiz (what is a password)
+  const [s1QuizIdx,setS1QuizIdx]=useState(0);
+  const [s1QuizSel,setS1QuizSel]=useState<number|null>(null);
+  const [s1QuizScore,setS1QuizScore]=useState(0);
+
+  // S3: Why scenarios
   const [whyIdx,setWhyIdx]=useState(0);
   const [whyShowGood,setWhyShowGood]=useState(false);
 
-  // S3: Recipe
+  // S4: Why quiz
+  const [whyQuizIdx,setWhyQuizIdx]=useState(0);
+  const [whyQuizSel,setWhyQuizSel]=useState<number|null>(null);
+  const [whyQuizScore,setWhyQuizScore]=useState(0);
+
+  // S5: Recipe
   const [recipePhase,setRecipePhase]=useState(0);
 
-  // S4: Builder
+  // S6: Builder
   const [builderSlots,setBuilderSlots]=useState([0,0,0,0]);
   const [builderActive,setBuilderActive]=useState(0);
 
-  // S5: Good/Bad
+  // S7: Good/Bad
   const [gbIdx,setGbIdx]=useState(0);
   const [gbRevealed,setGbRevealed]=useState(false);
 
-  // S6: Drag & Drop
+  // S8: Drag & Drop
   const [placed8,setPlaced8]=useState<Set<string>>(new Set());
   const [dragging,setDragging]=useState<string|null>(null);
   const [dragX,setDragX]=useState(0);
@@ -435,31 +589,22 @@ export default function LessonGame({userName,moduleId}:{userName:string;moduleId
   const drag8TimerRef=useRef<ReturnType<typeof setInterval>|null>(null);
   const drag8TimeRef=useRef(60);
 
-  // S7: Rules
-  const [rulesQuizMode,setRulesQuizMode]=useState(false);
+  // S9: Rules
   const [rulesQIdx,setRulesQIdx]=useState(0);
   const [rulesQSel,setRulesQSel]=useState<number|null>(null);
   const [rulesScore,setRulesScore]=useState(0);
   const [rulesQClass,setRulesQClass]=useState("slide-in");
 
-  // S8: Phishing
+  // S11: Phishing
   const [phishIdx,setPhishIdx]=useState(0);
   const [phishAnswer,setPhishAnswer]=useState<boolean|null>(null);
 
-  // S9: Scenarios
+  // S12: Scenarios
   const [wydIdx,setWydIdx]=useState(0);
   const [wydSel,setWydSel]=useState<number|null>(null);
   const [wydScore,setWydScore]=useState(0);
 
-  // S10: Typing
-  const [typingPwIdx,setTypingPwIdx]=useState(0);
-  const [typingInput,setTypingInput]=useState("");
-  const [typingAllDone,setTypingAllDone]=useState(false);
-
-  // S11: Decoder
-  const [decRevealed,setDecRevealed]=useState<Set<number>>(new Set());
-
-  // S12: Boss Quiz
+  // S13: Boss Quiz
   const [bossQIdx,setBossQIdx]=useState(0);
   const [bossQClass,setBossQClass]=useState("slide-in");
   const [bossSel,setBossSel]=useState<number|null>(null);
@@ -468,13 +613,20 @@ export default function LessonGame({userName,moduleId}:{userName:string;moduleId
   const [raccoonHealth,setRaccoonHealth]=useState(100);
   const [bossDone,setBossDone]=useState(false);
 
-  // S13: Summary
-  const [achievePhase,setAchievePhase]=useState(0);
-
   // Completion
   const progressPosted=useRef(false);
 
   // ── useEffects ────────────────────────────────────────────────────────────
+
+  // Robo story auto-advance
+  useEffect(() => {
+    if (screen !== 1 || roboStoryDone) return;
+    const t = setTimeout(() => {
+      if (roboScene < 4) setRoboScene(s => s + 1);
+      else setRoboStoryDone(true);
+    }, 3000);
+    return () => clearTimeout(t);
+  }, [screen, roboScene, roboStoryDone]);
 
   // Drag timer
   useEffect(()=>{
@@ -488,20 +640,13 @@ export default function LessonGame({userName,moduleId}:{userName:string;moduleId
 
   // Detect all 8 sorted
   useEffect(()=>{
-    if(placed8.size===8&&!drag8Done&&screen===6){
+    if(placed8.size===8&&!drag8Done&&screen===8){
       setDrag8Done(true);
       if(drag8TimerRef.current) clearInterval(drag8TimerRef.current);
       const elapsed=60-drag8TimeRef.current;
       setSortingStars(elapsed<30?3:elapsed<45?2:1);
     }
   },[placed8.size,drag8Done,screen]);
-
-  // Achievement auto-advance
-  useEffect(()=>{
-    if(screen!==13||achievePhase>=ACHIEVEMENTS.length) return;
-    const t=setTimeout(()=>setAchievePhase(p=>p+1),650);
-    return ()=>clearTimeout(t);
-  },[screen,achievePhase]);
 
   // Progress API on completion screen
   useEffect(()=>{
@@ -585,27 +730,54 @@ export default function LessonGame({userName,moduleId}:{userName:string;moduleId
       if(rulesQIdx<RULES_QUIZ.length-1){
         setRulesQClass("slide-out");
         setTimeout(()=>{setRulesQIdx(q=>q+1);setRulesQSel(null);setRulesQClass("slide-in");},260);
-      } else {setRulesQuizMode(false);navigate(8);}
+      } else { navigate(11); }
+    },1600);
+  };
+
+  const handleS1Quiz=(idx:number)=>{
+    if(s1QuizSel!==null) return;
+    setS1QuizSel(idx);
+    if(S1_QUIZ[s1QuizIdx].correct===idx) setS1QuizScore(s=>s+1);
+    setTimeout(()=>{
+      if(s1QuizIdx<S1_QUIZ.length-1){
+        setS1QuizIdx(q=>q+1);
+        setS1QuizSel(null);
+      } else {
+        navigate(3);
+      }
+    },1600);
+  };
+
+  const handleWhyQuiz=(idx:number)=>{
+    if(whyQuizSel!==null) return;
+    setWhyQuizSel(idx);
+    if(WHY_QUIZ[whyQuizIdx].correct===idx) setWhyQuizScore(s=>s+1);
+    setTimeout(()=>{
+      if(whyQuizIdx<WHY_QUIZ.length-1){
+        setWhyQuizIdx(q=>q+1);
+        setWhyQuizSel(null);
+      } else {
+        navigate(5);
+      }
     },1600);
   };
 
   const navigate=(to:number)=>{
     if(to===0) setCountPhase(0);
-    if(to===1) setClickedObjs(new Set());
-    if(to===2){setWhyIdx(0);setWhyShowGood(false);}
-    if(to===3) setRecipePhase(0);
-    if(to===4){setBuilderSlots([0,0,0,0]);setBuilderActive(0);}
-    if(to===5){setGbIdx(0);setGbRevealed(false);}
-    if(to===6){setPlaced8(new Set());setDrag8Started(false);setDrag8Time(60);setDrag8Done(false);drag8TimeRef.current=60;if(drag8TimerRef.current) clearInterval(drag8TimerRef.current);}
-    if(to===7){setRulesQuizMode(false);setRulesQIdx(0);setRulesQSel(null);setRulesScore(0);setRulesQClass("slide-in");}
-    if(to===8){setPhishIdx(0);setPhishAnswer(null);}
-    if(to===9){setWydIdx(0);setWydSel(null);setWydScore(0);}
-    if(to===10){setTypingPwIdx(0);setTypingInput("");setTypingAllDone(false);}
-    if(to===11) setDecRevealed(new Set());
-    if(to===12){setBossQIdx(0);setBossSel(null);setBossFeedback(null);setBossScore(0);setRaccoonHealth(100);setBossDone(false);setBossQClass("slide-in");}
-    if(to===13) setAchievePhase(0);
+    if(to===1){ setClickedObjs(new Set()); setRoboScene(0); setRoboStoryDone(false); }
+    if(to===2){ setS1QuizIdx(0); setS1QuizSel(null); setS1QuizScore(0); }
+    if(to===3){ setWhyIdx(0); setWhyShowGood(false); }
+    if(to===4){ setWhyQuizIdx(0); setWhyQuizSel(null); setWhyQuizScore(0); }
+    if(to===5) setRecipePhase(0);
+    if(to===6){ setBuilderSlots([0,0,0,0]); setBuilderActive(0); }
+    if(to===7){ setGbIdx(0); setGbRevealed(false); }
+    if(to===8){ setPlaced8(new Set()); setDrag8Started(false); setDrag8Time(60); setDrag8Done(false); drag8TimeRef.current=60; if(drag8TimerRef.current) clearInterval(drag8TimerRef.current); }
+    if(to===10){ setRulesQIdx(0); setRulesQSel(null); setRulesScore(0); setRulesQClass("slide-in"); }
+    if(to===11){ setPhishIdx(0); setPhishAnswer(null); }
+    if(to===12){ setWydIdx(0); setWydSel(null); setWydScore(0); }
+    if(to===13){ setBossQIdx(0); setBossSel(null); setBossFeedback(null); setBossScore(0); setRaccoonHealth(100); setBossDone(false); setBossQClass("slide-in"); }
     setAnimClass("slide-out");
-    setTimeout(()=>{setScreen(to);setAnimClass("slide-in");},260);
+    setTimeout(()=>{ setScreen(to); setAnimClass("slide-in"); },260);
   };
 
   // ── Derived ───────────────────────────────────────────────────────────────
@@ -613,9 +785,6 @@ export default function LessonGame({userName,moduleId}:{userName:string;moduleId
   const draggingCard=dragging?PASSWORDS_8.find(p=>p.id===dragging):null;
   const unplaced8=PASSWORDS_8.filter(p=>!placed8.has(p.id)&&p.id!==dragging);
   const allSorted8=placed8.size===PASSWORDS_8.length;
-  const typingTarget=TYPING_PWS[typingPwIdx];
-  const isTypingCorrect=typingInput===typingTarget;
-  const decDone=decRevealed.size===DECODE_PHRASE.replace(/ /g,"").length;
   const today=new Date().toLocaleDateString("en-GB",{day:"numeric",month:"long",year:"numeric"});
 
   const btn=(onClick:()=>void,label:React.ReactNode,extra?:React.CSSProperties)=>(
@@ -628,6 +797,54 @@ export default function LessonGame({userName,moduleId}:{userName:string;moduleId
       {label}
     </button>
   );
+
+  // ── Robo story scenes ─────────────────────────────────────────────────────
+
+  type RoboSceneData = {
+    mood: RoboMood;
+    showBug: boolean;
+    showByte: boolean;
+    showKey: boolean;
+    caption: React.ReactNode;
+  };
+
+  const ROBO_SCENES: RoboSceneData[] = [
+    {
+      mood: "happy",
+      showBug: false,
+      showByte: false,
+      showKey: false,
+      caption: <span>Meet Robo! He loves playing games on his computer! 🎮</span>,
+    },
+    {
+      mood: "worried",
+      showBug: true,
+      showByte: false,
+      showKey: false,
+      caption: <span>Uh oh! Robo has NO password! A sneaky bug is trying to get in! 😮</span>,
+    },
+    {
+      mood: "hacked",
+      showBug: true,
+      showByte: false,
+      showKey: false,
+      caption: <span>Oh no! Robo got HACKED! 😱 The bug got into everything!</span>,
+    },
+    {
+      mood: "hacked",
+      showBug: true,
+      showByte: true,
+      showKey: false,
+      caption: null,
+    },
+    {
+      mood: "safe",
+      showBug: false,
+      showByte: false,
+      showKey: true,
+      caption: <span>Robo is SAFE now! 🎉 A <Keyword word="password"/> is like a magic key that keeps bad guys OUT!</span>,
+    },
+  ];
 
   // ── Screens ───────────────────────────────────────────────────────────────
 
@@ -679,62 +896,208 @@ export default function LessonGame({userName,moduleId}:{userName:string;moduleId
         </div>
       );
 
-      // ── 1: WHAT IS A PASSWORD? ────────────────────────────────────────────
-      case 1: return (
-        <div className="flex flex-col gap-5 pb-10">
-          <div className="text-center" style={{animation:`slideUp 0.5s ${SPRING} both`}}>
-            <h2 className="text-3xl font-black" style={{background:GRAD,WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent",backgroundClip:"text"}}>
-              What IS a Password? 🔐
-            </h2>
-          </div>
-          <ByteSays mood="happy">
-            Have you ever had a <strong>secret diary with a lock</strong>? Or a treasure chest only YOU can open? Tap on each item below and I&apos;ll show you something cool!
-          </ByteSays>
+      // ── 1: WHAT IS A PASSWORD? (Robo story + interactive objects) ─────────
+      case 1: {
+        if(!roboStoryDone) {
+          const scene = ROBO_SCENES[roboScene];
+          return (
+            <div className="flex flex-col gap-5 pb-10">
+              <div className="text-center" style={{animation:`slideUp 0.5s ${SPRING} both`}}>
+                <h2 className="text-3xl font-black" style={{background:GRAD,WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent",backgroundClip:"text"}}>
+                  What IS a Password? 🔐
+                </h2>
+                <p className="text-gray-400 font-bold text-sm mt-1">Scene {roboScene+1} of 5</p>
+              </div>
 
-          <div className="flex gap-4 sm:gap-8 justify-center flex-wrap" style={{animation:`slideUp 0.5s ${SPRING} 0.1s both`}}>
-            {[{id:"diary",emoji:"📔",label:"Secret Diary"},{id:"chest",emoji:"🏺",label:"Treasure Chest"},{id:"phone",emoji:"📱",label:"Your Phone"}].map(obj=>(
-              <div key={obj.id} onClick={()=>setClickedObjs(s=>new Set([...s,obj.id]))}
-                className="flex flex-col items-center cursor-pointer select-none"
-                style={{animation:clickedObjs.has(obj.id)?`celebrate 0.5s ${SPRING} both`:undefined}}>
-                <div className="relative">
-                  <span style={{fontSize:70}}>{obj.emoji}</span>
-                  {clickedObjs.has(obj.id)&&(
-                    <div className="absolute -top-2 -right-2 text-3xl" style={{animation:`popIn 0.4s ${SPRING} both`}}>🔒</div>
+              <div className="bg-white rounded-3xl p-6 shadow-xl border-2 border-purple-100 flex flex-col items-center gap-4"
+                style={{animation:`slideUp 0.5s ${SPRING} 0.1s both`, minHeight:260}}>
+                <div className="flex items-center justify-center gap-6 flex-wrap">
+                  <RoboChar mood={scene.mood} size={90}/>
+                  {scene.showBug && (
+                    <div key={`bug-${roboScene}`}>
+                      <BugChar size={60}/>
+                    </div>
+                  )}
+                  {scene.showByte && (
+                    <div key={`byte-${roboScene}`} style={{animation:`slideInL 0.5s ${SPRING} both`}}>
+                      <ByteBot mood="wave" size={72}/>
+                    </div>
+                  )}
+                  {scene.showKey && (
+                    <div style={{fontSize:52,animation:`popIn 0.5s ${SPRING} both`}}>🗝️</div>
                   )}
                 </div>
-                <span className="font-bold text-gray-600 text-sm mt-1">{obj.label}</span>
-                {clickedObjs.has(obj.id)&&<span className="text-xs font-black text-green-600 mt-0.5">Protected! ✓</span>}
-              </div>
-            ))}
-          </div>
 
-          {clickedObjs.size>0&&(
-            <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-3xl p-4 border-2 border-blue-100 shadow-sm"
-              style={{animation:`bounceIn 0.6s ${SPRING} both`}}>
-              <p className="font-bold text-gray-700 text-base leading-relaxed">
-                🔐 A password is your <strong className="text-blue-600">secret magic key</strong> for the internet!
-                Just like a lock on your diary keeps your secrets safe, a password keeps your digital stuff <strong className="text-purple-600">safe from strangers</strong>.
+                {roboScene===3 ? (
+                  <ByteSays mood="wave">
+                    Don&apos;t worry Robo! I&apos;m Byte! I&apos;ll teach you how to stay safe with <Keyword word="passwords"/>!
+                  </ByteSays>
+                ) : (
+                  <div className="text-center rounded-2xl px-5 py-4 border-2 w-full"
+                    style={{background:roboScene===2||roboScene===3?"#fff1f2":roboScene===4?"#f0fdf4":"#f0f4ff",
+                      borderColor:roboScene===2||roboScene===3?"#fca5a5":roboScene===4?"#4ade80":"#93c5fd"}}>
+                    <p className="font-bold text-base leading-relaxed"
+                      style={{color:roboScene===2||roboScene===3?"#991b1b":roboScene===4?"#166534":"#1e40af"}}>
+                      {scene.caption}
+                    </p>
+                  </div>
+                )}
+              </div>
+
+              <div className="flex items-center justify-between gap-3">
+                <div className="flex gap-1.5">
+                  {[0,1,2,3,4].map(i=>(
+                    <div key={i} className="h-2 rounded-full transition-all duration-500"
+                      style={{width:i===roboScene?20:8,background:i<=roboScene?GRAD:"#e9d5ff"}}/>
+                  ))}
+                </div>
+                {roboScene<4 ? (
+                  <button onClick={()=>setRoboScene(s=>Math.min(s+1,4))}
+                    className="px-5 py-2.5 rounded-2xl font-black text-white text-sm border-none cursor-pointer"
+                    style={{background:GRAD,boxShadow:"0 4px 16px rgba(139,92,246,0.3)"}}>
+                    Next ➡️
+                  </button>
+                ) : (
+                  <button onClick={()=>setRoboStoryDone(true)}
+                    className="px-5 py-2.5 rounded-2xl font-black text-white text-sm border-none cursor-pointer"
+                    style={{background:"linear-gradient(135deg,#22c55e,#16a34a)",boxShadow:"0 4px 16px rgba(34,197,94,0.3)"}}>
+                    Let&apos;s protect YOUR stuff too! 👆
+                  </button>
+                )}
+              </div>
+            </div>
+          );
+        }
+
+        // Interactive objects phase
+        const tappedCount = clickedObjs.size;
+        return (
+          <div className="flex flex-col gap-5 pb-10">
+            <div className="text-center" style={{animation:`slideUp 0.5s ${SPRING} both`}}>
+              <h2 className="text-3xl font-black" style={{background:GRAD,WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent",backgroundClip:"text"}}>
+                Protect YOUR Stuff! 🔐
+              </h2>
+            </div>
+
+            {/* Instruction box */}
+            <div className="rounded-2xl px-5 py-3 border-2 text-center font-black text-sm"
+              style={{
+                background:"linear-gradient(135deg,#ede9fe,#dbeafe)",
+                borderColor:"#a78bfa",
+                color:"#5b21b6",
+                animation:`glowPulse 2s ease-in-out infinite`,
+              }}>
+              {tappedCount===0 && "👆 Tap each item below to see what happens!"}
+              {tappedCount===1 && "Great! Now tap the other 2! ✨"}
+              {tappedCount===2 && "Almost there! Tap the last one! 💪"}
+              {tappedCount===3 && "Amazing! You locked everything! 🎉"}
+            </div>
+
+            <div className="flex gap-4 sm:gap-8 justify-center flex-wrap" style={{animation:`slideUp 0.5s ${SPRING} 0.1s both`}}>
+              {S1_OBJECTS.map(obj=>{
+                const clicked = clickedObjs.has(obj.id);
+                return (
+                  <div key={obj.id} onClick={()=>setClickedObjs(s=>new Set([...s,obj.id]))}
+                    className="flex flex-col items-center cursor-pointer select-none"
+                    style={{animation:clicked?`celebrate 0.5s ${SPRING} both`:undefined}}>
+                    <div className="relative" style={{
+                      borderRadius:24,
+                      boxShadow:!clicked?"0 0 0 0 rgba(139,92,246,0.5)":undefined,
+                      animation:!clicked?`glowPulse 2s ease-in-out infinite`:undefined,
+                    }}>
+                      <span style={{fontSize:70}}>{obj.emoji}</span>
+                      {clicked&&(
+                        <div className="absolute -top-2 -right-2 text-3xl" style={{animation:`popIn 0.4s ${SPRING} both`}}>🔒</div>
+                      )}
+                    </div>
+                    <span className="font-bold text-gray-600 text-sm mt-1 text-center">{obj.label}</span>
+                    {clicked&&<span className="text-xs font-black text-green-600 mt-0.5">Protected! ✓</span>}
+                  </div>
+                );
+              })}
+            </div>
+
+            {tappedCount>0&&(
+              <div className="rounded-2xl p-4 border-2 shadow-sm"
+                style={{background:"linear-gradient(135deg,#f0fdf4,#eff6ff)",borderColor:"#4ade80",
+                  animation:`bounceIn 0.6s ${SPRING} both`}}>
+                <p className="font-bold text-gray-700 text-sm leading-relaxed">
+                  {S1_OBJECTS.find(o=>clickedObjs.has(o.id))?.desc}
+                </p>
+              </div>
+            )}
+
+            <div className="bg-yellow-50 rounded-3xl p-4 border-2 border-yellow-200" style={{animation:`slideUp 0.5s ${SPRING} 0.3s both`}}>
+              <p className="text-yellow-800 font-bold text-sm">
+                💡 <strong>Fun fact!</strong> The very first computer <Keyword word="password"/> was invented in <strong>1961</strong> at <Keyword word="MIT"/>! Even back then, people needed to keep their stuff secret! 🖥️
               </p>
             </div>
-          )}
 
-          <div className="bg-yellow-50 rounded-3xl p-4 border-2 border-yellow-200" style={{animation:`slideUp 0.5s ${SPRING} 0.3s both`}}>
-            <p className="text-yellow-800 font-bold text-sm">
-              💡 <strong>Fun fact!</strong> The very first computer password was invented in <strong>1961</strong> at MIT! Even back then, people needed to keep their stuff secret! 🖥️
-            </p>
+            {tappedCount===3&&(
+              <div className="flex justify-center" style={{animation:`bounceIn 0.6s ${SPRING} both`}}>
+                {btn(()=>navigate(2),"Great! What's next? ➡️")}
+              </div>
+            )}
+            {tappedCount<3&&<p className="text-center text-gray-400 font-bold text-sm">Tap all {3-tappedCount} item{3-tappedCount!==1?"s":""} to continue!</p>}
           </div>
+        );
+      }
 
-          {clickedObjs.size===3&&(
-            <div className="flex justify-center" style={{animation:`bounceIn 0.6s ${SPRING} both`}}>
-              {btn(()=>navigate(2),"Great! What's next? ➡️")}
+      // ── 2: MINI QUIZ – What is a password? ───────────────────────────────
+      case 2: {
+        const q = S1_QUIZ[s1QuizIdx];
+        return (
+          <div className="flex flex-col gap-5 pb-10">
+            <div className="text-center" style={{animation:`slideUp 0.5s ${SPRING} both`}}>
+              <h2 className="text-3xl font-black" style={{background:GRAD,WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent",backgroundClip:"text"}}>
+                Quick Check! 🧠
+              </h2>
+              <p className="text-gray-500 font-bold mt-1 text-sm">Question {s1QuizIdx+1} of {S1_QUIZ.length}</p>
             </div>
-          )}
-          {clickedObjs.size<3&&<p className="text-center text-gray-400 font-bold text-sm">Tap all {3-clickedObjs.size} item{3-clickedObjs.size!==1?"s":""} to continue!</p>}
-        </div>
-      );
+            <ByteSays mood="excited">
+              Let&apos;s see what you remember! Answer these quick questions!
+            </ByteSays>
 
-      // ── 2: WHY DO WE NEED PASSWORDS? ─────────────────────────────────────
-      case 2: return (
+            <div key={s1QuizIdx} className="bg-white rounded-3xl p-6 shadow-xl border-2 border-purple-100"
+              style={{animation:`slideInR 0.4s ${SPRING} both`}}>
+              <div className="font-black text-xl text-gray-800 mb-5 leading-snug">{q.q}</div>
+              <div className="space-y-2.5">
+                {q.opts.map((opt,i)=>{
+                  const sel=s1QuizSel===i;
+                  const isRight=q.correct===i;
+                  const col=OPTION_COLORS[i%OPTION_COLORS.length];
+                  let bg=col.bg,border=col.border,color=col.color;
+                  if(s1QuizSel!==null){if(isRight){bg="#dcfce7";border="#4ade80";color="#166534";}else if(sel){bg="#fee2e2";border="#f87171";color="#991b1b";}}
+                  return (
+                    <button key={i} onClick={()=>handleS1Quiz(i)} disabled={s1QuizSel!==null}
+                      className="w-full text-left rounded-2xl border-2 p-3.5 font-bold text-sm transition-all duration-300 cursor-pointer"
+                      style={{backgroundColor:bg,borderColor:border,color,
+                        animation:sel&&s1QuizSel!==null&&isRight?`celebrate 0.6s ${SPRING} both`:undefined}}>
+                      {opt}{isRight&&s1QuizSel!==null&&" ✓"}
+                    </button>
+                  );
+                })}
+              </div>
+              {s1QuizSel!==null&&(
+                <div className="mt-3 text-center font-black text-lg" style={{
+                  color:q.correct===s1QuizSel?"#16a34a":"#c2410c",
+                  animation:`bounceIn 0.5s ${SPRING} both`}}>
+                  {q.correct===s1QuizSel?"🎉 Correct! Well done!":"Good try! The green one is right!"}
+                </div>
+              )}
+            </div>
+
+            <div className="flex justify-center">
+              <div className="bg-white rounded-full px-5 py-2 shadow border-2 border-purple-100 font-black text-sm text-purple-600">
+                Score: {s1QuizScore}/{s1QuizIdx + (s1QuizSel !== null ? 1 : 0)} ⭐
+              </div>
+            </div>
+          </div>
+        );
+      }
+
+      // ── 3: WHY DO WE NEED PASSWORDS? ─────────────────────────────────────
+      case 3: return (
         <div className="flex flex-col gap-5 pb-10">
           <div className="text-center" style={{animation:`slideUp 0.5s ${SPRING} both`}}>
             <h2 className="text-3xl font-black" style={{background:GRAD,WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent",backgroundClip:"text"}}>
@@ -742,7 +1105,7 @@ export default function LessonGame({userName,moduleId}:{userName:string;moduleId
             </h2>
           </div>
           <ByteSays mood="worried">
-            Without a password, <strong>ANYONE could get into your stuff!</strong> Let me show you what could go wrong… then see how passwords save the day!
+            Without a password, <strong>ANYONE could get into your stuff!</strong> <Keyword word="Hackers"/> are always looking for easy targets. Let me show you what could go wrong… then see how passwords save the day!
           </ByteSays>
 
           <div className="bg-white rounded-3xl p-5 shadow-xl border-2 border-purple-100" style={{animation:`slideUp 0.5s ${SPRING} 0.1s both`}}>
@@ -779,15 +1142,68 @@ export default function LessonGame({userName,moduleId}:{userName:string;moduleId
                       style={{background:GRAD,boxShadow:"0 4px 16px rgba(139,92,246,0.3)"}}>
                       Next Scenario ➡️
                     </button>
-                  : btn(()=>navigate(3),"I understand! Let's go! 🚀")
+                  : btn(()=>navigate(4),"I understand! Let's go! 🚀")
               )}
             </div>
           </div>
         </div>
       );
 
-      // ── 3: THE PASSWORD RECIPE ────────────────────────────────────────────
-      case 3: return (
+      // ── 4: MINI QUIZ – Why passwords? ────────────────────────────────────
+      case 4: {
+        const q = WHY_QUIZ[whyQuizIdx];
+        return (
+          <div className="flex flex-col gap-5 pb-10">
+            <div className="text-center" style={{animation:`slideUp 0.5s ${SPRING} both`}}>
+              <h2 className="text-3xl font-black" style={{background:GRAD,WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent",backgroundClip:"text"}}>
+                Test Your Knowledge! 🧠
+              </h2>
+              <p className="text-gray-500 font-bold mt-1 text-sm">Question {whyQuizIdx+1} of {WHY_QUIZ.length}</p>
+            </div>
+            <ByteSays mood="excited">
+              You&apos;ve seen why passwords matter! Can you answer these?
+            </ByteSays>
+
+            <div key={whyQuizIdx} className="bg-white rounded-3xl p-6 shadow-xl border-2 border-purple-100"
+              style={{animation:`slideInR 0.4s ${SPRING} both`}}>
+              <div className="font-black text-xl text-gray-800 mb-5 leading-snug">{q.q}</div>
+              <div className="space-y-2.5">
+                {q.opts.map((opt,i)=>{
+                  const sel=whyQuizSel===i;
+                  const isRight=q.correct===i;
+                  const col=OPTION_COLORS[i%OPTION_COLORS.length];
+                  let bg=col.bg,border=col.border,color=col.color;
+                  if(whyQuizSel!==null){if(isRight){bg="#dcfce7";border="#4ade80";color="#166534";}else if(sel){bg="#fee2e2";border="#f87171";color="#991b1b";}}
+                  return (
+                    <button key={i} onClick={()=>handleWhyQuiz(i)} disabled={whyQuizSel!==null}
+                      className="w-full text-left rounded-2xl border-2 p-3.5 font-bold text-sm transition-all duration-300 cursor-pointer"
+                      style={{backgroundColor:bg,borderColor:border,color,
+                        animation:sel&&whyQuizSel!==null&&isRight?`celebrate 0.6s ${SPRING} both`:undefined}}>
+                      {opt}{isRight&&whyQuizSel!==null&&" ✓"}
+                    </button>
+                  );
+                })}
+              </div>
+              {whyQuizSel!==null&&(
+                <div className="mt-3 text-center font-black text-lg" style={{
+                  color:q.correct===whyQuizSel?"#16a34a":"#c2410c",
+                  animation:`bounceIn 0.5s ${SPRING} both`}}>
+                  {q.correct===whyQuizSel?"🎉 Correct! Well done!":"Good try! The green one is right!"}
+                </div>
+              )}
+            </div>
+
+            <div className="flex justify-center">
+              <div className="bg-white rounded-full px-5 py-2 shadow border-2 border-purple-100 font-black text-sm text-purple-600">
+                Score: {whyQuizScore}/{whyQuizIdx + (whyQuizSel !== null ? 1 : 0)} ⭐
+              </div>
+            </div>
+          </div>
+        );
+      }
+
+      // ── 5: THE PASSWORD RECIPE ────────────────────────────────────────────
+      case 5: return (
         <div className="flex flex-col gap-5 pb-10">
           <div className="text-center" style={{animation:`slideUp 0.5s ${SPRING} both`}}>
             <h2 className="text-3xl font-black" style={{background:GRAD,WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent",backgroundClip:"text"}}>
@@ -824,14 +1240,14 @@ export default function LessonGame({userName,moduleId}:{userName:string;moduleId
                     style={{background:`linear-gradient(135deg,${RECIPE[recipePhase].color},#8b5cf6)`,boxShadow:`0 4px 16px ${RECIPE[recipePhase].color}50`}}>
                     Add {RECIPE[recipePhase].label}! ➕
                   </button>
-                : btn(()=>navigate(4),"🎉 Mix them all! Let's build one →")}
+                : btn(()=>navigate(6),"🎉 Mix them all! Let's build one →")}
             </div>
           </div>
         </div>
       );
 
-      // ── 4: BUILD A PASSWORD ───────────────────────────────────────────────
-      case 4: {
+      // ── 6: BUILD A PASSWORD ───────────────────────────────────────────────
+      case 6: {
         const opts=BUILDER_OPTIONS[builderActive<4?builderActive:0];
         const builtPw=builderActive>0
           ?`${BUILDER_OPTIONS[0][builderSlots[0]]}${BUILDER_OPTIONS[1][builderSlots[1]]}${BUILDER_OPTIONS[2][builderSlots[2]]}${builderActive>3?BUILDER_OPTIONS[3][builderSlots[3]]:""}`
@@ -903,7 +1319,7 @@ export default function LessonGame({userName,moduleId}:{userName:string;moduleId
                 <div className="mt-4 text-center" style={{animation:`bounceIn 0.6s ${SPRING} both`}}>
                   <div className="text-xl font-black text-green-600 mb-2">🎉 AMAZING! You built a SUPER STRONG password!</div>
                   <div className="text-2xl font-black mb-4" style={{fontFamily:"monospace",background:GRAD,WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent",backgroundClip:"text"}}>{builtPw}</div>
-                  {btn(()=>navigate(5),"See Good vs Bad Passwords ➡️")}
+                  {btn(()=>navigate(7),"See Good vs Bad Passwords ➡️")}
                 </div>
               )}
             </div>
@@ -911,8 +1327,8 @@ export default function LessonGame({userName,moduleId}:{userName:string;moduleId
         );
       }
 
-      // ── 5: GOOD VS BAD ────────────────────────────────────────────────────
-      case 5: {
+      // ── 7: GOOD VS BAD ────────────────────────────────────────────────────
+      case 7: {
         const ex=GB_EXAMPLES[gbIdx];
         return (
           <div className="flex flex-col gap-5 pb-10">
@@ -945,7 +1361,7 @@ export default function LessonGame({userName,moduleId}:{userName:string;moduleId
                   </div>
                   {gbIdx<GB_EXAMPLES.length-1
                     ?<button onClick={()=>{setGbIdx(i=>i+1);setGbRevealed(false);}} className="w-full py-3 rounded-2xl font-black text-white text-sm border-none cursor-pointer" style={{background:GRAD}}>Next Example ➡️</button>
-                    :btn(()=>navigate(6),"Time to sort passwords! 🎮",{width:"100%"})}
+                    :btn(()=>navigate(8),"Time to sort passwords! 🎮",{width:"100%"})}
                 </div>
               )}
             </div>
@@ -969,8 +1385,8 @@ export default function LessonGame({userName,moduleId}:{userName:string;moduleId
         );
       }
 
-      // ── 6: DRAG & DROP ────────────────────────────────────────────────────
-      case 6: return (
+      // ── 8: DRAG & DROP ────────────────────────────────────────────────────
+      case 8: return (
         <div className="flex flex-col gap-4 pb-10">
           <div className="text-center" style={{animation:`slideUp 0.5s ${SPRING} both`}}>
             <h2 className="text-3xl font-black" style={{background:GRAD,WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent",backgroundClip:"text"}}>
@@ -1047,7 +1463,7 @@ export default function LessonGame({userName,moduleId}:{userName:string;moduleId
           {drag8Time===0&&!drag8Done&&(
             <div className="text-center" style={{animation:`bounceIn 0.6s ${SPRING} both`}}>
               <p className="text-orange-500 font-black text-lg mb-3">⏰ Time&apos;s up! Great try! Let&apos;s go again!</p>
-              {btn(()=>navigate(6),"Try Again! 🔄")}
+              {btn(()=>navigate(8),"Try Again! 🔄")}
             </div>
           )}
 
@@ -1056,7 +1472,7 @@ export default function LessonGame({userName,moduleId}:{userName:string;moduleId
             <div className="flex flex-col items-center gap-3" style={{animation:`bounceIn 0.7s ${SPRING} both`}}>
               <p className="text-green-600 font-black text-xl">🎉 AMAZING! All sorted in {60-drag8TimeRef.current}s!</p>
               <div className="flex gap-2">{Array.from({length:sortingStars},(_,i)=><span key={i} style={{fontSize:36,animation:`popIn 0.5s ${SPRING} ${i*120}ms both`}}>⭐</span>)}</div>
-              {btn(()=>navigate(7),"Learn the Password Rules! ➡️")}
+              {btn(()=>navigate(9),"Learn the Password Rules! ➡️")}
             </div>
           )}
 
@@ -1073,76 +1489,83 @@ export default function LessonGame({userName,moduleId}:{userName:string;moduleId
         </div>
       );
 
-      // ── 7: PASSWORD RULES ─────────────────────────────────────────────────
-      case 7: return (
+      // ── 9: PASSWORD RULES ─────────────────────────────────────────────────
+      case 9: return (
         <div className="flex flex-col gap-5 pb-10">
           <div className="text-center" style={{animation:`slideUp 0.5s ${SPRING} both`}}>
             <h2 className="text-3xl font-black" style={{background:GRAD,WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent",backgroundClip:"text"}}>
-              {rulesQuizMode?"Mini Quiz Time! 🧠":"The 5 Password Rules! 📜"}
+              The 5 Password Rules! 📜
             </h2>
           </div>
 
-          {!rulesQuizMode&&<>
-            <ByteSays mood="happy">
-              Every Cyber Hero knows these <strong>5 Golden Rules</strong>! Read them carefully — there&apos;ll be a quick quiz after! 😉
-            </ByteSays>
-            <div className="space-y-3" style={{animation:`slideUp 0.5s ${SPRING} 0.1s both`}}>
-              {RULES.map((rule,i)=>(
-                <div key={i} className="bg-white rounded-2xl p-4 border-2 border-purple-100 shadow-sm flex items-start gap-3"
-                  style={{animation:`slideUp 0.5s ${SPRING} ${i*120}ms both`}}>
-                  <span style={{fontSize:32}}>{rule.icon}</span>
-                  <div>
-                    <div className="font-black text-gray-800 text-sm">{rule.title}</div>
-                    <div className="text-xs font-semibold text-gray-500 mt-0.5">{rule.desc}</div>
-                  </div>
+          <ByteSays mood="happy">
+            Every Cyber Hero knows these <strong>5 Golden Rules</strong>! Read them carefully — there&apos;ll be a quick quiz after! 😉
+          </ByteSays>
+          <div className="space-y-3" style={{animation:`slideUp 0.5s ${SPRING} 0.1s both`}}>
+            {RULES.map((rule,i)=>(
+              <div key={i} className="bg-white rounded-2xl p-4 border-2 border-purple-100 shadow-sm flex items-start gap-3"
+                style={{animation:`slideUp 0.5s ${SPRING} ${i*120}ms both`}}>
+                <span style={{fontSize:32}}>{rule.icon}</span>
+                <div>
+                  <div className="font-black text-gray-800 text-sm">{rule.title}</div>
+                  <div className="text-xs font-semibold text-gray-500 mt-0.5">{rule.desc}</div>
                 </div>
-              ))}
-            </div>
-            <div className="flex justify-center" style={{animation:`slideUp 0.5s ${SPRING} 0.8s both`}}>
-              {btn(()=>setRulesQuizMode(true),"I know the rules! Quiz me! 🎯")}
-            </div>
-          </>}
-
-          {rulesQuizMode&&(
-            <div key={rulesQIdx} className={rulesQClass}>
-              <ByteSays mood="excited">
-                Question {rulesQIdx+1} of {RULES_QUIZ.length}: Which rule matches this icon?
-              </ByteSays>
-              <div className="bg-white rounded-3xl p-6 shadow-xl border-2 border-purple-100">
-                <div className="text-center text-6xl mb-4" style={{animation:`bobble 2s ease-in-out infinite`}}>
-                  {RULES[RULES_QUIZ[rulesQIdx].ruleIdx].icon}
-                </div>
-                <div className="space-y-2.5">
-                  {RULES_QUIZ[rulesQIdx].opts.map((opt,i)=>{
-                    const sel=rulesQSel===i;
-                    const isRight=RULES_QUIZ[rulesQIdx].correct===i;
-                    let bg="#f9fafb",border="#e5e7eb",color="#374151";
-                    if(rulesQSel!==null){if(isRight){bg="#dcfce7";border="#4ade80";color="#166534";}else if(sel){bg="#fee2e2";border="#f87171";color="#991b1b";}}
-                    return (
-                      <button key={i} onClick={()=>handleRulesQ(i)} disabled={rulesQSel!==null}
-                        className="w-full text-left rounded-2xl border-2 p-3.5 font-bold text-sm transition-all duration-300 cursor-pointer"
-                        style={{backgroundColor:bg,borderColor:border,color,
-                          animation:sel&&rulesQSel!==null&&isRight?`celebrate 0.6s ${SPRING} both`:undefined}}>
-                        {opt}{isRight&&rulesQSel!==null&&" ✓"}
-                      </button>
-                    );
-                  })}
-                </div>
-                {rulesQSel!==null&&(
-                  <div className="mt-3 text-center font-black text-lg" style={{
-                    color:RULES_QUIZ[rulesQIdx].correct===rulesQSel?"#16a34a":"#c2410c",
-                    animation:`bounceIn 0.5s ${SPRING} both`}}>
-                    {RULES_QUIZ[rulesQIdx].correct===rulesQSel?"🎉 Correct! Well done!":"Good try! The green one is right!"}
-                  </div>
-                )}
               </div>
-            </div>
-          )}
+            ))}
+          </div>
+          <div className="flex justify-center" style={{animation:`slideUp 0.5s ${SPRING} 0.8s both`}}>
+            {btn(()=>navigate(10),"I know the rules! Quiz me! 🎯")}
+          </div>
         </div>
       );
 
-      // ── 8: SPOT THE PHISHING ──────────────────────────────────────────────
-      case 8: {
+      // ── 10: RULES QUIZ ────────────────────────────────────────────────────
+      case 10: return (
+        <div className="flex flex-col gap-5 pb-10">
+          <div className="text-center" style={{animation:`slideUp 0.5s ${SPRING} both`}}>
+            <h2 className="text-3xl font-black" style={{background:GRAD,WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent",backgroundClip:"text"}}>
+              Mini Quiz Time! 🧠
+            </h2>
+          </div>
+
+          <div key={rulesQIdx} className={rulesQClass}>
+            <ByteSays mood="excited">
+              Question {rulesQIdx+1} of {RULES_QUIZ.length}: Which rule matches this icon?
+            </ByteSays>
+            <div className="bg-white rounded-3xl p-6 shadow-xl border-2 border-purple-100">
+              <div className="text-center text-6xl mb-4" style={{animation:`bobble 2s ease-in-out infinite`}}>
+                {RULES[RULES_QUIZ[rulesQIdx].ruleIdx].icon}
+              </div>
+              <div className="space-y-2.5">
+                {RULES_QUIZ[rulesQIdx].opts.map((opt,i)=>{
+                  const sel=rulesQSel===i;
+                  const isRight=RULES_QUIZ[rulesQIdx].correct===i;
+                  let bg="#f9fafb",border="#e5e7eb",color="#374151";
+                  if(rulesQSel!==null){if(isRight){bg="#dcfce7";border="#4ade80";color="#166534";}else if(sel){bg="#fee2e2";border="#f87171";color="#991b1b";}}
+                  return (
+                    <button key={i} onClick={()=>handleRulesQ(i)} disabled={rulesQSel!==null}
+                      className="w-full text-left rounded-2xl border-2 p-3.5 font-bold text-sm transition-all duration-300 cursor-pointer"
+                      style={{backgroundColor:bg,borderColor:border,color,
+                        animation:sel&&rulesQSel!==null&&isRight?`celebrate 0.6s ${SPRING} both`:undefined}}>
+                      {opt}{isRight&&rulesQSel!==null&&" ✓"}
+                    </button>
+                  );
+                })}
+              </div>
+              {rulesQSel!==null&&(
+                <div className="mt-3 text-center font-black text-lg" style={{
+                  color:RULES_QUIZ[rulesQIdx].correct===rulesQSel?"#16a34a":"#c2410c",
+                  animation:`bounceIn 0.5s ${SPRING} both`}}>
+                  {RULES_QUIZ[rulesQIdx].correct===rulesQSel?"🎉 Correct! Well done!":"Good try! The green one is right!"}
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      );
+
+      // ── 11: SPOT THE PHISHING ──────────────────────────────────────────────
+      case 11: {
         const p=PHISH[phishIdx];
         return (
           <div className="flex flex-col gap-5 pb-10">
@@ -1153,7 +1576,7 @@ export default function LessonGame({userName,moduleId}:{userName:string;moduleId
               <p className="text-gray-500 font-bold mt-1 text-sm">Pop-up {phishIdx+1} of {PHISH.length}</p>
             </div>
             <ByteSays mood="worried">
-              Sometimes bad guys try to <strong>TRICK you</strong> into giving your password! These are called <strong className="text-red-500">phishing scams</strong>. Can you spot them?
+              Sometimes bad guys try to <strong>TRICK you</strong> into giving your password! These are called <strong className="text-red-500"><Keyword word="phishing"/> scams</strong>. Can you spot them?
             </ByteSays>
 
             {/* Fake popup */}
@@ -1184,7 +1607,7 @@ export default function LessonGame({userName,moduleId}:{userName:string;moduleId
                 <div className="font-semibold text-gray-700 text-sm">{p.reason}</div>
                 {phishIdx<PHISH.length-1
                   ?<button onClick={()=>{setPhishIdx(i=>i+1);setPhishAnswer(null);}} className="py-3 rounded-2xl font-black text-white text-sm border-none cursor-pointer" style={{background:GRAD}}>Next Pop-up ➡️</button>
-                  :btn(()=>navigate(9),"Great work! Next up ➡️")}
+                  :btn(()=>navigate(12),"Great work! Next up ➡️")}
               </div>
             )}
 
@@ -1199,8 +1622,8 @@ export default function LessonGame({userName,moduleId}:{userName:string;moduleId
         );
       }
 
-      // ── 9: WHAT WOULD YOU DO? ─────────────────────────────────────────────
-      case 9: {
+      // ── 12: WHAT WOULD YOU DO? ─────────────────────────────────────────────
+      case 12: {
         const s=WYD[wydIdx];
         return (
           <div className="flex flex-col gap-5 pb-10">
@@ -1248,7 +1671,7 @@ export default function LessonGame({userName,moduleId}:{userName:string;moduleId
               {wydSel!==null&&(
                 wydIdx<WYD.length-1
                   ?<button onClick={()=>{setWydIdx(i=>i+1);setWydSel(null);}} className="w-full py-3 rounded-2xl font-black text-white text-sm border-none cursor-pointer" style={{background:GRAD}}>Next Scenario ➡️</button>
-                  :btn(()=>navigate(10),"Awesome! Typing Challenge ➡️",{width:"100%"})
+                  :btn(()=>navigate(13),"Boss Battle! 🦝 ➡️",{width:"100%"})
               )}
             </div>
 
@@ -1261,127 +1684,8 @@ export default function LessonGame({userName,moduleId}:{userName:string;moduleId
         );
       }
 
-      // ── 10: TYPING CHALLENGE ─────────────────────────────────────────────
-      case 10: {
-        const target=TYPING_PWS[typingPwIdx];
-        return (
-          <div className="flex flex-col gap-5 pb-10">
-            <div className="text-center" style={{animation:`slideUp 0.5s ${SPRING} both`}}>
-              <h2 className="text-3xl font-black" style={{background:GRAD,WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent",backgroundClip:"text"}}>
-                Typing Challenge! ⌨️
-              </h2>
-              <p className="text-gray-500 font-bold mt-1 text-sm">Password {typingPwIdx+1} of {TYPING_PWS.length}</p>
-            </div>
-            <ByteSays mood="excited">
-              Can you type this <strong>strong password</strong> exactly right? Each character lights up green when correct!
-            </ByteSays>
-
-            {!typingAllDone?(
-              <div className="bg-white rounded-3xl p-5 shadow-xl border-2 border-blue-100" style={{animation:`slideUp 0.5s ${SPRING} 0.1s both`}}>
-                <div className="text-center mb-4">
-                  <div className="text-xs font-black text-blue-400 uppercase tracking-wider mb-2">Type this password:</div>
-                  <div className="text-2xl font-black" style={{fontFamily:"monospace",color:"#1e40af",letterSpacing:"0.1em"}}>{target}</div>
-                </div>
-
-                {/* Character boxes */}
-                <div className="flex gap-1.5 flex-wrap justify-center mb-4">
-                  {Array.from(target).map((char,i)=>{
-                    const typed=typingInput[i];
-                    const status=!typed?"empty":typed===char?"correct":"wrong";
-                    return (
-                      <div key={i} className="w-9 h-9 rounded-lg border-2 font-black text-sm flex items-center justify-center transition-all duration-200"
-                        style={{fontFamily:"monospace",
-                          backgroundColor:status==="correct"?"#dcfce7":status==="wrong"?"#fee2e2":"#f9fafb",
-                          borderColor:status==="correct"?"#4ade80":status==="wrong"?"#f87171":"#e5e7eb",
-                          color:status==="correct"?"#166534":status==="wrong"?"#991b1b":"#9ca3af",
-                          transform:status==="correct"?"scale(1.1)":"scale(1)"}}>
-                        {typed||char}
-                      </div>
-                    );
-                  })}
-                </div>
-
-                <input type="text" value={typingInput}
-                  onChange={e=>{const v=e.target.value;if(v.length<=target.length) setTypingInput(v);}}
-                  autoComplete="off" autoCorrect="off" autoCapitalize="off" spellCheck={false}
-                  placeholder="Type the password here..."
-                  className="w-full text-center rounded-2xl border-2 border-purple-200 bg-purple-50 px-4 py-3 font-black text-base focus:outline-none focus:border-purple-400"
-                  style={{fontFamily:"monospace"}}/>
-
-                {isTypingCorrect&&(
-                  <div className="mt-4 text-center" style={{animation:`bounceIn 0.5s ${SPRING} both`}}>
-                    <div className="text-xl font-black text-green-600 mb-3">🎉 Perfect! You typed it exactly right!</div>
-                    {typingPwIdx<TYPING_PWS.length-1
-                      ?<button onClick={()=>{setTypingPwIdx(p=>p+1);setTypingInput("");}} className="px-6 py-3 rounded-2xl font-black text-white text-sm border-none cursor-pointer" style={{background:GRAD}}>Nice! Next Password ➡️</button>
-                      :<button onClick={()=>setTypingAllDone(true)} className="px-6 py-3 rounded-2xl font-black text-white text-sm border-none cursor-pointer" style={{background:GRAD}}>All Done! 🎉</button>}
-                  </div>
-                )}
-              </div>
-            ):(
-              <div className="flex flex-col items-center gap-4" style={{animation:`bounceIn 0.7s ${SPRING} both`}}>
-                <div style={{fontSize:80,animation:`bobble 1.5s ease-in-out infinite`}}>⌨️</div>
-                <p className="text-2xl font-black text-green-600">You can type strong passwords like a PRO!</p>
-                {btn(()=>navigate(11),"Decoder Puzzle! 🔍 ➡️")}
-              </div>
-            )}
-          </div>
-        );
-      }
-
-      // ── 11: DECODER PUZZLE ────────────────────────────────────────────────
-      case 11: {
-        const nonSpaceTotal=DECODE_PHRASE.replace(/ /g,"").length;
-        return (
-          <div className="flex flex-col gap-5 pb-10">
-            <div className="text-center" style={{animation:`slideUp 0.5s ${SPRING} both`}}>
-              <h2 className="text-3xl font-black" style={{background:GRAD,WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent",backgroundClip:"text"}}>
-                Password Decoder! 🕵️
-              </h2>
-            </div>
-            <ByteSays mood="happy">
-              I&apos;ve hidden a secret message! Each number stands for a letter (A=1, B=2, C=3…). <strong>Tap each tile</strong> to decode the message!
-            </ByteSays>
-
-            <div className="bg-white rounded-3xl p-6 shadow-xl border-2 border-purple-100 flex flex-col items-center gap-4"
-              style={{animation:`slideUp 0.5s ${SPRING} 0.1s both`}}>
-              <div className="text-sm font-black text-purple-400 uppercase tracking-wider">A=1, B=2, C=3… Z=26</div>
-
-              {/* Decoder tiles */}
-              <div className="flex gap-2 flex-wrap justify-center">
-                {Array.from(DECODE_PHRASE).map((char,i)=>{
-                  if(char===" ") return <div key={i} style={{width:16}}/>;
-                  const encoded=DECODE_ENCODED[i];
-                  const revealed=decRevealed.has(i);
-                  return (
-                    <div key={i} onClick={()=>!revealed&&setDecRevealed(s=>new Set([...s,i]))}
-                      className="w-12 h-14 rounded-2xl border-2 flex flex-col items-center justify-center transition-all cursor-pointer"
-                      style={{backgroundColor:revealed?"#dcfce7":"#ede9fe",borderColor:revealed?"#4ade80":"#a78bfa",
-                        animation:revealed?`flipCard 0.5s ${SPRING} both`:undefined,
-                        transform:revealed?"scale(1.05)":"scale(1)"}}>
-                      {revealed
-                        ?<span className="text-xl font-black text-green-700">{char}</span>
-                        :<span className="text-lg font-black text-purple-600">{encoded}</span>}
-                    </div>
-                  );
-                })}
-              </div>
-
-              <div className="text-sm text-gray-500 font-bold">{decRevealed.size}/{nonSpaceTotal} letters revealed</div>
-
-              {decDone&&(
-                <div className="text-center" style={{animation:`bounceIn 0.6s ${SPRING} both`}}>
-                  <div className="text-xl font-black text-green-600 mb-2">🎉 You decoded it! "{DECODE_PHRASE}"</div>
-                  <div className="text-sm font-bold text-gray-500 mb-4">That&apos;s your password motto — remember it!</div>
-                  {btn(()=>navigate(12),"Final Boss Challenge! 🦝 ➡️")}
-                </div>
-              )}
-            </div>
-          </div>
-        );
-      }
-
-      // ── 12: BOSS QUIZ ────────────────────────────────────────────────────
-      case 12: return (
+      // ── 13: BOSS BATTLE ──────────────────────────────────────────────────
+      case 13: return (
         <div className="flex flex-col gap-4 pb-10">
           <div className="text-center" style={{animation:`slideUp 0.5s ${SPRING} both`}}>
             <h2 className="text-3xl font-black" style={{background:GRAD,WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent",backgroundClip:"text"}}>
@@ -1464,42 +1768,6 @@ export default function LessonGame({userName,moduleId}:{userName:string;moduleId
                   </span>
                 ))}
               </div>
-              {btn(()=>navigate(13),"See What You've Learned! ➡️")}
-            </div>
-          )}
-        </div>
-      );
-
-      // ── 13: SUMMARY ──────────────────────────────────────────────────────
-      case 13: return (
-        <div className="flex flex-col gap-5 pb-10">
-          <div className="text-center" style={{animation:`slideUp 0.5s ${SPRING} both`}}>
-            <h2 className="text-3xl font-black" style={{background:GRAD,WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent",backgroundClip:"text"}}>
-              Look How Much You Learned! 🌟
-            </h2>
-          </div>
-          <ByteSays mood="excited">
-            You&apos;ve learned SO MUCH today! You are a <strong>real Cyber Hero</strong> now! Check out everything you can do:
-          </ByteSays>
-
-          <div className="space-y-3" style={{animation:`slideUp 0.5s ${SPRING} 0.1s both`}}>
-            {ACHIEVEMENTS.map((ach,i)=>(
-              <div key={i} className="flex items-center gap-4 bg-white rounded-2xl p-4 shadow-md border-2"
-                style={{borderColor:i<achievePhase?"#4ade80":"#e5e7eb",opacity:i<achievePhase?1:0.2,
-                  transition:"all 0.4s",animation:i===achievePhase-1?`tickIn 0.5s ${SPRING} both`:undefined}}>
-                <div className="w-8 h-8 rounded-full flex items-center justify-center shrink-0 transition-all duration-500"
-                  style={{background:i<achievePhase?GRAD:"#f3f4f6"}}>
-                  <span className="text-white font-black text-sm">{i<achievePhase?"✓":i+1}</span>
-                </div>
-                <span className="font-bold text-gray-700 text-sm">{ach}</span>
-                {i<achievePhase&&<span className="ml-auto text-lg" style={{animation:`popIn 0.4s ${SPRING} ${i*80}ms both`}}>⭐</span>}
-              </div>
-            ))}
-          </div>
-
-          {achievePhase>=ACHIEVEMENTS.length&&(
-            <div className="flex flex-col items-center gap-3" style={{animation:`bounceIn 0.7s ${SPRING} both`}}>
-              <p className="text-xl font-black text-purple-600">You&apos;ve earned them ALL! 🏆</p>
               {btn(()=>navigate(14),"Collect Your Certificate! 🎓 ➡️")}
             </div>
           )}
