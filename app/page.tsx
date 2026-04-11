@@ -137,6 +137,7 @@ export default function HomePage() {
         @keyframes slideUp     {from{opacity:0;transform:translateY(32px)}to{opacity:1;transform:translateY(0)}}
         @keyframes popIn       {0%{opacity:0;transform:scale(0.85)}100%{opacity:1;transform:scale(1)}}
         @keyframes sparkle     {0%,100%{opacity:0.3;transform:scale(0.8)}50%{opacity:1;transform:scale(1.2)}}
+        @keyframes charFloat   {0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
       `}</style>
 
       <FloatingOrbs />
@@ -215,7 +216,7 @@ export default function HomePage() {
             <div className="flex-1 flex justify-center lg:justify-end"
               style={{ animation: `popIn 0.9s ${SPRING} 0.2s both` }}>
               <div className="relative">
-                {/* Glow ring behind image */}
+                {/* Glow behind image */}
                 <div className="absolute inset-0 rounded-3xl"
                   style={{
                     background: "linear-gradient(135deg, rgba(139,92,246,0.4), rgba(59,130,246,0.4))",
@@ -229,9 +230,9 @@ export default function HomePage() {
                     boxShadow: "0 0 60px rgba(139,92,246,0.2)",
                   }}>
                   <Image src="/characters/adam-layla-happy.png" alt="Adam and Layla — your Cyber Hero guides"
-                    width={520} height={520} className="block w-full max-w-[480px]" priority />
+                    width={500} height={500} className="block w-full max-w-[500px]" priority />
                 </div>
-                {/* Sparkle decorations */}
+                {/* Sparkles */}
                 {[
                   { top: "-8px", right: "-8px", size: 14 },
                   { bottom: "12px", left: "-10px", size: 10 },
@@ -242,6 +243,79 @@ export default function HomePage() {
               </div>
             </div>
           </div>
+        </section>
+
+        {/* ── MEET YOUR HEROES ──────────────────────────────────────────── */}
+        <section className="max-w-[1200px] mx-auto px-6 md:px-10 py-16 sm:py-24">
+          <Reveal className="text-center mb-12">
+            <h2 className="text-3xl sm:text-4xl font-black text-white mb-4">
+              Meet Your{" "}
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-blue-400">Cyber Heroes</span>
+            </h2>
+          </Reveal>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 max-w-3xl mx-auto mb-10">
+            {/* Adam */}
+            <Reveal delay={0}>
+              <div className="rounded-3xl overflow-hidden transition-all duration-500 hover:scale-[1.03]"
+                style={{
+                  background: "rgba(255,255,255,0.04)",
+                  border: "1px solid rgba(245,158,11,0.2)",
+                  backdropFilter: "blur(8px)",
+                }}
+                onMouseEnter={e => { e.currentTarget.style.boxShadow = "0 0 40px rgba(245,158,11,0.2)"; e.currentTarget.style.borderColor = "rgba(245,158,11,0.4)"; }}
+                onMouseLeave={e => { e.currentTarget.style.boxShadow = "none"; e.currentTarget.style.borderColor = "rgba(245,158,11,0.2)"; }}>
+                <div className="relative overflow-hidden flex justify-center h-[400px]"
+                  style={{ background: "linear-gradient(180deg, rgba(245,158,11,0.08) 0%, transparent 100%)" }}>
+                  <div style={{ animation: "charFloat 3s ease-in-out infinite" }}>
+                    <Image src="/characters/layla.png" alt="Adam — curious and brave Cyber Hero" width={400} height={500} className="block h-full w-auto object-cover" />
+                  </div>
+                </div>
+                <div className="px-6 py-5 text-center">
+                  <h3 className="font-black text-white text-2xl mb-2">Adam</h3>
+                  <p className="text-gray-400 text-sm leading-relaxed">
+                    Curious, brave, and always ready to learn. Adam loves gaming and wants to keep his digital world safe.
+                  </p>
+                </div>
+              </div>
+            </Reveal>
+
+            {/* Layla */}
+            <Reveal delay={0.15}>
+              <div className="rounded-3xl overflow-hidden transition-all duration-500 hover:scale-[1.03]"
+                style={{
+                  background: "rgba(255,255,255,0.04)",
+                  border: "1px solid rgba(168,85,247,0.2)",
+                  backdropFilter: "blur(8px)",
+                }}
+                onMouseEnter={e => { e.currentTarget.style.boxShadow = "0 0 40px rgba(168,85,247,0.2)"; e.currentTarget.style.borderColor = "rgba(168,85,247,0.4)"; }}
+                onMouseLeave={e => { e.currentTarget.style.boxShadow = "none"; e.currentTarget.style.borderColor = "rgba(168,85,247,0.2)"; }}>
+                <div className="relative overflow-hidden flex justify-center h-[400px]"
+                  style={{ background: "linear-gradient(180deg, rgba(168,85,247,0.08) 0%, transparent 100%)" }}>
+                  <div style={{ animation: "charFloat 3s ease-in-out infinite 0.5s" }}>
+                    <Image src="/characters/adam.png" alt="Layla — smart and fearless Cyber Hero" width={400} height={500} className="block h-full w-auto object-cover" />
+                  </div>
+                </div>
+                <div className="px-6 py-5 text-center">
+                  <h3 className="font-black text-white text-2xl mb-2">Layla</h3>
+                  <p className="text-gray-400 text-sm leading-relaxed">
+                    Smart, creative, and fearless. Layla knows that staying safe online is a superpower everyone needs.
+                  </p>
+                </div>
+              </div>
+            </Reveal>
+          </div>
+
+          <Reveal className="text-center" delay={0.2}>
+            <p className="text-gray-300 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed mb-8">
+              Join Adam and Layla on their adventure to become cybersecurity experts. Help them stay safe from the Hacker Raccoon — and learn how to protect yourself too!
+            </p>
+            <a href="/signup"
+              className="inline-block px-7 py-4 rounded-2xl font-black text-white text-base transition-all duration-300 hover:scale-105"
+              style={{ background: GRAD, boxShadow: "0 8px 32px rgba(139,92,246,0.35)" }}>
+              Start the Adventure →
+            </a>
+          </Reveal>
         </section>
 
         {/* ── STORY ────────────────────────────────────────────────────────── */}
