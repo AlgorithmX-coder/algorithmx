@@ -240,9 +240,7 @@ export default function OnboardingPage() {
               <h1 className="text-3xl sm:text-4xl font-black text-white mb-2" style={{ fontFamily: "Nunito, sans-serif" }}>
                 How old is {childName.trim()}? 🎂
               </h1>
-              <p className="text-gray-300 text-base mb-8">
-                This helps us pick the perfect course
-              </p>
+              <div className="mb-8" />
 
               <div className="flex flex-wrap justify-center gap-3 mb-6">
                 {AGES.map((a, idx) => {

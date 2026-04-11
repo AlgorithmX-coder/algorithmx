@@ -371,6 +371,32 @@ const CSS = `
   50% { transform: rotate(360deg) scale(0.5); opacity: 0.7; }
   100% { transform: rotate(720deg) scale(0) translateY(-100px); opacity: 0; }
 }
+@keyframes projectileFly {
+  0% { transform: translate(0, 0) scale(1); opacity: 1; }
+  100% { transform: translate(var(--tx), var(--ty)) scale(0.6); opacity: 0.8; }
+}
+@keyframes impactBoom {
+  0% { transform: scale(0); opacity: 1; }
+  50% { transform: scale(2); opacity: 0.8; }
+  100% { transform: scale(3); opacity: 0; }
+}
+@keyframes raccoonHitFlash {
+  0% { filter: brightness(1); }
+  20% { filter: brightness(3); }
+  40% { filter: brightness(1); transform: scale(0.9, 1.1); }
+  60% { filter: brightness(1.5); transform: scale(1.1, 0.9); }
+  100% { filter: brightness(1); transform: scale(1); }
+}
+@keyframes raccoonTaunt {
+  0% { transform: translateX(0); }
+  25% { transform: translateX(-15px) rotate(-5deg); }
+  75% { transform: translateX(15px) rotate(5deg); }
+  100% { transform: translateX(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
 @keyframes goldShimmer {
   0% { background-position: -200% 0; }
   100% { background-position: 200% 0; }
@@ -812,12 +838,13 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
   const [raccoonHealth, setRaccoonHealth] = useState(100);
   const [bossDone, setBossDone] = useState(false);
   const [bossAttackPhase, setBossAttackPhase] = useState(false);
-  const [whackHits, setWhackHits] = useState(0);
-  const [whackActiveHole, setWhackActiveHole] = useState<number | null>(null);
-  const [whackPops, setWhackPops] = useState<{ id: number; hole: number; text: string }[]>([]);
-  const whackPopId = useRef(0);
-  const whackTimer = useRef<ReturnType<typeof setInterval> | null>(null);
-  const whackEndTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [arenaShotsLeft, setArenaShotsLeft] = useState(5);
+  const [arenaHits, setArenaHits] = useState(0);
+  const [arenaRaccoonPos, setArenaRaccoonPos] = useState({ left: 50, top: 30 });
+  const [arenaProjectiles, setArenaProjectiles] = useState<{ id: number; tx: number; ty: number; hit: boolean }[]>([]);
+  const [arenaShowResult, setArenaShowResult] = useState(false);
+  const [arenaRaccoonAnim, setArenaRaccoonAnim] = useState<"idle" | "hit" | "taunt" | "defeat">("idle");
+  const arenaProjectileId = useRef(0);
 
   // Screen 15 — Achievements
   const [achievePhase, setAchievePhase] = useState(0);
@@ -885,7 +912,9 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
         case 14:
           setBossIdx(0); setBossSel(null); setBossFeedback(null);
           setBossScore(0); setRaccoonHealth(100); setBossDone(false);
-          setBossAttackPhase(false); setWhackHits(0); setWhackActiveHole(null); setWhackPops([]);
+          setBossAttackPhase(false); setArenaShotsLeft(5); setArenaHits(0);
+          setArenaRaccoonPos({ left: 50, top: 30 }); setArenaProjectiles([]);
+          setArenaShowResult(false); setArenaRaccoonAnim("idle");
           break;
         case 15:
           setAchievePhase(0);
@@ -1061,58 +1090,78 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
     }).catch(() => { /* ignore */ });
   }, [screen, moduleId]);
 
-  /* ---------- whack-a-mole handler ---------- */
-  const handleWhackTap = useCallback((hole: number) => {
-    if (whackActiveHole !== hole) return;
-    setWhackActiveHole(null);
-    setWhackHits((h) => h + 1);
-    const id = whackPopId.current++;
-    const texts = ["POW!", "BAM!", "WHACK!", "ZAP!"];
-    setWhackPops((prev) => [...prev, { id, hole, text: texts[id % texts.length] }]);
-    playSound("/sounds/correct.mp3");
-    setTimeout(() => setWhackPops((prev) => prev.filter((p) => p.id !== id)), 600);
-  }, [whackActiveHole, playSound]);
+  /* ---------- arena boss battle handler ---------- */
+  const randomRaccoonPos = useCallback(() => ({
+    left: 15 + Math.random() * 70,
+    top: 10 + Math.random() * 40,
+  }), []);
 
-  // Whack-a-mole phase: raccoon pops up from random holes
+  const handleArenaFire = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+    if (arenaShotsLeft <= 0 || arenaShowResult) return;
+    const rect = e.currentTarget.getBoundingClientRect();
+    const tapX = e.clientX - rect.left;
+    const tapY = e.clientY - rect.top;
+    const raccoonX = (arenaRaccoonPos.left / 100) * rect.width;
+    const raccoonY = (arenaRaccoonPos.top / 100) * rect.height;
+    const dist = Math.sqrt((tapX - raccoonX) ** 2 + (tapY - raccoonY) ** 2);
+    const isHit = dist < 80;
+    const id = arenaProjectileId.current++;
+    const tx = tapX - rect.width / 2;
+    const ty = tapY - rect.height;
+
+    setArenaProjectiles((prev) => [...prev, { id, tx, ty, hit: isHit }]);
+    setTimeout(() => setArenaProjectiles((prev) => prev.filter((p) => p.id !== id)), 500);
+
+    if (isHit) {
+      setArenaHits((h) => h + 1);
+      setArenaRaccoonAnim("hit");
+      playSound("/sounds/correct.mp3");
+      setTimeout(() => {
+        setArenaRaccoonAnim("idle");
+        setArenaRaccoonPos(randomRaccoonPos());
+      }, 500);
+    } else {
+      setArenaRaccoonAnim("taunt");
+      setTimeout(() => {
+        setArenaRaccoonAnim("idle");
+        setArenaRaccoonPos(randomRaccoonPos());
+      }, 500);
+    }
+
+    const newShots = arenaShotsLeft - 1;
+    setArenaShotsLeft(newShots);
+    if (newShots <= 0) {
+      setTimeout(() => setArenaShowResult(true), 800);
+    }
+  }, [arenaShotsLeft, arenaShowResult, arenaRaccoonPos, playSound, randomRaccoonPos]);
+
+  // Arena: init on phase start
   useEffect(() => {
     if (!bossAttackPhase) return;
-    setWhackHits(0);
-    setWhackActiveHole(null);
-    setWhackPops([]);
-    let lastHole = -1;
-    whackTimer.current = setInterval(() => {
-      let next: number;
-      do { next = Math.floor(Math.random() * 9); } while (next === lastHole);
-      lastHole = next;
-      setWhackActiveHole(next);
-      setTimeout(() => setWhackActiveHole((cur) => cur === next ? null : cur), 800);
-    }, 600);
-    whackEndTimer.current = setTimeout(() => {
-      if (whackTimer.current) clearInterval(whackTimer.current);
-      setWhackActiveHole(null);
-      setBossAttackPhase(false);
-      // Calculate damage: each hit = 2%, minimum 10%
-      setWhackHits((hits) => {
-        const damage = Math.max(10, hits * 2);
-        setRaccoonHealth((h) => Math.max(0, h - damage));
-        const newHealth = raccoonHealth - damage;
-        if (newHealth <= 0 || bossIdx >= BOSS_QUIZ.length - 1) {
-          setTimeout(() => setBossDone(true), 1500);
-        } else {
-          setTimeout(() => {
-            setBossSel(null);
-            setBossFeedback(null);
-            setBossIdx((i) => i + 1);
-          }, 1500);
-        }
-        return hits;
-      });
-    }, 4000);
-    return () => {
-      if (whackTimer.current) clearInterval(whackTimer.current);
-      if (whackEndTimer.current) clearTimeout(whackEndTimer.current);
-    };
-  }, [bossAttackPhase, bossIdx, raccoonHealth]);
+    setArenaShotsLeft(5);
+    setArenaHits(0);
+    setArenaRaccoonPos(randomRaccoonPos());
+    setArenaProjectiles([]);
+    setArenaShowResult(false);
+    setArenaRaccoonAnim("idle");
+  }, [bossAttackPhase, randomRaccoonPos]);
+
+  const finishArenaRound = useCallback(() => {
+    const damage = Math.max(6, arenaHits * 2);
+    setRaccoonHealth((h) => Math.max(0, h - damage));
+    setBossAttackPhase(false);
+    setArenaShowResult(false);
+    const newHealth = raccoonHealth - damage;
+    if (newHealth <= 0 || bossIdx >= BOSS_QUIZ.length - 1) {
+      setTimeout(() => setBossDone(true), 500);
+    } else {
+      setTimeout(() => {
+        setBossSel(null);
+        setBossFeedback(null);
+        setBossIdx((i) => i + 1);
+      }, 500);
+    }
+  }, [arenaHits, raccoonHealth, bossIdx]);
 
   /* ---------- renderScreen ---------- */
   const renderScreen = () => {
@@ -1239,7 +1288,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
       case 2:
         return (
           <div style={{ textAlign: "center" }}>
-            <h1 style={{ color: "#fff", fontSize: 28, fontWeight: 900, marginBottom: 8 }}>What is a Password? 🔐</h1>
+            <h1 style={{ color: "#fff", fontSize: 28, fontWeight: 900, marginBottom: 8 }}>What is a Password?</h1>
             <p style={{ color: "#9ca3af", marginBottom: 8 }}>Tap each item to lock it with a password!</p>
             <p style={{ color: "#f59e0b", fontSize: 20, fontWeight: 700, marginBottom: 16 }}>🔒 {lockedItems.size}/3</p>
             <div style={{ display: "flex", gap: 16, justifyContent: "center", flexWrap: "wrap", marginBottom: 24 }}>
@@ -1337,7 +1386,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
         const qq = Q1_QUIZ[q1Idx];
         return (
           <div key={`q1-${q1Idx}`} style={{ animation: "slideFromBelow 0.5s ease" }}>
-            <h1 style={{ color: "#fff", fontSize: 24, fontWeight: 900, marginBottom: 4, textAlign: "center" }}>Quick Quiz! 🎮</h1>
+            <h1 style={{ color: "#fff", fontSize: 24, fontWeight: 900, marginBottom: 4, textAlign: "center" }}>Quick Quiz!<img src="/characters/adam-layla-happy.png" width={40} height={40} alt="" style={{ display: "inline-block", verticalAlign: "middle", marginLeft: 8, borderRadius: 999 }} /></h1>
             <p style={{ color: "#9ca3af", marginBottom: 12, textAlign: "center" }}>Question {q1Idx + 1}/{Q1_QUIZ.length}</p>
             <FloatingBubbleQuiz
               question={qq.q}
@@ -1376,7 +1425,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
         const raccoonSpeed = [3, 2.5, 2][whyIdx] || 2;
         return (
           <div style={{ textAlign: "center" }}>
-            <h1 style={{ color: "#fff", fontSize: 24, fontWeight: 900, marginBottom: 8 }}>Why Do Passwords Matter? 🛡️</h1>
+            <h1 style={{ color: "#fff", fontSize: 24, fontWeight: 900, marginBottom: 8 }}>Why Do Passwords Matter?</h1>
             <p style={{ color: "#9ca3af", marginBottom: 16 }}>Scenario {whyIdx + 1}/3: {sc.label} {sc.icon}</p>
             {card(
               <div style={{ position: "relative", minHeight: 200, overflow: "hidden" }}>
@@ -1490,7 +1539,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
         const qq = Q2_QUIZ[q2Idx];
         return (
           <div key={`q2-${q2Idx}`} style={{ animation: "slideFromBelow 0.5s ease" }}>
-            <h1 style={{ color: "#fff", fontSize: 24, fontWeight: 900, marginBottom: 4, textAlign: "center" }}>Quick Quiz! 🎮</h1>
+            <h1 style={{ color: "#fff", fontSize: 24, fontWeight: 900, marginBottom: 4, textAlign: "center" }}>Quick Quiz!<img src="/characters/adam-layla-happy.png" width={40} height={40} alt="" style={{ display: "inline-block", verticalAlign: "middle", marginLeft: 8, borderRadius: 999 }} /></h1>
             <p style={{ color: "#9ca3af", marginBottom: 12, textAlign: "center" }}>Question {q2Idx + 1}/{Q2_QUIZ.length}</p>
             <FloatingBubbleQuiz
               question={qq.q}
@@ -1513,7 +1562,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
       case 6:
         return (
           <div style={{ textAlign: "center" }}>
-            <h1 style={{ color: "#fff", fontSize: 28, fontWeight: 900, marginBottom: 8 }}>The Password Recipe! 🔐</h1>
+            <h1 style={{ color: "#fff", fontSize: 28, fontWeight: 900, marginBottom: 8 }}>The Password Recipe!</h1>
             <p style={{ color: "#9ca3af", marginBottom: 16 }}>Tap each bottle to pour it into the mix!</p>
 
             {/* Bottles in arc */}
@@ -1602,7 +1651,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
         const filledCount = builderSlots.filter((s: number) => s >= 0).length;
         return (
           <div style={{ textAlign: "center" }}>
-            <h1 style={{ color: "#fff", fontSize: 28, fontWeight: 900, marginBottom: 8 }}>Build Your Password! 🛡️</h1>
+            <h1 style={{ color: "#fff", fontSize: 28, fontWeight: 900, marginBottom: 8 }}>Build Your Password!</h1>
             {/* Display */}
             <div style={{
               background: "rgba(0,0,0,0.3)", borderRadius: 16, padding: "12px 20px", margin: "0 auto 16px",
@@ -1703,7 +1752,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
 
         return (
           <div style={{ textAlign: "center" }}>
-            <h1 style={{ color: "#fff", fontSize: 24, fontWeight: 900, marginBottom: 8 }}>Good or Bad? 🤔</h1>
+            <h1 style={{ color: "#fff", fontSize: 24, fontWeight: 900, marginBottom: 8 }}>Good or Bad?</h1>
             <p style={{ color: "#9ca3af", marginBottom: 8 }}>{swipeIdx + 1}/{SWIPE_DATA.length} — Swipe or tap!</p>
 
             {/* Weak/Strong indicators */}
@@ -1814,7 +1863,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
         }
         return (
           <div style={{ textAlign: "center", userSelect: "none" }}>
-            <h1 style={{ color: "#fff", fontSize: 24, fontWeight: 900, marginBottom: 8 }}>Sort the Passwords! 🔀</h1>
+            <h1 style={{ color: "#fff", fontSize: 24, fontWeight: 900, marginBottom: 8 }}>Sort the Passwords!</h1>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
               <span style={{ color: "#9ca3af" }}>{placed.size}/8 sorted</span>
               <span style={{ color: dragTime <= 10 ? "#ef4444" : "#f59e0b", fontWeight: 700, fontSize: 18 }}>
@@ -1882,7 +1931,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
       case 10:
         return (
           <div style={{ textAlign: "center" }}>
-            <h1 style={{ color: "#fff", fontSize: 28, fontWeight: 900, marginBottom: 16 }}>The 5 Golden Rules! 🌟</h1>
+            <h1 style={{ color: "#fff", fontSize: 28, fontWeight: 900, marginBottom: 16 }}>The 5 Golden Rules!</h1>
             <div style={{ display: "flex", flexDirection: "column", gap: 16, maxWidth: 540, margin: "0 auto 24px" }}>
               {RULES.map((rule, i) => {
                 const isRevealed = revealedRules.has(i);
@@ -1951,16 +2000,16 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                                     }
                                   }} style={{
                                     background: ruleAnswers[i] === oi
-                                      ? oi === rule.correct ? "rgba(16,185,129,0.15)" : "rgba(239,68,68,0.15)"
-                                      : "rgba(255,255,255,0.08)",
+                                      ? oi === rule.correct ? "rgba(16,185,129,0.2)" : "rgba(239,68,68,0.2)"
+                                      : "rgba(255,255,255,0.12)",
                                     border: `2px solid ${ruleAnswers[i] === oi
                                       ? oi === rule.correct ? "#10b981" : "#ef4444"
-                                      : "rgba(255,255,255,0.2)"}`,
-                                    borderRadius: 12, padding: "14px 20px",
+                                      : "rgba(255,255,255,0.35)"}`,
+                                    borderRadius: 12, padding: "16px 24px",
                                     color: ruleAnswers[i] === oi
                                       ? oi === rule.correct ? "#10b981" : "#ef4444"
-                                      : "#e5e7eb",
-                                    fontSize: 16, fontWeight: 700, cursor: "pointer", minHeight: 52, flex: 1,
+                                      : "#ffffff",
+                                    fontSize: 16, fontWeight: 800, cursor: "pointer", minHeight: 56, flex: 1,
                                     animation: ruleAnswers[i] === oi && oi !== rule.correct ? "shake 0.5s ease" : undefined,
                                     opacity: ruleAnswers[i] !== null && ruleAnswers[i] !== oi && ruleAnswers[i] !== rule.correct ? 0.4 : 1,
                                   }}>
@@ -2017,7 +2066,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
         const qq = Q3_QUIZ[q3Idx];
         return (
           <div key={`q3-${q3Idx}`} style={{ animation: "slideFromBelow 0.5s ease" }}>
-            <h1 style={{ color: "#fff", fontSize: 24, fontWeight: 900, marginBottom: 4, textAlign: "center" }}>Quick Quiz! 🎮</h1>
+            <h1 style={{ color: "#fff", fontSize: 24, fontWeight: 900, marginBottom: 4, textAlign: "center" }}>Quick Quiz!<img src="/characters/adam-layla-happy.png" width={40} height={40} alt="" style={{ display: "inline-block", verticalAlign: "middle", marginLeft: 8, borderRadius: 999 }} /></h1>
             <p style={{ color: "#9ca3af", marginBottom: 12, textAlign: "center" }}>Question {q3Idx + 1}/{Q3_QUIZ.length}</p>
             <FloatingBubbleQuiz
               question={qq.q}
@@ -2057,7 +2106,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
         const ph = PHISH[phishIdx];
         return (
           <div style={{ textAlign: "center" }}>
-            <h1 style={{ color: "#fff", fontSize: 24, fontWeight: 900, marginBottom: 8 }}>Spot the Tricks! 🔍</h1>
+            <h1 style={{ color: "#fff", fontSize: 24, fontWeight: 900, marginBottom: 8 }}>Spot the Tricks!<img src="/characters/raccoon.png" width={40} height={40} alt="" style={{ display: "inline-block", verticalAlign: "middle", marginLeft: 8, borderRadius: 999 }} /></h1>
             <p style={{ color: "#9ca3af", marginBottom: 16 }}>Message {phishIdx + 1}/{PHISH.length}</p>
 
             {/* Tablet frame */}
@@ -2177,7 +2226,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
         const w = WYD[wydIdx];
         return (
           <div style={{ textAlign: "center" }}>
-            <h1 style={{ color: "#fff", fontSize: 24, fontWeight: 900, marginBottom: 8 }}>What Would YOU Do? 🤔</h1>
+            <h1 style={{ color: "#fff", fontSize: 24, fontWeight: 900, marginBottom: 8 }}>What Would YOU Do?</h1>
             <p style={{ color: "#9ca3af", marginBottom: 16 }}>Scenario {wydIdx + 1}/{WYD.length}</p>
             <div key={`wyd-${wydIdx}`} style={{ animation: "slideInR 0.4s ease" }}>
               <div style={{ display: "flex", alignItems: "flex-start", gap: 12, maxWidth: 500, margin: "0 auto 16px" }}>
@@ -2270,47 +2319,105 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
         }
 
         if (bossAttackPhase) {
+          const raccoonScale = 0.5 + (arenaRaccoonPos.top / 100) * 0.8;
           return (
             <div style={{ textAlign: "center" }}>
-              <h1 style={{ color: "#f59e0b", fontSize: 28, fontWeight: 900, animation: "celebrate 0.5s ease infinite" }}>
-                WHACK THE RACCOON! 🔨
+              <h1 style={{ color: "#f59e0b", fontSize: 26, fontWeight: 900, marginBottom: 4 }}>
+                FIRE AT THE RACCOON!
               </h1>
-              <p style={{ color: "#9ca3af", fontSize: 14, marginBottom: 12 }}>Hits: {whackHits}</p>
-              {/* 3x3 grid of holes */}
-              <div style={{
-                display: "grid", gridTemplateColumns: "repeat(3, 80px)", gap: 12,
-                justifyContent: "center", margin: "0 auto 16px",
-              }}>
-                {Array.from({ length: 9 }, (_, hole) => {
-                  const isActive = whackActiveHole === hole;
-                  const pop = whackPops.find((p) => p.hole === hole);
-                  return (
-                    <div key={hole}
-                      onClick={() => handleWhackTap(hole)}
-                      style={{
-                        width: 80, height: 80, borderRadius: "50%",
-                        background: "rgba(0,0,0,0.3)", border: "2px solid rgba(255,255,255,0.08)",
-                        display: "flex", alignItems: "center", justifyContent: "center",
-                        cursor: isActive ? "pointer" : "default",
-                        position: "relative", overflow: "visible",
-                      }}>
-                      {isActive && (
-                        <img src="/characters/raccoon.png" alt="Raccoon" style={{
-                          width: 60, height: 60, borderRadius: "50%",
-                          animation: "popIn 0.2s ease both",
-                        }} />
-                      )}
-                      {pop && (
-                        <span style={{
-                          position: "absolute", top: -10, left: "50%", transform: "translateX(-50%)",
-                          color: "#f59e0b", fontWeight: 900, fontSize: 18,
-                          animation: "damageFloat 0.6s ease forwards", pointerEvents: "none",
-                        }}>{pop.text}</span>
-                      )}
-                    </div>
-                  );
-                })}
+              <p style={{ color: "#9ca3af", fontSize: 14, marginBottom: 8 }}>Tap the arena to fire! Shots: {arenaShotsLeft}/5 | Hits: {arenaHits}</p>
+
+              {/* Arena */}
+              <div
+                onClick={handleArenaFire}
+                style={{
+                  position: "relative", width: "100%", maxWidth: 500, height: 350,
+                  margin: "0 auto 12px", perspective: 800, overflow: "hidden",
+                  borderRadius: 24, cursor: arenaShotsLeft > 0 && !arenaShowResult ? "crosshair" : "default",
+                  background: "radial-gradient(ellipse at center bottom, rgba(139,92,246,0.15), transparent 70%)",
+                  border: "1px solid rgba(139,92,246,0.2)",
+                }}>
+                {/* Arena floor */}
+                <div style={{
+                  position: "absolute", bottom: 0, left: "-50%", width: "200%", height: "60%",
+                  transform: "rotateX(60deg)", transformOrigin: "bottom center",
+                  background: `
+                    repeating-linear-gradient(90deg, rgba(139,92,246,0.2) 0px, rgba(139,92,246,0.2) 1px, transparent 1px, transparent 40px),
+                    repeating-linear-gradient(0deg, rgba(59,130,246,0.15) 0px, rgba(59,130,246,0.15) 1px, transparent 1px, transparent 40px)
+                  `,
+                }} />
+
+                {/* Raccoon */}
+                <div style={{
+                  position: "absolute",
+                  left: `${arenaRaccoonPos.left}%`, top: `${arenaRaccoonPos.top}%`,
+                  transform: `translate(-50%, -50%) scale(${raccoonScale})`,
+                  transition: `left 0.5s ${SPRING}, top 0.5s ${SPRING}`,
+                  zIndex: 2,
+                }}>
+                  <img src="/characters/raccoon.png" alt="Raccoon" style={{
+                    width: 80, height: 80, borderRadius: 16,
+                    animation: arenaRaccoonAnim === "hit" ? "raccoonHitFlash 0.5s ease"
+                      : arenaRaccoonAnim === "taunt" ? "raccoonTaunt 0.5s ease"
+                      : arenaRaccoonAnim === "defeat" ? "raccoonDefeat 1.5s ease forwards"
+                      : "bobble 2s ease infinite",
+                  }} />
+                </div>
+
+                {/* Projectiles */}
+                {arenaProjectiles.map((p) => (
+                  <div key={p.id} style={{
+                    position: "absolute", bottom: 10, left: "50%",
+                    fontSize: 28, pointerEvents: "none", zIndex: 3,
+                    // @ts-expect-error CSS custom properties
+                    "--tx": `${p.tx}px`, "--ty": `${p.ty}px`,
+                    animation: "projectileFly 0.4s ease-out forwards",
+                  }}>
+                    🛡️
+                  </div>
+                ))}
+
+                {/* Impact effects */}
+                {arenaProjectiles.map((p) => (
+                  <span key={`fx-${p.id}`} style={{
+                    position: "absolute",
+                    left: `calc(50% + ${p.tx}px)`, top: `calc(100% + ${p.ty}px)`,
+                    color: p.hit ? "#f59e0b" : "#6b7280",
+                    fontWeight: 900, fontSize: p.hit ? 22 : 14,
+                    pointerEvents: "none", zIndex: 4,
+                    animation: "impactBoom 0.6s ease 0.35s forwards",
+                    opacity: 0,
+                  }}>
+                    {p.hit ? "BOOM!" : "Miss!"}
+                  </span>
+                ))}
+
+                {/* Result overlay */}
+                {arenaShowResult && (
+                  <div style={{
+                    position: "absolute", inset: 0, background: "rgba(26,16,51,0.85)",
+                    display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
+                    zIndex: 10, animation: "fadeIn 0.4s ease",
+                  }}>
+                    <p style={{ color: "#f59e0b", fontSize: 24, fontWeight: 900, marginBottom: 4 }}>
+                      {arenaHits}/5 hits!
+                    </p>
+                    <p style={{ color: "#d1d5db", fontSize: 16, marginBottom: 16 }}>
+                      {Math.max(6, arenaHits * 2)}% damage dealt!
+                    </p>
+                    {btn("Continue →", finishArenaRound)}
+                  </div>
+                )}
               </div>
+
+              {/* Shot indicators */}
+              <div style={{ display: "flex", gap: 8, justifyContent: "center", marginBottom: 8 }}>
+                {Array.from({ length: 5 }, (_, i) => (
+                  <span key={i} style={{ fontSize: 24, opacity: i < arenaShotsLeft ? 1 : 0.2 }}>🛡️</span>
+                ))}
+              </div>
+
+              {/* Health bar */}
               <div style={{ width: 200, margin: "0 auto" }}>
                 <div style={{ display: "flex", justifyContent: "space-between", fontSize: 12, color: "#9ca3af", marginBottom: 4 }}>
                   <span>Raccoon HP</span><span>{raccoonHealth}%</span>
@@ -2330,7 +2437,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
         const bq = BOSS_QUIZ[bossIdx];
         return (
           <div style={{ textAlign: "center" }}>
-            <h1 style={{ color: "#fff", fontSize: 28, fontWeight: 900, marginBottom: 8 }}>FINAL CHALLENGE! 🦸</h1>
+            <h1 style={{ color: "#fff", fontSize: 28, fontWeight: 900, marginBottom: 8 }}>FINAL CHALLENGE!<img src="/characters/raccoon.png" width={40} height={40} alt="" style={{ display: "inline-block", verticalAlign: "middle", marginLeft: 8, borderRadius: 999 }} /></h1>
             {/* Raccoon + health bar */}
             <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 16, marginBottom: 16 }}>
               <img src="/characters/raccoon.png" alt="Raccoon" style={{
@@ -2421,7 +2528,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
         const achieveCoins = [25, 30, 25, 0, 25, 0, 0, 0];
         return (
           <div style={{ textAlign: "center" }}>
-            <h1 style={{ color: "#fff", fontSize: 32, fontWeight: 900, marginBottom: 16 }}>You Did It! 🎉</h1>
+            <h1 style={{ color: "#fff", fontSize: 32, fontWeight: 900, marginBottom: 16 }}>You Did It!<img src="/characters/adam-layla-happy.png" width={44} height={44} alt="" style={{ display: "inline-block", verticalAlign: "middle", marginLeft: 8, borderRadius: 999 }} /></h1>
             <img src="/characters/adam-layla-happy.png" alt="Adam and Layla safe" style={{
               width: 200, borderRadius: 24, margin: "0 auto 16px", display: "block",
               animation: "heroFloat 3s ease infinite",
