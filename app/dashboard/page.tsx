@@ -9,6 +9,15 @@ export default async function DashboardPage() {
   const session = await auth();
   if (!session?.user) redirect("/login");
 
+  const childProfiles = await prisma.childProfile.findMany({
+    where: { userId: session.user.id! },
+    orderBy: { createdAt: "desc" },
+  });
+
+  if (childProfiles.length === 0) redirect("/onboarding");
+
+  const activeChild = childProfiles[0];
+
   const course = await prisma.course.findFirst({
     where: { title: "Cyber Heroes Academy" },
     include: {
@@ -66,7 +75,7 @@ export default async function DashboardPage() {
     },
   );
 
-  const userName = session.user.name ?? "Cyber Hero";
+  const userName = activeChild.childName ?? session.user.name ?? "Cyber Hero";
   const raccoonPower = Math.round(100 - progressPct);
 
   return (

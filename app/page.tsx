@@ -104,19 +104,19 @@ const COURSES = [
   },
   {
     emoji: "🔍", title: "Cyber Explorers", ages: "11–14", weeks: 14, time: "1 hr/week",
-    accent: "#8b5cf6", featured: false, href: null,
+    accent: "#8b5cf6", featured: false, href: "/cyber-explorers",
     desc: "Motion-graphics lessons exploring networks, encryption, social engineering, and ethical hacking fundamentals.",
     hasImage: false,
   },
   {
     emoji: "💻", title: "CyberStart", ages: "15–17", weeks: 16, time: "1.5 hrs/week",
-    accent: "#22c55e", featured: false, href: null,
+    accent: "#22c55e", featured: false, href: "/cyberstart",
     desc: "Real-world CTF challenges, incident response scenarios, and simulated phishing environments.",
     hasImage: false,
   },
   {
     emoji: "🚀", title: "CyberStart Pro", ages: "18+", weeks: 20, time: "2 hrs/week",
-    accent: "#f59e0b", featured: false, href: null,
+    accent: "#f59e0b", featured: false, href: "/cyberstart-pro",
     desc: "Professional workplace cybersecurity. Compliance frameworks, threat analysis, and career pathways.",
     hasImage: false,
   },
@@ -310,7 +310,7 @@ export default function HomePage() {
                       backdropFilter: "blur(12px)",
                       cursor: c.href ? "pointer" : "not-allowed",
                       textDecoration: "none",
-                      opacity: isComingSoon ? 0.7 : 1,
+                      opacity: 1,
                     }}
                     onMouseEnter={e => {
                       if (c.href) {
