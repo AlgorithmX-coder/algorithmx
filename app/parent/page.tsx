@@ -16,7 +16,15 @@ const MODULE_SUMMARIES: Record<number, string> = {
   9: "Explored safe gaming — in-app purchases, stranger danger, and reporting tools.",
   10: "Learned about two-factor authentication and extra layers of security.",
   11: "Understood backup and recovery — keeping your data safe from loss.",
-  12: "Final review and graduation — became a certified Cyber Hero!",
+  12: "Explored digital footprints — everything you do online leaves a trail.",
+  13: "Learned about screen time balance, breaks, sleep, and healthy online habits.",
+  14: "Understood how smart devices like Alexa and Siri listen, and how to protect privacy.",
+  15: "Discovered what AI chatbots are, what they know, and what never to share with them.",
+  16: "Learned to check QR codes and links before tapping — no more mystery clicks.",
+  17: "Explored social media safety on TikTok, Snapchat, and Instagram — privacy and posting.",
+  18: "Practised keeping things private on shared family devices — logging out and boundaries.",
+  19: "Became the family cyber expert — helping parents and grandparents stay safe too.",
+  20: "Completed the ultimate challenge and earned the Cyber Hero certificate!",
 };
 
 const PARENT_TIPS_BY_WEEK: Record<number, string> = {
@@ -31,7 +39,15 @@ const PARENT_TIPS_BY_WEEK: Record<number, string> = {
   9: "Review your child's gaming accounts together and discuss safe gaming habits.",
   10: "Set up two-factor authentication on a family account together as practice.",
   11: "Help your child back up their important school files or photos.",
-  12: "Celebrate! Your child is now a certified Cyber Hero. Ask them to present what they learned to the family!",
+  12: "Talk about digital footprints — search your child's name online together and discuss what comes up.",
+  13: "Set a family screen time agreement together — make it collaborative, not a punishment.",
+  14: "Ask your child to show you the privacy settings on your smart speakers and devices.",
+  15: "Chat about AI together — ask your child what they think chatbots should and shouldn't know about them.",
+  16: "Next time you see a QR code in the wild, ask your child if they think it's safe to scan.",
+  17: "Review your child's social media privacy settings together — make it a team check-up.",
+  18: "Set up separate user accounts on shared family devices if you haven't already.",
+  19: "Let your child teach a grandparent or relative about online safety — they'll love being the expert!",
+  20: "Celebrate! Your child is now a certified Cyber Hero. Ask them to present what they learned to the family!",
 };
 
 export default async function ParentDashboard() {

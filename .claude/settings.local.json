@@ -15,7 +15,13 @@
       "Bash(echo \"Exit code: $?\")",
       "Bash(echo \"TSC_EXIT:$?\")",
       "Bash(echo \"BUILD_EXIT:$?\")",
-      "Bash(node -e \"const m = require\\('@prisma/adapter-pg'\\); console.log\\(Object.keys\\(m\\)\\);\")"
+      "Bash(node -e \"const m = require\\('@prisma/adapter-pg'\\); console.log\\(Object.keys\\(m\\)\\);\")",
+      "Bash(grep -c '\\\\\\\\u[0-9a-f]' app/lesson/LessonPlayer.tsx)",
+      "Bash(grep -c '\\\\\\\\u[0-9a-f]' app/dashboard/page.tsx)",
+      "Bash(grep -n '\\\\\\\\u[0-9a-f]' app/lesson/LessonPlayer.tsx)",
+      "Bash(node -e ':*)",
+      "Bash(git commit -m ':*)",
+      "Bash(npx tsx:*)"
     ]
   }
 }

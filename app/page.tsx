@@ -97,7 +97,7 @@ function AnimCounter({ to, suffix = "", label }: { to: number | string; suffix?:
 /* ─── DATA ─── */
 const COURSES = [
   {
-    emoji: "🛡️", title: "Cyber Heroes Academy", ages: "6–10", weeks: 12, time: "45 min/week",
+    emoji: "🛡️", title: "Cyber Heroes Academy", ages: "6–10", weeks: 20, time: "45 min/week",
     accent: "#06b6d4", featured: true, href: "/cyberheroes",
     desc: "Fun animated adventures with Adam & Layla! Learn about passwords, online safety, and digital citizenship through interactive games.",
     hasImage: true,
@@ -439,7 +439,7 @@ export default function HomePage() {
         <section className="max-w-[1200px] mx-auto px-6 md:px-10 py-12 sm:py-20">
           <div className="flex flex-wrap gap-4 justify-center">
             <AnimCounter to={4} label="Learning Tracks" />
-            <AnimCounter to={62} suffix="+" label="Weeks of Content" />
+            <AnimCounter to={70} suffix="+" label="Weeks of Content" />
             <AnimCounter to="6+" suffix="" label="Starting Age" />
             <AnimCounter to={100} suffix="%" label="Interactive" />
           </div>
