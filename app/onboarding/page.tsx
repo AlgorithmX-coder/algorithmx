@@ -81,7 +81,7 @@ export default function OnboardingPage() {
         setLoading(false);
         return;
       }
-      router.push("/dashboard");
+      router.push("/welcome");
     } catch {
       setError("Network error. Please try again.");
       setLoading(false);
