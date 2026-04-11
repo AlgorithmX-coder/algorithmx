@@ -47,23 +47,23 @@ const RECIPE = [
 ];
 
 const Q1_QUIZ = [
-  { q: "What is a password?", opts: ["A type of computer game", "A secret code that only you know 🔐", "Your name", "A picture on your computer"], correct: 1, explain: "A password is YOUR secret code — like a key only you have!" },
-  { q: "What happened to Adam and Layla?", opts: ["They won a real prize", "Their computer broke", "They got tricked and hacked by the Raccoon 🦝", "Nothing happened"], correct: 2, explain: "The Hacker Raccoon tricked them because they didn't know about password safety!" },
-  { q: "A password is like a _____ for your digital stuff", opts: ["A picture 🖼️", "A special key 🔑", "A game 🎮", "A song 🎵"], correct: 1, explain: "Just like a key locks your door, a password locks your digital stuff!" },
+  { q: "What is a password?", opts: ["A type of computer game", "A secret code that only you know", "Your name", "A picture on your computer"], correct: 1, explain: "A password is YOUR secret code — like a key only you have!" },
+  { q: "What happened to Adam and Layla?", opts: ["They won a real prize", "Their computer broke", "They got tricked and hacked by the Raccoon", "Nothing happened"], correct: 2, explain: "The Hacker Raccoon tricked them because they didn't know about password safety!" },
+  { q: "A password is like a _____ for your digital stuff", opts: ["A picture", "A special key", "A game", "A song"], correct: 1, explain: "Just like a key locks your door, a password locks your digital stuff!" },
 ];
 
 const Q2_QUIZ = [
-  { q: "Why are passwords important?", opts: ["They make your computer look cool", "They keep your digital stuff safe 🛡️", "Teachers say you need them", "They make the internet faster"], correct: 1, explain: "Passwords protect everything you care about online!" },
-  { q: "What could happen WITHOUT a password on your games?", opts: ["You get more coins", "Nothing", "Someone could steal your progress 😱", "Games get faster"], correct: 2, explain: "Without a password, anyone could take your coins and saved games!" },
-  { q: "What happened when we added a password?", opts: ["The Raccoon got stronger", "Nothing changed", "The Raccoon bounced off and couldn't get in! 💨🔒", "The computer broke"], correct: 2, explain: "The password stopped the Raccoon in its tracks!" },
+  { q: "Why are passwords important?", opts: ["They make your computer look cool", "They keep your digital stuff safe", "Teachers say you need them", "They make the internet faster"], correct: 1, explain: "Passwords protect everything you care about online!" },
+  { q: "What could happen WITHOUT a password on your games?", opts: ["You get more coins", "Nothing", "Someone could steal your progress", "Games get faster"], correct: 2, explain: "Without a password, anyone could take your coins and saved games!" },
+  { q: "What happened when we added a password?", opts: ["The Raccoon got stronger", "Nothing changed", "The Raccoon bounced off and couldn't get in", "The computer broke"], correct: 2, explain: "The password stopped the Raccoon in its tracks!" },
 ];
 
 const Q3_QUIZ = [
-  { q: "Your best friend asks for your password. You should...", opts: ["Share it — they're your best friend!", "Politely say no — passwords are private 🔒", "Write it on a note for them", "Shout it out loud"], correct: 1, explain: "Even best friends should keep passwords private. It's YOUR secret code!" },
-  { q: "Should you use the same password for everything?", opts: ["Yes, it's easier to remember", "Only for games", "No, use different passwords! 🔑", "It doesn't matter"], correct: 2, explain: "If someone cracks one password, they'd have ALL your passwords!" },
-  { q: "Which should you NEVER use as a password?", opts: ["A mix of letters and numbers", "Your birthday 🎂", "A long made-up phrase", "Something with symbols"], correct: 1, explain: "Hackers check birthdays first — they're way too easy to guess!" },
-  { q: "How long should a good password be?", opts: ["2 characters", "4 characters", "At least 8 characters! 💪", "1 character"], correct: 2, explain: "The longer the password, the harder it is to crack!" },
-  { q: "Something weird happens online. You should...", opts: ["Ignore it", "Tell all your friends", "Try to fix it yourself", "Tell a trusted grown-up! 👨‍👩‍👧"], correct: 3, explain: "A parent, teacher, or carer can always help keep you safe!" },
+  { q: "Your best friend asks for your password. You should...", opts: ["Share it — they're your best friend!", "Politely say no — passwords are private", "Write it on a note for them", "Shout it out loud"], correct: 1, explain: "Even best friends should keep passwords private. It's YOUR secret code!" },
+  { q: "Should you use the same password for everything?", opts: ["Yes, it's easier to remember", "Only for games", "No, use different passwords!", "It doesn't matter"], correct: 2, explain: "If someone cracks one password, they'd have ALL your passwords!" },
+  { q: "Which should you NEVER use as a password?", opts: ["A mix of letters and numbers", "Your birthday", "A long made-up phrase", "Something with symbols"], correct: 1, explain: "Hackers check birthdays first — they're way too easy to guess!" },
+  { q: "How long should a good password be?", opts: ["2 characters", "4 characters", "At least 8 characters!", "1 character"], correct: 2, explain: "The longer the password, the harder it is to crack!" },
+  { q: "Something weird happens online. You should...", opts: ["Ignore it", "Tell all your friends", "Try to fix it yourself", "Tell a trusted grown-up"], correct: 3, explain: "A parent, teacher, or carer can always help keep you safe!" },
 ];
 
 const PHISH = [
@@ -74,31 +74,31 @@ const PHISH = [
 ];
 
 const WYD = [
-  { emoji: "🤝", situation: "Your friend says: 'Tell me your game password and I'll help you level up!'", opts: ["Share it — they're being helpful! 🙅", "Say 'No thanks, my password is private' 🔒", "Tell a grown-up 👨‍👩‍👧"], correct: 1, why: "It's kind of them to offer, but your password should always stay private. You could play together instead!" },
-  { emoji: "📝", situation: "You find a piece of paper at school with someone's password written on it.", opts: ["Leave it there 🤷", "Pick it up and throw it away safely 🗑️", "Try the password yourself 👀"], correct: 1, why: "Written passwords can be found by anyone! The kindest thing is to throw it away safely." },
-  { emoji: "🌐", situation: "A website asks you to create a new password.", opts: ["Type 'password123' 😴", "Use your birthday 🎂", "Create a strong one with the recipe! 💪"], correct: 2, why: "Use the password recipe! Mix capitals, lowercase, numbers, and symbols. Make it at least 8 characters!" },
-  { emoji: "😨", situation: "You think someone at school might know your password.", opts: ["Don't worry about it 🙈", "Change it straight away and tell a grown-up! 🔄", "Keep using the same one 😴"], correct: 1, why: "If you think someone knows your password, change it IMMEDIATELY and tell a trusted adult!" },
+  { emoji: "🤝", situation: "Your friend says: 'Tell me your game password and I'll help you level up!'", opts: ["Share it — they're being helpful!", "Say 'No thanks, my password is private'", "Tell a grown-up"], correct: 1, why: "It's kind of them to offer, but your password should always stay private. You could play together instead!" },
+  { emoji: "📝", situation: "You find a piece of paper at school with someone's password written on it.", opts: ["Leave it there", "Pick it up and throw it away safely", "Try the password yourself"], correct: 1, why: "Written passwords can be found by anyone! The kindest thing is to throw it away safely." },
+  { emoji: "🌐", situation: "A website asks you to create a new password.", opts: ["Type 'password123'", "Use your birthday", "Create a strong one with the recipe!"], correct: 2, why: "Use the password recipe! Mix capitals, lowercase, numbers, and symbols. Make it at least 8 characters!" },
+  { emoji: "😨", situation: "You think someone at school might know your password.", opts: ["Don't worry about it", "Change it straight away and tell a grown-up!", "Keep using the same one"], correct: 1, why: "If you think someone knows your password, change it IMMEDIATELY and tell a trusted adult!" },
 ];
 
 const BOSS_QUIZ = [
-  { q: "What is a password?", opts: ["A type of game", "A secret code only you know 🔐", "Your pet's name", "A picture"], correct: 1 },
-  { q: "What happened to Adam and Layla?", opts: ["They won a prize", "Their computer broke", "They got tricked by the Raccoon 🦝", "Nothing"], correct: 2 },
-  { q: "Which is the STRONGEST password?", opts: ["password123", "abcabc", "R@inb0w$2024! 🌈", "111111"], correct: 2 },
-  { q: "Strong passwords need...", opts: ["Just numbers", "Just your name", "Capitals, lowercase, numbers, symbols & length! 💪", "Just one letter"], correct: 2 },
-  { q: "Should you share your password with friends?", opts: ["Yes, always!", "Only best friends", "No, passwords are private! 🔒", "Only on weekends"], correct: 2 },
-  { q: "How long should a good password be?", opts: ["2 characters", "5 characters", "At least 8 characters! 📏", "1 character"], correct: 2 },
-  { q: "You should NEVER use ___ as a password", opts: ["Random symbols", "A long phrase", "Your birthday or real name 🎂", "Mixed characters"], correct: 2 },
-  { q: "A pop-up says 'You won! Enter your password!' You should...", opts: ["Enter it quickly!", "Click the link", "Ignore it and tell a grown-up! 🛡️", "Share it with friends"], correct: 2 },
-  { q: "You think someone knows your password. What do you do?", opts: ["Nothing", "Change it straight away! 🔄", "Tell nobody", "Use the same one"], correct: 1 },
-  { q: "If something feels wrong online, tell...", opts: ["Nobody", "Your pet 🐱", "A trusted grown-up! 👨‍👩‍👧", "The internet"], correct: 2 },
+  { q: "What is a password?", opts: ["A type of game", "A secret code only you know", "Your pet's name", "A picture"], correct: 1 },
+  { q: "What happened to Adam and Layla?", opts: ["They won a prize", "Their computer broke", "They got tricked by the Raccoon", "Nothing"], correct: 2 },
+  { q: "Which is the STRONGEST password?", opts: ["password123", "abcabc", "R@inb0w$2024!", "111111"], correct: 2 },
+  { q: "Strong passwords need...", opts: ["Just numbers", "Just your name", "Capitals, lowercase, numbers, symbols & length!", "Just one letter"], correct: 2 },
+  { q: "Should you share your password with friends?", opts: ["Yes, always!", "Only best friends", "No, passwords are private!", "Only on weekends"], correct: 2 },
+  { q: "How long should a good password be?", opts: ["2 characters", "5 characters", "At least 8 characters!", "1 character"], correct: 2 },
+  { q: "You should NEVER use ___ as a password", opts: ["Random symbols", "A long phrase", "Your birthday or real name", "Mixed characters"], correct: 2 },
+  { q: "A pop-up says 'You won! Enter your password!' You should...", opts: ["Enter it quickly!", "Click the link", "Ignore it and tell a grown-up!", "Share it with friends"], correct: 2 },
+  { q: "You think someone knows your password. What do you do?", opts: ["Nothing", "Change it straight away!", "Tell nobody", "Use the same one"], correct: 1 },
+  { q: "If something feels wrong online, tell...", opts: ["Nobody", "Your pet", "A trusted grown-up", "The internet"], correct: 2 },
 ];
 
 const RULES = [
-  { icon: "🔒", title: "NEVER share your password", desc: "Not even with your best friend — it's YOUR secret code!", question: "Your friend asks for your password to help you. What do you say?", opts: ["Sure, here it is!", "Sorry, passwords are private! 🔒"], correct: 1 },
-  { icon: "🔑", title: "Use DIFFERENT passwords", desc: "One for your games, one for your tablet, one for school!", question: "Should you use the same password everywhere?", opts: ["Yes, it's easier!", "No, use different ones! 🔑"], correct: 1 },
-  { icon: "🔓", title: "NEVER use your real name or birthday", desc: "Hackers try names and birthdays first — they're too easy to guess!", question: "Which is safer to use in a password?", opts: ["Your birthday 🎂", "Random letters and symbols ✨"], correct: 1 },
-  { icon: "📏", title: "Make it at LEAST 8 characters long", desc: "The longer the password, the harder to crack!", question: "How long should a good password be?", opts: ["3 characters", "At least 8 characters! 💪"], correct: 1 },
-  { icon: "👨‍👩‍👧", title: "If something feels wrong, tell a grown-up", desc: "A parent, teacher, or carer — they're always there to help!", question: "Something weird happens online. What do you do?", opts: ["Ignore it 🙈", "Tell a trusted grown-up! 👨‍👩‍👧"], correct: 1 },
+  { icon: "🔒", title: "NEVER share your password", desc: "Not even with your best friend — it's YOUR secret code!", question: "Your friend asks for your password to help you. What do you say?", opts: ["Sure, here it is!", "Sorry, passwords are private!"], correct: 1 },
+  { icon: "🔑", title: "Use DIFFERENT passwords", desc: "One for your games, one for your tablet, one for school!", question: "Should you use the same password everywhere?", opts: ["Yes, it's easier!", "No, use different ones!"], correct: 1 },
+  { icon: "🔓", title: "NEVER use your real name or birthday", desc: "Hackers try names and birthdays first — they're too easy to guess!", question: "Which is safer to use in a password?", opts: ["Your birthday", "Random letters and symbols"], correct: 1 },
+  { icon: "📏", title: "Make it at LEAST 8 characters long", desc: "The longer the password, the harder to crack!", question: "How long should a good password be?", opts: ["3 characters", "At least 8 characters!"], correct: 1 },
+  { icon: "👨‍👩‍👧", title: "If something feels wrong, tell a grown-up", desc: "A parent, teacher, or carer — they're always there to help!", question: "Something weird happens online. What do you do?", opts: ["Ignore it", "Tell a trusted grown-up"], correct: 1 },
 ];
 
 const ACHIEVEMENTS = [
@@ -278,6 +278,15 @@ const CSS = `
   0% { transform: perspective(400px) rotateY(0); }
   50% { transform: perspective(400px) rotateY(90deg); }
   100% { transform: perspective(400px) rotateY(0); }
+}
+@keyframes shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+@keyframes wobble {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(-1.5deg); }
+  75% { transform: rotate(1.5deg); }
 }
 @keyframes bigSparkle {
   0% { opacity: 1; transform: scale(1) rotate(0deg); }
@@ -590,6 +599,7 @@ function FloatingBubbleQuiz({ question, opts, correct, explain, onCorrect, onWro
   const [wrongTapped, setWrongTapped] = useState<Set<number>>(new Set());
   const [popped, setPopped] = useState(false);
   const [showFeedback, setShowFeedback] = useState(false);
+  const [showNext, setShowNext] = useState(false);
 
   const bubbleAnims = ["bubbleFloat1 3s ease-in-out infinite", "bubbleFloat2 3.5s ease-in-out infinite", "bubbleFloat3 4s ease-in-out infinite", "bubbleFloat4 2.8s ease-in-out infinite"];
 
@@ -599,9 +609,9 @@ function FloatingBubbleQuiz({ question, opts, correct, explain, onCorrect, onWro
       setSelected(i);
       setPopped(true);
       setShowFeedback(true);
+      setShowNext(true);
       playSound("/sounds/correct.mp3");
       setTimeout(() => playSound("/sounds/coin.mp3"), 500);
-      setTimeout(() => onCorrect(), 3000);
     } else {
       setWrongTapped((prev) => { const n = new Set(prev); n.add(i); return n; });
       playSound("/sounds/wrong.mp3");
@@ -648,92 +658,18 @@ function FloatingBubbleQuiz({ question, opts, correct, explain, onCorrect, onWro
         <div style={{ animation: "slideUp 0.3s ease", marginTop: 8 }}>
           <p style={{ color: "#10b981", fontSize: 20, fontWeight: 700 }}>🎉 Correct!</p>
           <p style={{ color: "#e5e7eb", fontSize: 16, lineHeight: 1.5 }}>{explain}</p>
+          {showNext && (
+            <div style={{ marginTop: 12 }}>
+              {btn("Continue →", () => onCorrect())}
+            </div>
+          )}
         </div>
       )}
     </div>
   );
 }
 
-/* ───────────────────────── SCRATCH CARD ──────────────────── */
-
-function ScratchCard({ children, onRevealed, width, height }: {
-  children: React.ReactNode;
-  onRevealed: () => void;
-  width: number;
-  height: number;
-}) {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const isDrawing = useRef(false);
-  const revealed = useRef(false);
-
-  const draw = useCallback((x: number, y: number) => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-    ctx.globalCompositeOperation = "destination-out";
-    ctx.beginPath();
-    ctx.arc(x, y, 30, 0, Math.PI * 2);
-    ctx.fill();
-
-    if (!revealed.current) {
-      const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-      let transparent = 0;
-      for (let p = 3; p < imageData.data.length; p += 16) {
-        if (imageData.data[p] === 0) transparent++;
-      }
-      const total = imageData.data.length / 16;
-      if (transparent / total > 0.5) {
-        revealed.current = true;
-        canvas.style.transition = "opacity 0.5s ease";
-        canvas.style.opacity = "0";
-        onRevealed();
-      }
-    }
-  }, [onRevealed]);
-
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-    canvas.width = width;
-    canvas.height = height;
-    const grad = ctx.createLinearGradient(0, 0, width, height);
-    grad.addColorStop(0, "#f59e0b");
-    grad.addColorStop(0.5, "#fbbf24");
-    grad.addColorStop(1, "#f59e0b");
-    ctx.fillStyle = grad;
-    ctx.fillRect(0, 0, width, height);
-    ctx.fillStyle = "rgba(255,255,255,0.3)";
-    ctx.font = "bold 14px Nunito, sans-serif";
-    ctx.textAlign = "center";
-    ctx.fillText("Scratch to reveal! ✨", width / 2, height / 2 + 5);
-  }, [width, height]);
-
-  const getPos = (e: React.PointerEvent) => {
-    const canvas = canvasRef.current;
-    if (!canvas) return { x: 0, y: 0 };
-    const rect = canvas.getBoundingClientRect();
-    return { x: e.clientX - rect.left, y: e.clientY - rect.top };
-  };
-
-  return (
-    <div style={{ position: "relative", width, height, margin: "0 auto" }}>
-      <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", padding: 12 }}>
-        {children}
-      </div>
-      <canvas
-        ref={canvasRef}
-        style={{ position: "absolute", inset: 0, borderRadius: 16, cursor: "crosshair", touchAction: "none" }}
-        onPointerDown={(e) => { isDrawing.current = true; const p = getPos(e); draw(p.x, p.y); }}
-        onPointerMove={(e) => { if (!isDrawing.current) return; const p = getPos(e); draw(p.x, p.y); }}
-        onPointerUp={() => { isDrawing.current = false; }}
-        onPointerLeave={() => { isDrawing.current = false; }}
-      />
-    </div>
-  );
-}
+/* ───────────────────────── (scratch cards removed — tap-to-reveal used instead) ─── */
 
 /* ───────────────────────── MAIN COMPONENT ─────────────────── */
 
@@ -831,8 +767,9 @@ export default function LessonPlayer({ userName, moduleId }: { userName: string;
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const timeRef = useRef(60);
 
-  // Screen 10 — Rules (scratch cards)
+  // Screen 10 — Rules (tap to reveal)
   const [revealedRules, setRevealedRules] = useState<Set<number>>(new Set());
+  const [flippingRule, setFlippingRule] = useState<number | null>(null);
   const [answeredRules, setAnsweredRules] = useState<Set<number>>(new Set());
   const [ruleAnswers, setRuleAnswers] = useState<Record<number, number | null>>({});
 
@@ -918,7 +855,7 @@ export default function LessonPlayer({ userName, moduleId }: { userName: string;
           setDragTime(60); timeRef.current = 60; setDragDone(false); setSortStars(0); setDragFlash(null);
           break;
         case 10:
-          setRevealedRules(new Set()); setAnsweredRules(new Set()); setRuleAnswers({});
+          setRevealedRules(new Set()); setFlippingRule(null); setAnsweredRules(new Set()); setRuleAnswers({});
           break;
         case 11:
           setQ3Idx(0); setQ3Score(0);
@@ -1008,14 +945,6 @@ export default function LessonPlayer({ userName, moduleId }: { userName: string;
         setTimeout(() => playSound("/sounds/coin.mp3"), 500);
         setTimeout(() => {
           setRaccoonHitShield(true);
-          setTimeout(() => {
-            if (whyIdx < WHY_SCENARIOS.length - 1) {
-              setWhyIdx((i) => i + 1);
-              setShieldPos(null); setShieldPlaced(false); setRaccoonHitShield(false);
-            } else {
-              setWhyIdx(WHY_SCENARIOS.length);
-            }
-          }, 1500);
         }, 500);
       } else {
         setShieldPos(null);
@@ -1482,12 +1411,28 @@ export default function LessonPlayer({ userName, moduleId }: { userName: string;
               { border: `2px solid ${shieldPlaced ? "#10b981" : "#ef4444"}`, padding: 16, marginBottom: 16 }
             )}
 
+            {/* Next scenario button after raccoon bounces */}
+            {raccoonHitShield && (
+              <div style={{ textAlign: "center", marginTop: 12, animation: "slideUp 0.3s ease" }}>
+                <p style={{ color: "#10b981", fontSize: 18, fontWeight: 700, marginBottom: 8 }}>Protected! The Raccoon bounced off!</p>
+                {btn(whyIdx < WHY_SCENARIOS.length - 1 ? "Next Scenario →" : "All done! →", () => {
+                  if (whyIdx < WHY_SCENARIOS.length - 1) {
+                    setWhyIdx((i) => i + 1);
+                    setShieldPos(null); setShieldPlaced(false); setRaccoonHitShield(false);
+                  } else {
+                    setWhyIdx(WHY_SCENARIOS.length);
+                  }
+                })}
+              </div>
+            )}
+
             {/* Draggable shield */}
-            {!shieldPlaced && (
+            {!shieldPlaced && !raccoonHitShield && (
               <div style={{ textAlign: "center", marginTop: 12 }}>
                 <p style={{ color: "#d1d5db", fontSize: 14, marginBottom: 8 }}>Drag the shield to protect it!</p>
                 <div
                   onPointerDown={(e) => {
+                    e.preventDefault();
                     setShieldDragging(true);
                     const rect = e.currentTarget.getBoundingClientRect();
                     shieldOffset.current = { x: e.clientX - rect.left, y: e.clientY - rect.top };
@@ -1497,7 +1442,7 @@ export default function LessonPlayer({ userName, moduleId }: { userName: string;
                     display: "inline-flex", alignItems: "center", justifyContent: "center",
                     width: 64, height: 64, borderRadius: "50%",
                     background: "rgba(16,185,129,0.15)", border: "3px solid #10b981",
-                    cursor: "grab", touchAction: "none", fontSize: 32,
+                    cursor: "grab", touchAction: "none", userSelect: "none", fontSize: 32,
                     animation: "pulseGlow 2s ease infinite",
                     boxShadow: "0 0 20px rgba(16,185,129,0.3)",
                   }}
@@ -1741,18 +1686,18 @@ export default function LessonPlayer({ userName, moduleId }: { userName: string;
             addCoins(10);
             playSound("/sounds/correct.mp3");
             setTimeout(() => playSound("/sounds/coin.mp3"), 500);
-            setTimeout(() => {
-              setSwipeFlyDir(null);
-              setSwipeFeedback(null);
-              setSwipeDelta(0);
-              setSwipeIdx((i) => i + 1);
-            }, 3000);
           } else {
             setSwipeFeedback("wrong");
             setSwipeDelta(0);
             playSound("/sounds/wrong.mp3");
-            setTimeout(() => setSwipeFeedback(null), 3000);
           }
+        };
+
+        const advanceSwipe = () => {
+          setSwipeFlyDir(null);
+          setSwipeFeedback(null);
+          setSwipeDelta(0);
+          setSwipeIdx((i) => i + 1);
         };
 
         return (
@@ -1771,6 +1716,7 @@ export default function LessonPlayer({ userName, moduleId }: { userName: string;
               key={`swipe-${swipeIdx}`}
               onPointerDown={(e) => {
                 if (swipeFlyDir) return;
+                e.preventDefault();
                 swipeStartX.current = e.clientX;
                 setSwipeSwiping(true);
               }}
@@ -1830,12 +1776,18 @@ export default function LessonPlayer({ userName, moduleId }: { userName: string;
               <div style={{ animation: "slideUp 0.3s ease", marginTop: 8 }}>
                 <p style={{ color: "#10b981", fontSize: 20, fontWeight: 700 }}>🎉 Correct!</p>
                 <p style={{ color: "#e5e7eb", fontSize: 16, lineHeight: 1.5 }}>{sw.why}</p>
+                <div style={{ marginTop: 12 }}>
+                  {btn("Next Card →", advanceSwipe)}
+                </div>
               </div>
             )}
             {swipeFeedback === "wrong" && !swipeFlyDir && (
               <div style={{ animation: "slideUp 0.3s ease", marginTop: 8 }}>
                 <p style={{ color: "#ef4444", fontSize: 20, fontWeight: 700 }}>❌ Not quite!</p>
                 <p style={{ color: "#e5e7eb", fontSize: 16, lineHeight: 1.5 }}>{sw.why}</p>
+                <div style={{ marginTop: 12 }}>
+                  {btn("Next Card →", () => { setSwipeFeedback(null); setSwipeDelta(0); })}
+                </div>
               </div>
             )}
           </div>
@@ -1900,6 +1852,7 @@ export default function LessonPlayer({ userName, moduleId }: { userName: string;
               {PASSWORDS_8.filter((p) => !placed.has(p.id)).map((p) => (
                 <div key={p.id}
                   onPointerDown={(e) => {
+                    e.preventDefault();
                     if (!dragStarted) setDragStarted(true);
                     const rect = e.currentTarget.getBoundingClientRect();
                     dragOffset.current = { x: e.clientX - rect.left, y: e.clientY - rect.top };
@@ -1938,7 +1891,7 @@ export default function LessonPlayer({ userName, moduleId }: { userName: string;
         );
       }
 
-      /* ──── CASE 10: 5 GOLDEN RULES (SCRATCH CARDS) ──── */
+      /* ──── CASE 10: 5 GOLDEN RULES (TAP TO REVEAL) ──── */
       case 10:
         return (
           <div style={{ textAlign: "center" }}>
@@ -1946,19 +1899,46 @@ export default function LessonPlayer({ userName, moduleId }: { userName: string;
             <div style={{ display: "flex", flexDirection: "column", gap: 16, maxWidth: 540, margin: "0 auto 24px" }}>
               {RULES.map((rule, i) => {
                 const isRevealed = revealedRules.has(i);
+                const isFlipping = flippingRule === i;
                 const isDone = answeredRules.has(i);
                 return (
                   <div key={i}>
                     {!isRevealed ? (
-                      <ScratchCard width={Math.min(500, window.innerWidth - 64)} height={100} onRevealed={() => {
-                        setRevealedRules((prev) => { const n = new Set(prev); n.add(i); return n; });
-                      }}>
-                        <div style={{ textAlign: "center" }}>
-                          <span style={{ fontSize: 28 }}>{rule.icon}</span>
-                          <p style={{ color: "#1a1033", fontWeight: 700, fontSize: 16, margin: "4px 0 0" }}>{rule.title}</p>
-                        </div>
-                      </ScratchCard>
+                      /* Mystery card */
+                      <div
+                        onClick={() => {
+                          if (isFlipping) return;
+                          setFlippingRule(i);
+                          setTimeout(() => {
+                            setRevealedRules((prev) => { const n = new Set(prev); n.add(i); return n; });
+                            setFlippingRule(null);
+                          }, 600);
+                        }}
+                        style={{
+                          borderRadius: 24, padding: 24, cursor: "pointer",
+                          background: "linear-gradient(135deg, #f59e0b, #fbbf24, #f59e0b)",
+                          backgroundSize: "200% 100%",
+                          border: "2px solid rgba(245,158,11,0.5)",
+                          position: "relative", overflow: "hidden",
+                          animation: isFlipping
+                            ? "cardFlip 0.6s ease"
+                            : "wobble 3s ease-in-out infinite",
+                          minHeight: 80,
+                          display: "flex", alignItems: "center", justifyContent: "center",
+                        }}>
+                        {/* Shimmer overlay */}
+                        <div style={{
+                          position: "absolute", inset: 0, pointerEvents: "none",
+                          background: "linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.25) 50%, transparent 70%)",
+                          backgroundSize: "200% 100%",
+                          animation: "shimmer 3s linear infinite",
+                        }} />
+                        <span style={{ fontSize: 18, fontWeight: 900, color: "#1a1033", position: "relative", zIndex: 1 }}>
+                          Tap to reveal Rule {i + 1}! ✨
+                        </span>
+                      </div>
                     ) : (
+                      /* Revealed card */
                       card(
                         <>
                           <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
@@ -1977,6 +1957,8 @@ export default function LessonPlayer({ userName, moduleId }: { userName: string;
                                     if (oi === rule.correct) {
                                       setAnsweredRules((prev) => { const n = new Set(prev); n.add(i); return n; });
                                       playSound("/sounds/correct.mp3");
+                                      addCoins(5);
+                                      setTimeout(() => playSound("/sounds/coin.mp3"), 500);
                                     } else {
                                       playSound("/sounds/wrong.mp3");
                                     }
@@ -1990,6 +1972,7 @@ export default function LessonPlayer({ userName, moduleId }: { userName: string;
                                     borderRadius: 12, padding: "10px 16px", color: "#d1d5db", fontSize: 14,
                                     fontWeight: 600, cursor: "pointer", minHeight: 48, flex: 1,
                                     animation: ruleAnswers[i] === oi && oi !== rule.correct ? "shake 0.5s ease" : undefined,
+                                    opacity: ruleAnswers[i] !== null && ruleAnswers[i] !== oi && ruleAnswers[i] !== rule.correct ? 0.4 : 1,
                                   }}>
                                     {opt}
                                   </button>
@@ -2001,7 +1984,11 @@ export default function LessonPlayer({ userName, moduleId }: { userName: string;
                             <p style={{ color: "#10b981", fontSize: 13, marginTop: 8, textAlign: "left" }}>{rule.desc}</p>
                           )}
                         </>,
-                        { border: isDone ? "2px solid #f59e0b" : "1px solid rgba(255,255,255,0.1)" }
+                        {
+                          borderLeft: isDone ? "4px solid #f59e0b" : "4px solid rgba(245,158,11,0.3)",
+                          border: isDone ? "2px solid #f59e0b" : "1px solid rgba(255,255,255,0.1)",
+                          animation: "slideUp 0.4s ease",
+                        }
                       )
                     )}
                   </div>
@@ -2013,7 +2000,7 @@ export default function LessonPlayer({ userName, moduleId }: { userName: string;
                 <p style={{ color: "#f59e0b", fontSize: 20, fontWeight: 700, marginBottom: 12 }}>
                   You know ALL 5 golden rules! ⭐⭐⭐⭐⭐
                 </p>
-                {btn("Quiz time! →", () => { addCoins(25); navigate(11); })}
+                {btn("Continue →", () => { addCoins(25); navigate(11); })}
               </div>
             )}
           </div>
@@ -2137,15 +2124,6 @@ export default function LessonPlayer({ userName, moduleId }: { userName: string;
                   if (correct) { setPhishScore((s) => s + 1); addCoins(15); playSound("/sounds/correct.mp3"); setTimeout(() => playSound("/sounds/coin.mp3"), 500); }
                   else { playSound("/sounds/wrong.mp3"); }
                   setPhishStamped(true);
-                  setTimeout(() => {
-                    setPhishExiting(true);
-                    setTimeout(() => {
-                      setPhishIdx((i) => i + 1);
-                      setPhishAnswer(null);
-                      setPhishStamped(false);
-                      setPhishExiting(false);
-                    }, 500);
-                  }, 3000);
                 }} style={{
                   background: "rgba(239,68,68,0.1)", border: "3px solid #ef4444", borderRadius: 20,
                   padding: "16px 24px", color: "#ef4444", fontSize: 18, fontWeight: 700, cursor: "pointer", minHeight: 60,
@@ -2158,15 +2136,6 @@ export default function LessonPlayer({ userName, moduleId }: { userName: string;
                   if (correct) { setPhishScore((s) => s + 1); addCoins(15); playSound("/sounds/correct.mp3"); setTimeout(() => playSound("/sounds/coin.mp3"), 500); }
                   else { playSound("/sounds/wrong.mp3"); }
                   setPhishStamped(true);
-                  setTimeout(() => {
-                    setPhishExiting(true);
-                    setTimeout(() => {
-                      setPhishIdx((i) => i + 1);
-                      setPhishAnswer(null);
-                      setPhishStamped(false);
-                      setPhishExiting(false);
-                    }, 500);
-                  }, 3000);
                 }} style={{
                   background: "rgba(16,185,129,0.1)", border: "3px solid #10b981", borderRadius: 20,
                   padding: "16px 24px", color: "#10b981", fontSize: 18, fontWeight: 700, cursor: "pointer", minHeight: 60,
@@ -2180,6 +2149,17 @@ export default function LessonPlayer({ userName, moduleId }: { userName: string;
                   {phishAnswer ? "🎉 Correct!" : "❌ Not quite!"}
                 </p>
                 <p style={{ color: "#e5e7eb", fontSize: 16, lineHeight: 1.5 }}>{ph.explain}</p>
+                <div style={{ marginTop: 12 }}>
+                  {btn("Continue →", () => {
+                    setPhishExiting(true);
+                    setTimeout(() => {
+                      setPhishIdx((i) => i + 1);
+                      setPhishAnswer(null);
+                      setPhishStamped(false);
+                      setPhishExiting(false);
+                    }, 500);
+                  })}
+                </div>
               </div>
             )}
           </div>
@@ -2247,11 +2227,6 @@ export default function LessonPlayer({ userName, moduleId }: { userName: string;
                       setWydSel(i);
                       if (i === w.correct) { setWydScore((s) => s + 1); addCoins(15); playSound("/sounds/correct.mp3"); setTimeout(() => playSound("/sounds/coin.mp3"), 500); }
                       else { playSound("/sounds/wrong.mp3"); }
-                      // Auto-advance after 3 seconds
-                      setTimeout(() => {
-                        setWydSel(null);
-                        setWydIdx((idx) => idx + 1);
-                      }, 3000);
                     }} disabled={answered} style={{
                       background: bg, border: `2px solid ${border}`, borderRadius: 16, padding: "14px 18px",
                       color: answered && isCorrect ? "#10b981" : selected && !isCorrect ? "#f59e0b" : c.color,
@@ -2269,6 +2244,9 @@ export default function LessonPlayer({ userName, moduleId }: { userName: string;
                     {wydSel === w.correct ? "🌟 Perfect Cyber Hero choice!" : "🤔 Good try! Here's a better approach:"}
                   </p>
                   <p style={{ color: "#e5e7eb", fontSize: 16, lineHeight: 1.5 }}>{w.why}</p>
+                  <div style={{ marginTop: 12 }}>
+                    {btn("Continue →", () => { setWydSel(null); setWydIdx((idx) => idx + 1); })}
+                  </div>
                 </div>
               )}
             </div>
@@ -2396,20 +2374,10 @@ export default function LessonPlayer({ userName, moduleId }: { userName: string;
                         addCoins(20);
                         playSound("/sounds/correct.mp3");
                         setTimeout(() => playSound("/sounds/coin.mp3"), 500);
-                        // Enter attack phase
+                        // Enter attack phase after brief delay
                         setTimeout(() => setBossAttackPhase(true), 500);
                       } else {
                         playSound("/sounds/wrong.mp3");
-                        // Wrong — auto-advance after 3s
-                        setTimeout(() => {
-                          if (bossIdx >= BOSS_QUIZ.length - 1) {
-                            setBossDone(true);
-                          } else {
-                            setBossSel(null);
-                            setBossFeedback(null);
-                            setBossIdx((idx) => idx + 1);
-                          }
-                        }, 3000);
                       }
                     }} disabled={answered} style={{
                       background: bg, border: `2px solid ${border}`, borderRadius: 16, padding: "14px 18px",
@@ -2429,6 +2397,19 @@ export default function LessonPlayer({ userName, moduleId }: { userName: string;
                 <p style={{ color: bossFeedback ? "#10b981" : "#f59e0b", fontSize: 18, fontWeight: 700 }}>
                   {bossFeedback ? "🎉 Hit! Tap the Raccoon!" : "The Raccoon dodged! Keep trying! 💪"}
                 </p>
+                {!bossFeedback && (
+                  <div style={{ marginTop: 12 }}>
+                    {btn("Next Question →", () => {
+                      if (bossIdx >= BOSS_QUIZ.length - 1) {
+                        setBossDone(true);
+                      } else {
+                        setBossSel(null);
+                        setBossFeedback(null);
+                        setBossIdx((idx) => idx + 1);
+                      }
+                    })}
+                  </div>
+                )}
               </div>
             )}
           </div>
