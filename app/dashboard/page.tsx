@@ -139,6 +139,9 @@ export default async function DashboardPage() {
               <span className="text-sm text-gray-400 hidden sm:block">
                 Welcome, <span className="text-amber-400 font-black">{userName}</span>
               </span>
+              <a href="/parent" className="text-xs font-bold text-gray-400 hover:text-white transition-colors hidden sm:block">
+                Parent View ��‍👩‍👧
+              </a>
               <form
                 action={async () => {
                   "use server";
