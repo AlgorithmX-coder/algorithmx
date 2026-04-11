@@ -212,6 +212,56 @@ export default async function DashboardPage() {
 
           {course ? (
             <>
+              {/* ── VILLAIN PROGRESS (HACKER RACCOON) ── */}
+              <section className="rounded-3xl p-6 sm:p-8 flex flex-col sm:flex-row items-center gap-6 mb-10"
+                style={{
+                  background: "rgba(255,255,255,0.04)",
+                  border: "1px solid rgba(255,255,255,0.06)",
+                  backdropFilter: "blur(12px)",
+                  animation: "slideUp 0.6s cubic-bezier(0.34,1.56,0.64,1) 0.3s both",
+                }}>
+                <div className="relative shrink-0">
+                  <div className="absolute inset-0 rounded-2xl"
+                    style={{ background: "rgba(139,92,246,0.25)", filter: "blur(25px)", transform: "scale(0.85)" }} />
+                  <Image src="/characters/raccoon.png" alt="The Hacker Raccoon"
+                    width={100} height={100} className="relative rounded-2xl block" />
+                </div>
+                <div className="flex-1 text-center sm:text-left">
+                  <h3 className="font-black text-white text-lg mb-2">
+                    {completedCount >= totalModules && totalModules > 0
+                      ? "You defeated the Hacker Raccoon! 🎉"
+                      : "The Hacker Raccoon is still out there… 🦝"}
+                  </h3>
+                  <p className="text-gray-400 text-sm leading-relaxed mb-4">
+                    {completedCount >= totalModules && totalModules > 0
+                      ? "Amazing work, Cyber Hero! You've completed every lesson and saved the day!"
+                      : `Complete all ${totalModules} weeks to defeat him! Each lesson weakens his power.`}
+                  </p>
+                  <div>
+                    <div className="flex justify-between text-xs font-black mb-1.5">
+                      <span className="text-red-400">Raccoon Power</span>
+                      <span className="text-red-400">{raccoonPower}%</span>
+                    </div>
+                    <div className="h-3 rounded-full overflow-hidden" style={{ background: "rgba(255,255,255,0.06)" }}>
+                      <div className="h-full rounded-full"
+                        style={{
+                          width: `${raccoonPower}%`,
+                          background: "linear-gradient(90deg, #f97316, #ef4444)",
+                          boxShadow: "0 0 10px rgba(239,68,68,0.3)",
+                          transition: "width 1s ease",
+                        }} />
+                    </div>
+                    <p className="text-[11px] text-gray-500 font-bold mt-2">
+                      {completedCount === 0
+                        ? "Start your first lesson to begin weakening the raccoon!"
+                        : completedCount >= totalModules
+                        ? "The raccoon's power has been fully drained! 💪"
+                        : `${completedCount} lesson${completedCount !== 1 ? "s" : ""} down — keep going!`}
+                    </p>
+                  </div>
+                </div>
+              </section>
+
               {/* ── COURSE HEADER ── */}
               <section className="rounded-3xl p-6 sm:p-8 mb-8 flex flex-col sm:flex-row items-center gap-6"
                 style={{
@@ -371,55 +421,6 @@ export default async function DashboardPage() {
                 })}
               </section>
 
-              {/* ── VILLAIN PROGRESS ── */}
-              <section className="rounded-3xl p-6 sm:p-8 flex flex-col sm:flex-row items-center gap-6 mb-10"
-                style={{
-                  background: "rgba(255,255,255,0.04)",
-                  border: "1px solid rgba(255,255,255,0.06)",
-                  backdropFilter: "blur(12px)",
-                  animation: "slideUp 0.6s cubic-bezier(0.34,1.56,0.64,1) 0.3s both",
-                }}>
-                <div className="relative shrink-0">
-                  <div className="absolute inset-0 rounded-2xl"
-                    style={{ background: "rgba(139,92,246,0.25)", filter: "blur(25px)", transform: "scale(0.85)" }} />
-                  <Image src="/characters/raccoon.png" alt="The Hacker Raccoon"
-                    width={100} height={100} className="relative rounded-2xl block" />
-                </div>
-                <div className="flex-1 text-center sm:text-left">
-                  <h3 className="font-black text-white text-lg mb-2">
-                    {completedCount >= totalModules && totalModules > 0
-                      ? "You defeated the Hacker Raccoon! 🎉"
-                      : "The Hacker Raccoon is still out there… 🦝"}
-                  </h3>
-                  <p className="text-gray-400 text-sm leading-relaxed mb-4">
-                    {completedCount >= totalModules && totalModules > 0
-                      ? "Amazing work, Cyber Hero! You've completed every lesson and saved the day!"
-                      : `Complete all ${totalModules} weeks to defeat him! Each lesson weakens his power.`}
-                  </p>
-                  <div>
-                    <div className="flex justify-between text-xs font-black mb-1.5">
-                      <span className="text-red-400">Raccoon Power</span>
-                      <span className="text-red-400">{raccoonPower}%</span>
-                    </div>
-                    <div className="h-3 rounded-full overflow-hidden" style={{ background: "rgba(255,255,255,0.06)" }}>
-                      <div className="h-full rounded-full"
-                        style={{
-                          width: `${raccoonPower}%`,
-                          background: "linear-gradient(90deg, #f97316, #ef4444)",
-                          boxShadow: "0 0 10px rgba(239,68,68,0.3)",
-                          transition: "width 1s ease",
-                        }} />
-                    </div>
-                    <p className="text-[11px] text-gray-500 font-bold mt-2">
-                      {completedCount === 0
-                        ? "Start your first lesson to begin weakening the raccoon!"
-                        : completedCount >= totalModules
-                        ? "The raccoon's power has been fully drained! 💪"
-                        : `${completedCount} lesson${completedCount !== 1 ? "s" : ""} down — keep going!`}
-                    </p>
-                  </div>
-                </div>
-              </section>
             </>
           ) : (
             <div className="rounded-3xl p-10 text-center"
