@@ -1,11 +1,11 @@
 "use client";
 import { useEffect, useRef, useState, useCallback } from "react";
+import { motion, AnimatePresence, useMotionValue, useTransform } from "framer-motion";
 
 /* ───────────────────────── CONSTANTS ───────────────────────── */
 
 const TOTAL = 17;
 const GRAD = "linear-gradient(135deg, #8b5cf6, #3b82f6)";
-const SPRING = "cubic-bezier(0.34,1.56,0.64,1)";
 
 /* ───────────────────────── DATA ────────────────────────────── */
 
@@ -141,288 +141,9 @@ const RECIPE_CHARS: Record<number, string[]> = {
   4: ["8", "+", "L", "o", "n", "g"],
 };
 
-/* ───────────────────────── CSS KEYFRAMES ───────────────────── */
+/* ───────────────────────── CSS (only what Framer can't replace) ── */
 
 const CSS = `
-@keyframes floatOrb {
-  0%, 100% { transform: translateY(0) scale(1); opacity: 0.3; }
-  50% { transform: translateY(-30px) scale(1.15); opacity: 0.5; }
-}
-@keyframes heroFloat {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-12px); }
-}
-@keyframes glowPulse {
-  0%, 100% { box-shadow: 0 0 20px rgba(139,92,246,0.3); }
-  50% { box-shadow: 0 0 40px rgba(139,92,246,0.6); }
-}
-@keyframes slideUp {
-  from { opacity: 0; transform: translateY(30px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-@keyframes popIn {
-  0% { opacity: 0; transform: scale(0.5); }
-  70% { transform: scale(1.1); }
-  100% { opacity: 1; transform: scale(1); }
-}
-@keyframes sparkle {
-  0% { opacity: 1; transform: scale(1) rotate(0deg); }
-  100% { opacity: 0; transform: scale(0) rotate(180deg); }
-}
-@keyframes slideInR {
-  from { opacity: 0; transform: translateX(60px); }
-  to { opacity: 1; transform: translateX(0); }
-}
-@keyframes slideOutL {
-  from { opacity: 1; transform: translateX(0); }
-  to { opacity: 0; transform: translateX(-60px); }
-}
-@keyframes shake {
-  0%, 100% { transform: translateX(0); }
-  20% { transform: translateX(-8px); }
-  40% { transform: translateX(8px); }
-  60% { transform: translateX(-6px); }
-  80% { transform: translateX(6px); }
-}
-@keyframes celebrate {
-  0% { transform: scale(1); }
-  25% { transform: scale(1.1) rotate(-3deg); }
-  50% { transform: scale(1.15) rotate(3deg); }
-  75% { transform: scale(1.1) rotate(-2deg); }
-  100% { transform: scale(1); }
-}
-@keyframes confetti {
-  0% { transform: translateY(0) rotate(0deg); opacity: 1; }
-  100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
-}
-@keyframes bounceIn {
-  0% { opacity: 0; transform: translateY(40px) scale(0.8); }
-  60% { opacity: 1; transform: translateY(-12px) scale(1.05); }
-  80% { transform: translateY(4px) scale(0.98); }
-  100% { transform: translateY(0) scale(1); }
-}
-@keyframes currentGlow {
-  0%, 100% { box-shadow: 0 0 6px rgba(139,92,246,0.5); }
-  50% { box-shadow: 0 0 14px rgba(139,92,246,0.9); }
-}
-@keyframes pulseDot {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.4); }
-}
-@keyframes bobble {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-6px); }
-}
-@keyframes flipCard {
-  0% { transform: rotateY(0); }
-  50% { transform: rotateY(90deg); }
-  100% { transform: rotateY(0); }
-}
-@keyframes tickIn {
-  0% { opacity: 0; transform: scale(0) rotate(-45deg); }
-  60% { transform: scale(1.3) rotate(10deg); }
-  100% { opacity: 1; transform: scale(1) rotate(0deg); }
-}
-@keyframes raccoonHit {
-  0% { transform: translateX(0) rotate(0deg); }
-  30% { transform: translateX(-10px) rotate(-10deg); }
-  60% { transform: translateX(10px) rotate(10deg); }
-  100% { transform: translateX(0) rotate(0deg); }
-}
-@keyframes raccoonRun {
-  0% { transform: translateX(0) rotate(0); opacity: 1; }
-  100% { transform: translateX(300px) rotate(30deg); opacity: 0; }
-}
-@keyframes progressFill {
-  from { width: 0%; }
-}
-@keyframes coinPop {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.4); }
-  100% { transform: scale(1); }
-}
-@keyframes bubbleFloat1 {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-15px); }
-}
-@keyframes bubbleFloat2 {
-  0%, 100% { transform: translateX(0); }
-  50% { transform: translateX(12px); }
-}
-@keyframes bubbleFloat3 {
-  0%, 100% { transform: translate(0, 0); }
-  50% { transform: translate(10px, -10px); }
-}
-@keyframes bubbleFloat4 {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(13px); }
-}
-@keyframes bubblePop {
-  0% { transform: scale(1); opacity: 1; }
-  50% { transform: scale(1.3); opacity: 0.6; }
-  100% { transform: scale(0); opacity: 0; }
-}
-@keyframes bubbleWobble {
-  0%, 100% { transform: translateX(0) rotate(0); }
-  25% { transform: translateX(-6px) rotate(-5deg); }
-  75% { transform: translateX(6px) rotate(5deg); }
-}
-@keyframes bubbleFadeAway {
-  to { opacity: 0; transform: scale(0.5); }
-}
-@keyframes lockTurn {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-@keyframes cardFlip {
-  0% { transform: perspective(400px) rotateY(0); }
-  50% { transform: perspective(400px) rotateY(90deg); }
-  100% { transform: perspective(400px) rotateY(0); }
-}
-@keyframes shimmer {
-  0% { background-position: -200% center; }
-  100% { background-position: 200% center; }
-}
-@keyframes wobble {
-  0%, 100% { transform: rotate(0deg); }
-  25% { transform: rotate(-1.5deg); }
-  75% { transform: rotate(1.5deg); }
-}
-@keyframes bigSparkle {
-  0% { opacity: 1; transform: scale(1) rotate(0deg); }
-  100% { opacity: 0; transform: scale(2) rotate(180deg); }
-}
-@keyframes confettiBurst {
-  0% { opacity: 1; transform: translate(0, 0) scale(1); }
-  100% { opacity: 0; transform: translate(var(--tx), var(--ty)) scale(0.5); }
-}
-@keyframes raccoonApproach {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(calc(-100% - 60px)); }
-}
-@keyframes raccoonBounce {
-  0% { transform: translateX(0) rotate(0) scaleX(1); }
-  30% { transform: translateX(30px) rotate(20deg) scaleX(0.8) scaleY(1.2); }
-  60% { transform: translateX(100px) rotate(-10deg) scaleX(1.1); }
-  100% { transform: translateX(300px) rotate(30deg) scaleX(1); opacity: 0; }
-}
-@keyframes shieldSnap {
-  0% { transform: scale(1.3); }
-  50% { transform: scale(0.9); }
-  100% { transform: scale(1); }
-}
-@keyframes barrierPulse {
-  0%, 100% { box-shadow: 0 0 10px rgba(16,185,129,0.3), inset 0 0 10px rgba(16,185,129,0.1); }
-  50% { box-shadow: 0 0 25px rgba(16,185,129,0.6), inset 0 0 20px rgba(16,185,129,0.2); }
-}
-@keyframes bottleTilt {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(-45deg); }
-}
-@keyframes pourDrop {
-  0% { opacity: 1; transform: translateY(0) translateX(var(--px, 0px)); }
-  100% { opacity: 0.6; transform: translateY(var(--drop-dist, 120px)) translateX(var(--px, 0px)); }
-}
-@keyframes bowlRainbow {
-  0% { box-shadow: 0 0 20px rgba(139,92,246,0.5); }
-  25% { box-shadow: 0 0 25px rgba(59,130,246,0.5); }
-  50% { box-shadow: 0 0 30px rgba(236,72,153,0.5); }
-  75% { box-shadow: 0 0 25px rgba(245,158,11,0.5); }
-  100% { box-shadow: 0 0 20px rgba(16,185,129,0.5); }
-}
-@keyframes flyToSlot {
-  0% { transform: translate(var(--startX, 0), var(--startY, 0)) scale(1); }
-  50% { transform: translate(calc(var(--startX, 0) * 0.3), calc(var(--startY, 0) - 30px)) scale(1.2); }
-  100% { transform: translate(0, 0) scale(1); }
-}
-@keyframes slotBounce {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.15); }
-  100% { transform: scale(1); }
-}
-@keyframes powerUp {
-  0% { transform: scale(1); box-shadow: 0 0 0 rgba(245,158,11,0); }
-  50% { transform: scale(1.08); box-shadow: 0 0 30px rgba(245,158,11,0.6); }
-  100% { transform: scale(1); box-shadow: 0 0 15px rgba(245,158,11,0.3); }
-}
-@keyframes stampSlam {
-  0% { opacity: 0; transform: scale(3) rotate(-20deg); }
-  60% { opacity: 1; transform: scale(0.9) rotate(5deg); }
-  100% { opacity: 1; transform: scale(1) rotate(-5deg); }
-}
-@keyframes notifSlideIn {
-  from { opacity: 0; transform: translateY(-40px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-@keyframes notifSlideOut {
-  from { opacity: 1; transform: translateY(0); }
-  to { opacity: 0; transform: translateY(-40px); }
-}
-@keyframes impactBurst {
-  0% { opacity: 1; transform: scale(0.5); }
-  100% { opacity: 0; transform: scale(2); }
-}
-@keyframes damageFloat {
-  0% { opacity: 1; transform: translateY(0); }
-  100% { opacity: 0; transform: translateY(-40px); }
-}
-@keyframes raccoonDefeat {
-  0% { transform: rotate(0) scale(1); opacity: 1; }
-  50% { transform: rotate(360deg) scale(0.5); opacity: 0.7; }
-  100% { transform: rotate(720deg) scale(0) translateY(-100px); opacity: 0; }
-}
-@keyframes projectileFly {
-  0% { transform: translate(0, 0) scale(1); opacity: 1; }
-  100% { transform: translate(var(--tx), var(--ty)) scale(0.6); opacity: 0.8; }
-}
-@keyframes impactBoom {
-  0% { transform: scale(0); opacity: 1; }
-  50% { transform: scale(2); opacity: 0.8; }
-  100% { transform: scale(3); opacity: 0; }
-}
-@keyframes raccoonHitFlash {
-  0% { filter: brightness(1); }
-  20% { filter: brightness(3); }
-  40% { filter: brightness(1); transform: scale(0.9, 1.1); }
-  60% { filter: brightness(1.5); transform: scale(1.1, 0.9); }
-  100% { filter: brightness(1); transform: scale(1); }
-}
-@keyframes raccoonTaunt {
-  0% { transform: translateX(0); }
-  25% { transform: translateX(-15px) rotate(-5deg); }
-  75% { transform: translateX(15px) rotate(5deg); }
-  100% { transform: translateX(0); }
-}
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-@keyframes goldShimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
-}
-@keyframes slideFromBelow {
-  from { opacity: 0; transform: translateY(60px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-@keyframes fadeZoomIn {
-  from { opacity: 0; transform: scale(0.9); }
-  to { opacity: 1; transform: scale(1); }
-}
-@keyframes pulseGlow {
-  0%, 100% { box-shadow: 0 0 15px rgba(139,92,246,0.4); }
-  50% { box-shadow: 0 0 30px rgba(139,92,246,0.8); }
-}
-@keyframes greenFlash {
-  0% { box-shadow: 0 0 0 rgba(16,185,129,0); }
-  50% { box-shadow: 0 0 20px rgba(16,185,129,0.5); }
-  100% { box-shadow: 0 0 0 rgba(16,185,129,0); }
-}
-.slide-in { animation: slideInR 0.4s ${SPRING} both; }
-.slide-out { animation: slideOutL 0.3s ease both; }
-.slide-up-in { animation: slideFromBelow 0.5s ${SPRING} both; }
-.pop-in { animation: popIn 0.5s ease both; }
-.fade-zoom-in { animation: fadeZoomIn 0.4s ease both; }
 @media print {
   body { background: white !important; }
   header, nav, .step-dots-wrap, .progress-wrap, .floating-orbs-wrap, .score-cards, .dash-link, .print-hide { display: none !important; }
@@ -440,24 +161,113 @@ const CSS = `
 }
 `;
 
+/* ───────────────────────── MOTION VARIANTS ────────────────────── */
+
+const springTransition = { type: "spring" as const, stiffness: 400, damping: 25 };
+
+const screenVariants = {
+  initial: { opacity: 0, x: 60 },
+  animate: { opacity: 1, x: 0, transition: { duration: 0.4, ease: "easeOut" as const } },
+  exit: { opacity: 0, x: -60, transition: { duration: 0.3, ease: "easeIn" as const } },
+};
+
+const slideUpVariants = {
+  initial: { opacity: 0, y: 30 },
+  animate: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" as const } },
+  exit: { opacity: 0, x: -60, transition: { duration: 0.3, ease: "easeIn" as const } },
+};
+
+const popInVariants = {
+  initial: { opacity: 0, scale: 0.5 },
+  animate: { opacity: 1, scale: 1, transition: { type: "spring" as const, stiffness: 300, damping: 20 } },
+  exit: { opacity: 0, x: -60, transition: { duration: 0.3, ease: "easeIn" as const } },
+};
+
+const fadeZoomVariants = {
+  initial: { opacity: 0, scale: 0.9 },
+  animate: { opacity: 1, scale: 1, transition: { duration: 0.4, ease: "easeOut" as const } },
+  exit: { opacity: 0, x: -60, transition: { duration: 0.3, ease: "easeIn" as const } },
+};
+
+const bounceInVariants = {
+  initial: { opacity: 0, y: 40, scale: 0.8 },
+  animate: { opacity: 1, y: 0, scale: 1, transition: { type: "spring" as const, stiffness: 300, damping: 18 } },
+};
+
+const staggerContainer = {
+  animate: { transition: { staggerChildren: 0.15 } },
+};
+
+const staggerItem = {
+  initial: { opacity: 0, y: 40, scale: 0.8 },
+  animate: { opacity: 1, y: 0, scale: 1, transition: { type: "spring" as const, stiffness: 300, damping: 18 } },
+};
+
+const achieveStaggerContainer = {
+  animate: { transition: { staggerChildren: 0.5 } },
+};
+
+const achieveStaggerItem = {
+  initial: { opacity: 0, y: 40, scale: 0.8 },
+  animate: { opacity: 1, y: 0, scale: 1, transition: { type: "spring" as const, stiffness: 300, damping: 18 } },
+};
+
+const shakeAnimation = {
+  x: [0, -8, 8, -6, 6, 0],
+  transition: { duration: 0.5 },
+};
+
+const confettiFallVariant = (_i: number) => ({
+  initial: { y: -20, opacity: 1, rotate: 0 },
+  animate: {
+    y: "100vh",
+    rotate: 720,
+    opacity: 0,
+    transition: {
+      duration: 2 + Math.random() * 3,
+      delay: Math.random() * 2,
+      repeat: Infinity,
+      ease: "linear" as const,
+    },
+  },
+});
+
 /* ───────────────────────── SUB-COMPONENTS ──────────────────── */
 
 function FloatingOrbs() {
   const orbs = [
-    { size: 80, left: "10%", top: "20%", delay: "0s", color: "rgba(245,158,11,0.15)" },
-    { size: 120, left: "80%", top: "10%", delay: "2s", color: "rgba(139,92,246,0.12)" },
-    { size: 60, left: "60%", top: "70%", delay: "4s", color: "rgba(245,158,11,0.1)" },
-    { size: 100, left: "25%", top: "80%", delay: "1s", color: "rgba(139,92,246,0.1)" },
-    { size: 50, left: "90%", top: "50%", delay: "3s", color: "rgba(245,158,11,0.12)" },
+    { size: 80, left: "10%", top: "20%", delay: 0, color: "rgba(245,158,11,0.15)" },
+    { size: 120, left: "80%", top: "10%", delay: 2, color: "rgba(139,92,246,0.12)" },
+    { size: 60, left: "60%", top: "70%", delay: 4, color: "rgba(245,158,11,0.1)" },
+    { size: 100, left: "25%", top: "80%", delay: 1, color: "rgba(139,92,246,0.1)" },
+    { size: 50, left: "90%", top: "50%", delay: 3, color: "rgba(245,158,11,0.12)" },
   ];
   return (
     <div style={{ position: "fixed", inset: 0, pointerEvents: "none", zIndex: 0, overflow: "hidden" }}>
       {orbs.map((o, i) => (
-        <div key={i} style={{
-          position: "absolute", width: o.size, height: o.size, left: o.left, top: o.top,
-          borderRadius: "50%", background: o.color,
-          animation: `floatOrb 6s ease-in-out ${o.delay} infinite`,
-        }} />
+        <motion.div
+          key={i}
+          animate={{
+            y: [-15, 15, -15],
+            scale: [1, 1.15, 1],
+            opacity: [0.3, 0.5, 0.3],
+          }}
+          transition={{
+            duration: 6,
+            ease: "easeInOut",
+            repeat: Infinity,
+            delay: o.delay,
+          }}
+          style={{
+            position: "absolute",
+            width: o.size,
+            height: o.size,
+            left: o.left,
+            top: o.top,
+            borderRadius: "50%",
+            background: o.color,
+          }}
+        />
       ))}
     </div>
   );
@@ -472,10 +282,11 @@ function ProgressBar({ step }: { step: number }) {
         <span>{Math.round(pct)}%</span>
       </div>
       <div style={{ height: 8, borderRadius: 999, background: "rgba(255,255,255,0.08)" }}>
-        <div style={{
-          height: "100%", borderRadius: 999, background: GRAD,
-          width: `${pct}%`, transition: "width 0.6s ease", animation: "progressFill 0.6s ease",
-        }} />
+        <motion.div
+          animate={{ width: `${pct}%` }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+          style={{ height: "100%", borderRadius: 999, background: GRAD }}
+        />
       </div>
     </div>
   );
@@ -485,12 +296,17 @@ function StepDots({ step }: { step: number }) {
   return (
     <div style={{ display: "flex", justifyContent: "center", gap: 6, margin: "8px 0 16px", flexWrap: "wrap" }}>
       {Array.from({ length: TOTAL }, (_, i) => (
-        <div key={i} style={{
-          width: i === step ? 12 : 8, height: i === step ? 12 : 8, borderRadius: "50%",
-          background: i < step ? "#8b5cf6" : i === step ? "#f59e0b" : "rgba(255,255,255,0.15)",
-          transition: `all 0.3s ${SPRING}`,
-          animation: i === step ? "pulseDot 1.5s ease infinite" : undefined,
-        }} />
+        <motion.div
+          key={i}
+          animate={{
+            width: i === step ? 12 : 8,
+            height: i === step ? 12 : 8,
+            background: i < step ? "#8b5cf6" : i === step ? "#f59e0b" : "rgba(255,255,255,0.15)",
+            scale: i === step ? [1, 1.4, 1] : 1,
+          }}
+          transition={i === step ? { scale: { duration: 1.5, repeat: Infinity, ease: "easeInOut" }, ...springTransition } : springTransition}
+          style={{ borderRadius: "50%" }}
+        />
       ))}
     </div>
   );
@@ -507,18 +323,24 @@ function Confetti({ duration = 3000 }: { duration?: number }) {
   if (!visible) return null;
   return (
     <div style={{ position: "fixed", inset: 0, pointerEvents: "none", zIndex: 100, overflow: "hidden" }}>
-      {Array.from({ length: 90 }, (_, i) => (
-        <div key={i} style={{
-          position: "absolute",
-          left: `${Math.random() * 100}%`,
-          top: -20,
-          fontSize: 10 + Math.random() * 14,
-          color: colors[i % colors.length],
-          animation: `confetti ${2 + Math.random() * 3}s linear ${Math.random() * 2}s infinite`,
-        }}>
-          {shapes[i % shapes.length]}
-        </div>
-      ))}
+      {Array.from({ length: 90 }, (_, i) => {
+        const v = confettiFallVariant(i);
+        return (
+          <motion.div
+            key={i}
+            initial={v.initial}
+            animate={v.animate}
+            style={{
+              position: "absolute",
+              left: `${Math.random() * 100}%`,
+              fontSize: 10 + Math.random() * 14,
+              color: colors[i % colors.length],
+            }}
+          >
+            {shapes[i % shapes.length]}
+          </motion.div>
+        );
+      })}
     </div>
   );
 }
@@ -528,13 +350,20 @@ function SparkleBurst({ x, y, big }: { x: number; y: number; big?: boolean }) {
   return (
     <div style={{ position: "fixed", left: x, top: y, pointerEvents: "none", zIndex: 99 }}>
       {emojis.map((e, i) => (
-        <span key={i} style={{
-          position: "absolute",
-          left: (i % 2 === 0 ? -1 : 1) * (10 + i * (big ? 12 : 8)),
-          top: (i < emojis.length / 2 ? -1 : 1) * (10 + i * (big ? 10 : 6)),
-          fontSize: big ? 26 : 20,
-          animation: `${big ? "bigSparkle" : "sparkle"} 0.7s ease forwards`,
-        }}>{e}</span>
+        <motion.span
+          key={i}
+          initial={{ opacity: 1, scale: 1, rotate: 0 }}
+          animate={{ opacity: 0, scale: big ? 2 : 0, rotate: 180 }}
+          transition={{ duration: 0.7, ease: "easeOut" }}
+          style={{
+            position: "absolute",
+            left: (i % 2 === 0 ? -1 : 1) * (10 + i * (big ? 12 : 8)),
+            top: (i < emojis.length / 2 ? -1 : 1) * (10 + i * (big ? 10 : 6)),
+            fontSize: big ? 26 : 20,
+          }}
+        >
+          {e}
+        </motion.span>
       ))}
     </div>
   );
@@ -542,15 +371,19 @@ function SparkleBurst({ x, y, big }: { x: number; y: number; big?: boolean }) {
 
 function CoinCounter({ coins, animKey }: { coins: number; animKey: number }) {
   return (
-    <div key={animKey} style={{
-      display: "flex", alignItems: "center", gap: 4,
-      background: "rgba(245,158,11,0.15)", border: "1px solid rgba(245,158,11,0.3)",
-      borderRadius: 12, padding: "4px 12px",
-      animation: animKey > 0 ? "coinPop 0.4s ease" : undefined,
-    }}>
+    <motion.div
+      key={animKey}
+      animate={animKey > 0 ? { scale: [1, 1.4, 1] } : {}}
+      transition={{ duration: 0.4 }}
+      style={{
+        display: "flex", alignItems: "center", gap: 4,
+        background: "rgba(245,158,11,0.15)", border: "1px solid rgba(245,158,11,0.3)",
+        borderRadius: 12, padding: "4px 12px",
+      }}
+    >
       <span style={{ fontSize: 18 }}>🪙</span>
       <span style={{ color: "#f59e0b", fontWeight: 900, fontSize: 16 }}>{coins}</span>
-    </div>
+    </motion.div>
   );
 }
 
@@ -564,13 +397,19 @@ function MiniConfetti({ x, y }: { x: number; y: number }) {
         const tx = Math.cos(angle) * dist;
         const ty = Math.sin(angle) * dist;
         return (
-          <span key={i} style={{
-            position: "absolute", fontSize: 8 + Math.random() * 6,
-            color: colors[i % colors.length],
-            // @ts-expect-error CSS custom properties
-            "--tx": `${tx}px`, "--ty": `${ty}px`,
-            animation: "confettiBurst 0.8s ease forwards",
-          }}>●</span>
+          <motion.span
+            key={i}
+            initial={{ x: 0, y: 0, scale: 1, opacity: 1 }}
+            animate={{ x: tx, y: ty, scale: 0.5, opacity: 0 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            style={{
+              position: "absolute",
+              fontSize: 8 + Math.random() * 6,
+              color: colors[i % colors.length],
+            }}
+          >
+            ●
+          </motion.span>
         );
       })}
     </div>
@@ -581,17 +420,19 @@ function MiniConfetti({ x, y }: { x: number; y: number }) {
 
 function btn(label: string, onClick: () => void, extra?: React.CSSProperties): React.ReactElement {
   return (
-    <button onClick={onClick} style={{
-      background: GRAD, color: "#fff", fontWeight: 900, borderRadius: 16,
-      padding: "13px 34px", border: "none", cursor: "pointer", fontSize: 16,
-      boxShadow: "0 4px 20px rgba(139,92,246,0.4)", transition: `transform 0.2s ${SPRING}`,
-      minHeight: 48, ...extra,
-    }}
-      onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.transform = "scale(1.06)"; }}
-      onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.transform = "scale(1)"; }}
+    <motion.button
+      onClick={onClick}
+      whileHover={{ scale: 1.05 }}
+      whileTap={{ scale: 0.95 }}
+      style={{
+        background: GRAD, color: "#fff", fontWeight: 900, borderRadius: 16,
+        padding: "13px 34px", border: "none", cursor: "pointer", fontSize: 16,
+        boxShadow: "0 4px 20px rgba(139,92,246,0.4)",
+        minHeight: 48, ...extra,
+      }}
     >
       {label}
-    </button>
+    </motion.button>
   );
 }
 
@@ -615,7 +456,11 @@ function strengthMeter(pct: number) {
         <span>Strength</span><span style={{ color: c, fontWeight: 700 }}>{label}</span>
       </div>
       <div style={{ height: 10, borderRadius: 999, background: "rgba(255,255,255,0.08)" }}>
-        <div style={{ height: "100%", borderRadius: 999, background: c, width: `${Math.min(pct, 100)}%`, transition: "all 0.5s ease" }} />
+        <motion.div
+          animate={{ width: `${Math.min(pct, 100)}%`, background: c }}
+          transition={{ duration: 0.5, ease: "easeOut" }}
+          style={{ height: "100%", borderRadius: 999 }}
+        />
       </div>
     </div>
   );
@@ -626,6 +471,15 @@ function stars(n: number) {
 }
 
 /* ───────────────────────── FLOATING BUBBLES QUIZ ─────────── */
+
+const bubbleFloatAnimations = [
+  { y: [0, -15, 0] },
+  { x: [0, 12, 0] },
+  { x: [0, 10, 0], y: [0, -10, 0] },
+  { y: [0, 13, 0] },
+];
+
+const bubbleFloatDurations = [3, 3.5, 4, 2.8];
 
 function FloatingBubbleQuiz({ question, opts, correct, explain, onCorrect, onWrong, playSound }: {
   question: string;
@@ -641,8 +495,6 @@ function FloatingBubbleQuiz({ question, opts, correct, explain, onCorrect, onWro
   const [popped, setPopped] = useState(false);
   const [showFeedback, setShowFeedback] = useState(false);
   const [showNext, setShowNext] = useState(false);
-
-  const bubbleAnims = ["bubbleFloat1 3s ease-in-out infinite", "bubbleFloat2 3.5s ease-in-out infinite", "bubbleFloat3 4s ease-in-out infinite", "bubbleFloat4 2.8s ease-in-out infinite"];
 
   const handleTap = (i: number) => {
     if (selected !== null) return;
@@ -675,49 +527,126 @@ function FloatingBubbleQuiz({ question, opts, correct, explain, onCorrect, onWro
           const isPopped = popped && isCorrectOpt;
           const isFading = popped && !isCorrectOpt;
           return (
-            <button key={i} onClick={() => handleTap(i)} disabled={selected !== null} style={{
-              width: 120, height: 120, borderRadius: "50%",
-              background: `rgba(${i === 0 ? "59,130,246" : i === 1 ? "139,92,246" : i === 2 ? "236,72,153" : "245,158,11"},0.15)`,
-              border: `3px solid ${BUBBLE_COLORS[i]}`,
-              color: BUBBLE_COLORS[i], fontWeight: 700, fontSize: 13,
-              cursor: selected !== null ? "default" : "pointer",
-              display: "flex", alignItems: "center", justifyContent: "center",
-              textAlign: "center", padding: 8,
-              boxShadow: `0 0 15px rgba(${i === 0 ? "59,130,246" : i === 1 ? "139,92,246" : i === 2 ? "236,72,153" : "245,158,11"},0.2)`,
-              animation: isPopped ? "bubblePop 0.5s ease forwards"
-                : isWrong ? "bubbleWobble 0.5s ease"
-                : isFading ? "bubbleFadeAway 0.5s ease forwards"
-                : bubbleAnims[i],
-              transition: "all 0.3s ease",
-            }}>
+            <motion.button
+              key={i}
+              onClick={() => handleTap(i)}
+              disabled={selected !== null}
+              animate={
+                isPopped ? { scale: [1, 1.3, 0], opacity: [1, 0.6, 0] }
+                : isWrong ? { x: [0, -6, 6, -6, 6, 0], rotate: [0, -5, 5, -5, 5, 0] }
+                : isFading ? { opacity: 0, scale: 0.5 }
+                : bubbleFloatAnimations[i]
+              }
+              transition={
+                isPopped ? { duration: 0.5 }
+                : isWrong ? { duration: 0.5 }
+                : isFading ? { duration: 0.5 }
+                : { duration: bubbleFloatDurations[i], repeat: Infinity, ease: "easeInOut" }
+              }
+              whileHover={selected === null ? { scale: 1.1 } : {}}
+              whileTap={selected === null ? { scale: 0.95 } : {}}
+              style={{
+                width: 120, height: 120, borderRadius: "50%",
+                background: `rgba(${i === 0 ? "59,130,246" : i === 1 ? "139,92,246" : i === 2 ? "236,72,153" : "245,158,11"},0.15)`,
+                border: `3px solid ${BUBBLE_COLORS[i]}`,
+                color: BUBBLE_COLORS[i], fontWeight: 700, fontSize: 13,
+                cursor: selected !== null ? "default" : "pointer",
+                display: "flex", alignItems: "center", justifyContent: "center",
+                textAlign: "center", padding: 8,
+                boxShadow: `0 0 15px rgba(${i === 0 ? "59,130,246" : i === 1 ? "139,92,246" : i === 2 ? "236,72,153" : "245,158,11"},0.2)`,
+              }}
+            >
               {opt}
-            </button>
+            </motion.button>
           );
         })}
       </div>
-      {showFeedback && (
-        <div style={{ animation: "slideUp 0.3s ease", marginTop: 8 }}>
-          <p style={{ color: "#10b981", fontSize: 20, fontWeight: 700 }}>🎉 Correct!</p>
-          <p style={{ color: "#e5e7eb", fontSize: 16, lineHeight: 1.5 }}>{explain}</p>
-          {showNext && (
-            <div style={{ marginTop: 12 }}>
-              {btn("Continue →", () => onCorrect())}
-            </div>
-          )}
-        </div>
-      )}
+      <AnimatePresence>
+        {showFeedback && (
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3 }}
+            style={{ marginTop: 8 }}
+          >
+            <p style={{ color: "#10b981", fontSize: 20, fontWeight: 700 }}>🎉 Correct!</p>
+            <p style={{ color: "#e5e7eb", fontSize: 16, lineHeight: 1.5 }}>{explain}</p>
+            {showNext && (
+              <div style={{ marginTop: 12 }}>
+                {btn("Continue →", () => onCorrect())}
+              </div>
+            )}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
 
-/* ───────────────────────── (scratch cards removed — tap-to-reveal used instead) ─── */
+/* ───────────────────────── SWIPE CARD SUB-COMPONENT ─────────── */
+
+function SwipeCard({
+  pw,
+  onSwipeEnd,
+}: {
+  pw: string;
+  onSwipeEnd: (isStrong: boolean) => void;
+}) {
+  const x = useMotionValue(0);
+  const rotate = useTransform(x, [-200, 200], [-20, 20]);
+  const borderColor = useTransform(x, [-100, -50, 0, 50, 100], [
+    "#ef4444", "#ef4444", "rgba(255,255,255,0.1)", "#10b981", "#10b981",
+  ]);
+  const bgColor = useTransform(x, [-100, -50, 0, 50, 100], [
+    "rgba(239,68,68,0.05)", "rgba(239,68,68,0.05)", "rgba(255,255,255,0.04)", "rgba(16,185,129,0.05)", "rgba(16,185,129,0.05)",
+  ]);
+
+  return (
+    <motion.div
+      drag="x"
+      dragConstraints={{ left: 0, right: 0 }}
+      dragElastic={0.8}
+      onDragEnd={(_, info) => {
+        if (Math.abs(info.offset.x) > 100) {
+          onSwipeEnd(info.offset.x > 0);
+        }
+      }}
+      initial={{ opacity: 0, y: 60 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, x: 300 }}
+      style={{
+        x,
+        rotate,
+        touchAction: "none",
+        cursor: "grab",
+        userSelect: "none",
+      }}
+    >
+      <motion.div
+        style={{
+          background: bgColor,
+          backdropFilter: "blur(12px)",
+          border: "1px solid rgba(255,255,255,0.1)",
+          borderColor,
+          borderWidth: 2,
+          borderStyle: "solid",
+          borderRadius: 24,
+          padding: 24,
+          maxWidth: 400,
+          margin: "0 auto 24px",
+        }}
+      >
+        <p style={{ color: "#f59e0b", fontFamily: "monospace", fontSize: 24, fontWeight: 900, margin: 0 }}>{pw}</p>
+      </motion.div>
+    </motion.div>
+  );
+}
 
 /* ───────────────────────── MAIN COMPONENT ─────────────────── */
 
 export default function LessonPlayer({ userName, moduleId, childName }: { userName: string; moduleId: string; childName: string }) {
   /* ---------- state ---------- */
   const [screen, setScreen] = useState(0);
-  const [animClass, setAnimClass] = useState("slide-in");
   const [coins, setCoins] = useState(0);
   const [coinAnimKey, setCoinAnimKey] = useState(0);
 
@@ -786,11 +715,8 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
   // Screen 8 — Swipe
   const [swipeIdx, setSwipeIdx] = useState(0);
   const [swipeScore, setSwipeScore] = useState(0);
-  const [swipeDelta, setSwipeDelta] = useState(0);
-  const [swipeSwiping, setSwipeSwiping] = useState(false);
-  const [swipeFlyDir, setSwipeFlyDir] = useState<"left" | "right" | null>(null);
   const [swipeFeedback, setSwipeFeedback] = useState<"correct" | "wrong" | null>(null);
-  const swipeStartX = useRef(0);
+  const [swipeFlyDir, setSwipeFlyDir] = useState<"left" | "right" | null>(null);
 
   // Screen 9 — Drag & drop
   const [placed, setPlaced] = useState<Set<string>>(new Set());
@@ -854,79 +780,68 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
   const [showConfetti, setShowConfetti] = useState(false);
 
   /* ---------- navigation ---------- */
-  const getTransitionClass = useCallback((to: number) => {
-    if (to === 15 || to === 16) return "pop-in";
-    if (to === 14) return "fade-zoom-in";
-    if ([3, 5, 11].includes(to)) return "slide-up-in";
-    return "slide-in";
-  }, []);
-
   const navigate = useCallback((to: number) => {
-    setAnimClass("slide-out");
-    setTimeout(() => {
-      switch (to) {
-        case 0:
-          setVideoEnded(false); setVideoFailed(false); setShowSkip(false);
-          setIsPlaying(false); setMediaProgress(0);
-          break;
-        case 1:
-          setMissionPhase(0);
-          break;
-        case 2:
-          setLockedItems(new Set()); setSparklePos(null); setLockFlipping(null); setLockCelebration(false); setMiniConfettiPos(null);
-          break;
-        case 3:
-          setQ1Idx(0); setQ1Score(0);
-          break;
-        case 4:
-          setWhyIdx(0); setShieldPos(null); setShieldDragging(false); setShieldPlaced(false); setRaccoonHitShield(false); setRaccoonReaching(false);
-          break;
-        case 5:
-          setQ2Idx(0); setQ2Score(0);
-          break;
-        case 6:
-          setAddedIngredients(new Set()); setPouringIdx(null); setPourChars([]);
-          break;
-        case 7:
-          setBuilderSlots([-1, -1, -1, -1]); setBuilderActive(0); setBuilderPowerUp(false);
-          break;
-        case 8:
-          setSwipeIdx(0); setSwipeScore(0); setSwipeDelta(0); setSwipeSwiping(false); setSwipeFlyDir(null); setSwipeFeedback(null);
-          break;
-        case 9:
-          setPlaced(new Set()); setDragging(null); setDragStarted(false);
-          setDragTime(60); timeRef.current = 60; setDragDone(false); setSortStars(0); setDragFlash(null);
-          break;
-        case 10:
-          setRevealedRules(new Set()); setFlippingRule(null); setAnsweredRules(new Set()); setRuleAnswers({});
-          break;
-        case 11:
-          setQ3Idx(0); setQ3Score(0);
-          break;
-        case 12:
-          setPhishIdx(0); setPhishAnswer(null); setPhishScore(0); setPhishStamped(false); setPhishExiting(false);
-          break;
-        case 13:
-          setWydIdx(0); setWydSel(null); setWydScore(0);
-          break;
-        case 14:
-          setBossIdx(0); setBossSel(null); setBossFeedback(null);
-          setBossScore(0); setRaccoonHealth(100); setBossDone(false);
-          setBossAttackPhase(false); setArenaShotsLeft(5); setArenaHits(0);
-          setArenaRaccoonPos({ left: 50, top: 30 }); setArenaProjectiles([]);
-          setArenaShowResult(false); setArenaRaccoonAnim("idle");
-          break;
-        case 15:
-          setAchievePhase(0);
-          break;
-        case 16:
-          setShowConfetti(true);
-          break;
-      }
-      setScreen(to);
-      setAnimClass(getTransitionClass(to));
-    }, 300);
-  }, [getTransitionClass]);
+    switch (to) {
+      case 0:
+        setVideoEnded(false); setVideoFailed(false); setShowSkip(false);
+        setIsPlaying(false); setMediaProgress(0);
+        break;
+      case 1:
+        setMissionPhase(0);
+        break;
+      case 2:
+        setLockedItems(new Set()); setSparklePos(null); setLockFlipping(null); setLockCelebration(false); setMiniConfettiPos(null);
+        break;
+      case 3:
+        setQ1Idx(0); setQ1Score(0);
+        break;
+      case 4:
+        setWhyIdx(0); setShieldPos(null); setShieldDragging(false); setShieldPlaced(false); setRaccoonHitShield(false); setRaccoonReaching(false);
+        break;
+      case 5:
+        setQ2Idx(0); setQ2Score(0);
+        break;
+      case 6:
+        setAddedIngredients(new Set()); setPouringIdx(null); setPourChars([]);
+        break;
+      case 7:
+        setBuilderSlots([-1, -1, -1, -1]); setBuilderActive(0); setBuilderPowerUp(false);
+        break;
+      case 8:
+        setSwipeIdx(0); setSwipeScore(0); setSwipeFlyDir(null); setSwipeFeedback(null);
+        break;
+      case 9:
+        setPlaced(new Set()); setDragging(null); setDragStarted(false);
+        setDragTime(60); timeRef.current = 60; setDragDone(false); setSortStars(0); setDragFlash(null);
+        break;
+      case 10:
+        setRevealedRules(new Set()); setFlippingRule(null); setAnsweredRules(new Set()); setRuleAnswers({});
+        break;
+      case 11:
+        setQ3Idx(0); setQ3Score(0);
+        break;
+      case 12:
+        setPhishIdx(0); setPhishAnswer(null); setPhishScore(0); setPhishStamped(false); setPhishExiting(false);
+        break;
+      case 13:
+        setWydIdx(0); setWydSel(null); setWydScore(0);
+        break;
+      case 14:
+        setBossIdx(0); setBossSel(null); setBossFeedback(null);
+        setBossScore(0); setRaccoonHealth(100); setBossDone(false);
+        setBossAttackPhase(false); setArenaShotsLeft(5); setArenaHits(0);
+        setArenaRaccoonPos({ left: 50, top: 30 }); setArenaProjectiles([]);
+        setArenaShowResult(false); setArenaRaccoonAnim("idle");
+        break;
+      case 15:
+        setAchievePhase(0);
+        break;
+      case 16:
+        setShowConfetti(true);
+        break;
+    }
+    setScreen(to);
+  }, []);
 
   /* ---------- effects ---------- */
 
@@ -1001,7 +916,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
       window.removeEventListener("pointermove", onMove);
       window.removeEventListener("pointerup", onUp);
     };
-  }, [shieldDragging, whyIdx, addCoins]);
+  }, [shieldDragging, whyIdx, addCoins, playSound]);
 
   // Screen 9: drag listeners
   useEffect(() => {
@@ -1039,7 +954,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
       window.removeEventListener("pointermove", onMove);
       window.removeEventListener("pointerup", onUp);
     };
-  }, [dragging]);
+  }, [dragging, playSound]);
 
   // Screen 9: timer
   useEffect(() => {
@@ -1088,7 +1003,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ moduleId }),
     }).catch(() => { /* ignore */ });
-  }, [screen, moduleId]);
+  }, [screen, moduleId, playSound]);
 
   /* ---------- arena boss battle handler ---------- */
   const randomRaccoonPos = useCallback(() => ({
@@ -1163,6 +1078,14 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
     }
   }, [arenaHits, raccoonHealth, bossIdx]);
 
+  /* ---------- getScreenVariants ---------- */
+  const getScreenVariants = (s: number) => {
+    if (s === 15 || s === 16) return popInVariants;
+    if (s === 14) return fadeZoomVariants;
+    if ([3, 5, 11].includes(s)) return slideUpVariants;
+    return screenVariants;
+  };
+
   /* ---------- renderScreen ---------- */
   const renderScreen = () => {
     switch (screen) {
@@ -1174,7 +1097,11 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
             {!videoEnded ? (
               <>
                 {!videoFailed ? (
-                  <div style={{ position: "relative", borderRadius: 24, overflow: "hidden", border: "2px solid rgba(139,92,246,0.4)", animation: "glowPulse 3s ease infinite", maxWidth: 640, margin: "0 auto" }}>
+                  <motion.div
+                    animate={{ boxShadow: ["0 0 20px rgba(139,92,246,0.3)", "0 0 40px rgba(139,92,246,0.6)", "0 0 20px rgba(139,92,246,0.3)"] }}
+                    transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                    style={{ position: "relative", borderRadius: 24, overflow: "hidden", border: "2px solid rgba(139,92,246,0.4)", maxWidth: 640, margin: "0 auto" }}
+                  >
                     <video
                       ref={videoRef}
                       src="/videos/01-welcome.mp4"
@@ -1213,21 +1140,35 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                         {mediaMuted ? "🔇" : "🔊"}
                       </button>
                     </div>
-                  </div>
+                  </motion.div>
                 ) : (
                   <div style={{ textAlign: "center" }}>
-                    <img src="/characters/adam-layla-hacked.png" alt="Adam and Layla" style={{ width: 200, borderRadius: 24, animation: "heroFloat 3s ease infinite" }} />
+                    <motion.img
+                      src="/characters/adam-layla-hacked.png"
+                      alt="Adam and Layla"
+                      animate={{ y: [0, -12, 0] }}
+                      transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                      style={{ width: 200, borderRadius: 24 }}
+                    />
                     <p style={{ color: "#9ca3af", marginTop: 12, fontSize: 18 }}>Video coming soon!</p>
                   </div>
                 )}
                 {showSkip && !videoEnded && (
-                  <div style={{ marginTop: 16 }}>
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    style={{ marginTop: 16 }}
+                  >
                     {btn("Skip video →", () => setVideoEnded(true))}
-                  </div>
+                  </motion.div>
                 )}
               </>
             ) : (
-              <div style={{ animation: "slideUp 0.6s ease" }}>
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6 }}
+              >
                 {card(
                   <>
                     <img src="/characters/adam-layla-hacked.png" alt="Adam and Layla hacked" style={{ width: 100, borderRadius: 16, margin: "0 auto 12px", display: "block" }} />
@@ -1236,7 +1177,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                     {btn("I'll help them! Let's go! 🚀", () => navigate(1))}
                   </>
                 )}
-              </div>
+              </motion.div>
             )}
           </div>
         );
@@ -1254,31 +1195,39 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
               fontSize: 36, fontWeight: 900, background: GRAD, WebkitBackgroundClip: "text",
               WebkitTextFillColor: "transparent", marginBottom: 24,
             }}>YOUR MISSION</h1>
-            <div style={{ display: "flex", flexDirection: "column", gap: 16, maxWidth: 500, margin: "0 auto 24px" }}>
+            <motion.div
+              variants={staggerContainer}
+              initial="initial"
+              animate="animate"
+              style={{ display: "flex", flexDirection: "column", gap: 16, maxWidth: 500, margin: "0 auto 24px" }}
+            >
               {missions.map((m, i) => (
                 missionPhase > i ? (
-                  <div key={i} style={{
-                    animation: `bounceIn 0.6s ${SPRING} both`,
-                    animationDelay: `${i * 0.15}s`,
-                  }}>
+                  <motion.div key={i} variants={staggerItem}>
                     {card(
                       <div style={{ display: "flex", alignItems: "center", gap: 16, textAlign: "left" }}>
                         <span style={{ fontSize: 32 }}>{m.icon}</span>
                         <span style={{ color: "#fff", fontSize: 18, fontWeight: 700 }}>{m.text}</span>
                       </div>,
-                      { borderLeft: "4px solid #8b5cf6", animation: "glowPulse 3s ease infinite" }
+                      { borderLeft: "4px solid #8b5cf6" }
                     )}
-                  </div>
+                  </motion.div>
                 ) : <div key={i} style={{ height: 80 }} />
               ))}
-            </div>
+            </motion.div>
             <div style={{ position: "absolute", right: 20, top: "50%", transform: "translateY(-50%)" }}>
-              <img src="/characters/adam-layla-happy.png" alt="Adam and Layla" style={{ width: 120, animation: "heroFloat 3s ease infinite" }} />
+              <motion.img
+                src="/characters/adam-layla-happy.png"
+                alt="Adam and Layla"
+                animate={{ y: [0, -12, 0] }}
+                transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                style={{ width: 120 }}
+              />
             </div>
             {missionPhase >= 3 && (
-              <div style={{ animation: "popIn 0.5s ease" }}>
-                {btn("Accept Mission →", () => navigate(2), { animation: "pulseGlow 2s ease infinite" })}
-              </div>
+              <motion.div initial={{ opacity: 0, scale: 0.5 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: "spring", stiffness: 300, damping: 20 }}>
+                {btn("Accept Mission →", () => navigate(2))}
+              </motion.div>
             )}
           </div>
         );
@@ -1296,72 +1245,102 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                 const locked = lockedItems.has(item.id);
                 const flipping = lockFlipping === item.id;
                 return (
-                  <div key={item.id} onClick={(e) => {
-                    if (locked || flipping) return;
-                    setLockFlipping(item.id);
-                    playSound("/sounds/lock.mp3");
-                    setTimeout(() => {
-                      setLockedItems((prev) => {
-                        const n = new Set(prev);
-                        n.add(item.id);
-                        if (n.size === 3) {
-                          setTimeout(() => {
-                            setLockCelebration(true);
-                            setMiniConfettiPos({ x: window.innerWidth / 2, y: window.innerHeight / 2 });
-                            addCoins(25);
-                            playSound("/sounds/coin.mp3");
-                            setTimeout(() => setMiniConfettiPos(null), 1000);
-                          }, 400);
-                        }
-                        return n;
-                      });
-                      setLockFlipping(null);
-                      setSparklePos({ x: e.clientX, y: e.clientY });
-                      setTimeout(() => setSparklePos(null), 700);
-                    }, 600);
-                  }}>
+                  <motion.div
+                    key={item.id}
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    whileHover={!locked && !flipping ? { scale: 1.05 } : {}}
+                    whileTap={!locked && !flipping ? { scale: 0.95 } : {}}
+                    onClick={(e) => {
+                      if (locked || flipping) return;
+                      setLockFlipping(item.id);
+                      playSound("/sounds/lock.mp3");
+                      setTimeout(() => {
+                        setLockedItems((prev) => {
+                          const n = new Set(prev);
+                          n.add(item.id);
+                          if (n.size === 3) {
+                            setTimeout(() => {
+                              setLockCelebration(true);
+                              setMiniConfettiPos({ x: window.innerWidth / 2, y: window.innerHeight / 2 });
+                              addCoins(25);
+                              playSound("/sounds/coin.mp3");
+                              setTimeout(() => setMiniConfettiPos(null), 1000);
+                            }, 400);
+                          }
+                          return n;
+                        });
+                        setLockFlipping(null);
+                        setSparklePos({ x: e.clientX, y: e.clientY });
+                        setTimeout(() => setSparklePos(null), 700);
+                      }, 600);
+                    }}
+                  >
                     {card(
                       <div style={{
                         textAlign: "center", cursor: locked ? "default" : "pointer", minWidth: 140,
-                        animation: flipping ? "cardFlip 0.6s ease" : undefined,
                       }}>
-                        <div style={{ fontSize: 48, marginBottom: 8 }}>{item.icon}</div>
-                        <div style={{ fontSize: 16, color: "#fff", fontWeight: 700, marginBottom: 8 }}>{item.label}</div>
-                        <div style={{
-                          fontSize: 32, transition: `all 0.3s ${SPRING}`,
-                          animation: flipping ? "lockTurn 0.6s ease" : undefined,
-                        }}>
-                          {locked ? "🔒" : "🔓"}
-                        </div>
+                        <motion.div
+                          animate={flipping ? { rotateY: [0, 90, 0] } : {}}
+                          transition={{ duration: 0.6 }}
+                        >
+                          <div style={{ fontSize: 48, marginBottom: 8 }}>{item.icon}</div>
+                          <div style={{ fontSize: 16, color: "#fff", fontWeight: 700, marginBottom: 8 }}>{item.label}</div>
+                          <motion.div
+                            animate={flipping ? { rotate: 360 } : {}}
+                            transition={{ duration: 0.6 }}
+                            style={{ fontSize: 32 }}
+                          >
+                            {locked ? "🔒" : "🔓"}
+                          </motion.div>
+                        </motion.div>
                         {!locked && !flipping && (
-                          <div style={{ fontSize: 24, animation: "bobble 1s ease infinite", marginTop: 4 }}>👆</div>
+                          <motion.div
+                            animate={{ y: [0, -6, 0] }}
+                            transition={{ duration: 1, repeat: Infinity, ease: "easeInOut" }}
+                            style={{ fontSize: 24, marginTop: 4 }}
+                          >
+                            👆
+                          </motion.div>
                         )}
                         {locked && (
-                          <p style={{ color: "#10b981", fontSize: 13, marginTop: 8, animation: "slideUp 0.3s ease" }}>{item.message}</p>
+                          <motion.p
+                            initial={{ opacity: 0, y: 30 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            style={{ color: "#10b981", fontSize: 13, marginTop: 8 }}
+                          >
+                            {item.message}
+                          </motion.p>
                         )}
                       </div>,
                       { border: `2px solid ${locked ? "#10b981" : "#ef4444"}`, transition: "border-color 0.3s ease" }
                     )}
-                  </div>
+                  </motion.div>
                 );
               })}
             </div>
             {sparklePos && <SparkleBurst x={sparklePos.x} y={sparklePos.y} big />}
             {miniConfettiPos && <MiniConfetti x={miniConfettiPos.x} y={miniConfettiPos.y} />}
-            {lockedItems.size === 3 && lockCelebration && (
-              <div style={{ animation: "bounceIn 0.6s ease" }}>
-                {card(
-                  <>
-                    <h2 style={{ color: "#10b981", fontSize: 22, margin: "0 0 8px" }}>🎉 All Locked!</h2>
-                    <p style={{ color: "#d1d5db", marginBottom: 12 }}>A password is like a key that locks your digital stuff so only YOU can open it!</p>
-                    <div style={{ border: "2px solid #f59e0b", borderRadius: 16, padding: 12, marginBottom: 16, background: "rgba(245,158,11,0.05)" }}>
-                      <p style={{ color: "#f59e0b", fontSize: 14, margin: 0 }}>🌟 Fun Fact: The first computer password was created in 1961!</p>
-                    </div>
-                    {btn("Got it! Quiz time! →", () => navigate(3))}
-                  </>
-                )}
-              </div>
-            )}
+            <AnimatePresence>
+              {lockedItems.size === 3 && lockCelebration && (
+                <motion.div
+                  initial={{ opacity: 0, y: 40, scale: 0.8 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 18 }}
+                >
+                  {card(
+                    <>
+                      <h2 style={{ color: "#10b981", fontSize: 22, margin: "0 0 8px" }}>🎉 All Locked!</h2>
+                      <p style={{ color: "#d1d5db", marginBottom: 12 }}>A password is like a key that locks your digital stuff so only YOU can open it!</p>
+                      <div style={{ border: "2px solid #f59e0b", borderRadius: 16, padding: 12, marginBottom: 16, background: "rgba(245,158,11,0.05)" }}>
+                        <p style={{ color: "#f59e0b", fontSize: 14, margin: 0 }}>🌟 Fun Fact: The first computer password was created in 1961!</p>
+                      </div>
+                      {btn("Got it! Quiz time! →", () => navigate(3))}
+                    </>
+                  )}
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
         );
 
@@ -1370,7 +1349,12 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
         if (q1Idx >= Q1_QUIZ.length) {
           const s = q1Score === 3 ? 3 : q1Score >= 2 ? 2 : 1;
           return (
-            <div style={{ textAlign: "center", animation: "popIn 0.5s ease" }}>
+            <motion.div
+              initial={{ opacity: 0, scale: 0.5 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ type: "spring", stiffness: 300, damping: 20 }}
+              style={{ textAlign: "center" }}
+            >
               {card(
                 <>
                   <h2 style={{ color: "#fff", fontSize: 24, margin: "0 0 12px" }}>Quiz Complete!</h2>
@@ -1380,12 +1364,17 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                   {btn("Next lesson! →", () => navigate(4))}
                 </>
               )}
-            </div>
+            </motion.div>
           );
         }
         const qq = Q1_QUIZ[q1Idx];
         return (
-          <div key={`q1-${q1Idx}`} style={{ animation: "slideFromBelow 0.5s ease" }}>
+          <motion.div
+            key={`q1-${q1Idx}`}
+            initial={{ opacity: 0, y: 60 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
             <h1 style={{ color: "#fff", fontSize: 24, fontWeight: 900, marginBottom: 4, textAlign: "center" }}>Quick Quiz!<img src="/characters/adam-layla-happy.png" width={40} height={40} alt="" style={{ display: "inline-block", verticalAlign: "middle", marginLeft: 8, borderRadius: 999 }} /></h1>
             <p style={{ color: "#9ca3af", marginBottom: 12, textAlign: "center" }}>Question {q1Idx + 1}/{Q1_QUIZ.length}</p>
             <FloatingBubbleQuiz
@@ -1401,7 +1390,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
               }}
               onWrong={() => {}}
             />
-          </div>
+          </motion.div>
         );
       }
 
@@ -1409,7 +1398,12 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
       case 4: {
         if (whyIdx >= WHY_SCENARIOS.length) {
           return (
-            <div style={{ textAlign: "center", animation: "popIn 0.5s ease" }}>
+            <motion.div
+              initial={{ opacity: 0, scale: 0.5 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ type: "spring", stiffness: 300, damping: 20 }}
+              style={{ textAlign: "center" }}
+            >
               {card(
                 <>
                   <h2 style={{ color: "#fff", fontSize: 24, margin: "0 0 12px" }}>Passwords protect EVERYTHING! 🛡️</h2>
@@ -1418,7 +1412,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                   {btn("Quiz time! →", () => navigate(5))}
                 </>
               )}
-            </div>
+            </motion.div>
           );
         }
         const sc = WHY_SCENARIOS[whyIdx];
@@ -1430,43 +1424,75 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
             {card(
               <div style={{ position: "relative", minHeight: 200, overflow: "hidden" }}>
                 {/* Item on the left */}
-                <div ref={itemRef} style={{
-                  position: "absolute", left: 20, top: "50%", transform: "translateY(-50%)",
-                  textAlign: "center",
-                  animation: shieldPlaced ? "barrierPulse 1s ease infinite" : undefined,
-                  border: shieldPlaced ? "3px solid #10b981" : "2px solid rgba(255,255,255,0.2)",
-                  borderRadius: 16, padding: 16, background: "rgba(255,255,255,0.04)",
-                }}>
+                <motion.div
+                  ref={itemRef}
+                  animate={shieldPlaced ? {
+                    boxShadow: ["0 0 10px rgba(16,185,129,0.3)", "0 0 25px rgba(16,185,129,0.6)", "0 0 10px rgba(16,185,129,0.3)"],
+                  } : {}}
+                  transition={shieldPlaced ? { duration: 1, repeat: Infinity, ease: "easeInOut" } : {}}
+                  style={{
+                    position: "absolute", left: 20, top: "50%", transform: "translateY(-50%)",
+                    textAlign: "center",
+                    border: shieldPlaced ? "3px solid #10b981" : "2px solid rgba(255,255,255,0.2)",
+                    borderRadius: 16, padding: 16, background: "rgba(255,255,255,0.04)",
+                  }}
+                >
                   <span style={{ fontSize: 48 }}>{sc.icon}</span>
                   <p style={{ color: "#fff", fontSize: 14, fontWeight: 700, margin: "4px 0 0" }}>{sc.item}</p>
-                  {shieldPlaced && <span style={{ fontSize: 28, animation: "shieldSnap 0.3s ease" }}>🛡️</span>}
-                </div>
+                  {shieldPlaced && (
+                    <motion.span
+                      initial={{ scale: 1.3 }}
+                      animate={{ scale: 1 }}
+                      transition={{ type: "spring", stiffness: 400, damping: 15 }}
+                      style={{ fontSize: 28, display: "inline-block" }}
+                    >
+                      🛡️
+                    </motion.span>
+                  )}
+                </motion.div>
 
                 {/* Raccoon on the right, approaching */}
                 {!raccoonHitShield && !shieldPlaced && (
-                  <div style={{
-                    position: "absolute", right: -10, top: "50%", transform: "translateY(-50%)",
-                    animation: `raccoonApproach ${raccoonSpeed}s linear forwards`,
-                  }}>
-                    <img src="/characters/raccoon.png" alt="Raccoon" style={{ width: 60, animation: "bobble 0.5s ease infinite" }} />
-                  </div>
+                  <motion.div
+                    initial={{ x: 0 }}
+                    animate={{ x: "calc(-100% - 60px)" }}
+                    transition={{ duration: raccoonSpeed, ease: "linear" }}
+                    style={{
+                      position: "absolute", right: -10, top: "50%", transform: "translateY(-50%)",
+                    }}
+                  >
+                    <motion.img
+                      src="/characters/raccoon.png"
+                      alt="Raccoon"
+                      animate={{ y: [0, -6, 0] }}
+                      transition={{ duration: 0.5, repeat: Infinity, ease: "easeInOut" }}
+                      style={{ width: 60 }}
+                    />
+                  </motion.div>
                 )}
 
                 {/* Raccoon bouncing back */}
                 {raccoonHitShield && (
-                  <div style={{
-                    position: "absolute", left: 150, top: "50%", transform: "translateY(-50%)",
-                    animation: "raccoonBounce 1s ease forwards",
-                  }}>
+                  <motion.div
+                    initial={{ x: 0, rotate: 0, scaleX: 1, opacity: 1 }}
+                    animate={{ x: 300, rotate: 30, scaleX: 1, opacity: 0 }}
+                    transition={{ duration: 1, ease: "easeOut" }}
+                    style={{
+                      position: "absolute", left: 150, top: "50%", transform: "translateY(-50%)",
+                    }}
+                  >
                     <img src="/characters/raccoon.png" alt="Raccoon" style={{ width: 60 }} />
-                  </div>
+                  </motion.div>
                 )}
 
                 {/* Reaching warning */}
                 {raccoonReaching && !shieldPlaced && (
-                  <div style={{ position: "absolute", bottom: 10, left: "50%", transform: "translateX(-50%)", animation: "shake 0.5s ease infinite" }}>
+                  <motion.div
+                    animate={shakeAnimation}
+                    style={{ position: "absolute", bottom: 10, left: "50%", transform: "translateX(-50%)" }}
+                  >
                     <p style={{ color: "#ef4444", fontWeight: 700, fontSize: 14, whiteSpace: "nowrap" }}>Quick! Drag the shield! 🛡️</p>
-                  </div>
+                  </motion.div>
                 )}
               </div>,
               { border: `2px solid ${shieldPlaced ? "#10b981" : "#ef4444"}`, padding: 16, marginBottom: 16 }
@@ -1474,7 +1500,11 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
 
             {/* Next scenario button after raccoon bounces */}
             {raccoonHitShield && (
-              <div style={{ textAlign: "center", marginTop: 12, animation: "slideUp 0.3s ease" }}>
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                style={{ textAlign: "center", marginTop: 12 }}
+              >
                 <p style={{ color: "#10b981", fontSize: 18, fontWeight: 700, marginBottom: 8 }}>Protected! The Raccoon bounced off!</p>
                 {btn(whyIdx < WHY_SCENARIOS.length - 1 ? "Next Scenario →" : "All done! →", () => {
                   if (whyIdx < WHY_SCENARIOS.length - 1) {
@@ -1484,14 +1514,14 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                     setWhyIdx(WHY_SCENARIOS.length);
                   }
                 })}
-              </div>
+              </motion.div>
             )}
 
             {/* Draggable shield */}
             {!shieldPlaced && !raccoonHitShield && (
               <div style={{ textAlign: "center", marginTop: 12 }}>
                 <p style={{ color: "#d1d5db", fontSize: 14, marginBottom: 8 }}>Drag the shield to protect it!</p>
-                <div
+                <motion.div
                   onPointerDown={(e) => {
                     e.preventDefault();
                     setShieldDragging(true);
@@ -1499,21 +1529,22 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                     shieldOffset.current = { x: e.clientX - rect.left, y: e.clientY - rect.top };
                     setShieldPos({ x: rect.left, y: rect.top });
                   }}
+                  animate={{
+                    boxShadow: ["0 0 15px rgba(16,185,129,0.4)", "0 0 30px rgba(16,185,129,0.8)", "0 0 15px rgba(16,185,129,0.4)"],
+                  }}
+                  transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                  whileHover={{ scale: 1.1 }}
                   style={{
                     display: "inline-flex", alignItems: "center", justifyContent: "center",
                     width: 64, height: 64, borderRadius: "50%",
                     background: "rgba(16,185,129,0.15)", border: "3px solid #10b981",
                     cursor: "grab", touchAction: "none", userSelect: "none", fontSize: 32,
-                    animation: "pulseGlow 2s ease infinite",
-                    boxShadow: "0 0 20px rgba(16,185,129,0.3)",
                   }}
                 >
                   🛡️
-                </div>
+                </motion.div>
               </div>
             )}
-
-            {/* Shield ghost rendered at root level below */}
           </div>
         );
       }
@@ -1523,7 +1554,12 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
         if (q2Idx >= Q2_QUIZ.length) {
           const s = q2Score === 3 ? 3 : q2Score >= 2 ? 2 : 1;
           return (
-            <div style={{ textAlign: "center", animation: "popIn 0.5s ease" }}>
+            <motion.div
+              initial={{ opacity: 0, scale: 0.5 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ type: "spring", stiffness: 300, damping: 20 }}
+              style={{ textAlign: "center" }}
+            >
               {card(
                 <>
                   <h2 style={{ color: "#fff", fontSize: 24, margin: "0 0 12px" }}>Quiz Complete!</h2>
@@ -1533,12 +1569,17 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                   {btn("Next lesson! →", () => navigate(6))}
                 </>
               )}
-            </div>
+            </motion.div>
           );
         }
         const qq = Q2_QUIZ[q2Idx];
         return (
-          <div key={`q2-${q2Idx}`} style={{ animation: "slideFromBelow 0.5s ease" }}>
+          <motion.div
+            key={`q2-${q2Idx}`}
+            initial={{ opacity: 0, y: 60 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
             <h1 style={{ color: "#fff", fontSize: 24, fontWeight: 900, marginBottom: 4, textAlign: "center" }}>Quick Quiz!<img src="/characters/adam-layla-happy.png" width={40} height={40} alt="" style={{ display: "inline-block", verticalAlign: "middle", marginLeft: 8, borderRadius: 999 }} /></h1>
             <p style={{ color: "#9ca3af", marginBottom: 12, textAlign: "center" }}>Question {q2Idx + 1}/{Q2_QUIZ.length}</p>
             <FloatingBubbleQuiz
@@ -1554,7 +1595,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
               }}
               onWrong={() => {}}
             />
-          </div>
+          </motion.div>
         );
       }
 
@@ -1571,37 +1612,44 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                 const added = addedIngredients.has(i);
                 const pouring = pouringIdx === i;
                 return (
-                  <button key={i} onClick={() => {
-                    if (added || pouringIdx !== null) return;
-                    setPouringIdx(i);
-                    playSound("/sounds/pour.mp3");
-                    const chars = RECIPE_CHARS[i] || ["?"];
-                    const newChars = chars.map((c, ci) => ({
-                      char: c, x: (Math.random() - 0.5) * 30, delay: ci * 50,
-                    }));
-                    setPourChars(newChars);
-                    setTimeout(() => {
-                      setAddedIngredients((prev) => { const n = new Set(prev); n.add(i); return n; });
-                      setPouringIdx(null);
-                      setPourChars([]);
-                      if (addedIngredients.size === 4) {
-                        addCoins(25);
-                        playSound("/sounds/coin.mp3");
-                      }
-                    }, 1200);
-                  }} style={{
-                    background: added ? "rgba(16,185,129,0.1)" : "rgba(255,255,255,0.04)",
-                    border: `2px solid ${added ? "#10b981" : r.color}`,
-                    borderRadius: 16, padding: 16, cursor: added || pouringIdx !== null ? "default" : "pointer",
-                    opacity: added ? 0.5 : 1, transition: "all 0.3s ease", minWidth: 120, minHeight: 48,
-                    transform: pouring ? "rotate(-45deg)" : "rotate(0deg)",
-                    transformOrigin: "bottom center",
-                  }}>
+                  <motion.button
+                    key={i}
+                    onClick={() => {
+                      if (added || pouringIdx !== null) return;
+                      setPouringIdx(i);
+                      playSound("/sounds/pour.mp3");
+                      const chars = RECIPE_CHARS[i] || ["?"];
+                      const newChars = chars.map((c, ci) => ({
+                        char: c, x: (Math.random() - 0.5) * 30, delay: ci * 50,
+                      }));
+                      setPourChars(newChars);
+                      setTimeout(() => {
+                        setAddedIngredients((prev) => { const n = new Set(prev); n.add(i); return n; });
+                        setPouringIdx(null);
+                        setPourChars([]);
+                        if (addedIngredients.size === 4) {
+                          addCoins(25);
+                          playSound("/sounds/coin.mp3");
+                        }
+                      }, 1200);
+                    }}
+                    animate={pouring ? { rotate: -45 } : { rotate: 0 }}
+                    whileHover={!added && pouringIdx === null ? { scale: 1.05 } : {}}
+                    whileTap={!added && pouringIdx === null ? { scale: 0.95 } : {}}
+                    transition={{ duration: 0.3 }}
+                    style={{
+                      background: added ? "rgba(16,185,129,0.1)" : "rgba(255,255,255,0.04)",
+                      border: `2px solid ${added ? "#10b981" : r.color}`,
+                      borderRadius: 16, padding: 16, cursor: added || pouringIdx !== null ? "default" : "pointer",
+                      opacity: added ? 0.5 : 1, minWidth: 120, minHeight: 48,
+                      transformOrigin: "bottom center",
+                    }}
+                  >
                     <div style={{ fontSize: 28 }}>{r.icon}</div>
                     <div style={{ color: r.color, fontWeight: 700, fontSize: 13 }}>{r.label}</div>
                     <div style={{ color: "#9ca3af", fontSize: 11 }}>{r.example}</div>
                     {added && <div style={{ color: "#10b981", fontSize: 12, marginTop: 4 }}>✓ Poured!</div>}
-                  </button>
+                  </motion.button>
                 );
               })}
             </div>
@@ -1610,38 +1658,59 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
             {pouringIdx !== null && (
               <div style={{ position: "relative", height: 60, margin: "0 auto", maxWidth: 200 }}>
                 {pourChars.map((c, i) => (
-                  <span key={i} style={{
-                    position: "absolute",
-                    left: `calc(50% + ${c.x}px)`,
-                    top: 0,
-                    color: RECIPE[pouringIdx]?.color || "#fff",
-                    fontWeight: 900, fontSize: 18, fontFamily: "monospace",
-                    // @ts-expect-error CSS custom properties
-                    "--px": `${c.x}px`, "--drop-dist": "50px",
-                    animation: `pourDrop 0.8s ease-in ${c.delay}ms forwards`,
-                  }}>{c.char}</span>
+                  <motion.span
+                    key={i}
+                    initial={{ y: 0, opacity: 1 }}
+                    animate={{ y: 50, opacity: 0.6 }}
+                    transition={{ duration: 0.8, ease: "easeIn", delay: c.delay / 1000 }}
+                    style={{
+                      position: "absolute",
+                      left: `calc(50% + ${c.x}px)`,
+                      top: 0,
+                      color: RECIPE[pouringIdx]?.color || "#fff",
+                      fontWeight: 900, fontSize: 18, fontFamily: "monospace",
+                    }}
+                  >
+                    {c.char}
+                  </motion.span>
                 ))}
               </div>
             )}
 
             {/* Bowl */}
-            <div style={{
-              width: 220, height: 140, margin: "0 auto 16px", borderRadius: "0 0 50% 50%",
-              background: `linear-gradient(135deg, rgba(139,92,246,${0.15 + addedIngredients.size * 0.07}), rgba(59,130,246,${0.15 + addedIngredients.size * 0.07}))`,
-              border: "3px solid rgba(139,92,246,0.4)", display: "flex", alignItems: "center",
-              justifyContent: "center", fontSize: 36, transition: "all 0.5s ease",
-              animation: addedIngredients.size === 5 ? "bowlRainbow 2s linear infinite" : undefined,
-              boxShadow: addedIngredients.size === 5 ? "0 0 30px rgba(139,92,246,0.5)" : undefined,
-            }}>
+            <motion.div
+              animate={addedIngredients.size === 5 ? {
+                boxShadow: [
+                  "0 0 20px rgba(139,92,246,0.5)",
+                  "0 0 25px rgba(59,130,246,0.5)",
+                  "0 0 30px rgba(236,72,153,0.5)",
+                  "0 0 25px rgba(245,158,11,0.5)",
+                  "0 0 20px rgba(16,185,129,0.5)",
+                ],
+              } : {}}
+              transition={addedIngredients.size === 5 ? { duration: 2, repeat: Infinity, ease: "linear" } : {}}
+              style={{
+                width: 220, height: 140, margin: "0 auto 16px", borderRadius: "0 0 50% 50%",
+                background: `linear-gradient(135deg, rgba(139,92,246,${0.15 + addedIngredients.size * 0.07}), rgba(59,130,246,${0.15 + addedIngredients.size * 0.07}))`,
+                border: "3px solid rgba(139,92,246,0.4)", display: "flex", alignItems: "center",
+                justifyContent: "center", fontSize: 36, transition: "all 0.5s ease",
+              }}
+            >
               {addedIngredients.size === 5 ? "🌟" : "🔑"}
-            </div>
+            </motion.div>
             {strengthMeter((addedIngredients.size / 5) * 100)}
-            {addedIngredients.size === 5 && (
-              <div style={{ animation: "popIn 0.5s ease" }}>
-                <p style={{ color: "#10b981", fontSize: 22, fontWeight: 700 }}>SUPER STRONG! 🔥</p>
-                {btn("Build a password! →", () => navigate(7))}
-              </div>
-            )}
+            <AnimatePresence>
+              {addedIngredients.size === 5 && (
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.5 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                >
+                  <p style={{ color: "#10b981", fontSize: 22, fontWeight: 700 }}>SUPER STRONG! 🔥</p>
+                  {btn("Build a password! →", () => navigate(7))}
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
         );
 
@@ -1653,52 +1722,69 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
           <div style={{ textAlign: "center" }}>
             <h1 style={{ color: "#fff", fontSize: 28, fontWeight: 900, marginBottom: 8 }}>Build Your Password!</h1>
             {/* Display */}
-            <div style={{
-              background: "rgba(0,0,0,0.3)", borderRadius: 16, padding: "12px 20px", margin: "0 auto 16px",
-              maxWidth: 400, fontFamily: "monospace", fontSize: 24, color: "#f59e0b", fontWeight: 900,
-              letterSpacing: 3, minHeight: 48, border: "2px solid rgba(139,92,246,0.3)",
-              animation: builderPowerUp ? "powerUp 1s ease" : undefined,
-            }}>
+            <motion.div
+              animate={builderPowerUp ? {
+                scale: [1, 1.08, 1],
+                boxShadow: ["0 0 0 rgba(245,158,11,0)", "0 0 30px rgba(245,158,11,0.6)", "0 0 15px rgba(245,158,11,0.3)"],
+              } : {}}
+              transition={{ duration: 1 }}
+              style={{
+                background: "rgba(0,0,0,0.3)", borderRadius: 16, padding: "12px 20px", margin: "0 auto 16px",
+                maxWidth: 400, fontFamily: "monospace", fontSize: 24, color: "#f59e0b", fontWeight: 900,
+                letterSpacing: 3, minHeight: 48, border: "2px solid rgba(139,92,246,0.3)",
+              }}
+            >
               {builtPw || "••••••••"}
-            </div>
+            </motion.div>
             {strengthMeter((filledCount / 4) * 100)}
             {builderActive < 4 ? (
-              <div key={`builder-${builderActive}`} style={{ animation: "slideFromBelow 0.4s ease" }}>
+              <motion.div
+                key={`builder-${builderActive}`}
+                initial={{ opacity: 0, y: 60 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4 }}
+              >
                 <p style={{ color: BUILDER_COLORS[builderActive], fontSize: 16, fontWeight: 700, marginBottom: 12 }}>
                   {BUILDER_LABELS[builderActive]}
                 </p>
                 <div style={{ display: "flex", flexWrap: "wrap", gap: 10, justifyContent: "center" }}>
                   {BUILDER_OPTIONS[builderActive].map((opt: string, i: number) => (
-                    <button key={i} onClick={() => {
-                      const newSlots: [number, number, number, number] = [...builderSlots];
-                      newSlots[builderActive] = i;
-                      setBuilderSlots(newSlots);
-                      playSound("/sounds/correct.mp3");
-                      if (builderActive === 3) {
-                        addCoins(25);
-                        setTimeout(() => { setBuilderPowerUp(true); playSound("/sounds/coin.mp3"); }, 100);
-                      }
-                      setBuilderActive((a) => a + 1);
-                    }} style={{
-                      background: "rgba(255,255,255,0.04)", border: `2px solid ${BUILDER_COLORS[builderActive]}`,
-                      borderRadius: 12, padding: "12px 18px", color: BUILDER_COLORS[builderActive],
-                      fontSize: 18, fontWeight: 700, cursor: "pointer", minWidth: 48, minHeight: 48,
-                      transition: `transform 0.2s ${SPRING}`,
-                    }}
-                      onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.transform = "scale(1.1)"; }}
-                      onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.transform = "scale(1)"; }}
+                    <motion.button
+                      key={i}
+                      onClick={() => {
+                        const newSlots: [number, number, number, number] = [...builderSlots];
+                        newSlots[builderActive] = i;
+                        setBuilderSlots(newSlots);
+                        playSound("/sounds/correct.mp3");
+                        if (builderActive === 3) {
+                          addCoins(25);
+                          setTimeout(() => { setBuilderPowerUp(true); playSound("/sounds/coin.mp3"); }, 100);
+                        }
+                        setBuilderActive((a) => a + 1);
+                      }}
+                      whileHover={{ scale: 1.1 }}
+                      whileTap={{ scale: 0.95 }}
+                      style={{
+                        background: "rgba(255,255,255,0.04)", border: `2px solid ${BUILDER_COLORS[builderActive]}`,
+                        borderRadius: 12, padding: "12px 18px", color: BUILDER_COLORS[builderActive],
+                        fontSize: 18, fontWeight: 700, cursor: "pointer", minWidth: 48, minHeight: 48,
+                      }}
                     >
                       {opt}
-                    </button>
+                    </motion.button>
                   ))}
                 </div>
-              </div>
+              </motion.div>
             ) : (
-              <div style={{ animation: "popIn 0.5s ease" }}>
+              <motion.div
+                initial={{ opacity: 0, scale: 0.5 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ type: "spring", stiffness: 300, damping: 20 }}
+              >
                 <p style={{ color: "#10b981", fontSize: 20, fontWeight: 700, marginBottom: 8 }}>🎉 Password built!</p>
                 <p style={{ color: "#d1d5db", marginBottom: 16 }}>Your password: <strong style={{ color: "#f59e0b" }}>{builtPw}</strong></p>
                 {btn("Now spot the good ones! →", () => navigate(8))}
-              </div>
+              </motion.div>
             )}
           </div>
         );
@@ -1709,7 +1795,12 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
         if (swipeIdx >= SWIPE_DATA.length) {
           const s = swipeScore >= 5 ? 3 : swipeScore >= 3 ? 2 : 1;
           return (
-            <div style={{ textAlign: "center", animation: "popIn 0.5s ease" }}>
+            <motion.div
+              initial={{ opacity: 0, scale: 0.5 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ type: "spring", stiffness: 300, damping: 20 }}
+              style={{ textAlign: "center" }}
+            >
               {card(
                 <>
                   <h2 style={{ color: "#fff", fontSize: 24, margin: "0 0 12px" }}>Round Complete!</h2>
@@ -1719,13 +1810,10 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                   {btn("Now sort them all! →", () => navigate(9))}
                 </>
               )}
-            </div>
+            </motion.div>
           );
         }
         const sw = SWIPE_DATA[swipeIdx];
-        const absDelta = Math.abs(swipeDelta);
-        const indicatorOpacity = Math.min(1, absDelta / 100);
-        const rotation = swipeDelta * 0.1;
 
         const handleSwipeEnd = (isStrong: boolean) => {
           const correct = isStrong === sw.isStrong;
@@ -1738,7 +1826,6 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
             setTimeout(() => playSound("/sounds/coin.mp3"), 500);
           } else {
             setSwipeFeedback("wrong");
-            setSwipeDelta(0);
             playSound("/sounds/wrong.mp3");
           }
         };
@@ -1746,7 +1833,6 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
         const advanceSwipe = () => {
           setSwipeFlyDir(null);
           setSwipeFeedback(null);
-          setSwipeDelta(0);
           setSwipeIdx((i) => i + 1);
         };
 
@@ -1757,88 +1843,87 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
 
             {/* Weak/Strong indicators */}
             <div style={{ display: "flex", justifyContent: "space-between", padding: "0 20px", marginBottom: 12 }}>
-              <span style={{ color: "#ef4444", fontSize: 24, fontWeight: 900, opacity: swipeDelta < 0 ? indicatorOpacity : 0, transition: "opacity 0.1s" }}>WEAK</span>
-              <span style={{ color: "#10b981", fontSize: 24, fontWeight: 900, opacity: swipeDelta > 0 ? indicatorOpacity : 0, transition: "opacity 0.1s" }}>STRONG</span>
+              <span style={{ color: "#ef4444", fontSize: 24, fontWeight: 900, opacity: swipeFeedback === "wrong" || swipeFlyDir === "left" ? 1 : 0, transition: "opacity 0.1s" }}>WEAK</span>
+              <span style={{ color: "#10b981", fontSize: 24, fontWeight: 900, opacity: swipeFlyDir === "right" ? 1 : 0, transition: "opacity 0.1s" }}>STRONG</span>
             </div>
 
             {/* Swipeable card */}
-            <div
-              key={`swipe-${swipeIdx}`}
-              onPointerDown={(e) => {
-                if (swipeFlyDir) return;
-                e.preventDefault();
-                swipeStartX.current = e.clientX;
-                setSwipeSwiping(true);
-              }}
-              onPointerMove={(e) => {
-                if (!swipeSwiping || swipeFlyDir) return;
-                setSwipeDelta(e.clientX - swipeStartX.current);
-              }}
-              onPointerUp={() => {
-                if (!swipeSwiping || swipeFlyDir) return;
-                setSwipeSwiping(false);
-                if (Math.abs(swipeDelta) > 100) {
-                  handleSwipeEnd(swipeDelta > 0);
-                } else {
-                  setSwipeDelta(0);
-                }
-              }}
-              style={{
-                touchAction: "none", cursor: "grab", userSelect: "none",
-                animation: swipeFeedback === "wrong" ? "shake 0.5s ease" :
-                  swipeFlyDir === "left" ? "none" : swipeFlyDir === "right" ? "none" :
-                  "slideFromBelow 0.5s ease",
-                transform: swipeFlyDir === "left" ? "translateX(-150vw) rotate(-30deg)"
-                  : swipeFlyDir === "right" ? "translateX(150vw) rotate(30deg)"
-                  : `translateX(${swipeDelta}px) rotate(${rotation}deg)`,
-                transition: swipeSwiping ? "none" : swipeFlyDir ? "transform 0.5s ease" : "transform 0.3s ease",
-              }}
-            >
-              {card(
-                <p style={{ color: "#f59e0b", fontFamily: "monospace", fontSize: 24, fontWeight: 900, margin: 0 }}>{sw.pw}</p>,
-                {
-                  maxWidth: 400, margin: "0 auto 24px",
-                  border: `2px solid ${absDelta > 50 ? (swipeDelta > 0 ? "#10b981" : "#ef4444") : "rgba(255,255,255,0.1)"}`,
-                  background: absDelta > 50 ? (swipeDelta > 0 ? "rgba(16,185,129,0.05)" : "rgba(239,68,68,0.05)") : "rgba(255,255,255,0.04)",
-                }
+            <AnimatePresence mode="wait">
+              {!swipeFlyDir && (
+                <SwipeCard
+                  key={`swipe-${swipeIdx}`}
+                  pw={sw.pw}
+                  onSwipeEnd={handleSwipeEnd}
+                />
               )}
-            </div>
+            </AnimatePresence>
+
+            {swipeFlyDir && (
+              <motion.div
+                initial={{ opacity: 1, x: 0 }}
+                animate={{ opacity: 0, x: swipeFlyDir === "left" ? -500 : 500, rotate: swipeFlyDir === "left" ? -30 : 30 }}
+                transition={{ duration: 0.5, ease: "easeOut" }}
+              >
+                {card(
+                  <p style={{ color: "#f59e0b", fontFamily: "monospace", fontSize: 24, fontWeight: 900, margin: 0 }}>{sw.pw}</p>,
+                  { maxWidth: 400, margin: "0 auto 24px" }
+                )}
+              </motion.div>
+            )}
 
             {/* Fallback buttons */}
             {!swipeFlyDir && !swipeFeedback && (
               <div style={{ display: "flex", gap: 16, justifyContent: "center" }}>
-                <button onClick={() => handleSwipeEnd(false)} style={{
-                  background: "rgba(239,68,68,0.1)", border: "2px solid #ef4444", borderRadius: 16,
-                  padding: "16px 28px", color: "#ef4444", fontSize: 18, fontWeight: 700, cursor: "pointer", minHeight: 60,
-                }}>
+                <motion.button
+                  onClick={() => handleSwipeEnd(false)}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  style={{
+                    background: "rgba(239,68,68,0.1)", border: "2px solid #ef4444", borderRadius: 16,
+                    padding: "16px 28px", color: "#ef4444", fontSize: 18, fontWeight: 700, cursor: "pointer", minHeight: 60,
+                  }}
+                >
                   Weak 👎
-                </button>
-                <button onClick={() => handleSwipeEnd(true)} style={{
-                  background: "rgba(16,185,129,0.1)", border: "2px solid #10b981", borderRadius: 16,
-                  padding: "16px 28px", color: "#10b981", fontSize: 18, fontWeight: 700, cursor: "pointer", minHeight: 60,
-                }}>
+                </motion.button>
+                <motion.button
+                  onClick={() => handleSwipeEnd(true)}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  style={{
+                    background: "rgba(16,185,129,0.1)", border: "2px solid #10b981", borderRadius: 16,
+                    padding: "16px 28px", color: "#10b981", fontSize: 18, fontWeight: 700, cursor: "pointer", minHeight: 60,
+                  }}
+                >
                   Strong 💪
-                </button>
+                </motion.button>
               </div>
             )}
 
             {swipeFeedback === "correct" && swipeFlyDir && (
-              <div style={{ animation: "slideUp 0.3s ease", marginTop: 8 }}>
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                style={{ marginTop: 8 }}
+              >
                 <p style={{ color: "#10b981", fontSize: 20, fontWeight: 700 }}>🎉 Correct!</p>
                 <p style={{ color: "#e5e7eb", fontSize: 16, lineHeight: 1.5 }}>{sw.why}</p>
                 <div style={{ marginTop: 12 }}>
                   {btn("Next Card →", advanceSwipe)}
                 </div>
-              </div>
+              </motion.div>
             )}
             {swipeFeedback === "wrong" && !swipeFlyDir && (
-              <div style={{ animation: "slideUp 0.3s ease", marginTop: 8 }}>
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                style={{ marginTop: 8 }}
+              >
                 <p style={{ color: "#ef4444", fontSize: 20, fontWeight: 700 }}>❌ Not quite!</p>
                 <p style={{ color: "#e5e7eb", fontSize: 16, lineHeight: 1.5 }}>{sw.why}</p>
                 <div style={{ marginTop: 12 }}>
-                  {btn("Next Card →", () => { setSwipeFeedback(null); setSwipeDelta(0); })}
+                  {btn("Next Card →", () => { setSwipeFeedback(null); })}
                 </div>
-              </div>
+              </motion.div>
             )}
           </div>
         );
@@ -1848,7 +1933,12 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
       case 9: {
         if (dragDone) {
           return (
-            <div style={{ textAlign: "center", animation: "popIn 0.5s ease" }}>
+            <motion.div
+              initial={{ opacity: 0, scale: 0.5 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ type: "spring", stiffness: 300, damping: 20 }}
+              style={{ textAlign: "center" }}
+            >
               {card(
                 <>
                   <h2 style={{ color: "#fff", fontSize: 24, margin: "0 0 12px" }}>Sorting Complete!</h2>
@@ -1858,7 +1948,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                   {btn("Learn the golden rules! →", () => navigate(10))}
                 </>
               )}
-            </div>
+            </motion.div>
           );
         }
         return (
@@ -1872,35 +1962,51 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
             </div>
             {/* Buckets */}
             <div style={{ display: "flex", gap: 16, justifyContent: "center", marginBottom: 24 }}>
-              <div ref={strongRef} style={{
-                flex: 1, maxWidth: 220, minHeight: 120, borderRadius: 20,
-                border: "3px dashed #10b981", background: "rgba(16,185,129,0.05)",
-                display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: 12,
-                animation: dragFlash === "strong" ? "greenFlash 0.5s ease" : undefined,
-              }}>
+              <motion.div
+                ref={strongRef}
+                animate={dragFlash === "strong" ? {
+                  boxShadow: ["0 0 0 rgba(16,185,129,0)", "0 0 20px rgba(16,185,129,0.5)", "0 0 0 rgba(16,185,129,0)"],
+                } : {}}
+                transition={{ duration: 0.5 }}
+                style={{
+                  flex: 1, maxWidth: 220, minHeight: 120, borderRadius: 20,
+                  border: "3px dashed #10b981", background: "rgba(16,185,129,0.05)",
+                  display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: 12,
+                }}
+              >
                 <span style={{ fontSize: 28 }}>💪</span>
                 <span style={{ color: "#10b981", fontWeight: 700 }}>Strong</span>
                 {PASSWORDS_8.filter((p) => p.isStrong && placed.has(p.id)).map((p) => (
                   <span key={p.id} style={{ color: p.color, fontSize: 11, fontFamily: "monospace" }}>{p.text}</span>
                 ))}
-              </div>
-              <div ref={weakRef} style={{
-                flex: 1, maxWidth: 220, minHeight: 120, borderRadius: 20,
-                border: "3px dashed #ef4444", background: "rgba(239,68,68,0.05)",
-                display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: 12,
-                animation: dragFlash === "weak" ? "greenFlash 0.5s ease" : undefined,
-              }}>
+              </motion.div>
+              <motion.div
+                ref={weakRef}
+                animate={dragFlash === "weak" ? {
+                  boxShadow: ["0 0 0 rgba(16,185,129,0)", "0 0 20px rgba(16,185,129,0.5)", "0 0 0 rgba(16,185,129,0)"],
+                } : {}}
+                transition={{ duration: 0.5 }}
+                style={{
+                  flex: 1, maxWidth: 220, minHeight: 120, borderRadius: 20,
+                  border: "3px dashed #ef4444", background: "rgba(239,68,68,0.05)",
+                  display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: 12,
+                }}
+              >
                 <span style={{ fontSize: 28 }}>👎</span>
                 <span style={{ color: "#ef4444", fontWeight: 700 }}>Weak</span>
                 {PASSWORDS_8.filter((p) => !p.isStrong && placed.has(p.id)).map((p) => (
                   <span key={p.id} style={{ color: p.color, fontSize: 11, fontFamily: "monospace" }}>{p.text}</span>
                 ))}
-              </div>
+              </motion.div>
             </div>
             {/* Cards */}
             <div style={{ display: "flex", flexWrap: "wrap", gap: 10, justifyContent: "center" }}>
               {PASSWORDS_8.filter((p) => !placed.has(p.id)).map((p) => (
-                <div key={p.id}
+                <motion.div
+                  key={p.id}
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: dragging === p.id ? 0.3 : 1, y: 0 }}
+                  whileHover={{ scale: 1.05 }}
                   onPointerDown={(e) => {
                     e.preventDefault();
                     if (!dragStarted) setDragStarted(true);
@@ -1915,14 +2021,12 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                     background: p.bg, border: `2px solid ${p.border}`, borderRadius: 12, padding: "10px 16px",
                     color: p.color, fontFamily: "monospace", fontWeight: 700, fontSize: 14, cursor: "grab",
                     touchAction: "none", minHeight: 48, display: "flex", alignItems: "center",
-                    opacity: dragging === p.id ? 0.3 : 1,
                   }}
                 >
                   {p.text}
-                </div>
+                </motion.div>
               ))}
             </div>
-            {/* Drag ghost rendered at root level below */}
           </div>
         );
       }
@@ -1941,7 +2045,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                   <div key={i}>
                     {!isRevealed ? (
                       /* Mystery card */
-                      <div
+                      <motion.div
                         onClick={() => {
                           if (isFlipping) return;
                           setFlippingRule(i);
@@ -1950,98 +2054,123 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                             setFlippingRule(null);
                           }, 600);
                         }}
+                        animate={isFlipping ? { rotateY: [0, 90, 0] } : { rotate: [0, -1.5, 0, 1.5, 0] }}
+                        transition={isFlipping ? { duration: 0.6 } : { duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
                         style={{
                           borderRadius: 24, padding: 24, cursor: "pointer",
                           background: "linear-gradient(135deg, #f59e0b, #fbbf24, #f59e0b)",
                           backgroundSize: "200% 100%",
                           border: "2px solid rgba(245,158,11,0.5)",
                           position: "relative", overflow: "hidden",
-                          animation: isFlipping
-                            ? "cardFlip 0.6s ease"
-                            : "wobble 3s ease-in-out infinite",
                           minHeight: 80,
                           display: "flex", alignItems: "center", justifyContent: "center",
-                        }}>
-                        {/* Shimmer overlay */}
-                        <div style={{
-                          position: "absolute", inset: 0, pointerEvents: "none",
-                          background: "linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.25) 50%, transparent 70%)",
-                          backgroundSize: "200% 100%",
-                          animation: "shimmer 3s linear infinite",
-                        }} />
+                        }}
+                      >
                         <span style={{ fontSize: 18, fontWeight: 900, color: "#1a1033", position: "relative", zIndex: 1 }}>
                           Tap to reveal Rule {i + 1}! ✨
                         </span>
-                      </div>
+                      </motion.div>
                     ) : (
                       /* Revealed card */
-                      card(
-                        <>
-                          <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-                            <span style={{ fontSize: 28 }}>{rule.icon}</span>
-                            <span style={{ color: "#fff", fontWeight: 700, fontSize: 16, flex: 1, textAlign: "left" }}>{rule.title}</span>
-                            {isDone && <span style={{ color: "#f59e0b", fontSize: 22, animation: "tickIn 0.5s ease" }}>✅</span>}
-                          </div>
-                          {!isDone && (
-                            <div style={{ marginTop: 12, animation: "slideUp 0.3s ease" }}>
-                              <p style={{ color: "#d1d5db", fontSize: 14, textAlign: "left" }}>{rule.desc}</p>
-                              <p style={{ color: "#f59e0b", fontWeight: 700, fontSize: 14, marginBottom: 8 }}>{rule.question}</p>
-                              <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-                                {rule.opts.map((opt: string, oi: number) => (
-                                  <button key={oi} onClick={() => {
-                                    setRuleAnswers((prev) => ({ ...prev, [i]: oi }));
-                                    if (oi === rule.correct) {
-                                      setAnsweredRules((prev) => { const n = new Set(prev); n.add(i); return n; });
-                                      playSound("/sounds/correct.mp3");
-                                      addCoins(5);
-                                      setTimeout(() => playSound("/sounds/coin.mp3"), 500);
-                                    } else {
-                                      playSound("/sounds/wrong.mp3");
-                                    }
-                                  }} style={{
-                                    background: ruleAnswers[i] === oi
-                                      ? oi === rule.correct ? "rgba(16,185,129,0.2)" : "rgba(239,68,68,0.2)"
-                                      : "rgba(255,255,255,0.12)",
-                                    border: `2px solid ${ruleAnswers[i] === oi
-                                      ? oi === rule.correct ? "#10b981" : "#ef4444"
-                                      : "rgba(255,255,255,0.35)"}`,
-                                    borderRadius: 12, padding: "16px 24px",
-                                    color: ruleAnswers[i] === oi
-                                      ? oi === rule.correct ? "#10b981" : "#ef4444"
-                                      : "#ffffff",
-                                    fontSize: 16, fontWeight: 800, cursor: "pointer", minHeight: 56, flex: 1,
-                                    animation: ruleAnswers[i] === oi && oi !== rule.correct ? "shake 0.5s ease" : undefined,
-                                    opacity: ruleAnswers[i] !== null && ruleAnswers[i] !== oi && ruleAnswers[i] !== rule.correct ? 0.4 : 1,
-                                  }}>
-                                    {opt}
-                                  </button>
-                                ))}
-                              </div>
+                      <motion.div
+                        initial={{ opacity: 0, y: 30 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.4 }}
+                      >
+                        {card(
+                          <>
+                            <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                              <span style={{ fontSize: 28 }}>{rule.icon}</span>
+                              <span style={{ color: "#fff", fontWeight: 700, fontSize: 16, flex: 1, textAlign: "left" }}>{rule.title}</span>
+                              {isDone && (
+                                <motion.span
+                                  initial={{ opacity: 0, scale: 0, rotate: -45 }}
+                                  animate={{ opacity: 1, scale: 1, rotate: 0 }}
+                                  transition={{ type: "spring", stiffness: 300, damping: 15 }}
+                                  style={{ color: "#f59e0b", fontSize: 22 }}
+                                >
+                                  ✅
+                                </motion.span>
+                              )}
                             </div>
-                          )}
-                          {isDone && (
-                            <p style={{ color: "#10b981", fontSize: 13, marginTop: 8, textAlign: "left" }}>{rule.desc}</p>
-                          )}
-                        </>,
-                        {
-                          borderLeft: isDone ? "4px solid #f59e0b" : "4px solid rgba(245,158,11,0.3)",
-                          border: isDone ? "2px solid #f59e0b" : "1px solid rgba(255,255,255,0.1)",
-                          animation: "slideUp 0.4s ease",
-                        }
-                      )
+                            {!isDone && (
+                              <motion.div
+                                initial={{ opacity: 0, y: 30 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                style={{ marginTop: 12 }}
+                              >
+                                <p style={{ color: "#d1d5db", fontSize: 14, textAlign: "left" }}>{rule.desc}</p>
+                                <p style={{ color: "#f59e0b", fontWeight: 700, fontSize: 14, marginBottom: 8 }}>{rule.question}</p>
+                                <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+                                  {rule.opts.map((opt: string, oi: number) => (
+                                    <motion.button
+                                      key={oi}
+                                      onClick={() => {
+                                        setRuleAnswers((prev) => ({ ...prev, [i]: oi }));
+                                        if (oi === rule.correct) {
+                                          setAnsweredRules((prev) => { const n = new Set(prev); n.add(i); return n; });
+                                          playSound("/sounds/correct.mp3");
+                                          addCoins(5);
+                                          setTimeout(() => playSound("/sounds/coin.mp3"), 500);
+                                        } else {
+                                          playSound("/sounds/wrong.mp3");
+                                        }
+                                      }}
+                                      animate={ruleAnswers[i] === oi && oi !== rule.correct ? shakeAnimation : {}}
+                                      whileHover={{ scale: 1.05 }}
+                                      whileTap={{ scale: 0.95 }}
+                                      style={{
+                                        background: ruleAnswers[i] === oi
+                                          ? oi === rule.correct ? "rgba(16,185,129,0.2)" : "rgba(239,68,68,0.2)"
+                                          : "rgba(255,255,255,0.12)",
+                                        border: `2px solid ${ruleAnswers[i] === oi
+                                          ? oi === rule.correct ? "#10b981" : "#ef4444"
+                                          : "rgba(255,255,255,0.35)"}`,
+                                        borderRadius: 12, padding: "16px 24px",
+                                        color: ruleAnswers[i] === oi
+                                          ? oi === rule.correct ? "#10b981" : "#ef4444"
+                                          : "#ffffff",
+                                        fontSize: 16, fontWeight: 800, cursor: "pointer", minHeight: 56, flex: 1,
+                                        opacity: ruleAnswers[i] !== null && ruleAnswers[i] !== undefined && ruleAnswers[i] !== oi && ruleAnswers[i] !== rule.correct ? 0.4 : 1,
+                                      }}
+                                    >
+                                      {opt}
+                                    </motion.button>
+                                  ))}
+                                </div>
+                              </motion.div>
+                            )}
+                            {isDone && (
+                              <p style={{ color: "#10b981", fontSize: 13, marginTop: 8, textAlign: "left" }}>{rule.desc}</p>
+                            )}
+                          </>,
+                          {
+                            borderLeft: isDone ? "4px solid #f59e0b" : "4px solid rgba(245,158,11,0.3)",
+                            border: isDone ? "2px solid #f59e0b" : "1px solid rgba(255,255,255,0.1)",
+                          }
+                        )}
+                      </motion.div>
                     )}
                   </div>
                 );
               })}
             </div>
-            {answeredRules.size === 5 && (
-              <div style={{ animation: "popIn 0.5s ease" }}>
-                <p style={{ color: "#f59e0b", fontSize: 20, fontWeight: 700, marginBottom: 12 }}>
-                  You know ALL 5 golden rules! ⭐⭐⭐⭐⭐
-                </p>
-                {btn("Continue →", () => { addCoins(25); navigate(11); })}
-              </div>
-            )}
+            <AnimatePresence>
+              {answeredRules.size === 5 && (
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.5 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                >
+                  <p style={{ color: "#f59e0b", fontSize: 20, fontWeight: 700, marginBottom: 12 }}>
+                    You know ALL 5 golden rules! ⭐⭐⭐⭐⭐
+                  </p>
+                  {btn("Continue →", () => { addCoins(25); navigate(11); })}
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
         );
 
@@ -2050,7 +2179,12 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
         if (q3Idx >= Q3_QUIZ.length) {
           const s = q3Score >= 4 ? 3 : q3Score >= 3 ? 2 : 1;
           return (
-            <div style={{ textAlign: "center", animation: "popIn 0.5s ease" }}>
+            <motion.div
+              initial={{ opacity: 0, scale: 0.5 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ type: "spring", stiffness: 300, damping: 20 }}
+              style={{ textAlign: "center" }}
+            >
               {card(
                 <>
                   <h2 style={{ color: "#fff", fontSize: 24, margin: "0 0 12px" }}>Quiz Complete!</h2>
@@ -2060,12 +2194,17 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                   {btn("Next lesson! →", () => navigate(12))}
                 </>
               )}
-            </div>
+            </motion.div>
           );
         }
         const qq = Q3_QUIZ[q3Idx];
         return (
-          <div key={`q3-${q3Idx}`} style={{ animation: "slideFromBelow 0.5s ease" }}>
+          <motion.div
+            key={`q3-${q3Idx}`}
+            initial={{ opacity: 0, y: 60 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
             <h1 style={{ color: "#fff", fontSize: 24, fontWeight: 900, marginBottom: 4, textAlign: "center" }}>Quick Quiz!<img src="/characters/adam-layla-happy.png" width={40} height={40} alt="" style={{ display: "inline-block", verticalAlign: "middle", marginLeft: 8, borderRadius: 999 }} /></h1>
             <p style={{ color: "#9ca3af", marginBottom: 12, textAlign: "center" }}>Question {q3Idx + 1}/{Q3_QUIZ.length}</p>
             <FloatingBubbleQuiz
@@ -2081,7 +2220,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
               }}
               onWrong={() => {}}
             />
-          </div>
+          </motion.div>
         );
       }
 
@@ -2090,7 +2229,12 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
         if (phishIdx >= PHISH.length) {
           const s = phishScore >= 3 ? 3 : phishScore >= 2 ? 2 : 1;
           return (
-            <div style={{ textAlign: "center", animation: "popIn 0.5s ease" }}>
+            <motion.div
+              initial={{ opacity: 0, scale: 0.5 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ type: "spring", stiffness: 300, damping: 20 }}
+              style={{ textAlign: "center" }}
+            >
               {card(
                 <>
                   <h2 style={{ color: "#fff", fontSize: 24, margin: "0 0 12px" }}>Phishing Expert!</h2>
@@ -2100,7 +2244,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                   {btn("Real life scenarios! →", () => navigate(13))}
                 </>
               )}
-            </div>
+            </motion.div>
           );
         }
         const ph = PHISH[phishIdx];
@@ -2123,67 +2267,101 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
               }} />
 
               {/* Notification message */}
-              <div key={`phish-${phishIdx}`} style={{
-                background: "rgba(255,255,255,0.06)", borderRadius: 16, padding: 16,
-                border: "1px solid rgba(255,255,255,0.1)",
-                animation: phishExiting ? "notifSlideOut 0.4s ease forwards" : "notifSlideIn 0.5s ease",
-                position: "relative",
-              }}>
-                <h3 style={{ color: "#fff", fontSize: 16, margin: "0 0 8px", textAlign: "left" }}>{ph.title}</h3>
-                <p style={{ color: "#d1d5db", margin: 0, fontSize: 14, textAlign: "left" }}>{ph.text}</p>
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={`phish-${phishIdx}`}
+                  initial={{ opacity: 0, y: -40 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -40 }}
+                  transition={{ duration: 0.5 }}
+                  style={{
+                    background: "rgba(255,255,255,0.06)", borderRadius: 16, padding: 16,
+                    border: "1px solid rgba(255,255,255,0.1)",
+                    position: "relative",
+                  }}
+                >
+                  <h3 style={{ color: "#fff", fontSize: 16, margin: "0 0 8px", textAlign: "left" }}>{ph.title}</h3>
+                  <p style={{ color: "#d1d5db", margin: 0, fontSize: 14, textAlign: "left" }}>{ph.text}</p>
 
-                {/* Scam stamp */}
-                {phishStamped && ph.isScam && (
-                  <div style={{
-                    position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)",
-                    color: "#ef4444", fontSize: 20, fontWeight: 900, border: "3px solid #ef4444",
-                    borderRadius: 8, padding: "4px 12px",
-                    animation: "stampSlam 0.5s ease", background: "rgba(239,68,68,0.15)",
-                  }}>
-                    SCAM BLOCKED
-                  </div>
-                )}
+                  {/* Scam stamp */}
+                  {phishStamped && ph.isScam && (
+                    <motion.div
+                      initial={{ opacity: 0, scale: 3, rotate: -20 }}
+                      animate={{ opacity: 1, scale: 1, rotate: -5 }}
+                      transition={{ type: "spring", stiffness: 300, damping: 15 }}
+                      style={{
+                        position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)",
+                        color: "#ef4444", fontSize: 20, fontWeight: 900, border: "3px solid #ef4444",
+                        borderRadius: 8, padding: "4px 12px",
+                        background: "rgba(239,68,68,0.15)",
+                      }}
+                    >
+                      SCAM BLOCKED
+                    </motion.div>
+                  )}
 
-                {/* Safe checkmark */}
-                {phishStamped && !ph.isScam && (
-                  <div style={{
-                    position: "absolute", top: 8, right: 8,
-                    color: "#10b981", fontSize: 28, animation: "tickIn 0.5s ease",
-                  }}>✅</div>
-                )}
-              </div>
+                  {/* Safe checkmark */}
+                  {phishStamped && !ph.isScam && (
+                    <motion.div
+                      initial={{ opacity: 0, scale: 0, rotate: -45 }}
+                      animate={{ opacity: 1, scale: 1, rotate: 0 }}
+                      transition={{ type: "spring", stiffness: 300, damping: 15 }}
+                      style={{
+                        position: "absolute", top: 8, right: 8,
+                        color: "#10b981", fontSize: 28,
+                      }}
+                    >
+                      ✅
+                    </motion.div>
+                  )}
+                </motion.div>
+              </AnimatePresence>
             </div>
 
             {/* Answer buttons */}
             {phishAnswer === null ? (
               <div style={{ display: "flex", gap: 16, justifyContent: "center" }}>
-                <button onClick={() => {
-                  const correct = ph.isScam;
-                  setPhishAnswer(correct);
-                  if (correct) { setPhishScore((s) => s + 1); addCoins(15); playSound("/sounds/correct.mp3"); setTimeout(() => playSound("/sounds/coin.mp3"), 500); }
-                  else { playSound("/sounds/wrong.mp3"); }
-                  setPhishStamped(true);
-                }} style={{
-                  background: "rgba(239,68,68,0.1)", border: "3px solid #ef4444", borderRadius: 20,
-                  padding: "16px 24px", color: "#ef4444", fontSize: 18, fontWeight: 700, cursor: "pointer", minHeight: 60,
-                }}>
-                  🚨 It's a SCAM!
-                </button>
-                <button onClick={() => {
-                  const correct = !ph.isScam;
-                  setPhishAnswer(correct);
-                  if (correct) { setPhishScore((s) => s + 1); addCoins(15); playSound("/sounds/correct.mp3"); setTimeout(() => playSound("/sounds/coin.mp3"), 500); }
-                  else { playSound("/sounds/wrong.mp3"); }
-                  setPhishStamped(true);
-                }} style={{
-                  background: "rgba(16,185,129,0.1)", border: "3px solid #10b981", borderRadius: 20,
-                  padding: "16px 24px", color: "#10b981", fontSize: 18, fontWeight: 700, cursor: "pointer", minHeight: 60,
-                }}>
-                  ✅ It's SAFE!
-                </button>
+                <motion.button
+                  onClick={() => {
+                    const correct = ph.isScam;
+                    setPhishAnswer(correct);
+                    if (correct) { setPhishScore((s) => s + 1); addCoins(15); playSound("/sounds/correct.mp3"); setTimeout(() => playSound("/sounds/coin.mp3"), 500); }
+                    else { playSound("/sounds/wrong.mp3"); }
+                    setPhishStamped(true);
+                  }}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  style={{
+                    background: "rgba(239,68,68,0.1)", border: "3px solid #ef4444", borderRadius: 20,
+                    padding: "16px 24px", color: "#ef4444", fontSize: 18, fontWeight: 700, cursor: "pointer", minHeight: 60,
+                  }}
+                >
+                  🚨 It&apos;s a SCAM!
+                </motion.button>
+                <motion.button
+                  onClick={() => {
+                    const correct = !ph.isScam;
+                    setPhishAnswer(correct);
+                    if (correct) { setPhishScore((s) => s + 1); addCoins(15); playSound("/sounds/correct.mp3"); setTimeout(() => playSound("/sounds/coin.mp3"), 500); }
+                    else { playSound("/sounds/wrong.mp3"); }
+                    setPhishStamped(true);
+                  }}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  style={{
+                    background: "rgba(16,185,129,0.1)", border: "3px solid #10b981", borderRadius: 20,
+                    padding: "16px 24px", color: "#10b981", fontSize: 18, fontWeight: 700, cursor: "pointer", minHeight: 60,
+                  }}
+                >
+                  ✅ It&apos;s SAFE!
+                </motion.button>
               </div>
             ) : (
-              <div style={{ animation: "slideUp 0.3s ease", marginTop: 8 }}>
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                style={{ marginTop: 8 }}
+              >
                 <p style={{ color: phishAnswer ? "#10b981" : "#ef4444", fontSize: 20, fontWeight: 700 }}>
                   {phishAnswer ? "🎉 Correct!" : "❌ Not quite!"}
                 </p>
@@ -2199,7 +2377,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                     }, 500);
                   })}
                 </div>
-              </div>
+              </motion.div>
             )}
           </div>
         );
@@ -2210,7 +2388,12 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
         if (wydIdx >= WYD.length) {
           const s = wydScore >= 3 ? 3 : wydScore >= 2 ? 2 : 1;
           return (
-            <div style={{ textAlign: "center", animation: "popIn 0.5s ease" }}>
+            <motion.div
+              initial={{ opacity: 0, scale: 0.5 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ type: "spring", stiffness: 300, damping: 20 }}
+              style={{ textAlign: "center" }}
+            >
               {card(
                 <>
                   <h2 style={{ color: "#fff", fontSize: 24, margin: "0 0 12px" }}>Great decisions!</h2>
@@ -2220,7 +2403,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                   {btn("Face the Raccoon! →", () => navigate(14))}
                 </>
               )}
-            </div>
+            </motion.div>
           );
         }
         const w = WYD[wydIdx];
@@ -2228,10 +2411,21 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
           <div style={{ textAlign: "center" }}>
             <h1 style={{ color: "#fff", fontSize: 24, fontWeight: 900, marginBottom: 8 }}>What Would YOU Do?</h1>
             <p style={{ color: "#9ca3af", marginBottom: 16 }}>Scenario {wydIdx + 1}/{WYD.length}</p>
-            <div key={`wyd-${wydIdx}`} style={{ animation: "slideInR 0.4s ease" }}>
+            <motion.div
+              key={`wyd-${wydIdx}`}
+              initial={{ opacity: 0, x: 60 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.4 }}
+            >
               <div style={{ display: "flex", alignItems: "flex-start", gap: 12, maxWidth: 500, margin: "0 auto 16px" }}>
                 {/* Character */}
-                <div style={{ fontSize: 48, animation: "bobble 2s ease infinite", flexShrink: 0 }}>{w.emoji}</div>
+                <motion.div
+                  animate={{ y: [0, -6, 0] }}
+                  transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                  style={{ fontSize: 48, flexShrink: 0 }}
+                >
+                  {w.emoji}
+                </motion.div>
                 {/* Speech bubble */}
                 <div style={{
                   position: "relative", background: "rgba(255,255,255,0.06)",
@@ -2261,24 +2455,35 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                   if (answered && isCorrect) { bg = "rgba(16,185,129,0.15)"; border = "#10b981"; }
                   if (selected && !isCorrect) { bg = "rgba(245,158,11,0.15)"; border = "#f59e0b"; }
                   return (
-                    <button key={i} onClick={() => {
-                      if (wydSel !== null) return;
-                      setWydSel(i);
-                      if (i === w.correct) { setWydScore((s) => s + 1); addCoins(15); playSound("/sounds/correct.mp3"); setTimeout(() => playSound("/sounds/coin.mp3"), 500); }
-                      else { playSound("/sounds/wrong.mp3"); }
-                    }} disabled={answered} style={{
-                      background: bg, border: `2px solid ${border}`, borderRadius: 16, padding: "14px 18px",
-                      color: answered && isCorrect ? "#10b981" : selected && !isCorrect ? "#f59e0b" : c.color,
-                      fontSize: 15, fontWeight: 700, cursor: answered ? "default" : "pointer", textAlign: "left",
-                      minHeight: 60, transition: "all 0.3s ease",
-                    }}>
+                    <motion.button
+                      key={i}
+                      onClick={() => {
+                        if (wydSel !== null) return;
+                        setWydSel(i);
+                        if (i === w.correct) { setWydScore((s) => s + 1); addCoins(15); playSound("/sounds/correct.mp3"); setTimeout(() => playSound("/sounds/coin.mp3"), 500); }
+                        else { playSound("/sounds/wrong.mp3"); }
+                      }}
+                      disabled={answered}
+                      whileHover={!answered ? { scale: 1.02 } : {}}
+                      whileTap={!answered ? { scale: 0.98 } : {}}
+                      style={{
+                        background: bg, border: `2px solid ${border}`, borderRadius: 16, padding: "14px 18px",
+                        color: answered && isCorrect ? "#10b981" : selected && !isCorrect ? "#f59e0b" : c.color,
+                        fontSize: 15, fontWeight: 700, cursor: answered ? "default" : "pointer", textAlign: "left",
+                        minHeight: 60, transition: "all 0.3s ease",
+                      }}
+                    >
                       {opt}
-                    </button>
+                    </motion.button>
                   );
                 })}
               </div>
               {wydSel !== null && (
-                <div style={{ marginTop: 12, animation: "slideUp 0.3s ease" }}>
+                <motion.div
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  style={{ marginTop: 12 }}
+                >
                   <p style={{ color: wydSel === w.correct ? "#10b981" : "#f59e0b", fontSize: 20, fontWeight: 700 }}>
                     {wydSel === w.correct ? "🌟 Perfect Cyber Hero choice!" : "🤔 Good try! Here's a better approach:"}
                   </p>
@@ -2286,9 +2491,9 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                   <div style={{ marginTop: 12 }}>
                     {btn("Continue →", () => { setWydSel(null); setWydIdx((idx) => idx + 1); })}
                   </div>
-                </div>
+                </motion.div>
               )}
-            </div>
+            </motion.div>
           </div>
         );
       }
@@ -2297,13 +2502,21 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
       case 14: {
         if (bossDone) {
           return (
-            <div style={{ textAlign: "center", animation: "popIn 0.5s ease" }}>
+            <motion.div
+              initial={{ opacity: 0, scale: 0.5 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ type: "spring", stiffness: 300, damping: 20 }}
+              style={{ textAlign: "center" }}
+            >
               {card(
                 <>
-                  <img src="/characters/raccoon.png" alt="Raccoon" style={{
-                    width: 80, margin: "0 auto 12px", display: "block",
-                    animation: "raccoonDefeat 1.5s ease forwards",
-                  }} />
+                  <motion.img
+                    src="/characters/raccoon.png"
+                    alt="Raccoon"
+                    animate={{ rotate: 720, scale: 0, y: -100, opacity: 0 }}
+                    transition={{ duration: 1.5, ease: "easeOut" }}
+                    style={{ width: 80, margin: "0 auto 12px", display: "block" }}
+                  />
                   <h2 style={{
                     fontSize: 28, margin: "0 0 12px", fontWeight: 900,
                     background: "linear-gradient(135deg, #f59e0b, #ef4444, #8b5cf6)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent",
@@ -2314,7 +2527,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                   {btn("Save Adam & Layla! →", () => { addCoins(50); playSound("/sounds/coin.mp3"); navigate(15); })}
                 </>
               )}
-            </div>
+            </motion.div>
           );
         }
 
@@ -2336,7 +2549,8 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                   borderRadius: 24, cursor: arenaShotsLeft > 0 && !arenaShowResult ? "crosshair" : "default",
                   background: "radial-gradient(ellipse at center bottom, rgba(139,92,246,0.15), transparent 70%)",
                   border: "1px solid rgba(139,92,246,0.2)",
-                }}>
+                }}
+              >
                 {/* Arena floor */}
                 <div style={{
                   position: "absolute", bottom: 0, left: "-50%", width: "200%", height: "60%",
@@ -2348,66 +2562,97 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                 }} />
 
                 {/* Raccoon */}
-                <div style={{
-                  position: "absolute",
-                  left: `${arenaRaccoonPos.left}%`, top: `${arenaRaccoonPos.top}%`,
-                  transform: `translate(-50%, -50%) scale(${raccoonScale})`,
-                  transition: `left 0.5s ${SPRING}, top 0.5s ${SPRING}`,
-                  zIndex: 2,
-                }}>
-                  <img src="/characters/raccoon.png" alt="Raccoon" style={{
-                    width: 80, height: 80, borderRadius: 16,
-                    animation: arenaRaccoonAnim === "hit" ? "raccoonHitFlash 0.5s ease"
-                      : arenaRaccoonAnim === "taunt" ? "raccoonTaunt 0.5s ease"
-                      : arenaRaccoonAnim === "defeat" ? "raccoonDefeat 1.5s ease forwards"
-                      : "bobble 2s ease infinite",
-                  }} />
-                </div>
+                <motion.div
+                  animate={{
+                    left: `${arenaRaccoonPos.left}%`,
+                    top: `${arenaRaccoonPos.top}%`,
+                  }}
+                  transition={{ duration: 0.5, type: "spring", stiffness: 300, damping: 25 }}
+                  style={{
+                    position: "absolute",
+                    left: `${arenaRaccoonPos.left}%`,
+                    top: `${arenaRaccoonPos.top}%`,
+                    transform: `translate(-50%, -50%) scale(${raccoonScale})`,
+                    zIndex: 2,
+                  }}
+                >
+                  <motion.img
+                    src="/characters/raccoon.png"
+                    alt="Raccoon"
+                    animate={
+                      arenaRaccoonAnim === "hit" ? { filter: ["brightness(1)", "brightness(3)", "brightness(1)"], scale: [1, 0.9, 1.1, 1] }
+                      : arenaRaccoonAnim === "taunt" ? { x: [0, -15, 15, 0], rotate: [0, -5, 5, 0] }
+                      : arenaRaccoonAnim === "defeat" ? { rotate: 720, scale: 0, y: -100, opacity: 0 }
+                      : { y: [0, -6, 0] }
+                    }
+                    transition={
+                      arenaRaccoonAnim === "hit" ? { duration: 0.5 }
+                      : arenaRaccoonAnim === "taunt" ? { duration: 0.5 }
+                      : arenaRaccoonAnim === "defeat" ? { duration: 1.5 }
+                      : { duration: 2, repeat: Infinity, ease: "easeInOut" }
+                    }
+                    style={{ width: 80, height: 80, borderRadius: 16 }}
+                  />
+                </motion.div>
 
                 {/* Projectiles */}
                 {arenaProjectiles.map((p) => (
-                  <div key={p.id} style={{
-                    position: "absolute", bottom: 10, left: "50%",
-                    fontSize: 28, pointerEvents: "none", zIndex: 3,
-                    // @ts-expect-error CSS custom properties
-                    "--tx": `${p.tx}px`, "--ty": `${p.ty}px`,
-                    animation: "projectileFly 0.4s ease-out forwards",
-                  }}>
+                  <motion.div
+                    key={p.id}
+                    initial={{ x: 0, y: 0, scale: 1, opacity: 1 }}
+                    animate={{ x: p.tx, y: p.ty, scale: 0.6, opacity: 0.8 }}
+                    transition={{ duration: 0.4, ease: "easeOut" }}
+                    style={{
+                      position: "absolute", bottom: 10, left: "50%",
+                      fontSize: 28, pointerEvents: "none", zIndex: 3,
+                    }}
+                  >
                     🛡️
-                  </div>
+                  </motion.div>
                 ))}
 
                 {/* Impact effects */}
                 {arenaProjectiles.map((p) => (
-                  <span key={`fx-${p.id}`} style={{
-                    position: "absolute",
-                    left: `calc(50% + ${p.tx}px)`, top: `calc(100% + ${p.ty}px)`,
-                    color: p.hit ? "#f59e0b" : "#6b7280",
-                    fontWeight: 900, fontSize: p.hit ? 22 : 14,
-                    pointerEvents: "none", zIndex: 4,
-                    animation: "impactBoom 0.6s ease 0.35s forwards",
-                    opacity: 0,
-                  }}>
+                  <motion.span
+                    key={`fx-${p.id}`}
+                    initial={{ scale: 0, opacity: 1 }}
+                    animate={{ scale: 3, opacity: 0 }}
+                    transition={{ duration: 0.6, delay: 0.35 }}
+                    style={{
+                      position: "absolute",
+                      left: `calc(50% + ${p.tx}px)`, top: `calc(100% + ${p.ty}px)`,
+                      color: p.hit ? "#f59e0b" : "#6b7280",
+                      fontWeight: 900, fontSize: p.hit ? 22 : 14,
+                      pointerEvents: "none", zIndex: 4,
+                    }}
+                  >
                     {p.hit ? "BOOM!" : "Miss!"}
-                  </span>
+                  </motion.span>
                 ))}
 
                 {/* Result overlay */}
-                {arenaShowResult && (
-                  <div style={{
-                    position: "absolute", inset: 0, background: "rgba(26,16,51,0.85)",
-                    display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
-                    zIndex: 10, animation: "fadeIn 0.4s ease",
-                  }}>
-                    <p style={{ color: "#f59e0b", fontSize: 24, fontWeight: 900, marginBottom: 4 }}>
-                      {arenaHits}/5 hits!
-                    </p>
-                    <p style={{ color: "#d1d5db", fontSize: 16, marginBottom: 16 }}>
-                      {Math.max(6, arenaHits * 2)}% damage dealt!
-                    </p>
-                    {btn("Continue →", finishArenaRound)}
-                  </div>
-                )}
+                <AnimatePresence>
+                  {arenaShowResult && (
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ duration: 0.4 }}
+                      style={{
+                        position: "absolute", inset: 0, background: "rgba(26,16,51,0.85)",
+                        display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
+                        zIndex: 10,
+                      }}
+                    >
+                      <p style={{ color: "#f59e0b", fontSize: 24, fontWeight: 900, marginBottom: 4 }}>
+                        {arenaHits}/5 hits!
+                      </p>
+                      <p style={{ color: "#d1d5db", fontSize: 16, marginBottom: 16 }}>
+                        {Math.max(6, arenaHits * 2)}% damage dealt!
+                      </p>
+                      {btn("Continue →", finishArenaRound)}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </div>
 
               {/* Shot indicators */}
@@ -2423,11 +2668,14 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                   <span>Raccoon HP</span><span>{raccoonHealth}%</span>
                 </div>
                 <div style={{ height: 12, borderRadius: 999, background: "rgba(255,255,255,0.08)" }}>
-                  <div style={{
-                    height: "100%", borderRadius: 999,
-                    background: raccoonHealth > 50 ? "#ef4444" : raccoonHealth > 20 ? "#f59e0b" : "#10b981",
-                    width: `${raccoonHealth}%`, transition: "all 0.5s ease",
-                  }} />
+                  <motion.div
+                    animate={{ width: `${raccoonHealth}%` }}
+                    transition={{ duration: 0.5, ease: "easeOut" }}
+                    style={{
+                      height: "100%", borderRadius: 999,
+                      background: raccoonHealth > 50 ? "#ef4444" : raccoonHealth > 20 ? "#f59e0b" : "#10b981",
+                    }}
+                  />
                 </div>
               </div>
             </div>
@@ -2440,25 +2688,42 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
             <h1 style={{ color: "#fff", fontSize: 28, fontWeight: 900, marginBottom: 8 }}>FINAL CHALLENGE!<img src="/characters/raccoon.png" width={40} height={40} alt="" style={{ display: "inline-block", verticalAlign: "middle", marginLeft: 8, borderRadius: 999 }} /></h1>
             {/* Raccoon + health bar */}
             <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 16, marginBottom: 16 }}>
-              <img src="/characters/raccoon.png" alt="Raccoon" style={{
-                width: 100,
-                animation: bossFeedback === true ? "raccoonHit 0.5s ease" : "bobble 2s ease infinite",
-              }} />
+              <motion.img
+                src="/characters/raccoon.png"
+                alt="Raccoon"
+                animate={
+                  bossFeedback === true ? { x: [0, -10, 10, -10, 10, 0], rotate: [0, -10, 10, -10, 10, 0] }
+                  : { y: [0, -6, 0] }
+                }
+                transition={
+                  bossFeedback === true ? { duration: 0.5 }
+                  : { duration: 2, repeat: Infinity, ease: "easeInOut" }
+                }
+                style={{ width: 100 }}
+              />
               <div style={{ width: 200 }}>
                 <div style={{ display: "flex", justifyContent: "space-between", fontSize: 12, color: "#9ca3af", marginBottom: 4 }}>
                   <span>Raccoon HP</span><span>{raccoonHealth}%</span>
                 </div>
                 <div style={{ height: 12, borderRadius: 999, background: "rgba(255,255,255,0.08)" }}>
-                  <div style={{
-                    height: "100%", borderRadius: 999,
-                    background: raccoonHealth > 50 ? "#ef4444" : raccoonHealth > 20 ? "#f59e0b" : "#10b981",
-                    width: `${raccoonHealth}%`, transition: "all 0.5s ease",
-                  }} />
+                  <motion.div
+                    animate={{ width: `${raccoonHealth}%` }}
+                    transition={{ duration: 0.5, ease: "easeOut" }}
+                    style={{
+                      height: "100%", borderRadius: 999,
+                      background: raccoonHealth > 50 ? "#ef4444" : raccoonHealth > 20 ? "#f59e0b" : "#10b981",
+                    }}
+                  />
                 </div>
               </div>
             </div>
             <p style={{ color: "#9ca3af", marginBottom: 8 }}>Question {bossIdx + 1}/{BOSS_QUIZ.length}</p>
-            <div key={`boss-${bossIdx}`} style={{ animation: "fadeZoomIn 0.4s ease" }}>
+            <motion.div
+              key={`boss-${bossIdx}`}
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.4 }}
+            >
               <h2 style={{ color: "#fff", fontSize: 18, margin: "0 0 16px" }}>{bq.q}</h2>
               <div style={{ display: "flex", flexDirection: "column", gap: 10, maxWidth: 500, margin: "0 auto" }}>
                 {bq.opts.map((opt: string, i: number) => {
@@ -2471,36 +2736,46 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                   if (answered && isCorrect) { bg = "rgba(16,185,129,0.15)"; border = "#10b981"; }
                   if (selected && !isCorrect) { bg = "rgba(239,68,68,0.15)"; border = "#ef4444"; }
                   return (
-                    <button key={i} onClick={() => {
-                      if (bossSel !== null) return;
-                      setBossSel(i);
-                      const correct = i === bq.correct;
-                      setBossFeedback(correct);
-                      if (correct) {
-                        setBossScore((s) => s + 1);
-                        addCoins(20);
-                        playSound("/sounds/correct.mp3");
-                        setTimeout(() => playSound("/sounds/coin.mp3"), 500);
-                        // Enter attack phase after brief delay
-                        setTimeout(() => setBossAttackPhase(true), 500);
-                      } else {
-                        playSound("/sounds/wrong.mp3");
-                      }
-                    }} disabled={answered} style={{
-                      background: bg, border: `2px solid ${border}`, borderRadius: 16, padding: "14px 18px",
-                      color: answered && isCorrect ? "#10b981" : selected && !isCorrect ? "#ef4444" : c.color,
-                      fontSize: 15, fontWeight: 700, cursor: answered ? "default" : "pointer", textAlign: "left",
-                      minHeight: 60, transition: "all 0.3s ease",
-                      animation: selected && !isCorrect ? "shake 0.5s ease" : undefined,
-                    }}>
+                    <motion.button
+                      key={i}
+                      onClick={() => {
+                        if (bossSel !== null) return;
+                        setBossSel(i);
+                        const correct = i === bq.correct;
+                        setBossFeedback(correct);
+                        if (correct) {
+                          setBossScore((s) => s + 1);
+                          addCoins(20);
+                          playSound("/sounds/correct.mp3");
+                          setTimeout(() => playSound("/sounds/coin.mp3"), 500);
+                          setTimeout(() => setBossAttackPhase(true), 500);
+                        } else {
+                          playSound("/sounds/wrong.mp3");
+                        }
+                      }}
+                      disabled={answered}
+                      animate={selected && !isCorrect ? shakeAnimation : {}}
+                      whileHover={!answered ? { scale: 1.02 } : {}}
+                      whileTap={!answered ? { scale: 0.98 } : {}}
+                      style={{
+                        background: bg, border: `2px solid ${border}`, borderRadius: 16, padding: "14px 18px",
+                        color: answered && isCorrect ? "#10b981" : selected && !isCorrect ? "#ef4444" : c.color,
+                        fontSize: 15, fontWeight: 700, cursor: answered ? "default" : "pointer", textAlign: "left",
+                        minHeight: 60, transition: "all 0.3s ease",
+                      }}
+                    >
                       {opt}
-                    </button>
+                    </motion.button>
                   );
                 })}
               </div>
-            </div>
+            </motion.div>
             {bossFeedback !== null && !bossAttackPhase && (
-              <div style={{ marginTop: 12, animation: "slideUp 0.3s ease" }}>
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                style={{ marginTop: 12 }}
+              >
                 <p style={{ color: bossFeedback ? "#10b981" : "#f59e0b", fontSize: 18, fontWeight: 700 }}>
                   {bossFeedback ? "🎉 Hit! Tap the Raccoon!" : "The Raccoon dodged! Keep trying! 💪"}
                 </p>
@@ -2517,7 +2792,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                     })}
                   </div>
                 )}
-              </div>
+              </motion.div>
             )}
           </div>
         );
@@ -2529,22 +2804,39 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
         return (
           <div style={{ textAlign: "center" }}>
             <h1 style={{ color: "#fff", fontSize: 32, fontWeight: 900, marginBottom: 16 }}>You Did It!<img src="/characters/adam-layla-happy.png" width={44} height={44} alt="" style={{ display: "inline-block", verticalAlign: "middle", marginLeft: 8, borderRadius: 999 }} /></h1>
-            <img src="/characters/adam-layla-happy.png" alt="Adam and Layla safe" style={{
-              width: 200, borderRadius: 24, margin: "0 auto 16px", display: "block",
-              animation: "heroFloat 3s ease infinite",
-              boxShadow: "0 0 40px rgba(245,158,11,0.4)",
-              border: "3px solid #f59e0b",
-            }} />
+            <motion.img
+              src="/characters/adam-layla-happy.png"
+              alt="Adam and Layla safe"
+              animate={{ y: [0, -12, 0] }}
+              transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+              style={{
+                width: 200, borderRadius: 24, margin: "0 auto 16px", display: "block",
+                boxShadow: "0 0 40px rgba(245,158,11,0.4)",
+                border: "3px solid #f59e0b",
+              }}
+            />
             <p style={{ color: "#d1d5db", fontSize: 18, marginBottom: 24 }}>
               Thanks to YOU, Adam and Layla now know how to stay safe!
             </p>
-            <div style={{ display: "flex", flexDirection: "column", gap: 8, maxWidth: 440, margin: "0 auto 24px" }}>
+            <motion.div
+              variants={achieveStaggerContainer}
+              initial="initial"
+              animate="animate"
+              style={{ display: "flex", flexDirection: "column", gap: 8, maxWidth: 440, margin: "0 auto 24px" }}
+            >
               {ACHIEVEMENTS.map((a: string, i: number) => (
                 achievePhase > i ? (
-                  <div key={i} style={{ animation: `bounceIn 0.6s ${SPRING} both` }}>
+                  <motion.div key={i} variants={achieveStaggerItem}>
                     {card(
                       <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-                        <span style={{ color: "#10b981", fontSize: 20, animation: "tickIn 0.5s ease" }}>✅</span>
+                        <motion.span
+                          initial={{ opacity: 0, scale: 0, rotate: -45 }}
+                          animate={{ opacity: 1, scale: 1, rotate: 0 }}
+                          transition={{ type: "spring", stiffness: 300, damping: 15 }}
+                          style={{ color: "#10b981", fontSize: 20 }}
+                        >
+                          ✅
+                        </motion.span>
                         <span style={{ color: "#d1d5db", fontSize: 14, flex: 1 }}>{a}</span>
                         {achieveCoins[i] > 0 && (
                           <span style={{ color: "#f59e0b", fontSize: 12, fontWeight: 700 }}>🪙 +{achieveCoins[i]}</span>
@@ -2552,14 +2844,18 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                       </div>,
                       { padding: "10px 16px" }
                     )}
-                  </div>
+                  </motion.div>
                 ) : <div key={i} style={{ height: 44 }} />
               ))}
-            </div>
+            </motion.div>
             {achievePhase >= 8 && (
-              <div style={{ animation: "popIn 0.5s ease" }}>
+              <motion.div
+                initial={{ opacity: 0, scale: 0.5 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ type: "spring", stiffness: 300, damping: 20 }}
+              >
                 {btn("Get your certificate! 🏆 →", () => navigate(16))}
-              </div>
+              </motion.div>
             )}
           </div>
         );
@@ -2575,21 +2871,19 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
           <div style={{ textAlign: "center" }}>
             {showConfetti && <Confetti duration={5000} />}
             {/* Certificate */}
-            <div className="certificate-card" style={{
-              background: "rgba(255,255,255,0.06)", backdropFilter: "blur(16px)",
-              border: "3px solid rgba(139,92,246,0.5)", borderRadius: 24, padding: 32,
-              maxWidth: 520, margin: "0 auto 24px",
-              boxShadow: "0 0 40px rgba(245,158,11,0.2)",
-              animation: "popIn 0.6s ease",
-              position: "relative", overflow: "hidden",
-            }}>
-              {/* Gold shimmer overlay */}
-              <div style={{
-                position: "absolute", inset: 0, pointerEvents: "none",
-                background: "linear-gradient(120deg, transparent 30%, rgba(245,158,11,0.1) 50%, transparent 70%)",
-                backgroundSize: "200% 100%",
-                animation: "goldShimmer 3s linear infinite",
-              }} />
+            <motion.div
+              className="certificate-card"
+              initial={{ opacity: 0, scale: 0.5 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ type: "spring", stiffness: 200, damping: 20, duration: 0.6 }}
+              style={{
+                background: "rgba(255,255,255,0.06)", backdropFilter: "blur(16px)",
+                border: "3px solid rgba(139,92,246,0.5)", borderRadius: 24, padding: 32,
+                maxWidth: 520, margin: "0 auto 24px",
+                boxShadow: "0 0 40px rgba(245,158,11,0.2)",
+                position: "relative", overflow: "hidden",
+              }}
+            >
               <div style={{ position: "relative", zIndex: 1 }}>
                 <div style={{ fontSize: 14, color: "#9ca3af", letterSpacing: 2, marginBottom: 8 }}>ALGORITHMX</div>
                 <div style={{ fontSize: 40, marginBottom: 4 }}>🛡️</div>
@@ -2612,7 +2906,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                   <span style={{ color: "#f59e0b", fontWeight: 900, fontSize: 22 }}>Total Coins: {coins}</span>
                 </div>
               </div>
-            </div>
+            </motion.div>
             {/* Score summary */}
             <div className="score-cards" style={{ display: "flex", flexWrap: "wrap", gap: 12, justifyContent: "center", maxWidth: 520, margin: "0 auto 24px" }}>
               {[
@@ -2624,7 +2918,12 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                 { label: "Real Life Choices", score: wydScore, total: WYD.length },
                 { label: "Final Challenge", score: bossScore, total: BOSS_QUIZ.length },
               ].map((item: { label: string; score: number; total: number }, i: number) => (
-                <div key={i}>
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: i * 0.1, duration: 0.4 }}
+                >
                   {card(
                     <div style={{ textAlign: "center", minWidth: 90 }}>
                       <div style={{ color: "#9ca3af", fontSize: 11 }}>{item.label}</div>
@@ -2632,7 +2931,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                     </div>,
                     { padding: "8px 14px" }
                   )}
-                </div>
+                </motion.div>
               ))}
             </div>
             <div className="print-hide" style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
@@ -2643,16 +2942,18 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
               }}>
                 Back to Dashboard 🚀
               </a>
-              <button onClick={() => window.print()} style={{
-                background: "transparent", color: "#fff", fontWeight: 900, borderRadius: 16,
-                padding: "13px 34px", fontSize: 16, cursor: "pointer",
-                border: "2px solid rgba(255,255,255,0.4)",
-              }}
-                onMouseEnter={(e) => { e.currentTarget.style.borderColor = "#fff"; e.currentTarget.style.background = "rgba(255,255,255,0.06)"; }}
-                onMouseLeave={(e) => { e.currentTarget.style.borderColor = "rgba(255,255,255,0.4)"; e.currentTarget.style.background = "transparent"; }}
+              <motion.button
+                onClick={() => window.print()}
+                whileHover={{ scale: 1.05, borderColor: "#fff", background: "rgba(255,255,255,0.06)" }}
+                whileTap={{ scale: 0.95 }}
+                style={{
+                  background: "transparent", color: "#fff", fontWeight: 900, borderRadius: 16,
+                  padding: "13px 34px", fontSize: 16, cursor: "pointer",
+                  border: "2px solid rgba(255,255,255,0.4)",
+                }}
               >
                 Print Certificate 🖨️
-              </button>
+              </motion.button>
             </div>
           </div>
         );
@@ -2690,9 +2991,17 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
       <div className="progress-wrap print-hide"><ProgressBar step={screen} /></div>
       <div className="step-dots-wrap print-hide"><StepDots step={screen} /></div>
       <main style={{ maxWidth: 700, margin: "0 auto", padding: "16px 16px 80px", position: "relative", zIndex: 1 }}>
-        <div className={animClass} key={screen}>
-          {renderScreen()}
-        </div>
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={screen}
+            variants={getScreenVariants(screen)}
+            initial="initial"
+            animate="animate"
+            exit="exit"
+          >
+            {renderScreen()}
+          </motion.div>
+        </AnimatePresence>
       </main>
 
       {/* ── DRAG GHOSTS (rendered outside overflow:hidden main) ── */}
