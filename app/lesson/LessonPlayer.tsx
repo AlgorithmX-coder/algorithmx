@@ -397,6 +397,21 @@ const CSS = `
 .slide-up-in { animation: slideFromBelow 0.5s ${SPRING} both; }
 .pop-in { animation: popIn 0.5s ease both; }
 .fade-zoom-in { animation: fadeZoomIn 0.4s ease both; }
+@media print {
+  body { background: white !important; }
+  header, nav, .step-dots-wrap, .progress-wrap, .floating-orbs-wrap, .score-cards, .dash-link, .print-hide { display: none !important; }
+  main { padding: 0 !important; }
+  .certificate-card {
+    border: 3px solid #8b5cf6 !important;
+    background: white !important;
+    color: black !important;
+    box-shadow: none !important;
+    max-width: 100% !important;
+    backdrop-filter: none !important;
+  }
+  .certificate-card * { color: black !important; -webkit-text-fill-color: black !important; }
+  .certificate-card .gradient-text { -webkit-text-fill-color: #8b5cf6 !important; color: #8b5cf6 !important; }
+}
 `;
 
 /* ───────────────────────── SUB-COMPONENTS ──────────────────── */
@@ -673,7 +688,7 @@ function FloatingBubbleQuiz({ question, opts, correct, explain, onCorrect, onWro
 
 /* ───────────────────────── MAIN COMPONENT ─────────────────── */
 
-export default function LessonPlayer({ userName, moduleId }: { userName: string; moduleId: string }) {
+export default function LessonPlayer({ userName, moduleId, childName }: { userName: string; moduleId: string; childName: string }) {
   /* ---------- state ---------- */
   const [screen, setScreen] = useState(0);
   const [animClass, setAnimClass] = useState("slide-in");
@@ -797,11 +812,12 @@ export default function LessonPlayer({ userName, moduleId }: { userName: string;
   const [raccoonHealth, setRaccoonHealth] = useState(100);
   const [bossDone, setBossDone] = useState(false);
   const [bossAttackPhase, setBossAttackPhase] = useState(false);
-  const [bossTaps, setBossTaps] = useState(0);
-  const [bossImpacts, setBossImpacts] = useState<{ id: number; x: number; y: number }[]>([]);
-  const [bossDamageNums, setBossDamageNums] = useState<{ id: number; x: number; y: number }[]>([]);
-  const bossAttackTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const bossImpactId = useRef(0);
+  const [whackHits, setWhackHits] = useState(0);
+  const [whackActiveHole, setWhackActiveHole] = useState<number | null>(null);
+  const [whackPops, setWhackPops] = useState<{ id: number; hole: number; text: string }[]>([]);
+  const whackPopId = useRef(0);
+  const whackTimer = useRef<ReturnType<typeof setInterval> | null>(null);
+  const whackEndTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Screen 15 — Achievements
   const [achievePhase, setAchievePhase] = useState(0);
@@ -869,7 +885,7 @@ export default function LessonPlayer({ userName, moduleId }: { userName: string;
         case 14:
           setBossIdx(0); setBossSel(null); setBossFeedback(null);
           setBossScore(0); setRaccoonHealth(100); setBossDone(false);
-          setBossAttackPhase(false); setBossTaps(0); setBossImpacts([]); setBossDamageNums([]);
+          setBossAttackPhase(false); setWhackHits(0); setWhackActiveHole(null); setWhackPops([]);
           break;
         case 15:
           setAchievePhase(0);
@@ -1045,62 +1061,58 @@ export default function LessonPlayer({ userName, moduleId }: { userName: string;
     }).catch(() => { /* ignore */ });
   }, [screen, moduleId]);
 
-  /* ---------- boss attack handler ---------- */
-  const handleBossAttackTap = useCallback((e: React.PointerEvent) => {
+  /* ---------- whack-a-mole handler ---------- */
+  const handleWhackTap = useCallback((hole: number) => {
+    if (whackActiveHole !== hole) return;
+    setWhackActiveHole(null);
+    setWhackHits((h) => h + 1);
+    const id = whackPopId.current++;
+    const texts = ["POW!", "BAM!", "WHACK!", "ZAP!"];
+    setWhackPops((prev) => [...prev, { id, hole, text: texts[id % texts.length] }]);
+    playSound("/sounds/correct.mp3");
+    setTimeout(() => setWhackPops((prev) => prev.filter((p) => p.id !== id)), 600);
+  }, [whackActiveHole, playSound]);
+
+  // Whack-a-mole phase: raccoon pops up from random holes
+  useEffect(() => {
     if (!bossAttackPhase) return;
-    const rect = e.currentTarget.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    const id = bossImpactId.current++;
-    setBossImpacts((prev) => [...prev, { id, x, y }]);
-    setBossDamageNums((prev) => [...prev, { id, x: x + (Math.random() - 0.5) * 20, y }]);
-    setBossTaps((t) => t + 1);
-    setTimeout(() => {
-      setBossImpacts((prev) => prev.filter((p) => p.id !== id));
-      setBossDamageNums((prev) => prev.filter((p) => p.id !== id));
+    setWhackHits(0);
+    setWhackActiveHole(null);
+    setWhackPops([]);
+    let lastHole = -1;
+    whackTimer.current = setInterval(() => {
+      let next: number;
+      do { next = Math.floor(Math.random() * 9); } while (next === lastHole);
+      lastHole = next;
+      setWhackActiveHole(next);
+      setTimeout(() => setWhackActiveHole((cur) => cur === next ? null : cur), 800);
     }, 600);
-  }, [bossAttackPhase]);
-
-  // Boss attack phase timer
-  useEffect(() => {
-    if (!bossAttackPhase) return;
-    bossAttackTimer.current = setTimeout(() => {
+    whackEndTimer.current = setTimeout(() => {
+      if (whackTimer.current) clearInterval(whackTimer.current);
+      setWhackActiveHole(null);
       setBossAttackPhase(false);
-      setRaccoonHealth((h) => Math.max(0, h - 10));
-      const newHealth = raccoonHealth - 10;
-      if (newHealth <= 0 || bossIdx >= BOSS_QUIZ.length - 1) {
-        setTimeout(() => setBossDone(true), 800);
-      } else {
-        setTimeout(() => {
-          setBossSel(null);
-          setBossFeedback(null);
-          setBossIdx((i) => i + 1);
-          setBossTaps(0);
-        }, 1000);
-      }
-    }, 2000);
-    return () => { if (bossAttackTimer.current) clearTimeout(bossAttackTimer.current); };
+      // Calculate damage: each hit = 2%, minimum 10%
+      setWhackHits((hits) => {
+        const damage = Math.max(10, hits * 2);
+        setRaccoonHealth((h) => Math.max(0, h - damage));
+        const newHealth = raccoonHealth - damage;
+        if (newHealth <= 0 || bossIdx >= BOSS_QUIZ.length - 1) {
+          setTimeout(() => setBossDone(true), 1500);
+        } else {
+          setTimeout(() => {
+            setBossSel(null);
+            setBossFeedback(null);
+            setBossIdx((i) => i + 1);
+          }, 1500);
+        }
+        return hits;
+      });
+    }, 4000);
+    return () => {
+      if (whackTimer.current) clearInterval(whackTimer.current);
+      if (whackEndTimer.current) clearTimeout(whackEndTimer.current);
+    };
   }, [bossAttackPhase, bossIdx, raccoonHealth]);
-
-  // Boss tap limit
-  useEffect(() => {
-    if (bossTaps >= 10 && bossAttackPhase) {
-      if (bossAttackTimer.current) clearTimeout(bossAttackTimer.current);
-      setBossAttackPhase(false);
-      setRaccoonHealth((h) => Math.max(0, h - 10));
-      const newHealth = raccoonHealth - 10;
-      if (newHealth <= 0 || bossIdx >= BOSS_QUIZ.length - 1) {
-        setTimeout(() => setBossDone(true), 800);
-      } else {
-        setTimeout(() => {
-          setBossSel(null);
-          setBossFeedback(null);
-          setBossIdx((i) => i + 1);
-          setBossTaps(0);
-        }, 1000);
-      }
-    }
-  }, [bossTaps, bossAttackPhase, bossIdx, raccoonHealth]);
 
   /* ---------- renderScreen ---------- */
   const renderScreen = () => {
@@ -1452,18 +1464,7 @@ export default function LessonPlayer({ userName, moduleId }: { userName: string;
               </div>
             )}
 
-            {/* Floating shield while dragging */}
-            {shieldDragging && shieldPos && (
-              <div style={{
-                position: "fixed", left: shieldPos.x, top: shieldPos.y, pointerEvents: "none", zIndex: 50,
-                width: 64, height: 64, borderRadius: "50%",
-                background: "rgba(16,185,129,0.2)", border: "3px solid #10b981",
-                display: "flex", alignItems: "center", justifyContent: "center", fontSize: 32,
-                boxShadow: "0 0 30px rgba(16,185,129,0.5)",
-              }}>
-                🛡️
-              </div>
-            )}
+            {/* Shield ghost rendered at root level below */}
           </div>
         );
       }
@@ -1872,21 +1873,7 @@ export default function LessonPlayer({ userName, moduleId }: { userName: string;
                 </div>
               ))}
             </div>
-            {/* Dragging ghost */}
-            {dragging && (() => {
-              const pw = PASSWORDS_8.find((p) => p.id === dragging);
-              if (!pw) return null;
-              return (
-                <div style={{
-                  position: "fixed", left: dragX, top: dragY, pointerEvents: "none", zIndex: 50,
-                  background: pw.bg, border: `2px solid ${pw.border}`, borderRadius: 12, padding: "10px 16px",
-                  color: pw.color, fontFamily: "monospace", fontWeight: 700, fontSize: 14,
-                  boxShadow: "0 8px 30px rgba(0,0,0,0.4)",
-                }}>
-                  {pw.text}
-                </div>
-              );
-            })()}
+            {/* Drag ghost rendered at root level below */}
           </div>
         );
       }
@@ -1965,12 +1952,15 @@ export default function LessonPlayer({ userName, moduleId }: { userName: string;
                                   }} style={{
                                     background: ruleAnswers[i] === oi
                                       ? oi === rule.correct ? "rgba(16,185,129,0.15)" : "rgba(239,68,68,0.15)"
-                                      : "rgba(255,255,255,0.04)",
+                                      : "rgba(255,255,255,0.08)",
                                     border: `2px solid ${ruleAnswers[i] === oi
                                       ? oi === rule.correct ? "#10b981" : "#ef4444"
-                                      : "rgba(255,255,255,0.1)"}`,
-                                    borderRadius: 12, padding: "10px 16px", color: "#d1d5db", fontSize: 14,
-                                    fontWeight: 600, cursor: "pointer", minHeight: 48, flex: 1,
+                                      : "rgba(255,255,255,0.2)"}`,
+                                    borderRadius: 12, padding: "14px 20px",
+                                    color: ruleAnswers[i] === oi
+                                      ? oi === rule.correct ? "#10b981" : "#ef4444"
+                                      : "#e5e7eb",
+                                    fontSize: 16, fontWeight: 700, cursor: "pointer", minHeight: 52, flex: 1,
                                     animation: ruleAnswers[i] === oi && oi !== rule.correct ? "shake 0.5s ease" : undefined,
                                     opacity: ruleAnswers[i] !== null && ruleAnswers[i] !== oi && ruleAnswers[i] !== rule.correct ? 0.4 : 1,
                                   }}>
@@ -2283,35 +2273,45 @@ export default function LessonPlayer({ userName, moduleId }: { userName: string;
           return (
             <div style={{ textAlign: "center" }}>
               <h1 style={{ color: "#f59e0b", fontSize: 28, fontWeight: 900, animation: "celebrate 0.5s ease infinite" }}>
-                HIT! TAP THE RACCOON! ⚡
+                WHACK THE RACCOON! 🔨
               </h1>
+              <p style={{ color: "#9ca3af", fontSize: 14, marginBottom: 12 }}>Hits: {whackHits}</p>
+              {/* 3x3 grid of holes */}
               <div style={{
-                position: "relative", display: "inline-block", marginTop: 20, cursor: "pointer",
-              }}
-                onPointerDown={handleBossAttackTap}
-              >
-                <img src="/characters/raccoon.png" alt="Raccoon" style={{
-                  width: 150,
-                  animation: bossTaps > 0 ? "shake 0.2s ease" : "pulseGlow 1s ease infinite",
-                  border: "3px solid #f59e0b", borderRadius: 24, padding: 8,
-                }} />
-                {/* Impact bursts */}
-                {bossImpacts.map((imp) => (
-                  <span key={imp.id} style={{
-                    position: "absolute", left: imp.x, top: imp.y, fontSize: 24,
-                    animation: "impactBurst 0.4s ease forwards", pointerEvents: "none",
-                  }}>⚡</span>
-                ))}
-                {/* Damage numbers */}
-                {bossDamageNums.map((dmg) => (
-                  <span key={dmg.id} style={{
-                    position: "absolute", left: dmg.x, top: dmg.y - 20,
-                    color: "#ef4444", fontWeight: 900, fontSize: 20,
-                    animation: "damageFloat 0.6s ease forwards", pointerEvents: "none",
-                  }}>-1</span>
-                ))}
+                display: "grid", gridTemplateColumns: "repeat(3, 80px)", gap: 12,
+                justifyContent: "center", margin: "0 auto 16px",
+              }}>
+                {Array.from({ length: 9 }, (_, hole) => {
+                  const isActive = whackActiveHole === hole;
+                  const pop = whackPops.find((p) => p.hole === hole);
+                  return (
+                    <div key={hole}
+                      onClick={() => handleWhackTap(hole)}
+                      style={{
+                        width: 80, height: 80, borderRadius: "50%",
+                        background: "rgba(0,0,0,0.3)", border: "2px solid rgba(255,255,255,0.08)",
+                        display: "flex", alignItems: "center", justifyContent: "center",
+                        cursor: isActive ? "pointer" : "default",
+                        position: "relative", overflow: "visible",
+                      }}>
+                      {isActive && (
+                        <img src="/characters/raccoon.png" alt="Raccoon" style={{
+                          width: 60, height: 60, borderRadius: "50%",
+                          animation: "popIn 0.2s ease both",
+                        }} />
+                      )}
+                      {pop && (
+                        <span style={{
+                          position: "absolute", top: -10, left: "50%", transform: "translateX(-50%)",
+                          color: "#f59e0b", fontWeight: 900, fontSize: 18,
+                          animation: "damageFloat 0.6s ease forwards", pointerEvents: "none",
+                        }}>{pop.text}</span>
+                      )}
+                    </div>
+                  );
+                })}
               </div>
-              <div style={{ width: 200, margin: "16px auto" }}>
+              <div style={{ width: 200, margin: "0 auto" }}>
                 <div style={{ display: "flex", justifyContent: "space-between", fontSize: 12, color: "#9ca3af", marginBottom: 4 }}>
                   <span>Raccoon HP</span><span>{raccoonHealth}%</span>
                 </div>
@@ -2468,7 +2468,7 @@ export default function LessonPlayer({ userName, moduleId }: { userName: string;
           <div style={{ textAlign: "center" }}>
             {showConfetti && <Confetti duration={5000} />}
             {/* Certificate */}
-            <div style={{
+            <div className="certificate-card" style={{
               background: "rgba(255,255,255,0.06)", backdropFilter: "blur(16px)",
               border: "3px solid rgba(139,92,246,0.5)", borderRadius: 24, padding: 32,
               maxWidth: 520, margin: "0 auto 24px",
@@ -2489,12 +2489,12 @@ export default function LessonPlayer({ userName, moduleId }: { userName: string;
                 <h1 style={{ color: "#fff", fontSize: 22, fontWeight: 900, margin: "0 0 4px" }}>Certificate of Achievement</h1>
                 <div style={{ width: 60, height: 3, background: GRAD, borderRadius: 999, margin: "8px auto 16px" }} />
                 <p style={{ color: "#d1d5db", marginBottom: 4 }}>Presented to</p>
-                <h2 style={{
+                <h2 className="gradient-text" style={{
                   fontSize: 28, fontWeight: 900, margin: "0 0 8px",
                   background: GRAD, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent",
-                }}>{userName}</h2>
+                }}>{childName}</h2>
                 <p style={{ color: "#f59e0b", fontSize: 16, fontWeight: 700, marginBottom: 8 }}>CYBER HERO</p>
-                <p style={{ color: "#9ca3af", fontSize: 14, marginBottom: 4 }}>Week 1 — What is a Password?</p>
+                <p style={{ color: "#9ca3af", fontSize: 14, marginBottom: 4 }}>Week 1 — Passwords: The Secret Code</p>
                 <p style={{ color: "#6b7280", fontSize: 13, marginBottom: 8 }}>{today}</p>
                 {stars(finalStars)}
                 <div style={{
@@ -2507,15 +2507,15 @@ export default function LessonPlayer({ userName, moduleId }: { userName: string;
               </div>
             </div>
             {/* Score summary */}
-            <div style={{ display: "flex", flexWrap: "wrap", gap: 12, justifyContent: "center", maxWidth: 520, margin: "0 auto 24px" }}>
+            <div className="score-cards" style={{ display: "flex", flexWrap: "wrap", gap: 12, justifyContent: "center", maxWidth: 520, margin: "0 auto 24px" }}>
               {[
-                { label: "Quiz 1", score: q1Score, total: Q1_QUIZ.length },
-                { label: "Quiz 2", score: q2Score, total: Q2_QUIZ.length },
-                { label: "Swipe", score: swipeScore, total: SWIPE_DATA.length },
-                { label: "Quiz 3", score: q3Score, total: Q3_QUIZ.length },
-                { label: "Phishing", score: phishScore, total: PHISH.length },
-                { label: "Scenarios", score: wydScore, total: WYD.length },
-                { label: "Boss", score: bossScore, total: BOSS_QUIZ.length },
+                { label: "Password Basics", score: q1Score, total: Q1_QUIZ.length },
+                { label: "Why Passwords Matter", score: q2Score, total: Q2_QUIZ.length },
+                { label: "Good vs Bad", score: swipeScore, total: SWIPE_DATA.length },
+                { label: "Golden Rules", score: q3Score, total: Q3_QUIZ.length },
+                { label: "Spot the Tricks", score: phishScore, total: PHISH.length },
+                { label: "Real Life Choices", score: wydScore, total: WYD.length },
+                { label: "Final Challenge", score: bossScore, total: BOSS_QUIZ.length },
               ].map((item: { label: string; score: number; total: number }, i: number) => (
                 <div key={i}>
                   {card(
@@ -2528,13 +2528,25 @@ export default function LessonPlayer({ userName, moduleId }: { userName: string;
                 </div>
               ))}
             </div>
-            <a href="/dashboard" style={{
-              display: "inline-block", background: GRAD, color: "#fff", fontWeight: 900, borderRadius: 16,
-              padding: "13px 34px", textDecoration: "none", fontSize: 16,
-              boxShadow: "0 4px 20px rgba(139,92,246,0.4)",
-            }}>
-              Back to Dashboard 🚀
-            </a>
+            <div className="print-hide" style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
+              <a href="/dashboard" style={{
+                display: "inline-block", background: GRAD, color: "#fff", fontWeight: 900, borderRadius: 16,
+                padding: "13px 34px", textDecoration: "none", fontSize: 16,
+                boxShadow: "0 4px 20px rgba(139,92,246,0.4)",
+              }}>
+                Back to Dashboard 🚀
+              </a>
+              <button onClick={() => window.print()} style={{
+                background: "transparent", color: "#fff", fontWeight: 900, borderRadius: 16,
+                padding: "13px 34px", fontSize: 16, cursor: "pointer",
+                border: "2px solid rgba(255,255,255,0.4)",
+              }}
+                onMouseEnter={(e) => { e.currentTarget.style.borderColor = "#fff"; e.currentTarget.style.background = "rgba(255,255,255,0.06)"; }}
+                onMouseLeave={(e) => { e.currentTarget.style.borderColor = "rgba(255,255,255,0.4)"; e.currentTarget.style.background = "transparent"; }}
+              >
+                Print Certificate 🖨️
+              </button>
+            </div>
           </div>
         );
       }
@@ -2548,9 +2560,9 @@ export default function LessonPlayer({ userName, moduleId }: { userName: string;
   return (
     <div style={{ minHeight: "100vh", background: "#1a1033", position: "relative", overflow: "hidden" }}>
       <style>{CSS}</style>
-      <FloatingOrbs />
+      <div className="floating-orbs-wrap"><FloatingOrbs /></div>
       {/* Sticky header */}
-      <header style={{
+      <header className="print-hide" style={{
         position: "sticky", top: 0, zIndex: 40, padding: "12px 16px",
         background: "rgba(26,16,51,0.85)", backdropFilter: "blur(12px)",
         borderBottom: "1px solid rgba(255,255,255,0.06)",
@@ -2564,17 +2576,44 @@ export default function LessonPlayer({ userName, moduleId }: { userName: string;
             fontWeight: 900, fontSize: 18, background: GRAD,
             WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent",
           }}>AX</span>
-          <span style={{ color: "#6b7280", fontSize: 13 }}>Week 1 · What is a Password?</span>
+          <span style={{ color: "#6b7280", fontSize: 13 }}>Week 1 · Passwords: The Secret Code</span>
         </div>
         <CoinCounter coins={coins} animKey={coinAnimKey} />
       </header>
-      <ProgressBar step={screen} />
-      <StepDots step={screen} />
+      <div className="progress-wrap print-hide"><ProgressBar step={screen} /></div>
+      <div className="step-dots-wrap print-hide"><StepDots step={screen} /></div>
       <main style={{ maxWidth: 700, margin: "0 auto", padding: "16px 16px 80px", position: "relative", zIndex: 1 }}>
         <div className={animClass} key={screen}>
           {renderScreen()}
         </div>
       </main>
+
+      {/* ── DRAG GHOSTS (rendered outside overflow:hidden main) ── */}
+      {shieldDragging && shieldPos && (
+        <div style={{
+          position: "fixed", left: shieldPos.x, top: shieldPos.y, pointerEvents: "none", zIndex: 9999,
+          width: 64, height: 64, borderRadius: "50%",
+          background: "rgba(16,185,129,0.2)", border: "3px solid #10b981",
+          display: "flex", alignItems: "center", justifyContent: "center", fontSize: 32,
+          boxShadow: "0 0 30px rgba(16,185,129,0.5)",
+        }}>
+          🛡️
+        </div>
+      )}
+      {dragging && (() => {
+        const pw = PASSWORDS_8.find((p) => p.id === dragging);
+        if (!pw) return null;
+        return (
+          <div style={{
+            position: "fixed", left: dragX, top: dragY, pointerEvents: "none", zIndex: 9999,
+            background: pw.bg, border: `2px solid ${pw.border}`, borderRadius: 12, padding: "10px 16px",
+            color: pw.color, fontFamily: "monospace", fontWeight: 700, fontSize: 14,
+            boxShadow: "0 8px 30px rgba(0,0,0,0.4)",
+          }}>
+            {pw.text}
+          </div>
+        );
+      })()}
     </div>
   );
 }

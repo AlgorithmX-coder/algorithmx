@@ -14,11 +14,17 @@ export default async function LessonPage() {
     where: { weekNumber: 1 },
   });
 
+  const childProfile = await prisma.childProfile.findFirst({
+    where: { userId: session.user.id! },
+    orderBy: { createdAt: "desc" },
+  });
+
   return (
     <div className={nunito.className}>
       <LessonPlayer
         userName={session.user.name ?? "Cyber Hero"}
         moduleId={module?.id ?? ""}
+        childName={childProfile?.childName ?? session.user.name ?? "Cyber Hero"}
       />
     </div>
   );
