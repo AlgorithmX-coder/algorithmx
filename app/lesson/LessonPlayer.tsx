@@ -1203,7 +1203,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                   >
                     <video
                       ref={videoRef}
-                      src="/videos/01-welcome.mp4"
+                      src="/videos/module-01-intro.mp4"
                       muted={mediaMuted}
                       onError={() => setVideoFailed(true)}
                       onEnded={() => setVideoEnded(true)}

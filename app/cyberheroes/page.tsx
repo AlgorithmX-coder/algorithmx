@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { motion, useInView } from "framer-motion";
+import { motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 
 /* ─── CONSTANTS ─── */
@@ -36,36 +36,32 @@ function FloatingOrbs() {
   );
 }
 
-/* ─── SCROLL REVEAL ─── */
-function ScrollReveal({ children, className = "", delay = 0 }: { children: React.ReactNode; className?: string; delay?: number }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once: true, margin: "-50px" });
-  return (
-    <motion.div ref={ref} initial={{ opacity: 0, y: 40 }} animate={isInView ? { opacity: 1, y: 0 } : {}} transition={{ type: "spring", stiffness: 150, damping: 20, delay }} className={className}>
-      {children}
-    </motion.div>
-  );
-}
-
 /* ─── COUNTER ANIMATION ─── */
 function AnimCounter({ to, suffix = "", label }: { to: number; suffix?: string; label: string }) {
   const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once: true, margin: "-50px" });
   const [val, setVal] = useState(0);
+  const counted = useRef(false);
   useEffect(() => {
-    if (!isInView) return;
-    let frame: number;
-    const start = performance.now();
-    const dur = 1600;
-    const tick = (now: number) => {
-      const t = Math.min((now - start) / dur, 1);
-      const ease = 1 - Math.pow(1 - t, 3);
-      setVal(Math.round(ease * to));
-      if (t < 1) frame = requestAnimationFrame(tick);
-    };
-    frame = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(frame);
-  }, [isInView, to]);
+    const el = ref.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting && !counted.current) {
+        counted.current = true;
+        let frame: number;
+        const start = performance.now();
+        const dur = 1600;
+        const tick = (now: number) => {
+          const t = Math.min((now - start) / dur, 1);
+          setVal(Math.round((1 - Math.pow(1 - t, 3)) * to));
+          if (t < 1) frame = requestAnimationFrame(tick);
+        };
+        frame = requestAnimationFrame(tick);
+        observer.disconnect();
+      }
+    }, { threshold: 0.5 });
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [to]);
   return (
     <div ref={ref} className="flex flex-col items-center gap-1 px-4 py-5 rounded-2xl flex-1 min-w-[140px]"
       style={{ background: "rgba(255,255,255,0.06)", backdropFilter: "blur(12px)", border: "1px solid rgba(255,255,255,0.08)" }}>
@@ -92,10 +88,52 @@ const FEATURES = [
 
 /* ─── STORY CARDS DATA ─── */
 const STORY = [
-  { src: "/characters/adam-layla-happy.png", alt: "Adam and Layla sitting happily", caption: "Meet Adam & Layla" },
-  { src: "/characters/adam-layla-raccoon.png", alt: "The Hacker Raccoon appears", caption: "The Hacker Raccoon appears..." },
-  { src: "/characters/adam-layla-hacked.png", alt: "Adam and Layla with hacked tablet", caption: "Can they save the day?" },
+  { src: "/characters/adam-layla-happy.png", alt: "Adam and Layla sitting happily", caption: "Meet Adam & Layla", sub: "Two enthusiastic gamers who love exploring the digital world. But danger lurks online..." },
+  { src: "/characters/adam-layla-raccoon.png", alt: "The Hacker Raccoon appears", caption: "The Hacker Raccoon Strikes", sub: "A sneaky villain who preys on their vulnerabilities — weak passwords, risky clicks, and shared secrets." },
+  { src: "/characters/adam-layla-hacked.png", alt: "Adam and Layla with hacked tablet", caption: "Can They Become Cyber Heroes?", sub: "20 weeks of missions to outsmart the Raccoon and earn their Cyber Hero certificate!" },
 ];
+
+/* ─── WEEKS DATA ─── */
+const WEEKS = [
+  { w: 1, title: "Passwords: The Secret Code", sub: "Discover why passwords matter and learn how to create super strong ones" },
+  { w: 2, title: "Private Info: Guard Your Secrets", sub: "Learn what personal information is and why some things should stay private" },
+  { w: 3, title: "Stranger Danger: Friend or Foe?", sub: "Spot fake profiles and stay safe when chatting to people online" },
+  { w: 4, title: "Scams and Tricks: Real or Fake?", sub: "Learn to spot scam messages, fake pop-ups, and sneaky tricks" },
+  { w: 5, title: "Cyberbullying: Words Have Power", sub: "Understand how words can hurt online and what to do if it happens" },
+  { w: 6, title: "Gaming Safety: Defend Your Game Zone", sub: "Stay safe in Roblox, Minecraft, and Fortnite" },
+  { w: 7, title: "In-Game Spending: The V-Bucks Trap", sub: "Learn about loot boxes, Robux, V-Bucks, and why to always ask a grown-up first" },
+  { w: 8, title: "Photos & Videos: Think Before You Share", sub: "Discover why screenshots last forever and why consent matters" },
+  { w: 9, title: "Apps & Downloads: Spot the Fakes", sub: "Learn to spot fake apps, understand permissions, and stay safe downloading" },
+  { w: 10, title: "YouTube & Videos: Escape the Rabbit Hole", sub: "Stay safe watching videos and manage screen time" },
+  { w: 11, title: "Something Wrong? Emergency Protocol", sub: "Learn how to report, block, and tell a trusted grown-up" },
+  { w: 12, title: "Digital Footprint: Tracks in the Snow", sub: "Everything you do online leaves a trail" },
+  { w: 13, title: "Screen Time: Balance Your Power", sub: "Find the right balance between time online, breaks, sleep, and healthy habits" },
+  { w: 14, title: "Smart Devices: Who's Listening?", sub: "Understand what Alexa, Siri, and smart devices hear" },
+  { w: 15, title: "AI & Chatbots: Robot or Real?", sub: "Learn about ChatGPT and chatbots — what they know and what never to share" },
+  { w: 16, title: "QR Codes & Links: Don't Take the Bait", sub: "Learn to check before you scan or click" },
+  { w: 17, title: "Social Media: The Profile Shield", sub: "Stay safe on TikTok, Snapchat, and Instagram" },
+  { w: 18, title: "Sharing Devices: Lock Before You Leave", sub: "Keep your stuff private on family tablets" },
+  { w: 19, title: "Protecting Family: Family Firewall", sub: "Become the family cyber expert" },
+  { w: 20, title: "Graduation Day: The Final Mission", sub: "The ultimate challenge! Earn your Cyber Hero certificate" },
+];
+
+/* ─── SVG ICONS ─── */
+const IconController = ({ size = 32, color = "#8b5cf6" }: { size?: number; color?: string }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+    <line x1="6" y1="12" x2="10" y2="12"/><line x1="8" y1="10" x2="8" y2="14"/><line x1="15" y1="13" x2="15.01" y2="13"/><line x1="18" y1="11" x2="18.01" y2="11"/>
+    <rect x="2" y="6" width="20" height="12" rx="2"/>
+  </svg>
+);
+const IconAward = ({ size = 32, color = "#f59e0b" }: { size?: number; color?: string }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+    <circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/>
+  </svg>
+);
+const IconFamily = ({ size = 32, color = "#ec4899" }: { size?: number; color?: string }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+  </svg>
+);
 
 /* ─── MAIN PAGE ─── */
 export default function HomePage() {
@@ -107,11 +145,38 @@ export default function HomePage() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  useEffect(() => {
+    const elements = document.querySelectorAll("[data-scroll]");
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const el = entry.target as HTMLElement;
+            el.style.opacity = "1";
+            el.style.transform = "translateY(0)";
+            observer.unobserve(el);
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+    elements.forEach((el) => {
+      const htmlEl = el as HTMLElement;
+      const delay = htmlEl.getAttribute("data-scroll-delay") || "0";
+      htmlEl.style.opacity = "0";
+      htmlEl.style.transform = "translateY(30px)";
+      htmlEl.style.transition = `opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1) ${delay}s, transform 0.7s cubic-bezier(0.16, 1, 0.3, 1) ${delay}s`;
+      observer.observe(el);
+    });
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
         * { font-family: 'Nunito', sans-serif; }
+        html { scroll-behavior: smooth; }
       `}</style>
 
       <FloatingOrbs />
@@ -177,16 +242,14 @@ export default function HomePage() {
                   whileTap={{ scale: 0.95 }}
                   className="px-7 py-4 rounded-2xl font-black text-white text-base"
                   style={{ background: GRAD, boxShadow: "0 8px 32px rgba(139,92,246,0.35)" }}>
-                  Start Free Trial 🚀
+                  Get Started Now 🚀
                 </motion.a>
                 <motion.button
+                  onClick={() => document.getElementById("preview")?.scrollIntoView({ behavior: "smooth" })}
                   whileHover={{ scale: 1.05, boxShadow: "0 0 24px rgba(139,92,246,0.3)", borderColor: "rgba(139,92,246,0.7)" }}
                   whileTap={{ scale: 0.95 }}
                   className="px-7 py-4 rounded-2xl font-black text-purple-300 text-base cursor-pointer"
-                  style={{
-                    background: "transparent",
-                    border: "2px solid rgba(139,92,246,0.4)",
-                  }}>
+                  style={{ background: "transparent", border: "2px solid rgba(139,92,246,0.4)" }}>
                   Watch Preview ▶
                 </motion.button>
               </div>
@@ -232,18 +295,45 @@ export default function HomePage() {
           </div>
         </section>
 
+        {/* ── VIDEO PREVIEW ────────────────────────────────────────────────── */}
+        <section id="preview" className="max-w-[1200px] mx-auto px-6 md:px-10 py-16 sm:py-24">
+          <div className="text-center mb-12" data-scroll>
+            <h2 className="text-3xl sm:text-4xl font-black text-white mb-4">
+              See the{" "}
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-blue-400">Adventure</span>
+            </h2>
+            <p className="text-gray-400 text-base sm:text-lg max-w-xl mx-auto">
+              Watch Adam and Layla&apos;s first cybersecurity mission
+            </p>
+          </div>
+          <div data-scroll>
+            <div style={{ maxWidth: 800, margin: "0 auto", borderRadius: 20, overflow: "hidden", boxShadow: "0 0 40px rgba(139,92,246,0.3)", border: "2px solid rgba(139,92,246,0.3)" }}>
+              <video
+                controls
+                playsInline
+                preload="metadata"
+                style={{ width: "100%", display: "block" }}
+                src="/videos/cyberheroes-intro.mp4"
+              />
+            </div>
+            <p className="text-gray-500 text-sm text-center mt-6">
+              This is just Week 1. Imagine 20 weeks of adventures!
+            </p>
+          </div>
+        </section>
+
         {/* ── MEET YOUR HEROES ──────────────────────────────────────────── */}
         <section className="max-w-[1200px] mx-auto px-6 md:px-10 py-16 sm:py-24">
-          <ScrollReveal className="text-center mb-12">
+          <div className="text-center mb-12" data-scroll>
             <h2 className="text-3xl sm:text-4xl font-black text-white mb-4">
               Meet Your{" "}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-blue-400">Cyber Heroes</span>
             </h2>
-          </ScrollReveal>
+          </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 max-w-3xl mx-auto mb-10">
             {/* Adam */}
-            <ScrollReveal delay={0}>
+            <div data-scroll data-scroll-delay="0">
               <motion.div className="rounded-3xl overflow-hidden"
                 whileHover={{ y: -8, scale: 1.03, boxShadow: "0 0 40px rgba(245,158,11,0.2)" }}
                 style={{
@@ -251,11 +341,8 @@ export default function HomePage() {
                   border: "1px solid rgba(245,158,11,0.2)",
                   backdropFilter: "blur(8px)",
                 }}>
-                <div className="relative overflow-hidden flex justify-center h-[400px]"
-                  style={{ background: "linear-gradient(180deg, rgba(245,158,11,0.08) 0%, transparent 100%)" }}>
-                  <motion.div animate={{ y: [0, -10, 0] }} transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}>
-                    <Image src="/characters/layla.png" alt="Adam — curious and brave Cyber Hero" width={400} height={500} className="block h-full w-auto object-cover" />
-                  </motion.div>
+                <div style={{ height: 420, overflow: "hidden", background: "linear-gradient(180deg, rgba(245,158,11,0.08) 0%, transparent 100%)" }}>
+                  <Image src="/characters/adam.png" alt="Adam — curious and brave Cyber Hero" width={400} height={500} style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 20%", display: "block" }} />
                 </div>
                 <div className="px-6 py-5 text-center">
                   <h3 className="font-black text-white text-2xl mb-2">Adam</h3>
@@ -264,10 +351,10 @@ export default function HomePage() {
                   </p>
                 </div>
               </motion.div>
-            </ScrollReveal>
+            </div>
 
             {/* Layla */}
-            <ScrollReveal delay={0.15}>
+            <div data-scroll data-scroll-delay="0.15">
               <motion.div className="rounded-3xl overflow-hidden"
                 whileHover={{ y: -8, scale: 1.03, boxShadow: "0 0 40px rgba(168,85,247,0.2)" }}
                 style={{
@@ -275,11 +362,8 @@ export default function HomePage() {
                   border: "1px solid rgba(168,85,247,0.2)",
                   backdropFilter: "blur(8px)",
                 }}>
-                <div className="relative overflow-hidden flex justify-center h-[400px]"
-                  style={{ background: "linear-gradient(180deg, rgba(168,85,247,0.08) 0%, transparent 100%)" }}>
-                  <motion.div animate={{ y: [0, -10, 0] }} transition={{ duration: 3, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}>
-                    <Image src="/characters/adam.png" alt="Layla — smart and fearless Cyber Hero" width={400} height={500} className="block h-full w-auto object-cover" />
-                  </motion.div>
+                <div style={{ height: 420, overflow: "hidden", background: "linear-gradient(180deg, rgba(168,85,247,0.08) 0%, transparent 100%)" }}>
+                  <Image src="/characters/layla.png" alt="Layla — smart and fearless Cyber Hero" width={400} height={500} style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 20%", display: "block" }} />
                 </div>
                 <div className="px-6 py-5 text-center">
                   <h3 className="font-black text-white text-2xl mb-2">Layla</h3>
@@ -288,10 +372,10 @@ export default function HomePage() {
                   </p>
                 </div>
               </motion.div>
-            </ScrollReveal>
+            </div>
           </div>
 
-          <ScrollReveal className="text-center" delay={0.2}>
+          <div className="text-center" data-scroll data-scroll-delay="0.2">
             <p className="text-gray-300 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed mb-8">
               Join Adam and Layla on their adventure to become cybersecurity experts. Help them stay safe from the Hacker Raccoon — and learn how to protect yourself too!
             </p>
@@ -302,12 +386,12 @@ export default function HomePage() {
               style={{ background: GRAD, boxShadow: "0 8px 32px rgba(139,92,246,0.35)" }}>
               Start the Adventure →
             </motion.a>
-          </ScrollReveal>
+          </div>
         </section>
 
         {/* ── STORY ────────────────────────────────────────────────────────── */}
         <section className="max-w-[1200px] mx-auto px-6 md:px-10 py-16 sm:py-24">
-          <ScrollReveal className="text-center mb-12">
+          <div className="text-center mb-12" data-scroll>
             <h2 className="text-3xl sm:text-4xl font-black text-white mb-4">
               The Adventure{" "}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-blue-400">Begins</span>
@@ -315,38 +399,61 @@ export default function HomePage() {
             <p className="text-gray-400 text-base sm:text-lg max-w-xl mx-auto leading-relaxed">
               Follow Adam and Layla as they learn to protect their digital world from the sneaky Hacker Raccoon. Each week is a new adventure!
             </p>
-          </ScrollReveal>
+          </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
             {STORY.map((s, i) => (
-              <ScrollReveal key={i} delay={i * 0.15}>
-                <motion.div className="rounded-3xl overflow-hidden group"
+              <div key={i} data-scroll data-scroll-delay={String(i * 0.15)}>
+                <motion.div className="overflow-hidden group"
                   whileHover={{ y: -8, scale: 1.03, boxShadow: "0 0 40px rgba(139,92,246,0.2)" }}
                   style={{
                     background: "rgba(255,255,255,0.04)",
                     border: "1px solid rgba(139,92,246,0.15)",
                     backdropFilter: "blur(8px)",
+                    borderRadius: 20,
+                    position: "relative",
+                    height: 380,
+                    overflow: "hidden",
                   }}>
-                  <div className="relative overflow-hidden">
-                    <Image src={s.src} alt={s.alt} width={400} height={400} className="w-full block" />
-                    {/* Step number badge */}
-                    <div className="absolute top-3 left-3 w-8 h-8 rounded-full flex items-center justify-center text-xs font-black text-white"
-                      style={{ background: GRAD, boxShadow: "0 4px 12px rgba(139,92,246,0.4)" }}>
-                      {i + 1}
-                    </div>
+                  <Image src={s.src} alt={s.alt} width={400} height={400} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+                  {/* Step number badge */}
+                  <div style={{ position: "absolute", top: 12, left: 12, width: 32, height: 32, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 12, fontWeight: 900, color: "#fff", background: GRAD, boxShadow: "0 4px 12px rgba(139,92,246,0.4)", zIndex: 2 }}>
+                    {i + 1}
                   </div>
-                  <div className="px-5 py-4">
-                    <p className="font-black text-white text-base">{s.caption}</p>
+                  {/* Text overlay */}
+                  <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, background: "linear-gradient(transparent, rgba(0,0,0,0.85))", padding: "40px 16px 16px", borderRadius: "0 0 16px 16px" }}>
+                    <p style={{ fontSize: 18, fontWeight: 800, color: "#fff", marginBottom: 4 }}>{s.caption}</p>
+                    <p style={{ fontSize: 14, color: "rgba(255,255,255,0.8)", lineHeight: 1.4 }}>{s.sub}</p>
                   </div>
                 </motion.div>
-              </ScrollReveal>
+              </div>
             ))}
           </div>
         </section>
 
+        {/* ── RACCOON ──────────────────────────────────────────────────────── */}
+        <div className="flex justify-center py-12" data-scroll data-scroll-delay="0.2">
+          <div className="relative max-w-xs">
+            <div className="absolute inset-0 rounded-3xl"
+              style={{ background: "rgba(139,92,246,0.3)", filter: "blur(50px)", transform: "scale(0.9)" }} />
+            <motion.div
+              animate={{ boxShadow: ["0 0 30px rgba(239,68,68,0.3)", "0 0 60px rgba(239,68,68,0.6)", "0 0 30px rgba(239,68,68,0.3)"] }}
+              transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+              style={{ borderRadius: 20, display: "inline-block", border: "2px solid rgba(239,68,68,0.3)" }}>
+              <Image src="/characters/raccoon.png" alt="The Hacker Raccoon villain"
+                width={280} height={280} className="relative block" style={{ borderRadius: 18 }} />
+            </motion.div>
+            <div className="text-center mt-4">
+              <p className="text-purple-300 text-sm font-black">The Hacker Raccoon</p>
+              <p style={{ color: "#ef4444", fontWeight: 700, fontSize: 18, marginTop: 4 }}>The villain your kids will learn to outsmart!</p>
+              <p style={{ color: "#9ca3af", fontSize: 14, fontStyle: "italic", marginTop: 4 }}>Can Adam &amp; Layla defeat him? Your child decides!</p>
+            </div>
+          </div>
+        </div>
+
         {/* ── COURSES ──────────────────────────────────────────────────────── */}
         <section className="max-w-[1200px] mx-auto px-6 md:px-10 py-16 sm:py-24">
-          <ScrollReveal className="text-center mb-12">
+          <div className="text-center mb-12" data-scroll>
             <h2 className="text-3xl sm:text-4xl font-black text-white mb-4">
               Four Learning Tracks.{" "}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-blue-400">Every Age.</span>
@@ -354,11 +461,11 @@ export default function HomePage() {
             <p className="text-gray-400 text-base sm:text-lg max-w-xl mx-auto">
               From first-time digital explorers to aspiring security professionals.
             </p>
-          </ScrollReveal>
+          </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
             {COURSES.map((c, i) => (
-              <ScrollReveal key={i} delay={i * 0.1}>
+              <div key={i} data-scroll data-scroll-delay={String(i * 0.1)}>
                 <motion.div className="rounded-3xl p-6 h-full relative group"
                   whileHover={{ y: -8, scale: 1.03, boxShadow: `0 0 40px ${c.accent}25` }}
                   style={{
@@ -384,23 +491,56 @@ export default function HomePage() {
                     <span>⏱️ {c.time}</span>
                   </div>
                 </motion.div>
-              </ScrollReveal>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* ── CURRICULUM PREVIEW ───────────────────────────────────────────── */}
+        <section className="max-w-[1200px] mx-auto px-6 md:px-10 py-16 sm:py-24">
+          <div className="text-center mb-12" data-scroll>
+            <h2 className="text-3xl sm:text-4xl font-black text-white mb-4">
+              Your 20-Week{" "}
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-blue-400">Journey</span>
+            </h2>
+            <p className="text-gray-400 text-base sm:text-lg max-w-xl mx-auto">
+              Each week brings a new cybersecurity adventure with animated stories, interactive games, and real-world skills.
+            </p>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {WEEKS.map((wk, i) => (
+              <div key={i} data-scroll data-scroll-delay={String(i * 0.03)}>
+                <div style={{
+                  background: "rgba(255,255,255,0.04)",
+                  border: wk.w === 20 ? "1px solid rgba(245,158,11,0.4)" : "1px solid rgba(255,255,255,0.08)",
+                  borderRadius: 16, padding: 20,
+                }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 8 }}>
+                    <div style={{ width: 28, height: 28, borderRadius: "50%", background: GRAD, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 11, fontWeight: 900, color: "#fff", flexShrink: 0 }}>
+                      {wk.w}
+                    </div>
+                    {wk.w === 20 && <span style={{ fontSize: 10, fontWeight: 800, color: "#f59e0b", background: "rgba(245,158,11,0.15)", borderRadius: 8, padding: "2px 8px" }}>🎓 Final Mission</span>}
+                  </div>
+                  <h4 style={{ color: "#fff", fontWeight: 800, fontSize: 14, marginBottom: 4 }}>{wk.title}</h4>
+                  <p style={{ color: "#9ca3af", fontSize: 12, lineHeight: 1.5 }}>{wk.sub}</p>
+                </div>
+              </div>
             ))}
           </div>
         </section>
 
         {/* ── FEATURES ─────────────────────────────────────────────────────── */}
         <section className="max-w-[1200px] mx-auto px-6 md:px-10 py-16 sm:py-24">
-          <ScrollReveal className="text-center mb-12">
+          <div className="text-center mb-12" data-scroll>
             <h2 className="text-3xl sm:text-4xl font-black text-white mb-4">
               Why{" "}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-blue-400">AlgorithmX</span>?
             </h2>
-          </ScrollReveal>
+          </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {FEATURES.map((f, i) => (
-              <ScrollReveal key={i} delay={i * 0.12}>
+              <div key={i} data-scroll data-scroll-delay={String(i * 0.12)}>
                 <motion.div className="rounded-3xl p-6 h-full"
                   whileHover={{ y: -8, scale: 1.03, boxShadow: "0 0 40px rgba(139,92,246,0.15)" }}
                   style={{
@@ -408,34 +548,24 @@ export default function HomePage() {
                     border: "1px solid rgba(255,255,255,0.06)",
                     backdropFilter: "blur(12px)",
                   }}>
-                  <div className="text-4xl mb-4">{f.emoji}</div>
+                  <div style={{ width: 56, height: 56, borderRadius: 16, background: "rgba(139,92,246,0.1)", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 16 }}>
+                    {i === 0 ? <IconController /> : i === 1 ? <IconAward /> : <IconFamily />}
+                  </div>
                   <h3 className="font-black text-white text-lg mb-2">{f.title}</h3>
                   <p className="text-gray-400 text-sm leading-relaxed">{f.desc}</p>
                 </motion.div>
-              </ScrollReveal>
+              </div>
             ))}
           </div>
 
-          {/* Raccoon accent image */}
-          <ScrollReveal className="mt-12 flex justify-center" delay={0.2}>
-            <div className="relative max-w-xs">
-              <div className="absolute inset-0 rounded-3xl"
-                style={{ background: "rgba(139,92,246,0.3)", filter: "blur(50px)", transform: "scale(0.9)" }} />
-              <Image src="/characters/raccoon.png" alt="The Hacker Raccoon villain"
-                width={320} height={320} className="relative rounded-3xl block" />
-              <div className="text-center mt-3">
-                <p className="text-purple-300 text-sm font-black">The Hacker Raccoon</p>
-                <p className="text-gray-500 text-xs font-bold">The villain your kids will learn to outsmart!</p>
-              </div>
-            </div>
-          </ScrollReveal>
+          {/* Raccoon moved to after story section */}
         </section>
 
         {/* ── STATS ────────────────────────────────────────────────────────── */}
         <section className="max-w-[1200px] mx-auto px-6 md:px-10 py-12 sm:py-20">
           <div className="flex flex-wrap gap-4 justify-center">
             <AnimCounter to={4} label="Learning Tracks" />
-            <AnimCounter to={62} suffix="+" label="Weeks of Content" />
+            <AnimCounter to={70} suffix="+" label="Weeks of Content" />
             <AnimCounter to={6} suffix="+" label="Starting Age" />
             <AnimCounter to={100} suffix="%" label="Interactive" />
           </div>
@@ -443,7 +573,7 @@ export default function HomePage() {
 
         {/* ── CTA ──────────────────────────────────────────────────────────── */}
         <section className="max-w-[1200px] mx-auto px-6 md:px-10 py-16 sm:py-24">
-          <ScrollReveal>
+          <div data-scroll>
             <div className="relative rounded-3xl overflow-hidden p-8 sm:p-14 text-center"
               style={{
                 background: "rgba(255,255,255,0.04)",
@@ -470,11 +600,11 @@ export default function HomePage() {
                   whileTap={{ scale: 0.95 }}
                   className="inline-block px-10 py-5 rounded-2xl font-black text-white text-lg"
                   style={{ background: GRAD, boxShadow: "0 8px 40px rgba(139,92,246,0.4)" }}>
-                  Get Started Free 🚀
+                  Get Started Now 🚀
                 </motion.a>
               </div>
             </div>
-          </ScrollReveal>
+          </div>
         </section>
 
         {/* ── FOOTER ───────────────────────────────────────────────────────── */}
