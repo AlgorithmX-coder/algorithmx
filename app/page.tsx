@@ -121,6 +121,67 @@ const TESTIMONIALS = [
   { quote: "Finally, a tech education platform that's actually designed for children. The quality is outstanding.", author: "Priya K., Birmingham", stars: 5 },
 ];
 
+/* ─── STYLED LOGOS ─── */
+function LogoText({ name }: { name: string }) {
+  switch (name) {
+    case "NCSC":
+      return <span className="font-black text-base tracking-wide text-slate-400 hover:text-slate-600 transition-colors flex items-center gap-1.5">🛡️ NCSC</span>;
+    case "CyberFirst":
+      return <span className="text-base text-slate-400 hover:text-slate-600 transition-colors"><span className="font-medium">Cyber</span><span className="font-black">First</span></span>;
+    case "ASDAN":
+      return <span className="font-bold text-base tracking-widest text-slate-400 hover:text-slate-600 transition-colors">ASDAN</span>;
+    case "CompTIA":
+      return <span className="text-base text-slate-400 hover:text-slate-600 transition-colors"><span className="font-black">Comp</span><span className="font-bold text-red-400/60">TIA</span></span>;
+    case "Unity":
+      return <span className="font-black text-base text-slate-500 hover:text-slate-700 transition-colors">Unity</span>;
+    case "Unreal Engine":
+      return <span className="font-bold italic text-base text-slate-400 hover:text-slate-600 transition-colors">Unreal Engine</span>;
+    case "Roblox Education":
+      return <span className="font-bold text-base text-slate-400 hover:text-slate-600 transition-colors">Roblox <span className="font-medium">Education</span></span>;
+    case "Google AI":
+      return (
+        <span className="font-bold text-base hover:opacity-80 transition-opacity flex items-center gap-0">
+          <span style={{ color: "#4285F4" }}>G</span><span style={{ color: "#EA4335" }}>o</span><span style={{ color: "#FBBC05" }}>o</span><span style={{ color: "#4285F4" }}>g</span><span style={{ color: "#34A853" }}>l</span><span style={{ color: "#EA4335" }}>e</span>
+          <span className="text-slate-400 ml-1 font-black">AI</span>
+        </span>
+      );
+    case "Microsoft":
+      return (
+        <span className="font-semibold text-base text-slate-400 hover:text-slate-600 transition-colors flex items-center gap-1.5">
+          <span className="inline-grid grid-cols-2 gap-px" style={{ width: 12, height: 12 }}>
+            <span className="bg-red-500/70 rounded-[1px]" /><span className="bg-green-500/70 rounded-[1px]" />
+            <span className="bg-blue-500/70 rounded-[1px]" /><span className="bg-yellow-500/70 rounded-[1px]" />
+          </span>
+          Microsoft
+        </span>
+      );
+    case "Apple":
+      return <span className="font-semibold text-base text-slate-400 hover:text-slate-600 transition-colors"> Apple</span>;
+    case "AWS":
+      return <span className="font-black text-base text-orange-400/70 hover:text-orange-500 transition-colors">AWS</span>;
+    case "IBM":
+      return <span className="font-black text-base tracking-[0.2em] text-blue-400/70 hover:text-blue-500 transition-colors">IBM</span>;
+    case "BAFTA Games":
+      return <span className="font-bold text-base tracking-[0.15em] uppercase text-slate-400 hover:text-slate-600 transition-colors">BAFTA <span className="font-medium normal-case tracking-normal">Games</span></span>;
+    case "Raspberry Pi":
+      return <span className="font-bold text-base text-slate-400 hover:text-slate-600 transition-colors flex items-center gap-1">🍓 Raspberry Pi</span>;
+    case "BCS":
+      return <span className="font-black text-base tracking-widest uppercase text-slate-400 hover:text-slate-600 transition-colors">BCS</span>;
+    case "STEM Learning":
+      return <span className="text-base text-slate-400 hover:text-slate-600 transition-colors"><span className="font-black">STEM</span> <span className="font-medium">Learning</span></span>;
+    case "Young Enterprise":
+      return <span className="font-bold text-base text-slate-400 hover:text-slate-600 transition-colors">Young Enterprise</span>;
+    case "Code.org":
+      return <span className="text-base text-slate-400 hover:text-slate-600 transition-colors"><span className="font-black">Code</span><span className="font-medium">.org</span></span>;
+    case "IET":
+      return <span className="font-black text-base tracking-wide text-slate-400 hover:text-slate-600 transition-colors">IET</span>;
+    case "Prince's Trust":
+      return <span className="font-bold text-base text-slate-400 hover:text-slate-600 transition-colors">Prince&apos;s Trust</span>;
+    default:
+      return <span className="font-semibold text-base text-slate-400 hover:text-slate-600 transition-colors">{name}</span>;
+  }
+}
+
 const LOGOS_ROW1 = ["NCSC", "CyberFirst", "ASDAN", "CompTIA", "Unity", "Unreal Engine", "Roblox Education", "Google AI", "Microsoft", "Apple"];
 const LOGOS_ROW2 = ["AWS", "IBM", "BAFTA Games", "Raspberry Pi", "BCS", "STEM Learning", "Young Enterprise", "Code.org", "IET", "Prince's Trust"];
 
@@ -129,10 +190,11 @@ function Marquee({ items, reverse = false }: { items: string[]; reverse?: boolea
   const doubled = [...items, ...items];
   return (
     <div className="relative overflow-hidden py-3" style={{ maskImage: "linear-gradient(90deg, transparent, black 10%, black 90%, transparent)" }}>
-      <div className="flex gap-8 whitespace-nowrap" style={{ animation: `marquee ${reverse ? "45s" : "40s"} linear infinite ${reverse ? "reverse" : ""}`, width: "max-content" }}>
+      <div className="flex items-center gap-10 whitespace-nowrap" style={{ animation: `marquee ${reverse ? "45s" : "40s"} linear infinite ${reverse ? "reverse" : ""}`, width: "max-content" }}>
         {doubled.map((logo, i) => (
-          <span key={i} className="text-sm font-semibold text-gray-400 flex items-center gap-8">
-            {logo}<span className="text-gray-200">|</span>
+          <span key={i} className="flex items-center gap-10">
+            <LogoText name={logo} />
+            <span className="text-gray-200 text-xs">|</span>
           </span>
         ))}
       </div>
