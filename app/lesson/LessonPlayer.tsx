@@ -1017,11 +1017,9 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
     top: 10 + Math.random() * 45,
   }), []);
 
+  const MAX_ARENA_HITS = 15;
   const getArenaDamage = (hits: number) => {
-    if (hits >= 9) return 18;
-    if (hits >= 6) return 14;
-    if (hits >= 3) return 10;
-    return 6;
+    return Math.min(15, Math.round((hits / MAX_ARENA_HITS) * 15));
   };
 
   const handleArenaFire = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
@@ -1198,11 +1196,12 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
               >
                 {card(
                   <>
-                    <img src="/characters/adam-layla-hacked.png" alt="Adam and Layla hacked" style={{ width: 100, borderRadius: 16, margin: "0 auto 12px", display: "block" }} />
-                    <h2 style={{ color: "#fff", fontSize: 22, margin: "0 0 8px" }}>Oh no! Adam and Layla got hacked by the Raccoon! 🦝</h2>
-                    <p style={{ color: "#d1d5db", marginBottom: 16 }}>They need YOUR help to learn about password safety!</p>
+                    <img src="/characters/adam-layla-hacked.png" alt="Adam and Layla hacked" style={{ width: 180, borderRadius: 20, margin: "0 auto 16px", display: "block" }} />
+                    <h2 style={{ color: "#fff", fontSize: 26, margin: "0 0 8px" }}>Oh no! Adam and Layla got hacked by the Raccoon! 🦝</h2>
+                    <p style={{ color: "#d1d5db", marginBottom: 20, fontSize: 16 }}>They need YOUR help to learn about password safety!</p>
                     {btn("I'll help them! Let's go! 🚀", () => navigate(1))}
-                  </>
+                  </>,
+                  { maxWidth: 600, margin: "0 auto", padding: 32 }
                 )}
               </motion.div>
             )}
@@ -1242,15 +1241,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                 ) : <div key={i} style={{ height: 80 }} />
               ))}
             </motion.div>
-            <div style={{ position: "absolute", right: 20, top: "50%", transform: "translateY(-50%)" }}>
-              <motion.img
-                src="/characters/heroic.png"
-                alt="Adam and Layla heroic pose"
-                animate={{ y: [0, -12, 0] }}
-                transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-                style={{ width: 120 }}
-              />
-            </div>
+            {/* Character image removed to prevent overlap on small screens */}
             {missionPhase >= 3 && (
               <motion.div initial={{ opacity: 0, scale: 0.5 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: "spring", stiffness: 300, damping: 20 }}>
                 {btn("Accept Mission →", () => navigate(2))}
@@ -1305,18 +1296,18 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                   >
                     {card(
                       <div style={{
-                        textAlign: "center", cursor: locked ? "default" : "pointer", minWidth: 140,
+                        textAlign: "center", cursor: locked ? "default" : "pointer", minWidth: 140, minHeight: 180, display: "flex", flexDirection: "column" as const, alignItems: "center", justifyContent: "center",
                       }}>
                         <motion.div
                           animate={flipping ? { rotateY: [0, 90, 0] } : {}}
                           transition={{ duration: 0.6 }}
                         >
-                          <div style={{ fontSize: 48, marginBottom: 8 }}>{item.icon}</div>
+                          <div style={{ fontSize: 48, marginBottom: 8, width: 56, height: 56, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>{item.icon}</div>
                           <div style={{ fontSize: 16, color: "#fff", fontWeight: 700, marginBottom: 8 }}>{item.label}</div>
                           <motion.div
                             animate={flipping ? { rotate: 360 } : {}}
                             transition={{ duration: 0.6 }}
-                            style={{ fontSize: 32 }}
+                            style={{ fontSize: 32, width: 40, height: 40, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}
                           >
                             {locked ? "🔒" : "🔓"}
                           </motion.div>
@@ -2106,7 +2097,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                       ) : (
                         <>
                           <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-                            <span style={{ fontSize: 28 }}>{rule.icon}</span>
+                            <span style={{ fontSize: 28, width: 36, height: 36, display: "inline-flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>{rule.icon}</span>
                             <span style={{ color: "#fff", fontWeight: 700, fontSize: 16, flex: 1, textAlign: "left" }}>{rule.title}</span>
                             {isDone && (
                               <motion.span
