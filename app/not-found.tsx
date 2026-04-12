@@ -50,7 +50,7 @@ export default function NotFound() {
         {/* Raccoon */}
         <div className="mb-6">
           <motion.img
-            src="/characters/raccoon.png"
+            src="/characters/raccoon-sneaking.png"
             alt="The Hacker Raccoon"
             width={120}
             height={120}

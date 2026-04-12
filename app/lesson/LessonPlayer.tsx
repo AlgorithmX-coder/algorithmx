@@ -1244,8 +1244,8 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
             </motion.div>
             <div style={{ position: "absolute", right: 20, top: "50%", transform: "translateY(-50%)" }}>
               <motion.img
-                src="/characters/adam-layla-happy.png"
-                alt="Adam and Layla"
+                src="/characters/heroic.png"
+                alt="Adam and Layla heroic pose"
                 animate={{ y: [0, -12, 0] }}
                 transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
                 style={{ width: 120 }}
@@ -1402,7 +1402,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
           >
-            <h1 style={{ color: "#fff", fontSize: 24, fontWeight: 900, marginBottom: 4, textAlign: "center" }}>Quick Quiz!<img src="/characters/adam-layla-happy.png" width={40} height={40} alt="" style={{ display: "inline-block", verticalAlign: "middle", marginLeft: 8, borderRadius: 999 }} /></h1>
+            <h1 style={{ color: "#fff", fontSize: 24, fontWeight: 900, marginBottom: 4, textAlign: "center" }}>Quick Quiz!<img src="/characters/thinking.png" width={40} height={40} alt="" style={{ display: "inline-block", verticalAlign: "middle", marginLeft: 8, borderRadius: 999 }} /></h1>
             <p style={{ color: "#9ca3af", marginBottom: 12, textAlign: "center" }}>Question {q1Idx + 1}/{Q1_QUIZ.length}</p>
             <FloatingBubbleQuiz
               question={qq.q}
@@ -1489,11 +1489,11 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                     }}
                   >
                     <motion.img
-                      src="/characters/raccoon.png"
-                      alt="Raccoon"
+                      src="/characters/raccoon-sneaking.png"
+                      alt="Raccoon sneaking"
                       animate={{ y: [0, -6, 0] }}
                       transition={{ duration: 0.5, repeat: Infinity, ease: "easeInOut" }}
-                      style={{ width: 60 }}
+                      style={{ width: 60, borderRadius: 12 }}
                     />
                   </motion.div>
                 )}
@@ -1508,7 +1508,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                       position: "absolute", left: 150, top: "50%", transform: "translateY(-50%)",
                     }}
                   >
-                    <img src="/characters/raccoon.png" alt="Raccoon" style={{ width: 60 }} />
+                    <img src="/characters/raccoon-defeated.png" alt="Raccoon defeated" style={{ width: 60, borderRadius: 12 }} />
                   </motion.div>
                 )}
 
@@ -1607,7 +1607,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
           >
-            <h1 style={{ color: "#fff", fontSize: 24, fontWeight: 900, marginBottom: 4, textAlign: "center" }}>Quick Quiz!<img src="/characters/adam-layla-happy.png" width={40} height={40} alt="" style={{ display: "inline-block", verticalAlign: "middle", marginLeft: 8, borderRadius: 999 }} /></h1>
+            <h1 style={{ color: "#fff", fontSize: 24, fontWeight: 900, marginBottom: 4, textAlign: "center" }}>Quick Quiz!<img src="/characters/thinking.png" width={40} height={40} alt="" style={{ display: "inline-block", verticalAlign: "middle", marginLeft: 8, borderRadius: 999 }} /></h1>
             <p style={{ color: "#9ca3af", marginBottom: 12, textAlign: "center" }}>Question {q2Idx + 1}/{Q2_QUIZ.length}</p>
             <FloatingBubbleQuiz
               question={qq.q}
@@ -2207,7 +2207,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
           >
-            <h1 style={{ color: "#fff", fontSize: 24, fontWeight: 900, marginBottom: 4, textAlign: "center" }}>Quick Quiz!<img src="/characters/adam-layla-happy.png" width={40} height={40} alt="" style={{ display: "inline-block", verticalAlign: "middle", marginLeft: 8, borderRadius: 999 }} /></h1>
+            <h1 style={{ color: "#fff", fontSize: 24, fontWeight: 900, marginBottom: 4, textAlign: "center" }}>Quick Quiz!<img src="/characters/thinking.png" width={40} height={40} alt="" style={{ display: "inline-block", verticalAlign: "middle", marginLeft: 8, borderRadius: 999 }} /></h1>
             <p style={{ color: "#9ca3af", marginBottom: 12, textAlign: "center" }}>Question {q3Idx + 1}/{Q3_QUIZ.length}</p>
             <FloatingBubbleQuiz
               question={qq.q}
@@ -2252,7 +2252,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
         const ph = PHISH[phishIdx];
         return (
           <div style={{ textAlign: "center" }}>
-            <h1 style={{ color: "#fff", fontSize: 24, fontWeight: 900, marginBottom: 8 }}>Spot the Tricks!<img src="/characters/raccoon.png" width={40} height={40} alt="" style={{ display: "inline-block", verticalAlign: "middle", marginLeft: 8, borderRadius: 999 }} /></h1>
+            <h1 style={{ color: "#fff", fontSize: 24, fontWeight: 900, marginBottom: 8 }}>Spot the Tricks!<img src="/characters/raccoon-sneaking.png" width={40} height={40} alt="" style={{ display: "inline-block", verticalAlign: "middle", marginLeft: 8, borderRadius: 999 }} /></h1>
             <p style={{ color: "#9ca3af", marginBottom: 16 }}>Message {phishIdx + 1}/{PHISH.length}</p>
 
             {/* Tablet frame */}
@@ -2513,8 +2513,8 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
               {card(
                 <>
                   <motion.img
-                    src="/characters/raccoon.png"
-                    alt="Raccoon"
+                    src="/characters/raccoon-defeated.png"
+                    alt="Raccoon defeated"
                     animate={{ rotate: 720, scale: 0, y: -100, opacity: 0 }}
                     transition={{ duration: 1.5, ease: "easeOut" }}
                     style={{ width: 80, margin: "0 auto 12px", display: "block" }}
@@ -2594,7 +2594,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                   }}
                 >
                   <motion.img
-                    src="/characters/raccoon.png"
+                    src="/characters/raccoon-sneaking.png"
                     alt="Raccoon"
                     animate={
                       arenaRaccoonAnim === "hit" ? { filter: ["brightness(1)", "brightness(3)", "brightness(1)"], scaleX: [1, 1.2, 1], scaleY: [1, 0.8, 1] }
@@ -2694,11 +2694,11 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
         const bq = BOSS_QUIZ[bossIdx];
         return (
           <div style={{ textAlign: "center" }}>
-            <h1 style={{ color: "#fff", fontSize: 28, fontWeight: 900, marginBottom: 8 }}>FINAL CHALLENGE!<img src="/characters/raccoon.png" width={40} height={40} alt="" style={{ display: "inline-block", verticalAlign: "middle", marginLeft: 8, borderRadius: 999 }} /></h1>
+            <h1 style={{ color: "#fff", fontSize: 28, fontWeight: 900, marginBottom: 8 }}>FINAL CHALLENGE!<img src="/characters/raccoon-sneaking.png" width={40} height={40} alt="" style={{ display: "inline-block", verticalAlign: "middle", marginLeft: 8, borderRadius: 999 }} /></h1>
             {/* Raccoon + health bar */}
             <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 16, marginBottom: 16 }}>
               <motion.img
-                src="/characters/raccoon.png"
+                src="/characters/raccoon-sneaking.png"
                 alt="Raccoon"
                 animate={
                   bossFeedback === true ? { x: [0, -10, 10, -10, 10, 0], rotate: [0, -10, 10, -10, 10, 0] }
@@ -2812,10 +2812,10 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
         const achieveCoins = [25, 30, 25, 0, 25, 0, 0, 0];
         return (
           <div style={{ textAlign: "center" }}>
-            <h1 style={{ color: "#fff", fontSize: 32, fontWeight: 900, marginBottom: 16 }}>You Did It!<img src="/characters/adam-layla-happy.png" width={44} height={44} alt="" style={{ display: "inline-block", verticalAlign: "middle", marginLeft: 8, borderRadius: 999 }} /></h1>
+            <h1 style={{ color: "#fff", fontSize: 32, fontWeight: 900, marginBottom: 16 }}>You Did It!<img src="/characters/celebrating.png" width={44} height={44} alt="" style={{ display: "inline-block", verticalAlign: "middle", marginLeft: 8, borderRadius: 999 }} /></h1>
             <motion.img
-              src="/characters/adam-layla-happy.png"
-              alt="Adam and Layla safe"
+              src="/characters/celebrating.png"
+              alt="Adam and Layla celebrating"
               animate={{ y: [0, -12, 0] }}
               transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
               style={{

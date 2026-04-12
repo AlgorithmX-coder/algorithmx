@@ -166,7 +166,7 @@ export default function WelcomePage() {
                       borderColor: "rgba(245,158,11,0.4)",
                       boxShadow: "0 0 30px rgba(245,158,11,0.3)",
                     }}>
-                    <img src="/characters/adam-layla-happy.png" alt="Adam and Layla"
+                    <img src="/characters/waving.png" alt="Adam and Layla"
                       className="block w-full" />
                   </div>
                 </motion.div>
@@ -224,7 +224,7 @@ export default function WelcomePage() {
               </p>
               {/* Raccoon peeking */}
               <div className="fixed right-0 top-1/2 -translate-y-1/2 pointer-events-none" style={{ zIndex: 10 }}>
-                <motion.img src="/characters/raccoon.png" alt="Hacker Raccoon" width={60} height={60}
+                <motion.img src="/characters/raccoon-sneaking.png" alt="Hacker Raccoon" width={60} height={60}
                   initial={{ x: "100%" }}
                   animate={{ x: ["100%", "85%", "100%"] }}
                   transition={{ duration: 2.5, ease: "easeInOut" }} />

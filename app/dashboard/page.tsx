@@ -182,7 +182,7 @@ export default async function DashboardPage() {
                     /* float handled statically */
                     boxShadow: "0 0 50px rgba(139,92,246,0.15)",
                   }}>
-                  <Image src="/characters/adam-layla-happy.png" alt="Adam and Layla"
+                  <Image src="/characters/waving.png" alt="Adam and Layla waving"
                     width={300} height={300} className="block" priority />
                 </div>
                 {[
@@ -210,7 +210,7 @@ export default async function DashboardPage() {
                 <div className="relative shrink-0">
                   <div className="absolute inset-0 rounded-2xl"
                     style={{ background: "rgba(139,92,246,0.25)", filter: "blur(25px)", transform: "scale(0.85)" }} />
-                  <Image src="/characters/raccoon.png" alt="The Hacker Raccoon"
+                  <Image src="/characters/raccoon-sneaking.png" alt="The Hacker Raccoon sneaking"
                     width={100} height={100} className="relative rounded-2xl block" />
                 </div>
                 <div className="flex-1 text-center sm:text-left">

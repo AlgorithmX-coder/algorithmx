@@ -213,7 +213,7 @@ export default function HomePage() {
                     borderColor: "rgba(139,92,246,0.3)",
                     boxShadow: "0 0 60px rgba(139,92,246,0.2)",
                   }}>
-                  <Image src="/characters/adam-layla-happy.png" alt="Adam and Layla — your Cyber Hero guides"
+                  <Image src="/characters/heroic.png" alt="Adam and Layla in heroic pose"
                     width={500} height={500} className="block w-full max-w-[500px]" priority />
                 </motion.div>
                 {/* Sparkles */}

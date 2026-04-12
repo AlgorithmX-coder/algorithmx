@@ -208,7 +208,7 @@ export default function OnboardingPage() {
 
                   {/* Adam & Layla (desktop only) */}
                   <div className="hidden lg:block shrink-0">
-                    <motion.img src="/characters/adam-layla-happy.png" alt="Adam and Layla"
+                    <motion.img src="/characters/waving.png" alt="Adam and Layla"
                       width={220} height={220}
                       className="block rounded-3xl"
                       animate={{ y: [0, -12, 0] }}
