@@ -2,6 +2,69 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import { motion, AnimatePresence, useMotionValue, useTransform } from "framer-motion";
 
+/* ───────────────────────── SVG ICONS ──────────────────────── */
+
+const IconShield = ({ size = 24, color = "#8b5cf6" }: { size?: number; color?: string }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+  </svg>
+);
+
+const IconLock = ({ size = 24, color = "#8b5cf6" }: { size?: number; color?: string }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+  </svg>
+);
+
+const IconUnlock = ({ size = 24, color = "#ef4444" }: { size?: number; color?: string }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 9.9-1"/>
+  </svg>
+);
+
+const IconGamepad = ({ size = 24, color = "#3b82f6" }: { size?: number; color?: string }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+    <line x1="6" y1="12" x2="10" y2="12"/><line x1="8" y1="10" x2="8" y2="14"/><line x1="15" y1="13" x2="15.01" y2="13"/><line x1="18" y1="11" x2="18.01" y2="11"/>
+    <rect x="2" y="6" width="20" height="12" rx="2"/>
+  </svg>
+);
+
+const IconKey = ({ size = 24, color = "#f59e0b" }: { size?: number; color?: string }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+    <path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/>
+  </svg>
+);
+
+const IconUsers = ({ size = 24, color = "#ec4899" }: { size?: number; color?: string }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+  </svg>
+);
+
+const IconMessageCircle = ({ size = 24, color = "#3b82f6" }: { size?: number; color?: string }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+    <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
+  </svg>
+);
+
+const IconTablet = ({ size = 24, color = "#8b5cf6" }: { size?: number; color?: string }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+    <rect x="4" y="2" width="16" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/>
+  </svg>
+);
+
+const IconSchool = ({ size = 24, color = "#10b981" }: { size?: number; color?: string }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+    <path d="M2 10l10-7 10 7-10 7z"/><path d="M6 12v5c0 1 2 3 6 3s6-2 6-3v-5"/>
+  </svg>
+);
+
+const IconRuler = ({ size = 24, color = "#10b981" }: { size?: number; color?: string }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+    <path d="M16 2l6 6-14 14-6-6z"/><path d="M10 10l2 2"/><path d="M14 6l2 2"/><path d="M6 14l2 2"/>
+  </svg>
+);
+
 /* ───────────────────────── CONSTANTS ───────────────────────── */
 
 const TOTAL = 17;
@@ -97,11 +160,11 @@ const BOSS_QUIZ = [
 ];
 
 const RULES = [
-  { icon: "🔒", title: "NEVER share your password", desc: "Not even with your best friend — it's YOUR secret code!", question: "Your friend asks for your password to help you. What do you say?", opts: ["Sure, here it is!", "Sorry, passwords are private!"], correct: 1 },
-  { icon: "🔑", title: "Use DIFFERENT passwords", desc: "One for your games, one for your tablet, one for school!", question: "Should you use the same password everywhere?", opts: ["Yes, it's easier!", "No, use different ones!"], correct: 1 },
-  { icon: "🔓", title: "NEVER use your real name or birthday", desc: "Hackers try names and birthdays first — they're too easy to guess!", question: "Which is safer to use in a password?", opts: ["Your birthday", "Random letters and symbols"], correct: 1 },
-  { icon: "📏", title: "Make it at LEAST 8 characters long", desc: "The longer the password, the harder to crack!", question: "How long should a good password be?", opts: ["3 characters", "At least 8 characters!"], correct: 1 },
-  { icon: "👨‍👩‍👧", title: "If something feels wrong, tell a grown-up", desc: "A parent, teacher, or carer — they're always there to help!", question: "Something weird happens online. What do you do?", opts: ["Ignore it", "Tell a trusted grown-up"], correct: 1 },
+  { icon: "lock", title: "NEVER share your password", desc: "Not even with your best friend — it's YOUR secret code!", question: "Your friend asks for your password to help you. What do you say?", opts: ["Sure, here it is!", "Sorry, passwords are private!"], correct: 1 },
+  { icon: "key", title: "Use DIFFERENT passwords", desc: "One for your games, one for your tablet, one for school!", question: "Should you use the same password everywhere?", opts: ["Yes, it's easier!", "No, use different ones!"], correct: 1 },
+  { icon: "unlock", title: "NEVER use your real name or birthday", desc: "Hackers try names and birthdays first — they're too easy to guess!", question: "Which is safer to use in a password?", opts: ["Your birthday", "Random letters and symbols"], correct: 1 },
+  { icon: "ruler", title: "Make it at LEAST 8 characters long", desc: "The longer the password, the harder to crack!", question: "How long should a good password be?", opts: ["3 characters", "At least 8 characters!"], correct: 1 },
+  { icon: "users", title: "If something feels wrong, tell a grown-up", desc: "A parent, teacher, or carer — they're always there to help!", question: "Something weird happens online. What do you do?", opts: ["Ignore it", "Tell a trusted grown-up"], correct: 1 },
 ];
 
 const ACHIEVEMENTS = [
@@ -125,9 +188,9 @@ const OPT_COLORS = [
 const BUBBLE_COLORS = ["#3b82f6", "#8b5cf6", "#ec4899", "#f59e0b"];
 
 const WHY_SCENARIOS = [
-  { icon: "🎮", label: "Gaming", item: "Your saved games & trophies", problem: "The Raccoon stole all your coins and deleted your save files!", success: "Your games are safe behind a strong password!" },
-  { icon: "👨‍👩‍👧", label: "Family Photos", item: "Your family photos & memories", problem: "The Raccoon deleted your family holiday photos!", success: "Your photos are locked and safe!" },
-  { icon: "💬", label: "Messages", item: "Your private messages", problem: "The Raccoon read all your messages and sent mean ones!", success: "Your messages are private and protected!" },
+  { icon: "gamepad", label: "Gaming", item: "Your saved games & trophies", problem: "The Raccoon stole all your coins and deleted your save files!", success: "Your games are safe behind a strong password!" },
+  { icon: "users", label: "Family Photos", item: "Your family photos & memories", problem: "The Raccoon deleted your family holiday photos!", success: "Your photos are locked and safe!" },
+  { icon: "message", label: "Messages", item: "Your private messages", problem: "The Raccoon read all your messages and sent mean ones!", success: "Your messages are private and protected!" },
 ];
 
 const LOCK_ITEMS = [
@@ -238,39 +301,50 @@ const confettiFallVariant = (_i: number) => ({
 /* ───────────────────────── SUB-COMPONENTS ──────────────────── */
 
 function FloatingOrbs() {
-  const orbs = [
-    { size: 80, left: "10%", top: "20%", delay: 0, color: "rgba(245,158,11,0.15)" },
-    { size: 120, left: "80%", top: "10%", delay: 2, color: "rgba(139,92,246,0.12)" },
-    { size: 60, left: "60%", top: "70%", delay: 4, color: "rgba(245,158,11,0.1)" },
-    { size: 100, left: "25%", top: "80%", delay: 1, color: "rgba(139,92,246,0.1)" },
-    { size: 50, left: "90%", top: "50%", delay: 3, color: "rgba(245,158,11,0.12)" },
-  ];
   return (
     <div style={{ position: "fixed", inset: 0, pointerEvents: "none", zIndex: 0, overflow: "hidden" }}>
-      {orbs.map((o, i) => (
-        <motion.div
-          key={i}
-          animate={{
-            y: [-15, 15, -15],
-            scale: [1, 1.15, 1],
-            opacity: [0.3, 0.5, 0.3],
-          }}
-          transition={{
-            duration: 6,
-            ease: "easeInOut",
-            repeat: Infinity,
-            delay: o.delay,
-          }}
-          style={{
-            position: "absolute",
-            width: o.size,
-            height: o.size,
-            left: o.left,
-            top: o.top,
-            borderRadius: "50%",
-            background: o.color,
-          }}
+      {/* Grid pattern */}
+      <div style={{
+        position: "absolute", inset: 0, opacity: 0.04,
+        backgroundImage: `linear-gradient(rgba(139,92,246,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(139,92,246,0.5) 1px, transparent 1px)`,
+        backgroundSize: "60px 60px",
+      }} />
+      {/* Circuit traces */}
+      <svg style={{ position: "absolute", inset: 0, width: "100%", height: "100%", opacity: 0.06 }}>
+        <line x1="10%" y1="0" x2="10%" y2="100%" stroke="#8b5cf6" strokeWidth="1" strokeDasharray="8 12" />
+        <line x1="30%" y1="0" x2="30%" y2="100%" stroke="#3b82f6" strokeWidth="1" strokeDasharray="4 16" />
+        <line x1="70%" y1="0" x2="70%" y2="100%" stroke="#8b5cf6" strokeWidth="1" strokeDasharray="12 8" />
+        <line x1="90%" y1="0" x2="90%" y2="100%" stroke="#3b82f6" strokeWidth="1" strokeDasharray="6 14" />
+        <line x1="0" y1="25%" x2="100%" y2="25%" stroke="#8b5cf6" strokeWidth="1" strokeDasharray="10 10" />
+        <line x1="0" y1="75%" x2="100%" y2="75%" stroke="#3b82f6" strokeWidth="1" strokeDasharray="8 12" />
+      </svg>
+      {/* Glow spots */}
+      {[
+        { left: "15%", top: "20%", color: "rgba(139,92,246,0.15)", delay: 0 },
+        { left: "75%", top: "15%", color: "rgba(59,130,246,0.12)", delay: 2 },
+        { left: "50%", top: "60%", color: "rgba(139,92,246,0.1)", delay: 4 },
+        { left: "85%", top: "70%", color: "rgba(59,130,246,0.1)", delay: 6 },
+      ].map((g, i) => (
+        <motion.div key={`glow-${i}`}
+          animate={{ opacity: [0.3, 0.6, 0.3] }}
+          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut", delay: g.delay }}
+          style={{ position: "absolute", left: g.left, top: g.top, width: 200, height: 200, borderRadius: "50%", background: `radial-gradient(circle, ${g.color}, transparent 70%)`, filter: "blur(40px)" }}
         />
+      ))}
+      {/* Floating security icons */}
+      {[
+        { icon: "🔒", left: "8%", top: "35%", delay: 0 },
+        { icon: "🛡️", left: "88%", top: "45%", delay: 1.5 },
+        { icon: "🔑", left: "45%", top: "85%", delay: 3 },
+        { icon: "🔒", left: "70%", top: "30%", delay: 4.5 },
+        { icon: "🛡️", left: "20%", top: "70%", delay: 6 },
+      ].map((ic, i) => (
+        <motion.div key={`icon-${i}`}
+          animate={{ y: [-10, 10, -10], opacity: [0.03, 0.07, 0.03] }}
+          transition={{ duration: 8 + i, repeat: Infinity, ease: "easeInOut", delay: ic.delay }}
+          style={{ position: "absolute", left: ic.left, top: ic.top, fontSize: 20, filter: "blur(1px)" }}>
+          {ic.icon}
+        </motion.div>
       ))}
     </div>
   );
@@ -1225,7 +1299,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
               variants={staggerContainer}
               initial="initial"
               animate="animate"
-              style={{ display: "flex", flexDirection: "column", gap: 16, maxWidth: 500, margin: "0 auto 24px" }}
+              style={{ display: "flex", flexDirection: "column", gap: 16, maxWidth: 640, margin: "0 auto 24px" }}
             >
               {missions.map((m, i) => (
                 missionPhase > i ? (
@@ -1302,14 +1376,14 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                           animate={flipping ? { rotateY: [0, 90, 0] } : {}}
                           transition={{ duration: 0.6 }}
                         >
-                          <div style={{ fontSize: 48, marginBottom: 8, width: 56, height: 56, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>{item.icon}</div>
+                          <div style={{ fontSize: 48, marginBottom: 8, width: 56, height: 56, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>{item.id === "gaming" ? <IconGamepad size={40} color="#3b82f6" /> : item.id === "tablet" ? <IconTablet size={40} color="#8b5cf6" /> : <IconSchool size={40} color="#10b981" />}</div>
                           <div style={{ fontSize: 16, color: "#fff", fontWeight: 700, marginBottom: 8 }}>{item.label}</div>
                           <motion.div
                             animate={flipping ? { rotate: 360 } : {}}
                             transition={{ duration: 0.6 }}
                             style={{ fontSize: 32, width: 40, height: 40, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}
                           >
-                            {locked ? "🔒" : "🔓"}
+                            {locked ? <IconLock size={28} color="#10b981" /> : <IconUnlock size={28} color="#ef4444" />}
                           </motion.div>
                         </motion.div>
                         {!locked && !flipping && (
@@ -1438,7 +1512,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
         return (
           <div style={{ textAlign: "center" }}>
             <h1 style={{ color: "#fff", fontSize: 24, fontWeight: 900, marginBottom: 8 }}>Why Do Passwords Matter?</h1>
-            <p style={{ color: "#9ca3af", marginBottom: 16 }}>Scenario {whyIdx + 1}/3: {sc.label} {sc.icon}</p>
+            <p style={{ color: "#9ca3af", marginBottom: 16 }}>Scenario {whyIdx + 1}/3: {sc.label}</p>
             {card(
               <div style={{ position: "relative", minHeight: 200, overflow: "hidden" }}>
                 {/* Item on the left */}
@@ -1455,7 +1529,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                     borderRadius: 16, padding: 16, background: "rgba(255,255,255,0.04)",
                   }}
                 >
-                  <span style={{ fontSize: 48 }}>{sc.icon}</span>
+                  <span style={{ fontSize: 48, display: "flex", alignItems: "center", justifyContent: "center" }}>{sc.icon === "gamepad" ? <IconGamepad size={44} color="#3b82f6" /> : sc.icon === "users" ? <IconUsers size={44} color="#ec4899" /> : <IconMessageCircle size={44} color="#3b82f6" />}</span>
                   <p style={{ color: "#fff", fontSize: 14, fontWeight: 700, margin: "4px 0 0" }}>{sc.item}</p>
                   {shieldPlaced && (
                     <motion.span
@@ -1472,8 +1546,8 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                 {/* Raccoon on the right, approaching */}
                 {!raccoonHitShield && !shieldPlaced && (
                   <motion.div
-                    initial={{ x: 0 }}
-                    animate={{ x: "calc(-100% - 60px)" }}
+                    initial={{ x: 0, scale: 0.6 }}
+                    animate={{ x: "calc(-100% - 60px)", scale: 1.2 }}
                     transition={{ duration: raccoonSpeed, ease: "linear" }}
                     style={{
                       position: "absolute", right: -10, top: "50%", transform: "translateY(-50%)",
@@ -1484,7 +1558,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                       alt="Raccoon sneaking"
                       animate={{ y: [0, -6, 0] }}
                       transition={{ duration: 0.5, repeat: Infinity, ease: "easeInOut" }}
-                      style={{ width: 60, borderRadius: 12 }}
+                      style={{ width: 120, borderRadius: 16, filter: "drop-shadow(0 0 12px rgba(239,68,68,0.5))" }}
                     />
                   </motion.div>
                 )}
@@ -1499,7 +1573,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                       position: "absolute", left: 150, top: "50%", transform: "translateY(-50%)",
                     }}
                   >
-                    <img src="/characters/raccoon-defeated.png" alt="Raccoon defeated" style={{ width: 60, borderRadius: 12 }} />
+                    <img src="/characters/raccoon-defeated.png" alt="Raccoon defeated" style={{ width: 100, borderRadius: 16 }} />
                   </motion.div>
                 )}
 
@@ -2054,7 +2128,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
         return (
           <div style={{ textAlign: "center" }}>
             <h1 style={{ color: "#fff", fontSize: 28, fontWeight: 900, marginBottom: 16 }}>The 5 Golden Rules!</h1>
-            <div style={{ display: "flex", flexDirection: "column", gap: 16, maxWidth: 540, margin: "0 auto 24px" }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: 16, maxWidth: 680, margin: "0 auto 24px" }}>
               {RULES.map((rule, i) => {
                 const isRevealed = revealedRules.has(i);
                 const isFlipping = flippingRule === i;
@@ -2097,7 +2171,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                       ) : (
                         <>
                           <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-                            <span style={{ fontSize: 28, width: 36, height: 36, display: "inline-flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>{rule.icon}</span>
+                            <span style={{ width: 36, height: 36, display: "inline-flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>{rule.icon === "lock" ? <IconLock size={28} color="#8b5cf6" /> : rule.icon === "key" ? <IconKey size={28} color="#f59e0b" /> : rule.icon === "unlock" ? <IconUnlock size={28} color="#ef4444" /> : rule.icon === "ruler" ? <IconRuler size={28} color="#10b981" /> : <IconUsers size={28} color="#ec4899" />}</span>
                             <span style={{ color: "#fff", fontWeight: 700, fontSize: 16, flex: 1, textAlign: "left" }}>{rule.title}</span>
                             {isDone && (
                               <motion.span
@@ -2437,7 +2511,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
               </div>
 
               {/* Options */}
-              <div style={{ display: "flex", flexDirection: "column", gap: 10, maxWidth: 500, margin: "0 auto" }}>
+              <div style={{ display: "flex", flexDirection: "column", gap: 10, maxWidth: 640, margin: "0 auto" }}>
                 {w.opts.map((opt: string, i: number) => {
                   const c = OPT_COLORS[i % OPT_COLORS.length];
                   const selected = wydSel === i;
@@ -2501,6 +2575,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
               transition={{ type: "spring", stiffness: 300, damping: 20 }}
               style={{ textAlign: "center" }}
             >
+              <Confetti duration={5000} />
               {card(
                 <>
                   <motion.img
@@ -2508,16 +2583,33 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                     alt="Raccoon defeated"
                     animate={{ rotate: 720, scale: 0, y: -100, opacity: 0 }}
                     transition={{ duration: 1.5, ease: "easeOut" }}
-                    style={{ width: 80, margin: "0 auto 12px", display: "block" }}
+                    style={{ width: 100, margin: "0 auto 12px", display: "block" }}
                   />
-                  <h2 style={{
-                    fontSize: 28, margin: "0 0 12px", fontWeight: 900,
-                    background: "linear-gradient(135deg, #f59e0b, #ef4444, #8b5cf6)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent",
-                  }}>YOU DEFEATED THE HACKER RACCOON! 🎉🎉🎉</h2>
-                  {stars(bossScore >= 8 ? 3 : bossScore >= 6 ? 2 : 1)}
+                  <motion.h2
+                    animate={{ textShadow: ["0 0 20px rgba(245,158,11,0.3)", "0 0 40px rgba(245,158,11,0.6)", "0 0 20px rgba(245,158,11,0.3)"] }}
+                    transition={{ duration: 2, repeat: Infinity }}
+                    style={{
+                      fontSize: 32, margin: "0 0 12px", fontWeight: 900,
+                      background: "linear-gradient(135deg, #f59e0b, #ef4444, #8b5cf6)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent",
+                    }}>YOU DEFEATED THE HACKER RACCOON!</motion.h2>
+                  <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.3, type: "spring" }}>
+                    {stars(bossScore >= 8 ? 3 : bossScore >= 6 ? 2 : 1)}
+                  </motion.div>
+                  <motion.img src="/characters/celebrating.png" alt="Adam and Layla celebrating"
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={{ opacity: 1, y: [0, -8, 0] }}
+                    transition={{ y: { duration: 2, repeat: Infinity }, opacity: { delay: 0.5, duration: 0.5 } }}
+                    style={{ width: 160, borderRadius: 20, margin: "16px auto", display: "block", border: "3px solid #f59e0b", boxShadow: "0 0 30px rgba(245,158,11,0.4)" }}
+                  />
                   <p style={{ color: "#d1d5db", margin: "12px 0" }}>{bossScore}/{BOSS_QUIZ.length} correct hits!</p>
-                  <p style={{ color: "#f59e0b", fontSize: 14 }}>🪙 +{bossScore * 20 + 50} coins (including 50 bonus!)</p>
-                  {btn("Save Adam & Layla! →", () => { addCoins(50); playSound("/sounds/coin.mp3"); navigate(15); })}
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.5 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: 0.8 }}
+                    style={{ background: "rgba(245,158,11,0.15)", border: "2px solid rgba(245,158,11,0.4)", borderRadius: 16, padding: "8px 20px", display: "inline-block", marginBottom: 16 }}>
+                    <span style={{ color: "#f59e0b", fontSize: 14, fontWeight: 700 }}>🪙 +{bossScore * 20 + 50} coins (including 50 bonus!)</span>
+                  </motion.div>
+                  <div>{btn("Save Adam & Layla! →", () => { addCoins(50); playSound("/sounds/coin.mp3"); navigate(15); })}</div>
                 </>
               )}
             </motion.div>
@@ -2539,7 +2631,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
               <div
                 onClick={handleArenaFire}
                 style={{
-                  position: "relative", width: "100%", maxWidth: 500, height: 350,
+                  position: "relative", width: "100%", maxWidth: 600, height: 380,
                   margin: "0 auto 12px", perspective: 800, overflow: "hidden",
                   borderRadius: 24, cursor: !arenaShowResult ? "crosshair" : "default",
                   background: "radial-gradient(ellipse at center bottom, rgba(139,92,246,0.15), transparent 70%)",
@@ -2597,7 +2689,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                       : arenaRaccoonAnim === "defeat" ? { duration: 1.5 }
                       : { duration: 2, repeat: Infinity, ease: "easeInOut" }
                     }
-                    style={{ width: 80, height: 80, borderRadius: 16 }}
+                    style={{ width: 120, height: 120, borderRadius: 16, filter: "drop-shadow(0 0 10px rgba(239,68,68,0.4))" }}
                   />
                 </motion.div>
 
@@ -2725,7 +2817,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
               transition={{ duration: 0.4 }}
             >
               <h2 style={{ color: "#fff", fontSize: 18, margin: "0 0 16px" }}>{bq.q}</h2>
-              <div style={{ display: "flex", flexDirection: "column", gap: 10, maxWidth: 500, margin: "0 auto" }}>
+              <div style={{ display: "flex", flexDirection: "column", gap: 10, maxWidth: 640, margin: "0 auto" }}>
                 {bq.opts.map((opt: string, i: number) => {
                   const c = OPT_COLORS[i];
                   const isCorrect = i === bq.correct;
@@ -2822,7 +2914,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
               variants={achieveStaggerContainer}
               initial="initial"
               animate="animate"
-              style={{ display: "flex", flexDirection: "column", gap: 8, maxWidth: 440, margin: "0 auto 24px" }}
+              style={{ display: "flex", flexDirection: "column", gap: 8, maxWidth: 580, margin: "0 auto 24px" }}
             >
               {ACHIEVEMENTS.map((a: string, i: number) => (
                 achievePhase > i ? (
@@ -2971,26 +3063,26 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
       <div className="floating-orbs-wrap"><FloatingOrbs /></div>
       {/* Sticky header */}
       <header className="print-hide" style={{
-        position: "sticky", top: 0, zIndex: 40, padding: "12px 16px",
-        background: "rgba(26,16,51,0.85)", backdropFilter: "blur(12px)",
-        borderBottom: "1px solid rgba(255,255,255,0.06)",
+        position: "sticky", top: 0, zIndex: 40, padding: "12px 20px",
+        background: "rgba(26,16,51,0.9)", backdropFilter: "blur(16px)",
+        borderBottom: "1px solid rgba(255,255,255,0.08)",
+        boxShadow: "0 2px 12px rgba(0,0,0,0.3)",
         display: "flex", alignItems: "center", justifyContent: "space-between",
       }}>
-        <a href="/dashboard" style={{ color: "#9ca3af", textDecoration: "none", fontSize: 14, fontWeight: 600, minWidth: 48, minHeight: 48, display: "flex", alignItems: "center" }}>
+        <a href="/dashboard" style={{ color: "#9ca3af", textDecoration: "none", fontSize: 14, fontWeight: 600, minWidth: 48, minHeight: 48, display: "flex", alignItems: "center", borderRadius: 12, padding: "4px 12px" }}>
           ← Dashboard
         </a>
         <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-          <span style={{
-            fontWeight: 900, fontSize: 18, background: GRAD,
-            WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent",
-          }}>AX</span>
-          <span style={{ color: "#6b7280", fontSize: 13 }}>Week 1 · Passwords: The Secret Code</span>
+          <div style={{ width: 36, height: 36, borderRadius: 10, background: GRAD, display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 2px 8px rgba(139,92,246,0.4)" }}>
+            <span style={{ fontWeight: 900, fontSize: 14, color: "#fff" }}>AX</span>
+          </div>
+          <span style={{ color: "#9ca3af", fontSize: 13, fontWeight: 600 }}>Week 1 · Passwords: The Secret Code</span>
         </div>
         <CoinCounter coins={coins} animKey={coinAnimKey} />
       </header>
       <div className="progress-wrap print-hide"><ProgressBar step={screen} /></div>
       <div className="step-dots-wrap print-hide"><StepDots step={screen} /></div>
-      <main style={{ maxWidth: 700, margin: "0 auto", padding: "16px 16px 80px", position: "relative", zIndex: 1 }}>
+      <main style={{ maxWidth: 850, margin: "0 auto", padding: "16px 24px 80px", position: "relative", zIndex: 1 }}>
         <AnimatePresence mode="wait">
           <motion.div
             key={screen}

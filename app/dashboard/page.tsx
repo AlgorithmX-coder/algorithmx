@@ -95,14 +95,15 @@ export default async function DashboardPage() {
         {/* ── NAV ── */}
         <nav className="sticky top-0 z-50 border-b"
           style={{
-            background: "rgba(26,16,51,0.85)",
+            background: "rgba(26,16,51,0.9)",
             backdropFilter: "blur(20px)",
-            borderColor: "rgba(255,255,255,0.06)",
+            borderColor: "rgba(255,255,255,0.08)",
+            boxShadow: "0 1px 3px rgba(0,0,0,0.3)",
           }}>
           <div className="max-w-[1100px] mx-auto px-6 md:px-10 py-4 flex items-center justify-between">
             <a href="/" className="flex items-center gap-2">
-              <div className="w-9 h-9 rounded-lg flex items-center justify-center shadow-lg"
-                style={{ background: GRAD, boxShadow: "0 0 20px rgba(139,92,246,0.4)" }}>
+              <div className="w-9 h-9 rounded-lg flex items-center justify-center"
+                style={{ background: GRAD, boxShadow: "0 2px 8px rgba(139,92,246,0.4)" }}>
                 <span className="text-xs font-black text-white">AX</span>
               </div>
               <span className="text-lg font-black text-white tracking-tight">
@@ -110,11 +111,16 @@ export default async function DashboardPage() {
               </span>
             </a>
             <div className="flex items-center gap-4">
-              <span className="text-sm text-gray-400 hidden sm:block">
-                Welcome, <span className="text-amber-400 font-black">{userName}</span>
-              </span>
-              <a href="/parent" className="text-xs font-bold text-gray-400 hover:text-white transition-colors hidden sm:block">
-                Parent View ��‍👩‍👧
+              <div className="hidden sm:flex items-center gap-2">
+                <div style={{ width: 32, height: 32, borderRadius: "50%", background: GRAD, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 12, fontWeight: 900, color: "#fff" }}>
+                  {userName.charAt(0).toUpperCase()}
+                </div>
+                <span className="text-sm text-gray-400">
+                  Welcome, <span className="text-amber-400 font-black">{userName}</span>
+                </span>
+              </div>
+              <a href="/parent" className="hidden sm:block" style={{ background: "rgba(139,92,246,0.15)", border: "1px solid rgba(139,92,246,0.3)", borderRadius: 20, padding: "4px 16px", fontSize: 13, fontWeight: 700, color: "#c4b5fd", textDecoration: "none" }}>
+                Parent View
               </a>
               <form
                 action={async () => {
@@ -122,8 +128,7 @@ export default async function DashboardPage() {
                   const { signOut } = await import("@/app/lib/auth");
                   await signOut({ redirectTo: "/" });
                 }}>
-                <button className="px-4 py-2.5 text-xs font-black text-gray-400 hover:text-white rounded-2xl transition-colors"
-                  style={{ border: "1px solid rgba(255,255,255,0.08)" }}>
+                <button style={{ background: "transparent", border: "1px solid rgba(255,255,255,0.2)", borderRadius: 12, padding: "6px 16px", color: "#9ca3af", fontSize: 13, fontWeight: 600, cursor: "pointer" }}>
                   Log Out
                 </button>
               </form>

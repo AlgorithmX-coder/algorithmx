@@ -110,11 +110,11 @@ export default function OnboardingPage() {
 
       <div className="relative min-h-screen flex flex-col items-center justify-center px-4 py-10" style={{ zIndex: 1 }}>
         {/* Logo */}
-        <a href="/" className="inline-flex items-center gap-2.5 mb-8">
-          <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: GRAD, boxShadow: "0 0 20px rgba(139,92,246,0.3)" }}>
-            <span className="text-sm font-black text-white">AX</span>
+        <a href="/" className="inline-flex items-center gap-3 mb-8">
+          <div className="w-14 h-14 rounded-2xl flex items-center justify-center" style={{ background: GRAD, boxShadow: "0 0 24px rgba(139,92,246,0.4)" }}>
+            <span className="text-lg font-black text-white">AX</span>
           </div>
-          <span className="text-xl font-black text-white" style={{ fontFamily: "Nunito, sans-serif" }}>
+          <span className="text-2xl font-black text-white" style={{ fontFamily: "Nunito, sans-serif" }}>
             Algorithm<span className="text-transparent bg-clip-text" style={{ backgroundImage: GRAD, WebkitBackgroundClip: "text" }}>X</span>
           </span>
         </a>
@@ -134,7 +134,7 @@ export default function OnboardingPage() {
         <AnimatePresence mode="wait">
           <motion.div
             key={step}
-            className="w-full max-w-2xl"
+            className="w-full max-w-3xl"
             initial={{ opacity: 0, x: 80 }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -80 }}
@@ -209,7 +209,7 @@ export default function OnboardingPage() {
                   {/* Adam & Layla (desktop only) */}
                   <div className="hidden lg:block shrink-0">
                     <motion.img src="/characters/waving.png" alt="Adam and Layla"
-                      width={220} height={220}
+                      width={280} height={280}
                       className="block rounded-3xl"
                       animate={{ y: [0, -12, 0] }}
                       transition={{ duration: 5, ease: "easeInOut", repeat: Infinity }} />
