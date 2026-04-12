@@ -71,6 +71,9 @@ const PHISH = [
   { title: "⚠️ URGENT: Your account has been hacked!", text: "Enter your password RIGHT NOW to fix it!", isScam: true, explain: "Real websites don't send scary pop-ups! They want to make you panic so you give away your code." },
   { title: "💬 Hi! Your friend Sam sent you a funny video 😂", text: "Click to watch!", isScam: false, explain: "This looks normal — no password needed! But always check with a grown-up if you're not sure." },
   { title: "🏫 Your school needs your password!", text: "Enter it in this form to update the system.", isScam: true, explain: "Your school would NEVER ask for your password in a message! Always ask your teacher in person." },
+  { title: "🎮 FREE V-BUCKS! Get 10,000 V-Bucks FREE!", text: "Just enter your username and password to claim your free V-Bucks now! Limited time only!", isScam: true, explain: "Free V-Bucks don't exist! This is a scam to steal your gaming account. Only buy V-Bucks from the official store." },
+  { title: "📚 Reminder from School", text: "Don't forget to bring your PE kit tomorrow! - Mrs Johnson", isScam: false, explain: "This looks like a normal school reminder. No password or personal information is being asked for." },
+  { title: "🏆 CONGRATULATIONS! You are our 1,000,000th visitor!", text: "Click NOW to claim your prize! Enter your details before time runs out! ⏰", isScam: true, explain: "Websites can't tell which number visitor you are! This is one of the oldest tricks online. Never click these." },
 ];
 
 const WYD = [
@@ -764,13 +767,16 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
   const [raccoonHealth, setRaccoonHealth] = useState(100);
   const [bossDone, setBossDone] = useState(false);
   const [bossAttackPhase, setBossAttackPhase] = useState(false);
-  const [arenaShotsLeft, setArenaShotsLeft] = useState(5);
   const [arenaHits, setArenaHits] = useState(0);
   const [arenaRaccoonPos, setArenaRaccoonPos] = useState({ left: 50, top: 30 });
   const [arenaProjectiles, setArenaProjectiles] = useState<{ id: number; tx: number; ty: number; hit: boolean }[]>([]);
   const [arenaShowResult, setArenaShowResult] = useState(false);
   const [arenaRaccoonAnim, setArenaRaccoonAnim] = useState<"idle" | "hit" | "taunt" | "defeat">("idle");
+  const [arenaTimeLeft, setArenaTimeLeft] = useState(12);
   const arenaProjectileId = useRef(0);
+  const arenaLastShot = useRef(0);
+  const arenaTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const arenaMoveRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   // Screen 15 — Achievements
   const [achievePhase, setAchievePhase] = useState(0);
@@ -829,9 +835,9 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
       case 14:
         setBossIdx(0); setBossSel(null); setBossFeedback(null);
         setBossScore(0); setRaccoonHealth(100); setBossDone(false);
-        setBossAttackPhase(false); setArenaShotsLeft(5); setArenaHits(0);
+        setBossAttackPhase(false); setArenaHits(0);
         setArenaRaccoonPos({ left: 50, top: 30 }); setArenaProjectiles([]);
-        setArenaShowResult(false); setArenaRaccoonAnim("idle");
+        setArenaShowResult(false); setArenaRaccoonAnim("idle"); setArenaTimeLeft(12);
         break;
       case 15:
         setAchievePhase(0);
@@ -1008,18 +1014,29 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
   /* ---------- arena boss battle handler ---------- */
   const randomRaccoonPos = useCallback(() => ({
     left: 15 + Math.random() * 70,
-    top: 10 + Math.random() * 40,
+    top: 10 + Math.random() * 45,
   }), []);
 
+  const getArenaDamage = (hits: number) => {
+    if (hits >= 9) return 18;
+    if (hits >= 6) return 14;
+    if (hits >= 3) return 10;
+    return 6;
+  };
+
   const handleArenaFire = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
-    if (arenaShotsLeft <= 0 || arenaShowResult) return;
+    if (arenaShowResult) return;
+    const now = Date.now();
+    if (now - arenaLastShot.current < 300) return;
+    arenaLastShot.current = now;
+
     const rect = e.currentTarget.getBoundingClientRect();
     const tapX = e.clientX - rect.left;
     const tapY = e.clientY - rect.top;
     const raccoonX = (arenaRaccoonPos.left / 100) * rect.width;
     const raccoonY = (arenaRaccoonPos.top / 100) * rect.height;
     const dist = Math.sqrt((tapX - raccoonX) ** 2 + (tapY - raccoonY) ** 2);
-    const isHit = dist < 80;
+    const isHit = dist < 90;
     const id = arenaProjectileId.current++;
     const tx = tapX - rect.width / 2;
     const ty = tapY - rect.height;
@@ -1031,38 +1048,48 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
       setArenaHits((h) => h + 1);
       setArenaRaccoonAnim("hit");
       playSound("/sounds/correct.mp3");
-      setTimeout(() => {
-        setArenaRaccoonAnim("idle");
-        setArenaRaccoonPos(randomRaccoonPos());
-      }, 500);
-    } else {
-      setArenaRaccoonAnim("taunt");
-      setTimeout(() => {
-        setArenaRaccoonAnim("idle");
-        setArenaRaccoonPos(randomRaccoonPos());
-      }, 500);
+      addCoins(2);
+      setTimeout(() => setArenaRaccoonAnim("idle"), 400);
     }
+  }, [arenaShowResult, arenaRaccoonPos, playSound, addCoins]);
 
-    const newShots = arenaShotsLeft - 1;
-    setArenaShotsLeft(newShots);
-    if (newShots <= 0) {
-      setTimeout(() => setArenaShowResult(true), 800);
-    }
-  }, [arenaShotsLeft, arenaShowResult, arenaRaccoonPos, playSound, randomRaccoonPos]);
-
-  // Arena: init on phase start
+  // Arena: init + timer + raccoon movement
   useEffect(() => {
     if (!bossAttackPhase) return;
-    setArenaShotsLeft(5);
     setArenaHits(0);
     setArenaRaccoonPos(randomRaccoonPos());
     setArenaProjectiles([]);
     setArenaShowResult(false);
     setArenaRaccoonAnim("idle");
+    setArenaTimeLeft(12);
+    arenaLastShot.current = 0;
+
+    // Countdown timer
+    arenaTimerRef.current = setInterval(() => {
+      setArenaTimeLeft((t) => {
+        if (t <= 1) {
+          if (arenaTimerRef.current) clearInterval(arenaTimerRef.current);
+          if (arenaMoveRef.current) clearInterval(arenaMoveRef.current);
+          setTimeout(() => setArenaShowResult(true), 300);
+          return 0;
+        }
+        return t - 1;
+      });
+    }, 1000);
+
+    // Raccoon moves every 1.5s (pauses 1s at each spot)
+    arenaMoveRef.current = setInterval(() => {
+      setArenaRaccoonPos({ left: 15 + Math.random() * 70, top: 10 + Math.random() * 45 });
+    }, 1500);
+
+    return () => {
+      if (arenaTimerRef.current) clearInterval(arenaTimerRef.current);
+      if (arenaMoveRef.current) clearInterval(arenaMoveRef.current);
+    };
   }, [bossAttackPhase, randomRaccoonPos]);
 
   const finishArenaRound = useCallback(() => {
-    const damage = Math.max(6, arenaHits * 2);
+    const damage = getArenaDamage(arenaHits);
     setRaccoonHealth((h) => Math.max(0, h - damage));
     setBossAttackPhase(false);
     setArenaShowResult(false);
@@ -2043,116 +2070,91 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                 const isDone = answeredRules.has(i);
                 return (
                   <div key={i}>
-                    {!isRevealed ? (
-                      /* Mystery card */
-                      <motion.div
-                        onClick={() => {
-                          if (isFlipping) return;
-                          setFlippingRule(i);
-                          setTimeout(() => {
-                            setRevealedRules((prev) => { const n = new Set(prev); n.add(i); return n; });
-                            setFlippingRule(null);
-                          }, 600);
-                        }}
-                        animate={isFlipping ? { rotateY: [0, 90, 0] } : { rotate: [0, -1.5, 0, 1.5, 0] }}
-                        transition={isFlipping ? { duration: 0.6 } : { duration: 3, repeat: Infinity, ease: "easeInOut" }}
-                        whileHover={{ scale: 1.02 }}
-                        whileTap={{ scale: 0.98 }}
-                        style={{
-                          borderRadius: 24, padding: 24, cursor: "pointer",
-                          background: "linear-gradient(135deg, #f59e0b, #fbbf24, #f59e0b)",
-                          backgroundSize: "200% 100%",
-                          border: "2px solid rgba(245,158,11,0.5)",
-                          position: "relative", overflow: "hidden",
-                          minHeight: 80,
-                          display: "flex", alignItems: "center", justifyContent: "center",
-                        }}
-                      >
-                        <span style={{ fontSize: 18, fontWeight: 900, color: "#1a1033", position: "relative", zIndex: 1 }}>
-                          Tap to reveal Rule {i + 1}! ✨
-                        </span>
-                      </motion.div>
-                    ) : (
-                      /* Revealed card */
-                      <motion.div
-                        initial={{ opacity: 0, y: 30 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.4 }}
-                      >
-                        {card(
-                          <>
-                            <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-                              <span style={{ fontSize: 28 }}>{rule.icon}</span>
-                              <span style={{ color: "#fff", fontWeight: 700, fontSize: 16, flex: 1, textAlign: "left" }}>{rule.title}</span>
-                              {isDone && (
-                                <motion.span
-                                  initial={{ opacity: 0, scale: 0, rotate: -45 }}
-                                  animate={{ opacity: 1, scale: 1, rotate: 0 }}
-                                  transition={{ type: "spring", stiffness: 300, damping: 15 }}
-                                  style={{ color: "#f59e0b", fontSize: 22 }}
-                                >
-                                  ✅
-                                </motion.span>
-                              )}
-                            </div>
-                            {!isDone && (
-                              <motion.div
-                                initial={{ opacity: 0, y: 30 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                style={{ marginTop: 12 }}
-                              >
-                                <p style={{ color: "#d1d5db", fontSize: 14, textAlign: "left" }}>{rule.desc}</p>
-                                <p style={{ color: "#f59e0b", fontWeight: 700, fontSize: 14, marginBottom: 8 }}>{rule.question}</p>
-                                <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-                                  {rule.opts.map((opt: string, oi: number) => (
-                                    <motion.button
-                                      key={oi}
-                                      onClick={() => {
-                                        setRuleAnswers((prev) => ({ ...prev, [i]: oi }));
-                                        if (oi === rule.correct) {
-                                          setAnsweredRules((prev) => { const n = new Set(prev); n.add(i); return n; });
-                                          playSound("/sounds/correct.mp3");
-                                          addCoins(5);
-                                          setTimeout(() => playSound("/sounds/coin.mp3"), 500);
-                                        } else {
-                                          playSound("/sounds/wrong.mp3");
-                                        }
-                                      }}
-                                      animate={ruleAnswers[i] === oi && oi !== rule.correct ? shakeAnimation : {}}
-                                      whileHover={{ scale: 1.05 }}
-                                      whileTap={{ scale: 0.95 }}
-                                      style={{
-                                        background: ruleAnswers[i] === oi
-                                          ? oi === rule.correct ? "rgba(16,185,129,0.2)" : "rgba(239,68,68,0.2)"
-                                          : "rgba(255,255,255,0.12)",
-                                        border: `2px solid ${ruleAnswers[i] === oi
-                                          ? oi === rule.correct ? "#10b981" : "#ef4444"
-                                          : "rgba(255,255,255,0.35)"}`,
-                                        borderRadius: 12, padding: "16px 24px",
-                                        color: ruleAnswers[i] === oi
-                                          ? oi === rule.correct ? "#10b981" : "#ef4444"
-                                          : "#ffffff",
-                                        fontSize: 16, fontWeight: 800, cursor: "pointer", minHeight: 56, flex: 1,
-                                        opacity: ruleAnswers[i] !== null && ruleAnswers[i] !== undefined && ruleAnswers[i] !== oi && ruleAnswers[i] !== rule.correct ? 0.4 : 1,
-                                      }}
-                                    >
-                                      {opt}
-                                    </motion.button>
-                                  ))}
-                                </div>
-                              </motion.div>
-                            )}
+                    <motion.div
+                      style={{
+                        borderRadius: 24, padding: 20, minHeight: 120,
+                        background: !isRevealed
+                          ? "linear-gradient(135deg, #f59e0b, #fbbf24, #f59e0b)"
+                          : "rgba(255,255,255,0.04)",
+                        backdropFilter: isRevealed ? "blur(12px)" : undefined,
+                        border: !isRevealed ? "2px solid rgba(245,158,11,0.5)"
+                          : isDone ? "2px solid #f59e0b"
+                          : "1px solid rgba(255,255,255,0.1)",
+                        borderLeft: isRevealed ? (isDone ? "4px solid #f59e0b" : "4px solid rgba(245,158,11,0.3)") : undefined,
+                        position: "relative", overflow: "hidden",
+                        cursor: !isRevealed ? "pointer" : "default",
+                      }}
+                      animate={!isRevealed ? (isFlipping ? { rotateY: [0, 90, 0] } : { rotate: [0, -1.5, 0, 1.5, 0] }) : {}}
+                      transition={!isRevealed ? (isFlipping ? { duration: 0.6 } : { duration: 3, repeat: Infinity, ease: "easeInOut" }) : { duration: 0.3 }}
+                      whileHover={!isRevealed ? { scale: 1.02 } : {}}
+                      whileTap={!isRevealed ? { scale: 0.98 } : {}}
+                      onClick={() => {
+                        if (isRevealed || isFlipping) return;
+                        setFlippingRule(i);
+                        setTimeout(() => {
+                          setRevealedRules((prev) => { const n = new Set(prev); n.add(i); return n; });
+                          setFlippingRule(null);
+                        }, 600);
+                      }}
+                    >
+                      {!isRevealed ? (
+                        <div style={{ display: "flex", alignItems: "center", justifyContent: "center", minHeight: 80 }}>
+                          <span style={{ fontSize: 18, fontWeight: 900, color: "#1a1033", position: "relative", zIndex: 1 }}>
+                            Tap to reveal Rule {i + 1}! ✨
+                          </span>
+                        </div>
+                      ) : (
+                        <>
+                          <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                            <span style={{ fontSize: 28 }}>{rule.icon}</span>
+                            <span style={{ color: "#fff", fontWeight: 700, fontSize: 16, flex: 1, textAlign: "left" }}>{rule.title}</span>
                             {isDone && (
-                              <p style={{ color: "#10b981", fontSize: 13, marginTop: 8, textAlign: "left" }}>{rule.desc}</p>
+                              <motion.span
+                                initial={{ opacity: 0, scale: 0, rotate: -45 }}
+                                animate={{ opacity: 1, scale: 1, rotate: 0 }}
+                                transition={{ type: "spring", stiffness: 300, damping: 15 }}
+                                style={{ color: "#f59e0b", fontSize: 22 }}
+                              >✅</motion.span>
                             )}
-                          </>,
-                          {
-                            borderLeft: isDone ? "4px solid #f59e0b" : "4px solid rgba(245,158,11,0.3)",
-                            border: isDone ? "2px solid #f59e0b" : "1px solid rgba(255,255,255,0.1)",
-                          }
-                        )}
-                      </motion.div>
-                    )}
+                          </div>
+                          {!isDone && (
+                            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} style={{ marginTop: 12 }}>
+                              <p style={{ color: "#d1d5db", fontSize: 14, textAlign: "left" }}>{rule.desc}</p>
+                              <p style={{ color: "#f59e0b", fontWeight: 700, fontSize: 14, marginBottom: 8 }}>{rule.question}</p>
+                              <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+                                {rule.opts.map((opt: string, oi: number) => (
+                                  <motion.button key={oi}
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      setRuleAnswers((prev) => ({ ...prev, [i]: oi }));
+                                      if (oi === rule.correct) {
+                                        setAnsweredRules((prev) => { const n = new Set(prev); n.add(i); return n; });
+                                        playSound("/sounds/correct.mp3");
+                                        addCoins(5);
+                                        setTimeout(() => playSound("/sounds/coin.mp3"), 500);
+                                      } else {
+                                        playSound("/sounds/wrong.mp3");
+                                      }
+                                    }}
+                                    animate={ruleAnswers[i] === oi && oi !== rule.correct ? shakeAnimation : {}}
+                                    whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
+                                    style={{
+                                      background: ruleAnswers[i] === oi ? (oi === rule.correct ? "rgba(16,185,129,0.2)" : "rgba(239,68,68,0.2)") : "rgba(255,255,255,0.12)",
+                                      border: `2px solid ${ruleAnswers[i] === oi ? (oi === rule.correct ? "#10b981" : "#ef4444") : "rgba(255,255,255,0.35)"}`,
+                                      borderRadius: 12, padding: "16px 24px",
+                                      color: ruleAnswers[i] === oi ? (oi === rule.correct ? "#10b981" : "#ef4444") : "#ffffff",
+                                      fontSize: 16, fontWeight: 800, cursor: "pointer", minHeight: 56, flex: 1,
+                                      opacity: ruleAnswers[i] !== null && ruleAnswers[i] !== undefined && ruleAnswers[i] !== oi && ruleAnswers[i] !== rule.correct ? 0.4 : 1,
+                                    }}
+                                  >{opt}</motion.button>
+                                ))}
+                              </div>
+                            </motion.div>
+                          )}
+                          {isDone && <p style={{ color: "#10b981", fontSize: 13, marginTop: 8, textAlign: "left" }}>{rule.desc}</p>}
+                        </>
+                      )}
+                    </motion.div>
                   </div>
                 );
               })}
@@ -2532,13 +2534,15 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
         }
 
         if (bossAttackPhase) {
-          const raccoonScale = 0.5 + (arenaRaccoonPos.top / 100) * 0.8;
+          const raccoonScale = 0.6 + (arenaRaccoonPos.top / 100) * 0.6;
+          const timerPct = (arenaTimeLeft / 12) * 100;
           return (
             <div style={{ textAlign: "center" }}>
               <h1 style={{ color: "#f59e0b", fontSize: 26, fontWeight: 900, marginBottom: 4 }}>
                 FIRE AT THE RACCOON!
               </h1>
-              <p style={{ color: "#9ca3af", fontSize: 14, marginBottom: 8 }}>Tap the arena to fire! Shots: {arenaShotsLeft}/5 | Hits: {arenaHits}</p>
+              <p style={{ color: "#9ca3af", fontSize: 14, marginBottom: 4 }}>Tap anywhere to fire!</p>
+              <p style={{ color: "#f59e0b", fontSize: 28, fontWeight: 900, marginBottom: 8 }}>HITS: {arenaHits}</p>
 
               {/* Arena */}
               <div
@@ -2546,11 +2550,26 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                 style={{
                   position: "relative", width: "100%", maxWidth: 500, height: 350,
                   margin: "0 auto 12px", perspective: 800, overflow: "hidden",
-                  borderRadius: 24, cursor: arenaShotsLeft > 0 && !arenaShowResult ? "crosshair" : "default",
+                  borderRadius: 24, cursor: !arenaShowResult ? "crosshair" : "default",
                   background: "radial-gradient(ellipse at center bottom, rgba(139,92,246,0.15), transparent 70%)",
                   border: "1px solid rgba(139,92,246,0.2)",
                 }}
               >
+                {/* Timer bar at top */}
+                <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 6, zIndex: 5, background: "rgba(0,0,0,0.3)", borderRadius: "24px 24px 0 0" }}>
+                  <motion.div
+                    animate={{ width: `${timerPct}%` }}
+                    transition={{ duration: 0.5 }}
+                    style={{
+                      height: "100%", borderRadius: "24px 24px 0 0",
+                      background: timerPct > 50 ? "linear-gradient(90deg, #22c55e, #4ade80)" : timerPct > 25 ? "linear-gradient(90deg, #f59e0b, #fbbf24)" : "linear-gradient(90deg, #ef4444, #f87171)",
+                    }}
+                  />
+                </div>
+                <div style={{ position: "absolute", top: 10, right: 14, zIndex: 6, color: arenaTimeLeft <= 3 ? "#ef4444" : "#9ca3af", fontWeight: 900, fontSize: 18 }}>
+                  {arenaTimeLeft}s
+                </div>
+
                 {/* Arena floor */}
                 <div style={{
                   position: "absolute", bottom: 0, left: "-50%", width: "200%", height: "60%",
@@ -2567,11 +2586,9 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                     left: `${arenaRaccoonPos.left}%`,
                     top: `${arenaRaccoonPos.top}%`,
                   }}
-                  transition={{ duration: 0.5, type: "spring", stiffness: 300, damping: 25 }}
+                  transition={{ type: "spring", stiffness: 150, damping: 15 }}
                   style={{
                     position: "absolute",
-                    left: `${arenaRaccoonPos.left}%`,
-                    top: `${arenaRaccoonPos.top}%`,
                     transform: `translate(-50%, -50%) scale(${raccoonScale})`,
                     zIndex: 2,
                   }}
@@ -2580,14 +2597,12 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                     src="/characters/raccoon.png"
                     alt="Raccoon"
                     animate={
-                      arenaRaccoonAnim === "hit" ? { filter: ["brightness(1)", "brightness(3)", "brightness(1)"], scale: [1, 0.9, 1.1, 1] }
-                      : arenaRaccoonAnim === "taunt" ? { x: [0, -15, 15, 0], rotate: [0, -5, 5, 0] }
-                      : arenaRaccoonAnim === "defeat" ? { rotate: 720, scale: 0, y: -100, opacity: 0 }
+                      arenaRaccoonAnim === "hit" ? { filter: ["brightness(1)", "brightness(3)", "brightness(1)"], scaleX: [1, 1.2, 1], scaleY: [1, 0.8, 1] }
+                      : arenaRaccoonAnim === "defeat" ? { rotate: 1440, scale: 0, y: -100, opacity: 0 }
                       : { y: [0, -6, 0] }
                     }
                     transition={
-                      arenaRaccoonAnim === "hit" ? { duration: 0.5 }
-                      : arenaRaccoonAnim === "taunt" ? { duration: 0.5 }
+                      arenaRaccoonAnim === "hit" ? { duration: 0.4 }
                       : arenaRaccoonAnim === "defeat" ? { duration: 1.5 }
                       : { duration: 2, repeat: Infinity, ease: "easeInOut" }
                     }
@@ -2600,15 +2615,16 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                   <motion.div
                     key={p.id}
                     initial={{ x: 0, y: 0, scale: 1, opacity: 1 }}
-                    animate={{ x: p.tx, y: p.ty, scale: 0.6, opacity: 0.8 }}
-                    transition={{ duration: 0.4, ease: "easeOut" }}
+                    animate={{ x: p.tx, y: p.ty, scale: 0.5, opacity: 0.6 }}
+                    transition={{ duration: 0.35, ease: "easeOut" }}
                     style={{
                       position: "absolute", bottom: 10, left: "50%",
-                      fontSize: 28, pointerEvents: "none", zIndex: 3,
+                      width: 14, height: 14, borderRadius: "50%",
+                      background: "radial-gradient(circle, #a78bfa, #7c3aed)",
+                      boxShadow: "0 0 12px #8b5cf6",
+                      pointerEvents: "none", zIndex: 3,
                     }}
-                  >
-                    🛡️
-                  </motion.div>
+                  />
                 ))}
 
                 {/* Impact effects */}
@@ -2616,17 +2632,17 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                   <motion.span
                     key={`fx-${p.id}`}
                     initial={{ scale: 0, opacity: 1 }}
-                    animate={{ scale: 3, opacity: 0 }}
-                    transition={{ duration: 0.6, delay: 0.35 }}
+                    animate={{ scale: 2.5, opacity: 0 }}
+                    transition={{ duration: 0.5, delay: 0.3 }}
                     style={{
                       position: "absolute",
                       left: `calc(50% + ${p.tx}px)`, top: `calc(100% + ${p.ty}px)`,
                       color: p.hit ? "#f59e0b" : "#6b7280",
-                      fontWeight: 900, fontSize: p.hit ? 22 : 14,
+                      fontWeight: 900, fontSize: p.hit ? 24 : 14,
                       pointerEvents: "none", zIndex: 4,
                     }}
                   >
-                    {p.hit ? "BOOM!" : "Miss!"}
+                    {p.hit ? "POW!" : ""}
                   </motion.span>
                 ))}
 
@@ -2638,16 +2654,16 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                       animate={{ opacity: 1 }}
                       transition={{ duration: 0.4 }}
                       style={{
-                        position: "absolute", inset: 0, background: "rgba(26,16,51,0.85)",
+                        position: "absolute", inset: 0, background: "rgba(26,16,51,0.9)",
                         display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
                         zIndex: 10,
                       }}
                     >
-                      <p style={{ color: "#f59e0b", fontSize: 24, fontWeight: 900, marginBottom: 4 }}>
-                        {arenaHits}/5 hits!
+                      <p style={{ color: "#f59e0b", fontSize: 28, fontWeight: 900, marginBottom: 4 }}>
+                        {arenaHits} hits!
                       </p>
                       <p style={{ color: "#d1d5db", fontSize: 16, marginBottom: 16 }}>
-                        {Math.max(6, arenaHits * 2)}% damage dealt!
+                        {getArenaDamage(arenaHits)}% damage dealt!
                       </p>
                       {btn("Continue →", finishArenaRound)}
                     </motion.div>
@@ -2655,15 +2671,8 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                 </AnimatePresence>
               </div>
 
-              {/* Shot indicators */}
-              <div style={{ display: "flex", gap: 8, justifyContent: "center", marginBottom: 8 }}>
-                {Array.from({ length: 5 }, (_, i) => (
-                  <span key={i} style={{ fontSize: 24, opacity: i < arenaShotsLeft ? 1 : 0.2 }}>🛡️</span>
-                ))}
-              </div>
-
               {/* Health bar */}
-              <div style={{ width: 200, margin: "0 auto" }}>
+              <div style={{ width: 220, margin: "0 auto" }}>
                 <div style={{ display: "flex", justifyContent: "space-between", fontSize: 12, color: "#9ca3af", marginBottom: 4 }}>
                   <span>Raccoon HP</span><span>{raccoonHealth}%</span>
                 </div>
