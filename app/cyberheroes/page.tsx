@@ -1,63 +1,59 @@
 "use client";
 
 import Image from "next/image";
+import { motion, useInView } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 
 /* ─── CONSTANTS ─── */
 const GRAD = "linear-gradient(135deg, #8b5cf6, #3b82f6)";
-const SPRING = "cubic-bezier(0.34,1.56,0.64,1)";
 
 /* ─── FLOATING ORBS (warm fairy-light style) ─── */
 function FloatingOrbs() {
   return (
     <div className="fixed inset-0 pointer-events-none overflow-hidden" style={{ zIndex: 0 }}>
       {[
-        { size: 8, top: "8%", left: "6%", color: "#f59e0b", dur: "9s", delay: "0s" },
-        { size: 6, top: "18%", right: "10%", color: "#8b5cf6", dur: "11s", delay: "1s" },
-        { size: 10, top: "35%", left: "3%", color: "#3b82f6", dur: "13s", delay: "2s" },
-        { size: 5, top: "52%", right: "5%", color: "#f59e0b", dur: "8s", delay: "0.5s" },
-        { size: 7, top: "70%", left: "12%", color: "#8b5cf6", dur: "10s", delay: "3s" },
-        { size: 9, top: "82%", right: "8%", color: "#3b82f6", dur: "12s", delay: "1.5s" },
-        { size: 4, top: "45%", left: "50%", color: "#f59e0b", dur: "14s", delay: "4s" },
-        { size: 6, top: "15%", left: "40%", color: "#a78bfa", dur: "10s", delay: "2.5s" },
+        { size: 8, top: "8%", left: "6%", color: "#f59e0b", delay: 0 },
+        { size: 6, top: "18%", right: "10%", color: "#8b5cf6", delay: 1 },
+        { size: 10, top: "35%", left: "3%", color: "#3b82f6", delay: 2 },
+        { size: 5, top: "52%", right: "5%", color: "#f59e0b", delay: 0.5 },
+        { size: 7, top: "70%", left: "12%", color: "#8b5cf6", delay: 3 },
+        { size: 9, top: "82%", right: "8%", color: "#3b82f6", delay: 1.5 },
+        { size: 4, top: "45%", left: "50%", color: "#f59e0b", delay: 4 },
+        { size: 6, top: "15%", left: "40%", color: "#a78bfa", delay: 2.5 },
       ].map((o, i) => (
-        <div key={i} className="absolute rounded-full"
+        <motion.div key={i} className="absolute rounded-full"
+          animate={{ y: [-15, 15, -15], scale: [1, 1.15, 1], opacity: [0.25, 0.45, 0.25] }}
+          transition={{ duration: 6 + i, repeat: Infinity, ease: "easeInOut", delay: o.delay }}
           style={{
             width: o.size, height: o.size, top: o.top,
             left: "left" in o ? o.left : undefined,
             right: "right" in o ? o.right : undefined,
-            backgroundColor: o.color, opacity: 0.35,
+            backgroundColor: o.color,
             boxShadow: `0 0 ${o.size * 3}px ${o.color}`,
-            animation: `floatOrb ${o.dur} ease-in-out infinite ${o.delay}`,
           }} />
       ))}
     </div>
   );
 }
 
-/* ─── SCROLL REVEAL HOOK ─── */
-function useReveal<T extends HTMLElement>() {
-  const ref = useRef<T>(null);
-  const [visible, setVisible] = useState(false);
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const obs = new IntersectionObserver(
-      ([e]) => { if (e.isIntersecting) { setVisible(true); obs.disconnect(); } },
-      { threshold: 0.15 },
-    );
-    obs.observe(el);
-    return () => obs.disconnect();
-  }, []);
-  return { ref, visible };
+/* ─── SCROLL REVEAL ─── */
+function ScrollReveal({ children, className = "", delay = 0 }: { children: React.ReactNode; className?: string; delay?: number }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const isInView = useInView(ref, { once: true, margin: "-50px" });
+  return (
+    <motion.div ref={ref} initial={{ opacity: 0, y: 40 }} animate={isInView ? { opacity: 1, y: 0 } : {}} transition={{ type: "spring", stiffness: 150, damping: 20, delay }} className={className}>
+      {children}
+    </motion.div>
+  );
 }
 
 /* ─── COUNTER ANIMATION ─── */
 function AnimCounter({ to, suffix = "", label }: { to: number; suffix?: string; label: string }) {
-  const { ref, visible } = useReveal<HTMLDivElement>();
+  const ref = useRef<HTMLDivElement>(null);
+  const isInView = useInView(ref, { once: true, margin: "-50px" });
   const [val, setVal] = useState(0);
   useEffect(() => {
-    if (!visible) return;
+    if (!isInView) return;
     let frame: number;
     const start = performance.now();
     const dur = 1600;
@@ -69,27 +65,12 @@ function AnimCounter({ to, suffix = "", label }: { to: number; suffix?: string; 
     };
     frame = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(frame);
-  }, [visible, to]);
+  }, [isInView, to]);
   return (
     <div ref={ref} className="flex flex-col items-center gap-1 px-4 py-5 rounded-2xl flex-1 min-w-[140px]"
       style={{ background: "rgba(255,255,255,0.06)", backdropFilter: "blur(12px)", border: "1px solid rgba(255,255,255,0.08)" }}>
       <span className="text-3xl sm:text-4xl font-black text-white">{val}{suffix}</span>
       <span className="text-xs sm:text-sm font-bold text-gray-400">{label}</span>
-    </div>
-  );
-}
-
-/* ─── REVEAL SECTION WRAPPER ─── */
-function Reveal({ children, className = "", delay = 0 }: { children: React.ReactNode; className?: string; delay?: number }) {
-  const { ref, visible } = useReveal<HTMLDivElement>();
-  return (
-    <div ref={ref} className={className}
-      style={{
-        opacity: visible ? 1 : 0,
-        transform: visible ? "translateY(0)" : "translateY(40px)",
-        transition: `opacity 0.7s ease ${delay}s, transform 0.7s ${SPRING} ${delay}s`,
-      }}>
-      {children}
     </div>
   );
 }
@@ -131,13 +112,6 @@ export default function HomePage() {
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
         * { font-family: 'Nunito', sans-serif; }
-        @keyframes floatOrb    {0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-24px) scale(1.3)}}
-        @keyframes heroFloat   {0%,100%{transform:translateY(0)}50%{transform:translateY(-16px)}}
-        @keyframes glowPulse   {0%,100%{opacity:0.5}50%{opacity:1}}
-        @keyframes slideUp     {from{opacity:0;transform:translateY(32px)}to{opacity:1;transform:translateY(0)}}
-        @keyframes popIn       {0%{opacity:0;transform:scale(0.85)}100%{opacity:1;transform:scale(1)}}
-        @keyframes sparkle     {0%,100%{opacity:0.3;transform:scale(0.8)}50%{opacity:1;transform:scale(1.2)}}
-        @keyframes charFloat   {0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
       `}</style>
 
       <FloatingOrbs />
@@ -165,11 +139,13 @@ export default function HomePage() {
               <a href="/login" className="text-sm font-bold text-gray-300 hover:text-white transition-colors hidden sm:block">
                 Log In
               </a>
-              <a href="/signup"
-                className="px-5 py-2.5 rounded-2xl text-sm font-black text-white transition-all duration-300 hover:scale-105"
+              <motion.a href="/signup"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="px-5 py-2.5 rounded-2xl text-sm font-black text-white"
                 style={{ background: GRAD, boxShadow: "0 4px 20px rgba(139,92,246,0.3)" }}>
                 Get Started
-              </a>
+              </motion.a>
             </div>
           </div>
         </nav>
@@ -178,7 +154,10 @@ export default function HomePage() {
         <section className="max-w-[1200px] mx-auto px-6 md:px-10 pt-28 sm:pt-36 pb-16 sm:pb-24">
           <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-16">
             {/* Text */}
-            <div className="flex-1 text-center lg:text-left" style={{ animation: `slideUp 0.8s ${SPRING} both` }}>
+            <motion.div className="flex-1 text-center lg:text-left"
+              initial={{ opacity: 0, y: 32 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ type: "spring", stiffness: 150, damping: 20 }}>
               <div className="inline-block px-4 py-1.5 rounded-full text-xs font-black text-purple-300 mb-6"
                 style={{ background: "rgba(139,92,246,0.15)", border: "1px solid rgba(139,92,246,0.25)" }}>
                 🛡️ Cybersecurity for Kids
@@ -193,83 +172,90 @@ export default function HomePage() {
                 Join Adam and Layla on an interactive journey to become a Cyber Hero. Fun animated lessons, games, and challenges for ages 6–10.
               </p>
               <div className="flex gap-4 flex-wrap justify-center lg:justify-start">
-                <a href="/signup"
-                  className="px-7 py-4 rounded-2xl font-black text-white text-base transition-all duration-300 hover:scale-105"
+                <motion.a href="/signup"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="px-7 py-4 rounded-2xl font-black text-white text-base"
                   style={{ background: GRAD, boxShadow: "0 8px 32px rgba(139,92,246,0.35)" }}>
                   Start Free Trial 🚀
-                </a>
-                <button
-                  className="px-7 py-4 rounded-2xl font-black text-purple-300 text-base transition-all duration-300 hover:scale-105 cursor-pointer"
+                </motion.a>
+                <motion.button
+                  whileHover={{ scale: 1.05, boxShadow: "0 0 24px rgba(139,92,246,0.3)", borderColor: "rgba(139,92,246,0.7)" }}
+                  whileTap={{ scale: 0.95 }}
+                  className="px-7 py-4 rounded-2xl font-black text-purple-300 text-base cursor-pointer"
                   style={{
                     background: "transparent",
                     border: "2px solid rgba(139,92,246,0.4)",
-                    boxShadow: "0 0 0 0 rgba(139,92,246,0)",
-                  }}
-                  onMouseEnter={e => { e.currentTarget.style.boxShadow = "0 0 24px rgba(139,92,246,0.3)"; e.currentTarget.style.borderColor = "rgba(139,92,246,0.7)"; }}
-                  onMouseLeave={e => { e.currentTarget.style.boxShadow = "0 0 0 0 rgba(139,92,246,0)"; e.currentTarget.style.borderColor = "rgba(139,92,246,0.4)"; }}>
+                  }}>
                   Watch Preview ▶
-                </button>
+                </motion.button>
               </div>
-            </div>
+            </motion.div>
 
             {/* Hero Image */}
-            <div className="flex-1 flex justify-center lg:justify-end"
-              style={{ animation: `popIn 0.9s ${SPRING} 0.2s both` }}>
+            <motion.div className="flex-1 flex justify-center lg:justify-end"
+              initial={{ opacity: 0, scale: 0.85 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ type: "spring", stiffness: 150, damping: 20, delay: 0.2 }}>
               <div className="relative">
                 {/* Glow behind image */}
-                <div className="absolute inset-0 rounded-3xl"
+                <motion.div className="absolute inset-0 rounded-3xl"
+                  animate={{ opacity: [0.5, 1, 0.5] }}
+                  transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
                   style={{
                     background: "linear-gradient(135deg, rgba(139,92,246,0.4), rgba(59,130,246,0.4))",
                     filter: "blur(40px)", transform: "scale(1.1)",
-                    animation: "glowPulse 4s ease-in-out infinite",
                   }} />
-                <div className="relative rounded-3xl overflow-hidden border-2 shadow-2xl"
+                <motion.div className="relative rounded-3xl overflow-hidden border-2 shadow-2xl"
+                  animate={{ y: [-8, 8, -8] }}
+                  transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
                   style={{
                     borderColor: "rgba(139,92,246,0.3)",
-                    animation: "heroFloat 5s ease-in-out infinite",
                     boxShadow: "0 0 60px rgba(139,92,246,0.2)",
                   }}>
                   <Image src="/characters/adam-layla-happy.png" alt="Adam and Layla — your Cyber Hero guides"
                     width={500} height={500} className="block w-full max-w-[500px]" priority />
-                </div>
+                </motion.div>
                 {/* Sparkles */}
                 {[
                   { top: "-8px", right: "-8px", size: 14 },
                   { bottom: "12px", left: "-10px", size: 10 },
                   { top: "40%", right: "-14px", size: 8 },
                 ].map((s, i) => (
-                  <div key={i} className="absolute text-yellow-300" style={{ ...s, fontSize: s.size, animation: `sparkle 2.5s ease-in-out infinite ${i * 0.8}s` }}>✦</div>
+                  <motion.div key={i} className="absolute text-yellow-300"
+                    animate={{ opacity: [0.3, 1, 0.3], scale: [0.8, 1.2, 0.8] }}
+                    transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut", delay: i * 0.8 }}
+                    style={{ ...s, fontSize: s.size }}>✦</motion.div>
                 ))}
               </div>
-            </div>
+            </motion.div>
           </div>
         </section>
 
         {/* ── MEET YOUR HEROES ──────────────────────────────────────────── */}
         <section className="max-w-[1200px] mx-auto px-6 md:px-10 py-16 sm:py-24">
-          <Reveal className="text-center mb-12">
+          <ScrollReveal className="text-center mb-12">
             <h2 className="text-3xl sm:text-4xl font-black text-white mb-4">
               Meet Your{" "}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-blue-400">Cyber Heroes</span>
             </h2>
-          </Reveal>
+          </ScrollReveal>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 max-w-3xl mx-auto mb-10">
             {/* Adam */}
-            <Reveal delay={0}>
-              <div className="rounded-3xl overflow-hidden transition-all duration-500 hover:scale-[1.03]"
+            <ScrollReveal delay={0}>
+              <motion.div className="rounded-3xl overflow-hidden"
+                whileHover={{ y: -8, scale: 1.03, boxShadow: "0 0 40px rgba(245,158,11,0.2)" }}
                 style={{
                   background: "rgba(255,255,255,0.04)",
                   border: "1px solid rgba(245,158,11,0.2)",
                   backdropFilter: "blur(8px)",
-                }}
-                onMouseEnter={e => { e.currentTarget.style.boxShadow = "0 0 40px rgba(245,158,11,0.2)"; e.currentTarget.style.borderColor = "rgba(245,158,11,0.4)"; }}
-                onMouseLeave={e => { e.currentTarget.style.boxShadow = "none"; e.currentTarget.style.borderColor = "rgba(245,158,11,0.2)"; }}>
+                }}>
                 <div className="relative overflow-hidden flex justify-center h-[400px]"
                   style={{ background: "linear-gradient(180deg, rgba(245,158,11,0.08) 0%, transparent 100%)" }}>
-                  <div style={{ animation: "charFloat 3s ease-in-out infinite" }}>
+                  <motion.div animate={{ y: [0, -10, 0] }} transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}>
                     <Image src="/characters/layla.png" alt="Adam — curious and brave Cyber Hero" width={400} height={500} className="block h-full w-auto object-cover" />
-                  </div>
+                  </motion.div>
                 </div>
                 <div className="px-6 py-5 text-center">
                   <h3 className="font-black text-white text-2xl mb-2">Adam</h3>
@@ -277,24 +263,23 @@ export default function HomePage() {
                     Curious, brave, and always ready to learn. Adam loves gaming and wants to keep his digital world safe.
                   </p>
                 </div>
-              </div>
-            </Reveal>
+              </motion.div>
+            </ScrollReveal>
 
             {/* Layla */}
-            <Reveal delay={0.15}>
-              <div className="rounded-3xl overflow-hidden transition-all duration-500 hover:scale-[1.03]"
+            <ScrollReveal delay={0.15}>
+              <motion.div className="rounded-3xl overflow-hidden"
+                whileHover={{ y: -8, scale: 1.03, boxShadow: "0 0 40px rgba(168,85,247,0.2)" }}
                 style={{
                   background: "rgba(255,255,255,0.04)",
                   border: "1px solid rgba(168,85,247,0.2)",
                   backdropFilter: "blur(8px)",
-                }}
-                onMouseEnter={e => { e.currentTarget.style.boxShadow = "0 0 40px rgba(168,85,247,0.2)"; e.currentTarget.style.borderColor = "rgba(168,85,247,0.4)"; }}
-                onMouseLeave={e => { e.currentTarget.style.boxShadow = "none"; e.currentTarget.style.borderColor = "rgba(168,85,247,0.2)"; }}>
+                }}>
                 <div className="relative overflow-hidden flex justify-center h-[400px]"
                   style={{ background: "linear-gradient(180deg, rgba(168,85,247,0.08) 0%, transparent 100%)" }}>
-                  <div style={{ animation: "charFloat 3s ease-in-out infinite 0.5s" }}>
+                  <motion.div animate={{ y: [0, -10, 0] }} transition={{ duration: 3, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}>
                     <Image src="/characters/adam.png" alt="Layla — smart and fearless Cyber Hero" width={400} height={500} className="block h-full w-auto object-cover" />
-                  </div>
+                  </motion.div>
                 </div>
                 <div className="px-6 py-5 text-center">
                   <h3 className="font-black text-white text-2xl mb-2">Layla</h3>
@@ -302,25 +287,27 @@ export default function HomePage() {
                     Smart, creative, and fearless. Layla knows that staying safe online is a superpower everyone needs.
                   </p>
                 </div>
-              </div>
-            </Reveal>
+              </motion.div>
+            </ScrollReveal>
           </div>
 
-          <Reveal className="text-center" delay={0.2}>
+          <ScrollReveal className="text-center" delay={0.2}>
             <p className="text-gray-300 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed mb-8">
               Join Adam and Layla on their adventure to become cybersecurity experts. Help them stay safe from the Hacker Raccoon — and learn how to protect yourself too!
             </p>
-            <a href="/signup"
-              className="inline-block px-7 py-4 rounded-2xl font-black text-white text-base transition-all duration-300 hover:scale-105"
+            <motion.a href="/signup"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="inline-block px-7 py-4 rounded-2xl font-black text-white text-base"
               style={{ background: GRAD, boxShadow: "0 8px 32px rgba(139,92,246,0.35)" }}>
               Start the Adventure →
-            </a>
-          </Reveal>
+            </motion.a>
+          </ScrollReveal>
         </section>
 
         {/* ── STORY ────────────────────────────────────────────────────────── */}
         <section className="max-w-[1200px] mx-auto px-6 md:px-10 py-16 sm:py-24">
-          <Reveal className="text-center mb-12">
+          <ScrollReveal className="text-center mb-12">
             <h2 className="text-3xl sm:text-4xl font-black text-white mb-4">
               The Adventure{" "}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-blue-400">Begins</span>
@@ -328,19 +315,18 @@ export default function HomePage() {
             <p className="text-gray-400 text-base sm:text-lg max-w-xl mx-auto leading-relaxed">
               Follow Adam and Layla as they learn to protect their digital world from the sneaky Hacker Raccoon. Each week is a new adventure!
             </p>
-          </Reveal>
+          </ScrollReveal>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
             {STORY.map((s, i) => (
-              <Reveal key={i} delay={i * 0.15}>
-                <div className="rounded-3xl overflow-hidden transition-all duration-500 hover:scale-[1.03] group"
+              <ScrollReveal key={i} delay={i * 0.15}>
+                <motion.div className="rounded-3xl overflow-hidden group"
+                  whileHover={{ y: -8, scale: 1.03, boxShadow: "0 0 40px rgba(139,92,246,0.2)" }}
                   style={{
                     background: "rgba(255,255,255,0.04)",
                     border: "1px solid rgba(139,92,246,0.15)",
                     backdropFilter: "blur(8px)",
-                  }}
-                  onMouseEnter={e => { e.currentTarget.style.boxShadow = "0 0 40px rgba(139,92,246,0.2)"; e.currentTarget.style.borderColor = "rgba(139,92,246,0.35)"; }}
-                  onMouseLeave={e => { e.currentTarget.style.boxShadow = "none"; e.currentTarget.style.borderColor = "rgba(139,92,246,0.15)"; }}>
+                  }}>
                   <div className="relative overflow-hidden">
                     <Image src={s.src} alt={s.alt} width={400} height={400} className="w-full block" />
                     {/* Step number badge */}
@@ -352,15 +338,15 @@ export default function HomePage() {
                   <div className="px-5 py-4">
                     <p className="font-black text-white text-base">{s.caption}</p>
                   </div>
-                </div>
-              </Reveal>
+                </motion.div>
+              </ScrollReveal>
             ))}
           </div>
         </section>
 
         {/* ── COURSES ──────────────────────────────────────────────────────── */}
         <section className="max-w-[1200px] mx-auto px-6 md:px-10 py-16 sm:py-24">
-          <Reveal className="text-center mb-12">
+          <ScrollReveal className="text-center mb-12">
             <h2 className="text-3xl sm:text-4xl font-black text-white mb-4">
               Four Learning Tracks.{" "}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-blue-400">Every Age.</span>
@@ -368,19 +354,18 @@ export default function HomePage() {
             <p className="text-gray-400 text-base sm:text-lg max-w-xl mx-auto">
               From first-time digital explorers to aspiring security professionals.
             </p>
-          </Reveal>
+          </ScrollReveal>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
             {COURSES.map((c, i) => (
-              <Reveal key={i} delay={i * 0.1}>
-                <div className="rounded-3xl p-6 h-full transition-all duration-500 hover:scale-[1.03] relative group"
+              <ScrollReveal key={i} delay={i * 0.1}>
+                <motion.div className="rounded-3xl p-6 h-full relative group"
+                  whileHover={{ y: -8, scale: 1.03, boxShadow: `0 0 40px ${c.accent}25` }}
                   style={{
                     background: c.featured ? "rgba(255,255,255,0.08)" : "rgba(255,255,255,0.04)",
                     border: `1px solid ${c.featured ? `${c.accent}40` : "rgba(255,255,255,0.06)"}`,
                     backdropFilter: "blur(12px)",
-                  }}
-                  onMouseEnter={e => { e.currentTarget.style.boxShadow = `0 0 40px ${c.accent}25`; e.currentTarget.style.borderColor = `${c.accent}50`; }}
-                  onMouseLeave={e => { e.currentTarget.style.boxShadow = "none"; e.currentTarget.style.borderColor = c.featured ? `${c.accent}40` : "rgba(255,255,255,0.06)"; }}>
+                  }}>
                   {c.featured && (
                     <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full text-[10px] font-black text-white"
                       style={{ background: c.accent, boxShadow: `0 4px 12px ${c.accent}40` }}>
@@ -398,42 +383,41 @@ export default function HomePage() {
                     <span>📅 {c.weeks} weeks</span>
                     <span>⏱️ {c.time}</span>
                   </div>
-                </div>
-              </Reveal>
+                </motion.div>
+              </ScrollReveal>
             ))}
           </div>
         </section>
 
         {/* ── FEATURES ─────────────────────────────────────────────────────── */}
         <section className="max-w-[1200px] mx-auto px-6 md:px-10 py-16 sm:py-24">
-          <Reveal className="text-center mb-12">
+          <ScrollReveal className="text-center mb-12">
             <h2 className="text-3xl sm:text-4xl font-black text-white mb-4">
               Why{" "}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-blue-400">AlgorithmX</span>?
             </h2>
-          </Reveal>
+          </ScrollReveal>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {FEATURES.map((f, i) => (
-              <Reveal key={i} delay={i * 0.12}>
-                <div className="rounded-3xl p-6 h-full transition-all duration-500 hover:scale-[1.03]"
+              <ScrollReveal key={i} delay={i * 0.12}>
+                <motion.div className="rounded-3xl p-6 h-full"
+                  whileHover={{ y: -8, scale: 1.03, boxShadow: "0 0 40px rgba(139,92,246,0.15)" }}
                   style={{
                     background: "rgba(255,255,255,0.04)",
                     border: "1px solid rgba(255,255,255,0.06)",
                     backdropFilter: "blur(12px)",
-                  }}
-                  onMouseEnter={e => { e.currentTarget.style.boxShadow = "0 0 40px rgba(139,92,246,0.15)"; e.currentTarget.style.borderColor = "rgba(139,92,246,0.25)"; }}
-                  onMouseLeave={e => { e.currentTarget.style.boxShadow = "none"; e.currentTarget.style.borderColor = "rgba(255,255,255,0.06)"; }}>
+                  }}>
                   <div className="text-4xl mb-4">{f.emoji}</div>
                   <h3 className="font-black text-white text-lg mb-2">{f.title}</h3>
                   <p className="text-gray-400 text-sm leading-relaxed">{f.desc}</p>
-                </div>
-              </Reveal>
+                </motion.div>
+              </ScrollReveal>
             ))}
           </div>
 
           {/* Raccoon accent image */}
-          <Reveal className="mt-12 flex justify-center" delay={0.2}>
+          <ScrollReveal className="mt-12 flex justify-center" delay={0.2}>
             <div className="relative max-w-xs">
               <div className="absolute inset-0 rounded-3xl"
                 style={{ background: "rgba(139,92,246,0.3)", filter: "blur(50px)", transform: "scale(0.9)" }} />
@@ -444,7 +428,7 @@ export default function HomePage() {
                 <p className="text-gray-500 text-xs font-bold">The villain your kids will learn to outsmart!</p>
               </div>
             </div>
-          </Reveal>
+          </ScrollReveal>
         </section>
 
         {/* ── STATS ────────────────────────────────────────────────────────── */}
@@ -459,7 +443,7 @@ export default function HomePage() {
 
         {/* ── CTA ──────────────────────────────────────────────────────────── */}
         <section className="max-w-[1200px] mx-auto px-6 md:px-10 py-16 sm:py-24">
-          <Reveal>
+          <ScrollReveal>
             <div className="relative rounded-3xl overflow-hidden p-8 sm:p-14 text-center"
               style={{
                 background: "rgba(255,255,255,0.04)",
@@ -481,14 +465,16 @@ export default function HomePage() {
                 <p className="text-gray-400 text-base sm:text-lg max-w-lg mx-auto mb-8">
                   Start your child&apos;s cybersecurity journey today. Interactive, fun, and built by educators.
                 </p>
-                <a href="/signup"
-                  className="inline-block px-10 py-5 rounded-2xl font-black text-white text-lg transition-all duration-300 hover:scale-105"
+                <motion.a href="/signup"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="inline-block px-10 py-5 rounded-2xl font-black text-white text-lg"
                   style={{ background: GRAD, boxShadow: "0 8px 40px rgba(139,92,246,0.4)" }}>
                   Get Started Free 🚀
-                </a>
+                </motion.a>
               </div>
             </div>
-          </Reveal>
+          </ScrollReveal>
         </section>
 
         {/* ── FOOTER ───────────────────────────────────────────────────────── */}

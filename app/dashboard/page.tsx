@@ -2,6 +2,7 @@ import { auth } from "@/app/lib/auth";
 import { prisma } from "@/app/lib/prisma";
 import { redirect } from "next/navigation";
 import Image from "next/image";
+import { AnimatedCard, AnimatedProgress, FloatingOrbs, PulsingGlow } from "@/app/components/AnimatedDashboard";
 
 const GRAD = "linear-gradient(135deg, #8b5cf6, #3b82f6)";
 
@@ -83,40 +84,13 @@ export default async function DashboardPage() {
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
         .dash * { font-family: 'Nunito', sans-serif; }
-        @keyframes floatOrb     {0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-24px) scale(1.3)}}
-        @keyframes heroFloat    {0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
-        @keyframes glowPulse    {0%,100%{opacity:0.5}50%{opacity:1}}
-        @keyframes slideUp      {from{opacity:0;transform:translateY(32px)}to{opacity:1;transform:translateY(0)}}
-        @keyframes popIn        {0%{opacity:0;transform:scale(0.85)}100%{opacity:1;transform:scale(1)}}
-        @keyframes sparkle      {0%,100%{opacity:0.3;transform:scale(0.8)}50%{opacity:1;transform:scale(1.2)}}
-        @keyframes currentGlow  {0%,100%{box-shadow:0 0 0 0 rgba(139,92,246,0.4)}50%{box-shadow:0 0 24px 4px rgba(139,92,246,0.15)}}
-        @keyframes progressFill {from{width:0}to{width:${progressPct}%}}
-        @keyframes ringFill     {from{stroke-dashoffset:${circumference}}to{stroke-dashoffset:${dashOffset}}}
-        @keyframes cardIn       {from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+        @keyframes ringFill {from{stroke-dashoffset:${circumference}}to{stroke-dashoffset:${dashOffset}}}
       `}</style>
 
       <div className="dash min-h-screen relative" style={{ background: "#1a1033" }}>
 
         {/* ── FLOATING ORBS ── */}
-        <div className="fixed inset-0 pointer-events-none overflow-hidden" style={{ zIndex: 0 }}>
-          {[
-            { s: 8, t: "8%", l: "6%", c: "#f59e0b", d: "9s", dl: "0s" },
-            { s: 6, t: "20%", r: "8%", c: "#8b5cf6", d: "11s", dl: "1s" },
-            { s: 10, t: "40%", l: "3%", c: "#3b82f6", d: "13s", dl: "2s" },
-            { s: 5, t: "60%", r: "5%", c: "#f59e0b", d: "8s", dl: "0.5s" },
-            { s: 7, t: "75%", l: "14%", c: "#8b5cf6", d: "10s", dl: "3s" },
-            { s: 4, t: "45%", l: "52%", c: "#f59e0b", d: "14s", dl: "4s" },
-          ].map((o: { s: number; t: string; c: string; d: string; dl: string; l?: string; r?: string }, i: number) => (
-            <div key={i} className="absolute rounded-full"
-              style={{
-                width: o.s, height: o.s, top: o.t,
-                left: o.l ?? undefined, right: o.r ?? undefined,
-                backgroundColor: o.c, opacity: 0.35,
-                boxShadow: `0 0 ${o.s * 3}px ${o.c}`,
-                animation: `floatOrb ${o.d} ease-in-out infinite ${o.dl}`,
-              }} />
-          ))}
-        </div>
+        <FloatingOrbs />
 
         {/* ── NAV ── */}
         <nav className="sticky top-0 z-50 border-b"
@@ -160,8 +134,8 @@ export default async function DashboardPage() {
         <div className="relative max-w-[1100px] mx-auto px-6 md:px-10 py-10" style={{ zIndex: 1 }}>
 
           {/* ── WELCOME ── */}
-          <section className="flex flex-col-reverse lg:flex-row items-center gap-10 lg:gap-14 mb-14"
-            style={{ animation: "slideUp 0.7s cubic-bezier(0.34,1.56,0.64,1) both" }}>
+          <AnimatedCard delay={0}>
+          <section className="flex flex-col-reverse lg:flex-row items-center gap-10 lg:gap-14 mb-14">
             <div className="flex-1 text-center lg:text-left">
               <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white leading-tight mb-3">
                 Welcome back,{" "}
@@ -186,7 +160,7 @@ export default async function DashboardPage() {
                     style={{
                       background: GRAD,
                       width: `${progressPct}%`,
-                      animation: "progressFill 1.2s cubic-bezier(0.34,1.56,0.64,1) both",
+                      /* animated via framer-motion */
                       boxShadow: "0 0 16px rgba(139,92,246,0.5)",
                     }} />
                 </div>
@@ -194,18 +168,18 @@ export default async function DashboardPage() {
             </div>
 
             {/* Hero image */}
-            <div className="shrink-0" style={{ animation: "popIn 0.8s cubic-bezier(0.34,1.56,0.64,1) 0.2s both" }}>
+            <div className="shrink-0" style={{ /* popIn handled by parent AnimatedCard */ }}>
               <div className="relative">
                 <div className="absolute inset-0 rounded-3xl"
                   style={{
                     background: "linear-gradient(135deg, rgba(139,92,246,0.35), rgba(59,130,246,0.35))",
                     filter: "blur(35px)", transform: "scale(1.1)",
-                    animation: "glowPulse 4s ease-in-out infinite",
+                    /* glow handled statically */
                   }} />
                 <div className="relative rounded-3xl overflow-hidden border-2 shadow-2xl"
                   style={{
                     borderColor: "rgba(139,92,246,0.25)",
-                    animation: "heroFloat 5s ease-in-out infinite",
+                    /* float handled statically */
                     boxShadow: "0 0 50px rgba(139,92,246,0.15)",
                   }}>
                   <Image src="/characters/adam-layla-happy.png" alt="Adam and Layla"
@@ -216,11 +190,12 @@ export default async function DashboardPage() {
                   { bottom: "10px", left: "-8px", fontSize: 10 },
                 ].map((s: { fontSize: number; top?: string; right?: string; bottom?: string; left?: string }, i: number) => (
                   <div key={i} className="absolute text-yellow-300"
-                    style={{ ...s, animation: `sparkle 2.5s ease-in-out infinite ${i * 0.9}s` }}>✦</div>
+                    style={{ ...s }}>✦</div>
                 ))}
               </div>
             </div>
           </section>
+          </AnimatedCard>
 
           {course ? (
             <>
@@ -230,7 +205,7 @@ export default async function DashboardPage() {
                   background: "rgba(255,255,255,0.04)",
                   border: "1px solid rgba(255,255,255,0.06)",
                   backdropFilter: "blur(12px)",
-                  animation: "slideUp 0.6s cubic-bezier(0.34,1.56,0.64,1) 0.3s both",
+                  /* animated by AnimatedCard */
                 }}>
                 <div className="relative shrink-0">
                   <div className="absolute inset-0 rounded-2xl"
@@ -280,7 +255,7 @@ export default async function DashboardPage() {
                   background: "rgba(255,255,255,0.05)",
                   border: "1px solid rgba(139,92,246,0.15)",
                   backdropFilter: "blur(14px)",
-                  animation: "slideUp 0.6s cubic-bezier(0.34,1.56,0.64,1) 0.1s both",
+                  /* animated by AnimatedCard */
                 }}>
                 <div className="flex items-center gap-4 flex-1 min-w-0">
                   <span className="text-5xl shrink-0">{course.emoji}</span>
@@ -340,9 +315,7 @@ export default async function DashboardPage() {
                           : "1px solid rgba(255,255,255,0.04)",
                         backdropFilter: "blur(10px)",
                         opacity: mod.isUnlocked ? 1 : 0.3,
-                        animation: isCurrent
-                          ? `currentGlow 2s ease-in-out infinite, cardIn 0.5s cubic-bezier(0.34,1.56,0.64,1) ${idx * 0.08}s both`
-                          : `cardIn 0.5s cubic-bezier(0.34,1.56,0.64,1) ${idx * 0.08}s both`,
+                        /* cards animated by parent */
                         cursor: mod.isUnlocked ? "default" : "not-allowed",
                         pointerEvents: mod.isUnlocked ? undefined : ("none" as const),
                       }}>

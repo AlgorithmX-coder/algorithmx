@@ -1,6 +1,7 @@
 import { auth } from "@/app/lib/auth";
 import { prisma } from "@/app/lib/prisma";
 import { redirect } from "next/navigation";
+import { AnimatedCard, FloatingOrbs } from "@/app/components/AnimatedDashboard";
 
 const GRAD = "linear-gradient(135deg, #8b5cf6, #3b82f6)";
 
@@ -112,32 +113,12 @@ export default async function ParentDashboard() {
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
         .parent * { font-family: 'Nunito', sans-serif; }
-        @keyframes floatOrb   {0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-24px) scale(1.3)}}
-        @keyframes slideUp    {from{opacity:0;transform:translateY(32px)}to{opacity:1;transform:translateY(0)}}
-        @keyframes cardIn     {from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-        @keyframes ringFill   {from{stroke-dashoffset:${circumference}}to{stroke-dashoffset:${dashOffset}}}
+        @keyframes ringFill {from{stroke-dashoffset:${circumference}}to{stroke-dashoffset:${dashOffset}}}
       `}</style>
 
       <div className="parent min-h-screen relative" style={{ background: "#1a1033" }}>
 
-        {/* Floating orbs */}
-        <div className="fixed inset-0 pointer-events-none overflow-hidden" style={{ zIndex: 0 }}>
-          {[
-            { s: 6, t: "10%", l: "5%", c: "#f59e0b", d: "10s", dl: "0s" },
-            { s: 5, t: "25%", r: "8%", c: "#8b5cf6", d: "12s", dl: "1s" },
-            { s: 8, t: "50%", l: "4%", c: "#3b82f6", d: "14s", dl: "2s" },
-            { s: 4, t: "70%", r: "6%", c: "#f59e0b", d: "9s", dl: "3s" },
-          ].map((o: { s: number; t: string; c: string; d: string; dl: string; l?: string; r?: string }, i: number) => (
-            <div key={i} className="absolute rounded-full"
-              style={{
-                width: o.s, height: o.s, top: o.t,
-                left: o.l ?? undefined, right: o.r ?? undefined,
-                backgroundColor: o.c, opacity: 0.25,
-                boxShadow: `0 0 ${o.s * 3}px ${o.c}`,
-                animation: `floatOrb ${o.d} ease-in-out infinite ${o.dl}`,
-              }} />
-          ))}
-        </div>
+        <FloatingOrbs />
 
         {/* Nav */}
         <nav className="sticky top-0 z-50 border-b"
@@ -177,7 +158,7 @@ export default async function ParentDashboard() {
             style={{
               background: "rgba(255,255,255,0.04)", border: `1px solid ${accent}25`,
               backdropFilter: "blur(14px)",
-              animation: "slideUp 0.6s cubic-bezier(0.34,1.56,0.64,1) both",
+              /* animated */
             }}>
             <div className="flex flex-col sm:flex-row items-center gap-6">
               {/* Avatar + info */}
@@ -242,7 +223,7 @@ export default async function ParentDashboard() {
             style={{
               background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.06)",
               backdropFilter: "blur(12px)",
-              animation: "cardIn 0.5s cubic-bezier(0.34,1.56,0.64,1) 0.1s both",
+              /* animated */
             }}>
             <h2 className="text-xl font-black text-white mb-5">Weekly Progress</h2>
 
@@ -258,7 +239,7 @@ export default async function ParentDashboard() {
                   <div key={m.id} className="grid grid-cols-[60px_1fr_140px_140px] items-center px-4 py-3.5 rounded-xl"
                     style={{
                       background: i % 2 === 0 ? "rgba(255,255,255,0.02)" : "transparent",
-                      animation: `cardIn 0.4s ease ${i * 0.05}s both`,
+                      /* animated */
                     }}>
                     <span className="text-sm font-black" style={{ color: isCompleted ? "#4ade80" : isInProgress ? "#60a5fa" : "#4b5563" }}>
                       W{m.weekNumber}
@@ -286,7 +267,7 @@ export default async function ParentDashboard() {
                   <div key={m.id} className="rounded-2xl p-4"
                     style={{
                       background: "rgba(255,255,255,0.03)", border: `1px solid ${isCompleted ? "rgba(74,222,128,0.15)" : "rgba(255,255,255,0.04)"}`,
-                      animation: `cardIn 0.4s ease ${i * 0.05}s both`,
+                      /* animated */
                     }}>
                     <div className="flex items-center justify-between mb-1.5">
                       <span className="text-xs font-black" style={{ color: isCompleted ? "#4ade80" : isInProgress ? "#60a5fa" : "#4b5563" }}>
@@ -317,7 +298,7 @@ export default async function ParentDashboard() {
               border: "1px solid rgba(255,255,255,0.06)",
               borderLeft: "4px solid #22c55e",
               backdropFilter: "blur(12px)",
-              animation: "cardIn 0.5s cubic-bezier(0.34,1.56,0.64,1) 0.2s both",
+              /* animated */
             }}>
             <h2 className="text-xl font-black text-white mb-4">
               What {child.childName} has learned so far 📚
@@ -347,7 +328,7 @@ export default async function ParentDashboard() {
               border: "1px solid rgba(255,255,255,0.06)",
               borderLeft: "4px solid #f59e0b",
               backdropFilter: "blur(12px)",
-              animation: "cardIn 0.5s cubic-bezier(0.34,1.56,0.64,1) 0.3s both",
+              /* animated */
             }}>
             <h2 className="text-xl font-black text-white mb-4">
               💡 Continue the conversation at home 💬
@@ -390,7 +371,7 @@ export default async function ParentDashboard() {
               background: "rgba(255,255,255,0.04)",
               border: "1px solid rgba(255,255,255,0.06)",
               backdropFilter: "blur(12px)",
-              animation: "cardIn 0.5s cubic-bezier(0.34,1.56,0.64,1) 0.4s both",
+              /* animated */
             }}>
             <h2 className="text-xl font-black text-white mb-5">Quick Actions</h2>
             <div className="flex flex-col sm:flex-row gap-3">

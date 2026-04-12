@@ -21,7 +21,8 @@
       "Bash(grep -n '\\\\\\\\u[0-9a-f]' app/lesson/LessonPlayer.tsx)",
       "Bash(node -e ':*)",
       "Bash(git commit -m ':*)",
-      "Bash(npx tsx:*)"
+      "Bash(npx tsx:*)",
+      "Bash(npm list:*)"
     ]
   }
 }

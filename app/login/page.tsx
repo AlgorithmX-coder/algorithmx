@@ -3,31 +3,32 @@
 import { useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { motion, AnimatePresence } from "framer-motion";
 
 /* ─── CONSTANTS ─── */
 const GRAD = "linear-gradient(135deg, #8b5cf6, #3b82f6)";
-const SPRING = "cubic-bezier(0.34,1.56,0.64,1)";
 
 /* ─── FLOATING ORBS ─── */
 function FloatingOrbs() {
   return (
     <div className="fixed inset-0 pointer-events-none overflow-hidden" style={{ zIndex: 0 }}>
       {[
-        { size: 8, top: "8%", left: "6%", color: "#f59e0b", dur: "9s", delay: "0s" },
-        { size: 6, top: "18%", right: "10%", color: "#8b5cf6", dur: "11s", delay: "1s" },
-        { size: 10, top: "35%", left: "3%", color: "#3b82f6", dur: "13s", delay: "2s" },
-        { size: 5, top: "52%", right: "5%", color: "#f59e0b", dur: "8s", delay: "0.5s" },
-        { size: 7, top: "70%", left: "12%", color: "#8b5cf6", dur: "10s", delay: "3s" },
-        { size: 9, top: "82%", right: "8%", color: "#3b82f6", dur: "12s", delay: "1.5s" },
+        { size: 8, top: "8%", left: "6%", color: "#f59e0b", dur: 9, delay: 0 },
+        { size: 6, top: "18%", right: "10%", color: "#8b5cf6", dur: 11, delay: 1 },
+        { size: 10, top: "35%", left: "3%", color: "#3b82f6", dur: 13, delay: 2 },
+        { size: 5, top: "52%", right: "5%", color: "#f59e0b", dur: 8, delay: 0.5 },
+        { size: 7, top: "70%", left: "12%", color: "#8b5cf6", dur: 10, delay: 3 },
+        { size: 9, top: "82%", right: "8%", color: "#3b82f6", dur: 12, delay: 1.5 },
       ].map((o, i) => (
-        <div key={i} className="absolute rounded-full"
+        <motion.div key={i} className="absolute rounded-full"
+          animate={{ y: [0, -18, 0], scale: [1, 1.1, 1], opacity: [0.35, 0.55, 0.35] }}
+          transition={{ duration: o.dur, ease: "easeInOut", repeat: Infinity, delay: o.delay }}
           style={{
             width: o.size, height: o.size, top: o.top,
             left: "left" in o ? o.left : undefined,
             right: "right" in o ? o.right : undefined,
             backgroundColor: o.color, opacity: 0.35,
             boxShadow: `0 0 ${o.size * 3}px ${o.color}`,
-            animation: `floatOrb ${o.dur} ease-in-out infinite ${o.delay}`,
           }} />
       ))}
     </div>
@@ -37,25 +38,27 @@ function FloatingOrbs() {
 /* ─── FLOATING ICONS (right panel) ─── */
 function FloatingIcons() {
   const icons = [
-    { emoji: "🔑", top: "15%", left: "25%", delay: "0s", dur: "7s" },
-    { emoji: "⭐", top: "28%", right: "18%", delay: "1.5s", dur: "6s" },
-    { emoji: "🔒", top: "55%", left: "18%", delay: "0.5s", dur: "8s" },
-    { emoji: "🛡️", top: "70%", right: "22%", delay: "2s", dur: "6.5s" },
-    { emoji: "✨", top: "42%", left: "65%", delay: "3s", dur: "9s" },
-    { emoji: "🔐", top: "88%", left: "40%", delay: "1s", dur: "7.5s" },
+    { emoji: "🔑", top: "15%", left: "25%", delay: 0, dur: 7 },
+    { emoji: "⭐", top: "28%", right: "18%", delay: 1.5, dur: 6 },
+    { emoji: "🔒", top: "55%", left: "18%", delay: 0.5, dur: 8 },
+    { emoji: "🛡️", top: "70%", right: "22%", delay: 2, dur: 6.5 },
+    { emoji: "✨", top: "42%", left: "65%", delay: 3, dur: 9 },
+    { emoji: "🔐", top: "88%", left: "40%", delay: 1, dur: 7.5 },
   ];
   return (
     <>
       {icons.map((ic, i) => (
-        <div key={i} className="absolute text-2xl" style={{
-          top: ic.top,
-          left: "left" in ic ? ic.left : undefined,
-          right: "right" in ic ? ic.right : undefined,
-          animation: `floatOrb ${ic.dur} ease-in-out infinite ${ic.delay}`,
-          opacity: 0.6,
-        }}>
+        <motion.div key={i} className="absolute text-2xl"
+          animate={{ y: [-10, 10, -10] }}
+          transition={{ duration: ic.dur, ease: "easeInOut", repeat: Infinity, delay: ic.delay }}
+          style={{
+            top: ic.top,
+            left: "left" in ic ? ic.left : undefined,
+            right: "right" in ic ? ic.right : undefined,
+            opacity: 0.6,
+          }}>
           {ic.emoji}
-        </div>
+        </motion.div>
       ))}
     </>
   );
@@ -98,21 +101,6 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen flex" style={{ background: "#1a1033" }}>
-      <style>{`
-        @keyframes floatOrb {
-          0%, 100% { transform: translateY(0) scale(1); opacity: 0.35; }
-          50% { transform: translateY(-18px) scale(1.1); opacity: 0.55; }
-        }
-        @keyframes slideUp {
-          from { opacity: 0; transform: translateY(40px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes fadeStagger {
-          from { opacity: 0; transform: translateY(20px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-      `}</style>
-
       <FloatingOrbs />
 
       {/* ─── LEFT SIDE: FORM ─── */}
@@ -137,21 +125,30 @@ export default function LoginPage() {
           </p>
 
           {/* Form card */}
-          <div className="rounded-3xl p-7 sm:p-8"
+          <motion.div className="rounded-3xl p-7 sm:p-8"
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ type: "spring", stiffness: 200, damping: 20 }}
             style={{
               background: "rgba(255,255,255,0.04)",
               backdropFilter: "blur(16px)",
               border: "1px solid rgba(255,255,255,0.08)",
-              animation: `slideUp 0.7s ${SPRING} both`,
             }}>
 
             {/* Error */}
-            {error && (
-              <div className="mb-5 p-3.5 rounded-2xl text-sm font-semibold"
-                style={{ background: "rgba(239,68,68,0.08)", border: "1px solid rgba(239,68,68,0.2)", color: "#fca5a5", backdropFilter: "blur(8px)" }}>
-                {error}
-              </div>
-            )}
+            <AnimatePresence>
+              {error && (
+                <motion.div
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.2 }}
+                  className="mb-5 p-3.5 rounded-2xl text-sm font-semibold"
+                  style={{ background: "rgba(239,68,68,0.08)", border: "1px solid rgba(239,68,68,0.2)", color: "#fca5a5", backdropFilter: "blur(8px)" }}>
+                  {error}
+                </motion.div>
+              )}
+            </AnimatePresence>
 
             <form onSubmit={handleSubmit} className="space-y-5">
               {/* Email */}
@@ -203,17 +200,16 @@ export default function LoginPage() {
               </div>
 
               {/* Submit */}
-              <button type="submit" disabled={loading}
-                className="w-full font-black text-white text-base rounded-2xl transition-all duration-300 disabled:opacity-50"
+              <motion.button type="submit" disabled={loading}
+                whileHover={{ scale: 1.02, boxShadow: "0 6px 30px rgba(139,92,246,0.5)" }}
+                whileTap={{ scale: 0.98 }}
+                className="w-full font-black text-white text-base rounded-2xl transition-colors duration-300 disabled:opacity-50"
                 style={{
                   height: 50, background: GRAD,
                   boxShadow: "0 4px 20px rgba(139,92,246,0.3)",
-                }}
-                onMouseEnter={(e) => { e.currentTarget.style.transform = "scale(1.02)"; e.currentTarget.style.boxShadow = "0 6px 30px rgba(139,92,246,0.5)"; }}
-                onMouseLeave={(e) => { e.currentTarget.style.transform = "scale(1)"; e.currentTarget.style.boxShadow = "0 4px 20px rgba(139,92,246,0.3)"; }}
-              >
+                }}>
                 {loading ? "Logging In..." : "Log In"}
-              </button>
+              </motion.button>
             </form>
 
             <p className="text-center text-gray-500 text-sm mt-6">
@@ -222,7 +218,7 @@ export default function LoginPage() {
                 Sign Up
               </a>
             </p>
-          </div>
+          </motion.div>
 
           {/* Trust badges */}
           <div className="flex items-center justify-center gap-6 mt-6 flex-wrap">
@@ -231,9 +227,13 @@ export default function LoginPage() {
               { icon: "👨‍👩‍👧‍👦", label: "Family Friendly" },
               { icon: "🛡️", label: "COPPA Compliant" },
             ].map((b, i) => (
-              <span key={i} className="text-xs text-gray-500 flex items-center gap-1.5">
+              <motion.span key={i}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ type: "spring", stiffness: 200, damping: 20, delay: 0.3 + i * 0.1 }}
+                className="text-xs text-gray-500 flex items-center gap-1.5">
                 <span>{b.icon}</span> {b.label}
-              </span>
+              </motion.span>
             ))}
           </div>
         </div>
@@ -255,8 +255,13 @@ export default function LoginPage() {
         <FloatingIcons />
 
         {/* Shield */}
-        <div className="relative flex flex-col items-center" style={{ animation: `fadeStagger 0.8s ${SPRING} both 0.3s` }}>
-          <div className="flex items-center justify-center"
+        <motion.div className="relative flex flex-col items-center"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ type: "spring", stiffness: 200, damping: 20, delay: 0.3 }}>
+          <motion.div className="flex items-center justify-center"
+            animate={{ y: [-6, 6, -6] }}
+            transition={{ duration: 4, ease: "easeInOut", repeat: Infinity }}
             style={{
               width: 200, height: 230,
               background: GRAD,
@@ -267,7 +272,7 @@ export default function LoginPage() {
               <span className="text-5xl font-black text-white" style={{ fontFamily: "Nunito, sans-serif", textShadow: "0 2px 10px rgba(0,0,0,0.3)" }}>AX</span>
               <span className="text-xs font-bold text-white/60 mt-1 tracking-widest">ALGORITHMX</span>
             </div>
-          </div>
+          </motion.div>
 
           {/* Stats */}
           <p className="text-gray-400 text-sm mt-8 text-center">
@@ -276,7 +281,7 @@ export default function LoginPage() {
           <p className="text-gray-500 text-xs mt-3 text-center">
             Trusted by families across the UK
           </p>
-        </div>
+        </motion.div>
       </div>
     </div>
   );

@@ -2,500 +2,386 @@
 
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
+import { motion, useInView, useScroll, useTransform } from "framer-motion";
 
-/* ─── CONSTANTS ─── */
-const GRAD = "linear-gradient(135deg, #8b5cf6, #3b82f6)";
-const SPRING = "cubic-bezier(0.34,1.56,0.64,1)";
-
-/* ─── FLOATING ORBS ─── */
-function FloatingOrbs() {
-  return (
-    <div className="fixed inset-0 pointer-events-none overflow-hidden" style={{ zIndex: 0 }}>
-      {[
-        { size: 8, top: "8%", left: "6%", color: "#f59e0b", dur: "9s", delay: "0s" },
-        { size: 6, top: "18%", right: "10%", color: "#8b5cf6", dur: "11s", delay: "1s" },
-        { size: 10, top: "35%", left: "3%", color: "#3b82f6", dur: "13s", delay: "2s" },
-        { size: 5, top: "52%", right: "5%", color: "#f59e0b", dur: "8s", delay: "0.5s" },
-        { size: 7, top: "70%", left: "12%", color: "#8b5cf6", dur: "10s", delay: "3s" },
-        { size: 9, top: "82%", right: "8%", color: "#3b82f6", dur: "12s", delay: "1.5s" },
-        { size: 4, top: "45%", left: "50%", color: "#f59e0b", dur: "14s", delay: "4s" },
-        { size: 6, top: "15%", left: "40%", color: "#a78bfa", dur: "10s", delay: "2.5s" },
-      ].map((o, i) => (
-        <div key={i} className="absolute rounded-full"
-          style={{
-            width: o.size, height: o.size, top: o.top,
-            left: "left" in o ? o.left : undefined,
-            right: "right" in o ? o.right : undefined,
-            backgroundColor: o.color, opacity: 0.35,
-            boxShadow: `0 0 ${o.size * 3}px ${o.color}`,
-            animation: `floatOrb ${o.dur} ease-in-out infinite ${o.delay}`,
-          }} />
-      ))}
-    </div>
-  );
-}
-
-/* ─── SCROLL REVEAL ─── */
-function useReveal<T extends HTMLElement>() {
-  const ref = useRef<T>(null);
-  const [visible, setVisible] = useState(false);
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const obs = new IntersectionObserver(
-      ([e]) => { if (e.isIntersecting) { setVisible(true); obs.disconnect(); } },
-      { threshold: 0.15 },
-    );
-    obs.observe(el);
-    return () => obs.disconnect();
-  }, []);
-  return { ref, visible };
-}
-
-function Reveal({ children, className = "", delay = 0 }: { children: React.ReactNode; className?: string; delay?: number }) {
-  const { ref, visible } = useReveal<HTMLDivElement>();
-  return (
-    <div ref={ref} className={className}
-      style={{
-        opacity: visible ? 1 : 0,
-        transform: visible ? "translateY(0)" : "translateY(40px)",
-        transition: `opacity 0.7s ease ${delay}s, transform 0.7s ${SPRING} ${delay}s`,
-      }}>
-      {children}
-    </div>
-  );
-}
-
-/* ─── COUNTER ─── */
-function AnimCounter({ to, suffix = "", label }: { to: number | string; suffix?: string; label: string }) {
-  const { ref, visible } = useReveal<HTMLDivElement>();
+/* ─── ANIMATED COUNTER ─── */
+function AnimCounter({ to, suffix = "", label }: { to: number; suffix?: string; label: string }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref, { once: true, margin: "-50px" });
   const [val, setVal] = useState(0);
-  const isNum = typeof to === "number";
   useEffect(() => {
-    if (!visible || !isNum) return;
+    if (!inView) return;
     let frame: number;
     const start = performance.now();
-    const dur = 1600;
+    const dur = 2000;
     const tick = (now: number) => {
       const t = Math.min((now - start) / dur, 1);
       const ease = 1 - Math.pow(1 - t, 3);
-      setVal(Math.round(ease * (to as number)));
+      setVal(Math.round(ease * to));
       if (t < 1) frame = requestAnimationFrame(tick);
     };
     frame = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(frame);
-  }, [visible, to, isNum]);
+  }, [inView, to]);
   return (
-    <div ref={ref} className="flex flex-col items-center gap-1 px-4 py-5 rounded-2xl flex-1 min-w-[140px]"
-      style={{ background: "rgba(255,255,255,0.06)", backdropFilter: "blur(12px)", border: "1px solid rgba(255,255,255,0.08)" }}>
-      <span className="text-3xl sm:text-4xl font-black text-white">{isNum ? val : to}{suffix}</span>
-      <span className="text-xs sm:text-sm font-bold text-gray-400">{label}</span>
+    <div ref={ref} className="flex flex-col items-center gap-1 flex-1 min-w-[120px] py-6">
+      <span className="text-4xl sm:text-5xl font-black text-purple-700">{val}{suffix}</span>
+      <span className="text-sm font-bold text-slate-400">{label}</span>
     </div>
   );
 }
 
-/* ─── DATA ─── */
+/* ─── SECTION REVEAL ─── */
+function Reveal({ children, className = "", delay = 0 }: { children: React.ReactNode; className?: string; delay?: number }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref, { once: true, margin: "-60px" });
+  return (
+    <motion.div
+      ref={ref}
+      className={className}
+      initial={{ opacity: 0, y: 40 }}
+      animate={inView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1], delay }}
+    >
+      {children}
+    </motion.div>
+  );
+}
+
+/* ─── COURSE DATA ─── */
 const COURSES = [
   {
-    emoji: "🛡️", title: "Cyber Heroes Academy", ages: "6–10", weeks: 20, time: "45 min/week",
-    accent: "#06b6d4", featured: true, href: "/cyberheroes",
-    desc: "Fun animated adventures with Adam & Layla! Learn about passwords, online safety, and digital citizenship through interactive games.",
-    hasImage: true,
+    title: "Cyber Heroes Academy", ages: "6–10", weeks: 20, time: "45 min/week",
+    gradient: "from-purple-500 to-blue-500", icon: null, img: "/characters/adam-layla-happy.png",
+    desc: "Fun animated adventures with Adam & Layla. Kids learn about passwords, online safety, and digital citizenship through interactive games and challenges.",
+    badge: "AVAILABLE NOW", badgeColor: "bg-green-100 text-green-700",
+    link: "/cyberheroes", linkText: "Explore Course →", linkColor: "text-purple-600",
   },
   {
-    emoji: "🔍", title: "Cyber Explorers", ages: "11–14", weeks: 14, time: "1 hr/week",
-    accent: "#8b5cf6", featured: false, href: "/cyber-explorers",
+    title: "Cyber Explorers", ages: "11–14", weeks: 14, time: "1 hour/week",
+    gradient: "from-violet-500 to-purple-500", icon: "🔍", img: null,
     desc: "Motion-graphics lessons exploring networks, encryption, social engineering, and ethical hacking fundamentals.",
-    hasImage: false,
+    badge: "COMING 2026", badgeColor: "bg-slate-100 text-slate-500",
+    link: "/cyber-explorers", linkText: "Join Waitlist →", linkColor: "text-slate-500",
   },
   {
-    emoji: "💻", title: "CyberStart", ages: "15–17", weeks: 16, time: "1.5 hrs/week",
-    accent: "#22c55e", featured: false, href: "/cyberstart",
+    title: "CyberStart", ages: "15–17", weeks: 16, time: "1.5 hours/week",
+    gradient: "from-emerald-500 to-green-500", icon: "💻", img: null,
     desc: "Real-world CTF challenges, incident response scenarios, and simulated phishing environments.",
-    hasImage: false,
+    badge: "COMING 2026", badgeColor: "bg-slate-100 text-slate-500",
+    link: "/cyberstart", linkText: "Join Waitlist →", linkColor: "text-slate-500",
   },
   {
-    emoji: "🚀", title: "CyberStart Pro", ages: "18+", weeks: 20, time: "2 hrs/week",
-    accent: "#f59e0b", featured: false, href: "/cyberstart-pro",
+    title: "CyberStart Pro", ages: "18+", weeks: 20, time: "2 hours/week",
+    gradient: "from-amber-500 to-orange-500", icon: "🏢", img: null,
     desc: "Professional workplace cybersecurity. Compliance frameworks, threat analysis, and career pathways.",
-    hasImage: false,
+    badge: "COMING 2027", badgeColor: "bg-slate-100 text-slate-500",
+    link: "/cyberstart-pro", linkText: "Join Waitlist →", linkColor: "text-slate-500",
   },
-];
-
-const FEATURES = [
-  { emoji: "🎮", title: "Not Just Videos", desc: "Hands-on games, simulations, and challenges that make cybersecurity stick. Your child learns by doing." },
-  { emoji: "🏅", title: "Accreditation Aligned", desc: "Built to CyberFirst and ASDAN frameworks. Real credentials recognised by universities and employers." },
-  { emoji: "👨‍👩‍👧‍👦", title: "Family Bundle", desc: "One purchase covers all three youth tracks. Complete cybersecurity education from ages 6 to 17." },
 ];
 
 const STEPS = [
-  { num: "1", emoji: "🎯", title: "Choose a Track", desc: "Pick the right course for your child's age and level." },
-  { num: "2", emoji: "🎮", title: "Learn Through Adventure", desc: "Animated stories, interactive games, and real-world challenges make learning unforgettable." },
-  { num: "3", emoji: "🎓", title: "Earn Your Certificate", desc: "Complete all modules and earn an accredited certificate of achievement." },
+  { num: "1", title: "Choose a Course", desc: "Pick the right course for your child's age. Each track is designed specifically for their learning stage.", icon: "📋" },
+  { num: "2", title: "Learn Through Adventure", desc: "Animated stories, interactive games, quizzes, and real-world challenges. No boring lectures — just hands-on learning.", icon: "🎮" },
+  { num: "3", title: "Earn Your Certificate", desc: "Complete all modules and earn an accredited certificate. Track progress through the parent dashboard.", icon: "🏅" },
 ];
 
-const TRUST = ["CyberFirst Aligned", "ASDAN Framework", "NCSC Standards", "100% Interactive"];
+const FEATURES = [
+  { title: "Not Just Videos", desc: "Hands-on games, simulations, and interactive challenges. Your child learns by doing — not watching. Every lesson features drag-and-drop activities, real-world scenarios, and gamified quizzes.", icon: "🎯" },
+  { title: "Accreditation Aligned", desc: "Our curriculum is built to CyberFirst and ASDAN frameworks. Your child earns credentials recognised by universities and employers across the UK.", icon: "🏅" },
+  { title: "Family Bundle", desc: "One purchase covers all three youth tracks. Complete cybersecurity education from ages 6 to 17 under one roof.", icon: "👨‍👩‍👧‍👦" },
+];
 
-/* ─── PAGE ─── */
+const TESTIMONIALS = [
+  { quote: "My daughter loves the Cyber Heroes course. She actually asks to do her lesson each week!", author: "Parent, London" },
+  { quote: "Finally, a cybersecurity course that's actually designed for kids. The interactive games are brilliant.", author: "Parent, Manchester" },
+  { quote: "I love the parent dashboard. I can see exactly what my son is learning.", author: "Parent, Birmingham" },
+];
+
+/* ─── MAIN PAGE ─── */
 export default function HomePage() {
-  const [scrolled, setScrolled] = useState(false);
-
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 60);
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
-  const scrollToCourses = () => {
-    document.getElementById("courses")?.scrollIntoView({ behavior: "smooth" });
-  };
+  const { scrollY } = useScroll();
+  const navShadow = useTransform(scrollY, [0, 50], [0, 1]);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <>
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
-        * { font-family: 'Nunito', sans-serif; }
-        @keyframes floatOrb    {0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-24px) scale(1.3)}}
-        @keyframes heroFloat   {0%,100%{transform:translateY(0)}50%{transform:translateY(-16px)}}
-        @keyframes glowPulse   {0%,100%{opacity:0.5}50%{opacity:1}}
-        @keyframes slideUp     {from{opacity:0;transform:translateY(32px)}to{opacity:1;transform:translateY(0)}}
-        @keyframes popIn       {0%{opacity:0;transform:scale(0.85)}100%{opacity:1;transform:scale(1)}}
-        @keyframes sparkle     {0%,100%{opacity:0.3;transform:scale(0.8)}50%{opacity:1;transform:scale(1.2)}}
-      `}</style>
+    <div className="min-h-screen bg-white" style={{ fontFamily: "Nunito, sans-serif" }}>
 
-      <FloatingOrbs />
+      {/* ── NAV ── */}
+      <motion.nav
+        className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-sm"
+        style={{ boxShadow: useTransform(navShadow, (v) => `0 1px ${v * 12}px rgba(0,0,0,${v * 0.06})`) }}
+      >
+        <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+          <a href="/" className="flex items-center gap-2">
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-purple-600 to-blue-600 flex items-center justify-center">
+              <span className="text-xs font-black text-white">AX</span>
+            </div>
+            <span className="text-lg font-black text-slate-800">
+              Algorithm<span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-blue-600">X</span>
+            </span>
+          </a>
 
-      <div className="min-h-screen relative" style={{ background: "#1a1033", zIndex: 1 }}>
+          {/* Desktop links */}
+          <div className="hidden md:flex items-center gap-8">
+            <a href="#courses" className="text-sm font-bold text-slate-500 hover:text-slate-800 transition-colors">Courses</a>
+            <a href="#how-it-works" className="text-sm font-bold text-slate-500 hover:text-slate-800 transition-colors">About</a>
+            <a href="#why-us" className="text-sm font-bold text-slate-500 hover:text-slate-800 transition-colors">For Parents</a>
+          </div>
 
-        {/* ── NAV ── */}
-        <nav className="fixed top-0 left-0 right-0 z-50 transition-all duration-300"
-          style={{
-            background: scrolled ? "rgba(26,16,51,0.85)" : "transparent",
-            backdropFilter: scrolled ? "blur(20px)" : "none",
-            borderBottom: scrolled ? "1px solid rgba(255,255,255,0.06)" : "1px solid transparent",
-          }}>
-          <div className="max-w-[1200px] mx-auto px-6 md:px-10 py-4 flex items-center justify-between">
-            <a href="/" className="flex items-center gap-2">
-              <div className="w-9 h-9 rounded-lg flex items-center justify-center shadow-lg"
-                style={{ background: GRAD, boxShadow: "0 0 20px rgba(139,92,246,0.4)" }}>
-                <span className="text-xs font-black text-white">AX</span>
-              </div>
-              <span className="text-lg font-black text-white tracking-tight">
-                Algorithm<span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-blue-400">X</span>
-              </span>
+          <div className="flex items-center gap-4">
+            <a href="/login" className="text-sm font-bold text-slate-500 hover:text-slate-800 transition-colors hidden sm:block">
+              Log In
             </a>
-            <div className="flex items-center gap-5">
-              <button onClick={scrollToCourses}
-                className="text-sm font-bold text-gray-300 hover:text-white transition-colors hidden sm:block cursor-pointer bg-transparent border-none">
-                Courses
-              </button>
-              <a href="/login" className="text-sm font-bold text-gray-300 hover:text-white transition-colors hidden sm:block">
-                Log In
-              </a>
-              <a href="/signup"
-                className="px-5 py-2.5 rounded-2xl text-sm font-black text-white transition-all duration-300 hover:scale-105"
-                style={{ background: GRAD, boxShadow: "0 4px 20px rgba(139,92,246,0.3)" }}>
-                Get Started
-              </a>
-            </div>
+            <a href="/signup"
+              className="px-5 py-2.5 rounded-xl text-sm font-black text-white bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 transition-all shadow-md hover:shadow-lg">
+              Get Started
+            </a>
+            {/* Mobile menu */}
+            <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} className="md:hidden text-slate-600 text-xl p-1">
+              {mobileMenuOpen ? "✕" : "☰"}
+            </button>
           </div>
-        </nav>
+        </div>
 
-        {/* ── HERO ── */}
-        <section className="max-w-[1200px] mx-auto px-6 md:px-10 pt-28 sm:pt-36 pb-16 sm:pb-20">
-          <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-16">
-            <div className="flex-1 text-center lg:text-left" style={{ animation: `slideUp 0.8s ${SPRING} both` }}>
-              <div className="inline-block px-4 py-1.5 rounded-full text-xs font-black text-purple-300 mb-6"
-                style={{ background: "rgba(139,92,246,0.15)", border: "1px solid rgba(139,92,246,0.25)" }}>
-                🛡️ Ages 6 to Adult
-              </div>
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-white leading-tight mb-6">
-                Cybersecurity Education{" "}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-blue-400 to-cyan-400">
-                  for Every Age
-                </span>
-              </h1>
-              <p className="text-gray-300 text-base sm:text-lg leading-relaxed max-w-lg mx-auto lg:mx-0 mb-8">
-                Interactive courses that teach your children how to stay safe online. From ages 6 to adult — powered by animated adventures, real-world simulations, and accredited learning paths.
-              </p>
-              <div className="flex gap-4 flex-wrap justify-center lg:justify-start">
-                <button onClick={scrollToCourses}
-                  className="px-7 py-4 rounded-2xl font-black text-white text-base transition-all duration-300 hover:scale-105 cursor-pointer border-none"
-                  style={{ background: GRAD, boxShadow: "0 8px 32px rgba(139,92,246,0.35)" }}>
-                  Explore Courses
-                </button>
-                <a href="/signup"
-                  className="px-7 py-4 rounded-2xl font-black text-purple-300 text-base transition-all duration-300 hover:scale-105"
-                  style={{
-                    background: "transparent",
-                    border: "2px solid rgba(139,92,246,0.4)",
-                  }}
-                  onMouseEnter={e => { e.currentTarget.style.boxShadow = "0 0 24px rgba(139,92,246,0.3)"; e.currentTarget.style.borderColor = "rgba(139,92,246,0.7)"; }}
-                  onMouseLeave={e => { e.currentTarget.style.boxShadow = "none"; e.currentTarget.style.borderColor = "rgba(139,92,246,0.4)"; }}>
-                  Start Free Trial
-                </a>
-              </div>
-            </div>
+        {/* Mobile dropdown */}
+        {mobileMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            className="md:hidden border-t border-slate-100 px-6 py-4 flex flex-col gap-3 bg-white"
+          >
+            <a href="#courses" className="text-sm font-bold text-slate-600 py-2" onClick={() => setMobileMenuOpen(false)}>Courses</a>
+            <a href="#how-it-works" className="text-sm font-bold text-slate-600 py-2" onClick={() => setMobileMenuOpen(false)}>About</a>
+            <a href="#why-us" className="text-sm font-bold text-slate-600 py-2" onClick={() => setMobileMenuOpen(false)}>For Parents</a>
+            <a href="/login" className="text-sm font-bold text-slate-600 py-2">Log In</a>
+          </motion.div>
+        )}
+      </motion.nav>
 
-            {/* Hero Image */}
-            <div className="flex-1 flex justify-center lg:justify-end"
-              style={{ animation: `popIn 0.9s ${SPRING} 0.2s both` }}>
-              <div className="relative">
-                <div className="absolute inset-0 rounded-3xl"
-                  style={{
-                    background: "linear-gradient(135deg, rgba(139,92,246,0.4), rgba(59,130,246,0.4))",
-                    filter: "blur(40px)", transform: "scale(1.1)",
-                    animation: "glowPulse 4s ease-in-out infinite",
-                  }} />
-                <div className="relative rounded-3xl overflow-hidden border-2 shadow-2xl"
-                  style={{
-                    borderColor: "rgba(139,92,246,0.3)",
-                    animation: "heroFloat 5s ease-in-out infinite",
-                    boxShadow: "0 0 60px rgba(139,92,246,0.2)",
-                  }}>
-                  <Image src="/characters/adam-layla-happy.png" alt="Adam and Layla — Cyber Heroes"
-                    width={500} height={500} className="block w-full max-w-[480px]" priority />
-                </div>
-                {[
-                  { top: "-8px", right: "-8px", size: 14 },
-                  { bottom: "12px", left: "-10px", size: 10 },
-                  { top: "40%", right: "-14px", size: 8 },
-                ].map((s, i) => (
-                  <div key={i} className="absolute text-yellow-300" style={{ ...s, fontSize: s.size, animation: `sparkle 2.5s ease-in-out infinite ${i * 0.8}s` }}>✦</div>
-                ))}
-              </div>
-            </div>
-          </div>
+      {/* ── HERO ── */}
+      <section className="pt-32 sm:pt-40 pb-20 sm:pb-28 px-6">
+        <div className="max-w-4xl mx-auto text-center">
+          <motion.h1
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ type: "spring", stiffness: 200, damping: 25 }}
+            className="text-4xl sm:text-5xl lg:text-6xl font-black text-slate-800 leading-tight mb-6"
+          >
+            Cybersecurity education that kids{" "}
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-blue-600">actually love</span>
+          </motion.h1>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.15, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+            className="text-lg sm:text-xl text-slate-500 max-w-2xl mx-auto mb-10 leading-relaxed"
+          >
+            Interactive courses for ages 6 to adult. Animated adventures, real-world simulations, and accredited learning paths that build real skills.
+          </motion.p>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+            className="flex gap-4 flex-wrap justify-center"
+          >
+            <a href="#courses"
+              className="px-8 py-4 rounded-xl font-black text-white text-base bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 transition-all shadow-lg hover:shadow-xl">
+              Explore Courses
+            </a>
+            <a href="#how-it-works"
+              className="px-8 py-4 rounded-xl font-black text-slate-600 text-base border-2 border-slate-200 hover:border-slate-300 hover:bg-slate-50 transition-all">
+              Watch How It Works
+            </a>
+          </motion.div>
 
-          {/* Trust bar */}
-          <div className="flex flex-wrap justify-center gap-x-8 gap-y-2 mt-12 sm:mt-16"
-            style={{ animation: `slideUp 0.8s ${SPRING} 0.4s both` }}>
-            {TRUST.map((t, i) => (
-              <span key={i} className="text-xs sm:text-sm font-bold text-gray-500 tracking-wide">
-                {i > 0 && <span className="text-gray-700 mr-3 hidden sm:inline">·</span>}
-                {t}
-              </span>
+          {/* Floating shield illustration */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.5, type: "spring", stiffness: 150, damping: 20 }}
+            className="mt-16 flex justify-center"
+          >
+            <motion.div
+              animate={{ y: [-8, 8, -8], rotate: [0, 3, 0, -3, 0] }}
+              transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+              className="w-24 h-28 rounded-[50%_50%_50%_50%/40%_40%_60%_60%] bg-gradient-to-br from-purple-500 to-blue-500 flex items-center justify-center shadow-2xl"
+              style={{ boxShadow: "0 20px 60px rgba(109,40,217,0.2)" }}
+            >
+              <span className="text-white text-3xl font-black">🛡️</span>
+            </motion.div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* ── TRUST BAR ── */}
+      <section className="bg-slate-50 border-y border-slate-100 py-8">
+        <Reveal className="max-w-5xl mx-auto px-6 text-center">
+          <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4">Trusted by families across the United Kingdom</p>
+          <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-3">
+            {["CyberFirst Aligned", "ASDAN Framework", "NCSC Standards", "COPPA Compliant"].map((item) => (
+              <span key={item} className="text-sm font-bold text-slate-400">{item}</span>
             ))}
           </div>
-        </section>
+        </Reveal>
+      </section>
 
-        {/* ── COURSES ── */}
-        <section id="courses" className="max-w-[1200px] mx-auto px-6 md:px-10 py-16 sm:py-24">
-          <Reveal className="text-center mb-12">
-            <h2 className="text-3xl sm:text-4xl font-black text-white mb-4">
-              Choose Your{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-blue-400">Learning Path</span>
-            </h2>
-            <p className="text-gray-400 text-base sm:text-lg max-w-xl mx-auto">
-              Four tracks covering every age — from first-time digital explorers to cybersecurity professionals.
+      {/* ── COURSES ── */}
+      <section id="courses" className="py-20 sm:py-28 px-6">
+        <div className="max-w-6xl mx-auto">
+          <Reveal className="text-center mb-16">
+            <h2 className="text-3xl sm:text-4xl font-black text-slate-800 mb-4">Four courses. Every age group.</h2>
+            <p className="text-lg text-slate-500 max-w-2xl mx-auto">
+              Each course is designed specifically for its age group — from animated adventures for young learners to professional training for adults.
             </p>
           </Reveal>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-            {COURSES.map((c, i) => {
-              const isComingSoon = !c.featured;
-              const Wrapper = c.href ? "a" : "div";
-              const wrapperProps = c.href ? { href: c.href } : {};
-
-              return (
-                <Reveal key={i} delay={i * 0.1}>
-                  <Wrapper {...wrapperProps}
-                    className="block rounded-3xl p-6 sm:p-7 h-full transition-all duration-500 relative group"
-                    style={{
-                      background: c.featured ? "rgba(255,255,255,0.07)" : "rgba(255,255,255,0.04)",
-                      borderTop: `3px solid ${c.accent}`,
-                      border: `1px solid ${c.featured ? `${c.accent}40` : "rgba(255,255,255,0.06)"}`,
-                      borderTopWidth: 3,
-                      borderTopColor: c.accent,
-                      backdropFilter: "blur(12px)",
-                      cursor: c.href ? "pointer" : "not-allowed",
-                      textDecoration: "none",
-                      opacity: 1,
-                    }}
-                    onMouseEnter={e => {
-                      if (c.href) {
-                        e.currentTarget.style.boxShadow = `0 0 40px ${c.accent}25`;
-                        e.currentTarget.style.transform = "translateY(-4px)";
-                      }
-                    }}
-                    onMouseLeave={e => {
-                      e.currentTarget.style.boxShadow = "none";
-                      e.currentTarget.style.transform = "translateY(0)";
-                    }}>
-
-                    {/* Badge */}
-                    <div className="absolute -top-3 right-6 px-3 py-1 rounded-full text-[10px] font-black text-white"
-                      style={{
-                        background: c.featured ? c.accent : "rgba(255,255,255,0.1)",
-                        color: c.featured ? "white" : "#9ca3af",
-                        boxShadow: c.featured ? `0 4px 12px ${c.accent}40` : "none",
-                      }}>
-                      {c.featured ? "NOW AVAILABLE" : "COMING SOON"}
-                    </div>
-
-                    <div className="flex items-start gap-4">
-                      <div className="text-4xl shrink-0">{c.emoji}</div>
-                      <div className="flex-1 min-w-0">
-                        <div className="inline-block px-2.5 py-1 rounded-full text-[10px] font-black mb-2"
-                          style={{ background: `${c.accent}20`, color: c.accent, border: `1px solid ${c.accent}30` }}>
-                          Ages {c.ages}
-                        </div>
-                        <h3 className="font-black text-white text-lg sm:text-xl mb-1 leading-snug">{c.title}</h3>
-                        <p className="text-gray-400 text-sm leading-relaxed mb-3">{c.desc}</p>
-                        <div className="flex items-center gap-3 text-xs font-bold text-gray-500">
-                          <span>📅 {c.weeks} weeks</span>
-                          <span>⏱️ {c.time}</span>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Thumbnail for featured card */}
-                    {c.hasImage && (
-                      <div className="mt-4 rounded-2xl overflow-hidden border"
-                        style={{ borderColor: `${c.accent}30` }}>
-                        <Image src="/characters/adam-layla-happy.png" alt="Cyber Heroes Academy preview"
-                          width={600} height={300} className="w-full block" style={{ objectFit: "cover", maxHeight: 180 }} />
+            {COURSES.map((c, i) => (
+              <Reveal key={i} delay={i * 0.1}>
+                <motion.a
+                  href={c.link}
+                  className="block rounded-2xl overflow-hidden bg-white border border-slate-200 shadow-sm hover:shadow-xl transition-shadow"
+                  whileHover={{ y: -6 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 25 }}
+                  style={{ textDecoration: "none" }}
+                >
+                  {/* Gradient header */}
+                  <div className={`bg-gradient-to-r ${c.gradient} p-6 flex items-center gap-4`}>
+                    {c.img ? (
+                      <Image src={c.img} alt={c.title} width={64} height={64} className="rounded-full border-2 border-white/50" />
+                    ) : (
+                      <div className="w-14 h-14 rounded-full bg-white/20 flex items-center justify-center text-2xl shrink-0">
+                        {c.icon}
                       </div>
                     )}
-
-                    {c.href && (
-                      <div className="mt-4">
-                        <span className="inline-block px-5 py-2.5 rounded-2xl text-sm font-black text-white"
-                          style={{ background: GRAD, boxShadow: `0 4px 16px ${c.accent}30` }}>
-                          Explore Course →
-                        </span>
-                      </div>
-                    )}
-                  </Wrapper>
-                </Reveal>
-              );
-            })}
+                    <div>
+                      <h3 className="font-black text-white text-lg leading-snug">{c.title}</h3>
+                      <p className="text-white/70 text-sm font-bold">Ages {c.ages} · {c.weeks} Weeks · {c.time}</p>
+                    </div>
+                  </div>
+                  {/* Card body */}
+                  <div className="p-6">
+                    <span className={`inline-block px-3 py-1 rounded-full text-xs font-black ${c.badgeColor} mb-3`}>{c.badge}</span>
+                    <p className="text-slate-500 text-sm leading-relaxed mb-4">{c.desc}</p>
+                    <span className={`text-sm font-black ${c.linkColor}`}>{c.linkText}</span>
+                  </div>
+                </motion.a>
+              </Reveal>
+            ))}
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* ── WHY ALGORITHMX ── */}
-        <section className="max-w-[1200px] mx-auto px-6 md:px-10 py-16 sm:py-24">
-          <Reveal className="text-center mb-12">
-            <h2 className="text-3xl sm:text-4xl font-black text-white mb-4">
-              Why{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-blue-400">AlgorithmX</span>?
-            </h2>
+      {/* ── HOW IT WORKS ── */}
+      <section id="how-it-works" className="bg-slate-50 py-20 sm:py-28 px-6">
+        <div className="max-w-6xl mx-auto">
+          <Reveal className="text-center mb-16">
+            <h2 className="text-3xl sm:text-4xl font-black text-slate-800 mb-4">Three Simple Steps</h2>
+          </Reveal>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {STEPS.map((s, i) => (
+              <Reveal key={i} delay={i * 0.15} className="text-center">
+                <div className="text-6xl font-black text-purple-100 mb-4">{s.num}</div>
+                <div className="text-4xl mb-4">{s.icon}</div>
+                <h3 className="text-xl font-black text-slate-800 mb-3">{s.title}</h3>
+                <p className="text-slate-500 text-sm leading-relaxed">{s.desc}</p>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── WHY US ── */}
+      <section id="why-us" className="py-20 sm:py-28 px-6">
+        <div className="max-w-6xl mx-auto">
+          <Reveal className="text-center mb-16">
+            <h2 className="text-3xl sm:text-4xl font-black text-slate-800 mb-4">Why parents choose AlgorithmX</h2>
           </Reveal>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {FEATURES.map((f, i) => (
               <Reveal key={i} delay={i * 0.12}>
-                <div className="rounded-3xl p-6 h-full transition-all duration-500 hover:scale-[1.03]"
-                  style={{
-                    background: "rgba(255,255,255,0.04)",
-                    border: "1px solid rgba(255,255,255,0.06)",
-                    backdropFilter: "blur(12px)",
-                  }}
-                  onMouseEnter={e => { e.currentTarget.style.boxShadow = "0 0 40px rgba(139,92,246,0.15)"; e.currentTarget.style.borderColor = "rgba(139,92,246,0.25)"; }}
-                  onMouseLeave={e => { e.currentTarget.style.boxShadow = "none"; e.currentTarget.style.borderColor = "rgba(255,255,255,0.06)"; }}>
-                  <div className="text-4xl mb-4">{f.emoji}</div>
-                  <h3 className="font-black text-white text-lg mb-2">{f.title}</h3>
-                  <p className="text-gray-400 text-sm leading-relaxed">{f.desc}</p>
+                <div className="rounded-2xl bg-white border border-slate-200 p-7 shadow-sm h-full">
+                  <div className="text-4xl mb-5">{f.icon}</div>
+                  <h3 className="text-lg font-black text-slate-800 mb-3">{f.title}</h3>
+                  <p className="text-slate-500 text-sm leading-relaxed">{f.desc}</p>
                 </div>
               </Reveal>
             ))}
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* ── HOW IT WORKS ── */}
-        <section className="max-w-[1200px] mx-auto px-6 md:px-10 py-16 sm:py-24">
-          <Reveal className="text-center mb-12">
-            <h2 className="text-3xl sm:text-4xl font-black text-white mb-4">
-              Three Simple{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-blue-400">Steps</span>
-            </h2>
+      {/* ── STATS ── */}
+      <section className="border-y border-slate-100 py-16 px-6">
+        <div className="max-w-4xl mx-auto flex flex-wrap justify-center gap-4">
+          <AnimCounter to={4} label="Learning Tracks" />
+          <AnimCounter to={70} suffix="+" label="Weeks of Content" />
+          <AnimCounter to={6} suffix="-18+" label="Age Range" />
+          <AnimCounter to={100} suffix="%" label="Interactive" />
+        </div>
+      </section>
+
+      {/* ── TESTIMONIALS ── */}
+      <section className="bg-slate-50 py-20 sm:py-28 px-6">
+        <div className="max-w-6xl mx-auto">
+          <Reveal className="text-center mb-16">
+            <h2 className="text-3xl sm:text-4xl font-black text-slate-800 mb-4">What parents are saying</h2>
           </Reveal>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {STEPS.map((s, i) => (
-              <Reveal key={i} delay={i * 0.12}>
-                <div className="rounded-3xl p-6 h-full text-center transition-all duration-500 hover:scale-[1.03]"
-                  style={{
-                    background: "rgba(255,255,255,0.04)",
-                    border: "1px solid rgba(255,255,255,0.06)",
-                    backdropFilter: "blur(12px)",
-                  }}
-                  onMouseEnter={e => { e.currentTarget.style.boxShadow = "0 0 40px rgba(139,92,246,0.15)"; }}
-                  onMouseLeave={e => { e.currentTarget.style.boxShadow = "none"; }}>
-                  <div className="w-14 h-14 rounded-2xl flex items-center justify-center mx-auto mb-4 text-xl font-black text-white"
-                    style={{ background: GRAD, boxShadow: "0 4px 16px rgba(139,92,246,0.3)" }}>
-                    {s.num}
-                  </div>
-                  <div className="text-3xl mb-3">{s.emoji}</div>
-                  <h3 className="font-black text-white text-lg mb-2">{s.title}</h3>
-                  <p className="text-gray-400 text-sm leading-relaxed">{s.desc}</p>
+            {TESTIMONIALS.map((t, i) => (
+              <Reveal key={i} delay={i * 0.15}>
+                <div className="rounded-2xl bg-white border border-slate-200 p-7 shadow-sm h-full flex flex-col">
+                  <span className="text-purple-200 text-4xl font-black leading-none mb-3">"</span>
+                  <p className="text-slate-600 text-sm leading-relaxed italic flex-1">{t.quote}</p>
+                  <p className="text-slate-400 text-xs font-bold mt-4">— {t.author}</p>
                 </div>
               </Reveal>
             ))}
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* ── STATS ── */}
-        <section className="max-w-[1200px] mx-auto px-6 md:px-10 py-12 sm:py-20">
-          <div className="flex flex-wrap gap-4 justify-center">
-            <AnimCounter to={4} label="Learning Tracks" />
-            <AnimCounter to={70} suffix="+" label="Weeks of Content" />
-            <AnimCounter to="6+" suffix="" label="Starting Age" />
-            <AnimCounter to={100} suffix="%" label="Interactive" />
+      {/* ── CTA ── */}
+      <section className="py-20 sm:py-28 px-6">
+        <Reveal>
+          <div className="max-w-4xl mx-auto rounded-3xl bg-gradient-to-r from-purple-700 to-blue-700 p-10 sm:p-16 text-center">
+            <h2 className="text-3xl sm:text-4xl font-black text-white mb-4 leading-tight">
+              Ready to start your child&apos;s cybersecurity journey?
+            </h2>
+            <p className="text-purple-200 text-lg mb-8 max-w-lg mx-auto">
+              The first lesson is completely free. No credit card required.
+            </p>
+            <a href="/signup"
+              className="inline-block px-10 py-5 rounded-xl font-black text-purple-700 text-lg bg-white hover:bg-purple-50 transition-colors shadow-xl">
+              Get Started Free
+            </a>
           </div>
-        </section>
+        </Reveal>
+      </section>
 
-        {/* ── CTA ── */}
-        <section className="max-w-[1200px] mx-auto px-6 md:px-10 py-16 sm:py-24">
-          <Reveal>
-            <div className="relative rounded-3xl overflow-hidden p-8 sm:p-14 text-center"
-              style={{
-                background: "rgba(255,255,255,0.04)",
-                border: "1px solid rgba(139,92,246,0.2)",
-                backdropFilter: "blur(16px)",
-              }}>
-              {/* Raccoon watermark */}
-              <div className="absolute right-4 bottom-4 z-0 opacity-[0.06]">
-                <Image src="/characters/raccoon.png" alt="" width={200} height={200} />
-              </div>
-              <div className="relative z-10">
-                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white mb-4 leading-tight">
-                  Ready to Start Your{" "}
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-blue-400 to-cyan-400">
-                    Cybersecurity Journey
-                  </span>?
-                </h2>
-                <p className="text-gray-400 text-base sm:text-lg max-w-lg mx-auto mb-8">
-                  Choose a track and begin learning today. First lesson is free!
-                </p>
-                <a href="/signup"
-                  className="inline-block px-10 py-5 rounded-2xl font-black text-white text-lg transition-all duration-300 hover:scale-105"
-                  style={{ background: GRAD, boxShadow: "0 8px 40px rgba(139,92,246,0.4)" }}>
-                  Get Started 🚀
-                </a>
-              </div>
+      {/* ── FOOTER ── */}
+      <footer className="bg-slate-50 border-t border-slate-200 py-10 px-6">
+        <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6">
+          <div className="flex items-center gap-2">
+            <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-purple-600 to-blue-600 flex items-center justify-center">
+              <span className="text-[9px] font-black text-white">AX</span>
             </div>
-          </Reveal>
-        </section>
-
-        {/* ── FOOTER ── */}
-        <footer className="border-t py-8 px-6 md:px-10" style={{ borderColor: "rgba(255,255,255,0.06)" }}>
-          <div className="max-w-[1200px] mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
-            <div className="flex items-center gap-2">
-              <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background: GRAD }}>
-                <span className="text-[9px] font-black text-white">AX</span>
-              </div>
-              <span className="text-sm font-bold text-gray-500">&copy; 2026 AlgorithmX. All rights reserved.</span>
-            </div>
-            <div className="flex items-center gap-6">
-              <a href="#" className="text-xs font-bold text-gray-500 hover:text-gray-300 transition-colors">Privacy</a>
-              <a href="#" className="text-xs font-bold text-gray-500 hover:text-gray-300 transition-colors">Terms</a>
-              <a href="#" className="text-xs font-bold text-gray-500 hover:text-gray-300 transition-colors">Contact</a>
-              <button onClick={scrollToCourses} className="text-xs font-bold text-gray-500 hover:text-gray-300 transition-colors bg-transparent border-none cursor-pointer">Courses</button>
-            </div>
+            <span className="text-sm font-bold text-slate-400">&copy; 2026 AlgorithmX. All rights reserved.</span>
           </div>
-        </footer>
-      </div>
-    </>
+          <div className="flex items-center gap-6 flex-wrap justify-center">
+            <a href="#courses" className="text-xs font-bold text-slate-400 hover:text-slate-600 transition-colors">Courses</a>
+            <a href="#how-it-works" className="text-xs font-bold text-slate-400 hover:text-slate-600 transition-colors">About</a>
+            <a href="#" className="text-xs font-bold text-slate-400 hover:text-slate-600 transition-colors">Privacy</a>
+            <a href="#" className="text-xs font-bold text-slate-400 hover:text-slate-600 transition-colors">Terms</a>
+            <a href="#" className="text-xs font-bold text-slate-400 hover:text-slate-600 transition-colors">Contact</a>
+          </div>
+          <span className="text-xs font-bold text-slate-400">Made in the UK 🇬🇧</span>
+        </div>
+      </footer>
+    </div>
   );
 }

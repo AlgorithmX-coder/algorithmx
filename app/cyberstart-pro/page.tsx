@@ -1,64 +1,45 @@
 "use client";
 
+import { motion, useInView } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 
 const PRIMARY = "#f59e0b";
 const ACCENT = "#f97316";
 const GRAD = `linear-gradient(135deg, ${PRIMARY}, ${ACCENT})`;
-const SPRING = "cubic-bezier(0.34,1.56,0.64,1)";
 
 function FloatingOrbs() {
   return (
     <div className="fixed inset-0 pointer-events-none overflow-hidden" style={{ zIndex: 0 }}>
       {[
-        { size: 8, top: "8%", left: "6%", color: PRIMARY, dur: "9s", delay: "0s" },
-        { size: 6, top: "18%", right: "10%", color: ACCENT, dur: "11s", delay: "1s" },
-        { size: 10, top: "35%", left: "3%", color: "#d97706", dur: "13s", delay: "2s" },
-        { size: 5, top: "52%", right: "5%", color: PRIMARY, dur: "8s", delay: "0.5s" },
-        { size: 7, top: "70%", left: "12%", color: ACCENT, dur: "10s", delay: "3s" },
-        { size: 9, top: "82%", right: "8%", color: "#d97706", dur: "12s", delay: "1.5s" },
+        { size: 8, top: "8%", left: "6%", color: PRIMARY, delay: 0 },
+        { size: 6, top: "18%", right: "10%", color: ACCENT, delay: 1 },
+        { size: 10, top: "35%", left: "3%", color: "#d97706", delay: 2 },
+        { size: 5, top: "52%", right: "5%", color: PRIMARY, delay: 0.5 },
+        { size: 7, top: "70%", left: "12%", color: ACCENT, delay: 3 },
+        { size: 9, top: "82%", right: "8%", color: "#d97706", delay: 1.5 },
       ].map((o, i) => (
-        <div key={i} className="absolute rounded-full"
+        <motion.div key={i} className="absolute rounded-full"
+          animate={{ y: [-15, 15, -15], scale: [1, 1.15, 1], opacity: [0.25, 0.45, 0.25] }}
+          transition={{ duration: 6 + i, repeat: Infinity, ease: "easeInOut", delay: o.delay }}
           style={{
             width: o.size, height: o.size, top: o.top,
             left: "left" in o ? o.left : undefined,
             right: "right" in o ? o.right : undefined,
-            backgroundColor: o.color, opacity: 0.35,
+            backgroundColor: o.color,
             boxShadow: `0 0 ${o.size * 3}px ${o.color}`,
-            animation: `floatOrb ${o.dur} ease-in-out infinite ${o.delay}`,
           }} />
       ))}
     </div>
   );
 }
 
-function useReveal<T extends HTMLElement>() {
-  const ref = useRef<T>(null);
-  const [visible, setVisible] = useState(false);
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const obs = new IntersectionObserver(
-      ([e]) => { if (e.isIntersecting) { setVisible(true); obs.disconnect(); } },
-      { threshold: 0.15 },
-    );
-    obs.observe(el);
-    return () => obs.disconnect();
-  }, []);
-  return { ref, visible };
-}
-
-function Reveal({ children, className = "", delay = 0 }: { children: React.ReactNode; className?: string; delay?: number }) {
-  const { ref, visible } = useReveal<HTMLDivElement>();
+function ScrollReveal({ children, className = "", delay = 0 }: { children: React.ReactNode; className?: string; delay?: number }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const isInView = useInView(ref, { once: true, margin: "-50px" });
   return (
-    <div ref={ref} className={className}
-      style={{
-        opacity: visible ? 1 : 0,
-        transform: visible ? "translateY(0)" : "translateY(40px)",
-        transition: `opacity 0.7s ease ${delay}s, transform 0.7s ${SPRING} ${delay}s`,
-      }}>
+    <motion.div ref={ref} initial={{ opacity: 0, y: 40 }} animate={isInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.5, ease: "easeOut", delay }} className={className}>
       {children}
-    </div>
+    </motion.div>
   );
 }
 
@@ -81,10 +62,6 @@ export default function CyberStartProPage() {
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
         * { font-family: 'Nunito', sans-serif; }
-        @keyframes floatOrb  {0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-24px) scale(1.3)}}
-        @keyframes slideUp   {from{opacity:0;transform:translateY(32px)}to{opacity:1;transform:translateY(0)}}
-        @keyframes popIn     {0%{opacity:0;transform:scale(0.85)}100%{opacity:1;transform:scale(1)}}
-        @keyframes glowPulse {0%,100%{opacity:0.5}50%{opacity:1}}
       `}</style>
 
       <FloatingOrbs />
@@ -109,21 +86,29 @@ export default function CyberStartProPage() {
             </a>
             <div className="flex items-center gap-4">
               <a href="/login" className="text-sm font-bold text-gray-300 hover:text-white transition-colors hidden sm:block">Log In</a>
-              <a href="/signup" className="px-5 py-2.5 rounded-2xl text-sm font-black text-white transition-all duration-300 hover:scale-105"
+              <motion.a href="/signup"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="px-5 py-2.5 rounded-2xl text-sm font-black text-white"
                 style={{ background: GRAD, boxShadow: `0 4px 20px ${PRIMARY}50` }}>
                 Get Started
-              </a>
+              </motion.a>
             </div>
           </div>
         </nav>
 
         {/* Hero */}
         <section className="max-w-[1200px] mx-auto px-6 md:px-10 pt-28 sm:pt-36 pb-16 sm:pb-24">
-          <div className="text-center" style={{ animation: `slideUp 0.8s ${SPRING} both` }}>
-            <div className="inline-block px-5 py-2 rounded-full text-xs font-black mb-6"
+          <motion.div className="text-center"
+            initial={{ opacity: 0, y: 32 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, ease: "easeOut" }}>
+            <motion.div className="inline-block px-5 py-2 rounded-full text-xs font-black mb-6"
+              animate={{ scale: [1, 1.05, 1] }}
+              transition={{ duration: 2, repeat: Infinity }}
               style={{ background: `${PRIMARY}20`, border: `1px solid ${PRIMARY}40`, color: PRIMARY }}>
               COMING SOON
-            </div>
+            </motion.div>
 
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-white leading-tight mb-4">
               <span className="text-transparent bg-clip-text" style={{ backgroundImage: GRAD, WebkitBackgroundClip: "text" }}>
@@ -140,53 +125,62 @@ export default function CyberStartProPage() {
               Professional workplace cybersecurity. Compliance frameworks, threat analysis, and career pathways. Designed for adults entering or advancing in the cybersecurity industry.
             </p>
 
-            <div className="relative mx-auto w-48 h-48 mb-10" style={{ animation: `popIn 0.9s ${SPRING} 0.2s both` }}>
-              <div className="absolute inset-0 rounded-full" style={{ background: `${PRIMARY}30`, filter: "blur(40px)", animation: "glowPulse 4s ease-in-out infinite" }} />
+            <motion.div className="relative mx-auto w-48 h-48 mb-10"
+              initial={{ opacity: 0, scale: 0.85 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.5, ease: "easeOut", delay: 0.2 }}>
+              <motion.div className="absolute inset-0 rounded-full"
+                animate={{ opacity: [0.5, 1, 0.5] }}
+                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                style={{ background: `${PRIMARY}30`, filter: "blur(40px)" }} />
               <div className="relative w-full h-full rounded-full flex items-center justify-center"
                 style={{ background: `${PRIMARY}15`, border: `2px solid ${PRIMARY}40` }}>
                 <span className="text-7xl">🏢</span>
               </div>
-            </div>
+            </motion.div>
 
-            <a href="/signup" className="inline-block px-8 py-4 rounded-2xl font-black text-white text-base transition-all duration-300 hover:scale-105"
+            <motion.a href="/signup"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="inline-block px-8 py-4 rounded-2xl font-black text-white text-base"
               style={{ background: GRAD, boxShadow: `0 8px 32px ${PRIMARY}50` }}>
               Join the Waitlist 🚀
-            </a>
-          </div>
+            </motion.a>
+          </motion.div>
         </section>
 
         {/* Features */}
         <section className="max-w-[1200px] mx-auto px-6 md:px-10 py-16 sm:py-24">
-          <Reveal className="text-center mb-12">
+          <ScrollReveal className="text-center mb-12">
             <h2 className="text-3xl sm:text-4xl font-black text-white mb-4">
               What You&apos;ll{" "}
               <span className="text-transparent bg-clip-text" style={{ backgroundImage: GRAD, WebkitBackgroundClip: "text" }}>Master</span>
             </h2>
-          </Reveal>
+          </ScrollReveal>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {FEATURES.map((f, i) => (
-              <Reveal key={i} delay={i * 0.12}>
-                <div className="rounded-3xl p-6 h-full transition-all duration-500 hover:scale-[1.03]"
+              <ScrollReveal key={i} delay={i * 0.12}>
+                <motion.div className="rounded-3xl p-6 h-full"
+                  whileHover={{ y: -2 }}
+                  transition={{ duration: 0.5, ease: "easeOut" }}
                   style={{
                     background: "rgba(255,255,255,0.04)",
                     border: `1px solid ${PRIMARY}20`,
                     backdropFilter: "blur(12px)",
-                  }}
-                  onMouseEnter={e => { e.currentTarget.style.boxShadow = `0 0 40px ${PRIMARY}20`; e.currentTarget.style.borderColor = `${PRIMARY}40`; }}
-                  onMouseLeave={e => { e.currentTarget.style.boxShadow = "none"; e.currentTarget.style.borderColor = `${PRIMARY}20`; }}>
+                  }}>
                   <div className="text-4xl mb-4">{f.emoji}</div>
                   <h3 className="font-black text-white text-lg mb-2">{f.title}</h3>
                   <p className="text-gray-400 text-sm leading-relaxed">{f.desc}</p>
-                </div>
-              </Reveal>
+                </motion.div>
+              </ScrollReveal>
             ))}
           </div>
         </section>
 
         {/* CTA */}
         <section className="max-w-[1200px] mx-auto px-6 md:px-10 py-16 sm:py-24">
-          <Reveal>
+          <ScrollReveal>
             <div className="rounded-3xl p-8 sm:p-14 text-center"
               style={{ background: "rgba(255,255,255,0.04)", border: `1px solid ${PRIMARY}25`, backdropFilter: "blur(16px)" }}>
               <h2 className="text-3xl sm:text-4xl font-black text-white mb-4">
@@ -196,12 +190,15 @@ export default function CyberStartProPage() {
               <p className="text-gray-400 text-base sm:text-lg max-w-lg mx-auto mb-8">
                 Launch your cybersecurity career. Be the first to access CyberStart Pro when it goes live.
               </p>
-              <a href="/signup" className="inline-block px-10 py-5 rounded-2xl font-black text-white text-lg transition-all duration-300 hover:scale-105"
+              <motion.a href="/signup"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="inline-block px-10 py-5 rounded-2xl font-black text-white text-lg"
                 style={{ background: GRAD, boxShadow: `0 8px 40px ${PRIMARY}50` }}>
                 Join the Waitlist 🚀
-              </a>
+              </motion.a>
             </div>
-          </Reveal>
+          </ScrollReveal>
         </section>
 
         {/* Footer */}
