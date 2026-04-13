@@ -225,7 +225,122 @@ export default function HomePage() {
           0%, 100% { box-shadow: 0 0 0 0 rgba(22,163,74,0.3); }
           50% { box-shadow: 0 0 12px 2px rgba(22,163,74,0.15); }
         }
+        @keyframes gridPulseLP { 0%,100% { opacity: 0.04; } 50% { opacity: 0.08; } }
+        @keyframes codeBubbleFloat { 0%,100% { transform: translateY(0) translateX(0); } 50% { transform: translateY(-20px) translateX(8px); } }
+        @keyframes dotPulse { 0%,100% { r: 2; } 50% { r: 4; } }
+        @keyframes sparkleTwink { 0%,100% { opacity: 0; } 50% { opacity: 0.3; } }
+        @keyframes scanLineLP { from { transform: translateY(-100vh); } to { transform: translateY(100vh); } }
+        @keyframes subjectFloat { 0%,100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-10px) rotate(5deg); } }
       `}</style>
+
+      {/* ── ANIMATED TECH BACKGROUND ── */}
+      <div style={{ position: "fixed", inset: 0, zIndex: 0, pointerEvents: "none", overflow: "hidden" }}>
+        {/* Layer 1: Flowing grid */}
+        <div style={{
+          position: "absolute", inset: 0,
+          backgroundImage: `linear-gradient(rgba(99,102,241,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(99,102,241,0.06) 1px, transparent 1px)`,
+          backgroundSize: "50px 50px",
+          animation: "gridPulseLP 10s ease-in-out infinite",
+        }} />
+
+        {/* Layer 2: Floating code bubbles */}
+        {[
+          { text: "if(safe)", left: "5%", top: "12%", w: 70, dur: 14 },
+          { text: "locked()", left: "82%", top: "25%", w: 75, dur: 16 },
+          { text: "encrypt()", left: "15%", top: "45%", w: 80, dur: 18 },
+          { text: "shield.on", left: "68%", top: "55%", w: 85, dur: 13 },
+          { text: "pass = ****", left: "40%", top: "72%", w: 90, dur: 15 },
+          { text: "verify()", left: "90%", top: "40%", w: 65, dur: 20 },
+          { text: "protect()", left: "25%", top: "85%", w: 75, dur: 17 },
+          { text: "block(ip)", left: "55%", top: "15%", w: 72, dur: 12 },
+          { text: "2FA: true", left: "75%", top: "78%", w: 78, dur: 19 },
+          { text: "hash(pwd)", left: "8%", top: "65%", w: 82, dur: 16 },
+        ].map((b, i) => (
+          <div key={`cb-${i}`} style={{
+            position: "absolute", left: b.left, top: b.top, width: b.w, height: 24,
+            borderRadius: 8, background: "rgba(99,102,241,0.04)", border: "1px solid rgba(99,102,241,0.06)",
+            display: "flex", alignItems: "center", justifyContent: "center",
+            fontFamily: "monospace", fontSize: 10, color: "rgba(99,102,241,0.15)",
+            animation: `codeBubbleFloat ${b.dur}s ease-in-out infinite`,
+            animationDelay: `${i * -2}s`,
+          }}>{b.text}</div>
+        ))}
+
+        {/* Layer 3: Connected dots network */}
+        <svg style={{ position: "absolute", inset: 0, width: "100%", height: "100%" }}>
+          {[
+            [8,12], [22,28], [45,8], [72,18], [88,32], [15,52], [38,45], [62,55],
+            [82,62], [50,78], [25,72], [68,82], [92,48], [35,22], [55,35],
+          ].map(([x,y], i) => (
+            <circle key={`nd-${i}`} cx={`${x}%`} cy={`${y}%`} r={2} fill="rgba(99,102,241,0.08)">
+              {i % 3 === 0 && <animate attributeName="r" values="2;4;2" dur={`${4 + i % 3}s`} repeatCount="indefinite" />}
+            </circle>
+          ))}
+          {[
+            [8,12,22,28], [22,28,45,8], [45,8,72,18], [72,18,88,32], [15,52,38,45],
+            [38,45,62,55], [62,55,82,62], [50,78,25,72], [25,72,15,52], [68,82,82,62],
+            [35,22,55,35], [55,35,62,55], [92,48,88,32], [50,78,68,82],
+          ].map(([x1,y1,x2,y2], i) => (
+            <line key={`nl-${i}`} x1={`${x1}%`} y1={`${y1}%`} x2={`${x2}%`} y2={`${y2}%`}
+              stroke="rgba(99,102,241,0.04)" strokeWidth={1} />
+          ))}
+        </svg>
+
+        {/* Layer 4: Gradient blobs */}
+        {[
+          { left: "-5%", top: "-5%", size: 400, color: "rgba(99,102,241,0.04)", delay: 0 },
+          { left: "75%", top: "10%", size: 350, color: "rgba(37,99,235,0.03)", delay: 8 },
+          { left: "60%", top: "70%", size: 450, color: "rgba(99,102,241,0.03)", delay: 15 },
+          { left: "5%", top: "80%", size: 300, color: "rgba(37,99,235,0.04)", delay: 5 },
+        ].map((bl, i) => (
+          <motion.div key={`blob-${i}`}
+            animate={{ x: [-15, 15, -15], y: [-10, 10, -10] }}
+            transition={{ duration: 25 + i * 5, repeat: Infinity, ease: "easeInOut", delay: bl.delay }}
+            style={{
+              position: "absolute", left: bl.left, top: bl.top,
+              width: bl.size, height: bl.size, borderRadius: "50%",
+              background: `radial-gradient(circle, ${bl.color}, transparent 70%)`,
+              filter: "blur(80px)",
+            }}
+          />
+        ))}
+
+        {/* Layer 5: Sparkle dots */}
+        {Array.from({ length: 15 }, (_, i) => (
+          <div key={`sp-${i}`} style={{
+            position: "absolute",
+            left: `${7 + ((i * 41 + 17) % 86)}%`,
+            top: `${5 + ((i * 59 + 11) % 88)}%`,
+            width: 2, height: 2, borderRadius: "50%", background: "rgba(99,102,241,0.2)",
+            animation: `sparkleTwink ${3 + (i % 3)}s ease-in-out infinite`,
+            animationDelay: `${i * 0.5}s`,
+          }} />
+        ))}
+
+        {/* Layer 6: Scanning line */}
+        <div style={{
+          position: "absolute", left: 0, width: "100%", height: 1,
+          background: "linear-gradient(to right, transparent, rgba(99,102,241,0.1), transparent)",
+          animation: "scanLineLP 15s linear infinite",
+        }} />
+
+        {/* Layer 7: Floating subject icons */}
+        {[
+          { icon: "🔒", left: "6%", top: "18%", dur: 14 },
+          { icon: "🎮", left: "85%", top: "30%", dur: 12 },
+          { icon: "🤖", left: "20%", top: "58%", dur: 16 },
+          { icon: "📱", left: "70%", top: "68%", dur: 18 },
+          { icon: "💡", left: "45%", top: "82%", dur: 13 },
+          { icon: "🔧", left: "55%", top: "10%", dur: 15 },
+        ].map((ic, i) => (
+          <div key={`si-${i}`} style={{
+            position: "absolute", left: ic.left, top: ic.top,
+            fontSize: 24, opacity: 0.06,
+            animation: `subjectFloat ${ic.dur}s ease-in-out infinite`,
+            animationDelay: `${i * -2.5}s`,
+          }}>{ic.icon}</div>
+        ))}
+      </div>
 
       {/* ── NAV ── */}
       <motion.nav className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-sm"
