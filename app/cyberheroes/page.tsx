@@ -13,23 +13,26 @@ function TechBackground() {
     <div style={{ position: "fixed", inset: 0, pointerEvents: "none", zIndex: 0, overflow: "hidden" }}>
       <style>{`
         @keyframes dashFlow { from { stroke-dashoffset: 0; } to { stroke-dashoffset: -40; } }
-        @keyframes cyberFloat { 0%,100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-15px) rotate(8deg); } }
+        @keyframes dataStream { from { left: -300px; } to { left: 100vw; } }
+        @keyframes binaryFall { from { transform: translateY(-100%); } to { transform: translateY(100vh); } }
+        @keyframes cyberFloat { 0%,100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-30px) rotate(8deg); } }
         @keyframes codeRainCH { from { transform: translateY(-100%); } to { transform: translateY(100vh); } }
-        @keyframes gridPulse { 0%,100% { opacity: 0.03; } 50% { opacity: 0.06; } }
+        @keyframes gridPulse { 0%,100% { opacity: 0.06; } 50% { opacity: 0.12; } }
         @keyframes scanLine { from { transform: translateY(-100vh); } to { transform: translateY(100vh); } }
-        @keyframes sparkle { 0%,100% { opacity: 0; } 50% { opacity: 0.4; } }
+        @keyframes sparkle { 0%,100% { opacity: 0; } 50% { opacity: 0.6; } }
+        @keyframes hexPulse { 0%,100% { fill: rgba(139,92,246,0); } 50% { fill: rgba(139,92,246,0.08); } }
       `}</style>
 
       {/* Layer 5: Animated grid */}
       <div style={{
         position: "absolute", inset: 0,
-        backgroundImage: `linear-gradient(rgba(139,92,246,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(139,92,246,0.04) 1px, transparent 1px)`,
+        backgroundImage: `linear-gradient(rgba(139,92,246,0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(139,92,246,0.08) 1px, transparent 1px)`,
         backgroundSize: "60px 60px",
         animation: "gridPulse 8s ease-in-out infinite",
       }} />
 
       {/* Layer 1: Circuit board lines */}
-      <svg style={{ position: "absolute", inset: 0, width: "100%", height: "100%" }}>
+      <svg style={{ position: "absolute", inset: 0, width: "100%", height: "100%", filter: "drop-shadow(0 0 4px rgba(139,92,246,0.3))" }}>
         {[
           { x1: "0", y1: "20%", x2: "100%", y2: "20%", c: "#8b5cf6" },
           { x1: "0", y1: "40%", x2: "100%", y2: "40%", c: "#3b82f6" },
@@ -41,48 +44,67 @@ function TechBackground() {
           { x1: "85%", y1: "0", x2: "85%", y2: "100%", c: "#3b82f6" },
         ].map((l, i) => (
           <line key={i} x1={l.x1} y1={l.y1} x2={l.x2} y2={l.y2}
-            stroke={l.c} strokeOpacity={0.08} strokeWidth={1} strokeDasharray="8 12"
-            style={{ animation: "dashFlow 20s linear infinite" }} />
+            stroke={l.c} strokeOpacity={0.2} strokeWidth={1} strokeDasharray="8 12"
+            style={{ animation: "dashFlow 10s linear infinite" }} />
         ))}
-        {/* Intersection dots */}
         {["20%","40%","60%","80%"].flatMap((y) =>
           ["15%","35%","65%","85%"].map((x) => ({ cx: x, cy: y }))
         ).map((d, i) => (
-          <circle key={`dot-${i}`} cx={d.cx} cy={d.cy} r={3} fill="rgba(139,92,246,0.1)" />
+          <circle key={`dot-${i}`} cx={d.cx} cy={d.cy} r={3} fill="rgba(139,92,246,0.25)" />
         ))}
+      </svg>
+
+      {/* Layer 8: Hex grid */}
+      <svg style={{ position: "absolute", inset: 0, width: "100%", height: "100%" }}>
+        {Array.from({ length: 40 }, (_, i) => {
+          const col = i % 8; const row = Math.floor(i / 8);
+          const x = col * 75 + (row % 2 === 0 ? 0 : 37); const y = row * 65;
+          return (
+            <polygon key={`hex-${i}`}
+              points={`${x+30},${y} ${x+60},${y+17} ${x+60},${y+48} ${x+30},${y+65} ${x},${y+48} ${x},${y+17}`}
+              stroke="rgba(139,92,246,0.06)" strokeWidth={1} fill="none">
+              {i % 7 === 0 && <animate attributeName="fill" values="rgba(139,92,246,0);rgba(139,92,246,0.08);rgba(139,92,246,0)" dur={`${3 + (i % 4)}s`} repeatCount="indefinite" />}
+            </polygon>
+          );
+        })}
       </svg>
 
       {/* Layer 2: Floating cyber icons */}
       {[
-        { icon: "🔒", left: "5%", top: "10%", size: 30, dur: 12 },
-        { icon: "🛡️", left: "88%", top: "22%", size: 36, dur: 10 },
-        { icon: "🔑", left: "20%", top: "45%", size: 24, dur: 14 },
-        { icon: "💻", left: "72%", top: "55%", size: 32, dur: 11 },
-        { icon: "🎮", left: "40%", top: "75%", size: 28, dur: 13 },
-        { icon: "📱", left: "60%", top: "12%", size: 26, dur: 15 },
-        { icon: "🔒", left: "92%", top: "70%", size: 34, dur: 9 },
-        { icon: "🛡️", left: "10%", top: "82%", size: 40, dur: 8 },
-        { icon: "🔑", left: "50%", top: "35%", size: 22, dur: 12 },
-        { icon: "💻", left: "30%", top: "90%", size: 30, dur: 11 },
+        { icon: "🔒", left: "4%", top: "8%", size: 40, dur: 10 },
+        { icon: "🛡️", left: "88%", top: "18%", size: 48, dur: 9 },
+        { icon: "🔑", left: "18%", top: "42%", size: 36, dur: 13 },
+        { icon: "💻", left: "72%", top: "52%", size: 44, dur: 11 },
+        { icon: "🎮", left: "38%", top: "72%", size: 38, dur: 12 },
+        { icon: "📱", left: "58%", top: "10%", size: 34, dur: 14 },
+        { icon: "⚡", left: "92%", top: "65%", size: 42, dur: 8 },
+        { icon: "🌐", left: "8%", top: "78%", size: 50, dur: 11 },
+        { icon: "🔐", left: "48%", top: "32%", size: 32, dur: 15 },
+        { icon: "👾", left: "28%", top: "88%", size: 40, dur: 10 },
+        { icon: "🕵️", left: "82%", top: "38%", size: 36, dur: 12 },
+        { icon: "🎯", left: "15%", top: "22%", size: 30, dur: 16 },
+        { icon: "🚀", left: "65%", top: "82%", size: 44, dur: 9 },
+        { icon: "💡", left: "42%", top: "55%", size: 38, dur: 13 },
+        { icon: "🔍", left: "78%", top: "92%", size: 34, dur: 11 },
       ].map((ic, i) => (
         <div key={`cyber-${i}`} style={{
-          position: "absolute", left: ic.left, top: ic.top, fontSize: ic.size, opacity: 0.06,
+          position: "absolute", left: ic.left, top: ic.top, fontSize: ic.size, opacity: 0.15,
           animation: `cyberFloat ${ic.dur}s ease-in-out infinite`,
-          animationDelay: `${i * -1.5}s`,
+          animationDelay: `${i * -1.2}s`,
         }}>{ic.icon}</div>
       ))}
 
       {/* Layer 3: Glowing orbs */}
       {[
-        { left: "10%", top: "15%", size: 300, color: "rgba(139,92,246,0.06)", delay: 0 },
-        { left: "70%", top: "10%", size: 250, color: "rgba(59,130,246,0.05)", delay: 3 },
-        { left: "50%", top: "50%", size: 400, color: "rgba(139,92,246,0.04)", delay: 6 },
-        { left: "85%", top: "60%", size: 280, color: "rgba(59,130,246,0.05)", delay: 2 },
-        { left: "20%", top: "75%", size: 350, color: "rgba(139,92,246,0.05)", delay: 5 },
-        { left: "60%", top: "85%", size: 220, color: "rgba(59,130,246,0.04)", delay: 1 },
+        { left: "5%", top: "10%", size: 400, color: "rgba(139,92,246,0.12)", delay: 0 },
+        { left: "65%", top: "5%", size: 350, color: "rgba(59,130,246,0.12)", delay: 3 },
+        { left: "45%", top: "45%", size: 500, color: "rgba(139,92,246,0.08)", delay: 6 },
+        { left: "80%", top: "55%", size: 380, color: "rgba(59,130,246,0.1)", delay: 2 },
+        { left: "15%", top: "70%", size: 450, color: "rgba(139,92,246,0.1)", delay: 5 },
+        { left: "55%", top: "80%", size: 300, color: "rgba(59,130,246,0.08)", delay: 1 },
       ].map((orb, i) => (
         <motion.div key={`orb-${i}`}
-          animate={{ opacity: [0.03, 0.08, 0.03], x: [-20, 20, -20] }}
+          animate={{ opacity: [0.06, 0.15, 0.06], x: [-25, 25, -25] }}
           transition={{ duration: 10 + i * 2, repeat: Infinity, ease: "easeInOut", delay: orb.delay }}
           style={{
             position: "absolute", left: orb.left, top: orb.top,
@@ -94,36 +116,70 @@ function TechBackground() {
       ))}
 
       {/* Layer 4: Code rain */}
-      {Array.from({ length: 8 }, (_, i) => (
+      {Array.from({ length: 12 }, (_, i) => (
         <div key={`rain-${i}`} style={{
-          position: "absolute", left: `${(i / 8) * 100}%`, top: 0, width: 16,
-          fontFamily: "monospace", fontSize: 12, color: "rgba(139,92,246,0.06)", lineHeight: "18px",
+          position: "absolute", left: `${(i / 12) * 100}%`, top: 0, width: 18,
+          fontFamily: "monospace", fontSize: 14, color: "rgba(139,92,246,0.12)", lineHeight: "20px",
           whiteSpace: "pre-wrap", wordBreak: "break-all",
-          animation: `codeRainCH ${20 + i * 3}s linear infinite`,
-          animationDelay: `${i * -3}s`,
+          animation: `codeRainCH ${12 + i * 1.5}s linear infinite`,
+          animationDelay: `${i * -2}s`,
         }}>
-          {"4F2A8B1E7C3D9A5F0B6E2C8A4D1F7B3E9C5A0D6F8B2E4C1A7D3F5B9E0C6A8D2F4B1E7C3A9D5F0B6E8C2A4D"}
+          {"4F2A8B1E7C3D9A5F0B6E2C8A4D1F7B3E9C5A0D6F8B2E4C1A7D3F5B9E0C6A8D2F4B1E7C3A9D5F0B6E8C2A4D7F1B3E5C0A9D6F2B8E4C"}
         </div>
       ))}
 
       {/* Layer 6: Sparkle particles */}
-      {Array.from({ length: 12 }, (_, i) => (
+      {Array.from({ length: 20 }, (_, i) => (
         <div key={`spark-${i}`} style={{
           position: "absolute",
-          left: `${5 + Math.floor((i * 37 + 13) % 90)}%`,
-          top: `${3 + Math.floor((i * 53 + 7) % 92)}%`,
-          width: 2, height: 2, borderRadius: "50%", background: "white",
+          left: `${3 + ((i * 37 + 13) % 94)}%`,
+          top: `${2 + ((i * 53 + 7) % 94)}%`,
+          width: i % 3 === 0 ? 4 : i % 2 === 0 ? 3 : 2,
+          height: i % 3 === 0 ? 4 : i % 2 === 0 ? 3 : 2,
+          borderRadius: "50%",
+          background: i % 2 === 0 ? "rgba(139,92,246,0.5)" : "rgba(59,130,246,0.5)",
           animation: `sparkle ${2 + (i % 3)}s ease-in-out infinite`,
-          animationDelay: `${i * 0.4}s`,
+          animationDelay: `${i * 0.35}s`,
         }} />
       ))}
 
       {/* Layer 7: Scanning line */}
       <div style={{
-        position: "absolute", left: 0, width: "100%", height: 1,
-        background: "linear-gradient(to right, transparent, rgba(139,92,246,0.15), transparent)",
-        animation: "scanLine 12s linear infinite",
+        position: "absolute", left: 0, width: "100%", height: 2,
+        background: "linear-gradient(to right, transparent, rgba(139,92,246,0.25), transparent)",
+        boxShadow: "0 0 10px rgba(139,92,246,0.3), 0 0 30px rgba(139,92,246,0.15)",
+        animation: "scanLine 8s linear infinite",
       }} />
+
+      {/* Layer 9: Data stream lines */}
+      {[
+        { top: "15%", dur: 3.5, delay: 0, w: 200 },
+        { top: "35%", dur: 4, delay: 2.5, w: 250 },
+        { top: "55%", dur: 3, delay: 5, w: 180 },
+        { top: "72%", dur: 4.5, delay: 1, w: 300 },
+        { top: "88%", dur: 3.5, delay: 4, w: 220 },
+      ].map((ds, i) => (
+        <div key={`ds-${i}`} style={{
+          position: "absolute", top: ds.top, height: 1, width: ds.w,
+          background: "linear-gradient(to right, transparent, rgba(139,92,246,0.4), transparent)",
+          animation: `dataStream ${ds.dur}s linear infinite`,
+          animationDelay: `${ds.delay}s`,
+        }} />
+      ))}
+
+      {/* Layer 10: Binary rain */}
+      {[10, 30, 70, 90].map((left, i) => (
+        <div key={`bin-${i}`} style={{
+          position: "absolute", left: `${left}%`, top: 0, width: 14,
+          fontFamily: "monospace", fontSize: 16, fontWeight: 700,
+          color: "rgba(59,130,246,0.1)", lineHeight: "22px",
+          whiteSpace: "pre-wrap", wordBreak: "break-all",
+          animation: `binaryFall ${15 + i * 3}s linear infinite`,
+          animationDelay: `${i * -4}s`,
+        }}>
+          {"10110100011101001011010001110100101101000111010010110100011101001011"}
+        </div>
+      ))}
     </div>
   );
 }
