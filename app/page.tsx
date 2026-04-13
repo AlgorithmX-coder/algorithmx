@@ -88,7 +88,7 @@ const SUBJECTS = [
     desc: "Build and program real robots. Physical robotics kits delivered to your door with step-by-step guided courses.",
     badge: "COMING 2027 · UK Only", badgeColor: "bg-gray-50 text-gray-500 border-gray-200",
     link: "#", linkText: "Join Waitlist →", linkColor: "text-gray-400", img: null,
-    note: "📦 Includes robotics kit — UK delivery only",
+    note: "📦 Includes robotics kit. UK delivery only",
   },
 ];
 
@@ -104,7 +104,7 @@ const HERO_ICONS = [
 const STEPS = [
   { icon: "📚", color: "#7c3aed", title: "Choose a Subject", desc: "Pick from cybersecurity, game development, AI, and more." },
   { icon: "🎯", color: "#2563eb", title: "Pick Your Level", desc: "Every subject has age-appropriate tracks from ages 6 to adult." },
-  { icon: "🎮", color: "#059669", title: "Learn By Doing", desc: "Interactive games, real-world simulations, and hands-on projects — not boring videos." },
+  { icon: "🎮", color: "#059669", title: "Learn By Doing", desc: "Interactive games, real-world simulations, and hands-on projects. not boring videos." },
   { icon: "🏆", color: "#d97706", title: "Earn Certificates", desc: "Complete courses and earn accredited certificates recognised across the UK." },
 ];
 
@@ -356,7 +356,7 @@ export default function HomePage() {
           </div>
           <div className="flex items-center gap-4">
             <a href="/login" className="text-sm font-bold text-gray-500 hover:text-gray-800 transition-colors hidden sm:block">Log In</a>
-            <a href="/signup" className="px-5 py-2.5 rounded-xl text-sm font-black text-white bg-gradient-to-r from-purple-600 to-blue-600 shadow-md hover:shadow-lg transition-shadow">Start Free</a>
+            <a href="/signup" className="px-5 py-2.5 rounded-xl text-sm font-black text-white bg-gradient-to-r from-purple-600 to-blue-600 shadow-md hover:shadow-lg transition-shadow">Get Started</a>
             <button onClick={() => setMobileMenu(!mobileMenu)} className="md:hidden text-gray-500 text-xl p-1">{mobileMenu ? "✕" : "☰"}</button>
           </div>
         </div>
@@ -392,9 +392,9 @@ export default function HomePage() {
             </motion.div>
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5, duration: 0.6 }}
               className="flex gap-4 flex-wrap justify-center lg:justify-start text-sm text-gray-400">
-              <span><span className="text-green-500">✓</span> First lesson free</span>
-              <span><span className="text-green-500">✓</span> No credit card needed</span>
+              <span><span className="text-green-500">✓</span> Trusted by UK families</span>
               <span><span className="text-green-500">✓</span> Cancel anytime</span>
+              <span><span className="text-green-500">✓</span> Ages 6 to adult</span>
             </motion.div>
           </div>
           {/* Product preview mockup */}
@@ -591,7 +591,7 @@ export default function HomePage() {
                   <span style={{ position: "absolute", top: -10, left: 16, fontSize: 120, color: "#6366f1", opacity: 0.06, fontFamily: "Georgia, serif", lineHeight: 1, pointerEvents: "none" }}>&ldquo;</span>
                   <p className="text-gray-600 text-sm leading-relaxed italic flex-1 relative" style={{ zIndex: 1 }}>{t.quote}</p>
                   <div className="mt-5 flex items-center justify-between relative" style={{ zIndex: 1 }}>
-                    <p className="text-xs"><span className="font-bold text-gray-700">{t.name}</span> <span className="text-gray-400">— {t.city}</span></p>
+                    <p className="text-xs"><span className="font-bold text-gray-700">{t.name}</span> <span className="text-gray-400">, {t.city}</span></p>
                     <span style={{ color: "#f59e0b", fontSize: 16, letterSpacing: 2 }}>{"★".repeat(t.stars)}</span>
                   </div>
                 </div>
@@ -614,12 +614,12 @@ export default function HomePage() {
             <div className="relative" style={{ zIndex: 1 }}>
               <p className="text-white/80 text-sm mb-3">Trusted by parents across the UK 🇬🇧</p>
               <h2 className="text-3xl sm:text-4xl font-extrabold text-white mb-4 leading-tight">Start your child&apos;s tech journey today</h2>
-              <p className="text-purple-200 text-lg mb-8 max-w-lg mx-auto">The first cybersecurity lesson is completely free. No credit card needed.</p>
+              <p className="text-purple-200 text-lg mb-8 max-w-lg mx-auto">Start your child's tech education journey today.</p>
               <motion.a href="/signup"
                 whileHover={{ y: -2, boxShadow: "0 8px 24px rgba(0,0,0,0.2)" }}
                 className="inline-block text-gray-900 bg-white font-bold"
                 style={{ borderRadius: 14, padding: "16px 40px", fontSize: 18, boxShadow: "0 4px 12px rgba(0,0,0,0.15)", textDecoration: "none" }}>
-                Get Started Free →
+                Get Started Now →
               </motion.a>
               <motion.p animate={{ opacity: [0.7, 1, 0.7] }} transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
                 className="text-white/60 text-sm mt-6">Join 500+ UK families learning with AlgorithmX</motion.p>

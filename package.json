@@ -16,6 +16,7 @@
     "@auth/prisma-adapter": "^2.11.1",
     "@lottiefiles/dotlottie-react": "^0.18.10",
     "@prisma/adapter-pg": "^7.7.0",
+    "@types/three": "^0.183.1",
     "@vercel/analytics": "^2.0.1",
     "bcryptjs": "^3.0.3",
     "dotenv": "^17.4.1",
@@ -24,7 +25,8 @@
     "next-auth": "^5.0.0-beta.30",
     "pg": "^8.20.0",
     "react": "19.2.4",
-    "react-dom": "19.2.4"
+    "react-dom": "19.2.4",
+    "three": "^0.183.2"
   },
   "devDependencies": {
     "@prisma/client": "^7.7.0",

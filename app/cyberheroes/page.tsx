@@ -229,38 +229,22 @@ const COURSES = [
 
 /* ─── FEATURES DATA ─── */
 const FEATURES = [
-  { emoji: "🎮", title: "Interactive Adventures", desc: "Not just videos — real games, puzzles, drag-and-drop challenges, and boss battles that keep kids engaged for the full lesson." },
+  { emoji: "🎮", title: "Interactive Adventures", desc: "Not just videos. Real games, puzzles, drag-and-drop challenges, and boss battles that keep kids engaged for the full lesson." },
   { emoji: "🏅", title: "Accreditation Aligned", desc: "Built around CyberFirst and ASDAN frameworks so every lesson counts towards recognised achievements." },
-  { emoji: "👨‍👩‍👧‍👦", title: "Family Bundle", desc: "One purchase covers all youth tracks. Siblings of different ages can all learn together at their own level." },
 ];
 
 /* ─── STORY CARDS DATA ─── */
 const STORY = [
   { src: "/characters/adam-layla-happy.png", alt: "Adam and Layla sitting happily", caption: "Meet Adam & Layla", sub: "Two enthusiastic gamers who love exploring the digital world. But danger lurks online..." },
-  { src: "/characters/adam-layla-raccoon.png", alt: "The Hacker Raccoon appears", caption: "The Hacker Raccoon Strikes", sub: "A sneaky villain who preys on their vulnerabilities — weak passwords, risky clicks, and shared secrets." },
+  { src: "/characters/adam-layla-raccoon.png", alt: "The Hacker Raccoon appears", caption: "The Hacker Raccoon Strikes", sub: "A sneaky villain who preys on their vulnerabilities: weak passwords, risky clicks, and shared secrets." },
   { src: "/characters/adam-layla-hacked.png", alt: "Adam and Layla with hacked tablet", caption: "Can They Become Cyber Heroes?", sub: "20 weeks of missions to outsmart the Raccoon and earn their Cyber Hero certificate!" },
 ];
 
 /* ─── WEEKS DATA ─── */
 const WEEKS = [
   { w: 1, title: "Passwords: The Secret Code", sub: "Discover why passwords matter and learn how to create super strong ones" },
-  { w: 2, title: "Private Info: Guard Your Secrets", sub: "Learn what personal information is and why some things should stay private" },
-  { w: 3, title: "Stranger Danger: Friend or Foe?", sub: "Spot fake profiles and stay safe when chatting to people online" },
-  { w: 4, title: "Scams and Tricks: Real or Fake?", sub: "Learn to spot scam messages, fake pop-ups, and sneaky tricks" },
-  { w: 5, title: "Cyberbullying: Words Have Power", sub: "Understand how words can hurt online and what to do if it happens" },
   { w: 6, title: "Gaming Safety: Defend Your Game Zone", sub: "Stay safe in Roblox, Minecraft, and Fortnite" },
-  { w: 7, title: "In-Game Spending: The V-Bucks Trap", sub: "Learn about loot boxes, Robux, V-Bucks, and why to always ask a grown-up first" },
-  { w: 8, title: "Photos & Videos: Think Before You Share", sub: "Discover why screenshots last forever and why consent matters" },
-  { w: 9, title: "Apps & Downloads: Spot the Fakes", sub: "Learn to spot fake apps, understand permissions, and stay safe downloading" },
-  { w: 10, title: "YouTube & Videos: Escape the Rabbit Hole", sub: "Stay safe watching videos and manage screen time" },
-  { w: 11, title: "Something Wrong? Emergency Protocol", sub: "Learn how to report, block, and tell a trusted grown-up" },
-  { w: 12, title: "Digital Footprint: Tracks in the Snow", sub: "Everything you do online leaves a trail" },
   { w: 13, title: "Screen Time: Balance Your Power", sub: "Find the right balance between time online, breaks, sleep, and healthy habits" },
-  { w: 14, title: "Smart Devices: Who's Listening?", sub: "Understand what Alexa, Siri, and smart devices hear" },
-  { w: 15, title: "AI & Chatbots: Robot or Real?", sub: "Learn about ChatGPT and chatbots — what they know and what never to share" },
-  { w: 16, title: "QR Codes & Links: Don't Take the Bait", sub: "Learn to check before you scan or click" },
-  { w: 17, title: "Social Media: The Profile Shield", sub: "Stay safe on TikTok, Snapchat, and Instagram" },
-  { w: 18, title: "Sharing Devices: Lock Before You Leave", sub: "Keep your stuff private on family tablets" },
   { w: 19, title: "Protecting Family: Family Firewall", sub: "Become the family cyber expert" },
   { w: 20, title: "Graduation Day: The Final Mission", sub: "The ultimate challenge! Earn your Cyber Hero certificate" },
 ];
@@ -481,7 +465,7 @@ export default function HomePage() {
                   backdropFilter: "blur(8px)",
                 }}>
                 <div style={{ height: 420, overflow: "hidden", background: "linear-gradient(180deg, rgba(245,158,11,0.08) 0%, transparent 100%)" }}>
-                  <Image src="/characters/adam.png" alt="Adam — curious and brave Cyber Hero" width={400} height={500} style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 20%", display: "block" }} />
+                  <Image src="/characters/adam.png" alt="Adam, curious and brave Cyber Hero" width={400} height={500} style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 20%", display: "block" }} />
                 </div>
                 <div className="px-6 py-5 text-center">
                   <h3 className="font-black text-white text-2xl mb-2">Adam</h3>
@@ -502,7 +486,7 @@ export default function HomePage() {
                   backdropFilter: "blur(8px)",
                 }}>
                 <div style={{ height: 420, overflow: "hidden", background: "linear-gradient(180deg, rgba(168,85,247,0.08) 0%, transparent 100%)" }}>
-                  <Image src="/characters/layla.png" alt="Layla — smart and fearless Cyber Hero" width={400} height={500} style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 20%", display: "block" }} />
+                  <Image src="/characters/layla.png" alt="Layla, smart and fearless Cyber Hero" width={400} height={500} style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 20%", display: "block" }} />
                 </div>
                 <div className="px-6 py-5 text-center">
                   <h3 className="font-black text-white text-2xl mb-2">Layla</h3>
@@ -516,7 +500,7 @@ export default function HomePage() {
 
           <div className="text-center" data-scroll data-scroll-delay="0.2">
             <p className="text-gray-300 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed mb-8">
-              Join Adam and Layla on their adventure to become cybersecurity experts. Help them stay safe from the Hacker Raccoon — and learn how to protect yourself too!
+              Join Adam and Layla on their adventure to become cybersecurity experts. Help them stay safe from the Hacker Raccoon and learn how to protect yourself too!
             </p>
             <motion.a href="/signup"
               whileHover={{ scale: 1.05 }}
@@ -607,36 +591,85 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* ── CURRICULUM PREVIEW ───────────────────────────────────────────── */}
-        <section className="max-w-[1200px] mx-auto px-6 md:px-10 py-16 sm:py-24">
+        {/* ── CURRICULUM TEASER ───────────────────────────────────────────── */}
+        <section className="max-w-[800px] mx-auto px-6 md:px-10 py-16 sm:py-24">
           <div className="text-center mb-12" data-scroll>
             <h2 className="text-3xl sm:text-4xl font-black text-white mb-4">
-              Your 20-Week{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-blue-400">Journey</span>
+              A{" "}
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-blue-400">Sneak Peek</span>
+              {" "}at Your Journey
             </h2>
             <p className="text-gray-400 text-base sm:text-lg max-w-xl mx-auto">
-              Each week brings a new cybersecurity adventure with animated stories, interactive games, and real-world skills.
+              20 weeks of cybersecurity missions. Here are some highlights.
             </p>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {WEEKS.map((wk, i) => (
-              <div key={i} data-scroll data-scroll-delay={String(i * 0.03)}>
-                <div style={{
-                  background: "rgba(255,255,255,0.04)",
-                  border: wk.w === 20 ? "1px solid rgba(245,158,11,0.4)" : "1px solid rgba(255,255,255,0.08)",
-                  borderRadius: 16, padding: 20,
-                }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 8 }}>
-                    <div style={{ width: 28, height: 28, borderRadius: "50%", background: GRAD, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 11, fontWeight: 900, color: "#fff", flexShrink: 0 }}>
-                      {wk.w}
+          {/* Timeline */}
+          <div style={{ position: "relative" }}>
+            {/* Centre line */}
+            <div style={{ position: "absolute", left: "50%", top: 0, bottom: 0, width: 2, background: "rgba(139,92,246,0.15)", transform: "translateX(-50%)" }} />
+            {[
+              { w: 1, title: "Passwords: The Secret Code", sub: "Discover why passwords matter and learn how to create super strong ones", gap: null },
+              { w: null, label: "5 more secret missions...", gap: true },
+              { w: 6, title: "Gaming Safety: Defend Your Game Zone", sub: "Stay safe in Roblox, Minecraft, and Fortnite", gap: null },
+              { w: null, label: "6 more secret missions...", gap: true },
+              { w: 13, title: "Screen Time: Balance Your Power", sub: "Find the right balance between time online, breaks, sleep, and healthy habits", gap: null },
+              { w: null, label: "5 more secret missions...", gap: true },
+              { w: 19, title: "Protecting Family: Family Firewall", sub: "Become the family cyber expert", gap: null },
+              { w: null, label: "The grand finale awaits...", gap: true },
+              { w: 20, title: "Graduation Day: The Final Mission", sub: "The ultimate challenge! Earn your Cyber Hero certificate", gap: null },
+            ].map((item, i) => (
+              <div key={i} data-scroll data-scroll-delay={String(i * 0.08)}>
+                {item.gap ? (
+                  /* Locked placeholder */
+                  <div style={{ display: "flex", justifyContent: "center", padding: "12px 0" }}>
+                    <div style={{
+                      background: "rgba(255,255,255,0.02)", border: "1px dashed rgba(255,255,255,0.1)",
+                      borderRadius: 12, padding: "10px 24px", opacity: 0.5, display: "flex", alignItems: "center", gap: 8,
+                    }}>
+                      <span style={{ fontSize: 16 }}>🔒</span>
+                      <span style={{ color: "#6b7280", fontSize: 13, fontWeight: 600 }}>{item.label}</span>
                     </div>
-                    {wk.w === 20 && <span style={{ fontSize: 10, fontWeight: 800, color: "#f59e0b", background: "rgba(245,158,11,0.15)", borderRadius: 8, padding: "2px 8px" }}>🎓 Final Mission</span>}
                   </div>
-                  <h4 style={{ color: "#fff", fontWeight: 800, fontSize: 14, marginBottom: 4 }}>{wk.title}</h4>
-                  <p style={{ color: "#9ca3af", fontSize: 12, lineHeight: 1.5 }}>{wk.sub}</p>
-                </div>
+                ) : (
+                  /* Visible module card */
+                  <div style={{
+                    display: "flex",
+                    justifyContent: i % 2 === 0 ? "flex-start" : "flex-end",
+                    padding: "8px 0",
+                  }}>
+                    <div style={{
+                      width: "45%",
+                      background: item.w === 20 ? "rgba(245,158,11,0.06)" : "rgba(255,255,255,0.04)",
+                      border: item.w === 20 ? "1px solid rgba(245,158,11,0.3)" : "1px solid rgba(255,255,255,0.08)",
+                      borderRadius: 16, padding: 20,
+                    }}>
+                      <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 8 }}>
+                        <div style={{ width: 32, height: 32, borderRadius: "50%", background: item.w === 20 ? "linear-gradient(135deg, #f59e0b, #f97316)" : GRAD, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 13, fontWeight: 900, color: "#fff", flexShrink: 0 }}>
+                          {item.w}
+                        </div>
+                        {item.w === 20 && <span style={{ fontSize: 10, fontWeight: 800, color: "#f59e0b", background: "rgba(245,158,11,0.15)", borderRadius: 8, padding: "2px 8px" }}>🎓 Final Mission</span>}
+                        {item.w === 1 && <span style={{ fontSize: 10, fontWeight: 800, color: "#10b981", background: "rgba(16,185,129,0.15)", borderRadius: 8, padding: "2px 8px" }}>START HERE</span>}
+                      </div>
+                      <h4 style={{ color: "#fff", fontWeight: 800, fontSize: 15, marginBottom: 4 }}>{item.title}</h4>
+                      <p style={{ color: "#9ca3af", fontSize: 13, lineHeight: 1.5 }}>{item.sub}</p>
+                    </div>
+                  </div>
+                )}
               </div>
             ))}
+          </div>
+          {/* CTA */}
+          <div data-scroll style={{ background: "rgba(139,92,246,0.1)", border: "1px solid rgba(139,92,246,0.3)", borderRadius: 20, padding: 32, textAlign: "center", maxWidth: 600, margin: "32px auto 0" }}>
+            <div style={{ fontSize: 40, marginBottom: 12 }}>🔒</div>
+            <h3 style={{ color: "#fff", fontSize: 22, fontWeight: 900, marginBottom: 8 }}>Want to unlock all 20 missions?</h3>
+            <p style={{ color: "#9ca3af", fontSize: 16, marginBottom: 20, maxWidth: 480, margin: "0 auto 20px" }}>
+              Subscribe now to reveal every week, every game, every badge. The full Cyber Heroes journey awaits.
+            </p>
+            <motion.a href="/signup"
+              whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
+              style={{ display: "inline-block", background: GRAD, color: "#fff", fontSize: 18, fontWeight: 700, padding: "14px 36px", borderRadius: 14, textDecoration: "none", boxShadow: "0 8px 32px rgba(139,92,246,0.35)" }}>
+              Subscribe Now
+            </motion.a>
           </div>
         </section>
 
@@ -649,7 +682,7 @@ export default function HomePage() {
             </h2>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto">
             {FEATURES.map((f, i) => (
               <div key={i} data-scroll data-scroll-delay={String(i * 0.12)}>
                 <motion.div className="rounded-3xl p-6 h-full"
@@ -660,7 +693,7 @@ export default function HomePage() {
                     backdropFilter: "blur(12px)",
                   }}>
                   <div style={{ width: 56, height: 56, borderRadius: 16, background: "rgba(139,92,246,0.1)", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 16 }}>
-                    {i === 0 ? <IconController /> : i === 1 ? <IconAward /> : <IconFamily />}
+                    {i === 0 ? <IconController /> : <IconAward />}
                   </div>
                   <h3 className="font-black text-white text-lg mb-2">{f.title}</h3>
                   <p className="text-gray-400 text-sm leading-relaxed">{f.desc}</p>

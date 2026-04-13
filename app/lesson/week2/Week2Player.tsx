@@ -76,7 +76,7 @@ const CHAT_ROUNDS = [
     opts: [
       { text: "42 Elm Street, London", danger: 2, reply: "Perfect! I'll send it right away!" },
       { text: "I can't share that", danger: 0, reply: "Come onnnn..." },
-      { text: "I'm going to block you now", danger: 0, reply: "Wait! Don't—" },
+      { text: "I'm going to block you now", danger: 0, reply: "Wait! Don't..." },
     ],
   },
 ];
@@ -92,11 +92,11 @@ const PROFILE_DANGERS = [
 ];
 
 const CONTEXT_ROUNDS = [
-  { info: "Your Full Name", a: { text: "Your teacher asks on the first day of school", ok: true }, b: { text: "A stranger in an online game asks", ok: false }, why: "Teachers need your name — strangers don't!" },
+  { info: "Your Full Name", a: { text: "Your teacher asks on the first day of school", ok: true }, b: { text: "A stranger in an online game asks", ok: false }, why: "Teachers need your name, strangers don't!" },
   { info: "Your Home Address", a: { text: "A delivery person asks while your parent is there", ok: true }, b: { text: "Someone in a chatroom asks", ok: false }, why: "Only share addresses with trusted adults present!" },
-  { info: "Your Birthday", a: { text: "Your friend asks to invite you to a party", ok: true }, b: { text: "A website popup asks to 'verify your age'", ok: false }, why: "Friends are fine — random websites are not!" },
+  { info: "Your Birthday", a: { text: "Your friend asks to invite you to a party", ok: true }, b: { text: "A website popup asks to 'verify your age'", ok: false }, why: "Friends are fine, random websites are not!" },
   { info: "A Photo of You", a: { text: "Your parent takes a family photo", ok: true }, b: { text: "An online friend you've never met asks for one", ok: false }, why: "Photos should only go to people you actually know in real life!" },
-  { info: "Your Password", a: { text: "Your parent asks", ok: true }, b: { text: "Your best friend asks", ok: false }, why: "Only parents should know your password — even best friends shouldn't!" },
+  { info: "Your Password", a: { text: "Your parent asks", ok: true }, b: { text: "Your best friend asks", ok: false }, why: "Only parents should know your password, even best friends shouldn't!" },
 ];
 
 const DOMINO_CHAIN_1 = [
@@ -149,19 +149,19 @@ const PHONE_ROUNDS = [
     opts: [
       { text: "Wow! My name is Adam and I live at...", danger: true, fb: "Real prizes don't ask for personal info!" },
       { text: "This sounds like a scam", danger: false, fb: "Exactly! Real prizes don't call asking for info" },
-      { text: "Can you call my parent instead?", danger: false, fb: "Good — let an adult handle it" },
+      { text: "Can you call my parent instead?", danger: false, fb: "Good, let an adult handle it" },
     ] },
   { caller: "School Office", says: "Hello, this is the school office. We need to update your emergency contact details. Can you give us your parent's phone number?",
     opts: [
       { text: "It's 07712...", danger: true, fb: "Even real-sounding callers could be fake!" },
       { text: "I'll ask my parent to call you back", danger: false, fb: "Smart! Always verify through parents" },
-      { text: "Which school?", danger: false, fb: "Testing if they're real — clever!" },
+      { text: "Which school?", danger: false, fb: "Testing if they're real, clever!" },
     ] },
   { caller: "Your Friend Jake", says: "Hey it's Jake! I got a new phone. What's your address? I want to come round to play!",
     opts: [
       { text: "Sure it's 42 Elm Street!", danger: true, fb: "How do you know it's really Jake?" },
       { text: "I'll ask my mum to call your mum", danger: false, fb: "Perfect! Verify through parents" },
-      { text: "What's our secret password?", danger: false, fb: "Verifying identity — great thinking!" },
+      { text: "What's our secret password?", danger: false, fb: "Verifying identity, great thinking!" },
     ] },
 ];
 
@@ -170,9 +170,9 @@ const SHIELD_QS = [
   { q: "Your friend wants to post a photo of you online. You should...", opts: ["Let them post anything", "Ask them not to", "Make sure you're both happy with it first"], correct: 2 },
   { q: "A website asks for your real name to play a free game. You should...", opts: ["Use a nickname instead", "Type your full real name", "Use your parent's name"], correct: 0 },
   { q: "You get an email saying you won a prize. You should...", opts: ["Click the link to claim it", "Tell a parent and don't click", "Forward it to friends"], correct: 1 },
-  { q: "Someone at school asks for your password to help you. You should...", opts: ["Share it — they're being nice", "Only share if they're your best friend", "Never share except with parents"], correct: 2 },
+  { q: "Someone at school asks for your password to help you. You should...", opts: ["Share it, they're being nice", "Only share if they're your best friend", "Never share except with parents"], correct: 2 },
   { q: "You want to sign up for a new app. You should...", opts: ["Use a fake birthday and no real info", "Ask a parent to help you sign up safely", "Fill in everything quickly"], correct: 1 },
-  { q: "The Raccoon disguised as a kid asks for your school name. You should...", opts: ["Tell them — it's just a school name", "Say nothing and report them", "Give a fake school name"], correct: 1 },
+  { q: "The Raccoon disguised as a kid asks for your school name. You should...", opts: ["Tell them, it's just a school name", "Say nothing and report them", "Give a fake school name"], correct: 1 },
 ];
 
 const MASTERPLAN_CARDS = [
@@ -381,30 +381,30 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
   const [step, setStep] = useState(0);
   const [coins, setCoins] = useState(0);
 
-  // Step 0 — Video
+  // Step 0, Video
   const [videoEnded, setVideoEnded] = useState(false);
   const [videoFailed, setVideoFailed] = useState(false);
   const [showSkip, setShowSkip] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
 
-  // Step 1 — Mission briefing
+  // Step 1, Mission briefing
   const [briefingLine, setBriefingLine] = useState(0);
   const [missionAccepted, setMissionAccepted] = useState(false);
 
-  // Step 2 — Flip tiles
+  // Step 2, Flip tiles
   const [flippedTiles, setFlippedTiles] = useState<Set<number>>(new Set());
 
-  // Step 3 — Poster fix
+  // Step 3, Poster fix
   const [removedItems, setRemovedItems] = useState<Set<string>>(new Set());
   const [safeTaps, setSafeTaps] = useState(0);
   const [posterDone, setPosterDone] = useState(false);
 
-  // Step 4 — Classify quiz
+  // Step 4, Classify quiz
   const [classifyIdx, setClassifyIdx] = useState(0);
   const [classifyScore, setClassifyScore] = useState(0);
   const [classifyFeedback, setClassifyFeedback] = useState<"correct" | "wrong" | null>(null);
 
-  // Step 5 — Chat simulation
+  // Step 5, Chat simulation
   const [chatRound, setChatRound] = useState(0);
   const [chatMessages, setChatMessages] = useState<{ from: "them" | "me"; text: string }[]>([]);
   const [dangerLevel, setDangerLevel] = useState(0);
@@ -412,21 +412,21 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
   const [chatRevealed, setChatRevealed] = useState(false);
   const [chatChoiceMade, setChatChoiceMade] = useState(false);
 
-  // Step 6 — Intel report
+  // Step 6, Intel report
   const [intelReady, setIntelReady] = useState(false);
 
-  // Step 7 — Profile detective
+  // Step 7, Profile detective
   const [foundDangers, setFoundDangers] = useState<Set<string>>(new Set());
   const [profileTimer, setProfileTimer] = useState(90);
   const [profileDone, setProfileDone] = useState(false);
   const profileTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
-  // Step 8 — Context sorting
+  // Step 8, Context sorting
   const [contextIdx, setContextIdx] = useState(0);
   const [contextScore, setContextScore] = useState(0);
   const [contextFeedback, setContextFeedback] = useState<string | null>(null);
 
-  // Step 9 — Information chain
+  // Step 9, Information chain
   const [chainRevealed, setChainRevealed] = useState(0);
   const [chainBroken, setChainBroken] = useState(false);
   const [chain2Phase, setChain2Phase] = useState(false);
@@ -434,10 +434,10 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
   const [chain2Broken, setChain2Broken] = useState(false);
   const [chainDone, setChainDone] = useState(false);
 
-  // Step 10 — Raccoon frustration
+  // Step 10, Raccoon frustration
   const [boardRevealed, setBoardRevealed] = useState<Set<number>>(new Set());
 
-  // Step 11 — Speed sort
+  // Step 11, Speed sort
   const [speedIdx, setSpeedIdx] = useState(0);
   const [speedScore, setSpeedScore] = useState(0);
   const [speedStreak, setSpeedStreak] = useState(0);
@@ -446,29 +446,29 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
   const [speedDone, setSpeedDone] = useState(false);
   const speedTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // Step 12 — Phone call
+  // Step 12, Phone call
   const [phoneRound, setPhoneRound] = useState(0);
   const [phoneScore, setPhoneScore] = useState(0);
   const [phoneAnswered, setPhoneAnswered] = useState(false);
   const [phoneFeedback, setPhoneFeedback] = useState<string | null>(null);
 
-  // Step 13 — Shield builder
+  // Step 13, Shield builder
   const [shieldIdx, setShieldIdx] = useState(0);
   const [shieldFilled, setShieldFilled] = useState(0);
   const [shieldRetry, setShieldRetry] = useState(false);
   const [shieldPerfect, setShieldPerfect] = useState(0);
 
-  // Step 14 — Masterplan
+  // Step 14, Masterplan
   const [masterRevealed, setMasterRevealed] = useState<Set<number>>(new Set());
 
-  // Step 15 — Vault battle
+  // Step 15, Vault battle
   const [vaultRound, setVaultRound] = useState(0);
   const [vaultHP, setVaultHP] = useState(100);
   const [vaultScore, setVaultScore] = useState(0);
   const [vaultFeedback, setVaultFeedback] = useState<"correct" | "wrong" | null>(null);
   const [vaultDone, setVaultDone] = useState(false);
 
-  // Step 16 — Victory (no extra state needed beyond coins)
+  // Step 16, Victory (no extra state needed beyond coins)
 
   const addCoins = useCallback((n: number) => {
     setCoins((c) => c + n);
@@ -630,10 +630,10 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
       /* ──── STEP 1: MISSION BRIEFING ──── */
       case 1: {
         const lines = [
-          "CLASSIFIED — INFORMATION AGENT BRIEFING",
+          "CLASSIFIED, INFORMATION AGENT BRIEFING",
           `Agent: ${childName}`,
           "Mission: Help Adam & Layla protect their personal information",
-          "Threat Level: HIGH — The Hacker Raccoon has been spotted collecting data",
+          "Threat Level: HIGH, The Hacker Raccoon has been spotted collecting data",
           "Your Objectives:",
           "1. Learn what personal information is",
           "2. Identify what's safe to share and what's private",
@@ -762,9 +762,9 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
                 <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
                   {card(
                     <>
-                      <p style={{ color: "#ef4444", fontWeight: 800, marginBottom: 4 }}>🔴 RED = PRIVATE — never share with strangers</p>
-                      <p style={{ color: "#22c55e", fontWeight: 800, marginBottom: 4 }}>🟢 GREEN = SAFE — okay to share</p>
-                      <p style={{ color: "#f59e0b", fontWeight: 800, marginBottom: 12 }}>🟡 AMBER = CAREFUL — depends who&apos;s asking!</p>
+                      <p style={{ color: "#ef4444", fontWeight: 800, marginBottom: 4 }}>🔴 RED = PRIVATE, never share with strangers</p>
+                      <p style={{ color: "#22c55e", fontWeight: 800, marginBottom: 4 }}>🟢 GREEN = SAFE, okay to share</p>
+                      <p style={{ color: "#f59e0b", fontWeight: 800, marginBottom: 12 }}>🟡 AMBER = CAREFUL, depends who&apos;s asking!</p>
                       {btn("Got it! Next →", () => { addCoins(10); triggerSummary(2); })}
                     </>,
                     { maxWidth: 500, margin: "0 auto" }
@@ -778,7 +778,7 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
       /* ──── STEP 3: POSTER FIX ──── */
       case 3:
         if (showInstr[3]) return <InstructionOverlay icon="📋" story="Adam made a poster with TOO MUCH info!" instructions="Tap on the dangerous things to REMOVE them from the poster." onReady={() => dismissInstr(3)} />;
-        if (showSummary[3]) return <LearnSummary message="You spotted dangerous information on a poster. Always check before sharing — remove addresses, phone numbers, and school names!" starCount={getStars(3)} onNext={() => dismissSummary(3, 4)} />;
+        if (showSummary[3]) return <LearnSummary message="You spotted dangerous information on a poster. Always check before sharing, remove addresses, phone numbers, and school names!" starCount={getStars(3)} onNext={() => dismissSummary(3, 4)} />;
         return (
           <div style={{ textAlign: "center" }}>
             <h1 style={{ color: "#fff", fontSize: 26, fontWeight: 900, marginBottom: 4 }}>Fix Adam&apos;s Poster!</h1>
@@ -921,7 +921,7 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
                           borderRadius: 16, padding: "20px 32px", cursor: "pointer",
                           color: "#ef4444", fontWeight: 900, fontSize: 16, transform: "rotate(3deg)",
                         }}>
-                        🔒 CLASSIFIED — PRIVATE
+                        🔒 CLASSIFIED, PRIVATE
                       </motion.button>
                     </div>
                     {classifyFeedback === "wrong" && (
@@ -960,7 +960,7 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
                   {dangerPct <= 20 ? (
                     <p style={{ color: "#10b981", fontWeight: 700, marginBottom: 16 }}>Amazing! The Raccoon got NOTHING from you!</p>
                   ) : (
-                    <p style={{ color: "#f59e0b", fontWeight: 700, marginBottom: 16 }}>The Raccoon got some info — but now you know what to watch for next time!</p>
+                    <p style={{ color: "#f59e0b", fontWeight: 700, marginBottom: 16 }}>The Raccoon got some info, but now you know what to watch for next time!</p>
                   )}
                   <p style={{ color: "#f59e0b", fontSize: 14, marginBottom: 16 }}>🪙 +20 coins earned!</p>
                   {btn("Continue Mission →", () => triggerSummary(5))}
@@ -977,7 +977,7 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
 
         return (
           <div style={{ textAlign: "center" }}>
-            <h1 style={{ color: "#fff", fontSize: 22, fontWeight: 900, marginBottom: 12 }}>INCOMING MESSAGE — UNKNOWN CONTACT</h1>
+            <h1 style={{ color: "#fff", fontSize: 22, fontWeight: 900, marginBottom: 12 }}>INCOMING MESSAGE, UNKNOWN CONTACT</h1>
 
             {/* Chat window */}
             <div style={{
@@ -1085,7 +1085,7 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
       /* ──── STEP 6: INTEL REPORT ──── */
       case 6: {
         const reportLines = [
-          "INTEL REPORT — MISSION UPDATE",
+          "INTEL REPORT, MISSION UPDATE",
           "The Hacker Raccoon attempted to extract personal data through social engineering.",
           "Result: FAILED ❌",
           "Agent, your quick thinking kept Adam & Layla's information secure.",
@@ -1218,7 +1218,7 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
               {card(
                 <>
                   <h2 style={{ color: "#fff", fontSize: 24, fontWeight: 900, marginBottom: 8 }}>Context Matters!</h2>
-                  <p style={{ color: "#d1d5db", marginBottom: 16 }}>{contextScore}/{CONTEXT_ROUNDS.length} correct! It&apos;s not just WHAT you share — it&apos;s WHO you share it with!</p>
+                  <p style={{ color: "#d1d5db", marginBottom: 16 }}>{contextScore}/{CONTEXT_ROUNDS.length} correct! It&apos;s not just WHAT you share, it&apos;s WHO you share it with!</p>
                   {btn("Continue →", () => { addCoins(contextScore === CONTEXT_ROUNDS.length ? 15 : 10); triggerSummary(8); })}
                 </>,
                 { maxWidth: 480, margin: "0 auto" }
@@ -1316,7 +1316,7 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
                       color: i < revealed ? "#fca5a5" : "#6b7280",
                       fontWeight: 700, fontSize: 14, textAlign: "left",
                     }}>
-                    {i < revealed ? text : `Domino ${i + 1} — Tap to reveal`}
+                    {i < revealed ? text : `Domino ${i + 1}, Tap to reveal`}
                   </motion.div>
                   {i < activeChain.length - 1 && i < revealed && (
                     <motion.div initial={{ scaleY: 0 }} animate={{ scaleY: broken ? 0 : 1 }}
@@ -1588,7 +1588,7 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
                     <span style={{ fontSize: 48, color: "#fff" }}>🛡️</span>
                   </motion.div>
                   <h2 style={{ color: "#fff", fontSize: 24, fontWeight: 900, marginBottom: 8 }}>
-                    {perfect ? "PERFECT SHIELD — Maximum Power!" : "Privacy Shield Complete!"}
+                    {perfect ? "PERFECT SHIELD, Maximum Power!" : "Privacy Shield Complete!"}
                   </h2>
                   <p style={{ color: "#d1d5db", marginBottom: 4 }}>{shieldFilled}/7 segments powered</p>
                   <p style={{ color: "#10b981", fontWeight: 700, marginBottom: 16 }}>Adam &amp; Layla are protected!</p>
@@ -1761,7 +1761,7 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
                     {vaultFeedback ? (
                       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
                         <p style={{ color: vaultFeedback === "correct" ? "#10b981" : "#ef4444", fontWeight: 900, fontSize: 18, marginBottom: 12 }}>
-                          {vaultFeedback === "correct" ? (va.block ? "BLOCKED!" : "Safe info — no need to block!") : "The Raccoon got through!"}
+                          {vaultFeedback === "correct" ? (va.block ? "BLOCKED!" : "Safe info, no need to block!") : "The Raccoon got through!"}
                         </p>
                       </motion.div>
                     ) : (
@@ -1824,7 +1824,7 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
               style={{ position: "relative", zIndex: 1 }}>
               {card(
                 <>
-                  <p style={{ color: "#f59e0b", fontWeight: 900, fontSize: 12, letterSpacing: "0.15em", marginBottom: 8 }}>MISSION COMPLETE — CLASSIFIED</p>
+                  <p style={{ color: "#f59e0b", fontWeight: 900, fontSize: 12, letterSpacing: "0.15em", marginBottom: 8 }}>MISSION COMPLETE, CLASSIFIED</p>
                   <p style={{ color: "#d1d5db", marginBottom: 12 }}>Agent Status:</p>
                   {/* Badge */}
                   <motion.div initial={{ scale: 0, rotate: -180 }} animate={{ scale: 1, rotate: 0 }} transition={{ type: "spring", stiffness: 150, damping: 12 }}
