@@ -320,7 +320,7 @@ export default function HomePage() {
   }, []);
 
   return (
-    <>
+    <div style={{ background: "#1a1033", minHeight: "100vh" }}>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
         * { font-family: 'Nunito', sans-serif; }
@@ -329,7 +329,7 @@ export default function HomePage() {
 
       <TechBackground />
 
-      <div className="min-h-screen relative" style={{ background: "#1a1033", zIndex: 1 }}>
+      <div className="min-h-screen relative" style={{ zIndex: 1 }}>
 
         {/* ── NAV ──────────────────────────────────────────────────────────── */}
         <nav className="fixed top-0 left-0 right-0 z-50 transition-all duration-300"
@@ -735,6 +735,6 @@ export default function HomePage() {
           </div>
         </footer>
       </div>
-    </>
+    </div>
   );
 }
