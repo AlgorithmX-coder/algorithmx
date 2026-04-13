@@ -67,7 +67,7 @@ const IconRuler = ({ size = 24, color = "#10b981" }: { size?: number; color?: st
 
 /* ───────────────────────── CONSTANTS ───────────────────────── */
 
-const TOTAL = 17;
+const TOTAL = 19;
 const GRAD = "linear-gradient(135deg, #8b5cf6, #3b82f6)";
 
 /* ───────────────────────── DATA ────────────────────────────── */
@@ -303,48 +303,60 @@ const confettiFallVariant = (_i: number) => ({
 function FloatingOrbs() {
   return (
     <div style={{ position: "fixed", inset: 0, pointerEvents: "none", zIndex: 0, overflow: "hidden" }}>
-      {/* Grid pattern */}
+      {/* Layer 4: Subtle grid */}
       <div style={{
-        position: "absolute", inset: 0, opacity: 0.04,
-        backgroundImage: `linear-gradient(rgba(139,92,246,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(139,92,246,0.5) 1px, transparent 1px)`,
-        backgroundSize: "60px 60px",
+        position: "absolute", inset: 0,
+        backgroundImage: `linear-gradient(rgba(139,92,246,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(139,92,246,0.06) 1px, transparent 1px)`,
+        backgroundSize: "80px 80px",
       }} />
-      {/* Circuit traces */}
-      <svg style={{ position: "absolute", inset: 0, width: "100%", height: "100%", opacity: 0.06 }}>
-        <line x1="10%" y1="0" x2="10%" y2="100%" stroke="#8b5cf6" strokeWidth="1" strokeDasharray="8 12" />
-        <line x1="30%" y1="0" x2="30%" y2="100%" stroke="#3b82f6" strokeWidth="1" strokeDasharray="4 16" />
-        <line x1="70%" y1="0" x2="70%" y2="100%" stroke="#8b5cf6" strokeWidth="1" strokeDasharray="12 8" />
-        <line x1="90%" y1="0" x2="90%" y2="100%" stroke="#3b82f6" strokeWidth="1" strokeDasharray="6 14" />
-        <line x1="0" y1="25%" x2="100%" y2="25%" stroke="#8b5cf6" strokeWidth="1" strokeDasharray="10 10" />
-        <line x1="0" y1="75%" x2="100%" y2="75%" stroke="#3b82f6" strokeWidth="1" strokeDasharray="8 12" />
-      </svg>
-      {/* Glow spots */}
-      {[
-        { left: "15%", top: "20%", color: "rgba(139,92,246,0.15)", delay: 0 },
-        { left: "75%", top: "15%", color: "rgba(59,130,246,0.12)", delay: 2 },
-        { left: "50%", top: "60%", color: "rgba(139,92,246,0.1)", delay: 4 },
-        { left: "85%", top: "70%", color: "rgba(59,130,246,0.1)", delay: 6 },
-      ].map((g, i) => (
-        <motion.div key={`glow-${i}`}
-          animate={{ opacity: [0.3, 0.6, 0.3] }}
-          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut", delay: g.delay }}
-          style={{ position: "absolute", left: g.left, top: g.top, width: 200, height: 200, borderRadius: "50%", background: `radial-gradient(circle, ${g.color}, transparent 70%)`, filter: "blur(40px)" }}
-        />
+      {/* Layer 1: Code rain columns (CSS animated) */}
+      <style>{`
+        @keyframes codeRain { from { transform: translateY(-100%); } to { transform: translateY(100vh); } }
+        @keyframes lockFloat { 0%,100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-20px) rotate(5deg); } }
+        @keyframes particleDrift { 0%,100% { opacity: 0.05; } 50% { opacity: 0.15; } }
+      `}</style>
+      {Array.from({ length: 12 }, (_, i) => (
+        <div key={`rain-${i}`} style={{
+          position: "absolute", left: `${(i / 12) * 100}%`, top: 0, width: 20,
+          fontFamily: "monospace", fontSize: 14, color: "rgba(139,92,246,0.12)", lineHeight: "20px",
+          whiteSpace: "pre-wrap", wordBreak: "break-all",
+          animation: `codeRain ${15 + i * 1.3}s linear infinite`,
+          animationDelay: `${i * -2}s`,
+        }}>
+          {"0A3F7B1E9C4D8A2F6B0E3C7A1D5F9B2E8C4A6D0F3B7E1C5A9D2F6B8E0C4A7D1F5B3E9C2A6D8F0B4E7C1A5D3F9B6E2C8A0D4F7B1E5C3A9D6F2B8E4C0A7D"}
+        </div>
       ))}
-      {/* Floating security icons */}
+      {/* Layer 2: Floating lock icons */}
       {[
-        { icon: "🔒", left: "8%", top: "35%", delay: 0 },
-        { icon: "🛡️", left: "88%", top: "45%", delay: 1.5 },
-        { icon: "🔑", left: "45%", top: "85%", delay: 3 },
-        { icon: "🔒", left: "70%", top: "30%", delay: 4.5 },
-        { icon: "🛡️", left: "20%", top: "70%", delay: 6 },
+        { icon: "🔒", left: "5%", top: "15%", size: 40, dur: 18 },
+        { icon: "🔑", left: "85%", top: "25%", size: 35, dur: 22 },
+        { icon: "🛡️", left: "15%", top: "55%", size: 50, dur: 16 },
+        { icon: "🔒", left: "75%", top: "65%", size: 30, dur: 25 },
+        { icon: "🔑", left: "45%", top: "80%", size: 45, dur: 20 },
+        { icon: "🛡️", left: "60%", top: "10%", size: 35, dur: 23 },
+        { icon: "🔒", left: "30%", top: "40%", size: 55, dur: 19 },
+        { icon: "🔑", left: "90%", top: "50%", size: 30, dur: 21 },
       ].map((ic, i) => (
-        <motion.div key={`icon-${i}`}
-          animate={{ y: [-10, 10, -10], opacity: [0.03, 0.07, 0.03] }}
-          transition={{ duration: 8 + i, repeat: Infinity, ease: "easeInOut", delay: ic.delay }}
-          style={{ position: "absolute", left: ic.left, top: ic.top, fontSize: 20, filter: "blur(1px)" }}>
-          {ic.icon}
-        </motion.div>
+        <div key={`lock-${i}`} style={{
+          position: "absolute", left: ic.left, top: ic.top, fontSize: ic.size, opacity: 0.08,
+          animation: `lockFloat ${ic.dur}s ease-in-out infinite`,
+          animationDelay: `${i * -3}s`,
+        }}>{ic.icon}</div>
+      ))}
+      {/* Layer 3: Glowing particles */}
+      {[
+        { left: "20%", top: "30%", delay: 0 },
+        { left: "70%", top: "20%", delay: 2 },
+        { left: "40%", top: "70%", delay: 4 },
+        { left: "80%", top: "55%", delay: 1 },
+        { left: "10%", top: "80%", delay: 3 },
+        { left: "55%", top: "40%", delay: 5 },
+      ].map((p, i) => (
+        <motion.div key={`particle-${i}`}
+          animate={{ x: [-15, 15, -15], y: [-10, 10, -10], opacity: [0.1, 0.3, 0.1] }}
+          transition={{ duration: 12 + i * 2, repeat: Infinity, ease: "easeInOut", delay: p.delay }}
+          style={{ position: "absolute", left: p.left, top: p.top, width: 4, height: 4, borderRadius: "50%", background: "rgba(139,92,246,0.3)", filter: "blur(2px)" }}
+        />
       ))}
     </div>
   );
@@ -719,6 +731,44 @@ function SwipeCard({
   );
 }
 
+/* ───────────────────────── INSTRUCTION & SUMMARY OVERLAYS ── */
+
+function InstructionOverlay({ icon, story, instructions, onReady }: { icon: string; story: string; instructions: string; onReady: () => void }) {
+  return (
+    <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} style={{ textAlign: "center" }}>
+      <div style={{ background: "rgba(15,10,40,0.9)", backdropFilter: "blur(12px)", borderRadius: 24, padding: 32, maxWidth: 520, margin: "0 auto" }}>
+        <div style={{ width: 80, height: 80, margin: "0 auto 16px", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 48, background: "rgba(139,92,246,0.15)", borderRadius: 20 }}>{icon}</div>
+        <p style={{ color: "#a78bfa", fontSize: 14, fontStyle: "italic", marginBottom: 8 }}>{story}</p>
+        <h2 style={{ color: "#fff", fontSize: 22, fontWeight: 900, marginBottom: 8 }}>Here&apos;s what to do!</h2>
+        <p style={{ color: "#d1d5db", fontSize: 16, lineHeight: 1.6, marginBottom: 20 }}>{instructions}</p>
+        <motion.button onClick={onReady} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
+          style={{ background: "linear-gradient(135deg, #8b5cf6, #3b82f6)", color: "#fff", fontWeight: 900, borderRadius: 16, padding: "13px 34px", border: "none", cursor: "pointer", fontSize: 16, boxShadow: "0 4px 20px rgba(139,92,246,0.4)" }}>
+          I&apos;m Ready! &rarr;
+        </motion.button>
+      </div>
+    </motion.div>
+  );
+}
+
+function LearnSummary({ message, starCount, onNext }: { message: string; starCount: number; onNext: () => void }) {
+  return (
+    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} style={{ textAlign: "center" }}>
+      <div style={{ background: "rgba(255,255,255,0.04)", backdropFilter: "blur(12px)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 20, padding: 28, maxWidth: 520, margin: "0 auto" }}>
+        <div style={{ width: 80, height: 80, margin: "0 auto 12px", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 48, background: "rgba(16,185,129,0.1)", borderRadius: 20 }}>&#x2705;</div>
+        <h2 style={{ color: "#fff", fontSize: 22, fontWeight: 900, marginBottom: 4 }}>Great job!</h2>
+        <div style={{ marginBottom: 8 }}>
+          <span style={{ fontSize: 28, letterSpacing: 4 }}>{"⭐".repeat(starCount)}{"☆".repeat(3 - starCount)}</span>
+        </div>
+        <p style={{ color: "#d1d5db", fontSize: 15, lineHeight: 1.6, marginBottom: 20 }}>{message}</p>
+        <motion.button onClick={onNext} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
+          style={{ background: "linear-gradient(135deg, #8b5cf6, #3b82f6)", color: "#fff", fontWeight: 900, borderRadius: 16, padding: "13px 34px", border: "none", cursor: "pointer", fontSize: 16, boxShadow: "0 4px 20px rgba(139,92,246,0.4)" }}>
+          Next &rarr;
+        </motion.button>
+      </div>
+    </motion.div>
+  );
+}
+
 /* ───────────────────────── MAIN COMPONENT ─────────────────── */
 
 export default function LessonPlayer({ userName, moduleId, childName }: { userName: string; moduleId: string; childName: string }) {
@@ -737,6 +787,52 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
       const audio = new Audio(src);
       audio.volume = 0.5;
       audio.play().catch(() => {});
+    } catch {}
+  }, []);
+
+  const playTone = useCallback((type: "powerup" | "zap" | "bubble") => {
+    try {
+      const ctx = new AudioContext();
+      if (type === "powerup") {
+        const osc = ctx.createOscillator(); const gain = ctx.createGain();
+        osc.type = "sine"; osc.frequency.setValueAtTime(400, ctx.currentTime);
+        osc.frequency.linearRampToValueAtTime(800, ctx.currentTime + 0.3);
+        gain.gain.setValueAtTime(0.2, ctx.currentTime);
+        gain.gain.linearRampToValueAtTime(0, ctx.currentTime + 0.4);
+        osc.connect(gain); gain.connect(ctx.destination);
+        osc.start(); osc.stop(ctx.currentTime + 0.4);
+        const osc2 = ctx.createOscillator(); const gain2 = ctx.createGain();
+        osc2.type = "sine"; osc2.frequency.value = 1000;
+        gain2.gain.setValueAtTime(0, ctx.currentTime + 0.3);
+        gain2.gain.linearRampToValueAtTime(0.15, ctx.currentTime + 0.32);
+        gain2.gain.linearRampToValueAtTime(0, ctx.currentTime + 0.45);
+        osc2.connect(gain2); gain2.connect(ctx.destination);
+        osc2.start(ctx.currentTime + 0.3); osc2.stop(ctx.currentTime + 0.45);
+      } else if (type === "zap") {
+        const osc = ctx.createOscillator(); const gain = ctx.createGain();
+        osc.type = "square"; osc.frequency.setValueAtTime(900, ctx.currentTime);
+        osc.frequency.linearRampToValueAtTime(150, ctx.currentTime + 0.15);
+        gain.gain.setValueAtTime(0.2, ctx.currentTime);
+        gain.gain.linearRampToValueAtTime(0, ctx.currentTime + 0.25);
+        osc.connect(gain); gain.connect(ctx.destination);
+        osc.start(); osc.stop(ctx.currentTime + 0.25);
+      } else if (type === "bubble") {
+        const osc = ctx.createOscillator(); const gain = ctx.createGain();
+        osc.type = "triangle"; osc.frequency.value = 400;
+        gain.gain.setValueAtTime(0, ctx.currentTime);
+        gain.gain.linearRampToValueAtTime(0.12, ctx.currentTime + 0.05);
+        gain.gain.linearRampToValueAtTime(0.12, ctx.currentTime + 0.2);
+        gain.gain.linearRampToValueAtTime(0, ctx.currentTime + 0.4);
+        osc.connect(gain); gain.connect(ctx.destination);
+        osc.start(); osc.stop(ctx.currentTime + 0.4);
+        const osc2 = ctx.createOscillator(); const gain2 = ctx.createGain();
+        osc2.type = "triangle"; osc2.frequency.value = 600;
+        gain2.gain.setValueAtTime(0, ctx.currentTime + 0.05);
+        gain2.gain.linearRampToValueAtTime(0.1, ctx.currentTime + 0.1);
+        gain2.gain.linearRampToValueAtTime(0, ctx.currentTime + 0.35);
+        osc2.connect(gain2); gain2.connect(ctx.destination);
+        osc2.start(ctx.currentTime + 0.05); osc2.stop(ctx.currentTime + 0.4);
+      }
     } catch {}
   }, []);
 
@@ -859,6 +955,17 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
   const progressPosted = useRef(false);
   const [showConfetti, setShowConfetti] = useState(false);
 
+  // Screen 12 — Phishing explainer
+  const [trickCard, setTrickCard] = useState(0);
+
+  // Screen 18 — Outro video
+  const [outroFailed, setOutroFailed] = useState(false);
+
+  // Global instruction/summary states
+  const [showInstr, setShowInstr] = useState<Record<number, boolean>>({});
+  const [showSummary, setShowSummary] = useState<Record<number, boolean>>({});
+  const [wrongAttempts, setWrongAttempts] = useState<Record<number, number>>({});
+
   /* ---------- navigation ---------- */
   const navigate = useCallback((to: number) => {
     switch (to) {
@@ -901,27 +1008,55 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
         setQ3Idx(0); setQ3Score(0);
         break;
       case 12:
-        setPhishIdx(0); setPhishAnswer(null); setPhishScore(0); setPhishStamped(false); setPhishExiting(false);
+        setTrickCard(0);
         break;
       case 13:
-        setWydIdx(0); setWydSel(null); setWydScore(0);
+        setPhishIdx(0); setPhishAnswer(null); setPhishScore(0); setPhishStamped(false); setPhishExiting(false);
         break;
       case 14:
+        setWydIdx(0); setWydSel(null); setWydScore(0);
+        break;
+      case 15:
         setBossIdx(0); setBossSel(null); setBossFeedback(null);
         setBossScore(0); setRaccoonHealth(100); setBossDone(false);
         setBossAttackPhase(false); setArenaHits(0);
         setArenaRaccoonPos({ left: 50, top: 30 }); setArenaProjectiles([]);
         setArenaShowResult(false); setArenaRaccoonAnim("idle"); setArenaTimeLeft(12);
         break;
-      case 15:
+      case 16:
         setAchievePhase(0);
         break;
-      case 16:
+      case 17:
         setShowConfetti(true);
         break;
     }
     setScreen(to);
+    if ([2,3,4,5,6,7,8,9,10,11,13,14,15].includes(to)) {
+      setShowInstr((prev) => ({ ...prev, [to]: true }));
+    }
   }, []);
+
+  const dismissInstr = useCallback((scr: number) => {
+    setShowInstr((prev) => ({ ...prev, [scr]: false }));
+  }, []);
+
+  const showLearnSummary = useCallback((scr: number) => {
+    setShowSummary((prev) => ({ ...prev, [scr]: true }));
+  }, []);
+
+  const dismissSummary = useCallback((scr: number, nextStep: number) => {
+    setShowSummary((prev) => ({ ...prev, [scr]: false }));
+    navigate(nextStep);
+  }, [navigate]);
+
+  const addWrong = useCallback((scr: number) => {
+    setWrongAttempts((prev) => ({ ...prev, [scr]: (prev[scr] || 0) + 1 }));
+  }, []);
+
+  const getStars = useCallback((scr: number) => {
+    const w = wrongAttempts[scr] || 0;
+    return w === 0 ? 3 : w <= 2 ? 2 : 1;
+  }, [wrongAttempts]);
 
   /* ---------- effects ---------- */
 
@@ -1119,7 +1254,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
     if (isHit) {
       setArenaHits((h) => h + 1);
       setArenaRaccoonAnim("hit");
-      playSound("/sounds/correct.mp3");
+      playTone("zap");
       addCoins(2);
       setTimeout(() => setArenaRaccoonAnim("idle"), 400);
     }
@@ -1270,12 +1405,12 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
               >
                 {card(
                   <>
-                    <img src="/characters/adam-layla-hacked.png" alt="Adam and Layla hacked" style={{ width: 180, borderRadius: 20, margin: "0 auto 16px", display: "block" }} />
+                    <img src="/characters/adam-layla-hacked.png" alt="Adam and Layla hacked" style={{ width: 280, borderRadius: 20, margin: "0 auto 20px", display: "block" }} />
                     <h2 style={{ color: "#fff", fontSize: 26, margin: "0 0 8px" }}>Oh no! Adam and Layla got hacked by the Raccoon! 🦝</h2>
                     <p style={{ color: "#d1d5db", marginBottom: 20, fontSize: 16 }}>They need YOUR help to learn about password safety!</p>
                     {btn("I'll help them! Let's go! 🚀", () => navigate(1))}
                   </>,
-                  { maxWidth: 600, margin: "0 auto", padding: 32 }
+                  { maxWidth: 700, margin: "0 auto", padding: 40 }
                 )}
               </motion.div>
             )}
@@ -1318,7 +1453,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
             {/* Character image removed to prevent overlap on small screens */}
             {missionPhase >= 3 && (
               <motion.div initial={{ opacity: 0, scale: 0.5 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: "spring", stiffness: 300, damping: 20 }}>
-                {btn("Accept Mission →", () => navigate(2))}
+                {btn("Accept Mission →", () => { playTone("powerup"); navigate(2); })}
               </motion.div>
             )}
           </div>
@@ -1327,6 +1462,8 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
 
       /* ──── CASE 2: INTERACTIVE LOCK GAME ──── */
       case 2:
+        if (showInstr[2]) return <InstructionOverlay icon="🔒" story="The Raccoon is trying to get into Adam and Layla's stuff!" instructions="Tap each item to lock it with a password! Can you lock all three?" onReady={() => dismissInstr(2)} />;
+        if (showSummary[2]) return <LearnSummary message="You learned that passwords LOCK your stuff! Just like a key locks a door, a password keeps your games and photos safe." starCount={getStars(2)} onNext={() => dismissSummary(2, 3)} />;
         return (
           <div style={{ textAlign: "center" }}>
             <h1 style={{ color: "#fff", fontSize: 28, fontWeight: 900, marginBottom: 8 }}>What is a Password?</h1>
@@ -1427,7 +1564,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                       <div style={{ border: "2px solid #f59e0b", borderRadius: 16, padding: 12, marginBottom: 16, background: "rgba(245,158,11,0.05)" }}>
                         <p style={{ color: "#f59e0b", fontSize: 14, margin: 0 }}>🌟 Fun Fact: The first computer password was created in 1961!</p>
                       </div>
-                      {btn("Got it! Quiz time! →", () => navigate(3))}
+                      {btn("Got it! Quiz time! →", () => showLearnSummary(2))}
                     </>
                   )}
                 </motion.div>
@@ -1438,6 +1575,8 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
 
       /* ──── CASE 3: QUIZ 1 (FLOATING BUBBLES) ──── */
       case 3: {
+        if (showInstr[3]) return <InstructionOverlay icon="❓" story="Adam and Layla need to figure out what counts as a password." instructions="Answer the question! Tap what you think is right." onReady={() => dismissInstr(3)} />;
+        if (showSummary[3]) return <LearnSummary message="Passwords are secret codes — not just any word! You can spot what IS a password." starCount={getStars(3)} onNext={() => dismissSummary(3, 4)} />;
         if (q1Idx >= Q1_QUIZ.length) {
           const s = q1Score === 3 ? 3 : q1Score >= 2 ? 2 : 1;
           return (
@@ -1453,7 +1592,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                   {stars(s)}
                   <p style={{ color: "#d1d5db", margin: "12px 0" }}>You got {q1Score}/{Q1_QUIZ.length} correct!</p>
                   <p style={{ color: "#f59e0b", fontSize: 14 }}>🪙 +{q1Score * 10} coins earned!</p>
-                  {btn("Next lesson! →", () => navigate(4))}
+                  {btn("Next lesson! →", () => showLearnSummary(3))}
                 </>
               )}
             </motion.div>
@@ -1480,7 +1619,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                 addCoins(10);
                 setTimeout(() => setQ1Idx((i) => i + 1), 0);
               }}
-              onWrong={() => {}}
+              onWrong={() => addWrong(3)}
             />
           </motion.div>
         );
@@ -1488,6 +1627,8 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
 
       /* ──── CASE 4: RACCOON SHIELD SIMULATOR ──── */
       case 4: {
+        if (showInstr[4]) return <InstructionOverlay icon="🛡️" story="Oh no — the Raccoon is sneaking towards Adam's tablet!" instructions="Watch out! The Raccoon is sneaking closer. Drag the shield to protect the items!" onReady={() => dismissInstr(4)} />;
+        if (showSummary[4]) return <LearnSummary message="You saw what happens without a password — the Raccoon can walk right in! Passwords keep him OUT." starCount={getStars(4)} onNext={() => dismissSummary(4, 5)} />;
         if (whyIdx >= WHY_SCENARIOS.length) {
           return (
             <motion.div
@@ -1501,7 +1642,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                   <h2 style={{ color: "#fff", fontSize: 24, margin: "0 0 12px" }}>Passwords protect EVERYTHING! 🛡️</h2>
                   <p style={{ color: "#d1d5db", marginBottom: 16 }}>Now you know why every digital thing needs a password.</p>
                   <p style={{ color: "#f59e0b", fontSize: 14 }}>🪙 +30 coins earned!</p>
-                  {btn("Quiz time! →", () => navigate(5))}
+                  {btn("Quiz time! →", () => showLearnSummary(4))}
                 </>
               )}
             </motion.div>
@@ -1566,14 +1707,14 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                 {/* Raccoon bouncing back */}
                 {raccoonHitShield && (
                   <motion.div
-                    initial={{ x: 0, rotate: 0, scaleX: 1, opacity: 1 }}
-                    animate={{ x: 300, rotate: 30, scaleX: 1, opacity: 0 }}
-                    transition={{ duration: 1, ease: "easeOut" }}
+                    initial={{ x: 0, rotate: 0, scale: 1.3, opacity: 1 }}
+                    animate={{ x: 300, rotate: 360, scale: 0, opacity: 0 }}
+                    transition={{ duration: 1.2, ease: "easeOut" }}
                     style={{
                       position: "absolute", left: 150, top: "50%", transform: "translateY(-50%)",
                     }}
                   >
-                    <img src="/characters/raccoon-defeated.png" alt="Raccoon defeated" style={{ width: 100, borderRadius: 16 }} />
+                    <img src="/characters/raccoon-defeated.png" alt="Raccoon defeated" style={{ width: 160, borderRadius: 16, filter: "drop-shadow(0 0 12px rgba(239,68,68,0.4))" }} />
                   </motion.div>
                 )}
 
@@ -1643,6 +1784,8 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
 
       /* ──── CASE 5: QUIZ 2 (FLOATING BUBBLES) ──── */
       case 5: {
+        if (showInstr[5]) return <InstructionOverlay icon="❓" story="Adam and Layla need your help to answer this!" instructions="Answer the question! Tap what you think is right." onReady={() => dismissInstr(5)} />;
+        if (showSummary[5]) return <LearnSummary message="Everyone needs passwords — for games, tablets, and school work!" starCount={getStars(5)} onNext={() => dismissSummary(5, 6)} />;
         if (q2Idx >= Q2_QUIZ.length) {
           const s = q2Score === 3 ? 3 : q2Score >= 2 ? 2 : 1;
           return (
@@ -1658,7 +1801,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                   {stars(s)}
                   <p style={{ color: "#d1d5db", margin: "12px 0" }}>You got {q2Score}/{Q2_QUIZ.length} correct!</p>
                   <p style={{ color: "#f59e0b", fontSize: 14 }}>🪙 +{q2Score * 10} coins earned!</p>
-                  {btn("Next lesson! →", () => navigate(6))}
+                  {btn("Next lesson! →", () => showLearnSummary(5))}
                 </>
               )}
             </motion.div>
@@ -1685,7 +1828,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                 addCoins(10);
                 setTimeout(() => setQ2Idx((i) => i + 1), 0);
               }}
-              onWrong={() => {}}
+              onWrong={() => addWrong(5)}
             />
           </motion.div>
         );
@@ -1693,6 +1836,8 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
 
       /* ──── CASE 6: PASSWORD RECIPE (POURING) ──── */
       case 6:
+        if (showInstr[6]) return <InstructionOverlay icon="🧪" story="Help Adam and Layla cook up the strongest password ever!" instructions="Tap each ingredient bottle to pour it into the mixing bowl!" onReady={() => dismissInstr(6)} />;
+        if (showSummary[6]) return <LearnSummary message="You learned HOW to build a super strong password — mix letters, numbers, and special characters!" starCount={getStars(6)} onNext={() => dismissSummary(6, 7)} />;
         return (
           <div style={{ textAlign: "center" }}>
             <h1 style={{ color: "#fff", fontSize: 28, fontWeight: 900, marginBottom: 8 }}>The Password Recipe!</h1>
@@ -1709,7 +1854,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                     onClick={() => {
                       if (added || pouringIdx !== null) return;
                       setPouringIdx(i);
-                      playSound("/sounds/pour.mp3");
+                      playTone("bubble");
                       const chars = RECIPE_CHARS[i] || ["?"];
                       const newChars = chars.map((c, ci) => ({
                         char: c, x: (Math.random() - 0.5) * 30, delay: ci * 50,
@@ -1799,7 +1944,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                   transition={{ type: "spring", stiffness: 300, damping: 20 }}
                 >
                   <p style={{ color: "#10b981", fontSize: 22, fontWeight: 700 }}>SUPER STRONG! 🔥</p>
-                  {btn("Build a password! →", () => navigate(7))}
+                  {btn("Build a password! →", () => showLearnSummary(6))}
                 </motion.div>
               )}
             </AnimatePresence>
@@ -1808,6 +1953,8 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
 
       /* ──── CASE 7: PASSWORD BUILDER ──── */
       case 7: {
+        if (showInstr[7]) return <InstructionOverlay icon="🔨" story="Time to build a real password!" instructions="Pick one option from each row to build a super strong password!" onReady={() => dismissInstr(7)} />;
+        if (showSummary[7]) return <LearnSummary message="You built your own password! Remember the recipe: capital letters + lowercase + numbers + symbols." starCount={getStars(7)} onNext={() => dismissSummary(7, 8)} />;
         const builtPw = builderSlots.map((s: number, i: number) => s >= 0 ? BUILDER_OPTIONS[i][s] : "").join("");
         const filledCount = builderSlots.filter((s: number) => s >= 0).length;
         return (
@@ -1875,7 +2022,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
               >
                 <p style={{ color: "#10b981", fontSize: 20, fontWeight: 700, marginBottom: 8 }}>🎉 Password built!</p>
                 <p style={{ color: "#d1d5db", marginBottom: 16 }}>Your password: <strong style={{ color: "#f59e0b" }}>{builtPw}</strong></p>
-                {btn("Now spot the good ones! →", () => navigate(8))}
+                {btn("Now spot the good ones! →", () => showLearnSummary(7))}
               </motion.div>
             )}
           </div>
@@ -1884,6 +2031,8 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
 
       /* ──── CASE 8: GOOD VS BAD SWIPE ──── */
       case 8: {
+        if (showInstr[8]) return <InstructionOverlay icon="👆" story="Which passwords can the Raccoon crack easily?" instructions="Swipe right for STRONG passwords, left for WEAK ones. Or use the buttons!" onReady={() => dismissInstr(8)} />;
+        if (showSummary[8]) return <LearnSummary message="You can tell STRONG passwords from WEAK ones. Longer and more mixed = stronger!" starCount={getStars(8)} onNext={() => dismissSummary(8, 9)} />;
         if (swipeIdx >= SWIPE_DATA.length) {
           const s = swipeScore >= 5 ? 3 : swipeScore >= 3 ? 2 : 1;
           return (
@@ -1899,7 +2048,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                   {stars(s)}
                   <p style={{ color: "#d1d5db", margin: "12px 0" }}>{swipeScore}/{SWIPE_DATA.length} correct!</p>
                   <p style={{ color: "#f59e0b", fontSize: 14 }}>🪙 +{swipeScore * 10} coins earned!</p>
-                  {btn("Now sort them all! →", () => navigate(9))}
+                  {btn("Now sort them all! →", () => showLearnSummary(8))}
                 </>
               )}
             </motion.div>
@@ -1919,6 +2068,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
           } else {
             setSwipeFeedback("wrong");
             playSound("/sounds/wrong.mp3");
+            addWrong(8);
           }
         };
 
@@ -2023,6 +2173,8 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
 
       /* ──── CASE 9: DRAG & DROP SORT ──── */
       case 9: {
+        if (showInstr[9]) return <InstructionOverlay icon="🔀" story="Can you sort the strong passwords from the weak ones?" instructions="Drag each password card into the correct bucket — Strong or Weak!" onReady={() => dismissInstr(9)} />;
+        if (showSummary[9]) return <LearnSummary message="You sorted them all! Strong passwords have a mix of characters and are hard to guess." starCount={getStars(9)} onNext={() => dismissSummary(9, 10)} />;
         if (dragDone) {
           return (
             <motion.div
@@ -2037,7 +2189,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                   {stars(sortStars)}
                   <p style={{ color: "#d1d5db", margin: "12px 0" }}>{placed.size}/8 sorted correctly!</p>
                   <p style={{ color: "#f59e0b", fontSize: 14 }}>🪙 +25 coins earned!</p>
-                  {btn("Learn the golden rules! →", () => navigate(10))}
+                  {btn("Learn the golden rules! →", () => showLearnSummary(9))}
                 </>
               )}
             </motion.div>
@@ -2125,6 +2277,8 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
 
       /* ──── CASE 10: 5 GOLDEN RULES (TAP TO REVEAL) ──── */
       case 10:
+        if (showInstr[10]) return <InstructionOverlay icon="⭐" story="Before you finish, learn the 5 most important rules about passwords!" instructions="Tap each golden card to reveal a rule, then answer the question!" onReady={() => dismissInstr(10)} />;
+        if (showSummary[10]) return <LearnSummary message="You know the 5 Golden Rules of passwords! Follow them and the Raccoon can never get in." starCount={getStars(10)} onNext={() => dismissSummary(10, 11)} />;
         return (
           <div style={{ textAlign: "center" }}>
             <h1 style={{ color: "#fff", fontSize: 28, fontWeight: 900, marginBottom: 16 }}>The 5 Golden Rules!</h1>
@@ -2234,7 +2388,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                   <p style={{ color: "#f59e0b", fontSize: 20, fontWeight: 700, marginBottom: 12 }}>
                     You know ALL 5 golden rules! ⭐⭐⭐⭐⭐
                   </p>
-                  {btn("Continue →", () => { addCoins(25); navigate(11); })}
+                  {btn("Continue →", () => { addCoins(25); showLearnSummary(10); })}
                 </motion.div>
               )}
             </AnimatePresence>
@@ -2243,6 +2397,8 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
 
       /* ──── CASE 11: QUIZ 3 (FLOATING BUBBLES) ──── */
       case 11: {
+        if (showInstr[11]) return <InstructionOverlay icon="❓" story="Adam and Layla need your help to answer this!" instructions="Answer the question! Tap what you think is right." onReady={() => dismissInstr(11)} />;
+        if (showSummary[11]) return <LearnSummary message="You aced the quiz! You really know your password facts now." starCount={getStars(11)} onNext={() => dismissSummary(11, 12)} />;
         if (q3Idx >= Q3_QUIZ.length) {
           const s = q3Score >= 4 ? 3 : q3Score >= 3 ? 2 : 1;
           return (
@@ -2258,7 +2414,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                   {stars(s)}
                   <p style={{ color: "#d1d5db", margin: "12px 0" }}>You got {q3Score}/{Q3_QUIZ.length} correct!</p>
                   <p style={{ color: "#f59e0b", fontSize: 14 }}>🪙 +{q3Score * 10} coins earned!</p>
-                  {btn("Next lesson! →", () => navigate(12))}
+                  {btn("Next lesson! →", () => showLearnSummary(11))}
                 </>
               )}
             </motion.div>
@@ -2285,14 +2441,75 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                 addCoins(10);
                 setTimeout(() => setQ3Idx((i) => i + 1), 0);
               }}
-              onWrong={() => {}}
+              onWrong={() => addWrong(11)}
             />
           </motion.div>
         );
       }
 
-      /* ──── CASE 12: PHISHING (TABLET FRAME) ──── */
+      /* ──── CASE 12: PHISHING EXPLAINER ──── */
       case 12: {
+        if (showSummary[12]) return <LearnSummary message="You learned the 4 signs of a trick — too good to be true, scary warnings, spelling mistakes, and asking for secrets!" starCount={3} onNext={() => dismissSummary(12, 13)} />;
+        const tricks = [
+          { title: "TOO GOOD TO BE TRUE", fake: "YOU WON A FREE iPAD!!! CLICK NOW!!!", explain: "If it sounds too good to be true... it probably is! Real prizes don't pop up on your screen.", color: "#f59e0b" },
+          { title: "SCARY WARNINGS", fake: "WARNING! YOUR TABLET HAS A VIRUS! CALL THIS NUMBER NOW!", explain: "Scary messages try to make you panic. Real warnings don't ask you to call a number. Tell a grown-up!", color: "#ef4444" },
+          { title: "SPELLING MISTAKES", fake: "Dear Costumer, Youre acount has ben comprimised. Clik here to fix.", explain: "Real companies don't make spelling mistakes! If it looks wrong, it IS wrong.", color: "#8b5cf6" },
+          { title: "ASKING FOR SECRETS", fake: "Enter your password to win free V-Bucks!", explain: "NO real website will EVER ask for your password in a message. NEVER type your password into a popup.", color: "#ec4899" },
+        ];
+        return (
+          <div style={{ textAlign: "center" }}>
+            <h1 style={{ color: "#fff", fontSize: 26, fontWeight: 900, marginBottom: 4 }}>Spot the Tricks!</h1>
+            <p style={{ color: "#9ca3af", marginBottom: 16 }}>The Raccoon sends FAKE messages to trick people. Here&apos;s how to spot them!</p>
+            {trickCard < 4 ? (
+              <AnimatePresence mode="wait">
+                <motion.div key={trickCard} initial={{ opacity: 0, x: 40 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -40 }}>
+                  {card(
+                    <>
+                      <p style={{ color: tricks[trickCard].color, fontWeight: 900, fontSize: 14, letterSpacing: "0.05em", marginBottom: 12 }}>{tricks[trickCard].title}</p>
+                      <div style={{ background: "rgba(239,68,68,0.08)", border: "2px solid rgba(239,68,68,0.2)", borderRadius: 16, padding: 16, marginBottom: 16 }}>
+                        <p style={{ color: "#fca5a5", fontSize: 16, fontWeight: 700, fontStyle: "italic" }}>&quot;{tricks[trickCard].fake}&quot;</p>
+                      </div>
+                      <div style={{ display: "flex", alignItems: "flex-start", gap: 12, textAlign: "left" }}>
+                        <span style={{ color: "#ef4444", fontSize: 28, flexShrink: 0 }}>✕</span>
+                        <p style={{ color: "#d1d5db", fontSize: 15, lineHeight: 1.6 }}>{tricks[trickCard].explain}</p>
+                      </div>
+                      <div style={{ marginTop: 16 }}>
+                        {btn(trickCard < 3 ? "Next Trick →" : "I see the pattern! →", () => setTrickCard((c) => c + 1))}
+                      </div>
+                    </>,
+                    { maxWidth: 540, margin: "0 auto" }
+                  )}
+                </motion.div>
+              </AnimatePresence>
+            ) : (
+              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+                {card(
+                  <>
+                    <h2 style={{ color: "#fff", fontSize: 22, fontWeight: 900, marginBottom: 12 }}>Remember the 4 signs of a trick:</h2>
+                    <div style={{ textAlign: "left", maxWidth: 400, margin: "0 auto 16px" }}>
+                      {["Too good to be true", "Scary warnings", "Spelling mistakes", "Asking for your secrets"].map((sign, i) => (
+                        <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.15 }}
+                          style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 8 }}>
+                          <span style={{ width: 28, height: 28, borderRadius: "50%", background: GRAD, display: "flex", alignItems: "center", justifyContent: "center", color: "#fff", fontWeight: 900, fontSize: 13, flexShrink: 0 }}>{i + 1}</span>
+                          <span style={{ color: "#d1d5db", fontSize: 15, fontWeight: 600 }}>{sign}</span>
+                        </motion.div>
+                      ))}
+                    </div>
+                    <p style={{ color: "#9ca3af", fontSize: 14, marginBottom: 16 }}>Now let&apos;s see if YOU can spot the Raccoon&apos;s tricks!</p>
+                    {btn("I'm Ready! →", () => showLearnSummary(12))}
+                  </>,
+                  { maxWidth: 540, margin: "0 auto" }
+                )}
+              </motion.div>
+            )}
+          </div>
+        );
+      }
+
+      /* ──── CASE 13: PHISHING (TABLET FRAME) ──── */
+      case 13: {
+        if (showInstr[13]) return <InstructionOverlay icon="🔍" story="The Raccoon is sending tricks — can you catch them all?" instructions="Look at each message. Is it a SCAM or is it SAFE? Tap to decide!" onReady={() => dismissInstr(13)} />;
+        if (showSummary[13]) return <LearnSummary message="You can now SPOT the Raccoon's tricks! If it looks weird, don't click it. Tell a grown-up!" starCount={getStars(13)} onNext={() => dismissSummary(13, 14)} />;
         if (phishIdx >= PHISH.length) {
           const s = phishScore >= 3 ? 3 : phishScore >= 2 ? 2 : 1;
           return (
@@ -2308,7 +2525,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                   {stars(s)}
                   <p style={{ color: "#d1d5db", margin: "12px 0" }}>{phishScore}/{PHISH.length} spotted correctly!</p>
                   <p style={{ color: "#f59e0b", fontSize: 14 }}>🪙 +{phishScore * 15} coins earned!</p>
-                  {btn("Real life scenarios! →", () => navigate(13))}
+                  {btn("Real life scenarios! →", () => showLearnSummary(13))}
                 </>
               )}
             </motion.div>
@@ -2393,7 +2610,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                     const correct = ph.isScam;
                     setPhishAnswer(correct);
                     if (correct) { setPhishScore((s) => s + 1); addCoins(15); playSound("/sounds/correct.mp3"); setTimeout(() => playSound("/sounds/coin.mp3"), 500); }
-                    else { playSound("/sounds/wrong.mp3"); }
+                    else { playSound("/sounds/wrong.mp3"); addWrong(13); }
                     setPhishStamped(true);
                   }}
                   whileHover={{ scale: 1.05 }}
@@ -2410,7 +2627,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                     const correct = !ph.isScam;
                     setPhishAnswer(correct);
                     if (correct) { setPhishScore((s) => s + 1); addCoins(15); playSound("/sounds/correct.mp3"); setTimeout(() => playSound("/sounds/coin.mp3"), 500); }
-                    else { playSound("/sounds/wrong.mp3"); }
+                    else { playSound("/sounds/wrong.mp3"); addWrong(13); }
                     setPhishStamped(true);
                   }}
                   whileHover={{ scale: 1.05 }}
@@ -2450,8 +2667,10 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
         );
       }
 
-      /* ──── CASE 13: WHAT WOULD YOU DO (COMIC BUBBLES) ──── */
-      case 13: {
+      /* ──── CASE 14: WHAT WOULD YOU DO (COMIC BUBBLES) ──── */
+      case 14: {
+        if (showInstr[14]) return <InstructionOverlay icon="🤔" story="What would YOU do in these real-life situations?" instructions="Read each situation and pick the best choice!" onReady={() => dismissInstr(14)} />;
+        if (showSummary[14]) return <LearnSummary message="You know what to do in tricky real-life situations. Always think before you share!" starCount={getStars(14)} onNext={() => dismissSummary(14, 15)} />;
         if (wydIdx >= WYD.length) {
           const s = wydScore >= 3 ? 3 : wydScore >= 2 ? 2 : 1;
           return (
@@ -2467,7 +2686,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                   {stars(s)}
                   <p style={{ color: "#d1d5db", margin: "12px 0" }}>{wydScore}/{WYD.length} perfect choices!</p>
                   <p style={{ color: "#f59e0b", fontSize: 14 }}>🪙 +{wydScore * 15} coins earned!</p>
-                  {btn("Face the Raccoon! →", () => navigate(14))}
+                  {btn("Face the Raccoon! →", () => showLearnSummary(14))}
                 </>
               )}
             </motion.div>
@@ -2528,7 +2747,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                         if (wydSel !== null) return;
                         setWydSel(i);
                         if (i === w.correct) { setWydScore((s) => s + 1); addCoins(15); playSound("/sounds/correct.mp3"); setTimeout(() => playSound("/sounds/coin.mp3"), 500); }
-                        else { playSound("/sounds/wrong.mp3"); }
+                        else { playSound("/sounds/wrong.mp3"); addWrong(14); }
                       }}
                       disabled={answered}
                       whileHover={!answered ? { scale: 1.02 } : {}}
@@ -2565,8 +2784,9 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
         );
       }
 
-      /* ──── CASE 14: BOSS BATTLE (TAP TO ATTACK) ──── */
-      case 14: {
+      /* ──── CASE 15: BOSS BATTLE (TAP TO ATTACK) ──── */
+      case 15: {
+        if (showInstr[15]) return <InstructionOverlay icon="⚔️" story="This is it — the Raccoon's final attack! Everything you've learned is needed now!" instructions="Answer questions to fight the Raccoon! Then fire at him in the arena!" onReady={() => dismissInstr(15)} />;
         if (bossDone) {
           return (
             <motion.div
@@ -2581,9 +2801,10 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                   <motion.img
                     src="/characters/raccoon-defeated.png"
                     alt="Raccoon defeated"
-                    animate={{ rotate: 720, scale: 0, y: -100, opacity: 0 }}
+                    initial={{ scale: 1.2 }}
+                    animate={{ rotate: 720, scale: 0, y: -120, opacity: 0 }}
                     transition={{ duration: 1.5, ease: "easeOut" }}
-                    style={{ width: 100, margin: "0 auto 12px", display: "block" }}
+                    style={{ width: 160, margin: "0 auto 12px", display: "block", filter: "drop-shadow(0 0 12px rgba(239,68,68,0.4))" }}
                   />
                   <motion.h2
                     animate={{ textShadow: ["0 0 20px rgba(245,158,11,0.3)", "0 0 40px rgba(245,158,11,0.6)", "0 0 20px rgba(245,158,11,0.3)"] }}
@@ -2591,7 +2812,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                     style={{
                       fontSize: 32, margin: "0 0 12px", fontWeight: 900,
                       background: "linear-gradient(135deg, #f59e0b, #ef4444, #8b5cf6)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent",
-                    }}>YOU DEFEATED THE HACKER RACCOON!</motion.h2>
+                    }}>You defeated the Hacker Raccoon!</motion.h2>
                   <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.3, type: "spring" }}>
                     {stars(bossScore >= 8 ? 3 : bossScore >= 6 ? 2 : 1)}
                   </motion.div>
@@ -2599,17 +2820,16 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: [0, -8, 0] }}
                     transition={{ y: { duration: 2, repeat: Infinity }, opacity: { delay: 0.5, duration: 0.5 } }}
-                    style={{ width: 160, borderRadius: 20, margin: "16px auto", display: "block", border: "3px solid #f59e0b", boxShadow: "0 0 30px rgba(245,158,11,0.4)" }}
+                    style={{ width: 180, borderRadius: 20, margin: "16px auto", display: "block", border: "3px solid #f59e0b", boxShadow: "0 0 30px rgba(245,158,11,0.4)" }}
                   />
-                  <p style={{ color: "#d1d5db", margin: "12px 0" }}>{bossScore}/{BOSS_QUIZ.length} correct hits!</p>
                   <motion.div
                     initial={{ opacity: 0, scale: 0.5 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ delay: 0.8 }}
                     style={{ background: "rgba(245,158,11,0.15)", border: "2px solid rgba(245,158,11,0.4)", borderRadius: 16, padding: "8px 20px", display: "inline-block", marginBottom: 16 }}>
-                    <span style={{ color: "#f59e0b", fontSize: 14, fontWeight: 700 }}>🪙 +{bossScore * 20 + 50} coins (including 50 bonus!)</span>
+                    <span style={{ color: "#f59e0b", fontSize: 14, fontWeight: 700 }}>🪙 +50 bonus coins!</span>
                   </motion.div>
-                  <div>{btn("Save Adam & Layla! →", () => { addCoins(50); playSound("/sounds/coin.mp3"); navigate(15); })}</div>
+                  <div>{btn("Save Adam & Layla! →", () => { addCoins(50); playSound("/sounds/coin.mp3"); navigate(16); })}</div>
                 </>
               )}
             </motion.div>
@@ -2742,11 +2962,8 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                         zIndex: 10,
                       }}
                     >
-                      <p style={{ color: "#f59e0b", fontSize: 28, fontWeight: 900, marginBottom: 4 }}>
-                        {arenaHits} hits!
-                      </p>
-                      <p style={{ color: "#d1d5db", fontSize: 16, marginBottom: 16 }}>
-                        {getArenaDamage(arenaHits)}% damage dealt!
+                      <p style={{ color: "#f59e0b", fontSize: 28, fontWeight: 900, marginBottom: 16 }}>
+                        Hits: {arenaHits}
                       </p>
                       {btn("Continue →", finishArenaRound)}
                     </motion.div>
@@ -2890,8 +3107,8 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
         );
       }
 
-      /* ──── CASE 15: ADAM AND LAYLA ARE SAFE ──── */
-      case 15: {
+      /* ──── CASE 16: ADAM AND LAYLA ARE SAFE ──── */
+      case 16: {
         const achieveCoins = [25, 30, 25, 0, 25, 0, 0, 0];
         return (
           <div style={{ textAlign: "center" }}>
@@ -2946,15 +3163,15 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ type: "spring", stiffness: 300, damping: 20 }}
               >
-                {btn("Get your certificate! 🏆 →", () => navigate(16))}
+                {btn("Get your certificate! 🏆 →", () => navigate(17))}
               </motion.div>
             )}
           </div>
         );
       }
 
-      /* ──── CASE 16: CERTIFICATE + GRADUATION ──── */
-      case 16: {
+      /* ──── CASE 17: CERTIFICATE + GRADUATION ──── */
+      case 17: {
         const totalScore = q1Score + q2Score + q3Score + bossScore + swipeScore + phishScore + wydScore;
         const totalPossible = Q1_QUIZ.length + Q2_QUIZ.length + Q3_QUIZ.length + BOSS_QUIZ.length + SWIPE_DATA.length + PHISH.length + WYD.length;
         const finalStars = totalScore >= totalPossible * 0.8 ? 3 : totalScore >= totalPossible * 0.5 ? 2 : 1;
@@ -3027,12 +3244,13 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
               ))}
             </div>
             <div className="print-hide" style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
+              {btn("Continue →", () => navigate(18))}
               <a href="/dashboard" style={{
-                display: "inline-block", background: GRAD, color: "#fff", fontWeight: 900, borderRadius: 16,
+                display: "inline-block", background: "transparent", color: "#fff", fontWeight: 900, borderRadius: 16,
                 padding: "13px 34px", textDecoration: "none", fontSize: 16,
-                boxShadow: "0 4px 20px rgba(139,92,246,0.4)",
+                border: "2px solid rgba(255,255,255,0.3)",
               }}>
-                Back to Dashboard 🚀
+                Back to Dashboard
               </a>
               <motion.button
                 onClick={() => window.print()}
@@ -3050,6 +3268,60 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
           </div>
         );
       }
+
+      /* ──── CASE 18: OUTRO VIDEO ──── */
+      case 18:
+        return (
+          <div style={{ textAlign: "center" }}>
+            <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+              style={{ color: "#fff", fontSize: 28, fontWeight: 900, marginBottom: 20 }}>
+              Your Adventure{" "}
+              <span style={{ background: GRAD, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>Continues...</span>
+            </motion.h1>
+
+            <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}>
+              {!outroFailed ? (
+                <div style={{ maxWidth: 800, margin: "0 auto 24px", borderRadius: 20, overflow: "hidden", boxShadow: "0 0 40px rgba(139,92,246,0.3)", border: "2px solid rgba(139,92,246,0.3)" }}>
+                  <video
+                    controls
+                    playsInline
+                    preload="metadata"
+                    onError={() => setOutroFailed(true)}
+                    style={{ width: "100%", display: "block" }}
+                    src="/videos/module-01-outro.mp4"
+                  />
+                </div>
+              ) : (
+                card(
+                  <>
+                    <img src="/characters/celebrating.png" alt="Adam and Layla celebrating" style={{ width: 160, borderRadius: 20, margin: "0 auto 16px", display: "block" }} />
+                    <p style={{ color: "#9ca3af", fontSize: 16 }}>Outro video coming soon!</p>
+                  </>,
+                  { maxWidth: 400, margin: "0 auto 24px" }
+                )
+              )}
+            </motion.div>
+
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4 }}>
+              <p style={{ color: "#fff", fontSize: 24, fontWeight: 900, marginBottom: 8 }}>Week 1 Complete!</p>
+              <p style={{ color: "#d1d5db", fontSize: 16, marginBottom: 8 }}>You earned the Password Hero badge and {coins} coins!</p>
+              <p style={{ marginBottom: 24 }}>
+                <span style={{ background: GRAD, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", fontWeight: 700, fontSize: 16 }}>
+                  Next week: Private Info — Guard Your Secrets
+                </span>
+              </p>
+              <div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
+                {btn("Back to Dashboard 🚀", () => { window.location.href = "/dashboard"; })}
+                <motion.button
+                  onClick={() => { window.location.reload(); }}
+                  whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
+                  style={{ background: "transparent", color: "#fff", fontWeight: 900, borderRadius: 16, padding: "13px 34px", border: "2px solid rgba(255,255,255,0.3)", cursor: "pointer", fontSize: 16 }}>
+                  Play Again
+                </motion.button>
+              </div>
+            </motion.div>
+          </div>
+        );
 
       default:
         return null;

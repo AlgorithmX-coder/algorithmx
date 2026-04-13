@@ -7,31 +7,123 @@ import { useEffect, useRef, useState } from "react";
 /* ─── CONSTANTS ─── */
 const GRAD = "linear-gradient(135deg, #8b5cf6, #3b82f6)";
 
-/* ─── FLOATING ORBS (warm fairy-light style) ─── */
-function FloatingOrbs() {
+/* ─── ANIMATED TECH BACKGROUND ─── */
+function TechBackground() {
   return (
-    <div className="fixed inset-0 pointer-events-none overflow-hidden" style={{ zIndex: 0 }}>
+    <div style={{ position: "fixed", inset: 0, pointerEvents: "none", zIndex: 0, overflow: "hidden" }}>
+      <style>{`
+        @keyframes dashFlow { from { stroke-dashoffset: 0; } to { stroke-dashoffset: -40; } }
+        @keyframes cyberFloat { 0%,100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-15px) rotate(8deg); } }
+        @keyframes codeRainCH { from { transform: translateY(-100%); } to { transform: translateY(100vh); } }
+        @keyframes gridPulse { 0%,100% { opacity: 0.03; } 50% { opacity: 0.06; } }
+        @keyframes scanLine { from { transform: translateY(-100vh); } to { transform: translateY(100vh); } }
+        @keyframes sparkle { 0%,100% { opacity: 0; } 50% { opacity: 0.4; } }
+      `}</style>
+
+      {/* Layer 5: Animated grid */}
+      <div style={{
+        position: "absolute", inset: 0,
+        backgroundImage: `linear-gradient(rgba(139,92,246,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(139,92,246,0.04) 1px, transparent 1px)`,
+        backgroundSize: "60px 60px",
+        animation: "gridPulse 8s ease-in-out infinite",
+      }} />
+
+      {/* Layer 1: Circuit board lines */}
+      <svg style={{ position: "absolute", inset: 0, width: "100%", height: "100%" }}>
+        {[
+          { x1: "0", y1: "20%", x2: "100%", y2: "20%", c: "#8b5cf6" },
+          { x1: "0", y1: "40%", x2: "100%", y2: "40%", c: "#3b82f6" },
+          { x1: "0", y1: "60%", x2: "100%", y2: "60%", c: "#8b5cf6" },
+          { x1: "0", y1: "80%", x2: "100%", y2: "80%", c: "#3b82f6" },
+          { x1: "15%", y1: "0", x2: "15%", y2: "100%", c: "#8b5cf6" },
+          { x1: "35%", y1: "0", x2: "35%", y2: "100%", c: "#3b82f6" },
+          { x1: "65%", y1: "0", x2: "65%", y2: "100%", c: "#8b5cf6" },
+          { x1: "85%", y1: "0", x2: "85%", y2: "100%", c: "#3b82f6" },
+        ].map((l, i) => (
+          <line key={i} x1={l.x1} y1={l.y1} x2={l.x2} y2={l.y2}
+            stroke={l.c} strokeOpacity={0.08} strokeWidth={1} strokeDasharray="8 12"
+            style={{ animation: "dashFlow 20s linear infinite" }} />
+        ))}
+        {/* Intersection dots */}
+        {["20%","40%","60%","80%"].flatMap((y) =>
+          ["15%","35%","65%","85%"].map((x) => ({ cx: x, cy: y }))
+        ).map((d, i) => (
+          <circle key={`dot-${i}`} cx={d.cx} cy={d.cy} r={3} fill="rgba(139,92,246,0.1)" />
+        ))}
+      </svg>
+
+      {/* Layer 2: Floating cyber icons */}
       {[
-        { size: 8, top: "8%", left: "6%", color: "#f59e0b", delay: 0 },
-        { size: 6, top: "18%", right: "10%", color: "#8b5cf6", delay: 1 },
-        { size: 10, top: "35%", left: "3%", color: "#3b82f6", delay: 2 },
-        { size: 5, top: "52%", right: "5%", color: "#f59e0b", delay: 0.5 },
-        { size: 7, top: "70%", left: "12%", color: "#8b5cf6", delay: 3 },
-        { size: 9, top: "82%", right: "8%", color: "#3b82f6", delay: 1.5 },
-        { size: 4, top: "45%", left: "50%", color: "#f59e0b", delay: 4 },
-        { size: 6, top: "15%", left: "40%", color: "#a78bfa", delay: 2.5 },
-      ].map((o, i) => (
-        <motion.div key={i} className="absolute rounded-full"
-          animate={{ y: [-15, 15, -15], scale: [1, 1.15, 1], opacity: [0.25, 0.45, 0.25] }}
-          transition={{ duration: 6 + i, repeat: Infinity, ease: "easeInOut", delay: o.delay }}
-          style={{
-            width: o.size, height: o.size, top: o.top,
-            left: "left" in o ? o.left : undefined,
-            right: "right" in o ? o.right : undefined,
-            backgroundColor: o.color,
-            boxShadow: `0 0 ${o.size * 3}px ${o.color}`,
-          }} />
+        { icon: "🔒", left: "5%", top: "10%", size: 30, dur: 12 },
+        { icon: "🛡️", left: "88%", top: "22%", size: 36, dur: 10 },
+        { icon: "🔑", left: "20%", top: "45%", size: 24, dur: 14 },
+        { icon: "💻", left: "72%", top: "55%", size: 32, dur: 11 },
+        { icon: "🎮", left: "40%", top: "75%", size: 28, dur: 13 },
+        { icon: "📱", left: "60%", top: "12%", size: 26, dur: 15 },
+        { icon: "🔒", left: "92%", top: "70%", size: 34, dur: 9 },
+        { icon: "🛡️", left: "10%", top: "82%", size: 40, dur: 8 },
+        { icon: "🔑", left: "50%", top: "35%", size: 22, dur: 12 },
+        { icon: "💻", left: "30%", top: "90%", size: 30, dur: 11 },
+      ].map((ic, i) => (
+        <div key={`cyber-${i}`} style={{
+          position: "absolute", left: ic.left, top: ic.top, fontSize: ic.size, opacity: 0.06,
+          animation: `cyberFloat ${ic.dur}s ease-in-out infinite`,
+          animationDelay: `${i * -1.5}s`,
+        }}>{ic.icon}</div>
       ))}
+
+      {/* Layer 3: Glowing orbs */}
+      {[
+        { left: "10%", top: "15%", size: 300, color: "rgba(139,92,246,0.06)", delay: 0 },
+        { left: "70%", top: "10%", size: 250, color: "rgba(59,130,246,0.05)", delay: 3 },
+        { left: "50%", top: "50%", size: 400, color: "rgba(139,92,246,0.04)", delay: 6 },
+        { left: "85%", top: "60%", size: 280, color: "rgba(59,130,246,0.05)", delay: 2 },
+        { left: "20%", top: "75%", size: 350, color: "rgba(139,92,246,0.05)", delay: 5 },
+        { left: "60%", top: "85%", size: 220, color: "rgba(59,130,246,0.04)", delay: 1 },
+      ].map((orb, i) => (
+        <motion.div key={`orb-${i}`}
+          animate={{ opacity: [0.03, 0.08, 0.03], x: [-20, 20, -20] }}
+          transition={{ duration: 10 + i * 2, repeat: Infinity, ease: "easeInOut", delay: orb.delay }}
+          style={{
+            position: "absolute", left: orb.left, top: orb.top,
+            width: orb.size, height: orb.size, borderRadius: "50%",
+            background: `radial-gradient(circle, ${orb.color}, transparent 70%)`,
+            filter: "blur(60px)",
+          }}
+        />
+      ))}
+
+      {/* Layer 4: Code rain */}
+      {Array.from({ length: 8 }, (_, i) => (
+        <div key={`rain-${i}`} style={{
+          position: "absolute", left: `${(i / 8) * 100}%`, top: 0, width: 16,
+          fontFamily: "monospace", fontSize: 12, color: "rgba(139,92,246,0.06)", lineHeight: "18px",
+          whiteSpace: "pre-wrap", wordBreak: "break-all",
+          animation: `codeRainCH ${20 + i * 3}s linear infinite`,
+          animationDelay: `${i * -3}s`,
+        }}>
+          {"4F2A8B1E7C3D9A5F0B6E2C8A4D1F7B3E9C5A0D6F8B2E4C1A7D3F5B9E0C6A8D2F4B1E7C3A9D5F0B6E8C2A4D"}
+        </div>
+      ))}
+
+      {/* Layer 6: Sparkle particles */}
+      {Array.from({ length: 12 }, (_, i) => (
+        <div key={`spark-${i}`} style={{
+          position: "absolute",
+          left: `${5 + Math.floor((i * 37 + 13) % 90)}%`,
+          top: `${3 + Math.floor((i * 53 + 7) % 92)}%`,
+          width: 2, height: 2, borderRadius: "50%", background: "white",
+          animation: `sparkle ${2 + (i % 3)}s ease-in-out infinite`,
+          animationDelay: `${i * 0.4}s`,
+        }} />
+      ))}
+
+      {/* Layer 7: Scanning line */}
+      <div style={{
+        position: "absolute", left: 0, width: "100%", height: 1,
+        background: "linear-gradient(to right, transparent, rgba(139,92,246,0.15), transparent)",
+        animation: "scanLine 12s linear infinite",
+      }} />
     </div>
   );
 }
@@ -179,7 +271,7 @@ export default function HomePage() {
         html { scroll-behavior: smooth; }
       `}</style>
 
-      <FloatingOrbs />
+      <TechBackground />
 
       <div className="min-h-screen relative" style={{ background: "#1a1033", zIndex: 1 }}>
 
@@ -244,14 +336,7 @@ export default function HomePage() {
                   style={{ background: GRAD, boxShadow: "0 8px 32px rgba(139,92,246,0.35)" }}>
                   Get Started Now 🚀
                 </motion.a>
-                <motion.button
-                  onClick={() => document.getElementById("preview")?.scrollIntoView({ behavior: "smooth" })}
-                  whileHover={{ scale: 1.05, boxShadow: "0 0 24px rgba(139,92,246,0.3)", borderColor: "rgba(139,92,246,0.7)" }}
-                  whileTap={{ scale: 0.95 }}
-                  className="px-7 py-4 rounded-2xl font-black text-purple-300 text-base cursor-pointer"
-                  style={{ background: "transparent", border: "2px solid rgba(139,92,246,0.4)" }}>
-                  Watch Preview ▶
-                </motion.button>
+                {/* Watch Preview button removed */}
               </div>
             </motion.div>
 
@@ -316,9 +401,7 @@ export default function HomePage() {
                 src="/videos/cyberheroes-intro.mp4"
               />
             </div>
-            <p className="text-gray-500 text-sm text-center mt-6">
-              This is just Week 1. Imagine 20 weeks of adventures!
-            </p>
+            {/* removed */}
           </div>
         </section>
 
@@ -347,7 +430,7 @@ export default function HomePage() {
                 <div className="px-6 py-5 text-center">
                   <h3 className="font-black text-white text-2xl mb-2">Adam</h3>
                   <p className="text-gray-400 text-sm leading-relaxed">
-                    Curious, brave, and always ready to learn. Adam loves gaming and wants to keep his digital world safe.
+                    Curious, brave, and always ready to learn. Adam enjoys gaming and wants to keep his digital world safe.
                   </p>
                 </div>
               </motion.div>
@@ -451,48 +534,20 @@ export default function HomePage() {
           </div>
         </div>
 
-        {/* ── COURSES ──────────────────────────────────────────────────────── */}
-        <section className="max-w-[1200px] mx-auto px-6 md:px-10 py-16 sm:py-24">
-          <div className="text-center mb-12" data-scroll>
-            <h2 className="text-3xl sm:text-4xl font-black text-white mb-4">
-              Four Learning Tracks.{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-blue-400">Every Age.</span>
-            </h2>
-            <p className="text-gray-400 text-base sm:text-lg max-w-xl mx-auto">
-              From first-time digital explorers to aspiring security professionals.
+        {/* ── OTHER AGES ──────────────────────────────────────────────────── */}
+        <section className="max-w-[1200px] mx-auto px-6 md:px-10 py-12 sm:py-16">
+          <div className="text-center" data-scroll>
+            <h3 className="text-xl sm:text-2xl font-bold text-gray-400 mb-3">
+              Looking for{" "}
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-blue-400">other ages</span>?
+            </h3>
+            <p className="text-gray-500 text-sm max-w-lg mx-auto mb-6">
+              Cyber Heroes Academy is designed for ages 6-10. For older children and adults, check out our other cybersecurity courses.
             </p>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-            {COURSES.map((c, i) => (
-              <div key={i} data-scroll data-scroll-delay={String(i * 0.1)}>
-                <motion.div className="rounded-3xl p-6 h-full relative group"
-                  whileHover={{ y: -8, scale: 1.03, boxShadow: `0 0 40px ${c.accent}25` }}
-                  style={{
-                    background: c.featured ? "rgba(255,255,255,0.08)" : "rgba(255,255,255,0.04)",
-                    border: `1px solid ${c.featured ? `${c.accent}40` : "rgba(255,255,255,0.06)"}`,
-                    backdropFilter: "blur(12px)",
-                  }}>
-                  {c.featured && (
-                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full text-[10px] font-black text-white"
-                      style={{ background: c.accent, boxShadow: `0 4px 12px ${c.accent}40` }}>
-                      LAUNCHING NOW
-                    </div>
-                  )}
-                  <div className="text-4xl mb-3">{c.emoji}</div>
-                  <div className="inline-block px-2.5 py-1 rounded-full text-[10px] font-black mb-3"
-                    style={{ background: `${c.accent}20`, color: c.accent, border: `1px solid ${c.accent}30` }}>
-                    Ages {c.ages}
-                  </div>
-                  <h3 className="font-black text-white text-lg mb-2 leading-snug">{c.title}</h3>
-                  <p className="text-gray-400 text-sm leading-relaxed mb-4">{c.desc}</p>
-                  <div className="flex items-center gap-3 text-xs font-bold text-gray-500 mt-auto">
-                    <span>📅 {c.weeks} weeks</span>
-                    <span>⏱️ {c.time}</span>
-                  </div>
-                </motion.div>
-              </div>
-            ))}
+            <a href="/" className="inline-block px-6 py-3 rounded-2xl text-sm font-bold text-gray-400 transition-all hover:text-white"
+              style={{ border: "1px solid rgba(255,255,255,0.1)", background: "rgba(255,255,255,0.03)" }}>
+              Explore All Courses →
+            </a>
           </div>
         </section>
 
@@ -564,9 +619,9 @@ export default function HomePage() {
         {/* ── STATS ────────────────────────────────────────────────────────── */}
         <section className="max-w-[1200px] mx-auto px-6 md:px-10 py-12 sm:py-20">
           <div className="flex flex-wrap gap-4 justify-center">
-            <AnimCounter to={4} label="Learning Tracks" />
-            <AnimCounter to={70} suffix="+" label="Weeks of Content" />
-            <AnimCounter to={6} suffix="+" label="Starting Age" />
+            <AnimCounter to={20} label="Weeks of Adventure" />
+            <AnimCounter to={100} suffix="+" label="Interactive Activities" />
+            <AnimCounter to={6} suffix="-10" label="Age Range" />
             <AnimCounter to={100} suffix="%" label="Interactive" />
           </div>
         </section>
