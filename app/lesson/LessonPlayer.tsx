@@ -5,13 +5,13 @@ import * as THREE from "three";
 
 /* ───────────────────────── SVG ICONS ──────────────────────── */
 
-const IconShield = ({ size = 24, color = "#8b5cf6" }: { size?: number; color?: string }) => (
+const IconShield = ({ size = 24, color = "#3b82f6" }: { size?: number; color?: string }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
     <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
   </svg>
 );
 
-const IconLock = ({ size = 24, color = "#8b5cf6" }: { size?: number; color?: string }) => (
+const IconLock = ({ size = 24, color = "#3b82f6" }: { size?: number; color?: string }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
     <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
   </svg>
@@ -48,7 +48,7 @@ const IconMessageCircle = ({ size = 24, color = "#3b82f6" }: { size?: number; co
   </svg>
 );
 
-const IconTablet = ({ size = 24, color = "#8b5cf6" }: { size?: number; color?: string }) => (
+const IconTablet = ({ size = 24, color = "#3b82f6" }: { size?: number; color?: string }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
     <rect x="4" y="2" width="16" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/>
   </svg>
@@ -69,13 +69,13 @@ const IconRuler = ({ size = 24, color = "#10b981" }: { size?: number; color?: st
 /* ───────────────────────── CONSTANTS ───────────────────────── */
 
 const TOTAL = 19;
-const GRAD = "linear-gradient(135deg, #8b5cf6, #3b82f6)";
+const GRAD = "linear-gradient(135deg, #3b82f6, #06b6d4)";
 
 /* ───────────────────────── DATA ────────────────────────────── */
 
 const PASSWORDS_8 = [
   { id: "q1", text: "Tr0phy$tar99", isStrong: true, bg: "rgba(96,165,250,0.1)", border: "#60a5fa", color: "#93c5fd" },
-  { id: "q2", text: "MyD0g&Runs!", isStrong: true, bg: "rgba(167,139,250,0.1)", border: "#a78bfa", color: "#c4b5fd" },
+  { id: "q2", text: "MyD0g&Runs!", isStrong: true, bg: "rgba(59,130,246,0.1)", border: "#60a5fa", color: "#c4b5fd" },
   { id: "q3", text: "C@tLov3r2024", isStrong: true, bg: "rgba(244,114,182,0.1)", border: "#f472b6", color: "#f9a8d4" },
   { id: "q4", text: "Sup3r$h!eld7", isStrong: true, bg: "rgba(52,211,153,0.1)", border: "#34d399", color: "#6ee7b7" },
   { id: "q5", text: "password", isStrong: false, bg: "rgba(251,146,60,0.1)", border: "#fb923c", color: "#fdba74" },
@@ -100,11 +100,11 @@ const BUILDER_OPTIONS = [
   ["@", "#", "$", "!", "&", "*", "?", "%"],
 ];
 const BUILDER_LABELS = ["Pick a CAPITAL LETTER", "Pick a SECRET WORD", "Pick a NUMBER", "Pick a SYMBOL"];
-const BUILDER_COLORS = ["#3b82f6", "#8b5cf6", "#ec4899", "#f59e0b"];
+const BUILDER_COLORS = ["#3b82f6", "#3b82f6", "#ec4899", "#f59e0b"];
 
 const RECIPE = [
   { label: "CAPITAL LETTERS", example: "A, B, C, the big ones!", icon: "🅰️", color: "#3b82f6" },
-  { label: "lowercase letters", example: "a, b, c, the small ones!", icon: "🔡", color: "#8b5cf6" },
+  { label: "lowercase letters", example: "a, b, c, the small ones!", icon: "🔡", color: "#3b82f6" },
   { label: "Numbers", example: "1, 2, 3!", icon: "🔢", color: "#ec4899" },
   { label: "Special Symbols", example: "@ # $ and !", icon: "✨", color: "#f59e0b" },
   { label: "Make it LONG", example: "At least 8 characters!", icon: "📏", color: "#10b981" },
@@ -181,12 +181,12 @@ const ACHIEVEMENTS = [
 
 const OPT_COLORS = [
   { bg: "rgba(96,165,250,0.08)", border: "rgba(96,165,250,0.3)", color: "#93c5fd" },
-  { bg: "rgba(167,139,250,0.08)", border: "rgba(167,139,250,0.3)", color: "#c4b5fd" },
+  { bg: "rgba(59,130,246,0.08)", border: "rgba(59,130,246,0.3)", color: "#c4b5fd" },
   { bg: "rgba(244,114,182,0.08)", border: "rgba(244,114,182,0.3)", color: "#f9a8d4" },
   { bg: "rgba(250,204,21,0.08)", border: "rgba(250,204,21,0.3)", color: "#fde047" },
 ];
 
-const BUBBLE_COLORS = ["#3b82f6", "#8b5cf6", "#ec4899", "#f59e0b"];
+const BUBBLE_COLORS = ["#3b82f6", "#3b82f6", "#ec4899", "#f59e0b"];
 
 const WHY_SCENARIOS = [
   { icon: "gamepad", label: "Gaming", item: "Your saved games & trophies", problem: "The Raccoon stole all your coins and deleted your save files!", success: "Your games are safe behind a strong password!" },
@@ -216,7 +216,7 @@ const CSS = `
   header, nav, .step-dots-wrap, .progress-wrap, .floating-orbs-wrap, .score-cards, .dash-link, .print-hide { display: none !important; }
   main { padding: 0 !important; }
   .certificate-card {
-    border: 3px solid #8b5cf6 !important;
+    border: 3px solid #3b82f6 !important;
     background: white !important;
     color: black !important;
     box-shadow: none !important;
@@ -224,7 +224,7 @@ const CSS = `
     backdrop-filter: none !important;
   }
   .certificate-card * { color: black !important; -webkit-text-fill-color: black !important; }
-  .certificate-card .gradient-text { -webkit-text-fill-color: #8b5cf6 !important; color: #8b5cf6 !important; }
+  .certificate-card .gradient-text { -webkit-text-fill-color: #3b82f6 !important; color: #3b82f6 !important; }
 }
 `;
 
@@ -307,7 +307,7 @@ function FloatingOrbs() {
       {/* Layer 4: Subtle grid */}
       <div style={{
         position: "absolute", inset: 0,
-        backgroundImage: `linear-gradient(rgba(139,92,246,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(139,92,246,0.06) 1px, transparent 1px)`,
+        backgroundImage: `linear-gradient(rgba(59,130,246,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(59,130,246,0.06) 1px, transparent 1px)`,
         backgroundSize: "80px 80px",
       }} />
       {/* Layer 1: Code rain columns (CSS animated) */}
@@ -319,7 +319,7 @@ function FloatingOrbs() {
       {Array.from({ length: 12 }, (_, i) => (
         <div key={`rain-${i}`} style={{
           position: "absolute", left: `${(i / 12) * 100}%`, top: 0, width: 20,
-          fontFamily: "monospace", fontSize: 14, color: "rgba(139,92,246,0.12)", lineHeight: "20px",
+          fontFamily: "monospace", fontSize: 14, color: "rgba(59,130,246,0.12)", lineHeight: "20px",
           whiteSpace: "pre-wrap", wordBreak: "break-all",
           animation: `codeRain ${30 + i * 2.6}s linear infinite`,
           animationDelay: `${i * -2}s`,
@@ -356,7 +356,7 @@ function FloatingOrbs() {
         <motion.div key={`particle-${i}`}
           animate={{ x: [-15, 15, -15], y: [-10, 10, -10], opacity: [0.1, 0.3, 0.1] }}
           transition={{ duration: 24 + i * 4, repeat: Infinity, ease: "easeInOut", delay: p.delay }}
-          style={{ position: "absolute", left: p.left, top: p.top, width: 4, height: 4, borderRadius: "50%", background: "rgba(139,92,246,0.3)", filter: "blur(2px)" }}
+          style={{ position: "absolute", left: p.left, top: p.top, width: 4, height: 4, borderRadius: "50%", background: "rgba(59,130,246,0.3)", filter: "blur(2px)" }}
         />
       ))}
     </div>
@@ -375,7 +375,7 @@ function ProgressBar({ step }: { step: number }) {
         <motion.div
           animate={{ width: `${pct}%` }}
           transition={{ duration: 0.6, ease: "easeOut" }}
-          style={{ height: "100%", borderRadius: 999, background: GRAD }}
+          style={{ height: "100%", borderRadius: 999, background: GRAD, boxShadow: "0 0 10px rgba(59,130,246,0.4)" }}
         />
       </div>
     </div>
@@ -391,8 +391,9 @@ function StepDots({ step }: { step: number }) {
           animate={{
             width: i === step ? 12 : 8,
             height: i === step ? 12 : 8,
-            background: i < step ? "#8b5cf6" : i === step ? "#f59e0b" : "rgba(255,255,255,0.15)",
+            background: i < step ? "#3b82f6" : i === step ? "#f59e0b" : "rgba(255,255,255,0.15)",
             scale: i === step ? [1, 1.4, 1] : 1,
+            boxShadow: i === step ? "0 0 12px rgba(245,158,11,0.5)" : i < step ? "0 0 8px rgba(59,130,246,0.4)" : "none",
           }}
           transition={i === step ? { scale: { duration: 1.5, repeat: Infinity, ease: "easeInOut" }, ...springTransition } : springTransition}
           style={{ borderRadius: "50%" }}
@@ -404,7 +405,7 @@ function StepDots({ step }: { step: number }) {
 
 function Confetti({ duration = 3000 }: { duration?: number }) {
   const shapes = ["●", "■", "▲", "⭐", "♥"];
-  const colors = ["#8b5cf6", "#3b82f6", "#f59e0b", "#10b981", "#ef4444", "#ec4899", "#f97316"];
+  const colors = ["#3b82f6", "#06b6d4", "#f59e0b", "#10b981", "#f97316", "#60a5fa"];
   const [visible, setVisible] = useState(true);
   useEffect(() => {
     const t = setTimeout(() => setVisible(false), duration);
@@ -469,6 +470,7 @@ function CoinCounter({ coins, animKey }: { coins: number; animKey: number }) {
         display: "flex", alignItems: "center", gap: 4,
         background: "rgba(245,158,11,0.15)", border: "1px solid rgba(245,158,11,0.3)",
         borderRadius: 12, padding: "4px 12px",
+        boxShadow: "0 0 10px rgba(245,158,11,0.3)",
       }}
     >
       <span style={{ fontSize: 18 }}>🪙</span>
@@ -478,7 +480,7 @@ function CoinCounter({ coins, animKey }: { coins: number; animKey: number }) {
 }
 
 function MiniConfetti({ x, y }: { x: number; y: number }) {
-  const colors = ["#8b5cf6", "#3b82f6", "#f59e0b", "#10b981", "#ef4444", "#ec4899"];
+  const colors = ["#3b82f6", "#3b82f6", "#f59e0b", "#10b981", "#ef4444", "#ec4899"];
   return (
     <div style={{ position: "fixed", left: x, top: y, pointerEvents: "none", zIndex: 99 }}>
       {Array.from({ length: 20 }, (_, i) => {
@@ -512,12 +514,12 @@ function btn(label: string, onClick: () => void, extra?: React.CSSProperties): R
   return (
     <motion.button
       onClick={onClick}
-      whileHover={{ scale: 1.05 }}
+      whileHover={{ scale: 1.05, y: -2, boxShadow: "0 0 25px rgba(249,115,22,0.6)" }}
       whileTap={{ scale: 0.95 }}
       style={{
-        background: GRAD, color: "#fff", fontWeight: 900, borderRadius: 16,
+        background: "linear-gradient(135deg, #f97316, #f59e0b)", color: "#fff", fontWeight: 700, borderRadius: 14,
         padding: "13px 34px", border: "none", cursor: "pointer", fontSize: 16,
-        boxShadow: "0 4px 20px rgba(139,92,246,0.4)",
+        boxShadow: "0 0 15px rgba(249,115,22,0.4)",
         minHeight: 48, ...extra,
       }}
     >
@@ -637,13 +639,13 @@ function FloatingBubbleQuiz({ question, opts, correct, explain, onCorrect, onWro
               whileTap={selected === null ? { scale: 0.95 } : {}}
               style={{
                 width: 120, height: 120, borderRadius: "50%",
-                background: `rgba(${i === 0 ? "59,130,246" : i === 1 ? "139,92,246" : i === 2 ? "236,72,153" : "245,158,11"},0.15)`,
+                background: `rgba(${i === 0 ? "59,130,246" : i === 1 ? "6,182,212" : i === 2 ? "236,72,153" : "245,158,11"},0.15)`,
                 border: `3px solid ${BUBBLE_COLORS[i]}`,
                 color: BUBBLE_COLORS[i], fontWeight: 700, fontSize: 13,
                 cursor: selected !== null ? "default" : "pointer",
                 display: "flex", alignItems: "center", justifyContent: "center",
                 textAlign: "center", padding: 8,
-                boxShadow: `0 0 15px rgba(${i === 0 ? "59,130,246" : i === 1 ? "139,92,246" : i === 2 ? "236,72,153" : "245,158,11"},0.2)`,
+                boxShadow: `0 0 15px rgba(${i === 0 ? "59,130,246" : i === 1 ? "6,182,212" : i === 2 ? "236,72,153" : "245,158,11"},0.2)`,
               }}
             >
               {opt}
@@ -752,26 +754,26 @@ function ArenaBg3D({ effect }: { effect: "hit" | "miss" | "super" | null }) {
     const camera = new THREE.PerspectiveCamera(60, width / height, 0.1, 100);
     camera.position.set(0, 2, 6);
     camera.lookAt(0, 0, 0);
-    const floorMat = new THREE.MeshStandardMaterial({ color: 0x1a1033, emissive: 0x6366f1, emissiveIntensity: 0.08 });
+    const floorMat = new THREE.MeshStandardMaterial({ color: 0x1a1033, emissive: 0x3b82f6, emissiveIntensity: 0.08 });
     const floor = new THREE.Mesh(new THREE.PlaneGeometry(12, 12), floorMat);
     floor.rotation.x = -Math.PI / 2; floor.position.y = -0.5; scene.add(floor);
-    const grid = new THREE.GridHelper(12, 24, 0x6366f1, 0x6366f1);
+    const grid = new THREE.GridHelper(12, 24, 0x3b82f6, 0x3b82f6);
     grid.position.y = -0.49; (grid.material as THREE.Material).opacity = 0.15; (grid.material as THREE.Material).transparent = true; scene.add(grid);
-    const ambient = new THREE.AmbientLight(0x6366f1, 0.2); scene.add(ambient);
-    const mainLight = new THREE.PointLight(0x8b5cf6, 1, 20); mainLight.position.set(0, 4, 2); scene.add(mainLight);
+    const ambient = new THREE.AmbientLight(0x3b82f6, 0.2); scene.add(ambient);
+    const mainLight = new THREE.PointLight(0x3b82f6, 1, 20); mainLight.position.set(0, 4, 2); scene.add(mainLight);
     const blueLight = new THREE.PointLight(0x3b82f6, 0.4, 15); blueLight.position.set(-4, 2, 0); scene.add(blueLight);
     const redLight = new THREE.PointLight(0xef4444, 0.4, 15); redLight.position.set(4, 2, 0); scene.add(redLight);
     const particles: THREE.Mesh[] = [];
     for (let i = 0; i < 40; i++) {
-      const pMat = new THREE.MeshBasicMaterial({ color: 0x8b5cf6, transparent: true, opacity: 0.5 });
+      const pMat = new THREE.MeshBasicMaterial({ color: 0x3b82f6, transparent: true, opacity: 0.5 });
       const p = new THREE.Mesh(new THREE.SphereGeometry(0.03, 6, 6), pMat);
       p.position.set((Math.random() - 0.5) * 8, Math.random() * 3, (Math.random() - 0.5) * 4);
       p.userData.speed = 0.001 + Math.random() * 0.003; scene.add(p); particles.push(p);
     }
-    const ring = new THREE.Mesh(new THREE.TorusGeometry(3.5, 0.015, 8, 64), new THREE.MeshBasicMaterial({ color: 0x8b5cf6, transparent: true, opacity: 0.2 }));
+    const ring = new THREE.Mesh(new THREE.TorusGeometry(3.5, 0.015, 8, 64), new THREE.MeshBasicMaterial({ color: 0x3b82f6, transparent: true, opacity: 0.2 }));
     ring.rotation.x = -Math.PI / 2; ring.position.y = -0.4; scene.add(ring);
     [[-4,1.5,-3],[4,1.5,-3],[-4,1.5,3],[4,1.5,3]].forEach(pos => {
-      const pillar = new THREE.Mesh(new THREE.BoxGeometry(0.08, 3, 0.08), new THREE.MeshStandardMaterial({ emissive: 0x6366f1, emissiveIntensity: 1, transparent: true, opacity: 0.25 }));
+      const pillar = new THREE.Mesh(new THREE.BoxGeometry(0.08, 3, 0.08), new THREE.MeshStandardMaterial({ emissive: 0x3b82f6, emissiveIntensity: 1, transparent: true, opacity: 0.25 }));
       pillar.position.set(pos[0], pos[1], pos[2]); scene.add(pillar);
     });
     sceneRef.current = { renderer, scene, camera, mainLight, redLight, blueLight, floorMat, grid, ring, particles, triggerShake: (_i: number, _d: number) => {} };
@@ -797,9 +799,9 @@ function ArenaBg3D({ effect }: { effect: "hit" | "miss" | "super" | null }) {
   useEffect(() => {
     const s = sceneRef.current as Record<string, any>;
     if (!effect || !s.mainLight) return;
-    if (effect === "hit") { s.mainLight.intensity = 3; s.mainLight.color.set(0x10b981); s.triggerShake(0.15, 0.3); setTimeout(() => { s.mainLight.intensity = 1; s.mainLight.color.set(0x8b5cf6); }, 300); }
-    else if (effect === "miss") { s.redLight.intensity = 2; s.floorMat.emissive.set(0xef4444); s.triggerShake(0.2, 0.3); setTimeout(() => { s.redLight.intensity = 0.4; s.floorMat.emissive.set(0x6366f1); }, 400); }
-    else if (effect === "super") { s.mainLight.intensity = 5; s.blueLight.intensity = 3; s.mainLight.color.set(0xf59e0b); s.floorMat.emissive.set(0xf59e0b); s.triggerShake(0.3, 0.5); setTimeout(() => { s.mainLight.intensity = 1; s.blueLight.intensity = 0.4; s.mainLight.color.set(0x8b5cf6); s.floorMat.emissive.set(0x6366f1); }, 500); }
+    if (effect === "hit") { s.mainLight.intensity = 3; s.mainLight.color.set(0x10b981); s.triggerShake(0.15, 0.3); setTimeout(() => { s.mainLight.intensity = 1; s.mainLight.color.set(0x3b82f6); }, 300); }
+    else if (effect === "miss") { s.redLight.intensity = 2; s.floorMat.emissive.set(0xef4444); s.triggerShake(0.2, 0.3); setTimeout(() => { s.redLight.intensity = 0.4; s.floorMat.emissive.set(0x3b82f6); }, 400); }
+    else if (effect === "super") { s.mainLight.intensity = 5; s.blueLight.intensity = 3; s.mainLight.color.set(0xf59e0b); s.floorMat.emissive.set(0xf59e0b); s.triggerShake(0.3, 0.5); setTimeout(() => { s.mainLight.intensity = 1; s.blueLight.intensity = 0.4; s.mainLight.color.set(0x3b82f6); s.floorMat.emissive.set(0x3b82f6); }, 500); }
   }, [effect]);
 
   return <div ref={mountRef} style={{ position: "absolute", inset: 0, zIndex: 0, borderRadius: 20, overflow: "hidden" }} />;
@@ -808,13 +810,13 @@ function ArenaBg3D({ effect }: { effect: "hit" | "miss" | "super" | null }) {
 function InstructionOverlay({ icon, story, instructions, onReady }: { icon: string; story: string; instructions: string; onReady: () => void }) {
   return (
     <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} style={{ textAlign: "center" }}>
-      <div style={{ background: "rgba(15,10,40,0.9)", backdropFilter: "blur(12px)", borderRadius: 24, padding: 32, maxWidth: 520, margin: "0 auto" }}>
-        <div style={{ width: 80, height: 80, margin: "0 auto 16px", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 48, background: "rgba(139,92,246,0.15)", borderRadius: 20 }}>{icon}</div>
-        <p style={{ color: "#a78bfa", fontSize: 14, fontStyle: "italic", marginBottom: 8 }}>{story}</p>
+      <div style={{ background: "rgba(15,10,40,0.9)", backdropFilter: "blur(12px)", border: "1px solid rgba(59,130,246,0.3)", boxShadow: "0 0 20px rgba(59,130,246,0.2)", borderRadius: 24, padding: 32, maxWidth: 520, margin: "0 auto" }}>
+        <div style={{ width: 80, height: 80, margin: "0 auto 16px", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 48, background: "rgba(59,130,246,0.15)", borderRadius: 20 }}>{icon}</div>
+        <p style={{ color: "#60a5fa", fontSize: 14, fontStyle: "italic", marginBottom: 8 }}>{story}</p>
         <h2 style={{ color: "#fff", fontSize: 22, fontWeight: 900, marginBottom: 8 }}>Here&apos;s what to do!</h2>
         <p style={{ color: "#d1d5db", fontSize: 16, lineHeight: 1.6, marginBottom: 20 }}>{instructions}</p>
-        <motion.button onClick={onReady} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
-          style={{ background: "linear-gradient(135deg, #8b5cf6, #3b82f6)", color: "#fff", fontWeight: 900, borderRadius: 16, padding: "13px 34px", border: "none", cursor: "pointer", fontSize: 16, boxShadow: "0 4px 20px rgba(139,92,246,0.4)" }}>
+        <motion.button onClick={onReady} whileHover={{ scale: 1.05, y: -2, boxShadow: "0 0 25px rgba(249,115,22,0.6)" }} whileTap={{ scale: 0.95 }}
+          style={{ background: "linear-gradient(135deg, #f97316, #f59e0b)", color: "#fff", fontWeight: 700, borderRadius: 14, padding: "13px 34px", border: "none", cursor: "pointer", fontSize: 16, boxShadow: "0 0 15px rgba(249,115,22,0.4)" }}>
           I&apos;m Ready! &rarr;
         </motion.button>
       </div>
@@ -825,15 +827,15 @@ function InstructionOverlay({ icon, story, instructions, onReady }: { icon: stri
 function LearnSummary({ message, starCount, onNext }: { message: string; starCount: number; onNext: () => void }) {
   return (
     <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} style={{ textAlign: "center" }}>
-      <div style={{ background: "rgba(255,255,255,0.04)", backdropFilter: "blur(12px)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 20, padding: 28, maxWidth: 520, margin: "0 auto" }}>
-        <div style={{ width: 80, height: 80, margin: "0 auto 12px", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 48, background: "rgba(16,185,129,0.1)", borderRadius: 20 }}>&#x2705;</div>
+      <div style={{ background: "rgba(255,255,255,0.04)", backdropFilter: "blur(12px)", border: "1px solid rgba(16,185,129,0.3)", boxShadow: "0 0 15px rgba(16,185,129,0.2)", borderRadius: 20, padding: 28, maxWidth: 520, margin: "0 auto" }}>
+        <div style={{ width: 80, height: 80, margin: "0 auto 12px", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 48, background: "rgba(16,185,129,0.1)", borderRadius: 20, boxShadow: "0 0 15px rgba(16,185,129,0.4)" }}>&#x2705;</div>
         <h2 style={{ color: "#fff", fontSize: 22, fontWeight: 900, marginBottom: 4 }}>Great job!</h2>
         <div style={{ marginBottom: 8 }}>
           <span style={{ fontSize: 28, letterSpacing: 4 }}>{"⭐".repeat(starCount)}{"☆".repeat(3 - starCount)}</span>
         </div>
         <p style={{ color: "#d1d5db", fontSize: 15, lineHeight: 1.6, marginBottom: 20 }}>{message}</p>
-        <motion.button onClick={onNext} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
-          style={{ background: "linear-gradient(135deg, #8b5cf6, #3b82f6)", color: "#fff", fontWeight: 900, borderRadius: 16, padding: "13px 34px", border: "none", cursor: "pointer", fontSize: 16, boxShadow: "0 4px 20px rgba(139,92,246,0.4)" }}>
+        <motion.button onClick={onNext} whileHover={{ scale: 1.05, y: -2, boxShadow: "0 0 25px rgba(249,115,22,0.6)" }} whileTap={{ scale: 0.95 }}
+          style={{ background: "linear-gradient(135deg, #f97316, #f59e0b)", color: "#fff", fontWeight: 700, borderRadius: 14, padding: "13px 34px", border: "none", cursor: "pointer", fontSize: 16, boxShadow: "0 0 15px rgba(249,115,22,0.4)" }}>
           Next &rarr;
         </motion.button>
       </div>
@@ -844,8 +846,8 @@ function LearnSummary({ message, starCount, onNext }: { message: string; starCou
 const SpeechBubble = ({ character, message, side = "left" }: { character: "adam" | "layla" | "raccoon"; message: string; side?: "left" | "right" }) => {
   const img = character === "adam" ? "/characters/adam-layla-happy.png" : character === "layla" ? "/characters/adam-layla-happy.png" : "/characters/raccoon.png";
   const name = character === "adam" ? "Adam" : character === "layla" ? "Layla" : "Raccoon";
-  const bubbleColor = character === "raccoon" ? "rgba(239,68,68,0.15)" : "rgba(139,92,246,0.15)";
-  const borderColor = character === "raccoon" ? "rgba(239,68,68,0.3)" : "rgba(139,92,246,0.3)";
+  const bubbleColor = character === "raccoon" ? "rgba(239,68,68,0.15)" : "rgba(59,130,246,0.15)";
+  const borderColor = character === "raccoon" ? "rgba(239,68,68,0.3)" : "rgba(59,130,246,0.3)";
   return (
     <motion.div
       initial={{ opacity: 0, y: 10 }}
@@ -855,7 +857,7 @@ const SpeechBubble = ({ character, message, side = "left" }: { character: "adam"
     >
       <img src={img} alt={name} style={{ width: 48, height: 48, borderRadius: "50%", objectFit: "cover", border: `2px solid ${borderColor}` }} />
       <div style={{ background: bubbleColor, border: `1px solid ${borderColor}`, borderRadius: 16, padding: "10px 16px", maxWidth: 320, fontSize: 14, color: "rgba(255,255,255,0.9)", lineHeight: 1.5 }}>
-        <span style={{ fontWeight: 700, fontSize: 12, color: character === "raccoon" ? "#ef4444" : "#8b5cf6", display: "block", marginBottom: 4 }}>{name}</span>
+        <span style={{ fontWeight: 700, fontSize: 12, color: character === "raccoon" ? "#ef4444" : "#3b82f6", display: "block", marginBottom: 4 }}>{name}</span>
         {message}
       </div>
     </motion.div>
@@ -1426,9 +1428,9 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
               <>
                 {!videoFailed ? (
                   <motion.div
-                    animate={{ boxShadow: ["0 0 20px rgba(139,92,246,0.3)", "0 0 40px rgba(139,92,246,0.6)", "0 0 20px rgba(139,92,246,0.3)"] }}
+                    animate={{ boxShadow: ["0 0 20px rgba(59,130,246,0.3)", "0 0 40px rgba(59,130,246,0.6)", "0 0 20px rgba(59,130,246,0.3)"] }}
                     transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-                    style={{ position: "relative", borderRadius: 24, overflow: "hidden", border: "2px solid rgba(139,92,246,0.4)", maxWidth: 640, margin: "0 auto" }}
+                    style={{ position: "relative", borderRadius: 24, overflow: "hidden", border: "2px solid rgba(59,130,246,0.4)", maxWidth: 640, margin: "0 auto" }}
                   >
                     <video
                       ref={videoRef}
@@ -1460,7 +1462,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                       <input
                         type="range" min={0} max={mediaDuration || 1} step={0.1} value={mediaProgress}
                         onChange={(e) => { const v = videoRef.current; if (v) v.currentTime = Number(e.target.value); }}
-                        style={{ flex: 1, accentColor: "#8b5cf6", height: 6 }}
+                        style={{ flex: 1, accentColor: "#3b82f6", height: 6 }}
                       />
                       <button onClick={() => setMediaMuted((m) => !m)} style={{
                         width: 40, height: 40, borderRadius: "50%", background: "rgba(255,255,255,0.15)", border: "none", cursor: "pointer", color: "#fff", fontSize: 16,
@@ -1538,7 +1540,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                         <span style={{ fontSize: 32 }}>{m.icon}</span>
                         <span style={{ color: "#fff", fontSize: 18, fontWeight: 700 }}>{m.text}</span>
                       </div>,
-                      { borderLeft: "4px solid #8b5cf6" }
+                      { borderLeft: "4px solid #3b82f6" }
                     )}
                   </motion.div>
                 ) : <div key={i} style={{ height: 80 }} />
@@ -1608,7 +1610,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                           animate={flipping ? { rotateY: [0, 90, 0] } : {}}
                           transition={{ duration: 0.6 }}
                         >
-                          <div style={{ fontSize: 48, marginBottom: 8, width: 56, height: 56, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>{item.id === "gaming" ? <IconGamepad size={40} color="#3b82f6" /> : item.id === "tablet" ? <IconTablet size={40} color="#8b5cf6" /> : <IconSchool size={40} color="#10b981" />}</div>
+                          <div style={{ fontSize: 48, marginBottom: 8, width: 56, height: 56, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>{item.id === "gaming" ? <IconGamepad size={40} color="#3b82f6" /> : item.id === "tablet" ? <IconTablet size={40} color="#3b82f6" /> : <IconSchool size={40} color="#10b981" />}</div>
                           <div style={{ fontSize: 16, color: "#fff", fontWeight: 700, marginBottom: 8 }}>{item.label}</div>
                           <motion.div
                             animate={flipping ? { rotate: 360 } : {}}
@@ -2017,7 +2019,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
             <motion.div
               animate={addedIngredients.size === 5 ? {
                 boxShadow: [
-                  "0 0 20px rgba(139,92,246,0.5)",
+                  "0 0 20px rgba(59,130,246,0.5)",
                   "0 0 25px rgba(59,130,246,0.5)",
                   "0 0 30px rgba(236,72,153,0.5)",
                   "0 0 25px rgba(245,158,11,0.5)",
@@ -2027,8 +2029,8 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
               transition={addedIngredients.size === 5 ? { duration: 2, repeat: Infinity, ease: "linear" } : {}}
               style={{
                 width: 220, height: 140, margin: "0 auto 16px", borderRadius: "0 0 50% 50%",
-                background: `linear-gradient(135deg, rgba(139,92,246,${0.15 + addedIngredients.size * 0.07}), rgba(59,130,246,${0.15 + addedIngredients.size * 0.07}))`,
-                border: "3px solid rgba(139,92,246,0.4)", display: "flex", alignItems: "center",
+                background: `linear-gradient(135deg, rgba(59,130,246,${0.15 + addedIngredients.size * 0.07}), rgba(59,130,246,${0.15 + addedIngredients.size * 0.07}))`,
+                border: "3px solid rgba(59,130,246,0.4)", display: "flex", alignItems: "center",
                 justifyContent: "center", fontSize: 36, transition: "all 0.5s ease",
               }}
             >
@@ -2070,7 +2072,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
               style={{
                 background: "rgba(0,0,0,0.3)", borderRadius: 16, padding: "12px 20px", margin: "0 auto 16px",
                 maxWidth: 400, fontFamily: "monospace", fontSize: 24, color: "#f59e0b", fontWeight: 900,
-                letterSpacing: 3, minHeight: 48, border: "2px solid rgba(139,92,246,0.3)",
+                letterSpacing: 3, minHeight: 48, border: "2px solid rgba(59,130,246,0.3)",
               }}
             >
               {builtPw || "••••••••"}
@@ -2426,7 +2428,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                       ) : (
                         <>
                           <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-                            <span style={{ width: 36, height: 36, display: "inline-flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>{rule.icon === "lock" ? <IconLock size={28} color="#8b5cf6" /> : rule.icon === "key" ? <IconKey size={28} color="#f59e0b" /> : rule.icon === "unlock" ? <IconUnlock size={28} color="#ef4444" /> : rule.icon === "ruler" ? <IconRuler size={28} color="#10b981" /> : <IconUsers size={28} color="#ec4899" />}</span>
+                            <span style={{ width: 36, height: 36, display: "inline-flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>{rule.icon === "lock" ? <IconLock size={28} color="#3b82f6" /> : rule.icon === "key" ? <IconKey size={28} color="#f59e0b" /> : rule.icon === "unlock" ? <IconUnlock size={28} color="#ef4444" /> : rule.icon === "ruler" ? <IconRuler size={28} color="#10b981" /> : <IconUsers size={28} color="#ec4899" />}</span>
                             <span style={{ color: "#fff", fontWeight: 700, fontSize: 16, flex: 1, textAlign: "left" }}>{rule.title}</span>
                             {isDone && (
                               <motion.span
@@ -2554,7 +2556,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
         const tricks = [
           { title: "TOO GOOD TO BE TRUE", fake: "YOU WON A FREE iPAD!!! CLICK NOW!!!", explain: "If it sounds too good to be true... it probably is! Real prizes don't pop up on your screen.", color: "#f59e0b" },
           { title: "SCARY WARNINGS", fake: "WARNING! YOUR TABLET HAS A VIRUS! CALL THIS NUMBER NOW!", explain: "Scary messages try to make you panic. Real warnings don't ask you to call a number. Tell a grown-up!", color: "#ef4444" },
-          { title: "SPELLING MISTAKES", fake: "Dear Costumer, Youre acount has ben comprimised. Clik here to fix.", explain: "Real companies don't make spelling mistakes! If it looks wrong, it IS wrong.", color: "#8b5cf6" },
+          { title: "SPELLING MISTAKES", fake: "Dear Costumer, Youre acount has ben comprimised. Clik here to fix.", explain: "Real companies don't make spelling mistakes! If it looks wrong, it IS wrong.", color: "#3b82f6" },
           { title: "ASKING FOR SECRETS", fake: "Enter your password to win free V-Bucks!", explain: "NO real website will EVER ask for your password in a message. NEVER type your password into a popup.", color: "#ec4899" },
         ];
         return (
@@ -2817,7 +2819,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                 {/* Speech bubble */}
                 <div style={{
                   position: "relative", background: "rgba(255,255,255,0.06)",
-                  border: "2px solid rgba(139,92,246,0.3)", borderRadius: 20, padding: 16,
+                  border: "2px solid rgba(59,130,246,0.3)", borderRadius: 20, padding: 16,
                   flex: 1, textAlign: "left",
                 }}>
                   {/* Triangle tail */}
@@ -2825,7 +2827,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                     position: "absolute", left: -10, top: 20,
                     width: 0, height: 0,
                     borderTop: "8px solid transparent", borderBottom: "8px solid transparent",
-                    borderRight: "10px solid rgba(139,92,246,0.3)",
+                    borderRight: "10px solid rgba(59,130,246,0.3)",
                   }} />
                   <p style={{ color: "#fff", fontSize: 15, fontWeight: 700, margin: 0 }}>{w.situation}</p>
                 </div>
@@ -2902,7 +2904,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                     style={{ width: 160, margin: "0 auto 12px", display: "block", filter: "drop-shadow(0 0 12px rgba(239,68,68,0.4))" }} />
                   <motion.h2 animate={{ textShadow: ["0 0 20px rgba(245,158,11,0.3)", "0 0 40px rgba(245,158,11,0.6)", "0 0 20px rgba(245,158,11,0.3)"] }}
                     transition={{ duration: 2, repeat: Infinity }}
-                    style={{ fontSize: 32, margin: "0 0 12px", fontWeight: 900, background: "linear-gradient(135deg, #f59e0b, #ef4444, #8b5cf6)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+                    style={{ fontSize: 32, margin: "0 0 12px", fontWeight: 900, background: "linear-gradient(135deg, #f59e0b, #ef4444, #3b82f6)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
                     You defeated the Hacker Raccoon!</motion.h2>
                   <SpeechBubble character="layla" message="We did it! The Raccoon is gone!" />
                   <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.3, type: "spring" }}>
@@ -2931,7 +2933,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
               <p style={{ color: "#9ca3af", fontSize: 14, marginBottom: 4 }}>Tap anywhere to fire!</p>
               <p style={{ color: "#f59e0b", fontSize: 28, fontWeight: 900, marginBottom: 8 }}>Hits: {arenaHits}</p>
               {/* Arena with 3D background */}
-              <div style={{ position: "relative", width: "100%", maxWidth: 600, height: 400, margin: "0 auto 12px", borderRadius: 24, overflow: "hidden", border: "1px solid rgba(139,92,246,0.2)" }}>
+              <div style={{ position: "relative", width: "100%", maxWidth: 600, height: 400, margin: "0 auto 12px", borderRadius: 24, overflow: "hidden", border: "1px solid rgba(59,130,246,0.2)" }}>
                 <ArenaBg3D effect={arenaEffect} />
                 <div onClick={handleArenaFire} style={{ position: "relative", zIndex: 1, width: "100%", height: "100%", cursor: !arenaShowResult ? "crosshair" : "default" }}>
                   {/* Timer */}
@@ -2955,7 +2957,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                   {arenaProjectiles.map((p) => (
                     <motion.div key={p.id} initial={{ x: 0, y: 0, scale: 1, opacity: 1 }} animate={{ x: p.tx, y: p.ty, scale: 0.5, opacity: 0.6 }}
                       transition={{ duration: 0.35, ease: "easeOut" }}
-                      style={{ position: "absolute", bottom: 10, left: "50%", width: 14, height: 14, borderRadius: "50%", background: "radial-gradient(circle, #a78bfa, #7c3aed)", boxShadow: "0 0 12px #8b5cf6", pointerEvents: "none", zIndex: 3 }} />
+                      style={{ position: "absolute", bottom: 10, left: "50%", width: 14, height: 14, borderRadius: "50%", background: "radial-gradient(circle, #60a5fa, #1d4ed8)", boxShadow: "0 0 12px #3b82f6", pointerEvents: "none", zIndex: 3 }} />
                   ))}
                   {arenaProjectiles.map((p) => (
                     <motion.span key={`fx-${p.id}`} initial={{ scale: 0, opacity: 1 }} animate={{ scale: 2.5, opacity: 0 }} transition={{ duration: 0.5, delay: 0.3 }}
@@ -3158,7 +3160,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
               transition={{ type: "spring", stiffness: 200, damping: 20, duration: 0.6 }}
               style={{
                 background: "rgba(255,255,255,0.06)", backdropFilter: "blur(16px)",
-                border: "3px solid rgba(139,92,246,0.5)", borderRadius: 24, padding: 32,
+                border: "3px solid rgba(59,130,246,0.5)", borderRadius: 24, padding: 32,
                 maxWidth: 520, margin: "0 auto 24px",
                 boxShadow: "0 0 40px rgba(245,158,11,0.2)",
                 position: "relative", overflow: "hidden",
@@ -3252,7 +3254,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
 
             <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}>
               {!outroFailed ? (
-                <div style={{ maxWidth: 800, margin: "0 auto 24px", borderRadius: 20, overflow: "hidden", boxShadow: "0 0 40px rgba(139,92,246,0.3)", border: "2px solid rgba(139,92,246,0.3)" }}>
+                <div style={{ maxWidth: 800, margin: "0 auto 24px", borderRadius: 20, overflow: "hidden", boxShadow: "0 0 40px rgba(59,130,246,0.3)", border: "2px solid rgba(59,130,246,0.3)" }}>
                   <video
                     controls
                     playsInline
@@ -3316,7 +3318,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
           ← Dashboard
         </a>
         <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-          <div style={{ width: 36, height: 36, borderRadius: 10, background: GRAD, display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 2px 8px rgba(139,92,246,0.4)" }}>
+          <div style={{ width: 36, height: 36, borderRadius: 10, background: GRAD, display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 2px 8px rgba(59,130,246,0.4)" }}>
             <span style={{ fontWeight: 900, fontSize: 14, color: "#fff" }}>AX</span>
           </div>
           <span style={{ color: "#9ca3af", fontSize: 13, fontWeight: 600 }}>Week 1 · Passwords: The Secret Code</span>

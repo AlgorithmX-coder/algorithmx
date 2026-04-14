@@ -2,10 +2,21 @@
 
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { useEffect, useRef, useState } from "react";
+import { CSSProperties, useEffect, useRef, useState } from "react";
 
 /* ─── CONSTANTS ─── */
-const GRAD = "linear-gradient(135deg, #8b5cf6, #3b82f6)";
+const GRAD = "linear-gradient(135deg, #3b82f6, #06b6d4)";
+const BTN_GRAD = "linear-gradient(135deg, #f97316, #f59e0b)";
+const BTN_GLOW = "0 0 20px rgba(249,115,22,0.4)";
+const BTN_GLOW_HOVER = "0 0 30px rgba(249,115,22,0.6)";
+const BLUE_GLOW = "0 0 20px rgba(59,130,246,0.4)";
+const ACCENT_TEXT: CSSProperties = {
+  background: "linear-gradient(135deg, #3b82f6, #06b6d4)",
+  backgroundClip: "text",
+  WebkitBackgroundClip: "text",
+  WebkitTextFillColor: "transparent",
+  textShadow: "0 0 30px rgba(59,130,246,0.3)",
+};
 
 /* ─── ANIMATED TECH BACKGROUND ─── */
 function TechBackground() {
@@ -20,27 +31,27 @@ function TechBackground() {
         @keyframes gridPulse { 0%,100% { opacity: 0.06; } 50% { opacity: 0.12; } }
         @keyframes scanLine { from { transform: translateY(-100vh); } to { transform: translateY(100vh); } }
         @keyframes sparkle { 0%,100% { opacity: 0; } 50% { opacity: 0.6; } }
-        @keyframes hexPulse { 0%,100% { fill: rgba(139,92,246,0); } 50% { fill: rgba(139,92,246,0.08); } }
+        @keyframes hexPulse { 0%,100% { fill: rgba(59,130,246,0); } 50% { fill: rgba(59,130,246,0.08); } }
       `}</style>
 
       {/* Layer 5: Animated grid */}
       <div style={{
         position: "absolute", inset: 0,
-        backgroundImage: `linear-gradient(rgba(139,92,246,0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(139,92,246,0.08) 1px, transparent 1px)`,
+        backgroundImage: `linear-gradient(rgba(59,130,246,0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(59,130,246,0.08) 1px, transparent 1px)`,
         backgroundSize: "60px 60px",
         animation: "gridPulse 8s ease-in-out infinite",
       }} />
 
       {/* Layer 1: Circuit board lines */}
-      <svg style={{ position: "absolute", inset: 0, width: "100%", height: "100%", filter: "drop-shadow(0 0 4px rgba(139,92,246,0.3))" }}>
+      <svg style={{ position: "absolute", inset: 0, width: "100%", height: "100%", filter: "drop-shadow(0 0 4px rgba(59,130,246,0.3))" }}>
         {[
-          { x1: "0", y1: "20%", x2: "100%", y2: "20%", c: "#8b5cf6" },
+          { x1: "0", y1: "20%", x2: "100%", y2: "20%", c: "#3b82f6" },
           { x1: "0", y1: "40%", x2: "100%", y2: "40%", c: "#3b82f6" },
-          { x1: "0", y1: "60%", x2: "100%", y2: "60%", c: "#8b5cf6" },
+          { x1: "0", y1: "60%", x2: "100%", y2: "60%", c: "#3b82f6" },
           { x1: "0", y1: "80%", x2: "100%", y2: "80%", c: "#3b82f6" },
-          { x1: "15%", y1: "0", x2: "15%", y2: "100%", c: "#8b5cf6" },
+          { x1: "15%", y1: "0", x2: "15%", y2: "100%", c: "#3b82f6" },
           { x1: "35%", y1: "0", x2: "35%", y2: "100%", c: "#3b82f6" },
-          { x1: "65%", y1: "0", x2: "65%", y2: "100%", c: "#8b5cf6" },
+          { x1: "65%", y1: "0", x2: "65%", y2: "100%", c: "#3b82f6" },
           { x1: "85%", y1: "0", x2: "85%", y2: "100%", c: "#3b82f6" },
         ].map((l, i) => (
           <line key={i} x1={l.x1} y1={l.y1} x2={l.x2} y2={l.y2}
@@ -50,7 +61,7 @@ function TechBackground() {
         {["20%","40%","60%","80%"].flatMap((y) =>
           ["15%","35%","65%","85%"].map((x) => ({ cx: x, cy: y }))
         ).map((d, i) => (
-          <circle key={`dot-${i}`} cx={d.cx} cy={d.cy} r={3} fill="rgba(139,92,246,0.25)" />
+          <circle key={`dot-${i}`} cx={d.cx} cy={d.cy} r={3} fill="rgba(59,130,246,0.25)" />
         ))}
       </svg>
 
@@ -62,8 +73,8 @@ function TechBackground() {
           return (
             <polygon key={`hex-${i}`}
               points={`${x+30},${y} ${x+60},${y+17} ${x+60},${y+48} ${x+30},${y+65} ${x},${y+48} ${x},${y+17}`}
-              stroke="rgba(139,92,246,0.06)" strokeWidth={1} fill="none">
-              {i % 7 === 0 && <animate attributeName="fill" values="rgba(139,92,246,0);rgba(139,92,246,0.08);rgba(139,92,246,0)" dur={`${3 + (i % 4)}s`} repeatCount="indefinite" />}
+              stroke="rgba(59,130,246,0.08)" strokeWidth={1} fill="none">
+              {i % 7 === 0 && <animate attributeName="fill" values="rgba(59,130,246,0);rgba(59,130,246,0.08);rgba(59,130,246,0)" dur={`${3 + (i % 4)}s`} repeatCount="indefinite" />}
             </polygon>
           );
         })}
@@ -96,12 +107,12 @@ function TechBackground() {
 
       {/* Layer 3: Glowing orbs */}
       {[
-        { left: "5%", top: "10%", size: 400, color: "rgba(139,92,246,0.12)", delay: 0 },
-        { left: "65%", top: "5%", size: 350, color: "rgba(59,130,246,0.12)", delay: 3 },
-        { left: "45%", top: "45%", size: 500, color: "rgba(139,92,246,0.08)", delay: 6 },
-        { left: "80%", top: "55%", size: 380, color: "rgba(59,130,246,0.1)", delay: 2 },
-        { left: "15%", top: "70%", size: 450, color: "rgba(139,92,246,0.1)", delay: 5 },
-        { left: "55%", top: "80%", size: 300, color: "rgba(59,130,246,0.08)", delay: 1 },
+        { left: "5%", top: "10%", size: 400, color: "rgba(59,130,246,0.12)", delay: 0 },
+        { left: "65%", top: "5%", size: 350, color: "rgba(6,182,212,0.12)", delay: 3 },
+        { left: "45%", top: "45%", size: 500, color: "rgba(59,130,246,0.08)", delay: 6 },
+        { left: "80%", top: "55%", size: 380, color: "rgba(6,182,212,0.1)", delay: 2 },
+        { left: "15%", top: "70%", size: 450, color: "rgba(59,130,246,0.1)", delay: 5 },
+        { left: "55%", top: "80%", size: 300, color: "rgba(6,182,212,0.08)", delay: 1 },
       ].map((orb, i) => (
         <motion.div key={`orb-${i}`}
           animate={{ opacity: [0.06, 0.15, 0.06], x: [-25, 25, -25] }}
@@ -119,7 +130,7 @@ function TechBackground() {
       {Array.from({ length: 12 }, (_, i) => (
         <div key={`rain-${i}`} style={{
           position: "absolute", left: `${(i / 12) * 100}%`, top: 0, width: 18,
-          fontFamily: "monospace", fontSize: 14, color: "rgba(139,92,246,0.12)", lineHeight: "20px",
+          fontFamily: "monospace", fontSize: 14, color: "rgba(59,130,246,0.12)", lineHeight: "20px",
           whiteSpace: "pre-wrap", wordBreak: "break-all",
           animation: `codeRainCH ${12 + i * 1.5}s linear infinite`,
           animationDelay: `${i * -2}s`,
@@ -137,7 +148,7 @@ function TechBackground() {
           width: i % 3 === 0 ? 4 : i % 2 === 0 ? 3 : 2,
           height: i % 3 === 0 ? 4 : i % 2 === 0 ? 3 : 2,
           borderRadius: "50%",
-          background: i % 2 === 0 ? "rgba(139,92,246,0.5)" : "rgba(59,130,246,0.5)",
+          background: i % 2 === 0 ? "rgba(59,130,246,0.5)" : "rgba(6,182,212,0.5)",
           animation: `sparkle ${2 + (i % 3)}s ease-in-out infinite`,
           animationDelay: `${i * 0.35}s`,
         }} />
@@ -146,8 +157,8 @@ function TechBackground() {
       {/* Layer 7: Scanning line */}
       <div style={{
         position: "absolute", left: 0, width: "100%", height: 2,
-        background: "linear-gradient(to right, transparent, rgba(139,92,246,0.25), transparent)",
-        boxShadow: "0 0 10px rgba(139,92,246,0.3), 0 0 30px rgba(139,92,246,0.15)",
+        background: "linear-gradient(to right, transparent, rgba(59,130,246,0.25), transparent)",
+        boxShadow: "0 0 10px rgba(59,130,246,0.3), 0 0 30px rgba(59,130,246,0.15)",
         animation: "scanLine 8s linear infinite",
       }} />
 
@@ -161,7 +172,7 @@ function TechBackground() {
       ].map((ds, i) => (
         <div key={`ds-${i}`} style={{
           position: "absolute", top: ds.top, height: 1, width: ds.w,
-          background: "linear-gradient(to right, transparent, rgba(139,92,246,0.4), transparent)",
+          background: "linear-gradient(to right, transparent, rgba(59,130,246,0.4), transparent)",
           animation: `dataStream ${ds.dur}s linear infinite`,
           animationDelay: `${ds.delay}s`,
         }} />
@@ -212,7 +223,7 @@ function AnimCounter({ to, suffix = "", label }: { to: number; suffix?: string; 
   }, [to]);
   return (
     <div ref={ref} className="flex flex-col items-center gap-1 px-4 py-5 rounded-2xl flex-1 min-w-[140px]"
-      style={{ background: "rgba(255,255,255,0.06)", backdropFilter: "blur(12px)", border: "1px solid rgba(255,255,255,0.08)" }}>
+      style={{ background: "linear-gradient(135deg, rgba(59,130,246,0.25), rgba(6,182,212,0.25), rgba(59,130,246,0.25))", backdropFilter: "blur(12px)", border: "1px solid rgba(59,130,246,0.3)", boxShadow: "0 0 20px rgba(59,130,246,0.2)" }}>
       <span className="text-3xl sm:text-4xl font-black text-white">{val}{suffix}</span>
       <span className="text-xs sm:text-sm font-bold text-gray-400">{label}</span>
     </div>
@@ -250,7 +261,7 @@ const WEEKS = [
 ];
 
 /* ─── SVG ICONS ─── */
-const IconController = ({ size = 32, color = "#8b5cf6" }: { size?: number; color?: string }) => (
+const IconController = ({ size = 32, color = "#3b82f6" }: { size?: number; color?: string }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
     <line x1="6" y1="12" x2="10" y2="12"/><line x1="8" y1="10" x2="8" y2="14"/><line x1="15" y1="13" x2="15.01" y2="13"/><line x1="18" y1="11" x2="18.01" y2="11"/>
     <rect x="2" y="6" width="20" height="12" rx="2"/>
@@ -325,11 +336,11 @@ export default function HomePage() {
           <div className="max-w-[1200px] mx-auto px-6 md:px-10 py-4 flex items-center justify-between">
             <a href="/" className="flex items-center gap-2">
               <div className="w-9 h-9 rounded-lg flex items-center justify-center shadow-lg"
-                style={{ background: GRAD, boxShadow: "0 0 20px rgba(139,92,246,0.4)" }}>
+                style={{ background: GRAD, boxShadow: "0 0 20px rgba(59,130,246,0.4)" }}>
                 <span className="text-xs font-black text-white">AX</span>
               </div>
               <span className="text-lg font-black text-white tracking-tight">
-                Algorithm<span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-blue-400">X</span>
+                Algorithm<span className="text-blue-400">X</span>
               </span>
             </a>
             <div className="flex items-center gap-4">
@@ -337,10 +348,10 @@ export default function HomePage() {
                 Log In
               </a>
               <motion.a href="/signup"
-                whileHover={{ scale: 1.05 }}
+                whileHover={{ scale: 1.05, y: -2, boxShadow: BTN_GLOW_HOVER }}
                 whileTap={{ scale: 0.95 }}
-                className="px-5 py-2.5 rounded-2xl text-sm font-black text-white"
-                style={{ background: GRAD, boxShadow: "0 4px 20px rgba(139,92,246,0.3)" }}>
+                className="px-5 py-2.5 rounded-2xl text-sm font-bold text-white"
+                style={{ background: BTN_GRAD, boxShadow: BTN_GLOW }}>
                 Get Started
               </motion.a>
             </div>
@@ -355,13 +366,13 @@ export default function HomePage() {
               initial={{ opacity: 0, y: 32 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ type: "spring", stiffness: 150, damping: 20 }}>
-              <div className="inline-block px-4 py-1.5 rounded-full text-xs font-black text-purple-300 mb-6"
-                style={{ background: "rgba(139,92,246,0.15)", border: "1px solid rgba(139,92,246,0.25)" }}>
+              <div className="inline-block px-4 py-1.5 rounded-full text-xs font-black mb-6"
+                style={{ background: "rgba(59,130,246,0.15)", border: "1px solid rgba(59,130,246,0.3)", color: "#3b82f6", boxShadow: "0 0 12px rgba(59,130,246,0.2)" }}>
                 🛡️ Cybersecurity for Kids
               </div>
               <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-white leading-tight mb-6">
                 Learn Cybersecurity{" "}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-blue-400 to-cyan-400">
+                <span style={ACCENT_TEXT}>
                   Through Adventure
                 </span>
               </h1>
@@ -370,10 +381,10 @@ export default function HomePage() {
               </p>
               <div className="flex gap-4 flex-wrap justify-center lg:justify-start">
                 <motion.a href="/signup"
-                  whileHover={{ scale: 1.05 }}
+                  whileHover={{ scale: 1.05, y: -2, boxShadow: BTN_GLOW_HOVER }}
                   whileTap={{ scale: 0.95 }}
-                  className="px-7 py-4 rounded-2xl font-black text-white text-base"
-                  style={{ background: GRAD, boxShadow: "0 8px 32px rgba(139,92,246,0.35)" }}>
+                  className="px-7 py-4 font-bold text-white text-base"
+                  style={{ background: BTN_GRAD, boxShadow: BTN_GLOW, borderRadius: 14 }}>
                   Get Started Now 🚀
                 </motion.a>
                 {/* Watch Preview button removed */}
@@ -391,15 +402,15 @@ export default function HomePage() {
                   animate={{ opacity: [0.5, 1, 0.5] }}
                   transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
                   style={{
-                    background: "linear-gradient(135deg, rgba(139,92,246,0.4), rgba(59,130,246,0.4))",
+                    background: "linear-gradient(135deg, rgba(59,130,246,0.4), rgba(6,182,212,0.4))",
                     filter: "blur(40px)", transform: "scale(1.1)",
                   }} />
                 <motion.div className="relative rounded-3xl overflow-hidden border-2 shadow-2xl"
                   animate={{ y: [-8, 8, -8] }}
                   transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
                   style={{
-                    borderColor: "rgba(139,92,246,0.3)",
-                    boxShadow: "0 0 60px rgba(139,92,246,0.2)",
+                    borderColor: "rgba(59,130,246,0.3)",
+                    boxShadow: "0 0 20px rgba(59,130,246,0.3), 0 0 60px rgba(59,130,246,0.2)",
                   }}>
                   <Image src="/characters/heroic.png" alt="Adam and Layla in heroic pose"
                     width={500} height={500} className="block w-full max-w-[500px]" priority />
@@ -425,14 +436,14 @@ export default function HomePage() {
           <div className="text-center mb-12" data-scroll>
             <h2 className="text-3xl sm:text-4xl font-black text-white mb-4">
               See the{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-blue-400">Adventure</span>
+              <span style={ACCENT_TEXT}>Adventure</span>
             </h2>
             <p className="text-gray-400 text-base sm:text-lg max-w-xl mx-auto">
               Watch Adam and Layla&apos;s first cybersecurity mission
             </p>
           </div>
           <div data-scroll>
-            <div style={{ maxWidth: 800, margin: "0 auto", borderRadius: 20, overflow: "hidden", boxShadow: "0 0 40px rgba(139,92,246,0.3)", border: "2px solid rgba(139,92,246,0.3)" }}>
+            <div style={{ maxWidth: 800, margin: "0 auto", borderRadius: 20, overflow: "hidden", boxShadow: "0 0 40px rgba(59,130,246,0.3)", border: "2px solid rgba(59,130,246,0.3)" }}>
               <video
                 controls
                 playsInline
@@ -450,7 +461,7 @@ export default function HomePage() {
           <div className="text-center mb-12" data-scroll>
             <h2 className="text-3xl sm:text-4xl font-black text-white mb-4">
               Meet Your{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-blue-400">Cyber Heroes</span>
+              <span style={ACCENT_TEXT}>Cyber Heroes</span>
             </h2>
           </div>
 
@@ -458,13 +469,14 @@ export default function HomePage() {
             {/* Adam */}
             <div data-scroll data-scroll-delay="0">
               <motion.div className="rounded-3xl overflow-hidden"
-                whileHover={{ y: -8, scale: 1.03, boxShadow: "0 0 40px rgba(245,158,11,0.2)" }}
+                whileHover={{ y: -8, scale: 1.03, boxShadow: "0 0 25px rgba(59,130,246,0.4)" }}
                 style={{
                   background: "rgba(255,255,255,0.04)",
-                  border: "1px solid rgba(245,158,11,0.2)",
+                  border: "2px solid rgba(59,130,246,0.3)",
                   backdropFilter: "blur(8px)",
+                  boxShadow: "0 0 20px rgba(59,130,246,0.3)",
                 }}>
-                <div style={{ height: 420, overflow: "hidden", background: "linear-gradient(180deg, rgba(245,158,11,0.08) 0%, transparent 100%)" }}>
+                <div style={{ height: 420, overflow: "hidden", background: "linear-gradient(180deg, rgba(59,130,246,0.08) 0%, transparent 100%)" }}>
                   <Image src="/characters/adam.png" alt="Adam, curious and brave Cyber Hero" width={400} height={500} style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 20%", display: "block" }} />
                 </div>
                 <div className="px-6 py-5 text-center">
@@ -479,13 +491,14 @@ export default function HomePage() {
             {/* Layla */}
             <div data-scroll data-scroll-delay="0.15">
               <motion.div className="rounded-3xl overflow-hidden"
-                whileHover={{ y: -8, scale: 1.03, boxShadow: "0 0 40px rgba(168,85,247,0.2)" }}
+                whileHover={{ y: -8, scale: 1.03, boxShadow: "0 0 25px rgba(59,130,246,0.4)" }}
                 style={{
                   background: "rgba(255,255,255,0.04)",
-                  border: "1px solid rgba(168,85,247,0.2)",
+                  border: "2px solid rgba(59,130,246,0.3)",
                   backdropFilter: "blur(8px)",
+                  boxShadow: "0 0 20px rgba(59,130,246,0.3)",
                 }}>
-                <div style={{ height: 420, overflow: "hidden", background: "linear-gradient(180deg, rgba(168,85,247,0.08) 0%, transparent 100%)" }}>
+                <div style={{ height: 420, overflow: "hidden", background: "linear-gradient(180deg, rgba(59,130,246,0.08) 0%, transparent 100%)" }}>
                   <Image src="/characters/layla.png" alt="Layla, smart and fearless Cyber Hero" width={400} height={500} style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 20%", display: "block" }} />
                 </div>
                 <div className="px-6 py-5 text-center">
@@ -503,10 +516,10 @@ export default function HomePage() {
               Join Adam and Layla on their adventure to become cybersecurity experts. Help them stay safe from the Hacker Raccoon and learn how to protect yourself too!
             </p>
             <motion.a href="/signup"
-              whileHover={{ scale: 1.05 }}
+              whileHover={{ scale: 1.05, y: -2, boxShadow: BTN_GLOW_HOVER }}
               whileTap={{ scale: 0.95 }}
-              className="inline-block px-7 py-4 rounded-2xl font-black text-white text-base"
-              style={{ background: GRAD, boxShadow: "0 8px 32px rgba(139,92,246,0.35)" }}>
+              className="inline-block px-7 py-4 font-bold text-white text-base"
+              style={{ background: BTN_GRAD, boxShadow: BTN_GLOW, borderRadius: 14 }}>
               Start the Adventure →
             </motion.a>
           </div>
@@ -517,7 +530,7 @@ export default function HomePage() {
           <div className="text-center mb-12" data-scroll>
             <h2 className="text-3xl sm:text-4xl font-black text-white mb-4">
               The Adventure{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-blue-400">Begins</span>
+              <span style={ACCENT_TEXT}>Begins</span>
             </h2>
             <p className="text-gray-400 text-base sm:text-lg max-w-xl mx-auto leading-relaxed">
               Follow Adam and Layla as they learn to protect their digital world from the sneaky Hacker Raccoon. Each week is a new adventure!
@@ -528,10 +541,10 @@ export default function HomePage() {
             {STORY.map((s, i) => (
               <div key={i} data-scroll data-scroll-delay={String(i * 0.15)}>
                 <motion.div className="overflow-hidden group"
-                  whileHover={{ y: -8, scale: 1.03, boxShadow: "0 0 40px rgba(139,92,246,0.2)" }}
+                  whileHover={{ y: -8, scale: 1.03, boxShadow: "0 0 25px rgba(59,130,246,0.15)" }}
                   style={{
                     background: "rgba(255,255,255,0.04)",
-                    border: "1px solid rgba(139,92,246,0.15)",
+                    border: "1px solid rgba(59,130,246,0.2)",
                     backdropFilter: "blur(8px)",
                     borderRadius: 20,
                     position: "relative",
@@ -540,7 +553,7 @@ export default function HomePage() {
                   }}>
                   <Image src={s.src} alt={s.alt} width={400} height={400} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
                   {/* Step number badge */}
-                  <div style={{ position: "absolute", top: 12, left: 12, width: 32, height: 32, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 12, fontWeight: 900, color: "#fff", background: GRAD, boxShadow: "0 4px 12px rgba(139,92,246,0.4)", zIndex: 2 }}>
+                  <div style={{ position: "absolute", top: 12, left: 12, width: 32, height: 32, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 12, fontWeight: 900, color: "#fff", background: GRAD, boxShadow: "0 4px 12px rgba(59,130,246,0.4)", zIndex: 2 }}>
                     {i + 1}
                   </div>
                   {/* Text overlay */}
@@ -558,7 +571,7 @@ export default function HomePage() {
         <div className="flex justify-center py-12" data-scroll data-scroll-delay="0.2">
           <div className="relative max-w-xs">
             <div className="absolute inset-0 rounded-3xl"
-              style={{ background: "rgba(139,92,246,0.3)", filter: "blur(50px)", transform: "scale(0.9)" }} />
+              style={{ background: "rgba(239,68,68,0.3)", filter: "blur(50px)", transform: "scale(0.9)" }} />
             <motion.div
               animate={{ boxShadow: ["0 0 30px rgba(239,68,68,0.3)", "0 0 60px rgba(239,68,68,0.6)", "0 0 30px rgba(239,68,68,0.3)"] }}
               transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
@@ -567,7 +580,7 @@ export default function HomePage() {
                 width={280} height={280} className="relative block" style={{ borderRadius: 18 }} />
             </motion.div>
             <div className="text-center mt-4">
-              <p className="text-purple-300 text-sm font-black">The Hacker Raccoon</p>
+              <p className="text-blue-300 text-sm font-black">The Hacker Raccoon</p>
               <p style={{ color: "#ef4444", fontWeight: 700, fontSize: 18, marginTop: 4 }}>The villain your kids will learn to outsmart!</p>
               <p style={{ color: "#9ca3af", fontSize: 14, fontStyle: "italic", marginTop: 4 }}>Can Adam &amp; Layla defeat him? Your child decides!</p>
             </div>
@@ -579,13 +592,13 @@ export default function HomePage() {
           <div className="text-center" data-scroll>
             <h3 className="text-xl sm:text-2xl font-bold text-gray-400 mb-3">
               Looking for{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-blue-400">other ages</span>?
+              <span style={ACCENT_TEXT}>other ages</span>?
             </h3>
             <p className="text-gray-500 text-sm max-w-lg mx-auto mb-6">
               Cyber Heroes Academy is designed for ages 6-10. For older children and adults, check out our other cybersecurity courses.
             </p>
-            <a href="/" className="inline-block px-6 py-3 rounded-2xl text-sm font-bold text-gray-400 transition-all hover:text-white"
-              style={{ border: "1px solid rgba(255,255,255,0.1)", background: "rgba(255,255,255,0.03)" }}>
+            <a href="/" className="inline-block px-6 py-3 text-sm font-bold text-white transition-all"
+              style={{ background: BTN_GRAD, boxShadow: BTN_GLOW, borderRadius: 14 }}>
               Explore All Courses →
             </a>
           </div>
@@ -596,7 +609,7 @@ export default function HomePage() {
           <div className="text-center mb-12" data-scroll>
             <h2 className="text-3xl sm:text-4xl font-black text-white mb-4">
               A{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-blue-400">Sneak Peek</span>
+              <span style={ACCENT_TEXT}>Sneak Peek</span>
               {" "}at Your Journey
             </h2>
             <p className="text-gray-400 text-base sm:text-lg max-w-xl mx-auto">
@@ -606,7 +619,7 @@ export default function HomePage() {
           {/* Timeline */}
           <div style={{ position: "relative" }}>
             {/* Centre line */}
-            <div style={{ position: "absolute", left: "50%", top: 0, bottom: 0, width: 2, background: "rgba(139,92,246,0.15)", transform: "translateX(-50%)" }} />
+            <div style={{ position: "absolute", left: "50%", top: 0, bottom: 0, width: 2, background: "rgba(59,130,246,0.15)", transform: "translateX(-50%)" }} />
             {[
               { w: 1, title: "Passwords: The Secret Code", sub: "Discover why passwords matter and learn how to create super strong ones", gap: null },
               { w: null, label: "5 more secret missions...", gap: true },
@@ -640,15 +653,17 @@ export default function HomePage() {
                     <div style={{
                       width: "45%",
                       background: item.w === 20 ? "rgba(245,158,11,0.06)" : "rgba(255,255,255,0.04)",
-                      border: item.w === 20 ? "1px solid rgba(245,158,11,0.3)" : "1px solid rgba(255,255,255,0.08)",
+                      border: item.w === 20 ? "2px solid #f59e0b" : "1px solid rgba(59,130,246,0.2)",
+                      borderLeft: item.w === 20 ? "2px solid #f59e0b" : "3px solid #3b82f6",
+                      boxShadow: item.w === 20 ? "0 0 15px rgba(245,158,11,0.4)" : "0 0 10px rgba(59,130,246,0.2)",
                       borderRadius: 16, padding: 20,
                     }}>
                       <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 8 }}>
                         <div style={{ width: 32, height: 32, borderRadius: "50%", background: item.w === 20 ? "linear-gradient(135deg, #f59e0b, #f97316)" : GRAD, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 13, fontWeight: 900, color: "#fff", flexShrink: 0 }}>
                           {item.w}
                         </div>
-                        {item.w === 20 && <span style={{ fontSize: 10, fontWeight: 800, color: "#f59e0b", background: "rgba(245,158,11,0.15)", borderRadius: 8, padding: "2px 8px" }}>🎓 Final Mission</span>}
-                        {item.w === 1 && <span style={{ fontSize: 10, fontWeight: 800, color: "#10b981", background: "rgba(16,185,129,0.15)", borderRadius: 8, padding: "2px 8px" }}>START HERE</span>}
+                        {item.w === 20 && <span style={{ fontSize: 10, fontWeight: 800, color: "#f59e0b", background: "rgba(245,158,11,0.15)", borderRadius: 8, padding: "2px 8px", boxShadow: "0 0 12px rgba(245,158,11,0.4)" }}>🎓 Final Mission</span>}
+                        {item.w === 1 && <span style={{ fontSize: 10, fontWeight: 800, color: "#10b981", background: "rgba(16,185,129,0.15)", borderRadius: 8, padding: "2px 8px", boxShadow: "0 0 12px rgba(16,185,129,0.4)" }}>START HERE</span>}
                       </div>
                       <h4 style={{ color: "#fff", fontWeight: 800, fontSize: 15, marginBottom: 4 }}>{item.title}</h4>
                       <p style={{ color: "#9ca3af", fontSize: 13, lineHeight: 1.5 }}>{item.sub}</p>
@@ -659,15 +674,15 @@ export default function HomePage() {
             ))}
           </div>
           {/* CTA */}
-          <div data-scroll style={{ background: "rgba(139,92,246,0.1)", border: "1px solid rgba(139,92,246,0.3)", borderRadius: 20, padding: 32, textAlign: "center", maxWidth: 600, margin: "32px auto 0" }}>
+          <div data-scroll style={{ background: "rgba(59,130,246,0.1)", border: "1px solid rgba(59,130,246,0.3)", boxShadow: "0 0 20px rgba(59,130,246,0.2)", borderRadius: 20, padding: 32, textAlign: "center", maxWidth: 600, margin: "32px auto 0" }}>
             <div style={{ fontSize: 40, marginBottom: 12 }}>🔒</div>
             <h3 style={{ color: "#fff", fontSize: 22, fontWeight: 900, marginBottom: 8 }}>Want to unlock all 20 missions?</h3>
             <p style={{ color: "#9ca3af", fontSize: 16, marginBottom: 20, maxWidth: 480, margin: "0 auto 20px" }}>
               Subscribe now to reveal every week, every game, every badge. The full Cyber Heroes journey awaits.
             </p>
             <motion.a href="/signup"
-              whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
-              style={{ display: "inline-block", background: GRAD, color: "#fff", fontSize: 18, fontWeight: 700, padding: "14px 36px", borderRadius: 14, textDecoration: "none", boxShadow: "0 8px 32px rgba(139,92,246,0.35)" }}>
+              whileHover={{ scale: 1.05, y: -2, boxShadow: BTN_GLOW_HOVER }} whileTap={{ scale: 0.95 }}
+              style={{ display: "inline-block", background: BTN_GRAD, color: "#fff", fontSize: 18, fontWeight: 700, padding: "14px 36px", borderRadius: 14, textDecoration: "none", boxShadow: BTN_GLOW }}>
               Subscribe Now
             </motion.a>
           </div>
@@ -678,7 +693,7 @@ export default function HomePage() {
           <div className="text-center mb-12" data-scroll>
             <h2 className="text-3xl sm:text-4xl font-black text-white mb-4">
               Why{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-blue-400">AlgorithmX</span>?
+              <span style={ACCENT_TEXT}>AlgorithmX</span>?
             </h2>
           </div>
 
@@ -686,13 +701,13 @@ export default function HomePage() {
             {FEATURES.map((f, i) => (
               <div key={i} data-scroll data-scroll-delay={String(i * 0.12)}>
                 <motion.div className="rounded-3xl p-6 h-full"
-                  whileHover={{ y: -8, scale: 1.03, boxShadow: "0 0 40px rgba(139,92,246,0.15)" }}
+                  whileHover={{ y: -8, scale: 1.03, boxShadow: "0 0 25px rgba(59,130,246,0.15)" }}
                   style={{
                     background: "rgba(255,255,255,0.04)",
-                    border: "1px solid rgba(255,255,255,0.06)",
+                    border: "1px solid rgba(59,130,246,0.2)",
                     backdropFilter: "blur(12px)",
                   }}>
-                  <div style={{ width: 56, height: 56, borderRadius: 16, background: "rgba(139,92,246,0.1)", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 16 }}>
+                  <div style={{ width: 56, height: 56, borderRadius: 16, background: "rgba(59,130,246,0.1)", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 16 }}>
                     {i === 0 ? <IconController /> : <IconAward />}
                   </div>
                   <h3 className="font-black text-white text-lg mb-2">{f.title}</h3>
@@ -720,9 +735,10 @@ export default function HomePage() {
           <div data-scroll>
             <div className="relative rounded-3xl overflow-hidden p-8 sm:p-14 text-center"
               style={{
-                background: "rgba(255,255,255,0.04)",
-                border: "1px solid rgba(139,92,246,0.2)",
+                background: "linear-gradient(135deg, #3b82f6, #1d4ed8, #06b6d4)",
+                border: "1px solid rgba(59,130,246,0.3)",
                 backdropFilter: "blur(16px)",
+                boxShadow: "0 0 30px rgba(59,130,246,0.3)",
               }}>
               {/* Blurred background image */}
               <div className="absolute inset-0 z-0">
@@ -732,7 +748,7 @@ export default function HomePage() {
               <div className="relative z-10">
                 <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white mb-4 leading-tight">
                   Ready to Become a{" "}
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-blue-400 to-cyan-400">
+                  <span style={ACCENT_TEXT}>
                     Cyber Hero
                   </span>?
                 </h2>
@@ -740,10 +756,10 @@ export default function HomePage() {
                   Start your child&apos;s cybersecurity journey today. Interactive, fun, and built by educators.
                 </p>
                 <motion.a href="/signup"
-                  whileHover={{ scale: 1.05 }}
+                  whileHover={{ scale: 1.05, y: -2, boxShadow: BTN_GLOW_HOVER }}
                   whileTap={{ scale: 0.95 }}
-                  className="inline-block px-10 py-5 rounded-2xl font-black text-white text-lg"
-                  style={{ background: GRAD, boxShadow: "0 8px 40px rgba(139,92,246,0.4)" }}>
+                  className="inline-block px-10 py-5 font-bold text-white text-lg"
+                  style={{ background: BTN_GRAD, boxShadow: BTN_GLOW, borderRadius: 14 }}>
                   Get Started Now 🚀
                 </motion.a>
               </div>

@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 
 /* ───────────────────────── CONSTANTS ───────────────────────── */
 const TOTAL = 17;
-const GRAD = "linear-gradient(135deg, #8b5cf6, #3b82f6)";
+const GRAD = "linear-gradient(135deg, #3b82f6, #06b6d4)";
 
 /* ───────────────────────── DATA ────────────────────────────── */
 const TILE_DATA = [
@@ -330,7 +330,7 @@ function FloatingBg() {
       {beams.map((b, i) => (
         <div key={`beam-${i}`} style={{
           position: "absolute", top: b.top, left: -300, width: b.width, height: 2,
-          background: "linear-gradient(to right, transparent, rgba(59,130,246,0.4), rgba(139,92,246,0.4), transparent)",
+          background: "linear-gradient(to right, transparent, rgba(59,130,246,0.4), rgba(59,130,246,0.4), transparent)",
           animation: `beamShoot ${20 + b.dur}s linear infinite`,
           animationDelay: `${b.delay}s`,
         }} />
@@ -360,7 +360,7 @@ function ProgressBar({ step }: { step: number }) {
       </div>
       <div style={{ height: 8, borderRadius: 999, background: "rgba(255,255,255,0.08)" }}>
         <motion.div animate={{ width: `${pct}%` }} transition={{ duration: 0.6 }}
-          style={{ height: "100%", borderRadius: 999, background: GRAD }} />
+          style={{ height: "100%", borderRadius: 999, background: GRAD, boxShadow: "0 0 10px rgba(59,130,246,0.4)" }} />
       </div>
     </div>
   );
@@ -374,7 +374,8 @@ function StepDots({ step }: { step: number }) {
           transition={i === step ? { duration: 1.5, repeat: Infinity } : {}}
           style={{
             width: i === step ? 12 : 8, height: i === step ? 12 : 8, borderRadius: "50%",
-            background: i < step ? "#8b5cf6" : i === step ? "#f59e0b" : "rgba(255,255,255,0.15)",
+            background: i < step ? "#3b82f6" : i === step ? "#f59e0b" : "rgba(255,255,255,0.15)",
+            boxShadow: i === step ? "0 0 12px rgba(245,158,11,0.5)" : i < step ? "0 0 8px rgba(59,130,246,0.4)" : "none",
             transition: "all 0.3s ease",
           }} />
       ))}
@@ -391,6 +392,7 @@ function CoinCounter({ coins }: { coins: number }) {
         display: "flex", alignItems: "center", gap: 4,
         background: "rgba(245,158,11,0.15)", border: "1px solid rgba(245,158,11,0.3)",
         borderRadius: 12, padding: "4px 12px",
+        boxShadow: "0 0 10px rgba(245,158,11,0.3)",
       }}>
       <span style={{ fontSize: 18 }}>🪙</span>
       <span style={{ color: "#f59e0b", fontWeight: 900, fontSize: 16 }}>{coins}</span>
@@ -402,11 +404,11 @@ function CoinCounter({ coins }: { coins: number }) {
 function btn(label: string, onClick: () => void, extra?: React.CSSProperties) {
   return (
     <motion.button onClick={onClick}
-      whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
+      whileHover={{ scale: 1.05, y: -2, boxShadow: "0 0 25px rgba(249,115,22,0.6)" }} whileTap={{ scale: 0.95 }}
       style={{
-        background: GRAD, color: "#fff", fontWeight: 900, borderRadius: 16,
+        background: "linear-gradient(135deg, #f97316, #f59e0b)", color: "#fff", fontWeight: 700, borderRadius: 14,
         padding: "13px 34px", border: "none", cursor: "pointer", fontSize: 16,
-        boxShadow: "0 4px 20px rgba(139,92,246,0.4)", minHeight: 48, ...extra,
+        boxShadow: "0 0 15px rgba(249,115,22,0.4)", minHeight: 48, ...extra,
       }}>
       {label}
     </motion.button>
@@ -431,13 +433,13 @@ function playSound(src: string) {
 function InstructionOverlay({ icon, story, instructions, onReady }: { icon: string; story: string; instructions: string; onReady: () => void }) {
   return (
     <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} style={{ textAlign: "center" }}>
-      <div style={{ background: "rgba(15,10,40,0.9)", backdropFilter: "blur(12px)", borderRadius: 24, padding: 32, maxWidth: 520, margin: "0 auto" }}>
-        <div style={{ width: 80, height: 80, margin: "0 auto 16px", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 48, background: "rgba(139,92,246,0.15)", borderRadius: 20 }}>{icon}</div>
-        <p style={{ color: "#a78bfa", fontSize: 14, fontStyle: "italic", marginBottom: 8 }}>{story}</p>
+      <div style={{ background: "rgba(15,10,40,0.9)", backdropFilter: "blur(12px)", border: "1px solid rgba(59,130,246,0.3)", boxShadow: "0 0 20px rgba(59,130,246,0.2)", borderRadius: 24, padding: 32, maxWidth: 520, margin: "0 auto" }}>
+        <div style={{ width: 80, height: 80, margin: "0 auto 16px", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 48, background: "rgba(59,130,246,0.15)", borderRadius: 20 }}>{icon}</div>
+        <p style={{ color: "#60a5fa", fontSize: 14, fontStyle: "italic", marginBottom: 8 }}>{story}</p>
         <h2 style={{ color: "#fff", fontSize: 22, fontWeight: 900, marginBottom: 8 }}>Here&apos;s what to do!</h2>
         <p style={{ color: "#d1d5db", fontSize: 16, lineHeight: 1.6, marginBottom: 20 }}>{instructions}</p>
-        <motion.button onClick={onReady} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
-          style={{ background: "linear-gradient(135deg, #8b5cf6, #3b82f6)", color: "#fff", fontWeight: 900, borderRadius: 16, padding: "13px 34px", border: "none", cursor: "pointer", fontSize: 16, boxShadow: "0 4px 20px rgba(139,92,246,0.4)" }}>
+        <motion.button onClick={onReady} whileHover={{ scale: 1.05, y: -2, boxShadow: "0 0 25px rgba(249,115,22,0.6)" }} whileTap={{ scale: 0.95 }}
+          style={{ background: "linear-gradient(135deg, #f97316, #f59e0b)", color: "#fff", fontWeight: 700, borderRadius: 14, padding: "13px 34px", border: "none", cursor: "pointer", fontSize: 16, boxShadow: "0 0 15px rgba(249,115,22,0.4)" }}>
           I&apos;m Ready! →
         </motion.button>
       </div>
@@ -448,13 +450,13 @@ function InstructionOverlay({ icon, story, instructions, onReady }: { icon: stri
 function LearnSummary({ message, starCount, onNext }: { message: string; starCount: number; onNext: () => void }) {
   return (
     <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} style={{ textAlign: "center" }}>
-      <div style={{ background: "rgba(255,255,255,0.04)", backdropFilter: "blur(12px)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 20, padding: 28, maxWidth: 520, margin: "0 auto" }}>
-        <div style={{ width: 80, height: 80, margin: "0 auto 12px", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 48, background: "rgba(16,185,129,0.1)", borderRadius: 20 }}>✅</div>
+      <div style={{ background: "rgba(255,255,255,0.04)", backdropFilter: "blur(12px)", border: "1px solid rgba(16,185,129,0.3)", boxShadow: "0 0 15px rgba(16,185,129,0.2)", borderRadius: 20, padding: 28, maxWidth: 520, margin: "0 auto" }}>
+        <div style={{ width: 80, height: 80, margin: "0 auto 12px", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 48, background: "rgba(16,185,129,0.1)", borderRadius: 20, boxShadow: "0 0 15px rgba(16,185,129,0.4)" }}>✅</div>
         <h2 style={{ color: "#fff", fontSize: 22, fontWeight: 900, marginBottom: 4 }}>Great job!</h2>
         <div style={{ marginBottom: 8 }}><span style={{ fontSize: 28, letterSpacing: 4 }}>{"⭐".repeat(starCount)}{"☆".repeat(3 - starCount)}</span></div>
         <p style={{ color: "#d1d5db", fontSize: 15, lineHeight: 1.6, marginBottom: 20 }}>{message}</p>
-        <motion.button onClick={onNext} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
-          style={{ background: "linear-gradient(135deg, #8b5cf6, #3b82f6)", color: "#fff", fontWeight: 900, borderRadius: 16, padding: "13px 34px", border: "none", cursor: "pointer", fontSize: 16, boxShadow: "0 4px 20px rgba(139,92,246,0.4)" }}>
+        <motion.button onClick={onNext} whileHover={{ scale: 1.05, y: -2, boxShadow: "0 0 25px rgba(249,115,22,0.6)" }} whileTap={{ scale: 0.95 }}
+          style={{ background: "linear-gradient(135deg, #f97316, #f59e0b)", color: "#fff", fontWeight: 700, borderRadius: 14, padding: "13px 34px", border: "none", cursor: "pointer", fontSize: 16, boxShadow: "0 0 15px rgba(249,115,22,0.4)" }}>
           Next →
         </motion.button>
       </div>
@@ -465,8 +467,8 @@ function LearnSummary({ message, starCount, onNext }: { message: string; starCou
 const SpeechBubble = ({ character, message, side = "left" }: { character: "adam" | "layla" | "raccoon"; message: string; side?: "left" | "right" }) => {
   const img = character === "adam" ? "/characters/adam-layla-happy.png" : character === "layla" ? "/characters/adam-layla-happy.png" : "/characters/raccoon.png";
   const name = character === "adam" ? "Adam" : character === "layla" ? "Layla" : "Raccoon";
-  const bubbleColor = character === "raccoon" ? "rgba(239,68,68,0.15)" : "rgba(139,92,246,0.15)";
-  const borderColor = character === "raccoon" ? "rgba(239,68,68,0.3)" : "rgba(139,92,246,0.3)";
+  const bubbleColor = character === "raccoon" ? "rgba(239,68,68,0.15)" : "rgba(59,130,246,0.15)";
+  const borderColor = character === "raccoon" ? "rgba(239,68,68,0.3)" : "rgba(59,130,246,0.3)";
   return (
     <motion.div
       initial={{ opacity: 0, y: 10 }}
@@ -476,7 +478,7 @@ const SpeechBubble = ({ character, message, side = "left" }: { character: "adam"
     >
       <img src={img} alt={name} style={{ width: 48, height: 48, borderRadius: "50%", objectFit: "cover", border: `2px solid ${borderColor}` }} />
       <div style={{ background: bubbleColor, border: `1px solid ${borderColor}`, borderRadius: 16, padding: "10px 16px", maxWidth: 320, fontSize: 14, color: "rgba(255,255,255,0.9)", lineHeight: 1.5 }}>
-        <span style={{ fontWeight: 700, fontSize: 12, color: character === "raccoon" ? "#ef4444" : "#8b5cf6", display: "block", marginBottom: 4 }}>{name}</span>
+        <span style={{ fontWeight: 700, fontSize: 12, color: character === "raccoon" ? "#ef4444" : "#3b82f6", display: "block", marginBottom: 4 }}>{name}</span>
         {message}
       </div>
     </motion.div>
@@ -697,7 +699,7 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
             {!videoEnded ? (
               <>
                 {!videoFailed ? (
-                  <div style={{ borderRadius: 20, overflow: "hidden", border: "2px solid rgba(139,92,246,0.3)", boxShadow: "0 0 30px rgba(139,92,246,0.2)", maxWidth: 640, margin: "0 auto" }}>
+                  <div style={{ borderRadius: 20, overflow: "hidden", border: "2px solid rgba(59,130,246,0.3)", boxShadow: "0 0 30px rgba(59,130,246,0.2)", maxWidth: 640, margin: "0 auto" }}>
                     <video ref={videoRef} src="/videos/week2-intro.mp4"
                       onError={() => setVideoFailed(true)} onEnded={() => setVideoEnded(true)}
                       style={{ width: "100%", display: "block" }} playsInline controls />
@@ -801,7 +803,7 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
                   style={{ marginTop: 20, textAlign: "center" }}>
                   <motion.button onClick={() => { setMissionAccepted(true); addCoins(10); setTimeout(() => navigate(2), 1200); }}
                     whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
-                    style={{ background: "linear-gradient(135deg, #ef4444, #dc2626)", color: "#fff", fontWeight: 900, borderRadius: 16, padding: "16px 40px", border: "none", cursor: "pointer", fontSize: 18, boxShadow: "0 4px 20px rgba(239,68,68,0.4)" }}>
+                    style={{ background: "linear-gradient(135deg, #f97316, #f59e0b)", color: "#fff", fontWeight: 700, borderRadius: 14, padding: "16px 40px", border: "none", cursor: "pointer", fontSize: 18, boxShadow: "0 0 15px rgba(249,115,22,0.4)" }}>
                     🔐 ACCEPT MISSION
                   </motion.button>
                 </motion.div>
@@ -1101,7 +1103,7 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
             }}>
               {/* Chat header */}
               <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "12px 16px", borderBottom: "1px solid rgba(255,255,255,0.06)", background: "rgba(255,255,255,0.03)" }}>
-                <div style={{ width: 36, height: 36, borderRadius: "50%", background: "linear-gradient(135deg, #3b82f6, #8b5cf6)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 16 }}>😎</div>
+                <div style={{ width: 36, height: 36, borderRadius: "50%", background: "linear-gradient(135deg, #3b82f6, #06b6d4)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 16 }}>😎</div>
                 <div style={{ flex: 1, textAlign: "left" }}>
                   <p style={{ color: "#fff", fontWeight: 700, fontSize: 14, margin: 0 }}>CoolKid99</p>
                   <p style={{ color: "#22c55e", fontSize: 11, margin: 0 }}>Online</p>
@@ -1125,7 +1127,7 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
                     }}>
                     <div style={{
                       maxWidth: "75%", padding: "10px 14px", borderRadius: 16,
-                      background: m.from === "me" ? "rgba(139,92,246,0.2)" : "rgba(255,255,255,0.06)",
+                      background: m.from === "me" ? "rgba(59,130,246,0.2)" : "rgba(255,255,255,0.06)",
                       borderBottomRightRadius: m.from === "me" ? 4 : 16,
                       borderBottomLeftRadius: m.from === "me" ? 16 : 4,
                     }}>
@@ -1183,7 +1185,7 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
                       }}
                       whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}
                       style={{
-                        background: "rgba(139,92,246,0.08)", border: "1px solid rgba(139,92,246,0.2)",
+                        background: "rgba(59,130,246,0.08)", border: "1px solid rgba(59,130,246,0.2)",
                         borderRadius: 12, padding: "10px 14px", cursor: "pointer",
                         color: "#d1d5db", fontSize: 14, textAlign: "left", fontWeight: 600,
                       }}>
@@ -1263,7 +1265,7 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
               <div style={{ maxWidth: 440, margin: "0 auto", borderRadius: 20, overflow: "hidden", border: "1px solid rgba(255,255,255,0.1)", background: "rgba(0,0,0,0.2)" }}>
                 {/* Profile header */}
                 <div style={{ padding: 16, display: "flex", alignItems: "center", gap: 12, borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
-                  <div style={{ width: 48, height: 48, borderRadius: "50%", background: "linear-gradient(135deg, #ec4899, #8b5cf6)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 24 }}>👧</div>
+                  <div style={{ width: 48, height: 48, borderRadius: "50%", background: "linear-gradient(135deg, #ec4899, #3b82f6)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 24 }}>👧</div>
                   <div style={{ textAlign: "left", flex: 1 }}>
                     <div onClick={() => { if (!foundDangers.has("username")) { setFoundDangers((s) => { const n = new Set(s); n.add("username"); return n; }); playSound("/sounds/correct.mp3"); } }}
                       style={{ cursor: "pointer", color: foundDangers.has("username") ? "#ef4444" : "#fff", fontWeight: 700, fontSize: 14, textDecoration: foundDangers.has("username") ? "line-through" : "none" }}>
@@ -1295,14 +1297,14 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
                 {/* Photos grid */}
                 <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 2, padding: 2 }}>
                   <div onClick={() => { if (!foundDangers.has("uniform")) { setFoundDangers((s) => { const n = new Set(s); n.add("uniform"); return n; }); playSound("/sounds/correct.mp3"); } }}
-                    style={{ cursor: "pointer", height: 100, background: foundDangers.has("uniform") ? "rgba(239,68,68,0.15)" : "rgba(139,92,246,0.1)", display: "flex", alignItems: "center", justifyContent: "center", padding: 8, border: foundDangers.has("uniform") ? "2px solid #ef4444" : "none" }}>
+                    style={{ cursor: "pointer", height: 100, background: foundDangers.has("uniform") ? "rgba(239,68,68,0.15)" : "rgba(59,130,246,0.1)", display: "flex", alignItems: "center", justifyContent: "center", padding: 8, border: foundDangers.has("uniform") ? "2px solid #ef4444" : "none" }}>
                     <span style={{ fontSize: 10, color: foundDangers.has("uniform") ? "#ef4444" : "#9ca3af", textAlign: "center" }}>Selfie in school uniform with logo</span>
                   </div>
                   <div style={{ height: 100, background: "rgba(34,197,94,0.08)", display: "flex", alignItems: "center", justifyContent: "center", padding: 8 }}>
                     <span style={{ fontSize: 10, color: "#6b7280", textAlign: "center" }}>Painting at home</span>
                   </div>
                   <div onClick={() => { if (!foundDangers.has("house")) { setFoundDangers((s) => { const n = new Set(s); n.add("house"); return n; }); playSound("/sounds/correct.mp3"); } }}
-                    style={{ cursor: "pointer", height: 100, background: foundDangers.has("house") ? "rgba(239,68,68,0.15)" : "rgba(139,92,246,0.1)", display: "flex", alignItems: "center", justifyContent: "center", padding: 8, border: foundDangers.has("house") ? "2px solid #ef4444" : "none" }}>
+                    style={{ cursor: "pointer", height: 100, background: foundDangers.has("house") ? "rgba(239,68,68,0.15)" : "rgba(59,130,246,0.1)", display: "flex", alignItems: "center", justifyContent: "center", padding: 8, border: foundDangers.has("house") ? "2px solid #ef4444" : "none" }}>
                     <span style={{ fontSize: 10, color: foundDangers.has("house") ? "#ef4444" : "#9ca3af", textAlign: "center" }}>Photo outside house with #42 visible</span>
                   </div>
                 </div>
@@ -1351,7 +1353,7 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
             <AnimatePresence mode="wait">
               <motion.div key={contextIdx} initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -30 }}>
                 {/* Info card */}
-                <div style={{ background: "rgba(139,92,246,0.1)", border: "2px solid rgba(139,92,246,0.3)", borderRadius: 16, padding: 20, marginBottom: 16, maxWidth: 500, margin: "0 auto 16px" }}>
+                <div style={{ background: "rgba(59,130,246,0.1)", border: "2px solid rgba(59,130,246,0.3)", borderRadius: 16, padding: 20, marginBottom: 16, maxWidth: 500, margin: "0 auto 16px" }}>
                   <p style={{ color: "#fff", fontSize: 24, fontWeight: 900 }}>&quot;{cr.info}&quot;</p>
                 </div>
                 {/* Scenario cards */}
@@ -1451,10 +1453,10 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
                   else setChainBroken(true);
                   playSound("/sounds/correct.mp3");
                 }}
-                  animate={{ boxShadow: ["0 0 10px rgba(59,130,246,0.3)", "0 0 25px rgba(59,130,246,0.6)", "0 0 10px rgba(59,130,246,0.3)"] }}
+                  animate={{ boxShadow: ["0 0 10px rgba(249,115,22,0.4)", "0 0 25px rgba(249,115,22,0.6)", "0 0 10px rgba(249,115,22,0.4)"] }}
                   transition={{ duration: 1.5, repeat: Infinity }}
                   whileTap={{ scale: 0.95 }}
-                  style={{ background: "linear-gradient(135deg, #3b82f6, #8b5cf6)", color: "#fff", fontWeight: 900, borderRadius: 16, padding: "16px 40px", border: "none", cursor: "pointer", fontSize: 18 }}>
+                  style={{ background: "linear-gradient(135deg, #f97316, #f59e0b)", color: "#fff", fontWeight: 700, borderRadius: 14, padding: "16px 40px", border: "none", cursor: "pointer", fontSize: 18 }}>
                   BREAK THE CHAIN!
                 </motion.button>
               </motion.div>
@@ -1704,7 +1706,7 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
             <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} style={{ textAlign: "center" }}>
               {card(
                 <>
-                  <motion.div animate={{ boxShadow: ["0 0 20px rgba(139,92,246,0.3)", "0 0 50px rgba(139,92,246,0.6)", "0 0 20px rgba(139,92,246,0.3)"] }}
+                  <motion.div animate={{ boxShadow: ["0 0 20px rgba(59,130,246,0.3)", "0 0 50px rgba(59,130,246,0.6)", "0 0 20px rgba(59,130,246,0.3)"] }}
                     transition={{ duration: 2, repeat: Infinity }}
                     style={{ width: 120, height: 120, borderRadius: "50%", background: GRAD, margin: "0 auto 16px", display: "flex", alignItems: "center", justifyContent: "center" }}>
                     <span style={{ fontSize: 48, color: "#fff" }}>🛡️</span>
@@ -1908,7 +1910,7 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
                           }, 1200);
                         }}
                           whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
-                          style={{ background: "rgba(139,92,246,0.15)", border: "3px solid #8b5cf6", borderRadius: 16, padding: "16px 28px", cursor: "pointer", color: "#a78bfa", fontWeight: 900, fontSize: 16 }}>
+                          style={{ background: "rgba(59,130,246,0.15)", border: "3px solid #3b82f6", borderRadius: 16, padding: "16px 28px", cursor: "pointer", color: "#60a5fa", fontWeight: 900, fontSize: 16 }}>
                           BLOCK IT! 🛡️
                         </motion.button>
                         <motion.button onClick={() => {
@@ -1958,7 +1960,7 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
                   <p style={{ color: "#d1d5db", marginBottom: 12 }}>Agent Status:</p>
                   {/* Badge */}
                   <motion.div initial={{ scale: 0, rotate: -180 }} animate={{ scale: 1, rotate: 0 }} transition={{ type: "spring", stiffness: 150, damping: 12 }}
-                    style={{ width: 120, height: 120, margin: "0 auto 16px", borderRadius: "50%", background: "linear-gradient(135deg, #8b5cf6, #f59e0b)", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 0 40px rgba(139,92,246,0.4)" }}>
+                    style={{ width: 120, height: 120, margin: "0 auto 16px", borderRadius: "50%", background: "linear-gradient(135deg, #3b82f6, #f59e0b)", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 0 40px rgba(59,130,246,0.4)" }}>
                     <div style={{ width: 100, height: 100, borderRadius: "50%", background: "#1a1033", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
                       <span style={{ fontSize: 32 }}>🔒</span>
                       <span style={{ color: "#f59e0b", fontWeight: 900, fontSize: 8, letterSpacing: "0.1em" }}>INFORMATION AGENT</span>
@@ -1989,7 +1991,7 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
                     You&apos;ve completed Mission 2! Adam and Layla&apos;s personal information is SAFE. The Raccoon&apos;s masterplan is destroyed!
                   </p>
                   <div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
-                    <a href="/dashboard" style={{ display: "inline-block", background: GRAD, color: "#fff", fontWeight: 900, borderRadius: 16, padding: "13px 34px", textDecoration: "none", fontSize: 16, boxShadow: "0 4px 20px rgba(139,92,246,0.4)" }}>
+                    <a href="/dashboard" style={{ display: "inline-block", background: GRAD, color: "#fff", fontWeight: 900, borderRadius: 16, padding: "13px 34px", textDecoration: "none", fontSize: 16, boxShadow: "0 4px 20px rgba(59,130,246,0.4)" }}>
                       Back to Dashboard 🚀
                     </a>
                   </div>
@@ -2021,7 +2023,7 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
           ← Dashboard
         </a>
         <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-          <div style={{ width: 36, height: 36, borderRadius: 10, background: GRAD, display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 2px 8px rgba(139,92,246,0.4)" }}>
+          <div style={{ width: 36, height: 36, borderRadius: 10, background: GRAD, display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 2px 8px rgba(59,130,246,0.4)" }}>
             <span style={{ fontWeight: 900, fontSize: 14, color: "#fff" }}>AX</span>
           </div>
           <span style={{ color: "#9ca3af", fontSize: 13, fontWeight: 600 }}>Week 2 · Private Info: Guard Your Secrets</span>
