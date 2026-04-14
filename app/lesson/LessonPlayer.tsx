@@ -321,7 +321,7 @@ function FloatingOrbs() {
           position: "absolute", left: `${(i / 12) * 100}%`, top: 0, width: 20,
           fontFamily: "monospace", fontSize: 14, color: "rgba(139,92,246,0.12)", lineHeight: "20px",
           whiteSpace: "pre-wrap", wordBreak: "break-all",
-          animation: `codeRain ${15 + i * 1.3}s linear infinite`,
+          animation: `codeRain ${30 + i * 2.6}s linear infinite`,
           animationDelay: `${i * -2}s`,
         }}>
           {"0A3F7B1E9C4D8A2F6B0E3C7A1D5F9B2E8C4A6D0F3B7E1C5A9D2F6B8E0C4A7D1F5B3E9C2A6D8F0B4E7C1A5D3F9B6E2C8A0D4F7B1E5C3A9D6F2B8E4C0A7D"}
@@ -329,14 +329,14 @@ function FloatingOrbs() {
       ))}
       {/* Layer 2: Floating lock icons */}
       {[
-        { icon: "🔒", left: "5%", top: "15%", size: 40, dur: 18 },
-        { icon: "🔑", left: "85%", top: "25%", size: 35, dur: 22 },
-        { icon: "🛡️", left: "15%", top: "55%", size: 50, dur: 16 },
-        { icon: "🔒", left: "75%", top: "65%", size: 30, dur: 25 },
-        { icon: "🔑", left: "45%", top: "80%", size: 45, dur: 20 },
-        { icon: "🛡️", left: "60%", top: "10%", size: 35, dur: 23 },
-        { icon: "🔒", left: "30%", top: "40%", size: 55, dur: 19 },
-        { icon: "🔑", left: "90%", top: "50%", size: 30, dur: 21 },
+        { icon: "🔒", left: "5%", top: "15%", size: 40, dur: 36 },
+        { icon: "🔑", left: "85%", top: "25%", size: 35, dur: 44 },
+        { icon: "🛡️", left: "15%", top: "55%", size: 50, dur: 32 },
+        { icon: "🔒", left: "75%", top: "65%", size: 30, dur: 50 },
+        { icon: "🔑", left: "45%", top: "80%", size: 45, dur: 40 },
+        { icon: "🛡️", left: "60%", top: "10%", size: 35, dur: 46 },
+        { icon: "🔒", left: "30%", top: "40%", size: 55, dur: 38 },
+        { icon: "🔑", left: "90%", top: "50%", size: 30, dur: 42 },
       ].map((ic, i) => (
         <div key={`lock-${i}`} style={{
           position: "absolute", left: ic.left, top: ic.top, fontSize: ic.size, opacity: 0.08,
@@ -355,7 +355,7 @@ function FloatingOrbs() {
       ].map((p, i) => (
         <motion.div key={`particle-${i}`}
           animate={{ x: [-15, 15, -15], y: [-10, 10, -10], opacity: [0.1, 0.3, 0.1] }}
-          transition={{ duration: 12 + i * 2, repeat: Infinity, ease: "easeInOut", delay: p.delay }}
+          transition={{ duration: 24 + i * 4, repeat: Infinity, ease: "easeInOut", delay: p.delay }}
           style={{ position: "absolute", left: p.left, top: p.top, width: 4, height: 4, borderRadius: "50%", background: "rgba(139,92,246,0.3)", filter: "blur(2px)" }}
         />
       ))}
@@ -840,6 +840,27 @@ function LearnSummary({ message, starCount, onNext }: { message: string; starCou
     </motion.div>
   );
 }
+
+const SpeechBubble = ({ character, message, side = "left" }: { character: "adam" | "layla" | "raccoon"; message: string; side?: "left" | "right" }) => {
+  const img = character === "adam" ? "/characters/adam-layla-happy.png" : character === "layla" ? "/characters/adam-layla-happy.png" : "/characters/raccoon.png";
+  const name = character === "adam" ? "Adam" : character === "layla" ? "Layla" : "Raccoon";
+  const bubbleColor = character === "raccoon" ? "rgba(239,68,68,0.15)" : "rgba(139,92,246,0.15)";
+  const borderColor = character === "raccoon" ? "rgba(239,68,68,0.3)" : "rgba(139,92,246,0.3)";
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4 }}
+      style={{ display: "flex", alignItems: "flex-start", gap: 12, flexDirection: side === "right" ? "row-reverse" : "row", margin: "12px 0" }}
+    >
+      <img src={img} alt={name} style={{ width: 48, height: 48, borderRadius: "50%", objectFit: "cover", border: `2px solid ${borderColor}` }} />
+      <div style={{ background: bubbleColor, border: `1px solid ${borderColor}`, borderRadius: 16, padding: "10px 16px", maxWidth: 320, fontSize: 14, color: "rgba(255,255,255,0.9)", lineHeight: 1.5 }}>
+        <span style={{ fontWeight: 700, fontSize: 12, color: character === "raccoon" ? "#ef4444" : "#8b5cf6", display: "block", marginBottom: 4 }}>{name}</span>
+        {message}
+      </div>
+    </motion.div>
+  );
+};
 
 /* ───────────────────────── MAIN COMPONENT ─────────────────── */
 
@@ -1540,6 +1561,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
         return (
           <div style={{ textAlign: "center" }}>
             <h1 style={{ color: "#fff", fontSize: 28, fontWeight: 900, marginBottom: 8 }}>What is a Password?</h1>
+            <SpeechBubble character="adam" message="Quick! We need to lock everything before the Raccoon gets in!" />
             <p style={{ color: "#9ca3af", marginBottom: 8 }}>Tap each item to lock it with a password!</p>
             <p style={{ color: "#f59e0b", fontSize: 20, fontWeight: 700, marginBottom: 16 }}>🔒 {lockedItems.size}/3</p>
             <div style={{ display: "flex", gap: 16, justifyContent: "center", flexWrap: "wrap", marginBottom: 24 }}>
@@ -1726,6 +1748,9 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
         return (
           <div style={{ textAlign: "center" }}>
             <h1 style={{ color: "#fff", fontSize: 24, fontWeight: 900, marginBottom: 8 }}>Why Do Passwords Matter?</h1>
+            {!raccoonHitShield && !shieldPlaced && (
+              <SpeechBubble character="raccoon" message="Hehehe... no password? This is going to be easy!" side="right" />
+            )}
             <p style={{ color: "#9ca3af", marginBottom: 16 }}>Scenario {whyIdx + 1}/3: {sc.label}</p>
             {card(
               <div style={{ position: "relative", minHeight: 200, overflow: "hidden" }}>
@@ -1812,6 +1837,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                 style={{ textAlign: "center", marginTop: 12 }}
               >
                 <p style={{ color: "#10b981", fontSize: 18, fontWeight: 700, marginBottom: 8 }}>Protected! The Raccoon bounced off!</p>
+                <SpeechBubble character="layla" message="Phew! That was close. We need stronger passwords!" />
                 {btn(whyIdx < WHY_SCENARIOS.length - 1 ? "Next Scenario →" : "All done! →", () => {
                   if (whyIdx < WHY_SCENARIOS.length - 1) {
                     setWhyIdx((i) => i + 1);
@@ -2033,6 +2059,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
         return (
           <div style={{ textAlign: "center" }}>
             <h1 style={{ color: "#fff", fontSize: 28, fontWeight: 900, marginBottom: 8 }}>Build Your Password!</h1>
+            <SpeechBubble character="layla" message="Let's mix these ingredients together to make a super strong password!" />
             {/* Display */}
             <motion.div
               animate={builderPowerUp ? {
@@ -2355,6 +2382,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
         return (
           <div style={{ textAlign: "center" }}>
             <h1 style={{ color: "#fff", fontSize: 28, fontWeight: 900, marginBottom: 16 }}>The 5 Golden Rules!</h1>
+            <SpeechBubble character="layla" message="These are the most important rules. Remember them!" />
             <div style={{ display: "flex", flexDirection: "column", gap: 16, maxWidth: 680, margin: "0 auto 24px" }}>
               {RULES.map((rule, i) => {
                 const isRevealed = revealedRules.has(i);
@@ -2532,6 +2560,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
         return (
           <div style={{ textAlign: "center" }}>
             <h1 style={{ color: "#fff", fontSize: 26, fontWeight: 900, marginBottom: 4 }}>Spot the Tricks!</h1>
+            <SpeechBubble character="adam" message="Wait... this message looks weird. Is it real?" />
             <p style={{ color: "#9ca3af", marginBottom: 16 }}>The Raccoon sends FAKE messages to trick people. Here&apos;s how to spot them!</p>
             {trickCard < 4 ? (
               <AnimatePresence mode="wait">
@@ -2875,6 +2904,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                     transition={{ duration: 2, repeat: Infinity }}
                     style={{ fontSize: 32, margin: "0 0 12px", fontWeight: 900, background: "linear-gradient(135deg, #f59e0b, #ef4444, #8b5cf6)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
                     You defeated the Hacker Raccoon!</motion.h2>
+                  <SpeechBubble character="layla" message="We did it! The Raccoon is gone!" />
                   <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.3, type: "spring" }}>
                     {stars(bossScore >= 8 ? 3 : bossScore >= 6 ? 2 : 1)}
                   </motion.div>
@@ -2965,6 +2995,12 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
             <h1 style={{ color: "#fff", fontSize: 28, fontWeight: 900, marginBottom: 8 }}>
               FINAL CHALLENGE!<img src="/characters/raccoon-sneaking.png" width={40} height={40} alt="" style={{ display: "inline-block", verticalAlign: "middle", marginLeft: 8, borderRadius: 999 }} />
             </h1>
+            {bossIdx === 0 && (
+              <>
+                <SpeechBubble character="raccoon" message="You think you can stop me? I'm the HACKER RACCOON!" side="right" />
+                <SpeechBubble character="adam" message="We're ready! Let's do this, Layla!" />
+              </>
+            )}
             <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 16, marginBottom: 16 }}>
               <motion.img src="/characters/raccoon-sneaking.png" alt="Raccoon"
                 animate={bossFeedback === true ? { x: [-5, 5, -5, 5, 0] } : { y: [0, -6, 0] }}
@@ -3293,10 +3329,10 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
         <AnimatePresence mode="wait">
           <motion.div
             key={screen}
-            variants={getScreenVariants(screen)}
-            initial="initial"
-            animate="animate"
-            exit="exit"
+            initial={{ opacity: 0, x: 60 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -60 }}
+            transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
           >
             {renderScreen()}
           </motion.div>

@@ -208,25 +208,25 @@ const CSS = `
 /* ───────────────────────── SUB-COMPONENTS ──────────────────── */
 function FloatingBg() {
   const stamps = [
-    { text: "TOP SECRET", left: "8%", top: "12%", rotate: -12, dur: 22, size: 22 },
-    { text: "CLASSIFIED", left: "78%", top: "18%", rotate: 8, dur: 26, size: 24 },
-    { text: "PRIVATE", left: "15%", top: "65%", rotate: -6, dur: 20, size: 20 },
-    { text: "CONFIDENTIAL", left: "70%", top: "72%", rotate: 10, dur: 28, size: 22 },
-    { text: "EYES ONLY", left: "45%", top: "88%", rotate: -15, dur: 24, size: 20 },
-    { text: "RESTRICTED", left: "55%", top: "35%", rotate: 5, dur: 30, size: 22 },
-    { text: "INTEL", left: "5%", top: "40%", rotate: -8, dur: 23, size: 24 },
-    { text: "DECODED", left: "85%", top: "50%", rotate: 12, dur: 27, size: 20 },
-    { text: "ENCRYPTED", left: "30%", top: "25%", rotate: -10, dur: 25, size: 22 },
-    { text: "AGENT ONLY", left: "60%", top: "10%", rotate: 6, dur: 29, size: 18 },
-    { text: "TOP SECRET", left: "25%", top: "78%", rotate: 14, dur: 21, size: 20 },
-    { text: "CLASSIFIED", left: "82%", top: "85%", rotate: -9, dur: 26, size: 22 },
+    { text: "TOP SECRET", left: "8%", top: "12%", rotate: -12, dur: 44, size: 22 },
+    { text: "CLASSIFIED", left: "78%", top: "18%", rotate: 8, dur: 52, size: 24 },
+    { text: "PRIVATE", left: "15%", top: "65%", rotate: -6, dur: 40, size: 20 },
+    { text: "CONFIDENTIAL", left: "70%", top: "72%", rotate: 10, dur: 56, size: 22 },
+    { text: "EYES ONLY", left: "45%", top: "88%", rotate: -15, dur: 48, size: 20 },
+    { text: "RESTRICTED", left: "55%", top: "35%", rotate: 5, dur: 60, size: 22 },
+    { text: "INTEL", left: "5%", top: "40%", rotate: -8, dur: 46, size: 24 },
+    { text: "DECODED", left: "85%", top: "50%", rotate: 12, dur: 54, size: 20 },
+    { text: "ENCRYPTED", left: "30%", top: "25%", rotate: -10, dur: 50, size: 22 },
+    { text: "AGENT ONLY", left: "60%", top: "10%", rotate: 6, dur: 58, size: 18 },
+    { text: "TOP SECRET", left: "25%", top: "78%", rotate: 14, dur: 42, size: 20 },
+    { text: "CLASSIFIED", left: "82%", top: "85%", rotate: -9, dur: 52, size: 22 },
   ];
   const binaryCols = [8, 25, 42, 58, 75, 92];
   const beams = [
-    { top: "15%", width: 200, dur: 2.5, delay: 0 },
-    { top: "40%", width: 180, dur: 3, delay: 2 },
-    { top: "65%", width: 250, dur: 3.5, delay: 5 },
-    { top: "85%", width: 150, dur: 2, delay: 8 },
+    { top: "15%", width: 200, dur: 6, delay: 0 },
+    { top: "40%", width: 180, dur: 7, delay: 4 },
+    { top: "65%", width: 250, dur: 8, delay: 10 },
+    { top: "85%", width: 150, dur: 6, delay: 16 },
   ];
   const morse = "· · — · — — · · · — — — ".repeat(40);
   return (
@@ -239,7 +239,7 @@ function FloatingBg() {
         @keyframes scanUp { 0% { top: 100%; } 100% { top: -2px; } }
         @keyframes scanRight { 0% { left: -2px; } 100% { left: 100%; } }
         @keyframes binRain { 0% { transform: translateY(-100%); } 100% { transform: translateY(100vh); } }
-        @keyframes beamShoot { 0% { left: -300px; } 40%,100% { left: 110vw; } }
+        @keyframes beamShoot { 0% { left: -300px; } 30%,100% { left: 110vw; } }
         @keyframes crossSpin { from { transform: translate(-50%,-50%) rotate(0deg); } to { transform: translate(-50%,-50%) rotate(360deg); } }
         @keyframes crossPulse { 0%,100% { opacity: 0.04; } 50% { opacity: 0.1; } }
         @keyframes morseScroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
@@ -256,12 +256,12 @@ function FloatingBg() {
       <div style={{ position: "absolute", left: "50%", top: "50%", transform: "translate(-50%, -50%)", width: 600, height: 600, borderRadius: "50%", border: "1px solid rgba(59,130,246,0.15)" }}>
         <div style={{ position: "absolute", inset: "33%", borderRadius: "50%", border: "1px solid rgba(59,130,246,0.1)" }} />
         <div style={{ position: "absolute", inset: "16%", borderRadius: "50%", border: "1px solid rgba(59,130,246,0.08)" }} />
-        <div style={{ position: "absolute", top: "50%", left: "50%", width: "50%", height: 2, transformOrigin: "left center", background: "linear-gradient(to right, transparent, rgba(59,130,246,0.25))", boxShadow: "0 0 12px rgba(59,130,246,0.4)", animation: "radarSweep 5s linear infinite" }} />
+        <div style={{ position: "absolute", top: "50%", left: "50%", width: "50%", height: 2, transformOrigin: "left center", background: "linear-gradient(to right, transparent, rgba(59,130,246,0.25))", boxShadow: "0 0 12px rgba(59,130,246,0.4)", animation: "radarSweep 12s linear infinite" }} />
       </div>
       {/* Layer 1b: Secondary radar */}
       <div style={{ position: "absolute", right: 40, top: 40, width: 300, height: 300, borderRadius: "50%", border: "1px solid rgba(59,130,246,0.15)" }}>
         <div style={{ position: "absolute", inset: "33%", borderRadius: "50%", border: "1px solid rgba(59,130,246,0.1)" }} />
-        <div style={{ position: "absolute", top: "50%", left: "50%", width: "50%", height: 2, transformOrigin: "left center", background: "linear-gradient(to right, transparent, rgba(59,130,246,0.25))", boxShadow: "0 0 8px rgba(59,130,246,0.4)", animation: "radarSweep 4s linear infinite" }} />
+        <div style={{ position: "absolute", top: "50%", left: "50%", width: "50%", height: 2, transformOrigin: "left center", background: "linear-gradient(to right, transparent, rgba(59,130,246,0.25))", boxShadow: "0 0 8px rgba(59,130,246,0.4)", animation: "radarSweep 10s linear infinite" }} />
       </div>
 
       {/* Layer 2: Floating classified stamps */}
@@ -302,15 +302,15 @@ function FloatingBg() {
       {Array.from({ length: 15 }, (_, i) => (
         <motion.div key={`spy-p-${i}`}
           animate={{ x: [-25, 25, -25], y: [-20, 20, -20], opacity: [0.15, 0.4, 0.15] }}
-          transition={{ duration: 14 + i * 1.2, repeat: Infinity, ease: "easeInOut", delay: i * 1.5 }}
+          transition={{ duration: 28 + i * 2.4, repeat: Infinity, ease: "easeInOut", delay: i * 1.5 }}
           style={{ position: "absolute", left: `${5 + i * 6.3}%`, top: `${10 + (i * 7) % 80}%`, width: 3 + (i % 4), height: 3 + (i % 4), borderRadius: "50%", background: "rgba(59,130,246,0.35)", filter: "blur(1.5px)" }}
         />
       ))}
 
       {/* Layer 6: Scanning lines */}
-      <div style={{ position: "absolute", left: 0, width: "100%", height: 2, background: "linear-gradient(to right, transparent, rgba(59,130,246,0.3), transparent)", boxShadow: "0 0 8px rgba(59,130,246,0.3)", animation: "scanDown 8s linear infinite" }} />
-      <div style={{ position: "absolute", left: 0, width: "100%", height: 2, background: "linear-gradient(to right, transparent, rgba(59,130,246,0.3), transparent)", boxShadow: "0 0 8px rgba(59,130,246,0.3)", animation: "scanUp 12s linear infinite" }} />
-      <div style={{ position: "absolute", top: 0, width: 2, height: "100%", background: "linear-gradient(to bottom, transparent, rgba(59,130,246,0.3), transparent)", boxShadow: "0 0 8px rgba(59,130,246,0.3)", animation: "scanRight 10s linear infinite" }} />
+      <div style={{ position: "absolute", left: 0, width: "100%", height: 2, background: "linear-gradient(to right, transparent, rgba(59,130,246,0.3), transparent)", boxShadow: "0 0 8px rgba(59,130,246,0.3)", animation: "scanDown 16s linear infinite" }} />
+      <div style={{ position: "absolute", left: 0, width: "100%", height: 2, background: "linear-gradient(to right, transparent, rgba(59,130,246,0.3), transparent)", boxShadow: "0 0 8px rgba(59,130,246,0.3)", animation: "scanUp 24s linear infinite" }} />
+      <div style={{ position: "absolute", top: 0, width: 2, height: "100%", background: "linear-gradient(to bottom, transparent, rgba(59,130,246,0.3), transparent)", boxShadow: "0 0 8px rgba(59,130,246,0.3)", animation: "scanRight 20s linear infinite" }} />
 
       {/* Layer 7: Binary code rain */}
       {binaryCols.map((xPct, i) => (
@@ -318,7 +318,7 @@ function FloatingBg() {
           position: "absolute", left: `${xPct}%`, top: 0, height: "100%",
           fontFamily: "monospace", fontSize: 16, fontWeight: "bold",
           color: "rgba(59,130,246,0.1)", lineHeight: 1.3,
-          animation: `binRain ${10 + i * 1.8}s linear infinite`,
+          animation: `binRain ${25 + i * 2.5}s linear infinite`,
           animationDelay: `${-i * 2.3}s`,
           whiteSpace: "pre",
         }}>
@@ -331,20 +331,20 @@ function FloatingBg() {
         <div key={`beam-${i}`} style={{
           position: "absolute", top: b.top, left: -300, width: b.width, height: 2,
           background: "linear-gradient(to right, transparent, rgba(59,130,246,0.4), rgba(139,92,246,0.4), transparent)",
-          animation: `beamShoot 10s linear infinite`,
+          animation: `beamShoot ${20 + b.dur}s linear infinite`,
           animationDelay: `${b.delay}s`,
         }} />
       ))}
 
       {/* Layer 9: Spy crosshair (center) */}
-      <div style={{ position: "absolute", left: "50%", top: "50%", width: 200, height: 200, animation: "crossSpin 30s linear infinite, crossPulse 6s ease-in-out infinite" }}>
+      <div style={{ position: "absolute", left: "50%", top: "50%", width: 200, height: 200, animation: "crossSpin 60s linear infinite, crossPulse 12s ease-in-out infinite" }}>
         <div style={{ position: "absolute", left: 0, top: "50%", width: "100%", height: 1, background: "rgba(59,130,246,0.06)" }} />
         <div style={{ position: "absolute", top: 0, left: "50%", width: 1, height: "100%", background: "rgba(59,130,246,0.06)" }} />
         <div style={{ position: "absolute", left: "50%", top: "50%", transform: "translate(-50%,-50%)", width: 80, height: 80, borderRadius: "50%", border: "1px solid rgba(59,130,246,0.06)" }} />
       </div>
 
       {/* Layer 10: Morse code ticker */}
-      <div style={{ position: "absolute", bottom: "5%", left: 0, width: "200%", fontFamily: "monospace", fontSize: 20, letterSpacing: "8px", color: "rgba(59,130,246,0.08)", whiteSpace: "nowrap", animation: "morseScroll 30s linear infinite" }}>
+      <div style={{ position: "absolute", bottom: "5%", left: 0, width: "200%", fontFamily: "monospace", fontSize: 20, letterSpacing: "8px", color: "rgba(59,130,246,0.08)", whiteSpace: "nowrap", animation: "morseScroll 60s linear infinite" }}>
         {morse}{morse}
       </div>
     </div>
@@ -461,6 +461,27 @@ function LearnSummary({ message, starCount, onNext }: { message: string; starCou
     </motion.div>
   );
 }
+
+const SpeechBubble = ({ character, message, side = "left" }: { character: "adam" | "layla" | "raccoon"; message: string; side?: "left" | "right" }) => {
+  const img = character === "adam" ? "/characters/adam-layla-happy.png" : character === "layla" ? "/characters/adam-layla-happy.png" : "/characters/raccoon.png";
+  const name = character === "adam" ? "Adam" : character === "layla" ? "Layla" : "Raccoon";
+  const bubbleColor = character === "raccoon" ? "rgba(239,68,68,0.15)" : "rgba(139,92,246,0.15)";
+  const borderColor = character === "raccoon" ? "rgba(239,68,68,0.3)" : "rgba(139,92,246,0.3)";
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4 }}
+      style={{ display: "flex", alignItems: "flex-start", gap: 12, flexDirection: side === "right" ? "row-reverse" : "row", margin: "12px 0" }}
+    >
+      <img src={img} alt={name} style={{ width: 48, height: 48, borderRadius: "50%", objectFit: "cover", border: `2px solid ${borderColor}` }} />
+      <div style={{ background: bubbleColor, border: `1px solid ${borderColor}`, borderRadius: 16, padding: "10px 16px", maxWidth: 320, fontSize: 14, color: "rgba(255,255,255,0.9)", lineHeight: 1.5 }}>
+        <span style={{ fontWeight: 700, fontSize: 12, color: character === "raccoon" ? "#ef4444" : "#8b5cf6", display: "block", marginBottom: 4 }}>{name}</span>
+        {message}
+      </div>
+    </motion.div>
+  );
+};
 
 /* ───────────────────────── MAIN COMPONENT ─────────────────── */
 export default function Week2Player({ userName, moduleId, childName }: { userName: string; moduleId: string; childName: string }) {
@@ -729,6 +750,7 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
         return (
           <div style={{ textAlign: "center" }}>
             <h1 style={{ color: "#fff", fontSize: 28, fontWeight: 900, marginBottom: 16 }}>Agent Assignment</h1>
+            <SpeechBubble character="layla" message="This is a top secret mission. We need to protect our personal information!" />
             {/* Folder */}
             <motion.div
               initial={{ rotateX: -30 }}
@@ -802,6 +824,7 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
         return (
           <div style={{ textAlign: "center" }}>
             <h1 style={{ color: "#fff", fontSize: 26, fontWeight: 900, marginBottom: 4 }}>What IS Personal Information?</h1>
+            <SpeechBubble character="adam" message="Some of this stuff is private and some is safe to share. Let's find out which!" />
             <p style={{ color: "#9ca3af", marginBottom: 20 }}>Tap each tile to discover what&apos;s inside</p>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))", gap: 12, maxWidth: 640, margin: "0 auto 20px" }}>
               {TILE_DATA.map((tile, i) => {
@@ -868,6 +891,8 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
         return (
           <div style={{ textAlign: "center" }}>
             <h1 style={{ color: "#fff", fontSize: 26, fontWeight: 900, marginBottom: 4 }}>Fix Adam&apos;s Poster!</h1>
+            <SpeechBubble character="layla" message="Oh no, Adam put WAY too much information on this poster!" />
+            <SpeechBubble character="raccoon" message="Hehehe, keep going Adam... tell me more!" side="right" />
             <p style={{ color: "#9ca3af", marginBottom: 8 }}>Tap on things that should be REMOVED to keep Adam safe</p>
             <p style={{ color: "#f59e0b", fontWeight: 700, marginBottom: 16 }}>
               Dangers found: {removedItems.size}/{POSTER_DANGER_COUNT}
@@ -1042,6 +1067,8 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
                   <h2 style={{ color: "#ef4444", fontSize: 24, fontWeight: 900, marginBottom: 8 }}>
                     It was the RACCOON all along!
                   </h2>
+                  <SpeechBubble character="layla" message="I KNEW it! It was the Raccoon all along!" />
+                  <SpeechBubble character="raccoon" message="Grrrr! I almost had you!" side="right" />
                   <p style={{ color: "#d1d5db", marginBottom: 4 }}>Danger Meter: {dangerPct}%</p>
                   {dangerPct <= 20 ? (
                     <p style={{ color: "#10b981", fontWeight: 700, marginBottom: 16 }}>Amazing! The Raccoon got NOTHING from you!</p>
@@ -1064,6 +1091,8 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
         return (
           <div style={{ textAlign: "center" }}>
             <h1 style={{ color: "#fff", fontSize: 22, fontWeight: 900, marginBottom: 12 }}>INCOMING MESSAGE, UNKNOWN CONTACT</h1>
+            <SpeechBubble character="adam" message="Someone called CoolKid99 is messaging me. They seem nice..." />
+            <SpeechBubble character="layla" message="Be careful! Remember, not everyone online is who they say they are!" />
 
             {/* Chat window */}
             <div style={{
@@ -1182,6 +1211,7 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
               <p style={{ color: "#f59e0b", fontWeight: 900, fontSize: 14, letterSpacing: "0.1em", marginBottom: 12 }}>TRANSMISSION INCOMING</p>
             </motion.div>
+            <SpeechBubble character="adam" message="The Raccoon got NOTHING from us. We're too smart for him!" />
             <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.5, type: "spring" }}>
               {card(
                 <>
@@ -1225,6 +1255,7 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
         return (
           <div style={{ textAlign: "center" }}>
             <h1 style={{ color: "#fff", fontSize: 24, fontWeight: 900, marginBottom: 4 }}>PROFILE DETECTIVE</h1>
+            <SpeechBubble character="layla" message="This profile has so many dangers. Can you spot them all?" />
             <p style={{ color: "#9ca3af", marginBottom: 4 }}>Find ALL the dangers hidden in this profile</p>
             <p style={{ color: "#f59e0b", fontWeight: 700, marginBottom: 8 }}>Dangers found: {foundDangers.size}/{PROFILE_DANGERS.length} | Time: {profileTimer}s</p>
 
@@ -1381,6 +1412,7 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
         return (
           <div style={{ textAlign: "center" }}>
             <h1 style={{ color: "#fff", fontSize: 24, fontWeight: 900, marginBottom: 4 }}>The Information Chain</h1>
+            <SpeechBubble character="adam" message="Wait... sharing just ONE thing can cause ALL of this?" />
             <p style={{ color: "#9ca3af", marginBottom: 16 }}>
               {broken ? "You broke the chain!" : "Tap each domino to see what happens next..."}
             </p>
@@ -1452,6 +1484,8 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
               TRANSMISSION INCOMING
             </motion.p>
             <h1 style={{ color: "#fff", fontSize: 24, fontWeight: 900, marginBottom: 16 }}>Raccoon&apos;s Investigation Board</h1>
+            <SpeechBubble character="raccoon" message="This is impossible! My investigation board is EMPTY!" side="right" />
+            <SpeechBubble character="layla" message="That's what happens when you keep your info private!" />
             {/* Board */}
             <div style={{ maxWidth: 500, margin: "0 auto 16px", background: "rgba(0,0,0,0.3)", borderRadius: 16, padding: 20, border: "1px solid rgba(255,255,255,0.08)", position: "relative" }}>
               <motion.img src="/characters/raccoon-defeated.png" alt="Frustrated Raccoon"
@@ -1552,6 +1586,7 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
         return (
           <div style={{ textAlign: "center" }}>
             <h1 style={{ color: "#fff", fontSize: 24, fontWeight: 900, marginBottom: 4 }}>SPEED SORT</h1>
+            <SpeechBubble character="adam" message="Quick! Sort them into the right vaults before time runs out!" />
             <div style={{ display: "flex", justifyContent: "center", gap: 16, marginBottom: 12, fontSize: 13 }}>
               <span style={{ color: speedColor, fontWeight: 800 }}>SPEED: {speedLabel}</span>
               <span style={{ color: "#9ca3af" }}>{speedIdx + 1}/{SPEED_SORT_ITEMS.length}</span>
@@ -1608,6 +1643,7 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
         return (
           <div style={{ textAlign: "center" }}>
             <h1 style={{ color: "#fff", fontSize: 24, fontWeight: 900, marginBottom: 4 }}>INCOMING CALL</h1>
+            <SpeechBubble character="layla" message="Someone is calling. Be careful what you say!" />
             <p style={{ color: "#9ca3af", marginBottom: 16 }}>Call {phoneRound + 1}/{PHONE_ROUNDS.length}</p>
             {!phoneAnswered ? (
               <motion.div animate={{ scale: [1, 1.1, 1] }} transition={{ duration: 1, repeat: Infinity }}>
@@ -1689,6 +1725,7 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
         return (
           <div style={{ textAlign: "center" }}>
             <h1 style={{ color: "#fff", fontSize: 24, fontWeight: 900, marginBottom: 4 }}>Build Your Privacy Shield</h1>
+            <SpeechBubble character="adam" message="Every correct answer makes our shield stronger!" />
             <p style={{ color: "#9ca3af", marginBottom: 8 }}>Segment {shieldIdx + 1}/{SHIELD_QS.length}</p>
             {/* Shield progress */}
             <div style={{ display: "flex", justifyContent: "center", gap: 6, marginBottom: 16 }}>
@@ -1825,6 +1862,13 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
         return (
           <div style={{ textAlign: "center" }}>
             <h1 style={{ color: "#fff", fontSize: 24, fontWeight: 900, marginBottom: 4 }}>DEFEND THE VAULT</h1>
+            {vaultRound === 0 && (
+              <>
+                <SpeechBubble character="raccoon" message="This is my LAST CHANCE! I'm going to break into that vault!" side="right" />
+                <SpeechBubble character="adam" message="Not if we can help it. Ready, Layla?" />
+                <SpeechBubble character="layla" message="Ready! Let's protect the vault!" />
+              </>
+            )}
             <p style={{ color: "#9ca3af", marginBottom: 8 }}>Round {vaultRound + 1}/{VAULT_ATTACKS.length}</p>
             {/* Vault HP */}
             <div style={{ maxWidth: 300, margin: "0 auto 16px" }}>
@@ -1921,6 +1965,8 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
                     </div>
                   </motion.div>
                   <h2 style={{ color: "#fff", fontSize: 26, fontWeight: 900, marginBottom: 16 }}>Information Agent Certified!</h2>
+                  <SpeechBubble character="adam" message="WE DID IT! The vault is safe!" />
+                  <SpeechBubble character="layla" message="The Raccoon's plan is totally destroyed. We're Information Agents now!" />
                   {/* Stats */}
                   <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, marginBottom: 16 }}>
                     {[
@@ -1990,7 +2036,7 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
             initial={{ opacity: 0, x: 60 }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -60 }}
-            transition={{ type: "spring", stiffness: 300, damping: 30 }}>
+            transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}>
             {renderScreen()}
           </motion.div>
         </AnimatePresence>
