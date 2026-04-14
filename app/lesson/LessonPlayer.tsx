@@ -121,6 +121,14 @@ const TiltCard = ({ children, style, className, onClick }: { children: React.Rea
   );
 };
 
+/* ───────────────────────── FULL-SCREEN SCENE WRAPPER ───────── */
+const FullScene = ({ children, bg, glow }: { children: React.ReactNode; bg: string; glow?: string }) => (
+  <div style={{ minHeight: "calc(100vh - 120px)", background: bg, position: "relative", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "40px 24px", overflow: "hidden" }}>
+    {glow && <div style={{ position: "absolute", top: "20%", left: "50%", transform: "translateX(-50%)", width: 600, height: 600, borderRadius: "50%", background: glow, filter: "blur(120px)", opacity: 0.3, pointerEvents: "none" }} />}
+    <div style={{ position: "relative", zIndex: 1, width: "100%", maxWidth: 900 }}>{children}</div>
+  </div>
+);
+
 /* ───────────────────────── SVG ICONS ──────────────────────── */
 
 const IconShield = ({ size = 24, color = "#3b82f6" }: { size?: number; color?: string }) => (
@@ -1588,6 +1596,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
       /* ──── CASE 0: VIDEO WELCOME ──── */
       case 0:
         return (
+          <FullScene bg="linear-gradient(180deg, #0a0a1a 0%, #1a1033 100%)">
           <div style={{ textAlign: "center" }}>
             {!videoEnded ? (
               <>
@@ -1667,15 +1676,16 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                 {card(
                   <>
                     <img src="/characters/adam-layla-hacked.png" alt="Adam and Layla hacked" style={{ width: 280, borderRadius: 20, margin: "0 auto 20px", display: "block" }} />
-                    <h2 data-split style={{ color: "#fff", fontSize: 26, margin: "0 0 8px" }}>Oh no! Adam and Layla got hacked by the Raccoon! 🦝</h2>
+                    <h2 data-split style={{ color: "#fff", fontSize: 36, margin: "0 0 12px", textShadow: "0 0 24px rgba(239,68,68,0.5)" }}>Oh no! Adam and Layla got hacked by the Raccoon! 🦝</h2>
                     <p style={{ color: "#d1d5db", marginBottom: 20, fontSize: 16 }}>They need YOUR help to learn about password safety!</p>
                     {btn("I'll help them! Let's go! 🚀", () => navigate(1))}
                   </>,
-                  { maxWidth: 700, margin: "0 auto", padding: 40 }
+                  { maxWidth: 800, margin: "0 auto", padding: 40 }
                 )}
               </motion.div>
             )}
           </div>
+          </FullScene>
         );
 
       /* ──── CASE 1: THE MISSION ──── */
@@ -1686,16 +1696,17 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
           { icon: "🦝", text: "Defeat the Hacker Raccoon" },
         ];
         return (
+          <FullScene bg="linear-gradient(180deg, #1a0a0a 0%, #1a1033 100%)" glow="radial-gradient(circle, rgba(239,68,68,0.3), transparent)">
           <div style={{ textAlign: "center" }}>
-            <h1 style={{
-              fontSize: 36, fontWeight: 900, background: GRAD, WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent", marginBottom: 24,
+            <h1 data-split style={{
+              fontSize: 48, fontWeight: 900, background: GRAD, WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent", marginBottom: 24, textShadow: "0 0 30px rgba(59,130,246,0.5)",
             }}>YOUR MISSION</h1>
             <motion.div
               variants={staggerContainer}
               initial="initial"
               animate="animate"
-              style={{ display: "flex", flexDirection: "column", gap: 16, maxWidth: 640, margin: "0 auto 24px" }}
+              style={{ display: "flex", flexDirection: "column", gap: 16, maxWidth: 800, margin: "0 auto 24px" }}
             >
               {missions.map((m, i) => (
                 missionPhase > i ? (
@@ -1718,6 +1729,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
               </motion.div>
             )}
           </div>
+          </FullScene>
         );
       }
 
@@ -1726,10 +1738,11 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
         if (showInstr[2]) return <InstructionOverlay icon="🔒" story="The Raccoon is trying to get into Adam and Layla's stuff!" instructions="Tap each item to lock it with a password! Can you lock all three?" onReady={() => dismissInstr(2)} />;
         if (showSummary[2]) return <LearnSummary message="You learned that passwords LOCK your stuff! Just like a key locks a door, a password keeps your games and photos safe." starCount={getStars(2)} onNext={() => dismissSummary(2, 3)} />;
         return (
+          <FullScene bg="linear-gradient(180deg, #1a1a0a 0%, #1a1033 100%)" glow="radial-gradient(circle, rgba(59,130,246,0.2), transparent)">
           <div style={{ textAlign: "center" }}>
-            <h1 data-split style={{ color: "#fff", fontSize: 28, fontWeight: 900, marginBottom: 8 }}>What is a Password?</h1>
+            <h1 data-split style={{ color: "#fff", fontSize: 40, fontWeight: 900, marginBottom: 8, textShadow: "0 0 24px rgba(59,130,246,0.5)" }}>What is a Password?</h1>
             <SpeechBubble character="adam" message="Quick! We need to lock everything before the Raccoon gets in!" />
-            <p style={{ color: "#9ca3af", marginBottom: 8 }}>Tap each item to lock it with a password!</p>
+            <p style={{ color: "#9ca3af", marginBottom: 8, fontSize: 16 }}>Tap each item to lock it with a password!</p>
             <p style={{ color: "#f59e0b", fontSize: 20, fontWeight: 700, marginBottom: 16 }}>🔒 {lockedItems.size}/3</p>
             <div style={{ display: "flex", gap: 16, justifyContent: "center", flexWrap: "wrap", marginBottom: 24 }}>
               {LOCK_ITEMS.map((item) => {
@@ -1833,6 +1846,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
               )}
             </AnimatePresence>
           </div>
+          </FullScene>
         );
 
       /* ──── CASE 3: QUIZ 1 (FLOATING BUBBLES) ──── */
@@ -1842,6 +1856,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
         if (q1Idx >= Q1_QUIZ.length) {
           const s = q1Score === 3 ? 3 : q1Score >= 2 ? 2 : 1;
           return (
+            <FullScene bg="linear-gradient(180deg, #0a0a2a 0%, #1a1033 100%)" glow="radial-gradient(circle, rgba(59,130,246,0.25), transparent)">
             <motion.div
               initial={{ opacity: 0, scale: 0.5 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -1850,7 +1865,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
             >
               {card(
                 <>
-                  <h2 data-split style={{ color: "#fff", fontSize: 24, margin: "0 0 12px" }}>Quiz Complete!</h2>
+                  <h2 data-split style={{ color: "#fff", fontSize: 36, margin: "0 0 12px", textShadow: "0 0 24px rgba(59,130,246,0.5)" }}>Quiz Complete!</h2>
                   {stars(s)}
                   <p style={{ color: "#d1d5db", margin: "12px 0" }}>You got {q1Score}/{Q1_QUIZ.length} correct!</p>
                   <p style={{ color: "#f59e0b", fontSize: 14 }}>🪙 +{q1Score * 10} coins earned!</p>
@@ -1858,17 +1873,19 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                 </>
               )}
             </motion.div>
+            </FullScene>
           );
         }
         const qq = Q1_QUIZ[q1Idx];
         return (
+          <FullScene bg="linear-gradient(180deg, #0a0a2a 0%, #1a1033 100%)" glow="radial-gradient(circle, rgba(59,130,246,0.25), transparent)">
           <motion.div
             key={`q1-${q1Idx}`}
             initial={{ opacity: 0, y: 60 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
           >
-            <h1 data-split style={{ color: "#fff", fontSize: 24, fontWeight: 900, marginBottom: 4, textAlign: "center" }}>Quick Quiz!<img src="/characters/thinking.png" width={40} height={40} alt="" style={{ display: "inline-block", verticalAlign: "middle", marginLeft: 8, borderRadius: 999 }} /></h1>
+            <h1 data-split style={{ color: "#fff", fontSize: 40, fontWeight: 900, marginBottom: 4, textAlign: "center", textShadow: "0 0 24px rgba(59,130,246,0.5)" }}>Quick Quiz!<img src="/characters/thinking.png" width={40} height={40} alt="" style={{ display: "inline-block", verticalAlign: "middle", marginLeft: 8, borderRadius: 999 }} /></h1>
             <p style={{ color: "#9ca3af", marginBottom: 12, textAlign: "center" }}>Question {q1Idx + 1}/{Q1_QUIZ.length}</p>
             <FloatingBubbleQuiz
               question={qq.q}
@@ -1884,6 +1901,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
               onWrong={() => addWrong(3)}
             />
           </motion.div>
+          </FullScene>
         );
       }
 
@@ -1893,6 +1911,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
         if (showSummary[4]) return <LearnSummary message="You saw what happens without a password, the Raccoon can walk right in! Passwords keep him OUT." starCount={getStars(4)} onNext={() => dismissSummary(4, 5)} />;
         if (whyIdx >= WHY_SCENARIOS.length) {
           return (
+            <FullScene bg="linear-gradient(180deg, #1a0505 0%, #1a1033 100%)" glow="radial-gradient(circle, rgba(239,68,68,0.25), transparent)">
             <motion.div
               initial={{ opacity: 0, scale: 0.5 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -1901,20 +1920,22 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
             >
               {card(
                 <>
-                  <h2 data-split style={{ color: "#fff", fontSize: 24, margin: "0 0 12px" }}>Passwords protect EVERYTHING! 🛡️</h2>
+                  <h2 data-split style={{ color: "#fff", fontSize: 36, margin: "0 0 12px", textShadow: "0 0 24px rgba(239,68,68,0.5)" }}>Passwords protect EVERYTHING! 🛡️</h2>
                   <p style={{ color: "#d1d5db", marginBottom: 16 }}>Now you know why every digital thing needs a password.</p>
                   <p style={{ color: "#f59e0b", fontSize: 14 }}>🪙 +30 coins earned!</p>
                   {btn("Quiz time! →", () => showLearnSummary(4))}
                 </>
               )}
             </motion.div>
+            </FullScene>
           );
         }
         const sc = WHY_SCENARIOS[whyIdx];
         const raccoonSpeed = [3, 2.5, 2][whyIdx] || 2;
         return (
+          <FullScene bg="linear-gradient(180deg, #1a0505 0%, #1a1033 100%)" glow="radial-gradient(circle, rgba(239,68,68,0.25), transparent)">
           <div style={{ textAlign: "center" }}>
-            <h1 data-split style={{ color: "#fff", fontSize: 24, fontWeight: 900, marginBottom: 8 }}>Why Do Passwords Matter?</h1>
+            <h1 data-split style={{ color: "#fff", fontSize: 38, fontWeight: 900, marginBottom: 8, textShadow: "0 0 24px rgba(239,68,68,0.5)" }}>Why Do Passwords Matter?</h1>
             {!raccoonHitShield && !shieldPlaced && (
               <SpeechBubble character="raccoon" message="Hehehe... no password? This is going to be easy!" side="right" />
             )}
@@ -2045,6 +2066,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
               </div>
             )}
           </div>
+          </FullScene>
         );
       }
 
@@ -2055,6 +2077,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
         if (q2Idx >= Q2_QUIZ.length) {
           const s = q2Score === 3 ? 3 : q2Score >= 2 ? 2 : 1;
           return (
+            <FullScene bg="linear-gradient(180deg, #0a0a2a 0%, #1a1033 100%)" glow="radial-gradient(circle, rgba(59,130,246,0.25), transparent)">
             <motion.div
               initial={{ opacity: 0, scale: 0.5 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -2063,7 +2086,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
             >
               {card(
                 <>
-                  <h2 data-split style={{ color: "#fff", fontSize: 24, margin: "0 0 12px" }}>Quiz Complete!</h2>
+                  <h2 data-split style={{ color: "#fff", fontSize: 36, margin: "0 0 12px", textShadow: "0 0 24px rgba(16,185,129,0.5)" }}>Quiz Complete!</h2>
                   {stars(s)}
                   <p style={{ color: "#d1d5db", margin: "12px 0" }}>You got {q2Score}/{Q2_QUIZ.length} correct!</p>
                   <p style={{ color: "#f59e0b", fontSize: 14 }}>🪙 +{q2Score * 10} coins earned!</p>
@@ -2071,17 +2094,19 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                 </>
               )}
             </motion.div>
+            </FullScene>
           );
         }
         const qq = Q2_QUIZ[q2Idx];
         return (
+          <FullScene bg="linear-gradient(180deg, #0a1a0a 0%, #1a1033 100%)" glow="radial-gradient(circle, rgba(16,185,129,0.15), transparent)">
           <motion.div
             key={`q2-${q2Idx}`}
             initial={{ opacity: 0, y: 60 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
           >
-            <h1 data-split style={{ color: "#fff", fontSize: 24, fontWeight: 900, marginBottom: 4, textAlign: "center" }}>Quick Quiz!<img src="/characters/thinking.png" width={40} height={40} alt="" style={{ display: "inline-block", verticalAlign: "middle", marginLeft: 8, borderRadius: 999 }} /></h1>
+            <h1 data-split style={{ color: "#fff", fontSize: 40, fontWeight: 900, marginBottom: 4, textAlign: "center", textShadow: "0 0 24px rgba(16,185,129,0.4)" }}>Quick Quiz!<img src="/characters/thinking.png" width={40} height={40} alt="" style={{ display: "inline-block", verticalAlign: "middle", marginLeft: 8, borderRadius: 999 }} /></h1>
             <p style={{ color: "#9ca3af", marginBottom: 12, textAlign: "center" }}>Question {q2Idx + 1}/{Q2_QUIZ.length}</p>
             <FloatingBubbleQuiz
               question={qq.q}
@@ -2097,6 +2122,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
               onWrong={() => addWrong(5)}
             />
           </motion.div>
+          </FullScene>
         );
       }
 
@@ -2105,9 +2131,10 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
         if (showInstr[6]) return <InstructionOverlay icon="🧪" story="Help Adam and Layla cook up the strongest password ever!" instructions="Tap each ingredient bottle to pour it into the mixing bowl!" onReady={() => dismissInstr(6)} />;
         if (showSummary[6]) return <LearnSummary message="You learned HOW to build a super strong password, mix letters, numbers, and special characters!" starCount={getStars(6)} onNext={() => dismissSummary(6, 7)} />;
         return (
+          <FullScene bg="linear-gradient(180deg, #0a1020 0%, #1a1033 100%)" glow="radial-gradient(circle, rgba(59,130,246,0.15), transparent)">
           <div style={{ textAlign: "center" }}>
-            <h1 data-split style={{ color: "#fff", fontSize: 28, fontWeight: 900, marginBottom: 8 }}>The Password Recipe!</h1>
-            <p style={{ color: "#9ca3af", marginBottom: 16 }}>Tap each bottle to pour it into the mix!</p>
+            <h1 data-split style={{ color: "#fff", fontSize: 40, fontWeight: 900, marginBottom: 8, textShadow: "0 0 24px rgba(59,130,246,0.5)" }}>🧪 The Password Recipe!</h1>
+            <p style={{ color: "#9ca3af", marginBottom: 16, fontSize: 16 }}>Tap each bottle to pour it into the mix!</p>
 
             {/* Bottles in arc */}
             <div style={{ display: "flex", flexWrap: "wrap", gap: 12, justifyContent: "center", marginBottom: 16 }}>
@@ -2215,6 +2242,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
               )}
             </AnimatePresence>
           </div>
+          </FullScene>
         );
 
       /* ──── CASE 7: PASSWORD BUILDER ──── */
@@ -2224,8 +2252,9 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
         const builtPw = builderSlots.map((s: number, i: number) => s >= 0 ? BUILDER_OPTIONS[i][s] : "").join("");
         const filledCount = builderSlots.filter((s: number) => s >= 0).length;
         return (
+          <FullScene bg="linear-gradient(180deg, #1a0a20 0%, #1a1033 100%)" glow="radial-gradient(circle, rgba(249,115,22,0.2), transparent)">
           <div style={{ textAlign: "center" }}>
-            <h1 data-split style={{ color: "#fff", fontSize: 28, fontWeight: 900, marginBottom: 8 }}>Build Your Password!</h1>
+            <h1 data-split style={{ color: "#fff", fontSize: 40, fontWeight: 900, marginBottom: 8, textShadow: "0 0 24px rgba(249,115,22,0.5)" }}>🔨 Build Your Password!</h1>
             <SpeechBubble character="layla" message="Let's mix these ingredients together to make a super strong password!" />
             {/* Display */}
             <motion.div
@@ -2293,6 +2322,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
               </motion.div>
             )}
           </div>
+          </FullScene>
         );
       }
 
@@ -2303,6 +2333,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
         if (swipeIdx >= SWIPE_DATA.length) {
           const s = swipeScore >= 5 ? 3 : swipeScore >= 3 ? 2 : 1;
           return (
+            <FullScene bg="linear-gradient(180deg, #1a0a20 0%, #1a1033 100%)" glow="radial-gradient(circle, rgba(249,115,22,0.2), transparent)">
             <motion.div
               initial={{ opacity: 0, scale: 0.5 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -2311,7 +2342,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
             >
               {card(
                 <>
-                  <h2 data-split style={{ color: "#fff", fontSize: 24, margin: "0 0 12px" }}>Round Complete!</h2>
+                  <h2 data-split style={{ color: "#fff", fontSize: 36, margin: "0 0 12px", textShadow: "0 0 24px rgba(249,115,22,0.5)" }}>Round Complete!</h2>
                   {stars(s)}
                   <p style={{ color: "#d1d5db", margin: "12px 0" }}>{swipeScore}/{SWIPE_DATA.length} correct!</p>
                   <p style={{ color: "#f59e0b", fontSize: 14 }}>🪙 +{swipeScore * 10} coins earned!</p>
@@ -2319,6 +2350,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                 </>
               )}
             </motion.div>
+            </FullScene>
           );
         }
         const sw = SWIPE_DATA[swipeIdx];
@@ -2346,9 +2378,10 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
         };
 
         return (
+          <FullScene bg="linear-gradient(180deg, #1a0a20 0%, #1a1033 100%)" glow="radial-gradient(circle, rgba(249,115,22,0.2), transparent)">
           <div style={{ textAlign: "center" }}>
-            <h1 data-split style={{ color: "#fff", fontSize: 24, fontWeight: 900, marginBottom: 8 }}>Good or Bad?</h1>
-            <p style={{ color: "#9ca3af", marginBottom: 8 }}>{swipeIdx + 1}/{SWIPE_DATA.length}, Swipe or tap!</p>
+            <h1 data-split style={{ color: "#fff", fontSize: 40, fontWeight: 900, marginBottom: 8, textShadow: "0 0 24px rgba(249,115,22,0.5)" }}>Good or Bad?</h1>
+            <p style={{ color: "#9ca3af", marginBottom: 8, fontSize: 16 }}>{swipeIdx + 1}/{SWIPE_DATA.length}, Swipe or tap!</p>
 
             {/* Weak/Strong indicators */}
             <div style={{ display: "flex", justifyContent: "space-between", padding: "0 20px", marginBottom: 12 }}>
@@ -2435,6 +2468,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
               </motion.div>
             )}
           </div>
+          </FullScene>
         );
       }
 
@@ -2444,6 +2478,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
         if (showSummary[9]) return <LearnSummary message="You sorted them all! Strong passwords have a mix of characters and are hard to guess." starCount={getStars(9)} onNext={() => dismissSummary(9, 10)} />;
         if (dragDone) {
           return (
+            <FullScene bg="linear-gradient(180deg, #0a1020 0%, #1a1033 100%)" glow="radial-gradient(circle, rgba(16,185,129,0.2), transparent)">
             <motion.div
               initial={{ opacity: 0, scale: 0.5 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -2452,7 +2487,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
             >
               {card(
                 <>
-                  <h2 data-split style={{ color: "#fff", fontSize: 24, margin: "0 0 12px" }}>Sorting Complete!</h2>
+                  <h2 data-split style={{ color: "#fff", fontSize: 36, margin: "0 0 12px", textShadow: "0 0 20px rgba(16,185,129,0.4)" }}>Sorting Complete!</h2>
                   {stars(sortStars)}
                   <p style={{ color: "#d1d5db", margin: "12px 0" }}>{placed.size}/8 sorted correctly!</p>
                   <p style={{ color: "#f59e0b", fontSize: 14 }}>🪙 +25 coins earned!</p>
@@ -2460,11 +2495,13 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                 </>
               )}
             </motion.div>
+            </FullScene>
           );
         }
         return (
+          <FullScene bg="linear-gradient(180deg, #0a1020 0%, #1a1033 100%)" glow="radial-gradient(circle, rgba(16,185,129,0.2), transparent)">
           <div style={{ textAlign: "center", userSelect: "none" }}>
-            <h1 data-split style={{ color: "#fff", fontSize: 24, fontWeight: 900, marginBottom: 8 }}>Sort the Passwords!</h1>
+            <h1 data-split style={{ color: "#fff", fontSize: 38, fontWeight: 900, marginBottom: 8, textShadow: "0 0 20px rgba(16,185,129,0.4)" }}>Sort the Passwords!</h1>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
               <span style={{ color: "#9ca3af" }}>{placed.size}/8 sorted</span>
               <span style={{ color: dragTime <= 10 ? "#ef4444" : "#f59e0b", fontWeight: 700, fontSize: 18 }}>
@@ -2539,6 +2576,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
               ))}
             </div>
           </div>
+          </FullScene>
         );
       }
 
@@ -2547,10 +2585,11 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
         if (showInstr[10]) return <InstructionOverlay icon="⭐" story="Before you finish, learn the 5 most important rules about passwords!" instructions="Tap each golden card to reveal a rule, then answer the question!" onReady={() => dismissInstr(10)} />;
         if (showSummary[10]) return <LearnSummary message="You know the 5 Golden Rules of passwords! Follow them and the Raccoon can never get in." starCount={getStars(10)} onNext={() => dismissSummary(10, 11)} />;
         return (
+          <FullScene bg="linear-gradient(180deg, #1a1508 0%, #1a1033 100%)" glow="radial-gradient(circle, rgba(245,158,11,0.25), transparent)">
           <div style={{ textAlign: "center" }}>
-            <h1 data-split style={{ color: "#fff", fontSize: 28, fontWeight: 900, marginBottom: 16 }}>The 5 Golden Rules!</h1>
+            <h1 data-split style={{ color: "#fff", fontSize: 40, fontWeight: 900, marginBottom: 16, textShadow: "0 0 20px rgba(245,158,11,0.4)" }}>⭐ The 5 Golden Rules!</h1>
             <SpeechBubble character="layla" message="These are the most important rules. Remember them!" />
-            <div style={{ display: "flex", flexDirection: "column", gap: 16, maxWidth: 680, margin: "0 auto 24px" }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: 16, maxWidth: 800, margin: "0 auto 24px" }}>
               {RULES.map((rule, i) => {
                 const isRevealed = revealedRules.has(i);
                 const isFlipping = flippingRule === i;
@@ -2664,6 +2703,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
               )}
             </AnimatePresence>
           </div>
+          </FullScene>
         );
 
       /* ──── CASE 11: QUIZ 3 (FLOATING BUBBLES) ──── */
@@ -2673,6 +2713,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
         if (q3Idx >= Q3_QUIZ.length) {
           const s = q3Score >= 4 ? 3 : q3Score >= 3 ? 2 : 1;
           return (
+            <FullScene bg="linear-gradient(180deg, #0a0a2a 0%, #1a1033 100%)" glow="radial-gradient(circle, rgba(59,130,246,0.25), transparent)">
             <motion.div
               initial={{ opacity: 0, scale: 0.5 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -2681,7 +2722,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
             >
               {card(
                 <>
-                  <h2 data-split style={{ color: "#fff", fontSize: 24, margin: "0 0 12px" }}>Quiz Complete!</h2>
+                  <h2 data-split style={{ color: "#fff", fontSize: 36, margin: "0 0 12px", textShadow: "0 0 20px rgba(59,130,246,0.4)" }}>Quiz Complete!</h2>
                   {stars(s)}
                   <p style={{ color: "#d1d5db", margin: "12px 0" }}>You got {q3Score}/{Q3_QUIZ.length} correct!</p>
                   <p style={{ color: "#f59e0b", fontSize: 14 }}>🪙 +{q3Score * 10} coins earned!</p>
@@ -2689,17 +2730,19 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                 </>
               )}
             </motion.div>
+            </FullScene>
           );
         }
         const qq = Q3_QUIZ[q3Idx];
         return (
+          <FullScene bg="linear-gradient(180deg, #0a0a2a 0%, #1a1033 100%)" glow="radial-gradient(circle, rgba(59,130,246,0.25), transparent)">
           <motion.div
             key={`q3-${q3Idx}`}
             initial={{ opacity: 0, y: 60 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
           >
-            <h1 data-split style={{ color: "#fff", fontSize: 24, fontWeight: 900, marginBottom: 4, textAlign: "center" }}>Quick Quiz!<img src="/characters/thinking.png" width={40} height={40} alt="" style={{ display: "inline-block", verticalAlign: "middle", marginLeft: 8, borderRadius: 999 }} /></h1>
+            <h1 data-split style={{ color: "#fff", fontSize: 40, fontWeight: 900, marginBottom: 4, textAlign: "center", textShadow: "0 0 24px rgba(59,130,246,0.5)" }}>Quick Quiz!<img src="/characters/thinking.png" width={40} height={40} alt="" style={{ display: "inline-block", verticalAlign: "middle", marginLeft: 8, borderRadius: 999 }} /></h1>
             <p style={{ color: "#9ca3af", marginBottom: 12, textAlign: "center" }}>Question {q3Idx + 1}/{Q3_QUIZ.length}</p>
             <FloatingBubbleQuiz
               question={qq.q}
@@ -2715,6 +2758,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
               onWrong={() => addWrong(11)}
             />
           </motion.div>
+          </FullScene>
         );
       }
 
@@ -2728,10 +2772,11 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
           { title: "ASKING FOR SECRETS", fake: "Enter your password to win free V-Bucks!", explain: "NO real website will EVER ask for your password in a message. NEVER type your password into a popup.", color: "#ec4899" },
         ];
         return (
+          <FullScene bg="linear-gradient(180deg, #1a0f05 0%, #1a1033 100%)" glow="radial-gradient(circle, rgba(249,115,22,0.15), transparent)">
           <div style={{ textAlign: "center" }}>
-            <h1 data-split style={{ color: "#fff", fontSize: 26, fontWeight: 900, marginBottom: 4 }}>Spot the Tricks!</h1>
+            <h1 data-split style={{ color: "#fff", fontSize: 38, fontWeight: 900, marginBottom: 4, textShadow: "0 0 20px rgba(249,115,22,0.4)" }}>🔍 Spot the Tricks!</h1>
             <SpeechBubble character="adam" message="Wait... this message looks weird. Is it real?" />
-            <p style={{ color: "#9ca3af", marginBottom: 16 }}>The Raccoon sends FAKE messages to trick people. Here&apos;s how to spot them!</p>
+            <p style={{ color: "#9ca3af", marginBottom: 16, fontSize: 16 }}>The Raccoon sends FAKE messages to trick people. Here&apos;s how to spot them!</p>
             {trickCard < 4 ? (
               <AnimatePresence mode="wait">
                 <motion.div key={trickCard} initial={{ opacity: 0, x: 40 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -40 }}>
@@ -2775,6 +2820,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
               </motion.div>
             )}
           </div>
+          </FullScene>
         );
       }
 
@@ -2785,6 +2831,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
         if (phishIdx >= PHISH.length) {
           const s = phishScore >= 3 ? 3 : phishScore >= 2 ? 2 : 1;
           return (
+            <FullScene bg="linear-gradient(180deg, #050a1a 0%, #1a1033 100%)" glow="radial-gradient(circle, rgba(59,130,246,0.2), transparent)">
             <motion.div
               initial={{ opacity: 0, scale: 0.5 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -2793,7 +2840,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
             >
               {card(
                 <>
-                  <h2 data-split style={{ color: "#fff", fontSize: 24, margin: "0 0 12px" }}>Phishing Expert!</h2>
+                  <h2 data-split style={{ color: "#fff", fontSize: 36, margin: "0 0 12px", textShadow: "0 0 20px rgba(59,130,246,0.4)" }}>Phishing Expert!</h2>
                   {stars(s)}
                   <p style={{ color: "#d1d5db", margin: "12px 0" }}>{phishScore}/{PHISH.length} spotted correctly!</p>
                   <p style={{ color: "#f59e0b", fontSize: 14 }}>🪙 +{phishScore * 15} coins earned!</p>
@@ -2801,13 +2848,15 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                 </>
               )}
             </motion.div>
+            </FullScene>
           );
         }
         const ph = PHISH[phishIdx];
         return (
+          <FullScene bg="linear-gradient(180deg, #050a1a 0%, #1a1033 100%)" glow="radial-gradient(circle, rgba(59,130,246,0.2), transparent)">
           <div style={{ textAlign: "center" }}>
-            <h1 data-split style={{ color: "#fff", fontSize: 24, fontWeight: 900, marginBottom: 8 }}>Spot the Tricks!<img src="/characters/raccoon-sneaking.png" width={40} height={40} alt="" style={{ display: "inline-block", verticalAlign: "middle", marginLeft: 8, borderRadius: 999 }} /></h1>
-            <p style={{ color: "#9ca3af", marginBottom: 16 }}>Message {phishIdx + 1}/{PHISH.length}</p>
+            <h1 data-split style={{ color: "#fff", fontSize: 38, fontWeight: 900, marginBottom: 8, textShadow: "0 0 20px rgba(59,130,246,0.4)" }}>📧 Spot the Tricks!<img src="/characters/raccoon-sneaking.png" width={40} height={40} alt="" style={{ display: "inline-block", verticalAlign: "middle", marginLeft: 8, borderRadius: 999 }} /></h1>
+            <p style={{ color: "#9ca3af", marginBottom: 16, fontSize: 16 }}>Message {phishIdx + 1}/{PHISH.length}</p>
 
             {/* Tablet frame */}
             <div style={{
@@ -2936,6 +2985,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
               </motion.div>
             )}
           </div>
+          </FullScene>
         );
       }
 
@@ -2946,6 +2996,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
         if (wydIdx >= WYD.length) {
           const s = wydScore >= 3 ? 3 : wydScore >= 2 ? 2 : 1;
           return (
+            <FullScene bg="linear-gradient(180deg, #0a0a2a 0%, #1a1033 100%)" glow="radial-gradient(circle, rgba(59,130,246,0.25), transparent)">
             <motion.div
               initial={{ opacity: 0, scale: 0.5 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -2954,7 +3005,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
             >
               {card(
                 <>
-                  <h2 data-split style={{ color: "#fff", fontSize: 24, margin: "0 0 12px" }}>Great decisions!</h2>
+                  <h2 data-split style={{ color: "#fff", fontSize: 36, margin: "0 0 12px", textShadow: "0 0 20px rgba(59,130,246,0.4)" }}>Great decisions!</h2>
                   {stars(s)}
                   <p style={{ color: "#d1d5db", margin: "12px 0" }}>{wydScore}/{WYD.length} perfect choices!</p>
                   <p style={{ color: "#f59e0b", fontSize: 14 }}>🪙 +{wydScore * 15} coins earned!</p>
@@ -2962,13 +3013,15 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                 </>
               )}
             </motion.div>
+            </FullScene>
           );
         }
         const w = WYD[wydIdx];
         return (
+          <FullScene bg="linear-gradient(180deg, #0a0a2a 0%, #1a1033 100%)" glow="radial-gradient(circle, rgba(59,130,246,0.25), transparent)">
           <div style={{ textAlign: "center" }}>
-            <h1 data-split style={{ color: "#fff", fontSize: 24, fontWeight: 900, marginBottom: 8 }}>What Would YOU Do?</h1>
-            <p style={{ color: "#9ca3af", marginBottom: 16 }}>Scenario {wydIdx + 1}/{WYD.length}</p>
+            <h1 data-split style={{ color: "#fff", fontSize: 38, fontWeight: 900, marginBottom: 8, textShadow: "0 0 20px rgba(59,130,246,0.4)" }}>🎬 What Would YOU Do?</h1>
+            <p style={{ color: "#9ca3af", marginBottom: 16, fontSize: 16 }}>Scenario {wydIdx + 1}/{WYD.length}</p>
             <motion.div
               key={`wyd-${wydIdx}`}
               initial={{ opacity: 0, x: 60 }}
@@ -3054,6 +3107,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
               )}
             </motion.div>
           </div>
+          </FullScene>
         );
       }
 
@@ -3064,6 +3118,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
 
         if (bossDone) {
           return (
+            <FullScene bg="linear-gradient(180deg, #0a0505 0%, #1a1033 100%)" glow="radial-gradient(circle, rgba(245,158,11,0.3), transparent)">
             <motion.div initial={{ opacity: 0, scale: 0.5 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: "spring", stiffness: 300, damping: 20 }} style={{ textAlign: "center" }}>
               <Confetti duration={5000} />
               {card(
@@ -3090,6 +3145,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                 </>
               )}
             </motion.div>
+            </FullScene>
           );
         }
 
@@ -3097,8 +3153,9 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
           const raccoonScale = 0.6 + (arenaRaccoonPos.top / 100) * 0.6;
           const timerPct = (arenaTimeLeft / 12) * 100;
           return (
+            <FullScene bg="linear-gradient(180deg, #0a0505 0%, #1a1033 100%)" glow="radial-gradient(circle, rgba(239,68,68,0.2), transparent)">
             <div style={{ textAlign: "center" }}>
-              <h1 data-split style={{ color: "#f59e0b", fontSize: 26, fontWeight: 900, marginBottom: 4 }}>FIRE AT THE RACCOON!</h1>
+              <h1 data-split style={{ color: "#f59e0b", fontSize: 40, fontWeight: 900, marginBottom: 4, textShadow: "0 0 20px rgba(239,68,68,0.4)" }}>🎯 FIRE AT THE RACCOON!</h1>
               <p style={{ color: "#9ca3af", fontSize: 14, marginBottom: 4 }}>Tap anywhere to fire!</p>
               <p style={{ color: "#f59e0b", fontSize: 28, fontWeight: 900, marginBottom: 8 }}>Hits: {arenaHits}</p>
               {/* Arena with 3D background */}
@@ -3157,14 +3214,16 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                 </div>
               </div>
             </div>
+            </FullScene>
           );
         }
 
         const bq = BOSS_QUIZ[bossIdx] || BOSS_QUIZ[0];
         return (
+          <FullScene bg="linear-gradient(180deg, #0a0505 0%, #1a1033 100%)" glow="radial-gradient(circle, rgba(239,68,68,0.2), transparent)">
           <div style={{ textAlign: "center" }}>
-            <h1 data-split style={{ color: "#fff", fontSize: 28, fontWeight: 900, marginBottom: 8 }}>
-              FINAL CHALLENGE!<img src="/characters/raccoon-sneaking.png" width={40} height={40} alt="" style={{ display: "inline-block", verticalAlign: "middle", marginLeft: 8, borderRadius: 999 }} />
+            <h1 data-split style={{ color: "#fff", fontSize: 40, fontWeight: 900, marginBottom: 8, textShadow: "0 0 20px rgba(239,68,68,0.4)" }}>
+              ⚔️ FINAL CHALLENGE!<img src="/characters/raccoon-sneaking.png" width={40} height={40} alt="" style={{ display: "inline-block", verticalAlign: "middle", marginLeft: 8, borderRadius: 999 }} />
             </h1>
             {bossIdx === 0 && (
               <>
@@ -3248,6 +3307,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
               </motion.div>
             )}
           </div>
+          </FullScene>
         );
       }
 
@@ -3255,8 +3315,9 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
       case 16: {
         const achieveCoins = [25, 30, 25, 0, 25, 0, 0, 0];
         return (
+          <FullScene bg="linear-gradient(180deg, #1a1508 0%, #0a0a1a 100%)" glow="radial-gradient(circle, rgba(245,158,11,0.3), transparent)">
           <div style={{ textAlign: "center" }}>
-            <h1 data-split style={{ color: "#fff", fontSize: 32, fontWeight: 900, marginBottom: 16 }}>You Did It!<img src="/characters/celebrating.png" width={44} height={44} alt="" style={{ display: "inline-block", verticalAlign: "middle", marginLeft: 8, borderRadius: 999 }} /></h1>
+            <h1 data-split style={{ color: "#fff", fontSize: 44, fontWeight: 900, marginBottom: 16, textShadow: "0 0 30px rgba(245,158,11,0.5)" }}>🏆 You Did It!<img src="/characters/celebrating.png" width={44} height={44} alt="" style={{ display: "inline-block", verticalAlign: "middle", marginLeft: 8, borderRadius: 999 }} /></h1>
             <motion.img
               src="/characters/celebrating.png"
               alt="Adam and Layla celebrating"
@@ -3311,6 +3372,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
               </motion.div>
             )}
           </div>
+          </FullScene>
         );
       }
 
@@ -3321,6 +3383,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
         const finalStars = totalScore >= totalPossible * 0.8 ? 3 : totalScore >= totalPossible * 0.5 ? 2 : 1;
         const today = new Date().toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" });
         return (
+          <FullScene bg="linear-gradient(180deg, #1a0a20 0%, #0a0a1a 100%)" glow="radial-gradient(circle, rgba(245,158,11,0.25), transparent)">
           <div style={{ textAlign: "center" }}>
             {showConfetti && <Confetti duration={5000} />}
             {/* Certificate */}
@@ -3410,16 +3473,18 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
               </motion.button>
             </div>
           </div>
+          </FullScene>
         );
       }
 
       /* ──── CASE 18: OUTRO VIDEO ──── */
       case 18:
         return (
+          <FullScene bg="linear-gradient(180deg, #0a0a1a 0%, #1a1033 100%)" glow="radial-gradient(circle, rgba(245,158,11,0.15), transparent)">
           <div style={{ textAlign: "center" }}>
-            <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
-              style={{ color: "#fff", fontSize: 28, fontWeight: 900, marginBottom: 20 }}>
-              Your Adventure{" "}
+            <motion.h1 data-split initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+              style={{ color: "#fff", fontSize: 44, fontWeight: 900, marginBottom: 20, textShadow: "0 0 24px rgba(245,158,11,0.4)" }}>
+              ✨ Your Adventure{" "}
               <span style={{ background: GRAD, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>Continues...</span>
             </motion.h1>
 
@@ -3465,6 +3530,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
               </div>
             </motion.div>
           </div>
+          </FullScene>
         );
 
       default:

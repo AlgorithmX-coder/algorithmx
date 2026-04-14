@@ -125,6 +125,55 @@ const TiltCard = ({ children, style, className, onClick }: { children: React.Rea
 // Player is imported for potential Lottie usage
 void Player;
 
+/* ───────────────────────── FULL-SCREEN SCENE WRAPPER ───────── */
+type SceneTheme = "domino" | "lair" | "factory" | "callscreen" | "forge" | "warroom" | "vault" | "ceremony";
+const SCENE_BG: Record<SceneTheme, React.CSSProperties> = {
+  domino: {
+    background: "radial-gradient(ellipse at center top, rgba(59,130,246,0.12), transparent 60%), linear-gradient(180deg, #0f172a 0%, #1a1033 100%)",
+  },
+  lair: {
+    background: "radial-gradient(ellipse at center, rgba(239,68,68,0.08), transparent 65%), linear-gradient(180deg, #0a0612 0%, #1a1033 100%)",
+  },
+  factory: {
+    background: "linear-gradient(180deg, #0d1424 0%, #1a1033 100%), repeating-linear-gradient(90deg, transparent 0 60px, rgba(245,158,11,0.04) 60px 62px)",
+  },
+  callscreen: {
+    background: "radial-gradient(ellipse at center, rgba(34,197,94,0.08), transparent 70%), linear-gradient(180deg, #0a0a14 0%, #1a1033 100%)",
+  },
+  forge: {
+    background: "radial-gradient(ellipse at center, rgba(249,115,22,0.10), transparent 55%), radial-gradient(ellipse at center, rgba(59,130,246,0.10), transparent 70%), linear-gradient(180deg, #0a0612 0%, #1a1033 100%)",
+  },
+  warroom: {
+    background: "radial-gradient(ellipse at center top, rgba(245,158,11,0.10), transparent 50%), linear-gradient(180deg, #0a0612 0%, #14091e 100%)",
+  },
+  vault: {
+    background: "radial-gradient(ellipse at center, rgba(59,130,246,0.15), transparent 60%), linear-gradient(180deg, #0a1024 0%, #1a1033 100%)",
+  },
+  ceremony: {
+    background: "radial-gradient(ellipse at top, rgba(245,158,11,0.18), transparent 55%), linear-gradient(180deg, #0c0820 0%, #1a1033 100%)",
+  },
+};
+const ThemedScene = ({ theme, children }: { theme: SceneTheme; children: React.ReactNode }) => (
+  <div style={{
+    minHeight: "calc(100vh - 120px)",
+    width: "100%",
+    position: "relative",
+    padding: "24px 16px 80px",
+    ...SCENE_BG[theme],
+  }}>
+    <div style={{ maxWidth: 900, margin: "0 auto", position: "relative", zIndex: 1 }}>
+      {children}
+    </div>
+  </div>
+);
+
+const FullScene = ({ children, bg, glow }: { children: React.ReactNode; bg: string; glow?: string }) => (
+  <div style={{ minHeight: "calc(100vh - 120px)", background: bg, position: "relative", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "40px 24px", overflow: "hidden" }}>
+    {glow && <div style={{ position: "absolute", top: "20%", left: "50%", transform: "translateX(-50%)", width: 600, height: 600, borderRadius: "50%", background: glow, filter: "blur(120px)", opacity: 0.3, pointerEvents: "none" }} />}
+    <div style={{ position: "relative", zIndex: 1, width: "100%", maxWidth: 900 }}>{children}</div>
+  </div>
+);
+
 /* ───────────────────────── DATA ────────────────────────────── */
 const TILE_DATA = [
   { label: "Your Full Name", icon: "👤", color: "#22c55e", level: "safe" },
@@ -847,6 +896,7 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
       /* ──── STEP 0: INTRO VIDEO ──── */
       case 0:
         return (
+          <FullScene bg="linear-gradient(180deg, #0a0a1a 0%, #0a1628 100%)">
           <div style={{ textAlign: "center" }}>
             {!videoEnded ? (
               <>
@@ -877,15 +927,16 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
                 {card(
                   <>
                     <img src="/characters/heroic.png" alt="Adam and Layla" style={{ width: 160, borderRadius: 20, margin: "0 auto 16px", display: "block" }} />
-                    <h2 data-split style={{ color: "#fff", fontSize: 24, fontWeight: 900, margin: "0 0 8px" }}>Mission: Guard Your Secrets!</h2>
+                    <h2 data-split style={{ color: "#fff", fontSize: 36, fontWeight: 900, margin: "0 0 8px", textShadow: "0 0 20px rgba(59,130,246,0.4)" }}>Mission: Guard Your Secrets!</h2>
                     <p style={{ color: "#d1d5db", marginBottom: 20, fontSize: 16 }}>Adam and Layla need your help to learn about private information!</p>
                     {btn("Start Mission →", () => navigate(1))}
                   </>,
-                  { maxWidth: 600, margin: "0 auto", padding: 32 }
+                  { maxWidth: 800, margin: "0 auto", padding: 32 }
                 )}
               </motion.div>
             )}
           </div>
+          </FullScene>
         );
 
       /* ──── STEP 1: MISSION BRIEFING ──── */
@@ -902,15 +953,16 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
           "4. Build an unbreakable Privacy Shield",
         ];
         return (
+          <FullScene bg="linear-gradient(180deg, #0a1020 0%, #0a0a1a 100%)" glow="radial-gradient(circle, rgba(59,130,246,0.25), transparent)">
           <div style={{ textAlign: "center" }}>
-            <h1 data-split style={{ color: "#fff", fontSize: 28, fontWeight: 900, marginBottom: 16 }}>Agent Assignment</h1>
+            <h1 data-split style={{ color: "#fff", fontSize: 40, fontWeight: 900, marginBottom: 16, textShadow: "0 0 20px rgba(59,130,246,0.4)" }}>🔐 Agent Assignment</h1>
             <SpeechBubble character="layla" message="This is a top secret mission. We need to protect our personal information!" />
             {/* Folder */}
             <motion.div
               initial={{ rotateX: -30 }}
               animate={{ rotateX: 0 }}
               transition={{ duration: 0.8, ease: "easeOut" }}
-              style={{ maxWidth: 580, margin: "0 auto" }}>
+              style={{ maxWidth: 800, margin: "0 auto" }}>
               {card(
                 <div style={{ textAlign: "left" }}>
                   {/* TOP SECRET stamp */}
@@ -968,6 +1020,7 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
               )}
             </motion.div>
           </div>
+          </FullScene>
         );
       }
 
@@ -976,11 +1029,12 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
         if (showInstr[2]) return <InstructionOverlay icon="🔍" story="The Raccoon is snooping!" instructions="Tap each tile to flip it. Red means PRIVATE, green means SAFE!" onReady={() => dismissInstr(2)} />;
         if (showSummary[2]) return <LearnSummary message="You learned that some information is PRIVATE and some is SAFE. Private things like addresses and passwords should NEVER be shared with strangers!" starCount={getStars(2)} onNext={() => dismissSummary(2, 3)} />;
         return (
+          <FullScene bg="linear-gradient(180deg, #0a0f1a 0%, #1a1033 100%)" glow="radial-gradient(circle, rgba(59,130,246,0.15), transparent)">
           <div style={{ textAlign: "center" }}>
-            <h1 data-split style={{ color: "#fff", fontSize: 26, fontWeight: 900, marginBottom: 4 }}>What IS Personal Information?</h1>
+            <h1 data-split style={{ color: "#fff", fontSize: 38, fontWeight: 900, marginBottom: 4, textShadow: "0 0 20px rgba(59,130,246,0.4)" }}>📁 What IS Personal Information?</h1>
             <SpeechBubble character="adam" message="Some of this stuff is private and some is safe to share. Let's find out which!" />
-            <p style={{ color: "#9ca3af", marginBottom: 20 }}>Tap each tile to discover what&apos;s inside</p>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))", gap: 12, maxWidth: 640, margin: "0 auto 20px" }}>
+            <p style={{ color: "#9ca3af", marginBottom: 20, fontSize: 16 }}>Tap each tile to discover what&apos;s inside</p>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))", gap: 12, maxWidth: 800, margin: "0 auto 20px" }}>
               {TILE_DATA.map((tile, i) => {
                 const flipped = flippedTiles.has(i);
                 return (
@@ -1036,6 +1090,7 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
               )}
             </AnimatePresence>
           </div>
+          </FullScene>
         );
 
       /* ──── STEP 3: POSTER FIX ──── */
@@ -1043,11 +1098,12 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
         if (showInstr[3]) return <InstructionOverlay icon="📋" story="Adam made a poster with TOO MUCH info!" instructions="Tap on the dangerous things to REMOVE them from the poster." onReady={() => dismissInstr(3)} />;
         if (showSummary[3]) return <LearnSummary message="You spotted dangerous information on a poster. Always check before sharing, remove addresses, phone numbers, and school names!" starCount={getStars(3)} onNext={() => dismissSummary(3, 4)} />;
         return (
+          <FullScene bg="linear-gradient(180deg, #1a1508 0%, #1a1033 100%)" glow="radial-gradient(circle, rgba(245,158,11,0.2), transparent)">
           <div style={{ textAlign: "center" }}>
-            <h1 data-split style={{ color: "#fff", fontSize: 26, fontWeight: 900, marginBottom: 4 }}>Fix Adam&apos;s Poster!</h1>
+            <h1 data-split style={{ color: "#fff", fontSize: 38, fontWeight: 900, marginBottom: 4, textShadow: "0 0 20px rgba(245,158,11,0.3)" }}>📋 Fix Adam&apos;s Poster!</h1>
             <SpeechBubble character="layla" message="Oh no, Adam put WAY too much information on this poster!" />
             <SpeechBubble character="raccoon" message="Hehehe, keep going Adam... tell me more!" side="right" />
-            <p style={{ color: "#9ca3af", marginBottom: 8 }}>Tap on things that should be REMOVED to keep Adam safe</p>
+            <p style={{ color: "#9ca3af", marginBottom: 8, fontSize: 16 }}>Tap on things that should be REMOVED to keep Adam safe</p>
             <p style={{ color: "#f59e0b", fontWeight: 700, marginBottom: 16 }}>
               Dangers found: {removedItems.size}/{POSTER_DANGER_COUNT}
             </p>
@@ -1113,6 +1169,7 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
               </motion.div>
             )}
           </div>
+          </FullScene>
         );
 
       /* ──── STEP 4: CLASSIFY QUIZ ──── */
@@ -1121,10 +1178,11 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
         if (showSummary[4]) return <LearnSummary message="You can now CLASSIFY information as safe or private. You're becoming a real Information Agent!" starCount={getStars(4)} onNext={() => dismissSummary(4, 5)} />;
         if (classifyIdx >= CLASSIFY_QS.length) {
           return (
+            <FullScene bg="linear-gradient(180deg, #0a1020 0%, #0a0a1a 100%)" glow="radial-gradient(circle, rgba(59,130,246,0.2), transparent)">
             <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} style={{ textAlign: "center" }}>
               {card(
                 <>
-                  <h2 data-split style={{ color: "#fff", fontSize: 24, fontWeight: 900, marginBottom: 8 }}>Classification Complete!</h2>
+                  <h2 data-split style={{ color: "#fff", fontSize: 36, fontWeight: 900, marginBottom: 8, textShadow: "0 0 20px rgba(59,130,246,0.4)" }}>Classification Complete!</h2>
                   <p style={{ color: "#d1d5db", marginBottom: 8 }}>You classified {classifyScore}/{CLASSIFY_QS.length} correctly!</p>
                   <p style={{ color: "#9ca3af", fontSize: 14, marginBottom: 16 }}>
                     Great work, Agent! But the Raccoon is already trying to trick you...
@@ -1137,13 +1195,15 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
                 { maxWidth: 480, margin: "0 auto" }
               )}
             </motion.div>
+            </FullScene>
           );
         }
         const q = CLASSIFY_QS[classifyIdx];
         return (
+          <FullScene bg="linear-gradient(180deg, #0a1020 0%, #0a0a1a 100%)" glow="radial-gradient(circle, rgba(59,130,246,0.2), transparent)">
           <div style={{ textAlign: "center" }}>
-            <h1 data-split style={{ color: "#fff", fontSize: 26, fontWeight: 900, marginBottom: 4 }}>CLASSIFY THE INFORMATION</h1>
-            <p style={{ color: "#9ca3af", marginBottom: 20 }}>Question {classifyIdx + 1}/{CLASSIFY_QS.length}</p>
+            <h1 data-split style={{ color: "#fff", fontSize: 38, fontWeight: 900, marginBottom: 4, textShadow: "0 0 20px rgba(59,130,246,0.4)" }}>🔖 CLASSIFY THE INFORMATION</h1>
+            <p style={{ color: "#9ca3af", marginBottom: 20, fontSize: 16 }}>Question {classifyIdx + 1}/{CLASSIFY_QS.length}</p>
             <AnimatePresence mode="wait">
               <motion.div key={classifyIdx} initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -30 }}>
                 {card(
@@ -1203,6 +1263,7 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
               </motion.div>
             </AnimatePresence>
           </div>
+          </FullScene>
         );
       }
 
@@ -1214,13 +1275,14 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
           const maxDanger = CHAT_ROUNDS.length * 2;
           const dangerPct = Math.round((dangerLevel / maxDanger) * 100);
           return (
+            <FullScene bg="linear-gradient(180deg, #0a0a1a 0%, #0f0a1a 100%)" glow="radial-gradient(circle, rgba(239,68,68,0.15), transparent)">
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={{ textAlign: "center" }}>
               {card(
                 <>
                   <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: "spring" }}>
                     <img src="/characters/raccoon-defeated.png" alt="Raccoon revealed" style={{ width: 120, borderRadius: 20, margin: "0 auto 12px", display: "block" }} />
                   </motion.div>
-                  <h2 style={{ color: "#ef4444", fontSize: 24, fontWeight: 900, marginBottom: 8 }}>
+                  <h2 style={{ color: "#ef4444", fontSize: 36, fontWeight: 900, marginBottom: 8, textShadow: "0 0 20px rgba(239,68,68,0.4)" }}>
                     It was the RACCOON all along!
                   </h2>
                   <SpeechBubble character="layla" message="I KNEW it! It was the Raccoon all along!" />
@@ -1237,6 +1299,7 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
                 { maxWidth: 520, margin: "0 auto" }
               )}
             </motion.div>
+            </FullScene>
           );
         }
 
@@ -1245,8 +1308,9 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
         const dangerPct = Math.round((dangerLevel / maxDanger) * 100);
 
         return (
+          <FullScene bg="linear-gradient(180deg, #0a0a1a 0%, #0f0a1a 100%)" glow="radial-gradient(circle, rgba(239,68,68,0.15), transparent)">
           <div style={{ textAlign: "center" }}>
-            <h1 data-split style={{ color: "#fff", fontSize: 22, fontWeight: 900, marginBottom: 12 }}>INCOMING MESSAGE, UNKNOWN CONTACT</h1>
+            <h1 data-split style={{ color: "#fff", fontSize: 38, fontWeight: 900, marginBottom: 12, textShadow: "0 0 20px rgba(239,68,68,0.3)" }}>💬 INCOMING MESSAGE</h1>
             <SpeechBubble character="adam" message="Someone called CoolKid99 is messaging me. They seem nice..." />
             <SpeechBubble character="layla" message="Be careful! Remember, not everyone online is who they say they are!" />
 
@@ -1350,6 +1414,7 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
               )}
             </div>
           </div>
+          </FullScene>
         );
       }
 
@@ -1363,10 +1428,12 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
           "But the Raccoon isn't done yet. He's changing tactics...",
         ];
         return (
+          <FullScene bg="linear-gradient(180deg, #0a1628 0%, #0a0a1a 100%)" glow="radial-gradient(circle, rgba(59,130,246,0.2), transparent)">
           <div style={{ textAlign: "center" }}>
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
-              <p style={{ color: "#f59e0b", fontWeight: 900, fontSize: 14, letterSpacing: "0.1em", marginBottom: 12 }}>TRANSMISSION INCOMING</p>
+              <p style={{ color: "#f59e0b", fontWeight: 900, fontSize: 16, letterSpacing: "0.2em", marginBottom: 12 }}>◉ TRANSMISSION INCOMING ◉</p>
             </motion.div>
+            <h1 data-split style={{ color: "#fff", fontSize: 38, fontWeight: 900, marginBottom: 12, textShadow: "0 0 20px rgba(59,130,246,0.4)" }}>📡 Intel Report</h1>
             <SpeechBubble character="adam" message="The Raccoon got NOTHING from us. We're too smart for him!" />
             <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.5, type: "spring" }}>
               {card(
@@ -1400,6 +1467,7 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
               )}
             </motion.div>
           </div>
+          </FullScene>
         );
       }
 
@@ -1409,10 +1477,11 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
         if (showSummary[7]) return <LearnSummary message="You spotted dangers in a social media profile. Keep your account PRIVATE!" starCount={getStars(7)} onNext={() => dismissSummary(7, 8)} />;
         const allFound = foundDangers.size >= PROFILE_DANGERS.length;
         return (
+          <FullScene bg="linear-gradient(180deg, #0a0f1a 0%, #1a1033 100%)" glow="radial-gradient(circle, rgba(6,182,212,0.2), transparent)">
           <div style={{ textAlign: "center" }}>
-            <h1 data-split style={{ color: "#fff", fontSize: 24, fontWeight: 900, marginBottom: 4 }}>PROFILE DETECTIVE</h1>
+            <h1 data-split style={{ color: "#fff", fontSize: 38, fontWeight: 900, marginBottom: 4, textShadow: "0 0 20px rgba(6,182,212,0.3)" }}>🔎 PROFILE DETECTIVE</h1>
             <SpeechBubble character="layla" message="This profile has so many dangers. Can you spot them all?" />
-            <p style={{ color: "#9ca3af", marginBottom: 4 }}>Find ALL the dangers hidden in this profile</p>
+            <p style={{ color: "#9ca3af", marginBottom: 4, fontSize: 16 }}>Find ALL the dangers hidden in this profile</p>
             <p style={{ color: "#f59e0b", fontWeight: 700, marginBottom: 8 }}>Dangers found: {foundDangers.size}/{PROFILE_DANGERS.length} | Time: {profileTimer}s</p>
 
             {!profileDone ? (
@@ -1478,6 +1547,7 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
               </motion.div>
             )}
           </div>
+          </FullScene>
         );
       }
 
@@ -1487,23 +1557,26 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
         if (showSummary[8]) return <LearnSummary message="WHO is asking matters as much as WHAT they're asking!" starCount={getStars(8)} onNext={() => dismissSummary(8, 9)} />;
         if (contextIdx >= CONTEXT_ROUNDS.length) {
           return (
+            <FullScene bg="linear-gradient(180deg, #1a1508 0%, #0a0a1a 100%)" glow="radial-gradient(circle, rgba(245,158,11,0.2), transparent)">
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={{ textAlign: "center" }}>
               {card(
                 <>
-                  <h2 data-split style={{ color: "#fff", fontSize: 24, fontWeight: 900, marginBottom: 8 }}>Context Matters!</h2>
+                  <h2 data-split style={{ color: "#fff", fontSize: 36, fontWeight: 900, marginBottom: 8, textShadow: "0 0 20px rgba(245,158,11,0.3)" }}>Context Matters!</h2>
                   <p style={{ color: "#d1d5db", marginBottom: 16 }}>{contextScore}/{CONTEXT_ROUNDS.length} correct! It&apos;s not just WHAT you share, it&apos;s WHO you share it with!</p>
                   {btn("Continue →", () => { addCoins(contextScore === CONTEXT_ROUNDS.length ? 15 : 10); triggerSummary(8); })}
                 </>,
                 { maxWidth: 480, margin: "0 auto" }
               )}
             </motion.div>
+            </FullScene>
           );
         }
         const cr = CONTEXT_ROUNDS[contextIdx];
         return (
+          <FullScene bg="linear-gradient(180deg, #1a1508 0%, #0a0a1a 100%)" glow="radial-gradient(circle, rgba(245,158,11,0.2), transparent)">
           <div style={{ textAlign: "center" }}>
-            <h1 data-split style={{ color: "#fff", fontSize: 24, fontWeight: 900, marginBottom: 4 }}>Who&apos;s Asking?</h1>
-            <p style={{ color: "#9ca3af", marginBottom: 16 }}>Round {contextIdx + 1}/{CONTEXT_ROUNDS.length}</p>
+            <h1 data-split style={{ color: "#fff", fontSize: 38, fontWeight: 900, marginBottom: 4, textShadow: "0 0 20px rgba(245,158,11,0.3)" }}>⚖️ Who&apos;s Asking?</h1>
+            <p style={{ color: "#9ca3af", marginBottom: 16, fontSize: 16 }}>Round {contextIdx + 1}/{CONTEXT_ROUNDS.length}</p>
             <AnimatePresence mode="wait">
               <motion.div key={contextIdx} initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -30 }}>
                 {/* Info card */}
@@ -1558,6 +1631,7 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
               </motion.div>
             </AnimatePresence>
           </div>
+          </FullScene>
         );
       }
 
@@ -1569,10 +1643,11 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
         const revealed = chain2Phase ? chain2Revealed : chainRevealed;
         const broken = chain2Phase ? chain2Broken : chainBroken;
         return (
-          <div style={{ textAlign: "center" }}>
-            <h1 data-split style={{ color: "#fff", fontSize: 24, fontWeight: 900, marginBottom: 4 }}>The Information Chain</h1>
+          <ThemedScene theme="domino">
+            <div style={{ textAlign: "center" }}>
+            <h1 data-split style={{ color: "#fff", fontSize: 36, fontWeight: 900, marginBottom: 8, textShadow: "0 0 20px rgba(59,130,246,0.5)" }}>The Information Chain</h1>
             <SpeechBubble character="adam" message="Wait... sharing just ONE thing can cause ALL of this?" />
-            <p style={{ color: "#9ca3af", marginBottom: 16 }}>
+            <p style={{ color: "#9ca3af", marginBottom: 16, fontSize: 16 }}>
               {broken ? "You broke the chain!" : "Tap each domino to see what happens next..."}
             </p>
             <div style={{ display: "flex", flexDirection: "column", gap: 8, maxWidth: 500, margin: "0 auto 16px" }}>
@@ -1630,19 +1705,21 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
                 {btn("Continue →", () => { addCoins(10); triggerSummary(9); })}
               </motion.div>
             )}
-          </div>
+            </div>
+          </ThemedScene>
         );
       }
 
       /* ──── STEP 10: RACCOON FRUSTRATION ──── */
       case 10:
         return (
-          <div style={{ textAlign: "center" }}>
+          <ThemedScene theme="lair">
+            <div style={{ textAlign: "center" }}>
             <motion.p initial={{ opacity: 0 }} animate={{ opacity: [0, 1, 0, 1] }} transition={{ duration: 1 }}
-              style={{ color: "#f59e0b", fontWeight: 900, fontSize: 14, letterSpacing: "0.1em", marginBottom: 12 }}>
-              TRANSMISSION INCOMING
+              style={{ color: "#f59e0b", fontWeight: 900, fontSize: 14, letterSpacing: "0.2em", marginBottom: 12 }}>
+              ◉ TRANSMISSION INCOMING ◉
             </motion.p>
-            <h1 data-split style={{ color: "#fff", fontSize: 24, fontWeight: 900, marginBottom: 16 }}>Raccoon&apos;s Investigation Board</h1>
+            <h1 data-split style={{ color: "#fff", fontSize: 36, fontWeight: 900, marginBottom: 16, textShadow: "0 0 20px rgba(239,68,68,0.4)" }}>Raccoon&apos;s Investigation Board</h1>
             <SpeechBubble character="raccoon" message="This is impossible! My investigation board is EMPTY!" side="right" />
             <SpeechBubble character="layla" message="That's what happens when you keep your info private!" />
             {/* Board */}
@@ -1691,7 +1768,8 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
                 )}
               </motion.div>
             )}
-          </div>
+            </div>
+          </ThemedScene>
         );
 
       /* ──── STEP 11: SPEED SORT ──── */
@@ -1702,10 +1780,11 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
           const rating = speedScore >= 15 ? "PERFECT AGENT!" : speedScore >= 13 ? "TURBO SORTER!" : speedScore >= 10 ? "QUICK THINKER!" : "KEEP PRACTISING!";
           const bonus = speedScore >= 15 ? 10 : speedScore >= 13 ? 5 : 0;
           return (
+            <ThemedScene theme="factory">
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={{ textAlign: "center" }}>
               {card(
                 <>
-                  <h2 data-split style={{ color: "#fff", fontSize: 24, fontWeight: 900, marginBottom: 8 }}>{rating}</h2>
+                  <h2 data-split style={{ color: "#fff", fontSize: 32, fontWeight: 900, marginBottom: 8, textShadow: "0 0 16px rgba(245,158,11,0.5)" }}>{rating}</h2>
                   <p style={{ color: "#d1d5db", marginBottom: 4 }}>Correct: {speedScore}/{SPEED_SORT_ITEMS.length}</p>
                   <p style={{ color: "#f59e0b", marginBottom: 16 }}>Best Streak: 🔥 {speedBestStreak}</p>
                   <p style={{ color: "#f59e0b", fontSize: 14, marginBottom: 16 }}>🪙 +{15 + bonus} coins earned!</p>
@@ -1714,6 +1793,7 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
                 { maxWidth: 480, margin: "0 auto" }
               )}
             </motion.div>
+            </ThemedScene>
           );
         }
         const item = SPEED_SORT_ITEMS[speedIdx];
@@ -1745,8 +1825,9 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
           }, 600);
         };
         return (
-          <div style={{ textAlign: "center" }}>
-            <h1 data-split style={{ color: "#fff", fontSize: 24, fontWeight: 900, marginBottom: 4 }}>SPEED SORT</h1>
+          <ThemedScene theme="factory">
+            <div style={{ textAlign: "center" }}>
+            <h1 data-split style={{ color: "#fff", fontSize: 40, fontWeight: 900, marginBottom: 4, letterSpacing: "0.05em", textShadow: "0 0 24px rgba(245,158,11,0.6)" }}>SPEED SORT</h1>
             <SpeechBubble character="adam" message="Quick! Sort them into the right vaults before time runs out!" />
             <div style={{ display: "flex", justifyContent: "center", gap: 16, marginBottom: 12, fontSize: 13 }}>
               <span style={{ color: speedColor, fontWeight: 800 }}>SPEED: {speedLabel}</span>
@@ -1777,7 +1858,8 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
                 ✅ SAFE
               </motion.button>
             </div>
-          </div>
+            </div>
+          </ThemedScene>
         );
       }
 
@@ -1787,10 +1869,11 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
         if (showSummary[12]) return <LearnSummary message="Phone callers might be trying to trick you. Always check with a grown-up!" starCount={getStars(12)} onNext={() => dismissSummary(12, 13)} />;
         if (phoneRound >= PHONE_ROUNDS.length) {
           return (
+            <ThemedScene theme="callscreen">
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={{ textAlign: "center" }}>
               {card(
                 <>
-                  <h2 data-split style={{ color: "#fff", fontSize: 24, fontWeight: 900, marginBottom: 8 }}>Calls Handled!</h2>
+                  <h2 data-split style={{ color: "#fff", fontSize: 32, fontWeight: 900, marginBottom: 8, textShadow: "0 0 16px rgba(34,197,94,0.5)" }}>Calls Handled!</h2>
                   <p style={{ color: "#d1d5db", marginBottom: 8 }}>{phoneScore}/{PHONE_ROUNDS.length} handled safely!</p>
                   <p style={{ color: "#9ca3af", fontSize: 14, marginBottom: 16 }}>Remember: NEVER give personal info over the phone unless a parent says it&apos;s okay.</p>
                   {btn("Continue →", () => { addCoins(15); triggerSummary(12); })}
@@ -1798,12 +1881,14 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
                 { maxWidth: 480, margin: "0 auto" }
               )}
             </motion.div>
+            </ThemedScene>
           );
         }
         const pr = PHONE_ROUNDS[phoneRound];
         return (
-          <div style={{ textAlign: "center" }}>
-            <h1 data-split style={{ color: "#fff", fontSize: 24, fontWeight: 900, marginBottom: 4 }}>INCOMING CALL</h1>
+          <ThemedScene theme="callscreen">
+            <div style={{ textAlign: "center" }}>
+            <h1 data-split style={{ color: "#fff", fontSize: 38, fontWeight: 900, marginBottom: 4, letterSpacing: "0.05em", textShadow: "0 0 20px rgba(34,197,94,0.5)" }}>📞 INCOMING CALL</h1>
             <SpeechBubble character="layla" message="Someone is calling. Be careful what you say!" />
             <p style={{ color: "#9ca3af", marginBottom: 16 }}>Call {phoneRound + 1}/{PHONE_ROUNDS.length}</p>
             {!phoneAnswered ? (
@@ -1851,7 +1936,8 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
                 </motion.div>
               </AnimatePresence>
             )}
-          </div>
+            </div>
+          </ThemedScene>
         );
       }
 
@@ -1862,6 +1948,7 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
         if (shieldIdx >= SHIELD_QS.length) {
           const perfect = shieldPerfect === SHIELD_QS.length;
           return (
+            <ThemedScene theme="forge">
             <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} style={{ textAlign: "center" }}>
               {card(
                 <>
@@ -1880,12 +1967,14 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
                 { maxWidth: 480, margin: "0 auto" }
               )}
             </motion.div>
+            </ThemedScene>
           );
         }
         const sq = SHIELD_QS[shieldIdx];
         return (
-          <div style={{ textAlign: "center" }}>
-            <h1 data-split style={{ color: "#fff", fontSize: 24, fontWeight: 900, marginBottom: 4 }}>Build Your Privacy Shield</h1>
+          <ThemedScene theme="forge">
+            <div style={{ textAlign: "center" }}>
+            <h1 data-split style={{ color: "#fff", fontSize: 36, fontWeight: 900, marginBottom: 4, textShadow: "0 0 18px rgba(59,130,246,0.5)" }}>🛡️ Build Your Privacy Shield</h1>
             <SpeechBubble character="adam" message="Every correct answer makes our shield stronger!" />
             <p style={{ color: "#9ca3af", marginBottom: 8 }}>Segment {shieldIdx + 1}/{SHIELD_QS.length}</p>
             {/* Shield progress */}
@@ -1933,7 +2022,8 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
                 )}
               </motion.div>
             </AnimatePresence>
-          </div>
+            </div>
+          </ThemedScene>
         );
       }
 
@@ -1941,8 +2031,9 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
       case 14: {
         const allRevealed = masterRevealed.size >= MASTERPLAN_CARDS.length;
         return (
-          <div style={{ textAlign: "center" }}>
-            <h1 data-split style={{ color: "#fff", fontSize: 24, fontWeight: 900, marginBottom: 16 }}>The Raccoon&apos;s Masterplan... FAILED</h1>
+          <ThemedScene theme="warroom">
+            <div style={{ textAlign: "center" }}>
+            <h1 data-split style={{ color: "#fff", fontSize: 36, fontWeight: 900, marginBottom: 16, textShadow: "0 0 18px rgba(245,158,11,0.5)" }}>The Raccoon&apos;s Masterplan... FAILED</h1>
             <div style={{ maxWidth: 520, margin: "0 auto 16px", background: "rgba(0,0,0,0.3)", borderRadius: 16, padding: 20, border: "1px solid rgba(255,255,255,0.08)", position: "relative" }}>
               <img src="/characters/raccoon-defeated.png" alt="Raccoon" style={{ width: 60, borderRadius: 12, margin: "0 auto 12px", display: "block" }} />
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 10 }}>
@@ -1982,7 +2073,8 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
                 )}
               </motion.div>
             )}
-          </div>
+            </div>
+          </ThemedScene>
         );
       }
 
@@ -1992,6 +2084,7 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
         if (vaultDone) {
           const won = vaultHP > 0;
           return (
+            <ThemedScene theme="vault">
             <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} style={{ textAlign: "center" }}>
               {card(
                 <>
@@ -2015,6 +2108,7 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
                 { maxWidth: 480, margin: "0 auto" }
               )}
             </motion.div>
+            </ThemedScene>
           );
         }
         if (vaultRound >= VAULT_ATTACKS.length) {
@@ -2024,8 +2118,9 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
         const va = VAULT_ATTACKS[vaultRound];
         const timeLimit = vaultRound < 5 ? 4000 : 3000;
         return (
-          <div style={{ textAlign: "center" }}>
-            <h1 data-split style={{ color: "#fff", fontSize: 24, fontWeight: 900, marginBottom: 4 }}>DEFEND THE VAULT</h1>
+          <ThemedScene theme="vault">
+            <div style={{ textAlign: "center" }}>
+            <h1 data-split style={{ color: "#fff", fontSize: 40, fontWeight: 900, marginBottom: 4, letterSpacing: "0.05em", textShadow: "0 0 24px rgba(59,130,246,0.6)" }}>🏦 DEFEND THE VAULT</h1>
             {vaultRound === 0 && (
               <>
                 <SpeechBubble character="raccoon" message="This is my LAST CHANCE! I'm going to break into that vault!" side="right" />
@@ -2097,14 +2192,16 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
                 )}
               </motion.div>
             </AnimatePresence>
-          </div>
+            </div>
+          </ThemedScene>
         );
       }
 
       /* ──── STEP 16: VICTORY ──── */
       case 16:
         return (
-          <div style={{ textAlign: "center" }}>
+          <ThemedScene theme="ceremony">
+            <div style={{ textAlign: "center" }}>
             {/* Gold particle background */}
             <div style={{ position: "fixed", inset: 0, pointerEvents: "none", zIndex: 0 }}>
               {Array.from({ length: 30 }, (_, i) => (
@@ -2161,7 +2258,8 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
                 { maxWidth: 520, margin: "0 auto", background: "rgba(255,255,255,0.06)", border: "2px solid rgba(245,158,11,0.3)" }
               )}
             </motion.div>
-          </div>
+            </div>
+          </ThemedScene>
         );
 
       default:
