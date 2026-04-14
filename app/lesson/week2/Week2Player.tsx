@@ -1,10 +1,129 @@
 "use client";
 import { useEffect, useRef, useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import gsap from "gsap";
+import { SplitText } from "gsap/SplitText";
+import { Player } from "@lottiefiles/react-lottie-player";
+
+gsap.registerPlugin(SplitText);
 
 /* ───────────────────────── CONSTANTS ───────────────────────── */
 const TOTAL = 17;
 const GRAD = "linear-gradient(135deg, #3b82f6, #06b6d4)";
+
+/* ───────────────────────── GSAP HELPERS ────────────────────── */
+const celebrateCorrect = (el: HTMLElement) => {
+  const tl = gsap.timeline();
+  tl.to(el, { scale: 1.15, duration: 0.15, ease: "power2.out" })
+    .to(el, { scale: 1, duration: 0.5, ease: "elastic.out(1, 0.3)" })
+    .to(el, { boxShadow: "0 0 40px rgba(16,185,129,0.6), 0 0 80px rgba(16,185,129,0.2)", duration: 0.2 }, 0)
+    .to(el, { boxShadow: "0 0 10px rgba(16,185,129,0.2)", duration: 0.6 }, 0.4);
+  const rect = el.getBoundingClientRect();
+  const colors = ["#10b981", "#06b6d4", "#3b82f6", "#f59e0b"];
+  for (let i = 0; i < 12; i++) {
+    const p = document.createElement("div");
+    const size = 6 + Math.random() * 6;
+    p.style.cssText = `position:fixed;width:${size}px;height:${size}px;border-radius:50%;background:${colors[Math.floor(Math.random() * 4)]};pointer-events:none;z-index:9999;`;
+    p.style.left = rect.left + rect.width / 2 + "px";
+    p.style.top = rect.top + rect.height / 2 + "px";
+    document.body.appendChild(p);
+    gsap.to(p, {
+      x: (Math.random() - 0.5) * 250,
+      y: (Math.random() - 0.5) * 250 - 80,
+      opacity: 0, scale: 0, rotation: Math.random() * 360,
+      duration: 0.8 + Math.random() * 0.5,
+      ease: "power2.out",
+      onComplete: () => p.remove(),
+    });
+  }
+};
+
+const shakeWrong = (el: HTMLElement) => {
+  gsap.timeline()
+    .to(el, { x: -15, rotation: -2, duration: 0.06 })
+    .to(el, { x: 15, rotation: 2, duration: 0.06 })
+    .to(el, { x: -10, rotation: -1, duration: 0.06 })
+    .to(el, { x: 10, rotation: 1, duration: 0.06 })
+    .to(el, { x: 0, rotation: 0, duration: 0.06 })
+    .to(el, { boxShadow: "0 0 30px rgba(239,68,68,0.6)", duration: 0.1 }, 0)
+    .to(el, { boxShadow: "0 0 0 rgba(239,68,68,0)", duration: 0.5 }, 0.3);
+  const rect = el.getBoundingClientRect();
+  for (let i = 0; i < 5; i++) {
+    const p = document.createElement("div");
+    p.style.cssText = `position:fixed;width:4px;height:4px;border-radius:50%;background:#ef4444;pointer-events:none;z-index:9999;`;
+    p.style.left = rect.left + rect.width / 2 + "px";
+    p.style.top = rect.top + rect.height / 2 + "px";
+    document.body.appendChild(p);
+    gsap.to(p, {
+      x: (Math.random() - 0.5) * 100,
+      y: Math.random() * 50 + 20,
+      opacity: 0,
+      duration: 0.5,
+      ease: "power2.out",
+      onComplete: () => p.remove(),
+    });
+  }
+};
+
+const animateCoins = () => {
+  const el = document.querySelector("[data-coin-counter]") as HTMLElement | null;
+  if (!el) return;
+  gsap.timeline()
+    .to(el, { scale: 1.5, color: "#f59e0b", textShadow: "0 0 20px rgba(245,158,11,0.6)", duration: 0.2 })
+    .to(el, { scale: 1, textShadow: "0 0 5px rgba(245,158,11,0.2)", duration: 0.5, ease: "elastic.out(1, 0.3)" });
+};
+
+const btnHoverIn = (e: React.MouseEvent<HTMLElement>) => {
+  gsap.to(e.currentTarget, { boxShadow: "0 0 35px rgba(249,115,22,0.6)", scale: 1.06, duration: 0.25 });
+};
+const btnHoverOut = (e: React.MouseEvent<HTMLElement>) => {
+  gsap.to(e.currentTarget, { boxShadow: "0 0 15px rgba(249,115,22,0.3)", scale: 1, duration: 0.4, ease: "elastic.out(1, 0.5)" });
+};
+
+/* ───────────────────────── TILT CARD ───────────────────────── */
+const TiltCard = ({ children, style, className, onClick }: { children: React.ReactNode; style?: React.CSSProperties; className?: string; onClick?: () => void }) => {
+  const cardRef = useRef<HTMLDivElement>(null);
+  const handleMove = (e: React.MouseEvent | React.TouchEvent) => {
+    if (!cardRef.current) return;
+    const rect = cardRef.current.getBoundingClientRect();
+    const clientX = "touches" in e ? e.touches[0].clientX : e.clientX;
+    const clientY = "touches" in e ? e.touches[0].clientY : e.clientY;
+    const x = (clientX - rect.left) / rect.width - 0.5;
+    const y = (clientY - rect.top) / rect.height - 0.5;
+    gsap.to(cardRef.current, {
+      rotateY: x * 15,
+      rotateX: -y * 15,
+      scale: 1.03,
+      boxShadow: "0 25px 50px rgba(0,0,0,0.3), 0 0 25px rgba(59,130,246,0.3)",
+      duration: 0.3,
+      ease: "power2.out",
+    });
+  };
+  const handleLeave = () => {
+    if (!cardRef.current) return;
+    gsap.to(cardRef.current, {
+      rotateY: 0, rotateX: 0, scale: 1,
+      boxShadow: "0 4px 15px rgba(0,0,0,0.2)",
+      duration: 0.6, ease: "elastic.out(1, 0.4)",
+    });
+  };
+  return (
+    <div
+      ref={cardRef}
+      onMouseMove={handleMove}
+      onTouchMove={handleMove}
+      onMouseLeave={handleLeave}
+      onTouchEnd={handleLeave}
+      onClick={onClick}
+      className={className}
+      style={{ perspective: 1000, transformStyle: "preserve-3d", cursor: "pointer", transition: "none", ...style }}
+    >
+      {children}
+    </div>
+  );
+};
+// Player is imported for potential Lottie usage
+void Player;
 
 /* ───────────────────────── DATA ────────────────────────────── */
 const TILE_DATA = [
@@ -386,6 +505,7 @@ function StepDots({ step }: { step: number }) {
 function CoinCounter({ coins }: { coins: number }) {
   return (
     <motion.div key={coins}
+      data-coin-counter
       animate={{ scale: [1, 1.3, 1] }}
       transition={{ duration: 0.3 }}
       style={{
@@ -404,7 +524,9 @@ function CoinCounter({ coins }: { coins: number }) {
 function btn(label: string, onClick: () => void, extra?: React.CSSProperties) {
   return (
     <motion.button onClick={onClick}
-      whileHover={{ scale: 1.05, y: -2, boxShadow: "0 0 25px rgba(249,115,22,0.6)" }} whileTap={{ scale: 0.95 }}
+      onMouseEnter={btnHoverIn} onMouseLeave={btnHoverOut}
+      whileTap={{ scale: 0.95 }}
+      data-animate
       style={{
         background: "linear-gradient(135deg, #f97316, #f59e0b)", color: "#fff", fontWeight: 700, borderRadius: 14,
         padding: "13px 34px", border: "none", cursor: "pointer", fontSize: 16,
@@ -417,7 +539,7 @@ function btn(label: string, onClick: () => void, extra?: React.CSSProperties) {
 
 function card(children: React.ReactNode, extra?: React.CSSProperties) {
   return (
-    <div style={{
+    <div data-animate style={{
       background: "rgba(255,255,255,0.04)", backdropFilter: "blur(12px)",
       border: "1px solid rgba(255,255,255,0.1)", borderRadius: 24, padding: 24, ...extra,
     }}>
@@ -433,12 +555,12 @@ function playSound(src: string) {
 function InstructionOverlay({ icon, story, instructions, onReady }: { icon: string; story: string; instructions: string; onReady: () => void }) {
   return (
     <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} style={{ textAlign: "center" }}>
-      <div style={{ background: "rgba(15,10,40,0.9)", backdropFilter: "blur(12px)", border: "1px solid rgba(59,130,246,0.3)", boxShadow: "0 0 20px rgba(59,130,246,0.2)", borderRadius: 24, padding: 32, maxWidth: 520, margin: "0 auto" }}>
+      <div data-animate style={{ background: "rgba(15,10,40,0.9)", backdropFilter: "blur(12px)", border: "1px solid rgba(59,130,246,0.3)", boxShadow: "0 0 20px rgba(59,130,246,0.2)", borderRadius: 24, padding: 32, maxWidth: 520, margin: "0 auto" }}>
         <div style={{ width: 80, height: 80, margin: "0 auto 16px", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 48, background: "rgba(59,130,246,0.15)", borderRadius: 20 }}>{icon}</div>
         <p style={{ color: "#60a5fa", fontSize: 14, fontStyle: "italic", marginBottom: 8 }}>{story}</p>
-        <h2 style={{ color: "#fff", fontSize: 22, fontWeight: 900, marginBottom: 8 }}>Here&apos;s what to do!</h2>
+        <h2 data-split style={{ color: "#fff", fontSize: 22, fontWeight: 900, marginBottom: 8 }}>Here&apos;s what to do!</h2>
         <p style={{ color: "#d1d5db", fontSize: 16, lineHeight: 1.6, marginBottom: 20 }}>{instructions}</p>
-        <motion.button onClick={onReady} whileHover={{ scale: 1.05, y: -2, boxShadow: "0 0 25px rgba(249,115,22,0.6)" }} whileTap={{ scale: 0.95 }}
+        <motion.button onClick={onReady} onMouseEnter={btnHoverIn} onMouseLeave={btnHoverOut} whileTap={{ scale: 0.95 }}
           style={{ background: "linear-gradient(135deg, #f97316, #f59e0b)", color: "#fff", fontWeight: 700, borderRadius: 14, padding: "13px 34px", border: "none", cursor: "pointer", fontSize: 16, boxShadow: "0 0 15px rgba(249,115,22,0.4)" }}>
           I&apos;m Ready! →
         </motion.button>
@@ -450,12 +572,12 @@ function InstructionOverlay({ icon, story, instructions, onReady }: { icon: stri
 function LearnSummary({ message, starCount, onNext }: { message: string; starCount: number; onNext: () => void }) {
   return (
     <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} style={{ textAlign: "center" }}>
-      <div style={{ background: "rgba(255,255,255,0.04)", backdropFilter: "blur(12px)", border: "1px solid rgba(16,185,129,0.3)", boxShadow: "0 0 15px rgba(16,185,129,0.2)", borderRadius: 20, padding: 28, maxWidth: 520, margin: "0 auto" }}>
+      <div data-animate style={{ background: "rgba(255,255,255,0.04)", backdropFilter: "blur(12px)", border: "1px solid rgba(16,185,129,0.3)", boxShadow: "0 0 15px rgba(16,185,129,0.2)", borderRadius: 20, padding: 28, maxWidth: 520, margin: "0 auto" }}>
         <div style={{ width: 80, height: 80, margin: "0 auto 12px", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 48, background: "rgba(16,185,129,0.1)", borderRadius: 20, boxShadow: "0 0 15px rgba(16,185,129,0.4)" }}>✅</div>
-        <h2 style={{ color: "#fff", fontSize: 22, fontWeight: 900, marginBottom: 4 }}>Great job!</h2>
+        <h2 data-split style={{ color: "#fff", fontSize: 22, fontWeight: 900, marginBottom: 4 }}>Great job!</h2>
         <div style={{ marginBottom: 8 }}><span style={{ fontSize: 28, letterSpacing: 4 }}>{"⭐".repeat(starCount)}{"☆".repeat(3 - starCount)}</span></div>
         <p style={{ color: "#d1d5db", fontSize: 15, lineHeight: 1.6, marginBottom: 20 }}>{message}</p>
-        <motion.button onClick={onNext} whileHover={{ scale: 1.05, y: -2, boxShadow: "0 0 25px rgba(249,115,22,0.6)" }} whileTap={{ scale: 0.95 }}
+        <motion.button onClick={onNext} onMouseEnter={btnHoverIn} onMouseLeave={btnHoverOut} whileTap={{ scale: 0.95 }}
           style={{ background: "linear-gradient(135deg, #f97316, #f59e0b)", color: "#fff", fontWeight: 700, borderRadius: 14, padding: "13px 34px", border: "none", cursor: "pointer", fontSize: 16, boxShadow: "0 0 15px rgba(249,115,22,0.4)" }}>
           Next →
         </motion.button>
@@ -471,6 +593,7 @@ const SpeechBubble = ({ character, message, side = "left" }: { character: "adam"
   const borderColor = character === "raccoon" ? "rgba(239,68,68,0.3)" : "rgba(59,130,246,0.3)";
   return (
     <motion.div
+      data-animate
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4 }}
@@ -582,7 +705,36 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
   const addCoins = useCallback((n: number) => {
     setCoins((c) => c + n);
     playSound("/sounds/coin.mp3");
+    animateCoins();
   }, []);
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.from("[data-animate]", {
+        y: 40,
+        opacity: 0,
+        duration: 0.7,
+        stagger: 0.12,
+        ease: "back.out(1.7)",
+        clearProps: "all",
+      });
+      document.querySelectorAll("[data-split]").forEach((el) => {
+        try {
+          const split = SplitText.create(el, { type: "chars,words" });
+          gsap.from(split.chars, {
+            opacity: 0,
+            y: 20,
+            rotateX: -90,
+            stagger: 0.03,
+            duration: 0.5,
+            ease: "back.out(1.7)",
+            delay: 0.2,
+          });
+        } catch { /* SplitText plugin may be unavailable */ }
+      });
+    });
+    return () => ctx.revert();
+  }, [step]);
 
   const [showInstr, setShowInstr] = useState<Record<number, boolean>>({});
   const [showSummary, setShowSummary] = useState<Record<number, boolean>>({});
@@ -725,7 +877,7 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
                 {card(
                   <>
                     <img src="/characters/heroic.png" alt="Adam and Layla" style={{ width: 160, borderRadius: 20, margin: "0 auto 16px", display: "block" }} />
-                    <h2 style={{ color: "#fff", fontSize: 24, fontWeight: 900, margin: "0 0 8px" }}>Mission: Guard Your Secrets!</h2>
+                    <h2 data-split style={{ color: "#fff", fontSize: 24, fontWeight: 900, margin: "0 0 8px" }}>Mission: Guard Your Secrets!</h2>
                     <p style={{ color: "#d1d5db", marginBottom: 20, fontSize: 16 }}>Adam and Layla need your help to learn about private information!</p>
                     {btn("Start Mission →", () => navigate(1))}
                   </>,
@@ -751,7 +903,7 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
         ];
         return (
           <div style={{ textAlign: "center" }}>
-            <h1 style={{ color: "#fff", fontSize: 28, fontWeight: 900, marginBottom: 16 }}>Agent Assignment</h1>
+            <h1 data-split style={{ color: "#fff", fontSize: 28, fontWeight: 900, marginBottom: 16 }}>Agent Assignment</h1>
             <SpeechBubble character="layla" message="This is a top secret mission. We need to protect our personal information!" />
             {/* Folder */}
             <motion.div
@@ -825,7 +977,7 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
         if (showSummary[2]) return <LearnSummary message="You learned that some information is PRIVATE and some is SAFE. Private things like addresses and passwords should NEVER be shared with strangers!" starCount={getStars(2)} onNext={() => dismissSummary(2, 3)} />;
         return (
           <div style={{ textAlign: "center" }}>
-            <h1 style={{ color: "#fff", fontSize: 26, fontWeight: 900, marginBottom: 4 }}>What IS Personal Information?</h1>
+            <h1 data-split style={{ color: "#fff", fontSize: 26, fontWeight: 900, marginBottom: 4 }}>What IS Personal Information?</h1>
             <SpeechBubble character="adam" message="Some of this stuff is private and some is safe to share. Let's find out which!" />
             <p style={{ color: "#9ca3af", marginBottom: 20 }}>Tap each tile to discover what&apos;s inside</p>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))", gap: 12, maxWidth: 640, margin: "0 auto 20px" }}>
@@ -892,7 +1044,7 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
         if (showSummary[3]) return <LearnSummary message="You spotted dangerous information on a poster. Always check before sharing, remove addresses, phone numbers, and school names!" starCount={getStars(3)} onNext={() => dismissSummary(3, 4)} />;
         return (
           <div style={{ textAlign: "center" }}>
-            <h1 style={{ color: "#fff", fontSize: 26, fontWeight: 900, marginBottom: 4 }}>Fix Adam&apos;s Poster!</h1>
+            <h1 data-split style={{ color: "#fff", fontSize: 26, fontWeight: 900, marginBottom: 4 }}>Fix Adam&apos;s Poster!</h1>
             <SpeechBubble character="layla" message="Oh no, Adam put WAY too much information on this poster!" />
             <SpeechBubble character="raccoon" message="Hehehe, keep going Adam... tell me more!" side="right" />
             <p style={{ color: "#9ca3af", marginBottom: 8 }}>Tap on things that should be REMOVED to keep Adam safe</p>
@@ -972,7 +1124,7 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
             <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} style={{ textAlign: "center" }}>
               {card(
                 <>
-                  <h2 style={{ color: "#fff", fontSize: 24, fontWeight: 900, marginBottom: 8 }}>Classification Complete!</h2>
+                  <h2 data-split style={{ color: "#fff", fontSize: 24, fontWeight: 900, marginBottom: 8 }}>Classification Complete!</h2>
                   <p style={{ color: "#d1d5db", marginBottom: 8 }}>You classified {classifyScore}/{CLASSIFY_QS.length} correctly!</p>
                   <p style={{ color: "#9ca3af", fontSize: 14, marginBottom: 16 }}>
                     Great work, Agent! But the Raccoon is already trying to trick you...
@@ -990,7 +1142,7 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
         const q = CLASSIFY_QS[classifyIdx];
         return (
           <div style={{ textAlign: "center" }}>
-            <h1 style={{ color: "#fff", fontSize: 26, fontWeight: 900, marginBottom: 4 }}>CLASSIFY THE INFORMATION</h1>
+            <h1 data-split style={{ color: "#fff", fontSize: 26, fontWeight: 900, marginBottom: 4 }}>CLASSIFY THE INFORMATION</h1>
             <p style={{ color: "#9ca3af", marginBottom: 20 }}>Question {classifyIdx + 1}/{CLASSIFY_QS.length}</p>
             <AnimatePresence mode="wait">
               <motion.div key={classifyIdx} initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -30 }}>
@@ -1000,12 +1152,13 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
                     <div style={{ display: "flex", gap: 16, justifyContent: "center", flexWrap: "wrap" }}>
                       {/* SAFE stamp */}
                       <motion.button
-                        onClick={() => {
+                        className="shimmer-card"
+                        onClick={(e) => {
                           if (classifyFeedback) return;
                           const correct = q.answer === "safe";
                           setClassifyFeedback(correct ? "correct" : "wrong");
-                          if (correct) { setClassifyScore((s) => s + 1); playSound("/sounds/correct.mp3"); }
-                          else { playSound("/sounds/wrong.mp3"); addWrong(4); }
+                          if (correct) { celebrateCorrect(e.currentTarget as HTMLElement); setClassifyScore((s) => s + 1); playSound("/sounds/correct.mp3"); }
+                          else { shakeWrong(e.currentTarget as HTMLElement); playSound("/sounds/wrong.mp3"); addWrong(4); }
                           if (correct) setTimeout(() => { setClassifyFeedback(null); setClassifyIdx((i) => i + 1); }, 1200);
                         }}
                         whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.9 }}
@@ -1019,12 +1172,13 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
                       </motion.button>
                       {/* PRIVATE stamp */}
                       <motion.button
-                        onClick={() => {
+                        className="shimmer-card"
+                        onClick={(e) => {
                           if (classifyFeedback) return;
                           const correct = q.answer === "private";
                           setClassifyFeedback(correct ? "correct" : "wrong");
-                          if (correct) { setClassifyScore((s) => s + 1); playSound("/sounds/correct.mp3"); }
-                          else { playSound("/sounds/wrong.mp3"); addWrong(4); }
+                          if (correct) { celebrateCorrect(e.currentTarget as HTMLElement); setClassifyScore((s) => s + 1); playSound("/sounds/correct.mp3"); }
+                          else { shakeWrong(e.currentTarget as HTMLElement); playSound("/sounds/wrong.mp3"); addWrong(4); }
                           if (correct) setTimeout(() => { setClassifyFeedback(null); setClassifyIdx((i) => i + 1); }, 1200);
                         }}
                         whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.9 }}
@@ -1092,7 +1246,7 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
 
         return (
           <div style={{ textAlign: "center" }}>
-            <h1 style={{ color: "#fff", fontSize: 22, fontWeight: 900, marginBottom: 12 }}>INCOMING MESSAGE, UNKNOWN CONTACT</h1>
+            <h1 data-split style={{ color: "#fff", fontSize: 22, fontWeight: 900, marginBottom: 12 }}>INCOMING MESSAGE, UNKNOWN CONTACT</h1>
             <SpeechBubble character="adam" message="Someone called CoolKid99 is messaging me. They seem nice..." />
             <SpeechBubble character="layla" message="Be careful! Remember, not everyone online is who they say they are!" />
 
@@ -1256,7 +1410,7 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
         const allFound = foundDangers.size >= PROFILE_DANGERS.length;
         return (
           <div style={{ textAlign: "center" }}>
-            <h1 style={{ color: "#fff", fontSize: 24, fontWeight: 900, marginBottom: 4 }}>PROFILE DETECTIVE</h1>
+            <h1 data-split style={{ color: "#fff", fontSize: 24, fontWeight: 900, marginBottom: 4 }}>PROFILE DETECTIVE</h1>
             <SpeechBubble character="layla" message="This profile has so many dangers. Can you spot them all?" />
             <p style={{ color: "#9ca3af", marginBottom: 4 }}>Find ALL the dangers hidden in this profile</p>
             <p style={{ color: "#f59e0b", fontWeight: 700, marginBottom: 8 }}>Dangers found: {foundDangers.size}/{PROFILE_DANGERS.length} | Time: {profileTimer}s</p>
@@ -1336,7 +1490,7 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={{ textAlign: "center" }}>
               {card(
                 <>
-                  <h2 style={{ color: "#fff", fontSize: 24, fontWeight: 900, marginBottom: 8 }}>Context Matters!</h2>
+                  <h2 data-split style={{ color: "#fff", fontSize: 24, fontWeight: 900, marginBottom: 8 }}>Context Matters!</h2>
                   <p style={{ color: "#d1d5db", marginBottom: 16 }}>{contextScore}/{CONTEXT_ROUNDS.length} correct! It&apos;s not just WHAT you share, it&apos;s WHO you share it with!</p>
                   {btn("Continue →", () => { addCoins(contextScore === CONTEXT_ROUNDS.length ? 15 : 10); triggerSummary(8); })}
                 </>,
@@ -1348,7 +1502,7 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
         const cr = CONTEXT_ROUNDS[contextIdx];
         return (
           <div style={{ textAlign: "center" }}>
-            <h1 style={{ color: "#fff", fontSize: 24, fontWeight: 900, marginBottom: 4 }}>Who&apos;s Asking?</h1>
+            <h1 data-split style={{ color: "#fff", fontSize: 24, fontWeight: 900, marginBottom: 4 }}>Who&apos;s Asking?</h1>
             <p style={{ color: "#9ca3af", marginBottom: 16 }}>Round {contextIdx + 1}/{CONTEXT_ROUNDS.length}</p>
             <AnimatePresence mode="wait">
               <motion.div key={contextIdx} initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -30 }}>
@@ -1360,14 +1514,17 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
                 <div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap", maxWidth: 600, margin: "0 auto" }}>
                   {[cr.a, cr.b].map((sc, si) => (
                     <motion.button key={si}
-                      onClick={() => {
+                      className="shimmer-card"
+                      onClick={(e) => {
                         if (contextFeedback) return;
                         if (sc.ok) {
+                          celebrateCorrect(e.currentTarget as HTMLElement);
                           setContextScore((s) => s + 1);
                           setContextFeedback(cr.why);
                           playSound("/sounds/correct.mp3");
                           setTimeout(() => { setContextFeedback(null); setContextIdx((i) => i + 1); }, 2500);
                         } else {
+                          shakeWrong(e.currentTarget as HTMLElement);
                           setContextFeedback("wrong");
                           playSound("/sounds/wrong.mp3");
                           addWrong(8);
@@ -1413,7 +1570,7 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
         const broken = chain2Phase ? chain2Broken : chainBroken;
         return (
           <div style={{ textAlign: "center" }}>
-            <h1 style={{ color: "#fff", fontSize: 24, fontWeight: 900, marginBottom: 4 }}>The Information Chain</h1>
+            <h1 data-split style={{ color: "#fff", fontSize: 24, fontWeight: 900, marginBottom: 4 }}>The Information Chain</h1>
             <SpeechBubble character="adam" message="Wait... sharing just ONE thing can cause ALL of this?" />
             <p style={{ color: "#9ca3af", marginBottom: 16 }}>
               {broken ? "You broke the chain!" : "Tap each domino to see what happens next..."}
@@ -1485,7 +1642,7 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
               style={{ color: "#f59e0b", fontWeight: 900, fontSize: 14, letterSpacing: "0.1em", marginBottom: 12 }}>
               TRANSMISSION INCOMING
             </motion.p>
-            <h1 style={{ color: "#fff", fontSize: 24, fontWeight: 900, marginBottom: 16 }}>Raccoon&apos;s Investigation Board</h1>
+            <h1 data-split style={{ color: "#fff", fontSize: 24, fontWeight: 900, marginBottom: 16 }}>Raccoon&apos;s Investigation Board</h1>
             <SpeechBubble character="raccoon" message="This is impossible! My investigation board is EMPTY!" side="right" />
             <SpeechBubble character="layla" message="That's what happens when you keep your info private!" />
             {/* Board */}
@@ -1548,7 +1705,7 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={{ textAlign: "center" }}>
               {card(
                 <>
-                  <h2 style={{ color: "#fff", fontSize: 24, fontWeight: 900, marginBottom: 8 }}>{rating}</h2>
+                  <h2 data-split style={{ color: "#fff", fontSize: 24, fontWeight: 900, marginBottom: 8 }}>{rating}</h2>
                   <p style={{ color: "#d1d5db", marginBottom: 4 }}>Correct: {speedScore}/{SPEED_SORT_ITEMS.length}</p>
                   <p style={{ color: "#f59e0b", marginBottom: 16 }}>Best Streak: 🔥 {speedBestStreak}</p>
                   <p style={{ color: "#f59e0b", fontSize: 14, marginBottom: 16 }}>🪙 +{15 + bonus} coins earned!</p>
@@ -1562,10 +1719,11 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
         const item = SPEED_SORT_ITEMS[speedIdx];
         const speedLabel = speedIdx < 5 ? "NORMAL" : speedIdx < 10 ? "FAST" : "TURBO!";
         const speedColor = speedIdx < 5 ? "#22c55e" : speedIdx < 10 ? "#f59e0b" : "#ef4444";
-        const handleSort = (choice: "safe" | "private") => {
+        const handleSort = (choice: "safe" | "private", e: React.MouseEvent<HTMLButtonElement>) => {
           if (speedFeedback) return;
           if (speedTimerRef.current) clearTimeout(speedTimerRef.current);
           if (choice === item.answer) {
+            celebrateCorrect(e.currentTarget as HTMLElement);
             const newStreak = speedStreak + 1;
             setSpeedScore((s) => s + 1);
             setSpeedStreak(newStreak);
@@ -1573,6 +1731,7 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
             setSpeedFeedback("correct");
             playSound("/sounds/correct.mp3");
           } else {
+            shakeWrong(e.currentTarget as HTMLElement);
             setSpeedStreak(0);
             setSpeedFeedback("wrong");
             playSound("/sounds/wrong.mp3");
@@ -1587,7 +1746,7 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
         };
         return (
           <div style={{ textAlign: "center" }}>
-            <h1 style={{ color: "#fff", fontSize: 24, fontWeight: 900, marginBottom: 4 }}>SPEED SORT</h1>
+            <h1 data-split style={{ color: "#fff", fontSize: 24, fontWeight: 900, marginBottom: 4 }}>SPEED SORT</h1>
             <SpeechBubble character="adam" message="Quick! Sort them into the right vaults before time runs out!" />
             <div style={{ display: "flex", justifyContent: "center", gap: 16, marginBottom: 12, fontSize: 13 }}>
               <span style={{ color: speedColor, fontWeight: 800 }}>SPEED: {speedLabel}</span>
@@ -1607,12 +1766,12 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
               </motion.div>
             </AnimatePresence>
             <div style={{ display: "flex", gap: 16, justifyContent: "center", flexWrap: "wrap" }}>
-              <motion.button onClick={() => handleSort("private")}
+              <motion.button onClick={(e) => handleSort("private", e)}
                 whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
                 style={{ background: "rgba(239,68,68,0.1)", border: "3px solid #ef4444", borderRadius: 20, padding: "20px 36px", cursor: "pointer", color: "#ef4444", fontWeight: 900, fontSize: 18, minWidth: 180 }}>
                 🔒 PRIVATE
               </motion.button>
-              <motion.button onClick={() => handleSort("safe")}
+              <motion.button onClick={(e) => handleSort("safe", e)}
                 whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
                 style={{ background: "rgba(34,197,94,0.1)", border: "3px solid #22c55e", borderRadius: 20, padding: "20px 36px", cursor: "pointer", color: "#22c55e", fontWeight: 900, fontSize: 18, minWidth: 180 }}>
                 ✅ SAFE
@@ -1631,7 +1790,7 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={{ textAlign: "center" }}>
               {card(
                 <>
-                  <h2 style={{ color: "#fff", fontSize: 24, fontWeight: 900, marginBottom: 8 }}>Calls Handled!</h2>
+                  <h2 data-split style={{ color: "#fff", fontSize: 24, fontWeight: 900, marginBottom: 8 }}>Calls Handled!</h2>
                   <p style={{ color: "#d1d5db", marginBottom: 8 }}>{phoneScore}/{PHONE_ROUNDS.length} handled safely!</p>
                   <p style={{ color: "#9ca3af", fontSize: 14, marginBottom: 16 }}>Remember: NEVER give personal info over the phone unless a parent says it&apos;s okay.</p>
                   {btn("Continue →", () => { addCoins(15); triggerSummary(12); })}
@@ -1644,7 +1803,7 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
         const pr = PHONE_ROUNDS[phoneRound];
         return (
           <div style={{ textAlign: "center" }}>
-            <h1 style={{ color: "#fff", fontSize: 24, fontWeight: 900, marginBottom: 4 }}>INCOMING CALL</h1>
+            <h1 data-split style={{ color: "#fff", fontSize: 24, fontWeight: 900, marginBottom: 4 }}>INCOMING CALL</h1>
             <SpeechBubble character="layla" message="Someone is calling. Be careful what you say!" />
             <p style={{ color: "#9ca3af", marginBottom: 16 }}>Call {phoneRound + 1}/{PHONE_ROUNDS.length}</p>
             {!phoneAnswered ? (
@@ -1673,9 +1832,9 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
                       ) : (
                         <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
                           {pr.opts.map((opt, oi) => (
-                            <motion.button key={oi} onClick={() => {
-                              if (!opt.danger) setPhoneScore((s) => s + 1);
-                              else addWrong(12);
+                            <motion.button key={oi} className="shimmer-card" onClick={(e) => {
+                              if (!opt.danger) { celebrateCorrect(e.currentTarget as HTMLElement); setPhoneScore((s) => s + 1); }
+                              else { shakeWrong(e.currentTarget as HTMLElement); addWrong(12); }
                               setPhoneFeedback(opt.fb);
                               playSound(opt.danger ? "/sounds/wrong.mp3" : "/sounds/correct.mp3");
                             }}
@@ -1711,7 +1870,7 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
                     style={{ width: 120, height: 120, borderRadius: "50%", background: GRAD, margin: "0 auto 16px", display: "flex", alignItems: "center", justifyContent: "center" }}>
                     <span style={{ fontSize: 48, color: "#fff" }}>🛡️</span>
                   </motion.div>
-                  <h2 style={{ color: "#fff", fontSize: 24, fontWeight: 900, marginBottom: 8 }}>
+                  <h2 data-split style={{ color: "#fff", fontSize: 24, fontWeight: 900, marginBottom: 8 }}>
                     {perfect ? "PERFECT SHIELD, Maximum Power!" : "Privacy Shield Complete!"}
                   </h2>
                   <p style={{ color: "#d1d5db", marginBottom: 4 }}>{shieldFilled}/7 segments powered</p>
@@ -1726,7 +1885,7 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
         const sq = SHIELD_QS[shieldIdx];
         return (
           <div style={{ textAlign: "center" }}>
-            <h1 style={{ color: "#fff", fontSize: 24, fontWeight: 900, marginBottom: 4 }}>Build Your Privacy Shield</h1>
+            <h1 data-split style={{ color: "#fff", fontSize: 24, fontWeight: 900, marginBottom: 4 }}>Build Your Privacy Shield</h1>
             <SpeechBubble character="adam" message="Every correct answer makes our shield stronger!" />
             <p style={{ color: "#9ca3af", marginBottom: 8 }}>Segment {shieldIdx + 1}/{SHIELD_QS.length}</p>
             {/* Shield progress */}
@@ -1746,14 +1905,17 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
                     <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
                       {sq.opts.map((opt, oi) => (
                         <motion.button key={oi}
-                          onClick={() => {
+                          className="shimmer-card"
+                          onClick={(e) => {
                             if (oi === sq.correct) {
+                              celebrateCorrect(e.currentTarget as HTMLElement);
                               setShieldFilled((f) => f + 1);
                               if (!shieldRetry) setShieldPerfect((p) => p + 1);
                               setShieldRetry(false);
                               playSound("/sounds/correct.mp3");
                               setTimeout(() => setShieldIdx((i) => i + 1), 800);
                             } else {
+                              shakeWrong(e.currentTarget as HTMLElement);
                               setShieldRetry(true);
                               playSound("/sounds/wrong.mp3");
                               addWrong(13);
@@ -1780,7 +1942,7 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
         const allRevealed = masterRevealed.size >= MASTERPLAN_CARDS.length;
         return (
           <div style={{ textAlign: "center" }}>
-            <h1 style={{ color: "#fff", fontSize: 24, fontWeight: 900, marginBottom: 16 }}>The Raccoon&apos;s Masterplan... FAILED</h1>
+            <h1 data-split style={{ color: "#fff", fontSize: 24, fontWeight: 900, marginBottom: 16 }}>The Raccoon&apos;s Masterplan... FAILED</h1>
             <div style={{ maxWidth: 520, margin: "0 auto 16px", background: "rgba(0,0,0,0.3)", borderRadius: 16, padding: 20, border: "1px solid rgba(255,255,255,0.08)", position: "relative" }}>
               <img src="/characters/raccoon-defeated.png" alt="Raccoon" style={{ width: 60, borderRadius: 12, margin: "0 auto 12px", display: "block" }} />
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 10 }}>
@@ -1863,7 +2025,7 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
         const timeLimit = vaultRound < 5 ? 4000 : 3000;
         return (
           <div style={{ textAlign: "center" }}>
-            <h1 style={{ color: "#fff", fontSize: 24, fontWeight: 900, marginBottom: 4 }}>DEFEND THE VAULT</h1>
+            <h1 data-split style={{ color: "#fff", fontSize: 24, fontWeight: 900, marginBottom: 4 }}>DEFEND THE VAULT</h1>
             {vaultRound === 0 && (
               <>
                 <SpeechBubble character="raccoon" message="This is my LAST CHANCE! I'm going to break into that vault!" side="right" />
@@ -1898,11 +2060,11 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
                       </motion.div>
                     ) : (
                       <div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
-                        <motion.button onClick={() => {
+                        <motion.button className="shimmer-card" onClick={(e) => {
                           const correct = va.block;
                           setVaultFeedback(correct ? "correct" : "wrong");
-                          if (correct) { setVaultScore((s) => s + 1); playSound("/sounds/correct.mp3"); }
-                          else { setVaultHP((h) => Math.max(0, h - 15)); playSound("/sounds/wrong.mp3"); addWrong(15); }
+                          if (correct) { celebrateCorrect(e.currentTarget as HTMLElement); setVaultScore((s) => s + 1); playSound("/sounds/correct.mp3"); }
+                          else { shakeWrong(e.currentTarget as HTMLElement); setVaultHP((h) => Math.max(0, h - 15)); playSound("/sounds/wrong.mp3"); addWrong(15); }
                           setTimeout(() => {
                             setVaultFeedback(null);
                             if (vaultHP - (correct ? 0 : 15) <= 0) setVaultDone(true);
@@ -1913,11 +2075,11 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
                           style={{ background: "rgba(59,130,246,0.15)", border: "3px solid #3b82f6", borderRadius: 16, padding: "16px 28px", cursor: "pointer", color: "#60a5fa", fontWeight: 900, fontSize: 16 }}>
                           BLOCK IT! 🛡️
                         </motion.button>
-                        <motion.button onClick={() => {
+                        <motion.button className="shimmer-card" onClick={(e) => {
                           const correct = !va.block;
                           setVaultFeedback(correct ? "correct" : "wrong");
-                          if (correct) { setVaultScore((s) => s + 1); playSound("/sounds/correct.mp3"); }
-                          else { setVaultHP((h) => Math.max(0, h - 15)); playSound("/sounds/wrong.mp3"); addWrong(15); }
+                          if (correct) { celebrateCorrect(e.currentTarget as HTMLElement); setVaultScore((s) => s + 1); playSound("/sounds/correct.mp3"); }
+                          else { shakeWrong(e.currentTarget as HTMLElement); setVaultHP((h) => Math.max(0, h - 15)); playSound("/sounds/wrong.mp3"); addWrong(15); }
                           setTimeout(() => {
                             setVaultFeedback(null);
                             if (vaultHP - (correct ? 0 : 15) <= 0) setVaultDone(true);
@@ -1966,7 +2128,7 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
                       <span style={{ color: "#f59e0b", fontWeight: 900, fontSize: 8, letterSpacing: "0.1em" }}>INFORMATION AGENT</span>
                     </div>
                   </motion.div>
-                  <h2 style={{ color: "#fff", fontSize: 26, fontWeight: 900, marginBottom: 16 }}>Information Agent Certified!</h2>
+                  <h2 data-split style={{ color: "#fff", fontSize: 26, fontWeight: 900, marginBottom: 16 }}>Information Agent Certified!</h2>
                   <SpeechBubble character="adam" message="WE DID IT! The vault is safe!" />
                   <SpeechBubble character="layla" message="The Raccoon's plan is totally destroyed. We're Information Agents now!" />
                   {/* Stats */}
@@ -2010,6 +2172,7 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
   /* ───────── RENDER ───────── */
   return (
     <div style={{ minHeight: "100vh", background: "#1a1033", position: "relative", overflow: "hidden" }}>
+      <style>{`@keyframes shimmer { 0% { background-position: 0% 50% } 50% { background-position: 100% 50% } 100% { background-position: 0% 50% } } .shimmer-card { background-image: linear-gradient(135deg, rgba(59,130,246,0.08) 0%, rgba(6,182,212,0.05) 25%, rgba(16,185,129,0.05) 50%, rgba(59,130,246,0.08) 75%, rgba(139,92,246,0.05) 100%); background-size: 200% 200%; animation: shimmer 3s ease infinite; }`}</style>
       <style>{CSS}</style>
       <FloatingBg />
       <header className="print-hide" style={{

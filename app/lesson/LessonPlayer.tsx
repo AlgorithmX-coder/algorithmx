@@ -2,6 +2,124 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import { motion, AnimatePresence, useMotionValue, useTransform } from "framer-motion";
 import * as THREE from "three";
+import gsap from "gsap";
+import { SplitText } from "gsap/SplitText";
+import { MorphSVGPlugin } from "gsap/MorphSVGPlugin";
+import { Player } from "@lottiefiles/react-lottie-player";
+
+gsap.registerPlugin(SplitText, MorphSVGPlugin);
+
+/* ───────────────────────── GSAP HELPERS ────────────────────── */
+const celebrateCorrect = (el: HTMLElement) => {
+  const tl = gsap.timeline();
+  tl.to(el, { scale: 1.15, duration: 0.15, ease: "power2.out" })
+    .to(el, { scale: 1, duration: 0.5, ease: "elastic.out(1, 0.3)" })
+    .to(el, { boxShadow: "0 0 40px rgba(16,185,129,0.6), 0 0 80px rgba(16,185,129,0.2)", duration: 0.2 }, 0)
+    .to(el, { boxShadow: "0 0 10px rgba(16,185,129,0.2)", duration: 0.6 }, 0.4);
+  const rect = el.getBoundingClientRect();
+  const colors = ["#10b981", "#06b6d4", "#3b82f6", "#f59e0b"];
+  for (let i = 0; i < 12; i++) {
+    const p = document.createElement("div");
+    const size = 6 + Math.random() * 6;
+    p.style.cssText = `position:fixed;width:${size}px;height:${size}px;border-radius:50%;background:${colors[Math.floor(Math.random() * 4)]};pointer-events:none;z-index:9999;`;
+    p.style.left = rect.left + rect.width / 2 + "px";
+    p.style.top = rect.top + rect.height / 2 + "px";
+    document.body.appendChild(p);
+    gsap.to(p, {
+      x: (Math.random() - 0.5) * 250,
+      y: (Math.random() - 0.5) * 250 - 80,
+      opacity: 0, scale: 0, rotation: Math.random() * 360,
+      duration: 0.8 + Math.random() * 0.5,
+      ease: "power2.out",
+      onComplete: () => p.remove(),
+    });
+  }
+};
+
+const shakeWrong = (el: HTMLElement) => {
+  gsap.timeline()
+    .to(el, { x: -15, rotation: -2, duration: 0.06 })
+    .to(el, { x: 15, rotation: 2, duration: 0.06 })
+    .to(el, { x: -10, rotation: -1, duration: 0.06 })
+    .to(el, { x: 10, rotation: 1, duration: 0.06 })
+    .to(el, { x: 0, rotation: 0, duration: 0.06 })
+    .to(el, { boxShadow: "0 0 30px rgba(239,68,68,0.6)", duration: 0.1 }, 0)
+    .to(el, { boxShadow: "0 0 0 rgba(239,68,68,0)", duration: 0.5 }, 0.3);
+  const rect = el.getBoundingClientRect();
+  for (let i = 0; i < 5; i++) {
+    const p = document.createElement("div");
+    p.style.cssText = `position:fixed;width:4px;height:4px;border-radius:50%;background:#ef4444;pointer-events:none;z-index:9999;`;
+    p.style.left = rect.left + rect.width / 2 + "px";
+    p.style.top = rect.top + rect.height / 2 + "px";
+    document.body.appendChild(p);
+    gsap.to(p, {
+      x: (Math.random() - 0.5) * 100,
+      y: Math.random() * 50 + 20,
+      opacity: 0,
+      duration: 0.5,
+      ease: "power2.out",
+      onComplete: () => p.remove(),
+    });
+  }
+};
+
+const animateCoins = () => {
+  const el = document.querySelector("[data-coin-counter]") as HTMLElement | null;
+  if (!el) return;
+  gsap.timeline()
+    .to(el, { scale: 1.5, color: "#f59e0b", textShadow: "0 0 20px rgba(245,158,11,0.6)", duration: 0.2 })
+    .to(el, { scale: 1, textShadow: "0 0 5px rgba(245,158,11,0.2)", duration: 0.5, ease: "elastic.out(1, 0.3)" });
+};
+
+const btnHoverIn = (e: React.MouseEvent<HTMLElement>) => {
+  gsap.to(e.currentTarget, { boxShadow: "0 0 35px rgba(249,115,22,0.6)", scale: 1.06, duration: 0.25 });
+};
+const btnHoverOut = (e: React.MouseEvent<HTMLElement>) => {
+  gsap.to(e.currentTarget, { boxShadow: "0 0 15px rgba(249,115,22,0.3)", scale: 1, duration: 0.4, ease: "elastic.out(1, 0.5)" });
+};
+
+/* ───────────────────────── TILT CARD ───────────────────────── */
+const TiltCard = ({ children, style, className, onClick }: { children: React.ReactNode; style?: React.CSSProperties; className?: string; onClick?: () => void }) => {
+  const cardRef = useRef<HTMLDivElement>(null);
+  const handleMove = (e: React.MouseEvent | React.TouchEvent) => {
+    if (!cardRef.current) return;
+    const rect = cardRef.current.getBoundingClientRect();
+    const clientX = "touches" in e ? e.touches[0].clientX : e.clientX;
+    const clientY = "touches" in e ? e.touches[0].clientY : e.clientY;
+    const x = (clientX - rect.left) / rect.width - 0.5;
+    const y = (clientY - rect.top) / rect.height - 0.5;
+    gsap.to(cardRef.current, {
+      rotateY: x * 15,
+      rotateX: -y * 15,
+      scale: 1.03,
+      boxShadow: "0 25px 50px rgba(0,0,0,0.3), 0 0 25px rgba(59,130,246,0.3)",
+      duration: 0.3,
+      ease: "power2.out",
+    });
+  };
+  const handleLeave = () => {
+    if (!cardRef.current) return;
+    gsap.to(cardRef.current, {
+      rotateY: 0, rotateX: 0, scale: 1,
+      boxShadow: "0 4px 15px rgba(0,0,0,0.2)",
+      duration: 0.6, ease: "elastic.out(1, 0.4)",
+    });
+  };
+  return (
+    <div
+      ref={cardRef}
+      onMouseMove={handleMove}
+      onTouchMove={handleMove}
+      onMouseLeave={handleLeave}
+      onTouchEnd={handleLeave}
+      onClick={onClick}
+      className={className}
+      style={{ perspective: 1000, transformStyle: "preserve-3d", cursor: "pointer", transition: "none", ...style }}
+    >
+      {children}
+    </div>
+  );
+};
 
 /* ───────────────────────── SVG ICONS ──────────────────────── */
 
@@ -211,6 +329,16 @@ const RECIPE_CHARS: Record<number, string[]> = {
 /* ───────────────────────── CSS (only what Framer can't replace) ── */
 
 const CSS = `
+@keyframes shimmer {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+.shimmer-card {
+  background-image: linear-gradient(135deg, rgba(59,130,246,0.08) 0%, rgba(6,182,212,0.05) 25%, rgba(16,185,129,0.05) 50%, rgba(59,130,246,0.08) 75%, rgba(139,92,246,0.05) 100%);
+  background-size: 200% 200%;
+  animation: shimmer 3s ease infinite;
+}
 @media print {
   body { background: white !important; }
   header, nav, .step-dots-wrap, .progress-wrap, .floating-orbs-wrap, .score-cards, .dash-link, .print-hide { display: none !important; }
@@ -464,6 +592,7 @@ function CoinCounter({ coins, animKey }: { coins: number; animKey: number }) {
   return (
     <motion.div
       key={animKey}
+      data-coin-counter
       animate={animKey > 0 ? { scale: [1, 1.4, 1] } : {}}
       transition={{ duration: 0.4 }}
       style={{
@@ -514,8 +643,10 @@ function btn(label: string, onClick: () => void, extra?: React.CSSProperties): R
   return (
     <motion.button
       onClick={onClick}
-      whileHover={{ scale: 1.05, y: -2, boxShadow: "0 0 25px rgba(249,115,22,0.6)" }}
+      onMouseEnter={btnHoverIn}
+      onMouseLeave={btnHoverOut}
       whileTap={{ scale: 0.95 }}
+      data-animate
       style={{
         background: "linear-gradient(135deg, #f97316, #f59e0b)", color: "#fff", fontWeight: 700, borderRadius: 14,
         padding: "13px 34px", border: "none", cursor: "pointer", fontSize: 16,
@@ -530,7 +661,7 @@ function btn(label: string, onClick: () => void, extra?: React.CSSProperties): R
 
 function card(children: React.ReactNode, extra?: React.CSSProperties): React.ReactElement {
   return (
-    <div style={{
+    <div data-animate style={{
       background: "rgba(255,255,255,0.04)", backdropFilter: "blur(12px)",
       border: "1px solid rgba(255,255,255,0.1)", borderRadius: 24, padding: 24, ...extra,
     }}>
@@ -588,17 +719,19 @@ function FloatingBubbleQuiz({ question, opts, correct, explain, onCorrect, onWro
   const [showFeedback, setShowFeedback] = useState(false);
   const [showNext, setShowNext] = useState(false);
 
-  const handleTap = (i: number) => {
+  const handleTap = (e: React.MouseEvent<HTMLButtonElement>, i: number) => {
     if (selected !== null) return;
     if (i === correct) {
       setSelected(i);
       setPopped(true);
       setShowFeedback(true);
       setShowNext(true);
+      celebrateCorrect(e.currentTarget);
       playSound("/sounds/correct.mp3");
       setTimeout(() => playSound("/sounds/coin.mp3"), 500);
     } else {
       setWrongTapped((prev) => { const n = new Set(prev); n.add(i); return n; });
+      shakeWrong(e.currentTarget);
       playSound("/sounds/wrong.mp3");
       onWrong();
       setTimeout(() => setWrongTapped((prev) => { const n = new Set(prev); n.delete(i); return n; }), 600);
@@ -607,7 +740,7 @@ function FloatingBubbleQuiz({ question, opts, correct, explain, onCorrect, onWro
 
   return (
     <div style={{ textAlign: "center" }}>
-      <h2 style={{ color: "#fff", fontSize: 20, margin: "0 0 24px" }}>{question}</h2>
+      <h2 data-split style={{ color: "#fff", fontSize: 20, margin: "0 0 24px" }}>{question}</h2>
       <div style={{
         display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20,
         maxWidth: 400, margin: "0 auto 20px", minHeight: 260,
@@ -621,7 +754,8 @@ function FloatingBubbleQuiz({ question, opts, correct, explain, onCorrect, onWro
           return (
             <motion.button
               key={i}
-              onClick={() => handleTap(i)}
+              className="shimmer-card"
+              onClick={(e) => handleTap(e, i)}
               disabled={selected !== null}
               animate={
                 isPopped ? { scale: [1, 1.3, 0], opacity: [1, 0.6, 0] }
@@ -810,10 +944,10 @@ function ArenaBg3D({ effect }: { effect: "hit" | "miss" | "super" | null }) {
 function InstructionOverlay({ icon, story, instructions, onReady }: { icon: string; story: string; instructions: string; onReady: () => void }) {
   return (
     <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} style={{ textAlign: "center" }}>
-      <div style={{ background: "rgba(15,10,40,0.9)", backdropFilter: "blur(12px)", border: "1px solid rgba(59,130,246,0.3)", boxShadow: "0 0 20px rgba(59,130,246,0.2)", borderRadius: 24, padding: 32, maxWidth: 520, margin: "0 auto" }}>
+      <div data-animate style={{ background: "rgba(15,10,40,0.9)", backdropFilter: "blur(12px)", border: "1px solid rgba(59,130,246,0.3)", boxShadow: "0 0 20px rgba(59,130,246,0.2)", borderRadius: 24, padding: 32, maxWidth: 520, margin: "0 auto" }}>
         <div style={{ width: 80, height: 80, margin: "0 auto 16px", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 48, background: "rgba(59,130,246,0.15)", borderRadius: 20 }}>{icon}</div>
         <p style={{ color: "#60a5fa", fontSize: 14, fontStyle: "italic", marginBottom: 8 }}>{story}</p>
-        <h2 style={{ color: "#fff", fontSize: 22, fontWeight: 900, marginBottom: 8 }}>Here&apos;s what to do!</h2>
+        <h2 data-split style={{ color: "#fff", fontSize: 22, fontWeight: 900, marginBottom: 8 }}>Here&apos;s what to do!</h2>
         <p style={{ color: "#d1d5db", fontSize: 16, lineHeight: 1.6, marginBottom: 20 }}>{instructions}</p>
         <motion.button onClick={onReady} whileHover={{ scale: 1.05, y: -2, boxShadow: "0 0 25px rgba(249,115,22,0.6)" }} whileTap={{ scale: 0.95 }}
           style={{ background: "linear-gradient(135deg, #f97316, #f59e0b)", color: "#fff", fontWeight: 700, borderRadius: 14, padding: "13px 34px", border: "none", cursor: "pointer", fontSize: 16, boxShadow: "0 0 15px rgba(249,115,22,0.4)" }}>
@@ -827,9 +961,9 @@ function InstructionOverlay({ icon, story, instructions, onReady }: { icon: stri
 function LearnSummary({ message, starCount, onNext }: { message: string; starCount: number; onNext: () => void }) {
   return (
     <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} style={{ textAlign: "center" }}>
-      <div style={{ background: "rgba(255,255,255,0.04)", backdropFilter: "blur(12px)", border: "1px solid rgba(16,185,129,0.3)", boxShadow: "0 0 15px rgba(16,185,129,0.2)", borderRadius: 20, padding: 28, maxWidth: 520, margin: "0 auto" }}>
+      <div data-animate style={{ background: "rgba(255,255,255,0.04)", backdropFilter: "blur(12px)", border: "1px solid rgba(16,185,129,0.3)", boxShadow: "0 0 15px rgba(16,185,129,0.2)", borderRadius: 20, padding: 28, maxWidth: 520, margin: "0 auto" }}>
         <div style={{ width: 80, height: 80, margin: "0 auto 12px", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 48, background: "rgba(16,185,129,0.1)", borderRadius: 20, boxShadow: "0 0 15px rgba(16,185,129,0.4)" }}>&#x2705;</div>
-        <h2 style={{ color: "#fff", fontSize: 22, fontWeight: 900, marginBottom: 4 }}>Great job!</h2>
+        <h2 data-split style={{ color: "#fff", fontSize: 22, fontWeight: 900, marginBottom: 4 }}>Great job!</h2>
         <div style={{ marginBottom: 8 }}>
           <span style={{ fontSize: 28, letterSpacing: 4 }}>{"⭐".repeat(starCount)}{"☆".repeat(3 - starCount)}</span>
         </div>
@@ -850,6 +984,7 @@ const SpeechBubble = ({ character, message, side = "left" }: { character: "adam"
   const borderColor = character === "raccoon" ? "rgba(239,68,68,0.3)" : "rgba(59,130,246,0.3)";
   return (
     <motion.div
+      data-animate
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4 }}
@@ -875,7 +1010,37 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
   const addCoins = useCallback((n: number) => {
     setCoins((c) => c + n);
     setCoinAnimKey((k) => k + 1);
+    animateCoins();
   }, []);
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.from("[data-animate]", {
+        y: 40,
+        opacity: 0,
+        duration: 0.7,
+        stagger: 0.12,
+        ease: "back.out(1.7)",
+        clearProps: "all",
+      });
+      document.querySelectorAll("[data-split]").forEach((el) => {
+        try {
+          const split = SplitText.create(el, { type: "chars,words" });
+          gsap.from(split.chars, {
+            opacity: 0,
+            y: 20,
+            rotateX: -90,
+            stagger: 0.03,
+            duration: 0.5,
+            ease: "back.out(1.7)",
+            delay: 0.2,
+          });
+        } catch { /* SplitText plugin may be unavailable */ }
+      });
+    });
+    return () => ctx.revert();
+  }, [screen]);
+
 
   const playSound = useCallback((src: string) => {
     try {
@@ -1502,7 +1667,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                 {card(
                   <>
                     <img src="/characters/adam-layla-hacked.png" alt="Adam and Layla hacked" style={{ width: 280, borderRadius: 20, margin: "0 auto 20px", display: "block" }} />
-                    <h2 style={{ color: "#fff", fontSize: 26, margin: "0 0 8px" }}>Oh no! Adam and Layla got hacked by the Raccoon! 🦝</h2>
+                    <h2 data-split style={{ color: "#fff", fontSize: 26, margin: "0 0 8px" }}>Oh no! Adam and Layla got hacked by the Raccoon! 🦝</h2>
                     <p style={{ color: "#d1d5db", marginBottom: 20, fontSize: 16 }}>They need YOUR help to learn about password safety!</p>
                     {btn("I'll help them! Let's go! 🚀", () => navigate(1))}
                   </>,
@@ -1562,7 +1727,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
         if (showSummary[2]) return <LearnSummary message="You learned that passwords LOCK your stuff! Just like a key locks a door, a password keeps your games and photos safe." starCount={getStars(2)} onNext={() => dismissSummary(2, 3)} />;
         return (
           <div style={{ textAlign: "center" }}>
-            <h1 style={{ color: "#fff", fontSize: 28, fontWeight: 900, marginBottom: 8 }}>What is a Password?</h1>
+            <h1 data-split style={{ color: "#fff", fontSize: 28, fontWeight: 900, marginBottom: 8 }}>What is a Password?</h1>
             <SpeechBubble character="adam" message="Quick! We need to lock everything before the Raccoon gets in!" />
             <p style={{ color: "#9ca3af", marginBottom: 8 }}>Tap each item to lock it with a password!</p>
             <p style={{ color: "#f59e0b", fontSize: 20, fontWeight: 700, marginBottom: 16 }}>🔒 {lockedItems.size}/3</p>
@@ -1685,7 +1850,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
             >
               {card(
                 <>
-                  <h2 style={{ color: "#fff", fontSize: 24, margin: "0 0 12px" }}>Quiz Complete!</h2>
+                  <h2 data-split style={{ color: "#fff", fontSize: 24, margin: "0 0 12px" }}>Quiz Complete!</h2>
                   {stars(s)}
                   <p style={{ color: "#d1d5db", margin: "12px 0" }}>You got {q1Score}/{Q1_QUIZ.length} correct!</p>
                   <p style={{ color: "#f59e0b", fontSize: 14 }}>🪙 +{q1Score * 10} coins earned!</p>
@@ -1703,7 +1868,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
           >
-            <h1 style={{ color: "#fff", fontSize: 24, fontWeight: 900, marginBottom: 4, textAlign: "center" }}>Quick Quiz!<img src="/characters/thinking.png" width={40} height={40} alt="" style={{ display: "inline-block", verticalAlign: "middle", marginLeft: 8, borderRadius: 999 }} /></h1>
+            <h1 data-split style={{ color: "#fff", fontSize: 24, fontWeight: 900, marginBottom: 4, textAlign: "center" }}>Quick Quiz!<img src="/characters/thinking.png" width={40} height={40} alt="" style={{ display: "inline-block", verticalAlign: "middle", marginLeft: 8, borderRadius: 999 }} /></h1>
             <p style={{ color: "#9ca3af", marginBottom: 12, textAlign: "center" }}>Question {q1Idx + 1}/{Q1_QUIZ.length}</p>
             <FloatingBubbleQuiz
               question={qq.q}
@@ -1736,7 +1901,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
             >
               {card(
                 <>
-                  <h2 style={{ color: "#fff", fontSize: 24, margin: "0 0 12px" }}>Passwords protect EVERYTHING! 🛡️</h2>
+                  <h2 data-split style={{ color: "#fff", fontSize: 24, margin: "0 0 12px" }}>Passwords protect EVERYTHING! 🛡️</h2>
                   <p style={{ color: "#d1d5db", marginBottom: 16 }}>Now you know why every digital thing needs a password.</p>
                   <p style={{ color: "#f59e0b", fontSize: 14 }}>🪙 +30 coins earned!</p>
                   {btn("Quiz time! →", () => showLearnSummary(4))}
@@ -1749,7 +1914,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
         const raccoonSpeed = [3, 2.5, 2][whyIdx] || 2;
         return (
           <div style={{ textAlign: "center" }}>
-            <h1 style={{ color: "#fff", fontSize: 24, fontWeight: 900, marginBottom: 8 }}>Why Do Passwords Matter?</h1>
+            <h1 data-split style={{ color: "#fff", fontSize: 24, fontWeight: 900, marginBottom: 8 }}>Why Do Passwords Matter?</h1>
             {!raccoonHitShield && !shieldPlaced && (
               <SpeechBubble character="raccoon" message="Hehehe... no password? This is going to be easy!" side="right" />
             )}
@@ -1898,7 +2063,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
             >
               {card(
                 <>
-                  <h2 style={{ color: "#fff", fontSize: 24, margin: "0 0 12px" }}>Quiz Complete!</h2>
+                  <h2 data-split style={{ color: "#fff", fontSize: 24, margin: "0 0 12px" }}>Quiz Complete!</h2>
                   {stars(s)}
                   <p style={{ color: "#d1d5db", margin: "12px 0" }}>You got {q2Score}/{Q2_QUIZ.length} correct!</p>
                   <p style={{ color: "#f59e0b", fontSize: 14 }}>🪙 +{q2Score * 10} coins earned!</p>
@@ -1916,7 +2081,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
           >
-            <h1 style={{ color: "#fff", fontSize: 24, fontWeight: 900, marginBottom: 4, textAlign: "center" }}>Quick Quiz!<img src="/characters/thinking.png" width={40} height={40} alt="" style={{ display: "inline-block", verticalAlign: "middle", marginLeft: 8, borderRadius: 999 }} /></h1>
+            <h1 data-split style={{ color: "#fff", fontSize: 24, fontWeight: 900, marginBottom: 4, textAlign: "center" }}>Quick Quiz!<img src="/characters/thinking.png" width={40} height={40} alt="" style={{ display: "inline-block", verticalAlign: "middle", marginLeft: 8, borderRadius: 999 }} /></h1>
             <p style={{ color: "#9ca3af", marginBottom: 12, textAlign: "center" }}>Question {q2Idx + 1}/{Q2_QUIZ.length}</p>
             <FloatingBubbleQuiz
               question={qq.q}
@@ -1941,7 +2106,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
         if (showSummary[6]) return <LearnSummary message="You learned HOW to build a super strong password, mix letters, numbers, and special characters!" starCount={getStars(6)} onNext={() => dismissSummary(6, 7)} />;
         return (
           <div style={{ textAlign: "center" }}>
-            <h1 style={{ color: "#fff", fontSize: 28, fontWeight: 900, marginBottom: 8 }}>The Password Recipe!</h1>
+            <h1 data-split style={{ color: "#fff", fontSize: 28, fontWeight: 900, marginBottom: 8 }}>The Password Recipe!</h1>
             <p style={{ color: "#9ca3af", marginBottom: 16 }}>Tap each bottle to pour it into the mix!</p>
 
             {/* Bottles in arc */}
@@ -2060,7 +2225,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
         const filledCount = builderSlots.filter((s: number) => s >= 0).length;
         return (
           <div style={{ textAlign: "center" }}>
-            <h1 style={{ color: "#fff", fontSize: 28, fontWeight: 900, marginBottom: 8 }}>Build Your Password!</h1>
+            <h1 data-split style={{ color: "#fff", fontSize: 28, fontWeight: 900, marginBottom: 8 }}>Build Your Password!</h1>
             <SpeechBubble character="layla" message="Let's mix these ingredients together to make a super strong password!" />
             {/* Display */}
             <motion.div
@@ -2146,7 +2311,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
             >
               {card(
                 <>
-                  <h2 style={{ color: "#fff", fontSize: 24, margin: "0 0 12px" }}>Round Complete!</h2>
+                  <h2 data-split style={{ color: "#fff", fontSize: 24, margin: "0 0 12px" }}>Round Complete!</h2>
                   {stars(s)}
                   <p style={{ color: "#d1d5db", margin: "12px 0" }}>{swipeScore}/{SWIPE_DATA.length} correct!</p>
                   <p style={{ color: "#f59e0b", fontSize: 14 }}>🪙 +{swipeScore * 10} coins earned!</p>
@@ -2182,7 +2347,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
 
         return (
           <div style={{ textAlign: "center" }}>
-            <h1 style={{ color: "#fff", fontSize: 24, fontWeight: 900, marginBottom: 8 }}>Good or Bad?</h1>
+            <h1 data-split style={{ color: "#fff", fontSize: 24, fontWeight: 900, marginBottom: 8 }}>Good or Bad?</h1>
             <p style={{ color: "#9ca3af", marginBottom: 8 }}>{swipeIdx + 1}/{SWIPE_DATA.length}, Swipe or tap!</p>
 
             {/* Weak/Strong indicators */}
@@ -2287,7 +2452,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
             >
               {card(
                 <>
-                  <h2 style={{ color: "#fff", fontSize: 24, margin: "0 0 12px" }}>Sorting Complete!</h2>
+                  <h2 data-split style={{ color: "#fff", fontSize: 24, margin: "0 0 12px" }}>Sorting Complete!</h2>
                   {stars(sortStars)}
                   <p style={{ color: "#d1d5db", margin: "12px 0" }}>{placed.size}/8 sorted correctly!</p>
                   <p style={{ color: "#f59e0b", fontSize: 14 }}>🪙 +25 coins earned!</p>
@@ -2299,7 +2464,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
         }
         return (
           <div style={{ textAlign: "center", userSelect: "none" }}>
-            <h1 style={{ color: "#fff", fontSize: 24, fontWeight: 900, marginBottom: 8 }}>Sort the Passwords!</h1>
+            <h1 data-split style={{ color: "#fff", fontSize: 24, fontWeight: 900, marginBottom: 8 }}>Sort the Passwords!</h1>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
               <span style={{ color: "#9ca3af" }}>{placed.size}/8 sorted</span>
               <span style={{ color: dragTime <= 10 ? "#ef4444" : "#f59e0b", fontWeight: 700, fontSize: 18 }}>
@@ -2383,7 +2548,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
         if (showSummary[10]) return <LearnSummary message="You know the 5 Golden Rules of passwords! Follow them and the Raccoon can never get in." starCount={getStars(10)} onNext={() => dismissSummary(10, 11)} />;
         return (
           <div style={{ textAlign: "center" }}>
-            <h1 style={{ color: "#fff", fontSize: 28, fontWeight: 900, marginBottom: 16 }}>The 5 Golden Rules!</h1>
+            <h1 data-split style={{ color: "#fff", fontSize: 28, fontWeight: 900, marginBottom: 16 }}>The 5 Golden Rules!</h1>
             <SpeechBubble character="layla" message="These are the most important rules. Remember them!" />
             <div style={{ display: "flex", flexDirection: "column", gap: 16, maxWidth: 680, margin: "0 auto 24px" }}>
               {RULES.map((rule, i) => {
@@ -2446,15 +2611,18 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                               <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
                                 {rule.opts.map((opt: string, oi: number) => (
                                   <motion.button key={oi}
+                                    className="shimmer-card"
                                     onClick={(e) => {
                                       e.stopPropagation();
                                       setRuleAnswers((prev) => ({ ...prev, [i]: oi }));
                                       if (oi === rule.correct) {
+                                        celebrateCorrect(e.currentTarget as HTMLElement);
                                         setAnsweredRules((prev) => { const n = new Set(prev); n.add(i); return n; });
                                         playSound("/sounds/correct.mp3");
                                         addCoins(5);
                                         setTimeout(() => playSound("/sounds/coin.mp3"), 500);
                                       } else {
+                                        shakeWrong(e.currentTarget as HTMLElement);
                                         playSound("/sounds/wrong.mp3");
                                       }
                                     }}
@@ -2513,7 +2681,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
             >
               {card(
                 <>
-                  <h2 style={{ color: "#fff", fontSize: 24, margin: "0 0 12px" }}>Quiz Complete!</h2>
+                  <h2 data-split style={{ color: "#fff", fontSize: 24, margin: "0 0 12px" }}>Quiz Complete!</h2>
                   {stars(s)}
                   <p style={{ color: "#d1d5db", margin: "12px 0" }}>You got {q3Score}/{Q3_QUIZ.length} correct!</p>
                   <p style={{ color: "#f59e0b", fontSize: 14 }}>🪙 +{q3Score * 10} coins earned!</p>
@@ -2531,7 +2699,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
           >
-            <h1 style={{ color: "#fff", fontSize: 24, fontWeight: 900, marginBottom: 4, textAlign: "center" }}>Quick Quiz!<img src="/characters/thinking.png" width={40} height={40} alt="" style={{ display: "inline-block", verticalAlign: "middle", marginLeft: 8, borderRadius: 999 }} /></h1>
+            <h1 data-split style={{ color: "#fff", fontSize: 24, fontWeight: 900, marginBottom: 4, textAlign: "center" }}>Quick Quiz!<img src="/characters/thinking.png" width={40} height={40} alt="" style={{ display: "inline-block", verticalAlign: "middle", marginLeft: 8, borderRadius: 999 }} /></h1>
             <p style={{ color: "#9ca3af", marginBottom: 12, textAlign: "center" }}>Question {q3Idx + 1}/{Q3_QUIZ.length}</p>
             <FloatingBubbleQuiz
               question={qq.q}
@@ -2561,7 +2729,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
         ];
         return (
           <div style={{ textAlign: "center" }}>
-            <h1 style={{ color: "#fff", fontSize: 26, fontWeight: 900, marginBottom: 4 }}>Spot the Tricks!</h1>
+            <h1 data-split style={{ color: "#fff", fontSize: 26, fontWeight: 900, marginBottom: 4 }}>Spot the Tricks!</h1>
             <SpeechBubble character="adam" message="Wait... this message looks weird. Is it real?" />
             <p style={{ color: "#9ca3af", marginBottom: 16 }}>The Raccoon sends FAKE messages to trick people. Here&apos;s how to spot them!</p>
             {trickCard < 4 ? (
@@ -2589,7 +2757,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
               <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
                 {card(
                   <>
-                    <h2 style={{ color: "#fff", fontSize: 22, fontWeight: 900, marginBottom: 12 }}>Remember the 4 signs of a trick:</h2>
+                    <h2 data-split style={{ color: "#fff", fontSize: 22, fontWeight: 900, marginBottom: 12 }}>Remember the 4 signs of a trick:</h2>
                     <div style={{ textAlign: "left", maxWidth: 400, margin: "0 auto 16px" }}>
                       {["Too good to be true", "Scary warnings", "Spelling mistakes", "Asking for your secrets"].map((sign, i) => (
                         <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.15 }}
@@ -2625,7 +2793,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
             >
               {card(
                 <>
-                  <h2 style={{ color: "#fff", fontSize: 24, margin: "0 0 12px" }}>Phishing Expert!</h2>
+                  <h2 data-split style={{ color: "#fff", fontSize: 24, margin: "0 0 12px" }}>Phishing Expert!</h2>
                   {stars(s)}
                   <p style={{ color: "#d1d5db", margin: "12px 0" }}>{phishScore}/{PHISH.length} spotted correctly!</p>
                   <p style={{ color: "#f59e0b", fontSize: 14 }}>🪙 +{phishScore * 15} coins earned!</p>
@@ -2638,7 +2806,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
         const ph = PHISH[phishIdx];
         return (
           <div style={{ textAlign: "center" }}>
-            <h1 style={{ color: "#fff", fontSize: 24, fontWeight: 900, marginBottom: 8 }}>Spot the Tricks!<img src="/characters/raccoon-sneaking.png" width={40} height={40} alt="" style={{ display: "inline-block", verticalAlign: "middle", marginLeft: 8, borderRadius: 999 }} /></h1>
+            <h1 data-split style={{ color: "#fff", fontSize: 24, fontWeight: 900, marginBottom: 8 }}>Spot the Tricks!<img src="/characters/raccoon-sneaking.png" width={40} height={40} alt="" style={{ display: "inline-block", verticalAlign: "middle", marginLeft: 8, borderRadius: 999 }} /></h1>
             <p style={{ color: "#9ca3af", marginBottom: 16 }}>Message {phishIdx + 1}/{PHISH.length}</p>
 
             {/* Tablet frame */}
@@ -2710,11 +2878,11 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
             {phishAnswer === null ? (
               <div style={{ display: "flex", gap: 16, justifyContent: "center" }}>
                 <motion.button
-                  onClick={() => {
+                  onClick={(e) => {
                     const correct = ph.isScam;
                     setPhishAnswer(correct);
-                    if (correct) { setPhishScore((s) => s + 1); addCoins(15); playSound("/sounds/correct.mp3"); setTimeout(() => playSound("/sounds/coin.mp3"), 500); }
-                    else { playSound("/sounds/wrong.mp3"); addWrong(13); }
+                    if (correct) { celebrateCorrect(e.currentTarget as HTMLElement); setPhishScore((s) => s + 1); addCoins(15); playSound("/sounds/correct.mp3"); setTimeout(() => playSound("/sounds/coin.mp3"), 500); }
+                    else { shakeWrong(e.currentTarget as HTMLElement); playSound("/sounds/wrong.mp3"); addWrong(13); }
                     setPhishStamped(true);
                   }}
                   whileHover={{ scale: 1.05 }}
@@ -2727,11 +2895,11 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                   🚨 It&apos;s a SCAM!
                 </motion.button>
                 <motion.button
-                  onClick={() => {
+                  onClick={(e) => {
                     const correct = !ph.isScam;
                     setPhishAnswer(correct);
-                    if (correct) { setPhishScore((s) => s + 1); addCoins(15); playSound("/sounds/correct.mp3"); setTimeout(() => playSound("/sounds/coin.mp3"), 500); }
-                    else { playSound("/sounds/wrong.mp3"); addWrong(13); }
+                    if (correct) { celebrateCorrect(e.currentTarget as HTMLElement); setPhishScore((s) => s + 1); addCoins(15); playSound("/sounds/correct.mp3"); setTimeout(() => playSound("/sounds/coin.mp3"), 500); }
+                    else { shakeWrong(e.currentTarget as HTMLElement); playSound("/sounds/wrong.mp3"); addWrong(13); }
                     setPhishStamped(true);
                   }}
                   whileHover={{ scale: 1.05 }}
@@ -2786,7 +2954,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
             >
               {card(
                 <>
-                  <h2 style={{ color: "#fff", fontSize: 24, margin: "0 0 12px" }}>Great decisions!</h2>
+                  <h2 data-split style={{ color: "#fff", fontSize: 24, margin: "0 0 12px" }}>Great decisions!</h2>
                   {stars(s)}
                   <p style={{ color: "#d1d5db", margin: "12px 0" }}>{wydScore}/{WYD.length} perfect choices!</p>
                   <p style={{ color: "#f59e0b", fontSize: 14 }}>🪙 +{wydScore * 15} coins earned!</p>
@@ -2799,7 +2967,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
         const w = WYD[wydIdx];
         return (
           <div style={{ textAlign: "center" }}>
-            <h1 style={{ color: "#fff", fontSize: 24, fontWeight: 900, marginBottom: 8 }}>What Would YOU Do?</h1>
+            <h1 data-split style={{ color: "#fff", fontSize: 24, fontWeight: 900, marginBottom: 8 }}>What Would YOU Do?</h1>
             <p style={{ color: "#9ca3af", marginBottom: 16 }}>Scenario {wydIdx + 1}/{WYD.length}</p>
             <motion.div
               key={`wyd-${wydIdx}`}
@@ -2847,11 +3015,12 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                   return (
                     <motion.button
                       key={i}
-                      onClick={() => {
+                      className="shimmer-card"
+                      onClick={(e) => {
                         if (wydSel !== null) return;
                         setWydSel(i);
-                        if (i === w.correct) { setWydScore((s) => s + 1); addCoins(15); playSound("/sounds/correct.mp3"); setTimeout(() => playSound("/sounds/coin.mp3"), 500); }
-                        else { playSound("/sounds/wrong.mp3"); addWrong(14); }
+                        if (i === w.correct) { celebrateCorrect(e.currentTarget as HTMLElement); setWydScore((s) => s + 1); addCoins(15); playSound("/sounds/correct.mp3"); setTimeout(() => playSound("/sounds/coin.mp3"), 500); }
+                        else { shakeWrong(e.currentTarget as HTMLElement); playSound("/sounds/wrong.mp3"); addWrong(14); }
                       }}
                       disabled={answered}
                       whileHover={!answered ? { scale: 1.02 } : {}}
@@ -2929,7 +3098,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
           const timerPct = (arenaTimeLeft / 12) * 100;
           return (
             <div style={{ textAlign: "center" }}>
-              <h1 style={{ color: "#f59e0b", fontSize: 26, fontWeight: 900, marginBottom: 4 }}>FIRE AT THE RACCOON!</h1>
+              <h1 data-split style={{ color: "#f59e0b", fontSize: 26, fontWeight: 900, marginBottom: 4 }}>FIRE AT THE RACCOON!</h1>
               <p style={{ color: "#9ca3af", fontSize: 14, marginBottom: 4 }}>Tap anywhere to fire!</p>
               <p style={{ color: "#f59e0b", fontSize: 28, fontWeight: 900, marginBottom: 8 }}>Hits: {arenaHits}</p>
               {/* Arena with 3D background */}
@@ -2994,7 +3163,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
         const bq = BOSS_QUIZ[bossIdx] || BOSS_QUIZ[0];
         return (
           <div style={{ textAlign: "center" }}>
-            <h1 style={{ color: "#fff", fontSize: 28, fontWeight: 900, marginBottom: 8 }}>
+            <h1 data-split style={{ color: "#fff", fontSize: 28, fontWeight: 900, marginBottom: 8 }}>
               FINAL CHALLENGE!<img src="/characters/raccoon-sneaking.png" width={40} height={40} alt="" style={{ display: "inline-block", verticalAlign: "middle", marginLeft: 8, borderRadius: 999 }} />
             </h1>
             {bossIdx === 0 && (
@@ -3021,7 +3190,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
             <p style={{ color: "#9ca3af", marginBottom: 8 }}>Question {bossIdx + 1}/{BOSS_QUIZ.length}</p>
             <AnimatePresence mode="wait">
               <motion.div key={`boss-${bossIdx}`} initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0 }}>
-                <h2 style={{ color: "#fff", fontSize: 18, margin: "0 0 16px" }}>{bq.q}</h2>
+                <h2 data-split style={{ color: "#fff", fontSize: 18, margin: "0 0 16px" }}>{bq.q}</h2>
                 <div style={{ display: "flex", flexDirection: "column", gap: 10, maxWidth: 640, margin: "0 auto" }}>
                   {bq.opts.map((opt: string, i: number) => {
                     const c = OPT_COLORS[i]; const isCorrect = i === bq.correct;
@@ -3030,17 +3199,19 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                     if (answered && isCorrect) { bg = "rgba(16,185,129,0.15)"; border = "#10b981"; }
                     if (selected && !isCorrect) { bg = "rgba(239,68,68,0.15)"; border = "#ef4444"; }
                     return (
-                      <motion.button key={i} onClick={() => {
+                      <motion.button key={i} className="shimmer-card" onClick={(e) => {
                         if (bossSel !== null) return;
                         setBossSel(i);
                         const correct = i === bq.correct;
                         setBossFeedback(correct);
                         if (correct) {
+                          celebrateCorrect(e.currentTarget as HTMLElement);
                           setBossScore((s) => s + 1); addCoins(20);
                           playTone("zap");
                           setArenaEffect("hit"); setTimeout(() => setArenaEffect(null), 600);
                           setTimeout(() => setBossAttackPhase(true), 500);
                         } else {
+                          shakeWrong(e.currentTarget as HTMLElement);
                           playSound("/sounds/wrong.mp3"); addWrong(15);
                           setArenaEffect("miss"); setTimeout(() => setArenaEffect(null), 600);
                           setTimeout(() => {
@@ -3085,7 +3256,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
         const achieveCoins = [25, 30, 25, 0, 25, 0, 0, 0];
         return (
           <div style={{ textAlign: "center" }}>
-            <h1 style={{ color: "#fff", fontSize: 32, fontWeight: 900, marginBottom: 16 }}>You Did It!<img src="/characters/celebrating.png" width={44} height={44} alt="" style={{ display: "inline-block", verticalAlign: "middle", marginLeft: 8, borderRadius: 999 }} /></h1>
+            <h1 data-split style={{ color: "#fff", fontSize: 32, fontWeight: 900, marginBottom: 16 }}>You Did It!<img src="/characters/celebrating.png" width={44} height={44} alt="" style={{ display: "inline-block", verticalAlign: "middle", marginLeft: 8, borderRadius: 999 }} /></h1>
             <motion.img
               src="/characters/celebrating.png"
               alt="Adam and Layla celebrating"
@@ -3169,7 +3340,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
               <div style={{ position: "relative", zIndex: 1 }}>
                 <div style={{ fontSize: 14, color: "#9ca3af", letterSpacing: 2, marginBottom: 8 }}>ALGORITHMX</div>
                 <div style={{ fontSize: 40, marginBottom: 4 }}>🛡️</div>
-                <h1 style={{ color: "#fff", fontSize: 22, fontWeight: 900, margin: "0 0 4px" }}>Certificate of Achievement</h1>
+                <h1 data-split style={{ color: "#fff", fontSize: 22, fontWeight: 900, margin: "0 0 4px" }}>Certificate of Achievement</h1>
                 <div style={{ width: 60, height: 3, background: GRAD, borderRadius: 999, margin: "8px auto 16px" }} />
                 <p style={{ color: "#d1d5db", marginBottom: 4 }}>Presented to</p>
                 <h2 className="gradient-text" style={{
@@ -3305,6 +3476,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
   return (
     <div style={{ minHeight: "100vh", background: "#1a1033", position: "relative", overflow: "hidden" }}>
       <style>{CSS}</style>
+      <style>{`@keyframes shimmer { 0% { background-position: 0% 50% } 50% { background-position: 100% 50% } 100% { background-position: 0% 50% } }`}</style>
       <div className="floating-orbs-wrap"><FloatingOrbs /></div>
       {/* Sticky header */}
       <header className="print-hide" style={{
