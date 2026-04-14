@@ -207,60 +207,146 @@ const CSS = `
 
 /* ───────────────────────── SUB-COMPONENTS ──────────────────── */
 function FloatingBg() {
+  const stamps = [
+    { text: "TOP SECRET", left: "8%", top: "12%", rotate: -12, dur: 22, size: 22 },
+    { text: "CLASSIFIED", left: "78%", top: "18%", rotate: 8, dur: 26, size: 24 },
+    { text: "PRIVATE", left: "15%", top: "65%", rotate: -6, dur: 20, size: 20 },
+    { text: "CONFIDENTIAL", left: "70%", top: "72%", rotate: 10, dur: 28, size: 22 },
+    { text: "EYES ONLY", left: "45%", top: "88%", rotate: -15, dur: 24, size: 20 },
+    { text: "RESTRICTED", left: "55%", top: "35%", rotate: 5, dur: 30, size: 22 },
+    { text: "INTEL", left: "5%", top: "40%", rotate: -8, dur: 23, size: 24 },
+    { text: "DECODED", left: "85%", top: "50%", rotate: 12, dur: 27, size: 20 },
+    { text: "ENCRYPTED", left: "30%", top: "25%", rotate: -10, dur: 25, size: 22 },
+    { text: "AGENT ONLY", left: "60%", top: "10%", rotate: 6, dur: 29, size: 18 },
+    { text: "TOP SECRET", left: "25%", top: "78%", rotate: 14, dur: 21, size: 20 },
+    { text: "CLASSIFIED", left: "82%", top: "85%", rotate: -9, dur: 26, size: 22 },
+  ];
+  const binaryCols = [8, 25, 42, 58, 75, 92];
+  const beams = [
+    { top: "15%", width: 200, dur: 2.5, delay: 0 },
+    { top: "40%", width: 180, dur: 3, delay: 2 },
+    { top: "65%", width: 250, dur: 3.5, delay: 5 },
+    { top: "85%", width: 150, dur: 2, delay: 8 },
+  ];
+  const morse = "· · — · — — · · · — — — ".repeat(40);
   return (
     <div className="floating-bg" style={{ position: "fixed", inset: 0, pointerEvents: "none", zIndex: 0, overflow: "hidden" }}>
       <style>{`
         @keyframes radarSweep { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-        @keyframes stampFloat { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
-        @keyframes spyDrift { 0%,100% { opacity: 0.03; } 50% { opacity: 0.1; } }
+        @keyframes stampFloat { 0%,100% { transform: translateY(-25px) rotate(var(--rot)); } 50% { transform: translateY(25px) rotate(var(--rot)); } }
+        @keyframes fpSpin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        @keyframes scanDown { 0% { top: -2px; } 100% { top: 100%; } }
+        @keyframes scanUp { 0% { top: 100%; } 100% { top: -2px; } }
+        @keyframes scanRight { 0% { left: -2px; } 100% { left: 100%; } }
+        @keyframes binRain { 0% { transform: translateY(-100%); } 100% { transform: translateY(100vh); } }
+        @keyframes beamShoot { 0% { left: -300px; } 40%,100% { left: 110vw; } }
+        @keyframes crossSpin { from { transform: translate(-50%,-50%) rotate(0deg); } to { transform: translate(-50%,-50%) rotate(360deg); } }
+        @keyframes crossPulse { 0%,100% { opacity: 0.04; } 50% { opacity: 0.1; } }
+        @keyframes morseScroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
       `}</style>
+
       {/* Layer 4: Crosshair dot grid */}
       <div style={{
         position: "absolute", inset: 0,
-        backgroundImage: "radial-gradient(rgba(59,130,246,0.06) 1.5px, transparent 1.5px)",
+        backgroundImage: "radial-gradient(rgba(59,130,246,0.08) 2px, transparent 2px)",
         backgroundSize: "100px 100px",
       }} />
-      {/* Layer 1: Radar sweep */}
-      <div style={{ position: "absolute", left: "50%", top: "50%", transform: "translate(-50%, -50%)", width: 600, height: 600, borderRadius: "50%", border: "1px solid rgba(59,130,246,0.08)" }}>
-        <div style={{ position: "absolute", inset: "33%", borderRadius: "50%", border: "1px solid rgba(59,130,246,0.025)" }} />
-        <div style={{ position: "absolute", inset: "16%", borderRadius: "50%", border: "1px solid rgba(59,130,246,0.02)" }} />
-        <div style={{ position: "absolute", top: "50%", left: "50%", width: "50%", height: 2, transformOrigin: "left center", background: "linear-gradient(to right, transparent, rgba(59,130,246,0.15))", animation: "radarSweep 8s linear infinite" }} />
+
+      {/* Layer 1a: Main radar sweep */}
+      <div style={{ position: "absolute", left: "50%", top: "50%", transform: "translate(-50%, -50%)", width: 600, height: 600, borderRadius: "50%", border: "1px solid rgba(59,130,246,0.15)" }}>
+        <div style={{ position: "absolute", inset: "33%", borderRadius: "50%", border: "1px solid rgba(59,130,246,0.1)" }} />
+        <div style={{ position: "absolute", inset: "16%", borderRadius: "50%", border: "1px solid rgba(59,130,246,0.08)" }} />
+        <div style={{ position: "absolute", top: "50%", left: "50%", width: "50%", height: 2, transformOrigin: "left center", background: "linear-gradient(to right, transparent, rgba(59,130,246,0.25))", boxShadow: "0 0 12px rgba(59,130,246,0.4)", animation: "radarSweep 5s linear infinite" }} />
       </div>
+      {/* Layer 1b: Secondary radar */}
+      <div style={{ position: "absolute", right: 40, top: 40, width: 300, height: 300, borderRadius: "50%", border: "1px solid rgba(59,130,246,0.15)" }}>
+        <div style={{ position: "absolute", inset: "33%", borderRadius: "50%", border: "1px solid rgba(59,130,246,0.1)" }} />
+        <div style={{ position: "absolute", top: "50%", left: "50%", width: "50%", height: 2, transformOrigin: "left center", background: "linear-gradient(to right, transparent, rgba(59,130,246,0.25))", boxShadow: "0 0 8px rgba(59,130,246,0.4)", animation: "radarSweep 4s linear infinite" }} />
+      </div>
+
       {/* Layer 2: Floating classified stamps */}
-      {[
-        { text: "TOP SECRET", left: "8%", top: "12%", rotate: -12, dur: 22 },
-        { text: "CLASSIFIED", left: "78%", top: "18%", rotate: 8, dur: 26 },
-        { text: "PRIVATE", left: "15%", top: "65%", rotate: -6, dur: 20 },
-        { text: "CONFIDENTIAL", left: "70%", top: "72%", rotate: 10, dur: 28 },
-        { text: "RESTRICTED", left: "45%", top: "88%", rotate: -15, dur: 24 },
-        { text: "SECURE", left: "55%", top: "35%", rotate: 5, dur: 30 },
-      ].map((s, i) => (
+      {stamps.map((s, i) => (
         <div key={`stamp-${i}`} style={{
-          position: "absolute", left: s.left, top: s.top, transform: `rotate(${s.rotate}deg)`,
-          fontWeight: 900, fontSize: 14, letterSpacing: "0.1em", textTransform: "uppercase",
-          color: "rgba(59,130,246,0.08)", animation: `stampFloat ${s.dur}s ease-in-out infinite`,
-          animationDelay: `${i * -4}s`,
-        }}>{s.text}</div>
+          position: "absolute", left: s.left, top: s.top,
+          ["--rot" as string]: `${s.rotate}deg`,
+          fontWeight: 900, fontSize: s.size, letterSpacing: "0.1em", textTransform: "uppercase",
+          color: "rgba(59,130,246,0.12)", animation: `stampFloat ${s.dur}s ease-in-out infinite`,
+          animationDelay: `${i * -3}s`,
+        } as React.CSSProperties}>{s.text}</div>
       ))}
-      {/* Layer 3: Fingerprint pattern (bottom right) */}
-      <div style={{ position: "absolute", right: -80, bottom: -80, opacity: 0.02 }}>
+
+      {/* Layer 3a: Fingerprint (bottom-right) */}
+      <div style={{ position: "absolute", right: -120, bottom: -120, transform: "scale(1.5)", transformOrigin: "bottom right", animation: "fpSpin 60s linear infinite" }}>
         {Array.from({ length: 8 }, (_, i) => (
           <div key={`fp-${i}`} style={{
             position: "absolute", right: 0, bottom: 0,
             width: 120 + i * 30, height: 160 + i * 40,
-            borderRadius: "50%", border: "1px solid rgba(59,130,246,0.08)",
+            borderRadius: "50%", border: "1px solid rgba(59,130,246,0.12)",
             transform: `translate(${i * 2}px, ${i * 3}px)`,
           }} />
         ))}
       </div>
+      {/* Layer 3b: Fingerprint (top-left) */}
+      <div style={{ position: "absolute", left: -120, top: -120, transform: "scale(1.5)", transformOrigin: "top left", animation: "fpSpin 60s linear infinite reverse" }}>
+        {Array.from({ length: 8 }, (_, i) => (
+          <div key={`fp2-${i}`} style={{
+            position: "absolute", left: 0, top: 0,
+            width: 120 + i * 30, height: 160 + i * 40,
+            borderRadius: "50%", border: "1px solid rgba(59,130,246,0.12)",
+            transform: `translate(${-i * 2}px, ${-i * 3}px)`,
+          }} />
+        ))}
+      </div>
+
       {/* Layer 5: Drifting particles */}
-      {Array.from({ length: 8 }, (_, i) => (
+      {Array.from({ length: 15 }, (_, i) => (
         <motion.div key={`spy-p-${i}`}
-          animate={{ x: [-20, 20, -20], y: [-15, 15, -15], opacity: [0.1, 0.25, 0.1] }}
-          transition={{ duration: 15 + i * 1.5, repeat: Infinity, ease: "easeInOut", delay: i * 2 }}
-          style={{ position: "absolute", left: `${10 + i * 11}%`, top: `${15 + i * 9}%`, width: 3, height: 3, borderRadius: "50%", background: "rgba(59,130,246,0.25)", filter: "blur(2px)" }}
+          animate={{ x: [-25, 25, -25], y: [-20, 20, -20], opacity: [0.15, 0.4, 0.15] }}
+          transition={{ duration: 14 + i * 1.2, repeat: Infinity, ease: "easeInOut", delay: i * 1.5 }}
+          style={{ position: "absolute", left: `${5 + i * 6.3}%`, top: `${10 + (i * 7) % 80}%`, width: 3 + (i % 4), height: 3 + (i % 4), borderRadius: "50%", background: "rgba(59,130,246,0.35)", filter: "blur(1.5px)" }}
         />
       ))}
+
+      {/* Layer 6: Scanning lines */}
+      <div style={{ position: "absolute", left: 0, width: "100%", height: 2, background: "linear-gradient(to right, transparent, rgba(59,130,246,0.3), transparent)", boxShadow: "0 0 8px rgba(59,130,246,0.3)", animation: "scanDown 8s linear infinite" }} />
+      <div style={{ position: "absolute", left: 0, width: "100%", height: 2, background: "linear-gradient(to right, transparent, rgba(59,130,246,0.3), transparent)", boxShadow: "0 0 8px rgba(59,130,246,0.3)", animation: "scanUp 12s linear infinite" }} />
+      <div style={{ position: "absolute", top: 0, width: 2, height: "100%", background: "linear-gradient(to bottom, transparent, rgba(59,130,246,0.3), transparent)", boxShadow: "0 0 8px rgba(59,130,246,0.3)", animation: "scanRight 10s linear infinite" }} />
+
+      {/* Layer 7: Binary code rain */}
+      {binaryCols.map((xPct, i) => (
+        <div key={`bin-${i}`} style={{
+          position: "absolute", left: `${xPct}%`, top: 0, height: "100%",
+          fontFamily: "monospace", fontSize: 16, fontWeight: "bold",
+          color: "rgba(59,130,246,0.1)", lineHeight: 1.3,
+          animation: `binRain ${10 + i * 1.8}s linear infinite`,
+          animationDelay: `${-i * 2.3}s`,
+          whiteSpace: "pre",
+        }}>
+          {Array.from({ length: 40 }, (_, j) => ((i + j) % 2 === 0 ? "0" : "1")).join("\n")}
+        </div>
+      ))}
+
+      {/* Layer 8: Data stream beams */}
+      {beams.map((b, i) => (
+        <div key={`beam-${i}`} style={{
+          position: "absolute", top: b.top, left: -300, width: b.width, height: 2,
+          background: "linear-gradient(to right, transparent, rgba(59,130,246,0.4), rgba(139,92,246,0.4), transparent)",
+          animation: `beamShoot 10s linear infinite`,
+          animationDelay: `${b.delay}s`,
+        }} />
+      ))}
+
+      {/* Layer 9: Spy crosshair (center) */}
+      <div style={{ position: "absolute", left: "50%", top: "50%", width: 200, height: 200, animation: "crossSpin 30s linear infinite, crossPulse 6s ease-in-out infinite" }}>
+        <div style={{ position: "absolute", left: 0, top: "50%", width: "100%", height: 1, background: "rgba(59,130,246,0.06)" }} />
+        <div style={{ position: "absolute", top: 0, left: "50%", width: 1, height: "100%", background: "rgba(59,130,246,0.06)" }} />
+        <div style={{ position: "absolute", left: "50%", top: "50%", transform: "translate(-50%,-50%)", width: 80, height: 80, borderRadius: "50%", border: "1px solid rgba(59,130,246,0.06)" }} />
+      </div>
+
+      {/* Layer 10: Morse code ticker */}
+      <div style={{ position: "absolute", bottom: "5%", left: 0, width: "200%", fontFamily: "monospace", fontSize: 20, letterSpacing: "8px", color: "rgba(59,130,246,0.08)", whiteSpace: "nowrap", animation: "morseScroll 30s linear infinite" }}>
+        {morse}{morse}
+      </div>
     </div>
   );
 }
