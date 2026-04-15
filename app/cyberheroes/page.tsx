@@ -195,6 +195,42 @@ function TechBackground() {
   );
 }
 
+/* ─── COUNT-UP SPAN (plain, for composition) ─── */
+function CountUp({ to, suffix = "" }: { to: number; suffix?: string }) {
+  const ref = useRef<HTMLSpanElement>(null);
+  const [val, setVal] = useState(0);
+  const counted = useRef(false);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !counted.current) {
+          counted.current = true;
+          const start = performance.now();
+          const dur = 1600;
+          const tick = (now: number) => {
+            const t = Math.min((now - start) / dur, 1);
+            setVal(Math.round((1 - Math.pow(1 - t, 3)) * to));
+            if (t < 1) requestAnimationFrame(tick);
+          };
+          requestAnimationFrame(tick);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.4 },
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [to]);
+  return (
+    <span ref={ref}>
+      {val}
+      {suffix}
+    </span>
+  );
+}
+
 /* ─── COUNTER ANIMATION ─── */
 function AnimCounter({ to, suffix = "", label }: { to: number; suffix?: string; label: string }) {
   const ref = useRef<HTMLDivElement>(null);
@@ -278,6 +314,61 @@ const IconFamily = ({ size = 32, color = "#ec4899" }: { size?: number; color?: s
   </svg>
 );
 
+/* ─── FAQ ACCORDION ─── */
+function FAQAccordion() {
+  const [open, setOpen] = useState<number | null>(0);
+  const items = [
+    { q: "What age is this for?", a: "Cyber Heroes Academy is designed for children aged 6–10. Every lesson, character, and activity is crafted to be age-appropriate and engaging for this specific age group." },
+    { q: "How long does it take?", a: "20 weeks, one 45-minute session per week. Children can go at their own pace — there's no pressure to keep to a schedule." },
+    { q: "Do we get lifetime access?", a: "Yes! Your one-time purchase of £99 gives you lifetime access with continuous updates — as new threats emerge, we update the content so your child's knowledge stays current." },
+    { q: "Is it accredited?", a: "Yes. Designed in alignment with CyberFirst and ASDAN accreditation frameworks from day one." },
+    { q: "What devices does it work on?", a: "Desktop browsers (Chrome, Safari, Firefox, Edge) and fully mobile-responsive on tablets and phones." },
+    { q: "What if my child doesn't enjoy it?", a: "We offer a 30-day money-back guarantee, no questions asked. If your child isn't engaged, you get a full refund." },
+  ];
+  return (
+    <div style={{ maxWidth: 720, margin: "0 auto" }}>
+      {items.map((item, i) => {
+        const isOpen = open === i;
+        return (
+          <div
+            key={i}
+            data-scroll
+            data-scroll-delay={String(i * 0.05)}
+            onClick={() => setOpen(isOpen ? null : i)}
+            style={{
+              borderBottom: "1px solid rgba(148,163,184,0.12)",
+              cursor: "pointer",
+            }}
+          >
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "22px 4px", fontSize: 16, fontWeight: 700, color: "#fff" }}>
+              <span>{item.q}</span>
+              <span style={{
+                width: 30, height: 30, borderRadius: "50%",
+                display: "flex", alignItems: "center", justifyContent: "center",
+                background: isOpen ? "#60a5fa" : "rgba(96,165,250,0.1)",
+                color: isOpen ? "#fff" : "#60a5fa",
+                fontSize: 20, flexShrink: 0,
+                transition: "all 0.3s",
+              }}>
+                {isOpen ? "−" : "+"}
+              </span>
+            </div>
+            <div style={{
+              maxHeight: isOpen ? 360 : 0,
+              overflow: "hidden",
+              transition: "max-height 0.45s cubic-bezier(0.16,1,0.3,1)",
+            }}>
+              <p style={{ padding: "0 4px 22px", color: "#94a3b8", fontSize: 15, lineHeight: 1.75 }}>
+                {item.a}
+              </p>
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
 /* ─── MAIN PAGE ─── */
 export default function HomePage() {
   const [scrolled, setScrolled] = useState(false);
@@ -317,12 +408,60 @@ export default function HomePage() {
   return (
     <div style={{ background: "#1a1033", minHeight: "100vh" }}>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Nunito:wght@400;600;700;800;900&display=swap');
         * { font-family: 'Nunito', sans-serif; }
+        h1, h2, h3, h4, .display-font { font-family: 'Fredoka', 'Nunito', sans-serif; letter-spacing: -0.015em; }
+        .mono { font-family: 'JetBrains Mono', monospace; }
         html { scroll-behavior: smooth; }
+        @keyframes chTyping { from { width: 0; } to { width: 100%; } }
+        @keyframes chBlink { 0%,100% { border-color: transparent; } 50% { border-color: #f97316; } }
+        .ch-typewriter {
+          display: inline-block; overflow: hidden; white-space: nowrap;
+          border-right: 2px solid #f97316;
+          animation: chTyping 3s steps(35) 1s forwards, chBlink 0.8s step-end infinite;
+          width: 0;
+        }
+        @keyframes chFadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: none; } }
+        .char-blob { transition: transform 0.35s cubic-bezier(0.16,1,0.3,1), box-shadow 0.35s cubic-bezier(0.16,1,0.3,1); }
+        .char-blob:hover { transform: translateY(-6px) scale(1.05); }
+        .char-blob-adam:hover { box-shadow: 0 20px 40px rgba(0,0,0,0.3), 0 0 30px rgba(96,165,250,0.45); }
+        .char-blob-layla:hover { box-shadow: 0 20px 40px rgba(0,0,0,0.3), 0 0 30px rgba(52,211,153,0.45); }
+        .char-blob-robo:hover { box-shadow: 0 20px 40px rgba(0,0,0,0.3), 0 0 30px rgba(245,158,11,0.45); }
+        .char-blob-raccoon:hover { box-shadow: 0 20px 40px rgba(0,0,0,0.3), 0 0 30px rgba(239,68,68,0.45); }
+        @keyframes chFloat { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+        .char-float { animation: chFloat 3s ease-in-out infinite; }
+        @keyframes chParticleA { 0%,100% { transform: translate(0,0); } 25% { transform: translate(40px,-60px); } 50% { transform: translate(-30px,-90px); } 75% { transform: translate(-50px,20px); } }
+        @keyframes chParticleB { 0%,100% { transform: translate(0,0); } 30% { transform: translate(-50px,50px); } 60% { transform: translate(60px,-40px); } }
+        @keyframes chParticleC { 0%,100% { transform: translate(0,0); } 33% { transform: translate(30px,70px); } 66% { transform: translate(-40px,30px); } }
       `}</style>
 
       <TechBackground />
+
+      {/* ── Floating brand particles ── */}
+      <div aria-hidden style={{ position: "fixed", inset: 0, pointerEvents: "none", zIndex: 0, overflow: "hidden" }}>
+        {[
+          { left: "12%", top: "18%", color: "#60a5fa", size: 4, dur: 18, path: "A", delay: 0 },
+          { left: "78%", top: "24%", color: "#34d399", size: 5, dur: 22, path: "B", delay: -3 },
+          { left: "34%", top: "52%", color: "#f97316", size: 3, dur: 16, path: "C", delay: -6 },
+          { left: "86%", top: "58%", color: "#f59e0b", size: 4, dur: 20, path: "A", delay: -9 },
+          { left: "8%", top: "72%", color: "#34d399", size: 5, dur: 24, path: "B", delay: -4 },
+          { left: "52%", top: "18%", color: "#60a5fa", size: 3, dur: 19, path: "C", delay: -11 },
+          { left: "68%", top: "82%", color: "#f97316", size: 4, dur: 21, path: "B", delay: -7 },
+          { left: "22%", top: "38%", color: "#f59e0b", size: 3, dur: 17, path: "A", delay: -2 },
+          { left: "92%", top: "40%", color: "#60a5fa", size: 4, dur: 23, path: "C", delay: -13 },
+          { left: "46%", top: "84%", color: "#34d399", size: 4, dur: 20, path: "A", delay: -5 },
+        ].map((p, i) => (
+          <div key={i} style={{
+            position: "absolute", left: p.left, top: p.top,
+            width: p.size, height: p.size, borderRadius: "50%",
+            background: p.color, opacity: 0.12,
+            boxShadow: `0 0 8px ${p.color}`,
+            animation: `chParticle${p.path} ${p.dur}s ease-in-out infinite`,
+            animationDelay: `${p.delay}s`,
+            willChange: "transform",
+          }} />
+        ))}
+      </div>
 
       <div className="min-h-screen relative" style={{ zIndex: 1 }}>
 
@@ -352,7 +491,7 @@ export default function HomePage() {
                 whileTap={{ scale: 0.95 }}
                 className="px-5 py-2.5 rounded-2xl text-sm font-bold text-white"
                 style={{ background: BTN_GRAD, boxShadow: BTN_GLOW }}>
-                Get Started
+                Enrol Now — £99
               </motion.a>
             </div>
           </div>
@@ -370,14 +509,17 @@ export default function HomePage() {
                 style={{ background: "rgba(59,130,246,0.15)", border: "1px solid rgba(59,130,246,0.3)", color: "#3b82f6", boxShadow: "0 0 12px rgba(59,130,246,0.2)" }}>
                 🛡️ Cybersecurity for Kids
               </div>
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-white leading-tight mb-6">
-                Learn Cybersecurity{" "}
+              <h1 className="text-white leading-none mb-6" style={{ fontSize: "clamp(40px, 7vw, 72px)", fontWeight: 900, letterSpacing: "-0.04em" }}>
+                Turn Your Child Into a{" "}
                 <span style={ACCENT_TEXT}>
-                  Through Adventure
+                  Cyber Hero
                 </span>
               </h1>
-              <p className="text-gray-300 text-base sm:text-lg leading-relaxed max-w-lg mx-auto lg:mx-0 mb-8">
+              <p className="text-gray-300 text-base sm:text-lg leading-relaxed max-w-lg mx-auto lg:mx-0 mb-4">
                 Join Adam and Layla on an interactive journey to become a Cyber Hero. Fun animated lessons, games, and challenges for ages 6–10.
+              </p>
+              <p className="mb-8 mono" style={{ fontSize: 14, color: "#f97316", fontWeight: 500 }}>
+                <span className="ch-typewriter">20 weeks. 40+ missions. 1 Cyber Hero.</span>
               </p>
               <div className="flex gap-4 flex-wrap justify-center lg:justify-start">
                 <motion.a href="/signup"
@@ -385,9 +527,42 @@ export default function HomePage() {
                   whileTap={{ scale: 0.95 }}
                   className="px-7 py-4 font-bold text-white text-base"
                   style={{ background: BTN_GRAD, boxShadow: BTN_GLOW, borderRadius: 14 }}>
-                  Get Started Now 🚀
+                  Enrol Now — £99
                 </motion.a>
-                {/* Watch Preview button removed */}
+                <motion.a href="#how"
+                  whileHover={{ scale: 1.05, y: -2 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="px-7 py-4 font-bold text-base inline-flex items-center gap-2"
+                  style={{
+                    color: "#60a5fa",
+                    background: "rgba(96,165,250,0.06)",
+                    border: "1px solid rgba(96,165,250,0.3)",
+                    borderRadius: 14,
+                    textDecoration: "none",
+                  }}>
+                  See How It Works
+                </motion.a>
+              </div>
+              {/* Hero counters row */}
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-10 max-w-2xl mx-auto lg:mx-0">
+                {[
+                  { to: 20, suffix: "", label: "Weeks", color: "#60a5fa" },
+                  { to: 40, suffix: "+", label: "Activities", color: "#34d399" },
+                  { to: 4, suffix: "", label: "Certificates", color: "#f97316" },
+                  { to: 100, suffix: "%", label: "Hands-On", color: "#f59e0b" },
+                ].map((s, i) => (
+                  <div key={i} style={{
+                    background: "rgba(255,255,255,0.03)", border: "1px solid rgba(148,163,184,0.12)",
+                    borderRadius: 14, padding: "14px 12px", textAlign: "center",
+                  }}>
+                    <div className="display-font" style={{ color: s.color, fontSize: 28, fontWeight: 700, lineHeight: 1 }}>
+                      <CountUp to={s.to} suffix={s.suffix} />
+                    </div>
+                    <div style={{ fontSize: 11, fontWeight: 700, color: "#94a3b8", letterSpacing: "0.08em", marginTop: 6, textTransform: "uppercase" }}>
+                      {s.label}
+                    </div>
+                  </div>
+                ))}
               </div>
             </motion.div>
 
@@ -431,31 +606,6 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* ── VIDEO PREVIEW ────────────────────────────────────────────────── */}
-        <section id="preview" className="max-w-[1200px] mx-auto px-6 md:px-10 py-16 sm:py-24">
-          <div className="text-center mb-12" data-scroll>
-            <h2 className="text-3xl sm:text-4xl font-black text-white mb-4">
-              See the{" "}
-              <span style={ACCENT_TEXT}>Adventure</span>
-            </h2>
-            <p className="text-gray-400 text-base sm:text-lg max-w-xl mx-auto">
-              Watch Adam and Layla&apos;s first cybersecurity mission
-            </p>
-          </div>
-          <div data-scroll>
-            <div style={{ maxWidth: 800, margin: "0 auto", borderRadius: 20, overflow: "hidden", boxShadow: "0 0 40px rgba(59,130,246,0.3)", border: "2px solid rgba(59,130,246,0.3)" }}>
-              <video
-                controls
-                playsInline
-                preload="metadata"
-                style={{ width: "100%", display: "block" }}
-                src="/videos/cyberheroes-intro.mp4"
-              />
-            </div>
-            {/* removed */}
-          </div>
-        </section>
-
         {/* ── MEET YOUR HEROES ──────────────────────────────────────────── */}
         <section className="max-w-[1200px] mx-auto px-6 md:px-10 py-16 sm:py-24">
           <div className="text-center mb-12" data-scroll>
@@ -468,7 +618,7 @@ export default function HomePage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 max-w-3xl mx-auto mb-10">
             {/* Adam */}
             <div data-scroll data-scroll-delay="0">
-              <motion.div className="rounded-3xl overflow-hidden"
+              <motion.div className="rounded-3xl overflow-hidden char-blob char-blob-adam"
                 whileHover={{ y: -8, scale: 1.03, boxShadow: "0 0 25px rgba(59,130,246,0.4)" }}
                 style={{
                   background: "rgba(255,255,255,0.04)",
@@ -477,7 +627,7 @@ export default function HomePage() {
                   boxShadow: "0 0 20px rgba(59,130,246,0.3)",
                 }}>
                 <div style={{ height: 420, overflow: "hidden", background: "linear-gradient(180deg, rgba(59,130,246,0.08) 0%, transparent 100%)" }}>
-                  <Image src="/characters/adam.png" alt="Adam, curious and brave Cyber Hero" width={400} height={500} style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 20%", display: "block" }} />
+                  <Image src="/characters/adam.png" alt="Adam, curious and brave Cyber Hero" width={400} height={500} className="char-float" style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 20%", display: "block" }} />
                 </div>
                 <div className="px-6 py-5 text-center">
                   <h3 className="font-black text-white text-2xl mb-2">Adam</h3>
@@ -490,7 +640,7 @@ export default function HomePage() {
 
             {/* Layla */}
             <div data-scroll data-scroll-delay="0.15">
-              <motion.div className="rounded-3xl overflow-hidden"
+              <motion.div className="rounded-3xl overflow-hidden char-blob char-blob-layla"
                 whileHover={{ y: -8, scale: 1.03, boxShadow: "0 0 25px rgba(59,130,246,0.4)" }}
                 style={{
                   background: "rgba(255,255,255,0.04)",
@@ -499,7 +649,7 @@ export default function HomePage() {
                   boxShadow: "0 0 20px rgba(59,130,246,0.3)",
                 }}>
                 <div style={{ height: 420, overflow: "hidden", background: "linear-gradient(180deg, rgba(59,130,246,0.08) 0%, transparent 100%)" }}>
-                  <Image src="/characters/layla.png" alt="Layla, smart and fearless Cyber Hero" width={400} height={500} style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 20%", display: "block" }} />
+                  <Image src="/characters/layla.png" alt="Layla, smart and fearless Cyber Hero" width={400} height={500} className="char-float" style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 20%", display: "block" }} />
                 </div>
                 <div className="px-6 py-5 text-center">
                   <h3 className="font-black text-white text-2xl mb-2">Layla</h3>
@@ -520,7 +670,7 @@ export default function HomePage() {
               whileTap={{ scale: 0.95 }}
               className="inline-block px-7 py-4 font-bold text-white text-base"
               style={{ background: BTN_GRAD, boxShadow: BTN_GLOW, borderRadius: 14 }}>
-              Start the Adventure →
+              Enrol Your Child — £99
             </motion.a>
           </div>
         </section>
@@ -587,6 +737,27 @@ export default function HomePage() {
           </div>
         </div>
 
+        {/* ── VILLAIN SPOTLIGHT ─────────────────────────────────────────── */}
+        <div className="flex justify-center px-6 pb-16" data-scroll data-scroll-delay="0.1">
+          <div style={{
+            maxWidth: 800, width: "100%",
+            background: "#111827",
+            border: "1px solid rgba(239,68,68,0.2)",
+            boxShadow: "0 0 30px rgba(239,68,68,0.08)",
+            borderRadius: 20, padding: 32,
+          }}>
+            <h3 className="display-font" style={{ color: "#fff", fontSize: 22, fontWeight: 700, marginBottom: 12 }}>
+              🦝 Who is the Hacker Raccoon?
+            </h3>
+            <p style={{ color: "#94a3b8", fontSize: 15, lineHeight: 1.75 }}>
+              The Hacker Raccoon isn&apos;t just a cartoon villain — he represents the real cyber threats targeting your children every day.
+              From sophisticated phishing emails disguised as game rewards, to social engineering in chat rooms, fake app downloads, and password-cracking attacks.
+              Each week, the Raccoon deploys a new tactic pulled straight from today&apos;s threat landscape.
+              Your child learns to recognise, outsmart, and block every single one.
+            </p>
+          </div>
+        </div>
+
         {/* ── OTHER AGES ──────────────────────────────────────────────────── */}
         <section className="max-w-[1200px] mx-auto px-6 md:px-10 py-12 sm:py-16">
           <div className="text-center" data-scroll>
@@ -620,21 +791,21 @@ export default function HomePage() {
           <div style={{ position: "relative" }}>
             {/* Centre line */}
             <div style={{ position: "absolute", left: "50%", top: 0, bottom: 0, width: 2, background: "rgba(59,130,246,0.15)", transform: "translateX(-50%)" }} />
-            {[
-              { w: 1, title: "Passwords: The Secret Code", sub: "Discover why passwords matter and learn how to create super strong ones", gap: null },
-              { w: null, label: "5 more secret missions...", gap: true },
-              { w: 6, title: "Gaming Safety: Defend Your Game Zone", sub: "Stay safe in Roblox, Minecraft, and Fortnite", gap: null },
-              { w: null, label: "6 more secret missions...", gap: true },
-              { w: 13, title: "Screen Time: Balance Your Power", sub: "Find the right balance between time online, breaks, sleep, and healthy habits", gap: null },
-              { w: null, label: "5 more secret missions...", gap: true },
-              { w: 19, title: "Protecting Family: Family Firewall", sub: "Become the family cyber expert", gap: null },
-              { w: null, label: "The grand finale awaits...", gap: true },
-              { w: 20, title: "Graduation Day: The Final Mission", sub: "The ultimate challenge! Earn your Cyber Hero certificate", gap: null },
-            ].map((item, i) => (
+            {([
+              { w: 1, title: "Passwords: The Secret Code", sub: "Discover why passwords matter and learn how to create super strong ones", gap: null, phase: "PHASE 1: FOUNDATIONS", phaseColor: "#60a5fa" },
+              { w: null, label: "4 more Phase 1 missions...", gap: true, milestone: "🛡️ Cyber Cadet Certificate (after W5)", milestoneColor: "#60a5fa" },
+              { w: 6, title: "Gaming Safety: Defend Your Game Zone", sub: "Stay safe in Roblox, Minecraft, and Fortnite", gap: null, phase: "PHASE 2: DIGITAL WORLD", phaseColor: "#34d399" },
+              { w: null, label: "6 more Phase 2 missions...", gap: true, milestone: "⚔️ Cyber Guardian Certificate (after W10)", milestoneColor: "#34d399" },
+              { w: 13, title: "Screen Time: Balance Your Power", sub: "Find the right balance between time online, breaks, sleep, and healthy habits", gap: null, phase: "PHASE 3: ADVANCED OPS", phaseColor: "#f97316" },
+              { w: null, label: "5 more Phase 3 missions...", gap: true, milestone: "🏰 Cyber Defender Certificate (after W15)", milestoneColor: "#f97316" },
+              { w: 19, title: "Protecting Family: Family Firewall", sub: "Become the family cyber expert", gap: null, phase: "PHASE 4: GRADUATION", phaseColor: "#f59e0b" },
+              { w: null, label: "The grand finale awaits...", gap: true, milestone: "🎓 Certified Cyber Hero (after W20)", milestoneColor: "#f59e0b" },
+              { w: 20, title: "Graduation Day: The Final Mission", sub: "The ultimate challenge! Earn your Cyber Hero certificate", gap: null, phase: "PHASE 4: GRADUATION", phaseColor: "#f59e0b" },
+            ] as Array<{ w: number | null; title?: string; sub?: string; gap: boolean | null; label?: string; phase?: string; phaseColor?: string; milestone?: string; milestoneColor?: string }>).map((item, i) => (
               <div key={i} data-scroll data-scroll-delay={String(i * 0.08)}>
                 {item.gap ? (
-                  /* Locked placeholder */
-                  <div style={{ display: "flex", justifyContent: "center", padding: "12px 0" }}>
+                  /* Locked placeholder + milestone */
+                  <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 10, padding: "14px 0" }}>
                     <div style={{
                       background: "rgba(255,255,255,0.02)", border: "1px dashed rgba(255,255,255,0.1)",
                       borderRadius: 12, padding: "10px 24px", opacity: 0.5, display: "flex", alignItems: "center", gap: 8,
@@ -642,6 +813,22 @@ export default function HomePage() {
                       <span style={{ fontSize: 16 }}>🔒</span>
                       <span style={{ color: "#6b7280", fontSize: 13, fontWeight: 600 }}>{item.label}</span>
                     </div>
+                    {item.milestone && (
+                      <div style={{
+                        display: "inline-flex", alignItems: "center", gap: 6,
+                        background: `${item.milestoneColor}1a`,
+                        border: `1px solid ${item.milestoneColor}55`,
+                        borderRadius: 999,
+                        padding: "6px 14px",
+                        fontSize: 12,
+                        fontWeight: 800,
+                        letterSpacing: "0.03em",
+                        color: item.milestoneColor,
+                        boxShadow: `0 0 12px ${item.milestoneColor}33`,
+                      }}>
+                        {item.milestone}
+                      </div>
+                    )}
                   </div>
                 ) : (
                   /* Visible module card */
@@ -658,10 +845,21 @@ export default function HomePage() {
                       boxShadow: item.w === 20 ? "0 0 15px rgba(245,158,11,0.4)" : "0 0 10px rgba(59,130,246,0.2)",
                       borderRadius: 16, padding: 20,
                     }}>
-                      <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 8 }}>
+                      <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 8, flexWrap: "wrap" }}>
                         <div style={{ width: 32, height: 32, borderRadius: "50%", background: item.w === 20 ? "linear-gradient(135deg, #f59e0b, #f97316)" : GRAD, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 13, fontWeight: 900, color: "#fff", flexShrink: 0 }}>
                           {item.w}
                         </div>
+                        {item.phase && (
+                          <span style={{
+                            fontSize: 9, fontWeight: 800, letterSpacing: "0.08em",
+                            color: item.phaseColor,
+                            background: `${item.phaseColor}1a`,
+                            border: `1px solid ${item.phaseColor}55`,
+                            borderRadius: 8, padding: "2px 8px",
+                          }}>
+                            {item.phase}
+                          </span>
+                        )}
                         {item.w === 20 && <span style={{ fontSize: 10, fontWeight: 800, color: "#f59e0b", background: "rgba(245,158,11,0.15)", borderRadius: 8, padding: "2px 8px", boxShadow: "0 0 12px rgba(245,158,11,0.4)" }}>🎓 Final Mission</span>}
                         {item.w === 1 && <span style={{ fontSize: 10, fontWeight: 800, color: "#10b981", background: "rgba(16,185,129,0.15)", borderRadius: 8, padding: "2px 8px", boxShadow: "0 0 12px rgba(16,185,129,0.4)" }}>START HERE</span>}
                       </div>
@@ -678,24 +876,29 @@ export default function HomePage() {
             <div style={{ fontSize: 40, marginBottom: 12 }}>🔒</div>
             <h3 style={{ color: "#fff", fontSize: 22, fontWeight: 900, marginBottom: 8 }}>Want to unlock all 20 missions?</h3>
             <p style={{ color: "#9ca3af", fontSize: 16, marginBottom: 20, maxWidth: 480, margin: "0 auto 20px" }}>
-              Subscribe now to reveal every week, every game, every badge. The full Cyber Heroes journey awaits.
+              Enrol today to reveal every week, every game, every badge. One payment — lifetime access to the full Cyber Heroes journey.
             </p>
             <motion.a href="/signup"
               whileHover={{ scale: 1.05, y: -2, boxShadow: BTN_GLOW_HOVER }} whileTap={{ scale: 0.95 }}
               style={{ display: "inline-block", background: BTN_GRAD, color: "#fff", fontSize: 18, fontWeight: 700, padding: "14px 36px", borderRadius: 14, textDecoration: "none", boxShadow: BTN_GLOW }}>
-              Subscribe Now
+              Enrol Now — £99
             </motion.a>
           </div>
         </section>
 
         {/* ── FEATURES ─────────────────────────────────────────────────────── */}
         <section className="max-w-[1200px] mx-auto px-6 md:px-10 py-16 sm:py-24">
-          <div className="text-center mb-12" data-scroll>
-            <h2 className="text-3xl sm:text-4xl font-black text-white mb-4">
-              Why{" "}
-              <span style={ACCENT_TEXT}>AlgorithmX</span>?
+          <div className="text-center mb-6" data-scroll>
+            <h2 className="text-3xl sm:text-4xl font-black text-white mb-4 display-font" style={{ fontSize: 28 }}>
+              Why Cybersecurity Matters for Kids
             </h2>
           </div>
+          <p data-scroll className="mx-auto text-center" style={{ fontSize: 17, color: "#94a3b8", maxWidth: 720, marginBottom: 20, lineHeight: 1.8 }}>
+            Children are spending more time online than ever before — gaming, chatting, streaming, learning. But the internet wasn&apos;t designed with kids in mind. Cyberbullying, phishing scams, data harvesting, and predatory behaviour are real threats that most children have never been taught to recognise.
+          </p>
+          <p data-scroll data-scroll-delay="0.08" className="mx-auto text-center" style={{ fontSize: 17, color: "#94a3b8", maxWidth: 720, marginBottom: 48, lineHeight: 1.8 }}>
+            Schools barely scratch the surface. Parental controls can only do so much. The best protection you can give your child is the knowledge to protect themselves. That&apos;s exactly what Cyber Heroes Academy delivers — real cybersecurity skills, taught through the language kids understand best: adventure, play, and stories.
+          </p>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto">
             {FEATURES.map((f, i) => (
@@ -720,6 +923,65 @@ export default function HomePage() {
           {/* Raccoon moved to after story section */}
         </section>
 
+        {/* ── HOW IT WORKS ────────────────────────────────────────────────── */}
+        <section id="how" className="max-w-[900px] mx-auto px-6 md:px-10 py-16 sm:py-24">
+          <div className="text-center mb-12" data-scroll>
+            <span style={{
+              display: "inline-flex", alignItems: "center", gap: 8,
+              padding: "6px 16px", borderRadius: 100,
+              fontSize: 11, fontWeight: 800, letterSpacing: "0.15em",
+              color: "#f97316", background: "rgba(249,115,22,0.1)",
+              border: "1px solid rgba(249,115,22,0.25)",
+              marginBottom: 20,
+            }}>
+              HOW IT WORKS
+            </span>
+            <h2 className="text-3xl sm:text-4xl font-black text-white">
+              From zero to <span style={ACCENT_TEXT}>Cyber Hero</span> in 20 weeks
+            </h2>
+          </div>
+          <div style={{ position: "relative", paddingLeft: 40 }}>
+            {/* connecting vertical line */}
+            <div style={{
+              position: "absolute", left: 36, top: 32, bottom: 32,
+              width: 2, background: "rgba(96,165,250,0.1)",
+            }} aria-hidden />
+            {[
+              { num: "1", title: "Enrol & Create Account", desc: "One-time payment of £99. Set up your child's profile and customise their avatar in under 2 minutes.", color: "#60a5fa" },
+              { num: "2", title: "Watch the Story", desc: "Each week opens with an animated chapter where Adam, Layla, and Robo discover a new cyber threat.", color: "#34d399" },
+              { num: "3", title: "Complete the Mission", desc: "Interactive simulations, drag-and-drop puzzles, and a boss battle finale against the Hacker Raccoon.", color: "#f97316" },
+              { num: "4", title: "Earn Badges & Level Up", desc: "Collect digital badges, unlock milestone certificates, and watch the Raccoon's power drain week by week.", color: "#f59e0b" },
+            ].map((s, i) => (
+              <div key={i} data-scroll data-scroll-delay={String(0.08 + i * 0.1)} style={{ display: "flex", gap: 28, alignItems: "flex-start", marginBottom: 30, position: "relative" }}>
+                <div style={{
+                  flexShrink: 0,
+                  width: 72, height: 72, borderRadius: "50%",
+                  marginLeft: -36,
+                  background: "#111827",
+                  border: `2px solid ${s.color}`,
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                  boxShadow: `0 0 28px ${s.color}44`,
+                  position: "relative", zIndex: 1,
+                }}>
+                  <span className="display-font" style={{
+                    fontSize: 40, fontWeight: 700,
+                    background: `linear-gradient(135deg, ${s.color}, ${s.color}aa)`,
+                    WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent",
+                    backgroundClip: "text",
+                    lineHeight: 1,
+                  }}>
+                    {s.num}
+                  </span>
+                </div>
+                <div style={{ paddingTop: 12 }}>
+                  <h3 className="display-font" style={{ color: "#fff", fontSize: 22, fontWeight: 700, marginBottom: 6 }}>{s.title}</h3>
+                  <p style={{ color: "#94a3b8", fontSize: 15, lineHeight: 1.7, maxWidth: 560 }}>{s.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
         {/* ── STATS ────────────────────────────────────────────────────────── */}
         <section className="max-w-[1200px] mx-auto px-6 md:px-10 py-12 sm:py-20">
           <div className="flex flex-wrap gap-4 justify-center">
@@ -728,6 +990,179 @@ export default function HomePage() {
             <AnimCounter to={6} suffix="-10" label="Age Range" />
             <AnimCounter to={100} suffix="%" label="Interactive" />
           </div>
+        </section>
+
+        {/* ── TESTIMONIALS ────────────────────────────────────────────────── */}
+        <section className="max-w-[1200px] mx-auto px-6 md:px-10 py-16 sm:py-24">
+          <div className="text-center mb-12" data-scroll>
+            <span style={{
+              display: "inline-flex", alignItems: "center", gap: 8,
+              padding: "6px 16px", borderRadius: 100,
+              fontSize: 11, fontWeight: 800, letterSpacing: "0.15em",
+              color: "#f59e0b", background: "rgba(245,158,11,0.1)",
+              border: "1px solid rgba(245,158,11,0.25)",
+              marginBottom: 20,
+            }}>
+              ★ TRUSTED BY PARENTS
+            </span>
+            <h2 className="text-3xl sm:text-4xl font-black text-white mb-4">
+              Families are seeing <span style={ACCENT_TEXT}>real results</span>
+            </h2>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+            {[
+              { name: "Sarah M.", role: "Mum of 8-year-old", text: "My daughter now teaches ME about password safety. She genuinely looks forward to each lesson.", color: "#60a5fa" },
+              { name: "James T.", role: "Dad of twins, age 7", text: "Finally, cybersecurity for kids that isn't boring. The boss battles are an absolute hit in our house.", color: "#34d399" },
+              { name: "Priya K.", role: "Mum of 9-year-old", text: "Worth every penny. My son spotted a real phishing email last week and knew exactly what to do.", color: "#f59e0b" },
+            ].map((r, i) => (
+              <div key={i} data-scroll data-scroll-delay={String(i * 0.12)}>
+                <motion.div
+                  whileHover={{ y: -4, borderColor: r.color }}
+                  style={{
+                    position: "relative", overflow: "hidden",
+                    background: "rgba(255,255,255,0.04)",
+                    border: "1px solid rgba(59,130,246,0.15)",
+                    borderRadius: 20, padding: 28,
+                    backdropFilter: "blur(12px)",
+                  }}
+                >
+                  <span className="display-font" aria-hidden style={{
+                    position: "absolute", top: 8, right: 20,
+                    fontSize: 48, lineHeight: 1,
+                    color: "rgba(96,165,250,0.08)", fontWeight: 700,
+                  }}>
+                    &ldquo;
+                  </span>
+                  <div style={{ color: "#f59e0b", fontSize: 16, letterSpacing: 3, marginBottom: 14 }}>★★★★★</div>
+                  <p style={{ color: "#d1d5db", fontSize: 15, lineHeight: 1.7, marginBottom: 20, fontStyle: "italic" }}>
+                    &ldquo;{r.text}&rdquo;
+                  </p>
+                  <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                    <div style={{
+                      width: 40, height: 40, borderRadius: "50%",
+                      background: `linear-gradient(135deg, ${r.color}, #34d399)`,
+                      display: "flex", alignItems: "center", justifyContent: "center",
+                      color: "#fff", fontWeight: 800, fontSize: 16,
+                    }}>
+                      {r.name[0]}
+                    </div>
+                    <div>
+                      <div style={{ color: "#fff", fontWeight: 800, fontSize: 14 }}>{r.name}</div>
+                      <div style={{ color: "#64748b", fontSize: 12 }}>{r.role}</div>
+                    </div>
+                  </div>
+                </motion.div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* ── PRICING ─────────────────────────────────────────────────────── */}
+        <section className="max-w-[800px] mx-auto px-6 md:px-10 py-16 sm:py-24">
+          <div className="text-center mb-10" data-scroll>
+            <span style={{
+              display: "inline-flex", alignItems: "center", gap: 8,
+              padding: "6px 16px", borderRadius: 100,
+              fontSize: 11, fontWeight: 800, letterSpacing: "0.15em",
+              color: "#f97316", background: "rgba(249,115,22,0.1)",
+              border: "1px solid rgba(249,115,22,0.25)",
+              marginBottom: 20,
+            }}>
+              SIMPLE PRICING
+            </span>
+            <h2 className="text-3xl sm:text-4xl font-black text-white">
+              One price. <span style={ACCENT_TEXT}>Lifetime access.</span>
+            </h2>
+          </div>
+          <div data-scroll style={{
+            maxWidth: 480, margin: "0 auto",
+            background: "linear-gradient(135deg, #60a5fa, #34d399, #f97316, #f59e0b)",
+            borderRadius: 24, padding: 2,
+            boxShadow: "0 20px 60px rgba(0,0,0,0.35), 0 0 40px rgba(249,115,22,0.15)",
+          }}>
+            <div style={{
+              background: "#111827", borderRadius: 22,
+              padding: "40px 32px", textAlign: "center",
+              position: "relative",
+            }}>
+              <div style={{
+                display: "inline-block",
+                padding: "4px 14px", borderRadius: 100,
+                fontSize: 11, fontWeight: 800, letterSpacing: 1,
+                background: "rgba(249,115,22,0.12)", color: "#f97316",
+                border: "1px solid rgba(249,115,22,0.3)",
+                marginBottom: 20,
+              }}>
+                BEST VALUE
+              </div>
+              <div className="display-font" style={{ fontSize: 80, fontWeight: 700, lineHeight: 1, letterSpacing: "-0.03em" }}>
+                <span style={{ fontSize: 36, color: "#64748b", verticalAlign: "top" }}>£</span>
+                <span style={{ color: "#fff" }}>99</span>
+              </div>
+              <div style={{ fontSize: 14, color: "#64748b", marginBottom: 28 }}>
+                One-time payment · Lifetime access · Continuously updated
+              </div>
+              <ul style={{ listStyle: "none", textAlign: "left", marginBottom: 28, padding: 0 }}>
+                {[
+                  "Full 20-week Cyber Heroes Academy",
+                  "All interactive missions & boss battles",
+                  "4 milestone certificates (printable PDFs)",
+                  "Parent progress dashboard",
+                  "CyberFirst & ASDAN aligned content",
+                  "Continuous content updates as new threats emerge",
+                  "30-day money-back guarantee",
+                ].map((f, i) => (
+                  <li key={i} style={{
+                    display: "flex", alignItems: "center", gap: 12,
+                    padding: "10px 0", fontSize: 14, color: "#d1d5db",
+                    borderBottom: i === 6 ? "none" : "1px solid rgba(148,163,184,0.1)",
+                  }}>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#34d399" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M5 12.5 10 17.5 19 7.5" />
+                    </svg>
+                    <span>{f}</span>
+                  </li>
+                ))}
+              </ul>
+              <motion.a href="/signup"
+                whileHover={{ scale: 1.05, y: -2, boxShadow: BTN_GLOW_HOVER }} whileTap={{ scale: 0.95 }}
+                style={{
+                  display: "inline-block", width: "100%",
+                  background: BTN_GRAD, color: "#fff",
+                  fontSize: 16, fontWeight: 800,
+                  padding: "16px 28px", borderRadius: 14,
+                  textDecoration: "none", textAlign: "center",
+                  boxShadow: BTN_GLOW,
+                }}
+              >
+                Enrol Your Child Now
+              </motion.a>
+              <p style={{ fontSize: 13, color: "#64748b", marginTop: 14 }}>
+                30-day money-back guarantee
+              </p>
+            </div>
+          </div>
+          <p data-scroll className="text-center mt-6" style={{ fontSize: 14, color: "#94a3b8", maxWidth: 520, margin: "24px auto 0", lineHeight: 1.7 }}>
+            That&apos;s less than £5 per week for 20 weeks of expert cybersecurity education — with free updates for life.
+          </p>
+        </section>
+
+        {/* ── FAQ ─────────────────────────────────────────────────────────── */}
+        <section className="max-w-[800px] mx-auto px-6 md:px-10 py-16 sm:py-24">
+          <div className="text-center mb-10" data-scroll>
+            <span style={{
+              display: "inline-flex", alignItems: "center", gap: 8,
+              padding: "6px 16px", borderRadius: 100,
+              fontSize: 11, fontWeight: 800, letterSpacing: "0.15em",
+              color: "#60a5fa", background: "rgba(96,165,250,0.1)",
+              border: "1px solid rgba(96,165,250,0.25)",
+              marginBottom: 20,
+            }}>
+              COMMON QUESTIONS
+            </span>
+            <h2 className="text-3xl sm:text-4xl font-black text-white">Got questions?</h2>
+          </div>
+          <FAQAccordion />
         </section>
 
         {/* ── CTA ──────────────────────────────────────────────────────────── */}
@@ -753,15 +1188,18 @@ export default function HomePage() {
                   </span>?
                 </h2>
                 <p className="text-gray-400 text-base sm:text-lg max-w-lg mx-auto mb-8">
-                  Start your child&apos;s cybersecurity journey today. Interactive, fun, and built by educators.
+                  Join families across the UK giving their children the online safety skills they&apos;ll carry for life.
                 </p>
                 <motion.a href="/signup"
                   whileHover={{ scale: 1.05, y: -2, boxShadow: BTN_GLOW_HOVER }}
                   whileTap={{ scale: 0.95 }}
                   className="inline-block px-10 py-5 font-bold text-white text-lg"
                   style={{ background: BTN_GRAD, boxShadow: BTN_GLOW, borderRadius: 14 }}>
-                  Get Started Now 🚀
+                  Enrol Now — £99
                 </motion.a>
+                <p className="mt-4" style={{ fontSize: 13, color: "#94a3b8" }}>
+                  One-time payment · Instant access · 30-day guarantee
+                </p>
               </div>
             </div>
           </div>
@@ -774,7 +1212,10 @@ export default function HomePage() {
               <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background: GRAD }}>
                 <span className="text-[9px] font-black text-white">AX</span>
               </div>
-              <span className="text-sm font-bold text-gray-500">&copy; 2026 AlgorithmX. All rights reserved.</span>
+              <div className="flex flex-col">
+                <span className="text-sm font-bold text-gray-500">&copy; 2026 AlgorithmX. All rights reserved.</span>
+                <span style={{ fontSize: 12, color: "#64748b" }}>Cybersecurity Education for Kids</span>
+              </div>
             </div>
             <div className="flex items-center gap-6">
               <a href="#" className="text-xs font-bold text-gray-500 hover:text-gray-300 transition-colors">Privacy</a>
