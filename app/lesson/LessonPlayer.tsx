@@ -7,6 +7,20 @@ import { SplitText } from "gsap/SplitText";
 import { MorphSVGPlugin } from "gsap/MorphSVGPlugin";
 import { Player } from "@lottiefiles/react-lottie-player";
 import { MILESTONES, getCertificateUrl } from "@/app/lib/certificates";
+import { playSound as playSFX } from "@/app/lib/sounds";
+import {
+  correctAnswerBurst,
+  wrongAnswerShake,
+  badgeEarnedCelebration,
+  bossDefeatedExplosion,
+  milestoneFireworks,
+} from "@/app/lib/celebrations";
+import MuteToggle from "@/app/components/MuteToggle";
+import LessonAmbience from "@/app/components/LessonAmbience";
+import BattleArena from "@/app/components/exercises/BattleArena";
+import VaultLock from "@/app/components/exercises/VaultLock";
+import InboxSimulator from "@/app/components/exercises/InboxSimulator";
+import SortingStation from "@/app/components/exercises/SortingStation";
 
 const CURRENT_WEEK: number = 1;
 const IS_MILESTONE_WEEK = MILESTONES.some((m) => m.week === CURRENT_WEEK);
@@ -15,6 +29,8 @@ gsap.registerPlugin(SplitText, MorphSVGPlugin);
 
 /* ───────────────────────── GSAP HELPERS ────────────────────── */
 const celebrateCorrect = (el: HTMLElement) => {
+  playSFX("correct");
+  void correctAnswerBurst();
   const tl = gsap.timeline();
   tl.to(el, { scale: 1.15, duration: 0.15, ease: "power2.out" })
     .to(el, { scale: 1, duration: 0.5, ease: "elastic.out(1, 0.3)" })
@@ -41,6 +57,8 @@ const celebrateCorrect = (el: HTMLElement) => {
 };
 
 const shakeWrong = (el: HTMLElement) => {
+  playSFX("wrong");
+  wrongAnswerShake();
   gsap.timeline()
     .to(el, { x: -15, rotation: -2, duration: 0.06 })
     .to(el, { x: 15, rotation: 2, duration: 0.06 })
@@ -1025,6 +1043,10 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
     animateCoins();
   }, []);
 
+  // Boss-battle entry + defeat sound cues
+  const bossAppearFiredRef = useRef(false);
+  const bossDefeatedFiredRef = useRef(false);
+
   useEffect(() => {
     const ctx = gsap.context(() => {
       gsap.from("[data-animate]", {
@@ -1239,6 +1261,48 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
   const [showSummary, setShowSummary] = useState<Record<number, boolean>>({});
   const [wrongAttempts, setWrongAttempts] = useState<Record<number, number>>({});
 
+  // Fire boss-appear once when the boss battle actually begins (not instr/summary/done)
+  useEffect(() => {
+    if (screen !== 15) {
+      bossAppearFiredRef.current = false;
+      return;
+    }
+    if (showInstr[15] || showSummary[15] || bossDone) return;
+    if (bossAppearFiredRef.current) return;
+    bossAppearFiredRef.current = true;
+    playSFX("boss-appear");
+  }, [screen, showInstr, showSummary, bossDone]);
+
+  // Fire boss-defeated + celebratory cascade once when the boss is defeated
+  useEffect(() => {
+    if (!bossDone) {
+      bossDefeatedFiredRef.current = false;
+      return;
+    }
+    if (bossDefeatedFiredRef.current) return;
+    bossDefeatedFiredRef.current = true;
+    playSFX("boss-defeated");
+    void bossDefeatedExplosion();
+  }, [bossDone]);
+
+  // Victory (case 16) + Certificate/Graduation (case 17) cues — fire once per entry
+  const victoryFiredRef = useRef(false);
+  const certFiredRef = useRef(false);
+  useEffect(() => {
+    if (screen !== 16) victoryFiredRef.current = false;
+    if (screen !== 17) certFiredRef.current = false;
+    if (screen === 16 && !victoryFiredRef.current) {
+      victoryFiredRef.current = true;
+      playSFX("level-up");
+    }
+    if (screen === 17 && !certFiredRef.current) {
+      certFiredRef.current = true;
+      playSFX("celebration");
+      void badgeEarnedCelebration();
+      void milestoneFireworks();
+    }
+  }, [screen]);
+
   /* ---------- navigation ---------- */
   const navigate = useCallback((to: number) => {
     switch (to) {
@@ -1303,6 +1367,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
         setShowConfetti(true);
         break;
     }
+    playSFX("transition");
     setScreen(to);
     if ([2,3,4,5,6,7,8,9,10,11,13,14,15].includes(to)) {
       setShowInstr((prev) => ({ ...prev, [to]: true }));
@@ -2357,121 +2422,22 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
             </FullScene>
           );
         }
-        const sw = SWIPE_DATA[swipeIdx];
-
-        const handleSwipeEnd = (isStrong: boolean) => {
-          const correct = isStrong === sw.isStrong;
-          if (correct) {
-            setSwipeFlyDir(isStrong ? "right" : "left");
-            setSwipeFeedback("correct");
-            setSwipeScore((s) => s + 1);
-            addCoins(10);
-            playSound("/sounds/correct.mp3");
-            setTimeout(() => playSound("/sounds/coin.mp3"), 500);
-          } else {
-            setSwipeFeedback("wrong");
-            playSound("/sounds/wrong.mp3");
-            addWrong(8);
-          }
-        };
-
-        const advanceSwipe = () => {
-          setSwipeFlyDir(null);
-          setSwipeFeedback(null);
-          setSwipeIdx((i) => i + 1);
-        };
-
         return (
           <FullScene bg="linear-gradient(180deg, #1a0a20 0%, #1a1033 100%)" glow="radial-gradient(circle, rgba(249,115,22,0.2), transparent)">
-          <div style={{ textAlign: "center" }}>
-            <h1 data-split style={{ color: "#fff", fontSize: 40, fontWeight: 900, marginBottom: 8, textShadow: "0 0 24px rgba(249,115,22,0.5)" }}>Good or Bad?</h1>
-            <p style={{ color: "#9ca3af", marginBottom: 8, fontSize: 16 }}>{swipeIdx + 1}/{SWIPE_DATA.length}, Swipe or tap!</p>
-
-            {/* Weak/Strong indicators */}
-            <div style={{ display: "flex", justifyContent: "space-between", padding: "0 20px", marginBottom: 12 }}>
-              <span style={{ color: "#ef4444", fontSize: 24, fontWeight: 900, opacity: swipeFeedback === "wrong" || swipeFlyDir === "left" ? 1 : 0, transition: "opacity 0.1s" }}>WEAK</span>
-              <span style={{ color: "#10b981", fontSize: 24, fontWeight: 900, opacity: swipeFlyDir === "right" ? 1 : 0, transition: "opacity 0.1s" }}>STRONG</span>
-            </div>
-
-            {/* Swipeable card */}
-            <AnimatePresence mode="wait">
-              {!swipeFlyDir && (
-                <SwipeCard
-                  key={`swipe-${swipeIdx}`}
-                  pw={sw.pw}
-                  onSwipeEnd={handleSwipeEnd}
-                />
-              )}
-            </AnimatePresence>
-
-            {swipeFlyDir && (
-              <motion.div
-                initial={{ opacity: 1, x: 0 }}
-                animate={{ opacity: 0, x: swipeFlyDir === "left" ? -500 : 500, rotate: swipeFlyDir === "left" ? -30 : 30 }}
-                transition={{ duration: 0.5, ease: "easeOut" }}
-              >
-                {card(
-                  <p style={{ color: "#f59e0b", fontFamily: "monospace", fontSize: 24, fontWeight: 900, margin: 0 }}>{sw.pw}</p>,
-                  { maxWidth: 400, margin: "0 auto 24px" }
-                )}
-              </motion.div>
-            )}
-
-            {/* Fallback buttons */}
-            {!swipeFlyDir && !swipeFeedback && (
-              <div style={{ display: "flex", gap: 16, justifyContent: "center" }}>
-                <motion.button
-                  onClick={() => handleSwipeEnd(false)}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  style={{
-                    background: "rgba(239,68,68,0.1)", border: "2px solid #ef4444", borderRadius: 16,
-                    padding: "16px 28px", color: "#ef4444", fontSize: 18, fontWeight: 700, cursor: "pointer", minHeight: 60,
-                  }}
-                >
-                  Weak 👎
-                </motion.button>
-                <motion.button
-                  onClick={() => handleSwipeEnd(true)}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  style={{
-                    background: "rgba(16,185,129,0.1)", border: "2px solid #10b981", borderRadius: 16,
-                    padding: "16px 28px", color: "#10b981", fontSize: 18, fontWeight: 700, cursor: "pointer", minHeight: 60,
-                  }}
-                >
-                  Strong 💪
-                </motion.button>
-              </div>
-            )}
-
-            {swipeFeedback === "correct" && swipeFlyDir && (
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                style={{ marginTop: 8 }}
-              >
-                <p style={{ color: "#10b981", fontSize: 20, fontWeight: 700 }}>🎉 Correct!</p>
-                <p style={{ color: "#e5e7eb", fontSize: 16, lineHeight: 1.5 }}>{sw.why}</p>
-                <div style={{ marginTop: 12 }}>
-                  {btn("Next Card →", advanceSwipe)}
-                </div>
-              </motion.div>
-            )}
-            {swipeFeedback === "wrong" && !swipeFlyDir && (
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                style={{ marginTop: 8 }}
-              >
-                <p style={{ color: "#ef4444", fontSize: 20, fontWeight: 700 }}>❌ Not quite!</p>
-                <p style={{ color: "#e5e7eb", fontSize: 16, lineHeight: 1.5 }}>{sw.why}</p>
-                <div style={{ marginTop: 12 }}>
-                  {btn("Next Card →", () => { setSwipeFeedback(null); })}
-                </div>
-              </motion.div>
-            )}
-          </div>
+            <VaultLock
+              title="Good or Bad?"
+              mode="evaluate"
+              items={SWIPE_DATA.map((d) => ({
+                text: d.pw,
+                isStrong: d.isStrong,
+                explanation: d.why,
+              }))}
+              onComplete={(sc) => {
+                setSwipeScore(sc);
+                addCoins(sc * 10);
+                setSwipeIdx(SWIPE_DATA.length);
+              }}
+            />
           </FullScene>
         );
       }
@@ -2504,82 +2470,24 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
         }
         return (
           <FullScene bg="linear-gradient(180deg, #0a1020 0%, #1a1033 100%)" glow="radial-gradient(circle, rgba(16,185,129,0.2), transparent)">
-          <div style={{ textAlign: "center", userSelect: "none" }}>
-            <h1 data-split style={{ color: "#fff", fontSize: 38, fontWeight: 900, marginBottom: 8, textShadow: "0 0 20px rgba(16,185,129,0.4)" }}>Sort the Passwords!</h1>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
-              <span style={{ color: "#9ca3af" }}>{placed.size}/8 sorted</span>
-              <span style={{ color: dragTime <= 10 ? "#ef4444" : "#f59e0b", fontWeight: 700, fontSize: 18 }}>
-                ⏱ {dragTime}s
-              </span>
-            </div>
-            {/* Buckets */}
-            <div style={{ display: "flex", gap: 16, justifyContent: "center", marginBottom: 24 }}>
-              <motion.div
-                ref={strongRef}
-                animate={dragFlash === "strong" ? {
-                  boxShadow: ["0 0 0 rgba(16,185,129,0)", "0 0 20px rgba(16,185,129,0.5)", "0 0 0 rgba(16,185,129,0)"],
-                } : {}}
-                transition={{ duration: 0.5 }}
-                style={{
-                  flex: 1, maxWidth: 220, minHeight: 120, borderRadius: 20,
-                  border: "3px dashed #10b981", background: "rgba(16,185,129,0.05)",
-                  display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: 12,
-                }}
-              >
-                <span style={{ fontSize: 28 }}>💪</span>
-                <span style={{ color: "#10b981", fontWeight: 700 }}>Strong</span>
-                {PASSWORDS_8.filter((p) => p.isStrong && placed.has(p.id)).map((p) => (
-                  <span key={p.id} style={{ color: p.color, fontSize: 11, fontFamily: "monospace" }}>{p.text}</span>
-                ))}
-              </motion.div>
-              <motion.div
-                ref={weakRef}
-                animate={dragFlash === "weak" ? {
-                  boxShadow: ["0 0 0 rgba(16,185,129,0)", "0 0 20px rgba(16,185,129,0.5)", "0 0 0 rgba(16,185,129,0)"],
-                } : {}}
-                transition={{ duration: 0.5 }}
-                style={{
-                  flex: 1, maxWidth: 220, minHeight: 120, borderRadius: 20,
-                  border: "3px dashed #ef4444", background: "rgba(239,68,68,0.05)",
-                  display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: 12,
-                }}
-              >
-                <span style={{ fontSize: 28 }}>👎</span>
-                <span style={{ color: "#ef4444", fontWeight: 700 }}>Weak</span>
-                {PASSWORDS_8.filter((p) => !p.isStrong && placed.has(p.id)).map((p) => (
-                  <span key={p.id} style={{ color: p.color, fontSize: 11, fontFamily: "monospace" }}>{p.text}</span>
-                ))}
-              </motion.div>
-            </div>
-            {/* Cards */}
-            <div style={{ display: "flex", flexWrap: "wrap", gap: 10, justifyContent: "center" }}>
-              {PASSWORDS_8.filter((p) => !placed.has(p.id)).map((p) => (
-                <motion.div
-                  key={p.id}
-                  initial={{ opacity: 0, y: 30 }}
-                  animate={{ opacity: dragging === p.id ? 0.3 : 1, y: 0 }}
-                  whileHover={{ scale: 1.05 }}
-                  onPointerDown={(e) => {
-                    e.preventDefault();
-                    if (!dragStarted) setDragStarted(true);
-                    const rect = e.currentTarget.getBoundingClientRect();
-                    dragOffset.current = { x: e.clientX - rect.left, y: e.clientY - rect.top };
-                    setDragX(rect.left);
-                    setDragY(rect.top);
-                    setDragging(p.id);
-                    e.currentTarget.setPointerCapture(e.pointerId);
-                  }}
-                  style={{
-                    background: p.bg, border: `2px solid ${p.border}`, borderRadius: 12, padding: "10px 16px",
-                    color: p.color, fontFamily: "monospace", fontWeight: 700, fontSize: 14, cursor: "grab",
-                    touchAction: "none", minHeight: 48, display: "flex", alignItems: "center",
-                  }}
-                >
-                  {p.text}
-                </motion.div>
-              ))}
-            </div>
-          </div>
+            <SortingStation
+              title="Sort the Passwords!"
+              instruction="Drop each password into Strong or Weak"
+              items={PASSWORDS_8.map((p) => ({
+                text: p.text,
+                category: p.isStrong ? "strong" : "weak",
+              }))}
+              categories={[
+                { id: "strong", label: "Strong", color: "#10b981", icon: "💪" },
+                { id: "weak", label: "Weak", color: "#ef4444", icon: "👎" },
+              ]}
+              onComplete={(sc, total) => {
+                setPlaced(new Set(PASSWORDS_8.map((p) => p.id)));
+                setSortStars(sc >= total ? 3 : sc >= Math.ceil(total * 0.7) ? 2 : 1);
+                addCoins(25);
+                setDragDone(true);
+              }}
+            />
           </FullScene>
         );
       }
@@ -2855,140 +2763,26 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
             </FullScene>
           );
         }
-        const ph = PHISH[phishIdx];
+        const phishEmails = [
+          { from: "Prize Central", fromEmail: "prizes@fr33-1phone-winner.com", subject: "🎉 YOU WON A FREE iPHONE!", preview: "Click here and enter your password to claim your prize NOW!", body: "Congratulations! You've been selected as our lucky winner of a brand new iPhone! To claim your prize, click the link below and enter your Apple ID password right away, before the offer expires!", isPhishing: true, clues: ["Suspicious sender address", "Asks for your password", "Urgency / too good to be true"] },
+          { from: "Security Team", fromEmail: "alerts@account-secure-now.info", subject: "⚠️ URGENT: Your account has been hacked!", preview: "Enter your password RIGHT NOW to fix it!", body: "We have detected suspicious activity on your account. To prevent it from being closed, enter your password IMMEDIATELY in the form linked below. This is URGENT!", isPhishing: true, clues: ["Fake urgency and panic", "Asks for your password", "Generic sender domain"] },
+          { from: "Sam", fromEmail: "sam@gmail.com", subject: "💬 Funny video!", preview: "Hi! Your friend Sam sent you a funny video 😂 Click to watch!", body: "Hey! I saw this funny video today and thought of you. Click to watch when you get a chance!", isPhishing: false, clues: ["From a known friend", "No password request", "Normal friendly tone"] },
+          { from: "School Admin", fromEmail: "admin@school-password-update.co", subject: "🏫 Your school needs your password!", preview: "Enter it in this form to update the system.", body: "Dear Student, our system needs to update all student passwords. Please enter your current school password in the form below as soon as possible.", isPhishing: true, clues: ["Schools never ask for your password in a message", "Strange domain for a school", "Urgency"] },
+          { from: "V-Bucks Giveaway", fromEmail: "freevbucks@fr33-vb-store.xyz", subject: "🎮 FREE V-BUCKS! Get 10,000 V-Bucks FREE!", preview: "Just enter your username and password to claim!", body: "Limited time only! Enter your gaming username and password below to receive 10,000 FREE V-Bucks instantly. Offer ends today!", isPhishing: true, clues: ["Free stuff that isn't real", "Asks for username AND password", "Fake urgency"] },
+          { from: "Mrs Johnson", fromEmail: "m.johnson@school.edu", subject: "📚 Reminder from School", preview: "Don't forget to bring your PE kit tomorrow!", body: "Hi class! Just a quick reminder to bring your PE kit in for tomorrow. Thanks! - Mrs Johnson", isPhishing: false, clues: ["Normal school reminder", "No password or personal info asked", "Real-looking sender"] },
+          { from: "Lucky Visitor", fromEmail: "prize@1-million-visitor-claim.net", subject: "🏆 CONGRATULATIONS! You are our 1,000,000th visitor!", preview: "Click NOW to claim your prize! Enter your details!", body: "You are visitor number 1,000,000! Click below and enter your details to claim your prize before time runs out! ⏰", isPhishing: true, clues: ["Websites can't tell which number visitor you are", "Fake urgency", "Asks for personal details"] },
+        ];
         return (
           <FullScene bg="linear-gradient(180deg, #050a1a 0%, #1a1033 100%)" glow="radial-gradient(circle, rgba(59,130,246,0.2), transparent)">
-          <div style={{ textAlign: "center" }}>
-            <h1 data-split style={{ color: "#fff", fontSize: 38, fontWeight: 900, marginBottom: 8, textShadow: "0 0 20px rgba(59,130,246,0.4)" }}>📧 Spot the Tricks!<img src="/characters/raccoon-sneaking.png" width={40} height={40} alt="" style={{ display: "inline-block", verticalAlign: "middle", marginLeft: 8, borderRadius: 999 }} /></h1>
-            <p style={{ color: "#9ca3af", marginBottom: 16, fontSize: 16 }}>Message {phishIdx + 1}/{PHISH.length}</p>
-
-            {/* Tablet frame */}
-            <div style={{
-              maxWidth: 420, margin: "0 auto 20px",
-              borderRadius: 32, border: "8px solid #374151",
-              background: "#111827", padding: 16, position: "relative",
-              minHeight: 200,
-            }}>
-              {/* Camera dot */}
-              <div style={{
-                width: 8, height: 8, borderRadius: "50%", background: "#4b5563",
-                margin: "0 auto 12px",
-              }} />
-
-              {/* Notification message */}
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={`phish-${phishIdx}`}
-                  initial={{ opacity: 0, y: -40 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -40 }}
-                  transition={{ duration: 0.5 }}
-                  style={{
-                    background: "rgba(255,255,255,0.06)", borderRadius: 16, padding: 16,
-                    border: "1px solid rgba(255,255,255,0.1)",
-                    position: "relative",
-                  }}
-                >
-                  <h3 style={{ color: "#fff", fontSize: 16, margin: "0 0 8px", textAlign: "left" }}>{ph.title}</h3>
-                  <p style={{ color: "#d1d5db", margin: 0, fontSize: 14, textAlign: "left" }}>{ph.text}</p>
-
-                  {/* Scam stamp */}
-                  {phishStamped && ph.isScam && (
-                    <motion.div
-                      initial={{ opacity: 0, scale: 3, rotate: -20 }}
-                      animate={{ opacity: 1, scale: 1, rotate: -5 }}
-                      transition={{ type: "spring", stiffness: 300, damping: 15 }}
-                      style={{
-                        position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)",
-                        color: "#ef4444", fontSize: 20, fontWeight: 900, border: "3px solid #ef4444",
-                        borderRadius: 8, padding: "4px 12px",
-                        background: "rgba(239,68,68,0.15)",
-                      }}
-                    >
-                      SCAM BLOCKED
-                    </motion.div>
-                  )}
-
-                  {/* Safe checkmark */}
-                  {phishStamped && !ph.isScam && (
-                    <motion.div
-                      initial={{ opacity: 0, scale: 0, rotate: -45 }}
-                      animate={{ opacity: 1, scale: 1, rotate: 0 }}
-                      transition={{ type: "spring", stiffness: 300, damping: 15 }}
-                      style={{
-                        position: "absolute", top: 8, right: 8,
-                        color: "#10b981", fontSize: 28,
-                      }}
-                    >
-                      ✅
-                    </motion.div>
-                  )}
-                </motion.div>
-              </AnimatePresence>
-            </div>
-
-            {/* Answer buttons */}
-            {phishAnswer === null ? (
-              <div style={{ display: "flex", gap: 16, justifyContent: "center" }}>
-                <motion.button
-                  onClick={(e) => {
-                    const correct = ph.isScam;
-                    setPhishAnswer(correct);
-                    if (correct) { celebrateCorrect(e.currentTarget as HTMLElement); setPhishScore((s) => s + 1); addCoins(15); playSound("/sounds/correct.mp3"); setTimeout(() => playSound("/sounds/coin.mp3"), 500); }
-                    else { shakeWrong(e.currentTarget as HTMLElement); playSound("/sounds/wrong.mp3"); addWrong(13); }
-                    setPhishStamped(true);
-                  }}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  style={{
-                    background: "rgba(239,68,68,0.1)", border: "3px solid #ef4444", borderRadius: 20,
-                    padding: "16px 24px", color: "#ef4444", fontSize: 18, fontWeight: 700, cursor: "pointer", minHeight: 60,
-                  }}
-                >
-                  🚨 It&apos;s a SCAM!
-                </motion.button>
-                <motion.button
-                  onClick={(e) => {
-                    const correct = !ph.isScam;
-                    setPhishAnswer(correct);
-                    if (correct) { celebrateCorrect(e.currentTarget as HTMLElement); setPhishScore((s) => s + 1); addCoins(15); playSound("/sounds/correct.mp3"); setTimeout(() => playSound("/sounds/coin.mp3"), 500); }
-                    else { shakeWrong(e.currentTarget as HTMLElement); playSound("/sounds/wrong.mp3"); addWrong(13); }
-                    setPhishStamped(true);
-                  }}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  style={{
-                    background: "rgba(16,185,129,0.1)", border: "3px solid #10b981", borderRadius: 20,
-                    padding: "16px 24px", color: "#10b981", fontSize: 18, fontWeight: 700, cursor: "pointer", minHeight: 60,
-                  }}
-                >
-                  ✅ It&apos;s SAFE!
-                </motion.button>
-              </div>
-            ) : (
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                style={{ marginTop: 8 }}
-              >
-                <p style={{ color: phishAnswer ? "#10b981" : "#ef4444", fontSize: 20, fontWeight: 700 }}>
-                  {phishAnswer ? "🎉 Correct!" : "❌ Not quite!"}
-                </p>
-                <p style={{ color: "#e5e7eb", fontSize: 16, lineHeight: 1.5 }}>{ph.explain}</p>
-                <div style={{ marginTop: 12 }}>
-                  {btn("Continue →", () => {
-                    setPhishExiting(true);
-                    setTimeout(() => {
-                      setPhishIdx((i) => i + 1);
-                      setPhishAnswer(null);
-                      setPhishStamped(false);
-                      setPhishExiting(false);
-                    }, 500);
-                  })}
-                </div>
-              </motion.div>
-            )}
-          </div>
+            <InboxSimulator
+              title="Spot the Tricks!"
+              emails={phishEmails}
+              onComplete={(sc) => {
+                setPhishScore(sc);
+                addCoins(sc * 15);
+                setPhishIdx(PHISH.length);
+              }}
+            />
           </FullScene>
         );
       }
@@ -3153,166 +2947,25 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
           );
         }
 
-        if (bossAttackPhase) {
-          const raccoonScale = 0.6 + (arenaRaccoonPos.top / 100) * 0.6;
-          const timerPct = (arenaTimeLeft / 12) * 100;
-          return (
-            <FullScene bg="linear-gradient(180deg, #0a0505 0%, #1a1033 100%)" glow="radial-gradient(circle, rgba(239,68,68,0.2), transparent)">
-            <div style={{ textAlign: "center" }}>
-              <h1 data-split style={{ color: "#f59e0b", fontSize: 40, fontWeight: 900, marginBottom: 4, textShadow: "0 0 20px rgba(239,68,68,0.4)" }}>🎯 FIRE AT THE RACCOON!</h1>
-              <p style={{ color: "#9ca3af", fontSize: 14, marginBottom: 4 }}>Tap anywhere to fire!</p>
-              <p style={{ color: "#f59e0b", fontSize: 28, fontWeight: 900, marginBottom: 8 }}>Hits: {arenaHits}</p>
-              {/* Arena with 3D background */}
-              <div style={{ position: "relative", width: "100%", maxWidth: 600, height: 400, margin: "0 auto 12px", borderRadius: 24, overflow: "hidden", border: "1px solid rgba(59,130,246,0.2)" }}>
-                <ArenaBg3D effect={arenaEffect} />
-                <div onClick={handleArenaFire} style={{ position: "relative", zIndex: 1, width: "100%", height: "100%", cursor: !arenaShowResult ? "crosshair" : "default" }}>
-                  {/* Timer */}
-                  <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 6, zIndex: 5, background: "rgba(0,0,0,0.3)", borderRadius: "24px 24px 0 0" }}>
-                    <motion.div animate={{ width: `${timerPct}%` }} transition={{ duration: 0.5 }}
-                      style={{ height: "100%", borderRadius: "24px 24px 0 0", background: timerPct > 50 ? "linear-gradient(90deg, #22c55e, #4ade80)" : timerPct > 25 ? "linear-gradient(90deg, #f59e0b, #fbbf24)" : "linear-gradient(90deg, #ef4444, #f87171)" }} />
-                  </div>
-                  <div style={{ position: "absolute", top: 10, right: 14, zIndex: 6, color: arenaTimeLeft <= 3 ? "#ef4444" : "#9ca3af", fontWeight: 900, fontSize: 18 }}>{arenaTimeLeft}s</div>
-                  {/* Raccoon */}
-                  <motion.div animate={{ left: `${arenaRaccoonPos.left}%`, top: `${arenaRaccoonPos.top}%` }}
-                    transition={{ type: "spring", stiffness: 150, damping: 15 }}
-                    style={{ position: "absolute", transform: `translate(-50%, -50%) scale(${raccoonScale})`, zIndex: 2 }}>
-                    <motion.img src="/characters/raccoon-sneaking.png" alt="Raccoon"
-                      animate={arenaRaccoonAnim === "hit" ? { filter: ["brightness(1)", "brightness(3)", "brightness(1)"], scaleX: [1, 1.2, 1], scaleY: [1, 0.8, 1] }
-                        : arenaRaccoonAnim === "defeat" ? { rotate: 1440, scale: 0, y: -100, opacity: 0 }
-                        : { y: [0, -6, 0] }}
-                      transition={arenaRaccoonAnim === "hit" ? { duration: 0.4 } : arenaRaccoonAnim === "defeat" ? { duration: 1.5 } : { duration: 2, repeat: Infinity, ease: "easeInOut" }}
-                      style={{ width: 120, height: 120, borderRadius: 16, filter: "drop-shadow(0 0 10px rgba(239,68,68,0.4))" }} />
-                  </motion.div>
-                  {/* Projectiles */}
-                  {arenaProjectiles.map((p) => (
-                    <motion.div key={p.id} initial={{ x: 0, y: 0, scale: 1, opacity: 1 }} animate={{ x: p.tx, y: p.ty, scale: 0.5, opacity: 0.6 }}
-                      transition={{ duration: 0.35, ease: "easeOut" }}
-                      style={{ position: "absolute", bottom: 10, left: "50%", width: 14, height: 14, borderRadius: "50%", background: "radial-gradient(circle, #60a5fa, #1d4ed8)", boxShadow: "0 0 12px #3b82f6", pointerEvents: "none", zIndex: 3 }} />
-                  ))}
-                  {arenaProjectiles.map((p) => (
-                    <motion.span key={`fx-${p.id}`} initial={{ scale: 0, opacity: 1 }} animate={{ scale: 2.5, opacity: 0 }} transition={{ duration: 0.5, delay: 0.3 }}
-                      style={{ position: "absolute", left: `calc(50% + ${p.tx}px)`, top: `calc(100% + ${p.ty}px)`, color: p.hit ? "#f59e0b" : "#6b7280", fontWeight: 900, fontSize: p.hit ? 24 : 14, pointerEvents: "none", zIndex: 4 }}>
-                      {p.hit ? "POW!" : ""}
-                    </motion.span>
-                  ))}
-                  {/* Result overlay */}
-                  <AnimatePresence>
-                    {arenaShowResult && (
-                      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.4 }}
-                        style={{ position: "absolute", inset: 0, background: "rgba(26,16,51,0.9)", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", zIndex: 10 }}>
-                        <p style={{ color: "#f59e0b", fontSize: 28, fontWeight: 900, marginBottom: 16 }}>Hits: {arenaHits}</p>
-                        {btn("Continue →", finishArenaRound)}
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </div>
-              </div>
-              {/* Health bar */}
-              <div style={{ width: 220, margin: "0 auto" }}>
-                <div style={{ display: "flex", justifyContent: "space-between", fontSize: 12, color: "#9ca3af", marginBottom: 4 }}>
-                  <span>Raccoon HP</span><span>{raccoonHealth}%</span>
-                </div>
-                <div style={{ height: 12, borderRadius: 999, background: "rgba(255,255,255,0.08)" }}>
-                  <motion.div animate={{ width: `${raccoonHealth}%` }} transition={{ duration: 0.5, ease: "easeOut" }}
-                    style={{ height: "100%", borderRadius: 999, background: raccoonHealth > 50 ? "#ef4444" : raccoonHealth > 20 ? "#f59e0b" : "#10b981" }} />
-                </div>
-              </div>
-            </div>
-            </FullScene>
-          );
-        }
-
-        const bq = BOSS_QUIZ[bossIdx] || BOSS_QUIZ[0];
         return (
           <FullScene bg="linear-gradient(180deg, #0a0505 0%, #1a1033 100%)" glow="radial-gradient(circle, rgba(239,68,68,0.2), transparent)">
-          <div style={{ textAlign: "center" }}>
-            <h1 data-split style={{ color: "#fff", fontSize: 40, fontWeight: 900, marginBottom: 8, textShadow: "0 0 20px rgba(239,68,68,0.4)" }}>
-              ⚔️ FINAL CHALLENGE!<img src="/characters/raccoon-sneaking.png" width={40} height={40} alt="" style={{ display: "inline-block", verticalAlign: "middle", marginLeft: 8, borderRadius: 999 }} />
-            </h1>
-            {bossIdx === 0 && (
-              <>
-                <SpeechBubble character="raccoon" message="You think you can stop me? I'm the HACKER RACCOON!" side="right" />
-                <SpeechBubble character="adam" message="We're ready! Let's do this, Layla!" />
-              </>
-            )}
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 16, marginBottom: 16 }}>
-              <motion.img src="/characters/raccoon-sneaking.png" alt="Raccoon"
-                animate={bossFeedback === true ? { x: [-5, 5, -5, 5, 0] } : { y: [0, -6, 0] }}
-                transition={bossFeedback === true ? { duration: 0.5 } : { duration: 2, repeat: Infinity, ease: "easeInOut" }}
-                style={{ width: 100, borderRadius: 16 }} />
-              <div style={{ width: 200 }}>
-                <div style={{ display: "flex", justifyContent: "space-between", fontSize: 12, color: "#9ca3af", marginBottom: 4 }}>
-                  <span>Raccoon HP</span><span>{raccoonHealth}%</span>
-                </div>
-                <div style={{ height: 12, borderRadius: 999, background: "rgba(255,255,255,0.08)" }}>
-                  <motion.div animate={{ width: `${raccoonHealth}%` }} transition={{ duration: 0.5, ease: "easeOut" }}
-                    style={{ height: "100%", borderRadius: 999, background: raccoonHealth > 50 ? "#ef4444" : raccoonHealth > 20 ? "#f59e0b" : "#10b981" }} />
-                </div>
-              </div>
-            </div>
-            <p style={{ color: "#9ca3af", marginBottom: 8 }}>Question {bossIdx + 1}/{BOSS_QUIZ.length}</p>
-            <AnimatePresence mode="wait">
-              <motion.div key={`boss-${bossIdx}`} initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0 }}>
-                <h2 data-split style={{ color: "#fff", fontSize: 18, margin: "0 0 16px" }}>{bq.q}</h2>
-                <div style={{ display: "flex", flexDirection: "column", gap: 10, maxWidth: 640, margin: "0 auto" }}>
-                  {bq.opts.map((opt: string, i: number) => {
-                    const c = OPT_COLORS[i]; const isCorrect = i === bq.correct;
-                    const selected = bossSel === i; const answered = bossSel !== null;
-                    let bg = c.bg, border = c.border;
-                    if (answered && isCorrect) { bg = "rgba(16,185,129,0.15)"; border = "#10b981"; }
-                    if (selected && !isCorrect) { bg = "rgba(239,68,68,0.15)"; border = "#ef4444"; }
-                    return (
-                      <motion.button key={i} className="shimmer-card" onClick={(e) => {
-                        if (bossSel !== null) return;
-                        setBossSel(i);
-                        const correct = i === bq.correct;
-                        setBossFeedback(correct);
-                        if (correct) {
-                          celebrateCorrect(e.currentTarget as HTMLElement);
-                          setBossScore((s) => s + 1); addCoins(20);
-                          playTone("zap");
-                          setArenaEffect("hit"); setTimeout(() => setArenaEffect(null), 600);
-                          setTimeout(() => setBossAttackPhase(true), 500);
-                        } else {
-                          shakeWrong(e.currentTarget as HTMLElement);
-                          playSound("/sounds/wrong.mp3"); addWrong(15);
-                          setArenaEffect("miss"); setTimeout(() => setArenaEffect(null), 600);
-                          setTimeout(() => {
-                            if (bossIdx >= BOSS_QUIZ.length - 1) setBossDone(true);
-                            else { setBossSel(null); setBossFeedback(null); setBossIdx((idx) => idx + 1); }
-                          }, 1500);
-                        }
-                      }} disabled={answered}
-                        whileHover={!answered ? { scale: 1.02 } : {}} whileTap={!answered ? { scale: 0.98 } : {}}
-                        animate={selected && !isCorrect ? { x: [-5, 5, -5, 5, 0] } : {}}
-                        style={{ background: bg, border: `2px solid ${border}`, borderRadius: 16, padding: "14px 18px",
-                          color: answered && isCorrect ? "#10b981" : selected && !isCorrect ? "#ef4444" : c.color,
-                          fontSize: 15, fontWeight: 700, cursor: answered ? "default" : "pointer", textAlign: "left", minHeight: 60 }}>
-                        {opt}
-                      </motion.button>
-                    );
-                  })}
-                </div>
-              </motion.div>
-            </AnimatePresence>
-            {bossFeedback !== null && !bossAttackPhase && (
-              <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} style={{ marginTop: 12 }}>
-                <p style={{ color: bossFeedback ? "#10b981" : "#f59e0b", fontSize: 18, fontWeight: 700 }}>
-                  {bossFeedback ? "Hit! Tap the Raccoon!" : "The Raccoon dodged! Keep trying!"}
-                </p>
-                {!bossFeedback && (
-                  <div style={{ marginTop: 12 }}>
-                    {btn("Next Question →", () => {
-                      if (bossIdx >= BOSS_QUIZ.length - 1) setBossDone(true);
-                      else { setBossSel(null); setBossFeedback(null); setBossIdx((idx) => idx + 1); }
-                    })}
-                  </div>
-                )}
-              </motion.div>
-            )}
-          </div>
+            <BattleArena
+              bossName="Hacker Raccoon"
+              bossImage="/characters/raccoon-sneaking.png"
+              questions={BOSS_QUIZ.map((q) => ({
+                question: q.q,
+                options: q.opts,
+                correctIndex: q.correct,
+                attackName: "Raccoon Attack!",
+              }))}
+              onComplete={(sc) => {
+                setBossScore(sc);
+                setBossDone(true);
+              }}
+            />
           </FullScene>
         );
+
       }
 
       /* ──── CASE 16: ADAM AND LAYLA ARE SAFE ──── */
@@ -3566,6 +3219,8 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
   return (
     <div style={{ minHeight: "100vh", background: "#1a1033", position: "relative", overflow: "hidden" }}>
       <style>{CSS}</style>
+      <LessonAmbience />
+      <MuteToggle />
       <style>{`@keyframes shimmer { 0% { background-position: 0% 50% } 50% { background-position: 100% 50% } 100% { background-position: 0% 50% } }`}</style>
       <div className="floating-orbs-wrap"><FloatingOrbs /></div>
       {/* Sticky header */}

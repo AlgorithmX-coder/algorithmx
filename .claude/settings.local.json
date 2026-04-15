@@ -23,7 +23,11 @@
       "Bash(git commit -m ':*)",
       "Bash(npx tsx:*)",
       "Bash(npm list:*)",
-      "Bash(echo \"EXIT:$?\")"
+      "Bash(echo \"EXIT:$?\")",
+      "Bash(node -e \"const d=require\\('./package.json'\\).dependencies; console.log\\('howler:', d.howler, 'types:', require\\('./package.json'\\).devDependencies?.['@types/howler']\\)\")",
+      "Bash(npx eslint:*)",
+      "Bash(awk 'NR>=3180 && NR<=3385 && /^      case [0-9]+|^      \\\\/\\\\* ──── CASE/' app/lesson/LessonPlayer.tsx)",
+      "Bash(awk 'NR>=3215 && NR<=3290 && /^        \\(}|return|const [a-z]|if \\\\\\(bossAttackPhase\\)/ {print NR\": \"$0}' app/lesson/LessonPlayer.tsx)"
     ]
   }
 }

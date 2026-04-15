@@ -5,6 +5,16 @@ import gsap from "gsap";
 import { SplitText } from "gsap/SplitText";
 import { Player } from "@lottiefiles/react-lottie-player";
 import { MILESTONES, getCertificateUrl } from "@/app/lib/certificates";
+import { playSound as playSFX } from "@/app/lib/sounds";
+import {
+  correctAnswerBurst,
+  wrongAnswerShake,
+  badgeEarnedCelebration,
+  bossDefeatedExplosion,
+  milestoneFireworks,
+} from "@/app/lib/celebrations";
+import MuteToggle from "@/app/components/MuteToggle";
+import LessonAmbience from "@/app/components/LessonAmbience";
 
 gsap.registerPlugin(SplitText);
 
@@ -17,6 +27,8 @@ const GRAD = "linear-gradient(135deg, #3b82f6, #06b6d4)";
 
 /* ───────────────────────── GSAP HELPERS ────────────────────── */
 const celebrateCorrect = (el: HTMLElement) => {
+  playSFX("correct");
+  void correctAnswerBurst();
   const tl = gsap.timeline();
   tl.to(el, { scale: 1.15, duration: 0.15, ease: "power2.out" })
     .to(el, { scale: 1, duration: 0.5, ease: "elastic.out(1, 0.3)" })
@@ -43,6 +55,8 @@ const celebrateCorrect = (el: HTMLElement) => {
 };
 
 const shakeWrong = (el: HTMLElement) => {
+  playSFX("wrong");
+  wrongAnswerShake();
   gsap.timeline()
     .to(el, { x: -15, rotation: -2, duration: 0.06 })
     .to(el, { x: 15, rotation: 2, duration: 0.06 })
@@ -793,7 +807,48 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
   const [showSummary, setShowSummary] = useState<Record<number, boolean>>({});
   const [wrongAttempts, setWrongAttempts] = useState<Record<number, number>>({});
 
+  // Vault-battle entry + defeat + victory cues (Week 2 boss = step 15)
+  const vaultAppearFiredRef = useRef(false);
+  const vaultDefeatedFiredRef = useRef(false);
+  const victoryFiredRef = useRef(false);
+
+  useEffect(() => {
+    if (step !== 15) {
+      vaultAppearFiredRef.current = false;
+      return;
+    }
+    if (showInstr[15] || showSummary[15] || vaultDone) return;
+    if (vaultAppearFiredRef.current) return;
+    vaultAppearFiredRef.current = true;
+    playSFX("boss-appear");
+  }, [step, showInstr, showSummary, vaultDone]);
+
+  useEffect(() => {
+    if (!vaultDone) {
+      vaultDefeatedFiredRef.current = false;
+      return;
+    }
+    if (vaultDefeatedFiredRef.current) return;
+    vaultDefeatedFiredRef.current = true;
+    playSFX("boss-defeated");
+    void bossDefeatedExplosion();
+  }, [vaultDone]);
+
+  useEffect(() => {
+    if (step !== 16) {
+      victoryFiredRef.current = false;
+      return;
+    }
+    if (victoryFiredRef.current) return;
+    victoryFiredRef.current = true;
+    playSFX("level-up");
+    playSFX("celebration");
+    void badgeEarnedCelebration();
+    void milestoneFireworks();
+  }, [step]);
+
   const navigate = useCallback((to: number) => {
+    playSFX("transition");
     setStep(to);
     if ([2,3,4,5,7,8,9,11,12,13,15].includes(to)) {
       setShowInstr((p) => ({ ...p, [to]: true }));
@@ -2162,7 +2217,7 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
                         <motion.button className="shimmer-card" onClick={(e) => {
                           const correct = va.block;
                           setVaultFeedback(correct ? "correct" : "wrong");
-                          if (correct) { celebrateCorrect(e.currentTarget as HTMLElement); setVaultScore((s) => s + 1); playSound("/sounds/correct.mp3"); }
+                          if (correct) { celebrateCorrect(e.currentTarget as HTMLElement); playSFX("boss-hit"); setVaultScore((s) => s + 1); playSound("/sounds/correct.mp3"); }
                           else { shakeWrong(e.currentTarget as HTMLElement); setVaultHP((h) => Math.max(0, h - 15)); playSound("/sounds/wrong.mp3"); addWrong(15); }
                           setTimeout(() => {
                             setVaultFeedback(null);
@@ -2177,7 +2232,7 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
                         <motion.button className="shimmer-card" onClick={(e) => {
                           const correct = !va.block;
                           setVaultFeedback(correct ? "correct" : "wrong");
-                          if (correct) { celebrateCorrect(e.currentTarget as HTMLElement); setVaultScore((s) => s + 1); playSound("/sounds/correct.mp3"); }
+                          if (correct) { celebrateCorrect(e.currentTarget as HTMLElement); playSFX("boss-hit"); setVaultScore((s) => s + 1); playSound("/sounds/correct.mp3"); }
                           else { shakeWrong(e.currentTarget as HTMLElement); setVaultHP((h) => Math.max(0, h - 15)); playSound("/sounds/wrong.mp3"); addWrong(15); }
                           setTimeout(() => {
                             setVaultFeedback(null);
@@ -2296,6 +2351,8 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
     <div style={{ minHeight: "100vh", background: "#1a1033", position: "relative", overflow: "hidden" }}>
       <style>{`@keyframes shimmer { 0% { background-position: 0% 50% } 50% { background-position: 100% 50% } 100% { background-position: 0% 50% } } .shimmer-card { background-image: linear-gradient(135deg, rgba(59,130,246,0.08) 0%, rgba(6,182,212,0.05) 25%, rgba(16,185,129,0.05) 50%, rgba(59,130,246,0.08) 75%, rgba(139,92,246,0.05) 100%); background-size: 200% 200%; animation: shimmer 3s ease infinite; }`}</style>
       <style>{CSS}</style>
+      <LessonAmbience />
+      <MuteToggle />
       <FloatingBg />
       <header className="print-hide" style={{
         position: "sticky", top: 0, zIndex: 40, padding: "12px 20px",
