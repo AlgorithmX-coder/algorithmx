@@ -2,9 +2,79 @@ import { auth } from "@/app/lib/auth";
 import { prisma } from "@/app/lib/prisma";
 import { redirect } from "next/navigation";
 import Image from "next/image";
-import { AnimatedCard, AnimatedProgress, FloatingOrbs, PulsingGlow } from "@/app/components/AnimatedDashboard";
+import {
+  CyberBackground,
+  RevealOnScroll,
+  AnimatedBar,
+  AnimatedRing,
+  StaggeredList,
+} from "@/app/components/AnimatedDashboardV2";
 
-const GRAD = "linear-gradient(135deg, #8b5cf6, #3b82f6)";
+const GRAD_MAIN = "linear-gradient(135deg, #60a5fa, #34d399)";
+const GRAD_CTA = "linear-gradient(135deg, #f97316, #f59e0b)";
+const GRAD_NAME = "linear-gradient(135deg, #f59e0b, #f97316)";
+const GRAD_RACCOON = "linear-gradient(90deg, #f97316, #ef4444)";
+
+const COLORS = {
+  bg: "#0a0e1a",
+  card: "#111827",
+  border: "rgba(148,163,184,0.12)",
+  text: "#f1f5f9",
+  secondary: "#94a3b8",
+  muted: "#64748b",
+  blue: "#60a5fa",
+  green: "#34d399",
+  orange: "#f97316",
+  yellow: "#f59e0b",
+  red: "#ef4444",
+};
+
+function ShieldLogo({ size = 22 }: { size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" aria-hidden>
+      <defs>
+        <linearGradient id="shieldLogoGrad" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stopColor="#60a5fa" />
+          <stop offset="100%" stopColor="#34d399" />
+        </linearGradient>
+      </defs>
+      <path
+        d="M12 2.5 4 5.2v6.3c0 4.7 3.3 8.7 8 10 4.7-1.3 8-5.3 8-10V5.2L12 2.5Z"
+        fill="url(#shieldLogoGrad)"
+      />
+      <path
+        d="m9 12 2.2 2.2L15 10.4"
+        stroke="#fff"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+function CheckIcon({ size = 18, color = "#34d399" }: { size?: number; color?: string }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" aria-hidden>
+      <path
+        d="M5 12.5 10 17.5 19 7.5"
+        stroke={color}
+        strokeWidth="3"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+function LockIcon({ size = 18, color = "#64748b" }: { size?: number; color?: string }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" aria-hidden>
+      <rect x="5" y="11" width="14" height="9" rx="2" stroke={color} strokeWidth="2" />
+      <path d="M8 11V8a4 4 0 1 1 8 0v3" stroke={color} strokeWidth="2" strokeLinecap="round" />
+    </svg>
+  );
+}
 
 export default async function DashboardPage() {
   const session = await auth();
@@ -36,18 +106,13 @@ export default async function DashboardPage() {
   const completedCount =
     course?.modules.filter(
       (m: NonNullable<typeof course>["modules"][number]) =>
-        m.progress[0]?.status === "COMPLETED"
+        m.progress[0]?.status === "COMPLETED",
     ).length ?? 0;
 
   const totalModules = course?.modules.length ?? 0;
   const progressPct = totalModules > 0 ? (completedCount / totalModules) * 100 : 0;
+  const remaining = Math.max(0, totalModules - completedCount);
 
-  // Progress ring calculations
-  const radius = 54;
-  const circumference = 2 * Math.PI * radius;
-  const dashOffset = circumference - (progressPct / 100) * circumference;
-
-  // Find the first available unlocked module (the "current next")
   let foundCurrentNext = false;
   const modules = (course?.modules ?? []).map(
     (module: NonNullable<typeof course>["modules"][number], idx: number) => {
@@ -78,48 +143,141 @@ export default async function DashboardPage() {
 
   const userName = activeChild.childName ?? session.user.name ?? "Cyber Hero";
   const raccoonPower = Math.round(100 - progressPct);
+  const raccoonStrong = raccoonPower > 50;
+
+  const encouragement =
+    completedCount === 0
+      ? {
+          title: "Ready to begin, Cyber Hero?",
+          body: "Your first mission is waiting. Start Week 1 and take your first step toward defeating the Hacker Raccoon!",
+          cta: "Start Week 1 →",
+        }
+      : completedCount >= totalModules && totalModules > 0
+        ? {
+            title: "You saved the day!",
+            body: "Every week complete. The Raccoon has been defeated. Keep your skills sharp and revisit any lesson anytime.",
+            cta: "Revisit a Lesson →",
+          }
+        : {
+            title: "You're on a roll!",
+            body: `${completedCount} week${completedCount !== 1 ? "s" : ""} done, ${remaining} to go. Keep the momentum — each lesson weakens the Raccoon.`,
+            cta: "Continue Mission →",
+          };
+
+  const stats = [
+    {
+      label: "Weeks Done",
+      value: completedCount,
+      accent: COLORS.green,
+      icon: "✓",
+      glow: "rgba(52,211,153,0.3)",
+    },
+    {
+      label: "Remaining",
+      value: remaining,
+      accent: COLORS.blue,
+      icon: "◷",
+      glow: "rgba(96,165,250,0.3)",
+    },
+    {
+      label: "Badges Earned",
+      value: completedCount,
+      accent: COLORS.yellow,
+      icon: "★",
+      glow: "rgba(245,158,11,0.3)",
+    },
+    {
+      label: "Raccoon Power",
+      value: `${raccoonPower}%`,
+      accent: COLORS.orange,
+      icon: "🦝",
+      glow: "rgba(249,115,22,0.3)",
+    },
+  ];
 
   return (
     <>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
-        .dash * { font-family: 'Nunito', sans-serif; }
-        @keyframes ringFill {from{stroke-dashoffset:${circumference}}to{stroke-dashoffset:${dashOffset}}}
+        @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fredoka:wght@500;600;700&display=swap');
+        .dash { font-family: 'Nunito', sans-serif; color: ${COLORS.text}; }
+        .dash h1, .dash h2, .dash h3, .dash h4, .dash .display { font-family: 'Fredoka', 'Nunito', sans-serif; }
       `}</style>
 
-      <div className="dash min-h-screen relative" style={{ background: "#1a1033" }}>
-
-        {/* ── FLOATING ORBS ── */}
-        <FloatingOrbs />
+      <div className="dash min-h-screen relative" style={{ background: COLORS.bg }}>
+        <CyberBackground />
 
         {/* ── NAV ── */}
-        <nav className="sticky top-0 z-50 border-b"
+        <nav
+          className="sticky top-0 z-50 border-b"
           style={{
-            background: "rgba(26,16,51,0.9)",
+            background: "rgba(10,14,26,0.85)",
             backdropFilter: "blur(20px)",
-            borderColor: "rgba(255,255,255,0.08)",
-            boxShadow: "0 1px 3px rgba(0,0,0,0.3)",
-          }}>
+            borderColor: COLORS.border,
+          }}
+        >
           <div className="max-w-[1100px] mx-auto px-6 md:px-10 py-4 flex items-center justify-between">
-            <a href="/" className="flex items-center gap-2">
-              <div className="w-9 h-9 rounded-lg flex items-center justify-center"
-                style={{ background: GRAD, boxShadow: "0 2px 8px rgba(139,92,246,0.4)" }}>
-                <span className="text-xs font-black text-white">AX</span>
+            <a href="/" className="flex items-center gap-2.5" style={{ textDecoration: "none" }}>
+              <div
+                className="flex items-center justify-center"
+                style={{
+                  width: 40,
+                  height: 40,
+                  borderRadius: 100,
+                  background: GRAD_MAIN,
+                  boxShadow: "0 4px 14px rgba(96,165,250,0.35)",
+                }}
+              >
+                <ShieldLogo size={22} />
               </div>
-              <span className="text-lg font-black text-white tracking-tight">
-                Algorithm<span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-blue-400">X</span>
+              <span className="display text-lg font-bold" style={{ color: COLORS.text, letterSpacing: "-0.01em" }}>
+                CyberHeroes
               </span>
             </a>
-            <div className="flex items-center gap-4">
-              <div className="hidden sm:flex items-center gap-2">
-                <div style={{ width: 32, height: 32, borderRadius: "50%", background: GRAD, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 12, fontWeight: 900, color: "#fff" }}>
+            <div className="flex items-center gap-3">
+              <div
+                className="hidden sm:flex items-center gap-2 pr-3"
+                style={{
+                  background: "rgba(255,255,255,0.04)",
+                  border: `1px solid ${COLORS.border}`,
+                  borderRadius: 100,
+                  padding: "3px 3px 3px 3px",
+                }}
+              >
+                <div
+                  style={{
+                    width: 30,
+                    height: 30,
+                    borderRadius: 100,
+                    background: GRAD_CTA,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    fontSize: 13,
+                    fontWeight: 900,
+                    color: "#fff",
+                    boxShadow: "0 2px 8px rgba(249,115,22,0.35)",
+                  }}
+                >
                   {userName.charAt(0).toUpperCase()}
                 </div>
-                <span className="text-sm text-gray-400">
-                  Welcome, <span className="text-amber-400 font-black">{userName}</span>
+                <span className="text-sm font-bold" style={{ color: COLORS.secondary, paddingRight: 4 }}>
+                  {userName}
                 </span>
               </div>
-              <a href="/parent" className="hidden sm:block" style={{ background: "rgba(139,92,246,0.15)", border: "1px solid rgba(139,92,246,0.3)", borderRadius: 20, padding: "4px 16px", fontSize: 13, fontWeight: 700, color: "#c4b5fd", textDecoration: "none" }}>
+              <a
+                href="/parent"
+                className="hidden sm:inline-block"
+                style={{
+                  background: "rgba(96,165,250,0.12)",
+                  border: "1px solid rgba(96,165,250,0.35)",
+                  borderRadius: 100,
+                  padding: "7px 16px",
+                  fontSize: 13,
+                  fontWeight: 700,
+                  color: COLORS.blue,
+                  textDecoration: "none",
+                }}
+              >
                 Parent View
               </a>
               <form
@@ -127,8 +285,20 @@ export default async function DashboardPage() {
                   "use server";
                   const { signOut } = await import("@/app/lib/auth");
                   await signOut({ redirectTo: "/" });
-                }}>
-                <button style={{ background: "transparent", border: "1px solid rgba(255,255,255,0.2)", borderRadius: 12, padding: "6px 16px", color: "#9ca3af", fontSize: 13, fontWeight: 600, cursor: "pointer" }}>
+                }}
+              >
+                <button
+                  style={{
+                    background: "transparent",
+                    border: `1px solid ${COLORS.border}`,
+                    borderRadius: 100,
+                    padding: "7px 16px",
+                    color: COLORS.secondary,
+                    fontSize: 13,
+                    fontWeight: 700,
+                    cursor: "pointer",
+                  }}
+                >
                   Log Out
                 </button>
               </form>
@@ -137,233 +307,372 @@ export default async function DashboardPage() {
         </nav>
 
         <div className="relative max-w-[1100px] mx-auto px-6 md:px-10 py-10" style={{ zIndex: 1 }}>
-
-          {/* ── WELCOME ── */}
-          <AnimatedCard delay={0}>
-          <section className="flex flex-col-reverse lg:flex-row items-center gap-10 lg:gap-14 mb-14">
-            <div className="flex-1 text-center lg:text-left">
-              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white leading-tight mb-3">
-                Welcome back,{" "}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-300 to-amber-500">
-                  {userName}
-                </span>
-                ! 👋
-              </h1>
-              <p className="text-gray-400 text-base sm:text-lg mb-6 leading-relaxed">
-                Continue your adventure with Adam &amp; Layla!
-              </p>
-
-              {/* Progress bar */}
-              <div className="rounded-3xl p-5"
-                style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.06)", backdropFilter: "blur(12px)" }}>
-                <div className="flex justify-between text-sm mb-2.5">
-                  <span className="text-gray-400 font-bold">Overall Progress</span>
-                  <span className="font-black text-purple-400">{completedCount} of {totalModules} weeks complete</span>
-                </div>
-                <div className="h-4 rounded-full overflow-hidden" style={{ background: "rgba(255,255,255,0.06)" }}>
-                  <div className="h-full rounded-full"
+          {/* ── WELCOME HERO ── */}
+          <RevealOnScroll>
+            <section className="flex flex-col-reverse lg:flex-row items-center gap-10 lg:gap-14 mb-10">
+              <div className="flex-1 text-center lg:text-left">
+                <div
+                  className="inline-flex items-center gap-2 mb-4"
+                  style={{
+                    background: "rgba(52,211,153,0.10)",
+                    border: "1px solid rgba(52,211,153,0.35)",
+                    borderRadius: 100,
+                    padding: "5px 14px",
+                    fontSize: 12,
+                    fontWeight: 800,
+                    color: COLORS.green,
+                    letterSpacing: "0.05em",
+                    textTransform: "uppercase",
+                  }}
+                >
+                  <span
                     style={{
-                      background: GRAD,
-                      width: `${progressPct}%`,
-                      /* animated via framer-motion */
-                      boxShadow: "0 0 16px rgba(139,92,246,0.5)",
-                    }} />
+                      width: 8,
+                      height: 8,
+                      borderRadius: 100,
+                      background: COLORS.green,
+                      boxShadow: `0 0 10px ${COLORS.green}`,
+                      display: "inline-block",
+                    }}
+                  />
+                  Mission Active
                 </div>
-              </div>
-            </div>
+                <h1
+                  className="display text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight mb-3"
+                  style={{ color: COLORS.text }}
+                >
+                  Welcome back,{" "}
+                  <span
+                    style={{
+                      background: GRAD_NAME,
+                      WebkitBackgroundClip: "text",
+                      WebkitTextFillColor: "transparent",
+                      backgroundClip: "text",
+                    }}
+                  >
+                    {userName}
+                  </span>
+                  !
+                </h1>
+                <p className="text-base sm:text-lg mb-6 leading-relaxed" style={{ color: COLORS.secondary }}>
+                  Continue your adventure with Adam &amp; Layla.
+                </p>
 
-            {/* Hero image */}
-            <div className="shrink-0" style={{ /* popIn handled by parent AnimatedCard */ }}>
-              <div className="relative">
-                <div className="absolute inset-0 rounded-3xl"
+                {/* Progress card */}
+                <div
+                  className="rounded-3xl p-5"
                   style={{
-                    background: "linear-gradient(135deg, rgba(139,92,246,0.35), rgba(59,130,246,0.35))",
-                    filter: "blur(35px)", transform: "scale(1.1)",
-                    /* glow handled statically */
-                  }} />
-                <div className="relative rounded-3xl overflow-hidden border-2 shadow-2xl"
-                  style={{
-                    borderColor: "rgba(139,92,246,0.25)",
-                    /* float handled statically */
-                    boxShadow: "0 0 50px rgba(139,92,246,0.15)",
-                  }}>
-                  <Image src="/characters/waving.png" alt="Adam and Layla waving"
-                    width={300} height={300} className="block" priority />
+                    background: COLORS.card,
+                    border: `1px solid ${COLORS.border}`,
+                    backdropFilter: "blur(12px)",
+                  }}
+                >
+                  <div className="flex justify-between text-sm mb-2.5">
+                    <span className="font-bold" style={{ color: COLORS.secondary }}>
+                      Overall Progress
+                    </span>
+                    <span className="font-black" style={{ color: COLORS.blue }}>
+                      {completedCount} of {totalModules} weeks
+                    </span>
+                  </div>
+                  <AnimatedBar
+                    percent={progressPct}
+                    gradient={GRAD_MAIN}
+                    glowColor="rgba(96,165,250,0.5)"
+                    height={14}
+                  />
                 </div>
-                {[
-                  { top: "-6px", right: "-6px", fontSize: 14 },
-                  { bottom: "10px", left: "-8px", fontSize: 10 },
-                ].map((s: { fontSize: number; top?: string; right?: string; bottom?: string; left?: string }, i: number) => (
-                  <div key={i} className="absolute text-yellow-300"
-                    style={{ ...s }}>✦</div>
-                ))}
               </div>
-            </div>
-          </section>
-          </AnimatedCard>
+
+              {/* Hero image */}
+              <div className="shrink-0">
+                <div className="relative">
+                  <div
+                    className="absolute inset-0 rounded-3xl"
+                    style={{
+                      background: "linear-gradient(135deg, rgba(96,165,250,0.35), rgba(52,211,153,0.35))",
+                      filter: "blur(35px)",
+                      transform: "scale(1.1)",
+                    }}
+                  />
+                  <div
+                    className="relative rounded-3xl overflow-hidden border-2"
+                    style={{
+                      borderColor: "rgba(96,165,250,0.3)",
+                      boxShadow: "0 0 50px rgba(96,165,250,0.15)",
+                    }}
+                  >
+                    <Image
+                      src="/characters/waving.png"
+                      alt="Adam and Layla waving"
+                      width={300}
+                      height={300}
+                      className="block"
+                      priority
+                    />
+                  </div>
+                  <div
+                    className="absolute"
+                    style={{ top: -6, right: -6, fontSize: 14, color: COLORS.yellow }}
+                    aria-hidden
+                  >
+                    ✦
+                  </div>
+                  <div
+                    className="absolute"
+                    style={{ bottom: 10, left: -8, fontSize: 10, color: COLORS.yellow }}
+                    aria-hidden
+                  >
+                    ✦
+                  </div>
+                </div>
+              </div>
+            </section>
+          </RevealOnScroll>
+
+          {/* ── STAT CARDS ROW ── */}
+          <RevealOnScroll delay={120}>
+            <section className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
+              {stats.map((s) => (
+                <div
+                  key={s.label}
+                  className="rounded-2xl p-5 relative overflow-hidden"
+                  style={{
+                    background: COLORS.card,
+                    border: `1px solid ${COLORS.border}`,
+                  }}
+                >
+                  <div
+                    style={{
+                      position: "absolute",
+                      top: 0,
+                      left: 0,
+                      right: 0,
+                      height: 3,
+                      background: s.accent,
+                      boxShadow: `0 0 12px ${s.glow}`,
+                    }}
+                  />
+                  <div className="flex items-center justify-between mb-2">
+                    <span
+                      style={{
+                        fontSize: 18,
+                        color: s.accent,
+                        filter: `drop-shadow(0 0 6px ${s.glow})`,
+                      }}
+                      aria-hidden
+                    >
+                      {s.icon}
+                    </span>
+                  </div>
+                  <div
+                    className="display"
+                    style={{ fontSize: 36, fontWeight: 700, color: COLORS.text, lineHeight: 1 }}
+                  >
+                    {s.value}
+                  </div>
+                  <div
+                    className="mt-1"
+                    style={{
+                      fontSize: 11,
+                      fontWeight: 800,
+                      color: COLORS.muted,
+                      letterSpacing: "0.08em",
+                      textTransform: "uppercase",
+                    }}
+                  >
+                    {s.label}
+                  </div>
+                </div>
+              ))}
+            </section>
+          </RevealOnScroll>
 
           {course ? (
             <>
-              {/* ── VILLAIN PROGRESS (HACKER RACCOON) ── */}
-              <section className="rounded-3xl p-6 sm:p-8 flex flex-col sm:flex-row items-center gap-6 mb-10"
-                style={{
-                  background: "rgba(255,255,255,0.04)",
-                  border: "1px solid rgba(255,255,255,0.06)",
-                  backdropFilter: "blur(12px)",
-                  /* animated by AnimatedCard */
-                }}>
-                <div className="relative shrink-0">
-                  <div className="absolute inset-0 rounded-2xl"
-                    style={{ background: "rgba(139,92,246,0.25)", filter: "blur(25px)", transform: "scale(0.85)" }} />
-                  <Image src="/characters/raccoon-sneaking.png" alt="The Hacker Raccoon sneaking"
-                    width={100} height={100} className="relative rounded-2xl block" />
-                </div>
-                <div className="flex-1 text-center sm:text-left">
-                  <h3 className="font-black text-white text-lg mb-2">
-                    {completedCount >= totalModules && totalModules > 0
-                      ? "You defeated the Hacker Raccoon! 🎉"
-                      : "The Hacker Raccoon is still out there… 🦝"}
-                  </h3>
-                  <p className="text-gray-400 text-sm leading-relaxed mb-4">
-                    {completedCount >= totalModules && totalModules > 0
-                      ? "Amazing work, Cyber Hero! You've completed every lesson and saved the day!"
-                      : `Complete all ${totalModules} weeks to defeat him! Each lesson weakens his power.`}
-                  </p>
-                  <div>
-                    <div className="flex justify-between text-xs font-black mb-1.5">
-                      <span className="text-red-400">Raccoon Power</span>
-                      <span className="text-red-400">{raccoonPower}%</span>
-                    </div>
-                    <div className="h-3 rounded-full overflow-hidden" style={{ background: "rgba(255,255,255,0.06)" }}>
-                      <div className="h-full rounded-full"
-                        style={{
-                          width: `${raccoonPower}%`,
-                          background: "linear-gradient(90deg, #f97316, #ef4444)",
-                          boxShadow: "0 0 10px rgba(239,68,68,0.3)",
-                          transition: "width 1s ease",
-                        }} />
-                    </div>
-                    <p className="text-[11px] text-gray-500 font-bold mt-2">
-                      {completedCount === 0
-                        ? "Start your first lesson to begin weakening the raccoon!"
-                        : completedCount >= totalModules
-                        ? "The raccoon's power has been fully drained! 💪"
-                        : `${completedCount} lesson${completedCount !== 1 ? "s" : ""} down — keep going!`}
-                    </p>
+              {/* ── HACKER RACCOON ── */}
+              <RevealOnScroll delay={80}>
+                <section
+                  className="rounded-3xl p-6 sm:p-8 flex flex-col sm:flex-row items-center gap-6 mb-10"
+                  style={{
+                    background: COLORS.card,
+                    border: `1px solid ${raccoonStrong ? "rgba(239,68,68,0.35)" : "rgba(52,211,153,0.3)"}`,
+                    boxShadow: raccoonStrong
+                      ? "0 0 20px rgba(239,68,68,0.12)"
+                      : "0 0 20px rgba(52,211,153,0.12)",
+                    backdropFilter: "blur(12px)",
+                  }}
+                >
+                  <div className="relative shrink-0">
+                    <div
+                      className="absolute inset-0 rounded-2xl"
+                      style={{
+                        background: raccoonStrong ? "rgba(239,68,68,0.3)" : "rgba(52,211,153,0.25)",
+                        filter: "blur(25px)",
+                        transform: "scale(0.85)",
+                      }}
+                    />
+                    <Image
+                      src="/characters/raccoon-sneaking.png"
+                      alt="The Hacker Raccoon sneaking"
+                      width={100}
+                      height={100}
+                      className="relative rounded-2xl block"
+                    />
                   </div>
-                </div>
-              </section>
+                  <div className="flex-1 text-center sm:text-left w-full">
+                    <h3 className="display font-bold text-lg mb-2" style={{ color: COLORS.text }}>
+                      {completedCount >= totalModules && totalModules > 0
+                        ? "You defeated the Hacker Raccoon!"
+                        : "The Hacker Raccoon is still out there…"}
+                    </h3>
+                    <p className="text-sm leading-relaxed mb-4" style={{ color: COLORS.secondary }}>
+                      {completedCount >= totalModules && totalModules > 0
+                        ? "Amazing work, Cyber Hero! You've completed every lesson and saved the day."
+                        : `Complete all ${totalModules} weeks to defeat him. Each lesson weakens his power.`}
+                    </p>
+                    <div>
+                      <div className="flex justify-between text-xs font-black mb-1.5">
+                        <span style={{ color: COLORS.red }}>Raccoon Power</span>
+                        <span style={{ color: COLORS.red }}>{raccoonPower}%</span>
+                      </div>
+                      <AnimatedBar
+                        percent={raccoonPower}
+                        gradient={GRAD_RACCOON}
+                        glowColor="rgba(239,68,68,0.4)"
+                        height={12}
+                      />
+                      <p className="text-[11px] font-bold mt-2" style={{ color: COLORS.muted }}>
+                        {completedCount === 0
+                          ? "Start your first lesson to begin weakening the raccoon."
+                          : completedCount >= totalModules
+                            ? "The raccoon's power has been fully drained."
+                            : `${completedCount} lesson${completedCount !== 1 ? "s" : ""} down — keep going!`}
+                      </p>
+                    </div>
+                  </div>
+                </section>
+              </RevealOnScroll>
 
               {/* ── COURSE HEADER ── */}
-              <section className="rounded-3xl p-6 sm:p-8 mb-8 flex flex-col sm:flex-row items-center gap-6"
-                style={{
-                  background: "rgba(255,255,255,0.05)",
-                  border: "1px solid rgba(139,92,246,0.15)",
-                  backdropFilter: "blur(14px)",
-                  /* animated by AnimatedCard */
-                }}>
-                <div className="flex items-center gap-4 flex-1 min-w-0">
-                  <span className="text-5xl shrink-0">{course.emoji}</span>
-                  <div className="min-w-0">
-                    <h2 className="text-xl sm:text-2xl font-black text-white leading-snug">{course.title}</h2>
-                    <p className="text-sm text-gray-400 font-bold">
-                      Ages {course.ageRange} · {course.weeksCount} Weeks · {course.duration}
-                    </p>
+              <RevealOnScroll delay={120}>
+                <section
+                  className="rounded-3xl p-6 sm:p-8 mb-8 flex flex-col sm:flex-row items-center gap-6"
+                  style={{
+                    background: COLORS.card,
+                    border: `1px solid ${COLORS.border}`,
+                    backdropFilter: "blur(14px)",
+                  }}
+                >
+                  <div className="flex items-center gap-4 flex-1 min-w-0">
+                    <span className="text-5xl shrink-0" aria-hidden>
+                      {course.emoji}
+                    </span>
+                    <div className="min-w-0">
+                      <h2
+                        className="display text-xl sm:text-2xl font-bold leading-snug"
+                        style={{ color: COLORS.text }}
+                      >
+                        {course.title}
+                      </h2>
+                      <p className="text-sm font-bold" style={{ color: COLORS.secondary }}>
+                        Ages {course.ageRange} · {course.weeksCount} Weeks · {course.duration}
+                      </p>
+                    </div>
                   </div>
-                </div>
-
-                {/* Progress ring */}
-                <div className="shrink-0 relative w-[130px] h-[130px] flex items-center justify-center">
-                  <svg width="130" height="130" className="-rotate-90">
-                    <circle cx="65" cy="65" r={radius} fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="10" />
-                    <circle cx="65" cy="65" r={radius} fill="none"
-                      stroke="url(#ringGrad)" strokeWidth="10" strokeLinecap="round"
-                      strokeDasharray={circumference}
-                      strokeDashoffset={dashOffset}
-                      style={{
-                        animation: "ringFill 1.4s cubic-bezier(0.34,1.56,0.64,1) 0.3s both",
-                        filter: "drop-shadow(0 0 6px rgba(139,92,246,0.5))",
-                      }} />
-                    <defs>
-                      <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" stopColor="#8b5cf6" />
-                        <stop offset="100%" stopColor="#3b82f6" />
-                      </linearGradient>
-                    </defs>
-                  </svg>
-                  <div className="absolute inset-0 flex flex-col items-center justify-center">
-                    <span className="text-2xl font-black text-white">{Math.round(progressPct)}%</span>
-                    <span className="text-[10px] font-bold text-gray-500 uppercase tracking-wider">Complete</span>
+                  <div className="shrink-0">
+                    <AnimatedRing percent={progressPct} />
                   </div>
-                </div>
-              </section>
+                </section>
+              </RevealOnScroll>
 
               {/* ── MODULE LIST ── */}
-              <section className="space-y-3 mb-12">
-                {modules.map((mod: typeof modules[number], idx: number) => {
+              <StaggeredList className="space-y-3 mb-12">
+                {modules.map((mod: (typeof modules)[number]) => {
                   const isCurrent = mod.isCurrentNext;
 
                   return (
-                    <div key={mod.id}
+                    <div
+                      key={mod.id}
                       className="rounded-3xl flex items-center gap-4 sm:gap-5 transition-all duration-300"
                       style={{
                         padding: isCurrent ? "24px 24px" : "20px 24px",
                         background: isCurrent
-                          ? "rgba(139,92,246,0.08)"
+                          ? "rgba(249,115,22,0.08)"
                           : mod.isCompleted
-                          ? "rgba(34,197,94,0.03)"
-                          : "rgba(255,255,255,0.03)",
+                            ? "rgba(52,211,153,0.06)"
+                            : COLORS.card,
                         border: isCurrent
-                          ? "1px solid rgba(139,92,246,0.3)"
+                          ? `1px solid ${COLORS.orange}`
                           : mod.isCompleted
-                          ? "1px solid rgba(34,197,94,0.12)"
-                          : "1px solid rgba(255,255,255,0.04)",
+                            ? "1px solid rgba(52,211,153,0.25)"
+                            : `1px solid ${COLORS.border}`,
+                        boxShadow: isCurrent ? "0 0 24px rgba(249,115,22,0.2)" : "none",
                         backdropFilter: "blur(10px)",
-                        opacity: mod.isUnlocked ? 1 : 0.3,
-                        /* cards animated by parent */
+                        opacity: mod.isUnlocked ? 1 : 0.4,
                         cursor: mod.isUnlocked ? "default" : "not-allowed",
                         pointerEvents: mod.isUnlocked ? undefined : ("none" as const),
-                      }}>
-
-                      {/* Week circle */}
-                      <div className="shrink-0 w-12 h-12 sm:w-14 sm:h-14 rounded-2xl flex items-center justify-center font-black text-sm"
+                      }}
+                    >
+                      {/* Week badge */}
+                      <div
+                        className="shrink-0 flex items-center justify-center font-black text-sm"
                         style={{
+                          width: 52,
+                          height: 52,
+                          borderRadius: 16,
                           background: mod.isCompleted
-                            ? "rgba(34,197,94,0.15)"
+                            ? "rgba(52,211,153,0.18)"
                             : isCurrent
-                            ? GRAD
-                            : "rgba(255,255,255,0.04)",
+                              ? GRAD_CTA
+                              : "rgba(255,255,255,0.04)",
                           color: mod.isCompleted
-                            ? "#4ade80"
+                            ? COLORS.green
                             : isCurrent
-                            ? "white"
-                            : "#4b5563",
+                              ? "#fff"
+                              : COLORS.muted,
                           boxShadow: mod.isCompleted
-                            ? "0 0 14px rgba(34,197,94,0.25)"
+                            ? "0 0 16px rgba(52,211,153,0.35)"
                             : isCurrent
-                            ? "0 0 20px rgba(139,92,246,0.35)"
-                            : "none",
-                        }}>
-                        {mod.isCompleted ? "✓" : mod.isUnlocked ? `W${mod.weekNumber}` : "🔒"}
+                              ? "0 0 20px rgba(249,115,22,0.45)"
+                              : "none",
+                        }}
+                      >
+                        {mod.isCompleted ? (
+                          <CheckIcon size={22} color={COLORS.green} />
+                        ) : mod.isUnlocked ? (
+                          `W${mod.weekNumber}`
+                        ) : (
+                          <LockIcon size={20} color={COLORS.muted} />
+                        )}
                       </div>
 
                       {/* Content */}
                       <div className="flex-1 min-w-0">
-                        <div className="text-[10px] font-black uppercase tracking-widest mb-0.5"
+                        <div
+                          className="font-black uppercase mb-0.5"
                           style={{
+                            fontSize: 10,
+                            letterSpacing: "0.15em",
                             color: mod.isCompleted
-                              ? "rgba(74,222,128,0.5)"
+                              ? "rgba(52,211,153,0.7)"
                               : isCurrent
-                              ? "rgba(167,139,250,0.7)"
-                              : "rgba(255,255,255,0.12)",
-                          }}>
+                                ? "rgba(249,115,22,0.85)"
+                                : "rgba(148,163,184,0.45)",
+                          }}
+                        >
                           Week {mod.weekNumber}
                         </div>
-                        <h3 className="font-black text-white text-sm sm:text-base leading-snug"
-                          style={{ opacity: mod.isCompleted ? 0.7 : 1 }}>
+                        <h3
+                          className="display font-bold text-sm sm:text-base leading-snug"
+                          style={{ color: COLORS.text, opacity: mod.isCompleted ? 0.75 : 1 }}
+                        >
                           {mod.title}
                         </h3>
-                        <p className="text-xs text-gray-500 mt-1 leading-relaxed line-clamp-2">
+                        <p
+                          className="text-xs mt-1 leading-relaxed line-clamp-2"
+                          style={{ color: COLORS.muted }}
+                        >
                           {mod.description}
                         </p>
                       </div>
@@ -371,37 +680,66 @@ export default async function DashboardPage() {
                       {/* Action */}
                       <div className="shrink-0">
                         {mod.isCompleted ? (
-                          <a href="/lesson"
-                            className="inline-block px-4 py-2.5 rounded-2xl text-xs font-black transition-all duration-300 hover:scale-105"
+                          <a
+                            href="/lesson"
+                            className="inline-flex items-center gap-1.5 font-black transition-all duration-200 hover:scale-105"
                             style={{
-                              background: "rgba(34,197,94,0.1)",
-                              color: "#4ade80",
-                              border: "1px solid rgba(34,197,94,0.2)",
-                            }}>
-                            Completed ✓
+                              background: "rgba(52,211,153,0.12)",
+                              color: COLORS.green,
+                              border: "1px solid rgba(52,211,153,0.3)",
+                              borderRadius: 100,
+                              padding: "8px 16px",
+                              fontSize: 12,
+                              textDecoration: "none",
+                            }}
+                          >
+                            <CheckIcon size={14} color={COLORS.green} />
+                            Completed
                           </a>
                         ) : isCurrent ? (
-                          <a href="/lesson"
-                            className="inline-block px-6 py-3 rounded-2xl text-sm font-black text-white transition-all duration-300 hover:scale-105"
+                          <a
+                            href="/lesson"
+                            className="inline-block font-black text-white transition-all duration-200 hover:scale-105"
                             style={{
-                              background: GRAD,
-                              boxShadow: "0 4px 24px rgba(139,92,246,0.35)",
-                              minHeight: 48,
-                            }}>
+                              background: GRAD_CTA,
+                              boxShadow: "0 4px 24px rgba(249,115,22,0.45)",
+                              borderRadius: 100,
+                              padding: "12px 24px",
+                              fontSize: 14,
+                              minHeight: 44,
+                              textDecoration: "none",
+                            }}
+                          >
                             {mod.isInProgress ? "Continue →" : "Start Lesson →"}
                           </a>
                         ) : mod.isUnlocked ? (
-                          <a href="/lesson"
-                            className="inline-block px-5 py-2.5 rounded-2xl text-xs font-black text-white transition-all duration-300 hover:scale-105"
-                            style={{ background: GRAD, boxShadow: "0 4px 20px rgba(139,92,246,0.3)" }}>
+                          <a
+                            href="/lesson"
+                            className="inline-block font-black text-white transition-all duration-200 hover:scale-105"
+                            style={{
+                              background: GRAD_CTA,
+                              boxShadow: "0 4px 18px rgba(249,115,22,0.35)",
+                              borderRadius: 100,
+                              padding: "10px 20px",
+                              fontSize: 12,
+                              textDecoration: "none",
+                            }}
+                          >
                             Start Lesson →
                           </a>
                         ) : (
-                          <span className="inline-block px-4 py-2.5 rounded-2xl text-xs font-bold text-gray-600 whitespace-nowrap"
+                          <span
+                            className="inline-flex items-center gap-1.5 font-bold whitespace-nowrap"
                             style={{
                               background: "rgba(255,255,255,0.03)",
-                              border: "1px solid rgba(255,255,255,0.04)",
-                            }}>
+                              border: `1px solid ${COLORS.border}`,
+                              color: COLORS.muted,
+                              borderRadius: 100,
+                              padding: "8px 14px",
+                              fontSize: 11,
+                            }}
+                          >
+                            <LockIcon size={12} color={COLORS.muted} />
                             {mod.prevWeek !== null ? `Complete W${mod.prevWeek}` : "Locked"}
                           </span>
                         )}
@@ -409,13 +747,59 @@ export default async function DashboardPage() {
                     </div>
                   );
                 })}
-              </section>
+              </StaggeredList>
 
+              {/* ── ENCOURAGEMENT ── */}
+              <RevealOnScroll delay={80}>
+                <section
+                  className="rounded-3xl p-8 sm:p-10 text-center relative overflow-hidden mb-6"
+                  style={{
+                    background:
+                      "linear-gradient(135deg, rgba(96,165,250,0.12), rgba(52,211,153,0.12))",
+                    border: "1px solid rgba(96,165,250,0.3)",
+                    boxShadow: "0 0 40px rgba(96,165,250,0.12)",
+                  }}
+                >
+                  <h3
+                    className="display text-2xl sm:text-3xl font-bold mb-3"
+                    style={{ color: COLORS.text }}
+                  >
+                    {encouragement.title}
+                  </h3>
+                  <p
+                    className="text-base mb-6 max-w-xl mx-auto leading-relaxed"
+                    style={{ color: COLORS.secondary }}
+                  >
+                    {encouragement.body}
+                  </p>
+                  <a
+                    href="/lesson"
+                    className="inline-block font-black text-white transition-all duration-200 hover:scale-105"
+                    style={{
+                      background: GRAD_CTA,
+                      boxShadow: "0 4px 24px rgba(249,115,22,0.45)",
+                      borderRadius: 100,
+                      padding: "14px 32px",
+                      fontSize: 16,
+                      textDecoration: "none",
+                    }}
+                  >
+                    {encouragement.cta}
+                  </a>
+                </section>
+              </RevealOnScroll>
             </>
           ) : (
-            <div className="rounded-3xl p-10 text-center"
-              style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.06)" }}>
-              <p className="text-gray-500 font-bold">No course found. Please run the seed script.</p>
+            <div
+              className="rounded-3xl p-10 text-center"
+              style={{
+                background: COLORS.card,
+                border: `1px solid ${COLORS.border}`,
+              }}
+            >
+              <p className="font-bold" style={{ color: COLORS.muted }}>
+                No course found. Please run the seed script.
+              </p>
             </div>
           )}
         </div>

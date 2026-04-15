@@ -6,6 +6,10 @@ import gsap from "gsap";
 import { SplitText } from "gsap/SplitText";
 import { MorphSVGPlugin } from "gsap/MorphSVGPlugin";
 import { Player } from "@lottiefiles/react-lottie-player";
+import { MILESTONES, getCertificateUrl } from "@/app/lib/certificates";
+
+const CURRENT_WEEK: number = 1;
+const IS_MILESTONE_WEEK = MILESTONES.some((m) => m.week === CURRENT_WEEK);
 
 gsap.registerPlugin(SplitText, MorphSVGPlugin);
 
@@ -3452,6 +3456,26 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
             </div>
             <div className="print-hide" style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
               {btn("Continue →", () => navigate(18))}
+              {IS_MILESTONE_WEEK && (
+                <a
+                  href={getCertificateUrl(childName, CURRENT_WEEK)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    display: "inline-block",
+                    background: "linear-gradient(135deg, #f97316, #f59e0b)",
+                    color: "#fff",
+                    fontWeight: 900,
+                    borderRadius: 100,
+                    padding: "13px 28px",
+                    textDecoration: "none",
+                    fontSize: 15,
+                    boxShadow: "0 4px 20px rgba(249,115,22,0.4)",
+                  }}
+                >
+                  Download My Certificate ↓
+                </a>
+              )}
               <a href="/dashboard" style={{
                 display: "inline-block", background: "transparent", color: "#fff", fontWeight: 900, borderRadius: 16,
                 padding: "13px 34px", textDecoration: "none", fontSize: 16,

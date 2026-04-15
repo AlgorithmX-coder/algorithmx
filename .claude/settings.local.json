@@ -22,7 +22,8 @@
       "Bash(node -e ':*)",
       "Bash(git commit -m ':*)",
       "Bash(npx tsx:*)",
-      "Bash(npm list:*)"
+      "Bash(npm list:*)",
+      "Bash(echo \"EXIT:$?\")"
     ]
   }
 }
