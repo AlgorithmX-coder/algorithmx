@@ -15,6 +15,9 @@ import {
 } from "@/app/lib/celebrations";
 import MuteToggle from "@/app/components/MuteToggle";
 import LessonAmbience from "@/app/components/LessonAmbience";
+import SortingStation from "@/app/components/exercises/SortingStation";
+import ChatSimulator from "@/app/components/exercises/ChatSimulator";
+import BattleArena from "@/app/components/exercises/BattleArena";
 
 gsap.registerPlugin(SplitText);
 
@@ -1257,71 +1260,24 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
             </FullScene>
           );
         }
-        const q = CLASSIFY_QS[classifyIdx];
         return (
           <FullScene bg="linear-gradient(180deg, #0a1020 0%, #0a0a1a 100%)" glow="radial-gradient(circle, rgba(59,130,246,0.2), transparent)">
-          <div style={{ textAlign: "center" }}>
-            <h1 data-split style={{ color: "#fff", fontSize: 38, fontWeight: 900, marginBottom: 4, textShadow: "0 0 20px rgba(59,130,246,0.4)" }}>🔖 CLASSIFY THE INFORMATION</h1>
-            <p style={{ color: "#9ca3af", marginBottom: 20, fontSize: 16 }}>Question {classifyIdx + 1}/{CLASSIFY_QS.length}</p>
-            <AnimatePresence mode="wait">
-              <motion.div key={classifyIdx} initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -30 }}>
-                {card(
-                  <>
-                    <p style={{ color: "#fff", fontSize: 22, fontWeight: 800, marginBottom: 24 }}>&quot;{q.info}&quot;</p>
-                    <div style={{ display: "flex", gap: 16, justifyContent: "center", flexWrap: "wrap" }}>
-                      {/* SAFE stamp */}
-                      <motion.button
-                        className="shimmer-card"
-                        onClick={(e) => {
-                          if (classifyFeedback) return;
-                          const correct = q.answer === "safe";
-                          setClassifyFeedback(correct ? "correct" : "wrong");
-                          if (correct) { celebrateCorrect(e.currentTarget as HTMLElement); setClassifyScore((s) => s + 1); playSound("/sounds/correct.mp3"); }
-                          else { shakeWrong(e.currentTarget as HTMLElement); playSound("/sounds/wrong.mp3"); addWrong(4); }
-                          if (correct) setTimeout(() => { setClassifyFeedback(null); setClassifyIdx((i) => i + 1); }, 1200);
-                        }}
-                        whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.9 }}
-                        animate={classifyFeedback === "correct" && q.answer === "safe" ? { scale: [1, 1.3, 1] } : {}}
-                        style={{
-                          background: "rgba(34,197,94,0.1)", border: "3px solid #22c55e",
-                          borderRadius: 16, padding: "20px 32px", cursor: "pointer",
-                          color: "#22c55e", fontWeight: 900, fontSize: 16, transform: "rotate(-3deg)",
-                        }}>
-                        ✅ SAFE TO SHARE
-                      </motion.button>
-                      {/* PRIVATE stamp */}
-                      <motion.button
-                        className="shimmer-card"
-                        onClick={(e) => {
-                          if (classifyFeedback) return;
-                          const correct = q.answer === "private";
-                          setClassifyFeedback(correct ? "correct" : "wrong");
-                          if (correct) { celebrateCorrect(e.currentTarget as HTMLElement); setClassifyScore((s) => s + 1); playSound("/sounds/correct.mp3"); }
-                          else { shakeWrong(e.currentTarget as HTMLElement); playSound("/sounds/wrong.mp3"); addWrong(4); }
-                          if (correct) setTimeout(() => { setClassifyFeedback(null); setClassifyIdx((i) => i + 1); }, 1200);
-                        }}
-                        whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.9 }}
-                        animate={classifyFeedback === "correct" && q.answer === "private" ? { scale: [1, 1.3, 1] } : {}}
-                        style={{
-                          background: "rgba(239,68,68,0.1)", border: "3px solid #ef4444",
-                          borderRadius: 16, padding: "20px 32px", cursor: "pointer",
-                          color: "#ef4444", fontWeight: 900, fontSize: 16, transform: "rotate(3deg)",
-                        }}>
-                        🔒 CLASSIFIED, PRIVATE
-                      </motion.button>
-                    </div>
-                    {classifyFeedback === "wrong" && (
-                      <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-                        style={{ color: "#ef4444", marginTop: 12, fontWeight: 700 }}>
-                        Think again! Tap the other stamp.
-                      </motion.p>
-                    )}
-                  </>,
-                  { maxWidth: 520, margin: "0 auto" }
-                )}
-              </motion.div>
-            </AnimatePresence>
-          </div>
+            <SortingStation
+              title="Classify the Information"
+              instruction="Drop each item into Private or Safe to Share"
+              items={CLASSIFY_QS.map((q) => ({
+                text: q.info,
+                category: q.answer === "private" ? "private" : "safe",
+              }))}
+              categories={[
+                { id: "private", label: "Private", color: "#ef4444", icon: "🔒" },
+                { id: "safe", label: "Safe to Share", color: "#34d399", icon: "✅" },
+              ]}
+              onComplete={(sc) => {
+                setClassifyScore(sc);
+                setClassifyIdx(CLASSIFY_QS.length);
+              }}
+            />
           </FullScene>
         );
       }
@@ -1855,69 +1811,26 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
             </ThemedScene>
           );
         }
-        const item = SPEED_SORT_ITEMS[speedIdx];
-        const speedLabel = speedIdx < 5 ? "NORMAL" : speedIdx < 10 ? "FAST" : "TURBO!";
-        const speedColor = speedIdx < 5 ? "#22c55e" : speedIdx < 10 ? "#f59e0b" : "#ef4444";
-        const handleSort = (choice: "safe" | "private", e: React.MouseEvent<HTMLButtonElement>) => {
-          if (speedFeedback) return;
-          if (speedTimerRef.current) clearTimeout(speedTimerRef.current);
-          if (choice === item.answer) {
-            celebrateCorrect(e.currentTarget as HTMLElement);
-            const newStreak = speedStreak + 1;
-            setSpeedScore((s) => s + 1);
-            setSpeedStreak(newStreak);
-            if (newStreak > speedBestStreak) setSpeedBestStreak(newStreak);
-            setSpeedFeedback("correct");
-            playSound("/sounds/correct.mp3");
-          } else {
-            shakeWrong(e.currentTarget as HTMLElement);
-            setSpeedStreak(0);
-            setSpeedFeedback("wrong");
-            playSound("/sounds/wrong.mp3");
-            addWrong(11);
-          }
-          setTimeout(() => {
-            setSpeedFeedback(null);
-            const next = speedIdx + 1;
-            if (next >= SPEED_SORT_ITEMS.length) { setSpeedDone(true); addCoins(speedScore >= 15 ? 25 : speedScore >= 13 ? 20 : 15); }
-            else setSpeedIdx(next);
-          }, 600);
-        };
         return (
           <ThemedScene theme="factory">
-            <div style={{ textAlign: "center" }}>
-            <h1 data-split style={{ color: "#fff", fontSize: 40, fontWeight: 900, marginBottom: 4, letterSpacing: "0.05em", textShadow: "0 0 24px rgba(245,158,11,0.6)" }}>SPEED SORT</h1>
-            <SpeechBubble character="adam" message="Quick! Sort them into the right vaults before time runs out!" />
-            <div style={{ display: "flex", justifyContent: "center", gap: 16, marginBottom: 12, fontSize: 13 }}>
-              <span style={{ color: speedColor, fontWeight: 800 }}>SPEED: {speedLabel}</span>
-              <span style={{ color: "#9ca3af" }}>{speedIdx + 1}/{SPEED_SORT_ITEMS.length}</span>
-              {speedStreak >= 3 && <span style={{ color: "#f59e0b" }}>🔥 {speedStreak} streak!</span>}
-            </div>
-            <AnimatePresence mode="wait">
-              <motion.div key={speedIdx} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }}
-                style={{ marginBottom: 20 }}>
-                <div style={{
-                  background: speedFeedback === "correct" ? "rgba(16,185,129,0.1)" : speedFeedback === "wrong" ? "rgba(239,68,68,0.1)" : "rgba(255,255,255,0.06)",
-                  border: `2px solid ${speedFeedback === "correct" ? "#10b981" : speedFeedback === "wrong" ? "#ef4444" : "rgba(255,255,255,0.15)"}`,
-                  borderRadius: 16, padding: 24, maxWidth: 400, margin: "0 auto",
-                }}>
-                  <p style={{ color: "#fff", fontSize: 20, fontWeight: 800 }}>{item.info}</p>
-                </div>
-              </motion.div>
-            </AnimatePresence>
-            <div style={{ display: "flex", gap: 16, justifyContent: "center", flexWrap: "wrap" }}>
-              <motion.button onClick={(e) => handleSort("private", e)}
-                whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
-                style={{ background: "rgba(239,68,68,0.1)", border: "3px solid #ef4444", borderRadius: 20, padding: "20px 36px", cursor: "pointer", color: "#ef4444", fontWeight: 900, fontSize: 18, minWidth: 180 }}>
-                🔒 PRIVATE
-              </motion.button>
-              <motion.button onClick={(e) => handleSort("safe", e)}
-                whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
-                style={{ background: "rgba(34,197,94,0.1)", border: "3px solid #22c55e", borderRadius: 20, padding: "20px 36px", cursor: "pointer", color: "#22c55e", fontWeight: 900, fontSize: 18, minWidth: 180 }}>
-                ✅ SAFE
-              </motion.button>
-            </div>
-            </div>
+            <SortingStation
+              title="Speed Sort"
+              instruction="Sort them into the right vaults — Private or Safe!"
+              items={SPEED_SORT_ITEMS.map((item) => ({
+                text: item.info,
+                category: item.answer === "private" ? "private" : "safe",
+              }))}
+              categories={[
+                { id: "private", label: "Private", color: "#ef4444", icon: "🔒" },
+                { id: "safe", label: "Safe", color: "#34d399", icon: "✅" },
+              ]}
+              onComplete={(sc) => {
+                setSpeedScore(sc);
+                if (sc > speedBestStreak) setSpeedBestStreak(sc);
+                addCoins(sc >= 15 ? 25 : sc >= 13 ? 20 : 15);
+                setSpeedDone(true);
+              }}
+            />
           </ThemedScene>
         );
       }
@@ -1943,59 +1856,30 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
             </ThemedScene>
           );
         }
-        const pr = PHONE_ROUNDS[phoneRound];
+        const phoneMessages = PHONE_ROUNDS.flatMap((pr, ri) => [
+          { sender: "narrator" as const, text: `📞 Incoming call from "${pr.caller}"...` },
+          { sender: "stranger" as const, text: pr.says },
+        ]);
+        const phoneChoices = PHONE_ROUNDS.map((pr, ri) => ({
+          triggerAfterMessage: ri * 2 + 1,
+          options: pr.opts.map((opt) => ({
+            text: opt.text,
+            isSafe: !opt.danger,
+            feedback: opt.fb,
+          })),
+        }));
         return (
           <ThemedScene theme="callscreen">
-            <div style={{ textAlign: "center" }}>
-            <h1 data-split style={{ color: "#fff", fontSize: 38, fontWeight: 900, marginBottom: 4, letterSpacing: "0.05em", textShadow: "0 0 20px rgba(34,197,94,0.5)" }}>📞 INCOMING CALL</h1>
-            <SpeechBubble character="layla" message="Someone is calling. Be careful what you say!" />
-            <p style={{ color: "#9ca3af", marginBottom: 16 }}>Call {phoneRound + 1}/{PHONE_ROUNDS.length}</p>
-            {!phoneAnswered ? (
-              <motion.div animate={{ scale: [1, 1.1, 1] }} transition={{ duration: 1, repeat: Infinity }}>
-                <div style={{ width: 100, height: 100, borderRadius: "50%", background: "rgba(34,197,94,0.15)", border: "3px solid #22c55e", margin: "0 auto 16px", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 40 }}>📞</div>
-                <p style={{ color: "#22c55e", fontWeight: 700, marginBottom: 12 }}>{pr.caller}</p>
-                {btn("Answer Call", () => setPhoneAnswered(true))}
-              </motion.div>
-            ) : (
-              <AnimatePresence mode="wait">
-                <motion.div key={phoneRound} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-                  {card(
-                    <>
-                      <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 12 }}>
-                        <div style={{ width: 36, height: 36, borderRadius: "50%", background: "rgba(239,68,68,0.15)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 18 }}>📞</div>
-                        <span style={{ color: "#ef4444", fontWeight: 700, fontSize: 14 }}>{pr.caller}</span>
-                      </div>
-                      <div style={{ background: "rgba(255,255,255,0.04)", borderRadius: 16, padding: 16, marginBottom: 16, textAlign: "left" }}>
-                        <p style={{ color: "#d1d5db", fontSize: 14, fontStyle: "italic" }}>&quot;{pr.says}&quot;</p>
-                      </div>
-                      {phoneFeedback ? (
-                        <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
-                          <p style={{ color: phoneFeedback.includes("Never") || phoneFeedback.includes("Real") || phoneFeedback.includes("Even") || phoneFeedback.includes("How") ? "#ef4444" : "#10b981", fontWeight: 700, fontSize: 16, marginBottom: 12 }}>{phoneFeedback}</p>
-                          {btn("Next Call →", () => { setPhoneRound((r) => r + 1); setPhoneAnswered(false); setPhoneFeedback(null); })}
-                        </motion.div>
-                      ) : (
-                        <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-                          {pr.opts.map((opt, oi) => (
-                            <motion.button key={oi} className="shimmer-card" onClick={(e) => {
-                              if (!opt.danger) { celebrateCorrect(e.currentTarget as HTMLElement); setPhoneScore((s) => s + 1); }
-                              else { shakeWrong(e.currentTarget as HTMLElement); addWrong(12); }
-                              setPhoneFeedback(opt.fb);
-                              playSound(opt.danger ? "/sounds/wrong.mp3" : "/sounds/correct.mp3");
-                            }}
-                              whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}
-                              style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.12)", borderRadius: 12, padding: "12px 16px", color: "#d1d5db", fontSize: 14, fontWeight: 600, cursor: "pointer", textAlign: "left" }}>
-                              {opt.text}
-                            </motion.button>
-                          ))}
-                        </div>
-                      )}
-                    </>,
-                    { maxWidth: 520, margin: "0 auto" }
-                  )}
-                </motion.div>
-              </AnimatePresence>
-            )}
-            </div>
+            <ChatSimulator
+              title="Incoming Calls"
+              scenario="Someone you don't know is calling. Stay safe — choose the best reply!"
+              messages={phoneMessages}
+              choices={phoneChoices}
+              onComplete={(sc) => {
+                setPhoneScore(sc);
+                setPhoneRound(PHONE_ROUNDS.length);
+              }}
+            />
           </ThemedScene>
         );
       }
@@ -2170,88 +2054,22 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
             </ThemedScene>
           );
         }
-        if (vaultRound >= VAULT_ATTACKS.length) {
-          setVaultDone(true);
-          return null;
-        }
-        const va = VAULT_ATTACKS[vaultRound];
-        const timeLimit = vaultRound < 5 ? 4000 : 3000;
         return (
           <ThemedScene theme="vault">
-            <div style={{ textAlign: "center" }}>
-            <h1 data-split style={{ color: "#fff", fontSize: 40, fontWeight: 900, marginBottom: 4, letterSpacing: "0.05em", textShadow: "0 0 24px rgba(59,130,246,0.6)" }}>🏦 DEFEND THE VAULT</h1>
-            {vaultRound === 0 && (
-              <>
-                <SpeechBubble character="raccoon" message="This is my LAST CHANCE! I'm going to break into that vault!" side="right" />
-                <SpeechBubble character="adam" message="Not if we can help it. Ready, Layla?" />
-                <SpeechBubble character="layla" message="Ready! Let's protect the vault!" />
-              </>
-            )}
-            <p style={{ color: "#9ca3af", marginBottom: 8 }}>Round {vaultRound + 1}/{VAULT_ATTACKS.length}</p>
-            {/* Vault HP */}
-            <div style={{ maxWidth: 300, margin: "0 auto 16px" }}>
-              <div style={{ display: "flex", justifyContent: "space-between", fontSize: 12, color: "#9ca3af", marginBottom: 4 }}>
-                <span>Vault Health</span><span>{vaultHP}%</span>
-              </div>
-              <div style={{ height: 10, borderRadius: 99, background: "rgba(255,255,255,0.08)" }}>
-                <motion.div animate={{ width: `${vaultHP}%` }} transition={{ duration: 0.5 }}
-                  style={{ height: "100%", borderRadius: 99, background: vaultHP > 50 ? "#22c55e" : vaultHP > 25 ? "#f59e0b" : "#ef4444" }} />
-              </div>
-            </div>
-            <AnimatePresence mode="wait">
-              <motion.div key={vaultRound} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }}>
-                {card(
-                  <>
-                    <motion.div animate={{ scale: [1, 1.1, 1] }} transition={{ duration: 0.8, repeat: Infinity }}
-                      style={{ display: "inline-block", padding: "8px 20px", borderRadius: 12, background: "rgba(239,68,68,0.15)", border: "1px solid rgba(239,68,68,0.3)", marginBottom: 16 }}>
-                      <span style={{ color: "#ef4444", fontWeight: 900, fontSize: 16 }}>STEALING: {va.data}!</span>
-                    </motion.div>
-                    {vaultFeedback ? (
-                      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-                        <p style={{ color: vaultFeedback === "correct" ? "#10b981" : "#ef4444", fontWeight: 900, fontSize: 18, marginBottom: 12 }}>
-                          {vaultFeedback === "correct" ? (va.block ? "BLOCKED!" : "Safe info, no need to block!") : "The Raccoon got through!"}
-                        </p>
-                      </motion.div>
-                    ) : (
-                      <div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
-                        <motion.button className="shimmer-card" onClick={(e) => {
-                          const correct = va.block;
-                          setVaultFeedback(correct ? "correct" : "wrong");
-                          if (correct) { celebrateCorrect(e.currentTarget as HTMLElement); playSFX("boss-hit"); setVaultScore((s) => s + 1); playSound("/sounds/correct.mp3"); }
-                          else { shakeWrong(e.currentTarget as HTMLElement); setVaultHP((h) => Math.max(0, h - 15)); playSound("/sounds/wrong.mp3"); addWrong(15); }
-                          setTimeout(() => {
-                            setVaultFeedback(null);
-                            if (vaultHP - (correct ? 0 : 15) <= 0) setVaultDone(true);
-                            else setVaultRound((r) => r + 1);
-                          }, 1200);
-                        }}
-                          whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
-                          style={{ background: "rgba(59,130,246,0.15)", border: "3px solid #3b82f6", borderRadius: 16, padding: "16px 28px", cursor: "pointer", color: "#60a5fa", fontWeight: 900, fontSize: 16 }}>
-                          BLOCK IT! 🛡️
-                        </motion.button>
-                        <motion.button className="shimmer-card" onClick={(e) => {
-                          const correct = !va.block;
-                          setVaultFeedback(correct ? "correct" : "wrong");
-                          if (correct) { celebrateCorrect(e.currentTarget as HTMLElement); playSFX("boss-hit"); setVaultScore((s) => s + 1); playSound("/sounds/correct.mp3"); }
-                          else { shakeWrong(e.currentTarget as HTMLElement); setVaultHP((h) => Math.max(0, h - 15)); playSound("/sounds/wrong.mp3"); addWrong(15); }
-                          setTimeout(() => {
-                            setVaultFeedback(null);
-                            if (vaultHP - (correct ? 0 : 15) <= 0) setVaultDone(true);
-                            else setVaultRound((r) => r + 1);
-                          }, 1200);
-                        }}
-                          whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
-                          style={{ background: "rgba(34,197,94,0.1)", border: "3px solid #22c55e", borderRadius: 16, padding: "16px 28px", cursor: "pointer", color: "#22c55e", fontWeight: 900, fontSize: 16 }}>
-                          Let it through
-                        </motion.button>
-                      </div>
-                    )}
-                  </>,
-                  { maxWidth: 500, margin: "0 auto" }
-                )}
-              </motion.div>
-            </AnimatePresence>
-            </div>
+            <BattleArena
+              bossName="Hacker Raccoon"
+              bossImage="/characters/raccoon.png"
+              questions={VAULT_ATTACKS.map((va, i) => ({
+                question: `The Raccoon is stealing: ${va.data}!`,
+                options: ["🛡️ BLOCK IT!", "✅ Let it through"],
+                correctIndex: va.block ? 0 : 1,
+                attackName: i % 3 === 0 ? "Data Harvest!" : i % 3 === 1 ? "Privacy Breach!" : "Info Leak!",
+              }))}
+              onComplete={(sc) => {
+                setVaultScore(sc);
+                setVaultDone(true);
+              }}
+            />
           </ThemedScene>
         );
       }
