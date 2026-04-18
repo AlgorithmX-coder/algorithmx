@@ -16,28 +16,25 @@ const PURPLE = "#a78bfa";
 const PINK = "#f472b6";
 const RED = "#ef4444";
 const MUTED = "#94a3b8";
-const EASE = "cubic-bezier(0.16, 1, 0.3, 1)";
 
-/* ─────────────── SUBJECT DATA ─────────────── */
+/* ─────────────── DATA ─────────────── */
 const SUBJECTS = [
-  { title: "Cybersecurity", icon: "shield", accent: GREEN, ages: "Ages 6–Adult", tracks: "4 tracks", status: "AVAILABLE NOW", statusColor: GREEN, desc: "Online safety, threat detection, ethical hacking, and digital defence — from foundational awareness through to penetration testing.", href: "/cyberheroes", live: true, extra: "UK's most comprehensive cyber education pathway", trackList: [
-    { name: "Cyber Heroes", age: "6-10", price: "£99", live: true },
-    { name: "Cyber Explorers", age: "11-14", price: "£99", live: false },
-    { name: "CyberStart", age: "15-17", price: "£99", live: false },
-    { name: "CyberStart Pro", age: "18+", price: "£109", live: false },
-  ]},
-  { title: "Game Development", icon: "gamepad", accent: BLUE, ages: "Ages 8–Adult", tracks: "3 tracks", status: "Coming 2026", statusColor: YELLOW, desc: "Game design, mechanics, coding, and publishing — from Scratch and block-based tools through to Unity and Unreal Engine.", href: "#", live: false },
-  { title: "AI & Machine Learning", icon: "brain", accent: PURPLE, ages: "Ages 10–Adult", tracks: "3 tracks", status: "Coming 2026", statusColor: YELLOW, desc: "Prompt engineering, model training, neural networks, and responsible AI — from playground tools through to Python and TensorFlow.", href: "#", live: false },
-  { title: "App Development", icon: "code", accent: ORANGE, ages: "Ages 10–Adult", tracks: "3 tracks", status: "Coming 2027", statusColor: YELLOW, desc: "Mobile and web applications — from no-code builders through to React, Swift, and full-stack development with deployment.", href: "#", live: false },
-  { title: "Tech Entrepreneurship", icon: "rocket", accent: YELLOW, ages: "Ages 14–Adult", tracks: "2 tracks", status: "Coming 2027", statusColor: YELLOW, desc: "Product thinking, lean startup methodology, pitch decks, financial modelling, and go-to-market strategy.", href: "#", live: false },
-  { title: "Robotic Engineering", icon: "cpu", accent: PINK, ages: "Ages 8–Adult", tracks: "3 tracks", status: "Coming 2027", statusColor: YELLOW, desc: "Hardware fundamentals, sensor integration, microcontrollers, and autonomous systems — from Lego Mindstorms to Arduino and ROS.", href: "#", live: false, extra: "UK Only · Kit Included" },
-];
-
-const STATS = [
-  { value: 6, suffix: "", label: "Technology Subjects", accent: BLUE, list: ["Cybersecurity", "Game Development", "AI & Machine Learning", "App Development", "Tech Entrepreneurship", "Robotic Engineering"] },
-  { value: 18, suffix: "", label: "Individual Tracks", accent: GREEN },
-  { value: 0, suffix: "", label: "Ages 6 to Adult", accent: ORANGE, display: "6–Adult" },
-  { value: 99, suffix: "", label: "Per Course · Lifetime", accent: YELLOW, display: "£99" },
+  {
+    title: "Cybersecurity", icon: "shield", accent: GREEN, ages: "Ages 6–Adult", tracks: "4 tracks", status: "AVAILABLE NOW", statusColor: GREEN,
+    desc: "Online safety, threat detection, ethical hacking, and digital defence — from foundational awareness through to penetration testing.",
+    href: "/cyberheroes", live: true,
+    trackList: [
+      { name: "Cyber Heroes", age: "6-10", price: "£99", live: true },
+      { name: "Cyber Explorers", age: "11-14", price: "£99", live: false },
+      { name: "CyberStart", age: "15-17", price: "£99", live: false },
+      { name: "CyberStart Pro", age: "18+", price: "£109", live: false },
+    ],
+  },
+  { title: "Game Development", icon: "gamepad", accent: BLUE, ages: "Ages 8–Adult", tracks: "3 tracks", status: "Coming 2026", desc: "Game design, mechanics, coding, and publishing — from Scratch and block-based tools through to Unity and Unreal Engine.", href: "#", live: false },
+  { title: "AI & Machine Learning", icon: "brain", accent: PURPLE, ages: "Ages 10–Adult", tracks: "3 tracks", status: "Coming 2026", desc: "Prompt engineering, model training, neural networks, and responsible AI — from playground tools through to Python and TensorFlow.", href: "#", live: false },
+  { title: "App Development", icon: "code", accent: ORANGE, ages: "Ages 10–Adult", tracks: "3 tracks", status: "Coming 2027", desc: "Mobile and web applications — from no-code builders through to React, Swift, and full-stack development with deployment.", href: "#", live: false },
+  { title: "Tech Entrepreneurship", icon: "rocket", accent: YELLOW, ages: "Ages 14–Adult", tracks: "2 tracks", status: "Coming 2027", desc: "Product thinking, lean startup methodology, pitch decks, financial modelling, and go-to-market strategy.", href: "#", live: false },
+  { title: "Robotic Engineering", icon: "cpu", accent: PINK, ages: "Ages 8–Adult", tracks: "3 tracks", status: "Coming 2027", desc: "Hardware fundamentals, sensor integration, microcontrollers, and autonomous systems — from Lego Mindstorms to Arduino and ROS.", href: "#", live: false, extra: "UK Only · Kit Included" },
 ];
 
 const STEPS = [
@@ -62,16 +59,8 @@ const TESTIMONIALS = [
 
 const TRUST_NAMES = ["ASDAN", "CompTIA", "CyberFirst", "Unity", "AWS", "Raspberry Pi", "BCS", "Prince\u2019s Trust", "NCSC", "BAFTA Games"];
 const TRUST_STRIP = ["CyberFirst Aligned", "ASDAN Accredited", "6 Subjects", "Ages 6 to Adult", "UK Designed"];
-const ORBIT_SUBJECTS = [
-  { icon: "shield", color: GREEN, r: 90, speed: 28, start: 0 },
-  { icon: "gamepad", color: BLUE, r: 110, speed: 34, start: 60 },
-  { icon: "brain", color: PURPLE, r: 95, speed: 22, start: 120 },
-  { icon: "code", color: ORANGE, r: 105, speed: 30, start: 180 },
-  { icon: "rocket", color: YELLOW, r: 85, speed: 26, start: 240 },
-  { icon: "cpu", color: PINK, r: 100, speed: 32, start: 300 },
-];
 
-/* ─────────────── SVG ICON ─────────────── */
+/* ─────────────── SVG ICONS ─────────────── */
 const PATHS: Record<string, string> = {
   shield: "M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z",
   gamepad: "M6 12h4M8 10v4M15 11h.01M18 13h.01",
@@ -102,27 +91,49 @@ function Ico({ name, size = 24, color = "#fff", sw = 2 }: { name: string; size?:
   );
 }
 
-/* ─────────────── COUNTER ─────────────── */
-function Counter({ to, suffix = "", display }: { to: number; suffix?: string; display?: string }) {
+/* ─────────────── COUNTER (CountUp effect) ─────────────── */
+function Counter({ to, duration = 2000 }: { to: number; duration?: number }) {
   const ref = useRef<HTMLSpanElement>(null);
   const inView = useInView(ref, { once: true, margin: "-40px" });
   const [val, setVal] = useState(0);
   useEffect(() => {
-    if (!inView || display) return;
+    if (!inView) return;
     let frame: number;
     const start = performance.now();
     const tick = (now: number) => {
-      const t = Math.min((now - start) / 1800, 1);
+      const t = Math.min((now - start) / duration, 1);
       setVal(Math.round((1 - Math.pow(1 - t, 3)) * to));
       if (t < 1) frame = requestAnimationFrame(tick);
     };
     frame = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(frame);
-  }, [inView, to, display]);
-  return <span ref={ref}>{display || `${val}${suffix}`}</span>;
+  }, [inView, to, duration]);
+  return <span ref={ref}>{val}</span>;
 }
 
-/* ─────────────── SPOTLIGHT CARD ─────────────── */
+/* ─────────────── TEXT GENERATE EFFECT ─────────────── */
+function TextGenerate({ text, delay = 0 }: { text: string; delay?: number }) {
+  const words = text.split(" ");
+  const ref = useRef<HTMLParagraphElement>(null);
+  const inView = useInView(ref, { once: true, margin: "-30px" });
+  return (
+    <p ref={ref} style={{ fontSize: "clamp(15px, 1.5vw, 18px)", color: MUTED, lineHeight: 1.8, maxWidth: 620, margin: "0 auto 44px" }}>
+      {words.map((word, i) => (
+        <motion.span
+          key={i}
+          initial={{ opacity: 0, y: 4 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.3, delay: delay + i * 0.06, ease: "easeOut" }}
+          style={{ display: "inline-block", marginRight: "0.3em" }}
+        >
+          {word}
+        </motion.span>
+      ))}
+    </p>
+  );
+}
+
+/* ─────────────── SPOTLIGHT CARD (mouse-tracking radial gradient) ─────────────── */
 function SpotlightCard({ children, accent, style, className }: { children: React.ReactNode; accent: string; style?: CSSProperties; className?: string }) {
   const cardRef = useRef<HTMLDivElement>(null);
   const [pos, setPos] = useState({ x: 0, y: 0 });
@@ -143,107 +154,20 @@ function SpotlightCard({ children, accent, style, className }: { children: React
         position: "relative", overflow: "hidden",
         background: CARD, borderRadius: 20,
         border: `1px solid ${hovering ? `${accent}40` : "rgba(255,255,255,.05)"}`,
-        transition: `transform .4s ${EASE}, box-shadow .4s ${EASE}, border-color .4s ${EASE}`,
-        transform: hovering ? "translateY(-8px)" : "none",
+        transition: "transform .4s cubic-bezier(0.16,1,0.3,1), box-shadow .4s cubic-bezier(0.16,1,0.3,1), border-color .4s cubic-bezier(0.16,1,0.3,1)",
+        transform: hovering ? "translateY(-6px)" : "none",
         boxShadow: hovering ? `0 20px 60px ${accent}15` : "none",
+        willChange: "transform",
         ...style,
       }}
     >
       <div style={{
         position: "absolute", inset: 0, pointerEvents: "none", zIndex: 0,
-        background: hovering ? `radial-gradient(300px circle at ${pos.x}px ${pos.y}px, ${accent}15, transparent 60%)` : "none",
+        background: hovering ? `radial-gradient(300px circle at ${pos.x}px ${pos.y}px, ${accent}1e, transparent 60%)` : "none",
         transition: "background .15s ease",
       }} />
       <div style={{ position: "relative", zIndex: 1 }}>{children}</div>
     </div>
-  );
-}
-
-/* ─────────────── TYPEWRITER ─────────────── */
-function Typewriter({ text, delay = 0 }: { text: string; delay?: number }) {
-  const [shown, setShown] = useState(0);
-  const ref = useRef<HTMLParagraphElement>(null);
-  const inView = useInView(ref, { once: true, margin: "-30px" });
-  useEffect(() => {
-    if (!inView) return;
-    const t = setTimeout(() => {
-      let i = 0;
-      const iv = setInterval(() => { i++; setShown(i); if (i >= text.length) clearInterval(iv); }, 28);
-      return () => clearInterval(iv);
-    }, delay);
-    return () => clearTimeout(t);
-  }, [inView, text, delay]);
-  return (
-    <p ref={ref} className="mono" style={{ fontSize: "clamp(14px, 1.4vw, 17px)", color: MUTED, lineHeight: 1.7, maxWidth: 600, margin: "0 auto 40px", minHeight: 52 }}>
-      {text.slice(0, shown)}
-      <span style={{ borderRight: "2px solid", borderColor: shown < text.length ? ORANGE : "transparent", animation: shown < text.length ? "none" : "axBlink .8s step-end infinite", paddingLeft: 1 }} />
-    </p>
-  );
-}
-
-/* ─────────────── TIMELINE STEP ─────────────── */
-function TimelineStep({ step, i }: { step: typeof STEPS[0]; i: number }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once: true, margin: "-60px" });
-  return (
-    <motion.div
-      ref={ref}
-      initial={{ opacity: 0, x: -40 }}
-      animate={inView ? { opacity: 1, x: 0 } : {}}
-      transition={{ duration: 0.6, delay: i * 0.15, ease: [0.16, 1, 0.3, 1] }}
-      style={{ display: "flex", gap: 24, alignItems: "flex-start", paddingBottom: 56, position: "relative" }}
-    >
-      <div style={{ flexShrink: 0, display: "flex", flexDirection: "column", alignItems: "center" }}>
-        <motion.div
-          animate={inView ? { boxShadow: [`0 0 0 0 ${step.accent}00`, `0 0 0 10px ${step.accent}00`] } : {}}
-          transition={{ duration: 1.5, repeat: Infinity, repeatType: "loop" }}
-          style={{
-            width: 48, height: 48, borderRadius: "50%",
-            background: `${step.accent}18`, border: `2px solid ${step.accent}40`,
-            display: "flex", alignItems: "center", justifyContent: "center",
-            fontFamily: "'Space Grotesk', sans-serif", fontSize: 20, fontWeight: 700, color: step.accent,
-          }}
-        >
-          {i + 1}
-        </motion.div>
-        {i < 3 && <div style={{ width: 2, flex: 1, minHeight: 40, background: `linear-gradient(${step.accent}40, transparent)`, marginTop: 8 }} />}
-      </div>
-      <div style={{ paddingTop: 8 }}>
-        <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 20, fontWeight: 700, color: "#fff", marginBottom: 6 }}>{step.title}</h3>
-        <p style={{ color: MUTED, fontSize: 15, lineHeight: 1.6 }}>{step.text}</p>
-      </div>
-    </motion.div>
-  );
-}
-
-/* ─────────────── TESTIMONIAL CARD ─────────────── */
-function TestimonialCard({ t, i }: { t: typeof TESTIMONIALS[0]; i: number }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once: true, margin: "-40px" });
-  const rotations = [-2, 1, -1.5];
-  return (
-    <motion.div
-      ref={ref}
-      initial={{ opacity: 0, y: 30, rotate: rotations[i] }}
-      animate={inView ? { opacity: 1, y: 0, rotate: 0 } : {}}
-      transition={{ duration: 0.7, delay: i * 0.12, ease: [0.16, 1, 0.3, 1] }}
-      style={{
-        background: CARD, borderRadius: 20, padding: "32px 28px",
-        border: "1px solid rgba(255,255,255,.05)", position: "relative",
-        marginLeft: i > 0 ? -12 : 0, zIndex: 3 - i,
-      }}
-    >
-      <div aria-hidden style={{ position: "absolute", top: 12, left: 20, opacity: .06 }}>
-        <Ico name="quote" size={48} color={BLUE} sw={1.5} />
-      </div>
-      <p style={{ color: "#cbd5e1", fontSize: 15, lineHeight: 1.8, marginBottom: 20, position: "relative" }}>
-        &ldquo;{t.text}&rdquo;
-      </p>
-      <div>
-        <p style={{ color: "#fff", fontSize: 14, fontWeight: 700 }}>{t.name}</p>
-        <p style={{ color: MUTED, fontSize: 12 }}>{t.role}</p>
-      </div>
-    </motion.div>
   );
 }
 
@@ -256,57 +180,39 @@ h1,h2,h3,h4,.dsp{font-family:'Space Grotesk',sans-serif;letter-spacing:-0.025em}
 html{scroll-behavior:smooth}
 a,button{cursor:pointer}
 
-@keyframes axDrift{0%,100%{transform:translate(0,0)}33%{transform:translate(25px,-40px)}66%{transform:translate(-20px,30px)}}
-@keyframes axBreathe{0%,100%{opacity:.18;transform:scale(1)}50%{opacity:.35;transform:scale(1.12)}}
-@keyframes axGrid{0%{background-position:0 0}100%{background-position:60px 60px}}
+@keyframes axBreathe{0%,100%{opacity:.15;transform:translate(-50%,-50%) scale(1)}50%{opacity:.25;transform:translate(-50%,-50%) scale(1.1)}}
 @keyframes axMarquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-@keyframes axBlink{0%,100%{border-color:transparent}50%{border-color:${ORANGE}}}
-@keyframes axOrbit{from{transform:rotate(var(--start)) translateX(var(--r)) rotate(calc(-1 * var(--start)))}to{transform:rotate(calc(var(--start) + 360deg)) translateX(var(--r)) rotate(calc(-1 * (var(--start) + 360deg)))}}
+@keyframes axTestimonialScroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@keyframes axUnderline{from{width:0}to{width:100%}}
 
 @property --angle{syntax:'<angle>';initial-value:0deg;inherits:false}
 @keyframes axRotateGrad{to{--angle:360deg}}
 
+/* How It Works line draw */
+@keyframes axLineDraw{from{width:0}to{width:100%}}
+
+/* Testimonial pause on hover */
+.ax-testimonial-track:hover{animation-play-state:paused!important}
+
 @media(max-width:768px){
-  .ax-g2{grid-template-columns:1fr!important}
-  .ax-g3{grid-template-columns:1fr!important}
-  .ax-g4{grid-template-columns:1fr 1fr!important}
-  .ax-bento{grid-template-columns:1fr!important}
-  .ax-bento>*{grid-column:span 1!important}
   .ax-hero-ctas{flex-direction:column;align-items:center}
-  .ax-why{grid-template-columns:1fr!important}
-  .ax-why>*{grid-column:span 1!important}
+  .ax-problem-grid{grid-template-columns:1fr!important;text-align:center}
+  .ax-problem-stat{justify-self:center}
+  .ax-subjects-row3{grid-template-columns:1fr!important}
+  .ax-subjects-row2{grid-template-columns:1fr!important}
+  .ax-subjects-row2>*{flex:1!important}
+  .ax-cyber-inner{flex-direction:column!important}
+  .ax-cyber-tracks{min-width:0!important}
+  .ax-steps-horizontal{flex-direction:column!important;align-items:flex-start!important}
+  .ax-steps-line-h{display:none!important}
+  .ax-steps-line-v{display:block!important}
+  .ax-zigzag{flex-direction:column!important}
+  .ax-zigzag-reverse{flex-direction:column!important}
   .ax-footer-grid{grid-template-columns:1fr!important;text-align:center}
-  .ax-orbit{display:none!important}
-  .ax-track-row{flex-direction:column!important}
+  .ax-trust-items{flex-wrap:wrap;justify-content:center}
+  .ax-nav-links a:not(:last-child){display:none}
 }
-@media(max-width:480px){.ax-g4{grid-template-columns:1fr!important}}
 `;
-
-/* ─────────────── PARTICLES ─────────────── */
-const PARTICLES = [
-  { left: "8%", top: "12%", c: BLUE, s: 3, d: 22 },
-  { left: "82%", top: "18%", c: GREEN, s: 4, d: 26 },
-  { left: "28%", top: "48%", c: ORANGE, s: 3, d: 19 },
-  { left: "90%", top: "52%", c: YELLOW, s: 3, d: 24 },
-  { left: "5%", top: "68%", c: GREEN, s: 4, d: 28 },
-  { left: "55%", top: "10%", c: BLUE, s: 3, d: 21 },
-  { left: "72%", top: "78%", c: ORANGE, s: 3, d: 25 },
-  { left: "18%", top: "85%", c: PURPLE, s: 3, d: 18 },
-];
-
-/* ─────────────── BADGE HELPER ─────────────── */
-function Badge({ children, color }: { children: React.ReactNode; color: string }) {
-  return (
-    <span style={{
-      display: "inline-flex", alignItems: "center", gap: 6,
-      padding: "5px 14px", borderRadius: 100, fontSize: 11, fontWeight: 700,
-      letterSpacing: ".06em", textTransform: "uppercase",
-      color, background: `${color}12`, border: `1px solid ${color}25`,
-    }}>
-      {children}
-    </span>
-  );
-}
 
 /* ═══════════════════════════════════════════════════════
    PAGE
@@ -316,28 +222,31 @@ export default function AlgorithmXHome() {
   const heroRef = useRef<HTMLDivElement>(null);
   const heroInView = useInView(heroRef, { once: true });
 
+  /* Problem section scroll reveal */
+  const problemRef = useRef<HTMLDivElement>(null);
+  const problemInView = useInView(problemRef, { once: true, margin: "-80px" });
+
+  /* Underline animation */
+  const underlineRef = useRef<HTMLDivElement>(null);
+  const underlineInView = useInView(underlineRef, { once: true, margin: "-20px" });
+
+  /* Steps section */
+  const stepsRef = useRef<HTMLDivElement>(null);
+  const stepsInView = useInView(stepsRef, { once: true, margin: "-80px" });
+
   return (
     <SmoothScroll>
       <div style={{ background: BG, minHeight: "100vh", color: "#e2e8f0", overflowX: "hidden" }}>
         <style>{CSS}</style>
 
-        {/* BG layers */}
+        {/* Subtle grid overlay — hero area only */}
         <div aria-hidden style={{
           position: "fixed", inset: 0, zIndex: 0, pointerEvents: "none",
           backgroundImage: "linear-gradient(rgba(96,165,250,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(96,165,250,.03) 1px,transparent 1px)",
-          backgroundSize: "60px 60px", animation: "axGrid 25s linear infinite",
-          maskImage: "radial-gradient(ellipse 70% 50% at 50% 25%,black 10%,transparent 70%)",
-          WebkitMaskImage: "radial-gradient(ellipse 70% 50% at 50% 25%,black 10%,transparent 70%)",
+          backgroundSize: "60px 60px",
+          maskImage: "radial-gradient(ellipse 70% 40% at 50% 20%,black 10%,transparent 70%)",
+          WebkitMaskImage: "radial-gradient(ellipse 70% 40% at 50% 20%,black 10%,transparent 70%)",
         }} />
-        <div aria-hidden style={{ position: "fixed", inset: 0, zIndex: 0, pointerEvents: "none", overflow: "hidden" }}>
-          {PARTICLES.map((p, i) => (
-            <div key={i} style={{
-              position: "absolute", left: p.left, top: p.top, width: p.s, height: p.s,
-              borderRadius: "50%", background: p.c, opacity: .22,
-              animation: `axDrift ${p.d}s ease-in-out ${-i * 2.5}s infinite`,
-            }} />
-          ))}
-        </div>
 
         {/* ═══ 1. NAV ═══ */}
         <nav style={{
@@ -366,55 +275,30 @@ export default function AlgorithmXHome() {
         </nav>
 
         {/* ═══ 2. HERO ═══ */}
-        <section ref={heroRef} style={{ position: "relative", zIndex: 1, textAlign: "center", maxWidth: 900, margin: "0 auto", padding: "160px 24px 80px" }}>
-          {/* Breathing glow */}
+        <section ref={heroRef} style={{ position: "relative", zIndex: 1, textAlign: "center", maxWidth: 900, margin: "0 auto", padding: "160px 24px 48px", minHeight: "50vh", display: "flex", flexDirection: "column", justifyContent: "center" }}>
+          {/* Single breathing radial glow */}
           <div aria-hidden style={{
-            position: "absolute", top: "12%", left: "50%", transform: "translateX(-50%)",
-            width: 500, height: 500, borderRadius: "50%", pointerEvents: "none", zIndex: -1,
-            background: `radial-gradient(circle,${BLUE}20,transparent 70%)`,
-            animation: "axBreathe 7s ease-in-out infinite",
+            position: "absolute", top: "50%", left: "50%",
+            width: 600, height: 600, borderRadius: "50%", pointerEvents: "none", zIndex: -1,
+            background: `radial-gradient(circle,${BLUE}18,transparent 70%)`,
+            animation: "axBreathe 8s ease-in-out infinite",
           }} />
 
-          {/* Orbital icons */}
-          <div className="ax-orbit" aria-hidden style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%,-50%)", width: 240, height: 240, zIndex: -1 }}>
-            <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%,-50%)", width: 48, height: 48, borderRadius: 14, background: `linear-gradient(135deg,${BLUE}20,${GREEN}20)`, border: `1px solid ${BLUE}20`, display: "flex", alignItems: "center", justifyContent: "center" }}>
-              <Ico name="shield" size={24} color={`${BLUE}60`} />
-            </div>
-            {ORBIT_SUBJECTS.map((o, i) => (
-              <div key={i} style={{
-                position: "absolute", top: "50%", left: "50%",
-                width: 0, height: 0,
-                ["--r" as string]: `${o.r}px`,
-                ["--start" as string]: `${o.start}deg`,
-                animation: `axOrbit ${o.speed}s linear infinite`,
-              }}>
-                <div style={{
-                  width: 32, height: 32, borderRadius: 10,
-                  background: `${o.color}12`, border: `1px solid ${o.color}20`,
-                  display: "flex", alignItems: "center", justifyContent: "center",
-                  transform: "translate(-50%,-50%)",
-                  boxShadow: `0 0 20px ${o.color}15`,
-                }}>
-                  <Ico name={o.icon} size={16} color={`${o.color}80`} />
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {/* Word-by-word headline */}
-          <h1 className="dsp" style={{ fontSize: "clamp(40px,6.5vw,68px)", fontWeight: 700, lineHeight: 1.06, color: "#fff", marginBottom: 28 }}>
+          {/* BlurText headline — word-by-word blur reveal */}
+          <h1 className="dsp" style={{ fontSize: "clamp(48px,7vw,80px)", fontWeight: 700, lineHeight: 1.06, color: "#fff", marginBottom: 28 }}>
             {heroWords.map((word, i) => (
               <motion.span
                 key={i}
-                initial={{ opacity: 0, y: 20 }}
-                animate={heroInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.5, delay: 0.3 + i * 0.08, ease: [0.16, 1, 0.3, 1] }}
+                initial={{ filter: "blur(10px)", opacity: 0, y: 20 }}
+                animate={heroInView ? { filter: "blur(0px)", opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.6, delay: 0.2 + i * 0.08, ease: [0.16, 1, 0.3, 1] }}
                 style={{
-                  display: "inline-block", marginRight: "0.3em",
+                  display: "inline-block", marginRight: "0.3em", willChange: "transform, filter",
                   ...(word === "Tech" || word === "Education" ? {
                     background: `linear-gradient(135deg,${BLUE},${GREEN})`,
                     WebkitBackgroundClip: "text",
                     WebkitTextFillColor: "transparent",
+                    backgroundClip: "text",
                   } : {}),
                 }}
               >
@@ -423,15 +307,18 @@ export default function AlgorithmXHome() {
             ))}
           </h1>
 
-          {/* Typewriter subtitle */}
-          <Typewriter text="Six streams of technology education designed for ages 6 to adult. Built by experts. Interactive, not passive. Accreditation aligned." delay={1200} />
+          {/* TextGenerateEffect subtitle */}
+          <TextGenerate
+            text="Six streams of technology education for ages 6 to adult. Built by experts. Accreditation aligned."
+            delay={0.9}
+          />
 
-          {/* CTAs */}
+          {/* Spring CTAs */}
           <motion.div
             className="ax-hero-ctas"
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 30 }}
             animate={heroInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.6, delay: 1.8, type: "spring", stiffness: 120, damping: 20 }}
+            transition={{ duration: 0.7, delay: 2.0, type: "spring", stiffness: 120, damping: 20 }}
             style={{ display: "flex", gap: 14, justifyContent: "center", flexWrap: "wrap", marginBottom: 48 }}
           >
             <a href="#subjects" style={{
@@ -446,14 +333,14 @@ export default function AlgorithmXHome() {
             }}>How It Works</a>
           </motion.div>
 
-          {/* Trust strip stagger */}
-          <div style={{ display: "flex", justifyContent: "center", gap: 28, flexWrap: "wrap" }}>
+          {/* Trust strip — stagger from left */}
+          <div className="ax-trust-items" style={{ display: "flex", justifyContent: "center", gap: 28, flexWrap: "wrap" }}>
             {TRUST_STRIP.map((t, i) => (
               <motion.span
                 key={t}
                 initial={{ opacity: 0, x: -20 }}
                 animate={heroInView ? { opacity: 1, x: 0 } : {}}
-                transition={{ duration: 0.5, delay: 2.2 + i * 0.1, ease: [0.16, 1, 0.3, 1] }}
+                transition={{ duration: 0.5, delay: 2.4 + i * 0.1, ease: [0.16, 1, 0.3, 1] }}
                 style={{ display: "inline-flex", alignItems: "center", gap: 6, color: MUTED, fontSize: 12, fontWeight: 600, letterSpacing: ".03em" }}
               >
                 <Ico name="check" size={14} color={GREEN} sw={2.5} />{t}
@@ -462,18 +349,21 @@ export default function AlgorithmXHome() {
           </div>
         </section>
 
+        {/* 48px breathing room */}
+        <div style={{ height: 48 }} />
+
         {/* ═══ 3. TRUST MARQUEE ═══ */}
         <div style={{
           position: "relative", zIndex: 1, padding: "26px 0",
-          background: "rgba(255,255,255,.015)", borderTop: "1px solid rgba(255,255,255,.04)", borderBottom: "1px solid rgba(255,255,255,.04)",
+          background: "rgba(255,255,255,.02)", borderTop: "1px solid rgba(255,255,255,.04)", borderBottom: "1px solid rgba(255,255,255,.04)",
           overflow: "hidden",
           maskImage: "linear-gradient(90deg,transparent,black 10%,black 90%,transparent)",
           WebkitMaskImage: "linear-gradient(90deg,transparent,black 10%,black 90%,transparent)",
         }}>
           <p style={{ textAlign: "center", fontSize: 10, fontWeight: 700, letterSpacing: ".12em", textTransform: "uppercase", color: "rgba(148,163,184,.4)", marginBottom: 14 }}>
-            Curriculum Aligned with Industry-Leading Standards
+            Curriculum Aligned with Industry Standards
           </p>
-          <div style={{ display: "flex", animation: "axMarquee 32s linear infinite", width: "max-content" }}>
+          <div style={{ display: "flex", animation: "axMarquee 40s linear infinite", width: "max-content" }}>
             {[0, 1].map((dup) => (
               <div key={dup} style={{ display: "flex", alignItems: "center", gap: 60, paddingRight: 60 }}>
                 {TRUST_NAMES.map((n) => (
@@ -484,275 +374,377 @@ export default function AlgorithmXHome() {
           </div>
         </div>
 
-        {/* ═══ 4. STATS BENTO ═══ */}
-        <section style={{ position: "relative", zIndex: 1, padding: "80px 24px", maxWidth: 1000, margin: "0 auto" }}>
-          <div className="ax-bento" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
-            {/* Large card — 6 Subjects */}
+        {/* ═══ 4. THE PROBLEM ═══ */}
+        <section ref={problemRef} style={{ position: "relative", zIndex: 1, padding: "140px 24px 80px", maxWidth: 1060, margin: "0 auto" }}>
+          <div className="ax-problem-grid" style={{ display: "grid", gridTemplateColumns: "1.5fr 1fr", gap: 60, alignItems: "center" }}>
+            {/* Left — emotional text */}
             <motion.div
-              initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-40px" }}
-              transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-              style={{
-                gridColumn: "span 2", padding: "36px 32px", borderRadius: 20,
-                background: "rgba(17,24,39,.7)", backdropFilter: "blur(20px)",
-                border: "1px solid rgba(255,255,255,.06)",
-              }}
+              initial={{ opacity: 0, x: -50 }}
+              animate={problemInView ? { opacity: 1, x: 0 } : {}}
+              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
             >
-              <p className="dsp" style={{ fontSize: 56, fontWeight: 700, color: BLUE, marginBottom: 4 }}>
-                <Counter to={6} />
+              <h2 className="dsp" style={{ fontSize: "clamp(32px,4vw,44px)", fontWeight: 700, color: "#fff", lineHeight: 1.15, marginBottom: 24 }}>
+                The Internet Wasn&rsquo;t Built for Kids
+              </h2>
+              <p style={{ color: MUTED, fontSize: "clamp(15px,1.4vw,18px)", lineHeight: 1.8 }}>
+                72% of children encounter online threats before age 10. Schools barely scratch the surface. Parental controls can only do so much. Children need the knowledge and instincts to protect themselves — and they need to learn it in a way that actually sticks.
               </p>
-              <p style={{ color: "#fff", fontSize: 18, fontWeight: 600, marginBottom: 16 }}>Technology Subjects</p>
-              <div className="ax-g3" style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 10 }}>
-                {SUBJECTS.map((s) => (
-                  <div key={s.title} style={{ display: "flex", alignItems: "center", gap: 8, padding: "8px 12px", borderRadius: 10, background: `${s.accent}08`, border: `1px solid ${s.accent}15` }}>
-                    <Ico name={s.icon} size={16} color={s.accent} />
-                    <span style={{ color: MUTED, fontSize: 13, fontWeight: 600 }}>{s.title}</span>
-                  </div>
-                ))}
-              </div>
             </motion.div>
 
-            {/* 18 Tracks */}
+            {/* Right — massive stat */}
             <motion.div
-              initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-40px" }}
-              transition={{ duration: 0.6, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-              style={{
-                padding: "32px 28px", borderRadius: 20,
-                background: "rgba(17,24,39,.7)", backdropFilter: "blur(20px)",
-                border: "1px solid rgba(255,255,255,.06)",
-              }}
+              className="ax-problem-stat"
+              initial={{ opacity: 0, x: 50 }}
+              animate={problemInView ? { opacity: 1, x: 0 } : {}}
+              transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+              style={{ textAlign: "center" }}
             >
-              <p className="dsp" style={{ fontSize: 48, fontWeight: 700, color: GREEN }}><Counter to={18} /></p>
-              <p style={{ color: "#fff", fontSize: 16, fontWeight: 600, marginBottom: 4 }}>Individual Tracks</p>
-              <p style={{ color: MUTED, fontSize: 13 }}>Age-appropriate courses within each subject</p>
+              <p className="dsp" style={{ fontSize: "clamp(96px,12vw,140px)", fontWeight: 700, color: RED, lineHeight: 1 }}>
+                <Counter to={72} duration={2000} />
+                <span style={{ fontSize: "0.5em" }}>%</span>
+              </p>
+              <p style={{ color: MUTED, fontSize: 14, marginTop: 8 }}>of children face online threats before age 10</p>
             </motion.div>
+          </div>
 
-            {/* Ages 6–Adult */}
-            <motion.div
-              initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-40px" }}
-              transition={{ duration: 0.6, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-              style={{
-                padding: "32px 28px", borderRadius: 20,
-                background: "rgba(17,24,39,.7)", backdropFilter: "blur(20px)",
-                border: "1px solid rgba(255,255,255,.06)",
-              }}
-            >
-              <p className="dsp" style={{ fontSize: 48, fontWeight: 700, color: ORANGE }}>6–Adult</p>
-              <p style={{ color: "#fff", fontSize: 16, fontWeight: 600, marginBottom: 4 }}>Complete Age Range</p>
-              <p style={{ color: MUTED, fontSize: 13 }}>From first steps online to professional certification</p>
-            </motion.div>
-
-            {/* Pricing bar */}
-            <motion.div
-              initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-40px" }}
-              transition={{ duration: 0.6, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-              style={{
-                gridColumn: "span 2", padding: "24px 32px", borderRadius: 20,
-                background: "rgba(17,24,39,.7)", backdropFilter: "blur(20px)",
-                border: "1px solid rgba(255,255,255,.06)",
-                display: "flex", alignItems: "center", justifyContent: "center", gap: 32, flexWrap: "wrap",
-              }}
-            >
-              <span className="dsp" style={{ fontSize: 32, fontWeight: 700, color: YELLOW }}>£99</span>
-              <span style={{ color: MUTED, fontSize: 15 }}>per course · Lifetime access · Continuously updated</span>
-            </motion.div>
+          {/* Centred tagline with animated underline */}
+          <div ref={underlineRef} style={{ textAlign: "center", marginTop: 64 }}>
+            <p className="dsp" style={{ fontSize: 20, fontWeight: 700, color: "#fff", display: "inline-block", position: "relative" }}>
+              That&rsquo;s why we built AlgorithmX.
+              <span style={{
+                position: "absolute", bottom: -6, left: 0, height: 2,
+                background: `linear-gradient(90deg,${BLUE},${GREEN})`,
+                borderRadius: 2,
+                width: underlineInView ? "100%" : "0%",
+                transition: "width 0.8s cubic-bezier(0.16,1,0.3,1)",
+              }} />
+            </p>
           </div>
         </section>
 
         {/* ═══ 5. SUBJECTS ═══ */}
-        <section id="subjects" style={{ position: "relative", zIndex: 1, padding: "80px 24px", maxWidth: 1100, margin: "0 auto" }}>
-          <div style={{ textAlign: "center", marginBottom: 48 }}>
-            <motion.div initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5 }}>
-              <Badge color={BLUE}><Ico name="layers" size={14} color={BLUE} /> Subjects</Badge>
-            </motion.div>
-            <motion.h2 className="dsp" initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.05 }}
-              style={{ fontSize: "clamp(28px,4vw,42px)", fontWeight: 700, color: "#fff", lineHeight: 1.15, marginBottom: 12, marginTop: 16 }}>
+        <section id="subjects" style={{ position: "relative", zIndex: 1, padding: "120px 24px", maxWidth: 1100, margin: "0 auto" }}>
+          <div style={{ textAlign: "center", marginBottom: 56 }}>
+            <motion.h2 className="dsp" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}
+              style={{ fontSize: "clamp(32px,4.5vw,48px)", fontWeight: 700, color: "#fff", lineHeight: 1.12, marginBottom: 14 }}>
               Everything They Need to Thrive in Tech
             </motion.h2>
             <motion.p initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.1 }}
-              style={{ color: MUTED, fontSize: 16, lineHeight: 1.7, maxWidth: 600, margin: "0 auto" }}>
+              style={{ color: MUTED, fontSize: 16, lineHeight: 1.7, maxWidth: 560, margin: "0 auto" }}>
               Six streams of technology education — each with multiple age-appropriate tracks.
             </motion.p>
           </div>
 
-          {/* Hero card: Cybersecurity */}
+          {/* Row 1: Cybersecurity FULL-WIDTH hero card */}
           {(() => {
             const s = SUBJECTS[0];
             return (
-              <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-40px" }} transition={{ duration: 0.6 }}>
-                <SpotlightCard accent={s.accent} style={{ padding: "36px 32px", marginBottom: 20 }}>
+              <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-40px" }} transition={{ duration: 0.6 }}
+                style={{ marginBottom: 20 }}
+              >
+                <SpotlightCard accent={s.accent} style={{
+                  padding: "36px 32px", minHeight: 280,
+                  boxShadow: `0 0 80px rgba(52,211,153,0.06)`,
+                }}>
+                  {/* Green top accent bar */}
                   <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg,${s.accent},transparent)`, zIndex: 2 }} />
-                  <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 20, flexWrap: "wrap", gap: 12 }}>
-                    <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
-                      <div style={{ width: 52, height: 52, borderRadius: 16, background: `${s.accent}15`, border: `1px solid ${s.accent}25`, display: "flex", alignItems: "center", justifyContent: "center", boxShadow: `0 0 30px ${s.accent}15` }}>
-                        <Ico name={s.icon} size={26} color={s.accent} />
-                      </div>
-                      <div>
-                        <h3 className="dsp" style={{ fontSize: 26, fontWeight: 700, color: "#fff" }}>{s.title}</h3>
-                        <span className="mono" style={{ fontSize: 12, color: MUTED }}>{s.ages} · {s.tracks}</span>
-                      </div>
-                    </div>
-                    <Badge color={GREEN}>{s.status}</Badge>
+
+                  {/* AVAILABLE NOW badge */}
+                  <div style={{ position: "absolute", top: 20, right: 24, zIndex: 2 }}>
+                    <span style={{
+                      display: "inline-flex", alignItems: "center", gap: 6,
+                      padding: "5px 14px", borderRadius: 100, fontSize: 11, fontWeight: 700,
+                      letterSpacing: ".06em", textTransform: "uppercase",
+                      color: GREEN, background: `${GREEN}12`, border: `1px solid ${GREEN}25`,
+                    }}>AVAILABLE NOW</span>
                   </div>
-                  <p style={{ color: "#cbd5e1", fontSize: 15, lineHeight: 1.7, marginBottom: 8, maxWidth: 700 }}>{s.desc}</p>
-                  {s.extra && <p className="mono" style={{ fontSize: 12, color: `${s.accent}90`, marginBottom: 20 }}>{s.extra}</p>}
-                  {/* Track row */}
-                  <div className="ax-track-row" style={{ display: "flex", gap: 10, marginBottom: 24, flexWrap: "wrap" }}>
-                    {s.trackList!.map((tr) => (
-                      <div key={tr.name} style={{
-                        flex: 1, minWidth: 160, padding: "12px 16px", borderRadius: 14,
-                        background: "rgba(255,255,255,.03)", border: `1px solid ${tr.live ? `${GREEN}30` : "rgba(255,255,255,.06)"}`,
-                      }}>
-                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 4 }}>
-                          <span style={{ color: "#fff", fontSize: 13, fontWeight: 700 }}>{tr.name}</span>
-                          {tr.live ? <span style={{ fontSize: 9, fontWeight: 800, color: GREEN, background: `${GREEN}15`, padding: "2px 8px", borderRadius: 100, letterSpacing: ".05em" }}>LIVE</span>
-                            : <span style={{ fontSize: 9, fontWeight: 700, color: MUTED }}>SOON</span>}
+
+                  <div className="ax-cyber-inner" style={{ display: "flex", gap: 32, alignItems: "flex-start" }}>
+                    {/* Left: icon + title + desc */}
+                    <div style={{ flex: 1 }}>
+                      <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 16 }}>
+                        <div style={{
+                          width: 52, height: 52, borderRadius: 16,
+                          background: `${s.accent}15`, border: `1px solid ${s.accent}25`,
+                          display: "flex", alignItems: "center", justifyContent: "center",
+                          boxShadow: `0 0 30px ${s.accent}15`,
+                        }}>
+                          <Ico name={s.icon} size={26} color={s.accent} />
                         </div>
-                        <span className="mono" style={{ fontSize: 11, color: MUTED }}>{tr.age} · {tr.price}</span>
+                        <div>
+                          <h3 className="dsp" style={{ fontSize: 26, fontWeight: 700, color: "#fff" }}>{s.title}</h3>
+                          <span className="mono" style={{ fontSize: 12, color: MUTED }}>{s.ages} · {s.tracks}</span>
+                        </div>
                       </div>
-                    ))}
+                      <p style={{ color: "#cbd5e1", fontSize: 15, lineHeight: 1.7, marginBottom: 24, maxWidth: 500 }}>{s.desc}</p>
+                      <Link href={s.href} style={{
+                        display: "inline-flex", alignItems: "center", gap: 8,
+                        background: `linear-gradient(135deg,${ORANGE},#fb923c)`, color: "#fff",
+                        fontSize: 14, fontWeight: 700, padding: "12px 28px", borderRadius: 100,
+                        textDecoration: "none", boxShadow: `0 4px 16px ${ORANGE}25`,
+                      }}>
+                        Explore Courses <Ico name="arrow" size={16} sw={2.5} />
+                      </Link>
+                    </div>
+
+                    {/* Right: 4 track pills */}
+                    <div className="ax-cyber-tracks" style={{ minWidth: 360, display: "flex", flexDirection: "column", gap: 10 }}>
+                      {s.trackList!.map((tr) => (
+                        <div key={tr.name} style={{
+                          padding: "12px 16px", borderRadius: 14,
+                          background: "rgba(255,255,255,.03)", border: `1px solid ${tr.live ? `${GREEN}30` : "rgba(255,255,255,.06)"}`,
+                          display: "flex", justifyContent: "space-between", alignItems: "center",
+                        }}>
+                          <div>
+                            <span style={{ color: "#fff", fontSize: 13, fontWeight: 700 }}>{tr.name}</span>
+                            <span className="mono" style={{ fontSize: 11, color: MUTED, marginLeft: 10 }}>{tr.age}</span>
+                          </div>
+                          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                            <span className="mono" style={{ fontSize: 12, color: MUTED }}>{tr.price}</span>
+                            {tr.live
+                              ? <span style={{ fontSize: 9, fontWeight: 800, color: GREEN, background: `${GREEN}15`, padding: "2px 8px", borderRadius: 100, letterSpacing: ".05em" }}>LIVE</span>
+                              : <span style={{ fontSize: 9, fontWeight: 700, color: MUTED, opacity: 0.6 }}>COMING</span>
+                            }
+                          </div>
+                        </div>
+                      ))}
+                    </div>
                   </div>
-                  <Link href={s.href} style={{
-                    display: "inline-flex", alignItems: "center", gap: 8,
-                    background: `linear-gradient(135deg,${ORANGE},#fb923c)`, color: "#fff",
-                    fontSize: 14, fontWeight: 700, padding: "12px 28px", borderRadius: 100,
-                    textDecoration: "none", boxShadow: `0 4px 16px ${ORANGE}25`,
-                  }}>
-                    Explore Courses <Ico name="arrow" size={16} sw={2.5} />
-                  </Link>
                 </SpotlightCard>
               </motion.div>
             );
           })()}
 
-          {/* Other 5 subjects */}
-          <div className="ax-g2" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20 }}>
-            {SUBJECTS.slice(1).map((s, i) => (
-              <motion.div key={s.title} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-40px" }} transition={{ duration: 0.5, delay: i * 0.08 }}>
-                <SpotlightCard accent={s.accent} style={{ padding: "28px 26px", height: "100%" }}>
+          {/* Row 2: 3 cards — Game Dev (1.2), AI/ML (1), App Dev (1) */}
+          <div className="ax-subjects-row2" style={{ display: "flex", gap: 20, marginBottom: 20 }}>
+            {SUBJECTS.slice(1, 4).map((s, i) => (
+              <motion.div key={s.title} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-40px" }} transition={{ duration: 0.5, delay: i * 0.1 }}
+                style={{ flex: i === 0 ? 1.2 : 1 }}
+              >
+                <SpotlightCard accent={s.accent} style={{ padding: "28px 24px", height: "100%" }}>
                   <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg,${s.accent},transparent)`, zIndex: 2 }} />
-                  <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 14 }}>
-                    <div style={{ width: 44, height: 44, borderRadius: 12, background: `${s.accent}12`, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                      <Ico name={s.icon} size={22} color={s.accent} />
-                    </div>
-                    <Badge color={s.statusColor}>{s.status}</Badge>
+                  <div style={{
+                    width: 48, height: 48, borderRadius: 14,
+                    background: `${s.accent}12`, border: `1px solid ${s.accent}20`,
+                    display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 16,
+                  }}>
+                    <Ico name={s.icon} size={24} color={s.accent} />
                   </div>
-                  <h3 className="dsp" style={{ fontSize: 20, fontWeight: 700, color: "#fff", marginBottom: 8 }}>{s.title}</h3>
-                  <p style={{ color: MUTED, fontSize: 14, lineHeight: 1.7, marginBottom: 14 }}>{s.desc}</p>
-                  <div style={{ display: "flex", gap: 8, marginBottom: 16, flexWrap: "wrap" }}>
-                    <span className="mono" style={{ fontSize: 11, color: MUTED, padding: "3px 10px", borderRadius: 6, background: "rgba(255,255,255,.04)" }}>{s.ages}</span>
-                    <span className="mono" style={{ fontSize: 11, color: MUTED, padding: "3px 10px", borderRadius: 6, background: "rgba(255,255,255,.04)" }}>{s.tracks}</span>
-                    {s.extra && <span className="mono" style={{ fontSize: 11, color: PINK, padding: "3px 10px", borderRadius: 6, background: `${PINK}08` }}>{s.extra}</span>}
-                  </div>
+                  <h3 className="dsp" style={{ fontSize: 20, fontWeight: 700, color: "#fff", marginBottom: 6 }}>{s.title}</h3>
+                  <p className="mono" style={{ fontSize: 11, color: MUTED, marginBottom: 12 }}>{s.ages} · {s.tracks}</p>
+                  <p style={{ color: MUTED, fontSize: 14, lineHeight: 1.7, marginBottom: 16 }}>{s.desc}</p>
                   <span style={{
-                    display: "block", textAlign: "center",
-                    color: "rgba(148,163,184,.5)", fontSize: 13, fontWeight: 600,
-                    padding: "11px 0", borderRadius: 100,
-                    background: "rgba(255,255,255,.025)", border: "1px solid rgba(255,255,255,.06)",
-                  }}>Coming Soon</span>
+                    display: "inline-block", fontSize: 11, fontWeight: 700, color: YELLOW,
+                    background: `${YELLOW}10`, padding: "4px 12px", borderRadius: 100,
+                    letterSpacing: ".04em", opacity: 0.7,
+                  }}>{s.status}</span>
+                </SpotlightCard>
+              </motion.div>
+            ))}
+          </div>
+
+          {/* Row 3: 2 cards — Entrepreneurship + Robotics */}
+          <div className="ax-subjects-row3" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20 }}>
+            {SUBJECTS.slice(4).map((s, i) => (
+              <motion.div key={s.title} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-40px" }} transition={{ duration: 0.5, delay: i * 0.1 }}>
+                <SpotlightCard accent={s.accent} style={{ padding: "28px 24px", height: "100%" }}>
+                  <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg,${s.accent},transparent)`, zIndex: 2 }} />
+                  <div style={{
+                    width: 48, height: 48, borderRadius: 14,
+                    background: `${s.accent}12`, border: `1px solid ${s.accent}20`,
+                    display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 16,
+                  }}>
+                    <Ico name={s.icon} size={24} color={s.accent} />
+                  </div>
+                  <h3 className="dsp" style={{ fontSize: 20, fontWeight: 700, color: "#fff", marginBottom: 6 }}>{s.title}</h3>
+                  <p className="mono" style={{ fontSize: 11, color: MUTED, marginBottom: 12 }}>{s.ages} · {s.tracks}</p>
+                  <p style={{ color: MUTED, fontSize: 14, lineHeight: 1.7, marginBottom: 16 }}>{s.desc}</p>
+                  <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+                    <span style={{
+                      display: "inline-block", fontSize: 11, fontWeight: 700, color: YELLOW,
+                      background: `${YELLOW}10`, padding: "4px 12px", borderRadius: 100,
+                      letterSpacing: ".04em", opacity: 0.7,
+                    }}>{s.status}</span>
+                    {s.extra && (
+                      <span style={{
+                        display: "inline-block", fontSize: 11, fontWeight: 700, color: PINK,
+                        background: `${PINK}10`, padding: "4px 12px", borderRadius: 100,
+                      }}>{s.extra}</span>
+                    )}
+                  </div>
                 </SpotlightCard>
               </motion.div>
             ))}
           </div>
         </section>
 
-        {/* ═══ 6. HOW IT WORKS ═══ */}
-        <section id="how" style={{ position: "relative", zIndex: 1, padding: "80px 24px", maxWidth: 640, margin: "0 auto" }}>
-          <div style={{ textAlign: "center", marginBottom: 48 }}>
-            <motion.div initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
-              <Badge color={GREEN}><Ico name="arrow" size={14} color={GREEN} /> Process</Badge>
-            </motion.div>
-            <motion.h2 className="dsp" initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.05 }}
-              style={{ fontSize: "clamp(28px,4vw,42px)", fontWeight: 700, color: "#fff", lineHeight: 1.15, marginTop: 16 }}>
+        {/* ═══ 6. HOW IT WORKS — horizontal step flow ═══ */}
+        <section id="how" style={{ position: "relative", zIndex: 1, padding: "160px 24px", maxWidth: 1000, margin: "0 auto" }}>
+          <div style={{ textAlign: "center", marginBottom: 64 }}>
+            <motion.h2 className="dsp" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}
+              style={{ fontSize: "clamp(28px,4vw,42px)", fontWeight: 700, color: "#fff", lineHeight: 1.15 }}>
               Start Learning in Minutes
             </motion.h2>
           </div>
-          {STEPS.map((s, i) => <TimelineStep key={i} step={s} i={i} />)}
+
+          <div ref={stepsRef} className="ax-steps-horizontal" style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", position: "relative" }}>
+            {/* Connecting horizontal line */}
+            <div className="ax-steps-line-h" style={{
+              position: "absolute", top: 28, left: 28, right: 28, height: 3, zIndex: 0,
+              background: "rgba(255,255,255,.06)", borderRadius: 2, overflow: "hidden",
+            }}>
+              <div style={{
+                height: "100%", borderRadius: 2,
+                background: `linear-gradient(90deg,${BLUE},${GREEN},${ORANGE},${YELLOW})`,
+                width: stepsInView ? "100%" : "0%",
+                transition: "width 1.2s cubic-bezier(0.16,1,0.3,1)",
+              }} />
+            </div>
+
+            {STEPS.map((step, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, scale: 0 }}
+                animate={stepsInView ? { opacity: 1, scale: 1 } : {}}
+                transition={{ duration: 0.5, delay: 0.3 + i * 0.15, type: "spring", stiffness: 200, damping: 15 }}
+                style={{ display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", flex: 1, position: "relative", zIndex: 1 }}
+              >
+                <div style={{
+                  width: 56, height: 56, borderRadius: "50%",
+                  background: `${step.accent}18`, border: `2px solid ${step.accent}40`,
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                  marginBottom: 16, willChange: "transform",
+                }}>
+                  <span className="dsp" style={{ fontSize: 22, fontWeight: 700, color: step.accent }}>{i + 1}</span>
+                </div>
+                <h3 className="dsp" style={{ fontSize: 17, fontWeight: 700, color: "#fff", marginBottom: 6 }}>{step.title}</h3>
+                <p style={{ color: MUTED, fontSize: 13, lineHeight: 1.6, maxWidth: 180 }}>{step.text}</p>
+              </motion.div>
+            ))}
+          </div>
+
+          {/* Vertical line for mobile — hidden on desktop */}
+          <div className="ax-steps-line-v" style={{ display: "none" }} />
         </section>
 
-        {/* ═══ 7. WHY ALGORITHMX ═══ */}
-        <section style={{ position: "relative", zIndex: 1, padding: "80px 24px", maxWidth: 1000, margin: "0 auto" }}>
-          <div style={{ textAlign: "center", marginBottom: 48 }}>
-            <motion.div initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
-              <Badge color={ORANGE}><Ico name="zap" size={14} color={ORANGE} /> Why AlgorithmX</Badge>
-            </motion.div>
-            <motion.h2 className="dsp" initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.05 }}
-              style={{ fontSize: "clamp(28px,4vw,42px)", fontWeight: 700, color: "#fff", lineHeight: 1.15, marginTop: 16 }}>
+        {/* ═══ 7. WHY ALGORITHMX — zigzag layout ═══ */}
+        <section style={{ position: "relative", zIndex: 1, padding: "120px 24px", maxWidth: 900, margin: "0 auto" }}>
+          <div style={{ textAlign: "center", marginBottom: 64 }}>
+            <motion.h2 className="dsp" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}
+              style={{ fontSize: "clamp(28px,4vw,42px)", fontWeight: 700, color: "#fff", lineHeight: 1.15 }}>
               Built Different
             </motion.h2>
           </div>
 
-          <div className="ax-why" style={{ display: "grid", gridTemplateColumns: "3fr 2fr", gap: 16 }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: 80 }}>
             {WHY.map((w, i) => {
-              const spans = [
-                { gridColumn: "1 / 2", gridRow: "1 / 2" },
-                { gridColumn: "2 / 3", gridRow: "1 / 2" },
-                { gridColumn: "1 / 2", gridRow: "2 / 3" },
-                { gridColumn: "2 / 3", gridRow: "2 / 3" },
-              ];
-              const cols = i % 2 === 0 ? "3fr 2fr" : "2fr 3fr";
+              const isEven = i % 2 === 0;
               return (
                 <motion.div
                   key={w.title}
-                  initial={{ opacity: 0, y: 24 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-40px" }}
-                  transition={{ duration: 0.5, delay: i * 0.1 }}
+                  className={isEven ? "ax-zigzag" : "ax-zigzag ax-zigzag-reverse"}
+                  initial={{ opacity: 0, x: isEven ? -40 : 40 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true, margin: "-60px" }}
+                  transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
                   style={{
-                    ...spans[i],
-                    background: CARD, borderRadius: 20, padding: "32px 28px",
-                    border: "1px solid rgba(255,255,255,.05)", position: "relative", overflow: "hidden",
-                    transition: `background .3s ${EASE}, border-color .3s ${EASE}`,
+                    display: "flex", gap: 40, alignItems: "center",
+                    flexDirection: isEven ? "row" : "row-reverse",
+                    position: "relative",
                   }}
-                  onMouseEnter={(e) => { (e.currentTarget).style.borderColor = `${w.accent}30`; }}
-                  onMouseLeave={(e) => { (e.currentTarget).style.borderColor = "rgba(255,255,255,.05)"; }}
                 >
-                  <div aria-hidden style={{ position: "absolute", top: -8, right: -8, opacity: .07 }}>
-                    <Ico name={w.icon} size={80} color={w.accent} sw={1} />
+                  {/* Decorative background icon */}
+                  <div aria-hidden style={{
+                    position: "absolute",
+                    [isEven ? "right" : "left"]: -20,
+                    top: "50%", transform: "translateY(-50%)", opacity: 0.04, pointerEvents: "none",
+                  }}>
+                    <Ico name={w.icon} size={200} color={w.accent} sw={1} />
                   </div>
-                  <div style={{ width: 44, height: 44, borderRadius: 12, background: `${w.accent}12`, display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 16 }}>
-                    <Ico name={w.icon} size={22} color={w.accent} />
+
+                  {/* Icon circle */}
+                  <div style={{ flexShrink: 0 }}>
+                    <div style={{
+                      width: 64, height: 64, borderRadius: "50%",
+                      background: `${w.accent}12`, border: `1px solid ${w.accent}20`,
+                      display: "flex", alignItems: "center", justifyContent: "center",
+                    }}>
+                      <Ico name={w.icon} size={28} color={w.accent} />
+                    </div>
                   </div>
-                  <h3 className="dsp" style={{ fontSize: 18, fontWeight: 700, color: "#fff", marginBottom: 8 }}>{w.title}</h3>
-                  <p style={{ color: MUTED, fontSize: 14, lineHeight: 1.7 }}>{w.text}</p>
+
+                  {/* Text */}
+                  <div>
+                    <h3 className="dsp" style={{ fontSize: 22, fontWeight: 700, color: "#fff", marginBottom: 8 }}>{w.title}</h3>
+                    <p style={{ color: MUTED, fontSize: 15, lineHeight: 1.7, maxWidth: 480 }}>{w.text}</p>
+                  </div>
                 </motion.div>
               );
             })}
           </div>
         </section>
 
-        {/* ═══ 8. TESTIMONIALS ═══ */}
-        <section style={{ position: "relative", zIndex: 1, padding: "80px 24px", maxWidth: 1000, margin: "0 auto" }}>
-          <div style={{ textAlign: "center", marginBottom: 48 }}>
-            <motion.div initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
-              <Badge color={YELLOW}><Ico name="quote" size={14} color={YELLOW} /> Testimonials</Badge>
-            </motion.div>
-            <motion.h2 className="dsp" initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.05 }}
-              style={{ fontSize: "clamp(28px,4vw,42px)", fontWeight: 700, color: "#fff", lineHeight: 1.15, marginTop: 16 }}>
+        {/* ═══ 8. TESTIMONIALS — infinite marquee ═══ */}
+        <section style={{ position: "relative", zIndex: 1, padding: "120px 0", background: "rgba(255,255,255,.01)" }}>
+          <div style={{ textAlign: "center", marginBottom: 48, padding: "0 24px" }}>
+            <motion.h2 className="dsp" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}
+              style={{ fontSize: "clamp(28px,4vw,42px)", fontWeight: 700, color: "#fff", lineHeight: 1.15 }}>
               What Parents &amp; Teachers Say
             </motion.h2>
           </div>
-          <div className="ax-g3" style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 8 }}>
-            {TESTIMONIALS.map((t, i) => <TestimonialCard key={i} t={t} i={i} />)}
+
+          <div style={{
+            overflow: "hidden",
+            maskImage: "linear-gradient(90deg,transparent,black 8%,black 92%,transparent)",
+            WebkitMaskImage: "linear-gradient(90deg,transparent,black 8%,black 92%,transparent)",
+          }}>
+            <div className="ax-testimonial-track" style={{
+              display: "flex", gap: 24, width: "max-content",
+              animation: "axTestimonialScroll 40s linear infinite",
+            }}>
+              {/* Duplicate set for seamless loop */}
+              {[0, 1].map((dup) =>
+                TESTIMONIALS.map((t, i) => (
+                  <div key={`${dup}-${i}`} style={{
+                    width: 340, flexShrink: 0, background: CARD, borderRadius: 20,
+                    padding: "32px 28px", border: "1px solid rgba(255,255,255,.05)",
+                    position: "relative",
+                  }}>
+                    {/* Decorative quote mark */}
+                    <div aria-hidden style={{ position: "absolute", top: 12, left: 20, opacity: .06 }}>
+                      <Ico name="quote" size={48} color={BLUE} sw={1.5} />
+                    </div>
+                    <p style={{ color: "#cbd5e1", fontSize: 15, lineHeight: 1.8, marginBottom: 20, position: "relative" }}>
+                      &ldquo;{t.text}&rdquo;
+                    </p>
+                    <div>
+                      <p style={{ color: "#fff", fontSize: 14, fontWeight: 700 }}>{t.name}</p>
+                      <p style={{ color: MUTED, fontSize: 12 }}>{t.role}</p>
+                    </div>
+                  </div>
+                ))
+              )}
+            </div>
           </div>
         </section>
 
-        {/* ═══ 9. FINAL CTA ═══ */}
-        <section style={{ position: "relative", zIndex: 1, padding: "80px 24px", maxWidth: 680, margin: "0 auto" }}>
+        {/* ═══ 9. FINAL CTA — rotating gradient border ═══ */}
+        <section style={{ position: "relative", zIndex: 1, padding: "120px 24px", maxWidth: 680, margin: "0 auto" }}>
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
             style={{
-              borderRadius: 26, padding: 2,
+              borderRadius: 28, padding: 2,
               background: `conic-gradient(from var(--angle,0deg),${BLUE},${GREEN},${ORANGE},${YELLOW},${BLUE})`,
               animation: "axRotateGrad 4s linear infinite",
             }}
           >
             <div style={{
-              background: CARD, borderRadius: 24, padding: "52px 36px", textAlign: "center",
+              background: CARD, borderRadius: 26, padding: "56px 36px", textAlign: "center",
             }}>
-              <h2 className="dsp" style={{ fontSize: "clamp(26px,4vw,38px)", fontWeight: 700, color: "#fff", marginBottom: 14 }}>
+              <h2 className="dsp" style={{ fontSize: "clamp(28px,4vw,36px)", fontWeight: 700, color: "#fff", marginBottom: 14 }}>
                 Ready to Start?
               </h2>
               <p style={{ color: MUTED, fontSize: 15, lineHeight: 1.7, maxWidth: 460, margin: "0 auto 32px" }}>
