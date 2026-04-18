@@ -94,19 +94,21 @@ function Ico({ name, size = 24, color = "#fff", sw = 2 }: { name: string; size?:
 /* ─────────────── COUNTER (CountUp effect) ─────────────── */
 function Counter({ to, duration = 2000 }: { to: number; duration?: number }) {
   const ref = useRef<HTMLSpanElement>(null);
-  const inView = useInView(ref, { once: true, margin: "-40px" });
+  const inView = useInView(ref, { once: true, amount: 0.2 });
   const [val, setVal] = useState(0);
   useEffect(() => {
     if (!inView) return;
-    let frame: number;
+    let frame = 0;
+    let cancelled = false;
     const start = performance.now();
     const tick = (now: number) => {
+      if (cancelled) return;
       const t = Math.min((now - start) / duration, 1);
       setVal(Math.round((1 - Math.pow(1 - t, 3)) * to));
       if (t < 1) frame = requestAnimationFrame(tick);
     };
     frame = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(frame);
+    return () => { cancelled = true; cancelAnimationFrame(frame); };
   }, [inView, to, duration]);
   return <span ref={ref}>{val}</span>;
 }
@@ -194,10 +196,11 @@ const CODE_RAIN = Array.from({ length: 25 }, (_, i) => ({
 
 function CodeRain() {
   return (
-    <div aria-hidden style={{ position: "fixed", inset: 0, zIndex: 0, pointerEvents: "none", overflow: "hidden" }}>
+    <div aria-hidden="true" style={{ position: "fixed", inset: 0, zIndex: 0, pointerEvents: "none", overflow: "hidden", userSelect: "none" }}>
       {CODE_RAIN.map((c, i) => (
         <span
           key={i}
+          aria-hidden="true"
           className="mono"
           style={{
             position: "absolute",
@@ -207,6 +210,8 @@ function CodeRain() {
             opacity: c.opacity,
             color: c.color,
             whiteSpace: "nowrap",
+            userSelect: "none",
+            pointerEvents: "none",
             ["--rot" as string]: `${c.rotation}deg`,
             animation: `codeFloat ${c.duration}s linear ${c.delay}s infinite`,
             willChange: "transform",
@@ -328,7 +333,7 @@ export default function AlgorithmXHome() {
         </nav>
 
         {/* ═══ 2. HERO ═══ */}
-        <section ref={heroRef} style={{ position: "relative", zIndex: 1, textAlign: "center", maxWidth: 900, margin: "0 auto", padding: "160px 24px 48px", minHeight: "50vh", display: "flex", flexDirection: "column", justifyContent: "center" }}>
+        <section ref={heroRef} style={{ position: "relative", zIndex: 1, textAlign: "center", maxWidth: 900, margin: "0 auto", padding: "160px 24px 120px", minHeight: "50vh", display: "flex", flexDirection: "column", justifyContent: "center" }}>
           {/* Single breathing radial glow */}
           <div aria-hidden style={{
             position: "absolute", top: "50%", left: "50%",
@@ -368,7 +373,9 @@ export default function AlgorithmXHome() {
                 animate={heroInView ? { filter: "blur(0px)", opacity: 1, y: 0 } : {}}
                 transition={{ duration: 0.6, delay: 0.2 + i * 0.08, ease: [0.16, 1, 0.3, 1] }}
                 style={{
-                  display: "inline-block", marginRight: "0.3em", willChange: "transform, filter",
+                  display: "inline-block",
+                  marginRight: i < heroWords.length - 1 ? "0.3em" : 0,
+                  willChange: "transform, filter",
                   ...(word === "Tech" || word === "Education" ? {
                     background: `linear-gradient(135deg,${BLUE},${GREEN})`,
                     WebkitBackgroundClip: "text",
@@ -424,8 +431,13 @@ export default function AlgorithmXHome() {
           </div>
         </section>
 
-        {/* 48px breathing room */}
-        <div style={{ height: 48 }} />
+        {/* Glowing divider: Hero → Trust Marquee */}
+        <div aria-hidden style={{
+          position: "relative", zIndex: 1,
+          height: 1, width: "60%", margin: "0 auto",
+          background: "linear-gradient(90deg, transparent, rgba(96,165,250,0.3), rgba(52,211,153,0.3), transparent)",
+          boxShadow: "0 0 20px rgba(96,165,250,0.1)",
+        }} />
 
         {/* ═══ 3. TRUST MARQUEE ═══ */}
         <div style={{
@@ -450,7 +462,7 @@ export default function AlgorithmXHome() {
         </div>
 
         {/* ═══ 4. THE PROBLEM ═══ */}
-        <section ref={problemRef} style={{ position: "relative", zIndex: 1, padding: "140px 24px 80px", maxWidth: 1060, margin: "0 auto" }}>
+        <section ref={problemRef} style={{ position: "relative", zIndex: 1, padding: "140px 24px", maxWidth: 1060, margin: "0 auto" }}>
           <div className="ax-problem-grid" style={{ display: "grid", gridTemplateColumns: "1.5fr 1fr", gap: 60, alignItems: "center" }}>
             {/* Left — emotional text */}
             <motion.div
@@ -496,6 +508,14 @@ export default function AlgorithmXHome() {
             </p>
           </div>
         </section>
+
+        {/* Glowing divider: Problem → Subjects */}
+        <div aria-hidden style={{
+          position: "relative", zIndex: 1,
+          height: 1, width: "60%", margin: "0 auto",
+          background: "linear-gradient(90deg, transparent, rgba(96,165,250,0.3), rgba(52,211,153,0.3), transparent)",
+          boxShadow: "0 0 20px rgba(96,165,250,0.1)",
+        }} />
 
         {/* ═══ 5. SUBJECTS ═══ */}
         <section id="subjects" style={{ position: "relative", zIndex: 1, padding: "120px 24px", maxWidth: 1100, margin: "0 auto" }}>
@@ -702,6 +722,14 @@ export default function AlgorithmXHome() {
           <div className="ax-steps-line-v" style={{ display: "none" }} />
         </section>
 
+        {/* Glowing divider: How It Works → Why AlgorithmX */}
+        <div aria-hidden style={{
+          position: "relative", zIndex: 1,
+          height: 1, width: "60%", margin: "0 auto",
+          background: "linear-gradient(90deg, transparent, rgba(96,165,250,0.3), rgba(52,211,153,0.3), transparent)",
+          boxShadow: "0 0 20px rgba(96,165,250,0.1)",
+        }} />
+
         {/* ═══ 7. WHY ALGORITHMX — zigzag layout ═══ */}
         <section style={{ position: "relative", zIndex: 1, padding: "120px 24px", maxWidth: 900, margin: "0 auto" }}>
           <div style={{ textAlign: "center", marginBottom: 64 }}>
@@ -711,37 +739,37 @@ export default function AlgorithmXHome() {
             </motion.h2>
           </div>
 
-          <div style={{ display: "flex", flexDirection: "column", gap: 80 }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: 64 }}>
             {WHY.map((w, i) => {
               const isEven = i % 2 === 0;
               return (
                 <motion.div
                   key={w.title}
                   className={isEven ? "ax-zigzag" : "ax-zigzag ax-zigzag-reverse"}
-                  initial={{ opacity: 0, x: isEven ? -40 : 40 }}
+                  initial={{ opacity: 0, x: isEven ? -30 : 30 }}
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true, margin: "-60px" }}
                   transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
                   style={{
-                    display: "flex", gap: 40, alignItems: "center",
+                    display: "flex", gap: 32, alignItems: "center",
                     flexDirection: isEven ? "row" : "row-reverse",
                     position: "relative",
                   }}
                 >
-                  {/* Decorative background icon */}
+                  {/* Decorative background icon on opposite side */}
                   <div aria-hidden style={{
                     position: "absolute",
-                    [isEven ? "right" : "left"]: -20,
+                    [isEven ? "right" : "left"]: -30,
                     top: "50%", transform: "translateY(-50%)", opacity: 0.04, pointerEvents: "none",
                   }}>
-                    <Ico name={w.icon} size={200} color={w.accent} sw={1} />
+                    <Ico name={w.icon} size={180} color={w.accent} sw={1} />
                   </div>
 
-                  {/* Icon circle */}
+                  {/* Icon circle (64px) */}
                   <div style={{ flexShrink: 0 }}>
                     <div style={{
                       width: 64, height: 64, borderRadius: "50%",
-                      background: `${w.accent}12`, border: `1px solid ${w.accent}20`,
+                      background: `${w.accent}14`, border: `1px solid ${w.accent}25`,
                       display: "flex", alignItems: "center", justifyContent: "center",
                     }}>
                       <Ico name={w.icon} size={28} color={w.accent} />
@@ -749,7 +777,7 @@ export default function AlgorithmXHome() {
                   </div>
 
                   {/* Text */}
-                  <div>
+                  <div style={{ position: "relative", zIndex: 1 }}>
                     <h3 className="dsp" style={{ fontSize: 22, fontWeight: 700, color: "#fff", marginBottom: 8 }}>{w.title}</h3>
                     <p style={{ color: MUTED, fontSize: 15, lineHeight: 1.7, maxWidth: 480 }}>{w.text}</p>
                   </div>
@@ -760,7 +788,7 @@ export default function AlgorithmXHome() {
         </section>
 
         {/* ═══ 8. TESTIMONIALS — infinite marquee ═══ */}
-        <section style={{ position: "relative", zIndex: 1, padding: "120px 0", background: "rgba(255,255,255,.02)" }}>
+        <section style={{ position: "relative", zIndex: 1, padding: "100px 0", background: "rgba(255,255,255,.02)" }}>
           <div style={{ textAlign: "center", marginBottom: 48, padding: "0 24px" }}>
             <motion.h2 className="dsp" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}
               style={{ fontSize: "clamp(28px,4vw,42px)", fontWeight: 700, color: "#fff", lineHeight: 1.15 }}>
