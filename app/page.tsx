@@ -6,8 +6,8 @@ import { motion, useInView } from "framer-motion";
 import SmoothScroll from "@/app/components/SmoothScroll";
 
 /* ─────────────── TOKENS ─────────────── */
-const BG = "#0a0e1a";
-const CARD = "#111827";
+const BG = "#131b2e";
+const CARD = "#1a2340";
 const BLUE = "#60a5fa";
 const GREEN = "#34d399";
 const ORANGE = "#f97316";
@@ -15,7 +15,7 @@ const YELLOW = "#f59e0b";
 const PURPLE = "#a78bfa";
 const PINK = "#f472b6";
 const RED = "#ef4444";
-const MUTED = "#94a3b8";
+const MUTED = "#a0aec0";
 
 /* ─────────────── DATA ─────────────── */
 const SUBJECTS = [
@@ -153,7 +153,7 @@ function SpotlightCard({ children, accent, style, className }: { children: React
       style={{
         position: "relative", overflow: "hidden",
         background: CARD, borderRadius: 20,
-        border: `1px solid ${hovering ? `${accent}40` : "rgba(255,255,255,.05)"}`,
+        border: `1px solid ${hovering ? `${accent}40` : "rgba(255,255,255,.09)"}`,
         transition: "transform .4s cubic-bezier(0.16,1,0.3,1), box-shadow .4s cubic-bezier(0.16,1,0.3,1), border-color .4s cubic-bezier(0.16,1,0.3,1)",
         transform: hovering ? "translateY(-6px)" : "none",
         boxShadow: hovering ? `0 20px 60px ${accent}15` : "none",
@@ -171,6 +171,54 @@ function SpotlightCard({ children, accent, style, className }: { children: React
   );
 }
 
+/* ─────────────── CODE RAIN ─────────────── */
+const CODE_SNIPPETS = [
+  "if (secure) {","const key = encrypt()","while (learning)","return safety;","async defend()",
+  "class CyberHero","import shield","for (let i = 0;","catch (threat)","hash(password)",
+  "firewall.enable()","authenticate(user)","decrypt(message)","validate(input)","scan(network)",
+  "const safe = true","export default","await protect()","<Shield />","npm run secure",
+  "git commit -m","sudo encrypt","ping 192.168","ssh root@","chmod 700",
+];
+const RAIN_COLORS = [BLUE, GREEN, PURPLE, "#ffffff"];
+const CODE_RAIN = Array.from({ length: 25 }, (_, i) => ({
+  text: CODE_SNIPPETS[i],
+  left: [4,91,17,63,38,82,11,55,73,28,47,6,86,34,59,21,69,44,78,14,52,93,31,66,8][i],
+  top: [12,67,34,88,5,45,72,23,56,81,39,63,18,91,47,7,76,29,54,85,42,61,15,70,36][i],
+  size: [12,11,13,12,14,11,13,12,11,14,12,13,11,12,14,13,11,12,13,11,14,12,11,13,12][i],
+  opacity: [.07,.05,.09,.06,.08,.05,.10,.07,.06,.09,.05,.08,.07,.10,.06,.09,.05,.08,.07,.06,.10,.05,.09,.07,.08][i],
+  duration: [38,45,32,50,42,36,55,40,48,33,44,37,52,35,46,39,53,41,34,47,51,30,43,49,37][i],
+  delay: [-12,-38,-5,-27,-45,-18,-33,-8,-41,-22,-50,-3,-30,-15,-47,-9,-36,-20,-44,-26,-7,-42,-14,-31,-48][i],
+  rotation: [-8,5,-3,10,-6,2,-11,7,-4,9,-1,6,-10,3,-7,11,-5,8,-2,4,-9,1,-12,6,-3][i],
+  color: RAIN_COLORS[[0,1,2,3,0,2,1,3,0,1,2,0,3,1,0,2,3,1,0,2,1,3,0,2,1][i]],
+}));
+
+function CodeRain() {
+  return (
+    <div aria-hidden style={{ position: "fixed", inset: 0, zIndex: 0, pointerEvents: "none", overflow: "hidden" }}>
+      {CODE_RAIN.map((c, i) => (
+        <span
+          key={i}
+          className="mono"
+          style={{
+            position: "absolute",
+            left: `${c.left}%`,
+            top: `${c.top}%`,
+            fontSize: c.size,
+            opacity: c.opacity,
+            color: c.color,
+            whiteSpace: "nowrap",
+            ["--rot" as string]: `${c.rotation}deg`,
+            animation: `codeFloat ${c.duration}s linear ${c.delay}s infinite`,
+            willChange: "transform",
+          }}
+        >
+          {c.text}
+        </span>
+      ))}
+    </div>
+  );
+}
+
 /* ─────────────── CSS ─────────────── */
 const CSS = `
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap');
@@ -181,6 +229,9 @@ html{scroll-behavior:smooth}
 a,button{cursor:pointer}
 
 @keyframes axBreathe{0%,100%{opacity:.15;transform:translate(-50%,-50%) scale(1)}50%{opacity:.25;transform:translate(-50%,-50%) scale(1.1)}}
+@keyframes codeFloat{from{transform:translateY(0) rotate(var(--rot))}to{transform:translateY(-120vh) rotate(var(--rot))}}
+@keyframes axBlobDrift{0%,100%{transform:translate(0,0)}50%{transform:translate(var(--dx),var(--dy))}}
+@keyframes axBlobPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.15)}}
 @keyframes axMarquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 @keyframes axTestimonialScroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 @keyframes axUnderline{from{width:0}to{width:100%}}
@@ -236,7 +287,7 @@ export default function AlgorithmXHome() {
 
   return (
     <SmoothScroll>
-      <div style={{ background: BG, minHeight: "100vh", color: "#e2e8f0", overflowX: "hidden" }}>
+      <div style={{ background: BG, minHeight: "100vh", color: "#edf2f7", overflowX: "hidden" }}>
         <style>{CSS}</style>
 
         {/* Subtle grid overlay — hero area only */}
@@ -248,11 +299,13 @@ export default function AlgorithmXHome() {
           WebkitMaskImage: "radial-gradient(ellipse 70% 40% at 50% 20%,black 10%,transparent 70%)",
         }} />
 
+        <CodeRain />
+
         {/* ═══ 1. NAV ═══ */}
         <nav style={{
           position: "fixed", top: 0, left: 0, right: 0, zIndex: 100,
           backdropFilter: "blur(20px) saturate(1.6)", WebkitBackdropFilter: "blur(20px) saturate(1.6)",
-          background: "rgba(10,14,26,.6)", borderBottom: "1px solid rgba(255,255,255,.04)",
+          background: "rgba(19,27,46,.75)", borderBottom: "1px solid rgba(255,255,255,.09)",
         }}>
           <div style={{ maxWidth: 1140, margin: "0 auto", padding: "0 24px", height: 64, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
             <Link href="/" style={{ display: "flex", alignItems: "center", gap: 10, textDecoration: "none" }}>
@@ -282,6 +335,28 @@ export default function AlgorithmXHome() {
             width: 600, height: 600, borderRadius: "50%", pointerEvents: "none", zIndex: -1,
             background: `radial-gradient(circle,${BLUE}18,transparent 70%)`,
             animation: "axBreathe 8s ease-in-out infinite",
+          }} />
+
+          {/* Floating gradient blobs */}
+          <div aria-hidden style={{
+            position: "absolute", left: "20%", top: "15%", width: 400, height: 400, borderRadius: "50%",
+            background: `radial-gradient(circle,${BLUE},transparent 70%)`, opacity: 0.06,
+            pointerEvents: "none", zIndex: -1,
+            ["--dx" as string]: "60px", ["--dy" as string]: "-20px",
+            animation: "axBlobDrift 30s ease-in-out infinite",
+          }} />
+          <div aria-hidden style={{
+            position: "absolute", left: "70%", top: "60%", width: 350, height: 350, borderRadius: "50%",
+            background: `radial-gradient(circle,${GREEN},transparent 70%)`, opacity: 0.05,
+            pointerEvents: "none", zIndex: -1,
+            ["--dx" as string]: "-40px", ["--dy" as string]: "20px",
+            animation: "axBlobDrift 25s ease-in-out infinite",
+          }} />
+          <div aria-hidden style={{
+            position: "absolute", left: "50%", top: "40%", width: 300, height: 300, borderRadius: "50%",
+            background: `radial-gradient(circle,${PURPLE},transparent 70%)`, opacity: 0.03,
+            pointerEvents: "none", zIndex: -1,
+            animation: "axBlobPulse 20s ease-in-out infinite",
           }} />
 
           {/* BlurText headline — word-by-word blur reveal */}
@@ -355,7 +430,7 @@ export default function AlgorithmXHome() {
         {/* ═══ 3. TRUST MARQUEE ═══ */}
         <div style={{
           position: "relative", zIndex: 1, padding: "26px 0",
-          background: "rgba(255,255,255,.02)", borderTop: "1px solid rgba(255,255,255,.04)", borderBottom: "1px solid rgba(255,255,255,.04)",
+          background: "rgba(255,255,255,.05)", borderTop: "1px solid rgba(255,255,255,.09)", borderBottom: "1px solid rgba(255,255,255,.09)",
           overflow: "hidden",
           maskImage: "linear-gradient(90deg,transparent,black 10%,black 90%,transparent)",
           WebkitMaskImage: "linear-gradient(90deg,transparent,black 10%,black 90%,transparent)",
@@ -492,7 +567,7 @@ export default function AlgorithmXHome() {
                       {s.trackList!.map((tr) => (
                         <div key={tr.name} style={{
                           padding: "12px 16px", borderRadius: 14,
-                          background: "rgba(255,255,255,.03)", border: `1px solid ${tr.live ? `${GREEN}30` : "rgba(255,255,255,.06)"}`,
+                          background: "rgba(255,255,255,.05)", border: `1px solid ${tr.live ? `${GREEN}30` : "rgba(255,255,255,.06)"}`,
                           display: "flex", justifyContent: "space-between", alignItems: "center",
                         }}>
                           <div>
@@ -685,7 +760,7 @@ export default function AlgorithmXHome() {
         </section>
 
         {/* ═══ 8. TESTIMONIALS — infinite marquee ═══ */}
-        <section style={{ position: "relative", zIndex: 1, padding: "120px 0", background: "rgba(255,255,255,.01)" }}>
+        <section style={{ position: "relative", zIndex: 1, padding: "120px 0", background: "rgba(255,255,255,.02)" }}>
           <div style={{ textAlign: "center", marginBottom: 48, padding: "0 24px" }}>
             <motion.h2 className="dsp" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}
               style={{ fontSize: "clamp(28px,4vw,42px)", fontWeight: 700, color: "#fff", lineHeight: 1.15 }}>
@@ -707,7 +782,7 @@ export default function AlgorithmXHome() {
                 TESTIMONIALS.map((t, i) => (
                   <div key={`${dup}-${i}`} style={{
                     width: 340, flexShrink: 0, background: CARD, borderRadius: 20,
-                    padding: "32px 28px", border: "1px solid rgba(255,255,255,.05)",
+                    padding: "32px 28px", border: "1px solid rgba(255,255,255,.09)",
                     position: "relative",
                   }}>
                     {/* Decorative quote mark */}
@@ -770,7 +845,7 @@ export default function AlgorithmXHome() {
         {/* ═══ 10. FOOTER ═══ */}
         <footer style={{
           position: "relative", zIndex: 1,
-          borderTop: "1px solid rgba(255,255,255,.05)", padding: "56px 24px 40px", marginTop: 24,
+          borderTop: "1px solid rgba(255,255,255,.09)", padding: "56px 24px 40px", marginTop: 24,
         }}>
           <div className="ax-footer-grid" style={{ maxWidth: 1100, margin: "0 auto", display: "grid", gridTemplateColumns: "2fr 1fr 1fr 1fr", gap: 40 }}>
             <div>
