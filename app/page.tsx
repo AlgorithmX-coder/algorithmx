@@ -15,12 +15,168 @@ const MUTED = "#94a3b8";
 
 const BLUE = "#3b82f6";
 const GREEN = "#10b981";
-const PURPLE = "#8b5cf6";
 const ORANGE = "#f97316";
 const YELLOW = "#eab308";
+const PURPLE = "#8b5cf6";
 const PINK = "#ec4899";
 const AMBER = "#f59e0b";
 const RED = "#ef4444";
+
+/* ─────────────── FUTURISTIC BACKGROUND ─────────────── */
+function FuturisticBackground() {
+  return (
+    <div aria-hidden="true" style={{
+      position: "fixed", inset: 0, zIndex: 0, pointerEvents: "none",
+      overflow: "hidden",
+    }}>
+      {/* Layer 1 — Living mesh gradient */}
+      <div style={{
+        position: "absolute", top: "15%", left: "20%",
+        width: 500, height: 500, borderRadius: "50%",
+        background: `radial-gradient(circle, ${BLUE}, transparent 70%)`,
+        opacity: 0.08, filter: "blur(60px)",
+        animation: "meshOrbit1 35s ease-in-out infinite",
+        willChange: "transform",
+      }} />
+      <div style={{
+        position: "absolute", top: "60%", left: "65%",
+        width: 450, height: 450, borderRadius: "50%",
+        background: `radial-gradient(circle, ${GREEN}, transparent 70%)`,
+        opacity: 0.06, filter: "blur(60px)",
+        animation: "meshOrbit2 42s ease-in-out infinite",
+        willChange: "transform",
+      }} />
+      <div style={{
+        position: "absolute", top: "30%", left: "75%",
+        width: 550, height: 550, borderRadius: "50%",
+        background: `radial-gradient(circle, ${PURPLE}, transparent 70%)`,
+        opacity: 0.05, filter: "blur(60px)",
+        animation: "meshOrbit3 38s ease-in-out infinite",
+        willChange: "transform",
+      }} />
+      <div style={{
+        position: "absolute", bottom: "20%", left: "10%",
+        width: 400, height: 400, borderRadius: "50%",
+        background: `radial-gradient(circle, ${PINK}, transparent 70%)`,
+        opacity: 0.04, filter: "blur(60px)",
+        animation: "meshOrbit4 45s ease-in-out infinite",
+        willChange: "transform",
+      }} />
+      <div style={{
+        position: "absolute", top: "50%", left: "40%",
+        width: 350, height: 350, borderRadius: "50%",
+        background: `radial-gradient(circle, ${AMBER}, transparent 70%)`,
+        opacity: 0.04, filter: "blur(60px)",
+        animation: "meshOrbit5 30s ease-in-out infinite",
+        willChange: "transform",
+      }} />
+
+      {/* Layer 2 — Circuit trace SVG */}
+      <svg
+        width="100%" height="100%" viewBox="0 0 1200 800"
+        preserveAspectRatio="xMidYMid slice"
+        style={{
+          position: "absolute", inset: 0, opacity: 0.5,
+          maskImage: "radial-gradient(ellipse 85% 80% at 50% 45%, black 20%, transparent 75%)",
+          WebkitMaskImage: "radial-gradient(ellipse 85% 80% at 50% 45%, black 20%, transparent 75%)",
+        }}
+      >
+        <defs>
+          <filter id="pulseGlowBlue" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur stdDeviation="3" result="glow" />
+            <feMerge><feMergeNode in="glow" /><feMergeNode in="SourceGraphic" /></feMerge>
+          </filter>
+        </defs>
+
+        {/* Horizontal and vertical trace paths (right-angle PCB style) */}
+        <g stroke="#cbd5e1" strokeWidth="0.5" fill="none" opacity="0.35">
+          <path id="trace1" d="M0 120 L300 120 L300 200 L600 200 L600 140 L900 140 L900 280 L1200 280" />
+          <path id="trace2" d="M0 380 L180 380 L180 320 L420 320 L420 460 L720 460 L720 400 L1020 400 L1020 520 L1200 520" />
+          <path id="trace3" d="M0 640 L240 640 L240 580 L480 580 L480 700 L780 700 L780 620 L1200 620" />
+          <path d="M150 0 L150 160 L90 160 L90 340 L210 340 L210 520 L150 520 L150 800" />
+          <path d="M540 0 L540 100 L480 100 L480 260 L600 260 L600 440 L540 440 L540 620 L600 620 L600 800" />
+          <path d="M900 0 L900 80 L840 80 L840 220 L960 220 L960 360 L900 360 L900 560 L1020 560 L1020 800" />
+        </g>
+
+        {/* Junction dots */}
+        <g fill="#cbd5e1" opacity="0.4">
+          <circle cx="300" cy="120" r="2" />
+          <circle cx="300" cy="200" r="2" />
+          <circle cx="600" cy="200" r="2" />
+          <circle cx="600" cy="140" r="2" />
+          <circle cx="900" cy="140" r="2" />
+          <circle cx="900" cy="280" r="2" />
+          <circle cx="180" cy="380" r="2" />
+          <circle cx="180" cy="320" r="2" />
+          <circle cx="420" cy="320" r="2" />
+          <circle cx="420" cy="460" r="2" />
+          <circle cx="720" cy="460" r="2" />
+          <circle cx="720" cy="400" r="2" />
+          <circle cx="1020" cy="400" r="2" />
+          <circle cx="1020" cy="520" r="2" />
+          <circle cx="150" cy="160" r="2" />
+          <circle cx="90" cy="160" r="2" />
+          <circle cx="90" cy="340" r="2" />
+          <circle cx="540" cy="100" r="2" />
+          <circle cx="480" cy="100" r="2" />
+          <circle cx="480" cy="260" r="2" />
+          <circle cx="600" cy="260" r="2" />
+          <circle cx="900" cy="80" r="2" />
+          <circle cx="840" cy="80" r="2" />
+          <circle cx="840" cy="220" r="2" />
+          <circle cx="960" cy="220" r="2" />
+        </g>
+
+        {/* Animated pulse dots */}
+        <circle r="3" fill={BLUE} style={{ filter: `drop-shadow(0 0 4px ${BLUE})` }}>
+          <animateMotion dur="8s" repeatCount="indefinite">
+            <mpath href="#trace1" />
+          </animateMotion>
+        </circle>
+        <circle r="3" fill={GREEN} style={{ filter: `drop-shadow(0 0 4px ${GREEN})` }}>
+          <animateMotion dur="12s" repeatCount="indefinite">
+            <mpath href="#trace2" />
+          </animateMotion>
+        </circle>
+        <circle r="3" fill={PURPLE} style={{ filter: `drop-shadow(0 0 4px ${PURPLE})` }}>
+          <animateMotion dur="10s" repeatCount="indefinite">
+            <mpath href="#trace3" />
+          </animateMotion>
+        </circle>
+      </svg>
+
+      {/* Layer 3 — Hexagonal grid */}
+      <svg
+        width="100%" height="100%"
+        preserveAspectRatio="xMidYMid slice"
+        style={{
+          position: "absolute", inset: 0, opacity: 0.04,
+          maskImage: "radial-gradient(ellipse 70% 60% at 50% 40%, black 10%, transparent 70%)",
+          WebkitMaskImage: "radial-gradient(ellipse 70% 60% at 50% 40%, black 10%, transparent 70%)",
+        }}
+      >
+        <defs>
+          <pattern id="hexPattern" width="40" height="34.64" patternUnits="userSpaceOnUse" patternTransform="translate(0,0)">
+            <path d="M20 0 L40 11.55 L40 23.09 L20 34.64 L0 23.09 L0 11.55 Z" stroke="#94a3b8" strokeWidth="0.3" fill="none" />
+          </pattern>
+        </defs>
+        <rect width="100%" height="100%" fill="url(#hexPattern)" />
+      </svg>
+
+      {/* Layer 4 — Noise texture */}
+      <svg
+        width="100%" height="100%"
+        preserveAspectRatio="xMidYMid slice"
+        style={{ position: "absolute", inset: 0, opacity: 0.025 }}
+      >
+        <filter id="noiseFilter">
+          <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch" />
+        </filter>
+        <rect width="100%" height="100%" filter="url(#noiseFilter)" />
+      </svg>
+    </div>
+  );
+}
 
 /* ─────────────── TRUST LOGOS ─────────────── */
 const TRUST_LOGOS: { name: string; src: string | null }[] = [
@@ -33,93 +189,26 @@ const TRUST_LOGOS: { name: string; src: string | null }[] = [
   { name: "BCS", src: "/logos/bcs.webp" },
   { name: "King\u2019s Trust", src: "/logos/kingstrust.svg" },
   { name: "NCSC", src: "/logos/ncsc.svg" },
+  { name: "Google for Education", src: null },
+  { name: "Microsoft Education", src: null },
+  { name: "Cisco Networking Academy", src: null },
+  { name: "EC-Council", src: null },
+  { name: "Micro:bit Foundation", src: null },
+  { name: "GitHub Education", src: null },
+  { name: "Code.org", src: null },
+  { name: "Ofqual", src: null },
   { name: "BAFTA Games", src: null },
 ];
-
-function BaftaTrophyIcon() {
-  return (
-    <svg width={44} height={44} viewBox="0 0 24 24" fill="none" stroke="#94a3b8" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
-      <path d="M6 5h12v3c0 4-2 8-6 8s-6-4-6-8z" />
-      <path d="M6 6H4a2 2 0 0 0 0 4h2" />
-      <path d="M18 6h2a2 2 0 0 1 0 4h-2" />
-      <path d="M12 16v4" />
-      <path d="M8 21h8" />
-    </svg>
-  );
-}
-
-/* ─────────────── CODE BACKGROUND (preserved) ─────────────── */
-const CODE_SNIPPETS = [
-  "if (secure) {", "const key = encrypt()", "while (learning)", "return safety;", "async defend()",
-  "class CyberHero {", "import { Shield }", "for (let i = 0;", "catch (threat) {", "hash(password)",
-  "firewall.enable()", "authenticate(user)", "decrypt(message)", "validate(input)", "scan(network)",
-  "const safe = true;", "export default App", "await protect()", "<CyberShield />", "npm run secure",
-  "git push origin", "sudo chmod 700", "ping 192.168.1.1", "ssh user@server", "docker build .",
-  "python3 train.py", "SELECT * FROM", "CREATE TABLE users", "kubectl apply -f", "terraform init",
-];
-
-const CODE_FLOATERS = Array.from({ length: 30 }, (_, i) => ({
-  text: CODE_SNIPPETS[i % CODE_SNIPPETS.length],
-  left: [4,91,17,63,38,82,11,55,73,28,47,6,86,34,59,21,69,44,78,14,52,93,31,66,8,75,49,23,40,97][i],
-  size: [12,11,13,12,11,12,13,11,12,13,11,12,13,11,12,13,11,12,13,11,12,13,11,12,13,11,12,13,11,12][i],
-  opacity: [.32,.38,.28,.42,.26,.35,.30,.45,.33,.29,.40,.27,.36,.43,.31,.38,.25,.41,.34,.28,.44,.30,.37,.26,.39,.32,.42,.29,.35,.33][i],
-  duration: [42,38,55,47,36,50,41,58,35,44,52,39,46,60,37,49,43,56,40,51,45,38,54,42,48,53,41,57,36,45][i],
-  delay: [-12,-38,-5,-27,-45,-18,-33,-8,-50,-22,-60,-3,-30,-15,-55,-9,-41,-20,-48,-26,-7,-53,-14,-35,-58,-11,-40,-24,-47,-2][i],
-  rotation: [-5,3,-2,6,-4,1,-7,4,-3,7,0,5,-6,2,-1,8,-5,3,-2,6,-8,1,-4,5,-3,7,-1,4,-6,2][i],
-  darker: [false,true,false,false,true,false,false,true,false,false,true,false,false,true,false,false,true,false,false,true,false,false,true,false,false,true,false,false,true,false][i],
-}));
-
-const CODE_LINES = [
-  { top: "15%", text: "const encrypted = await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, key, data);  //  secure transmission protocol v2.1  //  validated: true", duration: 55, delay: 0, opacity: 0.35 },
-  { top: "35%", text: "export async function authenticate(user: User): Promise<Session> { const hash = await bcrypt.compare(user.password, stored); return { valid: hash, token: jwt.sign(payload, secret) }; }", duration: 68, delay: -20, opacity: 0.3 },
-  { top: "60%", text: "SELECT users.name, certificates.grade FROM users INNER JOIN certificates ON users.id = certificates.user_id WHERE certificates.status = 'PASSED' ORDER BY grade DESC;", duration: 48, delay: -35, opacity: 0.38 },
-  { top: "85%", text: "if (threatLevel > THRESHOLD) { await incident.escalate({ severity: 'HIGH', team: 'SOC', timestamp: Date.now() }); firewall.blockIP(source); logger.alert('Breach detected'); }", duration: 62, delay: -12, opacity: 0.32 },
-];
-
-function CodeBackground() {
-  return (
-    <div aria-hidden="true" style={{
-      position: "fixed", inset: 0, zIndex: 0, pointerEvents: "none",
-      overflow: "hidden", userSelect: "none",
-    }}>
-      <div style={{
-        position: "absolute", inset: 0,
-        backgroundImage: "radial-gradient(circle, #cbd5e1 0.5px, transparent 0.5px)",
-        backgroundSize: "32px 32px",
-        opacity: 0.15,
-        maskImage: "radial-gradient(ellipse 80% 70% at 50% 40%, black 30%, transparent 80%)",
-        WebkitMaskImage: "radial-gradient(ellipse 80% 70% at 50% 40%, black 30%, transparent 80%)",
-      }} />
-      <div style={{ position: "absolute", top: "10%", left: "8%", width: 500, height: 500, borderRadius: "50%", background: "radial-gradient(circle, #3b82f6, transparent 70%)", opacity: 0.04, animation: "glowDrift1 30s ease-in-out infinite", willChange: "transform" }} />
-      <div style={{ position: "absolute", bottom: "8%", right: "6%", width: 400, height: 400, borderRadius: "50%", background: "radial-gradient(circle, #10b981, transparent 70%)", opacity: 0.03, animation: "glowDrift2 25s ease-in-out infinite", willChange: "transform" }} />
-      <div style={{ position: "absolute", top: "40%", left: "50%", width: 350, height: 350, borderRadius: "50%", transform: "translate(-50%,-50%)", background: "radial-gradient(circle, #8b5cf6, transparent 70%)", opacity: 0.02, animation: "glowPulse 20s ease-in-out infinite", willChange: "transform, opacity" }} />
-      {CODE_LINES.map((l, i) => (
-        <div key={i} className="mono" style={{ position: "absolute", top: l.top, left: 0, fontSize: 11, color: "#e2e8f0", whiteSpace: "nowrap", opacity: l.opacity, animation: `codeScrollLeft ${l.duration}s linear ${l.delay}s infinite`, willChange: "transform" }}>
-          {l.text}
-        </div>
-      ))}
-      {CODE_FLOATERS.map((f, i) => (
-        <span key={i} aria-hidden="true" className="mono" style={{
-          position: "absolute", left: `${f.left}%`, top: 0,
-          fontSize: f.size, color: f.darker ? "#94a3b8" : "#cbd5e1",
-          opacity: f.opacity, whiteSpace: "nowrap", userSelect: "none", pointerEvents: "none",
-          ["--rot" as string]: `${f.rotation}deg`,
-          animation: `codeFloatUp ${f.duration}s linear ${f.delay}s infinite`,
-          willChange: "transform",
-        }}>
-          {f.text}
-        </span>
-      ))}
-    </div>
-  );
-}
 
 /* ─────────────── DATA ─────────────── */
 const TRUST_STRIP = ["CyberFirst Aligned", "ASDAN Accredited", "6 Subjects", "Ages 6 to Adult", "UK Designed"];
 
+type AgeGroup = "6-10" | "11-14" | "15-17" | "18+";
+
 type Course = {
   title: string;
   ageRange: string;
+  ageGroup: AgeGroup;
   ageColor: string;
   desc: string;
   duration: string;
@@ -146,102 +235,73 @@ type Subject = {
 
 const SUBJECTS: Subject[] = [
   {
-    id: "cybersecurity",
-    title: "Cybersecurity",
-    icon: "shield",
-    accent: GREEN,
-    ages: "Ages 6 to Adult",
-    status: "AVAILABLE NOW",
-    statusColor: GREEN,
+    id: "cybersecurity", title: "Cybersecurity", icon: "shield", accent: GREEN,
+    ages: "Ages 6 to Adult", status: "AVAILABLE NOW", statusColor: GREEN,
     courses: [
-      { title: "Cyber Heroes Academy", ageRange: "Ages 6-10", ageColor: GREEN, desc: "Learn cybersecurity through animated adventures with Adam, Layla, and Robo. Story-driven missions make online safety fun and unforgettable.", duration: "20 weeks · 45 min/week", price: "£99 · Lifetime Access", live: true, gradient: ["#d1fae5", "#a7f3d0"], icon: "shield", image: "/images/courses/cyberheroes.png", href: "/cyberheroes" },
-      { title: "Cyber Explorers", ageRange: "Ages 11-14", ageColor: PURPLE, desc: "Go deeper into how the internet really works. Phishing simulations, network basics, and your first ethical hacking challenges.", duration: "12 weeks · 1 hr/week", price: "£99 · Lifetime Access", live: false, coming: "COMING 2026", gradient: ["#ede9fe", "#c4b5fd"], icon: "shield", image: "/images/courses/cyber-explorers.png", href: "/cyberexplorers" },
-      { title: "CyberStart", ageRange: "Ages 15-17", ageColor: ORANGE, desc: "Hands-on CTF challenges, incident response drills, and mock penetration testing. Build a portfolio that proves your skills.", duration: "16 weeks · 1.5 hrs/week", price: "£99 · Lifetime Access", live: false, coming: "COMING 2026", gradient: ["#ffedd5", "#fed7aa"], icon: "shield", image: "/images/courses/cyberstart.png", href: "#" },
-      { title: "CyberStart Pro", ageRange: "Ages 18+", ageColor: YELLOW, desc: "Professional-grade training in penetration testing, security operations, and compliance. Get ready to apply for industry roles.", duration: "20 weeks · 2 hrs/week", price: "£109 · Lifetime Access", live: false, coming: "COMING 2027", gradient: ["#fef9c3", "#fde68a"], icon: "shield", image: "/images/courses/cyberstart-pro.png", href: "#" },
+      { title: "Cyber Heroes Academy", ageRange: "Ages 6-10", ageGroup: "6-10", ageColor: GREEN, desc: "Join Adam, Layla, and Robo on animated adventures to learn online safety. Story-driven missions make cybersecurity feel like a game.", duration: "20 weeks · 45 min/week", price: "£99 · Lifetime Access", live: true, gradient: ["#d1fae5", "#a7f3d0"], icon: "shield", image: "/images/courses/cyber-heroes.svg", href: "/cyberheroes" },
+      { title: "Cyber Explorers", ageRange: "Ages 11-14", ageGroup: "11-14", ageColor: PURPLE, desc: "Go beyond the basics. Phishing simulations, network fundamentals, and your first ethical hacking challenges.", duration: "12 weeks · 1 hr/week", price: "£99 · Lifetime Access", live: false, coming: "COMING 2026", gradient: ["#ede9fe", "#c4b5fd"], icon: "shield", image: "/images/courses/cyber-explorers.png", href: "/cyberexplorers" },
+      { title: "CyberStart", ageRange: "Ages 15-17", ageGroup: "15-17", ageColor: ORANGE, desc: "CTF competitions, incident response drills, and penetration testing. Build a portfolio that gets you noticed.", duration: "16 weeks · 1.5 hrs/week", price: "£99 · Lifetime Access", live: false, coming: "COMING 2026", gradient: ["#ffedd5", "#fed7aa"], icon: "shield", image: "/images/courses/cyberstart.png", href: "#" },
+      { title: "CyberStart Pro", ageRange: "Ages 18+", ageGroup: "18+", ageColor: YELLOW, desc: "Industry-standard security operations, compliance frameworks, and career preparation. Get certified and get hired.", duration: "20 weeks · 2 hrs/week", price: "£109 · Lifetime Access", live: false, coming: "COMING 2027", gradient: ["#fef9c3", "#fde68a"], icon: "shield", image: "/images/courses/cyberstart-pro.png", href: "#" },
     ],
   },
   {
-    id: "game-dev",
-    title: "Game Development",
-    icon: "gamepad",
-    accent: BLUE,
-    ages: "Ages 8 to Adult",
-    status: "COMING 2026",
-    statusColor: AMBER,
+    id: "game-dev", title: "Game Development", icon: "gamepad", accent: BLUE,
+    ages: "Ages 8 to Adult", status: "COMING 2026", statusColor: AMBER,
     courses: [
-      { title: "Game Starters", ageRange: "Ages 8-10", ageColor: BLUE, desc: "Build your first games with Scratch and block-based coding. Drag, drop, and play your creations.", duration: "10 weeks · 45 min/week", price: "£99 · Lifetime Access", live: false, coming: "COMING 2026", gradient: ["#dbeafe", "#bfdbfe"], icon: "gamepad", image: "/images/courses/gamestarters.png", href: "#" },
-      { title: "Game Builders", ageRange: "Ages 11-14", ageColor: BLUE, desc: "Level up to Unity and Roblox Studio. Design real game mechanics, characters, and worlds.", duration: "14 weeks · 1 hr/week", price: "£99 · Lifetime Access", live: false, coming: "COMING 2026", gradient: ["#bfdbfe", "#93c5fd"], icon: "gamepad", image: "/images/courses/gamebuilders.png", href: "#" },
-      { title: "Game Engineers", ageRange: "Ages 15+", ageColor: BLUE, desc: "Unreal Engine, C#, physics engines, and publishing. Ship a real game to a real audience.", duration: "18 weeks · 1.5 hrs/week", price: "£99 · Lifetime Access", live: false, coming: "COMING 2026", gradient: ["#93c5fd", "#60a5fa"], icon: "gamepad", image: "/images/courses/gameengineers.png", href: "#" },
+      { title: "Game Starters", ageRange: "Ages 8-10", ageGroup: "6-10", ageColor: BLUE, desc: "Build your first games with Scratch! Drag, drop, and watch your creations come to life.", duration: "10 weeks · 45 min/week", price: "£99 · Lifetime Access", live: false, coming: "COMING 2026", gradient: ["#dbeafe", "#bfdbfe"], icon: "gamepad", image: "/images/courses/gamestarters.png", href: "#" },
+      { title: "Game Builders", ageRange: "Ages 11-14", ageGroup: "11-14", ageColor: BLUE, desc: "Level up to Unity and Roblox Studio. Design real mechanics, characters, and worlds.", duration: "14 weeks · 1 hr/week", price: "£99 · Lifetime Access", live: false, coming: "COMING 2026", gradient: ["#bfdbfe", "#93c5fd"], icon: "gamepad", image: "/images/courses/gamebuilders.png", href: "#" },
+      { title: "Game Engineers", ageRange: "Ages 15+", ageGroup: "15-17", ageColor: BLUE, desc: "Unreal Engine, C#, physics systems, and publishing. Ship a real game to a real audience.", duration: "18 weeks · 1.5 hrs/week", price: "£99 · Lifetime Access", live: false, coming: "COMING 2026", gradient: ["#93c5fd", "#60a5fa"], icon: "gamepad", image: "/images/courses/gameengineers.png", href: "#" },
     ],
   },
   {
-    id: "ai-ml",
-    title: "AI & Machine Learning",
-    icon: "brain",
-    accent: PURPLE,
-    ages: "Ages 10 to Adult",
-    status: "COMING 2026",
-    statusColor: AMBER,
+    id: "ai-ml", title: "AI & Machine Learning", icon: "brain", accent: PURPLE,
+    ages: "Ages 10 to Adult", status: "COMING 2026", statusColor: AMBER,
     courses: [
-      { title: "AI Discoverers", ageRange: "Ages 10-13", ageColor: PURPLE, desc: "Explore how AI works through interactive playgrounds. Train your first models and understand the ethics.", duration: "10 weeks · 1 hr/week", price: "£99 · Lifetime Access", live: false, coming: "COMING 2026", gradient: ["#ede9fe", "#ddd6fe"], icon: "brain", image: "/images/courses/aidiscoverers.png", href: "#" },
-      { title: "AI Builders", ageRange: "Ages 14-16", ageColor: PURPLE, desc: "Build real machine learning models with Python. Image recognition, NLP, and data science fundamentals.", duration: "14 weeks · 1.5 hrs/week", price: "£99 · Lifetime Access", live: false, coming: "COMING 2026", gradient: ["#ddd6fe", "#c4b5fd"], icon: "brain", image: "/images/courses/aibuilders.png", href: "#" },
-      { title: "AI Engineers", ageRange: "Ages 17+", ageColor: PURPLE, desc: "TensorFlow, neural networks, responsible AI, and deployment. Prepare for university-level AI studies.", duration: "18 weeks · 2 hrs/week", price: "£99 · Lifetime Access", live: false, coming: "COMING 2026", gradient: ["#c4b5fd", "#a78bfa"], icon: "brain", image: "/images/courses/aiengineers.png", href: "#" },
+      { title: "AI Discoverers", ageRange: "Ages 10-13", ageGroup: "11-14", ageColor: PURPLE, desc: "Play with AI! Train your first models, chat with AI safely, and explore the ethics of intelligent machines.", duration: "10 weeks · 1 hr/week", price: "£99 · Lifetime Access", live: false, coming: "COMING 2026", gradient: ["#ede9fe", "#ddd6fe"], icon: "brain", image: "/images/courses/aidiscoverers.png", href: "#" },
+      { title: "AI Builders", ageRange: "Ages 14-16", ageGroup: "15-17", ageColor: PURPLE, desc: "Python, TensorFlow, image recognition, and NLP. Build real machine learning models from scratch.", duration: "14 weeks · 1.5 hrs/week", price: "£99 · Lifetime Access", live: false, coming: "COMING 2026", gradient: ["#ddd6fe", "#c4b5fd"], icon: "brain", image: "/images/courses/aibuilders.png", href: "#" },
+      { title: "AI Engineers", ageRange: "Ages 17+", ageGroup: "18+", ageColor: PURPLE, desc: "Neural networks, deep learning, responsible AI, and deployment. University-level AI skills for your career.", duration: "18 weeks · 2 hrs/week", price: "£99 · Lifetime Access", live: false, coming: "COMING 2026", gradient: ["#c4b5fd", "#a78bfa"], icon: "brain", image: "/images/courses/aiengineers.png", href: "#" },
     ],
   },
   {
-    id: "app-dev",
-    title: "App Development",
-    icon: "phone",
-    accent: ORANGE,
-    ages: "Ages 10 to Adult",
-    status: "COMING 2027",
-    statusColor: AMBER,
+    id: "app-dev", title: "App Development", icon: "phone", accent: ORANGE,
+    ages: "Ages 10 to Adult", status: "COMING 2027", statusColor: AMBER,
     courses: [
-      { title: "App Starters", ageRange: "Ages 10-13", ageColor: ORANGE, desc: "Design your first app with no-code tools. Wireframes, UX thinking, and bringing ideas to life.", duration: "10 weeks · 1 hr/week", price: "£99 · Lifetime Access", live: false, coming: "COMING 2027", gradient: ["#ffedd5", "#fed7aa"], icon: "phone", image: "/images/courses/appstarters.png", href: "#" },
-      { title: "App Developers", ageRange: "Ages 14-16", ageColor: ORANGE, desc: "Build real mobile apps with React Native. From idea to working prototype on your phone.", duration: "14 weeks · 1.5 hrs/week", price: "£99 · Lifetime Access", live: false, coming: "COMING 2027", gradient: ["#fed7aa", "#fdba74"], icon: "phone", image: "/images/courses/appdevelopers.png", href: "#" },
-      { title: "Full-Stack Developers", ageRange: "Ages 17+", ageColor: ORANGE, desc: "React, Node.js, databases, APIs, and deployment. Ship production-ready applications.", duration: "18 weeks · 2 hrs/week", price: "£99 · Lifetime Access", live: false, coming: "COMING 2027", gradient: ["#fdba74", "#fb923c"], icon: "phone", image: "/images/courses/fullstackdeveloper.jpeg", href: "#" },
+      { title: "App Starters", ageRange: "Ages 10-13", ageGroup: "11-14", ageColor: ORANGE, desc: "Design your dream app! No-code tools, wireframes, and UX thinking — bring your ideas to life.", duration: "10 weeks · 1 hr/week", price: "£99 · Lifetime Access", live: false, coming: "COMING 2027", gradient: ["#ffedd5", "#fed7aa"], icon: "phone", image: "/images/courses/appstarters.png", href: "#" },
+      { title: "App Developers", ageRange: "Ages 14-16", ageGroup: "15-17", ageColor: ORANGE, desc: "React Native, real mobile apps, from idea to working prototype — right on your phone.", duration: "14 weeks · 1.5 hrs/week", price: "£99 · Lifetime Access", live: false, coming: "COMING 2027", gradient: ["#fed7aa", "#fdba74"], icon: "phone", image: "/images/courses/appdevelopers.png", href: "#" },
+      { title: "Full-Stack Developers", ageRange: "Ages 17+", ageGroup: "18+", ageColor: ORANGE, desc: "React, Node.js, databases, APIs, CI/CD. Ship production applications and land developer roles.", duration: "18 weeks · 2 hrs/week", price: "£99 · Lifetime Access", live: false, coming: "COMING 2027", gradient: ["#fdba74", "#fb923c"], icon: "phone", image: "/images/courses/fullstackdeveloper.jpeg", href: "#" },
     ],
   },
   {
-    id: "entrepreneurship",
-    title: "Tech Entrepreneurship",
-    icon: "rocket",
-    accent: YELLOW,
-    ages: "Ages 14 to Adult",
-    status: "COMING 2027",
-    statusColor: AMBER,
+    id: "entrepreneurship", title: "Tech Entrepreneurship", icon: "rocket", accent: YELLOW,
+    ages: "Ages 14 to Adult", status: "COMING 2027", statusColor: AMBER,
     courses: [
-      { title: "Startup Foundations", ageRange: "Ages 14-16", ageColor: YELLOW, desc: "Turn your ideas into real products. Lean startup thinking, customer research, and your first pitch deck.", duration: "12 weeks · 1 hr/week", price: "£99 · Lifetime Access", live: false, coming: "COMING 2027", gradient: ["#fef9c3", "#fde68a"], icon: "rocket", image: "/images/courses/startupfoundations.png", href: "#" },
-      { title: "Venture Builder", ageRange: "Ages 17+", ageColor: YELLOW, desc: "Financial modelling, go-to-market strategy, fundraising, and building a real tech company.", duration: "16 weeks · 1.5 hrs/week", price: "£99 · Lifetime Access", live: false, coming: "COMING 2027", gradient: ["#fde68a", "#fcd34d"], icon: "rocket", image: "/images/courses/venturestarter.png", href: "#" },
+      { title: "Startup Foundations", ageRange: "Ages 14-16", ageGroup: "15-17", ageColor: YELLOW, desc: "Turn your ideas into products. Lean startup, customer discovery, and your first pitch deck.", duration: "12 weeks · 1 hr/week", price: "£99 · Lifetime Access", live: false, coming: "COMING 2027", gradient: ["#fef9c3", "#fde68a"], icon: "rocket", image: "/images/courses/startupfoundations.png", href: "#" },
+      { title: "Venture Builder", ageRange: "Ages 17+", ageGroup: "18+", ageColor: YELLOW, desc: "Financial modelling, fundraising, go-to-market strategy. Build and launch a real tech company.", duration: "16 weeks · 1.5 hrs/week", price: "£99 · Lifetime Access", live: false, coming: "COMING 2027", gradient: ["#fde68a", "#fcd34d"], icon: "rocket", image: "/images/courses/venturestarter.png", href: "#" },
     ],
   },
   {
-    id: "robotics",
-    title: "Robotic Engineering",
-    icon: "cpu",
-    accent: PINK,
-    ages: "Ages 8 to Adult",
-    status: "COMING 2027",
-    statusColor: AMBER,
+    id: "robotics", title: "Robotic Engineering", icon: "cpu", accent: PINK,
+    ages: "Ages 8 to Adult", status: "COMING 2027", statusColor: AMBER,
     courses: [
-      { title: "Robot Explorers", ageRange: "Ages 8-10", ageColor: PINK, desc: "Build your first robot with Lego Mindstorms. Sensors, motors, and simple programming through play.", duration: "10 weeks · 1 hr/week", price: "£99 · Lifetime Access", live: false, coming: "COMING 2027", gradient: ["#fce7f3", "#fbcfe8"], icon: "cpu", image: "/images/courses/robot-explorers.svg", href: "#" },
-      { title: "Robot Builders", ageRange: "Ages 11-14", ageColor: PINK, desc: "Arduino, sensors, and circuit design. Program real hardware to interact with the physical world.", duration: "14 weeks · 1.5 hrs/week", price: "£99 · Lifetime Access", live: false, coming: "COMING 2027", gradient: ["#fbcfe8", "#f9a8d4"], icon: "cpu", image: "/images/courses/robot-builders.svg", href: "#" },
-      { title: "Robot Engineers", ageRange: "Ages 15+", ageColor: PINK, desc: "ROS, autonomous systems, computer vision, and advanced microcontrollers. Engineering-grade robotics.", duration: "18 weeks · 2 hrs/week", price: "£99 · Lifetime Access", live: false, coming: "COMING 2027", gradient: ["#f9a8d4", "#f472b6"], icon: "cpu", image: "/images/courses/robot-engineers.svg", href: "#", extra: "UK Only · Kit Included" },
+      { title: "Robot Explorers", ageRange: "Ages 8-10", ageGroup: "6-10", ageColor: PINK, desc: "Build your first robot with Lego Mindstorms! Sensors, motors, and programming through play.", duration: "10 weeks · 1 hr/week", price: "£99 · Lifetime Access", live: false, coming: "COMING 2027", gradient: ["#fce7f3", "#fbcfe8"], icon: "cpu", image: "/images/courses/robot-explorers.svg", href: "#" },
+      { title: "Robot Builders", ageRange: "Ages 11-14", ageGroup: "11-14", ageColor: PINK, desc: "Arduino, breadboards, sensors, and circuit design. Program real hardware.", duration: "14 weeks · 1.5 hrs/week", price: "£99 · Lifetime Access", live: false, coming: "COMING 2027", gradient: ["#fbcfe8", "#f9a8d4"], icon: "cpu", image: "/images/courses/robot-builders.svg", href: "#" },
+      { title: "Robot Engineers", ageRange: "Ages 15+", ageGroup: "15-17", ageColor: PINK, desc: "ROS, computer vision, autonomous systems. Engineering-grade robotics.", duration: "18 weeks · 2 hrs/week", price: "£99 · Lifetime Access", live: false, coming: "COMING 2027", gradient: ["#f9a8d4", "#f472b6"], icon: "cpu", image: "/images/courses/robot-engineers.svg", href: "#", extra: "UK Only · Kit Included" },
     ],
   },
 ];
 
 const STEPS = [
-  { n: 1, title: "Choose a Subject", desc: "Browse six streams of technology education", accent: BLUE, icon: "grid" },
-  { n: 2, title: "Pick Your Track", desc: "Select the age-appropriate course within that subject", accent: GREEN, icon: "layers" },
-  { n: 3, title: "Enrol — £99", desc: "One-time payment — no subscriptions, no hidden fees", accent: ORANGE, icon: "card" },
-  { n: 4, title: "Learn & Certify", desc: "Complete missions at your pace and earn accredited certificates", accent: YELLOW, icon: "trophy" },
+  { n: 1, title: "Choose a Subject", desc: "Browse six streams of technology education", accent: BLUE },
+  { n: 2, title: "Pick Your Level", desc: "Select the age-appropriate track for you or your child", accent: GREEN },
+  { n: 3, title: "Enrol", desc: "One-time £99 payment — no subscriptions, no hidden fees", accent: ORANGE },
+  { n: 4, title: "Learn & Certify", desc: "Complete missions at your pace and earn accredited certificates", accent: YELLOW },
 ];
 
-const TESTIMONIALS = [
-  { text: "My daughter absolutely loves it. She talks about Adam and Layla like they\u2019re her best friends, and she\u2019s already teaching ME about password safety.", name: "Sarah T.", role: "London" },
-  { text: "Finally, a course that actually engages kids. The interactive missions are brilliant \u2014 my son doesn\u2019t even realise he\u2019s learning.", name: "James P.", role: "Manchester" },
-  { text: "As a teacher, I recommend this to every parent. It covers everything the curriculum misses about online safety, and the kids genuinely enjoy it.", name: "Mrs. K. Williams", role: "Year 4 Teacher" },
+const TESTIMONIALS: { text: string; name: string; role: string; accent?: string }[] = [
+  { text: "My daughter absolutely loves it. She talks about Adam and Layla like they\u2019re her best friends, and she\u2019s already teaching ME about password safety.", name: "Sarah T.", role: "Parent · London" },
+  { text: "Finally, a course that actually engages kids. The interactive missions are brilliant \u2014 my son doesn\u2019t even realise he\u2019s learning.", name: "James P.", role: "Parent · Manchester" },
+  { text: "As a teacher, I recommend this to every parent. It covers everything the curriculum misses about online safety.", name: "Mrs. K. Williams", role: "Year 4 Teacher" },
+  { text: "I built my first penetration test environment at 15. The CTF challenges are genuinely hard \u2014 and I love it. My school doesn\u2019t teach anything like this.", name: "Aisha R.", role: "Age 16 · Birmingham", accent: PURPLE },
 ];
 
 /* ─────────────── SVG ICONS ─────────────── */
@@ -256,24 +316,18 @@ const ICON_PATHS: Record<string, string> = {
   arrow: "M5 12h14M12 5l7 7-7 7",
   chevron: "M6 9l6 6 6-6",
   quote: "M3 21c3 0 7-1 7-8V5H5v8c0 3-2 3-2 3zM17 21c3 0 7-1 7-8V5h-5v8c0 3-2 3-2 3z",
-  grid: "M3 3h7v7H3zM14 3h7v7h-7zM14 14h7v7h-7zM3 14h7v7H3z",
-  layers: "M12 2L2 7l10 5 10-5zM2 17l10 5 10-5M2 12l10 5 10-5",
-  card: "M3 10h18M7 15h3",
-  trophy: "M8 21h8M12 17v4M7 4h10v5a5 5 0 01-10 0zM7 6H4a2 2 0 000 4h3M17 6h3a2 2 0 010 4h-3",
 };
 const ICON_RECTS: Record<string, [number, number, number, number, number]> = {
   gamepad: [2, 6, 20, 12, 2],
   cpu: [6, 4, 12, 16, 1],
   phone: [5, 2, 14, 20, 2],
-  card: [2, 5, 20, 14, 2],
-  grid: [0, 0, 0, 0, 0],
 };
 
 function Ico({ name, size = 24, color = "#fff", sw = 2 }: { name: string; size?: number; color?: string; sw?: number }) {
   const r = ICON_RECTS[name];
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth={sw} strokeLinecap="round" strokeLinejoin="round">
-      {r && r[2] > 0 && <rect x={r[0]} y={r[1]} width={r[2]} height={r[3]} rx={r[4]} />}
+      {r && <rect x={r[0]} y={r[1]} width={r[2]} height={r[3]} rx={r[4]} />}
       <path d={ICON_PATHS[name] || ICON_PATHS.shield} />
     </svg>
   );
@@ -318,9 +372,26 @@ function Counter({ to, duration = 2000 }: { to: number; duration?: number }) {
 }
 
 /* ─────────────── COURSE CARD ─────────────── */
+function ctaLabel(ageGroup: AgeGroup, live: boolean, hasLink: boolean): string {
+  if (!live && !hasLink) return "Coming Soon";
+  if (!live && hasLink) return ageGroup === "6-10" ? "Coming Soon" : ageGroup === "11-14" ? "Coming Soon" : ageGroup === "15-17" ? "Coming Soon" : "Coming Soon";
+  // live
+  if (ageGroup === "6-10") return "Start the Adventure";
+  if (ageGroup === "11-14") return "Start Exploring";
+  if (ageGroup === "15-17") return "Build Your Portfolio";
+  return "Launch Your Career";
+}
+
 function CourseCard({ c }: { c: Course }) {
   const [hover, setHover] = useState(false);
+  const [imgError, setImgError] = useState(false);
   const lifted = hover && c.live;
+  const isKids = c.ageGroup === "6-10";
+  const titleSize = isKids ? 20 : 18;
+  const cardCornerRadius = isKids ? 20 : 16;
+  const hasLink = c.href !== "#";
+  const label = ctaLabel(c.ageGroup, c.live, hasLink);
+
   return (
     <div
       onMouseEnter={() => setHover(true)}
@@ -329,7 +400,7 @@ function CourseCard({ c }: { c: Course }) {
         flex: "0 0 280px",
         scrollSnapAlign: "start",
         background: WHITE,
-        borderRadius: 16,
+        borderRadius: cardCornerRadius,
         border: `1px solid ${BORDER}`,
         boxShadow: lifted ? "0 12px 40px rgba(0,0,0,0.1)" : "0 1px 3px rgba(0,0,0,0.04)",
         transform: lifted ? "translateY(-6px)" : "none",
@@ -340,20 +411,28 @@ function CourseCard({ c }: { c: Course }) {
         willChange: "transform",
       }}
     >
-      {/* Image header */}
+      {/* Image header (with gradient fallback) */}
       <div style={{
         height: 180, position: "relative", overflow: "hidden",
-        borderRadius: "16px 16px 0 0",
+        borderRadius: `${cardCornerRadius}px ${cardCornerRadius}px 0 0`,
         background: `linear-gradient(135deg,${c.gradient[0]},${c.gradient[1]})`,
       }}>
-        <img
-          src={c.image}
-          alt={c.title}
-          width={400}
-          height={300}
-          loading="lazy"
-          style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
-        />
+        {!imgError && (
+          <img
+            src={c.image}
+            alt={c.title}
+            width={400}
+            height={300}
+            loading="lazy"
+            onError={() => setImgError(true)}
+            style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+          />
+        )}
+        {imgError && (
+          <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", opacity: 0.7 }}>
+            <Ico name={c.icon} size={56} color="#ffffff" sw={1.5} />
+          </div>
+        )}
         {c.live && (
           <div style={{
             position: "absolute", top: 12, right: 12,
@@ -380,7 +459,7 @@ function CourseCard({ c }: { c: Course }) {
 
       {/* Body */}
       <div style={{ padding: 20, display: "flex", flexDirection: "column", flex: 1, gap: 10 }}>
-        <h3 className="dsp" style={{ fontSize: 18, fontWeight: 700, color: HEADING, lineHeight: 1.3 }}>
+        <h3 className="dsp" style={{ fontSize: titleSize, fontWeight: 700, color: HEADING, lineHeight: 1.3 }}>
           {c.title}
         </h3>
         <span style={{
@@ -402,12 +481,13 @@ function CourseCard({ c }: { c: Course }) {
             marginTop: 4,
             display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 6,
             background: `linear-gradient(135deg,${BLUE},#2563eb)`, color: "#fff",
-            fontSize: 14, fontWeight: 700, padding: "11px 20px", borderRadius: 100,
+            fontSize: 14, fontWeight: 700, padding: "11px 20px",
+            borderRadius: isKids ? 100 : 100,
             textDecoration: "none", boxShadow: `0 4px 14px ${BLUE}30`,
           }}>
-            Explore Course <Ico name="arrow" size={14} sw={2.5} />
+            {label} <Ico name="arrow" size={14} sw={2.5} />
           </Link>
-        ) : c.href !== "#" ? (
+        ) : hasLink ? (
           <Link href={c.href} style={{
             marginTop: 4,
             display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 6,
@@ -415,7 +495,7 @@ function CourseCard({ c }: { c: Course }) {
             fontSize: 14, fontWeight: 600, padding: "11px 20px", borderRadius: 100,
             textDecoration: "none",
           }}>
-            Coming Soon <Ico name="arrow" size={14} color={BODY} sw={2.5} />
+            {label} <Ico name="arrow" size={14} color={BODY} sw={2.5} />
           </Link>
         ) : (
           <span style={{
@@ -425,7 +505,7 @@ function CourseCard({ c }: { c: Course }) {
             fontSize: 14, fontWeight: 600, padding: "11px 20px", borderRadius: 100,
             cursor: "not-allowed",
           }}>
-            Coming Soon
+            {label}
           </span>
         )}
       </div>
@@ -443,16 +523,15 @@ h1,h2,h3,h4,.dsp{font-family:'Space Grotesk',sans-serif;letter-spacing:-0.02em}
 html{scroll-behavior:smooth}
 a,button{cursor:pointer}
 
-@keyframes axMarquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 @property --angle{syntax:'<angle>';initial-value:0deg;inherits:false}
 @keyframes axRotateGrad{to{--angle:360deg}}
 @keyframes chevronBounce{0%,100%{transform:translateY(0);opacity:.5}50%{transform:translateY(6px);opacity:.9}}
 
-@keyframes codeFloatUp{from{transform:translateY(100vh) rotate(var(--rot))}to{transform:translateY(-20vh) rotate(var(--rot))}}
-@keyframes codeScrollLeft{from{transform:translateX(100vw)}to{transform:translateX(-200%)}}
-@keyframes glowDrift1{0%,100%{transform:translate(0,0)}50%{transform:translate(120px,40px)}}
-@keyframes glowDrift2{0%,100%{transform:translate(0,0)}50%{transform:translate(-100px,-60px)}}
-@keyframes glowPulse{0%,100%{transform:scale(1);opacity:.02}50%{transform:scale(1.25);opacity:.04}}
+@keyframes meshOrbit1{0%,100%{transform:translate(0,0)}50%{transform:translate(150px,80px)}}
+@keyframes meshOrbit2{0%,100%{transform:translate(0,0)}50%{transform:translate(-120px,-100px)}}
+@keyframes meshOrbit3{0%,100%{transform:translate(0,0)}50%{transform:translate(-100px,60px)}}
+@keyframes meshOrbit4{0%,100%{transform:translate(0,0)}50%{transform:translate(80px,-120px)}}
+@keyframes meshOrbit5{0%,100%{transform:scale(1)}50%{transform:scale(1.3)}}
 
 .ax-course-row{
   display:flex;gap:20px;
@@ -479,14 +558,14 @@ a,button{cursor:pointer}
 }
 
 .ax-logo-img{
-  filter:grayscale(0.4) opacity(0.85);
+  filter:grayscale(0.3) opacity(0.8);
   transition:filter .3s ease;
 }
 .ax-logo-img:hover{filter:grayscale(0) opacity(1)}
 
 @media(max-width:768px){
   .ax-hero-ctas{flex-direction:column;align-items:center}
-  .ax-problem-grid{grid-template-columns:1fr!important;text-align:center;gap:40px!important}
+  .ax-stats-row{grid-template-columns:1fr!important}
   .ax-steps{flex-direction:column!important;gap:32px!important;align-items:flex-start!important}
   .ax-steps-line-h{display:none!important}
   .ax-testimonials{grid-template-columns:1fr!important}
@@ -494,6 +573,7 @@ a,button{cursor:pointer}
   .ax-nav-links a:not(:last-child){display:none}
   .ax-trust-strip{gap:14px!important}
   .ax-subject-info{flex-direction:column!important;align-items:flex-start!important;gap:16px!important}
+  .ax-final-ctas{flex-direction:column;align-items:stretch}
 }
 `;
 
@@ -506,16 +586,13 @@ export default function AlgorithmXHome() {
   const stepsRef = useRef<HTMLDivElement>(null);
   const [stepsInView, setStepsInView] = useState(false);
 
-  const problemRef = useRef<HTMLDivElement>(null);
-  const problemInView = useInView(problemRef, { once: true, amount: 0.2 });
-
   const underlineRef = useRef<HTMLDivElement>(null);
   const underlineInView = useInView(underlineRef, { once: true, amount: 0.5 });
 
   const heroRef = useRef<HTMLDivElement>(null);
   const heroInView = useInView(heroRef, { once: true });
 
-  const headlineWords = "The Future Starts With What They Learn Today".split(" ");
+  const headlineWords = "Technology Skills for Every Stage of Life".split(" ");
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 10);
@@ -548,7 +625,7 @@ export default function AlgorithmXHome() {
       <div style={{ background: WHITE, minHeight: "100vh", color: HEADING, overflowX: "hidden" }}>
         <style>{CSS}</style>
 
-        <CodeBackground />
+        <FuturisticBackground />
 
         {/* ═══ 1. NAV ═══ */}
         <nav style={{
@@ -591,36 +668,39 @@ export default function AlgorithmXHome() {
             {">_ algorithmx.co.uk"}
           </motion.p>
 
-          <h1 className="dsp" style={{ fontSize: "clamp(36px,6vw,68px)", fontWeight: 700, lineHeight: 1.06, color: HEADING, marginBottom: 24 }}>
-            {headlineWords.map((word, i) => (
-              <motion.span
-                key={i}
-                initial={{ opacity: 0, y: 20 }}
-                animate={heroInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.55, delay: 0.15 + i * 0.06, ease: [0.16, 1, 0.3, 1] }}
-                style={{
-                  display: "inline-block",
-                  marginRight: i < headlineWords.length - 1 ? "0.3em" : 0,
-                  ...(word === "Future" ? {
-                    background: `linear-gradient(135deg,${BLUE},${GREEN})`,
-                    WebkitBackgroundClip: "text",
-                    WebkitTextFillColor: "transparent",
-                    backgroundClip: "text",
-                  } : {}),
-                }}
-              >
-                {word}
-              </motion.span>
-            ))}
+          <h1 className="dsp" style={{ fontSize: "clamp(36px,6vw,64px)", fontWeight: 700, lineHeight: 1.06, color: HEADING, marginBottom: 24 }}>
+            {headlineWords.map((word, i) => {
+              const gradient = word === "Every" || word === "Stage";
+              return (
+                <motion.span
+                  key={i}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={heroInView ? { opacity: 1, y: 0 } : {}}
+                  transition={{ duration: 0.55, delay: 0.15 + i * 0.06, ease: [0.16, 1, 0.3, 1] }}
+                  style={{
+                    display: "inline-block",
+                    marginRight: i < headlineWords.length - 1 ? "0.3em" : 0,
+                    ...(gradient ? {
+                      background: `linear-gradient(135deg,${BLUE},${GREEN})`,
+                      WebkitBackgroundClip: "text",
+                      WebkitTextFillColor: "transparent",
+                      backgroundClip: "text",
+                    } : {}),
+                  }}
+                >
+                  {word}
+                </motion.span>
+              );
+            })}
           </h1>
 
           <motion.p
             initial={{ opacity: 0, y: 10 }}
             animate={heroInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.6, delay: 0.8 }}
-            style={{ fontSize: 20, color: "#64748b", lineHeight: 1.6, maxWidth: 560, marginBottom: 40 }}
+            style={{ fontSize: 19, color: "#64748b", lineHeight: 1.6, maxWidth: 640, marginBottom: 40 }}
           >
-            Six subjects. Four age tracks. Interactive lessons that actually stick.
+            From online safety for six-year-olds to professional cybersecurity certifications. Interactive courses designed for how YOU learn — whether you&rsquo;re 6 or 26.
           </motion.p>
 
           <motion.div
@@ -634,12 +714,12 @@ export default function AlgorithmXHome() {
               background: `linear-gradient(135deg,${BLUE},#2563eb)`, color: "#fff",
               fontSize: 15, fontWeight: 700, padding: "14px 32px", borderRadius: 100,
               textDecoration: "none", boxShadow: `0 4px 16px rgba(59,130,246,0.25)`,
-            }}>Explore Subjects</a>
-            <a href="#how" style={{
+            }}>I&rsquo;m a Parent</a>
+            <a href="#subjects" style={{
               color: "#334155", fontSize: 15, fontWeight: 600,
               padding: "14px 32px", borderRadius: 100, textDecoration: "none",
               border: `1.5px solid #cbd5e1`, background: "#fff",
-            }}>How It Works</a>
+            }}>I Want to Learn</a>
           </motion.div>
 
           <div className="ax-trust-strip" style={{ display: "flex", justifyContent: "center", gap: 28, flexWrap: "wrap" }}>
@@ -666,40 +746,37 @@ export default function AlgorithmXHome() {
           </div>
         </section>
 
-        {/* ═══ 3. THE PROBLEM ═══ */}
-        <section ref={problemRef} style={{ position: "relative", zIndex: 1, background: BG_ALT, padding: "120px 24px", borderTop: `1px solid ${BORDER}`, borderBottom: `1px solid ${BORDER}` }}>
-          <div style={{ maxWidth: 1060, margin: "0 auto" }}>
-            <div className="ax-problem-grid" style={{ display: "grid", gridTemplateColumns: "1.5fr 1fr", gap: 60, alignItems: "center" }}>
-              <motion.div
-                initial={{ opacity: 0, x: -40 }}
-                animate={problemInView ? { opacity: 1, x: 0 } : {}}
-                transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-              >
-                <h2 className="dsp" style={{ fontSize: "clamp(28px,4vw,36px)", fontWeight: 700, color: HEADING, lineHeight: 1.2, marginBottom: 20 }}>
-                  The Internet Wasn&rsquo;t Built for Kids
-                </h2>
-                <p style={{ color: BODY, fontSize: 17, lineHeight: 1.8 }}>
-                  72% of children encounter online threats before age 10. Schools can&rsquo;t keep up. Parental controls only go so far. Children need real knowledge and real instincts — taught in a way that actually sticks.
-                </p>
-              </motion.div>
-
-              <motion.div
-                initial={{ opacity: 0, x: 40 }}
-                animate={problemInView ? { opacity: 1, x: 0 } : {}}
-                transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-                style={{ textAlign: "center" }}
-              >
-                <p className="dsp" style={{ fontSize: "clamp(80px,12vw,120px)", fontWeight: 700, color: RED, lineHeight: 1 }}>
-                  <Counter to={72} duration={2000} />
-                  <span style={{ fontSize: "0.5em" }}>%</span>
-                </p>
-                <p style={{ color: MUTED, fontSize: 14, marginTop: 10 }}>of children face online threats before age 10</p>
-              </motion.div>
+        {/* ═══ 3. THE PROBLEM — 3 stat cards ═══ */}
+        <section style={{ position: "relative", zIndex: 1, background: BG_ALT, padding: "120px 24px", borderTop: `1px solid ${BORDER}`, borderBottom: `1px solid ${BORDER}` }}>
+          <div style={{ maxWidth: 1100, margin: "0 auto" }}>
+            <div className="ax-stats-row" style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 20 }}>
+              {[
+                { value: 72, prefix: "", suffix: "%", color: RED, label: "of children encounter online threats before age 10" },
+                { value: 93, prefix: "", suffix: "%", color: BLUE, label: "of UK employers say cybersecurity skills are now essential" },
+                { value: 65, prefix: "£", suffix: "K", color: GREEN, label: "average UK cybersecurity salary in 2026" },
+              ].map((stat, i) => (
+                <FadeUp key={i} delay={i * 0.1}>
+                  <div style={{
+                    background: WHITE, borderRadius: 16, border: `1px solid ${BORDER}`,
+                    padding: 32, textAlign: "center", overflow: "hidden",
+                    position: "relative", height: "100%",
+                    boxShadow: "0 1px 3px rgba(0,0,0,0.04)",
+                  }}>
+                    <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: stat.color }} />
+                    <p className="dsp" style={{ fontSize: 72, fontWeight: 700, color: stat.color, lineHeight: 1 }}>
+                      {stat.prefix}<Counter to={stat.value} duration={2000} />{stat.suffix}
+                    </p>
+                    <p style={{ color: BODY, fontSize: 15, lineHeight: 1.6, marginTop: 14, maxWidth: 280, marginLeft: "auto", marginRight: "auto" }}>
+                      {stat.label}
+                    </p>
+                  </div>
+                </FadeUp>
+              ))}
             </div>
 
             <div ref={underlineRef} style={{ textAlign: "center", marginTop: 72 }}>
-              <p className="dsp" style={{ fontSize: 22, fontWeight: 700, color: HEADING, display: "inline-block", position: "relative" }}>
-                That&rsquo;s why we built AlgorithmX.
+              <p className="dsp" style={{ fontSize: 20, fontWeight: 700, color: HEADING, display: "inline-block", position: "relative", maxWidth: 720, lineHeight: 1.5 }}>
+                Whether you&rsquo;re protecting your child or building your career — AlgorithmX has the right course.
                 <span style={{
                   position: "absolute", bottom: -6, left: 0, height: 2,
                   background: `linear-gradient(90deg,${BLUE},${GREEN})`,
@@ -714,7 +791,6 @@ export default function AlgorithmXHome() {
 
         {/* ═══ 4. SUBJECT SHOWCASE ═══ */}
         <section id="subjects" style={{ position: "relative", zIndex: 1, background: WHITE, padding: "120px 24px", overflow: "hidden" }}>
-          {/* Accent wash */}
           <AnimatePresence>
             <motion.div
               key={activeSubject.id + "-wash"}
@@ -733,11 +809,10 @@ export default function AlgorithmXHome() {
           </AnimatePresence>
 
           <div style={{ position: "relative", zIndex: 1, maxWidth: 1200, margin: "0 auto" }}>
-            {/* Header */}
             <div style={{ textAlign: "center", marginBottom: 48 }}>
               <FadeUp>
                 <h2 className="dsp" style={{ fontSize: "clamp(30px,4vw,40px)", fontWeight: 700, color: HEADING, marginBottom: 14 }}>
-                  Explore Our Subjects
+                  Explore Our Engineering Fields
                 </h2>
               </FadeUp>
               <FadeUp delay={0.1}>
@@ -747,7 +822,6 @@ export default function AlgorithmXHome() {
               </FadeUp>
             </div>
 
-            {/* Tabs */}
             <FadeUp delay={0.15}>
               <div className="ax-tab-row" style={{ marginBottom: 40 }}>
                 {SUBJECTS.map((s, i) => {
@@ -774,7 +848,6 @@ export default function AlgorithmXHome() {
               </div>
             </FadeUp>
 
-            {/* Subject content */}
             <AnimatePresence mode="wait">
               <motion.div
                 key={activeSubject.id}
@@ -783,7 +856,6 @@ export default function AlgorithmXHome() {
                 exit={{ opacity: 0, y: -12 }}
                 transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
               >
-                {/* Subject info bar */}
                 <div className="ax-subject-info" style={{
                   display: "flex", alignItems: "center", justifyContent: "space-between",
                   padding: "24px 28px", marginBottom: 32,
@@ -820,7 +892,6 @@ export default function AlgorithmXHome() {
                   </span>
                 </div>
 
-                {/* Course cards */}
                 <div className="ax-course-row">
                   {activeSubject.courses.map((c) => (
                     <CourseCard key={c.title} c={c} />
@@ -841,7 +912,6 @@ export default function AlgorithmXHome() {
             </FadeUp>
 
             <div ref={stepsRef} className="ax-steps" style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", position: "relative", gap: 16 }}>
-              {/* Connecting line */}
               <div className="ax-steps-line-h" aria-hidden style={{
                 position: "absolute", top: 28, left: 28, right: 28, height: 2, zIndex: 0,
                 background: "#e2e8f0", borderRadius: 2, overflow: "hidden",
@@ -884,11 +954,11 @@ export default function AlgorithmXHome() {
           <div style={{ maxWidth: 1100, margin: "0 auto" }}>
             <FadeUp>
               <h2 className="dsp" style={{ fontSize: "clamp(28px,4vw,36px)", fontWeight: 700, color: HEADING, textAlign: "center", marginBottom: 56 }}>
-                Trusted by Parents &amp; Teachers
+                Trusted by Parents, Teachers &amp; Learners
               </h2>
             </FadeUp>
 
-            <div className="ax-testimonials" style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 20, marginBottom: 72 }}>
+            <div className="ax-testimonials" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20, marginBottom: 72 }}>
               {TESTIMONIALS.map((t, i) => (
                 <FadeUp key={i} delay={i * 0.08}>
                   <div
@@ -902,14 +972,16 @@ export default function AlgorithmXHome() {
                     }}
                     style={{
                       background: WHITE, borderRadius: 16, padding: 28,
-                      border: `1px solid ${BORDER}`, position: "relative", overflow: "hidden",
+                      border: `1px solid ${BORDER}`,
+                      borderLeft: t.accent ? `3px solid ${t.accent}` : `1px solid ${BORDER}`,
+                      position: "relative", overflow: "hidden",
                       boxShadow: "0 1px 3px rgba(0,0,0,0.04)",
                       height: "100%",
                       transition: "transform .3s ease, box-shadow .3s ease",
                     }}
                   >
                     <div aria-hidden style={{ position: "absolute", top: 14, left: 20, opacity: 0.08 }}>
-                      <Ico name="quote" size={48} color={BLUE} sw={1.5} />
+                      <Ico name="quote" size={48} color={t.accent || BLUE} sw={1.5} />
                     </div>
                     <p style={{ color: BODY, fontSize: 15, lineHeight: 1.8, marginBottom: 20, position: "relative" }}>
                       &ldquo;{t.text}&rdquo;
@@ -921,28 +993,34 @@ export default function AlgorithmXHome() {
               ))}
             </div>
 
-            {/* Trust logos */}
             <FadeUp>
               <div style={{ textAlign: "center" }}>
                 <p style={{ fontSize: 11, fontWeight: 700, letterSpacing: ".14em", textTransform: "uppercase", color: MUTED, marginBottom: 28 }}>
-                  Curriculum Aligned With
+                  Trusted &amp; Aligned With
                 </p>
-                <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: 40, flexWrap: "wrap" }}>
+                <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: 32, flexWrap: "wrap" }}>
                   {TRUST_LOGOS.map((t) => (
-                    <div key={t.name} title={t.name} style={{ display: "flex", alignItems: "center", justifyContent: "center", height: 48 }}>
+                    <div key={t.name} title={t.name} style={{ display: "flex", alignItems: "center", justifyContent: "center", minHeight: 56 }}>
                       {t.src ? (
                         <img
                           src={t.src}
                           alt={t.name}
-                          width={48}
-                          height={48}
+                          width={56}
+                          height={56}
                           loading="lazy"
                           className="ax-logo-img"
                           style={{ objectFit: "contain" }}
                         />
                       ) : (
-                        <div className="ax-logo-img" style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
-                          <BaftaTrophyIcon />
+                        <div className="ax-logo-img" style={{
+                          width: 56, height: 56, borderRadius: "50%",
+                          background: "#f1f5f9",
+                          display: "flex", alignItems: "center", justifyContent: "center",
+                          padding: 6, textAlign: "center",
+                        }}>
+                          <span style={{ fontSize: 9, fontWeight: 700, color: MUTED, lineHeight: 1.15 }}>
+                            {t.name}
+                          </span>
                         </div>
                       )}
                     </div>
@@ -969,19 +1047,19 @@ export default function AlgorithmXHome() {
                     Ready to Start?
                   </h2>
                   <p style={{ color: "#64748b", fontSize: 17, lineHeight: 1.7, maxWidth: 460, margin: "0 auto 32px" }}>
-                    Choose a subject, pick your track, and begin today.
+                    Choose a subject, pick your level, and begin today.
                   </p>
-                  <div style={{ display: "flex", gap: 14, justifyContent: "center", flexWrap: "wrap", marginBottom: 20 }}>
-                    <Link href="/cyberheroes" style={{
+                  <div className="ax-final-ctas" style={{ display: "flex", gap: 14, justifyContent: "center", flexWrap: "wrap", marginBottom: 20 }}>
+                    <a href="#subjects" style={{
                       background: `linear-gradient(135deg,${BLUE},#2563eb)`, color: "#fff",
                       fontSize: 15, fontWeight: 700, padding: "14px 32px", borderRadius: 100,
                       textDecoration: "none", boxShadow: `0 6px 20px ${BLUE}30`,
-                    }}>Start with Cyber Heroes — Ages 6-10</Link>
+                    }}>Find a Course for My Child</a>
                     <a href="#subjects" style={{
                       color: "#334155", fontSize: 15, fontWeight: 600,
                       padding: "14px 32px", borderRadius: 100, textDecoration: "none",
                       border: `1.5px solid #cbd5e1`, background: WHITE,
-                    }}>Explore All Subjects</a>
+                    }}>I Want to Learn</a>
                   </div>
                   <p style={{ color: MUTED, fontSize: 13 }}>One-time payment · Lifetime access · 30-day guarantee</p>
                 </div>
@@ -1000,7 +1078,7 @@ export default function AlgorithmXHome() {
                 </div>
                 <span className="dsp" style={{ fontSize: 18, fontWeight: 700, color: "#fff" }}>Algorithm<span style={{ color: "#60a5fa" }}>X</span></span>
               </div>
-              <p style={{ color: "#94a3b8", fontSize: 13, lineHeight: 1.6, maxWidth: 260 }}>Technology Education for the Next Generation</p>
+              <p style={{ color: "#94a3b8", fontSize: 13, lineHeight: 1.6, maxWidth: 260 }}>Technology Skills for Every Stage of Life</p>
             </div>
             <div>
               <p style={{ color: "#fff", fontSize: 13, fontWeight: 700, marginBottom: 14, letterSpacing: ".03em", textTransform: "uppercase" }}>Subjects</p>
@@ -1018,7 +1096,7 @@ export default function AlgorithmXHome() {
             </div>
             <div>
               <p style={{ color: "#fff", fontSize: 13, fontWeight: 700, marginBottom: 14, letterSpacing: ".03em", textTransform: "uppercase" }}>Company</p>
-              {["About", "For Parents", "Pricing", "Contact"].map((l) => (
+              {["About", "For Parents", "For Teens", "Pricing", "Contact"].map((l) => (
                 <a key={l} href="#" style={{ display: "block", color: "#94a3b8", fontSize: 13, textDecoration: "none", marginBottom: 8 }}>{l}</a>
               ))}
             </div>
