@@ -1,8 +1,7 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import dynamic from "next/dynamic";
 import { AnimatePresence, motion, useInView } from "framer-motion";
 import SmoothScroll from "@/app/components/SmoothScroll";
 
@@ -23,60 +22,249 @@ const PINK = "#ec4899";
 const AMBER = "#f59e0b";
 const RED = "#ef4444";
 
-/* ─────────────── SHADER GRADIENT BACKGROUND (client-only via dynamic import) ─────────────── */
-const ShaderGradientCanvas = dynamic(
-  () => import("@shadergradient/react").then((m) => m.ShaderGradientCanvas),
-  { ssr: false }
-);
-const ShaderGradient = dynamic(
-  () => import("@shadergradient/react").then((m) => m.ShaderGradient),
-  { ssr: false }
-);
+/* ─────────────── INLINE ACETERNITY COMPONENTS ─────────────── */
 
-function ShaderGradientBackground() {
+/** BackgroundGradientAnimation — 5 soft-light blobs with slow drift + interactive pointer */
+function BackgroundGradientAnimation() {
+  const interactiveRef = useRef<HTMLDivElement>(null);
+  const [target, setTarget] = useState({ x: 0, y: 0 });
+  const cur = useRef({ x: 0, y: 0 });
+
+  useEffect(() => {
+    let frame = 0;
+    const tick = () => {
+      cur.current.x += (target.x - cur.current.x) * 0.08;
+      cur.current.y += (target.y - cur.current.y) * 0.08;
+      if (interactiveRef.current) {
+        interactiveRef.current.style.transform = `translate3d(${cur.current.x}px, ${cur.current.y}px, 0)`;
+      }
+      frame = requestAnimationFrame(tick);
+    };
+    frame = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(frame);
+  }, [target]);
+
+  const onMove = useCallback((e: MouseEvent) => {
+    const rect = document.body.getBoundingClientRect();
+    setTarget({ x: e.clientX - rect.left - 200, y: e.clientY - rect.top - 200 });
+  }, []);
+
+  useEffect(() => {
+    window.addEventListener("mousemove", onMove);
+    return () => window.removeEventListener("mousemove", onMove);
+  }, [onMove]);
+
+  const blobStyle = (color: string): React.CSSProperties => ({
+    position: "absolute",
+    width: "80%",
+    height: "80%",
+    borderRadius: "50%",
+    background: `radial-gradient(circle at center, rgba(${color}, 0.8) 0%, rgba(${color}, 0) 70%)`,
+    mixBlendMode: "normal",
+    willChange: "transform",
+    filter: "blur(80px)",
+    pointerEvents: "none",
+  });
+
   return (
-    <div aria-hidden="true" style={{ position: "fixed", inset: 0, zIndex: 0, pointerEvents: "none" }}>
-      <ShaderGradientCanvas
-        style={{ position: "absolute", inset: 0 }}
-        pixelDensity={1}
-        fov={45}
-        pointerEvents="none"
-      >
-        <ShaderGradient
-          type="waterPlane"
-          animate="on"
-          uSpeed={0.3}
-          uStrength={1.8}
-          uDensity={1.3}
-          uFrequency={5.5}
-          uAmplitude={0}
-          uTime={0}
-          color1="#3b82f6"
-          color2="#10b981"
-          color3="#8b5cf6"
-          reflection={0.1}
-          grain="on"
-          lightType="3d"
-          envPreset="city"
-          brightness={1.2}
-          positionX={-1.4}
-          positionY={0}
-          positionZ={0}
-          rotationX={0}
-          rotationY={10}
-          rotationZ={50}
-          cAzimuthAngle={180}
-          cPolarAngle={115}
-          cDistance={3.6}
-          cameraZoom={1}
+    <div aria-hidden="true" style={{
+      position: "fixed", inset: 0, zIndex: 0, pointerEvents: "none",
+      overflow: "hidden",
+      background: "linear-gradient(to bottom right, rgb(255,255,255), rgb(248,250,252))",
+    }}>
+      <svg style={{ position: "absolute", inset: 0, width: 0, height: 0 }}>
+        <defs>
+          <filter id="bgGoo">
+            <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur" />
+            <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -8" result="goo" />
+            <feBlend in="SourceGraphic" in2="goo" />
+          </filter>
+        </defs>
+      </svg>
+
+      <div style={{ position: "absolute", inset: 0, filter: "url(#bgGoo) blur(40px)" }}>
+        <div style={{
+          ...blobStyle("59,130,246"),
+          top: "calc(50% - 40%)", left: "calc(50% - 40%)",
+          animation: "bgMove1 30s ease infinite",
+          transformOrigin: "center center",
+        }} />
+        <div style={{
+          ...blobStyle("16,185,129"),
+          top: "calc(50% - 40%)", left: "calc(50% - 40%)",
+          animation: "bgMove2 20s reverse infinite",
+          transformOrigin: "calc(50% - 400px)",
+        }} />
+        <div style={{
+          ...blobStyle("139,92,246"),
+          top: "calc(50% - 40%)", left: "calc(50% - 40%)",
+          animation: "bgMove3 40s linear infinite",
+          transformOrigin: "calc(50% + 400px)",
+        }} />
+        <div style={{
+          ...blobStyle("236,72,153"),
+          top: "calc(50% - 40%)", left: "calc(50% - 40%)",
+          animation: "bgMove4 40s ease infinite",
+          transformOrigin: "calc(50% - 200px)",
+          opacity: 0.7,
+        }} />
+        <div style={{
+          ...blobStyle("245,158,11"),
+          width: "160%", height: "160%",
+          top: "calc(50% - 80%)", left: "calc(50% - 80%)",
+          animation: "bgMove5 20s ease infinite",
+          transformOrigin: "calc(50% - 800px) calc(50% + 200px)",
+          opacity: 0.5,
+        }} />
+        <div
+          ref={interactiveRef}
+          style={{
+            ...blobStyle("59,130,246"),
+            width: 400, height: 400,
+            top: 0, left: 0,
+            opacity: 0.6,
+          }}
         />
-      </ShaderGradientCanvas>
-      {/* White overlay softens the shader so it reads as frosted glass behind content */}
+      </div>
+
+      {/* White softening overlay */}
       <div style={{
         position: "absolute", inset: 0,
-        background: "rgba(255,255,255,0.85)",
+        background: "rgba(255,255,255,0.65)",
         pointerEvents: "none",
       }} />
+    </div>
+  );
+}
+
+/** TextGenerateEffect — words appear with blur→sharp fade, per-word custom styling supported */
+function TextGenerateEffect({
+  words, highlightWords = [], className, style,
+}: {
+  words: string;
+  highlightWords?: string[];
+  className?: string;
+  style?: React.CSSProperties;
+}) {
+  const ref = useRef<HTMLHeadingElement>(null);
+  const inView = useInView(ref, { once: true });
+  const parts = words.split(" ");
+  return (
+    <h1 ref={ref} className={className} style={style}>
+      {parts.map((word, i) => {
+        const highlight = highlightWords.includes(word);
+        return (
+          <motion.span
+            key={i}
+            initial={{ opacity: 0, filter: "blur(10px)", y: 12 }}
+            animate={inView ? { opacity: 1, filter: "blur(0px)", y: 0 } : {}}
+            transition={{ duration: 0.5, delay: 0.1 + i * 0.06, ease: [0.16, 1, 0.3, 1] }}
+            style={{
+              display: "inline-block",
+              marginRight: i < parts.length - 1 ? "0.3em" : 0,
+              willChange: "opacity, filter, transform",
+              ...(highlight
+                ? {
+                    background: `linear-gradient(135deg,${BLUE},${GREEN})`,
+                    WebkitBackgroundClip: "text",
+                    WebkitTextFillColor: "transparent",
+                    backgroundClip: "text",
+                  }
+                : {}),
+            }}
+          >
+            {word}
+          </motion.span>
+        );
+      })}
+    </h1>
+  );
+}
+
+/** CardSpotlight — mouse-tracking radial gradient glow */
+function CardSpotlight({
+  children, accent = BLUE, style, className,
+}: {
+  children: React.ReactNode;
+  accent?: string;
+  style?: React.CSSProperties;
+  className?: string;
+}) {
+  const cardRef = useRef<HTMLDivElement>(null);
+  const [pos, setPos] = useState({ x: 0, y: 0 });
+  const [hover, setHover] = useState(false);
+
+  const onMove = useCallback((e: React.MouseEvent) => {
+    if (!cardRef.current) return;
+    const r = cardRef.current.getBoundingClientRect();
+    setPos({ x: e.clientX - r.left, y: e.clientY - r.top });
+  }, []);
+
+  const accentRgba = (a: number) => {
+    const hex = accent.replace("#", "");
+    const r = parseInt(hex.substring(0, 2), 16);
+    const g = parseInt(hex.substring(2, 4), 16);
+    const b = parseInt(hex.substring(4, 6), 16);
+    return `rgba(${r},${g},${b},${a})`;
+  };
+
+  return (
+    <div
+      ref={cardRef}
+      className={className}
+      onMouseMove={onMove}
+      onMouseEnter={() => setHover(true)}
+      onMouseLeave={() => setHover(false)}
+      style={{ position: "relative", overflow: "hidden", ...style }}
+    >
+      <div
+        aria-hidden
+        style={{
+          position: "absolute", inset: 0, pointerEvents: "none", zIndex: 0,
+          background: hover
+            ? `radial-gradient(500px circle at ${pos.x}px ${pos.y}px, ${accentRgba(0.12)}, transparent 40%)`
+            : "transparent",
+          transition: "background 0.15s ease",
+        }}
+      />
+      <div style={{ position: "relative", zIndex: 1, width: "100%", height: "100%" }}>{children}</div>
+    </div>
+  );
+}
+
+/** InfiniteMovingCards — CSS marquee with duplicated content */
+function InfiniteMovingCards<T>({
+  items, renderItem, speed = 50, pauseOnHover = true, itemKey,
+}: {
+  items: T[];
+  renderItem: (item: T, i: number) => React.ReactNode;
+  speed?: number;
+  pauseOnHover?: boolean;
+  itemKey: (item: T, i: number) => string;
+}) {
+  return (
+    <div
+      className={pauseOnHover ? "ax-marquee ax-marquee-pause" : "ax-marquee"}
+      style={{
+        overflow: "hidden",
+        maskImage: "linear-gradient(to right, transparent, black 8%, black 92%, transparent)",
+        WebkitMaskImage: "linear-gradient(to right, transparent, black 8%, black 92%, transparent)",
+      }}
+    >
+      <div
+        style={{
+          display: "flex", gap: 20, width: "max-content",
+          animation: `axMarquee ${speed}s linear infinite`,
+        }}
+      >
+        {[0, 1].map((dup) => (
+          <div key={dup} style={{ display: "flex", gap: 20, paddingRight: 20 }}>
+            {items.map((item, i) => (
+              <div key={`${dup}-${itemKey(item, i)}`}>{renderItem(item, i)}</div>
+            ))}
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
@@ -194,17 +382,17 @@ const SUBJECTS: Subject[] = [
 ];
 
 const STEPS = [
-  { n: 1, title: "Choose a Subject", desc: "Browse six streams of technology education", accent: BLUE },
-  { n: 2, title: "Pick Your Level", desc: "Select the age-appropriate track for you or your child", accent: GREEN },
-  { n: 3, title: "Enrol", desc: "One-time £99 payment — no subscriptions, no hidden fees", accent: ORANGE },
-  { n: 4, title: "Learn & Certify", desc: "Complete missions at your pace and earn accredited certificates", accent: YELLOW },
+  { n: 1, title: "Choose a Subject", desc: "Browse six technology streams", accent: BLUE },
+  { n: 2, title: "Pick Your Level", desc: "Find the right course for your age", accent: GREEN },
+  { n: 3, title: "Enrol", desc: "One-time payment, instant access", accent: ORANGE },
+  { n: 4, title: "Learn & Certify", desc: "Interactive lessons with real credentials", accent: YELLOW },
 ];
 
-const TESTIMONIALS: { text: string; name: string; role: string; accent?: string }[] = [
-  { text: "My daughter absolutely loves it. She talks about Adam and Layla like they\u2019re her best friends, and she\u2019s already teaching ME about password safety.", name: "Sarah T.", role: "Parent · London" },
-  { text: "Finally, a course that actually engages kids. The interactive missions are brilliant \u2014 my son doesn\u2019t even realise he\u2019s learning.", name: "James P.", role: "Parent · Manchester" },
-  { text: "As a teacher, I recommend this to every parent. It covers everything the curriculum misses about online safety.", name: "Mrs. K. Williams", role: "Year 4 Teacher" },
-  { text: "I built my first penetration test environment at 15. The CTF challenges are genuinely hard \u2014 and I love it. My school doesn\u2019t teach anything like this.", name: "Aisha R.", role: "Age 16 · Birmingham", accent: PURPLE },
+const TESTIMONIALS = [
+  { quote: "My daughter absolutely loves it. She talks about Adam and Layla like they\u2019re her best friends, and she\u2019s already teaching ME about password safety.", name: "Sarah T.", title: "Parent, London", accent: BLUE },
+  { quote: "Finally, a course that actually engages kids. The interactive missions are brilliant \u2014 my son doesn\u2019t even realise he\u2019s learning.", name: "James P.", title: "Parent, Manchester", accent: GREEN },
+  { quote: "As a teacher, I recommend this to every parent. It covers everything the curriculum misses about online safety.", name: "Mrs. K. Williams", title: "Year 4 Teacher", accent: ORANGE },
+  { quote: "I built my first penetration test environment at 15. The CTF challenges are genuinely hard \u2014 and I love it. My school doesn\u2019t teach anything like this.", name: "Aisha R.", title: "Age 16, Birmingham", accent: PURPLE },
 ];
 
 /* ─────────────── SVG ICONS ─────────────── */
@@ -255,7 +443,7 @@ function FadeUp({ children, delay = 0, className, style }: { children: React.Rea
 /* ─────────────── COUNTER ─────────────── */
 function Counter({ to, duration = 2000 }: { to: number; duration?: number }) {
   const ref = useRef<HTMLSpanElement>(null);
-  const inView = useInView(ref, { once: true, amount: 0.2 });
+  const inView = useInView(ref, { once: true, amount: 0.3 });
   const [val, setVal] = useState(0);
   useEffect(() => {
     if (!inView) return;
@@ -285,26 +473,22 @@ function ctaLabel(ageGroup: AgeGroup, live: boolean, hasLink: boolean): string {
 }
 
 function CourseCard({ c }: { c: Course }) {
-  const [hover, setHover] = useState(false);
   const [imgError, setImgError] = useState(false);
-  const lifted = hover && c.live;
   const hasLink = c.href !== "#";
   const label = ctaLabel(c.ageGroup, c.live, hasLink);
 
   return (
-    <div
-      onMouseEnter={() => setHover(true)}
-      onMouseLeave={() => setHover(false)}
+    <CardSpotlight
+      accent={c.ageColor}
+      className="ax-course-card"
       style={{
         flex: "0 0 280px",
         scrollSnapAlign: "start",
         background: WHITE,
         borderRadius: 16,
         border: `1px solid ${BORDER}`,
-        boxShadow: lifted ? "0 12px 40px rgba(0,0,0,0.1)" : "0 1px 3px rgba(0,0,0,0.04)",
-        transform: lifted ? "translateY(-6px)" : "none",
-        transition: "transform .3s cubic-bezier(0.16,1,0.3,1), box-shadow .3s cubic-bezier(0.16,1,0.3,1)",
-        overflow: "hidden",
+        boxShadow: "0 1px 3px rgba(0,0,0,0.04)",
+        transition: "transform .3s ease, box-shadow .3s ease",
         display: "flex",
         flexDirection: "column",
         willChange: "transform",
@@ -338,6 +522,7 @@ function CourseCard({ c }: { c: Course }) {
             padding: "4px 10px", borderRadius: 100,
             background: "rgba(255,255,255,0.92)", backdropFilter: "blur(8px)",
             fontSize: 10, fontWeight: 700, color: GREEN, letterSpacing: ".06em",
+            boxShadow: "0 0 20px rgba(16,185,129,0.15)",
           }}>
             <span style={{ width: 6, height: 6, borderRadius: "50%", background: GREEN }} />
             LIVE
@@ -367,11 +552,11 @@ function CourseCard({ c }: { c: Course }) {
         }}>
           {c.ageRange}
         </span>
-        <p style={{ color: BODY, fontSize: 14, lineHeight: 1.6, flex: 1 }}>{c.desc}</p>
+        <p style={{ color: BODY, fontSize: 14, lineHeight: 1.6, flex: 1, minHeight: 60 }}>{c.desc}</p>
         <p className="mono" style={{ fontSize: 12, color: MUTED }}>{c.duration}</p>
         <p style={{ fontSize: 16, fontWeight: 700, color: HEADING }}>{c.price}</p>
         {c.extra && (
-          <p style={{ fontSize: 11, fontWeight: 700, color: PINK, letterSpacing: ".02em" }}>{c.extra}</p>
+          <p style={{ fontSize: 11, fontWeight: 700, color: PINK, letterSpacing: ".02em", fontStyle: "italic" }}>{c.extra}</p>
         )}
         {c.live ? (
           <Link href={c.href} style={{
@@ -387,11 +572,11 @@ function CourseCard({ c }: { c: Course }) {
           <Link href={c.href} style={{
             marginTop: 4,
             display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 6,
-            background: "#f1f5f9", color: BODY,
+            background: `${c.ageColor}14`, color: c.ageColor,
             fontSize: 14, fontWeight: 600, padding: "11px 20px", borderRadius: 100,
             textDecoration: "none",
           }}>
-            {label} <Ico name="arrow" size={14} color={BODY} sw={2.5} />
+            {label} <Ico name="arrow" size={14} color={c.ageColor} sw={2.5} />
           </Link>
         ) : (
           <span style={{
@@ -405,7 +590,7 @@ function CourseCard({ c }: { c: Course }) {
           </span>
         )}
       </div>
-    </div>
+    </CardSpotlight>
   );
 }
 
@@ -421,7 +606,37 @@ a,button{cursor:pointer}
 
 @property --angle{syntax:'<angle>';initial-value:0deg;inherits:false}
 @keyframes axRotateGrad{to{--angle:360deg}}
-@keyframes chevronBounce{0%,100%{transform:translateY(0);opacity:.5}50%{transform:translateY(6px);opacity:.9}}
+@keyframes axBounce{0%,100%{transform:translate(-50%,0)}50%{transform:translate(-50%,8px)}}
+@keyframes axMarquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+@keyframes bgMove1{
+  0%{transform:translate(0,0);opacity:1}
+  33%{transform:translate(30%,-50%);opacity:0.8}
+  66%{transform:translate(-20%,20%);opacity:0.9}
+  100%{transform:translate(0,0);opacity:1}
+}
+@keyframes bgMove2{
+  0%{transform:rotate(0deg)}
+  100%{transform:rotate(360deg)}
+}
+@keyframes bgMove3{
+  0%{transform:rotate(0deg)}
+  100%{transform:rotate(360deg)}
+}
+@keyframes bgMove4{
+  0%{transform:rotate(0deg)}
+  50%{transform:rotate(180deg) scale(1.1)}
+  100%{transform:rotate(360deg)}
+}
+@keyframes bgMove5{
+  0%{transform:rotate(0deg) scale(1)}
+  50%{transform:rotate(180deg) scale(1.15)}
+  100%{transform:rotate(360deg) scale(1)}
+}
+
+.ax-course-card:hover{transform:translateY(-6px);box-shadow:0 12px 40px rgba(0,0,0,0.1)}
+
+.ax-marquee-pause:hover>div{animation-play-state:paused}
 
 .ax-course-row{
   display:flex;gap:20px;
@@ -448,7 +663,7 @@ a,button{cursor:pointer}
 }
 
 .ax-logo-img{
-  filter:grayscale(0.3) opacity(0.8);
+  filter:grayscale(0.3) opacity(0.7);
   transition:filter .3s ease;
 }
 .ax-logo-img:hover{filter:grayscale(0) opacity(1)}
@@ -456,14 +671,14 @@ a,button{cursor:pointer}
 @media(max-width:768px){
   .ax-hero-ctas{flex-direction:column;align-items:center}
   .ax-stats-row{grid-template-columns:1fr!important}
-  .ax-steps{flex-direction:column!important;gap:32px!important;align-items:flex-start!important}
+  .ax-steps{flex-direction:column!important;gap:24px!important;align-items:stretch!important}
   .ax-steps-line-h{display:none!important}
-  .ax-testimonials{grid-template-columns:1fr!important}
   .ax-footer-grid{grid-template-columns:1fr!important;text-align:center}
-  .ax-nav-links a:not(:last-child){display:none}
+  .ax-nav-links a:not(:last-child),.ax-nav-links a.ax-nav-login{display:none}
   .ax-trust-strip{gap:14px!important}
   .ax-subject-info{flex-direction:column!important;align-items:flex-start!important;gap:16px!important}
   .ax-final-ctas{flex-direction:column;align-items:stretch}
+  .ax-footer-bottom{flex-direction:column!important;gap:8px;text-align:center}
 }
 `;
 
@@ -482,10 +697,8 @@ export default function AlgorithmXHome() {
   const heroRef = useRef<HTMLDivElement>(null);
   const heroInView = useInView(heroRef, { once: true });
 
-  const headlineWords = "Technology Skills for Every Stage of Life".split(" ");
-
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 10);
+    const onScroll = () => setScrolled(window.scrollY > 20);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
@@ -515,11 +728,11 @@ export default function AlgorithmXHome() {
       <div style={{ background: WHITE, minHeight: "100vh", color: HEADING, overflowX: "hidden" }}>
         <style>{CSS}</style>
 
-        <ShaderGradientBackground />
+        <BackgroundGradientAnimation />
 
         {/* ═══ 1. NAV ═══ */}
         <nav style={{
-          position: "fixed", top: 0, left: 0, right: 0, zIndex: 100,
+          position: "fixed", top: 0, left: 0, right: 0, zIndex: 50,
           background: "rgba(255,255,255,0.9)",
           backdropFilter: "blur(20px) saturate(1.8)", WebkitBackdropFilter: "blur(20px) saturate(1.8)",
           borderBottom: `1px solid ${BORDER}`,
@@ -536,7 +749,7 @@ export default function AlgorithmXHome() {
             <div className="ax-nav-links" style={{ display: "flex", alignItems: "center", gap: 28 }}>
               <a href="#subjects" style={{ color: BODY, fontSize: 14, fontWeight: 500, textDecoration: "none" }}>Subjects</a>
               <a href="#how" style={{ color: BODY, fontSize: 14, fontWeight: 500, textDecoration: "none" }}>How It Works</a>
-              <Link href="/login" style={{ color: BODY, fontSize: 14, fontWeight: 500, textDecoration: "none" }}>Log In</Link>
+              <Link className="ax-nav-login" href="/login" style={{ color: BODY, fontSize: 14, fontWeight: 500, textDecoration: "none" }}>Log In</Link>
               <Link href="/cyberheroes" style={{
                 background: `linear-gradient(135deg,${BLUE},#2563eb)`, color: "#fff",
                 fontSize: 13, fontWeight: 700, padding: "9px 22px", borderRadius: 100,
@@ -558,36 +771,17 @@ export default function AlgorithmXHome() {
             {">_ algorithmx.co.uk"}
           </motion.p>
 
-          <h1 className="dsp" style={{ fontSize: "clamp(36px,6vw,64px)", fontWeight: 700, lineHeight: 1.06, color: HEADING, marginBottom: 24 }}>
-            {headlineWords.map((word, i) => {
-              const gradient = word === "Every" || word === "Stage";
-              return (
-                <motion.span
-                  key={i}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={heroInView ? { opacity: 1, y: 0 } : {}}
-                  transition={{ duration: 0.55, delay: 0.15 + i * 0.06, ease: [0.16, 1, 0.3, 1] }}
-                  style={{
-                    display: "inline-block",
-                    marginRight: i < headlineWords.length - 1 ? "0.3em" : 0,
-                    ...(gradient ? {
-                      background: `linear-gradient(135deg,${BLUE},${GREEN})`,
-                      WebkitBackgroundClip: "text",
-                      WebkitTextFillColor: "transparent",
-                      backgroundClip: "text",
-                    } : {}),
-                  }}
-                >
-                  {word}
-                </motion.span>
-              );
-            })}
-          </h1>
+          <TextGenerateEffect
+            words="Technology Skills for Every Stage of Life"
+            highlightWords={["Every", "Stage"]}
+            className="dsp"
+            style={{ fontSize: "clamp(36px,6vw,64px)", fontWeight: 700, lineHeight: 1.06, color: HEADING, marginBottom: 24, maxWidth: 800 }}
+          />
 
           <motion.p
             initial={{ opacity: 0, y: 10 }}
             animate={heroInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.6, delay: 0.8 }}
+            transition={{ duration: 0.6, delay: 0.9 }}
             style={{ fontSize: 19, color: "#64748b", lineHeight: 1.6, maxWidth: 640, marginBottom: 40 }}
           >
             From online safety for six-year-olds to professional cybersecurity certifications. Interactive courses designed for how YOU learn — whether you&rsquo;re 6 or 26.
@@ -597,8 +791,8 @@ export default function AlgorithmXHome() {
             className="ax-hero-ctas"
             initial={{ opacity: 0, y: 20 }}
             animate={heroInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.6, delay: 1.1, type: "spring", stiffness: 120, damping: 20 }}
-            style={{ display: "flex", gap: 14, flexWrap: "wrap", marginBottom: 44, justifyContent: "center" }}
+            transition={{ duration: 0.6, delay: 1.2, type: "spring", stiffness: 120, damping: 20 }}
+            style={{ display: "flex", gap: 16, flexWrap: "wrap", marginBottom: 48, justifyContent: "center" }}
           >
             <a href="#subjects" style={{
               background: `linear-gradient(135deg,${BLUE},#2563eb)`, color: "#fff",
@@ -608,37 +802,44 @@ export default function AlgorithmXHome() {
             <a href="#subjects" style={{
               color: "#334155", fontSize: 15, fontWeight: 600,
               padding: "14px 32px", borderRadius: 100, textDecoration: "none",
-              border: `1.5px solid #cbd5e1`, background: "#fff",
+              border: `1px solid #cbd5e1`, background: "#fff",
             }}>I Want to Learn</a>
           </motion.div>
 
-          <div className="ax-trust-strip" style={{ display: "flex", justifyContent: "center", gap: 28, flexWrap: "wrap" }}>
+          <div className="ax-trust-strip" style={{ display: "flex", justifyContent: "center", gap: 24, flexWrap: "wrap" }}>
             {TRUST_STRIP.map((t, i) => (
               <motion.span
                 key={t}
                 initial={{ opacity: 0, x: -20 }}
                 animate={heroInView ? { opacity: 1, x: 0 } : {}}
-                transition={{ duration: 0.5, delay: 1.4 + i * 0.08, ease: [0.16, 1, 0.3, 1] }}
-                style={{ display: "inline-flex", alignItems: "center", gap: 6, color: "#64748b", fontSize: 13, fontWeight: 500 }}
+                transition={{ duration: 0.5, delay: 1.5 + i * 0.1, ease: [0.16, 1, 0.3, 1] }}
+                style={{ display: "inline-flex", alignItems: "center", gap: 8, color: "#94a3b8", fontSize: 13, fontWeight: 500 }}
               >
-                <Ico name="check" size={14} color={GREEN} sw={2.5} />{t}
+                <span style={{
+                  width: 16, height: 16, borderRadius: "50%",
+                  background: `${GREEN}26`,
+                  display: "inline-flex", alignItems: "center", justifyContent: "center",
+                }}>
+                  <Ico name="check" size={10} color={GREEN} sw={3} />
+                </span>
+                {t}
               </motion.span>
             ))}
           </div>
 
           <div aria-hidden style={{
-            position: "absolute", bottom: 36, left: "50%", transform: "translateX(-50%)",
-            animation: "chevronBounce 2s ease-in-out infinite",
+            position: "absolute", bottom: 32, left: "50%",
+            animation: "axBounce 2s ease-in-out infinite",
             color: MUTED,
           }}>
-            <Ico name="chevron" size={22} color={MUTED} sw={2} />
+            <Ico name="chevron" size={24} color={MUTED} sw={2} />
           </div>
         </section>
 
         {/* ═══ 3. THE PROBLEM — 3 stat cards ═══ */}
-        <section style={{ position: "relative", zIndex: 1, background: BG_ALT, padding: "120px 24px", borderTop: `1px solid ${BORDER}`, borderBottom: `1px solid ${BORDER}` }}>
-          <div style={{ maxWidth: 1100, margin: "0 auto" }}>
-            <div className="ax-stats-row" style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 20 }}>
+        <section style={{ position: "relative", zIndex: 1, background: BG_ALT, padding: "100px 24px", borderTop: `1px solid ${BORDER}`, borderBottom: `1px solid ${BORDER}` }}>
+          <div style={{ maxWidth: 900, margin: "0 auto" }}>
+            <div className="ax-stats-row" style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 24 }}>
               {[
                 { value: 72, prefix: "", suffix: "%", color: RED, label: "of children encounter online threats before age 10" },
                 { value: 93, prefix: "", suffix: "%", color: BLUE, label: "of UK employers say cybersecurity skills are now essential" },
@@ -646,16 +847,17 @@ export default function AlgorithmXHome() {
               ].map((stat, i) => (
                 <FadeUp key={i} delay={i * 0.1}>
                   <div style={{
-                    background: WHITE, borderRadius: 16, border: `1px solid ${BORDER}`,
-                    padding: 32, textAlign: "center", overflow: "hidden",
-                    position: "relative", height: "100%",
+                    background: WHITE, borderRadius: 16,
+                    border: `1px solid ${BORDER}`,
+                    borderTop: `3px solid ${stat.color}`,
+                    padding: 32, textAlign: "center",
+                    height: "100%",
                     boxShadow: "0 1px 3px rgba(0,0,0,0.04)",
                   }}>
-                    <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: stat.color }} />
-                    <p className="dsp" style={{ fontSize: 72, fontWeight: 700, color: stat.color, lineHeight: 1 }}>
+                    <p className="dsp" style={{ fontSize: 64, fontWeight: 700, color: stat.color, lineHeight: 1 }}>
                       {stat.prefix}<Counter to={stat.value} duration={2000} />{stat.suffix}
                     </p>
-                    <p style={{ color: BODY, fontSize: 15, lineHeight: 1.6, marginTop: 14, maxWidth: 280, marginLeft: "auto", marginRight: "auto" }}>
+                    <p style={{ color: BODY, fontSize: 14, lineHeight: 1.6, marginTop: 14, maxWidth: 280, marginLeft: "auto", marginRight: "auto" }}>
                       {stat.label}
                     </p>
                   </div>
@@ -663,15 +865,15 @@ export default function AlgorithmXHome() {
               ))}
             </div>
 
-            <div ref={underlineRef} style={{ textAlign: "center", marginTop: 72 }}>
-              <p className="dsp" style={{ fontSize: 20, fontWeight: 700, color: HEADING, display: "inline-block", position: "relative", maxWidth: 720, lineHeight: 1.5 }}>
+            <div ref={underlineRef} style={{ textAlign: "center", marginTop: 48 }}>
+              <p className="dsp" style={{ fontSize: 20, fontWeight: 700, color: HEADING, display: "inline-block", position: "relative", maxWidth: 700, lineHeight: 1.5 }}>
                 Whether you&rsquo;re protecting your child or building your career — AlgorithmX has the right course.
                 <span style={{
-                  position: "absolute", bottom: -6, left: 0, height: 2,
+                  position: "absolute", bottom: -8, left: 0, height: 2,
                   background: `linear-gradient(90deg,${BLUE},${GREEN})`,
                   borderRadius: 2,
                   width: underlineInView ? "100%" : "0%",
-                  transition: "width 0.8s cubic-bezier(0.16,1,0.3,1)",
+                  transition: "width 1s cubic-bezier(0.16,1,0.3,1)",
                 }} />
               </p>
             </div>
@@ -679,7 +881,7 @@ export default function AlgorithmXHome() {
         </section>
 
         {/* ═══ 4. SUBJECT SHOWCASE ═══ */}
-        <section id="subjects" style={{ position: "relative", zIndex: 1, background: WHITE, padding: "120px 24px", overflow: "hidden" }}>
+        <section id="subjects" style={{ position: "relative", zIndex: 1, background: WHITE, padding: "100px 24px", overflow: "hidden" }}>
           <AnimatePresence>
             <motion.div
               key={activeSubject.id + "-wash"}
@@ -692,7 +894,7 @@ export default function AlgorithmXHome() {
                 position: "absolute", top: "30%", left: "50%", transform: "translate(-50%,-50%)",
                 width: 900, height: 900, borderRadius: "50%",
                 background: `radial-gradient(circle,${activeSubject.accent},transparent 65%)`,
-                opacity: 0.05, pointerEvents: "none", zIndex: 0,
+                opacity: 0.04, pointerEvents: "none", zIndex: 0,
               }}
             />
           </AnimatePresence>
@@ -700,7 +902,7 @@ export default function AlgorithmXHome() {
           <div style={{ position: "relative", zIndex: 1, maxWidth: 1200, margin: "0 auto" }}>
             <div style={{ textAlign: "center", marginBottom: 48 }}>
               <FadeUp>
-                <h2 className="dsp" style={{ fontSize: "clamp(30px,4vw,40px)", fontWeight: 700, color: HEADING, marginBottom: 14 }}>
+                <h2 className="dsp" style={{ fontSize: "clamp(30px,4vw,40px)", fontWeight: 700, color: HEADING, marginBottom: 12 }}>
                   Explore Our Engineering Fields
                 </h2>
               </FadeUp>
@@ -726,7 +928,7 @@ export default function AlgorithmXHome() {
                         padding: "10px 24px", borderRadius: 100,
                         fontFamily: "'DM Sans',sans-serif", fontSize: 14, fontWeight: 700,
                         whiteSpace: "nowrap",
-                        boxShadow: active ? `0 4px 16px ${s.accent}30` : "none",
+                        boxShadow: active ? `0 4px 16px ${s.accent}40` : "none",
                         transition: "background .2s ease, color .2s ease, box-shadow .2s ease",
                       }}
                     >
@@ -754,7 +956,7 @@ export default function AlgorithmXHome() {
                   <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
                     <div style={{
                       width: 48, height: 48, borderRadius: 14,
-                      background: `${activeSubject.accent}14`, border: `1px solid ${activeSubject.accent}30`,
+                      background: `${activeSubject.accent}14`, border: `2px solid ${activeSubject.accent}4d`,
                       display: "flex", alignItems: "center", justifyContent: "center",
                     }}>
                       <Ico name={activeSubject.icon} size={24} color={activeSubject.accent} />
@@ -773,8 +975,7 @@ export default function AlgorithmXHome() {
                     padding: "6px 14px", borderRadius: 100,
                     fontSize: 11, fontWeight: 700, letterSpacing: ".06em",
                     color: activeSubject.statusColor,
-                    background: `${activeSubject.statusColor}14`,
-                    border: `1px solid ${activeSubject.statusColor}30`,
+                    background: `${activeSubject.statusColor}1a`,
                   }}>
                     {activeSubject.status === "AVAILABLE NOW" && <span style={{ width: 6, height: 6, borderRadius: "50%", background: activeSubject.statusColor }} />}
                     {activeSubject.status}
@@ -792,15 +993,15 @@ export default function AlgorithmXHome() {
         </section>
 
         {/* ═══ 5. HOW IT WORKS ═══ */}
-        <section id="how" style={{ position: "relative", zIndex: 1, background: BG_ALT, padding: "140px 24px", borderTop: `1px solid ${BORDER}` }}>
-          <div style={{ maxWidth: 1000, margin: "0 auto" }}>
+        <section id="how" style={{ position: "relative", zIndex: 1, background: BG_ALT, padding: "100px 24px", borderTop: `1px solid ${BORDER}` }}>
+          <div style={{ maxWidth: 900, margin: "0 auto" }}>
             <FadeUp>
-              <h2 className="dsp" style={{ fontSize: "clamp(28px,4vw,36px)", fontWeight: 700, color: HEADING, textAlign: "center", marginBottom: 64 }}>
+              <h2 className="dsp" style={{ fontSize: "clamp(28px,4vw,36px)", fontWeight: 700, color: HEADING, textAlign: "center", marginBottom: 56 }}>
                 How It Works
               </h2>
             </FadeUp>
 
-            <div ref={stepsRef} className="ax-steps" style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", position: "relative", gap: 16 }}>
+            <div ref={stepsRef} className="ax-steps" style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", position: "relative", gap: 0 }}>
               <div className="ax-steps-line-h" aria-hidden style={{
                 position: "absolute", top: 28, left: 28, right: 28, height: 2, zIndex: 0,
                 background: "#e2e8f0", borderRadius: 2, overflow: "hidden",
@@ -809,29 +1010,28 @@ export default function AlgorithmXHome() {
                   height: "100%", borderRadius: 2,
                   background: `linear-gradient(90deg,${BLUE},${GREEN},${ORANGE},${YELLOW})`,
                   width: stepsInView ? "100%" : "0%",
-                  transition: "width 1.2s cubic-bezier(0.16,1,0.3,1)",
+                  transition: "width 1.5s cubic-bezier(0.16,1,0.3,1)",
                 }} />
               </div>
 
               {STEPS.map((step, i) => (
                 <motion.div
                   key={step.n}
-                  initial={{ opacity: 0, scale: 0.8 }}
+                  initial={{ opacity: 0, scale: 0.6 }}
                   animate={stepsInView ? { opacity: 1, scale: 1 } : {}}
-                  transition={{ duration: 0.5, delay: 0.2 + i * 0.15, type: "spring", stiffness: 180, damping: 15 }}
-                  style={{ display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", flex: 1, position: "relative", zIndex: 1 }}
+                  transition={{ duration: 0.5, delay: 0.3 + i * 0.2, type: "spring", stiffness: 180, damping: 15 }}
+                  style={{ display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", width: 200, position: "relative", zIndex: 1 }}
                 >
                   <div style={{
                     width: 56, height: 56, borderRadius: "50%",
                     background: WHITE, border: `2px solid ${step.accent}`,
                     display: "flex", alignItems: "center", justifyContent: "center",
-                    marginBottom: 16,
-                    boxShadow: `0 4px 14px ${step.accent}25`,
+                    boxShadow: `0 4px 16px ${step.accent}40`,
                   }}>
-                    <span className="dsp" style={{ fontSize: 22, fontWeight: 700, color: step.accent }}>{step.n}</span>
+                    <span className="dsp" style={{ fontSize: 20, fontWeight: 700, color: step.accent }}>{step.n}</span>
                   </div>
-                  <h3 className="dsp" style={{ fontSize: 16, fontWeight: 700, color: HEADING, marginBottom: 6 }}>{step.title}</h3>
-                  <p style={{ color: BODY, fontSize: 14, lineHeight: 1.6, maxWidth: 200 }}>{step.desc}</p>
+                  <h3 className="dsp" style={{ fontSize: 15, fontWeight: 700, color: HEADING, marginTop: 16 }}>{step.title}</h3>
+                  <p style={{ color: MUTED, fontSize: 13, marginTop: 6 }}>{step.desc}</p>
                 </motion.div>
               ))}
             </div>
@@ -839,106 +1039,104 @@ export default function AlgorithmXHome() {
         </section>
 
         {/* ═══ 6. CREDIBILITY ═══ */}
-        <section style={{ position: "relative", zIndex: 1, background: WHITE, padding: "120px 24px" }}>
-          <div style={{ maxWidth: 1100, margin: "0 auto" }}>
-            <FadeUp>
-              <h2 className="dsp" style={{ fontSize: "clamp(28px,4vw,36px)", fontWeight: 700, color: HEADING, textAlign: "center", marginBottom: 56 }}>
-                Trusted by Parents, Teachers &amp; Learners
-              </h2>
-            </FadeUp>
+        <section style={{ position: "relative", zIndex: 1, background: WHITE, padding: "100px 24px" }}>
+          <FadeUp>
+            <h2 className="dsp" style={{ fontSize: "clamp(28px,4vw,36px)", fontWeight: 700, color: HEADING, textAlign: "center", marginBottom: 56 }}>
+              Trusted by Parents, Teachers &amp; Learners
+            </h2>
+          </FadeUp>
 
-            <div className="ax-testimonials" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20, marginBottom: 72 }}>
-              {TESTIMONIALS.map((t, i) => (
-                <FadeUp key={i} delay={i * 0.08}>
-                  <div
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.transform = "translateY(-4px)";
-                      e.currentTarget.style.boxShadow = "0 12px 40px rgba(0,0,0,0.08)";
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.transform = "none";
-                      e.currentTarget.style.boxShadow = "0 1px 3px rgba(0,0,0,0.04)";
-                    }}
-                    style={{
-                      background: WHITE, borderRadius: 16, padding: 28,
-                      border: `1px solid ${BORDER}`,
-                      borderLeft: t.accent ? `3px solid ${t.accent}` : `1px solid ${BORDER}`,
-                      position: "relative", overflow: "hidden",
-                      boxShadow: "0 1px 3px rgba(0,0,0,0.04)",
-                      height: "100%",
-                      transition: "transform .3s ease, box-shadow .3s ease",
-                    }}
-                  >
-                    <div aria-hidden style={{ position: "absolute", top: 14, left: 20, opacity: 0.08 }}>
-                      <Ico name="quote" size={48} color={t.accent || BLUE} sw={1.5} />
-                    </div>
-                    <p style={{ color: BODY, fontSize: 15, lineHeight: 1.8, marginBottom: 20, position: "relative" }}>
-                      &ldquo;{t.text}&rdquo;
-                    </p>
-                    <p style={{ color: HEADING, fontSize: 14, fontWeight: 700 }}>{t.name}</p>
-                    <p style={{ color: MUTED, fontSize: 12 }}>{t.role}</p>
+          {/* Testimonials marquee */}
+          <div style={{ marginBottom: 72 }}>
+            <InfiniteMovingCards
+              items={TESTIMONIALS}
+              speed={60}
+              pauseOnHover
+              itemKey={(t) => t.name}
+              renderItem={(t) => (
+                <div style={{
+                  width: 360,
+                  background: WHITE, borderRadius: 16, padding: 28,
+                  border: `1px solid ${BORDER}`,
+                  borderLeft: `3px solid ${t.accent}`,
+                  position: "relative", overflow: "hidden",
+                  boxShadow: "0 1px 3px rgba(0,0,0,0.04)",
+                  height: 260,
+                  display: "flex", flexDirection: "column",
+                }}>
+                  <div aria-hidden style={{ position: "absolute", top: 14, left: 20, opacity: 0.08 }}>
+                    <Ico name="quote" size={48} color={t.accent} sw={1.5} />
                   </div>
-                </FadeUp>
-              ))}
-            </div>
-
-            <FadeUp>
-              <div style={{ textAlign: "center" }}>
-                <p style={{ fontSize: 11, fontWeight: 700, letterSpacing: ".14em", textTransform: "uppercase", color: MUTED, marginBottom: 28 }}>
-                  Trusted &amp; Aligned With
-                </p>
-                <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: 32, flexWrap: "wrap" }}>
-                  {TRUST_LOGOS.map((t) => (
-                    <div key={t.name} title={t.name} style={{ display: "flex", alignItems: "center", justifyContent: "center", minHeight: 56 }}>
-                      {t.src ? (
-                        <img
-                          src={t.src}
-                          alt={t.name}
-                          width={56}
-                          height={56}
-                          loading="lazy"
-                          className="ax-logo-img"
-                          style={{ objectFit: "contain" }}
-                        />
-                      ) : (
-                        <div className="ax-logo-img" style={{
-                          width: 56, height: 56, borderRadius: "50%",
-                          background: "#f1f5f9",
-                          display: "flex", alignItems: "center", justifyContent: "center",
-                          padding: 6, textAlign: "center",
-                        }}>
-                          <span style={{ fontSize: 9, fontWeight: 700, color: MUTED, lineHeight: 1.15 }}>
-                            {t.name}
-                          </span>
-                        </div>
-                      )}
-                    </div>
-                  ))}
+                  <p style={{ color: BODY, fontSize: 15, lineHeight: 1.7, marginBottom: 16, position: "relative", flex: 1 }}>
+                    &ldquo;{t.quote}&rdquo;
+                  </p>
+                  <p style={{ color: HEADING, fontSize: 14, fontWeight: 700 }}>{t.name}</p>
+                  <p style={{ color: MUTED, fontSize: 12 }}>{t.title}</p>
                 </div>
-              </div>
-            </FadeUp>
+              )}
+            />
+          </div>
+
+          {/* Trust logos marquee */}
+          <div style={{ textAlign: "center" }}>
+            <p style={{ fontSize: 11, fontWeight: 700, letterSpacing: ".14em", textTransform: "uppercase", color: MUTED, marginBottom: 28 }}>
+              Trusted &amp; Aligned With
+            </p>
+            <InfiniteMovingCards
+              items={TRUST_LOGOS}
+              speed={45}
+              pauseOnHover
+              itemKey={(l) => l.name}
+              renderItem={(t) => (
+                <div title={t.name} style={{ display: "flex", alignItems: "center", justifyContent: "center", minHeight: 56, minWidth: 64 }}>
+                  {t.src ? (
+                    <img
+                      src={t.src}
+                      alt={t.name}
+                      width={48}
+                      height={48}
+                      loading="lazy"
+                      className="ax-logo-img"
+                      style={{ objectFit: "contain" }}
+                    />
+                  ) : (
+                    <div className="ax-logo-img" style={{
+                      height: 48, padding: "0 16px",
+                      background: "#f1f5f9",
+                      borderRadius: 8,
+                      display: "flex", alignItems: "center", justifyContent: "center",
+                      whiteSpace: "nowrap",
+                    }}>
+                      <span style={{ fontSize: 10, fontWeight: 700, color: MUTED, letterSpacing: ".02em" }}>
+                        {t.name}
+                      </span>
+                    </div>
+                  )}
+                </div>
+              )}
+            />
           </div>
         </section>
 
         {/* ═══ 7. FINAL CTA ═══ */}
-        <section style={{ position: "relative", zIndex: 1, background: BG_ALT, padding: "120px 24px", borderTop: `1px solid ${BORDER}` }}>
-          <div style={{ maxWidth: 680, margin: "0 auto" }}>
+        <section style={{ position: "relative", zIndex: 1, background: BG_ALT, padding: "100px 24px", borderTop: `1px solid ${BORDER}` }}>
+          <div style={{ maxWidth: 600, margin: "0 auto" }}>
             <FadeUp>
               <div style={{
                 borderRadius: 24, padding: 2,
-                background: `conic-gradient(from var(--angle,0deg),${BLUE},${GREEN},${ORANGE},${YELLOW},${BLUE})`,
+                background: `conic-gradient(from var(--angle,0deg),${BLUE},${GREEN},${ORANGE},${YELLOW},${PURPLE},${BLUE})`,
                 animation: "axRotateGrad 4s linear infinite",
               }}>
                 <div style={{
                   background: WHITE, borderRadius: 22, padding: "56px 36px", textAlign: "center",
                 }}>
-                  <h2 className="dsp" style={{ fontSize: "clamp(30px,4vw,38px)", fontWeight: 700, color: HEADING, marginBottom: 14 }}>
+                  <h2 className="dsp" style={{ fontSize: "clamp(30px,4vw,38px)", fontWeight: 700, color: HEADING, marginBottom: 16 }}>
                     Ready to Start?
                   </h2>
-                  <p style={{ color: "#64748b", fontSize: 17, lineHeight: 1.7, maxWidth: 460, margin: "0 auto 32px" }}>
+                  <p style={{ color: "#64748b", fontSize: 17, lineHeight: 1.7, maxWidth: 420, margin: "0 auto 32px" }}>
                     Choose a subject, pick your level, and begin today.
                   </p>
-                  <div className="ax-final-ctas" style={{ display: "flex", gap: 14, justifyContent: "center", flexWrap: "wrap", marginBottom: 20 }}>
+                  <div className="ax-final-ctas" style={{ display: "flex", gap: 14, justifyContent: "center", flexWrap: "wrap", marginBottom: 24 }}>
                     <a href="#subjects" style={{
                       background: `linear-gradient(135deg,${BLUE},#2563eb)`, color: "#fff",
                       fontSize: 15, fontWeight: 700, padding: "14px 32px", borderRadius: 100,
@@ -947,11 +1145,11 @@ export default function AlgorithmXHome() {
                     <a href="#subjects" style={{
                       color: "#334155", fontSize: 15, fontWeight: 600,
                       padding: "14px 32px", borderRadius: 100, textDecoration: "none",
-                      border: `1.5px solid #cbd5e1`, background: WHITE,
+                      border: `1px solid #cbd5e1`, background: WHITE,
                     }}>I Want to Learn</a>
                   </div>
                   <p style={{ color: MUTED, fontSize: 13 }}>One-time payment · Lifetime access · 30-day guarantee</p>
-                  <p style={{ marginTop: 12, fontSize: 13 }}>
+                  <p style={{ marginTop: 8, fontSize: 13 }}>
                     <a href="mailto:support@algorithmx.co.uk" style={{ color: MUTED, textDecoration: "none" }}>
                       Questions? Email us at support@algorithmx.co.uk
                     </a>
@@ -964,56 +1162,59 @@ export default function AlgorithmXHome() {
 
         {/* ═══ 8. FOOTER ═══ */}
         <footer style={{ position: "relative", zIndex: 1, background: "#0f172a", color: "#cbd5e1", padding: "56px 24px 40px" }}>
-          <div className="ax-footer-grid" style={{ maxWidth: 1200, margin: "0 auto", display: "grid", gridTemplateColumns: "2fr 1fr 1fr 1fr", gap: 40 }}>
-            <div>
-              <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 12 }}>
-                <div style={{ width: 30, height: 30, borderRadius: 8, background: `linear-gradient(135deg,${BLUE},${GREEN})`, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                  <Ico name="shield" size={15} sw={2.5} />
+          <div style={{ maxWidth: 1200, margin: "0 auto" }}>
+            <div className="ax-footer-grid" style={{ display: "grid", gridTemplateColumns: "2fr 1fr 1fr 1fr", gap: 48 }}>
+              <div>
+                <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 12 }}>
+                  <div style={{ width: 30, height: 30, borderRadius: 8, background: `linear-gradient(135deg,${BLUE},${GREEN})`, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                    <Ico name="shield" size={15} sw={2.5} />
+                  </div>
+                  <span className="dsp" style={{ fontSize: 18, fontWeight: 700, color: "#fff" }}>Algorithm<span style={{ color: "#60a5fa" }}>X</span></span>
                 </div>
-                <span className="dsp" style={{ fontSize: 18, fontWeight: 700, color: "#fff" }}>Algorithm<span style={{ color: "#60a5fa" }}>X</span></span>
+                <p style={{ color: "#94a3b8", fontSize: 13, lineHeight: 1.6, maxWidth: 260 }}>Technology Skills for Every Stage of Life</p>
               </div>
-              <p style={{ color: "#94a3b8", fontSize: 13, lineHeight: 1.6, maxWidth: 260 }}>Technology Skills for Every Stage of Life</p>
+              <div>
+                <p style={{ color: "#64748b", fontSize: 13, fontWeight: 700, marginBottom: 14, letterSpacing: ".03em", textTransform: "uppercase" }}>Subjects</p>
+                {[
+                  { name: "Cybersecurity", href: "/cyberheroes" },
+                  { name: "Cyber Explorers", href: "/cyberexplorers" },
+                  { name: "Game Dev", href: "#" },
+                  { name: "AI / ML", href: "#" },
+                  { name: "App Dev", href: "#" },
+                  { name: "Entrepreneurship", href: "#" },
+                  { name: "Robotics", href: "#" },
+                ].map((l) => (
+                  <Link key={l.name} href={l.href} style={{ display: "block", color: "#94a3b8", fontSize: 14, textDecoration: "none", marginBottom: 8 }}>{l.name}</Link>
+                ))}
+              </div>
+              <div>
+                <p style={{ color: "#64748b", fontSize: 13, fontWeight: 700, marginBottom: 14, letterSpacing: ".03em", textTransform: "uppercase" }}>Company</p>
+                {[
+                  { name: "About", href: "#" },
+                  { name: "For Parents", href: "#" },
+                  { name: "For Teens", href: "#" },
+                  { name: "Pricing", href: "#" },
+                  { name: "Contact", href: "mailto:support@algorithmx.co.uk" },
+                ].map((l) => (
+                  <a key={l.name} href={l.href} style={{ display: "block", color: "#94a3b8", fontSize: 14, textDecoration: "none", marginBottom: 8 }}>{l.name}</a>
+                ))}
+              </div>
+              <div>
+                <p style={{ color: "#64748b", fontSize: 13, fontWeight: 700, marginBottom: 14, letterSpacing: ".03em", textTransform: "uppercase" }}>Legal</p>
+                {["Privacy", "Terms", "Cookies", "Safeguarding"].map((l) => (
+                  <a key={l} href="#" style={{ display: "block", color: "#94a3b8", fontSize: 14, textDecoration: "none", marginBottom: 8 }}>{l}</a>
+                ))}
+              </div>
             </div>
-            <div>
-              <p style={{ color: "#fff", fontSize: 13, fontWeight: 700, marginBottom: 14, letterSpacing: ".03em", textTransform: "uppercase" }}>Subjects</p>
-              {[
-                { name: "Cybersecurity", href: "/cyberheroes" },
-                { name: "Cyber Explorers", href: "/cyberexplorers" },
-                { name: "Game Dev", href: "#" },
-                { name: "AI / ML", href: "#" },
-                { name: "App Dev", href: "#" },
-                { name: "Entrepreneurship", href: "#" },
-                { name: "Robotics", href: "#" },
-              ].map((l) => (
-                <Link key={l.name} href={l.href} style={{ display: "block", color: "#94a3b8", fontSize: 13, textDecoration: "none", marginBottom: 8 }}>{l.name}</Link>
-              ))}
+            <div style={{ height: 1, background: "#1e293b", margin: "40px 0 24px" }} />
+            <div className="ax-footer-bottom" style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+              <a href="mailto:support@algorithmx.co.uk" style={{ color: "#64748b", fontSize: 12, textDecoration: "none" }}>
+                support@algorithmx.co.uk
+              </a>
+              <p style={{ color: "#64748b", fontSize: 11 }}>
+                &copy; 2026 AlgorithmX Ltd. Registered in England and Wales.
+              </p>
             </div>
-            <div>
-              <p style={{ color: "#fff", fontSize: 13, fontWeight: 700, marginBottom: 14, letterSpacing: ".03em", textTransform: "uppercase" }}>Company</p>
-              {[
-                { name: "About", href: "#" },
-                { name: "For Parents", href: "#" },
-                { name: "For Teens", href: "#" },
-                { name: "Pricing", href: "#" },
-                { name: "Contact", href: "mailto:support@algorithmx.co.uk" },
-              ].map((l) => (
-                <a key={l.name} href={l.href} style={{ display: "block", color: "#94a3b8", fontSize: 13, textDecoration: "none", marginBottom: 8 }}>{l.name}</a>
-              ))}
-            </div>
-            <div>
-              <p style={{ color: "#fff", fontSize: 13, fontWeight: 700, marginBottom: 14, letterSpacing: ".03em", textTransform: "uppercase" }}>Legal</p>
-              {["Privacy", "Terms", "Cookies", "Safeguarding"].map((l) => (
-                <a key={l} href="#" style={{ display: "block", color: "#94a3b8", fontSize: 13, textDecoration: "none", marginBottom: 8 }}>{l}</a>
-              ))}
-            </div>
-          </div>
-          <div style={{ maxWidth: 1200, margin: "40px auto 0", textAlign: "center" }}>
-            <a href="mailto:support@algorithmx.co.uk" style={{ color: "#64748b", fontSize: 12, textDecoration: "none" }}>
-              support@algorithmx.co.uk
-            </a>
-            <p style={{ color: "#64748b", fontSize: 11, marginTop: 6 }}>
-              &copy; 2026 AlgorithmX Ltd. Registered in England and Wales.
-            </p>
           </div>
         </footer>
       </div>
