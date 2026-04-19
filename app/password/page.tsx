@@ -126,6 +126,11 @@ export default function PasswordPage() {
           <p style={{ color: MUTED, fontSize: 12, marginTop: 32 }}>
             &copy; 2026 AlgorithmX Ltd.
           </p>
+          <p style={{ marginTop: 8, fontSize: 12 }}>
+            <a href="mailto:support@algorithmx.co.uk" style={{ color: MUTED, textDecoration: "none" }}>
+              Need help? support@algorithmx.co.uk
+            </a>
+          </p>
         </div>
       </div>
     </>

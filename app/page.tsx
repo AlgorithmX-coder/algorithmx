@@ -1037,6 +1037,11 @@ export default function AlgorithmXHome() {
                     }}>I Want to Learn</a>
                   </div>
                   <p style={{ color: MUTED, fontSize: 13 }}>One-time payment · Lifetime access · 30-day guarantee</p>
+                  <p style={{ marginTop: 10, fontSize: 13 }}>
+                    <a href="mailto:support@algorithmx.co.uk" style={{ color: MUTED, textDecoration: "none" }}>
+                      Questions? Email us at support@algorithmx.co.uk
+                    </a>
+                  </p>
                 </div>
               </div>
             </FadeUp>
@@ -1071,9 +1076,18 @@ export default function AlgorithmXHome() {
             </div>
             <div>
               <p style={{ color: "#fff", fontSize: 13, fontWeight: 700, marginBottom: 14, letterSpacing: ".03em", textTransform: "uppercase" }}>Company</p>
-              {["About", "For Parents", "For Teens", "Pricing", "Contact"].map((l) => (
-                <a key={l} href="#" style={{ display: "block", color: "#94a3b8", fontSize: 13, textDecoration: "none", marginBottom: 8 }}>{l}</a>
+              {[
+                { name: "About", href: "#" },
+                { name: "For Parents", href: "#" },
+                { name: "For Teens", href: "#" },
+                { name: "Pricing", href: "#" },
+                { name: "Contact", href: "mailto:support@algorithmx.co.uk" },
+              ].map((l) => (
+                <a key={l.name} href={l.href} style={{ display: "block", color: "#94a3b8", fontSize: 13, textDecoration: "none", marginBottom: 8 }}>{l.name}</a>
               ))}
+              <a href="mailto:support@algorithmx.co.uk" style={{ display: "block", color: "#64748b", fontSize: 12, textDecoration: "none", marginTop: 4 }}>
+                support@algorithmx.co.uk
+              </a>
             </div>
             <div>
               <p style={{ color: "#fff", fontSize: 13, fontWeight: 700, marginBottom: 14, letterSpacing: ".03em", textTransform: "uppercase" }}>Legal</p>
