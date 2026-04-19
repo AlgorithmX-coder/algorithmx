@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import { AnimatePresence, motion, useInView } from "framer-motion";
 import SmoothScroll from "@/app/components/SmoothScroll";
 
@@ -22,139 +23,60 @@ const PINK = "#ec4899";
 const AMBER = "#f59e0b";
 const RED = "#ef4444";
 
-/* ─────────────── FUTURISTIC BACKGROUND ─────────────── */
-function FuturisticBackground() {
+/* ─────────────── SHADER GRADIENT BACKGROUND (client-only via dynamic import) ─────────────── */
+const ShaderGradientCanvas = dynamic(
+  () => import("@shadergradient/react").then((m) => m.ShaderGradientCanvas),
+  { ssr: false }
+);
+const ShaderGradient = dynamic(
+  () => import("@shadergradient/react").then((m) => m.ShaderGradient),
+  { ssr: false }
+);
+
+function ShaderGradientBackground() {
   return (
-    <div aria-hidden="true" style={{
-      position: "fixed", inset: 0, zIndex: 0, pointerEvents: "none",
-      overflow: "hidden",
-    }}>
-      {/* Layer 1 — Living mesh gradient (5 orbiting circles) */}
-      <div style={{
-        position: "absolute", top: "15%", left: "20%",
-        width: 500, height: 500, borderRadius: "50%",
-        background: `radial-gradient(circle, ${BLUE}, transparent 70%)`,
-        opacity: 0.08, filter: "blur(60px)",
-        animation: "meshOrbit1 35s ease-in-out infinite",
-        willChange: "transform",
-      }} />
-      <div style={{
-        position: "absolute", top: "60%", left: "65%",
-        width: 450, height: 450, borderRadius: "50%",
-        background: `radial-gradient(circle, ${GREEN}, transparent 70%)`,
-        opacity: 0.06, filter: "blur(60px)",
-        animation: "meshOrbit2 42s ease-in-out infinite",
-        willChange: "transform",
-      }} />
-      <div style={{
-        position: "absolute", top: "30%", left: "75%",
-        width: 550, height: 550, borderRadius: "50%",
-        background: `radial-gradient(circle, ${PURPLE}, transparent 70%)`,
-        opacity: 0.05, filter: "blur(60px)",
-        animation: "meshOrbit3 38s ease-in-out infinite",
-        willChange: "transform",
-      }} />
-      <div style={{
-        position: "absolute", bottom: "20%", left: "10%",
-        width: 400, height: 400, borderRadius: "50%",
-        background: `radial-gradient(circle, ${PINK}, transparent 70%)`,
-        opacity: 0.04, filter: "blur(60px)",
-        animation: "meshOrbit4 45s ease-in-out infinite",
-        willChange: "transform",
-      }} />
-      <div style={{
-        position: "absolute", top: "50%", left: "40%",
-        width: 350, height: 350, borderRadius: "50%",
-        background: `radial-gradient(circle, ${AMBER}, transparent 70%)`,
-        opacity: 0.04, filter: "blur(60px)",
-        animation: "meshOrbit5 30s ease-in-out infinite",
-        willChange: "transform",
-      }} />
-
-      {/* Layer 2 — Circuit trace SVG with 8 paths + 3 pulse dots */}
-      <svg
-        width="100%" height="100%" viewBox="0 0 1200 800"
-        preserveAspectRatio="xMidYMid slice"
-        style={{
-          position: "absolute", inset: 0,
-          maskImage: "radial-gradient(ellipse 85% 80% at 50% 45%, black 20%, transparent 75%)",
-          WebkitMaskImage: "radial-gradient(ellipse 85% 80% at 50% 45%, black 20%, transparent 75%)",
-        }}
+    <div aria-hidden="true" style={{ position: "fixed", inset: 0, zIndex: 0, pointerEvents: "none" }}>
+      <ShaderGradientCanvas
+        style={{ position: "absolute", inset: 0 }}
+        pixelDensity={1}
+        fov={45}
+        pointerEvents="none"
       >
-        <g stroke="#cbd5e1" strokeWidth="0.8" fill="none" opacity="0.12">
-          <path id="trace1" d="M 60 140 L 340 140 L 340 280 L 580 280 L 580 200 L 860 200 L 860 340 L 1160 340" />
-          <path id="trace2" d="M 100 460 L 260 460 L 260 380 L 500 380 L 500 540 L 760 540 L 760 460 L 1080 460 L 1080 620 L 1160 620" />
-          <path id="trace3" d="M 40 700 L 220 700 L 220 620 L 460 620 L 460 760 L 740 760 L 740 680 L 1020 680 L 1020 760" />
-          <path id="trace4" d="M 180 40 L 180 180 L 120 180 L 120 360 L 240 360 L 240 520 L 180 520 L 180 780" />
-          <path id="trace5" d="M 520 40 L 520 120 L 460 120 L 460 240 L 620 240 L 620 420 L 540 420 L 540 600 L 620 600 L 620 780" />
-          <path id="trace6" d="M 920 40 L 920 100 L 860 100 L 860 240 L 980 240 L 980 400 L 920 400 L 920 560 L 1040 560 L 1040 780" />
-          <path id="trace7" d="M 1160 80 L 1040 80 L 1040 180 L 1160 180 L 1160 260" />
-          <path id="trace8" d="M 60 360 L 60 500 L 160 500 L 160 620" />
-        </g>
-
-        {/* Junction dots */}
-        <g fill="#cbd5e1" opacity="0.15">
-          <circle cx="340" cy="140" r="2.5" />
-          <circle cx="340" cy="280" r="2.5" />
-          <circle cx="580" cy="280" r="2.5" />
-          <circle cx="580" cy="200" r="2.5" />
-          <circle cx="860" cy="200" r="2.5" />
-          <circle cx="860" cy="340" r="2.5" />
-          <circle cx="260" cy="460" r="2.5" />
-          <circle cx="260" cy="380" r="2.5" />
-          <circle cx="500" cy="380" r="2.5" />
-          <circle cx="500" cy="540" r="2.5" />
-          <circle cx="760" cy="540" r="2.5" />
-          <circle cx="760" cy="460" r="2.5" />
-        </g>
-
-        {/* Pulse dots — travel along 3 traces */}
-        <circle r="3" fill={BLUE} style={{ filter: `drop-shadow(0 0 6px ${BLUE})` }}>
-          <animateMotion dur="8s" repeatCount="indefinite">
-            <mpath href="#trace1" />
-          </animateMotion>
-        </circle>
-        <circle r="3" fill={GREEN} style={{ filter: `drop-shadow(0 0 6px ${GREEN})` }}>
-          <animateMotion dur="12s" repeatCount="indefinite">
-            <mpath href="#trace3" />
-          </animateMotion>
-        </circle>
-        <circle r="2.5" fill={PURPLE} style={{ filter: `drop-shadow(0 0 6px ${PURPLE})` }}>
-          <animateMotion dur="10s" repeatCount="indefinite">
-            <mpath href="#trace5" />
-          </animateMotion>
-        </circle>
-      </svg>
-
-      {/* Layer 3 — Hexagonal grid */}
-      <svg
-        width="100%" height="100%"
-        preserveAspectRatio="xMidYMid slice"
-        style={{
-          position: "absolute", inset: 0,
-          maskImage: "radial-gradient(ellipse 70% 60% at 50% 40%, black 10%, transparent 70%)",
-          WebkitMaskImage: "radial-gradient(ellipse 70% 60% at 50% 40%, black 10%, transparent 70%)",
-        }}
-      >
-        <defs>
-          <pattern id="hexPattern" width="60" height="52" patternUnits="userSpaceOnUse">
-            <polygon points="30,1 57,15 57,37 30,51 3,37 3,15" stroke="#94a3b8" strokeWidth="0.4" fill="none" />
-          </pattern>
-        </defs>
-        <rect width="100%" height="100%" fill="url(#hexPattern)" opacity="0.04" />
-      </svg>
-
-      {/* Layer 4 — Noise texture */}
-      <svg
-        width="100%" height="100%"
-        preserveAspectRatio="xMidYMid slice"
-        style={{ position: "absolute", inset: 0, opacity: 0.025 }}
-      >
-        <filter id="noiseFilter">
-          <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch" />
-        </filter>
-        <rect width="100%" height="100%" filter="url(#noiseFilter)" />
-      </svg>
+        <ShaderGradient
+          type="waterPlane"
+          animate="on"
+          uSpeed={0.3}
+          uStrength={1.8}
+          uDensity={1.3}
+          uFrequency={5.5}
+          uAmplitude={0}
+          uTime={0}
+          color1="#3b82f6"
+          color2="#10b981"
+          color3="#8b5cf6"
+          reflection={0.1}
+          grain="on"
+          lightType="3d"
+          envPreset="city"
+          brightness={1.2}
+          positionX={-1.4}
+          positionY={0}
+          positionZ={0}
+          rotationX={0}
+          rotationY={10}
+          rotationZ={50}
+          cAzimuthAngle={180}
+          cPolarAngle={115}
+          cDistance={3.6}
+          cameraZoom={1}
+        />
+      </ShaderGradientCanvas>
+      {/* White overlay softens the shader so it reads as frosted glass behind content */}
+      <div style={{
+        position: "absolute", inset: 0,
+        background: "rgba(255,255,255,0.85)",
+        pointerEvents: "none",
+      }} />
     </div>
   );
 }
@@ -388,7 +310,6 @@ function CourseCard({ c }: { c: Course }) {
         willChange: "transform",
       }}
     >
-      {/* Image header (with gradient fallback) */}
       <div style={{
         height: 180, position: "relative", overflow: "hidden",
         borderRadius: "16px 16px 0 0",
@@ -434,7 +355,6 @@ function CourseCard({ c }: { c: Course }) {
         )}
       </div>
 
-      {/* Body */}
       <div style={{ padding: 20, display: "flex", flexDirection: "column", flex: 1, gap: 10 }}>
         <h3 className="dsp" style={{ fontSize: 18, fontWeight: 700, color: HEADING, lineHeight: 1.3 }}>
           {c.title}
@@ -502,12 +422,6 @@ a,button{cursor:pointer}
 @property --angle{syntax:'<angle>';initial-value:0deg;inherits:false}
 @keyframes axRotateGrad{to{--angle:360deg}}
 @keyframes chevronBounce{0%,100%{transform:translateY(0);opacity:.5}50%{transform:translateY(6px);opacity:.9}}
-
-@keyframes meshOrbit1{0%,100%{transform:translate(0,0)}50%{transform:translate(150px,80px)}}
-@keyframes meshOrbit2{0%,100%{transform:translate(0,0)}50%{transform:translate(-120px,-100px)}}
-@keyframes meshOrbit3{0%,100%{transform:translate(0,0)}50%{transform:translate(-100px,60px)}}
-@keyframes meshOrbit4{0%,100%{transform:translate(0,0)}50%{transform:translate(80px,-120px)}}
-@keyframes meshOrbit5{0%,100%{transform:scale(1)}50%{transform:scale(1.3)}}
 
 .ax-course-row{
   display:flex;gap:20px;
@@ -601,7 +515,7 @@ export default function AlgorithmXHome() {
       <div style={{ background: WHITE, minHeight: "100vh", color: HEADING, overflowX: "hidden" }}>
         <style>{CSS}</style>
 
-        <FuturisticBackground />
+        <ShaderGradientBackground />
 
         {/* ═══ 1. NAV ═══ */}
         <nav style={{
@@ -778,7 +692,7 @@ export default function AlgorithmXHome() {
                 position: "absolute", top: "30%", left: "50%", transform: "translate(-50%,-50%)",
                 width: 900, height: 900, borderRadius: "50%",
                 background: `radial-gradient(circle,${activeSubject.accent},transparent 65%)`,
-                opacity: 0.03, pointerEvents: "none", zIndex: 0,
+                opacity: 0.05, pointerEvents: "none", zIndex: 0,
               }}
             />
           </AnimatePresence>
@@ -1037,7 +951,7 @@ export default function AlgorithmXHome() {
                     }}>I Want to Learn</a>
                   </div>
                   <p style={{ color: MUTED, fontSize: 13 }}>One-time payment · Lifetime access · 30-day guarantee</p>
-                  <p style={{ marginTop: 10, fontSize: 13 }}>
+                  <p style={{ marginTop: 12, fontSize: 13 }}>
                     <a href="mailto:support@algorithmx.co.uk" style={{ color: MUTED, textDecoration: "none" }}>
                       Questions? Email us at support@algorithmx.co.uk
                     </a>
@@ -1085,9 +999,6 @@ export default function AlgorithmXHome() {
               ].map((l) => (
                 <a key={l.name} href={l.href} style={{ display: "block", color: "#94a3b8", fontSize: 13, textDecoration: "none", marginBottom: 8 }}>{l.name}</a>
               ))}
-              <a href="mailto:support@algorithmx.co.uk" style={{ display: "block", color: "#64748b", fontSize: 12, textDecoration: "none", marginTop: 4 }}>
-                support@algorithmx.co.uk
-              </a>
             </div>
             <div>
               <p style={{ color: "#fff", fontSize: 13, fontWeight: 700, marginBottom: 14, letterSpacing: ".03em", textTransform: "uppercase" }}>Legal</p>
@@ -1096,9 +1007,14 @@ export default function AlgorithmXHome() {
               ))}
             </div>
           </div>
-          <p style={{ color: "#64748b", fontSize: 11, textAlign: "center", marginTop: 40 }}>
-            &copy; 2026 AlgorithmX Ltd. Registered in England and Wales.
-          </p>
+          <div style={{ maxWidth: 1200, margin: "40px auto 0", textAlign: "center" }}>
+            <a href="mailto:support@algorithmx.co.uk" style={{ color: "#64748b", fontSize: 12, textDecoration: "none" }}>
+              support@algorithmx.co.uk
+            </a>
+            <p style={{ color: "#64748b", fontSize: 11, marginTop: 6 }}>
+              &copy; 2026 AlgorithmX Ltd. Registered in England and Wales.
+            </p>
+          </div>
         </footer>
       </div>
     </SmoothScroll>
