@@ -128,6 +128,7 @@ type Course = {
   coming?: string;
   gradient: [string, string];
   icon: string;
+  image: string;
   extra?: string;
   href: string;
 };
@@ -153,10 +154,10 @@ const SUBJECTS: Subject[] = [
     status: "AVAILABLE NOW",
     statusColor: GREEN,
     courses: [
-      { title: "Cyber Heroes Academy", ageRange: "Ages 6-10", ageColor: GREEN, desc: "Learn cybersecurity through animated adventures with Adam, Layla, and Robo. Story-driven missions make online safety fun and unforgettable.", duration: "20 weeks · 45 min/week", price: "£99 · Lifetime Access", live: true, gradient: ["#d1fae5", "#a7f3d0"], icon: "shield", href: "/cyberheroes" },
-      { title: "Cyber Explorers", ageRange: "Ages 11-14", ageColor: PURPLE, desc: "Go deeper into how the internet really works. Phishing simulations, network basics, and your first ethical hacking challenges.", duration: "12 weeks · 1 hr/week", price: "£99 · Lifetime Access", live: false, coming: "COMING 2026", gradient: ["#ede9fe", "#c4b5fd"], icon: "shield", href: "/cyberexplorers" },
-      { title: "CyberStart", ageRange: "Ages 15-17", ageColor: ORANGE, desc: "Hands-on CTF challenges, incident response drills, and mock penetration testing. Build a portfolio that proves your skills.", duration: "16 weeks · 1.5 hrs/week", price: "£99 · Lifetime Access", live: false, coming: "COMING 2026", gradient: ["#ffedd5", "#fed7aa"], icon: "shield", href: "#" },
-      { title: "CyberStart Pro", ageRange: "Ages 18+", ageColor: YELLOW, desc: "Professional-grade training in penetration testing, security operations, and compliance. Get ready to apply for industry roles.", duration: "20 weeks · 2 hrs/week", price: "£109 · Lifetime Access", live: false, coming: "COMING 2027", gradient: ["#fef9c3", "#fde68a"], icon: "shield", href: "#" },
+      { title: "Cyber Heroes Academy", ageRange: "Ages 6-10", ageColor: GREEN, desc: "Learn cybersecurity through animated adventures with Adam, Layla, and Robo. Story-driven missions make online safety fun and unforgettable.", duration: "20 weeks · 45 min/week", price: "£99 · Lifetime Access", live: true, gradient: ["#d1fae5", "#a7f3d0"], icon: "shield", image: "/images/courses/cyber-heroes.svg", href: "/cyberheroes" },
+      { title: "Cyber Explorers", ageRange: "Ages 11-14", ageColor: PURPLE, desc: "Go deeper into how the internet really works. Phishing simulations, network basics, and your first ethical hacking challenges.", duration: "12 weeks · 1 hr/week", price: "£99 · Lifetime Access", live: false, coming: "COMING 2026", gradient: ["#ede9fe", "#c4b5fd"], icon: "shield", image: "/images/courses/cyber-explorers.png", href: "/cyberexplorers" },
+      { title: "CyberStart", ageRange: "Ages 15-17", ageColor: ORANGE, desc: "Hands-on CTF challenges, incident response drills, and mock penetration testing. Build a portfolio that proves your skills.", duration: "16 weeks · 1.5 hrs/week", price: "£99 · Lifetime Access", live: false, coming: "COMING 2026", gradient: ["#ffedd5", "#fed7aa"], icon: "shield", image: "/images/courses/cyberstart.png", href: "#" },
+      { title: "CyberStart Pro", ageRange: "Ages 18+", ageColor: YELLOW, desc: "Professional-grade training in penetration testing, security operations, and compliance. Get ready to apply for industry roles.", duration: "20 weeks · 2 hrs/week", price: "£109 · Lifetime Access", live: false, coming: "COMING 2027", gradient: ["#fef9c3", "#fde68a"], icon: "shield", image: "/images/courses/cyberstart-pro.png", href: "#" },
     ],
   },
   {
@@ -168,9 +169,9 @@ const SUBJECTS: Subject[] = [
     status: "COMING 2026",
     statusColor: AMBER,
     courses: [
-      { title: "Game Starters", ageRange: "Ages 8-10", ageColor: BLUE, desc: "Build your first games with Scratch and block-based coding. Drag, drop, and play your creations.", duration: "10 weeks · 45 min/week", price: "£99 · Lifetime Access", live: false, coming: "COMING 2026", gradient: ["#dbeafe", "#bfdbfe"], icon: "gamepad", href: "#" },
-      { title: "Game Builders", ageRange: "Ages 11-14", ageColor: BLUE, desc: "Level up to Unity and Roblox Studio. Design real game mechanics, characters, and worlds.", duration: "14 weeks · 1 hr/week", price: "£99 · Lifetime Access", live: false, coming: "COMING 2026", gradient: ["#bfdbfe", "#93c5fd"], icon: "gamepad", href: "#" },
-      { title: "Game Engineers", ageRange: "Ages 15+", ageColor: BLUE, desc: "Unreal Engine, C#, physics engines, and publishing. Ship a real game to a real audience.", duration: "18 weeks · 1.5 hrs/week", price: "£99 · Lifetime Access", live: false, coming: "COMING 2026", gradient: ["#93c5fd", "#60a5fa"], icon: "gamepad", href: "#" },
+      { title: "Game Starters", ageRange: "Ages 8-10", ageColor: BLUE, desc: "Build your first games with Scratch and block-based coding. Drag, drop, and play your creations.", duration: "10 weeks · 45 min/week", price: "£99 · Lifetime Access", live: false, coming: "COMING 2026", gradient: ["#dbeafe", "#bfdbfe"], icon: "gamepad", image: "/images/courses/gamestarters.png", href: "#" },
+      { title: "Game Builders", ageRange: "Ages 11-14", ageColor: BLUE, desc: "Level up to Unity and Roblox Studio. Design real game mechanics, characters, and worlds.", duration: "14 weeks · 1 hr/week", price: "£99 · Lifetime Access", live: false, coming: "COMING 2026", gradient: ["#bfdbfe", "#93c5fd"], icon: "gamepad", image: "/images/courses/gamebuilders.png", href: "#" },
+      { title: "Game Engineers", ageRange: "Ages 15+", ageColor: BLUE, desc: "Unreal Engine, C#, physics engines, and publishing. Ship a real game to a real audience.", duration: "18 weeks · 1.5 hrs/week", price: "£99 · Lifetime Access", live: false, coming: "COMING 2026", gradient: ["#93c5fd", "#60a5fa"], icon: "gamepad", image: "/images/courses/gameengineers.png", href: "#" },
     ],
   },
   {
@@ -182,9 +183,9 @@ const SUBJECTS: Subject[] = [
     status: "COMING 2026",
     statusColor: AMBER,
     courses: [
-      { title: "AI Discoverers", ageRange: "Ages 10-13", ageColor: PURPLE, desc: "Explore how AI works through interactive playgrounds. Train your first models and understand the ethics.", duration: "10 weeks · 1 hr/week", price: "£99 · Lifetime Access", live: false, coming: "COMING 2026", gradient: ["#ede9fe", "#ddd6fe"], icon: "brain", href: "#" },
-      { title: "AI Builders", ageRange: "Ages 14-16", ageColor: PURPLE, desc: "Build real machine learning models with Python. Image recognition, NLP, and data science fundamentals.", duration: "14 weeks · 1.5 hrs/week", price: "£99 · Lifetime Access", live: false, coming: "COMING 2026", gradient: ["#ddd6fe", "#c4b5fd"], icon: "brain", href: "#" },
-      { title: "AI Engineers", ageRange: "Ages 17+", ageColor: PURPLE, desc: "TensorFlow, neural networks, responsible AI, and deployment. Prepare for university-level AI studies.", duration: "18 weeks · 2 hrs/week", price: "£99 · Lifetime Access", live: false, coming: "COMING 2026", gradient: ["#c4b5fd", "#a78bfa"], icon: "brain", href: "#" },
+      { title: "AI Discoverers", ageRange: "Ages 10-13", ageColor: PURPLE, desc: "Explore how AI works through interactive playgrounds. Train your first models and understand the ethics.", duration: "10 weeks · 1 hr/week", price: "£99 · Lifetime Access", live: false, coming: "COMING 2026", gradient: ["#ede9fe", "#ddd6fe"], icon: "brain", image: "/images/courses/aidiscoverers.png", href: "#" },
+      { title: "AI Builders", ageRange: "Ages 14-16", ageColor: PURPLE, desc: "Build real machine learning models with Python. Image recognition, NLP, and data science fundamentals.", duration: "14 weeks · 1.5 hrs/week", price: "£99 · Lifetime Access", live: false, coming: "COMING 2026", gradient: ["#ddd6fe", "#c4b5fd"], icon: "brain", image: "/images/courses/aibuilders.png", href: "#" },
+      { title: "AI Engineers", ageRange: "Ages 17+", ageColor: PURPLE, desc: "TensorFlow, neural networks, responsible AI, and deployment. Prepare for university-level AI studies.", duration: "18 weeks · 2 hrs/week", price: "£99 · Lifetime Access", live: false, coming: "COMING 2026", gradient: ["#c4b5fd", "#a78bfa"], icon: "brain", image: "/images/courses/aiengineers.png", href: "#" },
     ],
   },
   {
@@ -196,9 +197,9 @@ const SUBJECTS: Subject[] = [
     status: "COMING 2027",
     statusColor: AMBER,
     courses: [
-      { title: "App Starters", ageRange: "Ages 10-13", ageColor: ORANGE, desc: "Design your first app with no-code tools. Wireframes, UX thinking, and bringing ideas to life.", duration: "10 weeks · 1 hr/week", price: "£99 · Lifetime Access", live: false, coming: "COMING 2027", gradient: ["#ffedd5", "#fed7aa"], icon: "phone", href: "#" },
-      { title: "App Developers", ageRange: "Ages 14-16", ageColor: ORANGE, desc: "Build real mobile apps with React Native. From idea to working prototype on your phone.", duration: "14 weeks · 1.5 hrs/week", price: "£99 · Lifetime Access", live: false, coming: "COMING 2027", gradient: ["#fed7aa", "#fdba74"], icon: "phone", href: "#" },
-      { title: "Full-Stack Developers", ageRange: "Ages 17+", ageColor: ORANGE, desc: "React, Node.js, databases, APIs, and deployment. Ship production-ready applications.", duration: "18 weeks · 2 hrs/week", price: "£99 · Lifetime Access", live: false, coming: "COMING 2027", gradient: ["#fdba74", "#fb923c"], icon: "phone", href: "#" },
+      { title: "App Starters", ageRange: "Ages 10-13", ageColor: ORANGE, desc: "Design your first app with no-code tools. Wireframes, UX thinking, and bringing ideas to life.", duration: "10 weeks · 1 hr/week", price: "£99 · Lifetime Access", live: false, coming: "COMING 2027", gradient: ["#ffedd5", "#fed7aa"], icon: "phone", image: "/images/courses/appstarters.png", href: "#" },
+      { title: "App Developers", ageRange: "Ages 14-16", ageColor: ORANGE, desc: "Build real mobile apps with React Native. From idea to working prototype on your phone.", duration: "14 weeks · 1.5 hrs/week", price: "£99 · Lifetime Access", live: false, coming: "COMING 2027", gradient: ["#fed7aa", "#fdba74"], icon: "phone", image: "/images/courses/appdevelopers.png", href: "#" },
+      { title: "Full-Stack Developers", ageRange: "Ages 17+", ageColor: ORANGE, desc: "React, Node.js, databases, APIs, and deployment. Ship production-ready applications.", duration: "18 weeks · 2 hrs/week", price: "£99 · Lifetime Access", live: false, coming: "COMING 2027", gradient: ["#fdba74", "#fb923c"], icon: "phone", image: "/images/courses/fullstackdeveloper.jpeg", href: "#" },
     ],
   },
   {
@@ -210,8 +211,8 @@ const SUBJECTS: Subject[] = [
     status: "COMING 2027",
     statusColor: AMBER,
     courses: [
-      { title: "Startup Foundations", ageRange: "Ages 14-16", ageColor: YELLOW, desc: "Turn your ideas into real products. Lean startup thinking, customer research, and your first pitch deck.", duration: "12 weeks · 1 hr/week", price: "£99 · Lifetime Access", live: false, coming: "COMING 2027", gradient: ["#fef9c3", "#fde68a"], icon: "rocket", href: "#" },
-      { title: "Venture Builder", ageRange: "Ages 17+", ageColor: YELLOW, desc: "Financial modelling, go-to-market strategy, fundraising, and building a real tech company.", duration: "16 weeks · 1.5 hrs/week", price: "£99 · Lifetime Access", live: false, coming: "COMING 2027", gradient: ["#fde68a", "#fcd34d"], icon: "rocket", href: "#" },
+      { title: "Startup Foundations", ageRange: "Ages 14-16", ageColor: YELLOW, desc: "Turn your ideas into real products. Lean startup thinking, customer research, and your first pitch deck.", duration: "12 weeks · 1 hr/week", price: "£99 · Lifetime Access", live: false, coming: "COMING 2027", gradient: ["#fef9c3", "#fde68a"], icon: "rocket", image: "/images/courses/startupfoundations.png", href: "#" },
+      { title: "Venture Builder", ageRange: "Ages 17+", ageColor: YELLOW, desc: "Financial modelling, go-to-market strategy, fundraising, and building a real tech company.", duration: "16 weeks · 1.5 hrs/week", price: "£99 · Lifetime Access", live: false, coming: "COMING 2027", gradient: ["#fde68a", "#fcd34d"], icon: "rocket", image: "/images/courses/venturestarter.png", href: "#" },
     ],
   },
   {
@@ -223,9 +224,9 @@ const SUBJECTS: Subject[] = [
     status: "COMING 2027",
     statusColor: AMBER,
     courses: [
-      { title: "Robot Explorers", ageRange: "Ages 8-10", ageColor: PINK, desc: "Build your first robot with Lego Mindstorms. Sensors, motors, and simple programming through play.", duration: "10 weeks · 1 hr/week", price: "£99 · Lifetime Access", live: false, coming: "COMING 2027", gradient: ["#fce7f3", "#fbcfe8"], icon: "cpu", href: "#" },
-      { title: "Robot Builders", ageRange: "Ages 11-14", ageColor: PINK, desc: "Arduino, sensors, and circuit design. Program real hardware to interact with the physical world.", duration: "14 weeks · 1.5 hrs/week", price: "£99 · Lifetime Access", live: false, coming: "COMING 2027", gradient: ["#fbcfe8", "#f9a8d4"], icon: "cpu", href: "#" },
-      { title: "Robot Engineers", ageRange: "Ages 15+", ageColor: PINK, desc: "ROS, autonomous systems, computer vision, and advanced microcontrollers. Engineering-grade robotics.", duration: "18 weeks · 2 hrs/week", price: "£99 · Lifetime Access", live: false, coming: "COMING 2027", gradient: ["#f9a8d4", "#f472b6"], icon: "cpu", href: "#", extra: "UK Only · Kit Included" },
+      { title: "Robot Explorers", ageRange: "Ages 8-10", ageColor: PINK, desc: "Build your first robot with Lego Mindstorms. Sensors, motors, and simple programming through play.", duration: "10 weeks · 1 hr/week", price: "£99 · Lifetime Access", live: false, coming: "COMING 2027", gradient: ["#fce7f3", "#fbcfe8"], icon: "cpu", image: "/images/courses/robot-explorers.svg", href: "#" },
+      { title: "Robot Builders", ageRange: "Ages 11-14", ageColor: PINK, desc: "Arduino, sensors, and circuit design. Program real hardware to interact with the physical world.", duration: "14 weeks · 1.5 hrs/week", price: "£99 · Lifetime Access", live: false, coming: "COMING 2027", gradient: ["#fbcfe8", "#f9a8d4"], icon: "cpu", image: "/images/courses/robot-builders.svg", href: "#" },
+      { title: "Robot Engineers", ageRange: "Ages 15+", ageColor: PINK, desc: "ROS, autonomous systems, computer vision, and advanced microcontrollers. Engineering-grade robotics.", duration: "18 weeks · 2 hrs/week", price: "£99 · Lifetime Access", live: false, coming: "COMING 2027", gradient: ["#f9a8d4", "#f472b6"], icon: "cpu", image: "/images/courses/robot-engineers.svg", href: "#", extra: "UK Only · Kit Included" },
     ],
   },
 ];
@@ -339,15 +340,20 @@ function CourseCard({ c }: { c: Course }) {
         willChange: "transform",
       }}
     >
-      {/* Gradient header */}
+      {/* Image header */}
       <div style={{
-        height: 160, position: "relative", overflow: "hidden",
+        height: 180, position: "relative", overflow: "hidden",
+        borderRadius: "16px 16px 0 0",
         background: `linear-gradient(135deg,${c.gradient[0]},${c.gradient[1]})`,
-        display: "flex", alignItems: "center", justifyContent: "center",
       }}>
-        <div style={{ opacity: 0.75 }}>
-          <Ico name={c.icon} size={56} color="#ffffff" sw={1.5} />
-        </div>
+        <img
+          src={c.image}
+          alt={c.title}
+          width={400}
+          height={300}
+          loading="lazy"
+          style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+        />
         {c.live && (
           <div style={{
             position: "absolute", top: 12, right: 12,
