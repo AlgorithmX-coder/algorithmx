@@ -14,14 +14,14 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "AlgorithmX — Cybersecurity Education for Kids",
-  description: "Interactive cybersecurity courses for ages 6-18+. Fun animated adventures, real-world simulations, and accredited learning paths.",
+  title: "AlgorithmX — Technology Education for Every Age",
+  description: "Six subjects, four age tracks each. Interactive cybersecurity, game development, AI, app development, entrepreneurship, and robotics courses for ages 6 to adult. UK-based, accreditation aligned, lifetime access.",
   icons: {
     icon: "/favicon.svg",
   },
   openGraph: {
-    title: "AlgorithmX — Cybersecurity Education for Kids",
-    description: "Interactive cybersecurity courses for ages 6-18+. Fun animated adventures with Adam & Layla.",
+    title: "AlgorithmX — Technology Education for Every Age",
+    description: "Six subjects, four age tracks each. Interactive cybersecurity, game development, AI, app development, entrepreneurship, and robotics courses for ages 6 to adult. UK-based, accreditation aligned, lifetime access.",
     type: "website",
     url: "https://algorithmx.co.uk",
   },

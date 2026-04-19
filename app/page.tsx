@@ -29,7 +29,7 @@ function FuturisticBackground() {
       position: "fixed", inset: 0, zIndex: 0, pointerEvents: "none",
       overflow: "hidden",
     }}>
-      {/* Layer 1 — Living mesh gradient */}
+      {/* Layer 1 — Living mesh gradient (5 orbiting circles) */}
       <div style={{
         position: "absolute", top: "15%", left: "20%",
         width: 500, height: 500, borderRadius: "50%",
@@ -71,76 +71,57 @@ function FuturisticBackground() {
         willChange: "transform",
       }} />
 
-      {/* Layer 2 — Circuit trace SVG */}
+      {/* Layer 2 — Circuit trace SVG with 8 paths + 3 pulse dots */}
       <svg
         width="100%" height="100%" viewBox="0 0 1200 800"
         preserveAspectRatio="xMidYMid slice"
         style={{
-          position: "absolute", inset: 0, opacity: 0.5,
+          position: "absolute", inset: 0,
           maskImage: "radial-gradient(ellipse 85% 80% at 50% 45%, black 20%, transparent 75%)",
           WebkitMaskImage: "radial-gradient(ellipse 85% 80% at 50% 45%, black 20%, transparent 75%)",
         }}
       >
-        <defs>
-          <filter id="pulseGlowBlue" x="-50%" y="-50%" width="200%" height="200%">
-            <feGaussianBlur stdDeviation="3" result="glow" />
-            <feMerge><feMergeNode in="glow" /><feMergeNode in="SourceGraphic" /></feMerge>
-          </filter>
-        </defs>
-
-        {/* Horizontal and vertical trace paths (right-angle PCB style) */}
-        <g stroke="#cbd5e1" strokeWidth="0.5" fill="none" opacity="0.35">
-          <path id="trace1" d="M0 120 L300 120 L300 200 L600 200 L600 140 L900 140 L900 280 L1200 280" />
-          <path id="trace2" d="M0 380 L180 380 L180 320 L420 320 L420 460 L720 460 L720 400 L1020 400 L1020 520 L1200 520" />
-          <path id="trace3" d="M0 640 L240 640 L240 580 L480 580 L480 700 L780 700 L780 620 L1200 620" />
-          <path d="M150 0 L150 160 L90 160 L90 340 L210 340 L210 520 L150 520 L150 800" />
-          <path d="M540 0 L540 100 L480 100 L480 260 L600 260 L600 440 L540 440 L540 620 L600 620 L600 800" />
-          <path d="M900 0 L900 80 L840 80 L840 220 L960 220 L960 360 L900 360 L900 560 L1020 560 L1020 800" />
+        <g stroke="#cbd5e1" strokeWidth="0.8" fill="none" opacity="0.12">
+          <path id="trace1" d="M 60 140 L 340 140 L 340 280 L 580 280 L 580 200 L 860 200 L 860 340 L 1160 340" />
+          <path id="trace2" d="M 100 460 L 260 460 L 260 380 L 500 380 L 500 540 L 760 540 L 760 460 L 1080 460 L 1080 620 L 1160 620" />
+          <path id="trace3" d="M 40 700 L 220 700 L 220 620 L 460 620 L 460 760 L 740 760 L 740 680 L 1020 680 L 1020 760" />
+          <path id="trace4" d="M 180 40 L 180 180 L 120 180 L 120 360 L 240 360 L 240 520 L 180 520 L 180 780" />
+          <path id="trace5" d="M 520 40 L 520 120 L 460 120 L 460 240 L 620 240 L 620 420 L 540 420 L 540 600 L 620 600 L 620 780" />
+          <path id="trace6" d="M 920 40 L 920 100 L 860 100 L 860 240 L 980 240 L 980 400 L 920 400 L 920 560 L 1040 560 L 1040 780" />
+          <path id="trace7" d="M 1160 80 L 1040 80 L 1040 180 L 1160 180 L 1160 260" />
+          <path id="trace8" d="M 60 360 L 60 500 L 160 500 L 160 620" />
         </g>
 
         {/* Junction dots */}
-        <g fill="#cbd5e1" opacity="0.4">
-          <circle cx="300" cy="120" r="2" />
-          <circle cx="300" cy="200" r="2" />
-          <circle cx="600" cy="200" r="2" />
-          <circle cx="600" cy="140" r="2" />
-          <circle cx="900" cy="140" r="2" />
-          <circle cx="900" cy="280" r="2" />
-          <circle cx="180" cy="380" r="2" />
-          <circle cx="180" cy="320" r="2" />
-          <circle cx="420" cy="320" r="2" />
-          <circle cx="420" cy="460" r="2" />
-          <circle cx="720" cy="460" r="2" />
-          <circle cx="720" cy="400" r="2" />
-          <circle cx="1020" cy="400" r="2" />
-          <circle cx="1020" cy="520" r="2" />
-          <circle cx="150" cy="160" r="2" />
-          <circle cx="90" cy="160" r="2" />
-          <circle cx="90" cy="340" r="2" />
-          <circle cx="540" cy="100" r="2" />
-          <circle cx="480" cy="100" r="2" />
-          <circle cx="480" cy="260" r="2" />
-          <circle cx="600" cy="260" r="2" />
-          <circle cx="900" cy="80" r="2" />
-          <circle cx="840" cy="80" r="2" />
-          <circle cx="840" cy="220" r="2" />
-          <circle cx="960" cy="220" r="2" />
+        <g fill="#cbd5e1" opacity="0.15">
+          <circle cx="340" cy="140" r="2.5" />
+          <circle cx="340" cy="280" r="2.5" />
+          <circle cx="580" cy="280" r="2.5" />
+          <circle cx="580" cy="200" r="2.5" />
+          <circle cx="860" cy="200" r="2.5" />
+          <circle cx="860" cy="340" r="2.5" />
+          <circle cx="260" cy="460" r="2.5" />
+          <circle cx="260" cy="380" r="2.5" />
+          <circle cx="500" cy="380" r="2.5" />
+          <circle cx="500" cy="540" r="2.5" />
+          <circle cx="760" cy="540" r="2.5" />
+          <circle cx="760" cy="460" r="2.5" />
         </g>
 
-        {/* Animated pulse dots */}
-        <circle r="3" fill={BLUE} style={{ filter: `drop-shadow(0 0 4px ${BLUE})` }}>
+        {/* Pulse dots — travel along 3 traces */}
+        <circle r="3" fill={BLUE} style={{ filter: `drop-shadow(0 0 6px ${BLUE})` }}>
           <animateMotion dur="8s" repeatCount="indefinite">
             <mpath href="#trace1" />
           </animateMotion>
         </circle>
-        <circle r="3" fill={GREEN} style={{ filter: `drop-shadow(0 0 4px ${GREEN})` }}>
+        <circle r="3" fill={GREEN} style={{ filter: `drop-shadow(0 0 6px ${GREEN})` }}>
           <animateMotion dur="12s" repeatCount="indefinite">
-            <mpath href="#trace2" />
+            <mpath href="#trace3" />
           </animateMotion>
         </circle>
-        <circle r="3" fill={PURPLE} style={{ filter: `drop-shadow(0 0 4px ${PURPLE})` }}>
+        <circle r="2.5" fill={PURPLE} style={{ filter: `drop-shadow(0 0 6px ${PURPLE})` }}>
           <animateMotion dur="10s" repeatCount="indefinite">
-            <mpath href="#trace3" />
+            <mpath href="#trace5" />
           </animateMotion>
         </circle>
       </svg>
@@ -150,17 +131,17 @@ function FuturisticBackground() {
         width="100%" height="100%"
         preserveAspectRatio="xMidYMid slice"
         style={{
-          position: "absolute", inset: 0, opacity: 0.04,
+          position: "absolute", inset: 0,
           maskImage: "radial-gradient(ellipse 70% 60% at 50% 40%, black 10%, transparent 70%)",
           WebkitMaskImage: "radial-gradient(ellipse 70% 60% at 50% 40%, black 10%, transparent 70%)",
         }}
       >
         <defs>
-          <pattern id="hexPattern" width="40" height="34.64" patternUnits="userSpaceOnUse" patternTransform="translate(0,0)">
-            <path d="M20 0 L40 11.55 L40 23.09 L20 34.64 L0 23.09 L0 11.55 Z" stroke="#94a3b8" strokeWidth="0.3" fill="none" />
+          <pattern id="hexPattern" width="60" height="52" patternUnits="userSpaceOnUse">
+            <polygon points="30,1 57,15 57,37 30,51 3,37 3,15" stroke="#94a3b8" strokeWidth="0.4" fill="none" />
           </pattern>
         </defs>
-        <rect width="100%" height="100%" fill="url(#hexPattern)" />
+        <rect width="100%" height="100%" fill="url(#hexPattern)" opacity="0.04" />
       </svg>
 
       {/* Layer 4 — Noise texture */}
@@ -191,9 +172,9 @@ const TRUST_LOGOS: { name: string; src: string | null }[] = [
   { name: "NCSC", src: "/logos/ncsc.svg" },
   { name: "Google for Education", src: null },
   { name: "Microsoft Education", src: null },
-  { name: "Cisco Networking Academy", src: null },
+  { name: "Cisco", src: null },
   { name: "EC-Council", src: null },
-  { name: "Micro:bit Foundation", src: null },
+  { name: "Micro:bit", src: null },
   { name: "GitHub Education", src: null },
   { name: "Code.org", src: null },
   { name: "Ofqual", src: null },
@@ -374,8 +355,7 @@ function Counter({ to, duration = 2000 }: { to: number; duration?: number }) {
 /* ─────────────── COURSE CARD ─────────────── */
 function ctaLabel(ageGroup: AgeGroup, live: boolean, hasLink: boolean): string {
   if (!live && !hasLink) return "Coming Soon";
-  if (!live && hasLink) return ageGroup === "6-10" ? "Coming Soon" : ageGroup === "11-14" ? "Coming Soon" : ageGroup === "15-17" ? "Coming Soon" : "Coming Soon";
-  // live
+  if (!live && hasLink) return ageGroup === "11-14" ? "Start Exploring" : "Coming Soon";
   if (ageGroup === "6-10") return "Start the Adventure";
   if (ageGroup === "11-14") return "Start Exploring";
   if (ageGroup === "15-17") return "Build Your Portfolio";
@@ -386,9 +366,6 @@ function CourseCard({ c }: { c: Course }) {
   const [hover, setHover] = useState(false);
   const [imgError, setImgError] = useState(false);
   const lifted = hover && c.live;
-  const isKids = c.ageGroup === "6-10";
-  const titleSize = isKids ? 20 : 18;
-  const cardCornerRadius = isKids ? 20 : 16;
   const hasLink = c.href !== "#";
   const label = ctaLabel(c.ageGroup, c.live, hasLink);
 
@@ -400,7 +377,7 @@ function CourseCard({ c }: { c: Course }) {
         flex: "0 0 280px",
         scrollSnapAlign: "start",
         background: WHITE,
-        borderRadius: cardCornerRadius,
+        borderRadius: 16,
         border: `1px solid ${BORDER}`,
         boxShadow: lifted ? "0 12px 40px rgba(0,0,0,0.1)" : "0 1px 3px rgba(0,0,0,0.04)",
         transform: lifted ? "translateY(-6px)" : "none",
@@ -414,7 +391,7 @@ function CourseCard({ c }: { c: Course }) {
       {/* Image header (with gradient fallback) */}
       <div style={{
         height: 180, position: "relative", overflow: "hidden",
-        borderRadius: `${cardCornerRadius}px ${cardCornerRadius}px 0 0`,
+        borderRadius: "16px 16px 0 0",
         background: `linear-gradient(135deg,${c.gradient[0]},${c.gradient[1]})`,
       }}>
         {!imgError && (
@@ -459,7 +436,7 @@ function CourseCard({ c }: { c: Course }) {
 
       {/* Body */}
       <div style={{ padding: 20, display: "flex", flexDirection: "column", flex: 1, gap: 10 }}>
-        <h3 className="dsp" style={{ fontSize: titleSize, fontWeight: 700, color: HEADING, lineHeight: 1.3 }}>
+        <h3 className="dsp" style={{ fontSize: 18, fontWeight: 700, color: HEADING, lineHeight: 1.3 }}>
           {c.title}
         </h3>
         <span style={{
@@ -481,8 +458,7 @@ function CourseCard({ c }: { c: Course }) {
             marginTop: 4,
             display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 6,
             background: `linear-gradient(135deg,${BLUE},#2563eb)`, color: "#fff",
-            fontSize: 14, fontWeight: 700, padding: "11px 20px",
-            borderRadius: isKids ? 100 : 100,
+            fontSize: 14, fontWeight: 700, padding: "11px 20px", borderRadius: 100,
             textDecoration: "none", boxShadow: `0 4px 14px ${BLUE}30`,
           }}>
             {label} <Ico name="arrow" size={14} sw={2.5} />
@@ -736,7 +712,6 @@ export default function AlgorithmXHome() {
             ))}
           </div>
 
-          {/* Scroll chevron */}
           <div aria-hidden style={{
             position: "absolute", bottom: 36, left: "50%", transform: "translateX(-50%)",
             animation: "chevronBounce 2s ease-in-out infinite",
@@ -803,7 +778,7 @@ export default function AlgorithmXHome() {
                 position: "absolute", top: "30%", left: "50%", transform: "translate(-50%,-50%)",
                 width: 900, height: 900, borderRadius: "50%",
                 background: `radial-gradient(circle,${activeSubject.accent},transparent 65%)`,
-                opacity: 0.05, pointerEvents: "none", zIndex: 0,
+                opacity: 0.03, pointerEvents: "none", zIndex: 0,
               }}
             />
           </AnimatePresence>
