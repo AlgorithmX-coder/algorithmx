@@ -5,6 +5,7 @@
  * Manual Application.init() + canvas append; no framework wrappers.
  */
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import dynamic from "next/dynamic";
 import {
   Application,
   Assets,
@@ -19,6 +20,10 @@ import {
 import { playSound, playBGM, stopBGM, SoundManager } from "@/app/lib/sounds";
 import { addXP, earnBadge, type RankInfo } from "@/app/lib/progression";
 import LevelUpCelebration from "@/app/components/LevelUpCelebration";
+
+// Three.js arena environment — dynamically imported so SSR doesn't try to
+// execute WebGL code. Renders behind the transparent PixiJS canvas.
+const Arena3D = dynamic(() => import("./Arena3D"), { ssr: false });
 
 export interface Question {
   question: string;
@@ -76,8 +81,8 @@ const HARD_QUESTIONS: Question[] = [
 ];
 
 const HP_MAX = 100;
-const HERO_HEIGHT = 300;
-const BOSS_HEIGHT = 350;
+const HERO_HEIGHT = 260;
+const BOSS_HEIGHT = 300;
 
 const ASSET_PATHS = {
   bg: "/game/backgrounds/cyber-classroom.png",
@@ -798,8 +803,8 @@ function tickFrame(g: GameState, dt: number) {
     // Celebrate frames have raised hands — shrink target height + shift anchor
     // down + lift the sprite so the head and hands stay on-screen.
     const celebrating = g.heroAnim === "celebrate";
-    g.hero.anchor.set(0.5, celebrating ? 0.65 : 0.5);
-    const effectiveHeight = celebrating ? 250 : HERO_HEIGHT;
+    g.hero.anchor.set(0.5, celebrating ? 0.75 : 0.5);
+    const effectiveHeight = celebrating ? HERO_HEIGHT * 0.8 : HERO_HEIGHT;
     const baseScale = effectiveHeight / (g.hero.texture.height || 1);
     const hBreatheX = 1 + Math.sin(g.time / 800) * 0.015;
     const hBreatheY = 1 + Math.sin(g.time / 800) * 0.025;
@@ -807,7 +812,7 @@ function tickFrame(g: GameState, dt: number) {
     g.hero.scale.y = baseScale * g.heroScaleMul * g.heroSquashY * hBreatheY;
     const heroSwayX = Math.sin(g.time / 2000) * 3;
     const heroBob = Math.sin(g.time / 500) * 4 + Math.sin(g.time / 1200) * 2;
-    const celebrateLift = celebrating ? -60 : 0;
+    const celebrateLift = celebrating ? -80 : 0;
     g.hero.x = g.baseHeroX + g.heroOffsetX + heroSwayX + g.mouseOffsetX * 4;
     g.hero.y = g.baseHeroY + heroBob + g.mouseOffsetY * 2 + celebrateLift;
     // Dynamic tint (default blue/purple + phase + event flash + victory gold)
@@ -1044,6 +1049,64 @@ export default function BossBattle({
   const [ready, setReady] = useState(false);
   const [selectedHero, setSelectedHero] = useState<HeroId | null>(null);
   const [selecting, setSelecting] = useState<HeroId | null>(null);
+
+  // ── Arena3D (Three.js scene) wiring ──
+  const [arenaMood, setArenaMood] = useState<"normal" | "danger" | "victory">(
+    "normal"
+  );
+  const [arenaShake, setArenaShake] = useState<{ mag: number; key: number }>({
+    mag: 0,
+    key: 0,
+  });
+  const arenaMoodTimerRef = useRef<number | null>(null);
+  const bumpArenaShake = useCallback((mag: number) => {
+    setArenaShake((prev) => ({ mag, key: prev.key + 1 }));
+  }, []);
+  const pulseArenaDanger = useCallback((ms = 500) => {
+    setArenaMood("danger");
+    if (arenaMoodTimerRef.current)
+      window.clearTimeout(arenaMoodTimerRef.current);
+    arenaMoodTimerRef.current = window.setTimeout(() => {
+      setArenaMood("normal");
+      arenaMoodTimerRef.current = null;
+    }, ms);
+  }, []);
+  const [viewport, setViewport] = useState<{ w: number; h: number }>(() => {
+    if (typeof window === "undefined") return { w: 1280, h: 720 };
+    return { w: window.innerWidth, h: window.innerHeight };
+  });
+  useEffect(() => {
+    const onResize = () =>
+      setViewport({ w: window.innerWidth, h: window.innerHeight });
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, []);
+
+  // Derive boss phase (0-3) from HP — matches the PixiJS internal mapping.
+  const arenaPhase: 0 | 1 | 2 | 3 = useMemo(() => {
+    const pct = bossHp / HP_MAX;
+    if (pct <= 0.25) return 3;
+    if (pct <= 0.5) return 2;
+    if (pct <= 0.75) return 1;
+    return 0;
+  }, [bossHp]);
+
+  // Victory mood override — once result is "won", lock arena to victory lighting.
+  useEffect(() => {
+    if (result === "won") {
+      if (arenaMoodTimerRef.current) {
+        window.clearTimeout(arenaMoodTimerRef.current);
+        arenaMoodTimerRef.current = null;
+      }
+      setArenaMood("victory");
+    } else if (result === null) {
+      setArenaMood("normal");
+    }
+  }, [result]);
+
+  useEffect(() => () => {
+    if (arenaMoodTimerRef.current) window.clearTimeout(arenaMoodTimerRef.current);
+  }, []);
 
   /** Advance to the next question, reading from the current-difficulty pool. */
   const advanceQuestion = useCallback(() => {
@@ -1344,10 +1407,12 @@ export default function BossBattle({
         g.bg.x = 0;
         g.bg.y = 0;
       }
-      g.baseHeroX = w * 0.22;
-      g.baseHeroY = h * 0.55;
-      g.baseBossX = w * 0.72;
-      g.baseBossY = h * 0.52;
+      // Centred, lifted so both characters are fully visible between the HP
+      // bar (top) and the question panel (bottom).
+      g.baseHeroX = w * 0.28;
+      g.baseHeroY = h * 0.42;
+      g.baseBossX = w * 0.68;
+      g.baseBossY = h * 0.40;
       g.cameraFocusX = w / 2;
       g.cameraFocusY = h / 2;
     };
@@ -1368,13 +1433,16 @@ export default function BossBattle({
         }
 
         const canvas = app.canvas;
-        canvas.style.position = "fixed";
+        // NOTE: position:absolute (not fixed) so the canvas stacks cleanly
+        // inside its zIndex:1 wrapper, above the 3D arena underneath.
+        canvas.style.position = "absolute";
         canvas.style.top = "0";
         canvas.style.left = "0";
-        canvas.style.width = "100vw";
-        canvas.style.height = "100vh";
+        canvas.style.width = "100%";
+        canvas.style.height = "100%";
         canvas.style.display = "block";
-        canvas.style.zIndex = "0";
+        canvas.style.background = "transparent";
+        canvas.style.pointerEvents = "none";
 
         if (!canvasHostRef.current) {
           app.destroy(true);
@@ -1421,15 +1489,14 @@ export default function BossBattle({
         const W = window.innerWidth;
         const H = window.innerHeight;
 
-        const bgSprite = new Sprite(textures.bg);
-        bgSprite.anchor.set(0, 0);
-        bgSprite.x = 0;
-        bgSprite.y = 0;
-        bgSprite.width = W;
-        bgSprite.height = H;
-        app.stage.addChild(bgSprite);
+        // NOTE: the static background sprite was removed — the 3D Arena
+        // (Three.js) renders behind the transparent PixiJS canvas now.
+        // We keep `textures.bg` loaded only so existing type contracts hold.
+        void W; void H;
 
-        // Reactive background overlay — above bg, below characters
+        // Reactive background overlay stays — it paints event flashes
+        // (hit / super / victory tints) over the 3D scene through the
+        // transparent Pixi canvas.
         const bgOverlay = new Graphics();
         app.stage.addChild(bgOverlay);
 
@@ -1492,7 +1559,7 @@ export default function BossBattle({
         g.selectedHero = selectedHero;
         g.hero = hero;
         g.boss = boss;
-        g.bg = bgSprite;
+        g.bg = null; // 3D arena replaces the PixiJS background sprite
         g.bgOverlay = bgOverlay;
         g.heroShadow = heroShadow;
         g.bossShadow = bossShadow;
@@ -1500,10 +1567,10 @@ export default function BossBattle({
         g.bossReflection = bossReflection;
         g.heroGlow = heroGlow;
         g.bossGlow = bossGlow;
-        g.baseHeroX = W * 0.22;
-        g.baseHeroY = H * 0.55;
-        g.baseBossX = W * 0.72;
-        g.baseBossY = H * 0.52;
+        g.baseHeroX = W * 0.28;
+        g.baseHeroY = H * 0.42;
+        g.baseBossX = W * 0.68;
+        g.baseBossY = H * 0.40;
         g.cameraFocusX = W / 2;
         g.cameraFocusY = H / 2;
         g.cameraScale = 1;
@@ -1650,10 +1717,12 @@ export default function BossBattle({
           setSuperReady(false);
           showAnnouncement("SUPER CYBER BLAST!", "gold");
           playerAttack(g, damage, { isSuper: true });
+          bumpArenaShake(12);
         } else {
           const cry = HERO_CRIES[Math.floor(Math.random() * HERO_CRIES.length)];
           showAnnouncement(cry, "blue");
           playerAttack(g, damage);
+          bumpArenaShake(damage >= 25 ? 8 : damage >= 15 ? 6 : 4);
         }
 
         if (quickBonus > 0) {
@@ -1722,6 +1791,8 @@ export default function BossBattle({
         bossAttack(g, damage);
         setShakeWrong(true);
         window.setTimeout(() => setShakeWrong(false), 400);
+        bumpArenaShake(7);
+        pulseArenaDanger(500);
 
         // Post-wrong — reveal correct answer + explanation for ~1.7s before advancing
         setExplanationVisible(true);
@@ -1753,6 +1824,7 @@ export default function BossBattle({
       HERO_CRIES, BOSS_CRIES, HERO_LINES_3, HERO_LINES_5, HERO_LINES_7,
       showAnnouncement, showCenterFeedback, showBossTaunt, showHeroSpeech,
       showPhaseAnnouncement, advanceQuestion,
+      bumpArenaShake, pulseArenaDanger,
     ]
   );
 
@@ -2081,10 +2153,12 @@ export default function BossBattle({
                       alt={c.label}
                       className="bb-sel-img"
                       style={{
-                        width: "100%",
-                        height: "320px",
+                        width: "auto",
+                        maxWidth: "100%",
+                        maxHeight: "320px",
+                        height: "auto",
                         objectFit: "contain",
-                        objectPosition: "center bottom",
+                        objectPosition: "center center",
                       }}
                     />
                     <div className="bb-sel-platform" />
@@ -2165,10 +2239,33 @@ export default function BossBattle({
         </div>
       )}
 
+      {/* 3D Arena — sits BEHIND the PixiJS canvas. */}
+      {selectedHero && (
+        <div
+          aria-hidden="true"
+          style={{
+            position: "absolute",
+            inset: 0,
+            zIndex: 0,
+            pointerEvents: "none",
+          }}
+        >
+          <Arena3D
+            width={viewport.w}
+            height={viewport.h}
+            phase={arenaPhase}
+            shakeIntensity={arenaShake.mag}
+            shakeKey={arenaShake.key}
+            mood={arenaMood}
+          />
+        </div>
+      )}
+
+      {/* PixiJS canvas — transparent, sits above the 3D arena. */}
       {selectedHero && (
         <div
           ref={canvasHostRef}
-          style={{ position: "absolute", inset: 0, zIndex: 0 }}
+          style={{ position: "absolute", inset: 0, zIndex: 1 }}
         />
       )}
 
@@ -3118,12 +3215,12 @@ export default function BossBattle({
           position: relative;
           flex: 0 0 auto;
           height: 60%;
-          min-height: 288px;
+          min-height: 320px;
           display: flex;
           align-items: flex-end;
           justify-content: center;
           padding-bottom: 0;
-          overflow: hidden;
+          overflow: visible;
         }
         .bb-sel-spot-glow {
           position: absolute;
@@ -3135,10 +3232,12 @@ export default function BossBattle({
         }
         .bb-sel-img {
           position: relative;
-          width: 100%;
-          height: 320px;
+          width: auto;
+          max-width: 100%;
+          max-height: 320px;
+          height: auto;
           object-fit: contain;
-          object-position: center bottom;
+          object-position: center center;
           transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
           filter: drop-shadow(0 10px 18px rgba(0,0,0,0.55));
           pointer-events: none;
@@ -3307,8 +3406,8 @@ export default function BossBattle({
             flex: 0 0 auto;
             min-height: 0;
           }
-          .bb-sel-spot { min-height: 248px }
-          .bb-sel-img { height: 240px !important; }
+          .bb-sel-spot { min-height: 260px }
+          .bb-sel-img { max-height: 240px !important; height: auto !important; }
           .bb-sel-or {
             flex-direction: row;
             width: 100%;
@@ -3720,12 +3819,13 @@ export default function BossBattle({
         }
         .bb-victory-hero {
           position: relative;
-          width: 200px;
-          height: 240px;
+          width: 220px;
+          height: 280px;
           display: flex;
           align-items: flex-end;
           justify-content: center;
           flex-shrink: 0;
+          overflow: visible;
         }
         .bb-victory-hero-glow {
           position: absolute;
@@ -3737,8 +3837,10 @@ export default function BossBattle({
         }
         .bb-victory-hero img {
           position: relative;
-          height: 240px;
-          width: auto;
+          height: 280px;
+          width: 100%;
+          object-fit: contain;
+          object-position: center top;
           filter: drop-shadow(0 8px 24px rgba(251,191,36,0.4));
         }
         .bb-victory-stats {
@@ -3834,8 +3936,9 @@ export default function BossBattle({
           box-shadow: 0 6px 22px rgba(249,115,22,0.5);
         }
         @media (max-width: 720px) {
-          .bb-victory-hero, .bb-victory-hero img { height: 200px; width: auto }
-          .bb-victory-hero { width: 180px; height: 200px }
+          .bb-victory-hero, .bb-victory-hero img { height: 240px }
+          .bb-victory-hero { width: 200px; height: 240px; overflow: visible }
+          .bb-victory-hero img { width: 100%; object-fit: contain; object-position: center top }
           .bb-victory-stats { min-width: 280px }
           .bb-victory-title { font-size: 44px }
         }

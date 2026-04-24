@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useRef, useState, useCallback } from "react";
+import dynamic from "next/dynamic";
 import { motion, AnimatePresence, useMotionValue, useTransform } from "framer-motion";
 import * as THREE from "three";
 import gsap from "gsap";
@@ -27,7 +28,12 @@ import ButtonJuice from "@/app/components/ButtonJuice";
 import ParticleBurst from "@/app/components/ParticleBurst";
 import FloatingText from "@/app/components/FloatingText";
 import ScreenShake from "@/app/components/ScreenShake";
-import ContentBackdrop from "@/app/components/ContentBackdrop";
+// ContentBackdrop has been superseded by the LessonArena3D 3D backdrop
+// rendered behind all lesson content. Kept as a no-op import removal.
+const LessonArena3D = dynamic(
+  () => import("@/app/components/game/LessonArena3D"),
+  { ssr: false }
+);
 import ScreenTransition, { type TransitionType } from "@/app/components/ScreenTransition";
 import { addXP, type RankInfo } from "@/app/lib/progression";
 import LessonAmbience from "@/app/components/LessonAmbience";
@@ -719,10 +725,12 @@ function card(children: React.ReactNode, extra?: React.CSSProperties): React.Rea
     <div data-animate style={{
       position: "relative",
       overflow: "hidden",
-      background: "rgba(255,255,255,0.04)", backdropFilter: "blur(12px)",
+      // Semi-transparent with backdrop blur so the 3D arena shows through.
+      background: "rgba(17,24,39,0.72)",
+      backdropFilter: "blur(10px)",
+      WebkitBackdropFilter: "blur(10px)",
       border: "1px solid rgba(255,255,255,0.1)", borderRadius: 24, padding: 24, ...extra,
     }}>
-      <ContentBackdrop />
       <div style={{ position: "relative", zIndex: 1 }}>{children}</div>
     </div>
   );
@@ -1174,6 +1182,41 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
   );
   const triggerShake = useCallback(() => setShakeTrigger((n) => n + 1), []);
 
+  // ── 3D lesson arena backdrop ──
+  const [arena3DMood, setArena3DMood] =
+    useState<"normal" | "correct" | "wrong" | "celebration">("normal");
+  const [arena3DPulseKey, setArena3DPulseKey] = useState(0);
+  const arenaMoodTimerRef = useRef<number | null>(null);
+  const setArenaMoodBrief = useCallback(
+    (m: "correct" | "wrong" | "celebration") => {
+      const duration = m === "celebration" ? 2000 : m === "correct" ? 500 : 400;
+      setArena3DMood(m);
+      if (arenaMoodTimerRef.current)
+        window.clearTimeout(arenaMoodTimerRef.current);
+      arenaMoodTimerRef.current = window.setTimeout(() => {
+        setArena3DMood("normal");
+        arenaMoodTimerRef.current = null;
+      }, duration);
+    },
+    []
+  );
+  useEffect(() => () => {
+    if (arenaMoodTimerRef.current)
+      window.clearTimeout(arenaMoodTimerRef.current);
+  }, []);
+
+  const [windowDim, setWindowDim] = useState<{ w: number; h: number }>(() =>
+    typeof window === "undefined"
+      ? { w: 1280, h: 720 }
+      : { w: window.innerWidth, h: window.innerHeight }
+  );
+  useEffect(() => {
+    const onResize = () =>
+      setWindowDim({ w: window.innerWidth, h: window.innerHeight });
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, []);
+
   /** Award XP + particles + floating text + combo tracking + rank-up check. */
   const awardXp = useCallback(
     (amount: number, source: string, element?: HTMLElement | null) => {
@@ -1196,6 +1239,8 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
         });
       }
       flashReaction("correct");
+      setArenaMoodBrief("correct");
+      setArena3DPulseKey((k) => k + 1);
 
       // Micro-feedback: green burst + floating "+N XP" + combo.
       spawnParticles(x, y, "#34d399", 12);
@@ -1219,7 +1264,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
         return next;
       });
     },
-    [flashReaction, spawnParticles, spawnFloatingText]
+    [flashReaction, spawnParticles, spawnFloatingText, setArenaMoodBrief]
   );
   const removeXpPopup = useCallback((id: number) => {
     setXpPopups((prev) => prev.filter((p) => p.id !== id));
@@ -1675,16 +1720,19 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
 
   const dismissSummary = useCallback((scr: number, nextStep: number) => {
     setShowSummary((prev) => ({ ...prev, [scr]: false }));
+    // Exercise complete — flash the arena into celebration mode briefly.
+    setArenaMoodBrief("celebration");
     navigate(nextStep);
-  }, [navigate]);
+  }, [navigate, setArenaMoodBrief]);
 
   const addWrong = useCallback((scr: number) => {
     setWrongAttempts((prev) => ({ ...prev, [scr]: (prev[scr] || 0) + 1 }));
     flashReaction("wrong");
+    setArenaMoodBrief("wrong");
     // Reset combo + shake on any wrong answer.
     setLessonCombo(0);
     triggerShake();
-  }, [flashReaction, triggerShake]);
+  }, [flashReaction, triggerShake, setArenaMoodBrief]);
 
   const getStars = useCallback((scr: number) => {
     const w = wrongAttempts[scr] || 0;
@@ -3533,7 +3581,25 @@ null
 
   /* ---------- render ---------- */
   return (
-    <div style={{ minHeight: "100vh", background: "#1a1033", position: "relative", overflow: "hidden" }}>
+    <div style={{ minHeight: "100vh", background: "#05061a", position: "relative", overflow: "hidden" }}>
+      {/* 3D arena backdrop — sits BEHIND everything. Fixed to the viewport
+          so it fills the screen even when the scroll container changes size. */}
+      <div
+        aria-hidden="true"
+        style={{
+          position: "fixed",
+          inset: 0,
+          zIndex: 0,
+          pointerEvents: "none",
+        }}
+      >
+        <LessonArena3D
+          width={windowDim.w}
+          height={windowDim.h}
+          mood={arena3DMood}
+          pulseKey={arena3DPulseKey}
+        />
+      </div>
       <style>{CSS}</style>
       <LessonAmbience />
 

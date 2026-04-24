@@ -4,8 +4,10 @@ import { useEffect, useState } from "react";
 import { getProgressionState, getRank, RANKS } from "@/app/lib/progression";
 
 export interface LessonHUDProps {
-  characterName: "ADAM" | "LAYLA";
-  characterImage: string;
+  /** Optional — legacy single-character name (unused now, both heroes are shown). */
+  characterName?: "ADAM" | "LAYLA";
+  /** Optional — legacy single-character image (ignored; Adam + Layla idle sprites are used). */
+  characterImage?: string;
   weekNumber: number;
   weekTitle: string;
   currentScreen: number;
@@ -16,8 +18,6 @@ export interface LessonHUDProps {
 }
 
 export default function LessonHUD({
-  characterName,
-  characterImage,
   weekNumber,
   weekTitle,
   currentScreen,
@@ -43,7 +43,6 @@ export default function LessonHUD({
   const lessonFillPct = totalScreens > 0
     ? Math.max(0, Math.min(1, currentScreen / totalScreens)) * 100
     : 0;
-  const heroColour = characterName === "LAYLA" ? "#34d399" : "#60a5fa";
   const rankLabel = rank.next
     ? `${totalXP} / ${rank.next.minXP} XP`
     : `${totalXP} XP — MAX`;
@@ -71,44 +70,73 @@ export default function LessonHUD({
         color: "#f1f5f9",
       }}
     >
-      {/* Character */}
+      {/* Characters — Adam + Layla overlapping avatars */}
       <div style={{ display: "flex", alignItems: "center", gap: 10, flexShrink: 0 }}>
-        <div
-          style={{
-            width: 40,
-            height: 40,
-            borderRadius: "50%",
-            border: `2px solid ${heroColour}`,
-            boxShadow: `0 0 14px ${heroColour}55`,
-            overflow: "hidden",
-            background: "#0f172a",
-            flexShrink: 0,
-          }}
-        >
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={characterImage}
-            alt={characterName}
+        <div style={{ display: "flex", alignItems: "center", flexShrink: 0 }}>
+          <div
             style={{
-              width: "100%",
-              height: "auto",
-              objectFit: "cover",
-              objectPosition: "top center",
-              transform: "scale(1.6) translateY(18%)",
-              pointerEvents: "none",
+              width: 36,
+              height: 36,
+              borderRadius: "50%",
+              border: "2px solid #60a5fa",
+              boxShadow: "0 0 12px rgba(96,165,250,0.45)",
+              overflow: "hidden",
+              background: "#0f172a",
+              flexShrink: 0,
+              zIndex: 2,
             }}
-          />
+          >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/game/characters/adam-idle.png"
+              alt="Adam"
+              style={{
+                width: "100%",
+                height: "100%",
+                objectFit: "cover",
+                objectPosition: "top",
+                pointerEvents: "none",
+              }}
+            />
+          </div>
+          <div
+            style={{
+              width: 36,
+              height: 36,
+              borderRadius: "50%",
+              border: "2px solid #34d399",
+              boxShadow: "0 0 12px rgba(52,211,153,0.45)",
+              overflow: "hidden",
+              background: "#0f172a",
+              flexShrink: 0,
+              marginLeft: -12,
+              zIndex: 1,
+            }}
+          >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/game/characters/layla-idle.png"
+              alt="Layla"
+              style={{
+                width: "100%",
+                height: "100%",
+                objectFit: "cover",
+                objectPosition: "top",
+                pointerEvents: "none",
+              }}
+            />
+          </div>
         </div>
         <span
           style={{
             fontFamily: "'Space Grotesk', sans-serif",
             fontWeight: 700,
-            fontSize: 13,
+            fontSize: 12,
             letterSpacing: "0.06em",
-            color: heroColour,
+            color: "#f1f5f9",
           }}
         >
-          {characterName}
+          ADAM & LAYLA
         </span>
       </div>
 

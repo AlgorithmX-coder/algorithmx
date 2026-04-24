@@ -5,7 +5,9 @@
       "Bash(mv public/characters/*-select.png public/game/characters/)",
       "Bash(git restore *)",
       "Bash(file public/game/characters/*.png)",
-      "Read(//c/Users/roboc/Downloads/**)"
+      "Read(//c/Users/roboc/Downloads/**)",
+      "Bash(echo \"Exit: $?\")",
+      "Bash(git ls-tree *)"
     ]
   }
 }

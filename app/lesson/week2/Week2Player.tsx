@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useRef, useState, useCallback } from "react";
+import dynamic from "next/dynamic";
 import { motion, AnimatePresence } from "framer-motion";
 import gsap from "gsap";
 import { SplitText } from "gsap/SplitText";
@@ -25,7 +26,11 @@ import ParticleBurst from "@/app/components/ParticleBurst";
 import FloatingText from "@/app/components/FloatingText";
 import ScreenShake from "@/app/components/ScreenShake";
 import ButtonJuice from "@/app/components/ButtonJuice";
-import ContentBackdrop from "@/app/components/ContentBackdrop";
+// ContentBackdrop replaced by the LessonArena3D Three.js backdrop.
+const LessonArena3D = dynamic(
+  () => import("@/app/components/game/LessonArena3D"),
+  { ssr: false }
+);
 import ScreenTransition, { type TransitionType } from "@/app/components/ScreenTransition";
 import { addXP as addXpProgress, type RankInfo } from "@/app/lib/progression";
 import LessonAmbience from "@/app/components/LessonAmbience";
@@ -640,10 +645,11 @@ function card(children: React.ReactNode, extra?: React.CSSProperties) {
     <div data-animate style={{
       position: "relative",
       overflow: "hidden",
-      background: "rgba(255,255,255,0.04)", backdropFilter: "blur(12px)",
+      background: "rgba(17,24,39,0.72)",
+      backdropFilter: "blur(10px)",
+      WebkitBackdropFilter: "blur(10px)",
       border: "1px solid rgba(255,255,255,0.1)", borderRadius: 24, padding: 24, ...extra,
     }}>
-      <ContentBackdrop />
       <div style={{ position: "relative", zIndex: 1 }}>{children}</div>
     </div>
   );
@@ -823,6 +829,41 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
   );
   const triggerShake = useCallback(() => setShakeTrigger((n) => n + 1), []);
 
+  // ── 3D lesson arena backdrop ──
+  const [arena3DMood, setArena3DMood] =
+    useState<"normal" | "correct" | "wrong" | "celebration">("normal");
+  const [arena3DPulseKey, setArena3DPulseKey] = useState(0);
+  const arenaMoodTimerRef = useRef<number | null>(null);
+  const setArenaMoodBrief = useCallback(
+    (m: "correct" | "wrong" | "celebration") => {
+      const duration = m === "celebration" ? 2000 : m === "correct" ? 500 : 400;
+      setArena3DMood(m);
+      if (arenaMoodTimerRef.current)
+        window.clearTimeout(arenaMoodTimerRef.current);
+      arenaMoodTimerRef.current = window.setTimeout(() => {
+        setArena3DMood("normal");
+        arenaMoodTimerRef.current = null;
+      }, duration);
+    },
+    []
+  );
+  useEffect(() => () => {
+    if (arenaMoodTimerRef.current)
+      window.clearTimeout(arenaMoodTimerRef.current);
+  }, []);
+
+  const [windowDim, setWindowDim] = useState<{ w: number; h: number }>(() =>
+    typeof window === "undefined"
+      ? { w: 1280, h: 720 }
+      : { w: window.innerWidth, h: window.innerHeight }
+  );
+  useEffect(() => {
+    const onResize = () =>
+      setWindowDim({ w: window.innerWidth, h: window.innerHeight });
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, []);
+
   const awardXp = useCallback(
     (amount: number, element?: HTMLElement | null) => {
       const result = addXpProgress(amount, "lesson-week-2");
@@ -844,6 +885,8 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
         });
       }
       flashReaction("correct");
+      setArenaMoodBrief("correct");
+      setArena3DPulseKey((k) => k + 1);
 
       spawnParticles(x, y, "#34d399", 12);
       spawnFloatingText(`+${amount} XP`, x, y - 24, "#fbbf24", 20);
@@ -866,7 +909,7 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
         return next;
       });
     },
-    [flashReaction, spawnParticles, spawnFloatingText]
+    [flashReaction, spawnParticles, spawnFloatingText, setArenaMoodBrief]
   );
   const removeXpPopup = useCallback((id: number) => {
     setXpPopups((prev) => prev.filter((p) => p.id !== id));
@@ -1066,13 +1109,18 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
 
   const dismissInstr = useCallback((s: number) => setShowInstr((p) => ({ ...p, [s]: false })), []);
   const triggerSummary = useCallback((s: number) => setShowSummary((p) => ({ ...p, [s]: true })), []);
-  const dismissSummary = useCallback((s: number, next: number) => { setShowSummary((p) => ({ ...p, [s]: false })); navigate(next); }, [navigate]);
+  const dismissSummary = useCallback((s: number, next: number) => {
+    setShowSummary((p) => ({ ...p, [s]: false }));
+    setArenaMoodBrief("celebration");
+    navigate(next);
+  }, [navigate, setArenaMoodBrief]);
   const addWrong = useCallback((s: number) => {
     setWrongAttempts((p) => ({ ...p, [s]: (p[s] || 0) + 1 }));
     flashReaction("wrong");
+    setArenaMoodBrief("wrong");
     setLessonCombo(0);
     triggerShake();
-  }, [flashReaction, triggerShake]);
+  }, [flashReaction, triggerShake, setArenaMoodBrief]);
   const getStars = useCallback((s: number) => { const w = wrongAttempts[s] || 0; return w === 0 ? 3 : w <= 2 ? 2 : 1; }, [wrongAttempts]);
 
   // Step 0: video skip timer
@@ -2379,7 +2427,24 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
 
   /* ───────── RENDER ───────── */
   return (
-    <div style={{ minHeight: "100vh", background: "#1a1033", position: "relative", overflow: "hidden" }}>
+    <div style={{ minHeight: "100vh", background: "#05061a", position: "relative", overflow: "hidden" }}>
+      {/* 3D arena backdrop — behind everything. */}
+      <div
+        aria-hidden="true"
+        style={{
+          position: "fixed",
+          inset: 0,
+          zIndex: 0,
+          pointerEvents: "none",
+        }}
+      >
+        <LessonArena3D
+          width={windowDim.w}
+          height={windowDim.h}
+          mood={arena3DMood}
+          pulseKey={arena3DPulseKey}
+        />
+      </div>
       <style>{`@keyframes shimmer { 0% { background-position: 0% 50% } 50% { background-position: 100% 50% } 100% { background-position: 0% 50% } } .shimmer-card { background-image: linear-gradient(135deg, rgba(59,130,246,0.08) 0%, rgba(6,182,212,0.05) 25%, rgba(16,185,129,0.05) 50%, rgba(59,130,246,0.08) 75%, rgba(139,92,246,0.05) 100%); background-size: 200% 200%; animation: shimmer 3s ease infinite; }`}</style>
       <style>{CSS}</style>
       <LessonAmbience />
