@@ -17,6 +17,8 @@ import {
   type Ticker,
 } from "pixi.js";
 import { playSound, playBGM, stopBGM, SoundManager } from "@/app/lib/sounds";
+import { addXP, earnBadge, type RankInfo } from "@/app/lib/progression";
+import LevelUpCelebration from "@/app/components/LevelUpCelebration";
 
 export interface Question {
   question: string;
@@ -1825,15 +1827,56 @@ export default function BossBattle({
     onEnd(false, { combo: stats.maxCombo, accuracy, xp });
   }, [result, stats, onEnd]);
 
+  // Pending level-up info — shown between "Continue →" click and onEnd.
+  const [pendingLevelUp, setPendingLevelUp] = useState<
+    { oldRank: RankInfo; newRank: RankInfo; totalXP: number } | null
+  >(null);
+  // Has XP already been persisted for this victory? Guard against double-add.
+  const xpPersistedRef = useRef(false);
+
+  useEffect(() => {
+    if (result !== "won" || xpPersistedRef.current) return;
+    xpPersistedRef.current = true;
+    const accuracy =
+      stats.totalAsked > 0
+        ? Math.round((stats.correct / stats.totalAsked) * 100)
+        : 0;
+    const xp = 100 + stats.correct * 15 + stats.maxCombo * 25;
+    const xpResult = addXP(xp, "boss-battle-week-1");
+    earnBadge("week-1");
+    if (xpResult.leveledUp) {
+      setPendingLevelUp({
+        oldRank: xpResult.oldRank,
+        newRank: xpResult.newRank,
+        totalXP: xpResult.newTotal,
+      });
+    }
+    void accuracy;
+  }, [result, stats]);
+
+  const finishToParent = useCallback(() => {
+    if (!onEnd) return;
+    const accuracy =
+      stats.totalAsked > 0
+        ? Math.round((stats.correct / stats.totalAsked) * 100)
+        : 0;
+    const xp = 100 + stats.correct * 15 + stats.maxCombo * 25;
+    onEnd(true, { combo: stats.maxCombo, accuracy, xp });
+  }, [onEnd, stats]);
+
   const handleContinue = useCallback(() => {
     playSound("select");
-    if (onEnd) {
-      const accuracy =
-        stats.totalAsked > 0 ? Math.round((stats.correct / stats.totalAsked) * 100) : 0;
-      const xp = 100 + stats.correct * 15 + stats.maxCombo * 25;
-      onEnd(true, { combo: stats.maxCombo, accuracy, xp });
+    if (pendingLevelUp) {
+      // Show level-up overlay first; onEnd fires once it's dismissed.
+      return;
     }
-  }, [onEnd, stats]);
+    finishToParent();
+  }, [pendingLevelUp, finishToParent]);
+
+  const dismissLevelUp = useCallback(() => {
+    setPendingLevelUp(null);
+    finishToParent();
+  }, [finishToParent]);
 
   const restart = () => {
     playSound("select");
@@ -2759,6 +2802,16 @@ export default function BossBattle({
           </div>
         );
       })()}
+
+      {/* Level-up celebration — shown between victory screen and onEnd */}
+      {pendingLevelUp && (
+        <LevelUpCelebration
+          oldRank={pendingLevelUp.oldRank}
+          newRank={pendingLevelUp.newRank}
+          totalXP={pendingLevelUp.totalXP}
+          onDismiss={dismissLevelUp}
+        />
+      )}
 
       <style>{`
         @keyframes bbFadeIn { from { opacity: 0 } to { opacity: 1 } }

@@ -16,6 +16,10 @@ import {
   milestoneFireworks,
 } from "@/app/lib/celebrations";
 import MuteToggle from "@/app/components/MuteToggle";
+import LessonHUD from "@/app/components/LessonHUD";
+import XPPopup from "@/app/components/XPPopup";
+import LevelUpCelebration from "@/app/components/LevelUpCelebration";
+import { addXP, type RankInfo } from "@/app/lib/progression";
 import LessonAmbience from "@/app/components/LessonAmbience";
 import BattleArena from "@/app/components/exercises/BattleArena";
 import VaultLock from "@/app/components/exercises/VaultLock";
@@ -1037,6 +1041,42 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
   const [coins, setCoins] = useState(0);
   const [coinAnimKey, setCoinAnimKey] = useState(0);
 
+  // XP / progression state
+  const [lessonXp, setLessonXp] = useState(0);
+  const [xpPopups, setXpPopups] = useState<{ id: number; x: number; y: number; amount: number }[]>([]);
+  const xpPopupIdRef = useRef(0);
+  const [pendingLevelUp, setPendingLevelUp] = useState<
+    { oldRank: RankInfo; newRank: RankInfo; totalXP: number } | null
+  >(null);
+
+  /** Award XP + show floating popup + check for rank-up. */
+  const awardXp = useCallback(
+    (amount: number, source: string, element?: HTMLElement | null) => {
+      const result = addXP(amount, source);
+      setLessonXp((v) => v + amount);
+      let x = typeof window !== "undefined" ? window.innerWidth / 2 : 0;
+      let y = typeof window !== "undefined" ? window.innerHeight / 2 : 0;
+      if (element) {
+        const r = element.getBoundingClientRect();
+        x = r.left + r.width / 2;
+        y = r.top + r.height / 2;
+      }
+      const id = ++xpPopupIdRef.current;
+      setXpPopups((prev) => [...prev, { id, x, y, amount }]);
+      if (result.leveledUp) {
+        setPendingLevelUp({
+          oldRank: result.oldRank,
+          newRank: result.newRank,
+          totalXP: result.newTotal,
+        });
+      }
+    },
+    []
+  );
+  const removeXpPopup = useCallback((id: number) => {
+    setXpPopups((prev) => prev.filter((p) => p.id !== id));
+  }, []);
+
   const addCoins = useCallback((n: number) => {
     setCoins((c) => c + n);
     setCoinAnimKey((k) => k + 1);
@@ -1490,6 +1530,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
         setShieldPlaced(true);
         playSFX("correct");
         addCoins(10);
+        awardXp(50, "lesson-week-1");
         setTimeout(() => playSFX("xpGain"), 500);
         setTimeout(() => {
           setRaccoonHitShield(true);
@@ -1530,6 +1571,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
       if (correct) {
         setPlaced((prev) => { const n = new Set(prev); n.add(pw.id); return n; });
         playSFX("correct");
+        awardXp(50, "lesson-week-1");
       } else if (sRect && cx >= sRect.left && cx <= sRect.right && cy >= sRect.top && cy <= sRect.bottom ||
                  wRect && cx >= wRect.left && cx <= wRect.right && cy >= wRect.top && cy <= wRect.bottom) {
         playSFX("wrong");
@@ -2390,11 +2432,12 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                   {BUILDER_OPTIONS[builderActive].map((opt: string, i: number) => (
                     <motion.button
                       key={i}
-                      onClick={() => {
+                      onClick={(e) => {
                         const newSlots: [number, number, number, number] = [...builderSlots];
                         newSlots[builderActive] = i;
                         setBuilderSlots(newSlots);
                         playSFX("correct");
+                        awardXp(50, "lesson-week-1", e.currentTarget as HTMLElement);
                         if (builderActive === 3) {
                           addCoins(25);
                           setTimeout(() => { setBuilderPowerUp(true); playSFX("xpGain"); }, 100);
@@ -2606,6 +2649,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                                         setAnsweredRules((prev) => { const n = new Set(prev); n.add(i); return n; });
                                         playSFX("correct");
                                         addCoins(5);
+                                        awardXp(50, "lesson-week-1", e.currentTarget as HTMLElement);
                                         setTimeout(() => playSFX("xpGain"), 500);
                                       } else {
                                         shakeWrong(e.currentTarget as HTMLElement);
@@ -2905,7 +2949,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                       onClick={(e) => {
                         if (wydSel !== null) return;
                         setWydSel(i);
-                        if (i === w.correct) { celebrateCorrect(e.currentTarget as HTMLElement); setWydScore((s) => s + 1); addCoins(15); playSFX("correct"); setTimeout(() => playSFX("xpGain"), 500); }
+                        if (i === w.correct) { celebrateCorrect(e.currentTarget as HTMLElement); setWydScore((s) => s + 1); addCoins(15); playSFX("correct"); awardXp(50, "lesson-week-1", e.currentTarget as HTMLElement); setTimeout(() => playSFX("xpGain"), 500); }
                         else { shakeWrong(e.currentTarget as HTMLElement); playSFX("wrong"); addWrong(14); }
                       }}
                       disabled={answered}
@@ -3255,6 +3299,36 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
     <div style={{ minHeight: "100vh", background: "#1a1033", position: "relative", overflow: "hidden" }}>
       <style>{CSS}</style>
       <LessonAmbience />
+
+      <LessonHUD
+        characterName="ADAM"
+        characterImage="/game/characters/adam-idle.png"
+        weekNumber={CURRENT_WEEK}
+        weekTitle="Passwords: The Secret Code"
+        currentScreen={screen}
+        totalScreens={18}
+        xpEarned={lessonXp}
+      />
+
+      {xpPopups.map((p) => (
+        <XPPopup
+          key={p.id}
+          amount={p.amount}
+          x={p.x}
+          y={p.y}
+          onComplete={() => removeXpPopup(p.id)}
+        />
+      ))}
+
+      {pendingLevelUp && (
+        <LevelUpCelebration
+          oldRank={pendingLevelUp.oldRank}
+          newRank={pendingLevelUp.newRank}
+          totalXP={pendingLevelUp.totalXP}
+          onDismiss={() => setPendingLevelUp(null)}
+        />
+      )}
+
       <MuteToggle />
       <style>{`@keyframes shimmer { 0% { background-position: 0% 50% } 50% { background-position: 100% 50% } 100% { background-position: 0% 50% } }`}</style>
       <div className="floating-orbs-wrap"><FloatingOrbs /></div>

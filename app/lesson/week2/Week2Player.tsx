@@ -14,6 +14,10 @@ import {
   milestoneFireworks,
 } from "@/app/lib/celebrations";
 import MuteToggle from "@/app/components/MuteToggle";
+import LessonHUD from "@/app/components/LessonHUD";
+import XPPopup from "@/app/components/XPPopup";
+import LevelUpCelebration from "@/app/components/LevelUpCelebration";
+import { addXP as addXpProgress, type RankInfo } from "@/app/lib/progression";
 import LessonAmbience from "@/app/components/LessonAmbience";
 import SortingStation from "@/app/components/exercises/SortingStation";
 import ChatSimulator from "@/app/components/exercises/ChatSimulator";
@@ -683,6 +687,40 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
   const [step, setStep] = useState(0);
   const [coins, setCoins] = useState(0);
 
+  // XP / progression
+  const [lessonXp, setLessonXp] = useState(0);
+  const [xpPopups, setXpPopups] = useState<{ id: number; x: number; y: number; amount: number }[]>([]);
+  const xpPopupIdRef = useRef(0);
+  const [pendingLevelUp, setPendingLevelUp] = useState<
+    { oldRank: RankInfo; newRank: RankInfo; totalXP: number } | null
+  >(null);
+  const awardXp = useCallback(
+    (amount: number, element?: HTMLElement | null) => {
+      const result = addXpProgress(amount, "lesson-week-2");
+      setLessonXp((v) => v + amount);
+      let x = typeof window !== "undefined" ? window.innerWidth / 2 : 0;
+      let y = typeof window !== "undefined" ? window.innerHeight / 2 : 0;
+      if (element) {
+        const r = element.getBoundingClientRect();
+        x = r.left + r.width / 2;
+        y = r.top + r.height / 2;
+      }
+      const id = ++xpPopupIdRef.current;
+      setXpPopups((prev) => [...prev, { id, x, y, amount }]);
+      if (result.leveledUp) {
+        setPendingLevelUp({
+          oldRank: result.oldRank,
+          newRank: result.newRank,
+          totalXP: result.newTotal,
+        });
+      }
+    },
+    []
+  );
+  const removeXpPopup = useCallback((id: number) => {
+    setXpPopups((prev) => prev.filter((p) => p.id !== id));
+  }, []);
+
   // Step 0, Video
   const [videoEnded, setVideoEnded] = useState(false);
   const [videoFailed, setVideoFailed] = useState(false);
@@ -1101,10 +1139,11 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
                 const flipped = flippedTiles.has(i);
                 return (
                   <motion.div key={i}
-                    onClick={() => {
+                    onClick={(e) => {
                       if (flipped) return;
                       setFlippedTiles((prev) => { const n = new Set(prev); n.add(i); return n; });
                       playSound("/sounds/correct.mp3");
+                      awardXp(30, e.currentTarget as HTMLElement);
                     }}
                     animate={flipped ? { rotateY: [0, 90, 0] } : {}}
                     transition={{ duration: 0.6 }}
@@ -1181,10 +1220,11 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
                       if (removed) return null;
                       return (
                         <motion.button key={item.id}
-                          onClick={() => {
+                          onClick={(e) => {
                             if (item.danger) {
                               setRemovedItems((prev) => { const n = new Set(prev); n.add(item.id); return n; });
                               playSound("/sounds/correct.mp3");
+                              awardXp(50, e.currentTarget as HTMLElement);
                               if (removedItems.size + 1 >= POSTER_DANGER_COUNT) {
                                 setTimeout(() => setPosterDone(true), 600);
                               }
@@ -1388,7 +1428,7 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
                         setChatChoiceMade(true);
                         setDangerLevel((d) => d + opt.danger);
                         setChatMessages((msgs) => [...msgs, { from: "me", text: opt.text }]);
-                        if (opt.danger === 0) playSound("/sounds/correct.mp3");
+                        if (opt.danger === 0) { playSound("/sounds/correct.mp3"); awardXp(50); }
                         else { playSound("/sounds/wrong.mp3"); addWrong(5); }
 
                         // Raccoon replies
@@ -2170,6 +2210,36 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
       <style>{`@keyframes shimmer { 0% { background-position: 0% 50% } 50% { background-position: 100% 50% } 100% { background-position: 0% 50% } } .shimmer-card { background-image: linear-gradient(135deg, rgba(59,130,246,0.08) 0%, rgba(6,182,212,0.05) 25%, rgba(16,185,129,0.05) 50%, rgba(59,130,246,0.08) 75%, rgba(139,92,246,0.05) 100%); background-size: 200% 200%; animation: shimmer 3s ease infinite; }`}</style>
       <style>{CSS}</style>
       <LessonAmbience />
+
+      <LessonHUD
+        characterName="ADAM"
+        characterImage="/game/characters/adam-idle.png"
+        weekNumber={2}
+        weekTitle="Privacy Guardian"
+        currentScreen={step}
+        totalScreens={18}
+        xpEarned={lessonXp}
+      />
+
+      {xpPopups.map((p) => (
+        <XPPopup
+          key={p.id}
+          amount={p.amount}
+          x={p.x}
+          y={p.y}
+          onComplete={() => removeXpPopup(p.id)}
+        />
+      ))}
+
+      {pendingLevelUp && (
+        <LevelUpCelebration
+          oldRank={pendingLevelUp.oldRank}
+          newRank={pendingLevelUp.newRank}
+          totalXP={pendingLevelUp.totalXP}
+          onDismiss={() => setPendingLevelUp(null)}
+        />
+      )}
+
       <MuteToggle />
       <FloatingBg />
       <header className="print-hide" style={{
