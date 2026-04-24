@@ -19,6 +19,8 @@ import XPPopup from "@/app/components/XPPopup";
 import LevelUpCelebration from "@/app/components/LevelUpCelebration";
 import CharacterGuide from "@/app/components/CharacterGuide";
 import { WEEK2_REACTIONS, CORRECT_QUIPS, WRONG_QUIPS, type CharacterLine } from "@/app/lesson/characterReactions";
+import StoryCutscene from "@/app/components/StoryCutscene";
+import { WEEK2_INTRO } from "@/app/lesson/storyContent";
 import { addXP as addXpProgress, type RankInfo } from "@/app/lib/progression";
 import LessonAmbience from "@/app/components/LessonAmbience";
 import SortingStation from "@/app/components/exercises/SortingStation";
@@ -662,7 +664,13 @@ function LearnSummary({ message, starCount, onNext }: { message: string; starCou
   );
 }
 
-const SpeechBubble = ({ character, message, side = "left" }: { character: "adam" | "layla" | "raccoon"; message: string; side?: "left" | "right" }) => {
+// Dialogue has moved to the CharacterGuide side panels. This inline bubble is
+// now a no-op so existing call sites stay compiling while they get migrated.
+const SpeechBubble = (_props: { character: "adam" | "layla" | "raccoon"; message: string; side?: "left" | "right" }) => {
+  void _props;
+  return null;
+};
+const _SpeechBubbleLegacy = ({ character, message, side = "left" }: { character: "adam" | "layla" | "raccoon"; message: string; side?: "left" | "right" }) => {
   const img = character === "adam" ? "/characters/adam-layla-happy.png" : character === "layla" ? "/characters/adam-layla-happy.png" : "/characters/raccoon.png";
   const name = character === "adam" ? "Adam" : character === "layla" ? "Layla" : "Raccoon";
   const bubbleColor = character === "raccoon" ? "rgba(239,68,68,0.15)" : "rgba(59,130,246,0.15)";
@@ -687,6 +695,13 @@ const SpeechBubble = ({ character, message, side = "left" }: { character: "adam"
 /* ───────────────────────── MAIN COMPONENT ─────────────────── */
 export default function Week2Player({ userName, moduleId, childName }: { userName: string; moduleId: string; childName: string }) {
   const [step, setStep] = useState(0);
+
+  // Story cutscene state — only the intro plays; the lesson runs uninterrupted after.
+  const [cutscene, setCutscene] = useState<"intro" | null>("intro");
+  const cutsceneSlides = cutscene === "intro" ? WEEK2_INTRO : null;
+  const cutsceneTitle: string | undefined = cutscene === "intro"
+    ? "WEEK 2: PRIVATE INFORMATION"
+    : undefined;
   const [coins, setCoins] = useState(0);
 
   // Character guide reaction
@@ -1172,7 +1187,7 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
                 <motion.div initial={{ opacity: 0, scale: 0.5 }} animate={{ opacity: 1, scale: 1 }}
                   transition={{ type: "spring", stiffness: 200 }}
                   style={{ marginTop: 20, textAlign: "center" }}>
-                  <motion.button onClick={() => { setMissionAccepted(true); addCoins(10); setTimeout(() => navigate(2), 1200); }}
+                  <motion.button onClick={() => { setMissionAccepted(true); addCoins(10); navigate(2); }}
                     whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
                     style={{ background: "linear-gradient(135deg, #f97316, #f59e0b)", color: "#fff", fontWeight: 700, borderRadius: 14, padding: "16px 40px", border: "none", cursor: "pointer", fontSize: 18, boxShadow: "0 0 15px rgba(249,115,22,0.4)" }}>
                     🔐 ACCEPT MISSION
@@ -2278,28 +2293,40 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
       <style>{CSS}</style>
       <LessonAmbience />
 
-      <LessonHUD
-        characterName="ADAM"
-        characterImage="/game/characters/adam-idle.png"
-        weekNumber={2}
-        weekTitle="Privacy Guardian"
-        currentScreen={step}
-        totalScreens={18}
-        xpEarned={lessonXp}
-      />
+      {cutsceneSlides && (
+        <StoryCutscene
+          slides={cutsceneSlides}
+          title={cutsceneTitle}
+          onComplete={() => setCutscene(null)}
+        />
+      )}
 
-      <CharacterGuide
-        character="adam"
-        position="left"
-        mood={adamReaction.mood}
-        message={adamReaction.message}
-      />
-      <CharacterGuide
-        character="layla"
-        position="right"
-        mood={laylaReaction.mood}
-        message={laylaReaction.message}
-      />
+      {!cutscene && (
+        <>
+          <LessonHUD
+            characterName="ADAM"
+            characterImage="/game/characters/adam-idle.png"
+            weekNumber={2}
+            weekTitle="Privacy Guardian"
+            currentScreen={step}
+            totalScreens={18}
+            xpEarned={lessonXp}
+          />
+
+          <CharacterGuide
+            character="adam"
+            position="left"
+            mood={adamReaction.mood}
+            message={adamReaction.message}
+          />
+          <CharacterGuide
+            character="layla"
+            position="right"
+            mood={laylaReaction.mood}
+            message={laylaReaction.message}
+          />
+        </>
+      )}
 
       {xpPopups.map((p) => (
         <XPPopup

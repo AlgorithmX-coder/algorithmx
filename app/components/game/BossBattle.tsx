@@ -2076,7 +2076,17 @@ export default function BossBattle({
                   <div className="bb-sel-spot">
                     <div className="bb-sel-spot-glow" />
                     {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={c.image} alt={c.label} className="bb-sel-img" />
+                    <img
+                      src={c.image}
+                      alt={c.label}
+                      className="bb-sel-img"
+                      style={{
+                        width: "100%",
+                        height: "320px",
+                        objectFit: "contain",
+                        objectPosition: "center bottom",
+                      }}
+                    />
                     <div className="bb-sel-platform" />
                   </div>
 
@@ -3125,9 +3135,10 @@ export default function BossBattle({
         }
         .bb-sel-img {
           position: relative;
+          width: 100%;
           height: 320px;
-          width: auto;
           object-fit: contain;
+          object-position: center bottom;
           transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
           filter: drop-shadow(0 10px 18px rgba(0,0,0,0.55));
           pointer-events: none;
@@ -3297,7 +3308,7 @@ export default function BossBattle({
             min-height: 0;
           }
           .bb-sel-spot { min-height: 248px }
-          .bb-sel-img { height: 240px }
+          .bb-sel-img { height: 240px !important; }
           .bb-sel-or {
             flex-direction: row;
             width: 100%;

@@ -234,7 +234,7 @@ export default function InboxSimulator({
   return (
     <div
       style={{
-        maxWidth: 1000,
+        maxWidth: 900,
         margin: "0 auto",
         background: "#0d1220",
         border: "1px solid rgba(96,165,250,0.14)",

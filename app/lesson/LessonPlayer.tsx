@@ -21,9 +21,11 @@ import XPPopup from "@/app/components/XPPopup";
 import LevelUpCelebration from "@/app/components/LevelUpCelebration";
 import CharacterGuide from "@/app/components/CharacterGuide";
 import { WEEK1_REACTIONS, CORRECT_QUIPS, WRONG_QUIPS, type CharacterLine } from "@/app/lesson/characterReactions";
+import StoryCutscene from "@/app/components/StoryCutscene";
+import { WEEK1_INTRO } from "@/app/lesson/storyContent";
 import { addXP, type RankInfo } from "@/app/lib/progression";
 import LessonAmbience from "@/app/components/LessonAmbience";
-import BattleArena from "@/app/components/exercises/BattleArena";
+import BossBattle from "@/app/components/game/BossBattle";
 import VaultLock from "@/app/components/exercises/VaultLock";
 import InboxSimulator from "@/app/components/exercises/InboxSimulator";
 import SortingStation from "@/app/components/exercises/SortingStation";
@@ -1056,6 +1058,14 @@ const SpeechBubble = ({ character, message, side = "left", delayMs = 500 }: { ch
 export default function LessonPlayer({ userName, moduleId, childName }: { userName: string; moduleId: string; childName: string }) {
   /* ---------- state ---------- */
   const [screen, setScreen] = useState(0);
+
+  // Story cutscene state — the lesson opens with the intro cutscene; no
+  // further cutscenes fire during the lesson.
+  const [cutscene, setCutscene] = useState<"intro" | null>("intro");
+  const cutsceneSlides = cutscene === "intro" ? WEEK1_INTRO : null;
+  const cutsceneTitle: string | undefined = cutscene === "intro"
+    ? "WEEK 1: PASSWORDS"
+    : undefined;
   const [coins, setCoins] = useState(0);
   const [coinAnimKey, setCoinAnimKey] = useState(0);
 
@@ -1404,11 +1414,21 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
 
   const bgmStartedRef = useRef(false);
   useEffect(() => {
+    if (cutscene) return; // cutscenes have their own audio
     if (!bgmStartedRef.current && screen >= 2) {
       bgmStartedRef.current = true;
       playBGM("bgmLesson");
     }
-  }, [screen]);
+  }, [screen, cutscene]);
+
+  // Pause BGM during the intro cutscene. Resumes after it ends and the
+  // learner is past the video intro (screen >= 2).
+  useEffect(() => {
+    if (cutscene) {
+      stopBGM(300);
+      bgmStartedRef.current = false;
+    }
+  }, [cutscene]);
 
   // Reveal chime on screen change. SpeechBubble instances fire their own
   // "pop" SFX 500ms after they mount, so this effect doesn't need to.
@@ -1987,7 +2007,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
           <FullScene bg="linear-gradient(180deg, #1a1a0a 0%, #1a1033 100%)" glow="radial-gradient(circle, rgba(59,130,246,0.2), transparent)">
           <div style={{ textAlign: "center" }}>
             <h1 data-split style={{ color: "#fff", fontSize: 40, fontWeight: 900, marginBottom: 8, textShadow: "0 0 24px rgba(59,130,246,0.5)" }}>What is a Password?</h1>
-            <SpeechBubble character="adam" message="Quick! We need to lock everything before the Raccoon gets in!" />
+null
             <p style={{ color: "#9ca3af", marginBottom: 8, fontSize: 16 }}>Tap each item to lock it with a password!</p>
             <p style={{ color: "#f59e0b", fontSize: 20, fontWeight: 700, marginBottom: 16 }}>🔒 {lockedItems.size}/3</p>
             <div style={{ display: "flex", gap: 16, justifyContent: "center", flexWrap: "wrap", marginBottom: 24 }}>
@@ -2183,7 +2203,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
           <div style={{ textAlign: "center" }}>
             <h1 data-split style={{ color: "#fff", fontSize: 38, fontWeight: 900, marginBottom: 8, textShadow: "0 0 24px rgba(239,68,68,0.5)" }}>Why Do Passwords Matter?</h1>
             {!raccoonHitShield && !shieldPlaced && (
-              <SpeechBubble character="raccoon" message="Hehehe... no password? This is going to be easy!" side="right" />
+null
             )}
             <p style={{ color: "#9ca3af", marginBottom: 16 }}>Scenario {whyIdx + 1}/3: {sc.label}</p>
             {card(
@@ -2271,7 +2291,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                 style={{ textAlign: "center", marginTop: 12 }}
               >
                 <p style={{ color: "#10b981", fontSize: 18, fontWeight: 700, marginBottom: 8 }}>Protected! The Raccoon bounced off!</p>
-                <SpeechBubble character="layla" message="Phew! That was close. We need stronger passwords!" />
+null
                 {btn(whyIdx < WHY_SCENARIOS.length - 1 ? "Next Scenario →" : "All done! →", () => {
                   if (whyIdx < WHY_SCENARIOS.length - 1) {
                     setWhyIdx((i) => i + 1);
@@ -2501,7 +2521,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
           <FullScene bg="linear-gradient(180deg, #1a0a20 0%, #1a1033 100%)" glow="radial-gradient(circle, rgba(249,115,22,0.2), transparent)">
           <div style={{ textAlign: "center" }}>
             <h1 data-split style={{ color: "#fff", fontSize: 40, fontWeight: 900, marginBottom: 8, textShadow: "0 0 24px rgba(249,115,22,0.5)" }}>🔨 Build Your Password!</h1>
-            <SpeechBubble character="layla" message="Let's mix these ingredients together to make a super strong password!" />
+null
             {/* Display */}
             <motion.div
               animate={builderPowerUp ? {
@@ -2678,7 +2698,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
           <FullScene bg="linear-gradient(180deg, #1a1508 0%, #1a1033 100%)" glow="radial-gradient(circle, rgba(245,158,11,0.25), transparent)">
           <div style={{ textAlign: "center" }}>
             <h1 data-split style={{ color: "#fff", fontSize: 40, fontWeight: 900, marginBottom: 16, textShadow: "0 0 20px rgba(245,158,11,0.4)" }}>⭐ The 5 Golden Rules!</h1>
-            <SpeechBubble character="layla" message="These are the most important rules. Remember them!" />
+null
             <div style={{ display: "flex", flexDirection: "column", gap: 16, maxWidth: 800, margin: "0 auto 24px" }}>
               {RULES.map((rule, i) => {
                 const isRevealed = revealedRules.has(i);
@@ -2866,7 +2886,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
           <FullScene bg="linear-gradient(180deg, #1a0f05 0%, #1a1033 100%)" glow="radial-gradient(circle, rgba(249,115,22,0.15), transparent)">
           <div style={{ textAlign: "center" }}>
             <h1 data-split style={{ color: "#fff", fontSize: 38, fontWeight: 900, marginBottom: 4, textShadow: "0 0 20px rgba(249,115,22,0.4)" }}>🔍 Spot the Tricks!</h1>
-            <SpeechBubble character="adam" message="Wait... this message looks weird. Is it real?" />
+null
             <p style={{ color: "#9ca3af", marginBottom: 16, fontSize: 16 }}>The Raccoon sends FAKE messages to trick people. Here&apos;s how to spot them!</p>
             {trickCard < 4 ? (
               <AnimatePresence mode="wait">
@@ -3107,7 +3127,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                     transition={{ duration: 2, repeat: Infinity }}
                     style={{ fontSize: 32, margin: "0 0 12px", fontWeight: 900, background: "linear-gradient(135deg, #f59e0b, #ef4444, #3b82f6)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
                     You defeated the Hacker Raccoon!</motion.h2>
-                  <SpeechBubble character="layla" message="We did it! The Raccoon is gone!" />
+null
                   <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.3, type: "spring" }}>
                     {stars(bossScore >= 8 ? 3 : bossScore >= 6 ? 2 : 1)}
                   </motion.div>
@@ -3127,22 +3147,19 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
         }
 
         return (
-          <FullScene bg="linear-gradient(180deg, #0a0505 0%, #1a1033 100%)" glow="radial-gradient(circle, rgba(239,68,68,0.2), transparent)">
-            <BattleArena
-              bossName="Hacker Raccoon"
-              bossImage="/characters/raccoon-sneaking.png"
-              questions={BOSS_QUIZ.map((q) => ({
-                question: q.q,
-                options: q.opts,
-                correctIndex: q.correct,
-                attackName: "Raccoon Attack!",
-              }))}
-              onComplete={(sc) => {
-                setBossScore(sc);
-                setBossDone(true);
-              }}
-            />
-          </FullScene>
+          <BossBattle
+            bossName="HACKER RACCOON"
+            questions={BOSS_QUIZ.map((q) => ({
+              question: q.q,
+              answers: q.opts,
+              correctIndex: q.correct,
+            }))}
+            onEnd={(won, stats) => {
+              setBossScore(won ? stats.combo : 0);
+              setBossDone(true);
+              if (won) navigate(16);
+            }}
+          />
         );
 
       }
@@ -3400,28 +3417,40 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
       <style>{CSS}</style>
       <LessonAmbience />
 
-      <LessonHUD
-        characterName="ADAM"
-        characterImage="/game/characters/adam-idle.png"
-        weekNumber={CURRENT_WEEK}
-        weekTitle="Passwords: The Secret Code"
-        currentScreen={screen}
-        totalScreens={18}
-        xpEarned={lessonXp}
-      />
+      {cutsceneSlides && (
+        <StoryCutscene
+          slides={cutsceneSlides}
+          title={cutsceneTitle}
+          onComplete={() => setCutscene(null)}
+        />
+      )}
 
-      <CharacterGuide
-        character="adam"
-        position="left"
-        mood={adamReaction.mood}
-        message={adamReaction.message}
-      />
-      <CharacterGuide
-        character="layla"
-        position="right"
-        mood={laylaReaction.mood}
-        message={laylaReaction.message}
-      />
+      {!cutscene && (
+        <>
+          <LessonHUD
+            characterName="ADAM"
+            characterImage="/game/characters/adam-idle.png"
+            weekNumber={CURRENT_WEEK}
+            weekTitle="Passwords: The Secret Code"
+            currentScreen={screen}
+            totalScreens={18}
+            xpEarned={lessonXp}
+          />
+
+          <CharacterGuide
+            character="adam"
+            position="left"
+            mood={adamReaction.mood}
+            message={adamReaction.message}
+          />
+          <CharacterGuide
+            character="layla"
+            position="right"
+            mood={laylaReaction.mood}
+            message={laylaReaction.message}
+          />
+        </>
+      )}
 
       {xpPopups.map((p) => (
         <XPPopup
