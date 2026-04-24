@@ -227,7 +227,7 @@ export default function CrackTheCode({
       style={{
         position: "relative",
         width: "100%",
-        minHeight: 620,
+        minHeight: 560,
         maxHeight: "calc(100vh - 140px)",
         borderRadius: 24,
         overflow: "hidden",

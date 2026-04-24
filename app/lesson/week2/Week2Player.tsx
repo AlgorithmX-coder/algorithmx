@@ -32,6 +32,7 @@ const LessonArena3D = dynamic(
   { ssr: false }
 );
 import ScreenTransition, { type TransitionType } from "@/app/components/ScreenTransition";
+import ExerciseErrorBoundary from "@/app/components/ExerciseErrorBoundary";
 import { addXP as addXpProgress, type RankInfo } from "@/app/lib/progression";
 import LessonAmbience from "@/app/components/LessonAmbience";
 import SortingStation from "@/app/components/exercises/SortingStation";
@@ -1578,52 +1579,6 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
         );
       }
 
-      /* ──── LEGACY STEP 4 (classify quiz) ──── */
-      case -104: {
-        if (classifyIdx >= CLASSIFY_QS.length) {
-          return (
-            <FullScene bg="linear-gradient(180deg, #0a1020 0%, #0a0a1a 100%)" glow="radial-gradient(circle, rgba(59,130,246,0.2), transparent)">
-            <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} style={{ textAlign: "center" }}>
-              {card(
-                <>
-                  <h2 data-split style={{ color: "#fff", fontSize: 36, fontWeight: 900, marginBottom: 8, textShadow: "0 0 20px rgba(59,130,246,0.4)" }}>Classification Complete!</h2>
-                  <p style={{ color: "#d1d5db", marginBottom: 8 }}>You classified {classifyScore}/{CLASSIFY_QS.length} correctly!</p>
-                  <p style={{ color: "#9ca3af", fontSize: 14, marginBottom: 16 }}>
-                    Great work, Agent! But the Raccoon is already trying to trick you...
-                  </p>
-                  {btn("Continue →", () => {
-                    addCoins(classifyScore === CLASSIFY_QS.length ? 15 : 10);
-                    triggerSummary(4);
-                  })}
-                </>,
-                { maxWidth: 480, margin: "0 auto" }
-              )}
-            </motion.div>
-            </FullScene>
-          );
-        }
-        return (
-          <FullScene bg="linear-gradient(180deg, #0a1020 0%, #0a0a1a 100%)" glow="radial-gradient(circle, rgba(59,130,246,0.2), transparent)">
-            <SortingStation
-              title="Classify the Information"
-              instruction="Drop each item into Private or Safe to Share"
-              items={CLASSIFY_QS.map((q) => ({
-                text: q.info,
-                category: q.answer === "private" ? "private" : "safe",
-              }))}
-              categories={[
-                { id: "private", label: "Private", color: "#ef4444", icon: "🔒" },
-                { id: "safe", label: "Safe to Share", color: "#34d399", icon: "✅" },
-              ]}
-              onComplete={(sc) => {
-                setClassifyScore(sc);
-                setClassifyIdx(CLASSIFY_QS.length);
-              }}
-            />
-          </FullScene>
-        );
-      }
-
       /* ──── STEP 5: CHAT SIMULATION ──── */
       case 5: {
         if (showInstr[5]) return <InstructionOverlay icon="💬" story="Someone called CoolKid99 is messaging you..." instructions="Choose how to reply. Be careful what you share!" onReady={() => dismissInstr(5)} />;
@@ -2145,52 +2100,6 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
         );
       }
 
-      /* ──── LEGACY STEP 11 (speed sort) ──── */
-      case -111: {
-        if (speedDone || speedIdx >= SPEED_SORT_ITEMS.length) {
-          const rating = speedScore >= 15 ? "PERFECT AGENT!" : speedScore >= 13 ? "TURBO SORTER!" : speedScore >= 10 ? "QUICK THINKER!" : "KEEP PRACTISING!";
-          const bonus = speedScore >= 15 ? 10 : speedScore >= 13 ? 5 : 0;
-          return (
-            <ThemedScene theme="factory">
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={{ textAlign: "center" }}>
-              {card(
-                <>
-                  <h2 data-split style={{ color: "#fff", fontSize: 32, fontWeight: 900, marginBottom: 8, textShadow: "0 0 16px rgba(245,158,11,0.5)" }}>{rating}</h2>
-                  <p style={{ color: "#d1d5db", marginBottom: 4 }}>Correct: {speedScore}/{SPEED_SORT_ITEMS.length}</p>
-                  <p style={{ color: "#f59e0b", marginBottom: 16 }}>Best Streak: 🔥 {speedBestStreak}</p>
-                  <p style={{ color: "#f59e0b", fontSize: 14, marginBottom: 16 }}>🪙 +{15 + bonus} coins earned!</p>
-                  {btn("Continue Mission →", () => triggerSummary(11))}
-                </>,
-                { maxWidth: 480, margin: "0 auto" }
-              )}
-            </motion.div>
-            </ThemedScene>
-          );
-        }
-        return (
-          <ThemedScene theme="factory">
-            <SortingStation
-              title="Speed Sort"
-              instruction="Sort them into the right vaults — Private or Safe!"
-              items={SPEED_SORT_ITEMS.map((item) => ({
-                text: item.info,
-                category: item.answer === "private" ? "private" : "safe",
-              }))}
-              categories={[
-                { id: "private", label: "Private", color: "#ef4444", icon: "🔒" },
-                { id: "safe", label: "Safe", color: "#34d399", icon: "✅" },
-              ]}
-              onComplete={(sc) => {
-                setSpeedScore(sc);
-                if (sc > speedBestStreak) setSpeedBestStreak(sc);
-                addCoins(sc >= 15 ? 25 : sc >= 13 ? 20 : 15);
-                setSpeedDone(true);
-              }}
-            />
-          </ThemedScene>
-        );
-      }
-
       /* ──── STEP 12: CHOOSE YOUR PATH (was phone call) ──── */
       case 12: {
         if (showInstr[12]) return <InstructionOverlay icon="🚪" story="Real-life choices about private info. Pick the safest door!" instructions="Read each scenario. Choose the door that keeps your info safe!" onReady={() => dismissInstr(12)} />;
@@ -2202,53 +2111,6 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
               onComplete={() => triggerSummary(12)}
               onCorrect={() => awardXp(25)}
               onWrong={() => addWrong(12)}
-            />
-          </ThemedScene>
-        );
-      }
-
-      /* ──── LEGACY STEP 12 (phone call) ──── */
-      case -112: {
-        if (phoneRound >= PHONE_ROUNDS.length) {
-          return (
-            <ThemedScene theme="callscreen">
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={{ textAlign: "center" }}>
-              {card(
-                <>
-                  <h2 data-split style={{ color: "#fff", fontSize: 32, fontWeight: 900, marginBottom: 8, textShadow: "0 0 16px rgba(34,197,94,0.5)" }}>Calls Handled!</h2>
-                  <p style={{ color: "#d1d5db", marginBottom: 8 }}>{phoneScore}/{PHONE_ROUNDS.length} handled safely!</p>
-                  <p style={{ color: "#9ca3af", fontSize: 14, marginBottom: 16 }}>Remember: NEVER give personal info over the phone unless a parent says it&apos;s okay.</p>
-                  {btn("Continue →", () => { addCoins(15); triggerSummary(12); })}
-                </>,
-                { maxWidth: 480, margin: "0 auto" }
-              )}
-            </motion.div>
-            </ThemedScene>
-          );
-        }
-        const phoneMessages = PHONE_ROUNDS.flatMap((pr, ri) => [
-          { sender: "narrator" as const, text: `📞 Incoming call from "${pr.caller}"...` },
-          { sender: "stranger" as const, text: pr.says },
-        ]);
-        const phoneChoices = PHONE_ROUNDS.map((pr, ri) => ({
-          triggerAfterMessage: ri * 2 + 1,
-          options: pr.opts.map((opt) => ({
-            text: opt.text,
-            isSafe: !opt.danger,
-            feedback: opt.fb,
-          })),
-        }));
-        return (
-          <ThemedScene theme="callscreen">
-            <ChatSimulator
-              title="Incoming Calls"
-              scenario="Someone you don't know is calling. Stay safe — choose the best reply!"
-              messages={phoneMessages}
-              choices={phoneChoices}
-              onComplete={(sc) => {
-                setPhoneScore(sc);
-                setPhoneRound(PHONE_ROUNDS.length);
-              }}
             />
           </ThemedScene>
         );
@@ -2271,89 +2133,6 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
       }
 
       /* ──── LEGACY STEP 13 (shield builder) ──── */
-      case -113: {
-        if (shieldIdx >= SHIELD_QS.length) {
-          const perfect = shieldPerfect === SHIELD_QS.length;
-          return (
-            <ThemedScene theme="forge">
-            <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} style={{ textAlign: "center" }}>
-              {card(
-                <>
-                  <motion.div animate={{ boxShadow: ["0 0 20px rgba(59,130,246,0.3)", "0 0 50px rgba(59,130,246,0.6)", "0 0 20px rgba(59,130,246,0.3)"] }}
-                    transition={{ duration: 2, repeat: Infinity }}
-                    style={{ width: 120, height: 120, borderRadius: "50%", background: GRAD, margin: "0 auto 16px", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                    <span style={{ fontSize: 48, color: "#fff" }}>🛡️</span>
-                  </motion.div>
-                  <h2 data-split style={{ color: "#fff", fontSize: 24, fontWeight: 900, marginBottom: 8 }}>
-                    {perfect ? "PERFECT SHIELD, Maximum Power!" : "Privacy Shield Complete!"}
-                  </h2>
-                  <p style={{ color: "#d1d5db", marginBottom: 4 }}>{shieldFilled}/7 segments powered</p>
-                  <p style={{ color: "#10b981", fontWeight: 700, marginBottom: 16 }}>Adam &amp; Layla are protected!</p>
-                  {btn("Continue →", () => { addCoins(perfect ? 20 : 15); triggerSummary(13); })}
-                </>,
-                { maxWidth: 480, margin: "0 auto" }
-              )}
-            </motion.div>
-            </ThemedScene>
-          );
-        }
-        const sq = SHIELD_QS[shieldIdx];
-        return (
-          <ThemedScene theme="forge">
-            <div style={{ textAlign: "center" }}>
-            <h1 data-split style={{ color: "#fff", fontSize: 36, fontWeight: 900, marginBottom: 4, textShadow: "0 0 18px rgba(59,130,246,0.5)" }}>🛡️ Build Your Privacy Shield</h1>
-            <SpeechBubble character="adam" message="Every correct answer makes our shield stronger!" />
-            <p style={{ color: "#9ca3af", marginBottom: 8 }}>Segment {shieldIdx + 1}/{SHIELD_QS.length}</p>
-            {/* Shield progress */}
-            <div style={{ display: "flex", justifyContent: "center", gap: 6, marginBottom: 16 }}>
-              {Array.from({ length: 7 }, (_, i) => (
-                <motion.div key={i} animate={i < shieldFilled ? { scale: [1, 1.2, 1] } : {}}
-                  style={{ width: 30, height: 30, borderRadius: 6, background: i < shieldFilled ? GRAD : "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.1)", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                  {i < shieldFilled && <span style={{ fontSize: 14 }}>🛡️</span>}
-                </motion.div>
-              ))}
-            </div>
-            <AnimatePresence mode="wait">
-              <motion.div key={shieldIdx} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }}>
-                {card(
-                  <>
-                    <p style={{ color: "#fff", fontSize: 18, fontWeight: 800, marginBottom: 16 }}>{sq.q}</p>
-                    <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-                      {sq.opts.map((opt, oi) => (
-                        <motion.button key={oi}
-                          className="shimmer-card"
-                          onClick={(e) => {
-                            if (oi === sq.correct) {
-                              celebrateCorrect(e.currentTarget as HTMLElement);
-                              setShieldFilled((f) => f + 1);
-                              if (!shieldRetry) setShieldPerfect((p) => p + 1);
-                              setShieldRetry(false);
-                              playSound("/sounds/correct.mp3");
-                              setTimeout(() => setShieldIdx((i) => i + 1), 800);
-                            } else {
-                              shakeWrong(e.currentTarget as HTMLElement);
-                              setShieldRetry(true);
-                              playSound("/sounds/wrong.mp3");
-                              addWrong(13);
-                            }
-                          }}
-                          whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}
-                          style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.12)", borderRadius: 12, padding: "14px 18px", color: "#d1d5db", fontSize: 15, fontWeight: 600, cursor: "pointer", textAlign: "left" }}>
-                          {opt}
-                        </motion.button>
-                      ))}
-                    </div>
-                    {shieldRetry && <p style={{ color: "#ef4444", fontWeight: 700, fontSize: 14, marginTop: 8 }}>Try again! The shield needs the right answer.</p>}
-                  </>,
-                  { maxWidth: 540, margin: "0 auto" }
-                )}
-              </motion.div>
-            </AnimatePresence>
-            </div>
-          </ThemedScene>
-        );
-      }
-
       /* ──── STEP 14: MASTERPLAN ──── */
       case 14: {
         const allRevealed = masterRevealed.size >= MASTERPLAN_CARDS.length;
@@ -2713,7 +2492,12 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
           onTransitionStart={() => playSFX("transition")}
         >
           <ScreenShake trigger={shakeTrigger}>
-            {renderScreen()}
+            <ExerciseErrorBoundary
+              key={step}
+              onSkip={() => navigate(Math.min(16, step + 1))}
+            >
+              {renderScreen()}
+            </ExerciseErrorBoundary>
           </ScreenShake>
         </ScreenTransition>
       </main>

@@ -16,11 +16,11 @@ export interface FirewallBuilderProps {
 
 // Play area dimensions — bigger blocks so the full text reads.
 const CANVAS_W = 640;
-const CANVAS_H = 620;
+const CANVAS_H = 560;
 const PLAY_W = 400;
-const PLAY_H = 480;
+const PLAY_H = 440;
 const PLAY_X = (CANVAS_W - PLAY_W) / 2;
-const PLAY_Y = 90;
+const PLAY_Y = 70;
 const COLS = 5;
 const COL_W = PLAY_W / COLS; // 80
 const BLOCK_H = 40;

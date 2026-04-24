@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { playSound } from "@/app/lib/sounds";
 import { correctAnswerBurst } from "@/app/lib/celebrations";
 import ExerciseIntro from "./ExerciseIntro";
+import { validateMaze, pathFromExit } from "./maze-helpers";
 
 export interface MazeQuestion {
   question: string;
@@ -35,88 +36,8 @@ const CELL = 54;
 const BOARD_W = COLS * CELL;
 const BOARD_H = ROWS * CELL;
 
-// BFS from (0,0) through all 0-cells. Returns the distance map; Infinity if unreachable.
-function bfs(grid: number[][]): number[][] {
-  const dist: number[][] = Array.from({ length: ROWS }, () =>
-    Array(COLS).fill(Infinity)
-  );
-  if (grid[0][0] === 1) return dist;
-  const q: Array<[number, number]> = [[0, 0]];
-  dist[0][0] = 0;
-  while (q.length) {
-    const [r, c] = q.shift()!;
-    const d = dist[r][c];
-    const neigh: Array<[number, number]> = [
-      [r - 1, c],
-      [r + 1, c],
-      [r, c - 1],
-      [r, c + 1],
-    ];
-    for (const [nr, nc] of neigh) {
-      if (nr < 0 || nr >= ROWS || nc < 0 || nc >= COLS) continue;
-      if (grid[nr][nc] !== 0) continue;
-      if (dist[nr][nc] !== Infinity) continue;
-      dist[nr][nc] = d + 1;
-      q.push([nr, nc]);
-    }
-  }
-  return dist;
-}
-
-// Guarantee start → exit is reachable. If not, knock walls along the bottom
-// row open until a path exists. Returns a sanitised grid + the BFS distances.
-function validateMaze(src: number[][]): { grid: number[][]; dist: number[][] } {
-  const grid = src.map((row) => row.slice());
-  let dist = bfs(grid);
-  if (dist[ROWS - 1][COLS - 1] === Infinity) {
-    // eslint-disable-next-line no-console
-    console.warn(
-      "[CyberMaze] exit unreachable with initial layout — opening path on bottom row"
-    );
-    // Open up the bottom row + the right column so exit is always reachable.
-    for (let c = 0; c < COLS; c++) grid[ROWS - 1][c] = 0;
-    for (let r = 0; r < ROWS; r++) grid[r][COLS - 1] = 0;
-    dist = bfs(grid);
-  }
-  return { grid, dist };
-}
-
-const VALIDATED = validateMaze(RAW_MAZE_GRID);
-
-// Pick gate cells along the verified shortest path so every gate is solvable.
-// Walk back from the exit using BFS distances to reconstruct a path.
-function pathFromExit(grid: number[][], dist: number[][]): Array<{ row: number; col: number }> {
-  const path: Array<{ row: number; col: number }> = [];
-  let r = ROWS - 1;
-  let c = COLS - 1;
-  if (dist[r][c] === Infinity) return path;
-  while (!(r === 0 && c === 0)) {
-    path.push({ row: r, col: c });
-    const d = dist[r][c];
-    const neigh: Array<[number, number]> = [
-      [r - 1, c],
-      [r + 1, c],
-      [r, c - 1],
-      [r, c + 1],
-    ];
-    let moved = false;
-    for (const [nr, nc] of neigh) {
-      if (nr < 0 || nr >= ROWS || nc < 0 || nc >= COLS) continue;
-      if (grid[nr][nc] !== 0) continue;
-      if (dist[nr][nc] === d - 1) {
-        r = nr;
-        c = nc;
-        moved = true;
-        break;
-      }
-    }
-    if (!moved) break;
-  }
-  path.push({ row: 0, col: 0 });
-  return path.reverse();
-}
-
-const SOLUTION_PATH = pathFromExit(VALIDATED.grid, VALIDATED.dist);
+const VALIDATED = validateMaze(RAW_MAZE_GRID, ROWS, COLS);
+const SOLUTION_PATH = pathFromExit(VALIDATED.grid, VALIDATED.dist, ROWS, COLS);
 
 // Pick 5 gate positions evenly along the solution (skip the start and exit).
 const GATES: Array<{ row: number; col: number }> = (() => {

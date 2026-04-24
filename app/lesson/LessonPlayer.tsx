@@ -35,6 +35,7 @@ const LessonArena3D = dynamic(
   { ssr: false }
 );
 import ScreenTransition, { type TransitionType } from "@/app/components/ScreenTransition";
+import ExerciseErrorBoundary from "@/app/components/ExerciseErrorBoundary";
 import { addXP, type RankInfo } from "@/app/lib/progression";
 import LessonAmbience from "@/app/components/LessonAmbience";
 const BossBattle = dynamic(
@@ -2374,169 +2375,6 @@ null
         );
       }
 
-      /* ──── LEGACY CASE 4 (shield simulator) ──── */
-      case -104: {
-        if (whyIdx >= WHY_SCENARIOS.length) {
-          return (
-            <FullScene bg="linear-gradient(180deg, #1a0505 0%, #1a1033 100%)" glow="radial-gradient(circle, rgba(239,68,68,0.25), transparent)">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.5 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ type: "spring", stiffness: 300, damping: 20 }}
-              style={{ textAlign: "center" }}
-            >
-              {card(
-                <>
-                  <h2 data-split style={{ color: "#fff", fontSize: 36, margin: "0 0 12px", textShadow: "0 0 24px rgba(239,68,68,0.5)" }}>Passwords protect EVERYTHING! 🛡️</h2>
-                  <p style={{ color: "#d1d5db", marginBottom: 16 }}>Now you know why every digital thing needs a password.</p>
-                  <p style={{ color: "#f59e0b", fontSize: 14 }}>🪙 +30 coins earned!</p>
-                  {btn("Quiz time! →", () => showLearnSummary(4))}
-                </>
-              )}
-            </motion.div>
-            </FullScene>
-          );
-        }
-        const sc = WHY_SCENARIOS[whyIdx];
-        const raccoonSpeed = [3, 2.5, 2][whyIdx] || 2;
-        return (
-          <FullScene bg="linear-gradient(180deg, #1a0505 0%, #1a1033 100%)" glow="radial-gradient(circle, rgba(239,68,68,0.25), transparent)">
-          <div style={{ textAlign: "center" }}>
-            <h1 data-split style={{ color: "#fff", fontSize: 38, fontWeight: 900, marginBottom: 8, textShadow: "0 0 24px rgba(239,68,68,0.5)" }}>Why Do Passwords Matter?</h1>
-            {!raccoonHitShield && !shieldPlaced && (
-null
-            )}
-            <p style={{ color: "#9ca3af", marginBottom: 16 }}>Scenario {whyIdx + 1}/3: {sc.label}</p>
-            {card(
-              <div style={{ position: "relative", minHeight: 200, overflow: "hidden" }}>
-                {/* Item on the left */}
-                <motion.div
-                  ref={itemRef}
-                  animate={shieldPlaced ? {
-                    boxShadow: ["0 0 10px rgba(16,185,129,0.3)", "0 0 25px rgba(16,185,129,0.6)", "0 0 10px rgba(16,185,129,0.3)"],
-                  } : {}}
-                  transition={shieldPlaced ? { duration: 1, repeat: Infinity, ease: "easeInOut" } : {}}
-                  style={{
-                    position: "absolute", left: 20, top: "50%", transform: "translateY(-50%)",
-                    textAlign: "center",
-                    border: shieldPlaced ? "3px solid #10b981" : "2px solid rgba(255,255,255,0.2)",
-                    borderRadius: 16, padding: 16, background: "rgba(255,255,255,0.04)",
-                  }}
-                >
-                  <span style={{ fontSize: 48, display: "flex", alignItems: "center", justifyContent: "center" }}>{sc.icon === "gamepad" ? <IconGamepad size={44} color="#3b82f6" /> : sc.icon === "users" ? <IconUsers size={44} color="#ec4899" /> : <IconMessageCircle size={44} color="#3b82f6" />}</span>
-                  <p style={{ color: "#fff", fontSize: 14, fontWeight: 700, margin: "4px 0 0" }}>{sc.item}</p>
-                  {shieldPlaced && (
-                    <motion.span
-                      initial={{ scale: 1.3 }}
-                      animate={{ scale: 1 }}
-                      transition={{ type: "spring", stiffness: 400, damping: 15 }}
-                      style={{ fontSize: 28, display: "inline-block" }}
-                    >
-                      🛡️
-                    </motion.span>
-                  )}
-                </motion.div>
-
-                {/* Raccoon on the right, approaching */}
-                {!raccoonHitShield && !shieldPlaced && (
-                  <motion.div
-                    initial={{ x: 0, scale: 0.6 }}
-                    animate={{ x: "calc(-100% - 60px)", scale: 1.2 }}
-                    transition={{ duration: raccoonSpeed, ease: "linear" }}
-                    style={{
-                      position: "absolute", right: -10, top: "50%", transform: "translateY(-50%)",
-                    }}
-                  >
-                    <motion.img
-                      src="/characters/raccoon-sneaking.png"
-                      alt="Raccoon sneaking"
-                      animate={{ y: [0, -6, 0] }}
-                      transition={{ duration: 0.5, repeat: Infinity, ease: "easeInOut" }}
-                      style={{ width: 120, borderRadius: 16, filter: "drop-shadow(0 0 12px rgba(239,68,68,0.5))" }}
-                    />
-                  </motion.div>
-                )}
-
-                {/* Raccoon bouncing back */}
-                {raccoonHitShield && (
-                  <motion.div
-                    initial={{ x: 0, rotate: 0, scale: 1.3, opacity: 1 }}
-                    animate={{ x: 300, rotate: 360, scale: 0, opacity: 0 }}
-                    transition={{ duration: 1.2, ease: "easeOut" }}
-                    style={{
-                      position: "absolute", left: 150, top: "50%", transform: "translateY(-50%)",
-                    }}
-                  >
-                    <img src="/characters/raccoon-defeated.png" alt="Raccoon defeated" style={{ width: 160, borderRadius: 16, filter: "drop-shadow(0 0 12px rgba(239,68,68,0.4))" }} />
-                  </motion.div>
-                )}
-
-                {/* Reaching warning */}
-                {raccoonReaching && !shieldPlaced && (
-                  <motion.div
-                    animate={shakeAnimation}
-                    style={{ position: "absolute", bottom: 10, left: "50%", transform: "translateX(-50%)" }}
-                  >
-                    <p style={{ color: "#ef4444", fontWeight: 700, fontSize: 14, whiteSpace: "nowrap" }}>Quick! Drag the shield! 🛡️</p>
-                  </motion.div>
-                )}
-              </div>,
-              { border: `2px solid ${shieldPlaced ? "#10b981" : "#ef4444"}`, padding: 16, marginBottom: 16 }
-            )}
-
-            {/* Next scenario button after raccoon bounces */}
-            {raccoonHitShield && (
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                style={{ textAlign: "center", marginTop: 12 }}
-              >
-                <p style={{ color: "#10b981", fontSize: 18, fontWeight: 700, marginBottom: 8 }}>Protected! The Raccoon bounced off!</p>
-null
-                {btn(whyIdx < WHY_SCENARIOS.length - 1 ? "Next Scenario →" : "All done! →", () => {
-                  if (whyIdx < WHY_SCENARIOS.length - 1) {
-                    setWhyIdx((i) => i + 1);
-                    setShieldPos(null); setShieldPlaced(false); setRaccoonHitShield(false);
-                  } else {
-                    setWhyIdx(WHY_SCENARIOS.length);
-                  }
-                })}
-              </motion.div>
-            )}
-
-            {/* Draggable shield */}
-            {!shieldPlaced && !raccoonHitShield && (
-              <div style={{ textAlign: "center", marginTop: 12 }}>
-                <p style={{ color: "#d1d5db", fontSize: 14, marginBottom: 8 }}>Drag the shield to protect it!</p>
-                <motion.div
-                  onPointerDown={(e) => {
-                    e.preventDefault();
-                    setShieldDragging(true);
-                    const rect = e.currentTarget.getBoundingClientRect();
-                    shieldOffset.current = { x: e.clientX - rect.left, y: e.clientY - rect.top };
-                    setShieldPos({ x: rect.left, y: rect.top });
-                  }}
-                  animate={{
-                    boxShadow: ["0 0 15px rgba(16,185,129,0.4)", "0 0 30px rgba(16,185,129,0.8)", "0 0 15px rgba(16,185,129,0.4)"],
-                  }}
-                  transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-                  whileHover={{ scale: 1.1 }}
-                  style={{
-                    display: "inline-flex", alignItems: "center", justifyContent: "center",
-                    width: 64, height: 64, borderRadius: "50%",
-                    background: "rgba(16,185,129,0.15)", border: "3px solid #10b981",
-                    cursor: "grab", touchAction: "none", userSelect: "none", fontSize: 32,
-                  }}
-                >
-                  🛡️
-                </motion.div>
-              </div>
-            )}
-          </div>
-          </FullScene>
-        );
-      }
-
       /* ──── CASE 5: CYBER MAZE ──── */
       case 5: {
         if (showInstr[5]) return <InstructionOverlay icon="🧩" story="Navigate the cyber maze. Every gate has a question!" instructions="Arrow keys / WASD / tap an adjacent cell to move. Answer correctly at each gate." onReady={() => dismissInstr(5)} />;
@@ -2549,60 +2387,6 @@ null
               onCorrect={() => awardXp(25, "lesson-week-1")}
               onWrong={() => addWrong(5)}
             />
-          </FullScene>
-        );
-      }
-
-      /* ──── LEGACY CASE 5 (Q2 bubble quiz) ──── */
-      case -105: {
-        if (q2Idx >= Q2_QUIZ.length) {
-          const s = q2Score === 3 ? 3 : q2Score >= 2 ? 2 : 1;
-          return (
-            <FullScene bg="linear-gradient(180deg, #0a0a2a 0%, #1a1033 100%)" glow="radial-gradient(circle, rgba(59,130,246,0.25), transparent)">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.5 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ type: "spring", stiffness: 300, damping: 20 }}
-              style={{ textAlign: "center" }}
-            >
-              {card(
-                <>
-                  <h2 data-split style={{ color: "#fff", fontSize: 36, margin: "0 0 12px", textShadow: "0 0 24px rgba(16,185,129,0.5)" }}>Quiz Complete!</h2>
-                  {stars(s)}
-                  <p style={{ color: "#d1d5db", margin: "12px 0" }}>You got {q2Score}/{Q2_QUIZ.length} correct!</p>
-                  <p style={{ color: "#f59e0b", fontSize: 14 }}>🪙 +{q2Score * 10} coins earned!</p>
-                  {btn("Next lesson! →", () => showLearnSummary(5))}
-                </>
-              )}
-            </motion.div>
-            </FullScene>
-          );
-        }
-        const qq = Q2_QUIZ[q2Idx];
-        return (
-          <FullScene bg="linear-gradient(180deg, #0a1a0a 0%, #1a1033 100%)" glow="radial-gradient(circle, rgba(16,185,129,0.15), transparent)">
-          <motion.div
-            key={`q2-${q2Idx}`}
-            initial={{ opacity: 0, y: 60 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-          >
-            <h1 data-split style={{ color: "#fff", fontSize: 40, fontWeight: 900, marginBottom: 4, textAlign: "center", textShadow: "0 0 24px rgba(16,185,129,0.4)" }}>Quick Quiz!<img src="/characters/thinking.png" width={40} height={40} alt="" style={{ display: "inline-block", verticalAlign: "middle", marginLeft: 8, borderRadius: 999 }} /></h1>
-            <p style={{ color: "#9ca3af", marginBottom: 12, textAlign: "center" }}>Question {q2Idx + 1}/{Q2_QUIZ.length}</p>
-            <FloatingBubbleQuiz
-              question={qq.q}
-              opts={qq.opts}
-              correct={qq.correct}
-              explain={qq.explain}
-              playSound={playSound}
-              onCorrect={() => {
-                setQ2Score((s) => s + 1);
-                addCoins(10);
-                setTimeout(() => setQ2Idx((i) => i + 1), 0);
-              }}
-              onWrong={() => addWrong(5)}
-            />
-          </motion.div>
           </FullScene>
         );
       }
@@ -2622,123 +2406,6 @@ null
         );
       }
 
-      /* ──── LEGACY CASE 6 (password recipe pouring) ──── */
-      case -106:
-        return (
-          <FullScene bg="linear-gradient(180deg, #0a1020 0%, #1a1033 100%)" glow="radial-gradient(circle, rgba(59,130,246,0.15), transparent)">
-          <div style={{ textAlign: "center" }}>
-            <h1 data-split style={{ color: "#fff", fontSize: 40, fontWeight: 900, marginBottom: 8, textShadow: "0 0 24px rgba(59,130,246,0.5)" }}>🧪 The Password Recipe!</h1>
-            <p style={{ color: "#9ca3af", marginBottom: 16, fontSize: 16 }}>Tap each bottle to pour it into the mix!</p>
-
-            {/* Bottles in arc */}
-            <div style={{ display: "flex", flexWrap: "wrap", gap: 12, justifyContent: "center", marginBottom: 16 }}>
-              {RECIPE.map((r, i) => {
-                const added = addedIngredients.has(i);
-                const pouring = pouringIdx === i;
-                return (
-                  <motion.button
-                    key={i}
-                    onClick={() => {
-                      if (added || pouringIdx !== null) return;
-                      setPouringIdx(i);
-                      playTone("bubble");
-                      const chars = RECIPE_CHARS[i] || ["?"];
-                      const newChars = chars.map((c, ci) => ({
-                        char: c, x: (Math.random() - 0.5) * 30, delay: ci * 50,
-                      }));
-                      setPourChars(newChars);
-                      setTimeout(() => {
-                        setAddedIngredients((prev) => { const n = new Set(prev); n.add(i); return n; });
-                        setPouringIdx(null);
-                        setPourChars([]);
-                        if (addedIngredients.size === 4) {
-                          addCoins(25);
-                          playSFX("xpGain");
-                        }
-                      }, 1200);
-                    }}
-                    animate={pouring ? { rotate: -45 } : { rotate: 0 }}
-                    whileHover={!added && pouringIdx === null ? { scale: 1.05 } : {}}
-                    whileTap={!added && pouringIdx === null ? { scale: 0.95 } : {}}
-                    transition={{ duration: 0.3 }}
-                    style={{
-                      background: added ? "rgba(16,185,129,0.1)" : "rgba(255,255,255,0.04)",
-                      border: `2px solid ${added ? "#10b981" : r.color}`,
-                      borderRadius: 16, padding: 16, cursor: added || pouringIdx !== null ? "default" : "pointer",
-                      opacity: added ? 0.5 : 1, minWidth: 120, minHeight: 48,
-                      transformOrigin: "bottom center",
-                    }}
-                  >
-                    <div style={{ fontSize: 28 }}>{r.icon}</div>
-                    <div style={{ color: r.color, fontWeight: 700, fontSize: 13 }}>{r.label}</div>
-                    <div style={{ color: "#9ca3af", fontSize: 11 }}>{r.example}</div>
-                    {added && <div style={{ color: "#10b981", fontSize: 12, marginTop: 4 }}>✓ Poured!</div>}
-                  </motion.button>
-                );
-              })}
-            </div>
-
-            {/* Pouring characters */}
-            {pouringIdx !== null && (
-              <div style={{ position: "relative", height: 60, margin: "0 auto", maxWidth: 200 }}>
-                {pourChars.map((c, i) => (
-                  <motion.span
-                    key={i}
-                    initial={{ y: 0, opacity: 1 }}
-                    animate={{ y: 50, opacity: 0.6 }}
-                    transition={{ duration: 0.8, ease: "easeIn", delay: c.delay / 1000 }}
-                    style={{
-                      position: "absolute",
-                      left: `calc(50% + ${c.x}px)`,
-                      top: 0,
-                      color: RECIPE[pouringIdx]?.color || "#fff",
-                      fontWeight: 900, fontSize: 18, fontFamily: "monospace",
-                    }}
-                  >
-                    {c.char}
-                  </motion.span>
-                ))}
-              </div>
-            )}
-
-            {/* Bowl */}
-            <motion.div
-              animate={addedIngredients.size === 5 ? {
-                boxShadow: [
-                  "0 0 20px rgba(59,130,246,0.5)",
-                  "0 0 25px rgba(59,130,246,0.5)",
-                  "0 0 30px rgba(236,72,153,0.5)",
-                  "0 0 25px rgba(245,158,11,0.5)",
-                  "0 0 20px rgba(16,185,129,0.5)",
-                ],
-              } : {}}
-              transition={addedIngredients.size === 5 ? { duration: 2, repeat: Infinity, ease: "linear" } : {}}
-              style={{
-                width: 220, height: 140, margin: "0 auto 16px", borderRadius: "0 0 50% 50%",
-                background: `linear-gradient(135deg, rgba(59,130,246,${0.15 + addedIngredients.size * 0.07}), rgba(59,130,246,${0.15 + addedIngredients.size * 0.07}))`,
-                border: "3px solid rgba(59,130,246,0.4)", display: "flex", alignItems: "center",
-                justifyContent: "center", fontSize: 36, transition: "all 0.5s ease",
-              }}
-            >
-              {addedIngredients.size === 5 ? "🌟" : "🔑"}
-            </motion.div>
-            {strengthMeter((addedIngredients.size / 5) * 100)}
-            <AnimatePresence>
-              {addedIngredients.size === 5 && (
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.5 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                >
-                  <p style={{ color: "#10b981", fontSize: 22, fontWeight: 700 }}>SUPER STRONG! 🔥</p>
-                  {btn("Build a password! →", () => showLearnSummary(6))}
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
-          </FullScene>
-        );
-
       /* ──── CASE 7: CRACK THE CODE (was password builder) ──── */
       case 7: {
         if (showInstr[7]) return <InstructionOverlay icon="🔓" story="Spin each dial until every setting is the strongest one. Then UNLOCK!" instructions="Use the ← → arrows on each ring to select the safest option, then press UNLOCK." onReady={() => dismissInstr(7)} />;
@@ -2750,86 +2417,6 @@ null
               onCorrect={() => awardXp(25, "lesson-week-1")}
               onWrong={() => addWrong(7)}
             />
-          </FullScene>
-        );
-      }
-
-      /* ──── LEGACY CASE 7 (password builder) ──── */
-      case -107: {
-        const builtPw = builderSlots.map((s: number, i: number) => s >= 0 ? BUILDER_OPTIONS[i][s] : "").join("");
-        const filledCount = builderSlots.filter((s: number) => s >= 0).length;
-        return (
-          <FullScene bg="linear-gradient(180deg, #1a0a20 0%, #1a1033 100%)" glow="radial-gradient(circle, rgba(249,115,22,0.2), transparent)">
-          <div style={{ textAlign: "center" }}>
-            <h1 data-split style={{ color: "#fff", fontSize: 40, fontWeight: 900, marginBottom: 8, textShadow: "0 0 24px rgba(249,115,22,0.5)" }}>🔨 Build Your Password!</h1>
-null
-            {/* Display */}
-            <motion.div
-              animate={builderPowerUp ? {
-                scale: [1, 1.08, 1],
-                boxShadow: ["0 0 0 rgba(245,158,11,0)", "0 0 30px rgba(245,158,11,0.6)", "0 0 15px rgba(245,158,11,0.3)"],
-              } : {}}
-              transition={{ duration: 1 }}
-              style={{
-                background: "rgba(0,0,0,0.3)", borderRadius: 16, padding: "12px 20px", margin: "0 auto 16px",
-                maxWidth: 400, fontFamily: "monospace", fontSize: 24, color: "#f59e0b", fontWeight: 900,
-                letterSpacing: 3, minHeight: 48, border: "2px solid rgba(59,130,246,0.3)",
-              }}
-            >
-              {builtPw || "••••••••"}
-            </motion.div>
-            {strengthMeter((filledCount / 4) * 100)}
-            {builderActive < 4 ? (
-              <motion.div
-                key={`builder-${builderActive}`}
-                initial={{ opacity: 0, y: 60 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4 }}
-              >
-                <p style={{ color: BUILDER_COLORS[builderActive], fontSize: 16, fontWeight: 700, marginBottom: 12 }}>
-                  {BUILDER_LABELS[builderActive]}
-                </p>
-                <div style={{ display: "flex", flexWrap: "wrap", gap: 10, justifyContent: "center" }}>
-                  {BUILDER_OPTIONS[builderActive].map((opt: string, i: number) => (
-                    <motion.button
-                      key={i}
-                      onClick={(e) => {
-                        const newSlots: [number, number, number, number] = [...builderSlots];
-                        newSlots[builderActive] = i;
-                        setBuilderSlots(newSlots);
-                        playSFX("correct");
-                        awardXp(50, "lesson-week-1", e.currentTarget as HTMLElement);
-                        if (builderActive === 3) {
-                          addCoins(25);
-                          setTimeout(() => { setBuilderPowerUp(true); playSFX("xpGain"); }, 100);
-                        }
-                        setBuilderActive((a) => a + 1);
-                      }}
-                      whileHover={{ scale: 1.1 }}
-                      whileTap={{ scale: 0.95 }}
-                      style={{
-                        background: "rgba(255,255,255,0.04)", border: `2px solid ${BUILDER_COLORS[builderActive]}`,
-                        borderRadius: 12, padding: "12px 18px", color: BUILDER_COLORS[builderActive],
-                        fontSize: 18, fontWeight: 700, cursor: "pointer", minWidth: 48, minHeight: 48,
-                      }}
-                    >
-                      {opt}
-                    </motion.button>
-                  ))}
-                </div>
-              </motion.div>
-            ) : (
-              <motion.div
-                initial={{ opacity: 0, scale: 0.5 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ type: "spring", stiffness: 300, damping: 20 }}
-              >
-                <p style={{ color: "#10b981", fontSize: 20, fontWeight: 700, marginBottom: 8 }}>🎉 Password built!</p>
-                <p style={{ color: "#d1d5db", marginBottom: 16 }}>Your password: <strong style={{ color: "#f59e0b" }}>{builtPw}</strong></p>
-                {btn("Now spot the good ones! →", () => showLearnSummary(7))}
-              </motion.div>
-            )}
-          </div>
           </FullScene>
         );
       }
@@ -2849,51 +2436,6 @@ null
         );
       }
 
-      /* ──── LEGACY CASE 8 (good vs bad swipe) ──── */
-      case -108: {
-        if (swipeIdx >= SWIPE_DATA.length) {
-          const s = swipeScore >= 5 ? 3 : swipeScore >= 3 ? 2 : 1;
-          return (
-            <FullScene bg="linear-gradient(180deg, #1a0a20 0%, #1a1033 100%)" glow="radial-gradient(circle, rgba(249,115,22,0.2), transparent)">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.5 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ type: "spring", stiffness: 300, damping: 20 }}
-              style={{ textAlign: "center" }}
-            >
-              {card(
-                <>
-                  <h2 data-split style={{ color: "#fff", fontSize: 36, margin: "0 0 12px", textShadow: "0 0 24px rgba(249,115,22,0.5)" }}>Round Complete!</h2>
-                  {stars(s)}
-                  <p style={{ color: "#d1d5db", margin: "12px 0" }}>{swipeScore}/{SWIPE_DATA.length} correct!</p>
-                  <p style={{ color: "#f59e0b", fontSize: 14 }}>🪙 +{swipeScore * 10} coins earned!</p>
-                  {btn("Now sort them all! →", () => showLearnSummary(8))}
-                </>
-              )}
-            </motion.div>
-            </FullScene>
-          );
-        }
-        return (
-          <FullScene bg="linear-gradient(180deg, #1a0a20 0%, #1a1033 100%)" glow="radial-gradient(circle, rgba(249,115,22,0.2), transparent)">
-            <VaultLock
-              title="Good or Bad?"
-              mode="evaluate"
-              items={SWIPE_DATA.map((d) => ({
-                text: d.pw,
-                isStrong: d.isStrong,
-                explanation: d.why,
-              }))}
-              onComplete={(sc) => {
-                setSwipeScore(sc);
-                addCoins(sc * 10);
-                setSwipeIdx(SWIPE_DATA.length);
-              }}
-            />
-          </FullScene>
-        );
-      }
-
       /* ──── CASE 9: CONVEYOR BELT (was drag & drop sort) ──── */
       case 9: {
         if (showInstr[9]) return <InstructionOverlay icon="⚙️" story="Passwords roll down the factory belt — sort them before they fall off!" instructions="Set the lever UP for STRONG or DOWN for WEAK before each password reaches the fork." onReady={() => dismissInstr(9)} />;
@@ -2908,54 +2450,6 @@ null
               onComplete={() => showLearnSummary(9)}
               onCorrect={() => awardXp(25, "lesson-week-1")}
               onWrong={() => addWrong(9)}
-            />
-          </FullScene>
-        );
-      }
-
-      /* ──── LEGACY CASE 9 (drag & drop sort) ──── */
-      case -109: {
-        if (dragDone) {
-          return (
-            <FullScene bg="linear-gradient(180deg, #0a1020 0%, #1a1033 100%)" glow="radial-gradient(circle, rgba(16,185,129,0.2), transparent)">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.5 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ type: "spring", stiffness: 300, damping: 20 }}
-              style={{ textAlign: "center" }}
-            >
-              {card(
-                <>
-                  <h2 data-split style={{ color: "#fff", fontSize: 36, margin: "0 0 12px", textShadow: "0 0 20px rgba(16,185,129,0.4)" }}>Sorting Complete!</h2>
-                  {stars(sortStars)}
-                  <p style={{ color: "#d1d5db", margin: "12px 0" }}>{placed.size}/8 sorted correctly!</p>
-                  <p style={{ color: "#f59e0b", fontSize: 14 }}>🪙 +25 coins earned!</p>
-                  {btn("Learn the golden rules! →", () => showLearnSummary(9))}
-                </>
-              )}
-            </motion.div>
-            </FullScene>
-          );
-        }
-        return (
-          <FullScene bg="linear-gradient(180deg, #0a1020 0%, #1a1033 100%)" glow="radial-gradient(circle, rgba(16,185,129,0.2), transparent)">
-            <SortingStation
-              title="Sort the Passwords!"
-              instruction="Drop each password into Strong or Weak"
-              items={PASSWORDS_8.map((p) => ({
-                text: p.text,
-                category: p.isStrong ? "strong" : "weak",
-              }))}
-              categories={[
-                { id: "strong", label: "Strong", color: "#10b981", icon: "💪" },
-                { id: "weak", label: "Weak", color: "#ef4444", icon: "👎" },
-              ]}
-              onComplete={(sc, total) => {
-                setPlaced(new Set(PASSWORDS_8.map((p) => p.id)));
-                setSortStars(sc >= total ? 3 : sc >= Math.ceil(total * 0.7) ? 2 : 1);
-                addCoins(25);
-                setDragDone(true);
-              }}
             />
           </FullScene>
         );
@@ -3103,60 +2597,6 @@ null
         );
       }
 
-      /* ──── LEGACY CASE 11 (Q3 bubble quiz) ──── */
-      case -111: {
-        if (q3Idx >= Q3_QUIZ.length) {
-          const s = q3Score >= 4 ? 3 : q3Score >= 3 ? 2 : 1;
-          return (
-            <FullScene bg="linear-gradient(180deg, #0a0a2a 0%, #1a1033 100%)" glow="radial-gradient(circle, rgba(59,130,246,0.25), transparent)">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.5 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ type: "spring", stiffness: 300, damping: 20 }}
-              style={{ textAlign: "center" }}
-            >
-              {card(
-                <>
-                  <h2 data-split style={{ color: "#fff", fontSize: 36, margin: "0 0 12px", textShadow: "0 0 20px rgba(59,130,246,0.4)" }}>Quiz Complete!</h2>
-                  {stars(s)}
-                  <p style={{ color: "#d1d5db", margin: "12px 0" }}>You got {q3Score}/{Q3_QUIZ.length} correct!</p>
-                  <p style={{ color: "#f59e0b", fontSize: 14 }}>🪙 +{q3Score * 10} coins earned!</p>
-                  {btn("Next lesson! →", () => showLearnSummary(11))}
-                </>
-              )}
-            </motion.div>
-            </FullScene>
-          );
-        }
-        const qq = Q3_QUIZ[q3Idx];
-        return (
-          <FullScene bg="linear-gradient(180deg, #0a0a2a 0%, #1a1033 100%)" glow="radial-gradient(circle, rgba(59,130,246,0.25), transparent)">
-          <motion.div
-            key={`q3-${q3Idx}`}
-            initial={{ opacity: 0, y: 60 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-          >
-            <h1 data-split style={{ color: "#fff", fontSize: 40, fontWeight: 900, marginBottom: 4, textAlign: "center", textShadow: "0 0 24px rgba(59,130,246,0.5)" }}>Quick Quiz!<img src="/characters/thinking.png" width={40} height={40} alt="" style={{ display: "inline-block", verticalAlign: "middle", marginLeft: 8, borderRadius: 999 }} /></h1>
-            <p style={{ color: "#9ca3af", marginBottom: 12, textAlign: "center" }}>Question {q3Idx + 1}/{Q3_QUIZ.length}</p>
-            <FloatingBubbleQuiz
-              question={qq.q}
-              opts={qq.opts}
-              correct={qq.correct}
-              explain={qq.explain}
-              playSound={playSound}
-              onCorrect={() => {
-                setQ3Score((s) => s + 1);
-                addCoins(10);
-                setTimeout(() => setQ3Idx((i) => i + 1), 0);
-              }}
-              onWrong={() => addWrong(11)}
-            />
-          </motion.div>
-          </FullScene>
-        );
-      }
-
       /* ──── CASE 12: PHISHING EXPLAINER ──── */
       case 12: {
         if (showSummary[12]) return <LearnSummary message="You learned the 4 signs of a trick, too good to be true, scary warnings, spelling mistakes, and asking for secrets!" starCount={3} onNext={() => dismissSummary(12, 13)} />;
@@ -3234,55 +2674,6 @@ null
         );
       }
 
-      /* ──── LEGACY CASE 13 (phishing tablet) ──── */
-      case -113: {
-        if (phishIdx >= PHISH.length) {
-          const s = phishScore >= 3 ? 3 : phishScore >= 2 ? 2 : 1;
-          return (
-            <FullScene bg="linear-gradient(180deg, #050a1a 0%, #1a1033 100%)" glow="radial-gradient(circle, rgba(59,130,246,0.2), transparent)">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.5 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ type: "spring", stiffness: 300, damping: 20 }}
-              style={{ textAlign: "center" }}
-            >
-              {card(
-                <>
-                  <h2 data-split style={{ color: "#fff", fontSize: 36, margin: "0 0 12px", textShadow: "0 0 20px rgba(59,130,246,0.4)" }}>Phishing Expert!</h2>
-                  {stars(s)}
-                  <p style={{ color: "#d1d5db", margin: "12px 0" }}>{phishScore}/{PHISH.length} spotted correctly!</p>
-                  <p style={{ color: "#f59e0b", fontSize: 14 }}>🪙 +{phishScore * 15} coins earned!</p>
-                  {btn("Real life scenarios! →", () => showLearnSummary(13))}
-                </>
-              )}
-            </motion.div>
-            </FullScene>
-          );
-        }
-        const phishEmails = [
-          { from: "Prize Central", fromEmail: "prizes@fr33-1phone-winner.com", subject: "🎉 YOU WON A FREE iPHONE!", preview: "Click here and enter your password to claim your prize NOW!", body: "Congratulations! You've been selected as our lucky winner of a brand new iPhone! To claim your prize, click the link below and enter your Apple ID password right away, before the offer expires!", isPhishing: true, clues: ["Suspicious sender address", "Asks for your password", "Urgency / too good to be true"] },
-          { from: "Security Team", fromEmail: "alerts@account-secure-now.info", subject: "⚠️ URGENT: Your account has been hacked!", preview: "Enter your password RIGHT NOW to fix it!", body: "We have detected suspicious activity on your account. To prevent it from being closed, enter your password IMMEDIATELY in the form linked below. This is URGENT!", isPhishing: true, clues: ["Fake urgency and panic", "Asks for your password", "Generic sender domain"] },
-          { from: "Sam", fromEmail: "sam@gmail.com", subject: "💬 Funny video!", preview: "Hi! Your friend Sam sent you a funny video 😂 Click to watch!", body: "Hey! I saw this funny video today and thought of you. Click to watch when you get a chance!", isPhishing: false, clues: ["From a known friend", "No password request", "Normal friendly tone"] },
-          { from: "School Admin", fromEmail: "admin@school-password-update.co", subject: "🏫 Your school needs your password!", preview: "Enter it in this form to update the system.", body: "Dear Student, our system needs to update all student passwords. Please enter your current school password in the form below as soon as possible.", isPhishing: true, clues: ["Schools never ask for your password in a message", "Strange domain for a school", "Urgency"] },
-          { from: "V-Bucks Giveaway", fromEmail: "freevbucks@fr33-vb-store.xyz", subject: "🎮 FREE V-BUCKS! Get 10,000 V-Bucks FREE!", preview: "Just enter your username and password to claim!", body: "Limited time only! Enter your gaming username and password below to receive 10,000 FREE V-Bucks instantly. Offer ends today!", isPhishing: true, clues: ["Free stuff that isn't real", "Asks for username AND password", "Fake urgency"] },
-          { from: "Mrs Johnson", fromEmail: "m.johnson@school.edu", subject: "📚 Reminder from School", preview: "Don't forget to bring your PE kit tomorrow!", body: "Hi class! Just a quick reminder to bring your PE kit in for tomorrow. Thanks! - Mrs Johnson", isPhishing: false, clues: ["Normal school reminder", "No password or personal info asked", "Real-looking sender"] },
-          { from: "Lucky Visitor", fromEmail: "prize@1-million-visitor-claim.net", subject: "🏆 CONGRATULATIONS! You are our 1,000,000th visitor!", preview: "Click NOW to claim your prize! Enter your details!", body: "You are visitor number 1,000,000! Click below and enter your details to claim your prize before time runs out! ⏰", isPhishing: true, clues: ["Websites can't tell which number visitor you are", "Fake urgency", "Asks for personal details"] },
-        ];
-        return (
-          <FullScene bg="linear-gradient(180deg, #050a1a 0%, #1a1033 100%)" glow="radial-gradient(circle, rgba(59,130,246,0.2), transparent)">
-            <InboxSimulator
-              title="Spot the Tricks!"
-              emails={phishEmails}
-              onComplete={(sc) => {
-                setPhishScore(sc);
-                addCoins(sc * 15);
-                setPhishIdx(PHISH.length);
-              }}
-            />
-          </FullScene>
-        );
-      }
-
       /* ──── CASE 14: CHOOSE YOUR PATH ──── */
       case 14: {
         if (showInstr[14]) return <InstructionOverlay icon="🚪" story="A choice leads through one of two doors. Which one keeps you safe?" instructions="Read each scenario and pick the safe door!" onReady={() => dismissInstr(14)} />;
@@ -3294,126 +2685,6 @@ null
               onCorrect={() => awardXp(25, "lesson-week-1")}
               onWrong={() => addWrong(14)}
             />
-          </FullScene>
-        );
-      }
-
-      /* ──── LEGACY CASE 14 (WYD comic bubbles) ──── */
-      case -114: {
-        if (wydIdx >= WYD.length) {
-          const s = wydScore >= 3 ? 3 : wydScore >= 2 ? 2 : 1;
-          return (
-            <FullScene bg="linear-gradient(180deg, #0a0a2a 0%, #1a1033 100%)" glow="radial-gradient(circle, rgba(59,130,246,0.25), transparent)">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.5 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ type: "spring", stiffness: 300, damping: 20 }}
-              style={{ textAlign: "center" }}
-            >
-              {card(
-                <>
-                  <h2 data-split style={{ color: "#fff", fontSize: 36, margin: "0 0 12px", textShadow: "0 0 20px rgba(59,130,246,0.4)" }}>Great decisions!</h2>
-                  {stars(s)}
-                  <p style={{ color: "#d1d5db", margin: "12px 0" }}>{wydScore}/{WYD.length} perfect choices!</p>
-                  <p style={{ color: "#f59e0b", fontSize: 14 }}>🪙 +{wydScore * 15} coins earned!</p>
-                  {btn("Face the Raccoon! →", () => showLearnSummary(14))}
-                </>
-              )}
-            </motion.div>
-            </FullScene>
-          );
-        }
-        const w = WYD[wydIdx];
-        return (
-          <FullScene bg="linear-gradient(180deg, #0a0a2a 0%, #1a1033 100%)" glow="radial-gradient(circle, rgba(59,130,246,0.25), transparent)">
-          <div style={{ textAlign: "center" }}>
-            <h1 data-split style={{ color: "#fff", fontSize: 38, fontWeight: 900, marginBottom: 8, textShadow: "0 0 20px rgba(59,130,246,0.4)" }}>🎬 What Would YOU Do?</h1>
-            <p style={{ color: "#9ca3af", marginBottom: 16, fontSize: 16 }}>Scenario {wydIdx + 1}/{WYD.length}</p>
-            <motion.div
-              key={`wyd-${wydIdx}`}
-              initial={{ opacity: 0, x: 60 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.4 }}
-            >
-              <div style={{ display: "flex", alignItems: "flex-start", gap: 12, maxWidth: 500, margin: "0 auto 16px" }}>
-                {/* Character */}
-                <motion.div
-                  animate={{ y: [0, -6, 0] }}
-                  transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-                  style={{ fontSize: 48, flexShrink: 0 }}
-                >
-                  {w.emoji}
-                </motion.div>
-                {/* Speech bubble */}
-                <div style={{
-                  position: "relative", background: "rgba(255,255,255,0.06)",
-                  border: "2px solid rgba(59,130,246,0.3)", borderRadius: 20, padding: 16,
-                  flex: 1, textAlign: "left",
-                }}>
-                  {/* Triangle tail */}
-                  <div style={{
-                    position: "absolute", left: -10, top: 20,
-                    width: 0, height: 0,
-                    borderTop: "8px solid transparent", borderBottom: "8px solid transparent",
-                    borderRight: "10px solid rgba(59,130,246,0.3)",
-                  }} />
-                  <p style={{ color: "#fff", fontSize: 15, fontWeight: 700, margin: 0 }}>{w.situation}</p>
-                </div>
-              </div>
-
-              {/* Options */}
-              <div style={{ display: "flex", flexDirection: "column", gap: 10, maxWidth: 640, margin: "0 auto" }}>
-                {w.opts.map((opt: string, i: number) => {
-                  const c = OPT_COLORS[i % OPT_COLORS.length];
-                  const selected = wydSel === i;
-                  const answered = wydSel !== null;
-                  const isCorrect = i === w.correct;
-                  let bg = c.bg;
-                  let border = c.border;
-                  if (answered && isCorrect) { bg = "rgba(16,185,129,0.15)"; border = "#10b981"; }
-                  if (selected && !isCorrect) { bg = "rgba(245,158,11,0.15)"; border = "#f59e0b"; }
-                  return (
-                    <motion.button
-                      key={i}
-                      className="shimmer-card"
-                      onClick={(e) => {
-                        if (wydSel !== null) return;
-                        setWydSel(i);
-                        if (i === w.correct) { celebrateCorrect(e.currentTarget as HTMLElement); setWydScore((s) => s + 1); addCoins(15); playSFX("correct"); awardXp(50, "lesson-week-1", e.currentTarget as HTMLElement); setTimeout(() => playSFX("xpGain"), 500); }
-                        else { shakeWrong(e.currentTarget as HTMLElement); playSFX("wrong"); addWrong(14); }
-                      }}
-                      disabled={answered}
-                      whileHover={!answered ? { scale: 1.02 } : {}}
-                      whileTap={!answered ? { scale: 0.98 } : {}}
-                      style={{
-                        background: bg, border: `2px solid ${border}`, borderRadius: 16, padding: "14px 18px",
-                        color: answered && isCorrect ? "#10b981" : selected && !isCorrect ? "#f59e0b" : c.color,
-                        fontSize: 15, fontWeight: 700, cursor: answered ? "default" : "pointer", textAlign: "left",
-                        minHeight: 60, transition: "all 0.3s ease",
-                      }}
-                    >
-                      {opt}
-                    </motion.button>
-                  );
-                })}
-              </div>
-              {wydSel !== null && (
-                <motion.div
-                  initial={{ opacity: 0, y: 30 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  style={{ marginTop: 12 }}
-                >
-                  <p style={{ color: wydSel === w.correct ? "#10b981" : "#f59e0b", fontSize: 20, fontWeight: 700 }}>
-                    {wydSel === w.correct ? "🌟 Perfect Cyber Hero choice!" : "🤔 Good try! Here's a better approach:"}
-                  </p>
-                  <p style={{ color: "#e5e7eb", fontSize: 16, lineHeight: 1.5 }}>{w.why}</p>
-                  <div style={{ marginTop: 12 }}>
-                    {btn("Continue →", () => { setWydSel(null); setWydIdx((idx) => idx + 1); })}
-                  </div>
-                </motion.div>
-              )}
-            </motion.div>
-          </div>
           </FullScene>
         );
       }
@@ -3921,7 +3192,12 @@ null
           onTransitionStart={() => playSFX("transition")}
         >
           <ScreenShake trigger={shakeTrigger}>
-            {renderScreen()}
+            <ExerciseErrorBoundary
+              key={screen}
+              onSkip={() => navigate(Math.min(18, screen + 1))}
+            >
+              {renderScreen()}
+            </ExerciseErrorBoundary>
           </ScreenShake>
         </ScreenTransition>
       </main>
