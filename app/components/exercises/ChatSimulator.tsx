@@ -163,6 +163,7 @@ export default function ChatSimulator({
       setTyping({ sender: nextMsg.sender });
       revealTimerRef.current = setTimeout(() => {
         setTyping(null);
+        if (nextMsg.sender === "stranger") playSound("chatReceive");
         pushShown({ sender: nextMsg.sender, text: nextMsg.text });
         // After showing, check for a choice trigger on THIS index
         const group = choiceForIndex(cursor);
@@ -237,7 +238,7 @@ export default function ChatSimulator({
       !perfectFiredRef.current
     ) {
       perfectFiredRef.current = true;
-      playSound("celebration");
+      playSound("confetti");
       void badgeEarnedCelebration();
     }
   }, [phase, score, totalChoices, onComplete]);

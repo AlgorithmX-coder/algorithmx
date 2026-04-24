@@ -172,7 +172,7 @@ export default function InboxSimulator({
   useEffect(() => {
     if (!allDone || completeFiredRef.current) return;
     completeFiredRef.current = true;
-    playSound("celebration");
+    playSound("confetti");
     if (score === emails.length && !celebrationFiredRef.current) {
       celebrationFiredRef.current = true;
       void badgeEarnedCelebration();
@@ -350,6 +350,7 @@ export default function InboxSimulator({
                   selected={isSelected}
                   unread={unread}
                   onClick={() => {
+                    if (i !== selectedIdx) playSound("emailOpen");
                     if (unread || isSelected) {
                       setSelectedIdx(i);
                       setFeedbackKind(null);

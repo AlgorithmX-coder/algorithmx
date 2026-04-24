@@ -13,7 +13,7 @@ import {
   wrongAnswerShake,
   bossDefeatedExplosion,
 } from "@/app/lib/celebrations";
-import { playSound } from "@/app/lib/sounds";
+import { playSound, playBGM, stopBGM } from "@/app/lib/sounds";
 
 type Question = {
   question: string;
@@ -179,7 +179,8 @@ export default function BattleArena({
   // Intro → first attack announcement
   useEffect(() => {
     if (phase !== "intro") return;
-    playSound("boss-appear");
+    playSound("bossRoar");
+    playBGM("bgmBattle");
     if (timerRef.current) clearTimeout(timerRef.current);
     timerRef.current = setTimeout(() => {
       setBannerKey((k) => k + 1);
@@ -189,6 +190,13 @@ export default function BattleArena({
       if (timerRef.current) clearTimeout(timerRef.current);
     };
   }, [phase]);
+
+  // Stop battle BGM on unmount
+  useEffect(() => {
+    return () => {
+      stopBGM(400);
+    };
+  }, []);
 
   // Attack announcement → question
   useEffect(() => {
@@ -207,7 +215,12 @@ export default function BattleArena({
     if (phase !== "victory") return;
     if (!defeatFiredRef.current) {
       defeatFiredRef.current = true;
-      playSound("boss-defeated");
+      stopBGM(400);
+      playSound("bossDefeated");
+      window.setTimeout(() => {
+        playSound("victory");
+        playBGM("bgmVictory");
+      }, 500);
       void bossDefeatedExplosion();
       onBossDefeated?.();
     }
@@ -225,12 +238,18 @@ export default function BattleArena({
       setPhase("feedback");
 
       if (correct) {
-        playSound("boss-hit");
+        playSound("heroAttack");
+        playSound("hitImpact");
+        playSound("bossHurt");
         void correctAnswerBurst();
         const newHP = Math.max(0, bossHP - 1);
         setBossHP(newHP);
         setScore((s) => s + 1);
-        setCombo((c) => c + 1);
+        const newCombo = combo + 1;
+        setCombo(newCombo);
+        if (newCombo === 3) playSound("streak3");
+        else if (newCombo === 5) playSound("streak5");
+        else if (newCombo >= 7 && newCombo % 2 === 1) playSound("streak7");
         setBossHitKey((k) => k + 1);
         setDamageKey((k) => k + 1);
 
@@ -253,6 +272,8 @@ export default function BattleArena({
         }, 1000);
       } else {
         playSound("wrong");
+        playSound("bossAttack");
+        playSound("hitImpact");
         wrongAnswerShake();
         setCombo(0);
         setAttackWaveKey((k) => k + 1);
@@ -266,7 +287,7 @@ export default function BattleArena({
         }, 1000);
       }
     },
-    [selected, currentQ, bossHP, score, total, onComplete],
+    [selected, currentQ, bossHP, score, total, combo, onComplete],
   );
 
   const arenaBorderColor =

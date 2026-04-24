@@ -2,28 +2,105 @@ import { Howl, Howler } from "howler";
 
 type Category = "sfx" | "music" | "voice";
 
-const SFX_KEYS = [
-  "click",
-  "correct",
-  "wrong",
-  "transition",
-  "whoosh",
-  "pop",
-  "badge-earned",
-  "boss-appear",
-  "boss-hit",
-  "boss-defeated",
-  "celebration",
-  "countdown",
-  "hover",
-  "lock",
-  "unlock",
-  "star",
-  "level-up",
-  "raccoon-laugh",
-] as const;
+interface SoundEntry {
+  path: string;
+  volume: number;
+}
 
-type SfxKey = (typeof SFX_KEYS)[number];
+/**
+ * SFX_REGISTRY — canonical keys used throughout the app.
+ *
+ * Keys are camelCase. A few legacy hyphenated aliases are registered at the
+ * bottom so older call sites keep working without edits.
+ *
+ * Volume tiers:
+ *   0.6 — routine UI + battle SFX
+ *   0.8 — feedback (correct/wrong/streaks)
+ *   0.9 — big moments (victory/defeat)
+ */
+const SFX_REGISTRY: Record<string, SoundEntry> = {
+  // UI
+  click: { path: "/audio/sfx/click.mp3", volume: 0.6 },
+  hover: { path: "/audio/sfx/hover.mp3", volume: 0.6 },
+  select: { path: "/audio/sfx/select.mp3", volume: 0.6 },
+  back: { path: "/audio/sfx/back.mp3", volume: 0.6 },
+  transition: { path: "/audio/sfx/transition.mp3", volume: 0.6 },
+  pop: { path: "/audio/sfx/pop.mp3", volume: 0.6 },
+
+  // Feedback
+  correct: { path: "/audio/sfx/correct.mp3", volume: 0.8 },
+  wrong: { path: "/audio/sfx/wrong.mp3", volume: 0.8 },
+  streak3: { path: "/audio/sfx/streak-3.mp3", volume: 0.8 },
+  streak5: { path: "/audio/sfx/streak-5.mp3", volume: 0.8 },
+  streak7: { path: "/audio/sfx/streak-7.mp3", volume: 0.8 },
+  xpGain: { path: "/audio/sfx/coin.mp3", volume: 0.6 },
+
+  // Boss battle
+  heroAttack: { path: "/audio/sfx/hero-attack.mp3", volume: 0.6 },
+  bossAttack: { path: "/audio/sfx/boss-attack.mp3", volume: 0.6 },
+  hitImpact: { path: "/audio/sfx/hit-impact.mp3", volume: 0.6 },
+  bossHurt: { path: "/audio/sfx/boss-hurt.mp3", volume: 0.6 },
+  bossRoar: { path: "/audio/sfx/boss-roar.mp3", volume: 0.6 },
+  bossDefeated: { path: "/audio/sfx/boss-defeated.mp3", volume: 0.6 },
+  shieldBlock: { path: "/audio/sfx/shield-block.mp3", volume: 0.6 },
+  phaseChange: { path: "/audio/sfx/phase-change.mp3", volume: 0.6 },
+  screenShake: { path: "/audio/sfx/screen-shake.mp3", volume: 0.6 },
+  projectile: { path: "/audio/sfx/projectile.mp3", volume: 0.6 },
+
+  // Celebration
+  victory: { path: "/audio/sfx/victory.mp3", volume: 0.9 },
+  defeat: { path: "/audio/sfx/defeat.mp3", volume: 0.9 },
+  confetti: { path: "/audio/sfx/confetti.mp3", volume: 0.6 },
+  badgeEarned: { path: "/audio/sfx/badge-earned.mp3", volume: 0.6 },
+  levelUp: { path: "/audio/sfx/level-up.mp3", volume: 0.6 },
+  starEarned: { path: "/audio/sfx/star-earned.mp3", volume: 0.6 },
+
+  // Lesson flow — lessonStart/emailOpen have no dedicated files yet,
+  // so substitute close-intent sounds until art delivers them.
+  lessonStart: { path: "/audio/sfx/reveal.mp3", volume: 0.6 },
+  lessonComplete: { path: "/audio/sfx/lesson-complete.mp3", volume: 0.6 },
+  timerTick: { path: "/audio/sfx/time-tick.mp3", volume: 0.6 },
+  timerWarning: { path: "/audio/sfx/time-warning.mp3", volume: 0.6 },
+  reveal: { path: "/audio/sfx/reveal.mp3", volume: 0.6 },
+  typing: { path: "/audio/sfx/typing.mp3", volume: 0.5 },
+
+  // Exercise
+  sortCorrect: { path: "/audio/sfx/sort-correct.mp3", volume: 0.8 },
+  sortWrong: { path: "/audio/sfx/sort-wrong.mp3", volume: 0.8 },
+  emailOpen: { path: "/audio/sfx/pop.mp3", volume: 0.6 },
+  chatReceive: { path: "/audio/sfx/chat-receive.mp3", volume: 0.6 },
+  lock: { path: "/audio/sfx/lock.mp3", volume: 0.6 },
+  pour: { path: "/audio/sfx/pour.mp3", volume: 0.6 },
+
+  // — legacy aliases (older call sites) —
+  "badge-earned": { path: "/audio/sfx/badge-earned.mp3", volume: 0.6 },
+  "boss-appear": { path: "/audio/sfx/boss-roar.mp3", volume: 0.6 },
+  "boss-hit": { path: "/audio/sfx/hit-impact.mp3", volume: 0.6 },
+  "boss-defeated": { path: "/audio/sfx/boss-defeated.mp3", volume: 0.6 },
+  "raccoon-laugh": { path: "/audio/sfx/boss-roar.mp3", volume: 0.6 },
+  "level-up": { path: "/audio/sfx/level-up.mp3", volume: 0.6 },
+  celebration: { path: "/audio/sfx/confetti.mp3", volume: 0.6 },
+  star: { path: "/audio/sfx/star-earned.mp3", volume: 0.6 },
+  countdown: { path: "/audio/sfx/time-tick.mp3", volume: 0.6 },
+  whoosh: { path: "/audio/sfx/transition.mp3", volume: 0.6 },
+  unlock: { path: "/audio/sfx/lock.mp3", volume: 0.6 },
+};
+
+/**
+ * BGM_REGISTRY — looped background music tracks.
+ * Volume is capped at 0.10 so voice + SFX always sit clearly on top.
+ * Invariant: BGM_MAX_VOLUME must stay well below any SFX volume
+ * (lowest SFX is 0.5; a 5× headroom keeps music subtle).
+ */
+const BGM_MAX_VOLUME = 0.1;
+const BGM_REGISTRY: Record<string, SoundEntry> = {
+  bgmLesson: { path: "/audio/sfx/bgm-lesson.mp3", volume: BGM_MAX_VOLUME },
+  bgmBattle: { path: "/audio/sfx/bgm-battle.mp3", volume: BGM_MAX_VOLUME },
+  bgmVictory: { path: "/audio/sfx/bgm-victory.mp3", volume: BGM_MAX_VOLUME },
+};
+
+const SFX_KEYS = Object.keys(SFX_REGISTRY);
+type SfxKey = keyof typeof SFX_REGISTRY;
 
 const MUTE_STORAGE_KEY = "algorithmx-muted";
 const CROSSFADE_MS = 1000;
@@ -33,18 +110,21 @@ export class SoundManager {
   private static instance: SoundManager | null = null;
 
   private sfx: Map<string, Howl> = new Map();
+  private sfxBaseVolume: Map<string, number> = new Map();
   private currentBGM: Howl | null = null;
   private currentBGMTrack: string | null = null;
+  private currentBGMTargetVolume: number = BGM_MAX_VOLUME;
   private currentVoice: Howl | null = null;
   private preloaded = false;
 
-  private volumes: Record<Category, number> = {
-    sfx: 0.5,
-    music: 0.4,
-    voice: 0.9,
+  // Category multipliers (applied on top of per-key volume).
+  private categoryScale: Record<Category, number> = {
+    sfx: 1,
+    music: 1,
+    voice: 1,
   };
+  private voiceBaseVolume = 0.9;
 
-  private bgmTargetVolume = this.volumes.music;
   private muted = false;
 
   private constructor() {
@@ -68,14 +148,15 @@ export class SoundManager {
     return SoundManager.instance;
   }
 
+  /** Load every SFX in the registry. Idempotent. */
   preloadSFX(): void {
     if (this.preloaded || typeof window === "undefined") return;
     this.preloaded = true;
-    for (const key of SFX_KEYS) {
+    for (const [key, entry] of Object.entries(SFX_REGISTRY)) {
       const howl = new Howl({
-        src: [`/audio/sfx/${key}.mp3`],
+        src: [entry.path],
         preload: true,
-        volume: this.volumes.sfx,
+        volume: entry.volume,
         onloaderror: () => {
           /* silently ignore missing files */
         },
@@ -84,6 +165,7 @@ export class SoundManager {
         },
       });
       this.sfx.set(key, howl);
+      this.sfxBaseVolume.set(key, entry.volume);
     }
   }
 
@@ -91,28 +173,35 @@ export class SoundManager {
     if (this.muted) return;
     const howl = this.sfx.get(key);
     if (!howl) return;
+    const base = this.sfxBaseVolume.get(key) ?? 0.6;
     try {
-      howl.volume(this.volumes.sfx);
+      howl.volume(base * this.categoryScale.sfx);
       howl.play();
     } catch {
       /* ignore */
     }
   }
 
-  playBGM(track: string): void {
+  /**
+   * Play a BGM track. Accepts either a BGM_REGISTRY key (e.g. "bgmLesson") or
+   * a legacy bare track name that resolves to /audio/music/{track}.mp3.
+   */
+  playBGM(trackOrKey: string): void {
     if (typeof window === "undefined") return;
-    if (this.currentBGMTrack === track && this.currentBGM?.playing()) return;
+    if (this.currentBGMTrack === trackOrKey && this.currentBGM?.playing()) return;
 
-    const nextTarget = this.volumes.music;
-    this.bgmTargetVolume = nextTarget;
+    const registered = BGM_REGISTRY[trackOrKey];
+    const src = registered ? registered.path : `/audio/music/${trackOrKey}.mp3`;
+    const baseVolume = registered ? registered.volume : BGM_MAX_VOLUME;
+    const target = baseVolume * this.categoryScale.music;
+    this.currentBGMTargetVolume = target;
 
     const previous = this.currentBGM;
     const next = new Howl({
-      src: [`/audio/music/${track}.mp3`],
+      src: [src],
       loop: true,
       volume: 0,
       onloaderror: () => {
-        /* file missing — clean up without throwing */
         if (this.currentBGM === next) {
           this.currentBGM = null;
           this.currentBGMTrack = null;
@@ -124,10 +213,10 @@ export class SoundManager {
     });
 
     next.play();
-    next.fade(0, nextTarget, CROSSFADE_MS);
+    next.fade(0, target, CROSSFADE_MS);
 
     this.currentBGM = next;
-    this.currentBGMTrack = track;
+    this.currentBGMTrack = trackOrKey;
 
     if (previous) {
       try {
@@ -170,7 +259,6 @@ export class SoundManager {
   playVoice(path: string): Promise<void> {
     if (typeof window === "undefined") return Promise.resolve();
 
-    // Stop any currently playing voice line first
     if (this.currentVoice) {
       try {
         this.currentVoice.stop();
@@ -182,10 +270,11 @@ export class SoundManager {
     }
 
     return new Promise<void>((resolve) => {
-      // Duck BGM while voice plays
       const bgm = this.currentBGM;
       const duckFrom = bgm ? bgm.volume() : 0;
-      const duckTarget = this.muted ? 0 : this.bgmTargetVolume * VOICE_DUCK_VOLUME;
+      const duckTarget = this.muted
+        ? 0
+        : this.currentBGMTargetVolume * VOICE_DUCK_VOLUME;
       if (bgm) {
         try {
           bgm.fade(duckFrom, duckTarget, 250);
@@ -198,7 +287,11 @@ export class SoundManager {
         const currentBgm = this.currentBGM;
         if (!currentBgm) return;
         try {
-          currentBgm.fade(currentBgm.volume(), this.bgmTargetVolume, 350);
+          currentBgm.fade(
+            currentBgm.volume(),
+            this.currentBGMTargetVolume,
+            350
+          );
         } catch {
           /* ignore */
         }
@@ -206,7 +299,7 @@ export class SoundManager {
 
       const howl = new Howl({
         src: [path],
-        volume: this.muted ? 0 : this.volumes.voice,
+        volume: this.muted ? 0 : this.voiceBaseVolume * this.categoryScale.voice,
         onend: () => {
           restoreBGM();
           try {
@@ -242,20 +335,27 @@ export class SoundManager {
 
   setVolume(category: Category, vol: number): void {
     const clamped = Math.max(0, Math.min(1, vol));
-    this.volumes[category] = clamped;
+    this.categoryScale[category] = clamped;
+
     if (category === "sfx") {
-      this.sfx.forEach((h) => {
+      this.sfx.forEach((h, key) => {
+        const base = this.sfxBaseVolume.get(key) ?? 0.6;
         try {
-          h.volume(clamped);
+          h.volume(base * clamped);
         } catch {
           /* ignore */
         }
       });
     } else if (category === "music") {
-      this.bgmTargetVolume = clamped;
       if (this.currentBGM) {
+        const base =
+          this.currentBGMTrack && BGM_REGISTRY[this.currentBGMTrack]
+            ? BGM_REGISTRY[this.currentBGMTrack].volume
+            : BGM_MAX_VOLUME;
+        const target = base * clamped;
+        this.currentBGMTargetVolume = target;
         try {
-          this.currentBGM.volume(clamped);
+          this.currentBGM.volume(target);
         } catch {
           /* ignore */
         }
@@ -263,7 +363,7 @@ export class SoundManager {
     } else if (category === "voice") {
       if (this.currentVoice) {
         try {
-          this.currentVoice.volume(clamped);
+          this.currentVoice.volume(this.voiceBaseVolume * clamped);
         } catch {
           /* ignore */
         }
@@ -301,6 +401,7 @@ export class SoundManager {
       }
     });
     this.sfx.clear();
+    this.sfxBaseVolume.clear();
     this.preloaded = false;
 
     if (this.currentBGM) {
@@ -330,5 +431,13 @@ export function playSound(key: string): void {
   SoundManager.getInstance().play(key);
 }
 
+export function playBGM(trackOrKey: string): void {
+  SoundManager.getInstance().playBGM(trackOrKey);
+}
+
+export function stopBGM(fadeOut?: number): void {
+  SoundManager.getInstance().stopBGM(fadeOut);
+}
+
 export type { Category, SfxKey };
-export { SFX_KEYS };
+export { SFX_KEYS, SFX_REGISTRY, BGM_REGISTRY };

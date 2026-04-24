@@ -217,6 +217,7 @@ function EvaluatePanel({
       const correct = (choice === "strong") === current.isStrong;
       setSelected(choice);
       setShowFeedback(true);
+      playSound("lock");
 
       if (correct) {
         scoreRef.current += 1;
@@ -664,7 +665,8 @@ export default function VaultLock({
   useEffect(() => {
     if (phase !== "complete" || badgeFiredRef.current) return;
     badgeFiredRef.current = true;
-    playSound("badge-earned");
+    playSound("confetti");
+    playSound("badgeEarned");
     void badgeEarnedCelebration();
   }, [phase]);
 

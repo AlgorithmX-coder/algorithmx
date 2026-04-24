@@ -104,13 +104,18 @@ export default function SortingStation({
 
       if (isCorrect) {
         triggerBinFlash(categoryId, "correct");
-        playSound("correct");
+        playSound("pour");
+        playSound("sortCorrect");
         void correctAnswerBurst();
         setItemFading(true);
+        const nextStreak = hadMistake ? streak : streak + 1;
         if (!hadMistake) {
           setScore((s) => s + 1);
           setStreak((s) => s + 1);
         }
+        if (nextStreak === 3) playSound("streak3");
+        else if (nextStreak === 5) playSound("streak5");
+        else if (nextStreak >= 7 && nextStreak % 2 === 1) playSound("streak7");
         if (current.explanation) setShowExplanation(true);
 
         if (advanceTimerRef.current) clearTimeout(advanceTimerRef.current);
@@ -127,7 +132,8 @@ export default function SortingStation({
               onComplete(finalScore, total);
               if (!perfectCelebratedRef.current && finalScore / total > 0.8) {
                 perfectCelebratedRef.current = true;
-                playSound("celebration");
+                playSound("confetti");
+                playSound("badgeEarned");
                 void badgeEarnedCelebration();
               }
             }
@@ -137,14 +143,14 @@ export default function SortingStation({
         }, 900);
       } else {
         triggerBinFlash(categoryId, "wrong");
-        playSound("wrong");
+        playSound("sortWrong");
         wrongAnswerShake();
         setHadMistake(true);
         setStreak(0);
         setScannerShakeKey((k) => k + 1);
       }
     },
-    [current, itemFading, phase, hadMistake, currentIdx, total, score, onComplete, triggerBinFlash],
+    [current, itemFading, phase, hadMistake, currentIdx, total, score, streak, onComplete, triggerBinFlash],
   );
 
   // Layout: row for up to 3 categories, 2x2 grid for 4+

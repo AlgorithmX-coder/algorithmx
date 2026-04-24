@@ -1,7 +1,9 @@
 {
   "permissions": {
     "allow": [
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(mv public/characters/*-select.png public/game/characters/)",
+      "Bash(git restore *)"
     ]
   }
 }

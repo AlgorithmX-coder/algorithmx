@@ -7,7 +7,7 @@ import { SplitText } from "gsap/SplitText";
 import { MorphSVGPlugin } from "gsap/MorphSVGPlugin";
 import { Player } from "@lottiefiles/react-lottie-player";
 import { MILESTONES, getCertificateUrl } from "@/app/lib/certificates";
-import { playSound as playSFX } from "@/app/lib/sounds";
+import { playSound as playSFX, playBGM, stopBGM } from "@/app/lib/sounds";
 import {
   correctAnswerBurst,
   wrongAnswerShake,
@@ -757,12 +757,12 @@ function FloatingBubbleQuiz({ question, opts, correct, explain, onCorrect, onWro
       setShowFeedback(true);
       setShowNext(true);
       celebrateCorrect(e.currentTarget);
-      playSound("/sounds/correct.mp3");
-      setTimeout(() => playSound("/sounds/coin.mp3"), 500);
+      playSFX("correct");
+      setTimeout(() => playSFX("xpGain"), 500);
     } else {
       setWrongTapped((prev) => { const n = new Set(prev); n.add(i); return n; });
       shakeWrong(e.currentTarget);
-      playSound("/sounds/wrong.mp3");
+      playSFX("wrong");
       onWrong();
       setTimeout(() => setWrongTapped((prev) => { const n = new Set(prev); n.delete(i); return n; }), 600);
     }
@@ -1285,6 +1285,40 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
     void bossDefeatedExplosion();
   }, [bossDone]);
 
+  // Lesson intro: play lesson-start + start looped BGM on first mount.
+  // Stop BGM on unmount to avoid leaking audio when navigating away.
+  useEffect(() => {
+    playSFX("lessonStart");
+    playBGM("bgmLesson");
+    return () => {
+      stopBGM(400);
+    };
+  }, []);
+
+  // Reveal chime whenever the learner advances to a new screen
+  // (skip the very first screen — lesson-start already fired for that).
+  const prevScreenRef = useRef<number | null>(null);
+  useEffect(() => {
+    if (prevScreenRef.current !== null && prevScreenRef.current !== screen) {
+      playSFX("reveal");
+    }
+    prevScreenRef.current = screen;
+  }, [screen]);
+
+  // Lesson complete: screen 17 is the certificate screen. Stop the lesson BGM
+  // and fire the completion cue exactly once per entry.
+  const lessonCompleteFiredRef = useRef(false);
+  useEffect(() => {
+    if (screen !== 17) {
+      lessonCompleteFiredRef.current = false;
+      return;
+    }
+    if (lessonCompleteFiredRef.current) return;
+    lessonCompleteFiredRef.current = true;
+    stopBGM(600);
+    playSFX("lessonComplete");
+  }, [screen]);
+
   // Victory (case 16) + Certificate/Graduation (case 17) cues — fire once per entry
   const victoryFiredRef = useRef(false);
   const certFiredRef = useRef(false);
@@ -1305,6 +1339,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
 
   /* ---------- navigation ---------- */
   const navigate = useCallback((to: number) => {
+    playSFX("transition");
     switch (to) {
       case 0:
         setVideoEnded(false); setVideoFailed(false); setShowSkip(false);
@@ -1453,9 +1488,9 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
       if (cx >= rect.left - 30 && cx <= rect.right + 30 && cy >= rect.top - 30 && cy <= rect.bottom + 30) {
         if (raccoonTimerRef.current) clearTimeout(raccoonTimerRef.current);
         setShieldPlaced(true);
-        playSound("/sounds/correct.mp3");
+        playSFX("correct");
         addCoins(10);
-        setTimeout(() => playSound("/sounds/coin.mp3"), 500);
+        setTimeout(() => playSFX("xpGain"), 500);
         setTimeout(() => {
           setRaccoonHitShield(true);
         }, 500);
@@ -1494,10 +1529,10 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
       }
       if (correct) {
         setPlaced((prev) => { const n = new Set(prev); n.add(pw.id); return n; });
-        playSound("/sounds/correct.mp3");
+        playSFX("correct");
       } else if (sRect && cx >= sRect.left && cx <= sRect.right && cy >= sRect.top && cy <= sRect.bottom ||
                  wRect && cx >= wRect.left && cx <= wRect.right && cy >= wRect.top && cy <= wRect.bottom) {
-        playSound("/sounds/wrong.mp3");
+        playSFX("wrong");
       }
       setDragging(null);
     };
@@ -1550,7 +1585,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
   useEffect(() => {
     if (screen !== 16 || progressPosted.current) return;
     progressPosted.current = true;
-    playSound("/sounds/coin.mp3");
+    playSFX("xpGain");
     fetch("/api/progress", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -1827,7 +1862,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                     onClick={(e) => {
                       if (locked || flipping) return;
                       setLockFlipping(item.id);
-                      playSound("/sounds/lock.mp3");
+                      playSFX("lock");
                       setTimeout(() => {
                         setLockedItems((prev) => {
                           const n = new Set(prev);
@@ -1837,7 +1872,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                               setLockCelebration(true);
                               setMiniConfettiPos({ x: window.innerWidth / 2, y: window.innerHeight / 2 });
                               addCoins(25);
-                              playSound("/sounds/coin.mp3");
+                              playSFX("xpGain");
                               setTimeout(() => setMiniConfettiPos(null), 1000);
                             }, 400);
                           }
@@ -2228,7 +2263,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                         setPourChars([]);
                         if (addedIngredients.size === 4) {
                           addCoins(25);
-                          playSound("/sounds/coin.mp3");
+                          playSFX("xpGain");
                         }
                       }, 1200);
                     }}
@@ -2359,10 +2394,10 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                         const newSlots: [number, number, number, number] = [...builderSlots];
                         newSlots[builderActive] = i;
                         setBuilderSlots(newSlots);
-                        playSound("/sounds/correct.mp3");
+                        playSFX("correct");
                         if (builderActive === 3) {
                           addCoins(25);
-                          setTimeout(() => { setBuilderPowerUp(true); playSound("/sounds/coin.mp3"); }, 100);
+                          setTimeout(() => { setBuilderPowerUp(true); playSFX("xpGain"); }, 100);
                         }
                         setBuilderActive((a) => a + 1);
                       }}
@@ -2569,12 +2604,12 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                                       if (oi === rule.correct) {
                                         celebrateCorrect(e.currentTarget as HTMLElement);
                                         setAnsweredRules((prev) => { const n = new Set(prev); n.add(i); return n; });
-                                        playSound("/sounds/correct.mp3");
+                                        playSFX("correct");
                                         addCoins(5);
-                                        setTimeout(() => playSound("/sounds/coin.mp3"), 500);
+                                        setTimeout(() => playSFX("xpGain"), 500);
                                       } else {
                                         shakeWrong(e.currentTarget as HTMLElement);
-                                        playSound("/sounds/wrong.mp3");
+                                        playSFX("wrong");
                                       }
                                     }}
                                     animate={ruleAnswers[i] === oi && oi !== rule.correct ? shakeAnimation : {}}
@@ -2870,8 +2905,8 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                       onClick={(e) => {
                         if (wydSel !== null) return;
                         setWydSel(i);
-                        if (i === w.correct) { celebrateCorrect(e.currentTarget as HTMLElement); setWydScore((s) => s + 1); addCoins(15); playSound("/sounds/correct.mp3"); setTimeout(() => playSound("/sounds/coin.mp3"), 500); }
-                        else { shakeWrong(e.currentTarget as HTMLElement); playSound("/sounds/wrong.mp3"); addWrong(14); }
+                        if (i === w.correct) { celebrateCorrect(e.currentTarget as HTMLElement); setWydScore((s) => s + 1); addCoins(15); playSFX("correct"); setTimeout(() => playSFX("xpGain"), 500); }
+                        else { shakeWrong(e.currentTarget as HTMLElement); playSFX("wrong"); addWrong(14); }
                       }}
                       disabled={answered}
                       whileHover={!answered ? { scale: 1.02 } : {}}
@@ -2939,7 +2974,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                     style={{ background: "rgba(245,158,11,0.15)", border: "2px solid rgba(245,158,11,0.4)", borderRadius: 16, padding: "8px 20px", display: "inline-block", marginBottom: 16 }}>
                     <span style={{ color: "#f59e0b", fontSize: 14, fontWeight: 700 }}>+50 bonus coins!</span>
                   </motion.div>
-                  <div>{btn("Save Adam & Layla! →", () => { addCoins(50); playSound("/sounds/coin.mp3"); navigate(16); })}</div>
+                  <div>{btn("Save Adam & Layla! →", () => { addCoins(50); playSFX("xpGain"); navigate(16); })}</div>
                 </>
               )}
             </motion.div>
