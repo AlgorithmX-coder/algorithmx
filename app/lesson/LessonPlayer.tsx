@@ -23,6 +23,11 @@ import CharacterGuide from "@/app/components/CharacterGuide";
 import { WEEK1_REACTIONS, CORRECT_QUIPS, WRONG_QUIPS, type CharacterLine } from "@/app/lesson/characterReactions";
 import StoryCutscene from "@/app/components/StoryCutscene";
 import { WEEK1_INTRO } from "@/app/lesson/storyContent";
+import ButtonJuice from "@/app/components/ButtonJuice";
+import ParticleBurst from "@/app/components/ParticleBurst";
+import FloatingText from "@/app/components/FloatingText";
+import ScreenShake from "@/app/components/ScreenShake";
+import ContentBackdrop from "@/app/components/ContentBackdrop";
 import { addXP, type RankInfo } from "@/app/lib/progression";
 import LessonAmbience from "@/app/components/LessonAmbience";
 import BossBattle from "@/app/components/game/BossBattle";
@@ -679,31 +684,36 @@ function MiniConfetti({ x, y }: { x: number; y: number }) {
 
 function btn(label: string, onClick: () => void, extra?: React.CSSProperties): React.ReactElement {
   return (
-    <motion.button
+    <ButtonJuice
       onClick={onClick}
-      onMouseEnter={btnHoverIn}
-      onMouseLeave={btnHoverOut}
-      whileTap={{ scale: 0.95 }}
-      data-animate
+      sound="click"
       style={{
-        background: "linear-gradient(135deg, #f97316, #f59e0b)", color: "#fff", fontWeight: 700, borderRadius: 14,
-        padding: "13px 34px", border: "none", cursor: "pointer", fontSize: 16,
+        background: "linear-gradient(135deg, #f97316, #f59e0b)",
+        color: "#fff",
+        fontWeight: 700,
+        borderRadius: 14,
+        padding: "13px 34px",
+        fontSize: 16,
         boxShadow: "0 0 15px rgba(249,115,22,0.4)",
-        minHeight: 48, ...extra,
+        minHeight: 48,
+        ...extra,
       }}
     >
       {label}
-    </motion.button>
+    </ButtonJuice>
   );
 }
 
 function card(children: React.ReactNode, extra?: React.CSSProperties): React.ReactElement {
   return (
     <div data-animate style={{
+      position: "relative",
+      overflow: "hidden",
       background: "rgba(255,255,255,0.04)", backdropFilter: "blur(12px)",
       border: "1px solid rgba(255,255,255,0.1)", borderRadius: 24, padding: 24, ...extra,
     }}>
-      {children}
+      <ContentBackdrop />
+      <div style={{ position: "relative", zIndex: 1 }}>{children}</div>
     </div>
   );
 }
@@ -1125,7 +1135,36 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
     { oldRank: RankInfo; newRank: RankInfo; totalXP: number } | null
   >(null);
 
-  /** Award XP + show floating popup + check for rank-up. */
+  // Micro-feedback — particles, floating texts, screen shake, combo counter.
+  const [burstList, setBurstList] = useState<
+    { id: number; x: number; y: number; colour: string; count: number }[]
+  >([]);
+  const [floatList, setFloatList] = useState<
+    { id: number; text: string; x: number; y: number; colour: string; size: number }[]
+  >([]);
+  const [shakeTrigger, setShakeTrigger] = useState(0);
+  const [lessonCombo, setLessonCombo] = useState(0);
+  const [comboPulseKey, setComboPulseKey] = useState(0);
+  const burstIdRef = useRef(0);
+  const floatIdRef = useRef(0);
+
+  const spawnParticles = useCallback(
+    (x: number, y: number, colour: string = "#34d399", count: number = 12) => {
+      const id = ++burstIdRef.current;
+      setBurstList((prev) => [...prev, { id, x, y, colour, count }]);
+    },
+    []
+  );
+  const spawnFloatingText = useCallback(
+    (text: string, x: number, y: number, colour: string = "#34d399", size: number = 20) => {
+      const id = ++floatIdRef.current;
+      setFloatList((prev) => [...prev, { id, text, x, y, colour, size }]);
+    },
+    []
+  );
+  const triggerShake = useCallback(() => setShakeTrigger((n) => n + 1), []);
+
+  /** Award XP + particles + floating text + combo tracking + rank-up check. */
   const awardXp = useCallback(
     (amount: number, source: string, element?: HTMLElement | null) => {
       const result = addXP(amount, source);
@@ -1147,8 +1186,30 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
         });
       }
       flashReaction("correct");
+
+      // Micro-feedback: green burst + floating "+N XP" + combo.
+      spawnParticles(x, y, "#34d399", 12);
+      spawnFloatingText(`+${amount} XP`, x, y - 24, "#fbbf24", 20);
+      setLessonCombo((prev) => {
+        const next = prev + 1;
+        setComboPulseKey((k) => k + 1);
+        if (next === 3) {
+          spawnParticles(x, y, "#fbbf24", 20);
+          spawnFloatingText("3x COMBO!", x, y - 60, "#fbbf24", 26);
+          playSFX("streak3");
+        } else if (next === 5) {
+          spawnParticles(x, y, "#fbbf24", 28);
+          spawnFloatingText("5x COMBO!", x, y - 60, "#fbbf24", 30);
+          playSFX("streak5");
+        } else if (next === 7) {
+          spawnParticles(x, y, "#fbbf24", 40);
+          spawnFloatingText("UNSTOPPABLE!", x, y - 60, "#f97316", 34);
+          playSFX("streak7");
+        }
+        return next;
+      });
     },
-    [flashReaction]
+    [flashReaction, spawnParticles, spawnFloatingText]
   );
   const removeXpPopup = useCallback((id: number) => {
     setXpPopups((prev) => prev.filter((p) => p.id !== id));
@@ -1584,7 +1645,10 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
   const addWrong = useCallback((scr: number) => {
     setWrongAttempts((prev) => ({ ...prev, [scr]: (prev[scr] || 0) + 1 }));
     flashReaction("wrong");
-  }, [flashReaction]);
+    // Reset combo + shake on any wrong answer.
+    setLessonCombo(0);
+    triggerShake();
+  }, [flashReaction, triggerShake]);
 
   const getStars = useCallback((scr: number) => {
     const w = wrongAttempts[scr] || 0;
@@ -1918,7 +1982,15 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                       alt="Adam and Layla"
                       animate={{ y: [0, -12, 0] }}
                       transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-                      style={{ width: 200, borderRadius: 24 }}
+                      style={{
+                        maxWidth: "90%",
+                        width: "100%",
+                        height: "auto",
+                        maxHeight: "50vh",
+                        margin: "0 auto",
+                        display: "block",
+                        borderRadius: 24,
+                      }}
                     />
                     <p style={{ color: "#9ca3af", marginTop: 12, fontSize: 18 }}>Video coming soon!</p>
                   </div>
@@ -1941,7 +2013,19 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
               >
                 {card(
                   <>
-                    <img src="/characters/adam-layla-hacked.png" alt="Adam and Layla hacked" style={{ width: 280, borderRadius: 20, margin: "0 auto 20px", display: "block" }} />
+                    <img
+                      src="/characters/adam-layla-hacked.png"
+                      alt="Adam and Layla hacked"
+                      style={{
+                        maxWidth: "90%",
+                        width: "100%",
+                        height: "auto",
+                        maxHeight: "50vh",
+                        margin: "0 auto 20px",
+                        display: "block",
+                        borderRadius: 20,
+                      }}
+                    />
                     <h2 data-split style={{ color: "#fff", fontSize: 36, margin: "0 0 12px", textShadow: "0 0 24px rgba(239,68,68,0.5)" }}>Oh no! Adam and Layla got hacked by the Raccoon! 🦝</h2>
                     <p style={{ color: "#d1d5db", marginBottom: 20, fontSize: 16 }}>They need YOUR help to learn about password safety!</p>
                     {btn("I'll help them! Let's go! 🚀", () => navigate(1))}
@@ -3472,7 +3556,67 @@ null
       )}
 
       <MuteToggle />
-      <style>{`@keyframes shimmer { 0% { background-position: 0% 50% } 50% { background-position: 100% 50% } 100% { background-position: 0% 50% } }`}</style>
+
+      {/* Combo counter — visible when combo > 0 */}
+      {lessonCombo > 0 && !cutscene && (
+        <div
+          key={comboPulseKey}
+          style={{
+            position: "fixed",
+            top: 80,
+            right: 20,
+            zIndex: 45,
+            fontFamily: "'Space Grotesk', sans-serif",
+            fontSize: Math.min(40, 20 + lessonCombo * 3),
+            fontWeight: 800,
+            color: "#fde047",
+            letterSpacing: "-0.01em",
+            textShadow: "0 0 14px rgba(250,204,21,0.8), 2px 2px 0 rgba(0,0,0,0.6)",
+            pointerEvents: "none",
+            animation: "juiceComboPop 0.45s cubic-bezier(0.34, 1.56, 0.64, 1)",
+          }}
+        >
+          {lessonCombo}× COMBO!
+        </div>
+      )}
+
+      {/* Particle bursts (one per event) */}
+      {burstList.map((b) => (
+        <ParticleBurst
+          key={b.id}
+          x={b.x}
+          y={b.y}
+          colour={b.colour}
+          count={b.count}
+          onComplete={() => setBurstList((prev) => prev.filter((pp) => pp.id !== b.id))}
+        />
+      ))}
+
+      {/* Floating feedback texts */}
+      {floatList.map((f) => (
+        <FloatingText
+          key={f.id}
+          text={f.text}
+          x={f.x}
+          y={f.y}
+          colour={f.colour}
+          size={f.size}
+          onComplete={() => setFloatList((prev) => prev.filter((ff) => ff.id !== f.id))}
+        />
+      ))}
+
+      <style>{`
+        @keyframes juiceComboPop {
+          0% { opacity: 0; transform: scale(0.6); }
+          60% { opacity: 1; transform: scale(1.15); }
+          100% { opacity: 1; transform: scale(1); }
+        }
+        @keyframes shimmer {
+          0% { background-position: 0% 50% }
+          50% { background-position: 100% 50% }
+          100% { background-position: 0% 50% }
+        }
+      `}</style>
       <div className="floating-orbs-wrap"><FloatingOrbs /></div>
       {/* Sticky header */}
       <header className="print-hide" style={{
@@ -3504,7 +3648,9 @@ null
             exit={{ opacity: 0, x: -60 }}
             transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
           >
-            {renderScreen()}
+            <ScreenShake trigger={shakeTrigger}>
+              {renderScreen()}
+            </ScreenShake>
           </motion.div>
         </AnimatePresence>
       </main>

@@ -21,6 +21,11 @@ import CharacterGuide from "@/app/components/CharacterGuide";
 import { WEEK2_REACTIONS, CORRECT_QUIPS, WRONG_QUIPS, type CharacterLine } from "@/app/lesson/characterReactions";
 import StoryCutscene from "@/app/components/StoryCutscene";
 import { WEEK2_INTRO } from "@/app/lesson/storyContent";
+import ParticleBurst from "@/app/components/ParticleBurst";
+import FloatingText from "@/app/components/FloatingText";
+import ScreenShake from "@/app/components/ScreenShake";
+import ButtonJuice from "@/app/components/ButtonJuice";
+import ContentBackdrop from "@/app/components/ContentBackdrop";
 import { addXP as addXpProgress, type RankInfo } from "@/app/lib/progression";
 import LessonAmbience from "@/app/components/LessonAmbience";
 import SortingStation from "@/app/components/exercises/SortingStation";
@@ -601,27 +606,36 @@ function CoinCounter({ coins }: { coins: number }) {
 /* ───────────────────────── HELPERS ─────────────────────────── */
 function btn(label: string, onClick: () => void, extra?: React.CSSProperties) {
   return (
-    <motion.button onClick={onClick}
-      onMouseEnter={btnHoverIn} onMouseLeave={btnHoverOut}
-      whileTap={{ scale: 0.95 }}
-      data-animate
+    <ButtonJuice
+      onClick={onClick}
+      sound="click"
       style={{
-        background: "linear-gradient(135deg, #f97316, #f59e0b)", color: "#fff", fontWeight: 700, borderRadius: 14,
-        padding: "13px 34px", border: "none", cursor: "pointer", fontSize: 16,
-        boxShadow: "0 0 15px rgba(249,115,22,0.4)", minHeight: 48, ...extra,
-      }}>
+        background: "linear-gradient(135deg, #f97316, #f59e0b)",
+        color: "#fff",
+        fontWeight: 700,
+        borderRadius: 14,
+        padding: "13px 34px",
+        fontSize: 16,
+        boxShadow: "0 0 15px rgba(249,115,22,0.4)",
+        minHeight: 48,
+        ...extra,
+      }}
+    >
       {label}
-    </motion.button>
+    </ButtonJuice>
   );
 }
 
 function card(children: React.ReactNode, extra?: React.CSSProperties) {
   return (
     <div data-animate style={{
+      position: "relative",
+      overflow: "hidden",
       background: "rgba(255,255,255,0.04)", backdropFilter: "blur(12px)",
       border: "1px solid rgba(255,255,255,0.1)", borderRadius: 24, padding: 24, ...extra,
     }}>
-      {children}
+      <ContentBackdrop />
+      <div style={{ position: "relative", zIndex: 1 }}>{children}</div>
     </div>
   );
 }
@@ -772,6 +786,34 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
   const [pendingLevelUp, setPendingLevelUp] = useState<
     { oldRank: RankInfo; newRank: RankInfo; totalXP: number } | null
   >(null);
+  // Micro-feedback state
+  const [burstList, setBurstList] = useState<
+    { id: number; x: number; y: number; colour: string; count: number }[]
+  >([]);
+  const [floatList, setFloatList] = useState<
+    { id: number; text: string; x: number; y: number; colour: string; size: number }[]
+  >([]);
+  const [shakeTrigger, setShakeTrigger] = useState(0);
+  const [lessonCombo, setLessonCombo] = useState(0);
+  const [comboPulseKey, setComboPulseKey] = useState(0);
+  const burstIdRef = useRef(0);
+  const floatIdRef = useRef(0);
+  const spawnParticles = useCallback(
+    (x: number, y: number, colour = "#34d399", count = 12) => {
+      const id = ++burstIdRef.current;
+      setBurstList((prev) => [...prev, { id, x, y, colour, count }]);
+    },
+    []
+  );
+  const spawnFloatingText = useCallback(
+    (text: string, x: number, y: number, colour = "#34d399", size = 20) => {
+      const id = ++floatIdRef.current;
+      setFloatList((prev) => [...prev, { id, text, x, y, colour, size }]);
+    },
+    []
+  );
+  const triggerShake = useCallback(() => setShakeTrigger((n) => n + 1), []);
+
   const awardXp = useCallback(
     (amount: number, element?: HTMLElement | null) => {
       const result = addXpProgress(amount, "lesson-week-2");
@@ -793,8 +835,29 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
         });
       }
       flashReaction("correct");
+
+      spawnParticles(x, y, "#34d399", 12);
+      spawnFloatingText(`+${amount} XP`, x, y - 24, "#fbbf24", 20);
+      setLessonCombo((prev) => {
+        const next = prev + 1;
+        setComboPulseKey((k) => k + 1);
+        if (next === 3) {
+          spawnParticles(x, y, "#fbbf24", 20);
+          spawnFloatingText("3x COMBO!", x, y - 60, "#fbbf24", 26);
+          playSFX("streak3");
+        } else if (next === 5) {
+          spawnParticles(x, y, "#fbbf24", 28);
+          spawnFloatingText("5x COMBO!", x, y - 60, "#fbbf24", 30);
+          playSFX("streak5");
+        } else if (next === 7) {
+          spawnParticles(x, y, "#fbbf24", 40);
+          spawnFloatingText("UNSTOPPABLE!", x, y - 60, "#f97316", 34);
+          playSFX("streak7");
+        }
+        return next;
+      });
     },
-    [flashReaction]
+    [flashReaction, spawnParticles, spawnFloatingText]
   );
   const removeXpPopup = useCallback((id: number) => {
     setXpPopups((prev) => prev.filter((p) => p.id !== id));
@@ -981,7 +1044,9 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
   const addWrong = useCallback((s: number) => {
     setWrongAttempts((p) => ({ ...p, [s]: (p[s] || 0) + 1 }));
     flashReaction("wrong");
-  }, [flashReaction]);
+    setLessonCombo(0);
+    triggerShake();
+  }, [flashReaction, triggerShake]);
   const getStars = useCallback((s: number) => { const w = wrongAttempts[s] || 0; return w === 0 ? 3 : w <= 2 ? 2 : 1; }, [wrongAttempts]);
 
   // Step 0: video skip timer
@@ -2348,6 +2413,63 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
       )}
 
       <MuteToggle />
+
+      {/* Combo counter — visible when combo > 0 */}
+      {lessonCombo > 0 && !cutscene && (
+        <div
+          key={comboPulseKey}
+          style={{
+            position: "fixed",
+            top: 80,
+            right: 20,
+            zIndex: 45,
+            fontFamily: "'Space Grotesk', sans-serif",
+            fontSize: Math.min(40, 20 + lessonCombo * 3),
+            fontWeight: 800,
+            color: "#fde047",
+            letterSpacing: "-0.01em",
+            textShadow: "0 0 14px rgba(250,204,21,0.8), 2px 2px 0 rgba(0,0,0,0.6)",
+            pointerEvents: "none",
+            animation: "w2ComboPop 0.45s cubic-bezier(0.34, 1.56, 0.64, 1)",
+          }}
+        >
+          {lessonCombo}× COMBO!
+        </div>
+      )}
+
+      {/* Particle bursts */}
+      {burstList.map((b) => (
+        <ParticleBurst
+          key={b.id}
+          x={b.x}
+          y={b.y}
+          colour={b.colour}
+          count={b.count}
+          onComplete={() => setBurstList((prev) => prev.filter((pp) => pp.id !== b.id))}
+        />
+      ))}
+
+      {/* Floating feedback texts */}
+      {floatList.map((f) => (
+        <FloatingText
+          key={f.id}
+          text={f.text}
+          x={f.x}
+          y={f.y}
+          colour={f.colour}
+          size={f.size}
+          onComplete={() => setFloatList((prev) => prev.filter((ff) => ff.id !== f.id))}
+        />
+      ))}
+
+      <style>{`
+        @keyframes w2ComboPop {
+          0% { opacity: 0; transform: scale(0.6); }
+          60% { opacity: 1; transform: scale(1.15); }
+          100% { opacity: 1; transform: scale(1); }
+        }
+      `}</style>
+
       <FloatingBg />
       <header className="print-hide" style={{
         position: "sticky", top: 0, zIndex: 40, padding: "12px 20px",
@@ -2376,7 +2498,9 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -60 }}
             transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}>
-            {renderScreen()}
+            <ScreenShake trigger={shakeTrigger}>
+              {renderScreen()}
+            </ScreenShake>
           </motion.div>
         </AnimatePresence>
       </main>

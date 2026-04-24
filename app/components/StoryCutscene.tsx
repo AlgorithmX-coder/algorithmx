@@ -87,13 +87,46 @@ export default function StoryCutscene({ slides, onComplete, title }: StoryCutsce
     onCompleteRef.current();
   }, []);
 
+  // Button-gated advance: "Continue →" shows once the typewriter finishes
+  // AND the slide's `duration` (as a minimum-hold) has elapsed.
+  const [textDone, setTextDone] = useState(false);
+  const [minElapsed, setMinElapsed] = useState(false);
+  const typewriterTimerRef = useRef<number | null>(null);
+  const minHoldTimerRef = useRef<number | null>(null);
+
   useEffect(() => {
+    // Reset gating state whenever we enter a new slide/title.
+    setTextDone(false);
+    setMinElapsed(false);
+    if (typewriterTimerRef.current) window.clearTimeout(typewriterTimerRef.current);
+    if (minHoldTimerRef.current) window.clearTimeout(minHoldTimerRef.current);
+
     if (phase !== "showing" && phase !== "title") return;
-    advanceTimerRef.current = window.setTimeout(() => goToNext(), duration);
+
+    // Compute how long the typewriter needs for the visible text.
+    const textForTypewriter = phase === "title" ? (title ?? "") : (activeSlide?.text ?? "");
+    const wordCount = textForTypewriter
+      .split(/\n/)
+      .reduce((acc, line) => acc + line.split(/\s+/).filter(Boolean).length, 0);
+    const typewriterMs = Math.max(200, wordCount * WORD_STAGGER_MS + 350);
+
+    typewriterTimerRef.current = window.setTimeout(
+      () => setTextDone(true),
+      typewriterMs
+    );
+    minHoldTimerRef.current = window.setTimeout(
+      () => setMinElapsed(true),
+      duration
+    );
+
     return () => {
-      if (advanceTimerRef.current) window.clearTimeout(advanceTimerRef.current);
+      if (typewriterTimerRef.current) window.clearTimeout(typewriterTimerRef.current);
+      if (minHoldTimerRef.current) window.clearTimeout(minHoldTimerRef.current);
     };
-  }, [phase, index, duration, goToNext]);
+  }, [phase, index, duration, title, activeSlide]);
+
+  const continueReady = textDone && minElapsed;
+  const isLastSlide = phase === "showing" && index + 1 >= totalSlides;
 
   useEffect(() => () => clearTimers(), []);
 
@@ -301,13 +334,19 @@ export default function StoryCutscene({ slides, onComplete, title }: StoryCutsce
         </div>
       )}
 
-      {/* Skip controls */}
+      {/* Skip All (top-right) */}
       <button type="button" onClick={skipAll} className="sc-skip-all">
         Skip All ▸▸
       </button>
-      {(phase === "showing" || phase === "title") && (
-        <button type="button" onClick={goToNext} className="sc-skip-one">
-          Skip ▸
+
+      {/* Continue / Start Lesson button — only after typewriter + min-hold */}
+      {(phase === "showing" || phase === "title") && continueReady && (
+        <button
+          type="button"
+          onClick={goToNext}
+          className="sc-continue"
+        >
+          {isLastSlide ? "Start Lesson →" : "Continue →"}
         </button>
       )}
 
@@ -746,6 +785,38 @@ const CSS = `
 }
 
 /* Skip buttons */
+.sc-continue {
+  position: absolute;
+  bottom: 64px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 5;
+  background: rgba(15,23,42,0.6);
+  border: 1.5px solid rgba(59,130,246,0.55);
+  color: #f1f5f9;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  padding: 10px 28px;
+  border-radius: 12px;
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 6px 20px rgba(59,130,246,0.25);
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+  animation: scContinueIn 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+.sc-continue:hover {
+  background: rgba(59,130,246,0.18);
+  border-color: #60a5fa;
+  box-shadow: 0 8px 28px rgba(96,165,250,0.5);
+  transform: translateX(-50%) translateY(-2px);
+}
+@keyframes scContinueIn {
+  0% { opacity: 0; transform: translateX(-50%) translateY(12px); }
+  100% { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
 .sc-skip-all, .sc-skip-one {
   position: absolute;
   background: rgba(148,163,184,0.05);

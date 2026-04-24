@@ -526,25 +526,47 @@ function CreatePanel({
         {picked.length === 0 ? "Build your password…" : builtPassword}
       </div>
 
-      {/* Strength meter */}
+      {/* Strength meter — 5-segment power gauge */}
       <div style={{ marginTop: 14 }}>
         <div style={{ display: "flex", justifyContent: "space-between", fontSize: 11, fontWeight: 700, color: "#94a3b8", letterSpacing: "0.08em", marginBottom: 6 }}>
           <span>STRENGTH</span>
           <span style={{ color: strengthColor }}>{strength}%</span>
         </div>
-        <div style={{ height: 10, borderRadius: 999, background: "rgba(255,255,255,0.06)", overflow: "hidden" }}>
-          <div
-            style={{
-              width: `${strength}%`,
-              height: "100%",
-              borderRadius: 999,
-              background:
-                "linear-gradient(90deg, #ef4444 0%, #f59e0b 50%, #34d399 100%)",
-              boxShadow: `0 0 12px ${strengthColor}66`,
-              transition: "width 0.5s cubic-bezier(0.16,1,0.3,1)",
-            }}
-          />
+        <div style={{ display: "flex", gap: 6, height: 16 }}>
+          {(() => {
+            // 5 segments — each segment lights up as strength crosses its threshold.
+            const segColours = ["#ef4444", "#f97316", "#fbbf24", "#84cc16", "#34d399"];
+            const filled = Math.min(5, Math.ceil((strength / 100) * 5));
+            return segColours.map((c, i) => {
+              const on = i < filled;
+              return (
+                <div
+                  key={i}
+                  style={{
+                    flex: 1,
+                    borderRadius: 4,
+                    border: `1px solid ${on ? c : "rgba(255,255,255,0.08)"}`,
+                    background: on
+                      ? `linear-gradient(180deg, ${c}, ${c}88)`
+                      : "rgba(255,255,255,0.04)",
+                    boxShadow: on
+                      ? `0 0 12px ${c}cc, inset 0 0 8px ${c}44`
+                      : "inset 0 1px 2px rgba(0,0,0,0.4)",
+                    transition: "background 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease",
+                    animation: on ? `vaultSegPulse${i} 1.6s ease-in-out infinite` : undefined,
+                  }}
+                />
+              );
+            });
+          })()}
         </div>
+        <style>{`
+          @keyframes vaultSegPulse0 { 0%,100% { filter: brightness(1); } 50% { filter: brightness(1.2); } }
+          @keyframes vaultSegPulse1 { 0%,100% { filter: brightness(1); } 50% { filter: brightness(1.25); } }
+          @keyframes vaultSegPulse2 { 0%,100% { filter: brightness(1); } 50% { filter: brightness(1.3); } }
+          @keyframes vaultSegPulse3 { 0%,100% { filter: brightness(1); } 50% { filter: brightness(1.35); } }
+          @keyframes vaultSegPulse4 { 0%,100% { filter: brightness(1); } 50% { filter: brightness(1.4); } }
+        `}</style>
       </div>
 
       {/* Component grid */}

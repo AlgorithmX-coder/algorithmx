@@ -36,6 +36,7 @@ const STYLES = `
 @keyframes ssScanSweep { 0% { transform: translateY(-10%); } 100% { transform: translateY(100%); } }
 @keyframes ssScannerPop { 0% { transform: scale(0.9); opacity: 0; } 60% { transform: scale(1.04); opacity: 1; } 100% { transform: scale(1); opacity: 1; } }
 @keyframes ssItemAccept { 0% { transform: scale(1); opacity: 1; } 100% { transform: scale(0.55); opacity: 0; } }
+@keyframes ssBinIdleGlow { 0%,100% { filter: brightness(1) saturate(1); } 50% { filter: brightness(1.08) saturate(1.2); } }
 @keyframes ssBinPulseGood { 0%,100% { box-shadow: 0 0 0 rgba(52,211,153,0); } 50% { box-shadow: 0 0 22px rgba(52,211,153,0.65); } }
 @keyframes ssBinPulseBad { 0%,100% { box-shadow: 0 0 0 rgba(239,68,68,0); transform: translateX(0); } 20% { transform: translateX(-8px); box-shadow: 0 0 20px rgba(239,68,68,0.55); } 40% { transform: translateX(8px); } 60% { transform: translateX(-4px); } 80% { transform: translateX(4px); } }
 @keyframes ssCheckPop { 0% { opacity: 0; transform: translate(-50%,-50%) scale(0.2); } 40% { opacity: 1; transform: translate(-50%,-50%) scale(1.1); } 100% { opacity: 0; transform: translate(-50%,-50%) scale(1); } }
@@ -427,32 +428,28 @@ function BinCard({
   onClick: () => void;
 }) {
   const [hover, setHover] = useState(false);
-  const solidBorder = hover || flash !== null;
+  // Portal-style bins: solid-colour gradient, glowing border that pulses when idle.
   const flashColor = flash === "correct" ? "#34d399" : flash === "wrong" ? "#ef4444" : category.color;
   const border = flash
     ? `2px solid ${flashColor}`
-    : solidBorder
-      ? `2px solid ${category.color}`
-      : `2px dashed ${category.color}55`;
+    : `2px solid ${category.color}cc`;
   const bg = flash === "correct"
-    ? "rgba(52,211,153,0.1)"
+    ? "linear-gradient(180deg, rgba(52,211,153,0.28), rgba(16,94,65,0.4))"
     : flash === "wrong"
-      ? "rgba(239,68,68,0.1)"
-      : hover
-        ? `${category.color}10`
-        : "#111827";
+      ? "linear-gradient(180deg, rgba(239,68,68,0.28), rgba(127,29,29,0.4))"
+      : `linear-gradient(180deg, ${category.color}22, ${category.color}08)`;
   const boxShadow = flash === "correct"
-    ? "0 0 22px rgba(52,211,153,0.55)"
+    ? "0 0 32px rgba(52,211,153,0.7), inset 0 0 24px rgba(52,211,153,0.3)"
     : flash === "wrong"
-      ? "0 0 20px rgba(239,68,68,0.55)"
+      ? "0 0 30px rgba(239,68,68,0.7), inset 0 0 24px rgba(239,68,68,0.3)"
       : hover
-        ? `0 6px 24px rgba(0,0,0,0.3), 0 0 18px ${category.color}44`
-        : "0 2px 8px rgba(0,0,0,0.25)";
+        ? `0 10px 32px rgba(0,0,0,0.4), 0 0 28px ${category.color}88, inset 0 1px 0 ${category.color}55`
+        : `0 6px 20px rgba(0,0,0,0.35), 0 0 16px ${category.color}55, inset 0 1px 0 ${category.color}44`;
   const animation = flash === "correct"
     ? "ssBinPulseGood 0.6s ease-out"
     : flash === "wrong"
       ? "ssBinPulseBad 0.5s ease-out"
-      : undefined;
+      : "ssBinIdleGlow 2.6s ease-in-out infinite";
 
   return (
     <button
@@ -474,7 +471,7 @@ function BinCard({
         cursor: "pointer",
         transition: "background 0.25s, border-color 0.25s, transform 0.2s, box-shadow 0.25s",
         boxShadow,
-        transform: hover ? "scale(1.03)" : "scale(1)",
+        transform: hover ? "scale(1.04) translateY(-2px)" : "scale(1)",
         animation,
         willChange: "transform, box-shadow",
         overflow: "hidden",

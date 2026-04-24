@@ -601,24 +601,31 @@ function ActionButton({
   onClick: () => void;
 }) {
   const accent = tone === "good" ? "#34d399" : "#ef4444";
-  const bg = tone === "good" ? "rgba(52,211,153,0.08)" : "rgba(239,68,68,0.08)";
-  const glow = tone === "good" ? "rgba(52,211,153,0.35)" : "rgba(239,68,68,0.35)";
+  const gradient = tone === "good"
+    ? "linear-gradient(135deg, #10b981, #047857)"
+    : "linear-gradient(135deg, #ef4444, #991b1b)";
+  const glow = tone === "good" ? "rgba(52,211,153,0.55)" : "rgba(239,68,68,0.55)";
   const [hover, setHover] = useState(false);
   const style: CSSProperties = {
-    height: 50,
+    height: 56,
     width: "100%",
-    borderRadius: 14,
-    border: `1px solid ${hover && !disabled ? accent : `${accent}55`}`,
-    background: bg,
-    color: "#f1f5f9",
+    borderRadius: 16,
+    border: `1px solid ${accent}`,
+    background: gradient,
+    color: "#fff",
     fontFamily: "'Fredoka', 'Nunito', sans-serif",
-    fontWeight: 700,
-    fontSize: 15,
+    fontWeight: 800,
+    fontSize: 16,
+    letterSpacing: "0.02em",
     cursor: disabled ? "default" : "pointer",
-    transition: "border-color 0.2s, box-shadow 0.2s, transform 0.2s",
-    boxShadow: hover && !disabled ? `0 0 18px ${glow}` : "none",
-    transform: hover && !disabled ? "translateY(-1px)" : "none",
+    transition: "box-shadow 0.2s, transform 0.2s, filter 0.2s",
+    boxShadow: hover && !disabled
+      ? `0 10px 28px ${glow}, 0 0 0 2px ${accent}66, inset 0 1px 0 rgba(255,255,255,0.2)`
+      : `0 6px 18px rgba(0,0,0,0.35), 0 0 14px ${accent}44, inset 0 1px 0 rgba(255,255,255,0.15)`,
+    transform: hover && !disabled ? "translateY(-2px) scale(1.01)" : "none",
+    filter: hover && !disabled ? "brightness(1.1)" : "none",
     opacity: disabled ? 0.55 : 1,
+    textShadow: "0 1px 2px rgba(0,0,0,0.4)",
   };
   return (
     <button

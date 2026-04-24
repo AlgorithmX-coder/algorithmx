@@ -261,11 +261,12 @@ export default function ChatSimulator({
         maxWidth: 420,
         margin: "0 auto",
         background: "#0a0e1a",
-        border: "2px solid rgba(96,165,250,0.12)",
-        borderRadius: 28,
+        border: "2px solid",
+        borderImage: "linear-gradient(180deg, #3b4a6a, #1a2030) 1",
+        borderRadius: 36,
         overflow: "hidden",
-        minHeight: 500,
-        boxShadow: "0 0 40px rgba(0,0,0,0.4)",
+        minHeight: 560,
+        boxShadow: "0 20px 60px rgba(0,0,0,0.6), 0 0 0 8px #0a0e1a, inset 0 0 0 1px rgba(255,255,255,0.04)",
         color: "#f1f5f9",
         fontFamily: "'Nunito', sans-serif",
         display: "flex",
@@ -273,35 +274,77 @@ export default function ChatSimulator({
         position: "relative",
       }}
     >
-      {/* Phone status bar */}
+      {/* Phone status bar — iPhone-style with notch */}
       <div
         aria-hidden
         style={{
-          height: 8,
-          background: "rgba(255,255,255,0.03)",
+          position: "relative",
+          height: 32,
+          padding: "8px 18px 0",
           display: "flex",
-          alignItems: "center",
+          alignItems: "flex-start",
           justifyContent: "space-between",
-          padding: "0 12px",
+          fontFamily: "'SF Pro Display', -apple-system, sans-serif",
+          fontSize: 13,
+          fontWeight: 600,
+          color: "#f8fafc",
           borderBottom: "1px solid rgba(255,255,255,0.04)",
         }}
       >
-        <div style={{ display: "flex", gap: 3 }}>
-          <span style={{ width: 3, height: 3, borderRadius: "50%", background: "rgba(255,255,255,0.35)" }} />
-          <span style={{ width: 3, height: 3, borderRadius: "50%", background: "rgba(255,255,255,0.35)" }} />
-          <span style={{ width: 3, height: 3, borderRadius: "50%", background: "rgba(255,255,255,0.35)" }} />
-        </div>
-        <div
+        {/* Time (left) */}
+        <span style={{ letterSpacing: "-0.02em" }}>9:41</span>
+
+        {/* Notch (centre) */}
+        <span
           style={{
-            width: 14,
-            height: 6,
-            borderRadius: 2,
-            border: "1px solid rgba(255,255,255,0.3)",
-            position: "relative",
+            position: "absolute",
+            top: 0,
+            left: "50%",
+            transform: "translateX(-50%)",
+            width: 110,
+            height: 22,
+            background: "#000",
+            borderBottomLeftRadius: 14,
+            borderBottomRightRadius: 14,
           }}
-        >
-          <div style={{ position: "absolute", inset: 1, background: "rgba(255,255,255,0.5)", borderRadius: 1 }} />
-        </div>
+        />
+
+        {/* Status icons (right) */}
+        <span style={{ display: "flex", alignItems: "center", gap: 5 }}>
+          {/* Signal bars */}
+          <span style={{ display: "flex", alignItems: "flex-end", gap: 1 }}>
+            {[3, 5, 7, 9].map((h) => (
+              <span
+                key={h}
+                style={{
+                  width: 2,
+                  height: h,
+                  borderRadius: 1,
+                  background: "#f8fafc",
+                }}
+              />
+            ))}
+          </span>
+          {/* Wi-Fi */}
+          <svg width="14" height="10" viewBox="0 0 14 10" aria-hidden>
+            <path d="M7 9.5a1.1 1.1 0 1 0 0-2.2 1.1 1.1 0 0 0 0 2.2z" fill="#f8fafc" />
+            <path d="M2.5 5.2a6.4 6.4 0 0 1 9 0" stroke="#f8fafc" strokeWidth="1.2" fill="none" strokeLinecap="round" />
+            <path d="M0.6 3.2a9 9 0 0 1 12.8 0" stroke="#f8fafc" strokeWidth="1.2" fill="none" strokeLinecap="round" />
+          </svg>
+          {/* Battery */}
+          <span
+            style={{
+              width: 22,
+              height: 10,
+              borderRadius: 3,
+              border: "1px solid rgba(248,250,252,0.5)",
+              padding: 1,
+              position: "relative",
+            }}
+          >
+            <span style={{ position: "absolute", inset: 1, background: "#34d399", borderRadius: 1, width: "78%" }} />
+          </span>
+        </span>
       </div>
 
       {/* Chat header */}
@@ -483,17 +526,39 @@ function MessageBubble({ msg }: { msg: ShownMsg }) {
         style={{
           alignSelf: "flex-end",
           maxWidth: "80%",
-          background: "rgba(96,165,250,0.12)",
-          border: "1px solid rgba(96,165,250,0.25)",
-          borderRadius: "16px 16px 4px 16px",
-          padding: "10px 14px",
-          fontSize: 14,
-          lineHeight: 1.45,
-          color: "#dbeafe",
+          display: "flex",
+          flexDirection: "column",
+          gap: 3,
           animation: "csNarratorIn 0.3s cubic-bezier(0.16,1,0.3,1) both",
         }}
       >
-        {msg.text.replace(/^You:\s*/, "")}
+        <div
+          style={{
+            background: "linear-gradient(135deg, #2563eb, #3b82f6)",
+            border: "1px solid rgba(96,165,250,0.45)",
+            borderRadius: "16px 16px 4px 16px",
+            padding: "10px 14px",
+            fontSize: 14,
+            lineHeight: 1.45,
+            color: "#f8fafc",
+            boxShadow: "0 4px 14px rgba(59,130,246,0.35)",
+          }}
+        >
+          {msg.text.replace(/^You:\s*/, "")}
+        </div>
+        {/* Read receipts */}
+        <span
+          aria-hidden
+          style={{
+            alignSelf: "flex-end",
+            fontSize: 10,
+            color: "#60a5fa",
+            letterSpacing: "-0.04em",
+            marginRight: 4,
+          }}
+        >
+          ✓✓
+        </span>
       </div>
     );
   }
@@ -591,20 +656,24 @@ function ChoiceCard({
     onPick();
   };
 
+  // Subtle tint hints at the choice tone without giving the answer away.
+  const hintTint = option.isSafe
+    ? "linear-gradient(135deg, rgba(16,185,129,0.12), rgba(15,23,42,0.9))"
+    : "linear-gradient(135deg, rgba(239,68,68,0.12), rgba(15,23,42,0.9))";
   const border = picked
     ? option.isSafe
       ? "#34d399"
       : "#ef4444"
     : hover
-      ? "rgba(96,165,250,0.4)"
-      : "rgba(255,255,255,0.08)";
+      ? "rgba(96,165,250,0.55)"
+      : "rgba(255,255,255,0.1)";
   const shadow = picked
     ? option.isSafe
-      ? "0 0 18px rgba(52,211,153,0.45)"
-      : "0 0 18px rgba(239,68,68,0.45)"
+      ? "0 0 22px rgba(52,211,153,0.55), inset 0 1px 0 rgba(255,255,255,0.15)"
+      : "0 0 22px rgba(239,68,68,0.55), inset 0 1px 0 rgba(255,255,255,0.15)"
     : hover
-      ? "0 4px 14px rgba(0,0,0,0.3)"
-      : "none";
+      ? "0 8px 22px rgba(0,0,0,0.4), 0 0 0 2px rgba(96,165,250,0.2)"
+      : "0 3px 10px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.05)";
 
   return (
     <button
@@ -615,18 +684,19 @@ function ChoiceCard({
       onMouseLeave={() => setHover(false)}
       style={{
         textAlign: "left",
-        background: "#111827",
-        border: `1px solid ${border}`,
-        borderRadius: 14,
-        padding: "14px 18px",
+        background: hintTint,
+        border: `1.5px solid ${border}`,
+        borderRadius: 999, // pill
+        padding: "14px 22px",
         color: "#f1f5f9",
         fontFamily: "'Nunito', sans-serif",
         fontSize: 14,
         fontWeight: 600,
         cursor: picked ? "default" : "pointer",
-        transition: "border-color 0.25s, transform 0.2s, box-shadow 0.25s",
+        transition: "border-color 0.25s, transform 0.2s, box-shadow 0.25s, filter 0.2s",
         boxShadow: shadow,
-        transform: hover && !picked ? "translateY(-1px)" : "none",
+        transform: hover && !picked ? "translateY(-2px) scale(1.01)" : "none",
+        filter: hover && !picked ? "brightness(1.08)" : "none",
         animation: `csChoiceIn 0.35s cubic-bezier(0.16,1,0.3,1) ${delay}ms both`,
       }}
     >
