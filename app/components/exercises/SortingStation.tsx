@@ -259,15 +259,14 @@ function ActiveStage({
 
   return (
     <>
-      {/* Streak badge */}
+      {/* Streak badge — top-right so it never clips the title. */}
       {streak >= 3 && (
         <div
           key={`streak-${streak}`}
           style={{
             position: "absolute",
-            top: 14,
-            left: "50%",
-            transform: "translateX(-50%)",
+            top: 12,
+            right: 16,
             background: "linear-gradient(135deg, #f59e0b, #f97316)",
             color: "#fff",
             fontFamily: "'Fredoka', 'Nunito', sans-serif",
@@ -279,7 +278,7 @@ function ActiveStage({
             boxShadow: "0 0 20px rgba(245,158,11,0.55), 0 4px 14px rgba(0,0,0,0.3)",
             animation: "ssStreakIn 0.35s cubic-bezier(0.2,1.5,0.4,1) both",
             pointerEvents: "none",
-            zIndex: 2,
+            zIndex: 10,
           }}
         >
           🔥 x{streak}

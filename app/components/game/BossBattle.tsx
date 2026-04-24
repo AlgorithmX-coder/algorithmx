@@ -1210,10 +1210,17 @@ export default function BossBattle({
   });
 
   const chooseHero = (h: HeroId) => {
-    if (selecting || selectedHero) return;
+    if (selecting || selectedHero) {
+      console.log("[BossBattle] chooseHero blocked", { requested: h, selecting, selectedHero });
+      return;
+    }
+    console.log("[BossBattle] chooseHero start →", h);
     playSound("select");
     setSelecting(h);
-    window.setTimeout(() => setSelectedHero(h), 500);
+    window.setTimeout(() => {
+      console.log("[BossBattle] chooseHero commit →", h);
+      setSelectedHero(h);
+    }, 600);
   };
 
   // Preload SFX + play intro cue when the selection screen appears
@@ -1999,40 +2006,53 @@ export default function BossBattle({
           <div className="bb-sel-rule" aria-hidden="true" />
 
           {/* Cards */}
-          <div className="bb-sel-cards">
-            {(
-              [
-                {
-                  id: "adam" as const,
-                  label: "ADAM",
-                  title: "The Shield Bearer",
-                  image: ASSET_PATHS.adamSelect,
-                  colour: "#60a5fa",
-                  description:
-                    "Brave and strong. Uses his Cyber Shield to block attacks and protect the digital world.",
-                  stats: { attack: 80, defence: 100, speed: 60 },
-                  btnGradient: "linear-gradient(135deg, #3b82f6, #2563eb)",
-                  shimmerDelay: "0s",
-                },
-                {
-                  id: "layla" as const,
-                  label: "LAYLA",
-                  title: "The Tech Prodigy",
-                  image: ASSET_PATHS.laylaSelect,
-                  colour: "#34d399",
-                  description:
-                    "Smart and quick. Uses her Tech Tablet to blast through firewalls and decode secrets.",
-                  stats: { attack: 60, defence: 60, speed: 100 },
-                  btnGradient: "linear-gradient(135deg, #34d399, #10b981)",
-                  shimmerDelay: "1.5s",
-                },
-              ] as const
-            ).map((c, idx) => {
+          {(() => {
+            type CardConfig = {
+              id: HeroId;
+              label: string;
+              title: string;
+              image: string;
+              colour: string;
+              description: string;
+              stats: { attack: number; defence: number; speed: number };
+              btnGradient: string;
+              shimmerDelay: string;
+            };
+            const cardConfigs: CardConfig[] = [
+              {
+                id: "adam",
+                label: "ADAM",
+                title: "The Shield Bearer",
+                image: ASSET_PATHS.adamSelect,
+                colour: "#60a5fa",
+                description:
+                  "Brave and strong. Uses his Cyber Shield to block attacks and protect the digital world.",
+                stats: { attack: 80, defence: 100, speed: 60 },
+                btnGradient: "linear-gradient(135deg, #3b82f6, #2563eb)",
+                shimmerDelay: "0s",
+              },
+              {
+                id: "layla",
+                label: "LAYLA",
+                title: "The Tech Prodigy",
+                image: ASSET_PATHS.laylaSelect,
+                colour: "#34d399",
+                description:
+                  "Smart and quick. Uses her Tech Tablet to blast through firewalls and decode secrets.",
+                stats: { attack: 60, defence: 60, speed: 100 },
+                btnGradient: "linear-gradient(135deg, #34d399, #10b981)",
+                shimmerDelay: "1.5s",
+              },
+            ];
+            const renderCard = (c: CardConfig, idx: number) => {
               const chosen = selecting === c.id;
               const faded = selecting !== null && selecting !== c.id;
               return (
                 <div
                   key={c.id}
+                  role="button"
+                  tabIndex={0}
+                  aria-label={`Select ${c.label}`}
                   className={
                     "bb-sel-card " +
                     (idx === 0 ? "bb-sel-card-left" : "bb-sel-card-right") +
@@ -2045,6 +2065,13 @@ export default function BossBattle({
                     } as React.CSSProperties
                   }
                   onMouseEnter={() => { if (!selecting) playSound("hover"); }}
+                  onClick={() => chooseHero(c.id)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                      e.preventDefault();
+                      chooseHero(c.id);
+                    }
+                  }}
                 >
                   <div className="bb-sel-spot">
                     <div className="bb-sel-spot-glow" />
@@ -2088,7 +2115,10 @@ export default function BossBattle({
                     <button
                       type="button"
                       className="bb-sel-btn"
-                      onClick={() => chooseHero(c.id)}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        chooseHero(c.id);
+                      }}
                       disabled={!!selecting}
                       style={{
                         background: c.btnGradient,
@@ -2105,14 +2135,19 @@ export default function BossBattle({
                   </div>
                 </div>
               );
-            })}
-
-            <div className="bb-sel-or" aria-hidden="true">
-              <span className="bb-sel-or-line" />
-              <span className="bb-sel-or-text">OR</span>
-              <span className="bb-sel-or-line" />
-            </div>
-          </div>
+            };
+            return (
+              <div className="bb-sel-cards">
+                {renderCard(cardConfigs[0], 0)}
+                <div className="bb-sel-or" aria-hidden="true">
+                  <span className="bb-sel-or-line" />
+                  <span className="bb-sel-or-text">OR</span>
+                  <span className="bb-sel-or-line" />
+                </div>
+                {renderCard(cardConfigs[1], 1)}
+              </div>
+            );
+          })()}
 
           <p className="bb-sel-footer">
             Both heroes have the same powers — pick your favourite!
@@ -3016,19 +3051,24 @@ export default function BossBattle({
           animation: bbSelTitleIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.15s both;
         }
 
-        /* Cards wrapper */
+        /* Cards wrapper — card ▸ OR ▸ card, all centred */
         .bb-sel-cards {
           position: relative;
           z-index: 1;
-          display: flex; align-items: stretch; justify-content: center;
-          gap: 40px;
-          flex-wrap: wrap;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 24px;
+          flex-wrap: nowrap;
+          width: 100%;
         }
 
         /* Card */
         .bb-sel-card {
           position: relative;
           width: 320px;
+          flex: 0 0 320px;
+          flex-shrink: 0;
           min-height: 480px;
           background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
           border: 2px solid transparent;
@@ -3213,6 +3253,9 @@ export default function BossBattle({
           display: flex; flex-direction: column;
           align-items: center; justify-content: center;
           gap: 10px;
+          flex-shrink: 0;
+          flex-basis: auto;
+          align-self: center;
           animation: bbSelOrIn 0.4s ease-out 0.5s both;
         }
         .bb-sel-or-line {
@@ -3244,9 +3287,15 @@ export default function BossBattle({
           .bb-sel-title { font-size: 36px }
           .bb-sel-cards {
             flex-direction: column;
+            flex-wrap: wrap;
             gap: 20px;
           }
-          .bb-sel-card { width: 90%; max-width: 340px; min-height: 0 }
+          .bb-sel-card {
+            width: 90%;
+            max-width: 340px;
+            flex: 0 0 auto;
+            min-height: 0;
+          }
           .bb-sel-spot { min-height: 248px }
           .bb-sel-img { height: 240px }
           .bb-sel-or {

@@ -19,6 +19,8 @@ import MuteToggle from "@/app/components/MuteToggle";
 import LessonHUD from "@/app/components/LessonHUD";
 import XPPopup from "@/app/components/XPPopup";
 import LevelUpCelebration from "@/app/components/LevelUpCelebration";
+import CharacterGuide from "@/app/components/CharacterGuide";
+import { WEEK1_REACTIONS, CORRECT_QUIPS, WRONG_QUIPS, type CharacterLine } from "@/app/lesson/characterReactions";
 import { addXP, type RankInfo } from "@/app/lib/progression";
 import LessonAmbience from "@/app/components/LessonAmbience";
 import BattleArena from "@/app/components/exercises/BattleArena";
@@ -1011,11 +1013,27 @@ function LearnSummary({ message, starCount, onNext }: { message: string; starCou
   );
 }
 
-const SpeechBubble = ({ character, message, side = "left" }: { character: "adam" | "layla" | "raccoon"; message: string; side?: "left" | "right" }) => {
+const SpeechBubble = ({ character, message, side = "left", delayMs = 500 }: { character: "adam" | "layla" | "raccoon"; message: string; side?: "left" | "right"; delayMs?: number }) => {
   const img = character === "adam" ? "/characters/adam-layla-happy.png" : character === "layla" ? "/characters/adam-layla-happy.png" : "/characters/raccoon.png";
   const name = character === "adam" ? "Adam" : character === "layla" ? "Layla" : "Raccoon";
   const bubbleColor = character === "raccoon" ? "rgba(239,68,68,0.15)" : "rgba(59,130,246,0.15)";
   const borderColor = character === "raccoon" ? "rgba(239,68,68,0.3)" : "rgba(59,130,246,0.3)";
+
+  // Reveal the bubble 500ms after the screen transition, then play "pop" SFX.
+  const [visible, setVisible] = useState(delayMs <= 0);
+  useEffect(() => {
+    if (delayMs <= 0) {
+      playSFX("pop");
+      return;
+    }
+    const id = window.setTimeout(() => {
+      setVisible(true);
+      playSFX("pop");
+    }, delayMs);
+    return () => window.clearTimeout(id);
+  }, [delayMs]);
+  if (!visible) return null;
+
   return (
     <motion.div
       data-animate
@@ -1040,6 +1058,54 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
   const [screen, setScreen] = useState(0);
   const [coins, setCoins] = useState(0);
   const [coinAnimKey, setCoinAnimKey] = useState(0);
+
+  // Dual-character guide state. Each character carries its own line; empty
+  // `message` means the character is present with that mood but silent.
+  const IDLE_LINE: CharacterLine = { mood: "idle", message: "" };
+  const initialReaction = WEEK1_REACTIONS[0];
+  const [adamReaction, setAdamReaction] = useState<CharacterLine>(
+    initialReaction?.adam ?? IDLE_LINE
+  );
+  const [laylaReaction, setLaylaReaction] = useState<CharacterLine>(
+    initialReaction?.layla ?? IDLE_LINE
+  );
+  const reactionRestoreRef = useRef<number | null>(null);
+
+  const pickQuip = (list: readonly string[]): string =>
+    list[Math.floor(Math.random() * list.length)];
+
+  /** Briefly override one character's reaction (and give the other a matching
+   *  mood) with a correct/wrong quip, then restore the per-screen reaction. */
+  const flashReaction = useCallback(
+    (kind: "correct" | "wrong") => {
+      if (kind === "correct") {
+        const quip = pickQuip(CORRECT_QUIPS);
+        // Coin-flip which character speaks; the other shows thumbsup.
+        if (Math.random() < 0.5) {
+          setAdamReaction({ mood: "thumbsup", message: quip });
+          setLaylaReaction({ mood: "thumbsup", message: "" });
+        } else {
+          setAdamReaction({ mood: "thumbsup", message: "" });
+          setLaylaReaction({ mood: "thumbsup", message: quip });
+        }
+      } else {
+        // Spec: Layla speaks the thinking quip, Adam shows thinking mood.
+        setAdamReaction({ mood: "thinking", message: "" });
+        setLaylaReaction({ mood: "thinking", message: pickQuip(WRONG_QUIPS) });
+      }
+      if (reactionRestoreRef.current) window.clearTimeout(reactionRestoreRef.current);
+      reactionRestoreRef.current = window.setTimeout(() => {
+        const fallback = WEEK1_REACTIONS[screen];
+        setAdamReaction(fallback?.adam ?? IDLE_LINE);
+        // Slight stagger on restore so the two don't animate in lock-step.
+        window.setTimeout(
+          () => setLaylaReaction(fallback?.layla ?? IDLE_LINE),
+          100
+        );
+      }, 2000);
+    },
+    [screen]
+  );
 
   // XP / progression state
   const [lessonXp, setLessonXp] = useState(0);
@@ -1070,8 +1136,9 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
           totalXP: result.newTotal,
         });
       }
+      flashReaction("correct");
     },
-    []
+    [flashReaction]
   );
   const removeXpPopup = useCallback((id: number) => {
     setXpPopups((prev) => prev.filter((p) => p.id !== id));
@@ -1325,24 +1392,56 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
     void bossDefeatedExplosion();
   }, [bossDone]);
 
-  // Lesson intro: play lesson-start + start looped BGM on first mount.
-  // Stop BGM on unmount to avoid leaking audio when navigating away.
+  // Lesson intro: lesson-start cue on first mount. BGM is deferred until the
+  // learner advances past the intro video (screen >= 2) so music doesn't
+  // compete with the video audio.
   useEffect(() => {
     playSFX("lessonStart");
-    playBGM("bgmLesson");
     return () => {
       stopBGM(400);
     };
   }, []);
 
-  // Reveal chime whenever the learner advances to a new screen
-  // (skip the very first screen — lesson-start already fired for that).
+  const bgmStartedRef = useRef(false);
+  useEffect(() => {
+    if (!bgmStartedRef.current && screen >= 2) {
+      bgmStartedRef.current = true;
+      playBGM("bgmLesson");
+    }
+  }, [screen]);
+
+  // Reveal chime on screen change. SpeechBubble instances fire their own
+  // "pop" SFX 500ms after they mount, so this effect doesn't need to.
   const prevScreenRef = useRef<number | null>(null);
   useEffect(() => {
     if (prevScreenRef.current !== null && prevScreenRef.current !== screen) {
       playSFX("reveal");
     }
     prevScreenRef.current = screen;
+  }, [screen]);
+
+  // Per-screen character guide reaction: wait 500ms after transition, then set.
+  // Layla is delayed another 100ms so Adam and Layla stagger their exit/enter.
+  useEffect(() => {
+    if (reactionRestoreRef.current) {
+      window.clearTimeout(reactionRestoreRef.current);
+      reactionRestoreRef.current = null;
+    }
+    const next = WEEK1_REACTIONS[screen];
+    if (!next) return;
+    const delay = next.delay ?? 500;
+    const idAdam = window.setTimeout(
+      () => setAdamReaction(next.adam ?? IDLE_LINE),
+      delay
+    );
+    const idLayla = window.setTimeout(
+      () => setLaylaReaction(next.layla ?? IDLE_LINE),
+      delay + 100
+    );
+    return () => {
+      window.clearTimeout(idAdam);
+      window.clearTimeout(idLayla);
+    };
   }, [screen]);
 
   // Lesson complete: screen 17 is the certificate screen. Stop the lesson BGM
@@ -1464,7 +1563,8 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
 
   const addWrong = useCallback((scr: number) => {
     setWrongAttempts((prev) => ({ ...prev, [scr]: (prev[scr] || 0) + 1 }));
-  }, []);
+    flashReaction("wrong");
+  }, [flashReaction]);
 
   const getStars = useCallback((scr: number) => {
     const w = wrongAttempts[scr] || 0;
@@ -3308,6 +3408,19 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
         currentScreen={screen}
         totalScreens={18}
         xpEarned={lessonXp}
+      />
+
+      <CharacterGuide
+        character="adam"
+        position="left"
+        mood={adamReaction.mood}
+        message={adamReaction.message}
+      />
+      <CharacterGuide
+        character="layla"
+        position="right"
+        mood={laylaReaction.mood}
+        message={laylaReaction.message}
       />
 
       {xpPopups.map((p) => (

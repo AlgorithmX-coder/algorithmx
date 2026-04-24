@@ -17,6 +17,8 @@ import MuteToggle from "@/app/components/MuteToggle";
 import LessonHUD from "@/app/components/LessonHUD";
 import XPPopup from "@/app/components/XPPopup";
 import LevelUpCelebration from "@/app/components/LevelUpCelebration";
+import CharacterGuide from "@/app/components/CharacterGuide";
+import { WEEK2_REACTIONS, CORRECT_QUIPS, WRONG_QUIPS, type CharacterLine } from "@/app/lesson/characterReactions";
 import { addXP as addXpProgress, type RankInfo } from "@/app/lib/progression";
 import LessonAmbience from "@/app/components/LessonAmbience";
 import SortingStation from "@/app/components/exercises/SortingStation";
@@ -687,6 +689,67 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
   const [step, setStep] = useState(0);
   const [coins, setCoins] = useState(0);
 
+  // Character guide reaction
+  const IDLE_LINE: CharacterLine = { mood: "idle", message: "" };
+  const initialReactionW2 = WEEK2_REACTIONS[0];
+  const [adamReaction, setAdamReaction] = useState<CharacterLine>(
+    initialReactionW2?.adam ?? IDLE_LINE
+  );
+  const [laylaReaction, setLaylaReaction] = useState<CharacterLine>(
+    initialReactionW2?.layla ?? IDLE_LINE
+  );
+  const reactionRestoreRef = useRef<number | null>(null);
+  const pickQuip = (list: readonly string[]): string =>
+    list[Math.floor(Math.random() * list.length)];
+  const flashReaction = useCallback(
+    (kind: "correct" | "wrong") => {
+      if (kind === "correct") {
+        const quip = pickQuip(CORRECT_QUIPS);
+        if (Math.random() < 0.5) {
+          setAdamReaction({ mood: "thumbsup", message: quip });
+          setLaylaReaction({ mood: "thumbsup", message: "" });
+        } else {
+          setAdamReaction({ mood: "thumbsup", message: "" });
+          setLaylaReaction({ mood: "thumbsup", message: quip });
+        }
+      } else {
+        setAdamReaction({ mood: "thinking", message: "" });
+        setLaylaReaction({ mood: "thinking", message: pickQuip(WRONG_QUIPS) });
+      }
+      if (reactionRestoreRef.current) window.clearTimeout(reactionRestoreRef.current);
+      reactionRestoreRef.current = window.setTimeout(() => {
+        const fallback = WEEK2_REACTIONS[step];
+        setAdamReaction(fallback?.adam ?? IDLE_LINE);
+        window.setTimeout(
+          () => setLaylaReaction(fallback?.layla ?? IDLE_LINE),
+          100
+        );
+      }, 2000);
+    },
+    [step]
+  );
+  useEffect(() => {
+    if (reactionRestoreRef.current) {
+      window.clearTimeout(reactionRestoreRef.current);
+      reactionRestoreRef.current = null;
+    }
+    const next = WEEK2_REACTIONS[step];
+    if (!next) return;
+    const delay = next.delay ?? 500;
+    const idAdam = window.setTimeout(
+      () => setAdamReaction(next.adam ?? IDLE_LINE),
+      delay
+    );
+    const idLayla = window.setTimeout(
+      () => setLaylaReaction(next.layla ?? IDLE_LINE),
+      delay + 100
+    );
+    return () => {
+      window.clearTimeout(idAdam);
+      window.clearTimeout(idLayla);
+    };
+  }, [step]);
+
   // XP / progression
   const [lessonXp, setLessonXp] = useState(0);
   const [xpPopups, setXpPopups] = useState<{ id: number; x: number; y: number; amount: number }[]>([]);
@@ -714,8 +777,9 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
           totalXP: result.newTotal,
         });
       }
+      flashReaction("correct");
     },
-    []
+    [flashReaction]
   );
   const removeXpPopup = useCallback((id: number) => {
     setXpPopups((prev) => prev.filter((p) => p.id !== id));
@@ -899,7 +963,10 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
   const dismissInstr = useCallback((s: number) => setShowInstr((p) => ({ ...p, [s]: false })), []);
   const triggerSummary = useCallback((s: number) => setShowSummary((p) => ({ ...p, [s]: true })), []);
   const dismissSummary = useCallback((s: number, next: number) => { setShowSummary((p) => ({ ...p, [s]: false })); navigate(next); }, [navigate]);
-  const addWrong = useCallback((s: number) => setWrongAttempts((p) => ({ ...p, [s]: (p[s] || 0) + 1 })), []);
+  const addWrong = useCallback((s: number) => {
+    setWrongAttempts((p) => ({ ...p, [s]: (p[s] || 0) + 1 }));
+    flashReaction("wrong");
+  }, [flashReaction]);
   const getStars = useCallback((s: number) => { const w = wrongAttempts[s] || 0; return w === 0 ? 3 : w <= 2 ? 2 : 1; }, [wrongAttempts]);
 
   // Step 0: video skip timer
@@ -2219,6 +2286,19 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
         currentScreen={step}
         totalScreens={18}
         xpEarned={lessonXp}
+      />
+
+      <CharacterGuide
+        character="adam"
+        position="left"
+        mood={adamReaction.mood}
+        message={adamReaction.message}
+      />
+      <CharacterGuide
+        character="layla"
+        position="right"
+        mood={laylaReaction.mood}
+        message={laylaReaction.message}
       />
 
       {xpPopups.map((p) => (

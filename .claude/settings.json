@@ -3,7 +3,9 @@
     "allow": [
       "Bash(git add:*)",
       "Bash(mv public/characters/*-select.png public/game/characters/)",
-      "Bash(git restore *)"
+      "Bash(git restore *)",
+      "Bash(file public/game/characters/*.png)",
+      "Read(//c/Users/roboc/Downloads/**)"
     ]
   }
 }

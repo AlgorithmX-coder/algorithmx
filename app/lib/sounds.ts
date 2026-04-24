@@ -92,7 +92,7 @@ const SFX_REGISTRY: Record<string, SoundEntry> = {
  * Invariant: BGM_MAX_VOLUME must stay well below any SFX volume
  * (lowest SFX is 0.5; a 5× headroom keeps music subtle).
  */
-const BGM_MAX_VOLUME = 0.1;
+const BGM_MAX_VOLUME = 0.04;
 const BGM_REGISTRY: Record<string, SoundEntry> = {
   bgmLesson: { path: "/audio/sfx/bgm-lesson.mp3", volume: BGM_MAX_VOLUME },
   bgmBattle: { path: "/audio/sfx/bgm-battle.mp3", volume: BGM_MAX_VOLUME },
