@@ -1,40 +1,36 @@
 "use client";
 
-import { ReactNode, useCallback, useEffect, useRef, useState } from "react";
-import { playSound } from "@/app/lib/sounds";
+import { ReactNode, useEffect, useRef, useState } from "react";
 
-export type TransitionType = "fade" | "slideLeft" | "slideRight" | "slideUp" | "zoom" | "blur";
+export type TransitionType = "slideRight" | "slideLeft" | "fadeScale" | "wipeDown";
 
-type ScreenTransitionProps = {
-  screenKey: number;
+export interface ScreenTransitionProps {
   children: ReactNode;
-  transition?: TransitionType;
+  /** Changing this value triggers an exit-then-enter cycle. */
+  transitionKey: string | number;
+  type?: TransitionType;
+  /** Total duration in ms. Exit and enter each take roughly half. Default 400. */
   duration?: number;
-};
+  onTransitionStart?: () => void;
+  onTransitionEnd?: () => void;
+}
 
-type Layer = {
-  id: number;
-  children: ReactNode;
-};
+type Phase = "idle" | "exiting" | "entering";
+
+const EASE = "cubic-bezier(0.16, 1, 0.3, 1)";
 
 const KEYFRAMES = `
-@keyframes st-fade-in { from { opacity: 0; } to { opacity: 1; } }
-@keyframes st-fade-out { from { opacity: 1; } to { opacity: 0; } }
+@keyframes st-slideRight-out { 0% { opacity: 1; transform: translateX(0); } 100% { opacity: 0; transform: translateX(-100%); } }
+@keyframes st-slideRight-in  { 0% { opacity: 0; transform: translateX(80px) scale(0.97); } 100% { opacity: 1; transform: translateX(0) scale(1); } }
 
-@keyframes st-slideLeft-in { from { opacity: 0; transform: translateX(30%); } to { opacity: 1; transform: translateX(0); } }
-@keyframes st-slideLeft-out { from { opacity: 1; transform: translateX(0); } to { opacity: 0; transform: translateX(-30%); } }
+@keyframes st-slideLeft-out  { 0% { opacity: 1; transform: translateX(0); } 100% { opacity: 0; transform: translateX(100%); } }
+@keyframes st-slideLeft-in   { 0% { opacity: 0; transform: translateX(-80px) scale(0.97); } 100% { opacity: 1; transform: translateX(0) scale(1); } }
 
-@keyframes st-slideRight-in { from { opacity: 0; transform: translateX(-30%); } to { opacity: 1; transform: translateX(0); } }
-@keyframes st-slideRight-out { from { opacity: 1; transform: translateX(0); } to { opacity: 0; transform: translateX(30%); } }
+@keyframes st-fadeScale-out  { 0% { opacity: 1; transform: scale(1); } 100% { opacity: 0; transform: scale(0.96); } }
+@keyframes st-fadeScale-in   { 0% { opacity: 0; transform: scale(1.03); } 100% { opacity: 1; transform: scale(1); } }
 
-@keyframes st-slideUp-in { from { opacity: 0; transform: translateY(30%); } to { opacity: 1; transform: translateY(0); } }
-@keyframes st-slideUp-out { from { opacity: 1; transform: translateY(0); } to { opacity: 0; transform: translateY(-30%); } }
-
-@keyframes st-zoom-in { from { opacity: 0; transform: scale(1.05); } to { opacity: 1; transform: scale(1); } }
-@keyframes st-zoom-out { from { opacity: 1; transform: scale(1); } to { opacity: 0; transform: scale(0.95); } }
-
-@keyframes st-blur-in { from { opacity: 0; filter: blur(8px); } to { opacity: 1; filter: blur(0); } }
-@keyframes st-blur-out { from { opacity: 1; filter: blur(0); } to { opacity: 0; filter: blur(8px); } }
+@keyframes st-wipeDown-cover  { 0% { transform: translateY(-100%); } 100% { transform: translateY(0); } }
+@keyframes st-wipeDown-reveal { 0% { transform: translateY(0); } 100% { transform: translateY(100%); } }
 `;
 
 function ensureKeyframes() {
@@ -47,68 +43,100 @@ function ensureKeyframes() {
   document.head.appendChild(el);
 }
 
-const EASE = "cubic-bezier(0.16, 1, 0.3, 1)";
-
 export default function ScreenTransition({
-  screenKey,
   children,
-  transition = "fade",
+  transitionKey,
+  type = "slideRight",
   duration = 400,
+  onTransitionStart,
+  onTransitionEnd,
 }: ScreenTransitionProps) {
-  const firstRenderRef = useRef(true);
-  const [currentKey, setCurrentKey] = useState(screenKey);
-  const [currentChildren, setCurrentChildren] = useState<ReactNode>(children);
-  const [outgoing, setOutgoing] = useState<Layer | null>(null);
-  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  // `displayedChildren` lags behind the children prop during exit so the
+  // outgoing layer keeps showing the previous screen until the swap moment.
+  const [displayedChildren, setDisplayedChildren] = useState<ReactNode>(children);
+  const [outgoingChildren, setOutgoingChildren] = useState<ReactNode>(null);
+  const [phase, setPhase] = useState<Phase>("idle");
+  const firstRunRef = useRef(true);
+  const prevKeyRef = useRef(transitionKey);
+  const exitTimerRef = useRef<number | null>(null);
+  const enterTimerRef = useRef<number | null>(null);
+
+  // Keep handler refs current so we don't restart the effect on function identity changes.
+  const startCbRef = useRef(onTransitionStart);
+  const endCbRef = useRef(onTransitionEnd);
+  useEffect(() => { startCbRef.current = onTransitionStart; }, [onTransitionStart]);
+  useEffect(() => { endCbRef.current = onTransitionEnd; }, [onTransitionEnd]);
 
   useEffect(() => {
     ensureKeyframes();
   }, []);
 
   useEffect(() => {
-    if (firstRenderRef.current) {
-      firstRenderRef.current = false;
+    if (firstRunRef.current) {
+      firstRunRef.current = false;
+      prevKeyRef.current = transitionKey;
       return;
     }
-    if (screenKey === currentKey) {
-      // Update children in place without replaying transition
-      setCurrentChildren(children);
+    if (transitionKey === prevKeyRef.current) {
+      // Live child update on the same key — just swap in place.
+      setDisplayedChildren(children);
       return;
     }
+    prevKeyRef.current = transitionKey;
 
-    // Start transition — play sound cue
-    playSound("transition");
+    // ── Start exit ──
+    if (exitTimerRef.current) window.clearTimeout(exitTimerRef.current);
+    if (enterTimerRef.current) window.clearTimeout(enterTimerRef.current);
 
-    // Move existing content into an outgoing layer and swap in the new content
-    setOutgoing({ id: currentKey, children: currentChildren });
-    setCurrentKey(screenKey);
-    setCurrentChildren(children);
+    setOutgoingChildren(displayedChildren);
+    setPhase("exiting");
+    startCbRef.current?.();
 
-    if (timerRef.current) clearTimeout(timerRef.current);
-    timerRef.current = setTimeout(() => {
-      setOutgoing(null);
-      timerRef.current = null;
-    }, duration);
+    // Split timing roughly 50/50 for slide/fade; wipeDown uses a harder cut.
+    const exitMs = type === "fadeScale" ? Math.round(duration * 0.5) : Math.round(duration * 0.55);
+    const enterMs = duration - exitMs;
+
+    exitTimerRef.current = window.setTimeout(() => {
+      setDisplayedChildren(children);
+      setOutgoingChildren(null);
+      setPhase("entering");
+      exitTimerRef.current = null;
+
+      enterTimerRef.current = window.setTimeout(() => {
+        setPhase("idle");
+        endCbRef.current?.();
+        enterTimerRef.current = null;
+      }, enterMs);
+    }, exitMs);
 
     return () => {
-      if (timerRef.current) {
-        clearTimeout(timerRef.current);
-        timerRef.current = null;
-      }
+      if (exitTimerRef.current) window.clearTimeout(exitTimerRef.current);
+      if (enterTimerRef.current) window.clearTimeout(enterTimerRef.current);
     };
+    // We intentionally only re-run on transitionKey changes — children updates
+    // within the same key flow through the secondary effect above.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [screenKey]);
+  }, [transitionKey]);
 
-  // Keep currentChildren in sync when children prop changes without a key change
+  // Children can change without a key change (e.g. parent re-renders). Reflect
+  // immediately when idle or entering (new content), never while exiting.
   useEffect(() => {
-    if (screenKey === currentKey) {
-      setCurrentChildren(children);
+    if (phase === "idle" || phase === "entering") {
+      setDisplayedChildren(children);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [children]);
 
-  const animIn = `st-${transition}-in ${duration}ms ${EASE} both`;
-  const animOut = `st-${transition}-out ${duration}ms ${EASE} both`;
+  const exitMs = type === "fadeScale" ? Math.round(duration * 0.5) : Math.round(duration * 0.55);
+  const enterMs = duration - exitMs;
+
+  // Compute per-layer animation strings.
+  const incomingAnim = phase === "entering"
+    ? `st-${type === "wipeDown" ? "fadeScale" : type}-in ${enterMs}ms ${EASE} both`
+    : undefined;
+  const outgoingAnim = phase === "exiting" && type !== "wipeDown"
+    ? `st-${type}-out ${exitMs}ms ${EASE} both`
+    : undefined;
 
   return (
     <div
@@ -119,58 +147,48 @@ export default function ScreenTransition({
       }}
     >
       <div
-        key={currentKey}
         style={{
-          animation: firstRenderRef.current ? undefined : animIn,
-          willChange: "transform, opacity, filter",
+          animation: incomingAnim,
+          willChange: "transform, opacity",
         }}
       >
-        {currentChildren}
+        {displayedChildren}
       </div>
-      {outgoing && (
+
+      {outgoingChildren && (
         <div
-          key={`out-${outgoing.id}`}
           aria-hidden
           style={{
             position: "absolute",
             inset: 0,
-            animation: animOut,
+            animation: outgoingAnim,
             pointerEvents: "none",
-            willChange: "transform, opacity, filter",
+            willChange: "transform, opacity",
+            opacity: type === "wipeDown" ? 1 : undefined,
           }}
         >
-          {outgoing.children}
+          {outgoingChildren}
         </div>
+      )}
+
+      {/* Wipe-down curtain */}
+      {type === "wipeDown" && phase !== "idle" && (
+        <div
+          aria-hidden
+          style={{
+            position: "absolute",
+            inset: 0,
+            background: "#04060a",
+            zIndex: 10,
+            pointerEvents: "none",
+            animation:
+              phase === "exiting"
+                ? `st-wipeDown-cover ${exitMs}ms ease-in both`
+                : `st-wipeDown-reveal ${enterMs}ms ease-out both`,
+            willChange: "transform",
+          }}
+        />
       )}
     </div>
   );
-}
-
-export function useScreenTransition(totalScreens: number) {
-  const [screenKey, setScreenKey] = useState(0);
-  const [transition, setTransition] = useState<TransitionType>("fade");
-
-  const next = useCallback(() => {
-    setTransition("slideLeft");
-    setScreenKey((k) => (k >= totalScreens - 1 ? k : k + 1));
-  }, [totalScreens]);
-
-  const prev = useCallback(() => {
-    setTransition("slideRight");
-    setScreenKey((k) => (k <= 0 ? k : k - 1));
-  }, []);
-
-  const goTo = useCallback(
-    (n: number) => {
-      setTransition("fade");
-      setScreenKey(() => {
-        if (n < 0) return 0;
-        if (n >= totalScreens) return totalScreens - 1;
-        return n;
-      });
-    },
-    [totalScreens],
-  );
-
-  return { screenKey, transition, next, prev, goTo };
 }

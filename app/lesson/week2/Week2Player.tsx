@@ -26,6 +26,7 @@ import FloatingText from "@/app/components/FloatingText";
 import ScreenShake from "@/app/components/ScreenShake";
 import ButtonJuice from "@/app/components/ButtonJuice";
 import ContentBackdrop from "@/app/components/ContentBackdrop";
+import ScreenTransition, { type TransitionType } from "@/app/components/ScreenTransition";
 import { addXP as addXpProgress, type RankInfo } from "@/app/lib/progression";
 import LessonAmbience from "@/app/components/LessonAmbience";
 import SortingStation from "@/app/components/exercises/SortingStation";
@@ -35,6 +36,14 @@ import BattleArena from "@/app/components/exercises/BattleArena";
 gsap.registerPlugin(SplitText);
 
 const CURRENT_WEEK: number = 2;
+
+/** Pick the ScreenTransition type for a given target step + nav direction. */
+function stepTransitionType(step: number, direction: "forward" | "back"): TransitionType {
+  if (step === 15) return "wipeDown"; // Boss moment
+  const EXERCISE_STEPS = [2, 4, 5, 7, 9, 11, 13];
+  if (EXERCISE_STEPS.includes(step)) return "fadeScale";
+  return direction === "back" ? "slideLeft" : "slideRight";
+}
 const IS_MILESTONE_WEEK = MILESTONES.some((m) => m.week === CURRENT_WEEK);
 
 /* ───────────────────────── CONSTANTS ───────────────────────── */
@@ -1030,13 +1039,30 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
     void milestoneFireworks();
   }, [step]);
 
+  const navDirectionRef = useRef<"forward" | "back">("forward");
   const navigate = useCallback((to: number) => {
     playSFX("transition");
-    setStep(to);
+    setStep((prev) => {
+      navDirectionRef.current = to < prev ? "back" : "forward";
+      return to;
+    });
     if ([2,3,4,5,7,8,9,11,12,13,15].includes(to)) {
       setShowInstr((p) => ({ ...p, [to]: true }));
     }
   }, []);
+
+  // Keyboard navigation — Right Arrow = next, Left Arrow = back (skips while cutscene active).
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      const target = e.target as HTMLElement | null;
+      if (target && (target.tagName === "INPUT" || target.tagName === "TEXTAREA" || target.isContentEditable)) return;
+      if (cutscene) return;
+      if (e.key === "ArrowRight" && step < 17) { e.preventDefault(); navigate(step + 1); }
+      else if (e.key === "ArrowLeft" && step > 0) { e.preventDefault(); navigate(step - 1); }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [step, cutscene, navigate]);
 
   const dismissInstr = useCallback((s: number) => setShowInstr((p) => ({ ...p, [s]: false })), []);
   const triggerSummary = useCallback((s: number) => setShowSummary((p) => ({ ...p, [s]: true })), []);
@@ -2492,17 +2518,16 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
       <ProgressBar step={step} />
       <StepDots step={step} />
       <main style={{ maxWidth: 850, margin: "0 auto", padding: "16px 24px 80px", position: "relative", zIndex: 1 }}>
-        <AnimatePresence mode="wait">
-          <motion.div key={step}
-            initial={{ opacity: 0, x: 60 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -60 }}
-            transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}>
-            <ScreenShake trigger={shakeTrigger}>
-              {renderScreen()}
-            </ScreenShake>
-          </motion.div>
-        </AnimatePresence>
+        <ScreenTransition
+          transitionKey={step}
+          type={stepTransitionType(step, navDirectionRef.current)}
+          duration={500}
+          onTransitionStart={() => playSFX("transition")}
+        >
+          <ScreenShake trigger={shakeTrigger}>
+            {renderScreen()}
+          </ScreenShake>
+        </ScreenTransition>
       </main>
     </div>
   );

@@ -28,6 +28,7 @@ import ParticleBurst from "@/app/components/ParticleBurst";
 import FloatingText from "@/app/components/FloatingText";
 import ScreenShake from "@/app/components/ScreenShake";
 import ContentBackdrop from "@/app/components/ContentBackdrop";
+import ScreenTransition, { type TransitionType } from "@/app/components/ScreenTransition";
 import { addXP, type RankInfo } from "@/app/lib/progression";
 import LessonAmbience from "@/app/components/LessonAmbience";
 import BossBattle from "@/app/components/game/BossBattle";
@@ -36,6 +37,15 @@ import InboxSimulator from "@/app/components/exercises/InboxSimulator";
 import SortingStation from "@/app/components/exercises/SortingStation";
 
 const CURRENT_WEEK: number = 1;
+
+/** Pick the ScreenTransition type for a given target screen + nav direction. */
+function screenTransitionType(screen: number, direction: "forward" | "back"): TransitionType {
+  if (screen === 15) return "wipeDown"; // Boss battle — dramatic
+  // Exercise screens get fade-scale for a slight "lens change" feel.
+  const EXERCISE_SCREENS = [2, 6, 7, 9, 10, 13, 14];
+  if (EXERCISE_SCREENS.includes(screen)) return "fadeScale";
+  return direction === "back" ? "slideLeft" : "slideRight";
+}
 const IS_MILESTONE_WEEK = MILESTONES.some((m) => m.week === CURRENT_WEEK);
 
 gsap.registerPlugin(SplitText, MorphSVGPlugin);
@@ -1623,11 +1633,37 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
         break;
     }
     playSFX("transition");
-    setScreen(to);
+    // Track direction for slide transitions.
+    setScreen((prev) => {
+      navDirectionRef.current = to < prev ? "back" : "forward";
+      return to;
+    });
     if ([2,3,4,5,6,7,8,9,10,11,13,14,15].includes(to)) {
       setShowInstr((prev) => ({ ...prev, [to]: true }));
     }
   }, []);
+
+  // Direction ref for ScreenTransition — set by navigate() before screen change.
+  const navDirectionRef = useRef<"forward" | "back">("forward");
+
+  // Keyboard navigation: Right Arrow = next, Left Arrow = back.
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      // Ignore when typing in an input or when a cutscene is playing.
+      const target = e.target as HTMLElement | null;
+      if (target && (target.tagName === "INPUT" || target.tagName === "TEXTAREA" || target.isContentEditable)) return;
+      if (cutscene) return;
+      if (e.key === "ArrowRight" && screen < 18) {
+        e.preventDefault();
+        navigate(screen + 1);
+      } else if (e.key === "ArrowLeft" && screen > 0) {
+        e.preventDefault();
+        navigate(screen - 1);
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [screen, cutscene, navigate]);
 
   const dismissInstr = useCallback((scr: number) => {
     setShowInstr((prev) => ({ ...prev, [scr]: false }));
@@ -3640,19 +3676,16 @@ null
       <div className="progress-wrap print-hide"><ProgressBar step={screen} /></div>
       <div className="step-dots-wrap print-hide"><StepDots step={screen} /></div>
       <main style={{ maxWidth: 850, margin: "0 auto", padding: "16px 24px 80px", position: "relative", zIndex: 1 }}>
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={screen}
-            initial={{ opacity: 0, x: 60 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -60 }}
-            transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-          >
-            <ScreenShake trigger={shakeTrigger}>
-              {renderScreen()}
-            </ScreenShake>
-          </motion.div>
-        </AnimatePresence>
+        <ScreenTransition
+          transitionKey={screen}
+          type={screenTransitionType(screen, navDirectionRef.current)}
+          duration={500}
+          onTransitionStart={() => playSFX("transition")}
+        >
+          <ScreenShake trigger={shakeTrigger}>
+            {renderScreen()}
+          </ScreenShake>
+        </ScreenTransition>
       </main>
 
       {/* ── DRAG GHOSTS (rendered outside overflow:hidden main) ── */}
