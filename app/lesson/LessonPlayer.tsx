@@ -37,10 +37,47 @@ const LessonArena3D = dynamic(
 import ScreenTransition, { type TransitionType } from "@/app/components/ScreenTransition";
 import { addXP, type RankInfo } from "@/app/lib/progression";
 import LessonAmbience from "@/app/components/LessonAmbience";
-import BossBattle from "@/app/components/game/BossBattle";
+const BossBattle = dynamic(
+  () => import("@/app/components/game/BossBattle"),
+  { ssr: false }
+);
 import VaultLock from "@/app/components/exercises/VaultLock";
 import InboxSimulator from "@/app/components/exercises/InboxSimulator";
 import SortingStation from "@/app/components/exercises/SortingStation";
+import PasswordLab from "@/app/components/exercises/PasswordLab";
+import ConveyorBelt from "@/app/components/exercises/ConveyorBelt";
+import CrackTheCode from "@/app/components/exercises/CrackTheCode";
+import ProtectTheData from "@/app/components/exercises/ProtectTheData";
+import SpamBlaster from "@/app/components/exercises/SpamBlaster";
+import ChooseYourPath from "@/app/components/exercises/ChooseYourPath";
+import CyberScanner from "@/app/components/exercises/CyberScanner";
+import MemoryMatch from "@/app/components/exercises/MemoryMatch";
+import CyberMaze from "@/app/components/exercises/CyberMaze";
+import FirewallBuilder from "@/app/components/exercises/FirewallBuilder";
+
+// Shared data for the new exercise templates.
+const PROTECT_DATA_ITEMS: { text: string; isPrivate: boolean }[] = [
+  { text: "Your home address", isPrivate: true },
+  { text: "Your password", isPrivate: true },
+  { text: "Your phone number", isPrivate: true },
+  { text: "Your school name", isPrivate: true },
+  { text: "Your full name", isPrivate: true },
+  { text: "Your birthday", isPrivate: true },
+  { text: "Your favourite colour", isPrivate: false },
+  { text: "Your favourite food", isPrivate: false },
+  { text: "Your favourite game", isPrivate: false },
+  { text: "Your age (I'm a kid)", isPrivate: false },
+  { text: "Your favourite animal", isPrivate: false },
+  { text: "Your favourite subject", isPrivate: false },
+];
+
+const MAZE_QUESTIONS: { question: string; answers: string[]; correctIndex: number }[] = [
+  { question: "What makes a password STRONG?", answers: ["Mix of letters, numbers, symbols", "Your name and birthday", "The word 'password'", "Just lowercase letters"], correctIndex: 0 },
+  { question: "Where should you KEEP your passwords?", answers: ["In a password manager", "On a sticky note", "In a text to a friend", "The same note for every account"], correctIndex: 0 },
+  { question: "Two-factor authentication adds...", answers: ["A second verification step", "A longer password", "Two usernames", "Double-clicking login"], correctIndex: 0 },
+  { question: "If a site looks suspicious...", answers: ["Close it and tell an adult", "Enter your password anyway", "Click every link to check", "Share it with friends"], correctIndex: 0 },
+  { question: "A strong password has AT LEAST...", answers: ["8 characters with mixed types", "3 letters", "Only numbers", "Just your pet's name"], correctIndex: 0 },
+];
 
 const CURRENT_WEEK: number = 1;
 
@@ -1463,6 +1500,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
   const [bossScore, setBossScore] = useState(0);
   const [raccoonHealth, setRaccoonHealth] = useState(100);
   const [bossDone, setBossDone] = useState(false);
+  const [showBossBattle, setShowBossBattle] = useState(false);
   const [bossAttackPhase, setBossAttackPhase] = useState(false);
   const [arenaHits, setArenaHits] = useState(0);
   const [arenaRaccoonPos, setArenaRaccoonPos] = useState({ left: 50, top: 30 });
@@ -1666,6 +1704,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
       case 15:
         setBossIdx(0); setBossSel(null); setBossFeedback(null);
         setBossScore(0); setRaccoonHealth(100); setBossDone(false);
+        setShowBossBattle(false);
         setBossAttackPhase(false); setArenaHits(0);
         setArenaRaccoonPos({ left: 50, top: 30 }); setArenaProjectiles([]);
         setArenaShowResult(false); setArenaRaccoonAnim("idle"); setArenaTimeLeft(12);
@@ -2283,66 +2322,39 @@ null
           </FullScene>
         );
 
-      /* ──── CASE 3: QUIZ 1 (FLOATING BUBBLES) ──── */
+      /* ──── CASE 3: CYBER SCANNER (strong vs weak passwords) ──── */
       case 3: {
-        if (showInstr[3]) return <InstructionOverlay icon="❓" story="Adam and Layla need to figure out what counts as a password." instructions="Answer the question! Tap what you think is right." onReady={() => dismissInstr(3)} />;
-        if (showSummary[3]) return <LearnSummary message="Passwords are secret codes, not just any word! You can spot what IS a password." starCount={getStars(3)} onNext={() => dismissSummary(3, 4)} />;
-        if (q1Idx >= Q1_QUIZ.length) {
-          const s = q1Score === 3 ? 3 : q1Score >= 2 ? 2 : 1;
-          return (
-            <FullScene bg="linear-gradient(180deg, #0a0a2a 0%, #1a1033 100%)" glow="radial-gradient(circle, rgba(59,130,246,0.25), transparent)">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.5 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ type: "spring", stiffness: 300, damping: 20 }}
-              style={{ textAlign: "center" }}
-            >
-              {card(
-                <>
-                  <h2 data-split style={{ color: "#fff", fontSize: 36, margin: "0 0 12px", textShadow: "0 0 24px rgba(59,130,246,0.5)" }}>Quiz Complete!</h2>
-                  {stars(s)}
-                  <p style={{ color: "#d1d5db", margin: "12px 0" }}>You got {q1Score}/{Q1_QUIZ.length} correct!</p>
-                  <p style={{ color: "#f59e0b", fontSize: 14 }}>🪙 +{q1Score * 10} coins earned!</p>
-                  {btn("Next lesson! →", () => showLearnSummary(3))}
-                </>
-              )}
-            </motion.div>
-            </FullScene>
-          );
-        }
-        const qq = Q1_QUIZ[q1Idx];
+        if (showInstr[3]) return <InstructionOverlay icon="🔍" story="Passwords fly through the Cyber Scanner. Are they strong or weak?" instructions="Tap STRONG or WEAK before each password leaves the scanner!" onReady={() => dismissInstr(3)} />;
+        if (showSummary[3]) return <LearnSummary message="You can spot a strong password in a flash! Mixed characters beat easy guesses." starCount={getStars(3)} onNext={() => dismissSummary(3, 4)} />;
         return (
           <FullScene bg="linear-gradient(180deg, #0a0a2a 0%, #1a1033 100%)" glow="radial-gradient(circle, rgba(59,130,246,0.25), transparent)">
-          <motion.div
-            key={`q1-${q1Idx}`}
-            initial={{ opacity: 0, y: 60 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-          >
-            <h1 data-split style={{ color: "#fff", fontSize: 40, fontWeight: 900, marginBottom: 4, textAlign: "center", textShadow: "0 0 24px rgba(59,130,246,0.5)" }}>Quick Quiz!<img src="/characters/thinking.png" width={40} height={40} alt="" style={{ display: "inline-block", verticalAlign: "middle", marginLeft: 8, borderRadius: 999 }} /></h1>
-            <p style={{ color: "#9ca3af", marginBottom: 12, textAlign: "center" }}>Question {q1Idx + 1}/{Q1_QUIZ.length}</p>
-            <FloatingBubbleQuiz
-              question={qq.q}
-              opts={qq.opts}
-              correct={qq.correct}
-              explain={qq.explain}
-              playSound={playSound}
-              onCorrect={() => {
-                setQ1Score((s) => s + 1);
-                addCoins(10);
-                setTimeout(() => setQ1Idx((i) => i + 1), 0);
-              }}
+            <CyberScanner
+              onComplete={() => showLearnSummary(3)}
+              onCorrect={() => awardXp(25, "lesson-week-1")}
               onWrong={() => addWrong(3)}
             />
-          </motion.div>
           </FullScene>
         );
       }
 
-      /* ──── CASE 4: RACCOON SHIELD SIMULATOR ──── */
+      /* ──── CASE 4: PROTECT THE DATA (was Shield Simulator) ──── */
       case 4: {
-        if (showInstr[4]) return <InstructionOverlay icon="🛡️" story="Oh no, the Raccoon is sneaking towards Adam's tablet!" instructions="Watch out! The Raccoon is sneaking closer. Drag the shield to protect the items!" onReady={() => dismissInstr(4)} />;
-        if (showSummary[4]) return <LearnSummary message="You saw what happens without a password, the Raccoon can walk right in! Passwords keep him OUT." starCount={getStars(4)} onNext={() => dismissSummary(4, 5)} />;
+        if (showInstr[4]) return <InstructionOverlay icon="🛡️" story="Private information is falling from the sky — the Raccoon wants it!" instructions="Move the shield to BLOCK private info. Let safe info pass through." onReady={() => dismissInstr(4)} />;
+        if (showSummary[4]) return <LearnSummary message="You know what to keep private and what is safe to share!" starCount={getStars(4)} onNext={() => dismissSummary(4, 5)} />;
+        return (
+          <FullScene bg="linear-gradient(180deg, #1a0505 0%, #1a1033 100%)" glow="radial-gradient(circle, rgba(239,68,68,0.25), transparent)">
+            <ProtectTheData
+              items={PROTECT_DATA_ITEMS}
+              onComplete={() => showLearnSummary(4)}
+              onCorrect={() => awardXp(25, "lesson-week-1")}
+              onWrong={() => addWrong(4)}
+            />
+          </FullScene>
+        );
+      }
+
+      /* ──── LEGACY CASE 4 (shield simulator) ──── */
+      case -104: {
         if (whyIdx >= WHY_SCENARIOS.length) {
           return (
             <FullScene bg="linear-gradient(180deg, #1a0505 0%, #1a1033 100%)" glow="radial-gradient(circle, rgba(239,68,68,0.25), transparent)">
@@ -2504,10 +2516,24 @@ null
         );
       }
 
-      /* ──── CASE 5: QUIZ 2 (FLOATING BUBBLES) ──── */
+      /* ──── CASE 5: CYBER MAZE ──── */
       case 5: {
-        if (showInstr[5]) return <InstructionOverlay icon="❓" story="Adam and Layla need your help to answer this!" instructions="Answer the question! Tap what you think is right." onReady={() => dismissInstr(5)} />;
-        if (showSummary[5]) return <LearnSummary message="Everyone needs passwords, for games, tablets, and school work!" starCount={getStars(5)} onNext={() => dismissSummary(5, 6)} />;
+        if (showInstr[5]) return <InstructionOverlay icon="🧩" story="Navigate the cyber maze. Every gate has a question!" instructions="Arrow keys / WASD / tap an adjacent cell to move. Answer correctly at each gate." onReady={() => dismissInstr(5)} />;
+        if (showSummary[5]) return <LearnSummary message="You thought your way through every gate. Keep using that critical thinking online!" starCount={getStars(5)} onNext={() => dismissSummary(5, 6)} />;
+        return (
+          <FullScene bg="linear-gradient(180deg, #050a1a 0%, #1a1033 100%)" glow="radial-gradient(circle, rgba(96,165,250,0.2), transparent)">
+            <CyberMaze
+              questions={MAZE_QUESTIONS}
+              onComplete={() => showLearnSummary(5)}
+              onCorrect={() => awardXp(25, "lesson-week-1")}
+              onWrong={() => addWrong(5)}
+            />
+          </FullScene>
+        );
+      }
+
+      /* ──── LEGACY CASE 5 (Q2 bubble quiz) ──── */
+      case -105: {
         if (q2Idx >= Q2_QUIZ.length) {
           const s = q2Score === 3 ? 3 : q2Score >= 2 ? 2 : 1;
           return (
@@ -2560,10 +2586,23 @@ null
         );
       }
 
-      /* ──── CASE 6: PASSWORD RECIPE (POURING) ──── */
-      case 6:
-        if (showInstr[6]) return <InstructionOverlay icon="🧪" story="Help Adam and Layla cook up the strongest password ever!" instructions="Tap each ingredient bottle to pour it into the mixing bowl!" onReady={() => dismissInstr(6)} />;
-        if (showSummary[6]) return <LearnSummary message="You learned HOW to build a super strong password, mix letters, numbers, and special characters!" starCount={getStars(6)} onNext={() => dismissSummary(6, 7)} />;
+      /* ──── CASE 6: PASSWORD LAB (cauldron ingredients) ──── */
+      case 6: {
+        if (showInstr[6]) return <InstructionOverlay icon="🧪" story="Brew the strongest password ever in the Password Lab!" instructions="Drag each ingredient card into the bubbling cauldron!" onReady={() => dismissInstr(6)} />;
+        if (showSummary[6]) return <LearnSummary message="You mixed uppercase, lowercase, numbers, symbols AND length — that's a super-strong recipe!" starCount={getStars(6)} onNext={() => dismissSummary(6, 7)} />;
+        return (
+          <FullScene bg="linear-gradient(180deg, #0a1020 0%, #1a1033 100%)" glow="radial-gradient(circle, rgba(59,130,246,0.15), transparent)">
+            <PasswordLab
+              onComplete={() => showLearnSummary(6)}
+              onCorrect={() => awardXp(25, "lesson-week-1")}
+              onWrong={() => addWrong(6)}
+            />
+          </FullScene>
+        );
+      }
+
+      /* ──── LEGACY CASE 6 (password recipe pouring) ──── */
+      case -106:
         return (
           <FullScene bg="linear-gradient(180deg, #0a1020 0%, #1a1033 100%)" glow="radial-gradient(circle, rgba(59,130,246,0.15), transparent)">
           <div style={{ textAlign: "center" }}>
@@ -2679,10 +2718,23 @@ null
           </FullScene>
         );
 
-      /* ──── CASE 7: PASSWORD BUILDER ──── */
+      /* ──── CASE 7: CRACK THE CODE (was password builder) ──── */
       case 7: {
-        if (showInstr[7]) return <InstructionOverlay icon="🔨" story="Time to build a real password!" instructions="Pick one option from each row to build a super strong password!" onReady={() => dismissInstr(7)} />;
-        if (showSummary[7]) return <LearnSummary message="You built your own password! Remember the recipe: capital letters + lowercase + numbers + symbols." starCount={getStars(7)} onNext={() => dismissSummary(7, 8)} />;
+        if (showInstr[7]) return <InstructionOverlay icon="🔓" story="Spin each dial until every setting is the strongest one. Then UNLOCK!" instructions="Use the ← → arrows on each ring to select the safest option, then press UNLOCK." onReady={() => dismissInstr(7)} />;
+        if (showSummary[7]) return <LearnSummary message="You cracked the code! Long, random passwords in a password manager are the way." starCount={getStars(7)} onNext={() => dismissSummary(7, 8)} />;
+        return (
+          <FullScene bg="linear-gradient(180deg, #1a0a20 0%, #1a1033 100%)" glow="radial-gradient(circle, rgba(168,85,247,0.2), transparent)">
+            <CrackTheCode
+              onComplete={() => showLearnSummary(7)}
+              onCorrect={() => awardXp(25, "lesson-week-1")}
+              onWrong={() => addWrong(7)}
+            />
+          </FullScene>
+        );
+      }
+
+      /* ──── LEGACY CASE 7 (password builder) ──── */
+      case -107: {
         const builtPw = builderSlots.map((s: number, i: number) => s >= 0 ? BUILDER_OPTIONS[i][s] : "").join("");
         const filledCount = builderSlots.filter((s: number) => s >= 0).length;
         return (
@@ -2761,10 +2813,23 @@ null
         );
       }
 
-      /* ──── CASE 8: GOOD VS BAD SWIPE ──── */
+      /* ──── CASE 8: MEMORY MATCH (cybersecurity term pairs) ──── */
       case 8: {
-        if (showInstr[8]) return <InstructionOverlay icon="👆" story="Which passwords can the Raccoon crack easily?" instructions="Swipe right for STRONG passwords, left for WEAK ones. Or use the buttons!" onReady={() => dismissInstr(8)} />;
-        if (showSummary[8]) return <LearnSummary message="You can tell STRONG passwords from WEAK ones. Longer and more mixed = stronger!" starCount={getStars(8)} onNext={() => dismissSummary(8, 9)} />;
+        if (showInstr[8]) return <InstructionOverlay icon="🧠" story="Match each cybersecurity term with its meaning!" instructions="Flip two cards at a time. Remember where things are to build streaks!" onReady={() => dismissInstr(8)} />;
+        if (showSummary[8]) return <LearnSummary message="You matched every term to its meaning — that's real cyber knowledge!" starCount={getStars(8)} onNext={() => dismissSummary(8, 9)} />;
+        return (
+          <FullScene bg="linear-gradient(180deg, #0a0e2a 0%, #1a1033 100%)" glow="radial-gradient(circle, rgba(168,85,247,0.2), transparent)">
+            <MemoryMatch
+              onComplete={() => showLearnSummary(8)}
+              onCorrect={() => awardXp(25, "lesson-week-1")}
+              onWrong={() => addWrong(8)}
+            />
+          </FullScene>
+        );
+      }
+
+      /* ──── LEGACY CASE 8 (good vs bad swipe) ──── */
+      case -108: {
         if (swipeIdx >= SWIPE_DATA.length) {
           const s = swipeScore >= 5 ? 3 : swipeScore >= 3 ? 2 : 1;
           return (
@@ -2808,10 +2873,27 @@ null
         );
       }
 
-      /* ──── CASE 9: DRAG & DROP SORT ──── */
+      /* ──── CASE 9: CONVEYOR BELT (was drag & drop sort) ──── */
       case 9: {
-        if (showInstr[9]) return <InstructionOverlay icon="🔀" story="Can you sort the strong passwords from the weak ones?" instructions="Drag each password card into the correct bucket, Strong or Weak!" onReady={() => dismissInstr(9)} />;
-        if (showSummary[9]) return <LearnSummary message="You sorted them all! Strong passwords have a mix of characters and are hard to guess." starCount={getStars(9)} onNext={() => dismissSummary(9, 10)} />;
+        if (showInstr[9]) return <InstructionOverlay icon="⚙️" story="Passwords roll down the factory belt — sort them before they fall off!" instructions="Set the lever UP for STRONG or DOWN for WEAK before each password reaches the fork." onReady={() => dismissInstr(9)} />;
+        if (showSummary[9]) return <LearnSummary message="You sorted strong from weak at full factory speed — great reflexes!" starCount={getStars(9)} onNext={() => dismissSummary(9, 10)} />;
+        return (
+          <FullScene bg="linear-gradient(180deg, #0a1020 0%, #1a1033 100%)" glow="radial-gradient(circle, rgba(249,115,22,0.2), transparent)">
+            <ConveyorBelt
+              items={SWIPE_DATA.map((d) => ({
+                text: d.pw,
+                category: d.isStrong ? "strong" : "weak",
+              }))}
+              onComplete={() => showLearnSummary(9)}
+              onCorrect={() => awardXp(25, "lesson-week-1")}
+              onWrong={() => addWrong(9)}
+            />
+          </FullScene>
+        );
+      }
+
+      /* ──── LEGACY CASE 9 (drag & drop sort) ──── */
+      case -109: {
         if (dragDone) {
           return (
             <FullScene bg="linear-gradient(180deg, #0a1020 0%, #1a1033 100%)" glow="radial-gradient(circle, rgba(16,185,129,0.2), transparent)">
@@ -2985,10 +3067,23 @@ null
           </FullScene>
         );
 
-      /* ──── CASE 11: QUIZ 3 (FLOATING BUBBLES) ──── */
+      /* ──── CASE 11: FIREWALL BUILDER (was Q3 bubble quiz) ──── */
       case 11: {
-        if (showInstr[11]) return <InstructionOverlay icon="❓" story="Adam and Layla need your help to answer this!" instructions="Answer the question! Tap what you think is right." onReady={() => dismissInstr(11)} />;
-        if (showSummary[11]) return <LearnSummary message="You aced the quiz! You really know your password facts now." starCount={getStars(11)} onNext={() => dismissSummary(11, 12)} />;
+        if (showInstr[11]) return <InstructionOverlay icon="🧱" story="Stack good security habits to build your firewall. Reject the viruses!" instructions="← → moves the block, SPACE rejects a virus. Stack 15 good blocks to win!" onReady={() => dismissInstr(11)} />;
+        if (showSummary[11]) return <LearnSummary message="Your firewall is tall and tough — keep practising good habits every day!" starCount={getStars(11)} onNext={() => dismissSummary(11, 12)} />;
+        return (
+          <FullScene bg="linear-gradient(180deg, #05060f 0%, #1a1033 100%)" glow="radial-gradient(circle, rgba(34,197,94,0.18), transparent)">
+            <FirewallBuilder
+              onComplete={() => showLearnSummary(11)}
+              onCorrect={() => awardXp(25, "lesson-week-1")}
+              onWrong={() => addWrong(11)}
+            />
+          </FullScene>
+        );
+      }
+
+      /* ──── LEGACY CASE 11 (Q3 bubble quiz) ──── */
+      case -111: {
         if (q3Idx >= Q3_QUIZ.length) {
           const s = q3Score >= 4 ? 3 : q3Score >= 3 ? 2 : 1;
           return (
@@ -3103,10 +3198,23 @@ null
         );
       }
 
-      /* ──── CASE 13: PHISHING (TABLET FRAME) ──── */
+      /* ──── CASE 13: SPAM BLASTER (was phishing tablet) ──── */
       case 13: {
-        if (showInstr[13]) return <InstructionOverlay icon="🔍" story="The Raccoon is sending tricks, can you catch them all?" instructions="Look at each message. Is it a SCAM or is it SAFE? Tap to decide!" onReady={() => dismissInstr(13)} />;
-        if (showSummary[13]) return <LearnSummary message="You can now SPOT the Raccoon's tricks! If it looks weird, don't click it. Tell a grown-up!" starCount={getStars(13)} onNext={() => dismissSummary(13, 14)} />;
+        if (showInstr[13]) return <InstructionOverlay icon="📧" story="Phishing emails are flying toward your inbox. Blast the scams!" instructions="Tap an email to zap it. Zap PHISHING emails. Let SAFE emails reach the inbox." onReady={() => dismissInstr(13)} />;
+        if (showSummary[13]) return <LearnSummary message="You spotted every trick! Real friends don't need your password — ever." starCount={getStars(13)} onNext={() => dismissSummary(13, 14)} />;
+        return (
+          <FullScene bg="linear-gradient(180deg, #050a1a 0%, #1a1033 100%)" glow="radial-gradient(circle, rgba(239,68,68,0.2), transparent)">
+            <SpamBlaster
+              onComplete={() => showLearnSummary(13)}
+              onCorrect={() => awardXp(25, "lesson-week-1")}
+              onWrong={() => addWrong(13)}
+            />
+          </FullScene>
+        );
+      }
+
+      /* ──── LEGACY CASE 13 (phishing tablet) ──── */
+      case -113: {
         if (phishIdx >= PHISH.length) {
           const s = phishScore >= 3 ? 3 : phishScore >= 2 ? 2 : 1;
           return (
@@ -3154,10 +3262,23 @@ null
         );
       }
 
-      /* ──── CASE 14: WHAT WOULD YOU DO (COMIC BUBBLES) ──── */
+      /* ──── CASE 14: CHOOSE YOUR PATH ──── */
       case 14: {
-        if (showInstr[14]) return <InstructionOverlay icon="🤔" story="What would YOU do in these real-life situations?" instructions="Read each situation and pick the best choice!" onReady={() => dismissInstr(14)} />;
-        if (showSummary[14]) return <LearnSummary message="You know what to do in tricky real-life situations. Always think before you share!" starCount={getStars(14)} onNext={() => dismissSummary(14, 15)} />;
+        if (showInstr[14]) return <InstructionOverlay icon="🚪" story="A choice leads through one of two doors. Which one keeps you safe?" instructions="Read each scenario and pick the safe door!" onReady={() => dismissInstr(14)} />;
+        if (showSummary[14]) return <LearnSummary message="You chose safely every time — that judgement is your best cyber tool." starCount={getStars(14)} onNext={() => dismissSummary(14, 15)} />;
+        return (
+          <FullScene bg="linear-gradient(180deg, #0a0e2a 0%, #1a1033 100%)" glow="radial-gradient(circle, rgba(168,85,247,0.18), transparent)">
+            <ChooseYourPath
+              onComplete={() => showLearnSummary(14)}
+              onCorrect={() => awardXp(25, "lesson-week-1")}
+              onWrong={() => addWrong(14)}
+            />
+          </FullScene>
+        );
+      }
+
+      /* ──── LEGACY CASE 14 (WYD comic bubbles) ──── */
+      case -114: {
         if (wydIdx >= WYD.length) {
           const s = wydScore >= 3 ? 3 : wydScore >= 2 ? 2 : 1;
           return (
@@ -3295,7 +3416,6 @@ null
                     transition={{ duration: 2, repeat: Infinity }}
                     style={{ fontSize: 32, margin: "0 0 12px", fontWeight: 900, background: "linear-gradient(135deg, #f59e0b, #ef4444, #3b82f6)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
                     You defeated the Hacker Raccoon!</motion.h2>
-null
                   <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.3, type: "spring" }}>
                     {stars(bossScore >= 8 ? 3 : bossScore >= 6 ? 2 : 1)}
                   </motion.div>
@@ -3315,19 +3435,50 @@ null
         }
 
         return (
-          <BossBattle
-            bossName="HACKER RACCOON"
-            questions={BOSS_QUIZ.map((q) => ({
-              question: q.q,
-              answers: q.opts,
-              correctIndex: q.correct,
-            }))}
-            onEnd={(won, stats) => {
-              setBossScore(won ? stats.combo : 0);
-              setBossDone(true);
-              if (won) navigate(16);
-            }}
-          />
+          <FullScene bg="linear-gradient(180deg, #1a0505 0%, #0a0a1a 100%)" glow="radial-gradient(circle, rgba(239,68,68,0.35), transparent)">
+            <div style={{ textAlign: "center" }}>
+              <motion.h1
+                initial={{ opacity: 0, scale: 0.6 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ type: "spring", stiffness: 220, damping: 18 }}
+                style={{
+                  fontSize: 72,
+                  fontWeight: 900,
+                  margin: "0 0 12px",
+                  background: "linear-gradient(135deg, #ef4444, #f97316, #fbbf24)",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                  letterSpacing: 2,
+                  textShadow: "0 0 40px rgba(239,68,68,0.35)",
+                }}
+              >
+                BOSS BATTLE
+              </motion.h1>
+              <motion.p
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.25 }}
+                style={{ color: "#fca5a5", fontSize: 20, fontWeight: 600, marginBottom: 32 }}
+              >
+                Hacker Raccoon is waiting...
+              </motion.p>
+              <motion.div
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.5, type: "spring", stiffness: 300, damping: 20 }}
+              >
+                {btn("START BATTLE →", () => {
+                  playSFX("transition");
+                  setShowBossBattle(true);
+                }, {
+                  fontSize: 22,
+                  padding: "18px 48px",
+                  borderRadius: 18,
+                  boxShadow: "0 0 30px rgba(249,115,22,0.6), 0 0 60px rgba(239,68,68,0.3)",
+                })}
+              </motion.div>
+            </div>
+          </FullScene>
         );
 
       }
@@ -3753,6 +3904,26 @@ null
           </ScreenShake>
         </ScreenTransition>
       </main>
+
+      {/* ── Boss battle full-screen overlay (outside <main> so it fills the viewport) ── */}
+      {showBossBattle && (
+        <div style={{ position: "fixed", inset: 0, zIndex: 80 }}>
+          <BossBattle
+            bossName="HACKER RACCOON"
+            questions={BOSS_QUIZ.map((q) => ({
+              question: q.q,
+              answers: q.opts,
+              correctIndex: q.correct,
+            }))}
+            onEnd={(won, stats) => {
+              setShowBossBattle(false);
+              setBossScore(won ? stats.combo : 0);
+              setBossDone(true);
+              if (won) navigate(16);
+            }}
+          />
+        </div>
+      )}
 
       {/* ── DRAG GHOSTS (rendered outside overflow:hidden main) ── */}
       {shieldDragging && shieldPos && (

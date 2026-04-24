@@ -37,6 +37,73 @@ import LessonAmbience from "@/app/components/LessonAmbience";
 import SortingStation from "@/app/components/exercises/SortingStation";
 import ChatSimulator from "@/app/components/exercises/ChatSimulator";
 import BattleArena from "@/app/components/exercises/BattleArena";
+import ProtectTheData from "@/app/components/exercises/ProtectTheData";
+import MemoryMatch from "@/app/components/exercises/MemoryMatch";
+import ChooseYourPath from "@/app/components/exercises/ChooseYourPath";
+import CyberMaze from "@/app/components/exercises/CyberMaze";
+
+const W2_PRIVATE_INFO_PAIRS = [
+  { term: "Home Address", match: "Private — never share online", colour: "#ef4444" },
+  { term: "Full Name", match: "Private — don't give to strangers", colour: "#f97316" },
+  { term: "Password", match: "Only for YOU and parents", colour: "#a855f7" },
+  { term: "Favourite Colour", match: "Safe to share", colour: "#34d399" },
+  { term: "Age Range", match: '"I\'m a kid" is OK', colour: "#60a5fa" },
+  { term: "School Name", match: "Private — helps strangers find you", colour: "#f472b6" },
+];
+
+const W2_PROTECT_ITEMS: { text: string; isPrivate: boolean }[] = [
+  { text: "Your full name", isPrivate: true },
+  { text: "Your home address", isPrivate: true },
+  { text: "Your school name", isPrivate: true },
+  { text: "Your phone number", isPrivate: true },
+  { text: "Your password", isPrivate: true },
+  { text: "Your birthday", isPrivate: true },
+  { text: "Favourite colour", isPrivate: false },
+  { text: "Favourite game", isPrivate: false },
+  { text: "Favourite animal", isPrivate: false },
+  { text: '"I\'m a kid"', isPrivate: false },
+  { text: "Favourite food", isPrivate: false },
+  { text: "Favourite subject", isPrivate: false },
+];
+
+const W2_MAZE_QUESTIONS = [
+  { question: "Someone asks your full name online. You...", answers: ["Don't share it; tell an adult", "Tell them your full name", "Give a fake name then chat", "Share it if they seem nice"], correctIndex: 0 },
+  { question: "Private information includes:", answers: ["Address, phone, school, password", "Favourite colour", "Favourite food", "Your avatar"], correctIndex: 0 },
+  { question: "A pop-up asks for your birthday for a 'prize'. You...", answers: ["Close the pop-up and tell a parent", "Enter your real birthday", "Enter a fake birthday and claim it", "Share with a friend"], correctIndex: 0 },
+  { question: "The safest way to share your age online is...", answers: ["\"I'm a kid\"", "Your exact birthday", "The year you were born", "Your school grade"], correctIndex: 0 },
+  { question: "A stranger wants to video chat. You...", answers: ["Say no and tell an adult", "Say yes for just a minute", "Turn off the camera and talk", "Let them call you"], correctIndex: 0 },
+];
+
+const W2_PATH_SCENARIOS = [
+  {
+    setup: "Someone on a game chat says: \"What school do you go to? I live near there!\"",
+    choices: [
+      { text: "Tell them the school name", isSafe: false, consequence: "Now the stranger knows where to find you in person. That's unsafe." },
+      { text: "Don't share and leave the chat", isSafe: true, consequence: "Smart move! Never share your school with strangers online." },
+    ],
+  },
+  {
+    setup: "A form on a game site asks for your full address for a \"free\" gift.",
+    choices: [
+      { text: "Fill it in to get the gift", isSafe: false, consequence: "The 'gift' was a scam. Now strangers know where you live." },
+      { text: "Close the form and tell a parent", isSafe: true, consequence: "Perfect! Real gifts never need your home address from a pop-up." },
+    ],
+  },
+  {
+    setup: "A new online friend asks for a photo of you in your school uniform.",
+    choices: [
+      { text: "Send it — they're friendly", isSafe: false, consequence: "The photo shows your school badge. A stranger could find you now." },
+      { text: "Politely say no and tell an adult", isSafe: true, consequence: "Great! Photos can give away way more than you'd expect." },
+    ],
+  },
+  {
+    setup: "Someone messages saying: \"I'm from your school, what's your phone number?\"",
+    choices: [
+      { text: "Share it — they go to your school", isSafe: false, consequence: "They might not really go to your school. Now they can contact you directly." },
+      { text: "Ask them in person at school instead", isSafe: true, consequence: "Smart! If they really go to your school, they can ask in person." },
+    ],
+  },
+];
 
 gsap.registerPlugin(SplitText);
 
@@ -1495,10 +1562,24 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
           </FullScene>
         );
 
-      /* ──── STEP 4: CLASSIFY QUIZ ──── */
+      /* ──── STEP 4: PROTECT THE DATA (was classify quiz) ──── */
       case 4: {
-        if (showInstr[4]) return <InstructionOverlay icon="🏷️" story="You need to classify this information!" instructions="Read each piece of info and stamp it SAFE or PRIVATE." onReady={() => dismissInstr(4)} />;
-        if (showSummary[4]) return <LearnSummary message="You can now CLASSIFY information as safe or private. You're becoming a real Information Agent!" starCount={getStars(4)} onNext={() => dismissSummary(4, 5)} />;
+        if (showInstr[4]) return <InstructionOverlay icon="🛡️" story="Private info is falling — use your shield to BLOCK it!" instructions="Move the shield to catch private info. Let safe-to-share info pass through." onReady={() => dismissInstr(4)} />;
+        if (showSummary[4]) return <LearnSummary message="You can tell private from safe-to-share in an instant!" starCount={getStars(4)} onNext={() => dismissSummary(4, 5)} />;
+        return (
+          <FullScene bg="linear-gradient(180deg, #0a1020 0%, #0a0a1a 100%)" glow="radial-gradient(circle, rgba(239,68,68,0.2), transparent)">
+            <ProtectTheData
+              items={W2_PROTECT_ITEMS}
+              onComplete={() => triggerSummary(4)}
+              onCorrect={() => awardXp(25)}
+              onWrong={() => addWrong(4)}
+            />
+          </FullScene>
+        );
+      }
+
+      /* ──── LEGACY STEP 4 (classify quiz) ──── */
+      case -104: {
         if (classifyIdx >= CLASSIFY_QS.length) {
           return (
             <FullScene bg="linear-gradient(180deg, #0a1020 0%, #0a0a1a 100%)" glow="radial-gradient(circle, rgba(59,130,246,0.2), transparent)">
@@ -2048,10 +2129,24 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
           </ThemedScene>
         );
 
-      /* ──── STEP 11: SPEED SORT ──── */
+      /* ──── STEP 11: MEMORY MATCH (was speed sort) ──── */
       case 11: {
-        if (showInstr[11]) return <InstructionOverlay icon="⚡" story="Information is flying in! Sort it FAST!" instructions="Tap RED for PRIVATE or GREEN for SAFE. It gets faster!" onReady={() => dismissInstr(11)} />;
-        if (showSummary[11]) return <LearnSummary message="You can quickly sort private from safe information!" starCount={getStars(11)} onNext={() => dismissSummary(11, 12)} />;
+        if (showInstr[11]) return <InstructionOverlay icon="🧠" story="Match each piece of info with the rule for keeping it safe!" instructions="Flip two cards at a time. Match the term with its meaning!" onReady={() => dismissInstr(11)} />;
+        if (showSummary[11]) return <LearnSummary message="You matched every rule — you know exactly what to keep private!" starCount={getStars(11)} onNext={() => dismissSummary(11, 12)} />;
+        return (
+          <ThemedScene theme="factory">
+            <MemoryMatch
+              pairs={W2_PRIVATE_INFO_PAIRS}
+              onComplete={() => triggerSummary(11)}
+              onCorrect={() => awardXp(25)}
+              onWrong={() => addWrong(11)}
+            />
+          </ThemedScene>
+        );
+      }
+
+      /* ──── LEGACY STEP 11 (speed sort) ──── */
+      case -111: {
         if (speedDone || speedIdx >= SPEED_SORT_ITEMS.length) {
           const rating = speedScore >= 15 ? "PERFECT AGENT!" : speedScore >= 13 ? "TURBO SORTER!" : speedScore >= 10 ? "QUICK THINKER!" : "KEEP PRACTISING!";
           const bonus = speedScore >= 15 ? 10 : speedScore >= 13 ? 5 : 0;
@@ -2096,10 +2191,24 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
         );
       }
 
-      /* ──── STEP 12: PHONE CALL ──── */
+      /* ──── STEP 12: CHOOSE YOUR PATH (was phone call) ──── */
       case 12: {
-        if (showInstr[12]) return <InstructionOverlay icon="📞" story="Someone is calling! But who are they?" instructions="Listen and choose the safest reply." onReady={() => dismissInstr(12)} />;
-        if (showSummary[12]) return <LearnSummary message="Phone callers might be trying to trick you. Always check with a grown-up!" starCount={getStars(12)} onNext={() => dismissSummary(12, 13)} />;
+        if (showInstr[12]) return <InstructionOverlay icon="🚪" story="Real-life choices about private info. Pick the safest door!" instructions="Read each scenario. Choose the door that keeps your info safe!" onReady={() => dismissInstr(12)} />;
+        if (showSummary[12]) return <LearnSummary message="You made safe choices every time — your private info is protected!" starCount={getStars(12)} onNext={() => dismissSummary(12, 13)} />;
+        return (
+          <ThemedScene theme="callscreen">
+            <ChooseYourPath
+              scenarios={W2_PATH_SCENARIOS}
+              onComplete={() => triggerSummary(12)}
+              onCorrect={() => awardXp(25)}
+              onWrong={() => addWrong(12)}
+            />
+          </ThemedScene>
+        );
+      }
+
+      /* ──── LEGACY STEP 12 (phone call) ──── */
+      case -112: {
         if (phoneRound >= PHONE_ROUNDS.length) {
           return (
             <ThemedScene theme="callscreen">
@@ -2145,10 +2254,24 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
         );
       }
 
-      /* ──── STEP 13: SHIELD BUILDER ──── */
+      /* ──── STEP 13: CYBER MAZE (was shield builder) ──── */
       case 13: {
-        if (showInstr[13]) return <InstructionOverlay icon="🛡️" story="Build a Privacy Shield!" instructions="Answer each question correctly to add a piece to the shield." onReady={() => dismissInstr(13)} />;
-        if (showSummary[13]) return <LearnSummary message="You built a Privacy Shield! Your knowledge is your best protection!" starCount={getStars(13)} onNext={() => dismissSummary(13, 14)} />;
+        if (showInstr[13]) return <InstructionOverlay icon="🧩" story="Navigate the Info Vault corridors. Answer every security gate!" instructions="Arrow keys / WASD / tap to move. Solve each gate to unlock the next passage." onReady={() => dismissInstr(13)} />;
+        if (showSummary[13]) return <LearnSummary message="You found the exit and answered every gate — knowledge is the key!" starCount={getStars(13)} onNext={() => dismissSummary(13, 14)} />;
+        return (
+          <ThemedScene theme="forge">
+            <CyberMaze
+              questions={W2_MAZE_QUESTIONS}
+              onComplete={() => triggerSummary(13)}
+              onCorrect={() => awardXp(25)}
+              onWrong={() => addWrong(13)}
+            />
+          </ThemedScene>
+        );
+      }
+
+      /* ──── LEGACY STEP 13 (shield builder) ──── */
+      case -113: {
         if (shieldIdx >= SHIELD_QS.length) {
           const perfect = shieldPerfect === SHIELD_QS.length;
           return (
