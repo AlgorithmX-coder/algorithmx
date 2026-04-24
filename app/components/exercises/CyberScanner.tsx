@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { playSound } from "@/app/lib/sounds";
 import { correctAnswerBurst } from "@/app/lib/celebrations";
+import ExerciseIntro from "./ExerciseIntro";
 
 export interface CyberScannerPassword {
   text: string;
@@ -90,6 +91,8 @@ export default function CyberScanner({
 
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const rafRef = useRef<number | null>(null);
+  const [showIntro, setShowIntro] = useState(true);
+  const [resetKey, setResetKey] = useState(0);
 
   const state = useRef({
     idx: 0,
@@ -192,8 +195,33 @@ export default function CyberScanner({
     return -CARD_W / 2 + progress * (CANVAS_W + CARD_W);
   };
 
+  const resetExercise = () => {
+    state.current = {
+      idx: 0,
+      card: null,
+      nextStartAt: 0,
+      floaters: [],
+      particles: [],
+      floaterId: 0,
+      particleId: 0,
+      correct: 0,
+      wrong: 0,
+      speedBonuses: 0,
+      streak: 0,
+      bestStreak: 0,
+      explanationText: "",
+      explanationUntil: 0,
+      explanationColour: "#fca5a5",
+      finished: false,
+    };
+    setShowIntro(true);
+    setResetKey((k) => k + 1);
+    setRender((n) => n + 1);
+  };
+
   // Render loop
   useEffect(() => {
+    if (showIntro) return;
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
@@ -492,7 +520,7 @@ export default function CyberScanner({
       ctx.clearRect(0, 0, CANVAS_W, CANVAS_H);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [list]);
+  }, [list, showIntro, resetKey]);
 
   const s = state.current;
   const total = list.length;
@@ -507,6 +535,7 @@ export default function CyberScanner({
         width: "100%",
         maxWidth: 760,
         margin: "0 auto",
+        maxHeight: "calc(100vh - 140px)",
         borderRadius: 24,
         overflow: "hidden",
         background: "linear-gradient(180deg, #05060f 0%, #010106 100%)",
@@ -587,27 +616,54 @@ export default function CyberScanner({
               {"★".repeat(3 - stars)}
             </span>
           </div>
-          <button
-            type="button"
-            onClick={() => {
-              playSound("click");
-              onComplete(s.correct);
-            }}
-            style={{
-              background: "linear-gradient(135deg, #f97316, #f59e0b)",
-              color: "#fff",
-              fontWeight: 800,
-              borderRadius: 14,
-              padding: "14px 36px",
-              fontSize: 17,
-              border: "none",
-              cursor: "pointer",
-              boxShadow: "0 0 18px rgba(249,115,22,0.5)",
-            }}
-          >
-            Continue &rarr;
-          </button>
+          <div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
+            <button
+              type="button"
+              onClick={() => {
+                playSound("click");
+                onComplete(s.correct);
+              }}
+              style={{
+                background: "linear-gradient(135deg, #f97316, #f59e0b)",
+                color: "#fff",
+                fontWeight: 800,
+                borderRadius: 14,
+                padding: "14px 36px",
+                fontSize: 17,
+                border: "none",
+                cursor: "pointer",
+                boxShadow: "0 0 18px rgba(249,115,22,0.5)",
+              }}
+            >
+              Continue &rarr;
+            </button>
+            <button
+              type="button"
+              onClick={() => { playSound("select"); resetExercise(); }}
+              style={{
+                background: "transparent",
+                color: "#93c5fd",
+                fontWeight: 700,
+                borderRadius: 14,
+                padding: "12px 24px",
+                fontSize: 14,
+                border: "2px solid rgba(96,165,250,0.55)",
+                cursor: "pointer",
+              }}
+            >
+              🔄 Try Again
+            </button>
+          </div>
         </div>
+      )}
+      {showIntro && (
+        <ExerciseIntro
+          title="Cyber Scanner"
+          description="Passwords will float across the screen. Tap STRONG or WEAK before they escape!"
+          icon="🔍"
+          controls="Tap the buttons below"
+          onStart={() => setShowIntro(false)}
+        />
       )}
       <span style={{ display: "none" }}>{render}</span>
     </div>

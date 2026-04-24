@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { playSound } from "@/app/lib/sounds";
+import ExerciseIntro from "./ExerciseIntro";
 
 export type ConveyorCategory = "strong" | "weak";
 
@@ -104,6 +105,7 @@ export default function ConveyorBelt({
 }: ConveyorBeltProps) {
   useEffect(ensureStyles, []);
 
+  const [showIntro, setShowIntro] = useState(true);
   const [card, setCard] = useState<Card | null>(null);
   const [lever, setLever] = useState<LeverPos>("neutral");
   const [leverFlash, setLeverFlash] = useState<"up" | "down" | null>(null);
@@ -118,12 +120,30 @@ export default function ConveyorBelt({
   const [showResult, setShowResult] = useState(false);
   const [missedBanner, setMissedBanner] = useState(false);
 
+  const resetExercise = () => {
+    setCard(null);
+    setLever("neutral");
+    setLeverFlash(null);
+    setSortedIdx(0);
+    setCorrectCount(0);
+    setStreak(0);
+    setBestStreak(0);
+    setSavedCount(0);
+    setShreddedCount(0);
+    setBeltFlash(null);
+    setSparkKey(0);
+    setShowResult(false);
+    setMissedBanner(false);
+    setShowIntro(true);
+  };
+
   const rafRef = useRef<number | null>(null);
   const nextSpawnRef = useRef<number>(0);
   const resolvingRef = useRef(false);
 
   // spawn next card
   useEffect(() => {
+    if (showIntro) return;
     if (card || showResult) return;
     if (sortedIdx >= items.length) {
       setShowResult(true);
@@ -150,7 +170,7 @@ export default function ConveyorBelt({
     }, delay);
     nextSpawnRef.current = t;
     return () => window.clearTimeout(t);
-  }, [card, sortedIdx, items, showResult]);
+  }, [card, sortedIdx, items, showResult, showIntro]);
 
   const resolveCard = useCallback(
     (c: Card, outcome: "strongOK" | "strongBad" | "weakOK" | "weakBad" | "miss") => {
@@ -277,6 +297,7 @@ export default function ConveyorBelt({
         maxWidth: 760,
         margin: "0 auto",
         height: 500,
+        maxHeight: "calc(100vh - 140px)",
         borderRadius: 24,
         overflow: "hidden",
         background:
@@ -813,27 +834,55 @@ export default function ConveyorBelt({
               {"★".repeat(3 - stars)}
             </span>
           </div>
-          <button
-            type="button"
-            onClick={() => {
-              playSound("click");
-              onComplete(correctCount);
-            }}
-            style={{
-              background: "linear-gradient(135deg, #f97316, #f59e0b)",
-              color: "#fff",
-              fontWeight: 800,
-              borderRadius: 14,
-              padding: "14px 36px",
-              fontSize: 17,
-              border: "none",
-              cursor: "pointer",
-              boxShadow: "0 0 18px rgba(249,115,22,0.5)",
-            }}
-          >
-            Continue &rarr;
-          </button>
+          <div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
+            <button
+              type="button"
+              onClick={() => {
+                playSound("click");
+                onComplete(correctCount);
+              }}
+              style={{
+                background: "linear-gradient(135deg, #f97316, #f59e0b)",
+                color: "#fff",
+                fontWeight: 800,
+                borderRadius: 14,
+                padding: "14px 36px",
+                fontSize: 17,
+                border: "none",
+                cursor: "pointer",
+                boxShadow: "0 0 18px rgba(249,115,22,0.5)",
+              }}
+            >
+              Continue &rarr;
+            </button>
+            <button
+              type="button"
+              onClick={() => { playSound("select"); resetExercise(); }}
+              style={{
+                background: "transparent",
+                color: "#93c5fd",
+                fontWeight: 700,
+                borderRadius: 14,
+                padding: "12px 24px",
+                fontSize: 14,
+                border: "2px solid rgba(96,165,250,0.55)",
+                cursor: "pointer",
+              }}
+            >
+              🔄 Try Again
+            </button>
+          </div>
         </div>
+      )}
+
+      {showIntro && (
+        <ExerciseIntro
+          title="Conveyor Belt Factory"
+          description="Passwords are moving along the belt! Pull the lever to sort them into STRONG or WEAK before they fall off!"
+          icon="⚙️"
+          controls="Click the lever up or down"
+          onStart={() => setShowIntro(false)}
+        />
       )}
     </div>
   );

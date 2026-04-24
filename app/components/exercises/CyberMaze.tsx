@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { playSound } from "@/app/lib/sounds";
 import { correctAnswerBurst } from "@/app/lib/celebrations";
+import ExerciseIntro from "./ExerciseIntro";
 
 export interface MazeQuestion {
   question: string;
@@ -17,22 +18,15 @@ export interface CyberMazeProps {
   onWrong?: () => void;
 }
 
-// Grid: col range [0..8], row range [0..6]. 1 = wall, 0 = open.
-// Row 0: S . # . . . # . .
-// Row 1: # . # . # . # . #
-// Row 2: . . . . # . . . .
-// Row 3: . # # . . # # . #
-// Row 4: . . . # . . . . .
-// Row 5: # . # . # . # # .
-// Row 6: . . . . . # . . E
-const RAW_MAZE = [
-  "S.#...#..",
-  "#.#.#.#.#",
-  "....#....",
-  ".##..##.#",
-  "...#.....",
-  "#.#.#.##.",
-  ".....#..E",
+// 7 rows × 9 cols. 0 = open, 1 = wall. Start (0,0), Exit (6,8).
+const RAW_MAZE_GRID: number[][] = [
+  [0, 0, 1, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 1, 0, 1, 0, 0],
+  [1, 0, 1, 0, 0, 0, 1, 0, 1],
+  [0, 0, 1, 0, 1, 0, 0, 0, 0],
+  [0, 1, 0, 0, 0, 1, 1, 0, 1],
+  [0, 0, 0, 1, 0, 0, 0, 0, 0],
+  [1, 0, 1, 0, 1, 0, 1, 0, 0],
 ];
 
 const COLS = 9;
@@ -41,24 +35,133 @@ const CELL = 54;
 const BOARD_W = COLS * CELL;
 const BOARD_H = ROWS * CELL;
 
-// Gates at (row,col) along the solution path.
-const GATES: Array<{ row: number; col: number }> = [
-  { row: 2, col: 2 },
-  { row: 4, col: 2 },
-  { row: 4, col: 4 },
-  { row: 6, col: 4 },
-  { row: 6, col: 6 },
-];
+// BFS from (0,0) through all 0-cells. Returns the distance map; Infinity if unreachable.
+function bfs(grid: number[][]): number[][] {
+  const dist: number[][] = Array.from({ length: ROWS }, () =>
+    Array(COLS).fill(Infinity)
+  );
+  if (grid[0][0] === 1) return dist;
+  const q: Array<[number, number]> = [[0, 0]];
+  dist[0][0] = 0;
+  while (q.length) {
+    const [r, c] = q.shift()!;
+    const d = dist[r][c];
+    const neigh: Array<[number, number]> = [
+      [r - 1, c],
+      [r + 1, c],
+      [r, c - 1],
+      [r, c + 1],
+    ];
+    for (const [nr, nc] of neigh) {
+      if (nr < 0 || nr >= ROWS || nc < 0 || nc >= COLS) continue;
+      if (grid[nr][nc] !== 0) continue;
+      if (dist[nr][nc] !== Infinity) continue;
+      dist[nr][nc] = d + 1;
+      q.push([nr, nc]);
+    }
+  }
+  return dist;
+}
 
-// Token positions — open cells off the critical path.
-const TOKENS: Array<{ row: number; col: number }> = [
-  { row: 0, col: 3 },
-  { row: 2, col: 5 },
-  { row: 2, col: 7 },
-  { row: 4, col: 5 },
-  { row: 6, col: 1 },
-  { row: 0, col: 7 },
-];
+// Guarantee start → exit is reachable. If not, knock walls along the bottom
+// row open until a path exists. Returns a sanitised grid + the BFS distances.
+function validateMaze(src: number[][]): { grid: number[][]; dist: number[][] } {
+  const grid = src.map((row) => row.slice());
+  let dist = bfs(grid);
+  if (dist[ROWS - 1][COLS - 1] === Infinity) {
+    // eslint-disable-next-line no-console
+    console.warn(
+      "[CyberMaze] exit unreachable with initial layout — opening path on bottom row"
+    );
+    // Open up the bottom row + the right column so exit is always reachable.
+    for (let c = 0; c < COLS; c++) grid[ROWS - 1][c] = 0;
+    for (let r = 0; r < ROWS; r++) grid[r][COLS - 1] = 0;
+    dist = bfs(grid);
+  }
+  return { grid, dist };
+}
+
+const VALIDATED = validateMaze(RAW_MAZE_GRID);
+
+// Pick gate cells along the verified shortest path so every gate is solvable.
+// Walk back from the exit using BFS distances to reconstruct a path.
+function pathFromExit(grid: number[][], dist: number[][]): Array<{ row: number; col: number }> {
+  const path: Array<{ row: number; col: number }> = [];
+  let r = ROWS - 1;
+  let c = COLS - 1;
+  if (dist[r][c] === Infinity) return path;
+  while (!(r === 0 && c === 0)) {
+    path.push({ row: r, col: c });
+    const d = dist[r][c];
+    const neigh: Array<[number, number]> = [
+      [r - 1, c],
+      [r + 1, c],
+      [r, c - 1],
+      [r, c + 1],
+    ];
+    let moved = false;
+    for (const [nr, nc] of neigh) {
+      if (nr < 0 || nr >= ROWS || nc < 0 || nc >= COLS) continue;
+      if (grid[nr][nc] !== 0) continue;
+      if (dist[nr][nc] === d - 1) {
+        r = nr;
+        c = nc;
+        moved = true;
+        break;
+      }
+    }
+    if (!moved) break;
+  }
+  path.push({ row: 0, col: 0 });
+  return path.reverse();
+}
+
+const SOLUTION_PATH = pathFromExit(VALIDATED.grid, VALIDATED.dist);
+
+// Pick 5 gate positions evenly along the solution (skip the start and exit).
+const GATES: Array<{ row: number; col: number }> = (() => {
+  const interior = SOLUTION_PATH.filter(
+    (p) => !(p.row === 0 && p.col === 0) && !(p.row === ROWS - 1 && p.col === COLS - 1)
+  );
+  if (interior.length === 0) return [];
+  const picks: Array<{ row: number; col: number }> = [];
+  const gateCount = Math.min(5, interior.length);
+  for (let i = 0; i < gateCount; i++) {
+    const idx = Math.floor(((i + 1) * interior.length) / (gateCount + 1));
+    picks.push(interior[Math.min(idx, interior.length - 1)]);
+  }
+  // Deduplicate
+  const seen = new Set<string>();
+  return picks.filter((p) => {
+    const k = `${p.row},${p.col}`;
+    if (seen.has(k)) return false;
+    seen.add(k);
+    return true;
+  });
+})();
+
+// Token positions — open cells that are NOT gates and NOT start/exit.
+const TOKENS: Array<{ row: number; col: number }> = (() => {
+  const gateSet = new Set(GATES.map((g) => `${g.row},${g.col}`));
+  const candidates: Array<{ row: number; col: number }> = [];
+  for (let r = 0; r < ROWS; r++) {
+    for (let c = 0; c < COLS; c++) {
+      if (VALIDATED.grid[r][c] !== 0) continue;
+      if (r === 0 && c === 0) continue;
+      if (r === ROWS - 1 && c === COLS - 1) continue;
+      if (gateSet.has(`${r},${c}`)) continue;
+      if (VALIDATED.dist[r][c] === Infinity) continue;
+      candidates.push({ row: r, col: c });
+    }
+  }
+  // Pick up to 6 spread across the map.
+  const picks: Array<{ row: number; col: number }> = [];
+  const stride = Math.max(1, Math.floor(candidates.length / 6));
+  for (let i = 0; i < candidates.length && picks.length < 6; i += stride) {
+    picks.push(candidates[i]);
+  }
+  return picks;
+})();
 
 const DEFAULT_QUESTIONS: MazeQuestion[] = [
   {
@@ -139,15 +242,7 @@ export default function CyberMaze({
   );
 
   const walls = useMemo(() => {
-    const w: boolean[][] = [];
-    for (let r = 0; r < ROWS; r++) {
-      const row: boolean[] = [];
-      for (let c = 0; c < COLS; c++) {
-        row.push(RAW_MAZE[r][c] === "#");
-      }
-      w.push(row);
-    }
-    return w;
+    return VALIDATED.grid.map((row) => row.map((v) => v === 1));
   }, []);
 
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -196,6 +291,42 @@ export default function CyberMaze({
   const [activeQuestion, setActiveQuestion] = useState<number | null>(null);
   const [render, setRender] = useState(0);
   const [finished, setFinished] = useState(false);
+  const [showIntro, setShowIntro] = useState(true);
+
+  const resetExercise = () => {
+    state.current = {
+      cellCol: 0,
+      cellRow: 0,
+      fromX: 0,
+      fromY: 0,
+      toX: CELL / 2,
+      toY: CELL / 2,
+      tweenStart: 0,
+      tweenDuration: 150,
+      x: CELL / 2,
+      y: CELL / 2,
+      gates: GATES.map((g, i) => ({
+        ...g,
+        qIdx: i % qList.length,
+        open: false,
+        flashUntil: 0,
+      })),
+      tokens: TOKENS.map((t) => ({ ...t, collected: false })),
+      tokensCollected: 0,
+      questionsAnswered: 0,
+      wrongCount: 0,
+      activeGateIdx: null,
+      complete: false,
+      particles: [],
+      particleId: 0,
+      trail: [],
+    };
+    startTimeRef.current = performance.now();
+    setActiveQuestion(null);
+    setFinished(false);
+    setShowIntro(true);
+    setRender((n) => n + 1);
+  };
 
   useEffect(() => {
     startTimeRef.current = performance.now();
@@ -205,6 +336,7 @@ export default function CyberMaze({
 
   const tryMove = (dr: number, dc: number) => {
     const s = state.current;
+    if (showIntro) return;
     if (s.complete || activeQuestion !== null) return;
     if (performance.now() < s.tweenStart + s.tweenDuration) return;
     const newRow = s.cellRow + dr;
@@ -613,6 +745,7 @@ export default function CyberMaze({
         width: "100%",
         maxWidth: 640,
         margin: "0 auto",
+        maxHeight: "calc(100vh - 140px)",
         borderRadius: 24,
         overflow: "hidden",
         background: "linear-gradient(180deg, #05060f 0%, #010106 100%)",
@@ -803,27 +936,54 @@ export default function CyberMaze({
               {"★".repeat(3 - stars)}
             </span>
           </div>
-          <button
-            type="button"
-            onClick={() => {
-              playSound("click");
-              onComplete(s.questionsAnswered);
-            }}
-            style={{
-              background: "linear-gradient(135deg, #f97316, #f59e0b)",
-              color: "#fff",
-              fontWeight: 800,
-              borderRadius: 14,
-              padding: "14px 36px",
-              fontSize: 17,
-              border: "none",
-              cursor: "pointer",
-              boxShadow: "0 0 18px rgba(249,115,22,0.5)",
-            }}
-          >
-            Continue &rarr;
-          </button>
+          <div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
+            <button
+              type="button"
+              onClick={() => {
+                playSound("click");
+                onComplete(s.questionsAnswered);
+              }}
+              style={{
+                background: "linear-gradient(135deg, #f97316, #f59e0b)",
+                color: "#fff",
+                fontWeight: 800,
+                borderRadius: 14,
+                padding: "14px 36px",
+                fontSize: 17,
+                border: "none",
+                cursor: "pointer",
+                boxShadow: "0 0 18px rgba(249,115,22,0.5)",
+              }}
+            >
+              Continue &rarr;
+            </button>
+            <button
+              type="button"
+              onClick={() => { playSound("select"); resetExercise(); }}
+              style={{
+                background: "transparent",
+                color: "#93c5fd",
+                fontWeight: 700,
+                borderRadius: 14,
+                padding: "12px 24px",
+                fontSize: 14,
+                border: "2px solid rgba(96,165,250,0.55)",
+                cursor: "pointer",
+              }}
+            >
+              🔄 Try Again
+            </button>
+          </div>
         </div>
+      )}
+      {showIntro && (
+        <ExerciseIntro
+          title="Cyber Maze"
+          description="Navigate through the maze and answer questions at each gate to unlock the path! Collect shield tokens along the way!"
+          icon="🧩"
+          controls="Arrow keys / WASD to move"
+          onStart={() => setShowIntro(false)}
+        />
       )}
       <span style={{ display: "none" }}>{render}</span>
     </div>

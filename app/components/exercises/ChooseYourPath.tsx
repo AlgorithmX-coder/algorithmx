@@ -6,6 +6,7 @@ import {
   correctAnswerBurst,
   wrongAnswerShake,
 } from "@/app/lib/celebrations";
+import ExerciseIntro from "./ExerciseIntro";
 
 export interface ChoiceOption {
   text: string;
@@ -169,6 +170,7 @@ export default function ChooseYourPath({
 
   const list = useMemo(() => scenarios ?? DEFAULT_SCENARIOS, [scenarios]);
 
+  const [showIntro, setShowIntro] = useState(true);
   const [idx, setIdx] = useState(0);
   const [phase, setPhase] = useState<Phase>("setup");
   const [typed, setTyped] = useState(0);
@@ -176,6 +178,17 @@ export default function ChooseYourPath({
   const [correctCount, setCorrectCount] = useState(0);
   const [particles, setParticles] = useState<Particle[]>([]);
   const [finished, setFinished] = useState(false);
+
+  const resetExercise = () => {
+    setIdx(0);
+    setPhase("setup");
+    setTyped(0);
+    setPicked(null);
+    setCorrectCount(0);
+    setParticles([]);
+    setFinished(false);
+    setShowIntro(true);
+  };
   const particleIdRef = useRef(0);
   const typeTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
@@ -183,6 +196,7 @@ export default function ChooseYourPath({
 
   // Type out setup text
   useEffect(() => {
+    if (showIntro) return;
     if (!scenario) return;
     setPhase("setup");
     setTyped(0);
@@ -204,7 +218,7 @@ export default function ChooseYourPath({
     return () => {
       if (typeTimerRef.current) clearInterval(typeTimerRef.current);
     };
-  }, [idx, scenario]);
+  }, [idx, scenario, showIntro]);
 
   const pickDoor = (choiceIdx: number) => {
     if (!scenario || phase !== "choice") return;
@@ -267,6 +281,7 @@ export default function ChooseYourPath({
           position: "relative",
           width: "100%",
           minHeight: 500,
+          maxHeight: "calc(100vh - 140px)",
           borderRadius: 24,
           overflow: "hidden",
           background:
@@ -303,26 +318,44 @@ export default function ChooseYourPath({
             {"★".repeat(3 - stars)}
           </span>
         </div>
-        <button
-          type="button"
-          onClick={() => {
-            playSound("click");
-            onComplete(correctCount);
-          }}
-          style={{
-            background: "linear-gradient(135deg, #f97316, #f59e0b)",
-            color: "#fff",
-            fontWeight: 800,
-            borderRadius: 14,
-            padding: "14px 36px",
-            fontSize: 17,
-            border: "none",
-            cursor: "pointer",
-            boxShadow: "0 0 18px rgba(249,115,22,0.5)",
-          }}
-        >
-          Continue &rarr;
-        </button>
+        <div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
+          <button
+            type="button"
+            onClick={() => {
+              playSound("click");
+              onComplete(correctCount);
+            }}
+            style={{
+              background: "linear-gradient(135deg, #f97316, #f59e0b)",
+              color: "#fff",
+              fontWeight: 800,
+              borderRadius: 14,
+              padding: "14px 36px",
+              fontSize: 17,
+              border: "none",
+              cursor: "pointer",
+              boxShadow: "0 0 18px rgba(249,115,22,0.5)",
+            }}
+          >
+            Continue &rarr;
+          </button>
+          <button
+            type="button"
+            onClick={() => { playSound("select"); resetExercise(); }}
+            style={{
+              background: "transparent",
+              color: "#93c5fd",
+              fontWeight: 700,
+              borderRadius: 14,
+              padding: "12px 24px",
+              fontSize: 14,
+              border: "2px solid rgba(96,165,250,0.55)",
+              cursor: "pointer",
+            }}
+          >
+            🔄 Try Again
+          </button>
+        </div>
       </div>
     );
   }
@@ -338,6 +371,7 @@ export default function ChooseYourPath({
         position: "relative",
         width: "100%",
         minHeight: 520,
+        maxHeight: "calc(100vh - 140px)",
         borderRadius: 24,
         overflow: "hidden",
         background:
@@ -665,6 +699,16 @@ export default function ChooseYourPath({
             </button>
           </div>
         </div>
+      )}
+
+      {showIntro && (
+        <ExerciseIntro
+          title="Choose Your Path"
+          description="You'll face real online situations. Pick a door to see what happens — choose wisely!"
+          icon="🚪"
+          controls="Click a door to choose"
+          onStart={() => setShowIntro(false)}
+        />
       )}
     </div>
   );

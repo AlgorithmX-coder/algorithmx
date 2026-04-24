@@ -6,6 +6,7 @@ import {
   badgeEarnedCelebration,
   correctAnswerBurst,
 } from "@/app/lib/celebrations";
+import ExerciseIntro from "./ExerciseIntro";
 
 export interface MemoryPair {
   term: string;
@@ -126,8 +127,11 @@ export default function MemoryMatch({
     return shuffled.map((c, idx) => ({ ...c, waveDelay: idx * 0.05 }));
   });
 
+  const [showIntro, setShowIntro] = useState(true);
   const [flippedIdxs, setFlippedIdxs] = useState<number[]>([]);
-  const [pairsFound, setPairsFound] = useState(0);
+  // matchedPairIds is the authoritative completion source — an array of
+  // successfully-matched pair IDs, not a counter that could double-increment.
+  const [matchedPairIds, setMatchedPairIds] = useState<number[]>([]);
   const [flipCount, setFlipCount] = useState(0);
   const [elapsedMs, setElapsedMs] = useState(0);
   const [streak, setStreak] = useState(0);
@@ -141,6 +145,49 @@ export default function MemoryMatch({
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const burstIdRef = useRef(0);
   const lockRef = useRef(false);
+  const completedRef = useRef(false);
+  const pairsFound = matchedPairIds.length;
+
+  const resetExercise = () => {
+    const raw: Card[] = [];
+    pairList.forEach((p, i) => {
+      raw.push({
+        id: `p${i}-term`,
+        pairId: i,
+        text: p.term,
+        colour: p.colour,
+        flipped: false,
+        matched: false,
+        waveDelay: 0,
+      });
+      raw.push({
+        id: `p${i}-match`,
+        pairId: i,
+        text: p.match,
+        colour: p.colour,
+        flipped: false,
+        matched: false,
+        waveDelay: 0,
+      });
+    });
+    const s = shuffle(raw);
+    setCards(s.map((c, idx) => ({ ...c, waveDelay: idx * 0.05 })));
+    setFlippedIdxs([]);
+    setMatchedPairIds([]);
+    setFlipCount(0);
+    setElapsedMs(0);
+    setStreak(0);
+    setBestStreak(0);
+    setBursts([]);
+    setShakeIdxs([]);
+    setPopIdxs([]);
+    setWaveOn(false);
+    setFinished(false);
+    lockRef.current = false;
+    completedRef.current = false;
+    startTimeRef.current = performance.now();
+    setShowIntro(true);
+  };
 
   // Timer
   useEffect(() => {
@@ -163,6 +210,7 @@ export default function MemoryMatch({
 
   const flip = (idx: number) => {
     if (lockRef.current) return;
+    if (showIntro) return;
     const c = cards[idx];
     if (!c || c.flipped || c.matched || finished) return;
     playSound("pop");
@@ -222,9 +270,12 @@ export default function MemoryMatch({
         });
         setPopIdxs([aIdx, bIdx]);
         window.setTimeout(() => setPopIdxs([]), 450);
-        setPairsFound((n) => {
-          const nn = n + 1;
-          if (nn >= pairList.length) triggerFinish();
+        setMatchedPairIds((prev) => {
+          if (prev.includes(a.pairId)) return prev;
+          const nn = [...prev, a.pairId];
+          if (nn.length >= pairList.length && !completedRef.current) {
+            triggerFinish();
+          }
           return nn;
         });
         setStreak((s) => {
@@ -256,14 +307,20 @@ export default function MemoryMatch({
   };
 
   const triggerFinish = () => {
-    setWaveOn(true);
-    playSound("confetti");
-    void correctAnswerBurst();
-    void badgeEarnedCelebration();
+    if (completedRef.current) return;
+    completedRef.current = true;
+    // Wait for the match pop animation (~500ms) before the wave celebration
+    // so the final pair's green-glow finishes before the results overlay.
     window.setTimeout(() => {
-      setWaveOn(false);
-      setFinished(true);
-    }, 1600);
+      setWaveOn(true);
+      playSound("confetti");
+      void correctAnswerBurst();
+      void badgeEarnedCelebration();
+      window.setTimeout(() => {
+        setWaveOn(false);
+        setFinished(true);
+      }, 1600);
+    }, 500);
   };
 
   const totalPairs = pairList.length;
@@ -285,6 +342,7 @@ export default function MemoryMatch({
         width: "100%",
         maxWidth: 720,
         margin: "0 auto",
+        maxHeight: "calc(100vh - 140px)",
         padding: "20px 18px 28px",
         borderRadius: 24,
         background:
@@ -515,27 +573,55 @@ export default function MemoryMatch({
               {"★".repeat(3 - stars)}
             </span>
           </div>
-          <button
-            type="button"
-            onClick={() => {
-              playSound("click");
-              onComplete(stars);
-            }}
-            style={{
-              background: "linear-gradient(135deg, #f97316, #f59e0b)",
-              color: "#fff",
-              fontWeight: 800,
-              borderRadius: 14,
-              padding: "14px 36px",
-              fontSize: 17,
-              border: "none",
-              cursor: "pointer",
-              boxShadow: "0 0 18px rgba(249,115,22,0.5)",
-            }}
-          >
-            Continue &rarr;
-          </button>
+          <div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
+            <button
+              type="button"
+              onClick={() => {
+                playSound("click");
+                onComplete(stars);
+              }}
+              style={{
+                background: "linear-gradient(135deg, #f97316, #f59e0b)",
+                color: "#fff",
+                fontWeight: 800,
+                borderRadius: 14,
+                padding: "14px 36px",
+                fontSize: 17,
+                border: "none",
+                cursor: "pointer",
+                boxShadow: "0 0 18px rgba(249,115,22,0.5)",
+              }}
+            >
+              Continue &rarr;
+            </button>
+            <button
+              type="button"
+              onClick={() => { playSound("select"); resetExercise(); }}
+              style={{
+                background: "transparent",
+                color: "#93c5fd",
+                fontWeight: 700,
+                borderRadius: 14,
+                padding: "12px 24px",
+                fontSize: 14,
+                border: "2px solid rgba(96,165,250,0.55)",
+                cursor: "pointer",
+              }}
+            >
+              🔄 Try Again
+            </button>
+          </div>
         </div>
+      )}
+
+      {showIntro && (
+        <ExerciseIntro
+          title="Memory Match"
+          description="Flip the cards and match the cybersecurity pairs! Try to remember where each card is!"
+          icon="🧠"
+          controls="Click cards to flip them"
+          onStart={() => setShowIntro(false)}
+        />
       )}
     </div>
   );

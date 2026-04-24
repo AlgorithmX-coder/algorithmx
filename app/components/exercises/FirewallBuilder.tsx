@@ -6,6 +6,7 @@ import {
   badgeEarnedCelebration,
   correctAnswerBurst,
 } from "@/app/lib/celebrations";
+import ExerciseIntro from "./ExerciseIntro";
 
 export interface FirewallBuilderProps {
   onComplete: (score: number) => void;
@@ -13,17 +14,17 @@ export interface FirewallBuilderProps {
   onWrong?: () => void;
 }
 
-// Play area dimensions
-const CANVAS_W = 520;
-const CANVAS_H = 550;
-const PLAY_W = 300;
-const PLAY_H = 450;
+// Play area dimensions — bigger blocks so the full text reads.
+const CANVAS_W = 640;
+const CANVAS_H = 620;
+const PLAY_W = 400;
+const PLAY_H = 480;
 const PLAY_X = (CANVAS_W - PLAY_W) / 2;
-const PLAY_Y = 50;
+const PLAY_Y = 90;
 const COLS = 5;
-const COL_W = PLAY_W / COLS; // 60
-const BLOCK_H = 30;
-const ROWS = Math.floor(PLAY_H / BLOCK_H); // 15
+const COL_W = PLAY_W / COLS; // 80
+const BLOCK_H = 40;
+const ROWS = Math.floor(PLAY_H / BLOCK_H); // 12
 
 interface BlockDef {
   text: string;
@@ -95,6 +96,8 @@ export default function FirewallBuilder({
 }: FirewallBuilderProps) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const rafRef = useRef<number | null>(null);
+  const [showIntro, setShowIntro] = useState(true);
+  const [resetKey, setResetKey] = useState(0);
 
   const state = useRef({
     falling: null as Falling | null,
@@ -296,8 +299,36 @@ export default function FirewallBuilder({
     else if (y > CANVAS_H - 80) reject();
   };
 
+  const resetExercise = () => {
+    state.current = {
+      falling: null,
+      nextSpawnAt: 0,
+      stacks: Array.from({ length: COLS }, () => [] as StackCell[]),
+      goodLanded: 0,
+      badLanded: 0,
+      goodRejected: 0,
+      wrongRejected: 0,
+      level: 0,
+      speed: 2,
+      floaters: [],
+      particles: [],
+      floaterId: 0,
+      particleId: 0,
+      shakeUntil: 0,
+      levelFlashUntil: 0,
+      levelFlashText: "",
+      won: false,
+      lost: false,
+      finished: false,
+    };
+    setShowIntro(true);
+    setResetKey((k) => k + 1);
+    setRender((n) => n + 1);
+  };
+
   // Render loop
   useEffect(() => {
+    if (showIntro) return;
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
@@ -478,24 +509,47 @@ export default function FirewallBuilder({
       ctx.fillStyle = s.badLanded >= LOSE_BAD - 1 ? "#ef4444" : "#fbbf24";
       ctx.fillText(`VIRUSES ${s.badLanded}/${LOSE_BAD}`, CANVAS_W / 2, 12);
 
-      // Current indicator at bottom
+      // Legend row
+      ctx.font = "800 13px 'Space Grotesk', sans-serif";
+      ctx.fillStyle = "#94a3b8";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillText("🟢 GREEN = Catch it!   🔴 RED = Press SPACE to reject!", CANVAS_W / 2, 34);
+
+      // Huge CATCH IT! / REJECT IT! indicator above the play area
       if (s.falling) {
-        ctx.fillStyle =
-          s.falling.def.kind === "good" ? "#4ade80" : "#f87171";
-        ctx.font = "900 14px 'Space Grotesk', sans-serif";
+        const isGood = s.falling.def.kind === "good";
+        const col = isGood ? "#4ade80" : "#ef4444";
+        const label = isGood ? "CATCH IT!" : "REJECT IT!";
+        const glowPulse = 0.6 + 0.4 * Math.sin(now / 180);
+        ctx.shadowColor = col;
+        ctx.shadowBlur = 18 * glowPulse;
+        ctx.fillStyle = col;
+        ctx.strokeStyle = "rgba(0,0,0,0.85)";
+        ctx.lineWidth = 5;
+        ctx.font = "900 32px 'Space Grotesk', sans-serif";
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
-        ctx.fillText(
-          s.falling.def.kind === "good" ? "CATCH IT!" : "REJECT IT!",
-          CANVAS_W / 2,
-          CANVAS_H - 22
-        );
+        ctx.strokeText(label, CANVAS_W / 2, PLAY_Y - 30);
+        ctx.fillText(label, CANVAS_W / 2, PLAY_Y - 30);
+        ctx.shadowBlur = 0;
+
+        // Arrow pointing at the falling block
+        const bx = PLAY_X + s.falling.col * COL_W + COL_W / 2;
+        const ay = PLAY_Y + s.falling.y - 10;
+        ctx.fillStyle = col;
+        ctx.beginPath();
+        ctx.moveTo(bx, ay);
+        ctx.lineTo(bx - 8, ay - 10);
+        ctx.lineTo(bx + 8, ay - 10);
+        ctx.closePath();
+        ctx.fill();
       } else {
         ctx.fillStyle = "#64748b";
-        ctx.font = "600 11px 'Space Grotesk', sans-serif";
+        ctx.font = "600 12px 'Space Grotesk', sans-serif";
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
-        ctx.fillText("← → move · SPACE reject", CANVAS_W / 2, CANVAS_H - 22);
+        ctx.fillText("← → move · SPACE reject", CANVAS_W / 2, PLAY_Y - 30);
       }
 
       rafRef.current = requestAnimationFrame(tick);
@@ -508,7 +562,7 @@ export default function FirewallBuilder({
       ctx.clearRect(0, 0, CANVAS_W, CANVAS_H);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [showIntro, resetKey]);
 
   const s = state.current;
   const stars =
@@ -519,8 +573,9 @@ export default function FirewallBuilder({
       style={{
         position: "relative",
         width: "100%",
-        maxWidth: 540,
+        maxWidth: 660,
         margin: "0 auto",
+        maxHeight: "calc(100vh - 140px)",
         borderRadius: 24,
         overflow: "hidden",
         background: "linear-gradient(180deg, #05060f 0%, #010106 100%)",
@@ -589,27 +644,54 @@ export default function FirewallBuilder({
               <span style={{ color: "rgba(148,163,184,0.6)" }}>☆☆☆</span>
             )}
           </div>
-          <button
-            type="button"
-            onClick={() => {
-              playSound("click");
-              onComplete(s.won ? stars : Math.max(1, s.level));
-            }}
-            style={{
-              background: "linear-gradient(135deg, #f97316, #f59e0b)",
-              color: "#fff",
-              fontWeight: 800,
-              borderRadius: 14,
-              padding: "14px 36px",
-              fontSize: 17,
-              border: "none",
-              cursor: "pointer",
-              boxShadow: "0 0 18px rgba(249,115,22,0.5)",
-            }}
-          >
-            Continue &rarr;
-          </button>
+          <div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
+            <button
+              type="button"
+              onClick={() => {
+                playSound("click");
+                onComplete(s.won ? stars : Math.max(1, s.level));
+              }}
+              style={{
+                background: "linear-gradient(135deg, #f97316, #f59e0b)",
+                color: "#fff",
+                fontWeight: 800,
+                borderRadius: 14,
+                padding: "14px 36px",
+                fontSize: 17,
+                border: "none",
+                cursor: "pointer",
+                boxShadow: "0 0 18px rgba(249,115,22,0.5)",
+              }}
+            >
+              Continue &rarr;
+            </button>
+            <button
+              type="button"
+              onClick={() => { playSound("select"); resetExercise(); }}
+              style={{
+                background: "transparent",
+                color: "#93c5fd",
+                fontWeight: 700,
+                borderRadius: 14,
+                padding: "12px 24px",
+                fontSize: 14,
+                border: "2px solid rgba(96,165,250,0.55)",
+                cursor: "pointer",
+              }}
+            >
+              🔄 Try Again
+            </button>
+          </div>
         </div>
+      )}
+      {showIntro && (
+        <ExerciseIntro
+          title="Build the Firewall!"
+          description="Good security blocks are falling — catch them to build your firewall! But REJECT the virus blocks before they land!"
+          icon="🧱"
+          controls="← → to move · SPACE to reject"
+          onStart={() => setShowIntro(false)}
+        />
       )}
       <span style={{ display: "none" }}>{render}</span>
     </div>
@@ -629,38 +711,56 @@ function drawBlock(
   grad.addColorStop(0, def.primary);
   grad.addColorStop(1, def.secondary);
   ctx.fillStyle = grad;
-  roundRect(ctx, x, y, w, h, 6);
+  roundRect(ctx, x, y, w, h, 8);
   ctx.fill();
+  // Bright border — green for good, red for bad.
   ctx.strokeStyle = flash
     ? "#fff"
     : def.kind === "good"
-      ? "rgba(255,255,255,0.35)"
-      : "rgba(0,0,0,0.35)";
-  ctx.lineWidth = flash ? 2 : 1;
-  roundRect(ctx, x, y, w, h, 6);
+      ? "#4ade80"
+      : "#ef4444";
+  ctx.lineWidth = 2;
+  roundRect(ctx, x, y, w, h, 8);
   ctx.stroke();
-  // Icon
-  ctx.font = "900 12px 'Space Grotesk', sans-serif";
+
+  // Icon on the left
+  ctx.font = "900 18px 'Space Grotesk', sans-serif";
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  ctx.fillStyle = "#fff";
+  ctx.shadowColor = "rgba(0,0,0,0.6)";
+  ctx.shadowBlur = 3;
+  ctx.fillText(def.kind === "good" ? "🛡" : "💀", x + 13, y + h / 2);
+  ctx.shadowBlur = 0;
+
+  // Text — 12px, wraps to 2 lines within the block width.
+  ctx.font = "800 12px 'Space Grotesk', sans-serif";
   ctx.textAlign = "left";
   ctx.textBaseline = "middle";
   ctx.fillStyle = "#fff";
-  if (def.kind === "bad") {
-    ctx.fillText("⚠", x + 4, y + h / 2);
-  } else {
-    ctx.fillText("✓", x + 4, y + h / 2);
+  const textLeft = x + 26;
+  const textRight = x + w - 4;
+  const maxWidth = textRight - textLeft;
+  const words = def.text.split(/\s+/);
+  const lines: string[] = [];
+  let cur = "";
+  for (const word of words) {
+    const probe = cur ? cur + " " + word : word;
+    if (ctx.measureText(probe).width <= maxWidth) {
+      cur = probe;
+    } else {
+      if (cur) lines.push(cur);
+      cur = word;
+    }
+    if (lines.length === 2) break;
   }
-  // Text
-  ctx.font = "700 9px 'Space Grotesk', sans-serif";
-  ctx.fillStyle = "rgba(255,255,255,0.95)";
-  const label = def.text;
-  // truncate if too long
-  const max = w - 18;
-  let t = label;
-  if (ctx.measureText(t).width > max) {
-    while (t.length > 4 && ctx.measureText(t + "…").width > max) t = t.slice(0, -1);
-    t = t + "…";
+  if (cur && lines.length < 2) lines.push(cur);
+  if (lines.length === 1) {
+    ctx.fillText(lines[0], textLeft, y + h / 2);
+  } else if (lines.length >= 2) {
+    ctx.fillText(lines[0], textLeft, y + h / 2 - 7);
+    ctx.fillText(lines[1], textLeft, y + h / 2 + 7);
   }
-  ctx.fillText(t, x + 16, y + h / 2);
 }
 
 function roundRect(

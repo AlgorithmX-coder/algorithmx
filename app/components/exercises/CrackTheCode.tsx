@@ -7,6 +7,7 @@ import {
   badgeEarnedCelebration,
   wrongAnswerShake,
 } from "@/app/lib/celebrations";
+import ExerciseIntro from "./ExerciseIntro";
 
 export interface CrackTheCodeProps {
   onComplete: (score: number) => void;
@@ -133,6 +134,7 @@ export default function CrackTheCode({
 }: CrackTheCodeProps) {
   useEffect(ensureStyles, []);
 
+  const [showIntro, setShowIntro] = useState(true);
   // Offsets: rings[i] = number of positions rotated clockwise (so selected
   // = options[(options.length - offset) % options.length]).
   const [offsets, setOffsets] = useState<number[]>(
@@ -145,6 +147,16 @@ export default function CrackTheCode({
   const [prevCorrect, setPrevCorrect] = useState<boolean[]>(() =>
     RINGS.map(() => false)
   );
+
+  const resetExercise = () => {
+    setOffsets(RINGS.map(() => Math.floor(Math.random() * 4)));
+    setRingFlash({});
+    setAttempts(0);
+    setUnlocked(false);
+    setShakeAll(false);
+    setPrevCorrect(RINGS.map(() => false));
+    setShowIntro(true);
+  };
 
   const rotate = (ringIdx: number, dir: -1 | 1) => {
     if (unlocked) return;
@@ -216,6 +228,7 @@ export default function CrackTheCode({
         position: "relative",
         width: "100%",
         minHeight: 620,
+        maxHeight: "calc(100vh - 140px)",
         borderRadius: 24,
         overflow: "hidden",
         background:
@@ -638,29 +651,57 @@ export default function CrackTheCode({
             <div style={{ color: "#94a3b8", fontSize: 14, marginBottom: 14 }}>
               Solved in {attempts} {attempts === 1 ? "attempt" : "attempts"}
             </div>
-            <button
-              type="button"
-              onClick={() => {
-                playSound("click");
-                onComplete(stars);
-              }}
-              style={{
-                background: "linear-gradient(135deg, #f97316, #f59e0b)",
-                color: "#fff",
-                fontWeight: 800,
-                borderRadius: 14,
-                padding: "14px 36px",
-                fontSize: 17,
-                border: "none",
-                cursor: "pointer",
-                boxShadow: "0 0 18px rgba(249,115,22,0.5)",
-              }}
-            >
-              Continue &rarr;
-            </button>
+            <div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
+              <button
+                type="button"
+                onClick={() => {
+                  playSound("click");
+                  onComplete(stars);
+                }}
+                style={{
+                  background: "linear-gradient(135deg, #f97316, #f59e0b)",
+                  color: "#fff",
+                  fontWeight: 800,
+                  borderRadius: 14,
+                  padding: "14px 36px",
+                  fontSize: 17,
+                  border: "none",
+                  cursor: "pointer",
+                  boxShadow: "0 0 18px rgba(249,115,22,0.5)",
+                }}
+              >
+                Continue &rarr;
+              </button>
+              <button
+                type="button"
+                onClick={() => { playSound("select"); resetExercise(); }}
+                style={{
+                  background: "transparent",
+                  color: "#93c5fd",
+                  fontWeight: 700,
+                  borderRadius: 14,
+                  padding: "12px 24px",
+                  fontSize: 14,
+                  border: "2px solid rgba(96,165,250,0.55)",
+                  cursor: "pointer",
+                }}
+              >
+                🔄 Try Again
+              </button>
+            </div>
           </div>
         )}
       </div>
+
+      {showIntro && (
+        <ExerciseIntro
+          title="Crack the Code!"
+          description="Rotate the combination rings to set the strongest password settings, then unlock the vault!"
+          icon="🔓"
+          controls="Click the arrows to rotate"
+          onStart={() => setShowIntro(false)}
+        />
+      )}
     </div>
   );
 }

@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { playSound } from "@/app/lib/sounds";
 import { correctAnswerBurst } from "@/app/lib/celebrations";
+import ExerciseIntro from "./ExerciseIntro";
 
 export interface ProtectTheDataItem {
   text: string;
@@ -84,7 +85,9 @@ export default function ProtectTheData({
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const wrapperRef = useRef<HTMLDivElement | null>(null);
 
-  const shuffled = useMemo(() => shuffle(items), [items]);
+  const [shuffleKey, setShuffleKey] = useState(0);
+  const shuffled = useMemo(() => shuffle(items), [items, shuffleKey]);
+  const [showIntro, setShowIntro] = useState(true);
 
   // Mutable game state in refs (not React state — every frame)
   const state = useRef({
@@ -254,8 +257,34 @@ export default function ProtectTheData({
     };
   }, []);
 
+  const resetExercise = () => {
+    state.current = {
+      shieldX: CANVAS_W / 2,
+      shieldTarget: CANVAS_W / 2,
+      current: null,
+      currentIdx: 0,
+      nextSpawnAt: 0,
+      floaters: [],
+      particles: [],
+      edgeFlash: null,
+      floaterId: 0,
+      particleId: 0,
+      blockedPrivate: 0,
+      totalPrivate: state.current.totalPrivate,
+      allowedSafe: 0,
+      totalSafe: state.current.totalSafe,
+      correct: 0,
+      streak: 0,
+      finished: false,
+    };
+    setShuffleKey((k) => k + 1);
+    setShowIntro(true);
+    setRender((n) => n + 1);
+  };
+
   // Render loop
   useEffect(() => {
+    if (showIntro) return;
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
@@ -542,7 +571,7 @@ export default function ProtectTheData({
       if (ctx) ctx.clearRect(0, 0, CANVAS_W, CANVAS_H);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [shuffled]);
+  }, [shuffled, showIntro]);
 
   const s = state.current;
   const stars = s.correct >= 10 ? 3 : s.correct >= 8 ? 2 : 1;
@@ -556,6 +585,7 @@ export default function ProtectTheData({
         width: "100%",
         maxWidth: 760,
         margin: "0 auto",
+        maxHeight: "calc(100vh - 140px)",
         borderRadius: 24,
         overflow: "hidden",
         background: "linear-gradient(180deg, #05060f 0%, #010106 100%)",
@@ -616,27 +646,54 @@ export default function ProtectTheData({
               {"★".repeat(3 - stars)}
             </span>
           </div>
-          <button
-            type="button"
-            onClick={() => {
-              playSound("click");
-              onComplete(s.correct);
-            }}
-            style={{
-              background: "linear-gradient(135deg, #f97316, #f59e0b)",
-              color: "#fff",
-              fontWeight: 800,
-              borderRadius: 14,
-              padding: "14px 36px",
-              fontSize: 17,
-              border: "none",
-              cursor: "pointer",
-              boxShadow: "0 0 18px rgba(249,115,22,0.5)",
-            }}
-          >
-            Continue &rarr;
-          </button>
+          <div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
+            <button
+              type="button"
+              onClick={() => {
+                playSound("click");
+                onComplete(s.correct);
+              }}
+              style={{
+                background: "linear-gradient(135deg, #f97316, #f59e0b)",
+                color: "#fff",
+                fontWeight: 800,
+                borderRadius: 14,
+                padding: "14px 36px",
+                fontSize: 17,
+                border: "none",
+                cursor: "pointer",
+                boxShadow: "0 0 18px rgba(249,115,22,0.5)",
+              }}
+            >
+              Continue &rarr;
+            </button>
+            <button
+              type="button"
+              onClick={() => { playSound("select"); resetExercise(); }}
+              style={{
+                background: "transparent",
+                color: "#93c5fd",
+                fontWeight: 700,
+                borderRadius: 14,
+                padding: "12px 24px",
+                fontSize: 14,
+                border: "2px solid rgba(96,165,250,0.55)",
+                cursor: "pointer",
+              }}
+            >
+              🔄 Try Again
+            </button>
+          </div>
         </div>
+      )}
+      {showIntro && (
+        <ExerciseIntro
+          title="Protect the Data!"
+          description="Private information is falling from the sky! Move your shield to block it — but let safe information through!"
+          icon="🛡️"
+          controls="Move mouse or arrow keys"
+          onStart={() => setShowIntro(false)}
+        />
       )}
     </div>
   );

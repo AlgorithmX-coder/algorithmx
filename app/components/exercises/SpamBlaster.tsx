@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { playSound } from "@/app/lib/sounds";
 import { correctAnswerBurst } from "@/app/lib/celebrations";
+import ExerciseIntro from "./ExerciseIntro";
 
 export interface SpamEmail {
   sender: string;
@@ -110,6 +111,8 @@ export default function SpamBlaster({
   const list = useMemo(() => emails ?? DEFAULT_EMAILS, [emails]);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const rafRef = useRef<number | null>(null);
+  const [showIntro, setShowIntro] = useState(true);
+  const [resetKey, setResetKey] = useState(0);
 
   const state = useRef({
     spawnedIdx: 0,
@@ -266,7 +269,36 @@ export default function SpamBlaster({
     onCorrect?.();
   };
 
+  const resetExercise = () => {
+    state.current = {
+      spawnedIdx: 0,
+      nextSpawnAt: 0,
+      live: [],
+      fragments: [],
+      floaters: [],
+      clues: [],
+      fragmentId: 0,
+      floaterId: 0,
+      clueId: 0,
+      zapped: 0,
+      totalPhishing: list.filter((e) => e.isPhishing).length,
+      inbox: 0,
+      totalSafe: list.length - list.filter((e) => e.isPhishing).length,
+      viruses: 0,
+      streak: 0,
+      bestStreak: 0,
+      monitorFlashColour: null,
+      monitorFlashUntil: 0,
+      monitorShakeUntil: 0,
+      finished: false,
+    };
+    setShowIntro(true);
+    setResetKey((k) => k + 1);
+    setRender((n) => n + 1);
+  };
+
   useEffect(() => {
+    if (showIntro) return;
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
@@ -593,7 +625,7 @@ export default function SpamBlaster({
       ctx.clearRect(0, 0, CANVAS_W, CANVAS_H);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [list]);
+  }, [list, showIntro, resetKey]);
 
   const s = state.current;
   const total = list.length;
@@ -607,6 +639,7 @@ export default function SpamBlaster({
         width: "100%",
         maxWidth: 760,
         margin: "0 auto",
+        maxHeight: "calc(100vh - 140px)",
         borderRadius: 24,
         overflow: "hidden",
         background: "linear-gradient(180deg, #05060f 0%, #010106 100%)",
@@ -664,27 +697,54 @@ export default function SpamBlaster({
               {"★".repeat(3 - stars)}
             </span>
           </div>
-          <button
-            type="button"
-            onClick={() => {
-              playSound("click");
-              onComplete(s.zapped + s.inbox);
-            }}
-            style={{
-              background: "linear-gradient(135deg, #f97316, #f59e0b)",
-              color: "#fff",
-              fontWeight: 800,
-              borderRadius: 14,
-              padding: "14px 36px",
-              fontSize: 17,
-              border: "none",
-              cursor: "pointer",
-              boxShadow: "0 0 18px rgba(249,115,22,0.5)",
-            }}
-          >
-            Continue &rarr;
-          </button>
+          <div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
+            <button
+              type="button"
+              onClick={() => {
+                playSound("click");
+                onComplete(s.zapped + s.inbox);
+              }}
+              style={{
+                background: "linear-gradient(135deg, #f97316, #f59e0b)",
+                color: "#fff",
+                fontWeight: 800,
+                borderRadius: 14,
+                padding: "14px 36px",
+                fontSize: 17,
+                border: "none",
+                cursor: "pointer",
+                boxShadow: "0 0 18px rgba(249,115,22,0.5)",
+              }}
+            >
+              Continue &rarr;
+            </button>
+            <button
+              type="button"
+              onClick={() => { playSound("select"); resetExercise(); }}
+              style={{
+                background: "transparent",
+                color: "#93c5fd",
+                fontWeight: 700,
+                borderRadius: 14,
+                padding: "12px 24px",
+                fontSize: 14,
+                border: "2px solid rgba(96,165,250,0.55)",
+                cursor: "pointer",
+              }}
+            >
+              🔄 Try Again
+            </button>
+          </div>
         </div>
+      )}
+      {showIntro && (
+        <ExerciseIntro
+          title="Spam Blaster!"
+          description="Emails are flying toward your computer! ZAP the phishing emails but let the real ones through!"
+          icon="📧"
+          controls="Click on phishing emails to zap them"
+          onStart={() => setShowIntro(false)}
+        />
       )}
       {/* `render` is read so state-bumps trigger re-render for the finish overlay */}
       <span style={{ display: "none" }}>{render}</span>

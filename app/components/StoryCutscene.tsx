@@ -142,35 +142,42 @@ export default function StoryCutscene({ slides, onComplete, title }: StoryCutsce
   const particles = useMemo(() => {
     const palette =
       bg === "danger"
-        ? ["#ef4444", "#f97316", "#fb923c", "#f43f5e"]
+        ? ["#ef4444", "#f97316", "#fb923c", "#f43f5e", "#fbbf24"]
         : bg === "victory"
-          ? ["#fbbf24", "#fde047", "#34d399", "#a7f3d0"]
-          : ["#60a5fa", "#34d399", "#a78bfa", "#fde047"];
-    return Array.from({ length: 15 }).map((_, i) => ({
-      left: (i * 6.7 + (i % 3) * 3) % 100,
-      size: 3 + (i % 3),
+          ? ["#fbbf24", "#fde047", "#34d399", "#a7f3d0", "#f472b6"]
+          : ["#60a5fa", "#34d399", "#a78bfa", "#fde047", "#fbbf24", "#f472b6"];
+    return Array.from({ length: 25 }).map((_, i) => ({
+      left: (i * 4.1 + (i % 3) * 2) % 100,
+      size: 4 + (i % 4),
       colour: palette[i % palette.length],
-      delay: (i * 1.3) % 14,
-      duration: 18 + (i % 6) * 2.5,
+      delay: (i * 0.9) % 14,
+      duration: 16 + (i % 7) * 2.2,
+      // Per-particle opacity ∈ [0.2, 0.35] for brighter, more vibrant feel.
+      peakOpacity: 0.2 + ((i * 13) % 16) / 100,
     }));
   }, [bg]);
 
   return (
     <div className={`sc-root sc-bg-${phase === "title" ? "normal" : bg} ${shake ? "sc-shake" : ""}`}>
-      {/* Animated starfield */}
+      {/* Warm stage lighting band at the bottom */}
+      <div className="sc-stage-light" aria-hidden="true" />
+
+      {/* Animated starfield — 50 stars, brighter */}
       <div className="sc-stars" aria-hidden="true">
-        {Array.from({ length: 40 }).map((_, i) => (
+        {Array.from({ length: 50 }).map((_, i) => (
           <span
             key={i}
             className="sc-star"
             style={{
-              left: `${(i * 2.5 + (i % 7) * 1.3) % 100}%`,
+              left: `${(i * 2.1 + (i % 7) * 1.3) % 100}%`,
               top: `${(i * 3.1 + (i % 5) * 2.1) % 100}%`,
               width: `${2 + (i % 2)}px`,
               height: `${2 + (i % 2)}px`,
               animationDuration: `${2 + (i % 4)}s`,
               animationDelay: `${(i * 0.19) % 5}s`,
-            }}
+              // Per-star peak opacity ∈ [0.2, 0.6]
+              ["--sc-star-peak" as string]: `${0.2 + ((i * 11) % 41) / 100}`,
+            } as React.CSSProperties}
           />
         ))}
       </div>
@@ -193,10 +200,11 @@ export default function StoryCutscene({ slides, onComplete, title }: StoryCutsce
               width: `${p.size}px`,
               height: `${p.size}px`,
               background: p.colour,
-              boxShadow: `0 0 8px ${p.colour}`,
+              boxShadow: `0 0 10px ${p.colour}`,
               animationDelay: `${p.delay}s`,
               animationDuration: `${p.duration}s`,
-            }}
+              ["--sc-particle-peak" as string]: `${p.peakOpacity}`,
+            } as React.CSSProperties}
           />
         ))}
       </div>
@@ -427,13 +435,13 @@ const CSS = `
   80% { transform: translate(4px, -1px); }
 }
 @keyframes scStarTwinkle {
-  0%,100% { opacity: 0.1; }
-  50% { opacity: 0.5; }
+  0%,100% { opacity: 0.2; }
+  50% { opacity: var(--sc-star-peak, 0.6); }
 }
 @keyframes scParticleRise {
   0% { transform: translateY(0); opacity: 0; }
-  10% { opacity: 0.6; }
-  90% { opacity: 0.6; }
+  10% { opacity: var(--sc-particle-peak, 0.32); }
+  90% { opacity: var(--sc-particle-peak, 0.32); }
   100% { transform: translateY(-110vh); opacity: 0; }
 }
 @keyframes scGridScroll {
@@ -495,9 +503,26 @@ const CSS = `
   animation: scSlideIn 0.4s ease-out both;
 }
 .sc-bg-normal, .sc-bg-dark, .sc-bg-danger, .sc-bg-victory {
-  background: radial-gradient(circle at center, #0c1225 0%, #080c14 80%);
+  background: radial-gradient(ellipse at 50% 30%, #1a1040 0%, #0c1225 50%, #080c14 100%);
 }
-.sc-bg-dark { background: radial-gradient(circle at center, #05080f 0%, #04060a 85%); }
+.sc-bg-dark { background: radial-gradient(ellipse at 50% 30%, #12102e 0%, #07091a 60%, #04060a 100%); }
+
+/* Warm stage lighting from below — a drifting amber/blue band. */
+.sc-stage-light {
+  position: absolute;
+  left: -20%; right: -20%;
+  bottom: 0;
+  height: 200px;
+  background: linear-gradient(180deg, transparent 0%, rgba(59,130,246,0.06) 60%, rgba(251,191,36,0.045) 100%);
+  filter: blur(12px);
+  pointer-events: none;
+  animation: scStageLight 14s ease-in-out infinite;
+  z-index: 0;
+}
+@keyframes scStageLight {
+  0%,100% { transform: translateX(-6%); }
+  50%     { transform: translateX(6%); }
+}
 
 .sc-shake { animation: scSlideIn 0.4s ease-out, scShake 0.5s ease-in-out 0.2s; }
 
@@ -516,9 +541,9 @@ const CSS = `
   position: absolute;
   background: #fff;
   border-radius: 50%;
-  box-shadow: 0 0 4px rgba(255,255,255,0.7);
+  box-shadow: 0 0 6px rgba(255,255,255,0.85);
   animation: scStarTwinkle ease-in-out infinite;
-  opacity: 0.15;
+  opacity: 0.35;
 }
 
 /* Grid */
@@ -552,12 +577,12 @@ const CSS = `
 }
 .sc-ambient-blue {
   top: -30vmax; left: -30vmax;
-  background: radial-gradient(circle, rgba(59,130,246,0.06), transparent 65%);
+  background: radial-gradient(circle, rgba(59,130,246,0.12), transparent 65%);
   animation: scAmbientBlue 22s ease-in-out infinite;
 }
 .sc-ambient-purple {
   bottom: -30vmax; right: -30vmax;
-  background: radial-gradient(circle, rgba(124,58,237,0.05), transparent 65%);
+  background: radial-gradient(circle, rgba(124,58,237,0.12), transparent 65%);
   animation: scAmbientPurple 22s ease-in-out infinite;
 }
 

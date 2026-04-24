@@ -6,6 +6,7 @@ import {
   correctAnswerBurst,
   badgeEarnedCelebration,
 } from "@/app/lib/celebrations";
+import ExerciseIntro from "./ExerciseIntro";
 
 export interface PasswordLabProps {
   onComplete: (score: number) => void;
@@ -147,7 +148,9 @@ export default function PasswordLab({
   const containerRef = useRef<HTMLDivElement | null>(null);
   const cauldronRef = useRef<HTMLDivElement | null>(null);
   const splashIdRef = useRef(0);
+  const dragOffsetRef = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
 
+  const [showIntro, setShowIntro] = useState(true);
   const [added, setAdded] = useState<IngredientId[]>([]);
   const [drag, setDrag] = useState<{
     id: IngredientId;
@@ -157,6 +160,15 @@ export default function PasswordLab({
   const [splashes, setSplashes] = useState<Splash[]>([]);
   const [completed, setCompleted] = useState(false);
   const [shake, setShake] = useState(false);
+
+  const resetExercise = () => {
+    setAdded([]);
+    setDrag(null);
+    setSplashes([]);
+    setCompleted(false);
+    setShake(false);
+    setShowIntro(true);
+  };
 
   const remaining = useMemo(
     () => INGREDIENTS.filter((i) => !added.includes(i.id)),
@@ -213,8 +225,15 @@ export default function PasswordLab({
     e: React.PointerEvent<HTMLDivElement>,
     id: IngredientId
   ) => {
-    if (added.includes(id) || completed) return;
+    if (added.includes(id) || completed || showIntro) return;
     (e.currentTarget as Element).setPointerCapture(e.pointerId);
+    // Capture where in the card the user grabbed — so the card stays under
+    // that exact point instead of centring on the cursor.
+    const rect = e.currentTarget.getBoundingClientRect();
+    dragOffsetRef.current = {
+      x: e.clientX - (rect.left + rect.width / 2),
+      y: e.clientY - (rect.top + rect.height / 2),
+    };
     setDrag({ id, x: e.clientX, y: e.clientY });
   };
 
@@ -225,7 +244,11 @@ export default function PasswordLab({
 
   const handlePointerUp = (e: React.PointerEvent<HTMLDivElement>) => {
     if (!drag) return;
-    const ok = tryAddAt(drag.id, e.clientX, e.clientY);
+    // Drop test uses the card's true centre (pointer minus the grab offset),
+    // not the raw pointer, so the drop sweet-spot matches the rendered card.
+    const cardCx = e.clientX - dragOffsetRef.current.x;
+    const cardCy = e.clientY - dragOffsetRef.current.y;
+    const ok = tryAddAt(drag.id, cardCx, cardCy);
     if (!ok) {
       setShake(true);
       window.setTimeout(() => setShake(false), 250);
@@ -272,6 +295,7 @@ export default function PasswordLab({
         position: "relative",
         width: "100%",
         minHeight: 520,
+        maxHeight: "calc(100vh - 140px)",
         borderRadius: 24,
         overflow: "hidden",
         background:
@@ -650,7 +674,7 @@ export default function PasswordLab({
           >
             {FINAL_PASSWORD}
           </div>
-          <div style={{ marginTop: 18 }}>
+          <div style={{ marginTop: 18, display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
             <button
               type="button"
               onClick={() => {
@@ -671,11 +695,40 @@ export default function PasswordLab({
             >
               Continue &rarr;
             </button>
+            <button
+              type="button"
+              onClick={() => {
+                playSound("select");
+                resetExercise();
+              }}
+              style={{
+                background: "transparent",
+                color: "#93c5fd",
+                fontWeight: 700,
+                borderRadius: 14,
+                padding: "12px 24px",
+                fontSize: 14,
+                border: "2px solid rgba(96,165,250,0.55)",
+                cursor: "pointer",
+              }}
+            >
+              🔄 Try Again
+            </button>
           </div>
         </div>
       )}
 
-      {/* Dragging ghost */}
+      {showIntro && (
+        <ExerciseIntro
+          title="Password Laboratory"
+          description="Drag each ingredient into the cauldron to brew the perfect password potion!"
+          icon="🧪"
+          controls="Drag and drop the cards"
+          onStart={() => setShowIntro(false)}
+        />
+      )}
+
+      {/* Dragging ghost — positioned so the grab-point on the card follows the cursor exactly */}
       {drag &&
         (() => {
           const ing = INGREDIENTS.find((i) => i.id === drag.id);
@@ -684,8 +737,8 @@ export default function PasswordLab({
             <div
               style={{
                 position: "fixed",
-                left: drag.x,
-                top: drag.y,
+                left: drag.x - dragOffsetRef.current.x,
+                top: drag.y - dragOffsetRef.current.y,
                 transform: "translate(-50%, -50%) scale(1.12) rotate(-5deg)",
                 width: 130,
                 height: 82,

@@ -1149,12 +1149,20 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
   const pickQuip = (list: readonly string[]): string =>
     list[Math.floor(Math.random() * list.length)];
 
+  // Exercise screens: the exercise itself gives feedback (sounds, flashes,
+  // particles), so the character guide stays silent — no speech bubble on
+  // every correct/wrong. Kids get cluttered otherwise.
+  const EXERCISE_SILENT_SCREENS = [3, 4, 5, 6, 7, 8, 9, 11, 13, 14];
+  const isExerciseActive = EXERCISE_SILENT_SCREENS.includes(screen);
+
   /** Briefly override one character's reaction (and give the other a matching
-   *  mood) with a correct/wrong quip, then restore the per-screen reaction. */
+   *  mood) with a correct/wrong quip, then restore the per-screen reaction.
+   *  During active exercises the mood still shifts but speech is suppressed. */
   const flashReaction = useCallback(
     (kind: "correct" | "wrong") => {
+      const silent = EXERCISE_SILENT_SCREENS.includes(screen);
       if (kind === "correct") {
-        const quip = pickQuip(CORRECT_QUIPS);
+        const quip = silent ? "" : pickQuip(CORRECT_QUIPS);
         // Coin-flip which character speaks; the other shows thumbsup.
         if (Math.random() < 0.5) {
           setAdamReaction({ mood: "thumbsup", message: quip });
@@ -1166,7 +1174,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
       } else {
         // Spec: Layla speaks the thinking quip, Adam shows thinking mood.
         setAdamReaction({ mood: "thinking", message: "" });
-        setLaylaReaction({ mood: "thinking", message: pickQuip(WRONG_QUIPS) });
+        setLaylaReaction({ mood: "thinking", message: silent ? "" : pickQuip(WRONG_QUIPS) });
       }
       if (reactionRestoreRef.current) window.clearTimeout(reactionRestoreRef.current);
       reactionRestoreRef.current = window.setTimeout(() => {
@@ -1780,16 +1788,29 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
 
   /* ---------- effects ---------- */
 
-  // Screen 0: auto-play video & show skip after 10s
+  // Screen 0: auto-play video & show skip after 10s.
+  // Must NOT run while a cutscene is active, otherwise the intro video
+  // plays under the cutscene (audible but unseen).
   useEffect(() => {
     if (screen !== 0) return;
+    if (cutscene !== null) return;
     const v = videoRef.current;
     if (v) {
       v.play().then(() => setIsPlaying(true)).catch(() => { /* blocked */ });
     }
     const t = setTimeout(() => setShowSkip(true), 10000);
     return () => clearTimeout(t);
-  }, [screen]);
+  }, [screen, cutscene]);
+
+  // Pause any playing video whenever a cutscene takes over the screen.
+  useEffect(() => {
+    if (cutscene === null) return;
+    const v = videoRef.current;
+    if (v && !v.paused) {
+      v.pause();
+      setIsPlaying(false);
+    }
+  }, [cutscene]);
 
   // Screen 1: mission phases with bounce timing
   useEffect(() => {
