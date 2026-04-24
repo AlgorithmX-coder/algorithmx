@@ -14,18 +14,6 @@ import {
 } from "@/app/lib/celebrations";
 import LessonHUD from "@/app/components/LessonHUD";
 import CharacterGuide, { type CharacterMood } from "@/app/components/CharacterGuide";
-
-const VALID_MOODS: ReadonlySet<CharacterMood> = new Set([
-  "idle",
-  "curious",
-  "excited",
-  "worried",
-  "thinking",
-  "thumbsup",
-]);
-function toMood(raw: string | undefined): CharacterMood {
-  return raw && VALID_MOODS.has(raw as CharacterMood) ? (raw as CharacterMood) : "idle";
-}
 import StoryCutscene from "@/app/components/StoryCutscene";
 import ScreenTransition, {
   type TransitionType,
@@ -51,6 +39,18 @@ import {
   type ScreenDef,
   type WeekContent,
 } from "@/app/lesson/weekContent";
+
+const VALID_MOODS: ReadonlySet<CharacterMood> = new Set([
+  "idle",
+  "curious",
+  "excited",
+  "worried",
+  "thinking",
+  "thumbsup",
+]);
+function toMood(raw: string | undefined): CharacterMood {
+  return raw && VALID_MOODS.has(raw as CharacterMood) ? (raw as CharacterMood) : "idle";
+}
 
 const LessonArena3D = dynamic(
   () => import("@/app/components/game/LessonArena3D"),
@@ -215,11 +215,50 @@ function Card({ children, extra }: { children: React.ReactNode; extra?: React.CS
 
 /* ─────────────── MAIN ─────────────── */
 
+function LessonLoading() {
+  return (
+    <div
+      style={{
+        minHeight: "100vh",
+        background: "linear-gradient(180deg, #0a0a1a 0%, #1a1033 100%)",
+        color: "#e2e8f0",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        fontFamily: "'Space Grotesk', system-ui, sans-serif",
+      }}
+    >
+      <div style={{ textAlign: "center" }}>
+        <div style={{ fontSize: 42, marginBottom: 8 }}>⚡</div>
+        <div style={{ fontSize: 14, color: "#94a3b8", letterSpacing: 1 }}>
+          Loading lesson…
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function DynamicLesson() {
-  const params = useParams<{ week: string }>();
+  const rawParams = useParams<{ week: string }>();
   const router = useRouter();
-  const weekNum = Number(params?.week);
-  const content = useMemo(() => (Number.isFinite(weekNum) ? getWeekContent(weekNum) : null), [weekNum]);
+
+  // `useParams` in App Router is synchronous, but we still guard for the
+  // edge case where a value comes through as `undefined` (empty routing state)
+  // and for non-numeric segments like `/lesson/abc`.
+  const rawWeek = rawParams?.week;
+  const weekNum =
+    typeof rawWeek === "string" && rawWeek.length > 0 ? Number(rawWeek) : NaN;
+  const content = useMemo(
+    () => (Number.isFinite(weekNum) ? getWeekContent(weekNum) : null),
+    [weekNum]
+  );
+
+  // One-time debug trace on mount / when params change — visible in the
+  // browser console so the user can paste it back if something is off.
+  useEffect(() => {
+    // eslint-disable-next-line no-console
+    console.log("[DynamicLesson] rawParams:", rawParams, "weekNum:", weekNum, "content:", content ? `Week ${content.weekNumber}: ${content.title}` : null);
+  }, [rawParams, weekNum, content]);
 
   // All hooks run unconditionally — we short-circuit with a fallback render below.
   const [cutsceneDone, setCutsceneDone] = useState(false);
@@ -340,9 +379,15 @@ export default function DynamicLesson() {
     wrongAnswerShake();
   }, [setArenaMoodBrief]);
 
-  // No content → show fallback BEFORE doing anything else in the main render.
+  // Param hasn't resolved yet (very brief moment in some hydration paths) —
+  // render a simple loading state so the page never appears "blank."
+  if (rawWeek === undefined) {
+    return <LessonLoading />;
+  }
+  // Week exists in the URL but we have no content for it (or it's not a
+  // valid number). Show the "coming soon" fallback.
   if (!content) {
-    return <WeekNotReady week={weekNum} />;
+    return <WeekNotReady week={Number.isFinite(weekNum) ? weekNum : 0} />;
   }
 
   const def = content.screens[screen];

@@ -2,242 +2,392 @@ import type { WeekContent } from "./types";
 
 /**
  * Data-driven port of Week 2. The legacy bespoke player at
- * app/lesson/week2/Week2Player.tsx still exists and is unchanged — this file
- * feeds the new /lesson/2 dynamic route. Custom legacy screens (chat sim,
- * phone call, masterplan, vault battle) that don't map cleanly to ScreenDef
- * types are represented here as `info` screens.
+ * app/lesson/week2/Week2Player.tsx still exists and is untouched — this file
+ * feeds the new /lesson/2 dynamic route. Where Week2Player had custom UI
+ * (chat simulator, phone call game, flip-tile info, poster-spot, masterplan
+ * cards), we've mapped each to the closest standard screen type and kept
+ * the original tone and content.
  */
 export const WEEK_2: WeekContent = {
   weekNumber: 2,
-  title: "Private Information: Your Secrets Are Yours",
+  title: "Private Information: The Privacy Guardian",
   topic: "private-info",
-  badgeName: "Info Agent",
-  badgeIcon: "🕶️",
+  badgeName: "Privacy Guardian",
+  badgeIcon: "🔒",
 
+  // Extracted verbatim from WEEK2_INTRO in storyContent.ts
   introCutscene: [
-    { text: "CYBER HEROES ACADEMY\nWEEK 2: PRIVATE INFO", bg: "normal", duration: 3000 },
-    { character: "both", characterMood: "excited", text: "Welcome back, Agent. Ready for Mission 2?", sound: "lessonStart", duration: 4500 },
-    { character: "raccoon", characterMood: "idle", text: "\"Tell me your address, phone number, and school. We can be friends!\"", bg: "danger", textColour: "#c084fc", sound: "bossRoar", duration: 5000 },
-    { character: "layla", characterMood: "worried", text: "The Hacker Raccoon is trying to trick kids into sharing PRIVATE info. That's how a lot of attacks start.", bg: "danger", duration: 5500 },
-    { character: "adam", characterMood: "thinking", text: "Some info is SAFE to share — your favourite colour, your hobby. Some info is PRIVATE — your address, your phone number.", duration: 5500 },
-    { character: "layla", characterMood: "excited", text: "Today we'll learn EXACTLY what stays private and what's fine to share. Let's go!", sound: "select", duration: 5000 },
-    { text: "CLASSIFY EVERYTHING! 🕶️", bg: "normal", sound: "confetti", duration: 2000 },
+    { text: "CYBER HEROES ACADEMY\nWEEK 2: PRIVATE INFORMATION", bg: "normal", duration: 3000 },
+    { character: "both", characterMood: "excited", text: "Welcome back, Cyber Hero! Great to see you again!", sound: "lessonStart", duration: 4500 },
+    { character: "layla", characterMood: "worried", text: "We've got a new problem. Hacker Raccoon is back — and this time he's after something REALLY dangerous...", bg: "danger", duration: 5500 },
+    { character: "raccoon", characterMood: "idle", text: "\"Forget passwords — I want your NAME, your ADDRESS, your SCHOOL! Tell me EVERYTHING!\"", textColour: "#c084fc", sound: "bossRoar", shake: true, duration: 5500 },
+    { character: "adam", characterMood: "worried", text: "Your private information is super valuable. If the wrong person gets it, they could find you, trick you, or pretend to be you!", duration: 5500 },
+    { character: "layla", characterMood: "excited", text: "But don't worry! Today we're going to learn EXACTLY what's safe to share and what must stay secret!", duration: 5500 },
+    { character: "adam", characterMood: "thumbsup", text: "And at the end — another Boss Battle against Hacker Raccoon! Let's do this!", sound: "select", duration: 5000 },
+    { text: "LET'S GO! 🚀", bg: "normal", sound: "confetti", duration: 2000 },
   ],
 
   screens: [
-    { type: "video", videoPlaceholder: "Week 2: Private Info intro video" },
+    // Screen 0: intro video
+    { type: "video", videoPlaceholder: "Week 2: Private Information intro video" },
+
+    // Screen 1: mission briefing
     {
       type: "mission",
       objectives: [
-        "Tell the difference between SAFE-to-share and PRIVATE info",
-        "Learn how the Raccoon uses private info to target kids",
-        "Know what to do when a stranger asks for info",
+        "Learn which information is PRIVATE and which is SAFE to share",
+        "Spot the tricks Hacker Raccoon uses to steal private info",
+        "Know exactly what to do when someone asks for something personal",
       ],
     },
+
+    // Screen 2: Flip-tiles info — what's private vs safe (from legacy FLIP TILES)
     {
       type: "info",
-      title: "What Counts as Private?",
+      title: "Private vs Safe to Share",
       content:
-        "Private info is ANY information that points to who you are, where you live, or how to contact you. Scammers and strangers piece these clues together like a puzzle.",
+        "Some information is SAFE to share — it's about your opinions or hobbies, nothing that identifies you. Other information is PRIVATE — if strangers get it, they could find you, contact you, or pretend to be you. Let's learn the difference!",
       bullets: [
-        "Full name",
-        "Home address",
-        "Phone number",
-        "School name",
-        "Birthday (the exact date)",
-        "Photos showing your uniform, school, or home",
+        "PRIVATE: Full name, home address, school name, phone number, password, birthday",
+        "PRIVATE: Photos of you in uniform, your schedule, your parent's work details",
+        "SAFE: Favourite colour, favourite game, favourite food",
+        "SAFE: Your hobbies, your favourite film, your age range (\"I'm a kid\")",
+        "Rule of thumb: would a stranger learn who or where you are from it? If yes — PRIVATE",
       ],
     },
+
+    // Screen 3: Poster danger (from legacy POSTER FIX — 7 dangers on a mock poster)
     {
-      type: "cyberScanner",
-      items: [
-        { text: "Your favourite colour", isStrong: true, explanation: "Safe to share — nothing about you can be found from this" },
-        { text: "Your school name", isStrong: false, explanation: "PRIVATE — tells strangers where you are every weekday" },
-        { text: "Your favourite film", isStrong: true, explanation: "Safe — opinion, not ID info" },
-        { text: "Your phone number", isStrong: false, explanation: "PRIVATE — strangers can contact you directly" },
-        { text: "Your favourite video game", isStrong: true, explanation: "Safe — a hobby, not a clue to find you" },
-        { text: "Your home address", isStrong: false, explanation: "PRIVATE — one of the most sensitive things" },
-        { text: "Your favourite food", isStrong: true, explanation: "Safe — a preference" },
-        { text: "A photo showing your uniform", isStrong: false, explanation: "PRIVATE — uniforms identify your school" },
-        { text: "Your age range ('I'm a kid')", isStrong: true, explanation: "Safe — vague enough that no one can pinpoint you" },
-        { text: "Your full name", isStrong: false, explanation: "PRIVATE — full names let strangers find your profiles" },
+      type: "info",
+      title: "Spot the Dangers on a Poster",
+      content:
+        "Someone made a 'Play With Me!' poster online. Can you spot the things they should NEVER share publicly? Seven red flags:",
+      bullets: [
+        "Their FULL NAME — only first name is ever needed online",
+        "Their HOME ADDRESS — never put this anywhere public",
+        "Their SCHOOL NAME — a stranger could find them weekdays",
+        "Their PHONE NUMBER — lets strangers contact directly",
+        "A photo in school UNIFORM — identifies exactly where they go",
+        "The exact DATE they're home alone — a scary pattern",
+        "An ACCOUNT SET TO PUBLIC — everyone can see everything",
       ],
     },
+
+    // Screen 4: Classify quiz → ProtectTheData (expanded from CLASSIFY_QS to 12 items)
     {
       type: "protectTheData",
       items: [
-        { text: "Your full name", isPrivate: true },
+        { text: "Your favourite colour", isPrivate: false },
         { text: "Your home address", isPrivate: true },
+        { text: "Your mum's phone number", isPrivate: true },
+        { text: "What games you like playing", isPrivate: false },
+        { text: "Your password for school", isPrivate: true },
+        { text: "Your full name", isPrivate: true },
+        { text: "Your favourite animal", isPrivate: false },
         { text: "Your school name", isPrivate: true },
-        { text: "Your phone number", isPrivate: true },
-        { text: "Your password", isPrivate: true },
-        { text: "Your birthday", isPrivate: true },
-        { text: "Favourite colour", isPrivate: false },
-        { text: "Favourite game", isPrivate: false },
-        { text: "Favourite animal", isPrivate: false },
-        { text: '"I\'m a kid"', isPrivate: false },
-        { text: "Favourite food", isPrivate: false },
-        { text: "Favourite subject", isPrivate: false },
+        { text: "Your favourite subject", isPrivate: false },
+        { text: "Your birthday (exact date)", isPrivate: true },
+        { text: "Your age range (\"I'm a kid\")", isPrivate: false },
+        { text: "Your house door number", isPrivate: true },
       ],
     },
-    {
-      type: "info",
-      title: "The Rule of Puzzle Pieces",
-      content:
-        "One piece of private info can seem harmless. But strangers collect MANY pieces and put them together like a puzzle — until they know exactly who you are.",
-      bullets: [
-        "Your first name (common)",
-        "+ Your school",
-        "+ Your approximate age",
-        "+ A photo of the playground",
-        "= Strangers can find you in person",
-      ],
-    },
+
+    // Screen 5: Chat Simulation (from CHAT_ROUNDS) → ChooseYourPath — picked safest vs most dangerous option per round
     {
       type: "chooseYourPath",
       scenarios: [
         {
-          setup: "Someone on a game chat says 'What school do you go to? I live near there!'",
+          setup: "Someone in a chat says: \"Hey! You seem cool! What's your name? 😊\"",
           choices: [
-            { text: "Tell them the school name", isSafe: false, consequence: "Now the stranger knows where to find you in person every weekday. That's unsafe." },
-            { text: "Don't share and leave the chat", isSafe: true, consequence: "Smart. Never share your school with online strangers." },
+            { text: "I'm Adam Johnson from London!", isSafe: false, consequence: "You just revealed your full name AND city. A stranger can now search for you online." },
+            { text: "I don't share my name with strangers", isSafe: true, consequence: "Perfect. A polite refusal is always fine — real friends don't mind." },
           ],
         },
         {
-          setup: "A form on a game site asks for your full address for a 'free' gift.",
+          setup: "\"What school do you go to? Maybe we go to the same one!\"",
           choices: [
-            { text: "Fill it in to get the gift", isSafe: false, consequence: "The 'gift' was a scam. Now strangers know where you live." },
-            { text: "Close the form and tell a parent", isSafe: true, consequence: "Perfect! Real gifts never need your home address from a pop-up." },
+            { text: "St Mary's Primary on Oak Lane!", isSafe: false, consequence: "Now a stranger knows exactly where you are every weekday. Dangerous." },
+            { text: "I'd rather not say", isSafe: true, consequence: "Nice work. Your school is one of the most sensitive pieces of info you can share." },
           ],
         },
         {
-          setup: "A new online friend asks for a photo of you in your school uniform.",
+          setup: "\"Want to meet up after school? We could play football! ⚽\"",
           choices: [
-            { text: "Send it — they're friendly", isSafe: false, consequence: "The photo shows your school badge. A stranger could find you now." },
-            { text: "Say no and tell an adult", isSafe: true, consequence: "Great! Photos can give away way more than you'd expect." },
+            { text: "Sure! I finish at 3:30!", isSafe: false, consequence: "NEVER meet an online stranger, and never share your schedule. Classic red flag." },
+            { text: "I never meet people from the internet", isSafe: true, consequence: "Exactly right. Online friends you've never met are still strangers." },
           ],
         },
         {
-          setup: "Someone messages saying: 'I'm from your school, what's your phone number?'",
+          setup: "\"Can you send me a photo? I want to see what you look like!\"",
           choices: [
-            { text: "Share it — they go to your school", isSafe: false, consequence: "They might not really go to your school. Now they can contact you directly." },
-            { text: "Ask them in person at school instead", isSafe: true, consequence: "Smart! If they really go to your school, they can ask in person." },
+            { text: "Sure, here's a selfie!", isSafe: false, consequence: "Strangers can use your photo to impersonate you or find out where you go." },
+            { text: "No, I don't send photos to people online", isSafe: true, consequence: "Good judgement. Photos reveal more than you'd expect." },
+          ],
+        },
+        {
+          setup: "\"What's your address? I'll send you a gaming code! 🎮\"",
+          choices: [
+            { text: "42 Elm Street, London", isSafe: false, consequence: "Huge red flag. No legit 'gaming code' needs your home address — ever." },
+            { text: "I'm going to block you now", isSafe: true, consequence: "Perfect response. Address requests = block, report, tell a trusted adult." },
           ],
         },
       ],
     },
+
+    // Screen 6: Intel Report info — why this matters
     {
-      type: "memoryMatch",
-      pairs: [
-        { term: "Home Address", match: "Private — never share online", colour: "#ef4444" },
-        { term: "Full Name", match: "Private — don't give to strangers", colour: "#f97316" },
-        { term: "Password", match: "Only for YOU and parents", colour: "#a855f7" },
-        { term: "Favourite Colour", match: "Safe to share", colour: "#34d399" },
-        { term: "Age Range", match: '"I\'m a kid" is OK', colour: "#60a5fa" },
-        { term: "School Name", match: "Private — helps strangers find you", colour: "#f472b6" },
+      type: "info",
+      title: "Why Private Info Matters So Much",
+      content:
+        "When strangers know your private info, they can do things you wouldn't believe. Real cases happen EVERY day — and most start with one piece of info that seemed harmless.",
+      bullets: [
+        "Impersonation — pretending to be you online to trick friends and family",
+        "Fraud — using your name or address to order things under your name",
+        "Location tracking — piecing clues together to find you in real life",
+        "Social engineering — using info about you to trick grown-ups in your family",
+        "Identity building — slowly collecting enough to open fake accounts in your name",
       ],
     },
+
+    // Screen 7: Profile Detective info — from PROFILE_DANGERS
     {
-      type: "spamBlaster",
-      emails: [
-        { sender: "Survey for Kids", subject: "Quick quiz! Name, birthday, school — win a prize!", isPhishing: true, clue: "Quizzes collecting private info = data harvesting" },
-        { sender: "Best Friend", subject: "Pool party Saturday 2pm!", isPhishing: false, clue: "" },
-        { sender: "Free Gift Team", subject: "Enter your address to get your free game!", isPhishing: true, clue: "Real giveaways never need your home address" },
-        { sender: "Nan", subject: "Sending love and a card soon xx", isPhishing: false, clue: "" },
-        { sender: "Online Friend?", subject: "What's your school? We might be neighbours!", isPhishing: true, clue: "Stranger asking for your school = red flag" },
-        { sender: "Mum", subject: "Left your PE kit — picking it up for you", isPhishing: false, clue: "" },
-        { sender: "Account Check", subject: "Confirm your full name and date of birth", isPhishing: true, clue: "Real services don't need DOB re-confirmations" },
-        { sender: "Cousin", subject: "Minecraft Saturday? 👀", isPhishing: false, clue: "" },
-        { sender: "Fun Quiz 2024", subject: "Which school do you go to? Find your pop quiz match!", isPhishing: true, clue: "Classic data harvesting quiz" },
-        { sender: "Dad", subject: "Back late tonight — pizza in the fridge", isPhishing: false, clue: "" },
+      type: "info",
+      title: "Profile Detective: 7 Red Flags",
+      content:
+        "Someone's social media profile has SEVEN things wrong with it. A detective eye spots each one — can you?",
+      bullets: [
+        "Birth year in the username (helps strangers guess security questions)",
+        "Full name in the bio (surnames belong offline)",
+        "School name in the bio (reveals your weekday location)",
+        "Home address mentioned anywhere (never, ever public)",
+        "A photo showing school uniform (uniforms identify your school)",
+        "A photo showing the house number (door numbers = find-me clues)",
+        "Account set to PUBLIC (anyone in the world can see everything you post)",
       ],
     },
+
+    // Screen 8: Context sorting (CONTEXT_ROUNDS) → ChooseYourPath — same info, different context
     {
-      type: "firewallBuilder",
-      goodBlocks: [
-        "Never share your address",
-        "Check privacy settings",
-        "Keep school name private",
-        "Ask a parent before filling forms",
-        "Use general age ranges only",
-        "Never share photos with strangers",
-        "Report suspicious info requests",
-        "Log out of shared devices",
-      ],
-      badBlocks: [
-        "Fill in every online form",
-        "Share birthday for discounts",
-        "Post school pics in uniform",
-        "Share your phone number",
+      type: "chooseYourPath",
+      scenarios: [
+        {
+          setup: "Your FULL NAME — a stranger in an online game asks for it, while your teacher asks for it on the first day of school. Which is SAFE to share?",
+          choices: [
+            { text: "The stranger in the game", isSafe: false, consequence: "Strangers in games don't need your full name. Teachers do — only share with people you know in real life." },
+            { text: "Your teacher on the first day", isSafe: true, consequence: "Right! Teachers need your name. Strangers online don't." },
+          ],
+        },
+        {
+          setup: "Your HOME ADDRESS — someone in a chatroom asks, and a delivery person asks while your parent is there. Which is SAFE?",
+          choices: [
+            { text: "The chatroom stranger", isSafe: false, consequence: "NEVER share your address with online strangers — no matter how friendly they seem." },
+            { text: "The delivery person (parent present)", isSafe: true, consequence: "Exactly. Addresses only ever get shared with trusted adults present." },
+          ],
+        },
+        {
+          setup: "Your BIRTHDAY — your friend asks to invite you to a party, and a website pop-up asks to 'verify your age.' Which is SAFE?",
+          choices: [
+            { text: "The website pop-up", isSafe: false, consequence: "Pop-ups don't need real birthdays — that's often data harvesting. Friends asking for parties is fine." },
+            { text: "Your friend planning a party", isSafe: true, consequence: "Right! Real friends = safe. Random websites = check with an adult first." },
+          ],
+        },
+        {
+          setup: "A PHOTO OF YOU — an online friend you've never met asks for one, and your parent takes a family photo. Which is SAFE?",
+          choices: [
+            { text: "The online friend you've never met", isSafe: false, consequence: "Online-only friends are still strangers. Photos should only go to people you know in person." },
+            { text: "Your parent's family photo", isSafe: true, consequence: "Exactly. Family photos = fine. Stranger requests = never." },
+          ],
+        },
+        {
+          setup: "Your PASSWORD — your best friend asks, and your parent asks. Which is SAFE?",
+          choices: [
+            { text: "Your best friend", isSafe: false, consequence: "Even best friends shouldn't know your password. Their account could get hacked and take yours with it." },
+            { text: "Your parent (for safety)", isSafe: true, consequence: "Right. Only parents — no one else, ever." },
+          ],
+        },
       ],
     },
+
+    // Screen 9: Information Chain info — DOMINO effect
+    {
+      type: "info",
+      title: "The Information Chain",
+      content:
+        "Sharing one piece of private info might seem harmless. But strangers CONNECT the dots — each piece adds to the puzzle. Here's how a single slip becomes something serious:",
+      bullets: [
+        "You tell someone your SCHOOL NAME online",
+        "They now know WHERE you go every weekday",
+        "They can FIND your school on a map",
+        "They know WHEN you arrive and leave",
+        "A stranger could find you in real life",
+        "This is why even ONE piece of private info matters",
+      ],
+    },
+
+    // Screen 10: Raccoon frustration info — the flip side
+    {
+      type: "info",
+      title: "Raccoon's Nightmare",
+      content:
+        "When you DON'T share private info, Hacker Raccoon is stuck. He tries and tries — and gets nothing. Every time you refuse, you defeat him.",
+      bullets: [
+        "Home Address: he's got nothing",
+        "School Name: completely secret",
+        "Phone Number: not a single digit",
+        "Password: triple locked",
+        "Photos: nothing useful",
+        "Every 'no' you say is a win",
+      ],
+    },
+
+    // Screen 11: Speed Sort (SPEED_SORT_ITEMS → ProtectTheData with all 15 items)
+    {
+      type: "protectTheData",
+      items: [
+        { text: "Your favourite food", isPrivate: false },
+        { text: "Your home address", isPrivate: true },
+        { text: "Your favourite game", isPrivate: false },
+        { text: "Your mum's phone number", isPrivate: true },
+        { text: "Your pet's name", isPrivate: false },
+        { text: "Your password", isPrivate: true },
+        { text: "Your favourite colour", isPrivate: false },
+        { text: "Your school name", isPrivate: true },
+        { text: "What music you like", isPrivate: false },
+        { text: "Your dad's email address", isPrivate: true },
+        { text: "Your favourite YouTuber", isPrivate: false },
+        { text: "Your house door number", isPrivate: true },
+      ],
+    },
+
+    // Screen 12: Phone rounds (PHONE_ROUNDS → ChooseYourPath — safest vs most dangerous option per round)
+    {
+      type: "chooseYourPath",
+      scenarios: [
+        {
+          setup: "\"Hi! I'm from your internet company. Can you tell me your mum's full name and home address so I can fix a problem with your WiFi?\" — Unknown Number",
+          choices: [
+            { text: "Sure! Her name is...", isSafe: false, consequence: "Never give info to unknown callers. Real support doesn't work like this." },
+            { text: "No. I'm hanging up now.", isSafe: true, consequence: "Perfect. You don't owe strangers any information — hang up and tell a parent." },
+          ],
+        },
+        {
+          setup: "\"Congratulations! You've won a FREE PlayStation! We just need your full name, age, and address to send it to you!\" — Competition Hotline",
+          choices: [
+            { text: "Wow! My name is Adam and I live at...", isSafe: false, consequence: "Real prizes don't cold-call asking for info. Classic scam — never respond." },
+            { text: "This sounds like a scam — goodbye.", isSafe: true, consequence: "Exactly right. Real prizes don't phone kids demanding personal details." },
+          ],
+        },
+        {
+          setup: "\"Hello, this is the school office. We need to update your emergency contact details. Can you give us your parent's phone number?\"",
+          choices: [
+            { text: "It's 07712...", isSafe: false, consequence: "Even a 'real-sounding' caller could be fake. Always verify first." },
+            { text: "I'll ask my parent to call you back", isSafe: true, consequence: "Smart! Verifying through parents is the right move, even if the caller seems legit." },
+          ],
+        },
+        {
+          setup: "\"Hey it's Jake! I got a new phone. What's your address? I want to come round to play!\"",
+          choices: [
+            { text: "Sure it's 42 Elm Street!", isSafe: false, consequence: "How do you know it's really Jake? Always verify identity — a new number is a red flag." },
+            { text: "I'll ask my mum to call your mum", isSafe: true, consequence: "Perfect! Verifying through parents is the foolproof way." },
+          ],
+        },
+      ],
+    },
+
+    // Screen 13: Shield Questions (SHIELD_QS → CyberMaze)
     {
       type: "cyberMaze",
       questions: [
-        { question: "A stranger asks your full name. You...", answers: ["Don't share; tell an adult", "Give it to be polite", "Give half of it", "Give a fake name then chat"], correctIndex: 0 },
-        { question: "Private info includes:", answers: ["Address, phone, school, password", "Favourite colour", "Favourite food", "Your avatar"], correctIndex: 0 },
-        { question: "A pop-up asks for your birthday for a 'prize'. You...", answers: ["Close the pop-up and tell a parent", "Enter your real birthday", "Enter a fake one and claim", "Share with a friend"], correctIndex: 0 },
-        { question: "The safest way to share your age online is...", answers: ['"I\'m a kid"', "Your exact birthday", "The year you were born", "Your school grade"], correctIndex: 0 },
-        { question: "A stranger wants to video chat. You...", answers: ["Say no and tell an adult", "Say yes for just a minute", "Turn off camera and talk", "Let them call you"], correctIndex: 0 },
+        { question: "A stranger online asks where you live. You should...", answers: ["Ignore or block them", "Tell them your city only", "Give them your address", "Say just your postcode"], correctIndex: 0 },
+        { question: "Your friend wants to post a photo of you online. You should...", answers: ["Make sure you're both happy with it first", "Let them post anything", "Ask them not to post anything ever", "Post a different one yourself"], correctIndex: 0 },
+        { question: "A website asks for your real name to play a free game. You should...", answers: ["Use a nickname instead", "Type your full real name", "Use your parent's name", "Use your sibling's name"], correctIndex: 0 },
+        { question: "You get an email saying you won a prize. You should...", answers: ["Tell a parent and don't click", "Click the link to claim it", "Forward it to friends", "Reply asking for proof"], correctIndex: 0 },
+        { question: "Someone at school asks for your password to 'help you'. You should...", answers: ["Never share except with parents", "Share it, they're being nice", "Only share if they're your best friend", "Share just the first half"], correctIndex: 0 },
       ],
     },
+
+    // Screen 14: Masterplan info
+    {
+      type: "info",
+      title: "Hacker Raccoon's Masterplan — FAILED",
+      content:
+        "Hacker Raccoon thought he'd collect enough info to impersonate every kid. But thanks to Privacy Guardians like you, his plan crumbled. Six key pieces — not one of them obtained.",
+      bullets: [
+        "FULL NAMES: only first names shared",
+        "HOME ADDRESSES: never publicly shared",
+        "SCHOOLS: kept private",
+        "PHONE NUMBERS: not a single digit leaked",
+        "PASSWORDS: triple-locked",
+        "IDENTIFYING PHOTOS: nothing useful shared",
+      ],
+    },
+
+    // Screen 15: Boss Battle
     { type: "bossBattle" },
+
+    // Screen 16: Completion
     { type: "completion" },
   ],
 
+  // 30 boss questions — derived from VAULT_ATTACKS + expanded scenarios
   bossQuestions: {
     easy: [
-      { question: "What is private info?", answers: ["Info that could identify or locate you", "Your favourite game", "Jokes you like", "Opinions"], correctIndex: 0, explanation: "Private info points to who you are and where you are" },
-      { question: "Which is SAFE to share?", answers: ["Favourite colour", "Home address", "Password", "School name"], correctIndex: 0, explanation: "Opinions and preferences are safe; IDs and locations are private" },
-      { question: "Which is PRIVATE?", answers: ["Your phone number", "Favourite film", "Favourite colour", "Your hobby"], correctIndex: 0, explanation: "Contact info is always private" },
-      { question: "Someone asks for your address online. You...", answers: ["Never share it", "Only share half", "Give it to be polite", "Post it publicly"], correctIndex: 0, explanation: "Your home address is one of the most sensitive pieces of info" },
-      { question: "Your school name is...", answers: ["Private", "Public", "Safe to share", "Required by sites"], correctIndex: 0, explanation: "School name gives strangers a weekday location for you — keep private" },
-      { question: "A stranger wants to know your exact birthday. You...", answers: ["Refuse — say 'I'm a kid'", "Share it — kids love birthdays", "Give just the day", "Give your birth year"], correctIndex: 0, explanation: "Exact birthdates are used for identity verification — keep private" },
-      { question: "A selfie in your school uniform can reveal...", answers: ["Your school", "Your height only", "Nothing", "Your mood"], correctIndex: 0, explanation: "Uniforms identify specific schools — be careful about posting them publicly" },
-      { question: "Is it safe to share your favourite hobby?", answers: ["Yes", "No", "Only on weekends", "Only with strangers"], correctIndex: 0, explanation: "Hobbies are preferences, not identifying info" },
-      { question: "Your full name is...", answers: ["Private", "Fine to post", "Meaningless", "Required online"], correctIndex: 0, explanation: "Full names let strangers find your profiles and life" },
-      { question: "A site asks for your address for a 'free prize'. You...", answers: ["Close it", "Enter it", "Give a fake nearby address", "Ask them why"], correctIndex: 0, explanation: "Real prizes don't need your home address from a pop-up" },
+      { question: "Which of these is PRIVATE information?", answers: ["Your home address", "Your favourite colour", "Your favourite game", "Your favourite animal"], correctIndex: 0, explanation: "Your home address could let strangers find you — always private" },
+      { question: "Which is SAFE to share online?", answers: ["Your favourite colour", "Your full name", "Your home address", "Your phone number"], correctIndex: 0, explanation: "Preferences like favourite colours don't identify you or help strangers find you" },
+      { question: "Should you share your phone number with a stranger?", answers: ["Never", "Yes if they're nice", "Only on their birthday", "Only in private chat"], correctIndex: 0, explanation: "Phone numbers let strangers contact you directly — never share" },
+      { question: "Which is PRIVATE?", answers: ["Your school name", "Your favourite subject", "Your favourite teacher's nickname", "Your house colour"], correctIndex: 0, explanation: "Your school name tells strangers where you are every weekday — keep it private" },
+      { question: "Who is allowed to know your password?", answers: ["Only you and your parents", "Your best friend", "Your whole class", "Anyone who asks nicely"], correctIndex: 0, explanation: "Passwords stay between you and your parents — nobody else, ever" },
+      { question: "A picture of you in your school uniform is...", answers: ["Private", "Safe to post anywhere", "Only risky on Fridays", "Harmless"], correctIndex: 0, explanation: "Uniforms identify specific schools — keep photos of them private" },
+      { question: "Which is SAFE to post?", answers: ["What you ate for lunch", "Your home address", "Your phone number", "Your school ID"], correctIndex: 0, explanation: "What you ate is a preference — it can't help a stranger find you" },
+      { question: "Your exact birthday is...", answers: ["Private", "Always safe", "Only private on weekdays", "Only private if you're younger than 10"], correctIndex: 0, explanation: "Exact birthdays are used to verify identities — keep them private" },
+      { question: "Your favourite YouTuber is...", answers: ["Safe to share", "Always private", "Only private online", "A security risk"], correctIndex: 0, explanation: "A preference is safe to share — it's not identifying info" },
+      { question: "A pop-up asks for your home address for a 'free game.' You should...", answers: ["Close it — no real game needs your address", "Fill it in for the free game", "Give a fake address and still claim the game", "Ask them why they need it first"], correctIndex: 0, explanation: "No legitimate free game needs your home address — close the pop-up and tell a parent" },
     ],
     medium: [
-      { question: "The 'puzzle pieces' problem means...", answers: ["Lots of small private facts add up to identify you", "Jigsaws are unsafe", "Games are dangerous", "Puzzles are banned"], correctIndex: 0, explanation: "Strangers collect small pieces over time — each one seems harmless alone" },
-      { question: "A 'privacy setting' does what?", answers: ["Controls who sees your posts and info", "Makes your account faster", "Changes your password", "Adds emojis"], correctIndex: 0, explanation: "Privacy settings let you limit who sees your posts — check them on every app" },
-      { question: "Why check privacy settings on a new app?", answers: ["Defaults usually favour the app, not you", "They're decorative", "They're required by law", "They play music"], correctIndex: 0, explanation: "Most apps default to public or shared — always tighten them when you sign up" },
-      { question: "A quiz asks 'What's your first pet's name?' Why is this risky?", answers: ["It's a common security question answer", "Pets are private", "Pets are dangerous", "Quizzes are illegal"], correctIndex: 0, explanation: "Security questions are often used for account recovery — don't give their answers away" },
-      { question: "Metadata on a photo can include...", answers: ["GPS location and time", "The caption only", "The photographer's mood", "The photo's colour palette"], correctIndex: 0, explanation: "Photos embed hidden data — strip metadata before sharing sensitive shots" },
-      { question: "Your parent's name + your school is enough for a stranger to...", answers: ["Find and contact your family", "Nothing", "Win a quiz", "Hack your phone"], correctIndex: 0, explanation: "Combine parent + school and a stranger can find you — layer protection with privacy" },
-      { question: "Public Wi-Fi without a VPN can leak...", answers: ["What you browse to anyone on the network", "Nothing ever", "Your dreams", "Song lyrics"], correctIndex: 0, explanation: "Public Wi-Fi is unsafe — use a VPN or your phone's data for sensitive stuff" },
-      { question: "'Opt out' means...", answers: ["Choose NOT to share data", "Choose to share all data", "Opt for surprises", "Turn off opinions"], correctIndex: 0, explanation: "Opt out = say no. Always look for opt-out buttons on data-collecting sites" },
-      { question: "Deleting a post from your account means...", answers: ["Copies may still exist in screenshots and backups", "It's gone from the whole internet", "Only the caption is gone", "The photo becomes public"], correctIndex: 0, explanation: "Deletion on your account isn't deletion everywhere — assume stuff online is permanent" },
-      { question: "Your 'digital shadow' is...", answers: ["All the info others collect about you without you knowing", "A photo filter", "An avatar", "A video game"], correctIndex: 0, explanation: "Every app, ad, and cookie builds a profile of you — your digital shadow" },
+      { question: "A website asks for your birthday to 'verify your age.' Is this safe?", answers: ["Check with a parent first", "Yes — it's just verification", "Only if the site has a lock icon", "Only if it's a school site"], correctIndex: 0, explanation: "Age verification can be a data-harvesting trick — always check with a parent before giving out your birthday" },
+      { question: "Why is your school name considered PRIVATE?", answers: ["It helps strangers find where you are every weekday", "It's copyrighted", "Schools are all different", "Because it has letters"], correctIndex: 0, explanation: "Knowing your school gives a stranger a specific location and schedule — very risky" },
+      { question: "A stranger online says 'I'm from your school too — what's your form room?' You should...", answers: ["Refuse and report them — real classmates can ask in person", "Tell them quickly", "Give them the wrong room on purpose", "Test them with a fake name"], correctIndex: 0, explanation: "Real classmates can ask you in person — online strangers claiming to be 'from your school' is a classic trick" },
+      { question: "An app asks for permission to access your CAMERA, MICROPHONE, CONTACTS, and LOCATION — but it's a calculator. You should...", answers: ["Deny — a calculator doesn't need those", "Allow — the app must need them", "Allow only camera and mic", "Install a different calculator"], correctIndex: 0, explanation: "If an app's requested permissions don't match what it does, don't install it" },
+      { question: "Photo metadata can include...", answers: ["GPS location where it was taken", "The photographer's mood", "Nothing important", "How many likes it will get"], correctIndex: 0, explanation: "Phone photos often embed GPS coordinates — be careful about posting them publicly" },
+      { question: "Why are 'fun personality quizzes' sometimes risky?", answers: ["They ask for security-question answers like pet's name or birthday", "They're too hard", "They're boring", "They run too slowly"], correctIndex: 0, explanation: "Many quizzes are data-harvesting — the questions match account-recovery security questions" },
+      { question: "A caller says they're from your internet company and asks for your parent's address. You should...", answers: ["Hang up and tell a parent", "Answer them — they sound official", "Give just your postcode", "Ask them for their employee ID first"], correctIndex: 0, explanation: "Real support companies don't cold-call kids asking for parent info. Hang up and tell an adult" },
+      { question: "The safest way to share your age online is...", answers: ["\"I'm a kid\" or an age range", "Your full birthday", "Your year of birth", "Your star sign"], correctIndex: 0, explanation: "Vague age ranges don't identify you — exact birthdays do" },
+      { question: "A 'free' online quiz at the end says 'give your full name, birthday, and pet's name for your result.' Why is this risky?", answers: ["These are common security-question answers", "The results aren't accurate anyway", "Quizzes are illegal", "Quizzes make websites slow"], correctIndex: 0, explanation: "That combo is exactly what hackers need to impersonate you or access accounts" },
+      { question: "You see a classmate share a photo showing your school in the background. You should...", answers: ["Ask them to take it down", "Share it too", "Post more photos like it", "Tell them it's fine"], correctIndex: 0, explanation: "Even accidentally revealing your school can be dangerous — ask to have it removed" },
     ],
     hard: [
-      { question: "Why is your school name particularly risky to share?", answers: ["It narrows your location to a weekday-predictable place and you", "It's copyrighted", "It's illegal", "It's too long"], correctIndex: 0, explanation: "School = a specific place you are on a specific schedule. Dangerous combo" },
-      { question: "A website's 'data broker' is...", answers: ["A company that buys and sells personal info", "A stock trader", "A bank employee", "A schoolteacher"], correctIndex: 0, explanation: "Data brokers profile people from public + purchased info — another reason to share less" },
-      { question: "Why is GPS metadata on photos especially risky for kids?", answers: ["A photo from 'home' can reveal exact address to anyone who sees it", "It makes photos heavy", "It uses too much battery", "It's a bug"], correctIndex: 0, explanation: "Phone photos often embed GPS coordinates — strip location on phones before posting sensitive shots" },
-      { question: "You post 'first day of Year 6!' with a uniform photo. What did you just share?", answers: ["Your age, school, and what you look like", "Nothing", "Only a photo", "Only a comment"], correctIndex: 0, explanation: "That one post revealed age (~10), school (uniform), and your face — three puzzle pieces" },
-      { question: "'Social engineering' exploits...", answers: ["People's trust and emotions, not computer bugs", "Only old computers", "Only games", "Nothing"], correctIndex: 0, explanation: "Scammers manipulate feelings (fear, excitement, trust) — not code — to get info" },
-      { question: "Why are 'loyalty cards' a privacy concern?", answers: ["They track every purchase you make", "They're magnetic", "They're made of plastic", "They have colours"], correctIndex: 0, explanation: "Loyalty programs build detailed buying profiles — that's why they're 'free'" },
-      { question: "Your IP address reveals...", answers: ["Your approximate location and your internet provider", "Your birth date", "Your favourite game", "Your address to the exact house"], correctIndex: 0, explanation: "IP = rough city-level location. Use a VPN for sensitive stuff" },
-      { question: "Oversharing 'I'm home alone today' is risky because...", answers: ["It tells strangers your location AND your vulnerability at once", "It's a spoiler", "It's nothing", "It's only a phrase"], correctIndex: 0, explanation: "Status posts about being alone are among the riskiest things to share publicly" },
-      { question: "The 'right to be forgotten' means...", answers: ["You can ask some companies to delete your data about you", "Everyone forgets your birthday", "You can delete the internet", "You can delete school"], correctIndex: 0, explanation: "In many countries you can request data removal — worth knowing, though not automatic" },
-      { question: "The core rule of online privacy is...", answers: ["Share the minimum — would a stranger need this to find me?", "Share everything — they'll find it anyway", "Share only on Mondays", "Share only photos"], correctIndex: 0, explanation: "Default to less — ask 'does this help a stranger find me?' before sharing anything" },
+      { question: "Your friend posts a photo of you in your school uniform without asking. What should you do?", answers: ["Ask them to take it down and tell an adult if they don't", "Leave it — they're your friend", "Post an embarrassing photo of them back", "Share the same photo with more people"], correctIndex: 0, explanation: "Always ask a friend to remove photos that reveal private info about you — and tell an adult if they won't" },
+      { question: "A quiz app wants access to your CONTACTS 'to find friends.' Why is this risky?", answers: ["It collects everyone's phone numbers — not just yours", "Contacts never work on apps", "It uses too much battery", "Nothing risky about it"], correctIndex: 0, explanation: "Contacts permissions collect data on everyone you know, not just you. Classic overreach" },
+      { question: "A stranger messages saying they go to your school and knows your teacher's name. What's actually happening?", answers: ["They researched publicly available info to sound credible", "They must go to your school", "They must be a teacher", "Teacher names are secret so they're lying"], correctIndex: 0, explanation: "Teacher names are often on school websites. Scammers research to sound legitimate" },
+      { question: "Your photo is posted on a public account. Later, you delete it. Can strangers still see it?", answers: ["Yes — screenshots and caches may already exist", "No — deleting removes it everywhere", "Only on leap years", "Only if they saved it first"], correctIndex: 0, explanation: "Anything public on the internet is essentially permanent — assume it can't be undone" },
+      { question: "Someone in a game says they're a 'Roblox employee' and offers Robux for your account login. What's actually happening?", answers: ["It's a scam — real staff never ask for logins", "It's the real deal", "It works for VIP accounts only", "It's only a scam at weekends"], correctIndex: 0, explanation: "No game company employee ever asks for your password or login credentials" },
+      { question: "Your school posts a class photo on their public social media. This is risky because...", answers: ["Strangers can identify students and the school from public posts", "Class photos drain batteries", "Photos are always bad", "Schools shouldn't have social media"], correctIndex: 0, explanation: "Public school posts can expose students to strangers — ask parents to check privacy settings with schools" },
+      { question: "A 'support agent' video-calls saying they need to see your screen to fix something. What should you do?", answers: ["Refuse and get a parent — real support doesn't demand screen access to kids", "Share your screen", "Let them control your device briefly", "Give your password over video call"], correctIndex: 0, explanation: "Remote access gives someone complete control over your device — never give this to anyone without a parent present" },
+      { question: "You accidentally tell an online 'friend' your school. You realise it's risky. What's the right move?", answers: ["Tell a trusted adult immediately — they can help", "Say nothing and hope for the best", "Block the friend and forget it", "Change schools"], correctIndex: 0, explanation: "Mistakes happen. The sooner a trusted adult knows, the faster things can be handled safely" },
+      { question: "Why is posting 'home alone today!' particularly risky?", answers: ["It tells strangers your location AND your vulnerability at once", "It's a spoiler", "It's just a phrase", "Nothing risky"], correctIndex: 0, explanation: "Status posts about being alone are among the riskiest things — never share your availability publicly" },
+      { question: "The single best rule of online privacy is...", answers: ["Share the minimum — ask if a stranger needs this to find me", "Share everything — they'll find it anyway", "Never go online", "Use emojis instead of words"], correctIndex: 0, explanation: "Default to less. Before you share, ask: 'Does this help a stranger identify or find me?' If yes, don't share" },
     ],
   },
 
+  // Extracted from WEEK2_REACTIONS in characterReactions.ts — speaker's {mood, message};
+  // the silent character = null so they use their idle pose.
   reactions: {
-    0: { adam: { mood: "excited", message: "Welcome to Week 2 — Private Info!" }, layla: null },
-    1: { adam: null, layla: { mood: "curious", message: "Mission briefing time." } },
-    2: { adam: { mood: "thinking", message: "Private info points to YOU — keep it safe." }, layla: null },
-    3: { adam: null, layla: { mood: "excited", message: "Scan each piece of info!" } },
-    4: { adam: { mood: "excited", message: "Move the shield to block private data." }, layla: null },
-    5: { adam: null, layla: { mood: "thinking", message: "Puzzle pieces add up fast." } },
-    6: { adam: { mood: "curious", message: "Which door keeps you safe?" }, layla: null },
-    7: { adam: null, layla: { mood: "curious", message: "Match up the privacy terms!" } },
-    8: { adam: { mood: "worried", message: "Zap the data-harvesting emails!" }, layla: null },
-    9: { adam: null, layla: { mood: "excited", message: "Build the privacy firewall!" } },
-    10: { adam: { mood: "thinking", message: "Answer each gate about privacy." }, layla: null },
-    11: { adam: null, layla: { mood: "excited", message: "Boss battle — beat the Raccoon's info harvest!" } },
-    12: { adam: { mood: "excited", message: "Final challenge, Agent!" }, layla: null },
-    13: { adam: null, layla: { mood: "thumbsup", message: "Info Agent unlocked. You're unstoppable." } },
+    0: { adam: { mood: "excited", message: "Welcome back, cadet! This week we're learning how to protect private info!" }, layla: null },
+    1: { adam: null, layla: { mood: "curious", message: "New mission! Something online needs your help — let's go!" } },
+    2: { adam: { mood: "thinking", message: "What counts as private information? Tap each tile to find out..." }, layla: null },
+    3: { adam: null, layla: { mood: "curious", message: "Not everything online should be shared. Let's keep looking!" } },
+    4: { adam: { mood: "worried", message: "Spot something risky on this poster — can you find all the dangers?" }, layla: null },
+    5: { adam: null, layla: { mood: "thumbsup", message: "Nice work! You're becoming a privacy pro!" } },
+    6: { adam: { mood: "thinking", message: "Think carefully — what should you share, and what should you keep secret?" }, layla: null },
+    7: { adam: null, layla: { mood: "worried", message: "A stranger is chatting with you. Choose your answers carefully!" } },
+    8: { adam: { mood: "thumbsup", message: "You handled that brilliantly! Safety first, always." }, layla: null },
+    9: { adam: null, layla: { mood: "curious", message: "Let's explore what happens when private info gets out..." } },
+    10: { adam: { mood: "worried", message: "Uh-oh — this post is sharing way too much. Can you fix it?" }, layla: null },
+    11: { adam: null, layla: { mood: "thinking", message: "Time to test your knowledge with a quick quiz!" } },
+    12: { adam: { mood: "excited", message: "You're almost a Privacy Guardian! Keep going!" }, layla: null },
+    13: { adam: null, layla: { mood: "worried", message: "Careful — this message looks like a trick. Can you tell why?" } },
+    14: { adam: { mood: "thumbsup", message: "Excellent detective work! You spotted the danger." }, layla: null },
+    15: { adam: null, layla: { mood: "excited", message: "Final mission! Use everything you've learned." } },
+    16: { adam: { mood: "thumbsup", message: "Amazing! You protected your private info like a true Guardian." }, layla: null },
   },
 };
