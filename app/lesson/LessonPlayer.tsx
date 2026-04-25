@@ -1125,9 +1125,10 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
   /* ---------- state ---------- */
   const [screen, setScreen] = useState(0);
 
-  // Story cutscene state — the lesson opens with the intro cutscene; no
-  // further cutscenes fire during the lesson.
-  const [cutscene, setCutscene] = useState<"intro" | null>("intro");
+  // Intro cutscene disabled — lesson lands directly on screen 0. The state
+  // machine and StoryCutscene render path are kept in case we want to
+  // re-enable later; just flip this initial value back to "intro".
+  const [cutscene, setCutscene] = useState<"intro" | null>(null);
   const cutsceneSlides = cutscene === "intro" ? WEEK1_INTRO : null;
   const cutsceneTitle: string | undefined = cutscene === "intro"
     ? "WEEK 1: PASSWORDS"

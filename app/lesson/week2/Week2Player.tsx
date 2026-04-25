@@ -793,8 +793,8 @@ const _SpeechBubbleLegacy = ({ character, message, side = "left" }: { character:
 export default function Week2Player({ userName, moduleId, childName }: { userName: string; moduleId: string; childName: string }) {
   const [step, setStep] = useState(0);
 
-  // Story cutscene state — only the intro plays; the lesson runs uninterrupted after.
-  const [cutscene, setCutscene] = useState<"intro" | null>("intro");
+  // Intro cutscene disabled — lesson lands directly on screen 0. State + render path kept in case we re-enable.
+  const [cutscene, setCutscene] = useState<"intro" | null>(null);
   const cutsceneSlides = cutscene === "intro" ? WEEK2_INTRO : null;
   const cutsceneTitle: string | undefined = cutscene === "intro"
     ? "WEEK 2: PRIVATE INFORMATION"

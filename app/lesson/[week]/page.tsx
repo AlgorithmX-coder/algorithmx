@@ -261,7 +261,9 @@ export default function DynamicLesson() {
   }, [rawParams, weekNum, content]);
 
   // All hooks run unconditionally — we short-circuit with a fallback render below.
-  const [cutsceneDone, setCutsceneDone] = useState(false);
+  // Intro cutscene disabled — lesson lands directly on screen 0. Default the
+  // flag to true so the StoryCutscene early return is bypassed.
+  const [cutsceneDone, setCutsceneDone] = useState(true);
   const [screen, setScreen] = useState(0);
   const [lessonXp, setLessonXp] = useState(0);
   const [wrongCounts, setWrongCounts] = useState<Record<number, number>>({});

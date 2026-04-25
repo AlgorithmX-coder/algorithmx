@@ -3,7 +3,14 @@
 import { useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import dynamic from "next/dynamic";
 import { motion, AnimatePresence } from "framer-motion";
+
+// 3D wireframe globe — code-split so the Three.js bundle only ships when
+// the user actually loads /login (not on every other route).
+const CyberGlobe = dynamic(() => import("@/app/components/CyberGlobe"), {
+  ssr: false,
+});
 
 /* ─── CONSTANTS ─── */
 const GRAD = "linear-gradient(135deg, #8b5cf6, #3b82f6)";
@@ -279,42 +286,40 @@ export default function LoginPage() {
 
         <FloatingIcons />
 
-        {/* Terminal-style pulse around the orb */}
+        {/* Halo glow behind the 3D globe */}
         <div aria-hidden className="absolute" style={{
-          width: 360, height: 360, borderRadius: "50%",
-          background: "radial-gradient(circle, rgba(34,211,238,0.18), transparent 60%)",
-          animation: "loginOrbPulse 3.2s ease-in-out infinite",
-          filter: "blur(14px)",
+          width: 460, height: 460, borderRadius: "50%",
+          background: "radial-gradient(circle, rgba(34,211,238,0.22), rgba(139,92,246,0.08) 50%, transparent 70%)",
+          animation: "loginOrbPulse 4s ease-in-out infinite",
+          filter: "blur(20px)",
           pointerEvents: "none",
         }} />
 
-        {/* Shield */}
+        {/* Live 3D wireframe globe — rotates, has orbiting rings + floating
+            particle shell. Fills the right column behind the AX label. */}
+        <div className="absolute inset-0" style={{ pointerEvents: "none" }}>
+          <CyberGlobe />
+        </div>
+
+        {/* Centre label + terminal prompt + stats */}
         <motion.div className="relative flex flex-col items-center"
+          style={{ marginTop: 270 }}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ type: "spring", stiffness: 200, damping: 20, delay: 0.3 }}>
-          <motion.div className="flex items-center justify-center"
-            animate={{ y: [-6, 6, -6], rotateY: [0, 6, 0, -6, 0] }}
-            transition={{ y: { duration: 4, ease: "easeInOut", repeat: Infinity }, rotateY: { duration: 7, ease: "easeInOut", repeat: Infinity } }}
-            style={{
-              width: 200, height: 230,
-              background: "linear-gradient(135deg, #8b5cf6, #3b82f6 55%, #22d3ee)",
-              borderRadius: "50% 50% 50% 50% / 40% 40% 60% 60%",
-              boxShadow: "0 0 60px rgba(34,211,238,0.35), 0 0 90px rgba(139,92,246,0.25), inset 0 0 40px rgba(255,255,255,0.05)",
-              position: "relative",
-            }}>
-            <div className="flex flex-col items-center">
-              <span className="text-5xl font-black text-white" style={{ fontFamily: "Nunito, sans-serif", textShadow: "0 2px 10px rgba(0,0,0,0.3)" }}>AX</span>
-              <span className="text-xs font-bold text-white/60 mt-1 tracking-widest">ALGORITHMX</span>
-            </div>
-          </motion.div>
+          transition={{ type: "spring", stiffness: 200, damping: 20, delay: 0.6 }}>
+          <span className="text-3xl font-black tracking-widest" style={{
+            fontFamily: "Nunito, sans-serif",
+            color: "#fff",
+            textShadow: "0 0 18px rgba(34,211,238,0.55), 0 2px 12px rgba(0,0,0,0.5)",
+            letterSpacing: 6,
+          }}>ALGORITHMX</span>
 
-          {/* Terminal prompt line under the orb */}
+          {/* Terminal prompt line under the globe */}
           <div style={{
             fontFamily: "'JetBrains Mono', 'Fira Code', 'Consolas', monospace",
             fontSize: 12,
             color: "#22d3ee",
-            marginTop: 28,
+            marginTop: 18,
             letterSpacing: 1,
           }}>
             <span style={{ color: "#10b981" }}>$</span> ax_login --auth<span style={{ marginLeft: 6, animation: "loginCursorBlink 1s steps(1) infinite" }}>▮</span>
