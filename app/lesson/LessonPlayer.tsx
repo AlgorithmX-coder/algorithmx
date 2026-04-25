@@ -42,6 +42,10 @@ const BossBattle = dynamic(
   () => import("@/app/components/game/BossBattle"),
   { ssr: false }
 );
+const MissionBriefScene = dynamic(
+  () => import("@/app/components/game/MissionBriefScene"),
+  { ssr: false }
+);
 import VaultLock from "@/app/components/exercises/VaultLock";
 import InboxSimulator from "@/app/components/exercises/InboxSimulator";
 import SortingStation from "@/app/components/exercises/SortingStation";
@@ -1660,11 +1664,23 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
   // We only consult the saved state ONCE on mount. The "Save & Exit"
   // button writes to localStorage and navigates away; on next mount the
   // screen below sees the saved state and offers a resume prompt.
-  const [savedState] = useState<SavedLessonState | null>(() => loadSavedLesson());
-  const [showResumePrompt, setShowResumePrompt] = useState(
-    () => !!savedState && savedState.screen > 0 && savedState.screen < 18
-  );
+  // Read saved state post-hydration to avoid SSR/client mismatch (localStorage doesn't exist server-side)
+  const [savedState, setSavedState] = useState<SavedLessonState | null>(null);
+  const [showResumePrompt, setShowResumePrompt] = useState(false);
+  useEffect(() => {
+    const s = loadSavedLesson();
+    if (s) {
+      setSavedState(s);
+      if (s.screen > 0 && s.screen < 18) setShowResumePrompt(true);
+    }
+  }, []);
   const [screen, setScreen] = useState(0);
+  // Dev: jump to a specific case via ?case=N (post-hydration so SSR matches)
+  useEffect(() => {
+    const c = new URLSearchParams(window.location.search).get("case");
+    const n = c ? parseInt(c, 10) : NaN;
+    if (Number.isFinite(n)) setScreen(n);
+  }, []);
 
   // Intro cutscene disabled — lesson lands directly on screen 0. The state
   // machine and StoryCutscene render path are kept in case we want to
@@ -2803,177 +2819,11 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
         ];
         return (
           <FullScene bg="linear-gradient(180deg, #1a0a0a 0%, #1a1033 100%)" glow="radial-gradient(circle, rgba(239,68,68,0.3), transparent)">
-          <style>{`
-            @keyframes missionScan { 0% { transform: translateY(-100%); } 100% { transform: translateY(120%); } }
-            @keyframes missionStatusBlink { 0%,100% { opacity: 1; } 50% { opacity: 0.25; } }
-            @keyframes missionGridDrift { 0% { background-position: 0 0; } 100% { background-position: 40px 40px; } }
-            @keyframes missionTilt { 0%,100% { transform: rotateX(6deg) rotateY(-2deg); } 50% { transform: rotateX(4deg) rotateY(2deg); } }
-            @keyframes missionTagPulse { 0%,100% { box-shadow: 0 0 12px var(--tag-glow), 0 0 0 0 var(--tag-glow); } 50% { box-shadow: 0 0 24px var(--tag-glow), 0 0 0 6px transparent; } }
-          `}</style>
-          <div style={{ textAlign: "center", perspective: "1400px", perspectiveOrigin: "50% 30%" }}>
-            {/* HUD status row */}
-            <motion.div
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              style={{
-                display: "inline-flex", alignItems: "center", gap: 10,
-                padding: "6px 14px", marginBottom: 14,
-                background: "rgba(239,68,68,0.08)",
-                border: "1px solid rgba(239,68,68,0.4)",
-                borderRadius: 999,
-                fontFamily: "ui-monospace, 'JetBrains Mono', Menlo, monospace",
-                fontSize: 12, fontWeight: 700,
-                color: "#fca5a5",
-                letterSpacing: 2,
-                textTransform: "uppercase",
-              }}
-            >
-              <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#ef4444", boxShadow: "0 0 10px #ef4444", animation: "missionStatusBlink 1.2s ease-in-out infinite" }} />
-              MISSION_BRIEF.exe // CLASSIFIED
-            </motion.div>
-
-            <h1 data-split style={{
-              fontSize: 48, fontWeight: 900, background: GRAD, WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent", marginBottom: 6, textShadow: "0 0 30px rgba(59,130,246,0.5)",
-              letterSpacing: 2,
-            }}>YOUR MISSION</h1>
-            <p style={{ color: "#94a3b8", fontSize: 13, letterSpacing: 4, textTransform: "uppercase", marginBottom: 22, fontFamily: "ui-monospace, 'JetBrains Mono', Menlo, monospace" }}>
-              ▸ THREE OBJECTIVES // ONE CYBER HERO
-            </p>
-
-            {/* Holographic 3D briefing panel */}
-            <motion.div
-              initial={{ opacity: 0, rotateX: 20, y: 30 }}
-              animate={{ opacity: 1, rotateX: 0, y: 0 }}
-              transition={{ duration: 0.7, ease: "easeOut" }}
-              style={{
-                position: "relative",
-                maxWidth: 760,
-                margin: "0 auto 24px",
-                padding: "28px 22px 24px",
-                background: "linear-gradient(180deg, rgba(15,23,42,0.85) 0%, rgba(20,12,40,0.85) 100%)",
-                borderRadius: 22,
-                border: "1px solid rgba(99,102,241,0.35)",
-                boxShadow:
-                  "0 30px 60px -20px rgba(2,6,23,0.7)," +
-                  "0 0 0 1px rgba(99,102,241,0.15) inset," +
-                  "0 0 60px rgba(99,102,241,0.18)",
-                transform: "rotateX(4deg)",
-                transformStyle: "preserve-3d",
-                overflow: "hidden",
-              }}
-            >
-              {/* Animated grid layer */}
-              <div aria-hidden style={{
-                position: "absolute", inset: 0,
-                backgroundImage:
-                  "linear-gradient(rgba(99,102,241,0.07) 1px, transparent 1px)," +
-                  "linear-gradient(90deg, rgba(99,102,241,0.07) 1px, transparent 1px)",
-                backgroundSize: "40px 40px",
-                animation: "missionGridDrift 6s linear infinite",
-                pointerEvents: "none",
-                opacity: 0.7,
-              }} />
-              {/* Scan line */}
-              <div aria-hidden style={{
-                position: "absolute", left: 0, right: 0, height: 80,
-                background: "linear-gradient(180deg, transparent, rgba(34,211,238,0.18), transparent)",
-                animation: "missionScan 4s linear infinite",
-                pointerEvents: "none",
-                mixBlendMode: "screen",
-              }} />
-              {/* Corner brackets */}
-              {[
-                { top: 8, left: 8, br: { borderTop: "2px solid #22d3ee", borderLeft: "2px solid #22d3ee" } },
-                { top: 8, right: 8, br: { borderTop: "2px solid #22d3ee", borderRight: "2px solid #22d3ee" } },
-                { bottom: 8, left: 8, br: { borderBottom: "2px solid #22d3ee", borderLeft: "2px solid #22d3ee" } },
-                { bottom: 8, right: 8, br: { borderBottom: "2px solid #22d3ee", borderRight: "2px solid #22d3ee" } },
-              ].map((c, idx) => (
-                <span key={idx} aria-hidden style={{ position: "absolute", width: 16, height: 16, ...c.br, ...c, opacity: 0.7, pointerEvents: "none" }} />
-              ))}
-
-              {/* Mission objectives (3D stacked cards) */}
-              <motion.div
-                variants={staggerContainer}
-                initial="initial"
-                animate="animate"
-                style={{ position: "relative", display: "flex", flexDirection: "column", gap: 14 }}
-              >
-                {missions.map((m, i) => (
-                  missionPhase > i ? (
-                    <motion.div
-                      key={i}
-                      variants={staggerItem}
-                      whileHover={{ rotateX: -2, rotateY: 1, scale: 1.02, z: 20 }}
-                      transition={{ type: "spring", stiffness: 260, damping: 20 }}
-                      style={{
-                        position: "relative",
-                        display: "grid",
-                        gridTemplateColumns: "auto auto 1fr auto",
-                        alignItems: "center",
-                        gap: 16,
-                        padding: "16px 18px",
-                        background: `linear-gradient(135deg, ${m.colour}18 0%, rgba(15,23,42,0.6) 70%)`,
-                        border: `1px solid ${m.colour}66`,
-                        borderRadius: 14,
-                        textAlign: "left",
-                        transformStyle: "preserve-3d",
-                        boxShadow: `0 10px 30px -12px ${m.glow}, inset 0 0 0 1px ${m.colour}22`,
-                      }}
-                    >
-                      {/* Number tag */}
-                      <span style={{
-                        display: "inline-flex", alignItems: "center", justifyContent: "center",
-                        width: 38, height: 38, borderRadius: 10,
-                        background: `linear-gradient(135deg, ${m.colour}, ${m.colour}aa)`,
-                        color: "#0b0f1a",
-                        fontFamily: "ui-monospace, 'JetBrains Mono', Menlo, monospace",
-                        fontWeight: 900, fontSize: 14,
-                        ["--tag-glow" as string]: m.glow,
-                        animation: "missionTagPulse 2.4s ease-in-out infinite",
-                      } as React.CSSProperties}>
-                        {String(i + 1).padStart(2, "0")}
-                      </span>
-                      {/* Icon orb */}
-                      <span style={{
-                        display: "inline-flex", alignItems: "center", justifyContent: "center",
-                        width: 52, height: 52, borderRadius: "50%",
-                        background: `radial-gradient(circle at 35% 30%, ${m.colour}55, transparent 70%)`,
-                        border: `1px solid ${m.colour}77`,
-                        fontSize: 28,
-                        boxShadow: `0 0 18px ${m.glow}`,
-                      }}>
-                        {m.icon}
-                      </span>
-                      {/* Text + caption */}
-                      <span style={{ display: "flex", flexDirection: "column", gap: 2 }}>
-                        <span style={{
-                          color: "#9ca3af", fontSize: 10, letterSpacing: 3, textTransform: "uppercase",
-                          fontFamily: "ui-monospace, 'JetBrains Mono', Menlo, monospace",
-                        }}>
-                          ▸ Objective {String(i + 1).padStart(2, "0")}
-                        </span>
-                        <span style={{ color: "#fff", fontSize: 18, fontWeight: 800 }}>{m.text}</span>
-                      </span>
-                      {/* Status dot */}
-                      <span style={{
-                        width: 10, height: 10, borderRadius: "50%",
-                        background: m.colour, boxShadow: `0 0 12px ${m.glow}`,
-                        animation: "missionStatusBlink 1.6s ease-in-out infinite",
-                      }} />
-                    </motion.div>
-                  ) : <div key={i} style={{ height: 86 }} />
-                ))}
-              </motion.div>
-            </motion.div>
-
-            {missionPhase >= 3 && (
-              <motion.div initial={{ opacity: 0, scale: 0.5 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: "spring", stiffness: 300, damping: 20 }}>
-                {btn("Accept Mission →", () => { playTone("powerup"); navigate(2); })}
-              </motion.div>
-            )}
-          </div>
+            <MissionBriefScene
+              phase={missionPhase}
+              missions={missions}
+              onAccept={() => { playTone("powerup"); navigate(2); }}
+            />
           </FullScene>
         );
       }
