@@ -1,56 +1,68 @@
 # E2E tests
 
-Run locally:
+```
+npm run test:e2e        # production build, headless (matches CI)
+npm run test:e2e:dev    # next dev, headless (faster iteration)
+npm run test:e2e:ui     # interactive UI runner
+```
 
-```
-npm run test:e2e          # production build, headless (matches CI)
-npm run test:e2e:dev      # dev server, headless (faster iteration)
-npm run test:e2e:ui       # opens Playwright UI runner
-```
+## Test projects
+
+Two Playwright projects, configured in `playwright.config.ts`:
+
+- **`public`** — runs `public-pages.spec.ts`. No auth, no DB required
+  beyond build-time. Smoke-tests the landing page, login form,
+  signup form, forgot-password flow and course pages. Uses
+  `tests/e2e/fixtures.ts` to pre-set the `site_auth` gate cookie.
+
+- **`authed`** — runs anything in `tests/e2e/authed/`. Loads
+  `storageState` from `tests/e2e/.auth/user.json`, which is generated
+  by `globalSetup` once before the suite runs. Tests start already
+  signed in as the e2e test user.
+
+`globalSetup` (see `global-setup.ts`):
+1. POSTs to `/api/test/seed` (only enabled when `E2E_TESTS=1`).
+   Creates the test user, child profile, course + week-1 module, and
+   wipes any progress.
+2. Drives the login form to obtain a real session cookie.
+3. Saves storageState to `tests/e2e/.auth/user.json`.
+
+Both projects run `tsc + vitest` in parallel via the GitHub Actions
+workflow on every push.
 
 ## What's covered today
 
-- `public-pages.spec.ts` — every public/auth-free page renders without
-  console errors, the login form has its expected fields, the
-  forgot-password flow validates and shows its success state, and the
-  Cyber Heroes age range stays "6-9".
+- `public-pages.spec.ts` — landing, login, signup, forgot-password,
+  course pages (cyberheroes / cyberexplorers / cyberstart /
+  cyberstart-pro), age-range regression guard.
+- `authed/lesson-flow.spec.ts` — `/lesson` boots, Save & Exit visible,
+  Resume prompt after autosave, dashboard renders, age-range while
+  authed, **first-lesson-screen always has an enabled action button**
+  (gate-everything regression guard).
+- `authed/gate-button-regression.spec.ts` — explicitly named guards
+  against the "no Next button / no doors / can't proceed" class of
+  bug. Add a new case here every time we ship a fix for a stranded
+  player.
 
-These are smoke tests. They catch the "white page after deploy" and
-"button removed by accident" regressions that have hit production.
+## How to add a regression test for a new bug
 
-## What's not covered yet (auth-required flows)
+When a bug is filed:
 
-The lesson player, exercises, and boss battle live behind authentication
-and require a populated user with a `Course → Module → Week` row in
-Postgres. Those tests need:
+1. Add a `test(...)` to `authed/gate-button-regression.spec.ts` (or a
+   new file under `authed/`) that asserts the buggy behaviour fails.
+   It should **go red** before any fix is applied.
+2. Implement the fix in the relevant file.
+3. The test now goes green. Commit both together so the test stays in
+   the suite as a permanent guard.
 
-1. A test database (or a Postgres test container in CI).
-2. A `tests/fixtures/seed.ts` that creates a known user + course state
-   before the suite, wraps each test in a transaction, and tears down
-   afterwards.
-3. A storage-state file so we don't go through the full sign-in flow on
-   every test.
+That's the loop: every reported bug becomes a permanent test.
 
-When we add those, the next batch of specs to write (in priority order):
+## Still uncovered
 
-1. **Lesson smoke** — load `/lesson/1`, click through the cutscene-skip
-   path, and verify each screen renders without errors.
-2. **Exercise interactions** — for every exercise, verify the primary
-   button or canvas interaction registers a score change. This is the
-   suite that would have caught the CyberScanner stale-`disabled` bug
-   before it shipped.
-3. **Boss battle** — verify the START button triggers the battle, an
-   answer click registers, and the victory state shows a Next button.
-4. **Completion** — verify "You Did It!" reveals achievements within 5s
-   and the Next button is clickable. (This is the gate-bug class.)
-5. **Onboarding wizard** — colour selection persists, age validates,
-   profile is created, redirect to /welcome works.
-
-## Why the gates keep breaking
-
-The class of bug we keep hitting is "the Next button is rendered behind
-a condition that's only true at the end of a long stagger animation, and
-the stagger never completes because of an unrelated state mismatch."
-The unit-of-test that catches this is "wait 6 seconds, assert the Next
-button is visible/clickable." That's exactly what these specs will do
-once the auth fixture is in place.
+- Inside-canvas interactions (Pixi BossBattle internals, canvas-only
+  collision detection). DOM-level Playwright can't reach them.
+- Visual regressions ("looks too 2D"). Visual snapshot testing is the
+  next investment if visual bugs become a recurring problem.
+- Audio assertions.
+- Real-device touch gestures (BrowserStack later).
+- Multi-week lesson progression (Week 2+ flows).

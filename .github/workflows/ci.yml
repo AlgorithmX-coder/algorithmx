@@ -76,9 +76,14 @@ jobs:
       - name: Run Playwright tests
         run: npm run test:e2e
         env:
-          DATABASE_URL: postgres://stub:stub@localhost:5432/stub
+          # NB: real DATABASE_URL needs to come from a CI secret pointing
+          # at a disposable test database. The /api/test/seed endpoint
+          # creates the e2e user + course; it does not stand up a DB.
+          DATABASE_URL: ${{ secrets.E2E_DATABASE_URL || 'postgres://stub:stub@localhost:5432/stub' }}
           AUTH_SECRET: ci-stub-secret
+          AUTH_TRUST_HOST: "true"
           NEXTAUTH_URL: http://localhost:3100
+          E2E_TESTS: "1"
 
       - name: Upload Playwright report
         if: always()
