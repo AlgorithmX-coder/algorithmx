@@ -2349,7 +2349,6 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
 
       /* ──── CASE 3: CYBER SCANNER (strong vs weak passwords) ──── */
       case 3: {
-        if (showInstr[3]) return <InstructionOverlay icon="🔍" story="Passwords fly through the Cyber Scanner. Are they strong or weak?" instructions="Tap STRONG or WEAK before each password leaves the scanner!" onReady={() => dismissInstr(3)} />;
         if (showSummary[3]) return <LearnSummary message="You can spot a strong password in a flash! Mixed characters beat easy guesses." starCount={getStars(3)} onNext={() => dismissSummary(3, 4)} />;
         return (
           <FullScene bg="linear-gradient(180deg, #0a0a2a 0%, #1a1033 100%)" glow="radial-gradient(circle, rgba(59,130,246,0.25), transparent)">
@@ -2364,7 +2363,6 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
 
       /* ──── CASE 4: PROTECT THE DATA (was Shield Simulator) ──── */
       case 4: {
-        if (showInstr[4]) return <InstructionOverlay icon="🛡️" story="Private information is falling from the sky — the Raccoon wants it!" instructions="Move the shield to BLOCK private info. Let safe info pass through." onReady={() => dismissInstr(4)} />;
         if (showSummary[4]) return <LearnSummary message="You know what to keep private and what is safe to share!" starCount={getStars(4)} onNext={() => dismissSummary(4, 5)} />;
         return (
           <FullScene bg="linear-gradient(180deg, #1a0505 0%, #1a1033 100%)" glow="radial-gradient(circle, rgba(239,68,68,0.25), transparent)">
@@ -2380,7 +2378,6 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
 
       /* ──── CASE 5: CYBER MAZE ──── */
       case 5: {
-        if (showInstr[5]) return <InstructionOverlay icon="🧩" story="Navigate the cyber maze. Every gate has a question!" instructions="Arrow keys / WASD / tap an adjacent cell to move. Answer correctly at each gate." onReady={() => dismissInstr(5)} />;
         if (showSummary[5]) return <LearnSummary message="You thought your way through every gate. Keep using that critical thinking online!" starCount={getStars(5)} onNext={() => dismissSummary(5, 6)} />;
         return (
           <FullScene bg="linear-gradient(180deg, #050a1a 0%, #1a1033 100%)" glow="radial-gradient(circle, rgba(96,165,250,0.2), transparent)">
@@ -2396,7 +2393,6 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
 
       /* ──── CASE 6: PASSWORD LAB (cauldron ingredients) ──── */
       case 6: {
-        if (showInstr[6]) return <InstructionOverlay icon="🧪" story="Brew the strongest password ever in the Password Lab!" instructions="Drag each ingredient card into the bubbling cauldron!" onReady={() => dismissInstr(6)} />;
         if (showSummary[6]) return <LearnSummary message="You mixed uppercase, lowercase, numbers, symbols AND length — that's a super-strong recipe!" starCount={getStars(6)} onNext={() => dismissSummary(6, 7)} />;
         return (
           <FullScene bg="linear-gradient(180deg, #0a1020 0%, #1a1033 100%)" glow="radial-gradient(circle, rgba(59,130,246,0.15), transparent)">
@@ -2411,7 +2407,6 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
 
       /* ──── CASE 7: CRACK THE CODE (was password builder) ──── */
       case 7: {
-        if (showInstr[7]) return <InstructionOverlay icon="🔓" story="Spin each dial until every setting is the strongest one. Then UNLOCK!" instructions="Use the ← → arrows on each ring to select the safest option, then press UNLOCK." onReady={() => dismissInstr(7)} />;
         if (showSummary[7]) return <LearnSummary message="You cracked the code! Long, random passwords in a password manager are the way." starCount={getStars(7)} onNext={() => dismissSummary(7, 8)} />;
         return (
           <FullScene bg="linear-gradient(180deg, #1a0a20 0%, #1a1033 100%)" glow="radial-gradient(circle, rgba(168,85,247,0.2), transparent)">
@@ -2426,7 +2421,6 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
 
       /* ──── CASE 8: MEMORY MATCH (cybersecurity term pairs) ──── */
       case 8: {
-        if (showInstr[8]) return <InstructionOverlay icon="🧠" story="Match each cybersecurity term with its meaning!" instructions="Flip two cards at a time. Remember where things are to build streaks!" onReady={() => dismissInstr(8)} />;
         if (showSummary[8]) return <LearnSummary message="You matched every term to its meaning — that's real cyber knowledge!" starCount={getStars(8)} onNext={() => dismissSummary(8, 9)} />;
         return (
           <FullScene bg="linear-gradient(180deg, #0a0e2a 0%, #1a1033 100%)" glow="radial-gradient(circle, rgba(168,85,247,0.2), transparent)">
@@ -2441,7 +2435,6 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
 
       /* ──── CASE 9: CONVEYOR BELT (was drag & drop sort) ──── */
       case 9: {
-        if (showInstr[9]) return <InstructionOverlay icon="⚙️" story="Passwords roll down the factory belt — sort them before they fall off!" instructions="Set the lever UP for STRONG or DOWN for WEAK before each password reaches the fork." onReady={() => dismissInstr(9)} />;
         if (showSummary[9]) return <LearnSummary message="You sorted strong from weak at full factory speed — great reflexes!" starCount={getStars(9)} onNext={() => dismissSummary(9, 10)} />;
         return (
           <FullScene bg="linear-gradient(180deg, #0a1020 0%, #1a1033 100%)" glow="radial-gradient(circle, rgba(249,115,22,0.2), transparent)">
@@ -2599,7 +2592,6 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
 
       /* ──── CASE 11: FIREWALL BUILDER (was Q3 bubble quiz) ──── */
       case 11: {
-        if (showInstr[11]) return <InstructionOverlay icon="🧱" story="Stack good security habits to build your firewall. Reject the viruses!" instructions="← → moves the block, SPACE rejects a virus. Stack 15 good blocks to win!" onReady={() => dismissInstr(11)} />;
         if (showSummary[11]) return <LearnSummary message="Your firewall is tall and tough — keep practising good habits every day!" starCount={getStars(11)} onNext={() => dismissSummary(11, 12)} />;
         return (
           <FullScene bg="linear-gradient(180deg, #05060f 0%, #1a1033 100%)" glow="radial-gradient(circle, rgba(34,197,94,0.18), transparent)">
@@ -2675,7 +2667,6 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
 
       /* ──── CASE 13: SPAM BLASTER (was phishing tablet) ──── */
       case 13: {
-        if (showInstr[13]) return <InstructionOverlay icon="📧" story="Phishing emails are flying toward your inbox. Blast the scams!" instructions="Tap an email to zap it. Zap PHISHING emails. Let SAFE emails reach the inbox." onReady={() => dismissInstr(13)} />;
         if (showSummary[13]) return <LearnSummary message="You spotted every trick! Real friends don't need your password — ever." starCount={getStars(13)} onNext={() => dismissSummary(13, 14)} />;
         return (
           <FullScene bg="linear-gradient(180deg, #050a1a 0%, #1a1033 100%)" glow="radial-gradient(circle, rgba(239,68,68,0.2), transparent)">
@@ -2690,7 +2681,6 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
 
       /* ──── CASE 14: CHOOSE YOUR PATH ──── */
       case 14: {
-        if (showInstr[14]) return <InstructionOverlay icon="🚪" story="A choice leads through one of two doors. Which one keeps you safe?" instructions="Read each scenario and pick the safe door!" onReady={() => dismissInstr(14)} />;
         if (showSummary[14]) return <LearnSummary message="You chose safely every time — that judgement is your best cyber tool." starCount={getStars(14)} onNext={() => dismissSummary(14, 15)} />;
         return (
           <FullScene bg="linear-gradient(180deg, #0a0e2a 0%, #1a1033 100%)" glow="radial-gradient(circle, rgba(168,85,247,0.18), transparent)">

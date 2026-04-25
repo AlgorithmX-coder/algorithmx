@@ -3,7 +3,6 @@
 import { useEffect, useState, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { speak, stopSpeaking, primeVoices } from "@/app/lib/speech";
 
 const GRAD = "linear-gradient(135deg, #8b5cf6, #3b82f6)";
 
@@ -141,37 +140,16 @@ export default function WelcomePage() {
   // Phase timing
   useEffect(() => {
     if (!loaded) return;
-    primeVoices();
     const timers = [
-      setTimeout(() => {
-        setPhase(1);
-      }, 2000),
-      setTimeout(() => {
-        setPhase(2);
-        speak(`Hi ${childName}!`, "adam");
-      }, 4000),
-      setTimeout(() => {
-        setPhase(3);
-        speak("We're Adam and Layla!", "layla");
-      }, 6000),
-      setTimeout(() => {
-        setPhase(4);
-        speak("We need YOUR help to learn about cybersecurity and defeat the Hacker Raccoon!", "adam");
-      }, 8000),
-      setTimeout(() => {
-        setPhase(5);
-        speak("Every week is a new adventure. Are you ready?", "layla");
-      }, 11000),
+      setTimeout(() => setPhase(1), 2000),
+      setTimeout(() => setPhase(2), 4000),
+      setTimeout(() => setPhase(3), 6000),
+      setTimeout(() => setPhase(4), 8000),
+      setTimeout(() => setPhase(5), 11000),
       setTimeout(() => setPhase(6), 13000),
     ];
-    return () => {
-      timers.forEach(clearTimeout);
-      stopSpeaking();
-    };
-  }, [loaded, childName]);
-
-  // Stop any in-flight speech when leaving the page.
-  useEffect(() => () => stopSpeaking(), []);
+    return () => timers.forEach(clearTimeout);
+  }, [loaded]);
 
   return (
     <div className="min-h-screen relative overflow-hidden flex items-center justify-center" style={{ background: "#1a1033" }}>

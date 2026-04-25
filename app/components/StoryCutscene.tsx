@@ -2,7 +2,6 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { playSound } from "@/app/lib/sounds";
-import { speak, stopSpeaking, primeVoices, type Speaker } from "@/app/lib/speech";
 
 export interface CutsceneSlide {
   character?: "adam" | "layla" | "raccoon" | "both";
@@ -50,36 +49,6 @@ export default function StoryCutscene({ slides, onComplete, title }: StoryCutsce
     playSound(activeSlide.sound);
   }, [phase, activeSlide]);
 
-  // Speak the slide's dialogue using Web Speech API with a voice chosen per
-  // character — Adam / Layla (child-pitched) and Raccoon (lower, slower).
-  // Title-only cards (no character) and pure hype text are skipped so we
-  // don't narrate "LET'S GO! 🚀".
-  useEffect(() => {
-    primeVoices();
-  }, []);
-  useEffect(() => {
-    if (phase !== "showing") return;
-    if (!activeSlide) return;
-    const speaker: Speaker | null = activeSlide.character === "adam"
-      ? "adam"
-      : activeSlide.character === "layla"
-        ? "layla"
-        : activeSlide.character === "raccoon"
-          ? "raccoon"
-          : activeSlide.character === "both"
-            ? "adam" // "both" speaking — Adam takes the line
-            : null;
-    if (!speaker) return;
-    // Small delay so the typewriter + sound layer on first, then speech.
-    const t = window.setTimeout(() => speak(activeSlide.text, speaker), 120);
-    return () => {
-      window.clearTimeout(t);
-      stopSpeaking();
-    };
-  }, [phase, activeSlide]);
-
-  // Ensure any queued speech stops when the whole cutscene unmounts.
-  useEffect(() => () => stopSpeaking(), []);
 
   const clearTimers = () => {
     if (advanceTimerRef.current) window.clearTimeout(advanceTimerRef.current);

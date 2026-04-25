@@ -1565,7 +1565,6 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
 
       /* ──── STEP 4: PROTECT THE DATA (was classify quiz) ──── */
       case 4: {
-        if (showInstr[4]) return <InstructionOverlay icon="🛡️" story="Private info is falling — use your shield to BLOCK it!" instructions="Move the shield to catch private info. Let safe-to-share info pass through." onReady={() => dismissInstr(4)} />;
         if (showSummary[4]) return <LearnSummary message="You can tell private from safe-to-share in an instant!" starCount={getStars(4)} onNext={() => dismissSummary(4, 5)} />;
         return (
           <FullScene bg="linear-gradient(180deg, #0a1020 0%, #0a0a1a 100%)" glow="radial-gradient(circle, rgba(239,68,68,0.2), transparent)">
@@ -2086,7 +2085,6 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
 
       /* ──── STEP 11: MEMORY MATCH (was speed sort) ──── */
       case 11: {
-        if (showInstr[11]) return <InstructionOverlay icon="🧠" story="Match each piece of info with the rule for keeping it safe!" instructions="Flip two cards at a time. Match the term with its meaning!" onReady={() => dismissInstr(11)} />;
         if (showSummary[11]) return <LearnSummary message="You matched every rule — you know exactly what to keep private!" starCount={getStars(11)} onNext={() => dismissSummary(11, 12)} />;
         return (
           <ThemedScene theme="factory">
@@ -2102,7 +2100,6 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
 
       /* ──── STEP 12: CHOOSE YOUR PATH (was phone call) ──── */
       case 12: {
-        if (showInstr[12]) return <InstructionOverlay icon="🚪" story="Real-life choices about private info. Pick the safest door!" instructions="Read each scenario. Choose the door that keeps your info safe!" onReady={() => dismissInstr(12)} />;
         if (showSummary[12]) return <LearnSummary message="You made safe choices every time — your private info is protected!" starCount={getStars(12)} onNext={() => dismissSummary(12, 13)} />;
         return (
           <ThemedScene theme="callscreen">
@@ -2118,7 +2115,6 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
 
       /* ──── STEP 13: CYBER MAZE (was shield builder) ──── */
       case 13: {
-        if (showInstr[13]) return <InstructionOverlay icon="🧩" story="Navigate the Info Vault corridors. Answer every security gate!" instructions="Arrow keys / WASD / tap to move. Solve each gate to unlock the next passage." onReady={() => dismissInstr(13)} />;
         if (showSummary[13]) return <LearnSummary message="You found the exit and answered every gate — knowledge is the key!" starCount={getStars(13)} onNext={() => dismissSummary(13, 14)} />;
         return (
           <ThemedScene theme="forge">
