@@ -19,8 +19,9 @@ export const config = {
      *  - /_next/* (Next.js internals — static, image, etc.)
      *  - /favicon.ico
      *  - /logos/* (static logo assets)
+     *  - /dev/* (dev-only preview/tooling routes — no auth)
      *  - anything with a file extension (static files)
      */
-    "/((?!password|api|_next|favicon.ico|logos|.*\\..*).*)",
+    "/((?!password|api|_next|favicon.ico|logos|dev|.*\\..*).*)",
   ],
 };
