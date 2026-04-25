@@ -2329,11 +2329,13 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
     }
   }, [placed, screen, dragDone, addCoins]);
 
-  // Screen 15: staggered achievements
+  // Screen 16 ("You Did It!"): staggered achievement reveal. Was guarded by
+  // `screen !== 15` which never fires on screen 16 — so the list stayed
+  // hidden and the Next button (gated on achievePhase >= 8) never showed.
   useEffect(() => {
-    if (screen !== 15) return;
+    if (screen !== 16) return;
     if (achievePhase >= 8) return;
-    const t = setTimeout(() => setAchievePhase((p) => p + 1), 500);
+    const t = setTimeout(() => setAchievePhase((p) => p + 1), 450);
     return () => clearTimeout(t);
   }, [screen, achievePhase]);
 
@@ -3463,45 +3465,290 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
 
         return (
           <FullScene bg="linear-gradient(180deg, #1a0505 0%, #0a0a1a 100%)" glow="radial-gradient(circle, rgba(239,68,68,0.35), transparent)">
-            <div style={{ textAlign: "center" }}>
+            <style>{`
+              @keyframes bbSweepLight { 0% { transform: translateX(-150%) skewX(-18deg); } 100% { transform: translateX(250%) skewX(-18deg); } }
+              @keyframes bbWarnPulse { 0%,100% { opacity: 0.35; box-shadow: 0 0 6px currentColor; } 50% { opacity: 1; box-shadow: 0 0 22px currentColor; } }
+              @keyframes bbVsClash { 0% { transform: translate(-50%, -50%) scale(0.4) rotate(-30deg); opacity: 0; } 50% { transform: translate(-50%, -50%) scale(1.4) rotate(0deg); opacity: 1; } 100% { transform: translate(-50%, -50%) scale(1) rotate(0deg); opacity: 1; } }
+              @keyframes bbLightningStrike { 0%,92%,100% { opacity: 0; } 94% { opacity: 0.85; } 96% { opacity: 0.2; } 98% { opacity: 0.7; } }
+              @keyframes bbFloatHero { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+              @keyframes bbFloatVillain { 0%,100% { transform: translateY(0) rotate(-2deg); } 50% { transform: translateY(-8px) rotate(2deg); } }
+              @keyframes bbHazardSlide { 0% { background-position: 0 0; } 100% { background-position: 60px 0; } }
+              @keyframes bbScanFloor { 0% { transform: translateY(-100%); } 100% { transform: translateY(120%); } }
+              @keyframes bbEmberRise { 0% { transform: translateY(0); opacity: 0; } 12% { opacity: 0.85; } 88% { opacity: 0.85; } 100% { transform: translateY(-220px); opacity: 0; } }
+            `}</style>
+
+            <div style={{ position: "relative", width: "100%", maxWidth: 900, margin: "0 auto" }}>
+              {/* Hazard tape ribbons top + bottom */}
+              <div aria-hidden style={{
+                position: "absolute", left: 0, right: 0, top: -10, height: 8,
+                backgroundImage: "repeating-linear-gradient(45deg, #fbbf24 0 12px, #1a0505 12px 24px)",
+                animation: "bbHazardSlide 1.4s linear infinite",
+                opacity: 0.85,
+                borderRadius: 4,
+              }} />
+              <div aria-hidden style={{
+                position: "absolute", left: 0, right: 0, bottom: -10, height: 8,
+                backgroundImage: "repeating-linear-gradient(-45deg, #ef4444 0 12px, #1a0505 12px 24px)",
+                animation: "bbHazardSlide 1.4s linear infinite reverse",
+                opacity: 0.85,
+                borderRadius: 4,
+              }} />
+
+              {/* Lightning flashes */}
+              {Array.from({ length: 3 }).map((_, i) => (
+                <span key={`bolt-${i}`} aria-hidden style={{
+                  position: "absolute",
+                  left: `${15 + i * 30}%`,
+                  top: 0,
+                  width: 2,
+                  height: 240,
+                  background: "linear-gradient(180deg, #fde047, transparent)",
+                  filter: "drop-shadow(0 0 8px #fbbf24)",
+                  animation: `bbLightningStrike ${5 + i * 1.4}s ease-in-out ${i * 1.7}s infinite`,
+                  pointerEvents: "none",
+                }} />
+              ))}
+
+              {/* Drifting embers */}
+              {Array.from({ length: 14 }).map((_, i) => {
+                const left = (i * 47) % 100;
+                const dur = 4 + (i % 4);
+                const delay = (i * 0.5) % 6;
+                const c = ["#fde047", "#f97316", "#fb923c", "#ef4444"][i % 4];
+                return (
+                  <span key={`ember-${i}`} aria-hidden style={{
+                    position: "absolute",
+                    left: `${left}%`,
+                    bottom: 0,
+                    width: 3, height: 3, borderRadius: "50%",
+                    background: c,
+                    boxShadow: `0 0 6px ${c}`,
+                    animation: `bbEmberRise ${dur}s linear ${delay}s infinite`,
+                  }} />
+                );
+              })}
+
+              {/* HUD warning row */}
+              <div style={{
+                display: "flex", justifyContent: "space-between", alignItems: "center",
+                padding: "8px 14px", marginTop: 6, marginBottom: 14,
+                background: "rgba(239,68,68,0.08)",
+                border: "1px solid rgba(239,68,68,0.45)",
+                borderRadius: 10,
+                fontFamily: "ui-monospace, 'JetBrains Mono', monospace",
+                fontSize: 11, fontWeight: 800,
+                letterSpacing: 2, textTransform: "uppercase",
+              }}>
+                <span style={{ color: "#fca5a5", display: "inline-flex", alignItems: "center", gap: 8 }}>
+                  <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#ef4444", color: "#ef4444", animation: "bbWarnPulse 1.2s ease-in-out infinite" }} />
+                  THREAT_DETECTED // FINAL_BOSS
+                </span>
+                <span style={{ color: "#fbbf24" }}>
+                  ARENA: SECURE_VAULT_07
+                </span>
+                <span style={{ color: "#fca5a5", display: "inline-flex", alignItems: "center", gap: 8 }}>
+                  PROTOCOL: ENGAGE
+                  <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#ef4444", color: "#ef4444", animation: "bbWarnPulse 1.2s ease-in-out 0.6s infinite" }} />
+                </span>
+              </div>
+
+              {/* Title */}
               <motion.h1
-                initial={{ opacity: 0, scale: 0.6 }}
-                animate={{ opacity: 1, scale: 1 }}
+                initial={{ opacity: 0, y: -10, scale: 0.7 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
                 transition={{ type: "spring", stiffness: 220, damping: 18 }}
                 style={{
-                  fontSize: 72,
+                  position: "relative",
+                  fontSize: 64,
                   fontWeight: 900,
-                  margin: "0 0 12px",
+                  margin: "0 0 4px",
                   background: "linear-gradient(135deg, #ef4444, #f97316, #fbbf24)",
                   WebkitBackgroundClip: "text",
                   WebkitTextFillColor: "transparent",
-                  letterSpacing: 2,
+                  letterSpacing: 3,
                   textShadow: "0 0 40px rgba(239,68,68,0.35)",
+                  textAlign: "center",
                 }}
               >
                 BOSS BATTLE
               </motion.h1>
               <motion.p
-                initial={{ opacity: 0, y: 10 }}
+                initial={{ opacity: 0, y: 6 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.25 }}
-                style={{ color: "#fca5a5", fontSize: 20, fontWeight: 600, marginBottom: 32 }}
+                style={{ color: "#fca5a5", fontSize: 14, fontWeight: 700, letterSpacing: 4, textTransform: "uppercase", marginBottom: 18, textAlign: "center", fontFamily: "ui-monospace, monospace" }}
               >
-                Hacker Raccoon is waiting...
+                ▸ Hacker Raccoon is locked &amp; loaded
               </motion.p>
+
+              {/* VS face-off */}
+              <div style={{
+                position: "relative",
+                display: "grid",
+                gridTemplateColumns: "1fr auto 1fr",
+                gap: 18,
+                alignItems: "center",
+                padding: "18px 14px",
+                marginBottom: 18,
+                background: "linear-gradient(180deg, rgba(20,8,12,0.85), rgba(8,4,16,0.85))",
+                border: "1px solid rgba(239,68,68,0.4)",
+                borderRadius: 18,
+                boxShadow: "0 30px 60px -20px rgba(239,68,68,0.45), inset 0 0 0 1px rgba(255,255,255,0.04), 0 0 60px rgba(239,68,68,0.18)",
+                overflow: "hidden",
+              }}>
+                {/* Sweeping light */}
+                <span aria-hidden style={{
+                  position: "absolute", top: 0, left: 0, height: "100%", width: "60%",
+                  background: "linear-gradient(90deg, transparent, rgba(253,224,71,0.18), transparent)",
+                  animation: "bbSweepLight 5s ease-in-out infinite",
+                  pointerEvents: "none",
+                }} />
+                {/* Vertical scan line */}
+                <span aria-hidden style={{
+                  position: "absolute", left: 0, right: 0, height: 60,
+                  background: "linear-gradient(180deg, transparent, rgba(34,211,238,0.18), transparent)",
+                  animation: "bbScanFloor 4s linear infinite",
+                  pointerEvents: "none",
+                  mixBlendMode: "screen",
+                }} />
+
+                {/* Hero side */}
+                <motion.div
+                  initial={{ opacity: 0, x: -40 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.4, type: "spring", stiffness: 200, damping: 22 }}
+                  style={{ position: "relative", textAlign: "center", padding: "10px 8px" }}
+                >
+                  <div style={{ position: "relative", display: "inline-block", animation: "bbFloatHero 3s ease-in-out infinite" }}>
+                    <span aria-hidden style={{
+                      position: "absolute", inset: -10, borderRadius: "50%",
+                      background: "radial-gradient(circle, rgba(96,165,250,0.45), transparent 70%)",
+                      filter: "blur(10px)",
+                    }} />
+                    <img src="/characters/heroic.png" alt="Adam &amp; Layla" style={{
+                      position: "relative",
+                      width: 130, maxWidth: "100%", height: "auto",
+                      filter: "drop-shadow(0 12px 22px rgba(96,165,250,0.55))",
+                    }} />
+                  </div>
+                  <div style={{ marginTop: 8, color: "#bfdbfe", fontWeight: 900, fontSize: 13, letterSpacing: 3, textTransform: "uppercase", fontFamily: "ui-monospace, monospace" }}>
+                    Adam &amp; Layla
+                  </div>
+                  {/* HP bar */}
+                  <div style={{ marginTop: 6, height: 8, borderRadius: 4, background: "rgba(255,255,255,0.06)", border: "1px solid rgba(96,165,250,0.4)", overflow: "hidden" }}>
+                    <motion.div
+                      initial={{ width: 0 }}
+                      animate={{ width: "100%" }}
+                      transition={{ delay: 0.7, duration: 0.8, ease: "easeOut" }}
+                      style={{ height: "100%", background: "linear-gradient(90deg, #22c55e, #4ade80, #86efac)", boxShadow: "0 0 10px #4ade80" }}
+                    />
+                  </div>
+                  <div style={{ marginTop: 4, fontSize: 10, color: "#86efac", fontFamily: "ui-monospace, monospace", letterSpacing: 1 }}>
+                    HP 100/100 ▸ READY
+                  </div>
+                </motion.div>
+
+                {/* VS chip */}
+                <div style={{ position: "relative", width: 64, height: 64 }}>
+                  <span aria-hidden style={{
+                    position: "absolute", inset: -10, borderRadius: "50%",
+                    background: "radial-gradient(circle, rgba(253,224,71,0.6), transparent 70%)",
+                    filter: "blur(8px)",
+                  }} />
+                  <div style={{
+                    position: "absolute", left: "50%", top: "50%",
+                    transform: "translate(-50%,-50%)",
+                    width: 64, height: 64, borderRadius: "50%",
+                    background: "radial-gradient(circle at 35% 30%, #fde68a, #f59e0b 60%, #b45309)",
+                    border: "3px solid #fbbf24",
+                    color: "#1a0505",
+                    fontFamily: "ui-monospace, monospace",
+                    fontWeight: 900, fontSize: 22,
+                    display: "flex", alignItems: "center", justifyContent: "center",
+                    boxShadow: "0 8px 18px rgba(180,83,9,0.55), inset 0 2px 6px rgba(255,255,255,0.4)",
+                    animation: "bbVsClash 0.9s cubic-bezier(0.4,1.4,0.5,1) 0.5s both",
+                  }}>VS</div>
+                </div>
+
+                {/* Villain side */}
+                <motion.div
+                  initial={{ opacity: 0, x: 40 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.4, type: "spring", stiffness: 200, damping: 22 }}
+                  style={{ position: "relative", textAlign: "center", padding: "10px 8px" }}
+                >
+                  <div style={{ position: "relative", display: "inline-block", animation: "bbFloatVillain 3.4s ease-in-out infinite" }}>
+                    <span aria-hidden style={{
+                      position: "absolute", inset: -10, borderRadius: "50%",
+                      background: "radial-gradient(circle, rgba(239,68,68,0.55), transparent 70%)",
+                      filter: "blur(12px)",
+                    }} />
+                    <img src="/characters/raccoon.png" alt="Hacker Raccoon" style={{
+                      position: "relative",
+                      width: 130, maxWidth: "100%", height: "auto",
+                      filter: "drop-shadow(0 12px 22px rgba(239,68,68,0.65))",
+                    }} />
+                  </div>
+                  <div style={{ marginTop: 8, color: "#fca5a5", fontWeight: 900, fontSize: 13, letterSpacing: 3, textTransform: "uppercase", fontFamily: "ui-monospace, monospace" }}>
+                    Hacker Raccoon
+                  </div>
+                  {/* HP bar */}
+                  <div style={{ marginTop: 6, height: 8, borderRadius: 4, background: "rgba(255,255,255,0.06)", border: "1px solid rgba(239,68,68,0.45)", overflow: "hidden" }}>
+                    <motion.div
+                      initial={{ width: 0 }}
+                      animate={{ width: "100%" }}
+                      transition={{ delay: 0.9, duration: 0.8, ease: "easeOut" }}
+                      style={{ height: "100%", background: "linear-gradient(90deg, #ef4444, #f97316, #fbbf24)", boxShadow: "0 0 10px #ef4444" }}
+                    />
+                  </div>
+                  <div style={{ marginTop: 4, fontSize: 10, color: "#fca5a5", fontFamily: "ui-monospace, monospace", letterSpacing: 1 }}>
+                    HP 100/100 ▸ HOSTILE
+                  </div>
+                </motion.div>
+              </div>
+
+              {/* Stat panel */}
+              <div style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(3, 1fr)",
+                gap: 10,
+                marginBottom: 18,
+              }}>
+                {[
+                  { l: "ROUNDS", v: "10", c: "#22d3ee" },
+                  { l: "WEAPON", v: "KNOWLEDGE", c: "#a78bfa" },
+                  { l: "REWARD", v: "+50 COINS", c: "#fbbf24" },
+                ].map((s, i) => (
+                  <div key={i} style={{
+                    padding: "8px 10px",
+                    background: `${s.c}10`,
+                    border: `1px solid ${s.c}55`,
+                    borderRadius: 10,
+                    textAlign: "center",
+                    fontFamily: "ui-monospace, monospace",
+                  }}>
+                    <div style={{ fontSize: 9, letterSpacing: 2, color: "#94a3b8" }}>{s.l}</div>
+                    <div style={{ fontSize: 13, fontWeight: 900, color: s.c, marginTop: 2 }}>{s.v}</div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Start button */}
               <motion.div
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.5, type: "spring", stiffness: 300, damping: 20 }}
+                initial={{ opacity: 0, scale: 0.8, y: 12 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                transition={{ delay: 1.0, type: "spring", stiffness: 300, damping: 20 }}
+                style={{ textAlign: "center" }}
               >
-                {btn("START BATTLE →", () => {
+                {btn("⚔ START BATTLE →", () => {
                   playSFX("transition");
                   setShowBossBattle(true);
                 }, {
                   fontSize: 22,
-                  padding: "18px 48px",
+                  padding: "16px 44px",
                   borderRadius: 18,
                   boxShadow: "0 0 30px rgba(249,115,22,0.6), 0 0 60px rgba(239,68,68,0.3)",
+                  letterSpacing: 2,
                 })}
               </motion.div>
             </div>
@@ -3515,70 +3762,252 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
         const achieveCoins = [25, 30, 25, 0, 25, 0, 0, 0];
         return (
           <FullScene bg="linear-gradient(180deg, #1a1508 0%, #0a0a1a 100%)" glow="radial-gradient(circle, rgba(245,158,11,0.3), transparent)">
-          <div style={{ textAlign: "center" }}>
-            <h1 data-split style={{ color: "#fff", fontSize: 44, fontWeight: 900, marginBottom: 16, textShadow: "0 0 30px rgba(245,158,11,0.5)" }}>🏆 You Did It!<img src="/characters/celebrating.png" width={44} height={44} alt="" style={{ display: "inline-block", verticalAlign: "middle", marginLeft: 8, borderRadius: 999 }} /></h1>
-            <motion.div
-              animate={{ y: [0, -12, 0] }}
-              transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-              style={{
-                display: "inline-block",
-                padding: "14px 16px 8px",
-                margin: "0 auto 16px",
-                borderRadius: 24,
-                border: "3px solid #f59e0b",
-                boxShadow: "0 0 40px rgba(245,158,11,0.4)",
-                background: "rgba(0,0,0,0.22)",
-                overflow: "visible",
-              }}
-            >
-              <img
-                src="/characters/celebrating.png"
-                alt="Adam and Layla celebrating"
-                style={{ width: 200, display: "block", objectFit: "contain" }}
-              />
-            </motion.div>
-            <p style={{ color: "#d1d5db", fontSize: 18, marginBottom: 24 }}>
-              Thanks to YOU, Adam and Layla now know how to stay safe!
-            </p>
-            <motion.div
-              variants={achieveStaggerContainer}
-              initial="initial"
-              animate="animate"
-              style={{ display: "flex", flexDirection: "column", gap: 8, maxWidth: 580, margin: "0 auto 24px" }}
-            >
-              {ACHIEVEMENTS.map((a: string, i: number) => (
-                achievePhase > i ? (
-                  <motion.div key={i} variants={achieveStaggerItem}>
-                    {card(
-                      <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-                        <motion.span
-                          initial={{ opacity: 0, scale: 0, rotate: -45 }}
-                          animate={{ opacity: 1, scale: 1, rotate: 0 }}
-                          transition={{ type: "spring", stiffness: 300, damping: 15 }}
-                          style={{ color: "#10b981", fontSize: 20 }}
-                        >
-                          ✅
-                        </motion.span>
-                        <span style={{ color: "#d1d5db", fontSize: 14, flex: 1 }}>{a}</span>
-                        {achieveCoins[i] > 0 && (
-                          <span style={{ color: "#f59e0b", fontSize: 12, fontWeight: 700 }}>🪙 +{achieveCoins[i]}</span>
-                        )}
-                      </div>,
-                      { padding: "10px 16px" }
-                    )}
-                  </motion.div>
-                ) : <div key={i} style={{ height: 44 }} />
-              ))}
-            </motion.div>
-            {achievePhase >= 8 && (
+          <style>{`
+            @keyframes ydiHaloSpin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+            @keyframes ydiCoinRise { 0% { transform: translateY(0) rotate(0deg); opacity: 0; } 12% { opacity: 1; } 88% { opacity: 1; } 100% { transform: translateY(-360px) rotate(540deg); opacity: 0; } }
+            @keyframes ydiSparkle { 0%,100% { opacity: 0.3; transform: scale(0.8); } 50% { opacity: 1; transform: scale(1.2); } }
+            @keyframes ydiBeamSweep { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+            @keyframes ydiStar { 0%,100% { opacity: 0.3; } 50% { opacity: 1; } }
+            @keyframes ydiFireworkBurst { 0% { transform: scale(0); opacity: 1; } 100% { transform: scale(1.6); opacity: 0; } }
+          `}</style>
+          <div style={{ textAlign: "center", position: "relative" }}>
+            <Confetti duration={6000} />
+
+            {/* Drifting gold coins behind everything */}
+            <div aria-hidden style={{ position: "absolute", inset: 0, pointerEvents: "none", overflow: "hidden", zIndex: 0 }}>
+              {Array.from({ length: 18 }).map((_, i) => {
+                const left = (i * 11) % 100;
+                const dur = 5 + (i % 5);
+                const delay = (i * 0.55) % 9;
+                return (
+                  <span key={`coin-${i}`} style={{
+                    position: "absolute",
+                    left: `${left}%`,
+                    bottom: -20,
+                    fontSize: 16 + (i % 3) * 8,
+                    opacity: 0,
+                    filter: "drop-shadow(0 0 10px rgba(253,224,71,0.6))",
+                    animation: `ydiCoinRise ${dur}s linear ${delay}s infinite`,
+                  }}>🪙</span>
+                );
+              })}
+              {/* Twinkling stars */}
+              {Array.from({ length: 24 }).map((_, i) => {
+                const left = (i * 17) % 100;
+                const top = (i * 23) % 100;
+                const dur = 1.6 + (i % 4) * 0.6;
+                const delay = (i * 0.18) % 4;
+                return (
+                  <span key={`s-${i}`} style={{
+                    position: "absolute",
+                    left: `${left}%`,
+                    top: `${top}%`,
+                    width: 3, height: 3, borderRadius: "50%",
+                    background: i % 3 === 0 ? "#fde047" : "#fff",
+                    boxShadow: "0 0 6px currentColor",
+                    color: i % 3 === 0 ? "#fde047" : "#fff",
+                    animation: `ydiStar ${dur}s ease-in-out ${delay}s infinite`,
+                  }} />
+                );
+              })}
+              {/* Firework bursts */}
+              {Array.from({ length: 4 }).map((_, i) => {
+                const left = 12 + i * 22;
+                const top = 18 + (i % 2) * 12;
+                const dur = 2.4 + i * 0.6;
+                const delay = i * 1.4;
+                const c = ["#f97316", "#fbbf24", "#a78bfa", "#22d3ee"][i];
+                return (
+                  <span key={`fw-${i}`} style={{
+                    position: "absolute",
+                    left: `${left}%`,
+                    top: `${top}%`,
+                    width: 80, height: 80,
+                    borderRadius: "50%",
+                    background: `radial-gradient(circle, ${c} 0%, transparent 60%)`,
+                    animation: `ydiFireworkBurst ${dur}s ease-out ${delay}s infinite`,
+                    pointerEvents: "none",
+                  }} />
+                );
+              })}
+            </div>
+
+            <div style={{ position: "relative", zIndex: 1 }}>
+              {/* Title with halo */}
+              <div style={{ position: "relative", display: "inline-block", marginBottom: 6 }}>
+                <span aria-hidden style={{
+                  position: "absolute", inset: -22,
+                  background: "conic-gradient(from 0deg, transparent 0deg, rgba(253,224,71,0.55) 30deg, transparent 60deg, rgba(244,114,182,0.45) 150deg, transparent 200deg, rgba(34,211,238,0.45) 280deg, transparent 320deg)",
+                  borderRadius: "50%",
+                  filter: "blur(16px)",
+                  animation: "ydiHaloSpin 9s linear infinite",
+                  pointerEvents: "none",
+                }} />
+                <h1 data-split style={{
+                  position: "relative",
+                  color: "#fff",
+                  fontSize: 50,
+                  fontWeight: 900,
+                  margin: 0,
+                  background: "linear-gradient(135deg, #fde68a, #f59e0b, #ef4444, #a78bfa)",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                  textShadow: "0 0 30px rgba(245,158,11,0.5)",
+                  letterSpacing: 2,
+                }}>
+                  🏆 You Did It!
+                </h1>
+              </div>
+              <p style={{ color: "#fbbf24", fontSize: 12, fontWeight: 800, letterSpacing: 4, textTransform: "uppercase", marginBottom: 14, fontFamily: "ui-monospace, monospace" }}>
+                ▸ HACKER RACCOON DEFEATED // WEEK COMPLETE
+              </p>
+
+              {/* Hero shot with rotating beams + sparkles */}
+              <div style={{ position: "relative", display: "inline-block", marginBottom: 18 }}>
+                <span aria-hidden style={{
+                  position: "absolute", inset: -28, borderRadius: "50%",
+                  background: "conic-gradient(from 0deg, transparent 0deg, rgba(253,224,71,0.18) 20deg, transparent 40deg, rgba(253,224,71,0.18) 60deg, transparent 80deg, rgba(253,224,71,0.18) 100deg, transparent 120deg, rgba(253,224,71,0.18) 140deg, transparent 160deg, rgba(253,224,71,0.18) 180deg, transparent 200deg)",
+                  animation: "ydiBeamSweep 14s linear infinite",
+                  filter: "blur(2px)",
+                  pointerEvents: "none",
+                }} />
+                <motion.div
+                  animate={{ y: [0, -10, 0] }}
+                  transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                  style={{
+                    position: "relative",
+                    padding: "14px 16px 8px",
+                    borderRadius: 24,
+                    border: "3px solid #f59e0b",
+                    boxShadow: "0 0 50px rgba(245,158,11,0.55), inset 0 0 0 1px rgba(255,255,255,0.08)",
+                    background: "linear-gradient(160deg, rgba(20,12,8,0.85), rgba(15,8,30,0.85))",
+                    overflow: "visible",
+                  }}
+                >
+                  <img
+                    src="/characters/celebrating.png"
+                    alt="Adam and Layla celebrating"
+                    style={{ width: 200, display: "block", objectFit: "contain" }}
+                  />
+                </motion.div>
+                {/* Corner sparkles */}
+                {[
+                  { top: -6, left: -10 }, { top: -10, right: -6 },
+                  { bottom: -6, left: -6 }, { bottom: -10, right: -10 },
+                ].map((pos, i) => (
+                  <span key={i} style={{
+                    position: "absolute",
+                    fontSize: 22,
+                    color: "#fde047",
+                    filter: "drop-shadow(0 0 8px #fbbf24)",
+                    animation: `ydiSparkle ${1.8 + i * 0.3}s ease-in-out ${i * 0.4}s infinite`,
+                    ...pos,
+                  }}>✦</span>
+                ))}
+              </div>
+
+              <p style={{ color: "#e5e7eb", fontSize: 17, marginBottom: 18, fontWeight: 600 }}>
+                Thanks to <span style={{ color: "#fde047", fontWeight: 900 }}>YOU</span>, Adam and Layla now know how to stay safe!
+              </p>
+
+              {/* Stats strip */}
+              <div style={{
+                display: "flex", justifyContent: "center", gap: 12, flexWrap: "wrap",
+                marginBottom: 18,
+              }}>
+                {[
+                  { l: "ENEMY", v: "DEFEATED", c: "#ef4444" },
+                  { l: "BADGES", v: `${Math.min(achievePhase, 8)} / 8`, c: "#a78bfa" },
+                  { l: "COINS", v: "+155", c: "#fbbf24" },
+                ].map((s, i) => (
+                  <div key={i} style={{
+                    padding: "8px 14px",
+                    background: `${s.c}10`,
+                    border: `1px solid ${s.c}55`,
+                    borderRadius: 10,
+                    fontFamily: "ui-monospace, monospace",
+                    minWidth: 110,
+                  }}>
+                    <div style={{ fontSize: 9, letterSpacing: 2, color: "#94a3b8" }}>{s.l}</div>
+                    <div style={{ fontSize: 14, fontWeight: 900, color: s.c, marginTop: 2 }}>{s.v}</div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Achievements list — only renders revealed items, no placeholder
+                  spacers, so the column collapses nicely as items appear */}
               <motion.div
-                initial={{ opacity: 0, scale: 0.5 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                variants={achieveStaggerContainer}
+                initial="initial"
+                animate="animate"
+                style={{ display: "flex", flexDirection: "column", gap: 8, maxWidth: 580, margin: "0 auto 18px" }}
               >
-                {btn(IS_MILESTONE_WEEK ? "Get your certificate! 🏆 →" : "Finish Week →", () => navigate(17))}
+                {ACHIEVEMENTS.map((a: string, i: number) => {
+                  if (achievePhase <= i) return null;
+                  return (
+                    <motion.div
+                      key={i}
+                      variants={achieveStaggerItem}
+                      whileHover={{ x: 4 }}
+                      style={{
+                        position: "relative",
+                        display: "grid",
+                        gridTemplateColumns: "auto 1fr auto",
+                        alignItems: "center",
+                        gap: 12,
+                        padding: "10px 14px",
+                        background: "linear-gradient(135deg, rgba(16,185,129,0.12), rgba(15,23,42,0.55))",
+                        border: "1px solid rgba(16,185,129,0.45)",
+                        borderRadius: 12,
+                        boxShadow: "0 6px 14px -8px rgba(16,185,129,0.45), inset 0 0 0 1px rgba(255,255,255,0.04)",
+                      }}
+                    >
+                      <motion.span
+                        initial={{ opacity: 0, scale: 0, rotate: -45 }}
+                        animate={{ opacity: 1, scale: 1, rotate: 0 }}
+                        transition={{ type: "spring", stiffness: 300, damping: 15 }}
+                        style={{
+                          width: 28, height: 28, borderRadius: "50%",
+                          background: "linear-gradient(135deg, #4ade80, #22c55e)",
+                          color: "#052e16",
+                          display: "inline-flex", alignItems: "center", justifyContent: "center",
+                          fontSize: 14, fontWeight: 900,
+                          boxShadow: "0 0 12px rgba(74,222,128,0.55)",
+                        }}
+                      >
+                        ✓
+                      </motion.span>
+                      <span style={{ color: "#e2e8f0", fontSize: 14, fontWeight: 600, textAlign: "left" }}>{a}</span>
+                      {achieveCoins[i] > 0 && (
+                        <span style={{
+                          color: "#1a0e00",
+                          background: "linear-gradient(135deg, #fde68a, #fbbf24)",
+                          fontSize: 12, fontWeight: 900,
+                          padding: "3px 10px",
+                          borderRadius: 999,
+                          boxShadow: "0 0 12px rgba(251,191,36,0.45)",
+                          display: "inline-flex", alignItems: "center", gap: 4,
+                        }}>
+                          🪙 +{achieveCoins[i]}
+                        </span>
+                      )}
+                    </motion.div>
+                  );
+                })}
               </motion.div>
-            )}
+
+              {/* Next button appears as soon as the first badge reveals so
+                  the user is never stuck waiting for the full stagger. */}
+              {achievePhase >= 1 && (
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.5 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                >
+                  {btn(IS_MILESTONE_WEEK ? "Get your certificate! 🏆 →" : "Finish Week →", () => navigate(17))}
+                </motion.div>
+              )}
+            </div>
           </div>
           </FullScene>
         );

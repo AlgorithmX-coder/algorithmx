@@ -80,6 +80,26 @@ const HARD_QUESTIONS: Question[] = [
   { question: "A site says your password was leaked and offers to check your email. Should you?", answers: ["Enter your email anywhere that checks", "Only use official sites like HaveIBeenPwned", "Never check", "Change your email instead"], correctIndex: 1, explanation: "Only use trusted official sites to check for breaches — random sites might be stealing your email!" },
 ];
 
+// Children kept noticing the right answer was always in the same slot in
+// the boss-battle quiz — the source data lists `correctIndex: 1` for most
+// rows. Fisher-Yates shuffle each question's answers in place at module
+// load and remap correctIndex so the right answer lands in a fresh slot
+// every page load. Stable within a session so re-renders don't reshuffle.
+function shuffleBossQuestions(arr: Question[]) {
+  for (const q of arr) {
+    const order = q.answers.map((_, i) => i);
+    for (let i = order.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [order[i], order[j]] = [order[j], order[i]];
+    }
+    q.answers = order.map((i) => q.answers[i]);
+    q.correctIndex = order.indexOf(q.correctIndex);
+  }
+}
+shuffleBossQuestions(EASY_QUESTIONS);
+shuffleBossQuestions(MEDIUM_QUESTIONS);
+shuffleBossQuestions(HARD_QUESTIONS);
+
 const HP_MAX = 100;
 const HERO_HEIGHT = 260;
 const BOSS_HEIGHT = 300;
