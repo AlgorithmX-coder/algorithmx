@@ -16,6 +16,7 @@ import {
   bossDefeatedExplosion,
   milestoneFireworks,
 } from "@/app/lib/celebrations";
+import { ExerciseFrame } from "@/app/components/scene";
 import MuteToggle from "@/app/components/MuteToggle";
 import LessonHUD from "@/app/components/LessonHUD";
 import XPPopup from "@/app/components/XPPopup";
@@ -2823,7 +2824,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
         if (showInstr[2]) return <InstructionOverlay icon="🔒" story="The Raccoon is trying to get into Adam and Layla's stuff!" instructions="Tap each item to lock it with a password! Can you lock all three?" onReady={() => dismissInstr(2)} />;
         if (showSummary[2]) return <LearnSummary message="You learned that passwords LOCK your stuff! Just like a key locks a door, a password keeps your games and photos safe." starCount={getStars(2)} onNext={() => dismissSummary(2, 3)} />;
         return (
-          <FullScene bg="linear-gradient(180deg, #1a1a0a 0%, #1a1033 100%)" glow="radial-gradient(circle, rgba(59,130,246,0.2), transparent)">
+          <ExerciseFrame variant="dusk" plate={false}>
           <style>{`
             @keyframes lockCardShimmer { 0% { transform: translateX(-150%) skewX(-18deg); } 100% { transform: translateX(250%) skewX(-18deg); } }
             @keyframes lockCardFloat { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
@@ -2982,20 +2983,20 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
               )}
             </AnimatePresence>
           </div>
-          </FullScene>
+          </ExerciseFrame>
         );
 
       /* ──── CASE 3: CYBER SCANNER (strong vs weak passwords) ──── */
       case 3: {
         if (showSummary[3]) return <LearnSummary message="You can spot a strong password in a flash! Mixed characters beat easy guesses." starCount={getStars(3)} onNext={() => dismissSummary(3, 4)} />;
         return (
-          <FullScene bg="linear-gradient(180deg, #0a0a2a 0%, #1a1033 100%)" glow="radial-gradient(circle, rgba(59,130,246,0.25), transparent)">
+          <ExerciseFrame variant="dusk">
             <CyberScanner
               onComplete={() => showLearnSummary(3)}
               onCorrect={() => awardXp(25, "lesson-week-1")}
               onWrong={() => addWrong(3)}
             />
-          </FullScene>
+          </ExerciseFrame>
         );
       }
 
@@ -3003,14 +3004,14 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
       case 4: {
         if (showSummary[4]) return <LearnSummary message="You know what to keep private and what is safe to share!" starCount={getStars(4)} onNext={() => dismissSummary(4, 5)} />;
         return (
-          <FullScene bg="linear-gradient(180deg, #1a0505 0%, #1a1033 100%)" glow="radial-gradient(circle, rgba(239,68,68,0.25), transparent)">
+          <ExerciseFrame variant="dusk">
             <ProtectTheData
               items={PROTECT_DATA_ITEMS}
               onComplete={() => showLearnSummary(4)}
               onCorrect={() => awardXp(25, "lesson-week-1")}
               onWrong={() => addWrong(4)}
             />
-          </FullScene>
+          </ExerciseFrame>
         );
       }
 
@@ -3018,14 +3019,14 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
       case 5: {
         if (showSummary[5]) return <LearnSummary message="You thought your way through every gate. Keep using that critical thinking online!" starCount={getStars(5)} onNext={() => dismissSummary(5, 6)} />;
         return (
-          <FullScene bg="linear-gradient(180deg, #050a1a 0%, #1a1033 100%)" glow="radial-gradient(circle, rgba(96,165,250,0.2), transparent)">
+          <ExerciseFrame variant="dusk">
             <CyberMaze
               questions={MAZE_QUESTIONS}
               onComplete={() => showLearnSummary(5)}
               onCorrect={() => awardXp(25, "lesson-week-1")}
               onWrong={() => addWrong(5)}
             />
-          </FullScene>
+          </ExerciseFrame>
         );
       }
 
@@ -3033,13 +3034,13 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
       case 6: {
         if (showSummary[6]) return <LearnSummary message="You mixed uppercase, lowercase, numbers, symbols AND length — that's a super-strong recipe!" starCount={getStars(6)} onNext={() => dismissSummary(6, 7)} />;
         return (
-          <FullScene bg="linear-gradient(180deg, #0a1020 0%, #1a1033 100%)" glow="radial-gradient(circle, rgba(59,130,246,0.15), transparent)">
+          <ExerciseFrame variant="dusk">
             <PasswordLab
               onComplete={() => showLearnSummary(6)}
               onCorrect={() => awardXp(25, "lesson-week-1")}
               onWrong={() => addWrong(6)}
             />
-          </FullScene>
+          </ExerciseFrame>
         );
       }
 
@@ -3047,13 +3048,13 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
       case 7: {
         if (showSummary[7]) return <LearnSummary message="You cracked the code! Long, random passwords in a password manager are the way." starCount={getStars(7)} onNext={() => dismissSummary(7, 8)} />;
         return (
-          <FullScene bg="linear-gradient(180deg, #1a0a20 0%, #1a1033 100%)" glow="radial-gradient(circle, rgba(168,85,247,0.2), transparent)">
+          <ExerciseFrame variant="dusk">
             <CrackTheCode
               onComplete={() => showLearnSummary(7)}
               onCorrect={() => awardXp(25, "lesson-week-1")}
               onWrong={() => addWrong(7)}
             />
-          </FullScene>
+          </ExerciseFrame>
         );
       }
 
@@ -3061,13 +3062,13 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
       case 8: {
         if (showSummary[8]) return <LearnSummary message="You matched every term to its meaning — that's real cyber knowledge!" starCount={getStars(8)} onNext={() => dismissSummary(8, 9)} />;
         return (
-          <FullScene bg="linear-gradient(180deg, #0a0e2a 0%, #1a1033 100%)" glow="radial-gradient(circle, rgba(168,85,247,0.2), transparent)">
+          <ExerciseFrame variant="dusk">
             <MemoryMatch
               onComplete={() => showLearnSummary(8)}
               onCorrect={() => awardXp(25, "lesson-week-1")}
               onWrong={() => addWrong(8)}
             />
-          </FullScene>
+          </ExerciseFrame>
         );
       }
 
@@ -3075,7 +3076,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
       case 9: {
         if (showSummary[9]) return <LearnSummary message="You sorted strong from weak at full factory speed — great reflexes!" starCount={getStars(9)} onNext={() => dismissSummary(9, 10)} />;
         return (
-          <FullScene bg="linear-gradient(180deg, #0a1020 0%, #1a1033 100%)" glow="radial-gradient(circle, rgba(249,115,22,0.2), transparent)">
+          <ExerciseFrame variant="dusk">
             <ConveyorBelt
               items={SWIPE_DATA.map((d) => ({
                 text: d.pw,
@@ -3085,7 +3086,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
               onCorrect={() => awardXp(25, "lesson-week-1")}
               onWrong={() => addWrong(9)}
             />
-          </FullScene>
+          </ExerciseFrame>
         );
       }
 
@@ -3094,7 +3095,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
         if (showInstr[10]) return <InstructionOverlay icon="⭐" story="Before you finish, learn the 5 most important rules about passwords!" instructions="Tap each golden card to reveal a rule, then answer the question!" onReady={() => dismissInstr(10)} />;
         if (showSummary[10]) return <LearnSummary message="You know the 5 Golden Rules of passwords! Follow them and the Raccoon can never get in." starCount={getStars(10)} onNext={() => dismissSummary(10, 11)} />;
         return (
-          <FullScene bg="linear-gradient(180deg, #1a1508 0%, #1a1033 100%)" glow="radial-gradient(circle, rgba(245,158,11,0.25), transparent)">
+          <ExerciseFrame variant="golden" plate={false}>
           <style>{`
             @keyframes grCoinRise { 0% { transform: translateY(0) rotate(0deg); opacity: 0; } 12% { opacity: 0.85; } 88% { opacity: 0.85; } 100% { transform: translateY(-100vh) rotate(720deg); opacity: 0; } }
             @keyframes grTwinkle { 0%,100% { opacity: 0.25; transform: scale(0.8); } 50% { opacity: 1; transform: scale(1.3); } }
@@ -3409,20 +3410,20 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
               )}
             </AnimatePresence>
           </div>
-          </FullScene>
+          </ExerciseFrame>
         );
 
       /* ──── CASE 11: FIREWALL BUILDER (was Q3 bubble quiz) ──── */
       case 11: {
         if (showSummary[11]) return <LearnSummary message="Your firewall is tall and tough — keep practising good habits every day!" starCount={getStars(11)} onNext={() => dismissSummary(11, 12)} />;
         return (
-          <FullScene bg="linear-gradient(180deg, #05060f 0%, #1a1033 100%)" glow="radial-gradient(circle, rgba(34,197,94,0.18), transparent)">
+          <ExerciseFrame variant="dusk">
             <FirewallBuilder
               onComplete={() => showLearnSummary(11)}
               onCorrect={() => awardXp(25, "lesson-week-1")}
               onWrong={() => addWrong(11)}
             />
-          </FullScene>
+          </ExerciseFrame>
         );
       }
 
@@ -3437,7 +3438,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
         ];
         const t = tricks[trickCard] || tricks[0];
         return (
-          <FullScene bg="linear-gradient(180deg, #1a0f05 0%, #1a1033 100%)" glow="radial-gradient(circle, rgba(249,115,22,0.15), transparent)">
+          <ExerciseFrame variant="dusk" plate={false}>
           <style>{`
             @keyframes phEvidenceTape { 0% { background-position: 0 0; } 100% { background-position: 36px 0; } }
             @keyframes phStampPunch { 0% { transform: scale(2.6) rotate(-30deg); opacity: 0; } 60% { transform: scale(0.95) rotate(-14deg); opacity: 0.95; } 80% { transform: scale(1.05) rotate(-14deg); } 100% { transform: scale(1) rotate(-14deg); opacity: 0.95; } }
@@ -3653,7 +3654,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
               </motion.div>
             )}
           </div>
-          </FullScene>
+          </ExerciseFrame>
         );
       }
 
@@ -3661,13 +3662,13 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
       case 13: {
         if (showSummary[13]) return <LearnSummary message="You spotted every trick! Real friends don't need your password — ever." starCount={getStars(13)} onNext={() => dismissSummary(13, 14)} />;
         return (
-          <FullScene bg="linear-gradient(180deg, #050a1a 0%, #1a1033 100%)" glow="radial-gradient(circle, rgba(239,68,68,0.2), transparent)">
+          <ExerciseFrame variant="dusk">
             <SpamBlaster
               onComplete={() => showLearnSummary(13)}
               onCorrect={() => awardXp(25, "lesson-week-1")}
               onWrong={() => addWrong(13)}
             />
-          </FullScene>
+          </ExerciseFrame>
         );
       }
 
@@ -3675,13 +3676,13 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
       case 14: {
         if (showSummary[14]) return <LearnSummary message="You chose safely every time — that judgement is your best cyber tool." starCount={getStars(14)} onNext={() => dismissSummary(14, 15)} />;
         return (
-          <FullScene bg="linear-gradient(180deg, #0a0e2a 0%, #1a1033 100%)" glow="radial-gradient(circle, rgba(168,85,247,0.18), transparent)">
+          <ExerciseFrame variant="dusk">
             <ChooseYourPath
               onComplete={() => showLearnSummary(14)}
               onCorrect={() => awardXp(25, "lesson-week-1")}
               onWrong={() => addWrong(14)}
             />
-          </FullScene>
+          </ExerciseFrame>
         );
       }
 

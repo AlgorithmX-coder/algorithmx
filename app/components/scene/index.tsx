@@ -628,6 +628,101 @@ export function SceneKeyframes() {
   );
 }
 
+/* ───────────────────────── EXERCISE FRAME ───────────────────────── */
+
+/**
+ * Pixar-mood wrapper for an interactive exercise. Provides the standard
+ * sunset atmosphere, then renders children inside a translucent dark
+ * "plate" so the exercise's own UI keeps its readability without
+ * fighting the warm backdrop. Drop-in replacement for the legacy
+ * <FullScene> when wrapping an exercise component.
+ */
+export function ExerciseFrame({
+  children,
+  variant = "dusk",
+  showStars = true,
+  showParticles = true,
+  showRidges = true,
+  plate = true,
+}: {
+  children: ReactNode;
+  variant?: PaletteKey;
+  showStars?: boolean;
+  showParticles?: boolean;
+  showRidges?: boolean;
+  /** Whether to render the translucent dark plate around children. */
+  plate?: boolean;
+}) {
+  const px = useMouseParallax();
+  return (
+    <div
+      style={{
+        position: "relative",
+        width: "100%",
+        minHeight: "min(82vh, 760px)",
+        borderRadius: 28,
+        overflow: "hidden",
+        boxShadow: SHADOW.sceneFrame,
+        fontFamily: FONT_STACK,
+        background: "#1a0d1f",
+      }}
+    >
+      <SunsetBackdrop variant={variant} parallax={px} />
+      {showRidges && <DistantRidges variant={variant} parallax={px} />}
+      {showStars && <StarField count={45} />}
+      {showParticles && <FloatingParticles count={22} />}
+
+      {plate ? (
+        <div
+          style={{
+            position: "relative",
+            zIndex: 6,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            minHeight: "min(82vh, 760px)",
+            padding: "32px 24px",
+          }}
+        >
+          <div
+            style={{
+              position: "relative",
+              width: "100%",
+              maxWidth: 880,
+              padding: "28px 26px",
+              background: "rgba(14, 6, 22, 0.62)",
+              backdropFilter: "blur(14px)",
+              WebkitBackdropFilter: "blur(14px)",
+              borderStyle: "solid",
+              borderWidth: 1,
+              borderColor: "rgba(255, 220, 180, 0.18)",
+              borderRadius: 24,
+              boxShadow:
+                "0 30px 70px -20px rgba(20, 6, 12, 0.7), 0 0 0 1px rgba(255, 220, 180, 0.05) inset",
+            }}
+          >
+            {children}
+          </div>
+        </div>
+      ) : (
+        <div
+          style={{
+            position: "relative",
+            zIndex: 6,
+            minHeight: "min(82vh, 760px)",
+            padding: "32px 24px",
+          }}
+        >
+          {children}
+        </div>
+      )}
+
+      <Vignette />
+      <SceneKeyframes />
+    </div>
+  );
+}
+
 /* ───────────────────────── RE-EXPORTS ───────────────────────── */
 
 export { COLOR, FONT_STACK, PALETTE, SHADOW, SPRING } from "./tokens";
