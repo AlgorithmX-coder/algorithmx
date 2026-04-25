@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { playSound } from "@/app/lib/sounds";
 import ExerciseIntro from "./ExerciseIntro";
+import ExerciseHowTo from "./ExerciseHowTo";
 
 export type ConveyorCategory = "strong" | "weak";
 
@@ -320,6 +321,18 @@ export default function ConveyorBelt({
           rotating cogs in shadow, drifting embers + steam, warning lights.
           All decorative; sits at zIndex 0 so HUD/cards land on top. */}
       <FactoryBackdrop />
+
+      <div style={{ position: "relative", zIndex: 5 }}>
+        <ExerciseHowTo
+          title="Sorting Factory"
+          steps={[
+            { glyph: "⬆", text: "Lever UP to send STRONG to the safe" },
+            { glyph: "⬇", text: "Lever DOWN to shred WEAK passwords" },
+            { glyph: "⏱", text: "Decide before each card hits the fork" },
+          ]}
+          accent="#fbbf24"
+        />
+      </div>
 
       {/* HUD */}
       <div
@@ -922,23 +935,155 @@ function FactoryBackdrop() {
         @keyframes cbEmberRise { 0% { transform: translateY(0) translateX(0); opacity: 0; } 12% { opacity: 0.85; } 88% { opacity: 0.85; } 100% { transform: translateY(-120%) translateX(var(--cb-drift, 18px)); opacity: 0; } }
         @keyframes cbSteamPuff { 0% { transform: translate(0,0) scale(0.4); opacity: 0; } 18% { opacity: 0.5; } 70% { opacity: 0.35; } 100% { transform: translate(var(--cb-sx, 30px), -160%) scale(2.3); opacity: 0; } }
         @keyframes cbCableSwing { 0%,100% { transform: rotate(-2deg); } 50% { transform: rotate(2deg); } }
+        @keyframes cbBeltSlide { 0% { background-position: 0 0; } 100% { background-position: 32px 0; } }
+        @keyframes cbPistonPump { 0%,100% { transform: translateY(0); } 50% { transform: translateY(14px); } }
+        @keyframes cbPipeFlow { 0% { stroke-dashoffset: 0; } 100% { stroke-dashoffset: -36; } }
+        @keyframes cbSpotlightSweep { 0%,100% { transform: translateX(-30%) skewX(-12deg); opacity: 0.18; } 50% { transform: translateX(60%) skewX(-12deg); opacity: 0.42; } }
+        @keyframes cbBgPulse { 0%,100% { opacity: 0.45; } 50% { opacity: 0.85; } }
+        @keyframes cbBulbFlicker { 0%,100% { opacity: 1; } 4%,8% { opacity: 0.5; } 6% { opacity: 1; } }
+        @keyframes cbConveyorRoller { 0% { transform: rotate(0deg); } 100% { transform: rotate(720deg); } }
       `}</style>
+
+      {/* Layer 1 — radial spotlight glow that reads as factory ceiling lighting */}
+      <div style={{
+        position: "absolute", inset: 0,
+        background:
+          "radial-gradient(ellipse at 22% 20%, rgba(253,224,71,0.22), transparent 38%)," +
+          "radial-gradient(ellipse at 78% 22%, rgba(34,211,238,0.18), transparent 38%)," +
+          "radial-gradient(ellipse at 50% 88%, rgba(249,115,22,0.18), transparent 50%)",
+        animation: "cbBgPulse 4.4s ease-in-out infinite",
+      }} />
 
       {/* Riveted metal plate texture — repeating dot pattern */}
       <div style={{
         position: "absolute", inset: 0,
         backgroundImage:
-          "radial-gradient(circle at 6px 6px, rgba(255,180,120,0.06) 1.2px, transparent 1.6px)," +
-          "radial-gradient(circle at 18px 18px, rgba(120,80,200,0.05) 1px, transparent 1.4px)",
+          "radial-gradient(circle at 6px 6px, rgba(255,180,120,0.08) 1.2px, transparent 1.6px)," +
+          "radial-gradient(circle at 18px 18px, rgba(120,80,200,0.07) 1px, transparent 1.4px)",
         backgroundSize: "24px 24px, 36px 36px",
-        opacity: 0.7,
+        opacity: 0.85,
       }} />
+
+      {/* Sweeping spotlight beam across the back wall */}
+      <span aria-hidden style={{
+        position: "absolute", top: 0, bottom: 0, left: 0, width: "70%",
+        background: "linear-gradient(90deg, transparent, rgba(253,224,71,0.18), transparent)",
+        animation: "cbSpotlightSweep 7s ease-in-out infinite",
+        pointerEvents: "none",
+        mixBlendMode: "screen",
+      }} />
+
+      {/* SVG mechanism — conveyor rollers, pistons, pipes, dials */}
+      <svg
+        aria-hidden
+        viewBox="0 0 760 500"
+        preserveAspectRatio="xMidYMid slice"
+        style={{ position: "absolute", inset: 0, width: "100%", height: "100%", pointerEvents: "none" }}
+      >
+        <defs>
+          <linearGradient id="cbPipe" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stopColor="#475569" />
+            <stop offset="50%" stopColor="#94a3b8" />
+            <stop offset="100%" stopColor="#475569" />
+          </linearGradient>
+          <linearGradient id="cbPiston" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="#64748b" />
+            <stop offset="100%" stopColor="#1e293b" />
+          </linearGradient>
+          <radialGradient id="cbBulbGlow">
+            <stop offset="0%" stopColor="rgba(253,224,71,0.85)" />
+            <stop offset="60%" stopColor="rgba(253,224,71,0.25)" />
+            <stop offset="100%" stopColor="rgba(253,224,71,0)" />
+          </radialGradient>
+        </defs>
+
+        {/* Top pipe with flowing fluid */}
+        <line x1="0" y1="22" x2="760" y2="22" stroke="url(#cbPipe)" strokeWidth="6" />
+        <line x1="0" y1="22" x2="760" y2="22"
+          stroke="#22d3ee" strokeWidth="2"
+          strokeDasharray="14 22"
+          style={{ animation: "cbPipeFlow 1.6s linear infinite", opacity: 0.7 }} />
+        {/* Pipe junctions */}
+        {[120, 320, 540, 700].map((x) => (
+          <g key={x}>
+            <rect x={x - 4} y="18" width="8" height="14" fill="#475569" rx="1" />
+            <circle cx={x} cy="22" r="3" fill="#22d3ee" opacity="0.8">
+              <animate attributeName="opacity" values="0.4;1;0.4" dur="1.6s" repeatCount="indefinite" />
+            </circle>
+          </g>
+        ))}
+
+        {/* Vertical drop pipe down to a dial gauge */}
+        <line x1="640" y1="22" x2="640" y2="120" stroke="url(#cbPipe)" strokeWidth="5" />
+        <circle cx="640" cy="140" r="22" fill="#1e293b" stroke="#475569" strokeWidth="2" />
+        <circle cx="640" cy="140" r="18" fill="none" stroke="#94a3b8" strokeWidth="1" />
+        {/* Gauge needle */}
+        <line x1="640" y1="140" x2="654" y2="128" stroke="#ef4444" strokeWidth="2" strokeLinecap="round">
+          <animateTransform attributeName="transform" type="rotate" values="-30 640 140; 30 640 140; -30 640 140" dur="3.2s" repeatCount="indefinite" />
+        </line>
+        <circle cx="640" cy="140" r="2" fill="#fbbf24" />
+
+        {/* Lower-left dial gauge */}
+        <circle cx="80" cy="430" r="26" fill="#1e293b" stroke="#475569" strokeWidth="2" />
+        <circle cx="80" cy="430" r="22" fill="none" stroke="#94a3b8" strokeWidth="1" />
+        {[-60, -30, 0, 30, 60].map((a, i) => (
+          <line key={i} x1={80 + Math.cos((a - 90) * Math.PI / 180) * 18} y1={430 + Math.sin((a - 90) * Math.PI / 180) * 18}
+            x2={80 + Math.cos((a - 90) * Math.PI / 180) * 22} y2={430 + Math.sin((a - 90) * Math.PI / 180) * 22}
+            stroke="#94a3b8" strokeWidth="1" />
+        ))}
+        <line x1="80" y1="430" x2="92" y2="416" stroke="#22d3ee" strokeWidth="2" strokeLinecap="round">
+          <animateTransform attributeName="transform" type="rotate" values="0 80 430; 60 80 430; 20 80 430; 40 80 430; 0 80 430" dur="4s" repeatCount="indefinite" />
+        </line>
+        <circle cx="80" cy="430" r="2" fill="#fbbf24" />
+
+        {/* Pistons pumping at the back */}
+        {[
+          { x: 240, baseY: 80 },
+          { x: 280, baseY: 70 },
+          { x: 500, baseY: 80 },
+        ].map((p, i) => (
+          <g key={i} style={{ animation: `cbPistonPump ${1.4 + i * 0.3}s ease-in-out ${i * 0.3}s infinite` }}>
+            <rect x={p.x - 6} y={p.baseY} width="12" height="36" fill="url(#cbPiston)" rx="2" />
+            <rect x={p.x - 8} y={p.baseY + 36} width="16" height="6" fill="#475569" rx="1" />
+            <line x1={p.x - 12} y1={p.baseY - 2} x2={p.x + 12} y2={p.baseY - 2} stroke="#475569" strokeWidth="3" />
+          </g>
+        ))}
+
+        {/* Background conveyor rollers (decorative — the real belt is in the foreground) */}
+        {[
+          { cx: 120, cy: 460 },
+          { cx: 200, cy: 460 },
+          { cx: 360, cy: 460 },
+          { cx: 540, cy: 460 },
+          { cx: 680, cy: 460 },
+        ].map((r, i) => (
+          <g key={i} style={{ transformOrigin: `${r.cx}px ${r.cy}px`, animation: `cbConveyorRoller ${4 + (i % 3)}s linear infinite` }}>
+            <circle cx={r.cx} cy={r.cy} r="14" fill="#1e293b" stroke="#475569" strokeWidth="2" />
+            <line x1={r.cx - 14} y1={r.cy} x2={r.cx + 14} y2={r.cy} stroke="#94a3b8" strokeWidth="1" />
+            <line x1={r.cx} y1={r.cy - 14} x2={r.cx} y2={r.cy + 14} stroke="#94a3b8" strokeWidth="1" />
+          </g>
+        ))}
+
+        {/* Faint background grid panels */}
+        {[60, 200, 400, 600].map((x) => (
+          <rect key={x} x={x} y="200" width="80" height="120" fill="none" stroke="rgba(148,163,184,0.08)" strokeWidth="1" rx="2" />
+        ))}
+
+        {/* Hanging chains for two extra bulbs */}
+        {[180, 460].map((x, i) => (
+          <g key={i}>
+            <line x1={x} y1="0" x2={x} y2="58" stroke="rgba(148,163,184,0.55)" strokeWidth="1.4" strokeDasharray="3 3" />
+            <circle cx={x} cy="64" r="6" fill="url(#cbBulbGlow)" />
+            <circle cx={x} cy="64" r="3" fill="#fde047" style={{ filter: "drop-shadow(0 0 8px #fbbf24)", animation: `cbBulbFlicker ${2.2 + i * 0.4}s ease-in-out ${i * 0.5}s infinite` }} />
+          </g>
+        ))}
+      </svg>
 
       {/* Hazard stripes ribbon along the bottom edge */}
       <div style={{
         position: "absolute", left: 0, right: 0, bottom: 0, height: 14,
         backgroundImage: "repeating-linear-gradient(45deg, #fbbf24 0 12px, #1a0f1e 12px 24px)",
-        opacity: 0.45,
+        opacity: 0.7,
         animation: "cbHazardSlide 1.6s linear infinite",
       }} />
       {/* Top accent thin neon bar */}
@@ -947,26 +1092,31 @@ function FactoryBackdrop() {
         background: "linear-gradient(90deg, transparent, rgba(34,211,238,0.55), rgba(168,85,247,0.55), transparent)",
       }} />
 
-      {/* Industrial cogs (decorative SVGs) at left & right ceiling */}
-      <Cog size={86} top={6} left={-30} colour="#5b6480" speed="22s" />
-      <Cog size={120} top={-46} left={94} colour="#3b4664" speed="36s" reverse />
-      <Cog size={64} top={94} left={680} colour="#5b6480" speed="18s" />
-      <Cog size={48} top={146} left={648} colour="#3b4664" speed="14s" reverse />
+      {/* Industrial cogs — bigger + more numerous so the mechanism reads
+          immediately as a working factory rather than decorative flourish */}
+      <Cog size={120} top={-30} left={-40} colour="#6b7798" speed="18s" />
+      <Cog size={160} top={-72} left={92} colour="#3b4664" speed="36s" reverse />
+      <Cog size={88} top={150} left={-30} colour="#5b6480" speed="24s" reverse />
+      <Cog size={94} top={94} left={680} colour="#6b7798" speed="14s" />
+      <Cog size={72} top={166} left={648} colour="#3b4664" speed="11s" reverse />
+      <Cog size={56} top={236} left={696} colour="#5b6480" speed="9s" />
 
       {/* Hanging cable with bulb (left) */}
       <div style={{ position: "absolute", left: 92, top: 0, transformOrigin: "top center", animation: "cbCableSwing 5s ease-in-out infinite" }}>
         <div style={{ width: 2, height: 70, background: "rgba(120,120,140,0.55)", margin: "0 auto" }} />
         <div style={{
-          width: 16, height: 16, borderRadius: "50%",
+          width: 18, height: 18, borderRadius: "50%",
           background: "radial-gradient(circle at 35% 35%, #fde047, #f59e0b 60%, #b45309)",
-          boxShadow: "0 0 24px rgba(253,224,71,0.55)",
+          boxShadow: "0 0 32px rgba(253,224,71,0.7), 0 0 60px rgba(249,115,22,0.45)",
           margin: "0 auto",
+          animation: "cbBulbFlicker 4s ease-in-out infinite",
         }} />
       </div>
 
       {/* Warning lights — corners */}
-      <span style={{ position: "absolute", top: 14, right: 22, width: 8, height: 8, borderRadius: "50%", background: "#ef4444", color: "#ef4444", animation: "cbWarnBlink 2.4s ease-in-out infinite" }} />
-      <span style={{ position: "absolute", top: 14, right: 40, width: 8, height: 8, borderRadius: "50%", background: "#f59e0b", color: "#f59e0b", animation: "cbWarnBlink 2.4s ease-in-out 0.7s infinite" }} />
+      <span style={{ position: "absolute", top: 14, right: 22, width: 10, height: 10, borderRadius: "50%", background: "#ef4444", color: "#ef4444", animation: "cbWarnBlink 2.4s ease-in-out infinite" }} />
+      <span style={{ position: "absolute", top: 14, right: 42, width: 10, height: 10, borderRadius: "50%", background: "#f59e0b", color: "#f59e0b", animation: "cbWarnBlink 2.4s ease-in-out 0.7s infinite" }} />
+      <span style={{ position: "absolute", top: 14, right: 62, width: 10, height: 10, borderRadius: "50%", background: "#22c55e", color: "#22c55e", animation: "cbWarnBlink 2.4s ease-in-out 1.4s infinite" }} />
 
       {/* Drifting embers / sparks */}
       {Array.from({ length: 14 }).map((_, i) => {

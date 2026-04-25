@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { playSound } from "@/app/lib/sounds";
 import { correctAnswerBurst } from "@/app/lib/celebrations";
 import ExerciseIntro from "./ExerciseIntro";
+import ExerciseHowTo from "./ExerciseHowTo";
 
 export interface ProtectTheDataItem {
   text: string;
@@ -696,6 +697,15 @@ export default function ProtectTheData({
       }}
       tabIndex={0}
     >
+      <ExerciseHowTo
+        title="Protect the Data"
+        steps={[
+          { glyph: "🖱️", text: "Move your shield with the mouse or ←/→ keys" },
+          { glyph: "🛡️", text: "BLOCK private info (red) before it lands" },
+          { glyph: "✅", text: "Let SAFE info (green) through to score" },
+        ]}
+        accent="#60a5fa"
+      />
       <canvas
         ref={canvasRef}
         style={{

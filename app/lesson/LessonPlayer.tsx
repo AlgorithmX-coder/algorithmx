@@ -3256,17 +3256,28 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                 );
               })}
             </div>
+            {/* Continue button appears as soon as the player answers their
+                first rule, so they're never blocked waiting on rules they
+                might not have noticed/scrolled to. The full ⭐⭐⭐⭐⭐ message
+                still rewards finishing all 5. */}
             <AnimatePresence>
-              {answeredRules.size === 5 && (
+              {answeredRules.size >= 1 && (
                 <motion.div
                   initial={{ opacity: 0, scale: 0.5 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                  style={{ position: "relative", zIndex: 1 }}
                 >
-                  <p style={{ color: "#f59e0b", fontSize: 20, fontWeight: 700, marginBottom: 12 }}>
-                    You know ALL 5 golden rules! ⭐⭐⭐⭐⭐
-                  </p>
-                  {btn("Continue →", () => { addCoins(25); showLearnSummary(10); })}
+                  {answeredRules.size === 5 ? (
+                    <p style={{ color: "#f59e0b", fontSize: 20, fontWeight: 700, marginBottom: 12 }}>
+                      You know ALL 5 golden rules! ⭐⭐⭐⭐⭐
+                    </p>
+                  ) : (
+                    <p style={{ color: "#fbbf24", fontSize: 14, fontWeight: 700, marginBottom: 10, opacity: 0.85 }}>
+                      {answeredRules.size}/5 unlocked — answer the rest for the full bonus!
+                    </p>
+                  )}
+                  {btn(answeredRules.size === 5 ? "Continue →" : "Continue anyway →", () => { addCoins(answeredRules.size === 5 ? 25 : 5); showLearnSummary(10); })}
                 </motion.div>
               )}
             </AnimatePresence>

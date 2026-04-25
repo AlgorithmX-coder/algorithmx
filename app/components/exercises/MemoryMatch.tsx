@@ -7,6 +7,7 @@ import {
   correctAnswerBurst,
 } from "@/app/lib/celebrations";
 import ExerciseIntro from "./ExerciseIntro";
+import ExerciseHowTo from "./ExerciseHowTo";
 
 export interface MemoryPair {
   term: string;
@@ -62,6 +63,10 @@ const STYLES = `
 @keyframes mmFadeIn {
   from { opacity: 0; transform: translateY(10px); }
   to   { opacity: 1; transform: none; }
+}
+@keyframes mmRingSpin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 `;
 
@@ -343,15 +348,92 @@ export default function MemoryMatch({
         maxWidth: 720,
         margin: "0 auto",
         maxHeight: "calc(100vh - 140px)",
-        padding: "20px 18px 28px",
+        padding: "0 0 22px",
         borderRadius: 24,
         background:
           "radial-gradient(circle at 50% 30%, rgba(168,85,247,0.15), transparent 60%), linear-gradient(180deg, #0a0e2a 0%, #05060f 100%)",
-        border: "1px solid rgba(255,255,255,0.08)",
+        border: "1px solid rgba(168,85,247,0.25)",
+        boxShadow: "0 30px 60px -25px rgba(168,85,247,0.45), 0 0 60px rgba(168,85,247,0.15)",
         color: "#e2e8f0",
         overflow: "hidden",
       }}
     >
+      {/* Animated neural-network backdrop — abstract synapse lines pulsing
+          across the board. Pure SVG so it scales & costs nothing. */}
+      <div aria-hidden style={{ position: "absolute", inset: 0, zIndex: 0, pointerEvents: "none" }}>
+        <style>{`
+          @keyframes mmSynapse { 0%,100% { opacity: 0.25; } 50% { opacity: 0.7; } }
+          @keyframes mmDataDrift { 0% { transform: translateX(-100%); } 100% { transform: translateX(120%); } }
+          @keyframes mmNodeGlow { 0%,100% { opacity: 0.4; transform: scale(1); } 50% { opacity: 1; transform: scale(1.3); } }
+        `}</style>
+        <svg width="100%" height="100%" viewBox="0 0 720 600" preserveAspectRatio="xMidYMid slice" style={{ position: "absolute", inset: 0 }}>
+          <defs>
+            <linearGradient id="mmNodeGrad" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stopColor="#a78bfa" />
+              <stop offset="100%" stopColor="#22d3ee" />
+            </linearGradient>
+          </defs>
+          {/* Synapse lines */}
+          {Array.from({ length: 18 }).map((_, i) => {
+            const x1 = (i * 71) % 720;
+            const y1 = (i * 113) % 600;
+            const x2 = ((i + 3) * 89) % 720;
+            const y2 = ((i + 5) * 137) % 600;
+            return (
+              <line
+                key={`syn-${i}`}
+                x1={x1} y1={y1} x2={x2} y2={y2}
+                stroke="url(#mmNodeGrad)"
+                strokeWidth="1"
+                strokeOpacity="0.3"
+                style={{ animation: `mmSynapse ${3 + (i % 5)}s ease-in-out ${i * 0.3}s infinite` }}
+              />
+            );
+          })}
+          {/* Network nodes */}
+          {Array.from({ length: 22 }).map((_, i) => {
+            const cx = (i * 53 + 17) % 720;
+            const cy = (i * 89 + 31) % 600;
+            const c = i % 3 === 0 ? "#a78bfa" : i % 3 === 1 ? "#22d3ee" : "#f472b6";
+            return (
+              <circle
+                key={`node-${i}`}
+                cx={cx} cy={cy} r="2.4"
+                fill={c}
+                style={{
+                  filter: `drop-shadow(0 0 4px ${c})`,
+                  animation: `mmNodeGlow ${2 + (i % 4)}s ease-in-out ${i * 0.18}s infinite`,
+                  transformOrigin: `${cx}px ${cy}px`,
+                }}
+              />
+            );
+          })}
+        </svg>
+        {/* Drifting data streams */}
+        {Array.from({ length: 6 }).map((_, i) => (
+          <span key={`stream-${i}`} style={{
+            position: "absolute",
+            top: `${10 + i * 14}%`,
+            left: 0,
+            width: 80,
+            height: 1.5,
+            background: "linear-gradient(90deg, transparent, rgba(167,139,250,0.7), transparent)",
+            animation: `mmDataDrift ${6 + i * 1.4}s linear ${i * 1.2}s infinite`,
+          }} />
+        ))}
+      </div>
+
+      <div style={{ position: "relative", zIndex: 1, padding: "0 18px" }}>
+      <ExerciseHowTo
+        title="Memory Match"
+        steps={[
+          { glyph: "🧠", text: "Flip two cards to find a matching pair" },
+          { glyph: "🔗", text: "Match the term to its meaning" },
+          { glyph: "⚡", text: "Fewer flips = more stars" },
+        ]}
+        accent="#a78bfa"
+      />
+      <div style={{ height: 14 }} />
       {/* HUD */}
       <div
         style={{
@@ -410,63 +492,87 @@ export default function MemoryMatch({
                 animation: extraAnim,
               }}
             >
-              {/* Back (face-down) */}
+              {/* Back (face-down) — holographic chip with rotating ring,
+                  hex pattern and circuit-board feel. Replaces the flat
+                  shield card the user said looked too plain. */}
               <div
                 style={{
                   position: "absolute",
                   inset: 0,
                   borderRadius: 16,
                   background:
-                    "linear-gradient(135deg, #1e3a5f 0%, #0f172a 100%)",
-                  border: "1px solid rgba(96,165,250,0.35)",
+                    "radial-gradient(circle at 30% 25%, rgba(167,139,250,0.45), transparent 60%)," +
+                    "linear-gradient(135deg, #1f2150 0%, #0a0e2a 100%)",
+                  border: "1px solid rgba(167,139,250,0.5)",
                   boxShadow:
-                    "inset 0 0 16px rgba(59,130,246,0.15), 0 4px 14px rgba(0,0,0,0.4)",
+                    "inset 0 0 18px rgba(167,139,250,0.2), 0 8px 22px rgba(167,139,250,0.25), 0 0 0 1px rgba(255,255,255,0.04)",
                   backfaceVisibility: "hidden",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  transition: "transform 0.2s ease",
+                  transition: "transform 0.2s ease, box-shadow 0.2s ease",
+                  overflow: "hidden",
                 }}
                 onMouseEnter={(e) => {
                   if (c.matched || c.flipped) return;
                   (e.currentTarget as HTMLDivElement).style.transform =
-                    "translateY(-3px)";
+                    "translateY(-4px)";
                   (e.currentTarget as HTMLDivElement).style.boxShadow =
-                    "inset 0 0 20px rgba(59,130,246,0.3), 0 8px 20px rgba(0,0,0,0.5)";
+                    "inset 0 0 22px rgba(167,139,250,0.4), 0 14px 28px rgba(167,139,250,0.45), 0 0 0 1px rgba(255,255,255,0.08)";
                 }}
                 onMouseLeave={(e) => {
                   (e.currentTarget as HTMLDivElement).style.transform = "";
                   (e.currentTarget as HTMLDivElement).style.boxShadow =
-                    "inset 0 0 16px rgba(59,130,246,0.15), 0 4px 14px rgba(0,0,0,0.4)";
+                    "inset 0 0 18px rgba(167,139,250,0.2), 0 8px 22px rgba(167,139,250,0.25), 0 0 0 1px rgba(255,255,255,0.04)";
                 }}
               >
-                {/* Shield mark */}
-                <svg
-                  width="46"
-                  height="46"
-                  viewBox="0 0 24 24"
-                  aria-hidden
-                  style={{ opacity: 0.55 }}
-                >
+                {/* Hex grid texture */}
+                <div aria-hidden style={{
+                  position: "absolute", inset: 0, opacity: 0.18,
+                  backgroundImage:
+                    "radial-gradient(circle at 4px 4px, rgba(167,139,250,0.6) 1px, transparent 1.5px)",
+                  backgroundSize: "10px 10px",
+                }} />
+                {/* Corner brackets */}
+                <span aria-hidden style={{ position: "absolute", top: 4, left: 4, width: 8, height: 8, borderTop: "1.5px solid #a78bfa", borderLeft: "1.5px solid #a78bfa", opacity: 0.7 }} />
+                <span aria-hidden style={{ position: "absolute", top: 4, right: 4, width: 8, height: 8, borderTop: "1.5px solid #22d3ee", borderRight: "1.5px solid #22d3ee", opacity: 0.7 }} />
+                <span aria-hidden style={{ position: "absolute", bottom: 4, left: 4, width: 8, height: 8, borderBottom: "1.5px solid #22d3ee", borderLeft: "1.5px solid #22d3ee", opacity: 0.7 }} />
+                <span aria-hidden style={{ position: "absolute", bottom: 4, right: 4, width: 8, height: 8, borderBottom: "1.5px solid #a78bfa", borderRight: "1.5px solid #a78bfa", opacity: 0.7 }} />
+                {/* Slowly rotating gradient ring */}
+                <span aria-hidden style={{
+                  position: "absolute",
+                  width: "65%", height: "65%",
+                  borderRadius: "50%",
+                  background: "conic-gradient(from 0deg, transparent 0deg, rgba(34,211,238,0.65) 70deg, transparent 140deg, rgba(167,139,250,0.65) 240deg, transparent 320deg)",
+                  filter: "blur(4px)",
+                  animation: `mmRingSpin 8s linear infinite`,
+                }} />
+                {/* Centre brain/chip glyph */}
+                <svg width="50%" height="50%" viewBox="0 0 60 60" aria-hidden style={{ position: "relative" }}>
                   <defs>
-                    <linearGradient id={`mmsh-${c.id}`} x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="0%" stopColor="#93c5fd" />
-                      <stop offset="100%" stopColor="#3b82f6" />
+                    <linearGradient id={`mmcg-${c.id}`} x1="0" y1="0" x2="1" y2="1">
+                      <stop offset="0%" stopColor="#fde047" />
+                      <stop offset="50%" stopColor="#a78bfa" />
+                      <stop offset="100%" stopColor="#22d3ee" />
                     </linearGradient>
                   </defs>
-                  <path
-                    d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"
-                    fill={`url(#mmsh-${c.id})`}
-                    opacity="0.65"
-                  />
-                  <path
-                    d="M8 12l3 3 5-6"
-                    stroke="#fff"
-                    strokeWidth="1.6"
-                    fill="none"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
+                  {/* Chip outline */}
+                  <rect x="14" y="14" width="32" height="32" rx="4"
+                    fill="none" stroke={`url(#mmcg-${c.id})`} strokeWidth="2" />
+                  {/* Pins */}
+                  {[0, 1, 2, 3].map((p) => (
+                    <g key={p}>
+                      <line x1={20 + p * 6} y1="14" x2={20 + p * 6} y2="8" stroke="#a78bfa" strokeWidth="1.5" />
+                      <line x1={20 + p * 6} y1="46" x2={20 + p * 6} y2="52" stroke="#a78bfa" strokeWidth="1.5" />
+                      <line x1="14" y1={20 + p * 6} x2="8" y2={20 + p * 6} stroke="#22d3ee" strokeWidth="1.5" />
+                      <line x1="46" y1={20 + p * 6} x2="52" y2={20 + p * 6} stroke="#22d3ee" strokeWidth="1.5" />
+                    </g>
+                  ))}
+                  {/* Centre dot */}
+                  <circle cx="30" cy="30" r="5" fill={`url(#mmcg-${c.id})`}>
+                    <animate attributeName="r" values="4;6;4" dur="2s" repeatCount="indefinite" />
+                  </circle>
+                  <circle cx="30" cy="30" r="2" fill="#fff" />
                 </svg>
               </div>
 
@@ -529,6 +635,8 @@ export default function MemoryMatch({
           />
         );
       })}
+
+      </div> {/* close zIndex:1 padded inner wrapper */}
 
       {/* Results overlay */}
       {finished && (

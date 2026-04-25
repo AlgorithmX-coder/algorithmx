@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { playSound } from "@/app/lib/sounds";
 import { correctAnswerBurst } from "@/app/lib/celebrations";
 import ExerciseIntro from "./ExerciseIntro";
+import ExerciseHowTo from "./ExerciseHowTo";
 
 export interface CyberScannerPassword {
   text: string;
@@ -548,6 +549,15 @@ export default function CyberScanner({
         color: "#e2e8f0",
       }}
     >
+      <ExerciseHowTo
+        title="Cyber Scanner"
+        steps={[
+          { glyph: "🛡", text: "Tap STRONG for safe passwords" },
+          { glyph: "💀", text: "Tap WEAK for guessable ones" },
+          { glyph: "⚡", text: "Decide before they cross the beam" },
+        ]}
+        accent="#22d3ee"
+      />
       <canvas
         ref={canvasRef}
         style={{
