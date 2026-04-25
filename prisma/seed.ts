@@ -71,7 +71,7 @@ async function main() {
     data: {
       title: "Cyber Heroes Academy",
       description: "A fun, beginner-friendly course teaching kids the fundamentals of cybersecurity through interactive weekly lessons.",
-      ageRange: "6–10",
+      ageRange: "6–9",
       duration: "45 min/week",
       weeksCount: 20,
       emoji: "🛡️",

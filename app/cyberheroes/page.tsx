@@ -268,7 +268,7 @@ function AnimCounter({ to, suffix = "", label }: { to: number; suffix?: string; 
 
 /* ─── COURSE CARD DATA ─── */
 const COURSES = [
-  { emoji: "🛡️", title: "Cyber Heroes Academy", ages: "6–10", weeks: 20, time: "45 min/week", accent: "#06b6d4", desc: "Fun animated adventures teaching password safety, online awareness, and digital citizenship.", featured: true },
+  { emoji: "🛡️", title: "Cyber Heroes Academy", ages: "6–9", weeks: 20, time: "45 min/week", accent: "#06b6d4", desc: "Fun animated adventures teaching password safety, online awareness, and digital citizenship.", featured: true },
   { emoji: "🔍", title: "Cyber Explorers", ages: "11–14", weeks: 14, time: "1 hr/week", accent: "#8b5cf6", desc: "Deeper dives into encryption, social engineering, safe browsing, and data privacy.", featured: false },
   { emoji: "💻", title: "CyberStart", ages: "15–17", weeks: 16, time: "1.5 hrs/week", accent: "#22c55e", desc: "Hands-on challenges covering networking, ethical hacking basics, and secure coding.", featured: false },
   { emoji: "🚀", title: "CyberStart Pro", ages: "18+", weeks: 20, time: "2 hrs/week", accent: "#f59e0b", desc: "Industry-aligned curriculum preparing for certifications and real-world security roles.", featured: false },
@@ -318,7 +318,7 @@ const IconFamily = ({ size = 32, color = "#ec4899" }: { size?: number; color?: s
 function FAQAccordion() {
   const [open, setOpen] = useState<number | null>(0);
   const items = [
-    { q: "What age is this for?", a: "Cyber Heroes Academy is designed for children aged 6–10. Every lesson, character, and activity is crafted to be age-appropriate and engaging for this specific age group." },
+    { q: "What age is this for?", a: "Cyber Heroes Academy is designed for children aged 6–9. Every lesson, character, and activity is crafted to be age-appropriate and engaging for this specific age group." },
     { q: "How long does it take?", a: "20 weeks, one 45-minute session per week. Children can go at their own pace — there's no pressure to keep to a schedule." },
     { q: "Do we get lifetime access?", a: "Yes! Your one-time purchase of £99 gives you lifetime access with continuous updates — as new threats emerge, we update the content so your child's knowledge stays current." },
     { q: "Is it accredited?", a: "Yes. Designed in alignment with CyberFirst and ASDAN accreditation frameworks from day one." },
@@ -516,7 +516,7 @@ export default function HomePage() {
                 </span>
               </h1>
               <p className="text-gray-300 text-base sm:text-lg leading-relaxed max-w-lg mx-auto lg:mx-0 mb-4">
-                Join Adam and Layla on an interactive journey to become a Cyber Hero. Fun animated lessons, games, and challenges for ages 6–10.
+                Join Adam and Layla on an interactive journey to become a Cyber Hero. Fun animated lessons, games, and challenges for ages 6–9.
               </p>
               <p className="mb-8 mono" style={{ fontSize: 14, color: "#f97316", fontWeight: 500 }}>
                 <span className="ch-typewriter">20 weeks. 40+ missions. 1 Cyber Hero.</span>
@@ -766,7 +766,7 @@ export default function HomePage() {
               <span style={ACCENT_TEXT}>other ages</span>?
             </h3>
             <p className="text-gray-500 text-sm max-w-lg mx-auto mb-6">
-              Cyber Heroes Academy is designed for ages 6-10. For older children and adults, check out our other cybersecurity courses.
+              Cyber Heroes Academy is designed for ages 6-9. For older children and adults, check out our other cybersecurity courses.
             </p>
             <a href="/" className="inline-block px-6 py-3 text-sm font-bold text-white transition-all"
               style={{ background: BTN_GRAD, boxShadow: BTN_GLOW, borderRadius: 14 }}>

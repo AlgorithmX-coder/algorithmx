@@ -383,21 +383,123 @@ export default function ProtectTheData({
       // ── DRAW ──
       ctx.clearRect(0, 0, CANVAS_W, CANVAS_H);
 
-      // Background starfield
+      // Background — deep space gradient + twinkling stars + retro Space-
+      // Invaders march across the upper half (purely decorative; never
+      // interacts with the actual gameplay).
       const bgGrad = ctx.createLinearGradient(0, 0, 0, CANVAS_H);
-      bgGrad.addColorStop(0, "#0b1225");
-      bgGrad.addColorStop(1, "#05060f");
+      bgGrad.addColorStop(0, "#0d1633");
+      bgGrad.addColorStop(0.5, "#080c1f");
+      bgGrad.addColorStop(1, "#02030a");
       ctx.fillStyle = bgGrad;
       ctx.fillRect(0, 0, CANVAS_W, CANVAS_H);
-      ctx.fillStyle = "rgba(255,255,255,0.4)";
-      for (let i = 0; i < 40; i++) {
+
+      // Twinkling stars
+      for (let i = 0; i < 70; i++) {
         const sx = (i * 97.3) % CANVAS_W;
         const sy = (i * 173.7) % CANVAS_H;
         const r = ((i * 13) % 3) / 2 + 0.4;
+        const tw = 0.35 + 0.65 * (0.5 + 0.5 * Math.sin(now * 0.002 + i * 0.7));
+        ctx.fillStyle = `rgba(255,255,255,${0.25 + 0.45 * tw})`;
         ctx.beginPath();
         ctx.arc(sx, sy, r, 0, Math.PI * 2);
         ctx.fill();
       }
+
+      // Retro pixel-invader grid (3 rows × 7 cols, two-frame "march" anim).
+      // Each invader is drawn from a tiny bitmap so it reads as proper
+      // pixel-art rather than a smooth shape.  Colours & opacity are dialled
+      // way down so the player's eye stays on the falling cards.
+      const INVADER_A = [
+        "..X.....X..",
+        "...X...X...",
+        "..XXXXXXX..",
+        ".XX.XXX.XX.",
+        "XXXXXXXXXXX",
+        "X.XXXXXXX.X",
+        "X.X.....X.X",
+        "...XX.XX...",
+      ];
+      const INVADER_B = [
+        "..X.....X..",
+        "X..X...X..X",
+        "X.XXXXXXX.X",
+        "XXX.XXX.XXX",
+        "XXXXXXXXXXX",
+        ".XXXXXXXXX.",
+        "..X.....X..",
+        ".X.......X.",
+      ];
+      const INVADER_C = [
+        "....XXX....",
+        ".XXXXXXXXX.",
+        "XXXXXXXXXXX",
+        "XXX.XXX.XXX",
+        "XXXXXXXXXXX",
+        "..X.X.X.X..",
+        ".X.X...X.X.",
+        "X.X.....X.X",
+      ];
+      const INVADER_TYPES = [INVADER_A, INVADER_B, INVADER_C];
+      const INVADER_COLS = ["#a78bfa", "#22d3ee", "#f472b6"];
+      const PX = 3;
+      const INV_W = 11 * PX;
+      const INV_H = 8 * PX;
+      const INV_GAP_X = 22;
+      const INV_GAP_Y = 20;
+      const COLS = 7;
+      const ROWS = 3;
+      const totalW = COLS * INV_W + (COLS - 1) * INV_GAP_X;
+      // March: bounce horizontally, step every ~0.7s (alternates frame)
+      const period = 5200;
+      const t = (now % period) / period;
+      const sway = Math.sin(t * Math.PI * 2) * 18;
+      const startX = (CANVAS_W - totalW) / 2 + sway;
+      const startY = 28;
+      const frame = Math.floor(now / 700) % 2;
+      for (let r = 0; r < ROWS; r++) {
+        const pat = INVADER_TYPES[r];
+        const colour = INVADER_COLS[r];
+        for (let c = 0; c < COLS; c++) {
+          const ox = startX + c * (INV_W + INV_GAP_X);
+          const oy = startY + r * (INV_H + INV_GAP_Y);
+          // Two-frame wobble: every other invader uses opposite frame so the
+          // formation reads as marching together.
+          const flip = frame ^ ((c + r) & 1);
+          ctx.fillStyle = colour;
+          ctx.globalAlpha = 0.22;
+          for (let py = 0; py < pat.length; py++) {
+            for (let px = 0; px < pat[py].length; px++) {
+              if (pat[py][px] === "X") {
+                const dx = flip ? (10 - px) : px;
+                ctx.fillRect(ox + dx * PX, oy + py * PX, PX, PX);
+              }
+            }
+          }
+        }
+      }
+      ctx.globalAlpha = 1;
+
+      // Occasional laser bolt streaking down from the invader formation
+      // (deterministic from time so we don't need extra state).
+      const boltCycle = 1800;
+      const boltT = (now % boltCycle) / boltCycle;
+      if (boltT < 0.18) {
+        const seed = Math.floor(now / boltCycle);
+        const bx = startX + ((seed * 5) % COLS) * (INV_W + INV_GAP_X) + INV_W / 2;
+        const by = startY + ROWS * (INV_H + INV_GAP_Y) + boltT * 6 * 220;
+        ctx.fillStyle = "rgba(248,113,113,0.55)";
+        ctx.fillRect(bx, by - 8, 2, 8);
+        ctx.fillStyle = "rgba(248,113,113,0.85)";
+        ctx.fillRect(bx, by - 4, 2, 4);
+      }
+
+      // Subtle scan-line floor near the shield: classic arcade "ground"
+      ctx.strokeStyle = "rgba(96,165,250,0.18)";
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(0, SHIELD_Y + 22);
+      ctx.lineTo(CANVAS_W, SHIELD_Y + 22);
+      ctx.stroke();
 
       // Edge flash
       if (s.edgeFlash && now < s.edgeFlash.until) {

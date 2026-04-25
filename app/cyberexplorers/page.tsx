@@ -1010,7 +1010,7 @@ export default function CyberExplorersPage() {
             </Link>
             <span style={{ color: "#334155" }}>·</span>
             <Link href="/cyberheroes" style={{ color: MUTED, textDecoration: "none" }}>
-              Cyber Heroes (6–10)
+              Cyber Heroes (6–9)
             </Link>
             <span style={{ color: "#334155" }}>·</span>
             <Link href="/cyberstart" style={{ color: MUTED, textDecoration: "none" }}>

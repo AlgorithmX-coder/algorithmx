@@ -486,106 +486,263 @@ export default function CyberMaze({
 
       // DRAW
       ctx.clearRect(0, 0, BOARD_W, BOARD_H);
-      ctx.fillStyle = "#0a0e1a";
+      // Cyber-grid base — radial gradient plus animated diagonal scan lines
+      // and a subtle nebula glow. Reads like a holographic data-vault floor.
+      const baseGrad = ctx.createRadialGradient(BOARD_W / 2, BOARD_H / 2, 0, BOARD_W / 2, BOARD_H / 2, Math.max(BOARD_W, BOARD_H));
+      baseGrad.addColorStop(0, "#1a2148");
+      baseGrad.addColorStop(0.55, "#0a0f2a");
+      baseGrad.addColorStop(1, "#04060f");
+      ctx.fillStyle = baseGrad;
       ctx.fillRect(0, 0, BOARD_W, BOARD_H);
 
-      // Hex floor hint
-      ctx.strokeStyle = "rgba(96,165,250,0.05)";
+      // Diagonal scan-line streaks drifting across the floor
+      ctx.save();
+      ctx.globalAlpha = 0.08;
+      ctx.strokeStyle = "#a78bfa";
       ctx.lineWidth = 1;
+      const scanOffset = (now / 18) % 30;
+      for (let i = -BOARD_H; i < BOARD_W + BOARD_H; i += 30) {
+        ctx.beginPath();
+        ctx.moveTo(i + scanOffset, 0);
+        ctx.lineTo(i + scanOffset - BOARD_H, BOARD_H);
+        ctx.stroke();
+      }
+      ctx.restore();
+
+      // Animated data-flow filaments around the perimeter
+      ctx.save();
+      ctx.strokeStyle = "rgba(34,211,238,0.18)";
+      ctx.lineWidth = 1.4;
+      for (let i = 0; i < 4; i++) {
+        const phase = (now / 4000 + i * 0.25) % 1;
+        const inset = 4 + i * 6;
+        ctx.globalAlpha = 0.3 - i * 0.06;
+        ctx.beginPath();
+        ctx.rect(inset, inset, BOARD_W - inset * 2, BOARD_H - inset * 2);
+        const dashLen = 60;
+        ctx.setLineDash([dashLen, 80]);
+        ctx.lineDashOffset = -(phase * (dashLen + 80) * 8);
+        ctx.stroke();
+      }
+      ctx.setLineDash([]);
+      ctx.restore();
+
+      // Floor cells — pulsing hex-style outlines with a soft inner tint
+      const cellPulse = 0.55 + 0.25 * Math.sin(now / 600);
       for (let r = 0; r < ROWS; r++) {
         for (let c = 0; c < COLS; c++) {
           if (walls[r][c]) continue;
-          ctx.strokeRect(c * CELL + 3, r * CELL + 3, CELL - 6, CELL - 6);
+          const x = c * CELL;
+          const y = r * CELL;
+          // Inner tint
+          const tint = ctx.createLinearGradient(x, y, x, y + CELL);
+          tint.addColorStop(0, "rgba(96,165,250,0.06)");
+          tint.addColorStop(1, "rgba(167,139,250,0.04)");
+          ctx.fillStyle = tint;
+          ctx.fillRect(x + 4, y + 4, CELL - 8, CELL - 8);
+          // Outline
+          ctx.strokeStyle = `rgba(96,165,250,${0.12 * cellPulse + 0.06})`;
+          ctx.lineWidth = 1;
+          ctx.strokeRect(x + 3, y + 3, CELL - 6, CELL - 6);
+          // Corner ticks (HUD-style)
+          ctx.strokeStyle = "rgba(34,211,238,0.25)";
+          ctx.lineWidth = 1.2;
+          const tick = 5;
+          ctx.beginPath();
+          ctx.moveTo(x + 3, y + 3 + tick); ctx.lineTo(x + 3, y + 3); ctx.lineTo(x + 3 + tick, y + 3);
+          ctx.moveTo(x + CELL - 3, y + 3 + tick); ctx.lineTo(x + CELL - 3, y + 3); ctx.lineTo(x + CELL - 3 - tick, y + 3);
+          ctx.moveTo(x + 3, y + CELL - 3 - tick); ctx.lineTo(x + 3, y + CELL - 3); ctx.lineTo(x + 3 + tick, y + CELL - 3);
+          ctx.moveTo(x + CELL - 3, y + CELL - 3 - tick); ctx.lineTo(x + CELL - 3, y + CELL - 3); ctx.lineTo(x + CELL - 3 - tick, y + CELL - 3);
+          ctx.stroke();
         }
       }
 
-      // Walls
+      // Walls — neon-edged data blocks with a moving highlight stripe
       for (let r = 0; r < ROWS; r++) {
         for (let c = 0; c < COLS; c++) {
           if (!walls[r][c]) continue;
           const x = c * CELL;
           const y = r * CELL;
-          const grad = ctx.createLinearGradient(x, y, x, y + CELL);
-          grad.addColorStop(0, "#1e3a5f");
-          grad.addColorStop(1, "#0b1730");
+          const grad = ctx.createLinearGradient(x, y, x + CELL, y + CELL);
+          grad.addColorStop(0, "#2b3f7c");
+          grad.addColorStop(0.5, "#1a2552");
+          grad.addColorStop(1, "#0c1430");
           ctx.fillStyle = grad;
+          ctx.fillRect(x + 2, y + 2, CELL - 4, CELL - 4);
+          // Inner circuit dots
+          ctx.fillStyle = "rgba(34,211,238,0.35)";
+          ctx.fillRect(x + CELL / 2 - 1, y + 8, 2, 2);
+          ctx.fillRect(x + 8, y + CELL / 2 - 1, 2, 2);
+          ctx.fillRect(x + CELL - 10, y + CELL / 2 - 1, 2, 2);
+          ctx.fillRect(x + CELL / 2 - 1, y + CELL - 10, 2, 2);
+          // Moving highlight stripe
+          ctx.save();
+          ctx.beginPath();
+          ctx.rect(x + 2, y + 2, CELL - 4, CELL - 4);
+          ctx.clip();
+          const stripe = ((now / 8) % (CELL * 2)) - CELL;
+          const sg = ctx.createLinearGradient(x + stripe, y, x + stripe + CELL, y + CELL);
+          sg.addColorStop(0, "rgba(96,165,250,0)");
+          sg.addColorStop(0.5, "rgba(96,165,250,0.25)");
+          sg.addColorStop(1, "rgba(96,165,250,0)");
+          ctx.fillStyle = sg;
           ctx.fillRect(x, y, CELL, CELL);
-          ctx.strokeStyle = "#3b82f6";
-          ctx.lineWidth = 1;
-          ctx.strokeRect(x + 1, y + 1, CELL - 2, CELL - 2);
+          ctx.restore();
+          // Neon edge
+          ctx.strokeStyle = "rgba(96,165,250,0.7)";
+          ctx.shadowColor = "#60a5fa";
+          ctx.shadowBlur = 8;
+          ctx.lineWidth = 1.4;
+          ctx.strokeRect(x + 2.5, y + 2.5, CELL - 5, CELL - 5);
+          ctx.shadowBlur = 0;
         }
       }
 
-      // Exit portal
+      // Exit portal — multi-ring cinematic vortex
       const exitX = (COLS - 1) * CELL + CELL / 2;
       const exitY = (ROWS - 1) * CELL + CELL / 2;
       const portalPulse = 0.7 + 0.3 * Math.sin(now / 350);
-      const portalGrad = ctx.createRadialGradient(
-        exitX,
-        exitY,
-        0,
-        exitX,
-        exitY,
-        CELL / 2
-      );
-      portalGrad.addColorStop(0, `rgba(74,222,128,${portalPulse})`);
-      portalGrad.addColorStop(0.5, "rgba(34,197,94,0.35)");
-      portalGrad.addColorStop(1, "rgba(22,163,74,0)");
-      ctx.fillStyle = portalGrad;
-      ctx.fillRect(exitX - CELL / 2, exitY - CELL / 2, CELL, CELL);
-      ctx.strokeStyle = "#4ade80";
-      ctx.lineWidth = 2;
+      // Outer halo
+      const halo = ctx.createRadialGradient(exitX, exitY, 0, exitX, exitY, CELL);
+      halo.addColorStop(0, `rgba(74,222,128,${0.55 * portalPulse})`);
+      halo.addColorStop(0.5, "rgba(34,197,94,0.25)");
+      halo.addColorStop(1, "rgba(22,163,74,0)");
+      ctx.fillStyle = halo;
+      ctx.fillRect(exitX - CELL, exitY - CELL, CELL * 2, CELL * 2);
+      // Concentric spinning rings
+      for (let k = 0; k < 3; k++) {
+        const radius = CELL / 2 - 6 - k * 5;
+        if (radius <= 4) break;
+        ctx.save();
+        ctx.translate(exitX, exitY);
+        ctx.rotate((now / (450 + k * 120)) * (k % 2 === 0 ? 1 : -1));
+        ctx.strokeStyle = k === 0 ? "#86efac" : k === 1 ? "#4ade80" : "#22d3ee";
+        ctx.lineWidth = 2;
+        ctx.shadowColor = "#4ade80";
+        ctx.shadowBlur = 10;
+        ctx.setLineDash([10, 6]);
+        ctx.beginPath();
+        ctx.arc(0, 0, radius, 0, Math.PI * 2);
+        ctx.stroke();
+        ctx.restore();
+      }
+      ctx.shadowBlur = 0;
+      ctx.setLineDash([]);
+      // Inner sparkle dot
+      ctx.fillStyle = "#fff";
       ctx.beginPath();
-      ctx.arc(exitX, exitY, CELL / 2 - 8, 0, Math.PI * 2);
-      ctx.stroke();
+      ctx.arc(exitX, exitY, 2 + portalPulse * 1.5, 0, Math.PI * 2);
+      ctx.fill();
 
-      // Gates
+      // Gates — pulsing hex-coded data nodes with rotating outline
       for (const g of s.gates) {
         if (g.open) continue;
         const gx = g.col * CELL;
         const gy = g.row * CELL;
+        const cxg = gx + CELL / 2;
+        const cyg = gy + CELL / 2;
         const flashing = now < g.flashUntil;
-        const col = flashing ? "rgba(239,68,68,0.55)" : "rgba(96,165,250,0.45)";
-        ctx.fillStyle = col;
-        ctx.fillRect(gx + 6, gy + 6, CELL - 12, CELL - 12);
-        ctx.strokeStyle = flashing ? "#ef4444" : "#60a5fa";
+        const baseCol = flashing ? "#ef4444" : "#60a5fa";
+        const accent = flashing ? "#fca5a5" : "#a78bfa";
+        const pulse = 0.6 + 0.4 * Math.sin(now / 280);
+        // Soft glow
+        const gateGlow = ctx.createRadialGradient(cxg, cyg, 0, cxg, cyg, CELL / 2 + 4);
+        gateGlow.addColorStop(0, flashing ? "rgba(239,68,68,0.55)" : "rgba(96,165,250,0.45)");
+        gateGlow.addColorStop(1, "rgba(0,0,0,0)");
+        ctx.fillStyle = gateGlow;
+        ctx.fillRect(gx, gy, CELL, CELL);
+        // Hex body
+        ctx.save();
+        ctx.translate(cxg, cyg);
+        ctx.rotate(now / 1200);
+        const hr = CELL / 2 - 9;
+        ctx.fillStyle = `rgba(20,30,60,0.85)`;
+        ctx.beginPath();
+        for (let i = 0; i < 6; i++) {
+          const a = (Math.PI / 3) * i;
+          const px = Math.cos(a) * hr;
+          const py = Math.sin(a) * hr;
+          if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+        }
+        ctx.closePath();
+        ctx.fill();
         ctx.lineWidth = 2;
-        ctx.shadowColor = flashing ? "#ef4444" : "#60a5fa";
-        ctx.shadowBlur = 14;
-        ctx.strokeRect(gx + 6, gy + 6, CELL - 12, CELL - 12);
+        ctx.strokeStyle = baseCol;
+        ctx.shadowColor = baseCol;
+        ctx.shadowBlur = 14 * pulse;
+        ctx.stroke();
         ctx.shadowBlur = 0;
+        ctx.restore();
+        // Animated dashed counter-ring
+        ctx.save();
+        ctx.translate(cxg, cyg);
+        ctx.rotate(-now / 600);
+        ctx.setLineDash([6, 6]);
+        ctx.lineDashOffset = -(now / 20) % 24;
+        ctx.strokeStyle = accent;
+        ctx.globalAlpha = 0.6;
+        ctx.lineWidth = 1.4;
+        ctx.beginPath();
+        ctx.arc(0, 0, hr + 5, 0, Math.PI * 2);
+        ctx.stroke();
+        ctx.restore();
+        ctx.setLineDash([]);
+        // ? glyph
         ctx.fillStyle = "#dbeafe";
-        ctx.font = "900 18px 'Space Grotesk', sans-serif";
+        ctx.font = "900 20px 'Space Grotesk', sans-serif";
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
-        ctx.fillText("?", gx + CELL / 2, gy + CELL / 2);
+        ctx.shadowColor = baseCol;
+        ctx.shadowBlur = 8;
+        ctx.fillText("?", cxg, cyg);
+        ctx.shadowBlur = 0;
       }
 
-      // Tokens
+      // Tokens — 3D-looking data crystals with sparkle
       for (const t of s.tokens) {
         if (t.collected) continue;
         const tx = t.col * CELL + CELL / 2;
-        const ty = t.row * CELL + CELL / 2;
+        const ty = t.row * CELL + CELL / 2 + Math.sin(now / 280 + t.col + t.row) * 2;
         ctx.save();
         ctx.translate(tx, ty);
         ctx.rotate(now / 500);
-        ctx.fillStyle = "#fde047";
-        ctx.strokeStyle = "#f59e0b";
+        // Outer crystal
+        const crystGrad = ctx.createLinearGradient(0, -12, 0, 12);
+        crystGrad.addColorStop(0, "#fef3c7");
+        crystGrad.addColorStop(0.45, "#fde047");
+        crystGrad.addColorStop(1, "#b45309");
+        ctx.fillStyle = crystGrad;
+        ctx.strokeStyle = "#fbbf24";
         ctx.lineWidth = 2;
-        ctx.shadowColor = "#fbbf24";
-        ctx.shadowBlur = 10;
+        ctx.shadowColor = "#fde047";
+        ctx.shadowBlur = 14;
         ctx.beginPath();
-        ctx.moveTo(0, -10);
-        ctx.lineTo(8, -6);
-        ctx.lineTo(8, 4);
-        ctx.lineTo(0, 10);
-        ctx.lineTo(-8, 4);
-        ctx.lineTo(-8, -6);
+        ctx.moveTo(0, -12);
+        ctx.lineTo(10, -7);
+        ctx.lineTo(10, 5);
+        ctx.lineTo(0, 12);
+        ctx.lineTo(-10, 5);
+        ctx.lineTo(-10, -7);
         ctx.closePath();
         ctx.fill();
         ctx.stroke();
         ctx.shadowBlur = 0;
+        // Inner facet (lighter)
+        ctx.fillStyle = "rgba(255,255,255,0.45)";
+        ctx.beginPath();
+        ctx.moveTo(-4, -7);
+        ctx.lineTo(0, -10);
+        ctx.lineTo(2, -2);
+        ctx.lineTo(-3, 0);
+        ctx.closePath();
+        ctx.fill();
         ctx.restore();
+        // Floating sparkle
+        const spkA = 0.4 + 0.6 * Math.abs(Math.sin(now / 200 + t.col));
+        ctx.fillStyle = `rgba(255,255,255,${spkA})`;
+        ctx.beginPath();
+        ctx.arc(tx + 8, ty - 10, 1.6, 0, Math.PI * 2);
+        ctx.fill();
       }
 
       // Trail

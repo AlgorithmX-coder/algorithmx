@@ -7,54 +7,109 @@ import { motion, AnimatePresence } from "framer-motion";
 const GRAD = "linear-gradient(135deg, #8b5cf6, #3b82f6)";
 
 function FloatingOrbs() {
-  // Alive, Pixar-theatre background — soft gradient glows + twinkling stars
-  // + drifting pastel particles. Shared visual language with the onboarding
-  // wizard so the tone is consistent across the sign-up journey.
-  const PARTICLES = Array.from({ length: 22 }).map((_, i) => ({
+  // Pixar-magic background — bright animated gradient blobs, twinkling
+  // stars, drifting cyber-icons, shooting stars and an aurora ribbon at
+  // the bottom. Matches the onboarding wizard so visual language stays
+  // consistent across the sign-up journey.
+  const PARTICLES = Array.from({ length: 32 }).map((_, i) => ({
     key: i,
-    left: (i * 4.7 + (i % 3) * 2) % 100,
+    left: (i * 3.3 + (i % 3) * 2) % 100,
     size: 4 + (i % 5),
-    color: ["#8b5cf6", "#3b82f6", "#f472b6", "#fbbf24", "#22d3ee", "#10b981"][i % 6],
-    delay: (i * 0.9) % 14,
-    duration: 16 + (i % 7) * 2.2,
-    peak: 0.22 + ((i * 11) % 18) / 100,
+    color: ["#a78bfa", "#60a5fa", "#f472b6", "#fde047", "#22d3ee", "#34d399"][i % 6],
+    delay: (i * 0.7) % 14,
+    duration: 14 + (i % 7) * 2.2,
+    peak: 0.32 + ((i * 11) % 22) / 100,
   }));
-  const STARS = Array.from({ length: 36 }).map((_, i) => ({
+  const STARS = Array.from({ length: 56 }).map((_, i) => ({
     key: i,
-    left: (i * 2.9 + (i % 5) * 1.7) % 100,
-    top: (i * 3.3 + (i % 7) * 2.1) % 100,
+    left: (i * 1.9 + (i % 5) * 1.7) % 100,
+    top: (i * 2.3 + (i % 7) * 2.1) % 100,
     size: 2 + (i % 2),
-    delay: (i * 0.17) % 5,
-    dur: 2.2 + (i % 4),
-    peak: 0.25 + ((i * 13) % 30) / 100,
+    delay: (i * 0.13) % 5,
+    dur: 2 + (i % 4),
+    peak: 0.35 + ((i * 13) % 35) / 100,
   }));
+  const SHOOTERS = Array.from({ length: 5 }).map((_, i) => ({
+    key: i,
+    top: 8 + i * 14,
+    delay: i * 9 + 2,
+    dur: 22 + i * 3,
+  }));
+  const ICONS = ["🔒", "🛡", "🔑", "⭐", "✨", "✨", "🌙"];
 
   return (
     <div className="fixed inset-0 pointer-events-none overflow-hidden" style={{ zIndex: 0 }}>
+      {/* Saturated drifting blobs */}
       <motion.div
-        animate={{ x: ["-6%", "6%", "-6%"], y: ["-4%", "4%", "-4%"] }}
+        animate={{ x: ["-6%", "6%", "-6%"], y: ["-4%", "4%", "-4%"], scale: [1, 1.08, 1] }}
         transition={{ duration: 24, repeat: Infinity, ease: "easeInOut" }}
-        style={{ position: "absolute", top: "-20%", left: "-15%", width: "70vmax", height: "70vmax", borderRadius: "50%", background: "radial-gradient(circle, rgba(139,92,246,0.28), transparent 65%)", filter: "blur(40px)" }}
+        style={{ position: "absolute", top: "-20%", left: "-15%", width: "70vmax", height: "70vmax", borderRadius: "50%", background: "radial-gradient(circle, rgba(139,92,246,0.45), transparent 65%)", filter: "blur(40px)" }}
       />
       <motion.div
-        animate={{ x: ["4%", "-6%", "4%"], y: ["6%", "-4%", "6%"] }}
+        animate={{ x: ["4%", "-6%", "4%"], y: ["6%", "-4%", "6%"], scale: [1, 1.1, 1] }}
         transition={{ duration: 28, repeat: Infinity, ease: "easeInOut" }}
-        style={{ position: "absolute", bottom: "-25%", right: "-15%", width: "70vmax", height: "70vmax", borderRadius: "50%", background: "radial-gradient(circle, rgba(59,130,246,0.24), transparent 65%)", filter: "blur(40px)" }}
+        style={{ position: "absolute", bottom: "-25%", right: "-15%", width: "70vmax", height: "70vmax", borderRadius: "50%", background: "radial-gradient(circle, rgba(59,130,246,0.42), transparent 65%)", filter: "blur(40px)" }}
       />
       <motion.div
-        animate={{ opacity: [0.18, 0.3, 0.18] }}
-        transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
-        style={{ position: "absolute", top: "40%", left: "50%", transform: "translate(-50%, -50%)", width: "50vmax", height: "50vmax", borderRadius: "50%", background: "radial-gradient(circle, rgba(244,114,182,0.18), transparent 60%)", filter: "blur(36px)" }}
+        animate={{ opacity: [0.3, 0.55, 0.3], scale: [1, 1.12, 1] }}
+        transition={{ duration: 11, repeat: Infinity, ease: "easeInOut" }}
+        style={{ position: "absolute", top: "40%", left: "50%", transform: "translate(-50%, -50%)", width: "55vmax", height: "55vmax", borderRadius: "50%", background: "radial-gradient(circle, rgba(244,114,182,0.32), transparent 60%)", filter: "blur(36px)" }}
       />
+      <motion.div
+        animate={{ x: ["-4%", "6%", "-4%"], y: ["3%", "-5%", "3%"], scale: [0.95, 1.1, 0.95] }}
+        transition={{ duration: 32, repeat: Infinity, ease: "easeInOut" }}
+        style={{ position: "absolute", top: "55%", left: "-10%", width: "55vmax", height: "55vmax", borderRadius: "50%", background: "radial-gradient(circle, rgba(34,211,238,0.32), transparent 65%)", filter: "blur(38px)" }}
+      />
+
+      {/* Aurora ribbon */}
+      <div style={{
+        position: "absolute", left: "-10%", right: "-10%", bottom: "-5%", height: "32vh",
+        background: "linear-gradient(90deg, rgba(167,139,250,0.0) 0%, rgba(96,165,250,0.35) 25%, rgba(244,114,182,0.32) 55%, rgba(34,211,238,0.32) 80%, rgba(167,139,250,0.0) 100%)",
+        filter: "blur(60px)",
+        mixBlendMode: "screen",
+        animation: "welcomeAuroraDrift 18s ease-in-out infinite",
+      }} />
+
       {STARS.map((s) => (
-        <span key={`star-${s.key}`} style={{ position: "absolute", left: `${s.left}%`, top: `${s.top}%`, width: s.size, height: s.size, borderRadius: "50%", background: "#fff", boxShadow: "0 0 6px rgba(255,255,255,0.8)", animation: `welcomeStarTwinkle ${s.dur}s ease-in-out ${s.delay}s infinite`, ["--welcome-star-peak" as string]: `${s.peak}` } as React.CSSProperties} />
+        <span key={`star-${s.key}`} style={{ position: "absolute", left: `${s.left}%`, top: `${s.top}%`, width: s.size, height: s.size, borderRadius: "50%", background: "#fff", boxShadow: "0 0 6px rgba(255,255,255,0.85)", animation: `welcomeStarTwinkle ${s.dur}s ease-in-out ${s.delay}s infinite`, ["--welcome-star-peak" as string]: `${s.peak}` } as React.CSSProperties} />
       ))}
       {PARTICLES.map((p) => (
-        <span key={`p-${p.key}`} style={{ position: "absolute", left: `${p.left}%`, bottom: -12, width: p.size, height: p.size, borderRadius: "50%", background: p.color, boxShadow: `0 0 10px ${p.color}`, animation: `welcomeParticleRise ${p.duration}s linear ${p.delay}s infinite`, ["--welcome-particle-peak" as string]: `${p.peak}` } as React.CSSProperties} />
+        <span key={`p-${p.key}`} style={{ position: "absolute", left: `${p.left}%`, bottom: -12, width: p.size, height: p.size, borderRadius: "50%", background: p.color, boxShadow: `0 0 12px ${p.color}`, animation: `welcomeParticleRise ${p.duration}s linear ${p.delay}s infinite`, ["--welcome-particle-peak" as string]: `${p.peak}` } as React.CSSProperties} />
       ))}
+
+      {/* Shooting stars — diagonal streaks */}
+      {SHOOTERS.map((s) => (
+        <span key={`shoot-${s.key}`} style={{
+          position: "absolute", top: `${s.top}%`, left: "-10%",
+          width: 140, height: 2,
+          background: "linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.85) 60%, #fff 100%)",
+          borderRadius: 2,
+          opacity: 0,
+          animation: `welcomeShootingStar ${s.dur}s linear ${s.delay}s infinite`,
+        }} />
+      ))}
+
+      {/* Drifting cyber-icons */}
+      {ICONS.map((icon, i) => (
+        <span key={`ic-${i}`} style={{
+          position: "absolute",
+          left: `${(i * 13.7) % 100}%`,
+          top: `${(i * 17.3) % 80 + 6}%`,
+          fontSize: 22 + (i % 3) * 6,
+          opacity: 0.22,
+          filter: "drop-shadow(0 0 6px rgba(167,139,250,0.6))",
+          animation: `welcomeIconDrift ${22 + (i % 4) * 4}s ease-in-out ${i * 1.7}s infinite`,
+        }}>
+          {icon}
+        </span>
+      ))}
+
       <style>{`
-        @keyframes welcomeStarTwinkle { 0%,100% { opacity: 0.15; } 50% { opacity: var(--welcome-star-peak, 0.5); } }
-        @keyframes welcomeParticleRise { 0% { transform: translateY(0); opacity: 0; } 12% { opacity: var(--welcome-particle-peak, 0.3); } 88% { opacity: var(--welcome-particle-peak, 0.3); } 100% { transform: translateY(-110vh); opacity: 0; } }
+        @keyframes welcomeStarTwinkle { 0%,100% { opacity: 0.15; } 50% { opacity: var(--welcome-star-peak, 0.7); } }
+        @keyframes welcomeParticleRise { 0% { transform: translateY(0); opacity: 0; } 12% { opacity: var(--welcome-particle-peak, 0.4); } 88% { opacity: var(--welcome-particle-peak, 0.4); } 100% { transform: translateY(-110vh); opacity: 0; } }
+        @keyframes welcomeShootingStar { 0% { transform: translate(0,0) rotate(18deg); opacity: 0; } 4% { opacity: 1; } 14% { opacity: 0; } 100% { transform: translate(120vw, 30vh) rotate(18deg); opacity: 0; } }
+        @keyframes welcomeAuroraDrift { 0%,100% { transform: translateX(-3%); } 50% { transform: translateX(3%); } }
+        @keyframes welcomeIconDrift { 0%,100% { transform: translate(0,0) rotate(0deg); } 50% { transform: translate(20px, -30px) rotate(8deg); } }
       `}</style>
     </div>
   );

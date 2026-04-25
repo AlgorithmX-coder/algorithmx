@@ -28,14 +28,14 @@ type Mood = LessonArena3DProps["mood"];
 
 const MOOD_PALETTE = {
   normal: {
-    ambient: new THREE.Color("#4a5568"),
-    ambientI: 0.5,
-    key: new THREE.Color("#93c5fd"),
-    keyI: 0.7,
-    spot: new THREE.Color("#60a5fa"),
-    spotI: 0.4,
-    fill: new THREE.Color("#7c3aed"),
-    fillI: 0.2,
+    ambient: new THREE.Color("#7c8aa8"),
+    ambientI: 0.95,
+    key: new THREE.Color("#bfdbfe"),
+    keyI: 1.25,
+    spot: new THREE.Color("#22d3ee"),
+    spotI: 0.85,
+    fill: new THREE.Color("#a855f7"),
+    fillI: 0.55,
   },
   correct: {
     ambient: new THREE.Color("#3e6954"),
@@ -94,16 +94,16 @@ function makeHexGridSoftTexture(size = 512): THREE.Texture | null {
   const ctx = c.getContext("2d");
   if (!ctx) return null;
 
-  ctx.fillStyle = "#0b112a";
+  ctx.fillStyle = "#161b3d";
   ctx.fillRect(0, 0, size, size);
 
   const r = 40;
   const colW = 1.5 * r;
   const rowH = Math.sqrt(3) * r;
 
-  ctx.strokeStyle = "#60a5fa";
-  ctx.lineWidth = 1;
-  ctx.globalAlpha = 0.14;
+  ctx.strokeStyle = "#7dd3fc";
+  ctx.lineWidth = 1.2;
+  ctx.globalAlpha = 0.32;
 
   const hex = (cx: number, cy: number) => {
     ctx.beginPath();
@@ -141,9 +141,9 @@ function makeDataFlowTexture(size = 256): THREE.Texture | null {
   const ctx = c.getContext("2d");
   if (!ctx) return null;
   ctx.clearRect(0, 0, size, size);
-  ctx.strokeStyle = "#3b82f6";
-  ctx.lineWidth = 1;
-  ctx.globalAlpha = 0.3;
+  ctx.strokeStyle = "#60a5fa";
+  ctx.lineWidth = 1.4;
+  ctx.globalAlpha = 0.55;
   const rand = (i: number) => (Math.sin(i * 17.1 + 4.2) * 10000) % 1;
   for (let i = 0; i < 14; i++) {
     const y = Math.abs(rand(i)) * size;
@@ -189,11 +189,11 @@ function makeCircuitSoftTexture(size = 512): THREE.Texture | null {
   c.height = size;
   const ctx = c.getContext("2d");
   if (!ctx) return null;
-  ctx.fillStyle = "#0c1225";
+  ctx.fillStyle = "#15193e";
   ctx.fillRect(0, 0, size, size);
-  ctx.strokeStyle = "#1e3a8a";
-  ctx.lineWidth = 1;
-  ctx.globalAlpha = 0.25;
+  ctx.strokeStyle = "#3b82f6";
+  ctx.lineWidth = 1.3;
+  ctx.globalAlpha = 0.45;
   const rand = (i: number) =>
     (Math.sin(i * 12.9 + 78.2) * 43758.5) % 1;
   for (let i = 0; i < 18; i++) {
@@ -638,7 +638,7 @@ export default function LessonArena3D({
     renderer.setSize(width, height, false);
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.05;
+    renderer.toneMappingExposure = 1.45;
 
     host.appendChild(renderer.domElement);
     renderer.domElement.style.display = "block";

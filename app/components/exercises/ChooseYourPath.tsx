@@ -370,7 +370,8 @@ export default function ChooseYourPath({
       style={{
         position: "relative",
         width: "100%",
-        minHeight: 520,
+        maxWidth: 760,
+        margin: "0 auto",
         maxHeight: "calc(100vh - 140px)",
         borderRadius: 24,
         overflow: "hidden",
@@ -380,11 +381,12 @@ export default function ChooseYourPath({
         animation: "cypBgDrift 18s linear infinite",
         border: "1px solid rgba(255,255,255,0.08)",
         color: "#e2e8f0",
-        padding: "28px 20px",
+        padding: "20px 20px 24px",
         textAlign: "center",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
+        gap: 4,
       }}
     >
       <div
@@ -401,12 +403,12 @@ export default function ChooseYourPath({
       <div
         style={{
           fontFamily: "'Space Grotesk', sans-serif",
-          fontSize: 22,
+          fontSize: 21,
           fontWeight: 700,
-          margin: "12px auto 22px",
+          margin: "8px auto 14px",
           maxWidth: 680,
-          lineHeight: 1.35,
-          minHeight: 80,
+          lineHeight: 1.3,
+          minHeight: 56,
         }}
       >
         {typedText}
@@ -430,10 +432,10 @@ export default function ChooseYourPath({
           src={scenario.image}
           alt=""
           style={{
-            width: 120,
+            width: 92,
             height: "auto",
             filter: "drop-shadow(0 10px 30px rgba(59,130,246,0.35))",
-            marginBottom: 18,
+            marginBottom: 10,
           }}
         />
       )}
@@ -442,7 +444,7 @@ export default function ChooseYourPath({
         <div
           style={{
             display: "flex",
-            gap: 36,
+            gap: 22,
             justifyContent: "center",
             flexWrap: "wrap",
             perspective: 900,
@@ -456,9 +458,9 @@ export default function ChooseYourPath({
               <div
                 key={i}
                 style={{
-                  width: 250,
+                  width: 240,
                   perspective: 900,
-                  minHeight: 320,
+                  minHeight: 240,
                   position: "relative",
                 }}
               >

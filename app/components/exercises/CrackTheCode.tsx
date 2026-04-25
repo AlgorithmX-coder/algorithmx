@@ -257,18 +257,111 @@ export default function CrackTheCode({
         style={{
           fontSize: 22,
           fontWeight: 900,
-          margin: "4px 0 20px",
+          margin: "4px 0 6px",
           background: "linear-gradient(135deg, #a855f7, #60a5fa)",
           WebkitBackgroundClip: "text",
           WebkitTextFillColor: "transparent",
         }}
       >
-        Rotate the rings, then UNLOCK
+        Build the strongest password recipe
+      </div>
+      <div
+        style={{
+          color: "#94a3b8",
+          fontSize: 13,
+          marginBottom: 14,
+          maxWidth: 460,
+          lineHeight: 1.5,
+        }}
+      >
+        Use ← → on each ring to spin to the <span style={{ color: "#86efac", fontWeight: 800 }}>safest</span> answer. When all four rings glow green, hit <span style={{ color: "#c4b5fd", fontWeight: 800 }}>UNLOCK</span>.
       </div>
 
-      {/* New horizontal dial layout — readable, kid-friendly.
-          The original concentric-rings visual is preserved below this block
-          but hidden (display: none) so we keep the code for rollback. */}
+      {/* Compact concentric-ring indicator — purely decorative, gives the
+          "rings" feel back without overwhelming the actual dials below.
+          Each ring's current pick is shown as a glowing dot on its arc;
+          rings turn green when correct so progress is obvious at a glance. */}
+      <div
+        style={{
+          width: 168,
+          height: 168,
+          margin: "0 0 14px",
+          position: "relative",
+          flexShrink: 0,
+        }}
+        aria-hidden
+      >
+        <svg width={168} height={168} viewBox="0 0 168 168" style={{ display: "block" }}>
+          <defs>
+            <radialGradient id="ctcCore">
+              <stop offset="0%" stopColor="#fde047" />
+              <stop offset="60%" stopColor="#a855f7" />
+              <stop offset="100%" stopColor="#1e1b4b" />
+            </radialGradient>
+          </defs>
+          {/* Centre keyhole */}
+          <circle cx="84" cy="84" r="14" fill="url(#ctcCore)" opacity={corrects.every(Boolean) ? 1 : 0.55} />
+          <circle cx="84" cy="84" r="14" fill="none" stroke="#fde047" strokeWidth="1.2" opacity="0.7" />
+          {RINGS.map((ring, i) => {
+            const r = 28 + i * 16;
+            const isCorrect = corrects[i];
+            const optionCount = ring.options.length;
+            const idx = selectedIndex(i);
+            const angle = (idx * 360) / optionCount - 90;
+            const dotX = 84 + Math.cos((angle * Math.PI) / 180) * r;
+            const dotY = 84 + Math.sin((angle * Math.PI) / 180) * r;
+            const flash = ringFlash[i] === "red";
+            return (
+              <g key={ring.id}>
+                <circle
+                  cx="84"
+                  cy="84"
+                  r={r}
+                  fill="none"
+                  stroke={isCorrect ? "#4ade80" : flash ? "#ef4444" : ring.colour}
+                  strokeOpacity={isCorrect ? 0.9 : 0.4}
+                  strokeWidth={isCorrect ? 2.4 : 1.6}
+                  strokeDasharray={isCorrect ? "0" : "4 6"}
+                />
+                {/* Selection marker */}
+                <circle
+                  cx={dotX}
+                  cy={dotY}
+                  r={isCorrect ? 5 : 4}
+                  fill={isCorrect ? "#4ade80" : ring.colour}
+                  style={{
+                    filter: `drop-shadow(0 0 6px ${isCorrect ? "#4ade80" : ring.colour})`,
+                    transition: "cx 0.35s cubic-bezier(0.4,1.4,0.5,1), cy 0.35s cubic-bezier(0.4,1.4,0.5,1), fill 0.3s ease",
+                  }}
+                />
+              </g>
+            );
+          })}
+        </svg>
+        {/* Progress badge */}
+        <div
+          style={{
+            position: "absolute",
+            top: -4,
+            right: -8,
+            background: "rgba(15,21,37,0.9)",
+            border: "1px solid rgba(167,139,250,0.45)",
+            borderRadius: 999,
+            padding: "3px 9px",
+            fontFamily: "ui-monospace, monospace",
+            fontSize: 11,
+            fontWeight: 800,
+            color: "#c4b5fd",
+            letterSpacing: 1,
+          }}
+        >
+          {corrects.filter(Boolean).length}/{RINGS.length}
+        </div>
+      </div>
+
+      {/* Horizontal dial layout — primary interaction. Clear labels +
+          arrow buttons keep it kid-friendly while the ring indicator
+          above gives the "ring" visual feel back. */}
       <div
         style={{
           width: "100%",

@@ -281,6 +281,173 @@ const IconRuler = ({ size = 24, color = "#10b981" }: { size?: number; color?: st
   </svg>
 );
 
+/* Rich illustrated devices for the "What is a Password?" cards. Each takes
+   two accent colours so the card's gradient palette flows into the artwork.
+   Inline SVG (not emoji) so they look like proper illustrations and don't
+   ship as the OS-default emoji glyphs. */
+const DeviceIllustration = ({
+  kind,
+  c1,
+  c2,
+  locked,
+}: {
+  kind: "gaming" | "tablet" | "school";
+  c1: string;
+  c2: string;
+  locked: boolean;
+}) => {
+  const gradId = `dev-grad-${kind}-${c1.replace(/[^a-z0-9]/gi, "")}`;
+  const shineId = `dev-shine-${kind}`;
+  const common = (
+    <defs>
+      <linearGradient id={gradId} x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stopColor={c1} />
+        <stop offset="100%" stopColor={c2} />
+      </linearGradient>
+      <linearGradient id={shineId} x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stopColor="rgba(255,255,255,0.55)" />
+        <stop offset="100%" stopColor="rgba(255,255,255,0)" />
+      </linearGradient>
+      <filter id="dev-shadow" x="-30%" y="-30%" width="160%" height="160%">
+        <feGaussianBlur stdDeviation="3" />
+      </filter>
+    </defs>
+  );
+  if (kind === "gaming") {
+    return (
+      <svg width={120} height={96} viewBox="0 0 120 96" style={{ filter: `drop-shadow(0 8px 16px ${c1}55)` }}>
+        {common}
+        {/* Controller body */}
+        <ellipse cx="60" cy="78" rx="46" ry="6" fill="rgba(0,0,0,0.45)" />
+        <path
+          d="M22 30 Q 60 12 98 30 Q 110 38 102 60 Q 96 76 82 76 Q 72 76 60 70 Q 48 76 38 76 Q 24 76 18 60 Q 10 38 22 30 Z"
+          fill={`url(#${gradId})`}
+          stroke="rgba(255,255,255,0.18)"
+          strokeWidth="1.4"
+        />
+        {/* Top shine */}
+        <path d="M28 30 Q60 18 92 30 Q92 36 60 32 Q28 36 28 30 Z" fill={`url(#${shineId})`} opacity="0.7" />
+        {/* D-pad */}
+        <rect x="28" y="44" width="6" height="20" rx="1.5" fill="#0b0f1a" />
+        <rect x="22" y="50" width="20" height="8" rx="1.5" fill="#0b0f1a" />
+        {/* Buttons */}
+        <circle cx="82" cy="48" r="4.2" fill="#fbbf24" stroke="#fff" strokeWidth="0.6" />
+        <circle cx="92" cy="56" r="4.2" fill="#ef4444" stroke="#fff" strokeWidth="0.6" />
+        <circle cx="82" cy="64" r="4.2" fill="#22c55e" stroke="#fff" strokeWidth="0.6" />
+        <circle cx="72" cy="56" r="4.2" fill="#3b82f6" stroke="#fff" strokeWidth="0.6" />
+        {/* Start/Select */}
+        <rect x="52" y="50" width="6" height="2.4" rx="1.2" fill="rgba(255,255,255,0.7)" />
+        <rect x="60" y="50" width="6" height="2.4" rx="1.2" fill="rgba(255,255,255,0.7)" />
+        {/* Glowing dot when locked */}
+        {locked && <circle cx="60" cy="60" r="3" fill="#10b981"><animate attributeName="opacity" values="0.4;1;0.4" dur="1.6s" repeatCount="indefinite" /></circle>}
+      </svg>
+    );
+  }
+  if (kind === "tablet") {
+    return (
+      <svg width={96} height={120} viewBox="0 0 96 120" style={{ filter: `drop-shadow(0 8px 16px ${c1}55)` }}>
+        {common}
+        <ellipse cx="48" cy="110" rx="36" ry="4" fill="rgba(0,0,0,0.45)" />
+        {/* Tablet body */}
+        <rect x="14" y="6" width="68" height="100" rx="10" fill="#0f172a" stroke={c1} strokeWidth="1.6" />
+        <rect x="14" y="6" width="68" height="100" rx="10" fill={`url(#${shineId})`} opacity="0.18" />
+        {/* Screen */}
+        <rect x="20" y="14" width="56" height="78" rx="3" fill="#020617" />
+        {/* Screen content — gradient + lines */}
+        <rect x="20" y="14" width="56" height="78" rx="3" fill={`url(#${gradId})`} opacity="0.85" />
+        <rect x="24" y="22" width="34" height="3" rx="1.2" fill="rgba(255,255,255,0.85)" />
+        <rect x="24" y="30" width="48" height="2" rx="1" fill="rgba(255,255,255,0.55)" />
+        <rect x="24" y="36" width="42" height="2" rx="1" fill="rgba(255,255,255,0.45)" />
+        <rect x="24" y="44" width="48" height="14" rx="2" fill="rgba(255,255,255,0.18)" />
+        <rect x="24" y="62" width="48" height="2" rx="1" fill="rgba(255,255,255,0.45)" />
+        <rect x="24" y="68" width="36" height="2" rx="1" fill="rgba(255,255,255,0.4)" />
+        <rect x="24" y="78" width="22" height="8" rx="2" fill="#fde047" />
+        {/* Camera & home */}
+        <circle cx="48" cy="10.5" r="1.4" fill="#475569" />
+        <circle cx="48" cy="99.5" r="3.2" fill="none" stroke="#475569" strokeWidth="1" />
+        {locked && (
+          <g transform="translate(60 80)">
+            <circle r="6" fill="#10b981" />
+            <path d="M-2 -1 v 2 m 0 0 h 0" stroke="#fff" strokeWidth="1.6" />
+            <rect x="-2" y="-1" width="4" height="3.6" fill="#fff" rx="0.6" />
+            <path d="M-1.5 -1 v -1.4 a 1.5 1.5 0 0 1 3 0 v 1.4" stroke="#fff" strokeWidth="1" fill="none" />
+          </g>
+        )}
+      </svg>
+    );
+  }
+  // school
+  return (
+    <svg width={120} height={104} viewBox="0 0 120 104" style={{ filter: `drop-shadow(0 8px 16px ${c1}55)` }}>
+      {common}
+      <ellipse cx="60" cy="92" rx="44" ry="5" fill="rgba(0,0,0,0.45)" />
+      {/* Building base */}
+      <rect x="20" y="44" width="80" height="42" rx="4" fill={`url(#${gradId})`} stroke="rgba(255,255,255,0.18)" strokeWidth="1.4" />
+      {/* Roof */}
+      <path d="M14 44 L60 18 L106 44 Z" fill="#1e293b" stroke="rgba(255,255,255,0.18)" strokeWidth="1.4" />
+      <path d="M14 44 L60 18 L106 44 Z" fill={`url(#${shineId})`} opacity="0.45" />
+      {/* Bell tower */}
+      <rect x="56" y="22" width="8" height="14" rx="1" fill="#fde047" />
+      <circle cx="60" cy="20" r="3" fill="#fde047" />
+      {/* Door */}
+      <rect x="52" y="62" width="16" height="24" rx="2" fill="#0b0f1a" />
+      <circle cx="64" cy="74" r="0.9" fill="#fde047" />
+      {/* Windows */}
+      <rect x="28" y="54" width="14" height="14" rx="1.5" fill="#dbeafe" stroke="#0b0f1a" strokeWidth="0.8" />
+      <line x1="35" y1="54" x2="35" y2="68" stroke="#0b0f1a" strokeWidth="0.8" />
+      <line x1="28" y1="61" x2="42" y2="61" stroke="#0b0f1a" strokeWidth="0.8" />
+      <rect x="78" y="54" width="14" height="14" rx="1.5" fill="#dbeafe" stroke="#0b0f1a" strokeWidth="0.8" />
+      <line x1="85" y1="54" x2="85" y2="68" stroke="#0b0f1a" strokeWidth="0.8" />
+      <line x1="78" y1="61" x2="92" y2="61" stroke="#0b0f1a" strokeWidth="0.8" />
+      {/* Flag */}
+      <line x1="14" y1="44" x2="14" y2="32" stroke="#fff" strokeWidth="1.2" />
+      <path d="M14 32 L24 35 L14 38 Z" fill="#ef4444" />
+      {locked && (
+        <g transform="translate(60 70)">
+          <circle r="6" fill="#10b981" opacity="0.95" />
+          <rect x="-2" y="-1" width="4" height="3.6" fill="#fff" rx="0.6" />
+          <path d="M-1.5 -1 v -1.4 a 1.5 1.5 0 0 1 3 0 v 1.4" stroke="#fff" strokeWidth="1" fill="none" />
+        </g>
+      )}
+    </svg>
+  );
+};
+
+/* Animated SVG burst used in place of the 🎉 / 🌟 emojis.  Two-tone gradient,
+   spinning rays, and a centre core — looks like a proper celebration mark. */
+const SuccessBurst = ({
+  size = 28,
+  colourA = "#fde047",
+  colourB = "#10b981",
+}: { size?: number; colourA?: string; colourB?: string }) => (
+  <svg width={size} height={size} viewBox="0 0 40 40" style={{ display: "inline-block", verticalAlign: "middle" }}>
+    <defs>
+      <radialGradient id={`burst-core-${colourA.replace(/[^a-z0-9]/gi, "")}`}>
+        <stop offset="0%" stopColor="#fff" />
+        <stop offset="60%" stopColor={colourA} />
+        <stop offset="100%" stopColor={colourB} />
+      </radialGradient>
+    </defs>
+    <g>
+      {[0, 45, 90, 135, 180, 225, 270, 315].map((a) => (
+        <rect
+          key={a}
+          x="19"
+          y="2"
+          width="2"
+          height="9"
+          rx="1"
+          fill={colourA}
+          opacity="0.9"
+          transform={`rotate(${a} 20 20)`}
+        />
+      ))}
+      <circle cx="20" cy="20" r="8" fill={`url(#burst-core-${colourA.replace(/[^a-z0-9]/gi, "")})`} />
+      <circle cx="20" cy="20" r="3" fill="#fff" opacity="0.85" />
+    </g>
+  </svg>
+);
+
 /* ───────────────────────── CONSTANTS ───────────────────────── */
 
 const TOTAL = 19;
@@ -382,6 +549,38 @@ const RULES = [
   { icon: "ruler", title: "Make it at LEAST 8 characters long", desc: "The longer the password, the harder to crack!", question: "How long should a good password be?", opts: ["3 characters", "At least 8 characters!"], correct: 1 },
   { icon: "users", title: "If something feels wrong, tell a grown-up", desc: "A parent, teacher, or carer, they're always there to help!", question: "Something weird happens online. What do you do?", opts: ["Ignore it", "Tell a trusted grown-up"], correct: 1 },
 ];
+
+// ── MCQ shuffle ──
+// Children kept noticing that the correct answer was almost always in the
+// same spot (the source data lists it predictably). On module load we
+// shuffle each question's options in place and remap the `correct` /
+// `correctIndex` pointer so the right answer is now in a random slot per
+// page-load. Stable within a session (Fisher–Yates is one-shot at import)
+// so rendering during a lesson doesn't reshuffle and confuse the learner.
+function shuffleMcqList<T>(arr: T[], optsKey: keyof T, correctKey: keyof T) {
+  for (const q of arr) {
+    const opts = q[optsKey] as unknown as unknown[];
+    const correct = q[correctKey] as unknown as number;
+    if (!Array.isArray(opts) || typeof correct !== "number") continue;
+    const order = opts.map((_, i) => i);
+    for (let i = order.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [order[i], order[j]] = [order[j], order[i]];
+    }
+    (q as unknown as Record<string, unknown>)[optsKey as string] = order.map(
+      (i) => opts[i]
+    );
+    (q as unknown as Record<string, unknown>)[correctKey as string] =
+      order.indexOf(correct);
+  }
+}
+shuffleMcqList(MAZE_QUESTIONS, "answers", "correctIndex");
+shuffleMcqList(Q1_QUIZ, "opts", "correct");
+shuffleMcqList(Q2_QUIZ, "opts", "correct");
+shuffleMcqList(Q3_QUIZ, "opts", "correct");
+shuffleMcqList(WYD, "opts", "correct");
+shuffleMcqList(BOSS_QUIZ, "opts", "correct");
+shuffleMcqList(RULES, "opts", "correct");
 
 const ACHIEVEMENTS = [
   "You know what a password is",
@@ -1063,17 +1262,198 @@ function InstructionOverlay({ icon, story, instructions, onReady }: { icon: stri
 }
 
 function LearnSummary({ message, starCount, onNext }: { message: string; starCount: number; onNext: () => void }) {
+  // Trophy SVG with depth, gradient, shine. Stars are SVG with rotating
+  // halo, popping in sequence. Card sits on a 3D rotateX perspective with
+  // an orbiting light streak around it.
   return (
-    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} style={{ textAlign: "center" }}>
-      <div data-animate style={{ background: "rgba(255,255,255,0.04)", backdropFilter: "blur(12px)", border: "1px solid rgba(16,185,129,0.3)", boxShadow: "0 0 15px rgba(16,185,129,0.2)", borderRadius: 20, padding: 28, maxWidth: 520, margin: "0 auto" }}>
-        <div style={{ width: 80, height: 80, margin: "0 auto 12px", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 48, background: "rgba(16,185,129,0.1)", borderRadius: 20, boxShadow: "0 0 15px rgba(16,185,129,0.4)" }}>&#x2705;</div>
-        <h2 data-split style={{ color: "#fff", fontSize: 22, fontWeight: 900, marginBottom: 4 }}>Great job!</h2>
-        <div style={{ marginBottom: 8 }}>
-          <span style={{ fontSize: 28, letterSpacing: 4 }}>{"⭐".repeat(starCount)}{"☆".repeat(3 - starCount)}</span>
+    <motion.div
+      initial={{ opacity: 0, y: 30, rotateX: 12 }}
+      animate={{ opacity: 1, y: 0, rotateX: 0 }}
+      transition={{ duration: 0.6, ease: "easeOut" }}
+      style={{ textAlign: "center", perspective: "1400px" }}
+    >
+      <style>{`
+        @keyframes lsTrophyFloat { 0%,100% { transform: translateY(0) rotateZ(-2deg); } 50% { transform: translateY(-6px) rotateZ(2deg); } }
+        @keyframes lsHaloSpin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        @keyframes lsRayPulse { 0%,100% { opacity: 0.35; transform: scale(1); } 50% { opacity: 0.75; transform: scale(1.15); } }
+        @keyframes lsShimmerSweep { 0% { transform: translateX(-160%) skewX(-18deg); } 100% { transform: translateX(260%) skewX(-18deg); } }
+        @keyframes lsConfetti { 0% { transform: translate3d(0,0,0) rotate(0deg); opacity: 0; } 10% { opacity: 1; } 100% { transform: translate3d(var(--cx), var(--cy), 0) rotate(540deg); opacity: 0; } }
+      `}</style>
+      <div
+        data-animate
+        style={{
+          position: "relative",
+          background: "linear-gradient(160deg, rgba(20,32,55,0.92) 0%, rgba(15,40,30,0.88) 100%)",
+          backdropFilter: "blur(14px)",
+          WebkitBackdropFilter: "blur(14px)",
+          border: "1px solid rgba(52,211,153,0.45)",
+          boxShadow:
+            "0 40px 80px -25px rgba(16,185,129,0.45), " +
+            "0 0 60px rgba(16,185,129,0.18), " +
+            "inset 0 0 0 1px rgba(255,255,255,0.06)",
+          borderRadius: 24,
+          padding: "32px 28px 26px",
+          maxWidth: 520,
+          margin: "0 auto",
+          overflow: "hidden",
+          transformStyle: "preserve-3d",
+        }}
+      >
+        {/* Diagonal shimmer sweep */}
+        <span aria-hidden style={{
+          position: "absolute", top: 0, left: 0, height: "100%", width: "60%",
+          background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.14), transparent)",
+          animation: "lsShimmerSweep 4.5s ease-in-out infinite",
+          pointerEvents: "none",
+        }} />
+        {/* Confetti bits floating up behind the trophy */}
+        {Array.from({ length: 14 }).map((_, i) => {
+          const cx = (i * 53) % 280 - 140;
+          const cy = -120 - (i % 5) * 14;
+          const colour = ["#fde047", "#34d399", "#22d3ee", "#a78bfa", "#f472b6"][i % 5];
+          return (
+            <span key={i} aria-hidden style={{
+              position: "absolute",
+              left: "50%",
+              top: "60%",
+              width: 6, height: 10,
+              borderRadius: 2,
+              background: colour,
+              ["--cx" as string]: `${cx}px`,
+              ["--cy" as string]: `${cy}px`,
+              animation: `lsConfetti ${2.4 + (i % 4) * 0.4}s ease-out ${i * 0.18}s infinite`,
+              pointerEvents: "none",
+            } as React.CSSProperties} />
+          );
+        })}
+
+        {/* Trophy + halo */}
+        <div style={{ position: "relative", width: 120, height: 120, margin: "0 auto 14px" }}>
+          {/* Spinning halo of rays */}
+          <span aria-hidden style={{
+            position: "absolute", inset: -8,
+            background: "conic-gradient(from 0deg, transparent 0deg, rgba(253,224,71,0.6) 30deg, transparent 60deg, rgba(34,211,238,0.5) 150deg, transparent 200deg, rgba(167,139,250,0.5) 280deg, transparent 320deg)",
+            borderRadius: "50%",
+            filter: "blur(10px)",
+            animation: "lsHaloSpin 8s linear infinite",
+          }} />
+          {/* Pulsing glow ring */}
+          <span aria-hidden style={{
+            position: "absolute", inset: 6,
+            borderRadius: "50%",
+            background: "radial-gradient(circle, rgba(52,211,153,0.6), rgba(52,211,153,0) 70%)",
+            animation: "lsRayPulse 2.4s ease-in-out infinite",
+          }} />
+          {/* Trophy SVG */}
+          <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", animation: "lsTrophyFloat 3.6s ease-in-out infinite", transformStyle: "preserve-3d" }}>
+            <svg width={88} height={88} viewBox="0 0 88 88">
+              <defs>
+                <linearGradient id="ls-cup" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor="#fde68a" />
+                  <stop offset="50%" stopColor="#f59e0b" />
+                  <stop offset="100%" stopColor="#b45309" />
+                </linearGradient>
+                <linearGradient id="ls-base" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor="#fcd34d" />
+                  <stop offset="100%" stopColor="#92400e" />
+                </linearGradient>
+                <linearGradient id="ls-shine" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor="rgba(255,255,255,0.7)" />
+                  <stop offset="100%" stopColor="rgba(255,255,255,0)" />
+                </linearGradient>
+              </defs>
+              {/* shadow */}
+              <ellipse cx="44" cy="80" rx="22" ry="3" fill="rgba(0,0,0,0.45)" />
+              {/* base */}
+              <rect x="34" y="70" width="20" height="6" rx="1.5" fill="url(#ls-base)" />
+              <rect x="28" y="74" width="32" height="5" rx="2" fill="url(#ls-base)" />
+              {/* stem */}
+              <rect x="40" y="58" width="8" height="14" fill="url(#ls-base)" />
+              {/* handles */}
+              <path d="M22 30 Q 12 36 16 50 Q 22 58 32 56" fill="none" stroke="url(#ls-cup)" strokeWidth="5" strokeLinecap="round" />
+              <path d="M66 30 Q 76 36 72 50 Q 66 58 56 56" fill="none" stroke="url(#ls-cup)" strokeWidth="5" strokeLinecap="round" />
+              {/* cup body */}
+              <path d="M22 16 L66 16 L62 50 Q 56 60 44 60 Q 32 60 26 50 Z" fill="url(#ls-cup)" stroke="rgba(0,0,0,0.18)" strokeWidth="0.8" />
+              {/* shine highlight */}
+              <path d="M28 18 L40 18 L36 44 Q 32 50 28 46 Z" fill="url(#ls-shine)" opacity="0.85" />
+              {/* check inside cup */}
+              <path d="M34 30 L42 38 L56 24" fill="none" stroke="#0b3a2a" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" />
+              {/* sparkles */}
+              <circle cx="14" cy="20" r="1.6" fill="#fde047" />
+              <circle cx="74" cy="22" r="2" fill="#fde047" />
+              <circle cx="78" cy="44" r="1.4" fill="#fde047" />
+              <circle cx="10" cy="44" r="1.4" fill="#fde047" />
+            </svg>
+          </div>
         </div>
-        <p style={{ color: "#d1d5db", fontSize: 15, lineHeight: 1.6, marginBottom: 20 }}>{message}</p>
-        <motion.button onClick={onNext} whileHover={{ scale: 1.05, y: -2, boxShadow: "0 0 25px rgba(249,115,22,0.6)" }} whileTap={{ scale: 0.95 }}
-          style={{ background: "linear-gradient(135deg, #f97316, #f59e0b)", color: "#fff", fontWeight: 700, borderRadius: 14, padding: "13px 34px", border: "none", cursor: "pointer", fontSize: 16, boxShadow: "0 0 15px rgba(249,115,22,0.4)" }}>
+
+        <h2 data-split style={{
+          color: "#fff", fontSize: 28, fontWeight: 900, margin: "0 0 4px",
+          letterSpacing: 1,
+          background: "linear-gradient(135deg, #fde68a, #f59e0b, #34d399)",
+          WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent",
+          textShadow: "0 0 30px rgba(245,158,11,0.4)",
+        }}>Great job!</h2>
+
+        {/* Stars row — SVG with sequenced pop-in + glow */}
+        <div style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 10, margin: "8px 0 14px" }}>
+          {[0, 1, 2].map((i) => {
+            const earned = i < starCount;
+            return (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, scale: 0, rotate: -90 }}
+                animate={{ opacity: 1, scale: 1, rotate: 0 }}
+                transition={{ delay: 0.25 + i * 0.18, type: "spring", stiffness: 260, damping: 16 }}
+                style={{ position: "relative", width: 44, height: 44 }}
+              >
+                {earned && (
+                  <span aria-hidden style={{
+                    position: "absolute", inset: -4, borderRadius: "50%",
+                    background: "radial-gradient(circle, rgba(253,224,71,0.6), transparent 70%)",
+                    animation: "lsRayPulse 1.8s ease-in-out infinite",
+                  }} />
+                )}
+                <svg width={44} height={44} viewBox="0 0 44 44" style={{ position: "relative", filter: earned ? "drop-shadow(0 4px 10px rgba(253,224,71,0.65))" : "none" }}>
+                  <defs>
+                    <linearGradient id={`ls-star-${i}`} x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stopColor={earned ? "#fef3c7" : "#334155"} />
+                      <stop offset="50%" stopColor={earned ? "#fbbf24" : "#1f2937"} />
+                      <stop offset="100%" stopColor={earned ? "#b45309" : "#0f172a"} />
+                    </linearGradient>
+                  </defs>
+                  <path
+                    d="M22 4 L26.7 16.5 L40 17.7 L29.8 26.3 L33 39 L22 32 L11 39 L14.2 26.3 L4 17.7 L17.3 16.5 Z"
+                    fill={`url(#ls-star-${i})`}
+                    stroke={earned ? "#fde68a" : "#475569"}
+                    strokeWidth="1.2"
+                    strokeLinejoin="round"
+                  />
+                  {earned && <path d="M16 14 L20 20 L18 22" fill="none" stroke="rgba(255,255,255,0.8)" strokeWidth="1.5" strokeLinecap="round" />}
+                </svg>
+              </motion.div>
+            );
+          })}
+        </div>
+
+        <p style={{ color: "#d1d5db", fontSize: 15, lineHeight: 1.6, margin: "0 0 22px", position: "relative", zIndex: 1 }}>{message}</p>
+
+        <motion.button
+          onClick={onNext}
+          whileHover={{ scale: 1.06, y: -2 }}
+          whileTap={{ scale: 0.95 }}
+          animate={{ boxShadow: ["0 0 20px rgba(249,115,22,0.45)", "0 0 38px rgba(249,115,22,0.85)", "0 0 20px rgba(249,115,22,0.45)"] }}
+          transition={{ boxShadow: { duration: 2, repeat: Infinity, ease: "easeInOut" } }}
+          style={{
+            position: "relative",
+            background: "linear-gradient(135deg, #f97316 0%, #f59e0b 50%, #fde047 100%)",
+            color: "#1f1300", fontWeight: 900,
+            borderRadius: 14, padding: "13px 34px",
+            border: "none", cursor: "pointer", fontSize: 16,
+            letterSpacing: 1,
+            transformStyle: "preserve-3d",
+          }}
+        >
           Next &rarr;
         </motion.button>
       </div>
@@ -2191,38 +2571,177 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
       /* ──── CASE 1: THE MISSION ──── */
       case 1: {
         const missions = [
-          { icon: "🔐", text: "Learn what passwords are" },
-          { icon: "🛡️", text: "Build a super strong password" },
-          { icon: "🦝", text: "Defeat the Hacker Raccoon" },
+          { icon: "🔐", text: "Learn what passwords are", colour: "#22d3ee", glow: "rgba(34,211,238,0.55)" },
+          { icon: "🛡️", text: "Build a super strong password", colour: "#a78bfa", glow: "rgba(167,139,250,0.55)" },
+          { icon: "🦝", text: "Defeat the Hacker Raccoon", colour: "#f59e0b", glow: "rgba(245,158,11,0.6)" },
         ];
         return (
           <FullScene bg="linear-gradient(180deg, #1a0a0a 0%, #1a1033 100%)" glow="radial-gradient(circle, rgba(239,68,68,0.3), transparent)">
-          <div style={{ textAlign: "center" }}>
+          <style>{`
+            @keyframes missionScan { 0% { transform: translateY(-100%); } 100% { transform: translateY(120%); } }
+            @keyframes missionStatusBlink { 0%,100% { opacity: 1; } 50% { opacity: 0.25; } }
+            @keyframes missionGridDrift { 0% { background-position: 0 0; } 100% { background-position: 40px 40px; } }
+            @keyframes missionTilt { 0%,100% { transform: rotateX(6deg) rotateY(-2deg); } 50% { transform: rotateX(4deg) rotateY(2deg); } }
+            @keyframes missionTagPulse { 0%,100% { box-shadow: 0 0 12px var(--tag-glow), 0 0 0 0 var(--tag-glow); } 50% { box-shadow: 0 0 24px var(--tag-glow), 0 0 0 6px transparent; } }
+          `}</style>
+          <div style={{ textAlign: "center", perspective: "1400px", perspectiveOrigin: "50% 30%" }}>
+            {/* HUD status row */}
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              style={{
+                display: "inline-flex", alignItems: "center", gap: 10,
+                padding: "6px 14px", marginBottom: 14,
+                background: "rgba(239,68,68,0.08)",
+                border: "1px solid rgba(239,68,68,0.4)",
+                borderRadius: 999,
+                fontFamily: "ui-monospace, 'JetBrains Mono', Menlo, monospace",
+                fontSize: 12, fontWeight: 700,
+                color: "#fca5a5",
+                letterSpacing: 2,
+                textTransform: "uppercase",
+              }}
+            >
+              <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#ef4444", boxShadow: "0 0 10px #ef4444", animation: "missionStatusBlink 1.2s ease-in-out infinite" }} />
+              MISSION_BRIEF.exe // CLASSIFIED
+            </motion.div>
+
             <h1 data-split style={{
               fontSize: 48, fontWeight: 900, background: GRAD, WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent", marginBottom: 24, textShadow: "0 0 30px rgba(59,130,246,0.5)",
+              WebkitTextFillColor: "transparent", marginBottom: 6, textShadow: "0 0 30px rgba(59,130,246,0.5)",
+              letterSpacing: 2,
             }}>YOUR MISSION</h1>
+            <p style={{ color: "#94a3b8", fontSize: 13, letterSpacing: 4, textTransform: "uppercase", marginBottom: 22, fontFamily: "ui-monospace, 'JetBrains Mono', Menlo, monospace" }}>
+              ▸ THREE OBJECTIVES // ONE CYBER HERO
+            </p>
+
+            {/* Holographic 3D briefing panel */}
             <motion.div
-              variants={staggerContainer}
-              initial="initial"
-              animate="animate"
-              style={{ display: "flex", flexDirection: "column", gap: 16, maxWidth: 800, margin: "0 auto 24px" }}
+              initial={{ opacity: 0, rotateX: 20, y: 30 }}
+              animate={{ opacity: 1, rotateX: 0, y: 0 }}
+              transition={{ duration: 0.7, ease: "easeOut" }}
+              style={{
+                position: "relative",
+                maxWidth: 760,
+                margin: "0 auto 24px",
+                padding: "28px 22px 24px",
+                background: "linear-gradient(180deg, rgba(15,23,42,0.85) 0%, rgba(20,12,40,0.85) 100%)",
+                borderRadius: 22,
+                border: "1px solid rgba(99,102,241,0.35)",
+                boxShadow:
+                  "0 30px 60px -20px rgba(2,6,23,0.7)," +
+                  "0 0 0 1px rgba(99,102,241,0.15) inset," +
+                  "0 0 60px rgba(99,102,241,0.18)",
+                transform: "rotateX(4deg)",
+                transformStyle: "preserve-3d",
+                overflow: "hidden",
+              }}
             >
-              {missions.map((m, i) => (
-                missionPhase > i ? (
-                  <motion.div key={i} variants={staggerItem}>
-                    {card(
-                      <div style={{ display: "flex", alignItems: "center", gap: 16, textAlign: "left" }}>
-                        <span style={{ fontSize: 32 }}>{m.icon}</span>
-                        <span style={{ color: "#fff", fontSize: 18, fontWeight: 700 }}>{m.text}</span>
-                      </div>,
-                      { borderLeft: "4px solid #3b82f6" }
-                    )}
-                  </motion.div>
-                ) : <div key={i} style={{ height: 80 }} />
+              {/* Animated grid layer */}
+              <div aria-hidden style={{
+                position: "absolute", inset: 0,
+                backgroundImage:
+                  "linear-gradient(rgba(99,102,241,0.07) 1px, transparent 1px)," +
+                  "linear-gradient(90deg, rgba(99,102,241,0.07) 1px, transparent 1px)",
+                backgroundSize: "40px 40px",
+                animation: "missionGridDrift 6s linear infinite",
+                pointerEvents: "none",
+                opacity: 0.7,
+              }} />
+              {/* Scan line */}
+              <div aria-hidden style={{
+                position: "absolute", left: 0, right: 0, height: 80,
+                background: "linear-gradient(180deg, transparent, rgba(34,211,238,0.18), transparent)",
+                animation: "missionScan 4s linear infinite",
+                pointerEvents: "none",
+                mixBlendMode: "screen",
+              }} />
+              {/* Corner brackets */}
+              {[
+                { top: 8, left: 8, br: { borderTop: "2px solid #22d3ee", borderLeft: "2px solid #22d3ee" } },
+                { top: 8, right: 8, br: { borderTop: "2px solid #22d3ee", borderRight: "2px solid #22d3ee" } },
+                { bottom: 8, left: 8, br: { borderBottom: "2px solid #22d3ee", borderLeft: "2px solid #22d3ee" } },
+                { bottom: 8, right: 8, br: { borderBottom: "2px solid #22d3ee", borderRight: "2px solid #22d3ee" } },
+              ].map((c, idx) => (
+                <span key={idx} aria-hidden style={{ position: "absolute", width: 16, height: 16, ...c.br, ...c, opacity: 0.7, pointerEvents: "none" }} />
               ))}
+
+              {/* Mission objectives (3D stacked cards) */}
+              <motion.div
+                variants={staggerContainer}
+                initial="initial"
+                animate="animate"
+                style={{ position: "relative", display: "flex", flexDirection: "column", gap: 14 }}
+              >
+                {missions.map((m, i) => (
+                  missionPhase > i ? (
+                    <motion.div
+                      key={i}
+                      variants={staggerItem}
+                      whileHover={{ rotateX: -2, rotateY: 1, scale: 1.02, z: 20 }}
+                      transition={{ type: "spring", stiffness: 260, damping: 20 }}
+                      style={{
+                        position: "relative",
+                        display: "grid",
+                        gridTemplateColumns: "auto auto 1fr auto",
+                        alignItems: "center",
+                        gap: 16,
+                        padding: "16px 18px",
+                        background: `linear-gradient(135deg, ${m.colour}18 0%, rgba(15,23,42,0.6) 70%)`,
+                        border: `1px solid ${m.colour}66`,
+                        borderRadius: 14,
+                        textAlign: "left",
+                        transformStyle: "preserve-3d",
+                        boxShadow: `0 10px 30px -12px ${m.glow}, inset 0 0 0 1px ${m.colour}22`,
+                      }}
+                    >
+                      {/* Number tag */}
+                      <span style={{
+                        display: "inline-flex", alignItems: "center", justifyContent: "center",
+                        width: 38, height: 38, borderRadius: 10,
+                        background: `linear-gradient(135deg, ${m.colour}, ${m.colour}aa)`,
+                        color: "#0b0f1a",
+                        fontFamily: "ui-monospace, 'JetBrains Mono', Menlo, monospace",
+                        fontWeight: 900, fontSize: 14,
+                        ["--tag-glow" as string]: m.glow,
+                        animation: "missionTagPulse 2.4s ease-in-out infinite",
+                      } as React.CSSProperties}>
+                        {String(i + 1).padStart(2, "0")}
+                      </span>
+                      {/* Icon orb */}
+                      <span style={{
+                        display: "inline-flex", alignItems: "center", justifyContent: "center",
+                        width: 52, height: 52, borderRadius: "50%",
+                        background: `radial-gradient(circle at 35% 30%, ${m.colour}55, transparent 70%)`,
+                        border: `1px solid ${m.colour}77`,
+                        fontSize: 28,
+                        boxShadow: `0 0 18px ${m.glow}`,
+                      }}>
+                        {m.icon}
+                      </span>
+                      {/* Text + caption */}
+                      <span style={{ display: "flex", flexDirection: "column", gap: 2 }}>
+                        <span style={{
+                          color: "#9ca3af", fontSize: 10, letterSpacing: 3, textTransform: "uppercase",
+                          fontFamily: "ui-monospace, 'JetBrains Mono', Menlo, monospace",
+                        }}>
+                          ▸ Objective {String(i + 1).padStart(2, "0")}
+                        </span>
+                        <span style={{ color: "#fff", fontSize: 18, fontWeight: 800 }}>{m.text}</span>
+                      </span>
+                      {/* Status dot */}
+                      <span style={{
+                        width: 10, height: 10, borderRadius: "50%",
+                        background: m.colour, boxShadow: `0 0 12px ${m.glow}`,
+                        animation: "missionStatusBlink 1.6s ease-in-out infinite",
+                      }} />
+                    </motion.div>
+                  ) : <div key={i} style={{ height: 86 }} />
+                ))}
+              </motion.div>
             </motion.div>
-            {/* Character image removed to prevent overlap on small screens */}
+
             {missionPhase >= 3 && (
               <motion.div initial={{ opacity: 0, scale: 0.5 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: "spring", stiffness: 300, damping: 20 }}>
                 {btn("Accept Mission →", () => { playTone("powerup"); navigate(2); })}
@@ -2239,21 +2758,32 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
         if (showSummary[2]) return <LearnSummary message="You learned that passwords LOCK your stuff! Just like a key locks a door, a password keeps your games and photos safe." starCount={getStars(2)} onNext={() => dismissSummary(2, 3)} />;
         return (
           <FullScene bg="linear-gradient(180deg, #1a1a0a 0%, #1a1033 100%)" glow="radial-gradient(circle, rgba(59,130,246,0.2), transparent)">
-          <div style={{ textAlign: "center" }}>
+          <style>{`
+            @keyframes lockCardShimmer { 0% { transform: translateX(-150%) skewX(-18deg); } 100% { transform: translateX(250%) skewX(-18deg); } }
+            @keyframes lockCardFloat { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+            @keyframes lockBurstSpin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+          `}</style>
+          <div style={{ textAlign: "center", perspective: "1400px" }}>
             <h1 data-split style={{ color: "#fff", fontSize: 40, fontWeight: 900, marginBottom: 8, textShadow: "0 0 24px rgba(59,130,246,0.5)" }}>What is a Password?</h1>
             <p style={{ color: "#9ca3af", marginBottom: 8, fontSize: 16 }}>Tap each item to lock it with a password!</p>
             <p style={{ color: "#f59e0b", fontSize: 20, fontWeight: 700, marginBottom: 16 }}>🔒 {lockedItems.size}/3</p>
-            <div style={{ display: "flex", gap: 16, justifyContent: "center", flexWrap: "wrap", marginBottom: 24 }}>
-              {LOCK_ITEMS.map((item) => {
+            <div style={{ display: "flex", gap: 22, justifyContent: "center", flexWrap: "wrap", marginBottom: 24, perspective: "1400px" }}>
+              {LOCK_ITEMS.map((item, idx) => {
                 const locked = lockedItems.has(item.id);
                 const flipping = lockFlipping === item.id;
+                const accent = item.id === "gaming" ? { c1: "#60a5fa", c2: "#a855f7", glow: "rgba(96,165,250,0.55)" }
+                  : item.id === "tablet" ? { c1: "#22d3ee", c2: "#3b82f6", glow: "rgba(34,211,238,0.55)" }
+                  : { c1: "#fbbf24", c2: "#f97316", glow: "rgba(251,191,36,0.55)" };
+                const baseTilt = idx === 0 ? -3 : idx === 2 ? 3 : 0;
                 return (
                   <motion.div
                     key={item.id}
-                    initial={{ opacity: 0, y: 30 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    whileHover={!locked && !flipping ? { scale: 1.05 } : {}}
-                    whileTap={!locked && !flipping ? { scale: 0.95 } : {}}
+                    initial={{ opacity: 0, y: 40, rotateX: 12 }}
+                    animate={{ opacity: 1, y: 0, rotateX: 0 }}
+                    transition={{ delay: idx * 0.12, type: "spring", stiffness: 220, damping: 22 }}
+                    whileHover={!locked && !flipping ? { scale: 1.06, rotateY: 6, rotateX: -3, z: 30 } : {}}
+                    whileTap={!locked && !flipping ? { scale: 0.96 } : {}}
+                    style={{ transformStyle: "preserve-3d", transform: `rotateY(${baseTilt}deg)` }}
                     onClick={(e) => {
                       if (locked || flipping) return;
                       setLockFlipping(item.id);
@@ -2279,45 +2809,82 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                       }, 600);
                     }}
                   >
-                    {card(
+                    <motion.div
+                      animate={flipping ? { rotateY: [0, 180, 360] } : {}}
+                      transition={{ duration: 0.6 }}
+                      style={{
+                        position: "relative",
+                        width: 200, minHeight: 270,
+                        borderRadius: 24,
+                        padding: "22px 18px",
+                        cursor: locked ? "default" : "pointer",
+                        background: `linear-gradient(160deg, ${accent.c1}1a 0%, rgba(15,23,42,0.85) 50%, ${accent.c2}22 100%)`,
+                        border: `1px solid ${locked ? "#10b98166" : `${accent.c1}66`}`,
+                        boxShadow: locked
+                          ? `0 30px 60px -20px rgba(16,185,129,0.5), inset 0 0 0 1px rgba(16,185,129,0.25), 0 0 50px rgba(16,185,129,0.25)`
+                          : `0 30px 60px -20px ${accent.glow}, inset 0 0 0 1px ${accent.c1}33, 0 0 40px ${accent.glow}`,
+                        backdropFilter: "blur(14px)",
+                        WebkitBackdropFilter: "blur(14px)",
+                        overflow: "hidden",
+                        transformStyle: "preserve-3d",
+                      }}
+                    >
+                      {/* Shimmer light streak */}
+                      {!locked && (
+                        <span aria-hidden style={{
+                          position: "absolute", top: 0, left: 0, width: "60%", height: "100%",
+                          background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.18), transparent)",
+                          animation: "lockCardShimmer 4.5s ease-in-out infinite",
+                          pointerEvents: "none",
+                        }} />
+                      )}
+
+                      {/* Big device illustration */}
+                      <div style={{ display: "flex", justifyContent: "center", marginBottom: 10, transform: "translateZ(20px)" }}>
+                        <DeviceIllustration kind={item.id as "gaming" | "tablet" | "school"} c1={accent.c1} c2={accent.c2} locked={locked} />
+                      </div>
+
+                      <div style={{ fontSize: 18, color: "#fff", fontWeight: 900, marginBottom: 6, letterSpacing: 0.5 }}>{item.label}</div>
+
+                      {/* Lock pill */}
                       <div style={{
-                        textAlign: "center", cursor: locked ? "default" : "pointer", minWidth: 140, minHeight: 180, display: "flex", flexDirection: "column" as const, alignItems: "center", justifyContent: "center",
+                        display: "inline-flex", alignItems: "center", gap: 6,
+                        padding: "5px 12px", borderRadius: 999,
+                        background: locked ? "rgba(16,185,129,0.15)" : "rgba(239,68,68,0.12)",
+                        border: `1px solid ${locked ? "#10b98166" : "#ef444466"}`,
+                        marginBottom: 8,
                       }}>
                         <motion.div
-                          animate={flipping ? { rotateY: [0, 90, 0] } : {}}
+                          animate={flipping ? { rotate: 360, scale: [1, 1.4, 1] } : {}}
                           transition={{ duration: 0.6 }}
+                          style={{ display: "inline-flex" }}
                         >
-                          <div style={{ fontSize: 48, marginBottom: 8, width: 56, height: 56, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>{item.id === "gaming" ? <IconGamepad size={40} color="#3b82f6" /> : item.id === "tablet" ? <IconTablet size={40} color="#3b82f6" /> : <IconSchool size={40} color="#10b981" />}</div>
-                          <div style={{ fontSize: 16, color: "#fff", fontWeight: 700, marginBottom: 8 }}>{item.label}</div>
-                          <motion.div
-                            animate={flipping ? { rotate: 360 } : {}}
-                            transition={{ duration: 0.6 }}
-                            style={{ fontSize: 32, width: 40, height: 40, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}
-                          >
-                            {locked ? <IconLock size={28} color="#10b981" /> : <IconUnlock size={28} color="#ef4444" />}
-                          </motion.div>
+                          {locked ? <IconLock size={16} color="#10b981" /> : <IconUnlock size={16} color="#ef4444" />}
                         </motion.div>
-                        {!locked && !flipping && (
-                          <motion.div
-                            animate={{ y: [0, -6, 0] }}
-                            transition={{ duration: 1, repeat: Infinity, ease: "easeInOut" }}
-                            style={{ fontSize: 24, marginTop: 4 }}
-                          >
-                            👆
-                          </motion.div>
-                        )}
-                        {locked && (
-                          <motion.p
-                            initial={{ opacity: 0, y: 30 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            style={{ color: "#10b981", fontSize: 13, marginTop: 8 }}
-                          >
-                            {item.message}
-                          </motion.p>
-                        )}
-                      </div>,
-                      { border: `2px solid ${locked ? "#10b981" : "#ef4444"}`, transition: "border-color 0.3s ease" }
-                    )}
+                        <span style={{ fontSize: 12, fontWeight: 800, color: locked ? "#10b981" : "#ef4444", letterSpacing: 1, textTransform: "uppercase" }}>
+                          {locked ? "Secure" : "Unlocked"}
+                        </span>
+                      </div>
+
+                      {!locked && !flipping && (
+                        <div style={{
+                          display: "flex", alignItems: "center", justifyContent: "center", gap: 6,
+                          color: accent.c1, fontSize: 12, fontWeight: 800, letterSpacing: 1,
+                          animation: "lockCardFloat 1.6s ease-in-out infinite",
+                        }}>
+                          <span style={{ fontSize: 18 }}>▾</span> TAP TO LOCK
+                        </div>
+                      )}
+                      {locked && (
+                        <motion.p
+                          initial={{ opacity: 0, y: 8 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          style={{ color: "#86efac", fontSize: 12, fontWeight: 600, margin: 0 }}
+                        >
+                          {item.message}
+                        </motion.p>
+                      )}
+                    </motion.div>
                   </motion.div>
                 );
               })}
@@ -2333,10 +2900,14 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                 >
                   {card(
                     <>
-                      <h2 style={{ color: "#10b981", fontSize: 22, margin: "0 0 8px" }}>🎉 All Locked!</h2>
+                      <h2 style={{ color: "#10b981", fontSize: 22, margin: "0 0 8px", display: "inline-flex", alignItems: "center", gap: 10 }}>
+                        <SuccessBurst size={28} />
+                        All Locked!
+                      </h2>
                       <p style={{ color: "#d1d5db", marginBottom: 12 }}>A password is like a key that locks your digital stuff so only YOU can open it!</p>
-                      <div style={{ border: "2px solid #f59e0b", borderRadius: 16, padding: 12, marginBottom: 16, background: "rgba(245,158,11,0.05)" }}>
-                        <p style={{ color: "#f59e0b", fontSize: 14, margin: 0 }}>🌟 Fun Fact: The first computer password was created in 1961!</p>
+                      <div style={{ border: "2px solid #f59e0b", borderRadius: 16, padding: 12, marginBottom: 16, background: "rgba(245,158,11,0.05)", display: "flex", alignItems: "center", gap: 10, justifyContent: "center" }}>
+                        <SuccessBurst size={20} colourA="#fde047" colourB="#f97316" />
+                        <p style={{ color: "#f59e0b", fontSize: 14, margin: 0 }}>Fun Fact: The first computer password was created in 1961!</p>
                       </div>
                       {btn("Got it! Quiz time! →", () => showLearnSummary(2))}
                     </>
@@ -2609,35 +3180,189 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
       case 12: {
         if (showSummary[12]) return <LearnSummary message="You learned the 4 signs of a trick, too good to be true, scary warnings, spelling mistakes, and asking for secrets!" starCount={3} onNext={() => dismissSummary(12, 13)} />;
         const tricks = [
-          { title: "TOO GOOD TO BE TRUE", fake: "YOU WON A FREE iPAD!!! CLICK NOW!!!", explain: "If it sounds too good to be true... it probably is! Real prizes don't pop up on your screen.", color: "#f59e0b" },
-          { title: "SCARY WARNINGS", fake: "WARNING! YOUR TABLET HAS A VIRUS! CALL THIS NUMBER NOW!", explain: "Scary messages try to make you panic. Real warnings don't ask you to call a number. Tell a grown-up!", color: "#ef4444" },
-          { title: "SPELLING MISTAKES", fake: "Dear Costumer, Youre acount has ben comprimised. Clik here to fix.", explain: "Real companies don't make spelling mistakes! If it looks wrong, it IS wrong.", color: "#3b82f6" },
-          { title: "ASKING FOR SECRETS", fake: "Enter your password to win free V-Bucks!", explain: "NO real website will EVER ask for your password in a message. NEVER type your password into a popup.", color: "#ec4899" },
+          { title: "TOO GOOD TO BE TRUE", fake: "YOU WON A FREE iPAD!!! CLICK NOW!!!", explain: "If it sounds too good to be true... it probably is! Real prizes don't pop up on your screen.", color: "#f59e0b", icon: "🎁", glyph: "%" },
+          { title: "SCARY WARNINGS", fake: "WARNING! YOUR TABLET HAS A VIRUS! CALL THIS NUMBER NOW!", explain: "Scary messages try to make you panic. Real warnings don't ask you to call a number. Tell a grown-up!", color: "#ef4444", icon: "⚠️", glyph: "!" },
+          { title: "SPELLING MISTAKES", fake: "Dear Costumer, Youre acount has ben comprimised. Clik here to fix.", explain: "Real companies don't make spelling mistakes! If it looks wrong, it IS wrong.", color: "#3b82f6", icon: "🅰️", glyph: "?" },
+          { title: "ASKING FOR SECRETS", fake: "Enter your password to win free V-Bucks!", explain: "NO real website will EVER ask for your password in a message. NEVER type your password into a popup.", color: "#ec4899", icon: "🔐", glyph: "@" },
         ];
+        const t = tricks[trickCard] || tricks[0];
         return (
           <FullScene bg="linear-gradient(180deg, #1a0f05 0%, #1a1033 100%)" glow="radial-gradient(circle, rgba(249,115,22,0.15), transparent)">
-          <div style={{ textAlign: "center" }}>
-            <h1 data-split style={{ color: "#fff", fontSize: 38, fontWeight: 900, marginBottom: 4, textShadow: "0 0 20px rgba(249,115,22,0.4)" }}>🔍 Spot the Tricks!</h1>
-            <p style={{ color: "#9ca3af", marginBottom: 16, fontSize: 16 }}>The Raccoon sends FAKE messages to trick people. Here&apos;s how to spot them!</p>
+          <style>{`
+            @keyframes phEvidenceTape { 0% { background-position: 0 0; } 100% { background-position: 36px 0; } }
+            @keyframes phStampPunch { 0% { transform: translate(-50%, -50%) scale(2.6) rotate(-30deg); opacity: 0; } 60% { transform: translate(-50%, -50%) scale(0.9) rotate(-12deg); opacity: 1; } 80% { transform: translate(-50%, -50%) scale(1.05) rotate(-12deg); } 100% { transform: translate(-50%, -50%) scale(1) rotate(-12deg); opacity: 1; } }
+            @keyframes phRedlineDraw { 0% { stroke-dashoffset: 320; } 100% { stroke-dashoffset: 0; } }
+            @keyframes phMagFloat { 0%,100% { transform: translateY(0) rotate(-8deg); } 50% { transform: translateY(-8px) rotate(-4deg); } }
+            @keyframes phGlitch { 0%,100% { transform: translate(0,0); } 20% { transform: translate(-1px,1px); } 40% { transform: translate(1px,-1px); } 60% { transform: translate(-1px,0); } 80% { transform: translate(0,1px); } }
+            @keyframes phGlyphFloat { 0% { transform: translateY(0) rotate(0); opacity: 0; } 12% { opacity: 0.18; } 80% { opacity: 0.18; } 100% { transform: translateY(-160px) rotate(20deg); opacity: 0; } }
+          `}</style>
+          <div style={{ textAlign: "center", position: "relative" }}>
+            {/* Drifting cipher glyphs in the background — subtle "case file" texture */}
+            <div aria-hidden style={{ position: "absolute", inset: 0, pointerEvents: "none", overflow: "hidden", zIndex: 0 }}>
+              {Array.from({ length: 14 }).map((_, i) => {
+                const ch = ["@", "$", "#", "?", "%", "&", "!", "*"][i % 8];
+                const left = (i * 13) % 100;
+                const dur = 9 + (i % 5) * 1.7;
+                const delay = (i * 0.7) % 8;
+                return (
+                  <span
+                    key={i}
+                    style={{
+                      position: "absolute",
+                      left: `${left}%`,
+                      bottom: -20,
+                      fontFamily: "ui-monospace, 'JetBrains Mono', monospace",
+                      fontSize: 22 + (i % 3) * 8,
+                      color: "rgba(249,115,22,0.85)",
+                      animation: `phGlyphFloat ${dur}s ease-in-out ${delay}s infinite`,
+                    }}
+                  >
+                    {ch}
+                  </span>
+                );
+              })}
+            </div>
+
+            <div style={{ position: "relative", zIndex: 1 }}>
+              <h1 data-split style={{ color: "#fff", fontSize: 38, fontWeight: 900, marginBottom: 4, textShadow: "0 0 20px rgba(249,115,22,0.4)" }}>🔍 Spot the Tricks!</h1>
+              <p style={{ color: "#fb923c", marginBottom: 4, fontSize: 12, letterSpacing: 4, textTransform: "uppercase", fontFamily: "ui-monospace, monospace", fontWeight: 800 }}>
+                ▸ EVIDENCE FILE {String(Math.min(trickCard + 1, tricks.length)).padStart(2, "0")} / {String(tricks.length).padStart(2, "0")}
+              </p>
+              <p style={{ color: "#9ca3af", marginBottom: 16, fontSize: 16 }}>The Raccoon sends FAKE messages to trick people. Here&apos;s how to spot them!</p>
+            </div>
             {trickCard < 4 ? (
               <AnimatePresence mode="wait">
-                <motion.div key={trickCard} initial={{ opacity: 0, x: 40 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -40 }}>
-                  {card(
-                    <>
-                      <p style={{ color: tricks[trickCard].color, fontWeight: 900, fontSize: 14, letterSpacing: "0.05em", marginBottom: 12 }}>{tricks[trickCard].title}</p>
-                      <div style={{ background: "rgba(239,68,68,0.08)", border: "2px solid rgba(239,68,68,0.2)", borderRadius: 16, padding: 16, marginBottom: 16 }}>
-                        <p style={{ color: "#fca5a5", fontSize: 16, fontWeight: 700, fontStyle: "italic" }}>&quot;{tricks[trickCard].fake}&quot;</p>
+                <motion.div
+                  key={trickCard}
+                  initial={{ opacity: 0, y: 24, rotateX: 12 }}
+                  animate={{ opacity: 1, y: 0, rotateX: 0 }}
+                  exit={{ opacity: 0, x: -40 }}
+                  transition={{ type: "spring", stiffness: 220, damping: 22 }}
+                  style={{ position: "relative", maxWidth: 560, margin: "0 auto", perspective: "1400px", zIndex: 1 }}
+                >
+                  {/* Detective case-file card */}
+                  <div
+                    style={{
+                      position: "relative",
+                      background: "linear-gradient(160deg, rgba(30,20,15,0.94) 0%, rgba(20,12,30,0.92) 100%)",
+                      border: `1px solid ${t.color}66`,
+                      borderRadius: 20,
+                      padding: "28px 24px 22px",
+                      boxShadow: `0 30px 60px -20px ${t.color}55, 0 0 50px ${t.color}33, inset 0 0 0 1px rgba(255,255,255,0.04)`,
+                      transformStyle: "preserve-3d",
+                      overflow: "hidden",
+                    }}
+                  >
+                    {/* Hazard tape ribbon */}
+                    <div aria-hidden style={{
+                      position: "absolute", left: 0, right: 0, top: 0, height: 8,
+                      backgroundImage: `repeating-linear-gradient(45deg, ${t.color} 0 12px, rgba(0,0,0,0.85) 12px 24px)`,
+                      animation: "phEvidenceTape 1.4s linear infinite",
+                      opacity: 0.85,
+                    }} />
+                    {/* Floating magnifier */}
+                    <div aria-hidden style={{ position: "absolute", top: 18, right: 18, fontSize: 36, animation: "phMagFloat 3.2s ease-in-out infinite", filter: `drop-shadow(0 6px 12px ${t.color}88)` }}>
+                      🔍
+                    </div>
+                    {/* Title chip */}
+                    <div style={{ display: "inline-flex", alignItems: "center", gap: 8, marginTop: 6, marginBottom: 14, padding: "5px 12px", borderRadius: 999, background: `${t.color}1a`, border: `1px solid ${t.color}66` }}>
+                      <span style={{ fontSize: 18 }}>{t.icon}</span>
+                      <span style={{ color: t.color, fontWeight: 900, fontSize: 13, letterSpacing: 2, textTransform: "uppercase" }}>{t.title}</span>
+                    </div>
+
+                    {/* Fake message — styled like a real popup with glitch + REJECTED stamp */}
+                    <div style={{ position: "relative", marginBottom: 18 }}>
+                      <div style={{
+                        background: "linear-gradient(180deg, rgba(239,68,68,0.18) 0%, rgba(239,68,68,0.08) 100%)",
+                        border: "2px solid rgba(239,68,68,0.55)",
+                        borderRadius: 14,
+                        padding: "22px 18px",
+                        boxShadow: "0 0 24px rgba(239,68,68,0.25), inset 0 0 0 1px rgba(255,255,255,0.04)",
+                      }}>
+                        {/* Pseudo browser bar */}
+                        <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 10, opacity: 0.8 }}>
+                          <span style={{ width: 10, height: 10, borderRadius: "50%", background: "#ef4444" }} />
+                          <span style={{ width: 10, height: 10, borderRadius: "50%", background: "#fbbf24" }} />
+                          <span style={{ width: 10, height: 10, borderRadius: "50%", background: "#22c55e" }} />
+                          <span style={{ flex: 1, fontFamily: "ui-monospace, monospace", fontSize: 11, color: "rgba(252,165,165,0.7)", textAlign: "left", marginLeft: 8 }}>
+                            ⚠ unsafe-link.notreal/{t.glyph}
+                          </span>
+                        </div>
+                        <p style={{
+                          color: "#fca5a5", fontSize: 17, fontWeight: 800, fontStyle: "italic",
+                          margin: 0, lineHeight: 1.4,
+                          textShadow: "0 0 8px rgba(239,68,68,0.5)",
+                          animation: "phGlitch 1.6s ease-in-out infinite",
+                          fontFamily: "'Space Grotesk', system-ui, sans-serif",
+                        }}>
+                          &ldquo;{t.fake}&rdquo;
+                        </p>
+                        {/* Diagonal redline animated stroke */}
+                        <svg viewBox="0 0 600 60" style={{ position: "absolute", left: 0, right: 0, top: "50%", transform: "translateY(-50%)", width: "100%", height: 60, pointerEvents: "none" }}>
+                          <line
+                            x1="20" y1="50" x2="580" y2="10"
+                            stroke="#ef4444" strokeWidth="3" strokeLinecap="round"
+                            strokeDasharray="320" strokeDashoffset="0"
+                            style={{ animation: "phRedlineDraw 1.2s ease-out 0.3s both", filter: "drop-shadow(0 0 8px #ef4444)" }}
+                          />
+                        </svg>
                       </div>
-                      <div style={{ display: "flex", alignItems: "flex-start", gap: 12, textAlign: "left" }}>
-                        <span style={{ color: "#ef4444", fontSize: 28, flexShrink: 0 }}>✕</span>
-                        <p style={{ color: "#d1d5db", fontSize: 15, lineHeight: 1.6 }}>{tricks[trickCard].explain}</p>
+                      {/* REJECTED stamp */}
+                      <div
+                        aria-hidden
+                        style={{
+                          position: "absolute",
+                          top: "50%", left: "50%",
+                          padding: "6px 18px",
+                          border: "3px solid #ef4444",
+                          color: "#ef4444",
+                          fontFamily: "ui-monospace, monospace",
+                          fontWeight: 900,
+                          fontSize: 18,
+                          letterSpacing: 4,
+                          background: "rgba(239,68,68,0.08)",
+                          textShadow: "0 0 6px rgba(239,68,68,0.65)",
+                          boxShadow: "inset 0 0 0 2px rgba(239,68,68,0.3), 0 0 18px rgba(239,68,68,0.45)",
+                          animation: "phStampPunch 0.9s cubic-bezier(0.4,1.4,0.5,1) 0.4s both",
+                          pointerEvents: "none",
+                        }}
+                      >
+                        REJECTED
                       </div>
-                      <div style={{ marginTop: 16 }}>
-                        {btn(trickCard < 3 ? "Next Trick →" : "I see the pattern! →", () => setTrickCard((c) => c + 1))}
-                      </div>
-                    </>,
-                    { maxWidth: 540, margin: "0 auto" }
-                  )}
+                    </div>
+
+                    {/* Detective explanation */}
+                    <div style={{ display: "flex", alignItems: "flex-start", gap: 14, textAlign: "left", padding: "10px 12px", background: "rgba(34,197,94,0.06)", border: "1px solid rgba(74,222,128,0.25)", borderRadius: 12 }}>
+                      <span style={{
+                        flexShrink: 0,
+                        width: 32, height: 32, borderRadius: "50%",
+                        background: "linear-gradient(135deg, #4ade80, #22c55e)",
+                        color: "#052e16", fontWeight: 900, fontSize: 18,
+                        display: "inline-flex", alignItems: "center", justifyContent: "center",
+                        boxShadow: "0 0 14px rgba(74,222,128,0.55)",
+                      }}>✓</span>
+                      <p style={{ color: "#e5e7eb", fontSize: 15, lineHeight: 1.55, margin: 0 }}>
+                        <span style={{ color: "#86efac", fontWeight: 800, marginRight: 4 }}>The clue:</span>
+                        {t.explain}
+                      </p>
+                    </div>
+
+                    <div style={{ marginTop: 18 }}>
+                      {btn(trickCard < 3 ? "Next Trick →" : "I see the pattern! →", () => setTrickCard((c) => c + 1))}
+                    </div>
+
+                    {/* Progress dots */}
+                    <div style={{ display: "flex", justifyContent: "center", gap: 8, marginTop: 14 }}>
+                      {tricks.map((_, idx) => (
+                        <span key={idx} style={{
+                          width: idx === trickCard ? 22 : 8, height: 8, borderRadius: 4,
+                          background: idx < trickCard ? "#4ade80" : idx === trickCard ? t.color : "rgba(255,255,255,0.15)",
+                          boxShadow: idx === trickCard ? `0 0 10px ${t.color}` : "none",
+                          transition: "width 0.3s ease, background 0.3s ease",
+                        }} />
+                      ))}
+                    </div>
+                  </div>
                 </motion.div>
               </AnimatePresence>
             ) : (

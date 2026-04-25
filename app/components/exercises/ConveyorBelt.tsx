@@ -306,7 +306,9 @@ export default function ConveyorBelt({
         borderRadius: 24,
         overflow: "hidden",
         background:
-          "radial-gradient(circle at 30% 30%, rgba(249,115,22,0.08), transparent 55%), linear-gradient(180deg, #1a0f1e 0%, #06080f 100%)",
+          "radial-gradient(circle at 20% 30%, rgba(249,115,22,0.18), transparent 55%)," +
+          "radial-gradient(circle at 80% 75%, rgba(168,85,247,0.18), transparent 55%)," +
+          "linear-gradient(180deg, #1a0f1e 0%, #06080f 100%)",
         border: "1px solid rgba(255,255,255,0.08)",
         color: "#e2e8f0",
         fontFamily: "sans-serif",
@@ -314,6 +316,11 @@ export default function ConveyorBelt({
         touchAction: "manipulation",
       }}
     >
+      {/* Cyberpunk factory backdrop — hazard stripes, riveted plates,
+          rotating cogs in shadow, drifting embers + steam, warning lights.
+          All decorative; sits at zIndex 0 so HUD/cards land on top. */}
+      <FactoryBackdrop />
+
       {/* HUD */}
       <div
         style={{
@@ -889,6 +896,191 @@ export default function ConveyorBelt({
           onStart={() => setShowIntro(false)}
         />
       )}
+    </div>
+  );
+}
+
+/* Decorative cyberpunk-factory backdrop. Pure CSS / SVG — no animation
+   refs into game state, so it's safe to drop in anywhere behind the HUD. */
+function FactoryBackdrop() {
+  return (
+    <div
+      aria-hidden
+      style={{
+        position: "absolute",
+        inset: 0,
+        zIndex: 0,
+        pointerEvents: "none",
+        overflow: "hidden",
+      }}
+    >
+      <style>{`
+        @keyframes cbHazardSlide { 0% { background-position: 0 0; } 100% { background-position: 60px 0; } }
+        @keyframes cbCogSpin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        @keyframes cbCogSpinRev { 0% { transform: rotate(0deg); } 100% { transform: rotate(-360deg); } }
+        @keyframes cbWarnBlink { 0%,55%,100% { opacity: 0.35; box-shadow: 0 0 6px currentColor; } 60%,80% { opacity: 1; box-shadow: 0 0 22px currentColor; } }
+        @keyframes cbEmberRise { 0% { transform: translateY(0) translateX(0); opacity: 0; } 12% { opacity: 0.85; } 88% { opacity: 0.85; } 100% { transform: translateY(-120%) translateX(var(--cb-drift, 18px)); opacity: 0; } }
+        @keyframes cbSteamPuff { 0% { transform: translate(0,0) scale(0.4); opacity: 0; } 18% { opacity: 0.5; } 70% { opacity: 0.35; } 100% { transform: translate(var(--cb-sx, 30px), -160%) scale(2.3); opacity: 0; } }
+        @keyframes cbCableSwing { 0%,100% { transform: rotate(-2deg); } 50% { transform: rotate(2deg); } }
+      `}</style>
+
+      {/* Riveted metal plate texture — repeating dot pattern */}
+      <div style={{
+        position: "absolute", inset: 0,
+        backgroundImage:
+          "radial-gradient(circle at 6px 6px, rgba(255,180,120,0.06) 1.2px, transparent 1.6px)," +
+          "radial-gradient(circle at 18px 18px, rgba(120,80,200,0.05) 1px, transparent 1.4px)",
+        backgroundSize: "24px 24px, 36px 36px",
+        opacity: 0.7,
+      }} />
+
+      {/* Hazard stripes ribbon along the bottom edge */}
+      <div style={{
+        position: "absolute", left: 0, right: 0, bottom: 0, height: 14,
+        backgroundImage: "repeating-linear-gradient(45deg, #fbbf24 0 12px, #1a0f1e 12px 24px)",
+        opacity: 0.45,
+        animation: "cbHazardSlide 1.6s linear infinite",
+      }} />
+      {/* Top accent thin neon bar */}
+      <div style={{
+        position: "absolute", left: 0, right: 0, top: 0, height: 2,
+        background: "linear-gradient(90deg, transparent, rgba(34,211,238,0.55), rgba(168,85,247,0.55), transparent)",
+      }} />
+
+      {/* Industrial cogs (decorative SVGs) at left & right ceiling */}
+      <Cog size={86} top={6} left={-30} colour="#5b6480" speed="22s" />
+      <Cog size={120} top={-46} left={94} colour="#3b4664" speed="36s" reverse />
+      <Cog size={64} top={94} left={680} colour="#5b6480" speed="18s" />
+      <Cog size={48} top={146} left={648} colour="#3b4664" speed="14s" reverse />
+
+      {/* Hanging cable with bulb (left) */}
+      <div style={{ position: "absolute", left: 92, top: 0, transformOrigin: "top center", animation: "cbCableSwing 5s ease-in-out infinite" }}>
+        <div style={{ width: 2, height: 70, background: "rgba(120,120,140,0.55)", margin: "0 auto" }} />
+        <div style={{
+          width: 16, height: 16, borderRadius: "50%",
+          background: "radial-gradient(circle at 35% 35%, #fde047, #f59e0b 60%, #b45309)",
+          boxShadow: "0 0 24px rgba(253,224,71,0.55)",
+          margin: "0 auto",
+        }} />
+      </div>
+
+      {/* Warning lights — corners */}
+      <span style={{ position: "absolute", top: 14, right: 22, width: 8, height: 8, borderRadius: "50%", background: "#ef4444", color: "#ef4444", animation: "cbWarnBlink 2.4s ease-in-out infinite" }} />
+      <span style={{ position: "absolute", top: 14, right: 40, width: 8, height: 8, borderRadius: "50%", background: "#f59e0b", color: "#f59e0b", animation: "cbWarnBlink 2.4s ease-in-out 0.7s infinite" }} />
+
+      {/* Drifting embers / sparks */}
+      {Array.from({ length: 14 }).map((_, i) => {
+        const left = (i * 47) % 100;
+        const dur = 6 + (i % 5);
+        const delay = (i * 0.7) % 8;
+        const drift = ((i % 4) - 2) * 14;
+        const c = ["#fde047", "#f97316", "#fb923c", "#fbbf24"][i % 4];
+        return (
+          <span
+            key={`ember-${i}`}
+            style={{
+              position: "absolute",
+              left: `${left}%`,
+              bottom: -6,
+              width: 3, height: 3, borderRadius: "50%",
+              background: c,
+              boxShadow: `0 0 6px ${c}`,
+              animation: `cbEmberRise ${dur}s linear ${delay}s infinite`,
+              ["--cb-drift" as string]: `${drift}px`,
+            } as React.CSSProperties}
+          />
+        );
+      })}
+
+      {/* Steam puffs from bottom corners */}
+      {Array.from({ length: 4 }).map((_, i) => {
+        const left = i < 2 ? 8 + i * 6 : 92 - (i - 2) * 6;
+        const dur = 7 + (i % 3);
+        const delay = i * 1.4;
+        const sx = i < 2 ? 30 + i * 20 : -(30 + (i - 2) * 20);
+        return (
+          <span
+            key={`steam-${i}`}
+            style={{
+              position: "absolute",
+              left: `${left}%`,
+              bottom: 12,
+              width: 24, height: 24, borderRadius: "50%",
+              background: "radial-gradient(circle, rgba(255,255,255,0.55), rgba(255,255,255,0))",
+              filter: "blur(2px)",
+              animation: `cbSteamPuff ${dur}s ease-in-out ${delay}s infinite`,
+              ["--cb-sx" as string]: `${sx}px`,
+            } as React.CSSProperties}
+          />
+        );
+      })}
+
+      {/* Vignette so foreground contrast stays readable */}
+      <div style={{
+        position: "absolute", inset: 0,
+        background: "radial-gradient(circle at 50% 50%, transparent 50%, rgba(0,0,0,0.45) 100%)",
+        pointerEvents: "none",
+      }} />
+    </div>
+  );
+}
+
+function Cog({
+  size,
+  top,
+  left,
+  colour,
+  speed,
+  reverse,
+}: {
+  size: number;
+  top: number;
+  left: number;
+  colour: string;
+  speed: string;
+  reverse?: boolean;
+}) {
+  // 12-toothed cog drawn as an SVG so it scales crisply at any size.
+  const teeth = 12;
+  const r = size / 2;
+  const inner = r * 0.7;
+  const tooth = r * 1.05;
+  const points: string[] = [];
+  for (let i = 0; i < teeth * 2; i++) {
+    const a = (i / (teeth * 2)) * Math.PI * 2;
+    const rad = i % 2 === 0 ? tooth : inner;
+    points.push(`${(r + Math.cos(a) * rad).toFixed(2)},${(r + Math.sin(a) * rad).toFixed(2)}`);
+  }
+  return (
+    <div
+      style={{
+        position: "absolute",
+        top,
+        left,
+        width: size,
+        height: size,
+        opacity: 0.35,
+        animation: `${reverse ? "cbCogSpinRev" : "cbCogSpin"} ${speed} linear infinite`,
+        filter: "drop-shadow(0 4px 8px rgba(0,0,0,0.6))",
+      }}
+    >
+      <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}>
+        <polygon points={points.join(" ")} fill={colour} stroke="#0b0f1a" strokeWidth={1} />
+        <circle cx={r} cy={r} r={inner * 0.55} fill="#0b0f1a" />
+        <circle cx={r} cy={r} r={inner * 0.25} fill={colour} />
+        {/* spokes */}
+        {[0, 60, 120].map((deg) => (
+          <rect
+            key={deg}
+            x={r - 2}
+            y={r - inner * 0.5}
+            width={4}
+            height={inner}
+            fill="#0b0f1a"
+            transform={`rotate(${deg} ${r} ${r})`}
+          />
+        ))}
+      </svg>
     </div>
   );
 }

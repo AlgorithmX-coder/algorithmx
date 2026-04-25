@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * BossBattle — raw PixiJS quiz-battle for ages 6-10.
+ * BossBattle — raw PixiJS quiz-battle for ages 6-9.
  * Manual Application.init() + canvas append; no framework wrappers.
  */
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";

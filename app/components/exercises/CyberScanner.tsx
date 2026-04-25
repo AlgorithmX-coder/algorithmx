@@ -567,18 +567,23 @@ export default function CyberScanner({
           background: "linear-gradient(180deg, transparent, rgba(5,8,18,0.95))",
         }}
       >
+        {/* Buttons read live state from the ref inside onClick rather than
+            from React props because the canvas tick loop runs at 60fps without
+            triggering re-renders, so a render-time `disabled` prop would be
+            stale and clicks would silently no-op. resolveCurrent already
+            short-circuits when there's no resolvable card. */}
         <ScannerButton
           tint="#22c55e"
           accent="#4ade80"
           label="🛡  STRONG"
-          disabled={!s.card || s.card.resolved || s.finished}
+          disabled={s.finished}
           onClick={() => resolveCurrent(true)}
         />
         <ScannerButton
           tint="#ef4444"
           accent="#f87171"
           label="💀  WEAK"
-          disabled={!s.card || s.card.resolved || s.finished}
+          disabled={s.finished}
           onClick={() => resolveCurrent(false)}
         />
       </div>

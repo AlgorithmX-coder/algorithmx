@@ -14,78 +14,153 @@ function getCourseLabel(_age: number, name: string) {
   return `🛡️ Cyber Heroes Academy — Perfect for ${name}!`;
 }
 
+// Slugs (`name`) preserve the original 6 values so saved profiles stay valid;
+// labels are tech-themed. The next 6 are new options with new slugs.
 const AVATAR_COLORS = [
-  { name: "purple", color: "#8b5cf6", label: "Purple" },
-  { name: "blue", color: "#3b82f6", label: "Blue" },
-  { name: "cyan", color: "#06b6d4", label: "Cyan" },
-  { name: "green", color: "#22c55e", label: "Green" },
-  { name: "amber", color: "#f59e0b", label: "Amber" },
-  { name: "pink", color: "#ec4899", label: "Pink" },
+  { name: "purple", color: "#8b5cf6", label: "Phantom Purple" },
+  { name: "blue", color: "#3b82f6", label: "Blazing Blue" },
+  { name: "cyan", color: "#06b6d4", label: "Cyber Cyan" },
+  { name: "green", color: "#22c55e", label: "Hacker Green" },
+  { name: "amber", color: "#f59e0b", label: "Solar Amber" },
+  { name: "pink", color: "#ec4899", label: "Pixel Pink" },
+  { name: "neon-violet", color: "#a855f7", label: "Neon Violet" },
+  { name: "plasma-magenta", color: "#d946ef", label: "Plasma Magenta" },
+  { name: "inferno-red", color: "#ef4444", label: "Inferno Red" },
+  { name: "glitch-gold", color: "#fbbf24", label: "Glitch Gold" },
+  { name: "frost-teal", color: "#14b8a6", label: "Frost Teal" },
+  { name: "laser-lime", color: "#84cc16", label: "Laser Lime" },
 ];
 
 function FloatingOrbs() {
-  // Warm, playful background — gradient glows + sparse stars + drifting
-  // pastel particles. Lives in a fixed layer so it persists across wizard
+  // Pixar-magic background — bright animated gradient blobs, twinkling
+  // stars, drifting cyber-icons, shooting stars and an aurora ribbon at
+  // the bottom. Lives in a fixed layer so it persists across wizard
   // steps without re-mounting (animation never resets between Next clicks).
-  const PARTICLES = Array.from({ length: 22 }).map((_, i) => ({
+  const PARTICLES = Array.from({ length: 32 }).map((_, i) => ({
     key: i,
-    left: (i * 4.7 + (i % 3) * 2) % 100,
+    left: (i * 3.3 + (i % 3) * 2) % 100,
     size: 4 + (i % 5),
-    color: ["#8b5cf6", "#3b82f6", "#f472b6", "#fbbf24", "#22d3ee", "#10b981"][i % 6],
-    delay: (i * 0.9) % 14,
-    duration: 16 + (i % 7) * 2.2,
-    peak: 0.22 + ((i * 11) % 18) / 100,
+    color: ["#a78bfa", "#60a5fa", "#f472b6", "#fde047", "#22d3ee", "#34d399"][i % 6],
+    delay: (i * 0.7) % 14,
+    duration: 14 + (i % 7) * 2.2,
+    peak: 0.32 + ((i * 11) % 22) / 100,
   }));
-  const STARS = Array.from({ length: 36 }).map((_, i) => ({
+  const STARS = Array.from({ length: 56 }).map((_, i) => ({
     key: i,
-    left: (i * 2.9 + (i % 5) * 1.7) % 100,
-    top: (i * 3.3 + (i % 7) * 2.1) % 100,
-    size: 2 + (i % 2),
-    delay: (i * 0.17) % 5,
+    left: (i * 1.9 + (i % 5) * 1.7) % 100,
+    top: (i * 2.3 + (i % 7) * 2.1) % 100,
+    size: 2 + (i % 3),
+    delay: (i * 0.13) % 5,
     dur: 2.2 + (i % 4),
-    peak: 0.25 + ((i * 13) % 30) / 100,
+    peak: 0.35 + ((i * 13) % 35) / 100,
   }));
+  // Shooting stars — fire on a stagger so the sky always has motion.
+  const SHOOTERS = Array.from({ length: 5 }).map((_, i) => ({
+    key: i,
+    delay: i * 4 + (i * 0.7),
+    duration: 1.6 + (i % 3) * 0.4,
+    top: 8 + i * 14,
+    period: 18 + i * 2,
+  }));
+  // Drifting decorative cyber-friendly icons — kept faint so they read as
+  // ambient magic, not foreground UI.
+  const DRIFT_ICONS = [
+    { ch: "🔒", left: 12, top: 18, dur: 24 },
+    { ch: "🛡", left: 78, top: 22, dur: 28 },
+    { ch: "🔑", left: 18, top: 70, dur: 26 },
+    { ch: "⭐", left: 86, top: 64, dur: 30 },
+    { ch: "✨", left: 50, top: 12, dur: 22 },
+    { ch: "✨", left: 8, top: 48, dur: 24 },
+    { ch: "🌙", left: 92, top: 8, dur: 32 },
+  ];
 
   return (
     <div className="fixed inset-0 pointer-events-none overflow-hidden" style={{ zIndex: 0 }}>
-      {/* Big drifting gradient blobs — the "warm stage lighting" layer */}
+      {/* Big animated gradient blobs — brighter + saturated */}
       <motion.div
-        animate={{ x: ["-6%", "6%", "-6%"], y: ["-4%", "4%", "-4%"] }}
-        transition={{ duration: 24, repeat: Infinity, ease: "easeInOut" }}
+        animate={{ x: ["-8%", "8%", "-8%"], y: ["-6%", "6%", "-6%"], scale: [1, 1.08, 1] }}
+        transition={{ duration: 22, repeat: Infinity, ease: "easeInOut" }}
         style={{
           position: "absolute",
           top: "-20%", left: "-15%",
-          width: "70vmax", height: "70vmax",
+          width: "75vmax", height: "75vmax",
           borderRadius: "50%",
-          background: "radial-gradient(circle, rgba(139,92,246,0.28), transparent 65%)",
-          filter: "blur(40px)",
-        }}
-      />
-      <motion.div
-        animate={{ x: ["4%", "-6%", "4%"], y: ["6%", "-4%", "6%"] }}
-        transition={{ duration: 28, repeat: Infinity, ease: "easeInOut" }}
-        style={{
-          position: "absolute",
-          bottom: "-25%", right: "-15%",
-          width: "70vmax", height: "70vmax",
-          borderRadius: "50%",
-          background: "radial-gradient(circle, rgba(59,130,246,0.24), transparent 65%)",
-          filter: "blur(40px)",
-        }}
-      />
-      <motion.div
-        animate={{ opacity: [0.18, 0.3, 0.18] }}
-        transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
-        style={{
-          position: "absolute",
-          top: "40%", left: "50%",
-          transform: "translate(-50%, -50%)",
-          width: "50vmax", height: "50vmax",
-          borderRadius: "50%",
-          background: "radial-gradient(circle, rgba(244,114,182,0.18), transparent 60%)",
+          background: "radial-gradient(circle, rgba(139,92,246,0.45), rgba(139,92,246,0.12) 45%, transparent 70%)",
           filter: "blur(36px)",
         }}
       />
+      <motion.div
+        animate={{ x: ["6%", "-8%", "6%"], y: ["8%", "-6%", "8%"], scale: [1.05, 1, 1.05] }}
+        transition={{ duration: 26, repeat: Infinity, ease: "easeInOut" }}
+        style={{
+          position: "absolute",
+          bottom: "-25%", right: "-15%",
+          width: "75vmax", height: "75vmax",
+          borderRadius: "50%",
+          background: "radial-gradient(circle, rgba(59,130,246,0.4), rgba(59,130,246,0.1) 45%, transparent 70%)",
+          filter: "blur(36px)",
+        }}
+      />
+      <motion.div
+        animate={{ opacity: [0.28, 0.45, 0.28], scale: [1, 1.1, 1] }}
+        transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }}
+        style={{
+          position: "absolute",
+          top: "38%", left: "50%",
+          transform: "translate(-50%, -50%)",
+          width: "55vmax", height: "55vmax",
+          borderRadius: "50%",
+          background: "radial-gradient(circle, rgba(244,114,182,0.32), rgba(244,114,182,0.08) 50%, transparent 70%)",
+          filter: "blur(32px)",
+        }}
+      />
+      <motion.div
+        animate={{ opacity: [0.2, 0.4, 0.2], rotate: [0, 12, 0] }}
+        transition={{ duration: 14, repeat: Infinity, ease: "easeInOut" }}
+        style={{
+          position: "absolute",
+          top: "60%", left: "20%",
+          width: "40vmax", height: "40vmax",
+          borderRadius: "50%",
+          background: "radial-gradient(circle, rgba(34,211,238,0.28), transparent 60%)",
+          filter: "blur(36px)",
+        }}
+      />
+
+      {/* Aurora ribbon at the bottom — slowly hue-shifting wave */}
+      <div
+        aria-hidden
+        style={{
+          position: "absolute",
+          left: "-20%",
+          right: "-20%",
+          bottom: 0,
+          height: "32vh",
+          background:
+            "linear-gradient(180deg, transparent 0%, rgba(139,92,246,0.18) 35%, rgba(244,114,182,0.16) 65%, rgba(34,211,238,0.20) 100%)",
+          filter: "blur(28px)",
+          animation: "onbAuroraDrift 18s ease-in-out infinite",
+          mixBlendMode: "screen",
+        }}
+      />
+
+      {/* Drifting decorative cyber icons (very low opacity) */}
+      {DRIFT_ICONS.map((ic, i) => (
+        <span
+          key={`icon-${i}`}
+          style={{
+            position: "absolute",
+            left: `${ic.left}%`,
+            top: `${ic.top}%`,
+            fontSize: 28 + (i % 3) * 6,
+            opacity: 0.18,
+            filter: "drop-shadow(0 0 8px rgba(255,255,255,0.4))",
+            animation: `onbIconDrift ${ic.dur}s ease-in-out ${i * 0.6}s infinite`,
+          }}
+        >
+          {ic.ch}
+        </span>
+      ))}
 
       {/* Twinkling stars */}
       {STARS.map((s) => (
@@ -99,10 +174,29 @@ function FloatingOrbs() {
             height: s.size,
             borderRadius: "50%",
             background: "#fff",
-            boxShadow: "0 0 6px rgba(255,255,255,0.8)",
+            boxShadow: "0 0 7px rgba(255,255,255,0.9)",
             animation: `onbStarTwinkle ${s.dur}s ease-in-out ${s.delay}s infinite`,
             ["--onb-star-peak" as string]: `${s.peak}`,
           } as React.CSSProperties}
+        />
+      ))}
+
+      {/* Shooting stars — diagonal streaks across the sky */}
+      {SHOOTERS.map((sh) => (
+        <span
+          key={`shooter-${sh.key}`}
+          style={{
+            position: "absolute",
+            left: 0,
+            top: `${sh.top}%`,
+            width: 140,
+            height: 2,
+            background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.9), rgba(34,211,238,0.6))",
+            filter: "blur(0.5px) drop-shadow(0 0 6px rgba(255,255,255,0.7))",
+            animation: `onbShootingStar ${sh.period}s ease-in ${sh.delay}s infinite`,
+            transformOrigin: "left center",
+            opacity: 0,
+          }}
         />
       ))}
 
@@ -118,7 +212,7 @@ function FloatingOrbs() {
             height: p.size,
             borderRadius: "50%",
             background: p.color,
-            boxShadow: `0 0 10px ${p.color}`,
+            boxShadow: `0 0 12px ${p.color}`,
             animation: `onbParticleRise ${p.duration}s linear ${p.delay}s infinite`,
             ["--onb-particle-peak" as string]: `${p.peak}`,
           } as React.CSSProperties}
@@ -127,14 +221,31 @@ function FloatingOrbs() {
 
       <style>{`
         @keyframes onbStarTwinkle {
-          0%, 100% { opacity: 0.15; }
-          50% { opacity: var(--onb-star-peak, 0.5); }
+          0%, 100% { opacity: 0.2; }
+          50% { opacity: var(--onb-star-peak, 0.6); }
         }
         @keyframes onbParticleRise {
           0% { transform: translateY(0); opacity: 0; }
-          12% { opacity: var(--onb-particle-peak, 0.3); }
-          88% { opacity: var(--onb-particle-peak, 0.3); }
+          12% { opacity: var(--onb-particle-peak, 0.4); }
+          88% { opacity: var(--onb-particle-peak, 0.4); }
           100% { transform: translateY(-110vh); opacity: 0; }
+        }
+        @keyframes onbShootingStar {
+          0% { transform: translate(0, 0) rotate(18deg); opacity: 0; }
+          5% { opacity: 1; }
+          12% { opacity: 1; }
+          18% { transform: translate(120vw, 24vh) rotate(18deg); opacity: 0; }
+          100% { transform: translate(120vw, 24vh) rotate(18deg); opacity: 0; }
+        }
+        @keyframes onbAuroraDrift {
+          0%, 100% { transform: translateX(-3%) scaleY(1); }
+          50% { transform: translateX(3%) scaleY(1.08); }
+        }
+        @keyframes onbIconDrift {
+          0%, 100% { transform: translate(0, 0) rotate(0deg); }
+          25% { transform: translate(8px, -10px) rotate(5deg); }
+          50% { transform: translate(-6px, -4px) rotate(-3deg); }
+          75% { transform: translate(4px, 8px) rotate(2deg); }
         }
       `}</style>
     </div>
