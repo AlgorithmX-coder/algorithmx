@@ -123,6 +123,16 @@ export default function SpamBlaster({
     fragments: [] as Fragment[],
     floaters: [] as Floater[],
     clues: [] as ClueBubble[],
+    bullets: [] as {
+      id: number;
+      sx: number; sy: number;
+      tx: number; ty: number;
+      bornAt: number;
+      duration: number;
+      colour: string;
+      kind: "phishing" | "safe";
+    }[],
+    bulletId: 0,
     fragmentId: 0,
     floaterId: 0,
     clueId: 0,
@@ -169,11 +179,27 @@ export default function SpamBlaster({
       );
     if (!hit) return;
 
-    if (hit.isPhishing) {
-      zapPhishing(hit);
-    } else {
-      nudgeSafe(hit);
-    }
+    // Fire a visible laser bullet from the monitor (the user's "device")
+    // up at the email. The actual zap/nudge logic runs after the bullet
+    // travels for ~140ms so the visual feedback feels causal.
+    const now = performance.now();
+    const phishing = hit.isPhishing;
+    state.current.bullets.push({
+      id: ++state.current.bulletId,
+      sx: MONITOR_X,
+      sy: MONITOR_Y - MONITOR_H / 2,
+      tx: hit.x,
+      ty: hit.y,
+      bornAt: now,
+      duration: 140,
+      colour: phishing ? "#22d3ee" : "#fde047",
+      kind: phishing ? "phishing" : "safe",
+    });
+    playSound("click");
+    window.setTimeout(() => {
+      if (phishing) zapPhishing(hit);
+      else nudgeSafe(hit);
+    }, 140);
   };
 
   const spawnFragments = (em: LiveEmail, colour: string, count: number) => {
@@ -279,6 +305,8 @@ export default function SpamBlaster({
       fragments: [],
       floaters: [],
       clues: [],
+      bullets: [],
+      bulletId: 0,
       fragmentId: 0,
       floaterId: 0,
       clueId: 0,
@@ -615,9 +643,10 @@ export default function SpamBlaster({
         }))
         .filter((f) => f.life > 0);
 
-      // floaters + clues
+      // floaters + clues + bullets
       s.floaters = s.floaters.filter((f) => now - f.bornAt < f.duration);
       s.clues = s.clues.filter((c) => now - c.bornAt < 1500);
+      s.bullets = s.bullets.filter((b) => now - b.bornAt < b.duration);
 
       // ── DRAW ──
       ctx.clearRect(0, 0, CANVAS_W, CANVAS_H);
@@ -704,6 +733,49 @@ export default function SpamBlaster({
         ctx.rotate(f.rot);
         ctx.fillStyle = f.colour;
         ctx.fillRect(-f.size / 2, -f.size / 2, f.size, f.size);
+        ctx.restore();
+      }
+      ctx.globalAlpha = 1;
+
+      // bullets — laser/zap projectiles fired from the monitor toward
+      // the email the user clicked. The whole shot animates over its
+      // `duration`, drawing both the in-flight head and a fading tail
+      // along the path.
+      for (const b of s.bullets) {
+        const t = Math.min(1, (now - b.bornAt) / b.duration);
+        const hx = b.sx + (b.tx - b.sx) * t;
+        const hy = b.sy + (b.ty - b.sy) * t;
+        // Trail
+        ctx.save();
+        ctx.strokeStyle = b.colour;
+        ctx.lineCap = "round";
+        ctx.shadowColor = b.colour;
+        ctx.shadowBlur = 16;
+        ctx.lineWidth = 4;
+        ctx.globalAlpha = 0.35;
+        ctx.beginPath();
+        ctx.moveTo(b.sx, b.sy);
+        ctx.lineTo(hx, hy);
+        ctx.stroke();
+        // Bright core
+        ctx.lineWidth = 2;
+        ctx.globalAlpha = 0.95;
+        const tailX = b.sx + (b.tx - b.sx) * Math.max(0, t - 0.35);
+        const tailY = b.sy + (b.ty - b.sy) * Math.max(0, t - 0.35);
+        ctx.beginPath();
+        ctx.moveTo(tailX, tailY);
+        ctx.lineTo(hx, hy);
+        ctx.stroke();
+        // Glowing head
+        ctx.fillStyle = "#ffffff";
+        ctx.shadowBlur = 24;
+        ctx.beginPath();
+        ctx.arc(hx, hy, 5, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = b.colour;
+        ctx.beginPath();
+        ctx.arc(hx, hy, 3.2, 0, Math.PI * 2);
+        ctx.fill();
         ctx.restore();
       }
       ctx.globalAlpha = 1;

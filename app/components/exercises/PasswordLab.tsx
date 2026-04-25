@@ -300,7 +300,9 @@ export default function PasswordLab({
         borderRadius: 24,
         overflow: "hidden",
         background:
-          "radial-gradient(circle at 50% 40%, rgba(59,130,246,0.15), transparent 55%), linear-gradient(180deg, #0b1225 0%, #070a18 100%)",
+          "radial-gradient(circle at 50% 75%, rgba(167,139,250,0.18), transparent 50%)," +
+          "radial-gradient(circle at 50% 30%, rgba(59,130,246,0.18), transparent 55%)," +
+          "linear-gradient(180deg, #0b1225 0%, #070a18 100%)",
         border: "1px solid rgba(255,255,255,0.08)",
         padding: "18px 16px 28px",
         color: "#e2e8f0",
@@ -308,6 +310,33 @@ export default function PasswordLab({
         touchAction: "none",
       }}
     >
+      {/* Magical lab backdrop — drifting alchemy runes & floor lights */}
+      <style>{`
+        @keyframes plRuneDrift { 0%,100% { transform: translateY(0) rotate(0deg); opacity: 0.18; } 50% { transform: translateY(-14px) rotate(8deg); opacity: 0.45; } }
+        @keyframes plSteam { 0% { transform: translate(-50%, 0) scale(0.6); opacity: 0; } 18% { opacity: 0.55; } 100% { transform: translate(calc(-50% + var(--sx, 0px)), -130px) scale(2.4); opacity: 0; } }
+        @keyframes plFireFlicker { 0%,100% { transform: translateX(-50%) scaleY(1) scaleX(1); opacity: 0.85; } 50% { transform: translateX(-50%) scaleY(1.18) scaleX(0.9); opacity: 1; } }
+        @keyframes plSpark { 0% { transform: translateY(0); opacity: 0; } 18% { opacity: 1; } 100% { transform: translateY(-160px) translateX(var(--sx, 12px)); opacity: 0; } }
+        @keyframes plRimGlow { 0%,100% { box-shadow: 0 0 18px rgba(167,139,250,0.55), 0 0 40px rgba(34,211,238,0.35); } 50% { box-shadow: 0 0 30px rgba(167,139,250,0.85), 0 0 60px rgba(244,114,182,0.45); } }
+      `}</style>
+      <div aria-hidden style={{ position: "absolute", inset: 0, pointerEvents: "none", overflow: "hidden", zIndex: 0 }}>
+        {["✦", "🜨", "🜂", "✧", "⚗", "☉", "✦"].map((r, i) => (
+          <span
+            key={`r-${i}`}
+            style={{
+              position: "absolute",
+              left: `${(i * 14 + 6) % 95}%`,
+              top: `${(i * 21 + 8) % 80}%`,
+              fontSize: 22 + (i % 3) * 8,
+              color: i % 2 === 0 ? "#a78bfa" : "#22d3ee",
+              opacity: 0.22,
+              filter: `drop-shadow(0 0 8px ${i % 2 === 0 ? "#a78bfa" : "#22d3ee"})`,
+              animation: `plRuneDrift ${10 + (i % 4) * 3}s ease-in-out ${i * 1.4}s infinite`,
+            }}
+          >
+            {r}
+          </span>
+        ))}
+      </div>
       <div
         style={{
           textAlign: "center",
@@ -447,6 +476,33 @@ export default function PasswordLab({
           ))}
         </div>
 
+        {/* Steam wisps rising above the cauldron */}
+        {Array.from({ length: 6 }).map((_, i) => {
+          const sx = ((i % 3) - 1) * 24;
+          const dur = 3.4 + (i % 3) * 0.8;
+          const delay = i * 0.55;
+          return (
+            <span
+              key={`steam-${i}`}
+              aria-hidden
+              style={{
+                position: "absolute",
+                left: `calc(50% + ${(i * 17) % 80 - 40}px)`,
+                top: 18,
+                width: 28,
+                height: 28,
+                borderRadius: "50%",
+                background:
+                  "radial-gradient(circle, rgba(255,255,255,0.55), rgba(255,255,255,0))",
+                filter: "blur(3px)",
+                animation: `plSteam ${dur}s ease-in-out ${delay}s infinite`,
+                ["--sx" as string]: `${sx}px`,
+                pointerEvents: "none",
+              } as React.CSSProperties}
+            />
+          );
+        })}
+
         {/* Cauldron body */}
         <div
           ref={cauldronRef}
@@ -463,6 +519,7 @@ export default function PasswordLab({
               "inset 0 6px 18px rgba(255,255,255,0.08), inset 0 -20px 30px rgba(0,0,0,0.8), 0 10px 40px rgba(0,0,0,0.6)",
             border: "3px solid #475569",
             overflow: "hidden",
+            animation: "plRimGlow 3s ease-in-out infinite",
           }}
         >
           {/* Liquid */}

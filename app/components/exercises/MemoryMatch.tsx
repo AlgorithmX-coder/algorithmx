@@ -477,6 +477,15 @@ export default function MemoryMatch({
                 : shakeIdxs.includes(idx)
                   ? "mmShake 0.35s ease-in-out 2"
                   : undefined;
+          // Per-card deterministic jitter so the grid reads as a muddled
+          // pile of cards instead of a perfect 4×3 grid. Small rotation +
+          // tiny x/y offset keyed off the card id so flipping doesn't
+          // reshuffle the jitter mid-game.
+          const jSeed = (c.id.charCodeAt(0) + c.id.charCodeAt(c.id.length - 1) + idx * 37) % 360;
+          const jRot = ((jSeed % 11) - 5) * 1.2; // -6..+6 deg
+          const jX = ((jSeed % 7) - 3) * 1.6; // -4.8..+4.8 px
+          const jY = (((jSeed >> 3) % 7) - 3) * 1.6; // -4.8..+4.8 px
+          const baseTransform = `translate(${jX}px, ${jY}px) rotate(${jRot}deg)`;
           return (
             <div
               key={c.id}
@@ -488,8 +497,11 @@ export default function MemoryMatch({
                 position: "relative",
                 transformStyle: "preserve-3d",
                 transition: "transform 0.45s cubic-bezier(0.4, 1.2, 0.4, 1)",
-                transform: showFace ? "rotateY(180deg)" : "rotateY(0)",
+                transform: showFace
+                  ? `${baseTransform} rotateY(180deg)`
+                  : baseTransform,
                 animation: extraAnim,
+                zIndex: c.matched ? 1 : 2,
               }}
             >
               {/* Back (face-down) — holographic chip with rotating ring,

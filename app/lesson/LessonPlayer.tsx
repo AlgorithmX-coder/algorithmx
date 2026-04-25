@@ -1609,8 +1609,61 @@ const SpeechBubble = ({ character, message, side = "left", delayMs = 500 }: { ch
 
 /* ───────────────────────── MAIN COMPONENT ─────────────────── */
 
+// Save/resume helpers ------------------------------------------------------
+// Persist lesson progress in localStorage so a child can quit mid-lesson
+// (close the tab, accidentally hit back, etc.) and resume from the same
+// screen with their coins/XP/scores intact. We deliberately use
+// localStorage rather than a DB write because:
+//   1. It works on every page change without an API round-trip.
+//   2. Kids share one device per lesson; cross-device sync isn't needed.
+//   3. No prisma migration required.
+// Keyed per week so future weeks have independent saves.
+type SavedLessonState = {
+  screen: number;
+  coins: number;
+  lessonXp: number;
+  q1Score: number;
+  q2Score: number;
+  q3Score: number;
+  swipeScore: number;
+  phishScore: number;
+  wydScore: number;
+  bossScore: number;
+  bossDone: boolean;
+  achievePhase: number;
+  revealedRules: number[];
+  answeredRules: number[];
+  ruleAnswers: Record<number, number | null | undefined>;
+  lockedItems: string[];
+  savedAt: number;
+};
+const SAVE_KEY = `algorithmx:lesson:week-${CURRENT_WEEK}:state`;
+function loadSavedLesson(): SavedLessonState | null {
+  if (typeof window === "undefined") return null;
+  try {
+    const raw = window.localStorage.getItem(SAVE_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw) as SavedLessonState;
+    if (typeof parsed.screen !== "number") return null;
+    return parsed;
+  } catch {
+    return null;
+  }
+}
+function clearSavedLesson() {
+  if (typeof window === "undefined") return;
+  try { window.localStorage.removeItem(SAVE_KEY); } catch {}
+}
+
 export default function LessonPlayer({ userName, moduleId, childName }: { userName: string; moduleId: string; childName: string }) {
   /* ---------- state ---------- */
+  // We only consult the saved state ONCE on mount. The "Save & Exit"
+  // button writes to localStorage and navigates away; on next mount the
+  // screen below sees the saved state and offers a resume prompt.
+  const [savedState] = useState<SavedLessonState | null>(() => loadSavedLesson());
+  const [showResumePrompt, setShowResumePrompt] = useState(
+    () => !!savedState && savedState.screen > 0 && savedState.screen < 18
+  );
   const [screen, setScreen] = useState(0);
 
   // Intro cutscene disabled — lesson lands directly on screen 0. The state
@@ -2451,6 +2504,77 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
     }).catch(() => { /* ignore */ });
   }, [screen, moduleId, playSound]);
 
+  // Autosave the lesson state to localStorage on every change. We
+  // serialise Set/object state to JSON-friendly arrays. Once the player
+  // reaches the certificate/outro screen (17/18) we wipe the save so a
+  // fresh visit starts clean. While we're still mid-lesson, every step
+  // gets persisted so closing the tab loses no progress.
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    if (showResumePrompt) return; // don't overwrite the saved state until user decides
+    if (screen >= 17) {
+      clearSavedLesson();
+      return;
+    }
+    const data: SavedLessonState = {
+      screen,
+      coins,
+      lessonXp,
+      q1Score,
+      q2Score,
+      q3Score,
+      swipeScore,
+      phishScore,
+      wydScore,
+      bossScore,
+      bossDone,
+      achievePhase,
+      revealedRules: Array.from(revealedRules),
+      answeredRules: Array.from(answeredRules),
+      ruleAnswers,
+      lockedItems: Array.from(lockedItems),
+      savedAt: Date.now(),
+    };
+    try { window.localStorage.setItem(SAVE_KEY, JSON.stringify(data)); } catch { /* quota — ignore */ }
+  }, [
+    showResumePrompt,
+    screen, coins, lessonXp,
+    q1Score, q2Score, q3Score, swipeScore, phishScore, wydScore, bossScore,
+    bossDone, achievePhase,
+    revealedRules, answeredRules, ruleAnswers, lockedItems,
+  ]);
+
+  const resumeFromSaved = useCallback(() => {
+    if (!savedState) return;
+    setScreen(savedState.screen);
+    setCoins(savedState.coins);
+    setLessonXp(savedState.lessonXp);
+    setQ1Score(savedState.q1Score);
+    setQ2Score(savedState.q2Score);
+    setQ3Score(savedState.q3Score);
+    setSwipeScore(savedState.swipeScore);
+    setPhishScore(savedState.phishScore);
+    setWydScore(savedState.wydScore);
+    setBossScore(savedState.bossScore);
+    setBossDone(savedState.bossDone);
+    setAchievePhase(savedState.achievePhase);
+    setRevealedRules(new Set(savedState.revealedRules));
+    setAnsweredRules(new Set(savedState.answeredRules));
+    setRuleAnswers(savedState.ruleAnswers as Record<number, number | null>);
+    setLockedItems(new Set(savedState.lockedItems));
+    setShowResumePrompt(false);
+  }, [savedState]);
+
+  const startFreshFromSaved = useCallback(() => {
+    clearSavedLesson();
+    setShowResumePrompt(false);
+  }, []);
+
+  const saveAndExit = useCallback(() => {
+    // The autosave already wrote the latest state. Just navigate home.
+    if (typeof window !== "undefined") window.location.href = "/dashboard";
+  }, []);
+
   /* ---------- arena boss battle handler ---------- */
   const randomRaccoonPos = useCallback(() => ({
     left: 15 + Math.random() * 70,
@@ -3134,6 +3258,8 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
           <style>{`
             @keyframes grCoinRise { 0% { transform: translateY(0) rotate(0deg); opacity: 0; } 12% { opacity: 0.85; } 88% { opacity: 0.85; } 100% { transform: translateY(-100vh) rotate(720deg); opacity: 0; } }
             @keyframes grTwinkle { 0%,100% { opacity: 0.25; transform: scale(0.8); } 50% { opacity: 1; transform: scale(1.3); } }
+            @keyframes grCoinShine { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+            @keyframes grSparkle { 0%,100% { opacity: 0.3; transform: scale(0.6); } 50% { opacity: 1; transform: scale(1.4); } }
             @keyframes grBeamSweep { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
             @keyframes grRuneDrift { 0%,100% { transform: translate(0,0) rotate(0deg); } 50% { transform: translate(18px, -22px) rotate(8deg); } }
             @keyframes grVaultPulse { 0%,100% { opacity: 0.18; } 50% { opacity: 0.4; } }
@@ -3258,25 +3384,28 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                   <div key={i} style={{ gridColumn: isRevealed ? "1 / -1" : "span 1" }}>
                     <motion.div
                       style={{
+                        position: "relative",
                         borderRadius: 18,
                         padding: isRevealed ? 18 : 14,
-                        minHeight: isRevealed ? 120 : 140,
+                        minHeight: isRevealed ? 120 : 150,
                         background: !isRevealed
-                          ? "linear-gradient(135deg, #b45309, #f59e0b, #fbbf24 55%, #b45309)"
+                          ? "radial-gradient(circle at 30% 25%, #fef3c7 0%, #fbbf24 22%, #f59e0b 55%, #92400e 100%)"
                           : "rgba(255,255,255,0.04)",
                         backdropFilter: isRevealed ? "blur(12px)" : undefined,
-                        border: !isRevealed ? "2px solid rgba(245,158,11,0.5)"
+                        border: !isRevealed ? "3px solid #fde68a"
                           : isDone ? "2px solid #f59e0b"
                           : "1px solid rgba(255,255,255,0.1)",
                         borderLeft: isRevealed ? (isDone ? "4px solid #f59e0b" : "4px solid rgba(245,158,11,0.3)") : undefined,
-                        position: "relative", overflow: "hidden",
+                        overflow: "hidden",
                         cursor: !isRevealed ? "pointer" : "default",
-                        boxShadow: !isRevealed ? "0 8px 18px rgba(180,83,9,0.35), inset 0 2px 6px rgba(255,255,255,0.25)" : undefined,
+                        boxShadow: !isRevealed
+                          ? "0 16px 32px -10px rgba(180,83,9,0.7), 0 0 24px rgba(253,224,71,0.45), inset 0 2px 8px rgba(255,255,255,0.55), inset 0 -8px 14px rgba(120,53,15,0.4)"
+                          : undefined,
                       }}
-                      animate={!isRevealed ? (isFlipping ? { rotateY: [0, 90, 0] } : { rotate: [0, -1.5, 0, 1.5, 0] }) : {}}
-                      transition={!isRevealed ? (isFlipping ? { duration: 0.6 } : { duration: 3, repeat: Infinity, ease: "easeInOut", delay: i * 0.15 }) : { duration: 0.3 }}
-                      whileHover={!isRevealed ? { scale: 1.04, y: -2 } : {}}
-                      whileTap={!isRevealed ? { scale: 0.96 } : {}}
+                      animate={!isRevealed ? (isFlipping ? { rotateY: [0, 90, 0] } : { rotate: [0, -2, 0, 2, 0], y: [0, -3, 0] }) : {}}
+                      transition={!isRevealed ? (isFlipping ? { duration: 0.6 } : { duration: 3.4, repeat: Infinity, ease: "easeInOut", delay: i * 0.18 }) : { duration: 0.3 }}
+                      whileHover={!isRevealed ? { scale: 1.06, y: -4, rotate: 0 } : {}}
+                      whileTap={!isRevealed ? { scale: 0.94 } : {}}
                       onClick={() => {
                         if (isRevealed || isFlipping) return;
                         setFlippingRule(i);
@@ -3287,15 +3416,73 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                       }}
                     >
                       {!isRevealed ? (
-                        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", minHeight: 110, gap: 6 }}>
-                          <div style={{ fontSize: 44, lineHeight: 1, filter: "drop-shadow(0 2px 4px rgba(0,0,0,0.3))" }}>🪙</div>
-                          <span style={{ fontSize: 13, fontWeight: 900, color: "#1a1033", letterSpacing: 0.5, textAlign: "center" }}>
-                            RULE {i + 1}
-                          </span>
-                          <span style={{ fontSize: 11, fontWeight: 700, color: "#4a2a08", textAlign: "center" }}>
-                            Tap to unlock ✨
-                          </span>
-                        </div>
+                        <>
+                          {/* Rotating shine inside the coin */}
+                          <span aria-hidden style={{
+                            position: "absolute", inset: 0, borderRadius: 16,
+                            background: "conic-gradient(from 0deg, transparent 0deg, rgba(255,255,255,0.55) 30deg, transparent 80deg, rgba(255,255,255,0) 360deg)",
+                            mixBlendMode: "screen",
+                            animation: `grCoinShine ${4 + (i % 3)}s linear ${i * 0.4}s infinite`,
+                            pointerEvents: "none",
+                          }} />
+                          {/* Sparkle dots */}
+                          {[
+                            { top: 8, left: 14, delay: 0 },
+                            { top: 26, right: 10, delay: 0.6 },
+                            { bottom: 28, left: 18, delay: 1.2 },
+                            { bottom: 12, right: 22, delay: 1.8 },
+                          ].map((s, k) => (
+                            <span key={k} aria-hidden style={{
+                              position: "absolute",
+                              ...s,
+                              fontSize: 10,
+                              color: "#fff",
+                              filter: "drop-shadow(0 0 4px #fde047)",
+                              animation: `grSparkle 1.6s ease-in-out ${s.delay}s infinite`,
+                              pointerEvents: "none",
+                            }}>✦</span>
+                          ))}
+                          <div style={{
+                            position: "relative", zIndex: 1,
+                            display: "flex", flexDirection: "column",
+                            alignItems: "center", justifyContent: "center",
+                            minHeight: 116, gap: 4,
+                          }}>
+                            {/* Big embossed Roman numeral medal-style */}
+                            <div style={{
+                              width: 64, height: 64, borderRadius: "50%",
+                              background: "radial-gradient(circle at 35% 30%, #fef3c7, #f59e0b 60%, #92400e)",
+                              border: "2px solid #fde68a",
+                              boxShadow: "inset 0 2px 6px rgba(255,255,255,0.6), inset 0 -4px 10px rgba(120,53,15,0.6), 0 6px 14px rgba(120,53,15,0.5)",
+                              display: "flex", alignItems: "center", justifyContent: "center",
+                              fontFamily: "'Space Grotesk', serif",
+                              fontWeight: 900,
+                              fontSize: 24,
+                              color: "#7c2d12",
+                              textShadow: "0 1px 1px rgba(255,255,255,0.7)",
+                              marginBottom: 4,
+                            }}>
+                              {["I", "II", "III", "IV", "V"][i] ?? `${i + 1}`}
+                            </div>
+                            <span style={{
+                              fontSize: 12, fontWeight: 900,
+                              color: "#451a03",
+                              letterSpacing: 2,
+                              textTransform: "uppercase",
+                              fontFamily: "ui-monospace, monospace",
+                            }}>
+                              GOLDEN RULE
+                            </span>
+                            <span style={{
+                              fontSize: 11, fontWeight: 700,
+                              color: "#7c2d12",
+                              textAlign: "center",
+                              opacity: 0.9,
+                            }}>
+                              Tap to claim ✨
+                            </span>
+                          </div>
+                        </>
                       ) : (
                         <>
                           <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
@@ -4521,6 +4708,122 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
             totalScreens={18}
             xpEarned={lessonXp}
           />
+
+          {/* Save & Exit button — kids can quit and resume later. The
+              autosave effect persists every state change to localStorage,
+              so this button just navigates home; the resume prompt
+              picks them back up next mount. */}
+          {screen > 0 && screen < 17 && (
+            <button
+              type="button"
+              onClick={saveAndExit}
+              title="Save your progress and come back later"
+              style={{
+                position: "fixed",
+                top: 16,
+                right: 16,
+                zIndex: 100,
+                background: "linear-gradient(135deg, rgba(34,211,238,0.18), rgba(167,139,250,0.18))",
+                border: "1px solid rgba(167,139,250,0.55)",
+                color: "#e0e7ff",
+                fontFamily: "ui-monospace, 'JetBrains Mono', Menlo, monospace",
+                fontWeight: 800,
+                fontSize: 11,
+                letterSpacing: 2,
+                textTransform: "uppercase",
+                padding: "8px 14px",
+                borderRadius: 999,
+                cursor: "pointer",
+                backdropFilter: "blur(8px)",
+                boxShadow: "0 8px 18px rgba(167,139,250,0.25)",
+              }}
+              onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.boxShadow = "0 8px 24px rgba(167,139,250,0.55)"; }}
+              onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.boxShadow = "0 8px 18px rgba(167,139,250,0.25)"; }}
+            >
+              💾 Save &amp; Exit
+            </button>
+          )}
+
+          {/* Resume prompt — appears once on mount if a saved state for
+              this week exists. Offers "Resume" or "Start fresh". */}
+          {showResumePrompt && savedState && (
+            <div
+              style={{
+                position: "fixed",
+                inset: 0,
+                background: "rgba(5,8,18,0.85)",
+                backdropFilter: "blur(8px)",
+                zIndex: 200,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                padding: 24,
+              }}
+            >
+              <div style={{
+                width: "100%", maxWidth: 460,
+                background: "linear-gradient(160deg, rgba(20,30,55,0.95) 0%, rgba(15,40,30,0.92) 100%)",
+                border: "1px solid rgba(34,211,238,0.45)",
+                borderRadius: 22,
+                padding: "30px 26px",
+                textAlign: "center",
+                boxShadow: "0 30px 60px -20px rgba(34,211,238,0.5)",
+              }}>
+                <div style={{ fontSize: 44, marginBottom: 8 }}>💾</div>
+                <h2 style={{
+                  color: "#fff", fontSize: 24, fontWeight: 900, margin: "0 0 6px",
+                  background: "linear-gradient(135deg, #22d3ee, #a78bfa)",
+                  WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent",
+                }}>
+                  Welcome back!
+                </h2>
+                <p style={{ color: "#cbd5e1", fontSize: 14, lineHeight: 1.5, margin: "0 0 18px" }}>
+                  You were in the middle of <strong style={{ color: "#fff" }}>Week {CURRENT_WEEK}</strong>.
+                  Pick up where you left off, or start the week again from the beginning?
+                </p>
+                <div style={{
+                  display: "flex", gap: 10, justifyContent: "center",
+                  fontFamily: "ui-monospace, monospace", fontSize: 11,
+                  color: "#94a3b8", letterSpacing: 1, marginBottom: 18,
+                  flexWrap: "wrap",
+                }}>
+                  <span>SCREEN {savedState.screen + 1} / 18</span>
+                  <span>·</span>
+                  <span>{savedState.coins} 🪙</span>
+                  <span>·</span>
+                  <span>{savedState.lessonXp} XP</span>
+                </div>
+                <div style={{ display: "flex", gap: 10, justifyContent: "center", flexWrap: "wrap" }}>
+                  <button
+                    type="button"
+                    onClick={resumeFromSaved}
+                    style={{
+                      background: "linear-gradient(135deg, #f97316, #f59e0b)",
+                      color: "#fff", fontWeight: 900, fontSize: 15,
+                      borderRadius: 14, padding: "12px 28px",
+                      border: "none", cursor: "pointer",
+                      boxShadow: "0 8px 20px rgba(249,115,22,0.4)",
+                    }}
+                  >
+                    Resume →
+                  </button>
+                  <button
+                    type="button"
+                    onClick={startFreshFromSaved}
+                    style={{
+                      background: "transparent",
+                      color: "#cbd5e1", fontWeight: 700, fontSize: 14,
+                      borderRadius: 14, padding: "12px 22px",
+                      border: "1px solid rgba(255,255,255,0.25)",
+                      cursor: "pointer",
+                    }}
+                  >
+                    Start fresh
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
 
           <CharacterGuide
             character="adam"
