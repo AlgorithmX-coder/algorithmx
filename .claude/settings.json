@@ -9,7 +9,8 @@
       "Bash(echo \"Exit: $?\")",
       "Bash(git ls-tree *)",
       "Bash(grep -n \"const currentScreen\\\\|screens\\\\[screen\\\\]\\\\|renderScreen\\\\|\\\\\\(\\(\\) => {\\\\s*$\\\\|renderCase\\\\|CASE 15\\\\|bossDone\\\\|ScreenTransition\" app/lesson/LessonPlayer.tsx)",
-      "Bash(npm test *)"
+      "Bash(npm test *)",
+      "Bash(taskkill /F /IM node.exe)"
     ]
   }
 }
