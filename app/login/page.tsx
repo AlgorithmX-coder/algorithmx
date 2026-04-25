@@ -325,13 +325,6 @@ export default function LoginPage() {
             <span style={{ color: "#10b981" }}>$</span> ax_login --auth<span style={{ marginLeft: 6, animation: "loginCursorBlink 1s steps(1) infinite" }}>▮</span>
           </div>
 
-          {/* Stats */}
-          <p className="text-gray-400 text-sm mt-5 text-center">
-            4 Courses · Ages 6–18+ · 100% Interactive
-          </p>
-          <p className="text-gray-500 text-xs mt-3 text-center">
-            Trusted by families across the UK
-          </p>
         </motion.div>
 
         <style>{`
