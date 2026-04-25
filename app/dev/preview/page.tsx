@@ -34,6 +34,10 @@ const VictoryScene = dynamic(
   () => import("@/app/components/game/VictoryScene"),
   { ssr: false }
 );
+const OutroScene = dynamic(
+  () => import("@/app/components/game/OutroScene"),
+  { ssr: false }
+);
 
 /* ───────────────────────── MOCK DATA ───────────────────────── */
 
@@ -123,7 +127,20 @@ const CASES: CaseEntry[] = [
       />
     ),
   },
-  { id: 18, name: "Outro Video", status: "todo" },
+  {
+    id: 18,
+    name: "Outro Video",
+    status: "redesigned",
+    render: ({ onAccept }) => (
+      <OutroScene
+        childName="Asad"
+        totalCoins={142}
+        nextWeekTitle="Private Info: Guard Your Secrets"
+        onBackToDashboard={onAccept}
+        onPlayAgain={() => alert("Play again (preview)")}
+      />
+    ),
+  },
 ];
 
 /* ───────────────────────── PAGE ───────────────────────── */

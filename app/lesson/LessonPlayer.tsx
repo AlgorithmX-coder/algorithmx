@@ -46,6 +46,22 @@ const MissionBriefScene = dynamic(
   () => import("@/app/components/game/MissionBriefScene"),
   { ssr: false }
 );
+const WelcomeScene = dynamic(
+  () => import("@/app/components/game/WelcomeScene"),
+  { ssr: false }
+);
+const VictoryScene = dynamic(
+  () => import("@/app/components/game/VictoryScene"),
+  { ssr: false }
+);
+const GraduationScene = dynamic(
+  () => import("@/app/components/game/GraduationScene"),
+  { ssr: false }
+);
+const OutroScene = dynamic(
+  () => import("@/app/components/game/OutroScene"),
+  { ssr: false }
+);
 import VaultLock from "@/app/components/exercises/VaultLock";
 import InboxSimulator from "@/app/components/exercises/InboxSimulator";
 import SortingStation from "@/app/components/exercises/SortingStation";
@@ -2778,33 +2794,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                 )}
               </>
             ) : (
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6 }}
-              >
-                {card(
-                  <>
-                    <img
-                      src="/characters/adam-layla-hacked.png"
-                      alt="Adam and Layla hacked"
-                      style={{
-                        maxWidth: "90%",
-                        width: "100%",
-                        height: "auto",
-                        maxHeight: "50vh",
-                        margin: "0 auto 20px",
-                        display: "block",
-                        borderRadius: 20,
-                      }}
-                    />
-                    <h2 data-split style={{ color: "#fff", fontSize: 36, margin: "0 0 12px", textShadow: "0 0 24px rgba(239,68,68,0.5)" }}>Oh no! Adam and Layla got hacked by the Raccoon! 🦝</h2>
-                    <p style={{ color: "#d1d5db", marginBottom: 20, fontSize: 16 }}>They need YOUR help to learn about password safety!</p>
-                    {btn("I'll help them! Let's go! 🚀", () => navigate(1))}
-                  </>,
-                  { maxWidth: 800, margin: "0 auto", padding: 40 }
-                )}
-              </motion.div>
+              <WelcomeScene onContinue={() => navigate(1)} />
             )}
           </div>
           </FullScene>
@@ -4032,481 +4022,55 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
       }
 
       /* ──── CASE 16: ADAM AND LAYLA ARE SAFE ──── */
-      case 16: {
-        const achieveCoins = [25, 30, 25, 0, 25, 0, 0, 0];
+      case 16:
         return (
-          <FullScene bg="linear-gradient(180deg, #1a1508 0%, #0a0a1a 100%)" glow="radial-gradient(circle, rgba(245,158,11,0.3), transparent)">
-          <style>{`
-            @keyframes ydiHaloSpin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-            @keyframes ydiCoinRise { 0% { transform: translateY(0) rotate(0deg); opacity: 0; } 12% { opacity: 1; } 88% { opacity: 1; } 100% { transform: translateY(-360px) rotate(540deg); opacity: 0; } }
-            @keyframes ydiSparkle { 0%,100% { opacity: 0.3; transform: scale(0.8); } 50% { opacity: 1; transform: scale(1.2); } }
-            @keyframes ydiBeamSweep { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-            @keyframes ydiStar { 0%,100% { opacity: 0.3; } 50% { opacity: 1; } }
-            @keyframes ydiFireworkBurst { 0% { transform: scale(0); opacity: 1; } 100% { transform: scale(1.6); opacity: 0; } }
-          `}</style>
-          <div style={{ textAlign: "center", position: "relative" }}>
-            <Confetti duration={6000} />
-
-            {/* Drifting gold coins behind everything */}
-            <div aria-hidden style={{ position: "absolute", inset: 0, pointerEvents: "none", overflow: "hidden", zIndex: 0 }}>
-              {Array.from({ length: 18 }).map((_, i) => {
-                const left = (i * 11) % 100;
-                const dur = 5 + (i % 5);
-                const delay = (i * 0.55) % 9;
-                return (
-                  <span key={`coin-${i}`} style={{
-                    position: "absolute",
-                    left: `${left}%`,
-                    bottom: -20,
-                    fontSize: 16 + (i % 3) * 8,
-                    opacity: 0,
-                    filter: "drop-shadow(0 0 10px rgba(253,224,71,0.6))",
-                    animation: `ydiCoinRise ${dur}s linear ${delay}s infinite`,
-                  }}>🪙</span>
-                );
-              })}
-              {/* Twinkling stars */}
-              {Array.from({ length: 24 }).map((_, i) => {
-                const left = (i * 17) % 100;
-                const top = (i * 23) % 100;
-                const dur = 1.6 + (i % 4) * 0.6;
-                const delay = (i * 0.18) % 4;
-                return (
-                  <span key={`s-${i}`} style={{
-                    position: "absolute",
-                    left: `${left}%`,
-                    top: `${top}%`,
-                    width: 3, height: 3, borderRadius: "50%",
-                    background: i % 3 === 0 ? "#fde047" : "#fff",
-                    boxShadow: "0 0 6px currentColor",
-                    color: i % 3 === 0 ? "#fde047" : "#fff",
-                    animation: `ydiStar ${dur}s ease-in-out ${delay}s infinite`,
-                  }} />
-                );
-              })}
-              {/* Firework bursts */}
-              {Array.from({ length: 4 }).map((_, i) => {
-                const left = 12 + i * 22;
-                const top = 18 + (i % 2) * 12;
-                const dur = 2.4 + i * 0.6;
-                const delay = i * 1.4;
-                const c = ["#f97316", "#fbbf24", "#a78bfa", "#22d3ee"][i];
-                return (
-                  <span key={`fw-${i}`} style={{
-                    position: "absolute",
-                    left: `${left}%`,
-                    top: `${top}%`,
-                    width: 80, height: 80,
-                    borderRadius: "50%",
-                    background: `radial-gradient(circle, ${c} 0%, transparent 60%)`,
-                    animation: `ydiFireworkBurst ${dur}s ease-out ${delay}s infinite`,
-                    pointerEvents: "none",
-                  }} />
-                );
-              })}
-            </div>
-
-            <div style={{ position: "relative", zIndex: 1 }}>
-              {/* Title with halo */}
-              <div style={{ position: "relative", display: "inline-block", marginBottom: 6 }}>
-                <span aria-hidden style={{
-                  position: "absolute", inset: -22,
-                  background: "conic-gradient(from 0deg, transparent 0deg, rgba(253,224,71,0.55) 30deg, transparent 60deg, rgba(244,114,182,0.45) 150deg, transparent 200deg, rgba(34,211,238,0.45) 280deg, transparent 320deg)",
-                  borderRadius: "50%",
-                  filter: "blur(16px)",
-                  animation: "ydiHaloSpin 9s linear infinite",
-                  pointerEvents: "none",
-                }} />
-                <h1 data-split style={{
-                  position: "relative",
-                  color: "#fff",
-                  fontSize: 50,
-                  fontWeight: 900,
-                  margin: 0,
-                  background: "linear-gradient(135deg, #fde68a, #f59e0b, #ef4444, #a78bfa)",
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                  textShadow: "0 0 30px rgba(245,158,11,0.5)",
-                  letterSpacing: 2,
-                }}>
-                  🏆 You Did It!
-                </h1>
-              </div>
-              <p style={{ color: "#fbbf24", fontSize: 12, fontWeight: 800, letterSpacing: 4, textTransform: "uppercase", marginBottom: 14, fontFamily: "ui-monospace, monospace" }}>
-                ▸ HACKER RACCOON DEFEATED // WEEK COMPLETE
-              </p>
-
-              {/* Hero shot with rotating beams + sparkles */}
-              <div style={{ position: "relative", display: "inline-block", marginBottom: 18 }}>
-                <span aria-hidden style={{
-                  position: "absolute", inset: -28, borderRadius: "50%",
-                  background: "conic-gradient(from 0deg, transparent 0deg, rgba(253,224,71,0.18) 20deg, transparent 40deg, rgba(253,224,71,0.18) 60deg, transparent 80deg, rgba(253,224,71,0.18) 100deg, transparent 120deg, rgba(253,224,71,0.18) 140deg, transparent 160deg, rgba(253,224,71,0.18) 180deg, transparent 200deg)",
-                  animation: "ydiBeamSweep 14s linear infinite",
-                  filter: "blur(2px)",
-                  pointerEvents: "none",
-                }} />
-                <motion.div
-                  animate={{ y: [0, -10, 0] }}
-                  transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-                  style={{
-                    position: "relative",
-                    padding: "14px 16px 8px",
-                    borderRadius: 24,
-                    border: "3px solid #f59e0b",
-                    boxShadow: "0 0 50px rgba(245,158,11,0.55), inset 0 0 0 1px rgba(255,255,255,0.08)",
-                    background: "linear-gradient(160deg, rgba(20,12,8,0.85), rgba(15,8,30,0.85))",
-                    overflow: "visible",
-                  }}
-                >
-                  <img
-                    src="/characters/celebrating.png"
-                    alt="Adam and Layla celebrating"
-                    style={{ width: 200, display: "block", objectFit: "contain" }}
-                  />
-                </motion.div>
-                {/* Corner sparkles */}
-                {[
-                  { top: -6, left: -10 }, { top: -10, right: -6 },
-                  { bottom: -6, left: -6 }, { bottom: -10, right: -10 },
-                ].map((pos, i) => (
-                  <span key={i} style={{
-                    position: "absolute",
-                    fontSize: 22,
-                    color: "#fde047",
-                    filter: "drop-shadow(0 0 8px #fbbf24)",
-                    animation: `ydiSparkle ${1.8 + i * 0.3}s ease-in-out ${i * 0.4}s infinite`,
-                    ...pos,
-                  }}>✦</span>
-                ))}
-              </div>
-
-              <p style={{ color: "#e5e7eb", fontSize: 17, marginBottom: 18, fontWeight: 600 }}>
-                Thanks to <span style={{ color: "#fde047", fontWeight: 900 }}>YOU</span>, Adam and Layla now know how to stay safe!
-              </p>
-
-              {/* Stats strip */}
-              <div style={{
-                display: "flex", justifyContent: "center", gap: 12, flexWrap: "wrap",
-                marginBottom: 18,
-              }}>
-                {[
-                  { l: "ENEMY", v: "DEFEATED", c: "#ef4444" },
-                  { l: "BADGES", v: `${Math.min(achievePhase, 8)} / 8`, c: "#a78bfa" },
-                  { l: "COINS", v: "+155", c: "#fbbf24" },
-                ].map((s, i) => (
-                  <div key={i} style={{
-                    padding: "8px 14px",
-                    background: `${s.c}10`,
-                    border: `1px solid ${s.c}55`,
-                    borderRadius: 10,
-                    fontFamily: "ui-monospace, monospace",
-                    minWidth: 110,
-                  }}>
-                    <div style={{ fontSize: 9, letterSpacing: 2, color: "#94a3b8" }}>{s.l}</div>
-                    <div style={{ fontSize: 14, fontWeight: 900, color: s.c, marginTop: 2 }}>{s.v}</div>
-                  </div>
-                ))}
-              </div>
-
-              {/* Achievements list — only renders revealed items, no placeholder
-                  spacers, so the column collapses nicely as items appear */}
-              <motion.div
-                variants={achieveStaggerContainer}
-                initial="initial"
-                animate="animate"
-                style={{ display: "flex", flexDirection: "column", gap: 8, maxWidth: 580, margin: "0 auto 18px" }}
-              >
-                {ACHIEVEMENTS.map((a: string, i: number) => {
-                  if (achievePhase <= i) return null;
-                  return (
-                    <motion.div
-                      key={i}
-                      variants={achieveStaggerItem}
-                      whileHover={{ x: 4 }}
-                      style={{
-                        position: "relative",
-                        display: "grid",
-                        gridTemplateColumns: "auto 1fr auto",
-                        alignItems: "center",
-                        gap: 12,
-                        padding: "10px 14px",
-                        background: "linear-gradient(135deg, rgba(16,185,129,0.12), rgba(15,23,42,0.55))",
-                        border: "1px solid rgba(16,185,129,0.45)",
-                        borderRadius: 12,
-                        boxShadow: "0 6px 14px -8px rgba(16,185,129,0.45), inset 0 0 0 1px rgba(255,255,255,0.04)",
-                      }}
-                    >
-                      <motion.span
-                        initial={{ opacity: 0, scale: 0, rotate: -45 }}
-                        animate={{ opacity: 1, scale: 1, rotate: 0 }}
-                        transition={{ type: "spring", stiffness: 300, damping: 15 }}
-                        style={{
-                          width: 28, height: 28, borderRadius: "50%",
-                          background: "linear-gradient(135deg, #4ade80, #22c55e)",
-                          color: "#052e16",
-                          display: "inline-flex", alignItems: "center", justifyContent: "center",
-                          fontSize: 14, fontWeight: 900,
-                          boxShadow: "0 0 12px rgba(74,222,128,0.55)",
-                        }}
-                      >
-                        ✓
-                      </motion.span>
-                      <span style={{ color: "#e2e8f0", fontSize: 14, fontWeight: 600, textAlign: "left" }}>{a}</span>
-                      {achieveCoins[i] > 0 && (
-                        <span style={{
-                          color: "#1a0e00",
-                          background: "linear-gradient(135deg, #fde68a, #fbbf24)",
-                          fontSize: 12, fontWeight: 900,
-                          padding: "3px 10px",
-                          borderRadius: 999,
-                          boxShadow: "0 0 12px rgba(251,191,36,0.45)",
-                          display: "inline-flex", alignItems: "center", gap: 4,
-                        }}>
-                          🪙 +{achieveCoins[i]}
-                        </span>
-                      )}
-                    </motion.div>
-                  );
-                })}
-              </motion.div>
-
-              {/* Next button appears as soon as the first badge reveals so
-                  the user is never stuck waiting for the full stagger. */}
-              {achievePhase >= 1 && (
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.5 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                >
-                  {btn(IS_MILESTONE_WEEK ? "Get your certificate! 🏆 →" : "Finish Week →", () => navigate(17))}
-                </motion.div>
-              )}
-            </div>
-          </div>
+          <FullScene bg="linear-gradient(180deg, #1a1508 0%, #0a0a1a 100%)">
+            <VictoryScene
+              onContinue={() => navigate(17)}
+            />
           </FullScene>
         );
-      }
+
 
       /* ──── CASE 17: CERTIFICATE + GRADUATION ──── */
       case 17: {
         const totalScore = q1Score + q2Score + q3Score + bossScore + swipeScore + phishScore + wydScore;
         const totalPossible = Q1_QUIZ.length + Q2_QUIZ.length + Q3_QUIZ.length + BOSS_QUIZ.length + SWIPE_DATA.length + PHISH.length + WYD.length;
-        const finalStars = totalScore >= totalPossible * 0.8 ? 3 : totalScore >= totalPossible * 0.5 ? 2 : 1;
-        const today = new Date().toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" });
+        const finalStars: 1 | 2 | 3 = totalScore >= totalPossible * 0.8 ? 3 : totalScore >= totalPossible * 0.5 ? 2 : 1;
         return (
-          <FullScene bg="linear-gradient(180deg, #1a0a20 0%, #0a0a1a 100%)" glow="radial-gradient(circle, rgba(245,158,11,0.25), transparent)">
-          <div style={{ textAlign: "center" }}>
-            {showConfetti && <Confetti duration={5000} />}
-            {/* Certificate */}
-            <motion.div
-              className="certificate-card"
-              initial={{ opacity: 0, scale: 0.5 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ type: "spring", stiffness: 200, damping: 20, duration: 0.6 }}
-              style={{
-                background: "rgba(255,255,255,0.06)", backdropFilter: "blur(16px)",
-                border: "3px solid rgba(59,130,246,0.5)", borderRadius: 24, padding: 32,
-                maxWidth: 520, margin: "0 auto 24px",
-                boxShadow: "0 0 40px rgba(245,158,11,0.2)",
-                position: "relative", overflow: "hidden",
-              }}
-            >
-              <div style={{ position: "relative", zIndex: 1 }}>
-                <div style={{ fontSize: 14, color: "#9ca3af", letterSpacing: 2, marginBottom: 8 }}>ALGORITHMX</div>
-                {/* Big badge or certificate icon depending on whether this
-                    is a milestone week. Non-milestone weeks earn a proper
-                    illustrated medal (not the generic 🎉 emoji) so the
-                    reward feels real. */}
-                {IS_MILESTONE_WEEK ? (
-                  <div style={{ fontSize: 40, marginBottom: 4 }}>🏅</div>
-                ) : (
-                  <div style={{ display: "flex", justifyContent: "center", marginBottom: 8 }}>
-                    <WeekBadge weekNumber={CURRENT_WEEK} />
-                  </div>
-                )}
-                <h1 data-split style={{ color: "#fff", fontSize: 22, fontWeight: 900, margin: "0 0 4px" }}>
-                  {IS_MILESTONE_WEEK ? "Certificate of Achievement" : `Week ${CURRENT_WEEK} Badge Earned!`}
-                </h1>
-                <div style={{ width: 60, height: 3, background: GRAD, borderRadius: 999, margin: "8px auto 16px" }} />
-                <p style={{ color: "#d1d5db", marginBottom: 4 }}>{IS_MILESTONE_WEEK ? "Presented to" : "Well done,"}</p>
-                <h2 className="gradient-text" style={{
-                  fontSize: 28, fontWeight: 900, margin: "0 0 8px",
-                  background: GRAD, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent",
-                }}>{childName}</h2>
-                <p style={{ color: "#f59e0b", fontSize: 16, fontWeight: 700, marginBottom: 8 }}>CYBER HERO</p>
-                <p style={{ color: "#9ca3af", fontSize: 14, marginBottom: 4 }}>Week {CURRENT_WEEK}: Passwords — The Secret Code</p>
-                {!IS_MILESTONE_WEEK && <CertificateProgress currentWeek={CURRENT_WEEK} />}
-                <p style={{ color: "#6b7280", fontSize: 13, marginBottom: 8 }}>{today}</p>
-                {stars(finalStars)}
-                {/* Twin reward chips: badge (left) + coins (right). Both
-                    feel weightier than a single coin row and reinforce
-                    that Cyber Heroes earn rewards every week, not only
-                    on certificate weeks. */}
-                <div style={{ display: "flex", gap: 10, justifyContent: "center", marginTop: 14, flexWrap: "wrap" }}>
-                  <div style={{
-                    display: "flex", alignItems: "center", gap: 8,
-                    background: "linear-gradient(135deg, rgba(167,139,250,0.18), rgba(96,165,250,0.18))",
-                    borderRadius: 14, padding: "8px 16px",
-                    border: "1px solid rgba(167,139,250,0.45)",
-                    boxShadow: "0 0 20px rgba(167,139,250,0.25)",
-                  }}>
-                    <span style={{ fontSize: 22 }}>🎖️</span>
-                    <div style={{ textAlign: "left" }}>
-                      <div style={{ fontSize: 9, letterSpacing: 2, color: "#c4b5fd", fontFamily: "ui-monospace, monospace" }}>NEW BADGE</div>
-                      <div style={{ color: "#e0e7ff", fontWeight: 800, fontSize: 13 }}>Week {CURRENT_WEEK} Hero</div>
-                    </div>
-                  </div>
-                  <div style={{
-                    display: "flex", alignItems: "center", gap: 8,
-                    background: "linear-gradient(135deg, rgba(245,158,11,0.18), rgba(251,191,36,0.18))",
-                    borderRadius: 14, padding: "8px 16px",
-                    border: "1px solid rgba(245,158,11,0.45)",
-                    boxShadow: "0 0 20px rgba(245,158,11,0.25)",
-                  }}>
-                    <span style={{ fontSize: 22 }}>🪙</span>
-                    <div style={{ textAlign: "left" }}>
-                      <div style={{ fontSize: 9, letterSpacing: 2, color: "#fcd34d", fontFamily: "ui-monospace, monospace" }}>TOTAL COINS</div>
-                      <div style={{ color: "#fef3c7", fontWeight: 900, fontSize: 18 }}>{coins}</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-            {/* Score summary */}
-            <div className="score-cards" style={{ display: "flex", flexWrap: "wrap", gap: 12, justifyContent: "center", maxWidth: 520, margin: "0 auto 24px" }}>
-              {[
-                { label: "Password Basics", score: q1Score, total: Q1_QUIZ.length },
-                { label: "Why Passwords Matter", score: q2Score, total: Q2_QUIZ.length },
-                { label: "Good vs Bad", score: swipeScore, total: SWIPE_DATA.length },
-                { label: "Golden Rules", score: q3Score, total: Q3_QUIZ.length },
-                { label: "Spot the Tricks", score: phishScore, total: PHISH.length },
-                { label: "Real Life Choices", score: wydScore, total: WYD.length },
-                { label: "Final Challenge", score: bossScore, total: BOSS_QUIZ.length },
-              ].map((item: { label: string; score: number; total: number }, i: number) => (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, y: 30 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: i * 0.1, duration: 0.4 }}
-                >
-                  {card(
-                    <div style={{ textAlign: "center", minWidth: 90 }}>
-                      <div style={{ color: "#9ca3af", fontSize: 11 }}>{item.label}</div>
-                      <div style={{ color: "#fff", fontWeight: 900, fontSize: 18 }}>{item.score}/{item.total}</div>
-                    </div>,
-                    { padding: "8px 14px" }
-                  )}
-                </motion.div>
-              ))}
-            </div>
-            <div className="print-hide" style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
-              {btn("Continue →", () => navigate(18))}
-              {IS_MILESTONE_WEEK && (
-                <a
-                  href={getCertificateUrl(childName, CURRENT_WEEK)}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{
-                    display: "inline-block",
-                    background: "linear-gradient(135deg, #f97316, #f59e0b)",
-                    color: "#fff",
-                    fontWeight: 900,
-                    borderRadius: 100,
-                    padding: "13px 28px",
-                    textDecoration: "none",
-                    fontSize: 15,
-                    boxShadow: "0 4px 20px rgba(249,115,22,0.4)",
-                  }}
-                >
-                  Download My Certificate ↓
-                </a>
-              )}
-              <a href="/dashboard" style={{
-                display: "inline-block", background: "transparent", color: "#fff", fontWeight: 900, borderRadius: 16,
-                padding: "13px 34px", textDecoration: "none", fontSize: 16,
-                border: "2px solid rgba(255,255,255,0.3)",
-              }}>
-                Back to Dashboard
-              </a>
-              {/* Print Certificate only makes sense on milestone weeks
-                  (5/10/15/20). On every other week the artwork is a
-                  badge, not a certificate, so printing it would be
-                  misleading. */}
-              {IS_MILESTONE_WEEK && (
-                <motion.button
-                  onClick={() => window.print()}
-                  whileHover={{ scale: 1.05, borderColor: "#fff", background: "rgba(255,255,255,0.06)" }}
-                  whileTap={{ scale: 0.95 }}
-                  style={{
-                    background: "transparent", color: "#fff", fontWeight: 900, borderRadius: 16,
-                    padding: "13px 34px", fontSize: 16, cursor: "pointer",
-                    border: "2px solid rgba(255,255,255,0.4)",
-                  }}
-                >
-                  Print Certificate 🖨️
-                </motion.button>
-              )}
-            </div>
-          </div>
+          <FullScene bg="linear-gradient(180deg, #1a0a20 0%, #0a0a1a 100%)">
+            <GraduationScene
+              childName={childName}
+              weekNumber={CURRENT_WEEK}
+              weekTitle="Passwords — The Secret Code"
+              starsCount={finalStars}
+              totalCoins={coins}
+              isMilestoneWeek={IS_MILESTONE_WEEK}
+              onContinue={() => navigate(18)}
+              onDownloadCertificate={
+                IS_MILESTONE_WEEK
+                  ? () => window.open(getCertificateUrl(childName, CURRENT_WEEK), "_blank")
+                  : undefined
+              }
+            />
           </FullScene>
         );
       }
 
+
       /* ──── CASE 18: OUTRO VIDEO ──── */
       case 18:
         return (
-          <FullScene bg="linear-gradient(180deg, #0a0a1a 0%, #1a1033 100%)" glow="radial-gradient(circle, rgba(245,158,11,0.15), transparent)">
-          <div style={{ textAlign: "center" }}>
-            <motion.h1 data-split initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
-              style={{ color: "#fff", fontSize: 44, fontWeight: 900, marginBottom: 20, textShadow: "0 0 24px rgba(245,158,11,0.4)" }}>
-              ✨ Your Adventure{" "}
-              <span style={{ background: GRAD, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>Continues...</span>
-            </motion.h1>
-
-            <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}>
-              {!outroFailed ? (
-                <div style={{ maxWidth: 800, margin: "0 auto 24px", borderRadius: 20, overflow: "hidden", boxShadow: "0 0 40px rgba(59,130,246,0.3)", border: "2px solid rgba(59,130,246,0.3)" }}>
-                  <video
-                    controls
-                    playsInline
-                    preload="metadata"
-                    onError={() => setOutroFailed(true)}
-                    style={{ width: "100%", display: "block" }}
-                    src="/videos/module-01-outro.mp4"
-                  />
-                </div>
-              ) : (
-                card(
-                  <>
-                    <div style={{ display: "inline-block", padding: "10px 10px 4px", margin: "0 auto 16px", borderRadius: 18, border: "2px solid rgba(245,158,11,0.5)", background: "rgba(0,0,0,0.2)", overflow: "visible" }}>
-                      <img src="/characters/celebrating.png" alt="Adam and Layla celebrating" style={{ width: 160, display: "block", objectFit: "contain" }} />
-                    </div>
-                    <p style={{ color: "#9ca3af", fontSize: 16 }}>Outro video coming soon!</p>
-                  </>,
-                  { maxWidth: 400, margin: "0 auto 24px" }
-                )
-              )}
-            </motion.div>
-
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4 }}>
-              <p style={{ color: "#fff", fontSize: 24, fontWeight: 900, marginBottom: 8 }}>Week 1 Complete!</p>
-              <p style={{ color: "#d1d5db", fontSize: 16, marginBottom: 8 }}>You earned the Password Hero badge and {coins} coins!</p>
-              <p style={{ marginBottom: 24 }}>
-                <span style={{ background: GRAD, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", fontWeight: 700, fontSize: 16 }}>
-                  Next week: Private Info, Guard Your Secrets
-                </span>
-              </p>
-              <div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
-                {btn("Back to Dashboard 🚀", () => { window.location.href = "/dashboard"; })}
-                <motion.button
-                  onClick={() => { window.location.reload(); }}
-                  whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
-                  style={{ background: "transparent", color: "#fff", fontWeight: 900, borderRadius: 16, padding: "13px 34px", border: "2px solid rgba(255,255,255,0.3)", cursor: "pointer", fontSize: 16 }}>
-                  Play Again
-                </motion.button>
-              </div>
-            </motion.div>
-          </div>
+          <FullScene bg="linear-gradient(180deg, #0a0a1a 0%, #1a1033 100%)">
+            <OutroScene
+              childName={childName}
+              totalCoins={coins}
+              nextWeekTitle="Private Info: Guard Your Secrets"
+              videoSrc={outroFailed ? null : "/videos/module-01-outro.mp4"}
+              fallbackImageSrc="/characters/celebrating.png"
+              onBackToDashboard={() => { window.location.href = "/dashboard"; }}
+              onPlayAgain={() => { window.location.reload(); }}
+            />
           </FullScene>
         );
 
