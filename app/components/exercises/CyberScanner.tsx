@@ -41,6 +41,9 @@ const SHIELD_X = CANVAS_W - 54;
 const SHIELD_Y = 54;
 
 function transitTimeMs(i: number) {
+  // First card gets +30% transit time as a learning lap so new players have
+  // time to read the buttons and find their rhythm.
+  if (i === 0) return 10500;
   if (i < 4) return 8000;
   if (i < 7) return 6000;
   return 4500;
@@ -231,7 +234,9 @@ export default function CyberScanner({
 
     let running = true;
     let lastTime = performance.now();
-    state.current.nextStartAt = performance.now() + 500;
+    // 2.2 s lead-in before the first card enters the scanner so players can
+    // orient after the intro dismisses — fixes "first one didn't let me select".
+    state.current.nextStartAt = performance.now() + 2200;
 
     const spawnNext = (now: number) => {
       const s = state.current;

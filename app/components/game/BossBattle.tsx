@@ -3819,8 +3819,9 @@ export default function BossBattle({
         }
         .bb-victory-hero {
           position: relative;
-          width: 220px;
-          height: 280px;
+          width: 240px;
+          height: 340px;
+          padding-top: 24px;
           display: flex;
           align-items: flex-end;
           justify-content: center;
@@ -3829,6 +3830,9 @@ export default function BossBattle({
         }
         .bb-victory-hero-glow {
           position: absolute;
+          left: 50%;
+          bottom: 30px;
+          transform: translateX(-50%);
           width: 220px; height: 220px;
           border-radius: 50%;
           background: radial-gradient(circle, rgba(251,191,36,0.45) 0%, rgba(251,191,36,0.15) 45%, transparent 70%);
@@ -3837,10 +3841,10 @@ export default function BossBattle({
         }
         .bb-victory-hero img {
           position: relative;
-          height: 280px;
+          height: 100%;
           width: 100%;
           object-fit: contain;
-          object-position: center top;
+          object-position: center bottom;
           filter: drop-shadow(0 8px 24px rgba(251,191,36,0.4));
         }
         .bb-victory-stats {
@@ -3936,9 +3940,8 @@ export default function BossBattle({
           box-shadow: 0 6px 22px rgba(249,115,22,0.5);
         }
         @media (max-width: 720px) {
-          .bb-victory-hero, .bb-victory-hero img { height: 240px }
-          .bb-victory-hero { width: 200px; height: 240px; overflow: visible }
-          .bb-victory-hero img { width: 100%; object-fit: contain; object-position: center top }
+          .bb-victory-hero { width: 210px; height: 290px; padding-top: 20px; overflow: visible }
+          .bb-victory-hero img { height: 100%; width: 100%; object-fit: contain; object-position: center bottom }
           .bb-victory-stats { min-width: 280px }
           .bb-victory-title { font-size: 44px }
         }

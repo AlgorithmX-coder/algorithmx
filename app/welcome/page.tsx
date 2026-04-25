@@ -3,31 +3,60 @@
 import { useEffect, useState, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
+import { speak, stopSpeaking, primeVoices } from "@/app/lib/speech";
 
 const GRAD = "linear-gradient(135deg, #8b5cf6, #3b82f6)";
 
 function FloatingOrbs() {
+  // Alive, Pixar-theatre background — soft gradient glows + twinkling stars
+  // + drifting pastel particles. Shared visual language with the onboarding
+  // wizard so the tone is consistent across the sign-up journey.
+  const PARTICLES = Array.from({ length: 22 }).map((_, i) => ({
+    key: i,
+    left: (i * 4.7 + (i % 3) * 2) % 100,
+    size: 4 + (i % 5),
+    color: ["#8b5cf6", "#3b82f6", "#f472b6", "#fbbf24", "#22d3ee", "#10b981"][i % 6],
+    delay: (i * 0.9) % 14,
+    duration: 16 + (i % 7) * 2.2,
+    peak: 0.22 + ((i * 11) % 18) / 100,
+  }));
+  const STARS = Array.from({ length: 36 }).map((_, i) => ({
+    key: i,
+    left: (i * 2.9 + (i % 5) * 1.7) % 100,
+    top: (i * 3.3 + (i % 7) * 2.1) % 100,
+    size: 2 + (i % 2),
+    delay: (i * 0.17) % 5,
+    dur: 2.2 + (i % 4),
+    peak: 0.25 + ((i * 13) % 30) / 100,
+  }));
+
   return (
     <div className="fixed inset-0 pointer-events-none overflow-hidden" style={{ zIndex: 0 }}>
-      {[
-        { size: 8, top: "8%", left: "6%", color: "#f59e0b", dur: 9, delay: 0 },
-        { size: 6, top: "18%", right: "10%", color: "#8b5cf6", dur: 11, delay: 1 },
-        { size: 10, top: "35%", left: "3%", color: "#3b82f6", dur: 13, delay: 2 },
-        { size: 5, top: "52%", right: "5%", color: "#f59e0b", dur: 8, delay: 0.5 },
-        { size: 7, top: "70%", left: "12%", color: "#8b5cf6", dur: 10, delay: 3 },
-        { size: 9, top: "82%", right: "8%", color: "#3b82f6", dur: 12, delay: 1.5 },
-      ].map((o, i) => (
-        <motion.div key={i} className="absolute rounded-full"
-          animate={{ y: [0, -18, 0], scale: [1, 1.1, 1], opacity: [0.35, 0.55, 0.35] }}
-          transition={{ duration: o.dur, ease: "easeInOut", repeat: Infinity, delay: o.delay }}
-          style={{
-            width: o.size, height: o.size, top: o.top,
-            left: "left" in o ? o.left : undefined,
-            right: "right" in o ? o.right : undefined,
-            backgroundColor: o.color, opacity: 0.35,
-            boxShadow: `0 0 ${o.size * 3}px ${o.color}`,
-          }} />
+      <motion.div
+        animate={{ x: ["-6%", "6%", "-6%"], y: ["-4%", "4%", "-4%"] }}
+        transition={{ duration: 24, repeat: Infinity, ease: "easeInOut" }}
+        style={{ position: "absolute", top: "-20%", left: "-15%", width: "70vmax", height: "70vmax", borderRadius: "50%", background: "radial-gradient(circle, rgba(139,92,246,0.28), transparent 65%)", filter: "blur(40px)" }}
+      />
+      <motion.div
+        animate={{ x: ["4%", "-6%", "4%"], y: ["6%", "-4%", "6%"] }}
+        transition={{ duration: 28, repeat: Infinity, ease: "easeInOut" }}
+        style={{ position: "absolute", bottom: "-25%", right: "-15%", width: "70vmax", height: "70vmax", borderRadius: "50%", background: "radial-gradient(circle, rgba(59,130,246,0.24), transparent 65%)", filter: "blur(40px)" }}
+      />
+      <motion.div
+        animate={{ opacity: [0.18, 0.3, 0.18] }}
+        transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+        style={{ position: "absolute", top: "40%", left: "50%", transform: "translate(-50%, -50%)", width: "50vmax", height: "50vmax", borderRadius: "50%", background: "radial-gradient(circle, rgba(244,114,182,0.18), transparent 60%)", filter: "blur(36px)" }}
+      />
+      {STARS.map((s) => (
+        <span key={`star-${s.key}`} style={{ position: "absolute", left: `${s.left}%`, top: `${s.top}%`, width: s.size, height: s.size, borderRadius: "50%", background: "#fff", boxShadow: "0 0 6px rgba(255,255,255,0.8)", animation: `welcomeStarTwinkle ${s.dur}s ease-in-out ${s.delay}s infinite`, ["--welcome-star-peak" as string]: `${s.peak}` } as React.CSSProperties} />
       ))}
+      {PARTICLES.map((p) => (
+        <span key={`p-${p.key}`} style={{ position: "absolute", left: `${p.left}%`, bottom: -12, width: p.size, height: p.size, borderRadius: "50%", background: p.color, boxShadow: `0 0 10px ${p.color}`, animation: `welcomeParticleRise ${p.duration}s linear ${p.delay}s infinite`, ["--welcome-particle-peak" as string]: `${p.peak}` } as React.CSSProperties} />
+      ))}
+      <style>{`
+        @keyframes welcomeStarTwinkle { 0%,100% { opacity: 0.15; } 50% { opacity: var(--welcome-star-peak, 0.5); } }
+        @keyframes welcomeParticleRise { 0% { transform: translateY(0); opacity: 0; } 12% { opacity: var(--welcome-particle-peak, 0.3); } 88% { opacity: var(--welcome-particle-peak, 0.3); } 100% { transform: translateY(-110vh); opacity: 0; } }
+      `}</style>
     </div>
   );
 }
@@ -112,16 +141,37 @@ export default function WelcomePage() {
   // Phase timing
   useEffect(() => {
     if (!loaded) return;
+    primeVoices();
     const timers = [
-      setTimeout(() => setPhase(1), 2000),
-      setTimeout(() => setPhase(2), 4000),
-      setTimeout(() => setPhase(3), 6000),
-      setTimeout(() => setPhase(4), 8000),
-      setTimeout(() => setPhase(5), 11000),
+      setTimeout(() => {
+        setPhase(1);
+      }, 2000),
+      setTimeout(() => {
+        setPhase(2);
+        speak(`Hi ${childName}!`, "adam");
+      }, 4000),
+      setTimeout(() => {
+        setPhase(3);
+        speak("We're Adam and Layla!", "layla");
+      }, 6000),
+      setTimeout(() => {
+        setPhase(4);
+        speak("We need YOUR help to learn about cybersecurity and defeat the Hacker Raccoon!", "adam");
+      }, 8000),
+      setTimeout(() => {
+        setPhase(5);
+        speak("Every week is a new adventure. Are you ready?", "layla");
+      }, 11000),
       setTimeout(() => setPhase(6), 13000),
     ];
-    return () => timers.forEach(clearTimeout);
-  }, [loaded]);
+    return () => {
+      timers.forEach(clearTimeout);
+      stopSpeaking();
+    };
+  }, [loaded, childName]);
+
+  // Stop any in-flight speech when leaving the page.
+  useEffect(() => () => stopSpeaking(), []);
 
   return (
     <div className="min-h-screen relative overflow-hidden flex items-center justify-center" style={{ background: "#1a1033" }}>

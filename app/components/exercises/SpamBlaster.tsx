@@ -91,6 +91,8 @@ interface ClueBubble {
 }
 
 function speedForIndex(i: number) {
+  // First email flies slower than base — a learning lap after the intro.
+  if (i === 0) return 0.75;
   if (i < 4) return 1;
   if (i < 7) return 1.4;
   return 1.8;
@@ -308,7 +310,8 @@ export default function SpamBlaster({
 
     let running = true;
     let lastTime = performance.now();
-    state.current.nextSpawnAt = performance.now() + 400;
+    // Longer lead-in after the intro dismisses — 2 s grace before first email.
+    state.current.nextSpawnAt = performance.now() + 2000;
 
     const trySpawn = (now: number) => {
       const s = state.current;

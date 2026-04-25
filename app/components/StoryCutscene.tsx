@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { playSound } from "@/app/lib/sounds";
+import { speak, stopSpeaking, primeVoices, type Speaker } from "@/app/lib/speech";
 
 export interface CutsceneSlide {
   character?: "adam" | "layla" | "raccoon" | "both";
@@ -48,6 +49,37 @@ export default function StoryCutscene({ slides, onComplete, title }: StoryCutsce
     if (!activeSlide?.sound) return;
     playSound(activeSlide.sound);
   }, [phase, activeSlide]);
+
+  // Speak the slide's dialogue using Web Speech API with a voice chosen per
+  // character — Adam / Layla (child-pitched) and Raccoon (lower, slower).
+  // Title-only cards (no character) and pure hype text are skipped so we
+  // don't narrate "LET'S GO! 🚀".
+  useEffect(() => {
+    primeVoices();
+  }, []);
+  useEffect(() => {
+    if (phase !== "showing") return;
+    if (!activeSlide) return;
+    const speaker: Speaker | null = activeSlide.character === "adam"
+      ? "adam"
+      : activeSlide.character === "layla"
+        ? "layla"
+        : activeSlide.character === "raccoon"
+          ? "raccoon"
+          : activeSlide.character === "both"
+            ? "adam" // "both" speaking — Adam takes the line
+            : null;
+    if (!speaker) return;
+    // Small delay so the typewriter + sound layer on first, then speech.
+    const t = window.setTimeout(() => speak(activeSlide.text, speaker), 120);
+    return () => {
+      window.clearTimeout(t);
+      stopSpeaking();
+    };
+  }, [phase, activeSlide]);
+
+  // Ensure any queued speech stops when the whole cutscene unmounts.
+  useEffect(() => () => stopSpeaking(), []);
 
   const clearTimers = () => {
     if (advanceTimerRef.current) window.clearTimeout(advanceTimerRef.current);
@@ -708,6 +740,16 @@ const CSS = `
   filter: drop-shadow(0 14px 28px rgba(0,0,0,0.65));
 }
 .sc-chars-both .sc-char-img { height: 300px; }
+
+/* Layla's source PNG is full-body while Adam's is waist-up. Crop Layla
+   to roughly Adam's framing so the two characters feel consistent when
+   shown together (or alone in a scene that pairs with Adam elsewhere). */
+.sc-chars-layla .sc-char-img,
+.sc-char-layla-slot .sc-char-img {
+  max-height: 310px;
+  object-fit: cover;
+  object-position: center top;
+}
 
 /* Character glow (soft radial in character colour) */
 .sc-char-glow {

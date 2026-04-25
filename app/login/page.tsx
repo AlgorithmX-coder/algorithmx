@@ -241,18 +241,52 @@ export default function LoginPage() {
 
       {/* ─── RIGHT SIDE: VISUAL (hidden on mobile) ─── */}
       <div className="hidden lg:flex flex-1 items-center justify-center relative overflow-hidden"
-        style={{ background: "linear-gradient(135deg, #241550, #1e1145)" }}>
+        style={{ background: "linear-gradient(135deg, #0c0b24, #1e1145 50%, #0d0a26)" }}>
+
+        {/* Matrix-rain glyphs drifting down */}
+        <div aria-hidden className="absolute inset-0 overflow-hidden pointer-events-none" style={{ opacity: 0.12 }}>
+          {Array.from({ length: 24 }).map((_, i) => {
+            const chars = "01XY#$/&*?!%@ZLR-=+";
+            const ch = chars.charAt(i % chars.length);
+            const colour = i % 3 === 0 ? "#22d3ee" : i % 3 === 1 ? "#10b981" : "#8b5cf6";
+            return (
+              <span
+                key={i}
+                style={{
+                  position: "absolute",
+                  left: `${(i * 4.1 + (i % 3) * 2) % 100}%`,
+                  top: 0,
+                  fontFamily: "'JetBrains Mono', 'Fira Code', 'Consolas', monospace",
+                  fontSize: 12 + (i % 4),
+                  color: colour,
+                  animation: `loginMatrixFall ${14 + (i % 7) * 2}s linear ${(i * 0.8) % 12}s infinite`,
+                }}
+              >
+                {ch}
+              </span>
+            );
+          })}
+        </div>
 
         {/* Circuit grid background */}
         <div className="absolute inset-0" style={{
           backgroundImage: `
-            linear-gradient(rgba(139,92,246,0.04) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(139,92,246,0.04) 1px, transparent 1px)
+            linear-gradient(rgba(34,211,238,0.05) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(139,92,246,0.05) 1px, transparent 1px)
           `,
-          backgroundSize: "40px 40px",
+          backgroundSize: "42px 42px",
         }} />
 
         <FloatingIcons />
+
+        {/* Terminal-style pulse around the orb */}
+        <div aria-hidden className="absolute" style={{
+          width: 360, height: 360, borderRadius: "50%",
+          background: "radial-gradient(circle, rgba(34,211,238,0.18), transparent 60%)",
+          animation: "loginOrbPulse 3.2s ease-in-out infinite",
+          filter: "blur(14px)",
+          pointerEvents: "none",
+        }} />
 
         {/* Shield */}
         <motion.div className="relative flex flex-col items-center"
@@ -260,13 +294,14 @@ export default function LoginPage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ type: "spring", stiffness: 200, damping: 20, delay: 0.3 }}>
           <motion.div className="flex items-center justify-center"
-            animate={{ y: [-6, 6, -6] }}
-            transition={{ duration: 4, ease: "easeInOut", repeat: Infinity }}
+            animate={{ y: [-6, 6, -6], rotateY: [0, 6, 0, -6, 0] }}
+            transition={{ y: { duration: 4, ease: "easeInOut", repeat: Infinity }, rotateY: { duration: 7, ease: "easeInOut", repeat: Infinity } }}
             style={{
               width: 200, height: 230,
-              background: GRAD,
+              background: "linear-gradient(135deg, #8b5cf6, #3b82f6 55%, #22d3ee)",
               borderRadius: "50% 50% 50% 50% / 40% 40% 60% 60%",
-              boxShadow: "0 0 60px rgba(139,92,246,0.3), inset 0 0 40px rgba(255,255,255,0.05)",
+              boxShadow: "0 0 60px rgba(34,211,238,0.35), 0 0 90px rgba(139,92,246,0.25), inset 0 0 40px rgba(255,255,255,0.05)",
+              position: "relative",
             }}>
             <div className="flex flex-col items-center">
               <span className="text-5xl font-black text-white" style={{ fontFamily: "Nunito, sans-serif", textShadow: "0 2px 10px rgba(0,0,0,0.3)" }}>AX</span>
@@ -274,14 +309,41 @@ export default function LoginPage() {
             </div>
           </motion.div>
 
+          {/* Terminal prompt line under the orb */}
+          <div style={{
+            fontFamily: "'JetBrains Mono', 'Fira Code', 'Consolas', monospace",
+            fontSize: 12,
+            color: "#22d3ee",
+            marginTop: 28,
+            letterSpacing: 1,
+          }}>
+            <span style={{ color: "#10b981" }}>$</span> ax_login --auth<span style={{ marginLeft: 6, animation: "loginCursorBlink 1s steps(1) infinite" }}>▮</span>
+          </div>
+
           {/* Stats */}
-          <p className="text-gray-400 text-sm mt-8 text-center">
+          <p className="text-gray-400 text-sm mt-5 text-center">
             4 Courses · Ages 6–18+ · 100% Interactive
           </p>
           <p className="text-gray-500 text-xs mt-3 text-center">
             Trusted by families across the UK
           </p>
         </motion.div>
+
+        <style>{`
+          @keyframes loginMatrixFall {
+            0% { transform: translateY(-100%); opacity: 0; }
+            15% { opacity: 0.7; }
+            100% { transform: translateY(110vh); opacity: 0; }
+          }
+          @keyframes loginOrbPulse {
+            0%, 100% { opacity: 0.7; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.08); }
+          }
+          @keyframes loginCursorBlink {
+            0%, 49% { opacity: 1; }
+            50%, 100% { opacity: 0; }
+          }
+        `}</style>
       </div>
     </div>
   );

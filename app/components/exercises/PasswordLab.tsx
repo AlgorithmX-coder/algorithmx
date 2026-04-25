@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { playSound } from "@/app/lib/sounds";
 import {
   correctAnswerBurst,
@@ -634,17 +635,26 @@ export default function PasswordLab({
         </div>
       </div>
 
-      {/* Completion banner */}
+      {/* Completion overlay — absolute positioned so it fits within the exercise
+          container viewport cap instead of stacking below and getting clipped. */}
       {completed && (
         <div
           style={{
-            marginTop: 22,
+            position: "absolute",
+            inset: 0,
+            background: "rgba(5,8,18,0.94)",
+            backdropFilter: "blur(8px)",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            zIndex: 15,
+            padding: 24,
             textAlign: "center",
             animation: "plFadeIn 0.5s ease-out both",
-            animationDelay: "0.4s",
-            animationFillMode: "both",
           }}
         >
+          <div style={{ fontSize: 56, marginBottom: 10 }}>🧪✨</div>
           <div
             style={{
               fontSize: 24,
@@ -728,12 +738,15 @@ export default function PasswordLab({
         />
       )}
 
-      {/* Dragging ghost — positioned so the grab-point on the card follows the cursor exactly */}
+      {/* Dragging ghost — rendered via portal to document.body so it escapes
+          any transformed ancestor (ScreenTransition, 3D arena) and the fixed
+          position actually uses the viewport as its reference frame. */}
       {drag &&
+        typeof document !== "undefined" &&
         (() => {
           const ing = INGREDIENTS.find((i) => i.id === drag.id);
           if (!ing) return null;
-          return (
+          return createPortal(
             <div
               style={{
                 position: "fixed",
@@ -758,7 +771,8 @@ export default function PasswordLab({
             >
               <div style={{ fontSize: 22, marginBottom: 4 }}>{ing.icon}</div>
               <div>{ing.label}</div>
-            </div>
+            </div>,
+            document.body
           );
         })()}
     </div>

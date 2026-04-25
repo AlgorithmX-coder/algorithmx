@@ -266,8 +266,115 @@ export default function CrackTheCode({
         Rotate the rings, then UNLOCK
       </div>
 
+      {/* New horizontal dial layout — readable, kid-friendly.
+          The original concentric-rings visual is preserved below this block
+          but hidden (display: none) so we keep the code for rollback. */}
       <div
         style={{
+          width: "100%",
+          maxWidth: 560,
+          display: "flex",
+          flexDirection: "column",
+          gap: 14,
+          padding: "0 4px",
+          animation: shakeAll ? "ccShake 0.6s ease-out" : undefined,
+        }}
+      >
+        {RINGS.map((ring, ringIdx) => {
+          const isCorrect = corrects[ringIdx];
+          const selectedLabel = ring.options[selectedIndex(ringIdx)];
+          const flash = ringFlash[ringIdx];
+          const ringIcon = ring.id === "chars" ? "🔤" : ring.id === "length" ? "📏" : ring.id === "pattern" ? "🎲" : "🔒";
+          return (
+            <div
+              key={ring.id}
+              style={{
+                display: "grid",
+                gridTemplateColumns: "120px 1fr",
+                alignItems: "stretch",
+                background: isCorrect ? `${ring.colour}15` : "rgba(15,21,37,0.7)",
+                border: `1px solid ${isCorrect ? "#4ade80" : flash === "red" ? "#ef4444" : `${ring.colour}44`}`,
+                borderLeft: `4px solid ${isCorrect ? "#4ade80" : ring.colour}`,
+                borderRadius: 14,
+                overflow: "hidden",
+                boxShadow: flash === "red" ? "0 0 22px rgba(239,68,68,0.6)" : isCorrect ? `0 0 18px ${ring.colour}44` : "none",
+                transition: "box-shadow 0.3s ease, border-color 0.3s ease, background 0.3s ease",
+              }}
+            >
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: 2,
+                  padding: "10px 6px",
+                  background: `${ring.colour}10`,
+                  borderRight: `1px solid ${ring.colour}22`,
+                }}
+              >
+                <div style={{ fontSize: 22, lineHeight: 1 }}>{ringIcon}</div>
+                <div style={{ fontFamily: "monospace", fontSize: 10, fontWeight: 900, color: ring.colour, letterSpacing: 1 }}>
+                  {ring.label}
+                </div>
+                {isCorrect && <div style={{ color: "#4ade80", fontSize: 14 }}>✓</div>}
+              </div>
+              <div style={{ display: "flex", alignItems: "center", gap: 6, padding: "10px 10px" }}>
+                <button
+                  type="button"
+                  aria-label={`Previous option for ${ring.label}`}
+                  onClick={() => rotate(ringIdx, -1)}
+                  disabled={unlocked}
+                  style={{
+                    flexShrink: 0,
+                    width: 36, height: 36, borderRadius: 10,
+                    background: `${ring.colour}22`,
+                    border: `1px solid ${ring.colour}66`,
+                    color: ring.colour, cursor: unlocked ? "default" : "pointer",
+                    fontSize: 16, fontWeight: 900, fontFamily: "inherit",
+                  }}
+                >←</button>
+                <div
+                  style={{
+                    flex: 1,
+                    textAlign: "center",
+                    fontFamily: "'Space Grotesk', sans-serif",
+                    fontSize: 14,
+                    fontWeight: 900,
+                    color: isCorrect ? "#86efac" : "#f1f5f9",
+                    padding: "0 8px",
+                    minHeight: 20,
+                    letterSpacing: 0.3,
+                    transition: "color 0.25s ease",
+                  }}
+                >
+                  {selectedLabel}
+                </div>
+                <button
+                  type="button"
+                  aria-label={`Next option for ${ring.label}`}
+                  onClick={() => rotate(ringIdx, 1)}
+                  disabled={unlocked}
+                  style={{
+                    flexShrink: 0,
+                    width: 36, height: 36, borderRadius: 10,
+                    background: `${ring.colour}22`,
+                    border: `1px solid ${ring.colour}66`,
+                    color: ring.colour, cursor: unlocked ? "default" : "pointer",
+                    fontSize: 16, fontWeight: 900, fontFamily: "inherit",
+                  }}
+                >→</button>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Legacy concentric-ring visualisation — kept for reference/rollback,
+          hidden so it doesn't render. Remove in a later pass if unused. */}
+      <div
+        style={{
+          display: "none",
           position: "relative",
           width: 520,
           height: 520,

@@ -92,6 +92,9 @@ const BELT_Y = 260; // vertical centre of the belt
 const BASE_SPEED = (BELT_RIGHT - BELT_LEFT) / (6 * 60);
 
 function speedForIndex(i: number) {
+  // First card is 25% slower than base so new players have time to learn
+  // where the lever is and what each position does.
+  if (i === 0) return BASE_SPEED * 0.75;
   if (i < 3) return BASE_SPEED;
   if (i < 6) return BASE_SPEED * 1.2;
   return BASE_SPEED * 1.4;
@@ -149,7 +152,9 @@ export default function ConveyorBelt({
       setShowResult(true);
       return;
     }
-    const delay = sortedIdx === 0 ? 300 : 1200;
+    // Longer lead-in on the very first card so players can read the scene
+    // after the intro dismisses. Subsequent cards flow normally.
+    const delay = sortedIdx === 0 ? 2000 : 1200;
     const t = window.setTimeout(() => {
       const it = items[sortedIdx];
       setCard({

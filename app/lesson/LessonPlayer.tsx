@@ -1161,9 +1161,13 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
    *  During active exercises the mood still shifts but speech is suppressed. */
   const flashReaction = useCallback(
     (kind: "correct" | "wrong") => {
-      const silent = EXERCISE_SILENT_SCREENS.includes(screen);
+      // During exercises, skip ENTIRELY — the exercise owns its own feedback
+      // (particles, sounds, floating text). Mood flips were causing Adam to
+      // re-animate every correct/wrong answer, which read as "Adam keeps
+      // coming in and out too frequently". Leave him in his idle pose.
+      if (EXERCISE_SILENT_SCREENS.includes(screen)) return;
       if (kind === "correct") {
-        const quip = silent ? "" : pickQuip(CORRECT_QUIPS);
+        const quip = pickQuip(CORRECT_QUIPS);
         // Coin-flip which character speaks; the other shows thumbsup.
         if (Math.random() < 0.5) {
           setAdamReaction({ mood: "thumbsup", message: quip });
@@ -1175,7 +1179,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
       } else {
         // Spec: Layla speaks the thinking quip, Adam shows thinking mood.
         setAdamReaction({ mood: "thinking", message: "" });
-        setLaylaReaction({ mood: "thinking", message: silent ? "" : pickQuip(WRONG_QUIPS) });
+        setLaylaReaction({ mood: "thinking", message: pickQuip(WRONG_QUIPS) });
       }
       if (reactionRestoreRef.current) window.clearTimeout(reactionRestoreRef.current);
       reactionRestoreRef.current = window.setTimeout(() => {
@@ -2236,7 +2240,6 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
           <FullScene bg="linear-gradient(180deg, #1a1a0a 0%, #1a1033 100%)" glow="radial-gradient(circle, rgba(59,130,246,0.2), transparent)">
           <div style={{ textAlign: "center" }}>
             <h1 data-split style={{ color: "#fff", fontSize: 40, fontWeight: 900, marginBottom: 8, textShadow: "0 0 24px rgba(59,130,246,0.5)" }}>What is a Password?</h1>
-null
             <p style={{ color: "#9ca3af", marginBottom: 8, fontSize: 16 }}>Tap each item to lock it with a password!</p>
             <p style={{ color: "#f59e0b", fontSize: 20, fontWeight: 700, marginBottom: 16 }}>🔒 {lockedItems.size}/3</p>
             <div style={{ display: "flex", gap: 16, justifyContent: "center", flexWrap: "wrap", marginBottom: 24 }}>
@@ -2463,19 +2466,26 @@ null
           <FullScene bg="linear-gradient(180deg, #1a1508 0%, #1a1033 100%)" glow="radial-gradient(circle, rgba(245,158,11,0.25), transparent)">
           <div style={{ textAlign: "center" }}>
             <h1 data-split style={{ color: "#fff", fontSize: 40, fontWeight: 900, marginBottom: 16, textShadow: "0 0 20px rgba(245,158,11,0.4)" }}>⭐ The 5 Golden Rules!</h1>
-null
-            <div style={{ display: "flex", flexDirection: "column", gap: 16, maxWidth: 800, margin: "0 auto 24px" }}>
+            <div style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))",
+              gap: 14,
+              maxWidth: 900,
+              margin: "0 auto 24px",
+            }}>
               {RULES.map((rule, i) => {
                 const isRevealed = revealedRules.has(i);
                 const isFlipping = flippingRule === i;
                 const isDone = answeredRules.has(i);
                 return (
-                  <div key={i}>
+                  <div key={i} style={{ gridColumn: isRevealed ? "1 / -1" : "span 1" }}>
                     <motion.div
                       style={{
-                        borderRadius: 24, padding: 20, minHeight: 120,
+                        borderRadius: 18,
+                        padding: isRevealed ? 18 : 14,
+                        minHeight: isRevealed ? 120 : 140,
                         background: !isRevealed
-                          ? "linear-gradient(135deg, #f59e0b, #fbbf24, #f59e0b)"
+                          ? "linear-gradient(135deg, #b45309, #f59e0b, #fbbf24 55%, #b45309)"
                           : "rgba(255,255,255,0.04)",
                         backdropFilter: isRevealed ? "blur(12px)" : undefined,
                         border: !isRevealed ? "2px solid rgba(245,158,11,0.5)"
@@ -2484,11 +2494,12 @@ null
                         borderLeft: isRevealed ? (isDone ? "4px solid #f59e0b" : "4px solid rgba(245,158,11,0.3)") : undefined,
                         position: "relative", overflow: "hidden",
                         cursor: !isRevealed ? "pointer" : "default",
+                        boxShadow: !isRevealed ? "0 8px 18px rgba(180,83,9,0.35), inset 0 2px 6px rgba(255,255,255,0.25)" : undefined,
                       }}
                       animate={!isRevealed ? (isFlipping ? { rotateY: [0, 90, 0] } : { rotate: [0, -1.5, 0, 1.5, 0] }) : {}}
-                      transition={!isRevealed ? (isFlipping ? { duration: 0.6 } : { duration: 3, repeat: Infinity, ease: "easeInOut" }) : { duration: 0.3 }}
-                      whileHover={!isRevealed ? { scale: 1.02 } : {}}
-                      whileTap={!isRevealed ? { scale: 0.98 } : {}}
+                      transition={!isRevealed ? (isFlipping ? { duration: 0.6 } : { duration: 3, repeat: Infinity, ease: "easeInOut", delay: i * 0.15 }) : { duration: 0.3 }}
+                      whileHover={!isRevealed ? { scale: 1.04, y: -2 } : {}}
+                      whileTap={!isRevealed ? { scale: 0.96 } : {}}
                       onClick={() => {
                         if (isRevealed || isFlipping) return;
                         setFlippingRule(i);
@@ -2499,9 +2510,13 @@ null
                       }}
                     >
                       {!isRevealed ? (
-                        <div style={{ display: "flex", alignItems: "center", justifyContent: "center", minHeight: 80 }}>
-                          <span style={{ fontSize: 18, fontWeight: 900, color: "#1a1033", position: "relative", zIndex: 1 }}>
-                            Tap to reveal Rule {i + 1}! ✨
+                        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", minHeight: 110, gap: 6 }}>
+                          <div style={{ fontSize: 44, lineHeight: 1, filter: "drop-shadow(0 2px 4px rgba(0,0,0,0.3))" }}>🪙</div>
+                          <span style={{ fontSize: 13, fontWeight: 900, color: "#1a1033", letterSpacing: 0.5, textAlign: "center" }}>
+                            RULE {i + 1}
+                          </span>
+                          <span style={{ fontSize: 11, fontWeight: 700, color: "#4a2a08", textAlign: "center" }}>
+                            Tap to unlock ✨
                           </span>
                         </div>
                       ) : (
@@ -2610,7 +2625,6 @@ null
           <FullScene bg="linear-gradient(180deg, #1a0f05 0%, #1a1033 100%)" glow="radial-gradient(circle, rgba(249,115,22,0.15), transparent)">
           <div style={{ textAlign: "center" }}>
             <h1 data-split style={{ color: "#fff", fontSize: 38, fontWeight: 900, marginBottom: 4, textShadow: "0 0 20px rgba(249,115,22,0.4)" }}>🔍 Spot the Tricks!</h1>
-null
             <p style={{ color: "#9ca3af", marginBottom: 16, fontSize: 16 }}>The Raccoon sends FAKE messages to trick people. Here&apos;s how to spot them!</p>
             {trickCard < 4 ? (
               <AnimatePresence mode="wait">
@@ -2711,9 +2725,14 @@ null
                   <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.3, type: "spring" }}>
                     {stars(bossScore >= 8 ? 3 : bossScore >= 6 ? 2 : 1)}
                   </motion.div>
-                  <motion.img src="/characters/celebrating.png" alt="Celebrating" initial={{ opacity: 0, y: 30 }}
-                    animate={{ opacity: 1, y: [0, -8, 0] }} transition={{ y: { duration: 2, repeat: Infinity }, opacity: { delay: 0.5, duration: 0.5 } }}
-                    style={{ width: 180, borderRadius: 20, margin: "16px auto", display: "block", border: "3px solid #f59e0b", boxShadow: "0 0 30px rgba(245,158,11,0.4)" }} />
+                  <motion.div
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={{ opacity: 1, y: [0, -8, 0] }}
+                    transition={{ y: { duration: 2, repeat: Infinity }, opacity: { delay: 0.5, duration: 0.5 } }}
+                    style={{ display: "inline-block", padding: "12px 12px 6px", margin: "16px auto", borderRadius: 20, border: "3px solid #f59e0b", boxShadow: "0 0 30px rgba(245,158,11,0.4)", background: "rgba(0,0,0,0.2)", overflow: "visible" }}
+                  >
+                    <img src="/characters/celebrating.png" alt="Celebrating" style={{ width: 180, display: "block", objectFit: "contain" }} />
+                  </motion.div>
                   <motion.div initial={{ opacity: 0, scale: 0.5 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.8 }}
                     style={{ background: "rgba(245,158,11,0.15)", border: "2px solid rgba(245,158,11,0.4)", borderRadius: 16, padding: "8px 20px", display: "inline-block", marginBottom: 16 }}>
                     <span style={{ color: "#f59e0b", fontSize: 14, fontWeight: 700 }}>+50 bonus coins!</span>
@@ -2782,17 +2801,26 @@ null
           <FullScene bg="linear-gradient(180deg, #1a1508 0%, #0a0a1a 100%)" glow="radial-gradient(circle, rgba(245,158,11,0.3), transparent)">
           <div style={{ textAlign: "center" }}>
             <h1 data-split style={{ color: "#fff", fontSize: 44, fontWeight: 900, marginBottom: 16, textShadow: "0 0 30px rgba(245,158,11,0.5)" }}>🏆 You Did It!<img src="/characters/celebrating.png" width={44} height={44} alt="" style={{ display: "inline-block", verticalAlign: "middle", marginLeft: 8, borderRadius: 999 }} /></h1>
-            <motion.img
-              src="/characters/celebrating.png"
-              alt="Adam and Layla celebrating"
+            <motion.div
               animate={{ y: [0, -12, 0] }}
               transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
               style={{
-                width: 200, borderRadius: 24, margin: "0 auto 16px", display: "block",
-                boxShadow: "0 0 40px rgba(245,158,11,0.4)",
+                display: "inline-block",
+                padding: "14px 16px 8px",
+                margin: "0 auto 16px",
+                borderRadius: 24,
                 border: "3px solid #f59e0b",
+                boxShadow: "0 0 40px rgba(245,158,11,0.4)",
+                background: "rgba(0,0,0,0.22)",
+                overflow: "visible",
               }}
-            />
+            >
+              <img
+                src="/characters/celebrating.png"
+                alt="Adam and Layla celebrating"
+                style={{ width: 200, display: "block", objectFit: "contain" }}
+              />
+            </motion.div>
             <p style={{ color: "#d1d5db", fontSize: 18, marginBottom: 24 }}>
               Thanks to YOU, Adam and Layla now know how to stay safe!
             </p>
@@ -2832,7 +2860,7 @@ null
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ type: "spring", stiffness: 300, damping: 20 }}
               >
-                {btn("Get your certificate! 🏆 →", () => navigate(17))}
+                {btn(IS_MILESTONE_WEEK ? "Get your certificate! 🏆 →" : "Finish Week →", () => navigate(17))}
               </motion.div>
             )}
           </div>
@@ -2866,16 +2894,23 @@ null
             >
               <div style={{ position: "relative", zIndex: 1 }}>
                 <div style={{ fontSize: 14, color: "#9ca3af", letterSpacing: 2, marginBottom: 8 }}>ALGORITHMX</div>
-                <div style={{ fontSize: 40, marginBottom: 4 }}>🛡️</div>
-                <h1 data-split style={{ color: "#fff", fontSize: 22, fontWeight: 900, margin: "0 0 4px" }}>Certificate of Achievement</h1>
+                <div style={{ fontSize: 40, marginBottom: 4 }}>{IS_MILESTONE_WEEK ? "🏅" : "🎉"}</div>
+                <h1 data-split style={{ color: "#fff", fontSize: 22, fontWeight: 900, margin: "0 0 4px" }}>
+                  {IS_MILESTONE_WEEK ? "Certificate of Achievement" : "Week Complete!"}
+                </h1>
                 <div style={{ width: 60, height: 3, background: GRAD, borderRadius: 999, margin: "8px auto 16px" }} />
-                <p style={{ color: "#d1d5db", marginBottom: 4 }}>Presented to</p>
+                <p style={{ color: "#d1d5db", marginBottom: 4 }}>{IS_MILESTONE_WEEK ? "Presented to" : "Well done,"}</p>
                 <h2 className="gradient-text" style={{
                   fontSize: 28, fontWeight: 900, margin: "0 0 8px",
                   background: GRAD, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent",
                 }}>{childName}</h2>
                 <p style={{ color: "#f59e0b", fontSize: 16, fontWeight: 700, marginBottom: 8 }}>CYBER HERO</p>
-                <p style={{ color: "#9ca3af", fontSize: 14, marginBottom: 4 }}>Week 1, Passwords: The Secret Code</p>
+                <p style={{ color: "#9ca3af", fontSize: 14, marginBottom: 4 }}>Week {CURRENT_WEEK}: Passwords — The Secret Code</p>
+                {!IS_MILESTONE_WEEK && (
+                  <p style={{ color: "#60a5fa", fontSize: 12, margin: "4px 0 6px", fontStyle: "italic" }}>
+                    🏅 Unlock your first certificate at Week 5!
+                  </p>
+                )}
                 <p style={{ color: "#6b7280", fontSize: 13, marginBottom: 8 }}>{today}</p>
                 {stars(finalStars)}
                 <div style={{
@@ -2987,7 +3022,9 @@ null
               ) : (
                 card(
                   <>
-                    <img src="/characters/celebrating.png" alt="Adam and Layla celebrating" style={{ width: 160, borderRadius: 20, margin: "0 auto 16px", display: "block" }} />
+                    <div style={{ display: "inline-block", padding: "10px 10px 4px", margin: "0 auto 16px", borderRadius: 18, border: "2px solid rgba(245,158,11,0.5)", background: "rgba(0,0,0,0.2)", overflow: "visible" }}>
+                      <img src="/characters/celebrating.png" alt="Adam and Layla celebrating" style={{ width: 160, display: "block", objectFit: "contain" }} />
+                    </div>
                     <p style={{ color: "#9ca3af", fontSize: 16 }}>Outro video coming soon!</p>
                   </>,
                   { maxWidth: 400, margin: "0 auto 24px" }

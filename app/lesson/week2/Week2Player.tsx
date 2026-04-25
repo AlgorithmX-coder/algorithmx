@@ -2201,7 +2201,9 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
                         style={{ width: 100, height: 100, borderRadius: "50%", background: "linear-gradient(135deg, #f59e0b, #fbbf24)", margin: "0 auto 16px", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 40 }}>🏦</motion.div>
                       <h2 style={{ color: "#f59e0b", fontSize: 24, fontWeight: 900, marginBottom: 8 }}>THE VAULT HELD!</h2>
                       <p style={{ color: "#d1d5db", marginBottom: 4 }}>You blocked {vaultScore}/{VAULT_ATTACKS.length} attacks!</p>
-                      <img src="/characters/celebrating.png" alt="Adam and Layla safe" style={{ width: 140, borderRadius: 20, margin: "12px auto", display: "block" }} />
+                      <div style={{ display: "inline-block", padding: "10px 10px 4px", margin: "12px auto", borderRadius: 18, border: "2px solid rgba(245,158,11,0.5)", background: "rgba(0,0,0,0.2)", overflow: "visible" }}>
+                        <img src="/characters/celebrating.png" alt="Adam and Layla safe" style={{ width: 140, display: "block", objectFit: "contain" }} />
+                      </div>
                     </>
                   ) : (
                     <>
@@ -2283,9 +2285,10 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
                       </motion.div>
                     ))}
                   </div>
-                  <motion.img src="/characters/celebrating.png" alt="Adam and Layla celebrating"
-                    animate={{ y: [0, -8, 0] }} transition={{ duration: 2, repeat: Infinity }}
-                    style={{ width: 140, borderRadius: 20, margin: "0 auto 16px", display: "block", border: "3px solid #f59e0b", boxShadow: "0 0 30px rgba(245,158,11,0.3)" }} />
+                  <motion.div animate={{ y: [0, -8, 0] }} transition={{ duration: 2, repeat: Infinity }}
+                    style={{ display: "inline-block", padding: "12px 12px 6px", margin: "0 auto 16px", borderRadius: 20, border: "3px solid #f59e0b", boxShadow: "0 0 30px rgba(245,158,11,0.3)", background: "rgba(0,0,0,0.2)", overflow: "visible" }}>
+                    <img src="/characters/celebrating.png" alt="Adam and Layla celebrating" style={{ width: 140, display: "block", objectFit: "contain" }} />
+                  </motion.div>
                   <p style={{ color: "#d1d5db", fontSize: 14, marginBottom: 20, maxWidth: 400, margin: "0 auto 20px" }}>
                     You&apos;ve completed Mission 2! Adam and Layla&apos;s personal information is SAFE. The Raccoon&apos;s masterplan is destroyed!
                   </p>
