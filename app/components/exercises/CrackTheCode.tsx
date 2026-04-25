@@ -41,7 +41,10 @@ const RINGS: RingConfig[] = [
   {
     id: "length",
     label: "LENGTH",
-    options: ["4 characters", "6 characters", "8 characters", "12+ characters"],
+    // Length options match the rest of the Cyber Heroes course, where
+    // we consistently teach "at least 8 characters" as the safe target.
+    // Anything 8+ is correct; the lower three are the wrong/weak answers.
+    options: ["3 characters", "5 characters", "6 characters", "8+ characters"],
     correct: 3,
     colour: "#22c55e",
     radius: 195,

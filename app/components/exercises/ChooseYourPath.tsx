@@ -221,7 +221,18 @@ export default function ChooseYourPath({
   }, [idx, scenario, showIntro]);
 
   const pickDoor = (choiceIdx: number) => {
-    if (!scenario || phase !== "choice") return;
+    if (!scenario) return;
+    // Allow picks during "setup" too — kids who already get the gist
+    // shouldn't be forced to wait for the typing animation. We still
+    // bail in "consequence" / "review" so a player can't double-click
+    // through the explanation panel.
+    if (phase !== "setup" && phase !== "choice") return;
+    // If they jumped the gun, finish the typewriter so the setup text
+    // is fully read before the consequence appears.
+    if (phase === "setup") {
+      if (typeTimerRef.current) clearInterval(typeTimerRef.current);
+      setTyped(scenario.setup.length);
+    }
     setPicked(choiceIdx);
     setPhase("consequence");
     const choice = scenario.choices[choiceIdx];
@@ -266,7 +277,13 @@ export default function ChooseYourPath({
   if (!scenario) return null;
 
   const typedText = scenario.setup.slice(0, typed);
-  const showDoors = phase !== "setup";
+  // Doors shown as soon as a scenario is loaded. Previously gated on the
+  // type-out animation completing (`phase !== "setup"`), which left the
+  // player stuck staring at a "Click a door to choose" hint with no
+  // visible doors if the typing effect failed to advance the phase.
+  // Doors are non-interactive until phase === "choice"; the wrapper
+  // grays them out during the setup phase via the `picking` flag.
+  const showDoors = !!scenario;
   const stars =
     correctCount === list.length
       ? 3

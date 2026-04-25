@@ -605,10 +605,14 @@ export default function FirewallBuilder({
 
       // Legend row
       ctx.font = "800 13px 'Space Grotesk', sans-serif";
-      ctx.fillStyle = "#94a3b8";
-      ctx.textAlign = "center";
-      ctx.textBaseline = "middle";
-      ctx.fillText("🟢 GREEN = Catch it!   🔴 RED = Press SPACE to reject!", CANVAS_W / 2, 34);
+      // Static legend only when there's NO falling block — otherwise it
+      // overlaps with the big CATCH IT! / REJECT IT! prompt below.
+      if (!s.falling) {
+        ctx.fillStyle = "#94a3b8";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillText("🟢 GREEN = Catch it!   🔴 RED = Press SPACE to reject!", CANVAS_W / 2, 34);
+      }
 
       // Huge CATCH IT! / REJECT IT! indicator above the play area
       if (s.falling) {

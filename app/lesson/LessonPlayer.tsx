@@ -2233,23 +2233,15 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
   const navDirectionRef = useRef<"forward" | "back">("forward");
 
   // Keyboard navigation: Right Arrow = next, Left Arrow = back.
-  useEffect(() => {
-    const onKey = (e: KeyboardEvent) => {
-      // Ignore when typing in an input or when a cutscene is playing.
-      const target = e.target as HTMLElement | null;
-      if (target && (target.tagName === "INPUT" || target.tagName === "TEXTAREA" || target.isContentEditable)) return;
-      if (cutscene) return;
-      if (e.key === "ArrowRight" && screen < 18) {
-        e.preventDefault();
-        navigate(screen + 1);
-      } else if (e.key === "ArrowLeft" && screen > 0) {
-        e.preventDefault();
-        navigate(screen - 1);
-      }
-    };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [screen, cutscene, navigate]);
+  // Keyboard arrow navigation between lesson screens is intentionally
+  // DISABLED. Exercises (ProtectTheData shield, CyberMaze movement,
+  // CrackTheCode dials, FirewallBuilder paddle, etc.) use arrow keys for
+  // gameplay, and the global lesson navigator was hijacking those
+  // presses and skipping the player out of the active exercise. The
+  // lesson is meant to progress in order via the on-screen buttons —
+  // there's no scenario where jumping forward by keyboard is correct.
+  // Re-introduce only behind a modifier (e.g. Shift+Arrow) if you ever
+  // need a debug-style shortcut, never bare arrow keys.
 
   const dismissInstr = useCallback((scr: number) => {
     setShowInstr((prev) => ({ ...prev, [scr]: false }));

@@ -230,30 +230,60 @@ export default function ProtectTheData({
         Math.min(CANVAS_W - SHIELD_W / 2, x)
       );
     };
+    // Mouse: track movement AND treat clicks as a snap-to-tap so kids
+    // playing on a trackpad without dragging still work.
     const onMouse = (e: MouseEvent) => onMove(canvasToLocal(e.clientX));
-    const onTouch = (e: TouchEvent) => {
+    const onMouseDown = (e: MouseEvent) => onMove(canvasToLocal(e.clientX));
+    // Touch: respond to both touch start and touch move so a tap on the
+    // tablet snaps the shield to that finger position immediately.
+    const onTouchStart = (e: TouchEvent) => {
       if (e.touches.length > 0) onMove(canvasToLocal(e.touches[0].clientX));
     };
+    const onTouchMove = (e: TouchEvent) => {
+      if (e.touches.length > 0) onMove(canvasToLocal(e.touches[0].clientX));
+    };
+    // Keyboard: arrow keys + WASD. Previous implementation only handled
+    // ArrowLeft/Right; add A/D so kids can use either side of the
+    // keyboard, and W/S as no-ops so accidental presses don't bubble
+    // up and scroll the page. Using `e.code` so layouts are predictable.
+    const NAV_CODES = new Set([
+      "ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown",
+      "KeyA", "KeyD", "KeyW", "KeyS",
+    ]);
     const onKey = (e: KeyboardEvent) => {
-      const step = 16;
-      if (e.key === "ArrowLeft") {
+      // Don't interfere when typing.
+      const target = e.target as HTMLElement | null;
+      if (target && (target.tagName === "INPUT" || target.tagName === "TEXTAREA" || target.isContentEditable)) return;
+      if (!NAV_CODES.has(e.code)) return;
+      const step = 24;
+      if (e.code === "ArrowLeft" || e.code === "KeyA") {
         state.current.shieldTarget = Math.max(
           SHIELD_W / 2,
           state.current.shieldTarget - step
         );
-      } else if (e.key === "ArrowRight") {
+        e.preventDefault();
+      } else if (e.code === "ArrowRight" || e.code === "KeyD") {
         state.current.shieldTarget = Math.min(
           CANVAS_W - SHIELD_W / 2,
           state.current.shieldTarget + step
         );
+        e.preventDefault();
+      } else {
+        // Up/Down/W/S — block default scroll so the lesson doesn't jump
+        // around while the player is concentrating on the canvas.
+        e.preventDefault();
       }
     };
     wrap.addEventListener("mousemove", onMouse);
-    wrap.addEventListener("touchmove", onTouch, { passive: true });
+    wrap.addEventListener("mousedown", onMouseDown);
+    wrap.addEventListener("touchstart", onTouchStart, { passive: true });
+    wrap.addEventListener("touchmove", onTouchMove, { passive: true });
     window.addEventListener("keydown", onKey);
     return () => {
       wrap.removeEventListener("mousemove", onMouse);
-      wrap.removeEventListener("touchmove", onTouch);
+      wrap.removeEventListener("mousedown", onMouseDown);
+      wrap.removeEventListener("touchstart", onTouchStart);
+      wrap.removeEventListener("touchmove", onTouchMove);
       window.removeEventListener("keydown", onKey);
     };
   }, []);
