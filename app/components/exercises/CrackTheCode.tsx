@@ -232,17 +232,20 @@ export default function CrackTheCode({
         width: "100%",
         minHeight: 560,
         maxHeight: "calc(100vh - 140px)",
-        borderRadius: 24,
+        borderRadius: 28,
         overflow: "hidden",
         background:
-          "radial-gradient(circle at 50% 45%, rgba(168,85,247,0.15), transparent 60%), linear-gradient(180deg, #10102a 0%, #060714 100%)",
-        border: "1px solid rgba(255,255,255,0.08)",
-        color: "#e2e8f0",
+          "linear-gradient(180deg, #2a1240 0%, #5a2540 35%, #a04a4a 70%, #e88550 92%, #fcd58a 100%)",
+        boxShadow:
+          "0 40px 90px -30px rgba(40, 22, 12, 0.55), 0 0 0 1px rgba(255,210,170,0.25) inset",
+        color: "#fff7e6",
         padding: "20px 16px 36px",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
         userSelect: "none",
+        fontFamily:
+          "ui-rounded, 'Fredoka', 'Quicksand', system-ui, -apple-system, sans-serif",
       }}
     >
       <div
@@ -816,42 +819,68 @@ export default function CrackTheCode({
             type="button"
             onClick={attemptUnlock}
             style={{
-              background: "linear-gradient(135deg, #a855f7, #6366f1)",
-              color: "#fff",
+              background: "linear-gradient(135deg, #ffd58a, #ff9b4a)",
+              color: "#3a1a06",
               fontWeight: 900,
               letterSpacing: 2,
-              borderRadius: 14,
+              borderRadius: 999,
               padding: "14px 40px",
               fontSize: 17,
               border: "none",
               cursor: "pointer",
-              boxShadow: "0 0 22px rgba(168,85,247,0.5)",
+              fontFamily: "inherit",
+              boxShadow:
+                "0 18px 36px -10px rgba(255,120,40,0.7), 0 0 0 1px rgba(255,235,200,0.6) inset, 0 -3px 0 rgba(180,80,30,0.45) inset",
             }}
           >
             {attempts === 0 ? "UNLOCK" : "TRY AGAIN"}
           </button>
         ) : (
-          <div style={{ animation: "ccFadeIn 0.6s ease-out both" }}>
+          <div
+            style={{
+              animation: "ccFadeIn 0.6s ease-out both",
+              padding: "16px 24px",
+              background: "rgba(40, 18, 38, 0.7)",
+              backdropFilter: "blur(8px)",
+              WebkitBackdropFilter: "blur(8px)",
+              borderRadius: 18,
+              borderStyle: "solid",
+              borderWidth: 1,
+              borderColor: "rgba(255, 220, 180, 0.4)",
+            }}
+          >
             <div
               style={{
-                fontSize: 28,
-                fontWeight: 900,
-                background:
-                  "linear-gradient(135deg, #fde047, #f59e0b, #ef4444)",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-                letterSpacing: 2,
+                fontSize: 11,
+                letterSpacing: 5,
+                color: "#ffd58a",
+                fontWeight: 800,
+                textTransform: "uppercase",
+                marginBottom: 4,
               }}
             >
-              VAULT CRACKED!
+              ✦ Vault Cracked ✦
+            </div>
+            <div
+              style={{
+                fontSize: 30,
+                fontWeight: 900,
+                background:
+                  "linear-gradient(135deg, #ffd58a, #ff9b4a, #d4733a)",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+                letterSpacing: 1,
+              }}
+            >
+              UNLOCKED!
             </div>
             <div style={{ fontSize: 36, margin: "10px 0" }}>
               {"★".repeat(stars)}
-              <span style={{ color: "rgba(148,163,184,0.4)" }}>
+              <span style={{ color: "rgba(255, 233, 200, 0.3)" }}>
                 {"★".repeat(3 - stars)}
               </span>
             </div>
-            <div style={{ color: "#94a3b8", fontSize: 14, marginBottom: 14 }}>
+            <div style={{ color: "#ffe9c8", opacity: 0.8, fontSize: 13, marginBottom: 16, letterSpacing: 1 }}>
               Solved in {attempts} {attempts === 1 ? "attempt" : "attempts"}
             </div>
             <div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
@@ -862,15 +891,18 @@ export default function CrackTheCode({
                   onComplete(stars);
                 }}
                 style={{
-                  background: "linear-gradient(135deg, #f97316, #f59e0b)",
-                  color: "#fff",
+                  background: "linear-gradient(135deg, #ffd58a, #ff9b4a)",
+                  color: "#3a1a06",
                   fontWeight: 800,
-                  borderRadius: 14,
+                  borderRadius: 999,
                   padding: "14px 36px",
-                  fontSize: 17,
+                  fontSize: 16,
                   border: "none",
                   cursor: "pointer",
-                  boxShadow: "0 0 18px rgba(249,115,22,0.5)",
+                  fontFamily: "inherit",
+                  letterSpacing: 0.5,
+                  boxShadow:
+                    "0 18px 36px -10px rgba(255,120,40,0.7), 0 0 0 1px rgba(255,235,200,0.6) inset, 0 -3px 0 rgba(180,80,30,0.45) inset",
                 }}
               >
                 Continue &rarr;
@@ -879,14 +911,18 @@ export default function CrackTheCode({
                 type="button"
                 onClick={() => { playSound("select"); resetExercise(); }}
                 style={{
-                  background: "transparent",
-                  color: "#93c5fd",
-                  fontWeight: 700,
-                  borderRadius: 14,
+                  background: "rgba(50, 20, 35, 0.65)",
+                  backdropFilter: "blur(6px)",
+                  WebkitBackdropFilter: "blur(6px)",
+                  color: "#ffe9c8",
+                  fontWeight: 800,
+                  borderRadius: 999,
                   padding: "12px 24px",
                   fontSize: 14,
-                  border: "2px solid rgba(96,165,250,0.55)",
+                  border: "none",
                   cursor: "pointer",
+                  fontFamily: "inherit",
+                  letterSpacing: 0.5,
                 }}
               >
                 🔄 Try Again

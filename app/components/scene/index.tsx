@@ -628,6 +628,186 @@ export function SceneKeyframes() {
   );
 }
 
+/* ───────────────────────── PIXAR FINISH OVERLAY ───────────────────────── */
+
+/**
+ * Standardised end-of-exercise results overlay used by every game.
+ * Glass dusk plate over the scene canvas, storybook badge, gradient
+ * title, optional accuracy + sub-line, three-star pop on stagger,
+ * design-token primary/secondary buttons.
+ */
+export function PixarFinishOverlay({
+  badge = "Mission Complete",
+  title,
+  accuracy,
+  subline,
+  stars,
+  onContinue,
+  onRetry,
+  continueLabel = "Continue →",
+  retryLabel = "↻ Try Again",
+}: {
+  badge?: string;
+  title: string;
+  accuracy?: number;
+  subline?: string;
+  stars: number;
+  onContinue: () => void;
+  onRetry?: () => void;
+  continueLabel?: string;
+  retryLabel?: string;
+}) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, scale: 0.95 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 0.4 }}
+      style={{
+        position: "absolute",
+        inset: 0,
+        background:
+          "linear-gradient(180deg, rgba(40, 18, 38, 0.95) 0%, rgba(20, 8, 24, 0.96) 100%)",
+        backdropFilter: "blur(8px)",
+        WebkitBackdropFilter: "blur(8px)",
+        color: COLOR.cream,
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        textAlign: "center",
+        padding: 28,
+        gap: 4,
+        fontFamily: FONT_STACK,
+        zIndex: 30,
+      }}
+    >
+      <div
+        style={{
+          fontSize: 12,
+          fontWeight: 800,
+          letterSpacing: 5,
+          color: "#ffd58a",
+          textTransform: "uppercase",
+          marginBottom: 4,
+        }}
+      >
+        ✦ {badge} ✦
+      </div>
+      <div
+        style={{
+          fontSize: 36,
+          fontWeight: 900,
+          background:
+            "linear-gradient(135deg, #ffd58a, #ff9b4a, #d4733a)",
+          WebkitBackgroundClip: "text",
+          WebkitTextFillColor: "transparent",
+          letterSpacing: 1,
+        }}
+      >
+        {title}
+      </div>
+      {typeof accuracy === "number" && (
+        <div style={{ marginTop: 4, fontSize: 16, opacity: 0.92 }}>
+          Accuracy <strong style={{ color: "#a8e3bb" }}>{accuracy}%</strong>
+        </div>
+      )}
+      {subline && (
+        <div
+          style={{
+            marginTop: 4,
+            fontSize: 12,
+            opacity: 0.75,
+            letterSpacing: 1,
+          }}
+        >
+          {subline}
+        </div>
+      )}
+      <div style={{ display: "flex", gap: 4, margin: "12px 0" }}>
+        {[0, 1, 2].map((i) => (
+          <motion.span
+            key={i}
+            initial={{ opacity: 0, scale: 0, rotate: -180 }}
+            animate={{
+              opacity: i < stars ? 1 : 0.25,
+              scale: 1,
+              rotate: 0,
+            }}
+            transition={{ ...SPRING.bouncy, delay: 0.3 + i * 0.18 }}
+            style={{
+              fontSize: 38,
+              filter:
+                i < stars
+                  ? "drop-shadow(0 0 14px rgba(255, 200, 100, 0.7))"
+                  : "grayscale(0.6)",
+            }}
+          >
+            ★
+          </motion.span>
+        ))}
+      </div>
+      <div
+        style={{
+          display: "flex",
+          gap: 12,
+          justifyContent: "center",
+          flexWrap: "wrap",
+          marginTop: 8,
+        }}
+      >
+        <motion.button
+          type="button"
+          onClick={onContinue}
+          whileHover={{ y: -3, scale: 1.04 }}
+          whileTap={{ scale: 0.97 }}
+          transition={SPRING.snappy}
+          style={{
+            border: "none",
+            cursor: "pointer",
+            padding: "14px 36px",
+            fontSize: 16,
+            fontWeight: 800,
+            color: COLOR.goldDark,
+            background: `linear-gradient(135deg, ${COLOR.goldLight}, ${COLOR.goldMid})`,
+            borderRadius: 999,
+            fontFamily: "inherit",
+            letterSpacing: 0.5,
+            boxShadow: SHADOW.primaryButton,
+          }}
+        >
+          {continueLabel}
+        </motion.button>
+        {onRetry && (
+          <motion.button
+            type="button"
+            onClick={onRetry}
+            whileHover={{ scale: 1.04 }}
+            whileTap={{ scale: 0.97 }}
+            transition={SPRING.snappy}
+            style={{
+              border: "none",
+              cursor: "pointer",
+              padding: "12px 24px",
+              fontSize: 14,
+              fontWeight: 800,
+              color: COLOR.cream,
+              background: "rgba(50, 20, 35, 0.65)",
+              backdropFilter: "blur(6px)",
+              WebkitBackdropFilter: "blur(6px)",
+              borderRadius: 999,
+              fontFamily: "inherit",
+              letterSpacing: 0.5,
+              boxShadow: SHADOW.drop,
+            }}
+          >
+            {retryLabel}
+          </motion.button>
+        )}
+      </div>
+    </motion.div>
+  );
+}
+
 /* ───────────────────────── EXERCISE FRAME ───────────────────────── */
 
 /**

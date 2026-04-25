@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { playSound } from "@/app/lib/sounds";
 import { correctAnswerBurst } from "@/app/lib/celebrations";
 import ExerciseIntro from "./ExerciseIntro";
+import { PixarFinishOverlay } from "@/app/components/scene";
 
 export interface SpamEmail {
   sender: string;
@@ -859,11 +860,15 @@ export default function SpamBlaster({
         maxWidth: 760,
         margin: "0 auto",
         maxHeight: "calc(100vh - 140px)",
-        borderRadius: 24,
+        borderRadius: 28,
         overflow: "hidden",
-        background: "linear-gradient(180deg, #05060f 0%, #010106 100%)",
-        border: "1px solid rgba(255,255,255,0.08)",
+        background:
+          "linear-gradient(180deg, #2a1240 0%, #5a2540 35%, #a04a4a 70%, #e88550 92%, #fcd58a 100%)",
+        boxShadow:
+          "0 40px 90px -30px rgba(40, 22, 12, 0.55), 0 0 0 1px rgba(255,210,170,0.25) inset",
         touchAction: "none",
+        fontFamily:
+          "ui-rounded, 'Fredoka', 'Quicksand', system-ui, -apple-system, sans-serif",
       }}
     >
       <canvas
@@ -878,83 +883,20 @@ export default function SpamBlaster({
         aria-label="Spam Blaster game"
       />
       {s.finished && (
-        <div
-          style={{
-            position: "absolute",
-            inset: 0,
-            background: "rgba(4,6,14,0.94)",
-            backdropFilter: "blur(6px)",
-            color: "#e2e8f0",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-            textAlign: "center",
-            padding: 24,
+        <PixarFinishOverlay
+          title="DEFENCE COMPLETE!"
+          accuracy={accuracy}
+          subline={`Zapped ${s.zapped}/${s.totalPhishing} · Delivered ${s.inbox}/${s.totalSafe} · Viruses ${s.viruses}`}
+          stars={stars}
+          onContinue={() => {
+            playSound("click");
+            onComplete(s.zapped + s.inbox);
           }}
-        >
-          <div
-            style={{
-              fontSize: 30,
-              fontWeight: 900,
-              background: "linear-gradient(135deg, #60a5fa, #ef4444, #fbbf24)",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-              letterSpacing: 2,
-            }}
-          >
-            DEFENCE COMPLETE!
-          </div>
-          <div style={{ marginTop: 8, fontSize: 18 }}>Accuracy {accuracy}%</div>
-          <div style={{ fontSize: 13, color: "#94a3b8", marginTop: 4 }}>
-            Zapped {s.zapped}/{s.totalPhishing} &nbsp;·&nbsp; Delivered {s.inbox}/
-            {s.totalSafe} &nbsp;·&nbsp; Viruses {s.viruses}
-          </div>
-          <div style={{ fontSize: 36, margin: "14px 0" }}>
-            {"★".repeat(stars)}
-            <span style={{ color: "rgba(148,163,184,0.4)" }}>
-              {"★".repeat(3 - stars)}
-            </span>
-          </div>
-          <div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
-            <button
-              type="button"
-              onClick={() => {
-                playSound("click");
-                onComplete(s.zapped + s.inbox);
-              }}
-              style={{
-                background: "linear-gradient(135deg, #f97316, #f59e0b)",
-                color: "#fff",
-                fontWeight: 800,
-                borderRadius: 14,
-                padding: "14px 36px",
-                fontSize: 17,
-                border: "none",
-                cursor: "pointer",
-                boxShadow: "0 0 18px rgba(249,115,22,0.5)",
-              }}
-            >
-              Continue &rarr;
-            </button>
-            <button
-              type="button"
-              onClick={() => { playSound("select"); resetExercise(); }}
-              style={{
-                background: "transparent",
-                color: "#93c5fd",
-                fontWeight: 700,
-                borderRadius: 14,
-                padding: "12px 24px",
-                fontSize: 14,
-                border: "2px solid rgba(96,165,250,0.55)",
-                cursor: "pointer",
-              }}
-            >
-              🔄 Try Again
-            </button>
-          </div>
-        </div>
+          onRetry={() => {
+            playSound("select");
+            resetExercise();
+          }}
+        />
       )}
       {showIntro && (
         <ExerciseIntro
@@ -992,3 +934,4 @@ function roundRect(
   ctx.quadraticCurveTo(x, y, x + rad, y);
   ctx.closePath();
 }
+

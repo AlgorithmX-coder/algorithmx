@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { playSound } from "@/app/lib/sounds";
 import ExerciseIntro from "./ExerciseIntro";
 import ExerciseHowTo from "./ExerciseHowTo";
+import { PixarFinishOverlay } from "@/app/components/scene";
 
 export type ConveyorCategory = "strong" | "weak";
 
@@ -304,15 +305,17 @@ export default function ConveyorBelt({
         margin: "0 auto",
         height: 500,
         maxHeight: "calc(100vh - 140px)",
-        borderRadius: 24,
+        borderRadius: 28,
         overflow: "hidden",
         background:
-          "radial-gradient(circle at 20% 30%, rgba(249,115,22,0.18), transparent 55%)," +
-          "radial-gradient(circle at 80% 75%, rgba(168,85,247,0.18), transparent 55%)," +
-          "linear-gradient(180deg, #1a0f1e 0%, #06080f 100%)",
-        border: "1px solid rgba(255,255,255,0.08)",
-        color: "#e2e8f0",
-        fontFamily: "sans-serif",
+          "radial-gradient(ellipse at 20% 30%, rgba(255, 178, 110, 0.5), transparent 55%)," +
+          "radial-gradient(ellipse at 80% 75%, rgba(196, 81, 58, 0.4), transparent 55%)," +
+          "linear-gradient(180deg, #2a1240 0%, #5a2540 35%, #a04a4a 70%, #e88550 92%, #fcd58a 100%)",
+        boxShadow:
+          "0 40px 90px -30px rgba(40, 22, 12, 0.55), 0 0 0 1px rgba(255,210,170,0.25) inset",
+        fontFamily:
+          "ui-rounded, 'Fredoka', 'Quicksand', system-ui, -apple-system, sans-serif",
+        color: "#fff7e6",
         userSelect: "none",
         touchAction: "manipulation",
       }}
@@ -817,87 +820,21 @@ export default function ConveyorBelt({
         </div>
       )}
 
-      {/* Results */}
       {showResult && (
-        <div
-          style={{
-            position: "absolute",
-            inset: 0,
-            background: "rgba(5,8,18,0.92)",
-            backdropFilter: "blur(6px)",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-            zIndex: 20,
-            padding: 24,
-            textAlign: "center",
+        <PixarFinishOverlay
+          badge="Shift Complete"
+          title="WELL SORTED!"
+          subline={`${correctCount}/${total} correct · best streak ${bestStreak}`}
+          stars={stars}
+          onContinue={() => {
+            playSound("click");
+            onComplete(correctCount);
           }}
-        >
-          <div
-            style={{
-              fontSize: 30,
-              fontWeight: 900,
-              marginBottom: 8,
-              background:
-                "linear-gradient(135deg, #60a5fa, #22c55e, #fbbf24)",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-            }}
-          >
-            SHIFT COMPLETE!
-          </div>
-          <div style={{ fontSize: 20, color: "#e2e8f0", margin: "6px 0" }}>
-            {correctCount} / {total} correct
-          </div>
-          <div style={{ fontSize: 14, color: "#94a3b8", marginBottom: 14 }}>
-            Best streak: {bestStreak}
-          </div>
-          <div style={{ fontSize: 38, marginBottom: 16 }}>
-            {"★".repeat(stars)}
-            <span style={{ color: "rgba(148,163,184,0.4)" }}>
-              {"★".repeat(3 - stars)}
-            </span>
-          </div>
-          <div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
-            <button
-              type="button"
-              onClick={() => {
-                playSound("click");
-                onComplete(correctCount);
-              }}
-              style={{
-                background: "linear-gradient(135deg, #f97316, #f59e0b)",
-                color: "#fff",
-                fontWeight: 800,
-                borderRadius: 14,
-                padding: "14px 36px",
-                fontSize: 17,
-                border: "none",
-                cursor: "pointer",
-                boxShadow: "0 0 18px rgba(249,115,22,0.5)",
-              }}
-            >
-              Continue &rarr;
-            </button>
-            <button
-              type="button"
-              onClick={() => { playSound("select"); resetExercise(); }}
-              style={{
-                background: "transparent",
-                color: "#93c5fd",
-                fontWeight: 700,
-                borderRadius: 14,
-                padding: "12px 24px",
-                fontSize: 14,
-                border: "2px solid rgba(96,165,250,0.55)",
-                cursor: "pointer",
-              }}
-            >
-              🔄 Try Again
-            </button>
-          </div>
-        </div>
+          onRetry={() => {
+            playSound("select");
+            resetExercise();
+          }}
+        />
       )}
 
       {showIntro && (
