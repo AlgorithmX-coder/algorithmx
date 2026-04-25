@@ -3313,8 +3313,8 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
           <FullScene bg="linear-gradient(180deg, #1a0f05 0%, #1a1033 100%)" glow="radial-gradient(circle, rgba(249,115,22,0.15), transparent)">
           <style>{`
             @keyframes phEvidenceTape { 0% { background-position: 0 0; } 100% { background-position: 36px 0; } }
-            @keyframes phStampPunch { 0% { transform: translate(-50%, -50%) scale(2.6) rotate(-30deg); opacity: 0; } 60% { transform: translate(-50%, -50%) scale(0.9) rotate(-12deg); opacity: 1; } 80% { transform: translate(-50%, -50%) scale(1.05) rotate(-12deg); } 100% { transform: translate(-50%, -50%) scale(1) rotate(-12deg); opacity: 1; } }
-            @keyframes phRedlineDraw { 0% { stroke-dashoffset: 320; } 100% { stroke-dashoffset: 0; } }
+            @keyframes phStampPunch { 0% { transform: scale(2.6) rotate(-30deg); opacity: 0; } 60% { transform: scale(0.95) rotate(-14deg); opacity: 0.95; } 80% { transform: scale(1.05) rotate(-14deg); } 100% { transform: scale(1) rotate(-14deg); opacity: 0.95; } }
+            @keyframes phRedlineDraw { 0% { stroke-dashoffset: 600; } 100% { stroke-dashoffset: 0; } }
             @keyframes phMagFloat { 0%,100% { transform: translateY(0) rotate(-8deg); } 50% { transform: translateY(-8px) rotate(-4deg); } }
             @keyframes phGlitch { 0%,100% { transform: translate(0,0); } 20% { transform: translate(-1px,1px); } 40% { transform: translate(1px,-1px); } 60% { transform: translate(-1px,0); } 80% { transform: translate(0,1px); } }
             @keyframes phGlyphFloat { 0% { transform: translateY(0) rotate(0); opacity: 0; } 12% { opacity: 0.18; } 80% { opacity: 0.18; } 100% { transform: translateY(-160px) rotate(20deg); opacity: 0; } }
@@ -3420,32 +3420,48 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                         }}>
                           &ldquo;{t.fake}&rdquo;
                         </p>
-                        {/* Diagonal redline animated stroke */}
-                        <svg viewBox="0 0 600 60" style={{ position: "absolute", left: 0, right: 0, top: "50%", transform: "translateY(-50%)", width: "100%", height: 60, pointerEvents: "none" }}>
+                        {/* Diagonal redline animated stroke. preserveAspectRatio="none"
+                            so the line stretches across the full popup width
+                            regardless of viewBox vs container ratio. The
+                            dasharray is set to the full path length (~600)
+                            so the line fully draws across the message. */}
+                        <svg
+                          viewBox="0 0 600 60"
+                          preserveAspectRatio="none"
+                          style={{ position: "absolute", left: 0, right: 0, top: "50%", transform: "translateY(-50%)", width: "100%", height: 60, pointerEvents: "none" }}
+                        >
                           <line
-                            x1="20" y1="50" x2="580" y2="10"
-                            stroke="#ef4444" strokeWidth="3" strokeLinecap="round"
-                            strokeDasharray="320" strokeDashoffset="0"
-                            style={{ animation: "phRedlineDraw 1.2s ease-out 0.3s both", filter: "drop-shadow(0 0 8px #ef4444)" }}
+                            x1="10" y1="52" x2="590" y2="8"
+                            stroke="#ef4444" strokeWidth="3"
+                            strokeLinecap="round"
+                            vectorEffect="non-scaling-stroke"
+                            strokeDasharray="600"
+                            strokeDashoffset="600"
+                            style={{ animation: "phRedlineDraw 1.2s ease-out 0.3s forwards", filter: "drop-shadow(0 0 8px #ef4444)" }}
                           />
                         </svg>
                       </div>
-                      {/* REJECTED stamp */}
+                      {/* REJECTED stamp — moved to the top-right corner so
+                          the actual fake-message text remains readable.
+                          The user needs to be able to read the trick in
+                          order to learn from it. */}
                       <div
                         aria-hidden
                         style={{
                           position: "absolute",
-                          top: "50%", left: "50%",
-                          padding: "6px 18px",
+                          top: -8,
+                          right: -10,
+                          padding: "4px 14px",
                           border: "3px solid #ef4444",
                           color: "#ef4444",
                           fontFamily: "ui-monospace, monospace",
                           fontWeight: 900,
-                          fontSize: 18,
-                          letterSpacing: 4,
-                          background: "rgba(239,68,68,0.08)",
+                          fontSize: 14,
+                          letterSpacing: 3,
+                          background: "rgba(239,68,68,0.12)",
                           textShadow: "0 0 6px rgba(239,68,68,0.65)",
-                          boxShadow: "inset 0 0 0 2px rgba(239,68,68,0.3), 0 0 18px rgba(239,68,68,0.45)",
+                          boxShadow: "inset 0 0 0 2px rgba(239,68,68,0.3), 0 0 18px rgba(239,68,68,0.55)",
+                          transformOrigin: "center",
                           animation: "phStampPunch 0.9s cubic-bezier(0.4,1.4,0.5,1) 0.4s both",
                           pointerEvents: "none",
                         }}
