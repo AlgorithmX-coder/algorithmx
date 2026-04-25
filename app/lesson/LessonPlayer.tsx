@@ -3031,9 +3031,119 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
         if (showSummary[10]) return <LearnSummary message="You know the 5 Golden Rules of passwords! Follow them and the Raccoon can never get in." starCount={getStars(10)} onNext={() => dismissSummary(10, 11)} />;
         return (
           <FullScene bg="linear-gradient(180deg, #1a1508 0%, #1a1033 100%)" glow="radial-gradient(circle, rgba(245,158,11,0.25), transparent)">
-          <div style={{ textAlign: "center" }}>
-            <h1 data-split style={{ color: "#fff", fontSize: 40, fontWeight: 900, marginBottom: 16, textShadow: "0 0 20px rgba(245,158,11,0.4)" }}>⭐ The 5 Golden Rules!</h1>
+          <style>{`
+            @keyframes grCoinRise { 0% { transform: translateY(0) rotate(0deg); opacity: 0; } 12% { opacity: 0.85; } 88% { opacity: 0.85; } 100% { transform: translateY(-100vh) rotate(720deg); opacity: 0; } }
+            @keyframes grTwinkle { 0%,100% { opacity: 0.25; transform: scale(0.8); } 50% { opacity: 1; transform: scale(1.3); } }
+            @keyframes grBeamSweep { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+            @keyframes grRuneDrift { 0%,100% { transform: translate(0,0) rotate(0deg); } 50% { transform: translate(18px, -22px) rotate(8deg); } }
+            @keyframes grVaultPulse { 0%,100% { opacity: 0.18; } 50% { opacity: 0.4; } }
+            @keyframes grSparkleStreak { 0% { transform: translateX(-200%) skewX(-12deg); } 100% { transform: translateX(220%) skewX(-12deg); } }
+          `}</style>
+          <div style={{ textAlign: "center", position: "relative" }}>
+            {/* Treasure-vault animated backdrop — drifting coins, runes,
+                twinkling gold dust, sweeping beam-of-light. Sits at z 0 so
+                the rule grid lands cleanly on top. */}
+            <div aria-hidden style={{ position: "absolute", inset: -40, pointerEvents: "none", overflow: "hidden", zIndex: 0 }}>
+              {/* Pulsing vault-door arc behind the grid */}
+              <div style={{
+                position: "absolute",
+                left: "50%", top: "50%",
+                transform: "translate(-50%, -50%)",
+                width: 720, height: 720,
+                borderRadius: "50%",
+                background: "radial-gradient(circle, rgba(245,158,11,0.18), rgba(245,158,11,0) 60%)",
+                animation: "grVaultPulse 4.6s ease-in-out infinite",
+                filter: "blur(8px)",
+              }} />
+              {/* Rotating gold rays */}
+              <div style={{
+                position: "absolute",
+                left: "50%", top: "50%",
+                transform: "translate(-50%, -50%)",
+                width: 760, height: 760,
+                background: "conic-gradient(from 0deg, transparent 0deg, rgba(253,224,71,0.16) 14deg, transparent 28deg, rgba(253,224,71,0.16) 60deg, transparent 80deg, rgba(253,224,71,0.16) 110deg, transparent 130deg, rgba(253,224,71,0.16) 170deg, transparent 200deg, rgba(253,224,71,0.16) 240deg, transparent 270deg, rgba(253,224,71,0.16) 310deg, transparent 340deg)",
+                animation: "grBeamSweep 22s linear infinite",
+                filter: "blur(2px)",
+                opacity: 0.9,
+              }} />
+              {/* Drifting gold coins */}
+              {Array.from({ length: 22 }).map((_, i) => {
+                const left = (i * 9.4) % 100;
+                const dur = 8 + (i % 6);
+                const delay = (i * 0.7) % 12;
+                return (
+                  <span key={`coin-${i}`} style={{
+                    position: "absolute",
+                    left: `${left}%`,
+                    bottom: -30,
+                    fontSize: 14 + (i % 4) * 6,
+                    opacity: 0,
+                    filter: `drop-shadow(0 0 ${6 + (i % 3) * 2}px rgba(253,224,71,0.6))`,
+                    animation: `grCoinRise ${dur}s linear ${delay}s infinite`,
+                  }}>🪙</span>
+                );
+              })}
+              {/* Twinkling gold dust */}
+              {Array.from({ length: 32 }).map((_, i) => {
+                const left = (i * 13.7) % 100;
+                const top = (i * 17.3) % 100;
+                const dur = 1.5 + (i % 4) * 0.6;
+                const delay = (i * 0.18) % 4;
+                const c = i % 4 === 0 ? "#fde047" : i % 4 === 1 ? "#fbbf24" : i % 4 === 2 ? "#f59e0b" : "#fff";
+                return (
+                  <span key={`d-${i}`} style={{
+                    position: "absolute",
+                    left: `${left}%`,
+                    top: `${top}%`,
+                    width: 3, height: 3, borderRadius: "50%",
+                    background: c,
+                    boxShadow: `0 0 6px ${c}`,
+                    animation: `grTwinkle ${dur}s ease-in-out ${delay}s infinite`,
+                  }} />
+                );
+              })}
+              {/* Drifting runes (lock / key / shield / star glyphs) */}
+              {["🗝️", "⚔️", "🛡️", "✨", "🔱", "💎", "👑"].map((g, i) => (
+                <span key={`r-${i}`} style={{
+                  position: "absolute",
+                  left: `${(i * 14 + 6) % 100}%`,
+                  top: `${(i * 21) % 80 + 8}%`,
+                  fontSize: 22 + (i % 3) * 8,
+                  opacity: 0.16,
+                  filter: "drop-shadow(0 0 6px rgba(245,158,11,0.6))",
+                  animation: `grRuneDrift ${20 + (i % 4) * 4}s ease-in-out ${i * 1.6}s infinite`,
+                }}>{g}</span>
+              ))}
+              {/* Sweeping diagonal sparkle band */}
+              <span style={{
+                position: "absolute",
+                top: "20%", left: 0, right: 0, height: 80,
+                background: "linear-gradient(90deg, transparent, rgba(253,224,71,0.18), transparent)",
+                animation: "grSparkleStreak 7s ease-in-out infinite",
+                pointerEvents: "none",
+              }} />
+            </div>
+
+            <div style={{ position: "relative", zIndex: 1 }}>
+              <h1 data-split style={{
+                color: "#fff", fontSize: 40, fontWeight: 900, marginBottom: 6,
+                background: "linear-gradient(135deg, #fde68a, #f59e0b, #b45309)",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+                textShadow: "0 0 20px rgba(245,158,11,0.4)",
+                letterSpacing: 1,
+              }}>⭐ The 5 Golden Rules!</h1>
+              <p style={{
+                color: "#fbbf24", fontSize: 12, fontWeight: 800, letterSpacing: 4,
+                textTransform: "uppercase", marginBottom: 14,
+                fontFamily: "ui-monospace, monospace",
+              }}>
+                ▸ TREASURE VAULT // TAP A COIN TO UNLOCK
+              </p>
+            </div>
             <div style={{
+              position: "relative",
+              zIndex: 1,
               display: "grid",
               gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))",
               gap: 14,

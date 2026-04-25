@@ -2156,7 +2156,7 @@ export default function BossBattle({
                       "--c-colour": c.colour,
                     } as React.CSSProperties
                   }
-                  onMouseEnter={() => { if (!selecting) playSound("hover"); }}
+                  onMouseEnter={() => { if (!selecting) playSound("whoosh"); }}
                   onClick={() => chooseHero(c.id)}
                   onKeyDown={(e) => {
                     if (e.key === "Enter" || e.key === " ") {
@@ -2728,6 +2728,9 @@ export default function BossBattle({
                 <button
                   key={i}
                   onClick={() => handleAnswer(i)}
+                  onMouseEnter={() => {
+                    if (!locked && ready && introStage === "done") playSound("whoosh");
+                  }}
                   disabled={locked || !ready || introStage !== "done"}
                   className={classes}
                 >
