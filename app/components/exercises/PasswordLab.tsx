@@ -2,12 +2,14 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
+import { motion } from "motion/react";
 import { playSound } from "@/app/lib/sounds";
 import {
   correctAnswerBurst,
   badgeEarnedCelebration,
 } from "@/app/lib/celebrations";
 import ExerciseIntro from "./ExerciseIntro";
+import { COLOR, SHADOW, SPRING } from "@/app/components/scene/tokens";
 
 export interface PasswordLabProps {
   onComplete: (score: number) => void;
@@ -64,20 +66,20 @@ const INGREDIENTS: Ingredient[] = [
 ];
 
 const STAGE_LIQUID_COLOURS = [
-  "#475569", // grey
-  "#1d4ed8",
-  "#0ea5e9",
-  "#10b981",
-  "#f59e0b",
-  "linear-gradient(180deg, #fbbf24, #ef4444, #a855f7, #3b82f6)",
+  "#5a3a48", // empty — warm dark plum
+  "#7a3a52", // 1 — wine
+  "#c47340", // 2 — terracotta
+  "#d4a04a", // 3 — amber
+  "#e89938", // 4 — sunset
+  "linear-gradient(180deg, #ffd158, #ff9b4a, #c43c6a, #7a3a08)", // 5 — rainbow
 ];
 
 const METER_SEGMENTS = [
-  { colour: "#ef4444", label: "WEAK" },
-  { colour: "#f97316", label: "GETTING THERE" },
-  { colour: "#facc15", label: "GOOD" },
-  { colour: "#22c55e", label: "STRONG" },
-  { colour: "#4ade80", label: "SUPER STRONG!" },
+  { colour: "#c4513a", label: "WEAK" },
+  { colour: "#e89938", label: "GETTING THERE" },
+  { colour: "#fcd34d", label: "GOOD" },
+  { colour: "#7cc89a", label: "STRONG" },
+  { colour: "#4a9a6a", label: "SUPER STRONG!" },
 ];
 
 const FINAL_PASSWORD = "Tr0pic4l$unR1se!";
@@ -297,17 +299,19 @@ export default function PasswordLab({
         width: "100%",
         minHeight: 520,
         maxHeight: "calc(100vh - 140px)",
-        borderRadius: 24,
+        borderRadius: 28,
         overflow: "hidden",
         background:
-          "radial-gradient(circle at 50% 75%, rgba(167,139,250,0.18), transparent 50%)," +
-          "radial-gradient(circle at 50% 30%, rgba(59,130,246,0.18), transparent 55%)," +
-          "linear-gradient(180deg, #0b1225 0%, #070a18 100%)",
-        border: "1px solid rgba(255,255,255,0.08)",
-        padding: "18px 16px 28px",
-        color: "#e2e8f0",
+          "radial-gradient(ellipse at 50% 80%, rgba(255, 178, 110, 0.45), transparent 60%)," +
+          "radial-gradient(ellipse at 50% 20%, rgba(255, 220, 168, 0.4), transparent 55%)," +
+          "linear-gradient(180deg, #2a1240 0%, #5a2540 35%, #a04a4a 70%, #e88550 92%, #fcd58a 100%)",
+        boxShadow: SHADOW.sceneFrame,
+        padding: "20px 18px 30px",
+        color: COLOR.cream,
         userSelect: "none",
         touchAction: "none",
+        fontFamily:
+          "ui-rounded, 'Fredoka', 'Quicksand', system-ui, -apple-system, sans-serif",
       }}
     >
       {/* Magical lab backdrop — drifting alchemy runes & floor lights */}
@@ -327,9 +331,9 @@ export default function PasswordLab({
               left: `${(i * 14 + 6) % 95}%`,
               top: `${(i * 21 + 8) % 80}%`,
               fontSize: 22 + (i % 3) * 8,
-              color: i % 2 === 0 ? "#a78bfa" : "#22d3ee",
-              opacity: 0.22,
-              filter: `drop-shadow(0 0 8px ${i % 2 === 0 ? "#a78bfa" : "#22d3ee"})`,
+              color: i % 2 === 0 ? "#ffd58a" : "#ff9b4a",
+              opacity: 0.32,
+              filter: `drop-shadow(0 0 10px ${i % 2 === 0 ? "#ffd58a" : "#ff9b4a"})`,
               animation: `plRuneDrift ${10 + (i % 4) * 3}s ease-in-out ${i * 1.4}s infinite`,
             }}
           >
@@ -339,25 +343,39 @@ export default function PasswordLab({
       </div>
       <div
         style={{
+          position: "relative",
+          zIndex: 1,
           textAlign: "center",
-          fontSize: 13,
-          letterSpacing: 2,
-          color: "#7dd3fc",
+          fontSize: 11,
+          letterSpacing: 5,
+          color: "#ffd58a",
           textTransform: "uppercase",
-          fontWeight: 700,
+          fontWeight: 800,
+          padding: "5px 16px",
+          background: "rgba(50, 20, 35, 0.55)",
+          backdropFilter: "blur(8px)",
+          WebkitBackdropFilter: "blur(8px)",
+          borderRadius: 999,
+          borderStyle: "solid",
+          borderWidth: 1,
+          borderColor: "rgba(255, 220, 180, 0.4)",
+          display: "inline-block",
+          margin: "0 auto",
         }}
       >
-        Password Lab
+        ✦ Password Laboratory ✦
       </div>
       <div
         style={{
+          position: "relative",
+          zIndex: 1,
           textAlign: "center",
           fontSize: 22,
           fontWeight: 800,
-          margin: "4px 0 18px",
-          background: "linear-gradient(135deg, #60a5fa, #a855f7)",
-          WebkitBackgroundClip: "text",
-          WebkitTextFillColor: "transparent",
+          margin: "8px 0 18px",
+          color: "#fff7e6",
+          textShadow:
+            "0 4px 12px rgba(40, 18, 12, 0.6), 0 0 20px rgba(255, 178, 110, 0.45)",
         }}
       >
         Drag ingredients into the cauldron!
@@ -695,94 +713,155 @@ export default function PasswordLab({
       {/* Completion overlay — absolute positioned so it fits within the exercise
           container viewport cap instead of stacking below and getting clipped. */}
       {completed && (
-        <div
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.4 }}
           style={{
             position: "absolute",
             inset: 0,
-            background: "rgba(5,8,18,0.94)",
+            background:
+              "linear-gradient(180deg, rgba(40, 18, 38, 0.95) 0%, rgba(20, 8, 24, 0.96) 100%)",
             backdropFilter: "blur(8px)",
+            WebkitBackdropFilter: "blur(8px)",
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
             justifyContent: "center",
             zIndex: 15,
-            padding: 24,
+            padding: 28,
             textAlign: "center",
-            animation: "plFadeIn 0.5s ease-out both",
+            color: COLOR.cream,
           }}
         >
-          <div style={{ fontSize: 56, marginBottom: 10 }}>🧪✨</div>
           <div
             style={{
-              fontSize: 24,
+              fontSize: 12,
+              fontWeight: 800,
+              letterSpacing: 5,
+              color: "#ffd58a",
+              textTransform: "uppercase",
+              marginBottom: 6,
+            }}
+          >
+            ✦ Brewed Successfully ✦
+          </div>
+          <div style={{ fontSize: 56, margin: "4px 0" }}>🧪✨</div>
+          <div
+            style={{
+              fontSize: 30,
               fontWeight: 900,
               background:
-                "linear-gradient(135deg, #fbbf24, #ef4444, #a855f7, #3b82f6)",
+                "linear-gradient(135deg, #ffd58a, #ff9b4a, #d4733a)",
               WebkitBackgroundClip: "text",
               WebkitTextFillColor: "transparent",
               letterSpacing: 1,
             }}
           >
-            PERFECT PASSWORD CREATED!
+            PERFECT POTION!
           </div>
           <div
             style={{
-              marginTop: 10,
-              fontFamily: "'Courier New', monospace",
-              fontSize: 22,
-              padding: "10px 18px",
-              background: "rgba(15,23,42,0.85)",
-              border: "1px solid rgba(253,224,71,0.5)",
-              borderRadius: 12,
+              marginTop: 12,
+              fontFamily: "ui-monospace, 'JetBrains Mono', Menlo, monospace",
+              fontSize: 20,
+              padding: "12px 22px",
+              background: "rgba(20, 8, 24, 0.85)",
+              borderStyle: "solid",
+              borderWidth: 2,
+              borderColor: "rgba(255, 215, 138, 0.6)",
+              borderRadius: 14,
               display: "inline-block",
-              color: "#fde68a",
-              boxShadow: "0 0 26px rgba(253,224,71,0.35)",
+              color: "#ffd58a",
+              boxShadow: "0 0 30px rgba(255, 178, 110, 0.45)",
+              fontWeight: 700,
+              letterSpacing: 1,
             }}
           >
             {FINAL_PASSWORD}
           </div>
-          <div style={{ marginTop: 18, display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
-            <button
+          <div style={{ display: "flex", gap: 4, margin: "16px 0 4px" }}>
+            {[0, 1, 2].map((i) => (
+              <motion.span
+                key={i}
+                initial={{ opacity: 0, scale: 0, rotate: -180 }}
+                animate={{ opacity: 1, scale: 1, rotate: 0 }}
+                transition={{
+                  ...SPRING.bouncy,
+                  delay: 0.3 + i * 0.18,
+                }}
+                style={{
+                  fontSize: 38,
+                  filter: "drop-shadow(0 0 14px rgba(255, 200, 100, 0.7))",
+                }}
+              >
+                ★
+              </motion.span>
+            ))}
+          </div>
+          <div
+            style={{
+              marginTop: 14,
+              display: "flex",
+              gap: 12,
+              justifyContent: "center",
+              flexWrap: "wrap",
+            }}
+          >
+            <motion.button
               type="button"
               onClick={() => {
                 playSound("click");
                 onComplete(5);
               }}
+              whileHover={{ y: -3, scale: 1.04 }}
+              whileTap={{ scale: 0.97 }}
+              transition={SPRING.snappy}
               style={{
-                background: "linear-gradient(135deg, #f97316, #f59e0b)",
-                color: "#fff",
-                fontWeight: 800,
-                borderRadius: 14,
-                padding: "14px 36px",
-                fontSize: 17,
                 border: "none",
                 cursor: "pointer",
-                boxShadow: "0 0 18px rgba(249,115,22,0.5)",
+                padding: "14px 36px",
+                fontSize: 16,
+                fontWeight: 800,
+                color: COLOR.goldDark,
+                background: `linear-gradient(135deg, ${COLOR.goldLight}, ${COLOR.goldMid})`,
+                borderRadius: 999,
+                fontFamily: "inherit",
+                letterSpacing: 0.5,
+                boxShadow: SHADOW.primaryButton,
               }}
             >
-              Continue &rarr;
-            </button>
-            <button
+              Continue →
+            </motion.button>
+            <motion.button
               type="button"
               onClick={() => {
                 playSound("select");
                 resetExercise();
               }}
+              whileHover={{ scale: 1.04 }}
+              whileTap={{ scale: 0.97 }}
+              transition={SPRING.snappy}
               style={{
-                background: "transparent",
-                color: "#93c5fd",
-                fontWeight: 700,
-                borderRadius: 14,
+                border: "none",
+                cursor: "pointer",
                 padding: "12px 24px",
                 fontSize: 14,
-                border: "2px solid rgba(96,165,250,0.55)",
-                cursor: "pointer",
+                fontWeight: 800,
+                color: COLOR.cream,
+                background: "rgba(50, 20, 35, 0.65)",
+                backdropFilter: "blur(6px)",
+                WebkitBackdropFilter: "blur(6px)",
+                borderRadius: 999,
+                fontFamily: "inherit",
+                letterSpacing: 0.5,
+                boxShadow: SHADOW.drop,
               }}
             >
-              🔄 Try Again
-            </button>
+              ↻ Try Again
+            </motion.button>
           </div>
-        </div>
+        </motion.div>
       )}
 
       {showIntro && (
