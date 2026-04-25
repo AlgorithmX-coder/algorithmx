@@ -1,10 +1,21 @@
 "use client";
 
+/*
+ * CyberScanner — Pixar 2.5D commercial polish.
+ *
+ * Game logic preserved (passwords drift across a scanner beam, tap
+ * STRONG or WEAK before they exit). Only the visual layer is rebuilt:
+ * warm parchment beam + golden shield + paper-style password cards
+ * + tactile spring buttons + design-token typography.
+ */
+
 import { useEffect, useMemo, useRef, useState } from "react";
+import { motion } from "motion/react";
 import { playSound } from "@/app/lib/sounds";
 import { correctAnswerBurst } from "@/app/lib/celebrations";
 import ExerciseIntro from "./ExerciseIntro";
 import ExerciseHowTo from "./ExerciseHowTo";
+import { COLOR, SHADOW, SPRING } from "@/app/components/scene/tokens";
 
 export interface CyberScannerPassword {
   text: string;
@@ -41,9 +52,56 @@ const CARD_Y = BEAM_Y;
 const SHIELD_X = CANVAS_W - 54;
 const SHIELD_Y = 54;
 
+/* ───────────────── PIXAR CANVAS PALETTE ───────────────── */
+
+const CV = {
+  // Sky-to-floor parchment gradient
+  bgTop: "#fcebc6",
+  bgBottom: "#f4cfa1",
+  // Warm grid
+  gridStroke: "rgba(140, 70, 25, 0.07)",
+  // Beam (gold)
+  beamCore: "rgba(255, 248, 220, 0.85)",
+  beamGlow: "rgba(255, 200, 110, 0.42)",
+  beamEdge: "rgba(255, 178, 110, 0)",
+  beamCenterLine: "rgba(255, 178, 90, 0.85)",
+  // Shield (warm gold)
+  shieldFill: "rgba(255, 220, 160, 0.45)",
+  shieldStroke: "#c47340",
+  shieldGlyph: "#5a2e14",
+  // Card
+  cardShadow: "rgba(80, 40, 10, 0.28)",
+  cardBodyTop: "#fffaf0",
+  cardBodyBottom: "#fdebcb",
+  cardBorderIdle: "rgba(196, 115, 64, 0.55)",
+  cardBorderCorrect: "#4a9a6a",
+  cardBorderWrong: "#c4513a",
+  cardSweep: "rgba(255, 220, 150, 0.45)",
+  cardText: "#3b2615",
+  // Timer bar
+  timerTrack: "rgba(140, 70, 25, 0.18)",
+  timerGood: "#4a9a6a",
+  timerWarn: "#e89938",
+  timerBad: "#c4513a",
+  // Floaters
+  floaterCorrect: "#4a9a6a",
+  floaterWrong: "#c4513a",
+  floaterSlow: "#e89938",
+  floaterBonus: "#a06aff",
+  // Particles
+  burstCorrect: "#a8e3bb",
+  burstWrong: "#f4a89a",
+  // Explanation
+  explainBg: "rgba(48, 22, 38, 0.92)",
+  explainStrong: "#a8e3bb",
+  explainWeak: "#f4a89a",
+  // HUD
+  hudScanned: "#7a3a52",
+  hudScore: "#4a9a6a",
+  hudStreak: "#d4733a",
+} as const;
+
 function transitTimeMs(i: number) {
-  // First card gets +30% transit time as a learning lap so new players have
-  // time to read the buttons and find their rhythm.
   if (i === 0) return 10500;
   if (i < 4) return 8000;
   if (i < 7) return 6000;
@@ -59,7 +117,7 @@ interface RunningCard {
   duration: number;
   resolved: boolean;
   outcome: "correct" | "wrong" | "slow" | null;
-  absorbProgress: number; // 0..1 for shield absorption
+  absorbProgress: number;
   absorbStartX: number;
   absorbStartY: number;
 }
@@ -113,13 +171,20 @@ export default function CyberScanner({
     bestStreak: 0,
     explanationText: "" as string,
     explanationUntil: 0,
-    explanationColour: "#fca5a5",
+    explanationColour: CV.explainWeak as string,
     finished: false,
   });
 
   const [render, setRender] = useState(0);
 
-  const addFloater = (text: string, x: number, y: number, colour: string, size = 20, duration = 900) => {
+  const addFloater = (
+    text: string,
+    x: number,
+    y: number,
+    colour: string,
+    size = 20,
+    duration = 900
+  ) => {
     const s = state.current;
     s.floaters.push({
       id: ++s.floaterId,
@@ -166,11 +231,11 @@ export default function CyberScanner({
       s.correct += 1;
       s.streak += 1;
       s.bestStreak = Math.max(s.bestStreak, s.streak);
-      burst(c.absorbStartX, c.absorbStartY, "#4ade80", 14);
-      addFloater("CORRECT!", c.absorbStartX, c.absorbStartY - 30, "#4ade80", 22);
+      burst(c.absorbStartX, c.absorbStartY, CV.burstCorrect, 14);
+      addFloater("CORRECT!", c.absorbStartX, c.absorbStartY - 30, CV.floaterCorrect, 22);
       if (progress <= 0.3) {
         s.speedBonuses += 1;
-        addFloater("+SPEED BONUS!", c.absorbStartX, c.absorbStartY - 58, "#22d3ee", 18);
+        addFloater("+SPEED BONUS!", c.absorbStartX, c.absorbStartY - 58, CV.floaterBonus, 18);
       }
       onCorrect?.();
     } else {
@@ -178,14 +243,13 @@ export default function CyberScanner({
       playSound("wrong");
       s.wrong += 1;
       s.streak = 0;
-      burst(c.absorbStartX, c.absorbStartY, "#ef4444", 12);
-      addFloater("WRONG!", c.absorbStartX, c.absorbStartY - 30, "#ef4444", 22);
+      burst(c.absorbStartX, c.absorbStartY, CV.burstWrong, 12);
+      addFloater("WRONG!", c.absorbStartX, c.absorbStartY - 30, CV.floaterWrong, 22);
       s.explanationText = `${c.isStrong ? "STRONG" : "WEAK"}: ${c.explanation}`;
       s.explanationUntil = now + 2400;
-      s.explanationColour = c.isStrong ? "#86efac" : "#fca5a5";
+      s.explanationColour = c.isStrong ? CV.explainStrong : CV.explainWeak;
       onWrong?.();
     }
-    // Give it ~700ms of resolution animation before advancing
     window.setTimeout(() => {
       s.card = null;
       s.idx = c.idx + 1;
@@ -215,7 +279,7 @@ export default function CyberScanner({
       bestStreak: 0,
       explanationText: "",
       explanationUntil: 0,
-      explanationColour: "#fca5a5",
+      explanationColour: CV.explainWeak,
       finished: false,
     };
     setShowIntro(true);
@@ -235,8 +299,6 @@ export default function CyberScanner({
 
     let running = true;
     let lastTime = performance.now();
-    // 2.2 s lead-in before the first card enters the scanner so players can
-    // orient after the intro dismisses — fixes "first one didn't let me select".
     state.current.nextStartAt = performance.now() + 2200;
 
     const spawnNext = (now: number) => {
@@ -276,7 +338,6 @@ export default function CyberScanner({
 
       spawnNext(now);
 
-      // Time-out if card reaches right edge without resolution
       if (s.card && !s.card.resolved) {
         const progress = (now - s.card.startTime) / s.card.duration;
         if (progress >= 1) {
@@ -284,13 +345,13 @@ export default function CyberScanner({
           c.resolved = true;
           c.outcome = "slow";
           const x = CANVAS_W - CARD_W / 2;
-          addFloater("TOO SLOW!", x - 30, BEAM_Y - 40, "#f97316", 22);
-          addFloater("🦝", x + 50, BEAM_Y - 10, "#fbbf24", 40, 1200);
+          addFloater("TOO SLOW!", x - 30, BEAM_Y - 40, CV.floaterSlow, 22);
+          addFloater("🦝", x + 50, BEAM_Y - 10, "#c4513a", 40, 1200);
           s.streak = 0;
           s.wrong += 1;
           s.explanationText = `${c.isStrong ? "STRONG" : "WEAK"}: ${c.explanation}`;
           s.explanationUntil = now + 2400;
-          s.explanationColour = c.isStrong ? "#86efac" : "#fca5a5";
+          s.explanationColour = c.isStrong ? CV.explainStrong : CV.explainWeak;
           playSound("wrong");
           onWrong?.();
           window.setTimeout(() => {
@@ -301,12 +362,10 @@ export default function CyberScanner({
         }
       }
 
-      // Absorb animation for correct-outcome resolved cards
       if (s.card && s.card.resolved && s.card.outcome === "correct") {
         s.card.absorbProgress = Math.min(1, s.card.absorbProgress + 0.08 * frames);
       }
 
-      // Particles
       s.particles = s.particles
         .map((p) => ({
           ...p,
@@ -320,15 +379,16 @@ export default function CyberScanner({
 
       // ── DRAW ──
       ctx.clearRect(0, 0, CANVAS_W, CANVAS_H);
-      // bg
+
+      // Parchment gradient sky
       const bg = ctx.createLinearGradient(0, 0, 0, CANVAS_H);
-      bg.addColorStop(0, "#0b1225");
-      bg.addColorStop(1, "#04060f");
+      bg.addColorStop(0, CV.bgTop);
+      bg.addColorStop(1, CV.bgBottom);
       ctx.fillStyle = bg;
       ctx.fillRect(0, 0, CANVAS_W, CANVAS_H);
 
-      // grid lines
-      ctx.strokeStyle = "rgba(59,130,246,0.05)";
+      // Soft warm grid
+      ctx.strokeStyle = CV.gridStroke;
       ctx.lineWidth = 1;
       for (let x = 0; x < CANVAS_W; x += 60) {
         ctx.beginPath();
@@ -336,39 +396,66 @@ export default function CyberScanner({
         ctx.lineTo(x, CANVAS_H);
         ctx.stroke();
       }
+      for (let y = 0; y < CANVAS_H; y += 60) {
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(CANVAS_W, y);
+        ctx.stroke();
+      }
 
-      // Scanning beam
+      // Golden scanner beam
       const beamPulse = 0.85 + 0.15 * Math.sin(now / 300);
-      const beamGrad = ctx.createLinearGradient(0, BEAM_Y - 40, 0, BEAM_Y + 40);
-      beamGrad.addColorStop(0, "rgba(59,130,246,0)");
-      beamGrad.addColorStop(0.5, `rgba(147,197,253,${0.35 * beamPulse})`);
-      beamGrad.addColorStop(1, "rgba(59,130,246,0)");
+      const beamGrad = ctx.createLinearGradient(0, BEAM_Y - 50, 0, BEAM_Y + 50);
+      beamGrad.addColorStop(0, CV.beamEdge);
+      beamGrad.addColorStop(0.4, `rgba(255, 200, 110, ${0.45 * beamPulse})`);
+      beamGrad.addColorStop(0.5, `rgba(255, 248, 220, ${0.65 * beamPulse})`);
+      beamGrad.addColorStop(0.6, `rgba(255, 200, 110, ${0.45 * beamPulse})`);
+      beamGrad.addColorStop(1, CV.beamEdge);
       ctx.fillStyle = beamGrad;
-      ctx.fillRect(0, BEAM_Y - 40, CANVAS_W, 80);
-      ctx.strokeStyle = `rgba(96,165,250,${0.8 * beamPulse})`;
+      ctx.fillRect(0, BEAM_Y - 50, CANVAS_W, 100);
+      ctx.strokeStyle = `rgba(255, 178, 90, ${0.7 * beamPulse})`;
       ctx.lineWidth = 2;
       ctx.beginPath();
       ctx.moveTo(0, BEAM_Y);
       ctx.lineTo(CANVAS_W, BEAM_Y);
       ctx.stroke();
 
-      // Shield (top-right, absorbs correct cards)
-      ctx.fillStyle = "rgba(96,165,250,0.15)";
+      // Golden shield, top-right
+      // Outer halo
+      ctx.fillStyle = CV.shieldFill;
       ctx.beginPath();
-      ctx.arc(SHIELD_X, SHIELD_Y, 34, 0, Math.PI * 2);
+      ctx.arc(SHIELD_X, SHIELD_Y, 36, 0, Math.PI * 2);
       ctx.fill();
-      ctx.strokeStyle = "#60a5fa";
-      ctx.lineWidth = 2;
+      // Ring
+      ctx.strokeStyle = CV.shieldStroke;
+      ctx.lineWidth = 2.5;
       ctx.beginPath();
       ctx.arc(SHIELD_X, SHIELD_Y, 28, 0, Math.PI * 2);
       ctx.stroke();
-      ctx.fillStyle = "#93c5fd";
-      ctx.font = "900 22px 'Space Grotesk', sans-serif";
+      // Inner gold highlight
+      const shieldGrad = ctx.createRadialGradient(
+        SHIELD_X - 6,
+        SHIELD_Y - 6,
+        2,
+        SHIELD_X,
+        SHIELD_Y,
+        26
+      );
+      shieldGrad.addColorStop(0, "#fff5cc");
+      shieldGrad.addColorStop(0.6, "#ffd58a");
+      shieldGrad.addColorStop(1, "#d68a4c");
+      ctx.fillStyle = shieldGrad;
+      ctx.beginPath();
+      ctx.arc(SHIELD_X, SHIELD_Y, 25, 0, Math.PI * 2);
+      ctx.fill();
+      // Glyph
+      ctx.fillStyle = CV.shieldGlyph;
+      ctx.font = "900 22px ui-rounded, 'Fredoka', system-ui, sans-serif";
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
       ctx.fillText("🛡", SHIELD_X, SHIELD_Y);
 
-      // Current card
+      // Active card
       const c = s.card;
       if (c) {
         let x: number;
@@ -387,63 +474,65 @@ export default function CyberScanner({
         ctx.save();
         ctx.translate(x, y);
         ctx.scale(scale, scale);
-        const flash =
-          c.resolved && c.outcome === "wrong"
-            ? Math.sin(now / 60) > 0
-              ? "#ef4444"
-              : null
-            : null;
 
-        // shadow
-        ctx.fillStyle = "rgba(0,0,0,0.5)";
-        roundRect(ctx, -CARD_W / 2 + 3, -CARD_H / 2 + 4, CARD_W, CARD_H, 12);
+        // Soft drop shadow
+        ctx.fillStyle = CV.cardShadow;
+        roundRect(ctx, -CARD_W / 2 + 2, -CARD_H / 2 + 5, CARD_W, CARD_H, 14);
         ctx.fill();
 
-        // body
+        // Card body — paper gradient
         const grad = ctx.createLinearGradient(0, -CARD_H / 2, 0, CARD_H / 2);
-        grad.addColorStop(0, "#1f2937");
-        grad.addColorStop(1, "#0f172a");
+        grad.addColorStop(0, CV.cardBodyTop);
+        grad.addColorStop(1, CV.cardBodyBottom);
         ctx.fillStyle = grad;
-        roundRect(ctx, -CARD_W / 2, -CARD_H / 2, CARD_W, CARD_H, 12);
+        roundRect(ctx, -CARD_W / 2, -CARD_H / 2, CARD_W, CARD_H, 14);
         ctx.fill();
+
+        // Border tint by outcome
         ctx.strokeStyle =
           c.resolved && c.outcome === "correct"
-            ? "#4ade80"
+            ? CV.cardBorderCorrect
             : c.resolved && c.outcome === "wrong"
-              ? "#ef4444"
-              : "rgba(147,197,253,0.55)";
-        ctx.lineWidth = 2;
-        roundRect(ctx, -CARD_W / 2, -CARD_H / 2, CARD_W, CARD_H, 12);
+              ? CV.cardBorderWrong
+              : CV.cardBorderIdle;
+        ctx.lineWidth = 2.5;
+        roundRect(ctx, -CARD_W / 2, -CARD_H / 2, CARD_W, CARD_H, 14);
         ctx.stroke();
 
-        if (flash) {
-          ctx.fillStyle = "rgba(239,68,68,0.25)";
-          roundRect(ctx, -CARD_W / 2, -CARD_H / 2, CARD_W, CARD_H, 12);
+        // Wrong-flash overlay
+        if (c.resolved && c.outcome === "wrong" && Math.sin(now / 60) > 0) {
+          ctx.fillStyle = "rgba(196, 81, 58, 0.18)";
+          roundRect(ctx, -CARD_W / 2, -CARD_H / 2, CARD_W, CARD_H, 14);
           ctx.fill();
         }
 
-        // scanning sweep when passing through the beam band
+        // Scanning sweep when in beam
         const progress = Math.min(1, (now - c.startTime) / c.duration);
         const inBeam = Math.abs(progress - 0.5) < 0.2 && !c.resolved;
         if (inBeam) {
           const sweep = ((now / 400) % 1) * CARD_W - CARD_W / 2;
-          ctx.fillStyle = "rgba(147,197,253,0.25)";
+          ctx.fillStyle = CV.cardSweep;
           ctx.fillRect(sweep - 4, -CARD_H / 2, 8, CARD_H);
         }
 
-        // password text
-        ctx.fillStyle = "#f1f5f9";
-        ctx.font = "700 18px 'Courier New', monospace";
+        // Password text
+        ctx.fillStyle = CV.cardText;
+        ctx.font = "700 18px 'JetBrains Mono', 'Courier New', monospace";
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
         ctx.fillText(c.text, 0, -2, CARD_W - 20);
-        // timer bar below card (only while moving)
+
+        // Timer bar
         if (!c.resolved) {
-          ctx.fillStyle = "rgba(255,255,255,0.1)";
+          ctx.fillStyle = CV.timerTrack;
           ctx.fillRect(-CARD_W / 2 + 12, CARD_H / 2 - 10, CARD_W - 24, 4);
           const fill = 1 - progress;
           const colour =
-            fill > 0.5 ? "#4ade80" : fill > 0.2 ? "#fbbf24" : "#ef4444";
+            fill > 0.5
+              ? CV.timerGood
+              : fill > 0.2
+                ? CV.timerWarn
+                : CV.timerBad;
           ctx.fillStyle = colour;
           ctx.fillRect(
             -CARD_W / 2 + 12,
@@ -466,16 +555,16 @@ export default function CyberScanner({
       }
       ctx.globalAlpha = 1;
 
-      // Floaters
+      // Floaters with warm dark stroke
       for (const f of s.floaters) {
         const age = now - f.bornAt;
         const alpha = Math.max(0, 1 - age / f.duration);
         const dy = -age * 0.08;
         ctx.globalAlpha = alpha;
         ctx.fillStyle = f.colour;
-        ctx.strokeStyle = "rgba(0,0,0,0.7)";
-        ctx.lineWidth = 3;
-        ctx.font = `900 ${f.size}px 'Space Grotesk', sans-serif`;
+        ctx.strokeStyle = "rgba(48, 22, 12, 0.7)";
+        ctx.lineWidth = 4;
+        ctx.font = `900 ${f.size}px ui-rounded, 'Fredoka', system-ui, sans-serif`;
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
         ctx.strokeText(f.text, f.x, f.y + dy);
@@ -485,34 +574,39 @@ export default function CyberScanner({
 
       // Explanation pill
       if (s.explanationText && now < s.explanationUntil) {
-        ctx.fillStyle = "rgba(15,23,42,0.9)";
+        ctx.font = "700 13px ui-rounded, 'Fredoka', system-ui, sans-serif";
+        const w = ctx.measureText(s.explanationText).width + 36;
+        ctx.fillStyle = CV.explainBg;
+        roundRect(ctx, CANVAS_W / 2 - w / 2, CANVAS_H - 50, w, 32, 12);
+        ctx.fill();
         ctx.strokeStyle = s.explanationColour;
         ctx.lineWidth = 2;
-        ctx.font = "600 13px 'Space Grotesk', sans-serif";
-        const w = ctx.measureText(s.explanationText).width + 30;
-        roundRect(ctx, CANVAS_W / 2 - w / 2, CANVAS_H - 46, w, 30, 10);
-        ctx.fill();
+        roundRect(ctx, CANVAS_W / 2 - w / 2, CANVAS_H - 50, w, 32, 12);
         ctx.stroke();
         ctx.fillStyle = s.explanationColour;
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
-        ctx.fillText(s.explanationText, CANVAS_W / 2, CANVAS_H - 31);
+        ctx.fillText(s.explanationText, CANVAS_W / 2, CANVAS_H - 34);
       }
 
       // HUD
-      ctx.font = "800 13px 'Space Grotesk', sans-serif";
+      ctx.font = "800 13px ui-rounded, 'Fredoka', system-ui, sans-serif";
       ctx.textBaseline = "top";
       ctx.textAlign = "left";
-      ctx.fillStyle = "#7dd3fc";
+      ctx.fillStyle = CV.hudScanned;
       const scannedNum = s.idx + (s.card ? 1 : 0);
-      ctx.fillText(`SCANNED ${Math.min(list.length, scannedNum)}/${list.length}`, 14, 10);
+      ctx.fillText(
+        `SCANNED ${Math.min(list.length, scannedNum)}/${list.length}`,
+        14,
+        12
+      );
       ctx.textAlign = "right";
-      ctx.fillStyle = "#86efac";
-      ctx.fillText(`SCORE ${s.correct}`, CANVAS_W - 14, 10);
+      ctx.fillStyle = CV.hudScore;
+      ctx.fillText(`SCORE ${s.correct}`, CANVAS_W - 14, 12);
       if (s.streak >= 3) {
         ctx.textAlign = "center";
-        ctx.fillStyle = "#fbbf24";
-        ctx.fillText(`STREAK x${s.streak}`, CANVAS_W / 2, 10);
+        ctx.fillStyle = CV.hudStreak;
+        ctx.fillText(`STREAK x${s.streak}`, CANVAS_W / 2, 12);
       }
 
       rafRef.current = requestAnimationFrame(tick);
@@ -542,11 +636,14 @@ export default function CyberScanner({
         maxWidth: 760,
         margin: "0 auto",
         maxHeight: "calc(100vh - 140px)",
-        borderRadius: 24,
+        borderRadius: 28,
         overflow: "hidden",
-        background: "linear-gradient(180deg, #05060f 0%, #010106 100%)",
-        border: "1px solid rgba(255,255,255,0.08)",
-        color: "#e2e8f0",
+        background:
+          "linear-gradient(180deg, #fff7e0 0%, #fde2b5 55%, #f9c27a 100%)",
+        boxShadow: SHADOW.sceneFrame,
+        color: COLOR.inkDeep,
+        fontFamily:
+          "ui-rounded, 'Fredoka', 'Quicksand', system-ui, -apple-system, sans-serif",
       }}
     >
       <ExerciseHowTo
@@ -556,7 +653,7 @@ export default function CyberScanner({
           { glyph: "💀", text: "Tap WEAK for guessable ones" },
           { glyph: "⚡", text: "Decide before they cross the beam" },
         ]}
-        accent="#22d3ee"
+        accent="#d4733a"
       />
       <canvas
         ref={canvasRef}
@@ -568,118 +665,49 @@ export default function CyberScanner({
         aria-label="Cyber Scanner game"
       />
 
-      {/* Answer buttons — big chunky game buttons */}
+      {/* Big tactile answer buttons */}
       <div
         style={{
           display: "flex",
-          gap: 14,
-          padding: "16px 18px 20px",
-          background: "linear-gradient(180deg, transparent, rgba(5,8,18,0.95))",
+          gap: 16,
+          padding: "18px 22px 24px",
+          background:
+            "linear-gradient(180deg, transparent 0%, rgba(255, 220, 168, 0.4) 60%, rgba(196, 115, 64, 0.18) 100%)",
         }}
       >
-        {/* Buttons read live state from the ref inside onClick rather than
-            from React props because the canvas tick loop runs at 60fps without
-            triggering re-renders, so a render-time `disabled` prop would be
-            stale and clicks would silently no-op. resolveCurrent already
-            short-circuits when there's no resolvable card. */}
         <ScannerButton
-          tint="#22c55e"
-          accent="#4ade80"
           label="🛡  STRONG"
+          tint="#4a9a6a"
+          accent="#7cc89a"
           disabled={s.finished}
           onClick={() => resolveCurrent(true)}
         />
         <ScannerButton
-          tint="#ef4444"
-          accent="#f87171"
           label="💀  WEAK"
+          tint="#c4513a"
+          accent="#f08e7e"
           disabled={s.finished}
           onClick={() => resolveCurrent(false)}
         />
       </div>
 
-      {s.finished && (
-        <div
-          style={{
-            position: "absolute",
-            inset: 0,
-            background: "rgba(4,6,14,0.94)",
-            backdropFilter: "blur(6px)",
-            color: "#e2e8f0",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-            textAlign: "center",
-            padding: 24,
-          }}
-        >
-          <div
-            style={{
-              fontSize: 30,
-              fontWeight: 900,
-              background:
-                "linear-gradient(135deg, #22d3ee, #60a5fa, #a78bfa)",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-              letterSpacing: 2,
-            }}
-          >
-            SCAN COMPLETE!
-          </div>
-          <div style={{ marginTop: 8, fontSize: 18 }}>
-            Accuracy {accuracy}% &nbsp;·&nbsp; Speed bonuses {s.speedBonuses}
-          </div>
-          <div style={{ fontSize: 36, margin: "14px 0" }}>
-            {"★".repeat(stars)}
-            <span style={{ color: "rgba(148,163,184,0.4)" }}>
-              {"★".repeat(3 - stars)}
-            </span>
-          </div>
-          <div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
-            <button
-              type="button"
-              onClick={() => {
-                playSound("click");
-                onComplete(s.correct);
-              }}
-              style={{
-                background: "linear-gradient(135deg, #f97316, #f59e0b)",
-                color: "#fff",
-                fontWeight: 800,
-                borderRadius: 14,
-                padding: "14px 36px",
-                fontSize: 17,
-                border: "none",
-                cursor: "pointer",
-                boxShadow: "0 0 18px rgba(249,115,22,0.5)",
-              }}
-            >
-              Continue &rarr;
-            </button>
-            <button
-              type="button"
-              onClick={() => { playSound("select"); resetExercise(); }}
-              style={{
-                background: "transparent",
-                color: "#93c5fd",
-                fontWeight: 700,
-                borderRadius: 14,
-                padding: "12px 24px",
-                fontSize: 14,
-                border: "2px solid rgba(96,165,250,0.55)",
-                cursor: "pointer",
-              }}
-            >
-              🔄 Try Again
-            </button>
-          </div>
-        </div>
-      )}
+      {s.finished && <FinishOverlay
+        accuracy={accuracy}
+        stars={stars}
+        speedBonuses={s.speedBonuses}
+        onContinue={() => {
+          playSound("click");
+          onComplete(s.correct);
+        }}
+        onRetry={() => {
+          playSound("select");
+          resetExercise();
+        }}
+      />}
       {showIntro && (
         <ExerciseIntro
           title="Cyber Scanner"
-          description="Passwords will float across the screen. Tap STRONG or WEAK before they escape!"
+          description="Passwords will float across the scanner. Tap STRONG or WEAK before they escape!"
           icon="🔍"
           controls="Tap the buttons below"
           onStart={() => setShowIntro(false)}
@@ -689,6 +717,8 @@ export default function CyberScanner({
     </div>
   );
 }
+
+/* ───────────────────────── ANSWER BUTTON ───────────────────────── */
 
 function ScannerButton({
   tint,
@@ -703,39 +733,203 @@ function ScannerButton({
   disabled: boolean;
   onClick: () => void;
 }) {
-  const [pressed, setPressed] = useState(false);
   return (
-    <button
+    <motion.button
       type="button"
       onClick={onClick}
       disabled={disabled}
-      onMouseDown={() => setPressed(true)}
-      onMouseUp={() => setPressed(false)}
-      onMouseLeave={() => setPressed(false)}
+      whileHover={!disabled ? { y: -3, scale: 1.03 } : undefined}
+      whileTap={!disabled ? { scale: 0.96, y: 1 } : undefined}
+      transition={SPRING.snappy}
       onMouseEnter={() => !disabled && playSound("hover")}
       style={{
         flex: 1,
-        height: 56,
-        borderRadius: 16,
+        height: 64,
+        borderRadius: 999,
         border: "none",
-        background: `linear-gradient(180deg, ${accent}, ${tint})`,
-        color: "#fff",
+        background: `linear-gradient(135deg, ${accent}, ${tint})`,
+        color: "#fff7e6",
         fontWeight: 900,
         fontSize: 18,
         letterSpacing: 2,
         cursor: disabled ? "not-allowed" : "pointer",
         opacity: disabled ? 0.5 : 1,
-        boxShadow: pressed
-          ? `0 2px 6px ${tint}88, inset 0 2px 8px rgba(0,0,0,0.3)`
-          : `0 8px 24px ${tint}88, 0 0 18px ${tint}66, inset 0 2px 2px rgba(255,255,255,0.3)`,
-        transform: pressed ? "scale(0.97) translateY(1px)" : "scale(1)",
-        transition: "transform 0.12s ease, box-shadow 0.12s ease",
+        fontFamily: "inherit",
+        boxShadow: `0 14px 28px -8px ${tint}aa, 0 0 0 1px rgba(255, 245, 220, 0.45) inset, 0 -4px 0 rgba(40, 18, 5, 0.3) inset`,
+        textShadow: "0 1px 2px rgba(40, 18, 5, 0.3)",
       }}
     >
       {label}
-    </button>
+    </motion.button>
   );
 }
+
+/* ───────────────────────── FINISH OVERLAY ───────────────────────── */
+
+function FinishOverlay({
+  accuracy,
+  stars,
+  speedBonuses,
+  onContinue,
+  onRetry,
+}: {
+  accuracy: number;
+  stars: number;
+  speedBonuses: number;
+  onContinue: () => void;
+  onRetry: () => void;
+}) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, scale: 0.95 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 0.4 }}
+      style={{
+        position: "absolute",
+        inset: 0,
+        background:
+          "linear-gradient(180deg, rgba(40, 18, 38, 0.95) 0%, rgba(20, 8, 24, 0.96) 100%)",
+        backdropFilter: "blur(8px)",
+        WebkitBackdropFilter: "blur(8px)",
+        color: COLOR.cream,
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        textAlign: "center",
+        padding: 28,
+        gap: 4,
+      }}
+    >
+      <div
+        style={{
+          fontSize: 12,
+          fontWeight: 800,
+          letterSpacing: 5,
+          color: "#ffd58a",
+          textTransform: "uppercase",
+          marginBottom: 4,
+        }}
+      >
+        ✦ Scan Complete ✦
+      </div>
+      <div
+        style={{
+          fontSize: 36,
+          fontWeight: 900,
+          background:
+            "linear-gradient(135deg, #ffd58a, #ff9b4a, #d4733a)",
+          WebkitBackgroundClip: "text",
+          WebkitTextFillColor: "transparent",
+          letterSpacing: 1,
+        }}
+      >
+        WELL DONE!
+      </div>
+      <div style={{ display: "flex", gap: 4, margin: "10px 0" }}>
+        {[0, 1, 2].map((i) => (
+          <motion.span
+            key={i}
+            initial={{ opacity: 0, scale: 0, rotate: -180 }}
+            animate={{
+              opacity: i < stars ? 1 : 0.25,
+              scale: 1,
+              rotate: 0,
+            }}
+            transition={{
+              ...SPRING.bouncy,
+              delay: 0.3 + i * 0.18,
+            }}
+            style={{
+              fontSize: 38,
+              filter:
+                i < stars
+                  ? "drop-shadow(0 0 14px rgba(255, 200, 100, 0.7))"
+                  : "grayscale(0.6)",
+            }}
+          >
+            ★
+          </motion.span>
+        ))}
+      </div>
+      <div
+        style={{
+          display: "flex",
+          gap: 14,
+          fontSize: 14,
+          opacity: 0.9,
+          marginBottom: 18,
+        }}
+      >
+        <span>
+          Accuracy <strong style={{ color: "#a8e3bb" }}>{accuracy}%</strong>
+        </span>
+        <span>·</span>
+        <span>
+          Speed bonuses <strong style={{ color: "#ffd58a" }}>{speedBonuses}</strong>
+        </span>
+      </div>
+      <div
+        style={{
+          display: "flex",
+          gap: 12,
+          justifyContent: "center",
+          flexWrap: "wrap",
+        }}
+      >
+        <motion.button
+          type="button"
+          onClick={onContinue}
+          whileHover={{ y: -3, scale: 1.04 }}
+          whileTap={{ scale: 0.97 }}
+          transition={SPRING.snappy}
+          style={{
+            border: "none",
+            cursor: "pointer",
+            padding: "14px 36px",
+            fontSize: 16,
+            fontWeight: 800,
+            color: COLOR.goldDark,
+            background:
+              `linear-gradient(135deg, ${COLOR.goldLight}, ${COLOR.goldMid})`,
+            borderRadius: 999,
+            fontFamily: "inherit",
+            letterSpacing: 0.5,
+            boxShadow: SHADOW.primaryButton,
+          }}
+        >
+          Continue →
+        </motion.button>
+        <motion.button
+          type="button"
+          onClick={onRetry}
+          whileHover={{ scale: 1.04 }}
+          whileTap={{ scale: 0.97 }}
+          transition={SPRING.snappy}
+          style={{
+            border: "none",
+            cursor: "pointer",
+            padding: "12px 24px",
+            fontSize: 14,
+            fontWeight: 800,
+            color: COLOR.cream,
+            background: "rgba(50, 20, 35, 0.65)",
+            backdropFilter: "blur(6px)",
+            WebkitBackdropFilter: "blur(6px)",
+            borderRadius: 999,
+            fontFamily: "inherit",
+            letterSpacing: 0.5,
+            boxShadow: SHADOW.drop,
+          }}
+        >
+          ↻ Try Again
+        </motion.button>
+      </div>
+    </motion.div>
+  );
+}
+
+/* ───────────────────────── HELPERS ───────────────────────── */
 
 function roundRect(
   ctx: CanvasRenderingContext2D,

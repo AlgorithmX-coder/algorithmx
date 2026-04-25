@@ -1,10 +1,22 @@
 "use client";
 
+/*
+ * ProtectTheData — Pixar 2.5D commercial polish.
+ *
+ * Game logic preserved: move the shield horizontally, block private
+ * info from landing, let safe info pass. Visuals fully redesigned:
+ * sunset sky with painted clouds drifting overhead (replacing the
+ * pixel-invader formation), paper-card falling items in warm tints,
+ * a golden Pixar shield, tactile motion for the win screen.
+ */
+
 import { useEffect, useMemo, useRef, useState } from "react";
+import { motion } from "motion/react";
 import { playSound } from "@/app/lib/sounds";
 import { correctAnswerBurst } from "@/app/lib/celebrations";
 import ExerciseIntro from "./ExerciseIntro";
 import ExerciseHowTo from "./ExerciseHowTo";
+import { COLOR, SHADOW, SPRING } from "@/app/components/scene/tokens";
 
 export interface ProtectTheDataItem {
   text: string;
@@ -22,11 +34,11 @@ interface FallingItem {
   idx: number;
   text: string;
   isPrivate: boolean;
-  x: number; // centre x
-  y: number; // top y
+  x: number;
+  y: number;
   vx: number;
   vy: number;
-  spin: number; // radians offset for rotation oscillation
+  spin: number;
   width: number;
   height: number;
   resolved: boolean;
@@ -56,11 +68,57 @@ interface Particle {
 
 const CANVAS_W = 720;
 const CANVAS_H = 500;
-const SHIELD_W = 120;
-const SHIELD_H = 40;
-const SHIELD_Y = CANVAS_H - 60;
-const ITEM_W = 180;
-const ITEM_H = 50;
+const SHIELD_W = 130;
+const SHIELD_H = 44;
+const SHIELD_Y = CANVAS_H - 64;
+const ITEM_W = 188;
+const ITEM_H = 54;
+
+/* ───────────────── PIXAR CANVAS PALETTE ───────────────── */
+
+const PV = {
+  // Sky stops (top to bottom)
+  skyTop: "#1f0f2e",
+  skyMid: "#5a2a48",
+  skyHorizon: "#a04a4a",
+  skyHaze: "#e88550",
+  skyFloor: "#fcd58a",
+  // Star sparkles in upper sky
+  starColor: "rgba(255, 250, 220, ",
+  // Clouds (silhouette)
+  cloudFar: "rgba(60, 28, 60, 0.45)",
+  cloudMid: "rgba(80, 36, 60, 0.55)",
+  cloudNear: "rgba(40, 18, 40, 0.65)",
+  // Floor scan
+  floorLine: "rgba(255, 178, 110, 0.35)",
+  // Falling items (paper cards)
+  cardShadow: "rgba(40, 18, 8, 0.4)",
+  cardPrivateBody: "#fde2b5",
+  cardPrivateAccent: "#c4513a",
+  cardSafeBody: "#fdf6ee",
+  cardSafeAccent: "#4a9a6a",
+  cardText: "#3b2615",
+  // Shield (golden)
+  shieldHalo: "rgba(255, 220, 160, 0.5)",
+  shieldGradTop: "#ffe9b8",
+  shieldGradMid: "#ffc97a",
+  shieldGradBottom: "#d4733a",
+  shieldRim: "rgba(255, 245, 220, 0.8)",
+  shieldGlow: "#ff9b4a",
+  // Edge flash
+  edgeFlashGood: "#7cc89a",
+  edgeFlashBad: "#c4513a",
+  edgeFlashWarn: "#e89938",
+  // Floaters
+  floaterCorrect: "#7cc89a",
+  floaterWrong: "#c4513a",
+  floaterSlow: "#e89938",
+  // HUD
+  hudBlocked: "#a8e3bb",
+  hudSafe: "#fcd34d",
+  hudCounter: "#ffd58a",
+  hudStreak: "#f08e7e",
+} as const;
 
 function speedForIndex(i: number): number {
   if (i < 4) return 2;
@@ -90,7 +148,6 @@ export default function ProtectTheData({
   const shuffled = useMemo(() => shuffle(items), [items, shuffleKey]);
   const [showIntro, setShowIntro] = useState(true);
 
-  // Mutable game state in refs (not React state — every frame)
   const state = useRef({
     shieldX: CANVAS_W / 2,
     shieldTarget: CANVAS_W / 2,
@@ -176,8 +233,8 @@ export default function ProtectTheData({
 
     if (outcome === "blocked") {
       playSound("shieldBlock");
-      addFloater("BLOCKED!", "#4ade80");
-      burst("#4ade80", 14);
+      addFloater("BLOCKED!", PV.floaterCorrect);
+      burst(PV.floaterCorrect, 14);
       state.current.blockedPrivate += 1;
       state.current.correct += 1;
       state.current.streak += 1;
@@ -186,26 +243,26 @@ export default function ProtectTheData({
       onCorrect?.();
     } else if (outcome === "passed") {
       playSound("sortCorrect");
-      addFloater("SAFE ✓", "#86efac");
-      burst("#86efac", 8);
+      addFloater("SAFE ✓", PV.floaterCorrect);
+      burst(PV.floaterCorrect, 8);
       state.current.allowedSafe += 1;
       state.current.correct += 1;
       state.current.streak += 1;
       onCorrect?.();
     } else if (outcome === "wrong-block") {
       playSound("wrong");
-      addFloater("OOPS! That was safe!", "#f97316");
-      burst("#f97316", 10);
-      state.current.edgeFlash = { colour: "#f97316", until: now + 250 };
+      addFloater("OOPS! That was safe!", PV.floaterSlow);
+      burst(PV.floaterSlow, 10);
+      state.current.edgeFlash = { colour: PV.edgeFlashWarn, until: now + 250 };
       state.current.streak = 0;
       item.bounceVy = -8;
       item.vy = -8;
       onWrong?.();
     } else {
       playSound("wrong");
-      addFloater("EXPOSED!", "#ef4444");
-      burst("#ef4444", 14);
-      state.current.edgeFlash = { colour: "#ef4444", until: now + 300 };
+      addFloater("EXPOSED!", PV.floaterWrong);
+      burst(PV.floaterWrong, 14);
+      state.current.edgeFlash = { colour: PV.edgeFlashBad, until: now + 300 };
       state.current.streak = 0;
       onWrong?.();
     }
@@ -230,28 +287,19 @@ export default function ProtectTheData({
         Math.min(CANVAS_W - SHIELD_W / 2, x)
       );
     };
-    // Mouse: track movement AND treat clicks as a snap-to-tap so kids
-    // playing on a trackpad without dragging still work.
     const onMouse = (e: MouseEvent) => onMove(canvasToLocal(e.clientX));
     const onMouseDown = (e: MouseEvent) => onMove(canvasToLocal(e.clientX));
-    // Touch: respond to both touch start and touch move so a tap on the
-    // tablet snaps the shield to that finger position immediately.
     const onTouchStart = (e: TouchEvent) => {
       if (e.touches.length > 0) onMove(canvasToLocal(e.touches[0].clientX));
     };
     const onTouchMove = (e: TouchEvent) => {
       if (e.touches.length > 0) onMove(canvasToLocal(e.touches[0].clientX));
     };
-    // Keyboard: arrow keys + WASD. Previous implementation only handled
-    // ArrowLeft/Right; add A/D so kids can use either side of the
-    // keyboard, and W/S as no-ops so accidental presses don't bubble
-    // up and scroll the page. Using `e.code` so layouts are predictable.
     const NAV_CODES = new Set([
       "ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown",
       "KeyA", "KeyD", "KeyW", "KeyS",
     ]);
     const onKey = (e: KeyboardEvent) => {
-      // Don't interfere when typing.
       const target = e.target as HTMLElement | null;
       if (target && (target.tagName === "INPUT" || target.tagName === "TEXTAREA" || target.isContentEditable)) return;
       if (!NAV_CODES.has(e.code)) return;
@@ -269,8 +317,6 @@ export default function ProtectTheData({
         );
         e.preventDefault();
       } else {
-        // Up/Down/W/S — block default scroll so the lesson doesn't jump
-        // around while the player is concentrating on the canvas.
         e.preventDefault();
       }
     };
@@ -342,10 +388,8 @@ export default function ProtectTheData({
 
       const s = state.current;
 
-      // shield lerp
       s.shieldX += (s.shieldTarget - s.shieldX) * Math.min(1, 0.25 * frames);
 
-      // spawn next
       if (!s.current && !s.finished) {
         if (s.currentIdx >= shuffled.length) {
           finish();
@@ -354,14 +398,12 @@ export default function ProtectTheData({
         }
       }
 
-      // tick current item
       if (s.current) {
         const c = s.current;
         if (!c.resolved) {
           c.x += c.vx * frames;
           c.y += c.vy * frames;
           c.spin += 0.04 * frames;
-          // reflect horizontally at edges
           if (c.x < c.width / 2 + 10) {
             c.x = c.width / 2 + 10;
             c.vx = Math.abs(c.vx);
@@ -370,7 +412,6 @@ export default function ProtectTheData({
             c.vx = -Math.abs(c.vx);
           }
 
-          // collision w/ shield (AABB, bottom edge of item vs shield rect)
           const shieldLeft = s.shieldX - SHIELD_W / 2;
           const shieldRight = s.shieldX + SHIELD_W / 2;
           const shieldTop = SHIELD_Y;
@@ -379,8 +420,7 @@ export default function ProtectTheData({
           const itemRight = c.x + c.width / 2;
           const itemBottom = c.y + c.height;
           const overlapsX = itemRight > shieldLeft && itemLeft < shieldRight;
-          const overlapsY =
-            itemBottom > shieldTop && c.y < shieldBottom;
+          const overlapsY = itemBottom > shieldTop && c.y < shieldBottom;
           if (overlapsX && overlapsY) {
             resolveItem(c, c.isPrivate ? "blocked" : "wrong-block");
           } else if (c.y > CANVAS_H - 10) {
@@ -398,9 +438,7 @@ export default function ProtectTheData({
         }
       }
 
-      // tick floaters
       s.floaters = s.floaters.filter((f) => now - f.bornAt < 900);
-      // tick particles
       s.particles = s.particles
         .map((p) => ({
           ...p,
@@ -414,128 +452,80 @@ export default function ProtectTheData({
       // ── DRAW ──
       ctx.clearRect(0, 0, CANVAS_W, CANVAS_H);
 
-      // Background — deep space gradient + twinkling stars + retro Space-
-      // Invaders march across the upper half (purely decorative; never
-      // interacts with the actual gameplay).
+      // Sunset gradient sky
       const bgGrad = ctx.createLinearGradient(0, 0, 0, CANVAS_H);
-      bgGrad.addColorStop(0, "#0d1633");
-      bgGrad.addColorStop(0.5, "#080c1f");
-      bgGrad.addColorStop(1, "#02030a");
+      bgGrad.addColorStop(0, PV.skyTop);
+      bgGrad.addColorStop(0.25, PV.skyMid);
+      bgGrad.addColorStop(0.55, PV.skyHorizon);
+      bgGrad.addColorStop(0.78, PV.skyHaze);
+      bgGrad.addColorStop(1, PV.skyFloor);
       ctx.fillStyle = bgGrad;
       ctx.fillRect(0, 0, CANVAS_W, CANVAS_H);
 
-      // Twinkling stars
-      for (let i = 0; i < 70; i++) {
+      // Soft sun glow
+      const sun = ctx.createRadialGradient(
+        CANVAS_W * 0.78,
+        CANVAS_H * 0.42,
+        4,
+        CANVAS_W * 0.78,
+        CANVAS_H * 0.42,
+        140
+      );
+      sun.addColorStop(0, "rgba(255, 250, 220, 0.85)");
+      sun.addColorStop(0.4, "rgba(255, 200, 130, 0.35)");
+      sun.addColorStop(1, "rgba(255, 160, 90, 0)");
+      ctx.fillStyle = sun;
+      ctx.fillRect(0, 0, CANVAS_W, CANVAS_H);
+
+      // Twinkling stars in upper purple
+      for (let i = 0; i < 40; i++) {
         const sx = (i * 97.3) % CANVAS_W;
-        const sy = (i * 173.7) % CANVAS_H;
+        const sy = (i * 61.7) % 130;
         const r = ((i * 13) % 3) / 2 + 0.4;
         const tw = 0.35 + 0.65 * (0.5 + 0.5 * Math.sin(now * 0.002 + i * 0.7));
-        ctx.fillStyle = `rgba(255,255,255,${0.25 + 0.45 * tw})`;
+        ctx.fillStyle = PV.starColor + (0.25 + 0.45 * tw) + ")";
         ctx.beginPath();
         ctx.arc(sx, sy, r, 0, Math.PI * 2);
         ctx.fill();
       }
 
-      // Retro pixel-invader grid (3 rows × 7 cols, two-frame "march" anim).
-      // Each invader is drawn from a tiny bitmap so it reads as proper
-      // pixel-art rather than a smooth shape.  Colours & opacity are dialled
-      // way down so the player's eye stays on the falling cards.
-      const INVADER_A = [
-        "..X.....X..",
-        "...X...X...",
-        "..XXXXXXX..",
-        ".XX.XXX.XX.",
-        "XXXXXXXXXXX",
-        "X.XXXXXXX.X",
-        "X.X.....X.X",
-        "...XX.XX...",
-      ];
-      const INVADER_B = [
-        "..X.....X..",
-        "X..X...X..X",
-        "X.XXXXXXX.X",
-        "XXX.XXX.XXX",
-        "XXXXXXXXXXX",
-        ".XXXXXXXXX.",
-        "..X.....X..",
-        ".X.......X.",
-      ];
-      const INVADER_C = [
-        "....XXX....",
-        ".XXXXXXXXX.",
-        "XXXXXXXXXXX",
-        "XXX.XXX.XXX",
-        "XXXXXXXXXXX",
-        "..X.X.X.X..",
-        ".X.X...X.X.",
-        "X.X.....X.X",
-      ];
-      const INVADER_TYPES = [INVADER_A, INVADER_B, INVADER_C];
-      const INVADER_COLS = ["#a78bfa", "#22d3ee", "#f472b6"];
-      const PX = 3;
-      const INV_W = 11 * PX;
-      const INV_H = 8 * PX;
-      const INV_GAP_X = 22;
-      const INV_GAP_Y = 20;
-      const COLS = 7;
-      const ROWS = 3;
-      const totalW = COLS * INV_W + (COLS - 1) * INV_GAP_X;
-      // March: bounce horizontally, step every ~0.7s (alternates frame)
-      const period = 5200;
-      const t = (now % period) / period;
-      const sway = Math.sin(t * Math.PI * 2) * 18;
-      const startX = (CANVAS_W - totalW) / 2 + sway;
-      const startY = 28;
-      const frame = Math.floor(now / 700) % 2;
-      for (let r = 0; r < ROWS; r++) {
-        const pat = INVADER_TYPES[r];
-        const colour = INVADER_COLS[r];
-        for (let c = 0; c < COLS; c++) {
-          const ox = startX + c * (INV_W + INV_GAP_X);
-          const oy = startY + r * (INV_H + INV_GAP_Y);
-          // Two-frame wobble: every other invader uses opposite frame so the
-          // formation reads as marching together.
-          const flip = frame ^ ((c + r) & 1);
-          ctx.fillStyle = colour;
-          ctx.globalAlpha = 0.22;
-          for (let py = 0; py < pat.length; py++) {
-            for (let px = 0; px < pat[py].length; px++) {
-              if (pat[py][px] === "X") {
-                const dx = flip ? (10 - px) : px;
-                ctx.fillRect(ox + dx * PX, oy + py * PX, PX, PX);
-              }
-            }
-          }
-        }
-      }
-      ctx.globalAlpha = 1;
+      // Drifting clouds (3 layers, parallax)
+      const cloudPhase = now / 18000;
+      const drawCloud = (
+        baseX: number,
+        y: number,
+        scale: number,
+        colour: string,
+        speed: number
+      ) => {
+        const x = ((baseX + cloudPhase * speed) % (CANVAS_W + 200)) - 100;
+        ctx.fillStyle = colour;
+        ctx.beginPath();
+        ctx.arc(x, y, 22 * scale, 0, Math.PI * 2);
+        ctx.arc(x + 24 * scale, y - 6 * scale, 26 * scale, 0, Math.PI * 2);
+        ctx.arc(x + 50 * scale, y, 22 * scale, 0, Math.PI * 2);
+        ctx.arc(x + 32 * scale, y + 8 * scale, 20 * scale, 0, Math.PI * 2);
+        ctx.fill();
+      };
+      drawCloud(80, 70, 1.0, PV.cloudFar, 480);
+      drawCloud(360, 95, 1.2, PV.cloudFar, 420);
+      drawCloud(580, 65, 0.9, PV.cloudFar, 520);
+      drawCloud(180, 130, 1.1, PV.cloudMid, 360);
+      drawCloud(480, 145, 1.0, PV.cloudMid, 320);
+      drawCloud(40, 180, 1.3, PV.cloudNear, 240);
+      drawCloud(420, 195, 1.15, PV.cloudNear, 220);
 
-      // Occasional laser bolt streaking down from the invader formation
-      // (deterministic from time so we don't need extra state).
-      const boltCycle = 1800;
-      const boltT = (now % boltCycle) / boltCycle;
-      if (boltT < 0.18) {
-        const seed = Math.floor(now / boltCycle);
-        const bx = startX + ((seed * 5) % COLS) * (INV_W + INV_GAP_X) + INV_W / 2;
-        const by = startY + ROWS * (INV_H + INV_GAP_Y) + boltT * 6 * 220;
-        ctx.fillStyle = "rgba(248,113,113,0.55)";
-        ctx.fillRect(bx, by - 8, 2, 8);
-        ctx.fillStyle = "rgba(248,113,113,0.85)";
-        ctx.fillRect(bx, by - 4, 2, 4);
-      }
-
-      // Subtle scan-line floor near the shield: classic arcade "ground"
-      ctx.strokeStyle = "rgba(96,165,250,0.18)";
-      ctx.lineWidth = 1;
+      // Warm horizon ground line
+      ctx.strokeStyle = PV.floorLine;
+      ctx.lineWidth = 1.5;
       ctx.beginPath();
-      ctx.moveTo(0, SHIELD_Y + 22);
-      ctx.lineTo(CANVAS_W, SHIELD_Y + 22);
+      ctx.moveTo(0, SHIELD_Y + 26);
+      ctx.lineTo(CANVAS_W, SHIELD_Y + 26);
       ctx.stroke();
 
       // Edge flash
       if (s.edgeFlash && now < s.edgeFlash.until) {
-        const alpha =
-          (s.edgeFlash.until - now) / 300;
+        const alpha = (s.edgeFlash.until - now) / 300;
         ctx.strokeStyle = s.edgeFlash.colour;
         ctx.globalAlpha = alpha;
         ctx.lineWidth = 18;
@@ -545,104 +535,108 @@ export default function ProtectTheData({
         s.edgeFlash = null;
       }
 
-      // Current item
+      // Falling card
       if (s.current) {
         const c = s.current;
         const tilt = Math.sin(c.spin) * 0.08;
         ctx.save();
         ctx.translate(c.x, c.y + c.height / 2);
         ctx.rotate(tilt);
-        // Card shadow
-        ctx.fillStyle = "rgba(0,0,0,0.4)";
-        ctx.fillRect(-c.width / 2 + 3, -c.height / 2 + 3, c.width, c.height);
-        // Card body
-        const tint = c.isPrivate
-          ? "rgba(239,68,68,0.12)"
-          : "rgba(34,197,94,0.10)";
-        const border = c.isPrivate
-          ? "rgba(248,113,113,0.55)"
-          : "rgba(134,239,172,0.55)";
-        const grad = ctx.createLinearGradient(
-          0,
-          -c.height / 2,
-          0,
-          c.height / 2
+
+        // Soft drop shadow
+        ctx.fillStyle = PV.cardShadow;
+        roundRect(
+          ctx,
+          -c.width / 2 + 3,
+          -c.height / 2 + 5,
+          c.width,
+          c.height,
+          14
         );
-        grad.addColorStop(0, "rgba(30,41,59,0.95)");
-        grad.addColorStop(1, "rgba(15,23,42,0.95)");
+        ctx.fill();
+
+        // Paper card body
+        const grad = ctx.createLinearGradient(0, -c.height / 2, 0, c.height / 2);
+        if (c.isPrivate) {
+          grad.addColorStop(0, "#fff5d4");
+          grad.addColorStop(1, PV.cardPrivateBody);
+        } else {
+          grad.addColorStop(0, "#ffffff");
+          grad.addColorStop(1, PV.cardSafeBody);
+        }
         ctx.fillStyle = grad;
-        roundRect(
-          ctx,
-          -c.width / 2,
-          -c.height / 2,
-          c.width,
-          c.height,
-          10
-        );
+        roundRect(ctx, -c.width / 2, -c.height / 2, c.width, c.height, 14);
         ctx.fill();
-        ctx.fillStyle = tint;
-        roundRect(
-          ctx,
-          -c.width / 2,
-          -c.height / 2,
-          c.width,
-          c.height,
-          10
-        );
+
+        // Coloured accent strip along top
+        ctx.fillStyle = c.isPrivate ? PV.cardPrivateAccent : PV.cardSafeAccent;
+        roundRect(ctx, -c.width / 2, -c.height / 2, c.width, 6, 14);
         ctx.fill();
-        ctx.strokeStyle = border;
+
+        // Tag dot (left)
+        ctx.fillStyle = c.isPrivate ? PV.cardPrivateAccent : PV.cardSafeAccent;
+        ctx.beginPath();
+        ctx.arc(-c.width / 2 + 18, 0, 6, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Border
+        ctx.strokeStyle = c.isPrivate
+          ? `rgba(196, 81, 58, 0.55)`
+          : `rgba(74, 154, 106, 0.55)`;
         ctx.lineWidth = 2;
-        roundRect(
-          ctx,
-          -c.width / 2,
-          -c.height / 2,
-          c.width,
-          c.height,
-          10
-        );
+        roundRect(ctx, -c.width / 2, -c.height / 2, c.width, c.height, 14);
         ctx.stroke();
-        // text
-        ctx.fillStyle = "#f1f5f9";
-        ctx.font = "600 14px 'Space Grotesk', sans-serif";
+
+        // Text
+        ctx.fillStyle = PV.cardText;
+        ctx.font = "700 14px ui-rounded, 'Fredoka', system-ui, sans-serif";
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
-        ctx.fillText(c.text, 0, 0, c.width - 16);
+        ctx.fillText(c.text, 6, 1, c.width - 36);
         ctx.restore();
       }
 
-      // Shield
+      // Golden Pixar shield
       const sx = s.shieldX;
       const sy = SHIELD_Y;
-      // Energy field (above)
-      const field = ctx.createRadialGradient(sx, sy, 0, sx, sy, 90);
-      field.addColorStop(0, "rgba(96,165,250,0.35)");
-      field.addColorStop(1, "rgba(96,165,250,0)");
-      ctx.fillStyle = field;
-      ctx.fillRect(sx - 90, sy - 60, 180, 70);
-      // Shield body
-      const sGrad = ctx.createLinearGradient(
-        sx - SHIELD_W / 2,
-        sy,
-        sx + SHIELD_W / 2,
-        sy + SHIELD_H
-      );
-      sGrad.addColorStop(0, "#60a5fa");
-      sGrad.addColorStop(0.5, "#22d3ee");
-      sGrad.addColorStop(1, "#34d399");
+      // Halo above
+      const halo = ctx.createRadialGradient(sx, sy, 0, sx, sy, 110);
+      halo.addColorStop(0, PV.shieldHalo);
+      halo.addColorStop(1, "rgba(255, 220, 160, 0)");
+      ctx.fillStyle = halo;
+      ctx.fillRect(sx - 110, sy - 80, 220, 90);
+      // Body
+      const sGrad = ctx.createLinearGradient(0, sy, 0, sy + SHIELD_H);
+      sGrad.addColorStop(0, PV.shieldGradTop);
+      sGrad.addColorStop(0.5, PV.shieldGradMid);
+      sGrad.addColorStop(1, PV.shieldGradBottom);
       ctx.fillStyle = sGrad;
-      roundRect(ctx, sx - SHIELD_W / 2, sy, SHIELD_W, SHIELD_H, 18);
+      roundRect(ctx, sx - SHIELD_W / 2, sy, SHIELD_W, SHIELD_H, 22);
+      ctx.fill();
+      // Top highlight
+      const highlight = ctx.createLinearGradient(0, sy, 0, sy + 14);
+      highlight.addColorStop(0, "rgba(255, 255, 230, 0.7)");
+      highlight.addColorStop(1, "rgba(255, 255, 230, 0)");
+      ctx.fillStyle = highlight;
+      roundRect(ctx, sx - SHIELD_W / 2 + 4, sy + 2, SHIELD_W - 8, 14, 16);
       ctx.fill();
       // Rim
-      ctx.strokeStyle = "rgba(255,255,255,0.85)";
+      ctx.strokeStyle = PV.shieldRim;
       ctx.lineWidth = 2;
-      roundRect(ctx, sx - SHIELD_W / 2, sy, SHIELD_W, SHIELD_H, 18);
+      roundRect(ctx, sx - SHIELD_W / 2, sy, SHIELD_W, SHIELD_H, 22);
       ctx.stroke();
       // Glow
-      ctx.shadowColor = "#60a5fa";
-      ctx.shadowBlur = 18;
-      roundRect(ctx, sx - SHIELD_W / 2, sy, SHIELD_W, SHIELD_H, 18);
+      ctx.shadowColor = PV.shieldGlow;
+      ctx.shadowBlur = 24;
+      roundRect(ctx, sx - SHIELD_W / 2, sy, SHIELD_W, SHIELD_H, 22);
       ctx.stroke();
       ctx.shadowBlur = 0;
+      // Centre crest
+      ctx.fillStyle = "#5a2e14";
+      ctx.font = "900 18px ui-rounded, 'Fredoka', system-ui, sans-serif";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillText("🛡", sx, sy + SHIELD_H / 2 + 1);
 
       // Particles
       for (const p of s.particles) {
@@ -655,16 +649,16 @@ export default function ProtectTheData({
       }
       ctx.globalAlpha = 1;
 
-      // Floating texts
+      // Floaters with warm dark stroke
       for (const f of s.floaters) {
         const age = now - f.bornAt;
         const alpha = Math.max(0, 1 - age / 900);
         const dy = -age * 0.08;
         ctx.globalAlpha = alpha;
         ctx.fillStyle = f.colour;
-        ctx.strokeStyle = "rgba(0,0,0,0.7)";
-        ctx.lineWidth = 3;
-        ctx.font = "900 20px 'Space Grotesk', sans-serif";
+        ctx.strokeStyle = "rgba(40, 18, 12, 0.7)";
+        ctx.lineWidth = 4;
+        ctx.font = "900 20px ui-rounded, 'Fredoka', system-ui, sans-serif";
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
         ctx.strokeText(f.text, f.x, f.y + dy);
@@ -673,24 +667,20 @@ export default function ProtectTheData({
       ctx.globalAlpha = 1;
 
       // HUD
-      ctx.font = "800 14px 'Space Grotesk', sans-serif";
+      ctx.font = "800 14px ui-rounded, 'Fredoka', system-ui, sans-serif";
       ctx.textBaseline = "top";
       ctx.textAlign = "left";
-      ctx.fillStyle = "#7dd3fc";
-      ctx.fillText(
-        `BLOCKED ${s.blockedPrivate}/${s.totalPrivate}`,
-        16,
-        14
-      );
+      ctx.fillStyle = PV.hudBlocked;
+      ctx.fillText(`BLOCKED ${s.blockedPrivate}/${s.totalPrivate}`, 16, 14);
       ctx.textAlign = "right";
-      ctx.fillStyle = "#86efac";
+      ctx.fillStyle = PV.hudSafe;
       ctx.fillText(`SAFE ${s.allowedSafe}/${s.totalSafe}`, CANVAS_W - 16, 14);
       ctx.textAlign = "center";
-      ctx.fillStyle = "#fbbf24";
+      ctx.fillStyle = PV.hudCounter;
       const curNum = Math.min(shuffled.length, s.currentIdx + (s.current ? 1 : 0));
       ctx.fillText(`Item ${curNum} of ${shuffled.length}`, CANVAS_W / 2, 14);
       if (s.streak >= 3) {
-        ctx.fillStyle = "#f97316";
+        ctx.fillStyle = PV.hudStreak;
         ctx.fillText(`STREAK x${s.streak}`, CANVAS_W / 2, 34);
       }
 
@@ -719,11 +709,15 @@ export default function ProtectTheData({
         maxWidth: 760,
         margin: "0 auto",
         maxHeight: "calc(100vh - 140px)",
-        borderRadius: 24,
+        borderRadius: 28,
         overflow: "hidden",
-        background: "linear-gradient(180deg, #05060f 0%, #010106 100%)",
-        border: "1px solid rgba(255,255,255,0.08)",
+        background:
+          "linear-gradient(180deg, #fff7e0 0%, #fde2b5 55%, #f9c27a 100%)",
+        boxShadow: SHADOW.sceneFrame,
         touchAction: "none",
+        fontFamily:
+          "ui-rounded, 'Fredoka', 'Quicksand', system-ui, -apple-system, sans-serif",
+        color: COLOR.inkDeep,
       }}
       tabIndex={0}
     >
@@ -731,10 +725,10 @@ export default function ProtectTheData({
         title="Protect the Data"
         steps={[
           { glyph: "🖱️", text: "Move your shield with the mouse or ←/→ keys" },
-          { glyph: "🛡️", text: "BLOCK private info (red) before it lands" },
-          { glyph: "✅", text: "Let SAFE info (green) through to score" },
+          { glyph: "🛡️", text: "BLOCK private info before it lands" },
+          { glyph: "✅", text: "Let SAFE info through to score" },
         ]}
-        accent="#60a5fa"
+        accent="#d4733a"
       />
       <canvas
         ref={canvasRef}
@@ -747,99 +741,209 @@ export default function ProtectTheData({
         aria-label="Protect the Data game"
       />
       {finished && (
-        <div
-          style={{
-            position: "absolute",
-            inset: 0,
-            background: "rgba(4,6,14,0.94)",
-            backdropFilter: "blur(6px)",
-            color: "#e2e8f0",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-            textAlign: "center",
-            padding: 24,
+        <FinishOverlay
+          correct={s.correct}
+          total={shuffled.length}
+          stars={stars}
+          blocked={s.blockedPrivate}
+          totalPrivate={s.totalPrivate}
+          safe={s.allowedSafe}
+          totalSafe={s.totalSafe}
+          onContinue={() => {
+            playSound("click");
+            onComplete(s.correct);
           }}
-        >
-          <div
-            style={{
-              fontSize: 30,
-              fontWeight: 900,
-              background:
-                "linear-gradient(135deg, #60a5fa, #22d3ee, #4ade80)",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-              letterSpacing: 2,
-            }}
-          >
-            MISSION COMPLETE!
-          </div>
-          <div style={{ marginTop: 10, fontSize: 18 }}>
-            {s.correct} / {shuffled.length} correct
-          </div>
-          <div style={{ color: "#94a3b8", marginTop: 4, fontSize: 13 }}>
-            Blocked {s.blockedPrivate}/{s.totalPrivate} private &nbsp;·&nbsp;
-            Let {s.allowedSafe}/{s.totalSafe} safe through
-          </div>
-          <div style={{ fontSize: 36, margin: "14px 0" }}>
-            {"★".repeat(stars)}
-            <span style={{ color: "rgba(148,163,184,0.4)" }}>
-              {"★".repeat(3 - stars)}
-            </span>
-          </div>
-          <div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
-            <button
-              type="button"
-              onClick={() => {
-                playSound("click");
-                onComplete(s.correct);
-              }}
-              style={{
-                background: "linear-gradient(135deg, #f97316, #f59e0b)",
-                color: "#fff",
-                fontWeight: 800,
-                borderRadius: 14,
-                padding: "14px 36px",
-                fontSize: 17,
-                border: "none",
-                cursor: "pointer",
-                boxShadow: "0 0 18px rgba(249,115,22,0.5)",
-              }}
-            >
-              Continue &rarr;
-            </button>
-            <button
-              type="button"
-              onClick={() => { playSound("select"); resetExercise(); }}
-              style={{
-                background: "transparent",
-                color: "#93c5fd",
-                fontWeight: 700,
-                borderRadius: 14,
-                padding: "12px 24px",
-                fontSize: 14,
-                border: "2px solid rgba(96,165,250,0.55)",
-                cursor: "pointer",
-              }}
-            >
-              🔄 Try Again
-            </button>
-          </div>
-        </div>
+          onRetry={() => {
+            playSound("select");
+            resetExercise();
+          }}
+        />
       )}
       {showIntro && (
         <ExerciseIntro
           title="Protect the Data!"
-          description="Private information is falling from the sky! Move your shield to block it — but let safe information through!"
+          description="Private info is falling from the sky. Move your golden shield to block it — but let safe info through!"
           icon="🛡️"
           controls="Move mouse or arrow keys"
           onStart={() => setShowIntro(false)}
         />
       )}
+      <span style={{ display: "none" }}>{render}</span>
     </div>
   );
 }
+
+/* ───────────────────────── FINISH OVERLAY ───────────────────────── */
+
+function FinishOverlay({
+  correct,
+  total,
+  stars,
+  blocked,
+  totalPrivate,
+  safe,
+  totalSafe,
+  onContinue,
+  onRetry,
+}: {
+  correct: number;
+  total: number;
+  stars: number;
+  blocked: number;
+  totalPrivate: number;
+  safe: number;
+  totalSafe: number;
+  onContinue: () => void;
+  onRetry: () => void;
+}) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, scale: 0.95 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 0.4 }}
+      style={{
+        position: "absolute",
+        inset: 0,
+        background:
+          "linear-gradient(180deg, rgba(40, 18, 38, 0.95) 0%, rgba(20, 8, 24, 0.96) 100%)",
+        backdropFilter: "blur(8px)",
+        WebkitBackdropFilter: "blur(8px)",
+        color: COLOR.cream,
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        textAlign: "center",
+        padding: 28,
+        gap: 4,
+      }}
+    >
+      <div
+        style={{
+          fontSize: 12,
+          fontWeight: 800,
+          letterSpacing: 5,
+          color: "#ffd58a",
+          textTransform: "uppercase",
+          marginBottom: 4,
+        }}
+      >
+        ✦ Mission Complete ✦
+      </div>
+      <div
+        style={{
+          fontSize: 36,
+          fontWeight: 900,
+          background:
+            "linear-gradient(135deg, #ffd58a, #ff9b4a, #d4733a)",
+          WebkitBackgroundClip: "text",
+          WebkitTextFillColor: "transparent",
+          letterSpacing: 1,
+        }}
+      >
+        SHIELDED!
+      </div>
+      <div style={{ marginTop: 4, fontSize: 16, opacity: 0.92 }}>
+        {correct} / {total} correct
+      </div>
+      <div
+        style={{
+          marginTop: 4,
+          fontSize: 12,
+          opacity: 0.75,
+          letterSpacing: 1,
+        }}
+      >
+        Blocked {blocked}/{totalPrivate} private &nbsp;·&nbsp; Let {safe}/{totalSafe} safe through
+      </div>
+      <div style={{ display: "flex", gap: 4, margin: "12px 0" }}>
+        {[0, 1, 2].map((i) => (
+          <motion.span
+            key={i}
+            initial={{ opacity: 0, scale: 0, rotate: -180 }}
+            animate={{
+              opacity: i < stars ? 1 : 0.25,
+              scale: 1,
+              rotate: 0,
+            }}
+            transition={{
+              ...SPRING.bouncy,
+              delay: 0.3 + i * 0.18,
+            }}
+            style={{
+              fontSize: 38,
+              filter:
+                i < stars
+                  ? "drop-shadow(0 0 14px rgba(255, 200, 100, 0.7))"
+                  : "grayscale(0.6)",
+            }}
+          >
+            ★
+          </motion.span>
+        ))}
+      </div>
+      <div
+        style={{
+          display: "flex",
+          gap: 12,
+          justifyContent: "center",
+          flexWrap: "wrap",
+          marginTop: 8,
+        }}
+      >
+        <motion.button
+          type="button"
+          onClick={onContinue}
+          whileHover={{ y: -3, scale: 1.04 }}
+          whileTap={{ scale: 0.97 }}
+          transition={SPRING.snappy}
+          style={{
+            border: "none",
+            cursor: "pointer",
+            padding: "14px 36px",
+            fontSize: 16,
+            fontWeight: 800,
+            color: COLOR.goldDark,
+            background:
+              `linear-gradient(135deg, ${COLOR.goldLight}, ${COLOR.goldMid})`,
+            borderRadius: 999,
+            fontFamily: "inherit",
+            letterSpacing: 0.5,
+            boxShadow: SHADOW.primaryButton,
+          }}
+        >
+          Continue →
+        </motion.button>
+        <motion.button
+          type="button"
+          onClick={onRetry}
+          whileHover={{ scale: 1.04 }}
+          whileTap={{ scale: 0.97 }}
+          transition={SPRING.snappy}
+          style={{
+            border: "none",
+            cursor: "pointer",
+            padding: "12px 24px",
+            fontSize: 14,
+            fontWeight: 800,
+            color: COLOR.cream,
+            background: "rgba(50, 20, 35, 0.65)",
+            backdropFilter: "blur(6px)",
+            WebkitBackdropFilter: "blur(6px)",
+            borderRadius: 999,
+            fontFamily: "inherit",
+            letterSpacing: 0.5,
+            boxShadow: SHADOW.drop,
+          }}
+        >
+          ↻ Try Again
+        </motion.button>
+      </div>
+    </motion.div>
+  );
+}
+
+/* ───────────────────────── HELPERS ───────────────────────── */
 
 function roundRect(
   ctx: CanvasRenderingContext2D,
