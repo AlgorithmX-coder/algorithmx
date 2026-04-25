@@ -368,6 +368,10 @@ export default function SpamBlaster({
         now < s.monitorShakeUntil ? (Math.random() - 0.5) * 6 : 0;
       const mx = MONITOR_X + shakeAmt;
       const my = MONITOR_Y + (now < s.monitorShakeUntil ? (Math.random() - 0.5) * 4 : 0);
+      const sx = mx - MONITOR_W / 2 + 10;
+      const sy = my - MONITOR_H / 2 + 10;
+      const sw = MONITOR_W - 20;
+      const sh = MONITOR_H - 20;
 
       // frame
       const frameColour = flashing ? s.monitorFlashColour! : "#1e293b";
@@ -378,21 +382,112 @@ export default function SpamBlaster({
       ctx.lineWidth = 4;
       roundRect(ctx, mx - MONITOR_W / 2, my - MONITOR_H / 2, MONITOR_W, MONITOR_H, 14);
       ctx.stroke();
-      // screen
+
+      // screen background
       const screenGrad = ctx.createLinearGradient(0, my - MONITOR_H / 2, 0, my + MONITOR_H / 2);
-      screenGrad.addColorStop(0, "rgba(59,130,246,0.3)");
-      screenGrad.addColorStop(1, "rgba(15,23,42,0.95)");
+      screenGrad.addColorStop(0, "rgba(20,30,80,0.95)");
+      screenGrad.addColorStop(1, "rgba(8,12,24,0.98)");
       ctx.fillStyle = screenGrad;
-      roundRect(
-        ctx,
-        mx - MONITOR_W / 2 + 10,
-        my - MONITOR_H / 2 + 10,
-        MONITOR_W - 20,
-        MONITOR_H - 20,
-        8
-      );
+      roundRect(ctx, sx, sy, sw, sh, 8);
       ctx.fill();
-      // glow ring if flashing
+
+      // Clip subsequent drawing to inside the screen so the AlgorithmX
+      // mock-app can't bleed past the bezel.
+      ctx.save();
+      roundRect(ctx, sx, sy, sw, sh, 8);
+      ctx.clip();
+
+      // App title bar
+      ctx.fillStyle = "rgba(15,23,42,0.95)";
+      ctx.fillRect(sx, sy, sw, 18);
+      // Traffic-light dots
+      ["#ef4444", "#fbbf24", "#22c55e"].forEach((c, i) => {
+        ctx.fillStyle = c;
+        ctx.beginPath();
+        ctx.arc(sx + 8 + i * 7, sy + 9, 2, 0, Math.PI * 2);
+        ctx.fill();
+      });
+      // Brand mark "AX" badge
+      ctx.fillStyle = "#22d3ee";
+      ctx.font = "900 9px 'Space Grotesk', sans-serif";
+      ctx.textAlign = "left";
+      ctx.textBaseline = "middle";
+      ctx.fillText("◆ AlgorithmX Mail", sx + 32, sy + 9);
+      // Status dot (live)
+      ctx.fillStyle = "#22c55e";
+      ctx.beginPath();
+      ctx.arc(sx + sw - 8, sy + 9, 2, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Inbox header (inside app)
+      ctx.fillStyle = "rgba(167,139,250,0.18)";
+      ctx.fillRect(sx, sy + 18, sw, 16);
+      ctx.fillStyle = "#a78bfa";
+      ctx.font = "900 9px 'Courier New', monospace";
+      ctx.textAlign = "left";
+      ctx.fillText("▸ INBOX", sx + 8, sy + 26);
+      ctx.fillStyle = "#86efac";
+      ctx.textAlign = "right";
+      ctx.fillText(`${s.inbox}/${s.totalSafe}`, sx + sw - 8, sy + 26);
+
+      // Recent message rows (one per email already in inbox, max 3)
+      const rowH = 14;
+      for (let i = 0; i < Math.min(s.inbox, 3); i++) {
+        const ry = sy + 38 + i * rowH;
+        // Row background
+        ctx.fillStyle = i === 0 ? "rgba(34,211,238,0.1)" : "rgba(255,255,255,0.03)";
+        ctx.fillRect(sx + 4, ry, sw - 8, rowH - 2);
+        // Avatar dot
+        const dotC = ["#22d3ee", "#a78bfa", "#fbbf24"][i % 3];
+        ctx.fillStyle = dotC;
+        ctx.beginPath();
+        ctx.arc(sx + 12, ry + (rowH - 2) / 2, 3, 0, Math.PI * 2);
+        ctx.fill();
+        // Sender stripe
+        ctx.fillStyle = "rgba(255,255,255,0.6)";
+        ctx.fillRect(sx + 20, ry + 3, sw * 0.45, 2);
+        // Subject stripe
+        ctx.fillStyle = "rgba(255,255,255,0.3)";
+        ctx.fillRect(sx + 20, ry + 7, sw * 0.6, 1.5);
+      }
+      // Empty-state placeholders
+      for (let i = s.inbox; i < 3; i++) {
+        const ry = sy + 38 + i * rowH;
+        ctx.fillStyle = "rgba(255,255,255,0.02)";
+        ctx.fillRect(sx + 4, ry, sw - 8, rowH - 2);
+        ctx.strokeStyle = "rgba(255,255,255,0.06)";
+        ctx.setLineDash([2, 2]);
+        ctx.strokeRect(sx + 4, ry, sw - 8, rowH - 2);
+        ctx.setLineDash([]);
+      }
+
+      // Footer status bar
+      ctx.fillStyle = "rgba(15,23,42,0.95)";
+      ctx.fillRect(sx, sy + sh - 14, sw, 14);
+      ctx.fillStyle = s.viruses > 0 ? "#ef4444" : "#22c55e";
+      ctx.beginPath();
+      ctx.arc(sx + 8, sy + sh - 7, 2.4, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = s.viruses > 0 ? "#fca5a5" : "#86efac";
+      ctx.font = "700 8px 'Courier New', monospace";
+      ctx.textAlign = "left";
+      ctx.fillText(
+        s.viruses > 0 ? `${s.viruses} VIRUS${s.viruses > 1 ? "ES" : ""} DETECTED` : "ALL CLEAR",
+        sx + 14, sy + sh - 7
+      );
+      ctx.textAlign = "right";
+      ctx.fillStyle = "#a78bfa";
+      ctx.fillText(`STREAK ${s.streak}`, sx + sw - 6, sy + sh - 7);
+
+      // Subtle scanlines on top of everything
+      ctx.fillStyle = "rgba(255,255,255,0.025)";
+      for (let yL = 0; yL < sh; yL += 3) {
+        ctx.fillRect(sx, sy + yL, sw, 1);
+      }
+
+      ctx.restore();
+
+      // Glow ring if flashing
       if (flashing) {
         ctx.shadowColor = s.monitorFlashColour!;
         ctx.shadowBlur = 28;
@@ -400,12 +495,13 @@ export default function SpamBlaster({
         ctx.stroke();
         ctx.shadowBlur = 0;
       }
+
       // base
       ctx.fillStyle = "#1e293b";
       ctx.fillRect(mx - 40, my + MONITOR_H / 2, 80, 12);
       ctx.fillRect(mx - 70, my + MONITOR_H / 2 + 12, 140, 8);
 
-      // inbox label
+      // External inbox label above the monitor
       ctx.fillStyle = "#93c5fd";
       ctx.font = "900 13px 'Space Grotesk', sans-serif";
       ctx.textAlign = "center";
@@ -415,10 +511,6 @@ export default function SpamBlaster({
         MONITOR_X,
         MONITOR_Y - MONITOR_H / 2 - 8
       );
-      // virus counter on the screen
-      ctx.fillStyle = s.viruses > 0 ? "#ef4444" : "#4b5563";
-      ctx.font = "700 12px 'Courier New', monospace";
-      ctx.fillText(`VIRUSES: ${s.viruses}`, MONITOR_X, MONITOR_Y + 12);
     };
 
     const drawEmail = (em: LiveEmail) => {

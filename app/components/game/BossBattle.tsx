@@ -3842,9 +3842,9 @@ export default function BossBattle({
         }
         .bb-victory-hero {
           position: relative;
-          width: 240px;
-          height: 340px;
-          padding-top: 24px;
+          width: 260px;
+          height: 400px;
+          padding-top: 60px;
           display: flex;
           align-items: flex-end;
           justify-content: center;
@@ -3861,11 +3861,22 @@ export default function BossBattle({
           background: radial-gradient(circle, rgba(251,191,36,0.45) 0%, rgba(251,191,36,0.15) 45%, transparent 70%);
           animation: bbTrophyPulse 2s ease-in-out infinite;
           filter: none;
+          pointer-events: none;
         }
+        /* Hand-clipping fix: the celebrate.png art has the raised arm
+           reaching very near the top edge of the source. With object-fit:
+           contain + height: 100% the image fills the box vertically and
+           the fingertips end up flush with the top of the picture frame,
+           so any tiny clip in the source asset reads as "missing hands".
+           Solution: cap the image height to less than 100% so there's a
+           clear gap above the head/hands, and let the padding-top above
+           absorb the rest. */
         .bb-victory-hero img {
           position: relative;
-          height: 100%;
-          width: 100%;
+          height: calc(100% - 24px);
+          max-height: 320px;
+          width: auto;
+          max-width: 100%;
           object-fit: contain;
           object-position: center bottom;
           filter: drop-shadow(0 8px 24px rgba(251,191,36,0.4));
@@ -3963,8 +3974,8 @@ export default function BossBattle({
           box-shadow: 0 6px 22px rgba(249,115,22,0.5);
         }
         @media (max-width: 720px) {
-          .bb-victory-hero { width: 210px; height: 290px; padding-top: 20px; overflow: visible }
-          .bb-victory-hero img { height: 100%; width: 100%; object-fit: contain; object-position: center bottom }
+          .bb-victory-hero { width: 220px; height: 340px; padding-top: 50px; overflow: visible }
+          .bb-victory-hero img { height: calc(100% - 24px); max-height: 280px; width: auto; max-width: 100%; object-fit: contain; object-position: center bottom }
           .bb-victory-stats { min-width: 280px }
           .bb-victory-title { font-size: 44px }
         }

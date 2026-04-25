@@ -448,6 +448,98 @@ const SuccessBurst = ({
   </svg>
 );
 
+/* Big illustrated weekly badge — used on the end-of-week screen for
+   non-milestone weeks (1-4, 6-9, etc.) so kids feel rewarded each week
+   even when there's no certificate yet. Inline SVG with depth, ribbons
+   and a centred week number. */
+function WeekBadge({ weekNumber, size = 96 }: { weekNumber: number; size?: number }) {
+  const id = `wb-${weekNumber}`;
+  return (
+    <svg width={size} height={size * 1.2} viewBox="0 0 100 120" style={{ filter: "drop-shadow(0 8px 18px rgba(245,158,11,0.55))" }}>
+      <defs>
+        <linearGradient id={`${id}-medal`} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#fde68a" />
+          <stop offset="50%" stopColor="#f59e0b" />
+          <stop offset="100%" stopColor="#92400e" />
+        </linearGradient>
+        <linearGradient id={`${id}-ribbon-l`} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#3b82f6" />
+          <stop offset="100%" stopColor="#1e3a8a" />
+        </linearGradient>
+        <linearGradient id={`${id}-ribbon-r`} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#a855f7" />
+          <stop offset="100%" stopColor="#581c87" />
+        </linearGradient>
+        <radialGradient id={`${id}-core`}>
+          <stop offset="0%" stopColor="#fff" stopOpacity="0.6" />
+          <stop offset="100%" stopColor="#fff" stopOpacity="0" />
+        </radialGradient>
+      </defs>
+      {/* Ribbons */}
+      <polygon points="32,40 14,108 30,98 36,84" fill={`url(#${id}-ribbon-l)`} stroke="rgba(0,0,0,0.25)" strokeWidth="0.6" />
+      <polygon points="68,40 86,108 70,98 64,84" fill={`url(#${id}-ribbon-r)`} stroke="rgba(0,0,0,0.25)" strokeWidth="0.6" />
+      {/* Outer ring */}
+      <circle cx="50" cy="48" r="34" fill={`url(#${id}-medal)`} stroke="#92400e" strokeWidth="1.5" />
+      {/* Inner star burst */}
+      {Array.from({ length: 12 }).map((_, i) => {
+        const a = (i / 12) * Math.PI * 2;
+        const x1 = 50 + Math.cos(a) * 20;
+        const y1 = 48 + Math.sin(a) * 20;
+        const x2 = 50 + Math.cos(a) * 28;
+        const y2 = 48 + Math.sin(a) * 28;
+        return <line key={i} x1={x1} y1={y1} x2={x2} y2={y2} stroke="#fbbf24" strokeWidth="1" opacity="0.6" />;
+      })}
+      {/* Inner medal */}
+      <circle cx="50" cy="48" r="22" fill="#fef3c7" stroke="#b45309" strokeWidth="1.4" />
+      <circle cx="50" cy="48" r="22" fill={`url(#${id}-core)`} />
+      {/* Week number */}
+      <text x="50" y="44" textAnchor="middle" fontFamily="'Space Grotesk', sans-serif" fontWeight="900" fontSize="10" fill="#92400e" letterSpacing="1.5">WEEK</text>
+      <text x="50" y="62" textAnchor="middle" fontFamily="'Space Grotesk', sans-serif" fontWeight="900" fontSize="22" fill="#92400e">{weekNumber}</text>
+      {/* Tiny shield in corner */}
+      <path d="M 70 32 L 76 30 L 76 36 Q 76 40 73 42 Q 70 40 70 36 Z" fill="#22d3ee" stroke="#0e7490" strokeWidth="0.6" />
+      <path d="M 71.5 35 L 73 36.6 L 75 33.8" fill="none" stroke="#fff" strokeWidth="0.8" />
+    </svg>
+  );
+}
+
+/* Mini progress strip showing "X of 5 weeks" toward the next certificate. */
+function CertificateProgress({ currentWeek }: { currentWeek: number }) {
+  // Find the next milestone week (5/10/15/20) that hasn't been reached.
+  const nextMilestone = MILESTONES.find((m) => m.week >= currentWeek)?.week ?? 5;
+  const prevMilestone = MILESTONES.filter((m) => m.week < currentWeek).pop()?.week ?? 0;
+  const progress = (currentWeek - prevMilestone) / (nextMilestone - prevMilestone);
+  const remaining = nextMilestone - currentWeek;
+  return (
+    <div style={{ margin: "8px auto 6px", maxWidth: 320 }}>
+      <div style={{
+        display: "flex", justifyContent: "space-between", alignItems: "center",
+        fontSize: 10, color: "#94a3b8", letterSpacing: 1.5,
+        fontFamily: "ui-monospace, 'JetBrains Mono', monospace",
+        marginBottom: 4,
+      }}>
+        <span>WEEK {currentWeek}</span>
+        <span style={{ color: "#fde047", fontWeight: 800 }}>
+          🏅 {remaining === 0 ? "CERTIFICATE READY" : `${remaining} WEEK${remaining === 1 ? "" : "S"} TO CERTIFICATE`}
+        </span>
+        <span>WEEK {nextMilestone}</span>
+      </div>
+      <div style={{
+        height: 6, borderRadius: 999,
+        background: "rgba(255,255,255,0.08)",
+        border: "1px solid rgba(96,165,250,0.3)",
+        overflow: "hidden",
+      }}>
+        <div style={{
+          height: "100%", width: `${Math.max(8, Math.min(100, progress * 100))}%`,
+          background: "linear-gradient(90deg, #60a5fa, #a78bfa, #fbbf24)",
+          boxShadow: "0 0 10px rgba(167,139,250,0.7)",
+          transition: "width 0.6s ease",
+        }} />
+      </div>
+    </div>
+  );
+}
+
 /* ───────────────────────── CONSTANTS ───────────────────────── */
 
 const TOTAL = 19;
@@ -552,35 +644,51 @@ const RULES = [
 
 // ── MCQ shuffle ──
 // Children kept noticing that the correct answer was almost always in the
-// same spot (the source data lists it predictably). On module load we
-// shuffle each question's options in place and remap the `correct` /
-// `correctIndex` pointer so the right answer is now in a random slot per
-// page-load. Stable within a session (Fisher–Yates is one-shot at import)
-// so rendering during a lesson doesn't reshuffle and confuse the learner.
-function shuffleMcqList<T>(arr: T[], optsKey: keyof T, correctKey: keyof T) {
-  for (const q of arr) {
-    const opts = q[optsKey] as unknown as unknown[];
-    const correct = q[correctKey] as unknown as number;
-    if (!Array.isArray(opts) || typeof correct !== "number") continue;
-    const order = opts.map((_, i) => i);
-    for (let i = order.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [order[i], order[j]] = [order[j], order[i]];
-    }
-    (q as unknown as Record<string, unknown>)[optsKey as string] = order.map(
-      (i) => opts[i]
-    );
-    (q as unknown as Record<string, unknown>)[correctKey as string] =
-      order.indexOf(correct);
+// same spot (the source data lists it predictably as index 1 or 2).
+// Naive Fisher-Yates per question is random but with only 4 slots it can
+// still produce streaks of "right answer is always C". Instead we
+// **balance** the distribution: pre-assign each question a target
+// position cycling through 0..N-1 (then shuffle that assignment), and
+// place the correct answer at its target — wrong answers shuffled around
+// it. Result: across any set of N questions, A/B/C/D each hold the right
+// answer roughly N/4 times, with no streaks longer than 1.
+// Stable within a session (one-shot at module load) so rendering during a
+// lesson doesn't reshuffle and confuse the learner.
+function balanceMcqList<T>(arr: T[], optsKey: keyof T, correctKey: keyof T) {
+  if (arr.length === 0) return;
+  const firstOpts = arr[0][optsKey] as unknown as unknown[];
+  const optsLen = Array.isArray(firstOpts) ? firstOpts.length : 0;
+  if (optsLen <= 1) return;
+  // Build target positions cycling through 0..optsLen-1, then shuffle.
+  const positions: number[] = arr.map((_, i) => i % optsLen);
+  for (let i = positions.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [positions[i], positions[j]] = [positions[j], positions[i]];
   }
+  arr.forEach((q, i) => {
+    const opts = q[optsKey] as unknown as unknown[];
+    const correctIdx = q[correctKey] as unknown as number;
+    if (!Array.isArray(opts) || typeof correctIdx !== "number") return;
+    const target = positions[i] ?? 0;
+    const correctVal = opts[correctIdx];
+    const wrong = opts.filter((_, j) => j !== correctIdx);
+    for (let k = wrong.length - 1; k > 0; k--) {
+      const j = Math.floor(Math.random() * (k + 1));
+      [wrong[k], wrong[j]] = [wrong[j], wrong[k]];
+    }
+    const newOpts = [...wrong];
+    newOpts.splice(target, 0, correctVal);
+    (q as unknown as Record<string, unknown>)[optsKey as string] = newOpts;
+    (q as unknown as Record<string, unknown>)[correctKey as string] = target;
+  });
 }
-shuffleMcqList(MAZE_QUESTIONS, "answers", "correctIndex");
-shuffleMcqList(Q1_QUIZ, "opts", "correct");
-shuffleMcqList(Q2_QUIZ, "opts", "correct");
-shuffleMcqList(Q3_QUIZ, "opts", "correct");
-shuffleMcqList(WYD, "opts", "correct");
-shuffleMcqList(BOSS_QUIZ, "opts", "correct");
-shuffleMcqList(RULES, "opts", "correct");
+balanceMcqList(MAZE_QUESTIONS, "answers", "correctIndex");
+balanceMcqList(Q1_QUIZ, "opts", "correct");
+balanceMcqList(Q2_QUIZ, "opts", "correct");
+balanceMcqList(Q3_QUIZ, "opts", "correct");
+balanceMcqList(WYD, "opts", "correct");
+balanceMcqList(BOSS_QUIZ, "opts", "correct");
+balanceMcqList(RULES, "opts", "correct");
 
 const ACHIEVEMENTS = [
   "You know what a password is",
@@ -4176,9 +4284,19 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
             >
               <div style={{ position: "relative", zIndex: 1 }}>
                 <div style={{ fontSize: 14, color: "#9ca3af", letterSpacing: 2, marginBottom: 8 }}>ALGORITHMX</div>
-                <div style={{ fontSize: 40, marginBottom: 4 }}>{IS_MILESTONE_WEEK ? "🏅" : "🎉"}</div>
+                {/* Big badge or certificate icon depending on whether this
+                    is a milestone week. Non-milestone weeks earn a proper
+                    illustrated medal (not the generic 🎉 emoji) so the
+                    reward feels real. */}
+                {IS_MILESTONE_WEEK ? (
+                  <div style={{ fontSize: 40, marginBottom: 4 }}>🏅</div>
+                ) : (
+                  <div style={{ display: "flex", justifyContent: "center", marginBottom: 8 }}>
+                    <WeekBadge weekNumber={CURRENT_WEEK} />
+                  </div>
+                )}
                 <h1 data-split style={{ color: "#fff", fontSize: 22, fontWeight: 900, margin: "0 0 4px" }}>
-                  {IS_MILESTONE_WEEK ? "Certificate of Achievement" : "Week Complete!"}
+                  {IS_MILESTONE_WEEK ? "Certificate of Achievement" : `Week ${CURRENT_WEEK} Badge Earned!`}
                 </h1>
                 <div style={{ width: 60, height: 3, background: GRAD, borderRadius: 999, margin: "8px auto 16px" }} />
                 <p style={{ color: "#d1d5db", marginBottom: 4 }}>{IS_MILESTONE_WEEK ? "Presented to" : "Well done,"}</p>
@@ -4188,19 +4306,40 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                 }}>{childName}</h2>
                 <p style={{ color: "#f59e0b", fontSize: 16, fontWeight: 700, marginBottom: 8 }}>CYBER HERO</p>
                 <p style={{ color: "#9ca3af", fontSize: 14, marginBottom: 4 }}>Week {CURRENT_WEEK}: Passwords — The Secret Code</p>
-                {!IS_MILESTONE_WEEK && (
-                  <p style={{ color: "#60a5fa", fontSize: 12, margin: "4px 0 6px", fontStyle: "italic" }}>
-                    🏅 Unlock your first certificate at Week 5!
-                  </p>
-                )}
+                {!IS_MILESTONE_WEEK && <CertificateProgress currentWeek={CURRENT_WEEK} />}
                 <p style={{ color: "#6b7280", fontSize: 13, marginBottom: 8 }}>{today}</p>
                 {stars(finalStars)}
-                <div style={{
-                  marginTop: 12, display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
-                  background: "rgba(245,158,11,0.1)", borderRadius: 12, padding: "8px 16px", border: "1px solid rgba(245,158,11,0.3)",
-                }}>
-                  <span style={{ fontSize: 24 }}>🪙</span>
-                  <span style={{ color: "#f59e0b", fontWeight: 900, fontSize: 22 }}>Total Coins: {coins}</span>
+                {/* Twin reward chips: badge (left) + coins (right). Both
+                    feel weightier than a single coin row and reinforce
+                    that Cyber Heroes earn rewards every week, not only
+                    on certificate weeks. */}
+                <div style={{ display: "flex", gap: 10, justifyContent: "center", marginTop: 14, flexWrap: "wrap" }}>
+                  <div style={{
+                    display: "flex", alignItems: "center", gap: 8,
+                    background: "linear-gradient(135deg, rgba(167,139,250,0.18), rgba(96,165,250,0.18))",
+                    borderRadius: 14, padding: "8px 16px",
+                    border: "1px solid rgba(167,139,250,0.45)",
+                    boxShadow: "0 0 20px rgba(167,139,250,0.25)",
+                  }}>
+                    <span style={{ fontSize: 22 }}>🎖️</span>
+                    <div style={{ textAlign: "left" }}>
+                      <div style={{ fontSize: 9, letterSpacing: 2, color: "#c4b5fd", fontFamily: "ui-monospace, monospace" }}>NEW BADGE</div>
+                      <div style={{ color: "#e0e7ff", fontWeight: 800, fontSize: 13 }}>Week {CURRENT_WEEK} Hero</div>
+                    </div>
+                  </div>
+                  <div style={{
+                    display: "flex", alignItems: "center", gap: 8,
+                    background: "linear-gradient(135deg, rgba(245,158,11,0.18), rgba(251,191,36,0.18))",
+                    borderRadius: 14, padding: "8px 16px",
+                    border: "1px solid rgba(245,158,11,0.45)",
+                    boxShadow: "0 0 20px rgba(245,158,11,0.25)",
+                  }}>
+                    <span style={{ fontSize: 22 }}>🪙</span>
+                    <div style={{ textAlign: "left" }}>
+                      <div style={{ fontSize: 9, letterSpacing: 2, color: "#fcd34d", fontFamily: "ui-monospace, monospace" }}>TOTAL COINS</div>
+                      <div style={{ color: "#fef3c7", fontWeight: 900, fontSize: 18 }}>{coins}</div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </motion.div>
@@ -4260,18 +4399,24 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
               }}>
                 Back to Dashboard
               </a>
-              <motion.button
-                onClick={() => window.print()}
-                whileHover={{ scale: 1.05, borderColor: "#fff", background: "rgba(255,255,255,0.06)" }}
-                whileTap={{ scale: 0.95 }}
-                style={{
-                  background: "transparent", color: "#fff", fontWeight: 900, borderRadius: 16,
-                  padding: "13px 34px", fontSize: 16, cursor: "pointer",
-                  border: "2px solid rgba(255,255,255,0.4)",
-                }}
-              >
-                Print Certificate 🖨️
-              </motion.button>
+              {/* Print Certificate only makes sense on milestone weeks
+                  (5/10/15/20). On every other week the artwork is a
+                  badge, not a certificate, so printing it would be
+                  misleading. */}
+              {IS_MILESTONE_WEEK && (
+                <motion.button
+                  onClick={() => window.print()}
+                  whileHover={{ scale: 1.05, borderColor: "#fff", background: "rgba(255,255,255,0.06)" }}
+                  whileTap={{ scale: 0.95 }}
+                  style={{
+                    background: "transparent", color: "#fff", fontWeight: 900, borderRadius: 16,
+                    padding: "13px 34px", fontSize: 16, cursor: "pointer",
+                    border: "2px solid rgba(255,255,255,0.4)",
+                  }}
+                >
+                  Print Certificate 🖨️
+                </motion.button>
+              )}
             </div>
           </div>
           </FullScene>
