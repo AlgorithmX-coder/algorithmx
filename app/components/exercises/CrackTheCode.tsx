@@ -233,7 +233,8 @@ export default function CrackTheCode({
         minHeight: 560,
         maxHeight: "calc(100vh - 140px)",
         borderRadius: 28,
-        overflow: "hidden",
+        overflowX: "hidden",
+        overflowY: "auto",
         background:
           "linear-gradient(180deg, #2a1240 0%, #5a2540 35%, #a04a4a 70%, #e88550 92%, #fcd58a 100%)",
         boxShadow:
