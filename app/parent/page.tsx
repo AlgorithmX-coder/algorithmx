@@ -2,32 +2,45 @@ import { auth } from "@/app/lib/auth";
 import { prisma } from "@/app/lib/prisma";
 import { redirect } from "next/navigation";
 import {
-  CyberBackground,
   RevealOnScroll,
   AnimatedBar,
   AnimatedRing,
   StaggeredList,
 } from "@/app/components/AnimatedDashboardV2";
+import {
+  DashboardSky,
+  DashboardParticles,
+} from "@/app/components/DashboardAtmosphere";
 import { getCertificateUrl, getAchievedMilestones } from "@/app/lib/certificates";
 
-const GRAD_MAIN = "linear-gradient(135deg, #60a5fa, #34d399)";
-const GRAD_CTA = "linear-gradient(135deg, #f97316, #f59e0b)";
-const GRAD_NAME = "linear-gradient(135deg, #f59e0b, #f97316)";
-const GRAD_RACCOON = "linear-gradient(90deg, #f97316, #ef4444)";
-
-const COLORS = {
-  bg: "#0a0e1a",
-  card: "#111827",
-  border: "rgba(148,163,184,0.12)",
-  text: "#f1f5f9",
-  secondary: "#94a3b8",
-  muted: "#64748b",
-  blue: "#60a5fa",
-  green: "#34d399",
-  orange: "#f97316",
-  yellow: "#f59e0b",
-  red: "#ef4444",
+/* ───────────────── PIXAR PALETTE (shared with dashboard) ───────────────── */
+const C = {
+  pageBg: "#1a0612",
+  card: "rgba(40, 18, 38, 0.72)",
+  border: "rgba(255, 220, 180, 0.22)",
+  borderStrong: "rgba(255, 220, 180, 0.45)",
+  text: "#fff7e6",
+  textSoft: "#ffe9c8",
+  textMuted: "rgba(255, 233, 200, 0.55)",
+  inkDeep: "#3b2615",
+  goldLight: "#ffd58a",
+  goldMid: "#ff9b4a",
+  goldDeep: "#d4733a",
+  goldDark: "#3a1a06",
+  coral: "#f08e7e",
+  ember: "#c4513a",
+  moss: "#7cc89a",
+  mossLight: "#a8e3bb",
+  cream: "#fff5cc",
 };
+const GRAD_GOLD = `linear-gradient(135deg, ${C.goldLight}, ${C.goldMid}, ${C.goldDeep})`;
+const GRAD_GOLD_PILL = `linear-gradient(135deg, ${C.goldLight}, ${C.goldMid})`;
+const GRAD_NAME = `linear-gradient(135deg, ${C.cream}, ${C.goldLight}, ${C.goldMid})`;
+const GRAD_RACCOON = `linear-gradient(90deg, ${C.ember}, ${C.coral}, ${C.goldMid})`;
+const SHADOW_PRIMARY =
+  "0 18px 36px -10px rgba(255,120,40,0.6), 0 0 0 1px rgba(255,235,200,0.55) inset, 0 -3px 0 rgba(180,80,30,0.4) inset";
+const FONT_STACK =
+  "ui-rounded, 'Fredoka', 'Quicksand', 'Nunito', system-ui, -apple-system, sans-serif";
 
 const WEEK_SUMMARIES: Record<number, string> = {
   1: "Your child learned how to create strong, memorable passwords and why reusing passwords is dangerous.",
@@ -57,8 +70,9 @@ function ShieldLogo({ size = 22 }: { size?: number }) {
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none" aria-hidden>
       <defs>
         <linearGradient id="parentShieldGrad" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stopColor="#60a5fa" />
-          <stop offset="100%" stopColor="#34d399" />
+          <stop offset="0%" stopColor={C.cream} />
+          <stop offset="55%" stopColor={C.goldLight} />
+          <stop offset="100%" stopColor={C.goldDeep} />
         </linearGradient>
       </defs>
       <path
@@ -67,7 +81,7 @@ function ShieldLogo({ size = 22 }: { size?: number }) {
       />
       <path
         d="m9 12 2.2 2.2L15 10.4"
-        stroke="#fff"
+        stroke={C.goldDark}
         strokeWidth="1.8"
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -76,7 +90,7 @@ function ShieldLogo({ size = 22 }: { size?: number }) {
   );
 }
 
-function CheckIcon({ size = 18, color = "#34d399" }: { size?: number; color?: string }) {
+function CheckIcon({ size = 18, color = C.mossLight }: { size?: number; color?: string }) {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none" aria-hidden>
       <path
@@ -90,7 +104,7 @@ function CheckIcon({ size = 18, color = "#34d399" }: { size?: number; color?: st
   );
 }
 
-function LockIcon({ size = 18, color = "#64748b" }: { size?: number; color?: string }) {
+function LockIcon({ size = 18, color = C.textMuted }: { size?: number; color?: string }) {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none" aria-hidden>
       <rect x="5" y="11" width="14" height="9" rx="2" stroke={color} strokeWidth="2" />
@@ -182,21 +196,29 @@ export default async function ParentDashboard() {
   return (
     <>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fredoka:wght@500;600;700&display=swap');
-        .parent { font-family: 'Nunito', sans-serif; color: ${COLORS.text}; }
-        .parent h1, .parent h2, .parent h3, .parent h4, .parent .display { font-family: 'Fredoka', 'Nunito', sans-serif; }
+        @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fredoka:wght@500;600;700;800&display=swap');
+        .parent { font-family: ${FONT_STACK}; color: ${C.text}; }
+        .parent h1, .parent h2, .parent h3, .parent h4, .parent .display { font-family: 'Fredoka', ${FONT_STACK}; }
       `}</style>
 
-      <div className="parent min-h-screen relative" style={{ background: COLORS.bg }}>
-        <CyberBackground />
+      <div
+        className="parent min-h-screen relative"
+        style={{
+          background:
+            `radial-gradient(ellipse at 50% -10%, #4a1a4a 0%, #2a0d2e 35%, ${C.pageBg} 70%, #0a0410 100%)`,
+        }}
+      >
+        <DashboardSky />
+        <DashboardParticles />
 
         {/* ── NAV ── */}
         <nav
-          className="sticky top-0 z-50 border-b"
+          className="sticky top-0 z-50"
           style={{
-            background: "rgba(10,14,26,0.85)",
+            background: "rgba(20, 8, 24, 0.78)",
             backdropFilter: "blur(20px)",
-            borderColor: COLORS.border,
+            WebkitBackdropFilter: "blur(20px)",
+            borderBottom: `1px solid ${C.border}`,
           }}
         >
           <div className="max-w-[1100px] mx-auto px-6 md:px-10 py-4 flex items-center justify-between">
@@ -207,15 +229,15 @@ export default async function ParentDashboard() {
                   width: 40,
                   height: 40,
                   borderRadius: 100,
-                  background: GRAD_MAIN,
-                  boxShadow: "0 4px 14px rgba(96,165,250,0.35)",
+                  background: GRAD_GOLD_PILL,
+                  boxShadow: "0 4px 14px rgba(255, 155, 74, 0.4)",
                 }}
               >
                 <ShieldLogo size={22} />
               </div>
               <span
                 className="display text-lg font-bold"
-                style={{ color: COLORS.text, letterSpacing: "-0.01em" }}
+                style={{ color: C.text, letterSpacing: "-0.01em" }}
               >
                 Parent Dashboard
               </span>
@@ -225,13 +247,13 @@ export default async function ParentDashboard() {
                 href="/dashboard"
                 className="hidden sm:inline-block"
                 style={{
-                  background: "rgba(96,165,250,0.12)",
-                  border: "1px solid rgba(96,165,250,0.35)",
+                  background: "rgba(255, 215, 138, 0.12)",
+                  border: `1px solid ${C.borderStrong}`,
                   borderRadius: 100,
                   padding: "7px 16px",
                   fontSize: 13,
                   fontWeight: 700,
-                  color: COLORS.blue,
+                  color: C.goldLight,
                   textDecoration: "none",
                 }}
               >
@@ -247,13 +269,14 @@ export default async function ParentDashboard() {
                 <button
                   style={{
                     background: "transparent",
-                    border: `1px solid ${COLORS.border}`,
+                    border: `1px solid ${C.border}`,
                     borderRadius: 100,
                     padding: "7px 16px",
-                    color: COLORS.secondary,
+                    color: C.textSoft,
                     fontSize: 13,
                     fontWeight: 700,
                     cursor: "pointer",
+                    fontFamily: "inherit",
                   }}
                 >
                   Log Out
@@ -273,13 +296,13 @@ export default async function ParentDashboard() {
               <div
                 className="inline-flex items-center gap-2 mb-4"
                 style={{
-                  background: "rgba(96,165,250,0.10)",
-                  border: "1px solid rgba(96,165,250,0.35)",
+                  background: "rgba(255, 215, 138, 0.14)",
+                  border: `1px solid ${C.borderStrong}`,
                   borderRadius: 100,
                   padding: "5px 14px",
                   fontSize: 12,
                   fontWeight: 800,
-                  color: COLORS.blue,
+                  color: C.goldLight,
                   letterSpacing: "0.05em",
                   textTransform: "uppercase",
                 }}
@@ -289,8 +312,8 @@ export default async function ParentDashboard() {
                     width: 8,
                     height: 8,
                     borderRadius: 100,
-                    background: COLORS.blue,
-                    boxShadow: `0 0 10px ${COLORS.blue}`,
+                    background: C.goldLight,
+                    boxShadow: `0 0 10px ${C.goldLight}`,
                     display: "inline-block",
                   }}
                 />
@@ -298,7 +321,7 @@ export default async function ParentDashboard() {
               </div>
               <h1
                 className="display text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight mb-3"
-                style={{ color: COLORS.text }}
+                style={{ color: C.text }}
               >
                 Parent Dashboard —{" "}
                 <span
@@ -312,7 +335,10 @@ export default async function ParentDashboard() {
                   {childName}
                 </span>
               </h1>
-              <p className="text-base sm:text-lg leading-relaxed" style={{ color: COLORS.secondary }}>
+              <p
+                className="text-base sm:text-lg leading-relaxed"
+                style={{ color: C.textSoft, opacity: 0.9 }}
+              >
                 Track {childName}&apos;s cybersecurity learning journey.
               </p>
             </section>
@@ -323,27 +349,38 @@ export default async function ParentDashboard() {
             <section
               className="rounded-3xl p-6 sm:p-8 mb-10"
               style={{
-                background: COLORS.card,
-                border: `1px solid ${COLORS.border}`,
+                background: C.card,
+                border: `1px solid ${C.border}`,
+                backdropFilter: "blur(14px)",
+                WebkitBackdropFilter: "blur(14px)",
+                boxShadow:
+                  "0 24px 50px -16px rgba(20, 6, 12, 0.6), 0 0 0 1px rgba(255, 220, 180, 0.05) inset",
               }}
             >
               <div className="flex flex-col sm:flex-row items-center gap-6 sm:gap-8">
                 <div className="shrink-0">
-                  <AnimatedRing percent={progressPct} />
+                  <AnimatedRing
+                    percent={progressPct}
+                    gradientFrom={C.goldLight}
+                    gradientTo={C.goldMid}
+                    glow="rgba(255, 178, 110, 0.55)"
+                    track="rgba(255, 220, 180, 0.12)"
+                    label={C.goldLight}
+                  />
                 </div>
                 <div className="flex-1 w-full">
                   <h2
                     className="display text-xl sm:text-2xl font-bold mb-2"
-                    style={{ color: COLORS.text }}
+                    style={{ color: C.text }}
                   >
                     Overall Progress
                   </h2>
-                  <p className="text-sm mb-4" style={{ color: COLORS.secondary }}>
-                    <span className="font-black" style={{ color: COLORS.blue }}>
+                  <p className="text-sm mb-4" style={{ color: C.textSoft, opacity: 0.9 }}>
+                    <span className="font-black" style={{ color: C.goldLight }}>
                       {completedCount}
                     </span>{" "}
                     of{" "}
-                    <span className="font-black" style={{ color: COLORS.text }}>
+                    <span className="font-black" style={{ color: C.text }}>
                       {totalModules}
                     </span>{" "}
                     weeks completed
@@ -351,26 +388,37 @@ export default async function ParentDashboard() {
                   <div className="mb-5">
                     <AnimatedBar
                       percent={progressPct}
-                      gradient={GRAD_MAIN}
-                      glowColor="rgba(96,165,250,0.5)"
+                      gradient={GRAD_GOLD}
+                      glowColor="rgba(255, 200, 110, 0.55)"
                       height={14}
                     />
                   </div>
                   <div>
                     <div className="flex justify-between text-xs font-black mb-1.5">
-                      <span style={{ color: COLORS.red }}>Raccoon Power Remaining</span>
-                      <span style={{ color: COLORS.red }}>{raccoonPower}%</span>
+                      <span style={{ color: C.coral, letterSpacing: 1 }}>
+                        Raccoon Power Remaining
+                      </span>
+                      <span style={{ color: C.coral }}>{raccoonPower}%</span>
                     </div>
                     <AnimatedBar
                       percent={raccoonPower}
                       gradient={GRAD_RACCOON}
-                      glowColor="rgba(239,68,68,0.4)"
+                      glowColor="rgba(240, 142, 126, 0.5)"
                       height={10}
                     />
-                    <p style={{ fontSize: 13, color: COLORS.secondary, lineHeight: 1.7, marginTop: 12, marginBottom: 8 }}>
+                    <p
+                      style={{
+                        fontSize: 13,
+                        color: C.textSoft,
+                        opacity: 0.85,
+                        lineHeight: 1.7,
+                        marginTop: 12,
+                        marginBottom: 8,
+                      }}
+                    >
                       The Hacker Raccoon represents real-world cyber threats — from phishing scams to password attacks — adapted to reflect the latest tactics children encounter online. As your child completes each lesson, they build the skills to recognise and defend against these threats, so you can feel confident they&apos;re prepared.
                     </p>
-                    <p className="text-[11px] font-bold mt-2" style={{ color: COLORS.muted }}>
+                    <p className="text-[11px] font-bold mt-2" style={{ color: C.textMuted }}>
                       {raccoonStrong
                         ? "The Hacker Raccoon still has most of his power. Each lesson weakens him."
                         : "The Hacker Raccoon is on the ropes — most of his power has been drained."}
@@ -387,16 +435,16 @@ export default async function ParentDashboard() {
               <div
                 className="inline-flex items-center gap-2 mb-4"
                 style={{
-                  background: "rgba(52,211,153,0.12)",
-                  border: "1px solid rgba(52,211,153,0.35)",
+                  background: "rgba(124, 200, 154, 0.18)",
+                  border: "1px solid rgba(124, 200, 154, 0.55)",
                   borderRadius: 100,
                   padding: "5px 14px",
                   fontSize: 12,
                   fontWeight: 800,
-                  color: COLORS.green,
+                  color: C.mossLight,
                   letterSpacing: "0.05em",
                   textTransform: "uppercase",
-                  boxShadow: "0 0 12px rgba(52,211,153,0.25)",
+                  boxShadow: "0 0 14px rgba(124, 200, 154, 0.3)",
                 }}
               >
                 <span
@@ -404,8 +452,8 @@ export default async function ParentDashboard() {
                     width: 8,
                     height: 8,
                     borderRadius: 100,
-                    background: COLORS.green,
-                    boxShadow: `0 0 10px ${COLORS.green}`,
+                    background: C.moss,
+                    boxShadow: `0 0 10px ${C.moss}`,
                     display: "inline-block",
                   }}
                 />
@@ -413,7 +461,7 @@ export default async function ParentDashboard() {
               </div>
               <h2
                 className="display text-2xl sm:text-3xl font-bold mb-6"
-                style={{ color: COLORS.text }}
+                style={{ color: C.text }}
               >
                 What {childName} Has Learned So Far
               </h2>
@@ -422,11 +470,13 @@ export default async function ParentDashboard() {
                 <div
                   className="rounded-3xl p-8 text-center"
                   style={{
-                    background: COLORS.card,
-                    border: `1px solid ${COLORS.border}`,
+                    background: C.card,
+                    border: `1px solid ${C.border}`,
+                    backdropFilter: "blur(12px)",
+                    WebkitBackdropFilter: "blur(12px)",
                   }}
                 >
-                  <p className="text-base" style={{ color: COLORS.secondary }}>
+                  <p className="text-base" style={{ color: C.textSoft, opacity: 0.85 }}>
                     No lessons completed yet — once {childName} finishes their first week, you&apos;ll see a summary of what they learned here.
                   </p>
                 </div>
@@ -437,9 +487,13 @@ export default async function ParentDashboard() {
                       key={mod.id}
                       className="rounded-2xl p-5"
                       style={{
-                        background: COLORS.card,
-                        border: "1px solid rgba(52,211,153,0.25)",
-                        boxShadow: "0 0 16px rgba(52,211,153,0.1)",
+                        background:
+                          "linear-gradient(135deg, rgba(124, 200, 154, 0.14), rgba(40, 18, 38, 0.6))",
+                        border: "1px solid rgba(124, 200, 154, 0.4)",
+                        boxShadow:
+                          "0 0 18px rgba(124, 200, 154, 0.16), 0 14px 28px -10px rgba(20, 6, 12, 0.5)",
+                        backdropFilter: "blur(12px)",
+                        WebkitBackdropFilter: "blur(12px)",
                       }}
                     >
                       <div className="flex items-center gap-3 mb-3">
@@ -449,11 +503,11 @@ export default async function ParentDashboard() {
                             width: 44,
                             height: 44,
                             borderRadius: 14,
-                            background: "rgba(52,211,153,0.18)",
-                            boxShadow: "0 0 14px rgba(52,211,153,0.35)",
+                            background: "rgba(124, 200, 154, 0.22)",
+                            boxShadow: "0 0 16px rgba(124, 200, 154, 0.4)",
                           }}
                         >
-                          <CheckIcon size={22} color={COLORS.green} />
+                          <CheckIcon size={22} color={C.mossLight} />
                         </div>
                         <div className="min-w-0 flex-1">
                           <div
@@ -461,14 +515,14 @@ export default async function ParentDashboard() {
                             style={{
                               fontSize: 10,
                               letterSpacing: "0.15em",
-                              color: "rgba(52,211,153,0.75)",
+                              color: "rgba(168, 227, 187, 0.85)",
                             }}
                           >
                             Week {mod.weekNumber}
                           </div>
                           <h3
                             className="display font-bold text-base leading-snug"
-                            style={{ color: COLORS.text }}
+                            style={{ color: C.text }}
                           >
                             {mod.title}
                           </h3>
@@ -476,7 +530,7 @@ export default async function ParentDashboard() {
                       </div>
                       <p
                         className="text-sm leading-relaxed"
-                        style={{ color: COLORS.secondary }}
+                        style={{ color: C.textSoft, opacity: 0.92 }}
                       >
                         {WEEK_SUMMARIES[mod.weekNumber] ??
                           `${childName} completed the Week ${mod.weekNumber} lesson.`}
@@ -494,16 +548,16 @@ export default async function ParentDashboard() {
               <div
                 className="inline-flex items-center gap-2 mb-4"
                 style={{
-                  background: "rgba(245,158,11,0.12)",
-                  border: "1px solid rgba(245,158,11,0.35)",
+                  background: "rgba(255, 215, 138, 0.14)",
+                  border: `1px solid ${C.borderStrong}`,
                   borderRadius: 100,
                   padding: "5px 14px",
                   fontSize: 12,
                   fontWeight: 800,
-                  color: COLORS.yellow,
+                  color: C.goldLight,
                   letterSpacing: "0.05em",
                   textTransform: "uppercase",
-                  boxShadow: "0 0 12px rgba(245,158,11,0.25)",
+                  boxShadow: "0 0 14px rgba(255, 200, 110, 0.3)",
                 }}
               >
                 <span
@@ -511,8 +565,8 @@ export default async function ParentDashboard() {
                     width: 8,
                     height: 8,
                     borderRadius: 100,
-                    background: COLORS.yellow,
-                    boxShadow: `0 0 10px ${COLORS.yellow}`,
+                    background: C.goldLight,
+                    boxShadow: `0 0 10px ${C.goldLight}`,
                     display: "inline-block",
                   }}
                 />
@@ -520,11 +574,11 @@ export default async function ParentDashboard() {
               </div>
               <h2
                 className="display text-2xl sm:text-3xl font-bold mb-2"
-                style={{ color: COLORS.text }}
+                style={{ color: C.text }}
               >
                 Certificates &amp; Milestones
               </h2>
-              <p className="text-sm mb-6" style={{ color: COLORS.secondary }}>
+              <p className="text-sm mb-6" style={{ color: C.textSoft, opacity: 0.85 }}>
                 Download and print certificates for {childName}&apos;s achievements.
               </p>
 
@@ -533,26 +587,39 @@ export default async function ParentDashboard() {
                   <div
                     key={m.week}
                     style={{
-                      background: COLORS.card,
+                      background: m.achieved
+                        ? "linear-gradient(135deg, rgba(255, 215, 138, 0.16), rgba(40, 18, 38, 0.7))"
+                        : C.card,
                       borderRadius: 18,
                       padding: 24,
                       border: m.achieved
-                        ? "1px solid rgba(52,211,153,0.4)"
-                        : `1px solid ${COLORS.border}`,
+                        ? `1px solid ${C.borderStrong}`
+                        : `1px solid ${C.border}`,
                       boxShadow: m.achieved
-                        ? "0 0 20px rgba(52,211,153,0.15)"
-                        : "none",
+                        ? "0 0 24px rgba(255, 200, 110, 0.22), 0 14px 28px -10px rgba(20, 6, 12, 0.55)"
+                        : "0 10px 22px -10px rgba(20, 6, 12, 0.45)",
                       opacity: m.achieved ? 1 : 0.55,
+                      backdropFilter: "blur(12px)",
+                      WebkitBackdropFilter: "blur(12px)",
                     }}
                   >
                     <div className="flex items-start gap-3 mb-3">
-                      <div style={{ fontSize: 36, lineHeight: 1 }} aria-hidden>
+                      <div
+                        style={{
+                          fontSize: 36,
+                          lineHeight: 1,
+                          filter: m.achieved
+                            ? "drop-shadow(0 0 14px rgba(255, 200, 110, 0.55))"
+                            : undefined,
+                        }}
+                        aria-hidden
+                      >
                         {m.icon}
                       </div>
                       <div className="flex-1 min-w-0">
                         <h3
                           className="display font-bold text-lg leading-tight"
-                          style={{ color: COLORS.text }}
+                          style={{ color: C.text }}
                         >
                           {m.title}
                         </h3>
@@ -561,9 +628,9 @@ export default async function ParentDashboard() {
                         <span
                           className="inline-flex items-center font-black whitespace-nowrap"
                           style={{
-                            background: "rgba(52,211,153,0.15)",
-                            color: COLORS.green,
-                            border: "1px solid rgba(52,211,153,0.35)",
+                            background: "rgba(124, 200, 154, 0.18)",
+                            color: C.mossLight,
+                            border: "1px solid rgba(124, 200, 154, 0.5)",
                             borderRadius: 100,
                             padding: "5px 12px",
                             fontSize: 11,
@@ -575,9 +642,9 @@ export default async function ParentDashboard() {
                         <span
                           className="inline-flex items-center font-bold whitespace-nowrap"
                           style={{
-                            background: "rgba(255,255,255,0.04)",
-                            border: `1px solid ${COLORS.border}`,
-                            color: COLORS.muted,
+                            background: "rgba(255, 220, 180, 0.04)",
+                            border: `1px solid ${C.border}`,
+                            color: C.textMuted,
                             borderRadius: 100,
                             padding: "5px 12px",
                             fontSize: 11,
@@ -590,7 +657,12 @@ export default async function ParentDashboard() {
 
                     <p
                       className="mb-4"
-                      style={{ fontSize: 13, color: COLORS.secondary, lineHeight: 1.6 }}
+                      style={{
+                        fontSize: 13,
+                        color: C.textSoft,
+                        opacity: 0.9,
+                        lineHeight: 1.6,
+                      }}
                     >
                       {m.description}
                     </p>
@@ -599,18 +671,20 @@ export default async function ParentDashboard() {
                       percent={m.progress}
                       gradient={
                         m.achieved
-                          ? "linear-gradient(135deg, #34d399, #60a5fa)"
-                          : GRAD_MAIN
+                          ? `linear-gradient(135deg, ${C.mossLight}, ${C.moss})`
+                          : GRAD_GOLD
                       }
                       glowColor={
-                        m.achieved ? "rgba(52,211,153,0.4)" : "rgba(96,165,250,0.4)"
+                        m.achieved
+                          ? "rgba(124, 200, 154, 0.45)"
+                          : "rgba(255, 200, 110, 0.5)"
                       }
                       height={10}
                     />
 
                     <p
                       className="mt-2"
-                      style={{ fontSize: 11, color: COLORS.muted, fontWeight: 600 }}
+                      style={{ fontSize: 11, color: C.textMuted, fontWeight: 600 }}
                     >
                       Week {m.week} milestone
                     </p>
@@ -621,14 +695,16 @@ export default async function ParentDashboard() {
                           href={getCertificateUrl(childName, m.week)}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="inline-block font-black text-white"
+                          className="inline-block font-black"
                           style={{
-                            background: GRAD_CTA,
-                            boxShadow: "0 4px 18px rgba(249,115,22,0.4)",
+                            background: GRAD_GOLD_PILL,
+                            color: C.goldDark,
+                            boxShadow: SHADOW_PRIMARY,
                             borderRadius: 100,
                             padding: "10px 20px",
                             fontSize: 13,
                             textDecoration: "none",
+                            letterSpacing: "0.02em",
                           }}
                         >
                           Download Certificate ↓
@@ -646,7 +722,7 @@ export default async function ParentDashboard() {
             <section className="mb-12">
               <h2
                 className="display text-2xl font-bold mb-4"
-                style={{ color: COLORS.text }}
+                style={{ color: C.text }}
               >
                 Full Curriculum
               </h2>
@@ -660,16 +736,20 @@ export default async function ParentDashboard() {
                       style={{
                         padding: "18px 24px",
                         background: isCurrent
-                          ? "rgba(249,115,22,0.08)"
+                          ? "linear-gradient(135deg, rgba(255, 178, 110, 0.16), rgba(255, 215, 138, 0.10))"
                           : mod.isCompleted
-                            ? "rgba(52,211,153,0.06)"
-                            : COLORS.card,
+                            ? "linear-gradient(135deg, rgba(124, 200, 154, 0.12), rgba(40, 18, 38, 0.5))"
+                            : C.card,
                         border: isCurrent
-                          ? `1px solid ${COLORS.orange}`
+                          ? `2px solid rgba(255, 200, 110, 0.7)`
                           : mod.isCompleted
-                            ? "1px solid rgba(52,211,153,0.25)"
-                            : `1px solid ${COLORS.border}`,
-                        boxShadow: isCurrent ? "0 0 20px rgba(249,115,22,0.18)" : "none",
+                            ? "1px solid rgba(124, 200, 154, 0.4)"
+                            : `1px solid ${C.border}`,
+                        boxShadow: isCurrent
+                          ? "0 0 28px rgba(255, 178, 110, 0.32), 0 14px 28px -10px rgba(20, 6, 12, 0.5)"
+                          : "0 10px 22px -10px rgba(20, 6, 12, 0.45)",
+                        backdropFilter: "blur(10px)",
+                        WebkitBackdropFilter: "blur(10px)",
                         opacity: mod.isUnlocked ? 1 : 0.45,
                       }}
                     >
@@ -681,28 +761,28 @@ export default async function ParentDashboard() {
                           height: 48,
                           borderRadius: 14,
                           background: mod.isCompleted
-                            ? "rgba(52,211,153,0.18)"
+                            ? "rgba(124, 200, 154, 0.22)"
                             : isCurrent
-                              ? GRAD_CTA
-                              : "rgba(255,255,255,0.04)",
+                              ? GRAD_GOLD_PILL
+                              : "rgba(255, 220, 180, 0.06)",
                           color: mod.isCompleted
-                            ? COLORS.green
+                            ? C.mossLight
                             : isCurrent
-                              ? "#fff"
-                              : COLORS.muted,
+                              ? C.goldDark
+                              : C.textMuted,
                           boxShadow: mod.isCompleted
-                            ? "0 0 14px rgba(52,211,153,0.35)"
+                            ? "0 0 16px rgba(124, 200, 154, 0.45)"
                             : isCurrent
-                              ? "0 0 18px rgba(249,115,22,0.4)"
+                              ? "0 0 20px rgba(255, 178, 110, 0.5)"
                               : "none",
                         }}
                       >
                         {mod.isCompleted ? (
-                          <CheckIcon size={20} color={COLORS.green} />
+                          <CheckIcon size={20} color={C.mossLight} />
                         ) : mod.isUnlocked ? (
                           `W${mod.weekNumber}`
                         ) : (
-                          <LockIcon size={18} color={COLORS.muted} />
+                          <LockIcon size={18} color={C.textMuted} />
                         )}
                       </div>
 
@@ -713,23 +793,26 @@ export default async function ParentDashboard() {
                             fontSize: 10,
                             letterSpacing: "0.15em",
                             color: mod.isCompleted
-                              ? "rgba(52,211,153,0.7)"
+                              ? "rgba(168, 227, 187, 0.85)"
                               : isCurrent
-                                ? "rgba(249,115,22,0.85)"
-                                : "rgba(148,163,184,0.45)",
+                                ? C.goldLight
+                                : "rgba(255, 233, 200, 0.5)",
                           }}
                         >
                           Week {mod.weekNumber}
                         </div>
                         <h3
                           className="display font-bold text-sm sm:text-base leading-snug"
-                          style={{ color: COLORS.text, opacity: mod.isCompleted ? 0.8 : 1 }}
+                          style={{
+                            color: C.text,
+                            opacity: mod.isCompleted ? 0.82 : 1,
+                          }}
                         >
                           {mod.title}
                         </h3>
                         <p
                           className="text-xs mt-1 leading-relaxed line-clamp-2"
-                          style={{ color: COLORS.muted }}
+                          style={{ color: C.textMuted }}
                         >
                           {mod.description}
                         </p>
@@ -740,24 +823,24 @@ export default async function ParentDashboard() {
                           <span
                             className="inline-flex items-center gap-1.5 font-black whitespace-nowrap"
                             style={{
-                              background: "rgba(52,211,153,0.12)",
-                              color: COLORS.green,
-                              border: "1px solid rgba(52,211,153,0.3)",
+                              background: "rgba(124, 200, 154, 0.16)",
+                              color: C.mossLight,
+                              border: "1px solid rgba(124, 200, 154, 0.5)",
                               borderRadius: 100,
                               padding: "7px 14px",
                               fontSize: 11,
                             }}
                           >
-                            <CheckIcon size={12} color={COLORS.green} />
+                            <CheckIcon size={12} color={C.mossLight} />
                             Completed
                           </span>
                         ) : isCurrent ? (
                           <span
                             className="inline-block font-black whitespace-nowrap"
                             style={{
-                              background: "rgba(249,115,22,0.15)",
-                              color: COLORS.orange,
-                              border: "1px solid rgba(249,115,22,0.4)",
+                              background: "rgba(255, 178, 110, 0.18)",
+                              color: C.goldLight,
+                              border: `1px solid ${C.borderStrong}`,
                               borderRadius: 100,
                               padding: "7px 14px",
                               fontSize: 11,
@@ -769,15 +852,15 @@ export default async function ParentDashboard() {
                           <span
                             className="inline-flex items-center gap-1.5 font-bold whitespace-nowrap"
                             style={{
-                              background: "rgba(255,255,255,0.03)",
-                              border: `1px solid ${COLORS.border}`,
-                              color: COLORS.muted,
+                              background: "rgba(255, 220, 180, 0.04)",
+                              border: `1px solid ${C.border}`,
+                              color: C.textMuted,
                               borderRadius: 100,
                               padding: "7px 14px",
                               fontSize: 11,
                             }}
                           >
-                            <LockIcon size={12} color={COLORS.muted} />
+                            <LockIcon size={12} color={C.textMuted} />
                             Locked
                           </span>
                         )}
@@ -795,20 +878,40 @@ export default async function ParentDashboard() {
               className="rounded-3xl p-8 sm:p-10 text-center relative overflow-hidden mb-6"
               style={{
                 background:
-                  "linear-gradient(135deg, rgba(96,165,250,0.12), rgba(52,211,153,0.12))",
-                border: "1px solid rgba(96,165,250,0.3)",
-                boxShadow: "0 0 40px rgba(96,165,250,0.12)",
+                  "linear-gradient(135deg, rgba(255, 215, 138, 0.18), rgba(196, 60, 106, 0.16))",
+                border: `1px solid ${C.borderStrong}`,
+                boxShadow:
+                  "0 0 50px rgba(255, 178, 110, 0.18), 0 24px 50px -16px rgba(20, 6, 12, 0.6)",
+                backdropFilter: "blur(12px)",
+                WebkitBackdropFilter: "blur(12px)",
               }}
             >
+              <div
+                style={{
+                  fontSize: 11,
+                  fontWeight: 800,
+                  letterSpacing: 5,
+                  color: C.goldLight,
+                  textTransform: "uppercase",
+                  marginBottom: 8,
+                }}
+              >
+                ✦ Cyber Hero Academy ✦
+              </div>
               <h3
                 className="display text-2xl sm:text-3xl font-bold mb-3"
-                style={{ color: COLORS.text }}
+                style={{
+                  background: GRAD_GOLD,
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                  backgroundClip: "text",
+                }}
               >
                 {encouragement.title}
               </h3>
               <p
                 className="text-base max-w-xl mx-auto leading-relaxed"
-                style={{ color: COLORS.secondary }}
+                style={{ color: C.textSoft, opacity: 0.92 }}
               >
                 {encouragement.body}
               </p>
