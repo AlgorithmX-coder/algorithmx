@@ -1,9 +1,17 @@
 "use client";
 
 import { useState } from "react";
+import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { ConstellationScene } from "@/app/components/PixarScenes";
+
+// Heavy R3F atlas — only ship to the client, only render lg+ where the
+// right panel is visible. Avoids hydration churn and keeps mobile fast.
+const HeroAtlas = dynamic(() => import("@/app/components/HeroAtlas"), {
+  ssr: false,
+  loading: () => null,
+});
 
 /* ─── PIXAR PALETTE ─── */
 const C = {
@@ -451,88 +459,62 @@ export default function SignupPage() {
 
         <FloatingIcons />
 
-        {/* Glowing medallion centerpiece */}
+        {/* Live R3F atlas — pulsing crystal core, wireframe shells,
+            four tilted orbital rings each carrying a glowing skill
+            satellite. Fills the right column behind the centre label. */}
+        <div className="absolute inset-0" style={{ pointerEvents: "none", zIndex: 1 }}>
+          <HeroAtlas />
+        </div>
+
+        {/* Centre label + terminal prompt — sits below the atlas */}
         <motion.div
           className="relative flex flex-col items-center"
+          style={{ marginTop: 290, zIndex: 2 }}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ type: "spring", stiffness: 200, damping: 20, delay: 0.3 }}
-          style={{ zIndex: 2 }}
+          transition={{ type: "spring", stiffness: 200, damping: 20, delay: 0.6 }}
         >
-          {/* Halo behind medallion */}
-          <div
-            aria-hidden
+          <span
+            className="text-3xl font-black tracking-widest"
             style={{
-              position: "absolute",
-              inset: -50,
-              borderRadius: "50%",
-              background:
-                "conic-gradient(from 0deg, transparent 0deg, rgba(255, 215, 138, 0.5) 60deg, transparent 120deg, rgba(247, 193, 214, 0.4) 180deg, transparent 240deg, rgba(255, 178, 110, 0.5) 300deg, transparent 360deg)",
-              filter: "blur(28px)",
-              animation: "spIntroSpin 16s linear infinite",
-              opacity: 0.7,
-            }}
-          />
-          <motion.div
-            className="flex items-center justify-center"
-            animate={{ y: [-6, 6, -6] }}
-            transition={{ duration: 4, ease: "easeInOut", repeat: Infinity }}
-            style={{
-              position: "relative",
-              width: 220,
-              height: 240,
-              background:
-                "radial-gradient(circle at 32% 28%, #fff5cc 0%, #ffd158 35%, #d48a18 80%, #5a2a05 100%)",
-              borderRadius: "50% 50% 50% 50% / 40% 40% 60% 60%",
-              boxShadow:
-                "0 0 60px rgba(255, 178, 110, 0.5), inset 0 0 50px rgba(255, 245, 215, 0.3), 0 30px 60px -20px rgba(20, 6, 12, 0.8)",
-              borderStyle: "solid",
-              borderWidth: 4,
-              borderColor: "rgba(255, 245, 215, 0.55)",
+              fontFamily: "Fredoka, Nunito, sans-serif",
+              color: C.cream,
+              textShadow:
+                "0 0 22px rgba(255, 200, 110, 0.6), 0 4px 12px rgba(20, 6, 12, 0.5)",
+              letterSpacing: 6,
             }}
           >
-            <div className="flex flex-col items-center">
-              <span
-                className="text-5xl font-black"
-                style={{
-                  fontFamily: "Fredoka, Nunito, sans-serif",
-                  color: C.goldDark,
-                  textShadow: "0 2px 0 rgba(255,245,215,0.5)",
-                }}
-              >
-                AX
-              </span>
-              <span
-                className="text-xs font-black mt-1 tracking-widest"
-                style={{ color: "rgba(58, 26, 6, 0.7)" }}
-              >
-                ALGORITHMX
-              </span>
-            </div>
-          </motion.div>
+            ALGORITHMX
+          </span>
+
+          <div
+            style={{
+              fontFamily: "ui-monospace, 'JetBrains Mono', Menlo, monospace",
+              fontSize: 12,
+              color: C.goldLight,
+              marginTop: 18,
+              letterSpacing: 1,
+            }}
+          >
+            <span style={{ color: C.goldMid }}>$</span> ax_signup --new-hero
+            <span style={{ marginLeft: 6, animation: "spCursorBlink 1s steps(1) infinite" }}>▮</span>
+          </div>
 
           <p
-            className="text-sm mt-8 text-center"
-            style={{
-              color: C.goldLight,
-              fontFamily: "Fredoka, Nunito, sans-serif",
-              letterSpacing: 1,
-              textShadow: "0 2px 8px rgba(20, 6, 12, 0.5)",
-            }}
+            className="text-xs mt-4 text-center"
+            style={{ color: C.textSoft, opacity: 0.75, letterSpacing: 0.5 }}
           >
             4 Courses · Ages 6–18+ · 100% Interactive
-          </p>
-          <p
-            className="text-xs mt-3 text-center"
-            style={{ color: C.textSoft, opacity: 0.75 }}
-          >
-            Trusted by families across the UK
           </p>
         </motion.div>
 
         <style>{`
           @keyframes spIntroSpin {
             to { transform: rotate(360deg); }
+          }
+          @keyframes spCursorBlink {
+            0%, 49% { opacity: 1; }
+            50%, 100% { opacity: 0; }
           }
         `}</style>
       </div>
