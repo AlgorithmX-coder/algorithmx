@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { getProgressionState, getRank, RANKS } from "@/app/lib/progression";
+import { CyberIconOrEmoji } from "@/app/components/CyberIcon";
 
 export interface LessonHUDProps {
   /** Optional — legacy single-character name (unused now, both heroes are shown). */
@@ -156,9 +157,12 @@ export default function LessonHUD({
               textTransform: "uppercase",
             }}
           >
-            <span aria-hidden="true" style={{ fontSize: 14 }}>
-              {rank.current.icon}
-            </span>
+            <CyberIconOrEmoji
+              emoji={rank.current.icon}
+              size={18}
+              accent="cyan"
+              glow={false}
+            />
             <span style={{ textShadow: `0 0 8px ${rank.current.colour}60` }}>
               {rank.current.name}
             </span>

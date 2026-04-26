@@ -146,7 +146,7 @@ export default function LoginPage() {
 
   return (
     <div
-      className="min-h-screen flex"
+      className="min-h-screen flex relative"
       style={{
         background: CYBER_GRAD.page,
         color: C.textBright,
@@ -154,13 +154,69 @@ export default function LoginPage() {
     >
       <CyberParticles />
 
-      {/* ─── LEFT SIDE: FORM ─── */}
-      <div className="flex-1 flex flex-col items-center justify-center px-6 py-12 relative overflow-hidden" style={{ zIndex: 1 }}>
-        {/* Same backdrop as the right panel — radial cyan/cosmic halo +
-            faint hex grid + twinkling stars. User liked the right-side
-            background so much they asked for it on the left too. */}
+      {/* ─── UNIFIED BACKDROP — extends across the entire viewport ───
+          Was a split-screen with the live globe only on the right.
+          User flagged that the two sides still felt like separate
+          screens; now the rotating wireframe globe + cyan/cosmic halo
+          + floating glyphs + ALGORITHMX terminal label all render in
+          a single full-viewport layer behind everything. The form
+          floats on top, anchored to the left half. */}
+      <div className="absolute inset-0" style={{ zIndex: 0, overflow: "hidden", pointerEvents: "none" }}>
         <CyberPanelBackdrop />
 
+        {/* Live R3F globe — fills the whole viewport behind the form */}
+        <div className="absolute inset-0">
+          <CyberGlobe />
+        </div>
+
+        {/* Floating security glyphs spread across the whole viewport,
+            biased to the right so they pool around the globe centre. */}
+        <CyberFloatingIcons />
+
+        {/* ALGORITHMX label + terminal prompt — anchored just below
+            the centre, biased toward the right half so it sits behind
+            the globe and beside the form, not under it. */}
+        <motion.div
+          className="absolute flex flex-col items-center"
+          style={{
+            top: "50%",
+            left: "70%",
+            transform: "translate(-50%, 80px)",
+            zIndex: 2,
+          }}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ type: "spring", stiffness: 200, damping: 20, delay: 0.6 }}
+        >
+          <span
+            className="text-3xl font-black tracking-widest"
+            style={{
+              fontFamily: "'Space Grotesk', system-ui, sans-serif",
+              color: C.textBright,
+              textShadow: `0 0 22px ${C.cyan}aa, 0 0 44px ${C.cosmic}66`,
+              letterSpacing: 6,
+            }}
+          >
+            ALGORITHMX
+          </span>
+          <div
+            style={{
+              fontFamily: "ui-monospace, 'JetBrains Mono', Menlo, monospace",
+              fontSize: 12,
+              color: C.cyan,
+              marginTop: 18,
+              letterSpacing: 1,
+              textShadow: `0 0 8px ${C.cyan}`,
+            }}
+          >
+            <span style={{ color: C.cosmic }}>$</span> ax_login --auth
+            <span style={{ marginLeft: 6, animation: "loginCursorBlink 1s steps(1) infinite" }}>▮</span>
+          </div>
+        </motion.div>
+      </div>
+
+      {/* ─── LEFT SIDE: FORM ─── */}
+      <div className="flex-1 flex flex-col items-center justify-center px-6 py-12 relative" style={{ zIndex: 3 }}>
         <div className="w-full max-w-md relative" style={{ zIndex: 2 }}>
           {/* Logo */}
           <a href="/" className="inline-flex items-center gap-2.5 mb-8">
@@ -445,71 +501,30 @@ export default function LoginPage() {
         </div>
       </div>
 
-      {/* ─── RIGHT SIDE: VISUAL (hidden on mobile) ─── */}
+      {/* ─── RIGHT SIDE — empty spacer on lg+ so the form anchors to
+          the left half. The unified backdrop layer above already
+          renders the globe / icons / ALGORITHMX label spanning both
+          halves; this column just reserves layout space. */}
       <div
-        className="hidden lg:flex flex-1 items-center justify-center relative overflow-hidden"
-        style={{ background: C.midnight }}
-      >
-        <CyberPanelBackdrop />
+        className="hidden lg:flex flex-1 items-center justify-center relative"
+        aria-hidden
+      />
 
-        <CyberFloatingIcons />
-
-        {/* Live 3D wireframe globe — fills the right column */}
-        <div className="absolute inset-0" style={{ pointerEvents: "none", zIndex: 1 }}>
-          <CyberGlobe />
-        </div>
-
-        {/* Centre label + terminal prompt */}
-        <motion.div
-          className="relative flex flex-col items-center"
-          style={{ marginTop: 270, zIndex: 2 }}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ type: "spring", stiffness: 200, damping: 20, delay: 0.6 }}
-        >
-          <span
-            className="text-3xl font-black tracking-widest"
-            style={{
-              fontFamily: "'Space Grotesk', system-ui, sans-serif",
-              color: C.textBright,
-              textShadow: `0 0 22px ${C.cyan}aa, 0 0 44px ${C.cosmic}66`,
-              letterSpacing: 6,
-            }}
-          >
-            ALGORITHMX
-          </span>
-
-          <div
-            style={{
-              fontFamily: "ui-monospace, 'JetBrains Mono', Menlo, monospace",
-              fontSize: 12,
-              color: C.cyan,
-              marginTop: 18,
-              letterSpacing: 1,
-              textShadow: `0 0 8px ${C.cyan}`,
-            }}
-          >
-            <span style={{ color: C.cosmic }}>$</span> ax_login --auth
-            <span style={{ marginLeft: 6, animation: "loginCursorBlink 1s steps(1) infinite" }}>▮</span>
-          </div>
-        </motion.div>
-
-        <style>{`
-          @keyframes loginCursorBlink {
-            0%, 49% { opacity: 1; }
-            50%, 100% { opacity: 0; }
-          }
-          @keyframes loginHoloShift {
-            0%,100% { filter: drop-shadow(0 0 22px ${C.cyan}66); }
-            50%     { filter: drop-shadow(0 0 30px ${C.cosmic}88); }
-          }
-          @keyframes loginButtonShine {
-            0%   { transform: translateX(-100%); }
-            60%  { transform: translateX(100%); }
-            100% { transform: translateX(100%); }
-          }
-        `}</style>
-      </div>
+      <style>{`
+        @keyframes loginCursorBlink {
+          0%, 49% { opacity: 1; }
+          50%, 100% { opacity: 0; }
+        }
+        @keyframes loginHoloShift {
+          0%,100% { filter: drop-shadow(0 0 22px ${C.cyan}66); }
+          50%     { filter: drop-shadow(0 0 30px ${C.cosmic}88); }
+        }
+        @keyframes loginButtonShine {
+          0%   { transform: translateX(-100%); }
+          60%  { transform: translateX(100%); }
+          100% { transform: translateX(100%); }
+        }
+      `}</style>
     </div>
   );
 }

@@ -309,7 +309,24 @@ export default function FirewallBuilder({
     const scale = CANVAS_W / rect.width;
     const x = (e.clientX - rect.left) * scale;
     const y = (e.clientY - rect.top) * scale;
-    // Tap below the play area triggers REJECT.
+    const s = state.current;
+
+    // TAP-TO-BLAST: if the tap lands directly on the falling block AND
+    // it's a bad block, blast it (= reject without waiting). This gives
+    // the kid an active "shoot it down" verb in addition to dodging.
+    if (s.falling && !s.falling.landed && !s.finished) {
+      const f = s.falling;
+      const blockX = PLAY_X + f.col * COL_W;
+      const blockY = PLAY_Y + f.y;
+      const onBlock =
+        x >= blockX && x <= blockX + COL_W && y >= blockY && y <= blockY + BLOCK_H;
+      if (onBlock && f.def.kind === "bad") {
+        reject();
+        return;
+      }
+    }
+
+    // Tap below the play area also triggers REJECT (legacy gesture).
     if (y > CANVAS_H - 80) {
       reject();
       return;
@@ -318,7 +335,6 @@ export default function FirewallBuilder({
     const playRelX = x - PLAY_X;
     if (playRelX < 0 || playRelX > PLAY_W) return;
     const targetCol = Math.max(0, Math.min(COLS - 1, Math.floor(playRelX / COL_W)));
-    const s = state.current;
     if (!s.falling || s.falling.landed || s.finished) return;
     while (s.falling.col !== targetCol) {
       const dir = targetCol > s.falling.col ? 1 : -1;
@@ -412,6 +428,26 @@ export default function FirewallBuilder({
       if (s.falling && !s.falling.landed && !s.finished) {
         const f = s.falling;
         f.y += s.speed * frames;
+
+        // Continuously track mouse position — block follows the
+        // cursor smoothly so the kid feels in direct control. Old
+        // mechanic was arrow-keys + click-snap; now the falling
+        // block migrates one column at a time toward mouseColTarget
+        // every ~80ms, respecting stack-collision rules.
+        if (s.mouseColTarget !== null && s.mouseColTarget !== f.col) {
+          if (now - s.threatPulseStart > 80) {
+            s.threatPulseStart = now;
+            const dir = s.mouseColTarget > f.col ? 1 : -1;
+            const next = f.col + dir;
+            if (next >= 0 && next < COLS) {
+              const topYOfCol = PLAY_H - stackHeightPx(next);
+              if (f.y + BLOCK_H <= topYOfCol) {
+                f.col = next;
+              }
+            }
+          }
+        }
+
         // Check collision with stack or floor
         const topYOfCol = PLAY_H - stackHeightPx(f.col);
         if (f.y + BLOCK_H >= topYOfCol) {
@@ -420,7 +456,8 @@ export default function FirewallBuilder({
           if (f.def.kind === "good") onLandGood(f);
           else onLandBad(f);
           s.falling = null;
-          s.nextSpawnAt = now + 1500;
+          // Tighter cadence — was 1500ms, now 900ms for more pace.
+          s.nextSpawnAt = now + 900;
         }
       }
 
@@ -598,6 +635,54 @@ export default function FirewallBuilder({
         const x = PLAY_X + s.falling.col * COL_W + 2;
         const y = PLAY_Y + s.falling.y;
         drawBlock(ctx, x, y, COL_W - 4, BLOCK_H - 2, s.falling.def, false);
+
+        // THREAT LOCK-ON: if the falling block is bad, draw a pulsing
+        // red corner-bracket reticule around it + a faint red halo so
+        // kids can see at a glance "this one's the threat — TAP IT".
+        if (s.falling.def.kind === "bad") {
+          const pulse = 0.55 + 0.45 * Math.sin(now / 150);
+          const w = COL_W - 4;
+          const h = BLOCK_H - 2;
+          const armLen = 10;
+          ctx.save();
+          ctx.strokeStyle = `rgba(255, 80, 100, ${pulse})`;
+          ctx.lineWidth = 2.5;
+          ctx.shadowColor = "#ff5577";
+          ctx.shadowBlur = 14 * pulse;
+          ctx.lineCap = "round";
+          // Top-left
+          ctx.beginPath();
+          ctx.moveTo(x, y + armLen);
+          ctx.lineTo(x, y);
+          ctx.lineTo(x + armLen, y);
+          ctx.stroke();
+          // Top-right
+          ctx.beginPath();
+          ctx.moveTo(x + w - armLen, y);
+          ctx.lineTo(x + w, y);
+          ctx.lineTo(x + w, y + armLen);
+          ctx.stroke();
+          // Bottom-right
+          ctx.beginPath();
+          ctx.moveTo(x + w, y + h - armLen);
+          ctx.lineTo(x + w, y + h);
+          ctx.lineTo(x + w - armLen, y + h);
+          ctx.stroke();
+          // Bottom-left
+          ctx.beginPath();
+          ctx.moveTo(x + armLen, y + h);
+          ctx.lineTo(x, y + h);
+          ctx.lineTo(x, y + h - armLen);
+          ctx.stroke();
+          // "TAP" hint pill above the bad block
+          ctx.shadowBlur = 0;
+          ctx.font = "900 10px 'Space Grotesk', sans-serif";
+          ctx.textAlign = "center";
+          ctx.textBaseline = "middle";
+          ctx.fillStyle = `rgba(255, 80, 100, ${pulse})`;
+          ctx.fillText("TAP TO BLAST", x + w / 2, y - 10);
+          ctx.restore();
+        }
       }
 
       // Cyber shield paddle — visible at the bottom of the play area,

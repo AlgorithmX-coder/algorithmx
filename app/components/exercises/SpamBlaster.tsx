@@ -148,6 +148,10 @@ export default function SpamBlaster({
     monitorFlashUntil: 0,
     monitorShakeUntil: 0,
     finished: false,
+    // Crosshair tracking — follows mouse position over canvas so the
+    // kid feels they're actively aiming. Null when cursor is off-canvas.
+    cursorX: null as number | null,
+    cursorY: null as number | null,
   });
 
   const [render, setRender] = useState(0);
@@ -157,6 +161,20 @@ export default function SpamBlaster({
     s.totalPhishing = list.filter((e) => e.isPhishing).length;
     s.totalSafe = list.length - s.totalPhishing;
   }, [list]);
+
+  // Track mouse position for the aiming crosshair
+  const onPointerMove = (e: React.PointerEvent<HTMLCanvasElement>) => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const rect = canvas.getBoundingClientRect();
+    const scale = CANVAS_W / rect.width;
+    state.current.cursorX = (e.clientX - rect.left) * scale;
+    state.current.cursorY = (e.clientY - rect.top) * scale;
+  };
+  const onPointerLeave = () => {
+    state.current.cursorX = null;
+    state.current.cursorY = null;
+  };
 
   // Hit test on canvas pointer
   const onPointerDown = (e: React.PointerEvent<HTMLCanvasElement>) => {
@@ -322,6 +340,8 @@ export default function SpamBlaster({
       monitorFlashUntil: 0,
       monitorShakeUntil: 0,
       finished: false,
+      cursorX: null,
+      cursorY: null,
     };
     setShowIntro(true);
     setResetKey((k) => k + 1);
@@ -833,6 +853,62 @@ export default function SpamBlaster({
         ctx.fillText(`STREAK x${s.streak}`, CANVAS_W / 2, 30);
       }
 
+      // CROSSHAIR / AIMING RETICULE — follows mouse position so the kid
+      // feels they're operating a turret. Cyan ring + cross-hair
+      // arms + faint guideline back to the firing monitor at the
+      // bottom (only drawn when cursor is over a virus to avoid
+      // visual noise on idle hover).
+      if (s.cursorX !== null && s.cursorY !== null && !s.finished) {
+        const cx = s.cursorX;
+        const cy = s.cursorY;
+        const overTarget = s.live.some(
+          (em) =>
+            em.alive &&
+            !em.resolved &&
+            Math.abs(cx - em.x) < (EMAIL_W / 2) * em.scale &&
+            Math.abs(cy - em.y) < (EMAIL_H / 2) * em.scale &&
+            em.isPhishing
+        );
+        ctx.save();
+        // Outer ring
+        ctx.strokeStyle = overTarget ? "#ff5577" : "#00e5ff";
+        ctx.lineWidth = 1.6;
+        ctx.shadowColor = overTarget ? "#ff5577" : "#00e5ff";
+        ctx.shadowBlur = overTarget ? 16 : 10;
+        ctx.beginPath();
+        ctx.arc(cx, cy, overTarget ? 22 : 18, 0, Math.PI * 2);
+        ctx.stroke();
+        // Inner dot
+        ctx.fillStyle = overTarget ? "#ff5577" : "#00e5ff";
+        ctx.beginPath();
+        ctx.arc(cx, cy, 2, 0, Math.PI * 2);
+        ctx.fill();
+        // Cross-hair arms (4 short lines)
+        ctx.beginPath();
+        const arm = overTarget ? 14 : 10;
+        const gap = 6;
+        ctx.moveTo(cx - arm - gap, cy); ctx.lineTo(cx - gap, cy);
+        ctx.moveTo(cx + gap, cy); ctx.lineTo(cx + arm + gap, cy);
+        ctx.moveTo(cx, cy - arm - gap); ctx.lineTo(cx, cy - gap);
+        ctx.moveTo(cx, cy + gap); ctx.lineTo(cx, cy + arm + gap);
+        ctx.stroke();
+        // When over a virus, draw a guideline from the firing
+        // monitor at the bottom up to the crosshair so the kid sees
+        // the firing path before they tap.
+        if (overTarget) {
+          ctx.strokeStyle = "rgba(255, 80, 100, 0.45)";
+          ctx.lineWidth = 1;
+          ctx.setLineDash([4, 6]);
+          ctx.shadowBlur = 0;
+          ctx.beginPath();
+          ctx.moveTo(MONITOR_X, MONITOR_Y - MONITOR_H / 2);
+          ctx.lineTo(cx, cy);
+          ctx.stroke();
+          ctx.setLineDash([]);
+        }
+        ctx.restore();
+      }
+
       // Big glowing instruction prompt at the top — the user wanted
       // this to make the goal unmissable. Pulses softly, RGB-split
       // chromatic shimmer (cyan + neon-pink) for the holographic feel.
@@ -900,6 +976,8 @@ export default function SpamBlaster({
       <canvas
         ref={canvasRef}
         onPointerDown={onPointerDown}
+        onPointerMove={onPointerMove}
+        onPointerLeave={onPointerLeave}
         style={{
           width: "100%",
           height: "auto",

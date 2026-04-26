@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { DataLabScene } from "@/app/components/CyberFutureScenes";
+import { CyberIconOrEmoji } from "@/app/components/CyberIcon";
 
 const C = {
   pageBg: "#080a16",
@@ -225,11 +226,12 @@ export default function OnboardingPage() {
                     </label>
                     <div className="relative">
                       <motion.span
-                        className="absolute left-5 top-1/2 -translate-y-1/2 text-2xl"
+                        className="absolute left-5 top-1/2 -translate-y-1/2"
+                        style={{ lineHeight: 0 }}
                         animate={{ rotate: [-20, 20, -20] }}
                         transition={{ duration: 1, repeat: Infinity }}
                       >
-                        👋
+                        <CyberIconOrEmoji emoji="👋" size={24} accent="cyan" />
                       </motion.span>
                       <input
                         type="text"

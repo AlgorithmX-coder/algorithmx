@@ -3,6 +3,7 @@
 import { motion, useInView } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { DataLabScene } from "@/app/components/CyberFutureScenes";
+import { CyberIconOrEmoji } from "@/app/components/CyberIcon";
 
 // Warm Pixar palette — moss + cream accents over dusk backdrop.
 const PRIMARY = "#7eff97";       // moss
@@ -111,7 +112,7 @@ export default function CyberStartPage() {
                 style={{ background: `${PRIMARY}30`, filter: "blur(40px)" }} />
               <div className="relative w-full h-full rounded-full flex items-center justify-center"
                 style={{ background: `${PRIMARY}15`, border: `2px solid ${PRIMARY}40` }}>
-                <span className="text-7xl">💻</span>
+                <CyberIconOrEmoji emoji="💻" size={80} accent="lime" />
               </div>
             </motion.div>
 
@@ -145,7 +146,9 @@ export default function CyberStartPage() {
                     border: `1px solid ${PRIMARY}20`,
                     backdropFilter: "blur(12px)",
                   }}>
-                  <div className="text-4xl mb-4">{f.emoji}</div>
+                  <div className="mb-4" style={{ lineHeight: 1 }}>
+                    <CyberIconOrEmoji emoji={f.emoji} size={36} accent="lime" />
+                  </div>
                   <h3 className="font-black text-white text-lg mb-2">{f.title}</h3>
                   <p className="text-gray-400 text-sm leading-relaxed">{f.desc}</p>
                 </motion.div>

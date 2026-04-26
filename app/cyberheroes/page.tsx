@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { CSSProperties, useEffect, useRef, useState } from "react";
+import { CyberIconOrEmoji } from "@/app/components/CyberIcon";
 
 /* ─── CONSTANTS ─── */
 const GRAD = "linear-gradient(135deg, #7c5cff, #00e5ff)";
@@ -505,9 +506,10 @@ export default function HomePage() {
               initial={{ opacity: 0, y: 32 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ type: "spring", stiffness: 150, damping: 20 }}>
-              <div className="inline-block px-4 py-1.5 rounded-full text-xs font-black mb-6"
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-black mb-6"
                 style={{ background: "rgba(124,92,255,0.15)", border: "1px solid rgba(124,92,255,0.3)", color: "#7c5cff", boxShadow: "0 0 12px rgba(124,92,255,0.2)" }}>
-                🛡️ Cybersecurity for Kids
+                <CyberIconOrEmoji emoji="🛡️" size={16} accent="cyan" glow={false} />
+                Cybersecurity for Kids
               </div>
               <h1 className="text-white leading-none mb-6" style={{ fontSize: "clamp(40px, 7vw, 72px)", fontWeight: 900, letterSpacing: "-0.04em" }}>
                 Turn Your Child Into a{" "}
@@ -810,7 +812,7 @@ export default function HomePage() {
                       background: "rgba(255,255,255,0.02)", border: "1px dashed rgba(255,255,255,0.1)",
                       borderRadius: 12, padding: "10px 24px", opacity: 0.5, display: "flex", alignItems: "center", gap: 8,
                     }}>
-                      <span style={{ fontSize: 16 }}>🔒</span>
+                      <CyberIconOrEmoji emoji="🔒" size={16} accent="cosmic" glow={false} />
                       <span style={{ color: "#6b7280", fontSize: 13, fontWeight: 600 }}>{item.label}</span>
                     </div>
                     {item.milestone && (
@@ -873,7 +875,9 @@ export default function HomePage() {
           </div>
           {/* CTA */}
           <div data-scroll style={{ background: "rgba(124,92,255,0.1)", border: "1px solid rgba(124,92,255,0.3)", boxShadow: "0 0 20px rgba(124,92,255,0.2)", borderRadius: 20, padding: 32, textAlign: "center", maxWidth: 600, margin: "32px auto 0" }}>
-            <div style={{ fontSize: 40, marginBottom: 12 }}>🔒</div>
+            <div style={{ marginBottom: 12, display: "flex", justifyContent: "center" }}>
+              <CyberIconOrEmoji emoji="🔒" size={40} accent="cyan" glow />
+            </div>
             <h3 style={{ color: "#fff", fontSize: 22, fontWeight: 900, marginBottom: 8 }}>Want to unlock all 20 missions?</h3>
             <p style={{ color: "#9ca3af", fontSize: 16, marginBottom: 20, maxWidth: 480, margin: "0 auto 20px" }}>
               Enrol today to reveal every week, every game, every badge. One payment — lifetime access to the full Cyber Heroes journey.

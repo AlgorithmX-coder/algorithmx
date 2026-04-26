@@ -101,19 +101,22 @@ function SkyBackdrop({ px }: { px: { x: number; y: number } }) {
         position: "absolute",
         inset: -20,
         zIndex: 0,
+        // Cyber Heroes Lab sky — abyss → twilight navy → midnight,
+        // replaces the warm sunset that was bleeding orange into the
+        // mission brief surface.
         background:
           "linear-gradient(180deg, " +
-          "#1f0f2e 0%, " +
-          "#3a1a4a 25%, " +
-          "#a04a4a 55%, " +
-          "#e88550 78%, " +
-          "#f9c27a 92%, " +
-          "#fde2b5 100%)",
+          "#04050d 0%, " +
+          "#0f1530 25%, " +
+          "#1a2147 55%, " +
+          "#252d5e 78%, " +
+          "#1a2147 92%, " +
+          "#0f1530 100%)",
         transform: `translate(${px.x * -4}px, ${px.y * -2}px)`,
         transition: "transform 0.5s ease-out",
       }}
     >
-      {/* Sun glow — top right */}
+      {/* Cyan/cosmic halo — top right (replaces the warm sun) */}
       <div
         style={{
           position: "absolute",
@@ -123,8 +126,8 @@ function SkyBackdrop({ px }: { px: { x: number; y: number } }) {
           height: 320,
           borderRadius: "50%",
           background:
-            "radial-gradient(circle, rgba(255,250,220,1) 0%, rgba(255,220,150,0.7) 18%, rgba(255,160,90,0.3) 50%, rgba(255,160,90,0) 100%)",
-          filter: "blur(2px)",
+            "radial-gradient(circle, rgba(0, 229, 255, 0.55) 0%, rgba(124, 92, 255, 0.32) 25%, rgba(124, 92, 255, 0.08) 55%, transparent 100%)",
+          filter: "blur(4px)",
           animation: "sunPulse 6s ease-in-out infinite",
         }}
       />
@@ -823,15 +826,16 @@ function AcceptButton({
             padding: "16px 38px",
             fontSize: 18,
             fontWeight: 800,
-            color: "#3a1a06",
-            background: "linear-gradient(135deg, #ffd58a, #ff9b4a)",
+            color: "#080a16",
+            background: "linear-gradient(135deg, #00e5ff, #7c5cff)",
             borderRadius: 999,
-            fontFamily: "inherit",
-            letterSpacing: 0.5,
+            fontFamily: "'Space Grotesk', system-ui, sans-serif",
+            letterSpacing: 1,
+            textTransform: "uppercase",
             boxShadow:
-              "0 18px 36px -10px rgba(255,120,40,0.7), " +
-              "0 0 0 1px rgba(255,235,200,0.6) inset, " +
-              "0 -3px 0 rgba(180,80,30,0.45) inset",
+              "0 0 24px rgba(0, 229, 255, 0.55), " +
+              "0 8px 20px -6px rgba(0, 229, 255, 0.45), " +
+              "0 0 0 1px rgba(125, 240, 255, 0.6) inset",
           }}
         >
           Accept Mission →

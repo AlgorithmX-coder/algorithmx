@@ -3,6 +3,7 @@
 import { useEffect, useState, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
+import { CyberIconOrEmoji } from "@/app/components/CyberIcon";
 
 const GRAD = "linear-gradient(135deg, #7c5cff, #3a7bff)";
 
@@ -273,10 +274,10 @@ export default function WelcomePage() {
                   Hi {childName}!
                 </span>
                 <motion.span
-                  style={{ display: "inline-block" }}
+                  style={{ display: "inline-flex", alignItems: "center" }}
                   animate={{ rotate: [-20, 20, -20] }}
                   transition={{ duration: 1.2, repeat: Infinity }}>
-                  👋
+                  <CyberIconOrEmoji emoji="👋" size={48} accent="cyan" />
                 </motion.span>
               </h1>
             </motion.div>

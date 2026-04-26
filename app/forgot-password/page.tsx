@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { VoidPortalScene } from "@/app/components/CyberFutureScenes";
+import { CyberIconOrEmoji } from "@/app/components/CyberIcon";
 
 const C = {
   pageBg: "#080a16",
@@ -130,10 +131,10 @@ export default function ForgotPasswordPage() {
               </label>
               <div className="relative">
                 <span
-                  className="absolute left-4 top-1/2 -translate-y-1/2 text-base"
-                  style={{ color: C.textMuted }}
+                  className="absolute left-4 top-1/2 -translate-y-1/2"
+                  style={{ color: C.textMuted, lineHeight: 0 }}
                 >
-                  ✉️
+                  <CyberIconOrEmoji emoji="✉️" size={18} accent="cyan" glow={false} />
                 </span>
                 <input
                   type="email"

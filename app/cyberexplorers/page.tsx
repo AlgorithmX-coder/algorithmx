@@ -5,6 +5,7 @@ import Link from "next/link";
 import { motion, useInView } from "framer-motion";
 import SmoothScroll from "@/app/components/SmoothScroll";
 import { CodeRainScene } from "@/app/components/CyberFutureScenes";
+import { CyberIconOrEmoji } from "@/app/components/CyberIcon";
 
 /* ─────────────── TOKENS — warm Pixar dusk palette ─────────────── */
 const BG = "#080a16";              // page bg (was near-black)
@@ -506,7 +507,9 @@ function FeatureCard({ title, desc, icon }: { title: string; desc: string; icon:
           }}
         />
       )}
-      <div style={{ fontSize: 32, marginBottom: 10 }}>{icon}</div>
+      <div style={{ fontSize: 32, marginBottom: 10, lineHeight: 1 }}>
+        <CyberIconOrEmoji emoji={icon} size={32} accent="cyan" />
+      </div>
       <h3
         style={{
           fontFamily: HEAD,

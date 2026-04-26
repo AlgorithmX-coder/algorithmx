@@ -5,6 +5,7 @@ import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { ParticleNetworkScene } from "@/app/components/CyberFutureScenes";
+import { CyberIconOrEmoji } from "@/app/components/CyberIcon";
 
 // Heavy R3F atlas — only ship to the client, only render lg+ where the
 // right panel is visible. Avoids hydration churn and keeps mobile fast.
@@ -312,10 +313,10 @@ export default function SignupPage() {
                 </label>
                 <div className="relative">
                   <span
-                    className="absolute left-4 top-1/2 -translate-y-1/2 text-base"
-                    style={{ color: C.textMuted }}
+                    className="absolute left-4 top-1/2 -translate-y-1/2"
+                    style={{ color: C.textMuted, lineHeight: 0 }}
                   >
-                    ✉️
+                    <CyberIconOrEmoji emoji="✉️" size={18} accent="cyan" glow={false} />
                   </span>
                   <input
                     type="email"
@@ -350,10 +351,10 @@ export default function SignupPage() {
                 </label>
                 <div className="relative">
                   <span
-                    className="absolute left-4 top-1/2 -translate-y-1/2 text-base"
-                    style={{ color: C.textMuted }}
+                    className="absolute left-4 top-1/2 -translate-y-1/2"
+                    style={{ color: C.textMuted, lineHeight: 0 }}
                   >
-                    🔒
+                    <CyberIconOrEmoji emoji="🔒" size={18} accent="cyan" glow={false} />
                   </span>
                   <input
                     type={showPassword ? "text" : "password"}
@@ -439,7 +440,7 @@ export default function SignupPage() {
                 className="text-xs flex items-center gap-1.5"
                 style={{ color: C.textMuted }}
               >
-                <span>{b.icon}</span> {b.label}
+                <CyberIconOrEmoji emoji={b.icon} size={14} accent="cyan" glow={false} /> {b.label}
               </motion.span>
             ))}
           </div>
