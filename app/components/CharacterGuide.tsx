@@ -179,17 +179,18 @@ export default function CharacterGuide({
             bottom: 170,
             ...bubbleSide,
             pointerEvents: "auto",
-            background: "#1a2340",
-            border: "1px solid rgba(255,255,255,0.08)",
+            background: "rgba(40,18,38,0.92)",
+            border: "1px solid rgba(255,220,180,0.32)",
             borderRadius: 16,
             padding: "14px 36px 14px 18px",
             maxWidth: 300,
             minWidth: 180,
-            color: "#e2e8f0",
+            color: "#fff7e6",
             fontFamily: "'DM Sans', sans-serif",
             fontSize: 15,
             lineHeight: 1.6,
-            boxShadow: "0 10px 28px rgba(0,0,0,0.45)",
+            boxShadow: "0 10px 28px rgba(20,6,12,0.7), 0 0 24px rgba(255,178,110,0.18)",
+            backdropFilter: "blur(10px)",
           }}
         >
           <button
@@ -202,7 +203,7 @@ export default function CharacterGuide({
               right: 6,
               background: "transparent",
               border: "none",
-              color: "#64748b",
+              color: "rgba(255,233,200,0.55)",
               cursor: "pointer",
               fontSize: 18,
               lineHeight: 1,
@@ -264,7 +265,15 @@ export default function CharacterGuide({
           width: auto;
           display: block;
           pointer-events: none;
-          filter: drop-shadow(0 10px 14px rgba(0,0,0,0.45));
+          filter:
+            drop-shadow(0 10px 14px rgba(20,6,12,0.55))
+            drop-shadow(0 0 22px rgba(255,178,110,0.18));
+          /* Soft fade on the bottom edge — hides any matte fringe at the
+             character's neck/shoulder line where the asset's alpha isn't
+             a clean cut. The fade is gentle (only the bottom ~12%) so
+             nothing important is clipped. */
+          -webkit-mask-image: linear-gradient(180deg, black 0%, black 88%, transparent 100%);
+                  mask-image: linear-gradient(180deg, black 0%, black 88%, transparent 100%);
         }
         /* Static state while hidden between exit and enter. */
         .cg-char-hidden { opacity: 0; transform: translateY(30px); }
@@ -287,7 +296,7 @@ export default function CharacterGuide({
           width: 0; height: 0;
           border-left: 8px solid transparent;
           border-right: 8px solid transparent;
-          border-top: 10px solid #1a2340;
+          border-top: 10px solid rgba(40,18,38,0.92);
         }
         .cg-pointer-left  { left:  36px }
         .cg-pointer-right { right: 36px }

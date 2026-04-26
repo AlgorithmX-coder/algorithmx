@@ -564,7 +564,9 @@ function CertificateProgress({ currentWeek }: { currentWeek: number }) {
 /* ───────────────────────── CONSTANTS ───────────────────────── */
 
 const TOTAL = 19;
-const GRAD = "linear-gradient(135deg, #3b82f6, #06b6d4)";
+// Warm Pixar gradient — used by progress bar, step dots' completed glow,
+// celebration confetti, and various inline UIs. Was a cyber blue→cyan blend.
+const GRAD = "linear-gradient(135deg, #ff9b4a, #ffd58a)";
 
 /* ───────────────────────── DATA ────────────────────────────── */
 
@@ -855,32 +857,63 @@ const confettiFallVariant = (_i: number) => ({
 /* ───────────────────────── SUB-COMPONENTS ──────────────────── */
 
 function FloatingOrbs() {
+  // Warm Pixar dust backdrop — replaces the old cyber-grid + hex code rain.
+  // Layered: faint warm grid, drifting gold/coral motes rising from below,
+  // soft-glow lock icons in warm Pixar amber, and a few pulsing fireflies.
   return (
     <div style={{ position: "fixed", inset: 0, pointerEvents: "none", zIndex: 0, overflow: "hidden" }}>
-      {/* Layer 4: Subtle grid */}
+      <style>{`
+        @keyframes lpMoteRise {
+          0%   { transform: translate(0, 0); opacity: 0; }
+          12%  { opacity: 0.85; }
+          88%  { opacity: 0.85; }
+          100% { transform: translate(var(--mx, 0), -110vh); opacity: 0; }
+        }
+        @keyframes lpLockFloat {
+          0%,100% { transform: translateY(0) rotate(0deg); }
+          50%     { transform: translateY(-22px) rotate(5deg); }
+        }
+        @keyframes lpFireflyTwinkle {
+          0%,100% { opacity: 0.3; transform: scale(1); }
+          50%     { opacity: 0.85; transform: scale(1.35); }
+        }
+      `}</style>
+
+      {/* Layer 1: faint warm grid (cream lines, much softer than the cyber one) */}
       <div style={{
         position: "absolute", inset: 0,
-        backgroundImage: `linear-gradient(rgba(59,130,246,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(59,130,246,0.06) 1px, transparent 1px)`,
-        backgroundSize: "80px 80px",
+        backgroundImage: `linear-gradient(rgba(255,220,180,0.045) 1px, transparent 1px), linear-gradient(90deg, rgba(255,220,180,0.045) 1px, transparent 1px)`,
+        backgroundSize: "100px 100px",
       }} />
-      {/* Layer 1: Code rain columns (CSS animated) */}
-      <style>{`
-        @keyframes codeRain { from { transform: translateY(-100%); } to { transform: translateY(100vh); } }
-        @keyframes lockFloat { 0%,100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-20px) rotate(5deg); } }
-        @keyframes particleDrift { 0%,100% { opacity: 0.05; } 50% { opacity: 0.15; } }
-      `}</style>
-      {Array.from({ length: 12 }, (_, i) => (
-        <div key={`rain-${i}`} style={{
-          position: "absolute", left: `${(i / 12) * 100}%`, top: 0, width: 20,
-          fontFamily: "monospace", fontSize: 14, color: "rgba(59,130,246,0.12)", lineHeight: "20px",
-          whiteSpace: "pre-wrap", wordBreak: "break-all",
-          animation: `codeRain ${30 + i * 2.6}s linear infinite`,
-          animationDelay: `${i * -2}s`,
-        }}>
-          {"0A3F7B1E9C4D8A2F6B0E3C7A1D5F9B2E8C4A6D0F3B7E1C5A9D2F6B8E0C4A7D1F5B3E9C2A6D8F0B4E7C1A5D3F9B6E2C8A0D4F7B1E5C3A9D6F2B8E4C0A7D"}
-        </div>
-      ))}
-      {/* Layer 2: Floating lock icons */}
+
+      {/* Layer 2: drifting gold/coral motes rising from below */}
+      {Array.from({ length: 28 }, (_, i) => {
+        const left = (i * 41 + 7) % 100;
+        const size = 2 + ((i * 5) % 4);
+        const drift = ((i * 11) % 30) - 15;
+        const dur = 14 + ((i * 3) % 10);
+        const delay = (i * 0.41) % 9;
+        const color = i % 3 === 0 ? "rgba(255,213,138,0.85)" : i % 3 === 1 ? "rgba(247,193,138,0.7)" : "rgba(240,142,126,0.55)";
+        return (
+          <span
+            key={`mote-${i}`}
+            style={{
+              position: "absolute",
+              left: `${left}%`,
+              bottom: -10,
+              width: size,
+              height: size,
+              borderRadius: "50%",
+              background: color,
+              boxShadow: `0 0 ${size * 5}px ${color}`,
+              animation: `lpMoteRise ${dur}s ease-in-out ${delay}s infinite`,
+              ["--mx" as string]: `${drift}px`,
+            } as React.CSSProperties}
+          />
+        );
+      })}
+
+      {/* Layer 3: warm soft-glow lock icons (low opacity, decorative) */}
       {[
         { icon: "🔒", left: "5%", top: "15%", size: 40, dur: 36 },
         { icon: "🔑", left: "85%", top: "25%", size: 35, dur: 44 },
@@ -892,12 +925,19 @@ function FloatingOrbs() {
         { icon: "🔑", left: "90%", top: "50%", size: 30, dur: 42 },
       ].map((ic, i) => (
         <div key={`lock-${i}`} style={{
-          position: "absolute", left: ic.left, top: ic.top, fontSize: ic.size, opacity: 0.08,
-          animation: `lockFloat ${ic.dur}s ease-in-out infinite`,
+          position: "absolute",
+          left: ic.left,
+          top: ic.top,
+          fontSize: ic.size,
+          opacity: 0.07,
+          filter: "drop-shadow(0 0 12px rgba(255,200,110,0.55))",
+          animation: `lpLockFloat ${ic.dur}s ease-in-out infinite`,
           animationDelay: `${i * -3}s`,
         }}>{ic.icon}</div>
       ))}
-      {/* Layer 3: Glowing particles */}
+
+      {/* Layer 4: warm fireflies — tiny pulsing gold dots that twinkle in
+          place rather than slide horizontally (the old cyber particles). */}
       {[
         { left: "20%", top: "30%", delay: 0 },
         { left: "70%", top: "20%", delay: 2 },
@@ -906,10 +946,19 @@ function FloatingOrbs() {
         { left: "10%", top: "80%", delay: 3 },
         { left: "55%", top: "40%", delay: 5 },
       ].map((p, i) => (
-        <motion.div key={`particle-${i}`}
-          animate={{ x: [-15, 15, -15], y: [-10, 10, -10], opacity: [0.1, 0.3, 0.1] }}
-          transition={{ duration: 24 + i * 4, repeat: Infinity, ease: "easeInOut", delay: p.delay }}
-          style={{ position: "absolute", left: p.left, top: p.top, width: 4, height: 4, borderRadius: "50%", background: "rgba(59,130,246,0.3)", filter: "blur(2px)" }}
+        <span
+          key={`firefly-${i}`}
+          style={{
+            position: "absolute",
+            left: p.left,
+            top: p.top,
+            width: 5,
+            height: 5,
+            borderRadius: "50%",
+            background: "#ffd58a",
+            boxShadow: "0 0 18px rgba(255,213,138,0.85), 0 0 36px rgba(255,178,110,0.4)",
+            animation: `lpFireflyTwinkle ${3 + (i % 3)}s ease-in-out ${p.delay}s infinite`,
+          }}
         />
       ))}
     </div>
@@ -920,15 +969,15 @@ function ProgressBar({ step }: { step: number }) {
   const pct = ((step + 1) / TOTAL) * 100;
   return (
     <div style={{ width: "100%", maxWidth: 600, margin: "0 auto 8px", padding: "0 16px" }}>
-      <div style={{ display: "flex", justifyContent: "space-between", fontSize: 12, color: "#9ca3af", marginBottom: 4 }}>
+      <div style={{ display: "flex", justifyContent: "space-between", fontSize: 12, color: "rgba(255,233,200,0.65)", marginBottom: 4, fontFamily: "Fredoka, Nunito, sans-serif", letterSpacing: 0.5, fontWeight: 600 }}>
         <span>Step {step + 1} of {TOTAL}</span>
         <span>{Math.round(pct)}%</span>
       </div>
-      <div style={{ height: 8, borderRadius: 999, background: "rgba(255,255,255,0.08)" }}>
+      <div style={{ height: 8, borderRadius: 999, background: "rgba(255,220,180,0.10)" }}>
         <motion.div
           animate={{ width: `${pct}%` }}
           transition={{ duration: 0.6, ease: "easeOut" }}
-          style={{ height: "100%", borderRadius: 999, background: GRAD, boxShadow: "0 0 10px rgba(59,130,246,0.4)" }}
+          style={{ height: "100%", borderRadius: 999, background: GRAD, boxShadow: "0 0 12px rgba(255,200,110,0.55)" }}
         />
       </div>
     </div>
@@ -944,9 +993,9 @@ function StepDots({ step }: { step: number }) {
           animate={{
             width: i === step ? 12 : 8,
             height: i === step ? 12 : 8,
-            background: i < step ? "#3b82f6" : i === step ? "#f59e0b" : "rgba(255,255,255,0.15)",
+            background: i < step ? "#ff9b4a" : i === step ? "#ffd58a" : "rgba(255,220,180,0.18)",
             scale: i === step ? [1, 1.4, 1] : 1,
-            boxShadow: i === step ? "0 0 12px rgba(245,158,11,0.5)" : i < step ? "0 0 8px rgba(59,130,246,0.4)" : "none",
+            boxShadow: i === step ? "0 0 14px rgba(255,213,138,0.7)" : i < step ? "0 0 8px rgba(255,200,110,0.45)" : "none",
           }}
           transition={i === step ? { scale: { duration: 1.5, repeat: Infinity, ease: "easeInOut" }, ...springTransition } : springTransition}
           style={{ borderRadius: "50%" }}
@@ -1376,13 +1425,13 @@ function ArenaBg3D({ effect }: { effect: "hit" | "miss" | "super" | null }) {
 function InstructionOverlay({ icon, story, instructions, onReady }: { icon: string; story: string; instructions: string; onReady: () => void }) {
   return (
     <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} style={{ textAlign: "center" }}>
-      <div data-animate style={{ background: "rgba(15,10,40,0.9)", backdropFilter: "blur(12px)", border: "1px solid rgba(59,130,246,0.3)", boxShadow: "0 0 20px rgba(59,130,246,0.2)", borderRadius: 24, padding: 32, maxWidth: 520, margin: "0 auto" }}>
-        <div style={{ width: 80, height: 80, margin: "0 auto 16px", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 48, background: "rgba(59,130,246,0.15)", borderRadius: 20 }}>{icon}</div>
-        <p style={{ color: "#60a5fa", fontSize: 14, fontStyle: "italic", marginBottom: 8 }}>{story}</p>
-        <h2 data-split style={{ color: "#fff", fontSize: 22, fontWeight: 900, marginBottom: 8 }}>Here&apos;s what to do!</h2>
-        <p style={{ color: "#d1d5db", fontSize: 16, lineHeight: 1.6, marginBottom: 20 }}>{instructions}</p>
-        <motion.button onClick={onReady} whileHover={{ scale: 1.05, y: -2, boxShadow: "0 0 25px rgba(249,115,22,0.6)" }} whileTap={{ scale: 0.95 }}
-          style={{ background: "linear-gradient(135deg, #f97316, #f59e0b)", color: "#fff", fontWeight: 700, borderRadius: 14, padding: "13px 34px", border: "none", cursor: "pointer", fontSize: 16, boxShadow: "0 0 15px rgba(249,115,22,0.4)" }}>
+      <div data-animate style={{ background: "rgba(40,18,38,0.82)", backdropFilter: "blur(14px)", border: "1px solid rgba(255,220,180,0.35)", boxShadow: "0 0 30px rgba(255,178,110,0.22), 0 30px 60px -20px rgba(20,6,12,0.7)", borderRadius: 24, padding: 32, maxWidth: 520, margin: "0 auto" }}>
+        <div style={{ width: 80, height: 80, margin: "0 auto 16px", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 48, background: "rgba(255,178,110,0.16)", border: "1px solid rgba(255,220,180,0.32)", borderRadius: 20, filter: "drop-shadow(0 0 18px rgba(255,200,110,0.45))" }}>{icon}</div>
+        <p style={{ color: "#ffe9c8", fontSize: 14, fontStyle: "italic", marginBottom: 8, opacity: 0.92 }}>{story}</p>
+        <h2 data-split style={{ color: "#fff7e6", fontSize: 22, fontWeight: 900, marginBottom: 8, fontFamily: "Fredoka, Nunito, sans-serif" }}>Here&apos;s what to do!</h2>
+        <p style={{ color: "#ffe9c8", fontSize: 16, lineHeight: 1.6, marginBottom: 20, opacity: 0.85 }}>{instructions}</p>
+        <motion.button onClick={onReady} whileHover={{ scale: 1.05, y: -2, boxShadow: "0 18px 36px -10px rgba(255,120,40,0.7), 0 0 0 1px rgba(255,235,200,0.55) inset" }} whileTap={{ scale: 0.95 }}
+          style={{ background: "linear-gradient(135deg, #ffd58a, #ff9b4a)", color: "#3a1a06", fontWeight: 800, borderRadius: 999, padding: "13px 34px", border: "none", cursor: "pointer", fontSize: 16, fontFamily: "Fredoka, Nunito, sans-serif", letterSpacing: 0.5, boxShadow: "0 18px 36px -10px rgba(255,120,40,0.6), 0 0 0 1px rgba(255,235,200,0.55) inset, 0 -3px 0 rgba(180,80,30,0.4) inset" }}>
           I&apos;m Ready! &rarr;
         </motion.button>
       </div>
@@ -4318,9 +4367,9 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                 top: 16,
                 right: 16,
                 zIndex: 100,
-                background: "linear-gradient(135deg, rgba(34,211,238,0.18), rgba(167,139,250,0.18))",
-                border: "1px solid rgba(167,139,250,0.55)",
-                color: "#e0e7ff",
+                background: "linear-gradient(135deg, rgba(255,213,138,0.22), rgba(255,155,74,0.18))",
+                border: "1px solid rgba(255,220,180,0.55)",
+                color: "#fff7e6",
                 fontFamily: "ui-monospace, 'JetBrains Mono', Menlo, monospace",
                 fontWeight: 800,
                 fontSize: 11,
@@ -4329,11 +4378,11 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                 padding: "8px 14px",
                 borderRadius: 999,
                 cursor: "pointer",
-                backdropFilter: "blur(8px)",
-                boxShadow: "0 8px 18px rgba(167,139,250,0.25)",
+                backdropFilter: "blur(10px)",
+                boxShadow: "0 8px 18px rgba(255,178,110,0.32)",
               }}
-              onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.boxShadow = "0 8px 24px rgba(167,139,250,0.55)"; }}
-              onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.boxShadow = "0 8px 18px rgba(167,139,250,0.25)"; }}
+              onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.boxShadow = "0 8px 24px rgba(255,178,110,0.55)"; }}
+              onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.boxShadow = "0 8px 18px rgba(255,178,110,0.32)"; }}
             >
               💾 Save &amp; Exit
             </button>

@@ -59,15 +59,15 @@ export default function LessonHUD({
         backdropFilter: "blur(12px)",
         WebkitBackdropFilter: "blur(12px)",
         background:
-          "linear-gradient(180deg, rgba(10,14,26,0.85) 0%, rgba(15,23,42,0.82) 100%)",
-        borderBottom: "1px solid rgba(255,255,255,0.06)",
-        boxShadow: "inset 0 -1px 0 rgba(96,165,250,0.12)",
+          "linear-gradient(180deg, rgba(20,6,12,0.88) 0%, rgba(40,18,38,0.85) 100%)",
+        borderBottom: "1px solid rgba(255,220,180,0.14)",
+        boxShadow: "inset 0 -1px 0 rgba(255,178,110,0.18)",
         display: "flex",
         alignItems: "center",
         gap: 18,
         padding: "0 18px",
         fontFamily: "'DM Sans', sans-serif",
-        color: "#f1f5f9",
+        color: "#fff7e6",
       }}
     >
       {/* Characters — Adam + Layla overlapping avatars */}
@@ -78,10 +78,10 @@ export default function LessonHUD({
               width: 36,
               height: 36,
               borderRadius: "50%",
-              border: "2px solid #60a5fa",
-              boxShadow: "0 0 12px rgba(96,165,250,0.45)",
+              border: "2px solid #ffd58a",
+              boxShadow: "0 0 12px rgba(255,213,138,0.55)",
               overflow: "hidden",
-              background: "#0f172a",
+              background: "#2a0d2e",
               flexShrink: 0,
               zIndex: 2,
             }}
@@ -104,10 +104,10 @@ export default function LessonHUD({
               width: 36,
               height: 36,
               borderRadius: "50%",
-              border: "2px solid #34d399",
-              boxShadow: "0 0 12px rgba(52,211,153,0.45)",
+              border: "2px solid #f08e7e",
+              boxShadow: "0 0 12px rgba(240,142,126,0.55)",
               overflow: "hidden",
-              background: "#0f172a",
+              background: "#2a0d2e",
               flexShrink: 0,
               marginLeft: -12,
               zIndex: 1,
@@ -133,7 +133,7 @@ export default function LessonHUD({
             fontWeight: 700,
             fontSize: 12,
             letterSpacing: "0.06em",
-            color: "#f1f5f9",
+            color: "#fff7e6",
           }}
         >
           ADAM & LAYLA
@@ -247,9 +247,9 @@ export default function LessonHUD({
             style={{
               height: "100%",
               width: `${lessonFillPct}%`,
-              background: "linear-gradient(90deg, #34d399, #10b981)",
+              background: "linear-gradient(90deg, #ffd58a, #ff9b4a)",
               transition: "width 0.4s ease-out",
-              boxShadow: "0 0 6px rgba(52,211,153,0.6)",
+              boxShadow: "0 0 8px rgba(255,213,138,0.65)",
             }}
           />
         </div>
@@ -281,9 +281,9 @@ export default function LessonHUD({
               width: 32,
               height: 32,
               borderRadius: "50%",
-              background: "rgba(255,255,255,0.05)",
-              border: "1px solid rgba(255,255,255,0.1)",
-              color: "#f1f5f9",
+              background: "rgba(255,220,180,0.06)",
+              border: "1px solid rgba(255,220,180,0.18)",
+              color: "#fff7e6",
               cursor: "pointer",
               display: "flex",
               alignItems: "center",
