@@ -38,6 +38,50 @@ const OutroScene = dynamic(
   () => import("@/app/components/game/OutroScene"),
   { ssr: false }
 );
+const CyberScanner = dynamic(
+  () => import("@/app/components/exercises/CyberScanner"),
+  { ssr: false }
+);
+const ProtectTheData = dynamic(
+  () => import("@/app/components/exercises/ProtectTheData"),
+  { ssr: false }
+);
+const CyberMaze = dynamic(
+  () => import("@/app/components/exercises/CyberMaze"),
+  { ssr: false }
+);
+const PasswordLab = dynamic(
+  () => import("@/app/components/exercises/PasswordLab"),
+  { ssr: false }
+);
+const CrackTheCode = dynamic(
+  () => import("@/app/components/exercises/CrackTheCode"),
+  { ssr: false }
+);
+const MemoryMatch = dynamic(
+  () => import("@/app/components/exercises/MemoryMatch"),
+  { ssr: false }
+);
+const ConveyorBelt = dynamic(
+  () => import("@/app/components/exercises/ConveyorBelt"),
+  { ssr: false }
+);
+const FirewallBuilder = dynamic(
+  () => import("@/app/components/exercises/FirewallBuilder"),
+  { ssr: false }
+);
+const SpamBlaster = dynamic(
+  () => import("@/app/components/exercises/SpamBlaster"),
+  { ssr: false }
+);
+const ChooseYourPath = dynamic(
+  () => import("@/app/components/exercises/ChooseYourPath"),
+  { ssr: false }
+);
+const BattleArena = dynamic(
+  () => import("@/app/components/exercises/BattleArena"),
+  { ssr: false }
+);
 
 /* ───────────────────────── MOCK DATA ───────────────────────── */
 
@@ -59,6 +103,88 @@ const MOCK_MISSIONS = [
     text: "Defeat the Hacker Raccoon",
     colour: "#f59e0b",
     glow: "rgba(245,158,11,0.6)",
+  },
+];
+
+const MOCK_PROTECT_ITEMS = [
+  { text: "My favourite colour", isPrivate: false },
+  { text: "Home address", isPrivate: true },
+  { text: "Phone number", isPrivate: true },
+  { text: "Pet's name", isPrivate: false },
+  { text: "Birthday", isPrivate: true },
+  { text: "Favourite food", isPrivate: false },
+  { text: "Password", isPrivate: true },
+  { text: "School name", isPrivate: true },
+  { text: "Hobby", isPrivate: false },
+  { text: "Email address", isPrivate: true },
+  { text: "Best friend's first name", isPrivate: false },
+  { text: "Bank card number", isPrivate: true },
+];
+
+const MOCK_MAZE_QUESTIONS = [
+  {
+    question: "Which is the strongest password?",
+    answers: ["password", "Tr0pic4l$un!", "12345"],
+    correctIndex: 1,
+  },
+  {
+    question: "Should you share your password with friends?",
+    answers: ["Yes, always", "Only with best friends", "No, never"],
+    correctIndex: 2,
+  },
+  {
+    question: "What makes a password strong?",
+    answers: ["Short and simple", "Long, mixed characters", "Just your name"],
+    correctIndex: 1,
+  },
+];
+
+const MOCK_CONVEYOR_ITEMS = [
+  { text: "password123", category: "weak" as const },
+  { text: "Tr0pic4l$un!", category: "strong" as const },
+  { text: "qwerty", category: "weak" as const },
+  { text: "MyN@me1sJ0hn", category: "strong" as const },
+  { text: "ilovecats", category: "weak" as const },
+  { text: "G4m3r#Pr0!", category: "strong" as const },
+  { text: "12345", category: "weak" as const },
+  { text: "X#9kL2$mP!", category: "strong" as const },
+];
+
+const MOCK_BOSS_QUESTIONS = [
+  {
+    question: "What's the best password length?",
+    options: ["3 characters", "8 or more", "Just 1"],
+    correctIndex: 1,
+    attackName: "Cracking Strike",
+  },
+  {
+    question: "Which is safest?",
+    options: ["Use 'password' everywhere", "A password manager", "Write on a sticky note"],
+    correctIndex: 1,
+    attackName: "Phishing Bolt",
+  },
+  {
+    question: "What should you do if a website asks for your password unexpectedly?",
+    options: ["Type it in", "Tell a grown-up first", "Share it on social media"],
+    correctIndex: 1,
+    attackName: "Trick Strike",
+  },
+];
+
+const MOCK_SCENARIOS = [
+  {
+    setup: 'A stranger online asks: "What\'s your name?"',
+    choices: [
+      { text: "Tell them your full name", isSafe: false, consequence: "The stranger now knows your real name." },
+      { text: "Don't tell them and tell an adult", isSafe: true, consequence: "Smart! You protected your identity." },
+    ],
+  },
+  {
+    setup: 'A pop-up says: "YOU WON A FREE PHONE!"',
+    choices: [
+      { text: "Click the link", isSafe: false, consequence: "It was a scam!" },
+      { text: "Close the pop-up", isSafe: true, consequence: "Great thinking!" },
+    ],
   },
 ];
 
@@ -91,19 +217,148 @@ const CASES: CaseEntry[] = [
     ),
   },
   { id: 2, name: "Lock Game", status: "todo" },
-  { id: 3, name: "Cyber Scanner", status: "todo" },
-  { id: 4, name: "Protect the Data", status: "todo" },
-  { id: 5, name: "Cyber Maze", status: "todo" },
-  { id: 6, name: "Password Lab", status: "todo" },
-  { id: 7, name: "Crack the Code", status: "todo" },
-  { id: 8, name: "Memory Match", status: "todo" },
-  { id: 9, name: "Conveyor Belt", status: "todo" },
+  {
+    id: 3,
+    name: "Cyber Scanner",
+    status: "redesigned",
+    render: ({ onAccept }) => (
+      <CyberScanner
+        onComplete={(score) => alert(`CyberScanner complete (score: ${score})`)}
+        onCorrect={() => {}}
+        onWrong={() => {}}
+      />
+    ),
+  },
+  {
+    id: 4,
+    name: "Protect the Data",
+    status: "redesigned",
+    render: ({ onAccept }) => (
+      <ProtectTheData
+        items={MOCK_PROTECT_ITEMS}
+        onComplete={(score) => alert(`ProtectTheData complete (score: ${score})`)}
+        onCorrect={() => {}}
+        onWrong={() => {}}
+      />
+    ),
+  },
+  {
+    id: 5,
+    name: "Cyber Maze",
+    status: "redesigned",
+    render: ({ onAccept }) => (
+      <CyberMaze
+        questions={MOCK_MAZE_QUESTIONS}
+        onComplete={(score) => alert(`CyberMaze complete (score: ${score})`)}
+        onCorrect={() => {}}
+        onWrong={() => {}}
+      />
+    ),
+  },
+  {
+    id: 6,
+    name: "Password Lab",
+    status: "redesigned",
+    render: ({ onAccept }) => (
+      <PasswordLab
+        onComplete={(score) => alert(`PasswordLab complete (score: ${score})`)}
+        onCorrect={() => {}}
+        onWrong={() => {}}
+      />
+    ),
+  },
+  {
+    id: 7,
+    name: "Crack the Code",
+    status: "redesigned",
+    render: ({ onAccept }) => (
+      <CrackTheCode
+        onComplete={(score) => alert(`CrackTheCode complete (score: ${score})`)}
+        onCorrect={() => {}}
+        onWrong={() => {}}
+      />
+    ),
+  },
+  {
+    id: 8,
+    name: "Memory Match",
+    status: "redesigned",
+    render: ({ onAccept }) => (
+      <MemoryMatch
+        onComplete={(score) => alert(`MemoryMatch complete (score: ${score})`)}
+        onCorrect={() => {}}
+        onWrong={() => {}}
+      />
+    ),
+  },
+  {
+    id: 9,
+    name: "Conveyor Belt",
+    status: "redesigned",
+    render: ({ onAccept }) => (
+      <ConveyorBelt
+        items={MOCK_CONVEYOR_ITEMS}
+        onComplete={(score) => alert(`ConveyorBelt complete (score: ${score})`)}
+        onCorrect={() => {}}
+        onWrong={() => {}}
+      />
+    ),
+  },
   { id: 10, name: "5 Golden Rules", status: "todo" },
-  { id: 11, name: "Firewall Builder", status: "todo" },
+  {
+    id: 11,
+    name: "Firewall Builder",
+    status: "redesigned",
+    render: ({ onAccept }) => (
+      <FirewallBuilder
+        onComplete={(score) => alert(`FirewallBuilder complete (score: ${score})`)}
+        onCorrect={() => {}}
+        onWrong={() => {}}
+      />
+    ),
+  },
   { id: 12, name: "Phishing Explainer", status: "todo" },
-  { id: 13, name: "Spam Blaster", status: "todo" },
-  { id: 14, name: "Choose Your Path", status: "todo" },
-  { id: 15, name: "Boss Battle", status: "todo" },
+  {
+    id: 13,
+    name: "Spam Blaster",
+    status: "redesigned",
+    render: ({ onAccept }) => (
+      <SpamBlaster
+        onComplete={(score) => alert(`SpamBlaster complete (score: ${score})`)}
+        onCorrect={() => {}}
+        onWrong={() => {}}
+      />
+    ),
+  },
+  {
+    id: 14,
+    name: "Choose Your Path",
+    status: "redesigned",
+    render: ({ onAccept }) => (
+      <ChooseYourPath
+        scenarios={MOCK_SCENARIOS}
+        onComplete={(score) => alert(`ChooseYourPath complete (score: ${score})`)}
+        onCorrect={() => {}}
+        onWrong={() => {}}
+      />
+    ),
+  },
+  {
+    id: 15,
+    name: "Boss Battle",
+    status: "redesigned",
+    render: ({ onAccept }) => (
+      <BattleArena
+        bossName="Hacker Raccoon"
+        bossImage="/characters/raccoon-sneaking.png"
+        questions={MOCK_BOSS_QUESTIONS}
+        onComplete={(score, total) =>
+          alert(`BossBattle complete (${score}/${total})`)
+        }
+        onBossDefeated={() => {}}
+      />
+    ),
+  },
   {
     id: 16,
     name: "Adam & Layla Safe",
