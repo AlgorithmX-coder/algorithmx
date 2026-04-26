@@ -90,8 +90,8 @@ const STYLES = `
   50% { transform: translateY(-6px); }
 }
 @keyframes baHPGlowPulse {
-  0%,100% { box-shadow: 0 0 12px rgba(196, 81, 58, 0.45); }
-  50% { box-shadow: 0 0 22px rgba(196, 81, 58, 0.8); }
+  0%,100% { box-shadow: 0 0 12px rgba(255, 95, 179, 0.45); }
+  50% { box-shadow: 0 0 22px rgba(255, 95, 179, 0.8); }
 }
 @keyframes baDamageFloat {
   0% { opacity: 1; transform: translate(-50%, 0); }
@@ -146,29 +146,29 @@ function FallbackRaccoon({ size = 120 }: { size?: number }) {
       <defs>
         <radialGradient id="baRacFace" cx="50%" cy="55%" r="55%">
           <stop offset="0%" stopColor="#5a2a48" />
-          <stop offset="100%" stopColor="#2a0d2e" />
+          <stop offset="100%" stopColor="#0f1530" />
         </radialGradient>
       </defs>
       {/* ears */}
-      <circle cx="32" cy="28" r="14" fill="#2a0d2e" stroke="#1a0612" strokeWidth="2" />
-      <circle cx="88" cy="28" r="14" fill="#2a0d2e" stroke="#1a0612" strokeWidth="2" />
-      <circle cx="32" cy="28" r="7" fill="#1a0612" />
-      <circle cx="88" cy="28" r="7" fill="#1a0612" />
+      <circle cx="32" cy="28" r="14" fill="#0f1530" stroke="#080a16" strokeWidth="2" />
+      <circle cx="88" cy="28" r="14" fill="#0f1530" stroke="#080a16" strokeWidth="2" />
+      <circle cx="32" cy="28" r="7" fill="#080a16" />
+      <circle cx="88" cy="28" r="7" fill="#080a16" />
       {/* head */}
       <ellipse cx="60" cy="66" rx="42" ry="38" fill="url(#baRacFace)" />
       {/* mask */}
-      <ellipse cx="42" cy="62" rx="16" ry="11" fill="#0a0410" />
-      <ellipse cx="78" cy="62" rx="16" ry="11" fill="#0a0410" />
+      <ellipse cx="42" cy="62" rx="16" ry="11" fill="#04050d" />
+      <ellipse cx="78" cy="62" rx="16" ry="11" fill="#04050d" />
       {/* eyes — ember red, not horror red */}
-      <circle cx="42" cy="62" r="5" fill="#f08e7e" />
-      <circle cx="78" cy="62" r="5" fill="#f08e7e" />
-      <circle cx="43.5" cy="60.5" r="1.5" fill="#fff7e6" />
-      <circle cx="79.5" cy="60.5" r="1.5" fill="#fff7e6" />
+      <circle cx="42" cy="62" r="5" fill="#ff5fb3" />
+      <circle cx="78" cy="62" r="5" fill="#ff5fb3" />
+      <circle cx="43.5" cy="60.5" r="1.5" fill="#e8edff" />
+      <circle cx="79.5" cy="60.5" r="1.5" fill="#e8edff" />
       {/* nose */}
-      <ellipse cx="60" cy="78" rx="5" ry="4" fill="#1a0612" />
+      <ellipse cx="60" cy="78" rx="5" ry="4" fill="#080a16" />
       {/* snout outline */}
-      <path d="M52 88 Q60 94 68 88" stroke="#1a0612" strokeWidth="2" fill="none" strokeLinecap="round" />
-      <path d="M60 82 Q55 92 60 96 Q65 92 60 82" fill="#fde2b5" opacity="0.3" />
+      <path d="M52 88 Q60 94 68 88" stroke="#080a16" strokeWidth="2" fill="none" strokeLinecap="round" />
+      <path d="M60 82 Q55 92 60 96 Q65 92 60 82" fill="#1a2147" opacity="0.3" />
     </svg>
   );
 }
@@ -375,7 +375,7 @@ export default function BattleArena({
             pointerEvents: "none",
             background:
               "radial-gradient(ellipse at 30% 18%, rgba(255, 220, 130, 0.22) 0%, transparent 55%)," +
-              "radial-gradient(ellipse at 75% 22%, rgba(255, 178, 110, 0.18) 0%, transparent 50%)",
+              "radial-gradient(ellipse at 75% 22%, rgba(124, 92, 255, 0.18) 0%, transparent 50%)",
             mixBlendMode: "screen",
             animation: "baLightning 6.5s ease-in-out infinite",
           }}
@@ -453,15 +453,15 @@ export default function BattleArena({
                     fontSize: 11,
                     fontWeight: 800,
                     letterSpacing: 5,
-                    color: "#ffd58a",
+                    color: "#00e5ff",
                     textTransform: "uppercase",
                     padding: "6px 18px",
-                    background: "rgba(40, 18, 38, 0.6)",
+                    background: "rgba(15, 21, 48, 0.6)",
                     backdropFilter: "blur(8px)",
                     WebkitBackdropFilter: "blur(8px)",
                     borderStyle: "solid",
                     borderWidth: 1,
-                    borderColor: "rgba(255, 220, 180, 0.45)",
+                    borderColor: "rgba(0, 229, 255, 0.45)",
                     borderRadius: 999,
                     animation: "baIntroPulse 1.2s ease-in-out infinite",
                   }}
@@ -475,18 +475,18 @@ export default function BattleArena({
                   style={{
                     padding: "12px 24px",
                     background:
-                      "linear-gradient(135deg, rgba(196, 81, 58, 0.85), rgba(122, 58, 82, 0.85))",
+                      "linear-gradient(135deg, rgba(255, 95, 179, 0.85), rgba(122, 58, 82, 0.85))",
                     borderStyle: "solid",
                     borderWidth: 2,
                     borderColor: "rgba(244, 168, 154, 0.6)",
                     borderRadius: 14,
-                    color: "#fff7e6",
+                    color: "#e8edff",
                     fontWeight: 800,
                     fontSize: 18,
                     letterSpacing: 0.5,
                     animation: "baBannerIn 1.5s ease-out both",
                     willChange: "transform, opacity",
-                    textShadow: "0 2px 6px rgba(20, 6, 12, 0.6)",
+                    textShadow: "0 2px 6px rgba(8, 10, 22, 0.6)",
                     boxShadow:
                       "0 14px 28px -8px rgba(80, 20, 30, 0.6), 0 0 28px rgba(244, 168, 154, 0.3)",
                   }}
@@ -521,9 +521,9 @@ export default function BattleArena({
                 transform: "translateX(-50%)",
                 background:
                   combo >= 3
-                    ? "linear-gradient(135deg, #ffd58a, #ff9b4a)"
+                    ? "linear-gradient(135deg, #00e5ff, #7c5cff)"
                     : "rgba(255, 220, 168, 0.22)",
-                color: combo >= 3 ? "#3a1a06" : "#ffd58a",
+                color: combo >= 3 ? "#080a16" : "#00e5ff",
                 borderStyle: "solid",
                 borderWidth: combo >= 3 ? 0 : 1,
                 borderColor: "rgba(255, 215, 138, 0.5)",
@@ -534,7 +534,7 @@ export default function BattleArena({
                 letterSpacing: 0.3,
                 boxShadow:
                   combo >= 3
-                    ? "0 0 22px rgba(255, 178, 110, 0.65), 0 6px 16px rgba(40, 18, 8, 0.4)"
+                    ? "0 0 22px rgba(124, 92, 255, 0.65), 0 6px 16px rgba(40, 18, 8, 0.4)"
                     : "0 4px 12px rgba(40, 18, 8, 0.3)",
                 animation: "baComboPop 0.35s cubic-bezier(0.2,1.5,0.4,1) both",
                 pointerEvents: "none",
@@ -567,7 +567,7 @@ export default function BattleArena({
               style={{
                 textAlign: "center",
                 padding: "20px 0",
-                color: "#ffe9c8",
+                color: "#c5cdf0",
                 fontSize: 14,
                 opacity: 0.85,
                 letterSpacing: 1,
@@ -581,7 +581,7 @@ export default function BattleArena({
               <div
                 style={{
                   background:
-                    "linear-gradient(180deg, rgba(255, 245, 215, 0.96) 0%, rgba(253, 226, 181, 0.96) 100%)",
+                    "linear-gradient(180deg, rgba(125, 240, 255, 0.96) 0%, rgba(253, 226, 181, 0.96) 100%)",
                   borderStyle: "solid",
                   borderWidth: 1,
                   borderColor: "rgba(196, 115, 64, 0.55)",
@@ -589,7 +589,7 @@ export default function BattleArena({
                   padding: "20px 26px",
                   marginBottom: 18,
                   boxShadow:
-                    "0 18px 40px -12px rgba(40, 18, 8, 0.5), inset 0 0 0 4px rgba(255, 245, 215, 0.85), inset 0 0 0 5px rgba(196, 115, 64, 0.35)",
+                    "0 18px 40px -12px rgba(40, 18, 8, 0.5), inset 0 0 0 4px rgba(125, 240, 255, 0.85), inset 0 0 0 5px rgba(196, 115, 64, 0.35)",
                 }}
               >
                 <p
@@ -620,7 +620,7 @@ export default function BattleArena({
                   const locked = selected !== null;
                   const inFeedback = phase === "feedback";
 
-                  let borderColor = "rgba(255, 220, 180, 0.35)";
+                  let borderColor = "rgba(0, 229, 255, 0.35)";
                   let extraShadow =
                     "0 6px 18px -8px rgba(40, 18, 8, 0.5)";
                   let opacity = 1;
@@ -629,14 +629,14 @@ export default function BattleArena({
 
                   if (inFeedback) {
                     if (isSelected && isTheCorrect) {
-                      borderColor = "#7cc89a";
+                      borderColor = "#7eff97";
                       extraShadow = "0 0 24px rgba(124, 200, 154, 0.55)";
                       glow = "rgba(124, 200, 154, 0.55)";
                     } else if (isSelected && !isTheCorrect) {
-                      borderColor = "#c4513a";
-                      extraShadow = "0 0 24px rgba(196, 81, 58, 0.55)";
+                      borderColor = "#ff7a59";
+                      extraShadow = "0 0 24px rgba(255, 95, 179, 0.55)";
                       shakeAnim = "baCardShake 0.3s ease";
-                      glow = "rgba(196, 81, 58, 0.55)";
+                      glow = "rgba(255, 95, 179, 0.55)";
                     } else {
                       opacity = 0.35;
                     }
@@ -645,7 +645,7 @@ export default function BattleArena({
                   const cardStyle: CSSProperties = {
                     position: "relative",
                     background:
-                      "linear-gradient(180deg, rgba(255, 245, 215, 0.94) 0%, rgba(253, 226, 181, 0.94) 100%)",
+                      "linear-gradient(180deg, rgba(125, 240, 255, 0.94) 0%, rgba(253, 226, 181, 0.94) 100%)",
                     borderStyle: "solid",
                     borderWidth: 2,
                     borderColor,
@@ -687,7 +687,7 @@ export default function BattleArena({
                             top: -10,
                             right: 12,
                             background: "#4a9a6a",
-                            color: "#fff7e6",
+                            color: "#e8edff",
                             fontWeight: 800,
                             fontSize: 11,
                             letterSpacing: 1.5,
@@ -706,8 +706,8 @@ export default function BattleArena({
                             position: "absolute",
                             top: -10,
                             right: 12,
-                            background: "#c4513a",
-                            color: "#fff7e6",
+                            background: "#ff7a59",
+                            color: "#e8edff",
                             fontWeight: 800,
                             fontSize: 11,
                             letterSpacing: 1.5,
@@ -741,15 +741,15 @@ function HeroBanner({ pct }: { pct: number }) {
         flex: 1,
         maxWidth: 280,
         padding: "8px 14px",
-        background: "rgba(40, 18, 38, 0.7)",
+        background: "rgba(15, 21, 48, 0.7)",
         backdropFilter: "blur(10px)",
         WebkitBackdropFilter: "blur(10px)",
         borderStyle: "solid",
         borderWidth: 1,
-        borderColor: "rgba(255, 220, 180, 0.45)",
+        borderColor: "rgba(0, 229, 255, 0.45)",
         borderRadius: 14,
         boxShadow:
-          "0 10px 24px -8px rgba(20, 6, 12, 0.5), 0 0 18px rgba(255, 200, 110, 0.25) inset",
+          "0 10px 24px -8px rgba(8, 10, 22, 0.5), 0 0 18px rgba(124, 92, 255, 0.25) inset",
       }}
     >
       <div
@@ -766,7 +766,7 @@ function HeroBanner({ pct }: { pct: number }) {
             fontSize: 10,
             letterSpacing: 3,
             fontWeight: 800,
-            color: "#ffd58a",
+            color: "#00e5ff",
             textTransform: "uppercase",
             fontFamily: "ui-monospace, 'JetBrains Mono', Menlo, monospace",
           }}
@@ -778,7 +778,7 @@ function HeroBanner({ pct }: { pct: number }) {
         style={{
           height: 10,
           borderRadius: 999,
-          background: "rgba(20, 6, 12, 0.55)",
+          background: "rgba(8, 10, 22, 0.55)",
           overflow: "hidden",
         }}
       >
@@ -786,10 +786,10 @@ function HeroBanner({ pct }: { pct: number }) {
           style={{
             width: `${pct}%`,
             height: "100%",
-            background: "linear-gradient(90deg, #fff5cc, #ffd158, #ff9b4a)",
+            background: "linear-gradient(90deg, #7df0ff, #ffd158, #7c5cff)",
             borderRadius: 999,
             transition: "width 0.6s cubic-bezier(0.16,1,0.3,1)",
-            boxShadow: "0 0 12px rgba(255, 200, 110, 0.55)",
+            boxShadow: "0 0 12px rgba(124, 92, 255, 0.55)",
           }}
         />
       </div>
@@ -820,7 +820,7 @@ function VillainBanner({
         flex: 1,
         maxWidth: 280,
         padding: "8px 14px",
-        background: "rgba(40, 18, 38, 0.7)",
+        background: "rgba(15, 21, 48, 0.7)",
         backdropFilter: "blur(10px)",
         WebkitBackdropFilter: "blur(10px)",
         borderStyle: "solid",
@@ -828,7 +828,7 @@ function VillainBanner({
         borderColor: "rgba(196, 115, 64, 0.55)",
         borderRadius: 14,
         boxShadow:
-          "0 10px 24px -8px rgba(20, 6, 12, 0.5), 0 0 18px rgba(196, 81, 58, 0.25) inset",
+          "0 10px 24px -8px rgba(8, 10, 22, 0.5), 0 0 18px rgba(255, 95, 179, 0.25) inset",
       }}
     >
       <div
@@ -852,7 +852,7 @@ function VillainBanner({
         >
           {name}
         </span>
-        <span style={{ fontSize: 11, color: "#fff7e6", fontWeight: 700, opacity: 0.85 }}>
+        <span style={{ fontSize: 11, color: "#e8edff", fontWeight: 700, opacity: 0.85 }}>
           {hp}/{total}
         </span>
       </div>
@@ -860,7 +860,7 @@ function VillainBanner({
         style={{
           height: 10,
           borderRadius: 999,
-          background: "rgba(20, 6, 12, 0.55)",
+          background: "rgba(8, 10, 22, 0.55)",
           overflow: "hidden",
         }}
       >
@@ -869,11 +869,11 @@ function VillainBanner({
             width: `${hpPct}%`,
             height: "100%",
             background: lowHP
-              ? "linear-gradient(90deg, #c4513a, #f08e7e)"
-              : "linear-gradient(90deg, #c4513a, #e89938, #ffd158)",
+              ? "linear-gradient(90deg, #ff7a59, #ff5fb3)"
+              : "linear-gradient(90deg, #ff7a59, #e89938, #ffd158)",
             borderRadius: 999,
             transition: "width 0.6s cubic-bezier(0.16,1,0.3,1)",
-            boxShadow: "0 0 12px rgba(196, 81, 58, 0.5)",
+            boxShadow: "0 0 12px rgba(255, 95, 179, 0.5)",
             animation: hpGlowAnim,
           }}
         />
@@ -904,7 +904,7 @@ function HeroPortrait({ phase }: { phase: Phase }) {
           inset: -22,
           borderRadius: "50%",
           background:
-            "conic-gradient(from 0deg, transparent 0deg, rgba(255, 215, 138, 0.55) 60deg, transparent 120deg, rgba(255, 178, 110, 0.45) 200deg, transparent 280deg, rgba(255, 220, 130, 0.5) 340deg, transparent 360deg)",
+            "conic-gradient(from 0deg, transparent 0deg, rgba(255, 215, 138, 0.55) 60deg, transparent 120deg, rgba(124, 92, 255, 0.45) 200deg, transparent 280deg, rgba(255, 220, 130, 0.5) 340deg, transparent 360deg)",
           filter: "blur(10px)",
           animation: "baHaloSpin 14s linear infinite",
           opacity: 0.7,
@@ -917,9 +917,9 @@ function HeroPortrait({ phase }: { phase: Phase }) {
           inset: 0,
           borderRadius: "50%",
           overflow: "hidden",
-          background: "#fde2b5",
+          background: "#1a2147",
           boxShadow:
-            "0 0 0 5px rgba(255, 230, 190, 0.85), 0 0 0 7px rgba(140, 70, 30, 0.6), 0 18px 36px -10px rgba(20, 6, 12, 0.7), 0 0 30px rgba(255, 178, 110, 0.5)",
+            "0 0 0 5px rgba(255, 230, 190, 0.85), 0 0 0 7px rgba(140, 70, 30, 0.6), 0 18px 36px -10px rgba(8, 10, 22, 0.7), 0 0 30px rgba(124, 92, 255, 0.5)",
         }}
       >
         <div
@@ -943,14 +943,14 @@ function HeroPortrait({ phase }: { phase: Phase }) {
           left: "50%",
           transform: "translateX(-50%)",
           padding: "3px 14px",
-          background: "rgba(40, 18, 38, 0.85)",
+          background: "rgba(15, 21, 48, 0.85)",
           backdropFilter: "blur(6px)",
           WebkitBackdropFilter: "blur(6px)",
           borderStyle: "solid",
           borderWidth: 1,
-          borderColor: "rgba(255, 220, 180, 0.55)",
+          borderColor: "rgba(0, 229, 255, 0.55)",
           borderRadius: 999,
-          color: "#ffe9c8",
+          color: "#c5cdf0",
           fontSize: 10,
           fontWeight: 800,
           letterSpacing: 2.5,
@@ -1010,7 +1010,7 @@ function BossPortrait({
           inset: -18,
           borderRadius: "50%",
           background:
-            "radial-gradient(circle at 50% 50%, rgba(196, 81, 58, 0.45) 0%, rgba(196, 81, 58, 0.15) 50%, transparent 75%)",
+            "radial-gradient(circle at 50% 50%, rgba(255, 95, 179, 0.45) 0%, rgba(255, 95, 179, 0.15) 50%, transparent 75%)",
           filter: "blur(10px)",
         }}
       />
@@ -1024,7 +1024,7 @@ function BossPortrait({
           overflow: "hidden",
           background: "#3a1a3e",
           boxShadow:
-            "0 0 0 5px rgba(196, 115, 64, 0.7), 0 0 0 7px rgba(122, 58, 82, 0.85), 0 18px 36px -10px rgba(20, 6, 12, 0.75), 0 0 28px rgba(196, 81, 58, 0.45)",
+            "0 0 0 5px rgba(196, 115, 64, 0.7), 0 0 0 7px rgba(122, 58, 82, 0.85), 0 18px 36px -10px rgba(8, 10, 22, 0.75), 0 0 28px rgba(255, 95, 179, 0.45)",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
@@ -1055,11 +1055,11 @@ function BossPortrait({
             top: -8,
             left: "50%",
             transform: "translateX(-50%)",
-            color: "#ffd58a",
+            color: "#00e5ff",
             fontWeight: 800,
             fontSize: 22,
             textShadow:
-              "0 0 12px rgba(255, 200, 110, 0.7), 0 2px 4px rgba(20, 6, 12, 0.5)",
+              "0 0 12px rgba(124, 92, 255, 0.7), 0 2px 4px rgba(8, 10, 22, 0.5)",
             animation: "baDamageFloat 0.8s ease-out forwards",
             pointerEvents: "none",
           }}
@@ -1080,7 +1080,7 @@ function BossPortrait({
             height: 130,
             borderRadius: "50%",
             background:
-              "radial-gradient(circle, rgba(196, 81, 58, 0.5) 0%, transparent 70%)",
+              "radial-gradient(circle, rgba(255, 95, 179, 0.5) 0%, transparent 70%)",
             pointerEvents: "none",
             animation: "baWavePulse 1s ease-out forwards",
             willChange: "transform, opacity",
@@ -1095,7 +1095,7 @@ function BossPortrait({
           left: "50%",
           transform: "translateX(-50%)",
           padding: "3px 14px",
-          background: "rgba(40, 18, 38, 0.85)",
+          background: "rgba(15, 21, 48, 0.85)",
           backdropFilter: "blur(6px)",
           WebkitBackdropFilter: "blur(6px)",
           borderStyle: "solid",

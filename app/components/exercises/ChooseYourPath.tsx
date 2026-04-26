@@ -231,7 +231,7 @@ export default function ChooseYourPath({
           id: ++particleIdRef.current,
           dx: Math.cos(a) * r,
           dy: Math.sin(a) * r - 50,
-          colour: ["#ffd58a", "#ff9b4a", "#a8e3bb", "#7cc89a"][i % 4],
+          colour: ["#00e5ff", "#7c5cff", "#a0ffb0", "#7eff97"][i % 4],
           delay: Math.random() * 120,
         });
       }
@@ -298,7 +298,7 @@ export default function ChooseYourPath({
         borderRadius: 28,
         overflow: "hidden",
         background:
-          "linear-gradient(180deg, #2a1240 0%, #5a2540 35%, #a04a4a 70%, #e88550 92%, #fcd58a 100%)",
+          "linear-gradient(180deg, #2a1240 0%, #1a2147 35%, #252d5e 70%, #3a7bff 92%, #7df0ff 100%)",
         boxShadow: SHADOW.sceneFrame,
         color: COLOR.cream,
         padding: "22px 22px 26px",
@@ -335,17 +335,17 @@ export default function ChooseYourPath({
           position: "relative",
           fontSize: 11,
           letterSpacing: 5,
-          color: "#ffd58a",
+          color: "#00e5ff",
           fontWeight: 800,
           textTransform: "uppercase",
           padding: "5px 14px",
-          background: "rgba(50, 20, 35, 0.55)",
+          background: "rgba(15, 21, 48, 0.55)",
           backdropFilter: "blur(8px)",
           WebkitBackdropFilter: "blur(8px)",
           borderRadius: 999,
           borderStyle: "solid",
           borderWidth: 1,
-          borderColor: "rgba(255, 220, 180, 0.4)",
+          borderColor: "rgba(0, 229, 255, 0.4)",
           zIndex: 1,
         }}
       >
@@ -362,7 +362,7 @@ export default function ChooseYourPath({
           maxWidth: 680,
           lineHeight: 1.35,
           minHeight: 60,
-          color: "#fff7e6",
+          color: "#e8edff",
           textShadow: "0 2px 8px rgba(40, 18, 12, 0.5)",
           zIndex: 1,
         }}
@@ -375,7 +375,7 @@ export default function ChooseYourPath({
               width: 10,
               height: 22,
               marginLeft: 4,
-              background: "#ffd58a",
+              background: "#00e5ff",
               verticalAlign: "middle",
               animation: "cypCursorBlink 0.8s ease-in-out infinite",
             }}
@@ -458,7 +458,7 @@ export default function ChooseYourPath({
                     color: COLOR.cream,
                     cursor: picking ? "pointer" : "default",
                     boxShadow:
-                      "0 18px 40px -10px rgba(20, 8, 5, 0.7), 0 0 0 1px rgba(255, 220, 180, 0.15) inset, 0 -6px 0 rgba(0, 0, 0, 0.35) inset",
+                      "0 18px 40px -10px rgba(20, 8, 5, 0.7), 0 0 0 1px rgba(0, 229, 255, 0.15) inset, 0 -6px 0 rgba(0, 0, 0, 0.35) inset",
                     transition: "transform 0.25s ease, box-shadow 0.25s ease",
                     fontFamily: "inherit",
                     overflow: "hidden",
@@ -474,7 +474,7 @@ export default function ChooseYourPath({
                     const t = e.currentTarget;
                     t.style.transform = "";
                     t.style.boxShadow =
-                      "0 18px 40px -10px rgba(20, 8, 5, 0.7), 0 0 0 1px rgba(255, 220, 180, 0.15) inset, 0 -6px 0 rgba(0, 0, 0, 0.35) inset";
+                      "0 18px 40px -10px rgba(20, 8, 5, 0.7), 0 0 0 1px rgba(0, 229, 255, 0.15) inset, 0 -6px 0 rgba(0, 0, 0, 0.35) inset";
                   }}
                 >
                   {/* Top arch keystone */}
@@ -546,7 +546,7 @@ export default function ChooseYourPath({
                       height: 14,
                       borderRadius: "50%",
                       background:
-                        "radial-gradient(circle at 35% 30%, #fff5cc 0%, #ffd158 50%, #b07015 100%)",
+                        "radial-gradient(circle at 35% 30%, #7df0ff 0%, #ffd158 50%, #b07015 100%)",
                       boxShadow:
                         "0 0 8px rgba(255, 200, 90, 0.5), 0 1px 2px rgba(0, 0, 0, 0.4)",
                     }}
@@ -561,7 +561,7 @@ export default function ChooseYourPath({
                       padding: "10px 12px",
                       background:
                         "linear-gradient(180deg, rgba(40, 18, 12, 0.0), rgba(40, 18, 12, 0.85))",
-                      color: "#fff7e6",
+                      color: "#e8edff",
                       fontSize: 14,
                       fontWeight: 700,
                       lineHeight: 1.3,
@@ -625,7 +625,7 @@ export default function ChooseYourPath({
             <div
               style={{
                 fontSize: 11,
-                color: "#ffd58a",
+                color: "#00e5ff",
                 marginBottom: 12,
                 letterSpacing: 4,
                 fontWeight: 800,
@@ -644,8 +644,8 @@ export default function ChooseYourPath({
                 background: "rgba(74, 154, 106, 0.2)",
                 borderStyle: "solid",
                 borderWidth: 2,
-                borderColor: "#7cc89a",
-                color: "#fff7e6",
+                borderColor: "#7eff97",
+                color: "#e8edff",
                 fontSize: 15,
                 fontWeight: 700,
                 animation: "cypPulseGlow 1.8s ease-in-out infinite",
@@ -714,11 +714,11 @@ function RevealPanel({ choice }: { choice: ChoiceOption }) {
           : "linear-gradient(180deg, rgba(255, 230, 215, 0.95), rgba(244, 168, 154, 0.95))",
         borderStyle: "solid",
         borderWidth: 3,
-        borderColor: choice.isSafe ? "#4a9a6a" : "#c4513a",
+        borderColor: choice.isSafe ? "#4a9a6a" : "#ff7a59",
         animation: "cypRevealIn 0.6s ease-out 0.3s both",
         boxShadow: choice.isSafe
           ? "0 0 30px rgba(74, 154, 106, 0.5)"
-          : "0 0 30px rgba(196, 81, 58, 0.5)",
+          : "0 0 30px rgba(255, 95, 179, 0.5)",
         color: COLOR.inkDeep,
       }}
     >
@@ -726,7 +726,7 @@ function RevealPanel({ choice }: { choice: ChoiceOption }) {
         style={{
           fontSize: 50,
           marginBottom: 8,
-          color: choice.isSafe ? "#4a9a6a" : "#c4513a",
+          color: choice.isSafe ? "#4a9a6a" : "#ff7a59",
           textShadow: "0 2px 4px rgba(0, 0, 0, 0.15)",
         }}
       >
@@ -750,7 +750,7 @@ function RevealPanel({ choice }: { choice: ChoiceOption }) {
             bottom: 14,
             fontSize: 42,
             animation: "cypRaccoonPop 1s ease-out forwards",
-            filter: "drop-shadow(0 0 16px rgba(196, 81, 58, 0.55))",
+            filter: "drop-shadow(0 0 16px rgba(255, 95, 179, 0.55))",
           }}
         >
           🦝
@@ -788,7 +788,7 @@ function FinishOverlay({
         borderRadius: 28,
         overflow: "hidden",
         background:
-          "linear-gradient(180deg, #2a1240 0%, #5a2540 50%, #a04a4a 100%)",
+          "linear-gradient(180deg, #2a1240 0%, #1a2147 50%, #252d5e 100%)",
         boxShadow: SHADOW.sceneFrame,
         color: COLOR.cream,
         padding: 32,
@@ -806,7 +806,7 @@ function FinishOverlay({
           fontSize: 12,
           fontWeight: 800,
           letterSpacing: 5,
-          color: "#ffd58a",
+          color: "#00e5ff",
           textTransform: "uppercase",
           marginBottom: 6,
         }}
@@ -818,7 +818,7 @@ function FinishOverlay({
           fontSize: 36,
           fontWeight: 900,
           background:
-            "linear-gradient(135deg, #ffd58a, #ff9b4a, #d4733a)",
+            "linear-gradient(135deg, #00e5ff, #7c5cff, #3a7bff)",
           WebkitBackgroundClip: "text",
           WebkitTextFillColor: "transparent",
           letterSpacing: 1,
@@ -827,7 +827,7 @@ function FinishOverlay({
         WISE HERO!
       </div>
       <div style={{ fontSize: 16, marginTop: 8, opacity: 0.92 }}>
-        You made <strong style={{ color: "#a8e3bb" }}>{correctCount}</strong> safe
+        You made <strong style={{ color: "#a0ffb0" }}>{correctCount}</strong> safe
         choice{correctCount === 1 ? "" : "s"} out of {total}
       </div>
       <div style={{ display: "flex", gap: 4, margin: "14px 0" }}>
@@ -900,7 +900,7 @@ function FinishOverlay({
             fontSize: 14,
             fontWeight: 800,
             color: COLOR.cream,
-            background: "rgba(50, 20, 35, 0.65)",
+            background: "rgba(15, 21, 48, 0.65)",
             backdropFilter: "blur(6px)",
             WebkitBackdropFilter: "blur(6px)",
             borderRadius: 999,

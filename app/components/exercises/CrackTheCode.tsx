@@ -35,7 +35,7 @@ const RINGS: RingConfig[] = [
       "All character types",
     ],
     correct: 3,
-    colour: "#ffd58a",
+    colour: "#00e5ff",
     radius: 230,
   },
   {
@@ -46,7 +46,7 @@ const RINGS: RingConfig[] = [
     // Anything 8+ is correct; the lower three are the wrong/weak answers.
     options: ["3 characters", "5 characters", "6 characters", "8+ characters"],
     correct: 3,
-    colour: "#7cc89a",
+    colour: "#7eff97",
     radius: 195,
   },
   {
@@ -353,7 +353,7 @@ export default function CrackTheCode({
           borderRadius: 28,
           overflow: "hidden",
           background:
-            "linear-gradient(180deg, #2a1240 0%, #5a2540 35%, #a04a4a 70%, #e88550 92%, #fcd58a 100%)",
+            "linear-gradient(180deg, #2a1240 0%, #1a2147 35%, #252d5e 70%, #3a7bff 92%, #7df0ff 100%)",
           boxShadow:
             "0 40px 90px -30px rgba(40, 22, 12, 0.55), 0 0 0 1px rgba(255,210,170,0.25) inset",
         }}
@@ -380,10 +380,10 @@ export default function CrackTheCode({
         overflowX: "hidden",
         overflowY: "auto",
         background:
-          "linear-gradient(180deg, #2a1240 0%, #5a2540 35%, #a04a4a 70%, #e88550 92%, #fcd58a 100%)",
+          "linear-gradient(180deg, #2a1240 0%, #1a2147 35%, #252d5e 70%, #3a7bff 92%, #7df0ff 100%)",
         boxShadow:
           "0 40px 90px -30px rgba(40, 22, 12, 0.55), 0 0 0 1px rgba(255,210,170,0.25) inset",
-        color: "#fff7e6",
+        color: "#e8edff",
         padding: "20px 16px 36px",
         display: "flex",
         flexDirection: "column",
@@ -397,7 +397,7 @@ export default function CrackTheCode({
         style={{
           fontSize: 13,
           letterSpacing: 3,
-          color: "#ffd58a",
+          color: "#00e5ff",
           fontWeight: 800,
           textTransform: "uppercase",
         }}
@@ -409,7 +409,7 @@ export default function CrackTheCode({
           fontSize: 22,
           fontWeight: 900,
           margin: "4px 0 6px",
-          background: "linear-gradient(135deg, #ff9b4a, #ffd58a)",
+          background: "linear-gradient(135deg, #7c5cff, #00e5ff)",
           WebkitBackgroundClip: "text",
           WebkitTextFillColor: "transparent",
         }}
@@ -418,14 +418,14 @@ export default function CrackTheCode({
       </div>
       <div
         style={{
-          color: "rgba(255,233,200,0.65)",
+          color: "rgba(125,240,255,0.65)",
           fontSize: 13,
           marginBottom: 14,
           maxWidth: 460,
           lineHeight: 1.5,
         }}
       >
-        Use ← → on each ring to spin to the <span style={{ color: "#7cc89a", fontWeight: 800 }}>safest</span> answer. When all four rings glow green, hit <span style={{ color: "#ffd58a", fontWeight: 800 }}>UNLOCK</span>.
+        Use ← → on each ring to spin to the <span style={{ color: "#7eff97", fontWeight: 800 }}>safest</span> answer. When all four rings glow green, hit <span style={{ color: "#00e5ff", fontWeight: 800 }}>UNLOCK</span>.
       </div>
 
       {/* Compact concentric-ring indicator — purely decorative, gives the
@@ -445,14 +445,14 @@ export default function CrackTheCode({
         <svg width={168} height={168} viewBox="0 0 168 168" style={{ display: "block" }}>
           <defs>
             <radialGradient id="ctcCore">
-              <stop offset="0%" stopColor="#ffd58a" />
+              <stop offset="0%" stopColor="#00e5ff" />
               <stop offset="60%" stopColor="#a855f7" />
               <stop offset="100%" stopColor="#1e1b4b" />
             </radialGradient>
           </defs>
           {/* Centre keyhole */}
           <circle cx="84" cy="84" r="14" fill="url(#ctcCore)" opacity={corrects.every(Boolean) ? 1 : 0.55} />
-          <circle cx="84" cy="84" r="14" fill="none" stroke="#ffd58a" strokeWidth="1.2" opacity="0.7" />
+          <circle cx="84" cy="84" r="14" fill="none" stroke="#00e5ff" strokeWidth="1.2" opacity="0.7" />
           {RINGS.map((ring, i) => {
             const r = 28 + i * 16;
             const isCorrect = corrects[i];
@@ -469,7 +469,7 @@ export default function CrackTheCode({
                   cy="84"
                   r={r}
                   fill="none"
-                  stroke={isCorrect ? "#7cc89a" : flash ? "#ef4444" : ring.colour}
+                  stroke={isCorrect ? "#7eff97" : flash ? "#ef4444" : ring.colour}
                   strokeOpacity={isCorrect ? 0.9 : 0.4}
                   strokeWidth={isCorrect ? 2.4 : 1.6}
                   strokeDasharray={isCorrect ? "0" : "4 6"}
@@ -479,9 +479,9 @@ export default function CrackTheCode({
                   cx={dotX}
                   cy={dotY}
                   r={isCorrect ? 5 : 4}
-                  fill={isCorrect ? "#7cc89a" : ring.colour}
+                  fill={isCorrect ? "#7eff97" : ring.colour}
                   style={{
-                    filter: `drop-shadow(0 0 6px ${isCorrect ? "#7cc89a" : ring.colour})`,
+                    filter: `drop-shadow(0 0 6px ${isCorrect ? "#7eff97" : ring.colour})`,
                     transition: "cx 0.35s cubic-bezier(0.4,1.4,0.5,1), cy 0.35s cubic-bezier(0.4,1.4,0.5,1), fill 0.3s ease",
                   }}
                 />
@@ -536,16 +536,16 @@ export default function CrackTheCode({
                 display: "grid",
                 gridTemplateColumns: "120px 1fr",
                 alignItems: "stretch",
-                background: "rgba(40, 18, 38, 0.78)",
-                border: `1px solid ${isCorrect ? "#7cc89a" : flash === "red" ? "#c4513a" : "rgba(255, 220, 180, 0.22)"}`,
-                borderLeft: `4px solid ${isCorrect ? "#7cc89a" : ring.colour}`,
+                background: "rgba(15, 21, 48, 0.78)",
+                border: `1px solid ${isCorrect ? "#7eff97" : flash === "red" ? "#ff7a59" : "rgba(0, 229, 255, 0.22)"}`,
+                borderLeft: `4px solid ${isCorrect ? "#7eff97" : ring.colour}`,
                 borderRadius: 14,
                 overflow: "hidden",
                 boxShadow: flash === "red"
-                  ? "0 0 22px rgba(196, 81, 58, 0.6)"
+                  ? "0 0 22px rgba(255, 95, 179, 0.6)"
                   : isCorrect
                     ? "0 0 22px rgba(124, 200, 154, 0.45)"
-                    : "0 4px 12px -4px rgba(20, 6, 12, 0.45)",
+                    : "0 4px 12px -4px rgba(8, 10, 22, 0.45)",
                 transition: "box-shadow 0.3s ease, border-color 0.3s ease, background 0.3s ease",
               }}
             >
@@ -558,7 +558,7 @@ export default function CrackTheCode({
                   gap: 2,
                   padding: "10px 6px",
                   background: "rgba(20, 8, 24, 0.5)",
-                  borderRight: "1px solid rgba(255, 220, 180, 0.15)",
+                  borderRight: "1px solid rgba(0, 229, 255, 0.15)",
                 }}
               >
                 <div style={{ fontSize: 22, lineHeight: 1 }}>{ringIcon}</div>
@@ -567,13 +567,13 @@ export default function CrackTheCode({
                     fontFamily: "ui-monospace, 'JetBrains Mono', Menlo, monospace",
                     fontSize: 10,
                     fontWeight: 900,
-                    color: "#ffd58a",
+                    color: "#00e5ff",
                     letterSpacing: 2,
                   }}
                 >
                   {ring.label}
                 </div>
-                {isCorrect && <div style={{ color: "#a8e3bb", fontSize: 14 }}>✓</div>}
+                {isCorrect && <div style={{ color: "#a0ffb0", fontSize: 14 }}>✓</div>}
               </div>
               <div style={{ display: "flex", alignItems: "center", gap: 6, padding: "10px 10px" }}>
                 <button
@@ -584,9 +584,9 @@ export default function CrackTheCode({
                   style={{
                     flexShrink: 0,
                     width: 36, height: 36, borderRadius: 10,
-                    background: "rgba(255, 220, 180, 0.12)",
-                    border: "1px solid rgba(255, 220, 180, 0.4)",
-                    color: "#ffd58a",
+                    background: "rgba(0, 229, 255, 0.12)",
+                    border: "1px solid rgba(0, 229, 255, 0.4)",
+                    color: "#00e5ff",
                     cursor: unlocked ? "default" : "pointer",
                     fontSize: 16, fontWeight: 900, fontFamily: "inherit",
                   }}
@@ -597,12 +597,12 @@ export default function CrackTheCode({
                     textAlign: "center",
                     fontSize: 14,
                     fontWeight: 800,
-                    color: "#fff7e6",
+                    color: "#e8edff",
                     padding: "0 8px",
                     minHeight: 20,
                     letterSpacing: 0.3,
                     transition: "color 0.25s ease",
-                    textShadow: "0 1px 2px rgba(20, 6, 12, 0.4)",
+                    textShadow: "0 1px 2px rgba(8, 10, 22, 0.4)",
                   }}
                 >
                   {selectedLabel}
@@ -615,9 +615,9 @@ export default function CrackTheCode({
                   style={{
                     flexShrink: 0,
                     width: 36, height: 36, borderRadius: 10,
-                    background: "rgba(255, 220, 180, 0.12)",
-                    border: "1px solid rgba(255, 220, 180, 0.4)",
-                    color: "#ffd58a",
+                    background: "rgba(0, 229, 255, 0.12)",
+                    border: "1px solid rgba(0, 229, 255, 0.4)",
+                    color: "#00e5ff",
                     cursor: unlocked ? "default" : "pointer",
                     fontSize: 16, fontWeight: 900, fontFamily: "inherit",
                   }}
@@ -664,7 +664,7 @@ export default function CrackTheCode({
                   width: "100%",
                   height: "100%",
                   borderRadius: "50%",
-                  border: `2px solid ${isCorrect ? "#7cc89a" : ring.colour}55`,
+                  border: `2px solid ${isCorrect ? "#7eff97" : ring.colour}55`,
                   boxShadow: isCorrect
                     ? `0 0 22px ${ring.colour}66, inset 0 0 18px ${ring.colour}44`
                     : `inset 0 0 14px ${ring.colour}33`,
@@ -703,9 +703,9 @@ export default function CrackTheCode({
                           textAlign: "center",
                           color: isSelected
                             ? isCorrect
-                              ? "#a8e3bb"
+                              ? "#a0ffb0"
                               : ring.colour
-                            : "rgba(255,233,200,0.55)",
+                            : "rgba(125,240,255,0.55)",
                           fontSize: 11,
                           fontWeight: isSelected ? 900 : 600,
                           letterSpacing: 0.5,
@@ -732,7 +732,7 @@ export default function CrackTheCode({
                     transform: "translateX(-50%)",
                     width: 20,
                     height: 14,
-                    background: isCorrect ? "#7cc89a" : ring.colour,
+                    background: isCorrect ? "#7eff97" : ring.colour,
                     clipPath: "polygon(50% 100%, 0 0, 100% 0)",
                     filter: `drop-shadow(0 0 6px ${ring.colour})`,
                   }}
@@ -820,7 +820,7 @@ export default function CrackTheCode({
             transform: "translate(-50%, -50%)",
             borderRadius: "50%",
             background:
-              "radial-gradient(circle at 40% 30%, #64748b 0%, #334155 40%, #2a0d2e 80%)",
+              "radial-gradient(circle at 40% 30%, #64748b 0%, #334155 40%, #0f1530 80%)",
             boxShadow:
               "0 0 30px rgba(0,0,0,0.6), inset 0 4px 14px rgba(255,255,255,0.15), inset 0 -4px 14px rgba(0,0,0,0.6)",
             overflow: "visible",
@@ -838,7 +838,7 @@ export default function CrackTheCode({
                   width: "50%",
                   height: "100%",
                   background:
-                    "radial-gradient(circle at 80% 50%, #64748b 0%, #334155 55%, #2a0d2e 100%)",
+                    "radial-gradient(circle at 80% 50%, #64748b 0%, #334155 55%, #0f1530 100%)",
                   borderRadius: "110px 0 0 110px",
                   animation: "ccDoorOpenLeft 1s ease-out forwards",
                   boxShadow: "inset 0 0 10px rgba(0,0,0,0.6)",
@@ -853,7 +853,7 @@ export default function CrackTheCode({
                   width: "50%",
                   height: "100%",
                   background:
-                    "radial-gradient(circle at 20% 50%, #64748b 0%, #334155 55%, #2a0d2e 100%)",
+                    "radial-gradient(circle at 20% 50%, #64748b 0%, #334155 55%, #0f1530 100%)",
                   borderRadius: "0 110px 110px 0",
                   animation: "ccDoorOpenRight 1s ease-out forwards",
                   boxShadow: "inset 0 0 10px rgba(0,0,0,0.6)",
@@ -906,8 +906,8 @@ export default function CrackTheCode({
                       Math.cos(a) * 92
                     }px, ${Math.sin(a) * 92}px)`,
                     background: lit
-                      ? "radial-gradient(circle, #a8e3bb, #7cc89a 70%, #166534)"
-                      : "radial-gradient(circle, rgba(255,233,200,0.55), #334155 70%, #2a0d2e)",
+                      ? "radial-gradient(circle, #a0ffb0, #7eff97 70%, #166534)"
+                      : "radial-gradient(circle, rgba(125,240,255,0.55), #334155 70%, #0f1530)",
                     boxShadow: lit
                       ? "0 0 8px rgba(134,239,172,0.8)"
                       : "inset 0 0 4px rgba(0,0,0,0.6)",
@@ -929,7 +929,7 @@ export default function CrackTheCode({
                 height: 70,
                 borderRadius: "50%",
                 background:
-                  "radial-gradient(circle at 40% 30%, #fff7e6, rgba(255,233,200,0.55) 50%, #334155)",
+                  "radial-gradient(circle at 40% 30%, #e8edff, rgba(125,240,255,0.55) 50%, #334155)",
                 boxShadow:
                   "0 0 12px rgba(0,0,0,0.6), inset 0 0 8px rgba(0,0,0,0.5)",
                 pointerEvents: "none",
@@ -962,7 +962,7 @@ export default function CrackTheCode({
                   height: 12,
                   borderRadius: "50%",
                   background:
-                    "radial-gradient(circle, #ffd58a 0%, rgba(255,213,138,0.4) 55%, transparent 80%)",
+                    "radial-gradient(circle, #00e5ff 0%, rgba(0,229,255,0.4) 55%, transparent 80%)",
                   animation: "ccKeyholePulse 1.5s ease-in-out infinite",
                 }}
               />
@@ -978,8 +978,8 @@ export default function CrackTheCode({
             type="button"
             onClick={attemptUnlock}
             style={{
-              background: "linear-gradient(135deg, #ffd58a, #ff9b4a)",
-              color: "#3a1a06",
+              background: "linear-gradient(135deg, #00e5ff, #7c5cff)",
+              color: "#080a16",
               fontWeight: 900,
               letterSpacing: 2,
               borderRadius: 999,
@@ -999,20 +999,20 @@ export default function CrackTheCode({
             style={{
               animation: "ccFadeIn 0.6s ease-out both",
               padding: "16px 24px",
-              background: "rgba(40, 18, 38, 0.7)",
+              background: "rgba(15, 21, 48, 0.7)",
               backdropFilter: "blur(8px)",
               WebkitBackdropFilter: "blur(8px)",
               borderRadius: 18,
               borderStyle: "solid",
               borderWidth: 1,
-              borderColor: "rgba(255, 220, 180, 0.4)",
+              borderColor: "rgba(0, 229, 255, 0.4)",
             }}
           >
             <div
               style={{
                 fontSize: 11,
                 letterSpacing: 5,
-                color: "#ffd58a",
+                color: "#00e5ff",
                 fontWeight: 800,
                 textTransform: "uppercase",
                 marginBottom: 4,
@@ -1025,7 +1025,7 @@ export default function CrackTheCode({
                 fontSize: 30,
                 fontWeight: 900,
                 background:
-                  "linear-gradient(135deg, #ffd58a, #ff9b4a, #d4733a)",
+                  "linear-gradient(135deg, #00e5ff, #7c5cff, #3a7bff)",
                 WebkitBackgroundClip: "text",
                 WebkitTextFillColor: "transparent",
                 letterSpacing: 1,
@@ -1035,11 +1035,11 @@ export default function CrackTheCode({
             </div>
             <div style={{ fontSize: 36, margin: "10px 0" }}>
               {"★".repeat(stars)}
-              <span style={{ color: "rgba(255, 233, 200, 0.3)" }}>
+              <span style={{ color: "rgba(125, 240, 255, 0.3)" }}>
                 {"★".repeat(3 - stars)}
               </span>
             </div>
-            <div style={{ color: "#ffe9c8", opacity: 0.8, fontSize: 13, marginBottom: 16, letterSpacing: 1 }}>
+            <div style={{ color: "#c5cdf0", opacity: 0.8, fontSize: 13, marginBottom: 16, letterSpacing: 1 }}>
               Solved in {attempts} {attempts === 1 ? "attempt" : "attempts"}
             </div>
             <div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
@@ -1058,8 +1058,8 @@ export default function CrackTheCode({
                   }
                 }}
                 style={{
-                  background: "linear-gradient(135deg, #ffd58a, #ff9b4a)",
-                  color: "#3a1a06",
+                  background: "linear-gradient(135deg, #00e5ff, #7c5cff)",
+                  color: "#080a16",
                   fontWeight: 800,
                   borderRadius: 999,
                   padding: "14px 36px",
@@ -1078,10 +1078,10 @@ export default function CrackTheCode({
                 type="button"
                 onClick={() => { playSound("select"); resetExercise(); }}
                 style={{
-                  background: "rgba(50, 20, 35, 0.65)",
+                  background: "rgba(15, 21, 48, 0.65)",
                   backdropFilter: "blur(6px)",
                   WebkitBackdropFilter: "blur(6px)",
-                  color: "#ffe9c8",
+                  color: "#c5cdf0",
                   fontWeight: 800,
                   borderRadius: 999,
                   padding: "12px 24px",
@@ -1148,10 +1148,10 @@ function DefendPanel({
         borderRadius: 28,
         overflow: "hidden",
         background:
-          "linear-gradient(180deg, #2a1240 0%, #5a2540 35%, #a04a4a 70%, #e88550 92%, #fcd58a 100%)",
+          "linear-gradient(180deg, #2a1240 0%, #1a2147 35%, #252d5e 70%, #3a7bff 92%, #7df0ff 100%)",
         boxShadow:
           "0 40px 90px -30px rgba(40, 22, 12, 0.55), 0 0 0 1px rgba(255,210,170,0.25) inset",
-        color: "#fff7e6",
+        color: "#e8edff",
         padding: "26px 22px 28px",
         fontFamily:
           "ui-rounded, 'Fredoka', 'Quicksand', system-ui, sans-serif",
@@ -1165,11 +1165,11 @@ function DefendPanel({
             fontSize: 11,
             letterSpacing: 4,
             fontWeight: 800,
-            color: "#ffd58a",
+            color: "#00e5ff",
             textTransform: "uppercase",
             padding: "4px 14px",
-            background: "rgba(20, 6, 12, 0.55)",
-            border: "1px solid rgba(255, 220, 180, 0.4)",
+            background: "rgba(8, 10, 22, 0.55)",
+            border: "1px solid rgba(0, 229, 255, 0.4)",
             borderRadius: 999,
           }}
         >
@@ -1184,7 +1184,7 @@ function DefendPanel({
           justifyContent: "space-between",
           alignItems: "center",
           padding: "8px 14px",
-          background: "rgba(20, 6, 12, 0.55)",
+          background: "rgba(8, 10, 22, 0.55)",
           backdropFilter: "blur(8px)",
           WebkitBackdropFilter: "blur(8px)",
           borderRadius: 14,
@@ -1194,9 +1194,9 @@ function DefendPanel({
           marginBottom: 18,
         }}
       >
-        <span style={{ color: "#a8e3bb" }}>BLOCKED {hits}</span>
-        <span style={{ color: "#f08e7e" }}>SLIPPED {misses}</span>
-        <span style={{ color: "#ffd58a" }}>
+        <span style={{ color: "#a0ffb0" }}>BLOCKED {hits}</span>
+        <span style={{ color: "#ff5fb3" }}>SLIPPED {misses}</span>
+        <span style={{ color: "#00e5ff" }}>
           {Math.min(guessIdx, total)}/{total}
         </span>
       </div>
@@ -1221,7 +1221,7 @@ function DefendPanel({
             top: "50%",
             transform: "translateY(-50%)",
             fontSize: 64,
-            filter: "drop-shadow(0 0 18px rgba(196, 81, 58, 0.55))",
+            filter: "drop-shadow(0 0 18px rgba(255, 95, 179, 0.55))",
             animation: "ccDefRaccoonHover 2.6s ease-in-out infinite",
           }}
         >
@@ -1258,18 +1258,18 @@ function DefendPanel({
               padding: "16px 22px",
               borderRadius: 16,
               background:
-                "linear-gradient(180deg, rgba(40, 18, 38, 0.9), rgba(20, 8, 24, 0.96))",
+                "linear-gradient(180deg, rgba(15, 21, 48, 0.9), rgba(20, 8, 24, 0.96))",
               border: feedback === "hit"
-                ? "2px solid #7cc89a"
+                ? "2px solid #7eff97"
                 : feedback === "miss"
                 ? "2px solid #ef4444"
-                : "1px solid rgba(255, 220, 180, 0.5)",
+                : "1px solid rgba(0, 229, 255, 0.5)",
               boxShadow:
                 feedback === "hit"
                   ? "0 0 28px rgba(124, 200, 154, 0.55)"
                   : feedback === "miss"
                   ? "0 0 28px rgba(239, 68, 68, 0.55)"
-                  : "0 18px 36px -12px rgba(20,6,12,0.7), 0 0 26px rgba(255, 178, 110, 0.32)",
+                  : "0 18px 36px -12px rgba(8,10,22,0.7), 0 0 26px rgba(124, 92, 255, 0.32)",
               animation: feedback
                 ? undefined
                 : "ccDefGuessIn 0.5s cubic-bezier(0.34,1.56,0.64,1) both",
@@ -1281,7 +1281,7 @@ function DefendPanel({
                 fontSize: 10,
                 letterSpacing: 3,
                 fontWeight: 800,
-                color: "#f08e7e",
+                color: "#ff5fb3",
                 textTransform: "uppercase",
                 marginBottom: 4,
               }}
@@ -1293,7 +1293,7 @@ function DefendPanel({
                 fontFamily: "ui-monospace, 'JetBrains Mono', Menlo, monospace",
                 fontSize: 22,
                 fontWeight: 900,
-                color: "#fff7e6",
+                color: "#e8edff",
                 letterSpacing: 1,
                 marginBottom: 6,
               }}
@@ -1303,7 +1303,7 @@ function DefendPanel({
             <div
               style={{
                 fontSize: 12,
-                color: "#ffe9c8",
+                color: "#c5cdf0",
                 opacity: 0.78,
                 lineHeight: 1.4,
               }}
@@ -1316,7 +1316,7 @@ function DefendPanel({
                   marginTop: 8,
                   fontSize: 14,
                   fontWeight: 900,
-                  color: "#a8e3bb",
+                  color: "#a0ffb0",
                   letterSpacing: 0.5,
                 }}
               >
@@ -1329,7 +1329,7 @@ function DefendPanel({
                   marginTop: 8,
                   fontSize: 14,
                   fontWeight: 900,
-                  color: "#f08e7e",
+                  color: "#ff5fb3",
                   letterSpacing: 0.5,
                 }}
               >
@@ -1346,13 +1346,13 @@ function DefendPanel({
           <p
             style={{
               fontSize: 14,
-              color: "#ffe9c8",
+              color: "#c5cdf0",
               opacity: 0.92,
               marginBottom: 14,
               fontWeight: 600,
             }}
           >
-            All these guesses are <strong style={{ color: "#f08e7e" }}>WEAK</strong>.
+            All these guesses are <strong style={{ color: "#ff5fb3" }}>WEAK</strong>.
             Tap REJECT to block them — fast!
           </p>
           <div style={{ display: "flex", gap: 14, justifyContent: "center", flexWrap: "wrap" }}>
@@ -1361,7 +1361,7 @@ function DefendPanel({
               onClick={onReject}
               disabled={feedback !== null}
               style={{
-                background: "linear-gradient(135deg, #7cc89a, #5fb37a)",
+                background: "linear-gradient(135deg, #7eff97, #5eff80)",
                 color: "#1f3a25",
                 fontWeight: 900,
                 borderRadius: 999,
@@ -1383,16 +1383,16 @@ function DefendPanel({
               onClick={onAllow}
               disabled={feedback !== null}
               style={{
-                background: "rgba(50, 20, 35, 0.65)",
+                background: "rgba(15, 21, 48, 0.65)",
                 backdropFilter: "blur(6px)",
                 WebkitBackdropFilter: "blur(6px)",
-                color: "#ffe9c8",
+                color: "#c5cdf0",
                 fontWeight: 800,
                 borderRadius: 999,
                 padding: "13px 28px",
                 fontSize: 14,
                 letterSpacing: 1,
-                border: "1px solid rgba(255,220,180,0.35)",
+                border: "1px solid rgba(0,229,255,0.35)",
                 cursor: feedback !== null ? "default" : "pointer",
                 fontFamily: "inherit",
                 opacity: feedback !== null ? 0.6 : 1,
@@ -1407,11 +1407,11 @@ function DefendPanel({
           style={{
             textAlign: "center",
             padding: "16px 24px",
-            background: "rgba(40, 18, 38, 0.7)",
+            background: "rgba(15, 21, 48, 0.7)",
             backdropFilter: "blur(8px)",
             WebkitBackdropFilter: "blur(8px)",
             borderRadius: 18,
-            border: "1px solid rgba(255, 220, 180, 0.4)",
+            border: "1px solid rgba(0, 229, 255, 0.4)",
             animation: "ccFadeIn 0.6s ease-out both",
           }}
         >
@@ -1419,7 +1419,7 @@ function DefendPanel({
             style={{
               fontSize: 11,
               letterSpacing: 5,
-              color: "#ffd58a",
+              color: "#00e5ff",
               fontWeight: 800,
               textTransform: "uppercase",
               marginBottom: 4,
@@ -1432,7 +1432,7 @@ function DefendPanel({
               fontSize: 28,
               fontWeight: 900,
               background:
-                "linear-gradient(135deg, #ffd58a, #ff9b4a, #d4733a)",
+                "linear-gradient(135deg, #00e5ff, #7c5cff, #3a7bff)",
               WebkitBackgroundClip: "text",
               WebkitTextFillColor: "transparent",
               letterSpacing: 1,
@@ -1443,13 +1443,13 @@ function DefendPanel({
           </div>
           <div style={{ fontSize: 36, margin: "10px 0" }}>
             {"★".repeat(stars)}
-            <span style={{ color: "rgba(255, 233, 200, 0.3)" }}>
+            <span style={{ color: "rgba(125, 240, 255, 0.3)" }}>
               {"★".repeat(3 - stars)}
             </span>
           </div>
           <div
             style={{
-              color: "#ffe9c8",
+              color: "#c5cdf0",
               opacity: 0.8,
               fontSize: 13,
               marginBottom: 16,
@@ -1463,8 +1463,8 @@ function DefendPanel({
               type="button"
               onClick={onContinue}
               style={{
-                background: "linear-gradient(135deg, #ffd58a, #ff9b4a)",
-                color: "#3a1a06",
+                background: "linear-gradient(135deg, #00e5ff, #7c5cff)",
+                color: "#080a16",
                 fontWeight: 800,
                 borderRadius: 999,
                 padding: "14px 36px",
@@ -1483,16 +1483,16 @@ function DefendPanel({
               type="button"
               onClick={onRetry}
               style={{
-                background: "rgba(50, 20, 35, 0.65)",
+                background: "rgba(15, 21, 48, 0.65)",
                 backdropFilter: "blur(6px)",
                 WebkitBackdropFilter: "blur(6px)",
-                color: "#ffe9c8",
+                color: "#c5cdf0",
                 fontWeight: 700,
                 borderRadius: 999,
                 padding: "14px 28px",
                 fontSize: 14,
                 letterSpacing: 1,
-                border: "1px solid rgba(255,220,180,0.35)",
+                border: "1px solid rgba(0,229,255,0.35)",
                 cursor: "pointer",
                 fontFamily: "inherit",
               }}

@@ -4,7 +4,7 @@ import { useState } from "react";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { ConstellationScene } from "@/app/components/PixarScenes";
+import { ParticleNetworkScene } from "@/app/components/CyberFutureScenes";
 
 // Heavy R3F atlas — only ship to the client, only render lg+ where the
 // right panel is visible. Avoids hydration churn and keeps mobile fast.
@@ -15,21 +15,21 @@ const HeroAtlas = dynamic(() => import("@/app/components/HeroAtlas"), {
 
 /* ─── PIXAR PALETTE ─── */
 const C = {
-  pageBg: "#1a0612",
-  panelBg: "rgba(40, 18, 38, 0.4)",
-  card: "rgba(40, 18, 38, 0.72)",
-  border: "rgba(255, 220, 180, 0.22)",
-  borderStrong: "rgba(255, 220, 180, 0.45)",
-  text: "#fff7e6",
-  textSoft: "#ffe9c8",
-  textMuted: "rgba(255, 233, 200, 0.55)",
-  goldLight: "#ffd58a",
-  goldMid: "#ff9b4a",
-  goldDeep: "#d4733a",
-  goldDark: "#3a1a06",
-  coral: "#f08e7e",
-  ember: "#c4513a",
-  cream: "#fff7e6",
+  pageBg: "#080a16",
+  panelBg: "rgba(15, 21, 48, 0.4)",
+  card: "rgba(15, 21, 48, 0.72)",
+  border: "rgba(0, 229, 255, 0.22)",
+  borderStrong: "rgba(0, 229, 255, 0.45)",
+  text: "#e8edff",
+  textSoft: "#c5cdf0",
+  textMuted: "rgba(125, 240, 255, 0.55)",
+  goldLight: "#00e5ff",
+  goldMid: "#7c5cff",
+  goldDeep: "#3a7bff",
+  goldDark: "#080a16",
+  coral: "#ff5fb3",
+  ember: "#ff7a59",
+  cream: "#e8edff",
 };
 const GRAD = `linear-gradient(135deg, ${C.goldLight}, ${C.goldMid})`;
 
@@ -38,12 +38,12 @@ function FloatingOrbs() {
   return (
     <div className="fixed inset-0 pointer-events-none overflow-hidden" style={{ zIndex: 0 }}>
       {[
-        { size: 8, top: "8%", left: "6%", color: "#ffd58a", dur: 9, delay: 0 },
-        { size: 6, top: "18%", right: "10%", color: "#f08e7e", dur: 11, delay: 1 },
-        { size: 10, top: "35%", left: "3%", color: "#ff9b4a", dur: 13, delay: 2 },
-        { size: 5, top: "52%", right: "5%", color: "#ffd58a", dur: 8, delay: 0.5 },
-        { size: 7, top: "70%", left: "12%", color: "#a06aff", dur: 10, delay: 3 },
-        { size: 9, top: "82%", right: "8%", color: "#ff9b4a", dur: 12, delay: 1.5 },
+        { size: 8, top: "8%", left: "6%", color: "#00e5ff", dur: 9, delay: 0 },
+        { size: 6, top: "18%", right: "10%", color: "#ff5fb3", dur: 11, delay: 1 },
+        { size: 10, top: "35%", left: "3%", color: "#7c5cff", dur: 13, delay: 2 },
+        { size: 5, top: "52%", right: "5%", color: "#00e5ff", dur: 8, delay: 0.5 },
+        { size: 7, top: "70%", left: "12%", color: "#7c5cff", dur: 10, delay: 3 },
+        { size: 9, top: "82%", right: "8%", color: "#7c5cff", dur: 12, delay: 1.5 },
       ].map((o, i) => (
         <motion.div
           key={i}
@@ -88,7 +88,7 @@ function FloatingIcons() {
             left: "left" in ic ? ic.left : undefined,
             right: "right" in ic ? ic.right : undefined,
             opacity: 0.7,
-            filter: "drop-shadow(0 0 12px rgba(255, 200, 110, 0.55))",
+            filter: "drop-shadow(0 0 12px rgba(124, 92, 255, 0.55))",
           }}
         >
           {ic.emoji}
@@ -150,7 +150,7 @@ export default function SignupPage() {
     <div
       className="min-h-screen flex"
       style={{
-        background: `radial-gradient(ellipse at 50% -10%, #4a1a4a 0%, #2a0d2e 35%, ${C.pageBg} 70%, #0a0410 100%)`,
+        background: `radial-gradient(ellipse at 50% -10%, #1d1f4d 0%, #0f1530 35%, ${C.pageBg} 70%, #04050d 100%)`,
         color: C.text,
       }}
     >
@@ -169,19 +169,19 @@ export default function SignupPage() {
               className="w-10 h-10 rounded-xl flex items-center justify-center"
               style={{
                 background: GRAD,
-                boxShadow: "0 0 20px rgba(255, 178, 110, 0.4)",
+                boxShadow: "0 0 20px rgba(124, 92, 255, 0.4)",
               }}
             >
               <span
                 className="text-sm font-black"
-                style={{ color: C.goldDark, fontFamily: "Fredoka, Nunito, sans-serif" }}
+                style={{ color: C.goldDark, fontFamily: "'Space Grotesk', system-ui, sans-serif" }}
               >
                 AX
               </span>
             </div>
             <span
               className="text-xl font-black"
-              style={{ color: C.text, fontFamily: "Fredoka, Nunito, sans-serif" }}
+              style={{ color: C.text, fontFamily: "'Space Grotesk', system-ui, sans-serif" }}
             >
               Algorithm
               <span
@@ -202,13 +202,13 @@ export default function SignupPage() {
               fontWeight: 800,
               textTransform: "uppercase",
               padding: "5px 16px",
-              background: "rgba(40, 18, 38, 0.55)",
+              background: "rgba(15, 21, 48, 0.55)",
               backdropFilter: "blur(8px)",
               WebkitBackdropFilter: "blur(8px)",
               border: `1px solid ${C.borderStrong}`,
               borderRadius: 999,
               marginBottom: 12,
-              fontFamily: "Fredoka, Nunito, sans-serif",
+              fontFamily: "'Space Grotesk', system-ui, sans-serif",
             }}
           >
             ✦ New Hero ✦
@@ -216,8 +216,8 @@ export default function SignupPage() {
           <h1
             className="text-3xl sm:text-4xl font-black mb-2"
             style={{
-              fontFamily: "Fredoka, Nunito, sans-serif",
-              background: "linear-gradient(135deg, #fff5cc, #ffd58a, #ff9b4a)",
+              fontFamily: "'Space Grotesk', system-ui, sans-serif",
+              background: "linear-gradient(135deg, #7df0ff, #00e5ff, #7c5cff)",
               WebkitBackgroundClip: "text",
               WebkitTextFillColor: "transparent",
               backgroundClip: "text",
@@ -242,7 +242,7 @@ export default function SignupPage() {
               WebkitBackdropFilter: "blur(16px)",
               border: `1px solid ${C.border}`,
               boxShadow:
-                "0 30px 60px -20px rgba(20, 6, 12, 0.7), 0 0 0 1px rgba(255, 220, 180, 0.05) inset",
+                "0 30px 60px -20px rgba(8, 10, 22, 0.7), 0 0 0 1px rgba(0, 229, 255, 0.05) inset",
             }}
           >
             {/* Error */}
@@ -255,8 +255,8 @@ export default function SignupPage() {
                   transition={{ duration: 0.2 }}
                   className="mb-5 p-3.5 rounded-2xl text-sm font-semibold"
                   style={{
-                    background: "rgba(196, 81, 58, 0.15)",
-                    border: "1px solid rgba(196, 81, 58, 0.5)",
+                    background: "rgba(255, 95, 179, 0.15)",
+                    border: "1px solid rgba(255, 95, 179, 0.5)",
                     color: "#f4a89a",
                     backdropFilter: "blur(8px)",
                   }}
@@ -288,13 +288,13 @@ export default function SignupPage() {
                       height: 50,
                       fontSize: 15,
                       color: C.text,
-                      background: "rgba(20, 6, 12, 0.5)",
+                      background: "rgba(8, 10, 22, 0.5)",
                       border: `1px solid ${C.border}`,
                       fontFamily: "Nunito, sans-serif",
                     }}
                     onFocus={(e) => {
                       e.currentTarget.style.borderColor = C.goldLight;
-                      e.currentTarget.style.boxShadow = "0 0 22px rgba(255, 200, 110, 0.25)";
+                      e.currentTarget.style.boxShadow = "0 0 22px rgba(124, 92, 255, 0.25)";
                     }}
                     onBlur={(e) => {
                       e.currentTarget.style.borderColor = C.border;
@@ -326,13 +326,13 @@ export default function SignupPage() {
                       height: 50,
                       fontSize: 15,
                       color: C.text,
-                      background: "rgba(20, 6, 12, 0.5)",
+                      background: "rgba(8, 10, 22, 0.5)",
                       border: `1px solid ${C.border}`,
                       fontFamily: "Nunito, sans-serif",
                     }}
                     onFocus={(e) => {
                       e.currentTarget.style.borderColor = C.goldLight;
-                      e.currentTarget.style.boxShadow = "0 0 22px rgba(255, 200, 110, 0.25)";
+                      e.currentTarget.style.boxShadow = "0 0 22px rgba(124, 92, 255, 0.25)";
                     }}
                     onBlur={(e) => {
                       e.currentTarget.style.borderColor = C.border;
@@ -364,13 +364,13 @@ export default function SignupPage() {
                       height: 50,
                       fontSize: 15,
                       color: C.text,
-                      background: "rgba(20, 6, 12, 0.5)",
+                      background: "rgba(8, 10, 22, 0.5)",
                       border: `1px solid ${C.border}`,
                       fontFamily: "Nunito, sans-serif",
                     }}
                     onFocus={(e) => {
                       e.currentTarget.style.borderColor = C.goldLight;
-                      e.currentTarget.style.boxShadow = "0 0 22px rgba(255, 200, 110, 0.25)";
+                      e.currentTarget.style.boxShadow = "0 0 22px rgba(124, 92, 255, 0.25)";
                     }}
                     onBlur={(e) => {
                       e.currentTarget.style.borderColor = C.border;
@@ -401,8 +401,9 @@ export default function SignupPage() {
                   height: 50,
                   background: GRAD,
                   color: C.goldDark,
-                  fontFamily: "Fredoka, Nunito, sans-serif",
-                  letterSpacing: 0.5,
+                  fontFamily: "'Space Grotesk', system-ui, sans-serif",
+                  letterSpacing: 1.5,
+                  textTransform: "uppercase",
                   boxShadow:
                     "0 18px 36px -10px rgba(255,120,40,0.6), 0 0 0 1px rgba(255,235,200,0.55) inset, 0 -3px 0 rgba(180,80,30,0.4) inset",
                 }}
@@ -455,7 +456,7 @@ export default function SignupPage() {
             visually contained on this side only. The fixed layer still
             renders, but the form column has its own backdrop overlay so
             nothing leaks through visually. */}
-        <ConstellationScene />
+        <ParticleNetworkScene />
 
         <FloatingIcons />
 
@@ -477,10 +478,10 @@ export default function SignupPage() {
           <span
             className="text-3xl font-black tracking-widest"
             style={{
-              fontFamily: "Fredoka, Nunito, sans-serif",
+              fontFamily: "'Space Grotesk', system-ui, sans-serif",
               color: C.cream,
               textShadow:
-                "0 0 22px rgba(255, 200, 110, 0.6), 0 4px 12px rgba(20, 6, 12, 0.5)",
+                "0 0 22px rgba(124, 92, 255, 0.6), 0 4px 12px rgba(8, 10, 22, 0.5)",
               letterSpacing: 6,
             }}
           >

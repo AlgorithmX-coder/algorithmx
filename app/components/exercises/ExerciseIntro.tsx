@@ -87,11 +87,11 @@ function IntroIconShowcase({ icon }: { icon: string }) {
   // theme is similar.
   const code = icon.codePointAt(0) ?? 0;
   const TINTS = [
-    { a: "#ffd58a", b: "#ff9b4a", c: "#d4733a" }, // gold-coral-amber (warm sunset)
-    { a: "#ffb079", b: "#c43c6a", c: "#a04a4a" }, // peach-rose-wine
-    { a: "#7cc89a", b: "#4a9a6a", c: "#ffd58a" }, // moss-forest-gold (safe vibe)
-    { a: "#fcd34d", b: "#f08e7e", c: "#c4513a" }, // amber-coral-terracotta
-    { a: "#f7c1d6", b: "#a06aff", c: "#ffd58a" }, // blossom-violet-gold
+    { a: "#00e5ff", b: "#7c5cff", c: "#3a7bff" }, // gold-coral-amber (warm sunset)
+    { a: "#ffb079", b: "#c43c6a", c: "#252d5e" }, // peach-rose-wine
+    { a: "#7eff97", b: "#4a9a6a", c: "#00e5ff" }, // moss-forest-gold (safe vibe)
+    { a: "#fcd34d", b: "#ff5fb3", c: "#ff7a59" }, // amber-coral-terracotta
+    { a: "#f7c1d6", b: "#7c5cff", c: "#00e5ff" }, // blossom-violet-gold
   ];
   const tint = TINTS[code % TINTS.length];
   const orbitDots = [
@@ -242,7 +242,7 @@ function IntroIconShowcase({ icon }: { icon: string }) {
           width: 92,
           height: 92,
           borderRadius: "50%",
-          background: `radial-gradient(circle at 35% 30%, rgba(255, 245, 220, 0.25), rgba(40, 18, 38, 0.85) 60%)`,
+          background: `radial-gradient(circle at 35% 30%, rgba(255, 245, 220, 0.25), rgba(15, 21, 48, 0.85) 60%)`,
           border: `1px solid ${tint.a}66`,
           boxShadow: `0 14px 30px ${tint.b}55, inset 0 -6px 14px rgba(0,0,0,0.4), inset 0 4px 10px rgba(255,255,255,0.08)`,
           display: "flex",
@@ -289,7 +289,7 @@ export default function ExerciseIntro({
         position: "fixed",
         inset: 0,
         background:
-          "linear-gradient(180deg, rgba(40, 18, 38, 0.97) 0%, rgba(20, 8, 24, 0.99) 100%)",
+          "linear-gradient(180deg, rgba(15, 21, 48, 0.97) 0%, rgba(20, 8, 24, 0.99) 100%)",
         backdropFilter: "blur(14px)",
         WebkitBackdropFilter: "blur(14px)",
         zIndex: 60,
@@ -308,7 +308,7 @@ export default function ExerciseIntro({
         style={{
           fontSize: 11,
           letterSpacing: 5,
-          color: "#ffd58a",
+          color: "#00e5ff",
           fontWeight: 800,
           textTransform: "uppercase",
           marginBottom: 14,
@@ -322,7 +322,7 @@ export default function ExerciseIntro({
         style={{
           fontSize: 32,
           fontWeight: 900,
-          background: "linear-gradient(135deg, #ffd58a, #ff9b4a, #d4733a)",
+          background: "linear-gradient(135deg, #00e5ff, #7c5cff, #3a7bff)",
           WebkitBackgroundClip: "text",
           WebkitTextFillColor: "transparent",
           margin: "6px 0 10px",
@@ -337,7 +337,7 @@ export default function ExerciseIntro({
       <p
         style={{
           fontSize: 16,
-          color: "#ffe9c8",
+          color: "#c5cdf0",
           maxWidth: 460,
           lineHeight: 1.5,
           margin: "0 auto 18px",
@@ -354,16 +354,16 @@ export default function ExerciseIntro({
         style={{
           fontFamily: "ui-monospace, 'JetBrains Mono', Menlo, monospace",
           fontSize: 11,
-          color: "#ffd58a",
+          color: "#00e5ff",
           marginBottom: 24,
           letterSpacing: 2.5,
           textTransform: "uppercase",
           fontWeight: 700,
           padding: "5px 14px",
-          background: "rgba(40, 18, 38, 0.55)",
+          background: "rgba(15, 21, 48, 0.55)",
           borderStyle: "solid",
           borderWidth: 1,
-          borderColor: "rgba(255, 220, 180, 0.35)",
+          borderColor: "rgba(0, 229, 255, 0.35)",
           borderRadius: 999,
           animation: "exIntroPop 0.55s ease-out both",
           animationDelay: "0.24s",
@@ -379,8 +379,8 @@ export default function ExerciseIntro({
           onStart();
         }}
         style={{
-          background: "linear-gradient(135deg, #ffd58a, #ff9b4a)",
-          color: "#3a1a06",
+          background: "linear-gradient(135deg, #00e5ff, #7c5cff)",
+          color: "#080a16",
           fontWeight: 900,
           fontSize: 18,
           letterSpacing: 2,

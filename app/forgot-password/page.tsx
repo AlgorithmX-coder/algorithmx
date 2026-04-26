@@ -2,21 +2,21 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { LighthouseScene } from "@/app/components/PixarScenes";
+import { VoidPortalScene } from "@/app/components/CyberFutureScenes";
 
 const C = {
-  pageBg: "#1a0612",
-  card: "rgba(40, 18, 38, 0.78)",
-  border: "rgba(255, 220, 180, 0.35)",
-  borderStrong: "rgba(255, 220, 180, 0.6)",
-  text: "#fff7e6",
-  textSoft: "#ffe9c8",
-  textMuted: "rgba(255, 233, 200, 0.55)",
-  goldLight: "#ffd58a",
-  goldMid: "#ff9b4a",
-  goldDeep: "#d4733a",
-  goldDark: "#3a1a06",
-  cream: "#fff7e6",
+  pageBg: "#080a16",
+  card: "rgba(15, 21, 48, 0.78)",
+  border: "rgba(0, 229, 255, 0.35)",
+  borderStrong: "rgba(0, 229, 255, 0.6)",
+  text: "#e8edff",
+  textSoft: "#c5cdf0",
+  textMuted: "rgba(125, 240, 255, 0.55)",
+  goldLight: "#00e5ff",
+  goldMid: "#7c5cff",
+  goldDeep: "#3a7bff",
+  goldDark: "#080a16",
+  cream: "#e8edff",
 };
 const GRAD = `linear-gradient(135deg, ${C.goldLight}, ${C.goldMid})`;
 
@@ -39,16 +39,16 @@ export default function ForgotPasswordPage() {
     <div
       className="min-h-screen flex items-center justify-center px-4"
       style={{
-        background: `radial-gradient(ellipse at 50% -10%, #4a1a4a 0%, #2a0d2e 35%, ${C.pageBg} 70%, #0a0410 100%)`,
+        background: `radial-gradient(ellipse at 50% -10%, #1d1f4d 0%, #0f1530 35%, ${C.pageBg} 70%, #04050d 100%)`,
         color: C.text,
       }}
     >
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fredoka:wght@500;600;700;800&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Space+Grotesk:wght@500;600;700;800&display=swap');
         * { font-family: 'Nunito', sans-serif; }
       `}</style>
 
-      <LighthouseScene />
+      <VoidPortalScene />
 
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -61,7 +61,7 @@ export default function ForgotPasswordPage() {
           WebkitBackdropFilter: "blur(16px)",
           border: `1px solid ${C.border}`,
           boxShadow:
-            "0 30px 60px -20px rgba(20, 6, 12, 0.7), 0 0 40px rgba(255, 178, 110, 0.18), 0 0 0 1px rgba(255, 220, 180, 0.05) inset",
+            "0 30px 60px -20px rgba(8, 10, 22, 0.7), 0 0 40px rgba(124, 92, 255, 0.18), 0 0 0 1px rgba(0, 229, 255, 0.05) inset",
           position: "relative",
           zIndex: 10,
         }}
@@ -75,13 +75,13 @@ export default function ForgotPasswordPage() {
             fontWeight: 800,
             textTransform: "uppercase",
             padding: "5px 16px",
-            background: "rgba(40, 18, 38, 0.55)",
+            background: "rgba(15, 21, 48, 0.55)",
             borderStyle: "solid",
             borderWidth: 1,
             borderColor: C.borderStrong,
             borderRadius: 999,
             marginBottom: 12,
-            fontFamily: "Fredoka, Nunito, sans-serif",
+            fontFamily: "'Space Grotesk', system-ui, sans-serif",
           }}
         >
           ✦ Beacon Lit ✦
@@ -90,8 +90,8 @@ export default function ForgotPasswordPage() {
         <h1
           className="text-3xl font-black mb-2"
           style={{
-            fontFamily: "Fredoka, Nunito, sans-serif",
-            background: "linear-gradient(135deg, #fff5cc, #ffd58a, #ff9b4a)",
+            fontFamily: "'Space Grotesk', system-ui, sans-serif",
+            background: "linear-gradient(135deg, #7df0ff, #00e5ff, #7c5cff)",
             WebkitBackgroundClip: "text",
             WebkitTextFillColor: "transparent",
             backgroundClip: "text",
@@ -113,7 +113,7 @@ export default function ForgotPasswordPage() {
             style={{
               background: "rgba(124, 200, 154, 0.16)",
               border: "1px solid rgba(124, 200, 154, 0.55)",
-              color: "#a8e3bb",
+              color: "#a0ffb0",
             }}
           >
             <div className="font-bold mb-1">✓ Check your email</div>
@@ -145,15 +145,15 @@ export default function ForgotPasswordPage() {
                     height: 50,
                     fontSize: 15,
                     color: C.text,
-                    background: "rgba(20, 6, 12, 0.5)",
-                    border: `1px solid rgba(255, 220, 180, 0.22)`,
+                    background: "rgba(8, 10, 22, 0.5)",
+                    border: `1px solid rgba(0, 229, 255, 0.22)`,
                   }}
                   onFocus={(e) => {
                     e.currentTarget.style.borderColor = C.goldLight;
-                    e.currentTarget.style.boxShadow = "0 0 22px rgba(255, 200, 110, 0.25)";
+                    e.currentTarget.style.boxShadow = "0 0 22px rgba(124, 92, 255, 0.25)";
                   }}
                   onBlur={(e) => {
-                    e.currentTarget.style.borderColor = "rgba(255, 220, 180, 0.22)";
+                    e.currentTarget.style.borderColor = "rgba(0, 229, 255, 0.22)";
                     e.currentTarget.style.boxShadow = "none";
                   }}
                 />
@@ -166,8 +166,8 @@ export default function ForgotPasswordPage() {
                 animate={{ opacity: 1, y: 0 }}
                 className="text-sm font-semibold p-3 rounded-2xl"
                 style={{
-                  background: "rgba(196, 81, 58, 0.18)",
-                  border: "1px solid rgba(196, 81, 58, 0.5)",
+                  background: "rgba(255, 95, 179, 0.18)",
+                  border: "1px solid rgba(255, 95, 179, 0.5)",
                   color: "#f4a89a",
                 }}
               >
@@ -185,8 +185,9 @@ export default function ForgotPasswordPage() {
                 height: 50,
                 background: GRAD,
                 color: C.goldDark,
-                fontFamily: "Fredoka, Nunito, sans-serif",
-                letterSpacing: 0.5,
+                fontFamily: "'Space Grotesk', system-ui, sans-serif",
+                letterSpacing: 1.5,
+                textTransform: "uppercase",
                 fontSize: 16,
                 border: "none",
                 cursor: "pointer",

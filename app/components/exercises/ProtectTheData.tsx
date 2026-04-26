@@ -80,9 +80,9 @@ const PV = {
   // Sky stops (top to bottom)
   skyTop: "#1f0f2e",
   skyMid: "#5a2a48",
-  skyHorizon: "#a04a4a",
-  skyHaze: "#e88550",
-  skyFloor: "#fcd58a",
+  skyHorizon: "#252d5e",
+  skyHaze: "#3a7bff",
+  skyFloor: "#7df0ff",
   // Star sparkles in upper sky
   starColor: "rgba(255, 250, 220, ",
   // Clouds (silhouette)
@@ -90,11 +90,11 @@ const PV = {
   cloudMid: "rgba(80, 36, 60, 0.55)",
   cloudNear: "rgba(40, 18, 40, 0.65)",
   // Floor scan
-  floorLine: "rgba(255, 178, 110, 0.35)",
+  floorLine: "rgba(124, 92, 255, 0.35)",
   // Falling items (paper cards)
   cardShadow: "rgba(40, 18, 8, 0.4)",
-  cardPrivateBody: "#fde2b5",
-  cardPrivateAccent: "#c4513a",
+  cardPrivateBody: "#1a2147",
+  cardPrivateAccent: "#ff7a59",
   cardSafeBody: "#fdf6ee",
   cardSafeAccent: "#4a9a6a",
   cardText: "#3b2615",
@@ -102,22 +102,22 @@ const PV = {
   shieldHalo: "rgba(255, 220, 160, 0.5)",
   shieldGradTop: "#ffe9b8",
   shieldGradMid: "#ffc97a",
-  shieldGradBottom: "#d4733a",
+  shieldGradBottom: "#3a7bff",
   shieldRim: "rgba(255, 245, 220, 0.8)",
-  shieldGlow: "#ff9b4a",
+  shieldGlow: "#7c5cff",
   // Edge flash
-  edgeFlashGood: "#7cc89a",
-  edgeFlashBad: "#c4513a",
+  edgeFlashGood: "#7eff97",
+  edgeFlashBad: "#ff7a59",
   edgeFlashWarn: "#e89938",
   // Floaters
-  floaterCorrect: "#7cc89a",
-  floaterWrong: "#c4513a",
+  floaterCorrect: "#7eff97",
+  floaterWrong: "#ff7a59",
   floaterSlow: "#e89938",
   // HUD
-  hudBlocked: "#a8e3bb",
+  hudBlocked: "#a0ffb0",
   hudSafe: "#fcd34d",
-  hudCounter: "#ffd58a",
-  hudStreak: "#f08e7e",
+  hudCounter: "#00e5ff",
+  hudStreak: "#ff5fb3",
 } as const;
 
 function speedForIndex(i: number): number {
@@ -581,7 +581,7 @@ export default function ProtectTheData({
 
         // Border
         ctx.strokeStyle = c.isPrivate
-          ? `rgba(196, 81, 58, 0.55)`
+          ? `rgba(255, 95, 179, 0.55)`
           : `rgba(74, 154, 106, 0.55)`;
         ctx.lineWidth = 2;
         roundRect(ctx, -c.width / 2, -c.height / 2, c.width, c.height, 14);
@@ -712,7 +712,7 @@ export default function ProtectTheData({
         borderRadius: 28,
         overflow: "hidden",
         background:
-          "linear-gradient(180deg, #fff7e0 0%, #fde2b5 55%, #f9c27a 100%)",
+          "linear-gradient(180deg, #0f1530 0%, #1a2147 55%, #252d5e 100%)",
         boxShadow: SHADOW.sceneFrame,
         touchAction: "none",
         fontFamily:
@@ -728,7 +728,7 @@ export default function ProtectTheData({
           { glyph: "🛡️", text: "BLOCK private info before it lands" },
           { glyph: "✅", text: "Let SAFE info through to score" },
         ]}
-        accent="#d4733a"
+        accent="#3a7bff"
       />
       <canvas
         ref={canvasRef}
@@ -805,7 +805,7 @@ function FinishOverlay({
         position: "absolute",
         inset: 0,
         background:
-          "linear-gradient(180deg, rgba(40, 18, 38, 0.95) 0%, rgba(20, 8, 24, 0.96) 100%)",
+          "linear-gradient(180deg, rgba(15, 21, 48, 0.95) 0%, rgba(20, 8, 24, 0.96) 100%)",
         backdropFilter: "blur(8px)",
         WebkitBackdropFilter: "blur(8px)",
         color: COLOR.cream,
@@ -823,7 +823,7 @@ function FinishOverlay({
           fontSize: 12,
           fontWeight: 800,
           letterSpacing: 5,
-          color: "#ffd58a",
+          color: "#00e5ff",
           textTransform: "uppercase",
           marginBottom: 4,
         }}
@@ -835,7 +835,7 @@ function FinishOverlay({
           fontSize: 36,
           fontWeight: 900,
           background:
-            "linear-gradient(135deg, #ffd58a, #ff9b4a, #d4733a)",
+            "linear-gradient(135deg, #00e5ff, #7c5cff, #3a7bff)",
           WebkitBackgroundClip: "text",
           WebkitTextFillColor: "transparent",
           letterSpacing: 1,
@@ -927,7 +927,7 @@ function FinishOverlay({
             fontSize: 14,
             fontWeight: 800,
             color: COLOR.cream,
-            background: "rgba(50, 20, 35, 0.65)",
+            background: "rgba(15, 21, 48, 0.65)",
             backdropFilter: "blur(6px)",
             WebkitBackdropFilter: "blur(6px)",
             borderRadius: 999,

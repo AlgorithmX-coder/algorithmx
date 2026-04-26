@@ -3,26 +3,26 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { MagicLabScene } from "@/app/components/PixarScenes";
+import { DataLabScene } from "@/app/components/CyberFutureScenes";
 
 const C = {
-  pageBg: "#1a0612",
-  card: "rgba(40, 18, 38, 0.78)",
-  border: "rgba(255, 220, 180, 0.35)",
-  borderStrong: "rgba(255, 220, 180, 0.6)",
-  text: "#fff7e6",
-  textSoft: "#ffe9c8",
-  textMuted: "rgba(255, 233, 200, 0.6)",
-  goldLight: "#ffd58a",
-  goldMid: "#ff9b4a",
-  goldDeep: "#d4733a",
-  goldDark: "#3a1a06",
-  coral: "#f08e7e",
-  ember: "#c4513a",
-  moss: "#7cc89a",
+  pageBg: "#080a16",
+  card: "rgba(15, 21, 48, 0.78)",
+  border: "rgba(0, 229, 255, 0.35)",
+  borderStrong: "rgba(0, 229, 255, 0.6)",
+  text: "#e8edff",
+  textSoft: "#c5cdf0",
+  textMuted: "rgba(125, 240, 255, 0.6)",
+  goldLight: "#00e5ff",
+  goldMid: "#7c5cff",
+  goldDeep: "#3a7bff",
+  goldDark: "#080a16",
+  coral: "#ff5fb3",
+  ember: "#ff7a59",
+  moss: "#7eff97",
 };
 const GRAD = `linear-gradient(135deg, ${C.goldLight}, ${C.goldMid})`;
-const TITLE_GRAD = "linear-gradient(135deg, #fff5cc, #ffd58a, #ff9b4a)";
+const TITLE_GRAD = "linear-gradient(135deg, #7df0ff, #00e5ff, #7c5cff)";
 
 const AGES = [6, 7, 8, 9, 10];
 
@@ -33,16 +33,16 @@ function getCourseLabel(_age: number, name: string) {
 // Slugs are preserved so saved profiles stay valid; warm accent colours
 // override the cool cyber-blues from the previous palette.
 const AVATAR_COLORS = [
-  { name: "purple", color: "#a06aff", label: "Mystic Violet" },
+  { name: "purple", color: "#7c5cff", label: "Mystic Violet" },
   { name: "blue", color: "#6aa6ff", label: "Twilight Blue" },
-  { name: "cyan", color: "#7cc89a", label: "Forest Glow" },
-  { name: "green", color: "#5fb37a", label: "Meadow Moss" },
-  { name: "amber", color: "#ffd58a", label: "Solar Amber" },
+  { name: "cyan", color: "#7eff97", label: "Forest Glow" },
+  { name: "green", color: "#5eff80", label: "Meadow Moss" },
+  { name: "amber", color: "#00e5ff", label: "Solar Amber" },
   { name: "pink", color: "#f7c1d6", label: "Blossom Pink" },
   { name: "neon-violet", color: "#c08aff", label: "Lavender Magic" },
-  { name: "plasma-magenta", color: "#f08e7e", label: "Coral Flame" },
-  { name: "inferno-red", color: "#c4513a", label: "Ember Red" },
-  { name: "glitch-gold", color: "#ff9b4a", label: "Glowing Gold" },
+  { name: "plasma-magenta", color: "#ff5fb3", label: "Coral Flame" },
+  { name: "inferno-red", color: "#ff7a59", label: "Ember Red" },
+  { name: "glitch-gold", color: "#7c5cff", label: "Glowing Gold" },
   { name: "frost-teal", color: "#5fa8b3", label: "Frost Teal" },
   { name: "laser-lime", color: "#a8c46a", label: "Sunlit Lime" },
 ];
@@ -104,7 +104,7 @@ export default function OnboardingPage() {
     <div
       className="min-h-screen relative overflow-hidden"
       style={{
-        background: `radial-gradient(ellipse at 50% -10%, #4a1a4a 0%, #2a0d2e 35%, ${C.pageBg} 70%, #0a0410 100%)`,
+        background: `radial-gradient(ellipse at 50% -10%, #1d1f4d 0%, #0f1530 35%, ${C.pageBg} 70%, #04050d 100%)`,
         color: C.text,
       }}
     >
@@ -113,7 +113,7 @@ export default function OnboardingPage() {
         * { font-family: 'Nunito', sans-serif; }
       `}</style>
 
-      <MagicLabScene />
+      <DataLabScene />
 
       <div className="relative min-h-screen flex flex-col items-center justify-center px-4 py-10" style={{ zIndex: 1 }}>
         {/* Logo */}
@@ -138,7 +138,7 @@ export default function OnboardingPage() {
                 fontSize: 18,
                 fontWeight: 900,
                 color: C.goldDark,
-                fontFamily: "Fredoka, Nunito, sans-serif",
+                fontFamily: "'Space Grotesk', system-ui, sans-serif",
               }}
             >
               AX
@@ -148,7 +148,7 @@ export default function OnboardingPage() {
             style={{
               fontSize: 26,
               fontWeight: 800,
-              fontFamily: "Fredoka, Nunito, sans-serif",
+              fontFamily: "'Space Grotesk', system-ui, sans-serif",
               background: TITLE_GRAD,
               WebkitBackgroundClip: "text",
               WebkitTextFillColor: "transparent",
@@ -168,8 +168,8 @@ export default function OnboardingPage() {
               style={{
                 width: s === step ? 32 : 10,
                 height: 10,
-                background: s <= step ? GRAD : "rgba(255, 220, 180, 0.18)",
-                boxShadow: s === step ? "0 0 12px rgba(255, 200, 110, 0.45)" : "none",
+                background: s <= step ? GRAD : "rgba(0, 229, 255, 0.18)",
+                boxShadow: s === step ? "0 0 12px rgba(124, 92, 255, 0.45)" : "none",
               }}
             />
           ))}
@@ -191,7 +191,7 @@ export default function OnboardingPage() {
                 <h1
                   className="text-3xl sm:text-4xl font-black mb-2"
                   style={{
-                    fontFamily: "Fredoka, Nunito, sans-serif",
+                    fontFamily: "'Space Grotesk', system-ui, sans-serif",
                     background: TITLE_GRAD,
                     WebkitBackgroundClip: "text",
                     WebkitTextFillColor: "transparent",
@@ -217,7 +217,7 @@ export default function OnboardingPage() {
                       WebkitBackdropFilter: "blur(16px)",
                       border: `1px solid ${C.border}`,
                       boxShadow:
-                        "0 30px 60px -20px rgba(20, 6, 12, 0.7), 0 0 40px rgba(255, 178, 110, 0.18)",
+                        "0 30px 60px -20px rgba(8, 10, 22, 0.7), 0 0 40px rgba(124, 92, 255, 0.18)",
                     }}
                   >
                     <label className="block text-left text-sm font-bold mb-3" style={{ color: C.textSoft }}>
@@ -241,15 +241,15 @@ export default function OnboardingPage() {
                           height: 60,
                           fontSize: 18,
                           color: C.text,
-                          background: "rgba(20, 6, 12, 0.5)",
-                          border: `1px solid rgba(255, 220, 180, 0.22)`,
+                          background: "rgba(8, 10, 22, 0.5)",
+                          border: `1px solid rgba(0, 229, 255, 0.22)`,
                         }}
                         onFocus={(e) => {
                           e.currentTarget.style.borderColor = C.goldLight;
-                          e.currentTarget.style.boxShadow = "0 0 25px rgba(255, 200, 110, 0.25)";
+                          e.currentTarget.style.boxShadow = "0 0 25px rgba(124, 92, 255, 0.25)";
                         }}
                         onBlur={(e) => {
-                          e.currentTarget.style.borderColor = "rgba(255, 220, 180, 0.22)";
+                          e.currentTarget.style.borderColor = "rgba(0, 229, 255, 0.22)";
                           e.currentTarget.style.boxShadow = "none";
                         }}
                         placeholder="e.g. Oliver"
@@ -274,7 +274,7 @@ export default function OnboardingPage() {
                               height: 50,
                               background: GRAD,
                               color: C.goldDark,
-                              fontFamily: "Fredoka, Nunito, sans-serif",
+                              fontFamily: "'Space Grotesk', system-ui, sans-serif",
                               letterSpacing: 0.5,
                               border: "none",
                               cursor: "pointer",
@@ -301,7 +301,7 @@ export default function OnboardingPage() {
                       transition={{ duration: 5, ease: "easeInOut", repeat: Infinity }}
                       style={{
                         filter:
-                          "drop-shadow(0 30px 50px rgba(20, 6, 12, 0.55)) drop-shadow(0 0 30px rgba(255, 200, 110, 0.18))",
+                          "drop-shadow(0 30px 50px rgba(8, 10, 22, 0.55)) drop-shadow(0 0 30px rgba(124, 92, 255, 0.18))",
                       }}
                     />
                   </div>
@@ -315,7 +315,7 @@ export default function OnboardingPage() {
                 <h1
                   className="text-3xl sm:text-4xl font-black mb-2"
                   style={{
-                    fontFamily: "Fredoka, Nunito, sans-serif",
+                    fontFamily: "'Space Grotesk', system-ui, sans-serif",
                     background: TITLE_GRAD,
                     WebkitBackgroundClip: "text",
                     WebkitTextFillColor: "transparent",
@@ -343,14 +343,14 @@ export default function OnboardingPage() {
                           width: 70,
                           height: 70,
                           fontSize: 18,
-                          background: isSelected ? GRAD : "rgba(40, 18, 38, 0.55)",
-                          border: `2px solid ${isSelected ? C.goldLight : "rgba(255, 220, 180, 0.4)"}`,
+                          background: isSelected ? GRAD : "rgba(15, 21, 48, 0.55)",
+                          border: `2px solid ${isSelected ? C.goldLight : "rgba(0, 229, 255, 0.4)"}`,
                           color: isSelected ? C.goldDark : C.textSoft,
                           transform: isSelected ? "scale(1.15)" : "scale(1)",
-                          boxShadow: isSelected ? "0 0 24px rgba(255, 200, 110, 0.45)" : "none",
+                          boxShadow: isSelected ? "0 0 24px rgba(124, 92, 255, 0.45)" : "none",
                           minWidth: 48,
                           minHeight: 48,
-                          fontFamily: "Fredoka, Nunito, sans-serif",
+                          fontFamily: "'Space Grotesk', system-ui, sans-serif",
                           cursor: "pointer",
                         }}
                       >
@@ -371,7 +371,7 @@ export default function OnboardingPage() {
                       <div
                         className="rounded-2xl p-4 mb-6 inline-block"
                         style={{
-                          background: "rgba(40, 18, 38, 0.6)",
+                          background: "rgba(15, 21, 48, 0.6)",
                           border: `1px solid ${C.borderStrong}`,
                           backdropFilter: "blur(12px)",
                         }}
@@ -391,7 +391,7 @@ export default function OnboardingPage() {
                             height: 50,
                             background: GRAD,
                             color: C.goldDark,
-                            fontFamily: "Fredoka, Nunito, sans-serif",
+                            fontFamily: "'Space Grotesk', system-ui, sans-serif",
                             letterSpacing: 0.5,
                             border: "none",
                             cursor: "pointer",
@@ -414,7 +414,7 @@ export default function OnboardingPage() {
                 <h1
                   className="text-3xl sm:text-4xl font-black mb-2"
                   style={{
-                    fontFamily: "Fredoka, Nunito, sans-serif",
+                    fontFamily: "'Space Grotesk', system-ui, sans-serif",
                     background: TITLE_GRAD,
                     WebkitBackgroundClip: "text",
                     WebkitTextFillColor: "transparent",
@@ -476,7 +476,7 @@ export default function OnboardingPage() {
                     WebkitBackdropFilter: "blur(12px)",
                     border: `2px solid ${selectedColor}`,
                     transition: "border-color 0.3s ease",
-                    boxShadow: "0 20px 40px -16px rgba(20, 6, 12, 0.55)",
+                    boxShadow: "0 20px 40px -16px rgba(8, 10, 22, 0.55)",
                   }}
                 >
                   <div className="flex items-center gap-3">
@@ -511,8 +511,8 @@ export default function OnboardingPage() {
                       transition={{ duration: 0.2 }}
                       className="mb-4 p-3 rounded-2xl text-sm font-semibold max-w-xs mx-auto"
                       style={{
-                        background: "rgba(196, 81, 58, 0.18)",
-                        border: "1px solid rgba(196, 81, 58, 0.5)",
+                        background: "rgba(255, 95, 179, 0.18)",
+                        border: "1px solid rgba(255, 95, 179, 0.5)",
                         color: "#f4a89a",
                       }}
                     >
@@ -532,7 +532,7 @@ export default function OnboardingPage() {
                     height: 56,
                     background: GRAD,
                     color: C.goldDark,
-                    fontFamily: "Fredoka, Nunito, sans-serif",
+                    fontFamily: "'Space Grotesk', system-ui, sans-serif",
                     letterSpacing: 0.5,
                     border: "none",
                     cursor: loading ? "not-allowed" : "pointer",

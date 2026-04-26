@@ -18,28 +18,28 @@ import {
 // pulls from the same warm dusk vocabulary as the Week 1 lesson.
 const C = {
   // Backgrounds
-  pageBg: "#1a0612",
-  card: "rgba(40, 18, 38, 0.72)",
-  cardSolid: "#2a0d2e",
+  pageBg: "#080a16",
+  card: "rgba(15, 21, 48, 0.72)",
+  cardSolid: "#0f1530",
   parchment: "rgba(255, 245, 220, 0.95)",
-  border: "rgba(255, 220, 180, 0.22)",
-  borderStrong: "rgba(255, 220, 180, 0.45)",
+  border: "rgba(0, 229, 255, 0.22)",
+  borderStrong: "rgba(0, 229, 255, 0.45)",
   // Type
-  text: "#fff7e6",
-  textSoft: "#ffe9c8",
-  textMuted: "rgba(255, 233, 200, 0.55)",
+  text: "#e8edff",
+  textSoft: "#c5cdf0",
+  textMuted: "rgba(125, 240, 255, 0.55)",
   inkDeep: "#3b2615",
   // Accents
-  goldLight: "#ffd58a",
-  goldMid: "#ff9b4a",
-  goldDeep: "#d4733a",
-  goldDark: "#3a1a06",
-  coral: "#f08e7e",
-  ember: "#c4513a",
-  moss: "#7cc89a",
-  mossLight: "#a8e3bb",
+  goldLight: "#00e5ff",
+  goldMid: "#7c5cff",
+  goldDeep: "#3a7bff",
+  goldDark: "#080a16",
+  coral: "#ff5fb3",
+  ember: "#ff7a59",
+  moss: "#7eff97",
+  mossLight: "#a0ffb0",
   blossom: "#f7c1d6",
-  cream: "#fff5cc",
+  cream: "#7df0ff",
 };
 const GRAD_GOLD = `linear-gradient(135deg, ${C.goldLight}, ${C.goldMid}, ${C.goldDeep})`;
 const GRAD_GOLD_PILL = `linear-gradient(135deg, ${C.goldLight}, ${C.goldMid})`;
@@ -47,7 +47,7 @@ const GRAD_NAME = `linear-gradient(135deg, ${C.cream}, ${C.goldLight}, ${C.goldM
 const GRAD_RACCOON = `linear-gradient(90deg, ${C.ember}, ${C.coral}, ${C.goldMid})`;
 
 const SHADOW_SCENE =
-  "0 30px 60px -20px rgba(20, 6, 12, 0.7), 0 0 0 1px rgba(255, 220, 180, 0.05) inset";
+  "0 30px 60px -20px rgba(8, 10, 22, 0.7), 0 0 0 1px rgba(0, 229, 255, 0.05) inset";
 const SHADOW_PRIMARY =
   "0 18px 36px -10px rgba(255,120,40,0.6), 0 0 0 1px rgba(255,235,200,0.55) inset, 0 -3px 0 rgba(180,80,30,0.4) inset";
 const FONT_STACK =
@@ -202,7 +202,7 @@ export default async function DashboardPage() {
       value: remaining,
       accent: C.goldLight,
       icon: "◷",
-      glow: "rgba(255, 213, 138, 0.45)",
+      glow: "rgba(0, 229, 255, 0.45)",
     },
     {
       label: "Badges Earned",
@@ -232,7 +232,7 @@ export default async function DashboardPage() {
         className="dash min-h-screen relative"
         style={{
           background:
-            `radial-gradient(ellipse at 50% -10%, #4a1a4a 0%, #2a0d2e 35%, ${C.pageBg} 70%, #0a0410 100%)`,
+            `radial-gradient(ellipse at 50% -10%, #1d1f4d 0%, #0f1530 35%, ${C.pageBg} 70%, #04050d 100%)`,
         }}
       >
         <DashboardSky />
@@ -273,7 +273,7 @@ export default async function DashboardPage() {
               <div
                 className="hidden sm:flex items-center gap-2 pr-3"
                 style={{
-                  background: "rgba(255, 220, 180, 0.06)",
+                  background: "rgba(0, 229, 255, 0.06)",
                   border: `1px solid ${C.border}`,
                   borderRadius: 100,
                   padding: "3px 3px 3px 3px",
@@ -409,7 +409,7 @@ export default async function DashboardPage() {
                     border: `1px solid ${C.borderStrong}`,
                     backdropFilter: "blur(12px)",
                     WebkitBackdropFilter: "blur(12px)",
-                    boxShadow: "0 18px 36px -12px rgba(20, 6, 12, 0.55)",
+                    boxShadow: "0 18px 36px -12px rgba(8, 10, 22, 0.55)",
                   }}
                 >
                   <div className="flex justify-between text-sm mb-2.5">
@@ -423,7 +423,7 @@ export default async function DashboardPage() {
                   <AnimatedBar
                     percent={progressPct}
                     gradient={GRAD_GOLD}
-                    glowColor="rgba(255, 200, 110, 0.55)"
+                    glowColor="rgba(124, 92, 255, 0.55)"
                     height={14}
                   />
                 </div>
@@ -446,7 +446,7 @@ export default async function DashboardPage() {
                     style={{
                       border: `3px solid ${C.borderStrong}`,
                       boxShadow:
-                        "0 0 50px rgba(255, 178, 110, 0.35), 0 0 0 6px rgba(140, 70, 30, 0.5)",
+                        "0 0 50px rgba(124, 92, 255, 0.35), 0 0 0 6px rgba(140, 70, 30, 0.5)",
                     }}
                   >
                     <Image
@@ -489,7 +489,7 @@ export default async function DashboardPage() {
                     border: `1px solid ${C.border}`,
                     backdropFilter: "blur(12px)",
                     WebkitBackdropFilter: "blur(12px)",
-                    boxShadow: "0 14px 28px -10px rgba(20, 6, 12, 0.5)",
+                    boxShadow: "0 14px 28px -10px rgba(8, 10, 22, 0.5)",
                   }}
                 >
                   <div
@@ -553,12 +553,12 @@ export default async function DashboardPage() {
                     background: C.card,
                     border: `1px solid ${
                       raccoonStrong
-                        ? "rgba(196, 81, 58, 0.5)"
+                        ? "rgba(255, 95, 179, 0.5)"
                         : "rgba(124, 200, 154, 0.45)"
                     }`,
                     boxShadow: raccoonStrong
-                      ? "0 0 28px rgba(196, 81, 58, 0.18), 0 18px 36px -12px rgba(20, 6, 12, 0.6)"
-                      : "0 0 28px rgba(124, 200, 154, 0.18), 0 18px 36px -12px rgba(20, 6, 12, 0.6)",
+                      ? "0 0 28px rgba(255, 95, 179, 0.18), 0 18px 36px -12px rgba(8, 10, 22, 0.6)"
+                      : "0 0 28px rgba(124, 200, 154, 0.18), 0 18px 36px -12px rgba(8, 10, 22, 0.6)",
                     backdropFilter: "blur(12px)",
                     WebkitBackdropFilter: "blur(12px)",
                   }}
@@ -568,7 +568,7 @@ export default async function DashboardPage() {
                       className="absolute inset-0 rounded-2xl"
                       style={{
                         background: raccoonStrong
-                          ? "rgba(196, 81, 58, 0.4)"
+                          ? "rgba(255, 95, 179, 0.4)"
                           : "rgba(124, 200, 154, 0.32)",
                         filter: "blur(28px)",
                         transform: "scale(0.85)",
@@ -583,7 +583,7 @@ export default async function DashboardPage() {
                       style={{
                         border: `2px solid ${
                           raccoonStrong
-                            ? "rgba(196, 81, 58, 0.55)"
+                            ? "rgba(255, 95, 179, 0.55)"
                             : "rgba(124, 200, 154, 0.5)"
                         }`,
                       }}
@@ -651,7 +651,7 @@ export default async function DashboardPage() {
                       className="text-5xl shrink-0"
                       aria-hidden
                       style={{
-                        filter: "drop-shadow(0 0 18px rgba(255, 200, 110, 0.5))",
+                        filter: "drop-shadow(0 0 18px rgba(124, 92, 255, 0.5))",
                       }}
                     >
                       {course.emoji}
@@ -673,8 +673,8 @@ export default async function DashboardPage() {
                       percent={progressPct}
                       gradientFrom={C.goldLight}
                       gradientTo={C.goldMid}
-                      glow={"rgba(255, 178, 110, 0.55)"}
-                      track={"rgba(255, 220, 180, 0.12)"}
+                      glow={"rgba(124, 92, 255, 0.55)"}
+                      track={"rgba(0, 229, 255, 0.12)"}
                       label={C.goldLight}
                     />
                   </div>
@@ -693,20 +693,20 @@ export default async function DashboardPage() {
                       style={{
                         padding: isCurrent ? "24px 24px" : "20px 24px",
                         background: isCurrent
-                          ? "linear-gradient(135deg, rgba(255, 178, 110, 0.16), rgba(255, 215, 138, 0.10))"
+                          ? "linear-gradient(135deg, rgba(124, 92, 255, 0.16), rgba(255, 215, 138, 0.10))"
                           : mod.isCompleted
-                            ? "linear-gradient(135deg, rgba(124, 200, 154, 0.12), rgba(40, 18, 38, 0.5))"
+                            ? "linear-gradient(135deg, rgba(124, 200, 154, 0.12), rgba(15, 21, 48, 0.5))"
                             : C.card,
                         border: isCurrent
-                          ? `2px solid rgba(255, 200, 110, 0.7)`
+                          ? `2px solid rgba(124, 92, 255, 0.7)`
                           : mod.isCompleted
                             ? "1px solid rgba(124, 200, 154, 0.4)"
                             : `1px solid ${C.border}`,
                         boxShadow: isCurrent
-                          ? "0 0 32px rgba(255, 178, 110, 0.35), 0 18px 36px -12px rgba(20, 6, 12, 0.55)"
+                          ? "0 0 32px rgba(124, 92, 255, 0.35), 0 18px 36px -12px rgba(8, 10, 22, 0.55)"
                           : mod.isCompleted
-                            ? "0 12px 24px -10px rgba(20, 6, 12, 0.45)"
-                            : "0 10px 22px -10px rgba(20, 6, 12, 0.45)",
+                            ? "0 12px 24px -10px rgba(8, 10, 22, 0.45)"
+                            : "0 10px 22px -10px rgba(8, 10, 22, 0.45)",
                         backdropFilter: "blur(10px)",
                         WebkitBackdropFilter: "blur(10px)",
                         opacity: mod.isUnlocked ? 1 : 0.45,
@@ -725,7 +725,7 @@ export default async function DashboardPage() {
                             ? "rgba(124, 200, 154, 0.22)"
                             : isCurrent
                               ? GRAD_GOLD_PILL
-                              : "rgba(255, 220, 180, 0.06)",
+                              : "rgba(0, 229, 255, 0.06)",
                           color: mod.isCompleted
                             ? C.mossLight
                             : isCurrent
@@ -734,7 +734,7 @@ export default async function DashboardPage() {
                           boxShadow: mod.isCompleted
                             ? "0 0 18px rgba(124, 200, 154, 0.45)"
                             : isCurrent
-                              ? "0 0 22px rgba(255, 178, 110, 0.55)"
+                              ? "0 0 22px rgba(124, 92, 255, 0.55)"
                               : "none",
                         }}
                       >
@@ -758,7 +758,7 @@ export default async function DashboardPage() {
                               ? "rgba(168, 227, 187, 0.85)"
                               : isCurrent
                                 ? C.goldLight
-                                : "rgba(255, 233, 200, 0.5)",
+                                : "rgba(125, 240, 255, 0.5)",
                           }}
                         >
                           Week {mod.weekNumber}
@@ -838,7 +838,7 @@ export default async function DashboardPage() {
                           <span
                             className="inline-flex items-center gap-1.5 font-bold whitespace-nowrap"
                             style={{
-                              background: "rgba(255, 220, 180, 0.04)",
+                              background: "rgba(0, 229, 255, 0.04)",
                               border: `1px solid ${C.border}`,
                               color: C.textMuted,
                               borderRadius: 100,
@@ -865,7 +865,7 @@ export default async function DashboardPage() {
                       "linear-gradient(135deg, rgba(255, 215, 138, 0.18), rgba(196, 60, 106, 0.16))",
                     border: `1px solid ${C.borderStrong}`,
                     boxShadow:
-                      "0 0 50px rgba(255, 178, 110, 0.18), 0 24px 50px -16px rgba(20, 6, 12, 0.6)",
+                      "0 0 50px rgba(124, 92, 255, 0.18), 0 24px 50px -16px rgba(8, 10, 22, 0.6)",
                     backdropFilter: "blur(12px)",
                     WebkitBackdropFilter: "blur(12px)",
                   }}

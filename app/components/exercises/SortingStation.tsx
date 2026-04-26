@@ -175,7 +175,7 @@ export default function SortingStation({
         maxWidth: 820,
         margin: "0 auto",
         background: "#0d1220",
-        border: "1px solid rgba(255,213,138,0.14)",
+        border: "1px solid rgba(0,229,255,0.14)",
         borderRadius: 24,
         padding: "28px 24px 32px",
         color: "#f1f5f9",
@@ -200,7 +200,7 @@ export default function SortingStation({
         </h2>
       )}
       {instruction && (
-        <p style={{ textAlign: "center", color: "rgba(255,233,200,0.55)", fontSize: 14, margin: "0 0 22px" }}>
+        <p style={{ textAlign: "center", color: "rgba(125,240,255,0.55)", fontSize: 14, margin: "0 0 22px" }}>
           {instruction}
         </p>
       )}
@@ -291,7 +291,7 @@ function ActiveStage({
         style={{
           fontFamily: "'JetBrains Mono', 'Courier New', monospace",
           fontSize: 12,
-          color: "#ffd58a",
+          color: "#00e5ff",
           letterSpacing: "0.15em",
           textAlign: "center",
           marginBottom: 10,
@@ -308,10 +308,10 @@ function ActiveStage({
           maxWidth: 400,
           margin: "0 auto 14px",
           background: "#0c1019",
-          border: "2px solid rgba(255,213,138,0.2)",
+          border: "2px solid rgba(0,229,255,0.2)",
           borderRadius: 20,
           padding: 24,
-          boxShadow: "0 0 30px rgba(255,213,138,0.08)",
+          boxShadow: "0 0 30px rgba(0,229,255,0.08)",
           overflow: "hidden",
           animation:
             scannerShakeKey > 0
@@ -329,7 +329,7 @@ function ActiveStage({
             right: 0,
             top: 0,
             height: 1,
-            background: "linear-gradient(90deg, transparent, rgba(255,213,138,0.45), transparent)",
+            background: "linear-gradient(90deg, transparent, rgba(0,229,255,0.45), transparent)",
             opacity: 0.4,
             animation: "ssScanSweep 2s linear infinite",
             willChange: "transform",
@@ -372,7 +372,7 @@ function ActiveStage({
                 width: 8,
                 height: 8,
                 borderRadius: "50%",
-                background: done ? "#7cc89a" : "rgba(255,255,255,0.08)",
+                background: done ? "#7eff97" : "rgba(255,255,255,0.08)",
                 boxShadow: done ? "0 0 8px rgba(168,227,187,0.5)" : "none",
                 transition: "background 0.4s, box-shadow 0.4s",
                 animation: done ? "ssDotFill 0.4s cubic-bezier(0.2,1.5,0.4,1)" : undefined,
@@ -410,7 +410,7 @@ function ActiveStage({
             lineHeight: 1.6,
           }}
         >
-          <strong style={{ color: "#7cc89a", fontWeight: 700 }}>Nice sort — </strong>
+          <strong style={{ color: "#7eff97", fontWeight: 700 }}>Nice sort — </strong>
           {current.explanation}
         </div>
       )}
@@ -429,7 +429,7 @@ function BinCard({
 }) {
   const [hover, setHover] = useState(false);
   // Portal-style bins: solid-colour gradient, glowing border that pulses when idle.
-  const flashColor = flash === "correct" ? "#7cc89a" : flash === "wrong" ? "#ef4444" : category.color;
+  const flashColor = flash === "correct" ? "#7eff97" : flash === "wrong" ? "#ef4444" : category.color;
   const border = flash
     ? `2px solid ${flashColor}`
     : `2px solid ${category.color}cc`;
@@ -496,7 +496,7 @@ function BinCard({
             left: "50%",
             transform: "translate(-50%, -50%)",
             fontSize: 48,
-            color: "#7cc89a",
+            color: "#7eff97",
             textShadow: "0 0 14px rgba(168,227,187,0.7)",
             animation: "ssCheckPop 0.6s cubic-bezier(0.16,1,0.3,1) both",
             pointerEvents: "none",
@@ -525,7 +525,7 @@ function CompletionStage({ score, total }: { score: number; total: number }) {
           borderRadius: 999,
           background: "rgba(168,227,187,0.14)",
           border: "1px solid rgba(168,227,187,0.35)",
-          color: "#7cc89a",
+          color: "#7eff97",
           letterSpacing: "-0.01em",
           animation: "ssBannerIn 0.5s cubic-bezier(0.16,1,0.3,1) both",
           boxShadow: "0 0 24px rgba(168,227,187,0.35)",
@@ -541,8 +541,8 @@ function CompletionStage({ score, total }: { score: number; total: number }) {
           fontSize: 22,
           margin: "0 0 8px",
           background: perfect
-            ? "linear-gradient(135deg, #f59e0b, #7cc89a)"
-            : "linear-gradient(135deg, #ffd58a, #7cc89a)",
+            ? "linear-gradient(135deg, #f59e0b, #7eff97)"
+            : "linear-gradient(135deg, #00e5ff, #7eff97)",
           WebkitBackgroundClip: "text",
           WebkitTextFillColor: "transparent",
           backgroundClip: "text",
@@ -551,7 +551,7 @@ function CompletionStage({ score, total }: { score: number; total: number }) {
         {score}/{total} sorted correctly!
       </h3>
       {perfect && (
-        <p style={{ color: "rgba(255,233,200,0.55)", fontSize: 14, margin: "0 0 18px" }}>
+        <p style={{ color: "rgba(125,240,255,0.55)", fontSize: 14, margin: "0 0 18px" }}>
           Amazing work, sorting champion.
         </p>
       )}

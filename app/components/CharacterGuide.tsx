@@ -179,18 +179,18 @@ export default function CharacterGuide({
             bottom: 170,
             ...bubbleSide,
             pointerEvents: "auto",
-            background: "rgba(40,18,38,0.92)",
-            border: "1px solid rgba(255,220,180,0.32)",
+            background: "rgba(15, 21, 48, 0.92)",
+            border: "1px solid rgba(0, 229, 255, 0.45)",
             borderRadius: 16,
             padding: "14px 36px 14px 18px",
             maxWidth: 300,
             minWidth: 180,
-            color: "#fff7e6",
+            color: "#e8edff",
             fontFamily: "'DM Sans', sans-serif",
             fontSize: 15,
             lineHeight: 1.6,
-            boxShadow: "0 10px 28px rgba(20,6,12,0.7), 0 0 24px rgba(255,178,110,0.18)",
-            backdropFilter: "blur(10px)",
+            boxShadow: "0 10px 28px rgba(0, 0, 0, 0.65), 0 0 24px rgba(0, 229, 255, 0.32)",
+            backdropFilter: "blur(12px)",
           }}
         >
           <button
@@ -289,15 +289,14 @@ export default function CharacterGuide({
           /* Filter chain (order matters — filters apply left-to-right):
              1. url(#cgEdgeClean) erodes the alpha channel by ~1.2px so
                 the semi-transparent matting fringe around the
-                silhouette (neck, shoulders, hair) is dropped before
-                the drop-shadows are computed. Without this the dusk
-                backdrop reads the fringe as a dark halo.
-             2. drop-shadow gives the warm Pixar grounding shadow.
-             3. drop-shadow #2 adds a soft amber bounce light. */
+                silhouette is dropped before the drop-shadows compute.
+             2. drop-shadow grounds the character with a deep shadow.
+             3. drop-shadow #2 adds the cyan rim-light (the cyber
+                command-centre glow). */
           filter:
             url(#cgEdgeClean)
-            drop-shadow(0 10px 14px rgba(20,6,12,0.55))
-            drop-shadow(0 0 22px rgba(255,178,110,0.18));
+            drop-shadow(0 10px 14px rgba(0, 0, 0, 0.65))
+            drop-shadow(0 0 22px rgba(0, 229, 255, 0.32));
           /* Soft fade on the very bottom — defensive backup for shoes/
              feet area, even though the alpha-erode handles most of it. */
           -webkit-mask-image: linear-gradient(180deg, black 0%, black 92%, transparent 100%);
@@ -324,7 +323,7 @@ export default function CharacterGuide({
           width: 0; height: 0;
           border-left: 8px solid transparent;
           border-right: 8px solid transparent;
-          border-top: 10px solid rgba(40,18,38,0.92);
+          border-top: 10px solid rgba(15, 21, 48, 0.92);
         }
         .cg-pointer-left  { left:  36px }
         .cg-pointer-right { right: 36px }

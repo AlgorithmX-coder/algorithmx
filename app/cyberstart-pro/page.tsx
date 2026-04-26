@@ -2,11 +2,11 @@
 
 import { motion, useInView } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
-import { CosmicLibraryScene } from "@/app/components/PixarScenes";
+import { DataLabScene } from "@/app/components/CyberFutureScenes";
 
 // Warm amber/gold for the Pro tier — already on-palette with the Pixar dusk system.
-const PRIMARY = "#ff9b4a";       // gold mid
-const ACCENT = "#ffd58a";        // gold light
+const PRIMARY = "#7c5cff";       // gold mid
+const ACCENT = "#00e5ff";        // gold light
 const GRAD = `linear-gradient(135deg, ${PRIMARY}, ${ACCENT})`;
 
 function ScrollReveal({ children, className = "", delay = 0 }: { children: React.ReactNode; className?: string; delay?: number }) {
@@ -40,9 +40,9 @@ export default function CyberStartProPage() {
         * { font-family: 'Nunito', sans-serif; }
       `}</style>
 
-      <CosmicLibraryScene />
+      <DataLabScene />
 
-      <div className="min-h-screen relative" style={{ background: `radial-gradient(ellipse at 50% -10%, #4a1a4a 0%, #2a0d2e 35%, #1a0612 70%, #0a0410 100%)`, zIndex: 1 }}>
+      <div className="min-h-screen relative" style={{ background: `radial-gradient(ellipse at 50% -10%, #1d1f4d 0%, #0f1530 35%, #080a16 70%, #04050d 100%)`, zIndex: 1 }}>
         {/* Nav */}
         <nav className="fixed top-0 left-0 right-0 z-50 transition-all duration-300"
           style={{

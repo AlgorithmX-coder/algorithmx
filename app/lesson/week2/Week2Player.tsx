@@ -46,10 +46,10 @@ import CyberMaze from "@/app/components/exercises/CyberMaze";
 const W2_PRIVATE_INFO_PAIRS = [
   { term: "Home Address", match: "Private — never share online", colour: "#ef4444" },
   { term: "Full Name", match: "Private — don't give to strangers", colour: "#f97316" },
-  { term: "Password", match: "Only for YOU and parents", colour: "#a855f7" },
-  { term: "Favourite Colour", match: "Safe to share", colour: "#34d399" },
-  { term: "Age Range", match: '"I\'m a kid" is OK', colour: "#60a5fa" },
-  { term: "School Name", match: "Private — helps strangers find you", colour: "#f472b6" },
+  { term: "Password", match: "Only for YOU and parents", colour: "#7c5cff" },
+  { term: "Favourite Colour", match: "Safe to share", colour: "#7eff97" },
+  { term: "Age Range", match: '"I\'m a kid" is OK', colour: "#7df0ff" },
+  { term: "School Name", match: "Private — helps strangers find you", colour: "#ff5fb3" },
 ];
 
 const W2_PROTECT_ITEMS: { text: string; isPrivate: boolean }[] = [
@@ -121,7 +121,7 @@ const IS_MILESTONE_WEEK = MILESTONES.some((m) => m.week === CURRENT_WEEK);
 
 /* ───────────────────────── CONSTANTS ───────────────────────── */
 const TOTAL = 17;
-const GRAD = "linear-gradient(135deg, #3b82f6, #06b6d4)";
+const GRAD = "linear-gradient(135deg, #3a7bff, #00e5ff)";
 
 /* ───────────────────────── GSAP HELPERS ────────────────────── */
 const celebrateCorrect = (el: HTMLElement) => {
@@ -133,7 +133,7 @@ const celebrateCorrect = (el: HTMLElement) => {
     .to(el, { boxShadow: "0 0 40px rgba(16,185,129,0.6), 0 0 80px rgba(16,185,129,0.2)", duration: 0.2 }, 0)
     .to(el, { boxShadow: "0 0 10px rgba(16,185,129,0.2)", duration: 0.6 }, 0.4);
   const rect = el.getBoundingClientRect();
-  const colors = ["#10b981", "#06b6d4", "#3b82f6", "#f59e0b"];
+  const colors = ["#7eff97", "#00e5ff", "#3a7bff", "#f59e0b"];
   for (let i = 0; i < 12; i++) {
     const p = document.createElement("div");
     const size = 6 + Math.random() * 6;
@@ -245,28 +245,28 @@ void Player;
 type SceneTheme = "domino" | "lair" | "factory" | "callscreen" | "forge" | "warroom" | "vault" | "ceremony";
 const SCENE_BG: Record<SceneTheme, React.CSSProperties> = {
   domino: {
-    background: "radial-gradient(ellipse at center top, rgba(59,130,246,0.12), transparent 60%), linear-gradient(180deg, #0f172a 0%, #1a1033 100%)",
+    background: "radial-gradient(ellipse at center top, rgba(59,130,246,0.12), transparent 60%), linear-gradient(180deg, #080a16 0%, #0f1530 100%)",
   },
   lair: {
-    background: "radial-gradient(ellipse at center, rgba(239,68,68,0.08), transparent 65%), linear-gradient(180deg, #0a0612 0%, #1a1033 100%)",
+    background: "radial-gradient(ellipse at center, rgba(239,68,68,0.08), transparent 65%), linear-gradient(180deg, #0a0612 0%, #0f1530 100%)",
   },
   factory: {
-    background: "linear-gradient(180deg, #0d1424 0%, #1a1033 100%), repeating-linear-gradient(90deg, transparent 0 60px, rgba(245,158,11,0.04) 60px 62px)",
+    background: "linear-gradient(180deg, #0d1424 0%, #0f1530 100%), repeating-linear-gradient(90deg, transparent 0 60px, rgba(245,158,11,0.04) 60px 62px)",
   },
   callscreen: {
-    background: "radial-gradient(ellipse at center, rgba(34,197,94,0.08), transparent 70%), linear-gradient(180deg, #0a0a14 0%, #1a1033 100%)",
+    background: "radial-gradient(ellipse at center, rgba(34,197,94,0.08), transparent 70%), linear-gradient(180deg, #0a0a14 0%, #0f1530 100%)",
   },
   forge: {
-    background: "radial-gradient(ellipse at center, rgba(249,115,22,0.10), transparent 55%), radial-gradient(ellipse at center, rgba(59,130,246,0.10), transparent 70%), linear-gradient(180deg, #0a0612 0%, #1a1033 100%)",
+    background: "radial-gradient(ellipse at center, rgba(249,115,22,0.10), transparent 55%), radial-gradient(ellipse at center, rgba(59,130,246,0.10), transparent 70%), linear-gradient(180deg, #0a0612 0%, #0f1530 100%)",
   },
   warroom: {
     background: "radial-gradient(ellipse at center top, rgba(245,158,11,0.10), transparent 50%), linear-gradient(180deg, #0a0612 0%, #14091e 100%)",
   },
   vault: {
-    background: "radial-gradient(ellipse at center, rgba(59,130,246,0.15), transparent 60%), linear-gradient(180deg, #0a1024 0%, #1a1033 100%)",
+    background: "radial-gradient(ellipse at center, rgba(59,130,246,0.15), transparent 60%), linear-gradient(180deg, #0a1024 0%, #0f1530 100%)",
   },
   ceremony: {
-    background: "radial-gradient(ellipse at top, rgba(245,158,11,0.18), transparent 55%), linear-gradient(180deg, #0c0820 0%, #1a1033 100%)",
+    background: "radial-gradient(ellipse at top, rgba(245,158,11,0.18), transparent 55%), linear-gradient(180deg, #0c0820 0%, #0f1530 100%)",
   },
 };
 const ThemedScene = ({ theme, children }: { theme: SceneTheme; children: React.ReactNode }) => (
@@ -658,7 +658,7 @@ function StepDots({ step }: { step: number }) {
           transition={i === step ? { duration: 1.5, repeat: Infinity } : {}}
           style={{
             width: i === step ? 12 : 8, height: i === step ? 12 : 8, borderRadius: "50%",
-            background: i < step ? "#3b82f6" : i === step ? "#f59e0b" : "rgba(255,255,255,0.15)",
+            background: i < step ? "#3a7bff" : i === step ? "#f59e0b" : "rgba(255,255,255,0.15)",
             boxShadow: i === step ? "0 0 12px rgba(245,158,11,0.5)" : i < step ? "0 0 8px rgba(59,130,246,0.4)" : "none",
             transition: "all 0.3s ease",
           }} />
@@ -732,7 +732,7 @@ function InstructionOverlay({ icon, story, instructions, onReady }: { icon: stri
     <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} style={{ textAlign: "center" }}>
       <div data-animate style={{ background: "rgba(15,10,40,0.9)", backdropFilter: "blur(12px)", border: "1px solid rgba(59,130,246,0.3)", boxShadow: "0 0 20px rgba(59,130,246,0.2)", borderRadius: 24, padding: 32, maxWidth: 520, margin: "0 auto" }}>
         <div style={{ width: 80, height: 80, margin: "0 auto 16px", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 48, background: "rgba(59,130,246,0.15)", borderRadius: 20 }}>{icon}</div>
-        <p style={{ color: "#60a5fa", fontSize: 14, fontStyle: "italic", marginBottom: 8 }}>{story}</p>
+        <p style={{ color: "#7df0ff", fontSize: 14, fontStyle: "italic", marginBottom: 8 }}>{story}</p>
         <h2 data-split style={{ color: "#fff", fontSize: 22, fontWeight: 900, marginBottom: 8 }}>Here&apos;s what to do!</h2>
         <p style={{ color: "#d1d5db", fontSize: 16, lineHeight: 1.6, marginBottom: 20 }}>{instructions}</p>
         <motion.button onClick={onReady} onMouseEnter={btnHoverIn} onMouseLeave={btnHoverOut} whileTap={{ scale: 0.95 }}
@@ -782,7 +782,7 @@ const _SpeechBubbleLegacy = ({ character, message, side = "left" }: { character:
     >
       <img src={img} alt={name} style={{ width: 48, height: 48, borderRadius: "50%", objectFit: "cover", border: `2px solid ${borderColor}` }} />
       <div style={{ background: bubbleColor, border: `1px solid ${borderColor}`, borderRadius: 16, padding: "10px 16px", maxWidth: 320, fontSize: 14, color: "rgba(255,255,255,0.9)", lineHeight: 1.5 }}>
-        <span style={{ fontWeight: 700, fontSize: 12, color: character === "raccoon" ? "#ef4444" : "#3b82f6", display: "block", marginBottom: 4 }}>{name}</span>
+        <span style={{ fontWeight: 700, fontSize: 12, color: character === "raccoon" ? "#ef4444" : "#3a7bff", display: "block", marginBottom: 4 }}>{name}</span>
         {message}
       </div>
     </motion.div>
@@ -882,14 +882,14 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
   const burstIdRef = useRef(0);
   const floatIdRef = useRef(0);
   const spawnParticles = useCallback(
-    (x: number, y: number, colour = "#34d399", count = 12) => {
+    (x: number, y: number, colour = "#7eff97", count = 12) => {
       const id = ++burstIdRef.current;
       setBurstList((prev) => [...prev, { id, x, y, colour, count }]);
     },
     []
   );
   const spawnFloatingText = useCallback(
-    (text: string, x: number, y: number, colour = "#34d399", size = 20) => {
+    (text: string, x: number, y: number, colour = "#7eff97", size = 20) => {
       const id = ++floatIdRef.current;
       setFloatList((prev) => [...prev, { id, text, x, y, colour, size }]);
     },
@@ -956,7 +956,7 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
       setArenaMoodBrief("correct");
       setArena3DPulseKey((k) => k + 1);
 
-      spawnParticles(x, y, "#34d399", 12);
+      spawnParticles(x, y, "#7eff97", 12);
       spawnFloatingText(`+${amount} XP`, x, y - 24, "#fbbf24", 20);
       setLessonCombo((prev) => {
         const next = prev + 1;
@@ -1370,7 +1370,7 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
                         style={{ display: "flex", alignItems: "flex-start", gap: 8, marginBottom: 8 }}>
                         {i >= 5 && (
                           <motion.span initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.2, type: "spring" }}
-                            style={{ color: "#10b981", fontSize: 16, flexShrink: 0 }}>✅</motion.span>
+                            style={{ color: "#7eff97", fontSize: 16, flexShrink: 0 }}>✅</motion.span>
                         )}
                         <p style={{
                           color: i === 0 ? "#f59e0b" : i === 3 ? "#ef4444" : "#d1d5db",
@@ -1404,7 +1404,7 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
               {missionAccepted && (
                 <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}
                   style={{ textAlign: "center", marginTop: 16 }}>
-                  <p style={{ color: "#10b981", fontWeight: 900, fontSize: 18 }}>IDENTITY CONFIRMED ✅</p>
+                  <p style={{ color: "#7eff97", fontWeight: 900, fontSize: 18 }}>IDENTITY CONFIRMED ✅</p>
                 </motion.div>
               )}
             </motion.div>
@@ -1418,7 +1418,7 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
         if (showInstr[2]) return <InstructionOverlay icon="🔍" story="The Raccoon is snooping!" instructions="Tap each tile to flip it. Red means PRIVATE, green means SAFE!" onReady={() => dismissInstr(2)} />;
         if (showSummary[2]) return <LearnSummary message="You learned that some information is PRIVATE and some is SAFE. Private things like addresses and passwords should NEVER be shared with strangers!" starCount={getStars(2)} onNext={() => dismissSummary(2, 3)} />;
         return (
-          <FullScene bg="linear-gradient(180deg, #0a0f1a 0%, #1a1033 100%)" glow="radial-gradient(circle, rgba(59,130,246,0.15), transparent)">
+          <FullScene bg="linear-gradient(180deg, #0a0f1a 0%, #0f1530 100%)" glow="radial-gradient(circle, rgba(59,130,246,0.15), transparent)">
           <div style={{ textAlign: "center" }}>
             <h1 data-split style={{ color: "#fff", fontSize: 38, fontWeight: 900, marginBottom: 4, textShadow: "0 0 20px rgba(59,130,246,0.4)" }}>📁 What IS Personal Information?</h1>
             <SpeechBubble character="adam" message="Some of this stuff is private and some is safe to share. Let's find out which!" />
@@ -1488,7 +1488,7 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
         if (showInstr[3]) return <InstructionOverlay icon="📋" story="Adam made a poster with TOO MUCH info!" instructions="Tap on the dangerous things to REMOVE them from the poster." onReady={() => dismissInstr(3)} />;
         if (showSummary[3]) return <LearnSummary message="You spotted dangerous information on a poster. Always check before sharing, remove addresses, phone numbers, and school names!" starCount={getStars(3)} onNext={() => dismissSummary(3, 4)} />;
         return (
-          <FullScene bg="linear-gradient(180deg, #1a1508 0%, #1a1033 100%)" glow="radial-gradient(circle, rgba(245,158,11,0.2), transparent)">
+          <FullScene bg="linear-gradient(180deg, #1a1508 0%, #0f1530 100%)" glow="radial-gradient(circle, rgba(245,158,11,0.2), transparent)">
           <div style={{ textAlign: "center" }}>
             <h1 data-split style={{ color: "#fff", fontSize: 38, fontWeight: 900, marginBottom: 4, textShadow: "0 0 20px rgba(245,158,11,0.3)" }}>📋 Fix Adam&apos;s Poster!</h1>
             <SpeechBubble character="layla" message="Oh no, Adam put WAY too much information on this poster!" />
@@ -1542,7 +1542,7 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
               <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }}>
                 {card(
                   <>
-                    <h2 style={{ color: "#10b981", fontSize: 22, fontWeight: 900, marginBottom: 8 }}>
+                    <h2 style={{ color: "#7eff97", fontSize: 22, fontWeight: 900, marginBottom: 8 }}>
                       Perfect! The poster is safe now! ✅
                     </h2>
                     <div style={{ background: "rgba(16,185,129,0.08)", borderRadius: 16, padding: 16, marginBottom: 16 }}>
@@ -1600,7 +1600,7 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
                   <SpeechBubble character="raccoon" message="Grrrr! I almost had you!" side="right" />
                   <p style={{ color: "#d1d5db", marginBottom: 4 }}>Danger Meter: {dangerPct}%</p>
                   {dangerPct <= 20 ? (
-                    <p style={{ color: "#10b981", fontWeight: 700, marginBottom: 16 }}>Amazing! The Raccoon got NOTHING from you!</p>
+                    <p style={{ color: "#7eff97", fontWeight: 700, marginBottom: 16 }}>Amazing! The Raccoon got NOTHING from you!</p>
                   ) : (
                     <p style={{ color: "#f59e0b", fontWeight: 700, marginBottom: 16 }}>The Raccoon got some info, but now you know what to watch for next time!</p>
                   )}
@@ -1632,7 +1632,7 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
             }}>
               {/* Chat header */}
               <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "12px 16px", borderBottom: "1px solid rgba(255,255,255,0.06)", background: "rgba(255,255,255,0.03)" }}>
-                <div style={{ width: 36, height: 36, borderRadius: "50%", background: "linear-gradient(135deg, #3b82f6, #06b6d4)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 16 }}>😎</div>
+                <div style={{ width: 36, height: 36, borderRadius: "50%", background: "linear-gradient(135deg, #3a7bff, #00e5ff)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 16 }}>😎</div>
                 <div style={{ flex: 1, textAlign: "left" }}>
                   <p style={{ color: "#fff", fontWeight: 700, fontSize: 14, margin: 0 }}>CoolKid99</p>
                   <p style={{ color: "#22c55e", fontSize: 11, margin: 0 }}>Online</p>
@@ -1788,7 +1788,7 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
         if (showSummary[7]) return <LearnSummary message="You spotted dangers in a social media profile. Keep your account PRIVATE!" starCount={getStars(7)} onNext={() => dismissSummary(7, 8)} />;
         const allFound = foundDangers.size >= PROFILE_DANGERS.length;
         return (
-          <FullScene bg="linear-gradient(180deg, #0a0f1a 0%, #1a1033 100%)" glow="radial-gradient(circle, rgba(6,182,212,0.2), transparent)">
+          <FullScene bg="linear-gradient(180deg, #0a0f1a 0%, #0f1530 100%)" glow="radial-gradient(circle, rgba(6,182,212,0.2), transparent)">
           <div style={{ textAlign: "center" }}>
             <h1 data-split style={{ color: "#fff", fontSize: 38, fontWeight: 900, marginBottom: 4, textShadow: "0 0 20px rgba(6,182,212,0.3)" }}>🔎 PROFILE DETECTIVE</h1>
             <SpeechBubble character="layla" message="This profile has so many dangers. Can you spot them all?" />
@@ -1799,7 +1799,7 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
               <div style={{ maxWidth: 440, margin: "0 auto", borderRadius: 20, overflow: "hidden", border: "1px solid rgba(255,255,255,0.1)", background: "rgba(0,0,0,0.2)" }}>
                 {/* Profile header */}
                 <div style={{ padding: 16, display: "flex", alignItems: "center", gap: 12, borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
-                  <div style={{ width: 48, height: 48, borderRadius: "50%", background: "linear-gradient(135deg, #ec4899, #3b82f6)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 24 }}>👧</div>
+                  <div style={{ width: 48, height: 48, borderRadius: "50%", background: "linear-gradient(135deg, #ff5fb3, #3a7bff)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 24 }}>👧</div>
                   <div style={{ textAlign: "left", flex: 1 }}>
                     <div onClick={() => { if (!foundDangers.has("username")) { setFoundDangers((s) => { const n = new Set(s); n.add("username"); return n; }); playSound("/sounds/correct.mp3"); } }}
                       style={{ cursor: "pointer", color: foundDangers.has("username") ? "#ef4444" : "#fff", fontWeight: 700, fontSize: 14, textDecoration: foundDangers.has("username") ? "line-through" : "none" }}>
@@ -1847,7 +1847,7 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
               <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }}>
                 {card(
                   <>
-                    <h2 style={{ color: "#10b981", fontSize: 22, fontWeight: 900, marginBottom: 8 }}>PROFILE SECURED!</h2>
+                    <h2 style={{ color: "#7eff97", fontSize: 22, fontWeight: 900, marginBottom: 8 }}>PROFILE SECURED!</h2>
                     <p style={{ color: "#d1d5db", marginBottom: 16 }}>
                       {allFound ? `All ${PROFILE_DANGERS.length} dangers eliminated!` : `You found ${foundDangers.size}/${PROFILE_DANGERS.length} dangers.`}
                     </p>
@@ -1920,7 +1920,7 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
                       style={{
                         flex: 1, minWidth: 200, padding: 24, borderRadius: 16, cursor: "pointer",
                         background: contextFeedback && sc.ok ? "rgba(16,185,129,0.15)" : contextFeedback === "wrong" && !sc.ok ? "rgba(239,68,68,0.1)" : "rgba(255,255,255,0.04)",
-                        border: `2px solid ${contextFeedback && sc.ok ? "#10b981" : "rgba(255,255,255,0.1)"}`,
+                        border: `2px solid ${contextFeedback && sc.ok ? "#7eff97" : "rgba(255,255,255,0.1)"}`,
                         color: "#d1d5db", fontSize: 18, fontWeight: 600, textAlign: "left", minHeight: 120,
                       }}>
                       {sc.text}
@@ -1929,7 +1929,7 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
                 </div>
                 {contextFeedback && contextFeedback !== "wrong" && (
                   <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
-                    style={{ color: "#10b981", fontWeight: 700, fontSize: 14, marginTop: 12 }}>
+                    style={{ color: "#7eff97", fontWeight: 700, fontSize: 14, marginTop: 12 }}>
                     {contextFeedback}
                   </motion.p>
                 )}
@@ -2006,13 +2006,13 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
             )}
             {broken && !chain2Phase && !chainDone && (
               <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={{ marginTop: 12 }}>
-                <p style={{ color: "#10b981", fontWeight: 700, fontSize: 16, marginBottom: 12 }}>By keeping just ONE thing private, you broke the entire chain!</p>
+                <p style={{ color: "#7eff97", fontWeight: 700, fontSize: 16, marginBottom: 12 }}>By keeping just ONE thing private, you broke the entire chain!</p>
                 {btn("See Another Chain →", () => { setChain2Phase(true); })}
               </motion.div>
             )}
             {chain2Phase && chain2Broken && (
               <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={{ marginTop: 12 }}>
-                <p style={{ color: "#10b981", fontWeight: 700, fontSize: 16, marginBottom: 12 }}>Every chain has a first link. Keep that link private, and the whole chain breaks!</p>
+                <p style={{ color: "#7eff97", fontWeight: 700, fontSize: 16, marginBottom: 12 }}>Every chain has a first link. Keep that link private, and the whole chain breaks!</p>
                 {btn("Continue →", () => { addCoins(10); triggerSummary(9); })}
               </motion.div>
             )}
@@ -2051,10 +2051,10 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
                         border: `1px solid ${revealed ? "rgba(16,185,129,0.3)" : "rgba(255,255,255,0.1)"}`,
                         textAlign: "center",
                       }}>
-                      <p style={{ color: revealed ? "#10b981" : "#6b7280", fontWeight: 700, fontSize: 13 }}>
+                      <p style={{ color: revealed ? "#7eff97" : "#6b7280", fontWeight: 700, fontSize: 13 }}>
                         {item.label}: {revealed ? "" : "???"}
                       </p>
-                      {revealed && <p style={{ color: "#10b981", fontSize: 12, marginTop: 4 }}>{item.msg}</p>}
+                      {revealed && <p style={{ color: "#7eff97", fontSize: 12, marginTop: 4 }}>{item.msg}</p>}
                     </motion.div>
                   );
                 })}
@@ -2064,7 +2064,7 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
               <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
                 {card(
                   <>
-                    <p style={{ color: "#10b981", fontWeight: 800, marginBottom: 4 }}>The Raccoon&apos;s board is EMPTY.</p>
+                    <p style={{ color: "#7eff97", fontWeight: 800, marginBottom: 4 }}>The Raccoon&apos;s board is EMPTY.</p>
                     <p style={{ color: "#d1d5db", fontSize: 14, marginBottom: 8 }}>He has NOTHING on Adam &amp; Layla. But he&apos;s not giving up!</p>
                     <div style={{ marginBottom: 12 }}>
                       <div style={{ fontSize: 12, color: "#9ca3af", marginBottom: 4 }}>Mission Progress: 65%</div>
@@ -2152,7 +2152,7 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
                       {rev ? (
                         <>
                           <motion.span initial={{ scale: 0 }} animate={{ scale: 1 }} style={{ display: "block", color: "#ef4444", fontWeight: 900, fontSize: 11 }}>FAILED</motion.span>
-                          <p style={{ color: "#10b981", fontSize: 10, marginTop: 4 }}>{mc.result}</p>
+                          <p style={{ color: "#7eff97", fontSize: 10, marginTop: 4 }}>{mc.result}</p>
                         </>
                       ) : (
                         <span style={{ color: "#6b7280", fontSize: 18 }}>???</span>
@@ -2166,7 +2166,7 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
               <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
                 {card(
                   <>
-                    <p style={{ color: "#10b981", fontWeight: 800, marginBottom: 4 }}>His masterplan is in RUINS!</p>
+                    <p style={{ color: "#7eff97", fontWeight: 800, marginBottom: 4 }}>His masterplan is in RUINS!</p>
                     <p style={{ color: "#d1d5db", fontSize: 14, marginBottom: 12 }}>Every lead was a dead end because YOU protected Adam &amp; Layla&apos;s information!</p>
                     <p style={{ color: "#f59e0b", fontWeight: 700, fontSize: 14, marginBottom: 12 }}>Now it&apos;s time for the FINAL BATTLE...</p>
                     {btn("Defend the Vault! →", () => { addCoins(10); navigate(15); })}
@@ -2257,8 +2257,8 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
                   <p style={{ color: "#d1d5db", marginBottom: 12 }}>Agent Status:</p>
                   {/* Badge */}
                   <motion.div initial={{ scale: 0, rotate: -180 }} animate={{ scale: 1, rotate: 0 }} transition={{ type: "spring", stiffness: 150, damping: 12 }}
-                    style={{ width: 120, height: 120, margin: "0 auto 16px", borderRadius: "50%", background: "linear-gradient(135deg, #3b82f6, #f59e0b)", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 0 40px rgba(59,130,246,0.4)" }}>
-                    <div style={{ width: 100, height: 100, borderRadius: "50%", background: "#1a1033", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
+                    style={{ width: 120, height: 120, margin: "0 auto 16px", borderRadius: "50%", background: "linear-gradient(135deg, #3a7bff, #f59e0b)", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 0 40px rgba(59,130,246,0.4)" }}>
+                    <div style={{ width: 100, height: 100, borderRadius: "50%", background: "#0f1530", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
                       <span style={{ fontSize: 32 }}>🔒</span>
                       <span style={{ color: "#f59e0b", fontWeight: 900, fontSize: 8, letterSpacing: "0.1em" }}>INFORMATION AGENT</span>
                     </div>
@@ -2418,7 +2418,7 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
             fontFamily: "'Space Grotesk', sans-serif",
             fontSize: Math.min(40, 20 + lessonCombo * 3),
             fontWeight: 800,
-            color: "#fde047",
+            color: "#ffb347",
             letterSpacing: "-0.01em",
             textShadow: "0 0 14px rgba(250,204,21,0.8), 2px 2px 0 rgba(0,0,0,0.6)",
             pointerEvents: "none",

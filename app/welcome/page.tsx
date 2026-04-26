@@ -4,7 +4,7 @@ import { useEffect, useState, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 
-const GRAD = "linear-gradient(135deg, #8b5cf6, #3b82f6)";
+const GRAD = "linear-gradient(135deg, #7c5cff, #3a7bff)";
 
 function FloatingOrbs() {
   // Pixar-magic background — bright animated gradient blobs, twinkling
@@ -15,7 +15,7 @@ function FloatingOrbs() {
     key: i,
     left: (i * 3.3 + (i % 3) * 2) % 100,
     size: 4 + (i % 5),
-    color: ["#a78bfa", "#60a5fa", "#f472b6", "#fde047", "#22d3ee", "#34d399"][i % 6],
+    color: ["#a08fff", "#7df0ff", "#ff5fb3", "#ffb347", "#00e5ff", "#7eff97"][i % 6],
     delay: (i * 0.7) % 14,
     duration: 14 + (i % 7) * 2.2,
     peak: 0.32 + ((i * 11) % 22) / 100,
@@ -116,7 +116,7 @@ function FloatingOrbs() {
 }
 
 function ConfettiBurst() {
-  const colors = ["#8b5cf6", "#3b82f6", "#f59e0b", "#10b981", "#ef4444", "#ec4899"];
+  const colors = ["#7c5cff", "#3a7bff", "#f59e0b", "#7eff97", "#ef4444", "#ff5fb3"];
   const particles = useMemo(() =>
     Array.from({ length: 40 }, (_, i) => {
       const angle = (i / 40) * Math.PI * 2;
@@ -207,7 +207,7 @@ export default function WelcomePage() {
   }, [loaded]);
 
   return (
-    <div className="min-h-screen relative overflow-hidden flex items-center justify-center" style={{ background: "#1a1033" }}>
+    <div className="min-h-screen relative overflow-hidden flex items-center justify-center" style={{ background: "#0f1530" }}>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
         * { font-family: 'Nunito', sans-serif; }

@@ -35,14 +35,14 @@ interface BlockDef {
 }
 
 const GOOD_BLOCKS: BlockDef[] = [
-  { text: "Strong Passwords", kind: "good", primary: "#7cc89a", secondary: "#15803d" },
-  { text: "Enable 2FA", kind: "good", primary: "#ff9b4a", secondary: "#d4733a" },
-  { text: "Avoid Unknown Links", kind: "good", primary: "#ffd58a", secondary: "#d4733a" },
-  { text: "Keep Software Updated", kind: "good", primary: "#7cc89a", secondary: "#15803d" },
-  { text: "Password Manager", kind: "good", primary: "#ff9b4a", secondary: "#d4733a" },
-  { text: "Check URLs Carefully", kind: "good", primary: "#ffd58a", secondary: "#d4733a" },
-  { text: "Log Out When Done", kind: "good", primary: "#7cc89a", secondary: "#15803d" },
-  { text: "Use Antivirus", kind: "good", primary: "#ff9b4a", secondary: "#d4733a" },
+  { text: "Strong Passwords", kind: "good", primary: "#7eff97", secondary: "#15803d" },
+  { text: "Enable 2FA", kind: "good", primary: "#7c5cff", secondary: "#3a7bff" },
+  { text: "Avoid Unknown Links", kind: "good", primary: "#00e5ff", secondary: "#3a7bff" },
+  { text: "Keep Software Updated", kind: "good", primary: "#7eff97", secondary: "#15803d" },
+  { text: "Password Manager", kind: "good", primary: "#7c5cff", secondary: "#3a7bff" },
+  { text: "Check URLs Carefully", kind: "good", primary: "#00e5ff", secondary: "#3a7bff" },
+  { text: "Log Out When Done", kind: "good", primary: "#7eff97", secondary: "#15803d" },
+  { text: "Use Antivirus", kind: "good", primary: "#7c5cff", secondary: "#3a7bff" },
 ];
 
 const BAD_BLOCKS: BlockDef[] = [
@@ -193,13 +193,13 @@ export default function FirewallBuilder({
     s.combo += 1;
     if (s.combo > s.bestCombo) s.bestCombo = s.combo;
     if (s.combo === 3 || s.combo === 5 || s.combo === 8 || s.combo === 12) {
-      addFloater(`COMBO x${s.combo}!`, col * COL_W + COL_W / 2, PLAY_H - stackHeightPx(col) - 24, "#ffd58a");
+      addFloater(`COMBO x${s.combo}!`, col * COL_W + COL_W / 2, PLAY_H - stackHeightPx(col) - 24, "#00e5ff");
       s.comboFlashUntil = performance.now() + 700;
       playSound("streak3");
     }
     playSound("correct");
     onCorrect?.();
-    burst(col * COL_W + COL_W / 2, PLAY_H - stackHeightPx(col) + BLOCK_H / 2, "#7cc89a", 10 + Math.min(20, s.combo * 2));
+    burst(col * COL_W + COL_W / 2, PLAY_H - stackHeightPx(col) + BLOCK_H / 2, "#7eff97", 10 + Math.min(20, s.combo * 2));
     const milestone = LEVEL_THRESHOLDS.indexOf(s.goodLanded);
     if (milestone >= 0) {
       s.level = milestone + 1;
@@ -411,9 +411,9 @@ export default function FirewallBuilder({
       // Background — animated cyberpunk firewall control room. Radial
       // gradient + circuit traces + drifting scan ring + hex starfield.
       const bg = ctx.createRadialGradient(CANVAS_W / 2, CANVAS_H * 0.35, 0, CANVAS_W / 2, CANVAS_H * 0.35, Math.max(CANVAS_W, CANVAS_H));
-      bg.addColorStop(0, "#5a2540");
-      bg.addColorStop(0.55, "#2a0d2e");
-      bg.addColorStop(1, "#1a0612");
+      bg.addColorStop(0, "#1a2147");
+      bg.addColorStop(0.55, "#0f1530");
+      bg.addColorStop(1, "#080a16");
       ctx.fillStyle = bg;
       ctx.fillRect(0, 0, CANVAS_W, CANVAS_H);
 
@@ -433,12 +433,12 @@ export default function FirewallBuilder({
       const ringPhase = (now / 2400) % 1;
       const ringR = 60 + ringPhase * 320;
       ctx.save();
-      ctx.strokeStyle = `rgba(255, 200, 110, ${0.45 * (1 - ringPhase)})`;
+      ctx.strokeStyle = `rgba(124, 92, 255, ${0.45 * (1 - ringPhase)})`;
       ctx.lineWidth = 2;
       ctx.beginPath();
       ctx.arc(CANVAS_W / 2, PLAY_Y + PLAY_H * 0.5, ringR, 0, Math.PI * 2);
       ctx.stroke();
-      ctx.strokeStyle = `rgba(255, 178, 110, ${0.3 * (1 - ringPhase)})`;
+      ctx.strokeStyle = `rgba(124, 92, 255, ${0.3 * (1 - ringPhase)})`;
       ctx.beginPath();
       ctx.arc(CANVAS_W / 2, PLAY_Y + PLAY_H * 0.5, ringR + 18, 0, Math.PI * 2);
       ctx.stroke();
@@ -481,7 +481,7 @@ export default function FirewallBuilder({
       }
       ctx.restore();
       // Grid (warmer)
-      ctx.strokeStyle = "rgba(255, 200, 110, 0.2)";
+      ctx.strokeStyle = "rgba(124, 92, 255, 0.2)";
       ctx.lineWidth = 1;
       for (let c = 1; c < COLS; c++) {
         ctx.beginPath();
@@ -498,13 +498,13 @@ export default function FirewallBuilder({
       // Top scan beam crossing the play area — warm gold
       const beamY = PLAY_Y + ((now / 12) % PLAY_H);
       const beamGrad = ctx.createLinearGradient(0, beamY - 24, 0, beamY + 24);
-      beamGrad.addColorStop(0, "rgba(255, 200, 110, 0)");
+      beamGrad.addColorStop(0, "rgba(124, 92, 255, 0)");
       beamGrad.addColorStop(0.5, "rgba(255, 220, 130, 0.22)");
-      beamGrad.addColorStop(1, "rgba(255, 200, 110, 0)");
+      beamGrad.addColorStop(1, "rgba(124, 92, 255, 0)");
       ctx.fillStyle = beamGrad;
       ctx.fillRect(PLAY_X, beamY - 24, PLAY_W, 48);
       // Bordering glow rectangle
-      ctx.strokeStyle = "rgba(255, 200, 110, 0.55)";
+      ctx.strokeStyle = "rgba(124, 92, 255, 0.55)";
       ctx.lineWidth = 1.5;
       ctx.shadowColor = "#ffd158";
       ctx.shadowBlur = 14;
@@ -516,7 +516,7 @@ export default function FirewallBuilder({
       ctx.fillRect(PLAY_X - 8, PLAY_Y, 6, PLAY_H);
       ctx.fillRect(PLAY_X + PLAY_W + 2, PLAY_Y, 6, PLAY_H);
       // Static brass rivets
-      ctx.fillStyle = "rgba(255, 200, 110, 0.7)";
+      ctx.fillStyle = "rgba(124, 92, 255, 0.7)";
       for (let i = 0; i < 12; i++) {
         const y = PLAY_Y + 10 + i * 38;
         ctx.fillRect(PLAY_X - 7, y, 4, 4);
@@ -525,7 +525,7 @@ export default function FirewallBuilder({
       // Travelling ember pulse along each rail
       const pulseY = PLAY_Y + ((now / 5) % PLAY_H);
       ctx.fillStyle = "#ffd158";
-      ctx.shadowColor = "#ff9b4a";
+      ctx.shadowColor = "#7c5cff";
       ctx.shadowBlur = 12;
       ctx.fillRect(PLAY_X - 8, pulseY, 6, 12);
       ctx.fillRect(PLAY_X + PLAY_W + 2, PLAY_H + PLAY_Y - (pulseY - PLAY_Y) - 12, 6, 12);
@@ -534,7 +534,7 @@ export default function FirewallBuilder({
       // Foundation — gold-trimmed base plate
       const foundGrad = ctx.createLinearGradient(0, PLAY_Y + PLAY_H, 0, PLAY_Y + PLAY_H + 12);
       foundGrad.addColorStop(0, "#ffd158");
-      foundGrad.addColorStop(1, "#7a3a08");
+      foundGrad.addColorStop(1, "#0f1530");
       ctx.fillStyle = foundGrad;
       ctx.fillRect(PLAY_X - 14, PLAY_Y + PLAY_H, PLAY_W + 28, 12);
       // Rivets along foundation
@@ -601,7 +601,7 @@ export default function FirewallBuilder({
         const age = now - (s.levelFlashUntil - 1500);
         const alpha = age < 300 ? age / 300 : 1 - (age - 300) / 1200;
         ctx.globalAlpha = Math.max(0, Math.min(1, alpha));
-        ctx.fillStyle = "#ffd58a";
+        ctx.fillStyle = "#00e5ff";
         ctx.strokeStyle = "rgba(0,0,0,0.8)";
         ctx.lineWidth = 4;
         ctx.font = "900 32px 'Space Grotesk', sans-serif";
@@ -616,13 +616,13 @@ export default function FirewallBuilder({
       ctx.font = "800 13px ui-rounded, 'Fredoka', system-ui, sans-serif";
       ctx.textAlign = "left";
       ctx.textBaseline = "top";
-      ctx.fillStyle = "#a8e3bb";
+      ctx.fillStyle = "#a0ffb0";
       ctx.fillText(`FIREWALL LEVEL ${s.level}`, 14, 12);
       ctx.textAlign = "right";
-      ctx.fillStyle = "#ffd58a";
+      ctx.fillStyle = "#00e5ff";
       ctx.fillText(`BLOCKS ${s.goodLanded}/${WIN_GOOD}`, CANVAS_W - 14, 12);
       ctx.textAlign = "center";
-      ctx.fillStyle = s.badLanded >= LOSE_BAD - 1 ? "#f08e7e" : "#ffd158";
+      ctx.fillStyle = s.badLanded >= LOSE_BAD - 1 ? "#ff5fb3" : "#ffd158";
       ctx.fillText(`VIRUSES ${s.badLanded}/${LOSE_BAD}`, CANVAS_W / 2, 12);
 
       // Legend row
@@ -630,7 +630,7 @@ export default function FirewallBuilder({
       // Static legend only when there's NO falling block — otherwise it
       // overlaps with the big CATCH IT! / REJECT IT! prompt below.
       if (!s.falling) {
-        ctx.fillStyle = "#ffe9c8";
+        ctx.fillStyle = "#c5cdf0";
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
         ctx.fillText("🟢 GREEN = Catch it!   🔴 RED = Press SPACE to reject!", CANVAS_W / 2, 34);
@@ -639,7 +639,7 @@ export default function FirewallBuilder({
       // Huge CATCH IT! / REJECT IT! indicator above the play area
       if (s.falling) {
         const isGood = s.falling.def.kind === "good";
-        const col = isGood ? "#7cc89a" : "#ef4444";
+        const col = isGood ? "#7eff97" : "#ef4444";
         const label = isGood ? "CATCH IT!" : "REJECT IT!";
         const glowPulse = 0.6 + 0.4 * Math.sin(now / 180);
         ctx.shadowColor = col;
@@ -699,10 +699,10 @@ export default function FirewallBuilder({
         borderRadius: 28,
         overflow: "hidden",
         background:
-          "linear-gradient(180deg, #2a1240 0%, #5a2540 35%, #a04a4a 70%, #e88550 92%, #fcd58a 100%)",
+          "linear-gradient(180deg, #2a1240 0%, #1a2147 35%, #252d5e 70%, #3a7bff 92%, #7df0ff 100%)",
         boxShadow:
           "0 40px 90px -30px rgba(40, 22, 12, 0.55), 0 0 0 1px rgba(255,210,170,0.25) inset",
-        color: "#fff7e6",
+        color: "#e8edff",
         fontFamily:
           "ui-rounded, 'Fredoka', 'Quicksand', system-ui, -apple-system, sans-serif",
       }}
@@ -769,7 +769,7 @@ function drawBlock(
   ctx.strokeStyle = flash
     ? "#fff"
     : def.kind === "good"
-      ? "#7cc89a"
+      ? "#7eff97"
       : "#ef4444";
   ctx.lineWidth = 2;
   roundRect(ctx, x, y, w, h, 8);

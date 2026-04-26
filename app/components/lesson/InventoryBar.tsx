@@ -15,13 +15,13 @@ import { useInventory } from "./InventoryProvider";
 import { useEffect, useRef, useState } from "react";
 
 const C = {
-  cream: "#fff7e6",
-  dim: "rgba(255,233,200,0.55)",
-  border: "rgba(255,220,180,0.32)",
-  borderEarned: "rgba(255,220,180,0.7)",
-  bgPanel: "rgba(40,18,38,0.78)",
-  bgSlot: "rgba(20,6,12,0.55)",
-  bgSlotEarned: "rgba(40,18,38,0.65)",
+  cream: "#e8edff",
+  dim: "rgba(125, 240, 255, 0.55)",
+  border: "rgba(0, 229, 255, 0.32)",
+  borderEarned: "rgba(0, 229, 255, 0.75)",
+  bgPanel: "rgba(15, 21, 48, 0.82)",
+  bgSlot: "rgba(8, 10, 22, 0.65)",
+  bgSlotEarned: "rgba(15, 21, 48, 0.75)",
 };
 
 export interface InventoryBarProps {
@@ -87,7 +87,7 @@ export function InventoryBar({ currentScreen }: InventoryBarProps) {
           border: `1px solid ${C.border}`,
           borderRadius: 999,
           boxShadow:
-            "0 12px 28px -10px rgba(20,6,12,0.6), 0 0 0 1px rgba(255,220,180,0.08) inset",
+            "0 12px 28px -10px rgba(0, 0, 0, 0.7), 0 0 26px rgba(0, 229, 255, 0.18), 0 0 0 1px rgba(0, 229, 255, 0.12) inset",
           backdropFilter: "blur(12px)",
           WebkitBackdropFilter: "blur(12px)",
           fontFamily:

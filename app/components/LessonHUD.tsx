@@ -59,9 +59,9 @@ export default function LessonHUD({
         backdropFilter: "blur(12px)",
         WebkitBackdropFilter: "blur(12px)",
         background:
-          "linear-gradient(180deg, rgba(20,6,12,0.88) 0%, rgba(40,18,38,0.85) 100%)",
-        borderBottom: "1px solid rgba(255,220,180,0.14)",
-        boxShadow: "inset 0 -1px 0 rgba(255,178,110,0.18)",
+          "linear-gradient(180deg, rgba(8, 10, 22, 0.92) 0%, rgba(15, 21, 48, 0.88) 100%)",
+        borderBottom: "1px solid rgba(0, 229, 255, 0.22)",
+        boxShadow: "inset 0 -1px 0 rgba(0, 229, 255, 0.32), 0 0 24px rgba(0, 229, 255, 0.08)",
         display: "flex",
         alignItems: "center",
         gap: 18,
@@ -78,10 +78,10 @@ export default function LessonHUD({
               width: 36,
               height: 36,
               borderRadius: "50%",
-              border: "2px solid #ffd58a",
-              boxShadow: "0 0 12px rgba(255,213,138,0.55)",
+              border: "2px solid #00e5ff",
+              boxShadow: "0 0 14px rgba(0, 229, 255, 0.7), 0 0 28px rgba(0, 229, 255, 0.35)",
               overflow: "hidden",
-              background: "#2a0d2e",
+              background: "#0f1530",
               flexShrink: 0,
               zIndex: 2,
             }}
@@ -104,10 +104,10 @@ export default function LessonHUD({
               width: 36,
               height: 36,
               borderRadius: "50%",
-              border: "2px solid #f08e7e",
-              boxShadow: "0 0 12px rgba(240,142,126,0.55)",
+              border: "2px solid #ff5fb3",
+              boxShadow: "0 0 14px rgba(255, 95, 179, 0.7), 0 0 28px rgba(124, 92, 255, 0.35)",
               overflow: "hidden",
-              background: "#2a0d2e",
+              background: "#0f1530",
               flexShrink: 0,
               marginLeft: -12,
               zIndex: 1,
@@ -247,9 +247,9 @@ export default function LessonHUD({
             style={{
               height: "100%",
               width: `${lessonFillPct}%`,
-              background: "linear-gradient(90deg, #ffd58a, #ff9b4a)",
+              background: "linear-gradient(90deg, #00e5ff, #7c5cff)",
               transition: "width 0.4s ease-out",
-              boxShadow: "0 0 8px rgba(255,213,138,0.65)",
+              boxShadow: "0 0 10px rgba(0, 229, 255, 0.8), 0 0 20px rgba(124, 92, 255, 0.45)",
             }}
           />
         </div>

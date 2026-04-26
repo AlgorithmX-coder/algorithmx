@@ -50,7 +50,7 @@ export const INVENTORY_ITEMS: InventoryItem[] = [
     name: "Mission Briefing",
     didYouKnow: "Every great hero starts with a mission. Yours is keeping passwords safe!",
     speaker: "adam",
-    accent: "#ffd58a",
+    accent: "#00e5ff",
   },
   {
     id: "w1-hero-license",
@@ -59,7 +59,7 @@ export const INVENTORY_ITEMS: InventoryItem[] = [
     name: "Hero License",
     didYouKnow: "You're officially a Cyber Hero now. The Raccoon should be worried…",
     speaker: "layla",
-    accent: "#f08e7e",
+    accent: "#ff5fb3",
   },
   {
     id: "w1-vault-key",
@@ -68,7 +68,7 @@ export const INVENTORY_ITEMS: InventoryItem[] = [
     name: "Vault Key",
     didYouKnow: "A password is a tiny key that fits only one lock — yours.",
     speaker: "adam",
-    accent: "#ff9b4a",
+    accent: "#7c5cff",
   },
   {
     id: "w1-strength-goggles",
@@ -77,7 +77,7 @@ export const INVENTORY_ITEMS: InventoryItem[] = [
     name: "Strength Goggles",
     didYouKnow: "Strong passwords mix big letters, small letters, numbers AND symbols. All four!",
     speaker: "layla",
-    accent: "#7cc89a",
+    accent: "#7eff97",
   },
   {
     id: "w1-shield-reflex",
@@ -86,7 +86,7 @@ export const INVENTORY_ITEMS: InventoryItem[] = [
     name: "Shield Reflex",
     didYouKnow: "Your data is precious — defend it like you'd defend a friend.",
     speaker: "adam",
-    accent: "#a06aff",
+    accent: "#3a7bff",
   },
   {
     id: "w1-first-insight",
@@ -95,7 +95,7 @@ export const INVENTORY_ITEMS: InventoryItem[] = [
     name: "First Insight",
     didYouKnow: "Hackers trick people more than they trick computers. Stay sharp!",
     speaker: "layla",
-    accent: "#ffd58a",
+    accent: "#00e5ff",
   },
   {
     id: "w1-password-potion",
@@ -104,7 +104,7 @@ export const INVENTORY_ITEMS: InventoryItem[] = [
     name: "Password Potion",
     didYouKnow: "Mix the right ingredients and even the Raccoon can't crack it.",
     speaker: "adam",
-    accent: "#f08e7e",
+    accent: "#ff5fb3",
   },
   {
     id: "w1-cracker-tool",
@@ -113,7 +113,7 @@ export const INVENTORY_ITEMS: InventoryItem[] = [
     name: "Code Cracker",
     didYouKnow: "Long, random passwords are the strongest. 8 characters minimum!",
     speaker: "layla",
-    accent: "#ff9b4a",
+    accent: "#7c5cff",
   },
   {
     id: "w1-memory-glasses",
@@ -122,7 +122,7 @@ export const INVENTORY_ITEMS: InventoryItem[] = [
     name: "Memory Charm",
     didYouKnow: "Linking a term to a picture makes it stick — that's how cyber pros remember.",
     speaker: "adam",
-    accent: "#7cc89a",
+    accent: "#7eff97",
   },
   {
     id: "w1-sorting-speed",
@@ -131,7 +131,7 @@ export const INVENTORY_ITEMS: InventoryItem[] = [
     name: "Sorting Speed",
     didYouKnow: "You can spot a weak password in seconds now. Real superpower!",
     speaker: "layla",
-    accent: "#ffd58a",
+    accent: "#00e5ff",
   },
   {
     id: "w1-rule-book",
@@ -140,7 +140,7 @@ export const INVENTORY_ITEMS: InventoryItem[] = [
     name: "Rule Book",
     didYouKnow: "Pros follow rules so they never have to think twice in danger.",
     speaker: "adam",
-    accent: "#a06aff",
+    accent: "#3a7bff",
   },
   {
     id: "w1-second-insight",
@@ -149,7 +149,7 @@ export const INVENTORY_ITEMS: InventoryItem[] = [
     name: "Second Insight",
     didYouKnow: "Two passwords that LOOK alike can be miles apart in safety.",
     speaker: "layla",
-    accent: "#ffd58a",
+    accent: "#00e5ff",
   },
   {
     id: "w1-detective-eye",
@@ -158,7 +158,7 @@ export const INVENTORY_ITEMS: InventoryItem[] = [
     name: "Detective Eye",
     didYouKnow: "Phishing tricks always leave a clue. You just trained your eye to spot one.",
     speaker: "adam",
-    accent: "#f08e7e",
+    accent: "#ff5fb3",
   },
   {
     id: "w1-spam-sword",
@@ -167,7 +167,7 @@ export const INVENTORY_ITEMS: InventoryItem[] = [
     name: "Spam Wand",
     didYouKnow: "One tap can save a whole inbox. Junk mail beware!",
     speaker: "layla",
-    accent: "#7cc89a",
+    accent: "#7eff97",
   },
   {
     id: "w1-path-compass",
@@ -176,7 +176,7 @@ export const INVENTORY_ITEMS: InventoryItem[] = [
     name: "Choice Compass",
     didYouKnow: "The best heroes don't just react — they choose. Smart over fast.",
     speaker: "adam",
-    accent: "#ffd58a",
+    accent: "#00e5ff",
   },
   {
     id: "w1-boss-trophy",
@@ -185,7 +185,7 @@ export const INVENTORY_ITEMS: InventoryItem[] = [
     name: "Boss Trophy",
     didYouKnow: "You out-thought the Hacker Raccoon. Adam and Layla are safe!",
     speaker: "layla",
-    accent: "#ff9b4a",
+    accent: "#7c5cff",
   },
   {
     id: "w1-victory-aura",
@@ -194,7 +194,7 @@ export const INVENTORY_ITEMS: InventoryItem[] = [
     name: "Victory Aura",
     didYouKnow: "Real heroes celebrate the people they protected, not just the win.",
     speaker: "adam",
-    accent: "#a06aff",
+    accent: "#3a7bff",
   },
   {
     id: "w1-academy-pin",
@@ -203,7 +203,7 @@ export const INVENTORY_ITEMS: InventoryItem[] = [
     name: "Academy Pin",
     didYouKnow: "You finished Week 1. The Cyber Heroes Academy is yours to keep.",
     speaker: "layla",
-    accent: "#ffd58a",
+    accent: "#00e5ff",
   },
   {
     id: "w1-secret-badge",
@@ -212,7 +212,7 @@ export const INVENTORY_ITEMS: InventoryItem[] = [
     name: "Secret Spark",
     didYouKnow: "There's always something extra for those who go the distance.",
     speaker: "adam",
-    accent: "#f08e7e",
+    accent: "#ff5fb3",
   },
 ];
 

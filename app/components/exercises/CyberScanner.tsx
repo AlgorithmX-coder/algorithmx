@@ -62,8 +62,8 @@ const CV = {
   gridStroke: "rgba(140, 70, 25, 0.07)",
   // Beam (gold)
   beamCore: "rgba(255, 248, 220, 0.85)",
-  beamGlow: "rgba(255, 200, 110, 0.42)",
-  beamEdge: "rgba(255, 178, 110, 0)",
+  beamGlow: "rgba(124, 92, 255, 0.42)",
+  beamEdge: "rgba(124, 92, 255, 0)",
   beamCenterLine: "rgba(255, 178, 90, 0.85)",
   // Shield (warm gold)
   shieldFill: "rgba(255, 220, 160, 0.45)",
@@ -75,30 +75,30 @@ const CV = {
   cardBodyBottom: "#fdebcb",
   cardBorderIdle: "rgba(196, 115, 64, 0.55)",
   cardBorderCorrect: "#4a9a6a",
-  cardBorderWrong: "#c4513a",
+  cardBorderWrong: "#ff7a59",
   cardSweep: "rgba(255, 220, 150, 0.45)",
   cardText: "#3b2615",
   // Timer bar
   timerTrack: "rgba(140, 70, 25, 0.18)",
   timerGood: "#4a9a6a",
   timerWarn: "#e89938",
-  timerBad: "#c4513a",
+  timerBad: "#ff7a59",
   // Floaters
   floaterCorrect: "#4a9a6a",
-  floaterWrong: "#c4513a",
+  floaterWrong: "#ff7a59",
   floaterSlow: "#e89938",
-  floaterBonus: "#a06aff",
+  floaterBonus: "#7c5cff",
   // Particles
-  burstCorrect: "#a8e3bb",
+  burstCorrect: "#a0ffb0",
   burstWrong: "#f4a89a",
   // Explanation
   explainBg: "rgba(48, 22, 38, 0.92)",
-  explainStrong: "#a8e3bb",
+  explainStrong: "#a0ffb0",
   explainWeak: "#f4a89a",
   // HUD
   hudScanned: "#7a3a52",
   hudScore: "#4a9a6a",
-  hudStreak: "#d4733a",
+  hudStreak: "#3a7bff",
 } as const;
 
 function transitTimeMs(i: number) {
@@ -346,7 +346,7 @@ export default function CyberScanner({
           c.outcome = "slow";
           const x = CANVAS_W - CARD_W / 2;
           addFloater("TOO SLOW!", x - 30, BEAM_Y - 40, CV.floaterSlow, 22);
-          addFloater("🦝", x + 50, BEAM_Y - 10, "#c4513a", 40, 1200);
+          addFloater("🦝", x + 50, BEAM_Y - 10, "#ff7a59", 40, 1200);
           s.streak = 0;
           s.wrong += 1;
           s.explanationText = `${c.isStrong ? "STRONG" : "WEAK"}: ${c.explanation}`;
@@ -407,9 +407,9 @@ export default function CyberScanner({
       const beamPulse = 0.85 + 0.15 * Math.sin(now / 300);
       const beamGrad = ctx.createLinearGradient(0, BEAM_Y - 50, 0, BEAM_Y + 50);
       beamGrad.addColorStop(0, CV.beamEdge);
-      beamGrad.addColorStop(0.4, `rgba(255, 200, 110, ${0.45 * beamPulse})`);
+      beamGrad.addColorStop(0.4, `rgba(124, 92, 255, ${0.45 * beamPulse})`);
       beamGrad.addColorStop(0.5, `rgba(255, 248, 220, ${0.65 * beamPulse})`);
-      beamGrad.addColorStop(0.6, `rgba(255, 200, 110, ${0.45 * beamPulse})`);
+      beamGrad.addColorStop(0.6, `rgba(124, 92, 255, ${0.45 * beamPulse})`);
       beamGrad.addColorStop(1, CV.beamEdge);
       ctx.fillStyle = beamGrad;
       ctx.fillRect(0, BEAM_Y - 50, CANVAS_W, 100);
@@ -441,8 +441,8 @@ export default function CyberScanner({
         SHIELD_Y,
         26
       );
-      shieldGrad.addColorStop(0, "#fff5cc");
-      shieldGrad.addColorStop(0.6, "#ffd58a");
+      shieldGrad.addColorStop(0, "#7df0ff");
+      shieldGrad.addColorStop(0.6, "#00e5ff");
       shieldGrad.addColorStop(1, "#d68a4c");
       ctx.fillStyle = shieldGrad;
       ctx.beginPath();
@@ -501,7 +501,7 @@ export default function CyberScanner({
 
         // Wrong-flash overlay
         if (c.resolved && c.outcome === "wrong" && Math.sin(now / 60) > 0) {
-          ctx.fillStyle = "rgba(196, 81, 58, 0.18)";
+          ctx.fillStyle = "rgba(255, 95, 179, 0.18)";
           roundRect(ctx, -CARD_W / 2, -CARD_H / 2, CARD_W, CARD_H, 14);
           ctx.fill();
         }
@@ -639,7 +639,7 @@ export default function CyberScanner({
         borderRadius: 28,
         overflow: "hidden",
         background:
-          "linear-gradient(180deg, #fff7e0 0%, #fde2b5 55%, #f9c27a 100%)",
+          "linear-gradient(180deg, #0f1530 0%, #1a2147 55%, #252d5e 100%)",
         boxShadow: SHADOW.sceneFrame,
         color: COLOR.inkDeep,
         fontFamily:
@@ -653,7 +653,7 @@ export default function CyberScanner({
           { glyph: "💀", text: "Tap WEAK for guessable ones" },
           { glyph: "⚡", text: "Decide before they cross the beam" },
         ]}
-        accent="#d4733a"
+        accent="#3a7bff"
       />
       <canvas
         ref={canvasRef}
@@ -678,14 +678,14 @@ export default function CyberScanner({
         <ScannerButton
           label="🛡  STRONG"
           tint="#4a9a6a"
-          accent="#7cc89a"
+          accent="#7eff97"
           disabled={s.finished}
           onClick={() => resolveCurrent(true)}
         />
         <ScannerButton
           label="💀  WEAK"
-          tint="#c4513a"
-          accent="#f08e7e"
+          tint="#ff7a59"
+          accent="#ff5fb3"
           disabled={s.finished}
           onClick={() => resolveCurrent(false)}
         />
@@ -748,7 +748,7 @@ function ScannerButton({
         borderRadius: 999,
         border: "none",
         background: `linear-gradient(135deg, ${accent}, ${tint})`,
-        color: "#fff7e6",
+        color: "#e8edff",
         fontWeight: 900,
         fontSize: 18,
         letterSpacing: 2,
@@ -788,7 +788,7 @@ function FinishOverlay({
         position: "absolute",
         inset: 0,
         background:
-          "linear-gradient(180deg, rgba(40, 18, 38, 0.95) 0%, rgba(20, 8, 24, 0.96) 100%)",
+          "linear-gradient(180deg, rgba(15, 21, 48, 0.95) 0%, rgba(20, 8, 24, 0.96) 100%)",
         backdropFilter: "blur(8px)",
         WebkitBackdropFilter: "blur(8px)",
         color: COLOR.cream,
@@ -806,7 +806,7 @@ function FinishOverlay({
           fontSize: 12,
           fontWeight: 800,
           letterSpacing: 5,
-          color: "#ffd58a",
+          color: "#00e5ff",
           textTransform: "uppercase",
           marginBottom: 4,
         }}
@@ -818,7 +818,7 @@ function FinishOverlay({
           fontSize: 36,
           fontWeight: 900,
           background:
-            "linear-gradient(135deg, #ffd58a, #ff9b4a, #d4733a)",
+            "linear-gradient(135deg, #00e5ff, #7c5cff, #3a7bff)",
           WebkitBackgroundClip: "text",
           WebkitTextFillColor: "transparent",
           letterSpacing: 1,
@@ -862,11 +862,11 @@ function FinishOverlay({
         }}
       >
         <span>
-          Accuracy <strong style={{ color: "#a8e3bb" }}>{accuracy}%</strong>
+          Accuracy <strong style={{ color: "#a0ffb0" }}>{accuracy}%</strong>
         </span>
         <span>·</span>
         <span>
-          Speed bonuses <strong style={{ color: "#ffd58a" }}>{speedBonuses}</strong>
+          Speed bonuses <strong style={{ color: "#00e5ff" }}>{speedBonuses}</strong>
         </span>
       </div>
       <div
@@ -913,7 +913,7 @@ function FinishOverlay({
             fontSize: 14,
             fontWeight: 800,
             color: COLOR.cream,
-            background: "rgba(50, 20, 35, 0.65)",
+            background: "rgba(15, 21, 48, 0.65)",
             backdropFilter: "blur(6px)",
             WebkitBackdropFilter: "blur(6px)",
             borderRadius: 999,

@@ -39,9 +39,9 @@ export interface MemoryMatchProps {
 
 const DEFAULT_PAIRS: MemoryPair[] = [
   { term: "Strong Password", match: "Tr0pic4l$unR1se!", colour: "#4a9a6a" },
-  { term: "Phishing", match: "Fake email stealing info", colour: "#c4513a" },
+  { term: "Phishing", match: "Fake email stealing info", colour: "#ff7a59" },
   { term: "2FA", match: "Second check to prove it's you", colour: "#3a6e8e" },
-  { term: "Firewall", match: "Blocks dangerous traffic", colour: "#d4733a" },
+  { term: "Firewall", match: "Blocks dangerous traffic", colour: "#3a7bff" },
   { term: "Digital Footprint", match: "Everything you do online", colour: "#8e6abf" },
   { term: "Private Info", match: "Name, address, phone number", colour: "#c43c6a" },
 ];
@@ -444,7 +444,7 @@ export default function MemoryMatch({
         // Deep plum card frame — replaces the cream parchment so the
         // tech-themed card backs read clearly. Still warm-Pixar.
         background:
-          "linear-gradient(180deg, #2a0d2e 0%, #1f0820 55%, #150610 100%)",
+          "linear-gradient(180deg, #0f1530 0%, #1f0820 55%, #150610 100%)",
         boxShadow: SHADOW.sceneFrame,
         color: COLOR.cream,
         overflow: "hidden",
@@ -462,7 +462,7 @@ export default function MemoryMatch({
             { glyph: "🔗", text: "Match the term to its meaning" },
             { glyph: "⚡", text: "Fewer flips = more stars" },
           ]}
-          accent="#d4733a"
+          accent="#3a7bff"
         />
         <div style={{ height: 14 }} />
         {/* HUD */}
@@ -476,7 +476,7 @@ export default function MemoryMatch({
             fontWeight: 800,
             letterSpacing: 1,
             padding: "8px 14px",
-            background: "rgba(50, 20, 35, 0.65)",
+            background: "rgba(15, 21, 48, 0.65)",
             backdropFilter: "blur(8px)",
             WebkitBackdropFilter: "blur(8px)",
             borderRadius: 14,
@@ -485,13 +485,13 @@ export default function MemoryMatch({
         >
           {phase === "rebuild" ? (
             <>
-              <span style={{ color: "#a8e3bb" }}>
+              <span style={{ color: "#a0ffb0" }}>
                 ROUND {Math.min(rebuildPromptIdx + 1, totalPairs)}/{totalPairs}
               </span>
               <span style={{ color: "#fcd34d" }}>HITS {rebuildHits}/{rebuildAttempts || 0}</span>
               <span
                 style={{
-                  color: "#ffd58a",
+                  color: "#00e5ff",
                   fontFamily: "ui-monospace, 'JetBrains Mono', Menlo, monospace",
                   letterSpacing: 2,
                   textTransform: "uppercase",
@@ -503,20 +503,20 @@ export default function MemoryMatch({
             </>
           ) : (
             <>
-              <span style={{ color: "#a8e3bb" }}>
+              <span style={{ color: "#a0ffb0" }}>
                 PAIRS {pairsFound}/{totalPairs}
               </span>
               <span style={{ color: "#fcd34d" }}>FLIPS {flipCount}</span>
               <span
                 style={{
-                  color: "#ffd58a",
+                  color: "#00e5ff",
                   fontFamily: "ui-monospace, 'JetBrains Mono', Menlo, monospace",
                 }}
               >
                 {mm}:{ss}
               </span>
               {streak >= 2 && (
-                <span style={{ color: "#f08e7e" }}>STREAK x{streak}</span>
+                <span style={{ color: "#ff5fb3" }}>STREAK x{streak}</span>
               )}
             </>
           )}
@@ -532,9 +532,9 @@ export default function MemoryMatch({
               padding: "12px 18px",
               borderRadius: 16,
               background:
-                "linear-gradient(135deg, rgba(255, 213, 138, 0.95), rgba(255, 178, 110, 0.92))",
+                "linear-gradient(135deg, rgba(0, 229, 255, 0.95), rgba(124, 92, 255, 0.92))",
               boxShadow:
-                "0 12px 28px -8px rgba(40, 18, 8, 0.45), 0 0 24px rgba(255, 213, 138, 0.35), inset 0 0 0 1px rgba(255, 245, 215, 0.6)",
+                "0 12px 28px -8px rgba(40, 18, 8, 0.45), 0 0 24px rgba(0, 229, 255, 0.35), inset 0 0 0 1px rgba(125, 240, 255, 0.6)",
               textAlign: "center",
               animation: "mmFadeIn 0.45s ease-out",
             }}
@@ -555,7 +555,7 @@ export default function MemoryMatch({
               style={{
                 fontSize: 22,
                 fontWeight: 900,
-                color: "#3a1a06",
+                color: "#080a16",
                 letterSpacing: 0.5,
                 lineHeight: 1.15,
                 fontFamily: "Fredoka, ui-rounded, system-ui, sans-serif",
@@ -702,7 +702,7 @@ export default function MemoryMatch({
             fontSize: 11,
             fontWeight: 700,
             letterSpacing: 1.5,
-            color: "rgba(255, 233, 200, 0.55)",
+            color: "rgba(125, 240, 255, 0.55)",
             textTransform: "uppercase",
             pointerEvents: "none",
             zIndex: 5,
@@ -734,7 +734,7 @@ function PhaseTransitionCard({ onStart }: { onStart: () => void }) {
         alignItems: "center",
         justifyContent: "center",
         background:
-          "linear-gradient(180deg, rgba(40, 18, 38, 0.85) 0%, rgba(20, 8, 24, 0.92) 100%)",
+          "linear-gradient(180deg, rgba(15, 21, 48, 0.85) 0%, rgba(20, 8, 24, 0.92) 100%)",
         backdropFilter: "blur(10px)",
         WebkitBackdropFilter: "blur(10px)",
         animation: "mmFadeIn 0.45s ease-out",
@@ -748,12 +748,12 @@ function PhaseTransitionCard({ onStart }: { onStart: () => void }) {
           padding: "26px 28px 22px",
           borderRadius: 22,
           background:
-            "linear-gradient(180deg, rgba(40, 18, 38, 0.92), rgba(20, 8, 24, 0.95))",
-          border: "1px solid rgba(255, 220, 180, 0.42)",
+            "linear-gradient(180deg, rgba(15, 21, 48, 0.92), rgba(20, 8, 24, 0.95))",
+          border: "1px solid rgba(0, 229, 255, 0.42)",
           boxShadow:
-            "0 30px 60px -20px rgba(20,6,12,0.7), 0 0 36px rgba(255, 178, 110, 0.25)",
+            "0 30px 60px -20px rgba(8,10,22,0.7), 0 0 36px rgba(124, 92, 255, 0.25)",
           textAlign: "center",
-          color: "#fff7e6",
+          color: "#e8edff",
           fontFamily:
             "ui-rounded, 'Fredoka', 'Quicksand', system-ui, sans-serif",
         }}
@@ -764,11 +764,11 @@ function PhaseTransitionCard({ onStart }: { onStart: () => void }) {
             fontSize: 11,
             letterSpacing: 4,
             fontWeight: 800,
-            color: "#ffd58a",
+            color: "#00e5ff",
             textTransform: "uppercase",
             padding: "4px 14px",
-            background: "rgba(20, 6, 12, 0.55)",
-            border: "1px solid rgba(255, 220, 180, 0.4)",
+            background: "rgba(8, 10, 22, 0.55)",
+            border: "1px solid rgba(0, 229, 255, 0.4)",
             borderRadius: 999,
             marginBottom: 14,
           }}
@@ -781,7 +781,7 @@ function PhaseTransitionCard({ onStart }: { onStart: () => void }) {
             lineHeight: 1,
             marginBottom: 8,
             filter:
-              "drop-shadow(0 0 18px rgba(255, 213, 138, 0.65)) drop-shadow(0 0 32px rgba(255, 178, 110, 0.4))",
+              "drop-shadow(0 0 18px rgba(0, 229, 255, 0.65)) drop-shadow(0 0 32px rgba(124, 92, 255, 0.4))",
           }}
         >
           🧠
@@ -791,7 +791,7 @@ function PhaseTransitionCard({ onStart }: { onStart: () => void }) {
             fontSize: 26,
             fontWeight: 900,
             background:
-              "linear-gradient(135deg, #fff5cc, #ffd58a, #ff9b4a)",
+              "linear-gradient(135deg, #7df0ff, #00e5ff, #7c5cff)",
             WebkitBackgroundClip: "text",
             WebkitTextFillColor: "transparent",
             margin: "4px 0 6px",
@@ -804,7 +804,7 @@ function PhaseTransitionCard({ onStart }: { onStart: () => void }) {
         <p
           style={{
             fontSize: 15,
-            color: "#ffe9c8",
+            color: "#c5cdf0",
             opacity: 0.92,
             margin: "0 0 18px",
             lineHeight: 1.55,
@@ -822,8 +822,8 @@ function PhaseTransitionCard({ onStart }: { onStart: () => void }) {
             padding: "0 28px",
             border: "none",
             borderRadius: 999,
-            background: "linear-gradient(135deg, #ffd58a, #ff9b4a)",
-            color: "#3a1a06",
+            background: "linear-gradient(135deg, #00e5ff, #7c5cff)",
+            color: "#080a16",
             fontWeight: 800,
             fontSize: 15,
             letterSpacing: 0.5,
@@ -921,12 +921,12 @@ function CardBack({
         inset: 0,
         borderRadius: 14,
         background:
-          "linear-gradient(135deg, #2a0d2e 0%, #1f0820 55%, #150610 100%)",
+          "linear-gradient(135deg, #0f1530 0%, #1f0820 55%, #150610 100%)",
         borderStyle: "solid",
         borderWidth: 1,
-        borderColor: "rgba(255, 220, 180, 0.32)",
+        borderColor: "rgba(0, 229, 255, 0.32)",
         boxShadow:
-          "0 12px 28px -8px rgba(20, 6, 12, 0.7), inset 0 0 0 1px rgba(255, 220, 180, 0.18), 0 0 0 1px rgba(40, 18, 8, 0.4)",
+          "0 12px 28px -8px rgba(8, 10, 22, 0.7), inset 0 0 0 1px rgba(0, 229, 255, 0.18), 0 0 0 1px rgba(40, 18, 8, 0.4)",
         backfaceVisibility: "hidden",
         display: "flex",
         alignItems: "center",
@@ -940,12 +940,12 @@ function CardBack({
         (e.currentTarget as HTMLDivElement).style.transform =
           "translateY(-4px)";
         (e.currentTarget as HTMLDivElement).style.boxShadow =
-          "0 18px 36px -8px rgba(20, 6, 12, 0.8), inset 0 0 0 1px rgba(255, 220, 180, 0.32), 0 0 18px rgba(255, 178, 110, 0.35)";
+          "0 18px 36px -8px rgba(8, 10, 22, 0.8), inset 0 0 0 1px rgba(0, 229, 255, 0.32), 0 0 18px rgba(124, 92, 255, 0.35)";
       }}
       onMouseLeave={(e) => {
         (e.currentTarget as HTMLDivElement).style.transform = "";
         (e.currentTarget as HTMLDivElement).style.boxShadow =
-          "0 12px 28px -8px rgba(20, 6, 12, 0.7), inset 0 0 0 1px rgba(255, 220, 180, 0.18), 0 0 0 1px rgba(40, 18, 8, 0.4)";
+          "0 12px 28px -8px rgba(8, 10, 22, 0.7), inset 0 0 0 1px rgba(0, 229, 255, 0.18), 0 0 0 1px rgba(40, 18, 8, 0.4)";
       }}
     >
       {/* Faint warm circuit grid — the technical texture */}
@@ -956,7 +956,7 @@ function CardBack({
           inset: 0,
           opacity: 0.55,
           backgroundImage:
-            "linear-gradient(rgba(255, 213, 138, 0.10) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 213, 138, 0.10) 1px, transparent 1px)",
+            "linear-gradient(rgba(0, 229, 255, 0.10) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 229, 255, 0.10) 1px, transparent 1px)",
           backgroundSize: "14px 14px",
         }}
       />
@@ -976,7 +976,7 @@ function CardBack({
       >
         <g
           fill="none"
-          stroke="rgba(255, 178, 110, 0.65)"
+          stroke="rgba(124, 92, 255, 0.65)"
           strokeWidth="0.8"
           strokeLinecap="round"
         >
@@ -990,7 +990,7 @@ function CardBack({
           <path d="M 94 94 L 94 72 L 70 72 L 62 64" />
         </g>
         {/* Solder pads at the four outer corners */}
-        <g fill="rgba(255, 213, 138, 0.85)">
+        <g fill="rgba(0, 229, 255, 0.85)">
           <circle cx="6" cy="6" r="1.6" />
           <circle cx="94" cy="6" r="1.6" />
           <circle cx="6" cy="94" r="1.6" />
@@ -1007,7 +1007,7 @@ function CardBack({
           height: "55%",
           borderRadius: "50%",
           background:
-            "radial-gradient(circle, rgba(255, 213, 138, 0.55) 0%, rgba(255, 155, 74, 0.28) 45%, transparent 75%)",
+            "radial-gradient(circle, rgba(0, 229, 255, 0.55) 0%, rgba(255, 155, 74, 0.28) 45%, transparent 75%)",
           filter: "blur(8px)",
           animation: "mmSealSpin 10s linear infinite",
         }}
@@ -1023,12 +1023,12 @@ function CardBack({
       >
         <defs>
           <linearGradient id="mmChipBody" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%" stopColor="#fff5cc" />
-            <stop offset="45%" stopColor="#ffd58a" />
+            <stop offset="0%" stopColor="#7df0ff" />
+            <stop offset="45%" stopColor="#00e5ff" />
             <stop offset="100%" stopColor="#c4753a" />
           </linearGradient>
           <linearGradient id="mmChipPin" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="#ffd58a" />
+            <stop offset="0%" stopColor="#00e5ff" />
             <stop offset="100%" stopColor="#a85a25" />
           </linearGradient>
         </defs>
@@ -1068,7 +1068,7 @@ function CardBack({
           height="32"
           rx="4"
           fill="none"
-          stroke="rgba(255, 245, 215, 0.7)"
+          stroke="rgba(125, 240, 255, 0.7)"
           strokeWidth="0.6"
         />
 
@@ -1079,7 +1079,7 @@ function CardBack({
         <g transform="translate(30, 30)">
           <circle r="4.5" fill="rgba(80, 35, 5, 0.85)" />
           <rect x="-1.2" y="3.4" width="2.4" height="5" rx="0.6" fill="rgba(80, 35, 5, 0.85)" />
-          <circle r="1.4" fill="rgba(255, 245, 215, 0.55)" />
+          <circle r="1.4" fill="rgba(125, 240, 255, 0.55)" />
         </g>
       </svg>
     </div>
@@ -1201,7 +1201,7 @@ function FinishOverlay({
         position: "absolute",
         inset: 0,
         background:
-          "linear-gradient(180deg, rgba(40, 18, 38, 0.95) 0%, rgba(20, 8, 24, 0.96) 100%)",
+          "linear-gradient(180deg, rgba(15, 21, 48, 0.95) 0%, rgba(20, 8, 24, 0.96) 100%)",
         backdropFilter: "blur(8px)",
         WebkitBackdropFilter: "blur(8px)",
         color: COLOR.cream,
@@ -1220,7 +1220,7 @@ function FinishOverlay({
           fontSize: 12,
           fontWeight: 800,
           letterSpacing: 5,
-          color: "#ffd58a",
+          color: "#00e5ff",
           textTransform: "uppercase",
           marginBottom: 4,
         }}
@@ -1232,7 +1232,7 @@ function FinishOverlay({
           fontSize: 36,
           fontWeight: 900,
           background:
-            "linear-gradient(135deg, #ffd58a, #ff9b4a, #d4733a)",
+            "linear-gradient(135deg, #00e5ff, #7c5cff, #3a7bff)",
           WebkitBackgroundClip: "text",
           WebkitTextFillColor: "transparent",
           letterSpacing: 1,
@@ -1319,7 +1319,7 @@ function FinishOverlay({
             fontSize: 14,
             fontWeight: 800,
             color: COLOR.cream,
-            background: "rgba(50, 20, 35, 0.65)",
+            background: "rgba(15, 21, 48, 0.65)",
             backdropFilter: "blur(6px)",
             WebkitBackdropFilter: "blur(6px)",
             borderRadius: 999,

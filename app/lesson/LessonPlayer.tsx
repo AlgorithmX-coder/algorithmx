@@ -130,7 +130,7 @@ const celebrateCorrect = (el: HTMLElement) => {
     .to(el, { boxShadow: "0 0 40px rgba(124,200,154,0.6), 0 0 80px rgba(124,200,154,0.2)", duration: 0.2 }, 0)
     .to(el, { boxShadow: "0 0 10px rgba(124,200,154,0.2)", duration: 0.6 }, 0.4);
   const rect = el.getBoundingClientRect();
-  const colors = ["#5fb37a", "#ffd58a", "#ff9b4a", "#f59e0b"];
+  const colors = ["#5eff80", "#00e5ff", "#7c5cff", "#f59e0b"];
   for (let i = 0; i < 12; i++) {
     const p = document.createElement("div");
     const size = 6 + Math.random() * 6;
@@ -246,13 +246,13 @@ const FullScene = ({ children, bg, glow }: { children: React.ReactNode; bg: stri
 
 /* ───────────────────────── SVG ICONS ──────────────────────── */
 
-const IconShield = ({ size = 24, color = "#ff9b4a" }: { size?: number; color?: string }) => (
+const IconShield = ({ size = 24, color = "#7c5cff" }: { size?: number; color?: string }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
     <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
   </svg>
 );
 
-const IconLock = ({ size = 24, color = "#ff9b4a" }: { size?: number; color?: string }) => (
+const IconLock = ({ size = 24, color = "#7c5cff" }: { size?: number; color?: string }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
     <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
   </svg>
@@ -264,7 +264,7 @@ const IconUnlock = ({ size = 24, color = "#ef4444" }: { size?: number; color?: s
   </svg>
 );
 
-const IconGamepad = ({ size = 24, color = "#ff9b4a" }: { size?: number; color?: string }) => (
+const IconGamepad = ({ size = 24, color = "#7c5cff" }: { size?: number; color?: string }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
     <line x1="6" y1="12" x2="10" y2="12"/><line x1="8" y1="10" x2="8" y2="14"/><line x1="15" y1="13" x2="15.01" y2="13"/><line x1="18" y1="11" x2="18.01" y2="11"/>
     <rect x="2" y="6" width="20" height="12" rx="2"/>
@@ -283,25 +283,25 @@ const IconUsers = ({ size = 24, color = "#ec4899" }: { size?: number; color?: st
   </svg>
 );
 
-const IconMessageCircle = ({ size = 24, color = "#ff9b4a" }: { size?: number; color?: string }) => (
+const IconMessageCircle = ({ size = 24, color = "#7c5cff" }: { size?: number; color?: string }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
     <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
   </svg>
 );
 
-const IconTablet = ({ size = 24, color = "#ff9b4a" }: { size?: number; color?: string }) => (
+const IconTablet = ({ size = 24, color = "#7c5cff" }: { size?: number; color?: string }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
     <rect x="4" y="2" width="16" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/>
   </svg>
 );
 
-const IconSchool = ({ size = 24, color = "#5fb37a" }: { size?: number; color?: string }) => (
+const IconSchool = ({ size = 24, color = "#5eff80" }: { size?: number; color?: string }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
     <path d="M2 10l10-7 10 7-10 7z"/><path d="M6 12v5c0 1 2 3 6 3s6-2 6-3v-5"/>
   </svg>
 );
 
-const IconRuler = ({ size = 24, color = "#5fb37a" }: { size?: number; color?: string }) => (
+const IconRuler = ({ size = 24, color = "#5eff80" }: { size?: number; color?: string }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
     <path d="M16 2l6 6-14 14-6-6z"/><path d="M10 10l2 2"/><path d="M14 6l2 2"/><path d="M6 14l2 2"/>
   </svg>
@@ -359,13 +359,13 @@ const DeviceIllustration = ({
         {/* Buttons */}
         <circle cx="82" cy="48" r="4.2" fill="#fbbf24" stroke="#fff" strokeWidth="0.6" />
         <circle cx="92" cy="56" r="4.2" fill="#ef4444" stroke="#fff" strokeWidth="0.6" />
-        <circle cx="82" cy="64" r="4.2" fill="#7cc89a" stroke="#fff" strokeWidth="0.6" />
-        <circle cx="72" cy="56" r="4.2" fill="#ff9b4a" stroke="#fff" strokeWidth="0.6" />
+        <circle cx="82" cy="64" r="4.2" fill="#7eff97" stroke="#fff" strokeWidth="0.6" />
+        <circle cx="72" cy="56" r="4.2" fill="#7c5cff" stroke="#fff" strokeWidth="0.6" />
         {/* Start/Select */}
         <rect x="52" y="50" width="6" height="2.4" rx="1.2" fill="rgba(255,255,255,0.7)" />
         <rect x="60" y="50" width="6" height="2.4" rx="1.2" fill="rgba(255,255,255,0.7)" />
         {/* Glowing dot when locked */}
-        {locked && <circle cx="60" cy="60" r="3" fill="#5fb37a"><animate attributeName="opacity" values="0.4;1;0.4" dur="1.6s" repeatCount="indefinite" /></circle>}
+        {locked && <circle cx="60" cy="60" r="3" fill="#5eff80"><animate attributeName="opacity" values="0.4;1;0.4" dur="1.6s" repeatCount="indefinite" /></circle>}
       </svg>
     );
   }
@@ -387,13 +387,13 @@ const DeviceIllustration = ({
         <rect x="24" y="44" width="48" height="14" rx="2" fill="rgba(255,255,255,0.18)" />
         <rect x="24" y="62" width="48" height="2" rx="1" fill="rgba(255,255,255,0.45)" />
         <rect x="24" y="68" width="36" height="2" rx="1" fill="rgba(255,255,255,0.4)" />
-        <rect x="24" y="78" width="22" height="8" rx="2" fill="#ffd58a" />
+        <rect x="24" y="78" width="22" height="8" rx="2" fill="#00e5ff" />
         {/* Camera & home */}
         <circle cx="48" cy="10.5" r="1.4" fill="#475569" />
         <circle cx="48" cy="99.5" r="3.2" fill="none" stroke="#475569" strokeWidth="1" />
         {locked && (
           <g transform="translate(60 80)">
-            <circle r="6" fill="#5fb37a" />
+            <circle r="6" fill="#5eff80" />
             <path d="M-2 -1 v 2 m 0 0 h 0" stroke="#fff" strokeWidth="1.6" />
             <rect x="-2" y="-1" width="4" height="3.6" fill="#fff" rx="0.6" />
             <path d="M-1.5 -1 v -1.4 a 1.5 1.5 0 0 1 3 0 v 1.4" stroke="#fff" strokeWidth="1" fill="none" />
@@ -413,11 +413,11 @@ const DeviceIllustration = ({
       <path d="M14 44 L60 18 L106 44 Z" fill="#1e293b" stroke="rgba(255,255,255,0.18)" strokeWidth="1.4" />
       <path d="M14 44 L60 18 L106 44 Z" fill={`url(#${shineId})`} opacity="0.45" />
       {/* Bell tower */}
-      <rect x="56" y="22" width="8" height="14" rx="1" fill="#ffd58a" />
-      <circle cx="60" cy="20" r="3" fill="#ffd58a" />
+      <rect x="56" y="22" width="8" height="14" rx="1" fill="#00e5ff" />
+      <circle cx="60" cy="20" r="3" fill="#00e5ff" />
       {/* Door */}
       <rect x="52" y="62" width="16" height="24" rx="2" fill="#0b0f1a" />
-      <circle cx="64" cy="74" r="0.9" fill="#ffd58a" />
+      <circle cx="64" cy="74" r="0.9" fill="#00e5ff" />
       {/* Windows */}
       <rect x="28" y="54" width="14" height="14" rx="1.5" fill="#dbeafe" stroke="#0b0f1a" strokeWidth="0.8" />
       <line x1="35" y1="54" x2="35" y2="68" stroke="#0b0f1a" strokeWidth="0.8" />
@@ -430,7 +430,7 @@ const DeviceIllustration = ({
       <path d="M14 32 L24 35 L14 38 Z" fill="#ef4444" />
       {locked && (
         <g transform="translate(60 70)">
-          <circle r="6" fill="#5fb37a" opacity="0.95" />
+          <circle r="6" fill="#5eff80" opacity="0.95" />
           <rect x="-2" y="-1" width="4" height="3.6" fill="#fff" rx="0.6" />
           <path d="M-1.5 -1 v -1.4 a 1.5 1.5 0 0 1 3 0 v 1.4" stroke="#fff" strokeWidth="1" fill="none" />
         </g>
@@ -443,8 +443,8 @@ const DeviceIllustration = ({
    spinning rays, and a centre core — looks like a proper celebration mark. */
 const SuccessBurst = ({
   size = 28,
-  colourA = "#ffd58a",
-  colourB = "#5fb37a",
+  colourA = "#00e5ff",
+  colourB = "#5eff80",
 }: { size?: number; colourA?: string; colourB?: string }) => (
   <svg width={size} height={size} viewBox="0 0 40 40" style={{ display: "inline-block", verticalAlign: "middle" }}>
     <defs>
@@ -489,7 +489,7 @@ function WeekBadge({ weekNumber, size = 96 }: { weekNumber: number; size?: numbe
           <stop offset="100%" stopColor="#92400e" />
         </linearGradient>
         <linearGradient id={`${id}-ribbon-l`} x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#ff9b4a" />
+          <stop offset="0%" stopColor="#7c5cff" />
           <stop offset="100%" stopColor="#1e3a8a" />
         </linearGradient>
         <linearGradient id={`${id}-ribbon-r`} x1="0" y1="0" x2="0" y2="1">
@@ -522,7 +522,7 @@ function WeekBadge({ weekNumber, size = 96 }: { weekNumber: number; size?: numbe
       <text x="50" y="44" textAnchor="middle" fontFamily="'Space Grotesk', sans-serif" fontWeight="900" fontSize="10" fill="#92400e" letterSpacing="1.5">WEEK</text>
       <text x="50" y="62" textAnchor="middle" fontFamily="'Space Grotesk', sans-serif" fontWeight="900" fontSize="22" fill="#92400e">{weekNumber}</text>
       {/* Tiny shield in corner */}
-      <path d="M 70 32 L 76 30 L 76 36 Q 76 40 73 42 Q 70 40 70 36 Z" fill="#ffd58a" stroke="#d4733a" strokeWidth="0.6" />
+      <path d="M 70 32 L 76 30 L 76 36 Q 76 40 73 42 Q 70 40 70 36 Z" fill="#00e5ff" stroke="#3a7bff" strokeWidth="0.6" />
       <path d="M 71.5 35 L 73 36.6 L 75 33.8" fill="none" stroke="#fff" strokeWidth="0.8" />
     </svg>
   );
@@ -544,7 +544,7 @@ function CertificateProgress({ currentWeek }: { currentWeek: number }) {
         marginBottom: 4,
       }}>
         <span>WEEK {currentWeek}</span>
-        <span style={{ color: "#ffd58a", fontWeight: 800 }}>
+        <span style={{ color: "#00e5ff", fontWeight: 800 }}>
           🏅 {remaining === 0 ? "CERTIFICATE READY" : `${remaining} WEEK${remaining === 1 ? "" : "S"} TO CERTIFICATE`}
         </span>
         <span>WEEK {nextMilestone}</span>
@@ -557,7 +557,7 @@ function CertificateProgress({ currentWeek }: { currentWeek: number }) {
       }}>
         <div style={{
           height: "100%", width: `${Math.max(8, Math.min(100, progress * 100))}%`,
-          background: "linear-gradient(90deg, #ffd58a, #a06aff, #fbbf24)",
+          background: "linear-gradient(90deg, #00e5ff, #7c5cff, #fbbf24)",
           boxShadow: "0 0 10px rgba(160,106,255,0.7)",
           transition: "width 0.6s ease",
         }} />
@@ -569,20 +569,22 @@ function CertificateProgress({ currentWeek }: { currentWeek: number }) {
 /* ───────────────────────── CONSTANTS ───────────────────────── */
 
 const TOTAL = 19;
-// Warm Pixar gradient — used by progress bar, step dots' completed glow,
-// celebration confetti, and various inline UIs. Was a cyber blue→cyan blend.
-const GRAD = "linear-gradient(135deg, #ff9b4a, #ffd58a)";
+// Cyber Heroes Lab gradient — cyan → cosmic violet. Used by progress
+// bar, step dots' completed glow, celebration confetti, and various
+// inline UIs. The previous warm gradient was for the Pixar dusk
+// system; cyber theme uses cool glow.
+const GRAD = "linear-gradient(135deg, #00e5ff, #7c5cff)";
 
 /* ───────────────────────── DATA ────────────────────────────── */
 
 const PASSWORDS_8 = [
-  { id: "q1", text: "Tr0phy$tar99", isStrong: true, bg: "rgba(255,213,138,0.1)", border: "#ffd58a", color: "#ffd58a" },
-  { id: "q2", text: "MyD0g&Runs!", isStrong: true, bg: "rgba(255,178,110,0.1)", border: "#ffd58a", color: "#c08aff" },
+  { id: "q1", text: "Tr0phy$tar99", isStrong: true, bg: "rgba(255,213,138,0.1)", border: "#00e5ff", color: "#00e5ff" },
+  { id: "q2", text: "MyD0g&Runs!", isStrong: true, bg: "rgba(255,178,110,0.1)", border: "#00e5ff", color: "#c08aff" },
   { id: "q3", text: "C@tLov3r2024", isStrong: true, bg: "rgba(244,114,182,0.1)", border: "#f472b6", color: "#f9a8d4" },
-  { id: "q4", text: "Sup3r$h!eld7", isStrong: true, bg: "rgba(168,227,187,0.1)", border: "#7cc89a", color: "#a8e3bb" },
+  { id: "q4", text: "Sup3r$h!eld7", isStrong: true, bg: "rgba(168,227,187,0.1)", border: "#7eff97", color: "#a0ffb0" },
   { id: "q5", text: "password", isStrong: false, bg: "rgba(251,146,60,0.1)", border: "#fb923c", color: "#fdba74" },
   { id: "q6", text: "123456", isStrong: false, bg: "rgba(248,113,113,0.1)", border: "#f87171", color: "#fca5a5" },
-  { id: "q7", text: "abcabc", isStrong: false, bg: "rgba(255,213,138,0.1)", border: "#ffd58a", color: "#ffd58a" },
+  { id: "q7", text: "abcabc", isStrong: false, bg: "rgba(255,213,138,0.1)", border: "#00e5ff", color: "#00e5ff" },
   { id: "q8", text: "iloveyou", isStrong: false, bg: "rgba(192,132,252,0.1)", border: "#c084fc", color: "#d8b4fe" },
 ];
 
@@ -602,14 +604,14 @@ const BUILDER_OPTIONS = [
   ["@", "#", "$", "!", "&", "*", "?", "%"],
 ];
 const BUILDER_LABELS = ["Pick a CAPITAL LETTER", "Pick a SECRET WORD", "Pick a NUMBER", "Pick a SYMBOL"];
-const BUILDER_COLORS = ["#ff9b4a", "#ff9b4a", "#ec4899", "#f59e0b"];
+const BUILDER_COLORS = ["#7c5cff", "#7c5cff", "#ec4899", "#f59e0b"];
 
 const RECIPE = [
-  { label: "CAPITAL LETTERS", example: "A, B, C, the big ones!", icon: "🅰️", color: "#ff9b4a" },
-  { label: "lowercase letters", example: "a, b, c, the small ones!", icon: "🔡", color: "#ff9b4a" },
+  { label: "CAPITAL LETTERS", example: "A, B, C, the big ones!", icon: "🅰️", color: "#7c5cff" },
+  { label: "lowercase letters", example: "a, b, c, the small ones!", icon: "🔡", color: "#7c5cff" },
   { label: "Numbers", example: "1, 2, 3!", icon: "🔢", color: "#ec4899" },
   { label: "Special Symbols", example: "@ # $ and !", icon: "✨", color: "#f59e0b" },
-  { label: "Make it LONG", example: "At least 8 characters!", icon: "📏", color: "#5fb37a" },
+  { label: "Make it LONG", example: "At least 8 characters!", icon: "📏", color: "#5eff80" },
 ];
 
 const Q1_QUIZ = [
@@ -730,13 +732,13 @@ const ACHIEVEMENTS = [
 ];
 
 const OPT_COLORS = [
-  { bg: "rgba(255,213,138,0.08)", border: "rgba(255,213,138,0.3)", color: "#ffd58a" },
+  { bg: "rgba(255,213,138,0.08)", border: "rgba(255,213,138,0.3)", color: "#00e5ff" },
   { bg: "rgba(255,178,110,0.08)", border: "rgba(255,178,110,0.3)", color: "#c08aff" },
   { bg: "rgba(244,114,182,0.08)", border: "rgba(244,114,182,0.3)", color: "#f9a8d4" },
-  { bg: "rgba(255,213,138,0.08)", border: "rgba(255,213,138,0.3)", color: "#ffd58a" },
+  { bg: "rgba(255,213,138,0.08)", border: "rgba(255,213,138,0.3)", color: "#00e5ff" },
 ];
 
-const BUBBLE_COLORS = ["#ff9b4a", "#ff9b4a", "#ec4899", "#f59e0b"];
+const BUBBLE_COLORS = ["#7c5cff", "#7c5cff", "#ec4899", "#f59e0b"];
 
 const WHY_SCENARIOS = [
   { icon: "gamepad", label: "Gaming", item: "Your saved games & trophies", problem: "The Raccoon stole all your coins and deleted your save files!", success: "Your games are safe behind a strong password!" },
@@ -776,7 +778,7 @@ const CSS = `
   header, nav, .step-dots-wrap, .progress-wrap, .floating-orbs-wrap, .score-cards, .dash-link, .print-hide { display: none !important; }
   main { padding: 0 !important; }
   .certificate-card {
-    border: 3px solid #ff9b4a !important;
+    border: 3px solid #7c5cff !important;
     background: white !important;
     color: black !important;
     box-shadow: none !important;
@@ -784,7 +786,7 @@ const CSS = `
     backdrop-filter: none !important;
   }
   .certificate-card * { color: black !important; -webkit-text-fill-color: black !important; }
-  .certificate-card .gradient-text { -webkit-text-fill-color: #ff9b4a !important; color: #ff9b4a !important; }
+  .certificate-card .gradient-text { -webkit-text-fill-color: #7c5cff !important; color: #7c5cff !important; }
 }
 `;
 
@@ -862,9 +864,10 @@ const confettiFallVariant = (_i: number) => ({
 /* ───────────────────────── SUB-COMPONENTS ──────────────────── */
 
 function FloatingOrbs() {
-  // Warm Pixar dust backdrop — replaces the old cyber-grid + hex code rain.
-  // Layered: faint warm grid, drifting gold/coral motes rising from below,
-  // soft-glow lock icons in warm Pixar amber, and a few pulsing fireflies.
+  // Cyber Heroes Lab backdrop — futuristic abyss-navy with glowing
+  // accents. Layered: faint cyan hex grid, drifting cyan/violet motes
+  // rising from below, soft-glow security glyphs in cyan, pulsing
+  // cosmic fireflies, and faint scanlines for the CRT phosphor feel.
   return (
     <div style={{ position: "fixed", inset: 0, pointerEvents: "none", zIndex: 0, overflow: "hidden" }}>
       <style>{`
@@ -879,26 +882,52 @@ function FloatingOrbs() {
           50%     { transform: translateY(-22px) rotate(5deg); }
         }
         @keyframes lpFireflyTwinkle {
-          0%,100% { opacity: 0.3; transform: scale(1); }
-          50%     { opacity: 0.85; transform: scale(1.35); }
+          0%,100% { opacity: 0.4; transform: scale(1); }
+          50%     { opacity: 1;   transform: scale(1.4); }
         }
       `}</style>
 
-      {/* Layer 1: faint warm grid (cream lines, much softer than the cyber one) */}
+      {/* Layer 1: faint cyan hex grid */}
       <div style={{
         position: "absolute", inset: 0,
-        backgroundImage: `linear-gradient(rgba(255,220,180,0.045) 1px, transparent 1px), linear-gradient(90deg, rgba(255,220,180,0.045) 1px, transparent 1px)`,
-        backgroundSize: "100px 100px",
+        backgroundImage: `linear-gradient(rgba(0, 229, 255, 0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 229, 255, 0.06) 1px, transparent 1px)`,
+        backgroundSize: "80px 80px",
+        maskImage: "radial-gradient(ellipse at 50% 50%, black 30%, transparent 90%)",
+        WebkitMaskImage: "radial-gradient(ellipse at 50% 50%, black 30%, transparent 90%)",
       }} />
 
-      {/* Layer 2: drifting gold/coral motes rising from below */}
+      {/* Layer 2: scanlines — very faint CRT texture */}
+      <div style={{
+        position: "absolute", inset: 0,
+        backgroundImage: "repeating-linear-gradient(0deg, transparent 0, transparent 3px, rgba(125, 240, 255, 0.025) 3px, rgba(125, 240, 255, 0.025) 4px)",
+      }} />
+
+      {/* Layer 3: nebula glow — distant cyan/violet bleeds */}
+      <div style={{
+        position: "absolute", left: "-15%", top: "-10%",
+        width: "60vw", height: "70vh",
+        background: "radial-gradient(ellipse, rgba(0, 229, 255, 0.16) 0%, rgba(0, 229, 255, 0.05) 35%, transparent 65%)",
+        filter: "blur(40px)",
+      }} />
+      <div style={{
+        position: "absolute", right: "-10%", top: "30%",
+        width: "55vw", height: "60vh",
+        background: "radial-gradient(ellipse, rgba(124, 92, 255, 0.20) 0%, rgba(124, 92, 255, 0.06) 40%, transparent 70%)",
+        filter: "blur(50px)",
+      }} />
+
+      {/* Layer 4: drifting cyan/violet/pink motes rising from below */}
       {Array.from({ length: 28 }, (_, i) => {
         const left = (i * 41 + 7) % 100;
         const size = 2 + ((i * 5) % 4);
         const drift = ((i * 11) % 30) - 15;
         const dur = 14 + ((i * 3) % 10);
         const delay = (i * 0.41) % 9;
-        const color = i % 3 === 0 ? "rgba(255,213,138,0.85)" : i % 3 === 1 ? "rgba(247,193,138,0.7)" : "rgba(240,142,126,0.55)";
+        const color = i % 3 === 0
+          ? "rgba(0, 229, 255, 0.95)"
+          : i % 3 === 1
+          ? "rgba(124, 92, 255, 0.85)"
+          : "rgba(255, 95, 179, 0.75)";
         return (
           <span
             key={`mote-${i}`}
@@ -910,7 +939,7 @@ function FloatingOrbs() {
               height: size,
               borderRadius: "50%",
               background: color,
-              boxShadow: `0 0 ${size * 5}px ${color}`,
+              boxShadow: `0 0 ${size * 6}px ${color}`,
               animation: `lpMoteRise ${dur}s ease-in-out ${delay}s infinite`,
               ["--mx" as string]: `${drift}px`,
             } as React.CSSProperties}
@@ -918,7 +947,7 @@ function FloatingOrbs() {
         );
       })}
 
-      {/* Layer 3: warm soft-glow lock icons (low opacity, decorative) */}
+      {/* Layer 5: cyan-glow security glyphs (low opacity, decorative) */}
       {[
         { icon: "🔒", left: "5%", top: "15%", size: 40, dur: 36 },
         { icon: "🔑", left: "85%", top: "25%", size: 35, dur: 44 },
@@ -934,22 +963,21 @@ function FloatingOrbs() {
           left: ic.left,
           top: ic.top,
           fontSize: ic.size,
-          opacity: 0.07,
-          filter: "drop-shadow(0 0 12px rgba(255,200,110,0.55))",
+          opacity: 0.08,
+          filter: "drop-shadow(0 0 14px rgba(0, 229, 255, 0.7)) drop-shadow(0 0 28px rgba(124, 92, 255, 0.4))",
           animation: `lpLockFloat ${ic.dur}s ease-in-out infinite`,
           animationDelay: `${i * -3}s`,
         }}>{ic.icon}</div>
       ))}
 
-      {/* Layer 4: warm fireflies — tiny pulsing gold dots that twinkle in
-          place rather than slide horizontally (the old cyber particles). */}
+      {/* Layer 6: cosmic fireflies — pulsing dots in cyan/violet/pink */}
       {[
-        { left: "20%", top: "30%", delay: 0 },
-        { left: "70%", top: "20%", delay: 2 },
-        { left: "40%", top: "70%", delay: 4 },
-        { left: "80%", top: "55%", delay: 1 },
-        { left: "10%", top: "80%", delay: 3 },
-        { left: "55%", top: "40%", delay: 5 },
+        { left: "20%", top: "30%", delay: 0, color: "#00e5ff" },
+        { left: "70%", top: "20%", delay: 2, color: "#7c5cff" },
+        { left: "40%", top: "70%", delay: 4, color: "#ff5fb3" },
+        { left: "80%", top: "55%", delay: 1, color: "#00e5ff" },
+        { left: "10%", top: "80%", delay: 3, color: "#7c5cff" },
+        { left: "55%", top: "40%", delay: 5, color: "#00e5ff" },
       ].map((p, i) => (
         <span
           key={`firefly-${i}`}
@@ -960,8 +988,8 @@ function FloatingOrbs() {
             width: 5,
             height: 5,
             borderRadius: "50%",
-            background: "#ffd58a",
-            boxShadow: "0 0 18px rgba(255,213,138,0.85), 0 0 36px rgba(255,178,110,0.4)",
+            background: p.color,
+            boxShadow: `0 0 20px ${p.color}, 0 0 40px ${p.color}88`,
             animation: `lpFireflyTwinkle ${3 + (i % 3)}s ease-in-out ${p.delay}s infinite`,
           }}
         />
@@ -974,15 +1002,15 @@ function ProgressBar({ step }: { step: number }) {
   const pct = ((step + 1) / TOTAL) * 100;
   return (
     <div style={{ width: "100%", maxWidth: 600, margin: "0 auto 8px", padding: "0 16px" }}>
-      <div style={{ display: "flex", justifyContent: "space-between", fontSize: 12, color: "rgba(255,233,200,0.65)", marginBottom: 4, fontFamily: "Fredoka, Nunito, sans-serif", letterSpacing: 0.5, fontWeight: 600 }}>
-        <span>Step {step + 1} of {TOTAL}</span>
-        <span>{Math.round(pct)}%</span>
+      <div style={{ display: "flex", justifyContent: "space-between", fontSize: 11, color: "rgba(125, 240, 255, 0.75)", marginBottom: 4, fontFamily: "ui-monospace, 'JetBrains Mono', Menlo, monospace", letterSpacing: 2, fontWeight: 700, textTransform: "uppercase" }}>
+        <span>STEP {step + 1} / {TOTAL}</span>
+        <span>{Math.round(pct)}% COMPLETE</span>
       </div>
-      <div style={{ height: 8, borderRadius: 999, background: "rgba(255,220,180,0.10)" }}>
+      <div style={{ height: 8, borderRadius: 999, background: "rgba(0, 229, 255, 0.08)", border: "1px solid rgba(0, 229, 255, 0.18)" }}>
         <motion.div
           animate={{ width: `${pct}%` }}
           transition={{ duration: 0.6, ease: "easeOut" }}
-          style={{ height: "100%", borderRadius: 999, background: GRAD, boxShadow: "0 0 12px rgba(255,200,110,0.55)" }}
+          style={{ height: "100%", borderRadius: 999, background: GRAD, boxShadow: "0 0 14px rgba(0, 229, 255, 0.7), 0 0 28px rgba(124, 92, 255, 0.45)" }}
         />
       </div>
     </div>
@@ -998,9 +1026,9 @@ function StepDots({ step }: { step: number }) {
           animate={{
             width: i === step ? 12 : 8,
             height: i === step ? 12 : 8,
-            background: i < step ? "#ff9b4a" : i === step ? "#ffd58a" : "rgba(255,220,180,0.18)",
+            background: i < step ? "#00e5ff" : i === step ? "#7c5cff" : "rgba(0, 229, 255, 0.18)",
             scale: i === step ? [1, 1.4, 1] : 1,
-            boxShadow: i === step ? "0 0 14px rgba(255,213,138,0.7)" : i < step ? "0 0 8px rgba(255,200,110,0.45)" : "none",
+            boxShadow: i === step ? "0 0 16px rgba(124, 92, 255, 0.85), 0 0 32px rgba(0, 229, 255, 0.5)" : i < step ? "0 0 10px rgba(0, 229, 255, 0.6)" : "none",
           }}
           transition={i === step ? { scale: { duration: 1.5, repeat: Infinity, ease: "easeInOut" }, ...springTransition } : springTransition}
           style={{ borderRadius: "50%" }}
@@ -1012,7 +1040,7 @@ function StepDots({ step }: { step: number }) {
 
 function Confetti({ duration = 3000 }: { duration?: number }) {
   const shapes = ["●", "■", "▲", "⭐", "♥"];
-  const colors = ["#ff9b4a", "#ffd58a", "#f59e0b", "#5fb37a", "#f97316", "#ffd58a"];
+  const colors = ["#7c5cff", "#00e5ff", "#f59e0b", "#5eff80", "#f97316", "#00e5ff"];
   const [visible, setVisible] = useState(true);
   useEffect(() => {
     const t = setTimeout(() => setVisible(false), duration);
@@ -1088,7 +1116,7 @@ function CoinCounter({ coins, animKey }: { coins: number; animKey: number }) {
 }
 
 function MiniConfetti({ x, y }: { x: number; y: number }) {
-  const colors = ["#ff9b4a", "#ff9b4a", "#f59e0b", "#5fb37a", "#ef4444", "#ec4899"];
+  const colors = ["#7c5cff", "#7c5cff", "#f59e0b", "#5eff80", "#ef4444", "#ec4899"];
   return (
     <div style={{ position: "fixed", left: x, top: y, pointerEvents: "none", zIndex: 99 }}>
       {Array.from({ length: 20 }, (_, i) => {
@@ -1157,7 +1185,7 @@ function card(children: React.ReactNode, extra?: React.CSSProperties): React.Rea
 }
 
 function strengthMeter(pct: number) {
-  const c = pct < 40 ? "#ef4444" : pct < 80 ? "#f59e0b" : "#5fb37a";
+  const c = pct < 40 ? "#ef4444" : pct < 80 ? "#f59e0b" : "#5eff80";
   const label = pct < 40 ? "Weak" : pct < 80 ? "Getting there..." : pct >= 100 ? "SUPER STRONG!" : "Strong";
   return (
     <div style={{ margin: "16px 0" }}>
@@ -1281,7 +1309,7 @@ function FloatingBubbleQuiz({ question, opts, correct, explain, onCorrect, onWro
             transition={{ duration: 0.3 }}
             style={{ marginTop: 8 }}
           >
-            <p style={{ color: "#5fb37a", fontSize: 20, fontWeight: 700 }}>🎉 Correct!</p>
+            <p style={{ color: "#5eff80", fontSize: 20, fontWeight: 700 }}>🎉 Correct!</p>
             <p style={{ color: "#e5e7eb", fontSize: 16, lineHeight: 1.5 }}>{explain}</p>
             {showNext && (
               <div style={{ marginTop: 12 }}>
@@ -1307,7 +1335,7 @@ function SwipeCard({
   const x = useMotionValue(0);
   const rotate = useTransform(x, [-200, 200], [-20, 20]);
   const borderColor = useTransform(x, [-100, -50, 0, 50, 100], [
-    "#ef4444", "#ef4444", "rgba(255,255,255,0.1)", "#5fb37a", "#5fb37a",
+    "#ef4444", "#ef4444", "rgba(255,255,255,0.1)", "#5eff80", "#5eff80",
   ]);
   const bgColor = useTransform(x, [-100, -50, 0, 50, 100], [
     "rgba(239,68,68,0.05)", "rgba(239,68,68,0.05)", "rgba(255,255,255,0.04)", "rgba(124,200,154,0.05)", "rgba(124,200,154,0.05)",
@@ -1430,14 +1458,17 @@ function ArenaBg3D({ effect }: { effect: "hit" | "miss" | "super" | null }) {
 function InstructionOverlay({ icon, story, instructions, onReady }: { icon: string; story: string; instructions: string; onReady: () => void }) {
   return (
     <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} style={{ textAlign: "center" }}>
-      <div data-animate style={{ background: "rgba(40,18,38,0.82)", backdropFilter: "blur(14px)", border: "1px solid rgba(255,220,180,0.35)", boxShadow: "0 0 30px rgba(255,178,110,0.22), 0 30px 60px -20px rgba(20,6,12,0.7)", borderRadius: 24, padding: 32, maxWidth: 520, margin: "0 auto" }}>
-        <div style={{ width: 80, height: 80, margin: "0 auto 16px", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 48, background: "rgba(255,178,110,0.16)", border: "1px solid rgba(255,220,180,0.32)", borderRadius: 20, filter: "drop-shadow(0 0 18px rgba(255,200,110,0.45))" }}>{icon}</div>
-        <p style={{ color: "#ffe9c8", fontSize: 14, fontStyle: "italic", marginBottom: 8, opacity: 0.92 }}>{story}</p>
-        <h2 data-split style={{ color: "#fff7e6", fontSize: 22, fontWeight: 900, marginBottom: 8, fontFamily: "Fredoka, Nunito, sans-serif" }}>Here&apos;s what to do!</h2>
-        <p style={{ color: "#ffe9c8", fontSize: 16, lineHeight: 1.6, marginBottom: 20, opacity: 0.85 }}>{instructions}</p>
-        <motion.button onClick={onReady} whileHover={{ scale: 1.05, y: -2, boxShadow: "0 18px 36px -10px rgba(255,120,40,0.7), 0 0 0 1px rgba(255,235,200,0.55) inset" }} whileTap={{ scale: 0.95 }}
-          style={{ background: "linear-gradient(135deg, #ffd58a, #ff9b4a)", color: "#3a1a06", fontWeight: 800, borderRadius: 999, padding: "13px 34px", border: "none", cursor: "pointer", fontSize: 16, fontFamily: "Fredoka, Nunito, sans-serif", letterSpacing: 0.5, boxShadow: "0 18px 36px -10px rgba(255,120,40,0.6), 0 0 0 1px rgba(255,235,200,0.55) inset, 0 -3px 0 rgba(180,80,30,0.4) inset" }}>
-          I&apos;m Ready! &rarr;
+      <div data-animate style={{ background: "rgba(15, 21, 48, 0.88)", backdropFilter: "blur(16px)", border: "1px solid rgba(0, 229, 255, 0.45)", boxShadow: "0 0 32px rgba(0, 229, 255, 0.28), 0 0 56px rgba(124, 92, 255, 0.22), 0 30px 60px -20px rgba(0, 0, 0, 0.7)", borderRadius: 24, padding: 32, maxWidth: 520, margin: "0 auto", position: "relative" }}>
+        {/* Energised top edge — animated gradient strip */}
+        <div aria-hidden style={{ position: "absolute", top: -1, left: 24, right: 24, height: 2, background: "linear-gradient(90deg, transparent, #00e5ff, #7c5cff, #ff5fb3, transparent)", filter: "drop-shadow(0 0 8px #00e5ffaa)", borderRadius: 999 }} />
+        <div style={{ width: 80, height: 80, margin: "0 auto 16px", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 48, background: "rgba(0, 229, 255, 0.12)", border: "1px solid rgba(0, 229, 255, 0.45)", borderRadius: 20, filter: "drop-shadow(0 0 22px rgba(0, 229, 255, 0.55))" }}>{icon}</div>
+        <p style={{ color: "#7df0ff", fontSize: 11, fontWeight: 800, marginBottom: 8, letterSpacing: 3, textTransform: "uppercase", fontFamily: "ui-monospace, 'JetBrains Mono', Menlo, monospace" }}>◇ MISSION BRIEF ◇</p>
+        <p style={{ color: "#c5cdf0", fontSize: 14, fontStyle: "italic", marginBottom: 8, opacity: 0.92 }}>{story}</p>
+        <h2 data-split style={{ color: "#e8edff", fontSize: 22, fontWeight: 900, marginBottom: 8, fontFamily: "'Space Grotesk', system-ui, sans-serif", letterSpacing: "-0.01em" }}>Here&apos;s what to do!</h2>
+        <p style={{ color: "#c5cdf0", fontSize: 16, lineHeight: 1.6, marginBottom: 20, opacity: 0.9 }}>{instructions}</p>
+        <motion.button onClick={onReady} whileHover={{ scale: 1.05, y: -2, boxShadow: "0 0 28px rgba(0, 229, 255, 0.9), 0 18px 36px -10px rgba(0, 229, 255, 0.6), 0 0 0 1px rgba(125, 240, 255, 0.6) inset" }} whileTap={{ scale: 0.95 }}
+          style={{ background: "linear-gradient(135deg, #00e5ff, #7c5cff)", color: "#080a16", fontWeight: 800, borderRadius: 999, padding: "13px 34px", border: "none", cursor: "pointer", fontSize: 16, fontFamily: "'Space Grotesk', system-ui, sans-serif", letterSpacing: 1, textTransform: "uppercase", boxShadow: "0 0 24px rgba(0, 229, 255, 0.55), 0 8px 20px -6px rgba(0, 229, 255, 0.45), 0 0 0 1px rgba(125, 240, 255, 0.6) inset" }}>
+          I&apos;m Ready &rarr;
         </motion.button>
       </div>
     </motion.div>
@@ -1493,7 +1524,7 @@ function LearnSummary({ message, starCount, onNext }: { message: string; starCou
         {Array.from({ length: 14 }).map((_, i) => {
           const cx = (i * 53) % 280 - 140;
           const cy = -120 - (i % 5) * 14;
-          const colour = ["#ffd58a", "#7cc89a", "#ffd58a", "#a06aff", "#f472b6"][i % 5];
+          const colour = ["#00e5ff", "#7eff97", "#00e5ff", "#7c5cff", "#f472b6"][i % 5];
           return (
             <span key={i} aria-hidden style={{
               position: "absolute",
@@ -1562,10 +1593,10 @@ function LearnSummary({ message, starCount, onNext }: { message: string; starCou
               {/* check inside cup */}
               <path d="M34 30 L42 38 L56 24" fill="none" stroke="#0b3a2a" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" />
               {/* sparkles */}
-              <circle cx="14" cy="20" r="1.6" fill="#ffd58a" />
-              <circle cx="74" cy="22" r="2" fill="#ffd58a" />
-              <circle cx="78" cy="44" r="1.4" fill="#ffd58a" />
-              <circle cx="10" cy="44" r="1.4" fill="#ffd58a" />
+              <circle cx="14" cy="20" r="1.6" fill="#00e5ff" />
+              <circle cx="74" cy="22" r="2" fill="#00e5ff" />
+              <circle cx="78" cy="44" r="1.4" fill="#00e5ff" />
+              <circle cx="10" cy="44" r="1.4" fill="#00e5ff" />
             </svg>
           </div>
         </div>
@@ -1573,7 +1604,7 @@ function LearnSummary({ message, starCount, onNext }: { message: string; starCou
         <h2 data-split style={{
           color: "#fff", fontSize: 28, fontWeight: 900, margin: "0 0 4px",
           letterSpacing: 1,
-          background: "linear-gradient(135deg, #fde68a, #f59e0b, #7cc89a)",
+          background: "linear-gradient(135deg, #fde68a, #f59e0b, #7eff97)",
           WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent",
           textShadow: "0 0 30px rgba(245,158,11,0.4)",
         }}>Great job!</h2>
@@ -1629,7 +1660,7 @@ function LearnSummary({ message, starCount, onNext }: { message: string; starCou
           transition={{ boxShadow: { duration: 2, repeat: Infinity, ease: "easeInOut" } }}
           style={{
             position: "relative",
-            background: "linear-gradient(135deg, #f97316 0%, #f59e0b 50%, #ffd58a 100%)",
+            background: "linear-gradient(135deg, #f97316 0%, #f59e0b 50%, #00e5ff 100%)",
             color: "#1f1300", fontWeight: 900,
             borderRadius: 14, padding: "13px 34px",
             border: "none", cursor: "pointer", fontSize: 16,
@@ -1675,7 +1706,7 @@ const SpeechBubble = ({ character, message, side = "left", delayMs = 500 }: { ch
     >
       <img src={img} alt={name} style={{ width: 48, height: 48, borderRadius: "50%", objectFit: "cover", border: `2px solid ${borderColor}` }} />
       <div style={{ background: bubbleColor, border: `1px solid ${borderColor}`, borderRadius: 16, padding: "10px 16px", maxWidth: 320, fontSize: 14, color: "rgba(255,255,255,0.9)", lineHeight: 1.5 }}>
-        <span style={{ fontWeight: 700, fontSize: 12, color: character === "raccoon" ? "#ef4444" : "#ff9b4a", display: "block", marginBottom: 4 }}>{name}</span>
+        <span style={{ fontWeight: 700, fontSize: 12, color: character === "raccoon" ? "#ef4444" : "#7c5cff", display: "block", marginBottom: 4 }}>{name}</span>
         {message}
       </div>
     </motion.div>
@@ -1858,14 +1889,14 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
   const floatIdRef = useRef(0);
 
   const spawnParticles = useCallback(
-    (x: number, y: number, colour: string = "#7cc89a", count: number = 12) => {
+    (x: number, y: number, colour: string = "#7eff97", count: number = 12) => {
       const id = ++burstIdRef.current;
       setBurstList((prev) => [...prev, { id, x, y, colour, count }]);
     },
     []
   );
   const spawnFloatingText = useCallback(
-    (text: string, x: number, y: number, colour: string = "#7cc89a", size: number = 20) => {
+    (text: string, x: number, y: number, colour: string = "#7eff97", size: number = 20) => {
       const id = ++floatIdRef.current;
       setFloatList((prev) => [...prev, { id, text, x, y, colour, size }]);
     },
@@ -1934,7 +1965,7 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
       setArena3DPulseKey((k) => k + 1);
 
       // Micro-feedback: green burst + floating "+N XP" + combo.
-      spawnParticles(x, y, "#7cc89a", 12);
+      spawnParticles(x, y, "#7eff97", 12);
       spawnFloatingText(`+${amount} XP`, x, y - 24, "#fbbf24", 20);
       setLessonCombo((prev) => {
         const next = prev + 1;
@@ -2850,7 +2881,7 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
                       <input
                         type="range" min={0} max={mediaDuration || 1} step={0.1} value={mediaProgress}
                         onChange={(e) => { const v = videoRef.current; if (v) v.currentTime = Number(e.target.value); }}
-                        style={{ flex: 1, accentColor: "#ff9b4a", height: 6 }}
+                        style={{ flex: 1, accentColor: "#7c5cff", height: 6 }}
                       />
                       <button onClick={() => setMediaMuted((m) => !m)} style={{
                         width: 40, height: 40, borderRadius: "50%", background: "rgba(255,255,255,0.15)", border: "none", cursor: "pointer", color: "#fff", fontSize: 16,
@@ -2899,8 +2930,8 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
       /* ──── CASE 1: THE MISSION ──── */
       case 1: {
         const missions = [
-          { icon: "🔐", text: "Learn what passwords are", colour: "#ffd58a", glow: "rgba(255,213,138,0.55)" },
-          { icon: "🛡️", text: "Build a super strong password", colour: "#a06aff", glow: "rgba(160,106,255,0.55)" },
+          { icon: "🔐", text: "Learn what passwords are", colour: "#00e5ff", glow: "rgba(255,213,138,0.55)" },
+          { icon: "🛡️", text: "Build a super strong password", colour: "#7c5cff", glow: "rgba(160,106,255,0.55)" },
           { icon: "🦝", text: "Defeat the Hacker Raccoon", colour: "#f59e0b", glow: "rgba(245,158,11,0.6)" },
         ];
         return (
@@ -2930,11 +2961,11 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
               display: "inline-block",
               fontSize: 11,
               letterSpacing: 5,
-              color: "#ffd58a",
+              color: "#00e5ff",
               fontWeight: 800,
               textTransform: "uppercase",
               padding: "5px 16px",
-              background: "rgba(40, 18, 38, 0.55)",
+              background: "rgba(15, 21, 48, 0.55)",
               backdropFilter: "blur(8px)",
               WebkitBackdropFilter: "blur(8px)",
               borderRadius: 999,
@@ -2949,15 +2980,15 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
               fontSize: 40,
               fontWeight: 900,
               margin: "4px 0 6px",
-              background: "linear-gradient(135deg, #ffd58a, #ff9b4a, #d4733a)",
+              background: "linear-gradient(135deg, #00e5ff, #7c5cff, #3a7bff)",
               WebkitBackgroundClip: "text",
               WebkitTextFillColor: "transparent",
               letterSpacing: 0.5,
               textShadow: "0 4px 18px rgba(80, 30, 10, 0.55)",
             }}>What is a Password?</h1>
-            <p style={{ color: "#ffe9c8", marginBottom: 8, fontSize: 16, opacity: 0.9, fontWeight: 500 }}>Tap each item to lock it with a password!</p>
+            <p style={{ color: "#c5cdf0", marginBottom: 8, fontSize: 16, opacity: 0.9, fontWeight: 500 }}>Tap each item to lock it with a password!</p>
             <p style={{
-              color: "#ffd58a",
+              color: "#00e5ff",
               fontSize: 18,
               fontWeight: 800,
               marginBottom: 16,
@@ -2968,8 +2999,8 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
               {LOCK_ITEMS.map((item, idx) => {
                 const locked = lockedItems.has(item.id);
                 const flipping = lockFlipping === item.id;
-                const accent = item.id === "gaming" ? { c1: "#ff9b4a", c2: "#d4733a", glow: "rgba(255, 155, 74, 0.5)" }
-                  : item.id === "tablet" ? { c1: "#a06aff", c2: "#7a3a52", glow: "rgba(160, 106, 255, 0.5)" }
+                const accent = item.id === "gaming" ? { c1: "#7c5cff", c2: "#3a7bff", glow: "rgba(255, 155, 74, 0.5)" }
+                  : item.id === "tablet" ? { c1: "#7c5cff", c2: "#7a3a52", glow: "rgba(160, 106, 255, 0.5)" }
                   : { c1: "#ffd158", c2: "#d48a18", glow: "rgba(255, 209, 88, 0.55)" };
                 const baseTilt = idx === 0 ? -3 : idx === 2 ? 3 : 0;
                 return (
@@ -3016,13 +3047,13 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
                         padding: "22px 18px",
                         cursor: locked ? "default" : "pointer",
                         background: locked
-                          ? "linear-gradient(160deg, rgba(124, 200, 154, 0.18) 0%, rgba(40, 18, 38, 0.78) 50%, rgba(74, 154, 106, 0.18) 100%)"
-                          : `linear-gradient(160deg, ${accent.c1}22 0%, rgba(40, 18, 38, 0.82) 50%, ${accent.c2}22 100%)`,
+                          ? "linear-gradient(160deg, rgba(126, 255, 151, 0.18) 0%, rgba(15, 21, 48, 0.78) 50%, rgba(94, 255, 128, 0.18) 100%)"
+                          : `linear-gradient(160deg, ${accent.c1}22 0%, rgba(15, 21, 48, 0.82) 50%, ${accent.c2}22 100%)`,
                         borderStyle: "solid",
                         borderWidth: 2,
-                        borderColor: locked ? "rgba(124, 200, 154, 0.6)" : `${accent.c1}66`,
+                        borderColor: locked ? "rgba(126, 255, 151, 0.6)" : `${accent.c1}66`,
                         boxShadow: locked
-                          ? "0 30px 60px -20px rgba(74, 154, 106, 0.55), inset 0 0 0 1px rgba(124, 200, 154, 0.3), 0 0 40px rgba(124, 200, 154, 0.3)"
+                          ? "0 30px 60px -20px rgba(94, 255, 128, 0.55), inset 0 0 0 1px rgba(126, 255, 151, 0.3), 0 0 40px rgba(126, 255, 151, 0.3)"
                           : `0 30px 60px -20px ${accent.glow}, inset 0 0 0 1px ${accent.c1}33, 0 0 36px ${accent.glow}`,
                         backdropFilter: "blur(14px)",
                         WebkitBackdropFilter: "blur(14px)",
@@ -3045,16 +3076,16 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
                         <DeviceIllustration kind={item.id as "gaming" | "tablet" | "school"} c1={accent.c1} c2={accent.c2} locked={locked} />
                       </div>
 
-                      <div style={{ fontSize: 18, color: "#fff7e6", fontWeight: 900, marginBottom: 6, letterSpacing: 0.5 }}>{item.label}</div>
+                      <div style={{ fontSize: 18, color: "#e8edff", fontWeight: 900, marginBottom: 6, letterSpacing: 0.5 }}>{item.label}</div>
 
                       {/* Lock pill */}
                       <div style={{
                         display: "inline-flex", alignItems: "center", gap: 6,
                         padding: "5px 12px", borderRadius: 999,
-                        background: locked ? "rgba(124, 200, 154, 0.22)" : "rgba(196, 81, 58, 0.18)",
+                        background: locked ? "rgba(126, 255, 151, 0.22)" : "rgba(255, 122, 89, 0.18)",
                         borderStyle: "solid",
                         borderWidth: 1,
-                        borderColor: locked ? "rgba(124, 200, 154, 0.6)" : "rgba(196, 81, 58, 0.55)",
+                        borderColor: locked ? "rgba(126, 255, 151, 0.6)" : "rgba(255, 122, 89, 0.55)",
                         marginBottom: 8,
                       }}>
                         <motion.div
@@ -3062,9 +3093,9 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
                           transition={{ duration: 0.6 }}
                           style={{ display: "inline-flex" }}
                         >
-                          {locked ? <IconLock size={16} color="#7cc89a" /> : <IconUnlock size={16} color="#f08e7e" />}
+                          {locked ? <IconLock size={16} color="#7eff97" /> : <IconUnlock size={16} color="#ff5fb3" />}
                         </motion.div>
-                        <span style={{ fontSize: 12, fontWeight: 800, color: locked ? "#a8e3bb" : "#f4a89a", letterSpacing: 1, textTransform: "uppercase" }}>
+                        <span style={{ fontSize: 12, fontWeight: 800, color: locked ? "#a0ffb0" : "#f4a89a", letterSpacing: 1, textTransform: "uppercase" }}>
                           {locked ? "Secure" : "Unlocked"}
                         </span>
                       </div>
@@ -3072,7 +3103,7 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
                       {!locked && !flipping && (
                         <div style={{
                           display: "flex", alignItems: "center", justifyContent: "center", gap: 6,
-                          color: "#ffd58a", fontSize: 12, fontWeight: 800, letterSpacing: 1,
+                          color: "#00e5ff", fontSize: 12, fontWeight: 800, letterSpacing: 1,
                           animation: "lockCardFloat 1.6s ease-in-out infinite",
                           textShadow: `0 0 10px ${accent.glow}`,
                         }}>
@@ -3083,7 +3114,7 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
                         <motion.p
                           initial={{ opacity: 0, y: 8 }}
                           animate={{ opacity: 1, y: 0 }}
-                          style={{ color: "#a8e3bb", fontSize: 12, fontWeight: 600, margin: 0, lineHeight: 1.4 }}
+                          style={{ color: "#a0ffb0", fontSize: 12, fontWeight: 600, margin: 0, lineHeight: 1.4 }}
                         >
                           {item.message}
                         </motion.p>
@@ -3106,21 +3137,21 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
                     maxWidth: 460,
                     margin: "0 auto",
                     padding: "22px 26px",
-                    background: "rgba(40, 18, 38, 0.72)",
+                    background: "rgba(15, 21, 48, 0.72)",
                     backdropFilter: "blur(12px)",
                     WebkitBackdropFilter: "blur(12px)",
                     borderStyle: "solid",
                     borderWidth: 1,
                     borderColor: "rgba(255, 220, 180, 0.4)",
                     borderRadius: 22,
-                    boxShadow: "0 30px 60px -20px rgba(20, 6, 12, 0.7)",
-                    color: "#fff7e6",
+                    boxShadow: "0 30px 60px -20px rgba(8, 10, 22, 0.7)",
+                    color: "#e8edff",
                     textAlign: "center",
                   }}>
                     <div style={{
                       fontSize: 11,
                       letterSpacing: 5,
-                      color: "#ffd58a",
+                      color: "#00e5ff",
                       fontWeight: 800,
                       textTransform: "uppercase",
                       marginBottom: 6,
@@ -3133,15 +3164,15 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
                       display: "inline-flex",
                       alignItems: "center",
                       gap: 10,
-                      background: "linear-gradient(135deg, #ffd58a, #ff9b4a, #d4733a)",
+                      background: "linear-gradient(135deg, #00e5ff, #7c5cff, #3a7bff)",
                       WebkitBackgroundClip: "text",
                       WebkitTextFillColor: "transparent",
                       fontWeight: 900,
                     }}>
-                      <SuccessBurst size={28} colourA="#ffd158" colourB="#ff9b4a" />
+                      <SuccessBurst size={28} colourA="#ffd158" colourB="#7c5cff" />
                       You did it!
                     </h2>
-                    <p style={{ color: "#ffe9c8", marginBottom: 14, fontSize: 15, opacity: 0.92, lineHeight: 1.45 }}>
+                    <p style={{ color: "#c5cdf0", marginBottom: 14, fontSize: 15, opacity: 0.92, lineHeight: 1.45 }}>
                       A password is like a key that locks your digital stuff so only YOU can open it!
                     </p>
                     <div style={{
@@ -3157,8 +3188,8 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
                       gap: 10,
                       justifyContent: "center",
                     }}>
-                      <SuccessBurst size={20} colourA="#ffd158" colourB="#ff9b4a" />
-                      <p style={{ color: "#ffd58a", fontSize: 13, margin: 0, fontWeight: 600 }}>
+                      <SuccessBurst size={20} colourA="#ffd158" colourB="#7c5cff" />
+                      <p style={{ color: "#00e5ff", fontSize: 13, margin: 0, fontWeight: 600 }}>
                         Fun fact — the first computer password was created in 1961!
                       </p>
                     </div>
@@ -3341,7 +3372,7 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
                 const top = (i * 17.3) % 100;
                 const dur = 1.5 + (i % 4) * 0.6;
                 const delay = (i * 0.18) % 4;
-                const c = i % 4 === 0 ? "#ffd58a" : i % 4 === 1 ? "#fbbf24" : i % 4 === 2 ? "#f59e0b" : "#fff";
+                const c = i % 4 === 0 ? "#00e5ff" : i % 4 === 1 ? "#fbbf24" : i % 4 === 2 ? "#f59e0b" : "#fff";
                 return (
                   <span key={`d-${i}`} style={{
                     position: "absolute",
@@ -3463,7 +3494,7 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
                               ...s,
                               fontSize: 10,
                               color: "#fff",
-                              filter: "drop-shadow(0 0 4px #ffd58a)",
+                              filter: "drop-shadow(0 0 4px #00e5ff)",
                               animation: `grSparkle 1.6s ease-in-out ${s.delay}s infinite`,
                               pointerEvents: "none",
                             }}>✦</span>
@@ -3512,8 +3543,8 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
                       ) : (
                         <>
                           <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-                            <span style={{ width: 36, height: 36, display: "inline-flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>{rule.icon === "lock" ? <IconLock size={28} color="#ffd58a" /> : rule.icon === "key" ? <IconKey size={28} color="#ffd158" /> : rule.icon === "unlock" ? <IconUnlock size={28} color="#f08e7e" /> : rule.icon === "ruler" ? <IconRuler size={28} color="#a8e3bb" /> : <IconUsers size={28} color="#f7c1d6" />}</span>
-                            <span style={{ color: "#fff7e6", fontWeight: 800, fontSize: 16, flex: 1, textAlign: "left" }}>{rule.title}</span>
+                            <span style={{ width: 36, height: 36, display: "inline-flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>{rule.icon === "lock" ? <IconLock size={28} color="#00e5ff" /> : rule.icon === "key" ? <IconKey size={28} color="#ffd158" /> : rule.icon === "unlock" ? <IconUnlock size={28} color="#ff5fb3" /> : rule.icon === "ruler" ? <IconRuler size={28} color="#a0ffb0" /> : <IconUsers size={28} color="#f7c1d6" />}</span>
+                            <span style={{ color: "#e8edff", fontWeight: 800, fontSize: 16, flex: 1, textAlign: "left" }}>{rule.title}</span>
                             {isDone && (
                               <motion.span
                                 initial={{ opacity: 0, scale: 0, rotate: -45 }}
@@ -3525,8 +3556,8 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
                           </div>
                           {!isDone && (
                             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} style={{ marginTop: 12 }}>
-                              <p style={{ color: "#ffe9c8", fontSize: 14, textAlign: "left", opacity: 0.9, lineHeight: 1.45 }}>{rule.desc}</p>
-                              <p style={{ color: "#ffd58a", fontWeight: 800, fontSize: 14, marginBottom: 10 }}>{rule.question}</p>
+                              <p style={{ color: "#c5cdf0", fontSize: 14, textAlign: "left", opacity: 0.9, lineHeight: 1.45 }}>{rule.desc}</p>
+                              <p style={{ color: "#00e5ff", fontWeight: 800, fontSize: 14, marginBottom: 10 }}>{rule.question}</p>
                               <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
                                 {rule.opts.map((opt: string, oi: number) => (
                                   <motion.button key={oi}
@@ -3550,18 +3581,18 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
                                     whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
                                     style={{
                                       background: ruleAnswers[i] === oi
-                                        ? (oi === rule.correct ? "rgba(124, 200, 154, 0.22)" : "rgba(196, 81, 58, 0.22)")
+                                        ? (oi === rule.correct ? "rgba(126, 255, 151, 0.22)" : "rgba(255, 122, 89, 0.22)")
                                         : "rgba(255, 245, 220, 0.12)",
                                       borderStyle: "solid",
                                       borderWidth: 2,
                                       borderColor: ruleAnswers[i] === oi
-                                        ? (oi === rule.correct ? "#7cc89a" : "#c4513a")
+                                        ? (oi === rule.correct ? "#7eff97" : "#ff7a59")
                                         : "rgba(255, 220, 180, 0.45)",
                                       borderRadius: 14,
                                       padding: "16px 24px",
                                       color: ruleAnswers[i] === oi
-                                        ? (oi === rule.correct ? "#a8e3bb" : "#f4a89a")
-                                        : "#fff7e6",
+                                        ? (oi === rule.correct ? "#a0ffb0" : "#f4a89a")
+                                        : "#e8edff",
                                       fontSize: 16, fontWeight: 800, cursor: "pointer", minHeight: 56, flex: 1,
                                       opacity: ruleAnswers[i] !== null && ruleAnswers[i] !== undefined && ruleAnswers[i] !== oi && ruleAnswers[i] !== rule.correct ? 0.4 : 1,
                                       fontFamily: "inherit",
@@ -3571,7 +3602,7 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
                               </div>
                             </motion.div>
                           )}
-                          {isDone && <p style={{ color: "#a8e3bb", fontSize: 13, marginTop: 8, textAlign: "left", lineHeight: 1.45 }}>{rule.desc}</p>}
+                          {isDone && <p style={{ color: "#a0ffb0", fontSize: 13, marginTop: 8, textAlign: "left", lineHeight: 1.45 }}>{rule.desc}</p>}
                         </>
                       )}
                     </motion.div>
@@ -3627,8 +3658,8 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
         if (showSummary[12]) return <LearnSummary message="You learned the 4 signs of a trick, too good to be true, scary warnings, spelling mistakes, and asking for secrets!" starCount={3} onNext={() => dismissSummary(12, 13)} />;
         const tricks = [
           { title: "TOO GOOD TO BE TRUE", fake: "YOU WON A FREE iPAD!!! CLICK NOW!!!", explain: "If it sounds too good to be true... it probably is! Real prizes don't pop up on your screen.", color: "#ffd158", icon: "🎁", glyph: "%" },
-          { title: "SCARY WARNINGS", fake: "WARNING! YOUR TABLET HAS A VIRUS! CALL THIS NUMBER NOW!", explain: "Scary messages try to make you panic. Real warnings don't ask you to call a number. Tell a grown-up!", color: "#f08e7e", icon: "⚠️", glyph: "!" },
-          { title: "SPELLING MISTAKES", fake: "Dear Costumer, Youre acount has ben comprimised. Clik here to fix.", explain: "Real companies don't make spelling mistakes! If it looks wrong, it IS wrong.", color: "#a06aff", icon: "🅰️", glyph: "?" },
+          { title: "SCARY WARNINGS", fake: "WARNING! YOUR TABLET HAS A VIRUS! CALL THIS NUMBER NOW!", explain: "Scary messages try to make you panic. Real warnings don't ask you to call a number. Tell a grown-up!", color: "#ff5fb3", icon: "⚠️", glyph: "!" },
+          { title: "SPELLING MISTAKES", fake: "Dear Costumer, Youre acount has ben comprimised. Clik here to fix.", explain: "Real companies don't make spelling mistakes! If it looks wrong, it IS wrong.", color: "#7c5cff", icon: "🅰️", glyph: "?" },
           { title: "ASKING FOR SECRETS", fake: "Enter your password to win free V-Bucks!", explain: "NO real website will EVER ask for your password in a message. NEVER type your password into a popup.", color: "#f7c1d6", icon: "🔐", glyph: "@" },
         ];
         const t = tricks[trickCard] || tricks[0];
@@ -3674,16 +3705,16 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
                 fontSize: 38,
                 fontWeight: 900,
                 marginBottom: 4,
-                background: "linear-gradient(135deg, #ffd58a, #ff9b4a, #d4733a)",
+                background: "linear-gradient(135deg, #00e5ff, #7c5cff, #3a7bff)",
                 WebkitBackgroundClip: "text",
                 WebkitTextFillColor: "transparent",
                 letterSpacing: 0.5,
                 textShadow: "0 4px 18px rgba(80, 30, 10, 0.55)",
               }}>🔍 Spot the Tricks!</h1>
-              <p style={{ color: "#ffd58a", marginBottom: 4, fontSize: 12, letterSpacing: 4, textTransform: "uppercase", fontFamily: "ui-monospace, 'JetBrains Mono', Menlo, monospace", fontWeight: 800 }}>
+              <p style={{ color: "#00e5ff", marginBottom: 4, fontSize: 12, letterSpacing: 4, textTransform: "uppercase", fontFamily: "ui-monospace, 'JetBrains Mono', Menlo, monospace", fontWeight: 800 }}>
                 ▸ EVIDENCE FILE {String(Math.min(trickCard + 1, tricks.length)).padStart(2, "0")} / {String(tricks.length).padStart(2, "0")}
               </p>
-              <p style={{ color: "#ffe9c8", marginBottom: 16, fontSize: 16, opacity: 0.9, fontWeight: 500 }}>The Raccoon sends FAKE messages to trick people. Here&apos;s how to spot them!</p>
+              <p style={{ color: "#c5cdf0", marginBottom: 16, fontSize: 16, opacity: 0.9, fontWeight: 500 }}>The Raccoon sends FAKE messages to trick people. Here&apos;s how to spot them!</p>
             </div>
             {trickCard < 4 ? (
               <AnimatePresence mode="wait">
@@ -3699,7 +3730,7 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
                   <div
                     style={{
                       position: "relative",
-                      background: "linear-gradient(160deg, rgba(40, 18, 38, 0.92) 0%, rgba(20, 8, 24, 0.94) 100%)",
+                      background: "linear-gradient(160deg, rgba(15, 21, 48, 0.92) 0%, rgba(4, 5, 13, 0.94) 100%)",
                       borderStyle: "solid",
                       borderWidth: 1,
                       borderColor: `${t.color}66`,
@@ -3740,7 +3771,7 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
                         <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 10, opacity: 0.8 }}>
                           <span style={{ width: 10, height: 10, borderRadius: "50%", background: "#ef4444" }} />
                           <span style={{ width: 10, height: 10, borderRadius: "50%", background: "#fbbf24" }} />
-                          <span style={{ width: 10, height: 10, borderRadius: "50%", background: "#7cc89a" }} />
+                          <span style={{ width: 10, height: 10, borderRadius: "50%", background: "#7eff97" }} />
                           <span style={{ flex: 1, fontFamily: "ui-monospace, monospace", fontSize: 11, color: "rgba(252,165,165,0.7)", textAlign: "left", marginLeft: 8 }}>
                             ⚠ unsafe-link.notreal/{t.glyph}
                           </span>
@@ -3811,16 +3842,16 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
                       gap: 14,
                       textAlign: "left",
                       padding: "12px 14px",
-                      background: "rgba(124, 200, 154, 0.12)",
+                      background: "rgba(126, 255, 151, 0.12)",
                       borderStyle: "solid",
                       borderWidth: 1,
-                      borderColor: "rgba(124, 200, 154, 0.5)",
+                      borderColor: "rgba(126, 255, 151, 0.5)",
                       borderRadius: 14,
                     }}>
                       <span style={{
                         flexShrink: 0,
                         width: 32, height: 32, borderRadius: "50%",
-                        background: "linear-gradient(135deg, #ffd158, #ff9b4a)",
+                        background: "linear-gradient(135deg, #ffd158, #7c5cff)",
                         color: "#3a1a06",
                         fontWeight: 900,
                         fontSize: 18,
@@ -3829,8 +3860,8 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
                         justifyContent: "center",
                         boxShadow: "0 0 14px rgba(255, 200, 110, 0.55)",
                       }}>✓</span>
-                      <p style={{ color: "#ffe9c8", fontSize: 15, lineHeight: 1.55, margin: 0 }}>
-                        <span style={{ color: "#a8e3bb", fontWeight: 800, marginRight: 4 }}>The clue:</span>
+                      <p style={{ color: "#c5cdf0", fontSize: 15, lineHeight: 1.55, margin: 0 }}>
+                        <span style={{ color: "#a0ffb0", fontWeight: 800, marginRight: 4 }}>The clue:</span>
                         {t.explain}
                       </p>
                     </div>
@@ -3844,7 +3875,7 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
                       {tricks.map((_, idx) => (
                         <span key={idx} style={{
                           width: idx === trickCard ? 22 : 8, height: 8, borderRadius: 4,
-                          background: idx < trickCard ? "#7cc89a" : idx === trickCard ? t.color : "rgba(255, 220, 180, 0.2)",
+                          background: idx < trickCard ? "#7eff97" : idx === trickCard ? t.color : "rgba(255, 220, 180, 0.2)",
                           boxShadow: idx === trickCard ? `0 0 12px ${t.color}` : "none",
                           transition: "width 0.3s ease, background 0.3s ease",
                         }} />
@@ -3859,22 +3890,22 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
                   maxWidth: 540,
                   margin: "0 auto",
                   padding: "26px 28px 22px",
-                  background: "rgba(40, 18, 38, 0.78)",
+                  background: "rgba(15, 21, 48, 0.78)",
                   backdropFilter: "blur(12px)",
                   WebkitBackdropFilter: "blur(12px)",
                   borderStyle: "solid",
                   borderWidth: 1,
                   borderColor: "rgba(255, 220, 180, 0.4)",
                   borderRadius: 22,
-                  boxShadow: "0 30px 60px -20px rgba(20, 6, 12, 0.7)",
-                  color: "#fff7e6",
+                  boxShadow: "0 30px 60px -20px rgba(8, 10, 22, 0.7)",
+                  color: "#e8edff",
                   fontFamily: "ui-rounded, 'Fredoka', 'Quicksand', system-ui, -apple-system, sans-serif",
                   textAlign: "center",
                 }}>
                   <div style={{
                     fontSize: 11,
                     letterSpacing: 5,
-                    color: "#ffd58a",
+                    color: "#00e5ff",
                     fontWeight: 800,
                     textTransform: "uppercase",
                     marginBottom: 6,
@@ -3885,7 +3916,7 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
                     fontSize: 24,
                     fontWeight: 900,
                     marginBottom: 14,
-                    background: "linear-gradient(135deg, #ffd58a, #ff9b4a, #d4733a)",
+                    background: "linear-gradient(135deg, #00e5ff, #7c5cff, #3a7bff)",
                     WebkitBackgroundClip: "text",
                     WebkitTextFillColor: "transparent",
                   }}>Remember the 4 signs of a trick:</h2>
@@ -3897,7 +3928,7 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
                           width: 28,
                           height: 28,
                           borderRadius: "50%",
-                          background: "linear-gradient(135deg, #ffd58a, #ff9b4a)",
+                          background: "linear-gradient(135deg, #00e5ff, #7c5cff)",
                           display: "flex",
                           alignItems: "center",
                           justifyContent: "center",
@@ -3907,11 +3938,11 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
                           flexShrink: 0,
                           boxShadow: "0 0 12px rgba(255, 200, 110, 0.5)",
                         }}>{i + 1}</span>
-                        <span style={{ color: "#fff7e6", fontSize: 15, fontWeight: 600 }}>{sign}</span>
+                        <span style={{ color: "#e8edff", fontSize: 15, fontWeight: 600 }}>{sign}</span>
                       </motion.div>
                     ))}
                   </div>
-                  <p style={{ color: "#ffe9c8", fontSize: 14, marginBottom: 16, opacity: 0.85 }}>Now let&apos;s see if YOU can spot the Raccoon&apos;s tricks!</p>
+                  <p style={{ color: "#c5cdf0", fontSize: 14, marginBottom: 16, opacity: 0.85 }}>Now let&apos;s see if YOU can spot the Raccoon&apos;s tricks!</p>
                   {btn("I'm Ready! →", () => showLearnSummary(12))}
                 </div>
               </motion.div>
@@ -3966,7 +3997,7 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
                     style={{ width: 160, margin: "0 auto 12px", display: "block", filter: "drop-shadow(0 0 12px rgba(239,68,68,0.4))" }} />
                   <motion.h2 animate={{ textShadow: ["0 0 20px rgba(245,158,11,0.3)", "0 0 40px rgba(245,158,11,0.6)", "0 0 20px rgba(245,158,11,0.3)"] }}
                     transition={{ duration: 2, repeat: Infinity }}
-                    style={{ fontSize: 32, margin: "0 0 12px", fontWeight: 900, background: "linear-gradient(135deg, #f59e0b, #ef4444, #ff9b4a)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+                    style={{ fontSize: 32, margin: "0 0 12px", fontWeight: 900, background: "linear-gradient(135deg, #f59e0b, #ef4444, #7c5cff)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
                     You defeated the Hacker Raccoon!</motion.h2>
                   <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.3, type: "spring" }}>
                     {stars(bossScore >= 8 ? 3 : bossScore >= 6 ? 2 : 1)}
@@ -4030,7 +4061,7 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
                   top: 0,
                   width: 2,
                   height: 240,
-                  background: "linear-gradient(180deg, #ffd58a, transparent)",
+                  background: "linear-gradient(180deg, #00e5ff, transparent)",
                   filter: "drop-shadow(0 0 8px #fbbf24)",
                   animation: `bbLightningStrike ${5 + i * 1.4}s ease-in-out ${i * 1.7}s infinite`,
                   pointerEvents: "none",
@@ -4042,7 +4073,7 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
                 const left = (i * 47) % 100;
                 const dur = 4 + (i % 4);
                 const delay = (i * 0.5) % 6;
-                const c = ["#ffd58a", "#f97316", "#fb923c", "#ef4444"][i % 4];
+                const c = ["#00e5ff", "#f97316", "#fb923c", "#ef4444"][i % 4];
                 return (
                   <span key={`ember-${i}`} aria-hidden style={{
                     position: "absolute",
@@ -4168,10 +4199,10 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
                       initial={{ width: 0 }}
                       animate={{ width: "100%" }}
                       transition={{ delay: 0.7, duration: 0.8, ease: "easeOut" }}
-                      style={{ height: "100%", background: "linear-gradient(90deg, #7cc89a, #7cc89a, #a8e3bb)", boxShadow: "0 0 10px #7cc89a" }}
+                      style={{ height: "100%", background: "linear-gradient(90deg, #7eff97, #7eff97, #a0ffb0)", boxShadow: "0 0 10px #7eff97" }}
                     />
                   </div>
-                  <div style={{ marginTop: 4, fontSize: 10, color: "#a8e3bb", fontFamily: "ui-monospace, monospace", letterSpacing: 1 }}>
+                  <div style={{ marginTop: 4, fontSize: 10, color: "#a0ffb0", fontFamily: "ui-monospace, monospace", letterSpacing: 1 }}>
                     HP 100/100 ▸ READY
                   </div>
                 </motion.div>
@@ -4243,8 +4274,8 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
                 marginBottom: 18,
               }}>
                 {[
-                  { l: "ROUNDS", v: "10", c: "#ffd58a" },
-                  { l: "WEAPON", v: "KNOWLEDGE", c: "#a06aff" },
+                  { l: "ROUNDS", v: "10", c: "#00e5ff" },
+                  { l: "WEAPON", v: "KNOWLEDGE", c: "#7c5cff" },
                   { l: "REWARD", v: "+50 COINS", c: "#fbbf24" },
                 ].map((s, i) => (
                   <div key={i} style={{
@@ -4354,8 +4385,10 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
         minHeight: "100vh",
         position: "relative",
         overflow: "hidden",
+        // Cyber Heroes Lab page bg — deep abyss with hint of cosmic
+        // violet bleeding from the top.
         background:
-          "radial-gradient(ellipse at 50% -10%, #4a1a4a 0%, #2a0d2e 35%, #1a0612 70%, #0a0410 100%)",
+          "radial-gradient(ellipse at 50% -10%, #1d1f4d 0%, #0f1530 35%, #080a16 70%, #04050d 100%)",
       }}
     >
       {/* Warm dusk backdrop — replaces the cyber LessonArena3D 3D scene
@@ -4430,9 +4463,9 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
                 top: 16,
                 right: 16,
                 zIndex: 100,
-                background: "linear-gradient(135deg, rgba(255,213,138,0.22), rgba(255,155,74,0.18))",
-                border: "1px solid rgba(255,220,180,0.55)",
-                color: "#fff7e6",
+                background: "linear-gradient(135deg, rgba(0, 229, 255, 0.22), rgba(124, 92, 255, 0.18))",
+                border: "1px solid rgba(0, 229, 255, 0.55)",
+                color: "#e8edff",
                 fontFamily: "ui-monospace, 'JetBrains Mono', Menlo, monospace",
                 fontWeight: 800,
                 fontSize: 11,
@@ -4442,10 +4475,11 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
                 borderRadius: 999,
                 cursor: "pointer",
                 backdropFilter: "blur(10px)",
-                boxShadow: "0 8px 18px rgba(255,178,110,0.32)",
+                boxShadow: "0 8px 18px rgba(0, 0, 0, 0.4), 0 0 18px rgba(0, 229, 255, 0.32)",
+                textShadow: "0 0 8px rgba(0, 229, 255, 0.6)",
               }}
-              onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.boxShadow = "0 8px 24px rgba(255,178,110,0.55)"; }}
-              onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.boxShadow = "0 8px 18px rgba(255,178,110,0.32)"; }}
+              onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.boxShadow = "0 8px 24px rgba(0, 0, 0, 0.5), 0 0 28px rgba(0, 229, 255, 0.6)"; }}
+              onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.boxShadow = "0 8px 18px rgba(0, 0, 0, 0.4), 0 0 18px rgba(0, 229, 255, 0.32)"; }}
             >
               💾 Save &amp; Exit
             </button>
@@ -4479,7 +4513,7 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
                 <div style={{ fontSize: 44, marginBottom: 8 }}>💾</div>
                 <h2 style={{
                   color: "#fff", fontSize: 24, fontWeight: 900, margin: "0 0 6px",
-                  background: "linear-gradient(135deg, #ffd58a, #a06aff)",
+                  background: "linear-gradient(135deg, #00e5ff, #7c5cff)",
                   WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent",
                 }}>
                   Welcome back!
@@ -4580,7 +4614,7 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
             fontFamily: "'Space Grotesk', sans-serif",
             fontSize: Math.min(40, 20 + lessonCombo * 3),
             fontWeight: 800,
-            color: "#ffd58a",
+            color: "#00e5ff",
             letterSpacing: "-0.01em",
             textShadow: "0 0 14px rgba(255,213,138,0.8), 2px 2px 0 rgba(0,0,0,0.6)",
             pointerEvents: "none",
@@ -4693,7 +4727,7 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
         <div style={{
           position: "fixed", left: shieldPos.x, top: shieldPos.y, pointerEvents: "none", zIndex: 9999,
           width: 64, height: 64, borderRadius: "50%",
-          background: "rgba(124,200,154,0.2)", border: "3px solid #5fb37a",
+          background: "rgba(124,200,154,0.2)", border: "3px solid #5eff80",
           display: "flex", alignItems: "center", justifyContent: "center", fontSize: 32,
           boxShadow: "0 0 30px rgba(124,200,154,0.5)",
         }}>

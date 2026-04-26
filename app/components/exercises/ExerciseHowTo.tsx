@@ -13,7 +13,7 @@
  *       { glyph: "🛡️", text: "Block PRIVATE info" },
  *       { glyph: "✅", text: "Let SAFE info through" },
  *     ]}
- *     accent="#d4733a"
+ *     accent="#3a7bff"
  *   />
  */
 
@@ -25,7 +25,7 @@ interface Step {
 export default function ExerciseHowTo({
   title,
   steps,
-  accent = "#d4733a",
+  accent = "#3a7bff",
 }: {
   title: string;
   steps: Step[];
@@ -38,15 +38,15 @@ export default function ExerciseHowTo({
         flexDirection: "column",
         gap: 8,
         padding: "12px 16px 14px",
-        background: "rgba(40, 18, 38, 0.62)",
+        background: "rgba(15, 21, 48, 0.62)",
         backdropFilter: "blur(10px)",
         WebkitBackdropFilter: "blur(10px)",
         borderBottomLeftRadius: 18,
         borderBottomRightRadius: 18,
         borderStyle: "solid",
         borderWidth: 1,
-        borderColor: "rgba(255, 220, 180, 0.22)",
-        boxShadow: "0 8px 18px -8px rgba(20, 6, 12, 0.4)",
+        borderColor: "rgba(0, 229, 255, 0.22)",
+        boxShadow: "0 8px 18px -8px rgba(8, 10, 22, 0.4)",
         userSelect: "none",
         fontFamily:
           "ui-rounded, 'Fredoka', 'Quicksand', system-ui, -apple-system, sans-serif",

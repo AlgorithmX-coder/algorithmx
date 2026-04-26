@@ -15,23 +15,23 @@ import { getCertificateUrl, getAchievedMilestones } from "@/app/lib/certificates
 
 /* ───────────────── PIXAR PALETTE (shared with dashboard) ───────────────── */
 const C = {
-  pageBg: "#1a0612",
-  card: "rgba(40, 18, 38, 0.72)",
-  border: "rgba(255, 220, 180, 0.22)",
-  borderStrong: "rgba(255, 220, 180, 0.45)",
-  text: "#fff7e6",
-  textSoft: "#ffe9c8",
-  textMuted: "rgba(255, 233, 200, 0.55)",
+  pageBg: "#080a16",
+  card: "rgba(15, 21, 48, 0.72)",
+  border: "rgba(0, 229, 255, 0.22)",
+  borderStrong: "rgba(0, 229, 255, 0.45)",
+  text: "#e8edff",
+  textSoft: "#c5cdf0",
+  textMuted: "rgba(125, 240, 255, 0.55)",
   inkDeep: "#3b2615",
-  goldLight: "#ffd58a",
-  goldMid: "#ff9b4a",
-  goldDeep: "#d4733a",
-  goldDark: "#3a1a06",
-  coral: "#f08e7e",
-  ember: "#c4513a",
-  moss: "#7cc89a",
-  mossLight: "#a8e3bb",
-  cream: "#fff5cc",
+  goldLight: "#00e5ff",
+  goldMid: "#7c5cff",
+  goldDeep: "#3a7bff",
+  goldDark: "#080a16",
+  coral: "#ff5fb3",
+  ember: "#ff7a59",
+  moss: "#7eff97",
+  mossLight: "#a0ffb0",
+  cream: "#7df0ff",
 };
 const GRAD_GOLD = `linear-gradient(135deg, ${C.goldLight}, ${C.goldMid}, ${C.goldDeep})`;
 const GRAD_GOLD_PILL = `linear-gradient(135deg, ${C.goldLight}, ${C.goldMid})`;
@@ -205,7 +205,7 @@ export default async function ParentDashboard() {
         className="parent min-h-screen relative"
         style={{
           background:
-            `radial-gradient(ellipse at 50% -10%, #4a1a4a 0%, #2a0d2e 35%, ${C.pageBg} 70%, #0a0410 100%)`,
+            `radial-gradient(ellipse at 50% -10%, #1d1f4d 0%, #0f1530 35%, ${C.pageBg} 70%, #04050d 100%)`,
         }}
       >
         <DashboardSky />
@@ -354,7 +354,7 @@ export default async function ParentDashboard() {
                 backdropFilter: "blur(14px)",
                 WebkitBackdropFilter: "blur(14px)",
                 boxShadow:
-                  "0 24px 50px -16px rgba(20, 6, 12, 0.6), 0 0 0 1px rgba(255, 220, 180, 0.05) inset",
+                  "0 24px 50px -16px rgba(8, 10, 22, 0.6), 0 0 0 1px rgba(0, 229, 255, 0.05) inset",
               }}
             >
               <div className="flex flex-col sm:flex-row items-center gap-6 sm:gap-8">
@@ -363,8 +363,8 @@ export default async function ParentDashboard() {
                     percent={progressPct}
                     gradientFrom={C.goldLight}
                     gradientTo={C.goldMid}
-                    glow="rgba(255, 178, 110, 0.55)"
-                    track="rgba(255, 220, 180, 0.12)"
+                    glow="rgba(124, 92, 255, 0.55)"
+                    track="rgba(0, 229, 255, 0.12)"
                     label={C.goldLight}
                   />
                 </div>
@@ -389,7 +389,7 @@ export default async function ParentDashboard() {
                     <AnimatedBar
                       percent={progressPct}
                       gradient={GRAD_GOLD}
-                      glowColor="rgba(255, 200, 110, 0.55)"
+                      glowColor="rgba(124, 92, 255, 0.55)"
                       height={14}
                     />
                   </div>
@@ -488,10 +488,10 @@ export default async function ParentDashboard() {
                       className="rounded-2xl p-5"
                       style={{
                         background:
-                          "linear-gradient(135deg, rgba(124, 200, 154, 0.14), rgba(40, 18, 38, 0.6))",
+                          "linear-gradient(135deg, rgba(124, 200, 154, 0.14), rgba(15, 21, 48, 0.6))",
                         border: "1px solid rgba(124, 200, 154, 0.4)",
                         boxShadow:
-                          "0 0 18px rgba(124, 200, 154, 0.16), 0 14px 28px -10px rgba(20, 6, 12, 0.5)",
+                          "0 0 18px rgba(124, 200, 154, 0.16), 0 14px 28px -10px rgba(8, 10, 22, 0.5)",
                         backdropFilter: "blur(12px)",
                         WebkitBackdropFilter: "blur(12px)",
                       }}
@@ -557,7 +557,7 @@ export default async function ParentDashboard() {
                   color: C.goldLight,
                   letterSpacing: "0.05em",
                   textTransform: "uppercase",
-                  boxShadow: "0 0 14px rgba(255, 200, 110, 0.3)",
+                  boxShadow: "0 0 14px rgba(124, 92, 255, 0.3)",
                 }}
               >
                 <span
@@ -588,7 +588,7 @@ export default async function ParentDashboard() {
                     key={m.week}
                     style={{
                       background: m.achieved
-                        ? "linear-gradient(135deg, rgba(255, 215, 138, 0.16), rgba(40, 18, 38, 0.7))"
+                        ? "linear-gradient(135deg, rgba(255, 215, 138, 0.16), rgba(15, 21, 48, 0.7))"
                         : C.card,
                       borderRadius: 18,
                       padding: 24,
@@ -596,8 +596,8 @@ export default async function ParentDashboard() {
                         ? `1px solid ${C.borderStrong}`
                         : `1px solid ${C.border}`,
                       boxShadow: m.achieved
-                        ? "0 0 24px rgba(255, 200, 110, 0.22), 0 14px 28px -10px rgba(20, 6, 12, 0.55)"
-                        : "0 10px 22px -10px rgba(20, 6, 12, 0.45)",
+                        ? "0 0 24px rgba(124, 92, 255, 0.22), 0 14px 28px -10px rgba(8, 10, 22, 0.55)"
+                        : "0 10px 22px -10px rgba(8, 10, 22, 0.45)",
                       opacity: m.achieved ? 1 : 0.55,
                       backdropFilter: "blur(12px)",
                       WebkitBackdropFilter: "blur(12px)",
@@ -609,7 +609,7 @@ export default async function ParentDashboard() {
                           fontSize: 36,
                           lineHeight: 1,
                           filter: m.achieved
-                            ? "drop-shadow(0 0 14px rgba(255, 200, 110, 0.55))"
+                            ? "drop-shadow(0 0 14px rgba(124, 92, 255, 0.55))"
                             : undefined,
                         }}
                         aria-hidden
@@ -642,7 +642,7 @@ export default async function ParentDashboard() {
                         <span
                           className="inline-flex items-center font-bold whitespace-nowrap"
                           style={{
-                            background: "rgba(255, 220, 180, 0.04)",
+                            background: "rgba(0, 229, 255, 0.04)",
                             border: `1px solid ${C.border}`,
                             color: C.textMuted,
                             borderRadius: 100,
@@ -677,7 +677,7 @@ export default async function ParentDashboard() {
                       glowColor={
                         m.achieved
                           ? "rgba(124, 200, 154, 0.45)"
-                          : "rgba(255, 200, 110, 0.5)"
+                          : "rgba(124, 92, 255, 0.5)"
                       }
                       height={10}
                     />
@@ -736,18 +736,18 @@ export default async function ParentDashboard() {
                       style={{
                         padding: "18px 24px",
                         background: isCurrent
-                          ? "linear-gradient(135deg, rgba(255, 178, 110, 0.16), rgba(255, 215, 138, 0.10))"
+                          ? "linear-gradient(135deg, rgba(124, 92, 255, 0.16), rgba(255, 215, 138, 0.10))"
                           : mod.isCompleted
-                            ? "linear-gradient(135deg, rgba(124, 200, 154, 0.12), rgba(40, 18, 38, 0.5))"
+                            ? "linear-gradient(135deg, rgba(124, 200, 154, 0.12), rgba(15, 21, 48, 0.5))"
                             : C.card,
                         border: isCurrent
-                          ? `2px solid rgba(255, 200, 110, 0.7)`
+                          ? `2px solid rgba(124, 92, 255, 0.7)`
                           : mod.isCompleted
                             ? "1px solid rgba(124, 200, 154, 0.4)"
                             : `1px solid ${C.border}`,
                         boxShadow: isCurrent
-                          ? "0 0 28px rgba(255, 178, 110, 0.32), 0 14px 28px -10px rgba(20, 6, 12, 0.5)"
-                          : "0 10px 22px -10px rgba(20, 6, 12, 0.45)",
+                          ? "0 0 28px rgba(124, 92, 255, 0.32), 0 14px 28px -10px rgba(8, 10, 22, 0.5)"
+                          : "0 10px 22px -10px rgba(8, 10, 22, 0.45)",
                         backdropFilter: "blur(10px)",
                         WebkitBackdropFilter: "blur(10px)",
                         opacity: mod.isUnlocked ? 1 : 0.45,
@@ -764,7 +764,7 @@ export default async function ParentDashboard() {
                             ? "rgba(124, 200, 154, 0.22)"
                             : isCurrent
                               ? GRAD_GOLD_PILL
-                              : "rgba(255, 220, 180, 0.06)",
+                              : "rgba(0, 229, 255, 0.06)",
                           color: mod.isCompleted
                             ? C.mossLight
                             : isCurrent
@@ -773,7 +773,7 @@ export default async function ParentDashboard() {
                           boxShadow: mod.isCompleted
                             ? "0 0 16px rgba(124, 200, 154, 0.45)"
                             : isCurrent
-                              ? "0 0 20px rgba(255, 178, 110, 0.5)"
+                              ? "0 0 20px rgba(124, 92, 255, 0.5)"
                               : "none",
                         }}
                       >
@@ -796,7 +796,7 @@ export default async function ParentDashboard() {
                               ? "rgba(168, 227, 187, 0.85)"
                               : isCurrent
                                 ? C.goldLight
-                                : "rgba(255, 233, 200, 0.5)",
+                                : "rgba(125, 240, 255, 0.5)",
                           }}
                         >
                           Week {mod.weekNumber}
@@ -838,7 +838,7 @@ export default async function ParentDashboard() {
                           <span
                             className="inline-block font-black whitespace-nowrap"
                             style={{
-                              background: "rgba(255, 178, 110, 0.18)",
+                              background: "rgba(124, 92, 255, 0.18)",
                               color: C.goldLight,
                               border: `1px solid ${C.borderStrong}`,
                               borderRadius: 100,
@@ -852,7 +852,7 @@ export default async function ParentDashboard() {
                           <span
                             className="inline-flex items-center gap-1.5 font-bold whitespace-nowrap"
                             style={{
-                              background: "rgba(255, 220, 180, 0.04)",
+                              background: "rgba(0, 229, 255, 0.04)",
                               border: `1px solid ${C.border}`,
                               color: C.textMuted,
                               borderRadius: 100,
@@ -881,7 +881,7 @@ export default async function ParentDashboard() {
                   "linear-gradient(135deg, rgba(255, 215, 138, 0.18), rgba(196, 60, 106, 0.16))",
                 border: `1px solid ${C.borderStrong}`,
                 boxShadow:
-                  "0 0 50px rgba(255, 178, 110, 0.18), 0 24px 50px -16px rgba(20, 6, 12, 0.6)",
+                  "0 0 50px rgba(124, 92, 255, 0.18), 0 24px 50px -16px rgba(8, 10, 22, 0.6)",
                 backdropFilter: "blur(12px)",
                 WebkitBackdropFilter: "blur(12px)",
               }}

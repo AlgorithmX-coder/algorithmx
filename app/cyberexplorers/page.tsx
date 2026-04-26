@@ -4,16 +4,16 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { motion, useInView } from "framer-motion";
 import SmoothScroll from "@/app/components/SmoothScroll";
-import { ForestGlowScene } from "@/app/components/PixarScenes";
+import { CodeRainScene } from "@/app/components/CyberFutureScenes";
 
 /* ─────────────── TOKENS — warm Pixar dusk palette ─────────────── */
-const BG = "#1a0612";              // page bg (was near-black)
-const CARD = "#2a0d2e";            // card surface (was navy)
-const CYAN = "#ffd58a";            // primary accent → gold light
-const PURPLE = "#a06aff";          // mystic violet (kept)
-const EMERALD = "#7cc89a";         // success accent → moss
-const GOLD = "#ff9b4a";            // gold mid
-const MUTED = "rgba(255, 233, 200, 0.55)";
+const BG = "#080a16";              // page bg (was near-black)
+const CARD = "#0f1530";            // card surface (was navy)
+const CYAN = "#00e5ff";            // primary accent → gold light
+const PURPLE = "#7c5cff";          // mystic violet (kept)
+const EMERALD = "#7eff97";         // success accent → moss
+const GOLD = "#7c5cff";            // gold mid
+const MUTED = "rgba(125, 240, 255, 0.55)";
 const MONO = "'JetBrains Mono', 'Fira Code', 'Consolas', monospace";
 const HEAD = "'Space Grotesk', system-ui, sans-serif";
 const BODY = "'DM Sans', system-ui, sans-serif";
@@ -80,12 +80,12 @@ const STYLES = `
   to { stroke-dashoffset: 0; }
 }
 @keyframes cxPulseTag {
-  0%,100% { box-shadow: 0 0 0 rgba(255,213,138,0); }
-  50% { box-shadow: 0 0 14px rgba(255,213,138,0.55); }
+  0%,100% { box-shadow: 0 0 0 rgba(0,229,255,0); }
+  50% { box-shadow: 0 0 14px rgba(0,229,255,0.55); }
 }
 @keyframes cxGlowPulse {
-  0%,100% { box-shadow: 0 0 20px rgba(255,213,138,0.15); }
-  50% { box-shadow: 0 0 36px rgba(255,213,138,0.35); }
+  0%,100% { box-shadow: 0 0 20px rgba(0,229,255,0.15); }
+  50% { box-shadow: 0 0 36px rgba(0,229,255,0.35); }
 }
 `;
 
@@ -108,9 +108,9 @@ function TerminalHeader({ title = "mentor@cyberexplorers:~" }: { title?: string 
         alignItems: "center",
         gap: 10,
         padding: "10px 14px",
-        borderBottom: "1px solid rgba(255,213,138,0.18)",
+        borderBottom: "1px solid rgba(0,229,255,0.18)",
         background:
-          "linear-gradient(180deg, rgba(255,213,138,0.08), rgba(255,213,138,0.02))",
+          "linear-gradient(180deg, rgba(0,229,255,0.08), rgba(0,229,255,0.02))",
       }}
     >
       <span style={{ width: 12, height: 12, borderRadius: "50%", background: "#ef4444" }} />
@@ -163,9 +163,9 @@ function HeroTerminal() {
         background: "#0a0e1a",
         borderRadius: 16,
         overflow: "hidden",
-        border: "1px solid rgba(255,213,138,0.22)",
+        border: "1px solid rgba(0,229,255,0.22)",
         boxShadow:
-          "0 0 40px rgba(255,213,138,0.2), inset 0 0 30px rgba(160,106,255,0.05)",
+          "0 0 40px rgba(0,229,255,0.2), inset 0 0 30px rgba(160,106,255,0.05)",
         animation: "cxGlowPulse 4s ease-in-out infinite",
       }}
     >
@@ -176,7 +176,7 @@ function HeroTerminal() {
           fontSize: 15,
           padding: "28px 24px 32px",
           minHeight: 320,
-          color: "#fff7e6",
+          color: "#e8edff",
           lineHeight: 1.8,
         }}
       >
@@ -392,18 +392,18 @@ function WeekCard({ week, title, desc, free, index }: { week: number; title: str
       style={{
         background: CARD,
         borderRadius: 14,
-        border: "1px solid rgba(255,213,138,0.18)",
+        border: "1px solid rgba(0,229,255,0.18)",
         overflow: "hidden",
         transition: "border-color 0.2s ease, box-shadow 0.2s ease",
       }}
       onMouseEnter={(e) => {
         const t = e.currentTarget;
         t.style.borderColor = CYAN;
-        t.style.boxShadow = `0 0 24px rgba(255,213,138,0.25)`;
+        t.style.boxShadow = `0 0 24px rgba(0,229,255,0.25)`;
       }}
       onMouseLeave={(e) => {
         const t = e.currentTarget;
-        t.style.borderColor = "rgba(255,213,138,0.18)";
+        t.style.borderColor = "rgba(0,229,255,0.18)";
         t.style.boxShadow = "none";
       }}
     >
@@ -413,9 +413,9 @@ function WeekCard({ week, title, desc, free, index }: { week: number; title: str
           alignItems: "center",
           justifyContent: "space-between",
           padding: "9px 14px",
-          borderBottom: "1px solid rgba(255,213,138,0.15)",
+          borderBottom: "1px solid rgba(0,229,255,0.15)",
           background:
-            "linear-gradient(180deg, rgba(255,213,138,0.07), rgba(160,106,255,0.04))",
+            "linear-gradient(180deg, rgba(0,229,255,0.07), rgba(160,106,255,0.04))",
         }}
       >
         <span
@@ -427,8 +427,8 @@ function WeekCard({ week, title, desc, free, index }: { week: number; title: str
             letterSpacing: 1,
             padding: "3px 9px",
             borderRadius: 4,
-            background: "rgba(255,213,138,0.08)",
-            border: "1px solid rgba(255,213,138,0.3)",
+            background: "rgba(0,229,255,0.08)",
+            border: "1px solid rgba(0,229,255,0.3)",
             animation: free ? "cxPulseTag 1.8s ease-in-out infinite" : undefined,
           }}
         >
@@ -594,7 +594,7 @@ function PathwayTier({ name, weeks, colour, skills, index }: { name: string; wee
             style={{
               fontFamily: BODY,
               fontSize: 14,
-              color: "rgba(255, 233, 200, 0.85)",
+              color: "rgba(125, 240, 255, 0.85)",
               paddingLeft: 16,
               position: "relative",
             }}
@@ -626,15 +626,15 @@ export default function CyberExplorersPage() {
     <SmoothScroll>
       <main
         style={{
-          background: `radial-gradient(ellipse at 50% -10%, #4a1a4a 0%, #2a0d2e 35%, ${BG} 70%, #0a0410 100%)`,
-          color: "#fff7e6",
+          background: `radial-gradient(ellipse at 50% -10%, #1d1f4d 0%, #0f1530 35%, ${BG} 70%, #04050d 100%)`,
+          color: "#e8edff",
           fontFamily: BODY,
           minHeight: "100vh",
           overflow: "hidden",
           position: "relative",
         }}
       >
-        <ForestGlowScene />
+        <CodeRainScene />
         {/* 1. HERO */}
         <section
           style={{
@@ -655,7 +655,7 @@ export default function CyberExplorersPage() {
               position: "absolute",
               inset: 0,
               background:
-                "radial-gradient(ellipse at 50% 50%, rgba(160,106,255,0.15), transparent 60%), radial-gradient(ellipse at 50% 110%, rgba(255,213,138,0.12), transparent 50%)",
+                "radial-gradient(ellipse at 50% 50%, rgba(160,106,255,0.15), transparent 60%), radial-gradient(ellipse at 50% 110%, rgba(0,229,255,0.12), transparent 50%)",
               pointerEvents: "none",
             }}
           />
@@ -724,7 +724,7 @@ export default function CyberExplorersPage() {
                 fontFamily: HEAD,
                 letterSpacing: 0.5,
                 fontSize: 15,
-                background: "rgba(255,213,138,0.05)",
+                background: "rgba(0,229,255,0.05)",
               }}
             >
               View Curriculum
@@ -893,7 +893,7 @@ export default function CyberExplorersPage() {
                 ].map((item) => (
                   <li
                     key={item}
-                    style={{ fontFamily: BODY, color: "rgba(255, 233, 200, 0.85)", fontSize: 15, paddingLeft: 24, position: "relative" }}
+                    style={{ fontFamily: BODY, color: "rgba(125, 240, 255, 0.85)", fontSize: 15, paddingLeft: 24, position: "relative" }}
                   >
                     <span style={{ position: "absolute", left: 0, color: EMERALD, fontFamily: MONO }}>✓</span>
                     {item}

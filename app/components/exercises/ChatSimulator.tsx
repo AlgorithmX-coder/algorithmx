@@ -69,7 +69,7 @@ const DEFAULT_DELAY = 500;
 function dangerStops(level: number): { label: string; color: string; bg: string } {
   if (level >= 0.66) return { label: "⚠️ HIGH", color: "#ef4444", bg: "rgba(239,68,68,0.14)" };
   if (level >= 0.33) return { label: "⚠️ RISING", color: "#f97316", bg: "rgba(249,115,22,0.12)" };
-  return { label: "SAFE", color: "rgba(255,233,200,0.55)", bg: "rgba(148,163,184,0.08)" };
+  return { label: "SAFE", color: "rgba(125,240,255,0.55)", bg: "rgba(148,163,184,0.08)" };
 }
 
 export default function ChatSimulator({
@@ -342,7 +342,7 @@ export default function ChatSimulator({
               position: "relative",
             }}
           >
-            <span style={{ position: "absolute", inset: 1, background: "#7cc89a", borderRadius: 1, width: "78%" }} />
+            <span style={{ position: "absolute", inset: 1, background: "#7eff97", borderRadius: 1, width: "78%" }} />
           </span>
         </span>
       </div>
@@ -354,11 +354,11 @@ export default function ChatSimulator({
           alignItems: "center",
           gap: 10,
           padding: "12px 16px",
-          background: "rgba(255,213,138,0.06)",
+          background: "rgba(0,229,255,0.06)",
           borderBottom: "1px solid rgba(255,255,255,0.06)",
         }}
       >
-        <span aria-hidden style={{ color: "rgba(255,233,200,0.55)", fontSize: 18, lineHeight: 1 }}>
+        <span aria-hidden style={{ color: "rgba(125,240,255,0.55)", fontSize: 18, lineHeight: 1 }}>
           ‹
         </span>
         <div
@@ -369,7 +369,7 @@ export default function ChatSimulator({
             borderRadius: "50%",
             background: "rgba(148,163,184,0.2)",
             border: "1px solid rgba(148,163,184,0.35)",
-            color: "rgba(255,233,200,0.55)",
+            color: "rgba(125,240,255,0.55)",
             fontFamily: "'Fredoka', 'Nunito', sans-serif",
             fontWeight: 700,
             fontSize: 16,
@@ -470,7 +470,7 @@ export default function ChatSimulator({
           <div
             style={{
               fontSize: 11,
-              color: "#ffd58a",
+              color: "#00e5ff",
               fontFamily: "'JetBrains Mono', 'Courier New', monospace",
               letterSpacing: "0.1em",
               marginBottom: 2,
@@ -534,14 +534,14 @@ function MessageBubble({ msg }: { msg: ShownMsg }) {
       >
         <div
           style={{
-            background: "linear-gradient(135deg, #ff9b4a, #ff9b4a)",
-            border: "1px solid rgba(255,213,138,0.45)",
+            background: "linear-gradient(135deg, #7c5cff, #7c5cff)",
+            border: "1px solid rgba(0,229,255,0.45)",
             borderRadius: "16px 16px 4px 16px",
             padding: "10px 14px",
             fontSize: 14,
             lineHeight: 1.45,
             color: "#f8fafc",
-            boxShadow: "0 4px 14px rgba(255,178,110,0.35)",
+            boxShadow: "0 4px 14px rgba(124,92,255,0.35)",
           }}
         >
           {msg.text.replace(/^You:\s*/, "")}
@@ -552,7 +552,7 @@ function MessageBubble({ msg }: { msg: ShownMsg }) {
           style={{
             alignSelf: "flex-end",
             fontSize: 10,
-            color: "#ffd58a",
+            color: "#00e5ff",
             letterSpacing: "-0.04em",
             marginRight: 4,
           }}
@@ -569,14 +569,14 @@ function MessageBubble({ msg }: { msg: ShownMsg }) {
       ? "rgba(168,227,187,0.10)"
       : tone === "bad"
         ? "rgba(239,68,68,0.10)"
-        : "rgba(255,213,138,0.06)";
+        : "rgba(0,229,255,0.06)";
   const border =
     tone === "good"
       ? "1px solid rgba(168,227,187,0.3)"
       : tone === "bad"
         ? "1px solid rgba(239,68,68,0.3)"
-        : "1px solid rgba(255,213,138,0.12)";
-  const color = tone === "good" ? "#a8e3bb" : tone === "bad" ? "#fca5a5" : "rgba(255,233,200,0.55)";
+        : "1px solid rgba(0,229,255,0.12)";
+  const color = tone === "good" ? "#a0ffb0" : tone === "bad" ? "#fca5a5" : "rgba(125,240,255,0.55)";
 
   return (
     <div
@@ -603,8 +603,8 @@ function MessageBubble({ msg }: { msg: ShownMsg }) {
 function TypingIndicator({ sender }: { sender: Sender }) {
   const isStranger = sender === "stranger";
   const align: CSSProperties["alignSelf"] = isStranger ? "flex-start" : "center";
-  const bg = isStranger ? "rgba(239,68,68,0.08)" : "rgba(255,213,138,0.06)";
-  const border = isStranger ? "1px solid rgba(239,68,68,0.15)" : "1px solid rgba(255,213,138,0.12)";
+  const bg = isStranger ? "rgba(239,68,68,0.08)" : "rgba(0,229,255,0.06)";
+  const border = isStranger ? "1px solid rgba(239,68,68,0.15)" : "1px solid rgba(0,229,255,0.12)";
   const radius = isStranger ? "16px 16px 16px 4px" : 12;
   const dotColor = isStranger ? "#fca5a5" : "#93c5fd";
   return (
@@ -662,17 +662,17 @@ function ChoiceCard({
     : "linear-gradient(135deg, rgba(239,68,68,0.12), rgba(15,23,42,0.9))";
   const border = picked
     ? option.isSafe
-      ? "#7cc89a"
+      ? "#7eff97"
       : "#ef4444"
     : hover
-      ? "rgba(255,213,138,0.55)"
+      ? "rgba(0,229,255,0.55)"
       : "rgba(255,255,255,0.1)";
   const shadow = picked
     ? option.isSafe
       ? "0 0 22px rgba(168,227,187,0.55), inset 0 1px 0 rgba(255,255,255,0.15)"
       : "0 0 22px rgba(239,68,68,0.55), inset 0 1px 0 rgba(255,255,255,0.15)"
     : hover
-      ? "0 8px 22px rgba(0,0,0,0.4), 0 0 0 2px rgba(255,213,138,0.2)"
+      ? "0 8px 22px rgba(0,0,0,0.4), 0 0 0 2px rgba(0,229,255,0.2)"
       : "0 3px 10px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.05)";
 
   return (
@@ -701,7 +701,7 @@ function ChoiceCard({
       }}
     >
       {picked && option.isSafe && (
-        <span style={{ color: "#7cc89a", fontWeight: 800, marginRight: 6 }}>✅ </span>
+        <span style={{ color: "#7eff97", fontWeight: 800, marginRight: 6 }}>✅ </span>
       )}
       {option.text}
     </button>
@@ -716,7 +716,7 @@ function Summary({ score, total }: { score: number; total: number }) {
         padding: "18px 20px 22px",
         borderTop: "1px solid rgba(255,255,255,0.06)",
         background:
-          "linear-gradient(180deg, rgba(255,213,138,0.04), rgba(168,227,187,0.06))",
+          "linear-gradient(180deg, rgba(0,229,255,0.04), rgba(168,227,187,0.06))",
         textAlign: "center",
         animation: "csSummaryIn 0.45s cubic-bezier(0.16,1,0.3,1) both",
       }}
@@ -733,7 +733,7 @@ function Summary({ score, total }: { score: number; total: number }) {
       >
         🛡️ Safety Score: {score}/{total}
       </div>
-      <div style={{ fontSize: 13, color: "rgba(255,233,200,0.55)", marginBottom: 14, lineHeight: 1.5 }}>
+      <div style={{ fontSize: 13, color: "rgba(125,240,255,0.55)", marginBottom: 14, lineHeight: 1.5 }}>
         {perfect
           ? "You stayed safe! A real Cyber Hero!"
           : score > 0

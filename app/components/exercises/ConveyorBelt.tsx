@@ -362,14 +362,14 @@ export default function ConveyorBelt({
         borderRadius: 28,
         overflow: "hidden",
         background:
-          "radial-gradient(ellipse at 20% 30%, rgba(255, 178, 110, 0.5), transparent 55%)," +
-          "radial-gradient(ellipse at 80% 75%, rgba(196, 81, 58, 0.4), transparent 55%)," +
-          "linear-gradient(180deg, #2a1240 0%, #5a2540 35%, #a04a4a 70%, #e88550 92%, #fcd58a 100%)",
+          "radial-gradient(ellipse at 20% 30%, rgba(124, 92, 255, 0.5), transparent 55%)," +
+          "radial-gradient(ellipse at 80% 75%, rgba(255, 95, 179, 0.4), transparent 55%)," +
+          "linear-gradient(180deg, #2a1240 0%, #1a2147 35%, #252d5e 70%, #3a7bff 92%, #7df0ff 100%)",
         boxShadow:
           "0 40px 90px -30px rgba(40, 22, 12, 0.55), 0 0 0 1px rgba(255,210,170,0.25) inset",
         fontFamily:
           "ui-rounded, 'Fredoka', 'Quicksand', system-ui, -apple-system, sans-serif",
-        color: "#fff7e6",
+        color: "#e8edff",
         userSelect: "none",
         touchAction: "manipulation",
       }}
@@ -424,7 +424,7 @@ export default function ConveyorBelt({
           fontWeight: 900,
           letterSpacing: 3,
           fontSize: 14,
-          color: "rgba(255,233,200,0.55)",
+          color: "rgba(125,240,255,0.55)",
           zIndex: 4,
         }}
       >
@@ -451,14 +451,14 @@ export default function ConveyorBelt({
           zIndex: 3,
         }}
       >
-        <div style={{ fontSize: 11, color: "#a8e3bb", letterSpacing: 1 }}>
+        <div style={{ fontSize: 11, color: "#a0ffb0", letterSpacing: 1 }}>
           SAFE VAULT
         </div>
         <div
           style={{
             fontSize: 28,
             fontWeight: 900,
-            color: "#7cc89a",
+            color: "#7eff97",
             lineHeight: 1,
             marginTop: 4,
           }}
@@ -546,7 +546,7 @@ export default function ConveyorBelt({
             height: 60,
             borderRadius: "50%",
             background:
-              "radial-gradient(circle at 40% 30%, #cbd5e1 0%, #475569 55%, #2a0d2e 100%)",
+              "radial-gradient(circle at 40% 30%, #cbd5e1 0%, #475569 55%, #0f1530 100%)",
             border: "2px solid #3a1a3e",
             boxShadow: "0 0 12px rgba(255,255,255,0.1)",
             animation: "cbRoller 1.8s linear infinite",
@@ -561,7 +561,7 @@ export default function ConveyorBelt({
             height: 60,
             borderRadius: "50%",
             background:
-              "radial-gradient(circle at 40% 30%, #cbd5e1 0%, #475569 55%, #2a0d2e 100%)",
+              "radial-gradient(circle at 40% 30%, #cbd5e1 0%, #475569 55%, #0f1530 100%)",
             border: "2px solid #3a1a3e",
             animation: "cbRoller 1.8s linear infinite",
           }}
@@ -576,14 +576,14 @@ export default function ConveyorBelt({
             height: 46,
             borderRadius: 8,
             background:
-              "repeating-linear-gradient(135deg, #3a1a3e 0 12px, #2a0d2e 12px 24px)",
+              "repeating-linear-gradient(135deg, #3a1a3e 0 12px, #0f1530 12px 24px)",
             backgroundSize: "48px 48px",
             animation: "cbBeltScroll 0.8s linear infinite",
             boxShadow:
               "inset 0 2px 6px rgba(255,255,255,0.1), inset 0 -2px 6px rgba(0,0,0,0.6)",
             outline:
               beltFlash === "good"
-                ? "2px solid #7cc89a"
+                ? "2px solid #7eff97"
                 : beltFlash === "bad"
                   ? "2px solid #ef4444"
                   : "none",
@@ -638,7 +638,7 @@ export default function ConveyorBelt({
           top: BELT_Y - 96,
           fontSize: 11,
           fontWeight: 900,
-          color: "#7cc89a",
+          color: "#7eff97",
           letterSpacing: 1,
         }}
       >
@@ -684,8 +684,8 @@ export default function ConveyorBelt({
             borderRadius: "12px 12px 4px 4px",
             background:
               lever === "up"
-                ? "linear-gradient(180deg, #7cc89a, #15803d)"
-                : "linear-gradient(180deg, #3a1a3e, #2a0d2e)",
+                ? "linear-gradient(180deg, #7eff97, #15803d)"
+                : "linear-gradient(180deg, #3a1a3e, #0f1530)",
             border: "2px solid rgba(34,197,94,0.5)",
             color: "#fff",
             fontWeight: 900,
@@ -708,7 +708,7 @@ export default function ConveyorBelt({
             flex: 1,
             width: 24,
             background:
-              "linear-gradient(180deg, #64748b, #334155 50%, #2a0d2e)",
+              "linear-gradient(180deg, #64748b, #334155 50%, #0f1530)",
             boxShadow: "inset 0 0 6px rgba(0,0,0,0.6)",
           }}
         >
@@ -727,7 +727,7 @@ export default function ConveyorBelt({
               height: 36,
               borderRadius: "50%",
               background:
-                "radial-gradient(circle at 40% 30%, #f8fafc, rgba(255,233,200,0.55) 55%, #3a1a3e)",
+                "radial-gradient(circle at 40% 30%, #f8fafc, rgba(125,240,255,0.55) 55%, #3a1a3e)",
               boxShadow:
                 "0 0 10px rgba(147,197,253,0.45), 0 3px 8px rgba(0,0,0,0.6)",
               transition: "top 0.25s cubic-bezier(0.4, 1.6, 0.5, 1)",
@@ -746,7 +746,7 @@ export default function ConveyorBelt({
             background:
               lever === "down"
                 ? "linear-gradient(180deg, #ef4444, #991b1b)"
-                : "linear-gradient(180deg, #2a0d2e, #3a1a3e)",
+                : "linear-gradient(180deg, #0f1530, #3a1a3e)",
             border: "2px solid rgba(239,68,68,0.5)",
             color: "#fff",
             fontWeight: 900,
@@ -783,7 +783,7 @@ export default function ConveyorBelt({
                 : "linear-gradient(135deg, rgba(30,41,59,0.95), rgba(15,23,42,0.95))",
             border:
               card.phase === "routed" && card.wasCorrect === true
-                ? "2px solid #7cc89a"
+                ? "2px solid #7eff97"
                 : card.phase === "routed" && card.wasCorrect === false
                   ? "2px solid #ef4444"
                   : "2px solid rgba(148,163,184,0.35)",
@@ -894,10 +894,10 @@ export default function ConveyorBelt({
             padding: "6px 18px",
             borderRadius: 999,
             background:
-              "linear-gradient(135deg, rgba(255, 213, 138, 0.95), rgba(255, 155, 74, 0.92))",
+              "linear-gradient(135deg, rgba(0, 229, 255, 0.95), rgba(255, 155, 74, 0.92))",
             boxShadow:
-              "0 12px 28px -8px rgba(40, 18, 8, 0.5), 0 0 28px rgba(255, 213, 138, 0.55)",
-            color: "#3a1a06",
+              "0 12px 28px -8px rgba(40, 18, 8, 0.5), 0 0 28px rgba(0, 229, 255, 0.55)",
+            color: "#080a16",
             fontWeight: 900,
             fontSize: 13,
             letterSpacing: 3,
@@ -1015,7 +1015,7 @@ function FrenzyTransitionCard({
         alignItems: "center",
         justifyContent: "center",
         background:
-          "linear-gradient(180deg, rgba(40, 18, 38, 0.85) 0%, rgba(20, 8, 24, 0.92) 100%)",
+          "linear-gradient(180deg, rgba(15, 21, 48, 0.85) 0%, rgba(20, 8, 24, 0.92) 100%)",
         backdropFilter: "blur(10px)",
         WebkitBackdropFilter: "blur(10px)",
         padding: 24,
@@ -1029,12 +1029,12 @@ function FrenzyTransitionCard({
           padding: "26px 28px 22px",
           borderRadius: 22,
           background:
-            "linear-gradient(180deg, rgba(40, 18, 38, 0.92), rgba(20, 8, 24, 0.95))",
-          border: "1px solid rgba(255, 220, 180, 0.42)",
+            "linear-gradient(180deg, rgba(15, 21, 48, 0.92), rgba(20, 8, 24, 0.95))",
+          border: "1px solid rgba(0, 229, 255, 0.42)",
           boxShadow:
-            "0 30px 60px -20px rgba(20,6,12,0.7), 0 0 36px rgba(255, 178, 110, 0.3)",
+            "0 30px 60px -20px rgba(8,10,22,0.7), 0 0 36px rgba(124, 92, 255, 0.3)",
           textAlign: "center",
-          color: "#fff7e6",
+          color: "#e8edff",
           fontFamily:
             "ui-rounded, 'Fredoka', 'Quicksand', system-ui, sans-serif",
         }}
@@ -1045,11 +1045,11 @@ function FrenzyTransitionCard({
             fontSize: 11,
             letterSpacing: 4,
             fontWeight: 800,
-            color: "#ffd58a",
+            color: "#00e5ff",
             textTransform: "uppercase",
             padding: "4px 14px",
-            background: "rgba(20, 6, 12, 0.55)",
-            border: "1px solid rgba(255, 220, 180, 0.4)",
+            background: "rgba(8, 10, 22, 0.55)",
+            border: "1px solid rgba(0, 229, 255, 0.4)",
             borderRadius: 999,
             marginBottom: 12,
           }}
@@ -1062,7 +1062,7 @@ function FrenzyTransitionCard({
             lineHeight: 1,
             marginBottom: 4,
             filter:
-              "drop-shadow(0 0 18px rgba(255, 213, 138, 0.7)) drop-shadow(0 0 32px rgba(255, 178, 110, 0.45))",
+              "drop-shadow(0 0 18px rgba(0, 229, 255, 0.7)) drop-shadow(0 0 32px rgba(124, 92, 255, 0.45))",
           }}
         >
           ⚡
@@ -1072,7 +1072,7 @@ function FrenzyTransitionCard({
             fontSize: 26,
             fontWeight: 900,
             background:
-              "linear-gradient(135deg, #fff5cc, #ffd58a, #ff9b4a)",
+              "linear-gradient(135deg, #7df0ff, #00e5ff, #7c5cff)",
             WebkitBackgroundClip: "text",
             WebkitTextFillColor: "transparent",
             margin: "4px 0 6px",
@@ -1085,7 +1085,7 @@ function FrenzyTransitionCard({
         <p
           style={{
             fontSize: 14,
-            color: "#a8e3bb",
+            color: "#a0ffb0",
             margin: "0 0 6px",
             fontWeight: 700,
           }}
@@ -1095,7 +1095,7 @@ function FrenzyTransitionCard({
         <p
           style={{
             fontSize: 15,
-            color: "#ffe9c8",
+            color: "#c5cdf0",
             opacity: 0.92,
             margin: "0 0 18px",
             lineHeight: 1.55,
@@ -1112,8 +1112,8 @@ function FrenzyTransitionCard({
             padding: "0 28px",
             border: "none",
             borderRadius: 999,
-            background: "linear-gradient(135deg, #ffd58a, #ff9b4a)",
-            color: "#3a1a06",
+            background: "linear-gradient(135deg, #00e5ff, #7c5cff)",
+            color: "#080a16",
             fontWeight: 800,
             fontSize: 15,
             letterSpacing: 0.5,
@@ -1144,7 +1144,7 @@ function ChestRevealCard({
   const tier =
     frenzyHits >= frenzyTotal ? "gold" : frenzyHits >= 4 ? "silver" : "bronze";
   const tierColour =
-    tier === "gold" ? "#ffd58a" : tier === "silver" ? "#e0d7c8" : "#d4985a";
+    tier === "gold" ? "#00e5ff" : tier === "silver" ? "#e0d7c8" : "#d4985a";
   const tierLabel =
     tier === "gold" ? "GOLD CHEST" : tier === "silver" ? "SILVER CHEST" : "BRONZE CHEST";
   const sparkles = Array.from({ length: 12 }, (_, i) => ({
@@ -1164,7 +1164,7 @@ function ChestRevealCard({
         alignItems: "center",
         justifyContent: "center",
         background:
-          "linear-gradient(180deg, rgba(40, 18, 38, 0.9) 0%, rgba(20, 8, 24, 0.96) 100%)",
+          "linear-gradient(180deg, rgba(15, 21, 48, 0.9) 0%, rgba(20, 8, 24, 0.96) 100%)",
         backdropFilter: "blur(10px)",
         WebkitBackdropFilter: "blur(10px)",
         padding: 24,
@@ -1178,11 +1178,11 @@ function ChestRevealCard({
           padding: "26px 28px 22px",
           borderRadius: 22,
           background:
-            "linear-gradient(180deg, rgba(40, 18, 38, 0.92), rgba(20, 8, 24, 0.95))",
+            "linear-gradient(180deg, rgba(15, 21, 48, 0.92), rgba(20, 8, 24, 0.95))",
           border: `1px solid ${tierColour}`,
-          boxShadow: `0 30px 60px -20px rgba(20,6,12,0.7), 0 0 40px ${tierColour}55`,
+          boxShadow: `0 30px 60px -20px rgba(8,10,22,0.7), 0 0 40px ${tierColour}55`,
           textAlign: "center",
-          color: "#fff7e6",
+          color: "#e8edff",
           fontFamily:
             "ui-rounded, 'Fredoka', 'Quicksand', system-ui, sans-serif",
         }}
@@ -1196,7 +1196,7 @@ function ChestRevealCard({
             color: tierColour,
             textTransform: "uppercase",
             padding: "4px 14px",
-            background: "rgba(20, 6, 12, 0.55)",
+            background: "rgba(8, 10, 22, 0.55)",
             border: `1px solid ${tierColour}`,
             borderRadius: 999,
             marginBottom: 14,
@@ -1251,7 +1251,7 @@ function ChestRevealCard({
               right: 10,
               bottom: 0,
               height: 60,
-              background: "linear-gradient(180deg, #6a3a14, #3a1a06)",
+              background: "linear-gradient(180deg, #6a3a14, #080a16)",
               borderRadius: "6px 6px 10px 10px",
               border: `2px solid ${tierColour}`,
               boxShadow: "inset 0 -8px 14px rgba(0,0,0,0.45)",
@@ -1309,7 +1309,7 @@ function ChestRevealCard({
             fontSize: 24,
             fontWeight: 900,
             background:
-              "linear-gradient(135deg, #fff5cc, #ffd58a, #ff9b4a)",
+              "linear-gradient(135deg, #7df0ff, #00e5ff, #7c5cff)",
             WebkitBackgroundClip: "text",
             WebkitTextFillColor: "transparent",
             margin: "4px 0 4px",
@@ -1324,7 +1324,7 @@ function ChestRevealCard({
         <p
           style={{
             fontSize: 14,
-            color: "#ffe9c8",
+            color: "#c5cdf0",
             opacity: 0.92,
             margin: "0 0 18px",
             lineHeight: 1.55,
@@ -1344,8 +1344,8 @@ function ChestRevealCard({
             padding: "0 28px",
             border: "none",
             borderRadius: 999,
-            background: "linear-gradient(135deg, #ffd58a, #ff9b4a)",
-            color: "#3a1a06",
+            background: "linear-gradient(135deg, #00e5ff, #7c5cff)",
+            color: "#080a16",
             fontWeight: 800,
             fontSize: 15,
             letterSpacing: 0.5,
@@ -1397,7 +1397,7 @@ function FactoryBackdrop() {
       <div style={{
         position: "absolute", inset: 0,
         background:
-          "radial-gradient(ellipse at 22% 20%, rgba(255,213,138,0.22), transparent 38%)," +
+          "radial-gradient(ellipse at 22% 20%, rgba(0,229,255,0.22), transparent 38%)," +
           "radial-gradient(ellipse at 78% 22%, rgba(160,106,255,0.22), transparent 38%)," +
           "radial-gradient(ellipse at 50% 88%, rgba(247,193,214,0.16), transparent 50%)",
         animation: "cbBgPulse 4.4s ease-in-out infinite",
@@ -1407,7 +1407,7 @@ function FactoryBackdrop() {
       <div style={{
         position: "absolute", inset: 0,
         backgroundImage:
-          "radial-gradient(circle at 6px 6px, rgba(255,213,138,0.08) 1.2px, transparent 1.6px)," +
+          "radial-gradient(circle at 6px 6px, rgba(0,229,255,0.08) 1.2px, transparent 1.6px)," +
           "radial-gradient(circle at 18px 18px, rgba(160,106,255,0.06) 1px, transparent 1.4px)",
         backgroundSize: "24px 24px, 36px 36px",
         opacity: 0.85,
@@ -1419,7 +1419,7 @@ function FactoryBackdrop() {
         width: "180%", height: "180%",
         transform: "translate(-50%, -50%)",
         background:
-          "conic-gradient(from 0deg, transparent 0deg, rgba(255,213,138,0.08) 30deg, transparent 60deg, rgba(160,106,255,0.08) 150deg, transparent 200deg)",
+          "conic-gradient(from 0deg, transparent 0deg, rgba(0,229,255,0.08) 30deg, transparent 60deg, rgba(160,106,255,0.08) 150deg, transparent 200deg)",
         animation: "cbBeamSweep 22s linear infinite",
         pointerEvents: "none",
       }} />
@@ -1427,7 +1427,7 @@ function FactoryBackdrop() {
       {/* Vertical scan line drifting down */}
       <span aria-hidden style={{
         position: "absolute", left: 0, right: 0, height: 80,
-        background: "linear-gradient(180deg, transparent, rgba(255,213,138,0.18), transparent)",
+        background: "linear-gradient(180deg, transparent, rgba(0,229,255,0.18), transparent)",
         animation: "cbScanLine 4.5s linear infinite",
         pointerEvents: "none",
         mixBlendMode: "screen",
@@ -1442,11 +1442,11 @@ function FactoryBackdrop() {
       >
         <defs>
           <linearGradient id="cbCircuit" x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0%" stopColor="#ffd58a" />
-            <stop offset="100%" stopColor="#a06aff" />
+            <stop offset="0%" stopColor="#00e5ff" />
+            <stop offset="100%" stopColor="#7c5cff" />
           </linearGradient>
           <linearGradient id="cbServer" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="rgba(255,213,138,0.18)" />
+            <stop offset="0%" stopColor="rgba(0,229,255,0.18)" />
             <stop offset="100%" stopColor="rgba(15,23,42,0.6)" />
           </linearGradient>
         </defs>
@@ -1454,14 +1454,14 @@ function FactoryBackdrop() {
         {/* Top circuit-trace bus running across the screen */}
         <line x1="0" y1="28" x2="760" y2="28" stroke="url(#cbCircuit)" strokeWidth="1.5" opacity="0.55" />
         <line x1="0" y1="28" x2="760" y2="28"
-          stroke="#ffd58a" strokeWidth="2"
+          stroke="#00e5ff" strokeWidth="2"
           strokeDasharray="20 44"
           style={{ animation: "cbCircuitFlow 1.8s linear infinite", opacity: 0.85 }} />
         {/* Pad junctions */}
         {[120, 320, 540, 700].map((x) => (
           <g key={x}>
-            <rect x={x - 5} y="22" width="10" height="12" fill="#2a0d2e" stroke="#ffd58a" strokeWidth="1" rx="1" />
-            <circle cx={x} cy="28" r="2.5" fill="#ffd58a">
+            <rect x={x - 5} y="22" width="10" height="12" fill="#0f1530" stroke="#00e5ff" strokeWidth="1" rx="1" />
+            <circle cx={x} cy="28" r="2.5" fill="#00e5ff">
               <animate attributeName="opacity" values="0.4;1;0.4" dur="1.6s" repeatCount="indefinite" />
             </circle>
           </g>
@@ -1469,7 +1469,7 @@ function FactoryBackdrop() {
 
         {/* Server-rack tower (left) */}
         <g transform="translate(20 80)">
-          <rect width="48" height="200" fill="url(#cbServer)" stroke="rgba(255,213,138,0.5)" strokeWidth="1" rx="3" />
+          <rect width="48" height="200" fill="url(#cbServer)" stroke="rgba(0,229,255,0.5)" strokeWidth="1" rx="3" />
           {[0, 1, 2, 3, 4, 5].map((i) => (
             <g key={i}>
               <line x1="0" y1={20 + i * 30} x2="48" y2={20 + i * 30} stroke="rgba(160,106,255,0.4)" strokeWidth="0.8" />
@@ -1480,7 +1480,7 @@ function FactoryBackdrop() {
                   cx={lx}
                   cy={28 + i * 30}
                   r="1.6"
-                  fill={j === 0 ? "#7cc89a" : j === 1 ? "#ffd58a" : "#a06aff"}
+                  fill={j === 0 ? "#7eff97" : j === 1 ? "#00e5ff" : "#7c5cff"}
                   style={{ animation: `cbServerLed ${1.2 + (i + j) * 0.18}s ease-in-out ${(i * 0.1 + j * 0.2)}s infinite` }}
                 />
               ))}
@@ -1489,7 +1489,7 @@ function FactoryBackdrop() {
             </g>
           ))}
           {/* Top status text */}
-          <text x="24" y="14" textAnchor="middle" fontFamily="monospace" fontSize="6" fill="#ffd58a" letterSpacing="1">
+          <text x="24" y="14" textAnchor="middle" fontFamily="monospace" fontSize="6" fill="#00e5ff" letterSpacing="1">
             NODE_07
           </text>
         </g>
@@ -1499,27 +1499,27 @@ function FactoryBackdrop() {
           <rect width="44" height="180" fill="url(#cbServer)" stroke="rgba(160,106,255,0.5)" strokeWidth="1" rx="3" />
           {[0, 1, 2, 3, 4].map((i) => (
             <g key={i}>
-              <line x1="0" y1={18 + i * 30} x2="44" y2={18 + i * 30} stroke="rgba(255,213,138,0.4)" strokeWidth="0.8" />
+              <line x1="0" y1={18 + i * 30} x2="44" y2={18 + i * 30} stroke="rgba(0,229,255,0.4)" strokeWidth="0.8" />
               {[8, 22, 36].map((lx, j) => (
                 <circle
                   key={j}
                   cx={lx}
                   cy={26 + i * 30}
                   r="1.6"
-                  fill={j === 0 ? "#a06aff" : j === 1 ? "#7cc89a" : "#f472b6"}
+                  fill={j === 0 ? "#7c5cff" : j === 1 ? "#7eff97" : "#f472b6"}
                   style={{ animation: `cbServerLed ${1.4 + (i + j) * 0.2}s ease-in-out ${(i * 0.15 + j * 0.18)}s infinite` }}
                 />
               ))}
               <rect x="4" y={22 + i * 30} width="22" height="1" fill="rgba(255,255,255,0.18)" />
             </g>
           ))}
-          <text x="22" y="12" textAnchor="middle" fontFamily="monospace" fontSize="6" fill="#a06aff" letterSpacing="1">
+          <text x="22" y="12" textAnchor="middle" fontFamily="monospace" fontSize="6" fill="#7c5cff" letterSpacing="1">
             NODE_12
           </text>
         </g>
 
         {/* Mid-deck circuit traces with pads */}
-        <g stroke="rgba(255,213,138,0.32)" strokeWidth="1" fill="none">
+        <g stroke="rgba(0,229,255,0.32)" strokeWidth="1" fill="none">
           <path d="M 90 110 L 200 110 L 200 160 L 320 160" />
           <path d="M 440 100 L 540 100 L 540 150" />
           <path d="M 200 240 L 320 240 L 320 280 L 460 280" />
@@ -1536,7 +1536,7 @@ function FactoryBackdrop() {
             y={y - 2}
             width="4"
             height="4"
-            fill="#ffd58a"
+            fill="#00e5ff"
             opacity="0.7"
             style={{ animation: `cbServerLed ${1.2 + (i % 4) * 0.4}s ease-in-out ${i * 0.12}s infinite` }}
           />
@@ -1568,9 +1568,9 @@ function FactoryBackdrop() {
             height: 20,
             clipPath: "polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%)",
             background: i % 2 === 0
-              ? "linear-gradient(135deg, rgba(255,213,138,0.5), rgba(160,106,255,0.5))"
-              : "linear-gradient(135deg, rgba(247,193,214,0.5), rgba(255,213,138,0.5))",
-            filter: "drop-shadow(0 0 8px rgba(255,213,138,0.5))",
+              ? "linear-gradient(135deg, rgba(0,229,255,0.5), rgba(160,106,255,0.5))"
+              : "linear-gradient(135deg, rgba(247,193,214,0.5), rgba(0,229,255,0.5))",
+            filter: "drop-shadow(0 0 8px rgba(0,229,255,0.5))",
             animation: `cbHexFloat ${5 + (i % 3)}s ease-in-out ${i * 0.7}s infinite`,
           }}
         />
@@ -1586,7 +1586,7 @@ function FactoryBackdrop() {
             left: 0,
             fontFamily: "ui-monospace, 'JetBrains Mono', monospace",
             fontSize: 11,
-            color: "rgba(255,213,138,0.45)",
+            color: "rgba(0,229,255,0.45)",
             whiteSpace: "nowrap",
             animation: `cbDataDrift ${10 + i * 1.7}s linear ${i * 1.4}s infinite`,
             pointerEvents: "none",
@@ -1607,7 +1607,7 @@ function FactoryBackdrop() {
             width: 200,
             height: 200,
             borderRadius: "50%",
-            border: "1.5px solid rgba(255,213,138,0.55)",
+            border: "1.5px solid rgba(0,229,255,0.55)",
             animation: `cbScanRing 4.6s ease-out ${i * 2.3}s infinite`,
             pointerEvents: "none",
           }}
@@ -1624,13 +1624,13 @@ function FactoryBackdrop() {
       {/* Top accent thin neon bar */}
       <div style={{
         position: "absolute", left: 0, right: 0, top: 0, height: 2,
-        background: "linear-gradient(90deg, transparent, rgba(255,213,138,0.55), rgba(160,106,255,0.55), transparent)",
+        background: "linear-gradient(90deg, transparent, rgba(0,229,255,0.55), rgba(160,106,255,0.55), transparent)",
       }} />
 
       {/* Status LED triplet — top-right HUD */}
-      <span style={{ position: "absolute", top: 14, right: 22, width: 10, height: 10, borderRadius: "50%", background: "#ffd58a", color: "#ffd58a", animation: "cbWarnBlink 2.4s ease-in-out infinite" }} />
-      <span style={{ position: "absolute", top: 14, right: 42, width: 10, height: 10, borderRadius: "50%", background: "#a06aff", color: "#a06aff", animation: "cbWarnBlink 2.4s ease-in-out 0.7s infinite" }} />
-      <span style={{ position: "absolute", top: 14, right: 62, width: 10, height: 10, borderRadius: "50%", background: "#7cc89a", color: "#7cc89a", animation: "cbWarnBlink 2.4s ease-in-out 1.4s infinite" }} />
+      <span style={{ position: "absolute", top: 14, right: 22, width: 10, height: 10, borderRadius: "50%", background: "#00e5ff", color: "#00e5ff", animation: "cbWarnBlink 2.4s ease-in-out infinite" }} />
+      <span style={{ position: "absolute", top: 14, right: 42, width: 10, height: 10, borderRadius: "50%", background: "#7c5cff", color: "#7c5cff", animation: "cbWarnBlink 2.4s ease-in-out 0.7s infinite" }} />
+      <span style={{ position: "absolute", top: 14, right: 62, width: 10, height: 10, borderRadius: "50%", background: "#7eff97", color: "#7eff97", animation: "cbWarnBlink 2.4s ease-in-out 1.4s infinite" }} />
 
       {/* Drifting embers / sparks */}
       {Array.from({ length: 14 }).map((_, i) => {
@@ -1638,7 +1638,7 @@ function FactoryBackdrop() {
         const dur = 6 + (i % 5);
         const delay = (i * 0.7) % 8;
         const drift = ((i % 4) - 2) * 14;
-        const c = ["#ffd58a", "#f97316", "#fb923c", "#fbbf24"][i % 4];
+        const c = ["#00e5ff", "#f97316", "#fb923c", "#fbbf24"][i % 4];
         return (
           <span
             key={`ember-${i}`}
