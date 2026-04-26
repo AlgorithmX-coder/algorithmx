@@ -309,10 +309,46 @@ export default function FirewallBuilder({
     const scale = CANVAS_W / rect.width;
     const x = (e.clientX - rect.left) * scale;
     const y = (e.clientY - rect.top) * scale;
-    // if tap inside play area top-half: move by clicking target column
-    if (x < CANVAS_W * 0.33) move(-1);
-    else if (x > CANVAS_W * 0.66) move(1);
-    else if (y > CANVAS_H - 80) reject();
+    // Tap below the play area triggers REJECT.
+    if (y > CANVAS_H - 80) {
+      reject();
+      return;
+    }
+    // Tap inside the play area: snap the falling block to that column.
+    const playRelX = x - PLAY_X;
+    if (playRelX < 0 || playRelX > PLAY_W) return;
+    const targetCol = Math.max(0, Math.min(COLS - 1, Math.floor(playRelX / COL_W)));
+    const s = state.current;
+    if (!s.falling || s.falling.landed || s.finished) return;
+    while (s.falling.col !== targetCol) {
+      const dir = targetCol > s.falling.col ? 1 : -1;
+      const next = s.falling.col + dir;
+      if (next < 0 || next >= COLS) break;
+      const topYOfCol = PLAY_H - stackHeightPx(next);
+      if (s.falling.y + BLOCK_H > topYOfCol) break;
+      s.falling.col = next;
+    }
+  };
+
+  /** Mouse hover (without click) tracks the cursor's column so the
+   *  paddle can preview where the block would land. The block itself
+   *  doesn't move — that happens on tap — but a visible cyber-shield
+   *  paddle at the bottom of the play area follows the cursor. */
+  const onCanvasHover = (e: React.PointerEvent<HTMLCanvasElement>) => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const rect = canvas.getBoundingClientRect();
+    const scale = CANVAS_W / rect.width;
+    const x = (e.clientX - rect.left) * scale;
+    const playRelX = x - PLAY_X;
+    if (playRelX < 0 || playRelX > PLAY_W) {
+      state.current.mouseColTarget = null;
+      return;
+    }
+    state.current.mouseColTarget = Math.max(0, Math.min(COLS - 1, Math.floor(playRelX / COL_W)));
+  };
+  const onCanvasLeave = () => {
+    state.current.mouseColTarget = null;
   };
 
   const resetExercise = () => {
@@ -564,6 +600,58 @@ export default function FirewallBuilder({
         drawBlock(ctx, x, y, COL_W - 4, BLOCK_H - 2, s.falling.def, false);
       }
 
+      // Cyber shield paddle — visible at the bottom of the play area,
+      // tracks the cursor (or the falling block's column if cursor is
+      // outside). Acts as a visual "you can drop the block here" guide
+      // to make the kid feel directly in control.
+      if (!s.finished) {
+        const guideCol =
+          s.mouseColTarget !== null
+            ? s.mouseColTarget
+            : s.falling
+              ? s.falling.col
+              : Math.floor(COLS / 2);
+        const px = PLAY_X + guideCol * COL_W + COL_W / 2;
+        const py = PLAY_Y + PLAY_H - 6;
+        const paddleW = COL_W * 0.92;
+        const paddleH = 14;
+        // Glow halo
+        const haloGrad = ctx.createRadialGradient(px, py, 2, px, py, paddleW * 0.85);
+        haloGrad.addColorStop(0, "rgba(0, 229, 255, 0.55)");
+        haloGrad.addColorStop(1, "rgba(0, 229, 255, 0)");
+        ctx.fillStyle = haloGrad;
+        ctx.beginPath();
+        ctx.arc(px, py, paddleW * 0.85, 0, Math.PI * 2);
+        ctx.fill();
+        // Shield body — chevron / rounded bar
+        ctx.save();
+        ctx.translate(px, py);
+        ctx.beginPath();
+        ctx.moveTo(-paddleW / 2, 0);
+        ctx.lineTo(-paddleW / 2 + 6, -paddleH);
+        ctx.lineTo(paddleW / 2 - 6, -paddleH);
+        ctx.lineTo(paddleW / 2, 0);
+        ctx.lineTo(paddleW / 2 - 6, paddleH * 0.5);
+        ctx.lineTo(-paddleW / 2 + 6, paddleH * 0.5);
+        ctx.closePath();
+        const bodyGrad = ctx.createLinearGradient(0, -paddleH, 0, paddleH);
+        bodyGrad.addColorStop(0, "#7df0ff");
+        bodyGrad.addColorStop(1, "#00e5ff");
+        ctx.fillStyle = bodyGrad;
+        ctx.shadowColor = "#00e5ff";
+        ctx.shadowBlur = 14;
+        ctx.fill();
+        ctx.shadowBlur = 0;
+        // Cosmic violet inner accent line
+        ctx.strokeStyle = "rgba(124, 92, 255, 0.85)";
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        ctx.moveTo(-paddleW / 2 + 8, -2);
+        ctx.lineTo(paddleW / 2 - 8, -2);
+        ctx.stroke();
+        ctx.restore();
+      }
+
       ctx.restore();
 
       // Particles
@@ -711,11 +799,14 @@ export default function FirewallBuilder({
       <canvas
         ref={canvasRef}
         onPointerDown={onCanvasTap}
+        onPointerMove={onCanvasHover}
+        onPointerLeave={onCanvasLeave}
         style={{
           width: "100%",
           height: "auto",
           display: "block",
           touchAction: "manipulation",
+          cursor: "pointer",
         }}
         aria-label="Firewall Builder"
       />

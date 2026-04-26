@@ -833,6 +833,32 @@ export default function SpamBlaster({
         ctx.fillText(`STREAK x${s.streak}`, CANVAS_W / 2, 30);
       }
 
+      // Big glowing instruction prompt at the top — the user wanted
+      // this to make the goal unmissable. Pulses softly, RGB-split
+      // chromatic shimmer (cyan + neon-pink) for the holographic feel.
+      const promptPulse = 0.7 + 0.3 * Math.sin(now / 380);
+      ctx.save();
+      ctx.font = "900 22px 'Space Grotesk', sans-serif";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "top";
+      const promptY = 56;
+      const promptX = CANVAS_W / 2;
+      // Cyan ghost behind the text
+      ctx.fillStyle = "rgba(0, 229, 255, 0.6)";
+      ctx.shadowColor = "#00e5ff";
+      ctx.shadowBlur = 18 * promptPulse;
+      ctx.fillText("⚡ ZAP THE VIRUS EMAILS! ⚡", promptX - 1.5, promptY);
+      // Neon-pink ghost on the other side
+      ctx.fillStyle = "rgba(255, 95, 179, 0.5)";
+      ctx.shadowColor = "#ff5fb3";
+      ctx.shadowBlur = 18 * promptPulse;
+      ctx.fillText("⚡ ZAP THE VIRUS EMAILS! ⚡", promptX + 1.5, promptY);
+      // Bright white core
+      ctx.shadowBlur = 0;
+      ctx.fillStyle = "#e8edff";
+      ctx.fillText("⚡ ZAP THE VIRUS EMAILS! ⚡", promptX, promptY);
+      ctx.restore();
+
       checkFinished();
       rafRef.current = requestAnimationFrame(tick);
     };

@@ -12,21 +12,15 @@
 
 import { motion } from "motion/react";
 import {
-  CharacterPortrait, // unused here but available
-  DistantRidges,
   FloatingParticles,
-  PrimaryButton,
   SceneFrame,
   SceneKeyframes,
   SceneTitle,
   StarField,
-  SunsetBackdrop,
   Vignette,
-  WoodFloor,
   COLOR,
   SHADOW,
   SPRING,
-  useMouseParallax,
 } from "@/app/components/scene";
 
 export interface WelcomeSceneProps {
@@ -51,16 +45,18 @@ export default function WelcomeScene({
   caption = "Adam and Layla just got hacked by the Hacker Raccoon. They need YOUR help.",
   ctaLabel = "I'll Save Them →",
 }: WelcomeSceneProps) {
-  void CharacterPortrait;
-  const px = useMouseParallax();
-
   return (
     <SceneFrame>
-      <SunsetBackdrop variant="storm" parallax={px} showSun={false} />
-      <DistantRidges variant="storm" parallax={px} />
+      {/* Cyber backdrop — transparent layers over the lesson page's
+          dark navy bg, with cyan/cosmic nebula bleeds + drifting
+          particles in cyber palette. The Pixar warm scene layers are
+          preserved on the marketing home; this scene runs inside the
+          cyber app surface. */}
+      <div aria-hidden style={{ position: "absolute", inset: 0, background: "linear-gradient(180deg, rgba(15, 21, 48, 0.4) 0%, rgba(8, 10, 22, 0.7) 100%)", pointerEvents: "none" }} />
+      <div aria-hidden style={{ position: "absolute", left: "-15%", top: "-10%", width: "60vw", height: "70vh", background: "radial-gradient(ellipse, rgba(0, 229, 255, 0.18) 0%, rgba(0, 229, 255, 0.06) 40%, transparent 70%)", filter: "blur(48px)", pointerEvents: "none" }} />
+      <div aria-hidden style={{ position: "absolute", right: "-10%", top: "30%", width: "55vw", height: "60vh", background: "radial-gradient(ellipse, rgba(124, 92, 255, 0.20) 0%, rgba(124, 92, 255, 0.06) 40%, transparent 70%)", filter: "blur(50px)", pointerEvents: "none" }} />
       <StarField count={60} />
       <FloatingParticles count={20} />
-      <WoodFloor variant="storm" />
 
       {/* Lightning flash overlay — subtle, periodic */}
       <div
@@ -79,12 +75,14 @@ export default function WelcomeScene({
 
       <SceneTitle title={title} badge={badge} />
 
-      {/* Centerpiece: polaroid */}
+      {/* Centerpiece: polaroid + caption.
+          Lifted from top:52% to top:44% so the caption + the bottom
+          CTA button don't collide on shorter viewports. */}
       <div
         style={{
           position: "absolute",
           left: "50%",
-          top: "52%",
+          top: "44%",
           transform: "translate(-50%, -50%)",
           zIndex: 6,
           display: "flex",
@@ -115,9 +113,41 @@ export default function WelcomeScene({
         🦝
       </motion.div>
 
-      <PrimaryButton onClick={onContinue} visible>
-        {ctaLabel}
-      </PrimaryButton>
+      {/* Cyber-styled CTA — replaces PrimaryButton (warm gold gradient)
+          for the cyber app surface. Position absolute at the bottom
+          centre, above the lesson page's bottom edge. */}
+      <div
+        style={{
+          position: "absolute",
+          bottom: 30,
+          left: "50%",
+          transform: "translateX(-50%)",
+          zIndex: 9,
+        }}
+      >
+        <motion.button
+          onClick={onContinue}
+          whileHover={{ y: -3, scale: 1.04, boxShadow: "0 0 32px rgba(0, 229, 255, 0.85), 0 14px 28px -6px rgba(0, 229, 255, 0.55), 0 0 0 1px rgba(125, 240, 255, 0.7) inset" }}
+          whileTap={{ scale: 0.97 }}
+          transition={{ type: "spring", stiffness: 320, damping: 20 }}
+          style={{
+            border: "none",
+            cursor: "pointer",
+            padding: "16px 38px",
+            fontSize: 18,
+            fontWeight: 800,
+            color: "#080a16",
+            background: "linear-gradient(135deg, #00e5ff, #7c5cff)",
+            borderRadius: 999,
+            fontFamily: "'Space Grotesk', system-ui, sans-serif",
+            letterSpacing: 1,
+            textTransform: "uppercase",
+            boxShadow: "0 0 24px rgba(0, 229, 255, 0.55), 0 8px 20px -6px rgba(0, 229, 255, 0.45), 0 0 0 1px rgba(125, 240, 255, 0.6) inset",
+          }}
+        >
+          {ctaLabel}
+        </motion.button>
+      </div>
 
       <Vignette />
       <SceneKeyframes />

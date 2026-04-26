@@ -12,19 +12,14 @@ import { useMemo } from "react";
 import { motion } from "motion/react";
 import {
   COLOR,
-  DistantRidges,
   FloatingParticles,
-  PrimaryButton,
   SHADOW,
   SPRING,
   SceneFrame,
   SceneKeyframes,
   SceneTitle,
   StarField,
-  SunsetBackdrop,
   Vignette,
-  WoodFloor,
-  useMouseParallax,
 } from "@/app/components/scene";
 
 export interface Achievement {
@@ -56,14 +51,19 @@ export default function VictoryScene({
   bonusCoins = 50,
   ctaLabel = "Claim Reward →",
 }: VictorySceneProps) {
-  const px = useMouseParallax();
   return (
     <SceneFrame>
-      <SunsetBackdrop variant="golden" parallax={px} />
-      <DistantRidges variant="golden" parallax={px} />
+      {/* Cyber victory backdrop — replaces the golden Pixar dusk
+          layers (SunsetBackdrop / DistantRidges / WoodFloor) with
+          deep navy + cyan/violet/lime nebula bleeds matching the
+          rest of the cyber app. The fireworks + coin rain stay since
+          they read as celebration regardless of palette. */}
+      <div aria-hidden style={{ position: "absolute", inset: 0, background: "linear-gradient(180deg, rgba(15, 21, 48, 0.5) 0%, rgba(8, 10, 22, 0.75) 100%)", pointerEvents: "none" }} />
+      <div aria-hidden style={{ position: "absolute", left: "-10%", top: "-15%", width: "70vw", height: "75vh", background: "radial-gradient(ellipse, rgba(126, 255, 151, 0.18) 0%, rgba(126, 255, 151, 0.06) 40%, transparent 70%)", filter: "blur(50px)", pointerEvents: "none" }} />
+      <div aria-hidden style={{ position: "absolute", right: "-15%", top: "20%", width: "60vw", height: "65vh", background: "radial-gradient(ellipse, rgba(0, 229, 255, 0.20) 0%, rgba(0, 229, 255, 0.06) 40%, transparent 70%)", filter: "blur(48px)", pointerEvents: "none" }} />
+      <div aria-hidden style={{ position: "absolute", left: "20%", bottom: "-10%", width: "60vw", height: "55vh", background: "radial-gradient(ellipse, rgba(124, 92, 255, 0.18) 0%, rgba(124, 92, 255, 0.05) 45%, transparent 75%)", filter: "blur(52px)", pointerEvents: "none" }} />
       <StarField count={40} />
       <FloatingParticles count={50} />
-      <WoodFloor variant="golden" />
       <Fireworks />
       <CoinRain />
 
@@ -86,12 +86,14 @@ export default function VictoryScene({
         <HeroFrame src={heroPhotoSrc} />
       </motion.div>
 
-      {/* Achievement chips */}
+      {/* Achievement chips — lifted from top:70% to top:62% so on
+          shorter viewports the wrapping row no longer collides with
+          the bonus-coins chip + the Claim Reward button below. */}
       <div
         style={{
           position: "absolute",
           left: "50%",
-          top: "70%",
+          top: "62%",
           transform: "translateX(-50%)",
           display: "flex",
           flexWrap: "wrap",
@@ -137,9 +139,40 @@ export default function VictoryScene({
         <span style={{ fontSize: 20 }}>🪙</span>+{bonusCoins} bonus coins
       </motion.div>
 
-      <PrimaryButton onClick={onContinue} visible>
-        {ctaLabel}
-      </PrimaryButton>
+      {/* Cyber Claim Reward CTA — replaces PrimaryButton (warm gold)
+          for the cyber victory surface. */}
+      <div
+        style={{
+          position: "absolute",
+          bottom: 30,
+          left: "50%",
+          transform: "translateX(-50%)",
+          zIndex: 9,
+        }}
+      >
+        <motion.button
+          onClick={onContinue}
+          whileHover={{ y: -3, scale: 1.04, boxShadow: "0 0 32px rgba(0, 229, 255, 0.85), 0 14px 28px -6px rgba(0, 229, 255, 0.55), 0 0 0 1px rgba(125, 240, 255, 0.7) inset" }}
+          whileTap={{ scale: 0.97 }}
+          transition={{ type: "spring", stiffness: 320, damping: 20 }}
+          style={{
+            border: "none",
+            cursor: "pointer",
+            padding: "16px 38px",
+            fontSize: 18,
+            fontWeight: 800,
+            color: "#080a16",
+            background: "linear-gradient(135deg, #00e5ff, #7c5cff)",
+            borderRadius: 999,
+            fontFamily: "'Space Grotesk', system-ui, sans-serif",
+            letterSpacing: 1,
+            textTransform: "uppercase",
+            boxShadow: "0 0 24px rgba(0, 229, 255, 0.55), 0 8px 20px -6px rgba(0, 229, 255, 0.45), 0 0 0 1px rgba(125, 240, 255, 0.6) inset",
+          }}
+        >
+          {ctaLabel}
+        </motion.button>
+      </div>
 
       <Vignette />
       <SceneKeyframes />

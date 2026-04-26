@@ -2116,11 +2116,11 @@ export default function BossBattle({
                 label: "ADAM",
                 title: "The Shield Bearer",
                 image: ASSET_PATHS.adamSelect,
-                colour: "#60a5fa",
+                colour: "#00e5ff",
                 description:
                   "Brave and strong. Uses his Cyber Shield to block attacks and protect the digital world.",
                 stats: { attack: 80, defence: 100, speed: 60 },
-                btnGradient: "linear-gradient(135deg, #3b82f6, #2563eb)",
+                btnGradient: "linear-gradient(135deg, #00e5ff, #7c5cff)",
                 shimmerDelay: "0s",
               },
               {
@@ -2128,11 +2128,11 @@ export default function BossBattle({
                 label: "LAYLA",
                 title: "The Tech Prodigy",
                 image: ASSET_PATHS.laylaSelect,
-                colour: "#34d399",
+                colour: "#7eff97",
                 description:
                   "Smart and quick. Uses her Tech Tablet to blast through firewalls and decode secrets.",
                 stats: { attack: 60, defence: 60, speed: 100 },
-                btnGradient: "linear-gradient(135deg, #34d399, #10b981)",
+                btnGradient: "linear-gradient(135deg, #7eff97, #00e5ff)",
                 shimmerDelay: "1.5s",
               },
             ];
@@ -3200,12 +3200,15 @@ export default function BossBattle({
           flex: 0 0 320px;
           flex-shrink: 0;
           min-height: 480px;
-          background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
-          border: 2px solid transparent;
+          /* Lifted from pure abyss to twilight navy so character
+             details (Adam's bright shield, Layla's dark dress) stay
+             readable against the page bg. */
+          background: linear-gradient(180deg, #1a2147 0%, #252d5e 100%);
+          border: 2px solid rgba(0, 229, 255, 0.18);
           border-radius: 24px;
           overflow: hidden;
           cursor: pointer;
-          color: #e2e8f0;
+          color: #e8edff;
           display: flex; flex-direction: column;
           transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
                       border-color 0.35s ease,
@@ -3262,7 +3265,12 @@ export default function BossBattle({
           object-fit: contain;
           object-position: center center;
           transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-          filter: drop-shadow(0 10px 18px rgba(0,0,0,0.55));
+          /* Two stacked shadows: the dark grounding drop + a cyan rim-
+             light that lifts the character off the navy backdrop so
+             Adam's shield and Layla's dress don't disappear. */
+          filter:
+            drop-shadow(0 10px 18px rgba(0,0,0,0.55))
+            drop-shadow(0 0 14px color-mix(in oklab, var(--c-colour) 50%, transparent));
           pointer-events: none;
           z-index: 1;
         }

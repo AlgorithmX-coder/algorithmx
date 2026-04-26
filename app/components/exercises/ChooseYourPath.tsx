@@ -130,22 +130,17 @@ interface Particle {
   delay: number;
 }
 
-const DOOR_PALETTE = [
-  // Left door — warm cherry wood
-  {
-    body: "linear-gradient(180deg, #6b3818 0%, #8b4a22 50%, #5a2e14 100%)",
-    rim: "#3a1a08",
-    panel: "linear-gradient(180deg, #8b4a22, #5a2e14)",
-    handle: "#ffd158",
-  },
-  // Right door — warm walnut
-  {
-    body: "linear-gradient(180deg, #4a2818 0%, #6b3818 50%, #3a1a08 100%)",
-    rim: "#2a1208",
-    panel: "linear-gradient(180deg, #6b3818, #3a1a08)",
-    handle: "#ffd158",
-  },
-];
+// Both portals are visually IDENTICAL pre-decision — fixes a giveaway
+// the user spotted where the darker door always happened to be the
+// safe one (data ordering bug + shade difference between doors). Now
+// they're the same cyan/cosmic cyber portal; shading is symmetric.
+const DOOR_PALETTE_CYBER = {
+  body: "linear-gradient(180deg, #1a2147 0%, #252d5e 50%, #0f1530 100%)",
+  rim: "rgba(0, 229, 255, 0.55)",
+  panel: "linear-gradient(180deg, #252d5e, #0f1530)",
+  handle: "#00e5ff",
+};
+const DOOR_PALETTE = [DOOR_PALETTE_CYBER, DOOR_PALETTE_CYBER];
 
 export default function ChooseYourPath({
   scenarios,
@@ -179,7 +174,21 @@ export default function ChooseYourPath({
   const particleIdRef = useRef(0);
   const typeTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
-  const scenario = list[idx] ?? null;
+  const rawScenario = list[idx] ?? null;
+  // Stable per-scenario shuffle of the choice order. Was a giveaway
+  // because every authored scenario had isSafe at index 1, so the
+  // "right" door was always the answer. useMemo keyed on idx keeps
+  // the shuffle stable inside a single scenario but re-rolls between.
+  const scenario = useMemo(() => {
+    if (!rawScenario) return null;
+    const out = rawScenario.choices.slice();
+    for (let i = out.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [out[i], out[j]] = [out[j], out[i]];
+    }
+    return { ...rawScenario, choices: out };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [idx, list]);
 
   // Type out setup text
   useEffect(() => {

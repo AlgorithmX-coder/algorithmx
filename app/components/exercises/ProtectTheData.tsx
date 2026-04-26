@@ -77,12 +77,14 @@ const ITEM_H = 54;
 /* ───────────────── PIXAR CANVAS PALETTE ───────────────── */
 
 const PV = {
-  // Sky stops (top to bottom)
-  skyTop: "#1f0f2e",
-  skyMid: "#5a2a48",
-  skyHorizon: "#252d5e",
-  skyHaze: "#3a7bff",
-  skyFloor: "#7df0ff",
+  // Sky stops (top to bottom) — cyber abyss → midnight → twilight
+  // navy. Was a warm sunset gradient bleeding orange into the floor;
+  // user spotted that when the cards floated past.
+  skyTop: "#04050d",
+  skyMid: "#0f1530",
+  skyHorizon: "#1a2147",
+  skyHaze: "#252d5e",
+  skyFloor: "#1a2147",
   // Star sparkles in upper sky
   starColor: "rgba(255, 250, 220, ",
   // Clouds (silhouette)
@@ -555,34 +557,32 @@ export default function ProtectTheData({
         );
         ctx.fill();
 
-        // Paper card body
+        // Holographic card body — IDENTICAL for safe and private
+        // pre-decision (was giving the answer away by tinting safe
+        // green / private yellow before the kid acted). Player has
+        // to read the text to classify; reveal happens via the
+        // post-tap outcome animation, not here.
         const grad = ctx.createLinearGradient(0, -c.height / 2, 0, c.height / 2);
-        if (c.isPrivate) {
-          grad.addColorStop(0, "#fff5d4");
-          grad.addColorStop(1, PV.cardPrivateBody);
-        } else {
-          grad.addColorStop(0, "#ffffff");
-          grad.addColorStop(1, PV.cardSafeBody);
-        }
+        grad.addColorStop(0, "rgba(232, 237, 255, 0.96)");
+        grad.addColorStop(1, "rgba(197, 205, 240, 0.92)");
         ctx.fillStyle = grad;
         roundRect(ctx, -c.width / 2, -c.height / 2, c.width, c.height, 14);
         ctx.fill();
 
-        // Coloured accent strip along top
-        ctx.fillStyle = c.isPrivate ? PV.cardPrivateAccent : PV.cardSafeAccent;
+        // Cyan accent strip along top — same on every card
+        ctx.fillStyle = "rgba(0, 229, 255, 0.85)";
         roundRect(ctx, -c.width / 2, -c.height / 2, c.width, 6, 14);
         ctx.fill();
 
-        // Tag dot (left)
-        ctx.fillStyle = c.isPrivate ? PV.cardPrivateAccent : PV.cardSafeAccent;
+        // Tag dot (left) — neutral cosmic violet on every card
+        ctx.fillStyle = "rgba(124, 92, 255, 0.85)";
         ctx.beginPath();
         ctx.arc(-c.width / 2 + 18, 0, 6, 0, Math.PI * 2);
         ctx.fill();
 
-        // Border
-        ctx.strokeStyle = c.isPrivate
-          ? `rgba(255, 95, 179, 0.55)`
-          : `rgba(74, 154, 106, 0.55)`;
+        // Border — neutral cyan on every card (the post-tap outcome
+        // overlay handles the green/pink reveal feedback)
+        ctx.strokeStyle = "rgba(0, 229, 255, 0.55)";
         ctx.lineWidth = 2;
         roundRect(ctx, -c.width / 2, -c.height / 2, c.width, c.height, 14);
         ctx.stroke();

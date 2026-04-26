@@ -54,26 +54,42 @@ const FONT_STACK =
   "ui-rounded, 'Fredoka', 'Quicksand', 'Nunito', system-ui, -apple-system, sans-serif";
 
 function ShieldLogo({ size = 22 }: { size?: number }) {
+  // Futuristic AI-cyber shield — replaces the 2-tone gold-fill shield
+  // the user spotted on the dashboard course card. Hex-bevel
+  // silhouette, cyan→cosmic gradient stroke, circuit cross + node
+  // dots inside, drop-shadow glow halo. Same shape language as the
+  // CyberIcon library's "shield" glyph.
   return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" aria-hidden>
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      aria-hidden
+      style={{ filter: "drop-shadow(0 0 8px rgba(0, 229, 255, 0.65))" }}
+    >
       <defs>
         <linearGradient id="shieldLogoGrad" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stopColor={C.cream} />
-          <stop offset="55%" stopColor={C.goldLight} />
-          <stop offset="100%" stopColor={C.goldDeep} />
+          <stop offset="0%" stopColor="#00e5ff" />
+          <stop offset="100%" stopColor="#7c5cff" />
         </linearGradient>
       </defs>
       <path
-        d="M12 2.5 4 5.2v6.3c0 4.7 3.3 8.7 8 10 4.7-1.3 8-5.3 8-10V5.2L12 2.5Z"
-        fill="url(#shieldLogoGrad)"
-      />
-      <path
-        d="m9 12 2.2 2.2L15 10.4"
-        stroke={C.goldDark}
-        strokeWidth="1.8"
-        strokeLinecap="round"
+        d="M12 2.5L3.5 5.6V12c0 5.4 3.7 8.6 8.5 9.5 4.8-.9 8.5-4.1 8.5-9.5V5.6L12 2.5z"
+        stroke="url(#shieldLogoGrad)"
+        strokeWidth={1.6}
+        fill="rgba(0, 229, 255, 0.12)"
         strokeLinejoin="round"
       />
+      <path
+        d="M12 8v8M8 12h8"
+        stroke="url(#shieldLogoGrad)"
+        strokeWidth={1.4}
+        strokeLinecap="round"
+      />
+      <circle cx="12" cy="12" r="1.3" fill="url(#shieldLogoGrad)" />
+      <circle cx="12" cy="6.5" r="0.7" fill="url(#shieldLogoGrad)" />
+      <circle cx="12" cy="17.5" r="0.7" fill="url(#shieldLogoGrad)" />
     </svg>
   );
 }

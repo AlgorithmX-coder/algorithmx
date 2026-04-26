@@ -244,7 +244,12 @@ export default function CharacterGuide({
       >
         <defs>
           <filter id="cgEdgeClean" x="-5%" y="-5%" width="110%" height="110%">
-            <feMorphology in="SourceGraphic" operator="erode" radius="1.2" />
+            {/* Was radius="1.2" — but at smaller render sizes that ate
+                hair tips, fingers and silhouette detail (testers
+                reported characters looking "distorted" / "chunky").
+                0.4 still kills semi-transparent edge fringe but
+                preserves features. */}
+            <feMorphology in="SourceGraphic" operator="erode" radius="0.4" />
           </filter>
         </defs>
       </svg>
@@ -298,9 +303,10 @@ export default function CharacterGuide({
             drop-shadow(0 10px 14px rgba(0, 0, 0, 0.65))
             drop-shadow(0 0 22px rgba(0, 229, 255, 0.32));
           /* Soft fade on the very bottom — defensive backup for shoes/
-             feet area, even though the alpha-erode handles most of it. */
-          -webkit-mask-image: linear-gradient(180deg, black 0%, black 92%, transparent 100%);
-                  mask-image: linear-gradient(180deg, black 0%, black 92%, transparent 100%);
+             feet area. Tightened from 92% → 96% now that the lighter
+             erode no longer compounds with the mask. */
+          -webkit-mask-image: linear-gradient(180deg, black 0%, black 96%, transparent 100%);
+                  mask-image: linear-gradient(180deg, black 0%, black 96%, transparent 100%);
         }
         /* Static state while hidden between exit and enter. */
         .cg-char-hidden { opacity: 0; transform: translateY(30px); }

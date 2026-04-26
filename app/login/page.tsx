@@ -155,8 +155,13 @@ export default function LoginPage() {
       <CyberParticles />
 
       {/* ─── LEFT SIDE: FORM ─── */}
-      <div className="flex-1 flex flex-col items-center justify-center px-6 py-12 relative" style={{ zIndex: 1 }}>
-        <div className="w-full max-w-md">
+      <div className="flex-1 flex flex-col items-center justify-center px-6 py-12 relative overflow-hidden" style={{ zIndex: 1 }}>
+        {/* Same backdrop as the right panel — radial cyan/cosmic halo +
+            faint hex grid + twinkling stars. User liked the right-side
+            background so much they asked for it on the left too. */}
+        <CyberPanelBackdrop />
+
+        <div className="w-full max-w-md relative" style={{ zIndex: 2 }}>
           {/* Logo */}
           <a href="/" className="inline-flex items-center gap-2.5 mb-8">
             <div

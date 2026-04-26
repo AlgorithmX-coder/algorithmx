@@ -37,6 +37,7 @@ const LessonArena3D = dynamic(
 );
 import ScreenTransition, { type TransitionType } from "@/app/components/ScreenTransition";
 import { InventoryProvider, useInventory } from "@/app/components/lesson/InventoryProvider";
+import { CyberIconOrEmoji } from "@/app/components/CyberIcon";
 import { InventoryBar } from "@/app/components/lesson/InventoryBar";
 import { EarnItemEffect } from "@/app/components/lesson/EarnItemEffect";
 import { RevealOverlay } from "@/app/components/lesson/RevealOverlay";
@@ -1461,7 +1462,7 @@ function InstructionOverlay({ icon, story, instructions, onReady }: { icon: stri
       <div data-animate style={{ background: "rgba(15, 21, 48, 0.88)", backdropFilter: "blur(16px)", border: "1px solid rgba(0, 229, 255, 0.45)", boxShadow: "0 0 32px rgba(0, 229, 255, 0.28), 0 0 56px rgba(124, 92, 255, 0.22), 0 30px 60px -20px rgba(0, 0, 0, 0.7)", borderRadius: 24, padding: 32, maxWidth: 520, margin: "0 auto", position: "relative" }}>
         {/* Energised top edge — animated gradient strip */}
         <div aria-hidden style={{ position: "absolute", top: -1, left: 24, right: 24, height: 2, background: "linear-gradient(90deg, transparent, #00e5ff, #7c5cff, #ff5fb3, transparent)", filter: "drop-shadow(0 0 8px #00e5ffaa)", borderRadius: 999 }} />
-        <div style={{ width: 80, height: 80, margin: "0 auto 16px", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 48, background: "rgba(0, 229, 255, 0.12)", border: "1px solid rgba(0, 229, 255, 0.45)", borderRadius: 20, filter: "drop-shadow(0 0 22px rgba(0, 229, 255, 0.55))" }}>{icon}</div>
+        <div style={{ width: 80, height: 80, margin: "0 auto 16px", display: "flex", alignItems: "center", justifyContent: "center", background: "rgba(0, 229, 255, 0.12)", border: "1px solid rgba(0, 229, 255, 0.45)", borderRadius: 20, filter: "drop-shadow(0 0 22px rgba(0, 229, 255, 0.55))" }}><CyberIconOrEmoji emoji={icon} size={48} accent="cyan" /></div>
         <p style={{ color: "#7df0ff", fontSize: 11, fontWeight: 800, marginBottom: 8, letterSpacing: 3, textTransform: "uppercase", fontFamily: "ui-monospace, 'JetBrains Mono', Menlo, monospace" }}>◇ MISSION BRIEF ◇</p>
         <p style={{ color: "#c5cdf0", fontSize: 14, fontStyle: "italic", marginBottom: 8, opacity: 0.92 }}>{story}</p>
         <h2 data-split style={{ color: "#e8edff", fontSize: 22, fontWeight: 900, marginBottom: 8, fontFamily: "'Space Grotesk', system-ui, sans-serif", letterSpacing: "-0.01em" }}>Here&apos;s what to do!</h2>

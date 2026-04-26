@@ -13,6 +13,7 @@
 
 import { useInventory } from "./InventoryProvider";
 import { useEffect, useRef, useState } from "react";
+import { CyberIconOrEmoji } from "@/app/components/CyberIcon";
 
 const C = {
   cream: "#e8edff",
@@ -158,9 +159,21 @@ export function InventoryBar({ currentScreen }: InventoryBarProps) {
                   filter: isEarned
                     ? `drop-shadow(0 0 6px ${hexToRgba(item.accent, 0.85)})`
                     : "none",
+                  display: "inline-flex",
+                  alignItems: "center",
+                  justifyContent: "center",
                 }}
               >
-                {item.icon}
+                {/* CyberIconOrEmoji renders a clean SVG cyber icon when
+                    the item's emoji has a mapped equivalent in the
+                    CyberIcon library, falls back to the emoji glyph
+                    otherwise. Glow off because the slot already glows. */}
+                <CyberIconOrEmoji
+                  emoji={item.icon}
+                  size={20}
+                  accent="cyan"
+                  glow={false}
+                />
               </span>
               {isCurrent && !isEarned && (
                 <span

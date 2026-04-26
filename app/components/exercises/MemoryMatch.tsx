@@ -38,12 +38,14 @@ export interface MemoryMatchProps {
 }
 
 const DEFAULT_PAIRS: MemoryPair[] = [
-  { term: "Strong Password", match: "Tr0pic4l$unR1se!", colour: "#4a9a6a" },
-  { term: "Phishing", match: "Fake email stealing info", colour: "#ff7a59" },
-  { term: "2FA", match: "Second check to prove it's you", colour: "#3a6e8e" },
-  { term: "Firewall", match: "Blocks dangerous traffic", colour: "#3a7bff" },
-  { term: "Digital Footprint", match: "Everything you do online", colour: "#8e6abf" },
-  { term: "Private Info", match: "Name, address, phone number", colour: "#c43c6a" },
+  // Pair text simplified for ages 6-9. "2FA" and "dangerous traffic"
+  // were too jargon-y; concrete, kid-readable phrases now.
+  { term: "Strong Password", match: "Tr0pic4l$unR1se!", colour: "#7eff97" },
+  { term: "Phishing", match: "A fake email that wants to trick you", colour: "#ff5fb3" },
+  { term: "Two-Step Lock", match: "A second check to prove it's you", colour: "#00e5ff" },
+  { term: "Firewall", match: "Stops bad stuff getting in", colour: "#3a7bff" },
+  { term: "Digital Footprint", match: "Everything you do online", colour: "#7c5cff" },
+  { term: "Private Info", match: "Your name, address, phone", colour: "#ff7a59" },
 ];
 
 interface Card {
@@ -441,12 +443,13 @@ export default function MemoryMatch({
         margin: "0 auto",
         padding: "0 0 22px",
         borderRadius: 28,
-        // Deep plum card frame — replaces the cream parchment so the
-        // tech-themed card backs read clearly. Still warm-Pixar.
+        // Cyber Heroes Lab frame — abyss navy gradient with a subtle
+        // cyan inner glow so the chip card backs sit cleanly inside.
         background:
-          "linear-gradient(180deg, #0f1530 0%, #1f0820 55%, #150610 100%)",
-        boxShadow: SHADOW.sceneFrame,
-        color: COLOR.cream,
+          "linear-gradient(180deg, #0f1530 0%, #1a2147 55%, #080a16 100%)",
+        boxShadow:
+          "0 30px 60px -20px rgba(0, 0, 0, 0.7), 0 0 32px rgba(0, 229, 255, 0.18), 0 0 0 1px rgba(0, 229, 255, 0.22) inset",
+        color: "#e8edff",
         overflow: "hidden",
         fontFamily:
           "ui-rounded, 'Fredoka', 'Quicksand', system-ui, -apple-system, sans-serif",
@@ -476,11 +479,14 @@ export default function MemoryMatch({
             fontWeight: 800,
             letterSpacing: 1,
             padding: "8px 14px",
-            background: "rgba(15, 21, 48, 0.65)",
+            background: "rgba(8, 10, 22, 0.7)",
             backdropFilter: "blur(8px)",
             WebkitBackdropFilter: "blur(8px)",
             borderRadius: 14,
-            color: COLOR.cream,
+            border: "1px solid rgba(0, 229, 255, 0.28)",
+            boxShadow: "0 0 18px rgba(0, 229, 255, 0.18)",
+            color: "#e8edff",
+            fontFamily: "ui-monospace, 'JetBrains Mono', Menlo, monospace",
           }}
         >
           {phase === "rebuild" ? (
@@ -860,7 +866,8 @@ function PixarBackdrop() {
       aria-hidden
       style={{ position: "absolute", inset: 0, zIndex: 0, pointerEvents: "none" }}
     >
-      {/* Soft sun glow top-right */}
+      {/* Cyber halo top-right — replaces the warm sun glow with a
+          cosmic violet / cyan bleed matching the rest of the cyber app. */}
       <div
         style={{
           position: "absolute",
@@ -870,31 +877,34 @@ function PixarBackdrop() {
           height: 220,
           borderRadius: "50%",
           background:
-            "radial-gradient(circle, rgba(255, 240, 180, 0.7) 0%, rgba(255, 200, 130, 0.3) 40%, transparent 80%)",
-          filter: "blur(2px)",
+            "radial-gradient(circle, rgba(0, 229, 255, 0.4) 0%, rgba(124, 92, 255, 0.18) 45%, transparent 80%)",
+          filter: "blur(4px)",
         }}
       />
-      {/* Drifting motes */}
-      {motes.map((m, i) => (
-        <span
-          key={i}
-          style={
-            {
-              position: "absolute",
-              left: `${m.left}%`,
-              top: `${m.top}%`,
-              width: m.size,
-              height: m.size,
-              borderRadius: "50%",
-              background: "rgba(255, 220, 170, 0.85)",
-              boxShadow: `0 0 ${m.size * 3}px rgba(255, 200, 140, 0.6)`,
-              animation: `mmMoteRise ${m.duration}s ease-in-out ${m.delay}s infinite`,
-              "--mx": `${m.drift}px`,
-              "--my": "-180px",
-            } as React.CSSProperties
-          }
-        />
-      ))}
+      {/* Drifting motes — cyan / cosmic / neon mix */}
+      {motes.map((m, i) => {
+        const c = i % 3 === 0 ? "0, 229, 255" : i % 3 === 1 ? "124, 92, 255" : "255, 95, 179";
+        return (
+          <span
+            key={i}
+            style={
+              {
+                position: "absolute",
+                left: `${m.left}%`,
+                top: `${m.top}%`,
+                width: m.size,
+                height: m.size,
+                borderRadius: "50%",
+                background: `rgba(${c}, 0.85)`,
+                boxShadow: `0 0 ${m.size * 4}px rgba(${c}, 0.7)`,
+                animation: `mmMoteRise ${m.duration}s ease-in-out ${m.delay}s infinite`,
+                "--mx": `${m.drift}px`,
+                "--my": "-180px",
+              } as React.CSSProperties
+            }
+          />
+        );
+      })}
     </div>
   );
 }
@@ -1025,11 +1035,11 @@ function CardBack({
           <linearGradient id="mmChipBody" x1="0" y1="0" x2="1" y2="1">
             <stop offset="0%" stopColor="#7df0ff" />
             <stop offset="45%" stopColor="#00e5ff" />
-            <stop offset="100%" stopColor="#c4753a" />
+            <stop offset="100%" stopColor="#7c5cff" />
           </linearGradient>
           <linearGradient id="mmChipPin" x1="0" y1="0" x2="0" y2="1">
             <stop offset="0%" stopColor="#00e5ff" />
-            <stop offset="100%" stopColor="#a85a25" />
+            <stop offset="100%" stopColor="#3a7bff" />
           </linearGradient>
         </defs>
 
