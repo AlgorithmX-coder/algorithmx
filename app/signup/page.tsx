@@ -231,20 +231,17 @@ export default function SignupPage() {
             Create your family&apos;s account and start learning cybersecurity today
           </p>
 
-          {/* Form card */}
+          {/* Form card — invisible container, matching the login.
+              No background, no border, no shadow, no rounded panel.
+              Just a layout wrapper. Each input field below carries its
+              own dark glass background so they stay legible against the
+              live scene. Net effect: form fields float over the
+              backdrop with no enclosing surface. */}
           <motion.div
-            className="rounded-3xl p-7 sm:p-8"
+            className="p-7 sm:p-8"
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ type: "spring", stiffness: 200, damping: 20 }}
-            style={{
-              background: C.card,
-              backdropFilter: "blur(16px)",
-              WebkitBackdropFilter: "blur(16px)",
-              border: `1px solid ${C.border}`,
-              boxShadow:
-                "0 30px 60px -20px rgba(8, 10, 22, 0.7), 0 0 0 1px rgba(0, 229, 255, 0.05) inset",
-            }}
           >
             {/* Error */}
             <AnimatePresence>
