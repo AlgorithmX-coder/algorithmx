@@ -86,7 +86,19 @@ interface Particle {
   rotSpeed: number;
 }
 
+/** Power-up types. Drop every 5 catches as a special falling token. */
+type PowerUpKind = "slowmo" | "shield" | "multicatch";
+interface PowerUp {
+  id: number;
+  kind: PowerUpKind;
+  col: number;
+  y: number;
+  speed: number;
+}
+
 const WIN_GOOD = 15;
+/** Drop a power-up after this many catches. */
+const PU_INTERVAL = 5;
 const LOSE_BAD = 5;
 const LEVEL_THRESHOLDS = [5, 10, 15];
 
@@ -127,6 +139,13 @@ export default function FirewallBuilder({
     mouseColTarget: null as number | null,
     threatPulseStart: 0, // performance.now() when current bad-block warning began
     lastFallingKind: null as "good" | "bad" | null,
+    // Power-up system — drop a special token every PU_INTERVAL catches.
+    powerUps: [] as PowerUp[],
+    powerUpId: 0,
+    catchesSinceLastPowerUp: 0,
+    slowMoUntil: 0,    // performance.now() until which speed is halved
+    shieldBigUntil: 0, // performance.now() until which paddle is 50% wider
+    multiCatchLeft: 0, // number of next blocks auto-counted as catches
   });
 
   const [render, setRender] = useState(0);
@@ -191,10 +210,28 @@ export default function FirewallBuilder({
     });
     s.goodLanded += 1;
     s.combo += 1;
+    s.catchesSinceLastPowerUp += 1;
     if (s.combo > s.bestCombo) s.bestCombo = s.combo;
     if (s.combo === 3 || s.combo === 5 || s.combo === 8 || s.combo === 12) {
       addFloater(`COMBO x${s.combo}!`, col * COL_W + COL_W / 2, PLAY_H - stackHeightPx(col) - 24, "#00e5ff");
       s.comboFlashUntil = performance.now() + 700;
+      playSound("streak3");
+    }
+    // POWER-UP DROP — every PU_INTERVAL catches, spawn one in a random
+    // column. Cycles through the three kinds so the kid always gets a
+    // mix of effects rather than the same one repeatedly.
+    if (s.catchesSinceLastPowerUp >= PU_INTERVAL) {
+      s.catchesSinceLastPowerUp = 0;
+      const KINDS: PowerUpKind[] = ["slowmo", "shield", "multicatch"];
+      const kind = KINDS[(s.powerUpId + 1) % KINDS.length];
+      s.powerUps.push({
+        id: ++s.powerUpId,
+        kind,
+        col: Math.floor(Math.random() * COLS),
+        y: 0,
+        speed: 1.6,
+      });
+      addFloater("POWER-UP!", col * COL_W + COL_W / 2, PLAY_H - stackHeightPx(col) - 50, "#ffb347");
       playSound("streak3");
     }
     playSound("correct");
@@ -394,6 +431,12 @@ export default function FirewallBuilder({
       mouseColTarget: null,
       threatPulseStart: 0,
       lastFallingKind: null,
+      powerUps: [],
+      powerUpId: 0,
+      catchesSinceLastPowerUp: 0,
+      slowMoUntil: 0,
+      shieldBigUntil: 0,
+      multiCatchLeft: 0,
     };
     setShowIntro(true);
     setResetKey((k) => k + 1);
@@ -459,6 +502,48 @@ export default function FirewallBuilder({
           // Tighter cadence — was 1500ms, now 900ms for more pace.
           s.nextSpawnAt = now + 900;
         }
+      }
+
+      // POWER-UP TICK — fall the tokens, catch when they reach the
+      // paddle/cursor column, apply effect.
+      const slowMo = now < s.slowMoUntil;
+      const slowFactor = slowMo ? 0.5 : 1;
+      const guideCol =
+        s.mouseColTarget !== null
+          ? s.mouseColTarget
+          : s.falling
+            ? s.falling.col
+            : Math.floor(COLS / 2);
+      s.powerUps = s.powerUps
+        .map((p) => ({ ...p, y: p.y + p.speed * frames * slowFactor }))
+        .filter((p) => {
+          // Caught if reaches the bottom in the kid's current column.
+          if (p.y + 28 >= PLAY_H && p.col === guideCol) {
+            // Apply effect
+            if (p.kind === "slowmo") {
+              s.slowMoUntil = now + 5000;
+              addFloater("SLOW-MO!", PLAY_X + p.col * COL_W + COL_W / 2 - PLAY_X, PLAY_H - 8, "#7c5cff");
+            } else if (p.kind === "shield") {
+              s.shieldBigUntil = now + 10000;
+              addFloater("BIG SHIELD!", PLAY_X + p.col * COL_W + COL_W / 2 - PLAY_X, PLAY_H - 8, "#7eff97");
+            } else {
+              s.multiCatchLeft += 3;
+              addFloater("MULTI-CATCH x3!", PLAY_X + p.col * COL_W + COL_W / 2 - PLAY_X, PLAY_H - 8, "#ff5fb3");
+            }
+            playSound("streak3");
+            burst(p.col * COL_W + COL_W / 2, PLAY_H - 8, "#ffb347", 16);
+            return false;
+          }
+          // Drop off screen if missed
+          if (p.y > PLAY_H + 20) return false;
+          return true;
+        });
+
+      // Apply slow-mo to falling block speed if active.
+      if (s.falling && slowMo && !s.falling.landed) {
+        // Already advanced once above with full speed; rewind half
+        // the step to net out at half-speed for this frame.
+        s.falling.y -= s.speed * frames * 0.5;
       }
 
       // Particles
@@ -685,20 +770,64 @@ export default function FirewallBuilder({
         }
       }
 
+      // POWER-UP RENDER — falling tokens with an animated halo
+      for (const p of s.powerUps) {
+        const px = PLAY_X + p.col * COL_W + COL_W / 2;
+        const py = PLAY_Y + p.y;
+        const r = 18;
+        const colour =
+          p.kind === "slowmo"
+            ? "#7c5cff"
+            : p.kind === "shield"
+              ? "#7eff97"
+              : "#ff5fb3";
+        const pulse = 0.7 + 0.3 * Math.sin(now / 180);
+        ctx.save();
+        // Halo
+        const halo = ctx.createRadialGradient(px, py, 2, px, py, r * 2);
+        halo.addColorStop(0, `${colour}cc`);
+        halo.addColorStop(1, "transparent");
+        ctx.fillStyle = halo;
+        ctx.beginPath();
+        ctx.arc(px, py, r * 2, 0, Math.PI * 2);
+        ctx.fill();
+        // Token disc
+        ctx.fillStyle = colour;
+        ctx.shadowColor = colour;
+        ctx.shadowBlur = 16 * pulse;
+        ctx.beginPath();
+        ctx.arc(px, py, r, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.shadowBlur = 0;
+        // Inner ring
+        ctx.strokeStyle = "#e8edff";
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        ctx.arc(px, py, r - 4, 0, Math.PI * 2);
+        ctx.stroke();
+        // Glyph
+        ctx.fillStyle = "#080a16";
+        ctx.font = "900 14px 'Space Grotesk', sans-serif";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillText(
+          p.kind === "slowmo" ? "T" : p.kind === "shield" ? "S" : "x3",
+          px,
+          py
+        );
+        ctx.restore();
+      }
+
       // Cyber shield paddle — visible at the bottom of the play area,
       // tracks the cursor (or the falling block's column if cursor is
       // outside). Acts as a visual "you can drop the block here" guide
       // to make the kid feel directly in control.
       if (!s.finished) {
-        const guideCol =
-          s.mouseColTarget !== null
-            ? s.mouseColTarget
-            : s.falling
-              ? s.falling.col
-              : Math.floor(COLS / 2);
         const px = PLAY_X + guideCol * COL_W + COL_W / 2;
         const py = PLAY_Y + PLAY_H - 6;
-        const paddleW = COL_W * 0.92;
+        // Shield-big power-up grows the paddle 50% wider for 10s.
+        const bigShield = now < s.shieldBigUntil;
+        const paddleW = COL_W * (bigShield ? 1.4 : 0.92);
         const paddleH = 14;
         // Glow halo
         const haloGrad = ctx.createRadialGradient(px, py, 2, px, py, paddleW * 0.85);
@@ -797,6 +926,70 @@ export default function FirewallBuilder({
       ctx.textAlign = "center";
       ctx.fillStyle = s.badLanded >= LOSE_BAD - 1 ? "#ff5fb3" : "#ffd158";
       ctx.fillText(`VIRUSES ${s.badLanded}/${LOSE_BAD}`, CANVAS_W / 2, 12);
+
+      // STREAK MULTIPLIER — visible at the top centre when combo>=2.
+      // Pulses with the combo, scales up at higher tiers, drives a
+      // "x2" / "x3" / "x5!" type readout the kid can see at all times
+      // (was previously only fired as a transient floater at 3/5/8/12).
+      if (s.combo >= 2) {
+        const mult =
+          s.combo >= 12 ? 5 : s.combo >= 8 ? 4 : s.combo >= 5 ? 3 : 2;
+        const pulse = 0.7 + 0.3 * Math.sin(now / 220);
+        const colour =
+          mult >= 5 ? "#ff5fb3" : mult >= 4 ? "#7c5cff" : mult >= 3 ? "#7df0ff" : "#7eff97";
+        ctx.save();
+        ctx.font = `900 ${14 + mult}px 'Space Grotesk', sans-serif`;
+        ctx.textAlign = "center";
+        ctx.textBaseline = "top";
+        ctx.shadowColor = colour;
+        ctx.shadowBlur = 14 * pulse;
+        ctx.fillStyle = colour;
+        ctx.fillText(`STREAK x${mult}`, CANVAS_W / 2, 30);
+        ctx.restore();
+      }
+
+      // Active power-up indicators — pill row in the top-left under
+      // FIREWALL LEVEL, one badge per active effect.
+      const activePU: { label: string; remaining: number; colour: string }[] = [];
+      if (now < s.slowMoUntil) {
+        activePU.push({ label: "SLOW-MO", remaining: s.slowMoUntil - now, colour: "#7c5cff" });
+      }
+      if (now < s.shieldBigUntil) {
+        activePU.push({ label: "BIG SHIELD", remaining: s.shieldBigUntil - now, colour: "#7eff97" });
+      }
+      if (s.multiCatchLeft > 0) {
+        activePU.push({ label: `MULTI x${s.multiCatchLeft}`, remaining: 9999, colour: "#ff5fb3" });
+      }
+      if (activePU.length > 0) {
+        let bx = 14;
+        const by = 32;
+        ctx.save();
+        ctx.font = "900 10px 'Space Grotesk', sans-serif";
+        ctx.textBaseline = "middle";
+        for (const pu of activePU) {
+          const labelW = ctx.measureText(pu.label).width;
+          const w = labelW + 14;
+          ctx.fillStyle = `${pu.colour}33`;
+          ctx.strokeStyle = pu.colour;
+          ctx.lineWidth = 1;
+          ctx.shadowColor = pu.colour;
+          ctx.shadowBlur = 8;
+          ctx.beginPath();
+          if (typeof ctx.roundRect === "function") {
+            (ctx as CanvasRenderingContext2D & { roundRect: (x: number, y: number, w: number, h: number, r: number) => void }).roundRect(bx, by - 8, w, 16, 8);
+          } else {
+            ctx.rect(bx, by - 8, w, 16);
+          }
+          ctx.fill();
+          ctx.stroke();
+          ctx.shadowBlur = 0;
+          ctx.fillStyle = pu.colour;
+          ctx.textAlign = "center";
+          ctx.fillText(pu.label, bx + w / 2, by);
+          bx += w + 6;
+        }
+        ctx.restore();
+      }
 
       // Legend row
       ctx.font = "800 13px ui-rounded, 'Fredoka', system-ui, sans-serif";

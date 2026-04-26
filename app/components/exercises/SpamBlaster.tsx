@@ -42,6 +42,13 @@ const MONITOR_Y = CANVAS_H - 95;
 const MONITOR_W = 200;
 const MONITOR_H = 140;
 
+// CYBER TURRET — fires DOWN from the top of the play area at viruses
+// (the user wanted the firing source at the top, not the bottom-
+// monitor only). The monitor stays for the inbox readout; the turret
+// is the active "you're aiming this" element.
+const TURRET_X = CANVAS_W / 2;
+const TURRET_Y = 90;
+
 interface LiveEmail {
   idx: number;
   sender: string;
@@ -205,13 +212,17 @@ export default function SpamBlaster({
     const phishing = hit.isPhishing;
     state.current.bullets.push({
       id: ++state.current.bulletId,
-      sx: MONITOR_X,
-      sy: MONITOR_Y - MONITOR_H / 2,
+      // Fire from the cyber turret at the TOP — bullet travels DOWN
+      // to the email's mid-fall position. (Old bullet source was the
+      // monitor at the bottom firing UP, which the user said felt
+      // like a different metaphor.)
+      sx: TURRET_X,
+      sy: TURRET_Y + 18,
       tx: hit.x,
       ty: hit.y,
       bornAt: now,
       duration: 140,
-      colour: phishing ? "#00e5ff" : "#00e5ff",
+      colour: phishing ? "#ff5577" : "#00e5ff",
       kind: phishing ? "phishing" : "safe",
     });
     playSound("click");
@@ -566,23 +577,68 @@ export default function SpamBlaster({
       ctx.save();
       ctx.translate(em.x, em.y);
       ctx.scale(em.scale, em.scale);
-      // tint
-      const tint = em.isPhishing ? "rgba(239,68,68,0.08)" : "rgba(168,227,187,0.08)";
-      // body
-      ctx.fillStyle = "#0b1222";
+
+      // HOLOGRAPHIC ENVELOPE — translucent dark glass body, animated
+      // chromatic edge, soft scan-line texture. Reads as "incoming
+      // intel data packet" rather than a stock email card.
+      const now = performance.now();
+      const phase = (now + em.idx * 173) / 320;
+
+      // Glass body
+      const bodyGrad = ctx.createLinearGradient(0, -EMAIL_H / 2, 0, EMAIL_H / 2);
+      bodyGrad.addColorStop(0, "rgba(15, 21, 48, 0.88)");
+      bodyGrad.addColorStop(1, "rgba(8, 10, 22, 0.96)");
+      ctx.fillStyle = bodyGrad;
       roundRect(ctx, -EMAIL_W / 2, -EMAIL_H / 2, EMAIL_W, EMAIL_H, 10);
       ctx.fill();
-      ctx.fillStyle = tint;
+
+      // Faint scan-lines (CRT phosphor texture)
+      ctx.save();
+      ctx.beginPath();
       roundRect(ctx, -EMAIL_W / 2, -EMAIL_H / 2, EMAIL_W, EMAIL_H, 10);
-      ctx.fill();
-      ctx.strokeStyle = "rgba(148,163,184,0.5)";
+      ctx.clip();
+      ctx.strokeStyle = "rgba(0, 229, 255, 0.06)";
+      ctx.lineWidth = 1;
+      for (let yy = -EMAIL_H / 2; yy < EMAIL_H / 2; yy += 3) {
+        ctx.beginPath();
+        ctx.moveTo(-EMAIL_W / 2, yy);
+        ctx.lineTo(EMAIL_W / 2, yy);
+        ctx.stroke();
+      }
+      ctx.restore();
+
+      // Animated chromatic border — cyan core with violet/pink ghost
+      ctx.shadowColor = "#7c5cff";
+      ctx.shadowBlur = 8;
+      ctx.strokeStyle = "rgba(124, 92, 255, 0.45)";
+      ctx.lineWidth = 1.5;
+      roundRect(ctx, -EMAIL_W / 2 - 1, -EMAIL_H / 2, EMAIL_W, EMAIL_H, 10);
+      ctx.stroke();
+      ctx.shadowBlur = 0;
+      ctx.strokeStyle = "rgba(0, 229, 255, 0.7)";
       ctx.lineWidth = 1.5;
       roundRect(ctx, -EMAIL_W / 2, -EMAIL_H / 2, EMAIL_W, EMAIL_H, 10);
       ctx.stroke();
-      // envelope icon
+
+      // Top corner data tags — "PKT" id + faint pulse dot
+      ctx.fillStyle = "rgba(0, 229, 255, 0.65)";
+      ctx.font = "800 8px ui-monospace, 'JetBrains Mono', Menlo, monospace";
+      ctx.textAlign = "left";
+      ctx.textBaseline = "top";
+      ctx.fillText(`PKT-${(em.idx % 999).toString().padStart(3, "0")}`, -EMAIL_W / 2 + 8, -EMAIL_H / 2 + 5);
+      // Live pulse dot top-right
+      const pulseAlpha = 0.5 + 0.5 * Math.sin(phase);
+      ctx.fillStyle = `rgba(126, 255, 151, ${pulseAlpha})`;
+      ctx.beginPath();
+      ctx.arc(EMAIL_W / 2 - 10, -EMAIL_H / 2 + 9, 2.2, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Envelope glyph (left side, holographic violet stroke)
       ctx.save();
-      ctx.translate(-EMAIL_W / 2 + 22, 0);
-      ctx.strokeStyle = "rgba(125,240,255,0.55)";
+      ctx.translate(-EMAIL_W / 2 + 22, 4);
+      ctx.strokeStyle = "rgba(125, 240, 255, 0.85)";
+      ctx.shadowColor = "#00e5ff";
+      ctx.shadowBlur = 6;
       ctx.lineWidth = 2;
       roundRect(ctx, -14, -10, 28, 20, 3);
       ctx.stroke();
@@ -591,18 +647,30 @@ export default function SpamBlaster({
       ctx.lineTo(0, 4);
       ctx.lineTo(14, -10);
       ctx.stroke();
+      ctx.shadowBlur = 0;
       ctx.restore();
-      // text
+
+      // Sender + subject text — bright cream + slate cream
       ctx.textAlign = "left";
       ctx.textBaseline = "middle";
-      ctx.fillStyle = "#f1f5f9";
+      ctx.fillStyle = "#e8edff";
       ctx.font = "700 13px 'Space Grotesk', sans-serif";
       const sender = em.sender.length > 20 ? em.sender.slice(0, 18) + "…" : em.sender;
-      ctx.fillText(sender, -EMAIL_W / 2 + 44, -10);
-      ctx.fillStyle = "#cbd5e1";
+      ctx.fillText(sender, -EMAIL_W / 2 + 44, -8);
+      ctx.fillStyle = "rgba(197, 205, 240, 0.85)";
       ctx.font = "500 11px 'Space Grotesk', sans-serif";
       const subj = em.subject.length > 24 ? em.subject.slice(0, 22) + "…" : em.subject;
-      ctx.fillText(subj, -EMAIL_W / 2 + 44, 10);
+      ctx.fillText(subj, -EMAIL_W / 2 + 44, 8);
+
+      // Bottom-edge "scanning..." progress shimmer (animated thin bar)
+      const scanLen = (Math.abs(Math.sin(phase * 0.6)) * (EMAIL_W - 16));
+      const scanGrad = ctx.createLinearGradient(-EMAIL_W / 2 + 8, EMAIL_H / 2 - 4, -EMAIL_W / 2 + 8 + scanLen, EMAIL_H / 2 - 4);
+      scanGrad.addColorStop(0, "rgba(0, 229, 255, 0)");
+      scanGrad.addColorStop(0.5, "rgba(0, 229, 255, 0.7)");
+      scanGrad.addColorStop(1, "rgba(0, 229, 255, 0)");
+      ctx.fillStyle = scanGrad;
+      ctx.fillRect(-EMAIL_W / 2 + 8, EMAIL_H / 2 - 4, scanLen, 1.5);
+
       ctx.restore();
     };
 
@@ -901,7 +969,7 @@ export default function SpamBlaster({
           ctx.setLineDash([4, 6]);
           ctx.shadowBlur = 0;
           ctx.beginPath();
-          ctx.moveTo(MONITOR_X, MONITOR_Y - MONITOR_H / 2);
+          ctx.moveTo(TURRET_X, TURRET_Y + 18);
           ctx.lineTo(cx, cy);
           ctx.stroke();
           ctx.setLineDash([]);
@@ -934,6 +1002,125 @@ export default function SpamBlaster({
       ctx.fillStyle = "#e8edff";
       ctx.fillText("⚡ ZAP THE VIRUS EMAILS! ⚡", promptX, promptY);
       ctx.restore();
+
+      // CYBER TURRET — sits below the prompt, points down at incoming
+      // viruses. Inverted-U mount + barrel that swivels toward the
+      // crosshair if the kid is hovering over a target. Fires the
+      // existing bullet from this position.
+      const turretAimX = s.cursorX !== null && s.cursorX > 0 && s.cursorX < CANVAS_W ? s.cursorX : TURRET_X;
+      const turretAimY = s.cursorY !== null && s.cursorY > TURRET_Y ? s.cursorY : TURRET_Y + 200;
+      const turretAngle = Math.atan2(turretAimY - (TURRET_Y + 8), turretAimX - TURRET_X);
+      ctx.save();
+      // Mount base (cylindrical)
+      const mountGrad = ctx.createLinearGradient(TURRET_X - 28, TURRET_Y - 6, TURRET_X + 28, TURRET_Y + 18);
+      mountGrad.addColorStop(0, "#1a2147");
+      mountGrad.addColorStop(0.5, "#252d5e");
+      mountGrad.addColorStop(1, "#1a2147");
+      ctx.fillStyle = mountGrad;
+      ctx.shadowColor = "#00e5ff";
+      ctx.shadowBlur = 12;
+      ctx.beginPath();
+      ctx.roundRect(TURRET_X - 28, TURRET_Y - 6, 56, 22, 6);
+      ctx.fill();
+      ctx.shadowBlur = 0;
+      // Mount rivets
+      ctx.fillStyle = "#00e5ff";
+      ctx.beginPath();
+      ctx.arc(TURRET_X - 22, TURRET_Y + 5, 1.5, 0, Math.PI * 2);
+      ctx.arc(TURRET_X + 22, TURRET_Y + 5, 1.5, 0, Math.PI * 2);
+      ctx.fill();
+      // Pivot dome
+      ctx.translate(TURRET_X, TURRET_Y + 8);
+      const domeGrad = ctx.createRadialGradient(0, 0, 1, 0, 0, 16);
+      domeGrad.addColorStop(0, "#7df0ff");
+      domeGrad.addColorStop(1, "#00e5ff");
+      ctx.fillStyle = domeGrad;
+      ctx.shadowColor = "#00e5ff";
+      ctx.shadowBlur = 14;
+      ctx.beginPath();
+      ctx.arc(0, 0, 12, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.shadowBlur = 0;
+      // Barrel — rotates toward aim
+      ctx.rotate(turretAngle);
+      const barrelGrad = ctx.createLinearGradient(0, -4, 22, 4);
+      barrelGrad.addColorStop(0, "#7c5cff");
+      barrelGrad.addColorStop(1, "#00e5ff");
+      ctx.fillStyle = barrelGrad;
+      ctx.shadowColor = "#7c5cff";
+      ctx.shadowBlur = 10;
+      ctx.beginPath();
+      ctx.roundRect(0, -3.5, 22, 7, 2);
+      ctx.fill();
+      // Barrel tip glow
+      ctx.fillStyle = "#7df0ff";
+      ctx.shadowBlur = 12;
+      ctx.beginPath();
+      ctx.arc(22, 0, 2, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+
+      // STREAK METER — fills as the kid maintains a correct-zap chain.
+      // Sits below the prompt, full at streak >=5. Pulses when full.
+      const streakPct = Math.min(1, s.streak / 5);
+      if (streakPct > 0) {
+        const meterX = CANVAS_W / 2 - 80;
+        const meterY = 76;
+        const meterW = 160;
+        const meterH = 6;
+        ctx.save();
+        // Track
+        ctx.fillStyle = "rgba(0, 229, 255, 0.12)";
+        ctx.beginPath();
+        if (typeof ctx.roundRect === "function") ctx.roundRect(meterX, meterY, meterW, meterH, 3);
+        else ctx.rect(meterX, meterY, meterW, meterH);
+        ctx.fill();
+        ctx.strokeStyle = "rgba(0, 229, 255, 0.3)";
+        ctx.lineWidth = 1;
+        ctx.stroke();
+        // Fill
+        const fillW = meterW * streakPct;
+        const fillGrad = ctx.createLinearGradient(meterX, 0, meterX + meterW, 0);
+        fillGrad.addColorStop(0, "#00e5ff");
+        fillGrad.addColorStop(1, "#7c5cff");
+        ctx.fillStyle = fillGrad;
+        ctx.shadowColor = "#00e5ff";
+        ctx.shadowBlur = streakPct >= 1 ? 14 + 4 * Math.sin(now / 180) : 8;
+        ctx.beginPath();
+        if (typeof ctx.roundRect === "function") ctx.roundRect(meterX, meterY, fillW, meterH, 3);
+        else ctx.rect(meterX, meterY, fillW, meterH);
+        ctx.fill();
+        ctx.shadowBlur = 0;
+        // Label
+        ctx.font = "900 9px ui-monospace, 'JetBrains Mono', Menlo, monospace";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "top";
+        ctx.fillStyle = streakPct >= 1 ? "#7df0ff" : "rgba(125, 240, 255, 0.7)";
+        ctx.fillText(
+          streakPct >= 1 ? `MAX STREAK · x${s.streak}` : `STREAK · x${s.streak}`,
+          CANVAS_W / 2,
+          meterY + meterH + 3
+        );
+        ctx.restore();
+      }
+
+      // EDGE FLASH — red border flash when the kid wrongly zaps a
+      // legit email. Driven off monitorFlashColour === "#ff5577" or
+      // similar; uses monitorFlashUntil for timing.
+      const edgeFlashActive =
+        s.monitorFlashColour && now < s.monitorFlashUntil &&
+        (s.monitorFlashColour === "#ff5577" || s.monitorFlashColour === "#ef4444");
+      if (edgeFlashActive) {
+        const t = (s.monitorFlashUntil - now) / 280;
+        const alpha = Math.max(0, Math.min(1, t)) * 0.85;
+        ctx.save();
+        ctx.strokeStyle = `rgba(255, 80, 100, ${alpha})`;
+        ctx.lineWidth = 8;
+        ctx.shadowColor = "#ff5577";
+        ctx.shadowBlur = 24;
+        ctx.strokeRect(2, 2, CANVAS_W - 4, CANVAS_H - 4);
+        ctx.restore();
+      }
 
       checkFinished();
       rafRef.current = requestAnimationFrame(tick);

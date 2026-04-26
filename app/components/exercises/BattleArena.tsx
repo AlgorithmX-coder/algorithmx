@@ -138,6 +138,39 @@ const STYLES = `
   0%,100% { transform: translateY(0); }
   50% { transform: translateY(-10px); }
 }
+@keyframes baSuperPulse {
+  0%,100% {
+    background-position: 0% 50%;
+    transform: translateX(-50%) scale(1);
+    box-shadow: 0 0 28px rgba(255, 95, 179, 0.7), 0 0 56px rgba(124, 92, 255, 0.5);
+  }
+  50% {
+    background-position: 100% 50%;
+    transform: translateX(-50%) scale(1.06);
+    box-shadow: 0 0 36px rgba(255, 95, 179, 0.95), 0 0 72px rgba(124, 92, 255, 0.7);
+  }
+}
+@keyframes baSuperArmedPulse {
+  0%,100% { transform: translateX(-50%) scale(1); filter: brightness(1); }
+  50%     { transform: translateX(-50%) scale(1.04); filter: brightness(1.2); }
+}
+@keyframes baAttackBeam {
+  0%   { opacity: 0; transform: scaleX(0); }
+  20%  { opacity: 1; transform: scaleX(1); }
+  85%  { opacity: 1; transform: scaleX(1); }
+  100% { opacity: 0; transform: scaleX(1); }
+}
+@keyframes baHeroLunge {
+  0%   { transform: translateX(0); }
+  35%  { transform: translateX(40px) rotate(-3deg); }
+  60%  { transform: translateX(40px) rotate(-3deg); }
+  100% { transform: translateX(0) rotate(0); }
+}
+@keyframes baFinalBlowFlash {
+  0%   { opacity: 0; }
+  20%  { opacity: 1; }
+  100% { opacity: 0; }
+}
 `;
 
 function FallbackRaccoon({ size = 120 }: { size?: number }) {
@@ -203,6 +236,21 @@ export default function BattleArena({
   const [attackWaveKey, setAttackWaveKey] = useState(0);
   const [bannerKey, setBannerKey] = useState(0);
 
+  // SUPER-MOVE state — armed at combo >=3, fires triple damage on the
+  // next correct answer. The pill is tappable; tapping arms it for the
+  // very next question. Auto-disarms on a wrong answer.
+  const [superArmed, setSuperArmed] = useState(false);
+  // Smooth HP-bar drain — drain target the bar tweens toward, distinct
+  // from the "logical" bossHP that drives game state. Lets the visible
+  // bar slide down over ~600ms instead of snapping.
+  const [bossHPDisplay, setBossHPDisplay] = useState(total);
+  // Hero-attack flash — fires on correct, drives the lunge animation
+  // + the cyan beam from Adam to the boss.
+  const [attackFlashKey, setAttackFlashKey] = useState(0);
+  // Final-blow slow-mo — true while the killing blow plays out so the
+  // CSS layer can apply the slow-mo zoom + chromatic effect.
+  const [finalBlowActive, setFinalBlowActive] = useState(false);
+
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const completeFiredRef = useRef(false);
   const defeatFiredRef = useRef(false);
@@ -210,6 +258,28 @@ export default function BattleArena({
   useEffect(() => {
     ensureStyles();
   }, []);
+
+  // Smooth HP-bar drain — when bossHP changes, tween the display value
+  // toward it over ~600ms so the bar slides instead of snapping. Single
+  // RAF loop, killed cleanly on unmount.
+  useEffect(() => {
+    if (bossHPDisplay === bossHP) return;
+    let raf = 0;
+    const startVal = bossHPDisplay;
+    const endVal = bossHP;
+    const startTime = performance.now();
+    const dur = 600;
+    const tick = (now: number) => {
+      const t = Math.min(1, (now - startTime) / dur);
+      // ease-out cubic
+      const eased = 1 - Math.pow(1 - t, 3);
+      setBossHPDisplay(startVal + (endVal - startVal) * eased);
+      if (t < 1) raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [bossHP]);
 
   // Intro → first attack announcement
   useEffect(() => {
@@ -277,8 +347,11 @@ export default function BattleArena({
         playSound("hitImpact");
         playSound("bossHurt");
         void correctAnswerBurst();
-        const newHP = Math.max(0, bossHP - 1);
+        // SUPER-MOVE: deal 3x damage if armed. Disarms on use.
+        const damage = superArmed ? 3 : 1;
+        const newHP = Math.max(0, bossHP - damage);
         setBossHP(newHP);
+        if (superArmed) setSuperArmed(false);
         setScore((s) => s + 1);
         const newCombo = combo + 1;
         setCombo(newCombo);
@@ -287,28 +360,38 @@ export default function BattleArena({
         else if (newCombo >= 7 && newCombo % 2 === 1) playSound("streak7");
         setBossHitKey((k) => k + 1);
         setDamageKey((k) => k + 1);
+        setAttackFlashKey((k) => k + 1);
+
+        // Final-blow slow-mo — when this hit drops boss HP to 0, freeze
+        // the room for ~1.4s before the victory phase takes over.
+        const isFinalBlow = newHP <= 0;
+        if (isFinalBlow) setFinalBlowActive(true);
 
         if (timerRef.current) clearTimeout(timerRef.current);
         timerRef.current = setTimeout(() => {
-          if (newHP <= 0) {
+          if (isFinalBlow) {
             setPhase("victory");
             if (!completeFiredRef.current) {
               completeFiredRef.current = true;
               onComplete(score + 1, total);
             }
+            // keep finalBlowActive true; victory overlay will handle
             return;
           }
           setSelected(null);
           setQIdx((idx) => idx + 1);
           setBannerKey((k) => k + 1);
           setPhase("attack-announce");
-        }, 1000);
+        }, isFinalBlow ? 1400 : 1000);
       } else {
         playSound("wrong");
         playSound("bossAttack");
         playSound("hitImpact");
         wrongAnswerShake();
         setCombo(0);
+        // Disarm super-move on a miss — the kid had to commit the
+        // armed shot to a correct answer.
+        if (superArmed) setSuperArmed(false);
         setAttackWaveKey((k) => k + 1);
 
         if (timerRef.current) clearTimeout(timerRef.current);
@@ -320,7 +403,7 @@ export default function BattleArena({
         }, 1000);
       }
     },
-    [selected, currentQ, bossHP, score, total, combo, onComplete],
+    [selected, currentQ, bossHP, score, total, combo, onComplete, superArmed],
   );
 
   const bossAnimation = bossDefeatedAnim
@@ -331,7 +414,9 @@ export default function BattleArena({
         ? "baBossFloat 2.4s ease-in-out infinite, baBossTremor 0.18s ease-in-out infinite"
         : "baBossFloat 2.4s ease-in-out infinite";
 
-  const hpPct = Math.max(0, (bossHP / total) * 100);
+  // Use the smoothly tweened display value (not the logical bossHP)
+  // so the HP bar slides down instead of snapping after each hit.
+  const hpPct = Math.max(0, (bossHPDisplay / total) * 100);
   const hpGlowAnim = bossLowHP
     ? "baHPGlowPulse 0.8s ease-in-out infinite"
     : undefined;
@@ -363,6 +448,25 @@ export default function BattleArena({
       <DistantRidges variant={variant} parallax={{ x: 0, y: 0 }} />
       <StarField count={isVictory ? 30 : 50} />
       <FloatingParticles count={isVictory ? 50 : 28} />
+
+      {/* FINAL-BLOW FLASH — full-arena white-cyan flash on the killing
+          hit. Sits above the atmosphere, below the chrome. The
+          animation auto-fades. */}
+      {finalBlowActive && (
+        <div
+          aria-hidden
+          style={{
+            position: "absolute",
+            inset: 0,
+            zIndex: 10,
+            pointerEvents: "none",
+            background:
+              "radial-gradient(ellipse at center, rgba(232, 237, 255, 0.85) 0%, rgba(0, 229, 255, 0.45) 35%, rgba(124, 92, 255, 0.18) 60%, transparent 85%)",
+            animation: "baFinalBlowFlash 1.4s ease-out both",
+            mixBlendMode: "screen",
+          }}
+        />
+      )}
 
       {/* Lightning (warm gold streaks) — subtle, periodic */}
       {!isVictory && (
@@ -433,7 +537,53 @@ export default function BattleArena({
               position: "relative",
             }}
           >
-            <HeroPortrait phase={phase} />
+            {/* HERO ATTACK BEAM — fires when attackFlashKey changes
+                (i.e. on every correct answer). Cyan→cosmic energy
+                stripe spanning from Adam to the boss across the
+                centre row. Scales-in fast then fades over ~700ms. */}
+            {attackFlashKey > 0 && (
+              <div
+                key={`beam-${attackFlashKey}`}
+                aria-hidden
+                style={{
+                  position: "absolute",
+                  top: "50%",
+                  left: 110,
+                  right: 110,
+                  height: superArmed ? 0 : 8,
+                  // Triple-stripe layout when super-armed (super-move
+                  // visual). Single stripe otherwise.
+                  transform: "translateY(-50%)",
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: 6,
+                  pointerEvents: "none",
+                  zIndex: 8,
+                  animation: "baAttackBeam 0.7s ease-out both",
+                  transformOrigin: "left center",
+                }}
+              >
+                <div
+                  style={{
+                    height: 6,
+                    background: "linear-gradient(90deg, transparent, #00e5ff, #7c5cff, transparent)",
+                    boxShadow: "0 0 18px #00e5ff, 0 0 36px #7c5cff",
+                    borderRadius: 999,
+                  }}
+                />
+              </div>
+            )}
+
+            {/* Adam lunge wrapper — applies a one-shot lunge animation
+                to the hero portrait when attackFlashKey changes. */}
+            <div
+              key={`hero-${attackFlashKey}`}
+              style={{
+                animation: attackFlashKey > 0 ? "baHeroLunge 0.7s cubic-bezier(0.3,1.4,0.4,1) both" : undefined,
+              }}
+            >
+              <HeroPortrait phase={phase} />
+            </div>
 
             {/* Centre — attack announcement banner */}
             <div
@@ -511,7 +661,7 @@ export default function BattleArena({
 
         {/* Defence zone — question card + answer pills, OR victory */}
         <div style={{ position: "relative", marginTop: isVictory ? 0 : 18, flex: 1 }}>
-          {combo >= 2 && (phase === "question" || phase === "feedback") && (
+          {combo >= 2 && (phase === "question" || phase === "feedback") && !superArmed && (
             <div
               key={`combo-${combo}`}
               style={{
@@ -542,6 +692,71 @@ export default function BattleArena({
               }}
             >
               🔥 x{combo} COMBO!
+            </div>
+          )}
+
+          {/* SUPER-MOVE pill — appears at combo>=3, replaces the COMBO
+              floater above. Tappable: arms triple-damage on the next
+              correct answer. Pulsing chromatic gradient + shine sweep. */}
+          {combo >= 3 && (phase === "question" || phase === "feedback") && !superArmed && (
+            <button
+              type="button"
+              onClick={() => {
+                playSound("streak5");
+                setSuperArmed(true);
+              }}
+              style={{
+                position: "absolute",
+                top: -38,
+                left: "50%",
+                transform: "translateX(-50%)",
+                background: "linear-gradient(135deg, #ff5fb3, #7c5cff, #00e5ff)",
+                backgroundSize: "200% 100%",
+                color: "#080a16",
+                border: "none",
+                borderRadius: 999,
+                padding: "8px 22px",
+                fontFamily: "'Space Grotesk', system-ui, sans-serif",
+                fontWeight: 900,
+                fontSize: 14,
+                letterSpacing: 1.5,
+                textTransform: "uppercase",
+                cursor: "pointer",
+                boxShadow:
+                  "0 0 28px rgba(255, 95, 179, 0.7), 0 0 56px rgba(124, 92, 255, 0.5), 0 6px 16px rgba(0, 0, 0, 0.4)",
+                animation: "baSuperPulse 1.2s ease-in-out infinite",
+                zIndex: 11,
+              }}
+            >
+              ⚡ TAP FOR SUPER MOVE ⚡
+            </button>
+          )}
+
+          {/* SUPER-ARMED indicator — shows once tapped, until used */}
+          {superArmed && (phase === "question" || phase === "feedback") && (
+            <div
+              style={{
+                position: "absolute",
+                top: -38,
+                left: "50%",
+                transform: "translateX(-50%)",
+                background: "linear-gradient(135deg, #ff5fb3, #7c5cff)",
+                color: "#080a16",
+                borderRadius: 999,
+                padding: "8px 22px",
+                fontFamily: "'Space Grotesk', system-ui, sans-serif",
+                fontWeight: 900,
+                fontSize: 14,
+                letterSpacing: 1.5,
+                textTransform: "uppercase",
+                boxShadow:
+                  "0 0 32px rgba(255, 95, 179, 0.85), 0 0 64px rgba(124, 92, 255, 0.6)",
+                animation: "baSuperArmedPulse 0.6s ease-in-out infinite",
+                pointerEvents: "none",
+                zIndex: 11,
+              }}
+            >
+              💥 SUPER MOVE READY · ANSWER NOW
             </div>
           )}
 
@@ -592,7 +807,13 @@ export default function BattleArena({
                     "0 18px 40px -12px rgba(40, 18, 8, 0.5), inset 0 0 0 4px rgba(125, 240, 255, 0.85), inset 0 0 0 5px rgba(196, 115, 64, 0.35)",
                 }}
               >
+                {/* GLITCH QUESTION TEXT — RGB-split chromatic shimmer.
+                    Three offset copies of the same text in cyan / pink /
+                    bright cream, the cream copy on top. Animated via
+                    drop-shadow filter shifting its offsets. Reads as
+                    "incoming intel data" rather than a static prompt. */}
                 <p
+                  key={`q-${qIdx}`}
                   style={{
                     fontSize: 17,
                     lineHeight: 1.5,
@@ -600,6 +821,10 @@ export default function BattleArena({
                     color: COLOR.inkDeep,
                     fontWeight: 700,
                     textAlign: "center",
+                    position: "relative",
+                    filter:
+                      "drop-shadow(-1px 0 0 rgba(0, 229, 255, 0.45)) drop-shadow(1px 0 0 rgba(255, 95, 179, 0.45))",
+                    animation: "baCardEnter 0.5s cubic-bezier(0.16,1,0.3,1) both",
                   }}
                 >
                   {currentQ.question}
