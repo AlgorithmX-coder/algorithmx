@@ -151,6 +151,29 @@ export default function CrackTheCode({
     RINGS.map(() => false)
   );
 
+  /* ─── PHASE B: DEFEND THE PASSWORD ─────────────────────────────
+   * After the kid cracks the rings and unlocks the vault, the Hacker
+   * Raccoon doesn't give up — he throws 4 common weak guesses at the
+   * lock and the kid has to REJECT each one in time. Same content
+   * (passwords, locks) but a totally new mechanic: defensive reflex
+   * instead of combinatorial puzzle. */
+  type CtcPhase = "rings" | "defend" | "done";
+  const [ctcPhase, setCtcPhase] = useState<CtcPhase>("rings");
+  const WEAK_GUESSES = useMemo(
+    () => [
+      { text: "password", reason: "Most-guessed password ever." },
+      { text: "12345", reason: "Easy keyboard run — try this!" },
+      { text: "qwerty", reason: "Just the top row of keys." },
+      { text: "abc123", reason: "First 3 letters + 1-2-3. Too obvious." },
+    ],
+    []
+  );
+  const [defendIdx, setDefendIdx] = useState(0);
+  const [defendHits, setDefendHits] = useState(0);
+  const [defendMisses, setDefendMisses] = useState(0);
+  const [defendFeedback, setDefendFeedback] = useState<"hit" | "miss" | null>(null);
+  const defendLockRef = useRef(false);
+
   const resetExercise = () => {
     setOffsets(RINGS.map(() => Math.floor(Math.random() * 4)));
     setRingFlash({});
@@ -159,6 +182,60 @@ export default function CrackTheCode({
     setShakeAll(false);
     setPrevCorrect(RINGS.map(() => false));
     setShowIntro(true);
+    setCtcPhase("rings");
+    setDefendIdx(0);
+    setDefendHits(0);
+    setDefendMisses(0);
+    setDefendFeedback(null);
+    defendLockRef.current = false;
+  };
+
+  /** Kid pressed REJECT on the current weak guess (correct action). */
+  const defendReject = () => {
+    if (defendLockRef.current) return;
+    if (defendIdx >= WEAK_GUESSES.length) return;
+    defendLockRef.current = true;
+    setDefendHits((n) => n + 1);
+    setDefendFeedback("hit");
+    playSound("sortCorrect");
+    onCorrect?.();
+    void correctAnswerBurst();
+    window.setTimeout(() => {
+      setDefendFeedback(null);
+      const next = defendIdx + 1;
+      if (next >= WEAK_GUESSES.length) {
+        setCtcPhase("done");
+        playSound("confetti");
+        void badgeEarnedCelebration();
+      } else {
+        setDefendIdx(next);
+      }
+      defendLockRef.current = false;
+    }, 600);
+  };
+
+  /** Kid pressed ALLOW on the current weak guess (wrong action — all
+   *  Phase B guesses are deliberate weak passwords). */
+  const defendAllow = () => {
+    if (defendLockRef.current) return;
+    if (defendIdx >= WEAK_GUESSES.length) return;
+    defendLockRef.current = true;
+    setDefendMisses((n) => n + 1);
+    setDefendFeedback("miss");
+    playSound("wrong");
+    wrongAnswerShake();
+    onWrong?.();
+    window.setTimeout(() => {
+      setDefendFeedback(null);
+      const next = defendIdx + 1;
+      if (next >= WEAK_GUESSES.length) {
+        setCtcPhase("done");
+        playSound("confetti");
+      } else {
+        setDefendIdx(next);
+      }
+      defendLockRef.current = false;
+    }, 900);
   };
 
   const rotate = (ringIdx: number, dir: -1 | 1) => {
@@ -221,9 +298,45 @@ export default function CrackTheCode({
     }
   };
 
-  const stars = attempts <= 1 ? 3 : attempts === 2 ? 2 : 1;
+  // Combined Phase A (ring attempts) + Phase B (defend hits) stars.
+  // Both must be excellent for a 3-star finish.
+  const phaseAStars = attempts <= 1 ? 3 : attempts === 2 ? 2 : 1;
+  const phaseBStars =
+    defendHits === WEAK_GUESSES.length
+      ? 3
+      : defendHits >= WEAK_GUESSES.length - 1
+      ? 2
+      : 1;
+  const stars =
+    ctcPhase === "done" ? Math.min(phaseAStars, phaseBStars) : phaseAStars;
 
   const boltAngles = Array.from({ length: 8 }, (_, i) => (i / 8) * Math.PI * 2);
+
+  // PHASE B: render the defend mini-game in place of the rings.
+  if (ctcPhase === "defend" || ctcPhase === "done") {
+    return (
+      <DefendPanel
+        guesses={WEAK_GUESSES}
+        guessIdx={defendIdx}
+        hits={defendHits}
+        misses={defendMisses}
+        feedback={defendFeedback}
+        done={ctcPhase === "done"}
+        stars={stars}
+        ringAttempts={attempts}
+        onReject={defendReject}
+        onAllow={defendAllow}
+        onContinue={() => {
+          playSound("click");
+          onComplete(stars);
+        }}
+        onRetry={() => {
+          playSound("select");
+          resetExercise();
+        }}
+      />
+    );
+  }
 
   // When the intro is up, render ONLY the intro (no game underneath). The
   // intro overlay used position:absolute inset:0 inside this wrapper, but
@@ -934,7 +1047,15 @@ export default function CrackTheCode({
                 type="button"
                 onClick={() => {
                   playSound("click");
-                  onComplete(stars);
+                  // Phase A done. If we haven't run Phase B yet,
+                  // advance into the Defend mini-game. Otherwise (kid
+                  // is on the post-Phase-B replay path), continue to
+                  // the lesson.
+                  if (ctcPhase === "rings") {
+                    setCtcPhase("defend");
+                  } else {
+                    onComplete(stars);
+                  }
                 }}
                 style={{
                   background: "linear-gradient(135deg, #ffd58a, #ff9b4a)",
@@ -951,7 +1072,7 @@ export default function CrackTheCode({
                     "0 18px 36px -10px rgba(255,120,40,0.7), 0 0 0 1px rgba(255,235,200,0.6) inset, 0 -3px 0 rgba(180,80,30,0.45) inset",
                 }}
               >
-                Continue &rarr;
+                {ctcPhase === "rings" ? "Defend the Vault →" : "Continue →"}
               </button>
               <button
                 type="button"
@@ -977,6 +1098,426 @@ export default function CrackTheCode({
           </div>
         )}
       </div>
+    </div>
+  );
+}
+
+/* ───────────────────────── DEFEND PANEL (PHASE B) ─────────────
+ * Renders in place of the rings once the kid has cracked the
+ * vault. The Hacker Raccoon throws weak guesses at the lock —
+ * each card animates in from the side with the guess text + a
+ * "why hackers love this" tooltip. Two buttons: REJECT (correct,
+ * since every guess is weak) or ALLOW (wrong, demonstrative). */
+
+function DefendPanel({
+  guesses,
+  guessIdx,
+  hits,
+  misses,
+  feedback,
+  done,
+  stars,
+  ringAttempts,
+  onReject,
+  onAllow,
+  onContinue,
+  onRetry,
+}: {
+  guesses: { text: string; reason: string }[];
+  guessIdx: number;
+  hits: number;
+  misses: number;
+  feedback: "hit" | "miss" | null;
+  done: boolean;
+  stars: number;
+  ringAttempts: number;
+  onReject: () => void;
+  onAllow: () => void;
+  onContinue: () => void;
+  onRetry: () => void;
+}) {
+  const total = guesses.length;
+  const current = guessIdx < total ? guesses[guessIdx] : null;
+
+  return (
+    <div
+      style={{
+        position: "relative",
+        width: "100%",
+        minHeight: 560,
+        borderRadius: 28,
+        overflow: "hidden",
+        background:
+          "linear-gradient(180deg, #2a1240 0%, #5a2540 35%, #a04a4a 70%, #e88550 92%, #fcd58a 100%)",
+        boxShadow:
+          "0 40px 90px -30px rgba(40, 22, 12, 0.55), 0 0 0 1px rgba(255,210,170,0.25) inset",
+        color: "#fff7e6",
+        padding: "26px 22px 28px",
+        fontFamily:
+          "ui-rounded, 'Fredoka', 'Quicksand', system-ui, sans-serif",
+      }}
+    >
+      {/* Phase 2 tag */}
+      <div style={{ textAlign: "center", marginBottom: 12 }}>
+        <span
+          style={{
+            display: "inline-block",
+            fontSize: 11,
+            letterSpacing: 4,
+            fontWeight: 800,
+            color: "#ffd58a",
+            textTransform: "uppercase",
+            padding: "4px 14px",
+            background: "rgba(20, 6, 12, 0.55)",
+            border: "1px solid rgba(255, 220, 180, 0.4)",
+            borderRadius: 999,
+          }}
+        >
+          Phase 2 · Defend the Vault
+        </span>
+      </div>
+
+      {/* HUD */}
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          padding: "8px 14px",
+          background: "rgba(20, 6, 12, 0.55)",
+          backdropFilter: "blur(8px)",
+          WebkitBackdropFilter: "blur(8px)",
+          borderRadius: 14,
+          fontSize: 13,
+          fontWeight: 800,
+          letterSpacing: 1,
+          marginBottom: 18,
+        }}
+      >
+        <span style={{ color: "#a8e3bb" }}>BLOCKED {hits}</span>
+        <span style={{ color: "#f08e7e" }}>SLIPPED {misses}</span>
+        <span style={{ color: "#ffd58a" }}>
+          {Math.min(guessIdx, total)}/{total}
+        </span>
+      </div>
+
+      {/* Raccoon attack scene */}
+      <div
+        style={{
+          position: "relative",
+          height: 220,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          marginBottom: 18,
+        }}
+      >
+        {/* Raccoon on the left */}
+        <div
+          aria-hidden
+          style={{
+            position: "absolute",
+            left: 18,
+            top: "50%",
+            transform: "translateY(-50%)",
+            fontSize: 64,
+            filter: "drop-shadow(0 0 18px rgba(196, 81, 58, 0.55))",
+            animation: "ccDefRaccoonHover 2.6s ease-in-out infinite",
+          }}
+        >
+          🦝
+        </div>
+        {/* Vault on the right */}
+        <div
+          aria-hidden
+          style={{
+            position: "absolute",
+            right: 18,
+            top: "50%",
+            transform: "translateY(-50%)",
+            fontSize: 64,
+            filter: feedback === "miss"
+              ? "drop-shadow(0 0 18px rgba(239, 68, 68, 0.85))"
+              : "drop-shadow(0 0 18px rgba(124, 200, 154, 0.55))",
+            animation: feedback === "miss"
+              ? "ccDefVaultShake 0.4s ease-in-out 2"
+              : undefined,
+          }}
+        >
+          🔒
+        </div>
+
+        {/* Guess card flying through */}
+        {current && (
+          <div
+            key={`guess-${guessIdx}-${feedback ?? ""}`}
+            style={{
+              position: "relative",
+              minWidth: 240,
+              maxWidth: 320,
+              padding: "16px 22px",
+              borderRadius: 16,
+              background:
+                "linear-gradient(180deg, rgba(40, 18, 38, 0.9), rgba(20, 8, 24, 0.96))",
+              border: feedback === "hit"
+                ? "2px solid #7cc89a"
+                : feedback === "miss"
+                ? "2px solid #ef4444"
+                : "1px solid rgba(255, 220, 180, 0.5)",
+              boxShadow:
+                feedback === "hit"
+                  ? "0 0 28px rgba(124, 200, 154, 0.55)"
+                  : feedback === "miss"
+                  ? "0 0 28px rgba(239, 68, 68, 0.55)"
+                  : "0 18px 36px -12px rgba(20,6,12,0.7), 0 0 26px rgba(255, 178, 110, 0.32)",
+              animation: feedback
+                ? undefined
+                : "ccDefGuessIn 0.5s cubic-bezier(0.34,1.56,0.64,1) both",
+              textAlign: "center",
+            }}
+          >
+            <div
+              style={{
+                fontSize: 10,
+                letterSpacing: 3,
+                fontWeight: 800,
+                color: "#f08e7e",
+                textTransform: "uppercase",
+                marginBottom: 4,
+              }}
+            >
+              Raccoon tries
+            </div>
+            <div
+              style={{
+                fontFamily: "ui-monospace, 'JetBrains Mono', Menlo, monospace",
+                fontSize: 22,
+                fontWeight: 900,
+                color: "#fff7e6",
+                letterSpacing: 1,
+                marginBottom: 6,
+              }}
+            >
+              &quot;{current.text}&quot;
+            </div>
+            <div
+              style={{
+                fontSize: 12,
+                color: "#ffe9c8",
+                opacity: 0.78,
+                lineHeight: 1.4,
+              }}
+            >
+              {current.reason}
+            </div>
+            {feedback === "hit" && (
+              <div
+                style={{
+                  marginTop: 8,
+                  fontSize: 14,
+                  fontWeight: 900,
+                  color: "#a8e3bb",
+                  letterSpacing: 0.5,
+                }}
+              >
+                BLOCKED! ✓
+              </div>
+            )}
+            {feedback === "miss" && (
+              <div
+                style={{
+                  marginTop: 8,
+                  fontSize: 14,
+                  fontWeight: 900,
+                  color: "#f08e7e",
+                  letterSpacing: 0.5,
+                }}
+              >
+                LET THROUGH! ✗
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+
+      {/* Action buttons or final result */}
+      {!done ? (
+        <div style={{ textAlign: "center" }}>
+          <p
+            style={{
+              fontSize: 14,
+              color: "#ffe9c8",
+              opacity: 0.92,
+              marginBottom: 14,
+              fontWeight: 600,
+            }}
+          >
+            All these guesses are <strong style={{ color: "#f08e7e" }}>WEAK</strong>.
+            Tap REJECT to block them — fast!
+          </p>
+          <div style={{ display: "flex", gap: 14, justifyContent: "center", flexWrap: "wrap" }}>
+            <button
+              type="button"
+              onClick={onReject}
+              disabled={feedback !== null}
+              style={{
+                background: "linear-gradient(135deg, #7cc89a, #5fb37a)",
+                color: "#1f3a25",
+                fontWeight: 900,
+                borderRadius: 999,
+                padding: "13px 32px",
+                fontSize: 15,
+                letterSpacing: 1.5,
+                border: "none",
+                cursor: feedback !== null ? "default" : "pointer",
+                fontFamily: "inherit",
+                opacity: feedback !== null ? 0.6 : 1,
+                boxShadow:
+                  "0 18px 36px -10px rgba(70,140,90,0.6), 0 0 0 1px rgba(220,255,225,0.5) inset, 0 -3px 0 rgba(60,120,80,0.35) inset",
+              }}
+            >
+              ✋ REJECT
+            </button>
+            <button
+              type="button"
+              onClick={onAllow}
+              disabled={feedback !== null}
+              style={{
+                background: "rgba(50, 20, 35, 0.65)",
+                backdropFilter: "blur(6px)",
+                WebkitBackdropFilter: "blur(6px)",
+                color: "#ffe9c8",
+                fontWeight: 800,
+                borderRadius: 999,
+                padding: "13px 28px",
+                fontSize: 14,
+                letterSpacing: 1,
+                border: "1px solid rgba(255,220,180,0.35)",
+                cursor: feedback !== null ? "default" : "pointer",
+                fontFamily: "inherit",
+                opacity: feedback !== null ? 0.6 : 1,
+              }}
+            >
+              Allow
+            </button>
+          </div>
+        </div>
+      ) : (
+        <div
+          style={{
+            textAlign: "center",
+            padding: "16px 24px",
+            background: "rgba(40, 18, 38, 0.7)",
+            backdropFilter: "blur(8px)",
+            WebkitBackdropFilter: "blur(8px)",
+            borderRadius: 18,
+            border: "1px solid rgba(255, 220, 180, 0.4)",
+            animation: "ccFadeIn 0.6s ease-out both",
+          }}
+        >
+          <div
+            style={{
+              fontSize: 11,
+              letterSpacing: 5,
+              color: "#ffd58a",
+              fontWeight: 800,
+              textTransform: "uppercase",
+              marginBottom: 4,
+            }}
+          >
+            ✦ Vault Defended ✦
+          </div>
+          <div
+            style={{
+              fontSize: 28,
+              fontWeight: 900,
+              background:
+                "linear-gradient(135deg, #ffd58a, #ff9b4a, #d4733a)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              letterSpacing: 1,
+              fontFamily: "Fredoka, ui-rounded, system-ui, sans-serif",
+            }}
+          >
+            {hits === total ? "FLAWLESS!" : `${hits}/${total} BLOCKED`}
+          </div>
+          <div style={{ fontSize: 36, margin: "10px 0" }}>
+            {"★".repeat(stars)}
+            <span style={{ color: "rgba(255, 233, 200, 0.3)" }}>
+              {"★".repeat(3 - stars)}
+            </span>
+          </div>
+          <div
+            style={{
+              color: "#ffe9c8",
+              opacity: 0.8,
+              fontSize: 13,
+              marginBottom: 16,
+              letterSpacing: 0.5,
+            }}
+          >
+            Cracked in {ringAttempts} {ringAttempts === 1 ? "attempt" : "attempts"} · Defended {hits}/{total}
+          </div>
+          <div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
+            <button
+              type="button"
+              onClick={onContinue}
+              style={{
+                background: "linear-gradient(135deg, #ffd58a, #ff9b4a)",
+                color: "#3a1a06",
+                fontWeight: 800,
+                borderRadius: 999,
+                padding: "14px 36px",
+                fontSize: 16,
+                border: "none",
+                cursor: "pointer",
+                fontFamily: "inherit",
+                letterSpacing: 0.5,
+                boxShadow:
+                  "0 18px 36px -10px rgba(255,120,40,0.7), 0 0 0 1px rgba(255,235,200,0.6) inset, 0 -3px 0 rgba(180,80,30,0.45) inset",
+              }}
+            >
+              Continue →
+            </button>
+            <button
+              type="button"
+              onClick={onRetry}
+              style={{
+                background: "rgba(50, 20, 35, 0.65)",
+                backdropFilter: "blur(6px)",
+                WebkitBackdropFilter: "blur(6px)",
+                color: "#ffe9c8",
+                fontWeight: 700,
+                borderRadius: 999,
+                padding: "14px 28px",
+                fontSize: 14,
+                letterSpacing: 1,
+                border: "1px solid rgba(255,220,180,0.35)",
+                cursor: "pointer",
+                fontFamily: "inherit",
+              }}
+            >
+              🔄 Try Again
+            </button>
+          </div>
+        </div>
+      )}
+
+      <style>{`
+        @keyframes ccDefGuessIn {
+          0%   { opacity: 0; transform: translateX(-60px) scale(0.85); }
+          100% { opacity: 1; transform: translateX(0) scale(1); }
+        }
+        @keyframes ccDefRaccoonHover {
+          0%,100% { transform: translateY(-50%) translateX(0); }
+          50%     { transform: translateY(-54%) translateX(6px); }
+        }
+        @keyframes ccDefVaultShake {
+          0%,100% { transform: translateY(-50%) translateX(0); }
+          25%     { transform: translateY(-50%) translateX(-4px); }
+          75%     { transform: translateY(-50%) translateX(4px); }
+        }
+      `}</style>
     </div>
   );
 }
