@@ -228,6 +228,27 @@ export default function CharacterGuide({
         </div>
       )}
 
+      {/* SVG filter that erodes the image's alpha channel by ~1.2px to
+          kill the dark matting fringe around Layla's neck/shoulders.
+          The PNG cutouts have semi-transparent edge pixels that read as
+          a halo against the dark dusk backdrop; eroding the alpha
+          shrinks the silhouette inward by exactly enough to drop those
+          fringe pixels off the edge. Definition lives once at the top
+          of the guide so the same filter id is reused for both Adam
+          and Layla. */}
+      <svg
+        aria-hidden
+        width="0"
+        height="0"
+        style={{ position: "absolute", pointerEvents: "none" }}
+      >
+        <defs>
+          <filter id="cgEdgeClean" x="-5%" y="-5%" width="110%" height="110%">
+            <feMorphology in="SourceGraphic" operator="erode" radius="1.2" />
+          </filter>
+        </defs>
+      </svg>
+
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         key={`${phase}-${enterKey}`}
@@ -265,15 +286,22 @@ export default function CharacterGuide({
           width: auto;
           display: block;
           pointer-events: none;
+          /* Filter chain (order matters — filters apply left-to-right):
+             1. url(#cgEdgeClean) erodes the alpha channel by ~1.2px so
+                the semi-transparent matting fringe around the
+                silhouette (neck, shoulders, hair) is dropped before
+                the drop-shadows are computed. Without this the dusk
+                backdrop reads the fringe as a dark halo.
+             2. drop-shadow gives the warm Pixar grounding shadow.
+             3. drop-shadow #2 adds a soft amber bounce light. */
           filter:
+            url(#cgEdgeClean)
             drop-shadow(0 10px 14px rgba(20,6,12,0.55))
             drop-shadow(0 0 22px rgba(255,178,110,0.18));
-          /* Soft fade on the bottom edge — hides any matte fringe at the
-             character's neck/shoulder line where the asset's alpha isn't
-             a clean cut. The fade is gentle (only the bottom ~12%) so
-             nothing important is clipped. */
-          -webkit-mask-image: linear-gradient(180deg, black 0%, black 88%, transparent 100%);
-                  mask-image: linear-gradient(180deg, black 0%, black 88%, transparent 100%);
+          /* Soft fade on the very bottom — defensive backup for shoes/
+             feet area, even though the alpha-erode handles most of it. */
+          -webkit-mask-image: linear-gradient(180deg, black 0%, black 92%, transparent 100%);
+                  mask-image: linear-gradient(180deg, black 0%, black 92%, transparent 100%);
         }
         /* Static state while hidden between exit and enter. */
         .cg-char-hidden { opacity: 0; transform: translateY(30px); }
