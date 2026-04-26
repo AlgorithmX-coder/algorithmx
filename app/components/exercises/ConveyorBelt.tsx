@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { playSound } from "@/app/lib/sounds";
 import ExerciseIntro from "./ExerciseIntro";
 import ExerciseHowTo from "./ExerciseHowTo";
@@ -125,6 +125,32 @@ export default function ConveyorBelt({
   const [showResult, setShowResult] = useState(false);
   const [missedBanner, setMissedBanner] = useState(false);
 
+  /* ─── PHASE B: FRENZY MODE ──────────────────────────────────────
+   * After the kid sorts every standard item, instead of going straight
+   * to the result we kick off a 6-card frenzy finale. Cards spawn
+   * faster, the screen flashes "FRENZY!" overhead, and every correct
+   * sort during this phase counts double toward a treasure-chest
+   * bonus revealed at the end. Adds ~30s of high-tempo arcade play
+   * without adding more questions. */
+  type CBPhase = "playing" | "phase-a-done" | "frenzy" | "chest" | "result";
+  const [phase, setPhase] = useState<CBPhase>("playing");
+  const FRENZY_CARDS = 6;
+  const [frenzyIdx, setFrenzyIdx] = useState(0);
+  const [frenzyHits, setFrenzyHits] = useState(0);
+  const frenzyItems = useMemo(() => {
+    if (items.length === 0) return [] as typeof items;
+    // Shuffle the standard items into a frenzy queue. We re-use the
+    // same content so the kid is doubling down on what they just
+    // learned, not solving brand-new content.
+    const out = items.slice();
+    for (let i = out.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [out[i], out[j]] = [out[j], out[i]];
+    }
+    while (out.length < FRENZY_CARDS) out.push(...items);
+    return out.slice(0, FRENZY_CARDS);
+  }, [items]);
+
   const resetExercise = () => {
     setCard(null);
     setLever("neutral");
@@ -140,6 +166,9 @@ export default function ConveyorBelt({
     setShowResult(false);
     setMissedBanner(false);
     setShowIntro(true);
+    setPhase("playing");
+    setFrenzyIdx(0);
+    setFrenzyHits(0);
   };
 
   const rafRef = useRef<number | null>(null);
@@ -150,21 +179,39 @@ export default function ConveyorBelt({
   useEffect(() => {
     if (showIntro) return;
     if (card || showResult) return;
-    if (sortedIdx >= items.length) {
-      setShowResult(true);
+    if (phase === "phase-a-done" || phase === "chest" || phase === "result") return;
+
+    // Phase A — exhausted the standard items? Pivot to the frenzy
+    // transition card instead of going straight to the result. The
+    // transition button kicks the player into "frenzy" phase.
+    if (phase === "playing" && sortedIdx >= items.length) {
+      setPhase("phase-a-done");
       return;
     }
-    // Longer lead-in on the very first card so players can read the scene
-    // after the intro dismisses. Subsequent cards flow normally.
-    const delay = sortedIdx === 0 ? 2000 : 1200;
+
+    // Frenzy — exhausted the 6 frenzy cards? Open the chest reveal.
+    if (phase === "frenzy" && frenzyIdx >= FRENZY_CARDS) {
+      setPhase("chest");
+      return;
+    }
+
+    // Pull the next item from the right queue + speed table for the
+    // current phase. Frenzy cards spawn faster (700ms vs 1200ms) and
+    // travel ~1.6× the base speed for a tangible tempo lift.
+    const isFrenzy = phase === "frenzy";
+    const idxThisPhase = isFrenzy ? frenzyIdx : sortedIdx;
+    const queue = isFrenzy ? frenzyItems : items;
+    const it = queue[idxThisPhase];
+    if (!it) return;
+    const delay = isFrenzy ? 700 : sortedIdx === 0 ? 2000 : 1200;
+    const speed = isFrenzy ? BASE_SPEED * 1.6 : speedForIndex(sortedIdx);
     const t = window.setTimeout(() => {
-      const it = items[sortedIdx];
       setCard({
-        idx: sortedIdx,
+        idx: idxThisPhase,
         text: it.text,
         category: it.category,
         x: BELT_LEFT,
-        speed: speedForIndex(sortedIdx),
+        speed,
         phase: "moving",
         routedAs: null,
         routeProgress: 0,
@@ -177,7 +224,7 @@ export default function ConveyorBelt({
     }, delay);
     nextSpawnRef.current = t;
     return () => window.clearTimeout(t);
-  }, [card, sortedIdx, items, showResult, showIntro]);
+  }, [card, sortedIdx, items, showResult, showIntro, phase, frenzyIdx, frenzyItems]);
 
   const resolveCard = useCallback(
     (c: Card, outcome: "strongOK" | "strongBad" | "weakOK" | "weakBad" | "miss") => {
@@ -209,6 +256,8 @@ export default function ConveyorBelt({
         else if (routedAs === "weak") setShreddedCount((n) => n + 1);
         setBeltFlash("good");
         window.setTimeout(() => setBeltFlash(null), 400);
+        // Frenzy-only: also bump the bonus tally for the chest reveal.
+        if (phase === "frenzy") setFrenzyHits((n) => n + 1);
         onCorrect?.();
       } else {
         playSound("sortWrong");
@@ -227,11 +276,16 @@ export default function ConveyorBelt({
         wasCorrect: correct,
       });
       window.setTimeout(() => {
-        setSortedIdx((i) => i + 1);
+        // Advance the right counter for whichever phase we're in.
+        if (phase === "frenzy") {
+          setFrenzyIdx((i) => i + 1);
+        } else {
+          setSortedIdx((i) => i + 1);
+        }
         setCard(null);
       }, outcome === "miss" ? 900 : 700);
     },
-    [onCorrect, onWrong]
+    [onCorrect, onWrong, phase]
   );
 
   // RAF loop
@@ -822,11 +876,74 @@ export default function ConveyorBelt({
         </div>
       )}
 
+      {/* FRENZY mode banner — pulses overhead while frenzy phase is
+          active so the kid feels the tempo shift. */}
+      {phase === "frenzy" && (
+        <div
+          aria-hidden
+          style={{
+            position: "absolute",
+            top: 60,
+            left: "50%",
+            transform: "translateX(-50%)",
+            zIndex: 6,
+            pointerEvents: "none",
+            display: "flex",
+            alignItems: "center",
+            gap: 10,
+            padding: "6px 18px",
+            borderRadius: 999,
+            background:
+              "linear-gradient(135deg, rgba(255, 213, 138, 0.95), rgba(255, 155, 74, 0.92))",
+            boxShadow:
+              "0 12px 28px -8px rgba(40, 18, 8, 0.5), 0 0 28px rgba(255, 213, 138, 0.55)",
+            color: "#3a1a06",
+            fontWeight: 900,
+            fontSize: 13,
+            letterSpacing: 3,
+            fontFamily: "Fredoka, ui-rounded, system-ui, sans-serif",
+            animation: "cbFrenzyPulse 0.9s ease-in-out infinite",
+            textTransform: "uppercase",
+          }}
+        >
+          ⚡ FRENZY {Math.min(frenzyIdx + (card ? 1 : 0), FRENZY_CARDS)}/{FRENZY_CARDS} · 2× POINTS
+        </div>
+      )}
+
+      {/* Phase A → Phase B transition card */}
+      {phase === "phase-a-done" && (
+        <FrenzyTransitionCard
+          standardCorrect={correctCount}
+          standardTotal={total}
+          onStart={() => {
+            playSound("click");
+            setPhase("frenzy");
+          }}
+        />
+      )}
+
+      {/* Treasure-chest reveal between Phase B and the result overlay */}
+      {phase === "chest" && (
+        <ChestRevealCard
+          frenzyHits={frenzyHits}
+          frenzyTotal={FRENZY_CARDS}
+          onClaim={() => {
+            playSound("click");
+            // Frenzy hits are already counted into correctCount via the
+            // resolver. The chest "bonus" here is purely a celebration
+            // beat — a visible reward for the kid's accuracy in Phase B.
+            // Roll the result overlay next.
+            setPhase("result");
+            setShowResult(true);
+          }}
+        />
+      )}
+
       {showResult && (
         <PixarFinishOverlay
-          badge="Shift Complete"
-          title="WELL SORTED!"
-          subline={`${correctCount}/${total} correct · best streak ${bestStreak}`}
+          badge={frenzyHits >= FRENZY_CARDS ? "Frenzy Champion" : "Shift Complete"}
+          title={frenzyHits >= FRENZY_CARDS ? "PERFECT SHIFT!" : "WELL SORTED!"}
+          subline={`${correctCount}/${total + FRENZY_CARDS} correct · ${frenzyHits}/${FRENZY_CARDS} frenzy · best streak ${bestStreak}`}
           stars={stars}
           onContinue={() => {
             playSound("click");
@@ -848,6 +965,399 @@ export default function ConveyorBelt({
           onStart={() => setShowIntro(false)}
         />
       )}
+      <style>{`
+        @keyframes cbFadeIn {
+          from { opacity: 0; }
+          to   { opacity: 1; }
+        }
+        @keyframes cbFrenzyPulse {
+          0%,100% { transform: translateX(-50%) scale(1); }
+          50%     { transform: translateX(-50%) scale(1.06); }
+        }
+        @keyframes cbChestLid {
+          0%   { transform: rotate(0); }
+          70%  { transform: rotate(-95deg); }
+          100% { transform: rotate(-80deg); }
+        }
+        @keyframes cbChestRise {
+          from { transform: translateY(60px) scale(0.85); opacity: 0; }
+          to   { transform: translateY(0) scale(1); opacity: 1; }
+        }
+        @keyframes cbChestSparkle {
+          0%   { opacity: 0; transform: translate(0, 0) scale(0.4); }
+          100% { opacity: 1; transform: translate(var(--sx, 0), var(--sy, -50px)) scale(1); }
+        }
+      `}</style>
+    </div>
+  );
+}
+
+/* ───────────────────────── FRENZY TRANSITION CARD ───────────── */
+
+function FrenzyTransitionCard({
+  standardCorrect,
+  standardTotal,
+  onStart,
+}: {
+  standardCorrect: number;
+  standardTotal: number;
+  onStart: () => void;
+}) {
+  return (
+    <div
+      role="dialog"
+      aria-label="Frenzy Mode unlocking"
+      style={{
+        position: "absolute",
+        inset: 0,
+        zIndex: 14,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        background:
+          "linear-gradient(180deg, rgba(40, 18, 38, 0.85) 0%, rgba(20, 8, 24, 0.92) 100%)",
+        backdropFilter: "blur(10px)",
+        WebkitBackdropFilter: "blur(10px)",
+        padding: 24,
+        animation: "cbFadeIn 0.45s ease-out",
+      }}
+    >
+      <div
+        style={{
+          maxWidth: 460,
+          width: "100%",
+          padding: "26px 28px 22px",
+          borderRadius: 22,
+          background:
+            "linear-gradient(180deg, rgba(40, 18, 38, 0.92), rgba(20, 8, 24, 0.95))",
+          border: "1px solid rgba(255, 220, 180, 0.42)",
+          boxShadow:
+            "0 30px 60px -20px rgba(20,6,12,0.7), 0 0 36px rgba(255, 178, 110, 0.3)",
+          textAlign: "center",
+          color: "#fff7e6",
+          fontFamily:
+            "ui-rounded, 'Fredoka', 'Quicksand', system-ui, sans-serif",
+        }}
+      >
+        <div
+          style={{
+            display: "inline-block",
+            fontSize: 11,
+            letterSpacing: 4,
+            fontWeight: 800,
+            color: "#ffd58a",
+            textTransform: "uppercase",
+            padding: "4px 14px",
+            background: "rgba(20, 6, 12, 0.55)",
+            border: "1px solid rgba(255, 220, 180, 0.4)",
+            borderRadius: 999,
+            marginBottom: 12,
+          }}
+        >
+          Phase 2 of 2
+        </div>
+        <div
+          style={{
+            fontSize: 56,
+            lineHeight: 1,
+            marginBottom: 4,
+            filter:
+              "drop-shadow(0 0 18px rgba(255, 213, 138, 0.7)) drop-shadow(0 0 32px rgba(255, 178, 110, 0.45))",
+          }}
+        >
+          ⚡
+        </div>
+        <h2
+          style={{
+            fontSize: 26,
+            fontWeight: 900,
+            background:
+              "linear-gradient(135deg, #fff5cc, #ffd58a, #ff9b4a)",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+            margin: "4px 0 6px",
+            letterSpacing: 0.3,
+            fontFamily: "Fredoka, ui-rounded, system-ui, sans-serif",
+          }}
+        >
+          FRENZY MODE!
+        </h2>
+        <p
+          style={{
+            fontSize: 14,
+            color: "#a8e3bb",
+            margin: "0 0 6px",
+            fontWeight: 700,
+          }}
+        >
+          Phase 1: {standardCorrect}/{standardTotal} sorted ✓
+        </p>
+        <p
+          style={{
+            fontSize: 15,
+            color: "#ffe9c8",
+            opacity: 0.92,
+            margin: "0 0 18px",
+            lineHeight: 1.55,
+          }}
+        >
+          Six rapid-fire passwords are about to fly down the belt. Get them
+          all right and a treasure chest drops at the end!
+        </p>
+        <button
+          type="button"
+          onClick={onStart}
+          style={{
+            height: 46,
+            padding: "0 28px",
+            border: "none",
+            borderRadius: 999,
+            background: "linear-gradient(135deg, #ffd58a, #ff9b4a)",
+            color: "#3a1a06",
+            fontWeight: 800,
+            fontSize: 15,
+            letterSpacing: 0.5,
+            cursor: "pointer",
+            fontFamily: "Fredoka, ui-rounded, system-ui, sans-serif",
+            boxShadow:
+              "0 18px 36px -10px rgba(255,120,40,0.6), 0 0 0 1px rgba(255,235,200,0.55) inset, 0 -3px 0 rgba(180,80,30,0.4) inset",
+          }}
+        >
+          Bring on the FRENZY →
+        </button>
+      </div>
+    </div>
+  );
+}
+
+/* ───────────────────────── CHEST REVEAL CARD ─────────────────── */
+
+function ChestRevealCard({
+  frenzyHits,
+  frenzyTotal,
+  onClaim,
+}: {
+  frenzyHits: number;
+  frenzyTotal: number;
+  onClaim: () => void;
+}) {
+  const tier =
+    frenzyHits >= frenzyTotal ? "gold" : frenzyHits >= 4 ? "silver" : "bronze";
+  const tierColour =
+    tier === "gold" ? "#ffd58a" : tier === "silver" ? "#e0d7c8" : "#d4985a";
+  const tierLabel =
+    tier === "gold" ? "GOLD CHEST" : tier === "silver" ? "SILVER CHEST" : "BRONZE CHEST";
+  const sparkles = Array.from({ length: 12 }, (_, i) => ({
+    angle: (i / 12) * Math.PI * 2,
+    delay: i * 0.05,
+  }));
+
+  return (
+    <div
+      role="dialog"
+      aria-label="Treasure chest reveal"
+      style={{
+        position: "absolute",
+        inset: 0,
+        zIndex: 14,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        background:
+          "linear-gradient(180deg, rgba(40, 18, 38, 0.9) 0%, rgba(20, 8, 24, 0.96) 100%)",
+        backdropFilter: "blur(10px)",
+        WebkitBackdropFilter: "blur(10px)",
+        padding: 24,
+        animation: "cbFadeIn 0.45s ease-out",
+      }}
+    >
+      <div
+        style={{
+          maxWidth: 460,
+          width: "100%",
+          padding: "26px 28px 22px",
+          borderRadius: 22,
+          background:
+            "linear-gradient(180deg, rgba(40, 18, 38, 0.92), rgba(20, 8, 24, 0.95))",
+          border: `1px solid ${tierColour}`,
+          boxShadow: `0 30px 60px -20px rgba(20,6,12,0.7), 0 0 40px ${tierColour}55`,
+          textAlign: "center",
+          color: "#fff7e6",
+          fontFamily:
+            "ui-rounded, 'Fredoka', 'Quicksand', system-ui, sans-serif",
+        }}
+      >
+        <div
+          style={{
+            display: "inline-block",
+            fontSize: 11,
+            letterSpacing: 4,
+            fontWeight: 800,
+            color: tierColour,
+            textTransform: "uppercase",
+            padding: "4px 14px",
+            background: "rgba(20, 6, 12, 0.55)",
+            border: `1px solid ${tierColour}`,
+            borderRadius: 999,
+            marginBottom: 14,
+          }}
+        >
+          {tierLabel}
+        </div>
+
+        {/* Animated chest — body sits, lid hinges open via CSS */}
+        <div
+          style={{
+            position: "relative",
+            width: 130,
+            height: 110,
+            margin: "0 auto 14px",
+            animation: "cbChestRise 0.6s cubic-bezier(0.34,1.56,0.64,1) both",
+          }}
+        >
+          {/* Sparkles emanating outward */}
+          {sparkles.map((s, i) => {
+            const dist = 70;
+            const sx = Math.cos(s.angle) * dist;
+            const sy = Math.sin(s.angle) * dist - 30;
+            return (
+              <span
+                key={i}
+                style={
+                  {
+                    position: "absolute",
+                    left: "50%",
+                    top: "50%",
+                    width: 6,
+                    height: 6,
+                    borderRadius: "50%",
+                    background: tierColour,
+                    boxShadow: `0 0 12px ${tierColour}`,
+                    "--sx": `${sx}px`,
+                    "--sy": `${sy}px`,
+                    animation: `cbChestSparkle 1s ease-out ${s.delay}s forwards`,
+                    opacity: 0,
+                  } as React.CSSProperties
+                }
+              />
+            );
+          })}
+
+          {/* Chest body */}
+          <div
+            style={{
+              position: "absolute",
+              left: 10,
+              right: 10,
+              bottom: 0,
+              height: 60,
+              background: "linear-gradient(180deg, #6a3a14, #3a1a06)",
+              borderRadius: "6px 6px 10px 10px",
+              border: `2px solid ${tierColour}`,
+              boxShadow: "inset 0 -8px 14px rgba(0,0,0,0.45)",
+            }}
+          />
+          {/* Glow inside the open chest */}
+          <div
+            style={{
+              position: "absolute",
+              left: 22,
+              right: 22,
+              bottom: 36,
+              height: 30,
+              borderRadius: 8,
+              background: `radial-gradient(circle, ${tierColour} 0%, transparent 70%)`,
+              filter: "blur(6px)",
+              opacity: 0.95,
+            }}
+          />
+          {/* Lid */}
+          <div
+            style={{
+              position: "absolute",
+              left: 8,
+              right: 8,
+              top: 24,
+              height: 30,
+              background: "linear-gradient(180deg, #8a4a18, #4a1f06)",
+              borderRadius: "10px 10px 4px 4px",
+              border: `2px solid ${tierColour}`,
+              transformOrigin: "0% 100%",
+              animation:
+                "cbChestLid 0.9s cubic-bezier(0.4, 1.6, 0.55, 1) 0.4s both",
+            }}
+          />
+          {/* Lock plate */}
+          <div
+            style={{
+              position: "absolute",
+              left: "50%",
+              top: 50,
+              transform: "translateX(-50%)",
+              width: 16,
+              height: 16,
+              borderRadius: 3,
+              background: tierColour,
+              border: "1px solid rgba(40, 18, 8, 0.55)",
+              zIndex: 1,
+            }}
+          />
+        </div>
+
+        <h2
+          style={{
+            fontSize: 24,
+            fontWeight: 900,
+            background:
+              "linear-gradient(135deg, #fff5cc, #ffd58a, #ff9b4a)",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+            margin: "4px 0 4px",
+            letterSpacing: 0.3,
+            fontFamily: "Fredoka, ui-rounded, system-ui, sans-serif",
+          }}
+        >
+          {frenzyHits === frenzyTotal
+            ? "ALL SIX!"
+            : `${frenzyHits} of ${frenzyTotal} caught!`}
+        </h2>
+        <p
+          style={{
+            fontSize: 14,
+            color: "#ffe9c8",
+            opacity: 0.92,
+            margin: "0 0 18px",
+            lineHeight: 1.55,
+          }}
+        >
+          {frenzyHits === frenzyTotal
+            ? "A perfect frenzy run — you sorted every single one. The chest is yours!"
+            : frenzyHits >= 4
+            ? "Solid sorting under pressure. Take the chest!"
+            : "Tough finale. Your brain is faster than you think — try again any time."}
+        </p>
+        <button
+          type="button"
+          onClick={onClaim}
+          style={{
+            height: 46,
+            padding: "0 28px",
+            border: "none",
+            borderRadius: 999,
+            background: "linear-gradient(135deg, #ffd58a, #ff9b4a)",
+            color: "#3a1a06",
+            fontWeight: 800,
+            fontSize: 15,
+            letterSpacing: 0.5,
+            cursor: "pointer",
+            fontFamily: "Fredoka, ui-rounded, system-ui, sans-serif",
+            boxShadow:
+              "0 18px 36px -10px rgba(255,120,40,0.6), 0 0 0 1px rgba(255,235,200,0.55) inset, 0 -3px 0 rgba(180,80,30,0.4) inset",
+          }}
+        >
+          Claim Treasure →
+        </button>
+      </div>
     </div>
   );
 }
