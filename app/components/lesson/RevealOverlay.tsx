@@ -25,7 +25,19 @@ export function RevealOverlay() {
   useEffect(() => {
     if (!reveal) return;
     const t = window.setTimeout(onRevealDismiss, AUTO_DISMISS_MS);
-    return () => window.clearTimeout(t);
+    // Esc key dismisses the reveal — keyboard users get the same
+    // "tap-anywhere" affordance as mouse/touch users.
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        e.preventDefault();
+        onRevealDismiss();
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => {
+      window.clearTimeout(t);
+      window.removeEventListener("keydown", onKey);
+    };
   }, [reveal, onRevealDismiss]);
 
   return (

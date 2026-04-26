@@ -255,7 +255,9 @@ export default function MemoryMatch({
     lockRef.current = true;
     if (a.pairId === b.pairId) {
       window.setTimeout(() => {
-        playSound("correct");
+        // Single celebratory cue — used to fire two stacked sounds
+        // ("correct" + "sortCorrect") which clipped on slower audio
+        // contexts. The sortCorrect chime is the more rewarding one.
         playSound("sortCorrect");
         addBurst(aIdx, a.colour);
         addBurst(bIdx, b.colour);
