@@ -36,6 +36,11 @@ const LessonArena3D = dynamic(
   { ssr: false }
 );
 import ScreenTransition, { type TransitionType } from "@/app/components/ScreenTransition";
+import { InventoryProvider, useInventory } from "@/app/components/lesson/InventoryProvider";
+import { InventoryBar } from "@/app/components/lesson/InventoryBar";
+import { EarnItemEffect } from "@/app/components/lesson/EarnItemEffect";
+import { RevealOverlay } from "@/app/components/lesson/RevealOverlay";
+import { getItemForScreen } from "@/app/lib/inventory";
 import ExerciseErrorBoundary from "@/app/components/ExerciseErrorBoundary";
 import { addXP, type RankInfo } from "@/app/lib/progression";
 import LessonAmbience from "@/app/components/LessonAmbience";
@@ -1725,7 +1730,19 @@ function clearSavedLesson() {
   try { window.localStorage.removeItem(SAVE_KEY); } catch {}
 }
 
-export default function LessonPlayer({ userName, moduleId, childName }: { userName: string; moduleId: string; childName: string }) {
+export default function LessonPlayer(props: { userName: string; moduleId: string; childName: string }) {
+  // The inventory context needs to wrap the whole player so the bar,
+  // fly effect, and reveal overlay all share state with the case
+  // renderers that fire earn(). The week key is the localStorage
+  // namespace for persisted progress.
+  return (
+    <InventoryProvider weekKey="week-1">
+      <LessonPlayerInner {...props} />
+    </InventoryProvider>
+  );
+}
+
+function LessonPlayerInner({ userName, moduleId, childName }: { userName: string; moduleId: string; childName: string }) {
   /* ---------- state ---------- */
   // We only consult the saved state ONCE on mount. The "Save & Exit"
   // button writes to localStorage and navigates away; on next mount the
@@ -2382,9 +2399,29 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
     setShowInstr((prev) => ({ ...prev, [scr]: false }));
   }, []);
 
+  const { earn: earnInventoryItem } = useInventory();
+
+  /** Trigger the Reveal-Then-Earn beat for a screen — flies the
+   *  earned item from viewport-centre into its inventory slot, then
+   *  pops the Adam/Layla "did you know" line. Safe to call multiple
+   *  times for the same screen (no-op if already earned). */
+  const triggerEarnForScreen = useCallback(
+    (scr: number) => {
+      const item = getItemForScreen(scr);
+      if (!item) return;
+      const cx = typeof window !== "undefined" ? window.innerWidth / 2 : 0;
+      const cy = typeof window !== "undefined" ? window.innerHeight / 2 : 0;
+      earnInventoryItem(item.id, cx, cy);
+    },
+    [earnInventoryItem]
+  );
+
   const showLearnSummary = useCallback((scr: number) => {
     setShowSummary((prev) => ({ ...prev, [scr]: true }));
-  }, []);
+    // Trigger the inventory earn beat slightly after the LearnSummary
+    // card pops so the fly visibly originates from the celebration.
+    window.setTimeout(() => triggerEarnForScreen(scr), 320);
+  }, [triggerEarnForScreen]);
 
   const dismissSummary = useCallback((scr: number, nextStep: number) => {
     setShowSummary((prev) => ({ ...prev, [scr]: false }));
@@ -2844,7 +2881,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                 )}
               </>
             ) : (
-              <WelcomeScene onContinue={() => navigate(1)} />
+              <WelcomeScene onContinue={() => { triggerEarnForScreen(0); navigate(1); }} />
             )}
           </div>
           </FullScene>
@@ -2862,7 +2899,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
             <MissionBriefScene
               phase={missionPhase}
               missions={missions}
-              onAccept={() => { playTone("powerup"); navigate(2); }}
+              onAccept={() => { playTone("powerup"); triggerEarnForScreen(1); navigate(2); }}
             />
           </FullScene>
         );
@@ -4244,7 +4281,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
         return (
           <FullScene bg="linear-gradient(180deg, #1a1508 0%, #0a0a1a 100%)">
             <VictoryScene
-              onContinue={() => navigate(17)}
+              onContinue={() => { triggerEarnForScreen(16); navigate(17); }}
             />
           </FullScene>
         );
@@ -4264,7 +4301,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
               starsCount={finalStars}
               totalCoins={coins}
               isMilestoneWeek={IS_MILESTONE_WEEK}
-              onContinue={() => navigate(18)}
+              onContinue={() => { triggerEarnForScreen(17); navigate(18); }}
               onDownloadCertificate={
                 IS_MILESTONE_WEEK
                   ? () => window.open(getCertificateUrl(childName, CURRENT_WEEK), "_blank")
@@ -4352,6 +4389,19 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
             totalScreens={18}
             xpEarned={lessonXp}
           />
+
+          {/* Inventory bar — earn-tracking strip below the HUD. The
+              bar is fixed-positioned so it sits over the lesson body
+              without consuming layout space. */}
+          <InventoryBar currentScreen={screen} />
+
+          {/* Earn-flight overlay — animates icons from action point
+              into their slot. Mounted once; watches provider state. */}
+          <EarnItemEffect />
+
+          {/* Did-you-know reveal — pops the speech bubble after the
+              fly lands. Auto-dismisses after 5s; tap to dismiss. */}
+          <RevealOverlay />
 
           {/* Save & Exit button — kids can quit and resume later. The
               autosave effect persists every state change to localStorage,

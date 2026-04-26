@@ -120,6 +120,13 @@ export default function FirewallBuilder({
     won: false,
     lost: false,
     finished: false,
+    // Gaming juice: combo chains, mouse-drag tracking, threat lock-on.
+    combo: 0,
+    bestCombo: 0,
+    comboFlashUntil: 0,
+    mouseColTarget: null as number | null,
+    threatPulseStart: 0, // performance.now() when current bad-block warning began
+    lastFallingKind: null as "good" | "bad" | null,
   });
 
   const [render, setRender] = useState(0);
@@ -183,9 +190,16 @@ export default function FirewallBuilder({
       cracked: false,
     });
     s.goodLanded += 1;
+    s.combo += 1;
+    if (s.combo > s.bestCombo) s.bestCombo = s.combo;
+    if (s.combo === 3 || s.combo === 5 || s.combo === 8 || s.combo === 12) {
+      addFloater(`COMBO x${s.combo}!`, col * COL_W + COL_W / 2, PLAY_H - stackHeightPx(col) - 24, "#ffd58a");
+      s.comboFlashUntil = performance.now() + 700;
+      playSound("streak3");
+    }
     playSound("correct");
     onCorrect?.();
-    burst(col * COL_W + COL_W / 2, PLAY_H - stackHeightPx(col) + BLOCK_H / 2, "#7cc89a", 10);
+    burst(col * COL_W + COL_W / 2, PLAY_H - stackHeightPx(col) + BLOCK_H / 2, "#7cc89a", 10 + Math.min(20, s.combo * 2));
     const milestone = LEVEL_THRESHOLDS.indexOf(s.goodLanded);
     if (milestone >= 0) {
       s.level = milestone + 1;
@@ -214,6 +228,7 @@ export default function FirewallBuilder({
       s.stacks[col].pop();
     }
     s.badLanded += 1;
+    s.combo = 0;
     s.shakeUntil = performance.now() + 450;
     playSound("wrong");
     onWrong?.();
@@ -321,6 +336,12 @@ export default function FirewallBuilder({
       won: false,
       lost: false,
       finished: false,
+      combo: 0,
+      bestCombo: 0,
+      comboFlashUntil: 0,
+      mouseColTarget: null,
+      threatPulseStart: 0,
+      lastFallingKind: null,
     };
     setShowIntro(true);
     setResetKey((k) => k + 1);
