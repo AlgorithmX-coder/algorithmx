@@ -297,19 +297,18 @@ export default function LoginPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ type: "spring", stiffness: 200, damping: 20 }}
             style={{
-              // True frosted-glass card. Was rgba 0.42 + blur 24px;
-              // user said still not blended enough. Drop to barely-
-              // there alpha and lean on a heavy backdrop blur for
-              // legibility. Soft ambient shadow only — no dark drop —
-              // so the card stops reading as "panel on top" and
-              // starts reading as "lens on the scene".
-              background:
-                "linear-gradient(180deg, rgba(15, 21, 48, 0.22) 0%, rgba(8, 10, 22, 0.18) 100%)",
-              backdropFilter: "blur(32px) saturate(1.25)",
-              WebkitBackdropFilter: "blur(32px) saturate(1.25)",
-              border: `1px solid ${C.cyan}22`,
+              // Card body now FULLY transparent — no dark wash at all.
+              // The backdrop blur stays so the globe behind looks
+              // softened, but the card itself doesn't add a colour
+              // layer. Inputs each carry their own dark background for
+              // legibility (already styled below). Net effect: the
+              // form fields appear to float in the scene, no panel.
+              background: "transparent",
+              backdropFilter: "blur(20px)",
+              WebkitBackdropFilter: "blur(20px)",
+              border: `1px solid ${C.cyan}1a`,
               boxShadow:
-                "0 0 32px rgba(0, 229, 255, 0.12), 0 0 0 1px rgba(125, 240, 255, 0.06) inset",
+                "0 0 24px rgba(0, 229, 255, 0.08), 0 0 0 1px rgba(125, 240, 255, 0.04) inset",
             }}
           >
             {/* Animated gradient top edge — the "energised border" */}
