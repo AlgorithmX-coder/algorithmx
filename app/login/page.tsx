@@ -297,9 +297,13 @@ export default function LoginPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ type: "spring", stiffness: 200, damping: 20 }}
             style={{
-              background: CYBER_GRAD.glass,
-              backdropFilter: "blur(18px)",
-              WebkitBackdropFilter: "blur(18px)",
+              // More transparent so the live globe scene reads through
+              // the card. CYBER_GRAD.glass = rgba(15, 21, 48, 0.78);
+              // dropped to 0.42 + bumped backdrop-filter blur from 18px
+              // to 24px to keep text legible against the busy backdrop.
+              background: "rgba(15, 21, 48, 0.42)",
+              backdropFilter: "blur(24px) saturate(1.1)",
+              WebkitBackdropFilter: "blur(24px) saturate(1.1)",
               border: `1px solid ${C.cyan}33`,
               boxShadow: CYBER_SHADOW.cardCyan,
             }}
