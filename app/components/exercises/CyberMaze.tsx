@@ -490,16 +490,16 @@ export default function CyberMaze({
       // Cyber-grid base — radial gradient plus animated diagonal scan lines
       // and a subtle nebula glow. Reads like a holographic data-vault floor.
       const baseGrad = ctx.createRadialGradient(BOARD_W / 2, BOARD_H / 2, 0, BOARD_W / 2, BOARD_H / 2, Math.max(BOARD_W, BOARD_H));
-      baseGrad.addColorStop(0, "#1a2148");
-      baseGrad.addColorStop(0.55, "#0a0f2a");
-      baseGrad.addColorStop(1, "#04060f");
+      baseGrad.addColorStop(0, "#5a2540");
+      baseGrad.addColorStop(0.55, "#2a0d2e");
+      baseGrad.addColorStop(1, "#1a0612");
       ctx.fillStyle = baseGrad;
       ctx.fillRect(0, 0, BOARD_W, BOARD_H);
 
       // Diagonal scan-line streaks drifting across the floor
       ctx.save();
-      ctx.globalAlpha = 0.08;
-      ctx.strokeStyle = "#a78bfa";
+      ctx.globalAlpha = 0.1;
+      ctx.strokeStyle = "#ffd58a";
       ctx.lineWidth = 1;
       const scanOffset = (now / 18) % 30;
       for (let i = -BOARD_H; i < BOARD_W + BOARD_H; i += 30) {
@@ -512,7 +512,7 @@ export default function CyberMaze({
 
       // Animated data-flow filaments around the perimeter
       ctx.save();
-      ctx.strokeStyle = "rgba(34,211,238,0.18)";
+      ctx.strokeStyle = "rgba(255, 200, 110, 0.22)";
       ctx.lineWidth = 1.4;
       for (let i = 0; i < 4; i++) {
         const phase = (now / 4000 + i * 0.25) % 1;
@@ -537,16 +537,16 @@ export default function CyberMaze({
           const y = r * CELL;
           // Inner tint
           const tint = ctx.createLinearGradient(x, y, x, y + CELL);
-          tint.addColorStop(0, "rgba(96,165,250,0.06)");
-          tint.addColorStop(1, "rgba(167,139,250,0.04)");
+          tint.addColorStop(0, "rgba(255, 200, 130, 0.08)");
+          tint.addColorStop(1, "rgba(196, 81, 58, 0.06)");
           ctx.fillStyle = tint;
           ctx.fillRect(x + 4, y + 4, CELL - 8, CELL - 8);
           // Outline
-          ctx.strokeStyle = `rgba(96,165,250,${0.12 * cellPulse + 0.06})`;
+          ctx.strokeStyle = `rgba(255, 200, 110, ${0.14 * cellPulse + 0.08})`;
           ctx.lineWidth = 1;
           ctx.strokeRect(x + 3, y + 3, CELL - 6, CELL - 6);
           // Corner ticks (HUD-style)
-          ctx.strokeStyle = "rgba(34,211,238,0.25)";
+          ctx.strokeStyle = "rgba(255, 220, 168, 0.3)";
           ctx.lineWidth = 1.2;
           const tick = 5;
           ctx.beginPath();
@@ -565,13 +565,13 @@ export default function CyberMaze({
           const x = c * CELL;
           const y = r * CELL;
           const grad = ctx.createLinearGradient(x, y, x + CELL, y + CELL);
-          grad.addColorStop(0, "#2b3f7c");
-          grad.addColorStop(0.5, "#1a2552");
-          grad.addColorStop(1, "#0c1430");
+          grad.addColorStop(0, "#6b3818");
+          grad.addColorStop(0.5, "#4a2818");
+          grad.addColorStop(1, "#2a1208");
           ctx.fillStyle = grad;
           ctx.fillRect(x + 2, y + 2, CELL - 4, CELL - 4);
           // Inner circuit dots
-          ctx.fillStyle = "rgba(34,211,238,0.35)";
+          ctx.fillStyle = "rgba(255, 220, 168, 0.4)";
           ctx.fillRect(x + CELL / 2 - 1, y + 8, 2, 2);
           ctx.fillRect(x + 8, y + CELL / 2 - 1, 2, 2);
           ctx.fillRect(x + CELL - 10, y + CELL / 2 - 1, 2, 2);
@@ -583,15 +583,15 @@ export default function CyberMaze({
           ctx.clip();
           const stripe = ((now / 8) % (CELL * 2)) - CELL;
           const sg = ctx.createLinearGradient(x + stripe, y, x + stripe + CELL, y + CELL);
-          sg.addColorStop(0, "rgba(96,165,250,0)");
-          sg.addColorStop(0.5, "rgba(96,165,250,0.25)");
-          sg.addColorStop(1, "rgba(96,165,250,0)");
+          sg.addColorStop(0, "rgba(255, 200, 110, 0)");
+          sg.addColorStop(0.5, "rgba(255, 200, 110, 0.28)");
+          sg.addColorStop(1, "rgba(255, 200, 110, 0)");
           ctx.fillStyle = sg;
           ctx.fillRect(x, y, CELL, CELL);
           ctx.restore();
-          // Neon edge
-          ctx.strokeStyle = "rgba(96,165,250,0.7)";
-          ctx.shadowColor = "#60a5fa";
+          // Warm edge
+          ctx.strokeStyle = "rgba(255, 200, 110, 0.7)";
+          ctx.shadowColor = "#ffd58a";
           ctx.shadowBlur = 8;
           ctx.lineWidth = 1.4;
           ctx.strokeRect(x + 2.5, y + 2.5, CELL - 5, CELL - 5);
@@ -605,9 +605,9 @@ export default function CyberMaze({
       const portalPulse = 0.7 + 0.3 * Math.sin(now / 350);
       // Outer halo
       const halo = ctx.createRadialGradient(exitX, exitY, 0, exitX, exitY, CELL);
-      halo.addColorStop(0, `rgba(74,222,128,${0.55 * portalPulse})`);
-      halo.addColorStop(0.5, "rgba(34,197,94,0.25)");
-      halo.addColorStop(1, "rgba(22,163,74,0)");
+      halo.addColorStop(0, `rgba(255, 220, 130, ${0.65 * portalPulse})`);
+      halo.addColorStop(0.5, "rgba(255, 178, 110, 0.32)");
+      halo.addColorStop(1, "rgba(212, 115, 58, 0)");
       ctx.fillStyle = halo;
       ctx.fillRect(exitX - CELL, exitY - CELL, CELL * 2, CELL * 2);
       // Concentric spinning rings
@@ -617,10 +617,10 @@ export default function CyberMaze({
         ctx.save();
         ctx.translate(exitX, exitY);
         ctx.rotate((now / (450 + k * 120)) * (k % 2 === 0 ? 1 : -1));
-        ctx.strokeStyle = k === 0 ? "#86efac" : k === 1 ? "#4ade80" : "#22d3ee";
+        ctx.strokeStyle = k === 0 ? "#fff5cc" : k === 1 ? "#ffd158" : "#ff9b4a";
         ctx.lineWidth = 2;
-        ctx.shadowColor = "#4ade80";
-        ctx.shadowBlur = 10;
+        ctx.shadowColor = "#ffd158";
+        ctx.shadowBlur = 12;
         ctx.setLineDash([10, 6]);
         ctx.beginPath();
         ctx.arc(0, 0, radius, 0, Math.PI * 2);
@@ -643,12 +643,12 @@ export default function CyberMaze({
         const cxg = gx + CELL / 2;
         const cyg = gy + CELL / 2;
         const flashing = now < g.flashUntil;
-        const baseCol = flashing ? "#ef4444" : "#60a5fa";
-        const accent = flashing ? "#fca5a5" : "#a78bfa";
+        const baseCol = flashing ? "#c4513a" : "#ffd158";
+        const accent = flashing ? "#f4a89a" : "#ffe9b8";
         const pulse = 0.6 + 0.4 * Math.sin(now / 280);
         // Soft glow
         const gateGlow = ctx.createRadialGradient(cxg, cyg, 0, cxg, cyg, CELL / 2 + 4);
-        gateGlow.addColorStop(0, flashing ? "rgba(239,68,68,0.55)" : "rgba(96,165,250,0.45)");
+        gateGlow.addColorStop(0, flashing ? "rgba(196, 81, 58, 0.55)" : "rgba(255, 220, 130, 0.5)");
         gateGlow.addColorStop(1, "rgba(0,0,0,0)");
         ctx.fillStyle = gateGlow;
         ctx.fillRect(gx, gy, CELL, CELL);
@@ -657,7 +657,7 @@ export default function CyberMaze({
         ctx.translate(cxg, cyg);
         ctx.rotate(now / 1200);
         const hr = CELL / 2 - 9;
-        ctx.fillStyle = `rgba(20,30,60,0.85)`;
+        ctx.fillStyle = "rgba(40, 18, 38, 0.85)";
         ctx.beginPath();
         for (let i = 0; i < 6; i++) {
           const a = (Math.PI / 3) * i;
@@ -689,8 +689,8 @@ export default function CyberMaze({
         ctx.restore();
         ctx.setLineDash([]);
         // ? glyph
-        ctx.fillStyle = "#dbeafe";
-        ctx.font = "900 20px 'Space Grotesk', sans-serif";
+        ctx.fillStyle = "#fff7e6";
+        ctx.font = "900 20px ui-rounded, 'Fredoka', system-ui, sans-serif";
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
         ctx.shadowColor = baseCol;
@@ -751,26 +751,26 @@ export default function CyberMaze({
         const p = s.trail[i];
         const alpha = (1 - p.age / 350) * 0.45 * (i / s.trail.length);
         ctx.globalAlpha = alpha;
-        ctx.fillStyle = "#34d399";
+        ctx.fillStyle = "#ffd158";
         ctx.beginPath();
         ctx.arc(p.x, p.y, 10, 0, Math.PI * 2);
         ctx.fill();
       }
       ctx.globalAlpha = 1;
 
-      // Player
+      // Player — warm gold-coral hero orb
       const pGrad = ctx.createRadialGradient(s.x, s.y, 0, s.x, s.y, 14);
-      pGrad.addColorStop(0, "#86efac");
-      pGrad.addColorStop(0.5, "#34d399");
-      pGrad.addColorStop(1, "#60a5fa");
+      pGrad.addColorStop(0, "#fff5cc");
+      pGrad.addColorStop(0.5, "#ffd158");
+      pGrad.addColorStop(1, "#ff9b4a");
       ctx.fillStyle = pGrad;
-      ctx.shadowColor = "#4ade80";
-      ctx.shadowBlur = 14;
+      ctx.shadowColor = "#ff9b4a";
+      ctx.shadowBlur = 16;
       ctx.beginPath();
       ctx.arc(s.x, s.y, 11, 0, Math.PI * 2);
       ctx.fill();
       ctx.shadowBlur = 0;
-      ctx.strokeStyle = "#fff";
+      ctx.strokeStyle = "#fff7e6";
       ctx.lineWidth = 1.5;
       ctx.beginPath();
       ctx.arc(s.x, s.y, 11, 0, Math.PI * 2);

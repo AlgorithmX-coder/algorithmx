@@ -390,19 +390,19 @@ export default function FirewallBuilder({
       // Background — animated cyberpunk firewall control room. Radial
       // gradient + circuit traces + drifting scan ring + hex starfield.
       const bg = ctx.createRadialGradient(CANVAS_W / 2, CANVAS_H * 0.35, 0, CANVAS_W / 2, CANVAS_H * 0.35, Math.max(CANVAS_W, CANVAS_H));
-      bg.addColorStop(0, "#1a2150");
-      bg.addColorStop(0.55, "#0a0e2a");
-      bg.addColorStop(1, "#02030a");
+      bg.addColorStop(0, "#5a2540");
+      bg.addColorStop(0.55, "#2a0d2e");
+      bg.addColorStop(1, "#1a0612");
       ctx.fillStyle = bg;
       ctx.fillRect(0, 0, CANVAS_W, CANVAS_H);
 
-      // Drifting hex stars
+      // Drifting warm-gold stars
       for (let i = 0; i < 60; i++) {
         const sx = (i * 91.7 + (now * 0.012) * (1 + (i % 3) * 0.4)) % CANVAS_W;
         const sy = (i * 173.7) % CANVAS_H;
         const r = ((i * 13) % 3) / 2 + 0.4;
         const tw = 0.35 + 0.65 * (0.5 + 0.5 * Math.sin(now * 0.002 + i * 0.5));
-        ctx.fillStyle = `rgba(167,139,250,${0.18 + 0.35 * tw})`;
+        ctx.fillStyle = `rgba(255, 220, 168, ${0.22 + 0.4 * tw})`;
         ctx.beginPath();
         ctx.arc(sx, sy, r, 0, Math.PI * 2);
         ctx.fill();
@@ -412,19 +412,19 @@ export default function FirewallBuilder({
       const ringPhase = (now / 2400) % 1;
       const ringR = 60 + ringPhase * 320;
       ctx.save();
-      ctx.strokeStyle = `rgba(34,211,238,${0.4 * (1 - ringPhase)})`;
+      ctx.strokeStyle = `rgba(255, 200, 110, ${0.45 * (1 - ringPhase)})`;
       ctx.lineWidth = 2;
       ctx.beginPath();
       ctx.arc(CANVAS_W / 2, PLAY_Y + PLAY_H * 0.5, ringR, 0, Math.PI * 2);
       ctx.stroke();
-      ctx.strokeStyle = `rgba(167,139,250,${0.25 * (1 - ringPhase)})`;
+      ctx.strokeStyle = `rgba(255, 178, 110, ${0.3 * (1 - ringPhase)})`;
       ctx.beginPath();
       ctx.arc(CANVAS_W / 2, PLAY_Y + PLAY_H * 0.5, ringR + 18, 0, Math.PI * 2);
       ctx.stroke();
       ctx.restore();
 
-      // Circuit traces along the top edge
-      ctx.strokeStyle = "rgba(34,211,238,0.35)";
+      // Warm circuit traces along the top edge
+      ctx.strokeStyle = "rgba(255, 220, 168, 0.4)";
       ctx.lineWidth = 1.4;
       const dash = (now / 30) % 18;
       ctx.setLineDash([8, 10]);
@@ -438,10 +438,10 @@ export default function FirewallBuilder({
       ctx.save();
       ctx.translate(shakeX, shakeY);
 
-      // Play area — animated holographic floor
+      // Play area — warm parchment floor
       const floorGrad = ctx.createLinearGradient(0, PLAY_Y, 0, PLAY_Y + PLAY_H);
-      floorGrad.addColorStop(0, "rgba(20,30,70,0.85)");
-      floorGrad.addColorStop(1, "rgba(8,12,30,0.95)");
+      floorGrad.addColorStop(0, "rgba(74, 36, 32, 0.85)");
+      floorGrad.addColorStop(1, "rgba(40, 18, 24, 0.95)");
       ctx.fillStyle = floorGrad;
       ctx.fillRect(PLAY_X, PLAY_Y, PLAY_W, PLAY_H);
       // Diagonal scan stripes inside the play area
@@ -450,7 +450,7 @@ export default function FirewallBuilder({
       ctx.rect(PLAY_X, PLAY_Y, PLAY_W, PLAY_H);
       ctx.clip();
       const stripeOff = (now / 16) % 24;
-      ctx.strokeStyle = "rgba(96,165,250,0.06)";
+      ctx.strokeStyle = "rgba(255, 220, 168, 0.08)";
       ctx.lineWidth = 1;
       for (let i = -PLAY_H; i < PLAY_W + PLAY_H; i += 24) {
         ctx.beginPath();
@@ -459,8 +459,8 @@ export default function FirewallBuilder({
         ctx.stroke();
       }
       ctx.restore();
-      // Grid (now brighter)
-      ctx.strokeStyle = "rgba(96,165,250,0.18)";
+      // Grid (warmer)
+      ctx.strokeStyle = "rgba(255, 200, 110, 0.2)";
       ctx.lineWidth = 1;
       for (let c = 1; c < COLS; c++) {
         ctx.beginPath();
@@ -474,50 +474,50 @@ export default function FirewallBuilder({
         ctx.lineTo(PLAY_X + PLAY_W, PLAY_Y + r * BLOCK_H);
         ctx.stroke();
       }
-      // Top scan beam crossing the play area
+      // Top scan beam crossing the play area — warm gold
       const beamY = PLAY_Y + ((now / 12) % PLAY_H);
       const beamGrad = ctx.createLinearGradient(0, beamY - 24, 0, beamY + 24);
-      beamGrad.addColorStop(0, "rgba(34,211,238,0)");
-      beamGrad.addColorStop(0.5, "rgba(34,211,238,0.18)");
-      beamGrad.addColorStop(1, "rgba(34,211,238,0)");
+      beamGrad.addColorStop(0, "rgba(255, 200, 110, 0)");
+      beamGrad.addColorStop(0.5, "rgba(255, 220, 130, 0.22)");
+      beamGrad.addColorStop(1, "rgba(255, 200, 110, 0)");
       ctx.fillStyle = beamGrad;
       ctx.fillRect(PLAY_X, beamY - 24, PLAY_W, 48);
       // Bordering glow rectangle
-      ctx.strokeStyle = "rgba(96,165,250,0.5)";
+      ctx.strokeStyle = "rgba(255, 200, 110, 0.55)";
       ctx.lineWidth = 1.5;
-      ctx.shadowColor = "#60a5fa";
+      ctx.shadowColor = "#ffd158";
       ctx.shadowBlur = 14;
       ctx.strokeRect(PLAY_X + 0.5, PLAY_Y + 0.5, PLAY_W - 1, PLAY_H - 1);
       ctx.shadowBlur = 0;
 
-      // Side tech frames — neon riveted rails with travelling dots
-      ctx.fillStyle = "#1e293b";
+      // Side wooden frames — riveted rails with travelling embers
+      ctx.fillStyle = "#3a1a08";
       ctx.fillRect(PLAY_X - 8, PLAY_Y, 6, PLAY_H);
       ctx.fillRect(PLAY_X + PLAY_W + 2, PLAY_Y, 6, PLAY_H);
-      // Static rivets
-      ctx.fillStyle = "rgba(96,165,250,0.6)";
+      // Static brass rivets
+      ctx.fillStyle = "rgba(255, 200, 110, 0.7)";
       for (let i = 0; i < 12; i++) {
         const y = PLAY_Y + 10 + i * 38;
         ctx.fillRect(PLAY_X - 7, y, 4, 4);
         ctx.fillRect(PLAY_X + PLAY_W + 3, y, 4, 4);
       }
-      // Travelling pulse along each rail
+      // Travelling ember pulse along each rail
       const pulseY = PLAY_Y + ((now / 5) % PLAY_H);
-      ctx.fillStyle = "#22d3ee";
-      ctx.shadowColor = "#22d3ee";
+      ctx.fillStyle = "#ffd158";
+      ctx.shadowColor = "#ff9b4a";
       ctx.shadowBlur = 12;
       ctx.fillRect(PLAY_X - 8, pulseY, 6, 12);
       ctx.fillRect(PLAY_X + PLAY_W + 2, PLAY_H + PLAY_Y - (pulseY - PLAY_Y) - 12, 6, 12);
       ctx.shadowBlur = 0;
 
-      // Foundation — neon-lit base plate
+      // Foundation — gold-trimmed base plate
       const foundGrad = ctx.createLinearGradient(0, PLAY_Y + PLAY_H, 0, PLAY_Y + PLAY_H + 12);
-      foundGrad.addColorStop(0, "#3b82f6");
-      foundGrad.addColorStop(1, "#1e3a5f");
+      foundGrad.addColorStop(0, "#ffd158");
+      foundGrad.addColorStop(1, "#7a3a08");
       ctx.fillStyle = foundGrad;
       ctx.fillRect(PLAY_X - 14, PLAY_Y + PLAY_H, PLAY_W + 28, 12);
       // Rivets along foundation
-      ctx.fillStyle = "rgba(167,139,250,0.7)";
+      ctx.fillStyle = "rgba(40, 18, 8, 0.6)";
       for (let i = 0; i < 14; i++) {
         ctx.beginPath();
         ctx.arc(PLAY_X - 14 + 12 + i * (PLAY_W + 28 - 24) / 13, PLAY_Y + PLAY_H + 6, 1.6, 0, Math.PI * 2);
@@ -592,24 +592,24 @@ export default function FirewallBuilder({
       ctx.globalAlpha = 1;
 
       // HUD
-      ctx.font = "800 13px 'Space Grotesk', sans-serif";
+      ctx.font = "800 13px ui-rounded, 'Fredoka', system-ui, sans-serif";
       ctx.textAlign = "left";
       ctx.textBaseline = "top";
-      ctx.fillStyle = "#86efac";
+      ctx.fillStyle = "#a8e3bb";
       ctx.fillText(`FIREWALL LEVEL ${s.level}`, 14, 12);
       ctx.textAlign = "right";
-      ctx.fillStyle = "#7dd3fc";
+      ctx.fillStyle = "#ffd58a";
       ctx.fillText(`BLOCKS ${s.goodLanded}/${WIN_GOOD}`, CANVAS_W - 14, 12);
       ctx.textAlign = "center";
-      ctx.fillStyle = s.badLanded >= LOSE_BAD - 1 ? "#ef4444" : "#fbbf24";
+      ctx.fillStyle = s.badLanded >= LOSE_BAD - 1 ? "#f08e7e" : "#ffd158";
       ctx.fillText(`VIRUSES ${s.badLanded}/${LOSE_BAD}`, CANVAS_W / 2, 12);
 
       // Legend row
-      ctx.font = "800 13px 'Space Grotesk', sans-serif";
+      ctx.font = "800 13px ui-rounded, 'Fredoka', system-ui, sans-serif";
       // Static legend only when there's NO falling block — otherwise it
       // overlaps with the big CATCH IT! / REJECT IT! prompt below.
       if (!s.falling) {
-        ctx.fillStyle = "#94a3b8";
+        ctx.fillStyle = "#ffe9c8";
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
         ctx.fillText("🟢 GREEN = Catch it!   🔴 RED = Press SPACE to reject!", CANVAS_W / 2, 34);

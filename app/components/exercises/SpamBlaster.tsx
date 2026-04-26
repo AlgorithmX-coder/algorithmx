@@ -654,14 +654,14 @@ export default function SpamBlaster({
       // Cyber-arcade background: radial nebula + drifting binary rain +
       // pulsing scan ring around the monitor + perspective floor grid.
       const bgGrad = ctx.createRadialGradient(CANVAS_W / 2, CANVAS_H * 0.7, 0, CANVAS_W / 2, CANVAS_H * 0.7, Math.max(CANVAS_W, CANVAS_H));
-      bgGrad.addColorStop(0, "#1f1448");
-      bgGrad.addColorStop(0.45, "#0c1235");
-      bgGrad.addColorStop(1, "#02030a");
+      bgGrad.addColorStop(0, "#5a2540");
+      bgGrad.addColorStop(0.45, "#2a0d2e");
+      bgGrad.addColorStop(1, "#1a0612");
       ctx.fillStyle = bgGrad;
       ctx.fillRect(0, 0, CANVAS_W, CANVAS_H);
 
-      // Drifting binary "spam stream" digits
-      ctx.font = "700 14px 'Courier New', monospace";
+      // Drifting warm "spam stream" digits
+      ctx.font = "700 14px ui-monospace, 'JetBrains Mono', Menlo, monospace";
       ctx.textAlign = "left";
       ctx.textBaseline = "top";
       for (let i = 0; i < 26; i++) {
@@ -669,12 +669,12 @@ export default function SpamBlaster({
         const speed = 30 + (i % 5) * 12;
         const y = ((now / 18) * speed / 60 + i * 73) % (CANVAS_H + 30) - 30;
         const alpha = 0.18 + 0.5 * (0.5 + 0.5 * Math.sin(now * 0.002 + i));
-        ctx.fillStyle = `rgba(96,165,250,${alpha * 0.45})`;
+        ctx.fillStyle = `rgba(255, 200, 110, ${alpha * 0.5})`;
         ctx.fillText(((i * 73 + Math.floor(now / 240)) & 1).toString(), baseX, y);
       }
 
-      // Perspective floor grid lines drawing toward the monitor
-      ctx.strokeStyle = "rgba(167,139,250,0.18)";
+      // Perspective floor grid lines drawing toward the monitor — warm
+      ctx.strokeStyle = "rgba(255, 200, 110, 0.22)";
       ctx.lineWidth = 1;
       const horizonY = CANVAS_H * 0.55;
       for (let i = -10; i <= 10; i++) {
@@ -683,25 +683,25 @@ export default function SpamBlaster({
         ctx.lineTo(CANVAS_W / 2 + i * 80, CANVAS_H + 8);
         ctx.stroke();
       }
-      // Horizontal floor lines (perspective)
+      // Horizontal floor lines (perspective) — warm
       const driftPhase = (now / 30) % 36;
       for (let i = 0; i < 8; i++) {
         const t = (i + driftPhase / 36) / 8;
         const yLine = horizonY + t * t * (CANVAS_H - horizonY);
-        const alpha = 0.18 - i * 0.015;
-        ctx.strokeStyle = `rgba(34,211,238,${alpha})`;
+        const alpha = 0.2 - i * 0.015;
+        ctx.strokeStyle = `rgba(255, 178, 110, ${alpha})`;
         ctx.beginPath();
         ctx.moveTo(0, yLine);
         ctx.lineTo(CANVAS_W, yLine);
         ctx.stroke();
       }
 
-      // Pulsing scan rings around the monitor (highlights the "danger zone")
+      // Pulsing warm scan rings around the monitor (highlights the "danger zone")
       const ringPhase = (now / 1800) % 1;
       for (let k = 0; k < 2; k++) {
         const phase = (ringPhase + k * 0.5) % 1;
         const radius = 30 + phase * 200;
-        ctx.strokeStyle = `rgba(96,165,250,${0.45 * (1 - phase)})`;
+        ctx.strokeStyle = `rgba(255, 200, 110, ${0.5 * (1 - phase)})`;
         ctx.lineWidth = 2;
         ctx.beginPath();
         ctx.arc(MONITOR_X, MONITOR_Y, radius, 0, Math.PI * 2);
@@ -709,7 +709,7 @@ export default function SpamBlaster({
       }
 
       // Subtle scanlines (lighter than before, kept for retro-terminal feel)
-      ctx.strokeStyle = "rgba(59,130,246,0.06)";
+      ctx.strokeStyle = "rgba(255, 178, 110, 0.06)";
       ctx.lineWidth = 1;
       for (let y = 0; y < CANVAS_H; y += 4) {
         ctx.beginPath();

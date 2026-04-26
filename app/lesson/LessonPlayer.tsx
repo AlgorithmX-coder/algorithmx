@@ -2830,17 +2830,52 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
             @keyframes lockCardFloat { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
             @keyframes lockBurstSpin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
           `}</style>
-          <div style={{ textAlign: "center", perspective: "1400px" }}>
-            <h1 data-split style={{ color: "#fff", fontSize: 40, fontWeight: 900, marginBottom: 8, textShadow: "0 0 24px rgba(59,130,246,0.5)" }}>What is a Password?</h1>
-            <p style={{ color: "#9ca3af", marginBottom: 8, fontSize: 16 }}>Tap each item to lock it with a password!</p>
-            <p style={{ color: "#f59e0b", fontSize: 20, fontWeight: 700, marginBottom: 16 }}>🔒 {lockedItems.size}/3</p>
+          <div style={{ textAlign: "center", perspective: "1400px", fontFamily: "ui-rounded, 'Fredoka', 'Quicksand', system-ui, -apple-system, sans-serif" }}>
+            <div style={{
+              display: "inline-block",
+              fontSize: 11,
+              letterSpacing: 5,
+              color: "#ffd58a",
+              fontWeight: 800,
+              textTransform: "uppercase",
+              padding: "5px 16px",
+              background: "rgba(40, 18, 38, 0.55)",
+              backdropFilter: "blur(8px)",
+              WebkitBackdropFilter: "blur(8px)",
+              borderRadius: 999,
+              borderStyle: "solid",
+              borderWidth: 1,
+              borderColor: "rgba(255, 220, 180, 0.4)",
+              marginBottom: 8,
+            }}>
+              ✦ Lesson 1 of 3 ✦
+            </div>
+            <h1 data-split style={{
+              fontSize: 40,
+              fontWeight: 900,
+              margin: "4px 0 6px",
+              background: "linear-gradient(135deg, #ffd58a, #ff9b4a, #d4733a)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              letterSpacing: 0.5,
+              textShadow: "0 4px 18px rgba(80, 30, 10, 0.55)",
+            }}>What is a Password?</h1>
+            <p style={{ color: "#ffe9c8", marginBottom: 8, fontSize: 16, opacity: 0.9, fontWeight: 500 }}>Tap each item to lock it with a password!</p>
+            <p style={{
+              color: "#ffd58a",
+              fontSize: 18,
+              fontWeight: 800,
+              marginBottom: 16,
+              letterSpacing: 1,
+              filter: "drop-shadow(0 0 12px rgba(255, 200, 110, 0.5))",
+            }}>🔒 {lockedItems.size}/3</p>
             <div style={{ display: "flex", gap: 22, justifyContent: "center", flexWrap: "wrap", marginBottom: 24, perspective: "1400px" }}>
               {LOCK_ITEMS.map((item, idx) => {
                 const locked = lockedItems.has(item.id);
                 const flipping = lockFlipping === item.id;
-                const accent = item.id === "gaming" ? { c1: "#60a5fa", c2: "#a855f7", glow: "rgba(96,165,250,0.55)" }
-                  : item.id === "tablet" ? { c1: "#22d3ee", c2: "#3b82f6", glow: "rgba(34,211,238,0.55)" }
-                  : { c1: "#fbbf24", c2: "#f97316", glow: "rgba(251,191,36,0.55)" };
+                const accent = item.id === "gaming" ? { c1: "#ff9b4a", c2: "#d4733a", glow: "rgba(255, 155, 74, 0.5)" }
+                  : item.id === "tablet" ? { c1: "#a06aff", c2: "#7a3a52", glow: "rgba(160, 106, 255, 0.5)" }
+                  : { c1: "#ffd158", c2: "#d48a18", glow: "rgba(255, 209, 88, 0.55)" };
                 const baseTilt = idx === 0 ? -3 : idx === 2 ? 3 : 0;
                 return (
                   <motion.div
@@ -2885,11 +2920,15 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                         borderRadius: 24,
                         padding: "22px 18px",
                         cursor: locked ? "default" : "pointer",
-                        background: `linear-gradient(160deg, ${accent.c1}1a 0%, rgba(15,23,42,0.85) 50%, ${accent.c2}22 100%)`,
-                        border: `1px solid ${locked ? "#10b98166" : `${accent.c1}66`}`,
+                        background: locked
+                          ? "linear-gradient(160deg, rgba(124, 200, 154, 0.18) 0%, rgba(40, 18, 38, 0.78) 50%, rgba(74, 154, 106, 0.18) 100%)"
+                          : `linear-gradient(160deg, ${accent.c1}22 0%, rgba(40, 18, 38, 0.82) 50%, ${accent.c2}22 100%)`,
+                        borderStyle: "solid",
+                        borderWidth: 2,
+                        borderColor: locked ? "rgba(124, 200, 154, 0.6)" : `${accent.c1}66`,
                         boxShadow: locked
-                          ? `0 30px 60px -20px rgba(16,185,129,0.5), inset 0 0 0 1px rgba(16,185,129,0.25), 0 0 50px rgba(16,185,129,0.25)`
-                          : `0 30px 60px -20px ${accent.glow}, inset 0 0 0 1px ${accent.c1}33, 0 0 40px ${accent.glow}`,
+                          ? "0 30px 60px -20px rgba(74, 154, 106, 0.55), inset 0 0 0 1px rgba(124, 200, 154, 0.3), 0 0 40px rgba(124, 200, 154, 0.3)"
+                          : `0 30px 60px -20px ${accent.glow}, inset 0 0 0 1px ${accent.c1}33, 0 0 36px ${accent.glow}`,
                         backdropFilter: "blur(14px)",
                         WebkitBackdropFilter: "blur(14px)",
                         overflow: "hidden",
@@ -2911,14 +2950,16 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                         <DeviceIllustration kind={item.id as "gaming" | "tablet" | "school"} c1={accent.c1} c2={accent.c2} locked={locked} />
                       </div>
 
-                      <div style={{ fontSize: 18, color: "#fff", fontWeight: 900, marginBottom: 6, letterSpacing: 0.5 }}>{item.label}</div>
+                      <div style={{ fontSize: 18, color: "#fff7e6", fontWeight: 900, marginBottom: 6, letterSpacing: 0.5 }}>{item.label}</div>
 
                       {/* Lock pill */}
                       <div style={{
                         display: "inline-flex", alignItems: "center", gap: 6,
                         padding: "5px 12px", borderRadius: 999,
-                        background: locked ? "rgba(16,185,129,0.15)" : "rgba(239,68,68,0.12)",
-                        border: `1px solid ${locked ? "#10b98166" : "#ef444466"}`,
+                        background: locked ? "rgba(124, 200, 154, 0.22)" : "rgba(196, 81, 58, 0.18)",
+                        borderStyle: "solid",
+                        borderWidth: 1,
+                        borderColor: locked ? "rgba(124, 200, 154, 0.6)" : "rgba(196, 81, 58, 0.55)",
                         marginBottom: 8,
                       }}>
                         <motion.div
@@ -2926,9 +2967,9 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                           transition={{ duration: 0.6 }}
                           style={{ display: "inline-flex" }}
                         >
-                          {locked ? <IconLock size={16} color="#10b981" /> : <IconUnlock size={16} color="#ef4444" />}
+                          {locked ? <IconLock size={16} color="#7cc89a" /> : <IconUnlock size={16} color="#f08e7e" />}
                         </motion.div>
-                        <span style={{ fontSize: 12, fontWeight: 800, color: locked ? "#10b981" : "#ef4444", letterSpacing: 1, textTransform: "uppercase" }}>
+                        <span style={{ fontSize: 12, fontWeight: 800, color: locked ? "#a8e3bb" : "#f4a89a", letterSpacing: 1, textTransform: "uppercase" }}>
                           {locked ? "Secure" : "Unlocked"}
                         </span>
                       </div>
@@ -2936,8 +2977,9 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                       {!locked && !flipping && (
                         <div style={{
                           display: "flex", alignItems: "center", justifyContent: "center", gap: 6,
-                          color: accent.c1, fontSize: 12, fontWeight: 800, letterSpacing: 1,
+                          color: "#ffd58a", fontSize: 12, fontWeight: 800, letterSpacing: 1,
                           animation: "lockCardFloat 1.6s ease-in-out infinite",
+                          textShadow: `0 0 10px ${accent.glow}`,
                         }}>
                           <span style={{ fontSize: 18 }}>▾</span> TAP TO LOCK
                         </div>
@@ -2946,7 +2988,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                         <motion.p
                           initial={{ opacity: 0, y: 8 }}
                           animate={{ opacity: 1, y: 0 }}
-                          style={{ color: "#86efac", fontSize: 12, fontWeight: 600, margin: 0 }}
+                          style={{ color: "#a8e3bb", fontSize: 12, fontWeight: 600, margin: 0, lineHeight: 1.4 }}
                         >
                           {item.message}
                         </motion.p>
@@ -2965,20 +3007,68 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   transition={{ type: "spring", stiffness: 300, damping: 18 }}
                 >
-                  {card(
-                    <>
-                      <h2 style={{ color: "#10b981", fontSize: 22, margin: "0 0 8px", display: "inline-flex", alignItems: "center", gap: 10 }}>
-                        <SuccessBurst size={28} />
-                        All Locked!
-                      </h2>
-                      <p style={{ color: "#d1d5db", marginBottom: 12 }}>A password is like a key that locks your digital stuff so only YOU can open it!</p>
-                      <div style={{ border: "2px solid #f59e0b", borderRadius: 16, padding: 12, marginBottom: 16, background: "rgba(245,158,11,0.05)", display: "flex", alignItems: "center", gap: 10, justifyContent: "center" }}>
-                        <SuccessBurst size={20} colourA="#fde047" colourB="#f97316" />
-                        <p style={{ color: "#f59e0b", fontSize: 14, margin: 0 }}>Fun Fact: The first computer password was created in 1961!</p>
-                      </div>
-                      {btn("Got it! Quiz time! →", () => showLearnSummary(2))}
-                    </>
-                  )}
+                  <div style={{
+                    maxWidth: 460,
+                    margin: "0 auto",
+                    padding: "22px 26px",
+                    background: "rgba(40, 18, 38, 0.72)",
+                    backdropFilter: "blur(12px)",
+                    WebkitBackdropFilter: "blur(12px)",
+                    borderStyle: "solid",
+                    borderWidth: 1,
+                    borderColor: "rgba(255, 220, 180, 0.4)",
+                    borderRadius: 22,
+                    boxShadow: "0 30px 60px -20px rgba(20, 6, 12, 0.7)",
+                    color: "#fff7e6",
+                    textAlign: "center",
+                  }}>
+                    <div style={{
+                      fontSize: 11,
+                      letterSpacing: 5,
+                      color: "#ffd58a",
+                      fontWeight: 800,
+                      textTransform: "uppercase",
+                      marginBottom: 6,
+                    }}>
+                      ✦ All Locked ✦
+                    </div>
+                    <h2 style={{
+                      fontSize: 26,
+                      margin: "0 0 10px",
+                      display: "inline-flex",
+                      alignItems: "center",
+                      gap: 10,
+                      background: "linear-gradient(135deg, #ffd58a, #ff9b4a, #d4733a)",
+                      WebkitBackgroundClip: "text",
+                      WebkitTextFillColor: "transparent",
+                      fontWeight: 900,
+                    }}>
+                      <SuccessBurst size={28} colourA="#ffd158" colourB="#ff9b4a" />
+                      You did it!
+                    </h2>
+                    <p style={{ color: "#ffe9c8", marginBottom: 14, fontSize: 15, opacity: 0.92, lineHeight: 1.45 }}>
+                      A password is like a key that locks your digital stuff so only YOU can open it!
+                    </p>
+                    <div style={{
+                      borderStyle: "solid",
+                      borderWidth: 1,
+                      borderColor: "rgba(255, 215, 138, 0.55)",
+                      borderRadius: 14,
+                      padding: "10px 14px",
+                      marginBottom: 18,
+                      background: "rgba(255, 215, 138, 0.1)",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 10,
+                      justifyContent: "center",
+                    }}>
+                      <SuccessBurst size={20} colourA="#ffd158" colourB="#ff9b4a" />
+                      <p style={{ color: "#ffd58a", fontSize: 13, margin: 0, fontWeight: 600 }}>
+                        Fun fact — the first computer password was created in 1961!
+                      </p>
+                    </div>
+                    {btn("Got it! Quiz time! →", () => showLearnSummary(2))}
+                  </div>
                 </motion.div>
               )}
             </AnimatePresence>
@@ -3327,21 +3417,21 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                       ) : (
                         <>
                           <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-                            <span style={{ width: 36, height: 36, display: "inline-flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>{rule.icon === "lock" ? <IconLock size={28} color="#3b82f6" /> : rule.icon === "key" ? <IconKey size={28} color="#f59e0b" /> : rule.icon === "unlock" ? <IconUnlock size={28} color="#ef4444" /> : rule.icon === "ruler" ? <IconRuler size={28} color="#10b981" /> : <IconUsers size={28} color="#ec4899" />}</span>
-                            <span style={{ color: "#fff", fontWeight: 700, fontSize: 16, flex: 1, textAlign: "left" }}>{rule.title}</span>
+                            <span style={{ width: 36, height: 36, display: "inline-flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>{rule.icon === "lock" ? <IconLock size={28} color="#ffd58a" /> : rule.icon === "key" ? <IconKey size={28} color="#ffd158" /> : rule.icon === "unlock" ? <IconUnlock size={28} color="#f08e7e" /> : rule.icon === "ruler" ? <IconRuler size={28} color="#a8e3bb" /> : <IconUsers size={28} color="#f7c1d6" />}</span>
+                            <span style={{ color: "#fff7e6", fontWeight: 800, fontSize: 16, flex: 1, textAlign: "left" }}>{rule.title}</span>
                             {isDone && (
                               <motion.span
                                 initial={{ opacity: 0, scale: 0, rotate: -45 }}
                                 animate={{ opacity: 1, scale: 1, rotate: 0 }}
                                 transition={{ type: "spring", stiffness: 300, damping: 15 }}
-                                style={{ color: "#f59e0b", fontSize: 22 }}
+                                style={{ color: "#ffd158", fontSize: 22 }}
                               >✅</motion.span>
                             )}
                           </div>
                           {!isDone && (
                             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} style={{ marginTop: 12 }}>
-                              <p style={{ color: "#d1d5db", fontSize: 14, textAlign: "left" }}>{rule.desc}</p>
-                              <p style={{ color: "#f59e0b", fontWeight: 700, fontSize: 14, marginBottom: 8 }}>{rule.question}</p>
+                              <p style={{ color: "#ffe9c8", fontSize: 14, textAlign: "left", opacity: 0.9, lineHeight: 1.45 }}>{rule.desc}</p>
+                              <p style={{ color: "#ffd58a", fontWeight: 800, fontSize: 14, marginBottom: 10 }}>{rule.question}</p>
                               <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
                                 {rule.opts.map((opt: string, oi: number) => (
                                   <motion.button key={oi}
@@ -3364,19 +3454,29 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                                     animate={ruleAnswers[i] === oi && oi !== rule.correct ? shakeAnimation : {}}
                                     whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
                                     style={{
-                                      background: ruleAnswers[i] === oi ? (oi === rule.correct ? "rgba(16,185,129,0.2)" : "rgba(239,68,68,0.2)") : "rgba(255,255,255,0.12)",
-                                      border: `2px solid ${ruleAnswers[i] === oi ? (oi === rule.correct ? "#10b981" : "#ef4444") : "rgba(255,255,255,0.35)"}`,
-                                      borderRadius: 12, padding: "16px 24px",
-                                      color: ruleAnswers[i] === oi ? (oi === rule.correct ? "#10b981" : "#ef4444") : "#ffffff",
+                                      background: ruleAnswers[i] === oi
+                                        ? (oi === rule.correct ? "rgba(124, 200, 154, 0.22)" : "rgba(196, 81, 58, 0.22)")
+                                        : "rgba(255, 245, 220, 0.12)",
+                                      borderStyle: "solid",
+                                      borderWidth: 2,
+                                      borderColor: ruleAnswers[i] === oi
+                                        ? (oi === rule.correct ? "#7cc89a" : "#c4513a")
+                                        : "rgba(255, 220, 180, 0.45)",
+                                      borderRadius: 14,
+                                      padding: "16px 24px",
+                                      color: ruleAnswers[i] === oi
+                                        ? (oi === rule.correct ? "#a8e3bb" : "#f4a89a")
+                                        : "#fff7e6",
                                       fontSize: 16, fontWeight: 800, cursor: "pointer", minHeight: 56, flex: 1,
                                       opacity: ruleAnswers[i] !== null && ruleAnswers[i] !== undefined && ruleAnswers[i] !== oi && ruleAnswers[i] !== rule.correct ? 0.4 : 1,
+                                      fontFamily: "inherit",
                                     }}
                                   >{opt}</motion.button>
                                 ))}
                               </div>
                             </motion.div>
                           )}
-                          {isDone && <p style={{ color: "#10b981", fontSize: 13, marginTop: 8, textAlign: "left" }}>{rule.desc}</p>}
+                          {isDone && <p style={{ color: "#a8e3bb", fontSize: 13, marginTop: 8, textAlign: "left", lineHeight: 1.45 }}>{rule.desc}</p>}
                         </>
                       )}
                     </motion.div>
@@ -3431,10 +3531,10 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
       case 12: {
         if (showSummary[12]) return <LearnSummary message="You learned the 4 signs of a trick, too good to be true, scary warnings, spelling mistakes, and asking for secrets!" starCount={3} onNext={() => dismissSummary(12, 13)} />;
         const tricks = [
-          { title: "TOO GOOD TO BE TRUE", fake: "YOU WON A FREE iPAD!!! CLICK NOW!!!", explain: "If it sounds too good to be true... it probably is! Real prizes don't pop up on your screen.", color: "#f59e0b", icon: "🎁", glyph: "%" },
-          { title: "SCARY WARNINGS", fake: "WARNING! YOUR TABLET HAS A VIRUS! CALL THIS NUMBER NOW!", explain: "Scary messages try to make you panic. Real warnings don't ask you to call a number. Tell a grown-up!", color: "#ef4444", icon: "⚠️", glyph: "!" },
-          { title: "SPELLING MISTAKES", fake: "Dear Costumer, Youre acount has ben comprimised. Clik here to fix.", explain: "Real companies don't make spelling mistakes! If it looks wrong, it IS wrong.", color: "#3b82f6", icon: "🅰️", glyph: "?" },
-          { title: "ASKING FOR SECRETS", fake: "Enter your password to win free V-Bucks!", explain: "NO real website will EVER ask for your password in a message. NEVER type your password into a popup.", color: "#ec4899", icon: "🔐", glyph: "@" },
+          { title: "TOO GOOD TO BE TRUE", fake: "YOU WON A FREE iPAD!!! CLICK NOW!!!", explain: "If it sounds too good to be true... it probably is! Real prizes don't pop up on your screen.", color: "#ffd158", icon: "🎁", glyph: "%" },
+          { title: "SCARY WARNINGS", fake: "WARNING! YOUR TABLET HAS A VIRUS! CALL THIS NUMBER NOW!", explain: "Scary messages try to make you panic. Real warnings don't ask you to call a number. Tell a grown-up!", color: "#f08e7e", icon: "⚠️", glyph: "!" },
+          { title: "SPELLING MISTAKES", fake: "Dear Costumer, Youre acount has ben comprimised. Clik here to fix.", explain: "Real companies don't make spelling mistakes! If it looks wrong, it IS wrong.", color: "#a06aff", icon: "🅰️", glyph: "?" },
+          { title: "ASKING FOR SECRETS", fake: "Enter your password to win free V-Bucks!", explain: "NO real website will EVER ask for your password in a message. NEVER type your password into a popup.", color: "#f7c1d6", icon: "🔐", glyph: "@" },
         ];
         const t = tricks[trickCard] || tricks[0];
         return (
@@ -3474,12 +3574,21 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
               })}
             </div>
 
-            <div style={{ position: "relative", zIndex: 1 }}>
-              <h1 data-split style={{ color: "#fff", fontSize: 38, fontWeight: 900, marginBottom: 4, textShadow: "0 0 20px rgba(249,115,22,0.4)" }}>🔍 Spot the Tricks!</h1>
-              <p style={{ color: "#fb923c", marginBottom: 4, fontSize: 12, letterSpacing: 4, textTransform: "uppercase", fontFamily: "ui-monospace, monospace", fontWeight: 800 }}>
+            <div style={{ position: "relative", zIndex: 1, fontFamily: "ui-rounded, 'Fredoka', 'Quicksand', system-ui, -apple-system, sans-serif" }}>
+              <h1 data-split style={{
+                fontSize: 38,
+                fontWeight: 900,
+                marginBottom: 4,
+                background: "linear-gradient(135deg, #ffd58a, #ff9b4a, #d4733a)",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+                letterSpacing: 0.5,
+                textShadow: "0 4px 18px rgba(80, 30, 10, 0.55)",
+              }}>🔍 Spot the Tricks!</h1>
+              <p style={{ color: "#ffd58a", marginBottom: 4, fontSize: 12, letterSpacing: 4, textTransform: "uppercase", fontFamily: "ui-monospace, 'JetBrains Mono', Menlo, monospace", fontWeight: 800 }}>
                 ▸ EVIDENCE FILE {String(Math.min(trickCard + 1, tricks.length)).padStart(2, "0")} / {String(tricks.length).padStart(2, "0")}
               </p>
-              <p style={{ color: "#9ca3af", marginBottom: 16, fontSize: 16 }}>The Raccoon sends FAKE messages to trick people. Here&apos;s how to spot them!</p>
+              <p style={{ color: "#ffe9c8", marginBottom: 16, fontSize: 16, opacity: 0.9, fontWeight: 500 }}>The Raccoon sends FAKE messages to trick people. Here&apos;s how to spot them!</p>
             </div>
             {trickCard < 4 ? (
               <AnimatePresence mode="wait">
@@ -3495,11 +3604,13 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                   <div
                     style={{
                       position: "relative",
-                      background: "linear-gradient(160deg, rgba(30,20,15,0.94) 0%, rgba(20,12,30,0.92) 100%)",
-                      border: `1px solid ${t.color}66`,
+                      background: "linear-gradient(160deg, rgba(40, 18, 38, 0.92) 0%, rgba(20, 8, 24, 0.94) 100%)",
+                      borderStyle: "solid",
+                      borderWidth: 1,
+                      borderColor: `${t.color}66`,
                       borderRadius: 20,
                       padding: "28px 24px 22px",
-                      boxShadow: `0 30px 60px -20px ${t.color}55, 0 0 50px ${t.color}33, inset 0 0 0 1px rgba(255,255,255,0.04)`,
+                      boxShadow: `0 30px 60px -20px ${t.color}55, 0 0 36px ${t.color}33, inset 0 0 0 1px rgba(255, 220, 180, 0.05)`,
                       transformStyle: "preserve-3d",
                       overflow: "hidden",
                     }}
@@ -3599,17 +3710,32 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                     </div>
 
                     {/* Detective explanation */}
-                    <div style={{ display: "flex", alignItems: "flex-start", gap: 14, textAlign: "left", padding: "10px 12px", background: "rgba(34,197,94,0.06)", border: "1px solid rgba(74,222,128,0.25)", borderRadius: 12 }}>
+                    <div style={{
+                      display: "flex",
+                      alignItems: "flex-start",
+                      gap: 14,
+                      textAlign: "left",
+                      padding: "12px 14px",
+                      background: "rgba(124, 200, 154, 0.12)",
+                      borderStyle: "solid",
+                      borderWidth: 1,
+                      borderColor: "rgba(124, 200, 154, 0.5)",
+                      borderRadius: 14,
+                    }}>
                       <span style={{
                         flexShrink: 0,
                         width: 32, height: 32, borderRadius: "50%",
-                        background: "linear-gradient(135deg, #4ade80, #22c55e)",
-                        color: "#052e16", fontWeight: 900, fontSize: 18,
-                        display: "inline-flex", alignItems: "center", justifyContent: "center",
-                        boxShadow: "0 0 14px rgba(74,222,128,0.55)",
+                        background: "linear-gradient(135deg, #ffd158, #ff9b4a)",
+                        color: "#3a1a06",
+                        fontWeight: 900,
+                        fontSize: 18,
+                        display: "inline-flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        boxShadow: "0 0 14px rgba(255, 200, 110, 0.55)",
                       }}>✓</span>
-                      <p style={{ color: "#e5e7eb", fontSize: 15, lineHeight: 1.55, margin: 0 }}>
-                        <span style={{ color: "#86efac", fontWeight: 800, marginRight: 4 }}>The clue:</span>
+                      <p style={{ color: "#ffe9c8", fontSize: 15, lineHeight: 1.55, margin: 0 }}>
+                        <span style={{ color: "#a8e3bb", fontWeight: 800, marginRight: 4 }}>The clue:</span>
                         {t.explain}
                       </p>
                     </div>
@@ -3623,8 +3749,8 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                       {tricks.map((_, idx) => (
                         <span key={idx} style={{
                           width: idx === trickCard ? 22 : 8, height: 8, borderRadius: 4,
-                          background: idx < trickCard ? "#4ade80" : idx === trickCard ? t.color : "rgba(255,255,255,0.15)",
-                          boxShadow: idx === trickCard ? `0 0 10px ${t.color}` : "none",
+                          background: idx < trickCard ? "#7cc89a" : idx === trickCard ? t.color : "rgba(255, 220, 180, 0.2)",
+                          boxShadow: idx === trickCard ? `0 0 12px ${t.color}` : "none",
                           transition: "width 0.3s ease, background 0.3s ease",
                         }} />
                       ))}
@@ -3633,24 +3759,66 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                 </motion.div>
               </AnimatePresence>
             ) : (
-              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-                {card(
-                  <>
-                    <h2 data-split style={{ color: "#fff", fontSize: 22, fontWeight: 900, marginBottom: 12 }}>Remember the 4 signs of a trick:</h2>
-                    <div style={{ textAlign: "left", maxWidth: 400, margin: "0 auto 16px" }}>
-                      {["Too good to be true", "Scary warnings", "Spelling mistakes", "Asking for your secrets"].map((sign, i) => (
-                        <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.15 }}
-                          style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 8 }}>
-                          <span style={{ width: 28, height: 28, borderRadius: "50%", background: GRAD, display: "flex", alignItems: "center", justifyContent: "center", color: "#fff", fontWeight: 900, fontSize: 13, flexShrink: 0 }}>{i + 1}</span>
-                          <span style={{ color: "#d1d5db", fontSize: 15, fontWeight: 600 }}>{sign}</span>
-                        </motion.div>
-                      ))}
-                    </div>
-                    <p style={{ color: "#9ca3af", fontSize: 14, marginBottom: 16 }}>Now let&apos;s see if YOU can spot the Raccoon&apos;s tricks!</p>
-                    {btn("I'm Ready! →", () => showLearnSummary(12))}
-                  </>,
-                  { maxWidth: 540, margin: "0 auto" }
-                )}
+              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} style={{ position: "relative", zIndex: 1 }}>
+                <div style={{
+                  maxWidth: 540,
+                  margin: "0 auto",
+                  padding: "26px 28px 22px",
+                  background: "rgba(40, 18, 38, 0.78)",
+                  backdropFilter: "blur(12px)",
+                  WebkitBackdropFilter: "blur(12px)",
+                  borderStyle: "solid",
+                  borderWidth: 1,
+                  borderColor: "rgba(255, 220, 180, 0.4)",
+                  borderRadius: 22,
+                  boxShadow: "0 30px 60px -20px rgba(20, 6, 12, 0.7)",
+                  color: "#fff7e6",
+                  fontFamily: "ui-rounded, 'Fredoka', 'Quicksand', system-ui, -apple-system, sans-serif",
+                  textAlign: "center",
+                }}>
+                  <div style={{
+                    fontSize: 11,
+                    letterSpacing: 5,
+                    color: "#ffd58a",
+                    fontWeight: 800,
+                    textTransform: "uppercase",
+                    marginBottom: 6,
+                  }}>
+                    ✦ Detective Briefing ✦
+                  </div>
+                  <h2 data-split style={{
+                    fontSize: 24,
+                    fontWeight: 900,
+                    marginBottom: 14,
+                    background: "linear-gradient(135deg, #ffd58a, #ff9b4a, #d4733a)",
+                    WebkitBackgroundClip: "text",
+                    WebkitTextFillColor: "transparent",
+                  }}>Remember the 4 signs of a trick:</h2>
+                  <div style={{ textAlign: "left", maxWidth: 400, margin: "0 auto 16px" }}>
+                    {["Too good to be true", "Scary warnings", "Spelling mistakes", "Asking for your secrets"].map((sign, i) => (
+                      <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.15 }}
+                        style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 10 }}>
+                        <span style={{
+                          width: 28,
+                          height: 28,
+                          borderRadius: "50%",
+                          background: "linear-gradient(135deg, #ffd58a, #ff9b4a)",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          color: "#3a1a06",
+                          fontWeight: 900,
+                          fontSize: 13,
+                          flexShrink: 0,
+                          boxShadow: "0 0 12px rgba(255, 200, 110, 0.5)",
+                        }}>{i + 1}</span>
+                        <span style={{ color: "#fff7e6", fontSize: 15, fontWeight: 600 }}>{sign}</span>
+                      </motion.div>
+                    ))}
+                  </div>
+                  <p style={{ color: "#ffe9c8", fontSize: 14, marginBottom: 16, opacity: 0.85 }}>Now let&apos;s see if YOU can spot the Raccoon&apos;s tricks!</p>
+                  {btn("I'm Ready! →", () => showLearnSummary(12))}
+                </div>
               </motion.div>
             )}
           </div>
