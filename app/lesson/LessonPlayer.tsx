@@ -2423,6 +2423,15 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
     window.setTimeout(() => triggerEarnForScreen(scr), 320);
   }, [triggerEarnForScreen]);
 
+  // Case 18 (the outro video) has no navigate-out path, so it can't
+  // hook earn() the way the other cinematic screens do. Fire the
+  // earn beat once on entry so the 19th inventory slot fills.
+  useEffect(() => {
+    if (screen !== 18) return;
+    const t = window.setTimeout(() => triggerEarnForScreen(18), 1200);
+    return () => window.clearTimeout(t);
+  }, [screen, triggerEarnForScreen]);
+
   const dismissSummary = useCallback((scr: number, nextStep: number) => {
     setShowSummary((prev) => ({ ...prev, [scr]: false }));
     // Exercise complete — flash the arena into celebration mode briefly.
@@ -4386,7 +4395,7 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
             weekNumber={CURRENT_WEEK}
             weekTitle="Passwords: The Secret Code"
             currentScreen={screen}
-            totalScreens={18}
+            totalScreens={19}
             xpEarned={lessonXp}
           />
 
