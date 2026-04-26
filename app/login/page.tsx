@@ -5,6 +5,7 @@ import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
 import { motion, AnimatePresence } from "framer-motion";
+import { GlobePanelBackdrop } from "@/app/components/PixarScenes";
 
 // 3D wireframe globe — code-split so the Three.js bundle only ships when
 // the user actually loads /login (not on every other route).
@@ -12,30 +13,47 @@ const CyberGlobe = dynamic(() => import("@/app/components/CyberGlobe"), {
   ssr: false,
 });
 
-/* ─── CONSTANTS ─── */
-const GRAD = "linear-gradient(135deg, #8b5cf6, #3b82f6)";
+/* ─── PIXAR PALETTE ─── */
+const C = {
+  pageBg: "#1a0612",
+  panelBg: "#2a0d2e",
+  card: "rgba(40, 18, 38, 0.72)",
+  border: "rgba(255, 220, 180, 0.22)",
+  borderStrong: "rgba(255, 220, 180, 0.45)",
+  text: "#fff7e6",
+  textSoft: "#ffe9c8",
+  textMuted: "rgba(255, 233, 200, 0.55)",
+  goldLight: "#ffd58a",
+  goldMid: "#ff9b4a",
+  goldDeep: "#d4733a",
+  goldDark: "#3a1a06",
+  coral: "#f08e7e",
+  ember: "#c4513a",
+  cream: "#fff7e6",
+};
+const GRAD = `linear-gradient(135deg, ${C.goldLight}, ${C.goldMid})`;
 
-/* ─── FLOATING ORBS ─── */
+/* ─── FLOATING ORBS — WARM ─── */
 function FloatingOrbs() {
   return (
     <div className="fixed inset-0 pointer-events-none overflow-hidden" style={{ zIndex: 0 }}>
       {[
-        { size: 8, top: "8%", left: "6%", color: "#f59e0b", dur: 9, delay: 0 },
-        { size: 6, top: "18%", right: "10%", color: "#8b5cf6", dur: 11, delay: 1 },
-        { size: 10, top: "35%", left: "3%", color: "#3b82f6", dur: 13, delay: 2 },
-        { size: 5, top: "52%", right: "5%", color: "#f59e0b", dur: 8, delay: 0.5 },
-        { size: 7, top: "70%", left: "12%", color: "#8b5cf6", dur: 10, delay: 3 },
-        { size: 9, top: "82%", right: "8%", color: "#3b82f6", dur: 12, delay: 1.5 },
+        { size: 8, top: "8%", left: "6%", color: "#ffd58a", dur: 9, delay: 0 },
+        { size: 6, top: "18%", right: "10%", color: "#f08e7e", dur: 11, delay: 1 },
+        { size: 10, top: "35%", left: "3%", color: "#ff9b4a", dur: 13, delay: 2 },
+        { size: 5, top: "52%", right: "5%", color: "#ffd58a", dur: 8, delay: 0.5 },
+        { size: 7, top: "70%", left: "12%", color: "#a06aff", dur: 10, delay: 3 },
+        { size: 9, top: "82%", right: "8%", color: "#ff9b4a", dur: 12, delay: 1.5 },
       ].map((o, i) => (
         <motion.div key={i} className="absolute rounded-full"
-          animate={{ y: [0, -18, 0], scale: [1, 1.1, 1], opacity: [0.35, 0.55, 0.35] }}
+          animate={{ y: [0, -18, 0], scale: [1, 1.1, 1], opacity: [0.45, 0.7, 0.45] }}
           transition={{ duration: o.dur, ease: "easeInOut", repeat: Infinity, delay: o.delay }}
           style={{
             width: o.size, height: o.size, top: o.top,
             left: "left" in o ? o.left : undefined,
             right: "right" in o ? o.right : undefined,
-            backgroundColor: o.color, opacity: 0.35,
-            boxShadow: `0 0 ${o.size * 3}px ${o.color}`,
+            backgroundColor: o.color,
+            boxShadow: `0 0 ${o.size * 4}px ${o.color}`,
           }} />
       ))}
     </div>
@@ -62,7 +80,8 @@ function FloatingIcons() {
             top: ic.top,
             left: "left" in ic ? ic.left : undefined,
             right: "right" in ic ? ic.right : undefined,
-            opacity: 0.6,
+            opacity: 0.7,
+            filter: "drop-shadow(0 0 12px rgba(255, 200, 110, 0.55))",
           }}>
           {ic.emoji}
         </motion.div>
@@ -107,7 +126,13 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex" style={{ background: "#1a1033" }}>
+    <div
+      className="min-h-screen flex"
+      style={{
+        background: `radial-gradient(ellipse at 50% -10%, #4a1a4a 0%, #2a0d2e 35%, ${C.pageBg} 70%, #0a0410 100%)`,
+        color: C.text,
+      }}
+    >
       <FloatingOrbs />
 
       {/* ─── LEFT SIDE: FORM ─── */}
@@ -115,19 +140,69 @@ export default function LoginPage() {
         <div className="w-full max-w-md">
           {/* Logo */}
           <a href="/" className="inline-flex items-center gap-2.5 mb-8">
-            <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: GRAD, boxShadow: "0 0 20px rgba(139,92,246,0.3)" }}>
-              <span className="text-sm font-black text-white">AX</span>
+            <div
+              className="w-10 h-10 rounded-xl flex items-center justify-center"
+              style={{
+                background: GRAD,
+                boxShadow: "0 0 20px rgba(255, 178, 110, 0.4)",
+              }}
+            >
+              <span
+                className="text-sm font-black"
+                style={{ color: C.goldDark, fontFamily: "Fredoka, Nunito, sans-serif" }}
+              >
+                AX
+              </span>
             </div>
-            <span className="text-xl font-black text-white" style={{ fontFamily: "Nunito, sans-serif" }}>
-              Algorithm<span className="text-transparent bg-clip-text" style={{ backgroundImage: GRAD, WebkitBackgroundClip: "text" }}>X</span>
+            <span
+              className="text-xl font-black"
+              style={{ color: C.text, fontFamily: "Fredoka, Nunito, sans-serif" }}
+            >
+              Algorithm
+              <span
+                className="text-transparent bg-clip-text"
+                style={{ backgroundImage: GRAD, WebkitBackgroundClip: "text" }}
+              >
+                X
+              </span>
             </span>
           </a>
 
           {/* Heading */}
-          <h1 className="text-3xl sm:text-4xl font-black text-white mb-2" style={{ fontFamily: "Nunito, sans-serif" }}>
-            Welcome Back
+          <div
+            style={{
+              display: "inline-block",
+              fontSize: 11,
+              letterSpacing: 5,
+              color: C.goldLight,
+              fontWeight: 800,
+              textTransform: "uppercase",
+              padding: "5px 16px",
+              background: "rgba(40, 18, 38, 0.55)",
+              backdropFilter: "blur(8px)",
+              WebkitBackdropFilter: "blur(8px)",
+              border: `1px solid ${C.borderStrong}`,
+              borderRadius: 999,
+              marginBottom: 12,
+              fontFamily: "Fredoka, Nunito, sans-serif",
+            }}
+          >
+            ✦ Welcome Back ✦
+          </div>
+          <h1
+            className="text-3xl sm:text-4xl font-black mb-2"
+            style={{
+              fontFamily: "Fredoka, Nunito, sans-serif",
+              background: "linear-gradient(135deg, #fff5cc, #ffd58a, #ff9b4a)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              backgroundClip: "text",
+              letterSpacing: "-0.01em",
+            }}
+          >
+            Hello again, hero!
           </h1>
-          <p className="text-gray-300 mb-8 text-base">
+          <p className="mb-8 text-base" style={{ color: C.textSoft, opacity: 0.92 }}>
             Log in to continue your cybersecurity journey
           </p>
 
@@ -137,9 +212,12 @@ export default function LoginPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ type: "spring", stiffness: 200, damping: 20 }}
             style={{
-              background: "rgba(255,255,255,0.04)",
+              background: C.card,
               backdropFilter: "blur(16px)",
-              border: "1px solid rgba(255,255,255,0.08)",
+              WebkitBackdropFilter: "blur(16px)",
+              border: `1px solid ${C.border}`,
+              boxShadow:
+                "0 30px 60px -20px rgba(20, 6, 12, 0.7), 0 0 0 1px rgba(255, 220, 180, 0.05) inset",
             }}>
 
             {/* Error */}
@@ -151,7 +229,12 @@ export default function LoginPage() {
                   exit={{ opacity: 0, y: -10 }}
                   transition={{ duration: 0.2 }}
                   className="mb-5 p-3.5 rounded-2xl text-sm font-semibold"
-                  style={{ background: "rgba(239,68,68,0.08)", border: "1px solid rgba(239,68,68,0.2)", color: "#fca5a5", backdropFilter: "blur(8px)" }}>
+                  style={{
+                    background: "rgba(196, 81, 58, 0.15)",
+                    border: "1px solid rgba(196, 81, 58, 0.5)",
+                    color: "#f4a89a",
+                    backdropFilter: "blur(8px)",
+                  }}>
                   {error}
                 </motion.div>
               )}
@@ -160,21 +243,35 @@ export default function LoginPage() {
             <form onSubmit={handleSubmit} className="space-y-5">
               {/* Email */}
               <div>
-                <label className="block text-sm font-bold text-gray-300 mb-2">Email</label>
+                <label className="block text-sm font-bold mb-2" style={{ color: C.textSoft }}>Email</label>
                 <div className="relative">
-                  <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 text-base">✉️</span>
+                  <span
+                    className="absolute left-4 top-1/2 -translate-y-1/2 text-base"
+                    style={{ color: C.textMuted }}
+                  >
+                    ✉️
+                  </span>
                   <input
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="w-full pl-11 pr-4 rounded-2xl text-white placeholder-gray-500 font-medium transition-all duration-300 focus:outline-none"
+                    className="w-full pl-11 pr-4 rounded-2xl font-medium transition-all duration-300 focus:outline-none"
                     style={{
-                      height: 50, fontSize: 15,
-                      background: "rgba(255,255,255,0.06)",
-                      border: "1px solid rgba(255,255,255,0.1)",
+                      height: 50,
+                      fontSize: 15,
+                      color: C.text,
+                      background: "rgba(20, 6, 12, 0.5)",
+                      border: `1px solid ${C.border}`,
+                      fontFamily: "Nunito, sans-serif",
                     }}
-                    onFocus={(e) => { e.currentTarget.style.borderColor = "#8b5cf6"; e.currentTarget.style.boxShadow = "0 0 20px rgba(139,92,246,0.15)"; }}
-                    onBlur={(e) => { e.currentTarget.style.borderColor = "rgba(255,255,255,0.1)"; e.currentTarget.style.boxShadow = "none"; }}
+                    onFocus={(e) => {
+                      e.currentTarget.style.borderColor = C.goldLight;
+                      e.currentTarget.style.boxShadow = "0 0 22px rgba(255, 200, 110, 0.25)";
+                    }}
+                    onBlur={(e) => {
+                      e.currentTarget.style.borderColor = C.border;
+                      e.currentTarget.style.boxShadow = "none";
+                    }}
                     placeholder="Enter your email"
                   />
                 </div>
@@ -183,51 +280,86 @@ export default function LoginPage() {
               {/* Password */}
               <div>
                 <div className="flex items-center justify-between mb-2">
-                  <label className="block text-sm font-bold text-gray-300">Password</label>
-                  <a href="/forgot-password" className="text-xs font-bold transition hover:opacity-80" style={{ color: "#8b5cf6" }}>
+                  <label className="block text-sm font-bold" style={{ color: C.textSoft }}>Password</label>
+                  <a
+                    href="/forgot-password"
+                    className="text-xs font-bold transition hover:opacity-80"
+                    style={{ color: C.goldLight }}
+                  >
                     Forgot password?
                   </a>
                 </div>
                 <div className="relative">
-                  <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 text-base">🔒</span>
+                  <span
+                    className="absolute left-4 top-1/2 -translate-y-1/2 text-base"
+                    style={{ color: C.textMuted }}
+                  >
+                    🔒
+                  </span>
 
                   <input
                     type={showPassword ? "text" : "password"}
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="w-full pl-11 pr-12 rounded-2xl text-white placeholder-gray-500 font-medium transition-all duration-300 focus:outline-none"
+                    className="w-full pl-11 pr-12 rounded-2xl font-medium transition-all duration-300 focus:outline-none"
                     style={{
-                      height: 50, fontSize: 15,
-                      background: "rgba(255,255,255,0.06)",
-                      border: "1px solid rgba(255,255,255,0.1)",
+                      height: 50,
+                      fontSize: 15,
+                      color: C.text,
+                      background: "rgba(20, 6, 12, 0.5)",
+                      border: `1px solid ${C.border}`,
+                      fontFamily: "Nunito, sans-serif",
                     }}
-                    onFocus={(e) => { e.currentTarget.style.borderColor = "#8b5cf6"; e.currentTarget.style.boxShadow = "0 0 20px rgba(139,92,246,0.15)"; }}
-                    onBlur={(e) => { e.currentTarget.style.borderColor = "rgba(255,255,255,0.1)"; e.currentTarget.style.boxShadow = "none"; }}
+                    onFocus={(e) => {
+                      e.currentTarget.style.borderColor = C.goldLight;
+                      e.currentTarget.style.boxShadow = "0 0 22px rgba(255, 200, 110, 0.25)";
+                    }}
+                    onBlur={(e) => {
+                      e.currentTarget.style.borderColor = C.border;
+                      e.currentTarget.style.boxShadow = "none";
+                    }}
                     placeholder="Enter your password"
                   />
-                  <button type="button" onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white transition text-sm">
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 transition text-sm"
+                    style={{ color: C.textMuted }}
+                  >
                     {showPassword ? "🙈" : "👁️"}
                   </button>
                 </div>
               </div>
 
               {/* Submit */}
-              <motion.button type="submit" disabled={loading}
-                whileHover={{ scale: 1.02, boxShadow: "0 6px 30px rgba(139,92,246,0.5)" }}
-                whileTap={{ scale: 0.98 }}
-                className="w-full font-black text-white text-base rounded-2xl transition-colors duration-300 disabled:opacity-50"
+              <motion.button
+                type="submit"
+                disabled={loading}
+                whileHover={{ y: -2, scale: 1.02 }}
+                whileTap={{ scale: 0.97 }}
+                transition={{ type: "spring", stiffness: 320, damping: 20 }}
+                className="w-full font-black text-base rounded-full transition-colors duration-300 disabled:opacity-50"
                 style={{
-                  height: 50, background: GRAD,
-                  boxShadow: "0 4px 20px rgba(139,92,246,0.3)",
-                }}>
-                {loading ? "Logging In..." : "Log In"}
+                  height: 50,
+                  background: GRAD,
+                  color: C.goldDark,
+                  fontFamily: "Fredoka, Nunito, sans-serif",
+                  letterSpacing: 0.5,
+                  boxShadow:
+                    "0 18px 36px -10px rgba(255,120,40,0.6), 0 0 0 1px rgba(255,235,200,0.55) inset, 0 -3px 0 rgba(180,80,30,0.4) inset",
+                }}
+              >
+                {loading ? "Logging In..." : "Log In →"}
               </motion.button>
             </form>
 
-            <p className="text-center text-gray-500 text-sm mt-6">
+            <p className="text-center text-sm mt-6" style={{ color: C.textMuted }}>
               Don&apos;t have an account?{" "}
-              <a href="/signup" className="font-bold transition hover:opacity-80" style={{ color: "#8b5cf6" }}>
+              <a
+                href="/signup"
+                className="font-bold transition hover:opacity-80"
+                style={{ color: C.goldLight }}
+              >
                 Sign Up
               </a>
             </p>
@@ -240,11 +372,14 @@ export default function LoginPage() {
               { icon: "👨‍👩‍👧‍👦", label: "Family Friendly" },
               { icon: "🛡️", label: "COPPA Compliant" },
             ].map((b, i) => (
-              <motion.span key={i}
+              <motion.span
+                key={i}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ type: "spring", stiffness: 200, damping: 20, delay: 0.3 + i * 0.1 }}
-                className="text-xs text-gray-500 flex items-center gap-1.5">
+                className="text-xs flex items-center gap-1.5"
+                style={{ color: C.textMuted }}
+              >
                 <span>{b.icon}</span> {b.label}
               </motion.span>
             ))}
@@ -253,96 +388,55 @@ export default function LoginPage() {
       </div>
 
       {/* ─── RIGHT SIDE: VISUAL (hidden on mobile) ─── */}
-      <div className="hidden lg:flex flex-1 items-center justify-center relative overflow-hidden"
-        style={{ background: "linear-gradient(135deg, #0c0b24, #1e1145 50%, #0d0a26)" }}>
-
-        {/* Matrix-rain glyphs drifting down */}
-        <div aria-hidden className="absolute inset-0 overflow-hidden pointer-events-none" style={{ opacity: 0.12 }}>
-          {Array.from({ length: 24 }).map((_, i) => {
-            const chars = "01XY#$/&*?!%@ZLR-=+";
-            const ch = chars.charAt(i % chars.length);
-            const colour = i % 3 === 0 ? "#22d3ee" : i % 3 === 1 ? "#10b981" : "#8b5cf6";
-            return (
-              <span
-                key={i}
-                style={{
-                  position: "absolute",
-                  left: `${(i * 4.1 + (i % 3) * 2) % 100}%`,
-                  top: 0,
-                  fontFamily: "'JetBrains Mono', 'Fira Code', 'Consolas', monospace",
-                  fontSize: 12 + (i % 4),
-                  color: colour,
-                  animation: `loginMatrixFall ${14 + (i % 7) * 2}s linear ${(i * 0.8) % 12}s infinite`,
-                }}
-              >
-                {ch}
-              </span>
-            );
-          })}
-        </div>
-
-        {/* Circuit grid background */}
-        <div className="absolute inset-0" style={{
-          backgroundImage: `
-            linear-gradient(rgba(34,211,238,0.05) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(139,92,246,0.05) 1px, transparent 1px)
-          `,
-          backgroundSize: "42px 42px",
-        }} />
+      <div
+        className="hidden lg:flex flex-1 items-center justify-center relative overflow-hidden"
+        style={{ background: C.panelBg }}
+      >
+        <GlobePanelBackdrop />
 
         <FloatingIcons />
 
-        {/* Halo glow behind the 3D globe */}
-        <div aria-hidden className="absolute" style={{
-          width: 460, height: 460, borderRadius: "50%",
-          background: "radial-gradient(circle, rgba(34,211,238,0.22), rgba(139,92,246,0.08) 50%, transparent 70%)",
-          animation: "loginOrbPulse 4s ease-in-out infinite",
-          filter: "blur(20px)",
-          pointerEvents: "none",
-        }} />
-
-        {/* Live 3D wireframe globe — rotates, has orbiting rings + floating
-            particle shell. Fills the right column behind the AX label. */}
-        <div className="absolute inset-0" style={{ pointerEvents: "none" }}>
+        {/* Live 3D wireframe globe — fills the right column */}
+        <div className="absolute inset-0" style={{ pointerEvents: "none", zIndex: 1 }}>
           <CyberGlobe />
         </div>
 
-        {/* Centre label + terminal prompt + stats */}
-        <motion.div className="relative flex flex-col items-center"
-          style={{ marginTop: 270 }}
+        {/* Centre label + terminal prompt */}
+        <motion.div
+          className="relative flex flex-col items-center"
+          style={{ marginTop: 270, zIndex: 2 }}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ type: "spring", stiffness: 200, damping: 20, delay: 0.6 }}>
-          <span className="text-3xl font-black tracking-widest" style={{
-            fontFamily: "Nunito, sans-serif",
-            color: "#fff",
-            textShadow: "0 0 18px rgba(34,211,238,0.55), 0 2px 12px rgba(0,0,0,0.5)",
-            letterSpacing: 6,
-          }}>ALGORITHMX</span>
+          transition={{ type: "spring", stiffness: 200, damping: 20, delay: 0.6 }}
+        >
+          <span
+            className="text-3xl font-black tracking-widest"
+            style={{
+              fontFamily: "Fredoka, Nunito, sans-serif",
+              color: C.cream,
+              textShadow:
+                "0 0 22px rgba(255, 200, 110, 0.6), 0 4px 12px rgba(20, 6, 12, 0.5)",
+              letterSpacing: 6,
+            }}
+          >
+            ALGORITHMX
+          </span>
 
-          {/* Terminal prompt line under the globe */}
-          <div style={{
-            fontFamily: "'JetBrains Mono', 'Fira Code', 'Consolas', monospace",
-            fontSize: 12,
-            color: "#22d3ee",
-            marginTop: 18,
-            letterSpacing: 1,
-          }}>
-            <span style={{ color: "#10b981" }}>$</span> ax_login --auth<span style={{ marginLeft: 6, animation: "loginCursorBlink 1s steps(1) infinite" }}>▮</span>
+          <div
+            style={{
+              fontFamily: "ui-monospace, 'JetBrains Mono', Menlo, monospace",
+              fontSize: 12,
+              color: C.goldLight,
+              marginTop: 18,
+              letterSpacing: 1,
+            }}
+          >
+            <span style={{ color: C.goldMid }}>$</span> ax_login --auth
+            <span style={{ marginLeft: 6, animation: "loginCursorBlink 1s steps(1) infinite" }}>▮</span>
           </div>
-
         </motion.div>
 
         <style>{`
-          @keyframes loginMatrixFall {
-            0% { transform: translateY(-100%); opacity: 0; }
-            15% { opacity: 0.7; }
-            100% { transform: translateY(110vh); opacity: 0; }
-          }
-          @keyframes loginOrbPulse {
-            0%, 100% { opacity: 0.7; transform: scale(1); }
-            50% { opacity: 1; transform: scale(1.08); }
-          }
           @keyframes loginCursorBlink {
             0%, 49% { opacity: 1; }
             50%, 100% { opacity: 0; }

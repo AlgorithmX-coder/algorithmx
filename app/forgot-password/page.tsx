@@ -2,8 +2,23 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
+import { LighthouseScene } from "@/app/components/PixarScenes";
 
-const GRAD = "linear-gradient(135deg, #8b5cf6 0%, #3b82f6 100%)";
+const C = {
+  pageBg: "#1a0612",
+  card: "rgba(40, 18, 38, 0.78)",
+  border: "rgba(255, 220, 180, 0.35)",
+  borderStrong: "rgba(255, 220, 180, 0.6)",
+  text: "#fff7e6",
+  textSoft: "#ffe9c8",
+  textMuted: "rgba(255, 233, 200, 0.55)",
+  goldLight: "#ffd58a",
+  goldMid: "#ff9b4a",
+  goldDeep: "#d4733a",
+  goldDark: "#3a1a06",
+  cream: "#fff7e6",
+};
+const GRAD = `linear-gradient(135deg, ${C.goldLight}, ${C.goldMid})`;
 
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState("");
@@ -17,17 +32,23 @@ export default function ForgotPasswordPage() {
       setError("Please enter a valid email address");
       return;
     }
-    // Stub — real reset flow lands when the auth backend supports it. For
-    // now we just acknowledge the request so the UI surface is complete.
     setSubmitted(true);
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4" style={{ background: "linear-gradient(135deg, #0c0b24, #1e1145 50%, #0d0a26)" }}>
+    <div
+      className="min-h-screen flex items-center justify-center px-4"
+      style={{
+        background: `radial-gradient(ellipse at 50% -10%, #4a1a4a 0%, #2a0d2e 35%, ${C.pageBg} 70%, #0a0410 100%)`,
+        color: C.text,
+      }}
+    >
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fredoka:wght@500;600;700;800&display=swap');
         * { font-family: 'Nunito', sans-serif; }
       `}</style>
+
+      <LighthouseScene />
 
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -35,107 +56,159 @@ export default function ForgotPasswordPage() {
         transition={{ duration: 0.5 }}
         className="w-full max-w-md rounded-3xl p-8"
         style={{
-          background: "rgba(15,10,40,0.85)",
-          border: "1px solid rgba(139,92,246,0.3)",
-          boxShadow: "0 20px 60px rgba(0,0,0,0.5), 0 0 40px rgba(139,92,246,0.15)",
-          backdropFilter: "blur(14px)",
+          background: C.card,
+          backdropFilter: "blur(16px)",
+          WebkitBackdropFilter: "blur(16px)",
+          border: `1px solid ${C.border}`,
+          boxShadow:
+            "0 30px 60px -20px rgba(20, 6, 12, 0.7), 0 0 40px rgba(255, 178, 110, 0.18), 0 0 0 1px rgba(255, 220, 180, 0.05) inset",
+          position: "relative",
+          zIndex: 10,
         }}
       >
-        <a href="/login" className="text-xs font-bold text-gray-400 hover:text-white transition mb-4 inline-block">
-          ← Back to login
-        </a>
+        <div
+          style={{
+            display: "inline-block",
+            fontSize: 11,
+            letterSpacing: 5,
+            color: C.goldLight,
+            fontWeight: 800,
+            textTransform: "uppercase",
+            padding: "5px 16px",
+            background: "rgba(40, 18, 38, 0.55)",
+            borderStyle: "solid",
+            borderWidth: 1,
+            borderColor: C.borderStrong,
+            borderRadius: 999,
+            marginBottom: 12,
+            fontFamily: "Fredoka, Nunito, sans-serif",
+          }}
+        >
+          ✦ Beacon Lit ✦
+        </div>
 
-        {!submitted ? (
-          <>
-            <h1 className="text-3xl font-black text-white mb-2">Reset your password</h1>
-            <p className="text-gray-400 text-sm mb-6">
-              Enter the email address linked to your account and we&apos;ll send you a reset link.
-            </p>
+        <h1
+          className="text-3xl font-black mb-2"
+          style={{
+            fontFamily: "Fredoka, Nunito, sans-serif",
+            background: "linear-gradient(135deg, #fff5cc, #ffd58a, #ff9b4a)",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+            backgroundClip: "text",
+            letterSpacing: "-0.01em",
+          }}
+        >
+          Find your way back
+        </h1>
+        <p style={{ color: C.textSoft, opacity: 0.92, marginBottom: 24 }}>
+          Enter your email and we&apos;ll send you a link to reset your password.
+        </p>
 
-            <form onSubmit={handleSubmit} className="space-y-5">
-              <div>
-                <label className="block text-sm font-bold text-gray-300 mb-2">Email</label>
-                <div className="relative">
-                  <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 text-base">📧</span>
-                  <input
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="you@example.com"
-                    autoFocus
-                    className="w-full pl-11 pr-4 rounded-2xl text-white placeholder-gray-500 font-medium transition-all duration-300 focus:outline-none"
-                    style={{
-                      height: 50,
-                      fontSize: 15,
-                      background: "rgba(255,255,255,0.06)",
-                      border: "1px solid rgba(255,255,255,0.1)",
-                    }}
-                    onFocus={(e) => { e.currentTarget.style.borderColor = "#8b5cf6"; e.currentTarget.style.boxShadow = "0 0 20px rgba(139,92,246,0.15)"; }}
-                    onBlur={(e) => { e.currentTarget.style.borderColor = "rgba(255,255,255,0.1)"; e.currentTarget.style.boxShadow = "none"; }}
-                  />
-                </div>
-              </div>
-
-              {error && (
-                <div className="rounded-2xl px-4 py-3 text-sm font-semibold" style={{ background: "rgba(239,68,68,0.08)", border: "1px solid rgba(239,68,68,0.25)", color: "#fca5a5" }}>
-                  {error}
-                </div>
-              )}
-
-              <motion.button
-                type="submit"
-                whileHover={{ scale: 1.02, boxShadow: "0 6px 30px rgba(139,92,246,0.5)" }}
-                whileTap={{ scale: 0.98 }}
-                className="w-full font-black text-white text-base rounded-2xl"
-                style={{
-                  height: 50,
-                  background: GRAD,
-                  boxShadow: "0 4px 20px rgba(139,92,246,0.3)",
-                }}
-              >
-                Send reset link
-              </motion.button>
-            </form>
-          </>
-        ) : (
+        {submitted ? (
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ type: "spring", stiffness: 220, damping: 20 }}
-            className="text-center py-4"
+            transition={{ duration: 0.3 }}
+            className="rounded-2xl p-5"
+            style={{
+              background: "rgba(124, 200, 154, 0.16)",
+              border: "1px solid rgba(124, 200, 154, 0.55)",
+              color: "#a8e3bb",
+            }}
           >
-            <div
+            <div className="font-bold mb-1">✓ Check your email</div>
+            <div className="text-sm" style={{ color: C.textSoft, opacity: 0.9 }}>
+              If an account exists for{" "}
+              <span style={{ fontWeight: 700, color: C.goldLight }}>{email}</span>, a reset link is on the way.
+            </div>
+          </motion.div>
+        ) : (
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div>
+              <label className="block text-sm font-bold mb-2" style={{ color: C.textSoft }}>
+                Email
+              </label>
+              <div className="relative">
+                <span
+                  className="absolute left-4 top-1/2 -translate-y-1/2 text-base"
+                  style={{ color: C.textMuted }}
+                >
+                  ✉️
+                </span>
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="you@example.com"
+                  className="w-full pl-11 pr-4 rounded-2xl font-medium transition-all duration-300 focus:outline-none"
+                  style={{
+                    height: 50,
+                    fontSize: 15,
+                    color: C.text,
+                    background: "rgba(20, 6, 12, 0.5)",
+                    border: `1px solid rgba(255, 220, 180, 0.22)`,
+                  }}
+                  onFocus={(e) => {
+                    e.currentTarget.style.borderColor = C.goldLight;
+                    e.currentTarget.style.boxShadow = "0 0 22px rgba(255, 200, 110, 0.25)";
+                  }}
+                  onBlur={(e) => {
+                    e.currentTarget.style.borderColor = "rgba(255, 220, 180, 0.22)";
+                    e.currentTarget.style.boxShadow = "none";
+                  }}
+                />
+              </div>
+            </div>
+
+            {error && (
+              <motion.div
+                initial={{ opacity: 0, y: -6 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="text-sm font-semibold p-3 rounded-2xl"
+                style={{
+                  background: "rgba(196, 81, 58, 0.18)",
+                  border: "1px solid rgba(196, 81, 58, 0.5)",
+                  color: "#f4a89a",
+                }}
+              >
+                {error}
+              </motion.div>
+            )}
+
+            <motion.button
+              type="submit"
+              whileHover={{ y: -2, scale: 1.02 }}
+              whileTap={{ scale: 0.97 }}
+              transition={{ type: "spring", stiffness: 320, damping: 20 }}
+              className="w-full font-black rounded-full"
               style={{
-                width: 72,
-                height: 72,
-                margin: "0 auto 16px",
-                borderRadius: "50%",
-                background: "rgba(34,197,94,0.15)",
-                border: "1px solid rgba(74,222,128,0.45)",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                fontSize: 36,
-                boxShadow: "0 0 30px rgba(74,222,128,0.4)",
+                height: 50,
+                background: GRAD,
+                color: C.goldDark,
+                fontFamily: "Fredoka, Nunito, sans-serif",
+                letterSpacing: 0.5,
+                fontSize: 16,
+                border: "none",
+                cursor: "pointer",
+                boxShadow:
+                  "0 18px 36px -10px rgba(255,120,40,0.6), 0 0 0 1px rgba(255,235,200,0.55) inset, 0 -3px 0 rgba(180,80,30,0.4) inset",
               }}
             >
-              ✓
-            </div>
-            <h2 className="text-2xl font-black text-white mb-2">Check your inbox</h2>
-            <p className="text-gray-400 text-sm leading-relaxed mb-5">
-              If <span className="text-white font-bold">{email}</span> is linked to an AlgorithmX account,
-              you&apos;ll receive a password reset link in the next few minutes. Don&apos;t forget to check your
-              spam folder.
-            </p>
-            <a
-              href="/login"
-              className="inline-block px-6 py-3 rounded-2xl font-bold text-white text-sm"
-              style={{ background: GRAD, boxShadow: "0 4px 20px rgba(139,92,246,0.3)" }}
-            >
-              Back to login
-            </a>
-          </motion.div>
+              Send Reset Link
+            </motion.button>
+          </form>
         )}
+
+        <p className="text-center text-sm mt-6" style={{ color: C.textMuted }}>
+          Remembered it?{" "}
+          <a
+            href="/login"
+            className="font-bold transition hover:opacity-80"
+            style={{ color: C.goldLight }}
+          >
+            Back to log in
+          </a>
+        </p>
       </motion.div>
     </div>
   );

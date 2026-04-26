@@ -4,23 +4,24 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { AnimatePresence, motion, useInView } from "framer-motion";
 import SmoothScroll from "@/app/components/SmoothScroll";
+import { AuroraDawnScene } from "@/app/components/PixarScenes";
 
-/* ─────────────── TOKENS ─────────────── */
-const WHITE = "#ffffff";
-const BG_ALT = "#f8fafc";
-const BORDER = "#e2e8f0";
-const HEADING = "#0f172a";
-const BODY = "#475569";
-const MUTED = "#94a3b8";
+/* ─────────────── TOKENS — warm Pixar dusk palette ─────────────── */
+const WHITE = "#2a0d2e";        // card surface (was pure white)
+const BG_ALT = "#1a0612";       // alt section panel (was off-white)
+const BORDER = "rgba(255, 220, 180, 0.28)";
+const HEADING = "#fff7e6";      // cream headlines
+const BODY = "rgba(255, 233, 200, 0.85)";
+const MUTED = "rgba(255, 233, 200, 0.55)";
 
-const BLUE = "#3b82f6";
-const GREEN = "#10b981";
-const ORANGE = "#f97316";
-const YELLOW = "#eab308";
-const PURPLE = "#8b5cf6";
-const PINK = "#ec4899";
-const AMBER = "#f59e0b";
-const RED = "#ef4444";
+const BLUE = "#ff9b4a";         // primary brand → gold mid
+const GREEN = "#7cc89a";        // secondary → moss
+const ORANGE = "#f08e7e";       // coral
+const YELLOW = "#ffd58a";       // gold light
+const PURPLE = "#a06aff";       // mystic violet (kept)
+const PINK = "#f7c1d6";         // blossom
+const AMBER = "#ff9b4a";        // gold mid
+const RED = "#c4513a";          // ember
 
 /* ─────────────── INLINE ACETERNITY COMPONENTS ─────────────── */
 
@@ -70,8 +71,11 @@ function BackgroundGradientAnimation() {
     <div aria-hidden="true" style={{
       position: "fixed", inset: 0, zIndex: 0, pointerEvents: "none",
       overflow: "hidden",
-      background: "linear-gradient(to bottom right, rgb(255,255,255), rgb(248,250,252))",
+      background: `radial-gradient(ellipse at 50% -10%, #4a1a4a 0%, #2a0d2e 35%, #1a0612 70%, #0a0410 100%)`,
     }}>
+      {/* Pixar dawn aurora — drifting warm-gold curtains, twinkling stars, ember motes */}
+      <AuroraDawnScene />
+
       <svg style={{ position: "absolute", inset: 0, width: 0, height: 0 }}>
         <defs>
           <filter id="bgGoo">
@@ -82,57 +86,18 @@ function BackgroundGradientAnimation() {
         </defs>
       </svg>
 
-      <div style={{ position: "absolute", inset: 0, filter: "url(#bgGoo) blur(40px)" }}>
-        <div style={{
-          ...blobStyle("59,130,246"),
-          top: "calc(50% - 40%)", left: "calc(50% - 40%)",
-          animation: "bgMove1 30s ease infinite",
-          transformOrigin: "center center",
-        }} />
-        <div style={{
-          ...blobStyle("16,185,129"),
-          top: "calc(50% - 40%)", left: "calc(50% - 40%)",
-          animation: "bgMove2 20s reverse infinite",
-          transformOrigin: "calc(50% - 400px)",
-        }} />
-        <div style={{
-          ...blobStyle("139,92,246"),
-          top: "calc(50% - 40%)", left: "calc(50% - 40%)",
-          animation: "bgMove3 40s linear infinite",
-          transformOrigin: "calc(50% + 400px)",
-        }} />
-        <div style={{
-          ...blobStyle("236,72,153"),
-          top: "calc(50% - 40%)", left: "calc(50% - 40%)",
-          animation: "bgMove4 40s ease infinite",
-          transformOrigin: "calc(50% - 200px)",
-          opacity: 0.7,
-        }} />
-        <div style={{
-          ...blobStyle("245,158,11"),
-          width: "160%", height: "160%",
-          top: "calc(50% - 80%)", left: "calc(50% - 80%)",
-          animation: "bgMove5 20s ease infinite",
-          transformOrigin: "calc(50% - 800px) calc(50% + 200px)",
-          opacity: 0.5,
-        }} />
+      {/* Mouse-tracked warm orb */}
+      <div style={{ position: "absolute", inset: 0, filter: "url(#bgGoo) blur(40px)", opacity: 0.55 }}>
         <div
           ref={interactiveRef}
           style={{
-            ...blobStyle("59,130,246"),
-            width: 400, height: 400,
+            ...blobStyle("255, 178, 110"),
+            width: 420, height: 420,
             top: 0, left: 0,
-            opacity: 0.6,
+            opacity: 0.5,
           }}
         />
       </div>
-
-      {/* White softening overlay */}
-      <div style={{
-        position: "absolute", inset: 0,
-        background: "rgba(255,255,255,0.65)",
-        pointerEvents: "none",
-      }} />
     </div>
   );
 }
@@ -520,7 +485,7 @@ function CourseCard({ c }: { c: Course }) {
             position: "absolute", top: 12, right: 12,
             display: "flex", alignItems: "center", gap: 6,
             padding: "4px 10px", borderRadius: 100,
-            background: "rgba(255,255,255,0.92)", backdropFilter: "blur(8px)",
+            background: "rgba(40, 18, 38, 0.78)", backdropFilter: "blur(12px)",
             fontSize: 10, fontWeight: 700, color: GREEN, letterSpacing: ".06em",
             boxShadow: "0 0 20px rgba(16,185,129,0.15)",
           }}>
@@ -532,7 +497,7 @@ function CourseCard({ c }: { c: Course }) {
           <div style={{
             position: "absolute", top: 12, right: 12,
             padding: "4px 10px", borderRadius: 100,
-            background: "rgba(255,255,255,0.92)", backdropFilter: "blur(8px)",
+            background: "rgba(40, 18, 38, 0.78)", backdropFilter: "blur(12px)",
             fontSize: 10, fontWeight: 700, color: AMBER, letterSpacing: ".06em",
           }}>
             {c.coming}
@@ -582,7 +547,7 @@ function CourseCard({ c }: { c: Course }) {
           <span style={{
             marginTop: 4,
             display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 6,
-            background: "#f1f5f9", color: MUTED,
+            background: "rgba(255, 220, 180, 0.08)", color: MUTED,
             fontSize: 14, fontWeight: 600, padding: "11px 20px", borderRadius: 100,
             cursor: "not-allowed",
           }}>
@@ -598,7 +563,7 @@ function CourseCard({ c }: { c: Course }) {
 const CSS = `
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap');
 *{font-family:'DM Sans',sans-serif;box-sizing:border-box;margin:0;padding:0}
-body{background:${WHITE}}
+body{background:#1a0612;color:${HEADING}}
 h1,h2,h3,h4,.dsp{font-family:'Space Grotesk',sans-serif;letter-spacing:-0.02em}
 .mono{font-family:'JetBrains Mono',monospace}
 html{scroll-behavior:smooth}
@@ -733,7 +698,7 @@ export default function AlgorithmXHome() {
         {/* ═══ 1. NAV ═══ */}
         <nav style={{
           position: "fixed", top: 0, left: 0, right: 0, zIndex: 50,
-          background: "rgba(255,255,255,0.9)",
+          background: "rgba(26, 6, 18, 0.78)",
           backdropFilter: "blur(20px) saturate(1.8)", WebkitBackdropFilter: "blur(20px) saturate(1.8)",
           borderBottom: `1px solid ${BORDER}`,
           boxShadow: scrolled ? "0 1px 8px rgba(0,0,0,0.06)" : "none",
@@ -802,7 +767,7 @@ export default function AlgorithmXHome() {
             <a href="#subjects" style={{
               color: "#334155", fontSize: 15, fontWeight: 600,
               padding: "14px 32px", borderRadius: 100, textDecoration: "none",
-              border: `1px solid #cbd5e1`, background: "#fff",
+              border: `1px solid ${BORDER}`, background: "rgba(40, 18, 38, 0.55)",
             }}>I Want to Learn</a>
           </motion.div>
 
@@ -1102,7 +1067,7 @@ export default function AlgorithmXHome() {
                   ) : (
                     <div className="ax-logo-img" style={{
                       height: 48, padding: "0 16px",
-                      background: "#f1f5f9",
+                      background: "rgba(255, 220, 180, 0.08)",
                       borderRadius: 8,
                       display: "flex", alignItems: "center", justifyContent: "center",
                       whiteSpace: "nowrap",
@@ -1145,7 +1110,7 @@ export default function AlgorithmXHome() {
                     <a href="#subjects" style={{
                       color: "#334155", fontSize: 15, fontWeight: 600,
                       padding: "14px 32px", borderRadius: 100, textDecoration: "none",
-                      border: `1px solid #cbd5e1`, background: WHITE,
+                      border: `1px solid ${BORDER}`, background: WHITE,
                     }}>I Want to Learn</a>
                   </div>
                   <p style={{ color: MUTED, fontSize: 13 }}>One-time payment · Lifetime access · 30-day guarantee</p>
@@ -1161,7 +1126,7 @@ export default function AlgorithmXHome() {
         </section>
 
         {/* ═══ 8. FOOTER ═══ */}
-        <footer style={{ position: "relative", zIndex: 1, background: "#0f172a", color: "#cbd5e1", padding: "56px 24px 40px" }}>
+        <footer style={{ position: "relative", zIndex: 1, background: "rgba(10, 4, 16, 0.85)", color: BODY, padding: "56px 24px 40px", borderTop: `1px solid ${BORDER}`, backdropFilter: "blur(8px)" }}>
           <div style={{ maxWidth: 1200, margin: "0 auto" }}>
             <div className="ax-footer-grid" style={{ display: "grid", gridTemplateColumns: "2fr 1fr 1fr 1fr", gap: 48 }}>
               <div>
@@ -1206,7 +1171,7 @@ export default function AlgorithmXHome() {
                 ))}
               </div>
             </div>
-            <div style={{ height: 1, background: "#1e293b", margin: "40px 0 24px" }} />
+            <div style={{ height: 1, background: BORDER, margin: "40px 0 24px" }} />
             <div className="ax-footer-bottom" style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
               <a href="mailto:support@algorithmx.co.uk" style={{ color: "#64748b", fontSize: 12, textDecoration: "none" }}>
                 support@algorithmx.co.uk

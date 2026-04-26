@@ -2,36 +2,12 @@
 
 import { motion, useInView } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
+import { CosmicLibraryScene } from "@/app/components/PixarScenes";
 
-const PRIMARY = "#10b981";
-const ACCENT = "#34d399";
+// Warm Pixar palette — moss + cream accents over dusk backdrop.
+const PRIMARY = "#7cc89a";       // moss
+const ACCENT = "#a8e3bb";        // light moss
 const GRAD = `linear-gradient(135deg, ${PRIMARY}, ${ACCENT})`;
-
-function FloatingOrbs() {
-  return (
-    <div className="fixed inset-0 pointer-events-none overflow-hidden" style={{ zIndex: 0 }}>
-      {[
-        { size: 8, top: "8%", left: "6%", color: PRIMARY, delay: 0 },
-        { size: 6, top: "18%", right: "10%", color: ACCENT, delay: 1 },
-        { size: 10, top: "35%", left: "3%", color: "#059669", delay: 2 },
-        { size: 5, top: "52%", right: "5%", color: PRIMARY, delay: 0.5 },
-        { size: 7, top: "70%", left: "12%", color: ACCENT, delay: 3 },
-        { size: 9, top: "82%", right: "8%", color: "#059669", delay: 1.5 },
-      ].map((o, i) => (
-        <motion.div key={i} className="absolute rounded-full"
-          animate={{ y: [-15, 15, -15], scale: [1, 1.15, 1], opacity: [0.25, 0.45, 0.25] }}
-          transition={{ duration: 6 + i, repeat: Infinity, ease: "easeInOut", delay: o.delay }}
-          style={{
-            width: o.size, height: o.size, top: o.top,
-            left: "left" in o ? o.left : undefined,
-            right: "right" in o ? o.right : undefined,
-            backgroundColor: o.color,
-            boxShadow: `0 0 ${o.size * 3}px ${o.color}`,
-          }} />
-      ))}
-    </div>
-  );
-}
 
 function ScrollReveal({ children, className = "", delay = 0 }: { children: React.ReactNode; className?: string; delay?: number }) {
   const ref = useRef<HTMLDivElement>(null);
@@ -64,13 +40,13 @@ export default function CyberStartPage() {
         * { font-family: 'Nunito', sans-serif; }
       `}</style>
 
-      <FloatingOrbs />
+      <CosmicLibraryScene />
 
-      <div className="min-h-screen relative" style={{ background: "#1a1033", zIndex: 1 }}>
+      <div className="min-h-screen relative" style={{ background: `radial-gradient(ellipse at 50% -10%, #4a1a4a 0%, #2a0d2e 35%, #1a0612 70%, #0a0410 100%)`, zIndex: 1 }}>
         {/* Nav */}
         <nav className="fixed top-0 left-0 right-0 z-50 transition-all duration-300"
           style={{
-            background: scrolled ? "rgba(26,16,51,0.85)" : "transparent",
+            background: scrolled ? "rgba(26,6,18,0.85)" : "transparent",
             backdropFilter: scrolled ? "blur(20px)" : "none",
             borderBottom: scrolled ? "1px solid rgba(255,255,255,0.06)" : "1px solid transparent",
           }}>
