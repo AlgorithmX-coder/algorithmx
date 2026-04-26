@@ -377,12 +377,14 @@ export default function ConveyorBelt({
         PASSWORD SORTING FACTORY
       </div>
 
-      {/* Safe zone (top right) */}
+      {/* Safe zone (top right) — bumped down so it sits below the
+          ExerciseHowTo header card instead of clipping into its
+          rounded top edge. */}
       <div
         style={{
           position: "absolute",
           right: 16,
-          top: 74,
+          top: 168,
           width: 130,
           height: 88,
           borderRadius: 16,
