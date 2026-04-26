@@ -312,20 +312,20 @@ export default function MemoryMatch({
       style={{
         position: "relative",
         width: "100%",
-        maxWidth: 720,
+        // Narrower frame keeps individual cards smaller so all 12 fit
+        // vertically without an inner scroll. The page itself can still
+        // scroll if a really tiny viewport demands it.
+        maxWidth: 600,
         margin: "0 auto",
-        // Cap to viewport height minus the lesson chrome (HUD + nav + spacing).
-        // Scroll inside the rounded frame rather than clipping when the grid
-        // is taller than the available space (short laptops / docked windows).
-        maxHeight: "calc(100vh - 140px)",
         padding: "0 0 22px",
         borderRadius: 28,
+        // Deep plum card frame — replaces the cream parchment so the
+        // tech-themed card backs read clearly. Still warm-Pixar.
         background:
-          "linear-gradient(180deg, #fff7e0 0%, #fde2b5 55%, #f9c27a 100%)",
+          "linear-gradient(180deg, #2a0d2e 0%, #1f0820 55%, #150610 100%)",
         boxShadow: SHADOW.sceneFrame,
-        color: COLOR.inkDeep,
-        overflowX: "hidden",
-        overflowY: "auto",
+        color: COLOR.cream,
+        overflow: "hidden",
         fontFamily:
           "ui-rounded, 'Fredoka', 'Quicksand', system-ui, -apple-system, sans-serif",
       }}
@@ -565,19 +565,24 @@ function CardBack({
   disabled: boolean;
 }) {
   void faceDown;
+  // Tech-themed card back: deep plum board, faint gold circuit grid,
+  // diagonal trace lines, four corner solder pads, and a glowing
+  // micro-chip with a keyhole at the centre. Still warm Pixar palette
+  // (no cyan / cyber-blue) — the tech feel comes from the form, not
+  // the colour temperature.
   return (
     <div
       style={{
         position: "absolute",
         inset: 0,
-        borderRadius: 16,
+        borderRadius: 14,
         background:
-          "linear-gradient(135deg, #fffaf0 0%, #fde2b5 60%, #f4cfa1 100%)",
+          "linear-gradient(135deg, #2a0d2e 0%, #1f0820 55%, #150610 100%)",
         borderStyle: "solid",
         borderWidth: 1,
-        borderColor: "rgba(196, 115, 64, 0.55)",
+        borderColor: "rgba(255, 220, 180, 0.32)",
         boxShadow:
-          "0 12px 28px -8px rgba(40, 18, 8, 0.45), inset 0 0 0 4px rgba(255, 245, 215, 0.85), inset 0 0 0 5px rgba(196, 115, 64, 0.35)",
+          "0 12px 28px -8px rgba(20, 6, 12, 0.7), inset 0 0 0 1px rgba(255, 220, 180, 0.18), 0 0 0 1px rgba(40, 18, 8, 0.4)",
         backfaceVisibility: "hidden",
         display: "flex",
         alignItems: "center",
@@ -591,81 +596,147 @@ function CardBack({
         (e.currentTarget as HTMLDivElement).style.transform =
           "translateY(-4px)";
         (e.currentTarget as HTMLDivElement).style.boxShadow =
-          "0 18px 36px -8px rgba(40, 18, 8, 0.55), inset 0 0 0 4px rgba(255, 245, 215, 0.95), inset 0 0 0 5px rgba(196, 115, 64, 0.5)";
+          "0 18px 36px -8px rgba(20, 6, 12, 0.8), inset 0 0 0 1px rgba(255, 220, 180, 0.32), 0 0 18px rgba(255, 178, 110, 0.35)";
       }}
       onMouseLeave={(e) => {
         (e.currentTarget as HTMLDivElement).style.transform = "";
         (e.currentTarget as HTMLDivElement).style.boxShadow =
-          "0 12px 28px -8px rgba(40, 18, 8, 0.45), inset 0 0 0 4px rgba(255, 245, 215, 0.85), inset 0 0 0 5px rgba(196, 115, 64, 0.35)";
+          "0 12px 28px -8px rgba(20, 6, 12, 0.7), inset 0 0 0 1px rgba(255, 220, 180, 0.18), 0 0 0 1px rgba(40, 18, 8, 0.4)";
       }}
     >
-      {/* Subtle parchment grain via diagonal stripes */}
+      {/* Faint warm circuit grid — the technical texture */}
       <div
         aria-hidden
         style={{
           position: "absolute",
           inset: 0,
-          opacity: 0.18,
+          opacity: 0.55,
           backgroundImage:
-            "repeating-linear-gradient(45deg, rgba(140, 70, 25, 0.18) 0px, rgba(140, 70, 25, 0.18) 1px, transparent 1px, transparent 6px)",
+            "linear-gradient(rgba(255, 213, 138, 0.10) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 213, 138, 0.10) 1px, transparent 1px)",
+          backgroundSize: "14px 14px",
         }}
       />
-      {/* Slowly rotating gold halo */}
+
+      {/* Diagonal circuit traces from the four corners into the chip */}
+      <svg
+        aria-hidden
+        viewBox="0 0 100 100"
+        preserveAspectRatio="none"
+        style={{
+          position: "absolute",
+          inset: 0,
+          width: "100%",
+          height: "100%",
+          opacity: 0.55,
+        }}
+      >
+        <g
+          fill="none"
+          stroke="rgba(255, 178, 110, 0.65)"
+          strokeWidth="0.8"
+          strokeLinecap="round"
+        >
+          {/* Top-left → chip */}
+          <path d="M 6 6 L 6 28 L 30 28 L 38 36" />
+          {/* Top-right → chip */}
+          <path d="M 94 6 L 94 28 L 70 28 L 62 36" />
+          {/* Bottom-left → chip */}
+          <path d="M 6 94 L 6 72 L 30 72 L 38 64" />
+          {/* Bottom-right → chip */}
+          <path d="M 94 94 L 94 72 L 70 72 L 62 64" />
+        </g>
+        {/* Solder pads at the four outer corners */}
+        <g fill="rgba(255, 213, 138, 0.85)">
+          <circle cx="6" cy="6" r="1.6" />
+          <circle cx="94" cy="6" r="1.6" />
+          <circle cx="6" cy="94" r="1.6" />
+          <circle cx="94" cy="94" r="1.6" />
+        </g>
+      </svg>
+
+      {/* Glowing halo behind the chip */}
       <span
         aria-hidden
         style={{
           position: "absolute",
-          width: "70%",
-          height: "70%",
+          width: "55%",
+          height: "55%",
           borderRadius: "50%",
           background:
-            "conic-gradient(from 0deg, transparent 0deg, rgba(255, 200, 100, 0.55) 70deg, transparent 140deg, rgba(255, 165, 80, 0.55) 240deg, transparent 320deg)",
-          filter: "blur(6px)",
+            "radial-gradient(circle, rgba(255, 213, 138, 0.55) 0%, rgba(255, 155, 74, 0.28) 45%, transparent 75%)",
+          filter: "blur(8px)",
           animation: "mmSealSpin 10s linear infinite",
         }}
       />
-      {/* Centre seal — gold star/medallion */}
+
+      {/* Microchip with keyhole — the tech-themed centerpiece */}
       <svg
-        width="58%"
-        height="58%"
+        width="56%"
+        height="56%"
         viewBox="0 0 60 60"
         aria-hidden
         style={{ position: "relative", zIndex: 1 }}
       >
         <defs>
-          <radialGradient id="mmSealG" cx="32%" cy="28%" r="70%">
+          <linearGradient id="mmChipBody" x1="0" y1="0" x2="1" y2="1">
             <stop offset="0%" stopColor="#fff5cc" />
-            <stop offset="35%" stopColor="#ffd158" />
-            <stop offset="80%" stopColor="#d48a18" />
-            <stop offset="100%" stopColor="#7a3a08" />
-          </radialGradient>
+            <stop offset="45%" stopColor="#ffd58a" />
+            <stop offset="100%" stopColor="#c4753a" />
+          </linearGradient>
+          <linearGradient id="mmChipPin" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="#ffd58a" />
+            <stop offset="100%" stopColor="#a85a25" />
+          </linearGradient>
         </defs>
-        <circle
-          cx="30"
-          cy="30"
-          r="22"
-          fill="url(#mmSealG)"
-          stroke="rgba(120, 60, 5, 0.45)"
-          strokeWidth="1.5"
+
+        {/* Pins (4 per side, symmetric) */}
+        <g fill="url(#mmChipPin)">
+          {[18, 26, 34, 42].map((y) => (
+            <rect key={`pl-${y}`} x="6" y={y - 1.5} width="6" height="3" rx="0.6" />
+          ))}
+          {[18, 26, 34, 42].map((y) => (
+            <rect key={`pr-${y}`} x="48" y={y - 1.5} width="6" height="3" rx="0.6" />
+          ))}
+          {[18, 26, 34, 42].map((x) => (
+            <rect key={`pt-${x}`} y="6" x={x - 1.5} height="6" width="3" rx="0.6" />
+          ))}
+          {[18, 26, 34, 42].map((x) => (
+            <rect key={`pb-${x}`} y="48" x={x - 1.5} height="6" width="3" rx="0.6" />
+          ))}
+        </g>
+
+        {/* Chip body — square with rounded corners, gold gradient */}
+        <rect
+          x="12"
+          y="12"
+          width="36"
+          height="36"
+          rx="5"
+          fill="url(#mmChipBody)"
+          stroke="rgba(120, 55, 10, 0.55)"
+          strokeWidth="0.8"
         />
-        {/* Inner ring */}
-        <circle
-          cx="30"
-          cy="30"
-          r="16"
+        {/* Inner bevel highlight */}
+        <rect
+          x="14"
+          y="14"
+          width="32"
+          height="32"
+          rx="4"
           fill="none"
-          stroke="rgba(140, 70, 5, 0.45)"
-          strokeWidth="1"
-          strokeDasharray="2 2"
+          stroke="rgba(255, 245, 215, 0.7)"
+          strokeWidth="0.6"
         />
-        {/* 4-point star */}
-        <path
-          d="M30 14 L33 27 L46 30 L33 33 L30 46 L27 33 L14 30 L27 27 Z"
-          fill="#7a3a08"
-          opacity="0.85"
-        />
-        {/* Centre sparkle */}
-        <circle cx="30" cy="30" r="2" fill="#fff5cc" />
+
+        {/* Notch (chip orientation marker) — top-left */}
+        <circle cx="18" cy="18" r="1.4" fill="rgba(80, 35, 5, 0.7)" />
+
+        {/* Keyhole etched into the chip — padlock allegiance */}
+        <g transform="translate(30, 30)">
+          <circle r="4.5" fill="rgba(80, 35, 5, 0.85)" />
+          <rect x="-1.2" y="3.4" width="2.4" height="5" rx="0.6" fill="rgba(80, 35, 5, 0.85)" />
+          <circle r="1.4" fill="rgba(255, 245, 215, 0.55)" />
+        </g>
       </svg>
     </div>
   );
