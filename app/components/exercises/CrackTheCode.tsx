@@ -392,12 +392,16 @@ export default function CrackTheCode({
                 display: "grid",
                 gridTemplateColumns: "120px 1fr",
                 alignItems: "stretch",
-                background: isCorrect ? `${ring.colour}15` : "rgba(15,21,37,0.7)",
-                border: `1px solid ${isCorrect ? "#4ade80" : flash === "red" ? "#ef4444" : `${ring.colour}44`}`,
-                borderLeft: `4px solid ${isCorrect ? "#4ade80" : ring.colour}`,
+                background: "rgba(40, 18, 38, 0.78)",
+                border: `1px solid ${isCorrect ? "#7cc89a" : flash === "red" ? "#c4513a" : "rgba(255, 220, 180, 0.22)"}`,
+                borderLeft: `4px solid ${isCorrect ? "#7cc89a" : ring.colour}`,
                 borderRadius: 14,
                 overflow: "hidden",
-                boxShadow: flash === "red" ? "0 0 22px rgba(239,68,68,0.6)" : isCorrect ? `0 0 18px ${ring.colour}44` : "none",
+                boxShadow: flash === "red"
+                  ? "0 0 22px rgba(196, 81, 58, 0.6)"
+                  : isCorrect
+                    ? "0 0 22px rgba(124, 200, 154, 0.45)"
+                    : "0 4px 12px -4px rgba(20, 6, 12, 0.45)",
                 transition: "box-shadow 0.3s ease, border-color 0.3s ease, background 0.3s ease",
               }}
             >
@@ -409,15 +413,23 @@ export default function CrackTheCode({
                   justifyContent: "center",
                   gap: 2,
                   padding: "10px 6px",
-                  background: `${ring.colour}10`,
-                  borderRight: `1px solid ${ring.colour}22`,
+                  background: "rgba(20, 8, 24, 0.5)",
+                  borderRight: "1px solid rgba(255, 220, 180, 0.15)",
                 }}
               >
                 <div style={{ fontSize: 22, lineHeight: 1 }}>{ringIcon}</div>
-                <div style={{ fontFamily: "monospace", fontSize: 10, fontWeight: 900, color: ring.colour, letterSpacing: 1 }}>
+                <div
+                  style={{
+                    fontFamily: "ui-monospace, 'JetBrains Mono', Menlo, monospace",
+                    fontSize: 10,
+                    fontWeight: 900,
+                    color: "#ffd58a",
+                    letterSpacing: 2,
+                  }}
+                >
                   {ring.label}
                 </div>
-                {isCorrect && <div style={{ color: "#4ade80", fontSize: 14 }}>✓</div>}
+                {isCorrect && <div style={{ color: "#a8e3bb", fontSize: 14 }}>✓</div>}
               </div>
               <div style={{ display: "flex", alignItems: "center", gap: 6, padding: "10px 10px" }}>
                 <button
@@ -428,9 +440,10 @@ export default function CrackTheCode({
                   style={{
                     flexShrink: 0,
                     width: 36, height: 36, borderRadius: 10,
-                    background: `${ring.colour}22`,
-                    border: `1px solid ${ring.colour}66`,
-                    color: ring.colour, cursor: unlocked ? "default" : "pointer",
+                    background: "rgba(255, 220, 180, 0.12)",
+                    border: "1px solid rgba(255, 220, 180, 0.4)",
+                    color: "#ffd58a",
+                    cursor: unlocked ? "default" : "pointer",
                     fontSize: 16, fontWeight: 900, fontFamily: "inherit",
                   }}
                 >←</button>
@@ -438,14 +451,14 @@ export default function CrackTheCode({
                   style={{
                     flex: 1,
                     textAlign: "center",
-                    fontFamily: "'Space Grotesk', sans-serif",
                     fontSize: 14,
-                    fontWeight: 900,
-                    color: isCorrect ? "#86efac" : "#f1f5f9",
+                    fontWeight: 800,
+                    color: "#fff7e6",
                     padding: "0 8px",
                     minHeight: 20,
                     letterSpacing: 0.3,
                     transition: "color 0.25s ease",
+                    textShadow: "0 1px 2px rgba(20, 6, 12, 0.4)",
                   }}
                 >
                   {selectedLabel}
@@ -458,9 +471,10 @@ export default function CrackTheCode({
                   style={{
                     flexShrink: 0,
                     width: 36, height: 36, borderRadius: 10,
-                    background: `${ring.colour}22`,
-                    border: `1px solid ${ring.colour}66`,
-                    color: ring.colour, cursor: unlocked ? "default" : "pointer",
+                    background: "rgba(255, 220, 180, 0.12)",
+                    border: "1px solid rgba(255, 220, 180, 0.4)",
+                    color: "#ffd58a",
+                    cursor: unlocked ? "default" : "pointer",
                     fontSize: 16, fontWeight: 900, fontFamily: "inherit",
                   }}
                 >→</button>

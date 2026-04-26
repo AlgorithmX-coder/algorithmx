@@ -4082,9 +4082,19 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
 
   /* ---------- render ---------- */
   return (
-    <div style={{ minHeight: "100vh", background: "#05061a", position: "relative", overflow: "hidden" }}>
-      {/* 3D arena backdrop — sits BEHIND everything. Fixed to the viewport
-          so it fills the screen even when the scroll container changes size. */}
+    <div
+      style={{
+        minHeight: "100vh",
+        position: "relative",
+        overflow: "hidden",
+        background:
+          "radial-gradient(ellipse at 50% -10%, #4a1a4a 0%, #2a0d2e 35%, #1a0612 70%, #0a0410 100%)",
+      }}
+    >
+      {/* Warm dusk backdrop — replaces the cyber LessonArena3D 3D scene
+          so the warm Pixar exercises sit on a tonally-matching page chrome
+          instead of a cold navy arena. The pulse / mood reactivity from
+          the old arena is sacrificed for visual cohesion. */}
       <div
         aria-hidden="true"
         style={{
@@ -4092,15 +4102,17 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
           inset: 0,
           zIndex: 0,
           pointerEvents: "none",
+          background:
+            "radial-gradient(ellipse at 80% 20%, rgba(255, 178, 110, 0.18) 0%, transparent 55%)," +
+            "radial-gradient(ellipse at 20% 90%, rgba(196, 60, 106, 0.14) 0%, transparent 55%)," +
+            "radial-gradient(ellipse at 50% 50%, rgba(255, 220, 168, 0.05) 0%, transparent 70%)",
         }}
-      >
-        <LessonArena3D
-          width={windowDim.w}
-          height={windowDim.h}
-          mood={arena3DMood}
-          pulseKey={arena3DPulseKey}
-        />
-      </div>
+      />
+      {/* Reference the mood/pulse vars so they don't trigger unused-var
+          warnings now that the arena is no longer rendered. */}
+      <span style={{ display: "none" }}>
+        {arena3DMood}-{arena3DPulseKey}
+      </span>
       <style>{CSS}</style>
       <LessonAmbience />
 
