@@ -149,7 +149,7 @@ export default function SignupPage() {
 
   return (
     <div
-      className="min-h-screen flex"
+      className="min-h-screen flex relative"
       style={{
         background: `radial-gradient(ellipse at 50% -10%, #1d1f4d 0%, #0f1530 35%, ${C.pageBg} 70%, #04050d 100%)`,
         color: C.text,
@@ -158,12 +158,77 @@ export default function SignupPage() {
       {/* Left-side floating orbs over the form column */}
       <FloatingOrbs />
 
+      {/* ─── UNIFIED BACKDROP — extends across the entire viewport ───
+          Mirrors the login page restructure: one absolute layer
+          renders the ParticleNetworkScene + HeroAtlas + ALGORITHMX
+          terminal across the full viewport, with the form floating
+          on top anchored to the left half. */}
+      <div className="absolute inset-0" style={{ zIndex: 0, overflow: "hidden", pointerEvents: "none" }}>
+        <ParticleNetworkScene />
+
+        <FloatingIcons />
+
+        {/* Live R3F atlas — pulsing crystal core, wireframe shells,
+            four tilted orbital rings. Fills the whole viewport so the
+            form on the left has the orbital scene as its direct
+            backdrop, same as the login globe. */}
+        <div className="absolute inset-0">
+          <HeroAtlas />
+        </div>
+
+        {/* Centre label + terminal prompt — biased toward the right
+            half so it sits beside (not under) the form column. */}
+        <motion.div
+          className="absolute flex flex-col items-center"
+          style={{
+            top: "50%",
+            left: "70%",
+            transform: "translate(-50%, 80px)",
+            zIndex: 2,
+          }}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ type: "spring", stiffness: 200, damping: 20, delay: 0.6 }}
+        >
+          <span
+            className="text-3xl font-black tracking-widest"
+            style={{
+              fontFamily: "'Space Grotesk', system-ui, sans-serif",
+              color: C.cream,
+              textShadow:
+                "0 0 22px rgba(124, 92, 255, 0.6), 0 4px 12px rgba(8, 10, 22, 0.5)",
+              letterSpacing: 6,
+            }}
+          >
+            ALGORITHMX
+          </span>
+          <div
+            style={{
+              fontFamily: "ui-monospace, 'JetBrains Mono', Menlo, monospace",
+              fontSize: 12,
+              color: C.goldLight,
+              marginTop: 18,
+              letterSpacing: 1,
+            }}
+          >
+            <span style={{ color: C.goldMid }}>$</span> ax_signup --new-hero
+            <span style={{ marginLeft: 6, animation: "spCursorBlink 1s steps(1) infinite" }}>▮</span>
+          </div>
+          <p
+            className="text-xs mt-4 text-center"
+            style={{ color: C.textSoft, opacity: 0.75, letterSpacing: 0.5 }}
+          >
+            4 Courses · Ages 6–18+ · 100% Interactive
+          </p>
+        </motion.div>
+      </div>
+
       {/* ─── LEFT SIDE: FORM ─── */}
       <div
         className="flex-1 flex flex-col items-center justify-center px-6 py-12 relative"
-        style={{ zIndex: 1 }}
+        style={{ zIndex: 3 }}
       >
-        <div className="w-full max-w-md">
+        <div className="w-full max-w-md relative" style={{ zIndex: 2 }}>
           {/* Logo */}
           <a href="/" className="inline-flex items-center gap-2.5 mb-8">
             <div
@@ -444,68 +509,14 @@ export default function SignupPage() {
         </div>
       </div>
 
-      {/* ─── RIGHT SIDE: VISUAL — CONSTELLATION + GLOWING MEDALLION ─── */}
+      {/* ─── RIGHT SIDE — empty layout spacer on lg+ so the form
+          anchors to the left half. The unified backdrop layer above
+          renders ParticleNetworkScene + HeroAtlas + ALGORITHMX label
+          spanning both halves; this column just reserves space. */}
       <div
-        className="hidden lg:flex flex-1 items-center justify-center relative overflow-hidden"
-        style={{ background: C.panelBg }}
+        className="hidden lg:flex flex-1 items-center justify-center relative"
+        aria-hidden
       >
-        {/* ConstellationScene is fixed-position so it covers the full viewport;
-            we place a clipping wrapper around the right column to keep it
-            visually contained on this side only. The fixed layer still
-            renders, but the form column has its own backdrop overlay so
-            nothing leaks through visually. */}
-        <ParticleNetworkScene />
-
-        <FloatingIcons />
-
-        {/* Live R3F atlas — pulsing crystal core, wireframe shells,
-            four tilted orbital rings each carrying a glowing skill
-            satellite. Fills the right column behind the centre label. */}
-        <div className="absolute inset-0" style={{ pointerEvents: "none", zIndex: 1 }}>
-          <HeroAtlas />
-        </div>
-
-        {/* Centre label + terminal prompt — sits below the atlas */}
-        <motion.div
-          className="relative flex flex-col items-center"
-          style={{ marginTop: 290, zIndex: 2 }}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ type: "spring", stiffness: 200, damping: 20, delay: 0.6 }}
-        >
-          <span
-            className="text-3xl font-black tracking-widest"
-            style={{
-              fontFamily: "'Space Grotesk', system-ui, sans-serif",
-              color: C.cream,
-              textShadow:
-                "0 0 22px rgba(124, 92, 255, 0.6), 0 4px 12px rgba(8, 10, 22, 0.5)",
-              letterSpacing: 6,
-            }}
-          >
-            ALGORITHMX
-          </span>
-
-          <div
-            style={{
-              fontFamily: "ui-monospace, 'JetBrains Mono', Menlo, monospace",
-              fontSize: 12,
-              color: C.goldLight,
-              marginTop: 18,
-              letterSpacing: 1,
-            }}
-          >
-            <span style={{ color: C.goldMid }}>$</span> ax_signup --new-hero
-            <span style={{ marginLeft: 6, animation: "spCursorBlink 1s steps(1) infinite" }}>▮</span>
-          </div>
-
-          <p
-            className="text-xs mt-4 text-center"
-            style={{ color: C.textSoft, opacity: 0.75, letterSpacing: 0.5 }}
-          >
-            4 Courses · Ages 6–18+ · 100% Interactive
-          </p>
-        </motion.div>
 
         <style>{`
           @keyframes spIntroSpin {
