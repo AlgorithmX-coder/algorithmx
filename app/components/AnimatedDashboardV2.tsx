@@ -601,11 +601,21 @@ export function AnimatedRing({
   radius = 54,
   strokeWidth = 10,
   size = 130,
+  gradientFrom = "#ffd58a",
+  gradientTo = "#ff9b4a",
+  glow = "rgba(255, 178, 110, 0.55)",
+  track = "rgba(255, 220, 180, 0.12)",
+  label = "#ffd58a",
 }: {
   percent: number;
   radius?: number;
   strokeWidth?: number;
   size?: number;
+  gradientFrom?: string;
+  gradientTo?: string;
+  glow?: string;
+  track?: string;
+  label?: string;
 }) {
   const gradId = useId().replace(/:/g, "");
   const circumference = 2 * Math.PI * radius;
@@ -626,8 +636,8 @@ export function AnimatedRing({
       <svg width={size} height={size}>
         <defs>
           <linearGradient id={`ring-${gradId}`} x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%" stopColor="#60a5fa" />
-            <stop offset="100%" stopColor="#34d399" />
+            <stop offset="0%" stopColor={gradientFrom} />
+            <stop offset="100%" stopColor={gradientTo} />
           </linearGradient>
         </defs>
         <circle
@@ -635,7 +645,7 @@ export function AnimatedRing({
           cy={cy}
           r={radius}
           fill="none"
-          stroke="rgba(255,255,255,0.08)"
+          stroke={track}
           strokeWidth={strokeWidth}
         />
         <circle
@@ -649,7 +659,10 @@ export function AnimatedRing({
           strokeDasharray={circumference}
           strokeDashoffset={offset}
           transform={`rotate(-90 ${cx} ${cy})`}
-          style={{ transition: "stroke-dashoffset 1.4s cubic-bezier(0.16,1,0.3,1)" }}
+          style={{
+            transition: "stroke-dashoffset 1.4s cubic-bezier(0.16,1,0.3,1)",
+            filter: `drop-shadow(0 0 8px ${glow})`,
+          }}
         />
       </svg>
       <div
@@ -663,10 +676,25 @@ export function AnimatedRing({
           pointerEvents: "none",
         }}
       >
-        <span style={{ color: "#fff", fontSize: size * 0.22, fontWeight: 900, lineHeight: 1 }}>
+        <span
+          style={{
+            color: "#fff7e6",
+            fontSize: size * 0.22,
+            fontWeight: 900,
+            lineHeight: 1,
+          }}
+        >
           {Math.round(clamped)}%
         </span>
-        <span style={{ color: "#9ca3af", fontSize: 11, fontWeight: 600, marginTop: 2 }}>
+        <span
+          style={{
+            color: label,
+            fontSize: 11,
+            fontWeight: 700,
+            marginTop: 2,
+            letterSpacing: 1,
+          }}
+        >
           Complete
         </span>
       </div>
