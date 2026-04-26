@@ -87,11 +87,11 @@ function IntroIconShowcase({ icon }: { icon: string }) {
   // theme is similar.
   const code = icon.codePointAt(0) ?? 0;
   const TINTS = [
-    { a: "#22d3ee", b: "#3b82f6", c: "#a78bfa" }, // cyan-blue-violet
-    { a: "#a78bfa", b: "#f472b6", c: "#fbbf24" }, // violet-pink-gold
-    { a: "#34d399", b: "#22d3ee", c: "#a78bfa" }, // green-cyan-violet
-    { a: "#fbbf24", b: "#f97316", c: "#ef4444" }, // amber-orange-red
-    { a: "#f472b6", b: "#a78bfa", c: "#22d3ee" }, // pink-violet-cyan
+    { a: "#ffd58a", b: "#ff9b4a", c: "#d4733a" }, // gold-coral-amber (warm sunset)
+    { a: "#ffb079", b: "#c43c6a", c: "#a04a4a" }, // peach-rose-wine
+    { a: "#7cc89a", b: "#4a9a6a", c: "#ffd58a" }, // moss-forest-gold (safe vibe)
+    { a: "#fcd34d", b: "#f08e7e", c: "#c4513a" }, // amber-coral-terracotta
+    { a: "#f7c1d6", b: "#a06aff", c: "#ffd58a" }, // blossom-violet-gold
   ];
   const tint = TINTS[code % TINTS.length];
   const orbitDots = [
@@ -242,7 +242,7 @@ function IntroIconShowcase({ icon }: { icon: string }) {
           width: 92,
           height: 92,
           borderRadius: "50%",
-          background: `radial-gradient(circle at 35% 30%, rgba(255,255,255,0.18), rgba(15,23,42,0.85) 60%)`,
+          background: `radial-gradient(circle at 35% 30%, rgba(255, 245, 220, 0.25), rgba(40, 18, 38, 0.85) 60%)`,
           border: `1px solid ${tint.a}66`,
           boxShadow: `0 14px 30px ${tint.b}55, inset 0 -6px 14px rgba(0,0,0,0.4), inset 0 4px 10px rgba(255,255,255,0.08)`,
           display: "flex",
@@ -282,8 +282,9 @@ export default function ExerciseIntro({
         position: "absolute",
         inset: 0,
         background:
-          "radial-gradient(ellipse at 50% 35%, rgba(59,130,246,0.15) 0%, rgba(10,14,26,0.95) 55%, rgba(5,6,14,0.98) 100%)",
-        backdropFilter: "blur(8px)",
+          "linear-gradient(180deg, rgba(40, 18, 38, 0.95) 0%, rgba(20, 8, 24, 0.97) 100%)",
+        backdropFilter: "blur(10px)",
+        WebkitBackdropFilter: "blur(10px)",
         zIndex: 20,
         display: "flex",
         flexDirection: "column",
@@ -293,17 +294,33 @@ export default function ExerciseIntro({
         textAlign: "center",
         animation: "exIntroIn 0.35s ease-out both",
         borderRadius: "inherit",
+        fontFamily:
+          "ui-rounded, 'Fredoka', 'Quicksand', system-ui, -apple-system, sans-serif",
       }}
     >
+      <div
+        style={{
+          fontSize: 11,
+          letterSpacing: 5,
+          color: "#ffd58a",
+          fontWeight: 800,
+          textTransform: "uppercase",
+          marginBottom: 14,
+          animation: "exIntroPop 0.45s ease-out both",
+        }}
+      >
+        ✦ Get Ready ✦
+      </div>
       <IntroIconShowcase icon={icon} />
       <h2
         style={{
-          fontFamily: "'Space Grotesk', sans-serif",
-          fontSize: 28,
+          fontSize: 32,
           fontWeight: 900,
-          color: "#f1f5f9",
+          background: "linear-gradient(135deg, #ffd58a, #ff9b4a, #d4733a)",
+          WebkitBackgroundClip: "text",
+          WebkitTextFillColor: "transparent",
           margin: "6px 0 10px",
-          letterSpacing: 0.3,
+          letterSpacing: 0.5,
           animation: "exIntroPop 0.45s ease-out both",
           animationDelay: "0.08s",
           animationFillMode: "both",
@@ -313,26 +330,35 @@ export default function ExerciseIntro({
       </h2>
       <p
         style={{
-          fontFamily: "'DM Sans', 'Space Grotesk', sans-serif",
           fontSize: 16,
-          color: "#94a3b8",
-          maxWidth: 400,
+          color: "#ffe9c8",
+          maxWidth: 460,
           lineHeight: 1.5,
           margin: "0 auto 18px",
+          opacity: 0.92,
           animation: "exIntroPop 0.5s ease-out both",
           animationDelay: "0.16s",
           animationFillMode: "both",
+          fontWeight: 500,
         }}
       >
         {description}
       </p>
       <div
         style={{
-          fontFamily: "'Courier New', monospace",
-          fontSize: 13,
-          color: "#64748b",
+          fontFamily: "ui-monospace, 'JetBrains Mono', Menlo, monospace",
+          fontSize: 11,
+          color: "#ffd58a",
           marginBottom: 24,
-          letterSpacing: 0.5,
+          letterSpacing: 2.5,
+          textTransform: "uppercase",
+          fontWeight: 700,
+          padding: "5px 14px",
+          background: "rgba(40, 18, 38, 0.55)",
+          borderStyle: "solid",
+          borderWidth: 1,
+          borderColor: "rgba(255, 220, 180, 0.35)",
+          borderRadius: 999,
           animation: "exIntroPop 0.55s ease-out both",
           animationDelay: "0.24s",
           animationFillMode: "both",
@@ -347,21 +373,31 @@ export default function ExerciseIntro({
           onStart();
         }}
         style={{
-          background: "linear-gradient(135deg, #f97316, #f59e0b)",
-          color: "#fff",
+          background: "linear-gradient(135deg, #ffd58a, #ff9b4a)",
+          color: "#3a1a06",
           fontWeight: 900,
           fontSize: 18,
           letterSpacing: 2,
-          borderRadius: 16,
+          borderRadius: 999,
           padding: "16px 48px",
           border: "none",
           cursor: "pointer",
-          animation: "exIntroBtnPulse 1.4s ease-in-out infinite",
           fontFamily: "inherit",
+          boxShadow:
+            "0 18px 36px -10px rgba(255,120,40,0.7), 0 0 0 1px rgba(255,235,200,0.6) inset, 0 -4px 0 rgba(180,80,30,0.45) inset",
+          transition: "transform 0.18s ease",
         }}
-        onMouseEnter={() => playSound("hover")}
+        onMouseEnter={(e) => {
+          playSound("hover");
+          (e.currentTarget as HTMLButtonElement).style.transform =
+            "translateY(-2px) scale(1.04)";
+        }}
+        onMouseLeave={(e) => {
+          (e.currentTarget as HTMLButtonElement).style.transform =
+            "translateY(0) scale(1)";
+        }}
       >
-        START &rarr;
+        START →
       </button>
     </div>
   );
