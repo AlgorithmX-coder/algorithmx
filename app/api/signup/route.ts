@@ -13,6 +13,15 @@ export async function POST(request: Request) {
       );
     }
 
+    // Server-side mirror of the client check — refuse weak passwords
+    // even if a request bypasses the form validation.
+    if (typeof password !== "string" || password.length < 8) {
+      return NextResponse.json(
+        { error: "Password must be at least 8 characters" },
+        { status: 400 }
+      );
+    }
+
     const existingUser = await prisma.user.findUnique({
       where: { email },
     });

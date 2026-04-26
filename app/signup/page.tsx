@@ -117,8 +117,8 @@ export default function SignupPage() {
       setError("Please enter a valid email address");
       return false;
     }
-    if (password.length < 6) {
-      setError("Password must be at least 6 characters");
+    if (password.length < 8) {
+      setError("Password must be at least 8 characters");
       return false;
     }
     return true;
@@ -439,7 +439,7 @@ export default function SignupPage() {
                       e.currentTarget.style.borderColor = C.border;
                       e.currentTarget.style.boxShadow = "none";
                     }}
-                    placeholder="Create a password (min 6 characters)"
+                    placeholder="Create a password (min 8 characters)"
                   />
                   <button
                     type="button"
