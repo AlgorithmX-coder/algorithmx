@@ -314,6 +314,9 @@ export default function MemoryMatch({
         width: "100%",
         maxWidth: 720,
         margin: "0 auto",
+        // Cap to viewport height minus the lesson chrome (HUD + nav + spacing).
+        // Scroll inside the rounded frame rather than clipping when the grid
+        // is taller than the available space (short laptops / docked windows).
         maxHeight: "calc(100vh - 140px)",
         padding: "0 0 22px",
         borderRadius: 28,
@@ -321,7 +324,8 @@ export default function MemoryMatch({
           "linear-gradient(180deg, #fff7e0 0%, #fde2b5 55%, #f9c27a 100%)",
         boxShadow: SHADOW.sceneFrame,
         color: COLOR.inkDeep,
-        overflow: "hidden",
+        overflowX: "hidden",
+        overflowY: "auto",
         fontFamily:
           "ui-rounded, 'Fredoka', 'Quicksand', system-ui, -apple-system, sans-serif",
       }}
@@ -379,7 +383,7 @@ export default function MemoryMatch({
           style={{
             display: "grid",
             gridTemplateColumns: `repeat(${cols}, 1fr)`,
-            gap: 14,
+            gap: 10,
             perspective: 900,
           }}
         >
@@ -409,7 +413,7 @@ export default function MemoryMatch({
                 onClick={() => flip(idx)}
                 style={{
                   cursor: c.matched ? "default" : "pointer",
-                  aspectRatio: "1 / 1",
+                  aspectRatio: "5 / 4",
                   position: "relative",
                   transformStyle: "preserve-3d",
                   transition:
