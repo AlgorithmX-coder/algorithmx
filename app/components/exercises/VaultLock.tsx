@@ -32,7 +32,7 @@ type Phase = "intro" | "active" | "feedback" | "complete";
 const STYLES = `
 @keyframes vaultSpin { to { transform: rotate(360deg); } }
 @keyframes vaultRingPulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
-@keyframes vaultTerminalFlashGood { 0% { background: #0c1019; } 40% { background: rgba(52,211,153,0.15); } 100% { background: #0c1019; } }
+@keyframes vaultTerminalFlashGood { 0% { background: #0c1019; } 40% { background: rgba(168,227,187,0.15); } 100% { background: #0c1019; } }
 @keyframes vaultTerminalFlashBad {  0% { background: #0c1019; } 40% { background: rgba(239,68,68,0.2);  } 100% { background: #0c1019; } }
 @keyframes vaultShakeX { 0%,100% { transform: translateX(0); } 20% { transform: translateX(-8px); } 40% { transform: translateX(8px); } 60% { transform: translateX(-4px); } 80% { transform: translateX(4px); } }
 @keyframes vaultType { from { max-width: 0; } to { max-width: 100%; } }
@@ -62,7 +62,7 @@ function LockIcon({ size = 40, color = "#fff" }: { size?: number; color?: string
   );
 }
 
-function UnlockIcon({ size = 40, color = "#34d399" }: { size?: number; color?: string }) {
+function UnlockIcon({ size = 40, color = "#7cc89a" }: { size?: number; color?: string }) {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
       <rect x="4" y="11" width="16" height="10" rx="2" />
@@ -71,7 +71,7 @@ function UnlockIcon({ size = 40, color = "#34d399" }: { size?: number; color?: s
   );
 }
 
-const SEGMENT_COLORS = ["#60a5fa", "#34d399", "#f97316", "#f59e0b"];
+const SEGMENT_COLORS = ["#ffd58a", "#7cc89a", "#f97316", "#f59e0b"];
 
 function VaultDoor({
   securityLevel,
@@ -88,7 +88,7 @@ function VaultDoor({
 
   const status =
     phase === "complete"
-      ? { text: "VAULT OPENED 🔓", color: "#34d399", bg: "rgba(52,211,153,0.12)" }
+      ? { text: "VAULT OPENED 🔓", color: "#7cc89a", bg: "rgba(168,227,187,0.12)" }
       : phase === "intro"
         ? { text: "LOCKED 🔒", color: "#ef4444", bg: "rgba(239,68,68,0.12)" }
         : { text: "UNLOCKING…", color: "#f97316", bg: "rgba(249,115,22,0.12)" };
@@ -127,7 +127,7 @@ function VaultDoor({
             inset: 0,
             borderRadius: "50%",
             background:
-              "conic-gradient(from 0deg, #60a5fa, #34d399, #f97316, #f59e0b, #60a5fa)",
+              "conic-gradient(from 0deg, #ffd58a, #7cc89a, #f97316, #f59e0b, #ffd58a)",
             animation: "vaultSpin 8s linear infinite",
             willChange: "transform",
           }}
@@ -144,7 +144,7 @@ function VaultDoor({
             alignItems: "center",
             justifyContent: "center",
             boxShadow: completed
-              ? "inset 0 0 20px rgba(52,211,153,0.25)"
+              ? "inset 0 0 20px rgba(168,227,187,0.25)"
               : "inset 0 0 18px rgba(0,0,0,0.5)",
             animation: completed ? "vaultCompleteGlow 2.2s ease-in-out infinite" : undefined,
           }}
@@ -156,7 +156,7 @@ function VaultDoor({
               animation: completed ? "vaultLockSwap 0.8s ease-out both" : undefined,
             }}
           >
-            {completed ? <UnlockIcon size={40} color="#34d399" /> : <LockIcon size={40} color="#fff" />}
+            {completed ? <UnlockIcon size={40} color="#7cc89a" /> : <LockIcon size={40} color="#fff" />}
           </span>
         </div>
       </div>
@@ -272,7 +272,7 @@ function EvaluatePanel({
       <div
         style={{
           background: "#0c1019",
-          border: "1px solid rgba(96,165,250,0.12)",
+          border: "1px solid rgba(255,213,138,0.12)",
           borderRadius: 14,
           padding: 20,
           textAlign: "center",
@@ -289,7 +289,7 @@ function EvaluatePanel({
             whiteSpace: "nowrap",
             fontFamily: "'JetBrains Mono', 'Courier New', monospace",
             fontSize: 20,
-            color: "#34d399",
+            color: "#7cc89a",
             letterSpacing: "0.02em",
             animation: "vaultType 0.9s steps(30, end) both",
             willChange: "max-width",
@@ -327,8 +327,8 @@ function EvaluatePanel({
           style={{
             marginTop: 16,
             overflow: "hidden",
-            background: isCorrect ? "rgba(52,211,153,0.08)" : "rgba(239,68,68,0.08)",
-            border: `1px solid ${isCorrect ? "rgba(52,211,153,0.3)" : "rgba(239,68,68,0.3)"}`,
+            background: isCorrect ? "rgba(168,227,187,0.08)" : "rgba(239,68,68,0.08)",
+            border: `1px solid ${isCorrect ? "rgba(168,227,187,0.3)" : "rgba(239,68,68,0.3)"}`,
             borderRadius: 12,
             padding: "14px 18px",
             animation: "vaultSlideDown 0.45s cubic-bezier(0.16,1,0.3,1) both",
@@ -339,7 +339,7 @@ function EvaluatePanel({
               fontFamily: "'Fredoka', 'Nunito', sans-serif",
               fontSize: 14,
               fontWeight: 700,
-              color: isCorrect ? "#34d399" : "#fca5a5",
+              color: isCorrect ? "#7cc89a" : "#fca5a5",
               marginBottom: 4,
             }}
           >
@@ -373,12 +373,12 @@ function AnswerButton({
   selectedIsWrong: boolean;
   onClick: () => void;
 }) {
-  const accent = tone === "good" ? "#34d399" : "#ef4444";
-  const glow = tone === "good" ? "rgba(52,211,153,0.4)" : "rgba(239,68,68,0.4)";
+  const accent = tone === "good" ? "#7cc89a" : "#ef4444";
+  const glow = tone === "good" ? "rgba(168,227,187,0.4)" : "rgba(239,68,68,0.4)";
   const [hover, setHover] = useState(false);
 
   const border = selectedIsCorrect
-    ? "#34d399"
+    ? "#7cc89a"
     : selectedIsWrong
       ? "#ef4444"
       : hover && !disabled
@@ -386,7 +386,7 @@ function AnswerButton({
         : "rgba(255,255,255,0.1)";
 
   const shadow = selected
-    ? `0 0 20px ${selectedIsCorrect ? "rgba(52,211,153,0.5)" : "rgba(239,68,68,0.5)"}`
+    ? `0 0 20px ${selectedIsCorrect ? "rgba(168,227,187,0.5)" : "rgba(239,68,68,0.5)"}`
     : hover && !disabled
       ? `0 0 16px ${glow}`
       : "none";
@@ -441,7 +441,7 @@ function CreatePanel({
   const goodsPicked = picked.filter((i) => components[i]?.isGood).length;
   const strength = Math.min(100, Math.round((goodsPicked / goodCount) * 100));
   const strengthColor =
-    strength >= 75 ? "#34d399" : strength >= 40 ? "#f59e0b" : "#ef4444";
+    strength >= 75 ? "#7cc89a" : strength >= 40 ? "#f59e0b" : "#ef4444";
 
   const pick = useCallback(
     (i: number) => {
@@ -508,8 +508,8 @@ function CreatePanel({
       <div
         style={{
           minHeight: 60,
-          border: `2px dashed ${lastFeedback === "good" ? "#34d399" : lastFeedback === "bad" ? "#ef4444" : "rgba(96,165,250,0.3)"}`,
-          background: "rgba(96,165,250,0.04)",
+          border: `2px dashed ${lastFeedback === "good" ? "#7cc89a" : lastFeedback === "bad" ? "#ef4444" : "rgba(255,213,138,0.3)"}`,
+          background: "rgba(255,213,138,0.04)",
           borderRadius: 14,
           padding: "14px 18px",
           display: "flex",
@@ -528,14 +528,14 @@ function CreatePanel({
 
       {/* Strength meter — 5-segment power gauge */}
       <div style={{ marginTop: 14 }}>
-        <div style={{ display: "flex", justifyContent: "space-between", fontSize: 11, fontWeight: 700, color: "#94a3b8", letterSpacing: "0.08em", marginBottom: 6 }}>
+        <div style={{ display: "flex", justifyContent: "space-between", fontSize: 11, fontWeight: 700, color: "rgba(255,233,200,0.55)", letterSpacing: "0.08em", marginBottom: 6 }}>
           <span>STRENGTH</span>
           <span style={{ color: strengthColor }}>{strength}%</span>
         </div>
         <div style={{ display: "flex", gap: 6, height: 16 }}>
           {(() => {
             // 5 segments — each segment lights up as strength crosses its threshold.
-            const segColours = ["#ef4444", "#f97316", "#fbbf24", "#84cc16", "#34d399"];
+            const segColours = ["#ef4444", "#f97316", "#fbbf24", "#84cc16", "#7cc89a"];
             const filled = Math.min(5, Math.ceil((strength / 100) * 5));
             return segColours.map((c, i) => {
               const on = i < filled;
@@ -613,18 +613,18 @@ function ComponentCard({
 }) {
   const [hover, setHover] = useState(false);
   const accent =
-    highlight === "good" ? "#34d399" : highlight === "bad" ? "#ef4444" : "#60a5fa";
+    highlight === "good" ? "#7cc89a" : highlight === "bad" ? "#ef4444" : "#ffd58a";
   const border =
     highlight === "good"
-      ? "#34d399"
+      ? "#7cc89a"
       : highlight === "bad"
         ? "#ef4444"
         : hover && !disabled
-          ? "rgba(96,165,250,0.45)"
+          ? "rgba(255,213,138,0.45)"
           : "rgba(255,255,255,0.08)";
   const bg =
     highlight === "good"
-      ? "rgba(52,211,153,0.08)"
+      ? "rgba(168,227,187,0.08)"
       : highlight === "bad"
         ? "rgba(239,68,68,0.08)"
         : "#111827";
@@ -727,7 +727,7 @@ export default function VaultLock({
         maxWidth: 800,
         margin: "0 auto",
         background: "#0d1220",
-        border: "1px solid rgba(96,165,250,0.12)",
+        border: "1px solid rgba(255,213,138,0.12)",
         borderRadius: 24,
         padding: "28px 24px",
         color: "#f1f5f9",
@@ -764,7 +764,7 @@ export default function VaultLock({
           style={{
             textAlign: "center",
             padding: "10px 0",
-            color: "#94a3b8",
+            color: "rgba(255,233,200,0.55)",
             fontSize: 14,
             animation: "vaultIntroPulse 1.2s ease-in-out infinite",
           }}
@@ -784,7 +784,7 @@ export default function VaultLock({
           registerTick={registerTick}
         />
       ) : (
-        <div style={{ textAlign: "center", color: "#94a3b8", fontSize: 14 }}>
+        <div style={{ textAlign: "center", color: "rgba(255,233,200,0.55)", fontSize: 14 }}>
           No exercise data supplied.
         </div>
       )}
@@ -807,7 +807,7 @@ function CompletePanel({ title }: { title: string }) {
           fontWeight: 700,
           fontSize: 26,
           margin: "0 0 6px",
-          background: "linear-gradient(135deg, #34d399, #f59e0b)",
+          background: "linear-gradient(135deg, #7cc89a, #f59e0b)",
           WebkitBackgroundClip: "text",
           WebkitTextFillColor: "transparent",
           backgroundClip: "text",
@@ -815,7 +815,7 @@ function CompletePanel({ title }: { title: string }) {
       >
         🔓 {title}
       </h3>
-      <p style={{ color: "#94a3b8", fontSize: 14, margin: 0 }}>
+      <p style={{ color: "rgba(255,233,200,0.55)", fontSize: 14, margin: 0 }}>
         All security segments activated.
       </p>
     </div>

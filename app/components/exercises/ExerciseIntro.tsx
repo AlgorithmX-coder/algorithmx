@@ -277,15 +277,22 @@ export default function ExerciseIntro({
   return (
     <div
       role="dialog"
+      aria-modal="true"
       aria-label={title}
       style={{
-        position: "absolute",
+        // Was position:absolute inset:0 — but exercise wrappers with
+        // overflow:auto + maxHeight let the game body bleed past the
+        // overlay's visible area on shorter viewports, so the intro
+        // appeared to "stack" with the game UI. position:fixed covers
+        // the actual viewport, so this can't happen regardless of how
+        // the parent exercise lays out.
+        position: "fixed",
         inset: 0,
         background:
-          "linear-gradient(180deg, rgba(40, 18, 38, 0.95) 0%, rgba(20, 8, 24, 0.97) 100%)",
-        backdropFilter: "blur(10px)",
-        WebkitBackdropFilter: "blur(10px)",
-        zIndex: 20,
+          "linear-gradient(180deg, rgba(40, 18, 38, 0.97) 0%, rgba(20, 8, 24, 0.99) 100%)",
+        backdropFilter: "blur(14px)",
+        WebkitBackdropFilter: "blur(14px)",
+        zIndex: 60,
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
@@ -293,7 +300,6 @@ export default function ExerciseIntro({
         padding: 32,
         textAlign: "center",
         animation: "exIntroIn 0.35s ease-out both",
-        borderRadius: "inherit",
         fontFamily:
           "ui-rounded, 'Fredoka', 'Quicksand', system-ui, -apple-system, sans-serif",
       }}

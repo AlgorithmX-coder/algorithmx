@@ -39,15 +39,15 @@ const INGREDIENTS: Ingredient[] = [
     id: "lower",
     label: "lowercase",
     icon: "abc",
-    colour: "#3b82f6",
-    bg: "linear-gradient(135deg, #3b82f6, #1d4ed8)",
+    colour: "#ff9b4a",
+    bg: "linear-gradient(135deg, #ff9b4a, #d4733a)",
   },
   {
     id: "digits",
     label: "Numbers",
     icon: "123",
-    colour: "#22c55e",
-    bg: "linear-gradient(135deg, #22c55e, #15803d)",
+    colour: "#7cc89a",
+    bg: "linear-gradient(135deg, #7cc89a, #15803d)",
   },
   {
     id: "symbols",
@@ -320,7 +320,7 @@ export default function PasswordLab({
         @keyframes plSteam { 0% { transform: translate(-50%, 0) scale(0.6); opacity: 0; } 18% { opacity: 0.55; } 100% { transform: translate(calc(-50% + var(--sx, 0px)), -130px) scale(2.4); opacity: 0; } }
         @keyframes plFireFlicker { 0%,100% { transform: translateX(-50%) scaleY(1) scaleX(1); opacity: 0.85; } 50% { transform: translateX(-50%) scaleY(1.18) scaleX(0.9); opacity: 1; } }
         @keyframes plSpark { 0% { transform: translateY(0); opacity: 0; } 18% { opacity: 1; } 100% { transform: translateY(-160px) translateX(var(--sx, 12px)); opacity: 0; } }
-        @keyframes plRimGlow { 0%,100% { box-shadow: 0 0 18px rgba(167,139,250,0.55), 0 0 40px rgba(34,211,238,0.35); } 50% { box-shadow: 0 0 30px rgba(167,139,250,0.85), 0 0 60px rgba(244,114,182,0.45); } }
+        @keyframes plRimGlow { 0%,100% { box-shadow: 0 0 18px rgba(160,106,255,0.55), 0 0 40px rgba(255,213,138,0.35); } 50% { box-shadow: 0 0 30px rgba(160,106,255,0.85), 0 0 60px rgba(247,193,214,0.45); } }
       `}</style>
       <div aria-hidden style={{ position: "absolute", inset: 0, pointerEvents: "none", overflow: "hidden", zIndex: 0 }}>
         {["✦", "🜨", "🜂", "✧", "⚗", "☉", "✦"].map((r, i) => (
@@ -532,7 +532,7 @@ export default function PasswordLab({
             height: 170,
             borderRadius: "40% 40% 60% 60% / 20% 20% 80% 80%",
             background:
-              "linear-gradient(180deg, #1e293b 0%, #0f172a 55%, #000 100%)",
+              "linear-gradient(180deg, #3a1a3e 0%, #2a0d2e 55%, #000 100%)",
             boxShadow:
               "inset 0 6px 18px rgba(255,255,255,0.08), inset 0 -20px 30px rgba(0,0,0,0.8), 0 10px 40px rgba(0,0,0,0.6)",
             border: "3px solid #475569",
@@ -630,7 +630,7 @@ export default function PasswordLab({
                   height: 120,
                   borderRadius: "30px 30px 50px 50% / 22px 22px 60px 60px",
                   background:
-                    "linear-gradient(180deg, rgba(253,224,71,0.7), rgba(236,72,153,0.6), rgba(59,130,246,0.7))",
+                    "linear-gradient(180deg, rgba(253,224,71,0.7), rgba(236,72,153,0.6), rgba(255,178,110,0.7))",
                   border: "2px solid rgba(255,255,255,0.6)",
                   boxShadow:
                     "0 0 30px rgba(253,224,71,0.55), inset 0 4px 10px rgba(255,255,255,0.4)",

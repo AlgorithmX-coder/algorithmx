@@ -193,7 +193,7 @@ export default function SpamBlaster({
       ty: hit.y,
       bornAt: now,
       duration: 140,
-      colour: phishing ? "#22d3ee" : "#fde047",
+      colour: phishing ? "#ffd58a" : "#ffd58a",
       kind: phishing ? "phishing" : "safe",
     });
     playSound("click");
@@ -292,7 +292,7 @@ export default function SpamBlaster({
     s.inbox += 1;
     s.streak += 1;
     s.bestStreak = Math.max(s.bestStreak, s.streak);
-    s.monitorFlashColour = "#34d399";
+    s.monitorFlashColour = "#7cc89a";
     s.monitorFlashUntil = performance.now() + 280;
     playSound("pop");
     onCorrect?.();
@@ -403,8 +403,8 @@ export default function SpamBlaster({
       const sh = MONITOR_H - 20;
 
       // frame
-      const frameColour = flashing ? s.monitorFlashColour! : "#1e293b";
-      ctx.fillStyle = "#0f172a";
+      const frameColour = flashing ? s.monitorFlashColour! : "#3a1a3e";
+      ctx.fillStyle = "#2a0d2e";
       roundRect(ctx, mx - MONITOR_W / 2, my - MONITOR_H / 2, MONITOR_W, MONITOR_H, 14);
       ctx.fill();
       ctx.strokeStyle = frameColour;
@@ -430,32 +430,32 @@ export default function SpamBlaster({
       ctx.fillStyle = "rgba(15,23,42,0.95)";
       ctx.fillRect(sx, sy, sw, 18);
       // Traffic-light dots
-      ["#ef4444", "#fbbf24", "#22c55e"].forEach((c, i) => {
+      ["#ef4444", "#fbbf24", "#7cc89a"].forEach((c, i) => {
         ctx.fillStyle = c;
         ctx.beginPath();
         ctx.arc(sx + 8 + i * 7, sy + 9, 2, 0, Math.PI * 2);
         ctx.fill();
       });
       // Brand mark "AX" badge
-      ctx.fillStyle = "#22d3ee";
+      ctx.fillStyle = "#ffd58a";
       ctx.font = "900 9px 'Space Grotesk', sans-serif";
       ctx.textAlign = "left";
       ctx.textBaseline = "middle";
       ctx.fillText("◆ AlgorithmX Mail", sx + 32, sy + 9);
       // Status dot (live)
-      ctx.fillStyle = "#22c55e";
+      ctx.fillStyle = "#7cc89a";
       ctx.beginPath();
       ctx.arc(sx + sw - 8, sy + 9, 2, 0, Math.PI * 2);
       ctx.fill();
 
       // Inbox header (inside app)
-      ctx.fillStyle = "rgba(167,139,250,0.18)";
+      ctx.fillStyle = "rgba(160,106,255,0.18)";
       ctx.fillRect(sx, sy + 18, sw, 16);
-      ctx.fillStyle = "#a78bfa";
+      ctx.fillStyle = "#a06aff";
       ctx.font = "900 9px 'Courier New', monospace";
       ctx.textAlign = "left";
       ctx.fillText("▸ INBOX", sx + 8, sy + 26);
-      ctx.fillStyle = "#86efac";
+      ctx.fillStyle = "#a8e3bb";
       ctx.textAlign = "right";
       ctx.fillText(`${s.inbox}/${s.totalSafe}`, sx + sw - 8, sy + 26);
 
@@ -464,10 +464,10 @@ export default function SpamBlaster({
       for (let i = 0; i < Math.min(s.inbox, 3); i++) {
         const ry = sy + 38 + i * rowH;
         // Row background
-        ctx.fillStyle = i === 0 ? "rgba(34,211,238,0.1)" : "rgba(255,255,255,0.03)";
+        ctx.fillStyle = i === 0 ? "rgba(255,213,138,0.1)" : "rgba(255,255,255,0.03)";
         ctx.fillRect(sx + 4, ry, sw - 8, rowH - 2);
         // Avatar dot
-        const dotC = ["#22d3ee", "#a78bfa", "#fbbf24"][i % 3];
+        const dotC = ["#ffd58a", "#a06aff", "#fbbf24"][i % 3];
         ctx.fillStyle = dotC;
         ctx.beginPath();
         ctx.arc(sx + 12, ry + (rowH - 2) / 2, 3, 0, Math.PI * 2);
@@ -493,11 +493,11 @@ export default function SpamBlaster({
       // Footer status bar
       ctx.fillStyle = "rgba(15,23,42,0.95)";
       ctx.fillRect(sx, sy + sh - 14, sw, 14);
-      ctx.fillStyle = s.viruses > 0 ? "#ef4444" : "#22c55e";
+      ctx.fillStyle = s.viruses > 0 ? "#ef4444" : "#7cc89a";
       ctx.beginPath();
       ctx.arc(sx + 8, sy + sh - 7, 2.4, 0, Math.PI * 2);
       ctx.fill();
-      ctx.fillStyle = s.viruses > 0 ? "#fca5a5" : "#86efac";
+      ctx.fillStyle = s.viruses > 0 ? "#fca5a5" : "#a8e3bb";
       ctx.font = "700 8px 'Courier New', monospace";
       ctx.textAlign = "left";
       ctx.fillText(
@@ -505,7 +505,7 @@ export default function SpamBlaster({
         sx + 14, sy + sh - 7
       );
       ctx.textAlign = "right";
-      ctx.fillStyle = "#a78bfa";
+      ctx.fillStyle = "#a06aff";
       ctx.fillText(`STREAK ${s.streak}`, sx + sw - 6, sy + sh - 7);
 
       // Subtle scanlines on top of everything
@@ -526,7 +526,7 @@ export default function SpamBlaster({
       }
 
       // base
-      ctx.fillStyle = "#1e293b";
+      ctx.fillStyle = "#3a1a3e";
       ctx.fillRect(mx - 40, my + MONITOR_H / 2, 80, 12);
       ctx.fillRect(mx - 70, my + MONITOR_H / 2 + 12, 140, 8);
 
@@ -547,7 +547,7 @@ export default function SpamBlaster({
       ctx.translate(em.x, em.y);
       ctx.scale(em.scale, em.scale);
       // tint
-      const tint = em.isPhishing ? "rgba(239,68,68,0.08)" : "rgba(52,211,153,0.08)";
+      const tint = em.isPhishing ? "rgba(239,68,68,0.08)" : "rgba(168,227,187,0.08)";
       // body
       ctx.fillStyle = "#0b1222";
       roundRect(ctx, -EMAIL_W / 2, -EMAIL_H / 2, EMAIL_W, EMAIL_H, 10);
@@ -562,7 +562,7 @@ export default function SpamBlaster({
       // envelope icon
       ctx.save();
       ctx.translate(-EMAIL_W / 2 + 22, 0);
-      ctx.strokeStyle = "#94a3b8";
+      ctx.strokeStyle = "rgba(255,233,200,0.55)";
       ctx.lineWidth = 2;
       roundRect(ctx, -14, -10, 28, 20, 3);
       ctx.stroke();
@@ -823,7 +823,7 @@ export default function SpamBlaster({
       ctx.fillStyle = "#fca5a5";
       ctx.fillText(`ZAPPED ${s.zapped}/${s.totalPhishing}`, 14, 12);
       ctx.textAlign = "right";
-      ctx.fillStyle = "#86efac";
+      ctx.fillStyle = "#a8e3bb";
       ctx.fillText(`INBOX ${s.inbox}/${s.totalSafe}`, CANVAS_W - 14, 12);
       ctx.textAlign = "center";
       ctx.fillStyle = s.viruses > 0 ? "#ef4444" : "#4b5563";

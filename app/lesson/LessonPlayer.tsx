@@ -122,10 +122,10 @@ const celebrateCorrect = (el: HTMLElement) => {
   const tl = gsap.timeline();
   tl.to(el, { scale: 1.15, duration: 0.15, ease: "power2.out" })
     .to(el, { scale: 1, duration: 0.5, ease: "elastic.out(1, 0.3)" })
-    .to(el, { boxShadow: "0 0 40px rgba(16,185,129,0.6), 0 0 80px rgba(16,185,129,0.2)", duration: 0.2 }, 0)
-    .to(el, { boxShadow: "0 0 10px rgba(16,185,129,0.2)", duration: 0.6 }, 0.4);
+    .to(el, { boxShadow: "0 0 40px rgba(124,200,154,0.6), 0 0 80px rgba(124,200,154,0.2)", duration: 0.2 }, 0)
+    .to(el, { boxShadow: "0 0 10px rgba(124,200,154,0.2)", duration: 0.6 }, 0.4);
   const rect = el.getBoundingClientRect();
-  const colors = ["#10b981", "#06b6d4", "#3b82f6", "#f59e0b"];
+  const colors = ["#5fb37a", "#ffd58a", "#ff9b4a", "#f59e0b"];
   for (let i = 0; i < 12; i++) {
     const p = document.createElement("div");
     const size = 6 + Math.random() * 6;
@@ -202,7 +202,7 @@ const TiltCard = ({ children, style, className, onClick }: { children: React.Rea
       rotateY: x * 15,
       rotateX: -y * 15,
       scale: 1.03,
-      boxShadow: "0 25px 50px rgba(0,0,0,0.3), 0 0 25px rgba(59,130,246,0.3)",
+      boxShadow: "0 25px 50px rgba(0,0,0,0.3), 0 0 25px rgba(255,178,110,0.3)",
       duration: 0.3,
       ease: "power2.out",
     });
@@ -241,13 +241,13 @@ const FullScene = ({ children, bg, glow }: { children: React.ReactNode; bg: stri
 
 /* ───────────────────────── SVG ICONS ──────────────────────── */
 
-const IconShield = ({ size = 24, color = "#3b82f6" }: { size?: number; color?: string }) => (
+const IconShield = ({ size = 24, color = "#ff9b4a" }: { size?: number; color?: string }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
     <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
   </svg>
 );
 
-const IconLock = ({ size = 24, color = "#3b82f6" }: { size?: number; color?: string }) => (
+const IconLock = ({ size = 24, color = "#ff9b4a" }: { size?: number; color?: string }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
     <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
   </svg>
@@ -259,7 +259,7 @@ const IconUnlock = ({ size = 24, color = "#ef4444" }: { size?: number; color?: s
   </svg>
 );
 
-const IconGamepad = ({ size = 24, color = "#3b82f6" }: { size?: number; color?: string }) => (
+const IconGamepad = ({ size = 24, color = "#ff9b4a" }: { size?: number; color?: string }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
     <line x1="6" y1="12" x2="10" y2="12"/><line x1="8" y1="10" x2="8" y2="14"/><line x1="15" y1="13" x2="15.01" y2="13"/><line x1="18" y1="11" x2="18.01" y2="11"/>
     <rect x="2" y="6" width="20" height="12" rx="2"/>
@@ -278,25 +278,25 @@ const IconUsers = ({ size = 24, color = "#ec4899" }: { size?: number; color?: st
   </svg>
 );
 
-const IconMessageCircle = ({ size = 24, color = "#3b82f6" }: { size?: number; color?: string }) => (
+const IconMessageCircle = ({ size = 24, color = "#ff9b4a" }: { size?: number; color?: string }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
     <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
   </svg>
 );
 
-const IconTablet = ({ size = 24, color = "#3b82f6" }: { size?: number; color?: string }) => (
+const IconTablet = ({ size = 24, color = "#ff9b4a" }: { size?: number; color?: string }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
     <rect x="4" y="2" width="16" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/>
   </svg>
 );
 
-const IconSchool = ({ size = 24, color = "#10b981" }: { size?: number; color?: string }) => (
+const IconSchool = ({ size = 24, color = "#5fb37a" }: { size?: number; color?: string }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
     <path d="M2 10l10-7 10 7-10 7z"/><path d="M6 12v5c0 1 2 3 6 3s6-2 6-3v-5"/>
   </svg>
 );
 
-const IconRuler = ({ size = 24, color = "#10b981" }: { size?: number; color?: string }) => (
+const IconRuler = ({ size = 24, color = "#5fb37a" }: { size?: number; color?: string }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
     <path d="M16 2l6 6-14 14-6-6z"/><path d="M10 10l2 2"/><path d="M14 6l2 2"/><path d="M6 14l2 2"/>
   </svg>
@@ -354,13 +354,13 @@ const DeviceIllustration = ({
         {/* Buttons */}
         <circle cx="82" cy="48" r="4.2" fill="#fbbf24" stroke="#fff" strokeWidth="0.6" />
         <circle cx="92" cy="56" r="4.2" fill="#ef4444" stroke="#fff" strokeWidth="0.6" />
-        <circle cx="82" cy="64" r="4.2" fill="#22c55e" stroke="#fff" strokeWidth="0.6" />
-        <circle cx="72" cy="56" r="4.2" fill="#3b82f6" stroke="#fff" strokeWidth="0.6" />
+        <circle cx="82" cy="64" r="4.2" fill="#7cc89a" stroke="#fff" strokeWidth="0.6" />
+        <circle cx="72" cy="56" r="4.2" fill="#ff9b4a" stroke="#fff" strokeWidth="0.6" />
         {/* Start/Select */}
         <rect x="52" y="50" width="6" height="2.4" rx="1.2" fill="rgba(255,255,255,0.7)" />
         <rect x="60" y="50" width="6" height="2.4" rx="1.2" fill="rgba(255,255,255,0.7)" />
         {/* Glowing dot when locked */}
-        {locked && <circle cx="60" cy="60" r="3" fill="#10b981"><animate attributeName="opacity" values="0.4;1;0.4" dur="1.6s" repeatCount="indefinite" /></circle>}
+        {locked && <circle cx="60" cy="60" r="3" fill="#5fb37a"><animate attributeName="opacity" values="0.4;1;0.4" dur="1.6s" repeatCount="indefinite" /></circle>}
       </svg>
     );
   }
@@ -382,13 +382,13 @@ const DeviceIllustration = ({
         <rect x="24" y="44" width="48" height="14" rx="2" fill="rgba(255,255,255,0.18)" />
         <rect x="24" y="62" width="48" height="2" rx="1" fill="rgba(255,255,255,0.45)" />
         <rect x="24" y="68" width="36" height="2" rx="1" fill="rgba(255,255,255,0.4)" />
-        <rect x="24" y="78" width="22" height="8" rx="2" fill="#fde047" />
+        <rect x="24" y="78" width="22" height="8" rx="2" fill="#ffd58a" />
         {/* Camera & home */}
         <circle cx="48" cy="10.5" r="1.4" fill="#475569" />
         <circle cx="48" cy="99.5" r="3.2" fill="none" stroke="#475569" strokeWidth="1" />
         {locked && (
           <g transform="translate(60 80)">
-            <circle r="6" fill="#10b981" />
+            <circle r="6" fill="#5fb37a" />
             <path d="M-2 -1 v 2 m 0 0 h 0" stroke="#fff" strokeWidth="1.6" />
             <rect x="-2" y="-1" width="4" height="3.6" fill="#fff" rx="0.6" />
             <path d="M-1.5 -1 v -1.4 a 1.5 1.5 0 0 1 3 0 v 1.4" stroke="#fff" strokeWidth="1" fill="none" />
@@ -408,11 +408,11 @@ const DeviceIllustration = ({
       <path d="M14 44 L60 18 L106 44 Z" fill="#1e293b" stroke="rgba(255,255,255,0.18)" strokeWidth="1.4" />
       <path d="M14 44 L60 18 L106 44 Z" fill={`url(#${shineId})`} opacity="0.45" />
       {/* Bell tower */}
-      <rect x="56" y="22" width="8" height="14" rx="1" fill="#fde047" />
-      <circle cx="60" cy="20" r="3" fill="#fde047" />
+      <rect x="56" y="22" width="8" height="14" rx="1" fill="#ffd58a" />
+      <circle cx="60" cy="20" r="3" fill="#ffd58a" />
       {/* Door */}
       <rect x="52" y="62" width="16" height="24" rx="2" fill="#0b0f1a" />
-      <circle cx="64" cy="74" r="0.9" fill="#fde047" />
+      <circle cx="64" cy="74" r="0.9" fill="#ffd58a" />
       {/* Windows */}
       <rect x="28" y="54" width="14" height="14" rx="1.5" fill="#dbeafe" stroke="#0b0f1a" strokeWidth="0.8" />
       <line x1="35" y1="54" x2="35" y2="68" stroke="#0b0f1a" strokeWidth="0.8" />
@@ -425,7 +425,7 @@ const DeviceIllustration = ({
       <path d="M14 32 L24 35 L14 38 Z" fill="#ef4444" />
       {locked && (
         <g transform="translate(60 70)">
-          <circle r="6" fill="#10b981" opacity="0.95" />
+          <circle r="6" fill="#5fb37a" opacity="0.95" />
           <rect x="-2" y="-1" width="4" height="3.6" fill="#fff" rx="0.6" />
           <path d="M-1.5 -1 v -1.4 a 1.5 1.5 0 0 1 3 0 v 1.4" stroke="#fff" strokeWidth="1" fill="none" />
         </g>
@@ -438,8 +438,8 @@ const DeviceIllustration = ({
    spinning rays, and a centre core — looks like a proper celebration mark. */
 const SuccessBurst = ({
   size = 28,
-  colourA = "#fde047",
-  colourB = "#10b981",
+  colourA = "#ffd58a",
+  colourB = "#5fb37a",
 }: { size?: number; colourA?: string; colourB?: string }) => (
   <svg width={size} height={size} viewBox="0 0 40 40" style={{ display: "inline-block", verticalAlign: "middle" }}>
     <defs>
@@ -484,7 +484,7 @@ function WeekBadge({ weekNumber, size = 96 }: { weekNumber: number; size?: numbe
           <stop offset="100%" stopColor="#92400e" />
         </linearGradient>
         <linearGradient id={`${id}-ribbon-l`} x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#3b82f6" />
+          <stop offset="0%" stopColor="#ff9b4a" />
           <stop offset="100%" stopColor="#1e3a8a" />
         </linearGradient>
         <linearGradient id={`${id}-ribbon-r`} x1="0" y1="0" x2="0" y2="1">
@@ -517,7 +517,7 @@ function WeekBadge({ weekNumber, size = 96 }: { weekNumber: number; size?: numbe
       <text x="50" y="44" textAnchor="middle" fontFamily="'Space Grotesk', sans-serif" fontWeight="900" fontSize="10" fill="#92400e" letterSpacing="1.5">WEEK</text>
       <text x="50" y="62" textAnchor="middle" fontFamily="'Space Grotesk', sans-serif" fontWeight="900" fontSize="22" fill="#92400e">{weekNumber}</text>
       {/* Tiny shield in corner */}
-      <path d="M 70 32 L 76 30 L 76 36 Q 76 40 73 42 Q 70 40 70 36 Z" fill="#22d3ee" stroke="#0e7490" strokeWidth="0.6" />
+      <path d="M 70 32 L 76 30 L 76 36 Q 76 40 73 42 Q 70 40 70 36 Z" fill="#ffd58a" stroke="#d4733a" strokeWidth="0.6" />
       <path d="M 71.5 35 L 73 36.6 L 75 33.8" fill="none" stroke="#fff" strokeWidth="0.8" />
     </svg>
   );
@@ -539,7 +539,7 @@ function CertificateProgress({ currentWeek }: { currentWeek: number }) {
         marginBottom: 4,
       }}>
         <span>WEEK {currentWeek}</span>
-        <span style={{ color: "#fde047", fontWeight: 800 }}>
+        <span style={{ color: "#ffd58a", fontWeight: 800 }}>
           🏅 {remaining === 0 ? "CERTIFICATE READY" : `${remaining} WEEK${remaining === 1 ? "" : "S"} TO CERTIFICATE`}
         </span>
         <span>WEEK {nextMilestone}</span>
@@ -547,13 +547,13 @@ function CertificateProgress({ currentWeek }: { currentWeek: number }) {
       <div style={{
         height: 6, borderRadius: 999,
         background: "rgba(255,255,255,0.08)",
-        border: "1px solid rgba(96,165,250,0.3)",
+        border: "1px solid rgba(255,213,138,0.3)",
         overflow: "hidden",
       }}>
         <div style={{
           height: "100%", width: `${Math.max(8, Math.min(100, progress * 100))}%`,
-          background: "linear-gradient(90deg, #60a5fa, #a78bfa, #fbbf24)",
-          boxShadow: "0 0 10px rgba(167,139,250,0.7)",
+          background: "linear-gradient(90deg, #ffd58a, #a06aff, #fbbf24)",
+          boxShadow: "0 0 10px rgba(160,106,255,0.7)",
           transition: "width 0.6s ease",
         }} />
       </div>
@@ -571,13 +571,13 @@ const GRAD = "linear-gradient(135deg, #ff9b4a, #ffd58a)";
 /* ───────────────────────── DATA ────────────────────────────── */
 
 const PASSWORDS_8 = [
-  { id: "q1", text: "Tr0phy$tar99", isStrong: true, bg: "rgba(96,165,250,0.1)", border: "#60a5fa", color: "#93c5fd" },
-  { id: "q2", text: "MyD0g&Runs!", isStrong: true, bg: "rgba(59,130,246,0.1)", border: "#60a5fa", color: "#c4b5fd" },
+  { id: "q1", text: "Tr0phy$tar99", isStrong: true, bg: "rgba(255,213,138,0.1)", border: "#ffd58a", color: "#ffd58a" },
+  { id: "q2", text: "MyD0g&Runs!", isStrong: true, bg: "rgba(255,178,110,0.1)", border: "#ffd58a", color: "#c08aff" },
   { id: "q3", text: "C@tLov3r2024", isStrong: true, bg: "rgba(244,114,182,0.1)", border: "#f472b6", color: "#f9a8d4" },
-  { id: "q4", text: "Sup3r$h!eld7", isStrong: true, bg: "rgba(52,211,153,0.1)", border: "#34d399", color: "#6ee7b7" },
+  { id: "q4", text: "Sup3r$h!eld7", isStrong: true, bg: "rgba(168,227,187,0.1)", border: "#7cc89a", color: "#a8e3bb" },
   { id: "q5", text: "password", isStrong: false, bg: "rgba(251,146,60,0.1)", border: "#fb923c", color: "#fdba74" },
   { id: "q6", text: "123456", isStrong: false, bg: "rgba(248,113,113,0.1)", border: "#f87171", color: "#fca5a5" },
-  { id: "q7", text: "abcabc", isStrong: false, bg: "rgba(250,204,21,0.1)", border: "#facc15", color: "#fde047" },
+  { id: "q7", text: "abcabc", isStrong: false, bg: "rgba(255,213,138,0.1)", border: "#ffd58a", color: "#ffd58a" },
   { id: "q8", text: "iloveyou", isStrong: false, bg: "rgba(192,132,252,0.1)", border: "#c084fc", color: "#d8b4fe" },
 ];
 
@@ -597,14 +597,14 @@ const BUILDER_OPTIONS = [
   ["@", "#", "$", "!", "&", "*", "?", "%"],
 ];
 const BUILDER_LABELS = ["Pick a CAPITAL LETTER", "Pick a SECRET WORD", "Pick a NUMBER", "Pick a SYMBOL"];
-const BUILDER_COLORS = ["#3b82f6", "#3b82f6", "#ec4899", "#f59e0b"];
+const BUILDER_COLORS = ["#ff9b4a", "#ff9b4a", "#ec4899", "#f59e0b"];
 
 const RECIPE = [
-  { label: "CAPITAL LETTERS", example: "A, B, C, the big ones!", icon: "🅰️", color: "#3b82f6" },
-  { label: "lowercase letters", example: "a, b, c, the small ones!", icon: "🔡", color: "#3b82f6" },
+  { label: "CAPITAL LETTERS", example: "A, B, C, the big ones!", icon: "🅰️", color: "#ff9b4a" },
+  { label: "lowercase letters", example: "a, b, c, the small ones!", icon: "🔡", color: "#ff9b4a" },
   { label: "Numbers", example: "1, 2, 3!", icon: "🔢", color: "#ec4899" },
   { label: "Special Symbols", example: "@ # $ and !", icon: "✨", color: "#f59e0b" },
-  { label: "Make it LONG", example: "At least 8 characters!", icon: "📏", color: "#10b981" },
+  { label: "Make it LONG", example: "At least 8 characters!", icon: "📏", color: "#5fb37a" },
 ];
 
 const Q1_QUIZ = [
@@ -725,13 +725,13 @@ const ACHIEVEMENTS = [
 ];
 
 const OPT_COLORS = [
-  { bg: "rgba(96,165,250,0.08)", border: "rgba(96,165,250,0.3)", color: "#93c5fd" },
-  { bg: "rgba(59,130,246,0.08)", border: "rgba(59,130,246,0.3)", color: "#c4b5fd" },
+  { bg: "rgba(255,213,138,0.08)", border: "rgba(255,213,138,0.3)", color: "#ffd58a" },
+  { bg: "rgba(255,178,110,0.08)", border: "rgba(255,178,110,0.3)", color: "#c08aff" },
   { bg: "rgba(244,114,182,0.08)", border: "rgba(244,114,182,0.3)", color: "#f9a8d4" },
-  { bg: "rgba(250,204,21,0.08)", border: "rgba(250,204,21,0.3)", color: "#fde047" },
+  { bg: "rgba(255,213,138,0.08)", border: "rgba(255,213,138,0.3)", color: "#ffd58a" },
 ];
 
-const BUBBLE_COLORS = ["#3b82f6", "#3b82f6", "#ec4899", "#f59e0b"];
+const BUBBLE_COLORS = ["#ff9b4a", "#ff9b4a", "#ec4899", "#f59e0b"];
 
 const WHY_SCENARIOS = [
   { icon: "gamepad", label: "Gaming", item: "Your saved games & trophies", problem: "The Raccoon stole all your coins and deleted your save files!", success: "Your games are safe behind a strong password!" },
@@ -762,7 +762,7 @@ const CSS = `
   100% { background-position: 0% 50%; }
 }
 .shimmer-card {
-  background-image: linear-gradient(135deg, rgba(59,130,246,0.08) 0%, rgba(6,182,212,0.05) 25%, rgba(16,185,129,0.05) 50%, rgba(59,130,246,0.08) 75%, rgba(139,92,246,0.05) 100%);
+  background-image: linear-gradient(135deg, rgba(255,178,110,0.08) 0%, rgba(255,213,138,0.05) 25%, rgba(124,200,154,0.05) 50%, rgba(255,178,110,0.08) 75%, rgba(160,106,255,0.05) 100%);
   background-size: 200% 200%;
   animation: shimmer 3s ease infinite;
 }
@@ -771,7 +771,7 @@ const CSS = `
   header, nav, .step-dots-wrap, .progress-wrap, .floating-orbs-wrap, .score-cards, .dash-link, .print-hide { display: none !important; }
   main { padding: 0 !important; }
   .certificate-card {
-    border: 3px solid #3b82f6 !important;
+    border: 3px solid #ff9b4a !important;
     background: white !important;
     color: black !important;
     box-shadow: none !important;
@@ -779,7 +779,7 @@ const CSS = `
     backdrop-filter: none !important;
   }
   .certificate-card * { color: black !important; -webkit-text-fill-color: black !important; }
-  .certificate-card .gradient-text { -webkit-text-fill-color: #3b82f6 !important; color: #3b82f6 !important; }
+  .certificate-card .gradient-text { -webkit-text-fill-color: #ff9b4a !important; color: #ff9b4a !important; }
 }
 `;
 
@@ -1007,7 +1007,7 @@ function StepDots({ step }: { step: number }) {
 
 function Confetti({ duration = 3000 }: { duration?: number }) {
   const shapes = ["●", "■", "▲", "⭐", "♥"];
-  const colors = ["#3b82f6", "#06b6d4", "#f59e0b", "#10b981", "#f97316", "#60a5fa"];
+  const colors = ["#ff9b4a", "#ffd58a", "#f59e0b", "#5fb37a", "#f97316", "#ffd58a"];
   const [visible, setVisible] = useState(true);
   useEffect(() => {
     const t = setTimeout(() => setVisible(false), duration);
@@ -1083,7 +1083,7 @@ function CoinCounter({ coins, animKey }: { coins: number; animKey: number }) {
 }
 
 function MiniConfetti({ x, y }: { x: number; y: number }) {
-  const colors = ["#3b82f6", "#3b82f6", "#f59e0b", "#10b981", "#ef4444", "#ec4899"];
+  const colors = ["#ff9b4a", "#ff9b4a", "#f59e0b", "#5fb37a", "#ef4444", "#ec4899"];
   return (
     <div style={{ position: "fixed", left: x, top: y, pointerEvents: "none", zIndex: 99 }}>
       {Array.from({ length: 20 }, (_, i) => {
@@ -1152,7 +1152,7 @@ function card(children: React.ReactNode, extra?: React.CSSProperties): React.Rea
 }
 
 function strengthMeter(pct: number) {
-  const c = pct < 40 ? "#ef4444" : pct < 80 ? "#f59e0b" : "#10b981";
+  const c = pct < 40 ? "#ef4444" : pct < 80 ? "#f59e0b" : "#5fb37a";
   const label = pct < 40 ? "Weak" : pct < 80 ? "Getting there..." : pct >= 100 ? "SUPER STRONG!" : "Strong";
   return (
     <div style={{ margin: "16px 0" }}>
@@ -1276,7 +1276,7 @@ function FloatingBubbleQuiz({ question, opts, correct, explain, onCorrect, onWro
             transition={{ duration: 0.3 }}
             style={{ marginTop: 8 }}
           >
-            <p style={{ color: "#10b981", fontSize: 20, fontWeight: 700 }}>🎉 Correct!</p>
+            <p style={{ color: "#5fb37a", fontSize: 20, fontWeight: 700 }}>🎉 Correct!</p>
             <p style={{ color: "#e5e7eb", fontSize: 16, lineHeight: 1.5 }}>{explain}</p>
             {showNext && (
               <div style={{ marginTop: 12 }}>
@@ -1302,10 +1302,10 @@ function SwipeCard({
   const x = useMotionValue(0);
   const rotate = useTransform(x, [-200, 200], [-20, 20]);
   const borderColor = useTransform(x, [-100, -50, 0, 50, 100], [
-    "#ef4444", "#ef4444", "rgba(255,255,255,0.1)", "#10b981", "#10b981",
+    "#ef4444", "#ef4444", "rgba(255,255,255,0.1)", "#5fb37a", "#5fb37a",
   ]);
   const bgColor = useTransform(x, [-100, -50, 0, 50, 100], [
-    "rgba(239,68,68,0.05)", "rgba(239,68,68,0.05)", "rgba(255,255,255,0.04)", "rgba(16,185,129,0.05)", "rgba(16,185,129,0.05)",
+    "rgba(239,68,68,0.05)", "rgba(239,68,68,0.05)", "rgba(255,255,255,0.04)", "rgba(124,200,154,0.05)", "rgba(124,200,154,0.05)",
   ]);
 
   return (
@@ -1369,26 +1369,26 @@ function ArenaBg3D({ effect }: { effect: "hit" | "miss" | "super" | null }) {
     const camera = new THREE.PerspectiveCamera(60, width / height, 0.1, 100);
     camera.position.set(0, 2, 6);
     camera.lookAt(0, 0, 0);
-    const floorMat = new THREE.MeshStandardMaterial({ color: 0x1a1033, emissive: 0x3b82f6, emissiveIntensity: 0.08 });
+    const floorMat = new THREE.MeshStandardMaterial({ color: 0x1a0612, emissive: 0xff9b4a, emissiveIntensity: 0.08 });
     const floor = new THREE.Mesh(new THREE.PlaneGeometry(12, 12), floorMat);
     floor.rotation.x = -Math.PI / 2; floor.position.y = -0.5; scene.add(floor);
-    const grid = new THREE.GridHelper(12, 24, 0x3b82f6, 0x3b82f6);
+    const grid = new THREE.GridHelper(12, 24, 0xff9b4a, 0xff9b4a);
     grid.position.y = -0.49; (grid.material as THREE.Material).opacity = 0.15; (grid.material as THREE.Material).transparent = true; scene.add(grid);
-    const ambient = new THREE.AmbientLight(0x3b82f6, 0.2); scene.add(ambient);
-    const mainLight = new THREE.PointLight(0x3b82f6, 1, 20); mainLight.position.set(0, 4, 2); scene.add(mainLight);
-    const blueLight = new THREE.PointLight(0x3b82f6, 0.4, 15); blueLight.position.set(-4, 2, 0); scene.add(blueLight);
+    const ambient = new THREE.AmbientLight(0xff9b4a, 0.2); scene.add(ambient);
+    const mainLight = new THREE.PointLight(0xff9b4a, 1, 20); mainLight.position.set(0, 4, 2); scene.add(mainLight);
+    const blueLight = new THREE.PointLight(0xff9b4a, 0.4, 15); blueLight.position.set(-4, 2, 0); scene.add(blueLight);
     const redLight = new THREE.PointLight(0xef4444, 0.4, 15); redLight.position.set(4, 2, 0); scene.add(redLight);
     const particles: THREE.Mesh[] = [];
     for (let i = 0; i < 40; i++) {
-      const pMat = new THREE.MeshBasicMaterial({ color: 0x3b82f6, transparent: true, opacity: 0.5 });
+      const pMat = new THREE.MeshBasicMaterial({ color: 0xff9b4a, transparent: true, opacity: 0.5 });
       const p = new THREE.Mesh(new THREE.SphereGeometry(0.03, 6, 6), pMat);
       p.position.set((Math.random() - 0.5) * 8, Math.random() * 3, (Math.random() - 0.5) * 4);
       p.userData.speed = 0.001 + Math.random() * 0.003; scene.add(p); particles.push(p);
     }
-    const ring = new THREE.Mesh(new THREE.TorusGeometry(3.5, 0.015, 8, 64), new THREE.MeshBasicMaterial({ color: 0x3b82f6, transparent: true, opacity: 0.2 }));
+    const ring = new THREE.Mesh(new THREE.TorusGeometry(3.5, 0.015, 8, 64), new THREE.MeshBasicMaterial({ color: 0xff9b4a, transparent: true, opacity: 0.2 }));
     ring.rotation.x = -Math.PI / 2; ring.position.y = -0.4; scene.add(ring);
     [[-4,1.5,-3],[4,1.5,-3],[-4,1.5,3],[4,1.5,3]].forEach(pos => {
-      const pillar = new THREE.Mesh(new THREE.BoxGeometry(0.08, 3, 0.08), new THREE.MeshStandardMaterial({ emissive: 0x3b82f6, emissiveIntensity: 1, transparent: true, opacity: 0.25 }));
+      const pillar = new THREE.Mesh(new THREE.BoxGeometry(0.08, 3, 0.08), new THREE.MeshStandardMaterial({ emissive: 0xff9b4a, emissiveIntensity: 1, transparent: true, opacity: 0.25 }));
       pillar.position.set(pos[0], pos[1], pos[2]); scene.add(pillar);
     });
     sceneRef.current = { renderer, scene, camera, mainLight, redLight, blueLight, floorMat, grid, ring, particles, triggerShake: (_i: number, _d: number) => {} };
@@ -1414,9 +1414,9 @@ function ArenaBg3D({ effect }: { effect: "hit" | "miss" | "super" | null }) {
   useEffect(() => {
     const s = sceneRef.current as Record<string, any>;
     if (!effect || !s.mainLight) return;
-    if (effect === "hit") { s.mainLight.intensity = 3; s.mainLight.color.set(0x10b981); s.triggerShake(0.15, 0.3); setTimeout(() => { s.mainLight.intensity = 1; s.mainLight.color.set(0x3b82f6); }, 300); }
-    else if (effect === "miss") { s.redLight.intensity = 2; s.floorMat.emissive.set(0xef4444); s.triggerShake(0.2, 0.3); setTimeout(() => { s.redLight.intensity = 0.4; s.floorMat.emissive.set(0x3b82f6); }, 400); }
-    else if (effect === "super") { s.mainLight.intensity = 5; s.blueLight.intensity = 3; s.mainLight.color.set(0xf59e0b); s.floorMat.emissive.set(0xf59e0b); s.triggerShake(0.3, 0.5); setTimeout(() => { s.mainLight.intensity = 1; s.blueLight.intensity = 0.4; s.mainLight.color.set(0x3b82f6); s.floorMat.emissive.set(0x3b82f6); }, 500); }
+    if (effect === "hit") { s.mainLight.intensity = 3; s.mainLight.color.set(0x5fb37a); s.triggerShake(0.15, 0.3); setTimeout(() => { s.mainLight.intensity = 1; s.mainLight.color.set(0xff9b4a); }, 300); }
+    else if (effect === "miss") { s.redLight.intensity = 2; s.floorMat.emissive.set(0xef4444); s.triggerShake(0.2, 0.3); setTimeout(() => { s.redLight.intensity = 0.4; s.floorMat.emissive.set(0xff9b4a); }, 400); }
+    else if (effect === "super") { s.mainLight.intensity = 5; s.blueLight.intensity = 3; s.mainLight.color.set(0xf59e0b); s.floorMat.emissive.set(0xf59e0b); s.triggerShake(0.3, 0.5); setTimeout(() => { s.mainLight.intensity = 1; s.blueLight.intensity = 0.4; s.mainLight.color.set(0xff9b4a); s.floorMat.emissive.set(0xff9b4a); }, 500); }
   }, [effect]);
 
   return <div ref={mountRef} style={{ position: "absolute", inset: 0, zIndex: 0, borderRadius: 20, overflow: "hidden" }} />;
@@ -1464,10 +1464,10 @@ function LearnSummary({ message, starCount, onNext }: { message: string; starCou
           background: "linear-gradient(160deg, rgba(20,32,55,0.92) 0%, rgba(15,40,30,0.88) 100%)",
           backdropFilter: "blur(14px)",
           WebkitBackdropFilter: "blur(14px)",
-          border: "1px solid rgba(52,211,153,0.45)",
+          border: "1px solid rgba(168,227,187,0.45)",
           boxShadow:
-            "0 40px 80px -25px rgba(16,185,129,0.45), " +
-            "0 0 60px rgba(16,185,129,0.18), " +
+            "0 40px 80px -25px rgba(124,200,154,0.45), " +
+            "0 0 60px rgba(124,200,154,0.18), " +
             "inset 0 0 0 1px rgba(255,255,255,0.06)",
           borderRadius: 24,
           padding: "32px 28px 26px",
@@ -1488,7 +1488,7 @@ function LearnSummary({ message, starCount, onNext }: { message: string; starCou
         {Array.from({ length: 14 }).map((_, i) => {
           const cx = (i * 53) % 280 - 140;
           const cy = -120 - (i % 5) * 14;
-          const colour = ["#fde047", "#34d399", "#22d3ee", "#a78bfa", "#f472b6"][i % 5];
+          const colour = ["#ffd58a", "#7cc89a", "#ffd58a", "#a06aff", "#f472b6"][i % 5];
           return (
             <span key={i} aria-hidden style={{
               position: "absolute",
@@ -1510,7 +1510,7 @@ function LearnSummary({ message, starCount, onNext }: { message: string; starCou
           {/* Spinning halo of rays */}
           <span aria-hidden style={{
             position: "absolute", inset: -8,
-            background: "conic-gradient(from 0deg, transparent 0deg, rgba(253,224,71,0.6) 30deg, transparent 60deg, rgba(34,211,238,0.5) 150deg, transparent 200deg, rgba(167,139,250,0.5) 280deg, transparent 320deg)",
+            background: "conic-gradient(from 0deg, transparent 0deg, rgba(253,224,71,0.6) 30deg, transparent 60deg, rgba(255,213,138,0.5) 150deg, transparent 200deg, rgba(160,106,255,0.5) 280deg, transparent 320deg)",
             borderRadius: "50%",
             filter: "blur(10px)",
             animation: "lsHaloSpin 8s linear infinite",
@@ -1519,7 +1519,7 @@ function LearnSummary({ message, starCount, onNext }: { message: string; starCou
           <span aria-hidden style={{
             position: "absolute", inset: 6,
             borderRadius: "50%",
-            background: "radial-gradient(circle, rgba(52,211,153,0.6), rgba(52,211,153,0) 70%)",
+            background: "radial-gradient(circle, rgba(168,227,187,0.6), rgba(168,227,187,0) 70%)",
             animation: "lsRayPulse 2.4s ease-in-out infinite",
           }} />
           {/* Trophy SVG */}
@@ -1557,10 +1557,10 @@ function LearnSummary({ message, starCount, onNext }: { message: string; starCou
               {/* check inside cup */}
               <path d="M34 30 L42 38 L56 24" fill="none" stroke="#0b3a2a" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" />
               {/* sparkles */}
-              <circle cx="14" cy="20" r="1.6" fill="#fde047" />
-              <circle cx="74" cy="22" r="2" fill="#fde047" />
-              <circle cx="78" cy="44" r="1.4" fill="#fde047" />
-              <circle cx="10" cy="44" r="1.4" fill="#fde047" />
+              <circle cx="14" cy="20" r="1.6" fill="#ffd58a" />
+              <circle cx="74" cy="22" r="2" fill="#ffd58a" />
+              <circle cx="78" cy="44" r="1.4" fill="#ffd58a" />
+              <circle cx="10" cy="44" r="1.4" fill="#ffd58a" />
             </svg>
           </div>
         </div>
@@ -1568,7 +1568,7 @@ function LearnSummary({ message, starCount, onNext }: { message: string; starCou
         <h2 data-split style={{
           color: "#fff", fontSize: 28, fontWeight: 900, margin: "0 0 4px",
           letterSpacing: 1,
-          background: "linear-gradient(135deg, #fde68a, #f59e0b, #34d399)",
+          background: "linear-gradient(135deg, #fde68a, #f59e0b, #7cc89a)",
           WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent",
           textShadow: "0 0 30px rgba(245,158,11,0.4)",
         }}>Great job!</h2>
@@ -1624,7 +1624,7 @@ function LearnSummary({ message, starCount, onNext }: { message: string; starCou
           transition={{ boxShadow: { duration: 2, repeat: Infinity, ease: "easeInOut" } }}
           style={{
             position: "relative",
-            background: "linear-gradient(135deg, #f97316 0%, #f59e0b 50%, #fde047 100%)",
+            background: "linear-gradient(135deg, #f97316 0%, #f59e0b 50%, #ffd58a 100%)",
             color: "#1f1300", fontWeight: 900,
             borderRadius: 14, padding: "13px 34px",
             border: "none", cursor: "pointer", fontSize: 16,
@@ -1642,8 +1642,8 @@ function LearnSummary({ message, starCount, onNext }: { message: string; starCou
 const SpeechBubble = ({ character, message, side = "left", delayMs = 500 }: { character: "adam" | "layla" | "raccoon"; message: string; side?: "left" | "right"; delayMs?: number }) => {
   const img = character === "adam" ? "/characters/adam-layla-happy.png" : character === "layla" ? "/characters/adam-layla-happy.png" : "/characters/raccoon.png";
   const name = character === "adam" ? "Adam" : character === "layla" ? "Layla" : "Raccoon";
-  const bubbleColor = character === "raccoon" ? "rgba(239,68,68,0.15)" : "rgba(59,130,246,0.15)";
-  const borderColor = character === "raccoon" ? "rgba(239,68,68,0.3)" : "rgba(59,130,246,0.3)";
+  const bubbleColor = character === "raccoon" ? "rgba(239,68,68,0.15)" : "rgba(255,178,110,0.15)";
+  const borderColor = character === "raccoon" ? "rgba(239,68,68,0.3)" : "rgba(255,178,110,0.3)";
 
   // Reveal the bubble 500ms after the screen transition, then play "pop" SFX.
   const [visible, setVisible] = useState(delayMs <= 0);
@@ -1670,7 +1670,7 @@ const SpeechBubble = ({ character, message, side = "left", delayMs = 500 }: { ch
     >
       <img src={img} alt={name} style={{ width: 48, height: 48, borderRadius: "50%", objectFit: "cover", border: `2px solid ${borderColor}` }} />
       <div style={{ background: bubbleColor, border: `1px solid ${borderColor}`, borderRadius: 16, padding: "10px 16px", maxWidth: 320, fontSize: 14, color: "rgba(255,255,255,0.9)", lineHeight: 1.5 }}>
-        <span style={{ fontWeight: 700, fontSize: 12, color: character === "raccoon" ? "#ef4444" : "#3b82f6", display: "block", marginBottom: 4 }}>{name}</span>
+        <span style={{ fontWeight: 700, fontSize: 12, color: character === "raccoon" ? "#ef4444" : "#ff9b4a", display: "block", marginBottom: 4 }}>{name}</span>
         {message}
       </div>
     </motion.div>
@@ -1841,14 +1841,14 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
   const floatIdRef = useRef(0);
 
   const spawnParticles = useCallback(
-    (x: number, y: number, colour: string = "#34d399", count: number = 12) => {
+    (x: number, y: number, colour: string = "#7cc89a", count: number = 12) => {
       const id = ++burstIdRef.current;
       setBurstList((prev) => [...prev, { id, x, y, colour, count }]);
     },
     []
   );
   const spawnFloatingText = useCallback(
-    (text: string, x: number, y: number, colour: string = "#34d399", size: number = 20) => {
+    (text: string, x: number, y: number, colour: string = "#7cc89a", size: number = 20) => {
       const id = ++floatIdRef.current;
       setFloatList((prev) => [...prev, { id, text, x, y, colour, size }]);
     },
@@ -1917,7 +1917,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
       setArena3DPulseKey((k) => k + 1);
 
       // Micro-feedback: green burst + floating "+N XP" + combo.
-      spawnParticles(x, y, "#34d399", 12);
+      spawnParticles(x, y, "#7cc89a", 12);
       spawnFloatingText(`+${amount} XP`, x, y - 24, "#fbbf24", 20);
       setLessonCombo((prev) => {
         const next = prev + 1;
@@ -2764,15 +2764,15 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
       /* ──── CASE 0: VIDEO WELCOME ──── */
       case 0:
         return (
-          <FullScene bg="linear-gradient(180deg, #0a0a1a 0%, #1a1033 100%)">
+          <FullScene bg="linear-gradient(180deg, #0a0a1a 0%, #1a0612 100%)">
           <div style={{ textAlign: "center" }}>
             {!videoEnded ? (
               <>
                 {!videoFailed ? (
                   <motion.div
-                    animate={{ boxShadow: ["0 0 20px rgba(59,130,246,0.3)", "0 0 40px rgba(59,130,246,0.6)", "0 0 20px rgba(59,130,246,0.3)"] }}
+                    animate={{ boxShadow: ["0 0 20px rgba(255,178,110,0.3)", "0 0 40px rgba(255,178,110,0.6)", "0 0 20px rgba(255,178,110,0.3)"] }}
                     transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-                    style={{ position: "relative", borderRadius: 24, overflow: "hidden", border: "2px solid rgba(59,130,246,0.4)", maxWidth: 640, margin: "0 auto" }}
+                    style={{ position: "relative", borderRadius: 24, overflow: "hidden", border: "2px solid rgba(255,178,110,0.4)", maxWidth: 640, margin: "0 auto" }}
                   >
                     <video
                       ref={videoRef}
@@ -2804,7 +2804,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                       <input
                         type="range" min={0} max={mediaDuration || 1} step={0.1} value={mediaProgress}
                         onChange={(e) => { const v = videoRef.current; if (v) v.currentTime = Number(e.target.value); }}
-                        style={{ flex: 1, accentColor: "#3b82f6", height: 6 }}
+                        style={{ flex: 1, accentColor: "#ff9b4a", height: 6 }}
                       />
                       <button onClick={() => setMediaMuted((m) => !m)} style={{
                         width: 40, height: 40, borderRadius: "50%", background: "rgba(255,255,255,0.15)", border: "none", cursor: "pointer", color: "#fff", fontSize: 16,
@@ -2853,12 +2853,12 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
       /* ──── CASE 1: THE MISSION ──── */
       case 1: {
         const missions = [
-          { icon: "🔐", text: "Learn what passwords are", colour: "#22d3ee", glow: "rgba(34,211,238,0.55)" },
-          { icon: "🛡️", text: "Build a super strong password", colour: "#a78bfa", glow: "rgba(167,139,250,0.55)" },
+          { icon: "🔐", text: "Learn what passwords are", colour: "#ffd58a", glow: "rgba(255,213,138,0.55)" },
+          { icon: "🛡️", text: "Build a super strong password", colour: "#a06aff", glow: "rgba(160,106,255,0.55)" },
           { icon: "🦝", text: "Defeat the Hacker Raccoon", colour: "#f59e0b", glow: "rgba(245,158,11,0.6)" },
         ];
         return (
-          <FullScene bg="linear-gradient(180deg, #1a0a0a 0%, #1a1033 100%)" glow="radial-gradient(circle, rgba(239,68,68,0.3), transparent)">
+          <FullScene bg="linear-gradient(180deg, #1a0a0a 0%, #1a0612 100%)" glow="radial-gradient(circle, rgba(239,68,68,0.3), transparent)">
             <MissionBriefScene
               phase={missionPhase}
               missions={missions}
@@ -3295,7 +3295,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                 const top = (i * 17.3) % 100;
                 const dur = 1.5 + (i % 4) * 0.6;
                 const delay = (i * 0.18) % 4;
-                const c = i % 4 === 0 ? "#fde047" : i % 4 === 1 ? "#fbbf24" : i % 4 === 2 ? "#f59e0b" : "#fff";
+                const c = i % 4 === 0 ? "#ffd58a" : i % 4 === 1 ? "#fbbf24" : i % 4 === 2 ? "#f59e0b" : "#fff";
                 return (
                   <span key={`d-${i}`} style={{
                     position: "absolute",
@@ -3417,7 +3417,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                               ...s,
                               fontSize: 10,
                               color: "#fff",
-                              filter: "drop-shadow(0 0 4px #fde047)",
+                              filter: "drop-shadow(0 0 4px #ffd58a)",
                               animation: `grSparkle 1.6s ease-in-out ${s.delay}s infinite`,
                               pointerEvents: "none",
                             }}>✦</span>
@@ -3694,7 +3694,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                         <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 10, opacity: 0.8 }}>
                           <span style={{ width: 10, height: 10, borderRadius: "50%", background: "#ef4444" }} />
                           <span style={{ width: 10, height: 10, borderRadius: "50%", background: "#fbbf24" }} />
-                          <span style={{ width: 10, height: 10, borderRadius: "50%", background: "#22c55e" }} />
+                          <span style={{ width: 10, height: 10, borderRadius: "50%", background: "#7cc89a" }} />
                           <span style={{ flex: 1, fontFamily: "ui-monospace, monospace", fontSize: 11, color: "rgba(252,165,165,0.7)", textAlign: "left", marginLeft: 8 }}>
                             ⚠ unsafe-link.notreal/{t.glyph}
                           </span>
@@ -3910,7 +3910,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
 
         if (bossDone) {
           return (
-            <FullScene bg="linear-gradient(180deg, #0a0505 0%, #1a1033 100%)" glow="radial-gradient(circle, rgba(245,158,11,0.3), transparent)">
+            <FullScene bg="linear-gradient(180deg, #0a0505 0%, #1a0612 100%)" glow="radial-gradient(circle, rgba(245,158,11,0.3), transparent)">
             <motion.div initial={{ opacity: 0, scale: 0.5 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: "spring", stiffness: 300, damping: 20 }} style={{ textAlign: "center" }}>
               <Confetti duration={5000} />
               {card(
@@ -3920,7 +3920,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                     style={{ width: 160, margin: "0 auto 12px", display: "block", filter: "drop-shadow(0 0 12px rgba(239,68,68,0.4))" }} />
                   <motion.h2 animate={{ textShadow: ["0 0 20px rgba(245,158,11,0.3)", "0 0 40px rgba(245,158,11,0.6)", "0 0 20px rgba(245,158,11,0.3)"] }}
                     transition={{ duration: 2, repeat: Infinity }}
-                    style={{ fontSize: 32, margin: "0 0 12px", fontWeight: 900, background: "linear-gradient(135deg, #f59e0b, #ef4444, #3b82f6)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+                    style={{ fontSize: 32, margin: "0 0 12px", fontWeight: 900, background: "linear-gradient(135deg, #f59e0b, #ef4444, #ff9b4a)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
                     You defeated the Hacker Raccoon!</motion.h2>
                   <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.3, type: "spring" }}>
                     {stars(bossScore >= 8 ? 3 : bossScore >= 6 ? 2 : 1)}
@@ -3984,7 +3984,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                   top: 0,
                   width: 2,
                   height: 240,
-                  background: "linear-gradient(180deg, #fde047, transparent)",
+                  background: "linear-gradient(180deg, #ffd58a, transparent)",
                   filter: "drop-shadow(0 0 8px #fbbf24)",
                   animation: `bbLightningStrike ${5 + i * 1.4}s ease-in-out ${i * 1.7}s infinite`,
                   pointerEvents: "none",
@@ -3996,7 +3996,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                 const left = (i * 47) % 100;
                 const dur = 4 + (i % 4);
                 const delay = (i * 0.5) % 6;
-                const c = ["#fde047", "#f97316", "#fb923c", "#ef4444"][i % 4];
+                const c = ["#ffd58a", "#f97316", "#fb923c", "#ef4444"][i % 4];
                 return (
                   <span key={`ember-${i}`} aria-hidden style={{
                     position: "absolute",
@@ -4088,7 +4088,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                 {/* Vertical scan line */}
                 <span aria-hidden style={{
                   position: "absolute", left: 0, right: 0, height: 60,
-                  background: "linear-gradient(180deg, transparent, rgba(34,211,238,0.18), transparent)",
+                  background: "linear-gradient(180deg, transparent, rgba(255,213,138,0.18), transparent)",
                   animation: "bbScanFloor 4s linear infinite",
                   pointerEvents: "none",
                   mixBlendMode: "screen",
@@ -4104,28 +4104,28 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                   <div style={{ position: "relative", display: "inline-block", animation: "bbFloatHero 3s ease-in-out infinite" }}>
                     <span aria-hidden style={{
                       position: "absolute", inset: -10, borderRadius: "50%",
-                      background: "radial-gradient(circle, rgba(96,165,250,0.45), transparent 70%)",
+                      background: "radial-gradient(circle, rgba(255,213,138,0.45), transparent 70%)",
                       filter: "blur(10px)",
                     }} />
                     <img src="/characters/heroic.png" alt="Adam &amp; Layla" style={{
                       position: "relative",
                       width: 130, maxWidth: "100%", height: "auto",
-                      filter: "drop-shadow(0 12px 22px rgba(96,165,250,0.55))",
+                      filter: "drop-shadow(0 12px 22px rgba(255,213,138,0.55))",
                     }} />
                   </div>
                   <div style={{ marginTop: 8, color: "#bfdbfe", fontWeight: 900, fontSize: 13, letterSpacing: 3, textTransform: "uppercase", fontFamily: "ui-monospace, monospace" }}>
                     Adam &amp; Layla
                   </div>
                   {/* HP bar */}
-                  <div style={{ marginTop: 6, height: 8, borderRadius: 4, background: "rgba(255,255,255,0.06)", border: "1px solid rgba(96,165,250,0.4)", overflow: "hidden" }}>
+                  <div style={{ marginTop: 6, height: 8, borderRadius: 4, background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,213,138,0.4)", overflow: "hidden" }}>
                     <motion.div
                       initial={{ width: 0 }}
                       animate={{ width: "100%" }}
                       transition={{ delay: 0.7, duration: 0.8, ease: "easeOut" }}
-                      style={{ height: "100%", background: "linear-gradient(90deg, #22c55e, #4ade80, #86efac)", boxShadow: "0 0 10px #4ade80" }}
+                      style={{ height: "100%", background: "linear-gradient(90deg, #7cc89a, #7cc89a, #a8e3bb)", boxShadow: "0 0 10px #7cc89a" }}
                     />
                   </div>
-                  <div style={{ marginTop: 4, fontSize: 10, color: "#86efac", fontFamily: "ui-monospace, monospace", letterSpacing: 1 }}>
+                  <div style={{ marginTop: 4, fontSize: 10, color: "#a8e3bb", fontFamily: "ui-monospace, monospace", letterSpacing: 1 }}>
                     HP 100/100 ▸ READY
                   </div>
                 </motion.div>
@@ -4197,8 +4197,8 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
                 marginBottom: 18,
               }}>
                 {[
-                  { l: "ROUNDS", v: "10", c: "#22d3ee" },
-                  { l: "WEAPON", v: "KNOWLEDGE", c: "#a78bfa" },
+                  { l: "ROUNDS", v: "10", c: "#ffd58a" },
+                  { l: "WEAPON", v: "KNOWLEDGE", c: "#a06aff" },
                   { l: "REWARD", v: "+50 COINS", c: "#fbbf24" },
                 ].map((s, i) => (
                   <div key={i} style={{
@@ -4279,7 +4279,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
       /* ──── CASE 18: OUTRO VIDEO ──── */
       case 18:
         return (
-          <FullScene bg="linear-gradient(180deg, #0a0a1a 0%, #1a1033 100%)">
+          <FullScene bg="linear-gradient(180deg, #0a0a1a 0%, #1a0612 100%)">
             <OutroScene
               childName={childName}
               totalCoins={coins}
@@ -4407,16 +4407,16 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
               <div style={{
                 width: "100%", maxWidth: 460,
                 background: "linear-gradient(160deg, rgba(20,30,55,0.95) 0%, rgba(15,40,30,0.92) 100%)",
-                border: "1px solid rgba(34,211,238,0.45)",
+                border: "1px solid rgba(255,213,138,0.45)",
                 borderRadius: 22,
                 padding: "30px 26px",
                 textAlign: "center",
-                boxShadow: "0 30px 60px -20px rgba(34,211,238,0.5)",
+                boxShadow: "0 30px 60px -20px rgba(255,213,138,0.5)",
               }}>
                 <div style={{ fontSize: 44, marginBottom: 8 }}>💾</div>
                 <h2 style={{
                   color: "#fff", fontSize: 24, fontWeight: 900, margin: "0 0 6px",
-                  background: "linear-gradient(135deg, #22d3ee, #a78bfa)",
+                  background: "linear-gradient(135deg, #ffd58a, #a06aff)",
                   WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent",
                 }}>
                   Welcome back!
@@ -4517,9 +4517,9 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
             fontFamily: "'Space Grotesk', sans-serif",
             fontSize: Math.min(40, 20 + lessonCombo * 3),
             fontWeight: 800,
-            color: "#fde047",
+            color: "#ffd58a",
             letterSpacing: "-0.01em",
-            textShadow: "0 0 14px rgba(250,204,21,0.8), 2px 2px 0 rgba(0,0,0,0.6)",
+            textShadow: "0 0 14px rgba(255,213,138,0.8), 2px 2px 0 rgba(0,0,0,0.6)",
             pointerEvents: "none",
             animation: "juiceComboPop 0.45s cubic-bezier(0.34, 1.56, 0.64, 1)",
           }}
@@ -4578,7 +4578,7 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
           ← Dashboard
         </a>
         <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-          <div style={{ width: 36, height: 36, borderRadius: 10, background: GRAD, display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 2px 8px rgba(59,130,246,0.4)" }}>
+          <div style={{ width: 36, height: 36, borderRadius: 10, background: GRAD, display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 2px 8px rgba(255,178,110,0.4)" }}>
             <span style={{ fontWeight: 900, fontSize: 14, color: "#fff" }}>AX</span>
           </div>
           <span style={{ color: "#9ca3af", fontSize: 13, fontWeight: 600 }}>Week 1 · Passwords: The Secret Code</span>
@@ -4630,9 +4630,9 @@ export default function LessonPlayer({ userName, moduleId, childName }: { userNa
         <div style={{
           position: "fixed", left: shieldPos.x, top: shieldPos.y, pointerEvents: "none", zIndex: 9999,
           width: 64, height: 64, borderRadius: "50%",
-          background: "rgba(16,185,129,0.2)", border: "3px solid #10b981",
+          background: "rgba(124,200,154,0.2)", border: "3px solid #5fb37a",
           display: "flex", alignItems: "center", justifyContent: "center", fontSize: 32,
-          boxShadow: "0 0 30px rgba(16,185,129,0.5)",
+          boxShadow: "0 0 30px rgba(124,200,154,0.5)",
         }}>
           🛡️
         </div>

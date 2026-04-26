@@ -37,7 +37,7 @@ const STYLES = `
 @keyframes ssScannerPop { 0% { transform: scale(0.9); opacity: 0; } 60% { transform: scale(1.04); opacity: 1; } 100% { transform: scale(1); opacity: 1; } }
 @keyframes ssItemAccept { 0% { transform: scale(1); opacity: 1; } 100% { transform: scale(0.55); opacity: 0; } }
 @keyframes ssBinIdleGlow { 0%,100% { filter: brightness(1) saturate(1); } 50% { filter: brightness(1.08) saturate(1.2); } }
-@keyframes ssBinPulseGood { 0%,100% { box-shadow: 0 0 0 rgba(52,211,153,0); } 50% { box-shadow: 0 0 22px rgba(52,211,153,0.65); } }
+@keyframes ssBinPulseGood { 0%,100% { box-shadow: 0 0 0 rgba(168,227,187,0); } 50% { box-shadow: 0 0 22px rgba(168,227,187,0.65); } }
 @keyframes ssBinPulseBad { 0%,100% { box-shadow: 0 0 0 rgba(239,68,68,0); transform: translateX(0); } 20% { transform: translateX(-8px); box-shadow: 0 0 20px rgba(239,68,68,0.55); } 40% { transform: translateX(8px); } 60% { transform: translateX(-4px); } 80% { transform: translateX(4px); } }
 @keyframes ssCheckPop { 0% { opacity: 0; transform: translate(-50%,-50%) scale(0.2); } 40% { opacity: 1; transform: translate(-50%,-50%) scale(1.1); } 100% { opacity: 0; transform: translate(-50%,-50%) scale(1); } }
 @keyframes ssDotFill { from { transform: scale(0.4); opacity: 0.4; } to { transform: scale(1); opacity: 1; } }
@@ -175,7 +175,7 @@ export default function SortingStation({
         maxWidth: 820,
         margin: "0 auto",
         background: "#0d1220",
-        border: "1px solid rgba(96,165,250,0.14)",
+        border: "1px solid rgba(255,213,138,0.14)",
         borderRadius: 24,
         padding: "28px 24px 32px",
         color: "#f1f5f9",
@@ -200,7 +200,7 @@ export default function SortingStation({
         </h2>
       )}
       {instruction && (
-        <p style={{ textAlign: "center", color: "#94a3b8", fontSize: 14, margin: "0 0 22px" }}>
+        <p style={{ textAlign: "center", color: "rgba(255,233,200,0.55)", fontSize: 14, margin: "0 0 22px" }}>
           {instruction}
         </p>
       )}
@@ -291,7 +291,7 @@ function ActiveStage({
         style={{
           fontFamily: "'JetBrains Mono', 'Courier New', monospace",
           fontSize: 12,
-          color: "#60a5fa",
+          color: "#ffd58a",
           letterSpacing: "0.15em",
           textAlign: "center",
           marginBottom: 10,
@@ -308,10 +308,10 @@ function ActiveStage({
           maxWidth: 400,
           margin: "0 auto 14px",
           background: "#0c1019",
-          border: "2px solid rgba(96,165,250,0.2)",
+          border: "2px solid rgba(255,213,138,0.2)",
           borderRadius: 20,
           padding: 24,
-          boxShadow: "0 0 30px rgba(96,165,250,0.08)",
+          boxShadow: "0 0 30px rgba(255,213,138,0.08)",
           overflow: "hidden",
           animation:
             scannerShakeKey > 0
@@ -329,7 +329,7 @@ function ActiveStage({
             right: 0,
             top: 0,
             height: 1,
-            background: "linear-gradient(90deg, transparent, rgba(96,165,250,0.45), transparent)",
+            background: "linear-gradient(90deg, transparent, rgba(255,213,138,0.45), transparent)",
             opacity: 0.4,
             animation: "ssScanSweep 2s linear infinite",
             willChange: "transform",
@@ -372,8 +372,8 @@ function ActiveStage({
                 width: 8,
                 height: 8,
                 borderRadius: "50%",
-                background: done ? "#34d399" : "rgba(255,255,255,0.08)",
-                boxShadow: done ? "0 0 8px rgba(52,211,153,0.5)" : "none",
+                background: done ? "#7cc89a" : "rgba(255,255,255,0.08)",
+                boxShadow: done ? "0 0 8px rgba(168,227,187,0.5)" : "none",
                 transition: "background 0.4s, box-shadow 0.4s",
                 animation: done ? "ssDotFill 0.4s cubic-bezier(0.2,1.5,0.4,1)" : undefined,
               }}
@@ -399,8 +399,8 @@ function ActiveStage({
         <div
           style={{
             marginTop: 18,
-            background: "rgba(52,211,153,0.08)",
-            border: "1px solid rgba(52,211,153,0.25)",
+            background: "rgba(168,227,187,0.08)",
+            border: "1px solid rgba(168,227,187,0.25)",
             borderRadius: 12,
             padding: "12px 16px",
             overflow: "hidden",
@@ -410,7 +410,7 @@ function ActiveStage({
             lineHeight: 1.6,
           }}
         >
-          <strong style={{ color: "#34d399", fontWeight: 700 }}>Nice sort — </strong>
+          <strong style={{ color: "#7cc89a", fontWeight: 700 }}>Nice sort — </strong>
           {current.explanation}
         </div>
       )}
@@ -429,17 +429,17 @@ function BinCard({
 }) {
   const [hover, setHover] = useState(false);
   // Portal-style bins: solid-colour gradient, glowing border that pulses when idle.
-  const flashColor = flash === "correct" ? "#34d399" : flash === "wrong" ? "#ef4444" : category.color;
+  const flashColor = flash === "correct" ? "#7cc89a" : flash === "wrong" ? "#ef4444" : category.color;
   const border = flash
     ? `2px solid ${flashColor}`
     : `2px solid ${category.color}cc`;
   const bg = flash === "correct"
-    ? "linear-gradient(180deg, rgba(52,211,153,0.28), rgba(16,94,65,0.4))"
+    ? "linear-gradient(180deg, rgba(168,227,187,0.28), rgba(16,94,65,0.4))"
     : flash === "wrong"
       ? "linear-gradient(180deg, rgba(239,68,68,0.28), rgba(127,29,29,0.4))"
       : `linear-gradient(180deg, ${category.color}22, ${category.color}08)`;
   const boxShadow = flash === "correct"
-    ? "0 0 32px rgba(52,211,153,0.7), inset 0 0 24px rgba(52,211,153,0.3)"
+    ? "0 0 32px rgba(168,227,187,0.7), inset 0 0 24px rgba(168,227,187,0.3)"
     : flash === "wrong"
       ? "0 0 30px rgba(239,68,68,0.7), inset 0 0 24px rgba(239,68,68,0.3)"
       : hover
@@ -496,8 +496,8 @@ function BinCard({
             left: "50%",
             transform: "translate(-50%, -50%)",
             fontSize: 48,
-            color: "#34d399",
-            textShadow: "0 0 14px rgba(52,211,153,0.7)",
+            color: "#7cc89a",
+            textShadow: "0 0 14px rgba(168,227,187,0.7)",
             animation: "ssCheckPop 0.6s cubic-bezier(0.16,1,0.3,1) both",
             pointerEvents: "none",
           }}
@@ -523,12 +523,12 @@ function CompletionStage({ score, total }: { score: number; total: number }) {
           fontSize: 24,
           padding: "10px 22px",
           borderRadius: 999,
-          background: "rgba(52,211,153,0.14)",
-          border: "1px solid rgba(52,211,153,0.35)",
-          color: "#34d399",
+          background: "rgba(168,227,187,0.14)",
+          border: "1px solid rgba(168,227,187,0.35)",
+          color: "#7cc89a",
           letterSpacing: "-0.01em",
           animation: "ssBannerIn 0.5s cubic-bezier(0.16,1,0.3,1) both",
-          boxShadow: "0 0 24px rgba(52,211,153,0.35)",
+          boxShadow: "0 0 24px rgba(168,227,187,0.35)",
           marginBottom: 18,
         }}
       >
@@ -541,8 +541,8 @@ function CompletionStage({ score, total }: { score: number; total: number }) {
           fontSize: 22,
           margin: "0 0 8px",
           background: perfect
-            ? "linear-gradient(135deg, #f59e0b, #34d399)"
-            : "linear-gradient(135deg, #60a5fa, #34d399)",
+            ? "linear-gradient(135deg, #f59e0b, #7cc89a)"
+            : "linear-gradient(135deg, #ffd58a, #7cc89a)",
           WebkitBackgroundClip: "text",
           WebkitTextFillColor: "transparent",
           backgroundClip: "text",
@@ -551,7 +551,7 @@ function CompletionStage({ score, total }: { score: number; total: number }) {
         {score}/{total} sorted correctly!
       </h3>
       {perfect && (
-        <p style={{ color: "#94a3b8", fontSize: 14, margin: "0 0 18px" }}>
+        <p style={{ color: "rgba(255,233,200,0.55)", fontSize: 14, margin: "0 0 18px" }}>
           Amazing work, sorting champion.
         </p>
       )}

@@ -35,7 +35,7 @@ const RINGS: RingConfig[] = [
       "All character types",
     ],
     correct: 3,
-    colour: "#60a5fa",
+    colour: "#ffd58a",
     radius: 230,
   },
   {
@@ -46,7 +46,7 @@ const RINGS: RingConfig[] = [
     // Anything 8+ is correct; the lower three are the wrong/weak answers.
     options: ["3 characters", "5 characters", "6 characters", "8+ characters"],
     correct: 3,
-    colour: "#22c55e",
+    colour: "#7cc89a",
     radius: 195,
   },
   {
@@ -225,6 +225,37 @@ export default function CrackTheCode({
 
   const boltAngles = Array.from({ length: 8 }, (_, i) => (i / 8) * Math.PI * 2);
 
+  // When the intro is up, render ONLY the intro (no game underneath). The
+  // intro overlay used position:absolute inset:0 inside this wrapper, but
+  // the wrapper's overflowY:auto + maxHeight meant a tall game body could
+  // poke out below the overlay (visible as a stacked-card overlap on
+  // shorter viewports). Early-returning the intro avoids that entirely.
+  if (showIntro) {
+    return (
+      <div
+        style={{
+          position: "relative",
+          width: "100%",
+          minHeight: 560,
+          borderRadius: 28,
+          overflow: "hidden",
+          background:
+            "linear-gradient(180deg, #2a1240 0%, #5a2540 35%, #a04a4a 70%, #e88550 92%, #fcd58a 100%)",
+          boxShadow:
+            "0 40px 90px -30px rgba(40, 22, 12, 0.55), 0 0 0 1px rgba(255,210,170,0.25) inset",
+        }}
+      >
+        <ExerciseIntro
+          title="Crack the Code!"
+          description="Rotate the combination rings to set the strongest password settings, then unlock the vault!"
+          icon="🔓"
+          controls="Click the arrows to rotate"
+          onStart={() => setShowIntro(false)}
+        />
+      </div>
+    );
+  }
+
   return (
     <div
       style={{
@@ -253,7 +284,7 @@ export default function CrackTheCode({
         style={{
           fontSize: 13,
           letterSpacing: 3,
-          color: "#c4b5fd",
+          color: "#ffd58a",
           fontWeight: 800,
           textTransform: "uppercase",
         }}
@@ -265,7 +296,7 @@ export default function CrackTheCode({
           fontSize: 22,
           fontWeight: 900,
           margin: "4px 0 6px",
-          background: "linear-gradient(135deg, #a855f7, #60a5fa)",
+          background: "linear-gradient(135deg, #ff9b4a, #ffd58a)",
           WebkitBackgroundClip: "text",
           WebkitTextFillColor: "transparent",
         }}
@@ -274,14 +305,14 @@ export default function CrackTheCode({
       </div>
       <div
         style={{
-          color: "#94a3b8",
+          color: "rgba(255,233,200,0.65)",
           fontSize: 13,
           marginBottom: 14,
           maxWidth: 460,
           lineHeight: 1.5,
         }}
       >
-        Use ← → on each ring to spin to the <span style={{ color: "#86efac", fontWeight: 800 }}>safest</span> answer. When all four rings glow green, hit <span style={{ color: "#c4b5fd", fontWeight: 800 }}>UNLOCK</span>.
+        Use ← → on each ring to spin to the <span style={{ color: "#7cc89a", fontWeight: 800 }}>safest</span> answer. When all four rings glow green, hit <span style={{ color: "#ffd58a", fontWeight: 800 }}>UNLOCK</span>.
       </div>
 
       {/* Compact concentric-ring indicator — purely decorative, gives the
@@ -301,14 +332,14 @@ export default function CrackTheCode({
         <svg width={168} height={168} viewBox="0 0 168 168" style={{ display: "block" }}>
           <defs>
             <radialGradient id="ctcCore">
-              <stop offset="0%" stopColor="#fde047" />
+              <stop offset="0%" stopColor="#ffd58a" />
               <stop offset="60%" stopColor="#a855f7" />
               <stop offset="100%" stopColor="#1e1b4b" />
             </radialGradient>
           </defs>
           {/* Centre keyhole */}
           <circle cx="84" cy="84" r="14" fill="url(#ctcCore)" opacity={corrects.every(Boolean) ? 1 : 0.55} />
-          <circle cx="84" cy="84" r="14" fill="none" stroke="#fde047" strokeWidth="1.2" opacity="0.7" />
+          <circle cx="84" cy="84" r="14" fill="none" stroke="#ffd58a" strokeWidth="1.2" opacity="0.7" />
           {RINGS.map((ring, i) => {
             const r = 28 + i * 16;
             const isCorrect = corrects[i];
@@ -325,7 +356,7 @@ export default function CrackTheCode({
                   cy="84"
                   r={r}
                   fill="none"
-                  stroke={isCorrect ? "#4ade80" : flash ? "#ef4444" : ring.colour}
+                  stroke={isCorrect ? "#7cc89a" : flash ? "#ef4444" : ring.colour}
                   strokeOpacity={isCorrect ? 0.9 : 0.4}
                   strokeWidth={isCorrect ? 2.4 : 1.6}
                   strokeDasharray={isCorrect ? "0" : "4 6"}
@@ -335,9 +366,9 @@ export default function CrackTheCode({
                   cx={dotX}
                   cy={dotY}
                   r={isCorrect ? 5 : 4}
-                  fill={isCorrect ? "#4ade80" : ring.colour}
+                  fill={isCorrect ? "#7cc89a" : ring.colour}
                   style={{
-                    filter: `drop-shadow(0 0 6px ${isCorrect ? "#4ade80" : ring.colour})`,
+                    filter: `drop-shadow(0 0 6px ${isCorrect ? "#7cc89a" : ring.colour})`,
                     transition: "cx 0.35s cubic-bezier(0.4,1.4,0.5,1), cy 0.35s cubic-bezier(0.4,1.4,0.5,1), fill 0.3s ease",
                   }}
                 />
@@ -352,13 +383,13 @@ export default function CrackTheCode({
             top: -4,
             right: -8,
             background: "rgba(15,21,37,0.9)",
-            border: "1px solid rgba(167,139,250,0.45)",
+            border: "1px solid rgba(160,106,255,0.45)",
             borderRadius: 999,
             padding: "3px 9px",
             fontFamily: "ui-monospace, monospace",
             fontSize: 11,
             fontWeight: 800,
-            color: "#c4b5fd",
+            color: "#c08aff",
             letterSpacing: 1,
           }}
         >
@@ -520,7 +551,7 @@ export default function CrackTheCode({
                   width: "100%",
                   height: "100%",
                   borderRadius: "50%",
-                  border: `2px solid ${isCorrect ? "#4ade80" : ring.colour}55`,
+                  border: `2px solid ${isCorrect ? "#7cc89a" : ring.colour}55`,
                   boxShadow: isCorrect
                     ? `0 0 22px ${ring.colour}66, inset 0 0 18px ${ring.colour}44`
                     : `inset 0 0 14px ${ring.colour}33`,
@@ -559,9 +590,9 @@ export default function CrackTheCode({
                           textAlign: "center",
                           color: isSelected
                             ? isCorrect
-                              ? "#86efac"
+                              ? "#a8e3bb"
                               : ring.colour
-                            : "#94a3b8",
+                            : "rgba(255,233,200,0.55)",
                           fontSize: 11,
                           fontWeight: isSelected ? 900 : 600,
                           letterSpacing: 0.5,
@@ -588,7 +619,7 @@ export default function CrackTheCode({
                     transform: "translateX(-50%)",
                     width: 20,
                     height: 14,
-                    background: isCorrect ? "#4ade80" : ring.colour,
+                    background: isCorrect ? "#7cc89a" : ring.colour,
                     clipPath: "polygon(50% 100%, 0 0, 100% 0)",
                     filter: `drop-shadow(0 0 6px ${ring.colour})`,
                   }}
@@ -676,7 +707,7 @@ export default function CrackTheCode({
             transform: "translate(-50%, -50%)",
             borderRadius: "50%",
             background:
-              "radial-gradient(circle at 40% 30%, #64748b 0%, #334155 40%, #0f172a 80%)",
+              "radial-gradient(circle at 40% 30%, #64748b 0%, #334155 40%, #2a0d2e 80%)",
             boxShadow:
               "0 0 30px rgba(0,0,0,0.6), inset 0 4px 14px rgba(255,255,255,0.15), inset 0 -4px 14px rgba(0,0,0,0.6)",
             overflow: "visible",
@@ -694,7 +725,7 @@ export default function CrackTheCode({
                   width: "50%",
                   height: "100%",
                   background:
-                    "radial-gradient(circle at 80% 50%, #64748b 0%, #334155 55%, #0f172a 100%)",
+                    "radial-gradient(circle at 80% 50%, #64748b 0%, #334155 55%, #2a0d2e 100%)",
                   borderRadius: "110px 0 0 110px",
                   animation: "ccDoorOpenLeft 1s ease-out forwards",
                   boxShadow: "inset 0 0 10px rgba(0,0,0,0.6)",
@@ -709,7 +740,7 @@ export default function CrackTheCode({
                   width: "50%",
                   height: "100%",
                   background:
-                    "radial-gradient(circle at 20% 50%, #64748b 0%, #334155 55%, #0f172a 100%)",
+                    "radial-gradient(circle at 20% 50%, #64748b 0%, #334155 55%, #2a0d2e 100%)",
                   borderRadius: "0 110px 110px 0",
                   animation: "ccDoorOpenRight 1s ease-out forwards",
                   boxShadow: "inset 0 0 10px rgba(0,0,0,0.6)",
@@ -762,8 +793,8 @@ export default function CrackTheCode({
                       Math.cos(a) * 92
                     }px, ${Math.sin(a) * 92}px)`,
                     background: lit
-                      ? "radial-gradient(circle, #86efac, #22c55e 70%, #166534)"
-                      : "radial-gradient(circle, #94a3b8, #334155 70%, #0f172a)",
+                      ? "radial-gradient(circle, #a8e3bb, #7cc89a 70%, #166534)"
+                      : "radial-gradient(circle, rgba(255,233,200,0.55), #334155 70%, #2a0d2e)",
                     boxShadow: lit
                       ? "0 0 8px rgba(134,239,172,0.8)"
                       : "inset 0 0 4px rgba(0,0,0,0.6)",
@@ -785,7 +816,7 @@ export default function CrackTheCode({
                 height: 70,
                 borderRadius: "50%",
                 background:
-                  "radial-gradient(circle at 40% 30%, #e2e8f0, #94a3b8 50%, #334155)",
+                  "radial-gradient(circle at 40% 30%, #fff7e6, rgba(255,233,200,0.55) 50%, #334155)",
                 boxShadow:
                   "0 0 12px rgba(0,0,0,0.6), inset 0 0 8px rgba(0,0,0,0.5)",
                 pointerEvents: "none",
@@ -802,7 +833,7 @@ export default function CrackTheCode({
                     height: 32,
                     marginLeft: -2,
                     marginTop: -16,
-                    background: "#1e293b",
+                    background: "#3a1a3e",
                     borderRadius: 2,
                     transform: `rotate(${deg}deg)`,
                   }}
@@ -818,7 +849,7 @@ export default function CrackTheCode({
                   height: 12,
                   borderRadius: "50%",
                   background:
-                    "radial-gradient(circle, #60a5fa 0%, rgba(96,165,250,0.4) 55%, transparent 80%)",
+                    "radial-gradient(circle, #ffd58a 0%, rgba(255,213,138,0.4) 55%, transparent 80%)",
                   animation: "ccKeyholePulse 1.5s ease-in-out infinite",
                 }}
               />
@@ -946,16 +977,6 @@ export default function CrackTheCode({
           </div>
         )}
       </div>
-
-      {showIntro && (
-        <ExerciseIntro
-          title="Crack the Code!"
-          description="Rotate the combination rings to set the strongest password settings, then unlock the vault!"
-          icon="🔓"
-          controls="Click the arrows to rotate"
-          onStart={() => setShowIntro(false)}
-        />
-      )}
     </div>
   );
 }

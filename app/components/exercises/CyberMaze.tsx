@@ -305,7 +305,7 @@ export default function CyberMaze({
           vx: Math.cos(a) * sp,
           vy: Math.sin(a) * sp,
           life: 600,
-          colour: ["#fde047", "#fbbf24", "#f97316"][i % 3],
+          colour: ["#ffd58a", "#fbbf24", "#f97316"][i % 3],
         });
       }
     }
@@ -344,7 +344,7 @@ export default function CyberMaze({
           vx: Math.cos(a) * sp,
           vy: Math.sin(a) * sp,
           life: 700,
-          colour: ["#4ade80", "#22d3ee", "#fde047"][i % 3],
+          colour: ["#7cc89a", "#ffd58a", "#ffd58a"][i % 3],
         });
       }
       // Move into the gate cell
@@ -710,12 +710,12 @@ export default function CyberMaze({
         // Outer crystal
         const crystGrad = ctx.createLinearGradient(0, -12, 0, 12);
         crystGrad.addColorStop(0, "#fef3c7");
-        crystGrad.addColorStop(0.45, "#fde047");
+        crystGrad.addColorStop(0.45, "#ffd58a");
         crystGrad.addColorStop(1, "#b45309");
         ctx.fillStyle = crystGrad;
         ctx.strokeStyle = "#fbbf24";
         ctx.lineWidth = 2;
-        ctx.shadowColor = "#fde047";
+        ctx.shadowColor = "#ffd58a";
         ctx.shadowBlur = 14;
         ctx.beginPath();
         ctx.moveTo(0, -12);
@@ -848,13 +848,13 @@ export default function CyberMaze({
           letterSpacing: 1.5,
         }}
       >
-        <span style={{ color: "#86efac" }}>
+        <span style={{ color: "#a8e3bb" }}>
           GATES {s.questionsAnswered}/{s.gates.length}
         </span>
-        <span style={{ color: "#fde047" }}>
+        <span style={{ color: "#ffd58a" }}>
           TOKENS {s.tokensCollected}/{s.tokens.length}
         </span>
-        <span style={{ color: "#a78bfa", fontFamily: "monospace" }}>
+        <span style={{ color: "#a06aff", fontFamily: "monospace" }}>
           TIME {secs}s
         </span>
       </div>
@@ -908,8 +908,8 @@ export default function CyberMaze({
               borderRadius: 18,
               background:
                 "linear-gradient(180deg, rgba(15,23,42,0.98), rgba(5,8,18,0.98))",
-              border: "2px solid rgba(96,165,250,0.5)",
-              boxShadow: "0 0 30px rgba(59,130,246,0.35)",
+              border: "2px solid rgba(255,213,138,0.5)",
+              boxShadow: "0 0 30px rgba(255,178,110,0.35)",
               textAlign: "center",
             }}
           >
@@ -951,8 +951,8 @@ export default function CyberMaze({
                     padding: "12px 14px",
                     borderRadius: 12,
                     background: "rgba(30,41,59,0.8)",
-                    border: "1px solid rgba(96,165,250,0.35)",
-                    color: "#e2e8f0",
+                    border: "1px solid rgba(255,213,138,0.35)",
+                    color: "#fff7e6",
                     fontSize: 14,
                     fontWeight: 600,
                     cursor: "pointer",
@@ -961,13 +961,13 @@ export default function CyberMaze({
                   }}
                   onMouseEnter={(e) => {
                     const t = e.currentTarget;
-                    t.style.background = "rgba(59,130,246,0.2)";
-                    t.style.borderColor = "#60a5fa";
+                    t.style.background = "rgba(255,178,110,0.2)";
+                    t.style.borderColor = "#ffd58a";
                   }}
                   onMouseLeave={(e) => {
                     const t = e.currentTarget;
                     t.style.background = "rgba(30,41,59,0.8)";
-                    t.style.borderColor = "rgba(96,165,250,0.35)";
+                    t.style.borderColor = "rgba(255,213,138,0.35)";
                   }}
                 >
                   {a}

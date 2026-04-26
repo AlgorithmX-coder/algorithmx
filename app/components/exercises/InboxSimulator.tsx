@@ -31,7 +31,7 @@ const STYLES = `
 @keyframes isClueIn { from { opacity: 0; transform: translateX(-8px); } to { opacity: 1; transform: none; } }
 @keyframes isShakeX { 0%,100% { transform: translateX(0); } 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
 @keyframes isEnter { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
-@keyframes isPulseGood { 0%,100% { box-shadow: 0 0 0 rgba(52,211,153,0); } 50% { box-shadow: 0 0 18px rgba(52,211,153,0.4); } }
+@keyframes isPulseGood { 0%,100% { box-shadow: 0 0 0 rgba(168,227,187,0); } 50% { box-shadow: 0 0 18px rgba(168,227,187,0.4); } }
 @keyframes isHighlightBg { 0% { background: rgba(245,158,11,0); } 30% { background: rgba(245,158,11,0.5); } 100% { background: rgba(245,158,11,0.25); } }
 `;
 
@@ -54,11 +54,11 @@ function fauxTimestamp(index: number): string {
 // Pick a per-sender avatar colour. Phishing senders get a warmer/darker red tone.
 function avatarColor(email: Email, index: number): string {
   if (email.isPhishing) return "#7f1d1d"; // deep red
-  const palette = ["#60a5fa", "#34d399", "#f59e0b", "#a78bfa", "#06b6d4", "#14b8a6"];
+  const palette = ["#ffd58a", "#7cc89a", "#f59e0b", "#a06aff", "#ffd58a", "#7cc89a"];
   return palette[index % palette.length];
 }
 
-function ShieldIcon({ size = 28, color = "#34d399" }: { size?: number; color?: string }) {
+function ShieldIcon({ size = 28, color = "#7cc89a" }: { size?: number; color?: string }) {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
       <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
@@ -77,7 +77,7 @@ function WarningIcon({ size = 14, color = "#ef4444" }: { size?: number; color?: 
   );
 }
 
-function CheckCircle({ size = 16, color = "#34d399" }: { size?: number; color?: string }) {
+function CheckCircle({ size = 16, color = "#7cc89a" }: { size?: number; color?: string }) {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
       <circle cx="12" cy="12" r="10" />
@@ -237,7 +237,7 @@ export default function InboxSimulator({
         maxWidth: 900,
         margin: "0 auto",
         background: "#0d1220",
-        border: "1px solid rgba(96,165,250,0.14)",
+        border: "1px solid rgba(255,213,138,0.14)",
         borderRadius: 20,
         overflow: "hidden",
         color: "#f1f5f9",
@@ -252,9 +252,9 @@ export default function InboxSimulator({
           style={{
             height: "100%",
             width: `${progressPct}%`,
-            background: "linear-gradient(90deg, #60a5fa, #34d399)",
+            background: "linear-gradient(90deg, #ffd58a, #7cc89a)",
             transition: "width 0.6s cubic-bezier(0.16,1,0.3,1)",
-            boxShadow: "0 0 10px rgba(52,211,153,0.5)",
+            boxShadow: "0 0 10px rgba(168,227,187,0.5)",
           }}
         />
       </div>
@@ -283,8 +283,8 @@ export default function InboxSimulator({
           alignItems: "center",
           justifyContent: "space-between",
           padding: "12px 20px",
-          background: "rgba(96,165,250,0.06)",
-          borderBottom: "1px solid rgba(96,165,250,0.1)",
+          background: "rgba(255,213,138,0.06)",
+          borderBottom: "1px solid rgba(255,213,138,0.1)",
         }}
       >
         <div
@@ -292,7 +292,7 @@ export default function InboxSimulator({
             fontFamily: "'Fredoka', 'Nunito', sans-serif",
             fontWeight: 700,
             fontSize: 16,
-            color: "#60a5fa",
+            color: "#ffd58a",
           }}
         >
           📧 CyberMail
@@ -303,9 +303,9 @@ export default function InboxSimulator({
             fontWeight: 700,
             padding: "4px 12px",
             borderRadius: 999,
-            background: "rgba(96,165,250,0.12)",
-            border: "1px solid rgba(96,165,250,0.2)",
-            color: "#60a5fa",
+            background: "rgba(255,213,138,0.12)",
+            border: "1px solid rgba(255,213,138,0.2)",
+            color: "#ffd58a",
             letterSpacing: "0.06em",
           }}
         >
@@ -430,10 +430,10 @@ function EmailListRow({
       style={{
         display: "block",
         width: "100%",
-        background: selected ? "rgba(96,165,250,0.08)" : "transparent",
+        background: selected ? "rgba(255,213,138,0.08)" : "transparent",
         border: "none",
         borderBottom: "1px solid rgba(255,255,255,0.04)",
-        borderLeft: `3px solid ${unread ? "#60a5fa" : "transparent"}`,
+        borderLeft: `3px solid ${unread ? "#ffd58a" : "transparent"}`,
         padding: "14px 16px",
         textAlign: "left",
         cursor: "pointer",
@@ -482,7 +482,7 @@ function EmailListRow({
           <div
             style={{
               fontSize: 13,
-              color: unread ? "#e2e8f0" : "#94a3b8",
+              color: unread ? "#fff7e6" : "rgba(255,233,200,0.55)",
               whiteSpace: "nowrap",
               overflow: "hidden",
               textOverflow: "ellipsis",
@@ -504,7 +504,7 @@ function EmailListRow({
             {email.preview}
           </div>
         </div>
-        {answer === "correct" && <CheckCircle size={16} color="#34d399" />}
+        {answer === "correct" && <CheckCircle size={16} color="#7cc89a" />}
         {answer === "wrong" && <XCircle size={16} color="#ef4444" />}
       </div>
     </button>
@@ -559,7 +559,7 @@ function EmailDetail({
         style={{
           fontSize: 15,
           lineHeight: 1.7,
-          color: "#94a3b8",
+          color: "rgba(255,233,200,0.55)",
           whiteSpace: "pre-line",
         }}
       >
@@ -600,11 +600,11 @@ function ActionButton({
   disabled: boolean;
   onClick: () => void;
 }) {
-  const accent = tone === "good" ? "#34d399" : "#ef4444";
+  const accent = tone === "good" ? "#7cc89a" : "#ef4444";
   const gradient = tone === "good"
-    ? "linear-gradient(135deg, #10b981, #047857)"
+    ? "linear-gradient(135deg, #5fb37a, #047857)"
     : "linear-gradient(135deg, #ef4444, #991b1b)";
-  const glow = tone === "good" ? "rgba(52,211,153,0.55)" : "rgba(239,68,68,0.55)";
+  const glow = tone === "good" ? "rgba(168,227,187,0.55)" : "rgba(239,68,68,0.55)";
   const [hover, setHover] = useState(false);
   const style: CSSProperties = {
     height: 56,
@@ -651,8 +651,8 @@ function FeedbackOverlay({
   clues: string[];
 }) {
   const isGood = kind === "correct";
-  const accent = isGood ? "#34d399" : "#ef4444";
-  const bg = isGood ? "rgba(52,211,153,0.14)" : "rgba(239,68,68,0.14)";
+  const accent = isGood ? "#7cc89a" : "#ef4444";
+  const bg = isGood ? "rgba(168,227,187,0.14)" : "rgba(239,68,68,0.14)";
   const title = isGood ? "✅ CORRECT!" : "❌ Look closer!";
 
   // Helper line explaining the scenario
@@ -742,15 +742,15 @@ function CompletionPanel({
           height: 84,
           margin: "0 auto 16px",
           borderRadius: "50%",
-          background: "rgba(52,211,153,0.1)",
-          border: "1px solid rgba(52,211,153,0.35)",
+          background: "rgba(168,227,187,0.1)",
+          border: "1px solid rgba(168,227,187,0.35)",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
           animation: perfect ? "isPulseGood 1.6s ease-in-out infinite" : undefined,
         }}
       >
-        <ShieldIcon size={44} color="#34d399" />
+        <ShieldIcon size={44} color="#7cc89a" />
       </div>
       <h3
         style={{
@@ -759,8 +759,8 @@ function CompletionPanel({
           fontSize: 26,
           margin: "0 0 6px",
           background: perfect
-            ? "linear-gradient(135deg, #f59e0b, #34d399)"
-            : "linear-gradient(135deg, #60a5fa, #34d399)",
+            ? "linear-gradient(135deg, #f59e0b, #7cc89a)"
+            : "linear-gradient(135deg, #ffd58a, #7cc89a)",
           WebkitBackgroundClip: "text",
           WebkitTextFillColor: "transparent",
           backgroundClip: "text",
@@ -768,7 +768,7 @@ function CompletionPanel({
       >
         {perfect ? "🏆 PERFECT! No phishing got past you!" : "Mission Complete!"}
       </h3>
-      <p style={{ color: "#94a3b8", fontSize: 15, margin: "0 0 22px" }}>
+      <p style={{ color: "rgba(255,233,200,0.55)", fontSize: 15, margin: "0 0 22px" }}>
         You identified <strong style={{ color: "#f1f5f9" }}>{score}/{total}</strong> threats.
       </p>
       <button

@@ -35,14 +35,14 @@ interface BlockDef {
 }
 
 const GOOD_BLOCKS: BlockDef[] = [
-  { text: "Strong Passwords", kind: "good", primary: "#22c55e", secondary: "#15803d" },
-  { text: "Enable 2FA", kind: "good", primary: "#3b82f6", secondary: "#1d4ed8" },
-  { text: "Avoid Unknown Links", kind: "good", primary: "#22d3ee", secondary: "#0891b2" },
-  { text: "Keep Software Updated", kind: "good", primary: "#22c55e", secondary: "#15803d" },
-  { text: "Password Manager", kind: "good", primary: "#3b82f6", secondary: "#1d4ed8" },
-  { text: "Check URLs Carefully", kind: "good", primary: "#22d3ee", secondary: "#0891b2" },
-  { text: "Log Out When Done", kind: "good", primary: "#22c55e", secondary: "#15803d" },
-  { text: "Use Antivirus", kind: "good", primary: "#3b82f6", secondary: "#1d4ed8" },
+  { text: "Strong Passwords", kind: "good", primary: "#7cc89a", secondary: "#15803d" },
+  { text: "Enable 2FA", kind: "good", primary: "#ff9b4a", secondary: "#d4733a" },
+  { text: "Avoid Unknown Links", kind: "good", primary: "#ffd58a", secondary: "#d4733a" },
+  { text: "Keep Software Updated", kind: "good", primary: "#7cc89a", secondary: "#15803d" },
+  { text: "Password Manager", kind: "good", primary: "#ff9b4a", secondary: "#d4733a" },
+  { text: "Check URLs Carefully", kind: "good", primary: "#ffd58a", secondary: "#d4733a" },
+  { text: "Log Out When Done", kind: "good", primary: "#7cc89a", secondary: "#15803d" },
+  { text: "Use Antivirus", kind: "good", primary: "#ff9b4a", secondary: "#d4733a" },
 ];
 
 const BAD_BLOCKS: BlockDef[] = [
@@ -185,7 +185,7 @@ export default function FirewallBuilder({
     s.goodLanded += 1;
     playSound("correct");
     onCorrect?.();
-    burst(col * COL_W + COL_W / 2, PLAY_H - stackHeightPx(col) + BLOCK_H / 2, "#4ade80", 10);
+    burst(col * COL_W + COL_W / 2, PLAY_H - stackHeightPx(col) + BLOCK_H / 2, "#7cc89a", 10);
     const milestone = LEVEL_THRESHOLDS.indexOf(s.goodLanded);
     if (milestone >= 0) {
       s.level = milestone + 1;
@@ -580,7 +580,7 @@ export default function FirewallBuilder({
         const age = now - (s.levelFlashUntil - 1500);
         const alpha = age < 300 ? age / 300 : 1 - (age - 300) / 1200;
         ctx.globalAlpha = Math.max(0, Math.min(1, alpha));
-        ctx.fillStyle = "#fde047";
+        ctx.fillStyle = "#ffd58a";
         ctx.strokeStyle = "rgba(0,0,0,0.8)";
         ctx.lineWidth = 4;
         ctx.font = "900 32px 'Space Grotesk', sans-serif";
@@ -618,7 +618,7 @@ export default function FirewallBuilder({
       // Huge CATCH IT! / REJECT IT! indicator above the play area
       if (s.falling) {
         const isGood = s.falling.def.kind === "good";
-        const col = isGood ? "#4ade80" : "#ef4444";
+        const col = isGood ? "#7cc89a" : "#ef4444";
         const label = isGood ? "CATCH IT!" : "REJECT IT!";
         const glowPulse = 0.6 + 0.4 * Math.sin(now / 180);
         ctx.shadowColor = col;
@@ -748,7 +748,7 @@ function drawBlock(
   ctx.strokeStyle = flash
     ? "#fff"
     : def.kind === "good"
-      ? "#4ade80"
+      ? "#7cc89a"
       : "#ef4444";
   ctx.lineWidth = 2;
   roundRect(ctx, x, y, w, h, 8);
