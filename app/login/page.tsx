@@ -290,41 +290,19 @@ export default function LoginPage() {
             Authenticate to continue your cybersecurity training.
           </p>
 
-          {/* Form card — dark glass with cyan accents */}
+          {/* Form card — invisible container.
+              No background, no border, no shadow, no top-edge
+              gradient strip, no padding box visible. Just a layout
+              wrapper. The form fields below carry their own dark
+              backgrounds so they remain legible against the live
+              globe scene. Net effect: NO card. Form fields literally
+              float in the scene. */}
           <motion.div
-            className="rounded-3xl p-7 sm:p-8 relative"
+            className="p-7 sm:p-8 relative"
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ type: "spring", stiffness: 200, damping: 20 }}
-            style={{
-              // Card body now FULLY transparent — no dark wash at all.
-              // The backdrop blur stays so the globe behind looks
-              // softened, but the card itself doesn't add a colour
-              // layer. Inputs each carry their own dark background for
-              // legibility (already styled below). Net effect: the
-              // form fields appear to float in the scene, no panel.
-              background: "transparent",
-              backdropFilter: "blur(20px)",
-              WebkitBackdropFilter: "blur(20px)",
-              border: `1px solid ${C.cyan}1a`,
-              boxShadow:
-                "0 0 24px rgba(0, 229, 255, 0.08), 0 0 0 1px rgba(125, 240, 255, 0.04) inset",
-            }}
           >
-            {/* Animated gradient top edge — the "energised border" */}
-            <div
-              aria-hidden
-              style={{
-                position: "absolute",
-                top: -1,
-                left: 24,
-                right: 24,
-                height: 2,
-                background: GRAD,
-                borderRadius: 999,
-                filter: `drop-shadow(0 0 8px ${C.cyan}aa)`,
-              }}
-            />
 
             {/* Error */}
             <AnimatePresence>
