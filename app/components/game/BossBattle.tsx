@@ -2343,26 +2343,73 @@ export default function BossBattle({
     >
       {!selectedHero && (
         <div className="bb-sel-screen">
-          {/* Background layers */}
+          {/* Background layers — cosmic blobs + bottom horizon haze */}
           <div className="bb-sel-mesh bb-sel-mesh-blue" />
           <div className="bb-sel-mesh bb-sel-mesh-purple" />
+          <div className="bb-sel-haze" />
           <div className="bb-sel-beam" />
+
+          {/* Lightning streaks scattered across the screen */}
+          {[
+            { left: "8%",  h: 240, dur: 6.5, delay: 0 },
+            { left: "23%", h: 180, dur: 8,   delay: 1.5 },
+            { left: "45%", h: 280, dur: 9,   delay: 3 },
+            { left: "68%", h: 220, dur: 7.5, delay: 4 },
+            { left: "82%", h: 200, dur: 9.5, delay: 5.5 },
+            { left: "94%", h: 160, dur: 8.5, delay: 2 },
+          ].map((b, i) => (
+            <span
+              key={`bolt-${i}`}
+              className="bb-sel-bolt"
+              aria-hidden="true"
+              style={{
+                left: b.left,
+                height: b.h,
+                animationDuration: `${b.dur}s`,
+                animationDelay: `${b.delay}s`,
+              }}
+            />
+          ))}
+
+          {/* Drifting particles — warm cosmic palette to match the
+              lock screen (gold / coral / pink / cosmic / cyan). */}
           <div className="bb-sel-particles" aria-hidden="true">
-            {Array.from({ length: 18 }).map((_, i) => (
+            {Array.from({ length: 24 }).map((_, i) => (
               <span
                 key={i}
                 className="bb-sel-particle"
                 style={{
-                  left: `${(i * 5.4 + (i % 3) * 3) % 100}%`,
-                  width: `${3 + (i % 3)}px`,
-                  height: `${3 + (i % 3)}px`,
-                  background: ["#60a5fa", "#a78bfa", "#34d399", "#fde047"][i % 4],
-                  animationDelay: `${(i * 1.3) % 12}s`,
+                  left: `${(i * 4.17 + (i % 3) * 2.5) % 100}%`,
+                  width: `${2 + (i % 3)}px`,
+                  height: `${2 + (i % 3)}px`,
+                  background: ["#ffd158", "#ffb347", "#ff5fb3", "#7c5cff", "#7df0ff"][i % 5],
+                  animationDelay: `${(i * 0.95) % 12}s`,
                   animationDuration: `${14 + (i % 6) * 2.5}s`,
                 }}
               />
             ))}
           </div>
+
+          {/* Tesla arc across the centre — fires every ~2.6s. Two zigzag
+              SVG paths (cyan + bright white core) for proper electric
+              bolt look. Sits between the hero cards. */}
+          <svg
+            className="bb-sel-tesla"
+            viewBox="0 0 100 30"
+            preserveAspectRatio="none"
+            aria-hidden="true"
+          >
+            <path
+              d="M0,15 L8,8 L16,20 L24,10 L32,18 L40,7 L48,16 L56,12 L64,22 L72,9 L80,17 L88,11 L100,15"
+              stroke="#7df0ff"
+              style={{ color: "#7df0ff" }}
+            />
+            <path
+              d="M0,15 L8,8 L16,20 L24,10 L32,18 L40,7 L48,16 L56,12 L64,22 L72,9 L80,17 L88,11 L100,15"
+              stroke="#ffffff"
+              style={{ strokeWidth: 0.3, opacity: 0.9 }}
+            />
+          </svg>
 
           {/* Title block */}
           <h1 className="bb-sel-title">CHOOSE YOUR HERO</h1>
@@ -3679,38 +3726,96 @@ export default function BossBattle({
           position: absolute; inset: 0;
           display: flex; flex-direction: column;
           align-items: center; justify-content: center;
-          background: #0a0e1a;
+          /* Cinematic radial — same lineage as the FINAL SHOWDOWN
+             lock screen. Cosmic-violet warmth bleeding through navy. */
+          background: radial-gradient(ellipse at 50% 70%, #2a0d2e 0%, #1a1f4d 35%, #0f1530 70%, #04050d 100%);
           padding: 40px 24px;
           z-index: 5;
           overflow: hidden;
           font-family: 'DM Sans', sans-serif;
         }
-        /* Animated gradient mesh — two drifting radials */
+        /* Cosmic cloud blobs — top-left violet, top-right pink, bottom
+           coral horizon haze. Same blobs as the lock screen. */
         .bb-sel-mesh {
           position: absolute;
           width: 80vmax; height: 80vmax;
           border-radius: 50%;
           pointer-events: none;
-          filter: blur(20px);
+          filter: blur(60px);
         }
         .bb-sel-mesh-blue {
-          top: -20vmax; left: -20vmax;
-          background: radial-gradient(circle, rgba(59,130,246,0.08), transparent 65%);
-          animation: bbSelMeshBlue 20s ease-in-out infinite;
+          top: -28vmax; left: -22vmax;
+          background: radial-gradient(circle, rgba(124,92,255,0.38), transparent 65%);
+          animation: bbSelMeshBlue 22s ease-in-out infinite;
         }
         .bb-sel-mesh-purple {
-          bottom: -20vmax; right: -20vmax;
-          background: radial-gradient(circle, rgba(124,58,237,0.06), transparent 65%);
-          animation: bbSelMeshPurple 20s ease-in-out infinite;
+          top: -24vmax; right: -22vmax;
+          background: radial-gradient(circle, rgba(255,95,179,0.30), transparent 65%);
+          animation: bbSelMeshPurple 26s ease-in-out infinite reverse;
         }
-        /* Horizontal light beam */
+        .bb-sel-haze {
+          position: absolute;
+          bottom: -10%;
+          left: 30%;
+          width: 560px;
+          height: 320px;
+          border-radius: 50%;
+          background: radial-gradient(circle, rgba(255, 122, 89, 0.28), transparent 65%);
+          filter: blur(70px);
+          pointer-events: none;
+        }
+        /* Lightning streak (warm gold) — used inline in the JSX. */
+        .bb-sel-bolt {
+          position: absolute;
+          top: 0;
+          width: 2px;
+          background: linear-gradient(180deg, rgba(255, 215, 138, 0.85), transparent);
+          filter: drop-shadow(0 0 12px rgba(255, 215, 138, 0.55));
+          pointer-events: none;
+          animation: bbSelBoltStrike ease-in-out infinite;
+        }
+        /* Horizontal light beam — kept as a subtle horizon line. */
         .bb-sel-beam {
           position: absolute;
           top: 50%; left: 0; right: 0;
-          height: 2px;
-          background: linear-gradient(90deg, transparent, rgba(255,255,255,0.03), transparent);
-          box-shadow: 0 0 24px rgba(255,255,255,0.04);
+          height: 1px;
+          background: linear-gradient(90deg, transparent, rgba(255, 215, 138, 0.18), transparent);
+          box-shadow: 0 0 24px rgba(255, 215, 138, 0.12);
           pointer-events: none;
+        }
+        /* Tesla arc — flickers across the centre OR badge. */
+        .bb-sel-tesla {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          width: 360px;
+          height: 60px;
+          transform: translate(-50%, -50%);
+          pointer-events: none;
+          overflow: visible;
+          z-index: 0;
+          animation: bbSelTeslaArc 2.6s ease-in-out infinite;
+        }
+        .bb-sel-tesla path {
+          fill: none;
+          stroke-width: 0.8;
+          filter: drop-shadow(0 0 6px currentColor) drop-shadow(0 0 12px currentColor);
+        }
+        @keyframes bbSelBoltStrike {
+          0%, 93%, 100% { opacity: 0; }
+          94% { opacity: 0.75; }
+          96% { opacity: 0.2; }
+          98% { opacity: 0.55; }
+        }
+        @keyframes bbSelTeslaArc {
+          0%, 100% { opacity: 0; }
+          8%       { opacity: 1; }
+          12%      { opacity: 0; }
+          22%      { opacity: 0.9; }
+          28%      { opacity: 0; }
+          60%      { opacity: 0; }
+          64%      { opacity: 1; }
+          70%      { opacity: 0; }
         }
         /* Floating particles */
         .bb-sel-particles {
@@ -3728,41 +3833,62 @@ export default function BossBattle({
           opacity: 0;
         }
 
-        /* Title */
+        /* Title — shimmering cosmic gradient with chromatic glitch jumps,
+           same lineage as the FINAL SHOWDOWN lock-screen title. */
         .bb-sel-title {
           position: relative;
           z-index: 1;
-          font-family: 'Space Grotesk', sans-serif;
-          font-size: 48px; font-weight: 800;
+          font-family: 'Fredoka', 'Space Grotesk', 'Nunito', system-ui, sans-serif;
+          font-size: 56px; font-weight: 900;
           letter-spacing: 0.08em;
-          color: #fff;
+          background: linear-gradient(135deg, #ffd158 0%, #ff7a59 35%, #ff5fb3 70%, #7c5cff 100%);
+          background-size: 200% 100%;
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
           text-transform: uppercase;
-          text-shadow: 0 0 30px rgba(96,165,250,0.3);
+          filter: drop-shadow(0 0 30px rgba(255, 95, 179, 0.35));
           margin: 0 0 8px;
           text-align: center;
-          animation: bbSelTitleIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+          animation:
+            bbSelTitleIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) both,
+            bbSelTitleShimmer 6s ease-in-out infinite,
+            bbSelTitleGlitch 5s steps(1, end) infinite;
         }
         .bb-sel-subtitle {
           position: relative;
           z-index: 1;
-          color: #64748b;
+          color: rgba(199, 207, 240, 0.78);
           font-size: 16px;
-          font-weight: 400;
+          font-weight: 600;
           margin: 0;
           text-align: center;
+          letter-spacing: 0.03em;
           animation: bbSelTitleIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both;
         }
         .bb-sel-subtitle-boss {
-          color: #a78bfa;
-          font-weight: 700;
+          color: #ff7a59;
+          font-weight: 800;
+          text-shadow: 0 0 12px rgba(255, 95, 179, 0.5);
         }
         .bb-sel-rule {
           position: relative;
           z-index: 1;
-          width: 120px; height: 2px;
+          width: 160px; height: 2px;
           margin: 24px auto;
-          background: linear-gradient(90deg, transparent, #3b82f6, transparent);
+          background: linear-gradient(90deg, transparent, #ff7a59 30%, #ff5fb3 50%, #7c5cff 70%, transparent);
+          box-shadow: 0 0 14px rgba(255, 95, 179, 0.45);
           animation: bbSelTitleIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.15s both;
+        }
+        @keyframes bbSelTitleShimmer {
+          0%, 100% { background-position: 0% 50%; }
+          50%      { background-position: 100% 50%; }
+        }
+        @keyframes bbSelTitleGlitch {
+          0%, 88%, 100% { transform: translate(0,0); }
+          90% { transform: translate(1px, -1px); filter: drop-shadow(-3px 0 0 #00e5ff) drop-shadow(3px 0 0 #ff5fb3) drop-shadow(0 0 30px rgba(255, 95, 179, 0.45)); }
+          92% { transform: translate(-1px, 1px); filter: drop-shadow(4px 0 0 #ffd158) drop-shadow(-4px 0 0 #7c5cff) drop-shadow(0 0 30px rgba(255, 95, 179, 0.45)); }
+          94% { transform: translate(0, 0); filter: drop-shadow(-2px 0 0 #00e5ff) drop-shadow(2px 0 0 #ff5fb3) drop-shadow(0 0 30px rgba(255, 95, 179, 0.45)); }
         }
 
         /* Cards wrapper — card ▸ OR ▸ card, all centred */
@@ -3777,23 +3903,28 @@ export default function BossBattle({
           width: 100%;
         }
 
-        /* Card */
+        /* Card — same cinematic dusk-glass treatment as the VS card on
+           the FINAL SHOWDOWN lock screen: layered translucent navy +
+           cosmic-violet, gold-ish rim, soft inner highlight. */
         .bb-sel-card {
           position: relative;
           width: 320px;
           flex: 0 0 320px;
           flex-shrink: 0;
           min-height: 480px;
-          /* Lifted from pure abyss to twilight navy so character
-             details (Adam's bright shield, Layla's dark dress) stay
-             readable against the page bg. */
-          background: linear-gradient(180deg, #1a2147 0%, #252d5e 100%);
-          border: 2px solid rgba(0, 229, 255, 0.18);
-          border-radius: 24px;
+          background: linear-gradient(180deg, rgba(15, 21, 48, 0.78) 0%, rgba(8, 10, 22, 0.82) 100%);
+          border: 1px solid rgba(255, 215, 138, 0.25);
+          border-radius: 22px;
           overflow: hidden;
           cursor: pointer;
           color: #e8edff;
           display: flex; flex-direction: column;
+          backdrop-filter: blur(2px);
+          -webkit-backdrop-filter: blur(2px);
+          box-shadow:
+            0 30px 60px -20px rgba(0, 0, 0, 0.65),
+            inset 0 0 0 1px rgba(255, 255, 255, 0.04),
+            0 0 60px rgba(124, 92, 255, 0.18);
           transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
                       border-color 0.35s ease,
                       box-shadow 0.35s ease,
@@ -3973,38 +4104,59 @@ export default function BossBattle({
           pointer-events: none;
         }
 
-        /* OR divider — vertical between cards */
+        /* OR divider — vertical between cards. Cosmic gold→pink chip
+           with a soft halo, matching the VS chip on the lock screen. */
         .bb-sel-or {
+          position: relative;
           display: flex; flex-direction: column;
           align-items: center; justify-content: center;
           gap: 10px;
           flex-shrink: 0;
           flex-basis: auto;
           align-self: center;
+          z-index: 1;
           animation: bbSelOrIn 0.4s ease-out 0.5s both;
         }
         .bb-sel-or-line {
           width: 1px;
           flex: 1;
           max-height: 130px;
-          background: rgba(255,255,255,0.06);
+          background: linear-gradient(180deg, transparent, rgba(255, 215, 138, 0.35), transparent);
+          box-shadow: 0 0 8px rgba(255, 215, 138, 0.4);
         }
         .bb-sel-or-text {
-          font-family: 'Space Grotesk', sans-serif;
-          font-size: 20px; font-weight: 700;
-          color: #475569;
-          background: #0a0e1a;
-          padding: 8px 12px;
-          border-radius: 6px;
+          position: relative;
+          font-family: 'Fredoka', 'Space Grotesk', sans-serif;
+          font-size: 18px; font-weight: 900;
+          letter-spacing: 0.08em;
+          color: #1a0612;
+          background: linear-gradient(135deg, #ffd158 0%, #ff7a59 50%, #ff5fb3 100%);
+          padding: 10px 16px;
+          border-radius: 999px;
+          border: 2px solid rgba(255, 215, 138, 0.85);
+          box-shadow:
+            0 8px 20px rgba(255, 95, 179, 0.45),
+            inset 0 2px 8px rgba(255, 255, 255, 0.5),
+            0 0 28px rgba(255, 95, 179, 0.4);
+        }
+        .bb-sel-or-text::before {
+          content: "";
+          position: absolute;
+          inset: -14px;
+          border-radius: 50%;
+          background: radial-gradient(circle, rgba(255, 95, 179, 0.5), transparent 70%);
+          filter: blur(10px);
+          z-index: -1;
         }
 
         .bb-sel-footer {
           position: relative;
           z-index: 1;
-          color: #475569;
+          color: rgba(199, 207, 240, 0.55);
           font-size: 12px;
           margin: 32px 0 0;
           text-align: center;
+          letter-spacing: 0.04em;
           animation: bbSelTitleIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.6s both;
         }
 
