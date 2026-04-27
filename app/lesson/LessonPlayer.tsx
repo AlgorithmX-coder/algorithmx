@@ -4348,6 +4348,14 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
               @keyframes bbRadarPulse { 0% { width: 0; height: 0; opacity: 0.55; border-width: 3px; } 100% { width: 1100px; height: 1100px; opacity: 0; border-width: 1px; } }
               @keyframes bbGlyphFloat { 0%,100% { transform: translateY(0) rotate(-3deg); } 50% { transform: translateY(-18px) rotate(3deg); } }
               @keyframes bbScanSweep { 0% { transform: translateY(-100%); } 100% { transform: translateY(120vh); } }
+              @keyframes bbCoreSpin    { from { transform: translate(-50%,-50%) rotate(0deg); }   to { transform: translate(-50%,-50%) rotate(360deg); } }
+              @keyframes bbCoreSpinRev { from { transform: translate(-50%,-50%) rotate(360deg); } to { transform: translate(-50%,-50%) rotate(0deg); } }
+              @keyframes bbCorePulse   { 0%,100% { opacity: 0.55; filter: blur(40px); } 50% { opacity: 0.85; filter: blur(28px); } }
+              @keyframes bbGridScroll  { 0% { background-position: 0 0; } 100% { background-position: 0 60px; } }
+              @keyframes bbTeslaArc    { 0%,100% { opacity: 0; transform: scaleX(1); } 8% { opacity: 1; transform: scaleX(1.04); } 12% { opacity: 0; } 22% { opacity: 0.9; transform: scaleX(0.96); } 28% { opacity: 0; } 60% { opacity: 0; } 64% { opacity: 1; transform: scaleX(1.02); } 70% { opacity: 0; } }
+              @keyframes bbSparkRace   { 0% { transform: translateX(-110vw) translateY(0); opacity: 0; } 5% { opacity: 1; } 95% { opacity: 1; } 100% { transform: translateX(110vw) translateY(0); opacity: 0; } }
+              @keyframes bbTitleGlitch { 0%, 88%, 100% { text-shadow: none; transform: translate(0,0); } 90% { text-shadow: -3px 0 0 #00e5ff, 3px 0 0 #ff5fb3; transform: translate(1px,-1px); } 92% { text-shadow: 4px 0 0 #ffd158, -4px 0 0 #7c5cff; transform: translate(-1px,1px); } 94% { text-shadow: -2px 0 0 #00e5ff, 2px 0 0 #ff5fb3; transform: translate(0,0); } }
+              @keyframes bbVignettePulse { 0%,100% { opacity: 0.4; } 50% { opacity: 0.7; } }
             `}</style>
 
             <div style={{
@@ -4412,6 +4420,108 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
                   borderRadius: "50%",
                   background: "radial-gradient(circle, rgba(255, 122, 89, 0.25) 0%, transparent 65%)",
                   filter: "blur(70px)",
+                }} />
+
+                {/* ⚡ ENERGY CORE — three stacked rotating conic gradients
+                    behind the VS chip area. The arena's beating heart. */}
+                <div style={{
+                  position: "absolute",
+                  top: "50%",
+                  left: "50%",
+                  width: 720,
+                  height: 720,
+                  borderRadius: "50%",
+                  background: "conic-gradient(from 0deg, transparent 0deg, rgba(0, 229, 255, 0.55) 30deg, transparent 60deg, rgba(124, 92, 255, 0.55) 180deg, transparent 220deg, rgba(255, 95, 179, 0.55) 320deg, transparent 360deg)",
+                  filter: "blur(40px)",
+                  animation: "bbCoreSpin 22s linear infinite, bbCorePulse 5s ease-in-out infinite",
+                  mixBlendMode: "screen",
+                  pointerEvents: "none",
+                }} />
+                <div style={{
+                  position: "absolute",
+                  top: "50%",
+                  left: "50%",
+                  width: 480,
+                  height: 480,
+                  borderRadius: "50%",
+                  background: "conic-gradient(from 90deg, rgba(255, 215, 138, 0.55) 0deg, transparent 60deg, rgba(0, 229, 255, 0.55) 180deg, transparent 240deg, rgba(255, 215, 138, 0.55) 360deg)",
+                  filter: "blur(28px)",
+                  animation: "bbCoreSpinRev 14s linear infinite",
+                  mixBlendMode: "screen",
+                  pointerEvents: "none",
+                }} />
+                <div style={{
+                  position: "absolute",
+                  top: "50%",
+                  left: "50%",
+                  width: 280,
+                  height: 280,
+                  borderRadius: "50%",
+                  background: "radial-gradient(circle, rgba(255, 95, 179, 0.6) 0%, rgba(124, 92, 255, 0.4) 50%, transparent 75%)",
+                  filter: "blur(22px)",
+                  animation: "bbCoreSpin 9s linear infinite",
+                  mixBlendMode: "screen",
+                  pointerEvents: "none",
+                }} />
+
+                {/* ⚡ TRON-GRID FLOOR — perspective floor lines receding
+                    into the distance. Sits in front of the city silhouette. */}
+                <div
+                  aria-hidden
+                  style={{
+                    position: "absolute",
+                    bottom: 0,
+                    left: "-10%",
+                    right: "-10%",
+                    height: 280,
+                    transform: "perspective(420px) rotateX(58deg)",
+                    transformOrigin: "center top",
+                    backgroundImage:
+                      "linear-gradient(to right, rgba(0, 229, 255, 0.5) 1px, transparent 1px), " +
+                      "linear-gradient(to bottom, rgba(0, 229, 255, 0.5) 1px, transparent 1px)",
+                    backgroundSize: "60px 60px",
+                    animation: "bbGridScroll 1.4s linear infinite",
+                    maskImage:
+                      "radial-gradient(ellipse at 50% 0%, black 0%, rgba(0,0,0,0.6) 50%, transparent 90%)",
+                    WebkitMaskImage:
+                      "radial-gradient(ellipse at 50% 0%, black 0%, rgba(0,0,0,0.6) 50%, transparent 90%)",
+                    pointerEvents: "none",
+                    opacity: 0.85,
+                  }}
+                />
+
+                {/* ⚡ RACING SPARKS — fast horizontal streaks across the
+                    screen, like energy bolts whipping past. */}
+                {[
+                  { top: "12%", dur: 2.6, delay: 0,    color: "#7df0ff" },
+                  { top: "22%", dur: 3.2, delay: 0.8,  color: "#ff5fb3" },
+                  { top: "34%", dur: 2.4, delay: 1.6,  color: "#ffd158" },
+                  { top: "62%", dur: 3.5, delay: 0.4,  color: "#7c5cff" },
+                  { top: "76%", dur: 2.8, delay: 2.2,  color: "#7df0ff" },
+                  { top: "88%", dur: 3.1, delay: 1.1,  color: "#ffd158" },
+                ].map((s, i) => (
+                  <span key={`spark-${i}`} aria-hidden style={{
+                    position: "absolute",
+                    top: s.top,
+                    left: 0,
+                    width: 140,
+                    height: 2,
+                    background: `linear-gradient(90deg, transparent, ${s.color}, transparent)`,
+                    boxShadow: `0 0 12px ${s.color}, 0 0 24px ${s.color}`,
+                    filter: "blur(0.5px)",
+                    animation: `bbSparkRace ${s.dur}s linear ${s.delay}s infinite`,
+                    pointerEvents: "none",
+                  }} />
+                ))}
+
+                {/* ⚡ EDGE VIGNETTE — dark cinematic edges so the centre
+                    pops harder. */}
+                <div style={{
+                  position: "absolute",
+                  inset: 0,
+                  background: "radial-gradient(ellipse at 50% 50%, transparent 35%, rgba(0,0,0,0.55) 90%)",
+                  animation: "bbVignettePulse 4s ease-in-out infinite",
+                  pointerEvents: "none",
                 }} />
 
                 {/* Lightning streaks — 6, scattered */}
@@ -4556,8 +4666,8 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
                   letterSpacing: 4,
                   textAlign: "center",
                   fontFamily: "'Fredoka', 'Nunito', system-ui, sans-serif",
-                  filter: "drop-shadow(0 0 40px rgba(255, 95, 179, 0.35))",
-                  animation: "bbTitleShimmer 6s ease-in-out infinite",
+                  filter: "drop-shadow(0 0 40px rgba(255, 95, 179, 0.45))",
+                  animation: "bbTitleShimmer 6s ease-in-out infinite, bbTitleGlitch 5s steps(1, end) infinite",
                   lineHeight: 1.05,
                 }}
               >
@@ -4600,6 +4710,75 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
                 backdropFilter: "blur(2px)",
                 WebkitBackdropFilter: "blur(2px)",
               }}>
+
+                {/* ⚡ Tesla-coil arcs — crackling electric arcs across
+                    the VS card from hero side to centre, and centre to
+                    villain side. Two zigzag SVG paths with flicker
+                    animations, layered on top of the portraits. */}
+                <svg
+                  aria-hidden
+                  viewBox="0 0 100 30"
+                  preserveAspectRatio="none"
+                  style={{
+                    position: "absolute",
+                    top: "50%",
+                    left: "8%",
+                    width: "38%",
+                    height: 60,
+                    transform: "translateY(-50%)",
+                    pointerEvents: "none",
+                    overflow: "visible",
+                    zIndex: 2,
+                    animation: "bbTeslaArc 2.6s ease-in-out infinite",
+                  }}
+                >
+                  <path
+                    d="M0,15 L8,8 L16,20 L24,10 L32,18 L40,7 L48,16 L56,12 L64,22 L72,9 L80,17 L88,11 L100,15"
+                    stroke="#7df0ff"
+                    strokeWidth="0.8"
+                    fill="none"
+                    style={{ filter: "drop-shadow(0 0 6px #7df0ff) drop-shadow(0 0 12px rgba(125, 240, 255, 0.7))" }}
+                  />
+                  <path
+                    d="M0,15 L8,8 L16,20 L24,10 L32,18 L40,7 L48,16 L56,12 L64,22 L72,9 L80,17 L88,11 L100,15"
+                    stroke="#ffffff"
+                    strokeWidth="0.3"
+                    fill="none"
+                    opacity="0.9"
+                  />
+                </svg>
+                <svg
+                  aria-hidden
+                  viewBox="0 0 100 30"
+                  preserveAspectRatio="none"
+                  style={{
+                    position: "absolute",
+                    top: "50%",
+                    right: "8%",
+                    width: "38%",
+                    height: 60,
+                    transform: "translateY(-50%)",
+                    pointerEvents: "none",
+                    overflow: "visible",
+                    zIndex: 2,
+                    animation: "bbTeslaArc 2.4s ease-in-out 0.8s infinite",
+                  }}
+                >
+                  <path
+                    d="M0,15 L9,9 L18,21 L27,11 L36,19 L45,8 L54,17 L63,13 L72,23 L81,10 L90,18 L100,15"
+                    stroke="#ff5fb3"
+                    strokeWidth="0.8"
+                    fill="none"
+                    style={{ filter: "drop-shadow(0 0 6px #ff5fb3) drop-shadow(0 0 12px rgba(255, 95, 179, 0.7))" }}
+                  />
+                  <path
+                    d="M0,15 L9,9 L18,21 L27,11 L36,19 L45,8 L54,17 L63,13 L72,23 L81,10 L90,18 L100,15"
+                    stroke="#ffffff"
+                    strokeWidth="0.3"
+                    fill="none"
+                    opacity="0.9"
+                  />
+                </svg>
 
                 {/* Hero side */}
                 <motion.div
