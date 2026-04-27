@@ -543,14 +543,9 @@ function makeShieldLogoTexture(size = 512): THREE.Texture | null {
   ctx.stroke();
   ctx.shadowBlur = 0;
 
-  ctx.fillStyle = "#ffffff";
-  ctx.shadowColor = "rgba(255,255,255,0.8)";
-  ctx.shadowBlur = size * 0.04;
-  ctx.font = "bold 40px 'Space Grotesk', 'DM Sans', sans-serif";
-  ctx.textAlign = "center";
-  ctx.textBaseline = "middle";
-  ctx.fillText("AX", cx, size * 0.84);
-  ctx.shadowBlur = 0;
+  // (Removed the "AX" wordmark below the shield emblem — it read as a
+  // dev placeholder during the boss fight. The crossed-sword X-emblem
+  // above already serves as the arena's "battle" marker.)
 
   const tex = new THREE.CanvasTexture(c);
   tex.colorSpace = THREE.SRGBColorSpace;

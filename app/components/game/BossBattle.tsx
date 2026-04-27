@@ -555,11 +555,13 @@ function playerAttack(
     particles = 45; shake = 12; zoom = 1.14; hitStop = 100; lunge = 80;
     colors.push(0xfde047, 0xf97316);
   } else if (damage <= 10) {
-    particles = 12; shake = 3; zoom = 1.00; hitStop = 0;
+    // Even the smallest hit gets some hit-stop so EVERY answer feels
+    // physical — no "soft" hits that read as a number tick.
+    particles = 12; shake = 3; zoom = 1.02; hitStop = 30;
   } else if (damage <= 20) {
-    particles = 20; shake = 6; zoom = 1.06; hitStop = 0;
+    particles = 20; shake = 6; zoom = 1.06; hitStop = 40;
   } else {
-    particles = 30; shake = 8; zoom = 1.10; hitStop = 50;
+    particles = 30; shake = 8; zoom = 1.10; hitStop = 60;
   }
 
   g.heroAnim = "attack";
@@ -1058,6 +1060,10 @@ export default function BossBattle({
   const [heroHp, setHeroHp] = useState(HP_MAX);
   const [bossHp, setBossHp] = useState(HP_MAX);
   const [combo, setCombo] = useState(0);
+  // SHIELD power-up — single charge per fight, auto-armed at start.
+  // Wrong-answer handler consumes it instead of taking damage.
+  const [shieldArmed, setShieldArmed] = useState(true);
+  const [shieldConsumedKey, setShieldConsumedKey] = useState(0);
   const [questionIdx, setQuestionIdx] = useState(0);
   const [feedback, setFeedback] = useState<{ index: number; correct: boolean } | null>(null);
   const [locked, setLocked] = useState(false);
@@ -1235,9 +1241,9 @@ export default function BossBattle({
   }, []);
 
   // Centre screen correct/wrong flash
-  const [centerFeedback, setCenterFeedback] = useState<"correct" | "wrong" | null>(null);
+  const [centerFeedback, setCenterFeedback] = useState<"correct" | "wrong" | "shielded" | null>(null);
   const centerFeedbackTimerRef = useRef<number | null>(null);
-  const showCenterFeedback = useCallback((kind: "correct" | "wrong") => {
+  const showCenterFeedback = useCallback((kind: "correct" | "wrong" | "shielded") => {
     setCenterFeedback(kind);
     if (centerFeedbackTimerRef.current) window.clearTimeout(centerFeedbackTimerRef.current);
     centerFeedbackTimerRef.current = window.setTimeout(() => setCenterFeedback(null), 600);
@@ -1767,7 +1773,9 @@ export default function BossBattle({
           showHeroSpeech(HERO_LINES_7[Math.floor(Math.random() * HERO_LINES_7.length)]);
         }
 
-        // Phase transition — boss HP crossed 75%, 50%, or 25%
+        // Phase transition — boss HP crossed 75%, 50%, or 25%. Each
+        // threshold escalates the visceral payoff (rage mode kicks in
+        // at the lower crossings).
         const prevPct = bossHp / HP_MAX;
         const newPct = newBossHp / HP_MAX;
         const crossed = (t: number) => prevPct > t && newPct <= t;
@@ -1777,17 +1785,65 @@ export default function BossBattle({
         } else if (crossed(0.5)) {
           playSound("phaseChange"); playSound("bossRoar");
           showPhaseAnnouncement("phase2");
+          // Rage mode kicks in — extra arena shake + danger pulse
+          // beyond the standard phase announcement.
+          bumpArenaShake(10);
+          pulseArenaDanger(700);
+          triggerHitStop(g, 80);
+          flashOverlay(g, 0xef4444, 0.18, 350);
         } else if (crossed(0.25)) {
           playSound("phaseChange"); playSound("bossRoar");
           showPhaseAnnouncement("final");
+          // Desperate phase — heavier shake, longer danger pulse,
+          // bigger overlay flash.
+          bumpArenaShake(13);
+          pulseArenaDanger(900);
+          triggerHitStop(g, 120);
+          flashOverlay(g, 0xef4444, 0.25, 500);
         }
 
         if (newBossHp <= 0) {
-          window.setTimeout(() => triggerVictory(g), 300);
+          // FINAL-BLOW SEQUENCE — freeze frame, zoom, white flash, then
+          // triggerVictory plays out the explosion + celebration.
+          triggerHitStop(g, 280);
+          if (g.boss) cameraPulse(g, 1.18, g.boss.x, g.boss.y, -25);
+          flashOverlay(g, 0xffffff, 0.35, 500);
+          bumpArenaShake(14);
+          window.setTimeout(() => triggerVictory(g), 380);
           window.setTimeout(() => setResult("won"), 2200);
           return;
         }
       } else {
+        // SHIELD: if armed, the kid's defensive charge absorbs this hit
+        // entirely — no damage, no combo break, no super-disarm. Single
+        // charge per fight. Plays a softer "block" feedback then advances
+        // the question.
+        if (shieldArmed) {
+          setShieldArmed(false);
+          setShieldConsumedKey((k) => k + 1);
+          setStats((s) => ({ ...s, totalAsked: s.totalAsked + 1 }));
+          playSound("hitImpact");
+          showCenterFeedback("shielded");
+          // Hero stays defiant — quick block animation via existing taunt.
+          g.heroAnim = "celebrate";
+          g.heroAnimTimer = 350;
+          setExplanationVisible(true);
+          const advanceDelay = 1500;
+          window.setTimeout(() => {
+            setExplanationVisible(false);
+            advanceQuestion();
+            setFeedback(null);
+            setLocked(false);
+            const nextBudget = difficultyTimerMs(g.difficultyLevel);
+            setCurrentQuestionMs(nextBudget);
+            questionStartTsRef.current = performance.now();
+            setTimerMs(nextBudget);
+            lastTickSecondRef.current = Math.ceil(nextBudget / 1000);
+            timerRunningRef.current = true;
+          }, advanceDelay);
+          return;
+        }
+
         const damage = difficultyDamage(g.difficultyLevel);
         const newHeroHp = Math.max(0, heroHp - damage);
         setHeroHp(newHeroHp);
@@ -1840,7 +1896,7 @@ export default function BossBattle({
       }, advanceDelay);
     },
     [
-      currentQ, combo, bossHp, heroHp, superReady,
+      currentQ, combo, bossHp, heroHp, superReady, shieldArmed,
       HERO_CRIES, BOSS_CRIES, HERO_LINES_3, HERO_LINES_5, HERO_LINES_7,
       showAnnouncement, showCenterFeedback, showBossTaunt, showHeroSpeech,
       showPhaseAnnouncement, advanceQuestion,
@@ -1985,6 +2041,9 @@ export default function BossBattle({
     setGhostBossHp(HP_MAX);
     setCombo(0);
     setSuperReady(false);
+    // Re-arm the shield charge for the next attempt.
+    setShieldArmed(true);
+    setShieldConsumedKey(0);
     setQuestionIdx(0);
     // Reset the pool pointers and start from the first easy question.
     easyIdxRef.current = 1;
@@ -2363,7 +2422,7 @@ export default function BossBattle({
           className={`bb-center-fb bb-center-fb-${centerFeedback}`}
           aria-live="polite"
         >
-          {centerFeedback === "correct" ? "✓ CORRECT!" : "✗ WRONG"}
+          {centerFeedback === "correct" ? "✓ CORRECT!" : centerFeedback === "shielded" ? "🛡 SHIELDED!" : "✗ WRONG"}
         </div>
       )}
 
@@ -2438,7 +2497,7 @@ export default function BossBattle({
         <div style={{ flex: 1, display: "flex", alignItems: "center", gap: 10 }}>
           <div
             style={{
-              width: 32, height: 32, borderRadius: "50%",
+              width: 28, height: 28, borderRadius: "50%",
               background: "linear-gradient(135deg, #3b82f6, #1e3a8a)",
               display: "flex", alignItems: "center", justifyContent: "center",
               border: "2px solid #60a5fa",
@@ -2446,23 +2505,24 @@ export default function BossBattle({
               flexShrink: 0, fontSize: 14,
             }}
           >
-            <span style={{ color: "#fff", fontWeight: 700 }}>H</span>
+            <span style={{ filter: "drop-shadow(0 1px 1px rgba(0,0,0,0.6))" }}>🛡</span>
           </div>
           <div style={{ flex: 1 }}>
             <div
               style={{
                 display: "flex",
                 justifyContent: "space-between",
+                alignItems: "baseline",
                 fontFamily: "'JetBrains Mono', monospace",
-                fontSize: 11,
+                fontSize: 10,
                 color: "#cbd5e1",
-                letterSpacing: "0.08em",
-                marginBottom: 4,
+                letterSpacing: "0.12em",
+                marginBottom: 3,
                 textShadow: "0 1px 2px rgba(0,0,0,0.6)",
               }}
             >
-              <span>{selectedHero === "layla" ? "LAYLA" : "ADAM"}</span>
-              <span>{heroHp} / {HP_MAX}</span>
+              <span style={{ fontWeight: 800, color: "#bfdbfe" }}>{selectedHero === "layla" ? "LAYLA" : "ADAM"}</span>
+              <span style={{ fontVariantNumeric: "tabular-nums", fontSize: 11, fontWeight: 700, color: heroPct > 0.3 ? "#cbd5e1" : "#fca5a5" }}>{heroHp}<span style={{ opacity: 0.55 }}> / {HP_MAX}</span></span>
             </div>
             <div
               className={
@@ -2471,12 +2531,12 @@ export default function BossBattle({
               }
               style={{
                 position: "relative",
-                height: 20,
-                background: "rgba(15,23,42,0.8)",
-                borderRadius: 10,
+                height: 12,
+                background: "rgba(15,23,42,0.85)",
+                borderRadius: 6,
                 overflow: "hidden",
-                border: "1px solid rgba(148,163,184,0.25)",
-                boxShadow: "inset 0 1px 3px rgba(0,0,0,0.4)",
+                border: "1px solid rgba(148,163,184,0.3)",
+                boxShadow: "inset 0 1px 3px rgba(0,0,0,0.5)",
               }}
             >
               {/* Ghost (delayed) fill — drains slowly after a hit */}
@@ -2497,12 +2557,12 @@ export default function BossBattle({
                   position: "relative",
                   height: "100%",
                   width: `${heroPct * 100}%`,
-                  backgroundImage: `repeating-linear-gradient(45deg, transparent, transparent 6px, rgba(255,255,255,0.08) 6px, rgba(255,255,255,0.08) 12px), ${
+                  backgroundImage: `repeating-linear-gradient(45deg, transparent, transparent 5px, rgba(255,255,255,0.1) 5px, rgba(255,255,255,0.1) 10px), ${
                     heroPct > 0.3
                       ? "linear-gradient(90deg, #3b82f6 0%, #10b981 100%)"
                       : "linear-gradient(90deg, #f97316 0%, #ef4444 100%)"
                   }`,
-                  backgroundSize: "24px 24px, 100% 100%",
+                  backgroundSize: "20px 20px, 100% 100%",
                   transition: "width 0.2s ease-out",
                 }}
               />
@@ -2516,16 +2576,17 @@ export default function BossBattle({
               style={{
                 display: "flex",
                 justifyContent: "space-between",
+                alignItems: "baseline",
                 fontFamily: "'JetBrains Mono', monospace",
-                fontSize: 11,
+                fontSize: 10,
                 color: "#cbd5e1",
-                letterSpacing: "0.08em",
-                marginBottom: 4,
+                letterSpacing: "0.12em",
+                marginBottom: 3,
                 textShadow: "0 1px 2px rgba(0,0,0,0.6)",
               }}
             >
-              <span>{bossName}</span>
-              <span>{bossHp} / {HP_MAX}</span>
+              <span style={{ fontVariantNumeric: "tabular-nums", fontSize: 11, fontWeight: 700, color: bossPct > 0.3 ? "#cbd5e1" : "#fca5a5" }}>{bossHp}<span style={{ opacity: 0.55 }}> / {HP_MAX}</span></span>
+              <span style={{ fontWeight: 800, color: "#fca5a5" }}>{bossName}</span>
             </div>
             <div
               className={
@@ -2534,12 +2595,12 @@ export default function BossBattle({
               }
               style={{
                 position: "relative",
-                height: 20,
-                background: "rgba(15,23,42,0.8)",
-                borderRadius: 10,
+                height: 12,
+                background: "rgba(15,23,42,0.85)",
+                borderRadius: 6,
                 overflow: "hidden",
-                border: "1px solid rgba(148,163,184,0.25)",
-                boxShadow: "inset 0 1px 3px rgba(0,0,0,0.4)",
+                border: "1px solid rgba(148,163,184,0.3)",
+                boxShadow: "inset 0 1px 3px rgba(0,0,0,0.5)",
               }}
             >
               <div
@@ -2559,8 +2620,8 @@ export default function BossBattle({
                   position: "relative",
                   height: "100%",
                   width: `${bossPct * 100}%`,
-                  backgroundImage: "repeating-linear-gradient(45deg, transparent, transparent 6px, rgba(255,255,255,0.08) 6px, rgba(255,255,255,0.08) 12px), linear-gradient(90deg, #ef4444 0%, #f97316 100%)",
-                  backgroundSize: "24px 24px, 100% 100%",
+                  backgroundImage: "repeating-linear-gradient(45deg, transparent, transparent 5px, rgba(255,255,255,0.1) 5px, rgba(255,255,255,0.1) 10px), linear-gradient(90deg, #ef4444 0%, #f97316 100%)",
+                  backgroundSize: "20px 20px, 100% 100%",
                   transition: "width 0.2s ease-out",
                 }}
               />
@@ -2568,7 +2629,7 @@ export default function BossBattle({
           </div>
           <div
             style={{
-              width: 32, height: 32, borderRadius: "50%",
+              width: 28, height: 28, borderRadius: "50%",
               background: "linear-gradient(135deg, #7c3aed, #4c1d95)",
               display: "flex", alignItems: "center", justifyContent: "center",
               border: "2px solid #a78bfa",
@@ -2576,7 +2637,7 @@ export default function BossBattle({
               flexShrink: 0, fontSize: 14,
             }}
           >
-            <span style={{ color: "#fff", fontWeight: 700 }}>R</span>
+            <span style={{ filter: "drop-shadow(0 1px 1px rgba(0,0,0,0.6))" }}>💀</span>
           </div>
         </div>
       </div>
@@ -2593,15 +2654,131 @@ export default function BossBattle({
             pointerEvents: "none",
             animation: "bbComboPop 0.45s ease-out",
             fontFamily: "'Space Grotesk', sans-serif",
-            fontSize: Math.min(48, 24 + combo * 4),
-            fontWeight: 700,
-            color: "#fde047",
-            textShadow: "0 0 14px rgba(250,204,21,0.7), 2px 2px 0 rgba(0,0,0,0.6)",
-            letterSpacing: "-0.02em",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "flex-end",
+            gap: 2,
             zIndex: 2,
           }}
         >
-          {combo}× COMBO
+          <div
+            style={{
+              fontSize: Math.min(48, 24 + combo * 4),
+              fontWeight: 700,
+              color: "#fde047",
+              textShadow: "0 0 14px rgba(250,204,21,0.7), 2px 2px 0 rgba(0,0,0,0.6)",
+              letterSpacing: "-0.02em",
+              lineHeight: 1,
+            }}
+          >
+            {combo}× COMBO
+          </div>
+          {combo >= 3 && (
+            <div
+              style={{
+                padding: "2px 10px",
+                borderRadius: 999,
+                background: "linear-gradient(90deg, #fde047, #f97316)",
+                color: "#1a0612",
+                fontSize: 11,
+                fontWeight: 900,
+                letterSpacing: "0.15em",
+                fontFamily: "'JetBrains Mono', monospace",
+                boxShadow: "0 0 14px rgba(250,204,21,0.6)",
+                textTransform: "uppercase",
+              }}
+            >
+              ⚡ {combo >= 5 ? "TRIPLE STRIKE" : "DOUBLE STRIKE"}
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* SHIELD power-up HUD chip — top-left, below HP bars. Pulsing
+          cyan when armed; dimmed when consumed. Single charge per fight. */}
+      {selectedHero && !result && introStage === "done" && (
+        <div
+          aria-hidden
+          style={{
+            position: "absolute",
+            top: 70,
+            left: 20,
+            zIndex: 2,
+            pointerEvents: "none",
+            display: "flex",
+            alignItems: "center",
+            gap: 8,
+          }}
+          title={shieldArmed ? "Shield charge ready — absorbs next wrong answer" : "Shield charge already used"}
+        >
+          <div
+            style={{
+              width: 38,
+              height: 38,
+              borderRadius: "50%",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              background: shieldArmed
+                ? "radial-gradient(circle at 35% 30%, rgba(125, 240, 255, 0.95), rgba(0, 229, 255, 0.55) 60%, rgba(124, 92, 255, 0.55))"
+                : "radial-gradient(circle at 35% 30%, rgba(60, 80, 120, 0.7), rgba(20, 28, 60, 0.7))",
+              border: shieldArmed ? "2px solid rgba(125, 240, 255, 0.9)" : "2px solid rgba(80, 100, 140, 0.5)",
+              boxShadow: shieldArmed
+                ? "0 0 14px rgba(125, 240, 255, 0.55), 0 0 30px rgba(125, 240, 255, 0.25)"
+                : "none",
+              animation: shieldArmed ? "bbShieldIdlePulse 1.6s ease-in-out infinite" : undefined,
+              opacity: shieldArmed ? 1 : 0.5,
+              transition: "opacity 0.3s ease",
+              fontSize: 18,
+              filter: shieldArmed ? "none" : "grayscale(70%)",
+            }}
+          >
+            🛡
+          </div>
+          <div
+            style={{
+              fontFamily: "'JetBrains Mono', monospace",
+              fontSize: 9,
+              fontWeight: 800,
+              letterSpacing: "0.18em",
+              color: shieldArmed ? "#7df0ff" : "rgba(199, 207, 240, 0.45)",
+              textShadow: shieldArmed ? "0 0 8px rgba(125, 240, 255, 0.6)" : "none",
+              textTransform: "uppercase",
+            }}
+          >
+            {shieldArmed ? "Shield · Ready" : "Shield · Used"}
+          </div>
+        </div>
+      )}
+
+      {/* SHIELDED! pop — fires when the shield absorbs a wrong answer.
+          Centred ring + label, auto-fades. */}
+      {shieldConsumedKey > 0 && (
+        <div
+          key={`sh-${shieldConsumedKey}`}
+          aria-hidden
+          style={{
+            position: "absolute",
+            top: "42%",
+            left: "50%",
+            zIndex: 4,
+            pointerEvents: "none",
+          }}
+        >
+          <span
+            style={{
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              width: 200,
+              height: 200,
+              borderRadius: "50%",
+              border: "3px solid rgba(125, 240, 255, 0.9)",
+              boxShadow: "0 0 32px rgba(125, 240, 255, 0.7)",
+              animation: "bbShieldRingExpand 0.9s ease-out both",
+              transform: "translate(-50%, -50%)",
+            }}
+          />
         </div>
       )}
 
@@ -2664,10 +2841,67 @@ export default function BossBattle({
             </div>
           )}
 
+          {/* ATTACK-TYPE BANNER — three telegraphed boss-attack types
+              cycle by question index. Pure visual / narrative variation;
+              scoring math is unchanged. Matches the BattleArena attack
+              system used elsewhere in Week 1. */}
+          {(() => {
+            const ATTACK_META = [
+              { name: "PHISHING LURE", icon: "🪤", color: "#ff5fb3", glow: "rgba(255, 95, 179, 0.55)", tag: "Don't take the bait" },
+              { name: "BRUTE FORCE",   icon: "🔨", color: "#ffb347", glow: "rgba(255, 179, 71, 0.55)", tag: "Hold your ground" },
+              { name: "TRICK QUESTION",icon: "🌀", color: "#7c5cff", glow: "rgba(124, 92, 255, 0.55)", tag: "Don't get fooled" },
+            ];
+            const meta = ATTACK_META[stats.totalAsked % 3];
+            return (
+              <div
+                key={`atk-${stats.totalAsked}`}
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  gap: 2,
+                  padding: "6px 14px 8px",
+                  marginBottom: 10,
+                  borderRadius: 12,
+                  background: `linear-gradient(135deg, ${meta.color}26, ${meta.color}10)`,
+                  border: `1.5px solid ${meta.color}88`,
+                  boxShadow: `0 0 18px ${meta.glow}`,
+                  animation: "bbFadeIn 0.35s ease-out both",
+                }}
+              >
+                <div
+                  style={{
+                    fontFamily: "'JetBrains Mono', monospace",
+                    fontSize: 9,
+                    letterSpacing: "0.25em",
+                    color: meta.color,
+                    fontWeight: 800,
+                    textTransform: "uppercase",
+                    opacity: 0.9,
+                  }}
+                >
+                  ⚡ Boss Attack — {meta.tag}
+                </div>
+                <div
+                  style={{
+                    fontFamily: "'Space Grotesk', sans-serif",
+                    fontSize: 14,
+                    fontWeight: 900,
+                    color: "#f1f5f9",
+                    letterSpacing: "0.05em",
+                    textShadow: `0 0 10px ${meta.glow}`,
+                  }}
+                >
+                  {meta.icon} {meta.name}
+                </div>
+              </div>
+            );
+          })()}
+
           <div
             style={{
               fontFamily: "'JetBrains Mono', monospace",
-              fontSize: 12,
+              fontSize: 11,
               color: "#64748b",
               letterSpacing: "0.1em",
               textAlign: "center",
@@ -2984,6 +3218,30 @@ export default function BossBattle({
           0% { transform: scale(0.6); opacity: 0 }
           60% { transform: scale(1.15); opacity: 1 }
           100% { transform: scale(1); opacity: 1 }
+        }
+        @keyframes bbShieldIdlePulse {
+          0%,100% {
+            box-shadow: 0 0 14px rgba(125, 240, 255, 0.45), 0 0 30px rgba(125, 240, 255, 0.25);
+            transform: translateY(0);
+          }
+          50% {
+            box-shadow: 0 0 22px rgba(125, 240, 255, 0.75), 0 0 48px rgba(125, 240, 255, 0.4);
+            transform: translateY(-1px);
+          }
+        }
+        @keyframes bbShieldRingExpand {
+          0%   { opacity: 0.85; transform: translate(-50%, -50%) scale(0.4); }
+          100% { opacity: 0;    transform: translate(-50%, -50%) scale(2.4); }
+        }
+        @keyframes bbRageFlash {
+          0%   { opacity: 0; }
+          15%  { opacity: 0.85; }
+          100% { opacity: 0; }
+        }
+        @keyframes bbFinalBlowFreeze {
+          0%   { transform: scale(1); filter: brightness(1) saturate(1); }
+          40%  { transform: scale(1.06); filter: brightness(1.6) saturate(1.4); }
+          100% { transform: scale(1); filter: brightness(1) saturate(1); }
         }
         @keyframes bbPulseLow {
           0%,100% { box-shadow: inset 0 1px 3px rgba(0,0,0,0.4) }
