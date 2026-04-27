@@ -1182,7 +1182,11 @@ export default function Arena3D({
 
     const now = performance.now() / 1000;
     r.codeFlashUntil = now + 0.3;
-    r.nodeFlashUntil = now + 0.25;
+    // Hex node flash duration scales with shake intensity — small hits
+    // get a quick blink (0.25s), big-combo / final-blow hits get a
+    // sustained flare (up to 0.7s) so the arena visibly reacts.
+    const flashDur = shakeIntensity >= 12 ? 0.7 : shakeIntensity >= 8 ? 0.45 : 0.25;
+    r.nodeFlashUntil = now + flashDur;
     r.binaryBoostUntil = now + 0.5;
     if (moodRef.current === "danger") {
       r.binaryDangerUntil = now + 0.5;
@@ -2436,12 +2440,24 @@ export default function Arena3D({
 
       // ── Hex nodes bob + flash ──
       const nodeFlashing = t < r.nodeFlashUntil;
+      // How "fresh" the flash is — used to make big-hit flashes peak
+      // brighter and add a small position scatter.
+      const flashFreshness = nodeFlashing
+        ? Math.max(0, Math.min(1, (r.nodeFlashUntil - t) / 0.5))
+        : 0;
       r.hexNodes.forEach((n) => {
-        n.mesh.position.y = n.baseY + Math.sin(t * n.freq + n.phase) * 0.15;
-        n.mesh.rotation.z += 0.003 * (dt * 60);
+        // Big-hit scatter — small outward kick on the freshest flash
+        // frames, decaying as the flash fades.
+        const scatterX = nodeFlashing ? (Math.sin(n.phase * 11.3) * 0.18 * flashFreshness) : 0;
+        const scatterY = nodeFlashing ? (Math.cos(n.phase * 9.7) * 0.15 * flashFreshness) : 0;
+        n.mesh.position.y = n.baseY + Math.sin(t * n.freq + n.phase) * 0.15 + scatterY;
+        n.mesh.position.x += (scatterX - (n.mesh.position.x - (n.mesh.userData.baseX ?? n.mesh.position.x))) * 0.25;
+        n.mesh.rotation.z += (0.003 + flashFreshness * 0.02) * (dt * 60);
         const mat = n.mesh.material as THREE.MeshBasicMaterial;
-        // Dimmer baseline + gentler flash peak (was 1.0 → 0.55).
-        const targetOp = nodeFlashing ? 0.6 : 0.33;
+        // Peak opacity scales with flash freshness — quick blink stays
+        // at 0.6, big-hit flares ramp up to 1.0 at the moment of impact.
+        const peak = 0.6 + flashFreshness * 0.4;
+        const targetOp = nodeFlashing ? peak : 0.33;
         mat.opacity += (targetOp - mat.opacity) * lerpSpeed;
       });
 

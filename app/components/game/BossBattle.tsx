@@ -101,6 +101,14 @@ shuffleBossQuestions(MEDIUM_QUESTIONS);
 shuffleBossQuestions(HARD_QUESTIONS);
 
 const HP_MAX = 100;
+
+// Three telegraphed boss-attack types — cycled per question. Pure
+// visual/narrative variation; the answer logic doesn't change.
+const ATTACK_META = [
+  { name: "PHISHING LURE",   icon: "🪤", color: "#ff5fb3", glow: "rgba(255, 95, 179, 0.55)", tag: "Don't take the bait",     emblemColor: 0xff5fb3 },
+  { name: "BRUTE FORCE",     icon: "🔨", color: "#ffb347", glow: "rgba(255, 179, 71, 0.55)", tag: "Hold your ground",        emblemColor: 0xffb347 },
+  { name: "TRICK QUESTION",  icon: "🌀", color: "#7c5cff", glow: "rgba(124, 92, 255, 0.55)", tag: "Don't get fooled",        emblemColor: 0x7c5cff },
+] as const;
 const HERO_HEIGHT = 260;
 const BOSS_HEIGHT = 300;
 
@@ -234,11 +242,25 @@ interface GameState {
   bossReflection: Sprite | null;
   heroGlow: Graphics | null;
   bossGlow: Graphics | null;
+  // Tighter rim-light layer in front of the wide glow — same colour but
+  // smaller radius and brighter alpha, so the silhouette pops harder.
+  heroRim: Graphics | null;
+  bossRim: Graphics | null;
+  // Floor energy rings under each fighter (stance circles). Scale +
+  // alpha are HP-driven so the kid sees the stakes physically.
+  heroFloorRing: Graphics | null;
+  bossFloorRing: Graphics | null;
   heroShadowAlpha: number;
   bossShadowAlpha: number;
   heroGlowAlpha: number;       // default 0.06, flashes to 0.15 on correct
   bossGlowAlpha: number;       // default 0.07, flashes on wrong
   bossGlowColor: number;       // phase-dependent
+  // HP-mirror for the floor ring scaling (lerped each tick toward HP %).
+  heroHpPct: number;
+  // Sustained super-ready zoom — when superReady is true, lerp toward
+  // 1.08 multiplier on cameraScale; releases back to 1.0 when used.
+  superZoomActive: boolean;
+  superZoomMul: number;
   // Squash & stretch multipliers (per axis, on top of heroScaleMul)
   heroSquashX: number;
   heroSquashY: number;
@@ -906,7 +928,7 @@ function tickFrame(g: GameState, dt: number) {
     g.bossReflection.alpha = 0.1 * g.bossAlpha;
   }
 
-  // Rim-light glows
+  // Rim-light glows (wide outer haze)
   if (g.heroGlow && g.hero) {
     g.heroGlow.x = g.hero.x;
     g.heroGlow.y = g.hero.y;
@@ -923,6 +945,57 @@ function tickFrame(g: GameState, dt: number) {
     g.bossGlow.x = g.boss.x;
     g.bossGlow.y = g.boss.y;
     g.bossGlow.alpha = g.bossGlowAlpha;
+  }
+
+  // Tighter RIM layer — bright silhouette pop, follows the wide glow's
+  // hit flash but with a higher baseline + peak so the character body
+  // visually separates from the dark arena background.
+  if (g.heroRim && g.hero) {
+    g.heroRim.x = g.hero.x;
+    g.heroRim.y = g.hero.y;
+    // Map heroGlowAlpha (0.06 idle → 0.15 hit) to rim alpha (0.22 → 0.55)
+    const t = (g.heroGlowAlpha - 0.06) / 0.09; // 0..1
+    const rimA = 0.22 + Math.max(0, Math.min(1, t)) * 0.33;
+    g.heroRim.alpha = rimA;
+  }
+  if (g.bossRim && g.boss) {
+    g.bossRim.x = g.boss.x;
+    g.bossRim.y = g.boss.y;
+    const t = (g.bossGlowAlpha - 0.07) / 0.13;
+    const rimA = 0.22 + Math.max(0, Math.min(1, t)) * 0.36;
+    g.bossRim.alpha = rimA;
+  }
+
+  // Floor energy rings — under each fighter, HP-driven. Outer ring is
+  // sized down + dimmed as that fighter loses HP, so the kid sees the
+  // stakes without reading numbers.
+  if (g.heroFloorRing && g.hero) {
+    const pct = Math.max(0.15, g.heroHpPct);
+    const baseR = 92;
+    const r = baseR * (0.6 + pct * 0.4);
+    const heroRingColor = pct < 0.3 ? 0xef4444 : pct < 0.55 ? 0xf97316 : 0x3b82f6;
+    g.heroFloorRing.clear();
+    g.heroFloorRing.circle(0, 0, r).stroke({ color: heroRingColor, width: 3, alpha: 0.7 });
+    g.heroFloorRing.circle(0, 0, r * 0.78).stroke({ color: heroRingColor, width: 1.5, alpha: 0.45 });
+    g.heroFloorRing.circle(0, 0, r * 0.55).stroke({ color: heroRingColor, width: 1, alpha: 0.3 });
+    g.heroFloorRing.x = g.hero.x;
+    g.heroFloorRing.y = g.baseHeroY + HERO_HEIGHT * 0.46;
+    g.heroFloorRing.scale.set(1, 0.32);
+    g.heroFloorRing.alpha = 0.55 + pct * 0.3;
+  }
+  if (g.bossFloorRing && g.boss) {
+    const pct = Math.max(0.15, g.bossHpPct);
+    const baseR = 100;
+    const r = baseR * (0.6 + pct * 0.4);
+    const bossRingColor = pct < 0.3 ? 0xef4444 : pct < 0.55 ? 0xf97316 : 0xff5fb3;
+    g.bossFloorRing.clear();
+    g.bossFloorRing.circle(0, 0, r).stroke({ color: bossRingColor, width: 3, alpha: 0.7 });
+    g.bossFloorRing.circle(0, 0, r * 0.78).stroke({ color: bossRingColor, width: 1.5, alpha: 0.45 });
+    g.bossFloorRing.circle(0, 0, r * 0.55).stroke({ color: bossRingColor, width: 1, alpha: 0.3 });
+    g.bossFloorRing.x = g.boss.x;
+    g.bossFloorRing.y = g.baseBossY + BOSS_HEIGHT * 0.46;
+    g.bossFloorRing.scale.set(1, 0.32);
+    g.bossFloorRing.alpha = 0.55 + pct * 0.3;
   }
 
   // Parallax the background slightly against mouse motion
@@ -988,7 +1061,11 @@ function tickFrame(g: GameState, dt: number) {
     } else {
       g.shakeIntensity = 0;
     }
-    const s = g.cameraScale;
+    // Smoothly lerp the super-zoom multiplier toward its target each
+    // tick (1.08 while super-ready, 1.00 otherwise).
+    const superTarget = g.superZoomActive ? 1.08 : 1.0;
+    g.superZoomMul += (superTarget - g.superZoomMul) * 0.08;
+    const s = g.cameraScale * g.superZoomMul;
     g.stage.scale.set(s);
     g.stage.x = shakeX + g.cameraFocusX * (1 - s) + g.cameraPanX;
     g.stage.y = shakeY + g.cameraFocusY * (1 - s) + g.cameraPanY;
@@ -1286,12 +1363,15 @@ export default function BossBattle({
     heroShadow: null, bossShadow: null,
     heroReflection: null, bossReflection: null,
     heroGlow: null, bossGlow: null,
+    heroRim: null, bossRim: null,
+    heroFloorRing: null, bossFloorRing: null,
     heroShadowAlpha: 0.3, bossShadowAlpha: 0.35,
     heroGlowAlpha: 0.06, bossGlowAlpha: 0.07, bossGlowColor: 0x7c3aed,
     heroSquashX: 1, heroSquashY: 1, bossSquashX: 1, bossSquashY: 1,
     heroTintFlashColor: 0xffffff, heroTintFlashMs: 0,
     bossTintFlashColor: 0xffffff, bossTintFlashMs: 0,
-    bossHpPct: 1,
+    bossHpPct: 1, heroHpPct: 1,
+    superZoomActive: false, superZoomMul: 1,
     mouseOffsetX: 0, mouseOffsetY: 0,
     difficultyLevel: 0,
     consecutiveCorrect: 0,
@@ -1551,6 +1631,17 @@ export default function BossBattle({
         bossReflection.alpha = 0.1;
         app.stage.addChild(bossReflection);
 
+        // Floor energy rings — concentric arcs beneath each fighter,
+        // HP-driven scale + alpha. Drawn first so they sit on the floor
+        // BELOW everything else.
+        const heroFloorRing = new Graphics();
+        heroFloorRing.alpha = 0;
+        app.stage.addChild(heroFloorRing);
+
+        const bossFloorRing = new Graphics();
+        bossFloorRing.alpha = 0;
+        app.stage.addChild(bossFloorRing);
+
         // Rim-light glows (above reflections, below characters)
         const heroGlow = new Graphics();
         heroGlow.circle(0, 0, 100).fill({ color: 0x3b82f6, alpha: 1 });
@@ -1561,6 +1652,19 @@ export default function BossBattle({
         bossGlow.circle(0, 0, 120).fill({ color: 0x7c3aed, alpha: 1 });
         bossGlow.alpha = 0.07;
         app.stage.addChild(bossGlow);
+
+        // Tighter rim layer in front of the wide glow — same colour,
+        // smaller radius, brighter alpha. Brings the silhouette out from
+        // the dark Arena3D background.
+        const heroRim = new Graphics();
+        heroRim.circle(0, 0, 70).fill({ color: 0x60a5fa, alpha: 1 });
+        heroRim.alpha = 0;
+        app.stage.addChild(heroRim);
+
+        const bossRim = new Graphics();
+        bossRim.circle(0, 0, 84).fill({ color: 0xff5fb3, alpha: 1 });
+        bossRim.alpha = 0;
+        app.stage.addChild(bossRim);
 
         const hero = new Sprite(heroSet.idle);
         hero.anchor.set(0.5, 0.5);
@@ -1593,6 +1697,10 @@ export default function BossBattle({
         g.bossReflection = bossReflection;
         g.heroGlow = heroGlow;
         g.bossGlow = bossGlow;
+        g.heroRim = heroRim;
+        g.bossRim = bossRim;
+        g.heroFloorRing = heroFloorRing;
+        g.bossFloorRing = bossFloorRing;
         g.baseHeroX = W * 0.28;
         g.baseHeroY = H * 0.42;
         g.baseBossX = W * 0.68;
@@ -1922,6 +2030,7 @@ export default function BossBattle({
     const g = gameRef.current;
     const pct = bossHp / HP_MAX;
     g.bossHpPct = pct;
+    g.heroHpPct = heroHp / HP_MAX;
     if (pct <= 0.25) {
       g.bgOverlayColor = 0xef4444;
       g.bgOverlayPulseAlpha = 0.06;
@@ -1931,7 +2040,13 @@ export default function BossBattle({
     } else {
       g.bgOverlayPulseAlpha = 0;
     }
-  }, [bossHp]);
+  }, [bossHp, heroHp]);
+
+  // Mirror SUPER-READY into the gameRef so the camera tick can latch
+  // a sustained dolly-in zoom while the kid has super armed.
+  useEffect(() => {
+    gameRef.current.superZoomActive = superReady;
+  }, [superReady]);
 
   // Parallax mouse tracking — disable on narrow screens + touch
   useEffect(() => {
@@ -2751,6 +2866,63 @@ export default function BossBattle({
         </div>
       )}
 
+      {/* Boss-attack TELEGRAPH EMBLEM — a brief icon (🪤/🔨/🌀) floats
+          above the raccoon when each new question reveals, colour-glowing
+          to match the attack-type banner. Pure visual punctuation. */}
+      {selectedHero && !result && q && introStage === "done" && countdownPhase === null && phaseAnnouncement === null && (() => {
+        const currentAttack = ATTACK_META[stats.totalAsked % 3];
+        return (
+          <div
+            key={`atk-emblem-${stats.totalAsked}`}
+            aria-hidden
+            style={{
+              position: "absolute",
+              top: "16vh",
+              left: "75%",
+              transform: "translateX(-50%)",
+              zIndex: 3,
+              pointerEvents: "none",
+              animation: "bbEmblemFloat 1.6s cubic-bezier(0.22, 1, 0.36, 1) forwards",
+            }}
+          >
+            <div
+              style={{
+                position: "relative",
+                width: 78,
+                height: 78,
+                borderRadius: "50%",
+                background: `radial-gradient(circle, ${currentAttack.color}cc 0%, ${currentAttack.color}55 60%, transparent 85%)`,
+                border: `2px solid ${currentAttack.color}`,
+                boxShadow: `0 0 28px ${currentAttack.glow}, 0 0 64px ${currentAttack.glow}`,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontSize: 36,
+                filter: `drop-shadow(0 4px 8px ${currentAttack.glow})`,
+              }}
+            >
+              {currentAttack.icon}
+            </div>
+            <div
+              style={{
+                marginTop: 6,
+                textAlign: "center",
+                fontFamily: "'JetBrains Mono', monospace",
+                fontSize: 9,
+                fontWeight: 900,
+                letterSpacing: "0.2em",
+                color: currentAttack.color,
+                textShadow: `0 0 8px ${currentAttack.glow}`,
+                textTransform: "uppercase",
+                whiteSpace: "nowrap",
+              }}
+            >
+              ▸ {currentAttack.name} ◂
+            </div>
+          </div>
+        );
+      })()}
+
       {/* SHIELDED! pop — fires when the shield absorbs a wrong answer.
           Centred ring + label, auto-fades. */}
       {shieldConsumedKey > 0 && (
@@ -2783,7 +2955,9 @@ export default function BossBattle({
       )}
 
       {/* Question panel */}
-      {selectedHero && !result && q && introStage === "done" && countdownPhase === null && phaseAnnouncement === null && (
+      {selectedHero && !result && q && introStage === "done" && countdownPhase === null && phaseAnnouncement === null && (() => {
+        const currentAttack = ATTACK_META[stats.totalAsked % 3];
+        return (
         <div
           style={{
             position: "absolute",
@@ -2793,11 +2967,12 @@ export default function BossBattle({
             background:
               "linear-gradient(180deg, rgba(15,23,42,0.96), rgba(30,27,75,0.96))",
             backdropFilter: "blur(10px)",
-            border: "2px solid rgba(99,102,241,0.25)",
+            border: `2px solid ${currentAttack.color}66`,
             borderRadius: 18,
             padding: "20px 22px",
-            boxShadow: "0 -10px 40px rgba(59,130,246,0.1)",
+            boxShadow: `0 -10px 40px ${currentAttack.glow}, 0 0 0 1px ${currentAttack.color}33`,
             zIndex: 2,
+            transition: "border-color 0.3s ease, box-shadow 0.3s ease",
           }}
         >
           {/* Timer bar */}
@@ -2841,17 +3016,11 @@ export default function BossBattle({
             </div>
           )}
 
-          {/* ATTACK-TYPE BANNER — three telegraphed boss-attack types
-              cycle by question index. Pure visual / narrative variation;
-              scoring math is unchanged. Matches the BattleArena attack
-              system used elsewhere in Week 1. */}
+          {/* ATTACK-TYPE BANNER — uses the hoisted ATTACK_META so the
+              card border, the banner, and the boss-emblem float all
+              share the same colour/icon/tag for the current attack. */}
           {(() => {
-            const ATTACK_META = [
-              { name: "PHISHING LURE", icon: "🪤", color: "#ff5fb3", glow: "rgba(255, 95, 179, 0.55)", tag: "Don't take the bait" },
-              { name: "BRUTE FORCE",   icon: "🔨", color: "#ffb347", glow: "rgba(255, 179, 71, 0.55)", tag: "Hold your ground" },
-              { name: "TRICK QUESTION",icon: "🌀", color: "#7c5cff", glow: "rgba(124, 92, 255, 0.55)", tag: "Don't get fooled" },
-            ];
-            const meta = ATTACK_META[stats.totalAsked % 3];
+            const meta = currentAttack;
             return (
               <div
                 key={`atk-${stats.totalAsked}`}
@@ -2975,7 +3144,8 @@ export default function BossBattle({
             })}
           </div>
         </div>
-      )}
+        );
+      })()}
 
       {/* End screen — defeat (kept simple, auto-ends to parent) */}
       {selectedHero && result === "lost" && (
@@ -3242,6 +3412,13 @@ export default function BossBattle({
           0%   { transform: scale(1); filter: brightness(1) saturate(1); }
           40%  { transform: scale(1.06); filter: brightness(1.6) saturate(1.4); }
           100% { transform: scale(1); filter: brightness(1) saturate(1); }
+        }
+        @keyframes bbEmblemFloat {
+          0%   { opacity: 0; transform: translateX(-50%) translateY(20px) scale(0.4); }
+          18%  { opacity: 1; transform: translateX(-50%) translateY(0) scale(1.15); }
+          30%  { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); }
+          75%  { opacity: 1; transform: translateX(-50%) translateY(-6px) scale(1); }
+          100% { opacity: 0; transform: translateX(-50%) translateY(-30px) scale(0.85); }
         }
         @keyframes bbPulseLow {
           0%,100% { box-shadow: inset 0 1px 3px rgba(0,0,0,0.4) }
