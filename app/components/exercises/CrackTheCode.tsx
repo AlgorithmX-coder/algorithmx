@@ -428,6 +428,9 @@ export default function CrackTheCode({
         Use ← → on each ring to spin to the <span style={{ color: "#7eff97", fontWeight: 800 }}>safest</span> answer. When all four rings glow green, hit <span style={{ color: "#00e5ff", fontWeight: 800 }}>UNLOCK</span>.
       </div>
 
+      <SavedPasswordChip />
+
+
       {/* Compact concentric-ring indicator — purely decorative, gives the
           "rings" feel back without overwhelming the actual dials below.
           Each ring's current pick is shown as a glowing dot on its arc;
@@ -1518,6 +1521,62 @@ function DefendPanel({
           75%     { transform: translateY(-50%) translateX(4px); }
         }
       `}</style>
+    </div>
+  );
+}
+
+/* ───────────────────────── SAVED PASSWORD CHIP ─────────────────
+ * Surfaces the password the kid built in PasswordLab (Case 3) as a
+ * "this is YOUR vault — you set this" chip in the CrackTheCode
+ * intro. Pure read-only display; absent when no password was saved. */
+
+function SavedPasswordChip() {
+  const [pwd, setPwd] = useState<string | null>(null);
+  useEffect(() => {
+    try {
+      setPwd(window.localStorage.getItem("ax-w1-saved-password"));
+    } catch {
+      // Private mode etc — silent fallback
+    }
+  }, []);
+  if (!pwd) return null;
+  return (
+    <div
+      style={{
+        display: "inline-flex",
+        alignItems: "center",
+        gap: 10,
+        padding: "8px 14px",
+        marginBottom: 18,
+        borderRadius: 999,
+        background: "rgba(0, 229, 255, 0.12)",
+        border: "1px solid rgba(0, 229, 255, 0.55)",
+        boxShadow: "0 0 18px rgba(0, 229, 255, 0.25)",
+      }}
+    >
+      <span
+        style={{
+          fontSize: 10,
+          letterSpacing: 2,
+          fontWeight: 800,
+          color: "#7df0ff",
+          textTransform: "uppercase",
+          fontFamily: "ui-monospace, 'JetBrains Mono', Menlo, monospace",
+        }}
+      >
+        Your password
+      </span>
+      <span
+        style={{
+          fontFamily: "ui-monospace, 'JetBrains Mono', Menlo, monospace",
+          fontSize: 14,
+          fontWeight: 800,
+          color: "#e8edff",
+          letterSpacing: 1,
+        }}
+      >
+        {pwd}
+      </span>
     </div>
   );
 }

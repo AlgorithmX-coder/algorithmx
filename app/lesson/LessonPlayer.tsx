@@ -1762,6 +1762,314 @@ function clearSavedLesson() {
   try { window.localStorage.removeItem(SAVE_KEY); } catch {}
 }
 
+// Phase B for Case 12: an interactive "spot the trick" hotspot mini-game.
+// Kids tap red flags directly on a fake email mock-up, learning by doing
+// what the explainer cards just told them about. Sits between the four
+// explainer cards and the wrap-up "Detective Briefing".
+function PhishingHotspotMiniGame({ onComplete }: { onComplete: () => void }) {
+  type Zone = {
+    id: string;
+    rect: { left: string; top: string; width: string; height: string };
+    label: string;
+    tooltip: string;
+  };
+
+  const ZONES: Zone[] = [
+    {
+      id: "sender",
+      rect: { left: "4%", top: "8%", width: "68%", height: "9%" },
+      label: "Weird Sender",
+      tooltip: "Real banks send mail from their own website — not random addresses with numbers and dashes.",
+    },
+    {
+      id: "subject",
+      rect: { left: "4%", top: "23%", width: "92%", height: "10%" },
+      label: "Scary Warning",
+      tooltip: "Real companies don't shout in CAPITALS or threaten you. Scammers want you to PANIC.",
+    },
+    {
+      id: "link",
+      rect: { left: "4%", top: "55%", width: "92%", height: "12%" },
+      label: "Fake Link",
+      tooltip: "Real links use the company's real website name. This one has weird letters — that's a red flag!",
+    },
+    {
+      id: "ask",
+      rect: { left: "4%", top: "76%", width: "92%", height: "12%" },
+      label: "Asks for Password",
+      tooltip: "Nobody real EVER asks for your password by email. Not your bank, not your friends, not anyone.",
+    },
+  ];
+
+  const [found, setFound] = useState<Set<string>>(new Set());
+  const [lastFound, setLastFound] = useState<Zone | null>(null);
+  const allFound = found.size >= ZONES.length;
+
+  const tap = useCallback(
+    (z: Zone) => {
+      if (found.has(z.id)) return;
+      setFound((prev) => {
+        const next = new Set(prev);
+        next.add(z.id);
+        return next;
+      });
+      setLastFound(z);
+      try { playSFX("xpGain"); } catch {}
+    },
+    [found],
+  );
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      style={{ position: "relative", zIndex: 1 }}
+    >
+      <div style={{ textAlign: "center", marginBottom: 14 }}>
+        <div
+          style={{
+            fontSize: 11,
+            letterSpacing: 5,
+            color: "#00e5ff",
+            fontWeight: 800,
+            textTransform: "uppercase",
+            marginBottom: 6,
+          }}
+        >
+          ✦ Detective Lab ✦
+        </div>
+        <h2
+          style={{
+            fontSize: 22,
+            fontWeight: 900,
+            margin: "0 0 6px",
+            background: "linear-gradient(135deg, #fbbf24, #ef4444, #7c5cff)",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+          }}
+        >
+          Tap every red flag in this fake email!
+        </h2>
+        <div style={{ color: "#c5cdf0", fontSize: 13 }}>
+          Found <strong style={{ color: "#a0ffb0" }}>{found.size}</strong> / {ZONES.length}
+        </div>
+      </div>
+
+      <div
+        style={{
+          position: "relative",
+          width: "100%",
+          maxWidth: 480,
+          margin: "0 auto",
+          aspectRatio: "1.4 / 1",
+          background: "linear-gradient(180deg, #ffffff 0%, #fef9e7 100%)",
+          borderRadius: 14,
+          border: "2px solid rgba(0,0,0,0.18)",
+          boxShadow: "0 18px 40px rgba(0,0,0,0.4)",
+          overflow: "hidden",
+          color: "#1a0505",
+          fontFamily: "ui-rounded, 'Fredoka', sans-serif",
+        }}
+      >
+        <div style={{ position: "absolute", inset: 0, padding: "5% 5%", fontSize: "min(13px, 2.6vw)" }}>
+          <div style={{ fontSize: "min(11px, 2.4vw)", color: "#666" }}>
+            From: <strong>secur1ty-team@bank-update.xyz</strong>
+          </div>
+          <div style={{ fontSize: "min(11px, 2.4vw)", color: "#666", marginTop: 2 }}>
+            To: you@example.com
+          </div>
+          <div style={{ marginTop: 8, fontWeight: 800, fontSize: "min(14px, 2.9vw)", color: "#1a0505" }}>
+            ⚠️ ACT NOW — ACCOUNT LOCKED!!!
+          </div>
+          <hr style={{ border: "none", borderTop: "1px solid #ddd", margin: "10px 0" }} />
+          <p style={{ margin: "6px 0", fontWeight: 700, color: "#b91c1c", fontSize: "min(12px, 2.5vw)" }}>
+            URGENT! Your account will be DELETED in 24 hours!!
+          </p>
+          <p style={{ margin: "10px 0", fontSize: "min(12px, 2.5vw)" }}>
+            Click here to verify:{" "}
+            <span style={{ color: "#1d4ed8", textDecoration: "underline" }}>
+              http://bank-secure-login.xn--12k.cf/verify?id=8842
+            </span>
+          </p>
+          <p style={{ margin: "10px 0", fontSize: "min(12px, 2.5vw)" }}>
+            Reply with your <strong>password</strong> to confirm your identity.
+          </p>
+        </div>
+
+        {ZONES.map((z) => {
+          const isFound = found.has(z.id);
+          return (
+            <button
+              key={z.id}
+              onClick={() => tap(z)}
+              aria-label={z.label}
+              style={{
+                position: "absolute",
+                left: z.rect.left,
+                top: z.rect.top,
+                width: z.rect.width,
+                height: z.rect.height,
+                background: isFound ? "rgba(34,197,94,0.22)" : "transparent",
+                border: isFound
+                  ? "2px solid #22c55e"
+                  : "2px dashed rgba(239,68,68,0.0)",
+                borderRadius: 8,
+                cursor: isFound ? "default" : "pointer",
+                transition: "all 0.2s ease",
+                padding: 0,
+              }}
+              onMouseEnter={(e) => {
+                if (!isFound) {
+                  e.currentTarget.style.borderColor = "rgba(239,68,68,0.55)";
+                  e.currentTarget.style.background = "rgba(239,68,68,0.1)";
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (!isFound) {
+                  e.currentTarget.style.borderColor = "rgba(239,68,68,0.0)";
+                  e.currentTarget.style.background = "transparent";
+                }
+              }}
+            >
+              {isFound && (
+                <span
+                  style={{
+                    position: "absolute",
+                    top: 4,
+                    right: 6,
+                    padding: "2px 8px",
+                    borderRadius: 8,
+                    background: "#22c55e",
+                    color: "#fff",
+                    fontSize: 10,
+                    fontWeight: 900,
+                    fontFamily: "ui-monospace, monospace",
+                    letterSpacing: 1,
+                    boxShadow: "0 2px 6px rgba(0,0,0,0.3)",
+                  }}
+                >
+                  ✓ {z.label}
+                </span>
+              )}
+            </button>
+          );
+        })}
+      </div>
+
+      {lastFound && (
+        <motion.div
+          key={lastFound.id}
+          initial={{ opacity: 0, y: 6 }}
+          animate={{ opacity: 1, y: 0 }}
+          style={{
+            margin: "12px auto 0",
+            maxWidth: 480,
+            padding: "10px 14px",
+            borderRadius: 12,
+            background: "rgba(126,255,151,0.12)",
+            border: "1px solid rgba(126,255,151,0.5)",
+            color: "#c5cdf0",
+            fontSize: 13,
+          }}
+        >
+          <strong style={{ color: "#a0ffb0" }}>{lastFound.label}:</strong>{" "}
+          {lastFound.tooltip}
+        </motion.div>
+      )}
+
+      <div style={{ textAlign: "center", marginTop: 16 }}>
+        <button
+          onClick={() => {
+            if (allFound) onComplete();
+          }}
+          disabled={!allFound}
+          style={{
+            padding: "12px 28px",
+            borderRadius: 16,
+            border: "none",
+            background: allFound
+              ? "linear-gradient(135deg, #f59e0b, #ef4444)"
+              : "rgba(125,240,255,0.15)",
+            color: allFound ? "#fff" : "rgba(125,240,255,0.5)",
+            fontFamily: "'Fredoka', 'Nunito', sans-serif",
+            fontWeight: 800,
+            fontSize: 16,
+            letterSpacing: 1,
+            cursor: allFound ? "pointer" : "not-allowed",
+            boxShadow: allFound ? "0 0 24px rgba(245,158,11,0.5)" : "none",
+            transition: "all 0.2s ease",
+          }}
+        >
+          {allFound ? "I see them all! →" : `Find ${ZONES.length - found.size} more`}
+        </button>
+      </div>
+    </motion.div>
+  );
+}
+
+// Reads the password the kid built in PasswordLab Phase B (Case 3) and
+// surfaces it on the Boss Battle pre-fight screen so the moment lands
+// emotionally — "the Raccoon is going to crack THIS specific password
+// you made". Falls back to a generic chip when nothing is saved.
+function BossSavedPasswordChip() {
+  const [pwd, setPwd] = useState<string | null>(null);
+  useEffect(() => {
+    try { setPwd(window.localStorage.getItem("ax-w1-saved-password")); } catch {}
+  }, []);
+  return (
+    <div
+      style={{
+        margin: "0 auto 14px",
+        maxWidth: 520,
+        padding: "10px 16px",
+        borderRadius: 14,
+        background: "linear-gradient(135deg, rgba(126,255,151,0.12), rgba(0,229,255,0.10))",
+        border: "1px solid rgba(126,255,151,0.5)",
+        textAlign: "center",
+        boxShadow: "0 0 24px rgba(126,255,151,0.18)",
+      }}
+    >
+      <div
+        style={{
+          fontFamily: "ui-monospace, monospace",
+          letterSpacing: 2,
+          fontSize: 10,
+          color: "#a0ffb0",
+          fontWeight: 800,
+          textTransform: "uppercase",
+        }}
+      >
+        🔐 You're protecting
+      </div>
+      <div
+        style={{
+          marginTop: 4,
+          fontFamily: "ui-monospace, 'JetBrains Mono', monospace",
+          fontSize: pwd ? 22 : 14,
+          fontWeight: 800,
+          color: "#e7ecff",
+          letterSpacing: pwd ? 1 : 0,
+          wordBreak: "break-all",
+        }}
+      >
+        {pwd ? pwd : "the password you'll build later this week"}
+      </div>
+      {pwd && (
+        <div
+          style={{
+            marginTop: 4,
+            fontSize: 11,
+            color: "#bfe9ff",
+            fontWeight: 600,
+          }}
+        >
+          ▸ The Raccoon wants this. Don't let him near it.
+        </div>
+      )}
+    </div>
+  );
+}
+
 export default function LessonPlayer(props: { userName: string; moduleId: string; childName: string }) {
   // The inventory context needs to wrap the whole player so the bar,
   // fly effect, and reveal overlay all share state with the case
@@ -3885,6 +4193,8 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
                   </div>
                 </motion.div>
               </AnimatePresence>
+            ) : trickCard === 4 ? (
+              <PhishingHotspotMiniGame onComplete={() => setTrickCard(5)} />
             ) : (
               <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} style={{ position: "relative", zIndex: 1 }}>
                 <div style={{
@@ -4292,6 +4602,9 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
                   </div>
                 ))}
               </div>
+
+              {/* Saved password reveal — what the kid is defending */}
+              <BossSavedPasswordChip />
 
               {/* Start button */}
               <motion.div

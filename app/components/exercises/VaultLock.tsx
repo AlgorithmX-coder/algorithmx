@@ -27,7 +27,7 @@ type VaultLockProps = {
   onComplete: (score: number, total: number) => void;
 };
 
-type Phase = "intro" | "active" | "feedback" | "complete";
+type Phase = "intro" | "active" | "feedback" | "complete" | "helping-adam";
 
 const STYLES = `
 @keyframes vaultSpin { to { transform: rotate(360deg); } }
@@ -708,13 +708,19 @@ export default function VaultLock({
     [totalSegments],
   );
 
+  // Stash the Phase A result so we can pass it through after the
+  // Phase B (Adam Forgot) mini-game.
+  const [phaseAResult, setPhaseAResult] = useState<{ score: number; total: number } | null>(null);
   const finish = useCallback(
     (score: number, t: number) => {
       setPhase("complete");
       setSecurityLevel(totalSegments);
-      onComplete(score, t);
+      setPhaseAResult({ score, total: t });
+      // Brief celebration on Phase A then drop into the Phase B
+      // "Adam forgot his password" mini-game.
+      window.setTimeout(() => setPhase("helping-adam"), 1600);
     },
-    [onComplete, totalSegments],
+    [totalSegments],
   );
 
   const canRenderEvaluate = mode === "evaluate" && items && items.length > 0;
@@ -775,6 +781,14 @@ export default function VaultLock({
         <CompletePanel
           title={mode === "evaluate" ? "Vault Secured!" : "Strong Password Built!"}
         />
+      ) : phase === "helping-adam" ? (
+        <AdamForgotPanel
+          onFinish={() => {
+            if (phaseAResult) {
+              onComplete(phaseAResult.score, phaseAResult.total);
+            }
+          }}
+        />
       ) : canRenderEvaluate ? (
         <EvaluatePanel items={items!} onFinish={finish} registerTick={registerTick} />
       ) : canRenderCreate ? (
@@ -818,6 +832,190 @@ function CompletePanel({ title }: { title: string }) {
       <p style={{ color: "rgba(125,240,255,0.55)", fontSize: 14, margin: 0 }}>
         All security segments activated.
       </p>
+    </div>
+  );
+}
+
+type ForgotHint = {
+  id: string;
+  emoji: string;
+  label: string;
+  safe: boolean;
+  reason: string;
+};
+
+const FORGOT_HINTS: ForgotHint[] = [
+  { id: "pet", emoji: "🐶", label: "Pet's name + a number", safe: true, reason: "Only Adam's family knows his pet — perfect clue!" },
+  { id: "food", emoji: "🍕", label: "Favourite food", safe: true, reason: "Nice — most people don't know exactly what Adam loves to eat." },
+  { id: "colour", emoji: "🎨", label: "Favourite colour", safe: true, reason: "Personal taste — only Adam truly knows!" },
+  { id: "bday", emoji: "🎂", label: "Adam's birthday", safe: false, reason: "Friends and family ALL know birthdays — it's an easy guess for the Raccoon!" },
+  { id: "addr", emoji: "🏠", label: "Home address", safe: false, reason: "Addresses are on letters and parcels — strangers can find them. Never a hint!" },
+];
+
+function AdamForgotPanel({ onFinish }: { onFinish: () => void }) {
+  const [picked, setPicked] = useState<Set<string>>(new Set());
+  const [shake, setShake] = useState<string | null>(null);
+  const [feedback, setFeedback] = useState<{ id: string; ok: boolean; reason: string } | null>(null);
+
+  const safeCount = FORGOT_HINTS.filter((h) => h.safe && picked.has(h.id)).length;
+  const ready = safeCount >= 3;
+
+  const tap = useCallback((h: ForgotHint) => {
+    if (picked.has(h.id)) return;
+    setFeedback({ id: h.id, ok: h.safe, reason: h.reason });
+    if (h.safe) {
+      setPicked((prev) => {
+        const next = new Set(prev);
+        next.add(h.id);
+        return next;
+      });
+      try { correctAnswerBurst(); } catch {}
+      try { playSound("xpGain"); } catch {}
+    } else {
+      setShake(h.id);
+      try { wrongAnswerShake(); } catch {}
+      try { playSound("error"); } catch {}
+      window.setTimeout(() => setShake(null), 500);
+    }
+  }, [picked]);
+
+  const handleContinue = useCallback(() => {
+    if (!ready) return;
+    try { badgeEarnedCelebration(); } catch {}
+    onFinish();
+  }, [ready, onFinish]);
+
+  return (
+    <div style={{ animation: "vaultCardPop 0.5s cubic-bezier(0.16,1,0.3,1) both", padding: "6px 0 4px" }}>
+      <h3
+        style={{
+          fontFamily: "'Fredoka', 'Nunito', sans-serif",
+          fontWeight: 700,
+          fontSize: 22,
+          margin: "0 0 4px",
+          textAlign: "center",
+          background: "linear-gradient(135deg, #00e5ff, #7eff97)",
+          WebkitBackgroundClip: "text",
+          WebkitTextFillColor: "transparent",
+          backgroundClip: "text",
+        }}
+      >
+        🦝 Adam Forgot His Password!
+      </h3>
+      <p
+        style={{
+          color: "rgba(125,240,255,0.7)",
+          fontSize: 13,
+          margin: "0 0 14px",
+          textAlign: "center",
+        }}
+      >
+        Pick 3 SAFE hints — clues only Adam would know. Skip ones the Raccoon could guess!
+      </p>
+
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))",
+          gap: 10,
+        }}
+      >
+        {FORGOT_HINTS.map((h) => {
+          const isPicked = picked.has(h.id);
+          const isShaking = shake === h.id;
+          return (
+            <button
+              key={h.id}
+              onClick={() => tap(h)}
+              disabled={isPicked}
+              style={{
+                padding: "12px 10px",
+                borderRadius: 14,
+                border: isPicked
+                  ? "2px solid #7eff97"
+                  : "1px solid rgba(0,229,255,0.25)",
+                background: isPicked
+                  ? "rgba(126,255,151,0.12)"
+                  : "rgba(15,21,48,0.6)",
+                color: "#e7ecff",
+                fontFamily: "'Nunito', sans-serif",
+                fontWeight: 600,
+                fontSize: 13,
+                textAlign: "center",
+                cursor: isPicked ? "default" : "pointer",
+                transition: "all 0.2s ease",
+                animation: isShaking ? "vaultShakeX 0.4s" : "none",
+                opacity: isPicked ? 0.85 : 1,
+              }}
+            >
+              <div style={{ fontSize: 26, marginBottom: 6 }}>{h.emoji}</div>
+              <div>{h.label}</div>
+              {isPicked && (
+                <div style={{ fontSize: 11, color: "#7eff97", marginTop: 4 }}>
+                  ✓ in hint box
+                </div>
+              )}
+            </button>
+          );
+        })}
+      </div>
+
+      {feedback && (
+        <div
+          key={feedback.id + (feedback.ok ? "-ok" : "-no")}
+          style={{
+            marginTop: 12,
+            padding: "10px 12px",
+            borderRadius: 12,
+            background: feedback.ok
+              ? "rgba(126,255,151,0.12)"
+              : "rgba(239,68,68,0.12)",
+            border: `1px solid ${feedback.ok ? "rgba(126,255,151,0.4)" : "rgba(239,68,68,0.4)"}`,
+            color: feedback.ok ? "#a8ffb8" : "#ffb4b4",
+            fontSize: 13,
+            animation: "vaultCardPop 0.3s ease both",
+          }}
+        >
+          {feedback.ok ? "✅ " : "⚠️ "}
+          {feedback.reason}
+        </div>
+      )}
+
+      <div
+        style={{
+          marginTop: 14,
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          gap: 12,
+          flexWrap: "wrap",
+        }}
+      >
+        <div style={{ color: "rgba(125,240,255,0.6)", fontSize: 12 }}>
+          {safeCount}/3 safe clues picked
+        </div>
+        <button
+          onClick={handleContinue}
+          disabled={!ready}
+          style={{
+            padding: "10px 18px",
+            borderRadius: 12,
+            border: "none",
+            background: ready
+              ? "linear-gradient(135deg, #7eff97, #00e5ff)"
+              : "rgba(125,240,255,0.15)",
+            color: ready ? "#0d1220" : "rgba(125,240,255,0.5)",
+            fontFamily: "'Fredoka', 'Nunito', sans-serif",
+            fontWeight: 700,
+            fontSize: 14,
+            cursor: ready ? "pointer" : "not-allowed",
+            boxShadow: ready ? "0 4px 16px rgba(126,255,151,0.4)" : "none",
+            transition: "all 0.2s ease",
+          }}
+        >
+          {ready ? "Help Adam →" : "Pick 3 safe clues"}
+        </button>
+      </div>
     </div>
   );
 }

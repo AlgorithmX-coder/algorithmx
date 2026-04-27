@@ -54,7 +54,7 @@ type BattleArenaProps = {
   onBossDefeated?: () => void;
 };
 
-type Phase = "intro" | "attack-announce" | "question" | "feedback" | "victory";
+type Phase = "intro" | "attack-announce" | "question" | "feedback" | "rage-qte" | "victory";
 
 const STYLES = `
 @keyframes baBossFloat {
@@ -171,6 +171,22 @@ const STYLES = `
   20%  { opacity: 1; }
   100% { opacity: 0; }
 }
+@keyframes baEnrageShake {
+  0%, 100% { transform: translate(0, 0) rotate(0); }
+  25%      { transform: translate(-3px, 1px) rotate(-1deg); }
+  50%      { transform: translate(2px, -1px) rotate(1deg); }
+  75%      { transform: translate(-1px, 2px) rotate(-0.5deg); }
+}
+@keyframes baRagePulse {
+  0%, 100% { transform: scale(1);    box-shadow: 0 0 14px rgba(255,179,71,0.45); }
+  50%      { transform: scale(1.08); box-shadow: 0 0 26px rgba(255,179,71,0.85); }
+}
+@keyframes baRageEnvelopeStreak {
+  0%   { transform: translateX(-180%) rotate(-12deg); opacity: 0; }
+  20%  { opacity: 0.85; }
+  80%  { opacity: 0.85; }
+  100% { transform: translateX(180%)  rotate(12deg);  opacity: 0; }
+}
 `;
 
 function FallbackRaccoon({ size = 120 }: { size?: number }) {
@@ -254,6 +270,10 @@ export default function BattleArena({
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const completeFiredRef = useRef(false);
   const defeatFiredRef = useRef(false);
+  // Stage 2 — fires once when the boss first crosses 50% HP, between the
+  // landing hit and the next question. The kid swats 3 phishing emails
+  // mid-flight to weather the Raccoon's rage spike.
+  const rageFiredRef = useRef(false);
 
   useEffect(() => {
     ensureStyles();
@@ -367,6 +387,11 @@ export default function BattleArena({
         const isFinalBlow = newHP <= 0;
         if (isFinalBlow) setFinalBlowActive(true);
 
+        // Stage 2 trigger: first time boss HP crosses 50% (and isn't 0
+        // already), divert to the rage QTE before advancing the question.
+        const halfHP = Math.ceil(total / 2);
+        const shouldRage = !isFinalBlow && newHP <= halfHP && newHP > 0 && !rageFiredRef.current;
+
         if (timerRef.current) clearTimeout(timerRef.current);
         timerRef.current = setTimeout(() => {
           if (isFinalBlow) {
@@ -376,6 +401,12 @@ export default function BattleArena({
               onComplete(score + 1, total);
             }
             // keep finalBlowActive true; victory overlay will handle
+            return;
+          }
+          if (shouldRage) {
+            rageFiredRef.current = true;
+            setSelected(null);
+            setPhase("rage-qte");
             return;
           }
           setSelected(null);
@@ -790,6 +821,15 @@ export default function BattleArena({
             >
               Get ready…
             </div>
+          ) : phase === "rage-qte" ? (
+            <RageQTE
+              onDone={() => {
+                if (timerRef.current) clearTimeout(timerRef.current);
+                setQIdx((idx) => idx + 1);
+                setBannerKey((k) => k + 1);
+                setPhase("attack-announce");
+              }}
+            />
           ) : currentQ ? (
             <>
               {/* Question parchment plaque */}
@@ -1335,6 +1375,182 @@ function BossPortrait({
         }}
       >
         RACCOON
+      </div>
+    </div>
+  );
+}
+
+// Stage 2 mid-fight QTE. Rendered when phase === "rage-qte" right after
+// the boss first dips below 50%. Three phishing envelopes streak across
+// the arena one at a time. Kid taps the active one inside ~1.4s. After
+// 3 slots resolve (hit or miss), onDone fires and the fight resumes.
+type RageSlotState = "hit" | "miss" | null;
+
+function RageQTE({ onDone }: { onDone: () => void }) {
+  const TOTAL = 3;
+  const [slot, setSlot] = useState(0);
+  const [hits, setHits] = useState(0);
+  const [tapped, setTapped] = useState<RageSlotState[]>([null, null, null]);
+  const doneFiredRef = useRef(false);
+
+  useEffect(() => {
+    if (slot >= TOTAL) {
+      if (doneFiredRef.current) return;
+      doneFiredRef.current = true;
+      const t = setTimeout(onDone, 700);
+      return () => clearTimeout(t);
+    }
+    const t = setTimeout(() => {
+      setTapped((prev) => {
+        const next = [...prev];
+        if (next[slot] === null) next[slot] = "miss";
+        return next;
+      });
+      try { playSound("wrong"); } catch {}
+      setSlot((s) => s + 1);
+    }, 1400);
+    return () => clearTimeout(t);
+  }, [slot, onDone]);
+
+  const tap = useCallback(() => {
+    setSlot((currentSlot) => {
+      if (currentSlot >= TOTAL) return currentSlot;
+      setTapped((prev) => {
+        const next = [...prev];
+        if (next[currentSlot] !== null) return prev;
+        next[currentSlot] = "hit";
+        return next;
+      });
+      setHits((h) => h + 1);
+      try { playSound("hitImpact"); } catch {}
+      return currentSlot + 1;
+    });
+  }, []);
+
+  return (
+    <div
+      style={{
+        position: "relative",
+        textAlign: "center",
+        padding: "10px 8px 18px",
+        animation: "baEnrageShake 0.45s ease-in-out infinite",
+      }}
+    >
+      {/* Streaking envelope tracers behind the targets */}
+      <div
+        aria-hidden
+        style={{
+          position: "absolute",
+          inset: 0,
+          pointerEvents: "none",
+          overflow: "hidden",
+        }}
+      >
+        {[0, 1, 2, 3].map((i) => (
+          <span
+            key={i}
+            style={{
+              position: "absolute",
+              top: `${20 + i * 18}%`,
+              left: 0,
+              right: 0,
+              fontSize: 22,
+              filter: "drop-shadow(0 0 8px rgba(239,68,68,0.5))",
+              animation: `baRageEnvelopeStreak ${1.6 + (i % 2) * 0.4}s ease-in-out ${i * 0.35}s infinite`,
+            }}
+          >
+            ✉️
+          </span>
+        ))}
+      </div>
+
+      <h3
+        style={{
+          position: "relative",
+          fontSize: 22,
+          fontWeight: 900,
+          color: "#ff5fb3",
+          margin: "0 0 6px",
+          textShadow: "0 0 14px rgba(255,95,179,0.55)",
+          letterSpacing: 1,
+        }}
+      >
+        🦝 RACCOON IS FURIOUS!
+      </h3>
+      <p
+        style={{
+          position: "relative",
+          color: "#c5cdf0",
+          fontSize: 13,
+          margin: "0 0 16px",
+          opacity: 0.85,
+        }}
+      >
+        He's hurling phishing emails — TAP to swat them away!
+      </p>
+
+      <div
+        style={{
+          position: "relative",
+          display: "flex",
+          gap: 14,
+          justifyContent: "center",
+          alignItems: "center",
+          marginBottom: 12,
+        }}
+      >
+        {[0, 1, 2].map((i) => {
+          const status = tapped[i];
+          const isActive = i === slot;
+          return (
+            <button
+              key={i}
+              onClick={isActive ? tap : undefined}
+              disabled={!isActive}
+              aria-label={`Phishing email ${i + 1}`}
+              style={{
+                width: 64,
+                height: 64,
+                borderRadius: 14,
+                border:
+                  status === "hit"
+                    ? "2px solid #7eff97"
+                    : status === "miss"
+                      ? "2px solid #ef4444"
+                      : isActive
+                        ? "2px solid #ffb347"
+                        : "2px solid rgba(255,255,255,0.12)",
+                background:
+                  status === "hit"
+                    ? "rgba(126,255,151,0.22)"
+                    : status === "miss"
+                      ? "rgba(239,68,68,0.18)"
+                      : isActive
+                        ? "rgba(255,179,71,0.18)"
+                        : "rgba(255,255,255,0.04)",
+                fontSize: 32,
+                cursor: isActive ? "pointer" : "default",
+                animation: isActive ? "baRagePulse 0.6s ease-in-out infinite" : "none",
+                color: "#fff",
+                transition: "all 0.2s ease",
+                padding: 0,
+              }}
+            >
+              {status === "hit" ? "✅" : status === "miss" ? "❌" : "✉️"}
+            </button>
+          );
+        })}
+      </div>
+      <div
+        style={{
+          position: "relative",
+          fontSize: 12,
+          color: "#a0ffb0",
+          fontFamily: "ui-monospace, monospace",
+          letterSpacing: 1,
+        }}
+      >
+        SWATTED {hits} / {TOTAL}
       </div>
     </div>
   );

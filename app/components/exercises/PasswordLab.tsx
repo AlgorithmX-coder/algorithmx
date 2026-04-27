@@ -164,6 +164,16 @@ export default function PasswordLab({
   const [completed, setCompleted] = useState(false);
   const [shake, setShake] = useState(false);
 
+  /* PHASE B — BUILD-YOUR-OWN PASSWORD SANDBOX
+     After the cauldron-mixing tutorial completes, the kid drops into
+     a personal password builder: pick word / number / symbol blocks
+     to compose their own password, save it, and that exact string
+     surfaces later in CrackTheCode and the Boss Battle as "your
+     password". Adds agency + meaningful continuity. */
+  type LabPhase = "playing" | "sandbox" | "done";
+  const [labPhase, setLabPhase] = useState<LabPhase>("playing");
+  const [builtPwd, setBuiltPwd] = useState<string[]>([]);
+
   const resetExercise = () => {
     setAdded([]);
     setDrag(null);
@@ -171,6 +181,8 @@ export default function PasswordLab({
     setCompleted(false);
     setShake(false);
     setShowIntro(true);
+    setLabPhase("playing");
+    setBuiltPwd([]);
   };
 
   const remaining = useMemo(
@@ -812,7 +824,9 @@ export default function PasswordLab({
               type="button"
               onClick={() => {
                 playSound("click");
-                onComplete(5);
+                // Phase A done → advance to the Build-Your-Own
+                // password sandbox instead of completing immediately.
+                setLabPhase("sandbox");
               }}
               whileHover={{ y: -3, scale: 1.04 }}
               whileTap={{ scale: 0.97 }}
@@ -831,7 +845,7 @@ export default function PasswordLab({
                 boxShadow: SHADOW.primaryButton,
               }}
             >
-              Continue →
+              Build YOUR Password →
             </motion.button>
             <motion.button
               type="button"
@@ -874,6 +888,23 @@ export default function PasswordLab({
         />
       )}
 
+      {/* PHASE B — Build-Your-Own Password sandbox overlay */}
+      {labPhase === "sandbox" && (
+        <BuildPasswordSandbox
+          built={builtPwd}
+          setBuilt={setBuiltPwd}
+          onSave={(pwd) => {
+            try {
+              window.localStorage.setItem("ax-w1-saved-password", pwd);
+            } catch {}
+            playSound("confetti");
+            setLabPhase("done");
+            // Brief celebratory beat before parent's onComplete fires.
+            window.setTimeout(() => onComplete(5), 600);
+          }}
+        />
+      )}
+
       {/* Dragging ghost — rendered via portal to document.body so it escapes
           any transformed ancestor (ScreenTransition, 3D arena) and the fixed
           position actually uses the viewport as its reference frame. */}
@@ -911,6 +942,346 @@ export default function PasswordLab({
             document.body
           );
         })()}
+    </div>
+  );
+}
+
+/* ───────────────────────── BUILD-YOUR-OWN PASSWORD ─────────────────
+ * Phase B sandbox. Kid clicks word / number / symbol blocks to compose
+ * their own password, sees the strength meter respond live, then hits
+ * "Save my password". The string is persisted to localStorage under
+ * `ax-w1-saved-password` so CrackTheCode (Case 7) and the Boss Battle
+ * (Case 15) can surface it back as "your password" — adds personal
+ * continuity through the rest of the lesson.
+ *
+ * Pure JSX/CSS. Uses the cyber palette + glassy sandbox card. */
+
+const BUILD_WORDS = ["Tiger", "Dragon", "Robot", "Pixel", "Comet", "Ninja"];
+const BUILD_NUMBERS = ["7", "42", "99", "23"];
+const BUILD_SYMBOLS = ["!", "@", "#", "$", "&"];
+
+function BuildPasswordSandbox({
+  built,
+  setBuilt,
+  onSave,
+}: {
+  built: string[];
+  setBuilt: (next: string[]) => void;
+  onSave: (pwd: string) => void;
+}) {
+  const pwd = built.join("");
+  // Strength heuristic: characters + variety of categories.
+  const hasWord = built.some((b) => /^[A-Za-z]+$/.test(b));
+  const hasNum = built.some((b) => /^\d+$/.test(b));
+  const hasSym = built.some((b) => /^[!@#$&]+$/.test(b));
+  const cats = (hasWord ? 1 : 0) + (hasNum ? 1 : 0) + (hasSym ? 1 : 0);
+  const strength = Math.min(
+    100,
+    Math.round((pwd.length / 12) * 60) + cats * 13,
+  );
+  const tier =
+    strength >= 80 ? "STRONG" : strength >= 50 ? "MEDIUM" : pwd.length > 0 ? "WEAK" : "EMPTY";
+  const tierColour =
+    tier === "STRONG" ? "#7eff97" : tier === "MEDIUM" ? "#ffd58a" : tier === "WEAK" ? "#ff5fb3" : "#7df0ff";
+  const canSave = pwd.length >= 6 && cats >= 2;
+
+  const addBlock = (val: string) => {
+    if (built.length >= 6) return;
+    setBuilt([...built, val]);
+    playSound("pop");
+  };
+  const removeLast = () => {
+    if (built.length === 0) return;
+    setBuilt(built.slice(0, -1));
+    playSound("click");
+  };
+
+  return (
+    <div
+      role="dialog"
+      aria-label="Build Your Password"
+      style={{
+        position: "absolute",
+        inset: 0,
+        zIndex: 14,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        padding: 24,
+        background:
+          "linear-gradient(180deg, rgba(15, 21, 48, 0.88) 0%, rgba(8, 10, 22, 0.95) 100%)",
+        backdropFilter: "blur(12px)",
+        WebkitBackdropFilter: "blur(12px)",
+        animation: "plBuildIn 0.4s ease-out both",
+      }}
+    >
+      <div
+        style={{
+          maxWidth: 580,
+          width: "100%",
+          padding: "24px 24px 22px",
+          borderRadius: 22,
+          background:
+            "linear-gradient(180deg, rgba(15, 21, 48, 0.85), rgba(8, 10, 22, 0.92))",
+          border: "1px solid rgba(0, 229, 255, 0.45)",
+          boxShadow:
+            "0 30px 60px -20px rgba(0, 0, 0, 0.7), 0 0 32px rgba(0, 229, 255, 0.25)",
+          color: "#e8edff",
+          fontFamily:
+            "ui-rounded, 'Fredoka', 'Quicksand', system-ui, -apple-system, sans-serif",
+        }}
+      >
+        <div style={{ textAlign: "center", marginBottom: 14 }}>
+          <span
+            style={{
+              display: "inline-block",
+              fontSize: 11,
+              letterSpacing: 4,
+              fontWeight: 800,
+              color: "#ffd58a",
+              textTransform: "uppercase",
+              padding: "4px 14px",
+              background: "rgba(8, 10, 22, 0.55)",
+              border: "1px solid rgba(0, 229, 255, 0.4)",
+              borderRadius: 999,
+            }}
+          >
+            Phase 2 of 2
+          </span>
+        </div>
+        <h2
+          style={{
+            fontSize: 24,
+            fontWeight: 900,
+            background: "linear-gradient(135deg, #7df0ff, #00e5ff, #7c5cff)",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+            margin: "4px 0 4px",
+            letterSpacing: 0.3,
+            textAlign: "center",
+            fontFamily: "'Space Grotesk', system-ui, sans-serif",
+          }}
+        >
+          Build YOUR Password!
+        </h2>
+        <p
+          style={{
+            fontSize: 14,
+            color: "#c5cdf0",
+            opacity: 0.92,
+            margin: "0 0 14px",
+            lineHeight: 1.5,
+            textAlign: "center",
+          }}
+        >
+          Pick blocks to make your own. Mix words, numbers, and symbols
+          for a strong one. We&apos;ll use it later in the lesson!
+        </p>
+
+        {/* Live password readout */}
+        <div
+          style={{
+            position: "relative",
+            minHeight: 60,
+            background: "rgba(8, 10, 22, 0.72)",
+            border: `1px solid ${tierColour}`,
+            borderRadius: 14,
+            padding: "12px 14px",
+            display: "flex",
+            alignItems: "center",
+            gap: 8,
+            marginBottom: 6,
+            flexWrap: "wrap",
+            boxShadow: `0 0 18px ${tierColour}33`,
+          }}
+        >
+          {built.length === 0 ? (
+            <span style={{ color: "rgba(125, 240, 255, 0.45)", fontFamily: "ui-monospace, 'JetBrains Mono', Menlo, monospace", fontSize: 14 }}>
+              click blocks below to build…
+            </span>
+          ) : (
+            built.map((b, i) => (
+              <span
+                key={i}
+                style={{
+                  padding: "4px 10px",
+                  borderRadius: 8,
+                  background: "rgba(0, 229, 255, 0.18)",
+                  border: "1px solid rgba(0, 229, 255, 0.55)",
+                  fontFamily: "ui-monospace, 'JetBrains Mono', Menlo, monospace",
+                  fontSize: 16,
+                  color: "#e8edff",
+                  fontWeight: 800,
+                }}
+              >
+                {b}
+              </span>
+            ))
+          )}
+        </div>
+
+        {/* Strength bar + tier */}
+        <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 18 }}>
+          <div
+            style={{
+              flex: 1,
+              height: 8,
+              borderRadius: 999,
+              background: "rgba(0, 229, 255, 0.12)",
+              overflow: "hidden",
+              border: "1px solid rgba(0, 229, 255, 0.22)",
+            }}
+          >
+            <div
+              style={{
+                width: `${strength}%`,
+                height: "100%",
+                background: `linear-gradient(90deg, #00e5ff, ${tierColour})`,
+                boxShadow: `0 0 10px ${tierColour}`,
+                transition: "width 0.3s ease, background 0.3s ease",
+              }}
+            />
+          </div>
+          <span
+            style={{
+              fontSize: 11,
+              letterSpacing: 2,
+              fontWeight: 800,
+              color: tierColour,
+              fontFamily: "ui-monospace, 'JetBrains Mono', Menlo, monospace",
+              minWidth: 60,
+              textAlign: "right",
+            }}
+          >
+            {tier}
+          </span>
+        </div>
+
+        {/* Block tray — three rows */}
+        <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 18 }}>
+          {[
+            { label: "WORDS", items: BUILD_WORDS, accent: "#00e5ff" },
+            { label: "NUMBERS", items: BUILD_NUMBERS, accent: "#7c5cff" },
+            { label: "SYMBOLS", items: BUILD_SYMBOLS, accent: "#ff5fb3" },
+          ].map((row) => (
+            <div key={row.label}>
+              <div
+                style={{
+                  fontSize: 9,
+                  letterSpacing: 2,
+                  fontWeight: 800,
+                  color: row.accent,
+                  fontFamily: "ui-monospace, 'JetBrains Mono', Menlo, monospace",
+                  marginBottom: 4,
+                }}
+              >
+                {row.label}
+              </div>
+              <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
+                {row.items.map((it) => (
+                  <button
+                    key={it}
+                    type="button"
+                    onClick={() => addBlock(it)}
+                    disabled={built.length >= 6}
+                    style={{
+                      padding: "6px 12px",
+                      borderRadius: 8,
+                      background: `${row.accent}1a`,
+                      border: `1px solid ${row.accent}66`,
+                      color: row.accent,
+                      fontFamily: "ui-monospace, 'JetBrains Mono', Menlo, monospace",
+                      fontSize: 14,
+                      fontWeight: 800,
+                      cursor: built.length >= 6 ? "default" : "pointer",
+                      opacity: built.length >= 6 ? 0.4 : 1,
+                      transition: "transform 0.15s ease, background 0.2s ease",
+                    }}
+                    onMouseEnter={(e) => {
+                      if (built.length >= 6) return;
+                      (e.currentTarget as HTMLButtonElement).style.transform = "translateY(-2px)";
+                      (e.currentTarget as HTMLButtonElement).style.background = `${row.accent}33`;
+                    }}
+                    onMouseLeave={(e) => {
+                      (e.currentTarget as HTMLButtonElement).style.transform = "";
+                      (e.currentTarget as HTMLButtonElement).style.background = `${row.accent}1a`;
+                    }}
+                  >
+                    {it}
+                  </button>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Footer actions */}
+        <div style={{ display: "flex", gap: 10, justifyContent: "center", flexWrap: "wrap" }}>
+          <button
+            type="button"
+            onClick={removeLast}
+            disabled={built.length === 0}
+            style={{
+              padding: "12px 22px",
+              borderRadius: 999,
+              background: "rgba(15, 21, 48, 0.65)",
+              border: "1px solid rgba(125, 240, 255, 0.32)",
+              color: "#c5cdf0",
+              fontFamily: "'Space Grotesk', system-ui, sans-serif",
+              fontWeight: 700,
+              fontSize: 13,
+              cursor: built.length === 0 ? "default" : "pointer",
+              opacity: built.length === 0 ? 0.4 : 1,
+              letterSpacing: 0.5,
+            }}
+          >
+            ← Undo
+          </button>
+          <button
+            type="button"
+            onClick={() => canSave && onSave(pwd)}
+            disabled={!canSave}
+            style={{
+              padding: "12px 26px",
+              borderRadius: 999,
+              border: "none",
+              background: canSave
+                ? "linear-gradient(135deg, #00e5ff, #7c5cff)"
+                : "rgba(15, 21, 48, 0.65)",
+              color: canSave ? "#080a16" : "rgba(197, 205, 240, 0.5)",
+              fontFamily: "'Space Grotesk', system-ui, sans-serif",
+              fontWeight: 900,
+              fontSize: 14,
+              cursor: canSave ? "pointer" : "default",
+              letterSpacing: 1,
+              textTransform: "uppercase",
+              boxShadow: canSave
+                ? "0 0 24px rgba(0, 229, 255, 0.55), 0 8px 18px -4px rgba(124, 92, 255, 0.45)"
+                : "none",
+            }}
+          >
+            {canSave ? "💾 Save My Password →" : "Add a number + symbol"}
+          </button>
+        </div>
+        <p
+          style={{
+            textAlign: "center",
+            fontSize: 11,
+            color: "rgba(125, 240, 255, 0.55)",
+            marginTop: 12,
+            fontFamily: "ui-monospace, 'JetBrains Mono', Menlo, monospace",
+            letterSpacing: 1,
+          }}
+        >
+          {built.length}/6 blocks · stays on this device only
+        </p>
+      </div>
+      <style>{`
+        @keyframes plBuildIn {
+          from { opacity: 0; }
+          to   { opacity: 1; }
+        }
+      `}</style>
     </div>
   );
 }
