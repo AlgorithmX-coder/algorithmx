@@ -102,6 +102,61 @@ shuffleBossQuestions(HARD_QUESTIONS);
 
 const HP_MAX = 100;
 
+// Achievement system — cumulative badge unlocks persisted to
+// localStorage. Computed at end-of-fight and surfaced on the victory
+// overlay. Pure end-of-run reward; no in-fight effect.
+type AchievementDef = {
+  id: string;
+  icon: string;
+  label: string;
+  desc: string;
+  accent: string;
+};
+
+const ACHIEVEMENT_DEFS: AchievementDef[] = [
+  { id: "first-win",     icon: "🥇", label: "First Win",        desc: "Beat the Hacker Raccoon",   accent: "#fbbf24" },
+  { id: "flawless",      icon: "💎", label: "Flawless",          desc: "Won without losing HP",     accent: "#7df0ff" },
+  { id: "perfect",       icon: "🎯", label: "Pixel Perfect",     desc: "100% accuracy",             accent: "#10b981" },
+  { id: "shield-save",   icon: "🛡",  label: "Shield Saved Me!",  desc: "Used your shield charge",   accent: "#60a5fa" },
+  { id: "triple-strike", icon: "⚡", label: "Triple Strike",     desc: "Hit a 5+ combo",            accent: "#fde047" },
+];
+
+const BB_ACH_KEY = "bb-achievements";
+
+function loadEarnedAchievements(): Set<string> {
+  if (typeof window === "undefined") return new Set();
+  try {
+    const raw = window.localStorage.getItem(BB_ACH_KEY);
+    return new Set(raw ? (JSON.parse(raw) as string[]) : []);
+  } catch {
+    return new Set();
+  }
+}
+
+function saveEarnedAchievements(ids: Set<string>) {
+  if (typeof window === "undefined") return;
+  try {
+    window.localStorage.setItem(BB_ACH_KEY, JSON.stringify(Array.from(ids)));
+  } catch {}
+}
+
+function computeAchievementsForRun(input: {
+  heroHp: number;
+  correct: number;
+  totalAsked: number;
+  maxCombo: number;
+  usedShield: boolean;
+  hasPriorWin: boolean;
+}): string[] {
+  const out: string[] = [];
+  if (!input.hasPriorWin) out.push("first-win");
+  if (input.heroHp >= HP_MAX) out.push("flawless");
+  if (input.totalAsked > 0 && input.correct === input.totalAsked) out.push("perfect");
+  if (input.usedShield) out.push("shield-save");
+  if (input.maxCombo >= 5) out.push("triple-strike");
+  return out;
+}
+
 // Three telegraphed boss-attack types — cycled per question. Pure
 // visual/narrative variation; the answer logic doesn't change.
 const ATTACK_META = [
@@ -1141,6 +1196,9 @@ export default function BossBattle({
   // Wrong-answer handler consumes it instead of taking damage.
   const [shieldArmed, setShieldArmed] = useState(true);
   const [shieldConsumedKey, setShieldConsumedKey] = useState(0);
+  // Tracks whether the kid spent their shield this run — drives the
+  // "Shield Saved Me!" achievement.
+  const [usedShield, setUsedShield] = useState(false);
   const [questionIdx, setQuestionIdx] = useState(0);
   const [feedback, setFeedback] = useState<{ index: number; correct: boolean } | null>(null);
   const [locked, setLocked] = useState(false);
@@ -1929,6 +1987,7 @@ export default function BossBattle({
         if (shieldArmed) {
           setShieldArmed(false);
           setShieldConsumedKey((k) => k + 1);
+          setUsedShield(true);
           setStats((s) => ({ ...s, totalAsked: s.totalAsked + 1 }));
           playSound("hitImpact");
           showCenterFeedback("shielded");
@@ -2159,6 +2218,7 @@ export default function BossBattle({
     // Re-arm the shield charge for the next attempt.
     setShieldArmed(true);
     setShieldConsumedKey(0);
+    setUsedShield(false);
     setQuestionIdx(0);
     // Reset the pool pointers and start from the first easy question.
     easyIdxRef.current = 1;
@@ -2228,6 +2288,46 @@ export default function BossBattle({
   const finalAccuracy =
     stats.totalAsked > 0 ? Math.round((stats.correct / stats.totalAsked) * 100) : 0;
   const finalXp = 100 + stats.correct * 15 + stats.maxCombo * 25;
+
+  // Compute end-of-run achievements once we hit "won". `freshlyEarned`
+  // is the IDs unlocked *this run* (highlighted with a "NEW!" tag);
+  // `earnedAllTime` includes prior unlocks so the kid sees their
+  // collection-to-date.
+  const achievementResult = useMemo(() => {
+    if (result !== "won") return null;
+    const prior = loadEarnedAchievements();
+    const freshlyEarned = computeAchievementsForRun({
+      heroHp,
+      correct: stats.correct,
+      totalAsked: stats.totalAsked,
+      maxCombo: stats.maxCombo,
+      usedShield,
+      hasPriorWin: prior.has("first-win"),
+    });
+    const merged = new Set(prior);
+    freshlyEarned.forEach((id) => merged.add(id));
+    return { freshlyEarned, earnedAllTime: merged };
+  }, [result, heroHp, stats.correct, stats.totalAsked, stats.maxCombo, usedShield]);
+
+  useEffect(() => {
+    if (achievementResult) {
+      saveEarnedAchievements(achievementResult.earnedAllTime);
+    }
+  }, [achievementResult]);
+
+  // Edge-glow arena lighting — picks the highest-priority game state and
+  // applies a coloured inset box-shadow across the play area. Smooth
+  // transitions on state changes via CSS `transition: box-shadow`.
+  const edgeGlow = useMemo(() => {
+    if (result) return null;
+    if (introStage !== "done") return null;
+    if (superReady) return { color: "rgba(125, 240, 255, 0.7)", spread: 36, blur: 90 };
+    const bossPctNow = bossHp / HP_MAX;
+    if (bossPctNow > 0 && bossPctNow <= 0.25) return { color: "rgba(239, 68, 68, 0.7)", spread: 40, blur: 100 };
+    if (bossPctNow > 0 && bossPctNow <= 0.5)  return { color: "rgba(249, 115, 22, 0.55)", spread: 30, blur: 80 };
+    if (combo >= 5) return { color: "rgba(253, 224, 71, 0.55)", spread: 28, blur: 75 };
+    return null;
+  }, [result, introStage, superReady, bossHp, combo]);
 
   return (
     <div
@@ -2529,6 +2629,26 @@ export default function BossBattle({
           <div className="bb-speech-tail bb-speech-tail-hero" />
         </div>
       )}
+
+      {/* Edge-glow arena lighting — single inset shadow whose colour /
+          spread / blur change with game state (super armed → cyan,
+          boss rage → orange/red, combo 5+ → gold). Smooth box-shadow
+          transition + a gentle pulse keep it alive. */}
+      <div
+        aria-hidden
+        className={edgeGlow ? "bb-edge-glow bb-edge-glow-on" : "bb-edge-glow"}
+        style={{
+          position: "absolute",
+          inset: 0,
+          pointerEvents: "none",
+          zIndex: 1,
+          transition: "box-shadow 0.5s ease, opacity 0.4s ease",
+          opacity: edgeGlow ? 1 : 0,
+          boxShadow: edgeGlow
+            ? `inset 0 0 ${edgeGlow.blur}px ${edgeGlow.spread}px ${edgeGlow.color}`
+            : "none",
+        }}
+      />
 
       {/* Centre correct/wrong flash */}
       {centerFeedback && (
@@ -3345,6 +3465,35 @@ export default function BossBattle({
                       ★
                     </span>
                   ))}
+                </div>
+              )}
+
+              {/* Achievement badge row — only renders the badges earned
+                  this run, with a "NEW!" pip if it's a first-time unlock. */}
+              {statsStage >= 6 && achievementResult && achievementResult.freshlyEarned.length > 0 && (
+                <div className="bb-victory-badges">
+                  <div className="bb-victory-badges-label">BADGES EARNED</div>
+                  <div className="bb-victory-badges-row">
+                    {ACHIEVEMENT_DEFS.filter((a) => achievementResult.freshlyEarned.includes(a.id)).map((a, i) => (
+                      <div
+                        key={a.id}
+                        className="bb-badge-chip"
+                        style={{
+                          animationDelay: `${0.2 + i * 0.18}s`,
+                          borderColor: a.accent + "99",
+                          boxShadow: `0 0 18px ${a.accent}66, inset 0 0 0 1px ${a.accent}33`,
+                        }}
+                        title={a.desc}
+                      >
+                        <span className="bb-badge-icon" style={{ filter: `drop-shadow(0 0 8px ${a.accent})` }}>{a.icon}</span>
+                        <div className="bb-badge-text">
+                          <span className="bb-badge-label" style={{ color: a.accent }}>{a.label}</span>
+                          <span className="bb-badge-desc">{a.desc}</span>
+                        </div>
+                        <span className="bb-badge-new">NEW!</span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               )}
 
@@ -4383,6 +4532,94 @@ export default function BossBattle({
           color: #fbbf24;
           text-shadow: 0 0 18px rgba(251,191,36,0.9), 0 0 36px rgba(249,115,22,0.5);
           animation: bbVStarPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+        }
+        .bb-victory-badges {
+          margin-top: 18px;
+          width: 100%;
+          max-width: 540px;
+        }
+        .bb-victory-badges-label {
+          font-family: 'JetBrains Mono', monospace;
+          font-size: 10px;
+          letter-spacing: 0.3em;
+          color: #94a3b8;
+          text-align: center;
+          margin-bottom: 8px;
+          text-transform: uppercase;
+        }
+        .bb-victory-badges-row {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 8px;
+          justify-content: center;
+        }
+        .bb-badge-chip {
+          position: relative;
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          padding: 8px 14px 8px 10px;
+          background: linear-gradient(135deg, rgba(15,23,42,0.95), rgba(30,27,75,0.95));
+          border: 1.5px solid;
+          border-radius: 12px;
+          opacity: 0;
+          transform: translateY(8px) scale(0.92);
+          animation: bbBadgePop 0.55s cubic-bezier(0.22, 1.4, 0.42, 1) forwards;
+          min-width: 0;
+        }
+        .bb-badge-icon {
+          font-size: 22px;
+          line-height: 1;
+          flex-shrink: 0;
+        }
+        .bb-badge-text {
+          display: flex;
+          flex-direction: column;
+          gap: 1px;
+          min-width: 0;
+        }
+        .bb-badge-label {
+          font-family: 'Space Grotesk', sans-serif;
+          font-size: 11px;
+          font-weight: 800;
+          letter-spacing: 0.06em;
+          text-transform: uppercase;
+        }
+        .bb-badge-desc {
+          font-size: 10px;
+          color: rgba(199, 207, 240, 0.65);
+          letter-spacing: 0.02em;
+        }
+        .bb-badge-new {
+          position: absolute;
+          top: -7px;
+          right: -7px;
+          padding: 1px 6px;
+          background: linear-gradient(135deg, #fbbf24, #ef4444);
+          color: #1a0612;
+          font-family: 'JetBrains Mono', monospace;
+          font-size: 8px;
+          font-weight: 900;
+          letter-spacing: 0.12em;
+          border-radius: 999px;
+          box-shadow: 0 0 10px rgba(251,191,36,0.7);
+          animation: bbBadgeNewBlink 1.1s ease-in-out infinite;
+        }
+        @keyframes bbBadgePop {
+          0%   { opacity: 0; transform: translateY(12px) scale(0.85); }
+          70%  { opacity: 1; transform: translateY(-2px) scale(1.04); }
+          100% { opacity: 1; transform: translateY(0)    scale(1);    }
+        }
+        @keyframes bbBadgeNewBlink {
+          0%, 100% { transform: scale(1);    box-shadow: 0 0 10px rgba(251,191,36,0.7); }
+          50%      { transform: scale(1.12); box-shadow: 0 0 16px rgba(251,191,36,0.95); }
+        }
+        @keyframes bbEdgeGlowPulse {
+          0%, 100% { filter: brightness(1); }
+          50%      { filter: brightness(1.18); }
+        }
+        .bb-edge-glow-on {
+          animation: bbEdgeGlowPulse 2.4s ease-in-out infinite;
         }
         .bb-victory-buttons {
           display: flex;
