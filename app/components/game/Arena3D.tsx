@@ -45,67 +45,75 @@ type Mood = Arena3DProps["mood"];
 // Palettes
 // ──────────────────────────────────────────────────────────
 
+// Cosmic-theme arena palette — same lineage as the FINAL SHOWDOWN
+// lock screen and CHOOSE YOUR HERO atrium. Violet / coral / pink /
+// gold instead of the old cyan / green / blue cyber palette.
+//   Phase 0 = full HP (calm cosmic-violet ambient)
+//   Phase 1 = 75% (warming amber sunset highlights)
+//   Phase 2 = 50% (rage — coral / ember glow)
+//   Phase 3 = 25% (desperate — pink / red wash)
+
 const PHASE_PALETTE = {
   0: {
-    ambient: new THREE.Color("#334155"),
-    ambientI: 0.3,
-    key: new THREE.Color("#60a5fa"),
-    keyI: 0.6,
-    spot: new THREE.Color("#34d399"),
-    spotI: 0.4,
-    fill: new THREE.Color("#7c3aed"),
-    fillI: 0.3,
-    fogColor: new THREE.Color("#0a0e2a"),
+    ambient: new THREE.Color("#2a0d2e"),
+    ambientI: 0.32,
+    key: new THREE.Color("#7c5cff"),
+    keyI: 0.62,
+    spot: new THREE.Color("#ff5fb3"),
+    spotI: 0.42,
+    fill: new THREE.Color("#ffd158"),
+    fillI: 0.32,
+    fogColor: new THREE.Color("#0f1530"),
     fogDensity: 0.0,
   },
   1: {
-    ambient: new THREE.Color("#3d3145"),
-    ambientI: 0.28,
-    key: new THREE.Color("#60a5fa"),
-    keyI: 0.55,
-    spot: new THREE.Color("#fbbf24"),
-    spotI: 0.38,
-    fill: new THREE.Color("#7c3aed"),
-    fillI: 0.32,
-    fogColor: new THREE.Color("#120e22"),
+    ambient: new THREE.Color("#3d2238"),
+    ambientI: 0.30,
+    key: new THREE.Color("#a06aff"),
+    keyI: 0.58,
+    spot: new THREE.Color("#ffd158"),
+    spotI: 0.42,
+    fill: new THREE.Color("#ff7a59"),
+    fillI: 0.34,
+    fogColor: new THREE.Color("#1a0e22"),
     fogDensity: 0.0,
   },
   2: {
-    ambient: new THREE.Color("#3a1f22"),
-    ambientI: 0.25,
-    key: new THREE.Color("#f97316"),
-    keyI: 0.5,
-    spot: new THREE.Color("#f97316"),
-    spotI: 0.42,
-    fill: new THREE.Color("#7c3aed"),
-    fillI: 0.28,
-    fogColor: new THREE.Color("#1c0a0f"),
-    fogDensity: 0.015,
+    ambient: new THREE.Color("#3a1f2a"),
+    ambientI: 0.27,
+    key: new THREE.Color("#ff7a59"),
+    keyI: 0.55,
+    spot: new THREE.Color("#ff5fb3"),
+    spotI: 0.46,
+    fill: new THREE.Color("#7c5cff"),
+    fillI: 0.30,
+    fogColor: new THREE.Color("#1c0a16"),
+    fogDensity: 0.012,
   },
   3: {
-    ambient: new THREE.Color("#2a0a0a"),
-    ambientI: 0.2,
-    key: new THREE.Color("#ef4444"),
-    keyI: 0.7,
-    spot: new THREE.Color("#ef4444"),
-    spotI: 0.55,
-    fill: new THREE.Color("#dc2626"),
-    fillI: 0.35,
-    fogColor: new THREE.Color("#1a0606"),
-    fogDensity: 0.04,
+    ambient: new THREE.Color("#2a0a16"),
+    ambientI: 0.22,
+    key: new THREE.Color("#ff5fb3"),
+    keyI: 0.72,
+    spot: new THREE.Color("#ff7a59"),
+    spotI: 0.58,
+    fill: new THREE.Color("#dc2654"),
+    fillI: 0.36,
+    fogColor: new THREE.Color("#1a0612"),
+    fogDensity: 0.035,
   },
 } as const;
 
 const VICTORY_PALETTE = {
-  ambient: new THREE.Color("#4a3a1f"),
-  ambientI: 0.45,
-  key: new THREE.Color("#fbbf24"),
-  keyI: 0.9,
-  spot: new THREE.Color("#fde047"),
-  spotI: 0.7,
-  fill: new THREE.Color("#fb923c"),
-  fillI: 0.45,
-  fogColor: new THREE.Color("#1f1a0a"),
+  ambient: new THREE.Color("#4a2a1f"),
+  ambientI: 0.46,
+  key: new THREE.Color("#ffd158"),
+  keyI: 0.92,
+  spot: new THREE.Color("#ff7a59"),
+  spotI: 0.72,
+  fill: new THREE.Color("#ff5fb3"),
+  fillI: 0.48,
+  fogColor: new THREE.Color("#1f1408"),
   fogDensity: 0.0,
 };
 
@@ -129,7 +137,7 @@ const CODE_SNIPPETS = [
   "await protect()",
 ] as const;
 
-const BRAND_COLOURS = [0x60a5fa, 0x34d399, 0x7c3aed, 0xfbbf24];
+const BRAND_COLOURS = [0x7c5cff, 0xff5fb3, 0xff5fb3, 0xffd158];
 
 // ──────────────────────────────────────────────────────────
 // Canvas texture builders (baked once)
@@ -143,7 +151,7 @@ function makeHexGridTexture(size = 512): THREE.Texture | null {
   const ctx = c.getContext("2d");
   if (!ctx) return null;
 
-  ctx.fillStyle = "#0a0e2a";
+  ctx.fillStyle = "#0f1530";
   ctx.fillRect(0, 0, size, size);
 
   // Flat-top hexagons. Column width = 1.5r, row height = sqrt(3)*r.
@@ -151,7 +159,7 @@ function makeHexGridTexture(size = 512): THREE.Texture | null {
   const colW = 1.5 * r;
   const rowH = Math.sqrt(3) * r;
 
-  ctx.strokeStyle = "#3b82f6";
+  ctx.strokeStyle = "#a06aff";
   ctx.lineWidth = 1;
   // Bumped from 0.18 → 0.24 so the hex grid reads clearly on the floor.
   ctx.globalAlpha = 0.24;
@@ -179,7 +187,7 @@ function makeHexGridTexture(size = 512): THREE.Texture | null {
 
   // Subtle glowing dots at some vertices for depth.
   ctx.globalAlpha = 0.4;
-  ctx.fillStyle = "#3b82f6";
+  ctx.fillStyle = "#a06aff";
   for (let col = 0; col * colW < size; col += 2) {
     for (let row = 0; row * rowH < size; row += 2) {
       const x = col * colW;
@@ -286,7 +294,7 @@ function makeDataFlowTexture(size = 256): THREE.Texture | null {
   if (!ctx) return null;
 
   ctx.clearRect(0, 0, size, size);
-  ctx.strokeStyle = "#3b82f6";
+  ctx.strokeStyle = "#a06aff";
   ctx.lineWidth = 1;
   ctx.globalAlpha = 0.2;
 
@@ -329,7 +337,7 @@ function makeBinaryStreamTexture(width = 64, height = 512): THREE.Texture | null
     for (let col = 0; col < 4; col++) {
       const ch = rand(r * 7 + col * 31) > 0.5 ? "1" : "0";
       const bright = rand(r * 13 + col) > 0.85;
-      ctx.fillStyle = bright ? "#a7f3d0" : "#34d399";
+      ctx.fillStyle = bright ? "#ffd158" : "#ff5fb3";
       ctx.globalAlpha = bright ? 1 : 0.55;
       ctx.fillText(ch, (width / 4) * col + width / 8, r * rowH + rowH / 2);
     }
@@ -356,8 +364,8 @@ function makeCodeSnippetTexture(text: string): THREE.Texture | null {
   ctx.font = "bold 36px 'Courier New', monospace";
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
-  ctx.fillStyle = "#34d399";
-  ctx.shadowColor = "#34d399";
+  ctx.fillStyle = "#ff5fb3";
+  ctx.shadowColor = "#ff5fb3";
   ctx.shadowBlur = 6;
   ctx.fillText(text, w / 2, h / 2);
 
@@ -375,9 +383,9 @@ function makeCircuitTexture(size = 512): THREE.Texture | null {
   const ctx = canvas.getContext("2d");
   if (!ctx) return null;
 
-  ctx.fillStyle = "#0c1225";
+  ctx.fillStyle = "#1a0e22";
   ctx.fillRect(0, 0, size, size);
-  ctx.strokeStyle = "#1e3a8a";
+  ctx.strokeStyle = "#3a1a3e";
   ctx.lineWidth = 1.2;
   ctx.globalAlpha = 0.5;
 
@@ -402,7 +410,7 @@ function makeCircuitTexture(size = 512): THREE.Texture | null {
       ctx.lineTo(x, y);
     }
     ctx.stroke();
-    ctx.fillStyle = "#3b82f6";
+    ctx.fillStyle = "#a06aff";
     ctx.globalAlpha = 0.8;
     ctx.beginPath();
     ctx.arc(x, y, 2.2, 0, Math.PI * 2);
@@ -510,8 +518,8 @@ function makeShieldLogoTexture(size = 512): THREE.Texture | null {
   };
 
   const bodyGrad = ctx.createLinearGradient(cx, top, cx, tipY);
-  bodyGrad.addColorStop(0, "#3b82f6");
-  bodyGrad.addColorStop(1, "#34d399");
+  bodyGrad.addColorStop(0, "#a06aff");
+  bodyGrad.addColorStop(1, "#ff5fb3");
   ctx.fillStyle = bodyGrad;
   ctx.shadowColor = "rgba(96,165,250,0.9)";
   ctx.shadowBlur = size * 0.08;
@@ -586,7 +594,7 @@ function drawRadar(lt: LiveTex, t: number, warning: boolean) {
   const r = size * 0.42;
 
   // Rings
-  ctx.strokeStyle = warning ? "#ef4444" : "#34d399";
+  ctx.strokeStyle = warning ? "#ef4444" : "#ff5fb3";
   ctx.globalAlpha = 0.35;
   ctx.lineWidth = 1;
   for (let i = 1; i <= 3; i++) {
@@ -618,7 +626,7 @@ function drawRadar(lt: LiveTex, t: number, warning: boolean) {
   ctx.fill();
 
   // Blips
-  ctx.fillStyle = warning ? "#fca5a5" : "#a7f3d0";
+  ctx.fillStyle = warning ? "#ff9bcb" : "#ffd158";
   ctx.globalAlpha = 0.9;
   const blips = [
     [0.3, 0.4],
@@ -648,7 +656,7 @@ function drawRadar(lt: LiveTex, t: number, warning: boolean) {
 
 function drawLogFeed(lt: LiveTex, scroll: number, warning: boolean) {
   const { ctx, size } = lt;
-  ctx.fillStyle = "#04060a";
+  ctx.fillStyle = "#04050d";
   ctx.fillRect(0, 0, size, size);
 
   ctx.font = "bold 14px 'Courier New', monospace";
@@ -682,14 +690,14 @@ function drawLogFeed(lt: LiveTex, scroll: number, warning: boolean) {
     if (y < -lineH || y > size) continue;
     const line = lines[i % lines.length];
     const isNew = i === Math.floor(scroll) % lines.length + lines.length;
-    ctx.fillStyle = warning ? "#ef4444" : isNew ? "#a7f3d0" : "#34d399";
+    ctx.fillStyle = warning ? "#ef4444" : isNew ? "#ffd158" : "#ff5fb3";
     ctx.fillText(line, 8, y);
   }
 
   if (warning) {
     ctx.fillStyle = "rgba(239,68,68,0.3)";
     ctx.fillRect(0, 0, size, size);
-    ctx.fillStyle = "#fca5a5";
+    ctx.fillStyle = "#ff9bcb";
     ctx.font = "bold 28px monospace";
     ctx.textAlign = "center";
     ctx.fillText("⚠ WARNING", size / 2, size / 2 - 14);
@@ -705,14 +713,14 @@ function drawShieldGfx(
   warning: boolean
 ) {
   const { ctx, size } = lt;
-  ctx.fillStyle = "#04060a";
+  ctx.fillStyle = "#04050d";
   ctx.fillRect(0, 0, size, size);
 
   const cx = size / 2;
   const cy = size / 2;
   const r = size * 0.38;
   const col =
-    mood === "victory" ? "#fde047" : warning ? "#ef4444" : "#60a5fa";
+    mood === "victory" ? "#ffd158" : warning ? "#ef4444" : "#a06aff";
   ctx.strokeStyle = col;
   ctx.lineWidth = 4;
   ctx.globalAlpha = brightness;
@@ -746,7 +754,7 @@ function drawShieldGfx(
   if (warning) {
     ctx.fillStyle = "rgba(239,68,68,0.35)";
     ctx.fillRect(0, 0, size, size);
-    ctx.fillStyle = "#fca5a5";
+    ctx.fillStyle = "#ff9bcb";
     ctx.font = "bold 24px monospace";
     ctx.fillText("⚠ WARNING", cx, cy + r + 20);
   }
@@ -756,7 +764,7 @@ function drawShieldGfx(
 
 function drawCountdownOverlay(lt: LiveTex, label: string) {
   const { ctx, size } = lt;
-  ctx.fillStyle = "#020510";
+  ctx.fillStyle = "#04050d";
   ctx.fillRect(0, 0, size, size);
 
   // Soft blue wash behind the number.
@@ -779,8 +787,8 @@ function drawCountdownOverlay(lt: LiveTex, label: string) {
   ctx.font = big
     ? "bold 140px 'Space Grotesk', monospace"
     : "bold 200px 'Space Grotesk', monospace";
-  ctx.fillStyle = big ? "#fde047" : "#e0f2fe";
-  ctx.shadowColor = big ? "#fbbf24" : "#60a5fa";
+  ctx.fillStyle = big ? "#ffd158" : "#fff7e6";
+  ctx.shadowColor = big ? "#ffd158" : "#a06aff";
   ctx.shadowBlur = 24;
   ctx.fillText(label, size / 2, size / 2);
 
@@ -795,7 +803,7 @@ function drawThreatBars(
   variant: 0 | 1
 ) {
   const { ctx, size } = lt;
-  ctx.fillStyle = "#04060a";
+  ctx.fillStyle = "#04050d";
   ctx.fillRect(0, 0, size, size);
 
   ctx.font = "bold 14px monospace";
@@ -835,12 +843,12 @@ function drawThreatBars(
       warning || phase >= 2
         ? fillPct > 0.7
           ? "#ef4444"
-          : "#f97316"
+          : "#ff7a59"
         : fillPct > 0.8
           ? "#ef4444"
           : fillPct > 0.6
-            ? "#fbbf24"
-            : "#34d399";
+            ? "#ffd158"
+            : "#ff5fb3";
     ctx.fillStyle = col;
     ctx.fillRect(86, y, barW * fillPct, barH);
 
@@ -859,7 +867,7 @@ function drawThreatBars(
   if (warning) {
     ctx.fillStyle = "rgba(239,68,68,0.3)";
     ctx.fillRect(0, 0, size, size);
-    ctx.fillStyle = "#fca5a5";
+    ctx.fillStyle = "#ff9bcb";
     ctx.font = "bold 26px monospace";
     ctx.textAlign = "center";
     ctx.fillText("⚠ WARNING", size / 2, size / 2);
@@ -1257,11 +1265,11 @@ export default function Arena3D({
     const floorGeom = new THREE.PlaneGeometry(12, 8, 1, 1);
     disposables.push(floorGeom);
     const floorMat = new THREE.MeshStandardMaterial({
-      color: 0x0a0e2a,
+      color: 0x0f1530,
       map: hexFloorTex ?? undefined,
       metalness: 0.4,
       roughness: 0.6,
-      emissive: new THREE.Color(0x0a1a3a),
+      emissive: new THREE.Color(0x14081a),
       emissiveIntensity: 0.25,
     });
     disposables.push(floorMat);
@@ -1278,7 +1286,7 @@ export default function Arena3D({
     const poolGeom = new THREE.PlaneGeometry(12, 8);
     disposables.push(poolGeom);
     const poolMat = new THREE.MeshBasicMaterial({
-      color: 0x3b82f6,
+      color: 0xa06aff,
       map: dataFlowTex ?? undefined,
       transparent: true,
       // Gentler (0.18 → 0.10): the flow is a hint under glass, not a billboard.
@@ -1319,7 +1327,7 @@ export default function Arena3D({
     disposables.push(ringGeomInner);
     const ringMatInner = new THREE.MeshBasicMaterial({
       // Brighter, more vibrant blue — the ring is the focal point.
-      color: 0x93c5fd,
+      color: 0xa06aff,
       transparent: true,
       opacity: 0.4,
       side: THREE.DoubleSide,
@@ -1335,7 +1343,7 @@ export default function Arena3D({
     const ringGeomOuter = new THREE.RingGeometry(3.2, 3.4, 64);
     disposables.push(ringGeomOuter);
     const ringMatOuter = new THREE.MeshBasicMaterial({
-      color: 0x93c5fd,
+      color: 0xa06aff,
       transparent: true,
       opacity: 0.15,
       side: THREE.DoubleSide,
@@ -1355,7 +1363,7 @@ export default function Arena3D({
     const logoHaloGeom = new THREE.PlaneGeometry(4.2, 4.2);
     disposables.push(logoHaloGeom);
     const floorLogoHaloMat = new THREE.MeshBasicMaterial({
-      color: 0x60a5fa,
+      color: 0x7c5cff,
       map: logoHaloTex ?? undefined,
       transparent: true,
       opacity: 0.18,
@@ -1392,7 +1400,7 @@ export default function Arena3D({
     const logoRingGeom = new THREE.RingGeometry(1.4, 1.5, 64);
     disposables.push(logoRingGeom);
     const floorLogoRingMat = new THREE.MeshBasicMaterial({
-      color: 0x60a5fa,
+      color: 0x7c5cff,
       transparent: true,
       opacity: 0.18,
       side: THREE.DoubleSide,
@@ -1419,11 +1427,11 @@ export default function Arena3D({
     const backGeom = new THREE.PlaneGeometry(14, 6);
     disposables.push(backGeom);
     const backMat = new THREE.MeshStandardMaterial({
-      color: 0x0c1225,
+      color: 0x1a0e22,
       map: circuitTex ?? undefined,
       metalness: 0.3,
       roughness: 0.8,
-      emissive: new THREE.Color(0x081030),
+      emissive: new THREE.Color(0x1a0e22),
       emissiveIntensity: 0.3,
     });
     disposables.push(backMat);
@@ -1468,7 +1476,7 @@ export default function Arena3D({
       const glowGeom = new THREE.PlaneGeometry(cfg.w + 0.2, cfg.h + 0.2);
       disposables.push(glowGeom);
       const glowMat = new THREE.MeshBasicMaterial({
-        color: 0x60a5fa,
+        color: 0x7c5cff,
         transparent: true,
         opacity: 0.125,
         blending: THREE.AdditiveBlending,
@@ -1513,10 +1521,10 @@ export default function Arena3D({
     const sideGeom = new THREE.PlaneGeometry(8, 6);
     disposables.push(sideGeom);
     const sideMat = new THREE.MeshStandardMaterial({
-      color: 0x070a18,
+      color: 0x0a0e22,
       metalness: 0.2,
       roughness: 0.9,
-      emissive: new THREE.Color(0x050a20),
+      emissive: new THREE.Color(0x0a0e22),
       emissiveIntensity: 0.15,
     });
     disposables.push(sideMat);
@@ -1535,7 +1543,7 @@ export default function Arena3D({
       const stripGeom = new THREE.PlaneGeometry(0.12, 5);
       disposables.push(stripGeom);
       const stripMat = new THREE.MeshBasicMaterial({
-        color: 0x60a5fa,
+        color: 0x7c5cff,
         transparent: true,
         opacity: 0.7,
         blending: THREE.AdditiveBlending,
@@ -1553,7 +1561,7 @@ export default function Arena3D({
     // ── Binary streams on side walls ──
     const binaryStreams: BinaryStreamObj[] = [];
     if (!isMobile) {
-      const baseColour = new THREE.Color(0x34d399);
+      const baseColour = new THREE.Color(0xff5fb3);
       const dangerColour = new THREE.Color(0xef4444);
       const streamGeom = new THREE.PlaneGeometry(0.3, 5);
       disposables.push(streamGeom);
@@ -1607,7 +1615,7 @@ export default function Arena3D({
     const ceilGeom = new THREE.PlaneGeometry(14, 8);
     disposables.push(ceilGeom);
     const ceilMat = new THREE.MeshStandardMaterial({
-      color: 0x040618,
+      color: 0x04050d,
       metalness: 0.1,
       roughness: 1.0,
     });
@@ -1758,7 +1766,7 @@ export default function Arena3D({
             new THREE.Vector3(5.9, 4.5, -1.4),
           ],
         ];
-    const baseConduitColour = new THREE.Color(0x3b82f6);
+    const baseConduitColour = new THREE.Color(0xa06aff);
     conduitPaths.forEach((path) => {
       const geom = new THREE.BufferGeometry().setFromPoints(path);
       disposables.push(geom);
@@ -1835,7 +1843,7 @@ export default function Arena3D({
 
     const driftOrbs: THREE.PointLight[] = [];
     if (!isMobile) {
-      const orbColours = [0x60a5fa, 0x34d399, 0xfbbf24];
+      const orbColours = [0x7c5cff, 0xff5fb3, 0xffd158];
       for (let i = 0; i < 3; i++) {
         const orb = new THREE.PointLight(orbColours[i], 0.15, 6, 2);
         orb.position.set(
@@ -1988,7 +1996,7 @@ export default function Arena3D({
         ]);
         disposables.push(geom);
         const lineMat = new THREE.LineBasicMaterial({
-          color: 0x60a5fa,
+          color: 0x7c5cff,
           transparent: true,
           opacity: 0.06,
           depthWrite: false,
@@ -2018,7 +2026,7 @@ export default function Arena3D({
       const outerGeom = new THREE.SphereGeometry(1.25, 16, 12);
       disposables.push(outerGeom);
       globeMatInner = new THREE.MeshBasicMaterial({
-        color: 0x60a5fa,
+        color: 0x7c5cff,
         wireframe: true,
         transparent: true,
         opacity: 0.1,
@@ -2026,7 +2034,7 @@ export default function Arena3D({
       });
       disposables.push(globeMatInner);
       globeMatOuter = new THREE.MeshBasicMaterial({
-        color: 0x7c3aed,
+        color: 0xff5fb3,
         wireframe: true,
         transparent: true,
         opacity: 0.06,
@@ -2039,7 +2047,7 @@ export default function Arena3D({
       globeOuter = new THREE.Mesh(outerGeom, globeMatOuter);
       globeOuter.position.set(0, 3.5, -3.5);
       scene.add(globeOuter);
-      globeCore = new THREE.PointLight(0x60a5fa, 0.1, 4, 2);
+      globeCore = new THREE.PointLight(0x7c5cff, 0.1, 4, 2);
       globeCore.position.set(0, 3.5, -3.5);
       scene.add(globeCore);
     }
@@ -2091,7 +2099,7 @@ export default function Arena3D({
       );
       disposables.push(arcGeom);
       const arcMat = new THREE.LineBasicMaterial({
-        color: 0x93c5fd,
+        color: 0xa06aff,
         transparent: true,
         opacity: 0,
         depthWrite: false,
@@ -2258,12 +2266,12 @@ export default function Arena3D({
       const innerRingMat = r.arenaRingInner.material as THREE.MeshBasicMaterial;
       const outerRingMat = r.arenaRingOuter.material as THREE.MeshBasicMaterial;
       if (currentMood === "victory") {
-        innerRingMat.color.setHex(0xfde047);
-        outerRingMat.color.setHex(0xfbbf24);
+        innerRingMat.color.setHex(0xffd158);
+        outerRingMat.color.setHex(0xffd158);
       } else if (currentPhase >= 2) {
-        innerRingMat.color.setHex(currentPhase === 3 ? 0xef4444 : 0xf97316);
+        innerRingMat.color.setHex(currentPhase === 3 ? 0xef4444 : 0xff7a59);
       } else {
-        innerRingMat.color.setHex(0x93c5fd);
+        innerRingMat.color.setHex(0xa06aff);
       }
       // Subtle 3s pulse between 0.35 and 0.45 — the ring breathes.
       const ringPulse = 0.4 + 0.05 * Math.sin((t * Math.PI * 2) / 3);
@@ -2283,14 +2291,14 @@ export default function Arena3D({
       if (currentMood === "victory") {
         logoTargetOp = 0.6;
         haloTargetOp = 0.45;
-        logoTargetCol = tmpColour.setHex(0xfde68a).clone();
-        haloTargetCol = new THREE.Color(0xfbbf24);
-        ringTargetCol = new THREE.Color(0xfde047);
+        logoTargetCol = tmpColour.setHex(0xffd158).clone();
+        haloTargetCol = new THREE.Color(0xffd158);
+        ringTargetCol = new THREE.Color(0xffd158);
         ringTargetOp = 0.4;
       } else if (currentPhase === 3) {
         logoTargetOp = 0.15;
         haloTargetOp = 0.12;
-        logoTargetCol = tmpColour.setHex(0xfecaca).clone();
+        logoTargetCol = tmpColour.setHex(0xff9bcb).clone();
         haloTargetCol = new THREE.Color(0xef4444);
         ringTargetCol = new THREE.Color(0xef4444);
         ringTargetOp = 0.1;
@@ -2298,8 +2306,8 @@ export default function Arena3D({
         logoTargetOp = logoPulse;
         haloTargetOp = haloPulse;
         logoTargetCol = tmpColour.setHex(0xffffff).clone();
-        haloTargetCol = new THREE.Color(0x60a5fa);
-        ringTargetCol = new THREE.Color(0x60a5fa);
+        haloTargetCol = new THREE.Color(0x7c5cff);
+        ringTargetCol = new THREE.Color(0x7c5cff);
         ringTargetOp = 0.18 + 0.05 * logoBreath;
       }
       r.floorLogoMat.opacity +=
@@ -2368,10 +2376,10 @@ export default function Arena3D({
         const targetGlow = warning
           ? 0xef4444
           : currentMood === "victory"
-            ? 0xfde047
+            ? 0xffd158
             : currentPhase >= 2
-              ? 0xf97316
-              : 0x60a5fa;
+              ? 0xff7a59
+              : 0x7c5cff;
         glowMat.color.lerp(new THREE.Color(targetGlow), lerpSpeed);
         // Halved — screens are decor, not foreground UI.
         glowMat.opacity = 0.1 + 0.04 * Math.sin(t * 1.3 + s.bobDelay);
@@ -2491,8 +2499,8 @@ export default function Arena3D({
         r.globeInner.rotation.x += 0.0005 * spinMult * (dt * 60);
         r.globeOuter.rotation.y -= 0.0015 * spinMult * (dt * 60);
         r.globeOuter.rotation.z += 0.0007 * spinMult * (dt * 60);
-        const targetInnerCol = victory ? 0xfde047 : 0x60a5fa;
-        const targetOuterCol = victory ? 0xfbbf24 : 0x7c3aed;
+        const targetInnerCol = victory ? 0xffd158 : 0x7c5cff;
+        const targetOuterCol = victory ? 0xffd158 : 0xff5fb3;
         r.globeMatInner.color.lerp(
           new THREE.Color(targetInnerCol),
           lerpSpeed
@@ -2510,7 +2518,7 @@ export default function Arena3D({
       // ── Floating shields ──
       r.floatingShields.forEach((fs) => {
         fs.mesh.rotation.y += fs.rotSpeed * (dt * 60);
-        const victoryCol = new THREE.Color(0xfde047);
+        const victoryCol = new THREE.Color(0xffd158);
         const target =
           currentMood === "victory" ? victoryCol : fs.baseColour;
         fs.material.color.lerp(target, lerpSpeed);
@@ -2547,7 +2555,7 @@ export default function Arena3D({
           attr.needsUpdate = true;
 
           const phase3 = currentPhase === 3;
-          arc.material.color.setHex(phase3 ? 0xef4444 : 0x93c5fd);
+          arc.material.color.setHex(phase3 ? 0xef4444 : 0xa06aff);
           arc.material.opacity = 0.4;
           arc.line.visible = true;
           arc.activeUntil = t + 0.15;
@@ -2562,7 +2570,7 @@ export default function Arena3D({
       // ── Volumetric light beams ──
       const beamVictory = currentMood === "victory";
       const beamOpacityTarget = beamVictory ? 0.04 : 0.02;
-      const beamColTarget = beamVictory ? 0xfde047 : 0xffffff;
+      const beamColTarget = beamVictory ? 0xffd158 : 0xffffff;
       const beamColVec = new THREE.Color(beamColTarget);
       r.lightBeams.forEach((b) => {
         b.mesh.rotation.y += b.rotSpeed * (dt * 60);
@@ -2578,7 +2586,7 @@ export default function Arena3D({
           // Hero pool warms to a faint gold; boss pool stays dark (losers stay grim).
           const target =
             refl.side === "hero"
-              ? new THREE.Color(0xffd67a)
+              ? new THREE.Color(0xffd158)
               : new THREE.Color(0x000000);
           mat.color.lerp(target, lerpSpeed);
           const op = refl.side === "hero" ? 0.22 : 0.15;
@@ -2598,10 +2606,10 @@ export default function Arena3D({
         r.conduitNextAt = t + conduitInterval;
       }
       const conduitHotCol = new THREE.Color(
-        currentPhase === 3 ? 0xef4444 : currentPhase === 2 ? 0xf97316 : 0x93c5fd
+        currentPhase === 3 ? 0xef4444 : currentPhase === 2 ? 0xff7a59 : 0xa06aff
       );
       const conduitColdCol = new THREE.Color(
-        currentPhase === 3 ? 0xef4444 : currentPhase === 2 ? 0xf97316 : 0x3b82f6
+        currentPhase === 3 ? 0xef4444 : currentPhase === 2 ? 0xff7a59 : 0xa06aff
       );
       r.conduits.forEach((c) => {
         const flashing = t < c.flashUntil;
@@ -2778,7 +2786,7 @@ function spawnShockwave(r: SceneRefs, now: number) {
   let pulse = r.shockwavePool.pop();
   if (!pulse) {
     const mat = new THREE.MeshBasicMaterial({
-      color: 0x60a5fa,
+      color: 0x7c5cff,
       transparent: true,
       opacity: 0.7,
       side: THREE.DoubleSide,
