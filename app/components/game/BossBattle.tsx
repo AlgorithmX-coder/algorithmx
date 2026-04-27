@@ -2625,13 +2625,16 @@ export default function BossBattle({
       {selectedHero && (
         <>
           {/* Cosmic realm backdrop — sits behind Arena3D giving the
-              "other realm" depth (stars, nebulae, aurora, crystals). */}
+              "other realm" depth (stars, nebulae, aurora, crystals).
+              Both layers share zIndex 0; DOM order puts the cosmic
+              backdrop first so Arena3D layers on top. zIndex -1 here
+              would render BEHIND the parent's solid background. */}
           <div
             aria-hidden="true"
             style={{
               position: "absolute",
               inset: 0,
-              zIndex: -1,
+              zIndex: 0,
               pointerEvents: "none",
               background: "radial-gradient(ellipse at 50% 60%, #1a0e22 0%, #0f1530 35%, #04050d 100%)",
             }}
