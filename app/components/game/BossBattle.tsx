@@ -2362,6 +2362,12 @@ export default function BossBattle({
           <div className="bb-sel-haze" />
           <div className="bb-sel-beam" />
 
+          {/* Subtle full-bleed vignette + ultra-fine grain overlay —
+              focuses attention to the centre and adds the "filmic"
+              quality high-end games tend to have. */}
+          <div className="bb-sel-vignette" aria-hidden="true" />
+          <div className="bb-sel-grain" aria-hidden="true" />
+
           {/* Lightning streaks scattered across the screen */}
           {[
             { left: "8%",  h: 240, dur: 6.5, delay: 0 },
@@ -2533,21 +2539,37 @@ export default function BossBattle({
                           ["DEFENCE", c.stats.defence],
                           ["SPEED", c.stats.speed],
                         ] as const
-                      ).map(([label, value], si) => (
-                        <div key={label} className="bb-sel-stat-row">
-                          <span className="bb-sel-stat-label">{label}</span>
-                          <div className="bb-sel-stat-track">
-                            <div
-                              className="bb-sel-stat-fill"
-                              style={{
-                                width: `${value}%`,
-                                background: c.colour,
-                                transitionDelay: `${0.7 + idx * 0.15 + si * 0.12}s`,
-                              }}
-                            />
+                      ).map(([label, value], si) => {
+                        const filledCount = Math.round(value / 10);
+                        return (
+                          <div key={label} className="bb-sel-stat-row">
+                            <span className="bb-sel-stat-label">{label}</span>
+                            <div className="bb-sel-stat-track">
+                              {Array.from({ length: 10 }, (_, ti) => {
+                                const filled = ti < filledCount;
+                                const lead = ti === filledCount - 1;
+                                return (
+                                  <span
+                                    key={ti}
+                                    className={
+                                      "bb-sel-tick" +
+                                      (filled ? " bb-sel-tick-on" : "") +
+                                      (lead ? " bb-sel-tick-lead" : "")
+                                    }
+                                    style={{
+                                      animationDelay: `${0.7 + idx * 0.15 + si * 0.12 + ti * 0.05}s`,
+                                    }}
+                                  />
+                                );
+                              })}
+                            </div>
+                            <span className="bb-sel-stat-value" style={{ color: c.colour }}>
+                              {filledCount}
+                              <span className="bb-sel-stat-value-max">/10</span>
+                            </span>
                           </div>
-                        </div>
-                      ))}
+                        );
+                      })}
                     </div>
 
                     <button
@@ -3759,6 +3781,34 @@ export default function BossBattle({
           width: 100%;
           height: 100%;
         }
+        /* Filmic vignette — soft dark halo at the edges that focuses
+           attention to the centre. Uses a transparent radial so the
+           R3F atmosphere still reads through. */
+        .bb-sel-vignette {
+          position: absolute;
+          inset: 0;
+          background: radial-gradient(ellipse at 50% 50%, transparent 35%, rgba(0, 0, 0, 0.55) 100%);
+          pointer-events: none;
+          z-index: 0;
+          animation: bbSelVignettePulse 8s ease-in-out infinite;
+        }
+        /* Ultra-fine grain — SVG noise as a base64 data URI so we don't
+           need to ship an asset. Adds the subtle "filmic" texture top-
+           tier games have. Very low opacity so it never reads as noise,
+           only as material warmth. */
+        .bb-sel-grain {
+          position: absolute;
+          inset: 0;
+          background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.5 0'/></filter><rect width='100%' height='100%' filter='url(%23n)' opacity='0.55'/></svg>");
+          opacity: 0.06;
+          mix-blend-mode: overlay;
+          pointer-events: none;
+          z-index: 0;
+        }
+        @keyframes bbSelVignettePulse {
+          0%, 100% { opacity: 0.85; }
+          50%      { opacity: 1.0; }
+        }
 
         /* Cosmic cloud blobs — top-left violet, top-right pink, bottom
            coral horizon haze. Same blobs as the lock screen. */
@@ -3929,39 +3979,100 @@ export default function BossBattle({
           width: 100%;
         }
 
-        /* Card — same cinematic dusk-glass treatment as the VS card on
-           the FINAL SHOWDOWN lock screen: layered translucent navy +
-           cosmic-violet, gold-ish rim, soft inner highlight. */
+        /* Card — premium holographic glass panel. Frosted-glass body,
+           edge bevel via layered inset highlights, animated gradient
+           top accent in the hero's colour, plus a slow holographic
+           scanline that sweeps top-to-bottom. */
         .bb-sel-card {
           position: relative;
           width: 320px;
           flex: 0 0 320px;
           flex-shrink: 0;
           min-height: 480px;
-          background: linear-gradient(180deg, rgba(15, 21, 48, 0.78) 0%, rgba(8, 10, 22, 0.82) 100%);
-          border: 1px solid rgba(255, 215, 138, 0.25);
+          background:
+            radial-gradient(circle at 50% 0%, color-mix(in oklab, var(--c-colour) 14%, transparent) 0%, transparent 55%),
+            linear-gradient(180deg, rgba(15, 21, 48, 0.82) 0%, rgba(8, 10, 22, 0.86) 100%);
+          border: 1px solid rgba(255, 215, 138, 0.22);
           border-radius: 22px;
           overflow: hidden;
           cursor: pointer;
           color: #e8edff;
           display: flex; flex-direction: column;
-          backdrop-filter: blur(2px);
-          -webkit-backdrop-filter: blur(2px);
+          backdrop-filter: blur(8px) saturate(1.1);
+          -webkit-backdrop-filter: blur(8px) saturate(1.1);
+          /* Layered shadow: outer drop, top-edge highlight, bottom-edge
+             shadow, hero-colour ambient, full-frame inner pinstripe. */
           box-shadow:
-            0 30px 60px -20px rgba(0, 0, 0, 0.65),
+            0 30px 70px -20px rgba(0, 0, 0, 0.7),
+            0 8px 28px -8px color-mix(in oklab, var(--c-colour) 22%, transparent),
+            inset 0 1px 0 rgba(255, 255, 255, 0.10),
+            inset 0 -1px 0 rgba(0, 0, 0, 0.55),
             inset 0 0 0 1px rgba(255, 255, 255, 0.04),
-            0 0 60px rgba(124, 92, 255, 0.18);
+            0 0 60px rgba(124, 92, 255, 0.16);
           transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
                       border-color 0.35s ease,
                       box-shadow 0.35s ease,
                       opacity 0.4s ease;
         }
+        /* Animated top accent strip — thin glowing gradient line in the
+           hero's colour, slowly cycling left-to-right. */
+        .bb-sel-card::before {
+          content: "";
+          position: absolute;
+          top: 0; left: 0; right: 0;
+          height: 2px;
+          background: linear-gradient(90deg,
+            transparent 0%,
+            color-mix(in oklab, var(--c-colour) 50%, transparent) 30%,
+            color-mix(in oklab, var(--c-colour) 95%, transparent) 50%,
+            color-mix(in oklab, var(--c-colour) 50%, transparent) 70%,
+            transparent 100%);
+          background-size: 200% 100%;
+          box-shadow: 0 0 14px color-mix(in oklab, var(--c-colour) 60%, transparent);
+          animation: bbSelAccentSlide 4.5s linear infinite;
+          z-index: 3;
+          pointer-events: none;
+        }
+        /* Holographic scanline — a faint horizontal line that drifts
+           top-to-bottom every 6s, like a CRT/holo readout. */
+        .bb-sel-card::after {
+          content: "";
+          position: absolute;
+          left: 0; right: 0;
+          height: 28px;
+          top: -28px;
+          background: linear-gradient(180deg,
+            transparent,
+            color-mix(in oklab, var(--c-colour) 18%, transparent) 40%,
+            color-mix(in oklab, var(--c-colour) 28%, transparent) 50%,
+            color-mix(in oklab, var(--c-colour) 18%, transparent) 60%,
+            transparent);
+          mix-blend-mode: screen;
+          opacity: 0.6;
+          z-index: 2;
+          pointer-events: none;
+          animation: bbSelCardScan 6s linear infinite;
+        }
+        @keyframes bbSelAccentSlide {
+          from { background-position: -100% 50%; }
+          to   { background-position: 200% 50%; }
+        }
+        @keyframes bbSelCardScan {
+          0%   { top: -28px; }
+          100% { top: 100%; }
+        }
         .bb-sel-card-left { animation: bbSelLeftIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both }
         .bb-sel-card-right { animation: bbSelRightIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.3s both }
         .bb-sel-card:hover {
-          border-color: color-mix(in oklab, var(--c-colour) 50%, transparent);
-          transform: translateY(-12px);
-          box-shadow: 0 20px 60px color-mix(in oklab, var(--c-colour) 15%, transparent);
+          border-color: color-mix(in oklab, var(--c-colour) 60%, transparent);
+          transform: translateY(-14px);
+          box-shadow:
+            0 36px 80px -20px rgba(0, 0, 0, 0.75),
+            0 14px 50px -8px color-mix(in oklab, var(--c-colour) 32%, transparent),
+            inset 0 1px 0 rgba(255, 255, 255, 0.16),
+            inset 0 -1px 0 rgba(0, 0, 0, 0.55),
+            inset 0 0 0 1px rgba(255, 255, 255, 0.06),
+            0 0 80px color-mix(in oklab, var(--c-colour) 22%, transparent);
         }
         .bb-sel-card:hover .bb-sel-img { transform: scale(1.05) }
         .bb-sel-card:hover .bb-sel-platform {
@@ -4068,66 +4179,152 @@ export default function BossBattle({
           margin: 0 0 14px;
         }
 
-        /* Stat bars */
+        /* Stats — tick-mark style. 10 segments per bar, filled count
+           = round(value/10), leading filled tick pulses subtly. Each
+           tick reveals with a staggered cascade. */
         .bb-sel-stats {
           width: 100%;
-          display: flex; flex-direction: column; gap: 6px;
+          display: flex; flex-direction: column; gap: 8px;
           margin-bottom: 16px;
         }
-        .bb-sel-stat-row { display: flex; align-items: center; gap: 10px }
+        .bb-sel-stat-row {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+        }
         .bb-sel-stat-label {
           font-family: 'JetBrains Mono', monospace;
-          font-size: 10px;
-          color: #64748b;
+          font-size: 9px;
+          color: #94a3b8;
           text-transform: uppercase;
-          letter-spacing: 0.08em;
-          min-width: 56px;
+          letter-spacing: 0.18em;
+          min-width: 50px;
           text-align: left;
+          font-weight: 700;
         }
         .bb-sel-stat-track {
           flex: 1;
-          height: 4px;
-          background: #1e293b;
-          border-radius: 2px;
-          overflow: hidden;
+          display: flex;
+          gap: 3px;
+          height: 8px;
         }
-        .bb-sel-stat-fill {
-          height: 100%;
-          width: 0;
+        .bb-sel-tick {
+          flex: 1;
+          background: rgba(255, 255, 255, 0.06);
           border-radius: 2px;
-          transition: width 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+          opacity: 0;
+          transform: scaleY(0.45);
+          animation: bbSelTickReveal 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
+          transition: background 0.3s ease, box-shadow 0.3s ease;
+        }
+        .bb-sel-tick-on {
+          background: var(--c-colour);
+          box-shadow:
+            0 0 8px color-mix(in oklab, var(--c-colour) 70%, transparent),
+            inset 0 0 0 1px color-mix(in oklab, var(--c-colour) 50%, white);
+        }
+        .bb-sel-tick-lead {
+          animation:
+            bbSelTickReveal 0.45s cubic-bezier(0.16, 1, 0.3, 1) both,
+            bbSelTickPulse 1.4s ease-in-out infinite 1s;
+        }
+        @keyframes bbSelTickReveal {
+          0%   { opacity: 0; transform: scaleY(0.45); }
+          100% { opacity: 1; transform: scaleY(1); }
+        }
+        @keyframes bbSelTickPulse {
+          0%, 100% { box-shadow: 0 0 8px color-mix(in oklab, var(--c-colour) 70%, transparent), inset 0 0 0 1px color-mix(in oklab, var(--c-colour) 50%, white); transform: scaleY(1); }
+          50%      { box-shadow: 0 0 14px color-mix(in oklab, var(--c-colour) 95%, transparent), inset 0 0 0 1px color-mix(in oklab, var(--c-colour) 70%, white); transform: scaleY(1.18); }
+        }
+        .bb-sel-stat-value {
+          font-family: 'JetBrains Mono', monospace;
+          font-size: 11px;
+          font-weight: 800;
+          font-variant-numeric: tabular-nums;
+          letter-spacing: 0.04em;
+          min-width: 32px;
+          text-align: right;
+          text-shadow: 0 0 8px color-mix(in oklab, currentColor 50%, transparent);
+        }
+        .bb-sel-stat-value-max {
+          color: #64748b;
+          font-weight: 600;
+          margin-left: 1px;
+          text-shadow: none;
         }
 
-        /* Select button */
+        /* Select button — premium feel: layered inset highlights for
+           a beveled 3D edge, sustained shimmer sweep, hover lift. */
         .bb-sel-btn {
           position: relative;
           width: 100%;
-          height: 44px;
+          height: 50px;
           border: none;
-          border-radius: 12px;
+          border-radius: 14px;
           color: #fff;
-          font-family: 'DM Sans', sans-serif;
+          font-family: 'Fredoka', 'DM Sans', sans-serif;
           font-size: 14px;
-          font-weight: 700;
-          letter-spacing: 0.08em;
+          font-weight: 800;
+          letter-spacing: 0.18em;
           text-transform: uppercase;
           cursor: pointer;
           overflow: hidden;
-          transition: transform 0.2s ease, filter 0.2s ease, box-shadow 0.25s ease;
+          /* Top-edge highlight + bottom-edge shadow + inner stroke +
+             outer drop — gives it a tactile 3D button feel. */
+          box-shadow:
+            inset 0 1px 0 rgba(255, 255, 255, 0.28),
+            inset 0 -1px 0 rgba(0, 0, 0, 0.45),
+            inset 0 0 0 1px rgba(255, 255, 255, 0.08),
+            0 6px 18px -4px rgba(0, 0, 0, 0.55),
+            0 0 24px color-mix(in oklab, var(--c-colour) 25%, transparent);
+          transition:
+            transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1),
+            filter 0.2s ease,
+            box-shadow 0.25s ease;
+        }
+        .bb-sel-btn::before {
+          /* Subtle top sheen — flat highlight band on the top half so
+             it reads as a beveled glass surface. */
+          content: "";
+          position: absolute;
+          top: 0; left: 0; right: 0;
+          height: 50%;
+          background: linear-gradient(180deg, rgba(255, 255, 255, 0.15), transparent);
+          border-radius: 14px 14px 0 0;
+          pointer-events: none;
         }
         .bb-sel-btn:hover:not(:disabled) {
-          transform: translateY(-2px);
-          filter: brightness(1.1);
+          transform: translateY(-3px) scale(1.01);
+          filter: brightness(1.12);
+          box-shadow:
+            inset 0 1px 0 rgba(255, 255, 255, 0.36),
+            inset 0 -1px 0 rgba(0, 0, 0, 0.45),
+            inset 0 0 0 1px rgba(255, 255, 255, 0.12),
+            0 12px 28px -4px rgba(0, 0, 0, 0.65),
+            0 0 36px color-mix(in oklab, var(--c-colour) 45%, transparent);
+        }
+        .bb-sel-btn:active:not(:disabled) {
+          transform: translateY(-1px) scale(0.99);
+          box-shadow:
+            inset 0 2px 6px rgba(0, 0, 0, 0.45),
+            inset 0 -1px 0 rgba(255, 255, 255, 0.06),
+            0 4px 10px -4px rgba(0, 0, 0, 0.55),
+            0 0 24px color-mix(in oklab, var(--c-colour) 35%, transparent);
         }
         .bb-sel-btn:disabled { cursor: default }
-        .bb-sel-btn-label { position: relative; z-index: 1 }
+        .bb-sel-btn-label {
+          position: relative;
+          z-index: 1;
+          text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+        }
         .bb-sel-btn-shimmer {
           position: absolute;
           top: 0; left: 0;
           width: 100%; height: 100%;
-          background: linear-gradient(90deg, transparent, rgba(255,255,255,0.18), transparent);
-          animation: bbSelShimmer 3s linear infinite;
+          background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.28), transparent);
+          animation: bbSelShimmer 3.5s linear infinite;
           pointer-events: none;
+          z-index: 0;
         }
 
         /* OR divider — vertical between cards. Cosmic gold→pink chip
