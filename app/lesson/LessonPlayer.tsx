@@ -69,6 +69,12 @@ const OutroScene = dynamic(
   () => import("@/app/components/game/OutroScene"),
   { ssr: false }
 );
+// Live 3D energy reactor that drops behind the boss-battle lock screen.
+// SSR-disabled because R3F needs the WebGL context.
+const BossEnergyCore = dynamic(
+  () => import("@/app/components/BossEnergyCore"),
+  { ssr: false }
+);
 import VaultLock from "@/app/components/exercises/VaultLock";
 import InboxSimulator from "@/app/components/exercises/InboxSimulator";
 import SortingStation from "@/app/components/exercises/SortingStation";
@@ -4422,8 +4428,24 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
                   filter: "blur(70px)",
                 }} />
 
-                {/* ⚡ ENERGY CORE — three stacked rotating conic gradients
-                    behind the VS chip area. The arena's beating heart. */}
+                {/* ⚡ 3D ENERGY REACTOR — live R3F scene behind the VS
+                    chip. Crystal core + wire shells + 3 orbital satellites
+                    + crossing energy beams + dust + stars. Same lineage
+                    as HeroAtlas on the signup page. */}
+                <div style={{
+                  position: "absolute",
+                  top: "50%",
+                  left: "50%",
+                  transform: "translate(-50%, -50%)",
+                  width: "min(880px, 92vw)",
+                  height: "min(880px, 92vh)",
+                  pointerEvents: "none",
+                }}>
+                  <BossEnergyCore />
+                </div>
+
+                {/* ⚡ ENERGY CORE GLOW — three stacked rotating conic gradients
+                    layered behind the 3D reactor as ambient additive haze. */}
                 <div style={{
                   position: "absolute",
                   top: "50%",
