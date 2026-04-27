@@ -4339,54 +4339,203 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
               @keyframes bbVsClash { 0% { transform: translate(-50%, -50%) scale(0.4) rotate(-30deg); opacity: 0; } 50% { transform: translate(-50%, -50%) scale(1.4) rotate(0deg); opacity: 1; } 100% { transform: translate(-50%, -50%) scale(1) rotate(0deg); opacity: 1; } }
               @keyframes bbFloatHero { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
               @keyframes bbFloatVillain { 0%,100% { transform: translateY(0) rotate(-2deg); } 50% { transform: translateY(-8px) rotate(2deg); } }
-              @keyframes bbLockEmber { 0% { transform: translateY(0); opacity: 0; } 12% { opacity: 0.7; } 88% { opacity: 0.7; } 100% { transform: translateY(-260px); opacity: 0; } }
+              @keyframes bbLockEmber { 0% { transform: translateY(0); opacity: 0; } 12% { opacity: 0.7; } 88% { opacity: 0.7; } 100% { transform: translateY(-360px); opacity: 0; } }
               @keyframes bbLockBolt { 0%,93%,100% { opacity: 0; } 94% { opacity: 0.75; } 96% { opacity: 0.2; } 98% { opacity: 0.55; } }
               @keyframes bbHaloSpin { to { transform: rotate(360deg); } }
               @keyframes bbButtonGlow { 0%,100% { box-shadow: 0 0 26px rgba(255, 95, 179, 0.45), 0 0 52px rgba(124, 92, 255, 0.3); } 50% { box-shadow: 0 0 38px rgba(255, 95, 179, 0.7), 0 0 76px rgba(124, 92, 255, 0.5); } }
               @keyframes bbTitleShimmer { 0%,100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
+              @keyframes bbCloudDrift { 0%,100% { transform: translate(0,0) scale(1); } 50% { transform: translate(40px,-20px) scale(1.05); } }
+              @keyframes bbRadarPulse { 0% { width: 0; height: 0; opacity: 0.55; border-width: 3px; } 100% { width: 1100px; height: 1100px; opacity: 0; border-width: 1px; } }
+              @keyframes bbGlyphFloat { 0%,100% { transform: translateY(0) rotate(-3deg); } 50% { transform: translateY(-18px) rotate(3deg); } }
+              @keyframes bbScanSweep { 0% { transform: translateY(-100%); } 100% { transform: translateY(120vh); } }
             `}</style>
 
-            <div style={{ position: "relative", width: "100%", maxWidth: 880, margin: "0 auto", padding: "20px 16px" }}>
+            <div style={{
+              position: "relative",
+              width: "100%",
+              maxWidth: 880,
+              margin: "0 auto",
+              padding: "20px 16px",
+              minHeight: "calc(100vh - 200px)",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+            }}>
 
-              {/* Subtle warm-gold lightning streaks — atmosphere only */}
-              {[
-                { left: "22%", top: 0, h: 240, dur: 7, delay: 0 },
-                { left: "72%", top: 0, h: 200, dur: 8.5, delay: 3 },
-              ].map((b, i) => (
-                <span key={`bolt-${i}`} aria-hidden style={{
+              {/* ─────── FULL-BLEED ATMOSPHERIC LAYER ─────── */}
+              {/* The 100vw + transform trick lets this escape the 880px
+                  content column so atmosphere fills the empty side / top
+                  / bottom space. FullScene clips overflow. */}
+              <div aria-hidden style={{
+                position: "absolute",
+                top: 0,
+                bottom: 0,
+                left: "50%",
+                transform: "translateX(-50%)",
+                width: "100vw",
+                pointerEvents: "none",
+                zIndex: 0,
+                overflow: "hidden",
+              }}>
+
+                {/* Cosmic cloud blobs — top-left + top-right */}
+                <div style={{
                   position: "absolute",
-                  left: b.left,
-                  top: b.top,
-                  width: 2,
-                  height: b.h,
-                  background: "linear-gradient(180deg, rgba(255, 215, 138, 0.85), transparent)",
-                  filter: "drop-shadow(0 0 10px rgba(255, 215, 138, 0.5))",
-                  animation: `bbLockBolt ${b.dur}s ease-in-out ${b.delay}s infinite`,
-                  pointerEvents: "none",
-                  zIndex: 0,
+                  top: "-12%",
+                  left: "-12%",
+                  width: 640,
+                  height: 640,
+                  borderRadius: "50%",
+                  background: "radial-gradient(circle, rgba(124, 92, 255, 0.38) 0%, transparent 65%)",
+                  filter: "blur(60px)",
+                  animation: "bbCloudDrift 18s ease-in-out infinite",
                 }} />
-              ))}
+                <div style={{
+                  position: "absolute",
+                  top: "-8%",
+                  right: "-12%",
+                  width: 540,
+                  height: 540,
+                  borderRadius: "50%",
+                  background: "radial-gradient(circle, rgba(255, 95, 179, 0.28) 0%, transparent 65%)",
+                  filter: "blur(60px)",
+                  animation: "bbCloudDrift 22s ease-in-out infinite reverse",
+                }} />
 
-              {/* Drifting warm embers — gold / coral / pink, subtle */}
-              {Array.from({ length: 8 }).map((_, i) => {
-                const left = (i * 53 + 7) % 100;
-                const dur = 5 + (i % 3);
-                const delay = (i * 0.7) % 6;
-                const c = (["#ffd158", "#ffb347", "#ff5fb3"])[i % 3];
-                return (
-                  <span key={`ember-${i}`} aria-hidden style={{
+                {/* Bottom warm-coral haze — like horizon glow */}
+                <div style={{
+                  position: "absolute",
+                  bottom: "-10%",
+                  left: "30%",
+                  width: 560,
+                  height: 320,
+                  borderRadius: "50%",
+                  background: "radial-gradient(circle, rgba(255, 122, 89, 0.25) 0%, transparent 65%)",
+                  filter: "blur(70px)",
+                }} />
+
+                {/* Lightning streaks — 6, scattered */}
+                {[
+                  { left: "8%", h: 240, dur: 6.5, delay: 0 },
+                  { left: "23%", h: 180, dur: 8, delay: 1.5 },
+                  { left: "45%", h: 280, dur: 9, delay: 3 },
+                  { left: "68%", h: 220, dur: 7.5, delay: 4 },
+                  { left: "82%", h: 200, dur: 9.5, delay: 5.5 },
+                  { left: "94%", h: 160, dur: 8.5, delay: 2 },
+                ].map((b, i) => (
+                  <span key={`bolt-${i}`} style={{
                     position: "absolute",
-                    left: `${left}%`,
-                    bottom: 0,
-                    width: 3, height: 3, borderRadius: "50%",
-                    background: c,
-                    boxShadow: `0 0 8px ${c}`,
-                    animation: `bbLockEmber ${dur}s linear ${delay}s infinite`,
-                    opacity: 0.7,
-                    zIndex: 0,
+                    left: b.left,
+                    top: 0,
+                    width: 2,
+                    height: b.h,
+                    background: "linear-gradient(180deg, rgba(255, 215, 138, 0.85), transparent)",
+                    filter: "drop-shadow(0 0 12px rgba(255, 215, 138, 0.6))",
+                    animation: `bbLockBolt ${b.dur}s ease-in-out ${b.delay}s infinite`,
                   }} />
-                );
-              })}
+                ))}
+
+                {/* Particle drift — denser, varied size */}
+                {Array.from({ length: 24 }).map((_, i) => {
+                  const left = (i * 41 + 7) % 100;
+                  const dur = 5 + (i % 4);
+                  const delay = (i * 0.55) % 7;
+                  const size = 2 + (i % 3);
+                  const c = (["#ffd158", "#ffb347", "#ff5fb3", "#7c5cff", "#7df0ff"])[i % 5];
+                  return (
+                    <span key={`em-${i}`} style={{
+                      position: "absolute",
+                      left: `${left}%`,
+                      bottom: 0,
+                      width: size,
+                      height: size,
+                      borderRadius: "50%",
+                      background: c,
+                      boxShadow: `0 0 10px ${c}`,
+                      animation: `bbLockEmber ${dur}s linear ${delay}s infinite`,
+                      opacity: 0.7,
+                    }} />
+                  );
+                })}
+
+                {/* Radar pulse rings — emanating from centre */}
+                {[0, 2, 4].map((delay) => (
+                  <span key={`radar-${delay}`} style={{
+                    position: "absolute",
+                    top: "50%",
+                    left: "50%",
+                    transform: "translate(-50%, -50%)",
+                    borderRadius: "50%",
+                    border: "2px solid rgba(125, 240, 255, 0.35)",
+                    boxShadow: "0 0 24px rgba(125, 240, 255, 0.25)",
+                    animation: `bbRadarPulse 6s ease-out ${delay}s infinite`,
+                  }} />
+                ))}
+
+                {/* Floating cyber glyphs at depth — large, very faded */}
+                {[
+                  { icon: "🛡", left: "8%", top: "26%", size: 76, dur: 7, delay: 0 },
+                  { icon: "🔒", left: "88%", top: "22%", size: 68, dur: 9, delay: 2 },
+                  { icon: "⚔", left: "6%", top: "72%", size: 84, dur: 8.5, delay: 1 },
+                  { icon: "🦝", left: "90%", top: "76%", size: 72, dur: 7.5, delay: 3 },
+                ].map((g, i) => (
+                  <span key={`glyph-${i}`} style={{
+                    position: "absolute",
+                    left: g.left,
+                    top: g.top,
+                    fontSize: g.size,
+                    opacity: 0.08,
+                    filter: "drop-shadow(0 0 16px rgba(255, 215, 138, 0.5))",
+                    animation: `bbGlyphFloat ${g.dur}s ease-in-out ${g.delay}s infinite`,
+                  }}>{g.icon}</span>
+                ))}
+
+                {/* Distant city / ridge silhouette at the bottom */}
+                <svg
+                  viewBox="0 0 1200 220"
+                  preserveAspectRatio="xMidYMax slice"
+                  style={{
+                    position: "absolute",
+                    bottom: 0,
+                    left: 0,
+                    width: "100%",
+                    height: 220,
+                    display: "block",
+                  }}
+                >
+                  <defs>
+                    <linearGradient id="bbRidgeGrad" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stopColor="#1a0612" stopOpacity="0.8" />
+                      <stop offset="100%" stopColor="#04050d" stopOpacity="1" />
+                    </linearGradient>
+                    <linearGradient id="bbRidgeFar" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stopColor="#3a1a3e" stopOpacity="0.55" />
+                      <stop offset="100%" stopColor="#1a0612" stopOpacity="0.85" />
+                    </linearGradient>
+                  </defs>
+                  {/* Far ridge — softer, behind */}
+                  <path
+                    d="M0,220 L0,160 L60,150 L120,170 L180,140 L240,165 L320,135 L400,160 L480,130 L560,155 L640,140 L720,165 L820,135 L900,160 L980,130 L1080,160 L1140,140 L1200,165 L1200,220 Z"
+                    fill="url(#bbRidgeFar)"
+                  />
+                  {/* Near ridge — sharper city skyline */}
+                  <path
+                    d="M0,220 L0,180 L40,180 L40,140 L100,140 L100,100 L160,100 L160,170 L210,170 L210,90 L270,90 L270,150 L340,150 L340,110 L400,110 L400,170 L470,170 L470,80 L530,80 L530,160 L600,160 L600,120 L660,120 L660,180 L730,180 L730,100 L790,100 L790,170 L860,170 L860,130 L920,130 L920,160 L990,160 L990,110 L1060,110 L1060,170 L1130,170 L1130,140 L1200,140 L1200,220 Z"
+                    fill="url(#bbRidgeGrad)"
+                  />
+                  {/* Window lights — random tiny gold dots */}
+                  {[
+                    [60, 145], [115, 110], [175, 125], [225, 105], [285, 115],
+                    [355, 130], [415, 130], [485, 95], [545, 110], [615, 135],
+                    [675, 140], [745, 115], [805, 130], [875, 140], [935, 145],
+                    [1005, 125], [1075, 130], [1145, 150],
+                  ].map(([x, y], i) => (
+                    <circle key={i} cx={x} cy={y} r="1.6" fill="#ffd158" opacity="0.65" />
+                  ))}
+                </svg>
+              </div>
+
+              {/* ─────── CONTENT (above the atmospheric layer) ─────── */}
 
               {/* Cinematic title */}
               <motion.h1
@@ -4395,9 +4544,10 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
                 transition={{ type: "spring", stiffness: 220, damping: 18 }}
                 style={{
                   position: "relative",
-                  fontSize: 60,
+                  zIndex: 1,
+                  fontSize: 76,
                   fontWeight: 900,
-                  margin: "0 0 6px",
+                  margin: "0 0 8px",
                   background: "linear-gradient(135deg, #ffd158 0%, #ff7a59 35%, #ff5fb3 70%, #7c5cff 100%)",
                   backgroundSize: "200% 100%",
                   WebkitBackgroundClip: "text",
@@ -4406,8 +4556,9 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
                   letterSpacing: 4,
                   textAlign: "center",
                   fontFamily: "'Fredoka', 'Nunito', system-ui, sans-serif",
-                  filter: "drop-shadow(0 0 30px rgba(255, 95, 179, 0.35))",
+                  filter: "drop-shadow(0 0 40px rgba(255, 95, 179, 0.35))",
                   animation: "bbTitleShimmer 6s ease-in-out infinite",
+                  lineHeight: 1.05,
                 }}
               >
                 FINAL SHOWDOWN
@@ -4417,10 +4568,12 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.25, duration: 0.5 }}
                 style={{
+                  position: "relative",
+                  zIndex: 1,
                   color: "rgba(199, 207, 240, 0.78)",
-                  fontSize: 15,
+                  fontSize: 16,
                   fontWeight: 600,
-                  marginBottom: 26,
+                  marginBottom: 28,
                   textAlign: "center",
                   fontFamily: "'Nunito', sans-serif",
                   letterSpacing: 0.5,
@@ -4432,6 +4585,7 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
               {/* VS face-off — circular portraits with proper halos, no demo HUD */}
               <div style={{
                 position: "relative",
+                zIndex: 1,
                 display: "grid",
                 gridTemplateColumns: "1fr auto 1fr",
                 gap: 28,
@@ -4443,6 +4597,8 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
                 borderRadius: 22,
                 boxShadow: "0 30px 60px -20px rgba(0,0,0,0.65), inset 0 0 0 1px rgba(255,255,255,0.04), 0 0 60px rgba(124, 92, 255, 0.18)",
                 overflow: "hidden",
+                backdropFilter: "blur(2px)",
+                WebkitBackdropFilter: "blur(2px)",
               }}>
 
                 {/* Hero side */}
@@ -4568,14 +4724,16 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
               </div>
 
               {/* Saved password reveal — what the kid is defending */}
-              <BossSavedPasswordChip />
+              <div style={{ position: "relative", zIndex: 1 }}>
+                <BossSavedPasswordChip />
+              </div>
 
               {/* Start button - cinematic CTA */}
               <motion.div
                 initial={{ opacity: 0, scale: 0.85, y: 14 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 transition={{ delay: 0.95, type: "spring", stiffness: 280, damping: 22 }}
-                style={{ textAlign: "center", marginTop: 8 }}
+                style={{ position: "relative", zIndex: 1, textAlign: "center", marginTop: 8 }}
               >
                 <button
                   onClick={() => {
