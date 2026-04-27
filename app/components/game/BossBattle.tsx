@@ -25,6 +25,13 @@ import LevelUpCelebration from "@/app/components/LevelUpCelebration";
 // execute WebGL code. Renders behind the transparent PixiJS canvas.
 const Arena3D = dynamic(() => import("./Arena3D"), { ssr: false });
 
+// Live R3F backdrop for the CHOOSE YOUR HERO screen — calmer cousin of
+// BossEnergyCore, sets a "preparation" mood before the boss reactor.
+const HeroSelectAtmosphere = dynamic(
+  () => import("@/app/components/HeroSelectAtmosphere"),
+  { ssr: false },
+);
+
 export interface Question {
   question: string;
   answers: string[];
@@ -2343,6 +2350,12 @@ export default function BossBattle({
     >
       {!selectedHero && (
         <div className="bb-sel-screen">
+          {/* Live R3F atmosphere — cosmic atrium, sits behind the CSS
+              decoration layers and the cards. */}
+          <div className="bb-sel-canvas" aria-hidden="true">
+            <HeroSelectAtmosphere />
+          </div>
+
           {/* Background layers — cosmic blobs + bottom horizon haze */}
           <div className="bb-sel-mesh bb-sel-mesh-blue" />
           <div className="bb-sel-mesh bb-sel-mesh-purple" />
@@ -3734,6 +3747,19 @@ export default function BossBattle({
           overflow: hidden;
           font-family: 'DM Sans', sans-serif;
         }
+        /* Live R3F canvas — sits behind every other decoration so the
+           CSS blobs / lightning / particles / Tesla layer over it. */
+        .bb-sel-canvas {
+          position: absolute;
+          inset: 0;
+          z-index: 0;
+          pointer-events: none;
+        }
+        .bb-sel-canvas > * {
+          width: 100%;
+          height: 100%;
+        }
+
         /* Cosmic cloud blobs — top-left violet, top-right pink, bottom
            coral horizon haze. Same blobs as the lock screen. */
         .bb-sel-mesh {
