@@ -48,12 +48,12 @@ function HoloTorusKnot() {
   const ref = useRef<THREE.Mesh>(null);
   useFrame((_, dt) => {
     if (ref.current) {
-      ref.current.rotation.x += dt * 0.18;
-      ref.current.rotation.y += dt * 0.24;
+      ref.current.rotation.x += dt * 0.45;
+      ref.current.rotation.y += dt * 0.55;
     }
   });
   return (
-    <Float speed={1.2} rotationIntensity={0.4} floatIntensity={0.6}>
+    <Float speed={2.4} rotationIntensity={0.7} floatIntensity={0.8}>
       <mesh ref={ref}>
         <torusKnotGeometry args={[0.85, 0.18, 220, 28, 2, 5]} />
         <meshPhysicalMaterial
@@ -83,15 +83,15 @@ function HoloCrystal() {
   const haloRef = useRef<THREE.Mesh>(null);
   useFrame(({ clock }, dt) => {
     if (ref.current) {
-      ref.current.rotation.y -= dt * 0.12;
-      ref.current.rotation.x += dt * 0.05;
+      ref.current.rotation.y -= dt * 0.32;
+      ref.current.rotation.x += dt * 0.18;
       const t = clock.getElapsedTime();
-      const s = 1 + Math.sin(t * 0.8) * 0.04;
+      const s = 1 + Math.sin(t * 1.6) * 0.06;
       ref.current.scale.setScalar(s);
     }
     if (haloRef.current) {
       const t = clock.getElapsedTime();
-      const s = 1 + Math.sin(t * 0.6) * 0.12;
+      const s = 1 + Math.sin(t * 1.2) * 0.16;
       haloRef.current.scale.setScalar(s);
     }
   });
@@ -142,12 +142,12 @@ function HoloFloatingShapes() {
     floatIntensity: number;
     rotIntensity: number;
   }[] = useMemo(() => [
-    { pos: [-2.6,  0.9, -1.2], kind: "octa",   scale: 0.34, color: PALETTE.cyan,    accent: PALETTE.cyanBright, floatSpeed: 1.3, floatIntensity: 0.8, rotIntensity: 0.5 },
-    { pos: [ 2.7,  1.1, -0.9], kind: "dodeca", scale: 0.40, color: PALETTE.pink,    accent: PALETTE.pink,       floatSpeed: 1.0, floatIntensity: 0.7, rotIntensity: 0.5 },
-    { pos: [-2.3, -1.2, -0.4], kind: "tetra",  scale: 0.38, color: PALETTE.amber,   accent: PALETTE.amber,      floatSpeed: 1.6, floatIntensity: 0.9, rotIntensity: 0.7 },
-    { pos: [ 2.4, -1.4, -0.6], kind: "ico",    scale: 0.32, color: PALETTE.violet,  accent: PALETTE.cosmic,     floatSpeed: 1.4, floatIntensity: 0.8, rotIntensity: 0.6 },
-    { pos: [ 0.0,  2.3, -1.6], kind: "torus",  scale: 0.40, color: PALETTE.cyan,    accent: PALETTE.cosmic,     floatSpeed: 0.9, floatIntensity: 0.5, rotIntensity: 0.4 },
-    { pos: [ 0.0, -2.2, -1.4], kind: "octa",   scale: 0.36, color: PALETTE.pink,    accent: PALETTE.amber,      floatSpeed: 1.1, floatIntensity: 0.6, rotIntensity: 0.5 },
+    { pos: [-2.6,  0.9, -1.2], kind: "octa",   scale: 0.34, color: PALETTE.cyan,    accent: PALETTE.cyanBright, floatSpeed: 2.6, floatIntensity: 1.1, rotIntensity: 1.0 },
+    { pos: [ 2.7,  1.1, -0.9], kind: "dodeca", scale: 0.40, color: PALETTE.pink,    accent: PALETTE.pink,       floatSpeed: 2.0, floatIntensity: 1.0, rotIntensity: 1.0 },
+    { pos: [-2.3, -1.2, -0.4], kind: "tetra",  scale: 0.38, color: PALETTE.amber,   accent: PALETTE.amber,      floatSpeed: 3.2, floatIntensity: 1.2, rotIntensity: 1.4 },
+    { pos: [ 2.4, -1.4, -0.6], kind: "ico",    scale: 0.32, color: PALETTE.violet,  accent: PALETTE.cosmic,     floatSpeed: 2.8, floatIntensity: 1.1, rotIntensity: 1.2 },
+    { pos: [ 0.0,  2.3, -1.6], kind: "torus",  scale: 0.40, color: PALETTE.cyan,    accent: PALETTE.cosmic,     floatSpeed: 1.8, floatIntensity: 0.8, rotIntensity: 0.8 },
+    { pos: [ 0.0, -2.2, -1.4], kind: "octa",   scale: 0.36, color: PALETTE.pink,    accent: PALETTE.amber,      floatSpeed: 2.2, floatIntensity: 0.9, rotIntensity: 1.0 },
   ], []);
 
   return (
@@ -193,12 +193,12 @@ function WireShells() {
   const ico = useRef<THREE.LineSegments>(null);
   useFrame((_, dt) => {
     if (sphere.current) {
-      sphere.current.rotation.y += dt * 0.08;
-      sphere.current.rotation.x += dt * 0.03;
+      sphere.current.rotation.y += dt * 0.22;
+      sphere.current.rotation.x += dt * 0.08;
     }
     if (ico.current) {
-      ico.current.rotation.y -= dt * 0.05;
-      ico.current.rotation.z += dt * 0.03;
+      ico.current.rotation.y -= dt * 0.16;
+      ico.current.rotation.z += dt * 0.10;
     }
   });
   const sphereEdges = useMemo(
@@ -245,8 +245,8 @@ function StarField({ count = 320 }: { count?: number }) {
   const ref = useRef<THREE.Points>(null);
   useFrame((_, dt) => {
     if (ref.current) {
-      ref.current.rotation.y += dt * 0.012;
-      ref.current.rotation.x += dt * 0.004;
+      ref.current.rotation.y += dt * 0.04;
+      ref.current.rotation.x += dt * 0.012;
     }
   });
 
@@ -333,7 +333,7 @@ export default function HeroSelectAtmosphere() {
         count={60}
         scale={[8, 6, 6]}
         size={3}
-        speed={0.3}
+        speed={0.9}
         opacity={0.8}
         color={PALETTE.cyan}
       />
@@ -341,15 +341,15 @@ export default function HeroSelectAtmosphere() {
         count={40}
         scale={[6, 5, 4]}
         size={5}
-        speed={0.2}
+        speed={0.7}
         opacity={0.6}
         color={PALETTE.pink}
       />
 
-      {/* Aurora ribbons — slow drifting tube curves */}
-      <AuroraRibbon color={PALETTE.cosmic} radius={3.4} tilt={[Math.PI / 2.1, 0, 0]}        speed={0.022} thickness={0.05} />
-      <AuroraRibbon color={PALETTE.pink}   radius={3.8} tilt={[Math.PI / 2.6, Math.PI / 5, 0]} speed={-0.016} thickness={0.04} />
-      <AuroraRibbon color={PALETTE.cyan}   radius={4.2} tilt={[Math.PI / 3,    -Math.PI / 4, 0]} speed={0.012} thickness={0.035} />
+      {/* Aurora ribbons — drifting tube curves */}
+      <AuroraRibbon color={PALETTE.cosmic} radius={3.4} tilt={[Math.PI / 2.1, 0, 0]}        speed={0.075} thickness={0.05} />
+      <AuroraRibbon color={PALETTE.pink}   radius={3.8} tilt={[Math.PI / 2.6, Math.PI / 5, 0]} speed={-0.055} thickness={0.04} />
+      <AuroraRibbon color={PALETTE.cyan}   radius={4.2} tilt={[Math.PI / 3,    -Math.PI / 4, 0]} speed={0.045} thickness={0.035} />
 
       <WireShells />
 
