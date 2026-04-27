@@ -25,6 +25,12 @@ import LevelUpCelebration from "@/app/components/LevelUpCelebration";
 // execute WebGL code. Renders behind the transparent PixiJS canvas.
 const Arena3D = dynamic(() => import("./Arena3D"), { ssr: false });
 
+// Cosmic realm backdrop — separate R3F Canvas that sits BEHIND Arena3D
+// (whose WebGLRenderer is alpha:true so this layer reads through). Adds
+// the "other realm" depth: deep starfield, distant nebula spheres,
+// drifting aurora ribbons, floating cosmic crystals, energy portal ring.
+const CosmicRealmBackdrop = dynamic(() => import("./CosmicRealmBackdrop"), { ssr: false });
+
 // Live R3F backdrop for the CHOOSE YOUR HERO screen — calmer cousin of
 // BossEnergyCore, sets a "preparation" mood before the boss reactor.
 const HeroSelectAtmosphere = dynamic(
@@ -2617,24 +2623,40 @@ export default function BossBattle({
 
       {/* 3D Arena — sits BEHIND the PixiJS canvas. */}
       {selectedHero && (
-        <div
-          aria-hidden="true"
-          style={{
-            position: "absolute",
-            inset: 0,
-            zIndex: 0,
-            pointerEvents: "none",
-          }}
-        >
-          <Arena3D
-            width={viewport.w}
-            height={viewport.h}
-            phase={arenaPhase}
-            shakeIntensity={arenaShake.mag}
-            shakeKey={arenaShake.key}
-            mood={arenaMood}
-          />
-        </div>
+        <>
+          {/* Cosmic realm backdrop — sits behind Arena3D giving the
+              "other realm" depth (stars, nebulae, aurora, crystals). */}
+          <div
+            aria-hidden="true"
+            style={{
+              position: "absolute",
+              inset: 0,
+              zIndex: -1,
+              pointerEvents: "none",
+              background: "radial-gradient(ellipse at 50% 60%, #1a0e22 0%, #0f1530 35%, #04050d 100%)",
+            }}
+          >
+            <CosmicRealmBackdrop />
+          </div>
+          <div
+            aria-hidden="true"
+            style={{
+              position: "absolute",
+              inset: 0,
+              zIndex: 0,
+              pointerEvents: "none",
+            }}
+          >
+            <Arena3D
+              width={viewport.w}
+              height={viewport.h}
+              phase={arenaPhase}
+              shakeIntensity={arenaShake.mag}
+              shakeKey={arenaShake.key}
+              mood={arenaMood}
+            />
+          </div>
+        </>
       )}
 
       {/* PixiJS canvas — transparent, sits above the 3D arena. */}
