@@ -56,6 +56,48 @@ type BattleArenaProps = {
 
 type Phase = "intro" | "attack-announce" | "question" | "feedback" | "rage-qte" | "victory";
 
+// Three telegraphed boss attack types — cycled by qIdx so every question
+// reads as a distinct "move" the Raccoon is throwing. Pure visual /
+// narrative variation — scoring math is unchanged so the kid doesn't get
+// punished for hitting the wrong attack-type "tell".
+type AttackType = "lure" | "brute" | "trick";
+
+const ATTACK_META: Record<AttackType, {
+  name: string;
+  icon: string;
+  color: string;
+  glow: string;
+  bg: string;
+  tag: string;
+}> = {
+  lure: {
+    name: "PHISHING LURE",
+    icon: "🪤",
+    color: "#ff5fb3",
+    glow: "rgba(255, 95, 179, 0.55)",
+    bg: "linear-gradient(135deg, rgba(255, 95, 179, 0.88) 0%, rgba(122, 58, 82, 0.88) 100%)",
+    tag: "Don't take the bait",
+  },
+  brute: {
+    name: "BRUTE FORCE",
+    icon: "🔨",
+    color: "#ffb347",
+    glow: "rgba(255, 179, 71, 0.55)",
+    bg: "linear-gradient(135deg, rgba(255, 179, 71, 0.88) 0%, rgba(124, 58, 18, 0.88) 100%)",
+    tag: "Hold your ground",
+  },
+  trick: {
+    name: "TRICK QUESTION",
+    icon: "🌀",
+    color: "#7c5cff",
+    glow: "rgba(124, 92, 255, 0.55)",
+    bg: "linear-gradient(135deg, rgba(124, 92, 255, 0.88) 0%, rgba(40, 16, 82, 0.88) 100%)",
+    tag: "Don't get fooled",
+  },
+};
+
+const ATTACK_CYCLE: AttackType[] = ["lure", "brute", "trick"];
+
 const STYLES = `
 @keyframes baBossFloat {
   0%,100% { transform: translateY(-4px); }
@@ -187,6 +229,20 @@ const STYLES = `
   80%  { opacity: 0.85; }
   100% { transform: translateX(180%)  rotate(12deg);  opacity: 0; }
 }
+@keyframes baShieldIdlePulse {
+  0%, 100% { box-shadow: 0 0 14px rgba(125, 240, 255, 0.45), 0 0 30px rgba(125, 240, 255, 0.25); transform: translateY(0); }
+  50%      { box-shadow: 0 0 22px rgba(125, 240, 255, 0.75), 0 0 48px rgba(125, 240, 255, 0.4);  transform: translateY(-1px); }
+}
+@keyframes baShieldedPop {
+  0%   { opacity: 0; transform: translate(-50%, -50%) scale(0.4); }
+  20%  { opacity: 1; transform: translate(-50%, -50%) scale(1.15); }
+  60%  { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  100% { opacity: 0; transform: translate(-50%, -50%) scale(1) translateY(-30px); }
+}
+@keyframes baShieldRingExpand {
+  0%   { opacity: 0.85; transform: translate(-50%, -50%) scale(0.4); }
+  100% { opacity: 0;    transform: translate(-50%, -50%) scale(2.4); }
+}
 `;
 
 function FallbackRaccoon({ size = 120 }: { size?: number }) {
@@ -275,6 +331,13 @@ export default function BattleArena({
   // mid-flight to weather the Raccoon's rage spike.
   const rageFiredRef = useRef(false);
 
+  // SHIELD power-up — one charge per fight. Auto-armed at start. When
+  // the kid picks a wrong answer, if shieldArmed is true the shield
+  // absorbs the hit: combo isn't broken, super isn't disarmed, and a
+  // brief "SHIELDED!" overlay plays. Then advance to next question.
+  const [shieldArmed, setShieldArmed] = useState(true);
+  const [shieldConsumedKey, setShieldConsumedKey] = useState(0);
+
   useEffect(() => {
     ensureStyles();
   }, []);
@@ -354,6 +417,10 @@ export default function BattleArena({
   const currentQ = questions[qIdx % total];
   const bossLowHP = bossHP > 0 && bossHP / total < 0.25;
   const bossDefeatedAnim = phase === "victory";
+  // Telegraphed attack — cycles through lure / brute / trick so each
+  // question feels like a different "move" the boss is throwing.
+  const currentAttackType: AttackType = ATTACK_CYCLE[qIdx % ATTACK_CYCLE.length];
+  const attackMeta = ATTACK_META[currentAttackType];
 
   const handleSelect = useCallback(
     (i: number) => {
@@ -415,6 +482,22 @@ export default function BattleArena({
           setPhase("attack-announce");
         }, isFinalBlow ? 1400 : 1000);
       } else {
+        // SHIELD: if armed, absorb the wrong answer entirely — no penalty,
+        // no combo break, no super disarm. Single-charge per fight.
+        if (shieldArmed) {
+          setShieldArmed(false);
+          setShieldConsumedKey((k) => k + 1);
+          playSound("hitImpact");
+          if (timerRef.current) clearTimeout(timerRef.current);
+          timerRef.current = setTimeout(() => {
+            setSelected(null);
+            setQIdx((idx) => idx + 1);
+            setBannerKey((k) => k + 1);
+            setPhase("attack-announce");
+          }, 1100);
+          return;
+        }
+
         playSound("wrong");
         playSound("bossAttack");
         playSound("hitImpact");
@@ -434,7 +517,7 @@ export default function BattleArena({
         }, 1000);
       }
     },
-    [selected, currentQ, bossHP, score, total, combo, onComplete, superArmed],
+    [selected, currentQ, bossHP, score, total, combo, onComplete, superArmed, shieldArmed],
   );
 
   const bossAnimation = bossDefeatedAnim
@@ -517,7 +600,9 @@ export default function BattleArena({
         />
       )}
 
-      {/* Top status row — Hero banner (left) + Villain banner (right) */}
+      {/* Top status row — Hero banner (left), Shield pill (centre),
+          Villain banner (right). Shield is the kid's one-charge defensive
+          power; rest of the layout is decorative. */}
       {!isVictory && (
         <div
           style={{
@@ -527,12 +612,14 @@ export default function BattleArena({
             right: 18,
             display: "flex",
             justifyContent: "space-between",
+            alignItems: "center",
             gap: 12,
             zIndex: 8,
             pointerEvents: "none",
           }}
         >
           <HeroBanner pct={heroPct} />
+          <ShieldChip armed={shieldArmed} />
           <VillainBanner
             name={bossName}
             hp={bossHP}
@@ -541,6 +628,61 @@ export default function BattleArena({
             hpGlowAnim={hpGlowAnim}
             lowHP={bossLowHP}
           />
+        </div>
+      )}
+
+      {/* SHIELDED! toast — pops centred on the arena when the shield
+          absorbs a wrong answer. Auto-fades. */}
+      {shieldConsumedKey > 0 && (
+        <div
+          key={`shielded-${shieldConsumedKey}`}
+          aria-hidden
+          style={{
+            position: "absolute",
+            top: "42%",
+            left: "50%",
+            zIndex: 12,
+            pointerEvents: "none",
+          }}
+        >
+          {/* Expanding ring */}
+          <span
+            aria-hidden
+            style={{
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              width: 160,
+              height: 160,
+              borderRadius: "50%",
+              border: "3px solid rgba(125, 240, 255, 0.85)",
+              boxShadow: "0 0 28px rgba(125, 240, 255, 0.6)",
+              animation: "baShieldRingExpand 0.9s ease-out both",
+              transform: "translate(-50%, -50%)",
+            }}
+          />
+          {/* Toast pill */}
+          <div
+            style={{
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              padding: "12px 26px",
+              background: "linear-gradient(135deg, #7df0ff 0%, #00e5ff 50%, #7c5cff 100%)",
+              color: "#080a16",
+              fontFamily: "'Fredoka', 'Nunito', system-ui, sans-serif",
+              fontWeight: 900,
+              fontSize: 22,
+              letterSpacing: 2,
+              borderRadius: 999,
+              whiteSpace: "nowrap",
+              boxShadow: "0 0 32px rgba(125, 240, 255, 0.8), 0 8px 20px rgba(0,0,0,0.4)",
+              animation: "baShieldedPop 1.5s cubic-bezier(0.22, 1, 0.36, 1) forwards",
+              transform: "translate(-50%, -50%)",
+            }}
+          >
+            🛡 SHIELDED!
+          </div>
         </div>
       )}
 
@@ -654,25 +796,37 @@ export default function BattleArena({
                 <div
                   key={`banner-${bannerKey}`}
                   style={{
-                    padding: "12px 24px",
-                    background:
-                      "linear-gradient(135deg, rgba(255, 95, 179, 0.85), rgba(122, 58, 82, 0.85))",
+                    padding: "10px 22px 12px",
+                    background: attackMeta.bg,
                     borderStyle: "solid",
                     borderWidth: 2,
-                    borderColor: "rgba(244, 168, 154, 0.6)",
+                    borderColor: attackMeta.color + "99",
                     borderRadius: 14,
-                    color: "#e8edff",
+                    color: "#fff7e6",
                     fontWeight: 800,
-                    fontSize: 18,
                     letterSpacing: 0.5,
                     animation: "baBannerIn 1.5s ease-out both",
                     willChange: "transform, opacity",
                     textShadow: "0 2px 6px rgba(8, 10, 22, 0.6)",
-                    boxShadow:
-                      "0 14px 28px -8px rgba(80, 20, 30, 0.6), 0 0 28px rgba(244, 168, 154, 0.3)",
+                    boxShadow: `0 14px 28px -8px rgba(8, 10, 22, 0.55), 0 0 28px ${attackMeta.glow}`,
+                    textAlign: "center",
                   }}
                 >
-                  🦝 {currentQ.attackName || "Raccoon Attack!"}
+                  <div
+                    style={{
+                      fontSize: 10,
+                      letterSpacing: 4,
+                      textTransform: "uppercase",
+                      opacity: 0.85,
+                      marginBottom: 2,
+                      fontFamily: "ui-monospace, 'JetBrains Mono', monospace",
+                    }}
+                  >
+                    {attackMeta.tag}
+                  </div>
+                  <div style={{ fontSize: 18, fontWeight: 900 }}>
+                    {attackMeta.icon} {currentQ.attackName || attackMeta.name}
+                  </div>
                 </div>
               )}
             </div>
@@ -832,21 +986,43 @@ export default function BattleArena({
             />
           ) : currentQ ? (
             <>
-              {/* Question parchment plaque */}
+              {/* Question parchment plaque — colored top edge tells the
+                  kid which attack-type they're defending against. */}
               <div
                 style={{
+                  position: "relative",
                   background:
                     "linear-gradient(180deg, rgba(125, 240, 255, 0.96) 0%, rgba(253, 226, 181, 0.96) 100%)",
                   borderStyle: "solid",
                   borderWidth: 1,
                   borderColor: "rgba(196, 115, 64, 0.55)",
+                  borderTop: `4px solid ${attackMeta.color}`,
                   borderRadius: 18,
-                  padding: "20px 26px",
+                  padding: "20px 26px 22px",
                   marginBottom: 18,
-                  boxShadow:
-                    "0 18px 40px -12px rgba(40, 18, 8, 0.5), inset 0 0 0 4px rgba(125, 240, 255, 0.85), inset 0 0 0 5px rgba(196, 115, 64, 0.35)",
+                  boxShadow: `0 18px 40px -12px rgba(40, 18, 8, 0.5), inset 0 0 0 4px rgba(125, 240, 255, 0.85), inset 0 0 0 5px rgba(196, 115, 64, 0.35), 0 0 24px ${attackMeta.glow}`,
                 }}
               >
+                {/* Attack-type chip — top-right corner */}
+                <span
+                  aria-hidden
+                  style={{
+                    position: "absolute",
+                    top: -10,
+                    right: 14,
+                    padding: "2px 10px",
+                    borderRadius: 999,
+                    background: attackMeta.color,
+                    color: "#1a0612",
+                    fontSize: 10,
+                    fontWeight: 900,
+                    letterSpacing: 2,
+                    fontFamily: "ui-monospace, 'JetBrains Mono', monospace",
+                    boxShadow: `0 4px 10px ${attackMeta.glow}`,
+                  }}
+                >
+                  {attackMeta.icon} {attackMeta.name}
+                </span>
                 {/* GLITCH QUESTION TEXT — RGB-split chromatic shimmer.
                     Three offset copies of the same text in cyan / pink /
                     bright cream, the cream copy on top. Animated via
@@ -993,6 +1169,60 @@ export default function BattleArena({
           ) : null}
         </div>
       </div>
+    </div>
+  );
+}
+
+/* ───────────────────────── SHIELD CHIP ───────────────────────── */
+
+// Single-charge defensive pill — sits between the Hero and Villain
+// banners. When `armed` is true it pulses cyan; when false (already
+// consumed) it dims to indicate the charge is spent.
+function ShieldChip({ armed }: { armed: boolean }) {
+  return (
+    <div
+      aria-hidden
+      style={{
+        flexShrink: 0,
+        width: 64,
+        height: 64,
+        borderRadius: "50%",
+        background: armed
+          ? "radial-gradient(circle at 35% 30%, rgba(125, 240, 255, 0.95), rgba(0, 229, 255, 0.55) 60%, rgba(124, 92, 255, 0.55))"
+          : "radial-gradient(circle at 35% 30%, rgba(60, 80, 120, 0.7), rgba(20, 28, 60, 0.7))",
+        border: armed
+          ? "2px solid rgba(125, 240, 255, 0.9)"
+          : "2px solid rgba(80, 100, 140, 0.5)",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        color: armed ? "#080a16" : "rgba(199, 207, 240, 0.5)",
+        fontFamily: "'Fredoka', 'Nunito', system-ui, sans-serif",
+        fontWeight: 900,
+        fontSize: 22,
+        boxShadow: armed
+          ? "0 0 14px rgba(125, 240, 255, 0.45), 0 0 30px rgba(125, 240, 255, 0.25)"
+          : "none",
+        animation: armed ? "baShieldIdlePulse 1.6s ease-in-out infinite" : undefined,
+        opacity: armed ? 1 : 0.55,
+        transition: "opacity 0.3s ease, background 0.3s ease",
+        position: "relative",
+      }}
+      title={armed ? "Shield charge ready — absorbs next wrong answer" : "Shield charge already used"}
+    >
+      <span style={{ lineHeight: 1, fontSize: 20 }}>🛡</span>
+      <span
+        style={{
+          fontSize: 8,
+          letterSpacing: 1.5,
+          marginTop: 2,
+          fontFamily: "ui-monospace, 'JetBrains Mono', monospace",
+          fontWeight: 800,
+        }}
+      >
+        {armed ? "READY" : "USED"}
+      </span>
     </div>
   );
 }

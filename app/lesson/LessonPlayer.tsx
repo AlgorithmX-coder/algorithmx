@@ -4334,57 +4334,45 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
         }
 
         return (
-          <FullScene bg="linear-gradient(180deg, #1a0505 0%, #0a0a1a 100%)" glow="radial-gradient(circle, rgba(239,68,68,0.35), transparent)">
+          <FullScene bg="radial-gradient(ellipse at 50% 70%, #2a0d2e 0%, #1a1f4d 35%, #0f1530 70%, #04050d 100%)">
             <style>{`
-              @keyframes bbSweepLight { 0% { transform: translateX(-150%) skewX(-18deg); } 100% { transform: translateX(250%) skewX(-18deg); } }
-              @keyframes bbWarnPulse { 0%,100% { opacity: 0.35; box-shadow: 0 0 6px currentColor; } 50% { opacity: 1; box-shadow: 0 0 22px currentColor; } }
               @keyframes bbVsClash { 0% { transform: translate(-50%, -50%) scale(0.4) rotate(-30deg); opacity: 0; } 50% { transform: translate(-50%, -50%) scale(1.4) rotate(0deg); opacity: 1; } 100% { transform: translate(-50%, -50%) scale(1) rotate(0deg); opacity: 1; } }
-              @keyframes bbLightningStrike { 0%,92%,100% { opacity: 0; } 94% { opacity: 0.85; } 96% { opacity: 0.2; } 98% { opacity: 0.7; } }
               @keyframes bbFloatHero { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
               @keyframes bbFloatVillain { 0%,100% { transform: translateY(0) rotate(-2deg); } 50% { transform: translateY(-8px) rotate(2deg); } }
-              @keyframes bbHazardSlide { 0% { background-position: 0 0; } 100% { background-position: 60px 0; } }
-              @keyframes bbScanFloor { 0% { transform: translateY(-100%); } 100% { transform: translateY(120%); } }
-              @keyframes bbEmberRise { 0% { transform: translateY(0); opacity: 0; } 12% { opacity: 0.85; } 88% { opacity: 0.85; } 100% { transform: translateY(-220px); opacity: 0; } }
+              @keyframes bbLockEmber { 0% { transform: translateY(0); opacity: 0; } 12% { opacity: 0.7; } 88% { opacity: 0.7; } 100% { transform: translateY(-260px); opacity: 0; } }
+              @keyframes bbLockBolt { 0%,93%,100% { opacity: 0; } 94% { opacity: 0.75; } 96% { opacity: 0.2; } 98% { opacity: 0.55; } }
+              @keyframes bbHaloSpin { to { transform: rotate(360deg); } }
+              @keyframes bbButtonGlow { 0%,100% { box-shadow: 0 0 26px rgba(255, 95, 179, 0.45), 0 0 52px rgba(124, 92, 255, 0.3); } 50% { box-shadow: 0 0 38px rgba(255, 95, 179, 0.7), 0 0 76px rgba(124, 92, 255, 0.5); } }
+              @keyframes bbTitleShimmer { 0%,100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
             `}</style>
 
-            <div style={{ position: "relative", width: "100%", maxWidth: 900, margin: "0 auto" }}>
-              {/* Hazard tape ribbons top + bottom */}
-              <div aria-hidden style={{
-                position: "absolute", left: 0, right: 0, top: -10, height: 8,
-                backgroundImage: "repeating-linear-gradient(45deg, #fbbf24 0 12px, #1a0505 12px 24px)",
-                animation: "bbHazardSlide 1.4s linear infinite",
-                opacity: 0.85,
-                borderRadius: 4,
-              }} />
-              <div aria-hidden style={{
-                position: "absolute", left: 0, right: 0, bottom: -10, height: 8,
-                backgroundImage: "repeating-linear-gradient(-45deg, #ef4444 0 12px, #1a0505 12px 24px)",
-                animation: "bbHazardSlide 1.4s linear infinite reverse",
-                opacity: 0.85,
-                borderRadius: 4,
-              }} />
+            <div style={{ position: "relative", width: "100%", maxWidth: 880, margin: "0 auto", padding: "20px 16px" }}>
 
-              {/* Lightning flashes */}
-              {Array.from({ length: 3 }).map((_, i) => (
+              {/* Subtle warm-gold lightning streaks — atmosphere only */}
+              {[
+                { left: "22%", top: 0, h: 240, dur: 7, delay: 0 },
+                { left: "72%", top: 0, h: 200, dur: 8.5, delay: 3 },
+              ].map((b, i) => (
                 <span key={`bolt-${i}`} aria-hidden style={{
                   position: "absolute",
-                  left: `${15 + i * 30}%`,
-                  top: 0,
+                  left: b.left,
+                  top: b.top,
                   width: 2,
-                  height: 240,
-                  background: "linear-gradient(180deg, #00e5ff, transparent)",
-                  filter: "drop-shadow(0 0 8px #fbbf24)",
-                  animation: `bbLightningStrike ${5 + i * 1.4}s ease-in-out ${i * 1.7}s infinite`,
+                  height: b.h,
+                  background: "linear-gradient(180deg, rgba(255, 215, 138, 0.85), transparent)",
+                  filter: "drop-shadow(0 0 10px rgba(255, 215, 138, 0.5))",
+                  animation: `bbLockBolt ${b.dur}s ease-in-out ${b.delay}s infinite`,
                   pointerEvents: "none",
+                  zIndex: 0,
                 }} />
               ))}
 
-              {/* Drifting embers */}
-              {Array.from({ length: 14 }).map((_, i) => {
-                const left = (i * 47) % 100;
-                const dur = 4 + (i % 4);
-                const delay = (i * 0.5) % 6;
-                const c = ["#00e5ff", "#f97316", "#fb923c", "#ef4444"][i % 4];
+              {/* Drifting warm embers — gold / coral / pink, subtle */}
+              {Array.from({ length: 8 }).map((_, i) => {
+                const left = (i * 53 + 7) % 100;
+                const dur = 5 + (i % 3);
+                const delay = (i * 0.7) % 6;
+                const c = (["#ffd158", "#ffb347", "#ff5fb3"])[i % 3];
                 return (
                   <span key={`ember-${i}`} aria-hidden style={{
                     position: "absolute",
@@ -4392,150 +4380,141 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
                     bottom: 0,
                     width: 3, height: 3, borderRadius: "50%",
                     background: c,
-                    boxShadow: `0 0 6px ${c}`,
-                    animation: `bbEmberRise ${dur}s linear ${delay}s infinite`,
+                    boxShadow: `0 0 8px ${c}`,
+                    animation: `bbLockEmber ${dur}s linear ${delay}s infinite`,
+                    opacity: 0.7,
+                    zIndex: 0,
                   }} />
                 );
               })}
 
-              {/* HUD warning row */}
-              <div style={{
-                display: "flex", justifyContent: "space-between", alignItems: "center",
-                padding: "8px 14px", marginTop: 6, marginBottom: 14,
-                background: "rgba(239,68,68,0.08)",
-                border: "1px solid rgba(239,68,68,0.45)",
-                borderRadius: 10,
-                fontFamily: "ui-monospace, 'JetBrains Mono', monospace",
-                fontSize: 11, fontWeight: 800,
-                letterSpacing: 2, textTransform: "uppercase",
-              }}>
-                <span style={{ color: "#fca5a5", display: "inline-flex", alignItems: "center", gap: 8 }}>
-                  <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#ef4444", color: "#ef4444", animation: "bbWarnPulse 1.2s ease-in-out infinite" }} />
-                  THREAT_DETECTED // FINAL_BOSS
-                </span>
-                <span style={{ color: "#fbbf24" }}>
-                  ARENA: SECURE_VAULT_07
-                </span>
-                <span style={{ color: "#fca5a5", display: "inline-flex", alignItems: "center", gap: 8 }}>
-                  PROTOCOL: ENGAGE
-                  <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#ef4444", color: "#ef4444", animation: "bbWarnPulse 1.2s ease-in-out 0.6s infinite" }} />
-                </span>
-              </div>
-
-              {/* Title */}
+              {/* Cinematic title */}
               <motion.h1
-                initial={{ opacity: 0, y: -10, scale: 0.7 }}
+                initial={{ opacity: 0, y: -10, scale: 0.85 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 transition={{ type: "spring", stiffness: 220, damping: 18 }}
                 style={{
                   position: "relative",
-                  fontSize: 64,
+                  fontSize: 60,
                   fontWeight: 900,
-                  margin: "0 0 4px",
-                  background: "linear-gradient(135deg, #ef4444, #f97316, #fbbf24)",
+                  margin: "0 0 6px",
+                  background: "linear-gradient(135deg, #ffd158 0%, #ff7a59 35%, #ff5fb3 70%, #7c5cff 100%)",
+                  backgroundSize: "200% 100%",
                   WebkitBackgroundClip: "text",
                   WebkitTextFillColor: "transparent",
-                  letterSpacing: 3,
-                  textShadow: "0 0 40px rgba(239,68,68,0.35)",
+                  backgroundClip: "text",
+                  letterSpacing: 4,
                   textAlign: "center",
+                  fontFamily: "'Fredoka', 'Nunito', system-ui, sans-serif",
+                  filter: "drop-shadow(0 0 30px rgba(255, 95, 179, 0.35))",
+                  animation: "bbTitleShimmer 6s ease-in-out infinite",
                 }}
               >
-                BOSS BATTLE
+                FINAL SHOWDOWN
               </motion.h1>
               <motion.p
                 initial={{ opacity: 0, y: 6 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.25 }}
-                style={{ color: "#fca5a5", fontSize: 14, fontWeight: 700, letterSpacing: 4, textTransform: "uppercase", marginBottom: 18, textAlign: "center", fontFamily: "ui-monospace, monospace" }}
+                transition={{ delay: 0.25, duration: 0.5 }}
+                style={{
+                  color: "rgba(199, 207, 240, 0.78)",
+                  fontSize: 15,
+                  fontWeight: 600,
+                  marginBottom: 26,
+                  textAlign: "center",
+                  fontFamily: "'Nunito', sans-serif",
+                  letterSpacing: 0.5,
+                }}
               >
-                ▸ Hacker Raccoon is locked &amp; loaded
+                Adam &amp; Layla need you. The Hacker Raccoon is waiting.
               </motion.p>
 
-              {/* VS face-off */}
+              {/* VS face-off — circular portraits with proper halos, no demo HUD */}
               <div style={{
                 position: "relative",
                 display: "grid",
                 gridTemplateColumns: "1fr auto 1fr",
-                gap: 18,
+                gap: 28,
                 alignItems: "center",
-                padding: "18px 14px",
-                marginBottom: 18,
-                background: "linear-gradient(180deg, rgba(20,8,12,0.85), rgba(8,4,16,0.85))",
-                border: "1px solid rgba(239,68,68,0.4)",
-                borderRadius: 18,
-                boxShadow: "0 30px 60px -20px rgba(239,68,68,0.45), inset 0 0 0 1px rgba(255,255,255,0.04), 0 0 60px rgba(239,68,68,0.18)",
+                padding: "30px 24px",
+                marginBottom: 22,
+                background: "linear-gradient(180deg, rgba(15, 21, 48, 0.7) 0%, rgba(8, 10, 22, 0.78) 100%)",
+                border: "1px solid rgba(255, 215, 138, 0.25)",
+                borderRadius: 22,
+                boxShadow: "0 30px 60px -20px rgba(0,0,0,0.65), inset 0 0 0 1px rgba(255,255,255,0.04), 0 0 60px rgba(124, 92, 255, 0.18)",
                 overflow: "hidden",
               }}>
-                {/* Sweeping light */}
-                <span aria-hidden style={{
-                  position: "absolute", top: 0, left: 0, height: "100%", width: "60%",
-                  background: "linear-gradient(90deg, transparent, rgba(253,224,71,0.18), transparent)",
-                  animation: "bbSweepLight 5s ease-in-out infinite",
-                  pointerEvents: "none",
-                }} />
-                {/* Vertical scan line */}
-                <span aria-hidden style={{
-                  position: "absolute", left: 0, right: 0, height: 60,
-                  background: "linear-gradient(180deg, transparent, rgba(255,213,138,0.18), transparent)",
-                  animation: "bbScanFloor 4s linear infinite",
-                  pointerEvents: "none",
-                  mixBlendMode: "screen",
-                }} />
 
                 {/* Hero side */}
                 <motion.div
                   initial={{ opacity: 0, x: -40 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 0.4, type: "spring", stiffness: 200, damping: 22 }}
-                  style={{ position: "relative", textAlign: "center", padding: "10px 8px" }}
+                  style={{ position: "relative", textAlign: "center", animation: "bbFloatHero 3s ease-in-out infinite" }}
                 >
-                  <div style={{ position: "relative", display: "inline-block", animation: "bbFloatHero 3s ease-in-out infinite" }}>
+                  <div style={{ position: "relative", display: "inline-block", width: 130, height: 130 }}>
+                    {/* Halo — matches BattleArena's HeroPortrait halo */}
                     <span aria-hidden style={{
-                      position: "absolute", inset: -10, borderRadius: "50%",
-                      background: "radial-gradient(circle, rgba(255,213,138,0.45), transparent 70%)",
+                      position: "absolute",
+                      inset: -16,
+                      borderRadius: "50%",
+                      background: "conic-gradient(from 0deg, transparent 0deg, rgba(255, 215, 138, 0.55) 60deg, transparent 120deg, rgba(124, 92, 255, 0.45) 200deg, transparent 280deg, rgba(255, 220, 130, 0.5) 340deg, transparent 360deg)",
                       filter: "blur(10px)",
+                      animation: "bbHaloSpin 14s linear infinite",
+                      opacity: 0.7,
                     }} />
-                    <img src="/characters/heroic.png" alt="Adam &amp; Layla" style={{
+                    {/* Disc */}
+                    <div style={{
                       position: "relative",
-                      width: 130, maxWidth: "100%", height: "auto",
-                      filter: "drop-shadow(0 12px 22px rgba(255,213,138,0.55))",
-                    }} />
+                      width: 130,
+                      height: 130,
+                      borderRadius: "50%",
+                      overflow: "hidden",
+                      background: "#1a2147",
+                      boxShadow: "0 0 0 5px rgba(255, 230, 190, 0.85), 0 0 0 7px rgba(140, 70, 30, 0.6), 0 18px 36px -10px rgba(8, 10, 22, 0.7), 0 0 30px rgba(124, 92, 255, 0.5)",
+                    }}>
+                      <div style={{
+                        width: "100%", height: "100%",
+                        backgroundImage: "url(/characters/heroic.png)",
+                        backgroundSize: "180% auto",
+                        backgroundPosition: "center 18%",
+                        backgroundRepeat: "no-repeat",
+                      }} />
+                    </div>
                   </div>
-                  <div style={{ marginTop: 8, color: "#bfdbfe", fontWeight: 900, fontSize: 13, letterSpacing: 3, textTransform: "uppercase", fontFamily: "ui-monospace, monospace" }}>
+                  <div style={{
+                    marginTop: 16,
+                    color: "#bfdbfe",
+                    fontWeight: 800,
+                    fontSize: 13,
+                    letterSpacing: 3,
+                    textTransform: "uppercase",
+                    fontFamily: "'Fredoka', 'Nunito', sans-serif",
+                  }}>
                     Adam &amp; Layla
-                  </div>
-                  {/* HP bar */}
-                  <div style={{ marginTop: 6, height: 8, borderRadius: 4, background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,213,138,0.4)", overflow: "hidden" }}>
-                    <motion.div
-                      initial={{ width: 0 }}
-                      animate={{ width: "100%" }}
-                      transition={{ delay: 0.7, duration: 0.8, ease: "easeOut" }}
-                      style={{ height: "100%", background: "linear-gradient(90deg, #7eff97, #7eff97, #a0ffb0)", boxShadow: "0 0 10px #7eff97" }}
-                    />
-                  </div>
-                  <div style={{ marginTop: 4, fontSize: 10, color: "#a0ffb0", fontFamily: "ui-monospace, monospace", letterSpacing: 1 }}>
-                    HP 100/100 ▸ READY
                   </div>
                 </motion.div>
 
                 {/* VS chip */}
-                <div style={{ position: "relative", width: 64, height: 64 }}>
+                <div style={{ position: "relative", width: 70, height: 70 }}>
                   <span aria-hidden style={{
-                    position: "absolute", inset: -10, borderRadius: "50%",
-                    background: "radial-gradient(circle, rgba(253,224,71,0.6), transparent 70%)",
-                    filter: "blur(8px)",
+                    position: "absolute",
+                    inset: -14,
+                    borderRadius: "50%",
+                    background: "radial-gradient(circle, rgba(255, 95, 179, 0.5), transparent 70%)",
+                    filter: "blur(10px)",
                   }} />
                   <div style={{
                     position: "absolute", left: "50%", top: "50%",
                     transform: "translate(-50%,-50%)",
-                    width: 64, height: 64, borderRadius: "50%",
-                    background: "radial-gradient(circle at 35% 30%, #fde68a, #f59e0b 60%, #b45309)",
-                    border: "3px solid #fbbf24",
-                    color: "#1a0505",
-                    fontFamily: "ui-monospace, monospace",
-                    fontWeight: 900, fontSize: 22,
+                    width: 70, height: 70, borderRadius: "50%",
+                    background: "linear-gradient(135deg, #ffd158 0%, #ff7a59 50%, #ff5fb3 100%)",
+                    border: "3px solid rgba(255, 215, 138, 0.85)",
+                    color: "#1a0612",
+                    fontFamily: "'Fredoka', 'Nunito', sans-serif",
+                    fontWeight: 900, fontSize: 22, letterSpacing: 1,
                     display: "flex", alignItems: "center", justifyContent: "center",
-                    boxShadow: "0 8px 18px rgba(180,83,9,0.55), inset 0 2px 6px rgba(255,255,255,0.4)",
+                    boxShadow: "0 8px 20px rgba(255, 95, 179, 0.45), inset 0 2px 8px rgba(255,255,255,0.5)",
                     animation: "bbVsClash 0.9s cubic-bezier(0.4,1.4,0.5,1) 0.5s both",
                   }}>VS</div>
                 </div>
@@ -4545,84 +4524,86 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
                   initial={{ opacity: 0, x: 40 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 0.4, type: "spring", stiffness: 200, damping: 22 }}
-                  style={{ position: "relative", textAlign: "center", padding: "10px 8px" }}
+                  style={{ position: "relative", textAlign: "center", animation: "bbFloatVillain 3.4s ease-in-out infinite" }}
                 >
-                  <div style={{ position: "relative", display: "inline-block", animation: "bbFloatVillain 3.4s ease-in-out infinite" }}>
+                  <div style={{ position: "relative", display: "inline-block", width: 130, height: 130 }}>
+                    {/* Ember halo — matches BattleArena's BossPortrait halo */}
                     <span aria-hidden style={{
-                      position: "absolute", inset: -10, borderRadius: "50%",
-                      background: "radial-gradient(circle, rgba(239,68,68,0.55), transparent 70%)",
+                      position: "absolute",
+                      inset: -16,
+                      borderRadius: "50%",
+                      background: "radial-gradient(circle at 50% 50%, rgba(255, 95, 179, 0.55) 0%, rgba(255, 95, 179, 0.18) 50%, transparent 75%)",
                       filter: "blur(12px)",
                     }} />
-                    <img src="/characters/raccoon.png" alt="Hacker Raccoon" style={{
+                    <div style={{
                       position: "relative",
-                      width: 130, maxWidth: "100%", height: "auto",
-                      filter: "drop-shadow(0 12px 22px rgba(239,68,68,0.65))",
-                    }} />
+                      width: 130,
+                      height: 130,
+                      borderRadius: "50%",
+                      overflow: "hidden",
+                      background: "#3a1a3e",
+                      boxShadow: "0 0 0 5px rgba(196, 115, 64, 0.7), 0 0 0 7px rgba(122, 58, 82, 0.85), 0 18px 36px -10px rgba(8, 10, 22, 0.75), 0 0 28px rgba(255, 95, 179, 0.45)",
+                    }}>
+                      <div style={{
+                        width: "100%", height: "100%",
+                        backgroundImage: "url(/characters/raccoon.png)",
+                        backgroundSize: "180% auto",
+                        backgroundPosition: "center 18%",
+                        backgroundRepeat: "no-repeat",
+                      }} />
+                    </div>
                   </div>
-                  <div style={{ marginTop: 8, color: "#fca5a5", fontWeight: 900, fontSize: 13, letterSpacing: 3, textTransform: "uppercase", fontFamily: "ui-monospace, monospace" }}>
+                  <div style={{
+                    marginTop: 16,
+                    color: "#f4a89a",
+                    fontWeight: 800,
+                    fontSize: 13,
+                    letterSpacing: 3,
+                    textTransform: "uppercase",
+                    fontFamily: "'Fredoka', 'Nunito', sans-serif",
+                  }}>
                     Hacker Raccoon
                   </div>
-                  {/* HP bar */}
-                  <div style={{ marginTop: 6, height: 8, borderRadius: 4, background: "rgba(255,255,255,0.06)", border: "1px solid rgba(239,68,68,0.45)", overflow: "hidden" }}>
-                    <motion.div
-                      initial={{ width: 0 }}
-                      animate={{ width: "100%" }}
-                      transition={{ delay: 0.9, duration: 0.8, ease: "easeOut" }}
-                      style={{ height: "100%", background: "linear-gradient(90deg, #ef4444, #f97316, #fbbf24)", boxShadow: "0 0 10px #ef4444" }}
-                    />
-                  </div>
-                  <div style={{ marginTop: 4, fontSize: 10, color: "#fca5a5", fontFamily: "ui-monospace, monospace", letterSpacing: 1 }}>
-                    HP 100/100 ▸ HOSTILE
-                  </div>
                 </motion.div>
-              </div>
-
-              {/* Stat panel */}
-              <div style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(3, 1fr)",
-                gap: 10,
-                marginBottom: 18,
-              }}>
-                {[
-                  { l: "ROUNDS", v: "10", c: "#00e5ff" },
-                  { l: "WEAPON", v: "KNOWLEDGE", c: "#7c5cff" },
-                  { l: "REWARD", v: "+50 COINS", c: "#fbbf24" },
-                ].map((s, i) => (
-                  <div key={i} style={{
-                    padding: "8px 10px",
-                    background: `${s.c}10`,
-                    border: `1px solid ${s.c}55`,
-                    borderRadius: 10,
-                    textAlign: "center",
-                    fontFamily: "ui-monospace, monospace",
-                  }}>
-                    <div style={{ fontSize: 9, letterSpacing: 2, color: "#94a3b8" }}>{s.l}</div>
-                    <div style={{ fontSize: 13, fontWeight: 900, color: s.c, marginTop: 2 }}>{s.v}</div>
-                  </div>
-                ))}
               </div>
 
               {/* Saved password reveal — what the kid is defending */}
               <BossSavedPasswordChip />
 
-              {/* Start button */}
+              {/* Start button - cinematic CTA */}
               <motion.div
-                initial={{ opacity: 0, scale: 0.8, y: 12 }}
+                initial={{ opacity: 0, scale: 0.85, y: 14 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
-                transition={{ delay: 1.0, type: "spring", stiffness: 300, damping: 20 }}
-                style={{ textAlign: "center" }}
+                transition={{ delay: 0.95, type: "spring", stiffness: 280, damping: 22 }}
+                style={{ textAlign: "center", marginTop: 8 }}
               >
-                {btn("⚔ START BATTLE →", () => {
-                  playSFX("transition");
-                  setShowBossBattle(true);
-                }, {
-                  fontSize: 22,
-                  padding: "16px 44px",
-                  borderRadius: 18,
-                  boxShadow: "0 0 30px rgba(249,115,22,0.6), 0 0 60px rgba(239,68,68,0.3)",
-                  letterSpacing: 2,
-                })}
+                <button
+                  onClick={() => {
+                    playSFX("transition");
+                    setShowBossBattle(true);
+                  }}
+                  style={{
+                    position: "relative",
+                    padding: "16px 44px",
+                    border: "none",
+                    borderRadius: 18,
+                    background: "linear-gradient(135deg, #ffd158 0%, #ff7a59 30%, #ff5fb3 65%, #7c5cff 100%)",
+                    color: "#080a16",
+                    fontFamily: "'Fredoka', 'Nunito', sans-serif",
+                    fontWeight: 900,
+                    fontSize: 22,
+                    letterSpacing: 2,
+                    cursor: "pointer",
+                    animation: "bbButtonGlow 1.8s ease-in-out infinite",
+                    transition: "transform 0.15s ease",
+                  }}
+                  onMouseEnter={(e) => { e.currentTarget.style.transform = "translateY(-2px)"; }}
+                  onMouseLeave={(e) => { e.currentTarget.style.transform = "translateY(0)"; }}
+                  onMouseDown={(e) => { e.currentTarget.style.transform = "translateY(1px) scale(0.98)"; }}
+                  onMouseUp={(e) => { e.currentTarget.style.transform = "translateY(-2px)"; }}
+                >
+                  ⚔ Begin the Battle →
+                </button>
               </motion.div>
             </div>
           </FullScene>
