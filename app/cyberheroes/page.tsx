@@ -236,10 +236,10 @@ const CREDENTIALS: Array<{
   { icon: "🎓", title: "ASDAN Aligned",       sub: "Accreditation",       accent: "#a06aff" },
   { icon: "🛡️", title: "GDPR Compliant",       sub: "EU · UK Privacy",     accent: "#7eff97" },
   { icon: "★",  title: "Built by Parents",    sub: "For Parents",         accent: "#ffd158" },
-  { icon: "✓",  title: "30-Day Refund",        sub: "No Questions Asked",  accent: "#ff5fb3" },
+  { icon: "♾", title: "Lifetime Access",      sub: "Free Updates Forever", accent: "#ff5fb3" },
   { icon: "🇬🇧", title: "Made in the UK",       sub: "British Curriculum",  accent: "#7df0ff" },
   { icon: "🔐", title: "No Data Sold",         sub: "No 3rd-Party Ads",    accent: "#a06aff" },
-  { icon: "🎯", title: "Ages 6–9",             sub: "Crafted Curriculum",  accent: "#ffd158" },
+  { icon: "🎯", title: "Ages 6–10",            sub: "Crafted Curriculum",  accent: "#ffd158" },
 ];
 
 function CredentialsMarquee() {
@@ -597,7 +597,7 @@ function AnimCounter({ to, suffix = "", label }: { to: number; suffix?: string; 
 
 /* ─── COURSE CARD DATA ─── */
 const COURSES = [
-  { emoji: "🛡️", title: "Cyber Heroes Academy", ages: "6–9", weeks: 20, time: "45 min/week", accent: "#00e5ff", desc: "Fun animated adventures teaching password safety, online awareness, and digital citizenship.", featured: true },
+  { emoji: "🛡️", title: "Cyber Heroes Academy", ages: "6–10", weeks: 20, time: "45 min/week", accent: "#00e5ff", desc: "Fun animated adventures teaching password safety, online awareness, and digital citizenship.", featured: true },
   { emoji: "🔍", title: "Cyber Explorers", ages: "11–14", weeks: 14, time: "1 hr/week", accent: "#8b5cf6", desc: "Deeper dives into encryption, social engineering, safe browsing, and data privacy.", featured: false },
   { emoji: "💻", title: "CyberStart", ages: "15–17", weeks: 16, time: "1.5 hrs/week", accent: "#22c55e", desc: "Hands-on challenges covering networking, ethical hacking basics, and secure coding.", featured: false },
   { emoji: "🚀", title: "CyberStart Pro", ages: "18+", weeks: 20, time: "2 hrs/week", accent: "#ffd158", desc: "Industry-aligned curriculum preparing for certifications and real-world security roles.", featured: false },
@@ -647,7 +647,7 @@ const IconFamily = ({ size = 32, color = "#ec4899" }: { size?: number; color?: s
 function FAQAccordion() {
   const [open, setOpen] = useState<number | null>(0);
   const items = [
-    { q: "What age is this for?", a: "Cyber Heroes Academy is designed for children aged 6–9. Every lesson, character, and activity is crafted to be age-appropriate and engaging for this specific age group." },
+    { q: "What age is this for?", a: "Cyber Heroes Academy is designed for children aged 6–10. Every lesson, character, and activity is crafted to be age-appropriate and engaging for this specific age group." },
     { q: "How long does it take?", a: "20 weeks, one 45-minute session per week. Children can go at their own pace — there's no pressure to keep to a schedule." },
     { q: "Is it safe? Can strangers contact my child?", a: "Yes, completely safe. Lessons are sandboxed — no chat, no public profile, no social feed. Your child plays through the missions on their own; nobody else can contact them through the course. We don't sell or share data, and we don't run third-party advertising trackers." },
     { q: "Can I see what my child is learning?", a: "Yes. The parent dashboard shows you which lessons they've completed, badges earned, time spent, and a snapshot of how they're progressing each week. You'll also receive a printable milestone certificate at the end of each module." },
@@ -656,7 +656,6 @@ function FAQAccordion() {
     { q: "What if something breaks during a lesson?", a: "Email hello@algorithmx.co.uk with a quick description of what happened — we usually respond within one working day and push fixes within the week. If you're stuck mid-lesson, refresh the page; progress is saved automatically every few seconds." },
     { q: "Do we get lifetime access?", a: "Yes! Your one-time purchase of £99 gives you lifetime access with continuous updates — as new threats emerge, we update the content so your child's knowledge stays current." },
     { q: "I have more than one child — do I need to pay £99 each time?", a: "Yes, enrolment is per child at £99 — there's no sibling discount. Each child gets their own dedicated account, progress tracking, badges, and milestone certificates, so they can each move at their own pace. It's a one-time payment per child with lifetime access; no subscriptions, no renewals." },
-    { q: "What if my child doesn't enjoy it?", a: "We offer a 30-day money-back guarantee, no questions asked. If your child isn't engaged within the first 30 days, email hello@algorithmx.co.uk and we'll process a full refund. Their progress is saved during the 30-day window — if you change your mind, you can re-enrol any time." },
   ];
   return (
     <div style={{ maxWidth: 720, margin: "0 auto" }}>
@@ -919,7 +918,7 @@ export default function HomePage() {
                 </span>
               </h1>
               <p className="text-gray-300 text-base sm:text-lg leading-relaxed max-w-lg mx-auto lg:mx-0 mb-4">
-                Join Adam and Layla on an interactive journey to become a Cyber Hero. Fun animated lessons, games, and challenges for ages 6–9.
+                Join Adam and Layla on an interactive journey to become a Cyber Hero. Fun animated lessons, games, and challenges for ages 6–10.
               </p>
               <p className="mb-4 mono" style={{ fontSize: 14, color: "#ff7a59", fontWeight: 500 }}>
                 <span className="ch-typewriter">20 weeks. 40+ missions. 1 Cyber Hero.</span>
@@ -1003,40 +1002,35 @@ export default function HomePage() {
               animate={{ opacity: 1, scale: 1 }}
               transition={{ type: "spring", stiffness: 150, damping: 20, delay: 0.2 }}>
               <div className="relative">
-                {/* Glow behind image — bigger + softer so the video
-                    radiates further into the cosmic backdrop. */}
-                <motion.div className="absolute inset-0 rounded-3xl"
-                  animate={{ opacity: [0.55, 1, 0.55] }}
-                  transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                  style={{
-                    background: "radial-gradient(ellipse at center, rgba(124,92,255,0.55) 0%, rgba(0,229,255,0.32) 35%, rgba(255,95,179,0.22) 60%, transparent 80%)",
-                    filter: "blur(70px)", transform: "scale(1.45)",
+                <div className="relative">
+                  {/* Ambient cosmic glow — STATIC, sits behind the video.
+                      Previously this was a drop-shadow filter on the video
+                      wrapper, which forced the GPU to recomposite every
+                      frame and made playback stutter. A static blurred div
+                      gets the same look without the per-frame cost. */}
+                  <div aria-hidden style={{
+                    position: "absolute",
+                    inset: "-60px",
+                    borderRadius: 80,
+                    background: "radial-gradient(ellipse at center, rgba(124,92,255,0.55) 0%, rgba(0,229,255,0.30) 40%, rgba(255,95,179,0.20) 65%, transparent 85%)",
+                    filter: "blur(48px)",
+                    pointerEvents: "none",
+                    zIndex: 0,
                   }} />
-                <motion.div
-                  animate={{ y: [-8, 8, -8] }}
-                  transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-                  className="relative"
-                  style={{
-                    // OUTER wrapper carries the ambient glow that bleeds
-                    // into the cosmic backdrop. Cranked up so the video
-                    // radiates light noticeably further outward.
-                    filter:
-                      "drop-shadow(0 0 60px rgba(124,92,255,0.6)) drop-shadow(0 0 140px rgba(0,229,255,0.32)) drop-shadow(0 0 80px rgba(255,95,179,0.22))",
-                  }}
-                >
                   <div
                     className="relative overflow-hidden"
                     style={{
                       borderRadius: 24,
-                      // Aggressive radial mask — starts fading from 38%
-                      // radius so the video bleeds into the cosmos
-                      // significantly; only the centre ~half is fully
-                      // opaque. Reads as 'a glow in space' rather than
-                      // a card with rounded corners.
+                      // Radial mask blends the video into the cosmic
+                      // backdrop. The previous mask-image had four stops
+                      // with alpha; simplified to two stops + a single
+                      // alpha midpoint so the GPU doesn't sample a
+                      // complex gradient on every frame.
                       maskImage:
-                        "radial-gradient(ellipse 88% 88% at center, black 38%, rgba(0,0,0,0.85) 60%, rgba(0,0,0,0.4) 82%, transparent 100%)",
+                        "radial-gradient(ellipse 92% 92% at center, black 50%, rgba(0,0,0,0.6) 80%, transparent 100%)",
                       WebkitMaskImage:
-                        "radial-gradient(ellipse 88% 88% at center, black 38%, rgba(0,0,0,0.85) 60%, rgba(0,0,0,0.4) 82%, transparent 100%)",
+                        "radial-gradient(ellipse 92% 92% at center, black 50%, rgba(0,0,0,0.6) 80%, transparent 100%)",
+                      zIndex: 1,
                     }}
                   >
                     <video
@@ -1046,9 +1040,10 @@ export default function HomePage() {
                       muted={heroMuted}
                       loop
                       playsInline
+                      preload="auto"
                       poster="/characters/heroic.png"
                       className="block w-full max-w-[500px]"
-                      style={{ display: "block", background: "transparent", cursor: "pointer" }}
+                      style={{ display: "block", background: "transparent", cursor: "pointer", willChange: "transform" }}
                       onClick={() => {
                         setHeroMuted((m) => !m);
                         const v = heroVideoRef.current;
@@ -1093,7 +1088,7 @@ export default function HomePage() {
                     <span style={{ fontSize: 16 }}>{heroMuted ? "🔇" : "🔊"}</span>
                     {heroMuted && <span>Tap for sound</span>}
                   </button>
-                </motion.div>
+                </div>
                 {/* Sparkles */}
                 {[
                   { top: "-8px", right: "-8px", size: 14 },
@@ -1286,7 +1281,7 @@ export default function HomePage() {
               <span style={ACCENT_TEXT}>other ages</span>?
             </h3>
             <p className="text-gray-500 text-sm max-w-lg mx-auto mb-6">
-              Cyber Heroes Academy is designed for ages 6-9. For older children and adults, check out our other cybersecurity courses.
+              Cyber Heroes Academy is designed for ages 6-10. For older children and adults, check out our other cybersecurity courses.
             </p>
             <a href="/" className="inline-block px-6 py-3 text-sm font-bold text-white transition-all"
               style={{ background: BTN_GRAD, boxShadow: BTN_GLOW, borderRadius: 14 }}>
@@ -1535,30 +1530,87 @@ export default function HomePage() {
             </p>
           </div>
 
-          <div className="relative max-w-[960px] mx-auto" data-scroll data-scroll-delay="0.15"
-            style={{ height: 540 }}>
+          <div className="relative max-w-[1040px] mx-auto flex flex-wrap items-end justify-center gap-6 sm:gap-8 px-2" data-scroll data-scroll-delay="0.15">
             {/* Big cosmic glow behind the device cluster */}
             <div aria-hidden style={{
               position: "absolute", inset: "-10%",
               background: "radial-gradient(ellipse at center, rgba(124,92,255,0.35) 0%, rgba(0,229,255,0.20) 35%, rgba(255,95,179,0.15) 60%, transparent 80%)",
               filter: "blur(60px)",
               pointerEvents: "none",
+              zIndex: 0,
             }} />
 
-            {/* ── LAPTOP — back, biggest ── */}
+            {/* ── PHONE — left ── */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.42, ease: [0.16, 1, 0.3, 1] }}
+              viewport={{ once: true }}
+              style={{
+                position: "relative",
+                width: "clamp(120px, 16vw, 160px)",
+                aspectRatio: "10 / 19",
+                marginBottom: 18,
+                filter: "drop-shadow(0 22px 44px rgba(0,229,255,0.45)) drop-shadow(0 0 70px rgba(124,92,255,0.22))",
+              }}
+            >
+              <div style={{
+                width: "100%", height: "100%",
+                borderRadius: 28,
+                background: "linear-gradient(135deg, #1a1f3a, #0a0e22)",
+                border: "2px solid rgba(0,229,255,0.5)",
+                padding: 6,
+                boxShadow: "inset 0 0 0 1px rgba(255,255,255,0.05)",
+                position: "relative",
+              }}>
+                {/* Notch */}
+                <div style={{
+                  position: "absolute", top: 10, left: "50%", transform: "translateX(-50%)",
+                  width: "32%", height: 8,
+                  borderRadius: 999,
+                  background: "#04050d",
+                  zIndex: 2,
+                }} />
+                <div style={{
+                  position: "relative",
+                  width: "100%", height: "100%",
+                  borderRadius: 22, overflow: "hidden",
+                  background: "radial-gradient(ellipse at 50% 60%, #2a0d2e 0%, #1a1f4d 35%, #0f1530 70%, #04050d 100%)",
+                }}>
+                  <Image
+                    src="/characters/celebrating.png"
+                    alt="Cyber Heroes lesson on a phone"
+                    width={175} height={332}
+                    style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 30%" }}
+                    sizes="(max-width: 768px) 30vw, 160px"
+                  />
+                  <div style={{ position: "absolute", inset: 0, background: "linear-gradient(180deg, transparent 50%, rgba(8,10,22,0.7) 100%)" }} />
+                  <div style={{
+                    position: "absolute", bottom: 14, left: "50%", transform: "translateX(-50%)",
+                    fontFamily: "'JetBrains Mono', monospace",
+                    fontSize: 7, letterSpacing: "0.18em", color: "#ffd158",
+                    background: "rgba(8,10,22,0.85)",
+                    border: "1px solid rgba(255,209,88,0.45)",
+                    borderRadius: 999, padding: "2px 6px",
+                    textTransform: "uppercase",
+                    whiteSpace: "nowrap",
+                  }}>
+                    ★ Victory!
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* ── LAPTOP — center, biggest ── */}
             <motion.div
               initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
               viewport={{ once: true }}
               style={{
-                position: "absolute",
-                top: "8%",
-                left: "50%",
-                transform: "translateX(-50%)",
-                width: "min(72%, 640px)",
+                position: "relative",
+                width: "clamp(360px, 50vw, 540px)",
                 aspectRatio: "16 / 10",
-                zIndex: 1,
                 filter: "drop-shadow(0 30px 60px rgba(124,92,255,0.45)) drop-shadow(0 0 90px rgba(0,229,255,0.22))",
               }}
             >
@@ -1612,19 +1664,17 @@ export default function HomePage() {
               }} />
             </motion.div>
 
-            {/* ── TABLET — middle, in front ── */}
+            {/* ── TABLET — right ── */}
             <motion.div
-              initial={{ opacity: 0, y: 30, x: 20 }}
-              whileInView={{ opacity: 1, y: 0, x: 0 }}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.28, ease: [0.16, 1, 0.3, 1] }}
               viewport={{ once: true }}
               style={{
-                position: "absolute",
-                top: "32%",
-                right: "5%",
-                width: "min(34%, 280px)",
+                position: "relative",
+                width: "clamp(170px, 22vw, 220px)",
                 aspectRatio: "4 / 5.6",
-                zIndex: 2,
+                marginBottom: 10,
                 filter: "drop-shadow(0 26px 50px rgba(255,95,179,0.45)) drop-shadow(0 0 80px rgba(124,92,255,0.22))",
               }}
             >
@@ -1660,68 +1710,6 @@ export default function HomePage() {
                     textTransform: "uppercase",
                   }}>
                     ▸ Story · The Hack
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-
-            {/* ── PHONE — front, smallest ── */}
-            <motion.div
-              initial={{ opacity: 0, y: 30, x: -20 }}
-              whileInView={{ opacity: 1, y: 0, x: 0 }}
-              transition={{ duration: 0.7, delay: 0.42, ease: [0.16, 1, 0.3, 1] }}
-              viewport={{ once: true }}
-              style={{
-                position: "absolute",
-                bottom: "0%",
-                left: "8%",
-                width: "min(20%, 175px)",
-                aspectRatio: "10 / 19",
-                zIndex: 3,
-                filter: "drop-shadow(0 22px 44px rgba(0,229,255,0.45)) drop-shadow(0 0 70px rgba(124,92,255,0.22))",
-              }}
-            >
-              <div style={{
-                width: "100%", height: "100%",
-                borderRadius: 28,
-                background: "linear-gradient(135deg, #1a1f3a, #0a0e22)",
-                border: "2px solid rgba(0,229,255,0.5)",
-                padding: 6,
-                boxShadow: "inset 0 0 0 1px rgba(255,255,255,0.05)",
-              }}>
-                {/* Notch */}
-                <div style={{
-                  position: "absolute", top: 10, left: "50%", transform: "translateX(-50%)",
-                  width: "32%", height: 8,
-                  borderRadius: 999,
-                  background: "#04050d",
-                  zIndex: 2,
-                }} />
-                <div style={{
-                  position: "relative",
-                  width: "100%", height: "100%",
-                  borderRadius: 22, overflow: "hidden",
-                  background: "radial-gradient(ellipse at 50% 60%, #2a0d2e 0%, #1a1f4d 35%, #0f1530 70%, #04050d 100%)",
-                }}>
-                  <Image
-                    src="/characters/celebrating.png"
-                    alt="Cyber Heroes lesson on a phone"
-                    width={175} height={332}
-                    style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 30%" }}
-                    sizes="(max-width: 768px) 20vw, 175px"
-                  />
-                  <div style={{ position: "absolute", inset: 0, background: "linear-gradient(180deg, transparent 50%, rgba(8,10,22,0.7) 100%)" }} />
-                  <div style={{
-                    position: "absolute", bottom: 14, left: "50%", transform: "translateX(-50%)",
-                    fontFamily: "'JetBrains Mono', monospace",
-                    fontSize: 7, letterSpacing: "0.18em", color: "#ffd158",
-                    background: "rgba(8,10,22,0.85)",
-                    border: "1px solid rgba(255,209,88,0.45)",
-                    borderRadius: 999, padding: "2px 6px",
-                    textTransform: "uppercase",
-                    whiteSpace: "nowrap",
-                  }}>
-                    ★ Victory!
                   </div>
                 </div>
               </div>
@@ -1876,7 +1864,7 @@ export default function HomePage() {
                   "CyberFirst & ASDAN aligned content",
                   "Continuous content updates as new threats emerge",
                   "GDPR-compliant · No data sold · No third-party ads",
-                  "30-day money-back guarantee — full refund, no questions asked",
+                  "Lifetime access — free updates as new threats emerge",
                 ].map((f, i, arr) => (
                   <li key={i} style={{
                     display: "flex", alignItems: "center", gap: 12,
@@ -1904,7 +1892,7 @@ export default function HomePage() {
                 Enrol Your Child Now
               </motion.a>
               <p style={{ fontSize: 13, color: "#64748b", marginTop: 14 }}>
-                30-day money-back guarantee
+                One-time payment · Lifetime access
               </p>
             </div>
           </div>
@@ -1964,7 +1952,7 @@ export default function HomePage() {
                   Enrol Now — £99
                 </motion.a>
                 <p className="mt-4" style={{ fontSize: 13, color: "#94a3b8" }}>
-                  One-time payment · Instant access · 30-day guarantee
+                  One-time payment · Instant access · Lifetime updates
                 </p>
               </div>
             </div>

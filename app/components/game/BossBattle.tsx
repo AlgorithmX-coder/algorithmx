@@ -3329,6 +3329,7 @@ export default function BossBattle({
             </p>
           )}
           <div
+            className="bb-answer-grid"
             style={{
               display: "grid",
               gridTemplateColumns: "1fr 1fr",
@@ -3684,6 +3685,13 @@ export default function BossBattle({
           100% { transform: scale(1) }
         }
         .bb-hp-bar.bb-hp-low { animation: bbPulseLow 0.9s ease-in-out infinite }
+        @media (max-width: 640px) {
+          /* Phone: stack the four answers in a single column so each
+             answer button is a full-width touch target. */
+          .bb-answer-grid { grid-template-columns: 1fr !important; }
+          .bb-answer { font-size: 15px; padding: 16px 14px; min-height: 52px; }
+          .bb-answer-letter { width: 32px; height: 32px; font-size: 14px; }
+        }
         .bb-answer {
           display: flex; align-items: center; gap: 12px;
           background: rgba(15,23,42,0.95);

@@ -11,9 +11,9 @@ import type { Metadata } from "next";
  */
 
 const PAGE_TITLE =
-  "Cyber Heroes Academy — Cybersecurity for Kids Ages 6–9 | AlgorithmX";
+  "Cyber Heroes Academy — Cybersecurity for Kids Ages 6–10 | AlgorithmX";
 const PAGE_DESC =
-  "Turn your child into a Cyber Hero. 20 weeks of interactive cybersecurity missions for kids 6–9 — animated lessons, boss battles, printable certificates. £99 one-time, lifetime access, no subscriptions.";
+  "Turn your child into a Cyber Hero. 20 weeks of interactive cybersecurity missions for kids 6–10 — animated lessons, boss battles, printable certificates. £99 one-time, lifetime access, no subscriptions.";
 const PAGE_URL = "https://www.algorithmx.co.uk/cyberheroes";
 const OG_IMAGE = "/characters/heroic.png";
 
@@ -22,7 +22,7 @@ export const metadata: Metadata = {
   description: PAGE_DESC,
   alternates: { canonical: PAGE_URL },
   openGraph: {
-    title: "Cyber Heroes Academy — Cybersecurity for Kids 6–9",
+    title: "Cyber Heroes Academy — Cybersecurity for Kids 6–10",
     description: PAGE_DESC,
     url: PAGE_URL,
     siteName: "AlgorithmX",
@@ -38,7 +38,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Cyber Heroes Academy — Cybersecurity for Kids 6–9",
+    title: "Cyber Heroes Academy — Cybersecurity for Kids 6–10",
     description:
       "20 weeks of interactive cybersecurity adventures. £99 one-time, lifetime access.",
     images: [OG_IMAGE],
@@ -50,7 +50,7 @@ const COURSE_JSON_LD = {
   "@type": "Course",
   name: "Cyber Heroes Academy",
   description:
-    "Interactive cybersecurity course for children aged 6–9. 20 weeks of animated lessons, missions, and boss battles teaching password safety, phishing awareness, and digital citizenship.",
+    "Interactive cybersecurity course for children aged 6–10. 20 weeks of animated lessons, missions, and boss battles teaching password safety, phishing awareness, and digital citizenship.",
   provider: {
     "@type": "Organization",
     name: "AlgorithmX",
@@ -60,7 +60,7 @@ const COURSE_JSON_LD = {
   audience: {
     "@type": "EducationalAudience",
     educationalRole: "student",
-    audienceType: "Children aged 6–9",
+    audienceType: "Children aged 6–10",
   },
   offers: {
     "@type": "Offer",

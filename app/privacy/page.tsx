@@ -100,7 +100,7 @@ export default function PrivacyPage() {
 
         <Section title="Children under 13">
           <p>
-            Cyber Heroes Academy is designed for children aged 6–9. We treat all
+            Cyber Heroes Academy is designed for children aged 6–10. We treat all
             user accounts as belonging to a parent or guardian — you create the
             account, you provide consent, you control the data.
           </p>

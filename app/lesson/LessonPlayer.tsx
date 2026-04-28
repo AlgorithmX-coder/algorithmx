@@ -4366,6 +4366,24 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
               @keyframes bbSparkRace   { 0% { transform: translateX(-110vw) translateY(0); opacity: 0; } 5% { opacity: 1; } 95% { opacity: 1; } 100% { transform: translateX(110vw) translateY(0); opacity: 0; } }
               @keyframes bbTitleGlitch { 0%, 88%, 100% { text-shadow: none; transform: translate(0,0); } 90% { text-shadow: -3px 0 0 #00e5ff, 3px 0 0 #ff5fb3; transform: translate(1px,-1px); } 92% { text-shadow: 4px 0 0 #ffd158, -4px 0 0 #7c5cff; transform: translate(-1px,1px); } 94% { text-shadow: -2px 0 0 #00e5ff, 2px 0 0 #ff5fb3; transform: translate(0,0); } }
               @keyframes bbVignettePulse { 0%,100% { opacity: 0.4; } 50% { opacity: 0.7; } }
+              /* Mobile lite-mode for the boss lock screen */
+              @media (max-width: 640px) {
+                .bb-lock-vs {
+                  grid-template-columns: 1fr !important;
+                  gap: 14px !important;
+                  padding: 22px 16px !important;
+                }
+                .bb-lock-vs > div:nth-child(2) {
+                  /* The VS chip — make it a horizontal divider on phones */
+                  width: 56px !important;
+                  height: 56px !important;
+                  margin: 4px auto !important;
+                }
+                .bb-lock-vs [data-portrait] {
+                  width: 110px !important;
+                  height: 110px !important;
+                }
+              }
             `}</style>
 
             <div style={{
@@ -4719,7 +4737,7 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
               </motion.p>
 
               {/* VS face-off — circular portraits with proper halos, no demo HUD */}
-              <div style={{
+              <div className="bb-lock-vs" style={{
                 position: "relative",
                 zIndex: 1,
                 display: "grid",
@@ -4813,7 +4831,7 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
                   transition={{ delay: 0.4, type: "spring", stiffness: 200, damping: 22 }}
                   style={{ position: "relative", textAlign: "center", animation: "bbFloatHero 3s ease-in-out infinite" }}
                 >
-                  <div style={{ position: "relative", display: "inline-block", width: 130, height: 130 }}>
+                  <div data-portrait style={{ position: "relative", display: "inline-block", width: 130, height: 130 }}>
                     {/* Halo — matches BattleArena's HeroPortrait halo */}
                     <span aria-hidden style={{
                       position: "absolute",
@@ -4887,7 +4905,7 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
                   transition={{ delay: 0.4, type: "spring", stiffness: 200, damping: 22 }}
                   style={{ position: "relative", textAlign: "center", animation: "bbFloatVillain 3.4s ease-in-out infinite" }}
                 >
-                  <div style={{ position: "relative", display: "inline-block", width: 130, height: 130 }}>
+                  <div data-portrait style={{ position: "relative", display: "inline-block", width: 130, height: 130 }}>
                     {/* Ember halo — matches BattleArena's BossPortrait halo */}
                     <span aria-hidden style={{
                       position: "absolute",
