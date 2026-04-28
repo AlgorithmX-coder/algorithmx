@@ -876,32 +876,46 @@ export default function HomePage() {
                     background: "linear-gradient(135deg, rgba(124,92,255,0.4), rgba(0,229,255,0.4))",
                     filter: "blur(40px)", transform: "scale(1.1)",
                   }} />
-                <motion.div className="relative rounded-3xl overflow-hidden border-2 shadow-2xl"
+                <motion.div
                   animate={{ y: [-8, 8, -8] }}
                   transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+                  className="relative"
                   style={{
-                    borderColor: "rgba(124,92,255,0.45)",
-                    boxShadow: "0 0 28px rgba(124,92,255,0.45), 0 0 64px rgba(0,229,255,0.25)",
-                  }}>
-                  <video
-                    ref={heroVideoRef}
-                    src="/videos/cyberheroes-hero.mp4"
-                    autoPlay
-                    muted={heroMuted}
-                    loop
-                    playsInline
-                    poster="/characters/heroic.png"
-                    className="block w-full max-w-[500px]"
-                    style={{ display: "block", background: "#000", cursor: "pointer" }}
-                    onClick={() => {
-                      setHeroMuted((m) => !m);
-                      const v = heroVideoRef.current;
-                      if (v && v.paused) v.play().catch(() => {});
+                    // OUTER wrapper carries the ambient glow that bleeds
+                    // into the cosmic backdrop.
+                    filter: "drop-shadow(0 0 32px rgba(124,92,255,0.45)) drop-shadow(0 0 80px rgba(0,229,255,0.18))",
+                  }}
+                >
+                  <div
+                    className="relative rounded-3xl overflow-hidden"
+                    style={{
+                      // INNER element holds the soft radial mask so the
+                      // video corners fade into the cosmos. Drop-shadow
+                      // on the OUTER survives the mask cleanly because
+                      // the wrapper isn't masked.
+                      maskImage: "radial-gradient(ellipse at center, black 62%, rgba(0,0,0,0.6) 82%, transparent 100%)",
+                      WebkitMaskImage: "radial-gradient(ellipse at center, black 62%, rgba(0,0,0,0.6) 82%, transparent 100%)",
                     }}
-                  />
-                  {/* Sound toggle — overlays the bottom-right corner.
-                      "Tap for sound" hint while muted; speaker icon
-                      while playing with sound. */}
+                  >
+                    <video
+                      ref={heroVideoRef}
+                      src="/videos/cyberheroes-hero.mp4"
+                      autoPlay
+                      muted={heroMuted}
+                      loop
+                      playsInline
+                      poster="/characters/heroic.png"
+                      className="block w-full max-w-[500px]"
+                      style={{ display: "block", background: "transparent", cursor: "pointer" }}
+                      onClick={() => {
+                        setHeroMuted((m) => !m);
+                        const v = heroVideoRef.current;
+                        if (v && v.paused) v.play().catch(() => {});
+                      }}
+                    />
+                  </div>
+                  {/* Sound toggle — sits OUTSIDE the masked container so
+                      it stays sharp and fully visible at the corner. */}
                   <button
                     type="button"
                     onClick={(e) => {
@@ -931,6 +945,7 @@ export default function HomePage() {
                       WebkitBackdropFilter: "blur(8px)",
                       boxShadow: "0 4px 12px rgba(0, 0, 0, 0.4), 0 0 14px rgba(0, 229, 255, 0.35)",
                       transition: "all 0.2s ease",
+                      zIndex: 2,
                     }}
                   >
                     <span style={{ fontSize: 16 }}>{heroMuted ? "🔇" : "🔊"}</span>
@@ -965,15 +980,26 @@ export default function HomePage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 max-w-3xl mx-auto mb-10">
             {/* Adam */}
             <div data-scroll data-scroll-delay="0">
-              <motion.div className="rounded-3xl overflow-hidden char-blob char-blob-adam"
-                whileHover={{ y: -8, scale: 1.03, boxShadow: "0 0 25px rgba(124,92,255,0.4)" }}
+              <motion.div className="rounded-3xl char-blob char-blob-adam"
+                whileHover={{ y: -8, scale: 1.03, filter: "drop-shadow(0 0 32px rgba(124,92,255,0.5))" }}
                 style={{
-                  background: "rgba(255,255,255,0.04)",
-                  border: "2px solid rgba(124,92,255,0.3)",
-                  backdropFilter: "blur(8px)",
-                  boxShadow: "0 0 20px rgba(124,92,255,0.3)",
+                  // Card background + border softened — image blends into the
+                  // cosmic atmosphere via mask + drop-shadow instead of
+                  // sitting in a hard frame.
+                  background: "linear-gradient(180deg, rgba(124,92,255,0.06) 0%, rgba(124,92,255,0.02) 100%)",
+                  filter: "drop-shadow(0 0 24px rgba(124,92,255,0.32))",
                 }}>
-                <div style={{ height: 420, overflow: "hidden", background: "linear-gradient(180deg, rgba(124,92,255,0.08) 0%, transparent 100%)" }}>
+                <div
+                  style={{
+                    height: 420,
+                    overflow: "hidden",
+                    // Soft top + bottom + side fade so the character image
+                    // bleeds into the card / background instead of having
+                    // hard rectangular edges.
+                    maskImage: "linear-gradient(180deg, transparent 0%, black 12%, black 78%, transparent 100%)",
+                    WebkitMaskImage: "linear-gradient(180deg, transparent 0%, black 12%, black 78%, transparent 100%)",
+                  }}
+                >
                   <Image src="/characters/adam.png" alt="Adam, curious and brave Cyber Hero" width={400} height={500} className="char-float" style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 20%", display: "block" }} />
                 </div>
                 <div className="px-6 py-5 text-center">
@@ -987,15 +1013,20 @@ export default function HomePage() {
 
             {/* Layla */}
             <div data-scroll data-scroll-delay="0.15">
-              <motion.div className="rounded-3xl overflow-hidden char-blob char-blob-layla"
-                whileHover={{ y: -8, scale: 1.03, boxShadow: "0 0 25px rgba(124,92,255,0.4)" }}
+              <motion.div className="rounded-3xl char-blob char-blob-layla"
+                whileHover={{ y: -8, scale: 1.03, filter: "drop-shadow(0 0 32px rgba(255,95,179,0.5))" }}
                 style={{
-                  background: "rgba(255,255,255,0.04)",
-                  border: "2px solid rgba(124,92,255,0.3)",
-                  backdropFilter: "blur(8px)",
-                  boxShadow: "0 0 20px rgba(124,92,255,0.3)",
+                  background: "linear-gradient(180deg, rgba(255,95,179,0.06) 0%, rgba(124,92,255,0.02) 100%)",
+                  filter: "drop-shadow(0 0 24px rgba(255,95,179,0.32))",
                 }}>
-                <div style={{ height: 420, overflow: "hidden", background: "linear-gradient(180deg, rgba(124,92,255,0.08) 0%, transparent 100%)" }}>
+                <div
+                  style={{
+                    height: 420,
+                    overflow: "hidden",
+                    maskImage: "linear-gradient(180deg, transparent 0%, black 12%, black 78%, transparent 100%)",
+                    WebkitMaskImage: "linear-gradient(180deg, transparent 0%, black 12%, black 78%, transparent 100%)",
+                  }}
+                >
                   <Image src="/characters/layla.png" alt="Layla, smart and fearless Cyber Hero" width={400} height={500} className="char-float" style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 20%", display: "block" }} />
                 </div>
                 <div className="px-6 py-5 text-center">
