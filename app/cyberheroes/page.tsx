@@ -126,6 +126,77 @@ function ConstellationMesh() {
   );
 }
 
+/* ─── CODE LINES ───
+   Faint cybersecurity-themed pseudo-code snippets fading in/out at
+   fixed positions. Gives the page a "tech / cybersecurity" cue
+   without leaning on the Matrix-rain cliché. Multi-coloured cosmic
+   palette, low opacity, mono-font. */
+const CODE_SNIPPETS = [
+  "if (secure) { allow() }",
+  "encrypt(password)",
+  "firewall.active()",
+  "const shield = true",
+  "await scanThreats()",
+  "sha256(input)",
+  "validate(token)",
+  "import { Shield } from 'cyber'",
+  "auth.verify(user)",
+  "session.lock()",
+  "decrypt(message)",
+  "hash(pw + salt)",
+  "tls.handshake()",
+  "while (safe) { defend() }",
+  "bypass = false",
+  "cipher.encode(data)",
+  "block(ip)",
+  "scanPorts() // ok",
+  "mfa.required = true",
+  "guard.engage()",
+];
+
+function CodeLines() {
+  return (
+    <div style={{ position: "absolute", inset: 0, pointerEvents: "none" }}>
+      <style>{`
+        @keyframes codeFadeCH {
+          0%, 100% { opacity: 0; transform: translateY(0); }
+          15%      { opacity: 0.10; }
+          85%      { opacity: 0.10; }
+        }
+      `}</style>
+      {CODE_SNIPPETS.map((snippet, i) => {
+        const left = (i * 37 + 5) % 92;
+        const top = (i * 53 + 7) % 92;
+        const dur = 7 + (i % 5);
+        const delay = (i * 0.85) % 9;
+        const colour = ["#7c5cff", "#7df0ff", "#ff5fb3", "#ffd158"][i % 4];
+        return (
+          <span
+            key={`code-${i}`}
+            style={{
+              position: "absolute",
+              left: `${left}%`,
+              top: `${top}%`,
+              fontFamily: "'JetBrains Mono', ui-monospace, monospace",
+              fontSize: 10 + (i % 3),
+              fontWeight: 500,
+              color: colour,
+              textShadow: `0 0 8px ${colour}55`,
+              opacity: 0,
+              animation: `codeFadeCH ${dur}s ease-in-out ${delay}s infinite`,
+              whiteSpace: "nowrap",
+              letterSpacing: "0.04em",
+              userSelect: "none",
+            }}
+          >
+            {snippet}
+          </span>
+        );
+      })}
+    </div>
+  );
+}
+
 /* ─── ANIMATED TECH BACKGROUND ─── */
 function TechBackground() {
   // Mouse parallax — sets --mx / --my CSS custom properties on the root.
@@ -190,6 +261,14 @@ function TechBackground() {
           grid with an organic node-network in cosmic palette. */}
       <div style={{ position: "absolute", inset: 0, transform: "translate3d(calc(var(--mx) * 8px), calc(var(--my) * 8px), 0)" }}>
         <ConstellationMesh />
+      </div>
+
+      {/* Layer 1.5: Faint cybersecurity code snippets — mono-font lines
+          that fade in/out at fixed positions, giving the page an
+          explicit "tech / cybersecurity" cue without being Matrix-rain
+          cliché. Cosmic palette, very low opacity, mouse-parallax. */}
+      <div style={{ position: "absolute", inset: 0, transform: "translate3d(calc(var(--mx) * 12px), calc(var(--my) * 10px), 0)" }}>
+        <CodeLines />
       </div>
 
       {/* Layer 2: Floating cyber icons */}
