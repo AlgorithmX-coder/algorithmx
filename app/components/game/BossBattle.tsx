@@ -2629,7 +2629,16 @@ export default function BossBattle({
             inset: 0,
             zIndex: 0,
             pointerEvents: "none",
-            background: "radial-gradient(ellipse at 50% 60%, #1a0e22 0%, #0f1530 35%, #04050d 100%)",
+            // Adam = cool tech-blue; Layla = cosmic violet/pink. The
+            // hue-rotate is a global filter on the rendered Arena3D
+            // canvas so every inline-coloured mesh inside (wireframe
+            // globe, conduits, hex nodes, arcs) shifts together —
+            // way cheaper than threading heroId through every color
+            // literal in the 2800-line scene.
+            filter: selectedHero === "adam" ? "hue-rotate(-70deg) saturate(0.95)" : "none",
+            background: selectedHero === "adam"
+              ? "radial-gradient(ellipse at 50% 60%, #08243a 0%, #08142e 35%, #04050d 100%)"
+              : "radial-gradient(ellipse at 50% 60%, #1a0e22 0%, #0f1530 35%, #04050d 100%)",
           }}
         >
           <Arena3D

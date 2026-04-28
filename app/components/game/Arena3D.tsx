@@ -2026,7 +2026,9 @@ export default function Arena3D({
     const nodeLinks: NodeLink[] = [];
     const hexGeom = makeHexagonGeometry(0.15);
     disposables.push(hexGeom);
-    const nodeCount = isMobile ? 6 : 10;
+    // Trimmed (was 6 mobile / 10 desktop) — node bobbing + per-frame
+    // material lerp scaled with count and was contributing to jank.
+    const nodeCount = isMobile ? 4 : 6;
     const nodePositions: THREE.Vector3[] = [];
     for (let i = 0; i < nodeCount; i++) {
       const x = (Math.random() - 0.5) * 9;
