@@ -2,8 +2,15 @@
 
 import Image from "next/image";
 import { motion } from "framer-motion";
+import dynamic from "next/dynamic";
 import { CSSProperties, useEffect, useRef, useState } from "react";
 import { CyberIconOrEmoji } from "@/app/components/CyberIcon";
+
+// Live R3F backdrop — lazy-loaded so SSR doesn't try to execute WebGL.
+const CyberHeroesBackdrop = dynamic(
+  () => import("@/app/components/CyberHeroesBackdrop"),
+  { ssr: false },
+);
 
 /* ─── CONSTANTS ─── */
 const GRAD = "linear-gradient(135deg, #7c5cff, #00e5ff)";
@@ -24,10 +31,132 @@ const ACCENT_TEXT: CSSProperties = {
   whiteSpace: "nowrap",
 };
 
+/* ─── CONSTELLATION MESH ───
+   Replaces the old rigid circuit-board grid with an organic
+   constellation-network — random points connected by thin lines for
+   nearby pairs. Multi-coloured cosmic palette. */
+function ConstellationMesh() {
+  // Pre-computed deterministic node positions so the mesh is stable
+  // across renders (no jarring re-shuffles on resize).
+  const nodes = [
+    { x: 6,  y: 8,   c: "#7c5cff" }, { x: 22, y: 14,  c: "#a06aff" }, { x: 38, y: 6,  c: "#ff5fb3" },
+    { x: 54, y: 12,  c: "#7df0ff" }, { x: 72, y: 8,   c: "#ffd158" }, { x: 88, y: 14, c: "#7c5cff" },
+    { x: 12, y: 28,  c: "#ff5fb3" }, { x: 30, y: 32,  c: "#7df0ff" }, { x: 46, y: 22, c: "#7c5cff" },
+    { x: 62, y: 30,  c: "#ffd158" }, { x: 80, y: 26,  c: "#ff5fb3" }, { x: 95, y: 32, c: "#a06aff" },
+    { x: 4,  y: 50,  c: "#7df0ff" }, { x: 24, y: 48,  c: "#7c5cff" }, { x: 42, y: 54, c: "#ffd158" },
+    { x: 60, y: 46,  c: "#ff5fb3" }, { x: 76, y: 52,  c: "#a06aff" }, { x: 92, y: 48, c: "#7df0ff" },
+    { x: 14, y: 70,  c: "#ffd158" }, { x: 32, y: 76,  c: "#ff5fb3" }, { x: 50, y: 68, c: "#7c5cff" },
+    { x: 68, y: 74,  c: "#7df0ff" }, { x: 84, y: 70,  c: "#a06aff" },
+    { x: 8,  y: 90,  c: "#7c5cff" }, { x: 28, y: 86,  c: "#ffd158" }, { x: 46, y: 92, c: "#ff5fb3" },
+    { x: 64, y: 88,  c: "#a06aff" }, { x: 82, y: 94,  c: "#7df0ff" },
+  ];
+
+  // Build edges: connect each node to its 2-3 nearest neighbours.
+  type Edge = { a: number; b: number; len: number };
+  const edges: Edge[] = [];
+  for (let i = 0; i < nodes.length; i++) {
+    const dists = nodes
+      .map((_, j) => ({ j, d: i === j ? Infinity : Math.hypot(nodes[i].x - nodes[j].x, nodes[i].y - nodes[j].y) }))
+      .sort((a, b) => a.d - b.d);
+    // Connect to 2 nearest if within threshold.
+    for (let k = 0; k < 2; k++) {
+      const { j, d } = dists[k];
+      if (d > 26) break;
+      const a = Math.min(i, j);
+      const b = Math.max(i, j);
+      if (!edges.some((e) => e.a === a && e.b === b)) {
+        edges.push({ a, b, len: d });
+      }
+    }
+  }
+
+  return (
+    <svg
+      style={{
+        position: "absolute",
+        inset: 0,
+        width: "100%",
+        height: "100%",
+        filter: "drop-shadow(0 0 6px rgba(124, 92, 255, 0.35))",
+      }}
+      preserveAspectRatio="xMidYMid slice"
+      viewBox="0 0 100 100"
+    >
+      <defs>
+        <linearGradient id="constEdge" x1="0" x2="1">
+          <stop offset="0%" stopColor="#7c5cff" stopOpacity="0" />
+          <stop offset="50%" stopColor="#a06aff" stopOpacity="0.45" />
+          <stop offset="100%" stopColor="#7df0ff" stopOpacity="0" />
+        </linearGradient>
+      </defs>
+      {edges.map((e, i) => {
+        const a = nodes[e.a];
+        const b = nodes[e.b];
+        return (
+          <line
+            key={`edge-${i}`}
+            x1={a.x}
+            y1={a.y}
+            x2={b.x}
+            y2={b.y}
+            stroke="url(#constEdge)"
+            strokeWidth={0.18}
+            style={{
+              animation: `constTwinkle ${4 + (i % 5)}s ease-in-out ${i * 0.13}s infinite`,
+            }}
+          />
+        );
+      })}
+      {nodes.map((n, i) => (
+        <g key={`node-${i}`}>
+          <circle cx={n.x} cy={n.y} r={1.2} fill={n.c} opacity={0.22} />
+          <circle
+            cx={n.x}
+            cy={n.y}
+            r={0.55}
+            fill={n.c}
+            style={{
+              filter: `drop-shadow(0 0 2px ${n.c})`,
+              animation: `constTwinkle ${3 + (i % 4)}s ease-in-out ${i * 0.2}s infinite`,
+            }}
+          />
+        </g>
+      ))}
+    </svg>
+  );
+}
+
 /* ─── ANIMATED TECH BACKGROUND ─── */
 function TechBackground() {
+  // Mouse parallax — sets --mx / --my CSS custom properties on the root.
+  // Inner layers translate by --mx * (their depth multiplier) so the
+  // closer layers move more, creating a parallax depth read.
+  const rootRef = useRef<HTMLDivElement | null>(null);
+  useEffect(() => {
+    const root = rootRef.current;
+    if (!root) return;
+    let raf = 0;
+    let mx = 0, my = 0;
+    const onMove = (e: PointerEvent) => {
+      mx = (e.clientX / window.innerWidth - 0.5) * 2;
+      my = (e.clientY / window.innerHeight - 0.5) * 2;
+      if (!raf) {
+        raf = requestAnimationFrame(() => {
+          raf = 0;
+          root.style.setProperty("--mx", String(mx));
+          root.style.setProperty("--my", String(my));
+        });
+      }
+    };
+    window.addEventListener("pointermove", onMove, { passive: true });
+    return () => {
+      window.removeEventListener("pointermove", onMove);
+      if (raf) cancelAnimationFrame(raf);
+    };
+  }, []);
+
   return (
-    <div style={{ position: "fixed", inset: 0, pointerEvents: "none", zIndex: 0, overflow: "hidden" }}>
+    <div ref={rootRef} style={{ position: "fixed", inset: 0, pointerEvents: "none", zIndex: 0, overflow: "hidden", ["--mx" as string]: 0, ["--my" as string]: 0 } as CSSProperties}>
       <style>{`
         @keyframes dashFlow { from { stroke-dashoffset: 0; } to { stroke-dashoffset: -40; } }
         @keyframes dataStream { from { left: -300px; } to { left: 100vw; } }
@@ -38,7 +167,15 @@ function TechBackground() {
         @keyframes scanLine { from { transform: translateY(-100vh); } to { transform: translateY(100vh); } }
         @keyframes sparkle { 0%,100% { opacity: 0; } 50% { opacity: 0.6; } }
         @keyframes hexPulse { 0%,100% { fill: rgba(124,92,255,0); } 50% { fill: rgba(124,92,255,0.08); } }
+        @keyframes constTwinkle { 0%,100% { opacity: 0.35; } 50% { opacity: 1; } }
       `}</style>
+
+      {/* Layer 0: Live R3F cosmic depth — sparse 3D atmosphere with
+          nebulae, starfield, aurora ribbons, floating wireframe shapes,
+          mouse-parallax camera pan. Sits at the back of every layer. */}
+      <div style={{ position: "absolute", inset: 0, zIndex: 0 }}>
+        <CyberHeroesBackdrop />
+      </div>
 
       {/* Layer 5: Animated grid */}
       <div style={{
@@ -46,30 +183,14 @@ function TechBackground() {
         backgroundImage: `linear-gradient(rgba(124,92,255,0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(124,92,255,0.08) 1px, transparent 1px)`,
         backgroundSize: "60px 60px",
         animation: "gridPulse 8s ease-in-out infinite",
+        transform: "translate3d(calc(var(--mx) * 4px), calc(var(--my) * 4px), 0)",
       }} />
 
-      {/* Layer 1: Circuit board lines */}
-      <svg style={{ position: "absolute", inset: 0, width: "100%", height: "100%", filter: "drop-shadow(0 0 4px rgba(124,92,255,0.3))" }}>
-        {[
-          { x1: "0", y1: "20%", x2: "100%", y2: "20%", c: "#7c5cff" },
-          { x1: "0", y1: "40%", x2: "100%", y2: "40%", c: "#7c5cff" },
-          { x1: "0", y1: "60%", x2: "100%", y2: "60%", c: "#7c5cff" },
-          { x1: "0", y1: "80%", x2: "100%", y2: "80%", c: "#7c5cff" },
-          { x1: "15%", y1: "0", x2: "15%", y2: "100%", c: "#7c5cff" },
-          { x1: "35%", y1: "0", x2: "35%", y2: "100%", c: "#7c5cff" },
-          { x1: "65%", y1: "0", x2: "65%", y2: "100%", c: "#7c5cff" },
-          { x1: "85%", y1: "0", x2: "85%", y2: "100%", c: "#7c5cff" },
-        ].map((l, i) => (
-          <line key={i} x1={l.x1} y1={l.y1} x2={l.x2} y2={l.y2}
-            stroke={l.c} strokeOpacity={0.2} strokeWidth={1} strokeDasharray="8 12"
-            style={{ animation: "dashFlow 10s linear infinite" }} />
-        ))}
-        {["20%","40%","60%","80%"].flatMap((y) =>
-          ["15%","35%","65%","85%"].map((x) => ({ cx: x, cy: y }))
-        ).map((d, i) => (
-          <circle key={`dot-${i}`} cx={d.cx} cy={d.cy} r={3} fill="rgba(124,92,255,0.25)" />
-        ))}
-      </svg>
+      {/* Layer 1: Constellation mesh — replaces the old rigid circuit
+          grid with an organic node-network in cosmic palette. */}
+      <div style={{ position: "absolute", inset: 0, transform: "translate3d(calc(var(--mx) * 8px), calc(var(--my) * 8px), 0)" }}>
+        <ConstellationMesh />
+      </div>
 
       {/* Layer 2: Floating cyber icons */}
       {[
@@ -96,41 +217,56 @@ function TechBackground() {
         }}>{ic.icon}</div>
       ))}
 
-      {/* Layer 3: Glowing orbs */}
-      {[
-        { left: "5%", top: "10%", size: 400, color: "rgba(124,92,255,0.12)", delay: 0 },
-        { left: "65%", top: "5%", size: 350, color: "rgba(0,229,255,0.12)", delay: 3 },
-        { left: "45%", top: "45%", size: 500, color: "rgba(124,92,255,0.08)", delay: 6 },
-        { left: "80%", top: "55%", size: 380, color: "rgba(0,229,255,0.1)", delay: 2 },
-        { left: "15%", top: "70%", size: 450, color: "rgba(124,92,255,0.1)", delay: 5 },
-        { left: "55%", top: "80%", size: 300, color: "rgba(0,229,255,0.08)", delay: 1 },
-      ].map((orb, i) => (
-        <motion.div key={`orb-${i}`}
-          animate={{ opacity: [0.06, 0.15, 0.06], x: [-25, 25, -25] }}
-          transition={{ duration: 10 + i * 2, repeat: Infinity, ease: "easeInOut", delay: orb.delay }}
-          style={{
-            position: "absolute", left: orb.left, top: orb.top,
-            width: orb.size, height: orb.size, borderRadius: "50%",
-            background: `radial-gradient(circle, ${orb.color}, transparent 70%)`,
-            filter: "blur(60px)",
-          }}
-        />
-      ))}
+      {/* Layer 3: Glowing orbs — diversified palette + mouse-parallax
+          drift (closer-feeling orbs move more). */}
+      <div style={{ position: "absolute", inset: 0, transform: "translate3d(calc(var(--mx) * -16px), calc(var(--my) * -10px), 0)" }}>
+        {[
+          { left: "5%", top: "10%", size: 400, color: "rgba(124,92,255,0.14)", delay: 0 },
+          { left: "65%", top: "5%", size: 350, color: "rgba(0,229,255,0.12)", delay: 3 },
+          { left: "45%", top: "45%", size: 500, color: "rgba(255,95,179,0.10)", delay: 6 },
+          { left: "80%", top: "55%", size: 380, color: "rgba(255,209,88,0.10)", delay: 2 },
+          { left: "15%", top: "70%", size: 450, color: "rgba(124,92,255,0.10)", delay: 5 },
+          { left: "55%", top: "80%", size: 300, color: "rgba(255,122,89,0.10)", delay: 1 },
+        ].map((orb, i) => (
+          <motion.div key={`orb-${i}`}
+            animate={{ opacity: [0.06, 0.18, 0.06], x: [-25, 25, -25] }}
+            transition={{ duration: 10 + i * 2, repeat: Infinity, ease: "easeInOut", delay: orb.delay }}
+            style={{
+              position: "absolute", left: orb.left, top: orb.top,
+              width: orb.size, height: orb.size, borderRadius: "50%",
+              background: `radial-gradient(circle, ${orb.color}, transparent 70%)`,
+              filter: "blur(60px)",
+            }}
+          />
+        ))}
+      </div>
 
-      {/* Layer 6: Sparkle particles */}
-      {Array.from({ length: 20 }, (_, i) => (
-        <div key={`spark-${i}`} style={{
-          position: "absolute",
-          left: `${3 + ((i * 37 + 13) % 94)}%`,
-          top: `${2 + ((i * 53 + 7) % 94)}%`,
-          width: i % 3 === 0 ? 4 : i % 2 === 0 ? 3 : 2,
-          height: i % 3 === 0 ? 4 : i % 2 === 0 ? 3 : 2,
-          borderRadius: "50%",
-          background: i % 2 === 0 ? "rgba(124,92,255,0.5)" : "rgba(0,229,255,0.5)",
-          animation: `sparkle ${2 + (i % 3)}s ease-in-out infinite`,
-          animationDelay: `${i * 0.35}s`,
-        }} />
-      ))}
+      {/* Layer 6: Sparkle particles — full cosmic palette (violet,
+          cyan, pink, gold) + mouse-parallax. */}
+      <div style={{ position: "absolute", inset: 0, transform: "translate3d(calc(var(--mx) * 18px), calc(var(--my) * 14px), 0)" }}>
+        {Array.from({ length: 26 }, (_, i) => {
+          const palette = [
+            "rgba(124,92,255,0.55)",
+            "rgba(0,229,255,0.55)",
+            "rgba(255,95,179,0.50)",
+            "rgba(255,209,88,0.50)",
+          ];
+          return (
+            <div key={`spark-${i}`} style={{
+              position: "absolute",
+              left: `${3 + ((i * 37 + 13) % 94)}%`,
+              top: `${2 + ((i * 53 + 7) % 94)}%`,
+              width: i % 3 === 0 ? 4 : i % 2 === 0 ? 3 : 2,
+              height: i % 3 === 0 ? 4 : i % 2 === 0 ? 3 : 2,
+              borderRadius: "50%",
+              background: palette[i % palette.length],
+              boxShadow: `0 0 6px ${palette[i % palette.length]}`,
+              animation: `sparkle ${2 + (i % 3)}s ease-in-out infinite`,
+              animationDelay: `${i * 0.35}s`,
+            }} />
+          );
+        })}
+      </div>
 
       {/* Layer 7: Scanning line */}
       <div style={{
