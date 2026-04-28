@@ -38,6 +38,8 @@ const HeroSelectAtmosphere = dynamic(
   { ssr: false },
 );
 
+import { useIsMobile } from "@/app/lib/useIsMobile";
+
 export interface Question {
   question: string;
   answers: string[];
@@ -1183,6 +1185,10 @@ export default function BossBattle({
   onEnd,
 }: BossBattleProps) {
   const canvasHostRef = useRef<HTMLDivElement>(null);
+
+  // Mobile detection — used to gate the HeroSelectAtmosphere R3F
+  // canvas so phones don't run it alongside Arena3D + PixiJS.
+  const isMobile = useIsMobile();
 
   // When custom questions are passed in, we use them verbatim and skip the
   // adaptive 3-pool system (backwards-compatible with older callers).
@@ -2359,7 +2365,7 @@ export default function BossBattle({
           {/* Live R3F atmosphere — cosmic atrium, sits behind the CSS
               decoration layers and the cards. */}
           <div className="bb-sel-canvas" aria-hidden="true">
-            <HeroSelectAtmosphere />
+            {!isMobile && <HeroSelectAtmosphere />}
           </div>
 
           {/* Background layers — cosmic blobs + bottom horizon haze */}

@@ -75,6 +75,7 @@ const BossEnergyCore = dynamic(
   () => import("@/app/components/BossEnergyCore"),
   { ssr: false }
 );
+import { useIsMobile } from "@/app/lib/useIsMobile";
 import VaultLock from "@/app/components/exercises/VaultLock";
 import InboxSimulator from "@/app/components/exercises/InboxSimulator";
 import SortingStation from "@/app/components/exercises/SortingStation";
@@ -2089,6 +2090,10 @@ export default function LessonPlayer(props: { userName: string; moduleId: string
 }
 
 function LessonPlayerInner({ userName, moduleId, childName }: { userName: string; moduleId: string; childName: string }) {
+  // Mobile detection — gates heavy R3F surfaces (BossEnergyCore) so
+  // phones don't try to run a third WebGL context alongside whatever
+  // exercise is on screen.
+  const isMobile = useIsMobile();
   /* ---------- state ---------- */
   // We only consult the saved state ONCE on mount. The "Save & Exit"
   // button writes to localStorage and navigates away; on next mount the
@@ -4463,7 +4468,7 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
                   height: "min(880px, 92vh)",
                   pointerEvents: "none",
                 }}>
-                  <BossEnergyCore />
+                  {!isMobile && <BossEnergyCore />}
                 </div>
 
                 {/* ⚡ ENERGY CORE GLOW — three stacked rotating conic gradients
