@@ -222,13 +222,21 @@ function VideoPlate({
   onError: () => void;
 }) {
   return (
-    <div
+    <motion.div
+      animate={{
+        boxShadow: [
+          "0 0 24px rgba(0, 229, 255, 0.45), 0 0 48px rgba(124, 92, 255, 0.3), 0 24px 50px -16px rgba(8, 10, 22, 0.7)",
+          "0 0 40px rgba(0, 229, 255, 0.75), 0 0 80px rgba(124, 92, 255, 0.5), 0 24px 50px -16px rgba(8, 10, 22, 0.7)",
+          "0 0 24px rgba(0, 229, 255, 0.45), 0 0 48px rgba(124, 92, 255, 0.3), 0 24px 50px -16px rgba(8, 10, 22, 0.7)",
+        ],
+      }}
+      transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
       style={{
         position: "relative",
-        padding: 8,
-        borderRadius: 22,
-        background: "linear-gradient(135deg, #6b3818, #8b4a22)",
-        boxShadow: "0 24px 50px -16px rgba(40, 18, 5, 0.7)",
+        borderRadius: 24,
+        overflow: "hidden",
+        border: "2px solid rgba(125, 240, 255, 0.55)",
+        background: "#000",
       }}
     >
       <video
@@ -240,11 +248,10 @@ function VideoPlate({
         style={{
           width: "100%",
           display: "block",
-          borderRadius: 14,
           background: "#000",
         }}
       />
-    </div>
+    </motion.div>
   );
 }
 
@@ -252,14 +259,21 @@ function VideoPlate({
 
 function CelebrationPlate({ src }: { src: string }) {
   return (
-    <div
+    <motion.div
+      animate={{
+        boxShadow: [
+          "0 0 24px rgba(0, 229, 255, 0.45), 0 0 48px rgba(124, 92, 255, 0.3), 0 24px 50px -12px rgba(8, 10, 22, 0.7)",
+          "0 0 40px rgba(0, 229, 255, 0.7), 0 0 80px rgba(124, 92, 255, 0.45), 0 24px 50px -12px rgba(8, 10, 22, 0.7)",
+          "0 0 24px rgba(0, 229, 255, 0.45), 0 0 48px rgba(124, 92, 255, 0.3), 0 24px 50px -12px rgba(8, 10, 22, 0.7)",
+        ],
+      }}
+      transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
       style={{
         position: "relative",
-        padding: 12,
-        borderRadius: 22,
-        background: "linear-gradient(135deg, #ffe4a3, #ffb058 60%, #c87a18)",
-        boxShadow:
-          "0 24px 50px -12px rgba(80, 40, 5, 0.6), 0 0 40px rgba(255, 178, 80, 0.35)",
+        borderRadius: 24,
+        overflow: "hidden",
+        border: "2px solid rgba(125, 240, 255, 0.55)",
+        background: "linear-gradient(135deg, #1a0e22, #0f1530)",
       }}
     >
       <div
@@ -269,13 +283,9 @@ function CelebrationPlate({ src }: { src: string }) {
           backgroundImage: `url(${src})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
-          borderRadius: 14,
-          borderStyle: "solid",
-          borderWidth: 3,
-          borderColor: "rgba(255, 245, 200, 0.6)",
         }}
       />
-    </div>
+    </motion.div>
   );
 }
 
