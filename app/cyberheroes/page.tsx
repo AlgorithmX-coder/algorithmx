@@ -321,10 +321,14 @@ function FAQAccordion() {
   const items = [
     { q: "What age is this for?", a: "Cyber Heroes Academy is designed for children aged 6–9. Every lesson, character, and activity is crafted to be age-appropriate and engaging for this specific age group." },
     { q: "How long does it take?", a: "20 weeks, one 45-minute session per week. Children can go at their own pace — there's no pressure to keep to a schedule." },
-    { q: "Do we get lifetime access?", a: "Yes! Your one-time purchase of £99 gives you lifetime access with continuous updates — as new threats emerge, we update the content so your child's knowledge stays current." },
+    { q: "Is it safe? Can strangers contact my child?", a: "Yes, completely safe. Lessons are sandboxed — no chat, no public profile, no social feed. Your child plays through the missions on their own; nobody else can contact them through the course. We don't sell or share data, and we don't run third-party advertising trackers." },
+    { q: "Can I see what my child is learning?", a: "Yes. The parent dashboard shows you which lessons they've completed, badges earned, time spent, and a snapshot of how they're progressing each week. You'll also receive a printable milestone certificate at the end of each module." },
     { q: "Is it accredited?", a: "Yes. Designed in alignment with CyberFirst and ASDAN accreditation frameworks from day one." },
-    { q: "What devices does it work on?", a: "Desktop browsers (Chrome, Safari, Firefox, Edge) and fully mobile-responsive on tablets and phones." },
-    { q: "What if my child doesn't enjoy it?", a: "We offer a 30-day money-back guarantee, no questions asked. If your child isn't engaged, you get a full refund." },
+    { q: "What devices does it work on?", a: "Modern browsers on desktop or laptop (Chrome, Safari, Firefox, Edge — last two major versions) and on tablets / phones (iOS 14+, Android 9+, iPad 6th gen+). For the boss-battle visuals we recommend a screen of at least 10 inches. Headphones are optional but help kids focus." },
+    { q: "What if something breaks during a lesson?", a: "Email hello@algorithmx.co.uk with a quick description of what happened — we usually respond within one working day and push fixes within the week. If you're stuck mid-lesson, refresh the page; progress is saved automatically every few seconds." },
+    { q: "Do we get lifetime access?", a: "Yes! Your one-time purchase of £99 gives you lifetime access with continuous updates — as new threats emerge, we update the content so your child's knowledge stays current." },
+    { q: "I have more than one child — do I need to pay £99 each time?", a: "One licence covers your whole household — siblings can each have their own profile within a single account, and progress is tracked separately. Just add a new child profile from the parent dashboard after enrolling." },
+    { q: "What if my child doesn't enjoy it?", a: "We offer a 30-day money-back guarantee, no questions asked. If your child isn't engaged within the first 30 days, email hello@algorithmx.co.uk and we'll process a full refund. Their progress is saved during the 30-day window — if you change your mind, you can re-enrol any time." },
   ];
   return (
     <div style={{ maxWidth: 720, margin: "0 auto" }}>
@@ -1167,14 +1171,16 @@ export default function HomePage() {
                   "All interactive missions & boss battles",
                   "4 milestone certificates (printable PDFs)",
                   "Parent progress dashboard",
+                  "Covers your whole household — siblings each get their own profile",
                   "CyberFirst & ASDAN aligned content",
                   "Continuous content updates as new threats emerge",
-                  "30-day money-back guarantee",
-                ].map((f, i) => (
+                  "GDPR-compliant · No data sold · No third-party ads",
+                  "30-day money-back guarantee — full refund, no questions asked",
+                ].map((f, i, arr) => (
                   <li key={i} style={{
                     display: "flex", alignItems: "center", gap: 12,
                     padding: "10px 0", fontSize: 14, color: "#d1d5db",
-                    borderBottom: i === 6 ? "none" : "1px solid rgba(148,163,184,0.1)",
+                    borderBottom: i === arr.length - 1 ? "none" : "1px solid rgba(148,163,184,0.1)",
                   }}>
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#34d399" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
                       <path d="M5 12.5 10 17.5 19 7.5" />
@@ -1277,9 +1283,9 @@ export default function HomePage() {
               </div>
             </div>
             <div className="flex items-center gap-6">
-              <a href="#" className="text-xs font-bold text-gray-500 hover:text-gray-300 transition-colors">Privacy</a>
-              <a href="#" className="text-xs font-bold text-gray-500 hover:text-gray-300 transition-colors">Terms</a>
-              <a href="#" className="text-xs font-bold text-gray-500 hover:text-gray-300 transition-colors">Contact</a>
+              <a href="/privacy" className="text-xs font-bold text-gray-500 hover:text-gray-300 transition-colors">Privacy</a>
+              <a href="/terms" className="text-xs font-bold text-gray-500 hover:text-gray-300 transition-colors">Terms</a>
+              <a href="mailto:hello@algorithmx.co.uk" className="text-xs font-bold text-gray-500 hover:text-gray-300 transition-colors">Contact</a>
             </div>
           </div>
         </footer>

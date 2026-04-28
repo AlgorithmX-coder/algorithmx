@@ -1,0 +1,105 @@
+import type { Metadata } from "next";
+
+/**
+ * Cyber Heroes — landing-page metadata.
+ *
+ * Sits as a route-segment layout because the page itself is a "use
+ * client" component and can't export `metadata`. This layout adds
+ * page-specific OpenGraph + Twitter cards (so WhatsApp / Facebook
+ * shares show the right preview) plus a schema.org/Course JSON-LD
+ * block for richer search results.
+ */
+
+const PAGE_TITLE =
+  "Cyber Heroes Academy — Cybersecurity for Kids Ages 6–9 | AlgorithmX";
+const PAGE_DESC =
+  "Turn your child into a Cyber Hero. 20 weeks of interactive cybersecurity missions for kids 6–9 — animated lessons, boss battles, printable certificates. £99 one-time, lifetime access, no subscriptions.";
+const PAGE_URL = "https://www.algorithmx.co.uk/cyberheroes";
+const OG_IMAGE = "/characters/heroic.png";
+
+export const metadata: Metadata = {
+  title: PAGE_TITLE,
+  description: PAGE_DESC,
+  alternates: { canonical: PAGE_URL },
+  openGraph: {
+    title: "Cyber Heroes Academy — Cybersecurity for Kids 6–9",
+    description: PAGE_DESC,
+    url: PAGE_URL,
+    siteName: "AlgorithmX",
+    type: "website",
+    images: [
+      {
+        url: OG_IMAGE,
+        width: 1200,
+        height: 630,
+        alt: "Adam and Layla — the Cyber Heroes",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Cyber Heroes Academy — Cybersecurity for Kids 6–9",
+    description:
+      "20 weeks of interactive cybersecurity adventures. £99 one-time, lifetime access.",
+    images: [OG_IMAGE],
+  },
+};
+
+const COURSE_JSON_LD = {
+  "@context": "https://schema.org",
+  "@type": "Course",
+  name: "Cyber Heroes Academy",
+  description:
+    "Interactive cybersecurity course for children aged 6–9. 20 weeks of animated lessons, missions, and boss battles teaching password safety, phishing awareness, and digital citizenship.",
+  provider: {
+    "@type": "Organization",
+    name: "AlgorithmX",
+    sameAs: "https://www.algorithmx.co.uk",
+  },
+  educationalLevel: "Primary education / Key Stage 1–2",
+  audience: {
+    "@type": "EducationalAudience",
+    educationalRole: "student",
+    audienceType: "Children aged 6–9",
+  },
+  offers: {
+    "@type": "Offer",
+    price: 99,
+    priceCurrency: "GBP",
+    availability: "https://schema.org/InStock",
+    url: PAGE_URL,
+    category: "Educational Software",
+  },
+  hasCourseInstance: {
+    "@type": "CourseInstance",
+    courseMode: "online",
+    courseWorkload: "PT45M",
+    duration: "P20W",
+  },
+  inLanguage: "en-GB",
+  about: [
+    "Password safety",
+    "Phishing awareness",
+    "Online safety",
+    "Digital citizenship",
+    "Cybersecurity for kids",
+  ],
+};
+
+export default function CyberHeroesLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(COURSE_JSON_LD),
+        }}
+      />
+      {children}
+    </>
+  );
+}
