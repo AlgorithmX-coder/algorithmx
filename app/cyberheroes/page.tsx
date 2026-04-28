@@ -327,7 +327,7 @@ function FAQAccordion() {
     { q: "What devices does it work on?", a: "Modern browsers on desktop or laptop (Chrome, Safari, Firefox, Edge — last two major versions) and on tablets / phones (iOS 14+, Android 9+, iPad 6th gen+). For the boss-battle visuals we recommend a screen of at least 10 inches. Headphones are optional but help kids focus." },
     { q: "What if something breaks during a lesson?", a: "Email hello@algorithmx.co.uk with a quick description of what happened — we usually respond within one working day and push fixes within the week. If you're stuck mid-lesson, refresh the page; progress is saved automatically every few seconds." },
     { q: "Do we get lifetime access?", a: "Yes! Your one-time purchase of £99 gives you lifetime access with continuous updates — as new threats emerge, we update the content so your child's knowledge stays current." },
-    { q: "I have more than one child — do I need to pay £99 each time?", a: "One licence covers your whole household — siblings can each have their own profile within a single account, and progress is tracked separately. Just add a new child profile from the parent dashboard after enrolling." },
+    { q: "I have more than one child — do I need to pay £99 each time?", a: "Yes, enrolment is per child at £99 — there's no sibling discount. Each child gets their own dedicated account, progress tracking, badges, and milestone certificates, so they can each move at their own pace. It's a one-time payment per child with lifetime access; no subscriptions, no renewals." },
     { q: "What if my child doesn't enjoy it?", a: "We offer a 30-day money-back guarantee, no questions asked. If your child isn't engaged within the first 30 days, email hello@algorithmx.co.uk and we'll process a full refund. Their progress is saved during the 30-day window — if you change your mind, you can re-enrol any time." },
   ];
   return (
@@ -386,6 +386,38 @@ export default function HomePage() {
     const onScroll = () => setScrolled(window.scrollY > 60);
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  // Hero video — autoplay starts muted (browser policy), then unmutes
+  // on the FIRST user interaction with the page so the kid hears the
+  // video as soon as they actually engage. Once unmuted, the manual
+  // mute toggle takes over for the rest of the session.
+  useEffect(() => {
+    let unmuted = false;
+    const unmute = () => {
+      if (unmuted) return;
+      unmuted = true;
+      setHeroMuted(false);
+      const v = heroVideoRef.current;
+      if (v) {
+        v.muted = false;
+        if (v.paused) v.play().catch(() => {});
+      }
+      window.removeEventListener("pointerdown", unmute);
+      window.removeEventListener("keydown", unmute);
+      window.removeEventListener("scroll", unmute);
+      window.removeEventListener("touchstart", unmute);
+    };
+    window.addEventListener("pointerdown", unmute, { passive: true });
+    window.addEventListener("keydown", unmute);
+    window.addEventListener("scroll", unmute, { passive: true });
+    window.addEventListener("touchstart", unmute, { passive: true });
+    return () => {
+      window.removeEventListener("pointerdown", unmute);
+      window.removeEventListener("keydown", unmute);
+      window.removeEventListener("scroll", unmute);
+      window.removeEventListener("touchstart", unmute);
+    };
   }, []);
 
   useEffect(() => {
@@ -1171,7 +1203,7 @@ export default function HomePage() {
                   "All interactive missions & boss battles",
                   "4 milestone certificates (printable PDFs)",
                   "Parent progress dashboard",
-                  "Covers your whole household — siblings each get their own profile",
+                  "One-time £99 per child — no subscriptions, no renewals",
                   "CyberFirst & ASDAN aligned content",
                   "Continuous content updates as new threats emerge",
                   "GDPR-compliant · No data sold · No third-party ads",
