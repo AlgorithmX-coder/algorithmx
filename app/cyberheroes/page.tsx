@@ -373,12 +373,23 @@ function FAQAccordion() {
 /* ─── MAIN PAGE ─── */
 export default function HomePage() {
   const [scrolled, setScrolled] = useState(false);
+  const [trailerOpen, setTrailerOpen] = useState(false);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 60);
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  // Esc key closes the trailer modal.
+  useEffect(() => {
+    if (!trailerOpen) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setTrailerOpen(false);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [trailerOpen]);
 
   useEffect(() => {
     const elements = document.querySelectorAll("[data-scroll]");
@@ -544,6 +555,22 @@ export default function HomePage() {
                   }}>
                   See How It Works
                 </motion.a>
+                <motion.button
+                  onClick={() => setTrailerOpen(true)}
+                  whileHover={{ scale: 1.05, y: -2, boxShadow: "0 0 28px rgba(124, 92, 255, 0.55)" }}
+                  whileTap={{ scale: 0.95 }}
+                  className="px-7 py-4 font-bold text-base inline-flex items-center gap-2"
+                  style={{
+                    color: "#fff",
+                    background: "linear-gradient(135deg, rgba(124,92,255,0.18), rgba(0,229,255,0.18))",
+                    border: "1px solid rgba(124,92,255,0.45)",
+                    borderRadius: 14,
+                    cursor: "pointer",
+                    boxShadow: "0 0 18px rgba(124,92,255,0.32)",
+                  }}>
+                  <span style={{ fontSize: 18 }}>▶</span>
+                  Watch the Trailer
+                </motion.button>
               </div>
               {/* Hero counters row */}
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-10 max-w-2xl mx-auto lg:mx-0">
@@ -1229,6 +1256,78 @@ export default function HomePage() {
           </div>
         </footer>
       </div>
+
+      {/* ── TRAILER MODAL ───────────────────────────────────────────────── */}
+      {trailerOpen && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          onClick={() => setTrailerOpen(false)}
+          style={{
+            position: "fixed",
+            inset: 0,
+            zIndex: 100,
+            background: "radial-gradient(ellipse at 50% 50%, rgba(20, 14, 34, 0.92) 0%, rgba(8, 10, 22, 0.96) 100%)",
+            backdropFilter: "blur(8px)",
+            WebkitBackdropFilter: "blur(8px)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            padding: 24,
+            cursor: "pointer",
+          }}
+        >
+          <motion.div
+            initial={{ opacity: 0, scale: 0.85, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.85 }}
+            transition={{ type: "spring", stiffness: 220, damping: 22 }}
+            onClick={(e) => e.stopPropagation()}
+            style={{
+              position: "relative",
+              width: "min(92vw, 960px)",
+              borderRadius: 20,
+              overflow: "hidden",
+              border: "2px solid rgba(124, 92, 255, 0.55)",
+              boxShadow: "0 0 48px rgba(124, 92, 255, 0.45), 0 0 96px rgba(0, 229, 255, 0.28), 0 30px 70px -20px rgba(0, 0, 0, 0.7)",
+              cursor: "default",
+            }}
+          >
+            <video
+              src="/videos/cyberheroes-hero.mp4"
+              controls
+              autoPlay
+              playsInline
+              style={{ width: "100%", display: "block", background: "#000" }}
+            />
+            <button
+              onClick={() => setTrailerOpen(false)}
+              aria-label="Close trailer"
+              style={{
+                position: "absolute",
+                top: 12,
+                right: 12,
+                width: 40,
+                height: 40,
+                borderRadius: "50%",
+                background: "rgba(8, 10, 22, 0.85)",
+                border: "1px solid rgba(125, 240, 255, 0.55)",
+                color: "#7df0ff",
+                fontSize: 20,
+                fontWeight: 900,
+                cursor: "pointer",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                boxShadow: "0 0 14px rgba(0, 229, 255, 0.45)",
+              }}
+            >
+              ✕
+            </button>
+          </motion.div>
+        </motion.div>
+      )}
     </div>
   );
 }

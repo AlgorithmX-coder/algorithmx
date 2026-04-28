@@ -5019,11 +5019,9 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
               childName={childName}
               totalCoins={coins}
               nextWeekTitle="Private Info: Guard Your Secrets"
-              // Outro video file isn't shipped yet — pass null so OutroScene
-              // skips the <video> request entirely and renders the fallback
-              // celebrating image directly (no 404 / broken-poster flash).
-              // Restore the path once /public/videos/module-01-outro.mp4 lands.
-              videoSrc={outroFailed ? null : null}
+              // Outro video shipped — falls back to the celebrating
+              // image only if the video fetch itself errors at runtime.
+              videoSrc={outroFailed ? null : "/videos/module-01-outro.mp4"}
               fallbackImageSrc="/characters/celebrating.png"
               onBackToDashboard={() => { window.location.href = "/dashboard"; }}
               onPlayAgain={() => { window.location.reload(); }}
