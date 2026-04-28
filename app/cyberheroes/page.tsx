@@ -7,9 +7,13 @@ import { CyberIconOrEmoji } from "@/app/components/CyberIcon";
 
 /* ─── CONSTANTS ─── */
 const GRAD = "linear-gradient(135deg, #7c5cff, #00e5ff)";
-const BTN_GRAD = "linear-gradient(135deg, #f97316, #f59e0b)";
-const BTN_GLOW = "0 0 20px rgba(249,115,22,0.4)";
-const BTN_GLOW_HOVER = "0 0 30px rgba(249,115,22,0.6)";
+// Primary CTA gradient — cosmic gold→coral→pink. Was orange/amber
+// (#ff7a59 → #ffd158) which read as a warm-Pixar tonal break in an
+// otherwise cosmic-cyber page; this gradient pops harder AND stays
+// in palette.
+const BTN_GRAD = "linear-gradient(135deg, #ffd158, #ff7a59, #ff5fb3)";
+const BTN_GLOW = "0 0 24px rgba(255, 95, 179, 0.45)";
+const BTN_GLOW_HOVER = "0 0 36px rgba(255, 95, 179, 0.65), 0 0 60px rgba(255, 122, 89, 0.4)";
 const BLUE_GLOW = "0 0 20px rgba(124,92,255,0.4)";
 const ACCENT_TEXT: CSSProperties = {
   background: "linear-gradient(135deg, #7c5cff, #00e5ff)",
@@ -17,6 +21,7 @@ const ACCENT_TEXT: CSSProperties = {
   WebkitBackgroundClip: "text",
   WebkitTextFillColor: "transparent",
   textShadow: "0 0 30px rgba(124,92,255,0.3)",
+  whiteSpace: "nowrap",
 };
 
 /* ─── ANIMATED TECH BACKGROUND ─── */
@@ -66,21 +71,6 @@ function TechBackground() {
         ))}
       </svg>
 
-      {/* Layer 8: Hex grid */}
-      <svg style={{ position: "absolute", inset: 0, width: "100%", height: "100%" }}>
-        {Array.from({ length: 40 }, (_, i) => {
-          const col = i % 8; const row = Math.floor(i / 8);
-          const x = col * 75 + (row % 2 === 0 ? 0 : 37); const y = row * 65;
-          return (
-            <polygon key={`hex-${i}`}
-              points={`${x+30},${y} ${x+60},${y+17} ${x+60},${y+48} ${x+30},${y+65} ${x},${y+48} ${x},${y+17}`}
-              stroke="rgba(124,92,255,0.08)" strokeWidth={1} fill="none">
-              {i % 7 === 0 && <animate attributeName="fill" values="rgba(124,92,255,0);rgba(124,92,255,0.08);rgba(124,92,255,0)" dur={`${3 + (i % 4)}s`} repeatCount="indefinite" />}
-            </polygon>
-          );
-        })}
-      </svg>
-
       {/* Layer 2: Floating cyber icons */}
       {[
         { icon: "🔒", left: "4%", top: "8%", size: 40, dur: 10 },
@@ -127,19 +117,6 @@ function TechBackground() {
         />
       ))}
 
-      {/* Layer 4: Code rain */}
-      {Array.from({ length: 12 }, (_, i) => (
-        <div key={`rain-${i}`} style={{
-          position: "absolute", left: `${(i / 12) * 100}%`, top: 0, width: 18,
-          fontFamily: "monospace", fontSize: 14, color: "rgba(124,92,255,0.12)", lineHeight: "20px",
-          whiteSpace: "pre-wrap", wordBreak: "break-all",
-          animation: `codeRainCH ${12 + i * 1.5}s linear infinite`,
-          animationDelay: `${i * -2}s`,
-        }}>
-          {"4F2A8B1E7C3D9A5F0B6E2C8A4D1F7B3E9C5A0D6F8B2E4C1A7D3F5B9E0C6A8D2F4B1E7C3A9D5F0B6E8C2A4D7F1B3E5C0A9D6F2B8E4C"}
-        </div>
-      ))}
-
       {/* Layer 6: Sparkle particles */}
       {Array.from({ length: 20 }, (_, i) => (
         <div key={`spark-${i}`} style={{
@@ -179,8 +156,9 @@ function TechBackground() {
         }} />
       ))}
 
-      {/* Layer 10: Binary rain */}
-      {[10, 30, 70, 90].map((left, i) => (
+      {/* Layer 10: Binary rain — REMOVED (was redundant with code rain
+          + hex grid; trimmed to ease GPU load and reduce visual noise) */}
+      {false && [10, 30, 70, 90].map((left, i) => (
         <div key={`bin-${i}`} style={{
           position: "absolute", left: `${left}%`, top: 0, width: 14,
           fontFamily: "monospace", fontSize: 16, fontWeight: 700,
@@ -272,7 +250,7 @@ const COURSES = [
   { emoji: "🛡️", title: "Cyber Heroes Academy", ages: "6–9", weeks: 20, time: "45 min/week", accent: "#00e5ff", desc: "Fun animated adventures teaching password safety, online awareness, and digital citizenship.", featured: true },
   { emoji: "🔍", title: "Cyber Explorers", ages: "11–14", weeks: 14, time: "1 hr/week", accent: "#8b5cf6", desc: "Deeper dives into encryption, social engineering, safe browsing, and data privacy.", featured: false },
   { emoji: "💻", title: "CyberStart", ages: "15–17", weeks: 16, time: "1.5 hrs/week", accent: "#22c55e", desc: "Hands-on challenges covering networking, ethical hacking basics, and secure coding.", featured: false },
-  { emoji: "🚀", title: "CyberStart Pro", ages: "18+", weeks: 20, time: "2 hrs/week", accent: "#f59e0b", desc: "Industry-aligned curriculum preparing for certifications and real-world security roles.", featured: false },
+  { emoji: "🚀", title: "CyberStart Pro", ages: "18+", weeks: 20, time: "2 hrs/week", accent: "#ffd158", desc: "Industry-aligned curriculum preparing for certifications and real-world security roles.", featured: false },
 ];
 
 /* ─── FEATURES DATA ─── */
@@ -304,7 +282,7 @@ const IconController = ({ size = 32, color = "#7c5cff" }: { size?: number; color
     <rect x="2" y="6" width="20" height="12" rx="2"/>
   </svg>
 );
-const IconAward = ({ size = 32, color = "#f59e0b" }: { size?: number; color?: string }) => (
+const IconAward = ({ size = 32, color = "#ffd158" }: { size?: number; color?: string }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
     <circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/>
   </svg>
@@ -488,10 +466,10 @@ export default function HomePage() {
         .mono { font-family: 'JetBrains Mono', monospace; }
         html { scroll-behavior: smooth; }
         @keyframes chTyping { from { width: 0; } to { width: 100%; } }
-        @keyframes chBlink { 0%,100% { border-color: transparent; } 50% { border-color: #f97316; } }
+        @keyframes chBlink { 0%,100% { border-color: transparent; } 50% { border-color: #ff7a59; } }
         .ch-typewriter {
           display: inline-block; overflow: hidden; white-space: nowrap;
-          border-right: 2px solid #f97316;
+          border-right: 2px solid #ff7a59;
           animation: chTyping 3s steps(35) 1s forwards, chBlink 0.8s step-end infinite;
           width: 0;
         }
@@ -500,7 +478,7 @@ export default function HomePage() {
         .char-blob:hover { transform: translateY(-6px) scale(1.05); }
         .char-blob-adam:hover { box-shadow: 0 20px 40px rgba(0,0,0,0.3), 0 0 30px rgba(0,229,255,0.45); }
         .char-blob-layla:hover { box-shadow: 0 20px 40px rgba(0,0,0,0.3), 0 0 30px rgba(52,211,153,0.45); }
-        .char-blob-robo:hover { box-shadow: 0 20px 40px rgba(0,0,0,0.3), 0 0 30px rgba(245,158,11,0.45); }
+        .char-blob-robo:hover { box-shadow: 0 20px 40px rgba(0,0,0,0.3), 0 0 30px rgba(255, 209, 88,0.45); }
         .char-blob-raccoon:hover { box-shadow: 0 20px 40px rgba(0,0,0,0.3), 0 0 30px rgba(239,68,68,0.45); }
         @keyframes chFloat { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
         .char-float { animation: chFloat 3s ease-in-out infinite; }
@@ -516,12 +494,12 @@ export default function HomePage() {
         {[
           { left: "12%", top: "18%", color: "#00e5ff", size: 4, dur: 18, path: "A", delay: 0 },
           { left: "78%", top: "24%", color: "#34d399", size: 5, dur: 22, path: "B", delay: -3 },
-          { left: "34%", top: "52%", color: "#f97316", size: 3, dur: 16, path: "C", delay: -6 },
-          { left: "86%", top: "58%", color: "#f59e0b", size: 4, dur: 20, path: "A", delay: -9 },
+          { left: "34%", top: "52%", color: "#ff7a59", size: 3, dur: 16, path: "C", delay: -6 },
+          { left: "86%", top: "58%", color: "#ffd158", size: 4, dur: 20, path: "A", delay: -9 },
           { left: "8%", top: "72%", color: "#34d399", size: 5, dur: 24, path: "B", delay: -4 },
           { left: "52%", top: "18%", color: "#00e5ff", size: 3, dur: 19, path: "C", delay: -11 },
-          { left: "68%", top: "82%", color: "#f97316", size: 4, dur: 21, path: "B", delay: -7 },
-          { left: "22%", top: "38%", color: "#f59e0b", size: 3, dur: 17, path: "A", delay: -2 },
+          { left: "68%", top: "82%", color: "#ff7a59", size: 4, dur: 21, path: "B", delay: -7 },
+          { left: "22%", top: "38%", color: "#ffd158", size: 3, dur: 17, path: "A", delay: -2 },
           { left: "92%", top: "40%", color: "#00e5ff", size: 4, dur: 23, path: "C", delay: -13 },
           { left: "46%", top: "84%", color: "#34d399", size: 4, dur: 20, path: "A", delay: -5 },
         ].map((p, i) => (
@@ -593,9 +571,31 @@ export default function HomePage() {
               <p className="text-gray-300 text-base sm:text-lg leading-relaxed max-w-lg mx-auto lg:mx-0 mb-4">
                 Join Adam and Layla on an interactive journey to become a Cyber Hero. Fun animated lessons, games, and challenges for ages 6–9.
               </p>
-              <p className="mb-8 mono" style={{ fontSize: 14, color: "#f97316", fontWeight: 500 }}>
+              <p className="mb-4 mono" style={{ fontSize: 14, color: "#ff7a59", fontWeight: 500 }}>
                 <span className="ch-typewriter">20 weeks. 40+ missions. 1 Cyber Hero.</span>
               </p>
+              {/* Trust line — surfaces accreditation + privacy from the
+                  FAQ so it's visible above the fold. */}
+              <div className="mb-3 flex flex-wrap items-center gap-x-4 gap-y-2 justify-center lg:justify-start"
+                style={{ fontSize: 12, color: "#94a3b8", fontWeight: 600, letterSpacing: "0.04em" }}>
+                <span className="inline-flex items-center gap-1.5">
+                  <span style={{ color: "#7df0ff" }}>✓</span> CyberFirst (UK) aligned
+                </span>
+                <span style={{ color: "rgba(148,163,184,0.4)" }}>·</span>
+                <span className="inline-flex items-center gap-1.5">
+                  <span style={{ color: "#7df0ff" }}>✓</span> ASDAN aligned
+                </span>
+                <span style={{ color: "rgba(148,163,184,0.4)" }}>·</span>
+                <span className="inline-flex items-center gap-1.5">
+                  <span style={{ color: "#7df0ff" }}>✓</span> GDPR compliant
+                </span>
+              </div>
+              {/* Social proof line — placeholder until real reviews land */}
+              <div className="mb-8 flex flex-wrap items-center gap-2 justify-center lg:justify-start"
+                style={{ fontSize: 13, color: "#cbd5e1", fontWeight: 600 }}>
+                <span style={{ color: "#ffd158", letterSpacing: 1, fontSize: 15 }}>★★★★★</span>
+                <span>Built by parents, for parents — UK-based</span>
+              </div>
               <div className="flex gap-4 flex-wrap justify-center lg:justify-start">
                 <motion.a href="/signup"
                   whileHover={{ scale: 1.05, y: -2, boxShadow: BTN_GLOW_HOVER }}
@@ -618,25 +618,31 @@ export default function HomePage() {
                   See How It Works
                 </motion.a>
               </div>
-              {/* Hero counters row */}
+              {/* Hero counters row — staggered fade-in-up reveal */}
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-10 max-w-2xl mx-auto lg:mx-0">
                 {[
                   { to: 20, suffix: "", label: "Weeks", color: "#00e5ff" },
-                  { to: 40, suffix: "+", label: "Activities", color: "#34d399" },
-                  { to: 4, suffix: "", label: "Certificates", color: "#f97316" },
-                  { to: 100, suffix: "%", label: "Hands-On", color: "#f59e0b" },
+                  { to: 40, suffix: "+", label: "Activities", color: "#7eff97" },
+                  { to: 4, suffix: "", label: "Certificates", color: "#ff7a59" },
+                  { to: 100, suffix: "%", label: "Hands-On", color: "#ffd158" },
                 ].map((s, i) => (
-                  <div key={i} style={{
-                    background: "rgba(255,255,255,0.03)", border: "1px solid rgba(148,163,184,0.12)",
-                    borderRadius: 14, padding: "14px 12px", textAlign: "center",
-                  }}>
+                  <motion.div
+                    key={i}
+                    initial={{ opacity: 0, y: 16 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: 0.4 + i * 0.12, ease: [0.16, 1, 0.3, 1] }}
+                    style={{
+                      background: "rgba(255,255,255,0.03)", border: "1px solid rgba(148,163,184,0.12)",
+                      borderRadius: 14, padding: "14px 12px", textAlign: "center",
+                    }}
+                  >
                     <div className="display-font" style={{ color: s.color, fontSize: 28, fontWeight: 700, lineHeight: 1 }}>
                       <CountUp to={s.to} suffix={s.suffix} />
                     </div>
                     <div style={{ fontSize: 11, fontWeight: 700, color: "#94a3b8", letterSpacing: "0.08em", marginTop: 6, textTransform: "uppercase" }}>
                       {s.label}
                     </div>
-                  </div>
+                  </motion.div>
                 ))}
               </div>
             </motion.div>
@@ -922,11 +928,11 @@ export default function HomePage() {
               { w: null, label: "4 more Phase 1 missions...", gap: true, milestone: "🛡️ Cyber Cadet Certificate (after W5)", milestoneColor: "#00e5ff" },
               { w: 6, title: "Gaming Safety: Defend Your Game Zone", sub: "Stay safe in Roblox, Minecraft, and Fortnite", gap: null, phase: "PHASE 2: DIGITAL WORLD", phaseColor: "#34d399" },
               { w: null, label: "6 more Phase 2 missions...", gap: true, milestone: "⚔️ Cyber Guardian Certificate (after W10)", milestoneColor: "#34d399" },
-              { w: 13, title: "Screen Time: Balance Your Power", sub: "Find the right balance between time online, breaks, sleep, and healthy habits", gap: null, phase: "PHASE 3: ADVANCED OPS", phaseColor: "#f97316" },
-              { w: null, label: "5 more Phase 3 missions...", gap: true, milestone: "🏰 Cyber Defender Certificate (after W15)", milestoneColor: "#f97316" },
-              { w: 19, title: "Protecting Family: Family Firewall", sub: "Become the family cyber expert", gap: null, phase: "PHASE 4: GRADUATION", phaseColor: "#f59e0b" },
-              { w: null, label: "The grand finale awaits...", gap: true, milestone: "🎓 Certified Cyber Hero (after W20)", milestoneColor: "#f59e0b" },
-              { w: 20, title: "Graduation Day: The Final Mission", sub: "The ultimate challenge! Earn your Cyber Hero certificate", gap: null, phase: "PHASE 4: GRADUATION", phaseColor: "#f59e0b" },
+              { w: 13, title: "Screen Time: Balance Your Power", sub: "Find the right balance between time online, breaks, sleep, and healthy habits", gap: null, phase: "PHASE 3: ADVANCED OPS", phaseColor: "#ff7a59" },
+              { w: null, label: "5 more Phase 3 missions...", gap: true, milestone: "🏰 Cyber Defender Certificate (after W15)", milestoneColor: "#ff7a59" },
+              { w: 19, title: "Protecting Family: Family Firewall", sub: "Become the family cyber expert", gap: null, phase: "PHASE 4: GRADUATION", phaseColor: "#ffd158" },
+              { w: null, label: "The grand finale awaits...", gap: true, milestone: "🎓 Certified Cyber Hero (after W20)", milestoneColor: "#ffd158" },
+              { w: 20, title: "Graduation Day: The Final Mission", sub: "The ultimate challenge! Earn your Cyber Hero certificate", gap: null, phase: "PHASE 4: GRADUATION", phaseColor: "#ffd158" },
             ] as Array<{ w: number | null; title?: string; sub?: string; gap: boolean | null; label?: string; phase?: string; phaseColor?: string; milestone?: string; milestoneColor?: string }>).map((item, i) => (
               <div key={i} data-scroll data-scroll-delay={String(i * 0.08)}>
                 {item.gap ? (
@@ -965,14 +971,14 @@ export default function HomePage() {
                   }}>
                     <div style={{
                       width: "45%",
-                      background: item.w === 20 ? "rgba(245,158,11,0.06)" : "rgba(255,255,255,0.04)",
-                      border: item.w === 20 ? "2px solid #f59e0b" : "1px solid rgba(124,92,255,0.2)",
-                      borderLeft: item.w === 20 ? "2px solid #f59e0b" : "3px solid #7c5cff",
-                      boxShadow: item.w === 20 ? "0 0 15px rgba(245,158,11,0.4)" : "0 0 10px rgba(124,92,255,0.2)",
+                      background: item.w === 20 ? "rgba(255, 209, 88,0.06)" : "rgba(255,255,255,0.04)",
+                      border: item.w === 20 ? "2px solid #ffd158" : "1px solid rgba(124,92,255,0.2)",
+                      borderLeft: item.w === 20 ? "2px solid #ffd158" : "3px solid #7c5cff",
+                      boxShadow: item.w === 20 ? "0 0 15px rgba(255, 209, 88,0.4)" : "0 0 10px rgba(124,92,255,0.2)",
                       borderRadius: 16, padding: 20,
                     }}>
                       <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 8, flexWrap: "wrap" }}>
-                        <div style={{ width: 32, height: 32, borderRadius: "50%", background: item.w === 20 ? "linear-gradient(135deg, #f59e0b, #f97316)" : GRAD, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 13, fontWeight: 900, color: "#fff", flexShrink: 0 }}>
+                        <div style={{ width: 32, height: 32, borderRadius: "50%", background: item.w === 20 ? "linear-gradient(135deg, #ffd158, #ff7a59)" : GRAD, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 13, fontWeight: 900, color: "#fff", flexShrink: 0 }}>
                           {item.w}
                         </div>
                         {item.phase && (
@@ -986,7 +992,7 @@ export default function HomePage() {
                             {item.phase}
                           </span>
                         )}
-                        {item.w === 20 && <span style={{ fontSize: 10, fontWeight: 800, color: "#f59e0b", background: "rgba(245,158,11,0.15)", borderRadius: 8, padding: "2px 8px", boxShadow: "0 0 12px rgba(245,158,11,0.4)" }}>🎓 Final Mission</span>}
+                        {item.w === 20 && <span style={{ fontSize: 10, fontWeight: 800, color: "#ffd158", background: "rgba(255, 209, 88,0.15)", borderRadius: 8, padding: "2px 8px", boxShadow: "0 0 12px rgba(255, 209, 88,0.4)" }}>🎓 Final Mission</span>}
                         {item.w === 1 && <span style={{ fontSize: 10, fontWeight: 800, color: "#10b981", background: "rgba(16,185,129,0.15)", borderRadius: 8, padding: "2px 8px", boxShadow: "0 0 12px rgba(16,185,129,0.4)" }}>START HERE</span>}
                       </div>
                       <h4 style={{ color: "#fff", fontWeight: 800, fontSize: 15, marginBottom: 4 }}>{item.title}</h4>
@@ -1058,8 +1064,8 @@ export default function HomePage() {
               display: "inline-flex", alignItems: "center", gap: 8,
               padding: "6px 16px", borderRadius: 100,
               fontSize: 11, fontWeight: 800, letterSpacing: "0.15em",
-              color: "#f97316", background: "rgba(249,115,22,0.1)",
-              border: "1px solid rgba(249,115,22,0.25)",
+              color: "#ff7a59", background: "rgba(255, 122, 89,0.1)",
+              border: "1px solid rgba(255, 122, 89,0.25)",
               marginBottom: 20,
             }}>
               HOW IT WORKS
@@ -1077,8 +1083,8 @@ export default function HomePage() {
             {[
               { num: "1", title: "Enrol & Create Account", desc: "One-time payment of £99. Set up your child's profile and customise their avatar in under 2 minutes.", color: "#00e5ff" },
               { num: "2", title: "Watch the Story", desc: "Each week opens with an animated chapter where Adam, Layla, and Robo discover a new cyber threat.", color: "#34d399" },
-              { num: "3", title: "Complete the Mission", desc: "Interactive simulations, drag-and-drop puzzles, and a boss battle finale against the Hacker Raccoon.", color: "#f97316" },
-              { num: "4", title: "Earn Badges & Level Up", desc: "Collect digital badges, unlock milestone certificates, and watch the Raccoon's power drain week by week.", color: "#f59e0b" },
+              { num: "3", title: "Complete the Mission", desc: "Interactive simulations, drag-and-drop puzzles, and a boss battle finale against the Hacker Raccoon.", color: "#ff7a59" },
+              { num: "4", title: "Earn Badges & Level Up", desc: "Collect digital badges, unlock milestone certificates, and watch the Raccoon's power drain week by week.", color: "#ffd158" },
             ].map((s, i) => (
               <div key={i} data-scroll data-scroll-delay={String(0.08 + i * 0.1)} style={{ display: "flex", gap: 28, alignItems: "flex-start", marginBottom: 30, position: "relative" }}>
                 <div style={{
@@ -1127,8 +1133,8 @@ export default function HomePage() {
               display: "inline-flex", alignItems: "center", gap: 8,
               padding: "6px 16px", borderRadius: 100,
               fontSize: 11, fontWeight: 800, letterSpacing: "0.15em",
-              color: "#f59e0b", background: "rgba(245,158,11,0.1)",
-              border: "1px solid rgba(245,158,11,0.25)",
+              color: "#ffd158", background: "rgba(255, 209, 88,0.1)",
+              border: "1px solid rgba(255, 209, 88,0.25)",
               marginBottom: 20,
             }}>
               ★ TRUSTED BY PARENTS
@@ -1141,7 +1147,7 @@ export default function HomePage() {
             {[
               { name: "Sarah M.", role: "Mum of 8-year-old", text: "My daughter now teaches ME about password safety. She genuinely looks forward to each lesson.", color: "#00e5ff" },
               { name: "James T.", role: "Dad of twins, age 7", text: "Finally, cybersecurity for kids that isn't boring. The boss battles are an absolute hit in our house.", color: "#34d399" },
-              { name: "Priya K.", role: "Mum of 9-year-old", text: "Worth every penny. My son spotted a real phishing email last week and knew exactly what to do.", color: "#f59e0b" },
+              { name: "Priya K.", role: "Mum of 9-year-old", text: "Worth every penny. My son spotted a real phishing email last week and knew exactly what to do.", color: "#ffd158" },
             ].map((r, i) => (
               <div key={i} data-scroll data-scroll-delay={String(i * 0.12)}>
                 <motion.div
@@ -1161,7 +1167,7 @@ export default function HomePage() {
                   }}>
                     &ldquo;
                   </span>
-                  <div style={{ color: "#f59e0b", fontSize: 16, letterSpacing: 3, marginBottom: 14 }}>★★★★★</div>
+                  <div style={{ color: "#ffd158", fontSize: 16, letterSpacing: 3, marginBottom: 14 }}>★★★★★</div>
                   <p style={{ color: "#d1d5db", fontSize: 15, lineHeight: 1.7, marginBottom: 20, fontStyle: "italic" }}>
                     &ldquo;{r.text}&rdquo;
                   </p>
@@ -1192,8 +1198,8 @@ export default function HomePage() {
               display: "inline-flex", alignItems: "center", gap: 8,
               padding: "6px 16px", borderRadius: 100,
               fontSize: 11, fontWeight: 800, letterSpacing: "0.15em",
-              color: "#f97316", background: "rgba(249,115,22,0.1)",
-              border: "1px solid rgba(249,115,22,0.25)",
+              color: "#ff7a59", background: "rgba(255, 122, 89,0.1)",
+              border: "1px solid rgba(255, 122, 89,0.25)",
               marginBottom: 20,
             }}>
               SIMPLE PRICING
@@ -1204,9 +1210,9 @@ export default function HomePage() {
           </div>
           <div data-scroll style={{
             maxWidth: 480, margin: "0 auto",
-            background: "linear-gradient(135deg, #00e5ff, #34d399, #f97316, #f59e0b)",
+            background: "linear-gradient(135deg, #00e5ff, #34d399, #ff7a59, #ffd158)",
             borderRadius: 24, padding: 2,
-            boxShadow: "0 20px 60px rgba(0,0,0,0.35), 0 0 40px rgba(249,115,22,0.15)",
+            boxShadow: "0 20px 60px rgba(0,0,0,0.35), 0 0 40px rgba(255, 122, 89,0.15)",
           }}>
             <div style={{
               background: "#111827", borderRadius: 22,
@@ -1217,8 +1223,8 @@ export default function HomePage() {
                 display: "inline-block",
                 padding: "4px 14px", borderRadius: 100,
                 fontSize: 11, fontWeight: 800, letterSpacing: 1,
-                background: "rgba(249,115,22,0.12)", color: "#f97316",
-                border: "1px solid rgba(249,115,22,0.3)",
+                background: "rgba(255, 122, 89,0.12)", color: "#ff7a59",
+                border: "1px solid rgba(255, 122, 89,0.3)",
                 marginBottom: 20,
               }}>
                 BEST VALUE
