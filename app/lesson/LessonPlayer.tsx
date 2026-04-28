@@ -2722,7 +2722,7 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
       navDirectionRef.current = to < prev ? "back" : "forward";
       return to;
     });
-    if ([2,3,4,5,6,7,8,9,10,11,13,14,15].includes(to)) {
+    if ([2,3,4,5,6,7,8,9,10,11,12,13,14,15].includes(to)) {
       setShowInstr((prev) => ({ ...prev, [to]: true }));
     }
   }, []);
@@ -3156,15 +3156,18 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
       /* ──── CASE 0: VIDEO WELCOME ──── */
       case 0:
         return (
-          <FullScene bg="linear-gradient(180deg, #0a0a1a 0%, #1a0612 100%)">
-          <div style={{ textAlign: "center" }}>
+          <FullScene bg="radial-gradient(ellipse at 50% 70%, #2a0d2e 0%, #1a1f4d 35%, #0f1530 70%, #04050d 100%)">
+          {/* Cosmic atmosphere — top-corner blobs + bottom horizon */}
+          <div aria-hidden style={{ position: "absolute", top: "-12%", left: "-12%", width: 640, height: 640, borderRadius: "50%", background: "radial-gradient(circle, rgba(124, 92, 255, 0.32) 0%, transparent 65%)", filter: "blur(60px)", pointerEvents: "none" }} />
+          <div aria-hidden style={{ position: "absolute", top: "-8%", right: "-12%", width: 540, height: 540, borderRadius: "50%", background: "radial-gradient(circle, rgba(255, 95, 179, 0.26) 0%, transparent 65%)", filter: "blur(60px)", pointerEvents: "none" }} />
+          <div style={{ textAlign: "center", position: "relative", zIndex: 1 }}>
             {!videoEnded ? (
               <>
                 {!videoFailed ? (
                   <motion.div
-                    animate={{ boxShadow: ["0 0 20px rgba(255,178,110,0.3)", "0 0 40px rgba(255,178,110,0.6)", "0 0 20px rgba(255,178,110,0.3)"] }}
+                    animate={{ boxShadow: ["0 0 24px rgba(0, 229, 255, 0.45), 0 0 48px rgba(124, 92, 255, 0.3)", "0 0 40px rgba(0, 229, 255, 0.75), 0 0 80px rgba(124, 92, 255, 0.5)", "0 0 24px rgba(0, 229, 255, 0.45), 0 0 48px rgba(124, 92, 255, 0.3)"] }}
                     transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-                    style={{ position: "relative", borderRadius: 24, overflow: "hidden", border: "2px solid rgba(255,178,110,0.4)", maxWidth: 640, margin: "0 auto" }}
+                    style={{ position: "relative", borderRadius: 24, overflow: "hidden", border: "2px solid rgba(125, 240, 255, 0.55)", maxWidth: 640, margin: "0 auto" }}
                   >
                     <video
                       ref={videoRef}
@@ -3222,7 +3225,7 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
                         borderRadius: 24,
                       }}
                     />
-                    <p style={{ color: "#9ca3af", marginTop: 12, fontSize: 18 }}>Video coming soon!</p>
+                    <p style={{ color: "rgba(199, 207, 240, 0.78)", marginTop: 14, fontSize: 14, fontFamily: "'JetBrains Mono', monospace", letterSpacing: 4, textTransform: "uppercase" }}>▸ Transmission Loading…</p>
                   </div>
                 )}
                 {showSkip && !videoEnded && (
@@ -3970,6 +3973,7 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
 
       /* ──── CASE 12: PHISHING EXPLAINER ──── */
       case 12: {
+        if (showInstr[12]) return <InstructionOverlay icon="🕵️" story="The Hacker Raccoon sends FAKE messages to trick people!" instructions="Look at each fake message and learn the 4 warning signs. Then a detective lab will let YOU try spotting them!" onReady={() => dismissInstr(12)} />;
         if (showSummary[12]) return <LearnSummary message="You learned the 4 signs of a trick, too good to be true, scary warnings, spelling mistakes, and asking for secrets!" starCount={3} onNext={() => dismissSummary(12, 13)} />;
         const tricks = [
           { title: "TOO GOOD TO BE TRUE", fake: "YOU WON A FREE iPAD!!! CLICK NOW!!!", explain: "If it sounds too good to be true... it probably is! Real prizes don't pop up on your screen.", color: "#ffd158", icon: "🎁", glyph: "%" },

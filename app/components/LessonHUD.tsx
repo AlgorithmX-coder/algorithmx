@@ -267,8 +267,8 @@ export default function LessonHUD({
             fontFamily: "'DM Sans', sans-serif",
             fontWeight: 700,
             fontSize: 14,
-            color: "#fbbf24",
-            textShadow: "0 0 10px rgba(251,191,36,0.55)",
+            color: "#ffd158",
+            textShadow: "0 0 10px rgba(255,209,88,0.55)",
             letterSpacing: "0.02em",
             animation: "hudXpPulse 0.45s ease-out",
           }}

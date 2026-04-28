@@ -12,19 +12,14 @@ import { useState } from "react";
 import { motion } from "motion/react";
 import {
   COLOR,
-  DistantRidges,
   FloatingParticles,
-  PrimaryButton,
   SHADOW,
   SPRING,
   SceneFrame,
   SceneKeyframes,
   SceneTitle,
   StarField,
-  SunsetBackdrop,
   Vignette,
-  WoodFloor,
-  useMouseParallax,
 } from "@/app/components/scene";
 
 export interface OutroSceneProps {
@@ -53,16 +48,54 @@ export default function OutroScene({
   onBackToDashboard,
   onPlayAgain,
 }: OutroSceneProps) {
-  const px = useMouseParallax();
   const [videoFailed, setVideoFailed] = useState(false);
 
   return (
     <SceneFrame>
-      <SunsetBackdrop variant="dusk" parallax={px} />
-      <DistantRidges variant="dusk" parallax={px} />
-      <StarField count={45} />
+      {/* Cosmic atmosphere — same lineage as the rest of Week 1's
+          cosmic-cyber theme. Replaces the older Pixar SunsetBackdrop
+          / DistantRidges / WoodFloor triplet that felt like a daytime
+          tonal break after the cosmic graduation scene. */}
+      <div
+        aria-hidden
+        style={{
+          position: "absolute",
+          inset: 0,
+          background:
+            "radial-gradient(ellipse at 50% 70%, #2a0d2e 0%, #1a1f4d 35%, #0f1530 70%, #04050d 100%)",
+          pointerEvents: "none",
+        }}
+      />
+      <div
+        aria-hidden
+        style={{
+          position: "absolute",
+          top: "-12%",
+          left: "-12%",
+          width: 640,
+          height: 640,
+          borderRadius: "50%",
+          background: "radial-gradient(circle, rgba(124, 92, 255, 0.32) 0%, transparent 65%)",
+          filter: "blur(60px)",
+          pointerEvents: "none",
+        }}
+      />
+      <div
+        aria-hidden
+        style={{
+          position: "absolute",
+          top: "-8%",
+          right: "-12%",
+          width: 540,
+          height: 540,
+          borderRadius: "50%",
+          background: "radial-gradient(circle, rgba(255, 95, 179, 0.26) 0%, transparent 65%)",
+          filter: "blur(60px)",
+          pointerEvents: "none",
+        }}
+      />
+      <StarField count={50} />
       <FloatingParticles count={32} />
-      <WoodFloor variant="dusk" />
 
       <SceneTitle title="ADVENTURE COMPLETE" badge={`Goodbye, ${childName}`} />
 
@@ -104,10 +137,42 @@ export default function OutroScene({
         <NextWeekCard title={nextWeekTitle} coins={totalCoins} />
       </motion.div>
 
-      {/* Actions */}
-      <PrimaryButton onClick={onBackToDashboard} visible>
-        Back to Dashboard 🏠
-      </PrimaryButton>
+      {/* Actions — cosmic CTA matches the boss-flow style */}
+      <motion.div
+        initial={{ opacity: 0, y: 12, scale: 0.92 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        transition={{ ...SPRING.bouncy, delay: 1.1 }}
+        style={{
+          position: "absolute",
+          bottom: 36,
+          left: "50%",
+          transform: "translateX(-50%)",
+          zIndex: 9,
+        }}
+      >
+        <motion.button
+          onClick={onBackToDashboard}
+          whileHover={{ y: -3, scale: 1.04, boxShadow: "0 0 32px rgba(0, 229, 255, 0.85), 0 14px 28px -6px rgba(0, 229, 255, 0.55), 0 0 0 1px rgba(125, 240, 255, 0.7) inset" }}
+          whileTap={{ scale: 0.97 }}
+          transition={{ type: "spring", stiffness: 320, damping: 20 }}
+          style={{
+            border: "none",
+            cursor: "pointer",
+            padding: "16px 38px",
+            fontSize: 18,
+            fontWeight: 800,
+            color: "#080a16",
+            background: "linear-gradient(135deg, #00e5ff, #7c5cff)",
+            borderRadius: 999,
+            fontFamily: "'Space Grotesk', system-ui, sans-serif",
+            letterSpacing: 1,
+            textTransform: "uppercase",
+            boxShadow: "0 0 24px rgba(0, 229, 255, 0.55), 0 8px 20px -6px rgba(0, 229, 255, 0.45), 0 0 0 1px rgba(125, 240, 255, 0.6) inset",
+          }}
+        >
+          Back to Dashboard 🏠
+        </motion.button>
+      </motion.div>
       <motion.div
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
