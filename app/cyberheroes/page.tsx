@@ -388,35 +388,68 @@ export default function HomePage() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Hero video — autoplay starts muted (browser policy), then unmutes
-  // on the FIRST user interaction with the page so the kid hears the
-  // video as soon as they actually engage. Once unmuted, the manual
-  // mute toggle takes over for the rest of the session.
+  // Hero video — sound-by-default strategy:
+  //
+  // 1. Attempt to play UNMUTED on mount. Most browsers block this on
+  //    a fresh visit, but allow it on return visits or when the site
+  //    has Media autoplay permission. When it works, we get sound
+  //    immediately with no user action.
+  //
+  // 2. If that's blocked, fall back to muted autoplay + a global
+  //    listener that unmutes on the first scroll / click / key /
+  //    touch anywhere on the page.
+  //
+  // Once unmuted, the manual mute toggle takes over for the session.
   useEffect(() => {
+    const v = heroVideoRef.current;
+    if (!v) return;
+
     let unmuted = false;
-    const unmute = () => {
+    const finishUnmute = () => {
       if (unmuted) return;
       unmuted = true;
       setHeroMuted(false);
-      const v = heroVideoRef.current;
-      if (v) {
-        v.muted = false;
-        if (v.paused) v.play().catch(() => {});
-      }
-      window.removeEventListener("pointerdown", unmute);
-      window.removeEventListener("keydown", unmute);
-      window.removeEventListener("scroll", unmute);
-      window.removeEventListener("touchstart", unmute);
+      window.removeEventListener("pointerdown", onInteraction);
+      window.removeEventListener("keydown", onInteraction);
+      window.removeEventListener("scroll", onInteraction);
+      window.removeEventListener("touchstart", onInteraction);
     };
-    window.addEventListener("pointerdown", unmute, { passive: true });
-    window.addEventListener("keydown", unmute);
-    window.addEventListener("scroll", unmute, { passive: true });
-    window.addEventListener("touchstart", unmute, { passive: true });
+
+    const onInteraction = () => {
+      const vv = heroVideoRef.current;
+      if (vv) {
+        vv.muted = false;
+        if (vv.paused) vv.play().catch(() => {});
+      }
+      finishUnmute();
+    };
+
+    // 1) aggressive immediate-unmute attempt
+    v.muted = false;
+    const p = v.play();
+    if (p) {
+      p.then(() => {
+        finishUnmute();
+      }).catch(() => {
+        // Blocked — restore muted autoplay and rely on interaction.
+        if (v) {
+          v.muted = true;
+          v.play().catch(() => {});
+        }
+      });
+    }
+
+    // 2) interaction fallback listeners (no-op once finishUnmute fires)
+    window.addEventListener("pointerdown", onInteraction, { passive: true });
+    window.addEventListener("keydown", onInteraction);
+    window.addEventListener("scroll", onInteraction, { passive: true });
+    window.addEventListener("touchstart", onInteraction, { passive: true });
+
     return () => {
-      window.removeEventListener("pointerdown", unmute);
-      window.removeEventListener("keydown", unmute);
-      window.removeEventListener("scroll", unmute);
-      window.removeEventListener("touchstart", unmute);
+      window.removeEventListener("pointerdown", onInteraction);
+      window.removeEventListener("keydown", onInteraction);
+      window.removeEventListener("scroll", onInteraction);
+      window.removeEventListener("touchstart", onInteraction);
     };
   }, []);
 
