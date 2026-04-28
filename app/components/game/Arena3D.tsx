@@ -36,6 +36,9 @@ export interface Arena3DProps {
    * does a full-room flash and every floating element pulses.
    */
   countdownPulse?: { label: string; key: number } | null;
+  /** Selected hero — drives the arena's lighting palette. Adam gets a
+   *  cool tech-blue/cyan tone; Layla gets cosmic-violet/pink/coral. */
+  heroId?: "adam" | "layla";
 }
 
 type PhaseKey = 0 | 1 | 2 | 3;
@@ -1168,7 +1171,14 @@ export default function Arena3D({
   shakeKey = 0,
   mood,
   countdownPulse = null,
+  heroId = "adam",
 }: Arena3DProps) {
+  // Per-hero palette switch — captured ONCE on mount; heroId doesn't
+  // change mid-fight in practice, and the scene-setup useEffect runs
+  // once so the inner closures bind to the correct table.
+  const PHASE_PALETTE = heroId === "adam" ? ADAM_PHASE_PALETTE : LAYLA_PHASE_PALETTE;
+  const VICTORY_PALETTE = heroId === "adam" ? ADAM_VICTORY_PALETTE : LAYLA_VICTORY_PALETTE;
+
   const hostRef = useRef<HTMLDivElement | null>(null);
   const refs = useRef<SceneRefs | null>(null);
 
