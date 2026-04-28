@@ -166,7 +166,7 @@ function OrbitalRing({
 }
 
 /* ───────────────────────── DEEP STARFIELD ────────────────────── */
-function StarField({ count = 320 }: { count?: number }) {
+function StarField({ count = 200 }: { count?: number }) {
   const positions = useMemo(() => {
     const arr = new Float32Array(count * 3);
     for (let i = 0; i < count; i++) {
@@ -202,7 +202,7 @@ function StarField({ count = 320 }: { count?: number }) {
 }
 
 /* ───────────────────────── COSMIC DUST ───────────────────────── */
-function DustCloud({ count = 130 }: { count?: number }) {
+function DustCloud({ count = 70 }: { count?: number }) {
   const positions = useMemo(() => {
     const arr = new Float32Array(count * 3);
     for (let i = 0; i < count; i++) {
@@ -285,7 +285,7 @@ function AuroraRibbon({
 export default function HeroSelectAtmosphere() {
   return (
     <Canvas
-      dpr={[1, 2]}
+      dpr={[1, 1.5]}
       camera={{ position: [0, 0.5, 7.2], fov: 48 }}
       style={{ width: "100%", height: "100%", background: "transparent", pointerEvents: "none" }}
       gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
@@ -295,14 +295,13 @@ export default function HeroSelectAtmosphere() {
       <pointLight position={[-3, -2, 3]} intensity={0.85} color={PALETTE.pink} />
       <pointLight position={[0, 4, -2]} intensity={0.6} color={PALETTE.amber} />
 
-      <StarField count={320} />
-      <DustCloud count={130} />
+      <StarField count={200} />
+      <DustCloud count={70} />
 
-      {/* Three slowly-drifting aurora ribbons in different planes —
-          gives the deep-space "atrium before battle" feel. */}
+      {/* Two slowly-drifting aurora ribbons — was three; trimmed for
+          GPU load. Same atrium feel without the jank. */}
       <AuroraRibbon color={PALETTE.cosmic} radius={3.2} tilt={[Math.PI / 2.1, 0, 0]}        speed={0.025} thickness={0.05} />
       <AuroraRibbon color={PALETTE.pink}   radius={3.6} tilt={[Math.PI / 2.6, Math.PI / 5, 0]} speed={-0.018} thickness={0.04} />
-      <AuroraRibbon color={PALETTE.cyan}   radius={4.0} tilt={[Math.PI / 3,    -Math.PI / 4, 0]} speed={0.014} thickness={0.035} />
 
       <WireShells />
       <CrystalCore />

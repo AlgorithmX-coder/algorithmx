@@ -2374,14 +2374,13 @@ export default function BossBattle({
           <div className="bb-sel-vignette" aria-hidden="true" />
           <div className="bb-sel-grain" aria-hidden="true" />
 
-          {/* Lightning streaks scattered across the screen */}
+          {/* Lightning streaks scattered across the screen — was 6,
+              trimmed to 3 to ease GPU paint while the R3F atmosphere
+              runs behind. */}
           {[
-            { left: "8%",  h: 240, dur: 6.5, delay: 0 },
-            { left: "23%", h: 180, dur: 8,   delay: 1.5 },
-            { left: "45%", h: 280, dur: 9,   delay: 3 },
-            { left: "68%", h: 220, dur: 7.5, delay: 4 },
-            { left: "82%", h: 200, dur: 9.5, delay: 5.5 },
-            { left: "94%", h: 160, dur: 8.5, delay: 2 },
+            { left: "12%", h: 240, dur: 7,   delay: 0 },
+            { left: "55%", h: 280, dur: 9,   delay: 3 },
+            { left: "88%", h: 200, dur: 8.5, delay: 5 },
           ].map((b, i) => (
             <span
               key={`bolt-${i}`}
@@ -2399,7 +2398,7 @@ export default function BossBattle({
           {/* Drifting particles — warm cosmic palette to match the
               lock screen (gold / coral / pink / cosmic / cyan). */}
           <div className="bb-sel-particles" aria-hidden="true">
-            {Array.from({ length: 24 }).map((_, i) => (
+            {Array.from({ length: 14 }).map((_, i) => (
               <span
                 key={i}
                 className="bb-sel-particle"
@@ -3815,7 +3814,7 @@ export default function BossBattle({
           background: radial-gradient(ellipse at 50% 50%, transparent 35%, rgba(0, 0, 0, 0.55) 100%);
           pointer-events: none;
           z-index: 0;
-          animation: bbSelVignettePulse 8s ease-in-out infinite;
+          /* pulse animation removed — was constant repaint */
         }
         /* Ultra-fine grain — SVG noise as a base64 data URI so we don't
            need to ship an asset. Adds the subtle "filmic" texture top-
@@ -3953,8 +3952,7 @@ export default function BossBattle({
           text-align: center;
           animation:
             bbSelTitleIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) both,
-            bbSelTitleShimmer 6s ease-in-out infinite,
-            bbSelTitleGlitch 5s steps(1, end) infinite;
+            bbSelTitleShimmer 6s ease-in-out infinite;
         }
         .bb-sel-subtitle {
           position: relative;
@@ -4039,8 +4037,8 @@ export default function BossBattle({
                       box-shadow 0.35s ease,
                       opacity 0.4s ease;
         }
-        /* Animated top accent strip — thin glowing gradient line in the
-           hero's colour, slowly cycling left-to-right. */
+        /* Static top accent strip — was animated cycling, now static
+           to ease repaint cost. Same hero-colour glow read. */
         .bb-sel-card::before {
           content: "";
           position: absolute;
@@ -4048,36 +4046,15 @@ export default function BossBattle({
           height: 2px;
           background: linear-gradient(90deg,
             transparent 0%,
-            color-mix(in oklab, var(--c-colour) 50%, transparent) 30%,
-            color-mix(in oklab, var(--c-colour) 95%, transparent) 50%,
-            color-mix(in oklab, var(--c-colour) 50%, transparent) 70%,
+            color-mix(in oklab, var(--c-colour) 80%, transparent) 50%,
             transparent 100%);
-          background-size: 200% 100%;
           box-shadow: 0 0 14px color-mix(in oklab, var(--c-colour) 60%, transparent);
-          animation: bbSelAccentSlide 4.5s linear infinite;
           z-index: 3;
           pointer-events: none;
         }
-        /* Holographic scanline — a faint horizontal line that drifts
-           top-to-bottom every 6s, like a CRT/holo readout. */
-        .bb-sel-card::after {
-          content: "";
-          position: absolute;
-          left: 0; right: 0;
-          height: 28px;
-          top: -28px;
-          background: linear-gradient(180deg,
-            transparent,
-            color-mix(in oklab, var(--c-colour) 18%, transparent) 40%,
-            color-mix(in oklab, var(--c-colour) 28%, transparent) 50%,
-            color-mix(in oklab, var(--c-colour) 18%, transparent) 60%,
-            transparent);
-          mix-blend-mode: screen;
-          opacity: 0.6;
-          z-index: 2;
-          pointer-events: none;
-          animation: bbSelCardScan 6s linear infinite;
-        }
+        /* Card scanline removed — was running per-card on infinite
+           loop alongside the R3F atmosphere; perceptible jank during
+           heavy frames. */
         @keyframes bbSelAccentSlide {
           from { background-position: -100% 50%; }
           to   { background-position: 200% 50%; }

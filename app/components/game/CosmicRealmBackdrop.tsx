@@ -27,7 +27,7 @@ const PALETTE = {
 };
 
 /* ───────────────────────── DEEP STARFIELD ─────────────────── */
-function DeepStars({ count = 720 }: { count?: number }) {
+function DeepStars({ count = 380 }: { count?: number }) {
   const positions = useMemo(() => {
     const arr = new Float32Array(count * 3);
     for (let i = 0; i < count; i++) {
@@ -64,7 +64,7 @@ function DeepStars({ count = 720 }: { count?: number }) {
 }
 
 /* ───────────────────────── COSMIC DUST CLOUD ──────────────── */
-function CosmicDust({ count = 240 }: { count?: number }) {
+function CosmicDust({ count = 110 }: { count?: number }) {
   const positions = useMemo(() => {
     const arr = new Float32Array(count * 3);
     for (let i = 0; i < count; i++) {
@@ -178,11 +178,7 @@ function FloatingCrystals() {
     { pos: [ 8,  2, -12], kind: "dodeca", scale: 1.0,  color: PALETTE.pink,   speedY: -0.14, speedX: 0.05 },
     { pos: [-9, -3, -14], kind: "ico",    scale: 1.1,  color: PALETTE.amber,  speedY: 0.12, speedX: -0.06 },
     { pos: [ 7, -4, -11], kind: "tetra",  scale: 0.9,  color: PALETTE.violet, speedY: 0.22, speedX: 0.10 },
-    { pos: [-4,  6, -13], kind: "ico",    scale: 0.7,  color: PALETTE.coral,  speedY: -0.16, speedX: 0.07 },
-    { pos: [ 5,  5, -15], kind: "octa",   scale: 0.8,  color: PALETTE.cosmic, speedY: 0.20, speedX: 0.09 },
     { pos: [ 0, -6, -16], kind: "dodeca", scale: 1.2,  color: PALETTE.pink,   speedY: 0.10, speedX: -0.04 },
-    { pos: [-11, 0, -18], kind: "octa",   scale: 1.0,  color: PALETTE.cyan,   speedY: -0.12, speedX: 0.06 },
-    { pos: [11,  1, -17], kind: "ico",    scale: 0.95, color: PALETTE.amber,  speedY: 0.14, speedX: -0.05 },
   ], []);
 
   return (
@@ -283,7 +279,7 @@ function EnergyPortalRing() {
 export default function CosmicRealmBackdrop() {
   return (
     <Canvas
-      dpr={[1, 2]}
+      dpr={[1, 1.5]}
       camera={{ position: [0, 0, 8], fov: 60 }}
       style={{ width: "100%", height: "100%", background: "transparent", pointerEvents: "none" }}
       gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
@@ -301,11 +297,10 @@ export default function CosmicRealmBackdrop() {
       <DeepStars count={720} />
       <CosmicDust count={240} />
 
-      {/* Aurora ribbons drifting through space at different planes,
-          giving lateral motion / parallax. */}
+      {/* Aurora ribbons drifting through space at different planes —
+          two is enough for parallax without overloading the GPU. */}
       <AuroraRibbon color={PALETTE.cosmic} radius={10} tilt={[Math.PI / 2.1, 0, 0]}            speed={0.018} thickness={0.07} position={[0, 0, -8]} />
       <AuroraRibbon color={PALETTE.pink}   radius={11} tilt={[Math.PI / 2.6, Math.PI / 5, 0]}  speed={-0.014} thickness={0.06} position={[0, 1, -10]} />
-      <AuroraRibbon color={PALETTE.cyan}   radius={12} tilt={[Math.PI / 3, -Math.PI / 4, 0]}    speed={0.011} thickness={0.05} position={[0, -1, -12]} />
 
       {/* Floating cosmic crystal shards at varied depths */}
       <FloatingCrystals />

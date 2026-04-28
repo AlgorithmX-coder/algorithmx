@@ -45,15 +45,15 @@ type Mood = Arena3DProps["mood"];
 // Palettes
 // ──────────────────────────────────────────────────────────
 
-// Cosmic-theme arena palette — same lineage as the FINAL SHOWDOWN
-// lock screen and CHOOSE YOUR HERO atrium. Violet / coral / pink /
-// gold instead of the old cyan / green / blue cyber palette.
-//   Phase 0 = full HP (calm cosmic-violet ambient)
-//   Phase 1 = 75% (warming amber sunset highlights)
-//   Phase 2 = 50% (rage — coral / ember glow)
-//   Phase 3 = 25% (desperate — pink / red wash)
+// Per-hero arena palette — Layla gets cosmic violet/pink/coral/gold,
+// Adam gets the cool tech-blue/cyan tone he wears on the hero-select.
+// Same phase structure for both:
+//   Phase 0 = full HP (calm)
+//   Phase 1 = 75% (warming)
+//   Phase 2 = 50% (rage)
+//   Phase 3 = 25% (desperate)
 
-const PHASE_PALETTE = {
+const LAYLA_PHASE_PALETTE = {
   0: {
     ambient: new THREE.Color("#2a0d2e"),
     ambientI: 0.32,
@@ -104,7 +104,7 @@ const PHASE_PALETTE = {
   },
 } as const;
 
-const VICTORY_PALETTE = {
+const LAYLA_VICTORY_PALETTE = {
   ambient: new THREE.Color("#4a2a1f"),
   ambientI: 0.46,
   key: new THREE.Color("#ffd158"),
@@ -116,6 +116,79 @@ const VICTORY_PALETTE = {
   fogColor: new THREE.Color("#1f1408"),
   fogDensity: 0.0,
 };
+
+// Adam — Adam's hero-select accent is #00e5ff. Phase 0 reads as a deep
+// tech-cyan command centre; rage phases warm toward gold/coral so the
+// danger reading stays consistent across heroes.
+const ADAM_PHASE_PALETTE = {
+  0: {
+    ambient: new THREE.Color("#0d1f3a"),
+    ambientI: 0.32,
+    key: new THREE.Color("#3b82f6"),
+    keyI: 0.62,
+    spot: new THREE.Color("#00e5ff"),
+    spotI: 0.42,
+    fill: new THREE.Color("#7eff97"),
+    fillI: 0.30,
+    fogColor: new THREE.Color("#08142e"),
+    fogDensity: 0.0,
+  },
+  1: {
+    ambient: new THREE.Color("#1a253a"),
+    ambientI: 0.30,
+    key: new THREE.Color("#60a5fa"),
+    keyI: 0.58,
+    spot: new THREE.Color("#7df0ff"),
+    spotI: 0.44,
+    fill: new THREE.Color("#ffd158"),
+    fillI: 0.34,
+    fogColor: new THREE.Color("#0e1c33"),
+    fogDensity: 0.0,
+  },
+  2: {
+    ambient: new THREE.Color("#2a1a2a"),
+    ambientI: 0.27,
+    key: new THREE.Color("#ff7a59"),
+    keyI: 0.55,
+    spot: new THREE.Color("#ffd158"),
+    spotI: 0.46,
+    fill: new THREE.Color("#3b82f6"),
+    fillI: 0.30,
+    fogColor: new THREE.Color("#1c0e1a"),
+    fogDensity: 0.012,
+  },
+  3: {
+    ambient: new THREE.Color("#2a0a16"),
+    ambientI: 0.22,
+    key: new THREE.Color("#ef4444"),
+    keyI: 0.72,
+    spot: new THREE.Color("#ff7a59"),
+    spotI: 0.58,
+    fill: new THREE.Color("#dc2654"),
+    fillI: 0.36,
+    fogColor: new THREE.Color("#1a0612"),
+    fogDensity: 0.035,
+  },
+} as const;
+
+const ADAM_VICTORY_PALETTE = {
+  ambient: new THREE.Color("#1a3a4a"),
+  ambientI: 0.46,
+  key: new THREE.Color("#00e5ff"),
+  keyI: 0.92,
+  spot: new THREE.Color("#7df0ff"),
+  spotI: 0.72,
+  fill: new THREE.Color("#7eff97"),
+  fillI: 0.48,
+  fogColor: new THREE.Color("#08243a"),
+  fogDensity: 0.0,
+};
+
+// Default export bound at module scope — replaced inside the component
+// with the per-hero variant. Tools that read PHASE_PALETTE outside the
+// component get Layla's by default.
+const PHASE_PALETTE = LAYLA_PHASE_PALETTE;
+const VICTORY_PALETTE = LAYLA_VICTORY_PALETTE;
 
 const DANGER_BOOST = { ambientI: 0.15, keyI: 0.2 };
 
