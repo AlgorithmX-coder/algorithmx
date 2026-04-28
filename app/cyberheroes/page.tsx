@@ -373,6 +373,10 @@ function FAQAccordion() {
 /* ─── MAIN PAGE ─── */
 export default function HomePage() {
   const [scrolled, setScrolled] = useState(false);
+  // Hero video starts muted (browser autoplay policy requires it).
+  // Tap the speaker icon overlay to unmute.
+  const [heroMuted, setHeroMuted] = useState(true);
+  const heroVideoRef = useRef<HTMLVideoElement | null>(null);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 60);
@@ -590,15 +594,58 @@ export default function HomePage() {
                     boxShadow: "0 0 28px rgba(124,92,255,0.45), 0 0 64px rgba(0,229,255,0.25)",
                   }}>
                   <video
+                    ref={heroVideoRef}
                     src="/videos/cyberheroes-hero.mp4"
                     autoPlay
-                    muted
+                    muted={heroMuted}
                     loop
                     playsInline
                     poster="/characters/heroic.png"
                     className="block w-full max-w-[500px]"
-                    style={{ display: "block", background: "#000" }}
+                    style={{ display: "block", background: "#000", cursor: "pointer" }}
+                    onClick={() => {
+                      setHeroMuted((m) => !m);
+                      const v = heroVideoRef.current;
+                      if (v && v.paused) v.play().catch(() => {});
+                    }}
                   />
+                  {/* Sound toggle — overlays the bottom-right corner.
+                      "Tap for sound" hint while muted; speaker icon
+                      while playing with sound. */}
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setHeroMuted((m) => !m);
+                      const v = heroVideoRef.current;
+                      if (v && v.paused) v.play().catch(() => {});
+                    }}
+                    aria-label={heroMuted ? "Unmute video" : "Mute video"}
+                    style={{
+                      position: "absolute",
+                      bottom: 14,
+                      right: 14,
+                      display: "inline-flex",
+                      alignItems: "center",
+                      gap: 8,
+                      padding: heroMuted ? "8px 14px" : "8px 12px",
+                      borderRadius: 999,
+                      background: "rgba(8, 10, 22, 0.78)",
+                      border: "1px solid rgba(125, 240, 255, 0.5)",
+                      color: "#7df0ff",
+                      fontSize: 13,
+                      fontWeight: 800,
+                      letterSpacing: 1,
+                      cursor: "pointer",
+                      backdropFilter: "blur(8px)",
+                      WebkitBackdropFilter: "blur(8px)",
+                      boxShadow: "0 4px 12px rgba(0, 0, 0, 0.4), 0 0 14px rgba(0, 229, 255, 0.35)",
+                      transition: "all 0.2s ease",
+                    }}
+                  >
+                    <span style={{ fontSize: 16 }}>{heroMuted ? "🔇" : "🔊"}</span>
+                    {heroMuted && <span>Tap for sound</span>}
+                  </button>
                 </motion.div>
                 {/* Sparkles */}
                 {[
