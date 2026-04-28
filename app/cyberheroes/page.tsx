@@ -1021,15 +1021,6 @@ export default function HomePage() {
                     className="relative overflow-hidden"
                     style={{
                       borderRadius: 24,
-                      // Radial mask blends the video into the cosmic
-                      // backdrop. The previous mask-image had four stops
-                      // with alpha; simplified to two stops + a single
-                      // alpha midpoint so the GPU doesn't sample a
-                      // complex gradient on every frame.
-                      maskImage:
-                        "radial-gradient(ellipse 92% 92% at center, black 50%, rgba(0,0,0,0.6) 80%, transparent 100%)",
-                      WebkitMaskImage:
-                        "radial-gradient(ellipse 92% 92% at center, black 50%, rgba(0,0,0,0.6) 80%, transparent 100%)",
                       zIndex: 1,
                     }}
                   >
@@ -1043,13 +1034,27 @@ export default function HomePage() {
                       preload="auto"
                       poster="/characters/heroic.png"
                       className="block w-full max-w-[500px]"
-                      style={{ display: "block", background: "transparent", cursor: "pointer", willChange: "transform" }}
+                      style={{ display: "block", background: "#04050d", cursor: "pointer" }}
                       onClick={() => {
                         setHeroMuted((m) => !m);
                         const v = heroVideoRef.current;
                         if (v && v.paused) v.play().catch(() => {});
                       }}
                     />
+                    {/* Vignette OVERLAY — fades the edges of the video
+                        into the cosmic backdrop without applying a
+                        per-frame mask to the video itself. The video
+                        plays unfiltered; the GPU only paints this
+                        static overlay once. Big perf win on devices
+                        that struggled with mask-image-on-video. */}
+                    <div aria-hidden style={{
+                      position: "absolute",
+                      inset: 0,
+                      borderRadius: 24,
+                      pointerEvents: "none",
+                      background:
+                        "radial-gradient(ellipse 100% 100% at center, transparent 55%, rgba(8,10,22,0.55) 80%, rgba(8,10,22,0.95) 100%)",
+                    }} />
                   </div>
                   {/* Sound toggle — sits OUTSIDE the masked container so
                       it stays sharp and fully visible at the corner. */}

@@ -83,7 +83,7 @@ function Nebula({
 }
 
 /* ─── Deep starfield ─── */
-function Starfield({ count = 350 }: { count?: number }) {
+function Starfield({ count = 180 }: { count?: number }) {
   const positions = useMemo(() => {
     const arr = new Float32Array(count * 3);
     for (let i = 0; i < count; i++) {
@@ -151,7 +151,7 @@ function Aurora({
       }),
       true,
     );
-    return new THREE.TubeGeometry(path, 128, thickness, 10, true);
+    return new THREE.TubeGeometry(path, 80, thickness, 6, true);
   }, [radius, thickness]);
   useFrame((_, dt) => {
     if (ref.current) {
@@ -212,7 +212,7 @@ function FloatingShape({
 export default function CyberHeroesBackdrop() {
   return (
     <Canvas
-      dpr={[1, 1.5]}
+      dpr={[1, 1.2]}
       camera={{ position: [0, 0, 12], fov: 60 }}
       style={{
         width: "100%",
@@ -221,30 +221,28 @@ export default function CyberHeroesBackdrop() {
         pointerEvents: "none",
       }}
       gl={{
-        antialias: true,
+        antialias: false,
         alpha: true,
-        powerPreference: "high-performance",
+        powerPreference: "low-power",
       }}
     >
       <ambientLight intensity={0.45} />
       <CameraParallax />
 
-      {/* Distant nebulae — four colours at varied depths so the cosmic
-          background isn't monochrome violet. */}
+      {/* Distant nebulae — two colours at varied depths so the cosmic
+          background isn't monochrome violet. (Cut from 4 → 2 to leave
+          GPU headroom for the hero video.) */}
       <Nebula position={[-13, 4, -22]} color={PALETTE.cosmic} radius={10} opacity={0.16} />
       <Nebula position={[14, 6, -28]} color={PALETTE.pink} radius={11} opacity={0.14} />
-      <Nebula position={[0, -8, -32]} color={PALETTE.amber} radius={9} opacity={0.10} />
-      <Nebula position={[9, -4, -18]} color={PALETTE.cyan} radius={6} opacity={0.16} />
 
-      <Starfield count={350} />
+      <Starfield count={180} />
 
+      {/* One aurora ribbon (cut from 2). */}
       <Aurora color={PALETTE.cosmic} radius={9} tilt={[Math.PI / 2.1, 0, 0]} speed={0.010} thickness={0.07} position={[0, 1, -10]} />
-      <Aurora color={PALETTE.pink} radius={10.5} tilt={[Math.PI / 2.6, Math.PI / 5, 0]} speed={-0.008} thickness={0.06} position={[0, -2, -12]} />
 
+      {/* Two floating shapes (cut from 4). */}
       <FloatingShape pos={[-7, 3, -8]} kind="octa" scale={0.7} color={PALETTE.cosmic} speedX={0.08} speedY={0.18} />
       <FloatingShape pos={[8, 2, -10]} kind="dodeca" scale={0.85} color={PALETTE.pink} speedX={0.05} speedY={-0.14} />
-      <FloatingShape pos={[-9, -3, -12]} kind="ico" scale={1.0} color={PALETTE.amber} speedX={-0.06} speedY={0.12} />
-      <FloatingShape pos={[7, -4, -9]} kind="tetra" scale={0.8} color={PALETTE.cyan} speedX={0.10} speedY={0.22} />
     </Canvas>
   );
 }
