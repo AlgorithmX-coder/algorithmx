@@ -220,6 +220,118 @@ function CodeLines() {
   );
 }
 
+/* ─── CREDENTIALS MARQUEE ───
+   Continuous horizontal belt of credential badges, scrolling left
+   forever. Same pattern CodeMonkey uses for awards. Currently
+   populated with the real credentials you have today — swap in
+   third-party awards (Mom's Choice / EdTech / etc.) here as they
+   come in by editing CREDENTIALS. */
+const CREDENTIALS: Array<{
+  icon: string;
+  title: string;
+  sub: string;
+  accent: string;
+}> = [
+  { icon: "🇬🇧", title: "CyberFirst Aligned", sub: "UK Framework",        accent: "#7df0ff" },
+  { icon: "🎓", title: "ASDAN Aligned",       sub: "Accreditation",       accent: "#a06aff" },
+  { icon: "🛡️", title: "GDPR Compliant",       sub: "EU · UK Privacy",     accent: "#7eff97" },
+  { icon: "★",  title: "Built by Parents",    sub: "For Parents",         accent: "#ffd158" },
+  { icon: "✓",  title: "30-Day Refund",        sub: "No Questions Asked",  accent: "#ff5fb3" },
+  { icon: "🇬🇧", title: "Made in the UK",       sub: "British Curriculum",  accent: "#7df0ff" },
+  { icon: "🔐", title: "No Data Sold",         sub: "No 3rd-Party Ads",    accent: "#a06aff" },
+  { icon: "🎯", title: "Ages 6–9",             sub: "Crafted Curriculum",  accent: "#ffd158" },
+];
+
+function CredentialsMarquee() {
+  // Duplicate the array so the loop is seamless — when the first set
+  // scrolls off the left, the duplicate is exactly at the start.
+  const items = [...CREDENTIALS, ...CREDENTIALS];
+  return (
+    <div
+      style={{
+        position: "relative",
+        overflow: "hidden",
+        // Soft fade-out edges so badges enter / exit gracefully
+        // instead of snapping at the viewport edges.
+        maskImage:
+          "linear-gradient(90deg, transparent 0%, black 8%, black 92%, transparent 100%)",
+        WebkitMaskImage:
+          "linear-gradient(90deg, transparent 0%, black 8%, black 92%, transparent 100%)",
+      }}
+    >
+      <style>{`
+        @keyframes credSlide {
+          from { transform: translateX(0); }
+          to   { transform: translateX(-50%); }
+        }
+        .cred-track:hover { animation-play-state: paused; }
+        @media (prefers-reduced-motion: reduce) {
+          .cred-track { animation: none !important; }
+        }
+      `}</style>
+      <div
+        className="cred-track"
+        style={{
+          display: "flex",
+          gap: 28,
+          width: "max-content",
+          animation: "credSlide 38s linear infinite",
+          padding: "8px 0",
+        }}
+      >
+        {items.map((c, i) => (
+          <div
+            key={i}
+            style={{
+              flex: "0 0 auto",
+              width: 168,
+              height: 168,
+              borderRadius: "50%",
+              background:
+                "radial-gradient(circle at 35% 30%, rgba(255, 255, 255, 0.04), rgba(8, 10, 22, 0.85) 70%)",
+              border: `2px solid ${c.accent}55`,
+              boxShadow: `0 0 18px ${c.accent}22, 0 8px 24px -10px rgba(0, 0, 0, 0.6), inset 0 0 0 1px rgba(255, 255, 255, 0.04)`,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+              padding: 14,
+              textAlign: "center",
+              gap: 6,
+            }}
+          >
+            <span style={{ fontSize: 30, lineHeight: 1, filter: `drop-shadow(0 0 8px ${c.accent}88)` }}>{c.icon}</span>
+            <div
+              style={{
+                fontFamily: "'Space Grotesk', system-ui, sans-serif",
+                fontSize: 12.5,
+                fontWeight: 800,
+                color: c.accent,
+                letterSpacing: "0.02em",
+                lineHeight: 1.15,
+              }}
+            >
+              {c.title}
+            </div>
+            <div
+              style={{
+                fontFamily: "'JetBrains Mono', monospace",
+                fontSize: 9,
+                fontWeight: 600,
+                color: "#94a3b8",
+                letterSpacing: "0.14em",
+                textTransform: "uppercase",
+              }}
+            >
+              {c.sub}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 /* ─── ANIMATED TECH BACKGROUND ─── */
 function TechBackground() {
   // Mouse parallax — sets --mx / --my CSS custom properties on the root.
@@ -1622,6 +1734,26 @@ export default function HomePage() {
               Progress, badges, and certificates sync automatically — your child picks up exactly where they left off.
             </p>
           </div>
+        </section>
+
+        {/* ── CREDENTIALS MARQUEE ─────────────────────────────────────────── */}
+        <section className="py-12 sm:py-16" data-scroll>
+          <div className="text-center mb-8 px-6 md:px-10">
+            <span style={{
+              display: "inline-flex", alignItems: "center", gap: 8,
+              background: "rgba(255,209,88,0.10)", border: "1px solid rgba(255,209,88,0.32)",
+              color: "#ffd158", borderRadius: 999, padding: "5px 14px",
+              fontFamily: "'JetBrains Mono', monospace", fontSize: 11,
+              fontWeight: 800, letterSpacing: "0.2em", textTransform: "uppercase",
+              marginBottom: 14,
+            }}>
+              <span style={{ fontSize: 14 }}>★</span> Trusted Credentials
+            </span>
+            <h2 className="text-2xl sm:text-3xl font-black text-white">
+              Built on <span style={ACCENT_TEXT}>Real Standards</span>
+            </h2>
+          </div>
+          <CredentialsMarquee />
         </section>
 
         {/* ── TESTIMONIALS ────────────────────────────────────────────────── */}
