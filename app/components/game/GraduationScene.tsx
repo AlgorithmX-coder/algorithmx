@@ -13,18 +13,14 @@ import { useMemo } from "react";
 import { motion } from "motion/react";
 import {
   COLOR,
-  DistantRidges,
   FloatingParticles,
-  PrimaryButton,
   SHADOW,
   SPRING,
   SceneFrame,
   SceneKeyframes,
   SceneTitle,
-  SunsetBackdrop,
+  StarField,
   Vignette,
-  WoodFloor,
-  useMouseParallax,
 } from "@/app/components/scene";
 
 export interface GraduationSceneProps {
@@ -48,7 +44,6 @@ export default function GraduationScene({
   onContinue,
   onDownloadCertificate,
 }: GraduationSceneProps) {
-  const px = useMouseParallax();
   const today = useMemo(
     () =>
       new Date().toLocaleDateString("en-GB", {
@@ -61,10 +56,65 @@ export default function GraduationScene({
 
   return (
     <SceneFrame>
-      <SunsetBackdrop variant="golden" parallax={px} />
-      <DistantRidges variant="golden" parallax={px} />
+      {/* Cosmic atmosphere — bridges the boss-flow tone (cosmic violet
+          / coral / pink) into the warm-gold victory accents. Replaces
+          the older Pixar Sunset/Ridges/WoodFloor layers that felt
+          like a daytime tonal break after the cosmic boss arena. */}
+      <div
+        aria-hidden
+        style={{
+          position: "absolute",
+          inset: 0,
+          background:
+            "radial-gradient(ellipse at 50% 70%, #2a0d2e 0%, #1a1f4d 35%, #0f1530 70%, #04050d 100%)",
+          pointerEvents: "none",
+        }}
+      />
+      {/* Cosmic cloud blobs — top-left violet, top-right pink, bottom warm-gold horizon */}
+      <div
+        aria-hidden
+        style={{
+          position: "absolute",
+          top: "-12%",
+          left: "-12%",
+          width: 640,
+          height: 640,
+          borderRadius: "50%",
+          background: "radial-gradient(circle, rgba(124, 92, 255, 0.32) 0%, transparent 65%)",
+          filter: "blur(60px)",
+          pointerEvents: "none",
+        }}
+      />
+      <div
+        aria-hidden
+        style={{
+          position: "absolute",
+          top: "-8%",
+          right: "-12%",
+          width: 540,
+          height: 540,
+          borderRadius: "50%",
+          background: "radial-gradient(circle, rgba(255, 95, 179, 0.26) 0%, transparent 65%)",
+          filter: "blur(60px)",
+          pointerEvents: "none",
+        }}
+      />
+      <div
+        aria-hidden
+        style={{
+          position: "absolute",
+          bottom: "-15%",
+          left: "20%",
+          width: 720,
+          height: 380,
+          borderRadius: "50%",
+          background: "radial-gradient(circle, rgba(255, 178, 80, 0.30) 0%, transparent 65%)",
+          filter: "blur(70px)",
+          pointerEvents: "none",
+        }}
+      />
+      <StarField count={45} />
       <FloatingParticles count={45} />
-      <WoodFloor variant="golden" />
 
       <ConfettiBurst />
 
@@ -172,9 +222,41 @@ export default function GraduationScene({
       </motion.div>
 
       {/* Action buttons — Continue centered, Download to the right when milestone */}
-      <PrimaryButton onClick={onContinue} visible>
-        Continue →
-      </PrimaryButton>
+      <motion.div
+        initial={{ opacity: 0, y: 12, scale: 0.92 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        transition={{ ...SPRING.bouncy, delay: 1.1 }}
+        style={{
+          position: "absolute",
+          bottom: 36,
+          left: "50%",
+          transform: "translateX(-50%)",
+          zIndex: 9,
+        }}
+      >
+        <motion.button
+          onClick={onContinue}
+          whileHover={{ y: -3, scale: 1.04, boxShadow: "0 0 32px rgba(0, 229, 255, 0.85), 0 14px 28px -6px rgba(0, 229, 255, 0.55), 0 0 0 1px rgba(125, 240, 255, 0.7) inset" }}
+          whileTap={{ scale: 0.97 }}
+          transition={{ type: "spring", stiffness: 320, damping: 20 }}
+          style={{
+            border: "none",
+            cursor: "pointer",
+            padding: "16px 38px",
+            fontSize: 18,
+            fontWeight: 800,
+            color: "#080a16",
+            background: "linear-gradient(135deg, #00e5ff, #7c5cff)",
+            borderRadius: 999,
+            fontFamily: "'Space Grotesk', system-ui, sans-serif",
+            letterSpacing: 1,
+            textTransform: "uppercase",
+            boxShadow: "0 0 24px rgba(0, 229, 255, 0.55), 0 8px 20px -6px rgba(0, 229, 255, 0.45), 0 0 0 1px rgba(125, 240, 255, 0.6) inset",
+          }}
+        >
+          Continue →
+        </motion.button>
+      </motion.div>
       {isMilestoneWeek && onDownloadCertificate && (
         <motion.div
           initial={{ opacity: 0, y: 12 }}

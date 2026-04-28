@@ -94,27 +94,27 @@ const PV = {
   // Floor scan
   floorLine: "rgba(124, 92, 255, 0.35)",
   // Falling items (paper cards)
-  cardShadow: "rgba(40, 18, 8, 0.4)",
+  cardShadow: "rgba(8, 10, 22, 0.55)",
   cardPrivateBody: "#1a2147",
-  cardPrivateAccent: "#ff7a59",
-  cardSafeBody: "#fdf6ee",
-  cardSafeAccent: "#4a9a6a",
-  cardText: "#3b2615",
-  // Shield (golden)
-  shieldHalo: "rgba(255, 220, 160, 0.5)",
-  shieldGradTop: "#ffe9b8",
-  shieldGradMid: "#ffc97a",
-  shieldGradBottom: "#3a7bff",
+  cardPrivateAccent: "#ff5fb3",
+  cardSafeBody: "rgba(231, 236, 255, 0.96)",
+  cardSafeAccent: "#7eff97",
+  cardText: "#0f1530",
+  // Shield (cosmic violet → cyan)
+  shieldHalo: "rgba(125, 240, 255, 0.5)",
+  shieldGradTop: "#e7ecff",
+  shieldGradMid: "#7df0ff",
+  shieldGradBottom: "#7c5cff",
   shieldRim: "rgba(255, 245, 220, 0.8)",
   shieldGlow: "#7c5cff",
   // Edge flash
   edgeFlashGood: "#7eff97",
-  edgeFlashBad: "#ff7a59",
-  edgeFlashWarn: "#e89938",
+  edgeFlashBad: "#ff5fb3",
+  edgeFlashWarn: "#ffd158",
   // Floaters
   floaterCorrect: "#7eff97",
-  floaterWrong: "#ff7a59",
-  floaterSlow: "#e89938",
+  floaterWrong: "#ff5fb3",
+  floaterSlow: "#ffd158",
   // HUD
   hudBlocked: "#a0ffb0",
   hudSafe: "#fcd34d",

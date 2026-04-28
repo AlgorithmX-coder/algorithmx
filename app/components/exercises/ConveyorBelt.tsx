@@ -387,7 +387,7 @@ export default function ConveyorBelt({
             { glyph: "⬇", text: "Lever DOWN to shred WEAK passwords" },
             { glyph: "⏱", text: "Decide before each card hits the fork" },
           ]}
-          accent="#fbbf24"
+          accent="#ffd158"
         />
       </div>
 
@@ -409,8 +409,8 @@ export default function ConveyorBelt({
         <span style={{ color: "#7dd3fc" }}>
           SORTED {sortedIdx}/{total}
         </span>
-        <span style={{ color: "#fbbf24" }}>STREAK {streak}</span>
-        <span style={{ color: "#f97316" }}>
+        <span style={{ color: "#ffd158" }}>STREAK {streak}</span>
+        <span style={{ color: "#ff7a59" }}>
           TIME {timeToFork.toFixed(1)}s
         </span>
       </div>
@@ -510,7 +510,7 @@ export default function ConveyorBelt({
             style={{
               fontSize: 28,
               fontWeight: 900,
-              color: "#f87171",
+              color: "#ff5fb3",
               lineHeight: 1,
               marginTop: 4,
             }}
@@ -651,7 +651,7 @@ export default function ConveyorBelt({
           top: BELT_Y + 112,
           fontSize: 11,
           fontWeight: 900,
-          color: "#f87171",
+          color: "#ff5fb3",
           letterSpacing: 1,
         }}
       >
@@ -841,7 +841,7 @@ export default function ConveyorBelt({
                   width: 6,
                   height: 6,
                   borderRadius: "50%",
-                  background: "#fbbf24",
+                  background: "#ffd158",
                   boxShadow: "0 0 6px #fbbf24",
                   "--dx": `${s.dx}px`,
                   "--dy": `${s.dy}px`,
@@ -1638,7 +1638,7 @@ function FactoryBackdrop() {
         const dur = 6 + (i % 5);
         const delay = (i * 0.7) % 8;
         const drift = ((i % 4) - 2) * 14;
-        const c = ["#00e5ff", "#f97316", "#fb923c", "#fbbf24"][i % 4];
+        const c = ["#00e5ff", "#ff7a59", "#ff7a59", "#ffd158"][i % 4];
         return (
           <span
             key={`ember-${i}`}

@@ -52,53 +52,56 @@ const CARD_Y = BEAM_Y;
 const SHIELD_X = CANVAS_W - 54;
 const SHIELD_Y = 54;
 
-/* ───────────────── PIXAR CANVAS PALETTE ───────────────── */
+/* ───────────────── COSMIC CANVAS PALETTE ─────────────────
+ * Was the warm Pixar parchment / sunset-gold treatment; swept to the
+ * cosmic-cyber palette so the scanner reads in the same key as the
+ * boss flow (cosmic violet / pink / coral / cyan / gold). */
 
 const CV = {
-  // Sky-to-floor parchment gradient
-  bgTop: "#fcebc6",
-  bgBottom: "#f4cfa1",
-  // Warm grid
-  gridStroke: "rgba(140, 70, 25, 0.07)",
-  // Beam (gold)
-  beamCore: "rgba(255, 248, 220, 0.85)",
+  // Sky-to-floor cosmic gradient — deep cosmic-violet → abyss
+  bgTop: "#1a1f4d",
+  bgBottom: "#0f1530",
+  // Cosmic grid
+  gridStroke: "rgba(125, 240, 255, 0.08)",
+  // Beam (cosmic violet → cyan)
+  beamCore: "rgba(231, 236, 255, 0.85)",
   beamGlow: "rgba(124, 92, 255, 0.42)",
   beamEdge: "rgba(124, 92, 255, 0)",
-  beamCenterLine: "rgba(255, 178, 90, 0.85)",
-  // Shield (warm gold)
-  shieldFill: "rgba(255, 220, 160, 0.45)",
-  shieldStroke: "#c47340",
-  shieldGlyph: "#5a2e14",
+  beamCenterLine: "rgba(125, 240, 255, 0.85)",
+  // Shield (cyan/cosmic)
+  shieldFill: "rgba(125, 240, 255, 0.32)",
+  shieldStroke: "#7c5cff",
+  shieldGlyph: "#e7ecff",
   // Card
-  cardShadow: "rgba(80, 40, 10, 0.28)",
-  cardBodyTop: "#fffaf0",
-  cardBodyBottom: "#fdebcb",
-  cardBorderIdle: "rgba(196, 115, 64, 0.55)",
-  cardBorderCorrect: "#4a9a6a",
-  cardBorderWrong: "#ff7a59",
-  cardSweep: "rgba(255, 220, 150, 0.45)",
-  cardText: "#3b2615",
+  cardShadow: "rgba(8, 10, 22, 0.45)",
+  cardBodyTop: "rgba(15, 21, 48, 0.92)",
+  cardBodyBottom: "rgba(26, 31, 77, 0.92)",
+  cardBorderIdle: "rgba(124, 92, 255, 0.55)",
+  cardBorderCorrect: "#7eff97",
+  cardBorderWrong: "#ff5fb3",
+  cardSweep: "rgba(125, 240, 255, 0.32)",
+  cardText: "#e7ecff",
   // Timer bar
-  timerTrack: "rgba(140, 70, 25, 0.18)",
-  timerGood: "#4a9a6a",
-  timerWarn: "#e89938",
-  timerBad: "#ff7a59",
+  timerTrack: "rgba(125, 240, 255, 0.18)",
+  timerGood: "#7eff97",
+  timerWarn: "#ffd158",
+  timerBad: "#ff5fb3",
   // Floaters
-  floaterCorrect: "#4a9a6a",
-  floaterWrong: "#ff7a59",
-  floaterSlow: "#e89938",
+  floaterCorrect: "#7eff97",
+  floaterWrong: "#ff5fb3",
+  floaterSlow: "#ffd158",
   floaterBonus: "#7c5cff",
   // Particles
   burstCorrect: "#a0ffb0",
-  burstWrong: "#f4a89a",
+  burstWrong: "#ff9bcb",
   // Explanation
-  explainBg: "rgba(48, 22, 38, 0.92)",
+  explainBg: "rgba(8, 10, 22, 0.92)",
   explainStrong: "#a0ffb0",
-  explainWeak: "#f4a89a",
+  explainWeak: "#ff9bcb",
   // HUD
-  hudScanned: "#7a3a52",
-  hudScore: "#4a9a6a",
-  hudStreak: "#3a7bff",
+  hudScanned: "#a06aff",
+  hudScore: "#7eff97",
+  hudStreak: "#7df0ff",
 } as const;
 
 function transitTimeMs(i: number) {

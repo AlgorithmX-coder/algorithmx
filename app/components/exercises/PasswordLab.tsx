@@ -66,20 +66,20 @@ const INGREDIENTS: Ingredient[] = [
 ];
 
 const STAGE_LIQUID_COLOURS = [
-  "#5a3a48", // empty — warm dark plum
-  "#7a3a52", // 1 — wine
-  "#c47340", // 2 — terracotta
-  "#d4a04a", // 3 — amber
-  "#e89938", // 4 — sunset
-  "linear-gradient(180deg, #ffd158, #7c5cff, #c43c6a, #0f1530)", // 5 — rainbow
+  "#1a1f4d", // empty — cosmic deep
+  "#3a1a3e", // 1 — cosmic plum
+  "#7c5cff", // 2 — cosmic violet
+  "#a06aff", // 3 — lighter violet
+  "#ff5fb3", // 4 — cosmic pink
+  "linear-gradient(180deg, #ffd158, #ff5fb3, #7c5cff, #00e5ff)", // 5 — cosmic rainbow
 ];
 
 const METER_SEGMENTS = [
-  { colour: "#ff7a59", label: "WEAK" },
-  { colour: "#e89938", label: "GETTING THERE" },
-  { colour: "#fcd34d", label: "GOOD" },
+  { colour: "#ff5fb3", label: "WEAK" },
+  { colour: "#ff7a59", label: "GETTING THERE" },
+  { colour: "#ffd158", label: "GOOD" },
   { colour: "#7eff97", label: "STRONG" },
-  { colour: "#4a9a6a", label: "SUPER STRONG!" },
+  { colour: "#7df0ff", label: "SUPER STRONG!" },
 ];
 
 const FINAL_PASSWORD = "Tr0pic4l$unR1se!";

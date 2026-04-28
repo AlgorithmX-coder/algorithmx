@@ -282,7 +282,7 @@ export default function SpamBlaster({
     em.resolved = true;
     em.alive = false;
     spawnFragments(em, "#ef4444", 10 + Math.floor(Math.random() * 4));
-    addFloater("ZAP!", em.x, em.y, "#f87171", 800);
+    addFloater("ZAP!", em.x, em.y, "#ff5fb3", 800);
     if (em.clue) addClue(em.clue, em.x, em.y - 40);
     s.zapped += 1;
     s.streak += 1;
@@ -292,7 +292,7 @@ export default function SpamBlaster({
   };
 
   const nudgeSafe = (em: LiveEmail) => {
-    addFloater("OOPS! That was a real email!", em.x, em.y - 30, "#f97316", 1100);
+    addFloater("OOPS! That was a real email!", em.x, em.y - 30, "#ffd158", 1100);
     playSound("wrong");
     state.current.streak = 0;
     onWrong?.();
