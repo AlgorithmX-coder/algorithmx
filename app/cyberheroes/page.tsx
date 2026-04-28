@@ -127,10 +127,9 @@ function ConstellationMesh() {
 }
 
 /* ─── CODE LINES ───
-   Faint cybersecurity-themed pseudo-code snippets fading in/out at
-   fixed positions. Gives the page a "tech / cybersecurity" cue
-   without leaning on the Matrix-rain cliché. Multi-coloured cosmic
-   palette, low opacity, mono-font. */
+   Cybersecurity-themed pseudo-code snippets fading in/out at fixed
+   positions across the page. Gives an explicit 'tech / cybersecurity'
+   cue. Multi-coloured cosmic palette, varied sizes, mono-font. */
 const CODE_SNIPPETS = [
   "if (secure) { allow() }",
   "encrypt(password)",
@@ -152,6 +151,22 @@ const CODE_SNIPPETS = [
   "scanPorts() // ok",
   "mfa.required = true",
   "guard.engage()",
+  "if (phishing) { reject() }",
+  "regex.match(/[!@#$]/)",
+  "user.role === 'hero'",
+  "vault.unlock(key)",
+  "audit.log('access')",
+  "shield.deflect()",
+  "patch.deploy()",
+  "monitor.alert(threat)",
+  "passphrase.length >= 12",
+  "deny.unknown_origin()",
+  "checksum.verify()",
+  "intrusion.blocked = 47",
+  "secure_random(32)",
+  "// Layla: 'too easy'",
+  "// Adam: 'shield up!'",
+  "raccoon.detected = true",
 ];
 
 function CodeLines() {
@@ -160,16 +175,23 @@ function CodeLines() {
       <style>{`
         @keyframes codeFadeCH {
           0%, 100% { opacity: 0; transform: translateY(0); }
-          15%      { opacity: 0.10; }
-          85%      { opacity: 0.10; }
+          12%      { opacity: var(--peak, 0.18); }
+          88%      { opacity: var(--peak, 0.18); }
         }
       `}</style>
       {CODE_SNIPPETS.map((snippet, i) => {
-        const left = (i * 37 + 5) % 92;
-        const top = (i * 53 + 7) % 92;
-        const dur = 7 + (i % 5);
-        const delay = (i * 0.85) % 9;
-        const colour = ["#7c5cff", "#7df0ff", "#ff5fb3", "#ffd158"][i % 4];
+        // Pseudo-random but deterministic placement — denser than
+        // before, peak opacity bumped from 0.10 -> 0.18 so the snippets
+        // actually stand out without being noisy.
+        const left = (i * 41 + 3) % 94;
+        const top = (i * 67 + 5) % 94;
+        const dur = 6 + (i % 6);
+        const delay = (i * 0.55) % 11;
+        const colour = ["#7c5cff", "#7df0ff", "#ff5fb3", "#ffd158", "#a06aff"][i % 5];
+        // Varied font sizes: most are 11-13px; every 5th snippet is
+        // bigger (16px) for hierarchy.
+        const fontSize = i % 5 === 0 ? 16 : 11 + (i % 3);
+        const peak = i % 5 === 0 ? 0.22 : 0.18;
         return (
           <span
             key={`code-${i}`}
@@ -178,16 +200,17 @@ function CodeLines() {
               left: `${left}%`,
               top: `${top}%`,
               fontFamily: "'JetBrains Mono', ui-monospace, monospace",
-              fontSize: 10 + (i % 3),
-              fontWeight: 500,
+              fontSize,
+              fontWeight: i % 5 === 0 ? 600 : 500,
               color: colour,
-              textShadow: `0 0 8px ${colour}55`,
+              textShadow: `0 0 10px ${colour}66, 0 0 20px ${colour}33`,
               opacity: 0,
               animation: `codeFadeCH ${dur}s ease-in-out ${delay}s infinite`,
               whiteSpace: "nowrap",
               letterSpacing: "0.04em",
               userSelect: "none",
-            }}
+              ["--peak" as string]: peak,
+            } as CSSProperties}
           >
             {snippet}
           </span>
@@ -868,13 +891,14 @@ export default function HomePage() {
               animate={{ opacity: 1, scale: 1 }}
               transition={{ type: "spring", stiffness: 150, damping: 20, delay: 0.2 }}>
               <div className="relative">
-                {/* Glow behind image */}
+                {/* Glow behind image — bigger + softer so the video
+                    radiates further into the cosmic backdrop. */}
                 <motion.div className="absolute inset-0 rounded-3xl"
-                  animate={{ opacity: [0.5, 1, 0.5] }}
+                  animate={{ opacity: [0.55, 1, 0.55] }}
                   transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
                   style={{
-                    background: "linear-gradient(135deg, rgba(124,92,255,0.4), rgba(0,229,255,0.4))",
-                    filter: "blur(40px)", transform: "scale(1.1)",
+                    background: "radial-gradient(ellipse at center, rgba(124,92,255,0.55) 0%, rgba(0,229,255,0.32) 35%, rgba(255,95,179,0.22) 60%, transparent 80%)",
+                    filter: "blur(70px)", transform: "scale(1.45)",
                   }} />
                 <motion.div
                   animate={{ y: [-8, 8, -8] }}
@@ -882,19 +906,25 @@ export default function HomePage() {
                   className="relative"
                   style={{
                     // OUTER wrapper carries the ambient glow that bleeds
-                    // into the cosmic backdrop.
-                    filter: "drop-shadow(0 0 32px rgba(124,92,255,0.45)) drop-shadow(0 0 80px rgba(0,229,255,0.18))",
+                    // into the cosmic backdrop. Cranked up so the video
+                    // radiates light noticeably further outward.
+                    filter:
+                      "drop-shadow(0 0 60px rgba(124,92,255,0.6)) drop-shadow(0 0 140px rgba(0,229,255,0.32)) drop-shadow(0 0 80px rgba(255,95,179,0.22))",
                   }}
                 >
                   <div
-                    className="relative rounded-3xl overflow-hidden"
+                    className="relative overflow-hidden"
                     style={{
-                      // INNER element holds the soft radial mask so the
-                      // video corners fade into the cosmos. Drop-shadow
-                      // on the OUTER survives the mask cleanly because
-                      // the wrapper isn't masked.
-                      maskImage: "radial-gradient(ellipse at center, black 62%, rgba(0,0,0,0.6) 82%, transparent 100%)",
-                      WebkitMaskImage: "radial-gradient(ellipse at center, black 62%, rgba(0,0,0,0.6) 82%, transparent 100%)",
+                      borderRadius: 24,
+                      // Aggressive radial mask — starts fading from 38%
+                      // radius so the video bleeds into the cosmos
+                      // significantly; only the centre ~half is fully
+                      // opaque. Reads as 'a glow in space' rather than
+                      // a card with rounded corners.
+                      maskImage:
+                        "radial-gradient(ellipse 88% 88% at center, black 38%, rgba(0,0,0,0.85) 60%, rgba(0,0,0,0.4) 82%, transparent 100%)",
+                      WebkitMaskImage:
+                        "radial-gradient(ellipse 88% 88% at center, black 38%, rgba(0,0,0,0.85) 60%, rgba(0,0,0,0.4) 82%, transparent 100%)",
                     }}
                   >
                     <video
@@ -981,23 +1011,23 @@ export default function HomePage() {
             {/* Adam */}
             <div data-scroll data-scroll-delay="0">
               <motion.div className="rounded-3xl char-blob char-blob-adam"
-                whileHover={{ y: -8, scale: 1.03, filter: "drop-shadow(0 0 32px rgba(124,92,255,0.5))" }}
+                whileHover={{ y: -8, scale: 1.03, filter: "drop-shadow(0 0 50px rgba(124,92,255,0.6))" }}
                 style={{
-                  // Card background + border softened — image blends into the
-                  // cosmic atmosphere via mask + drop-shadow instead of
-                  // sitting in a hard frame.
-                  background: "linear-gradient(180deg, rgba(124,92,255,0.06) 0%, rgba(124,92,255,0.02) 100%)",
-                  filter: "drop-shadow(0 0 24px rgba(124,92,255,0.32))",
+                  // No card background — Adam emerges directly from the
+                  // cosmic atmosphere with a violet ambient glow.
+                  background: "transparent",
+                  filter: "drop-shadow(0 0 40px rgba(124,92,255,0.45)) drop-shadow(0 0 90px rgba(124,92,255,0.18))",
                 }}>
                 <div
                   style={{
                     height: 420,
                     overflow: "hidden",
-                    // Soft top + bottom + side fade so the character image
-                    // bleeds into the card / background instead of having
-                    // hard rectangular edges.
-                    maskImage: "linear-gradient(180deg, transparent 0%, black 12%, black 78%, transparent 100%)",
-                    WebkitMaskImage: "linear-gradient(180deg, transparent 0%, black 12%, black 78%, transparent 100%)",
+                    // Stronger radial-ellipse mask: only the centre body
+                    // is fully visible, edges fade aggressively into the
+                    // cosmos. Adam reads as 'a being in space' rather
+                    // than 'a portrait in a frame'.
+                    maskImage: "radial-gradient(ellipse 78% 92% at 50% 45%, black 35%, rgba(0,0,0,0.85) 62%, rgba(0,0,0,0.35) 86%, transparent 100%)",
+                    WebkitMaskImage: "radial-gradient(ellipse 78% 92% at 50% 45%, black 35%, rgba(0,0,0,0.85) 62%, rgba(0,0,0,0.35) 86%, transparent 100%)",
                   }}
                 >
                   <Image src="/characters/adam.png" alt="Adam, curious and brave Cyber Hero" width={400} height={500} className="char-float" style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 20%", display: "block" }} />
@@ -1014,17 +1044,17 @@ export default function HomePage() {
             {/* Layla */}
             <div data-scroll data-scroll-delay="0.15">
               <motion.div className="rounded-3xl char-blob char-blob-layla"
-                whileHover={{ y: -8, scale: 1.03, filter: "drop-shadow(0 0 32px rgba(255,95,179,0.5))" }}
+                whileHover={{ y: -8, scale: 1.03, filter: "drop-shadow(0 0 50px rgba(255,95,179,0.6))" }}
                 style={{
-                  background: "linear-gradient(180deg, rgba(255,95,179,0.06) 0%, rgba(124,92,255,0.02) 100%)",
-                  filter: "drop-shadow(0 0 24px rgba(255,95,179,0.32))",
+                  background: "transparent",
+                  filter: "drop-shadow(0 0 40px rgba(255,95,179,0.45)) drop-shadow(0 0 90px rgba(255,95,179,0.18))",
                 }}>
                 <div
                   style={{
                     height: 420,
                     overflow: "hidden",
-                    maskImage: "linear-gradient(180deg, transparent 0%, black 12%, black 78%, transparent 100%)",
-                    WebkitMaskImage: "linear-gradient(180deg, transparent 0%, black 12%, black 78%, transparent 100%)",
+                    maskImage: "radial-gradient(ellipse 78% 92% at 50% 45%, black 35%, rgba(0,0,0,0.85) 62%, rgba(0,0,0,0.35) 86%, transparent 100%)",
+                    WebkitMaskImage: "radial-gradient(ellipse 78% 92% at 50% 45%, black 35%, rgba(0,0,0,0.85) 62%, rgba(0,0,0,0.35) 86%, transparent 100%)",
                   }}
                 >
                   <Image src="/characters/layla.png" alt="Layla, smart and fearless Cyber Hero" width={400} height={500} className="char-float" style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 20%", display: "block" }} />
