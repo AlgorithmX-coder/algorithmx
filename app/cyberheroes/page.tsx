@@ -1402,6 +1402,228 @@ export default function HomePage() {
           </div>
         </section>
 
+        {/* ── ON EVERY DEVICE ─────────────────────────────────────────────── */}
+        <section className="max-w-[1200px] mx-auto px-6 md:px-10 py-16 sm:py-24">
+          <div className="text-center mb-12 sm:mb-16" data-scroll>
+            <span style={{
+              display: "inline-flex", alignItems: "center", gap: 8,
+              background: "rgba(0,229,255,0.12)", border: "1px solid rgba(0,229,255,0.35)",
+              color: "#7df0ff", borderRadius: 999, padding: "5px 14px",
+              fontFamily: "'JetBrains Mono', monospace", fontSize: 11,
+              fontWeight: 800, letterSpacing: "0.2em", textTransform: "uppercase",
+              marginBottom: 16,
+            }}>
+              <span style={{ fontSize: 14 }}>📱</span> Anywhere · Anytime
+            </span>
+            <h2 className="text-3xl sm:text-4xl font-black text-white mb-4">
+              On <span style={ACCENT_TEXT}>Every Device</span> They Use
+            </h2>
+            <p className="text-gray-400 text-base sm:text-lg max-w-2xl mx-auto">
+              Laptop. Tablet. Phone. Same lesson, same progress, picked up anywhere — kids start in the morning on a tablet and finish on a laptop after school.
+            </p>
+          </div>
+
+          <div className="relative max-w-[960px] mx-auto" data-scroll data-scroll-delay="0.15"
+            style={{ height: 540 }}>
+            {/* Big cosmic glow behind the device cluster */}
+            <div aria-hidden style={{
+              position: "absolute", inset: "-10%",
+              background: "radial-gradient(ellipse at center, rgba(124,92,255,0.35) 0%, rgba(0,229,255,0.20) 35%, rgba(255,95,179,0.15) 60%, transparent 80%)",
+              filter: "blur(60px)",
+              pointerEvents: "none",
+            }} />
+
+            {/* ── LAPTOP — back, biggest ── */}
+            <motion.div
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+              viewport={{ once: true }}
+              style={{
+                position: "absolute",
+                top: "8%",
+                left: "50%",
+                transform: "translateX(-50%)",
+                width: "min(72%, 640px)",
+                aspectRatio: "16 / 10",
+                zIndex: 1,
+                filter: "drop-shadow(0 30px 60px rgba(124,92,255,0.45)) drop-shadow(0 0 90px rgba(0,229,255,0.22))",
+              }}
+            >
+              {/* Laptop body */}
+              <div style={{
+                position: "absolute", inset: 0,
+                borderRadius: "14px 14px 6px 6px",
+                background: "linear-gradient(135deg, #1a1f3a, #0a0e22)",
+                border: "2px solid rgba(125,240,255,0.45)",
+                padding: "12px 12px 18px",
+                boxShadow: "inset 0 0 0 1px rgba(255,255,255,0.05)",
+              }}>
+                {/* Camera notch */}
+                <div style={{ position: "absolute", top: 4, left: "50%", transform: "translateX(-50%)", width: 4, height: 4, borderRadius: "50%", background: "rgba(125,240,255,0.5)" }} />
+                {/* Screen */}
+                <div style={{
+                  position: "relative",
+                  width: "100%", height: "100%",
+                  borderRadius: 6, overflow: "hidden",
+                  background: "radial-gradient(ellipse at 50% 70%, #2a0d2e 0%, #1a1f4d 35%, #0f1530 70%, #04050d 100%)",
+                }}>
+                  <Image
+                    src="/characters/heroic.png"
+                    alt="Cyber Heroes lesson on a laptop"
+                    width={640} height={400}
+                    style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 25%" }}
+                    sizes="(max-width: 768px) 70vw, 640px"
+                  />
+                  {/* Faint cosmic overlay */}
+                  <div style={{ position: "absolute", inset: 0, background: "linear-gradient(180deg, transparent 60%, rgba(8,10,22,0.6) 100%)" }} />
+                  {/* Caption pill */}
+                  <div style={{
+                    position: "absolute", bottom: 10, left: "50%", transform: "translateX(-50%)",
+                    fontFamily: "'JetBrains Mono', monospace",
+                    fontSize: 9, letterSpacing: "0.2em", color: "#7df0ff",
+                    background: "rgba(8,10,22,0.78)",
+                    border: "1px solid rgba(125,240,255,0.4)",
+                    borderRadius: 999, padding: "3px 10px",
+                    textTransform: "uppercase",
+                  }}>
+                    ▸ Boss Battle · Week 1
+                  </div>
+                </div>
+              </div>
+              {/* Laptop base / hinge */}
+              <div style={{
+                position: "absolute", bottom: "-10px", left: "-4%", width: "108%", height: 14,
+                borderRadius: "0 0 18px 18px",
+                background: "linear-gradient(180deg, #1a1f3a, #04050d)",
+                boxShadow: "0 6px 14px -2px rgba(0,0,0,0.6)",
+              }} />
+            </motion.div>
+
+            {/* ── TABLET — middle, in front ── */}
+            <motion.div
+              initial={{ opacity: 0, y: 30, x: 20 }}
+              whileInView={{ opacity: 1, y: 0, x: 0 }}
+              transition={{ duration: 0.7, delay: 0.28, ease: [0.16, 1, 0.3, 1] }}
+              viewport={{ once: true }}
+              style={{
+                position: "absolute",
+                top: "32%",
+                right: "5%",
+                width: "min(34%, 280px)",
+                aspectRatio: "4 / 5.6",
+                zIndex: 2,
+                filter: "drop-shadow(0 26px 50px rgba(255,95,179,0.45)) drop-shadow(0 0 80px rgba(124,92,255,0.22))",
+              }}
+            >
+              <div style={{
+                width: "100%", height: "100%",
+                borderRadius: 22,
+                background: "linear-gradient(135deg, #1a1f3a, #0a0e22)",
+                border: "2px solid rgba(255,95,179,0.45)",
+                padding: 8,
+                boxShadow: "inset 0 0 0 1px rgba(255,255,255,0.05)",
+              }}>
+                <div style={{
+                  position: "relative",
+                  width: "100%", height: "100%",
+                  borderRadius: 14, overflow: "hidden",
+                  background: "radial-gradient(ellipse at 50% 70%, #2a0d2e 0%, #1a1f4d 35%, #0f1530 70%, #04050d 100%)",
+                }}>
+                  <Image
+                    src="/characters/adam-layla-hacked.png"
+                    alt="Cyber Heroes lesson on a tablet"
+                    width={280} height={392}
+                    style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 30%" }}
+                    sizes="(max-width: 768px) 34vw, 280px"
+                  />
+                  <div style={{ position: "absolute", inset: 0, background: "linear-gradient(180deg, transparent 60%, rgba(8,10,22,0.6) 100%)" }} />
+                  <div style={{
+                    position: "absolute", bottom: 10, left: "50%", transform: "translateX(-50%)",
+                    fontFamily: "'JetBrains Mono', monospace",
+                    fontSize: 8, letterSpacing: "0.18em", color: "#ff9bcb",
+                    background: "rgba(8,10,22,0.78)",
+                    border: "1px solid rgba(255,95,179,0.4)",
+                    borderRadius: 999, padding: "3px 8px",
+                    textTransform: "uppercase",
+                  }}>
+                    ▸ Story · The Hack
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* ── PHONE — front, smallest ── */}
+            <motion.div
+              initial={{ opacity: 0, y: 30, x: -20 }}
+              whileInView={{ opacity: 1, y: 0, x: 0 }}
+              transition={{ duration: 0.7, delay: 0.42, ease: [0.16, 1, 0.3, 1] }}
+              viewport={{ once: true }}
+              style={{
+                position: "absolute",
+                bottom: "0%",
+                left: "8%",
+                width: "min(20%, 175px)",
+                aspectRatio: "10 / 19",
+                zIndex: 3,
+                filter: "drop-shadow(0 22px 44px rgba(0,229,255,0.45)) drop-shadow(0 0 70px rgba(124,92,255,0.22))",
+              }}
+            >
+              <div style={{
+                width: "100%", height: "100%",
+                borderRadius: 28,
+                background: "linear-gradient(135deg, #1a1f3a, #0a0e22)",
+                border: "2px solid rgba(0,229,255,0.5)",
+                padding: 6,
+                boxShadow: "inset 0 0 0 1px rgba(255,255,255,0.05)",
+              }}>
+                {/* Notch */}
+                <div style={{
+                  position: "absolute", top: 10, left: "50%", transform: "translateX(-50%)",
+                  width: "32%", height: 8,
+                  borderRadius: 999,
+                  background: "#04050d",
+                  zIndex: 2,
+                }} />
+                <div style={{
+                  position: "relative",
+                  width: "100%", height: "100%",
+                  borderRadius: 22, overflow: "hidden",
+                  background: "radial-gradient(ellipse at 50% 60%, #2a0d2e 0%, #1a1f4d 35%, #0f1530 70%, #04050d 100%)",
+                }}>
+                  <Image
+                    src="/characters/celebrating.png"
+                    alt="Cyber Heroes lesson on a phone"
+                    width={175} height={332}
+                    style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 30%" }}
+                    sizes="(max-width: 768px) 20vw, 175px"
+                  />
+                  <div style={{ position: "absolute", inset: 0, background: "linear-gradient(180deg, transparent 50%, rgba(8,10,22,0.7) 100%)" }} />
+                  <div style={{
+                    position: "absolute", bottom: 14, left: "50%", transform: "translateX(-50%)",
+                    fontFamily: "'JetBrains Mono', monospace",
+                    fontSize: 7, letterSpacing: "0.18em", color: "#ffd158",
+                    background: "rgba(8,10,22,0.85)",
+                    border: "1px solid rgba(255,209,88,0.45)",
+                    borderRadius: 999, padding: "2px 6px",
+                    textTransform: "uppercase",
+                    whiteSpace: "nowrap",
+                  }}>
+                    ★ Victory!
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+
+          {/* Sub-line under the cluster */}
+          <div className="text-center mt-8 sm:mt-10" data-scroll data-scroll-delay="0.5">
+            <p style={{ color: "#94a3b8", fontSize: 14, fontWeight: 500, letterSpacing: "0.02em" }}>
+              Progress, badges, and certificates sync automatically — your child picks up exactly where they left off.
+            </p>
+          </div>
+        </section>
+
         {/* ── TESTIMONIALS ────────────────────────────────────────────────── */}
         <section className="max-w-[1200px] mx-auto px-6 md:px-10 py-16 sm:py-24">
           <div className="text-center mb-12" data-scroll>
