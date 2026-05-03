@@ -12,7 +12,7 @@ import { test, expect } from "@playwright/test";
  *   1. /lesson loads without crashing                    (route boot)
  *   2. Save & Exit button visible during a lesson       (UI invariant)
  *   3. Resume prompt appears after Save & Exit          (autosave loop)
- *   4. Cyber Heroes age range is 6-9 (auth view too)    (regression)
+ *   4. Cyber Heroes age range is 6-10 (auth view too)   (regression)
  *   5. /dashboard renders for an authed user            (route boot)
  *   6. Each lesson screen has at least one focusable    (no dead ends)
  *      action (button or link) — guards against the
@@ -49,13 +49,13 @@ test.describe("Lesson flow — authed", () => {
     expect(errors, "page errors on /dashboard").toEqual([]);
   });
 
-  test("cyberheroes course page still says 6-9 (authed view)", async ({
+  test("cyberheroes course page still says 6-10 (authed view)", async ({
     page,
   }) => {
     await page.goto("/cyberheroes");
     const text = await page.locator("body").innerText();
-    expect(text).toMatch(/6\s*[–-]\s*9/);
-    expect(text).not.toMatch(/6\s*[–-]\s*10/);
+    expect(text).toMatch(/6\s*[–-]\s*10/);
+    expect(text).not.toMatch(/6\s*[–-]\s*9(?!\d)/);
   });
 
   test("first lesson screen has at least one clickable CTA — no dead ends", async ({
