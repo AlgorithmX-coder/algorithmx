@@ -272,21 +272,28 @@ export default function LoginPage() {
             ◇ ACCESS TERMINAL ◇
           </div>
           <h1
-            className="text-3xl sm:text-4xl font-black mb-2"
+            className="text-4xl sm:text-5xl font-black mb-3"
             style={{
               fontFamily: "'Space Grotesk', system-ui, sans-serif",
               background: GRAD,
               WebkitBackgroundClip: "text",
               WebkitTextFillColor: "transparent",
               backgroundClip: "text",
-              letterSpacing: "-0.02em",
-              filter: `drop-shadow(0 0 22px ${C.cyan}66)`,
+              letterSpacing: "-0.025em",
+              filter: `drop-shadow(0 2px 0 rgba(8,10,22,0.9)) drop-shadow(0 0 28px ${C.cyan}88) drop-shadow(0 0 60px ${C.cosmic}55)`,
               animation: "loginHoloShift 3.6s ease-in-out infinite",
             }}
           >
             Welcome back, hero.
           </h1>
-          <p className="mb-8 text-base" style={{ color: C.textSoft }}>
+          <p
+            className="mb-8 text-base sm:text-lg"
+            style={{
+              color: C.textBright,
+              fontWeight: 600,
+              textShadow: "0 1px 12px rgba(8,10,22,0.95), 0 0 24px rgba(8,10,22,0.7)",
+            }}
+          >
             Authenticate to continue your cybersecurity training.
           </p>
 
@@ -330,8 +337,15 @@ export default function LoginPage() {
               {/* Email */}
               <div>
                 <label
-                  className="block text-xs font-bold mb-2"
-                  style={{ color: C.cyan, letterSpacing: 2, textTransform: "uppercase", fontFamily: "ui-monospace, 'JetBrains Mono', Menlo, monospace" }}
+                  className="block font-black mb-2"
+                  style={{
+                    color: C.cyan,
+                    fontSize: 13,
+                    letterSpacing: 2.5,
+                    textTransform: "uppercase",
+                    fontFamily: "ui-monospace, 'JetBrains Mono', Menlo, monospace",
+                    textShadow: `0 0 10px ${C.cyan}aa, 0 1px 6px rgba(8,10,22,0.9)`,
+                  }}
                 >
                   ✉  Email
                 </label>
@@ -339,14 +353,17 @@ export default function LoginPage() {
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full pl-4 pr-4 rounded-xl font-medium transition-all duration-300 focus:outline-none"
+                  className="w-full pl-4 pr-4 rounded-xl transition-all duration-300 focus:outline-none"
                   style={{
-                    height: 50,
-                    fontSize: 15,
+                    height: 52,
+                    fontSize: 16,
+                    fontWeight: 600,
                     color: C.textBright,
-                    background: "rgba(8, 10, 22, 0.55)",
-                    border: `1px solid ${C.cyan}33`,
+                    background: "rgba(8, 10, 22, 0.82)",
+                    border: `1.5px solid ${C.cyan}55`,
                     fontFamily: "'DM Sans', system-ui, sans-serif",
+                    backdropFilter: "blur(6px)",
+                    WebkitBackdropFilter: "blur(6px)",
                   }}
                   onFocus={(e) => {
                     e.currentTarget.style.borderColor = C.cyan;
@@ -364,15 +381,26 @@ export default function LoginPage() {
               <div>
                 <div className="flex items-center justify-between mb-2">
                   <label
-                    className="block text-xs font-bold"
-                    style={{ color: C.cyan, letterSpacing: 2, textTransform: "uppercase", fontFamily: "ui-monospace, 'JetBrains Mono', Menlo, monospace" }}
+                    className="block font-black"
+                    style={{
+                      color: C.cyan,
+                      fontSize: 13,
+                      letterSpacing: 2.5,
+                      textTransform: "uppercase",
+                      fontFamily: "ui-monospace, 'JetBrains Mono', Menlo, monospace",
+                      textShadow: `0 0 10px ${C.cyan}aa, 0 1px 6px rgba(8,10,22,0.9)`,
+                    }}
                   >
                     🔒  Password
                   </label>
                   <a
                     href="/forgot-password"
-                    className="text-xs font-bold transition hover:opacity-80"
-                    style={{ color: C.cosmic, textShadow: `0 0 8px ${C.cosmic}55` }}
+                    className="font-black transition hover:opacity-80"
+                    style={{
+                      color: C.cyanSoft,
+                      fontSize: 13,
+                      textShadow: `0 0 10px ${C.cosmic}aa, 0 1px 6px rgba(8,10,22,0.9)`,
+                    }}
                   >
                     Forgot password?
                   </a>
@@ -382,14 +410,17 @@ export default function LoginPage() {
                     type={showPassword ? "text" : "password"}
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="w-full pl-4 pr-12 rounded-xl font-medium transition-all duration-300 focus:outline-none"
+                    className="w-full pl-4 pr-12 rounded-xl transition-all duration-300 focus:outline-none"
                     style={{
-                      height: 50,
-                      fontSize: 15,
+                      height: 52,
+                      fontSize: 16,
+                      fontWeight: 600,
                       color: C.textBright,
-                      background: "rgba(8, 10, 22, 0.55)",
-                      border: `1px solid ${C.cyan}33`,
+                      background: "rgba(8, 10, 22, 0.82)",
+                      border: `1.5px solid ${C.cyan}55`,
                       fontFamily: "'DM Sans', system-ui, sans-serif",
+                      backdropFilter: "blur(6px)",
+                      WebkitBackdropFilter: "blur(6px)",
                     }}
                     onFocus={(e) => {
                       e.currentTarget.style.borderColor = C.cyan;
@@ -448,12 +479,20 @@ export default function LoginPage() {
               </motion.button>
             </form>
 
-            <p className="text-center text-sm mt-6" style={{ color: C.textMuted }}>
+            <p
+              className="text-center mt-6"
+              style={{
+                color: C.text,
+                fontSize: 14,
+                fontWeight: 600,
+                textShadow: "0 1px 6px rgba(8,10,22,0.9)",
+              }}
+            >
               Don&apos;t have an account?{" "}
               <a
                 href="/signup"
-                className="font-bold transition hover:opacity-80"
-                style={{ color: C.cyan, textShadow: `0 0 8px ${C.cyan}55` }}
+                className="font-black transition hover:opacity-80"
+                style={{ color: C.cyan, textShadow: `0 0 10px ${C.cyan}aa, 0 1px 6px rgba(8,10,22,0.9)` }}
               >
                 Sign Up
               </a>
@@ -472,11 +511,14 @@ export default function LoginPage() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ type: "spring", stiffness: 200, damping: 20, delay: 0.3 + i * 0.1 }}
-                className="text-xs flex items-center gap-1.5"
+                className="flex items-center gap-1.5"
                 style={{
-                  color: C.textMuted,
+                  color: C.textSoft,
+                  fontSize: 12,
+                  fontWeight: 700,
                   fontFamily: "ui-monospace, 'JetBrains Mono', Menlo, monospace",
-                  letterSpacing: 1,
+                  letterSpacing: 1.5,
+                  textShadow: "0 1px 6px rgba(8,10,22,0.9)",
                 }}
               >
                 <span>{b.icon}</span> {b.label}
