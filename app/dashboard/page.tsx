@@ -12,6 +12,7 @@ import {
   DashboardSky,
   DashboardParticles,
 } from "@/app/components/DashboardAtmosphere";
+import SubscribeButton from "@/app/components/SubscribeButton";
 
 /* ───────────────── PIXAR PALETTE ───────────────── */
 // Centralised so every surface, gradient, and shadow on the dashboard
@@ -117,18 +118,34 @@ function LockIcon({ size = 18, color = C.textMuted }: { size?: number; color?: s
   );
 }
 
-export default async function DashboardPage() {
+export default async function DashboardPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ payment?: string }>;
+}) {
   const session = await auth();
   if (!session?.user) redirect("/login");
 
-  const childProfiles = await prisma.childProfile.findMany({
-    where: { userId: session.user.id! },
-    orderBy: { createdAt: "desc" },
-  });
+  const params = await searchParams;
+  const paymentJustSucceeded = params.payment === "success";
+  const paymentJustCancelled = params.payment === "cancelled";
+
+  const [user, childProfiles] = await Promise.all([
+    prisma.user.findUnique({
+      where: { id: session.user.id! },
+      select: { stripeStatus: true, stripePaidAt: true },
+    }),
+    prisma.childProfile.findMany({
+      where: { userId: session.user.id! },
+      orderBy: { createdAt: "desc" },
+    }),
+  ]);
 
   if (childProfiles.length === 0) redirect("/onboarding");
 
   const activeChild = childProfiles[0];
+  const hasAccess =
+    user?.stripeStatus === "active" || user?.stripeStatus === "paid";
 
   const course = await prisma.course.findFirst({
     where: { title: "Cyber Heroes Academy" },
@@ -517,6 +534,185 @@ export default async function DashboardPage() {
             </section>
           </RevealOnScroll>
 
+          {/* ── PAYMENT BANNERS ── */}
+          {paymentJustSucceeded && hasAccess && (
+            <div
+              className="rounded-3xl mb-8 p-5 sm:p-6 flex items-center gap-4 relative overflow-hidden"
+              style={{
+                background:
+                  "linear-gradient(135deg, rgba(126, 255, 151, 0.18), rgba(0, 229, 255, 0.14))",
+                border: "1px solid rgba(126, 255, 151, 0.5)",
+                boxShadow: "0 0 30px rgba(126, 255, 151, 0.25)",
+              }}
+            >
+              <span style={{ fontSize: 36 }}>🎉</span>
+              <div className="flex-1">
+                <h3
+                  className="display font-bold text-lg"
+                  style={{ color: C.mossLight }}
+                >
+                  Welcome to the Academy!
+                </h3>
+                <p
+                  className="text-sm font-bold"
+                  style={{ color: C.textSoft, opacity: 0.92 }}
+                >
+                  Payment confirmed — all 20 weeks of missions are unlocked.
+                </p>
+              </div>
+            </div>
+          )}
+          {paymentJustSucceeded && !hasAccess && (
+            <div
+              className="rounded-3xl mb-8 p-5 sm:p-6 flex items-center gap-4"
+              style={{
+                background: "rgba(255, 215, 138, 0.14)",
+                border: "1px solid rgba(255, 215, 138, 0.5)",
+              }}
+            >
+              <span style={{ fontSize: 32 }}>⏳</span>
+              <div className="flex-1">
+                <h3 className="display font-bold text-lg" style={{ color: C.text }}>
+                  Confirming your payment…
+                </h3>
+                <p
+                  className="text-sm font-bold"
+                  style={{ color: C.textSoft, opacity: 0.92 }}
+                >
+                  This usually takes a few seconds. Refresh this page if it
+                  doesn&apos;t flip on its own.
+                </p>
+              </div>
+            </div>
+          )}
+          {paymentJustCancelled && (
+            <div
+              className="rounded-3xl mb-8 p-5 sm:p-6 flex items-center gap-4"
+              style={{
+                background: "rgba(255, 122, 89, 0.14)",
+                border: "1px solid rgba(255, 122, 89, 0.5)",
+              }}
+            >
+              <span style={{ fontSize: 32 }}>👋</span>
+              <div className="flex-1">
+                <h3 className="display font-bold text-lg" style={{ color: C.text }}>
+                  Checkout cancelled — no charge.
+                </h3>
+                <p
+                  className="text-sm font-bold"
+                  style={{ color: C.textSoft, opacity: 0.92 }}
+                >
+                  Take your time. Come back any time to enrol your child.
+                </p>
+              </div>
+            </div>
+          )}
+
+          {/* ── PAYWALL (unpaid users only) ─────────────────────────
+               Shown until Stripe webhook flips stripeStatus to active.
+               Replaces the stats / modules / encouragement below. */}
+          {!hasAccess && (
+            <RevealOnScroll>
+              <section
+                className="rounded-3xl p-7 sm:p-10 mb-10 text-center relative overflow-hidden"
+                style={{
+                  background:
+                    "linear-gradient(135deg, rgba(124, 92, 255, 0.14), rgba(0, 229, 255, 0.10), rgba(255, 95, 179, 0.10))",
+                  border: `1px solid ${C.borderStrong}`,
+                  backdropFilter: "blur(14px)",
+                  WebkitBackdropFilter: "blur(14px)",
+                  boxShadow:
+                    "0 0 50px rgba(124, 92, 255, 0.25), 0 24px 50px -16px rgba(8, 10, 22, 0.6)",
+                }}
+              >
+                <div
+                  style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: 8,
+                    padding: "5px 14px",
+                    borderRadius: 999,
+                    background: "rgba(255, 209, 88, 0.16)",
+                    border: "1px solid rgba(255, 209, 88, 0.45)",
+                    color: "#ffd158",
+                    fontSize: 11,
+                    fontWeight: 800,
+                    letterSpacing: "0.2em",
+                    textTransform: "uppercase",
+                    marginBottom: 18,
+                    fontFamily: "ui-monospace, 'JetBrains Mono', Menlo, monospace",
+                  }}
+                >
+                  ◇ One Step Left ◇
+                </div>
+                <h2
+                  className="display text-2xl sm:text-3xl lg:text-4xl font-bold mb-4 leading-tight"
+                  style={{
+                    background:
+                      "linear-gradient(135deg, #00e5ff, #7c5cff, #ff5fb3)",
+                    WebkitBackgroundClip: "text",
+                    WebkitTextFillColor: "transparent",
+                    backgroundClip: "text",
+                    letterSpacing: "-0.02em",
+                  }}
+                >
+                  Unlock {activeChild.childName}&rsquo;s Cyber Hero adventure
+                </h2>
+                <p
+                  className="text-base sm:text-lg leading-relaxed mb-6 max-w-xl mx-auto"
+                  style={{ color: C.textSoft }}
+                >
+                  20 weeks of animated missions, 100+ interactive activities, 4
+                  printable certificates. One-time £99 per child &mdash; lifetime
+                  access, no subscriptions.
+                </p>
+
+                <ul
+                  className="text-left max-w-md mx-auto mb-8 space-y-2"
+                  style={{ color: C.textSoft }}
+                >
+                  {[
+                    "Full 20-week Cyber Heroes Academy",
+                    "All boss battles, mini-games & badges",
+                    "Parent dashboard with weekly progress",
+                    "GDPR-compliant · No data sold · No ads",
+                  ].map((item) => (
+                    <li
+                      key={item}
+                      className="flex items-center gap-2.5 text-sm font-bold"
+                    >
+                      <CheckIcon size={16} color={C.mossLight} />
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+
+                <SubscribeButton
+                  label="Enrol Now — £99 →"
+                  className="rounded-full font-black"
+                  style={{
+                    padding: "16px 36px",
+                    fontSize: 17,
+                    background: GRAD_GOLD_PILL,
+                    color: C.goldDark,
+                    boxShadow: SHADOW_PRIMARY,
+                    border: "none",
+                    letterSpacing: "0.02em",
+                    textTransform: "uppercase",
+                  }}
+                />
+                <p
+                  className="text-xs font-bold mt-4"
+                  style={{ color: C.textMuted }}
+                >
+                  Secure checkout via Stripe · Card payment in test mode
+                </p>
+              </section>
+            </RevealOnScroll>
+          )}
+
+          {hasAccess && (
+            <>
           {/* ── STAT CARDS ROW ── */}
           <RevealOnScroll delay={120}>
             <section className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
@@ -972,6 +1168,8 @@ export default async function DashboardPage() {
                 No course found. Please run the seed script.
               </p>
             </div>
+          )}
+            </>
           )}
         </div>
       </div>

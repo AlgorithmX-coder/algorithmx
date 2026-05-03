@@ -10,6 +10,15 @@ export default async function LessonNewPage() {
   const session = await auth();
   if (!session?.user) redirect("/login");
 
+  const accessUser = await prisma.user.findUnique({
+    where: { id: session.user.id! },
+    select: { stripeStatus: true },
+  });
+  const hasAccess =
+    accessUser?.stripeStatus === "active" ||
+    accessUser?.stripeStatus === "paid";
+  if (!hasAccess) redirect("/dashboard?payment=needed");
+
   const module = await prisma.module.findFirst({
     where: { weekNumber: 1 },
   });

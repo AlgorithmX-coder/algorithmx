@@ -36,8 +36,16 @@ export async function POST() {
       name: "E2E Test Parent",
       hashedPassword,
       role: "learner",
+      // Mark the test user as enrolled so the paywall doesn't bounce
+      // /lesson/* requests during e2e runs.
+      stripeStatus: "active",
+      stripePaidAt: new Date(),
     },
-    update: { hashedPassword },
+    update: {
+      hashedPassword,
+      stripeStatus: "active",
+      stripePaidAt: new Date(),
+    },
   });
 
   // Ensure exactly one child profile exists. Delete-then-create so we
@@ -64,8 +72,8 @@ export async function POST() {
     course = await prisma.course.create({
       data: {
         title: "Cyber Heroes Academy",
-        description: "Beginner cybersecurity for ages 6-9.",
-        ageRange: "6-9",
+        description: "Beginner cybersecurity for ages 6-10.",
+        ageRange: "6-10",
         duration: "45 min/week",
         weeksCount: 20,
         emoji: "🛡️",
