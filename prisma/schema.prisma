@@ -72,3 +72,14 @@ model Progress {
 
   @@unique([userId, moduleId])
 }
+
+model WaitlistEntry {
+  id         String   @id @default(cuid())
+  email      String
+  courseSlug String
+  source     String?
+  createdAt  DateTime @default(now())
+
+  @@unique([email, courseSlug])
+  @@index([courseSlug])
+}

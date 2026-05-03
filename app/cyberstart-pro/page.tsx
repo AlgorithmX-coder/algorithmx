@@ -4,6 +4,7 @@ import { motion, useInView } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { DataLabScene } from "@/app/components/CyberFutureScenes";
 import { CyberIconOrEmoji } from "@/app/components/CyberIcon";
+import WaitlistForm from "@/app/components/WaitlistForm";
 
 // Warm amber/gold for the Pro tier — already on-palette with the Pixar dusk system.
 const PRIMARY = "#7c5cff";       // gold mid
@@ -116,13 +117,16 @@ export default function CyberStartProPage() {
               </div>
             </motion.div>
 
-            <motion.a href="/signup"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="inline-block px-8 py-4 rounded-2xl font-black text-white text-base"
-              style={{ background: GRAD, boxShadow: `0 8px 32px ${PRIMARY}50` }}>
-              Join the Waitlist 🚀
-            </motion.a>
+            <div className="flex justify-center">
+              <WaitlistForm
+                courseSlug="cyberstart-pro"
+                accent={PRIMARY}
+                accentSoft={ACCENT}
+                buttonGradient={GRAD}
+                buttonShadow={`0 8px 32px ${PRIMARY}50`}
+                source="hero"
+              />
+            </div>
           </motion.div>
         </section>
 
@@ -169,13 +173,16 @@ export default function CyberStartProPage() {
               <p className="text-gray-400 text-base sm:text-lg max-w-lg mx-auto mb-8">
                 Launch your cybersecurity career. Be the first to access CyberStart Pro when it goes live.
               </p>
-              <motion.a href="/signup"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="inline-block px-10 py-5 rounded-2xl font-black text-white text-lg"
-                style={{ background: GRAD, boxShadow: `0 8px 40px ${PRIMARY}50` }}>
-                Join the Waitlist 🚀
-              </motion.a>
+              <div className="flex justify-center">
+                <WaitlistForm
+                  courseSlug="cyberstart-pro"
+                  accent={PRIMARY}
+                  accentSoft={ACCENT}
+                  buttonGradient={GRAD}
+                  buttonShadow={`0 8px 40px ${PRIMARY}50`}
+                  source="footer-cta"
+                />
+              </div>
             </div>
           </ScrollReveal>
         </section>

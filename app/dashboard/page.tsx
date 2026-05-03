@@ -414,8 +414,32 @@ export default async function DashboardPage() {
                   className="text-base sm:text-lg mb-6 leading-relaxed"
                   style={{ color: C.textSoft, opacity: 0.92 }}
                 >
-                  Continue your adventure with Adam &amp; Layla.
+                  {completedCount === 0
+                    ? "Your first mission is ready. Tap below to begin."
+                    : "Continue your adventure with Adam & Layla."}
                 </p>
+
+                {/* Primary CTA — only for new users so the path from
+                    landing-on-dashboard to in-lesson is one tap. Existing
+                    users hit "Continue" on their current week card below. */}
+                {completedCount === 0 && (
+                  <a
+                    href="/lesson"
+                    className="inline-flex items-center gap-2 font-black mb-6 transition-all duration-200 hover:scale-105"
+                    style={{
+                      background: GRAD_GOLD_PILL,
+                      color: C.goldDark,
+                      boxShadow: SHADOW_PRIMARY,
+                      borderRadius: 100,
+                      padding: "14px 28px",
+                      fontSize: 16,
+                      textDecoration: "none",
+                      letterSpacing: "0.02em",
+                    }}
+                  >
+                    <span>🚀</span> Start Your First Mission →
+                  </a>
+                )}
 
                 {/* Progress card */}
                 <div

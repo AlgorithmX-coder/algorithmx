@@ -4,6 +4,7 @@ import { motion, useInView } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { DataLabScene } from "@/app/components/CyberFutureScenes";
 import { CyberIconOrEmoji } from "@/app/components/CyberIcon";
+import WaitlistForm from "@/app/components/WaitlistForm";
 
 // Warm Pixar palette — moss + cream accents over dusk backdrop.
 const PRIMARY = "#7eff97";       // moss
@@ -116,13 +117,16 @@ export default function CyberStartPage() {
               </div>
             </motion.div>
 
-            <motion.a href="/signup"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="inline-block px-8 py-4 rounded-2xl font-black text-white text-base"
-              style={{ background: GRAD, boxShadow: `0 8px 32px ${PRIMARY}50` }}>
-              Join the Waitlist 🚀
-            </motion.a>
+            <div className="flex justify-center">
+              <WaitlistForm
+                courseSlug="cyberstart"
+                accent={PRIMARY}
+                accentSoft={ACCENT}
+                buttonGradient={GRAD}
+                buttonShadow={`0 8px 32px ${PRIMARY}50`}
+                source="hero"
+              />
+            </div>
           </motion.div>
         </section>
 
@@ -169,13 +173,16 @@ export default function CyberStartPage() {
               <p className="text-gray-400 text-base sm:text-lg max-w-lg mx-auto mb-8">
                 CyberStart launches soon. Get early access and be among the first to level up your skills.
               </p>
-              <motion.a href="/signup"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="inline-block px-10 py-5 rounded-2xl font-black text-white text-lg"
-                style={{ background: GRAD, boxShadow: `0 8px 40px ${PRIMARY}50` }}>
-                Join the Waitlist 🚀
-              </motion.a>
+              <div className="flex justify-center">
+                <WaitlistForm
+                  courseSlug="cyberstart"
+                  accent={PRIMARY}
+                  accentSoft={ACCENT}
+                  buttonGradient={GRAD}
+                  buttonShadow={`0 8px 40px ${PRIMARY}50`}
+                  source="footer-cta"
+                />
+              </div>
             </div>
           </ScrollReveal>
         </section>

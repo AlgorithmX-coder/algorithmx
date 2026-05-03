@@ -11,6 +11,7 @@ const CyberHeroesBackdrop = dynamic(
   () => import("@/app/components/CyberHeroesBackdrop"),
   { ssr: false },
 );
+import SampleLessonPreview from "@/app/components/SampleLessonPreview";
 
 /* ─── CONSTANTS ─── */
 const GRAD = "linear-gradient(135deg, #7c5cff, #00e5ff)";
@@ -1513,6 +1514,12 @@ export default function HomePage() {
             <AnimCounter to={100} suffix="%" label="Interactive" />
           </div>
         </section>
+
+        {/* ── SAMPLE LESSON PREVIEW ─────────────────────────────────────────
+             60-second playable mini-lesson. The biggest conversion lever
+             on the page — visitors get to feel the product before
+             committing to £99. */}
+        <SampleLessonPreview />
 
         {/* ── ON EVERY DEVICE ─────────────────────────────────────────────── */}
         <section className="max-w-[1200px] mx-auto px-6 md:px-10 py-16 sm:py-24">
