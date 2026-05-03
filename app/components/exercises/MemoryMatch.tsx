@@ -59,19 +59,28 @@ interface Card {
 }
 
 const STYLES = `
+/* Bug 2 fix — decorative keyframes used to bake rotateY(180deg) into
+   every frame so the flipped state would survive the shake/pop. That
+   meant when one of these animations fired DURING the 0.45s flip
+   transition, the animation took over the transform property entirely
+   and snapped the card to its (animation-defined) rotateY(180deg) start
+   pose, killing the in-flight flip mid-rotation.
+
+   Now the keyframes only animate translate/scale — the rotateY flip
+   lives on a SEPARATE inner element, so the two never fight. */
 @keyframes mmShake {
-  0%,100% { transform: rotateY(180deg) translateX(0); }
-  25%  { transform: rotateY(180deg) translateX(-6px); }
-  75%  { transform: rotateY(180deg) translateX(6px); }
+  0%,100% { transform: translateX(0); }
+  25%  { transform: translateX(-6px); }
+  75%  { transform: translateX(6px); }
 }
 @keyframes mmPop {
-  0%   { transform: rotateY(180deg) scale(1); }
-  50%  { transform: rotateY(180deg) scale(1.12); }
-  100% { transform: rotateY(180deg) scale(1); }
+  0%   { transform: scale(1); }
+  50%  { transform: scale(1.12); }
+  100% { transform: scale(1); }
 }
 @keyframes mmWave {
-  0%,100% { transform: rotateY(180deg) scale(1); }
-  50%     { transform: rotateY(180deg) scale(1.18); }
+  0%,100% { transform: scale(1); }
+  50%     { transform: scale(1.18); }
 }
 @keyframes mmBurst {
   0%   { opacity: 1; transform: translate(0, 0) scale(1); }
@@ -601,6 +610,11 @@ export default function MemoryMatch({
             const jY = (((jSeed >> 3) % 7) - 3) * 1.2;
             const baseTransform = `translate(${jX}px, ${jY}px) rotate(${jRot}deg)`;
             return (
+              // Outer wrapper — owns the click handler, the static
+              // jitter (baseTransform), and the decorative shake/pop/
+              // wave animation.  Crucially this layer does NOT touch
+              // rotateY, so when the animation runs it can't clobber
+              // the in-flight flip transition on the inner flipper.
               <div
                 key={c.id}
                 data-mm-card={idx}
@@ -610,21 +624,32 @@ export default function MemoryMatch({
                   aspectRatio: "5 / 4",
                   position: "relative",
                   transformStyle: "preserve-3d",
-                  transition:
-                    "transform 0.45s cubic-bezier(0.4, 1.2, 0.4, 1)",
-                  transform: showFace
-                    ? `${baseTransform} rotateY(180deg)`
-                    : baseTransform,
+                  transform: baseTransform,
                   animation: extraAnim,
                   zIndex: c.matched ? 1 : 2,
                 }}
               >
-                <CardBack faceDown={!showFace} disabled={c.matched || c.flipped} />
-                <CardFront
-                  text={c.text}
-                  colour={c.colour}
-                  matched={c.matched}
-                />
+                {/* Inner flipper — owns the 3D rotateY flip and its
+                    transition.  Clean transform property, no animation,
+                    so the 0.45s flip always runs to completion. */}
+                <div
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    position: "relative",
+                    transformStyle: "preserve-3d",
+                    transition:
+                      "transform 0.45s cubic-bezier(0.4, 1.2, 0.4, 1)",
+                    transform: showFace ? "rotateY(180deg)" : "rotateY(0deg)",
+                  }}
+                >
+                  <CardBack faceDown={!showFace} disabled={c.matched || c.flipped} />
+                  <CardFront
+                    text={c.text}
+                    colour={c.colour}
+                    matched={c.matched}
+                  />
+                </div>
               </div>
             );
           })}
