@@ -372,7 +372,7 @@ export default function ChooseYourPath({
           lineHeight: 1.35,
           minHeight: 60,
           color: "#e8edff",
-          textShadow: "0 2px 8px rgba(40, 18, 12, 0.5)",
+          textShadow: "0 2px 8px rgba(8, 10, 22, 0.65)",
           zIndex: 1,
         }}
       >
@@ -399,7 +399,7 @@ export default function ChooseYourPath({
           style={{
             width: 92,
             height: "auto",
-            filter: "drop-shadow(0 10px 30px rgba(40, 18, 8, 0.5))",
+            filter: "drop-shadow(0 10px 30px rgba(8, 10, 22, 0.65))",
             marginBottom: 10,
             position: "relative",
             zIndex: 1,
@@ -569,7 +569,7 @@ export default function ChooseYourPath({
                       width: "100%",
                       padding: "10px 12px",
                       background:
-                        "linear-gradient(180deg, rgba(40, 18, 12, 0.0), rgba(40, 18, 12, 0.85))",
+                        "linear-gradient(180deg, rgba(8, 10, 22, 0), rgba(4, 5, 13, 0.92))",
                       color: "#e8edff",
                       fontSize: 14,
                       fontWeight: 700,

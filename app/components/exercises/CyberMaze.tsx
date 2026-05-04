@@ -546,7 +546,7 @@ export default function CyberMaze({
           ctx.lineWidth = 1;
           ctx.strokeRect(x + 3, y + 3, CELL - 6, CELL - 6);
           // Corner ticks (HUD-style)
-          ctx.strokeStyle = "rgba(255, 220, 168, 0.3)";
+          ctx.strokeStyle = "rgba(125, 240, 255, 0.3)";
           ctx.lineWidth = 1.2;
           const tick = 5;
           ctx.beginPath();
@@ -571,7 +571,7 @@ export default function CyberMaze({
           ctx.fillStyle = grad;
           ctx.fillRect(x + 2, y + 2, CELL - 4, CELL - 4);
           // Inner circuit dots
-          ctx.fillStyle = "rgba(255, 220, 168, 0.4)";
+          ctx.fillStyle = "rgba(125, 240, 255, 0.4)";
           ctx.fillRect(x + CELL / 2 - 1, y + 8, 2, 2);
           ctx.fillRect(x + 8, y + CELL / 2 - 1, 2, 2);
           ctx.fillRect(x + CELL - 10, y + CELL / 2 - 1, 2, 2);

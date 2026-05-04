@@ -896,7 +896,7 @@ export default function ConveyorBelt({
             background:
               "linear-gradient(135deg, rgba(0, 229, 255, 0.95), rgba(255, 155, 74, 0.92))",
             boxShadow:
-              "0 12px 28px -8px rgba(40, 18, 8, 0.5), 0 0 28px rgba(0, 229, 255, 0.55)",
+              "0 12px 28px -8px rgba(8, 10, 22, 0.6), 0 0 28px rgba(0, 229, 255, 0.55)",
             color: "#080a16",
             fontWeight: 900,
             fontSize: 13,
@@ -1015,7 +1015,7 @@ function FrenzyTransitionCard({
         alignItems: "center",
         justifyContent: "center",
         background:
-          "linear-gradient(180deg, rgba(15, 21, 48, 0.85) 0%, rgba(20, 8, 24, 0.92) 100%)",
+          "linear-gradient(180deg, rgba(15, 21, 48, 0.85) 0%, rgba(4, 5, 13, 0.92) 100%)",
         backdropFilter: "blur(10px)",
         WebkitBackdropFilter: "blur(10px)",
         padding: 24,
@@ -1029,7 +1029,7 @@ function FrenzyTransitionCard({
           padding: "26px 28px 22px",
           borderRadius: 22,
           background:
-            "linear-gradient(180deg, rgba(15, 21, 48, 0.92), rgba(20, 8, 24, 0.95))",
+            "linear-gradient(180deg, rgba(15, 21, 48, 0.92), rgba(4, 5, 13, 0.95))",
           border: "1px solid rgba(0, 229, 255, 0.42)",
           boxShadow:
             "0 30px 60px -20px rgba(8,10,22,0.7), 0 0 36px rgba(124, 92, 255, 0.3)",
@@ -1164,7 +1164,7 @@ function ChestRevealCard({
         alignItems: "center",
         justifyContent: "center",
         background:
-          "linear-gradient(180deg, rgba(15, 21, 48, 0.9) 0%, rgba(20, 8, 24, 0.96) 100%)",
+          "linear-gradient(180deg, rgba(15, 21, 48, 0.9) 0%, rgba(4, 5, 13, 0.96) 100%)",
         backdropFilter: "blur(10px)",
         WebkitBackdropFilter: "blur(10px)",
         padding: 24,
@@ -1178,7 +1178,7 @@ function ChestRevealCard({
           padding: "26px 28px 22px",
           borderRadius: 22,
           background:
-            "linear-gradient(180deg, rgba(15, 21, 48, 0.92), rgba(20, 8, 24, 0.95))",
+            "linear-gradient(180deg, rgba(15, 21, 48, 0.92), rgba(4, 5, 13, 0.95))",
           border: `1px solid ${tierColour}`,
           boxShadow: `0 30px 60px -20px rgba(8,10,22,0.7), 0 0 40px ${tierColour}55`,
           textAlign: "center",
@@ -1298,7 +1298,7 @@ function ChestRevealCard({
               height: 16,
               borderRadius: 3,
               background: tierColour,
-              border: "1px solid rgba(40, 18, 8, 0.55)",
+              border: "1px solid rgba(125, 240, 255, 0.35)",
               zIndex: 1,
             }}
           />

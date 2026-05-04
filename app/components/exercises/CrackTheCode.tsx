@@ -560,7 +560,7 @@ export default function CrackTheCode({
                   justifyContent: "center",
                   gap: 2,
                   padding: "10px 6px",
-                  background: "rgba(20, 8, 24, 0.5)",
+                  background: "rgba(4, 5, 13, 0.5)",
                   borderRight: "1px solid rgba(0, 229, 255, 0.15)",
                 }}
               >
@@ -1261,7 +1261,7 @@ function DefendPanel({
               padding: "16px 22px",
               borderRadius: 16,
               background:
-                "linear-gradient(180deg, rgba(15, 21, 48, 0.9), rgba(20, 8, 24, 0.96))",
+                "linear-gradient(180deg, rgba(15, 21, 48, 0.9), rgba(4, 5, 13, 0.96))",
               border: feedback === "hit"
                 ? "2px solid #7eff97"
                 : feedback === "miss"
