@@ -857,11 +857,11 @@ export default function BattleArena({
                 background:
                   combo >= 3
                     ? "linear-gradient(135deg, #00e5ff, #7c5cff)"
-                    : "rgba(255, 220, 168, 0.22)",
+                    : "rgba(15, 21, 48, 0.78)",
                 color: combo >= 3 ? "#080a16" : "#00e5ff",
                 borderStyle: "solid",
                 borderWidth: combo >= 3 ? 0 : 1,
-                borderColor: "rgba(255, 215, 138, 0.5)",
+                borderColor: "rgba(125, 240, 255, 0.45)",
                 borderRadius: 999,
                 padding: combo >= 3 ? "6px 18px" : "5px 14px",
                 fontWeight: 800,
@@ -869,8 +869,8 @@ export default function BattleArena({
                 letterSpacing: 0.3,
                 boxShadow:
                   combo >= 3
-                    ? "0 0 22px rgba(124, 92, 255, 0.65), 0 6px 16px rgba(40, 18, 8, 0.4)"
-                    : "0 4px 12px rgba(40, 18, 8, 0.3)",
+                    ? "0 0 22px rgba(124, 92, 255, 0.65), 0 6px 16px rgba(8, 10, 22, 0.55)"
+                    : "0 4px 12px rgba(8, 10, 22, 0.45)",
                 animation: "baComboPop 0.35s cubic-bezier(0.2,1.5,0.4,1) both",
                 pointerEvents: "none",
                 zIndex: 9,
@@ -992,15 +992,19 @@ export default function BattleArena({
                 style={{
                   position: "relative",
                   background:
-                    "linear-gradient(180deg, rgba(125, 240, 255, 0.96) 0%, rgba(253, 226, 181, 0.96) 100%)",
+                    // Question card was cyan-top → warm parchment-bottom
+                    // (mid-gradient breaks tone). Pulled bottom stop to
+                    // cosmic-violet glass so the card reads cool top-to-
+                    // bottom, framing the dark text inside.
+                    "linear-gradient(180deg, rgba(220, 250, 255, 0.96) 0%, rgba(180, 200, 255, 0.92) 100%)",
                   borderStyle: "solid",
                   borderWidth: 1,
-                  borderColor: "rgba(196, 115, 64, 0.55)",
+                  borderColor: "rgba(124, 92, 255, 0.55)",
                   borderTop: `4px solid ${attackMeta.color}`,
                   borderRadius: 18,
                   padding: "20px 26px 22px",
                   marginBottom: 18,
-                  boxShadow: `0 18px 40px -12px rgba(40, 18, 8, 0.5), inset 0 0 0 4px rgba(125, 240, 255, 0.85), inset 0 0 0 5px rgba(196, 115, 64, 0.35), 0 0 24px ${attackMeta.glow}`,
+                  boxShadow: `0 18px 40px -12px rgba(8, 10, 22, 0.6), inset 0 0 0 4px rgba(125, 240, 255, 0.85), inset 0 0 0 5px rgba(124, 92, 255, 0.35), 0 0 24px ${attackMeta.glow}`,
                 }}
               >
                 {/* Attack-type chip — top-right corner */}
@@ -1063,7 +1067,7 @@ export default function BattleArena({
 
                   let borderColor = "rgba(0, 229, 255, 0.35)";
                   let extraShadow =
-                    "0 6px 18px -8px rgba(40, 18, 8, 0.5)";
+                    "0 6px 18px -8px rgba(8, 10, 22, 0.6)";
                   let opacity = 1;
                   let shakeAnim: string | undefined;
                   let glow: string | null = null;
@@ -1320,7 +1324,7 @@ function VillainBanner({
         WebkitBackdropFilter: "blur(10px)",
         borderStyle: "solid",
         borderWidth: 1,
-        borderColor: "rgba(196, 115, 64, 0.55)",
+        borderColor: "rgba(124, 92, 255, 0.55)",
         borderRadius: 14,
         boxShadow:
           "0 10px 24px -8px rgba(8, 10, 22, 0.5), 0 0 18px rgba(255, 95, 179, 0.25) inset",
@@ -1399,7 +1403,10 @@ function HeroPortrait({ phase }: { phase: Phase }) {
           inset: -22,
           borderRadius: "50%",
           background:
-            "conic-gradient(from 0deg, transparent 0deg, rgba(255, 215, 138, 0.55) 60deg, transparent 120deg, rgba(124, 92, 255, 0.45) 200deg, transparent 280deg, rgba(255, 220, 130, 0.5) 340deg, transparent 360deg)",
+            // Conic halo was warm gold + violet + warm gold — pulled
+            // the two warm stops to cyan + neon-pink so the halo
+            // sweeps cyan / violet / pink in palette.
+            "conic-gradient(from 0deg, transparent 0deg, rgba(125, 240, 255, 0.55) 60deg, transparent 120deg, rgba(124, 92, 255, 0.45) 200deg, transparent 280deg, rgba(255, 95, 179, 0.5) 340deg, transparent 360deg)",
           filter: "blur(10px)",
           animation: "baHaloSpin 14s linear infinite",
           opacity: 0.7,
@@ -1519,7 +1526,10 @@ function BossPortrait({
           overflow: "hidden",
           background: "#3a1a3e",
           boxShadow:
-            "0 0 0 5px rgba(196, 115, 64, 0.7), 0 0 0 7px rgba(122, 58, 82, 0.85), 0 18px 36px -10px rgba(8, 10, 22, 0.75), 0 0 28px rgba(255, 95, 179, 0.45)",
+            // Was warm-brown + warm-rose double rim — pulled to cyan +
+            // cosmic-violet rim so the boss portrait reads as a cyber
+            // adversary not a Pixar antagonist.
+            "0 0 0 5px rgba(125, 240, 255, 0.7), 0 0 0 7px rgba(124, 92, 255, 0.85), 0 18px 36px -10px rgba(8, 10, 22, 0.75), 0 0 28px rgba(255, 95, 179, 0.45)",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",

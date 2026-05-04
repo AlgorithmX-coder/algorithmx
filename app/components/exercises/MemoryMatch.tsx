@@ -551,7 +551,7 @@ export default function MemoryMatch({
               background:
                 "linear-gradient(135deg, rgba(0, 229, 255, 0.95), rgba(124, 92, 255, 0.92))",
               boxShadow:
-                "0 12px 28px -8px rgba(40, 18, 8, 0.45), 0 0 24px rgba(0, 229, 255, 0.35), inset 0 0 0 1px rgba(125, 240, 255, 0.6)",
+                "0 12px 28px -8px rgba(8, 10, 22, 0.55), 0 0 24px rgba(0, 229, 255, 0.35), inset 0 0 0 1px rgba(125, 240, 255, 0.6)",
               textAlign: "center",
               animation: "mmFadeIn 0.45s ease-out",
             }}
@@ -767,7 +767,7 @@ function PhaseTransitionCard({ onStart }: { onStart: () => void }) {
         alignItems: "center",
         justifyContent: "center",
         background:
-          "linear-gradient(180deg, rgba(15, 21, 48, 0.85) 0%, rgba(20, 8, 24, 0.92) 100%)",
+          "linear-gradient(180deg, rgba(15, 21, 48, 0.85) 0%, rgba(4, 5, 13, 0.92) 100%)",
         backdropFilter: "blur(10px)",
         WebkitBackdropFilter: "blur(10px)",
         animation: "mmFadeIn 0.45s ease-out",
@@ -781,7 +781,7 @@ function PhaseTransitionCard({ onStart }: { onStart: () => void }) {
           padding: "26px 28px 22px",
           borderRadius: 22,
           background:
-            "linear-gradient(180deg, rgba(15, 21, 48, 0.92), rgba(20, 8, 24, 0.95))",
+            "linear-gradient(180deg, rgba(15, 21, 48, 0.92), rgba(4, 5, 13, 0.95))",
           border: "1px solid rgba(0, 229, 255, 0.42)",
           boxShadow:
             "0 30px 60px -20px rgba(8,10,22,0.7), 0 0 36px rgba(124, 92, 255, 0.25)",
@@ -963,7 +963,7 @@ function CardBack({
         borderWidth: 1,
         borderColor: "rgba(0, 229, 255, 0.32)",
         boxShadow:
-          "0 12px 28px -8px rgba(8, 10, 22, 0.7), inset 0 0 0 1px rgba(0, 229, 255, 0.18), 0 0 0 1px rgba(40, 18, 8, 0.4)",
+          "0 12px 28px -8px rgba(8, 10, 22, 0.7), inset 0 0 0 1px rgba(0, 229, 255, 0.18), 0 0 0 1px rgba(8, 10, 22, 0.55)",
         backfaceVisibility: "hidden",
         display: "flex",
         alignItems: "center",
@@ -982,7 +982,7 @@ function CardBack({
       onMouseLeave={(e) => {
         (e.currentTarget as HTMLDivElement).style.transform = "";
         (e.currentTarget as HTMLDivElement).style.boxShadow =
-          "0 12px 28px -8px rgba(8, 10, 22, 0.7), inset 0 0 0 1px rgba(0, 229, 255, 0.18), 0 0 0 1px rgba(40, 18, 8, 0.4)";
+          "0 12px 28px -8px rgba(8, 10, 22, 0.7), inset 0 0 0 1px rgba(0, 229, 255, 0.18), 0 0 0 1px rgba(8, 10, 22, 0.55)";
       }}
     >
       {/* Faint warm circuit grid — the technical texture */}
@@ -1146,8 +1146,8 @@ function CardFront({
         borderWidth: 2,
         borderColor: matched ? "#4a9a6a" : `${colour}88`,
         boxShadow: matched
-          ? `0 0 22px ${colour}66, inset 0 0 18px ${colour}44, 0 12px 24px -8px rgba(40, 18, 8, 0.4)`
-          : `0 8px 18px -6px rgba(40, 18, 8, 0.35), inset 0 0 0 1px ${colour}33`,
+          ? `0 0 22px ${colour}66, inset 0 0 18px ${colour}44, 0 12px 24px -8px rgba(8, 10, 22, 0.55)`
+          : `0 8px 18px -6px rgba(8, 10, 22, 0.5), inset 0 0 0 1px ${colour}33`,
         backfaceVisibility: "hidden",
         transform: "rotateY(180deg)",
         display: "flex",
@@ -1238,7 +1238,7 @@ function FinishOverlay({
         position: "absolute",
         inset: 0,
         background:
-          "linear-gradient(180deg, rgba(15, 21, 48, 0.95) 0%, rgba(20, 8, 24, 0.96) 100%)",
+          "linear-gradient(180deg, rgba(15, 21, 48, 0.95) 0%, rgba(4, 5, 13, 0.96) 100%)",
         backdropFilter: "blur(8px)",
         WebkitBackdropFilter: "blur(8px)",
         color: COLOR.cream,
