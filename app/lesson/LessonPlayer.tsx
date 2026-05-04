@@ -3252,13 +3252,24 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
 
       /* ──── CASE 1: THE MISSION ──── */
       case 1: {
+        // Mission accents — cyan, cosmic violet, neon pink (third was
+        // amber/orange, which broke palette coherence with the cyber
+        // sky in MissionBriefScene). All three glows now sit inside
+        // the Cyber Heroes Lab vocabulary.
         const missions = [
-          { icon: "🔐", text: "Learn what passwords are", colour: "#00e5ff", glow: "rgba(255,213,138,0.55)" },
-          { icon: "🛡️", text: "Build a super strong password", colour: "#7c5cff", glow: "rgba(160,106,255,0.55)" },
-          { icon: "🦝", text: "Defeat the Hacker Raccoon", colour: "#f59e0b", glow: "rgba(245,158,11,0.6)" },
+          { icon: "🔐", text: "Learn what passwords are", colour: "#00e5ff", glow: "rgba(0, 229, 255, 0.55)" },
+          { icon: "🛡️", text: "Build a super strong password", colour: "#7c5cff", glow: "rgba(124, 92, 255, 0.55)" },
+          { icon: "🦝", text: "Defeat the Hacker Raccoon", colour: "#ff5fb3", glow: "rgba(255, 95, 179, 0.55)" },
         ];
         return (
-          <FullScene bg="linear-gradient(180deg, #1a0a0a 0%, #1a0612 100%)" glow="radial-gradient(circle, rgba(239,68,68,0.3), transparent)">
+          // Was a dark-red wrapper bleeding red glow into a cyber-sky
+          // scene — three competing colour systems in one screen. Now
+          // a cyber-aligned abyss bg + cosmic-violet halo so the
+          // wrapper, the sky, and the floor all read as one place.
+          <FullScene
+            bg="linear-gradient(180deg, #04050d 0%, #0f1530 100%)"
+            glow="radial-gradient(circle, rgba(124, 92, 255, 0.32), transparent)"
+          >
             <MissionBriefScene
               phase={missionPhase}
               missions={missions}

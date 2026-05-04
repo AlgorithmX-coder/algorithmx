@@ -61,9 +61,11 @@ export default function MissionBriefScene({
         height: "min(82vh, 760px)",
         borderRadius: 28,
         overflow: "hidden",
-        background: "#1a0d1f",
+        background: "#04050d",
         boxShadow:
-          "0 40px 90px -30px rgba(40, 22, 12, 0.55), 0 0 0 1px rgba(255,210,170,0.25) inset",
+          "0 40px 90px -30px rgba(8, 10, 22, 0.7), " +
+          "0 0 0 1px rgba(125, 240, 255, 0.25) inset, " +
+          "0 0 60px rgba(0, 229, 255, 0.12) inset",
         fontFamily:
           "ui-rounded, 'Fredoka', 'Quicksand', system-ui, -apple-system, sans-serif",
       }}
@@ -240,6 +242,9 @@ function FloatingParticles() {
         duration: 8 + ((i * 5) % 8),
         delay: (i * 0.43) % 8,
         drift: ((i * 13) % 30) - 15,
+        // Alternate cyan / violet motes for cosmic palette coherence.
+        // Replaces the warm gold dust that clashed with the cyber sky.
+        cyan: i % 2 === 0,
       })),
     []
   );
@@ -264,8 +269,10 @@ function FloatingParticles() {
             width: m.size,
             height: m.size,
             borderRadius: "50%",
-            background: "rgba(255, 220, 170, 0.85)",
-            boxShadow: `0 0 ${m.size * 4}px rgba(255, 200, 140, 0.6)`,
+            background: m.cyan ? "rgba(125, 240, 255, 0.85)" : "rgba(160, 143, 255, 0.85)",
+            boxShadow: m.cyan
+              ? `0 0 ${m.size * 4}px rgba(0, 229, 255, 0.6)`
+              : `0 0 ${m.size * 4}px rgba(124, 92, 255, 0.6)`,
             animation: `moteFloat ${m.duration}s ease-in-out ${m.delay}s infinite`,
             ["--moteDrift" as string]: `${m.drift}px`,
           } as React.CSSProperties}
@@ -275,7 +282,12 @@ function FloatingParticles() {
   );
 }
 
-/* ───────────────────────── WOODEN FLOOR ───────────────────────── */
+/* ───────────────────────── CYBER FLOOR ───────────────────────── */
+/*
+ * Was a wooden floor (tonal mismatch — warm Pixar inside cyber sky).
+ * Now a chrome / glass platform with cyan grid lines, matching the
+ * Cyber Heroes Lab vocabulary used everywhere else in the player.
+ */
 
 function WoodFloor() {
   return (
@@ -292,7 +304,7 @@ function WoodFloor() {
         pointerEvents: "none",
       }}
     >
-      {/* Ground plane gradient (foreshortened circle via radial gradient) */}
+      {/* Chrome plate — deep navy with cyan rim */}
       <div
         style={{
           position: "absolute",
@@ -300,26 +312,44 @@ function WoodFloor() {
           borderRadius: "50% / 24%",
           background:
             "radial-gradient(ellipse at 50% 30%, " +
-            "#fdd9a5 0%, " +
-            "#d68a4c 32%, " +
-            "#8b4a22 60%, " +
-            "#3a1a08 95%)",
-          boxShadow: "inset 0 -40px 80px rgba(20, 8, 24, 0.5)",
+            "#1a2147 0%, " +
+            "#0f1530 35%, " +
+            "#080a16 70%, " +
+            "#04050d 100%)",
+          boxShadow:
+            "inset 0 -40px 80px rgba(8, 10, 22, 0.65), " +
+            "inset 0 0 0 1px rgba(125, 240, 255, 0.18)",
         }}
       />
-      {/* Floor grain — very subtle radial streaks via repeating gradient */}
+      {/* Concentric cyan rings — radar/grid feel */}
       <div
         style={{
           position: "absolute",
           inset: 0,
           borderRadius: "50% / 24%",
           background:
-            "repeating-conic-gradient(from 0deg at 50% 28%, " +
-            "transparent 0deg, " +
-            "rgba(60, 30, 10, 0.06) 1deg, " +
-            "transparent 3deg)",
-          mixBlendMode: "multiply",
-          opacity: 0.7,
+            "repeating-radial-gradient(ellipse at 50% 28%, " +
+            "transparent 0px, " +
+            "transparent 38px, " +
+            "rgba(0, 229, 255, 0.10) 39px, " +
+            "rgba(0, 229, 255, 0.10) 40px)",
+          mixBlendMode: "screen",
+          opacity: 0.85,
+        }}
+      />
+      {/* Soft cyan glow at the centre of the disc */}
+      <div
+        style={{
+          position: "absolute",
+          left: "50%",
+          top: "20%",
+          transform: "translateX(-50%)",
+          width: "55%",
+          height: "30%",
+          borderRadius: "50%",
+          background:
+            "radial-gradient(ellipse at center, rgba(0, 229, 255, 0.18) 0%, transparent 70%)",
+          filter: "blur(20px)",
         }}
       />
     </div>
@@ -327,6 +357,11 @@ function WoodFloor() {
 }
 
 /* ───────────────────────── HOLO PEDESTAL ───────────────────────── */
+/*
+ * Was a brown wooden cylinder with warm gold emissive top — clashed
+ * with the cyber sky.  Now a chrome / dark-navy pedestal with a
+ * cyan emissive disc, matching the cyber palette throughout.
+ */
 
 function HoloPedestal() {
   return (
@@ -351,11 +386,11 @@ function HoloPedestal() {
           width: 280,
           height: 30,
           borderRadius: "50%",
-          background: "rgba(20, 8, 24, 0.55)",
+          background: "rgba(8, 10, 22, 0.65)",
           filter: "blur(18px)",
         }}
       />
-      {/* Outer flange (chamfer feel) */}
+      {/* Outer flange — chrome chamfer */}
       <div
         style={{
           position: "relative",
@@ -363,12 +398,12 @@ function HoloPedestal() {
           height: 32,
           borderRadius: "50%",
           background:
-            "radial-gradient(ellipse at 50% 35%, #6b3818 0%, #3a1c0a 100%)",
+            "radial-gradient(ellipse at 50% 35%, #1f2855 0%, #0a0e22 100%)",
           boxShadow:
-            "0 6px 14px rgba(15, 6, 12, 0.55), inset 0 -3px 6px rgba(0,0,0,0.4)",
+            "0 6px 14px rgba(8, 10, 22, 0.6), inset 0 -3px 6px rgba(0,0,0,0.5), inset 0 0 0 1px rgba(125, 240, 255, 0.22)",
         }}
       />
-      {/* Cylinder body */}
+      {/* Cylinder body — chrome */}
       <div
         style={{
           position: "relative",
@@ -377,12 +412,13 @@ function HoloPedestal() {
           width: 244,
           height: 56,
           background:
-            "linear-gradient(90deg, #5a2e14 0%, #8b4a22 25%, #b06432 50%, #8b4a22 75%, #5a2e14 100%)",
+            "linear-gradient(90deg, #0f1530 0%, #1a2147 25%, #252d5e 50%, #1a2147 75%, #0f1530 100%)",
           borderRadius: "8px / 4px",
-          boxShadow: "inset 0 -8px 14px rgba(0,0,0,0.45)",
+          boxShadow:
+            "inset 0 -8px 14px rgba(0,0,0,0.55), inset 0 0 0 1px rgba(125, 240, 255, 0.18)",
         }}
       />
-      {/* Top inset disc */}
+      {/* Top inset disc — chrome bowl */}
       <div
         style={{
           position: "relative",
@@ -392,12 +428,12 @@ function HoloPedestal() {
           height: 28,
           borderRadius: "50%",
           background:
-            "radial-gradient(ellipse at 50% 35%, #5b2e14 0%, #3a1a08 100%)",
+            "radial-gradient(ellipse at 50% 35%, #1a2147 0%, #04050d 100%)",
           boxShadow:
-            "inset 0 4px 10px rgba(0,0,0,0.55), 0 -2px 0 rgba(255,210,160,0.15)",
+            "inset 0 4px 10px rgba(0,0,0,0.6), 0 -2px 0 rgba(125, 240, 255, 0.18)",
         }}
       />
-      {/* Glowing emissive top — pulses */}
+      {/* Glowing cyan emissive top — pulses */}
       <div
         style={{
           position: "absolute",
@@ -408,12 +444,12 @@ function HoloPedestal() {
           height: 22,
           borderRadius: "50%",
           background:
-            "radial-gradient(ellipse at 50% 50%, #fff5cc 0%, #ffc97a 35%, #ff9b4a 70%, transparent 100%)",
+            "radial-gradient(ellipse at 50% 50%, rgba(220, 250, 255, 0.95) 0%, rgba(125, 240, 255, 0.85) 30%, rgba(0, 229, 255, 0.55) 60%, transparent 100%)",
           filter: "blur(2px)",
           animation: "pedestalGlow 2.4s ease-in-out infinite",
         }}
       />
-      {/* Ring rim */}
+      {/* Ring rim — cyan */}
       <div
         style={{
           position: "absolute",
@@ -423,9 +459,9 @@ function HoloPedestal() {
           width: 220,
           height: 18,
           borderRadius: "50%",
-          border: "2px solid rgba(255, 200, 130, 0.7)",
+          border: "2px solid rgba(0, 229, 255, 0.7)",
           boxShadow:
-            "0 0 20px rgba(255, 180, 100, 0.5), inset 0 0 10px rgba(255, 200, 130, 0.3)",
+            "0 0 20px rgba(0, 229, 255, 0.55), inset 0 0 10px rgba(125, 240, 255, 0.4)",
         }}
       />
     </div>
@@ -448,12 +484,14 @@ function BeamRays() {
         zIndex: 3,
         pointerEvents: "none",
         clipPath: "polygon(38% 0%, 62% 0%, 88% 100%, 12% 100%)",
+        // Was warm-gold beams (clashed with cyber sky). Now a cool
+        // cyan/violet projector beam that reads as a holo emitter.
         background:
           "linear-gradient(to top, " +
-          "rgba(255, 200, 130, 0) 0%, " +
-          "rgba(255, 220, 160, 0.4) 35%, " +
-          "rgba(255, 240, 200, 0.7) 75%, " +
-          "rgba(255, 250, 220, 0.92) 100%)",
+          "rgba(0, 229, 255, 0) 0%, " +
+          "rgba(0, 229, 255, 0.32) 35%, " +
+          "rgba(125, 240, 255, 0.6) 75%, " +
+          "rgba(220, 250, 255, 0.85) 100%)",
         mixBlendMode: "screen",
         animation: "beamShimmer 3.6s ease-in-out infinite",
       }}
@@ -657,12 +695,14 @@ function CharacterPortrait({
           height: 92,
           borderRadius: "50%",
           overflow: "hidden",
-          background: "#fde2b5",
+          background: "#1a2147",
+          // Cyber rim — was warm cream + amber. Now cyan/violet halo
+          // that matches every other character treatment in the lesson.
           boxShadow:
-            "0 0 0 4px rgba(255, 230, 190, 0.85), " +
-            "0 0 0 6px rgba(140, 70, 30, 0.5), " +
-            "0 14px 28px -8px rgba(50, 20, 5, 0.65), " +
-            "0 0 24px rgba(255, 178, 110, 0.45)",
+            "0 0 0 3px rgba(125, 240, 255, 0.85), " +
+            "0 0 0 5px rgba(124, 92, 255, 0.5), " +
+            "0 14px 28px -8px rgba(8, 10, 22, 0.7), " +
+            "0 0 24px rgba(0, 229, 255, 0.45)",
           animation: "portraitBob 3.4s ease-in-out infinite",
         }}
       >
@@ -682,12 +722,12 @@ function CharacterPortrait({
       <div
         style={{
           padding: "3px 12px",
-          background: "rgba(50, 20, 35, 0.7)",
+          background: "rgba(15, 21, 48, 0.78)",
           backdropFilter: "blur(6px)",
           WebkitBackdropFilter: "blur(6px)",
-          border: "1px solid rgba(255, 220, 180, 0.4)",
+          border: "1px solid rgba(125, 240, 255, 0.45)",
           borderRadius: 999,
-          color: "#ffe9c8",
+          color: "#e8edff",
           fontSize: 10,
           fontWeight: 800,
           letterSpacing: 2.5,
@@ -721,32 +761,36 @@ function TitlePlate({ title }: { title: string }) {
         style={{
           display: "inline-block",
           padding: "6px 20px",
-          background: "rgba(255, 219, 168, 0.22)",
-          border: "1px solid rgba(255, 232, 195, 0.55)",
+          background: "rgba(0, 229, 255, 0.10)",
+          border: "1px solid rgba(125, 240, 255, 0.55)",
           borderRadius: 999,
           backdropFilter: "blur(8px)",
           WebkitBackdropFilter: "blur(8px)",
-          color: "#ffe9c8",
+          color: "#7df0ff",
           fontSize: 12,
           fontWeight: 700,
           letterSpacing: 5,
           textTransform: "uppercase",
           marginBottom: 12,
+          fontFamily: "ui-monospace, 'JetBrains Mono', Menlo, monospace",
+          textShadow: "0 0 12px rgba(0, 229, 255, 0.55)",
         }}
       >
-        ✦ Mission Briefing ✦
+        ◇ Mission Briefing ◇
       </div>
       <h1
         style={{
           margin: 0,
           fontSize: "clamp(32px, 4.6vw, 54px)",
           fontWeight: 900,
-          color: "#fff7e6",
+          color: "#e8edff",
           letterSpacing: 0.5,
           lineHeight: 1,
           whiteSpace: "nowrap",
           textShadow:
-            "0 4px 18px rgba(80, 30, 10, 0.65), 0 0 36px rgba(255, 178, 110, 0.45)",
+            "0 4px 18px rgba(8, 10, 22, 0.65), " +
+            "0 0 28px rgba(0, 229, 255, 0.55), " +
+            "0 0 56px rgba(124, 92, 255, 0.4)",
         }}
       >
         {title}
@@ -778,9 +822,12 @@ function ProgressDots({ phase }: { phase: number }) {
             borderRadius: "50%",
             background:
               phase > i
-                ? "linear-gradient(135deg, #ffe1ad, #ff9b4a)"
-                : "rgba(255, 219, 168, 0.18)",
-            boxShadow: phase > i ? "0 0 14px rgba(255,170,90,0.7)" : "none",
+                ? "linear-gradient(135deg, #7df0ff, #7c5cff)"
+                : "rgba(125, 240, 255, 0.18)",
+            boxShadow:
+              phase > i
+                ? "0 0 14px rgba(0, 229, 255, 0.7), 0 0 28px rgba(124, 92, 255, 0.4)"
+                : "none",
             transition: "all 0.4s ease",
           }}
         />
@@ -857,7 +904,7 @@ function Vignette() {
         zIndex: 5,
         pointerEvents: "none",
         background:
-          "radial-gradient(ellipse at center, transparent 50%, rgba(20, 8, 24, 0.55) 100%)",
+          "radial-gradient(ellipse at center, transparent 50%, rgba(4, 5, 13, 0.65) 100%)",
       }}
     />
   );
