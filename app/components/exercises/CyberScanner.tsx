@@ -406,24 +406,28 @@ export default function CyberScanner({
         ctx.stroke();
       }
 
-      // Golden scanner beam
+      // Cyber scanner beam — was a warm cream/orange centre with a
+      // warm-orange centre stroke (comment said "Golden" — Pixar
+      // leftover). Now a cool cyan-white centre over a violet halo,
+      // with a cyan centre stroke. Reads as a holographic scanner
+      // beam not a stage spotlight.
       const beamPulse = 0.85 + 0.15 * Math.sin(now / 300);
       const beamGrad = ctx.createLinearGradient(0, BEAM_Y - 50, 0, BEAM_Y + 50);
       beamGrad.addColorStop(0, CV.beamEdge);
       beamGrad.addColorStop(0.4, `rgba(124, 92, 255, ${0.45 * beamPulse})`);
-      beamGrad.addColorStop(0.5, `rgba(255, 248, 220, ${0.65 * beamPulse})`);
+      beamGrad.addColorStop(0.5, `rgba(220, 250, 255, ${0.7 * beamPulse})`);
       beamGrad.addColorStop(0.6, `rgba(124, 92, 255, ${0.45 * beamPulse})`);
       beamGrad.addColorStop(1, CV.beamEdge);
       ctx.fillStyle = beamGrad;
       ctx.fillRect(0, BEAM_Y - 50, CANVAS_W, 100);
-      ctx.strokeStyle = `rgba(255, 178, 90, ${0.7 * beamPulse})`;
+      ctx.strokeStyle = `rgba(125, 240, 255, ${0.75 * beamPulse})`;
       ctx.lineWidth = 2;
       ctx.beginPath();
       ctx.moveTo(0, BEAM_Y);
       ctx.lineTo(CANVAS_W, BEAM_Y);
       ctx.stroke();
 
-      // Golden shield, top-right
+      // Cyber shield, top-right
       // Outer halo
       ctx.fillStyle = CV.shieldFill;
       ctx.beginPath();
@@ -674,8 +678,11 @@ export default function CyberScanner({
           display: "flex",
           gap: 16,
           padding: "18px 22px 24px",
+          // Was a warm parchment-orange gradient under the buttons
+          // (Pixar leftover). Now a deep abyss → midnight wash that
+          // visually anchors the buttons in the cyber surface.
           background:
-            "linear-gradient(180deg, transparent 0%, rgba(255, 220, 168, 0.4) 60%, rgba(196, 115, 64, 0.18) 100%)",
+            "linear-gradient(180deg, transparent 0%, rgba(15, 21, 48, 0.55) 60%, rgba(8, 10, 22, 0.78) 100%)",
         }}
       >
         <ScannerButton
@@ -758,8 +765,10 @@ function ScannerButton({
         cursor: disabled ? "not-allowed" : "pointer",
         opacity: disabled ? 0.5 : 1,
         fontFamily: "inherit",
-        boxShadow: `0 14px 28px -8px ${tint}aa, 0 0 0 1px rgba(255, 245, 220, 0.45) inset, 0 -4px 0 rgba(40, 18, 5, 0.3) inset`,
-        textShadow: "0 1px 2px rgba(40, 18, 5, 0.3)",
+        // Was warm parchment inner highlight + warm-brown bottom rim.
+        // Cyber: cyan inner glint + abyss-navy bottom rim.
+        boxShadow: `0 14px 28px -8px ${tint}aa, 0 0 0 1px rgba(125, 240, 255, 0.5) inset, 0 -4px 0 rgba(8, 10, 22, 0.55) inset`,
+        textShadow: "0 1px 2px rgba(8, 10, 22, 0.55)",
       }}
     >
       {label}
@@ -790,8 +799,11 @@ function FinishOverlay({
       style={{
         position: "absolute",
         inset: 0,
+        // Was a warm purple-brown second stop (rgba(20,8,24,0.96)) —
+        // tightened to pure cyber abyss so the overlay reads as the
+        // same surface as the rest of the lesson.
         background:
-          "linear-gradient(180deg, rgba(15, 21, 48, 0.95) 0%, rgba(20, 8, 24, 0.96) 100%)",
+          "linear-gradient(180deg, rgba(15, 21, 48, 0.95) 0%, rgba(4, 5, 13, 0.96) 100%)",
         backdropFilter: "blur(8px)",
         WebkitBackdropFilter: "blur(8px)",
         color: COLOR.cream,
@@ -809,12 +821,14 @@ function FinishOverlay({
           fontSize: 12,
           fontWeight: 800,
           letterSpacing: 5,
-          color: "#00e5ff",
+          color: "#7df0ff",
           textTransform: "uppercase",
           marginBottom: 4,
+          fontFamily: "ui-monospace, 'JetBrains Mono', Menlo, monospace",
+          textShadow: "0 0 10px rgba(0, 229, 255, 0.5)",
         }}
       >
-        ✦ Scan Complete ✦
+        ◇ Scan Complete ◇
       </div>
       <div
         style={{
