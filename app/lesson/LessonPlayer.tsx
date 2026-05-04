@@ -3298,20 +3298,24 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
               display: "inline-block",
               fontSize: 11,
               letterSpacing: 5,
-              color: "#00e5ff",
+              color: "#7df0ff",
               fontWeight: 800,
               textTransform: "uppercase",
               padding: "5px 16px",
-              background: "rgba(15, 21, 48, 0.55)",
+              background: "rgba(15, 21, 48, 0.6)",
               backdropFilter: "blur(8px)",
               WebkitBackdropFilter: "blur(8px)",
               borderRadius: 999,
               borderStyle: "solid",
               borderWidth: 1,
-              borderColor: "rgba(255, 220, 180, 0.4)",
+              // Was warm cream border (Pixar leftover) on a cyber-blue
+              // text. Now a cyan border so the badge reads as one piece.
+              borderColor: "rgba(125, 240, 255, 0.5)",
               marginBottom: 8,
+              fontFamily: "ui-monospace, 'JetBrains Mono', Menlo, monospace",
+              textShadow: "0 0 10px rgba(0, 229, 255, 0.5)",
             }}>
-              ✦ Lesson 1 of 3 ✦
+              ◇ Lesson 1 of 3 ◇
             </div>
             <h1 data-split style={{
               fontSize: 40,
@@ -3321,24 +3325,36 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
               WebkitBackgroundClip: "text",
               WebkitTextFillColor: "transparent",
               letterSpacing: 0.5,
-              textShadow: "0 4px 18px rgba(80, 30, 10, 0.55)",
+              // Title was casting a warm brown shadow on a cyber-gradient
+              // — that was the obvious tell. Now a cyan/violet glow stack.
+              textShadow:
+                "0 4px 18px rgba(8, 10, 22, 0.65), 0 0 28px rgba(0, 229, 255, 0.45), 0 0 56px rgba(124, 92, 255, 0.3)",
             }}>What is a Password?</h1>
             <p style={{ color: "#c5cdf0", marginBottom: 8, fontSize: 16, opacity: 0.9, fontWeight: 500 }}>Tap each item to lock it with a password!</p>
             <p style={{
-              color: "#00e5ff",
+              color: "#7df0ff",
               fontSize: 18,
               fontWeight: 800,
               marginBottom: 16,
               letterSpacing: 1,
-              filter: "drop-shadow(0 0 12px rgba(255, 200, 110, 0.5))",
+              // Lock counter glow was amber (warm Pixar) on cyan text.
+              // Now cyan-on-cyan so it reads as a coherent counter.
+              filter: "drop-shadow(0 0 12px rgba(0, 229, 255, 0.55))",
             }}>🔒 {lockedItems.size}/3</p>
             <div style={{ display: "flex", gap: 22, justifyContent: "center", flexWrap: "wrap", marginBottom: 24, perspective: "1400px" }}>
               {LOCK_ITEMS.map((item, idx) => {
                 const locked = lockedItems.has(item.id);
                 const flipping = lockFlipping === item.id;
-                const accent = item.id === "gaming" ? { c1: "#7c5cff", c2: "#3a7bff", glow: "rgba(255, 155, 74, 0.5)" }
-                  : item.id === "tablet" ? { c1: "#7c5cff", c2: "#7a3a52", glow: "rgba(160, 106, 255, 0.5)" }
-                  : { c1: "#ffd158", c2: "#d48a18", glow: "rgba(255, 209, 88, 0.55)" };
+                // Three distinct cyber accents per card — gaming reads
+                // cyan/violet, tablet reads cosmic-violet/pink, school
+                // reads pink/coral. Was amber/gold on the school card
+                // and a brown c2 on the tablet card, which made the row
+                // look like three different products.
+                const accent = item.id === "gaming"
+                    ? { c1: "#00e5ff", c2: "#7c5cff", glow: "rgba(0, 229, 255, 0.5)" }
+                  : item.id === "tablet"
+                    ? { c1: "#7c5cff", c2: "#ff5fb3", glow: "rgba(124, 92, 255, 0.5)" }
+                  :   { c1: "#ff5fb3", c2: "#ff7a59", glow: "rgba(255, 95, 179, 0.5)" };
                 const baseTilt = idx === 0 ? -3 : idx === 2 ? 3 : 0;
                 return (
                   <motion.div
@@ -3474,26 +3490,32 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
                     maxWidth: 460,
                     margin: "0 auto",
                     padding: "22px 26px",
-                    background: "rgba(15, 21, 48, 0.72)",
+                    background: "rgba(15, 21, 48, 0.78)",
                     backdropFilter: "blur(12px)",
                     WebkitBackdropFilter: "blur(12px)",
                     borderStyle: "solid",
                     borderWidth: 1,
-                    borderColor: "rgba(255, 220, 180, 0.4)",
+                    // Celebration card border was warm cream — now cyan
+                    // with a soft cyan inner halo, so the success card
+                    // reads as a continuation of the cyber surface.
+                    borderColor: "rgba(125, 240, 255, 0.5)",
                     borderRadius: 22,
-                    boxShadow: "0 30px 60px -20px rgba(8, 10, 22, 0.7)",
+                    boxShadow:
+                      "0 30px 60px -20px rgba(8, 10, 22, 0.75), 0 0 32px rgba(0, 229, 255, 0.18)",
                     color: "#e8edff",
                     textAlign: "center",
                   }}>
                     <div style={{
                       fontSize: 11,
                       letterSpacing: 5,
-                      color: "#00e5ff",
+                      color: "#7df0ff",
                       fontWeight: 800,
                       textTransform: "uppercase",
                       marginBottom: 6,
+                      fontFamily: "ui-monospace, 'JetBrains Mono', Menlo, monospace",
+                      textShadow: "0 0 10px rgba(0, 229, 255, 0.5)",
                     }}>
-                      ✦ All Locked ✦
+                      ◇ All Locked ◇
                     </div>
                     <h2 style={{
                       fontSize: 26,
@@ -3506,7 +3528,7 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
                       WebkitTextFillColor: "transparent",
                       fontWeight: 900,
                     }}>
-                      <SuccessBurst size={28} colourA="#ffd158" colourB="#7c5cff" />
+                      <SuccessBurst size={28} colourA="#7df0ff" colourB="#7c5cff" />
                       You did it!
                     </h2>
                     <p style={{ color: "#c5cdf0", marginBottom: 14, fontSize: 15, opacity: 0.92, lineHeight: 1.45 }}>
@@ -3515,18 +3537,22 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
                     <div style={{
                       borderStyle: "solid",
                       borderWidth: 1,
-                      borderColor: "rgba(255, 215, 138, 0.55)",
+                      // Fun-fact panel was a warm gold tint inside a
+                      // cyber celebration card — was the loudest
+                      // remaining mismatch.  Now a cyan-tinted glass
+                      // strip that visually nests inside the parent.
+                      borderColor: "rgba(125, 240, 255, 0.45)",
                       borderRadius: 14,
                       padding: "10px 14px",
                       marginBottom: 18,
-                      background: "rgba(255, 215, 138, 0.1)",
+                      background: "rgba(0, 229, 255, 0.08)",
                       display: "flex",
                       alignItems: "center",
                       gap: 10,
                       justifyContent: "center",
                     }}>
-                      <SuccessBurst size={20} colourA="#ffd158" colourB="#7c5cff" />
-                      <p style={{ color: "#00e5ff", fontSize: 13, margin: 0, fontWeight: 600 }}>
+                      <SuccessBurst size={20} colourA="#7df0ff" colourB="#7c5cff" />
+                      <p style={{ color: "#7df0ff", fontSize: 13, margin: 0, fontWeight: 600 }}>
                         Fun fact — the first computer password was created in 1961!
                       </p>
                     </div>
