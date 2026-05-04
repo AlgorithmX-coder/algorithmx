@@ -105,7 +105,9 @@ const PV = {
   shieldGradTop: "#e7ecff",
   shieldGradMid: "#7df0ff",
   shieldGradBottom: "#7c5cff",
-  shieldRim: "rgba(255, 245, 220, 0.8)",
+  // Was warm cream rim (Pixar leftover) — now cyan to match the
+  // shield body which is already cosmic-violet → cyan.
+  shieldRim: "rgba(125, 240, 255, 0.8)",
   shieldGlow: "#7c5cff",
   // Edge flash
   edgeFlashGood: "#7eff97",
@@ -464,7 +466,8 @@ export default function ProtectTheData({
       ctx.fillStyle = bgGrad;
       ctx.fillRect(0, 0, CANVAS_W, CANVAS_H);
 
-      // Soft sun glow
+      // Cosmic halo (was a warm sun glow — replaced with a cool
+      // cyan/violet halo to match the abyss-navy sky behind it)
       const sun = ctx.createRadialGradient(
         CANVAS_W * 0.78,
         CANVAS_H * 0.42,
@@ -473,9 +476,9 @@ export default function ProtectTheData({
         CANVAS_H * 0.42,
         140
       );
-      sun.addColorStop(0, "rgba(255, 250, 220, 0.85)");
-      sun.addColorStop(0.4, "rgba(255, 200, 130, 0.35)");
-      sun.addColorStop(1, "rgba(255, 160, 90, 0)");
+      sun.addColorStop(0, "rgba(220, 250, 255, 0.85)");
+      sun.addColorStop(0.4, "rgba(124, 92, 255, 0.32)");
+      sun.addColorStop(1, "rgba(124, 92, 255, 0)");
       ctx.fillStyle = sun;
       ctx.fillRect(0, 0, CANVAS_W, CANVAS_H);
 
@@ -596,16 +599,19 @@ export default function ProtectTheData({
         ctx.restore();
       }
 
-      // Golden Pixar shield
+      // Cyber chrome shield (was a "Golden Pixar shield" comment but
+      // the gradient stops were already cyan→violet; just the halo
+      // outer ring + the top highlight were warm cream Pixar leftovers).
       const sx = s.shieldX;
       const sy = SHIELD_Y;
-      // Halo above
+      // Halo above — cyan inner, fading to transparent (was warm
+      // cream → orange fade-out)
       const halo = ctx.createRadialGradient(sx, sy, 0, sx, sy, 110);
       halo.addColorStop(0, PV.shieldHalo);
-      halo.addColorStop(1, "rgba(255, 220, 160, 0)");
+      halo.addColorStop(1, "rgba(0, 229, 255, 0)");
       ctx.fillStyle = halo;
       ctx.fillRect(sx - 110, sy - 80, 220, 90);
-      // Body
+      // Body — cyan→violet chrome
       const sGrad = ctx.createLinearGradient(0, sy, 0, sy + SHIELD_H);
       sGrad.addColorStop(0, PV.shieldGradTop);
       sGrad.addColorStop(0.5, PV.shieldGradMid);
@@ -613,10 +619,10 @@ export default function ProtectTheData({
       ctx.fillStyle = sGrad;
       roundRect(ctx, sx - SHIELD_W / 2, sy, SHIELD_W, SHIELD_H, 22);
       ctx.fill();
-      // Top highlight
+      // Top highlight — cool white (was warm cream "rgba(255, 255, 230)")
       const highlight = ctx.createLinearGradient(0, sy, 0, sy + 14);
-      highlight.addColorStop(0, "rgba(255, 255, 230, 0.7)");
-      highlight.addColorStop(1, "rgba(255, 255, 230, 0)");
+      highlight.addColorStop(0, "rgba(220, 250, 255, 0.75)");
+      highlight.addColorStop(1, "rgba(220, 250, 255, 0)");
       ctx.fillStyle = highlight;
       roundRect(ctx, sx - SHIELD_W / 2 + 4, sy + 2, SHIELD_W - 8, 14, 16);
       ctx.fill();
@@ -762,7 +768,7 @@ export default function ProtectTheData({
       {showIntro && (
         <ExerciseIntro
           title="Protect the Data!"
-          description="Private info is falling from the sky. Move your golden shield to block it — but let safe info through!"
+          description="Private info is falling from the sky. Move your cyber shield to block it — but let safe info through!"
           icon="🛡️"
           controls="Move mouse or arrow keys"
           onStart={() => setShowIntro(false)}
