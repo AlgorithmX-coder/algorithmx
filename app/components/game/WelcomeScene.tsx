@@ -95,7 +95,9 @@ export default function WelcomeScene({
         <CaptionPlaque text={caption} />
       </div>
 
-      {/* Floating raccoon glyph in the corner — the antagonist's calling card */}
+      {/* Floating raccoon glyph in the corner — the antagonist's calling card.
+          Drop-shadow was harsh red; switched to coral/pink so the antagonist
+          still reads as "warning" without breaking the cyber palette. */}
       <motion.div
         initial={{ opacity: 0, scale: 0.5, rotate: -20 }}
         animate={{ opacity: 1, scale: 1, rotate: 0 }}
@@ -105,7 +107,8 @@ export default function WelcomeScene({
           top: 120,
           right: 60,
           fontSize: 78,
-          filter: "drop-shadow(0 0 24px rgba(255, 80, 80, 0.55))",
+          filter:
+            "drop-shadow(0 0 24px rgba(255, 95, 179, 0.55)) drop-shadow(0 0 48px rgba(255, 122, 89, 0.32))",
           zIndex: 7,
           animation: "raccoonTaunt 3s ease-in-out infinite",
         }}
@@ -257,19 +260,23 @@ function CaptionPlaque({ text }: { text: string }) {
       style={{
         maxWidth: 540,
         padding: "12px 22px",
-        background: "rgba(50, 20, 35, 0.65)",
+        // Was warm purple-brown bg + warm cream border (Pixar leftover).
+        // Now cyber-glass: deep navy translucent + cyan border, matches
+        // every other plaque/banner across the cyber lesson surface.
+        background: "rgba(8, 10, 22, 0.78)",
         backdropFilter: "blur(10px)",
         WebkitBackdropFilter: "blur(10px)",
         borderStyle: "solid",
         borderWidth: 1,
-        borderColor: "rgba(255, 200, 160, 0.35)",
+        borderColor: "rgba(125, 240, 255, 0.45)",
         borderRadius: 16,
         color: COLOR.cream,
         fontSize: 16,
         fontWeight: 600,
         textAlign: "center",
         lineHeight: 1.4,
-        boxShadow: SHADOW.drop,
+        boxShadow:
+          "0 12px 28px -8px rgba(8, 10, 22, 0.7), 0 0 22px rgba(0, 229, 255, 0.18)",
       }}
     >
       {text}

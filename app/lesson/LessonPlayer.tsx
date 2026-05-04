@@ -3161,7 +3161,10 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
       /* ──── CASE 0: VIDEO WELCOME ──── */
       case 0:
         return (
-          <FullScene bg="radial-gradient(ellipse at 50% 70%, #2a0d2e 0%, #1a1f4d 35%, #0f1530 70%, #04050d 100%)">
+          // Was a slightly purple-tinged cyber gradient (#2a0d2e bleed at
+          // bottom). Tightened to pure cyber palette so Case 0 reads as
+          // the same "place" as Case 1 onwards.
+          <FullScene bg="radial-gradient(ellipse at 50% 70%, #1a2147 0%, #0f1530 35%, #04050d 75%, #04050d 100%)">
           {/* Cosmic atmosphere — top-corner blobs + bottom horizon */}
           <div aria-hidden style={{ position: "absolute", top: "-12%", left: "-12%", width: 640, height: 640, borderRadius: "50%", background: "radial-gradient(circle, rgba(124, 92, 255, 0.32) 0%, transparent 65%)", filter: "blur(60px)", pointerEvents: "none" }} />
           <div aria-hidden style={{ position: "absolute", top: "-8%", right: "-12%", width: 540, height: 540, borderRadius: "50%", background: "radial-gradient(circle, rgba(255, 95, 179, 0.26) 0%, transparent 65%)", filter: "blur(60px)", pointerEvents: "none" }} />
