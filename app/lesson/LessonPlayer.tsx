@@ -57,17 +57,21 @@ const WelcomeScene = dynamic(
   () => import("@/app/components/game/WelcomeScene"),
   { ssr: false }
 );
-const VictoryScene = dynamic(
-  () => import("@/app/components/game/VictoryScene"),
-  { ssr: false }
+// Per-case components — extracted from the inline switch statement
+// below so each case owns its own file. Dynamic-imported so they
+// only ship when their case is actually rendered, and ssr:false
+// because the underlying scenes use browser-only APIs.
+const Case16Victory = dynamic(
+  () => import("@/app/lesson/cases/Case16Victory"),
+  { ssr: false },
 );
-const GraduationScene = dynamic(
-  () => import("@/app/components/game/GraduationScene"),
-  { ssr: false }
+const Case17Graduation = dynamic(
+  () => import("@/app/lesson/cases/Case17Graduation"),
+  { ssr: false },
 );
-const OutroScene = dynamic(
-  () => import("@/app/components/game/OutroScene"),
-  { ssr: false }
+const Case18Outro = dynamic(
+  () => import("@/app/lesson/cases/Case18Outro"),
+  { ssr: false },
 );
 // Live 3D energy reactor that drops behind the boss-battle lock screen.
 // SSR-disabled because R3F needs the WebGL context.
@@ -5049,14 +5053,9 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
       /* ──── CASE 16: ADAM AND LAYLA ARE SAFE ──── */
       case 16:
         return (
-          // Was a warm dark-brown bg (#1a1508) → dark navy. Pulled to
-          // pure cyber abyss + midnight so the victory screen reads
-          // as the same place as the rest of Week 1.
-          <FullScene bg="linear-gradient(180deg, #0f1530 0%, #04050d 100%)">
-            <VictoryScene
-              onContinue={() => { triggerEarnForScreen(16); navigate(17); }}
-            />
-          </FullScene>
+          <Case16Victory
+            onContinue={() => { triggerEarnForScreen(16); navigate(17); }}
+          />
         );
 
 
@@ -5064,24 +5063,22 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
       case 17: {
         const totalScore = q1Score + q2Score + q3Score + bossScore + swipeScore + phishScore + wydScore;
         const totalPossible = Q1_QUIZ.length + Q2_QUIZ.length + Q3_QUIZ.length + BOSS_QUIZ.length + SWIPE_DATA.length + PHISH.length + WYD.length;
-        const finalStars: 1 | 2 | 3 = totalScore >= totalPossible * 0.8 ? 3 : totalScore >= totalPossible * 0.5 ? 2 : 1;
         return (
-          <FullScene bg="linear-gradient(180deg, #1a2147 0%, #04050d 100%)">
-            <GraduationScene
-              childName={childName}
-              weekNumber={CURRENT_WEEK}
-              weekTitle="Passwords — The Secret Code"
-              starsCount={finalStars}
-              totalCoins={coins}
-              isMilestoneWeek={IS_MILESTONE_WEEK}
-              onContinue={() => { triggerEarnForScreen(17); navigate(18); }}
-              onDownloadCertificate={
-                IS_MILESTONE_WEEK
-                  ? () => window.open(getCertificateUrl(childName, CURRENT_WEEK), "_blank")
-                  : undefined
-              }
-            />
-          </FullScene>
+          <Case17Graduation
+            childName={childName}
+            weekNumber={CURRENT_WEEK}
+            weekTitle="Passwords — The Secret Code"
+            totalCoins={coins}
+            isMilestoneWeek={IS_MILESTONE_WEEK}
+            totalScore={totalScore}
+            totalPossible={totalPossible}
+            onContinue={() => { triggerEarnForScreen(17); navigate(18); }}
+            onDownloadCertificate={
+              IS_MILESTONE_WEEK
+                ? () => window.open(getCertificateUrl(childName, CURRENT_WEEK), "_blank")
+                : undefined
+            }
+          />
         );
       }
 
@@ -5089,19 +5086,15 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
       /* ──── CASE 18: OUTRO VIDEO ──── */
       case 18:
         return (
-          <FullScene bg="linear-gradient(180deg, #0f1530 0%, #04050d 100%)">
-            <OutroScene
-              childName={childName}
-              totalCoins={coins}
-              nextWeekTitle="Private Info: Guard Your Secrets"
-              // Outro video shipped — falls back to the celebrating
-              // image only if the video fetch itself errors at runtime.
-              videoSrc={outroFailed ? null : "/videos/module-01-outro.mp4"}
-              fallbackImageSrc="/characters/celebrating.png"
-              onBackToDashboard={() => { window.location.href = "/dashboard"; }}
-              onPlayAgain={() => { window.location.reload(); }}
-            />
-          </FullScene>
+          <Case18Outro
+            childName={childName}
+            totalCoins={coins}
+            nextWeekTitle="Private Info: Guard Your Secrets"
+            videoSrc={outroFailed ? null : "/videos/module-01-outro.mp4"}
+            fallbackImageSrc="/characters/celebrating.png"
+            onBackToDashboard={() => { window.location.href = "/dashboard"; }}
+            onPlayAgain={() => { window.location.reload(); }}
+          />
         );
 
       default:
