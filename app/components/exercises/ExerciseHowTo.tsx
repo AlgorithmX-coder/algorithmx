@@ -91,15 +91,21 @@ export default function ExerciseHowTo({
               gap: 8,
               padding: "6px 12px",
               borderRadius: 999,
-              background: "rgba(255, 245, 220, 0.95)",
+              // Was warm parchment + warm-brown text + warm border —
+              // a Pixar dusk pill on a cyber surface. Now cyber glass:
+              // dark navy translucent + cyan border + bright text.
+              background: "rgba(15, 21, 48, 0.78)",
               borderStyle: "solid",
               borderWidth: 1,
-              borderColor: "rgba(196, 115, 64, 0.35)",
+              borderColor: "rgba(125, 240, 255, 0.45)",
               fontSize: 12,
-              color: "#3b2615",
+              color: "#e8edff",
               fontWeight: 700,
               lineHeight: 1.3,
-              boxShadow: "0 4px 10px -4px rgba(40, 18, 8, 0.35)",
+              boxShadow:
+                "0 4px 10px -4px rgba(8, 10, 22, 0.55), 0 0 14px rgba(0, 229, 255, 0.18)",
+              backdropFilter: "blur(6px)",
+              WebkitBackdropFilter: "blur(6px)",
             }}
           >
             <span style={{ fontSize: 14 }}>{s.glyph}</span>

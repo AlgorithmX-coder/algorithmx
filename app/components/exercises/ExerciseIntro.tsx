@@ -25,8 +25,8 @@ const STYLES = `
   50%     { transform: translateY(-10px) rotate(2deg); }
 }
 @keyframes exIntroBtnPulse {
-  0%,100% { box-shadow: 0 0 18px rgba(249,115,22,0.55), 0 0 0 rgba(249,115,22,0); }
-  50%     { box-shadow: 0 0 30px rgba(249,115,22,0.85), 0 0 60px rgba(249,115,22,0.35); }
+  0%,100% { box-shadow: 0 0 18px rgba(0, 229, 255, 0.55), 0 0 0 rgba(124, 92, 255, 0); }
+  50%     { box-shadow: 0 0 30px rgba(0, 229, 255, 0.85), 0 0 60px rgba(124, 92, 255, 0.45); }
 }
 @keyframes exIntroHaloSpin {
   0%   { transform: rotate(0deg); }
@@ -242,7 +242,10 @@ function IntroIconShowcase({ icon }: { icon: string }) {
           width: 92,
           height: 92,
           borderRadius: "50%",
-          background: `radial-gradient(circle at 35% 30%, rgba(255, 245, 220, 0.25), rgba(15, 21, 48, 0.85) 60%)`,
+          // Was a warm cream highlight on the glass disc — pulled to a
+          // cool cyan-white so the disc reads as cyber chrome, not
+          // candle-lit parchment.
+          background: `radial-gradient(circle at 35% 30%, rgba(220, 250, 255, 0.32), rgba(15, 21, 48, 0.85) 60%)`,
           border: `1px solid ${tint.a}66`,
           boxShadow: `0 14px 30px ${tint.b}55, inset 0 -6px 14px rgba(0,0,0,0.4), inset 0 4px 10px rgba(255,255,255,0.08)`,
           display: "flex",
@@ -288,8 +291,11 @@ export default function ExerciseIntro({
         // the parent exercise lays out.
         position: "fixed",
         inset: 0,
+        // Was a warm purple-brown second stop (rgba(20, 8, 24, 0.99))
+        // — pulled to pure cyber abyss so the intro reads as the same
+        // surface as the lesson player behind it.
         background:
-          "linear-gradient(180deg, rgba(15, 21, 48, 0.97) 0%, rgba(20, 8, 24, 0.99) 100%)",
+          "linear-gradient(180deg, rgba(15, 21, 48, 0.97) 0%, rgba(4, 5, 13, 0.99) 100%)",
         backdropFilter: "blur(14px)",
         WebkitBackdropFilter: "blur(14px)",
         zIndex: 60,
@@ -308,14 +314,16 @@ export default function ExerciseIntro({
         style={{
           fontSize: 11,
           letterSpacing: 5,
-          color: "#00e5ff",
+          color: "#7df0ff",
           fontWeight: 800,
           textTransform: "uppercase",
           marginBottom: 14,
           animation: "exIntroPop 0.45s ease-out both",
+          fontFamily: "ui-monospace, 'JetBrains Mono', Menlo, monospace",
+          textShadow: "0 0 10px rgba(0, 229, 255, 0.5)",
         }}
       >
-        ✦ Get Ready ✦
+        ◇ Get Ready ◇
       </div>
       <IntroIconShowcase icon={icon} />
       <h2
@@ -389,8 +397,12 @@ export default function ExerciseIntro({
           border: "none",
           cursor: "pointer",
           fontFamily: "inherit",
+          // Was warm orange drop + warm cream inner highlight + warm
+          // brown bottom rim — three Pixar leftovers on a cyber gradient
+          // button. Pulled to: cyan drop + cyan inner glint + abyss
+          // bottom rim. Now reads as one piece with the gradient face.
           boxShadow:
-            "0 18px 36px -10px rgba(255,120,40,0.7), 0 0 0 1px rgba(255,235,200,0.6) inset, 0 -4px 0 rgba(180,80,30,0.45) inset",
+            "0 18px 36px -10px rgba(0, 229, 255, 0.65), 0 0 0 1px rgba(125, 240, 255, 0.55) inset, 0 -4px 0 rgba(8, 10, 22, 0.55) inset",
           transition: "transform 0.18s ease",
         }}
         onMouseEnter={(e) => {
