@@ -26,14 +26,34 @@ export default function ForgotPasswordPage() {
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  function handleSubmit(e: React.FormEvent) {
+  const [loading, setLoading] = useState(false);
+
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError(null);
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       setError("Please enter a valid email address");
       return;
     }
-    setSubmitted(true);
+    setLoading(true);
+    try {
+      await fetch("/api/forgot-password", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+      // Always show success — the API never reveals whether the email
+      // matched a real account, so we never reveal it either.  Prevents
+      // user enumeration.
+      setSubmitted(true);
+    } catch {
+      // Network failure: still show success (same anti-enumeration
+      // posture). The retry happens via the email itself if it didn't
+      // arrive.
+      setSubmitted(true);
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -178,8 +198,9 @@ export default function ForgotPasswordPage() {
 
             <motion.button
               type="submit"
-              whileHover={{ y: -2, scale: 1.02 }}
-              whileTap={{ scale: 0.97 }}
+              disabled={loading}
+              whileHover={loading ? {} : { y: -2, scale: 1.02 }}
+              whileTap={loading ? {} : { scale: 0.97 }}
               transition={{ type: "spring", stiffness: 320, damping: 20 }}
               className="w-full font-black rounded-full"
               style={{
@@ -191,12 +212,16 @@ export default function ForgotPasswordPage() {
                 textTransform: "uppercase",
                 fontSize: 16,
                 border: "none",
-                cursor: "pointer",
+                cursor: loading ? "wait" : "pointer",
+                opacity: loading ? 0.7 : 1,
+                // Was warm orange drop + warm cream inner highlight + warm
+                // brown bottom rim. Pulled to cyan drop + cyan inner glint
+                // + abyss bottom rim, matching every other cyber CTA.
                 boxShadow:
-                  "0 18px 36px -10px rgba(255,120,40,0.6), 0 0 0 1px rgba(255,235,200,0.55) inset, 0 -3px 0 rgba(180,80,30,0.4) inset",
+                  "0 18px 36px -10px rgba(0, 229, 255, 0.65), 0 0 0 1px rgba(125, 240, 255, 0.55) inset, 0 -3px 0 rgba(8, 10, 22, 0.55) inset",
               }}
             >
-              Send Reset Link
+              {loading ? "Sending…" : "Send Reset Link"}
             </motion.button>
           </form>
         )}

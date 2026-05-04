@@ -29,6 +29,7 @@ model User {
   updatedAt      DateTime   @updatedAt
   progress       Progress[]
   children       ChildProfile[]
+  passwordResetTokens PasswordResetToken[]
 }
 
 model ChildProfile {
@@ -77,6 +78,20 @@ model Progress {
   createdAt   DateTime       @default(now())
 
   @@unique([userId, moduleId])
+}
+
+model PasswordResetToken {
+  id        String   @id @default(cuid())
+  /** SHA-256 hex of the token (so a leaked DB doesn't expose live tokens). */
+  tokenHash String   @unique
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([expiresAt])
 }
 
 model WaitlistEntry {
