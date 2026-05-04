@@ -1,26 +1,151 @@
 import { playSound } from "@/app/lib/sounds";
 
-const BRAND_COLORS = ["#60a5fa", "#34d399", "#f97316", "#f59e0b"];
+/* ───────────────────────── PALETTE ───────────────────────── */
+/*
+ * Was warm Pixar (`#f97316`, `#f59e0b`) which clashed with the cyber
+ * surface introduced for the lesson player.  Now sources from the same
+ * palette as cyberTokens.ts: lime / cyan / cosmic-violet / neon-pink /
+ * gold.  Gold survived as a celebration accent because it's the
+ * universal "you earned it" cue across kids' apps.
+ */
+const BRAND_COLORS = [
+  "#7eff97", // lime
+  "#00e5ff", // cyan
+  "#7c5cff", // cosmic violet
+  "#ff5fb3", // neon pink
+  "#ffd158", // gold
+];
 
 function isBrowser(): boolean {
   return typeof window !== "undefined";
 }
 
-export async function correctAnswerBurst(): Promise<void> {
-  playSound("correct");
-  if (!isBrowser()) return;
-  const confetti = (await import("canvas-confetti")).default;
-  confetti({
-    particleCount: 40,
-    spread: 60,
-    startVelocity: 30,
-    gravity: 0.8,
-    ticks: 60,
-    origin: { x: 0.5, y: 0.5 },
-    colors: ["#34d399", "#60a5fa", "#f59e0b"],
-  });
+/* ───────────────────────── HIT-STOP ───────────────────────── */
+/*
+ * Game-feel primitive — a sub-100ms "thunk" of feedback applied to a
+ * target element on a positive event.  Briefly scales it up + brightens,
+ * then snaps back.  The brain reads this as weight / impact, the same
+ * pattern Mario / Hollow Knight / Celeste use on hit and pickup.  Pure
+ * code — no extra assets needed.
+ *
+ * Default target is `document.body` so callers can fire-and-forget
+ * without grabbing a ref.  Pass a specific element for a localised
+ * pulse (e.g. the answer card the kid just tapped).
+ */
+export function hitStop(target?: HTMLElement | null): void {
+  if (typeof document === "undefined") return;
+  const el = target ?? document.body;
+  // Bail if a previous hit-stop hasn't completed — avoids stacking
+  // transforms which look glitchy.
+  if (el.dataset.hitStopActive === "1") return;
+  el.dataset.hitStopActive = "1";
+
+  const prevTransition = el.style.transition;
+  const prevTransform = el.style.transform;
+  const prevFilter = el.style.filter;
+
+  el.style.transition = "transform 80ms ease-out, filter 80ms ease-out";
+  el.style.transform = `${prevTransform || ""} scale(1.015)`.trim();
+  el.style.filter = `${prevFilter || ""} brightness(1.18) saturate(1.18)`.trim();
+
+  window.setTimeout(() => {
+    el.style.transform = prevTransform;
+    el.style.filter = prevFilter;
+    window.setTimeout(() => {
+      el.style.transition = prevTransition;
+      delete el.dataset.hitStopActive;
+    }, 100);
+  }, 80);
 }
 
+/* ───────────────────────── CORRECT ANSWER ───────────────────────── */
+/*
+ * Streak-scaled celebration.  Was a fixed 40-particle burst regardless
+ * of streak, so a kid getting their 1st right answer felt the same as
+ * their 10th in a row — no progressive reward.  Now scales with streak:
+ *
+ *   1   → 25 particles, modest spread, no second wave
+ *   3+  → 50 particles, bigger spread, snappier velocity
+ *   5+  → adds a top-down second wave (200ms after primary)
+ *   10+ → adds full-screen side bursts (400ms after primary)
+ *
+ * Also fires `hitStop()` automatically so every correct answer carries
+ * a visceral "thunk" of feedback regardless of where it's called.
+ */
+export async function correctAnswerBurst(
+  streak: number = 1,
+  target?: HTMLElement | null,
+): Promise<void> {
+  playSound("correct");
+  hitStop(target);
+  if (!isBrowser()) return;
+
+  const confetti = (await import("canvas-confetti")).default;
+
+  const particleCount = Math.min(120, 25 + Math.floor(streak * 7));
+  const spread = Math.min(120, 50 + streak * 5);
+  const startVelocity = 25 + Math.min(20, streak * 1.5);
+
+  confetti({
+    particleCount,
+    spread,
+    startVelocity,
+    gravity: 0.85,
+    ticks: 70,
+    origin: { x: 0.5, y: 0.55 },
+    colors: BRAND_COLORS,
+  });
+
+  // Streak 5+: second wave from above for a fuller payoff.
+  if (streak >= 5) {
+    window.setTimeout(() => {
+      confetti({
+        particleCount: 35,
+        spread: 100,
+        startVelocity: 38,
+        gravity: 1,
+        ticks: 90,
+        origin: { x: 0.5, y: 0.35 },
+        colors: BRAND_COLORS,
+      });
+    }, 200);
+  }
+
+  // Streak 10+: full-screen side bursts.  Rare event so it actually
+  // feels rare when it happens.
+  if (streak >= 10) {
+    window.setTimeout(() => {
+      confetti({
+        particleCount: 50,
+        angle: 60,
+        spread: 80,
+        startVelocity: 50,
+        ticks: 120,
+        origin: { x: 0, y: 0.6 },
+        colors: BRAND_COLORS,
+      });
+      confetti({
+        particleCount: 50,
+        angle: 120,
+        spread: 80,
+        startVelocity: 50,
+        ticks: 120,
+        origin: { x: 1, y: 0.6 },
+        colors: BRAND_COLORS,
+      });
+    }, 400);
+  }
+}
+
+/* ───────────────────────── WRONG ANSWER ───────────────────────── */
+/*
+ * Tighter shake than before.  Old version: body-level x-axis only,
+ * 4px amplitude, 300ms with default ease — read as "harsh slap".
+ * Now uses both axes (more natural physical-object feel), 3px
+ * amplitude (subtler), 250ms with cubic-bezier(.36,.07,.19,.97) so
+ * it settles instead of bouncing.  Sympathetic, not punitive — kids
+ * audience.
+ */
 export function wrongAnswerShake(): void {
   playSound("wrong");
   if (!isBrowser()) return;
@@ -29,18 +154,29 @@ export function wrongAnswerShake(): void {
   if (!styleEl) {
     styleEl = document.createElement("style");
     styleEl.id = styleId;
-    styleEl.textContent = `@keyframes screenShake { 0%,100% { transform: translateX(0); } 25% { transform: translateX(-4px); } 75% { transform: translateX(4px); } }`;
+    styleEl.textContent = `@keyframes screenShake {
+      0%   { transform: translate(0, 0); }
+      15%  { transform: translate(-3px, 1px); }
+      30%  { transform: translate(3px, -1px); }
+      45%  { transform: translate(-2px, 2px); }
+      60%  { transform: translate(2px, -1px); }
+      75%  { transform: translate(-1px, 1px); }
+      100% { transform: translate(0, 0); }
+    }`;
     document.head.appendChild(styleEl);
   }
   const body = document.body;
-  body.style.animation = "screenShake 0.3s ease";
+  body.style.animation = "screenShake 250ms cubic-bezier(0.36, 0.07, 0.19, 0.97)";
   window.setTimeout(() => {
     body.style.animation = "";
-  }, 300);
+  }, 250);
 }
+
+/* ───────────────────────── BADGE EARNED ───────────────────────── */
 
 export async function badgeEarnedCelebration(): Promise<void> {
   playSound("badge-earned");
+  hitStop();
   if (!isBrowser()) return;
   const confetti = (await import("canvas-confetti")).default;
 
@@ -64,8 +200,11 @@ export async function badgeEarnedCelebration(): Promise<void> {
   }, 200);
 }
 
+/* ───────────────────────── BOSS DEFEATED ───────────────────────── */
+
 export async function bossDefeatedExplosion(): Promise<void> {
   playSound("boss-defeated");
+  hitStop();
   if (!isBrowser()) return;
   const confetti = (await import("canvas-confetti")).default;
   const colors = [...BRAND_COLORS, "#ffffff"];
@@ -119,6 +258,8 @@ export async function bossDefeatedExplosion(): Promise<void> {
   }, 600);
 }
 
+/* ───────────────────────── STAR BURST (small) ───────────────────────── */
+
 export async function starBurst(x: number, y: number): Promise<void> {
   playSound("star");
   if (!isBrowser()) return;
@@ -130,12 +271,17 @@ export async function starBurst(x: number, y: number): Promise<void> {
     ticks: 80,
     origin: { x, y },
     shapes: ["star"],
-    colors: ["#f59e0b", "#f97316"],
+    // Was warm orange-only — now cyber gold + cyan so the star burst
+    // belongs to the same celebration system as the bigger ones.
+    colors: ["#ffd158", "#00e5ff", "#ff5fb3"],
   });
 }
 
+/* ───────────────────────── MILESTONE FIREWORKS ───────────────────────── */
+
 export async function milestoneFireworks(): Promise<void> {
   playSound("celebration");
+  hitStop();
   if (!isBrowser()) return;
   const confetti = (await import("canvas-confetti")).default;
 

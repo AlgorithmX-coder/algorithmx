@@ -322,7 +322,9 @@ export default function MemoryMatch({
     window.setTimeout(() => {
       setWaveOn(true);
       playSound("sortCorrect");
-      void correctAnswerBurst();
+      // Pass best streak so the finale burst scales with how cleanly
+      // the kid solved the board — perfect run = full-screen party.
+      void correctAnswerBurst(bestStreak);
       window.setTimeout(() => {
         setWaveOn(false);
         // Phase A complete — pivot to the memory-rebuild transition

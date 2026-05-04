@@ -310,7 +310,9 @@ export default function CyberScanner({
       if (s.idx >= list.length) {
         if (!s.finished) {
           s.finished = true;
-          void correctAnswerBurst();
+          // Pass best streak so the finale burst scales with how
+          // confidently the kid played — bigger streak = bigger party.
+          void correctAnswerBurst(s.bestStreak);
           setRender((n) => n + 1);
         }
         return;
