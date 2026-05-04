@@ -4353,7 +4353,7 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
 
         if (bossDone) {
           return (
-            <FullScene bg="linear-gradient(180deg, #0a0505 0%, #1a0612 100%)" glow="radial-gradient(circle, rgba(245,158,11,0.3), transparent)">
+            <FullScene bg="linear-gradient(180deg, #04050d 0%, #0f1530 100%)" glow="radial-gradient(circle, rgba(124, 92, 255, 0.32), transparent)">
             <motion.div initial={{ opacity: 0, scale: 0.5 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: "spring", stiffness: 300, damping: 20 }} style={{ textAlign: "center" }}>
               <Confetti duration={5000} />
               {card(
@@ -5040,7 +5040,10 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
       /* ──── CASE 16: ADAM AND LAYLA ARE SAFE ──── */
       case 16:
         return (
-          <FullScene bg="linear-gradient(180deg, #1a1508 0%, #0a0a1a 100%)">
+          // Was a warm dark-brown bg (#1a1508) → dark navy. Pulled to
+          // pure cyber abyss + midnight so the victory screen reads
+          // as the same place as the rest of Week 1.
+          <FullScene bg="linear-gradient(180deg, #0f1530 0%, #04050d 100%)">
             <VictoryScene
               onContinue={() => { triggerEarnForScreen(16); navigate(17); }}
             />
@@ -5054,7 +5057,7 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
         const totalPossible = Q1_QUIZ.length + Q2_QUIZ.length + Q3_QUIZ.length + BOSS_QUIZ.length + SWIPE_DATA.length + PHISH.length + WYD.length;
         const finalStars: 1 | 2 | 3 = totalScore >= totalPossible * 0.8 ? 3 : totalScore >= totalPossible * 0.5 ? 2 : 1;
         return (
-          <FullScene bg="linear-gradient(180deg, #1a0a20 0%, #0a0a1a 100%)">
+          <FullScene bg="linear-gradient(180deg, #1a2147 0%, #04050d 100%)">
             <GraduationScene
               childName={childName}
               weekNumber={CURRENT_WEEK}
@@ -5077,7 +5080,7 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
       /* ──── CASE 18: OUTRO VIDEO ──── */
       case 18:
         return (
-          <FullScene bg="linear-gradient(180deg, #0a0a1a 0%, #1a0612 100%)">
+          <FullScene bg="linear-gradient(180deg, #0f1530 0%, #04050d 100%)">
             <OutroScene
               childName={childName}
               totalCoins={coins}
@@ -5110,10 +5113,13 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
           "radial-gradient(ellipse at 50% -10%, #1d1f4d 0%, #0f1530 35%, #080a16 70%, #04050d 100%)",
       }}
     >
-      {/* Warm dusk backdrop — replaces the cyber LessonArena3D 3D scene
-          so the warm Pixar exercises sit on a tonally-matching page chrome
-          instead of a cold navy arena. The pulse / mood reactivity from
-          the old arena is sacrificed for visual cohesion. */}
+      {/* Cyber page chrome — was a warm dusk gradient (orange + rose +
+          parchment) that bled through every lesson screen, fighting
+          every cyber palette case underneath it. Pulled to cosmic-
+          violet + cyan + neon-pink halos so the page chrome is now
+          coherent with the cyber lesson surface. This is the single
+          biggest cause of the "AI-generated patchwork" feel — a warm
+          halo bleeding behind cyber screens. */}
       <div
         aria-hidden="true"
         style={{
@@ -5122,9 +5128,9 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
           zIndex: 0,
           pointerEvents: "none",
           background:
-            "radial-gradient(ellipse at 80% 20%, rgba(255, 178, 110, 0.18) 0%, transparent 55%)," +
-            "radial-gradient(ellipse at 20% 90%, rgba(196, 60, 106, 0.14) 0%, transparent 55%)," +
-            "radial-gradient(ellipse at 50% 50%, rgba(255, 220, 168, 0.05) 0%, transparent 70%)",
+            "radial-gradient(ellipse at 80% 20%, rgba(124, 92, 255, 0.18) 0%, transparent 55%)," +
+            "radial-gradient(ellipse at 20% 90%, rgba(0, 229, 255, 0.12) 0%, transparent 55%)," +
+            "radial-gradient(ellipse at 50% 50%, rgba(255, 95, 179, 0.05) 0%, transparent 70%)",
         }}
       />
       {/* Reference the mood/pulse vars so they don't trigger unused-var
