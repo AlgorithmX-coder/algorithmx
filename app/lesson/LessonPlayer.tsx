@@ -194,11 +194,13 @@ const animateCoins = () => {
     .to(el, { scale: 1, textShadow: "0 0 5px rgba(245,158,11,0.2)", duration: 0.5, ease: "elastic.out(1, 0.3)" });
 };
 
+// Was warm orange (rgba(249,115,22,*) — Pixar leftover). Pulled to
+// cyan glow so every legacy GSAP-handler button reads cyber when hovered.
 const btnHoverIn = (e: React.MouseEvent<HTMLElement>) => {
-  gsap.to(e.currentTarget, { boxShadow: "0 0 35px rgba(249,115,22,0.6)", scale: 1.06, duration: 0.25 });
+  gsap.to(e.currentTarget, { boxShadow: "0 0 35px rgba(0, 229, 255, 0.65)", scale: 1.06, duration: 0.25 });
 };
 const btnHoverOut = (e: React.MouseEvent<HTMLElement>) => {
-  gsap.to(e.currentTarget, { boxShadow: "0 0 15px rgba(249,115,22,0.3)", scale: 1, duration: 0.4, ease: "elastic.out(1, 0.5)" });
+  gsap.to(e.currentTarget, { boxShadow: "0 0 15px rgba(0, 229, 255, 0.35)", scale: 1, duration: 0.4, ease: "elastic.out(1, 0.5)" });
 };
 
 /* ───────────────────────── TILT CARD ───────────────────────── */
@@ -1160,13 +1162,20 @@ function btn(label: string, onClick: () => void, extra?: React.CSSProperties): R
       onClick={onClick}
       sound="click"
       style={{
-        background: "linear-gradient(135deg, #f97316, #f59e0b)",
-        color: "#fff",
-        fontWeight: 700,
-        borderRadius: 14,
+        // Was warm Pixar orange/amber gradient (#f97316 → #f59e0b) — the
+        // single most common button across every lesson screen, all
+        // rendered warm against a cyber surface. Pulled to the cyber
+        // gradient (cyan → cosmic-violet) used by the hero CTAs.
+        background: "linear-gradient(135deg, #00e5ff, #7c5cff)",
+        color: "#080a16",
+        fontWeight: 800,
+        borderRadius: 999,
         padding: "13px 34px",
         fontSize: 16,
-        boxShadow: "0 0 15px rgba(249,115,22,0.4)",
+        letterSpacing: 1,
+        textTransform: "uppercase",
+        boxShadow:
+          "0 0 24px rgba(0, 229, 255, 0.55), 0 8px 20px -6px rgba(0, 229, 255, 0.45), 0 0 0 1px rgba(125, 240, 255, 0.6) inset",
         minHeight: 48,
         ...extra,
       }}
