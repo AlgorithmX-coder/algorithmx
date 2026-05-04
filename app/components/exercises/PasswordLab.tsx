@@ -314,8 +314,12 @@ export default function PasswordLab({
         borderRadius: 28,
         overflow: "hidden",
         background:
+          // Was a violet halo at the bottom + a warm cream halo at the
+          // top — two competing colour temperatures inside one cauldron
+          // scene.  Replaced the warm cream halo with a cyan halo so the
+          // sky reads cool-on-cool.
           "radial-gradient(ellipse at 50% 80%, rgba(124, 92, 255, 0.45), transparent 60%)," +
-          "radial-gradient(ellipse at 50% 20%, rgba(255, 220, 168, 0.4), transparent 55%)," +
+          "radial-gradient(ellipse at 50% 20%, rgba(125, 240, 255, 0.4), transparent 55%)," +
           "linear-gradient(180deg, #2a1240 0%, #1a2147 35%, #252d5e 70%, #3a7bff 92%, #7df0ff 100%)",
         boxShadow: SHADOW.sceneFrame,
         padding: "20px 18px 30px",
@@ -387,7 +391,7 @@ export default function PasswordLab({
           margin: "8px 0 18px",
           color: "#e8edff",
           textShadow:
-            "0 4px 12px rgba(40, 18, 12, 0.6), 0 0 20px rgba(124, 92, 255, 0.45)",
+            "0 4px 12px rgba(8, 10, 22, 0.7), 0 0 20px rgba(124, 92, 255, 0.45)",
         }}
       >
         Drag ingredients into the cauldron!
@@ -733,7 +737,7 @@ export default function PasswordLab({
             position: "absolute",
             inset: 0,
             background:
-              "linear-gradient(180deg, rgba(15, 21, 48, 0.95) 0%, rgba(20, 8, 24, 0.96) 100%)",
+              "linear-gradient(180deg, rgba(15, 21, 48, 0.95) 0%, rgba(4, 5, 13, 0.96) 100%)",
             backdropFilter: "blur(8px)",
             WebkitBackdropFilter: "blur(8px)",
             display: "flex",
@@ -778,10 +782,10 @@ export default function PasswordLab({
               fontFamily: "ui-monospace, 'JetBrains Mono', Menlo, monospace",
               fontSize: 20,
               padding: "12px 22px",
-              background: "rgba(20, 8, 24, 0.85)",
+              background: "rgba(4, 5, 13, 0.85)",
               borderStyle: "solid",
               borderWidth: 2,
-              borderColor: "rgba(255, 215, 138, 0.6)",
+              borderColor: "rgba(125, 240, 255, 0.55)",
               borderRadius: 14,
               display: "inline-block",
               color: "#00e5ff",
