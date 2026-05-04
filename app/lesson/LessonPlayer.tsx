@@ -3945,12 +3945,12 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
                                     style={{
                                       background: ruleAnswers[i] === oi
                                         ? (oi === rule.correct ? "rgba(126, 255, 151, 0.22)" : "rgba(255, 122, 89, 0.22)")
-                                        : "rgba(255, 245, 220, 0.12)",
+                                        : "rgba(15, 21, 48, 0.65)",
                                       borderStyle: "solid",
                                       borderWidth: 2,
                                       borderColor: ruleAnswers[i] === oi
                                         ? (oi === rule.correct ? "#7eff97" : "#ff7a59")
-                                        : "rgba(255, 220, 180, 0.45)",
+                                        : "rgba(125, 240, 255, 0.45)",
                                       borderRadius: 14,
                                       padding: "16px 24px",
                                       color: ruleAnswers[i] === oi
@@ -4100,7 +4100,7 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
                       borderColor: `${t.color}66`,
                       borderRadius: 20,
                       padding: "28px 24px 22px",
-                      boxShadow: `0 30px 60px -20px ${t.color}55, 0 0 36px ${t.color}33, inset 0 0 0 1px rgba(255, 220, 180, 0.05)`,
+                      boxShadow: `0 30px 60px -20px ${t.color}55, 0 0 36px ${t.color}33, inset 0 0 0 1px rgba(125, 240, 255, 0.08)`,
                       transformStyle: "preserve-3d",
                       overflow: "hidden",
                     }}
@@ -4239,7 +4239,7 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
                       {tricks.map((_, idx) => (
                         <span key={idx} style={{
                           width: idx === trickCard ? 22 : 8, height: 8, borderRadius: 4,
-                          background: idx < trickCard ? "#7eff97" : idx === trickCard ? t.color : "rgba(255, 220, 180, 0.2)",
+                          background: idx < trickCard ? "#7eff97" : idx === trickCard ? t.color : "rgba(125, 240, 255, 0.2)",
                           boxShadow: idx === trickCard ? `0 0 12px ${t.color}` : "none",
                           transition: "width 0.3s ease, background 0.3s ease",
                         }} />
@@ -4261,7 +4261,7 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
                   WebkitBackdropFilter: "blur(12px)",
                   borderStyle: "solid",
                   borderWidth: 1,
-                  borderColor: "rgba(255, 220, 180, 0.4)",
+                  borderColor: "rgba(125, 240, 255, 0.45)",
                   borderRadius: 22,
                   boxShadow: "0 30px 60px -20px rgba(8, 10, 22, 0.7)",
                   color: "#e8edff",

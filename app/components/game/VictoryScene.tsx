@@ -271,10 +271,10 @@ function AchievementChip({
         borderWidth: 1,
         borderColor: earned
           ? "rgba(167,139,250,0.6)"
-          : "rgba(255, 220, 180, 0.18)",
+          : "rgba(125, 240, 255, 0.18)",
         borderRadius: 14,
         boxShadow: earned ? "0 0 20px rgba(167,139,250,0.35)" : "none",
-        color: earned ? "#e0e7ff" : "rgba(255, 233, 200, 0.4)",
+        color: earned ? "#e0e7ff" : "rgba(220, 232, 255, 0.4)",
         opacity: earned ? 1 : 0.55,
       }}
     >
