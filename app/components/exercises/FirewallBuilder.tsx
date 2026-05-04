@@ -603,7 +603,7 @@ export default function FirewallBuilder({
       ctx.restore();
 
       // Warm circuit traces along the top edge
-      ctx.strokeStyle = "rgba(255, 220, 168, 0.4)";
+      ctx.strokeStyle = "rgba(125, 240, 255, 0.4)";
       ctx.lineWidth = 1.4;
       const dash = (now / 30) % 18;
       ctx.setLineDash([8, 10]);
@@ -617,10 +617,12 @@ export default function FirewallBuilder({
       ctx.save();
       ctx.translate(shakeX, shakeY);
 
-      // Play area — warm parchment floor
+      // Play area floor — was a warm parchment/brown gradient (Pixar
+      // leftover) on a cosmic cyber play surface. Now a cyber navy
+      // floor that anchors the firewall blocks against the cosmos sky.
       const floorGrad = ctx.createLinearGradient(0, PLAY_Y, 0, PLAY_Y + PLAY_H);
-      floorGrad.addColorStop(0, "rgba(74, 36, 32, 0.85)");
-      floorGrad.addColorStop(1, "rgba(40, 18, 24, 0.95)");
+      floorGrad.addColorStop(0, "rgba(26, 33, 71, 0.85)");
+      floorGrad.addColorStop(1, "rgba(15, 21, 48, 0.95)");
       ctx.fillStyle = floorGrad;
       ctx.fillRect(PLAY_X, PLAY_Y, PLAY_W, PLAY_H);
       // Diagonal scan stripes inside the play area
@@ -629,7 +631,7 @@ export default function FirewallBuilder({
       ctx.rect(PLAY_X, PLAY_Y, PLAY_W, PLAY_H);
       ctx.clip();
       const stripeOff = (now / 16) % 24;
-      ctx.strokeStyle = "rgba(255, 220, 168, 0.08)";
+      ctx.strokeStyle = "rgba(125, 240, 255, 0.08)";
       ctx.lineWidth = 1;
       for (let i = -PLAY_H; i < PLAY_W + PLAY_H; i += 24) {
         ctx.beginPath();
@@ -653,11 +655,13 @@ export default function FirewallBuilder({
         ctx.lineTo(PLAY_X + PLAY_W, PLAY_Y + r * BLOCK_H);
         ctx.stroke();
       }
-      // Top scan beam crossing the play area — warm gold
+      // Top scan beam crossing the play area — was warm gold, now a
+      // cyan-cored holographic sweep matching the cyber scanner
+      // vocabulary established in CyberScanner.
       const beamY = PLAY_Y + ((now / 12) % PLAY_H);
       const beamGrad = ctx.createLinearGradient(0, beamY - 24, 0, beamY + 24);
       beamGrad.addColorStop(0, "rgba(124, 92, 255, 0)");
-      beamGrad.addColorStop(0.5, "rgba(255, 220, 130, 0.22)");
+      beamGrad.addColorStop(0.5, "rgba(125, 240, 255, 0.32)");
       beamGrad.addColorStop(1, "rgba(124, 92, 255, 0)");
       ctx.fillStyle = beamGrad;
       ctx.fillRect(PLAY_X, beamY - 24, PLAY_W, 48);
@@ -669,8 +673,10 @@ export default function FirewallBuilder({
       ctx.strokeRect(PLAY_X + 0.5, PLAY_Y + 0.5, PLAY_W - 1, PLAY_H - 1);
       ctx.shadowBlur = 0;
 
-      // Side wooden frames — riveted rails with travelling embers
-      ctx.fillStyle = "#3a1a08";
+      // Side rails — were wooden brown (Pixar) on a cyber play surface.
+      // Now cyber chrome rails (deep navy) so the play area reads as
+      // one mechanical piece, not wood-and-glass mash-up.
+      ctx.fillStyle = "#0f1530";
       ctx.fillRect(PLAY_X - 8, PLAY_Y, 6, PLAY_H);
       ctx.fillRect(PLAY_X + PLAY_W + 2, PLAY_Y, 6, PLAY_H);
       // Static brass rivets
@@ -696,7 +702,7 @@ export default function FirewallBuilder({
       ctx.fillStyle = foundGrad;
       ctx.fillRect(PLAY_X - 14, PLAY_Y + PLAY_H, PLAY_W + 28, 12);
       // Rivets along foundation
-      ctx.fillStyle = "rgba(40, 18, 8, 0.6)";
+      ctx.fillStyle = "rgba(8, 10, 22, 0.6)";
       for (let i = 0; i < 14; i++) {
         ctx.beginPath();
         ctx.arc(PLAY_X - 14 + 12 + i * (PLAY_W + 28 - 24) / 13, PLAY_Y + PLAY_H + 6, 1.6, 0, Math.PI * 2);
