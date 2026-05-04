@@ -294,7 +294,7 @@ export function WoodFloor({
           borderRadius: "50% / 24%",
           background:
             `radial-gradient(ellipse at 50% 30%, ${p.floorCenter} 0%, ${p.floorMid} 32%, ${p.floorEdge} 95%)`,
-          boxShadow: "inset 0 -40px 80px rgba(20, 8, 24, 0.5)",
+          boxShadow: "inset 0 -40px 80px rgba(4, 5, 13, 0.55)",
         }}
       />
       <div
@@ -371,12 +371,12 @@ export function CharacterPortrait({
       <div
         style={{
           padding: "3px 12px",
-          background: "rgba(50, 20, 35, 0.7)",
+          background: "rgba(15, 21, 48, 0.78)",
           backdropFilter: "blur(6px)",
           WebkitBackdropFilter: "blur(6px)",
           borderStyle: "solid",
           borderWidth: 1,
-          borderColor: "rgba(255, 220, 180, 0.4)",
+          borderColor: "rgba(125, 240, 255, 0.45)",
           borderRadius: 999,
           color: COLOR.cream,
           fontSize: 10,
@@ -665,8 +665,11 @@ export function PixarFinishOverlay({
       style={{
         position: "absolute",
         inset: 0,
+        // Was a warm purple-brown gradient (Pixar leftover) on a global
+        // FinishOverlay shown across many exercises. Pulled to pure
+        // cyber abyss so the overlay feels like part of the cyber app.
         background:
-          "linear-gradient(180deg, rgba(40, 18, 38, 0.95) 0%, rgba(20, 8, 24, 0.96) 100%)",
+          "linear-gradient(180deg, rgba(15, 21, 48, 0.95) 0%, rgba(4, 5, 13, 0.96) 100%)",
         backdropFilter: "blur(8px)",
         WebkitBackdropFilter: "blur(8px)",
         color: COLOR.cream,
@@ -870,15 +873,20 @@ export function ExerciseFrame({
               width: "100%",
               maxWidth: 880,
               padding: "28px 26px",
-              background: "rgba(14, 6, 22, 0.62)",
+              // Was warm purple-brown bg + warm cream border + warm
+              // brown drop shadow. ExerciseFrame is the wrapping
+              // container behind every exercise — fixing it once
+              // cascades to every single exercise screen. Pulled to
+              // cyber glass + cyan border + cyber dark drop.
+              background: "rgba(15, 21, 48, 0.72)",
               backdropFilter: "blur(14px)",
               WebkitBackdropFilter: "blur(14px)",
               borderStyle: "solid",
               borderWidth: 1,
-              borderColor: "rgba(255, 220, 180, 0.18)",
+              borderColor: "rgba(125, 240, 255, 0.32)",
               borderRadius: 24,
               boxShadow:
-                "0 30px 70px -20px rgba(20, 6, 12, 0.7), 0 0 0 1px rgba(255, 220, 180, 0.05) inset",
+                "0 30px 70px -20px rgba(8, 10, 22, 0.75), 0 0 0 1px rgba(125, 240, 255, 0.08) inset",
             }}
           >
             {children}
