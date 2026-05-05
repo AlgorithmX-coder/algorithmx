@@ -2,7 +2,7 @@ import { Nunito } from "next/font/google";
 import { auth } from "@/app/lib/auth";
 import { prisma } from "@/app/lib/prisma";
 import { redirect } from "next/navigation";
-import LessonPlayer from "./LessonPlayer";
+import LessonGate from "./LessonGate";
 
 const nunito = Nunito({ subsets: ["latin"] });
 
@@ -44,7 +44,7 @@ export default async function LessonPage() {
 
   return (
     <div className={nunito.className}>
-      <LessonPlayer
+      <LessonGate
         userName={session.user.name ?? "Cyber Hero"}
         moduleId={module?.id ?? ""}
         childName={childProfile?.childName ?? session.user.name ?? "Cyber Hero"}

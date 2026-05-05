@@ -109,7 +109,28 @@ export interface ProgressionState {
   currentRank: string;
 }
 
-const STORAGE_KEY = "algorithmx-progression";
+const LEGACY_STORAGE_KEY = "algorithmx-progression";
+const ACTIVE_SLOT_STORAGE_KEY = "algorithmx-active-slot-v1";
+
+/**
+ * Namespaced storage key — reads the currently active save slot
+ * (set by the title-screen slot picker) and reads/writes the
+ * progression blob under `algorithmx-progression-{slotId}`.
+ *
+ * Falls back to the legacy single-blob key if no active slot exists,
+ * so existing single-player saves keep working until the user picks
+ * a slot for the first time.
+ */
+function storageKey(): string {
+  if (typeof window === "undefined") return LEGACY_STORAGE_KEY;
+  try {
+    const slotId = window.localStorage.getItem(ACTIVE_SLOT_STORAGE_KEY);
+    if (slotId) return `algorithmx-progression-${slotId}`;
+  } catch {
+    /* ignore */
+  }
+  return LEGACY_STORAGE_KEY;
+}
 
 const EMPTY_STATE: ProgressionState = {
   totalXP: 0,
@@ -122,7 +143,7 @@ const EMPTY_STATE: ProgressionState = {
 export function getProgressionState(): ProgressionState {
   if (typeof window === "undefined") return { ...EMPTY_STATE };
   try {
-    const raw = window.localStorage.getItem(STORAGE_KEY);
+    const raw = window.localStorage.getItem(storageKey());
     if (!raw) return { ...EMPTY_STATE };
     const parsed = JSON.parse(raw) as Partial<ProgressionState>;
     return {
@@ -140,7 +161,7 @@ export function getProgressionState(): ProgressionState {
 function saveProgression(state: ProgressionState): void {
   if (typeof window === "undefined") return;
   try {
-    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    window.localStorage.setItem(storageKey(), JSON.stringify(state));
   } catch {
     /* quota or serialisation failure — ignore */
   }
