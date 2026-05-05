@@ -3,6 +3,7 @@
 import { useCallback, useState } from "react";
 import LessonPlayer from "./LessonPlayer";
 import TitleScreen from "@/app/components/TitleScreen";
+import GameMenuOverlay from "@/app/components/GameMenuOverlay";
 import {
   getActiveSlotId,
   getSlot,
@@ -50,10 +51,13 @@ export default function LessonGate({
   }
 
   return (
-    <LessonPlayer
-      userName={userName}
-      moduleId={moduleId}
-      childName={started.name || childName}
-    />
+    <>
+      <LessonPlayer
+        userName={userName}
+        moduleId={moduleId}
+        childName={started.name || childName}
+      />
+      <GameMenuOverlay />
+    </>
   );
 }

@@ -19,7 +19,7 @@ import {
   setActiveSlot,
   type SaveSlot,
 } from "@/app/lib/saveSlots";
-import { playBGM, playSound, stopBGM } from "@/app/lib/sounds";
+import { playBGM, playSound } from "@/app/lib/sounds";
 
 /**
  * TitleScreen — full-screen "boot" experience that gates the lesson.
@@ -61,12 +61,11 @@ export default function TitleScreen({ defaultName, onStart }: TitleScreenProps) 
   const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
   const titleRef = useRef<HTMLDivElement>(null);
 
-  /* Ambient music while the title screen is up. */
+  /* Ambient music starts here and continues into the lesson —
+   * SoundManager.playBGM crossfades when LessonPlayer eventually
+   * picks its own track, so the kid never hears a silence gap. */
   useEffect(() => {
     playBGM("bgmLesson");
-    return () => {
-      stopBGM(800);
-    };
   }, []);
 
   /* "Press any key" → slots. Clicking the screen also advances. */
