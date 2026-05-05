@@ -4,6 +4,7 @@ import { useCallback, useState } from "react";
 import LessonPlayer from "./LessonPlayer";
 import TitleScreen from "@/app/components/TitleScreen";
 import GameMenuOverlay from "@/app/components/GameMenuOverlay";
+import AchievementToastHost from "@/app/components/AchievementToast";
 import {
   getActiveSlotId,
   getSlot,
@@ -58,6 +59,7 @@ export default function LessonGate({
         childName={started.name || childName}
       />
       <GameMenuOverlay />
+      <AchievementToastHost />
     </>
   );
 }

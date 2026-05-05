@@ -195,9 +195,22 @@ export function addXP(
   state.currentRank = newRank.name;
   saveProgression(state);
 
+  const leveledUp = newRank.name !== oldRank.name;
+  if (leveledUp) {
+    fireAchievementSafe({
+      id: `rank-${newRank.name}`,
+      kicker: "RANK UP",
+      title: newRank.name,
+      subtitle: `${state.totalXP.toLocaleString()} XP earned`,
+      icon: newRank.icon,
+      accent: newRank.colour,
+      sound: "levelUp",
+    });
+  }
+
   return {
     newTotal: state.totalXP,
-    leveledUp: newRank.name !== oldRank.name,
+    leveledUp,
     oldRank,
     newRank,
   };
@@ -205,10 +218,41 @@ export function addXP(
 
 export function earnBadge(badgeId: string): void {
   const state = getProgressionState();
-  if (!state.badges.includes(badgeId)) {
-    state.badges.push(badgeId);
-    saveProgression(state);
-  }
+  if (state.badges.includes(badgeId)) return;
+  state.badges.push(badgeId);
+  saveProgression(state);
+
+  const meta = WEEK_BADGES.find((b) => b.id === badgeId);
+  fireAchievementSafe({
+    id: `badge-${badgeId}`,
+    kicker: "BADGE EARNED",
+    title: meta?.name ?? badgeId,
+    subtitle: meta ? `Week ${meta.week} complete` : undefined,
+    icon: "🏅",
+    accent: "#ffd158",
+    sound: "badgeEarned",
+  });
+}
+
+/**
+ * Fires an achievement toast via the global host if mounted. Imported
+ * lazily so the progression module stays usable in non-DOM contexts
+ * (server renders, tests).
+ */
+function fireAchievementSafe(payload: {
+  id: string;
+  kicker: string;
+  title: string;
+  subtitle?: string;
+  icon: string;
+  accent: string;
+  sound?: string;
+}): void {
+  if (typeof window === "undefined") return;
+  const fn = (window as unknown as {
+    __axAchievement__?: (a: typeof payload) => void;
+  }).__axAchievement__;
+  if (typeof fn === "function") fn(payload);
 }
 
 export function getWeekProgress(week: number): WeekProgress {
