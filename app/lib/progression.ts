@@ -264,6 +264,14 @@ export function addXP(
       sound: "levelUp",
     });
     fireBigMomentSafe(newRank.colour);
+    void import("./activityLog").then(({ appendActivity }) =>
+      appendActivity({
+        kind: "rank-up",
+        text: `promoted to ${newRank.name}`,
+        accent: newRank.colour,
+        icon: newRank.icon,
+      }),
+    );
   }
 
   return {
@@ -291,6 +299,14 @@ export function earnBadge(badgeId: string): void {
     sound: "badgeEarned",
   });
   fireBigMomentSafe("#ffd158");
+  void import("./activityLog").then(({ appendActivity }) =>
+    appendActivity({
+      kind: "badge",
+      text: `earned ${meta?.name ?? badgeId}`,
+      accent: "#ffd158",
+      icon: "🏅",
+    }),
+  );
 }
 
 function fireBigMomentSafe(colour: string): void {

@@ -22,6 +22,7 @@ import {
 import { playBGM, playSound } from "@/app/lib/sounds";
 import { getRank } from "@/app/lib/progression";
 import BootIntro from "@/app/components/BootIntro";
+import RecentActivityMarquee from "@/app/components/RecentActivityMarquee";
 
 /**
  * TitleScreen — full-screen "boot" experience that gates the lesson.
@@ -298,6 +299,7 @@ function SlotsPhase({
 
   return (
     <div style={slotsColumnStyle}>
+      <RecentActivityMarquee />
       <h1 style={panelTitleStyle}>CHOOSE YOUR HERO</h1>
       <p style={panelSubStyle}>Pick a save slot to continue, or start a new adventure.</p>
 

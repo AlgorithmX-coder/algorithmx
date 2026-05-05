@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { getProgressionState, getRank, RANKS } from "@/app/lib/progression";
 import { CyberIconOrEmoji } from "@/app/components/CyberIcon";
 import AnimatedCounter from "@/app/components/AnimatedCounter";
+import { getCaseMeta } from "@/app/lib/caseTitles";
 
 export interface LessonHUDProps {
   /** Optional — legacy single-character name (unused now, both heroes are shown). */
@@ -225,18 +226,58 @@ export default function LessonHUD({
       >
         <div
           style={{
-            fontFamily: "'Space Grotesk', sans-serif",
-            fontWeight: 600,
-            fontSize: 14,
-            color: "#f8fafc",
-            letterSpacing: "0.02em",
-            whiteSpace: "nowrap",
-            overflow: "hidden",
-            textOverflow: "ellipsis",
-            maxWidth: "100%",
+            display: "flex",
+            alignItems: "center",
+            gap: 10,
+            minWidth: 0,
           }}
         >
-          Week {weekNumber}: {weekTitle}
+          <div
+            style={{
+              fontFamily: "'Space Grotesk', sans-serif",
+              fontWeight: 600,
+              fontSize: 13,
+              color: "#f8fafc",
+              letterSpacing: "0.02em",
+              whiteSpace: "nowrap",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+            }}
+          >
+            Week {weekNumber}: {weekTitle}
+          </div>
+          {(() => {
+            const meta = getCaseMeta(currentScreen);
+            if (!meta) return null;
+            return (
+              <span
+                key={`hud-case-${currentScreen}`}
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: 6,
+                  padding: "2px 10px",
+                  borderRadius: 999,
+                  background:
+                    "linear-gradient(90deg, rgba(0,229,255,0.18), rgba(124,92,255,0.16))",
+                  border: "1px solid rgba(0,229,255,0.4)",
+                  color: "#7df0ff",
+                  fontFamily: "'JetBrains Mono', monospace",
+                  fontSize: 10,
+                  fontWeight: 800,
+                  letterSpacing: "0.12em",
+                  textTransform: "uppercase",
+                  whiteSpace: "nowrap",
+                  animation:
+                    "hudCaseChipIn 360ms cubic-bezier(0.16,1,0.3,1) both",
+                }}
+              >
+                <span style={{ opacity: 0.7 }}>{meta.label}</span>
+                <span aria-hidden style={{ opacity: 0.5 }}>·</span>
+                <span style={{ color: "#fff7e6" }}>{meta.title}</span>
+              </span>
+            );
+          })()}
         </div>
         <div
           style={{
@@ -319,6 +360,11 @@ export default function LessonHUD({
           0% { transform: scale(1); text-shadow: 0 0 10px rgba(251,191,36,0.55); }
           40% { transform: scale(1.2); text-shadow: 0 0 22px rgba(251,191,36,0.95), 0 0 44px rgba(249,115,22,0.45); }
           100% { transform: scale(1); text-shadow: 0 0 10px rgba(251,191,36,0.55); }
+        }
+        @keyframes hudCaseChipIn {
+          0% { opacity: 0; transform: translateX(-6px) scale(0.92); }
+          60% { opacity: 1; transform: translateX(2px) scale(1.04); }
+          100% { opacity: 1; transform: translateX(0) scale(1); }
         }
       `}</style>
     </div>
