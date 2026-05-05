@@ -5,6 +5,7 @@ import LessonPlayer from "./LessonPlayer";
 import TitleScreen from "@/app/components/TitleScreen";
 import GameMenuOverlay from "@/app/components/GameMenuOverlay";
 import AchievementToastHost from "@/app/components/AchievementToast";
+import SceneTitleHost from "@/app/components/SceneTitleCard";
 import {
   getActiveSlotId,
   getSlot,
@@ -60,6 +61,7 @@ export default function LessonGate({
       />
       <GameMenuOverlay />
       <AchievementToastHost />
+      <SceneTitleHost />
     </>
   );
 }

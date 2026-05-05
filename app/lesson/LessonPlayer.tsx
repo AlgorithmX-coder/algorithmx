@@ -29,6 +29,28 @@ import ButtonJuice from "@/app/components/ButtonJuice";
 import ParticleBurst from "@/app/components/ParticleBurst";
 import FloatingText from "@/app/components/FloatingText";
 import ScreenShake from "@/app/components/ScreenShake";
+import { fireSceneTitle } from "@/app/components/SceneTitleCard";
+
+const CASE_TITLES: Record<number, { label: string; title: string }> = {
+  0: { label: "PROLOGUE", title: "Welcome, Hero" },
+  1: { label: "MISSION BRIEF", title: "Your Training Begins" },
+  2: { label: "CASE 1", title: "Lock the Locks" },
+  3: { label: "CASE 2", title: "Quick Drill" },
+  4: { label: "CASE 3", title: "Shield Up" },
+  5: { label: "CASE 4", title: "Quick Drill" },
+  6: { label: "CASE 5", title: "Password Lab" },
+  7: { label: "CASE 6", title: "Firewall Builder" },
+  8: { label: "CASE 7", title: "Memory Match" },
+  9: { label: "CASE 8", title: "Sort the Data" },
+  10: { label: "CASE 9", title: "Crack the Code" },
+  11: { label: "CASE 10", title: "Quick Drill" },
+  12: { label: "CASE 11", title: "Choose Your Path" },
+  13: { label: "CASE 12", title: "Phishing Hunt" },
+  14: { label: "CASE 13", title: "What Would You Do?" },
+  15: { label: "BOSS", title: "Hacker Raccoon" },
+  16: { label: "VICTORY", title: "Hero Defeated the Hacker" },
+  17: { label: "GRADUATION", title: "Cyber Hero" },
+};
 // ContentBackdrop has been superseded by the LessonArena3D 3D backdrop
 // rendered behind all lesson content. Kept as a no-op import removal.
 const LessonArena3D = dynamic(
@@ -2672,6 +2694,18 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
   /* ---------- navigation ---------- */
   const navigate = useCallback((to: number) => {
     playSFX("transition");
+    /* Fire the cinematic case title card on every screen change. The
+     * host is mounted globally in LessonGate, so this no-ops if not
+     * available. Skip case 0 since the user just landed. */
+    if (to !== 0) {
+      const meta = CASE_TITLES[to];
+      if (meta) {
+        fireSceneTitle({
+          caseLabel: meta.label,
+          title: meta.title,
+        });
+      }
+    }
     switch (to) {
       case 0:
         setVideoEnded(false); setVideoFailed(false); setShowSkip(false);
