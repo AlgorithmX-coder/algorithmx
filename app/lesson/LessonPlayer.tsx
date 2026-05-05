@@ -45,6 +45,7 @@ import { getItemForScreen } from "@/app/lib/inventory";
 import ExerciseErrorBoundary from "@/app/components/ExerciseErrorBoundary";
 import { addXP, type RankInfo } from "@/app/lib/progression";
 import LessonAmbience from "@/app/components/LessonAmbience";
+import LottieOverlayHost from "@/app/components/LottieOverlayHost";
 const BossBattle = dynamic(
   () => import("@/app/components/game/BossBattle"),
   { ssr: false }
@@ -5142,6 +5143,10 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
       </span>
       <style>{CSS}</style>
       <LessonAmbience />
+      {/* Lottie overlay host — wires correct/wrong/badge events to
+          full-screen Lottie playback. No-op until a .lottie file is
+          registered in lib/lottie-manifest.ts. */}
+      <LottieOverlayHost />
 
       {cutsceneSlides && (
         <StoryCutscene

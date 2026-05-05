@@ -1,5 +1,47 @@
 import { playSound } from "@/app/lib/sounds";
 
+/* ───────────────────────── LOTTIE OVERLAY ───────────────────
+ *
+ * When a Lottie path is set on `window.__axLottieOverlay__` (via the
+ * <LottieOverlayHost />  component, which gets mounted once near the
+ * lesson root), every celebration / badge / wrong-answer fires an
+ * overlay Lottie INSTEAD of the canvas-confetti burst.  This is the
+ * graceful upgrade path: drop a .lottie file in /public/lottie/, set
+ * its path on the global, and the lesson uses it everywhere the
+ * legacy effect was firing.
+ *
+ * If no Lottie is configured, the old canvas-confetti burst still
+ * fires.  No regression; pure additive enhancement.
+ */
+
+interface LottieOverlayHandle {
+  fire: (kind: "correct" | "wrong" | "badge", streak?: number) => void;
+}
+
+const LOTTIE_HANDLE_KEY = "__axLottieOverlay__";
+
+declare global {
+  // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
+  interface Window {
+    __axLottieOverlay__?: LottieOverlayHandle;
+  }
+}
+
+function fireLottieOverlay(
+  kind: "correct" | "wrong" | "badge",
+  streak: number = 0,
+): boolean {
+  if (typeof window === "undefined") return false;
+  const handle = window[LOTTIE_HANDLE_KEY];
+  if (!handle) return false;
+  try {
+    handle.fire(kind, streak);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
 /* ───────────────────────── PALETTE ───────────────────────── */
 /*
  * Was warm Pixar (`#f97316`, `#f59e0b`) which clashed with the cyber
@@ -80,6 +122,12 @@ export async function correctAnswerBurst(
   hitStop(target);
   if (!isBrowser()) return;
 
+  // If a Lottie celebration is configured at the page level, play that
+  // INSTEAD of the canvas-confetti burst.  The Lottie itself was made
+  // by a real animator so it carries craft the confetti can't.
+  const lottieFired = fireLottieOverlay("correct", streak);
+  if (lottieFired) return;
+
   const confetti = (await import("canvas-confetti")).default;
 
   const particleCount = Math.min(120, 25 + Math.floor(streak * 7));
@@ -149,6 +197,12 @@ export async function correctAnswerBurst(
 export function wrongAnswerShake(): void {
   playSound("wrong");
   if (!isBrowser()) return;
+
+  // If a Lottie wrong-reaction overlay is configured, fire that
+  // alongside (not instead of) the body shake — the shake is good
+  // tactile feedback and the Lottie adds character life.
+  fireLottieOverlay("wrong");
+
   const styleId = "ax-screen-shake-style";
   let styleEl = document.getElementById(styleId) as HTMLStyleElement | null;
   if (!styleEl) {
@@ -178,6 +232,11 @@ export async function badgeEarnedCelebration(): Promise<void> {
   playSound("badge-earned");
   hitStop();
   if (!isBrowser()) return;
+
+  // Lottie overlay takes precedence if configured.
+  const lottieFired = fireLottieOverlay("badge");
+  if (lottieFired) return;
+
   const confetti = (await import("canvas-confetti")).default;
 
   const fire = (angle: number, originX: number, particles: number) => {
