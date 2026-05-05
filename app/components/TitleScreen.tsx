@@ -48,7 +48,6 @@ type Phase = "boot" | "slots" | "newGame" | "intro";
 const AVATAR_OPTIONS: { id: SaveSlot["avatar"]; label: string; tint: string }[] = [
   { id: "adam", label: "Adam", tint: "#00e5ff" },
   { id: "layla", label: "Layla", tint: "#ff5fb3" },
-  { id: "robo", label: "Robo", tint: "#7eff97" },
 ];
 
 export default function TitleScreen({ defaultName, onStart }: TitleScreenProps) {
@@ -549,26 +548,32 @@ function AvatarRing({
   avatar: SaveSlot["avatar"];
   tint: string;
 }) {
-  const initial = avatar[0].toUpperCase();
   return (
     <div
       style={{
-        width: 72,
-        height: 72,
+        width: 84,
+        height: 84,
         borderRadius: "50%",
-        background: `radial-gradient(circle at 30% 30%, ${tint}99, ${tint}33 60%, transparent)`,
+        background: `radial-gradient(circle at 30% 30%, ${tint}55, ${tint}22 50%, rgba(15,21,48,0.8))`,
         border: `2px solid ${tint}`,
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        fontSize: 28,
-        fontWeight: 800,
-        color: "#fff",
-        textShadow: `0 0 12px ${tint}`,
+        boxShadow: `0 0 18px ${tint}55, inset 0 0 12px ${tint}33`,
+        overflow: "hidden",
+        position: "relative",
         marginBottom: 4,
       }}
     >
-      {initial}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src={`/game/characters/${avatar}-idle.png`}
+        alt={avatar}
+        style={{
+          width: "100%",
+          height: "100%",
+          objectFit: "cover",
+          objectPosition: "top",
+          pointerEvents: "none",
+        }}
+      />
     </div>
   );
 }

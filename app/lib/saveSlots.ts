@@ -14,7 +14,7 @@ export interface SaveSlot {
   /** Free-form display name the player chose (or default). */
   name: string;
   /** Avatar/character key — drives the slot card portrait. */
-  avatar: "adam" | "layla" | "robo";
+  avatar: "adam" | "layla";
   /** Unix ms when the slot was created. */
   createdAt: number;
   /** Unix ms of the last save event (any progression mutation). */
@@ -35,7 +35,6 @@ const ACTIVE_SLOT_KEY = "algorithmx-active-slot-v1";
 const DEFAULT_NAMES: Record<SaveSlot["avatar"], string> = {
   adam: "Adam",
   layla: "Layla",
-  robo: "Robo",
 };
 
 const SLOT_IDS = ["slot-1", "slot-2", "slot-3"] as const;

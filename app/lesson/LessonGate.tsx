@@ -12,6 +12,9 @@ import AutosaveIndicator from "@/app/components/AutosaveIndicator";
 import StreakIndicator from "@/app/components/StreakIndicator";
 import BigMomentFlash from "@/app/components/BigMomentFlash";
 import GlobalGameStyles from "@/app/components/GlobalGameStyles";
+import OnboardingOverlay, {
+  shouldShowOnboarding,
+} from "@/app/components/OnboardingOverlay";
 import {
   getActiveSlotId,
   getSlot,
@@ -54,6 +57,10 @@ export default function LessonGate({
     setStarted(slot);
   }, []);
 
+  const [showOnboarding, setShowOnboarding] = useState<boolean>(() =>
+    typeof window !== "undefined" && shouldShowOnboarding(),
+  );
+
   if (!started) {
     return (
       <>
@@ -79,6 +86,12 @@ export default function LessonGate({
       <AutosaveIndicator />
       <StreakIndicator />
       <BigMomentFlash />
+      {showOnboarding && (
+        <OnboardingOverlay
+          heroName={started.name || childName}
+          onComplete={() => setShowOnboarding(false)}
+        />
+      )}
     </>
   );
 }
