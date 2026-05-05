@@ -263,6 +263,7 @@ export function addXP(
       accent: newRank.colour,
       sound: "levelUp",
     });
+    fireBigMomentSafe(newRank.colour);
   }
 
   return {
@@ -289,6 +290,18 @@ export function earnBadge(badgeId: string): void {
     accent: "#ffd158",
     sound: "badgeEarned",
   });
+  fireBigMomentSafe("#ffd158");
+}
+
+function fireBigMomentSafe(colour: string): void {
+  if (typeof window === "undefined") return;
+  try {
+    window.dispatchEvent(
+      new CustomEvent("algorithmx:big-moment", { detail: { colour } }),
+    );
+  } catch {
+    /* ignore */
+  }
 }
 
 /**
