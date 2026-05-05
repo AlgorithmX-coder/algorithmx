@@ -164,9 +164,11 @@ const overlayStyle: CSSProperties = {
   position: "fixed",
   inset: 0,
   zIndex: 9000,
+  /* Fully opaque centre — true curtain wipe so the underlying scene
+   * change at swap time is invisible, not a translucent fade. */
   background:
-    "radial-gradient(ellipse at center, rgba(15,21,48,0.94) 0%, rgba(4,5,13,0.99) 70%)",
-  backdropFilter: "blur(10px)",
+    "radial-gradient(ellipse at center, rgba(15,21,48,1) 0%, rgba(4,5,13,1) 60%, rgba(4,5,13,1) 100%)",
+  backdropFilter: "blur(14px)",
   display: "flex",
   alignItems: "center",
   justifyContent: "center",

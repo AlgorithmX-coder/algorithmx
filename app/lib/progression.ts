@@ -158,6 +158,31 @@ export function getProgressionState(): ProgressionState {
   }
 }
 
+/**
+ * Read the progression blob for a SPECIFIC slot without touching the
+ * active-slot pointer. Used by the title-screen slot cards so they
+ * can render per-week stars without forcing a reload.
+ */
+export function getSlotProgressionState(slotId: string): ProgressionState {
+  if (typeof window === "undefined") return { ...EMPTY_STATE };
+  try {
+    const raw = window.localStorage.getItem(
+      `algorithmx-progression-${slotId}`,
+    );
+    if (!raw) return { ...EMPTY_STATE };
+    const parsed = JSON.parse(raw) as Partial<ProgressionState>;
+    return {
+      totalXP: parsed.totalXP ?? 0,
+      weeklyXP: parsed.weeklyXP ?? {},
+      badges: parsed.badges ?? [],
+      weekProgress: parsed.weekProgress ?? {},
+      currentRank: parsed.currentRank ?? RANKS[0].name,
+    };
+  } catch {
+    return { ...EMPTY_STATE };
+  }
+}
+
 function saveProgression(state: ProgressionState): void {
   if (typeof window === "undefined") return;
   try {

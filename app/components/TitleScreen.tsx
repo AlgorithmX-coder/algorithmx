@@ -20,7 +20,7 @@ import {
   type SaveSlot,
 } from "@/app/lib/saveSlots";
 import { playBGM, playSound } from "@/app/lib/sounds";
-import { getRank } from "@/app/lib/progression";
+import { getRank, getSlotProgressionState } from "@/app/lib/progression";
 import BootIntro from "@/app/components/BootIntro";
 import RecentActivityMarquee from "@/app/components/RecentActivityMarquee";
 
@@ -438,6 +438,7 @@ function SlotCard({
             Week {slot.weekUnlocked} · {formatPlayTime(slot.playSeconds)} played
           </div>
           <WeekProgressBar weekUnlocked={slot.weekUnlocked} tint={tint} />
+          <WeekStarsGrid slotId={slot.id} tint={tint} />
           <div style={slotLastStyle}>{formatRelative(slot.lastPlayedAt)}</div>
 
           <div style={slotButtonRowStyle}>
@@ -464,6 +465,70 @@ function SlotCard({
       )}
 
       <div style={{ ...slotIdStyle, opacity: 0.4 }}>{slotId}</div>
+    </div>
+  );
+}
+
+function WeekStarsGrid({
+  slotId,
+  tint,
+}: {
+  slotId: string;
+  tint: string;
+}) {
+  const state = useMemo(() => getSlotProgressionState(slotId), [slotId]);
+  return (
+    <div
+      style={{
+        display: "grid",
+        gridTemplateColumns: "repeat(10, 1fr)",
+        gap: 3,
+        width: "100%",
+        marginTop: 4,
+      }}
+    >
+      {Array.from({ length: 20 }).map((_, i) => {
+        const week = i + 1;
+        const wp = state.weekProgress[week];
+        const stars = wp?.stars ?? 0;
+        const completed = wp?.completed ?? false;
+        let bg: string;
+        let title: string;
+        if (stars >= 3) {
+          bg = "#ffd158";
+          title = `Week ${week} · ★★★`;
+        } else if (stars === 2) {
+          bg = `${tint}cc`;
+          title = `Week ${week} · ★★`;
+        } else if (stars === 1) {
+          bg = `${tint}88`;
+          title = `Week ${week} · ★`;
+        } else if (completed) {
+          bg = `${tint}55`;
+          title = `Week ${week} · complete`;
+        } else {
+          bg = "rgba(255,255,255,0.08)";
+          title = `Week ${week} · locked`;
+        }
+        return (
+          <div
+            key={week}
+            title={title}
+            style={{
+              height: 8,
+              borderRadius: 2,
+              background: bg,
+              boxShadow:
+                stars >= 3
+                  ? "0 0 6px rgba(255,209,88,0.65)"
+                  : stars >= 1
+                    ? `0 0 4px ${tint}55`
+                    : "none",
+              transition: "background 240ms ease",
+            }}
+          />
+        );
+      })}
     </div>
   );
 }

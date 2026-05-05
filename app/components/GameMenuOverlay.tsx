@@ -12,6 +12,7 @@ import {
   isFullscreen,
   toggleFullscreen,
 } from "@/app/components/FullscreenManager";
+import TrophiesGallery from "@/app/components/TrophiesGallery";
 
 /**
  * GameMenuOverlay — pause menu + settings, triggered globally by ESC
@@ -82,7 +83,7 @@ function saveReduceMotion(value: boolean): void {
   }
 }
 
-type Panel = "pause" | "settings";
+type Panel = "pause" | "settings" | "trophies";
 
 export interface GameMenuOverlayProps {
   /** Optional — disable the global ESC hotkey if the host wants to
@@ -218,35 +219,50 @@ export default function GameMenuOverlay({
   if (!open) return null;
 
   return (
-    <div style={overlayStyle} role="dialog" aria-modal="true">
-      <div style={dimStyle} onClick={closeOverlay} aria-hidden />
-      <div style={panelStyle}>
-        {panel === "pause" ? (
-          <PausePanel
-            onResume={closeOverlay}
-            onSettings={() => {
-              setPanel("settings");
-              playSound("select");
-            }}
-            onMainMenu={handleMainMenu}
-          />
-        ) : (
-          <SettingsPanel
-            vols={vols}
-            muted={muted}
-            reduceMotion={reduceMotion}
-            fsActive={fsActive}
-            onVolumeChange={setVolume}
-            onToggleMute={toggleMute}
-            onToggleReduceMotion={toggleReduceMotion}
-            onBack={() => {
-              setPanel("pause");
-              playSound("back");
-            }}
-          />
-        )}
+    <>
+      <div style={overlayStyle} role="dialog" aria-modal="true">
+        <div style={dimStyle} onClick={closeOverlay} aria-hidden />
+        <div style={panelStyle}>
+          {panel === "pause" && (
+            <PausePanel
+              onResume={closeOverlay}
+              onSettings={() => {
+                setPanel("settings");
+                playSound("select");
+              }}
+              onTrophies={() => {
+                setPanel("trophies");
+                playSound("select");
+              }}
+              onMainMenu={handleMainMenu}
+            />
+          )}
+          {panel === "settings" && (
+            <SettingsPanel
+              vols={vols}
+              muted={muted}
+              reduceMotion={reduceMotion}
+              fsActive={fsActive}
+              onVolumeChange={setVolume}
+              onToggleMute={toggleMute}
+              onToggleReduceMotion={toggleReduceMotion}
+              onBack={() => {
+                setPanel("pause");
+                playSound("back");
+              }}
+            />
+          )}
+        </div>
       </div>
-    </div>
+      {panel === "trophies" && (
+        <TrophiesGallery
+          onClose={() => {
+            setPanel("pause");
+            playSound("back");
+          }}
+        />
+      )}
+    </>
   );
 }
 
@@ -255,10 +271,12 @@ export default function GameMenuOverlay({
 function PausePanel({
   onResume,
   onSettings,
+  onTrophies,
   onMainMenu,
 }: {
   onResume: () => void;
   onSettings: () => void;
+  onTrophies: () => void;
   onMainMenu: () => void;
 }) {
   return (
@@ -268,6 +286,7 @@ function PausePanel({
       <div style={panelDividerStyle} />
       <div style={menuListStyle}>
         <MenuButton onClick={onResume} label="RESUME" hint="ESC" primary />
+        <MenuButton onClick={onTrophies} label="TROPHIES" />
         <MenuButton onClick={onSettings} label="SETTINGS" />
         <MenuButton onClick={onMainMenu} label="MAIN MENU" warn />
       </div>
