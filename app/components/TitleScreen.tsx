@@ -20,6 +20,7 @@ import {
   type SaveSlot,
 } from "@/app/lib/saveSlots";
 import { playBGM, playSound } from "@/app/lib/sounds";
+import { getRank } from "@/app/lib/progression";
 
 /**
  * TitleScreen — full-screen "boot" experience that gates the lesson.
@@ -60,6 +61,19 @@ export default function TitleScreen({ defaultName, onStart }: TitleScreenProps) 
   const [newAvatar, setNewAvatar] = useState<SaveSlot["avatar"]>("adam");
   const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
   const titleRef = useRef<HTMLDivElement>(null);
+  const [tilt, setTilt] = useState({ x: 0, y: 0 });
+
+  /* Mouse-parallax: subtle 3D tilt on the logo. Tracks across the
+   * whole window so the kid doesn't have to hover precisely. */
+  useEffect(() => {
+    const onMove = (e: MouseEvent) => {
+      const x = e.clientX / window.innerWidth - 0.5;
+      const y = e.clientY / window.innerHeight - 0.5;
+      setTilt({ x, y });
+    };
+    window.addEventListener("mousemove", onMove);
+    return () => window.removeEventListener("mousemove", onMove);
+  }, []);
 
   /* Ambient music starts here and continues into the lesson —
    * SoundManager.playBGM crossfades when LessonPlayer eventually
@@ -135,6 +149,7 @@ export default function TitleScreen({ defaultName, onStart }: TitleScreenProps) 
             titleRef={titleRef}
             defaultName={defaultName}
             hasSaves={slots.some((s) => s !== null)}
+            tilt={tilt}
           />
         )}
 
@@ -181,16 +196,42 @@ export default function TitleScreen({ defaultName, onStart }: TitleScreenProps) 
 function BootPhase({
   titleRef,
   hasSaves,
+  tilt,
 }: {
   titleRef: React.RefObject<HTMLDivElement | null>;
   defaultName: string;
   hasSaves: boolean;
+  tilt: { x: number; y: number };
 }) {
+  /* Parallax transforms — subtle, 6deg max tilt. */
+  const tiltX = -tilt.y * 6;
+  const tiltY = tilt.x * 6;
   return (
     <div style={bootColumnStyle}>
-      <div ref={titleRef} style={logoWrapStyle}>
-        <div style={logoLineStyle}>ALGORITHMX</div>
-        <div style={logoSubStyle}>CYBER HEROES ACADEMY</div>
+      <div
+        ref={titleRef}
+        style={{
+          ...logoWrapStyle,
+          transform: `perspective(900px) rotateX(${tiltX}deg) rotateY(${tiltY}deg)`,
+          transition: "transform 200ms ease-out",
+        }}
+      >
+        <div
+          style={{
+            ...logoLineStyle,
+            transform: `translateX(${tilt.x * -8}px) translateY(${tilt.y * -4}px)`,
+          }}
+        >
+          ALGORITHMX
+        </div>
+        <div
+          style={{
+            ...logoSubStyle,
+            transform: `translateX(${tilt.x * -4}px)`,
+          }}
+        >
+          CYBER HEROES ACADEMY
+        </div>
         <div style={logoUnderlineStyle} />
       </div>
 
@@ -226,10 +267,36 @@ function SlotsPhase({
   cancelDelete: () => void;
   onBack: () => void;
 }) {
+  /* Quick-resume — most-recently-played slot, only if played in the
+   * last 14 days. Filters out brand-new empty slots. */
+  const recent = slots
+    .filter((s): s is SaveSlot => s !== null)
+    .sort((a, b) => b.lastPlayedAt - a.lastPlayedAt)[0];
+  const fourteenDaysMs = 14 * 86_400_000;
+  const showQuickResume =
+    !!recent && Date.now() - recent.lastPlayedAt < fourteenDaysMs;
+
   return (
     <div style={slotsColumnStyle}>
       <h1 style={panelTitleStyle}>CHOOSE YOUR HERO</h1>
       <p style={panelSubStyle}>Pick a save slot to continue, or start a new adventure.</p>
+
+      {showQuickResume && recent && (
+        <button
+          onClick={() => {
+            playSound("select");
+            onContinue(recent);
+          }}
+          style={quickResumeStyle}
+        >
+          <span style={quickResumeKickerStyle}>QUICK RESUME</span>
+          <span style={quickResumeNameStyle}>{recent.name}</span>
+          <span style={quickResumeMetaStyle}>
+            Week {recent.weekUnlocked} · {recent.totalXP} XP
+          </span>
+          <span style={quickResumeArrowStyle}>→</span>
+        </button>
+      )}
 
       <div style={slotsGridStyle}>
         {AVAILABLE_SLOT_IDS.map((slotId, i) => {
@@ -340,6 +407,7 @@ function SlotCard({
         <div style={slotInnerStyle}>
           <AvatarRing avatar={slot.avatar} tint={tint} />
           <div style={slotNameStyle}>{slot.name}</div>
+          <RankChip totalXP={slot.totalXP} />
           <div style={slotMetaStyle}>
             <span>★ {slot.totalStars}</span>
             <span style={dotStyle}>•</span>
@@ -374,6 +442,31 @@ function SlotCard({
       )}
 
       <div style={{ ...slotIdStyle, opacity: 0.4 }}>{slotId}</div>
+    </div>
+  );
+}
+
+function RankChip({ totalXP }: { totalXP: number }) {
+  const rank = getRank(totalXP).current;
+  return (
+    <div
+      style={{
+        display: "inline-flex",
+        alignItems: "center",
+        gap: 6,
+        padding: "3px 10px",
+        borderRadius: 999,
+        background: `${rank.colour}22`,
+        border: `1px solid ${rank.colour}55`,
+        fontSize: 10,
+        letterSpacing: 2,
+        fontWeight: 800,
+        color: rank.colour,
+        textTransform: "uppercase",
+      }}
+    >
+      <span aria-hidden>{rank.icon}</span>
+      <span>{rank.name}</span>
     </div>
   );
 }
@@ -708,6 +801,49 @@ const panelSubStyle: CSSProperties = {
   margin: "0 0 12px",
   fontSize: 13,
   color: "rgba(232,237,255,0.65)",
+};
+
+const quickResumeStyle: CSSProperties = {
+  display: "flex",
+  alignItems: "center",
+  gap: 14,
+  width: "min(720px, 92vw)",
+  padding: "12px 18px",
+  background:
+    "linear-gradient(90deg, rgba(0,229,255,0.1), rgba(124,92,255,0.06) 50%, rgba(255,95,179,0.08))",
+  border: "1px solid rgba(0,229,255,0.32)",
+  borderRadius: 14,
+  color: "#e8edff",
+  cursor: "pointer",
+  boxShadow: "0 6px 22px rgba(0,229,255,0.18)",
+  transition: "transform 200ms ease, box-shadow 200ms ease",
+};
+
+const quickResumeKickerStyle: CSSProperties = {
+  fontSize: 10,
+  letterSpacing: 3,
+  fontWeight: 800,
+  color: "#7df0ff",
+  textTransform: "uppercase",
+};
+
+const quickResumeNameStyle: CSSProperties = {
+  flex: 1,
+  fontSize: 16,
+  fontWeight: 800,
+  letterSpacing: 1,
+};
+
+const quickResumeMetaStyle: CSSProperties = {
+  fontSize: 12,
+  color: "rgba(232,237,255,0.7)",
+  fontFamily: "monospace",
+};
+
+const quickResumeArrowStyle: CSSProperties = {
+  fontSize: 22,
+  color: "#00e5ff",
+  fontWeight: 800,
 };
 
 const slotsGridStyle: CSSProperties = {
