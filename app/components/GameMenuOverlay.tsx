@@ -8,6 +8,10 @@ import {
 } from "react";
 import { SoundManager, playSound } from "@/app/lib/sounds";
 import { clearActiveSlot } from "@/app/lib/saveSlots";
+import {
+  isFullscreen,
+  toggleFullscreen,
+} from "@/app/components/FullscreenManager";
 
 /**
  * GameMenuOverlay — pause menu + settings, triggered globally by ESC
@@ -100,6 +104,16 @@ export default function GameMenuOverlay({
   const [reduceMotion, setReduceMotion] = useState<boolean>(() =>
     loadReduceMotion(),
   );
+  const [fsActive, setFsActive] = useState<boolean>(() => isFullscreen());
+
+  /* Keep the settings toggle's state in sync if the user exits via Esc
+   * or the OS chrome so the switch reflects reality. */
+  useEffect(() => {
+    if (typeof document === "undefined") return;
+    const onChange = () => setFsActive(isFullscreen());
+    document.addEventListener("fullscreenchange", onChange);
+    return () => document.removeEventListener("fullscreenchange", onChange);
+  }, []);
 
   /* Apply persisted volumes on mount so a fresh tab honours the user's
    * last session's mix. */
@@ -221,6 +235,7 @@ export default function GameMenuOverlay({
             vols={vols}
             muted={muted}
             reduceMotion={reduceMotion}
+            fsActive={fsActive}
             onVolumeChange={setVolume}
             onToggleMute={toggleMute}
             onToggleReduceMotion={toggleReduceMotion}
@@ -267,6 +282,7 @@ function SettingsPanel({
   vols,
   muted,
   reduceMotion,
+  fsActive,
   onVolumeChange,
   onToggleMute,
   onToggleReduceMotion,
@@ -275,6 +291,7 @@ function SettingsPanel({
   vols: VolumePrefs;
   muted: boolean;
   reduceMotion: boolean;
+  fsActive: boolean;
   onVolumeChange: (cat: keyof VolumePrefs, value: number) => void;
   onToggleMute: () => void;
   onToggleReduceMotion: () => void;
@@ -310,6 +327,17 @@ function SettingsPanel({
           label="Mute everything"
           value={muted}
           onChange={onToggleMute}
+        />
+
+        <SectionLabel>Display</SectionLabel>
+        <ToggleRow
+          label="Fullscreen"
+          value={fsActive}
+          onChange={() => {
+            void toggleFullscreen();
+            playSound("hover");
+          }}
+          hint="Press F anywhere to toggle quickly."
         />
 
         <SectionLabel>Accessibility</SectionLabel>

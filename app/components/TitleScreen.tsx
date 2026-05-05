@@ -600,7 +600,9 @@ function StarLayer() {
 const containerStyle: CSSProperties = {
   position: "fixed",
   inset: 0,
-  background: "#04050d",
+  /* Translucent — IdleWorldLayer below shows through. */
+  background:
+    "radial-gradient(ellipse at center, rgba(15,21,48,0.6) 0%, rgba(4,5,13,0.92) 70%)",
   color: "#e8edff",
   fontFamily: "system-ui, -apple-system, sans-serif",
   overflow: "hidden",

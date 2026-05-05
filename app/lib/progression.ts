@@ -165,6 +165,63 @@ function saveProgression(state: ProgressionState): void {
   } catch {
     /* quota or serialisation failure — ignore */
   }
+  /* Mirror summary into the active slot record so the title-screen
+   * picker reflects fresh totals on the next visit. Hands-off if the
+   * slot system isn't wired (legacy single-blob users). */
+  syncSlotSummary(state);
+  /* Notify the in-tab autosave indicator. The native `storage` event
+   * only fires on OTHER tabs, so we need a custom event for the same
+   * tab feedback. */
+  try {
+    window.dispatchEvent(new CustomEvent("algorithmx:autosave"));
+  } catch {
+    /* ignore */
+  }
+}
+
+function syncSlotSummary(state: ProgressionState): void {
+  if (typeof window === "undefined") return;
+  try {
+    const slotId = window.localStorage.getItem("algorithmx-active-slot-v1");
+    if (!slotId) return;
+    const slotsRaw = window.localStorage.getItem(
+      "algorithmx-save-slots-v1",
+    );
+    if (!slotsRaw) return;
+    const slots = JSON.parse(slotsRaw) as Record<
+      string,
+      {
+        id: string;
+        totalXP: number;
+        totalStars: number;
+        weekUnlocked: number;
+        lastPlayedAt: number;
+        [k: string]: unknown;
+      }
+    >;
+    const slot = slots[slotId];
+    if (!slot) return;
+    const totalStars = Object.values(state.weekProgress).reduce(
+      (sum, w) => sum + (w?.stars ?? 0),
+      0,
+    );
+    const weekUnlocked = Object.entries(state.weekProgress)
+      .filter(([, w]) => w?.completed)
+      .reduce((max, [k]) => Math.max(max, parseInt(k, 10) + 1), 1);
+    slots[slotId] = {
+      ...slot,
+      totalXP: state.totalXP,
+      totalStars,
+      weekUnlocked: Math.max(slot.weekUnlocked, weekUnlocked),
+      lastPlayedAt: Date.now(),
+    };
+    window.localStorage.setItem(
+      "algorithmx-save-slots-v1",
+      JSON.stringify(slots),
+    );
+  } catch {
+    /* ignore */
+  }
 }
 
 /**

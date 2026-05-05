@@ -6,6 +6,9 @@ import TitleScreen from "@/app/components/TitleScreen";
 import GameMenuOverlay from "@/app/components/GameMenuOverlay";
 import AchievementToastHost from "@/app/components/AchievementToast";
 import SceneTitleHost from "@/app/components/SceneTitleCard";
+import IdleWorldLayer from "@/app/components/IdleWorldLayer";
+import FullscreenManager from "@/app/components/FullscreenManager";
+import AutosaveIndicator from "@/app/components/AutosaveIndicator";
 import {
   getActiveSlotId,
   getSlot,
@@ -49,7 +52,12 @@ export default function LessonGate({
   }, []);
 
   if (!started) {
-    return <TitleScreen defaultName={childName} onStart={handleStart} />;
+    return (
+      <>
+        <IdleWorldLayer />
+        <TitleScreen defaultName={childName} onStart={handleStart} />
+      </>
+    );
   }
 
   return (
@@ -62,6 +70,8 @@ export default function LessonGate({
       <GameMenuOverlay />
       <AchievementToastHost />
       <SceneTitleHost />
+      <FullscreenManager />
+      <AutosaveIndicator />
     </>
   );
 }

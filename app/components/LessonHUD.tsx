@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { getProgressionState, getRank, RANKS } from "@/app/lib/progression";
 import { CyberIconOrEmoji } from "@/app/components/CyberIcon";
+import AnimatedCounter from "@/app/components/AnimatedCounter";
 
 export interface LessonHUDProps {
   /** Optional — legacy single-character name (unused now, both heroes are shown). */
@@ -273,7 +274,7 @@ export default function LessonHUD({
             animation: "hudXpPulse 0.45s ease-out",
           }}
         >
-          +{xpEarned} XP
+          <AnimatedCounter value={xpEarned} prefix="+" suffix=" XP" />
         </div>
         {onMuteToggle && (
           <button
