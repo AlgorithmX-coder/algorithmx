@@ -76,6 +76,46 @@ export const LOTTIE_CHARACTERS = {
   },
 };
 
+/* ───────────────────── SPRITE CHARACTERS (Cartoon Animator) ─────────────────────
+ *
+ * Output of Reallusion Cartoon Animator 5's "Image Sequence" export.
+ * Each character has a sprite sheet (PNG with N frames in a row or
+ * grid) plus metadata describing how to play it back.
+ *
+ * Drop the PNG in /public/sprites/<name>.png, fill in the metadata
+ * below, and the lesson uses it.
+ */
+
+export interface SpriteAnimation {
+  /** Path to PNG, e.g. "/sprites/adam-idle.png" */
+  src: string;
+  /** Width of one frame in pixels */
+  frameWidth: number;
+  /** Height of one frame in pixels */
+  frameHeight: number;
+  /** Total number of frames in the sheet */
+  frameCount: number;
+  /** Frames per row if laid out as a grid (default: 1 row, all horizontal) */
+  framesPerRow?: number;
+  /** Frames per second of playback (Cartoon Animator default is 24) */
+  fps?: number;
+}
+
+export const SPRITE_CHARACTERS: {
+  adam: { idle?: SpriteAnimation; talk?: SpriteAnimation; excited?: SpriteAnimation; worried?: SpriteAnimation };
+  layla: { idle?: SpriteAnimation; talk?: SpriteAnimation; excited?: SpriteAnimation; worried?: SpriteAnimation };
+  robo: { idle?: SpriteAnimation; talk?: SpriteAnimation };
+  raccoon: { idle?: SpriteAnimation; taunt?: SpriteAnimation; defeated?: SpriteAnimation };
+} = {
+  adam: {
+    // Example — uncomment + fill in once Cartoon Animator 5 exports land:
+    // idle: { src: "/sprites/adam-idle.png", frameWidth: 400, frameHeight: 500, frameCount: 24, fps: 24 },
+  },
+  layla: {},
+  robo: {},
+  raccoon: {},
+};
+
 /**
  * Misc decorative Lotties — backgrounds, transitions, ambient loops.
  */
