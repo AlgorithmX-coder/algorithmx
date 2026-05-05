@@ -9,6 +9,7 @@ import SceneTitleHost from "@/app/components/SceneTitleCard";
 import IdleWorldLayer from "@/app/components/IdleWorldLayer";
 import FullscreenManager from "@/app/components/FullscreenManager";
 import AutosaveIndicator from "@/app/components/AutosaveIndicator";
+import StreakIndicator from "@/app/components/StreakIndicator";
 import {
   getActiveSlotId,
   getSlot,
@@ -72,6 +73,7 @@ export default function LessonGate({
       <SceneTitleHost />
       <FullscreenManager />
       <AutosaveIndicator />
+      <StreakIndicator />
     </>
   );
 }

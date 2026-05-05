@@ -121,6 +121,14 @@ export async function correctAnswerBurst(
   playSound("correct");
   hitStop(target);
   if (!isBrowser()) return;
+  /* Notify any global listeners (StreakIndicator, achievement hooks). */
+  try {
+    window.dispatchEvent(
+      new CustomEvent("algorithmx:answer-correct", { detail: { streak } }),
+    );
+  } catch {
+    /* ignore */
+  }
 
   // If a Lottie celebration is configured at the page level, play that
   // INSTEAD of the canvas-confetti burst.  The Lottie itself was made
@@ -194,9 +202,25 @@ export async function correctAnswerBurst(
  * it settles instead of bouncing.  Sympathetic, not punitive — kids
  * audience.
  */
+export function dispatchWrongAnswer(): void {
+  if (!isBrowser()) return;
+  try {
+    window.dispatchEvent(new CustomEvent("algorithmx:answer-wrong"));
+  } catch {
+    /* ignore */
+  }
+}
+
 export function wrongAnswerShake(): void {
   playSound("wrong");
   if (!isBrowser()) return;
+
+  /* Reset streak for any listeners (StreakIndicator). */
+  try {
+    window.dispatchEvent(new CustomEvent("algorithmx:answer-wrong"));
+  } catch {
+    /* ignore */
+  }
 
   // If a Lottie wrong-reaction overlay is configured, fire that
   // alongside (not instead of) the body shake — the shake is good
