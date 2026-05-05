@@ -21,6 +21,7 @@ import {
 } from "@/app/lib/saveSlots";
 import { playBGM, playSound } from "@/app/lib/sounds";
 import { getRank } from "@/app/lib/progression";
+import BootIntro from "@/app/components/BootIntro";
 
 /**
  * TitleScreen — full-screen "boot" experience that gates the lesson.
@@ -41,7 +42,7 @@ export interface TitleScreenProps {
   onStart: (slot: SaveSlot) => void;
 }
 
-type Phase = "boot" | "slots" | "newGame";
+type Phase = "boot" | "slots" | "newGame" | "intro";
 
 const AVATAR_OPTIONS: { id: SaveSlot["avatar"]; label: string; tint: string }[] = [
   { id: "adam", label: "Adam", tint: "#00e5ff" },
@@ -115,6 +116,8 @@ export default function TitleScreen({ defaultName, onStart }: TitleScreenProps) 
     [onStart],
   );
 
+  const [pendingNewSlot, setPendingNewSlot] = useState<SaveSlot | null>(null);
+
   const handleNewGameStart = useCallback(() => {
     if (!pickerSlotId) return;
     const slot = createSlot({
@@ -123,8 +126,18 @@ export default function TitleScreen({ defaultName, onStart }: TitleScreenProps) 
       avatar: newAvatar,
     });
     playSound("levelUp");
-    onStart(slot);
-  }, [pickerSlotId, newName, newAvatar, onStart]);
+    /* Play the boot intro before handing control to the lesson. */
+    setPendingNewSlot(slot);
+    setPhase("intro");
+  }, [pickerSlotId, newName, newAvatar]);
+
+  const handleIntroComplete = useCallback(() => {
+    if (pendingNewSlot) {
+      const slot = pendingNewSlot;
+      setPendingNewSlot(null);
+      onStart(slot);
+    }
+  }, [pendingNewSlot, onStart]);
 
   const handleDelete = useCallback(
     (id: string) => {
@@ -187,6 +200,13 @@ export default function TitleScreen({ defaultName, onStart }: TitleScreenProps) 
           />
         )}
       </div>
+
+      {phase === "intro" && pendingNewSlot && (
+        <BootIntro
+          name={pendingNewSlot.name}
+          onComplete={handleIntroComplete}
+        />
+      )}
     </div>
   );
 }
@@ -416,6 +436,7 @@ function SlotCard({
           <div style={slotPlayStyle}>
             Week {slot.weekUnlocked} · {formatPlayTime(slot.playSeconds)} played
           </div>
+          <WeekProgressBar weekUnlocked={slot.weekUnlocked} tint={tint} />
           <div style={slotLastStyle}>{formatRelative(slot.lastPlayedAt)}</div>
 
           <div style={slotButtonRowStyle}>
@@ -442,6 +463,54 @@ function SlotCard({
       )}
 
       <div style={{ ...slotIdStyle, opacity: 0.4 }}>{slotId}</div>
+    </div>
+  );
+}
+
+function WeekProgressBar({
+  weekUnlocked,
+  tint,
+}: {
+  weekUnlocked: number;
+  tint: string;
+}) {
+  const pct = Math.min(100, Math.round((weekUnlocked / 20) * 100));
+  return (
+    <div style={{ width: "100%", marginTop: 6 }}>
+      <div
+        style={{
+          fontSize: 9,
+          letterSpacing: 2,
+          fontWeight: 700,
+          color: "rgba(232,237,255,0.5)",
+          marginBottom: 4,
+          display: "flex",
+          justifyContent: "space-between",
+          textTransform: "uppercase",
+        }}
+      >
+        <span>CURRICULUM</span>
+        <span style={{ color: tint }}>{weekUnlocked}/20</span>
+      </div>
+      <div
+        style={{
+          height: 4,
+          width: "100%",
+          background: "rgba(255,255,255,0.06)",
+          borderRadius: 2,
+          overflow: "hidden",
+        }}
+      >
+        <div
+          style={{
+            height: "100%",
+            width: `${pct}%`,
+            background: `linear-gradient(90deg, ${tint}, #7c5cff)`,
+            transition: "width 600ms cubic-bezier(0.16,1,0.3,1)",
+            boxShadow: `0 0 8px ${tint}88`,
+          }}
+        />
+      </div>
     </div>
   );
 }

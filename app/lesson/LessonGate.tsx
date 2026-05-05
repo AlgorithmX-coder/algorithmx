@@ -11,6 +11,7 @@ import FullscreenManager from "@/app/components/FullscreenManager";
 import AutosaveIndicator from "@/app/components/AutosaveIndicator";
 import StreakIndicator from "@/app/components/StreakIndicator";
 import BigMomentFlash from "@/app/components/BigMomentFlash";
+import GlobalGameStyles from "@/app/components/GlobalGameStyles";
 import {
   getActiveSlotId,
   getSlot,
@@ -56,6 +57,7 @@ export default function LessonGate({
   if (!started) {
     return (
       <>
+        <GlobalGameStyles />
         <IdleWorldLayer />
         <TitleScreen defaultName={childName} onStart={handleStart} />
       </>
@@ -64,6 +66,7 @@ export default function LessonGate({
 
   return (
     <>
+      <GlobalGameStyles />
       <LessonPlayer
         userName={userName}
         moduleId={moduleId}
