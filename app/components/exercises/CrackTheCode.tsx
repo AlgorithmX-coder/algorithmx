@@ -1534,7 +1534,17 @@ function SavedPasswordChip() {
   const [pwd, setPwd] = useState<string | null>(null);
   useEffect(() => {
     try {
-      setPwd(window.localStorage.getItem("ax-w1-saved-password"));
+      /* Slot-aware: read the saved password under the active slot's
+       * key so siblings don't see each other's vault. Falls back to
+       * the legacy global key for back-compat with older installs. */
+      const id = window.localStorage.getItem("algorithmx-active-slot-v1");
+      const namespaced = id
+        ? `ax-w1-saved-password::${id}`
+        : "ax-w1-saved-password";
+      setPwd(
+        window.localStorage.getItem(namespaced) ??
+          window.localStorage.getItem("ax-w1-saved-password"),
+      );
     } catch {
       // Private mode etc — silent fallback
     }

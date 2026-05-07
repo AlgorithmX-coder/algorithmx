@@ -99,10 +99,22 @@ export function deleteSlot(id: string): void {
   if (getActiveSlotId() === id) {
     clearActiveSlot();
   }
-  // Wipe the namespaced progression blob too.
   if (typeof window !== "undefined") {
+    /* Wipe the namespaced progression blob. */
     try {
       window.localStorage.removeItem(`algorithmx-progression-${id}`);
+    } catch {
+      /* ignore */
+    }
+    /* Wipe every per-slot lesson-runtime blob — autosaves, inventory,
+     * saved password, etc. Otherwise deleting Adam's slot leaves his
+     * mid-lesson coins / inventory / password under the same slot id,
+     * which then bleeds into the next player to occupy that slot. */
+    try {
+      // Lazy-load to avoid a circular dep at module-eval time.
+      void import("./slotStorage").then(({ wipeSlotKeys }) =>
+        wipeSlotKeys(id),
+      );
     } catch {
       /* ignore */
     }

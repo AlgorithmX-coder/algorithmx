@@ -31,6 +31,7 @@ import FloatingText from "@/app/components/FloatingText";
 import ScreenShake from "@/app/components/ScreenShake";
 import { fireSceneTitle } from "@/app/components/SceneTitleCard";
 import { CASE_TITLES } from "@/app/lib/caseTitles";
+import { slotKey, migrateLegacyKey } from "@/app/lib/slotStorage";
 // ContentBackdrop has been superseded by the LessonArena3D 3D backdrop
 // rendered behind all lesson content. Kept as a no-op import removal.
 const LessonArena3D = dynamic(
@@ -1767,11 +1768,18 @@ type SavedLessonState = {
   lockedItems: string[];
   savedAt: number;
 };
-const SAVE_KEY = `algorithmx:lesson:week-${CURRENT_WEEK}:state`;
+const SAVE_KEY_BASE = `algorithmx:lesson:week-${CURRENT_WEEK}:state`;
+function getSaveKey(): string {
+  return slotKey(SAVE_KEY_BASE);
+}
 function loadSavedLesson(): SavedLessonState | null {
   if (typeof window === "undefined") return null;
+  /* One-shot migrate: if the legacy global blob exists from before the
+   * slot system shipped, copy it under the active slot's namespaced
+   * key so existing players don't lose mid-lesson progress. */
+  migrateLegacyKey(SAVE_KEY_BASE);
   try {
-    const raw = window.localStorage.getItem(SAVE_KEY);
+    const raw = window.localStorage.getItem(getSaveKey());
     if (!raw) return null;
     const parsed = JSON.parse(raw) as SavedLessonState;
     if (typeof parsed.screen !== "number") return null;
@@ -1782,7 +1790,7 @@ function loadSavedLesson(): SavedLessonState | null {
 }
 function clearSavedLesson() {
   if (typeof window === "undefined") return;
-  try { window.localStorage.removeItem(SAVE_KEY); } catch {}
+  try { window.localStorage.removeItem(getSaveKey()); } catch {}
 }
 
 // Phase B for Case 12: an interactive "spot the trick" hotspot mini-game.
@@ -2037,7 +2045,13 @@ function PhishingHotspotMiniGame({ onComplete }: { onComplete: () => void }) {
 function BossSavedPasswordChip() {
   const [pwd, setPwd] = useState<string | null>(null);
   useEffect(() => {
-    try { setPwd(window.localStorage.getItem("ax-w1-saved-password")); } catch {}
+    /* Slot-aware lookup so Adam's password doesn't appear in Layla's
+     * boss screen. Migrate any legacy unsuffixed value into the
+     * active slot on first read. */
+    try {
+      migrateLegacyKey("ax-w1-saved-password");
+      setPwd(window.localStorage.getItem(slotKey("ax-w1-saved-password")));
+    } catch {}
   }, []);
   return (
     <div
@@ -3042,7 +3056,7 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
       lockedItems: Array.from(lockedItems),
       savedAt: Date.now(),
     };
-    try { window.localStorage.setItem(SAVE_KEY, JSON.stringify(data)); } catch { /* quota — ignore */ }
+    try { window.localStorage.setItem(getSaveKey(), JSON.stringify(data)); } catch { /* quota — ignore */ }
   }, [
     showResumePrompt,
     screen, coins, lessonXp,
@@ -3069,6 +3083,14 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
     setAnsweredRules(new Set(savedState.answeredRules));
     setRuleAnswers(savedState.ruleAnswers as Record<number, number | null>);
     setLockedItems(new Set(savedState.lockedItems));
+    /* Ephemeral state — explicitly reset so resuming doesn't carry
+     * over a streak / shake / wrong-attempt count from the previous
+     * session. The autosave deliberately doesn't persist these
+     * runtime-only counters; the resume path needs to honour that. */
+    setLessonCombo(0);
+    setComboPulseKey((k) => k + 1);
+    setWrongAttempts({});
+    setShakeTrigger(0);
     setShowResumePrompt(false);
   }, [savedState]);
 

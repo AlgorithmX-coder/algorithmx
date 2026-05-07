@@ -899,7 +899,15 @@ export default function PasswordLab({
           setBuilt={setBuiltPwd}
           onSave={(pwd) => {
             try {
-              window.localStorage.setItem("ax-w1-saved-password", pwd);
+              /* Slot-aware so Adam's saved password doesn't bleed
+               * into Layla's CrackTheCode + boss screen. */
+              const id = window.localStorage.getItem(
+                "algorithmx-active-slot-v1",
+              );
+              const key = id
+                ? `ax-w1-saved-password::${id}`
+                : "ax-w1-saved-password";
+              window.localStorage.setItem(key, pwd);
             } catch {}
             playSound("confetti");
             setLabPhase("done");

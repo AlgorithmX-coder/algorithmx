@@ -226,17 +226,50 @@ export function getItemForScreen(screen: number): InventoryItem | undefined {
 
 /* ───────────────────────── PERSISTENCE ─────────────────────────
  * Earned items are stored as a JSON string array of ids under a
- * per-week key. We deliberately keep the schema dumb — a `Set` of ids
- * is easy to evolve and survives item reorderings. */
+ * per-week + per-slot key. We deliberately keep the schema dumb —
+ * a `Set` of ids is easy to evolve and survives item reorderings.
+ *
+ * Slot-aware: keys are now `ax-inventory-v1::week-X::slot-Y`. The
+ * saveSlots / slotStorage modules handle the slot-id resolution. */
 
 const STORAGE_PREFIX = "ax-inventory-v1";
 
+function activeSlotId(): string | null {
+  if (typeof window === "undefined") return null;
+  try {
+    return window.localStorage.getItem("algorithmx-active-slot-v1");
+  } catch {
+    return null;
+  }
+}
+
 export function storageKeyForWeek(weekKey: string): string {
-  return `${STORAGE_PREFIX}::${weekKey}`;
+  const id = activeSlotId();
+  const base = `${STORAGE_PREFIX}::${weekKey}`;
+  return id ? `${base}::${id}` : base;
 }
 
 export function loadEarnedItems(weekKey: string): Set<string> {
   if (typeof window === "undefined") return new Set();
+  /* One-shot migrate: if a legacy unsuffixed inventory blob exists
+   * from before slot-namespacing shipped, copy it under the active
+   * slot's key so existing players don't lose earned items. */
+  try {
+    const id = activeSlotId();
+    if (id) {
+      const namespaced = `${STORAGE_PREFIX}::${weekKey}::${id}`;
+      if (window.localStorage.getItem(namespaced) === null) {
+        const legacy = window.localStorage.getItem(
+          `${STORAGE_PREFIX}::${weekKey}`,
+        );
+        if (legacy !== null) {
+          window.localStorage.setItem(namespaced, legacy);
+        }
+      }
+    }
+  } catch {
+    /* ignore migration errors */
+  }
   try {
     const raw = window.localStorage.getItem(storageKeyForWeek(weekKey));
     if (!raw) return new Set();
