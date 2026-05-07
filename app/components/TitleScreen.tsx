@@ -91,9 +91,7 @@ export default function TitleScreen({ defaultName, onStart }: TitleScreenProps) 
 
   useEffect(() => {
     if (phase !== "boot") return;
-    const onKey = (_e: KeyboardEvent) => {
-      advanceFromBoot();
-    };
+    const onKey = () => advanceFromBoot();
     const onClick = () => advanceFromBoot();
     window.addEventListener("keydown", onKey);
     window.addEventListener("click", onClick);
@@ -288,13 +286,19 @@ function SlotsPhase({
   onBack: () => void;
 }) {
   /* Quick-resume — most-recently-played slot, only if played in the
-   * last 14 days. Filters out brand-new empty slots. */
+   * last 14 days. Filters out brand-new empty slots.
+   *
+   * Date.now() reads on every render, but it only drives a one-shot
+   * boolean for showing the resume CTA — no derived memo, no state,
+   * no effect. Stale-by-a-frame is fine here. */
   const recent = slots
     .filter((s): s is SaveSlot => s !== null)
     .sort((a, b) => b.lastPlayedAt - a.lastPlayedAt)[0];
   const fourteenDaysMs = 14 * 86_400_000;
+  // eslint-disable-next-line react-hooks/purity
+  const nowMs = Date.now();
   const showQuickResume =
-    !!recent && Date.now() - recent.lastPlayedAt < fourteenDaysMs;
+    !!recent && nowMs - recent.lastPlayedAt < fourteenDaysMs;
 
   return (
     <div style={slotsColumnStyle}>

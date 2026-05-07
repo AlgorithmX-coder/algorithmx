@@ -132,12 +132,6 @@ export default function GameMenuOverlay({
     playSound("back");
   }, []);
 
-  const openOverlay = useCallback(() => {
-    setOpen(true);
-    setPanel("pause");
-    playSound("transition");
-  }, []);
-
   /* Global ESC binding. */
   useEffect(() => {
     if (!enabled) return;
