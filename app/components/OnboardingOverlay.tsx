@@ -109,24 +109,30 @@ export default function OnboardingOverlay({
     onComplete();
   };
 
-  /* Keyboard navigation. */
+  /* Keyboard navigation. Capture phase + stopImmediatePropagation so
+   * the pause-menu ESC handler (also bound to window) doesn't fire
+   * underneath us when the kid hits Escape inside the onboarding. */
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "ArrowRight" || e.key === " " || e.key === "Enter") {
         e.preventDefault();
+        e.stopImmediatePropagation();
         next();
       } else if (e.key === "ArrowLeft") {
         if (idx > 0) {
+          e.preventDefault();
+          e.stopImmediatePropagation();
           setIdx((i) => i - 1);
           playSound("back");
         }
       } else if (e.key === "Escape") {
         e.preventDefault();
+        e.stopImmediatePropagation();
         skip();
       }
     };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
+    window.addEventListener("keydown", onKey, true);
+    return () => window.removeEventListener("keydown", onKey, true);
     /* eslint-disable-next-line react-hooks/exhaustive-deps */
   }, [idx]);
 

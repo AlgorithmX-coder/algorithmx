@@ -123,6 +123,26 @@ export default function IdleWorldLayer() {
     let raf = 0;
     let last = performance.now();
     let nextSpark = performance.now() + rand(2400, 4800);
+    let paused = document.hidden;
+
+    /* Pause the rAF loop when the tab is backgrounded — saves battery
+     * and avoids burning CPU on a canvas no one can see. */
+    const onVisibility = () => {
+      if (document.hidden) {
+        paused = true;
+        if (raf) {
+          window.cancelAnimationFrame(raf);
+          raf = 0;
+        }
+      } else if (paused) {
+        paused = false;
+        /* Reset `last` so the first frame after resume doesn't see a
+         * giant `dt` and warp every particle off-screen. */
+        last = performance.now();
+        raf = window.requestAnimationFrame(tick);
+      }
+    };
+    document.addEventListener("visibilitychange", onVisibility);
 
     function tick(now: number) {
       if (!ctx) return;
@@ -185,11 +205,12 @@ export default function IdleWorldLayer() {
 
       raf = window.requestAnimationFrame(tick);
     }
-    raf = window.requestAnimationFrame(tick);
+    if (!paused) raf = window.requestAnimationFrame(tick);
 
     return () => {
       window.removeEventListener("resize", resizeHandler);
-      window.cancelAnimationFrame(raf);
+      document.removeEventListener("visibilitychange", onVisibility);
+      if (raf) window.cancelAnimationFrame(raf);
     };
   }, []);
 

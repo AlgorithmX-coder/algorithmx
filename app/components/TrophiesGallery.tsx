@@ -40,12 +40,17 @@ export default function TrophiesGallery({ onClose }: TrophiesGalleryProps) {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
         e.preventDefault();
-        e.stopPropagation();
+        /* stopImmediatePropagation — required because the pause-menu
+         * ESC handler is also bound to `window`. stopPropagation alone
+         * does NOT stop other listeners on the same node; we need
+         * stopImmediatePropagation to prevent the pause menu from
+         * also toggling under us. */
+        e.stopImmediatePropagation();
         onClose();
       }
     };
-    /* Capture phase so we steal Esc before the pause-menu hotkey
-     * (the gallery lives ON TOP of the pause menu). */
+    /* Capture phase so we run before the pause-menu's bubble-phase
+     * handler (the gallery lives ON TOP of the pause menu). */
     window.addEventListener("keydown", onKey, true);
     return () => window.removeEventListener("keydown", onKey, true);
   }, [onClose]);

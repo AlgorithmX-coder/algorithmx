@@ -70,6 +70,11 @@ let nextUid = 1;
 export default function AchievementToastHost() {
   const [toasts, setToasts] = useState<ToastInternal[]>([]);
   const recentIdsRef = useRef<Map<string, number>>(new Map());
+  /* Track every pending timeout so we can clear them all on unmount —
+   * otherwise a long-duration toast scheduled just before navigation
+   * fires `setToasts` after this component is gone (React 18 swallows
+   * the warning, but it's still wasted work). */
+  const timersRef = useRef<Set<number>>(new Set());
 
   const push = useCallback((a: Achievement) => {
     /* Dedupe: ignore the same id within 1.2s — protects against a
@@ -95,25 +100,34 @@ export default function AchievementToastHost() {
     /* Schedule the exit. The 320ms tail covers the slide-out animation
      * before we actually drop it from the array so React's reconciler
      * runs the leave transition. */
-    window.setTimeout(() => {
+    const exitTimer = window.setTimeout(() => {
+      timersRef.current.delete(exitTimer);
       setToasts((current) =>
         current.map((t) =>
           t.uid === uid ? { ...t, visible: false } : t,
         ),
       );
-      window.setTimeout(() => {
+      const dropTimer = window.setTimeout(() => {
+        timersRef.current.delete(dropTimer);
         setToasts((current) => current.filter((t) => t.uid !== uid));
       }, 360);
+      timersRef.current.add(dropTimer);
     }, duration);
+    timersRef.current.add(exitTimer);
   }, []);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
     window[GLOBAL_KEY] = push;
+    const timers = timersRef.current;
     return () => {
       if (window[GLOBAL_KEY] === push) {
         delete window[GLOBAL_KEY];
       }
+      /* Clear any in-flight slide-out / drop timeouts so callbacks
+       * don't fire on an unmounted component. */
+      timers.forEach((id) => window.clearTimeout(id));
+      timers.clear();
     };
   }, [push]);
 
