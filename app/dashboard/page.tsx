@@ -688,7 +688,7 @@ export default async function DashboardPage({
                 </ul>
 
                 <SubscribeButton
-                  label="Enrol Now — £99 →"
+                  label="Enrol Now · £99 →"
                   className="rounded-full font-black"
                   style={{
                     padding: "16px 36px",

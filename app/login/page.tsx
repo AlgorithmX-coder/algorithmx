@@ -219,34 +219,36 @@ export default function LoginPage() {
       <div className="flex-1 flex flex-col items-center justify-center px-6 py-12 relative" style={{ zIndex: 3 }}>
         <div className="w-full max-w-md relative" style={{ zIndex: 2 }}>
           {/* Logo */}
-          <a href="/" className="inline-flex items-center gap-2.5 mb-8">
-            <div
-              className="w-10 h-10 rounded-xl flex items-center justify-center"
-              style={{
-                background: GRAD,
-                boxShadow: CYBER_SHADOW.buttonGlow,
-              }}
-            >
-              <span
-                className="text-sm font-black"
-                style={{ color: C.abyss, fontFamily: "'Space Grotesk', system-ui, sans-serif" }}
+          <div className="mb-10">
+            <a href="/" className="inline-flex items-center gap-2.5">
+              <div
+                className="w-10 h-10 rounded-xl flex items-center justify-center"
+                style={{
+                  background: GRAD,
+                  boxShadow: CYBER_SHADOW.buttonGlow,
+                }}
               >
-                AX
-              </span>
-            </div>
-            <span
-              className="text-xl font-black"
-              style={{ color: C.textBright, fontFamily: "'Space Grotesk', system-ui, sans-serif", letterSpacing: "-0.01em" }}
-            >
-              Algorithm
+                <span
+                  className="text-sm font-black"
+                  style={{ color: C.abyss, fontFamily: "'Space Grotesk', system-ui, sans-serif" }}
+                >
+                  AX
+                </span>
+              </div>
               <span
-                className="text-transparent bg-clip-text"
-                style={{ backgroundImage: GRAD, WebkitBackgroundClip: "text" }}
+                className="text-xl font-black"
+                style={{ color: C.textBright, fontFamily: "'Space Grotesk', system-ui, sans-serif", letterSpacing: "-0.01em" }}
               >
-                X
+                Algorithm
+                <span
+                  className="text-transparent bg-clip-text"
+                  style={{ backgroundImage: GRAD, WebkitBackgroundClip: "text" }}
+                >
+                  X
+                </span>
               </span>
-            </span>
-          </a>
+            </a>
+          </div>
 
           {/* Heading */}
           <div

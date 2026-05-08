@@ -99,14 +99,49 @@ function FloatingIcons() {
   );
 }
 
+/* Live password-rule chip. Cyan + check when satisfied, dim with a
+ * dot when still pending. */
+function RuleChip({ pass, label }: { pass: boolean; label: string }) {
+  return (
+    <span
+      style={{
+        display: "inline-flex",
+        alignItems: "center",
+        gap: 6,
+        padding: "3px 10px",
+        borderRadius: 999,
+        background: pass ? "rgba(0,229,255,0.14)" : "rgba(255,255,255,0.04)",
+        border: `1px solid ${pass ? "rgba(0,229,255,0.55)" : "rgba(255,255,255,0.12)"}`,
+        color: pass ? "#7df0ff" : "rgba(232,237,255,0.55)",
+        letterSpacing: 0.5,
+        textTransform: "uppercase",
+        transition: "all 220ms ease",
+      }}
+    >
+      <span aria-hidden style={{ fontSize: 10 }}>{pass ? "✓" : "•"}</span>
+      <span>{label}</span>
+    </span>
+  );
+}
+
 export default function SignupPage() {
   const router = useRouter();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+
+  /* Password-rule checks. Shown live as the kid types so they see the
+   * dots fill in rather than only learning what's wrong on submit. */
+  const ruleLength = password.length >= 8;
+  const ruleUpper = /[A-Z]/.test(password);
+  const ruleSpecial = /[^A-Za-z0-9]/.test(password);
+  const ruleMatch = confirmPassword.length > 0 && password === confirmPassword;
+  const passwordReady = ruleLength && ruleUpper && ruleSpecial;
+  const allReady = passwordReady && ruleMatch;
 
   const validate = () => {
     if (!name.trim()) {
@@ -117,8 +152,20 @@ export default function SignupPage() {
       setError("Please enter a valid email address");
       return false;
     }
-    if (password.length < 8) {
+    if (!ruleLength) {
       setError("Password must be at least 8 characters");
+      return false;
+    }
+    if (!ruleUpper) {
+      setError("Password must include a capital letter");
+      return false;
+    }
+    if (!ruleSpecial) {
+      setError("Password must include a special character (e.g. ! @ # ?)");
+      return false;
+    }
+    if (!ruleMatch) {
+      setError("The two passwords do not match. Please type them again.");
       return false;
     }
     return true;
@@ -130,21 +177,27 @@ export default function SignupPage() {
     if (!validate()) return;
     setLoading(true);
 
-    const res = await fetch("/api/signup", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name, email, password }),
-    });
+    try {
+      const res = await fetch("/api/signup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, password }),
+      });
 
-    const data = await res.json();
+      const data = await res.json();
 
-    if (!res.ok) {
-      setError(data.error);
+      if (!res.ok) {
+        setError(data.error || "We couldn't create your account. Please try again.");
+        setLoading(false);
+        return;
+      }
+
+      router.push("/login?registered=true");
+    } catch (err) {
+      const detail = err instanceof Error ? err.message : "Network error";
+      setError(`Couldn't reach the server. ${detail}. If this keeps happening, email support@algorithmx.co.uk.`);
       setLoading(false);
-      return;
     }
-
-    router.push("/login?registered=true");
   };
 
   return (
@@ -230,34 +283,36 @@ export default function SignupPage() {
       >
         <div className="w-full max-w-md relative" style={{ zIndex: 2 }}>
           {/* Logo */}
-          <a href="/" className="inline-flex items-center gap-2.5 mb-8">
-            <div
-              className="w-10 h-10 rounded-xl flex items-center justify-center"
-              style={{
-                background: GRAD,
-                boxShadow: "0 0 20px rgba(124, 92, 255, 0.4)",
-              }}
-            >
-              <span
-                className="text-sm font-black"
-                style={{ color: C.goldDark, fontFamily: "'Space Grotesk', system-ui, sans-serif" }}
+          <div className="mb-10">
+            <a href="/" className="inline-flex items-center gap-2.5">
+              <div
+                className="w-10 h-10 rounded-xl flex items-center justify-center"
+                style={{
+                  background: GRAD,
+                  boxShadow: "0 0 20px rgba(124, 92, 255, 0.4)",
+                }}
               >
-                AX
-              </span>
-            </div>
-            <span
-              className="text-xl font-black"
-              style={{ color: C.text, fontFamily: "'Space Grotesk', system-ui, sans-serif" }}
-            >
-              Algorithm
+                <span
+                  className="text-sm font-black"
+                  style={{ color: C.goldDark, fontFamily: "'Space Grotesk', system-ui, sans-serif" }}
+                >
+                  AX
+                </span>
+              </div>
               <span
-                className="text-transparent bg-clip-text"
-                style={{ backgroundImage: GRAD, WebkitBackgroundClip: "text" }}
+                className="text-xl font-black"
+                style={{ color: C.text, fontFamily: "'Space Grotesk', system-ui, sans-serif" }}
               >
-                X
+                Algorithm
+                <span
+                  className="text-transparent bg-clip-text"
+                  style={{ backgroundImage: GRAD, WebkitBackgroundClip: "text" }}
+                >
+                  X
+                </span>
               </span>
-            </span>
-          </a>
+            </a>
+          </div>
 
           <div
             style={{
@@ -292,8 +347,11 @@ export default function SignupPage() {
           >
             Join the Adventure
           </h1>
-          <p className="mb-8 text-base" style={{ color: C.textSoft, opacity: 0.92 }}>
-            Create your family&apos;s account and start learning cybersecurity today
+          <p
+            className="mb-8 text-base"
+            style={{ color: C.text, opacity: 1, fontWeight: 600 }}
+          >
+            Create your family&apos;s account and start learning cybersecurity today.
           </p>
 
           {/* Form card — invisible container, matching the login.
@@ -450,14 +508,75 @@ export default function SignupPage() {
                     {showPassword ? "🙈" : "👁️"}
                   </button>
                 </div>
+
+                {/* Live password-rule indicators. Each lights up cyan
+                    when its rule is satisfied. */}
+                <div className="mt-3 flex flex-wrap gap-2 text-[11px] font-bold">
+                  <RuleChip pass={ruleLength} label="8+ chars" />
+                  <RuleChip pass={ruleUpper} label="Capital letter" />
+                  <RuleChip pass={ruleSpecial} label="Special char" />
+                </div>
+              </div>
+
+              {/* Confirm password */}
+              <div>
+                <label
+                  className="block text-sm font-bold mb-2"
+                  style={{ color: C.textSoft }}
+                >
+                  Confirm password
+                </label>
+                <div className="relative">
+                  <span
+                    className="absolute left-4 top-1/2 -translate-y-1/2"
+                    style={{ color: C.textMuted, lineHeight: 0 }}
+                  >
+                    <CyberIconOrEmoji emoji="🔁" size={18} accent="cyan" glow={false} />
+                  </span>
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    className="w-full pl-11 pr-4 rounded-2xl font-medium transition-all duration-300 focus:outline-none"
+                    style={{
+                      height: 50,
+                      fontSize: 15,
+                      color: C.text,
+                      background: "rgba(8, 10, 22, 0.5)",
+                      border: `1px solid ${
+                        confirmPassword.length === 0
+                          ? C.border
+                          : ruleMatch
+                            ? C.goldLight
+                            : C.coral
+                      }`,
+                      fontFamily: "Nunito, sans-serif",
+                    }}
+                    onFocus={(e) => {
+                      e.currentTarget.style.boxShadow = "0 0 22px rgba(124, 92, 255, 0.25)";
+                    }}
+                    onBlur={(e) => {
+                      e.currentTarget.style.boxShadow = "none";
+                    }}
+                    placeholder="Type your password again"
+                  />
+                </div>
+                {confirmPassword.length > 0 && !ruleMatch && (
+                  <div
+                    className="mt-2 text-xs font-semibold"
+                    style={{ color: C.coral }}
+                  >
+                    The two passwords do not match.
+                  </div>
+                )}
               </div>
 
               {/* Submit */}
               <motion.button
                 type="submit"
-                disabled={loading}
-                whileHover={{ y: -2, scale: 1.02 }}
-                whileTap={{ scale: 0.97 }}
+                disabled={loading || !allReady}
+                whileHover={allReady ? { y: -2, scale: 1.02 } : undefined}
+                whileTap={allReady ? { scale: 0.97 } : undefined}
                 transition={{ type: "spring", stiffness: 320, damping: 20 }}
                 className="w-full font-black text-base rounded-full transition-colors duration-300 disabled:opacity-50"
                 style={{

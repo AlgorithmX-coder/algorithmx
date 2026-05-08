@@ -27,7 +27,7 @@ function getResend(): Resend | null {
 
 /** Verified sender — must match a domain you've added + verified in Resend. */
 export const FROM_ADDRESS =
-  process.env.RESEND_FROM ?? "AlgorithmX <hello@algorithmx.co.uk>";
+  process.env.RESEND_FROM ?? "AlgorithmX <support@algorithmx.co.uk>";
 
 /* ─── Templated emails ──────────────────────────────────────────────── */
 

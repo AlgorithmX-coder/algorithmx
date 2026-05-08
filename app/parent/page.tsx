@@ -416,12 +416,12 @@ export default async function ParentDashboard() {
                         marginBottom: 8,
                       }}
                     >
-                      The Hacker Raccoon represents real-world cyber threats — from phishing scams to password attacks — adapted to reflect the latest tactics children encounter online. As your child completes each lesson, they build the skills to recognise and defend against these threats, so you can feel confident they&apos;re prepared.
+                      The Hacker Raccoon represents real-world cyber threats (from phishing scams to password attacks) adapted to reflect the latest tactics children encounter online. As your child completes each lesson, they build the skills to recognise and defend against these threats, so you can feel confident they&apos;re prepared.
                     </p>
                     <p className="text-[11px] font-bold mt-2" style={{ color: C.textMuted }}>
                       {raccoonStrong
                         ? "The Hacker Raccoon still has most of his power. Each lesson weakens him."
-                        : "The Hacker Raccoon is on the ropes — most of his power has been drained."}
+                        : "The Hacker Raccoon is on the ropes. Most of his power has been drained."}
                     </p>
                   </div>
                 </div>

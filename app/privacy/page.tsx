@@ -141,10 +141,10 @@ function Section({ title, children }: { title: string; children: React.ReactNode
 function ContactEmail() {
   return (
     <a
-      href="mailto:hello@algorithmx.co.uk"
+      href="mailto:support@algorithmx.co.uk"
       style={{ color: "#ff5fb3", textDecoration: "underline" }}
     >
-      hello@algorithmx.co.uk
+      support@algorithmx.co.uk
     </a>
   );
 }

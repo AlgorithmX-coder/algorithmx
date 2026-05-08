@@ -11,7 +11,6 @@ const CyberHeroesBackdrop = dynamic(
   () => import("@/app/components/CyberHeroesBackdrop"),
   { ssr: false },
 );
-import SampleLessonPreview from "@/app/components/SampleLessonPreview";
 
 /* ─── CONSTANTS ─── */
 const GRAD = "linear-gradient(135deg, #7c5cff, #00e5ff)";
@@ -237,7 +236,7 @@ const CREDENTIALS: Array<{
   { icon: "🎓", title: "ASDAN Aligned",       sub: "Accreditation",       accent: "#a06aff" },
   { icon: "🛡️", title: "GDPR Compliant",       sub: "EU · UK Privacy",     accent: "#7eff97" },
   { icon: "★",  title: "Built by Parents",    sub: "For Parents",         accent: "#ffd158" },
-  { icon: "♾", title: "Lifetime Access",      sub: "Free Updates Forever", accent: "#ff5fb3" },
+  { icon: "♾", title: "Lifetime Access",      sub: "Updates for life", accent: "#ff5fb3" },
   { icon: "🇬🇧", title: "Made in the UK",       sub: "British Curriculum",  accent: "#7df0ff" },
   { icon: "🔐", title: "No Data Sold",         sub: "No 3rd-Party Ads",    accent: "#a06aff" },
   { icon: "🎯", title: "Ages 6–10",            sub: "Crafted Curriculum",  accent: "#ffd158" },
@@ -319,7 +318,7 @@ function CredentialsMarquee() {
                 fontFamily: "'JetBrains Mono', monospace",
                 fontSize: 9,
                 fontWeight: 600,
-                color: "#94a3b8",
+                color: "#d1d5db",
                 letterSpacing: "0.14em",
                 textTransform: "uppercase",
               }}
@@ -649,14 +648,14 @@ function FAQAccordion() {
   const [open, setOpen] = useState<number | null>(0);
   const items = [
     { q: "What age is this for?", a: "Cyber Heroes Academy is designed for children aged 6–10. Every lesson, character, and activity is crafted to be age-appropriate and engaging for this specific age group." },
-    { q: "How long does it take?", a: "20 weeks, one 45-minute session per week. Children can go at their own pace — there's no pressure to keep to a schedule." },
-    { q: "Is it safe? Can strangers contact my child?", a: "Yes, completely safe. Lessons are sandboxed — no chat, no public profile, no social feed. Your child plays through the missions on their own; nobody else can contact them through the course. We don't sell or share data, and we don't run third-party advertising trackers." },
+    { q: "How long does it take?", a: "20 weeks, one 45-minute session per week. Children can go at their own pace. There's no pressure to keep to a schedule." },
+    { q: "Is it safe? Can strangers contact my child?", a: "Yes, completely safe. Lessons are sandboxed (no chat, no public profile, no social feed). Your child plays through the missions on their own; nobody else can contact them through the course. We don't sell or share data, and we don't run third-party advertising trackers." },
     { q: "Can I see what my child is learning?", a: "Yes. The parent dashboard shows you which lessons they've completed, badges earned, time spent, and a snapshot of how they're progressing each week. You'll also receive a printable milestone certificate at the end of each module." },
     { q: "Is it accredited?", a: "Yes. Designed in alignment with CyberFirst and ASDAN accreditation frameworks from day one." },
-    { q: "What devices does it work on?", a: "Modern browsers on desktop or laptop (Chrome, Safari, Firefox, Edge — last two major versions) and on tablets / phones (iOS 14+, Android 9+, iPad 6th gen+). For the boss-battle visuals we recommend a screen of at least 10 inches. Headphones are optional but help kids focus." },
-    { q: "What if something breaks during a lesson?", a: "Email hello@algorithmx.co.uk with a quick description of what happened — we usually respond within one working day and push fixes within the week. If you're stuck mid-lesson, refresh the page; progress is saved automatically every few seconds." },
-    { q: "Do we get lifetime access?", a: "Yes! Your one-time purchase of £99 gives you lifetime access with continuous updates — as new threats emerge, we update the content so your child's knowledge stays current." },
-    { q: "I have more than one child — do I need to pay £99 each time?", a: "Yes, enrolment is per child at £99 — there's no sibling discount. Each child gets their own dedicated account, progress tracking, badges, and milestone certificates, so they can each move at their own pace. It's a one-time payment per child with lifetime access; no subscriptions, no renewals." },
+    { q: "What devices does it work on?", a: "Modern browsers on desktop or laptop (Chrome, Safari, Firefox, Edge: last two major versions) and on tablets / phones (iOS 14+, Android 9+, iPad 6th gen+). For the boss-battle visuals we recommend a screen of at least 10 inches. Headphones are optional but help kids focus." },
+    { q: "What if something breaks during a lesson?", a: "Email support@algorithmx.co.uk with a quick description of what happened. We usually respond within one working day and push fixes within the week. If you're stuck mid-lesson, refresh the page; progress is saved automatically every few seconds." },
+    { q: "Do we get lifetime access?", a: "Yes. Your one-time purchase of £99 gives you lifetime access with continuous updates. As new threats emerge, we update the content so your child's knowledge stays current." },
+    { q: "I have more than one child. Do I need to pay £99 each time?", a: "Yes, enrolment is per child at £99. There's no sibling discount. Each child gets their own dedicated account, progress tracking, badges, and milestone certificates, so they can each move at their own pace. It's a one-time payment per child with lifetime access; no subscriptions, no renewals." },
   ];
   return (
     <div style={{ maxWidth: 720, margin: "0 auto" }}>
@@ -691,7 +690,7 @@ function FAQAccordion() {
               overflow: "hidden",
               transition: "max-height 0.45s cubic-bezier(0.16,1,0.3,1)",
             }}>
-              <p style={{ padding: "0 4px 22px", color: "#94a3b8", fontSize: 15, lineHeight: 1.75 }}>
+              <p style={{ padding: "0 4px 22px", color: "#d1d5db", fontSize: 15, lineHeight: 1.75 }}>
                 {item.a}
               </p>
             </div>
@@ -870,7 +869,7 @@ export default function HomePage() {
         {/* ── NAV ──────────────────────────────────────────────────────────── */}
         <nav className="fixed top-0 left-0 right-0 z-50 transition-all duration-300"
           style={{
-            background: scrolled ? "rgba(26,6,18,0.85)" : "transparent",
+            background: scrolled ? "rgba(8,10,22,0.85)" : "transparent",
             backdropFilter: scrolled ? "blur(20px)" : "none",
             borderBottom: scrolled ? "1px solid rgba(255,255,255,0.06)" : "1px solid transparent",
           }}>
@@ -893,7 +892,7 @@ export default function HomePage() {
                 whileTap={{ scale: 0.95 }}
                 className="px-5 py-2.5 rounded-2xl text-sm font-bold text-white"
                 style={{ background: BTN_GRAD, boxShadow: BTN_GLOW }}>
-                Enrol Now — £99
+                Enrol Now · £99
               </motion.a>
             </div>
           </div>
@@ -927,7 +926,7 @@ export default function HomePage() {
               {/* Trust line — surfaces accreditation + privacy from the
                   FAQ so it's visible above the fold. */}
               <div className="mb-3 flex flex-wrap items-center gap-x-4 gap-y-2 justify-center lg:justify-start"
-                style={{ fontSize: 12, color: "#94a3b8", fontWeight: 600, letterSpacing: "0.04em" }}>
+                style={{ fontSize: 12, color: "#d1d5db", fontWeight: 600, letterSpacing: "0.04em" }}>
                 <span className="inline-flex items-center gap-1.5">
                   <span style={{ color: "#7df0ff" }}>✓</span> CyberFirst (UK) aligned
                 </span>
@@ -942,9 +941,9 @@ export default function HomePage() {
               </div>
               {/* Social proof line — placeholder until real reviews land */}
               <div className="mb-8 flex flex-wrap items-center gap-2 justify-center lg:justify-start"
-                style={{ fontSize: 13, color: "#cbd5e1", fontWeight: 600 }}>
+                style={{ fontSize: 13, color: "#e8edff", fontWeight: 600 }}>
                 <span style={{ color: "#ffd158", letterSpacing: 1, fontSize: 15 }}>★★★★★</span>
-                <span>Built by parents, for parents — UK-based</span>
+                <span>Built by parents, for parents. UK-based.</span>
               </div>
               <div className="flex gap-4 flex-wrap justify-center lg:justify-start">
                 <motion.a href="/signup"
@@ -952,7 +951,7 @@ export default function HomePage() {
                   whileTap={{ scale: 0.95 }}
                   className="px-7 py-4 font-bold text-white text-base"
                   style={{ background: BTN_GRAD, boxShadow: BTN_GLOW, borderRadius: 14 }}>
-                  Enrol Now — £99
+                  Enrol Now · £99
                 </motion.a>
                 <motion.a href="#how"
                   whileHover={{ scale: 1.05, y: -2 }}
@@ -989,7 +988,7 @@ export default function HomePage() {
                     <div className="display-font" style={{ color: s.color, fontSize: 28, fontWeight: 700, lineHeight: 1 }}>
                       <CountUp to={s.to} suffix={s.suffix} />
                     </div>
-                    <div style={{ fontSize: 11, fontWeight: 700, color: "#94a3b8", letterSpacing: "0.08em", marginTop: 6, textTransform: "uppercase" }}>
+                    <div style={{ fontSize: 11, fontWeight: 700, color: "#d1d5db", letterSpacing: "0.08em", marginTop: 6, textTransform: "uppercase" }}>
                       {s.label}
                     </div>
                   </motion.div>
@@ -1267,11 +1266,11 @@ export default function HomePage() {
             boxShadow: "0 0 30px rgba(239,68,68,0.08)",
             borderRadius: 20, padding: 32,
           }}>
-            <h3 className="display-font" style={{ color: "#fff", fontSize: 22, fontWeight: 700, marginBottom: 12 }}>
-              🦝 Who is the Hacker Raccoon?
+            <h3 className="display-font" style={{ color: "#fff", fontSize: 22, fontWeight: 800, marginBottom: 12 }}>
+              Who is the Hacker Raccoon?
             </h3>
-            <p style={{ color: "#94a3b8", fontSize: 15, lineHeight: 1.75 }}>
-              The Hacker Raccoon isn&apos;t just a cartoon villain — he represents the real cyber threats targeting your children every day.
+            <p style={{ color: "#e2e8f0", fontSize: 15, lineHeight: 1.75, fontWeight: 500 }}>
+              The Hacker Raccoon isn&apos;t just a cartoon villain. He represents the real cyber threats targeting your children every day.
               From sophisticated phishing emails disguised as game rewards, to social engineering in chat rooms, fake app downloads, and password-cracking attacks.
               Each week, the Raccoon deploys a new tactic pulled straight from today&apos;s threat landscape.
               Your child learns to recognise, outsmart, and block every single one.
@@ -1416,10 +1415,10 @@ export default function HomePage() {
               Why Cybersecurity Matters for Kids
             </h2>
           </div>
-          <p data-scroll className="mx-auto text-center" style={{ fontSize: 17, color: "#94a3b8", maxWidth: 720, marginBottom: 20, lineHeight: 1.8 }}>
+          <p data-scroll className="mx-auto text-center" style={{ fontSize: 17, color: "#d1d5db", maxWidth: 720, marginBottom: 20, lineHeight: 1.8 }}>
             Children are spending more time online than ever before — gaming, chatting, streaming, learning. But the internet wasn&apos;t designed with kids in mind. Cyberbullying, phishing scams, data harvesting, and predatory behaviour are real threats that most children have never been taught to recognise.
           </p>
-          <p data-scroll data-scroll-delay="0.08" className="mx-auto text-center" style={{ fontSize: 17, color: "#94a3b8", maxWidth: 720, marginBottom: 48, lineHeight: 1.8 }}>
+          <p data-scroll data-scroll-delay="0.08" className="mx-auto text-center" style={{ fontSize: 17, color: "#d1d5db", maxWidth: 720, marginBottom: 48, lineHeight: 1.8 }}>
             Schools barely scratch the surface. Parental controls can only do so much. The best protection you can give your child is the knowledge to protect themselves. That&apos;s exactly what Cyber Heroes Academy delivers — real cybersecurity skills, taught through the language kids understand best: adventure, play, and stories.
           </p>
 
@@ -1498,7 +1497,7 @@ export default function HomePage() {
                 </div>
                 <div style={{ paddingTop: 12 }}>
                   <h3 className="display-font" style={{ color: "#fff", fontSize: 22, fontWeight: 700, marginBottom: 6 }}>{s.title}</h3>
-                  <p style={{ color: "#94a3b8", fontSize: 15, lineHeight: 1.7, maxWidth: 560 }}>{s.desc}</p>
+                  <p style={{ color: "#d1d5db", fontSize: 15, lineHeight: 1.7, maxWidth: 560 }}>{s.desc}</p>
                 </div>
               </div>
             ))}
@@ -1515,11 +1514,9 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* ── SAMPLE LESSON PREVIEW ─────────────────────────────────────────
-             60-second playable mini-lesson. The biggest conversion lever
-             on the page — visitors get to feel the product before
-             committing to £99. */}
-        <SampleLessonPreview />
+        {/* Sample-lesson preview removed — no free-trial path on this
+             landing page. Visitors enrol straight from the pricing
+             section. */}
 
         {/* ── ON EVERY DEVICE ─────────────────────────────────────────────── */}
         <section className="max-w-[1200px] mx-auto px-6 md:px-10 py-16 sm:py-24">
@@ -1730,7 +1727,7 @@ export default function HomePage() {
 
           {/* Sub-line under the cluster */}
           <div className="text-center mt-8 sm:mt-10" data-scroll data-scroll-delay="0.5">
-            <p style={{ color: "#94a3b8", fontSize: 14, fontWeight: 500, letterSpacing: "0.02em" }}>
+            <p style={{ color: "#d1d5db", fontSize: 14, fontWeight: 500, letterSpacing: "0.02em" }}>
               Progress, badges, and certificates sync automatically — your child picks up exactly where they left off.
             </p>
           </div>
@@ -1822,7 +1819,7 @@ export default function HomePage() {
         </section>
 
         {/* ── PRICING ─────────────────────────────────────────────────────── */}
-        <section className="max-w-[800px] mx-auto px-6 md:px-10 py-16 sm:py-24">
+        <section className="max-w-[800px] mx-auto px-6 md:px-10 pt-6 pb-16 sm:pt-8 sm:pb-20">
           <div className="text-center mb-10" data-scroll>
             <span style={{
               display: "inline-flex", alignItems: "center", gap: 8,
@@ -1872,11 +1869,11 @@ export default function HomePage() {
                   "All interactive missions & boss battles",
                   "4 milestone certificates (printable PDFs)",
                   "Parent progress dashboard",
-                  "One-time £99 per child — no subscriptions, no renewals",
+                  "One-time £99 per child. No subscriptions, no renewals",
                   "CyberFirst & ASDAN aligned content",
                   "Continuous content updates as new threats emerge",
                   "GDPR-compliant · No data sold · No third-party ads",
-                  "Lifetime access — free updates as new threats emerge",
+                  "Lifetime access with continuous updates",
                 ].map((f, i, arr) => (
                   <li key={i} style={{
                     display: "flex", alignItems: "center", gap: 12,
@@ -1908,8 +1905,8 @@ export default function HomePage() {
               </p>
             </div>
           </div>
-          <p data-scroll className="text-center mt-6" style={{ fontSize: 14, color: "#94a3b8", maxWidth: 520, margin: "24px auto 0", lineHeight: 1.7 }}>
-            That&apos;s less than £5 per week for 20 weeks of expert cybersecurity education — with free updates for life.
+          <p data-scroll className="text-center mt-6" style={{ fontSize: 14, color: "#d1d5db", maxWidth: 520, margin: "24px auto 0", lineHeight: 1.7 }}>
+            That&apos;s less than £5 per week for 20 weeks of expert cybersecurity education, with updates for life.
           </p>
         </section>
 
@@ -1961,9 +1958,9 @@ export default function HomePage() {
                   whileTap={{ scale: 0.95 }}
                   className="inline-block px-10 py-5 font-bold text-white text-lg"
                   style={{ background: BTN_GRAD, boxShadow: BTN_GLOW, borderRadius: 14 }}>
-                  Enrol Now — £99
+                  Enrol Now · £99
                 </motion.a>
-                <p className="mt-4" style={{ fontSize: 13, color: "#94a3b8" }}>
+                <p className="mt-4" style={{ fontSize: 13, color: "#d1d5db" }}>
                   One-time payment · Instant access · Lifetime updates
                 </p>
               </div>
@@ -1986,7 +1983,7 @@ export default function HomePage() {
             <div className="flex items-center gap-6">
               <a href="/privacy" className="text-xs font-bold text-gray-500 hover:text-gray-300 transition-colors">Privacy</a>
               <a href="/terms" className="text-xs font-bold text-gray-500 hover:text-gray-300 transition-colors">Terms</a>
-              <a href="mailto:hello@algorithmx.co.uk" className="text-xs font-bold text-gray-500 hover:text-gray-300 transition-colors">Contact</a>
+              <a href="mailto:support@algorithmx.co.uk" className="text-xs font-bold text-gray-500 hover:text-gray-300 transition-colors">Contact</a>
             </div>
           </div>
         </footer>

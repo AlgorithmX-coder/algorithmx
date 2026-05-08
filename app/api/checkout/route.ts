@@ -78,7 +78,16 @@ export async function POST(req: Request) {
       metadata: { userId: user.id, product: "cyber-heroes-academy" },
       success_url: `${origin}/dashboard?payment=success&session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${origin}/dashboard?payment=cancelled`,
-      // 30 minutes — generous, matches Stripe default.
+      // Surface the support contact on the Stripe-hosted checkout
+      // page so the parent has a clear path if anything goes wrong
+      // mid-payment. Stripe also includes this on receipts.
+      custom_text: {
+        submit: {
+          message:
+            "Need help? Email support@algorithmx.co.uk and we will respond within one working day.",
+        },
+      },
+      // 30 minutes. Generous, matches Stripe default.
       expires_at: Math.floor(Date.now() / 1000) + 60 * 30,
     });
 
