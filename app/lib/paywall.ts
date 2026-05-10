@@ -1,59 +1,41 @@
 /**
  * Single source of truth for "does this user have lesson access?"
  *
- * Three gates land you on `hasLessonAccess = true`:
+ * DEFAULT: paywall is OFF. Anyone signed in can access every lesson.
  *
- *   1. Server-side env override: `PAYWALL_DISABLED=true` set on Vercel
- *      (Production / Preview / Development scope, your choice).
- *      Use this during testing + content development. UNSET BEFORE LAUNCH.
+ * Pre-launch (right now): no env var needed. The product is in
+ * content-development mode; we want the team + invited testers to
+ * walk straight into Week 1 without setting up Stripe.
  *
- *   2. Local dev shortcut: NODE_ENV !== 'production' AND
- *      DEV_BYPASS_PAYWALL=true in .env.local. Belt-and-braces for local
- *      work; the env var alone in (1) also satisfies this case.
+ * For launch: set `PAYWALL_ENFORCED=true` on Vercel (Production scope).
+ * The gate snaps back on. Only users with `stripeStatus === 'active'`
+ * or `'paid'` get past `/lesson`. Anyone else gets bounced to the
+ * dashboard upsell card.
  *
- *   3. The user has a successful Stripe payment recorded —
- *      stripeStatus === 'active' or 'paid'.
- *
- * Call this helper from every server component or API route that needs
- * to gate against payment. Do NOT inline the stripeStatus check —
- * keeping the env-var bypass logic in one file means you flip a single
- * flag to open / close the gate everywhere.
+ * Call this helper from every server component or API route that
+ * needs to gate against payment. Do NOT inline the stripeStatus
+ * check. Keeping the logic in one file means flipping a single env
+ * var closes the gate everywhere.
  */
 export function hasLessonAccess(user: {
   stripeStatus?: string | null;
 } | null | undefined): boolean {
-  // Env override - works in prod too. Set PAYWALL_DISABLED=true on
-  // Vercel to unlock all lessons without payment. UNSET BEFORE LAUNCH.
-  if (process.env.PAYWALL_DISABLED === "true") return true;
+  // Default: paywall is OFF. Only enforce when the env var is set.
+  if (process.env.PAYWALL_ENFORCED !== "true") return true;
 
-  // Legacy local-dev shortcut. Kept so .env.local files from earlier in
-  // the project still work.
-  if (
-    process.env.NODE_ENV !== "production" &&
-    process.env.DEV_BYPASS_PAYWALL === "true"
-  ) {
-    return true;
-  }
-
-  // Stripe payment recorded.
+  // Stripe payment recorded. The only way past the gate when
+  // enforcement is on.
   return (
     user?.stripeStatus === "active" || user?.stripeStatus === "paid"
   );
 }
 
 /**
- * Convenience: is the paywall currently bypassed by env (any scope)?
- * Used by the dashboard to hide the £99 upsell card when the gate is
- * open so the parent doesn't see "Buy now" but then walk into a free
- * lesson - the UI would be incoherent.
+ * Is the paywall currently being enforced? Used by the dashboard to
+ * show or hide the £99 upsell card. When the gate is off the upsell
+ * shouldn't appear. It would be incoherent to show "Buy now" and then
+ * let the parent walk into a free lesson.
  */
-export function isPaywallBypassed(): boolean {
-  if (process.env.PAYWALL_DISABLED === "true") return true;
-  if (
-    process.env.NODE_ENV !== "production" &&
-    process.env.DEV_BYPASS_PAYWALL === "true"
-  ) {
-    return true;
-  }
-  return false;
+export function isPaywallEnforced(): boolean {
+  return process.env.PAYWALL_ENFORCED === "true";
 }
