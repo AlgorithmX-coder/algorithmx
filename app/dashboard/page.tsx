@@ -13,6 +13,7 @@ import {
   DashboardParticles,
 } from "@/app/components/DashboardAtmosphere";
 import SubscribeButton from "@/app/components/SubscribeButton";
+import { hasLessonAccess } from "@/app/lib/paywall";
 
 /* ───────────────── PIXAR PALETTE ───────────────── */
 // Centralised so every surface, gradient, and shadow on the dashboard
@@ -144,8 +145,11 @@ export default async function DashboardPage({
   if (childProfiles.length === 0) redirect("/onboarding");
 
   const activeChild = childProfiles[0];
-  const hasAccess =
-    user?.stripeStatus === "active" || user?.stripeStatus === "paid";
+  // hasAccess honours the shared paywall helper - both Stripe status
+  // AND the PAYWALL_DISABLED env flag. Flip the flag on Vercel to
+  // hide the upsell card during testing and let the parent walk
+  // straight into the course.
+  const hasAccess = hasLessonAccess(user);
 
   const course = await prisma.course.findFirst({
     where: { title: "Cyber Heroes Academy" },
