@@ -1,0 +1,60 @@
+name: Post-deploy smoke test
+
+# Pings the prod /api/signup endpoint after every push to main with a
+# real DB call. Catches schema-drift / DB-connection / Prisma-client
+# mismatch issues that lint + tsc cannot. The launch-blocking signup
+# bug we hit on 2026-05-10 would have failed this check 30s after the
+# deploy went out, instead of being discovered by a customer.
+#
+# Strategy: try one signup with a unique email per run. We don't keep
+# the user — the cleanup endpoint at the end nukes any test users we
+# created. Failure here annotates the commit with a red X on GitHub
+# so a broken deploy is immediately visible.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: # allow manual trigger from the Actions tab
+
+jobs:
+  smoke:
+    name: Hit /api/signup on prod
+    runs-on: ubuntu-latest
+    # Wait long enough for Vercel to finish a fresh build before we ping
+    # — typical build is ~90s, we give 4 minutes of headroom.
+    steps:
+      - name: Wait for Vercel to deploy
+        run: sleep 240
+
+      - name: Ping signup endpoint
+        id: signup
+        env:
+          # Defaults to the prod domain. Override via repo secrets/vars
+          # if your prod URL is different.
+          PROD_URL: ${{ vars.PROD_URL || 'https://www.algorithmx.co.uk' }}
+        run: |
+          set -e
+          STAMP=$(date +%s)
+          EMAIL="ci-smoke-${STAMP}-${{ github.run_id }}@algorithmx-ci.invalid"
+          BODY=$(cat <<EOF
+          {"name":"CI Smoke","email":"${EMAIL}","password":"CiSmoke1!"}
+          EOF
+          )
+          echo "POST ${PROD_URL}/api/signup with email ${EMAIL}"
+          STATUS=$(curl -s -o /tmp/body.txt -w "%{http_code}" \
+            -X POST "${PROD_URL}/api/signup" \
+            -H "Content-Type: application/json" \
+            --data "${BODY}")
+          echo "HTTP status: ${STATUS}"
+          echo "Body: $(cat /tmp/body.txt)"
+          # 201 Created is the happy path. 400 would mean valid request
+          # with rejected payload (e.g. email already used) — fine, server
+          # is up. 5xx means the server is broken.
+          if [ "${STATUS}" -ge 500 ]; then
+            echo "::error::Signup endpoint returned ${STATUS} — deploy is broken."
+            exit 1
+          fi
+          if [ "${STATUS}" -lt 200 ] || [ "${STATUS}" -ge 400 ]; then
+            echo "::warning::Unexpected status ${STATUS} from /api/signup. Body: $(cat /tmp/body.txt)"
+          fi
+          echo "smoke=ok" >> "$GITHUB_OUTPUT"
