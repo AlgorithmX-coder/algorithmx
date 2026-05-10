@@ -1,7 +1,7 @@
 "use client";
 
 /*
- * VictoryScene — Case 16 post-boss "You saved Adam and Layla" reward.
+ * VictoryScene - Case 16 post-boss "You saved Adam and Layla" reward.
  *
  * Big celebratory beat. Bright golden palette, hero photo in a gold
  * frame, achievement chips drifting in on a stagger, fireworks burst,
@@ -53,7 +53,7 @@ export default function VictoryScene({
 }: VictorySceneProps) {
   return (
     <SceneFrame>
-      {/* Cyber victory backdrop — replaces the golden Pixar dusk
+      {/* Cyber victory backdrop - replaces the golden Pixar dusk
           layers (SunsetBackdrop / DistantRidges / WoodFloor) with
           deep navy + cyan/violet/lime nebula bleeds matching the
           rest of the cyber app. The fireworks + coin rain stay since
@@ -86,7 +86,7 @@ export default function VictoryScene({
         <HeroFrame src={heroPhotoSrc} />
       </motion.div>
 
-      {/* Achievement chips — lifted from top:70% to top:62% so on
+      {/* Achievement chips - lifted from top:70% to top:62% so on
           shorter viewports the wrapping row no longer collides with
           the bonus-coins chip + the Claim Reward button below. */}
       <div
@@ -139,7 +139,7 @@ export default function VictoryScene({
         <span style={{ fontSize: 20 }}>🪙</span>+{bonusCoins} bonus coins
       </motion.div>
 
-      {/* Cyber Claim Reward CTA — replaces PrimaryButton (warm gold)
+      {/* Cyber Claim Reward CTA - replaces PrimaryButton (warm gold)
           for the cyber victory surface. */}
       <div
         style={{

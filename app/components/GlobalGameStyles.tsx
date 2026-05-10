@@ -3,7 +3,7 @@
 import { useEffect } from "react";
 
 /**
- * GlobalGameStyles — injects one stylesheet for hover-glow + focus-visible
+ * GlobalGameStyles - injects one stylesheet for hover-glow + focus-visible
  * polish that applies across every screen of the lesson shell. Stays in
  * one place so we can tweak the game-feel of buttons project-wide
  * without hunting through every component.
@@ -13,7 +13,7 @@ import { useEffect } from "react";
 
 const ID = "ax-global-game-styles";
 const CSS = `
-/* Hover lift — applies to any button that opts in via [data-ax-juice]
+/* Hover lift - applies to any button that opts in via [data-ax-juice]
  * (so we don't accidentally disturb the bespoke buttons). */
 button[data-ax-juice]:hover {
   transform: translateY(-1px);
@@ -41,7 +41,7 @@ select:focus-visible,
   border-radius: 8px;
 }
 
-/* Native range inputs — keep the outline subtler since the thumb is
+/* Native range inputs - keep the outline subtler since the thumb is
  * already visible. */
 input[type="range"]:focus-visible {
   outline: 2px solid #00e5ff;
@@ -59,7 +59,7 @@ input, textarea {
   color: #ffffff;
 }
 
-/* Disabled button styling — uniform "you can't click this right now"
+/* Disabled button styling - uniform "you can't click this right now"
  * cue across the whole app. */
 button:disabled,
 [aria-disabled="true"] {
@@ -68,7 +68,7 @@ button:disabled,
   filter: grayscale(0.5);
 }
 
-/* Reduce-motion override — when the user has the toggle on, kill any
+/* Reduce-motion override - when the user has the toggle on, kill any
  * decorative animations registered by other components. */
 html[data-ax-reduce-motion="true"] *,
 html[data-ax-reduce-motion="true"] *::before,

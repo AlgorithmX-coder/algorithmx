@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * Arena3D — Three.js "cyber command centre" arena for BossBattle.
+ * Arena3D - Three.js "cyber command centre" arena for BossBattle.
  *
  * Renders behind the transparent PixiJS canvas. Features:
  *   1. Floating code snippets (drifting text planes)
@@ -22,11 +22,11 @@ import * as THREE from "three";
 export interface Arena3DProps {
   width: number;
   height: number;
-  /** Boss phase 0-3 — affects lighting, screens, arc frequency. */
+  /** Boss phase 0-3 - affects lighting, screens, arc frequency. */
   phase: 0 | 1 | 2 | 3;
   /** Camera shake magnitude. Decays internally; each pulse raises this. */
   shakeIntensity: number;
-  /** Incrementing counter — bump to trigger a shake even if intensity is unchanged. */
+  /** Incrementing counter - bump to trigger a shake even if intensity is unchanged. */
   shakeKey?: number;
   /** Lighting & camera mood. */
   mood: "normal" | "danger" | "victory";
@@ -36,7 +36,7 @@ export interface Arena3DProps {
    * does a full-room flash and every floating element pulses.
    */
   countdownPulse?: { label: string; key: number } | null;
-  /** Selected hero — drives the arena's lighting palette. Adam gets a
+  /** Selected hero - drives the arena's lighting palette. Adam gets a
    *  cool tech-blue/cyan tone; Layla gets cosmic-violet/pink/coral. */
   heroId?: "adam" | "layla";
 }
@@ -48,7 +48,7 @@ type Mood = Arena3DProps["mood"];
 // Palettes
 // ──────────────────────────────────────────────────────────
 
-// Per-hero arena palette — Layla gets cosmic violet/pink/coral/gold,
+// Per-hero arena palette - Layla gets cosmic violet/pink/coral/gold,
 // Adam gets the cool tech-blue/cyan tone he wears on the hero-select.
 // Same phase structure for both:
 //   Phase 0 = full HP (calm)
@@ -120,7 +120,7 @@ const LAYLA_VICTORY_PALETTE = {
   fogDensity: 0.0,
 };
 
-// Adam — Adam's hero-select accent is #00e5ff. Phase 0 reads as a deep
+// Adam - Adam's hero-select accent is #00e5ff. Phase 0 reads as a deep
 // tech-cyan command centre; rage phases warm toward gold/coral so the
 // danger reading stays consistent across heroes.
 const ADAM_PHASE_PALETTE = {
@@ -187,7 +187,7 @@ const ADAM_VICTORY_PALETTE = {
   fogDensity: 0.0,
 };
 
-// Default export bound at module scope — replaced inside the component
+// Default export bound at module scope - replaced inside the component
 // with the per-hero variant. Tools that read PHASE_PALETTE outside the
 // component get Layla's by default.
 const PHASE_PALETTE = LAYLA_PHASE_PALETTE;
@@ -542,7 +542,7 @@ function makeShieldAlphaTexture(size = 128): THREE.Texture | null {
   ctx.fill();
   ctx.globalCompositeOperation = "source-over";
 
-  // Cross in the centre (restored — paint white)
+  // Cross in the centre (restored - paint white)
   ctx.fillStyle = "#ffffff";
   ctx.fillRect(cx - 6, size * 0.35, 12, size * 0.35);
   ctx.fillRect(size * 0.3, size * 0.48, size * 0.4, 12);
@@ -627,7 +627,7 @@ function makeShieldLogoTexture(size = 512): THREE.Texture | null {
   ctx.stroke();
   ctx.shadowBlur = 0;
 
-  // (Removed the "AX" wordmark below the shield emblem — it read as a
+  // (Removed the "AX" wordmark below the shield emblem - it read as a
   // dev placeholder during the boss fight. The crossed-sword X-emblem
   // above already serves as the arena's "battle" marker.)
 
@@ -638,7 +638,7 @@ function makeShieldLogoTexture(size = 512): THREE.Texture | null {
 }
 
 // ──────────────────────────────────────────────────────────
-// Live canvas textures — redraw on demand
+// Live canvas textures - redraw on demand
 // ──────────────────────────────────────────────────────────
 
 interface LiveTex {
@@ -662,7 +662,7 @@ function makeLiveCanvas(size = 256): LiveTex | null {
 
 function drawRadar(lt: LiveTex, t: number, warning: boolean) {
   const { ctx, size } = lt;
-  ctx.fillStyle = "rgba(4, 8, 20, 0.25)"; // trail — creates comet tail on sweep
+  ctx.fillStyle = "rgba(4, 8, 20, 0.25)"; // trail - creates comet tail on sweep
   ctx.fillRect(0, 0, size, size);
 
   const cx = size / 2;
@@ -1088,7 +1088,7 @@ type CameraMode = "default" | "phaseOrbit" | "victoryOrbit";
 interface CameraState {
   mode: CameraMode;
   modeStart: number;
-  // Lateral pulse triggered by a shake — peaks, then returns.
+  // Lateral pulse triggered by a shake - peaks, then returns.
   lateralPulseStart: number;
   lateralPulseSide: number; // -1 (toward hero/left), +1 (toward boss/right), 0 (inactive)
 }
@@ -1138,7 +1138,7 @@ interface SceneRefs {
   binaryBoostUntil: number;
   binaryDangerUntil: number;
 
-  // New — volumetric beams, reflections, conduits, haze, countdown, camera.
+  // New - volumetric beams, reflections, conduits, haze, countdown, camera.
   lightBeams: LightBeam[];
   reflections: Reflection[];
   conduits: Conduit[];
@@ -1173,7 +1173,7 @@ export default function Arena3D({
   countdownPulse = null,
   heroId = "adam",
 }: Arena3DProps) {
-  // Per-hero palette switch — captured ONCE on mount; heroId doesn't
+  // Per-hero palette switch - captured ONCE on mount; heroId doesn't
   // change mid-fight in practice, and the scene-setup useEffect runs
   // once so the inner closures bind to the correct table.
   const PHASE_PALETTE = heroId === "adam" ? ADAM_PHASE_PALETTE : LAYLA_PHASE_PALETTE;
@@ -1273,7 +1273,7 @@ export default function Arena3D({
 
     const now = performance.now() / 1000;
     r.codeFlashUntil = now + 0.3;
-    // Hex node flash duration scales with shake intensity — small hits
+    // Hex node flash duration scales with shake intensity - small hits
     // get a quick blink (0.25s), big-combo / final-blow hits get a
     // sustained flare (up to 0.7s) so the arena visibly reacts.
     const flashDur = shakeIntensity >= 12 ? 0.7 : shakeIntensity >= 8 ? 0.45 : 0.25;
@@ -1295,7 +1295,7 @@ export default function Arena3D({
         s.warningUntil = Math.max(s.warningUntil, now + 0.4);
       }
     });
-    // Lateral camera pulse — boss attack (danger) pushes camera toward hero
+    // Lateral camera pulse - boss attack (danger) pushes camera toward hero
     // side (−x), hero attack pushes it toward boss side (+x).
     r.cameraState.lateralPulseStart = now;
     r.cameraState.lateralPulseSide = moodRef.current === "danger" ? -1 : 1;
@@ -1383,7 +1383,7 @@ export default function Arena3D({
     pool.position.y = -0.02;
     scene.add(pool);
 
-    // Radial gradient glow under the two character positions — draws the
+    // Radial gradient glow under the two character positions - draws the
     // eye toward the fighters without overpowering the hex grid.
     const radialTex = makeRadialGlowTexture();
     if (radialTex) disposables.push(radialTex);
@@ -1409,7 +1409,7 @@ export default function Arena3D({
     const ringGeomInner = new THREE.RingGeometry(3, 3.15, 64);
     disposables.push(ringGeomInner);
     const ringMatInner = new THREE.MeshBasicMaterial({
-      // Brighter, more vibrant blue — the ring is the focal point.
+      // Brighter, more vibrant blue - the ring is the focal point.
       color: 0xa06aff,
       transparent: true,
       opacity: 0.4,
@@ -1440,7 +1440,7 @@ export default function Arena3D({
     scene.add(ringOuter);
 
     // ── Floor shield-logo watermark (centre, slightly forward) ──
-    // Soft radial halo beneath the logo — spreads the glow across the floor.
+    // Soft radial halo beneath the logo - spreads the glow across the floor.
     const logoHaloTex = makeRadialGlowTexture();
     if (logoHaloTex) disposables.push(logoHaloTex);
     const logoHaloGeom = new THREE.PlaneGeometry(4.2, 4.2);
@@ -1479,7 +1479,7 @@ export default function Arena3D({
     floorLogo.position.set(0, 0.022, 0.5);
     scene.add(floorLogo);
 
-    // Ring framing the logo — rotates opposite to the inner arena ring.
+    // Ring framing the logo - rotates opposite to the inner arena ring.
     const logoRingGeom = new THREE.RingGeometry(1.4, 1.5, 64);
     disposables.push(logoRingGeom);
     const floorLogoRingMat = new THREE.MeshBasicMaterial({
@@ -1496,7 +1496,7 @@ export default function Arena3D({
     floorLogoRing.position.set(0, 0.016, 0.5);
     scene.add(floorLogoRing);
 
-    // Shockwave pool — shared geometry, per-pulse material & mesh.
+    // Shockwave pool - shared geometry, per-pulse material & mesh.
     const shockwaveGeom = new THREE.RingGeometry(0.45, 0.55, 48);
     disposables.push(shockwaveGeom);
     const shockwavePool: ShockwavePulse[] = [];
@@ -1554,7 +1554,7 @@ export default function Arena3D({
       const live = makeLiveCanvas(256);
       if (live) disposables.push(live.texture);
 
-      // Backlight glow plane (slightly larger, additive) — emissive halved
+      // Backlight glow plane (slightly larger, additive) - emissive halved
       // so the screens read as subtle background decor.
       const glowGeom = new THREE.PlaneGeometry(cfg.w + 0.2, cfg.h + 0.2);
       disposables.push(glowGeom);
@@ -1941,7 +1941,7 @@ export default function Arena3D({
     }
 
     // ── Floating particles ──
-    // Fewer but larger + slightly brighter — better depth, less visual noise.
+    // Fewer but larger + slightly brighter - better depth, less visual noise.
     const particles: THREE.Mesh[] = [];
     const particleCount = isMobile ? 20 : 50;
     const partGeom = new THREE.SphereGeometry(1, 6, 6);
@@ -2005,7 +2005,7 @@ export default function Arena3D({
       );
       mesh.rotation.z = (Math.random() - 0.5) * 0.3;
       mesh.rotation.y = (Math.random() - 0.5) * 0.4;
-      // Lower ceiling (max 0.10) — snippets should read as watermarks.
+      // Lower ceiling (max 0.10) - snippets should read as watermarks.
       const baseOp = 0.05 + Math.random() * 0.05;
       mat.opacity = baseOp;
       scene.add(mesh);
@@ -2026,7 +2026,7 @@ export default function Arena3D({
     const nodeLinks: NodeLink[] = [];
     const hexGeom = makeHexagonGeometry(0.15);
     disposables.push(hexGeom);
-    // Trimmed (was 6 mobile / 10 desktop) — node bobbing + per-frame
+    // Trimmed (was 6 mobile / 10 desktop) - node bobbing + per-frame
     // material lerp scaled with count and was contributing to jank.
     const nodeCount = isMobile ? 4 : 6;
     const nodePositions: THREE.Vector3[] = [];
@@ -2042,7 +2042,7 @@ export default function Arena3D({
       const mat = new THREE.MeshBasicMaterial({
         color: baseColour.clone(),
         transparent: true,
-        // Emissive intensity reduced 40% (0.6 → 0.36) — subtle background.
+        // Emissive intensity reduced 40% (0.6 → 0.36) - subtle background.
         opacity: 0.36,
         side: THREE.DoubleSide,
         blending: THREE.AdditiveBlending,
@@ -2358,7 +2358,7 @@ export default function Arena3D({
       } else {
         innerRingMat.color.setHex(0xa06aff);
       }
-      // Subtle 3s pulse between 0.35 and 0.45 — the ring breathes.
+      // Subtle 3s pulse between 0.35 and 0.45 - the ring breathes.
       const ringPulse = 0.4 + 0.05 * Math.sin((t * Math.PI * 2) / 3);
       innerRingMat.opacity = ringPulse;
       outerRingMat.opacity = ringPulse * 0.38;
@@ -2466,7 +2466,7 @@ export default function Arena3D({
               ? 0xff7a59
               : 0x7c5cff;
         glowMat.color.lerp(new THREE.Color(targetGlow), lerpSpeed);
-        // Halved — screens are decor, not foreground UI.
+        // Halved - screens are decor, not foreground UI.
         glowMat.opacity = 0.1 + 0.04 * Math.sin(t * 1.3 + s.bobDelay);
       });
 
@@ -2533,13 +2533,13 @@ export default function Arena3D({
 
       // ── Hex nodes bob + flash ──
       const nodeFlashing = t < r.nodeFlashUntil;
-      // How "fresh" the flash is — used to make big-hit flashes peak
+      // How "fresh" the flash is - used to make big-hit flashes peak
       // brighter and add a small position scatter.
       const flashFreshness = nodeFlashing
         ? Math.max(0, Math.min(1, (r.nodeFlashUntil - t) / 0.5))
         : 0;
       r.hexNodes.forEach((n) => {
-        // Big-hit scatter — small outward kick on the freshest flash
+        // Big-hit scatter - small outward kick on the freshest flash
         // frames, decaying as the flash fades.
         const scatterX = nodeFlashing ? (Math.sin(n.phase * 11.3) * 0.18 * flashFreshness) : 0;
         const scatterY = nodeFlashing ? (Math.cos(n.phase * 9.7) * 0.15 * flashFreshness) : 0;
@@ -2547,7 +2547,7 @@ export default function Arena3D({
         n.mesh.position.x += (scatterX - (n.mesh.position.x - (n.mesh.userData.baseX ?? n.mesh.position.x))) * 0.25;
         n.mesh.rotation.z += (0.003 + flashFreshness * 0.02) * (dt * 60);
         const mat = n.mesh.material as THREE.MeshBasicMaterial;
-        // Peak opacity scales with flash freshness — quick blink stays
+        // Peak opacity scales with flash freshness - quick blink stays
         // at 0.6, big-hit flares ramp up to 1.0 at the moment of impact.
         const peak = 0.6 + flashFreshness * 0.4;
         const targetOp = nodeFlashing ? peak : 0.33;
@@ -2615,7 +2615,7 @@ export default function Arena3D({
       if (r.electricArc) {
         const arc = r.electricArc;
         if (t < arc.activeUntil) {
-          // still visible — no-op
+          // still visible - no-op
         } else if (arc.line.visible) {
           arc.line.visible = false;
           arc.material.opacity = 0;
@@ -2683,7 +2683,7 @@ export default function Arena3D({
       });
 
       // ── Energy conduits ──
-      // Fire a new conduit pulse on a schedule — faster in phase 2+.
+      // Fire a new conduit pulse on a schedule - faster in phase 2+.
       const conduitInterval = currentPhase >= 2 ? 1.5 + Math.random() : 3 + Math.random();
       if (t >= r.conduitNextAt && r.conduits.length > 0) {
         const idx = Math.floor(Math.random() * r.conduits.length);
@@ -2717,7 +2717,7 @@ export default function Arena3D({
 
       // ── Countdown effects (ring pulse + GO flash) ──
       if (countdownActive) {
-        // Extra pulse on the arena ring while counting — just bump opacity.
+        // Extra pulse on the arena ring while counting - just bump opacity.
         innerRingMat.opacity = Math.min(0.85, innerRingMat.opacity + 0.35);
         outerRingMat.opacity = Math.min(0.6, outerRingMat.opacity + 0.2);
       }
@@ -2782,7 +2782,7 @@ export default function Arena3D({
       const camLerp = 1 - Math.pow(1 - 0.03, dt * 60);
       r.camera.position.lerp(tmpTarget, camLerp);
 
-      // Shake overlay (not smoothed — instant per-frame jitter).
+      // Shake overlay (not smoothed - instant per-frame jitter).
       currentShakeRef.current = shakeIntensityRef.current;
       shakeIntensityRef.current *= Math.pow(0.85, dt * 60);
       if (shakeIntensityRef.current < 0.01) shakeIntensityRef.current = 0;

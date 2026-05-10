@@ -1,5 +1,5 @@
 /**
- * Save-slot system — 3 slots, each with its own namespaced progression
+ * Save-slot system - 3 slots, each with its own namespaced progression
  * blob in localStorage.  Mirrors the slot-picker pattern from console games
  * (pick a save, see hours/last-played + progress, "New Game" / "Continue").
  *
@@ -9,11 +9,11 @@
  */
 
 export interface SaveSlot {
-  /** Stable identifier — `slot-1`, `slot-2`, `slot-3`. */
+  /** Stable identifier - `slot-1`, `slot-2`, `slot-3`. */
   id: string;
   /** Free-form display name the player chose (or default). */
   name: string;
-  /** Avatar/character key — drives the slot card portrait. */
+  /** Avatar/character key - drives the slot card portrait. */
   avatar: "adam" | "layla";
   /** Unix ms when the slot was created. */
   createdAt: number;
@@ -55,7 +55,7 @@ function writeSlots(slots: Record<string, SaveSlot>): void {
   try {
     window.localStorage.setItem(SLOTS_KEY, JSON.stringify(slots));
   } catch {
-    /* quota — ignore */
+    /* quota - ignore */
   }
 }
 
@@ -106,7 +106,7 @@ export function deleteSlot(id: string): void {
     } catch {
       /* ignore */
     }
-    /* Wipe every per-slot lesson-runtime blob — autosaves, inventory,
+    /* Wipe every per-slot lesson-runtime blob - autosaves, inventory,
      * saved password, etc. Otherwise deleting Adam's slot leaves his
      * mid-lesson coins / inventory / password under the same slot id,
      * which then bleeds into the next player to occupy that slot. */
@@ -129,7 +129,7 @@ export function updateSlot(id: string, patch: Partial<SaveSlot>): void {
   writeSlots(slots);
 }
 
-/** Mark slot as just played — bump lastPlayedAt, optionally tick playSeconds. */
+/** Mark slot as just played - bump lastPlayedAt, optionally tick playSeconds. */
 export function touchSlot(id: string, addSeconds = 0): void {
   const slots = readSlots();
   const current = slots[id];

@@ -1,7 +1,7 @@
 "use client";
 
 /*
- * ChooseYourPath — Pixar 2.5D commercial polish.
+ * ChooseYourPath - Pixar 2.5D commercial polish.
  *
  * Game logic preserved (typed scenario text, two doors, pick to open,
  * see consequence, review correct answer, advance). Visuals fully
@@ -57,8 +57,8 @@ const DEFAULT_SCENARIOS: Scenario[] = [
   {
     setup: "Your friend says: \"Tell me your password, I'll help you with the game level!\"",
     choices: [
-      { text: "Share your password — they're your friend", isSafe: false, consequence: "Even friends shouldn't know your password. They might accidentally share it or their account could get hacked." },
-      { text: "Say no — passwords are secret", isSafe: true, consequence: "Perfect! Your password is YOUR secret. Nobody else should know it except your parents." },
+      { text: "Share your password - they're your friend", isSafe: false, consequence: "Even friends shouldn't know your password. They might accidentally share it or their account could get hacked." },
+      { text: "Say no - passwords are secret", isSafe: true, consequence: "Perfect! Your password is YOUR secret. Nobody else should know it except your parents." },
     ],
   },
   {
@@ -130,7 +130,7 @@ interface Particle {
   delay: number;
 }
 
-// Both portals are visually IDENTICAL pre-decision — fixes a giveaway
+// Both portals are visually IDENTICAL pre-decision - fixes a giveaway
 // the user spotted where the darker door always happened to be the
 // safe one (data ordering bug + shade difference between doors). Now
 // they're the same cyan/cosmic cyber portal; shading is symmetric.
@@ -694,7 +694,7 @@ export default function ChooseYourPath({
       {showIntro && (
         <ExerciseIntro
           title="Choose Your Path"
-          description="You'll face real online situations. Pick a door to see what happens — choose wisely!"
+          description="You'll face real online situations. Pick a door to see what happens - choose wisely!"
           icon="🚪"
           controls="Click a door to choose"
           onStart={() => setShowIntro(false)}

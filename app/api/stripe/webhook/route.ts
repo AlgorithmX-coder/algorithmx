@@ -38,7 +38,7 @@ export async function POST(req: Request) {
   const secret = process.env.STRIPE_WEBHOOK_SECRET;
   if (!secret) {
     console.error(
-      "[stripe/webhook] STRIPE_WEBHOOK_SECRET not set — refusing to process events",
+      "[stripe/webhook] STRIPE_WEBHOOK_SECRET not set - refusing to process events",
     );
     return NextResponse.json(
       { error: "Webhook not configured" },
@@ -102,7 +102,7 @@ async function markPaid(session: Stripe.Checkout.Session) {
     );
     return;
   }
-  // payment_status is the source of truth — only mark active when it
+  // payment_status is the source of truth - only mark active when it
   // genuinely settled.  For card payments this is 'paid' on completion.
   if (session.payment_status !== "paid") return;
 

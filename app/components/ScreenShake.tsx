@@ -25,7 +25,7 @@ export default function ScreenShake({
   const initialRef = useRef(trigger);
 
   useEffect(() => {
-    // Skip the initial render — we only shake on subsequent trigger changes.
+    // Skip the initial render - we only shake on subsequent trigger changes.
     if (trigger === initialRef.current) return;
     setShaking(false);
     // Force restart by re-flowing across a microtask.

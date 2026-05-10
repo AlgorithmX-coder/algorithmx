@@ -1,5 +1,5 @@
 /**
- * activityLog — small append-only log of recent achievements across
+ * activityLog - small append-only log of recent achievements across
  * all save slots. Drives the recent-activity marquee on the title
  * screen (so the kid sees "Adam earned Phishing Hunter" sliding by).
  *
@@ -9,7 +9,7 @@
 export type ActivityKind = "rank-up" | "badge" | "completion";
 
 export interface ActivityEntry {
-  /** Stable id — used for React keys + dedupe. */
+  /** Stable id - used for React keys + dedupe. */
   id: string;
   /** Unix ms timestamp. */
   ts: number;
@@ -48,7 +48,7 @@ function write(entries: ActivityEntry[]): void {
       JSON.stringify(entries.slice(0, MAX_ENTRIES)),
     );
   } catch {
-    /* quota — ignore */
+    /* quota - ignore */
   }
 }
 
@@ -79,7 +79,7 @@ export function appendActivity(
   }
 
   const list = read();
-  /* Dedupe — drop any older entry with the same kind + text. */
+  /* Dedupe - drop any older entry with the same kind + text. */
   const filtered = list.filter(
     (e) => !(e.kind === entry.kind && e.text === entry.text),
   );

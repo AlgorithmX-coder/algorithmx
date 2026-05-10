@@ -1,7 +1,7 @@
 "use client";
 
 /*
- * BattleArena — Pixar 2.5D climactic showdown.
+ * BattleArena - Pixar 2.5D climactic showdown.
  *
  * Storm palette during the fight (heavy purple sky with coral light
  * breaking through), golden sunrise during victory. Hero on the left
@@ -56,9 +56,9 @@ type BattleArenaProps = {
 
 type Phase = "intro" | "attack-announce" | "question" | "feedback" | "rage-qte" | "victory";
 
-// Three telegraphed boss attack types — cycled by qIdx so every question
+// Three telegraphed boss attack types - cycled by qIdx so every question
 // reads as a distinct "move" the Raccoon is throwing. Pure visual /
-// narrative variation — scoring math is unchanged so the kid doesn't get
+// narrative variation - scoring math is unchanged so the kid doesn't get
 // punished for hitting the wrong attack-type "tell".
 type AttackType = "lure" | "brute" | "trick";
 
@@ -264,7 +264,7 @@ function FallbackRaccoon({ size = 120 }: { size?: number }) {
       {/* mask */}
       <ellipse cx="42" cy="62" rx="16" ry="11" fill="#04050d" />
       <ellipse cx="78" cy="62" rx="16" ry="11" fill="#04050d" />
-      {/* eyes — ember red, not horror red */}
+      {/* eyes - ember red, not horror red */}
       <circle cx="42" cy="62" r="5" fill="#ff5fb3" />
       <circle cx="78" cy="62" r="5" fill="#ff5fb3" />
       <circle cx="43.5" cy="60.5" r="1.5" fill="#e8edff" />
@@ -308,30 +308,30 @@ export default function BattleArena({
   const [attackWaveKey, setAttackWaveKey] = useState(0);
   const [bannerKey, setBannerKey] = useState(0);
 
-  // SUPER-MOVE state — armed at combo >=3, fires triple damage on the
+  // SUPER-MOVE state - armed at combo >=3, fires triple damage on the
   // next correct answer. The pill is tappable; tapping arms it for the
   // very next question. Auto-disarms on a wrong answer.
   const [superArmed, setSuperArmed] = useState(false);
-  // Smooth HP-bar drain — drain target the bar tweens toward, distinct
+  // Smooth HP-bar drain - drain target the bar tweens toward, distinct
   // from the "logical" bossHP that drives game state. Lets the visible
   // bar slide down over ~600ms instead of snapping.
   const [bossHPDisplay, setBossHPDisplay] = useState(total);
-  // Hero-attack flash — fires on correct, drives the lunge animation
+  // Hero-attack flash - fires on correct, drives the lunge animation
   // + the cyan beam from Adam to the boss.
   const [attackFlashKey, setAttackFlashKey] = useState(0);
-  // Final-blow slow-mo — true while the killing blow plays out so the
+  // Final-blow slow-mo - true while the killing blow plays out so the
   // CSS layer can apply the slow-mo zoom + chromatic effect.
   const [finalBlowActive, setFinalBlowActive] = useState(false);
 
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const completeFiredRef = useRef(false);
   const defeatFiredRef = useRef(false);
-  // Stage 2 — fires once when the boss first crosses 50% HP, between the
+  // Stage 2 - fires once when the boss first crosses 50% HP, between the
   // landing hit and the next question. The kid swats 3 phishing emails
   // mid-flight to weather the Raccoon's rage spike.
   const rageFiredRef = useRef(false);
 
-  // SHIELD power-up — one charge per fight. Auto-armed at start. When
+  // SHIELD power-up - one charge per fight. Auto-armed at start. When
   // the kid picks a wrong answer, if shieldArmed is true the shield
   // absorbs the hit: combo isn't broken, super isn't disarmed, and a
   // brief "SHIELDED!" overlay plays. Then advance to next question.
@@ -342,7 +342,7 @@ export default function BattleArena({
     ensureStyles();
   }, []);
 
-  // Smooth HP-bar drain — when bossHP changes, tween the display value
+  // Smooth HP-bar drain - when bossHP changes, tween the display value
   // toward it over ~600ms so the bar slides instead of snapping. Single
   // RAF loop, killed cleanly on unmount.
   useEffect(() => {
@@ -417,7 +417,7 @@ export default function BattleArena({
   const currentQ = questions[qIdx % total];
   const bossLowHP = bossHP > 0 && bossHP / total < 0.25;
   const bossDefeatedAnim = phase === "victory";
-  // Telegraphed attack — cycles through lure / brute / trick so each
+  // Telegraphed attack - cycles through lure / brute / trick so each
   // question feels like a different "move" the boss is throwing.
   const currentAttackType: AttackType = ATTACK_CYCLE[qIdx % ATTACK_CYCLE.length];
   const attackMeta = ATTACK_META[currentAttackType];
@@ -449,7 +449,7 @@ export default function BattleArena({
         setDamageKey((k) => k + 1);
         setAttackFlashKey((k) => k + 1);
 
-        // Final-blow slow-mo — when this hit drops boss HP to 0, freeze
+        // Final-blow slow-mo - when this hit drops boss HP to 0, freeze
         // the room for ~1.4s before the victory phase takes over.
         const isFinalBlow = newHP <= 0;
         if (isFinalBlow) setFinalBlowActive(true);
@@ -482,7 +482,7 @@ export default function BattleArena({
           setPhase("attack-announce");
         }, isFinalBlow ? 1400 : 1000);
       } else {
-        // SHIELD: if armed, absorb the wrong answer entirely — no penalty,
+        // SHIELD: if armed, absorb the wrong answer entirely - no penalty,
         // no combo break, no super disarm. Single-charge per fight.
         if (shieldArmed) {
           setShieldArmed(false);
@@ -503,7 +503,7 @@ export default function BattleArena({
         playSound("hitImpact");
         wrongAnswerShake();
         setCombo(0);
-        // Disarm super-move on a miss — the kid had to commit the
+        // Disarm super-move on a miss - the kid had to commit the
         // armed shot to a correct answer.
         if (superArmed) setSuperArmed(false);
         setAttackWaveKey((k) => k + 1);
@@ -535,7 +535,7 @@ export default function BattleArena({
     ? "baHPGlowPulse 0.8s ease-in-out infinite"
     : undefined;
   const heroHpPct = Math.max(0, ((total - (total - score - (qIdx - score))) / total) * 100);
-  // Hero "wellbeing" bar — drains slightly with each wrong answer.
+  // Hero "wellbeing" bar - drains slightly with each wrong answer.
   const wrongCount = qIdx - score;
   const heroPct = Math.max(0, ((total - wrongCount) / total) * 100);
   void heroHpPct;
@@ -557,13 +557,13 @@ export default function BattleArena({
         minHeight: "min(82vh, 760px)",
       }}
     >
-      {/* Atmosphere — storm during fight, golden after */}
+      {/* Atmosphere - storm during fight, golden after */}
       <SunsetBackdrop variant={variant} parallax={{ x: 0, y: 0 }} showSun={!isVictory} />
       <DistantRidges variant={variant} parallax={{ x: 0, y: 0 }} />
       <StarField count={isVictory ? 30 : 50} />
       <FloatingParticles count={isVictory ? 50 : 28} />
 
-      {/* FINAL-BLOW FLASH — full-arena white-cyan flash on the killing
+      {/* FINAL-BLOW FLASH - full-arena white-cyan flash on the killing
           hit. Sits above the atmosphere, below the chrome. The
           animation auto-fades. */}
       {finalBlowActive && (
@@ -582,7 +582,7 @@ export default function BattleArena({
         />
       )}
 
-      {/* Lightning (warm gold streaks) — subtle, periodic */}
+      {/* Lightning (warm gold streaks) - subtle, periodic */}
       {!isVictory && (
         <div
           aria-hidden
@@ -600,7 +600,7 @@ export default function BattleArena({
         />
       )}
 
-      {/* Top status row — Hero banner (left), Shield pill (centre),
+      {/* Top status row - Hero banner (left), Shield pill (centre),
           Villain banner (right). Shield is the kid's one-charge defensive
           power; rest of the layout is decorative. */}
       {!isVictory && (
@@ -631,7 +631,7 @@ export default function BattleArena({
         </div>
       )}
 
-      {/* SHIELDED! toast — pops centred on the arena when the shield
+      {/* SHIELDED! toast - pops centred on the arena when the shield
           absorbs a wrong answer. Auto-fades. */}
       {shieldConsumedKey > 0 && (
         <div
@@ -697,7 +697,7 @@ export default function BattleArena({
           padding: "92px 24px 28px",
         }}
       >
-        {/* Showdown stage — hero left, raccoon right */}
+        {/* Showdown stage - hero left, raccoon right */}
         {!isVictory && (
           <div
             style={{
@@ -710,7 +710,7 @@ export default function BattleArena({
               position: "relative",
             }}
           >
-            {/* HERO ATTACK BEAM — fires when attackFlashKey changes
+            {/* HERO ATTACK BEAM - fires when attackFlashKey changes
                 (i.e. on every correct answer). Cyan→cosmic energy
                 stripe spanning from Adam to the boss across the
                 centre row. Scales-in fast then fades over ~700ms. */}
@@ -747,7 +747,7 @@ export default function BattleArena({
               </div>
             )}
 
-            {/* Adam lunge wrapper — applies a one-shot lunge animation
+            {/* Adam lunge wrapper - applies a one-shot lunge animation
                 to the hero portrait when attackFlashKey changes. */}
             <div
               key={`hero-${attackFlashKey}`}
@@ -758,7 +758,7 @@ export default function BattleArena({
               <HeroPortrait phase={phase} />
             </div>
 
-            {/* Centre — attack announcement banner */}
+            {/* Centre - attack announcement banner */}
             <div
               style={{
                 flex: 1,
@@ -844,7 +844,7 @@ export default function BattleArena({
           </div>
         )}
 
-        {/* Defence zone — question card + answer pills, OR victory */}
+        {/* Defence zone - question card + answer pills, OR victory */}
         <div style={{ position: "relative", marginTop: isVictory ? 0 : 18, flex: 1 }}>
           {combo >= 2 && (phase === "question" || phase === "feedback") && !superArmed && (
             <div
@@ -880,7 +880,7 @@ export default function BattleArena({
             </div>
           )}
 
-          {/* SUPER-MOVE pill — appears at combo>=3, replaces the COMBO
+          {/* SUPER-MOVE pill - appears at combo>=3, replaces the COMBO
               floater above. Tappable: arms triple-damage on the next
               correct answer. Pulsing chromatic gradient + shine sweep. */}
           {combo >= 3 && (phase === "question" || phase === "feedback") && !superArmed && (
@@ -917,7 +917,7 @@ export default function BattleArena({
             </button>
           )}
 
-          {/* SUPER-ARMED indicator — shows once tapped, until used */}
+          {/* SUPER-ARMED indicator - shows once tapped, until used */}
           {superArmed && (phase === "question" || phase === "feedback") && (
             <div
               style={{
@@ -986,7 +986,7 @@ export default function BattleArena({
             />
           ) : currentQ ? (
             <>
-              {/* Question parchment plaque — colored top edge tells the
+              {/* Question parchment plaque - colored top edge tells the
                   kid which attack-type they're defending against. */}
               <div
                 style={{
@@ -1007,7 +1007,7 @@ export default function BattleArena({
                   boxShadow: `0 18px 40px -12px rgba(8, 10, 22, 0.6), inset 0 0 0 4px rgba(125, 240, 255, 0.85), inset 0 0 0 5px rgba(124, 92, 255, 0.35), 0 0 24px ${attackMeta.glow}`,
                 }}
               >
-                {/* Attack-type chip — top-right corner */}
+                {/* Attack-type chip - top-right corner */}
                 <span
                   aria-hidden
                   style={{
@@ -1027,7 +1027,7 @@ export default function BattleArena({
                 >
                   {attackMeta.icon} {attackMeta.name}
                 </span>
-                {/* GLITCH QUESTION TEXT — RGB-split chromatic shimmer.
+                {/* GLITCH QUESTION TEXT - RGB-split chromatic shimmer.
                     Three offset copies of the same text in cyan / pink /
                     bright cream, the cream copy on top. Animated via
                     drop-shadow filter shifting its offsets. Reads as
@@ -1179,7 +1179,7 @@ export default function BattleArena({
 
 /* ───────────────────────── SHIELD CHIP ───────────────────────── */
 
-// Single-charge defensive pill — sits between the Hero and Villain
+// Single-charge defensive pill - sits between the Hero and Villain
 // banners. When `armed` is true it pulses cyan; when false (already
 // consumed) it dims to indicate the charge is spent.
 function ShieldChip({ armed }: { armed: boolean }) {
@@ -1213,7 +1213,7 @@ function ShieldChip({ armed }: { armed: boolean }) {
         transition: "opacity 0.3s ease, background 0.3s ease",
         position: "relative",
       }}
-      title={armed ? "Shield charge ready — absorbs next wrong answer" : "Shield charge already used"}
+      title={armed ? "Shield charge ready - absorbs next wrong answer" : "Shield charge already used"}
     >
       <span style={{ lineHeight: 1, fontSize: 20 }}>🛡</span>
       <span
@@ -1403,7 +1403,7 @@ function HeroPortrait({ phase }: { phase: Phase }) {
           inset: -22,
           borderRadius: "50%",
           background:
-            // Conic halo was warm gold + violet + warm gold — pulled
+            // Conic halo was warm gold + violet + warm gold - pulled
             // the two warm stops to cyan + neon-pink so the halo
             // sweeps cyan / violet / pink in palette.
             "conic-gradient(from 0deg, transparent 0deg, rgba(125, 240, 255, 0.55) 60deg, transparent 120deg, rgba(124, 92, 255, 0.45) 200deg, transparent 280deg, rgba(255, 95, 179, 0.5) 340deg, transparent 360deg)",
@@ -1526,7 +1526,7 @@ function BossPortrait({
           overflow: "hidden",
           background: "#3a1a3e",
           boxShadow:
-            // Was warm-brown + warm-rose double rim — pulled to cyan +
+            // Was warm-brown + warm-rose double rim - pulled to cyan +
             // cosmic-violet rim so the boss portrait reads as a cyber
             // adversary not a Pixar antagonist.
             "0 0 0 5px rgba(125, 240, 255, 0.7), 0 0 0 7px rgba(124, 92, 255, 0.85), 0 18px 36px -10px rgba(8, 10, 22, 0.75), 0 0 28px rgba(255, 95, 179, 0.45)",
@@ -1726,7 +1726,7 @@ function RageQTE({ onDone }: { onDone: () => void }) {
           opacity: 0.85,
         }}
       >
-        He's hurling phishing emails — TAP to swat them away!
+        He's hurling phishing emails - TAP to swat them away!
       </p>
 
       <div

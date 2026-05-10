@@ -70,7 +70,7 @@ export default class ExerciseErrorBoundary extends React.Component<Props, State>
           Something broke on this screen.
         </h2>
         <p style={{ color: "#cbd5e1", fontSize: 15, marginBottom: 20 }}>
-          Don&apos;t worry — your progress is safe. You can skip this exercise
+          Don&apos;t worry - your progress is safe. You can skip this exercise
           and keep going, or refresh to try it again.
         </p>
         <div style={{ display: "flex", gap: 12, flexWrap: "wrap", justifyContent: "center" }}>

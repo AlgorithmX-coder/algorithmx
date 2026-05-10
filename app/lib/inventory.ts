@@ -1,16 +1,16 @@
 /**
- * Inventory catalog — the 19 collectibles a kid earns through Week 1.
+ * Inventory catalog - the 19 collectibles a kid earns through Week 1.
  *
  * Each correct screen completion drops one item into the persistent
  * inventory bar at the top of the lesson. Two reasons this exists:
  *
  *   1. Continuity. Right now every screen is locally stateful. The bar
- *      gives the kid a *visible journey* across the 19 screens — the
+ *      gives the kid a *visible journey* across the 19 screens - the
  *      thing they earned five minutes ago is still on screen now.
  *   2. Reveal-Then-Earn beat. After a correct answer, the new item
  *      flies from the action point into its inventory slot, and a
  *      one-line "did you know" pops in the Adam/Layla bubble. Adds
- *      ~3.5s of emotional payoff per screen — opposite of boring.
+ *      ~3.5s of emotional payoff per screen - opposite of boring.
  *
  * Items are keyed by stable string ids ("loop1-vault-key", etc.) so we
  * can reorder screens later without invalidating saved state. Persisted
@@ -18,14 +18,14 @@
  */
 
 export interface InventoryItem {
-  /** Stable identifier — never reuse / rename without a migration. */
+  /** Stable identifier - never reuse / rename without a migration. */
   id: string;
   /** Lesson screen index (0..18) the item is earned on. Used to lay
    *  out the empty-slot row even before the kid has earned anything. */
   screen: number;
   /** Emoji glyph rendered as the icon. Kept as a glyph (not an SVG
    *  asset) so the bar stays cheap to render and consistent across
-   *  themes. Picked to feel concrete — a thing, not a decoration. */
+   *  themes. Picked to feel concrete - a thing, not a decoration. */
   icon: string;
   /** Short display name (≤ 22 chars). Shown on hover and in the
    *  earn floater so the kid associates the icon with a label. */
@@ -66,7 +66,7 @@ export const INVENTORY_ITEMS: InventoryItem[] = [
     screen: 2,
     icon: "🔑",
     name: "Vault Key",
-    didYouKnow: "A password is a tiny key that fits only one lock — yours.",
+    didYouKnow: "A password is a tiny key that fits only one lock - yours.",
     speaker: "adam",
     accent: "#7c5cff",
   },
@@ -84,7 +84,7 @@ export const INVENTORY_ITEMS: InventoryItem[] = [
     screen: 4,
     icon: "🛡️",
     name: "Shield Reflex",
-    didYouKnow: "Your data is precious — defend it like you'd defend a friend.",
+    didYouKnow: "Your data is precious - defend it like you'd defend a friend.",
     speaker: "adam",
     accent: "#3a7bff",
   },
@@ -120,7 +120,7 @@ export const INVENTORY_ITEMS: InventoryItem[] = [
     screen: 8,
     icon: "🧠",
     name: "Memory Charm",
-    didYouKnow: "Linking a term to a picture makes it stick — that's how cyber pros remember.",
+    didYouKnow: "Linking a term to a picture makes it stick - that's how cyber pros remember.",
     speaker: "adam",
     accent: "#7eff97",
   },
@@ -174,7 +174,7 @@ export const INVENTORY_ITEMS: InventoryItem[] = [
     screen: 14,
     icon: "🧭",
     name: "Choice Compass",
-    didYouKnow: "The best heroes don't just react — they choose. Smart over fast.",
+    didYouKnow: "The best heroes don't just react - they choose. Smart over fast.",
     speaker: "adam",
     accent: "#00e5ff",
   },
@@ -226,7 +226,7 @@ export function getItemForScreen(screen: number): InventoryItem | undefined {
 
 /* ───────────────────────── PERSISTENCE ─────────────────────────
  * Earned items are stored as a JSON string array of ids under a
- * per-week + per-slot key. We deliberately keep the schema dumb —
+ * per-week + per-slot key. We deliberately keep the schema dumb -
  * a `Set` of ids is easy to evolve and survives item reorderings.
  *
  * Slot-aware: keys are now `ax-inventory-v1::week-X::slot-Y`. The
@@ -289,7 +289,7 @@ export function saveEarnedItems(weekKey: string, ids: Set<string>): void {
       JSON.stringify(Array.from(ids))
     );
   } catch {
-    // Storage quota / private mode — silently no-op. The bar still
+    // Storage quota / private mode - silently no-op. The bar still
     // works in-session; we just can't persist across reloads.
   }
 }

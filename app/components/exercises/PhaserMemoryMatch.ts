@@ -34,18 +34,18 @@ interface CardSlot {
 }
 
 interface CardObj {
-  /** Container holding both faces — what we tween + tap. */
+  /** Container holding both faces - what we tween + tap. */
   container: Phaser.GameObjects.Container;
   /** Back face (the "Cyber Card" side, hides front when face-down). */
   back: Phaser.GameObjects.Container;
-  /** Front face (the side with text — hidden until flipped). */
+  /** Front face (the side with text - hidden until flipped). */
   front: Phaser.GameObjects.Container;
   slot: CardSlot;
-  /** Position in the cards[] array — used for state lookups. */
+  /** Position in the cards[] array - used for state lookups. */
   index: number;
   /** Currently in the flipped-up pile (waiting for match check). */
   flipped: boolean;
-  /** Permanently matched — locked face-up, ignores taps. */
+  /** Permanently matched - locked face-up, ignores taps. */
   matched: boolean;
 }
 
@@ -113,7 +113,7 @@ export default class PhaserMemoryMatch extends Phaser.Scene {
       [slots[i], slots[j]] = [slots[j], slots[i]];
     }
 
-    // Stash on registry for create() to consume — we only finalise positions
+    // Stash on registry for create() to consume - we only finalise positions
     // once we know the canvas size.
     this.registry.set("__mm_slots", slots);
   }
@@ -140,12 +140,12 @@ export default class PhaserMemoryMatch extends Phaser.Scene {
   private drawBackground() {
     const { width, height } = this.scale;
 
-    // Deep cosmic gradient — abyss → midnight → twilight at top
+    // Deep cosmic gradient - abyss → midnight → twilight at top
     const bg = this.add.graphics();
     bg.fillGradientStyle(0x04050d, 0x04050d, 0x0f1530, 0x1a2147, 1);
     bg.fillRect(0, 0, width, height);
 
-    // Faint stars — 60 specks at deterministic positions (fast loop, no perf hit)
+    // Faint stars - 60 specks at deterministic positions (fast loop, no perf hit)
     for (let i = 0; i < 60; i++) {
       const x = (i * 73.7) % width;
       const y = (i * 137.3) % height;
@@ -164,7 +164,7 @@ export default class PhaserMemoryMatch extends Phaser.Scene {
       });
     }
 
-    // Two cosmic blobs — top-left cyan, bottom-right cosmic-violet
+    // Two cosmic blobs - top-left cyan, bottom-right cosmic-violet
     const blobA = this.add.graphics();
     blobA.fillStyle(COLOR.cyan, 0.12);
     blobA.fillCircle(width * 0.15, height * 0.18, 220);
@@ -271,7 +271,7 @@ export default class PhaserMemoryMatch extends Phaser.Scene {
       const card = this.makeCard(slot, idx, x, y, cardW, cardH);
       this.cards.push(card);
 
-      // Stagger reveal — cards drop in from above
+      // Stagger reveal - cards drop in from above
       card.container.setAlpha(0);
       card.container.y -= 30;
       this.tweens.add({
@@ -295,7 +295,7 @@ export default class PhaserMemoryMatch extends Phaser.Scene {
   ): CardObj {
     const container = this.add.container(x, y);
 
-    // Back face — cyber chrome card
+    // Back face - cyber chrome card
     const back = this.add.container(0, 0);
     {
       // Outer glow halo
@@ -304,18 +304,18 @@ export default class PhaserMemoryMatch extends Phaser.Scene {
       halo.fillRoundedRect(-w / 2 - 6, -h / 2 - 6, w + 12, h + 12, 18);
       halo.setBlendMode(Phaser.BlendModes.ADD);
 
-      // Card body — dark navy gradient
+      // Card body - dark navy gradient
       const body = this.add.graphics();
       body.fillGradientStyle(0x1a2147, 0x1a2147, 0x0f1530, 0x0f1530, 1);
       body.fillRoundedRect(-w / 2, -h / 2, w, h, 14);
       body.lineStyle(2, slot.colourInt, 0.55);
       body.strokeRoundedRect(-w / 2, -h / 2, w, h, 14);
 
-      // Inner cyan line — accent rim
+      // Inner cyan line - accent rim
       body.lineStyle(1, COLOR.cyanSoft, 0.18);
       body.strokeRoundedRect(-w / 2 + 4, -h / 2 + 4, w - 8, h - 8, 11);
 
-      // Centre glyph — diamond pulse
+      // Centre glyph - diamond pulse
       const glyph = this.add
         .text(0, 0, "◇", {
           fontFamily: "ui-monospace, JetBrains Mono, monospace",
@@ -337,7 +337,7 @@ export default class PhaserMemoryMatch extends Phaser.Scene {
       back.add([halo, body, glyph]);
     }
 
-    // Front face — parchment with text (hidden initially)
+    // Front face - parchment with text (hidden initially)
     const front = this.add.container(0, 0);
     {
       const body = this.add.graphics();
@@ -351,7 +351,7 @@ export default class PhaserMemoryMatch extends Phaser.Scene {
       stripe.fillStyle(slot.colourInt, 1);
       stripe.fillRoundedRect(-w / 2, -h / 2, w, 8, { tl: 14, tr: 14, bl: 0, br: 0 });
 
-      // Side label — "TERM" or "MATCH"
+      // Side label - "TERM" or "MATCH"
       const sideLabel = this.add
         .text(0, -h / 2 + 22, slot.side === "term" ? "TERM" : "MATCH", {
           fontFamily: "ui-monospace, JetBrains Mono, monospace",
@@ -362,7 +362,7 @@ export default class PhaserMemoryMatch extends Phaser.Scene {
         .setOrigin(0.5)
         .setLetterSpacing(4);
 
-      // The text — wrapped to fit
+      // The text - wrapped to fit
       const text = this.add
         .text(0, 12, slot.text, {
           fontFamily: "ui-rounded, Fredoka, system-ui, sans-serif",
@@ -384,7 +384,7 @@ export default class PhaserMemoryMatch extends Phaser.Scene {
     container.setSize(w, h);
     container.setInteractive(new Phaser.Geom.Rectangle(-w / 2, -h / 2, w, h), Phaser.Geom.Rectangle.Contains);
 
-    // Hover lift — only when face-down + game unlocked
+    // Hover lift - only when face-down + game unlocked
     container.on("pointerover", () => {
       if (this.locked) return;
       const c = this.cards[index];
@@ -448,7 +448,7 @@ export default class PhaserMemoryMatch extends Phaser.Scene {
   }
 
   private tapPulse(card: CardObj) {
-    // Brief scale pop on tap — visceral feedback
+    // Brief scale pop on tap - visceral feedback
     this.tweens.add({
       targets: card.container,
       scale: 0.96,
@@ -505,7 +505,7 @@ export default class PhaserMemoryMatch extends Phaser.Scene {
     this.locked = false;
     this.updateHud();
 
-    // Glow + scale pop — "you matched these"
+    // Glow + scale pop - "you matched these"
     [a, b].forEach((card) => {
       this.tweens.add({
         targets: card.container,

@@ -1,12 +1,12 @@
 "use client";
 
 /*
- * MissionBriefScene — Pixar 2.5D storybook briefing.
+ * MissionBriefScene - Pixar 2.5D storybook briefing.
  *
  * Pure HTML/CSS/SVG + framer-motion. No WebGL, no R3F, no three.js.
  * The "3D feel" comes from layered depth: parallax sky, painted ridges,
  * stacked-CSS pedestal with beam, perspective-tilted mission cards,
- * and floating dust motes. Bulletproof rendering — no GPU contention,
+ * and floating dust motes. Bulletproof rendering - no GPU contention,
  * no context loss, deterministic layout.
  *
  * Contract preserved with parent LessonPlayer Case 1:
@@ -103,7 +103,7 @@ function SkyBackdrop({ px }: { px: { x: number; y: number } }) {
         position: "absolute",
         inset: -20,
         zIndex: 0,
-        // Cyber Heroes Lab sky — abyss → twilight navy → midnight,
+        // Cyber Heroes Lab sky - abyss → twilight navy → midnight,
         // replaces the warm sunset that was bleeding orange into the
         // mission brief surface.
         background:
@@ -118,7 +118,7 @@ function SkyBackdrop({ px }: { px: { x: number; y: number } }) {
         transition: "transform 0.5s ease-out",
       }}
     >
-      {/* Cyan/cosmic halo — top right (replaces the warm sun) */}
+      {/* Cyan/cosmic halo - top right (replaces the warm sun) */}
       <div
         style={{
           position: "absolute",
@@ -284,7 +284,7 @@ function FloatingParticles() {
 
 /* ───────────────────────── CYBER FLOOR ───────────────────────── */
 /*
- * Was a wooden floor (tonal mismatch — warm Pixar inside cyber sky).
+ * Was a wooden floor (tonal mismatch - warm Pixar inside cyber sky).
  * Now a chrome / glass platform with cyan grid lines, matching the
  * Cyber Heroes Lab vocabulary used everywhere else in the player.
  */
@@ -304,7 +304,7 @@ function WoodFloor() {
         pointerEvents: "none",
       }}
     >
-      {/* Chrome plate — deep navy with cyan rim */}
+      {/* Chrome plate - deep navy with cyan rim */}
       <div
         style={{
           position: "absolute",
@@ -321,7 +321,7 @@ function WoodFloor() {
             "inset 0 0 0 1px rgba(125, 240, 255, 0.18)",
         }}
       />
-      {/* Concentric cyan rings — radar/grid feel */}
+      {/* Concentric cyan rings - radar/grid feel */}
       <div
         style={{
           position: "absolute",
@@ -358,7 +358,7 @@ function WoodFloor() {
 
 /* ───────────────────────── HOLO PEDESTAL ───────────────────────── */
 /*
- * Was a brown wooden cylinder with warm gold emissive top — clashed
+ * Was a brown wooden cylinder with warm gold emissive top - clashed
  * with the cyber sky.  Now a chrome / dark-navy pedestal with a
  * cyan emissive disc, matching the cyber palette throughout.
  */
@@ -390,7 +390,7 @@ function HoloPedestal() {
           filter: "blur(18px)",
         }}
       />
-      {/* Outer flange — chrome chamfer */}
+      {/* Outer flange - chrome chamfer */}
       <div
         style={{
           position: "relative",
@@ -403,7 +403,7 @@ function HoloPedestal() {
             "0 6px 14px rgba(8, 10, 22, 0.6), inset 0 -3px 6px rgba(0,0,0,0.5), inset 0 0 0 1px rgba(125, 240, 255, 0.22)",
         }}
       />
-      {/* Cylinder body — chrome */}
+      {/* Cylinder body - chrome */}
       <div
         style={{
           position: "relative",
@@ -418,7 +418,7 @@ function HoloPedestal() {
             "inset 0 -8px 14px rgba(0,0,0,0.55), inset 0 0 0 1px rgba(125, 240, 255, 0.18)",
         }}
       />
-      {/* Top inset disc — chrome bowl */}
+      {/* Top inset disc - chrome bowl */}
       <div
         style={{
           position: "relative",
@@ -433,7 +433,7 @@ function HoloPedestal() {
             "inset 0 4px 10px rgba(0,0,0,0.6), 0 -2px 0 rgba(125, 240, 255, 0.18)",
         }}
       />
-      {/* Glowing cyan emissive top — pulses */}
+      {/* Glowing cyan emissive top - pulses */}
       <div
         style={{
           position: "absolute",
@@ -449,7 +449,7 @@ function HoloPedestal() {
           animation: "pedestalGlow 2.4s ease-in-out infinite",
         }}
       />
-      {/* Ring rim — cyan */}
+      {/* Ring rim - cyan */}
       <div
         style={{
           position: "absolute",
@@ -696,7 +696,7 @@ function CharacterPortrait({
           borderRadius: "50%",
           overflow: "hidden",
           background: "#1a2147",
-          // Cyber rim — was warm cream + amber. Now cyan/violet halo
+          // Cyber rim - was warm cream + amber. Now cyan/violet halo
           // that matches every other character treatment in the lesson.
           boxShadow:
             "0 0 0 3px rgba(125, 240, 255, 0.85), " +

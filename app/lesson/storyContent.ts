@@ -1,11 +1,11 @@
 import type { CutsceneSlide } from "@/app/components/StoryCutscene";
 
-/* ───────── WEEK 1 — Passwords: The Secret Code ───────── */
+/* ───────── WEEK 1 - Passwords: The Secret Code ───────── */
 
 export const WEEK1_INTRO: CutsceneSlide[] = [
   { text: "CYBER HEROES ACADEMY\nWEEK 1: PASSWORDS", bg: "normal", duration: 3000 },
-  { character: "both", characterMood: "excited", text: "Hi there! I'm Adam, and this is Layla. We're Cyber Heroes — and today, YOU'RE joining the team!", sound: "lessonStart", duration: 5500 },
-  { character: "both", characterMood: "curious", text: "Do you know what a password is? It's like a secret code that keeps your stuff safe — your games, your photos, everything!", duration: 5500 },
+  { character: "both", characterMood: "excited", text: "Hi there! I'm Adam, and this is Layla. We're Cyber Heroes - and today, YOU'RE joining the team!", sound: "lessonStart", duration: 5500 },
+  { character: "both", characterMood: "curious", text: "Do you know what a password is? It's like a secret code that keeps your stuff safe - your games, your photos, everything!", duration: 5500 },
   { character: "both", characterMood: "worried", text: "But there's a BIG problem...", bg: "danger", duration: 3000 },
   { character: "raccoon", characterMood: "idle", text: "Meet Hacker Raccoon. He STEALS passwords from kids and breaks into their accounts!", sound: "bossRoar", bg: "danger", shake: true, duration: 5500 },
   { character: "raccoon", characterMood: "idle", text: "\"Hee hee hee! Weak passwords are SO easy to crack! Nobody can stop me!\"", textColour: "#c084fc", duration: 5000 },
@@ -36,16 +36,16 @@ export const WEEK1_POST_BOSS: CutsceneSlide[] = [
   { text: "WEEK 1 COMPLETE\n⭐ Password Protector Badge Earned!", bg: "victory", sound: "confetti", duration: 3000 },
 ];
 
-/* ───────── WEEK 2 — Private Information: Privacy Guardian ───────── */
+/* ───────── WEEK 2 - Private Information: Privacy Guardian ───────── */
 
 export const WEEK2_INTRO: CutsceneSlide[] = [
   { text: "CYBER HEROES ACADEMY\nWEEK 2: PRIVATE INFORMATION", bg: "normal", duration: 3000 },
   { character: "both", characterMood: "excited", text: "Welcome back, Cyber Hero! Great to see you again!", sound: "lessonStart", duration: 4500 },
-  { character: "layla", characterMood: "worried", text: "We've got a new problem. Hacker Raccoon is back — and this time he's after something REALLY dangerous...", bg: "danger", duration: 5500 },
-  { character: "raccoon", characterMood: "idle", text: "\"Forget passwords — I want your NAME, your ADDRESS, your SCHOOL! Tell me EVERYTHING!\"", textColour: "#c084fc", sound: "bossRoar", shake: true, duration: 5500 },
+  { character: "layla", characterMood: "worried", text: "We've got a new problem. Hacker Raccoon is back - and this time he's after something REALLY dangerous...", bg: "danger", duration: 5500 },
+  { character: "raccoon", characterMood: "idle", text: "\"Forget passwords - I want your NAME, your ADDRESS, your SCHOOL! Tell me EVERYTHING!\"", textColour: "#c084fc", sound: "bossRoar", shake: true, duration: 5500 },
   { character: "adam", characterMood: "worried", text: "Your private information is super valuable. If the wrong person gets it, they could find you, trick you, or pretend to be you!", duration: 5500 },
   { character: "layla", characterMood: "excited", text: "But don't worry! Today we're going to learn EXACTLY what's safe to share and what must stay secret!", duration: 5500 },
-  { character: "adam", characterMood: "thumbsup", text: "And at the end — another Boss Battle against Hacker Raccoon! Let's do this!", sound: "select", duration: 5000 },
+  { character: "adam", characterMood: "thumbsup", text: "And at the end - another Boss Battle against Hacker Raccoon! Let's do this!", sound: "select", duration: 5000 },
   { text: "LET'S GO! 🚀", bg: "normal", sound: "confetti", duration: 2000 },
 ];
 
@@ -67,6 +67,6 @@ export const WEEK2_POST_BOSS: CutsceneSlide[] = [
   { character: "both", characterMood: "excited", text: "Hacker Raccoon is defeated AGAIN! Your private information is safe!", bg: "victory", sound: "victory", duration: 4500 },
   { character: "raccoon", characterMood: "defeated", text: "\"Not again! These kids are too smart!\"", textColour: "#c084fc", duration: 4000 },
   { character: "adam", characterMood: "thumbsup", text: "You're officially a Privacy Guardian now!", sound: "badgeEarned", duration: 4000 },
-  { character: "layla", characterMood: "thumbsup", text: "But be careful — Hacker Raccoon always comes back. See you next week!", duration: 4500 },
+  { character: "layla", characterMood: "thumbsup", text: "But be careful - Hacker Raccoon always comes back. See you next week!", duration: 4500 },
   { text: "WEEK 2 COMPLETE\n⭐ Privacy Guardian Badge Earned!", bg: "victory", sound: "confetti", duration: 3000 },
 ];

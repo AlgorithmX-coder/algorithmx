@@ -1,24 +1,24 @@
 "use client";
 
 /**
- * CyberFutureScenes — futuristic atmospheric backdrops.
+ * CyberFutureScenes - futuristic atmospheric backdrops.
  *
  * Parallel to PixarScenes but tuned for the navy + glow Cyber Heroes
  * Lab aesthetic. Each scene is a fixed-position layer (zIndex 0,
  * pointer-events:none) meant to drop behind a normal page. CSS / SVG
- * / motion only — no WebGL — so they're cheap to mount and don't
+ * / motion only - no WebGL - so they're cheap to mount and don't
  * compete for GPU contexts with R3F components like CyberGlobe.
  *
  * Conventions:
- *   <CyberSpaceBackdrop/>      — abyss + drifting starfield + nebula
- *   <ParticleNetworkScene/>    — pulsing connected node graph
- *   <CodeRainScene/>           — vertical streams of glowing characters
- *   <HoloGridScene/>           — perspective grid + radar sweep
- *   <NeonCityScene/>            — distant skyline silhouette
- *   <CircuitTraceScene/>        — animated traces over a hex grid
- *   <DataLabScene/>             — drifting glyphs + data tickers
- *   <VoidPortalScene/>          — concentric pulse rings + halo
- *   <CyberPanelBackdrop/>       — side-panel companion (login layout)
+ *   <CyberSpaceBackdrop/>      - abyss + drifting starfield + nebula
+ *   <ParticleNetworkScene/>    - pulsing connected node graph
+ *   <CodeRainScene/>           - vertical streams of glowing characters
+ *   <HoloGridScene/>           - perspective grid + radar sweep
+ *   <NeonCityScene/>            - distant skyline silhouette
+ *   <CircuitTraceScene/>        - animated traces over a hex grid
+ *   <DataLabScene/>             - drifting glyphs + data tickers
+ *   <VoidPortalScene/>          - concentric pulse rings + halo
+ *   <CyberPanelBackdrop/>       - side-panel companion (login layout)
  *
  * Every scene assumes the page itself has set the dark navy
  * background (CYBER_GRAD.page). These scenes add LIGHT on top of that.
@@ -214,7 +214,7 @@ function NebulaLayer() {
 }
 
 function ScanlineLayer() {
-  // Faint horizontal lines crawling down the screen — CRT phosphor
+  // Faint horizontal lines crawling down the screen - CRT phosphor
   // texture. Kept low-opacity so it reads as "alive surface", not noise.
   return (
     <div
@@ -332,7 +332,7 @@ export function CyberSpaceBackdrop() {
 }
 
 /* ───────────────────────── SCENE: PARTICLE NETWORK ─────────
- * Pulsing nodes connected by faint lines — the classic "neural
+ * Pulsing nodes connected by faint lines - the classic "neural
  * network" look. Used where we want intelligence/connection
  * imagery (login, cyberheroes hero). */
 
@@ -367,7 +367,7 @@ export function ParticleNetworkScene() {
       <NebulaLayer />
       <StarLayer count={40} />
 
-      {/* Connection layer — faint cyan lines pulsing in unison */}
+      {/* Connection layer - faint cyan lines pulsing in unison */}
       <svg
         aria-hidden
         viewBox="0 0 1100 700"
@@ -436,7 +436,7 @@ export function ParticleNetworkScene() {
 
 /* ───────────────────────── SCENE: CODE RAIN ───────────────
  * Vertical streams of falling glyphs in cyan. Less intrusive than
- * Matrix rain — sparse columns, soft glow. Used for admin / tech
+ * Matrix rain - sparse columns, soft glow. Used for admin / tech
  * pages (signup, cyberheroes). */
 
 export function CodeRainScene() {
@@ -612,7 +612,7 @@ export function NeonCityScene() {
         }}
       >
         <svg viewBox="0 0 1200 280" preserveAspectRatio="none" style={{ width: "100%", height: "100%" }}>
-          {/* Back row — taller, dimmer */}
+          {/* Back row - taller, dimmer */}
           <path
             d="M0 280 L0 130 L40 130 L40 100 L80 100 L80 110 L120 110 L120 80 L160 80 L160 130 L200 130 L200 90 L240 90 L240 130 L280 130 L280 60 L320 60 L320 130 L360 130 L360 100 L400 100 L400 110 L440 110 L440 130 L480 130 L480 80 L520 80 L520 130 L560 130 L560 110 L600 110 L600 130 L640 130 L640 70 L680 70 L680 130 L720 130 L720 100 L760 100 L760 130 L800 130 L800 90 L840 90 L840 130 L880 130 L880 110 L920 110 L920 60 L960 60 L960 130 L1000 130 L1000 100 L1040 100 L1040 130 L1080 130 L1080 80 L1120 80 L1120 130 L1160 130 L1160 110 L1200 110 L1200 280 Z"
             fill={CYBER_PALETTE.midnight}
@@ -644,7 +644,7 @@ export function NeonCityScene() {
               />
             );
           })}
-          {/* Front row — closer, more saturated */}
+          {/* Front row - closer, more saturated */}
           <path
             d="M0 280 L0 180 L60 180 L60 160 L120 160 L120 200 L180 200 L180 150 L240 150 L240 200 L300 200 L300 170 L360 170 L360 200 L420 200 L420 140 L480 140 L480 200 L540 200 L540 175 L600 175 L600 200 L660 200 L660 160 L720 160 L720 200 L780 200 L780 180 L840 180 L840 200 L900 200 L900 165 L960 165 L960 200 L1020 200 L1020 145 L1080 145 L1080 200 L1140 200 L1140 175 L1200 175 L1200 280 Z"
             fill={CYBER_PALETTE.abyss}
@@ -717,7 +717,7 @@ export function CircuitTraceScene() {
           <path d="M 0 480 L 200 480 L 240 440 L 480 440" />
           <path d="M 720 440 L 920 440 L 960 480 L 1200 480" />
         </g>
-        {/* Solder pads — pulse */}
+        {/* Solder pads - pulse */}
         {[
           [240, 200], [480, 240], [720, 240], [960, 200],
           [200, 480], [480, 440], [720, 440], [960, 480],
@@ -838,7 +838,7 @@ export function VoidPortalScene() {
       <NebulaLayer />
       <StarLayer count={50} />
 
-      {/* Central pulse rings — staggered */}
+      {/* Central pulse rings - staggered */}
       <div
         aria-hidden
         style={{
@@ -962,7 +962,7 @@ export function CyberPanelBackdrop() {
           );
         })}
       </div>
-      {/* Centre halo — visible behind whatever the parent renders */}
+      {/* Centre halo - visible behind whatever the parent renders */}
       <div
         aria-hidden
         style={{

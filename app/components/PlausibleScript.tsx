@@ -1,7 +1,7 @@
 import Script from "next/script";
 
 /**
- * Plausible Analytics — lightweight, privacy-friendly, GDPR-compliant.
+ * Plausible Analytics - lightweight, privacy-friendly, GDPR-compliant.
  * No cookies, no PII, no compliance work to use it on a kids' site
  * (huge upside for a £99 product targeting children under 13).
  *

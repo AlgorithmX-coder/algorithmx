@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * LessonArena3D — calm Three.js environment for lesson screens.
+ * LessonArena3D - calm Three.js environment for lesson screens.
  *
  * Shares the visual language of Arena3D (hex floor, holo screens,
  * drifting code snippets) but with warmer, brighter lighting and
@@ -1104,7 +1104,7 @@ export default function LessonArena3D({
         if (t < r.celebrationUntil) {
           mat.color.lerp(new THREE.Color(0xfde047), lerpSpeed);
         } else {
-          // material colour can drift back — but since we share materials
+          // material colour can drift back - but since we share materials
           // across particles, drifting back touches all particles of that colour.
           // That's fine; celebration is a brief 2s window.
         }

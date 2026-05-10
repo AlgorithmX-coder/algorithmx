@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 import * as Phaser from "phaser";
 
 /**
- * PhaserExercise — generic React wrapper that mounts a Phaser game
+ * PhaserExercise - generic React wrapper that mounts a Phaser game
  * inside a div, passes through callbacks + initial data, and tears
  * down cleanly when the React component unmounts.
  *
@@ -12,8 +12,8 @@ import * as Phaser from "phaser";
  * React handles the lesson shell (navigation, HUD, transitions
  * between cases). They communicate only through:
  *
- *   1. `sceneData` — initial config passed to the scene's `init()`
- *   2. `callbacks` — Phaser scenes can invoke React handlers via
+ *   1. `sceneData` - initial config passed to the scene's `init()`
+ *   2. `callbacks` - Phaser scenes can invoke React handlers via
  *      these (onCorrect, onWrong, onComplete, etc.)
  *
  * Each exercise gets its own Scene subclass.  See
@@ -23,7 +23,7 @@ import * as Phaser from "phaser";
 export interface PhaserExerciseCallbacks {
   onCorrect?: () => void;
   onWrong?: () => void;
-  /** Stars: 1, 2, or 3 — passed through to the lesson's progression system. */
+  /** Stars: 1, 2, or 3 - passed through to the lesson's progression system. */
   onComplete?: (score: number) => void;
 }
 
@@ -77,7 +77,7 @@ export default function PhaserExercise<TData = unknown>({
       scene: Scene,
       // Disable Phaser's banner spam in the browser console.
       banner: false,
-      // Pause when hidden (kid switches tab) — avoids burning battery.
+      // Pause when hidden (kid switches tab) - avoids burning battery.
       autoFocus: true,
     });
 
@@ -119,7 +119,7 @@ export default function PhaserExercise<TData = unknown>({
         height: "100%",
         minHeight: 480,
         position: "relative",
-        // Hide default focus outline on the canvas — Phaser handles input.
+        // Hide default focus outline on the canvas - Phaser handles input.
         outline: "none",
       }}
     />

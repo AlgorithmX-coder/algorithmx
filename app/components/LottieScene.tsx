@@ -10,12 +10,12 @@ import {
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 
 /**
- * LottieScene — drop-in wrapper for any Lottie or dotLottie animation.
+ * LottieScene - drop-in wrapper for any Lottie or dotLottie animation.
  *
  * Pattern matches RiveScene: pass a `src` (URL or `/public/...` path),
  * choose loop / autoplay / speed, get a graceful fallback when the
  * file is missing or fails. Use this for celebrations, badge
- * animations, character reactions, scene transitions — anywhere you'd
+ * animations, character reactions, scene transitions - anywhere you'd
  * have asked Framer Motion to animate a static PNG and felt the
  * limitations.
  *
@@ -45,7 +45,7 @@ export interface LottieSceneProps {
   style?: CSSProperties;
   /** Rendered when the .lottie fails to load (404, parse error, etc.). */
   fallback?: ReactNode;
-  /** Forwarded onClick — Lottie renders to a canvas, so wire here for taps. */
+  /** Forwarded onClick - Lottie renders to a canvas, so wire here for taps. */
   onClick?: () => void;
 }
 
@@ -74,7 +74,7 @@ class LottieErrorBoundary extends Component<
   }
 }
 
-/* ─── Inner — DotLottieReact handles both .lottie and .json ─── */
+/* ─── Inner - DotLottieReact handles both .lottie and .json ─── */
 function LottieSceneInner({
   src,
   width,
@@ -134,7 +134,7 @@ function LottieSceneInner({
 /* ─── Public component ───────────────────────────────────────── */
 export default function LottieScene(props: LottieSceneProps) {
   const [failed, setFailed] = useState(false);
-  // Reset failed state if src changes — give the new file a chance.
+  // Reset failed state if src changes - give the new file a chance.
   useEffect(() => {
     setFailed(false);
   }, [props.src]);
@@ -143,7 +143,7 @@ export default function LottieScene(props: LottieSceneProps) {
     if (!failed) {
       // eslint-disable-next-line no-console
       console.warn(
-        `[LottieScene] failed to load "${props.src}" — showing fallback. ` +
+        `[LottieScene] failed to load "${props.src}" - showing fallback. ` +
           `Drop the file in /public/lottie/ or check the URL.`,
       );
       setFailed(true);

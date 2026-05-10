@@ -1,5 +1,5 @@
 /**
- * Lottie manifest — one place to register every .lottie file the app uses.
+ * Lottie manifest - one place to register every .lottie file the app uses.
  *
  * Drop a Lottie file in /public/lottie/ and add its path here. The rest
  * of the codebase consumes these constants, so a missing file shows
@@ -46,7 +46,7 @@ export const LOTTIE_OVERLAYS = {
 };
 
 /**
- * Character animations — used inside lesson screens for idle / react /
+ * Character animations - used inside lesson screens for idle / react /
  * talk states. Wire these into specific cases as Lotties land.
  *
  * Naming: <character>_<state>. Set to undefined when nothing's
@@ -108,7 +108,7 @@ export const SPRITE_CHARACTERS: {
   raccoon: { idle?: SpriteAnimation; taunt?: SpriteAnimation; defeated?: SpriteAnimation };
 } = {
   adam: {
-    // Example — uncomment + fill in once Cartoon Animator 5 exports land:
+    // Example - uncomment + fill in once Cartoon Animator 5 exports land:
     // idle: { src: "/sprites/adam-idle.png", frameWidth: 400, frameHeight: 500, frameCount: 24, fps: 24 },
   },
   layla: {},
@@ -117,7 +117,7 @@ export const SPRITE_CHARACTERS: {
 };
 
 /**
- * Misc decorative Lotties — backgrounds, transitions, ambient loops.
+ * Misc decorative Lotties - backgrounds, transitions, ambient loops.
  */
 export const LOTTIE_DECORATIVE = {
   /** Cosmic background loop on mission-brief / between-case fades. */

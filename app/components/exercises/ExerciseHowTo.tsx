@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * ExerciseHowTo — small persistent instruction bar at the top of an
+ * ExerciseHowTo - small persistent instruction bar at the top of an
  * exercise wrapper. Pixar-warm styling: dusk-glass pills with cream
  * text so it reads against any background palette (light or dark).
  *
@@ -91,7 +91,7 @@ export default function ExerciseHowTo({
               gap: 8,
               padding: "6px 12px",
               borderRadius: 999,
-              // Was warm parchment + warm-brown text + warm border —
+              // Was warm parchment + warm-brown text + warm border -
               // a Pixar dusk pill on a cyber surface. Now cyber glass:
               // dark navy translucent + cyan border + bright text.
               background: "rgba(15, 21, 48, 0.78)",

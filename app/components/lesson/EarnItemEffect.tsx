@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * EarnItemEffect — overlay layer that animates a newly-earned item
+ * EarnItemEffect - overlay layer that animates a newly-earned item
  * from the action point (where the kid clicked / the answer landed)
  * into its matching slot inside <InventoryBar/>.
  *
@@ -103,7 +103,7 @@ function FlyingItem({
         pointerEvents: "none",
       }}
     >
-      {/* Trail — staggered ghost copies behind the lead icon */}
+      {/* Trail - staggered ghost copies behind the lead icon */}
       {Array.from({ length: TRAIL_DOTS }).map((_, i) => (
         <motion.span
           key={`trail-${i}`}

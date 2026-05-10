@@ -4,7 +4,7 @@ import { type CSSProperties, useEffect, useState } from "react";
 import { playSound } from "@/app/lib/sounds";
 
 /**
- * OnboardingOverlay — 4-step "how to play" carousel that fires on a
+ * OnboardingOverlay - 4-step "how to play" carousel that fires on a
  * brand-new save slot, immediately after the boot intro finishes.
  * Real game tutorials orient the kid before dropping them in case 0;
  * without this, they hit the lesson cold with no expectations.
@@ -32,13 +32,13 @@ const STEPS: Step[] = [
   {
     icon: "🦝",
     title: "Welcome to the Academy",
-    body: "A bad guy called the Hacker Raccoon is causing trouble online. You're going to train to stop him — by learning the same tricks real cyber heroes use.",
+    body: "A bad guy called the Hacker Raccoon is causing trouble online. You're going to train to stop him - by learning the same tricks real cyber heroes use.",
     accent: "#7c5cff",
   },
   {
     icon: "🧠",
     title: "Each Case is a New Skill",
-    body: "You'll play 17 short cases. Each one teaches one big idea — strong passwords, spotting fake emails, locking your accounts. Quick, fun, and you keep going at your pace.",
+    body: "You'll play 17 short cases. Each one teaches one big idea - strong passwords, spotting fake emails, locking your accounts. Quick, fun, and you keep going at your pace.",
     accent: "#00e5ff",
   },
   {
@@ -50,7 +50,7 @@ const STEPS: Step[] = [
   {
     icon: "⌨️",
     title: "Quick Controls",
-    body: "Tap or click to play. Press ESC to pause. Press F to go fullscreen. The pause menu has volume sliders and other settings — you can change them any time.",
+    body: "Tap or click to play. Press ESC to pause. Press F to go fullscreen. The pause menu has volume sliders and other settings - you can change them any time.",
     accent: "#ff5fb3",
   },
 ];
@@ -192,7 +192,7 @@ export default function OnboardingOverlay({
         </div>
 
         <h2 style={titleStyle}>
-          {idx === 0 ? `Hello, ${heroName} —` : ""}{" "}
+          {idx === 0 ? `Hello, ${heroName} -` : ""}{" "}
           <span style={{ color: step.accent }}>{step.title}</span>
         </h2>
 

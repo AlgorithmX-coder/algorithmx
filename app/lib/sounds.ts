@@ -8,15 +8,15 @@ interface SoundEntry {
 }
 
 /**
- * SFX_REGISTRY — canonical keys used throughout the app.
+ * SFX_REGISTRY - canonical keys used throughout the app.
  *
  * Keys are camelCase. A few legacy hyphenated aliases are registered at the
  * bottom so older call sites keep working without edits.
  *
  * Volume tiers:
- *   0.6 — routine UI + battle SFX
- *   0.8 — feedback (correct/wrong/streaks)
- *   0.9 — big moments (victory/defeat)
+ *   0.6 - routine UI + battle SFX
+ *   0.8 - feedback (correct/wrong/streaks)
+ *   0.9 - big moments (victory/defeat)
  */
 const SFX_REGISTRY: Record<string, SoundEntry> = {
   // UI
@@ -55,7 +55,7 @@ const SFX_REGISTRY: Record<string, SoundEntry> = {
   levelUp: { path: "/audio/sfx/level-up.mp3", volume: 0.6 },
   starEarned: { path: "/audio/sfx/star-earned.mp3", volume: 0.6 },
 
-  // Lesson flow — lessonStart/emailOpen have no dedicated files yet,
+  // Lesson flow - lessonStart/emailOpen have no dedicated files yet,
   // so substitute close-intent sounds until art delivers them.
   lessonStart: { path: "/audio/sfx/reveal.mp3", volume: 0.6 },
   lessonComplete: { path: "/audio/sfx/lesson-complete.mp3", volume: 0.6 },
@@ -72,7 +72,7 @@ const SFX_REGISTRY: Record<string, SoundEntry> = {
   lock: { path: "/audio/sfx/lock.mp3", volume: 0.6 },
   pour: { path: "/audio/sfx/pour.mp3", volume: 0.6 },
 
-  // — legacy aliases (older call sites) —
+  // - legacy aliases (older call sites) -
   "badge-earned": { path: "/audio/sfx/badge-earned.mp3", volume: 0.6 },
   "boss-appear": { path: "/audio/sfx/boss-roar.mp3", volume: 0.6 },
   "boss-hit": { path: "/audio/sfx/hit-impact.mp3", volume: 0.6 },
@@ -87,7 +87,7 @@ const SFX_REGISTRY: Record<string, SoundEntry> = {
 };
 
 /**
- * BGM_REGISTRY — looped background music tracks.
+ * BGM_REGISTRY - looped background music tracks.
  * Volume is capped at 0.10 so voice + SFX always sit clearly on top.
  * Invariant: BGM_MAX_VOLUME must stay well below any SFX volume
  * (lowest SFX is 0.5; a 5× headroom keeps music subtle).

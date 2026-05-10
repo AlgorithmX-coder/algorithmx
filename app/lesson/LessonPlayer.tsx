@@ -61,7 +61,7 @@ const WelcomeScene = dynamic(
   () => import("@/app/components/game/WelcomeScene"),
   { ssr: false }
 );
-// Per-case components — extracted from the inline switch statement
+// Per-case components - extracted from the inline switch statement
 // below so each case owns its own file. Dynamic-imported so they
 // only ship when their case is actually rendered, and ssr:false
 // because the underlying scenes use browser-only APIs.
@@ -126,7 +126,7 @@ const CURRENT_WEEK: number = 1;
 
 /** Pick the ScreenTransition type for a given target screen + nav direction. */
 function screenTransitionType(screen: number, direction: "forward" | "back"): TransitionType {
-  if (screen === 15) return "wipeDown"; // Boss battle — dramatic
+  if (screen === 15) return "wipeDown"; // Boss battle - dramatic
   // Exercise screens get fade-scale for a slight "lens change" feel.
   const EXERCISE_SCREENS = [2, 6, 7, 9, 10, 13, 14];
   if (EXERCISE_SCREENS.includes(screen)) return "fadeScale";
@@ -202,7 +202,7 @@ const animateCoins = () => {
     .to(el, { scale: 1, textShadow: "0 0 5px rgba(245,158,11,0.2)", duration: 0.5, ease: "elastic.out(1, 0.3)" });
 };
 
-// Was warm orange (rgba(249,115,22,*) — Pixar leftover). Pulled to
+// Was warm orange (rgba(249,115,22,*) - Pixar leftover). Pulled to
 // cyan glow so every legacy GSAP-handler button reads cyber when hovered.
 const btnHoverIn = (e: React.MouseEvent<HTMLElement>) => {
   gsap.to(e.currentTarget, { boxShadow: "0 0 35px rgba(0, 229, 255, 0.65)", scale: 1.06, duration: 0.25 });
@@ -397,7 +397,7 @@ const DeviceIllustration = ({
         <rect x="14" y="6" width="68" height="100" rx="10" fill={`url(#${shineId})`} opacity="0.18" />
         {/* Screen */}
         <rect x="20" y="14" width="56" height="78" rx="3" fill="#020617" />
-        {/* Screen content — gradient + lines */}
+        {/* Screen content - gradient + lines */}
         <rect x="20" y="14" width="56" height="78" rx="3" fill={`url(#${gradId})`} opacity="0.85" />
         <rect x="24" y="22" width="34" height="3" rx="1.2" fill="rgba(255,255,255,0.85)" />
         <rect x="24" y="30" width="48" height="2" rx="1" fill="rgba(255,255,255,0.55)" />
@@ -458,7 +458,7 @@ const DeviceIllustration = ({
 };
 
 /* Animated SVG burst used in place of the 🎉 / 🌟 emojis.  Two-tone gradient,
-   spinning rays, and a centre core — looks like a proper celebration mark. */
+   spinning rays, and a centre core - looks like a proper celebration mark. */
 const SuccessBurst = ({
   size = 28,
   colourA = "#00e5ff",
@@ -492,7 +492,7 @@ const SuccessBurst = ({
   </svg>
 );
 
-/* Big illustrated weekly badge — used on the end-of-week screen for
+/* Big illustrated weekly badge - used on the end-of-week screen for
    non-milestone weeks (1-4, 6-9, etc.) so kids feel rewarded each week
    even when there's no certificate yet. Inline SVG with depth, ribbons
    and a centred week number. */
@@ -587,7 +587,7 @@ function CertificateProgress({ currentWeek }: { currentWeek: number }) {
 /* ───────────────────────── CONSTANTS ───────────────────────── */
 
 const TOTAL = 19;
-// Cyber Heroes Lab gradient — cyan → cosmic violet. Used by progress
+// Cyber Heroes Lab gradient - cyan → cosmic violet. Used by progress
 // bar, step dots' completed glow, celebration confetti, and various
 // inline UIs. The previous warm gradient was for the Pixar dusk
 // system; cyber theme uses cool glow.
@@ -697,7 +697,7 @@ const RULES = [
 // still produce streaks of "right answer is always C". Instead we
 // **balance** the distribution: pre-assign each question a target
 // position cycling through 0..N-1 (then shuffle that assignment), and
-// place the correct answer at its target — wrong answers shuffled around
+// place the correct answer at its target - wrong answers shuffled around
 // it. Result: across any set of N questions, A/B/C/D each hold the right
 // answer roughly N/4 times, with no streaks longer than 1.
 // Stable within a session (one-shot at module load) so rendering during a
@@ -882,7 +882,7 @@ const confettiFallVariant = (_i: number) => ({
 /* ───────────────────────── SUB-COMPONENTS ──────────────────── */
 
 function FloatingOrbs() {
-  // Cyber Heroes Lab backdrop — futuristic abyss-navy with glowing
+  // Cyber Heroes Lab backdrop - futuristic abyss-navy with glowing
   // accents. Layered: faint cyan hex grid, drifting cyan/violet motes
   // rising from below, soft-glow security glyphs in cyan, pulsing
   // cosmic fireflies, and faint scanlines for the CRT phosphor feel.
@@ -914,13 +914,13 @@ function FloatingOrbs() {
         WebkitMaskImage: "radial-gradient(ellipse at 50% 50%, black 30%, transparent 90%)",
       }} />
 
-      {/* Layer 2: scanlines — very faint CRT texture */}
+      {/* Layer 2: scanlines - very faint CRT texture */}
       <div style={{
         position: "absolute", inset: 0,
         backgroundImage: "repeating-linear-gradient(0deg, transparent 0, transparent 3px, rgba(125, 240, 255, 0.025) 3px, rgba(125, 240, 255, 0.025) 4px)",
       }} />
 
-      {/* Layer 3: nebula glow — distant cyan/violet bleeds */}
+      {/* Layer 3: nebula glow - distant cyan/violet bleeds */}
       <div style={{
         position: "absolute", left: "-15%", top: "-10%",
         width: "60vw", height: "70vh",
@@ -988,7 +988,7 @@ function FloatingOrbs() {
         }}>{ic.icon}</div>
       ))}
 
-      {/* Layer 6: cosmic fireflies — pulsing dots in cyan/violet/pink */}
+      {/* Layer 6: cosmic fireflies - pulsing dots in cyan/violet/pink */}
       {[
         { left: "20%", top: "30%", delay: 0, color: "#00e5ff" },
         { left: "70%", top: "20%", delay: 2, color: "#7c5cff" },
@@ -1170,7 +1170,7 @@ function btn(label: string, onClick: () => void, extra?: React.CSSProperties): R
       onClick={onClick}
       sound="click"
       style={{
-        // Was warm Pixar orange/amber gradient (#f97316 → #f59e0b) — the
+        // Was warm Pixar orange/amber gradient (#f97316 → #f59e0b) - the
         // single most common button across every lesson screen, all
         // rendered warm against a cyber surface. Pulled to the cyber
         // gradient (cyan → cosmic-violet) used by the hero CTAs.
@@ -1484,7 +1484,7 @@ function InstructionOverlay({ icon, story, instructions, onReady }: { icon: stri
   return (
     <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} style={{ textAlign: "center" }}>
       <div data-animate style={{ background: "rgba(15, 21, 48, 0.88)", backdropFilter: "blur(16px)", border: "1px solid rgba(0, 229, 255, 0.45)", boxShadow: "0 0 32px rgba(0, 229, 255, 0.28), 0 0 56px rgba(124, 92, 255, 0.22), 0 30px 60px -20px rgba(0, 0, 0, 0.7)", borderRadius: 24, padding: 32, maxWidth: 520, margin: "0 auto", position: "relative" }}>
-        {/* Energised top edge — animated gradient strip */}
+        {/* Energised top edge - animated gradient strip */}
         <div aria-hidden style={{ position: "absolute", top: -1, left: 24, right: 24, height: 2, background: "linear-gradient(90deg, transparent, #00e5ff, #7c5cff, #ff5fb3, transparent)", filter: "drop-shadow(0 0 8px #00e5ffaa)", borderRadius: 999 }} />
         <div style={{ width: 80, height: 80, margin: "0 auto 16px", display: "flex", alignItems: "center", justifyContent: "center", background: "rgba(0, 229, 255, 0.12)", border: "1px solid rgba(0, 229, 255, 0.45)", borderRadius: 20, filter: "drop-shadow(0 0 22px rgba(0, 229, 255, 0.55))" }}><CyberIconOrEmoji emoji={icon} size={48} accent="cyan" /></div>
         <p style={{ color: "#7df0ff", fontSize: 11, fontWeight: 800, marginBottom: 8, letterSpacing: 3, textTransform: "uppercase", fontFamily: "ui-monospace, 'JetBrains Mono', Menlo, monospace" }}>◇ MISSION BRIEF ◇</p>
@@ -1634,7 +1634,7 @@ function LearnSummary({ message, starCount, onNext }: { message: string; starCou
           textShadow: "0 0 30px rgba(245,158,11,0.4)",
         }}>Great job!</h2>
 
-        {/* Stars row — SVG with sequenced pop-in + glow */}
+        {/* Stars row - SVG with sequenced pop-in + glow */}
         <div style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 10, margin: "8px 0 14px" }}>
           {[0, 1, 2].map((i) => {
             const earned = i < starCount;
@@ -1810,7 +1810,7 @@ function PhishingHotspotMiniGame({ onComplete }: { onComplete: () => void }) {
       id: "sender",
       rect: { left: "4%", top: "8%", width: "68%", height: "9%" },
       label: "Weird Sender",
-      tooltip: "Real banks send mail from their own website — not random addresses with numbers and dashes.",
+      tooltip: "Real banks send mail from their own website - not random addresses with numbers and dashes.",
     },
     {
       id: "subject",
@@ -1822,7 +1822,7 @@ function PhishingHotspotMiniGame({ onComplete }: { onComplete: () => void }) {
       id: "link",
       rect: { left: "4%", top: "55%", width: "92%", height: "12%" },
       label: "Fake Link",
-      tooltip: "Real links use the company's real website name. This one has weird letters — that's a red flag!",
+      tooltip: "Real links use the company's real website name. This one has weird letters - that's a red flag!",
     },
     {
       id: "ask",
@@ -1910,7 +1910,7 @@ function PhishingHotspotMiniGame({ onComplete }: { onComplete: () => void }) {
             To: you@example.com
           </div>
           <div style={{ marginTop: 8, fontWeight: 800, fontSize: "min(14px, 2.9vw)", color: "#1a0505" }}>
-            ⚠️ ACT NOW — ACCOUNT LOCKED!!!
+            ⚠️ ACT NOW - ACCOUNT LOCKED!!!
           </div>
           <hr style={{ border: "none", borderTop: "1px solid #ddd", margin: "10px 0" }} />
           <p style={{ margin: "6px 0", fontWeight: 700, color: "#b91c1c", fontSize: "min(12px, 2.5vw)" }}>
@@ -2040,7 +2040,7 @@ function PhishingHotspotMiniGame({ onComplete }: { onComplete: () => void }) {
 
 // Reads the password the kid built in PasswordLab Phase B (Case 3) and
 // surfaces it on the Boss Battle pre-fight screen so the moment lands
-// emotionally — "the Raccoon is going to crack THIS specific password
+// emotionally - "the Raccoon is going to crack THIS specific password
 // you made". Falls back to a generic chip when nothing is saved.
 function BossSavedPasswordChip() {
   const [pwd, setPwd] = useState<string | null>(null);
@@ -2120,7 +2120,7 @@ export default function LessonPlayer(props: { userName: string; moduleId: string
 }
 
 function LessonPlayerInner({ userName, moduleId, childName }: { userName: string; moduleId: string; childName: string }) {
-  // Mobile detection — gates heavy R3F surfaces (BossEnergyCore) so
+  // Mobile detection - gates heavy R3F surfaces (BossEnergyCore) so
   // phones don't try to run a third WebGL context alongside whatever
   // exercise is on screen.
   const isMobile = useIsMobile();
@@ -2146,7 +2146,7 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
     if (Number.isFinite(n)) setScreen(n);
   }, []);
 
-  // Intro cutscene disabled — lesson lands directly on screen 0. The state
+  // Intro cutscene disabled - lesson lands directly on screen 0. The state
   // machine and StoryCutscene render path are kept in case we want to
   // re-enable later; just flip this initial value back to "intro".
   const [cutscene, setCutscene] = useState<"intro" | null>(null);
@@ -2173,7 +2173,7 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
     list[Math.floor(Math.random() * list.length)];
 
   // Exercise screens: the exercise itself gives feedback (sounds, flashes,
-  // particles), so the character guide stays silent — no speech bubble on
+  // particles), so the character guide stays silent - no speech bubble on
   // every correct/wrong. Kids get cluttered otherwise.
   const EXERCISE_SILENT_SCREENS = [3, 4, 5, 6, 7, 8, 9, 11, 13, 14];
   const isExerciseActive = EXERCISE_SILENT_SCREENS.includes(screen);
@@ -2183,7 +2183,7 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
    *  During active exercises the mood still shifts but speech is suppressed. */
   const flashReaction = useCallback(
     (kind: "correct" | "wrong") => {
-      // During exercises, skip ENTIRELY — the exercise owns its own feedback
+      // During exercises, skip ENTIRELY - the exercise owns its own feedback
       // (particles, sounds, floating text). Mood flips were causing Adam to
       // re-animate every correct/wrong answer, which read as "Adam keeps
       // coming in and out too frequently". Leave him in his idle pose.
@@ -2225,7 +2225,7 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
     { oldRank: RankInfo; newRank: RankInfo; totalXP: number } | null
   >(null);
 
-  // Micro-feedback — particles, floating texts, screen shake, combo counter.
+  // Micro-feedback - particles, floating texts, screen shake, combo counter.
   const [burstList, setBurstList] = useState<
     { id: number; x: number; y: number; colour: string; count: number }[]
   >([]);
@@ -2667,7 +2667,7 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
     playSFX("lessonComplete");
   }, [screen]);
 
-  // Victory (case 16) + Certificate/Graduation (case 17) cues — fire once per entry
+  // Victory (case 16) + Certificate/Graduation (case 17) cues - fire once per entry
   const victoryFiredRef = useRef(false);
   const certFiredRef = useRef(false);
   useEffect(() => {
@@ -2774,7 +2774,7 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
     }
   }, []);
 
-  // Direction ref for ScreenTransition — set by navigate() before screen change.
+  // Direction ref for ScreenTransition - set by navigate() before screen change.
   const navDirectionRef = useRef<"forward" | "back">("forward");
 
   // Keyboard navigation: Right Arrow = next, Left Arrow = back.
@@ -2783,7 +2783,7 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
   // CrackTheCode dials, FirewallBuilder paddle, etc.) use arrow keys for
   // gameplay, and the global lesson navigator was hijacking those
   // presses and skipping the player out of the active exercise. The
-  // lesson is meant to progress in order via the on-screen buttons —
+  // lesson is meant to progress in order via the on-screen buttons -
   // there's no scenario where jumping forward by keyboard is correct.
   // Re-introduce only behind a modifier (e.g. Shift+Arrow) if you ever
   // need a debug-style shortcut, never bare arrow keys.
@@ -2794,7 +2794,7 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
 
   const { earn: earnInventoryItem } = useInventory();
 
-  /** Trigger the Reveal-Then-Earn beat for a screen — flies the
+  /** Trigger the Reveal-Then-Earn beat for a screen - flies the
    *  earned item from viewport-centre into its inventory slot, then
    *  pops the Adam/Layla "did you know" line. Safe to call multiple
    *  times for the same screen (no-op if already earned). */
@@ -2827,7 +2827,7 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
 
   const dismissSummary = useCallback((scr: number, nextStep: number) => {
     setShowSummary((prev) => ({ ...prev, [scr]: false }));
-    // Exercise complete — flash the arena into celebration mode briefly.
+    // Exercise complete - flash the arena into celebration mode briefly.
     setArenaMoodBrief("celebration");
     navigate(nextStep);
   }, [navigate, setArenaMoodBrief]);
@@ -3004,7 +3004,7 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
   }, [placed, screen, dragDone, addCoins]);
 
   // Screen 16 ("You Did It!"): staggered achievement reveal. Was guarded by
-  // `screen !== 15` which never fires on screen 16 — so the list stayed
+  // `screen !== 15` which never fires on screen 16 - so the list stayed
   // hidden and the Next button (gated on achievePhase >= 8) never showed.
   useEffect(() => {
     if (screen !== 16) return;
@@ -3056,7 +3056,7 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
       lockedItems: Array.from(lockedItems),
       savedAt: Date.now(),
     };
-    try { window.localStorage.setItem(getSaveKey(), JSON.stringify(data)); } catch { /* quota — ignore */ }
+    try { window.localStorage.setItem(getSaveKey(), JSON.stringify(data)); } catch { /* quota - ignore */ }
   }, [
     showResumePrompt,
     screen, coins, lessonXp,
@@ -3083,7 +3083,7 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
     setAnsweredRules(new Set(savedState.answeredRules));
     setRuleAnswers(savedState.ruleAnswers as Record<number, number | null>);
     setLockedItems(new Set(savedState.lockedItems));
-    /* Ephemeral state — explicitly reset so resuming doesn't carry
+    /* Ephemeral state - explicitly reset so resuming doesn't carry
      * over a streak / shake / wrong-attempt count from the previous
      * session. The autosave deliberately doesn't persist these
      * runtime-only counters; the resume path needs to honour that. */
@@ -3215,7 +3215,7 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
           // bottom). Tightened to pure cyber palette so Case 0 reads as
           // the same "place" as Case 1 onwards.
           <FullScene bg="radial-gradient(ellipse at 50% 70%, #1a2147 0%, #0f1530 35%, #04050d 75%, #04050d 100%)">
-          {/* Cosmic atmosphere — top-corner blobs + bottom horizon */}
+          {/* Cosmic atmosphere - top-corner blobs + bottom horizon */}
           <div aria-hidden style={{ position: "absolute", top: "-12%", left: "-12%", width: 640, height: 640, borderRadius: "50%", background: "radial-gradient(circle, rgba(124, 92, 255, 0.32) 0%, transparent 65%)", filter: "blur(60px)", pointerEvents: "none" }} />
           <div aria-hidden style={{ position: "absolute", top: "-8%", right: "-12%", width: 540, height: 540, borderRadius: "50%", background: "radial-gradient(circle, rgba(255, 95, 179, 0.26) 0%, transparent 65%)", filter: "blur(60px)", pointerEvents: "none" }} />
           <div style={{ textAlign: "center", position: "relative", zIndex: 1 }}>
@@ -3305,7 +3305,7 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
 
       /* ──── CASE 1: THE MISSION ──── */
       case 1: {
-        // Mission accents — cyan, cosmic violet, neon pink (third was
+        // Mission accents - cyan, cosmic violet, neon pink (third was
         // amber/orange, which broke palette coherence with the cyber
         // sky in MissionBriefScene). All three glows now sit inside
         // the Cyber Heroes Lab vocabulary.
@@ -3316,7 +3316,7 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
         ];
         return (
           // Was a dark-red wrapper bleeding red glow into a cyber-sky
-          // scene — three competing colour systems in one screen. Now
+          // scene - three competing colour systems in one screen. Now
           // a cyber-aligned abyss bg + cosmic-violet halo so the
           // wrapper, the sky, and the floor all read as one place.
           <FullScene
@@ -3376,7 +3376,7 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
               WebkitTextFillColor: "transparent",
               letterSpacing: 0.5,
               // Title was casting a warm brown shadow on a cyber-gradient
-              // — that was the obvious tell. Now a cyan/violet glow stack.
+              // - that was the obvious tell. Now a cyan/violet glow stack.
               textShadow:
                 "0 4px 18px rgba(8, 10, 22, 0.65), 0 0 28px rgba(0, 229, 255, 0.45), 0 0 56px rgba(124, 92, 255, 0.3)",
             }}>What is a Password?</h1>
@@ -3395,7 +3395,7 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
               {LOCK_ITEMS.map((item, idx) => {
                 const locked = lockedItems.has(item.id);
                 const flipping = lockFlipping === item.id;
-                // Three distinct cyber accents per card — gaming reads
+                // Three distinct cyber accents per card - gaming reads
                 // cyan/violet, tablet reads cosmic-violet/pink, school
                 // reads pink/coral. Was amber/gold on the school card
                 // and a brown c2 on the tablet card, which made the row
@@ -3545,7 +3545,7 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
                     WebkitBackdropFilter: "blur(12px)",
                     borderStyle: "solid",
                     borderWidth: 1,
-                    // Celebration card border was warm cream — now cyan
+                    // Celebration card border was warm cream - now cyan
                     // with a soft cyan inner halo, so the success card
                     // reads as a continuation of the cyber surface.
                     borderColor: "rgba(125, 240, 255, 0.5)",
@@ -3588,7 +3588,7 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
                       borderStyle: "solid",
                       borderWidth: 1,
                       // Fun-fact panel was a warm gold tint inside a
-                      // cyber celebration card — was the loudest
+                      // cyber celebration card - was the loudest
                       // remaining mismatch.  Now a cyan-tinted glass
                       // strip that visually nests inside the parent.
                       borderColor: "rgba(125, 240, 255, 0.45)",
@@ -3603,7 +3603,7 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
                     }}>
                       <SuccessBurst size={20} colourA="#7df0ff" colourB="#7c5cff" />
                       <p style={{ color: "#7df0ff", fontSize: 13, margin: 0, fontWeight: 600 }}>
-                        Fun fact — the first computer password was created in 1961!
+                        Fun fact - the first computer password was created in 1961!
                       </p>
                     </div>
                     {btn("Got it! Quiz time! →", () => showLearnSummary(2))}
@@ -3661,7 +3661,7 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
 
       /* ──── CASE 6: PASSWORD LAB (cauldron ingredients) ──── */
       case 6: {
-        if (showSummary[6]) return <LearnSummary message="You mixed uppercase, lowercase, numbers, symbols AND length — that's a super-strong recipe!" starCount={getStars(6)} onNext={() => dismissSummary(6, 7)} />;
+        if (showSummary[6]) return <LearnSummary message="You mixed uppercase, lowercase, numbers, symbols AND length - that's a super-strong recipe!" starCount={getStars(6)} onNext={() => dismissSummary(6, 7)} />;
         return (
           <ExerciseFrame variant="dusk">
             <PasswordLab
@@ -3689,7 +3689,7 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
 
       /* ──── CASE 8: MEMORY MATCH (cybersecurity term pairs) ──── */
       case 8: {
-        if (showSummary[8]) return <LearnSummary message="You matched every term to its meaning — that's real cyber knowledge!" starCount={getStars(8)} onNext={() => dismissSummary(8, 9)} />;
+        if (showSummary[8]) return <LearnSummary message="You matched every term to its meaning - that's real cyber knowledge!" starCount={getStars(8)} onNext={() => dismissSummary(8, 9)} />;
         return (
           <ExerciseFrame variant="dusk">
             <MemoryMatch
@@ -3703,7 +3703,7 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
 
       /* ──── CASE 9: CONVEYOR BELT (was drag & drop sort) ──── */
       case 9: {
-        if (showSummary[9]) return <LearnSummary message="You sorted strong from weak at full factory speed — great reflexes!" starCount={getStars(9)} onNext={() => dismissSummary(9, 10)} />;
+        if (showSummary[9]) return <LearnSummary message="You sorted strong from weak at full factory speed - great reflexes!" starCount={getStars(9)} onNext={() => dismissSummary(9, 10)} />;
         return (
           <ExerciseFrame variant="dusk">
             <ConveyorBelt
@@ -3736,7 +3736,7 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
             @keyframes grSparkleStreak { 0% { transform: translateX(-200%) skewX(-12deg); } 100% { transform: translateX(220%) skewX(-12deg); } }
           `}</style>
           <div style={{ textAlign: "center", position: "relative" }}>
-            {/* Treasure-vault animated backdrop — drifting coins, runes,
+            {/* Treasure-vault animated backdrop - drifting coins, runes,
                 twinkling gold dust, sweeping beam-of-light. Sits at z 0 so
                 the rule grid lands cleanly on top. */}
             <div aria-hidden style={{ position: "absolute", inset: -40, pointerEvents: "none", overflow: "hidden", zIndex: 0 }}>
@@ -4041,7 +4041,7 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
                     </p>
                   ) : (
                     <p style={{ color: "#fbbf24", fontSize: 14, fontWeight: 700, marginBottom: 10, opacity: 0.85 }}>
-                      {answeredRules.size}/5 unlocked — answer the rest for the full bonus!
+                      {answeredRules.size}/5 unlocked - answer the rest for the full bonus!
                     </p>
                   )}
                   {btn(answeredRules.size === 5 ? "Continue →" : "Continue anyway →", () => { addCoins(answeredRules.size === 5 ? 25 : 5); showLearnSummary(10); })}
@@ -4054,7 +4054,7 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
 
       /* ──── CASE 11: FIREWALL BUILDER (was Q3 bubble quiz) ──── */
       case 11: {
-        if (showSummary[11]) return <LearnSummary message="Your firewall is tall and tough — keep practising good habits every day!" starCount={getStars(11)} onNext={() => dismissSummary(11, 12)} />;
+        if (showSummary[11]) return <LearnSummary message="Your firewall is tall and tough - keep practising good habits every day!" starCount={getStars(11)} onNext={() => dismissSummary(11, 12)} />;
         return (
           <ExerciseFrame variant="dusk">
             <FirewallBuilder
@@ -4088,7 +4088,7 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
             @keyframes phGlyphFloat { 0% { transform: translateY(0) rotate(0); opacity: 0; } 12% { opacity: 0.18; } 80% { opacity: 0.18; } 100% { transform: translateY(-160px) rotate(20deg); opacity: 0; } }
           `}</style>
           <div style={{ textAlign: "center", position: "relative" }}>
-            {/* Drifting cipher glyphs in the background — subtle "case file" texture */}
+            {/* Drifting cipher glyphs in the background - subtle "case file" texture */}
             <div aria-hidden style={{ position: "absolute", inset: 0, pointerEvents: "none", overflow: "hidden", zIndex: 0 }}>
               {Array.from({ length: 14 }).map((_, i) => {
                 const ch = ["@", "$", "#", "?", "%", "&", "!", "*"][i % 8];
@@ -4172,7 +4172,7 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
                       <span style={{ color: t.color, fontWeight: 900, fontSize: 13, letterSpacing: 2, textTransform: "uppercase" }}>{t.title}</span>
                     </div>
 
-                    {/* Fake message — styled like a real popup with glitch + REJECTED stamp */}
+                    {/* Fake message - styled like a real popup with glitch + REJECTED stamp */}
                     <div style={{ position: "relative", marginBottom: 18 }}>
                       <div style={{
                         background: "linear-gradient(180deg, rgba(239,68,68,0.18) 0%, rgba(239,68,68,0.08) 100%)",
@@ -4220,7 +4220,7 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
                           />
                         </svg>
                       </div>
-                      {/* REJECTED stamp — moved to the top-right corner so
+                      {/* REJECTED stamp - moved to the top-right corner so
                           the actual fake-message text remains readable.
                           The user needs to be able to read the trick in
                           order to learn from it. */}
@@ -4370,7 +4370,7 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
 
       /* ──── CASE 13: SPAM BLASTER (was phishing tablet) ──── */
       case 13: {
-        if (showSummary[13]) return <LearnSummary message="You spotted every trick! Real friends don't need your password — ever." starCount={getStars(13)} onNext={() => dismissSummary(13, 14)} />;
+        if (showSummary[13]) return <LearnSummary message="You spotted every trick! Real friends don't need your password - ever." starCount={getStars(13)} onNext={() => dismissSummary(13, 14)} />;
         return (
           <ExerciseFrame variant="dusk">
             <SpamBlaster
@@ -4384,7 +4384,7 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
 
       /* ──── CASE 14: CHOOSE YOUR PATH ──── */
       case 14: {
-        if (showSummary[14]) return <LearnSummary message="You chose safely every time — that judgement is your best cyber tool." starCount={getStars(14)} onNext={() => dismissSummary(14, 15)} />;
+        if (showSummary[14]) return <LearnSummary message="You chose safely every time - that judgement is your best cyber tool." starCount={getStars(14)} onNext={() => dismissSummary(14, 15)} />;
         return (
           <ExerciseFrame variant="dusk">
             <ChooseYourPath
@@ -4469,7 +4469,7 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
                   padding: 22px 16px !important;
                 }
                 .bb-lock-vs > div:nth-child(2) {
-                  /* The VS chip — make it a horizontal divider on phones */
+                  /* The VS chip - make it a horizontal divider on phones */
                   width: 56px !important;
                   height: 56px !important;
                   margin: 4px auto !important;
@@ -4509,7 +4509,7 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
                 overflow: "hidden",
               }}>
 
-                {/* Cosmic cloud blobs — top-left + top-right */}
+                {/* Cosmic cloud blobs - top-left + top-right */}
                 <div style={{
                   position: "absolute",
                   top: "-12%",
@@ -4533,7 +4533,7 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
                   animation: "bbCloudDrift 22s ease-in-out infinite reverse",
                 }} />
 
-                {/* Bottom warm-coral haze — like horizon glow */}
+                {/* Bottom warm-coral haze - like horizon glow */}
                 <div style={{
                   position: "absolute",
                   bottom: "-10%",
@@ -4545,7 +4545,7 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
                   filter: "blur(70px)",
                 }} />
 
-                {/* ⚡ 3D ENERGY REACTOR — live R3F scene behind the VS
+                {/* ⚡ 3D ENERGY REACTOR - live R3F scene behind the VS
                     chip. Crystal core + wire shells + 3 orbital satellites
                     + crossing energy beams + dust + stars. Same lineage
                     as HeroAtlas on the signup page. */}
@@ -4561,7 +4561,7 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
                   {!isMobile && <BossEnergyCore />}
                 </div>
 
-                {/* ⚡ ENERGY CORE GLOW — three stacked rotating conic gradients
+                {/* ⚡ ENERGY CORE GLOW - three stacked rotating conic gradients
                     layered behind the 3D reactor as ambient additive haze. */}
                 <div style={{
                   position: "absolute",
@@ -4603,7 +4603,7 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
                   pointerEvents: "none",
                 }} />
 
-                {/* ⚡ TRON-GRID FLOOR — perspective floor lines receding
+                {/* ⚡ TRON-GRID FLOOR - perspective floor lines receding
                     into the distance. Sits in front of the city silhouette. */}
                 <div
                   aria-hidden
@@ -4629,7 +4629,7 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
                   }}
                 />
 
-                {/* ⚡ RACING SPARKS — fast horizontal streaks across the
+                {/* ⚡ RACING SPARKS - fast horizontal streaks across the
                     screen, like energy bolts whipping past. */}
                 {[
                   { top: "12%", dur: 2.6, delay: 0,    color: "#7df0ff" },
@@ -4653,7 +4653,7 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
                   }} />
                 ))}
 
-                {/* ⚡ EDGE VIGNETTE — dark cinematic edges so the centre
+                {/* ⚡ EDGE VIGNETTE - dark cinematic edges so the centre
                     pops harder. */}
                 <div style={{
                   position: "absolute",
@@ -4663,7 +4663,7 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
                   pointerEvents: "none",
                 }} />
 
-                {/* Lightning streaks — 6, scattered */}
+                {/* Lightning streaks - 6, scattered */}
                 {[
                   { left: "8%", h: 240, dur: 6.5, delay: 0 },
                   { left: "23%", h: 180, dur: 8, delay: 1.5 },
@@ -4684,7 +4684,7 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
                   }} />
                 ))}
 
-                {/* Particle drift — denser, varied size */}
+                {/* Particle drift - denser, varied size */}
                 {Array.from({ length: 24 }).map((_, i) => {
                   const left = (i * 41 + 7) % 100;
                   const dur = 5 + (i % 4);
@@ -4707,7 +4707,7 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
                   );
                 })}
 
-                {/* Radar pulse rings — emanating from centre */}
+                {/* Radar pulse rings - emanating from centre */}
                 {[0, 2, 4].map((delay) => (
                   <span key={`radar-${delay}`} style={{
                     position: "absolute",
@@ -4721,7 +4721,7 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
                   }} />
                 ))}
 
-                {/* Floating cyber glyphs at depth — large, very faded */}
+                {/* Floating cyber glyphs at depth - large, very faded */}
                 {[
                   { icon: "🛡", left: "8%", top: "26%", size: 76, dur: 7, delay: 0 },
                   { icon: "🔒", left: "88%", top: "22%", size: 68, dur: 9, delay: 2 },
@@ -4762,17 +4762,17 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
                       <stop offset="100%" stopColor="#1a0612" stopOpacity="0.85" />
                     </linearGradient>
                   </defs>
-                  {/* Far ridge — softer, behind */}
+                  {/* Far ridge - softer, behind */}
                   <path
                     d="M0,220 L0,160 L60,150 L120,170 L180,140 L240,165 L320,135 L400,160 L480,130 L560,155 L640,140 L720,165 L820,135 L900,160 L980,130 L1080,160 L1140,140 L1200,165 L1200,220 Z"
                     fill="url(#bbRidgeFar)"
                   />
-                  {/* Near ridge — sharper city skyline */}
+                  {/* Near ridge - sharper city skyline */}
                   <path
                     d="M0,220 L0,180 L40,180 L40,140 L100,140 L100,100 L160,100 L160,170 L210,170 L210,90 L270,90 L270,150 L340,150 L340,110 L400,110 L400,170 L470,170 L470,80 L530,80 L530,160 L600,160 L600,120 L660,120 L660,180 L730,180 L730,100 L790,100 L790,170 L860,170 L860,130 L920,130 L920,160 L990,160 L990,110 L1060,110 L1060,170 L1130,170 L1130,140 L1200,140 L1200,220 Z"
                     fill="url(#bbRidgeGrad)"
                   />
-                  {/* Window lights — random tiny gold dots */}
+                  {/* Window lights - random tiny gold dots */}
                   {[
                     [60, 145], [115, 110], [175, 125], [225, 105], [285, 115],
                     [355, 130], [415, 130], [485, 95], [545, 110], [615, 135],
@@ -4831,7 +4831,7 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
                 Adam &amp; Layla need you. The Hacker Raccoon is waiting.
               </motion.p>
 
-              {/* VS face-off — circular portraits with proper halos, no demo HUD */}
+              {/* VS face-off - circular portraits with proper halos, no demo HUD */}
               <div className="bb-lock-vs" style={{
                 position: "relative",
                 zIndex: 1,
@@ -4850,7 +4850,7 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
                 WebkitBackdropFilter: "blur(2px)",
               }}>
 
-                {/* ⚡ Tesla-coil arcs — crackling electric arcs across
+                {/* ⚡ Tesla-coil arcs - crackling electric arcs across
                     the VS card from hero side to centre, and centre to
                     villain side. Two zigzag SVG paths with flicker
                     animations, layered on top of the portraits. */}
@@ -4927,7 +4927,7 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
                   style={{ position: "relative", textAlign: "center", animation: "bbFloatHero 3s ease-in-out infinite" }}
                 >
                   <div data-portrait style={{ position: "relative", display: "inline-block", width: 130, height: 130 }}>
-                    {/* Halo — matches BattleArena's HeroPortrait halo */}
+                    {/* Halo - matches BattleArena's HeroPortrait halo */}
                     <span aria-hidden style={{
                       position: "absolute",
                       inset: -16,
@@ -5001,7 +5001,7 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
                   style={{ position: "relative", textAlign: "center", animation: "bbFloatVillain 3.4s ease-in-out infinite" }}
                 >
                   <div data-portrait style={{ position: "relative", display: "inline-block", width: 130, height: 130 }}>
-                    {/* Ember halo — matches BattleArena's BossPortrait halo */}
+                    {/* Ember halo - matches BattleArena's BossPortrait halo */}
                     <span aria-hidden style={{
                       position: "absolute",
                       inset: -16,
@@ -5041,7 +5041,7 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
                 </motion.div>
               </div>
 
-              {/* Saved password reveal — what the kid is defending */}
+              {/* Saved password reveal - what the kid is defending */}
               <div style={{ position: "relative", zIndex: 1 }}>
                 <BossSavedPasswordChip />
               </div>
@@ -5104,7 +5104,7 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
           <Case17Graduation
             childName={childName}
             weekNumber={CURRENT_WEEK}
-            weekTitle="Passwords — The Secret Code"
+            weekTitle="Passwords - The Secret Code"
             totalCoins={coins}
             isMilestoneWeek={IS_MILESTONE_WEEK}
             totalScore={totalScore}
@@ -5146,18 +5146,18 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
         minHeight: "100vh",
         position: "relative",
         overflow: "hidden",
-        // Cyber Heroes Lab page bg — deep abyss with hint of cosmic
+        // Cyber Heroes Lab page bg - deep abyss with hint of cosmic
         // violet bleeding from the top.
         background:
           "radial-gradient(ellipse at 50% -10%, #1d1f4d 0%, #0f1530 35%, #080a16 70%, #04050d 100%)",
       }}
     >
-      {/* Cyber page chrome — was a warm dusk gradient (orange + rose +
+      {/* Cyber page chrome - was a warm dusk gradient (orange + rose +
           parchment) that bled through every lesson screen, fighting
           every cyber palette case underneath it. Pulled to cosmic-
           violet + cyan + neon-pink halos so the page chrome is now
           coherent with the cyber lesson surface. This is the single
-          biggest cause of the "AI-generated patchwork" feel — a warm
+          biggest cause of the "AI-generated patchwork" feel - a warm
           halo bleeding behind cyber screens. */}
       <div
         aria-hidden="true"
@@ -5179,7 +5179,7 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
       </span>
       <style>{CSS}</style>
       <LessonAmbience />
-      {/* Lottie overlay host — wires correct/wrong/badge events to
+      {/* Lottie overlay host - wires correct/wrong/badge events to
           full-screen Lottie playback. No-op until a .lottie file is
           registered in lib/lottie-manifest.ts. */}
       <LottieOverlayHost />
@@ -5204,20 +5204,20 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
             xpEarned={lessonXp}
           />
 
-          {/* Inventory bar — earn-tracking strip below the HUD. The
+          {/* Inventory bar - earn-tracking strip below the HUD. The
               bar is fixed-positioned so it sits over the lesson body
               without consuming layout space. */}
           <InventoryBar currentScreen={screen} />
 
-          {/* Earn-flight overlay — animates icons from action point
+          {/* Earn-flight overlay - animates icons from action point
               into their slot. Mounted once; watches provider state. */}
           <EarnItemEffect />
 
-          {/* Did-you-know reveal — pops the speech bubble after the
+          {/* Did-you-know reveal - pops the speech bubble after the
               fly lands. Auto-dismisses after 5s; tap to dismiss. */}
           <RevealOverlay />
 
-          {/* Save & Exit button — kids can quit and resume later. The
+          {/* Save & Exit button - kids can quit and resume later. The
               autosave effect persists every state change to localStorage,
               so this button just navigates home; the resume prompt
               picks them back up next mount. */}
@@ -5253,7 +5253,7 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
             </button>
           )}
 
-          {/* Resume prompt — appears once on mount if a saved state for
+          {/* Resume prompt - appears once on mount if a saved state for
               this week exists. Offers "Resume" or "Start fresh". */}
           {showResumePrompt && savedState && (
             <div
@@ -5370,7 +5370,7 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
 
       <MuteToggle />
 
-      {/* Combo counter — visible when combo > 0 */}
+      {/* Combo counter - visible when combo > 0 */}
       {lessonCombo > 0 && !cutscene && (
         <div
           key={comboPulseKey}

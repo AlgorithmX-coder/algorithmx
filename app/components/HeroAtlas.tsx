@@ -5,16 +5,16 @@ import { Canvas, useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 
 /**
- * HeroAtlas — a richer companion to <CyberGlobe/>.
+ * HeroAtlas - a richer companion to <CyberGlobe/>.
  *
  * Built for the signup right panel: a layered 3D atlas with a pulsing
  * crystalline core, multiple wireframe shells (sphere + icosahedron),
  * four tilted orbital rings each carrying a glowing skill satellite,
  * a slow energy beam from core to active satellite, and a deep
- * starfield. Warm Pixar palette only — gold, coral, violet — no cyber
+ * starfield. Warm Pixar palette only - gold, coral, violet - no cyber
  * cyans.
  *
- * No drei, no orbit controls, no pointer events — drops behind UI.
+ * No drei, no orbit controls, no pointer events - drops behind UI.
  */
 
 const PALETTE = {
@@ -29,7 +29,7 @@ const PALETTE = {
 };
 
 /* ───────────────────────── CRYSTAL CORE ─────────────────────────
- * An icosahedron with emissive gold — pulses scale + intensity. */
+ * An icosahedron with emissive gold - pulses scale + intensity. */
 function CrystalCore() {
   const ref = useRef<THREE.Mesh>(null);
   const halo = useRef<THREE.Mesh>(null);
@@ -179,7 +179,7 @@ function OrbitalRing({
             emissiveIntensity={1.4}
           />
         </mesh>
-        {/* Satellite halo follows automatically — same group */}
+        {/* Satellite halo follows automatically - same group */}
         <mesh>
           <sphereGeometry args={[satellite.size * 2.4, 16, 12]} />
           <meshBasicMaterial color={satellite.color} transparent opacity={0.18} />
@@ -227,7 +227,7 @@ function StarField({ count = 240 }: { count?: number }) {
 
 /* ───────────────────────── DUST SHELL ──────────────────────── */
 function DustShell({ count = 110 }: { count?: number }) {
-  // Closer-in warm gold dust — gives the volumetric haze around the
+  // Closer-in warm gold dust - gives the volumetric haze around the
   // wire shells.
   const positions = useMemo(() => {
     const arr = new Float32Array(count * 3);
@@ -263,7 +263,7 @@ function DustShell({ count = 110 }: { count?: number }) {
 /* ───────────────────────── ENERGY BEAMS ──────────────────────── */
 function EnergyBeams() {
   // Three thin rotating crossbeams that pass through the core to create
-  // a "radiant" feel — gives an axis-of-power look without lens flare.
+  // a "radiant" feel - gives an axis-of-power look without lens flare.
   const ref = useRef<THREE.Group>(null);
   useFrame((_, dt) => {
     if (ref.current) {

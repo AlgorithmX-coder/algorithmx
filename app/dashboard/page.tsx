@@ -55,7 +55,7 @@ const FONT_STACK =
   "ui-rounded, 'Fredoka', 'Quicksand', 'Nunito', system-ui, -apple-system, sans-serif";
 
 function ShieldLogo({ size = 22 }: { size?: number }) {
-  // Futuristic AI-cyber shield — replaces the 2-tone gold-fill shield
+  // Futuristic AI-cyber shield - replaces the 2-tone gold-fill shield
   // the user spotted on the dashboard course card. Hex-bevel
   // silhouette, cyan→cosmic gradient stroke, circuit cross + node
   // dots inside, drop-shadow glow halo. Same shape language as the
@@ -218,7 +218,7 @@ export default async function DashboardPage({
           }
         : {
             title: "You're on a roll!",
-            body: `${completedCount} week${completedCount !== 1 ? "s" : ""} done, ${remaining} to go. Keep the momentum — each lesson weakens the Raccoon.`,
+            body: `${completedCount} week${completedCount !== 1 ? "s" : ""} done, ${remaining} to go. Keep the momentum - each lesson weakens the Raccoon.`,
             cta: "Continue Mission →",
           };
 
@@ -436,7 +436,7 @@ export default async function DashboardPage({
                     : "Continue your adventure with Adam & Layla."}
                 </p>
 
-                {/* Primary CTA — only for new users so the path from
+                {/* Primary CTA - only for new users so the path from
                     landing-on-dashboard to in-lesson is one tap. Existing
                     users hit "Continue" on their current week card below. */}
                 {completedCount === 0 && (
@@ -557,7 +557,7 @@ export default async function DashboardPage({
                   className="text-sm font-bold"
                   style={{ color: C.textSoft, opacity: 0.92 }}
                 >
-                  Payment confirmed — all 20 weeks of missions are unlocked.
+                  Payment confirmed - all 20 weeks of missions are unlocked.
                 </p>
               </div>
             </div>
@@ -596,7 +596,7 @@ export default async function DashboardPage({
               <span style={{ fontSize: 32 }}>👋</span>
               <div className="flex-1">
                 <h3 className="display font-bold text-lg" style={{ color: C.text }}>
-                  Checkout cancelled — no charge.
+                  Checkout cancelled - no charge.
                 </h3>
                 <p
                   className="text-sm font-bold"
@@ -863,7 +863,7 @@ export default async function DashboardPage({
                           ? "Start your first lesson to begin weakening the raccoon."
                           : completedCount >= totalModules
                             ? "The raccoon's power has been fully drained."
-                            : `${completedCount} lesson${completedCount !== 1 ? "s" : ""} down — keep going!`}
+                            : `${completedCount} lesson${completedCount !== 1 ? "s" : ""} down - keep going!`}
                       </p>
                     </div>
                   </div>

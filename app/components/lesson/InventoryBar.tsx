@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * InventoryBar — the persistent earned-items strip shown below the
+ * InventoryBar - the persistent earned-items strip shown below the
  * lesson HUD. 19 slots in a single row, each ~32px square. Empty slots
  * show a dim outline; earned slots show the icon at full saturation
  * with a soft warm glow + a celebratory bounce on first appearance.
@@ -95,7 +95,7 @@ export function InventoryBar({ currentScreen }: InventoryBarProps) {
             "ui-rounded, 'Fredoka', 'Quicksand', system-ui, sans-serif",
           maxWidth: "calc(100vw - 24px)",
           overflowX: "auto",
-          // Hide the native scrollbar — small bar should look clean
+          // Hide the native scrollbar - small bar should look clean
           // even if the viewport is too narrow for all 19 slots.
           scrollbarWidth: "none",
         }}
@@ -122,7 +122,7 @@ export function InventoryBar({ currentScreen }: InventoryBarProps) {
             <div
               key={item.id}
               id={`inv-slot-${item.id}`}
-              title={isEarned ? `${item.name} ✓` : `Locked — earn on screen ${item.screen + 1}`}
+              title={isEarned ? `${item.name} ✓` : `Locked - earn on screen ${item.screen + 1}`}
               style={{
                 position: "relative",
                 width: 34,
@@ -204,7 +204,7 @@ export function InventoryBar({ currentScreen }: InventoryBarProps) {
 }
 
 function hexToRgba(hex: string, alpha: number): string {
-  // Cheap parser — input is always our palette which is always #rrggbb.
+  // Cheap parser - input is always our palette which is always #rrggbb.
   const r = parseInt(hex.slice(1, 3), 16);
   const g = parseInt(hex.slice(3, 5), 16);
   const b = parseInt(hex.slice(5, 7), 16);

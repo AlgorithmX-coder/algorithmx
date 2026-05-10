@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * RevealOverlay — the second half of the Reveal-Then-Earn beat.
+ * RevealOverlay - the second half of the Reveal-Then-Earn beat.
  *
  * Once <EarnItemEffect/> has landed the new item in its slot, the
  * provider opens a `reveal` state. This overlay watches that state
@@ -25,7 +25,7 @@ export function RevealOverlay() {
   useEffect(() => {
     if (!reveal) return;
     const t = window.setTimeout(onRevealDismiss, AUTO_DISMISS_MS);
-    // Esc key dismisses the reveal — keyboard users get the same
+    // Esc key dismisses the reveal - keyboard users get the same
     // "tap-anywhere" affordance as mouse/touch users.
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") {

@@ -10,7 +10,7 @@ import * as THREE from "three";
  * to the bundle beyond what's already installed (`@react-three/fiber`,
  * `three`).
  *
- * Designed to live behind/under a UI panel — it auto-rotates slowly, has
+ * Designed to live behind/under a UI panel - it auto-rotates slowly, has
  * no controls, and accepts pointer events so the page doesn't intercept
  * clicks.
  */
@@ -28,7 +28,7 @@ function WireframeSphere() {
       inner.current.rotation.z += dt * 0.05;
     }
   });
-  // Wireframe via EdgesGeometry of a SphereGeometry — gives clean lat/long lines.
+  // Wireframe via EdgesGeometry of a SphereGeometry - gives clean lat/long lines.
   const outerEdges = useMemo(() => new THREE.EdgesGeometry(new THREE.SphereGeometry(1.6, 26, 16)), []);
   const innerEdges = useMemo(() => new THREE.EdgesGeometry(new THREE.SphereGeometry(1.2, 18, 12)), []);
   return (

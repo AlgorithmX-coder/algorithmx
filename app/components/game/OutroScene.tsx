@@ -1,7 +1,7 @@
 "use client";
 
 /*
- * OutroScene — Case 18 lesson outro / next-week teaser.
+ * OutroScene - Case 18 lesson outro / next-week teaser.
  *
  * Reflective sunset mood. "Adventure complete" message, optional outro
  * video framed in a Pixar plate, next-week teaser card, two action
@@ -33,9 +33,9 @@ export interface OutroSceneProps {
   videoSrc?: string | null;
   /** Fallback image when video is unavailable. */
   fallbackImageSrc?: string;
-  /** Primary action — usually navigate to dashboard. */
+  /** Primary action - usually navigate to dashboard. */
   onBackToDashboard: () => void;
-  /** Secondary action — replay this week. */
+  /** Secondary action - replay this week. */
   onPlayAgain: () => void;
 }
 
@@ -52,7 +52,7 @@ export default function OutroScene({
 
   return (
     <SceneFrame>
-      {/* Cosmic atmosphere — same lineage as the rest of Week 1's
+      {/* Cosmic atmosphere - same lineage as the rest of Week 1's
           cosmic-cyber theme. Replaces the older Pixar SunsetBackdrop
           / DistantRidges / WoodFloor triplet that felt like a daytime
           tonal break after the cosmic graduation scene. */}
@@ -137,7 +137,7 @@ export default function OutroScene({
         <NextWeekCard title={nextWeekTitle} coins={totalCoins} />
       </motion.div>
 
-      {/* Actions — cosmic CTA matches the boss-flow style */}
+      {/* Actions - cosmic CTA matches the boss-flow style */}
       <motion.div
         initial={{ opacity: 0, y: 12, scale: 0.92 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}

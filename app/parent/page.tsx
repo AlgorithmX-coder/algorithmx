@@ -181,7 +181,7 @@ export default async function ParentDashboard() {
     completedCount === 0
       ? {
           title: "Ready for the first mission?",
-          body: `Encourage ${childName} to start their first mission — it only takes 45 minutes.`,
+          body: `Encourage ${childName} to start their first mission - it only takes 45 minutes.`,
         }
       : completedCount >= totalModules && totalModules > 0
         ? {
@@ -323,7 +323,7 @@ export default async function ParentDashboard() {
                 className="display text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight mb-3"
                 style={{ color: C.text }}
               >
-                Parent Dashboard —{" "}
+                Parent Dashboard -{" "}
                 <span
                   style={{
                     background: GRAD_NAME,
@@ -477,7 +477,7 @@ export default async function ParentDashboard() {
                   }}
                 >
                   <p className="text-base" style={{ color: C.textSoft, opacity: 0.85 }}>
-                    No lessons completed yet — once {childName} finishes their first week, you&apos;ll see a summary of what they learned here.
+                    No lessons completed yet - once {childName} finishes their first week, you&apos;ll see a summary of what they learned here.
                   </p>
                 </div>
               ) : (

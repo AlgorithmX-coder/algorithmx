@@ -7,7 +7,7 @@ import SmoothScroll from "@/app/components/SmoothScroll";
 import { CodeRainScene } from "@/app/components/CyberFutureScenes";
 import { CyberIconOrEmoji } from "@/app/components/CyberIcon";
 
-/* ─────────────── TOKENS — warm Pixar dusk palette ─────────────── */
+/* ─────────────── TOKENS - warm Pixar dusk palette ─────────────── */
 const BG = "#080a16";              // page bg (was near-black)
 const CARD = "#0f1530";            // card surface (was navy)
 const CYAN = "#00e5ff";            // primary accent → gold light
@@ -21,24 +21,24 @@ const BODY = "'DM Sans', system-ui, sans-serif";
 
 /* ─────────────── DATA ─────────────── */
 const WEEKS = [
-  { week: 1, title: "Digital Identity & Footprint", desc: "Your online presence is permanent — learn to control it", free: true },
-  { week: 2, title: "Password Security & Authentication", desc: "Beyond \"password123\" — hashing, 2FA, and password managers" },
+  { week: 1, title: "Digital Identity & Footprint", desc: "Your online presence is permanent - learn to control it", free: true },
+  { week: 2, title: "Password Security & Authentication", desc: "Beyond \"password123\" - hashing, 2FA, and password managers" },
   { week: 3, title: "Phishing & Social Engineering", desc: "How hackers manipulate people, not just machines" },
-  { week: 4, title: "Network Fundamentals", desc: "IP addresses, Wi-Fi security, VPNs — how data travels" },
-  { week: 5, title: "Encryption & Secure Communication", desc: "Caesar ciphers to modern encryption — keeping secrets safe" },
-  { week: 6, title: "Malware & Threat Landscape", desc: "Viruses, ransomware, trojans — how they work and how to stop them" },
+  { week: 4, title: "Network Fundamentals", desc: "IP addresses, Wi-Fi security, VPNs - how data travels" },
+  { week: 5, title: "Encryption & Secure Communication", desc: "Caesar ciphers to modern encryption - keeping secrets safe" },
+  { week: 6, title: "Malware & Threat Landscape", desc: "Viruses, ransomware, trojans - how they work and how to stop them" },
   { week: 7, title: "Social Media Security", desc: "Privacy settings, data harvesting, deepfakes, and digital manipulation" },
   { week: 8, title: "Safe Browsing & OSINT", desc: "How to verify information and spot misinformation online" },
   { week: 9, title: "Ethical Hacking Introduction", desc: "White hat vs black hat, bug bounties, responsible disclosure" },
-  { week: 10, title: "Incident Response", desc: "What to do when things go wrong — the cyber emergency plan" },
-  { week: 11, title: "CTF Challenge Week", desc: "Capture The Flag — apply everything you've learned in a live challenge" },
+  { week: 10, title: "Incident Response", desc: "What to do when things go wrong - the cyber emergency plan" },
+  { week: 11, title: "CTF Challenge Week", desc: "Capture The Flag - apply everything you've learned in a live challenge" },
   { week: 12, title: "Certification & Graduation", desc: "Final assessment, portfolio review, CyberFirst-aligned certificate" },
 ];
 
 const FEATURES = [
   { title: "Hands-on Labs", desc: "Build real security tools and run simulated attacks in safe sandboxed environments.", icon: "🧪" },
   { title: "CTF Challenges", desc: "Compete in Capture The Flag competitions to test your skills against real scenarios.", icon: "🚩" },
-  { title: "Industry Tools", desc: "Learn the same tools professionals use — Wireshark, Nmap, Burp Suite basics.", icon: "🛠️" },
+  { title: "Industry Tools", desc: "Learn the same tools professionals use - Wireshark, Nmap, Burp Suite basics.", icon: "🛠️" },
   { title: "Portfolio Builder", desc: "Graduate with a cybersecurity portfolio showcasing your skills to schools and employers.", icon: "📁" },
 ];
 
@@ -855,7 +855,7 @@ export default function CyberExplorersPage() {
               boxShadow: `0 0 40px ${CYAN}15`,
             }}
           >
-            <TerminalHeader title="enrolment — cyber_explorers" />
+            <TerminalHeader title="enrolment - cyber_explorers" />
             <div style={{ padding: 32, textAlign: "center" }}>
               <h3 style={{ fontFamily: HEAD, fontSize: 22, fontWeight: 800, color: "#f1f5f9", margin: "0 0 4px" }}>
                 Cyber Explorers Academy
@@ -874,7 +874,7 @@ export default function CyberExplorersPage() {
                 £149
               </div>
               <div style={{ color: MUTED, fontSize: 14, marginBottom: 20 }}>
-                Lifetime access — 12 weeks of content, new content added regularly
+                Lifetime access - 12 weeks of content, new content added regularly
               </div>
               <ul
                 style={{
@@ -929,7 +929,7 @@ export default function CyberExplorersPage() {
                   letterSpacing: 0.5,
                 }}
               >
-                # Week 1 is FREE — no card required
+                # Week 1 is FREE - no card required
               </div>
             </div>
           </div>

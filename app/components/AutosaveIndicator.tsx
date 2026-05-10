@@ -3,7 +3,7 @@
 import { type CSSProperties, useEffect, useRef, useState } from "react";
 
 /**
- * AutosaveIndicator — small "AUTOSAVED" pill that pops up in the
+ * AutosaveIndicator - small "AUTOSAVED" pill that pops up in the
  * bottom-left for ~1.6s whenever the progression module writes to
  * localStorage. Real games show this kind of feedback; without it
  * the player has no signal that anything was persisted.

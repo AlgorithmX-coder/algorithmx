@@ -5,7 +5,7 @@ import { Canvas, useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 
 /**
- * BossEnergyCore — a 3D energy reactor sitting behind the boss-battle
+ * BossEnergyCore - a 3D energy reactor sitting behind the boss-battle
  * lock screen's VS chip. Cousin of HeroAtlas (signup right panel) but
  * with the cyber-electric palette and a faster combat tempo: pulsing
  * crystal core, wireframe shells, three orbital rings carrying glowing

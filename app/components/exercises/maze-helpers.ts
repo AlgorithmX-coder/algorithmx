@@ -1,4 +1,4 @@
-// Pure grid/maze helpers — no React, no DOM. Kept in a separate file so they
+// Pure grid/maze helpers - no React, no DOM. Kept in a separate file so they
 // can be unit-tested without mounting the CyberMaze component.
 
 export const MAZE_COLS = 9;
@@ -43,7 +43,7 @@ export function bfs(
 /**
  * Ensure (0,0) → (rows-1, cols-1) is reachable. If the given grid has no
  * open path, rescue by opening the full perimeter (top + bottom rows +
- * left + right columns) — that always connects start to exit via the
+ * left + right columns) - that always connects start to exit via the
  * outer frame regardless of interior walls. Returns the sanitised grid
  * and its BFS distances.
  */

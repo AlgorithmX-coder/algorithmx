@@ -8,7 +8,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { CyberPanelBackdrop } from "@/app/components/CyberFutureScenes";
 import { CYBER_PALETTE, CYBER_GRAD, CYBER_SHADOW } from "@/app/components/scene/cyberTokens";
 
-// 3D wireframe globe — code-split so the Three.js bundle only ships when
+// 3D wireframe globe - code-split so the Three.js bundle only ships when
 // the user actually loads /login (not on every other route).
 const CyberGlobe = dynamic(() => import("@/app/components/CyberGlobe"), {
   ssr: false,
@@ -53,7 +53,7 @@ function CyberParticles() {
 
 /* ─── FLOATING SECURITY GLYPHS (right panel) ────────────────
  * Same set of icons as the Pixar version, but with cyan glow and a
- * monospace data-tag rendered next to a few of them — gives the
+ * monospace data-tag rendered next to a few of them - gives the
  * right panel a "cyber lab readout" feel. */
 function CyberFloatingIcons() {
   const icons = [
@@ -154,7 +154,7 @@ export default function LoginPage() {
     >
       <CyberParticles />
 
-      {/* ─── UNIFIED BACKDROP — extends across the entire viewport ───
+      {/* ─── UNIFIED BACKDROP - extends across the entire viewport ───
           Was a split-screen with the live globe only on the right.
           User flagged that the two sides still felt like separate
           screens; now the rotating wireframe globe + cyan/cosmic halo
@@ -164,7 +164,7 @@ export default function LoginPage() {
       <div className="absolute inset-0" style={{ zIndex: 0, overflow: "hidden", pointerEvents: "none" }}>
         <CyberPanelBackdrop />
 
-        {/* Live R3F globe — fills the whole viewport behind the form */}
+        {/* Live R3F globe - fills the whole viewport behind the form */}
         <div className="absolute inset-0">
           <CyberGlobe />
         </div>
@@ -173,7 +173,7 @@ export default function LoginPage() {
             biased to the right so they pool around the globe centre. */}
         <CyberFloatingIcons />
 
-        {/* ALGORITHMX label + terminal prompt — anchored just below
+        {/* ALGORITHMX label + terminal prompt - anchored just below
             the centre, biased toward the right half so it sits behind
             the globe and beside the form, not under it. */}
         <motion.div
@@ -299,7 +299,7 @@ export default function LoginPage() {
             Authenticate to continue your cybersecurity training.
           </p>
 
-          {/* Form card — invisible container.
+          {/* Form card - invisible container.
               No background, no border, no shadow, no top-edge
               gradient strip, no padding box visible. Just a layout
               wrapper. The form fields below carry their own dark
@@ -445,7 +445,7 @@ export default function LoginPage() {
                 </div>
               </div>
 
-              {/* Submit — backlit cyan/violet pill */}
+              {/* Submit - backlit cyan/violet pill */}
               <motion.button
                 type="submit"
                 disabled={loading}
@@ -501,7 +501,7 @@ export default function LoginPage() {
             </p>
           </motion.div>
 
-          {/* Trust badges — now in monospace cyber-readout style */}
+          {/* Trust badges - now in monospace cyber-readout style */}
           <div className="flex items-center justify-center gap-4 mt-6 flex-wrap">
             {[
               { icon: "🔒", label: "ENC: 256-BIT" },
@@ -530,7 +530,7 @@ export default function LoginPage() {
         </div>
       </div>
 
-      {/* ─── RIGHT SIDE — empty spacer on lg+ so the form anchors to
+      {/* ─── RIGHT SIDE - empty spacer on lg+ so the form anchors to
           the left half. The unified backdrop layer above already
           renders the globe / icons / ALGORITHMX label spanning both
           halves; this column just reserves layout space. */}
@@ -552,6 +552,17 @@ export default function LoginPage() {
           0%   { transform: translateX(-100%); }
           60%  { transform: translateX(100%); }
           100% { transform: translateX(100%); }
+        }
+        /* Placeholder text was too dim against the dark glass inputs.
+           Brighter, bolder placeholder so the kid (and parent) can
+           actually read the hint. */
+        input::placeholder {
+          color: rgba(232, 237, 255, 0.85);
+          font-weight: 600;
+          opacity: 1;
+        }
+        input:focus::placeholder {
+          color: rgba(232, 237, 255, 0.55);
         }
       `}</style>
     </div>

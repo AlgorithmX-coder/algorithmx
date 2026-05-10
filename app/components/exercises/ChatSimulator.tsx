@@ -195,7 +195,7 @@ export default function ChatSimulator({
 
       // Show the child's own reply as a stranger-style outgoing bubble (player side).
       // We render it right-aligned below via a tone flag; reuse 'narrator' sender for simplicity would
-      // be wrong — instead we insert it as a stranger-shaped bubble but mark it as "player". Keep it simple:
+      // be wrong - instead we insert it as a stranger-shaped bubble but mark it as "player". Keep it simple:
       // push a narrator bubble showing `You: …` styled subtly.
       pushShown({ sender: "narrator", text: `You: "${opt.text}"` });
 
@@ -274,7 +274,7 @@ export default function ChatSimulator({
         position: "relative",
       }}
     >
-      {/* Phone status bar — iPhone-style with notch */}
+      {/* Phone status bar - iPhone-style with notch */}
       <div
         aria-hidden
         style={{
@@ -738,7 +738,7 @@ function Summary({ score, total }: { score: number; total: number }) {
           ? "You stayed safe! A real Cyber Hero!"
           : score > 0
             ? "Solid thinking. Review the tricky moments to spot them next time."
-            : "Tricky one. Review the red flags — you'll catch them next time."}
+            : "Tricky one. Review the red flags - you'll catch them next time."}
       </div>
       <button
         type="button"

@@ -1,15 +1,15 @@
 /**
- * Cyber Heroes Lab — futuristic design tokens.
+ * Cyber Heroes Lab - futuristic design tokens.
  *
  * A parallel design system to the warm Pixar dusk tokens (./tokens.ts).
  * The marketing home page keeps the warm welcoming palette; the
  * moment a kid crosses into the app (login → lessons → dashboard) the
- * world flips to this — deep navy abyss, glowing cyan terminals,
+ * world flips to this - deep navy abyss, glowing cyan terminals,
  * holographic chromatic edges. Two systems, one decision per page.
  *
  * Why navy + glow for cyber: the kids are training to be Cyber Heroes
  * in a futuristic command-centre lab. The visual language should
- * reinforce that — dark, focused, alive with energy traces, but never
+ * reinforce that - dark, focused, alive with energy traces, but never
  * scary (kids 6-9 are the audience). Reads as exciting, not threatening.
  */
 
@@ -23,13 +23,13 @@ export const CYBER_PALETTE = {
   oceanDeep: "#252d5e",    // card surface
   oceanMid: "#323b78",     // hover state / lighter card
 
-  // Glow accents — used for borders, glow shadows, animated highlights
+  // Glow accents - used for borders, glow shadows, animated highlights
   cyan: "#00e5ff",         // primary brand glow
   cyanSoft: "#7df0ff",     // softer cyan for tints
   electric: "#3a7bff",     // electric blue
   cosmic: "#7c5cff",       // cosmic violet
   cosmicSoft: "#a08fff",   // soft violet for tints
-  neon: "#ff5fb3",         // hot pink — celebrations, rare events
+  neon: "#ff5fb3",         // hot pink - celebrations, rare events
   lime: "#7eff97",         // success / energy / saved
   amber: "#ffb347",        // earned / XP / coins (kept warm for reward)
   ember: "#ff7a59",        // alert / warning (warmer than red)
@@ -49,37 +49,37 @@ export const CYBER_PALETTE = {
 /* ───────────────────────── GRADIENTS ───────────────────────── */
 
 export const CYBER_GRAD = {
-  /** The hero gradient — used on titles, primary buttons, and active
+  /** The hero gradient - used on titles, primary buttons, and active
    *  states. Travels cyan → violet → pink. Heavy enough that it
    *  reads as "the brand colour" everywhere. */
   hero: `linear-gradient(135deg, ${CYBER_PALETTE.cyan} 0%, ${CYBER_PALETTE.cosmic} 55%, ${CYBER_PALETTE.neon} 100%)`,
 
-  /** Subdued variant for subtle accents — same hues, lower contrast. */
+  /** Subdued variant for subtle accents - same hues, lower contrast. */
   heroSoft: `linear-gradient(135deg, ${CYBER_PALETTE.cyanSoft} 0%, ${CYBER_PALETTE.cosmicSoft} 100%)`,
 
-  /** Page background — deep abyss with a hint of cosmic violet bleeding
+  /** Page background - deep abyss with a hint of cosmic violet bleeding
    *  in from the top. Looks like the sky over a futuristic city. */
   page: `radial-gradient(ellipse at 50% -10%, #1d1f4d 0%, ${CYBER_PALETTE.midnight} 35%, ${CYBER_PALETTE.abyss} 70%, #04050d 100%)`,
 
-  /** Panel background — a dim navy that takes glow inserts cleanly. */
+  /** Panel background - a dim navy that takes glow inserts cleanly. */
   panel: `linear-gradient(180deg, ${CYBER_PALETTE.twilight} 0%, ${CYBER_PALETTE.midnight} 100%)`,
 
-  /** Card surface — slightly brighter than panel, suggests depth. */
+  /** Card surface - slightly brighter than panel, suggests depth. */
   card: `linear-gradient(180deg, rgba(50, 60, 130, 0.85) 0%, rgba(20, 28, 70, 0.92) 100%)`,
 
-  /** Glass surface — translucent dark navy with backdrop blur paired. */
+  /** Glass surface - translucent dark navy with backdrop blur paired. */
   glass: "rgba(15, 21, 48, 0.78)",
   glassDarker: "rgba(8, 10, 22, 0.85)",
 
-  /** Holographic shimmer — animated rotating conic gradient. Use as
+  /** Holographic shimmer - animated rotating conic gradient. Use as
    *  a `border-image` source or as a backdrop for chromatic edges. */
   holoConic: `conic-gradient(from 0deg, ${CYBER_PALETTE.cyan} 0deg, ${CYBER_PALETTE.cosmic} 120deg, ${CYBER_PALETTE.neon} 240deg, ${CYBER_PALETTE.cyan} 360deg)`,
 
-  /** Energy beam — vertical slice with cyan core and violet edges,
+  /** Energy beam - vertical slice with cyan core and violet edges,
    *  for accent strokes. */
   beam: `linear-gradient(180deg, transparent, ${CYBER_PALETTE.cyan}, ${CYBER_PALETTE.cosmic}, transparent)`,
 
-  /** Reward gradient — the only warm accent in the system. Used for
+  /** Reward gradient - the only warm accent in the system. Used for
    *  XP, coins, earned items. Visually distinct from the cool brand. */
   reward: `linear-gradient(135deg, ${CYBER_PALETTE.amber} 0%, ${CYBER_PALETTE.ember} 100%)`,
 } as const;
@@ -87,23 +87,23 @@ export const CYBER_GRAD = {
 /* ───────────────────────── BORDERS ───────────────────────── */
 
 export const CYBER_BORDER = {
-  /** Hairline — for subtle separator lines on dark surfaces. */
+  /** Hairline - for subtle separator lines on dark surfaces. */
   hair: "1px solid rgba(125, 240, 255, 0.12)",
 
-  /** Default — visible but quiet. Most cards / inputs. */
+  /** Default - visible but quiet. Most cards / inputs. */
   panel: "1px solid rgba(125, 240, 255, 0.22)",
 
-  /** Energised — used on focused / active / important panels. */
+  /** Energised - used on focused / active / important panels. */
   active: "1px solid rgba(0, 229, 255, 0.55)",
 
-  /** Holographic — paired with `border-image` for the shimmer effect. */
+  /** Holographic - paired with `border-image` for the shimmer effect. */
   holo: "1.5px solid transparent",
 } as const;
 
 /* ───────────────────────── SHADOW (GLOW) ───────────────────────── */
 
 export const CYBER_SHADOW = {
-  /** Base panel shadow — depth without glow. */
+  /** Base panel shadow - depth without glow. */
   panel: "0 12px 32px -8px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(125, 240, 255, 0.06) inset",
 
   /** Card with subtle cyan glow. */
@@ -114,15 +114,15 @@ export const CYBER_SHADOW = {
   cardViolet:
     "0 12px 28px -8px rgba(0, 0, 0, 0.65), 0 0 26px rgba(124, 92, 255, 0.22), 0 0 0 1px rgba(160, 143, 255, 0.16) inset",
 
-  /** Hero / important card — full holographic halo. */
+  /** Hero / important card - full holographic halo. */
   cardHero:
     "0 18px 40px -10px rgba(0, 0, 0, 0.75), 0 0 28px rgba(0, 229, 255, 0.32), 0 0 56px rgba(124, 92, 255, 0.26), 0 0 0 1px rgba(125, 240, 255, 0.22) inset",
 
-  /** Button glow ring — for primary CTAs. */
+  /** Button glow ring - for primary CTAs. */
   buttonGlow:
     "0 0 24px rgba(0, 229, 255, 0.55), 0 8px 20px -6px rgba(0, 229, 255, 0.45), 0 0 0 1px rgba(125, 240, 255, 0.6) inset",
 
-  /** Reward glow (warm) — for XP / coins / earned items. */
+  /** Reward glow (warm) - for XP / coins / earned items. */
   reward:
     "0 0 22px rgba(255, 179, 71, 0.55), 0 8px 20px -6px rgba(255, 122, 89, 0.45)",
 
@@ -141,7 +141,7 @@ export const CYBER_SPRING = {
 
 /* ───────────────────────── TYPOGRAPHY ───────────────────── */
 
-/** Display font stack — used for big titles. Space Grotesk is already
+/** Display font stack - used for big titles. Space Grotesk is already
  *  loaded site-wide; we layer Orbitron as an optional system fallback
  *  for users who happen to have it installed (slightly more "cyber"). */
 export const CYBER_FONT = {
@@ -163,7 +163,7 @@ export function hexToRgba(hex: string, alpha: number): string {
   return `rgba(${r}, ${g}, ${b}, ${alpha})`;
 }
 
-/** Common chromatic offset filter — applies a faint RGB-split to text
+/** Common chromatic offset filter - applies a faint RGB-split to text
  *  for a holographic shimmer effect. Pair with @keyframes for animation. */
 export const CYBER_FILTERS = {
   chromaticShimmer:

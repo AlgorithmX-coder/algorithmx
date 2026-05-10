@@ -5,7 +5,7 @@ import LottieScene from "@/app/components/LottieScene";
 import { LOTTIE_OVERLAYS } from "@/app/lib/lottie-manifest";
 
 /**
- * LottieOverlayHost — mounts once near the lesson root, then any
+ * LottieOverlayHost - mounts once near the lesson root, then any
  * call to correctAnswerBurst / badgeEarnedCelebration / wrongAnswerShake
  * fires a full-screen Lottie overlay with a 1s lifetime.
  *
@@ -23,7 +23,7 @@ interface ActiveOverlay {
   kind: Kind;
   /** Force-remount key so consecutive bursts of the same kind restart cleanly. */
   fireKey: number;
-  /** Streak at the time of fire — used to pick a bigger Lottie at high streaks. */
+  /** Streak at the time of fire - used to pick a bigger Lottie at high streaks. */
   streak: number;
 }
 
@@ -75,7 +75,7 @@ export default function LottieOverlayHost() {
     src = LOTTIE_OVERLAYS.badge;
   }
 
-  // No Lottie configured for this kind — render nothing so the
+  // No Lottie configured for this kind - render nothing so the
   // legacy canvas-confetti effect (already returned false from the
   // celebrations library) fires instead.
   if (!src) return null;
@@ -102,7 +102,7 @@ export default function LottieOverlayHost() {
           width: "min(640px, 80vw)",
           height: "min(640px, 80vh)",
         }}
-        // Hide the dashed-fallback box if the file 404s — overlay
+        // Hide the dashed-fallback box if the file 404s - overlay
         // should silently disappear, not show a placeholder.
         fallback={null}
       />

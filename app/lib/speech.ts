@@ -12,7 +12,7 @@
  *
  * The API is best-effort: the set of installed voices varies between
  * browsers/OSes, so we fall back gracefully when nothing matches.
- * SpeechSynthesis also requires a user gesture before it can speak — we
+ * SpeechSynthesis also requires a user gesture before it can speak - we
  * don't throw if it's blocked; audio just silently won't play.
  */
 
@@ -49,7 +49,7 @@ function pickVoice(speaker: Speaker): SpeechSynthesisVoice | null {
   const en = v.filter((vv) => vv.lang.toLowerCase().startsWith("en"));
   const pool = en.length > 0 ? en : v;
 
-  // Heuristic by voice name — Web Speech API doesn't expose gender directly.
+  // Heuristic by voice name - Web Speech API doesn't expose gender directly.
   const nameHint = (v: SpeechSynthesisVoice) => v.name.toLowerCase();
   const female = ["female", "samantha", "victoria", "karen", "moira", "fiona", "susan", "tessa", "serena", "allison", "zira"];
   const male = ["male", "daniel", "alex", "fred", "oliver", "tom", "david", "rishi"];
@@ -84,7 +84,7 @@ export function speak(text: string, speaker: Speaker = "narrator"): void {
   try {
     const synth = window.speechSynthesis;
     synth.cancel();
-    // Strip common markers that shouldn't be read out — emojis, quote chars.
+    // Strip common markers that shouldn't be read out - emojis, quote chars.
     const clean = text
       .replace(/[\u{1F300}-\u{1FAFF}]/gu, "")
       .replace(/[☀-➿]/g, "")
@@ -100,7 +100,7 @@ export function speak(text: string, speaker: Speaker = "narrator"): void {
     if (voice) u.voice = voice;
     synth.speak(u);
   } catch {
-    // Web Speech API is best-effort — silently fail on unsupported browsers.
+    // Web Speech API is best-effort - silently fail on unsupported browsers.
   }
 }
 
@@ -114,7 +114,7 @@ export function stopSpeaking(): void {
   }
 }
 
-/** Prime the voice list — some browsers load voices asynchronously. */
+/** Prime the voice list - some browsers load voices asynchronously. */
 export function primeVoices(): void {
   if (typeof window === "undefined" || !window.speechSynthesis) return;
   const s = window.speechSynthesis;

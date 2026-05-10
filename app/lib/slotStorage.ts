@@ -3,7 +3,7 @@
  *
  * Many lesson-runtime keys (mid-lesson save, inventory, ad-hoc per-week
  * caches) were originally global. After the save-slot system shipped,
- * those keys leak between slots — Adam's save shows up under Layla.
+ * those keys leak between slots - Adam's save shows up under Layla.
  *
  * Wrap every per-player storage key through `slotKey(base)` and the
  * read/write will land under `<base>::slot-N` automatically. Falls back
@@ -74,7 +74,7 @@ export const PER_SLOT_BASE_KEYS = [
   // Mid-lesson autosave (LessonPlayer SAVE_KEY).
   "algorithmx:lesson:week-1:state",
   "algorithmx:lesson:week-2:state",
-  // Inventory: ax-inventory-v1::week-X — wrap that base. Inventory
+  // Inventory: ax-inventory-v1::week-X - wrap that base. Inventory
   // already adds the `::weekKey` suffix; we also append `::slotId`.
   // (Both suffixes are added by the inventory module via slotKey.)
   // Saved password (the kid's chosen password text from the password lab).
@@ -90,7 +90,7 @@ export function wipeSlotKeys(slotId: string): void {
       /* ignore */
     }
   }
-  /* Inventory uses a compound base — remove every key beginning with
+  /* Inventory uses a compound base - remove every key beginning with
    * `ax-inventory-v1::` and ending with `::slotId`. */
   try {
     const remove: string[] = [];

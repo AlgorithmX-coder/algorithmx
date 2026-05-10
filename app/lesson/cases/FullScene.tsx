@@ -4,7 +4,7 @@ import type { ReactNode } from "react";
 
 export interface FullSceneProps {
   children: ReactNode;
-  /** Background — pass a CSS gradient string. */
+  /** Background - pass a CSS gradient string. */
   bg: string;
   /** Optional radial-gradient halo above the content. */
   glow?: string;

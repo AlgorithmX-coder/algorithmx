@@ -10,7 +10,7 @@ This is the system that stops bugs reaching the same kid twice.
    severity, device.
 4. Submit.
 
-That's it. Don't worry about formatting — the template asks for
+That's it. Don't worry about formatting - the template asks for
 everything I need.
 
 ## Severity labels
@@ -26,9 +26,9 @@ everything I need.
 For each bug report I (Claude) will:
 
 1. Reproduce locally.
-2. Write a Playwright test that exercises the bug — **test goes red**.
+2. Write a Playwright test that exercises the bug - **test goes red**.
    The test stays in the repo forever as a permanent regression guard.
-3. Fix the code — **test goes green**.
+3. Fix the code - **test goes green**.
 4. CI runs `tsc + vitest + playwright` on every push and blocks merge
    if any test goes red.
 5. PR merges → Vercel deploys → bug closed with the test PR linked.
@@ -48,13 +48,13 @@ If you and your friend are doing a manual pass, test in this order
    - CyberScanner (does STRONG/WEAK actually click?)
    - ProtectTheData (mouse / arrow keys / WASD / tap on tablet)
    - Memory Match
-   - ConveyorBelt (lever up/down — does it route correctly?)
+   - ConveyorBelt (lever up/down - does it route correctly?)
    - Crack the Code (does the rings indicator update?)
-   - Golden Rules (tap each medal — answer each rule's question)
+   - Golden Rules (tap each medal - answer each rule's question)
    - Spot the Tricks (4 evidence files)
    - Choose Your Path (4 scenarios)
    - FirewallBuilder (catch green, space-to-reject red)
-   - SpamBlaster (click phishing emails — laser zap?)
+   - SpamBlaster (click phishing emails - laser zap?)
    - Boss Battle (10 questions vs the Raccoon)
    - You Did It! (achievements + Next button)
    - Week summary (badge + coins)
@@ -84,5 +84,5 @@ npm run test:e2e:ui       # interactive UI runner
   iPad-specific bugs).
 
 When you hit something that ISN'T in one of those buckets and we shipped
-a regression anyway, **that's a hole in the test suite** — file the bug
+a regression anyway, **that's a hole in the test suite** - file the bug
 and a test will be added at the same time as the fix.

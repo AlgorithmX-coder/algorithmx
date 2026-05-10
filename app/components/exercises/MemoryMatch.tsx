@@ -1,7 +1,7 @@
 "use client";
 
 /*
- * MemoryMatch — Pixar 2.5D commercial polish.
+ * MemoryMatch - Pixar 2.5D commercial polish.
  *
  * Game logic preserved (flip two cards, match the pair, mismatched
  * cards flip back, all-matched triggers a wave celebration). Visuals
@@ -59,14 +59,14 @@ interface Card {
 }
 
 const STYLES = `
-/* Bug 2 fix — decorative keyframes used to bake rotateY(180deg) into
+/* Bug 2 fix - decorative keyframes used to bake rotateY(180deg) into
    every frame so the flipped state would survive the shake/pop. That
    meant when one of these animations fired DURING the 0.45s flip
    transition, the animation took over the transform property entirely
    and snapped the card to its (animation-defined) rotateY(180deg) start
    pose, killing the in-flight flip mid-rotation.
 
-   Now the keyframes only animate translate/scale — the rotateY flip
+   Now the keyframes only animate translate/scale - the rotateY flip
    lives on a SEPARATE inner element, so the two never fight. */
 @keyframes mmShake {
   0%,100% { transform: translateX(0); }
@@ -159,7 +159,7 @@ export default function MemoryMatch({
    * top of the grid, and the kid taps the face-down card they think
    * holds the matching meaning. Cycles through all 6 terms.
    *
-   * Same content, completely different mechanic — adds ~60-90s to
+   * Same content, completely different mechanic - adds ~60-90s to
    * the screen without being "more questions". */
   type Phase = "playing" | "phase-a-finished" | "rebuild" | "done";
   const [phase, setPhase] = useState<Phase>("playing");
@@ -266,7 +266,7 @@ export default function MemoryMatch({
     lockRef.current = true;
     if (a.pairId === b.pairId) {
       window.setTimeout(() => {
-        // Single celebratory cue — used to fire two stacked sounds
+        // Single celebratory cue - used to fire two stacked sounds
         // ("correct" + "sortCorrect") which clipped on slower audio
         // contexts. The sortCorrect chime is the more rewarding one.
         playSound("sortCorrect");
@@ -323,11 +323,11 @@ export default function MemoryMatch({
       setWaveOn(true);
       playSound("sortCorrect");
       // Pass best streak so the finale burst scales with how cleanly
-      // the kid solved the board — perfect run = full-screen party.
+      // the kid solved the board - perfect run = full-screen party.
       void correctAnswerBurst(bestStreak);
       window.setTimeout(() => {
         setWaveOn(false);
-        // Phase A complete — pivot to the memory-rebuild transition
+        // Phase A complete - pivot to the memory-rebuild transition
         // card instead of jumping straight to the FinishOverlay. The
         // overlay still fires, but only after Phase B is also done.
         setPhase("phase-a-finished");
@@ -350,7 +350,7 @@ export default function MemoryMatch({
     setPhase("rebuild");
   };
 
-  /** Click handler for rebuild mode — flips ONE card and checks it
+  /** Click handler for rebuild mode - flips ONE card and checks it
    *  against the currently-prompted term's meaning. Right answer
    *  locks the card face-up and advances; wrong answer flips back
    *  after a short reveal. */
@@ -391,7 +391,7 @@ export default function MemoryMatch({
         const nextPrompt = rebuildPromptIdx + 1;
         window.setTimeout(() => {
           if (nextPrompt >= pairList.length) {
-            // Phase B complete — celebrate, then open the FinishOverlay
+            // Phase B complete - celebrate, then open the FinishOverlay
             setPhase("done");
             playSound("confetti");
             void badgeEarnedCelebration();
@@ -403,7 +403,7 @@ export default function MemoryMatch({
         }, 700);
       }, 280);
     } else {
-      // Wrong card — let the kid see what it actually was for ~1.1s,
+      // Wrong card - let the kid see what it actually was for ~1.1s,
       // then flip it back face-down so they can try again.
       playSound("wrong");
       setShakeIdxs([idx]);
@@ -454,7 +454,7 @@ export default function MemoryMatch({
         margin: "0 auto",
         padding: "0 0 22px",
         borderRadius: 28,
-        // Cyber Heroes Lab frame — abyss navy gradient with a subtle
+        // Cyber Heroes Lab frame - abyss navy gradient with a subtle
         // cyan inner glow so the chip card backs sit cleanly inside.
         background:
           "linear-gradient(180deg, #0f1530 0%, #1a2147 55%, #080a16 100%)",
@@ -515,7 +515,7 @@ export default function MemoryMatch({
                   fontSize: 11,
                 }}
               >
-                Phase 2 — Memory
+                Phase 2 - Memory
               </span>
             </>
           ) : (
@@ -539,7 +539,7 @@ export default function MemoryMatch({
           )}
         </div>
 
-        {/* Rebuild-mode prompt banner — shows the term the kid is
+        {/* Rebuild-mode prompt banner - shows the term the kid is
             looking for, big and centred above the grid. */}
         {phase === "rebuild" && rebuildPromptIdx < pairList.length && (
           <div
@@ -612,7 +612,7 @@ export default function MemoryMatch({
             const jY = (((jSeed >> 3) % 7) - 3) * 1.2;
             const baseTransform = `translate(${jX}px, ${jY}px) rotate(${jRot}deg)`;
             return (
-              // Outer wrapper — owns the click handler, the static
+              // Outer wrapper - owns the click handler, the static
               // jitter (baseTransform), and the decorative shake/pop/
               // wave animation.  Crucially this layer does NOT touch
               // rotateY, so when the animation runs it can't clobber
@@ -631,7 +631,7 @@ export default function MemoryMatch({
                   zIndex: c.matched ? 1 : 2,
                 }}
               >
-                {/* Inner flipper — owns the 3D rotateY flip and its
+                {/* Inner flipper - owns the 3D rotateY flip and its
                     transition.  Clean transform property, no animation,
                     so the 0.45s flip always runs to completion. */}
                 <div
@@ -751,7 +751,7 @@ export default function MemoryMatch({
 /* ───────────────────────── PHASE TRANSITION CARD ─────────────
  * Modal-style overlay that pops between Phase A and Phase B. Same
  * visual language as ExerciseIntro but smaller and re-themed for
- * "level 2" — gold-rimmed plum card with a brain glyph and a single
+ * "level 2" - gold-rimmed plum card with a brain glyph and a single
  * START button. */
 
 function PhaseTransitionCard({ onStart }: { onStart: () => void }) {
@@ -844,7 +844,7 @@ function PhaseTransitionCard({ onStart }: { onStart: () => void }) {
           }}
         >
           The cards are flipping face-down again. We&apos;ll show you a
-          term — tap the card you remember holds the matching meaning.
+          term - tap the card you remember holds the matching meaning.
           Hit them all in one go for a 3-star finish!
         </p>
         <button
@@ -893,7 +893,7 @@ function PixarBackdrop() {
       aria-hidden
       style={{ position: "absolute", inset: 0, zIndex: 0, pointerEvents: "none" }}
     >
-      {/* Cyber halo top-right — replaces the warm sun glow with a
+      {/* Cyber halo top-right - replaces the warm sun glow with a
           cosmic violet / cyan bleed matching the rest of the cyber app. */}
       <div
         style={{
@@ -908,7 +908,7 @@ function PixarBackdrop() {
           filter: "blur(4px)",
         }}
       />
-      {/* Drifting motes — cyan / cosmic / neon mix */}
+      {/* Drifting motes - cyan / cosmic / neon mix */}
       {motes.map((m, i) => {
         const c = i % 3 === 0 ? "0, 229, 255" : i % 3 === 1 ? "124, 92, 255" : "255, 95, 179";
         return (
@@ -949,7 +949,7 @@ function CardBack({
   // Tech-themed card back: deep plum board, faint gold circuit grid,
   // diagonal trace lines, four corner solder pads, and a glowing
   // micro-chip with a keyhole at the centre. Still warm Pixar palette
-  // (no cyan / cyber-blue) — the tech feel comes from the form, not
+  // (no cyan / cyber-blue) - the tech feel comes from the form, not
   // the colour temperature.
   return (
     <div
@@ -985,7 +985,7 @@ function CardBack({
           "0 12px 28px -8px rgba(8, 10, 22, 0.7), inset 0 0 0 1px rgba(0, 229, 255, 0.18), 0 0 0 1px rgba(8, 10, 22, 0.55)";
       }}
     >
-      {/* Faint warm circuit grid — the technical texture */}
+      {/* Faint warm circuit grid - the technical texture */}
       <div
         aria-hidden
         style={{
@@ -1050,7 +1050,7 @@ function CardBack({
         }}
       />
 
-      {/* Microchip with keyhole — the tech-themed centerpiece */}
+      {/* Microchip with keyhole - the tech-themed centerpiece */}
       <svg
         width="56%"
         height="56%"
@@ -1086,7 +1086,7 @@ function CardBack({
           ))}
         </g>
 
-        {/* Chip body — square with rounded corners, gold gradient */}
+        {/* Chip body - square with rounded corners, gold gradient */}
         <rect
           x="12"
           y="12"
@@ -1109,10 +1109,10 @@ function CardBack({
           strokeWidth="0.6"
         />
 
-        {/* Notch (chip orientation marker) — top-left */}
+        {/* Notch (chip orientation marker) - top-left */}
         <circle cx="18" cy="18" r="1.4" fill="rgba(80, 35, 5, 0.7)" />
 
-        {/* Keyhole etched into the chip — padlock allegiance */}
+        {/* Keyhole etched into the chip - padlock allegiance */}
         <g transform="translate(30, 30)">
           <circle r="4.5" fill="rgba(80, 35, 5, 0.85)" />
           <rect x="-1.2" y="3.4" width="2.4" height="5" rx="0.6" fill="rgba(80, 35, 5, 0.85)" />

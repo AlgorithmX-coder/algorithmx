@@ -139,7 +139,7 @@ export default function StoryCutscene({ slides, onComplete, title }: StoryCutsce
     ? 0
     : Math.round(((index + 1) / Math.max(1, totalSlides)) * 100);
 
-  /* Floating particle config — colour set depends on bg. */
+  /* Floating particle config - colour set depends on bg. */
   const particles = useMemo(() => {
     const palette =
       bg === "danger"
@@ -163,7 +163,7 @@ export default function StoryCutscene({ slides, onComplete, title }: StoryCutsce
       {/* Warm stage lighting band at the bottom */}
       <div className="sc-stage-light" aria-hidden="true" />
 
-      {/* Animated starfield — 50 stars, brighter */}
+      {/* Animated starfield - 50 stars, brighter */}
       <div className="sc-stars" aria-hidden="true">
         {Array.from({ length: 50 }).map((_, i) => (
           <span
@@ -348,7 +348,7 @@ export default function StoryCutscene({ slides, onComplete, title }: StoryCutsce
         Skip All ▸▸
       </button>
 
-      {/* Continue / Start Lesson button — only after typewriter + min-hold */}
+      {/* Continue / Start Lesson button - only after typewriter + min-hold */}
       {(phase === "showing" || phase === "title") && continueReady && (
         <button
           type="button"
@@ -508,7 +508,7 @@ const CSS = `
 }
 .sc-bg-dark { background: radial-gradient(ellipse at 50% 30%, #12102e 0%, #07091a 60%, #04060a 100%); }
 
-/* Warm stage lighting from below — a drifting amber/blue band. */
+/* Warm stage lighting from below - a drifting amber/blue band. */
 .sc-stage-light {
   position: absolute;
   left: -20%; right: -20%;

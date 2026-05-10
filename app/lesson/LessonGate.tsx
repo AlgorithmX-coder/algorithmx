@@ -23,7 +23,7 @@ import {
 } from "@/app/lib/saveSlots";
 
 /**
- * LessonGate — fronts the lesson with a console-style title screen and
+ * LessonGate - fronts the lesson with a console-style title screen and
  * save-slot picker. Once a slot is chosen the gate unmounts the title
  * and mounts the existing LessonPlayer with no behavioural changes.
  *

@@ -16,10 +16,10 @@ export const config = {
      * Match all paths except:
      *  - /password (the gate page itself)
      *  - /api/* (API routes, incl. /api/password)
-     *  - /_next/* (Next.js internals — static, image, etc.)
+     *  - /_next/* (Next.js internals - static, image, etc.)
      *  - /favicon.ico
      *  - /logos/* (static logo assets)
-     *  - /dev/* (dev-only preview/tooling routes — no auth)
+     *  - /dev/* (dev-only preview/tooling routes - no auth)
      *  - anything with a file extension (static files)
      */
     "/((?!password|api|_next|favicon.ico|logos|dev|.*\\..*).*)",

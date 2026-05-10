@@ -3,7 +3,7 @@
 import { type CSSProperties, useEffect, useRef, useState } from "react";
 
 /**
- * AnimatedCounter — animates a number from its previous render to the
+ * AnimatedCounter - animates a number from its previous render to the
  * new value with eased lerp, like classic game scoreboards. Default
  * duration 600ms with cubic ease-out.
  *
@@ -85,7 +85,7 @@ export default function AnimatedCounter({
     return () => {
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
     };
-    /* We deliberately do NOT depend on `display` — re-running on each
+    /* We deliberately do NOT depend on `display` - re-running on each
      * intermediate frame would loop forever. The from-anchor is captured
      * synchronously above. */
     /* eslint-disable-next-line react-hooks/exhaustive-deps */

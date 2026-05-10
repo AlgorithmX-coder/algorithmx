@@ -45,12 +45,12 @@ export async function GET(req: NextRequest) {
   doc.setFillColor(BRAND.paper);
   doc.rect(0, 0, W, H, "F");
 
-  // Outer border — rounded, 10mm inset, 2px, brand blue
+  // Outer border - rounded, 10mm inset, 2px, brand blue
   doc.setDrawColor(BRAND.blue);
   doc.setLineWidth(0.7);
   doc.roundedRect(10, 10, W - 20, H - 20, 4, 4, "S");
 
-  // Inner border — 14mm inset, thinner, green
+  // Inner border - 14mm inset, thinner, green
   doc.setDrawColor(BRAND.green);
   doc.setLineWidth(0.18);
   doc.roundedRect(14, 14, W - 28, H - 28, 3, 3, "S");
@@ -181,7 +181,7 @@ export async function GET(req: NextRequest) {
   // Bottom-centre: website
   doc.text("www.algorithmx.com", shieldCX, H - 18, { align: "center" });
 
-  // Corner decorations — filled dots, one brand colour per corner
+  // Corner decorations - filled dots, one brand colour per corner
   const dots: { x: number; y: number; color: string }[] = [
     { x: 20, y: 20, color: BRAND.blue },
     { x: W - 20, y: 20, color: BRAND.green },
@@ -200,9 +200,9 @@ export async function GET(req: NextRequest) {
   // PDF metadata
   doc.setProperties({
     title: `${childName} - ${milestone.title} Certificate`,
-    subject: `Cyber Heroes Academy — Week ${weekNumber} milestone`,
+    subject: `Cyber Heroes Academy - Week ${weekNumber} milestone`,
     creator: "AlgorithmX",
-    author: "AlgorithmX — Cyber Heroes Academy",
+    author: "AlgorithmX - Cyber Heroes Academy",
   });
 
   const pdfBuffer = Buffer.from(doc.output("arraybuffer"));

@@ -25,7 +25,7 @@ export interface ButtonJuiceProps {
  * A11y: tabIndex=0 so it's keyboard-focusable, Enter/Space activate it,
  * and a visible focus ring fires on keyboard focus (focus-visible polyfilled
  * via :focus-visible CSS, but as inline styles can't query that pseudo-class
- * we approximate with the `keyboardFocused` state — set true by onFocus and
+ * we approximate with the `keyboardFocused` state - set true by onFocus and
  * cleared by onBlur or any mouse interaction).
  */
 export default function ButtonJuice({
@@ -70,7 +70,7 @@ export default function ButtonJuice({
     transition,
     filter: hovered && !disabled ? "brightness(1.05)" : "none",
     // Visible cyan focus ring when reached via keyboard (Tab key).
-    // Mouse focus does NOT show the ring — same UX as :focus-visible.
+    // Mouse focus does NOT show the ring - same UX as :focus-visible.
     outline: keyboardFocused ? "3px solid rgba(0, 229, 255, 0.85)" : "none",
     outlineOffset: keyboardFocused ? "3px" : 0,
     ...style,

@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 
 /**
- * SpriteCharacter — plays a PNG sprite-sheet animation produced by
+ * SpriteCharacter - plays a PNG sprite-sheet animation produced by
  * Cartoon Animator 5 (or any other tool that outputs an image sequence).
  *
  * The expected asset shape is a single PNG with N frames laid out in
@@ -49,7 +49,7 @@ export interface SpriteCharacterProps {
   loop?: boolean;
   /** Auto-play on mount. Default true. */
   autoplay?: boolean;
-  /** Display size — defaults to frame native size. Aspect ratio is preserved. */
+  /** Display size - defaults to frame native size. Aspect ratio is preserved. */
   width?: number | string;
   height?: number | string;
   /** Force re-mount + restart from frame 0 when this number changes. */
@@ -58,7 +58,7 @@ export interface SpriteCharacterProps {
   style?: CSSProperties;
   /** Fires once when the last frame is shown (only meaningful if loop=false). */
   onComplete?: () => void;
-  /** Click handler — sprite is rendered to a div, so wire here for taps. */
+  /** Click handler - sprite is rendered to a div, so wire here for taps. */
   onClick?: () => void;
 }
 
@@ -134,7 +134,7 @@ export default function SpriteCharacter({
         backgroundImage: `url(${src})`,
         backgroundPosition: `${bgX}px ${bgY}px`,
         backgroundRepeat: "no-repeat",
-        // Crisp pixels — sprite-sheet kids' content rarely benefits from
+        // Crisp pixels - sprite-sheet kids' content rarely benefits from
         // bilinear smoothing.
         imageRendering: "auto",
         cursor: onClick ? "pointer" : undefined,

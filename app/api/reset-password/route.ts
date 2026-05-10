@@ -64,7 +64,7 @@ export async function POST(req: Request) {
   const hashedPassword = await bcrypt.hash(password, 10);
 
   // Single transaction: update user + mark token used. Also wipe any
-  // other outstanding reset tokens for this user — once they've reset,
+  // other outstanding reset tokens for this user - once they've reset,
   // older outstanding requests should not still be redeemable.
   await prisma.$transaction([
     prisma.user.update({

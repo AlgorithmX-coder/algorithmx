@@ -7,9 +7,9 @@ import AnimatedCounter from "@/app/components/AnimatedCounter";
 import { getCaseMeta } from "@/app/lib/caseTitles";
 
 export interface LessonHUDProps {
-  /** Optional — legacy single-character name (unused now, both heroes are shown). */
+  /** Optional - legacy single-character name (unused now, both heroes are shown). */
   characterName?: "ADAM" | "LAYLA";
-  /** Optional — legacy single-character image (ignored; Adam + Layla idle sprites are used). */
+  /** Optional - legacy single-character image (ignored; Adam + Layla idle sprites are used). */
   characterImage?: string;
   weekNumber: number;
   weekTitle: string;
@@ -48,7 +48,7 @@ export default function LessonHUD({
     : 0;
   const rankLabel = rank.next
     ? `${totalXP} / ${rank.next.minXP} XP`
-    : `${totalXP} XP — MAX`;
+    : `${totalXP} XP - MAX`;
 
   return (
     <div
@@ -73,7 +73,7 @@ export default function LessonHUD({
         color: "#fff7e6",
       }}
     >
-      {/* Characters — Adam + Layla overlapping avatars */}
+      {/* Characters - Adam + Layla overlapping avatars */}
       <div style={{ display: "flex", alignItems: "center", gap: 10, flexShrink: 0 }}>
         <div style={{ display: "flex", alignItems: "center", flexShrink: 0 }}>
           <div

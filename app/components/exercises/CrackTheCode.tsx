@@ -153,7 +153,7 @@ export default function CrackTheCode({
 
   /* ─── PHASE B: DEFEND THE PASSWORD ─────────────────────────────
    * After the kid cracks the rings and unlocks the vault, the Hacker
-   * Raccoon doesn't give up — he throws 4 common weak guesses at the
+   * Raccoon doesn't give up - he throws 4 common weak guesses at the
    * lock and the kid has to REJECT each one in time. Same content
    * (passwords, locks) but a totally new mechanic: defensive reflex
    * instead of combinatorial puzzle. */
@@ -162,7 +162,7 @@ export default function CrackTheCode({
   const WEAK_GUESSES = useMemo(
     () => [
       { text: "password", reason: "Most-guessed password ever." },
-      { text: "12345", reason: "Easy keyboard run — try this!" },
+      { text: "12345", reason: "Easy keyboard run - try this!" },
       { text: "qwerty", reason: "Just the top row of keys." },
       { text: "abc123", reason: "First 3 letters + 1-2-3. Too obvious." },
     ],
@@ -214,7 +214,7 @@ export default function CrackTheCode({
     }, 600);
   };
 
-  /** Kid pressed ALLOW on the current weak guess (wrong action — all
+  /** Kid pressed ALLOW on the current weak guess (wrong action - all
    *  Phase B guesses are deliberate weak passwords). */
   const defendAllow = () => {
     if (defendLockRef.current) return;
@@ -431,7 +431,7 @@ export default function CrackTheCode({
       <SavedPasswordChip />
 
 
-      {/* Compact concentric-ring indicator — purely decorative, gives the
+      {/* Compact concentric-ring indicator - purely decorative, gives the
           "rings" feel back without overwhelming the actual dials below.
           Each ring's current pick is shown as a glowing dot on its arc;
           rings turn green when correct so progress is obvious at a glance. */}
@@ -513,7 +513,7 @@ export default function CrackTheCode({
         </div>
       </div>
 
-      {/* Horizontal dial layout — primary interaction. Clear labels +
+      {/* Horizontal dial layout - primary interaction. Clear labels +
           arrow buttons keep it kid-friendly while the ring indicator
           above gives the "ring" visual feel back. */}
       <div
@@ -631,7 +631,7 @@ export default function CrackTheCode({
         })}
       </div>
 
-      {/* Legacy concentric-ring visualisation — kept for reference/rollback,
+      {/* Legacy concentric-ring visualisation - kept for reference/rollback,
           hidden so it doesn't render. Remove in a later pass if unused. */}
       <div
         style={{
@@ -1107,7 +1107,7 @@ export default function CrackTheCode({
 
 /* ───────────────────────── DEFEND PANEL (PHASE B) ─────────────
  * Renders in place of the rings once the kid has cracked the
- * vault. The Hacker Raccoon throws weak guesses at the lock —
+ * vault. The Hacker Raccoon throws weak guesses at the lock -
  * each card animates in from the side with the guess text + a
  * "why hackers love this" tooltip. Two buttons: REJECT (correct,
  * since every guess is weak) or ALLOW (wrong, demonstrative). */
@@ -1356,7 +1356,7 @@ function DefendPanel({
             }}
           >
             All these guesses are <strong style={{ color: "#ff5fb3" }}>WEAK</strong>.
-            Tap REJECT to block them — fast!
+            Tap REJECT to block them - fast!
           </p>
           <div style={{ display: "flex", gap: 14, justifyContent: "center", flexWrap: "wrap" }}>
             <button
@@ -1527,7 +1527,7 @@ function DefendPanel({
 
 /* ───────────────────────── SAVED PASSWORD CHIP ─────────────────
  * Surfaces the password the kid built in PasswordLab (Case 3) as a
- * "this is YOUR vault — you set this" chip in the CrackTheCode
+ * "this is YOUR vault - you set this" chip in the CrackTheCode
  * intro. Pure read-only display; absent when no password was saved. */
 
 function SavedPasswordChip() {
@@ -1546,7 +1546,7 @@ function SavedPasswordChip() {
           window.localStorage.getItem("ax-w1-saved-password"),
       );
     } catch {
-      // Private mode etc — silent fallback
+      // Private mode etc - silent fallback
     }
   }, []);
   if (!pwd) return null;

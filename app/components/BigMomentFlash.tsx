@@ -3,7 +3,7 @@
 import { type CSSProperties, useEffect, useState } from "react";
 
 /**
- * BigMomentFlash — subtle radial accent flash from the screen edges
+ * BigMomentFlash - subtle radial accent flash from the screen edges
  * that fires alongside the achievement toast on big moments
  * (rank-up, badge earn, boss defeat). 1.2s total: 280ms in, 250ms
  * hold, ~700ms slow fade.

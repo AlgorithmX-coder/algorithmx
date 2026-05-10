@@ -62,7 +62,7 @@ const BossBattle = dynamic(
 );
 
 /**
- * Choose a transition style per screen type — exercise screens get a
+ * Choose a transition style per screen type - exercise screens get a
  * fade-scale lens-change feel; boss battle is a dramatic wipe.
  */
 function transitionForScreen(def: ScreenDef | undefined, dir: "forward" | "back"): TransitionType {
@@ -106,7 +106,7 @@ function WeekNotReady({ week }: { week: number }) {
         Week {week} is on the way!
       </h1>
       <p style={{ color: "#94a3b8", maxWidth: 420, marginBottom: 24 }}>
-        This week&apos;s mission hasn&apos;t landed yet. Check back soon —
+        This week&apos;s mission hasn&apos;t landed yet. Check back soon -
         we&apos;re adding new content all the time.
       </p>
       <Link
@@ -253,15 +253,15 @@ export default function DynamicLesson() {
     [weekNum]
   );
 
-  // One-time debug trace on mount / when params change — visible in the
+  // One-time debug trace on mount / when params change - visible in the
   // browser console so the user can paste it back if something is off.
   useEffect(() => {
     // eslint-disable-next-line no-console
     console.log("[DynamicLesson] rawParams:", rawParams, "weekNum:", weekNum, "content:", content ? `Week ${content.weekNumber}: ${content.title}` : null);
   }, [rawParams, weekNum, content]);
 
-  // All hooks run unconditionally — we short-circuit with a fallback render below.
-  // Intro cutscene disabled — lesson lands directly on screen 0. Default the
+  // All hooks run unconditionally - we short-circuit with a fallback render below.
+  // Intro cutscene disabled - lesson lands directly on screen 0. Default the
   // flag to true so the StoryCutscene early return is bypassed.
   const [cutsceneDone, setCutsceneDone] = useState(true);
   const [screen, setScreen] = useState(0);
@@ -381,7 +381,7 @@ export default function DynamicLesson() {
     wrongAnswerShake();
   }, [setArenaMoodBrief]);
 
-  // Param hasn't resolved yet (very brief moment in some hydration paths) —
+  // Param hasn't resolved yet (very brief moment in some hydration paths) -
   // render a simple loading state so the page never appears "blank."
   if (rawWeek === undefined) {
     return <LessonLoading />;

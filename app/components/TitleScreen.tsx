@@ -25,7 +25,7 @@ import BootIntro from "@/app/components/BootIntro";
 import RecentActivityMarquee from "@/app/components/RecentActivityMarquee";
 
 /**
- * TitleScreen — full-screen "boot" experience that gates the lesson.
+ * TitleScreen - full-screen "boot" experience that gates the lesson.
  *
  * Phases:
  *   1. boot      → animated logo + "PRESS ANY KEY"
@@ -76,7 +76,7 @@ export default function TitleScreen({ defaultName, onStart }: TitleScreenProps) 
     return () => window.removeEventListener("mousemove", onMove);
   }, []);
 
-  /* Ambient music starts here and continues into the lesson —
+  /* Ambient music starts here and continues into the lesson -
    * SoundManager.playBGM crossfades when LessonPlayer eventually
    * picks its own track, so the kid never hears a silence gap. */
   useEffect(() => {
@@ -221,7 +221,7 @@ function BootPhase({
   hasSaves: boolean;
   tilt: { x: number; y: number };
 }) {
-  /* Parallax transforms — subtle, 6deg max tilt. */
+  /* Parallax transforms - subtle, 6deg max tilt. */
   const tiltX = -tilt.y * 6;
   const tiltY = tilt.x * 6;
   return (
@@ -285,11 +285,11 @@ function SlotsPhase({
   cancelDelete: () => void;
   onBack: () => void;
 }) {
-  /* Quick-resume — most-recently-played slot, only if played in the
+  /* Quick-resume - most-recently-played slot, only if played in the
    * last 14 days. Filters out brand-new empty slots.
    *
    * Date.now() reads on every render, but it only drives a one-shot
-   * boolean for showing the resume CTA — no derived memo, no state,
+   * boolean for showing the resume CTA - no derived memo, no state,
    * no effect. Stale-by-a-frame is fine here. */
   const recent = slots
     .filter((s): s is SaveSlot => s !== null)
@@ -765,7 +765,7 @@ function Backdrop() {
 }
 
 function StarLayer() {
-  /* Deterministic star field — same on every render so it doesn't twinkle
+  /* Deterministic star field - same on every render so it doesn't twinkle
    * randomly between phase transitions. */
   const stars = useMemo(() => {
     const out: { x: number; y: number; size: number; delay: number }[] = [];
@@ -838,7 +838,7 @@ function StarLayer() {
 const containerStyle: CSSProperties = {
   position: "fixed",
   inset: 0,
-  /* Translucent — IdleWorldLayer below shows through. */
+  /* Translucent - IdleWorldLayer below shows through. */
   background:
     "radial-gradient(ellipse at center, rgba(15,21,48,0.6) 0%, rgba(4,5,13,0.92) 70%)",
   color: "#e8edff",

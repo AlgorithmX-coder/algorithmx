@@ -1,5 +1,5 @@
 /**
- * Tween engine — smooth value interpolation, spring physics, and screen shake.
+ * Tween engine - smooth value interpolation, spring physics, and screen shake.
  * Pure TypeScript with no Pixi dependency; drive from any game loop.
  */
 
@@ -130,7 +130,7 @@ export class ScreenShake {
   private intensity = 0;
   private decay = 5;
 
-  /** Current (x, y) offset — apply to a container each frame. */
+  /** Current (x, y) offset - apply to a container each frame. */
   readonly offset = { x: 0, y: 0 };
 
   /** Trigger a shake. Higher intensity = larger offset. decay = how fast it dies off. */

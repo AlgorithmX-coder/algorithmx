@@ -37,14 +37,14 @@ const TOTAL_SCREENS = 16;
 
 type ScanItem = { text: string; isStrong: boolean; explanation: string };
 const SCAN_ITEMS: ScanItem[] = [
-  { text: "Your Instagram post", isStrong: true, explanation: "Active — you chose to share this" },
-  { text: "A Google search", isStrong: false, explanation: "Passive — recorded in your history without a prompt" },
-  { text: "Your school login", isStrong: true, explanation: "Active — you entered credentials deliberately" },
-  { text: "A YouTube comment", isStrong: true, explanation: "Active — you chose to publish it" },
-  { text: "GPS data from your phone", isStrong: false, explanation: "Passive — collected in the background" },
-  { text: "Browser cookies", isStrong: false, explanation: "Passive — stored as you browse" },
-  { text: "Your email to a friend", isStrong: true, explanation: "Active — you composed and sent it" },
-  { text: "WiFi network you connected to", isStrong: false, explanation: "Passive — logged by the router automatically" },
+  { text: "Your Instagram post", isStrong: true, explanation: "Active - you chose to share this" },
+  { text: "A Google search", isStrong: false, explanation: "Passive - recorded in your history without a prompt" },
+  { text: "Your school login", isStrong: true, explanation: "Active - you entered credentials deliberately" },
+  { text: "A YouTube comment", isStrong: true, explanation: "Active - you chose to publish it" },
+  { text: "GPS data from your phone", isStrong: false, explanation: "Passive - collected in the background" },
+  { text: "Browser cookies", isStrong: false, explanation: "Passive - stored as you browse" },
+  { text: "Your email to a friend", isStrong: true, explanation: "Active - you composed and sent it" },
+  { text: "WiFi network you connected to", isStrong: false, explanation: "Passive - logged by the router automatically" },
 ];
 // Re-purposes CyberScanner's STRONG button as "ACTIVE" and WEAK as "PASSIVE".
 
@@ -77,37 +77,37 @@ const PATH_SCENARIOS = [
   {
     setup: "You take a selfie at school with your uniform showing. Should you post it?",
     choices: [
-      { text: "Post it — it's just a photo", isSafe: false, consequence: "Your uniform and the background give away where you go every weekday. Strangers can use that." },
+      { text: "Post it - it's just a photo", isSafe: false, consequence: "Your uniform and the background give away where you go every weekday. Strangers can use that." },
       { text: "Don't post it online", isSafe: true, consequence: "Smart. Uniforms + landmarks = your real-world location is now public." },
     ],
   },
   {
     setup: "A website pops up and asks you to accept cookies. What do you do?",
     choices: [
-      { text: "Click Accept All — everyone does it", isSafe: false, consequence: "You just handed over tracking permissions to dozens of third-party companies." },
-      { text: "Check what data they collect — only accept necessary", isSafe: true, consequence: "Exactly right. Necessary cookies are fine. Third-party trackers aren't." },
+      { text: "Click Accept All - everyone does it", isSafe: false, consequence: "You just handed over tracking permissions to dozens of third-party companies." },
+      { text: "Check what data they collect - only accept necessary", isSafe: true, consequence: "Exactly right. Necessary cookies are fine. Third-party trackers aren't." },
     ],
   },
   {
     setup: "A \"fun quiz\" asks for your full name, birthday, and pet's name. Should you fill it in?",
     choices: [
-      { text: "Yes — it's just a quiz", isSafe: false, consequence: "Those are classic security-question answers. Quizzes are often data-harvesting scams." },
-      { text: "No — those are security-question answers", isSafe: true, consequence: "Perfect. Any quiz asking for info banks and apps use to verify you is a red flag." },
+      { text: "Yes - it's just a quiz", isSafe: false, consequence: "Those are classic security-question answers. Quizzes are often data-harvesting scams." },
+      { text: "No - those are security-question answers", isSafe: true, consequence: "Perfect. Any quiz asking for info banks and apps use to verify you is a red flag." },
     ],
   },
   {
     setup: "A calculator app asks for your camera, microphone, contacts AND location. Install?",
     choices: [
-      { text: "Allow — it probably needs them to work", isSafe: false, consequence: "A calculator needs none of those. Those permissions make the app a surveillance tool." },
-      { text: "Deny — a calculator doesn't need those permissions", isSafe: true, consequence: "Yes. When permissions don't match the app's job, walk away." },
+      { text: "Allow - it probably needs them to work", isSafe: false, consequence: "A calculator needs none of those. Those permissions make the app a surveillance tool." },
+      { text: "Deny - a calculator doesn't need those permissions", isSafe: true, consequence: "Yes. When permissions don't match the app's job, walk away." },
     ],
   },
 ];
 
 const MAZE_QUESTIONS = [
   { question: "What is a PASSIVE digital footprint?", answers: ["Data collected about you without your knowledge", "Things you post yourself", "Photos you like", "Videos you watch on mute"], correctIndex: 0 },
-  { question: "Where is your IP address visible?", answers: ["Every website you visit can see it", "Only to your friends", "Only when you're logged in", "Nowhere — it's private"], correctIndex: 0 },
-  { question: "What hidden data do photos often contain?", answers: ["Metadata — location, time, device", "The photographer's name", "Your phone's battery level", "Nothing hidden"], correctIndex: 0 },
+  { question: "Where is your IP address visible?", answers: ["Every website you visit can see it", "Only to your friends", "Only when you're logged in", "Nowhere - it's private"], correctIndex: 0 },
+  { question: "What hidden data do photos often contain?", answers: ["Metadata - location, time, device", "The photographer's name", "Your phone's battery level", "Nothing hidden"], correctIndex: 0 },
   { question: "Before posting online you should ask...", answers: ["Who might see this in the future", "How many likes will I get", "Is it funny", "Is it trending"], correctIndex: 0 },
   { question: "Why check app permissions?", answers: ["Some apps collect more data than they need", "To make apps load faster", "Apps won't work without every permission", "Permissions are decorative"], correctIndex: 0 },
 ];
@@ -121,20 +121,20 @@ const BOSS_QUESTIONS = [
   { question: "Which is PRIVATE info?", answers: ["Your home address", "Your favourite colour", "Your favourite game", "Your hobby"], correctIndex: 0 },
   { question: "A cookie is...", answers: ["A file that tracks your browsing", "A website design", "A kind of password", "An email"], correctIndex: 0 },
   { question: "Which of these is SAFE to share online?", answers: ["Your favourite band", "Your full address", "Your school name", "Your phone number"], correctIndex: 0 },
-  { question: "Should you accept EVERY cookie on a site?", answers: ["No — only the necessary ones", "Yes — always", "Only on Mondays", "Only if you're in a hurry"], correctIndex: 0 },
+  { question: "Should you accept EVERY cookie on a site?", answers: ["No - only the necessary ones", "Yes - always", "Only on Mondays", "Only if you're in a hurry"], correctIndex: 0 },
   { question: "Your online posts are...", answers: ["Hard to fully delete", "Gone forever when you tap delete", "Only visible to friends", "Private by default"], correctIndex: 0 },
   { question: "Metadata in a photo can include...", answers: ["GPS location and timestamp", "The photo's caption", "The number of likes", "The photo's filter"], correctIndex: 0 },
   { question: "A calculator app should NOT ask for...", answers: ["Your location and contacts", "The maths operator you want", "A number to calculate", "Your preferred colour"], correctIndex: 0 },
   // MEDIUM
   { question: "Which HIDES your IP address?", answers: ["A VPN", "A cookie", "A selfie", "A GIF"], correctIndex: 0 },
-  { question: "What is OSINT?", answers: ["Open-source intelligence — info gathered from public sources", "A type of virus", "A social media platform", "An antivirus brand"], correctIndex: 0 },
+  { question: "What is OSINT?", answers: ["Open-source intelligence - info gathered from public sources", "A type of virus", "A social media platform", "An antivirus brand"], correctIndex: 0 },
   { question: "Private browsing mode does NOT...", answers: ["Hide you from your internet provider", "Delete local browsing history", "Clear cookies when you close it", "Hide search history on your device"], correctIndex: 0 },
   { question: "Someone finds your name, school and birthday online. They can...", answers: ["Guess security questions and impersonate you", "Only send you a birthday card", "Nothing at all", "Only subscribe to your channel"], correctIndex: 0 },
-  { question: "An app that sells your location data is...", answers: ["A privacy risk — check permissions", "Harmless — it's anonymous", "Illegal everywhere", "Only a problem for adults"], correctIndex: 0 },
+  { question: "An app that sells your location data is...", answers: ["A privacy risk - check permissions", "Harmless - it's anonymous", "Illegal everywhere", "Only a problem for adults"], correctIndex: 0 },
   { question: "A good privacy habit is to...", answers: ["Google yourself and see what's public", "Post as much as possible", "Share your password with friends", "Accept all DMs from strangers"], correctIndex: 0 },
   { question: "A photo tagged with your location...", answers: ["Tells anyone where you were", "Makes the photo higher quality", "Hides the photo from strangers", "Deletes itself after a week"], correctIndex: 0 },
   { question: "Which is the STRONGEST password?", answers: ["Tr0pic4l$unR1se!", "password123", "qwerty", "your name"], correctIndex: 0 },
-  { question: "Your digital footprint can affect...", answers: ["Jobs, universities, and friendships years later", "Nothing — teens are exempt", "Only your gaming rank", "Only your email inbox"], correctIndex: 0 },
+  { question: "Your digital footprint can affect...", answers: ["Jobs, universities, and friendships years later", "Nothing - teens are exempt", "Only your gaming rank", "Only your email inbox"], correctIndex: 0 },
   { question: "You see a new follower request from a stranger asking personal questions. You...", answers: ["Block and tell a trusted adult", "Answer to be polite", "Accept and share your school", "Give them your number"], correctIndex: 0 },
   // HARD
   { question: "Deleting a post from your account means...", answers: ["Copies may still exist on servers, screenshots and archives", "It's gone from the entire internet", "Only the caption is deleted", "Only the photo is deleted"], correctIndex: 0 },
@@ -142,11 +142,11 @@ const BOSS_QUESTIONS = [
   { question: "Which item is most risky to post publicly?", answers: ["A dated photo of you in school uniform", "A plain sunset photo", "A meme", "A photo of food"], correctIndex: 0 },
   { question: "The safest way to give your age online is usually...", answers: ["\"I'm a teen\" or an age range", "Your exact birthday", "Your year of birth and month", "Your full birth certificate"], correctIndex: 0 },
   { question: "You can reduce your passive footprint by...", answers: ["Auditing app permissions and using tracker-blockers", "Posting more memes", "Accepting all cookies", "Clicking every ad"], correctIndex: 0 },
-  { question: "Which data is OFTEN harvested from a \"fun personality quiz\"?", answers: ["Security-question answers like pet's name + birthday", "Your favourite number only", "Nothing — they're charities", "Only your quiz score"], correctIndex: 0 },
+  { question: "Which data is OFTEN harvested from a \"fun personality quiz\"?", answers: ["Security-question answers like pet's name + birthday", "Your favourite number only", "Nothing - they're charities", "Only your quiz score"], correctIndex: 0 },
   { question: "A \"digital twin\" profile built from your data can be used to...", answers: ["Impersonate you or guess your answers", "Make your Wi-Fi faster", "Delete your posts automatically", "Speed up your downloads"], correctIndex: 0 },
   { question: "An ETHICAL hacker's first rule is...", answers: ["Only test systems you have permission to test", "Post passwords they find", "Keep every vulnerability secret", "Sell data to the highest bidder"], correctIndex: 0 },
   { question: "A dating-app breach leaks photo metadata. Attackers can...", answers: ["Pinpoint where photos were taken", "Only see the app's logo", "See the battery level only", "Only see the filter used"], correctIndex: 0 },
-  { question: "Strong identity protection online is about...", answers: ["Layers — mindset, settings, tools, and habits", "One perfect password", "Always being offline", "Trusting everyone"], correctIndex: 0 },
+  { question: "Strong identity protection online is about...", answers: ["Layers - mindset, settings, tools, and habits", "One perfect password", "Always being offline", "Trusting everyone"], correctIndex: 0 },
 ];
 
 /* ─────────────── ANIMATIONS ─────────────── */
@@ -505,7 +505,7 @@ export default function CyberExplorersWeek1() {
   const S0 = () => (
     <div style={{ maxWidth: 740, margin: "0 auto" }}>
       <CommandHeading cmd="./mission --brief --module=01" />
-      <Terminal title="mission_briefing.mp4 — Jermaine">
+      <Terminal title="mission_briefing.mp4 - Jermaine">
         <div
           style={{
             position: "relative",
@@ -595,7 +595,7 @@ export default function CyberExplorersWeek1() {
           <div style={{ color: CYAN }}>// objectives</div>
           {[
             "Understand what a digital footprint is",
-            "Learn what data you leave behind — with and without knowing",
+            "Learn what data you leave behind - with and without knowing",
             "Take control of your online presence",
           ].map((goal, i) => (
             <div key={i} style={{ paddingLeft: 18, position: "relative" }}>
@@ -618,7 +618,7 @@ export default function CyberExplorersWeek1() {
       <Terminal title="digital_footprint.md">
         <div style={{ fontFamily: BODY, color: "#f1f5f9", fontSize: 16, lineHeight: 1.65 }}>
           Every time you go online, you leave a trail. Every search, every post, every
-          click — it <span style={{ color: CYAN }}>all gets recorded</span> somewhere.
+          click - it <span style={{ color: CYAN }}>all gets recorded</span> somewhere.
         </div>
 
         {/* Footstep animation */}
@@ -708,7 +708,7 @@ export default function CyberExplorersWeek1() {
           Websites, apps, and services collect data using these common methods:
         </div>
         {[
-          { name: "COOKIES", desc: "Small files saved in your browser. Remember logins — and track you across sites.", colour: CYAN },
+          { name: "COOKIES", desc: "Small files saved in your browser. Remember logins - and track you across sites.", colour: CYAN },
           { name: "IP ADDRESS", desc: "Your device's public address. Reveals approximate location and network.", colour: PURPLE },
           { name: "LOCATION DATA", desc: "GPS, Wi-Fi lookups, cell towers. Accurate to within metres.", colour: EMERALD },
           { name: "BROWSING HISTORY", desc: "Every URL you visit, stored locally AND sent to trackers on each page.", colour: GOLD },
@@ -894,11 +894,11 @@ export default function CyberExplorersWeek1() {
 
   const S8 = () => {
     const tips = [
-      "Think before you post — would you be happy if a teacher or parent saw this?",
-      "Check privacy settings on every app — defaults favour the platform, not you.",
-      "Use private browsing for sensitive searches — it won't hide you from your ISP, but it helps locally.",
-      "Regularly Google yourself — see what's public before someone else does.",
-      "Audit app permissions — revoke anything an app doesn't actually need to do its job.",
+      "Think before you post - would you be happy if a teacher or parent saw this?",
+      "Check privacy settings on every app - defaults favour the platform, not you.",
+      "Use private browsing for sensitive searches - it won't hide you from your ISP, but it helps locally.",
+      "Regularly Google yourself - see what's public before someone else does.",
+      "Audit app permissions - revoke anything an app doesn't actually need to do its job.",
     ];
     return (
       <div style={{ maxWidth: 740, margin: "0 auto" }}>
@@ -949,7 +949,7 @@ export default function CyberExplorersWeek1() {
             ))}
           </div>
         </Terminal>
-        <MentorTip message="You don't need to become invisible — just deliberate." />
+        <MentorTip message="You don't need to become invisible - just deliberate." />
         <div style={{ marginTop: 26, textAlign: "center" }}>
           <PrimaryButton onClick={() => navigate(9)}>Next →</PrimaryButton>
         </div>
@@ -958,10 +958,10 @@ export default function CyberExplorersWeek1() {
   };
 
   const S10 = () => {
-    // Mock profile audit — each element is flagged as SAFE or RISKY
+    // Mock profile audit - each element is flagged as SAFE or RISKY
     const elements = [
       { label: "Bio: \"Class 9B @ St Mary's\"", risky: true, reason: "School name = physical location" },
-      { label: "Avatar photo: a sunset silhouette", risky: false, reason: "Non-identifying — safe" },
+      { label: "Avatar photo: a sunset silhouette", risky: false, reason: "Non-identifying - safe" },
       { label: "Location: \"Manchester, UK\"", risky: true, reason: "Home town narrows you down fast" },
       { label: "Birthday: \"14th March\"", risky: true, reason: "Common security question" },
       { label: "Favourite film listed", risky: false, reason: "Opinion, not ID info" },
@@ -1341,7 +1341,7 @@ export default function CyberExplorersWeek1() {
           </div>
         );
       case 14:
-        // Boss battle pre-screen — similar to Cyber Heroes, different boss name.
+        // Boss battle pre-screen - similar to Cyber Heroes, different boss name.
         if (bossDone) {
           return (
             <div style={{ maxWidth: 620, margin: "0 auto", textAlign: "center" }}>

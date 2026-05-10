@@ -34,7 +34,7 @@ export default function BadgeSlots({
             type="button"
             className="bs-slot bs-slot-earned"
             title={`Week ${b.week}: ${b.name}`}
-            aria-label={`Week ${b.week}: ${b.name} — earned`}
+            aria-label={`Week ${b.week}: ${b.name} - earned`}
             onClick={() => onBadgeClick?.(b.week)}
             style={commonStyle}
           >
@@ -45,7 +45,7 @@ export default function BadgeSlots({
             key={b.id}
             className="bs-slot bs-slot-locked"
             title={`Week ${b.week}: ${b.name} (locked)`}
-            aria-label={`Week ${b.week}: ${b.name} — locked`}
+            aria-label={`Week ${b.week}: ${b.name} - locked`}
             style={commonStyle}
           >
             <span className="bs-week-num">{b.week}</span>

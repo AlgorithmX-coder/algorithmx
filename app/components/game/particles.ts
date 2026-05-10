@@ -1,5 +1,5 @@
 /**
- * Particle system — explosions, sparkles, and trails.
+ * Particle system - explosions, sparkles, and trails.
  * Owns a Pixi Container + single Graphics object; redraws on each update() call.
  */
 import { Container, Graphics } from "pixi.js";
@@ -165,7 +165,7 @@ export class ParticleSystem {
         g.rect(p.x - size / 2, p.y - size / 2, size, size);
         g.fill({ color: p.color, alpha });
       } else {
-        // Star — two crossed rectangles, no rotation needed (cheap sparkle)
+        // Star - two crossed rectangles, no rotation needed (cheap sparkle)
         const s = size;
         g.rect(p.x - s / 2, p.y - s / 6, s, s / 3);
         g.fill({ color: p.color, alpha });

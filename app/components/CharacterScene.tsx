@@ -85,7 +85,7 @@ function SpeechBubble({
     animation: "axSceneReveal 1s steps(30, end) both",
   };
 
-  // Tail — small coloured triangle pointing back toward the character
+  // Tail - small coloured triangle pointing back toward the character
   const tailCommon: CSSProperties = {
     position: "absolute",
     width: 0,

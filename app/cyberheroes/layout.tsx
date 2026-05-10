@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 /**
- * Cyber Heroes — landing-page metadata.
+ * Cyber Heroes - landing-page metadata.
  *
  * Sits as a route-segment layout because the page itself is a "use
  * client" component and can't export `metadata`. This layout adds
@@ -11,9 +11,9 @@ import type { Metadata } from "next";
  */
 
 const PAGE_TITLE =
-  "Cyber Heroes Academy — Cybersecurity for Kids Ages 6–10 | AlgorithmX";
+  "Cyber Heroes Academy - Cybersecurity for Kids Ages 6–10 | AlgorithmX";
 const PAGE_DESC =
-  "Turn your child into a Cyber Hero. 20 weeks of interactive cybersecurity missions for kids 6–10 — animated lessons, boss battles, printable certificates. £99 one-time, lifetime access, no subscriptions.";
+  "Turn your child into a Cyber Hero. 20 weeks of interactive cybersecurity missions for kids 6–10 - animated lessons, boss battles, printable certificates. £99 one-time, lifetime access, no subscriptions.";
 const PAGE_URL = "https://www.algorithmx.co.uk/cyberheroes";
 const OG_IMAGE = "/characters/heroic.png";
 
@@ -22,7 +22,7 @@ export const metadata: Metadata = {
   description: PAGE_DESC,
   alternates: { canonical: PAGE_URL },
   openGraph: {
-    title: "Cyber Heroes Academy — Cybersecurity for Kids 6–10",
+    title: "Cyber Heroes Academy - Cybersecurity for Kids 6–10",
     description: PAGE_DESC,
     url: PAGE_URL,
     siteName: "AlgorithmX",
@@ -32,13 +32,13 @@ export const metadata: Metadata = {
         url: OG_IMAGE,
         width: 1200,
         height: 630,
-        alt: "Adam and Layla — the Cyber Heroes",
+        alt: "Adam and Layla - the Cyber Heroes",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Cyber Heroes Academy — Cybersecurity for Kids 6–10",
+    title: "Cyber Heroes Academy - Cybersecurity for Kids 6–10",
     description:
       "20 weeks of interactive cybersecurity adventures. £99 one-time, lifetime access.",
     images: [OG_IMAGE],

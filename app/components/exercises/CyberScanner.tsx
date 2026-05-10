@@ -1,7 +1,7 @@
 "use client";
 
 /*
- * CyberScanner — Pixar 2.5D commercial polish.
+ * CyberScanner - Pixar 2.5D commercial polish.
  *
  * Game logic preserved (passwords drift across a scanner beam, tap
  * STRONG or WEAK before they exit). Only the visual layer is rebuilt:
@@ -33,7 +33,7 @@ export interface CyberScannerProps {
 const DEFAULT_PASSWORDS: CyberScannerPassword[] = [
   { text: "password123", isStrong: false, explanation: "Too common and predictable" },
   { text: "Tr0pic4l$unR1se!", isStrong: true, explanation: "Mix of upper, lower, numbers, and symbols" },
-  { text: "qwerty", isStrong: false, explanation: "Keyboard pattern — easy to guess" },
+  { text: "qwerty", isStrong: false, explanation: "Keyboard pattern - easy to guess" },
   { text: "MyN@me1sJ0hn!", isStrong: true, explanation: "Good length with mixed characters" },
   { text: "ilovecats", isStrong: false, explanation: "Common phrase, no numbers or symbols" },
   { text: "G4m3r#Pr0!", isStrong: true, explanation: "Short but has all character types" },
@@ -58,7 +58,7 @@ const SHIELD_Y = 54;
  * boss flow (cosmic violet / pink / coral / cyan / gold). */
 
 const CV = {
-  // Sky-to-floor cosmic gradient — deep cosmic-violet → abyss
+  // Sky-to-floor cosmic gradient - deep cosmic-violet → abyss
   bgTop: "#1a1f4d",
   bgBottom: "#0f1530",
   // Cosmic grid
@@ -311,7 +311,7 @@ export default function CyberScanner({
         if (!s.finished) {
           s.finished = true;
           // Pass best streak so the finale burst scales with how
-          // confidently the kid played — bigger streak = bigger party.
+          // confidently the kid played - bigger streak = bigger party.
           void correctAnswerBurst(s.bestStreak);
           setRender((n) => n + 1);
         }
@@ -408,8 +408,8 @@ export default function CyberScanner({
         ctx.stroke();
       }
 
-      // Cyber scanner beam — was a warm cream/orange centre with a
-      // warm-orange centre stroke (comment said "Golden" — Pixar
+      // Cyber scanner beam - was a warm cream/orange centre with a
+      // warm-orange centre stroke (comment said "Golden" - Pixar
       // leftover). Now a cool cyan-white centre over a violet halo,
       // with a cyan centre stroke. Reads as a holographic scanner
       // beam not a stage spotlight.
@@ -489,7 +489,7 @@ export default function CyberScanner({
         roundRect(ctx, -CARD_W / 2 + 2, -CARD_H / 2 + 5, CARD_W, CARD_H, 14);
         ctx.fill();
 
-        // Card body — paper gradient
+        // Card body - paper gradient
         const grad = ctx.createLinearGradient(0, -CARD_H / 2, 0, CARD_H / 2);
         grad.addColorStop(0, CV.cardBodyTop);
         grad.addColorStop(1, CV.cardBodyBottom);
@@ -801,7 +801,7 @@ function FinishOverlay({
       style={{
         position: "absolute",
         inset: 0,
-        // Was a warm purple-brown second stop (rgba(20,8,24,0.96)) —
+        // Was a warm purple-brown second stop (rgba(20,8,24,0.96)) -
         // tightened to pure cyber abyss so the overlay reads as the
         // same surface as the rest of the lesson.
         background:

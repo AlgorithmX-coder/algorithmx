@@ -1,4 +1,4 @@
-# Cartoon Animator 5 — workflow for AlgorithmX
+# Cartoon Animator 5 - workflow for AlgorithmX
 
 Step-by-step guide to taking Adam (or any of your OpenArt PNGs) from
 "static image" to "animated character that drops into the lesson."
@@ -7,13 +7,13 @@ You operate Cartoon Animator 5; I integrate whatever it spits out.
 
 ---
 
-## Before you buy — the free sanity check
+## Before you buy - the free sanity check
 
 Spend 10 minutes on this BEFORE paying $129.
 
 1. Visit https://sketch.metademolab.com (Meta's Animated Drawings, free)
 2. Click "Get Started" → upload Adam's PNG
-3. The tool tries to auto-detect the character outline. It's not perfect — adjust the bounding box if it cuts off Adam's head/feet.
+3. The tool tries to auto-detect the character outline. It's not perfect - adjust the bounding box if it cuts off Adam's head/feet.
 4. Confirm joints (head, hands, feet, knees) are placed correctly. Drag any wonky ones.
 5. Pick a stock motion (wave, dance, jump) and watch it play.
 
@@ -25,14 +25,14 @@ Spend 10 minutes on this BEFORE paying $129.
 
 ## Buy + install (15 min)
 
-1. https://www.reallusion.com/cartoon-animator/ — buy **Standard edition $99** OR **Pro edition $129** (Pro adds Spine export, which is what we want for cleanest integration). Pro is the right pick.
+1. https://www.reallusion.com/cartoon-animator/ - buy **Standard edition $99** OR **Pro edition $129** (Pro adds Spine export, which is what we want for cleanest integration). Pro is the right pick.
 2. Download installer → install.
-3. First launch — sign in with the account you bought with.
+3. First launch - sign in with the account you bought with.
 4. Watch their **5-minute Quick Start video** (linked from the welcome screen). It shows the core workflow.
 
 ---
 
-## Rig your first character — Adam (~30 min)
+## Rig your first character - Adam (~30 min)
 
 This is the longest single step. Subsequent characters are 10 min each.
 
@@ -40,7 +40,7 @@ This is the longest single step. Subsequent characters are 10 min each.
 
 Cartoon Animator works best when:
 - The character is on a transparent background (no checker pattern, true alpha)
-- The character is full-body (head to feet visible) OR upper-body (head to waist) — pick one and stick with it across all four characters
+- The character is full-body (head to feet visible) OR upper-body (head to waist) - pick one and stick with it across all four characters
 - The character is facing forward (3/4 view also works, profile is harder)
 
 If Adam's existing OpenArt PNG has a background, remove it:
@@ -69,7 +69,7 @@ CA5 calls this the **Smart IK** or **Auto-Pose** feature depending on version:
 The AI usually gets ~80% right. Common fixes:
 - Knees / elbows in the wrong place → click the joint, drag to actual joint location
 - Hands too high / low → drag wrist joints
-- Head separation line — make sure the head is one segment, not split across forehead
+- Head separation line - make sure the head is one segment, not split across forehead
 
 Spend ~10 minutes here. Don't perfect it; "good enough" is enough.
 
@@ -83,7 +83,7 @@ Right panel → **Content Manager** → **Motion** library:
 ### 6. Tweak the motion
 
 - Drag the timeline scrubber to preview different frames
-- If Adam's head twitches weirdly, it's usually a bone-anchor issue from step 4 — go fix the bones, motion replays cleanly
+- If Adam's head twitches weirdly, it's usually a bone-anchor issue from step 4 - go fix the bones, motion replays cleanly
 
 ### 7. Export as image sequence (sprite sheet)
 
@@ -107,8 +107,8 @@ CA5 might offer "Single Sprite Sheet" export option. If so, use that.
 
 If not, use a free tool to combine the PNG sequence into one strip:
 
-- **TexturePacker Free** (https://www.codeandweb.com/texturepacker) — drag PNGs in, export as single PNG
-- OR **Photopea online** — open all PNGs as layers, arrange in a horizontal strip, export
+- **TexturePacker Free** (https://www.codeandweb.com/texturepacker) - drag PNGs in, export as single PNG
+- OR **Photopea online** - open all PNGs as layers, arrange in a horizontal strip, export
 
 Settings:
 - All frames in **one horizontal row** (simpler for our component)
@@ -149,7 +149,7 @@ The lesson player picks it up immediately.
 Once Adam is rigged, adding new motions is fast:
 
 1. Same file in CA5 (Adam still rigged from before)
-2. Drag a different motion from the library — "Talking," "Excited," "Worried," etc.
+2. Drag a different motion from the library - "Talking," "Excited," "Worried," etc.
 3. Export image sequence (step 7-8 above)
 4. Save with name matching state: `adam-talk.png`, `adam-excited.png`, `adam-worried.png`
 5. Tell me the metadata for each → I add them to manifest
@@ -171,13 +171,13 @@ Total time for all four characters × ~3 motions each: **~6 hours of GUI work** 
 
 ---
 
-## Motion library — what to grab from Reallusion's store
+## Motion library - what to grab from Reallusion's store
 
 CA5 Pro comes with starter motions but the good stuff is in their content store:
 
-- **Boy Cartoon Series Motion Pack** — ~$30, has wave, jump, talk, excited, worried, etc. Designed for kid characters.
-- **Girl Cartoon Series Motion Pack** — same idea for Layla.
-- **Skull / Villain Motion Pack** — for the Raccoon's taunt/defeated states.
+- **Boy Cartoon Series Motion Pack** - ~$30, has wave, jump, talk, excited, worried, etc. Designed for kid characters.
+- **Girl Cartoon Series Motion Pack** - same idea for Layla.
+- **Skull / Villain Motion Pack** - for the Raccoon's taunt/defeated states.
 
 Total motion-pack budget: ~$60-90 if you want fully custom motions. Or stick with the free starter set and accept fewer variations.
 
@@ -187,11 +187,11 @@ Total motion-pack budget: ~$60-90 if you want fully custom motions. Or stick wit
 
 If CA5's AI can't rig your character (some stylized art breaks it):
 
-**Option A** — manual bone placement. Right-click character → "Add Bones Manually." Place head/torso/upper-arm/lower-arm/hand/upper-leg/lower-leg/foot bones one by one. ~20 min per character but always works.
+**Option A** - manual bone placement. Right-click character → "Add Bones Manually." Place head/torso/upper-arm/lower-arm/hand/upper-leg/lower-leg/foot bones one by one. ~20 min per character but always works.
 
-**Option B** — split the character into parts in Photopea (head as separate PNG, torso, arms, legs) and import each part separately. CA5 then rigs them as a multi-part actor. More work, more control.
+**Option B** - split the character into parts in Photopea (head as separate PNG, torso, arms, legs) and import each part separately. CA5 then rigs them as a multi-part actor. More work, more control.
 
-Send me a screenshot of the failed rig if you get stuck — I'll diagnose and tell you which path to take.
+Send me a screenshot of the failed rig if you get stuck - I'll diagnose and tell you which path to take.
 
 ---
 
@@ -212,6 +212,6 @@ You don't touch any code. You just send PNG sprite sheets + 3 numbers per motion
 
 - **Tonight (10 min)**: Animated Drawings sanity check
 - **This week (1-2 evenings)**: buy CA5, install, rig + export Adam idle. Drop in repo. See it move on screen.
-- **Next week (2-3 evenings)**: Layla, Robo, Raccoon — all base idle states.
+- **Next week (2-3 evenings)**: Layla, Robo, Raccoon - all base idle states.
 - **Following week**: excited / worried / talk states for the ones that need them.
 - **Total**: ~10-15 hours of GUI work spread over 2 weeks for full character coverage.

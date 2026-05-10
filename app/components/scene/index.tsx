@@ -4,7 +4,7 @@
  * Shared Pixar 2.5D scene components.
  *
  * All scenes (Mission Brief, Welcome, Boss Battle, Graduation, etc.)
- * compose from these primitives. No WebGL — pure HTML/CSS/SVG with
+ * compose from these primitives. No WebGL - pure HTML/CSS/SVG with
  * framer-motion for entrance animations.
  *
  * Usage:
@@ -875,7 +875,7 @@ export function ExerciseFrame({
               padding: "28px 26px",
               // Was warm purple-brown bg + warm cream border + warm
               // brown drop shadow. ExerciseFrame is the wrapping
-              // container behind every exercise — fixing it once
+              // container behind every exercise - fixing it once
               // cascades to every single exercise screen. Pulled to
               // cyber glass + cyan border + cyber dark drop.
               background: "rgba(15, 21, 48, 0.72)",

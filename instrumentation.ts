@@ -14,7 +14,7 @@ export async function register() {
   }
 }
 
-// captureRequestError is the current API — replaces the old
+// captureRequestError is the current API - replaces the old
 // onRequestError export. Forwarding it here lets Next.js auto-wire
 // uncaught errors from server actions / route handlers into Sentry.
 export async function onRequestError(

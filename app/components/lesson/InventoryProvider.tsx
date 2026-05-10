@@ -1,12 +1,12 @@
 "use client";
 
 /**
- * InventoryProvider — global state for the Week-1 inventory bar.
+ * InventoryProvider - global state for the Week-1 inventory bar.
  *
  * Owns:
  *   - earned: Set<string>  (which items the kid has unlocked)
  *   - flying: { item, originX, originY }  (item currently animating
- *     from its action point into its inventory slot — null when idle)
+ *     from its action point into its inventory slot - null when idle)
  *   - reveal: { item } | null  (item whose "did-you-know" line is
  *     currently being delivered by Adam/Layla in the speech bubble)
  *
@@ -56,14 +56,14 @@ interface RevealItem {
 }
 
 interface InventoryContextValue {
-  /** Set of earned item ids — read-only from consumers. */
+  /** Set of earned item ids - read-only from consumers. */
   earned: Set<string>;
   /** All catalog items in display order. Useful so InventoryBar can
    *  render empty slots for not-yet-earned items without re-importing
    *  the catalog. */
   catalog: InventoryItem[];
   /** Trigger an earn beat. If the item is already earned this is a
-   *  no-op (we don't replay the fly animation on repeat triggers — the
+   *  no-op (we don't replay the fly animation on repeat triggers - the
    *  caller may earn the same screen multiple times via retries). */
   earn: (itemId: string, originX: number, originY: number) => void;
   /** Currently-animating fly. Read by <EarnItemEffect/>. */
@@ -83,7 +83,7 @@ const InventoryContext = createContext<InventoryContextValue | null>(null);
 
 export interface InventoryProviderProps {
   children: ReactNode;
-  /** Stable string identifying which week's inventory this is — used
+  /** Stable string identifying which week's inventory this is - used
    *  as the localStorage namespace. e.g. "week-1". */
   weekKey: string;
 }

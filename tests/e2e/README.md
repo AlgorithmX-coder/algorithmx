@@ -10,12 +10,12 @@ npm run test:e2e:ui     # interactive UI runner
 
 Two Playwright projects, configured in `playwright.config.ts`:
 
-- **`public`** — runs `public-pages.spec.ts`. No auth, no DB required
+- **`public`** - runs `public-pages.spec.ts`. No auth, no DB required
   beyond build-time. Smoke-tests the landing page, login form,
   signup form, forgot-password flow and course pages. Uses
   `tests/e2e/fixtures.ts` to pre-set the `site_auth` gate cookie.
 
-- **`authed`** — runs anything in `tests/e2e/authed/`. Loads
+- **`authed`** - runs anything in `tests/e2e/authed/`. Loads
   `storageState` from `tests/e2e/.auth/user.json`, which is generated
   by `globalSetup` once before the suite runs. Tests start already
   signed in as the e2e test user.
@@ -32,14 +32,14 @@ workflow on every push.
 
 ## What's covered today
 
-- `public-pages.spec.ts` — landing, login, signup, forgot-password,
+- `public-pages.spec.ts` - landing, login, signup, forgot-password,
   course pages (cyberheroes / cyberexplorers / cyberstart /
   cyberstart-pro), age-range regression guard.
-- `authed/lesson-flow.spec.ts` — `/lesson` boots, Save & Exit visible,
+- `authed/lesson-flow.spec.ts` - `/lesson` boots, Save & Exit visible,
   Resume prompt after autosave, dashboard renders, age-range while
   authed, **first-lesson-screen always has an enabled action button**
   (gate-everything regression guard).
-- `authed/gate-button-regression.spec.ts` — explicitly named guards
+- `authed/gate-button-regression.spec.ts` - explicitly named guards
   against the "no Next button / no doors / can't proceed" class of
   bug. Add a new case here every time we ship a fix for a stranded
   player.

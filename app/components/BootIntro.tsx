@@ -4,7 +4,7 @@ import { type CSSProperties, useEffect } from "react";
 import { playSound } from "@/app/lib/sounds";
 
 /**
- * BootIntro — short cinematic that plays after the player creates a
+ * BootIntro - short cinematic that plays after the player creates a
  * NEW save slot, before the lesson mounts. Like the agency-issued
  * "WELCOME, AGENT" stings real games drop on first boot.
  *

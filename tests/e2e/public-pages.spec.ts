@@ -3,12 +3,12 @@ import { test, expect } from "./fixtures";
 /**
  * Smoke tests for the public, auth-free pages.
  *
- * Goal: catch the class of regression bug we keep hitting — "the page
+ * Goal: catch the class of regression bug we keep hitting - "the page
  * renders blank", "the button doesn't exist", "build breaks". Every test
  * here is fast (<5s) and runs on every push.
  *
  * Auth-required flows (lesson player, exercises, boss battle) need a
- * seeded test user and a separate db fixture — see tests/e2e/README.md
+ * seeded test user and a separate db fixture - see tests/e2e/README.md
  * for the plan.  Once that's wired we'll add specs for the lesson flow.
  */
 
@@ -19,7 +19,7 @@ test.describe("Public pages render", () => {
 
     await page.goto("/");
     await expect(page).toHaveTitle(/AlgorithmX/i);
-    // Body should have meaningful text — catches blank-page regressions.
+    // Body should have meaningful text - catches blank-page regressions.
     const bodyText = await page.locator("body").innerText();
     expect(bodyText.length).toBeGreaterThan(50);
     expect(consoleErrors, "page errors on /").toEqual([]);
@@ -94,7 +94,7 @@ test.describe("Public pages render", () => {
   test("auth-required routes redirect away when logged out", async ({
     page,
   }) => {
-    // /dashboard requires a session — visiting it logged out should not
+    // /dashboard requires a session - visiting it logged out should not
     // crash. It should either redirect to /login or render a guarded
     // shell. Either is acceptable; what we're catching is the page
     // throwing during render.

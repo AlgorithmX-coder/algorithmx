@@ -181,7 +181,7 @@ export default function ConveyorBelt({
     if (card || showResult) return;
     if (phase === "phase-a-done" || phase === "chest" || phase === "result") return;
 
-    // Phase A — exhausted the standard items? Pivot to the frenzy
+    // Phase A - exhausted the standard items? Pivot to the frenzy
     // transition card instead of going straight to the result. The
     // transition button kicks the player into "frenzy" phase.
     if (phase === "playing" && sortedIdx >= items.length) {
@@ -189,7 +189,7 @@ export default function ConveyorBelt({
       return;
     }
 
-    // Frenzy — exhausted the 6 frenzy cards? Open the chest reveal.
+    // Frenzy - exhausted the 6 frenzy cards? Open the chest reveal.
     if (phase === "frenzy" && frenzyIdx >= FRENZY_CARDS) {
       setPhase("chest");
       return;
@@ -374,7 +374,7 @@ export default function ConveyorBelt({
         touchAction: "manipulation",
       }}
     >
-      {/* Cyberpunk factory backdrop — hazard stripes, riveted plates,
+      {/* Cyberpunk factory backdrop - hazard stripes, riveted plates,
           rotating cogs in shadow, drifting embers + steam, warning lights.
           All decorative; sits at zIndex 0 so HUD/cards land on top. */}
       <FactoryBackdrop />
@@ -431,7 +431,7 @@ export default function ConveyorBelt({
         PASSWORD SORTING FACTORY
       </div>
 
-      {/* Safe zone (top right) — bumped down so it sits below the
+      {/* Safe zone (top right) - bumped down so it sits below the
           ExerciseHowTo header card instead of clipping into its
           rounded top edge. */}
       <div
@@ -876,7 +876,7 @@ export default function ConveyorBelt({
         </div>
       )}
 
-      {/* FRENZY mode banner — pulses overhead while frenzy phase is
+      {/* FRENZY mode banner - pulses overhead while frenzy phase is
           active so the kid feels the tempo shift. */}
       {phase === "frenzy" && (
         <div
@@ -931,7 +931,7 @@ export default function ConveyorBelt({
             playSound("click");
             // Frenzy hits are already counted into correctCount via the
             // resolver. The chest "bonus" here is purely a celebration
-            // beat — a visible reward for the kid's accuracy in Phase B.
+            // beat - a visible reward for the kid's accuracy in Phase B.
             // Roll the result overlay next.
             setPhase("result");
             setShowResult(true);
@@ -1205,7 +1205,7 @@ function ChestRevealCard({
           {tierLabel}
         </div>
 
-        {/* Animated chest — body sits, lid hinges open via CSS */}
+        {/* Animated chest - body sits, lid hinges open via CSS */}
         <div
           style={{
             position: "relative",
@@ -1331,10 +1331,10 @@ function ChestRevealCard({
           }}
         >
           {frenzyHits === frenzyTotal
-            ? "A perfect frenzy run — you sorted every single one. The chest is yours!"
+            ? "A perfect frenzy run - you sorted every single one. The chest is yours!"
             : frenzyHits >= 4
             ? "Solid sorting under pressure. Take the chest!"
-            : "Tough finale. Your brain is faster than you think — try again any time."}
+            : "Tough finale. Your brain is faster than you think - try again any time."}
         </p>
         <button
           type="button"
@@ -1392,7 +1392,7 @@ function FactoryBackdrop() {
         @keyframes cbBeamSweep { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
       `}</style>
 
-      {/* Layer 1 — radial cyan/violet/pink data-vault glow (replaces the
+      {/* Layer 1 - radial cyan/violet/pink data-vault glow (replaces the
           warm orange/yellow factory ceiling lighting) */}
       <div style={{
         position: "absolute", inset: 0,
@@ -1494,7 +1494,7 @@ function FactoryBackdrop() {
           </text>
         </g>
 
-        {/* Server-rack tower (right) — slightly offset for parallax */}
+        {/* Server-rack tower (right) - slightly offset for parallax */}
         <g transform="translate(696 110)">
           <rect width="44" height="180" fill="url(#cbServer)" stroke="rgba(160,106,255,0.5)" strokeWidth="1" rx="3" />
           {[0, 1, 2, 3, 4].map((i) => (
@@ -1627,7 +1627,7 @@ function FactoryBackdrop() {
         background: "linear-gradient(90deg, transparent, rgba(0,229,255,0.55), rgba(160,106,255,0.55), transparent)",
       }} />
 
-      {/* Status LED triplet — top-right HUD */}
+      {/* Status LED triplet - top-right HUD */}
       <span style={{ position: "absolute", top: 14, right: 22, width: 10, height: 10, borderRadius: "50%", background: "#00e5ff", color: "#00e5ff", animation: "cbWarnBlink 2.4s ease-in-out infinite" }} />
       <span style={{ position: "absolute", top: 14, right: 42, width: 10, height: 10, borderRadius: "50%", background: "#7c5cff", color: "#7c5cff", animation: "cbWarnBlink 2.4s ease-in-out 0.7s infinite" }} />
       <span style={{ position: "absolute", top: 14, right: 62, width: 10, height: 10, borderRadius: "50%", background: "#7eff97", color: "#7eff97", animation: "cbWarnBlink 2.4s ease-in-out 1.4s infinite" }} />

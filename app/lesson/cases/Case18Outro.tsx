@@ -4,7 +4,7 @@ import OutroScene from "@/app/components/game/OutroScene";
 import FullScene from "@/app/lesson/cases/FullScene";
 
 /**
- * Case 18 — Outro video + "next week" teaser.
+ * Case 18 - Outro video + "next week" teaser.
  *
  * The outro video is preferred but the parent player may pass
  * `videoSrc={null}` to force the fallback image (e.g. when the video

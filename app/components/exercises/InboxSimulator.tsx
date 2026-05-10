@@ -220,7 +220,7 @@ export default function InboxSimulator({
           setFeedbackKind(null);
           setHighlightClues(false);
         } else {
-          // All answered — phase flip handled by the allDone effect above
+          // All answered - phase flip handled by the allDone effect above
           setFeedbackKind(null);
           setHighlightClues(false);
         }
@@ -662,7 +662,7 @@ function FeedbackOverlay({
       : "This one really is safe. Nice work."
     : isPhishing
       ? "That was phishing. Red flags you missed:"
-      : "Actually, this one was safe — no real threat.";
+      : "Actually, this one was safe - no real threat.";
 
   return (
     <div

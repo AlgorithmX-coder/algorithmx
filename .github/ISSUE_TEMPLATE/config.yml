@@ -2,4 +2,4 @@ blank_issues_enabled: false
 contact_links:
   - name: Polish / visual feedback
     url: https://github.com/AlgorithmX-coder/algorithmx/issues/new?template=bug_report.md&labels=polish
-    about: For "looks plain", "make this more creative" — please use the bug template with severity=polish.
+    about: For "looks plain", "make this more creative" - please use the bug template with severity=polish.

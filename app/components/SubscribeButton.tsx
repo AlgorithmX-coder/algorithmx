@@ -4,16 +4,16 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 
 /**
- * SubscribeButton — POSTs to /api/checkout and redirects the browser
+ * SubscribeButton - POSTs to /api/checkout and redirects the browser
  * to the Stripe-hosted Checkout page.  Used on the dashboard upsell
- * card and (future) the cyberheroes "Enrol Now — £99" button when
+ * card and (future) the cyberheroes "Enrol Now - £99" button when
  * the user is signed in.
  *
  * Why a client component: we need to issue a fetch and then do
  * `window.location.href = url`.  Server components can't.
  */
 export default function SubscribeButton({
-  label = "Enrol — £99 →",
+  label = "Enrol - £99 →",
   className,
   style,
 }: {

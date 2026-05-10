@@ -9,7 +9,7 @@ import Stripe from "stripe";
  * Only ever import this from server code (`route.ts`, server actions,
  * `auth.ts` callbacks).  The secret key MUST NOT reach the browser.
  * The client-side SDK lives in `@stripe/stripe-js` and uses the
- * publishable key — keep them in separate files so a client component
+ * publishable key - keep them in separate files so a client component
  * can never accidentally pull in this module.
  */
 
@@ -48,7 +48,7 @@ export const stripe = new Proxy({} as Stripe, {
 });
 
 /* ─── Pricing ──────────────────────────────────────────────────────── */
-// One-time £99 GBP charge for "Cyber Heroes Academy — Lifetime Access".
+// One-time £99 GBP charge for "Cyber Heroes Academy - Lifetime Access".
 // Inline price_data is fine for this MVP.  When we move to multiple
 // SKUs (other courses), promote these into Stripe Products + Prices and
 // reference them by `price` ID in the Checkout Session.
@@ -56,4 +56,4 @@ export const CYBER_HEROES_PRICE_GBP = 9900; // pence
 
 export const CYBER_HEROES_PRODUCT_NAME = "Cyber Heroes Academy";
 export const CYBER_HEROES_PRODUCT_DESC =
-  "Lifetime access to the 20-week Cyber Heroes Academy — animated cybersecurity missions for ages 6–10.";
+  "Lifetime access to the 20-week Cyber Heroes Academy - animated cybersecurity missions for ages 6–10.";

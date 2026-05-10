@@ -10,7 +10,7 @@ import {
 import { playSound } from "@/app/lib/sounds";
 
 /**
- * AchievementToast — Steam / Xbox style slide-in notifications.
+ * AchievementToast - Steam / Xbox style slide-in notifications.
  *
  * Mount once near the root of the lesson shell. Anywhere in the app,
  * call `fireAchievement({...})` (or `window.__axAchievement__(...)`)
@@ -23,17 +23,17 @@ import { playSound } from "@/app/lib/sounds";
  */
 
 export interface Achievement {
-  /** Stable key — used to dedupe a rapid double-fire. */
+  /** Stable key - used to dedupe a rapid double-fire. */
   id: string;
-  /** Top kicker line — usually "ACHIEVEMENT UNLOCKED" / "STREAK +5" / "BADGE EARNED". */
+  /** Top kicker line - usually "ACHIEVEMENT UNLOCKED" / "STREAK +5" / "BADGE EARNED". */
   kicker: string;
-  /** Bold main title — the achievement name. */
+  /** Bold main title - the achievement name. */
   title: string;
   /** Optional subline / description. */
   subtitle?: string;
   /** Emoji or single character shown in the icon disc. */
   icon: string;
-  /** Hex accent — drives the icon ring + glow. */
+  /** Hex accent - drives the icon ring + glow. */
   accent: string;
   /** Time on screen in ms before sliding out. Default 4000. */
   duration?: number;
@@ -70,14 +70,14 @@ let nextUid = 1;
 export default function AchievementToastHost() {
   const [toasts, setToasts] = useState<ToastInternal[]>([]);
   const recentIdsRef = useRef<Map<string, number>>(new Map());
-  /* Track every pending timeout so we can clear them all on unmount —
+  /* Track every pending timeout so we can clear them all on unmount -
    * otherwise a long-duration toast scheduled just before navigation
    * fires `setToasts` after this component is gone (React 18 swallows
    * the warning, but it's still wasted work). */
   const timersRef = useRef<Set<number>>(new Set());
 
   const push = useCallback((a: Achievement) => {
-    /* Dedupe: ignore the same id within 1.2s — protects against a
+    /* Dedupe: ignore the same id within 1.2s - protects against a
      * double-fire from React strict mode dev re-renders. */
     const now = Date.now();
     const last = recentIdsRef.current.get(a.id);
@@ -90,7 +90,7 @@ export default function AchievementToastHost() {
 
     setToasts((current) => [...current, toast]);
 
-    /* Play the sound. We don't await — fire and forget. */
+    /* Play the sound. We don't await - fire and forget. */
     try {
       playSound(a.sound ?? "badgeEarned");
     } catch {

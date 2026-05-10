@@ -7,7 +7,7 @@ import {
 } from "@/app/lib/activityLog";
 
 /**
- * RecentActivityMarquee — horizontally-scrolling band of the player's
+ * RecentActivityMarquee - horizontally-scrolling band of the player's
  * recent achievements, shown at the top of the title-screen slot
  * picker. Real games display "Adam earned Phishing Hunter" / "Layla
  * promoted to Specialist" in a feed; we mirror that vibe.
@@ -62,7 +62,7 @@ export default function RecentActivityMarquee() {
   const totalPx = items.length * approxItemPx;
   const durationS = Math.max(20, totalPx / SCROLL_SPEED_PX_PER_S);
 
-  /* Duplicate the list so the loop is seamless — the keyframe scrolls
+  /* Duplicate the list so the loop is seamless - the keyframe scrolls
    * by exactly half the track width, which corresponds to one full
    * pass of the original list. */
   const doubled = [...items, ...items];

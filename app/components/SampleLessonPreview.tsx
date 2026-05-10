@@ -5,7 +5,7 @@ import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 
 /**
- * SampleLessonPreview — interactive 60-second mini-lesson on the
+ * SampleLessonPreview - interactive 60-second mini-lesson on the
  * /cyberheroes landing page.
  *
  * Goal: prove the product is fun BEFORE the £99 ask. Visitors see
@@ -25,7 +25,7 @@ const OPTIONS = [
     label: "password123",
     correct: false,
     feedback:
-      "Hackers crack 'password123' in 0.02 seconds — it's on every leaked-password list ever.",
+      "Hackers crack 'password123' in 0.02 seconds - it's on every leaked-password list ever.",
   },
   {
     id: "strong",
@@ -39,7 +39,7 @@ const OPTIONS = [
     label: "qwerty",
     correct: false,
     feedback:
-      "It's literally the top-left of the keyboard — the second-most-common password ever leaked.",
+      "It's literally the top-left of the keyboard - the second-most-common password ever leaked.",
   },
 ];
 
@@ -165,7 +165,7 @@ export default function SampleLessonPreview() {
                   style={{ color: "#cbd5e1", lineHeight: 1.6 }}
                 >
                   Ready to try one of the questions kids face in Week 1?
-                  Tap below — it takes 30 seconds.
+                  Tap below - it takes 30 seconds.
                 </p>
                 <motion.button
                   type="button"
@@ -325,7 +325,7 @@ export default function SampleLessonPreview() {
                   className="text-2xl sm:text-3xl font-black mb-3"
                   style={{ color: wasCorrect ? "#7eff97" : "#ff9bcb" }}
                 >
-                  {wasCorrect ? "Correct! Cyber Hero badge earned." : "Close — but not quite."}
+                  {wasCorrect ? "Correct! Cyber Hero badge earned." : "Close - but not quite."}
                 </h3>
                 <p
                   className="text-base sm:text-lg max-w-md mb-2"
@@ -357,7 +357,7 @@ export default function SampleLessonPreview() {
                     style={{ color: "#cbd5e1", lineHeight: 1.5 }}
                   >
                     That&rsquo;s 1 of <span style={{ color: GOLD, fontWeight: 900 }}>100+</span> interactive missions.
-                    Adam &amp; Layla guide your child through 20 weeks of adventures like this — one-time £99, lifetime access.
+                    Adam &amp; Layla guide your child through 20 weeks of adventures like this - one-time £99, lifetime access.
                   </p>
                   <div className="flex flex-col sm:flex-row gap-3 justify-center">
                     <motion.a
@@ -376,7 +376,7 @@ export default function SampleLessonPreview() {
                         boxShadow: `0 14px 28px -8px ${COSMIC}88, 0 0 0 1px rgba(255,235,200,0.35) inset`,
                       }}
                     >
-                      Enrol — £99 →
+                      Enrol - £99 →
                     </motion.a>
                     <button
                       type="button"

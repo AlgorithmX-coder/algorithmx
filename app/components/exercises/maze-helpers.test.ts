@@ -120,7 +120,7 @@ describe("real maze size validation (7×9)", () => {
     // Wall off the entire bottom row and right column from above
     for (let c = 0; c < COLS; c++) walled[ROWS - 2][c] = 1;
     for (let r = 0; r < ROWS; r++) walled[r][COLS - 2] = 1;
-    // Plus the exit itself has to be reached somehow — the rescue opens it.
+    // Plus the exit itself has to be reached somehow - the rescue opens it.
     const { dist } = validateMaze(walled, ROWS, COLS);
     expect(dist[ROWS - 1][COLS - 1]).not.toBe(Infinity);
   });

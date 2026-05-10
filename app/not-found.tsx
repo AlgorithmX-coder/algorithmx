@@ -74,7 +74,7 @@ export default function NotFound() {
             Oops! The Raccoon stole this page! 🦝
           </h1>
           <p className="text-gray-400 text-base mb-8">
-            Don&apos;t worry — we&apos;ll get you back to safety.
+            Don&apos;t worry - we&apos;ll get you back to safety.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
@@ -107,7 +107,7 @@ export default function NotFound() {
           </div>
         </motion.div>
 
-        <p className="text-gray-600 text-xs mt-6 font-bold">Error 404 — Page not found</p>
+        <p className="text-gray-600 text-xs mt-6 font-bold">Error 404 - Page not found</p>
       </div>
     </div>
   );

@@ -9,7 +9,7 @@ import {
 import { playSound } from "@/app/lib/sounds";
 
 /**
- * TrophiesGallery — full-screen overlay showing the 20 weekly badges
+ * TrophiesGallery - full-screen overlay showing the 20 weekly badges
  * + the player's rank ladder. Earned badges are vivid; locked badges
  * render as dim outline silhouettes with their week number visible
  * so the kid sees there's more to chase.
@@ -40,7 +40,7 @@ export default function TrophiesGallery({ onClose }: TrophiesGalleryProps) {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
         e.preventDefault();
-        /* stopImmediatePropagation — required because the pause-menu
+        /* stopImmediatePropagation - required because the pause-menu
          * ESC handler is also bound to `window`. stopPropagation alone
          * does NOT stop other listeners on the same node; we need
          * stopImmediatePropagation to prevent the pause menu from

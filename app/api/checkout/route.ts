@@ -15,7 +15,7 @@ import {
  * Academy purchase and returns the hosted-checkout URL.  The client
  * does `window.location.href = url` to redirect.
  *
- * Auth required — userId is attached as `client_reference_id` so the
+ * Auth required - userId is attached as `client_reference_id` so the
  * webhook can match the payment back to a User row.
  *
  * Idempotency: if the user already has stripeStatus = 'active', we
@@ -24,26 +24,56 @@ import {
  * case anyway, but defence-in-depth.
  */
 export async function POST(req: Request) {
-  const session = await auth();
-  if (!session?.user?.id || !session.user.email) {
-    return NextResponse.json({ error: "Not signed in" }, { status: 401 });
+  /* Fail fast with a clear error if the Stripe secret is missing.
+   * Without this the error surfaces as a generic 500 from the SDK
+   * deep inside `stripe.checkout.sessions.create()` and the parent
+   * is left with no recourse. */
+  if (!process.env.STRIPE_SECRET_KEY) {
+    console.error("[api/checkout] STRIPE_SECRET_KEY is not set");
+    return NextResponse.json(
+      {
+        error:
+          "Checkout is temporarily unavailable. Please contact support@algorithmx.co.uk.",
+      },
+      { status: 500 },
+    );
   }
 
-  const user = await prisma.user.findUnique({
-    where: { id: session.user.id },
-    select: {
-      id: true,
-      email: true,
-      stripeCustomerId: true,
-      stripeStatus: true,
-    },
-  });
+  const session = await auth();
+  if (!session?.user?.id || !session.user.email) {
+    return NextResponse.json(
+      { error: "You need to be signed in to enrol. Please log in or create an account first." },
+      { status: 401 },
+    );
+  }
+
+  let user;
+  try {
+    user = await prisma.user.findUnique({
+      where: { id: session.user.id },
+      select: {
+        id: true,
+        email: true,
+        stripeCustomerId: true,
+        stripeStatus: true,
+      },
+    });
+  } catch (err) {
+    console.error("[api/checkout] DB lookup failed", err);
+    return NextResponse.json(
+      {
+        error:
+          "We couldn't reach the account database. Please try again in a moment.",
+      },
+      { status: 500 },
+    );
+  }
   if (!user) {
-    return NextResponse.json({ error: "User not found" }, { status: 404 });
+    return NextResponse.json({ error: "Account not found. Please log out and back in." }, { status: 404 });
   }
   if (user.stripeStatus === "active" || user.stripeStatus === "paid") {
     return NextResponse.json(
-      { error: "Already enrolled" },
+      { error: "You're already enrolled. Head to the dashboard to start your first lesson." },
       { status: 409 },
     );
   }
@@ -96,9 +126,23 @@ export async function POST(req: Request) {
     }
     return NextResponse.json({ url: checkoutSession.url });
   } catch (err) {
+    /* Surface a meaningful error to the client. Stripe errors carry
+     * useful info (auth failures, account-not-activated, invalid
+     * configuration). We pass the message through in non-prod for
+     * easier debugging; in prod we keep it concise and point users
+     * at support. */
     console.error("[api/checkout] failed", err);
+    const message = err instanceof Error ? err.message : String(err);
+    const isAuthError =
+      /invalid api key|no such|account.*not.*activated/i.test(message);
+    const userMessage = isAuthError
+      ? "Payments are temporarily unavailable. Please contact support@algorithmx.co.uk."
+      : "We couldn't start the payment. Please try again or contact support@algorithmx.co.uk if it keeps failing.";
     return NextResponse.json(
-      { error: "Could not start checkout. Try again in a moment." },
+      {
+        error: userMessage,
+        ...(process.env.NODE_ENV !== "production" ? { detail: message } : {}),
+      },
       { status: 500 },
     );
   }

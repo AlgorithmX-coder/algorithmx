@@ -15,7 +15,7 @@ export interface FirewallBuilderProps {
   onWrong?: () => void;
 }
 
-// Play area dimensions — bigger blocks so the full text reads.
+// Play area dimensions - bigger blocks so the full text reads.
 const CANVAS_W = 640;
 const CANVAS_H = 560;
 const PLAY_W = 400;
@@ -139,7 +139,7 @@ export default function FirewallBuilder({
     mouseColTarget: null as number | null,
     threatPulseStart: 0, // performance.now() when current bad-block warning began
     lastFallingKind: null as "good" | "bad" | null,
-    // Power-up system — drop a special token every PU_INTERVAL catches.
+    // Power-up system - drop a special token every PU_INTERVAL catches.
     powerUps: [] as PowerUp[],
     powerUpId: 0,
     catchesSinceLastPowerUp: 0,
@@ -217,7 +217,7 @@ export default function FirewallBuilder({
       s.comboFlashUntil = performance.now() + 700;
       playSound("streak3");
     }
-    // POWER-UP DROP — every PU_INTERVAL catches, spawn one in a random
+    // POWER-UP DROP - every PU_INTERVAL catches, spawn one in a random
     // column. Cycles through the three kinds so the kid always gets a
     // mix of effects rather than the same one repeatedly.
     if (s.catchesSinceLastPowerUp >= PU_INTERVAL) {
@@ -385,7 +385,7 @@ export default function FirewallBuilder({
 
   /** Mouse hover (without click) tracks the cursor's column so the
    *  paddle can preview where the block would land. The block itself
-   *  doesn't move — that happens on tap — but a visible cyber-shield
+   *  doesn't move - that happens on tap - but a visible cyber-shield
    *  paddle at the bottom of the play area follows the cursor. */
   const onCanvasHover = (e: React.PointerEvent<HTMLCanvasElement>) => {
     const canvas = canvasRef.current;
@@ -472,7 +472,7 @@ export default function FirewallBuilder({
         const f = s.falling;
         f.y += s.speed * frames;
 
-        // Continuously track mouse position — block follows the
+        // Continuously track mouse position - block follows the
         // cursor smoothly so the kid feels in direct control. Old
         // mechanic was arrow-keys + click-snap; now the falling
         // block migrates one column at a time toward mouseColTarget
@@ -499,12 +499,12 @@ export default function FirewallBuilder({
           if (f.def.kind === "good") onLandGood(f);
           else onLandBad(f);
           s.falling = null;
-          // Tighter cadence — was 1500ms, now 900ms for more pace.
+          // Tighter cadence - was 1500ms, now 900ms for more pace.
           s.nextSpawnAt = now + 900;
         }
       }
 
-      // POWER-UP TICK — fall the tokens, catch when they reach the
+      // POWER-UP TICK - fall the tokens, catch when they reach the
       // paddle/cursor column, apply effect.
       const slowMo = now < s.slowMoUntil;
       const slowFactor = slowMo ? 0.5 : 1;
@@ -566,7 +566,7 @@ export default function FirewallBuilder({
       const shakeX = now < s.shakeUntil ? (Math.random() - 0.5) * 6 : 0;
       const shakeY = now < s.shakeUntil ? (Math.random() - 0.5) * 4 : 0;
 
-      // Background — animated cyberpunk firewall control room. Radial
+      // Background - animated cyberpunk firewall control room. Radial
       // gradient + circuit traces + drifting scan ring + hex starfield.
       const bg = ctx.createRadialGradient(CANVAS_W / 2, CANVAS_H * 0.35, 0, CANVAS_W / 2, CANVAS_H * 0.35, Math.max(CANVAS_W, CANVAS_H));
       bg.addColorStop(0, "#1a2147");
@@ -617,7 +617,7 @@ export default function FirewallBuilder({
       ctx.save();
       ctx.translate(shakeX, shakeY);
 
-      // Play area floor — was a warm parchment/brown gradient (Pixar
+      // Play area floor - was a warm parchment/brown gradient (Pixar
       // leftover) on a cosmic cyber play surface. Now a cyber navy
       // floor that anchors the firewall blocks against the cosmos sky.
       const floorGrad = ctx.createLinearGradient(0, PLAY_Y, 0, PLAY_Y + PLAY_H);
@@ -655,7 +655,7 @@ export default function FirewallBuilder({
         ctx.lineTo(PLAY_X + PLAY_W, PLAY_Y + r * BLOCK_H);
         ctx.stroke();
       }
-      // Top scan beam crossing the play area — was warm gold, now a
+      // Top scan beam crossing the play area - was warm gold, now a
       // cyan-cored holographic sweep matching the cyber scanner
       // vocabulary established in CyberScanner.
       const beamY = PLAY_Y + ((now / 12) % PLAY_H);
@@ -673,7 +673,7 @@ export default function FirewallBuilder({
       ctx.strokeRect(PLAY_X + 0.5, PLAY_Y + 0.5, PLAY_W - 1, PLAY_H - 1);
       ctx.shadowBlur = 0;
 
-      // Side rails — were wooden brown (Pixar) on a cyber play surface.
+      // Side rails - were wooden brown (Pixar) on a cyber play surface.
       // Now cyber chrome rails (deep navy) so the play area reads as
       // one mechanical piece, not wood-and-glass mash-up.
       ctx.fillStyle = "#0f1530";
@@ -695,7 +695,7 @@ export default function FirewallBuilder({
       ctx.fillRect(PLAY_X + PLAY_W + 2, PLAY_H + PLAY_Y - (pulseY - PLAY_Y) - 12, 6, 12);
       ctx.shadowBlur = 0;
 
-      // Foundation — gold-trimmed base plate
+      // Foundation - gold-trimmed base plate
       const foundGrad = ctx.createLinearGradient(0, PLAY_Y + PLAY_H, 0, PLAY_Y + PLAY_H + 12);
       foundGrad.addColorStop(0, "#ffd158");
       foundGrad.addColorStop(1, "#0f1530");
@@ -729,7 +729,7 @@ export default function FirewallBuilder({
 
         // THREAT LOCK-ON: if the falling block is bad, draw a pulsing
         // red corner-bracket reticule around it + a faint red halo so
-        // kids can see at a glance "this one's the threat — TAP IT".
+        // kids can see at a glance "this one's the threat - TAP IT".
         if (s.falling.def.kind === "bad") {
           const pulse = 0.55 + 0.45 * Math.sin(now / 150);
           const w = COL_W - 4;
@@ -776,7 +776,7 @@ export default function FirewallBuilder({
         }
       }
 
-      // POWER-UP RENDER — falling tokens with an animated halo
+      // POWER-UP RENDER - falling tokens with an animated halo
       for (const p of s.powerUps) {
         const px = PLAY_X + p.col * COL_W + COL_W / 2;
         const py = PLAY_Y + p.y;
@@ -824,7 +824,7 @@ export default function FirewallBuilder({
         ctx.restore();
       }
 
-      // Cyber shield paddle — visible at the bottom of the play area,
+      // Cyber shield paddle - visible at the bottom of the play area,
       // tracks the cursor (or the falling block's column if cursor is
       // outside). Acts as a visual "you can drop the block here" guide
       // to make the kid feel directly in control.
@@ -843,7 +843,7 @@ export default function FirewallBuilder({
         ctx.beginPath();
         ctx.arc(px, py, paddleW * 0.85, 0, Math.PI * 2);
         ctx.fill();
-        // Shield body — chevron / rounded bar
+        // Shield body - chevron / rounded bar
         ctx.save();
         ctx.translate(px, py);
         ctx.beginPath();
@@ -933,7 +933,7 @@ export default function FirewallBuilder({
       ctx.fillStyle = s.badLanded >= LOSE_BAD - 1 ? "#ff5fb3" : "#ffd158";
       ctx.fillText(`VIRUSES ${s.badLanded}/${LOSE_BAD}`, CANVAS_W / 2, 12);
 
-      // STREAK MULTIPLIER — visible at the top centre when combo>=2.
+      // STREAK MULTIPLIER - visible at the top centre when combo>=2.
       // Pulses with the combo, scales up at higher tiers, drives a
       // "x2" / "x3" / "x5!" type readout the kid can see at all times
       // (was previously only fired as a transient floater at 3/5/8/12).
@@ -954,7 +954,7 @@ export default function FirewallBuilder({
         ctx.restore();
       }
 
-      // Active power-up indicators — pill row in the top-left under
+      // Active power-up indicators - pill row in the top-left under
       // FIREWALL LEVEL, one badge per active effect.
       const activePU: { label: string; remaining: number; colour: string }[] = [];
       if (now < s.slowMoUntil) {
@@ -999,7 +999,7 @@ export default function FirewallBuilder({
 
       // Legend row
       ctx.font = "800 13px ui-rounded, 'Fredoka', system-ui, sans-serif";
-      // Static legend only when there's NO falling block — otherwise it
+      // Static legend only when there's NO falling block - otherwise it
       // overlaps with the big CATCH IT! / REJECT IT! prompt below.
       if (!s.falling) {
         ctx.fillStyle = "#c5cdf0";
@@ -1114,7 +1114,7 @@ export default function FirewallBuilder({
       {showIntro && (
         <ExerciseIntro
           title="Build the Firewall!"
-          description="Good security blocks are falling — catch them to build your firewall! But REJECT the virus blocks before they land!"
+          description="Good security blocks are falling - catch them to build your firewall! But REJECT the virus blocks before they land!"
           icon="🧱"
           controls="← → to move · SPACE to reject"
           onStart={() => setShowIntro(false)}
@@ -1140,7 +1140,7 @@ function drawBlock(
   ctx.fillStyle = grad;
   roundRect(ctx, x, y, w, h, 8);
   ctx.fill();
-  // Bright border — green for good, red for bad.
+  // Bright border - green for good, red for bad.
   ctx.strokeStyle = flash
     ? "#fff"
     : def.kind === "good"
@@ -1160,7 +1160,7 @@ function drawBlock(
   ctx.fillText(def.kind === "good" ? "🛡" : "💀", x + 13, y + h / 2);
   ctx.shadowBlur = 0;
 
-  // Text — 12px, wraps to 2 lines within the block width.
+  // Text - 12px, wraps to 2 lines within the block width.
   ctx.font = "800 12px 'Space Grotesk', sans-serif";
   ctx.textAlign = "left";
   ctx.textBaseline = "middle";

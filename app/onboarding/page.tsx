@@ -28,7 +28,7 @@ const TITLE_GRAD = "linear-gradient(135deg, #7df0ff, #00e5ff, #7c5cff)";
 const AGES = [6, 7, 8, 9, 10];
 
 function getCourseLabel(_age: number, name: string) {
-  return `🛡️ Cyber Heroes Academy — Perfect for ${name}!`;
+  return `🛡️ Cyber Heroes Academy - Perfect for ${name}!`;
 }
 
 // Slugs are preserved so saved profiles stay valid; warm accent colours
@@ -497,7 +497,7 @@ export default function OnboardingPage() {
                         {childName.trim()}&apos;s Profile
                       </p>
                       <p className="text-xs" style={{ color: C.textMuted }}>
-                        Age {age} · {getCourseLabel(age!, "").split("—")[0].trim()}
+                        Age {age} · {getCourseLabel(age!, "").split("-")[0].trim()}
                       </p>
                     </div>
                   </div>

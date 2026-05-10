@@ -5,10 +5,10 @@ import { Canvas, useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 
 /**
- * CyberHeroesBackdrop — flagship marketing-page R3F backdrop.
+ * CyberHeroesBackdrop - flagship marketing-page R3F backdrop.
  *
  * Sparser and slower than the in-product atmospheres (BossEnergyCore /
- * HeroSelectAtmosphere) — this is a reading page, not an action surface.
+ * HeroSelectAtmosphere) - this is a reading page, not an action surface.
  * Layered cosmic depth: distant nebulae, deep starfield, two slow aurora
  * ribbons, four wireframe geometric shards at varied Z, all framed by a
  * soft mouse-parallax camera pan.
@@ -229,7 +229,7 @@ export default function CyberHeroesBackdrop() {
       <ambientLight intensity={0.45} />
       <CameraParallax />
 
-      {/* Distant nebulae — two colours at varied depths so the cosmic
+      {/* Distant nebulae - two colours at varied depths so the cosmic
           background isn't monochrome violet. (Cut from 4 → 2 to leave
           GPU headroom for the hero video.) */}
       <Nebula position={[-13, 4, -22]} color={PALETTE.cosmic} radius={10} opacity={0.16} />

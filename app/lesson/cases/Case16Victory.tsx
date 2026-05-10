@@ -4,7 +4,7 @@ import VictoryScene from "@/app/components/game/VictoryScene";
 import FullScene from "@/app/lesson/cases/FullScene";
 
 /**
- * Case 16 — "Adam and Layla are Safe" victory beat.
+ * Case 16 - "Adam and Layla are Safe" victory beat.
  *
  * One-line wrapper around VictoryScene. Extracted from the
  * 5,400-line LessonPlayer monolith so future polish on this case

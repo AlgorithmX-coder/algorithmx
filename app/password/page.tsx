@@ -163,7 +163,7 @@ export default function PasswordPage() {
           Whisper the password
         </h1>
         <p style={{ color: C.textSoft, opacity: 0.92, marginBottom: 24, fontSize: 15 }}>
-          The castle is still being built — only invited guests beyond this gate.
+          The castle is still being built - only invited guests beyond this gate.
         </p>
 
         <form onSubmit={onSubmit} className="space-y-3">

@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 
 /**
- * useIsMobile — true when the viewport is narrow OR the device looks
+ * useIsMobile - true when the viewport is narrow OR the device looks
  * touch-only. SSR-safe (returns false during prerender, then resolves
  * after mount).
  *
@@ -22,7 +22,7 @@ export function useIsMobile(breakpoint = 768): boolean {
       const touch =
         "ontouchstart" in window ||
         (navigator.maxTouchPoints !== undefined && navigator.maxTouchPoints > 0);
-      // Treat as "mobile" when BOTH narrow and touch — laptops with
+      // Treat as "mobile" when BOTH narrow and touch - laptops with
       // touchscreens stay on the desktop layout.
       setIsMobile(narrow && touch);
     };

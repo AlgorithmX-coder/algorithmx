@@ -7,7 +7,7 @@ name: Post-deploy smoke test
 # deploy went out, instead of being discovered by a customer.
 #
 # Strategy: try one signup with a unique email per run. We don't keep
-# the user — the cleanup endpoint at the end nukes any test users we
+# the user - the cleanup endpoint at the end nukes any test users we
 # created. Failure here annotates the commit with a red X on GitHub
 # so a broken deploy is immediately visible.
 
@@ -21,7 +21,7 @@ jobs:
     name: Hit /api/signup on prod
     runs-on: ubuntu-latest
     # Wait long enough for Vercel to finish a fresh build before we ping
-    # — typical build is ~90s, we give 4 minutes of headroom.
+    # - typical build is ~90s, we give 4 minutes of headroom.
     steps:
       - name: Wait for Vercel to deploy
         run: sleep 240
@@ -48,10 +48,10 @@ jobs:
           echo "HTTP status: ${STATUS}"
           echo "Body: $(cat /tmp/body.txt)"
           # 201 Created is the happy path. 400 would mean valid request
-          # with rejected payload (e.g. email already used) — fine, server
+          # with rejected payload (e.g. email already used) - fine, server
           # is up. 5xx means the server is broken.
           if [ "${STATUS}" -ge 500 ]; then
-            echo "::error::Signup endpoint returned ${STATUS} — deploy is broken."
+            echo "::error::Signup endpoint returned ${STATUS} - deploy is broken."
             exit 1
           fi
           if [ "${STATUS}" -lt 200 ] || [ "${STATUS}" -ge 400 ]; then

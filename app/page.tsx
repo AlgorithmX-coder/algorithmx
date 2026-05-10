@@ -6,7 +6,7 @@ import { AnimatePresence, motion, useInView } from "framer-motion";
 import SmoothScroll from "@/app/components/SmoothScroll";
 import { AuroraDawnScene } from "@/app/components/PixarScenes";
 
-/* ─────────────── TOKENS — warm Pixar dusk palette ─────────────── */
+/* ─────────────── TOKENS - warm Pixar dusk palette ─────────────── */
 const WHITE = "#2a0d2e";        // card surface (was pure white)
 const BG_ALT = "#1a0612";       // alt section panel (was off-white)
 const BORDER = "rgba(255, 220, 180, 0.28)";
@@ -25,7 +25,7 @@ const RED = "#c4513a";          // ember
 
 /* ─────────────── INLINE ACETERNITY COMPONENTS ─────────────── */
 
-/** BackgroundGradientAnimation — 5 soft-light blobs with slow drift + interactive pointer */
+/** BackgroundGradientAnimation - 5 soft-light blobs with slow drift + interactive pointer */
 function BackgroundGradientAnimation() {
   const interactiveRef = useRef<HTMLDivElement>(null);
   const [target, setTarget] = useState({ x: 0, y: 0 });
@@ -73,7 +73,7 @@ function BackgroundGradientAnimation() {
       overflow: "hidden",
       background: `radial-gradient(ellipse at 50% -10%, #4a1a4a 0%, #2a0d2e 35%, #1a0612 70%, #0a0410 100%)`,
     }}>
-      {/* Pixar dawn aurora — drifting warm-gold curtains, twinkling stars, ember motes */}
+      {/* Pixar dawn aurora - drifting warm-gold curtains, twinkling stars, ember motes */}
       <AuroraDawnScene />
 
       <svg style={{ position: "absolute", inset: 0, width: 0, height: 0 }}>
@@ -102,7 +102,7 @@ function BackgroundGradientAnimation() {
   );
 }
 
-/** TextGenerateEffect — words appear with blur→sharp fade, per-word custom styling supported */
+/** TextGenerateEffect - words appear with blur→sharp fade, per-word custom styling supported */
 function TextGenerateEffect({
   words, highlightWords = [], className, style,
 }: {
@@ -146,7 +146,7 @@ function TextGenerateEffect({
   );
 }
 
-/** CardSpotlight — mouse-tracking radial gradient glow */
+/** CardSpotlight - mouse-tracking radial gradient glow */
 function CardSpotlight({
   children, accent = BLUE, style, className,
 }: {
@@ -197,7 +197,7 @@ function CardSpotlight({
   );
 }
 
-/** InfiniteMovingCards — CSS marquee with duplicated content */
+/** InfiniteMovingCards - CSS marquee with duplicated content */
 function InfiniteMovingCards<T>({
   items, renderItem, speed = 50, pauseOnHover = true, itemKey,
 }: {
@@ -749,7 +749,7 @@ export default function AlgorithmXHome() {
             transition={{ duration: 0.6, delay: 0.9 }}
             style={{ fontSize: 19, color: "#64748b", lineHeight: 1.6, maxWidth: 640, marginBottom: 40 }}
           >
-            From online safety for six-year-olds to professional cybersecurity certifications. Interactive courses designed for how YOU learn — whether you&rsquo;re 6 or 26.
+            From online safety for six-year-olds to professional cybersecurity certifications. Interactive courses designed for how YOU learn - whether you&rsquo;re 6 or 26.
           </motion.p>
 
           <motion.div
@@ -801,7 +801,7 @@ export default function AlgorithmXHome() {
           </div>
         </section>
 
-        {/* ═══ 3. THE PROBLEM — 3 stat cards ═══ */}
+        {/* ═══ 3. THE PROBLEM - 3 stat cards ═══ */}
         <section style={{ position: "relative", zIndex: 1, background: BG_ALT, padding: "100px 24px", borderTop: `1px solid ${BORDER}`, borderBottom: `1px solid ${BORDER}` }}>
           <div style={{ maxWidth: 900, margin: "0 auto" }}>
             <div className="ax-stats-row" style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 24 }}>
@@ -832,7 +832,7 @@ export default function AlgorithmXHome() {
 
             <div ref={underlineRef} style={{ textAlign: "center", marginTop: 48 }}>
               <p className="dsp" style={{ fontSize: 20, fontWeight: 700, color: HEADING, display: "inline-block", position: "relative", maxWidth: 700, lineHeight: 1.5 }}>
-                Whether you&rsquo;re protecting your child or building your career — AlgorithmX has the right course.
+                Whether you&rsquo;re protecting your child or building your career - AlgorithmX has the right course.
                 <span style={{
                   position: "absolute", bottom: -8, left: 0, height: 2,
                   background: `linear-gradient(90deg,${BLUE},${GREEN})`,

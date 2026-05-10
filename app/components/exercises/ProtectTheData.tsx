@@ -1,7 +1,7 @@
 "use client";
 
 /*
- * ProtectTheData — Pixar 2.5D commercial polish.
+ * ProtectTheData - Pixar 2.5D commercial polish.
  *
  * Game logic preserved: move the shield horizontally, block private
  * info from landing, let safe info pass. Visuals fully redesigned:
@@ -77,7 +77,7 @@ const ITEM_H = 54;
 /* ───────────────── PIXAR CANVAS PALETTE ───────────────── */
 
 const PV = {
-  // Sky stops (top to bottom) — cyber abyss → midnight → twilight
+  // Sky stops (top to bottom) - cyber abyss → midnight → twilight
   // navy. Was a warm sunset gradient bleeding orange into the floor;
   // user spotted that when the cards floated past.
   skyTop: "#04050d",
@@ -105,7 +105,7 @@ const PV = {
   shieldGradTop: "#e7ecff",
   shieldGradMid: "#7df0ff",
   shieldGradBottom: "#7c5cff",
-  // Was warm cream rim (Pixar leftover) — now cyan to match the
+  // Was warm cream rim (Pixar leftover) - now cyan to match the
   // shield body which is already cosmic-violet → cyan.
   shieldRim: "rgba(125, 240, 255, 0.8)",
   shieldGlow: "#7c5cff",
@@ -466,7 +466,7 @@ export default function ProtectTheData({
       ctx.fillStyle = bgGrad;
       ctx.fillRect(0, 0, CANVAS_W, CANVAS_H);
 
-      // Cosmic halo (was a warm sun glow — replaced with a cool
+      // Cosmic halo (was a warm sun glow - replaced with a cool
       // cyan/violet halo to match the abyss-navy sky behind it)
       const sun = ctx.createRadialGradient(
         CANVAS_W * 0.78,
@@ -560,7 +560,7 @@ export default function ProtectTheData({
         );
         ctx.fill();
 
-        // Holographic card body — IDENTICAL for safe and private
+        // Holographic card body - IDENTICAL for safe and private
         // pre-decision (was giving the answer away by tinting safe
         // green / private yellow before the kid acted). Player has
         // to read the text to classify; reveal happens via the
@@ -572,18 +572,18 @@ export default function ProtectTheData({
         roundRect(ctx, -c.width / 2, -c.height / 2, c.width, c.height, 14);
         ctx.fill();
 
-        // Cyan accent strip along top — same on every card
+        // Cyan accent strip along top - same on every card
         ctx.fillStyle = "rgba(0, 229, 255, 0.85)";
         roundRect(ctx, -c.width / 2, -c.height / 2, c.width, 6, 14);
         ctx.fill();
 
-        // Tag dot (left) — neutral cosmic violet on every card
+        // Tag dot (left) - neutral cosmic violet on every card
         ctx.fillStyle = "rgba(124, 92, 255, 0.85)";
         ctx.beginPath();
         ctx.arc(-c.width / 2 + 18, 0, 6, 0, Math.PI * 2);
         ctx.fill();
 
-        // Border — neutral cyan on every card (the post-tap outcome
+        // Border - neutral cyan on every card (the post-tap outcome
         // overlay handles the green/pink reveal feedback)
         ctx.strokeStyle = "rgba(0, 229, 255, 0.55)";
         ctx.lineWidth = 2;
@@ -604,14 +604,14 @@ export default function ProtectTheData({
       // outer ring + the top highlight were warm cream Pixar leftovers).
       const sx = s.shieldX;
       const sy = SHIELD_Y;
-      // Halo above — cyan inner, fading to transparent (was warm
+      // Halo above - cyan inner, fading to transparent (was warm
       // cream → orange fade-out)
       const halo = ctx.createRadialGradient(sx, sy, 0, sx, sy, 110);
       halo.addColorStop(0, PV.shieldHalo);
       halo.addColorStop(1, "rgba(0, 229, 255, 0)");
       ctx.fillStyle = halo;
       ctx.fillRect(sx - 110, sy - 80, 220, 90);
-      // Body — cyan→violet chrome
+      // Body - cyan→violet chrome
       const sGrad = ctx.createLinearGradient(0, sy, 0, sy + SHIELD_H);
       sGrad.addColorStop(0, PV.shieldGradTop);
       sGrad.addColorStop(0.5, PV.shieldGradMid);
@@ -619,7 +619,7 @@ export default function ProtectTheData({
       ctx.fillStyle = sGrad;
       roundRect(ctx, sx - SHIELD_W / 2, sy, SHIELD_W, SHIELD_H, 22);
       ctx.fill();
-      // Top highlight — cool white (was warm cream "rgba(255, 255, 230)")
+      // Top highlight - cool white (was warm cream "rgba(255, 255, 230)")
       const highlight = ctx.createLinearGradient(0, sy, 0, sy + 14);
       highlight.addColorStop(0, "rgba(220, 250, 255, 0.75)");
       highlight.addColorStop(1, "rgba(220, 250, 255, 0)");
@@ -768,7 +768,7 @@ export default function ProtectTheData({
       {showIntro && (
         <ExerciseIntro
           title="Protect the Data!"
-          description="Private info is falling from the sky. Move your cyber shield to block it — but let safe info through!"
+          description="Private info is falling from the sky. Move your cyber shield to block it - but let safe info through!"
           icon="🛡️"
           controls="Move mouse or arrow keys"
           onStart={() => setShowIntro(false)}

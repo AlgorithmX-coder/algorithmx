@@ -25,7 +25,7 @@ function getResend(): Resend | null {
 
 /* ─── Configuration ─────────────────────────────────────────────────── */
 
-/** Verified sender — must match a domain you've added + verified in Resend. */
+/** Verified sender - must match a domain you've added + verified in Resend. */
 export const FROM_ADDRESS =
   process.env.RESEND_FROM ?? "AlgorithmX <support@algorithmx.co.uk>";
 
@@ -45,7 +45,7 @@ export interface SendOptions {
  *
  * In dev without RESEND_API_KEY: logs to console and returns ok-without-id
  * so the calling flow continues. Production callers should treat a null
- * id as a genuine send (it isn't) only in dev — do not rely on it for
+ * id as a genuine send (it isn't) only in dev - do not rely on it for
  * real receipts.
  */
 export async function sendEmail(opts: SendOptions): Promise<{ id: string | null }> {
@@ -54,7 +54,7 @@ export async function sendEmail(opts: SendOptions): Promise<{ id: string | null 
   if (!client) {
     if (process.env.NODE_ENV === "production") {
       throw new Error(
-        "RESEND_API_KEY is not set — cannot send email in production",
+        "RESEND_API_KEY is not set - cannot send email in production",
       );
     }
     // Dev fallback so the rest of the flow can be exercised.
@@ -81,7 +81,7 @@ export async function sendEmail(opts: SendOptions): Promise<{ id: string | null 
   });
 
   if (error) {
-    // Don't leak the API error verbatim to callers — log + rethrow generic.
+    // Don't leak the API error verbatim to callers - log + rethrow generic.
     // eslint-disable-next-line no-console
     console.error("[resend] send failed", error);
     throw new Error("Email send failed");
@@ -105,7 +105,7 @@ export function passwordResetTemplate(args: {
     `Open this link within ${expiryMinutes} minutes to set a new password:`,
     resetUrl,
     "",
-    "If you didn't request this, you can safely ignore this email — your password won't change.",
+    "If you didn't request this, you can safely ignore this email - your password won't change.",
     "",
     "AlgorithmX",
   ].join("\n");

@@ -1,18 +1,18 @@
 "use client";
 
 /*
- * PixarScenes — a small library of distinct, animated backdrops that
+ * PixarScenes - a small library of distinct, animated backdrops that
  * share the warm dusk Pixar palette but each carry their own unique
  * visual hook (3D globe halo, lighthouse beam, drifting alchemy
  * glyphs, mountain ridges, etc).
  *
  * Each scene is a fixed-position layer (zIndex 0, pointer-events: none)
  * meant to sit behind a normal page. They are all CSS/SVG/motion based
- * — no WebGL, no GPU contention.
+ * - no WebGL, no GPU contention.
  *
  * Conventions:
- *   <ScenePage variant>   — drop in once at the top of a page
- *   <ScenePanelGlobe>     — a side-panel scene used in split-screen
+ *   <ScenePage variant>   - drop in once at the top of a page
+ *   <ScenePanelGlobe>     - a side-panel scene used in split-screen
  *                           layouts (e.g. /login right-half)
  */
 
@@ -70,7 +70,7 @@ const KEYFRAMES = `
 `;
 
 const PALETTE = {
-  // Sky stops — used by all variants
+  // Sky stops - used by all variants
   duskTop: "#1a0612",
   duskMid: "#2a0d2e",
   duskHorizon: "#5a2540",
@@ -276,7 +276,7 @@ function SunGlow({
 }
 
 /* ───────────────────────── SCENE: DUSK VALLEY ─────────────────────────
- * Default Pixar dusk — sky gradient, drifting motes, twinkling stars,
+ * Default Pixar dusk - sky gradient, drifting motes, twinkling stars,
  * mountain silhouettes, sun glow. Used by the dashboards. */
 
 export function DuskValleyScene() {
@@ -350,7 +350,7 @@ export function ConstellationScene() {
       <style>{KEYFRAMES}</style>
       <SkyGradientLayer />
       <StarLayer count={55} topPct={90} />
-      {/* Connecting lines — 3 small constellation clusters */}
+      {/* Connecting lines - 3 small constellation clusters */}
       <svg
         aria-hidden
         viewBox="0 0 1200 800"

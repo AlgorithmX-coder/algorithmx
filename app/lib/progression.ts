@@ -113,7 +113,7 @@ const LEGACY_STORAGE_KEY = "algorithmx-progression";
 const ACTIVE_SLOT_STORAGE_KEY = "algorithmx-active-slot-v1";
 
 /**
- * Namespaced storage key — reads the currently active save slot
+ * Namespaced storage key - reads the currently active save slot
  * (set by the title-screen slot picker) and reads/writes the
  * progression blob under `algorithmx-progression-{slotId}`.
  *
@@ -188,7 +188,7 @@ function saveProgression(state: ProgressionState): void {
   try {
     window.localStorage.setItem(storageKey(), JSON.stringify(state));
   } catch {
-    /* quota or serialisation failure — ignore */
+    /* quota or serialisation failure - ignore */
   }
   /* Mirror summary into the active slot record so the title-screen
    * picker reflects fresh totals on the next visit. Hands-off if the

@@ -1,5 +1,5 @@
 /*
- * Sentry — Edge runtime bootstrap.
+ * Sentry - Edge runtime bootstrap.
  *
  * Used for API routes / middleware running on Vercel's Edge Runtime.
  * We currently don't use Edge runtime anywhere in the app, but having

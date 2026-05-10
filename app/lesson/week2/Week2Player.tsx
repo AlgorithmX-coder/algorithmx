@@ -44,12 +44,12 @@ import ChooseYourPath from "@/app/components/exercises/ChooseYourPath";
 import CyberMaze from "@/app/components/exercises/CyberMaze";
 
 const W2_PRIVATE_INFO_PAIRS = [
-  { term: "Home Address", match: "Private — never share online", colour: "#ef4444" },
-  { term: "Full Name", match: "Private — don't give to strangers", colour: "#f97316" },
+  { term: "Home Address", match: "Private - never share online", colour: "#ef4444" },
+  { term: "Full Name", match: "Private - don't give to strangers", colour: "#f97316" },
   { term: "Password", match: "Only for YOU and parents", colour: "#7c5cff" },
   { term: "Favourite Colour", match: "Safe to share", colour: "#7eff97" },
   { term: "Age Range", match: '"I\'m a kid" is OK', colour: "#7df0ff" },
-  { term: "School Name", match: "Private — helps strangers find you", colour: "#ff5fb3" },
+  { term: "School Name", match: "Private - helps strangers find you", colour: "#ff5fb3" },
 ];
 
 const W2_PROTECT_ITEMS: { text: string; isPrivate: boolean }[] = [
@@ -93,14 +93,14 @@ const W2_PATH_SCENARIOS = [
   {
     setup: "A new online friend asks for a photo of you in your school uniform.",
     choices: [
-      { text: "Send it — they're friendly", isSafe: false, consequence: "The photo shows your school badge. A stranger could find you now." },
+      { text: "Send it - they're friendly", isSafe: false, consequence: "The photo shows your school badge. A stranger could find you now." },
       { text: "Politely say no and tell an adult", isSafe: true, consequence: "Great! Photos can give away way more than you'd expect." },
     ],
   },
   {
     setup: "Someone messages saying: \"I'm from your school, what's your phone number?\"",
     choices: [
-      { text: "Share it — they go to your school", isSafe: false, consequence: "They might not really go to your school. Now they can contact you directly." },
+      { text: "Share it - they go to your school", isSafe: false, consequence: "They might not really go to your school. Now they can contact you directly." },
       { text: "Ask them in person at school instead", isSafe: true, consequence: "Smart! If they really go to your school, they can ask in person." },
     ],
   },
@@ -512,7 +512,7 @@ function FloatingBg() {
     { top: "65%", width: 250, dur: 8, delay: 10 },
     { top: "85%", width: 150, dur: 6, delay: 16 },
   ];
-  const morse = "· · — · — — · · · — — — ".repeat(40);
+  const morse = "· · - · - - · · · - - - ".repeat(40);
   return (
     <div className="floating-bg" style={{ position: "fixed", inset: 0, pointerEvents: "none", zIndex: 0, overflow: "hidden" }}>
       <style>{`
@@ -793,7 +793,7 @@ const _SpeechBubbleLegacy = ({ character, message, side = "left" }: { character:
 export default function Week2Player({ userName, moduleId, childName }: { userName: string; moduleId: string; childName: string }) {
   const [step, setStep] = useState(0);
 
-  // Intro cutscene disabled — lesson lands directly on screen 0. State + render path kept in case we re-enable.
+  // Intro cutscene disabled - lesson lands directly on screen 0. State + render path kept in case we re-enable.
   const [cutscene, setCutscene] = useState<"intro" | null>(null);
   const cutsceneSlides = cutscene === "intro" ? WEEK2_INTRO : null;
   const cutsceneTitle: string | undefined = cutscene === "intro"
@@ -1162,7 +1162,7 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
     }
   }, []);
 
-  // Keyboard navigation — Right Arrow = next, Left Arrow = back (skips while cutscene active).
+  // Keyboard navigation - Right Arrow = next, Left Arrow = back (skips while cutscene active).
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       const target = e.target as HTMLElement | null;
@@ -2085,7 +2085,7 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
 
       /* ──── STEP 11: MEMORY MATCH (was speed sort) ──── */
       case 11: {
-        if (showSummary[11]) return <LearnSummary message="You matched every rule — you know exactly what to keep private!" starCount={getStars(11)} onNext={() => dismissSummary(11, 12)} />;
+        if (showSummary[11]) return <LearnSummary message="You matched every rule - you know exactly what to keep private!" starCount={getStars(11)} onNext={() => dismissSummary(11, 12)} />;
         return (
           <ThemedScene theme="factory">
             <MemoryMatch
@@ -2100,7 +2100,7 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
 
       /* ──── STEP 12: CHOOSE YOUR PATH (was phone call) ──── */
       case 12: {
-        if (showSummary[12]) return <LearnSummary message="You made safe choices every time — your private info is protected!" starCount={getStars(12)} onNext={() => dismissSummary(12, 13)} />;
+        if (showSummary[12]) return <LearnSummary message="You made safe choices every time - your private info is protected!" starCount={getStars(12)} onNext={() => dismissSummary(12, 13)} />;
         return (
           <ThemedScene theme="callscreen">
             <ChooseYourPath
@@ -2115,7 +2115,7 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
 
       /* ──── STEP 13: CYBER MAZE (was shield builder) ──── */
       case 13: {
-        if (showSummary[13]) return <LearnSummary message="You found the exit and answered every gate — knowledge is the key!" starCount={getStars(13)} onNext={() => dismissSummary(13, 14)} />;
+        if (showSummary[13]) return <LearnSummary message="You found the exit and answered every gate - knowledge is the key!" starCount={getStars(13)} onNext={() => dismissSummary(13, 14)} />;
         return (
           <ThemedScene theme="forge">
             <CyberMaze
@@ -2329,7 +2329,7 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
   /* ───────── RENDER ───────── */
   return (
     <div style={{ minHeight: "100vh", background: "#05061a", position: "relative", overflow: "hidden" }}>
-      {/* 3D arena backdrop — behind everything. */}
+      {/* 3D arena backdrop - behind everything. */}
       <div
         aria-hidden="true"
         style={{
@@ -2406,7 +2406,7 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
 
       <MuteToggle />
 
-      {/* Combo counter — visible when combo > 0 */}
+      {/* Combo counter - visible when combo > 0 */}
       {lessonCombo > 0 && !cutscene && (
         <div
           key={comboPulseKey}

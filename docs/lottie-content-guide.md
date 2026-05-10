@@ -1,7 +1,7 @@
 # Lottie content acquisition guide
 
 How to populate `app/lib/lottie-manifest.ts` with real animations and
-get the lesson player feeling alive — without commissioning a single
+get the lesson player feeling alive - without commissioning a single
 custom animator.
 
 ## The pipeline
@@ -24,17 +24,17 @@ that needs editing per new asset.
 | What | URL | Cost | Why |
 |---|---|---|---|
 | **LottieFiles Pro** | https://lottiefiles.com/pricing | $19.99/mo | Required for commercial use of marketplace animations. Cancel after launch if you stop adding new content. |
-| **Envato Elements** (optional) | https://elements.envato.com | $16.50/mo | Massive stock library — sound FX, BGM, video clips, plus some Lottie animations. Useful for the next round (audio). |
+| **Envato Elements** (optional) | https://elements.envato.com | $16.50/mo | Massive stock library - sound FX, BGM, video clips, plus some Lottie animations. Useful for the next round (audio). |
 
 That's it. ~$36/mo for everything you'd otherwise commission for thousands.
 
-## What to download — exact search terms that work
+## What to download - exact search terms that work
 
 Search LottieFiles with these queries. Filter by "Free for commercial use"
 once subscribed. Pick the one that visually matches the cyber palette
-(cyan / cosmic violet / pink / gold) — most hits will be customisable.
+(cyan / cosmic violet / pink / gold) - most hits will be customisable.
 
-### Tier 1 — must-haves for first deploy (replaces existing canvas-confetti)
+### Tier 1 - must-haves for first deploy (replaces existing canvas-confetti)
 
 | Manifest key | Search query | Save as | Used by |
 |---|---|---|---|
@@ -45,7 +45,7 @@ once subscribed. Pick the one that visually matches the cyber palette
 
 These four alone replace 70% of the canvas-confetti effects firing across the lesson. Drop them in, set the manifest paths, ~2 hours of integration work from me.
 
-### Tier 2 — character life (lifts the whole player)
+### Tier 2 - character life (lifts the whole player)
 
 | Manifest key | Search query | Notes |
 |---|---|---|
@@ -59,11 +59,11 @@ These four alone replace 70% of the canvas-confetti effects firing across the le
 
 Heads-up: stock Lottie kids may not look exactly like Adam/Layla as drawn. Two options:
 1. **Accept** they're new characters and treat existing PNGs as decorative.
-2. **Composite** the Lottie character idle / talk over the existing PNG silhouette using opacity blend modes — ugly hack, sometimes works.
+2. **Composite** the Lottie character idle / talk over the existing PNG silhouette using opacity blend modes - ugly hack, sometimes works.
 
 For Week 1 launch, option 1 is more honest. Long-term you commission custom Lotties that match your character art.
 
-### Tier 3 — atmospheric / decorative
+### Tier 3 - atmospheric / decorative
 
 | Manifest key | Search query |
 |---|---|
@@ -80,7 +80,7 @@ Tier 3 is "nice to have." Skip until launch is closer.
 - **Size**: aim for under 200KB per file. Anything bigger, look for an alternative or simplify.
 - **Per scene budget**: ~5–10 Lotties on screen simultaneously is fine. More than that on a mid-range Android tablet starts to chug.
 
-## Getting it working — ordered steps
+## Getting it working - ordered steps
 
 1. Subscribe to LottieFiles Pro.
 2. Search and download the four Tier 1 animations to your local Downloads.
@@ -95,7 +95,7 @@ Tier 3 is "nice to have." Skip until launch is closer.
    };
    ```
 5. Commit + push (or run dev locally).
-6. Play through any lesson — every correct answer now triggers a real animator's celebration instead of CSS particles. **You'll feel the difference immediately.**
+6. Play through any lesson - every correct answer now triggers a real animator's celebration instead of CSS particles. **You'll feel the difference immediately.**
 7. Iterate on Tier 2 + Tier 3 over the following days as you find ones you like.
 
 ## Customising without an animator

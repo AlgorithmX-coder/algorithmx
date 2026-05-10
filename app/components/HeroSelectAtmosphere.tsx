@@ -5,7 +5,7 @@ import { Canvas, useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 
 /**
- * HeroSelectAtmosphere — a calmer, more contemplative cousin of
+ * HeroSelectAtmosphere - a calmer, more contemplative cousin of
  * BossEnergyCore. Sits behind the CHOOSE YOUR HERO screen as a live
  * 3D backdrop. Sets a "preparation" mood: slower rotation, deeper
  * starfield, drifting auroras, paler palette than the combat reactor.
@@ -24,7 +24,7 @@ const PALETTE = {
   cream: "#fff7e6",
 };
 
-/* ───────────────────────── CRYSTAL CORE — calmer ─────────────── */
+/* ───────────────────────── CRYSTAL CORE - calmer ─────────────── */
 function CrystalCore() {
   const ref = useRef<THREE.Mesh>(null);
   const halo = useRef<THREE.Mesh>(null);
@@ -248,7 +248,7 @@ function AuroraRibbon({
   speed: number;
   thickness?: number;
 }) {
-  // Tube geometry following a wavy circular path — gives a thin
+  // Tube geometry following a wavy circular path - gives a thin
   // curving aurora-like ribbon that drifts slowly.
   const ref = useRef<THREE.Mesh>(null);
   const geom = useMemo(() => {
@@ -298,7 +298,7 @@ export default function HeroSelectAtmosphere() {
       <StarField count={200} />
       <DustCloud count={70} />
 
-      {/* Two slowly-drifting aurora ribbons — was three; trimmed for
+      {/* Two slowly-drifting aurora ribbons - was three; trimmed for
           GPU load. Same atrium feel without the jank. */}
       <AuroraRibbon color={PALETTE.cosmic} radius={3.2} tilt={[Math.PI / 2.1, 0, 0]}        speed={0.025} thickness={0.05} />
       <AuroraRibbon color={PALETTE.pink}   radius={3.6} tilt={[Math.PI / 2.6, Math.PI / 5, 0]} speed={-0.018} thickness={0.04} />

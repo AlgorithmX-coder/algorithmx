@@ -526,7 +526,7 @@ function CreatePanel({
         {picked.length === 0 ? "Build your password…" : builtPassword}
       </div>
 
-      {/* Strength meter — 5-segment power gauge */}
+      {/* Strength meter - 5-segment power gauge */}
       <div style={{ marginTop: 14 }}>
         <div style={{ display: "flex", justifyContent: "space-between", fontSize: 11, fontWeight: 700, color: "rgba(125,240,255,0.55)", letterSpacing: "0.08em", marginBottom: 6 }}>
           <span>STRENGTH</span>
@@ -534,7 +534,7 @@ function CreatePanel({
         </div>
         <div style={{ display: "flex", gap: 6, height: 16 }}>
           {(() => {
-            // 5 segments — each segment lights up as strength crosses its threshold.
+            // 5 segments - each segment lights up as strength crosses its threshold.
             const segColours = ["#ef4444", "#f97316", "#fbbf24", "#84cc16", "#7eff97"];
             const filled = Math.min(5, Math.ceil((strength / 100) * 5));
             return segColours.map((c, i) => {
@@ -845,11 +845,11 @@ type ForgotHint = {
 };
 
 const FORGOT_HINTS: ForgotHint[] = [
-  { id: "pet", emoji: "🐶", label: "Pet's name + a number", safe: true, reason: "Only Adam's family knows his pet — perfect clue!" },
-  { id: "food", emoji: "🍕", label: "Favourite food", safe: true, reason: "Nice — most people don't know exactly what Adam loves to eat." },
-  { id: "colour", emoji: "🎨", label: "Favourite colour", safe: true, reason: "Personal taste — only Adam truly knows!" },
-  { id: "bday", emoji: "🎂", label: "Adam's birthday", safe: false, reason: "Friends and family ALL know birthdays — it's an easy guess for the Raccoon!" },
-  { id: "addr", emoji: "🏠", label: "Home address", safe: false, reason: "Addresses are on letters and parcels — strangers can find them. Never a hint!" },
+  { id: "pet", emoji: "🐶", label: "Pet's name + a number", safe: true, reason: "Only Adam's family knows his pet - perfect clue!" },
+  { id: "food", emoji: "🍕", label: "Favourite food", safe: true, reason: "Nice - most people don't know exactly what Adam loves to eat." },
+  { id: "colour", emoji: "🎨", label: "Favourite colour", safe: true, reason: "Personal taste - only Adam truly knows!" },
+  { id: "bday", emoji: "🎂", label: "Adam's birthday", safe: false, reason: "Friends and family ALL know birthdays - it's an easy guess for the Raccoon!" },
+  { id: "addr", emoji: "🏠", label: "Home address", safe: false, reason: "Addresses are on letters and parcels - strangers can find them. Never a hint!" },
 ];
 
 function AdamForgotPanel({ onFinish }: { onFinish: () => void }) {
@@ -910,7 +910,7 @@ function AdamForgotPanel({ onFinish }: { onFinish: () => void }) {
           textAlign: "center",
         }}
       >
-        Pick 3 SAFE hints — clues only Adam would know. Skip ones the Raccoon could guess!
+        Pick 3 SAFE hints - clues only Adam would know. Skip ones the Raccoon could guess!
       </p>
 
       <div

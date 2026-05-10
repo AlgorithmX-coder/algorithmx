@@ -5,7 +5,7 @@ import { test, expect } from "@playwright/test";
  * so each test starts with a valid session (storage state seeded by
  * tests/e2e/global-setup.ts).
  *
- * Coverage map — these are written specifically against bug PATTERNS
+ * Coverage map - these are written specifically against bug PATTERNS
  * we've already had in production, so a regression of any of them
  * goes red in CI before deploy:
  *
@@ -15,7 +15,7 @@ import { test, expect } from "@playwright/test";
  *   4. Cyber Heroes age range is 6-10 (auth view too)   (regression)
  *   5. /dashboard renders for an authed user            (route boot)
  *   6. Each lesson screen has at least one focusable    (no dead ends)
- *      action (button or link) — guards against the
+ *      action (button or link) - guards against the
  *      "no Next button" class of bug.
  *
  * Why this passes the bar: these 6 cases would have caught at least
@@ -24,7 +24,7 @@ import { test, expect } from "@playwright/test";
  * Save & Exit accidentally removed).
  */
 
-test.describe("Lesson flow — authed", () => {
+test.describe("Lesson flow - authed", () => {
   test("/lesson loads and shows the lesson HUD", async ({ page }) => {
     const errors: string[] = [];
     page.on("pageerror", (e) => errors.push(e.message));
@@ -58,7 +58,7 @@ test.describe("Lesson flow — authed", () => {
     expect(text).not.toMatch(/6\s*[–-]\s*9(?!\d)/);
   });
 
-  test("first lesson screen has at least one clickable CTA — no dead ends", async ({
+  test("first lesson screen has at least one clickable CTA - no dead ends", async ({
     page,
   }) => {
     // This is the regression guard for the gate-everything-Next-button
@@ -71,7 +71,7 @@ test.describe("Lesson flow — authed", () => {
     const count = await enabledButtons.count();
     expect(
       count,
-      "lesson screen should always offer at least one enabled action — if this is 0, the player is stuck"
+      "lesson screen should always offer at least one enabled action - if this is 0, the player is stuck"
     ).toBeGreaterThan(0);
   });
 });

@@ -42,7 +42,7 @@ const MONITOR_Y = CANVAS_H - 95;
 const MONITOR_W = 200;
 const MONITOR_H = 140;
 
-// CYBER TURRET — fires DOWN from the top of the play area at viruses
+// CYBER TURRET - fires DOWN from the top of the play area at viruses
 // (the user wanted the firing source at the top, not the bottom-
 // monitor only). The monitor stays for the inbox readout; the turret
 // is the active "you're aiming this" element.
@@ -99,7 +99,7 @@ interface ClueBubble {
 }
 
 function speedForIndex(i: number) {
-  // First email flies slower than base — a learning lap after the intro.
+  // First email flies slower than base - a learning lap after the intro.
   if (i === 0) return 0.75;
   if (i < 4) return 1;
   if (i < 7) return 1.4;
@@ -155,7 +155,7 @@ export default function SpamBlaster({
     monitorFlashUntil: 0,
     monitorShakeUntil: 0,
     finished: false,
-    // Crosshair tracking — follows mouse position over canvas so the
+    // Crosshair tracking - follows mouse position over canvas so the
     // kid feels they're actively aiming. Null when cursor is off-canvas.
     cursorX: null as number | null,
     cursorY: null as number | null,
@@ -212,7 +212,7 @@ export default function SpamBlaster({
     const phishing = hit.isPhishing;
     state.current.bullets.push({
       id: ++state.current.bulletId,
-      // Fire from the cyber turret at the TOP — bullet travels DOWN
+      // Fire from the cyber turret at the TOP - bullet travels DOWN
       // to the email's mid-fall position. (Old bullet source was the
       // monitor at the bottom firing UP, which the user said felt
       // like a different metaphor.)
@@ -370,7 +370,7 @@ export default function SpamBlaster({
 
     let running = true;
     let lastTime = performance.now();
-    // Longer lead-in after the intro dismisses — 2 s grace before first email.
+    // Longer lead-in after the intro dismisses - 2 s grace before first email.
     state.current.nextSpawnAt = performance.now() + 2000;
 
     const trySpawn = (now: number) => {
@@ -578,7 +578,7 @@ export default function SpamBlaster({
       ctx.translate(em.x, em.y);
       ctx.scale(em.scale, em.scale);
 
-      // HOLOGRAPHIC ENVELOPE — translucent dark glass body, animated
+      // HOLOGRAPHIC ENVELOPE - translucent dark glass body, animated
       // chromatic edge, soft scan-line texture. Reads as "incoming
       // intel data packet" rather than a stock email card.
       const now = performance.now();
@@ -607,7 +607,7 @@ export default function SpamBlaster({
       }
       ctx.restore();
 
-      // Animated chromatic border — cyan core with violet/pink ghost
+      // Animated chromatic border - cyan core with violet/pink ghost
       ctx.shadowColor = "#7c5cff";
       ctx.shadowBlur = 8;
       ctx.strokeStyle = "rgba(124, 92, 255, 0.45)";
@@ -620,7 +620,7 @@ export default function SpamBlaster({
       roundRect(ctx, -EMAIL_W / 2, -EMAIL_H / 2, EMAIL_W, EMAIL_H, 10);
       ctx.stroke();
 
-      // Top corner data tags — "PKT" id + faint pulse dot
+      // Top corner data tags - "PKT" id + faint pulse dot
       ctx.fillStyle = "rgba(0, 229, 255, 0.65)";
       ctx.font = "800 8px ui-monospace, 'JetBrains Mono', Menlo, monospace";
       ctx.textAlign = "left";
@@ -650,7 +650,7 @@ export default function SpamBlaster({
       ctx.shadowBlur = 0;
       ctx.restore();
 
-      // Sender + subject text — bright cream + slate cream
+      // Sender + subject text - bright cream + slate cream
       ctx.textAlign = "left";
       ctx.textBaseline = "middle";
       ctx.fillStyle = "#e8edff";
@@ -761,7 +761,7 @@ export default function SpamBlaster({
         ctx.fillText(((i * 73 + Math.floor(now / 240)) & 1).toString(), baseX, y);
       }
 
-      // Perspective floor grid lines drawing toward the monitor — warm
+      // Perspective floor grid lines drawing toward the monitor - warm
       ctx.strokeStyle = "rgba(124, 92, 255, 0.22)";
       ctx.lineWidth = 1;
       const horizonY = CANVAS_H * 0.55;
@@ -771,7 +771,7 @@ export default function SpamBlaster({
         ctx.lineTo(CANVAS_W / 2 + i * 80, CANVAS_H + 8);
         ctx.stroke();
       }
-      // Horizontal floor lines (perspective) — warm
+      // Horizontal floor lines (perspective) - warm
       const driftPhase = (now / 30) % 36;
       for (let i = 0; i < 8; i++) {
         const t = (i + driftPhase / 36) / 8;
@@ -826,7 +826,7 @@ export default function SpamBlaster({
       }
       ctx.globalAlpha = 1;
 
-      // bullets — laser/zap projectiles fired from the monitor toward
+      // bullets - laser/zap projectiles fired from the monitor toward
       // the email the user clicked. The whole shot animates over its
       // `duration`, drawing both the in-flight head and a fading tail
       // along the path.
@@ -921,7 +921,7 @@ export default function SpamBlaster({
         ctx.fillText(`STREAK x${s.streak}`, CANVAS_W / 2, 30);
       }
 
-      // CROSSHAIR / AIMING RETICULE — follows mouse position so the kid
+      // CROSSHAIR / AIMING RETICULE - follows mouse position so the kid
       // feels they're operating a turret. Cyan ring + cross-hair
       // arms + faint guideline back to the firing monitor at the
       // bottom (only drawn when cursor is over a virus to avoid
@@ -977,7 +977,7 @@ export default function SpamBlaster({
         ctx.restore();
       }
 
-      // Big glowing instruction prompt at the top — the user wanted
+      // Big glowing instruction prompt at the top - the user wanted
       // this to make the goal unmissable. Pulses softly, RGB-split
       // chromatic shimmer (cyan + neon-pink) for the holographic feel.
       const promptPulse = 0.7 + 0.3 * Math.sin(now / 380);
@@ -1003,7 +1003,7 @@ export default function SpamBlaster({
       ctx.fillText("⚡ ZAP THE VIRUS EMAILS! ⚡", promptX, promptY);
       ctx.restore();
 
-      // CYBER TURRET — sits below the prompt, points down at incoming
+      // CYBER TURRET - sits below the prompt, points down at incoming
       // viruses. Inverted-U mount + barrel that swivels toward the
       // crosshair if the kid is hovering over a target. Fires the
       // existing bullet from this position.
@@ -1041,7 +1041,7 @@ export default function SpamBlaster({
       ctx.arc(0, 0, 12, 0, Math.PI * 2);
       ctx.fill();
       ctx.shadowBlur = 0;
-      // Barrel — rotates toward aim
+      // Barrel - rotates toward aim
       ctx.rotate(turretAngle);
       const barrelGrad = ctx.createLinearGradient(0, -4, 22, 4);
       barrelGrad.addColorStop(0, "#7c5cff");
@@ -1060,7 +1060,7 @@ export default function SpamBlaster({
       ctx.fill();
       ctx.restore();
 
-      // STREAK METER — fills as the kid maintains a correct-zap chain.
+      // STREAK METER - fills as the kid maintains a correct-zap chain.
       // Sits below the prompt, full at streak >=5. Pulses when full.
       const streakPct = Math.min(1, s.streak / 5);
       if (streakPct > 0) {
@@ -1104,7 +1104,7 @@ export default function SpamBlaster({
         ctx.restore();
       }
 
-      // EDGE FLASH — red border flash when the kid wrongly zaps a
+      // EDGE FLASH - red border flash when the kid wrongly zaps a
       // legit email. Driven off monitorFlashColour === "#ff5577" or
       // similar; uses monitorFlashUntil for timing.
       const edgeFlashActive =

@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * CyberIcon — futuristic AI-themed SVG icon set replacing emojis.
+ * CyberIcon - futuristic AI-themed SVG icon set replacing emojis.
  *
  * The user wants the cyber-themed app to drop Apple/system emojis
  * everywhere in favour of a single cohesive icon language: clean
@@ -13,7 +13,7 @@
  *
  * The accent colours bind to the cyberTokens palette so the whole set
  * always reads as part of the Cyber Heroes Lab system. Adding a new
- * glyph means adding one entry to the GLYPHS map below — no per-icon
+ * glyph means adding one entry to the GLYPHS map below - no per-icon
  * components, no separate files.
  */
 
@@ -73,7 +73,7 @@ const ACCENT_PAIRS: Record<CyberIconAccent, [string, string]> = {
 
 export interface CyberIconProps {
   name: CyberIconName;
-  /** Pixel size — applied to both width + height. */
+  /** Pixel size - applied to both width + height. */
   size?: number;
   /** Accent gradient colour pair. Default cyan. */
   accent?: CyberIconAccent;
@@ -90,7 +90,7 @@ export interface CyberIconProps {
 }
 
 /**
- * Glyph paths — every icon is rendered inside a 24×24 viewBox with
+ * Glyph paths - every icon is rendered inside a 24×24 viewBox with
  * `stroke="url(#g)"`, `fill="none"`, `strokeWidth=1.6`, `strokeLinecap`
  * + `strokeLinejoin` "round". Some glyphs have `<path fill="url(#g)" />`
  * for filled accents (gem facets, eye pupil, etc.).
@@ -99,7 +99,7 @@ export interface CyberIconProps {
  * weave in a few coloured fills without losing the gradient stroke.
  */
 const GLYPHS: Record<CyberIconName, (gid: string) => React.ReactNode> = {
-  /* SHIELD — hex-bevel silhouette + circuit cross + node dot */
+  /* SHIELD - hex-bevel silhouette + circuit cross + node dot */
   shield: (g) => (
     <>
       <path d="M12 2.5L3.5 5.6V12c0 5.4 3.7 8.6 8.5 9.5 4.8-.9 8.5-4.1 8.5-9.5V5.6L12 2.5z" stroke={`url(#${g})`} strokeWidth={1.6} fill="none" strokeLinejoin="round" />
@@ -109,7 +109,7 @@ const GLYPHS: Record<CyberIconName, (gid: string) => React.ReactNode> = {
       <circle cx="12" cy="17.5" r="0.7" fill={`url(#${g})`} />
     </>
   ),
-  /* LOCK — chunky padlock with keyhole */
+  /* LOCK - chunky padlock with keyhole */
   lock: (g) => (
     <>
       <rect x="4.5" y="10.5" width="15" height="10.5" rx="2" stroke={`url(#${g})`} strokeWidth={1.6} fill="none" />
@@ -118,7 +118,7 @@ const GLYPHS: Record<CyberIconName, (gid: string) => React.ReactNode> = {
       <path d="M12 16v2.4" stroke={`url(#${g})`} strokeWidth={1.6} strokeLinecap="round" />
     </>
   ),
-  /* UNLOCK — same body but shackle is open */
+  /* UNLOCK - same body but shackle is open */
   unlock: (g) => (
     <>
       <rect x="4.5" y="10.5" width="15" height="10.5" rx="2" stroke={`url(#${g})`} strokeWidth={1.6} fill="none" />
@@ -127,7 +127,7 @@ const GLYPHS: Record<CyberIconName, (gid: string) => React.ReactNode> = {
       <path d="M12 16v2.4" stroke={`url(#${g})`} strokeWidth={1.6} strokeLinecap="round" />
     </>
   ),
-  /* KEY — bow + bit + teeth */
+  /* KEY - bow + bit + teeth */
   key: (g) => (
     <>
       <circle cx="6" cy="12" r="3.5" stroke={`url(#${g})`} strokeWidth={1.6} fill="none" />
@@ -136,7 +136,7 @@ const GLYPHS: Record<CyberIconName, (gid: string) => React.ReactNode> = {
       <circle cx="6" cy="12" r="0.9" fill={`url(#${g})`} />
     </>
   ),
-  /* BRAIN — half-circle hemispheres + inner waves */
+  /* BRAIN - half-circle hemispheres + inner waves */
   brain: (g) => (
     <>
       <path d="M9 4.5a3 3 0 0 0-3 3 3 3 0 0 0-1 5.8A3 3 0 0 0 7 19a3 3 0 0 0 5 .5" stroke={`url(#${g})`} strokeWidth={1.6} fill="none" strokeLinecap="round" />
@@ -145,11 +145,11 @@ const GLYPHS: Record<CyberIconName, (gid: string) => React.ReactNode> = {
       <path d="M9 10c1 0 1.5 1 3 1s2-1 3-1" stroke={`url(#${g})`} strokeWidth={1.2} strokeLinecap="round" fill="none" />
     </>
   ),
-  /* BOLT — angular lightning */
+  /* BOLT - angular lightning */
   bolt: (g) => (
     <path d="M13 2L4 13.5h6L9.5 22 20 10h-6l1-8z" stroke={`url(#${g})`} strokeWidth={1.6} fill="none" strokeLinejoin="round" />
   ),
-  /* TROPHY — cup + handles + base */
+  /* TROPHY - cup + handles + base */
   trophy: (g) => (
     <>
       <path d="M7 4h10v6a5 5 0 0 1-10 0V4z" stroke={`url(#${g})`} strokeWidth={1.6} fill="none" strokeLinejoin="round" />
@@ -158,14 +158,14 @@ const GLYPHS: Record<CyberIconName, (gid: string) => React.ReactNode> = {
       <circle cx="12" cy="8" r="1.2" fill={`url(#${g})`} />
     </>
   ),
-  /* STAR — 5-point with inner dot */
+  /* STAR - 5-point with inner dot */
   star: (g) => (
     <>
       <path d="M12 3l2.6 5.4 5.9.6-4.4 4 1.3 5.8L12 16l-5.4 2.8L7.9 13 3.5 9l5.9-.6L12 3z" stroke={`url(#${g})`} strokeWidth={1.6} fill="none" strokeLinejoin="round" />
       <circle cx="12" cy="12" r="0.8" fill={`url(#${g})`} />
     </>
   ),
-  /* SPARKLE — 4-point burst */
+  /* SPARKLE - 4-point burst */
   sparkle: (g) => (
     <>
       <path d="M12 3v6M12 15v6M3 12h6M15 12h6" stroke={`url(#${g})`} strokeWidth={1.6} strokeLinecap="round" />
@@ -173,7 +173,7 @@ const GLYPHS: Record<CyberIconName, (gid: string) => React.ReactNode> = {
       <circle cx="12" cy="12" r="1.6" fill={`url(#${g})`} />
     </>
   ),
-  /* EYE — surveillance / detective */
+  /* EYE - surveillance / detective */
   eye: (g) => (
     <>
       <path d="M2.5 12s3.5-7 9.5-7 9.5 7 9.5 7-3.5 7-9.5 7S2.5 12 2.5 12z" stroke={`url(#${g})`} strokeWidth={1.6} fill="none" />
@@ -181,7 +181,7 @@ const GLYPHS: Record<CyberIconName, (gid: string) => React.ReactNode> = {
       <circle cx="12" cy="12" r="1.4" fill={`url(#${g})`} />
     </>
   ),
-  /* TARGET — concentric crosshair */
+  /* TARGET - concentric crosshair */
   target: (g) => (
     <>
       <circle cx="12" cy="12" r="9" stroke={`url(#${g})`} strokeWidth={1.6} fill="none" />
@@ -190,7 +190,7 @@ const GLYPHS: Record<CyberIconName, (gid: string) => React.ReactNode> = {
       <path d="M12 1v3M12 20v3M1 12h3M20 12h3" stroke={`url(#${g})`} strokeWidth={1.4} strokeLinecap="round" />
     </>
   ),
-  /* VAULT — circular dial */
+  /* VAULT - circular dial */
   vault: (g) => (
     <>
       <rect x="3" y="4" width="18" height="16" rx="2" stroke={`url(#${g})`} strokeWidth={1.6} fill="none" />
@@ -199,21 +199,21 @@ const GLYPHS: Record<CyberIconName, (gid: string) => React.ReactNode> = {
       <path d="M12 7.5v-1M12 17.5v-1M16.5 12h1M6.5 12h-1" stroke={`url(#${g})`} strokeWidth={1.4} strokeLinecap="round" />
     </>
   ),
-  /* MAIL — envelope */
+  /* MAIL - envelope */
   mail: (g) => (
     <>
       <rect x="3" y="5" width="18" height="14" rx="2" stroke={`url(#${g})`} strokeWidth={1.6} fill="none" />
       <path d="M3.5 6l8.5 6.5L20.5 6" stroke={`url(#${g})`} strokeWidth={1.6} fill="none" strokeLinejoin="round" />
     </>
   ),
-  /* SWORDS — crossed blades (used for Boss Battle MISSION BRIEF) */
+  /* SWORDS - crossed blades (used for Boss Battle MISSION BRIEF) */
   swords: (g) => (
     <>
       <path d="M14.5 17.5L19 22l1.5-1.5L16 16M9.5 6.5L5 2 3.5 3.5 8 8" stroke={`url(#${g})`} strokeWidth={1.6} fill="none" strokeLinecap="round" />
       <path d="M16 8L8 16M14 4l6 6-2 2-6-6 2-2zM10 20l-6-6 2-2 6 6-2 2z" stroke={`url(#${g})`} strokeWidth={1.6} fill="none" strokeLinejoin="round" />
     </>
   ),
-  /* SCOPE — magnifier */
+  /* SCOPE - magnifier */
   scope: (g) => (
     <>
       <circle cx="11" cy="11" r="6.5" stroke={`url(#${g})`} strokeWidth={1.6} fill="none" />
@@ -221,7 +221,7 @@ const GLYPHS: Record<CyberIconName, (gid: string) => React.ReactNode> = {
       <circle cx="11" cy="11" r="2.2" fill={`url(#${g})`} opacity="0.55" />
     </>
   ),
-  /* COMPASS — needle + ring */
+  /* COMPASS - needle + ring */
   compass: (g) => (
     <>
       <circle cx="12" cy="12" r="9" stroke={`url(#${g})`} strokeWidth={1.6} fill="none" />
@@ -230,14 +230,14 @@ const GLYPHS: Record<CyberIconName, (gid: string) => React.ReactNode> = {
       <circle cx="12" cy="12" r="0.8" fill={`url(#${g})`} />
     </>
   ),
-  /* GEM — diamond facets */
+  /* GEM - diamond facets */
   gem: (g) => (
     <>
       <path d="M12 2L4 9l8 13 8-13-8-7z" stroke={`url(#${g})`} strokeWidth={1.6} fill="none" strokeLinejoin="round" />
       <path d="M4 9h16M9 9l3-7M15 9l-3-7M9 9l3 13M15 9l-3 13" stroke={`url(#${g})`} strokeWidth={1.2} strokeLinejoin="round" />
     </>
   ),
-  /* ROCKET — body + window + flames */
+  /* ROCKET - body + window + flames */
   rocket: (g) => (
     <>
       <path d="M12 2c2.5 1.5 4.5 4 4.5 8 0 2-.5 4-1.5 5.5h-6c-1-1.5-1.5-3.5-1.5-5.5 0-4 2-6.5 4.5-8z" stroke={`url(#${g})`} strokeWidth={1.6} fill="none" strokeLinejoin="round" />
@@ -245,14 +245,14 @@ const GLYPHS: Record<CyberIconName, (gid: string) => React.ReactNode> = {
       <path d="M9 15.5L7 21M15 15.5L17 21M12 16v5" stroke={`url(#${g})`} strokeWidth={1.4} strokeLinecap="round" />
     </>
   ),
-  /* SCROLL — rule book / parchment */
+  /* SCROLL - rule book / parchment */
   scroll: (g) => (
     <>
       <path d="M5 4h12a3 3 0 0 1 3 3v9a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3V6a2 2 0 0 1 1-2z" stroke={`url(#${g})`} strokeWidth={1.6} fill="none" strokeLinejoin="round" />
       <path d="M5 4a2 2 0 0 0-1 2v10c0 1 1 2 2 2M9 9h7M9 12h7M9 15h5" stroke={`url(#${g})`} strokeWidth={1.4} strokeLinecap="round" />
     </>
   ),
-  /* WAND — magic stick + sparkle */
+  /* WAND - magic stick + sparkle */
   wand: (g) => (
     <>
       <path d="M5 19l11-11" stroke={`url(#${g})`} strokeWidth={1.8} strokeLinecap="round" />
@@ -261,7 +261,7 @@ const GLYPHS: Record<CyberIconName, (gid: string) => React.ReactNode> = {
       <circle cx="13" cy="18" r="0.9" fill={`url(#${g})`} />
     </>
   ),
-  /* RAINBOW — three arches */
+  /* RAINBOW - three arches */
   rainbow: (g) => (
     <>
       <path d="M3 18a9 9 0 0 1 18 0" stroke={`url(#${g})`} strokeWidth={1.6} fill="none" strokeLinecap="round" />
@@ -269,7 +269,7 @@ const GLYPHS: Record<CyberIconName, (gid: string) => React.ReactNode> = {
       <path d="M9 18a3 3 0 0 1 6 0" stroke={`url(#${g})`} strokeWidth={1.6} fill="none" strokeLinecap="round" />
     </>
   ),
-  /* GRADUATION — mortarboard + tassel */
+  /* GRADUATION - mortarboard + tassel */
   graduation: (g) => (
     <>
       <path d="M2 9l10-4 10 4-10 4-10-4z" stroke={`url(#${g})`} strokeWidth={1.6} fill="none" strokeLinejoin="round" />
@@ -278,7 +278,7 @@ const GLYPHS: Record<CyberIconName, (gid: string) => React.ReactNode> = {
       <circle cx="21" cy="15" r="1" fill={`url(#${g})`} />
     </>
   ),
-  /* FILM — clapperboard */
+  /* FILM - clapperboard */
   film: (g) => (
     <>
       <rect x="3" y="6" width="18" height="14" rx="1.5" stroke={`url(#${g})`} strokeWidth={1.6} fill="none" />
@@ -287,7 +287,7 @@ const GLYPHS: Record<CyberIconName, (gid: string) => React.ReactNode> = {
       <path d="M8 14l5 3-5 3v-6z" fill={`url(#${g})`} />
     </>
   ),
-  /* GOGGLES — twin lenses + strap */
+  /* GOGGLES - twin lenses + strap */
   goggles: (g) => (
     <>
       <circle cx="7" cy="13" r="3.5" stroke={`url(#${g})`} strokeWidth={1.6} fill="none" />
@@ -298,7 +298,7 @@ const GLYPHS: Record<CyberIconName, (gid: string) => React.ReactNode> = {
       <circle cx="17" cy="13" r="1.2" fill={`url(#${g})`} />
     </>
   ),
-  /* FLASK — alchemy / potion */
+  /* FLASK - alchemy / potion */
   flask: (g) => (
     <>
       <path d="M9 3h6v5l4 9a2 2 0 0 1-2 3H7a2 2 0 0 1-2-3l4-9V3z" stroke={`url(#${g})`} strokeWidth={1.6} fill="none" strokeLinejoin="round" />
@@ -307,7 +307,7 @@ const GLYPHS: Record<CyberIconName, (gid: string) => React.ReactNode> = {
       <circle cx="14" cy="18" r="0.6" fill={`url(#${g})`} />
     </>
   ),
-  /* WAVE — hand wave */
+  /* WAVE - hand wave */
   wave: (g) => (
     <>
       <path d="M9 11V5.5a1.5 1.5 0 0 1 3 0V10" stroke={`url(#${g})`} strokeWidth={1.6} fill="none" strokeLinecap="round" />
@@ -315,7 +315,7 @@ const GLYPHS: Record<CyberIconName, (gid: string) => React.ReactNode> = {
       <path d="M15 8a1.5 1.5 0 0 1 3 0v5c0 4-3 7-7 7s-6.5-2.5-7-5L4 13a1.5 1.5 0 0 1 2.6-1.5L9 14" stroke={`url(#${g})`} strokeWidth={1.6} fill="none" strokeLinejoin="round" />
     </>
   ),
-  /* CAKE — birthday */
+  /* CAKE - birthday */
   cake: (g) => (
     <>
       <rect x="4" y="13" width="16" height="7" rx="1.5" stroke={`url(#${g})`} strokeWidth={1.6} fill="none" />
@@ -326,7 +326,7 @@ const GLYPHS: Record<CyberIconName, (gid: string) => React.ReactNode> = {
       <circle cx="15" cy="9" r="0.9" fill={`url(#${g})`} />
     </>
   ),
-  /* PALETTE — artist palette + paint dots */
+  /* PALETTE - artist palette + paint dots */
   palette: (g) => (
     <>
       <path d="M12 3a9 9 0 0 0 0 18c1.5 0 2-1 1.5-2-.5-1 .5-2 2-2H17a4 4 0 0 0 4-4 9 9 0 0 0-9-10z" stroke={`url(#${g})`} strokeWidth={1.6} fill="none" strokeLinejoin="round" />
@@ -336,7 +336,7 @@ const GLYPHS: Record<CyberIconName, (gid: string) => React.ReactNode> = {
       <circle cx="8" cy="14" r="1" fill={`url(#${g})`} />
     </>
   ),
-  /* CHIP — microchip with pins */
+  /* CHIP - microchip with pins */
   chip: (g) => (
     <>
       <rect x="6" y="6" width="12" height="12" rx="1.5" stroke={`url(#${g})`} strokeWidth={1.6} fill="none" />
@@ -344,7 +344,7 @@ const GLYPHS: Record<CyberIconName, (gid: string) => React.ReactNode> = {
       <path d="M3 9h3M3 12h3M3 15h3M18 9h3M18 12h3M18 15h3M9 3v3M12 3v3M15 3v3M9 18v3M12 18v3M15 18v3" stroke={`url(#${g})`} strokeWidth={1.4} strokeLinecap="round" />
     </>
   ),
-  /* NETWORK — central node + connected satellites */
+  /* NETWORK - central node + connected satellites */
   network: (g) => (
     <>
       <circle cx="12" cy="12" r="2.5" stroke={`url(#${g})`} strokeWidth={1.6} fill={`url(#${g})`} opacity="0.5" />
@@ -355,7 +355,7 @@ const GLYPHS: Record<CyberIconName, (gid: string) => React.ReactNode> = {
       <path d="M5.3 7.1L9.8 10.6M18.7 7.1L14.2 10.6M5.3 16.9L9.8 13.4M18.7 16.9L14.2 13.4" stroke={`url(#${g})`} strokeWidth={1.2} strokeLinecap="round" />
     </>
   ),
-  /* ALERT — triangle + bang */
+  /* ALERT - triangle + bang */
   alert: (g) => (
     <>
       <path d="M12 3l10 17H2L12 3z" stroke={`url(#${g})`} strokeWidth={1.6} fill="none" strokeLinejoin="round" />
@@ -363,7 +363,7 @@ const GLYPHS: Record<CyberIconName, (gid: string) => React.ReactNode> = {
       <circle cx="12" cy="17" r="1" fill={`url(#${g})`} />
     </>
   ),
-  /* AI-SPARK — diamond burst with halo (the "AI brain spark") */
+  /* AI-SPARK - diamond burst with halo (the "AI brain spark") */
   "ai-spark": (g) => (
     <>
       <path d="M12 2l1.8 6.5L20 10l-6.2 1.5L12 18l-1.8-6.5L4 10l6.2-1.5L12 2z" stroke={`url(#${g})`} strokeWidth={1.4} fill={`url(#${g})`} opacity="0.6" strokeLinejoin="round" />

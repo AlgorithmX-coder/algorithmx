@@ -12,7 +12,7 @@ import { sendEmail, passwordResetTemplate } from "@/app/lib/resend";
  * in the DB (so a leaked DB can't reuse live tokens), and emails the
  * raw token in a reset link.
  *
- * Always returns 200 OK regardless of whether the email exists — this
+ * Always returns 200 OK regardless of whether the email exists - this
  * prevents user-enumeration via the response code.  The user-facing UI
  * shows "if an account exists, a link is on its way" either way.
  *
@@ -38,19 +38,19 @@ export async function POST(req: Request) {
 
   const email = ((body ?? {}) as { email?: string }).email?.trim().toLowerCase();
   if (!email || !EMAIL_RE.test(email)) {
-    // Same generic 200 — don't leak whether validation failed vs the
+    // Same generic 200 - don't leak whether validation failed vs the
     // user not existing.
     return NextResponse.json({ ok: true });
   }
 
-  // Look up user — silent if not found.
+  // Look up user - silent if not found.
   const user = await prisma.user.findUnique({
     where: { email },
     select: { id: true, email: true, name: true },
   });
 
   if (!user) {
-    // No-op response — same shape so attackers can't enumerate.
+    // No-op response - same shape so attackers can't enumerate.
     return NextResponse.json({ ok: true });
   }
 

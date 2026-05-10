@@ -260,7 +260,7 @@ function ActiveStage({
 
   return (
     <>
-      {/* Streak badge — top-right so it never clips the title. */}
+      {/* Streak badge - top-right so it never clips the title. */}
       {streak >= 3 && (
         <div
           key={`streak-${streak}`}
@@ -410,7 +410,7 @@ function ActiveStage({
             lineHeight: 1.6,
           }}
         >
-          <strong style={{ color: "#7eff97", fontWeight: 700 }}>Nice sort — </strong>
+          <strong style={{ color: "#7eff97", fontWeight: 700 }}>Nice sort - </strong>
           {current.explanation}
         </div>
       )}

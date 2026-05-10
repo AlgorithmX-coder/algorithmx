@@ -78,7 +78,7 @@ export default function ScreenTransition({
       return;
     }
     if (transitionKey === prevKeyRef.current) {
-      // Live child update on the same key — just swap in place.
+      // Live child update on the same key - just swap in place.
       setDisplayedChildren(children);
       return;
     }
@@ -113,7 +113,7 @@ export default function ScreenTransition({
       if (exitTimerRef.current) window.clearTimeout(exitTimerRef.current);
       if (enterTimerRef.current) window.clearTimeout(enterTimerRef.current);
     };
-    // We intentionally only re-run on transitionKey changes — children updates
+    // We intentionally only re-run on transitionKey changes - children updates
     // within the same key flow through the secondary effect above.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [transitionKey]);
@@ -144,11 +144,11 @@ export default function ScreenTransition({
         position: "relative",
         overflow: "hidden",
         willChange: "transform, opacity",
-        // Bug 1 fix — kill all clicks during exit/enter so the user can't
+        // Bug 1 fix - kill all clicks during exit/enter so the user can't
         // tap a button on a screen that's mid-unmount.  Without this lock
         // the parent fires `navigate()` again, the in-flight transition
         // restarts on the new key, and the user's click occasionally
-        // lands on a DOM node that React is removing — silently dropping
+        // lands on a DOM node that React is removing - silently dropping
         // the event.  400ms of no-clicks is far less jarring than the
         // intermittent dead-clicks the old behaviour produced.
         pointerEvents: phase === "idle" ? undefined : "none",

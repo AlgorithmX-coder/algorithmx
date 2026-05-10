@@ -66,12 +66,12 @@ const INGREDIENTS: Ingredient[] = [
 ];
 
 const STAGE_LIQUID_COLOURS = [
-  "#1a1f4d", // empty — cosmic deep
-  "#3a1a3e", // 1 — cosmic plum
-  "#7c5cff", // 2 — cosmic violet
-  "#a06aff", // 3 — lighter violet
-  "#ff5fb3", // 4 — cosmic pink
-  "linear-gradient(180deg, #ffd158, #ff5fb3, #7c5cff, #00e5ff)", // 5 — cosmic rainbow
+  "#1a1f4d", // empty - cosmic deep
+  "#3a1a3e", // 1 - cosmic plum
+  "#7c5cff", // 2 - cosmic violet
+  "#a06aff", // 3 - lighter violet
+  "#ff5fb3", // 4 - cosmic pink
+  "linear-gradient(180deg, #ffd158, #ff5fb3, #7c5cff, #00e5ff)", // 5 - cosmic rainbow
 ];
 
 const METER_SEGMENTS = [
@@ -164,7 +164,7 @@ export default function PasswordLab({
   const [completed, setCompleted] = useState(false);
   const [shake, setShake] = useState(false);
 
-  /* PHASE B — BUILD-YOUR-OWN PASSWORD SANDBOX
+  /* PHASE B - BUILD-YOUR-OWN PASSWORD SANDBOX
      After the cauldron-mixing tutorial completes, the kid drops into
      a personal password builder: pick word / number / symbol blocks
      to compose their own password, save it, and that exact string
@@ -242,7 +242,7 @@ export default function PasswordLab({
   ) => {
     if (added.includes(id) || completed || showIntro) return;
     (e.currentTarget as Element).setPointerCapture(e.pointerId);
-    // Capture where in the card the user grabbed — so the card stays under
+    // Capture where in the card the user grabbed - so the card stays under
     // that exact point instead of centring on the cursor.
     const rect = e.currentTarget.getBoundingClientRect();
     dragOffsetRef.current = {
@@ -315,7 +315,7 @@ export default function PasswordLab({
         overflow: "hidden",
         background:
           // Was a violet halo at the bottom + a warm cream halo at the
-          // top — two competing colour temperatures inside one cauldron
+          // top - two competing colour temperatures inside one cauldron
           // scene.  Replaced the warm cream halo with a cyan halo so the
           // sky reads cool-on-cool.
           "radial-gradient(ellipse at 50% 80%, rgba(124, 92, 255, 0.45), transparent 60%)," +
@@ -330,7 +330,7 @@ export default function PasswordLab({
           "ui-rounded, 'Fredoka', 'Quicksand', system-ui, -apple-system, sans-serif",
       }}
     >
-      {/* Magical lab backdrop — drifting alchemy runes & floor lights */}
+      {/* Magical lab backdrop - drifting alchemy runes & floor lights */}
       <style>{`
         @keyframes plRuneDrift { 0%,100% { transform: translateY(0) rotate(0deg); opacity: 0.18; } 50% { transform: translateY(-14px) rotate(8deg); opacity: 0.45; } }
         @keyframes plSteam { 0% { transform: translate(-50%, 0) scale(0.6); opacity: 0; } 18% { opacity: 0.55; } 100% { transform: translate(calc(-50% + var(--sx, 0px)), -130px) scale(2.4); opacity: 0; } }
@@ -726,7 +726,7 @@ export default function PasswordLab({
         </div>
       </div>
 
-      {/* Completion overlay — absolute positioned so it fits within the exercise
+      {/* Completion overlay - absolute positioned so it fits within the exercise
           container viewport cap instead of stacking below and getting clipped. */}
       {completed && (
         <motion.div
@@ -892,7 +892,7 @@ export default function PasswordLab({
         />
       )}
 
-      {/* PHASE B — Build-Your-Own Password sandbox overlay */}
+      {/* PHASE B - Build-Your-Own Password sandbox overlay */}
       {labPhase === "sandbox" && (
         <BuildPasswordSandbox
           built={builtPwd}
@@ -917,7 +917,7 @@ export default function PasswordLab({
         />
       )}
 
-      {/* Dragging ghost — rendered via portal to document.body so it escapes
+      {/* Dragging ghost - rendered via portal to document.body so it escapes
           any transformed ancestor (ScreenTransition, 3D arena) and the fixed
           position actually uses the viewport as its reference frame. */}
       {drag &&
@@ -963,7 +963,7 @@ export default function PasswordLab({
  * their own password, sees the strength meter respond live, then hits
  * "Save my password". The string is persisted to localStorage under
  * `ax-w1-saved-password` so CrackTheCode (Case 7) and the Boss Battle
- * (Case 15) can surface it back as "your password" — adds personal
+ * (Case 15) can surface it back as "your password" - adds personal
  * continuity through the rest of the lesson.
  *
  * Pure JSX/CSS. Uses the cyber palette + glassy sandbox card. */
@@ -1169,7 +1169,7 @@ function BuildPasswordSandbox({
           </span>
         </div>
 
-        {/* Block tray — three rows */}
+        {/* Block tray - three rows */}
         <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 18 }}>
           {[
             { label: "WORDS", items: BUILD_WORDS, accent: "#00e5ff" },

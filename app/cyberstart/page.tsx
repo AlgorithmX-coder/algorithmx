@@ -6,7 +6,7 @@ import { DataLabScene } from "@/app/components/CyberFutureScenes";
 import { CyberIconOrEmoji } from "@/app/components/CyberIcon";
 import WaitlistForm from "@/app/components/WaitlistForm";
 
-// Warm Pixar palette — moss + cream accents over dusk backdrop.
+// Warm Pixar palette - moss + cream accents over dusk backdrop.
 const PRIMARY = "#7eff97";       // moss
 const ACCENT = "#a0ffb0";        // light moss
 const GRAD = `linear-gradient(135deg, ${PRIMARY}, ${ACCENT})`;

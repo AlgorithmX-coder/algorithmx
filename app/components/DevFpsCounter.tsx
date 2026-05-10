@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 
 /**
  * Lightweight FPS overlay that only mounts in dev AND only when the user
- * has toggled it on — press `Ctrl + Shift + F` to show/hide. Rolling
+ * has toggled it on - press `Ctrl + Shift + F` to show/hide. Rolling
  * 60-frame average, fixed top-right corner so it never obstructs UI chrome.
  */
 export default function DevFpsCounter() {

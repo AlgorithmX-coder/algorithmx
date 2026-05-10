@@ -146,7 +146,7 @@ export default function RiveCharacter({
       loggedRef.logged = true;
       // eslint-disable-next-line no-console
       console.warn(
-        `[RiveCharacter] ${character}.riv not found — using fallback. Drop .riv files in /public/rive/ when ready.`,
+        `[RiveCharacter] ${character}.riv not found - using fallback. Drop .riv files in /public/rive/ when ready.`,
       );
     }
     setFailed(true);

@@ -27,9 +27,9 @@ assignees: ""
 
 ## Severity
 <!-- Pick one: -->
-- [ ] **blocker** — can't proceed (no Next button, page crashes, lesson won't load)
-- [ ] **broken** — works but wrong (right answer always C, wrong sound, hands clipped)
-- [ ] **polish** — looks/feels off (too plain, spacing weird, animation jank)
+- [ ] **blocker** - can't proceed (no Next button, page crashes, lesson won't load)
+- [ ] **broken** - works but wrong (right answer always C, wrong sound, hands clipped)
+- [ ] **polish** - looks/feels off (too plain, spacing weird, animation jank)
 
 ## Device / browser
 <!-- e.g. iPad Safari / Windows Chrome / Mac Firefox -->

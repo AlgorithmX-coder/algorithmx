@@ -5,11 +5,11 @@ import { prisma } from "@/app/lib/prisma";
 /**
  * Test-only endpoint that upserts a known E2E test user (and child
  * profile) so Playwright specs can sign in deterministically. Gated on
- * `E2E_TESTS=1` — any other environment returns 404 so this surface
+ * `E2E_TESTS=1` - any other environment returns 404 so this surface
  * cannot be hit on production.
  *
  * The test user lives at e2e@algorithmx.test with password `e2e-test-pw`.
- * Tests should never depend on any other user — this endpoint is the
+ * Tests should never depend on any other user - this endpoint is the
  * single source of truth for the fixture.
  */
 
@@ -105,6 +105,6 @@ export async function POST() {
 }
 
 export async function GET() {
-  // Allow GET for easy verification while debugging — same gate.
+  // Allow GET for easy verification while debugging - same gate.
   return POST();
 }

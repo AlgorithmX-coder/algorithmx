@@ -79,7 +79,7 @@ function ensureStyles() {
  *   - the icon itself sits on a glass disc with inner shadow + perspective
  *     tilt so it reads as a physical token rather than a flat emoji.
  *
- * Pure CSS / inline SVG — no external library required.
+ * Pure CSS / inline SVG - no external library required.
  */
 function IntroIconShowcase({ icon }: { icon: string }) {
   // Deterministic per-exercise tint based on the glyph code-point so
@@ -231,7 +231,7 @@ function IntroIconShowcase({ icon }: { icon: string }) {
         />
       ))}
 
-      {/* Glass disc holding the icon — 3D-tilted */}
+      {/* Glass disc holding the icon - 3D-tilted */}
       <div
         style={{
           position: "absolute",
@@ -242,7 +242,7 @@ function IntroIconShowcase({ icon }: { icon: string }) {
           width: 92,
           height: 92,
           borderRadius: "50%",
-          // Was a warm cream highlight on the glass disc — pulled to a
+          // Was a warm cream highlight on the glass disc - pulled to a
           // cool cyan-white so the disc reads as cyber chrome, not
           // candle-lit parchment.
           background: `radial-gradient(circle at 35% 30%, rgba(220, 250, 255, 0.32), rgba(15, 21, 48, 0.85) 60%)`,
@@ -283,7 +283,7 @@ export default function ExerciseIntro({
       aria-modal="true"
       aria-label={title}
       style={{
-        // Was position:absolute inset:0 — but exercise wrappers with
+        // Was position:absolute inset:0 - but exercise wrappers with
         // overflow:auto + maxHeight let the game body bleed past the
         // overlay's visible area on shorter viewports, so the intro
         // appeared to "stack" with the game UI. position:fixed covers
@@ -292,7 +292,7 @@ export default function ExerciseIntro({
         position: "fixed",
         inset: 0,
         // Was a warm purple-brown second stop (rgba(20, 8, 24, 0.99))
-        // — pulled to pure cyber abyss so the intro reads as the same
+        // - pulled to pure cyber abyss so the intro reads as the same
         // surface as the lesson player behind it.
         background:
           "linear-gradient(180deg, rgba(15, 21, 48, 0.97) 0%, rgba(4, 5, 13, 0.99) 100%)",
@@ -398,7 +398,7 @@ export default function ExerciseIntro({
           cursor: "pointer",
           fontFamily: "inherit",
           // Was warm orange drop + warm cream inner highlight + warm
-          // brown bottom rim — three Pixar leftovers on a cyber gradient
+          // brown bottom rim - three Pixar leftovers on a cyber gradient
           // button. Pulled to: cyan drop + cyan inner glint + abyss
           // bottom rim. Now reads as one piece with the gradient face.
           boxShadow:

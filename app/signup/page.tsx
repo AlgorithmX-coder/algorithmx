@@ -7,7 +7,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ParticleNetworkScene } from "@/app/components/CyberFutureScenes";
 import { CyberIconOrEmoji } from "@/app/components/CyberIcon";
 
-// Heavy R3F atlas — only ship to the client, only render lg+ where the
+// Heavy R3F atlas - only ship to the client, only render lg+ where the
 // right panel is visible. Avoids hydration churn and keeps mobile fast.
 const HeroAtlas = dynamic(() => import("@/app/components/HeroAtlas"), {
   ssr: false,
@@ -34,7 +34,7 @@ const C = {
 };
 const GRAD = `linear-gradient(135deg, ${C.goldLight}, ${C.goldMid})`;
 
-/* ─── FLOATING ORBS — WARM ─── */
+/* ─── FLOATING ORBS - WARM ─── */
 function FloatingOrbs() {
   return (
     <div className="fixed inset-0 pointer-events-none overflow-hidden" style={{ zIndex: 0 }}>
@@ -211,7 +211,7 @@ export default function SignupPage() {
       {/* Left-side floating orbs over the form column */}
       <FloatingOrbs />
 
-      {/* ─── UNIFIED BACKDROP — extends across the entire viewport ───
+      {/* ─── UNIFIED BACKDROP - extends across the entire viewport ───
           Mirrors the login page restructure: one absolute layer
           renders the ParticleNetworkScene + HeroAtlas + ALGORITHMX
           terminal across the full viewport, with the form floating
@@ -221,7 +221,7 @@ export default function SignupPage() {
 
         <FloatingIcons />
 
-        {/* Live R3F atlas — pulsing crystal core, wireframe shells,
+        {/* Live R3F atlas - pulsing crystal core, wireframe shells,
             four tilted orbital rings. Fills the whole viewport so the
             form on the left has the orbital scene as its direct
             backdrop, same as the login globe. */}
@@ -229,7 +229,7 @@ export default function SignupPage() {
           <HeroAtlas />
         </div>
 
-        {/* Centre label + terminal prompt — biased toward the right
+        {/* Centre label + terminal prompt - biased toward the right
             half so it sits beside (not under) the form column. */}
         <motion.div
           className="absolute flex flex-col items-center"
@@ -354,7 +354,7 @@ export default function SignupPage() {
             Create your family&apos;s account and start learning cybersecurity today.
           </p>
 
-          {/* Form card — invisible container, matching the login.
+          {/* Form card - invisible container, matching the login.
               No background, no border, no shadow, no rounded panel.
               Just a layout wrapper. Each input field below carries its
               own dark glass background so they stay legible against the
@@ -628,7 +628,7 @@ export default function SignupPage() {
         </div>
       </div>
 
-      {/* ─── RIGHT SIDE — empty layout spacer on lg+ so the form
+      {/* ─── RIGHT SIDE - empty layout spacer on lg+ so the form
           anchors to the left half. The unified backdrop layer above
           renders ParticleNetworkScene + HeroAtlas + ALGORITHMX label
           spanning both halves; this column just reserves space. */}
@@ -644,6 +644,18 @@ export default function SignupPage() {
           @keyframes spCursorBlink {
             0%, 49% { opacity: 1; }
             50%, 100% { opacity: 0; }
+          }
+          /* Placeholder text was too dim against the dark glass inputs.
+             Brighter + bolder so it reads clearly without the kid
+             squinting. Fades when the input is focused so the typed
+             value still gets visual priority. */
+          input::placeholder {
+            color: rgba(232, 237, 255, 0.85);
+            font-weight: 600;
+            opacity: 1;
+          }
+          input:focus::placeholder {
+            color: rgba(232, 237, 255, 0.5);
           }
         `}</style>
       </div>

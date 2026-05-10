@@ -5,7 +5,7 @@ import { Canvas, useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 
 /**
- * CosmicRealmBackdrop — sits BEHIND Arena3D in the boss-battle stack.
+ * CosmicRealmBackdrop - sits BEHIND Arena3D in the boss-battle stack.
  *
  * Adds an "other realm" feeling beyond the cyber-arena: deep starfield,
  * a huge distant nebula sphere, drifting aurora ribbons, and slowly
@@ -234,7 +234,7 @@ function CrystalShape({
 
 /* ───────────────────────── ENERGY PORTAL RING ─────────────── */
 // A massive distant ring far behind the action, rotating slowly.
-// Reads as "the gateway to the realm" — implies the kid is fighting
+// Reads as "the gateway to the realm" - implies the kid is fighting
 // in front of something cosmically huge.
 function EnergyPortalRing() {
   const inner = useRef<THREE.LineLoop>(null);
@@ -284,20 +284,20 @@ export default function CosmicRealmBackdrop() {
       style={{ width: "100%", height: "100%", background: "transparent", pointerEvents: "none" }}
       gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
     >
-      {/* Distant celestial bodies — three soft glowing nebula spheres
+      {/* Distant celestial bodies - three soft glowing nebula spheres
           at varied positions and colours for the "other realm" depth. */}
       <DistantNebula position={[-12,  4, -28]} color={PALETTE.cosmic} radius={9} />
       <DistantNebula position={[ 14,  6, -32]} color={PALETTE.pink}   radius={10} />
       <DistantNebula position={[ 0,  -8, -34]} color={PALETTE.amber}  radius={8} />
 
-      {/* Energy portal ring deep behind the action — reads as a
+      {/* Energy portal ring deep behind the action - reads as a
           gateway to the realm. */}
       <EnergyPortalRing />
 
       <DeepStars count={720} />
       <CosmicDust count={240} />
 
-      {/* Aurora ribbons drifting through space at different planes —
+      {/* Aurora ribbons drifting through space at different planes -
           two is enough for parallax without overloading the GPU. */}
       <AuroraRibbon color={PALETTE.cosmic} radius={10} tilt={[Math.PI / 2.1, 0, 0]}            speed={0.018} thickness={0.07} position={[0, 0, -8]} />
       <AuroraRibbon color={PALETTE.pink}   radius={11} tilt={[Math.PI / 2.6, Math.PI / 5, 0]}  speed={-0.014} thickness={0.06} position={[0, 1, -10]} />

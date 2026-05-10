@@ -32,7 +32,7 @@ jobs:
       - run: npm ci
 
       # `next build` and prisma generate aren't needed for tsc/vitest,
-      # but `prisma generate` is — typecheck imports `@prisma/client`.
+      # but `prisma generate` is - typecheck imports `@prisma/client`.
       - run: npx prisma generate
 
       - run: npx tsc --noEmit

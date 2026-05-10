@@ -16,7 +16,7 @@ import {
 } from "@rive-app/react-canvas";
 
 /**
- * RiveScene — the general-purpose Rive wrapper for in-lesson content.
+ * RiveScene - the general-purpose Rive wrapper for in-lesson content.
  *
  * Wraps `useRive` with three things every lesson screen needs:
  *
@@ -59,11 +59,11 @@ interface RiveSceneProps {
   height?: number | string;
   /** Boolean / number inputs written every render. */
   inputs?: RiveSceneInputs;
-  /** One-shot triggers — fired once per render where the name appears. */
+  /** One-shot triggers - fired once per render where the name appears. */
   triggers?: readonly string[];
   /** How the art fits the box. Default: `contain` so nothing crops. */
   fit?: Fit;
-  /** Forwarded onClick — Rive renders to a canvas, so wire here for taps. */
+  /** Forwarded onClick - Rive renders to a canvas, so wire here for taps. */
   onClick?: () => void;
   /** Class on the canvas wrapper. */
   className?: string;
@@ -128,7 +128,7 @@ function RiveSceneInner({
   // render unless the schema actually changed.
   const inputNames = useMemo(
     () => (inputs ? Object.keys(inputs) : []).sort(),
-    // We intentionally key on the JSON shape, not the instance — same
+    // We intentionally key on the JSON shape, not the instance - same
     // names across renders should reuse the same hooks.
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [inputs ? Object.keys(inputs).sort().join("|") : ""],
@@ -160,14 +160,14 @@ function RiveSceneInner({
           if (sm.value !== next) sm.value = next;
         }
       } catch {
-        /* swallow — wrong type for this input slot */
+        /* swallow - wrong type for this input slot */
       }
     });
     // We depend on the actual values via JSON to catch every change.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [JSON.stringify(inputs), ...slots]);
 
-  // Triggers — fire each name in the array exactly once.
+  // Triggers - fire each name in the array exactly once.
   useEffect(() => {
     if (!triggers || triggers.length === 0 || !rive) return;
     triggers.forEach((name) => {
@@ -207,7 +207,7 @@ export default function RiveScene(props: RiveSceneProps) {
       loggedRef.logged = true;
       // eslint-disable-next-line no-console
       console.warn(
-        `[RiveScene] failed to load "${props.src}" — falling back. ` +
+        `[RiveScene] failed to load "${props.src}" - falling back. ` +
           `Drop the .riv file in /public/rive/ or check the URL.`,
       );
     }

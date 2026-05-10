@@ -1,5 +1,5 @@
 /*
- * Sentry — Node.js server bootstrap.
+ * Sentry - Node.js server bootstrap.
  *
  * Used by API routes + server components running in the Node runtime.
  */

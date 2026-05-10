@@ -9,7 +9,7 @@ import {
 } from "react";
 
 /**
- * SceneTitleCard — full-screen "loading screen" beat that fades in
+ * SceneTitleCard - full-screen "loading screen" beat that fades in
  * between cases. Real PC games use these to mask transitions and
  * deliver a useful tip while the next scene preloads. The visual
  * weight tells the player "you've completed something, the world
@@ -19,11 +19,11 @@ import {
  *   fireSceneTitle({ caseNumber, title, tip })
  *
  * Mount the host once near the lesson root. The card auto-dismisses
- * after `duration` ms (default 1700ms — ~1.2s on screen + 250ms in/out).
+ * after `duration` ms (default 1700ms - ~1.2s on screen + 250ms in/out).
  */
 
 export interface SceneTitlePayload {
-  /** "CASE 8" / "INTRO" / "BOSS" — small kicker above the title. */
+  /** "CASE 8" / "INTRO" / "BOSS" - small kicker above the title. */
   caseLabel: string;
   /** Big main line. */
   title: string;
@@ -49,15 +49,15 @@ export function fireSceneTitle(p: SceneTitlePayload): void {
 
 const TIP_POOL = [
   "Strong passwords have 12+ characters. Phrases beat single words.",
-  "Two-step locks add a second proof — even a stolen password is useless.",
+  "Two-step locks add a second proof - even a stolen password is useless.",
   "If something online feels off, ask a grown-up before you click.",
-  "Phishing emails copy real ones — check the address letter by letter.",
+  "Phishing emails copy real ones - check the address letter by letter.",
   "Don't share your address, school, or birthday in chats.",
   "Updating apps fixes secret leaks bad guys try to use.",
   "A firewall is a rule book that blocks risky traffic.",
   "Public Wi-Fi can be watched. Skip private things until you're home.",
   "Your digital footprint stays online. Post like a future you is reading.",
-  "When unsure, log out and walk away — the page will still be there.",
+  "When unsure, log out and walk away - the page will still be there.",
 ];
 
 export default function SceneTitleHost() {
@@ -164,7 +164,7 @@ const overlayStyle: CSSProperties = {
   position: "fixed",
   inset: 0,
   zIndex: 9000,
-  /* Fully opaque centre — true curtain wipe so the underlying scene
+  /* Fully opaque centre - true curtain wipe so the underlying scene
    * change at swap time is invisible, not a translucent fade. */
   background:
     "radial-gradient(ellipse at center, rgba(15,21,48,1) 0%, rgba(4,5,13,1) 60%, rgba(4,5,13,1) 100%)",

@@ -3,7 +3,7 @@
 import { type CSSProperties, useEffect, useRef, useState } from "react";
 
 /**
- * StreakIndicator — listens to the global `algorithmx:answer-correct`
+ * StreakIndicator - listens to the global `algorithmx:answer-correct`
  * and `algorithmx:answer-wrong` events fired by the celebrations
  * module and renders a flame-style streak chip in the top-right.
  *

@@ -4,7 +4,7 @@ import GraduationScene from "@/app/components/game/GraduationScene";
 import FullScene from "@/app/lesson/cases/FullScene";
 
 /**
- * Case 17 — Certificate / graduation beat.
+ * Case 17 - Certificate / graduation beat.
  *
  * Owns its own star-tier calculation given raw score numbers, so the
  * parent player doesn't have to know the threshold heuristic.

@@ -19,7 +19,7 @@ export interface WeekContent {
 
   /**
    * Per-screen character reactions (by screen index). Either character can be
-   * null for that screen — the other will use their idle pose.
+   * null for that screen - the other will use their idle pose.
    */
   reactions: Record<
     number,

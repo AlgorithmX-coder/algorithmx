@@ -8,7 +8,7 @@ import { CyberIconOrEmoji } from "@/app/components/CyberIcon";
 const GRAD = "linear-gradient(135deg, #7c5cff, #3a7bff)";
 
 function FloatingOrbs() {
-  // Pixar-magic background — bright animated gradient blobs, twinkling
+  // Pixar-magic background - bright animated gradient blobs, twinkling
   // stars, drifting cyber-icons, shooting stars and an aurora ribbon at
   // the bottom. Matches the onboarding wizard so visual language stays
   // consistent across the sign-up journey.
@@ -78,7 +78,7 @@ function FloatingOrbs() {
         <span key={`p-${p.key}`} style={{ position: "absolute", left: `${p.left}%`, bottom: -12, width: p.size, height: p.size, borderRadius: "50%", background: p.color, boxShadow: `0 0 12px ${p.color}`, animation: `welcomeParticleRise ${p.duration}s linear ${p.delay}s infinite`, ["--welcome-particle-peak" as string]: `${p.peak}` } as React.CSSProperties} />
       ))}
 
-      {/* Shooting stars — diagonal streaks */}
+      {/* Shooting stars - diagonal streaks */}
       {SHOOTERS.map((s) => (
         <span key={`shoot-${s.key}`} style={{
           position: "absolute", top: `${s.top}%`, left: "-10%",

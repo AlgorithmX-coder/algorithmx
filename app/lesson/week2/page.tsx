@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 import Link from "next/link";
 
 /**
- * Week 2 lesson route — currently locked.
+ * Week 2 lesson route - currently locked.
  *
  * The Week2Player.tsx file in this directory contains in-progress
  * lesson code (cases 0–3 wired, 4+ stubbed). Until those are
@@ -81,7 +81,7 @@ export default async function Week2Page() {
           style={{ color: "#c5cdf0" }}
         >
           Adam &amp; Layla are still training for the next mission. Your
-          Week 1 progress is saved — keep it fresh until Week 2 unlocks.
+          Week 1 progress is saved - keep it fresh until Week 2 unlocks.
         </p>
 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-3">

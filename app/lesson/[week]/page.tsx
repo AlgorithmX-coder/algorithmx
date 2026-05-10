@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 import DynamicLesson from "./DynamicLesson";
 
 /**
- * /lesson/[week] — server-side auth + paywall gate.
+ * /lesson/[week] - server-side auth + paywall gate.
  *
  * The lesson UI itself is a client component (DynamicLesson) that uses
  * useParams + browser-only state.  This server wrapper exists solely

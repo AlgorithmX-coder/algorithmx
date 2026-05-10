@@ -6,7 +6,7 @@ import dynamic from "next/dynamic";
 import { CSSProperties, useEffect, useRef, useState } from "react";
 import { CyberIconOrEmoji } from "@/app/components/CyberIcon";
 
-// Live R3F backdrop — lazy-loaded so SSR doesn't try to execute WebGL.
+// Live R3F backdrop - lazy-loaded so SSR doesn't try to execute WebGL.
 const CyberHeroesBackdrop = dynamic(
   () => import("@/app/components/CyberHeroesBackdrop"),
   { ssr: false },
@@ -14,7 +14,7 @@ const CyberHeroesBackdrop = dynamic(
 
 /* ─── CONSTANTS ─── */
 const GRAD = "linear-gradient(135deg, #7c5cff, #00e5ff)";
-// Primary CTA gradient — cosmic gold→coral→pink. Was orange/amber
+// Primary CTA gradient - cosmic gold→coral→pink. Was orange/amber
 // (#ff7a59 → #ffd158) which read as a warm-Pixar tonal break in an
 // otherwise cosmic-cyber page; this gradient pops harder AND stays
 // in palette.
@@ -33,7 +33,7 @@ const ACCENT_TEXT: CSSProperties = {
 
 /* ─── CONSTELLATION MESH ───
    Replaces the old rigid circuit-board grid with an organic
-   constellation-network — random points connected by thin lines for
+   constellation-network - random points connected by thin lines for
    nearby pairs. Multi-coloured cosmic palette. */
 function ConstellationMesh() {
   // Pre-computed deterministic node positions so the mesh is stable
@@ -180,7 +180,7 @@ function CodeLines() {
         }
       `}</style>
       {CODE_SNIPPETS.map((snippet, i) => {
-        // Pseudo-random but deterministic placement — denser than
+        // Pseudo-random but deterministic placement - denser than
         // before, peak opacity bumped from 0.10 -> 0.18 so the snippets
         // actually stand out without being noisy.
         const left = (i * 41 + 3) % 94;
@@ -223,7 +223,7 @@ function CodeLines() {
 /* ─── CREDENTIALS MARQUEE ───
    Continuous horizontal belt of credential badges, scrolling left
    forever. Same pattern CodeMonkey uses for awards. Currently
-   populated with the real credentials you have today — swap in
+   populated with the real credentials you have today - swap in
    third-party awards (Mom's Choice / EdTech / etc.) here as they
    come in by editing CREDENTIALS. */
 const CREDENTIALS: Array<{
@@ -243,7 +243,7 @@ const CREDENTIALS: Array<{
 ];
 
 function CredentialsMarquee() {
-  // Duplicate the array so the loop is seamless — when the first set
+  // Duplicate the array so the loop is seamless - when the first set
   // scrolls off the left, the duplicate is exactly at the start.
   const items = [...CREDENTIALS, ...CREDENTIALS];
   return (
@@ -334,7 +334,7 @@ function CredentialsMarquee() {
 
 /* ─── ANIMATED TECH BACKGROUND ─── */
 function TechBackground() {
-  // Mouse parallax — sets --mx / --my CSS custom properties on the root.
+  // Mouse parallax - sets --mx / --my CSS custom properties on the root.
   // Inner layers translate by --mx * (their depth multiplier) so the
   // closer layers move more, creating a parallax depth read.
   const rootRef = useRef<HTMLDivElement | null>(null);
@@ -376,7 +376,7 @@ function TechBackground() {
         @keyframes constTwinkle { 0%,100% { opacity: 0.35; } 50% { opacity: 1; } }
       `}</style>
 
-      {/* Layer 0: Live R3F cosmic depth — sparse 3D atmosphere with
+      {/* Layer 0: Live R3F cosmic depth - sparse 3D atmosphere with
           nebulae, starfield, aurora ribbons, floating wireframe shapes,
           mouse-parallax camera pan. Sits at the back of every layer. */}
       <div style={{ position: "absolute", inset: 0, zIndex: 0 }}>
@@ -392,13 +392,13 @@ function TechBackground() {
         transform: "translate3d(calc(var(--mx) * 4px), calc(var(--my) * 4px), 0)",
       }} />
 
-      {/* Layer 1: Constellation mesh — replaces the old rigid circuit
+      {/* Layer 1: Constellation mesh - replaces the old rigid circuit
           grid with an organic node-network in cosmic palette. */}
       <div style={{ position: "absolute", inset: 0, transform: "translate3d(calc(var(--mx) * 8px), calc(var(--my) * 8px), 0)" }}>
         <ConstellationMesh />
       </div>
 
-      {/* Layer 1.5: Faint cybersecurity code snippets — mono-font lines
+      {/* Layer 1.5: Faint cybersecurity code snippets - mono-font lines
           that fade in/out at fixed positions, giving the page an
           explicit "tech / cybersecurity" cue without being Matrix-rain
           cliché. Cosmic palette, very low opacity, mouse-parallax. */}
@@ -431,7 +431,7 @@ function TechBackground() {
         }}>{ic.icon}</div>
       ))}
 
-      {/* Layer 3: Glowing orbs — diversified palette + mouse-parallax
+      {/* Layer 3: Glowing orbs - diversified palette + mouse-parallax
           drift (closer-feeling orbs move more). */}
       <div style={{ position: "absolute", inset: 0, transform: "translate3d(calc(var(--mx) * -16px), calc(var(--my) * -10px), 0)" }}>
         {[
@@ -455,7 +455,7 @@ function TechBackground() {
         ))}
       </div>
 
-      {/* Layer 6: Sparkle particles — full cosmic palette (violet,
+      {/* Layer 6: Sparkle particles - full cosmic palette (violet,
           cyan, pink, gold) + mouse-parallax. */}
       <div style={{ position: "absolute", inset: 0, transform: "translate3d(calc(var(--mx) * 18px), calc(var(--my) * 14px), 0)" }}>
         {Array.from({ length: 26 }, (_, i) => {
@@ -506,7 +506,7 @@ function TechBackground() {
         }} />
       ))}
 
-      {/* Layer 10: Binary rain — REMOVED (was redundant with code rain
+      {/* Layer 10: Binary rain - REMOVED (was redundant with code rain
           + hex grid; trimmed to ease GPU load and reduce visual noise) */}
       {false && [10, 30, 70, 90].map((left, i) => (
         <div key={`bin-${i}`} style={{
@@ -715,7 +715,7 @@ export default function HomePage() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Hero video — sound-by-default strategy:
+  // Hero video - sound-by-default strategy:
   //
   // 1. Attempt to play UNMUTED on mount. Most browsers block this on
   //    a fresh visit, but allow it on return visits or when the site
@@ -758,7 +758,7 @@ export default function HomePage() {
       p.then(() => {
         finishUnmute();
       }).catch(() => {
-        // Blocked — restore muted autoplay and rely on interaction.
+        // Blocked - restore muted autoplay and rely on interaction.
         if (v) {
           v.muted = true;
           v.play().catch(() => {});
@@ -923,7 +923,7 @@ export default function HomePage() {
               <p className="mb-4 mono" style={{ fontSize: 14, color: "#ff7a59", fontWeight: 500 }}>
                 <span className="ch-typewriter">20 weeks. 40+ missions. 1 Cyber Hero.</span>
               </p>
-              {/* Trust line — surfaces accreditation + privacy from the
+              {/* Trust line - surfaces accreditation + privacy from the
                   FAQ so it's visible above the fold. */}
               <div className="mb-3 flex flex-wrap items-center gap-x-4 gap-y-2 justify-center lg:justify-start"
                 style={{ fontSize: 12, color: "#d1d5db", fontWeight: 600, letterSpacing: "0.04em" }}>
@@ -939,7 +939,7 @@ export default function HomePage() {
                   <span style={{ color: "#7df0ff" }}>✓</span> GDPR compliant
                 </span>
               </div>
-              {/* Social proof line — placeholder until real reviews land */}
+              {/* Social proof line - placeholder until real reviews land */}
               <div className="mb-8 flex flex-wrap items-center gap-2 justify-center lg:justify-start"
                 style={{ fontSize: 13, color: "#e8edff", fontWeight: 600 }}>
                 <span style={{ color: "#ffd158", letterSpacing: 1, fontSize: 15 }}>★★★★★</span>
@@ -967,7 +967,7 @@ export default function HomePage() {
                   See How It Works
                 </motion.a>
               </div>
-              {/* Hero counters row — staggered fade-in-up reveal */}
+              {/* Hero counters row - staggered fade-in-up reveal */}
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-10 max-w-2xl mx-auto lg:mx-0">
                 {[
                   { to: 20, suffix: "", label: "Weeks", color: "#00e5ff" },
@@ -1003,7 +1003,7 @@ export default function HomePage() {
               transition={{ type: "spring", stiffness: 150, damping: 20, delay: 0.2 }}>
               <div className="relative">
                 <div className="relative">
-                  {/* Ambient cosmic glow — STATIC, sits behind the video.
+                  {/* Ambient cosmic glow - STATIC, sits behind the video.
                       Previously this was a drop-shadow filter on the video
                       wrapper, which forced the GPU to recomposite every
                       frame and made playback stutter. A static blurred div
@@ -1041,7 +1041,7 @@ export default function HomePage() {
                         if (v && v.paused) v.play().catch(() => {});
                       }}
                     />
-                    {/* Vignette OVERLAY — fades the edges of the video
+                    {/* Vignette OVERLAY - fades the edges of the video
                         into the cosmic backdrop without applying a
                         per-frame mask to the video itself. The video
                         plays unfiltered; the GPU only paints this
@@ -1056,7 +1056,7 @@ export default function HomePage() {
                         "radial-gradient(ellipse 100% 100% at center, transparent 55%, rgba(8,10,22,0.55) 80%, rgba(8,10,22,0.95) 100%)",
                     }} />
                   </div>
-                  {/* Sound toggle — sits OUTSIDE the masked container so
+                  {/* Sound toggle - sits OUTSIDE the masked container so
                       it stays sharp and fully visible at the corner. */}
                   <button
                     type="button"
@@ -1125,7 +1125,7 @@ export default function HomePage() {
               <motion.div className="rounded-3xl char-blob char-blob-adam"
                 whileHover={{ y: -8, scale: 1.03, filter: "drop-shadow(0 0 50px rgba(124,92,255,0.6))" }}
                 style={{
-                  // No card background — Adam emerges directly from the
+                  // No card background - Adam emerges directly from the
                   // cosmic atmosphere with a violet ambient glow.
                   background: "transparent",
                   filter: "drop-shadow(0 0 40px rgba(124,92,255,0.45)) drop-shadow(0 0 90px rgba(124,92,255,0.18))",
@@ -1190,7 +1190,7 @@ export default function HomePage() {
               whileTap={{ scale: 0.95 }}
               className="inline-block px-7 py-4 font-bold text-white text-base"
               style={{ background: BTN_GRAD, boxShadow: BTN_GLOW, borderRadius: 14 }}>
-              Enrol Your Child — £99
+              Enrol Your Child - £99
             </motion.a>
           </div>
         </section>
@@ -1398,12 +1398,12 @@ export default function HomePage() {
             </div>
             <h3 style={{ color: "#fff", fontSize: 22, fontWeight: 900, marginBottom: 8 }}>Want to unlock all 20 missions?</h3>
             <p style={{ color: "#9ca3af", fontSize: 16, marginBottom: 20, maxWidth: 480, margin: "0 auto 20px" }}>
-              Enrol today to reveal every week, every game, every badge. One payment — lifetime access to the full Cyber Heroes journey.
+              Enrol today to reveal every week, every game, every badge. One payment - lifetime access to the full Cyber Heroes journey.
             </p>
             <motion.a href="/signup"
               whileHover={{ scale: 1.05, y: -2, boxShadow: BTN_GLOW_HOVER }} whileTap={{ scale: 0.95 }}
               style={{ display: "inline-block", background: BTN_GRAD, color: "#fff", fontSize: 18, fontWeight: 700, padding: "14px 36px", borderRadius: 14, textDecoration: "none", boxShadow: BTN_GLOW }}>
-              Enrol Now — £99
+              Enrol Now - £99
             </motion.a>
           </div>
         </section>
@@ -1416,10 +1416,10 @@ export default function HomePage() {
             </h2>
           </div>
           <p data-scroll className="mx-auto text-center" style={{ fontSize: 17, color: "#d1d5db", maxWidth: 720, marginBottom: 20, lineHeight: 1.8 }}>
-            Children are spending more time online than ever before — gaming, chatting, streaming, learning. But the internet wasn&apos;t designed with kids in mind. Cyberbullying, phishing scams, data harvesting, and predatory behaviour are real threats that most children have never been taught to recognise.
+            Children are spending more time online than ever before - gaming, chatting, streaming, learning. But the internet wasn&apos;t designed with kids in mind. Cyberbullying, phishing scams, data harvesting, and predatory behaviour are real threats that most children have never been taught to recognise.
           </p>
           <p data-scroll data-scroll-delay="0.08" className="mx-auto text-center" style={{ fontSize: 17, color: "#d1d5db", maxWidth: 720, marginBottom: 48, lineHeight: 1.8 }}>
-            Schools barely scratch the surface. Parental controls can only do so much. The best protection you can give your child is the knowledge to protect themselves. That&apos;s exactly what Cyber Heroes Academy delivers — real cybersecurity skills, taught through the language kids understand best: adventure, play, and stories.
+            Schools barely scratch the surface. Parental controls can only do so much. The best protection you can give your child is the knowledge to protect themselves. That&apos;s exactly what Cyber Heroes Academy delivers - real cybersecurity skills, taught through the language kids understand best: adventure, play, and stories.
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto">
@@ -1514,7 +1514,7 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* Sample-lesson preview removed — no free-trial path on this
+        {/* Sample-lesson preview removed - no free-trial path on this
              landing page. Visitors enrol straight from the pricing
              section. */}
 
@@ -1535,7 +1535,7 @@ export default function HomePage() {
               On <span style={ACCENT_TEXT}>Every Device</span> They Use
             </h2>
             <p className="text-gray-400 text-base sm:text-lg max-w-2xl mx-auto">
-              Laptop. Tablet. Phone. Same lesson, same progress, picked up anywhere — kids start in the morning on a tablet and finish on a laptop after school.
+              Laptop. Tablet. Phone. Same lesson, same progress, picked up anywhere - kids start in the morning on a tablet and finish on a laptop after school.
             </p>
           </div>
 
@@ -1549,7 +1549,7 @@ export default function HomePage() {
               zIndex: 0,
             }} />
 
-            {/* ── PHONE — left ── */}
+            {/* ── PHONE - left ── */}
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -1610,7 +1610,7 @@ export default function HomePage() {
               </div>
             </motion.div>
 
-            {/* ── LAPTOP — center, biggest ── */}
+            {/* ── LAPTOP - center, biggest ── */}
             <motion.div
               initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -1673,7 +1673,7 @@ export default function HomePage() {
               }} />
             </motion.div>
 
-            {/* ── TABLET — right ── */}
+            {/* ── TABLET - right ── */}
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -1728,7 +1728,7 @@ export default function HomePage() {
           {/* Sub-line under the cluster */}
           <div className="text-center mt-8 sm:mt-10" data-scroll data-scroll-delay="0.5">
             <p style={{ color: "#d1d5db", fontSize: 14, fontWeight: 500, letterSpacing: "0.02em" }}>
-              Progress, badges, and certificates sync automatically — your child picks up exactly where they left off.
+              Progress, badges, and certificates sync automatically - your child picks up exactly where they left off.
             </p>
           </div>
         </section>

@@ -42,7 +42,7 @@ export default function ForgotPasswordPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email }),
       });
-      // Always show success — the API never reveals whether the email
+      // Always show success - the API never reveals whether the email
       // matched a real account, so we never reveal it either.  Prevents
       // user enumeration.
       setSubmitted(true);

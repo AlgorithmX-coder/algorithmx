@@ -4,7 +4,7 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: "Terms of Service | AlgorithmX",
   description:
-    "Terms of service for AlgorithmX Cyber Heroes Academy — refund policy, account use, content licence.",
+    "Terms of service for AlgorithmX Cyber Heroes Academy - refund policy, account use, content licence.",
 };
 
 export default function TermsPage() {
@@ -87,9 +87,9 @@ export default function TermsPage() {
         <Section title="Service availability">
           <p>
             We aim for the lesson player to work reliably on modern browsers
-            (Chrome, Safari, Firefox, Edge — last two major versions). If
+            (Chrome, Safari, Firefox, Edge - last two major versions). If
             something breaks, email <ContactEmail /> with a screenshot and a
-            quick description of what you were doing — we&rsquo;ll fix it as fast
+            quick description of what you were doing - we&rsquo;ll fix it as fast
             as we can.
           </p>
         </Section>

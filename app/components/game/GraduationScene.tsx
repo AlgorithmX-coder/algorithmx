@@ -1,7 +1,7 @@
 "use client";
 
 /*
- * GraduationScene — Case 17 certificate reveal.
+ * GraduationScene - Case 17 certificate reveal.
  *
  * Triumphant golden-hour scene. Spring-mounted gold medal, ribbon
  * banner with the hero's name in script, week and date plate,
@@ -56,7 +56,7 @@ export default function GraduationScene({
 
   return (
     <SceneFrame>
-      {/* Cosmic atmosphere — bridges the boss-flow tone (cosmic violet
+      {/* Cosmic atmosphere - bridges the boss-flow tone (cosmic violet
           / coral / pink) into the warm-gold victory accents. Replaces
           the older Pixar Sunset/Ridges/WoodFloor layers that felt
           like a daytime tonal break after the cosmic boss arena. */}
@@ -70,7 +70,7 @@ export default function GraduationScene({
           pointerEvents: "none",
         }}
       />
-      {/* Cosmic cloud blobs — top-left violet, top-right pink, bottom warm-gold horizon */}
+      {/* Cosmic cloud blobs - top-left violet, top-right pink, bottom warm-gold horizon */}
       <div
         aria-hidden
         style={{
@@ -221,7 +221,7 @@ export default function GraduationScene({
         </div>
       </motion.div>
 
-      {/* Action buttons — Continue centered, Download to the right when milestone */}
+      {/* Action buttons - Continue centered, Download to the right when milestone */}
       <motion.div
         initial={{ opacity: 0, y: 12, scale: 0.92 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}

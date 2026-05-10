@@ -4,7 +4,7 @@ import { useState } from "react";
 import RiveScene from "@/app/components/RiveScene";
 
 /**
- * /dev/rive-demo — proof-of-concept for the Rive integration.
+ * /dev/rive-demo - proof-of-concept for the Rive integration.
  *
  * Visits http://localhost:3000/dev/rive-demo to see RiveScene working
  * end-to-end against a Rive Community sample (`light_switch.riv`,
@@ -12,7 +12,7 @@ import RiveScene from "@/app/components/RiveScene";
  * animation react.  Once your animator delivers the first .riv file,
  * point `src` at `/rive/<filename>.riv` and you're done.
  *
- * Dev-only — gated by being under `/dev/*`.  Don't ship a link to it
+ * Dev-only - gated by being under `/dev/*`.  Don't ship a link to it
  * in production navigation.
  */
 
@@ -46,12 +46,12 @@ export default function RiveDemoPage() {
             marginBottom: 8,
           }}
         >
-          Rive integration — proof of concept
+          Rive integration - proof of concept
         </h1>
         <p style={{ color: "#c5cdf0", marginBottom: 32, lineHeight: 1.6 }}>
           The block on the left is a real Rive scene loaded over the network.
           The buttons on the right write boolean inputs and fire triggers
-          on its state machine — the animator builds the actual reaction.
+          on its state machine - the animator builds the actual reaction.
           When your `.riv` files arrive, swap the <code style={{ background: "#1a2147", padding: "2px 6px", borderRadius: 4 }}>src</code>
           {" "}prop and these controls drive the new scene with no other code change.
         </p>
@@ -164,7 +164,7 @@ export default function RiveDemoPage() {
             Note on the demo file
           </p>
           <p style={{ color: "#c5cdf0", fontSize: 13, lineHeight: 1.6 }}>
-            The remote <code>vehicles.riv</code> is a stock Rive sample — its
+            The remote <code>vehicles.riv</code> is a stock Rive sample - its
             real state machine is named <code>bumpy</code> and it doesn&rsquo;t
             actually have inputs called <code>isFlipped</code> or{" "}
             <code>isMatched</code>, so the toggles above will register but

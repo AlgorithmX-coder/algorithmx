@@ -1,4 +1,4 @@
-# AlgorithmX — Production deploy checklist
+# AlgorithmX - Production deploy checklist
 
 Everything that needs to be true before you flip the switch on
 `https://www.algorithmx.co.uk`. Tick each box once it's done in the
@@ -9,7 +9,7 @@ copies. None require new code from me.
 
 ---
 
-## 1. Database (Prisma) — REQUIRED
+## 1. Database (Prisma) - REQUIRED
 
 The Prisma schema has gained several models since the last prod
 deploy and the prod DB needs to be brought into sync once.
@@ -35,7 +35,7 @@ you ever change column types in future schema edits, switch to
 
 ---
 
-## 2. Stripe — REQUIRED to take payment
+## 2. Stripe - REQUIRED to take payment
 
 ### 2a. Switch to LIVE keys when going live
 
@@ -75,7 +75,7 @@ flip to live keys.
 
 ---
 
-## 3. Email (Resend) — REQUIRED for password resets
+## 3. Email (Resend) - REQUIRED for password resets
 
 Without this, anyone who forgets their password is permanently
 locked out and has to email you for support.
@@ -105,14 +105,14 @@ Once deployed:
 
 1. Visit `/forgot-password`
 2. Enter the email of an account in your prod DB
-3. Check that inbox — should arrive within 30 seconds
+3. Check that inbox - should arrive within 30 seconds
 4. Click the link → reset password → log in with new password
 
 If no email arrives, check Resend Dashboard → Logs.
 
 ---
 
-## 4. Sentry — Strongly recommended
+## 4. Sentry - Strongly recommended
 
 Without Sentry you launch blind. A kid hits an uncaught error in
 the lesson player and you never know.
@@ -134,7 +134,7 @@ SENTRY_DSN=https://…@…ingest.sentry.io/…
 to the browser bundle for client-side errors; the unprefixed one is
 used by server-side code.)
 
-### 4c. Optional — source-map upload
+### 4c. Optional - source-map upload
 
 For readable stack traces in Sentry (vs minified gibberish):
 
@@ -148,12 +148,12 @@ SENTRY_ORG=your-org-slug
 SENTRY_PROJECT=your-project-slug
 ```
 
-Without these, the SDK still reports errors — you just see minified
+Without these, the SDK still reports errors - you just see minified
 stack traces. Add later if Sentry becomes critical for debugging.
 
 ---
 
-## 5. Plausible Analytics — Strongly recommended
+## 5. Plausible Analytics - Strongly recommended
 
 Without analytics you can't tell if signups / lessons / payments
 are actually happening.
@@ -180,7 +180,7 @@ Once all the above env vars are set, redeploy from Vercel:
 
 - Vercel Dashboard → Deployments → "..." on the latest → Redeploy
 
-(Setting env vars doesn't auto-redeploy — you have to trigger it.)
+(Setting env vars doesn't auto-redeploy - you have to trigger it.)
 
 ---
 
@@ -188,17 +188,17 @@ Once all the above env vars are set, redeploy from Vercel:
 
 Run this checklist on production after the first deploy:
 
-- [ ] Visit `https://www.algorithmx.co.uk` — landing page loads, no
+- [ ] Visit `https://www.algorithmx.co.uk` - landing page loads, no
       errors in browser console
-- [ ] Visit `/cyberheroes` — landing loads, video plays, "Enrol Now"
+- [ ] Visit `/cyberheroes` - landing loads, video plays, "Enrol Now"
       button is visible
-- [ ] Click "Enrol Now" — redirects to /signup or stripe checkout
+- [ ] Click "Enrol Now" - redirects to /signup or stripe checkout
 - [ ] Sign up with a test email
 - [ ] Check Sentry for any errors during signup
 - [ ] Verify the Plausible dashboard shows the page view
 - [ ] Sign in
 - [ ] Click "Forgot password" from /login
-- [ ] Enter your email — check inbox for reset email
+- [ ] Enter your email - check inbox for reset email
 - [ ] Reset password, sign in with new one
 - [ ] (If you've set Stripe live keys) Try a real-card purchase using
       a test card 4242 4242 4242 4242 in **test mode** first.  Confirm
@@ -222,6 +222,6 @@ The code side is complete:
 - ✅ Sentry SDK + instrumentation + next.config wrapper
 - ✅ Plausible script in root layout
 
-All of these are env-var-driven — they no-op if the corresponding
+All of these are env-var-driven - they no-op if the corresponding
 env var is unset, so dev runs without keys cost nothing and ship
 nothing.

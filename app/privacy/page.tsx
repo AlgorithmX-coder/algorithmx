@@ -62,7 +62,7 @@ export default function PrivacyPage() {
           <ul style={{ paddingLeft: 22, lineHeight: 1.7 }}>
             <li>We do not sell or share your child&rsquo;s data with third parties.</li>
             <li>We do not run third-party advertising trackers on the lesson player.</li>
-            <li>We do not let other users contact your child — there is no chat,
+            <li>We do not let other users contact your child - there is no chat,
               no public profile, no social feed.</li>
             <li>
               We do not use any of your child&rsquo;s data to train AI models,
@@ -101,7 +101,7 @@ export default function PrivacyPage() {
         <Section title="Children under 13">
           <p>
             Cyber Heroes Academy is designed for children aged 6–10. We treat all
-            user accounts as belonging to a parent or guardian — you create the
+            user accounts as belonging to a parent or guardian - you create the
             account, you provide consent, you control the data.
           </p>
         </Section>

@@ -6,7 +6,7 @@ import { DataLabScene } from "@/app/components/CyberFutureScenes";
 import { CyberIconOrEmoji } from "@/app/components/CyberIcon";
 import WaitlistForm from "@/app/components/WaitlistForm";
 
-// Warm amber/gold for the Pro tier — already on-palette with the Pixar dusk system.
+// Warm amber/gold for the Pro tier - already on-palette with the Pixar dusk system.
 const PRIMARY = "#7c5cff";       // gold mid
 const ACCENT = "#00e5ff";        // gold light
 const GRAD = `linear-gradient(135deg, ${PRIMARY}, ${ACCENT})`;

@@ -10,7 +10,7 @@ import { test, expect } from "@playwright/test";
  *    animation never completes, the player is stranded."
  *
  * Examples shipped to production this month:
- *   - You-Did-It (case 16): Next button gated on `screen !== 15` —
+ *   - You-Did-It (case 16): Next button gated on `screen !== 15` -
  *     guard checked the wrong screen number.
  *   - Golden Rules (case 10): Continue gated on `answeredRules.size === 5`.
  *   - Choose-Your-Path: doors hidden until type-out animation finished.
@@ -22,7 +22,7 @@ import { test, expect } from "@playwright/test";
  *      stays enabled.
  *
  * As we file more bugs, add a test here for each one. The test should
- * stay in the suite even after the fix — that's how we prevent
+ * stay in the suite even after the fix - that's how we prevent
  * regressions.
  */
 
@@ -36,7 +36,7 @@ test.describe("Gate-button regression guards", () => {
     const count = await page.locator("button:not([disabled])").count();
     expect(
       count,
-      "If 0, the user is stranded with no way to advance — likely a guard checking the wrong state"
+      "If 0, the user is stranded with no way to advance - likely a guard checking the wrong state"
     ).toBeGreaterThan(0);
   });
 
@@ -44,7 +44,7 @@ test.describe("Gate-button regression guards", () => {
     page,
   }) => {
     // Submitting forgot-password without an email shouldn't strand the
-    // user — the success state must offer a way home.
+    // user - the success state must offer a way home.
     await page.goto("/forgot-password");
     await page.locator("input[type='email']").fill("test@example.com");
     await page.getByRole("button", { name: /Send reset link/i }).click();

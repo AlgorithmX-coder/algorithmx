@@ -64,11 +64,11 @@ function isBrowser(): boolean {
 
 /* ───────────────────────── HIT-STOP ───────────────────────── */
 /*
- * Game-feel primitive — a sub-100ms "thunk" of feedback applied to a
+ * Game-feel primitive - a sub-100ms "thunk" of feedback applied to a
  * target element on a positive event.  Briefly scales it up + brightens,
  * then snaps back.  The brain reads this as weight / impact, the same
  * pattern Mario / Hollow Knight / Celeste use on hit and pickup.  Pure
- * code — no extra assets needed.
+ * code - no extra assets needed.
  *
  * Default target is `document.body` so callers can fire-and-forget
  * without grabbing a ref.  Pass a specific element for a localised
@@ -77,7 +77,7 @@ function isBrowser(): boolean {
 export function hitStop(target?: HTMLElement | null): void {
   if (typeof document === "undefined") return;
   const el = target ?? document.body;
-  // Bail if a previous hit-stop hasn't completed — avoids stacking
+  // Bail if a previous hit-stop hasn't completed - avoids stacking
   // transforms which look glitchy.
   if (el.dataset.hitStopActive === "1") return;
   el.dataset.hitStopActive = "1";
@@ -104,7 +104,7 @@ export function hitStop(target?: HTMLElement | null): void {
 /*
  * Streak-scaled celebration.  Was a fixed 40-particle burst regardless
  * of streak, so a kid getting their 1st right answer felt the same as
- * their 10th in a row — no progressive reward.  Now scales with streak:
+ * their 10th in a row - no progressive reward.  Now scales with streak:
  *
  *   1   → 25 particles, modest spread, no second wave
  *   3+  → 50 particles, bigger spread, snappier velocity
@@ -196,10 +196,10 @@ export async function correctAnswerBurst(
 /* ───────────────────────── WRONG ANSWER ───────────────────────── */
 /*
  * Tighter shake than before.  Old version: body-level x-axis only,
- * 4px amplitude, 300ms with default ease — read as "harsh slap".
+ * 4px amplitude, 300ms with default ease - read as "harsh slap".
  * Now uses both axes (more natural physical-object feel), 3px
  * amplitude (subtler), 250ms with cubic-bezier(.36,.07,.19,.97) so
- * it settles instead of bouncing.  Sympathetic, not punitive — kids
+ * it settles instead of bouncing.  Sympathetic, not punitive - kids
  * audience.
  */
 export function dispatchWrongAnswer(): void {
@@ -223,7 +223,7 @@ export function wrongAnswerShake(): void {
   }
 
   // If a Lottie wrong-reaction overlay is configured, fire that
-  // alongside (not instead of) the body shake — the shake is good
+  // alongside (not instead of) the body shake - the shake is good
   // tactile feedback and the Lottie adds character life.
   fireLottieOverlay("wrong");
 
@@ -354,7 +354,7 @@ export async function starBurst(x: number, y: number): Promise<void> {
     ticks: 80,
     origin: { x, y },
     shapes: ["star"],
-    // Was warm orange-only — now cyber gold + cyan so the star burst
+    // Was warm orange-only - now cyber gold + cyan so the star burst
     // belongs to the same celebration system as the bigger ones.
     colors: ["#ffd158", "#00e5ff", "#ff5fb3"],
   });

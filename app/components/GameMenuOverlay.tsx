@@ -15,7 +15,7 @@ import {
 import TrophiesGallery from "@/app/components/TrophiesGallery";
 
 /**
- * GameMenuOverlay — pause menu + settings, triggered globally by ESC
+ * GameMenuOverlay - pause menu + settings, triggered globally by ESC
  * anywhere inside the lesson shell.
  *
  * Visible behaviour:
@@ -86,7 +86,7 @@ function saveReduceMotion(value: boolean): void {
 type Panel = "pause" | "settings" | "trophies";
 
 export interface GameMenuOverlayProps {
-  /** Optional — disable the global ESC hotkey if the host wants to
+  /** Optional - disable the global ESC hotkey if the host wants to
    * own that key (e.g. during a particular cutscene). */
   enabled?: boolean;
 }

@@ -62,7 +62,7 @@ const GATES: Array<{ row: number; col: number }> = (() => {
   });
 })();
 
-// Token positions — open cells that are NOT gates and NOT start/exit.
+// Token positions - open cells that are NOT gates and NOT start/exit.
 const TOKENS: Array<{ row: number; col: number }> = (() => {
   const gateSet = new Set(GATES.map((g) => `${g.row},${g.col}`));
   const candidates: Array<{ row: number; col: number }> = [];
@@ -265,7 +265,7 @@ export default function CyberMaze({
     const newCol = s.cellCol + dc;
     if (newRow < 0 || newRow >= ROWS || newCol < 0 || newCol >= COLS) return;
     if (walls[newRow][newCol]) return;
-    // Gate collision — only stop if gate isn't open yet
+    // Gate collision - only stop if gate isn't open yet
     const gateIdx = s.gates.findIndex(
       (g) => g.row === newRow && g.col === newCol
     );
@@ -487,7 +487,7 @@ export default function CyberMaze({
 
       // DRAW
       ctx.clearRect(0, 0, BOARD_W, BOARD_H);
-      // Cyber-grid base — radial gradient plus animated diagonal scan lines
+      // Cyber-grid base - radial gradient plus animated diagonal scan lines
       // and a subtle nebula glow. Reads like a holographic data-vault floor.
       const baseGrad = ctx.createRadialGradient(BOARD_W / 2, BOARD_H / 2, 0, BOARD_W / 2, BOARD_H / 2, Math.max(BOARD_W, BOARD_H));
       baseGrad.addColorStop(0, "#1a2147");
@@ -528,7 +528,7 @@ export default function CyberMaze({
       ctx.setLineDash([]);
       ctx.restore();
 
-      // Floor cells — pulsing hex-style outlines with a soft inner tint
+      // Floor cells - pulsing hex-style outlines with a soft inner tint
       const cellPulse = 0.55 + 0.25 * Math.sin(now / 600);
       for (let r = 0; r < ROWS; r++) {
         for (let c = 0; c < COLS; c++) {
@@ -558,7 +558,7 @@ export default function CyberMaze({
         }
       }
 
-      // Walls — neon-edged data blocks with a moving highlight stripe
+      // Walls - neon-edged data blocks with a moving highlight stripe
       for (let r = 0; r < ROWS; r++) {
         for (let c = 0; c < COLS; c++) {
           if (!walls[r][c]) continue;
@@ -599,7 +599,7 @@ export default function CyberMaze({
         }
       }
 
-      // Exit portal — multi-ring cinematic vortex
+      // Exit portal - multi-ring cinematic vortex
       const exitX = (COLS - 1) * CELL + CELL / 2;
       const exitY = (ROWS - 1) * CELL + CELL / 2;
       const portalPulse = 0.7 + 0.3 * Math.sin(now / 350);
@@ -635,7 +635,7 @@ export default function CyberMaze({
       ctx.arc(exitX, exitY, 2 + portalPulse * 1.5, 0, Math.PI * 2);
       ctx.fill();
 
-      // Gates — pulsing hex-coded data nodes with rotating outline
+      // Gates - pulsing hex-coded data nodes with rotating outline
       for (const g of s.gates) {
         if (g.open) continue;
         const gx = g.col * CELL;
@@ -699,7 +699,7 @@ export default function CyberMaze({
         ctx.shadowBlur = 0;
       }
 
-      // Tokens — 3D-looking data crystals with sparkle
+      // Tokens - 3D-looking data crystals with sparkle
       for (const t of s.tokens) {
         if (t.collected) continue;
         const tx = t.col * CELL + CELL / 2;
@@ -758,7 +758,7 @@ export default function CyberMaze({
       }
       ctx.globalAlpha = 1;
 
-      // Player — warm gold-coral hero orb
+      // Player - warm gold-coral hero orb
       const pGrad = ctx.createRadialGradient(s.x, s.y, 0, s.x, s.y, 14);
       pGrad.addColorStop(0, "#7df0ff");
       pGrad.addColorStop(0.5, "#ffd158");

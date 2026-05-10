@@ -1,7 +1,7 @@
 "use client";
 
 /*
- * DashboardAtmosphere — Pixar warm-dusk backdrop for the dashboard.
+ * DashboardAtmosphere - Pixar warm-dusk backdrop for the dashboard.
  *
  * Replaces the cold cyber CyberBackground SVG (drifting cyan circuit
  * traces) with the same sunset language the lesson uses: a soft fixed
@@ -45,7 +45,7 @@ export function DashboardSky() {
 }
 
 export function DashboardParticles() {
-  // Stable positions via memo — no Math.random per render
+  // Stable positions via memo - no Math.random per render
   const stars = useMemo(
     () =>
       Array.from({ length: 35 }, (_, i) => ({

@@ -3,12 +3,12 @@
 import { useEffect, useRef } from "react";
 
 /**
- * IdleWorldLayer — fixed-position canvas behind all content that runs
+ * IdleWorldLayer - fixed-position canvas behind all content that runs
  * a tiny particle simulation. Real PC games keep the world breathing
  * even when you're not interacting; otherwise the screen feels frozen.
  *
  * Cheap: ~50 particles, 60fps via rAF, draws into a single 2D canvas.
- * Honours the global `data-ax-reduce-motion` flag — if the user has
+ * Honours the global `data-ax-reduce-motion` flag - if the user has
  * enabled "Reduce motion" in settings, the canvas just renders 5
  * static dim points and skips the rAF loop.
  *
@@ -23,7 +23,7 @@ interface Particle {
   vx: number;
   vy: number;
   size: number;
-  hue: number; /* 0..1 — drives colour pick */
+  hue: number; /* 0..1 - drives colour pick */
   life: number;
   max: number;
   spark: boolean;
@@ -89,7 +89,7 @@ export default function IdleWorldLayer() {
     const resizeHandler = () => resize();
     window.addEventListener("resize", resizeHandler);
 
-    /* Initial seed — half the cap, distributed up the screen so we
+    /* Initial seed - half the cap, distributed up the screen so we
      * don't have an obvious wave of new particles entering from the
      * bottom on first render. */
     particlesRef.current = [];
@@ -125,7 +125,7 @@ export default function IdleWorldLayer() {
     let nextSpark = performance.now() + rand(2400, 4800);
     let paused = document.hidden;
 
-    /* Pause the rAF loop when the tab is backgrounded — saves battery
+    /* Pause the rAF loop when the tab is backgrounded - saves battery
      * and avoids burning CPU on a canvas no one can see. */
     const onVisibility = () => {
       if (document.hidden) {
@@ -161,11 +161,11 @@ export default function IdleWorldLayer() {
           continue;
         }
 
-        /* Sway — gentle horizontal sine. */
+        /* Sway - gentle horizontal sine. */
         p.x += p.vx * dt + Math.sin((p.life + p.hue * 1000) / 600) * 0.04;
         p.y += p.vy * dt;
 
-        /* Fade curve — ease in/out across life. */
+        /* Fade curve - ease in/out across life. */
         const t = p.life / p.max;
         const fadeIn = Math.min(1, t * 6);
         const fadeOut = Math.min(1, (1 - t) * 4);
@@ -176,7 +176,7 @@ export default function IdleWorldLayer() {
         ctx.fillStyle = `rgba(${c.r},${c.g},${c.b},${alpha})`;
 
         if (p.spark) {
-          /* Spark — small radial gradient via 2 stacked circles. */
+          /* Spark - small radial gradient via 2 stacked circles. */
           ctx.beginPath();
           ctx.arc(p.x, p.y, p.size * 2.5, 0, Math.PI * 2);
           ctx.fillStyle = `rgba(${c.r},${c.g},${c.b},${alpha * 0.18})`;

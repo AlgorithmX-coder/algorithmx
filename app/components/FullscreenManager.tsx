@@ -3,7 +3,7 @@
 import { useEffect } from "react";
 
 /**
- * FullscreenManager — global F key shortcut + state mirror that drives
+ * FullscreenManager - global F key shortcut + state mirror that drives
  * the Fullscreen API. Real PC games support F11 / F to swap to
  * full-screen play; web kids' content rarely does, so it's a free
  * upgrade in perceived premium.
@@ -27,7 +27,7 @@ export async function enterFullscreen(): Promise<void> {
   try {
     await document.documentElement.requestFullscreen();
   } catch {
-    /* User declined / browser denied — silent. */
+    /* User declined / browser denied - silent. */
   }
 }
 

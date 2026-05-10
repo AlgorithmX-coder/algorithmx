@@ -5,8 +5,8 @@ import path from "node:path";
  * Playwright config for AlgorithmX.
  *
  * Two test projects:
- *   - `public`     — auth-free smoke tests (landing/login/signup pages).
- *   - `authed`     — runs after `globalSetup` has signed in the test
+ *   - `public`     - auth-free smoke tests (landing/login/signup pages).
+ *   - `authed`     - runs after `globalSetup` has signed in the test
  *                    user, so specs land already authenticated. This is
  *                    where lesson-flow / exercise / boss-battle tests
  *                    live.
@@ -16,7 +16,7 @@ import path from "node:path";
  * so the test-only seed endpoint is reachable. We use the production
  * build rather than `next dev` so the tests catch build-time errors too.
  *
- * Local: just run `npm run test:e2e:dev` — that uses `next dev` so
+ * Local: just run `npm run test:e2e:dev` - that uses `next dev` so
  * iteration is faster, at the cost of HMR noise in test output.
  */
 const PORT = Number(process.env.PLAYWRIGHT_PORT ?? 3100);

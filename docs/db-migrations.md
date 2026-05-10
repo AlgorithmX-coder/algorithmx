@@ -30,7 +30,7 @@ of drift is caught:
 
 ---
 
-## ONE-TIME BOOTSTRAP — run these now
+## ONE-TIME BOOTSTRAP - run these now
 
 The baseline migration at `prisma/migrations/20260510000000_baseline/`
 captures the schema as it currently exists on prod. But because prod
@@ -38,11 +38,11 @@ already has every table, running `prisma migrate deploy` would try to
 re-create them and fail. We need to mark the baseline as already
 applied on prod first.
 
-You will need your **prod pooled DATABASE_URL** for these commands —
+You will need your **prod pooled DATABASE_URL** for these commands -
 the same one you just pasted into Vercel. Get it from Neon's Connect
 panel (pooled connection).
 
-### Step 1 — Mark baseline as applied on prod
+### Step 1 - Mark baseline as applied on prod
 
 Open a terminal in this repo. Run, with your real URL substituted:
 
@@ -61,7 +61,7 @@ This adds a row to the `_prisma_migrations` table on prod saying
 `prisma migrate deploy` runs will only apply migrations newer than
 this baseline.
 
-### Step 2 — Verify
+### Step 2 - Verify
 
 ```bash
 DATABASE_URL='<same url>' npx prisma migrate status
@@ -96,7 +96,7 @@ prod automatically.
 This lets every Vercel PR preview deploy use a forked copy of the prod
 DB so destructive schema changes can't reach prod customers.
 
-### Step 1 — Create the branch on Neon
+### Step 1 - Create the branch on Neon
 
 1. Go to https://console.neon.tech → your `algorithmx` project.
 2. Left sidebar → **Branches**.
@@ -105,7 +105,7 @@ DB so destructive schema changes can't reach prod customers.
    default `.25–2 CU`. Name it `preview`.
 5. Confirm. Neon clones the data structure (copy-on-write, fast).
 
-### Step 2 — Get the preview branch's pooled URL
+### Step 2 - Get the preview branch's pooled URL
 
 1. On the Branches list, click `preview`.
 2. There's a **Connection string** widget on the branch overview.
@@ -114,7 +114,7 @@ DB so destructive schema changes can't reach prod customers.
    prod password).
 5. Click **Show password** → **Copy snippet**.
 
-### Step 3 — Add it to Vercel as a Preview-only env var
+### Step 3 - Add it to Vercel as a Preview-only env var
 
 1. Vercel → your project → **Settings** → **Environment Variables**.
 2. Click **Add Environment Variable**.
@@ -132,11 +132,11 @@ You will now have THREE `DATABASE_URL` rows on Vercel:
 
 Vercel routes each environment to the right one automatically.
 
-### Step 4 — Test it
+### Step 4 - Test it
 
 Open a PR with a no-op change. Vercel deploys a preview. The deploy
 URL hits the preview Neon branch instead of prod. Verify by signing
-up a test user — it should appear in the preview branch's `User`
+up a test user - it should appear in the preview branch's `User`
 table on Neon, not prod.
 
 ---

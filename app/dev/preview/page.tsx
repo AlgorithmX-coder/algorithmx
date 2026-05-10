@@ -4,7 +4,7 @@
  * Dev-only preview harness for lesson cases.
  *
  * Renders any one case in isolation with mock state. No auth, no DB,
- * no LessonPlayer wrapper — just the case's scene component on a clean
+ * no LessonPlayer wrapper - just the case's scene component on a clean
  * canvas. Lets us iterate on visual design 10× faster than the full
  * lesson flow (which requires login + walking through prior cases).
  *
@@ -373,7 +373,7 @@ const CASES: CaseEntry[] = [
       <GraduationScene
         childName="Asad"
         weekNumber={1}
-        weekTitle="Passwords — The Secret Code"
+        weekTitle="Passwords - The Secret Code"
         starsCount={3}
         totalCoins={142}
         isMilestoneWeek={false}
@@ -645,7 +645,7 @@ function Placeholder({ caseId, name }: { caseId: number; name: string }) {
         🚧
       </div>
       <div style={{ fontSize: 22, fontWeight: 800, color: "#ffe9c8" }}>
-        Case {String(caseId).padStart(2, "0")} — {name}
+        Case {String(caseId).padStart(2, "0")} - {name}
       </div>
       <div style={{ fontSize: 14, maxWidth: 480, lineHeight: 1.5 }}>
         Not yet redesigned. To preview here, extract this case&apos;s scene

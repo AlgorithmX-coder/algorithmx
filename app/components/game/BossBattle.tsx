@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * BossBattle — raw PixiJS quiz-battle for ages 6-9.
+ * BossBattle - raw PixiJS quiz-battle for ages 6-9.
  * Manual Application.init() + canvas append; no framework wrappers.
  */
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
@@ -21,17 +21,17 @@ import { playSound, playBGM, stopBGM, SoundManager } from "@/app/lib/sounds";
 import { addXP, earnBadge, type RankInfo } from "@/app/lib/progression";
 import LevelUpCelebration from "@/app/components/LevelUpCelebration";
 
-// Three.js arena environment — dynamically imported so SSR doesn't try to
+// Three.js arena environment - dynamically imported so SSR doesn't try to
 // execute WebGL code. Renders behind the transparent PixiJS canvas.
 const Arena3D = dynamic(() => import("./Arena3D"), { ssr: false });
 
-// CosmicRealmBackdrop import removed — was a third WebGL context running
+// CosmicRealmBackdrop import removed - was a third WebGL context running
 // alongside Arena3D + PixiJS, contributing to the perceived jank. The
 // Arena3D scene itself already carries the cosmic theme via its palette,
 // so the separate realm canvas is overkill. File kept on disk for
 // possible reuse.
 
-// Live R3F backdrop for the CHOOSE YOUR HERO screen — calmer cousin of
+// Live R3F backdrop for the CHOOSE YOUR HERO screen - calmer cousin of
 // BossEnergyCore, sets a "preparation" mood before the boss reactor.
 const HeroSelectAtmosphere = dynamic(
   () => import("@/app/components/HeroSelectAtmosphere"),
@@ -57,46 +57,46 @@ export interface BossBattleProps {
 }
 
 const EASY_QUESTIONS: Question[] = [
-  { question: "What makes a strong password?", answers: ["Mix of letters, numbers & symbols", "Your name", "123456", "password"], correctIndex: 0, explanation: "A strong password mixes letters, numbers and symbols — making it super hard to guess!" },
-  { question: "Should you share your password?", answers: ["Only with friends", "Write it on paper", "Never share it", "Tell everyone"], correctIndex: 2, explanation: "Your password is YOUR secret — never share it with anyone except your parents!" },
-  { question: "A stranger online asks your name. What do you do?", answers: ["Tell them", "Don't tell them", "Ask their name first", "Give a nickname"], correctIndex: 1, explanation: "Never give personal information to strangers online — you don't know who they really are!" },
+  { question: "What makes a strong password?", answers: ["Mix of letters, numbers & symbols", "Your name", "123456", "password"], correctIndex: 0, explanation: "A strong password mixes letters, numbers and symbols - making it super hard to guess!" },
+  { question: "Should you share your password?", answers: ["Only with friends", "Write it on paper", "Never share it", "Tell everyone"], correctIndex: 2, explanation: "Your password is YOUR secret - never share it with anyone except your parents!" },
+  { question: "A stranger online asks your name. What do you do?", answers: ["Tell them", "Don't tell them", "Ask their name first", "Give a nickname"], correctIndex: 1, explanation: "Never give personal information to strangers online - you don't know who they really are!" },
   { question: "What is a password for?", answers: ["Showing off", "Keeping accounts safe", "Sharing with friends", "Nothing important"], correctIndex: 1, explanation: "Passwords keep your accounts safe from people who shouldn't be in them!" },
-  { question: "Who should know your password?", answers: ["Your best friend", "Only you and your parents", "Your teacher", "Everyone"], correctIndex: 1, explanation: "Only you and your parents should know your password — nobody else!" },
+  { question: "Who should know your password?", answers: ["Your best friend", "Only you and your parents", "Your teacher", "Everyone"], correctIndex: 1, explanation: "Only you and your parents should know your password - nobody else!" },
   { question: "Someone says they'll give you free V-Bucks. Is this real?", answers: ["Yes click the link", "Maybe", "No it's a scam", "Ask for proof"], correctIndex: 2, explanation: "Free V-Bucks offers are almost always scams trying to steal your account!" },
-  { question: "What should your password NOT be?", answers: ["Random letters and numbers", "Your birthday", "Something hard to guess", "A mix of symbols"], correctIndex: 1, explanation: "Birthdays are easy to guess — never use personal dates as passwords!" },
+  { question: "What should your password NOT be?", answers: ["Random letters and numbers", "Your birthday", "Something hard to guess", "A mix of symbols"], correctIndex: 1, explanation: "Birthdays are easy to guess - never use personal dates as passwords!" },
   { question: "Your friend wants to use your tablet. What do you do?", answers: ["Give them your password", "Log out of your accounts first", "Leave everything open", "Say no"], correctIndex: 1, explanation: "Always log out before letting someone else use your device!" },
   { question: "A website asks for your home address. What do you do?", answers: ["Type it in", "Tell a parent before typing anything", "Make one up", "Give your school address"], correctIndex: 1, explanation: "Always check with a parent before entering personal information online!" },
   { question: "Why do we lock devices with a passcode?", answers: ["Because it looks cool", "To stop others getting in", "Because mum said so", "No reason"], correctIndex: 1, explanation: "Passcodes stop other people from accessing your private information!" },
 ];
 
 const MEDIUM_QUESTIONS: Question[] = [
-  { question: "Which password is the strongest?", answers: ["Sunshine2024", "Tr0pic4l$unR1se!", "ilovecats", "MyName123"], correctIndex: 1, explanation: "Tr0pic4l$unR1se! uses uppercase, lowercase, numbers AND symbols — maximum strength!" },
+  { question: "Which password is the strongest?", answers: ["Sunshine2024", "Tr0pic4l$unR1se!", "ilovecats", "MyName123"], correctIndex: 1, explanation: "Tr0pic4l$unR1se! uses uppercase, lowercase, numbers AND symbols - maximum strength!" },
   { question: "An email says 'Your account will be deleted! Click here!' What is this?", answers: ["A real warning", "A phishing scam", "A helpful reminder", "A software update"], correctIndex: 1, explanation: "Urgent scary emails trying to make you click are almost always phishing scams!" },
-  { question: "What is two-factor authentication?", answers: ["Having two passwords", "A second check to prove it's you", "Logging in twice", "Using two devices"], correctIndex: 1, explanation: "Two-factor adds a second check — like a code sent to your phone — so even if someone has your password, they can't get in!" },
-  { question: "A game asks you to create an account. What email should you use?", answers: ["Use mum's email without asking", "Ask a parent to help set one up", "Make up a fake email", "Use your school email"], correctIndex: 1, explanation: "Always ask a parent to help you set up accounts — they can make sure it's safe!" },
-  { question: "Which of these is private information?", answers: ["Your favourite colour", "Your home address", "Your favourite food", "The weather"], correctIndex: 1, explanation: "Your home address is private — never share it with people you don't trust!" },
-  { question: "A pop-up says 'Your computer has a virus! Call this number!' What do you do?", answers: ["Call the number", "Close it and tell an adult", "Download their fix", "Turn off the computer forever"], correctIndex: 1, explanation: "Fake virus warnings are scams — close them and tell a trusted adult!" },
+  { question: "What is two-factor authentication?", answers: ["Having two passwords", "A second check to prove it's you", "Logging in twice", "Using two devices"], correctIndex: 1, explanation: "Two-factor adds a second check - like a code sent to your phone - so even if someone has your password, they can't get in!" },
+  { question: "A game asks you to create an account. What email should you use?", answers: ["Use mum's email without asking", "Ask a parent to help set one up", "Make up a fake email", "Use your school email"], correctIndex: 1, explanation: "Always ask a parent to help you set up accounts - they can make sure it's safe!" },
+  { question: "Which of these is private information?", answers: ["Your favourite colour", "Your home address", "Your favourite food", "The weather"], correctIndex: 1, explanation: "Your home address is private - never share it with people you don't trust!" },
+  { question: "A pop-up says 'Your computer has a virus! Call this number!' What do you do?", answers: ["Call the number", "Close it and tell an adult", "Download their fix", "Turn off the computer forever"], correctIndex: 1, explanation: "Fake virus warnings are scams - close them and tell a trusted adult!" },
   { question: "Why use a DIFFERENT password for each account?", answers: ["It's more fun", "If one is stolen the others stay safe", "Websites make you", "It doesn't matter"], correctIndex: 1, explanation: "If a hacker steals one password, they can't get into your other accounts if they're all different!" },
-  { question: "What does a padlock icon in the browser mean?", answers: ["The website is locked", "The connection is encrypted", "You can't visit it", "The website is dangerous"], correctIndex: 1, explanation: "The padlock means your connection to that website is encrypted — your data is protected!" },
-  { question: "Someone at school says they know a game cheat and asks for your login. What do you do?", answers: ["Give it to them", "Say no and don't share your login", "Ask a teacher first", "Share it but change password later"], correctIndex: 1, explanation: "Never share your login with anyone — real cheats don't need your password!" },
+  { question: "What does a padlock icon in the browser mean?", answers: ["The website is locked", "The connection is encrypted", "You can't visit it", "The website is dangerous"], correctIndex: 1, explanation: "The padlock means your connection to that website is encrypted - your data is protected!" },
+  { question: "Someone at school says they know a game cheat and asks for your login. What do you do?", answers: ["Give it to them", "Say no and don't share your login", "Ask a teacher first", "Share it but change password later"], correctIndex: 1, explanation: "Never share your login with anyone - real cheats don't need your password!" },
   { question: "What is the safest way to remember lots of passwords?", answers: ["Write them on a sticky note", "Use a password manager app", "Use the same password everywhere", "Memorise them all"], correctIndex: 1, explanation: "Password managers safely store all your passwords so you only need to remember one master password!" },
 ];
 
 const HARD_QUESTIONS: Question[] = [
-  { question: "You want to check email on a friend's computer. What's safest?", answers: ["Just log in normally", "Use private/incognito window and log out after", "Don't check email at all", "Ask your friend to look away"], correctIndex: 1, explanation: "Incognito mode doesn't save your login — and always log out when you're done on someone else's device!" },
-  { question: "A free game download asks you to disable your antivirus first. What should you do?", answers: ["Disable it temporarily", "Don't download it — that's a red flag", "Only if a friend recommended it", "Download to a USB instead"], correctIndex: 1, explanation: "Any download that asks you to turn off protection is almost certainly malware!" },
+  { question: "You want to check email on a friend's computer. What's safest?", answers: ["Just log in normally", "Use private/incognito window and log out after", "Don't check email at all", "Ask your friend to look away"], correctIndex: 1, explanation: "Incognito mode doesn't save your login - and always log out when you're done on someone else's device!" },
+  { question: "A free game download asks you to disable your antivirus first. What should you do?", answers: ["Disable it temporarily", "Don't download it - that's a red flag", "Only if a friend recommended it", "Download to a USB instead"], correctIndex: 1, explanation: "Any download that asks you to turn off protection is almost certainly malware!" },
   { question: "Your account was logged into from a city you've never visited. What's the FIRST thing to do?", answers: ["Ignore it", "Change your password immediately", "Wait and see", "Delete the account"], correctIndex: 1, explanation: "If someone else logged into your account, change your password RIGHT AWAY before they do more damage!" },
   { question: "Which is the BEST security question answer?", answers: ["Your real mother's maiden name", "A made-up answer only you know", "Your pet's real name", "Your birthday"], correctIndex: 1, explanation: "Made-up answers that only you know can't be guessed or found on social media!" },
-  { question: "Your friend sends a link that looks like YouTube but the URL says 'y0utube.com'. What is this?", answers: ["YouTube's new address", "A fake website trying to steal your info", "A YouTube for kids", "A YouTube shortcut"], correctIndex: 1, explanation: "Fake URLs that look similar to real ones are used to trick people — always check the spelling!" },
-  { question: "You made a strong password. When should you change it?", answers: ["Every single day", "If you think someone might have seen it", "Never — strong passwords last forever", "Only when the website asks"], correctIndex: 1, explanation: "Change your password whenever you suspect someone else might know it!" },
-  { question: "A game asks permission for your photos, contacts, and location. What should you do?", answers: ["Allow everything", "Question why a game needs all that access", "Only allow photos", "Ask a friend what they did"], correctIndex: 1, explanation: "A game doesn't need your photos or contacts — be suspicious when apps ask for too many permissions!" },
-  { question: "What makes public Wi-Fi (like at a cafe) risky?", answers: ["The Wi-Fi is slower", "Others on the network could see what you're doing", "The cafe might charge you", "Public Wi-Fi has more ads"], correctIndex: 1, explanation: "On public Wi-Fi, hackers can spy on what you're sending — avoid logging into important accounts!" },
+  { question: "Your friend sends a link that looks like YouTube but the URL says 'y0utube.com'. What is this?", answers: ["YouTube's new address", "A fake website trying to steal your info", "A YouTube for kids", "A YouTube shortcut"], correctIndex: 1, explanation: "Fake URLs that look similar to real ones are used to trick people - always check the spelling!" },
+  { question: "You made a strong password. When should you change it?", answers: ["Every single day", "If you think someone might have seen it", "Never - strong passwords last forever", "Only when the website asks"], correctIndex: 1, explanation: "Change your password whenever you suspect someone else might know it!" },
+  { question: "A game asks permission for your photos, contacts, and location. What should you do?", answers: ["Allow everything", "Question why a game needs all that access", "Only allow photos", "Ask a friend what they did"], correctIndex: 1, explanation: "A game doesn't need your photos or contacts - be suspicious when apps ask for too many permissions!" },
+  { question: "What makes public Wi-Fi (like at a cafe) risky?", answers: ["The Wi-Fi is slower", "Others on the network could see what you're doing", "The cafe might charge you", "Public Wi-Fi has more ads"], correctIndex: 1, explanation: "On public Wi-Fi, hackers can spy on what you're sending - avoid logging into important accounts!" },
   { question: "You get a message from 'your bank' asking to verify your account. You're 10 years old. What's wrong?", answers: ["Banks always send these", "You don't have a bank account so it's a scam", "Click to check just in case", "Forward it to parents to click"], correctIndex: 1, explanation: "If you don't have a bank account, any message from 'your bank' is definitely a scam!" },
-  { question: "A site says your password was leaked and offers to check your email. Should you?", answers: ["Enter your email anywhere that checks", "Only use official sites like HaveIBeenPwned", "Never check", "Change your email instead"], correctIndex: 1, explanation: "Only use trusted official sites to check for breaches — random sites might be stealing your email!" },
+  { question: "A site says your password was leaked and offers to check your email. Should you?", answers: ["Enter your email anywhere that checks", "Only use official sites like HaveIBeenPwned", "Never check", "Change your email instead"], correctIndex: 1, explanation: "Only use trusted official sites to check for breaches - random sites might be stealing your email!" },
 ];
 
 // Children kept noticing the right answer was always in the same slot in
-// the boss-battle quiz — the source data lists `correctIndex: 1` for most
+// the boss-battle quiz - the source data lists `correctIndex: 1` for most
 // rows. Fisher-Yates shuffle each question's answers in place at module
 // load and remap correctIndex so the right answer lands in a fresh slot
 // every page load. Stable within a session so re-renders don't reshuffle.
@@ -117,7 +117,7 @@ shuffleBossQuestions(HARD_QUESTIONS);
 
 const HP_MAX = 100;
 
-// Achievement system — cumulative badge unlocks persisted to
+// Achievement system - cumulative badge unlocks persisted to
 // localStorage. Computed at end-of-fight and surfaced on the victory
 // overlay. Pure end-of-run reward; no in-fight effect.
 type AchievementDef = {
@@ -172,7 +172,7 @@ function computeAchievementsForRun(input: {
   return out;
 }
 
-// Three telegraphed boss-attack types — cycled per question. Pure
+// Three telegraphed boss-attack types - cycled per question. Pure
 // visual/narrative variation; the answer logic doesn't change.
 const ATTACK_META = [
   { name: "PHISHING LURE",   icon: "🪤", color: "#ff5fb3", glow: "rgba(255, 95, 179, 0.55)", tag: "Don't take the bait",     emblemColor: 0xff5fb3 },
@@ -301,8 +301,8 @@ interface GameState {
   bgOverlayColor: number;
   bgOverlayPulseAlpha: number; // phase-3 slow pulse (0..1 lerps between min/max)
   // Intro / VFX
-  heroAlpha: number;           // hero sprite alpha — for intro fade-in
-  bossAlpha: number;           // boss sprite alpha — for intro reveal
+  heroAlpha: number;           // hero sprite alpha - for intro fade-in
+  bossAlpha: number;           // boss sprite alpha - for intro reveal
   bossYOffset: number;         // vertical offset for intro drop-in
   hitStopUntil: number;        // timestamp (g.time + N) when hit-stop ends
   // 3D-ish stagecraft
@@ -312,7 +312,7 @@ interface GameState {
   bossReflection: Sprite | null;
   heroGlow: Graphics | null;
   bossGlow: Graphics | null;
-  // Tighter rim-light layer in front of the wide glow — same colour but
+  // Tighter rim-light layer in front of the wide glow - same colour but
   // smaller radius and brighter alpha, so the silhouette pops harder.
   heroRim: Graphics | null;
   bossRim: Graphics | null;
@@ -327,7 +327,7 @@ interface GameState {
   bossGlowColor: number;       // phase-dependent
   // HP-mirror for the floor ring scaling (lerped each tick toward HP %).
   heroHpPct: number;
-  // Sustained super-ready zoom — when superReady is true, lerp toward
+  // Sustained super-ready zoom - when superReady is true, lerp toward
   // 1.08 multiplier on cameraScale; releases back to 1.0 when used.
   superZoomActive: boolean;
   superZoomMul: number;
@@ -481,7 +481,7 @@ function spawnDamageFx(
     }
     return;
   }
-  // hero-hits-boss — tiered by damage
+  // hero-hits-boss - tiered by damage
   if (damage <= 10) {
     const main = makeText(`-${damage}`, 0x10b981, 36);
     main.x = x; main.y = y - 60;
@@ -648,7 +648,7 @@ function playerAttack(
     colors.push(0xfde047, 0xf97316);
   } else if (damage <= 10) {
     // Even the smallest hit gets some hit-stop so EVERY answer feels
-    // physical — no "soft" hits that read as a number tick.
+    // physical - no "soft" hits that read as a number tick.
     particles = 12; shake = 3; zoom = 1.02; hitStop = 30;
   } else if (damage <= 20) {
     particles = 20; shake = 6; zoom = 1.06; hitStop = 40;
@@ -914,7 +914,7 @@ function tickFrame(g: GameState, dt: number) {
     const heroSet = g.textures[g.selectedHero];
     const next = heroSet[g.heroAnim];
     if (g.hero.texture !== next) g.hero.texture = next;
-    // Celebrate frames have raised hands — shrink target height + shift anchor
+    // Celebrate frames have raised hands - shrink target height + shift anchor
     // down + lift the sprite so the head and hands stay on-screen.
     const celebrating = g.heroAnim === "celebrate";
     g.hero.anchor.set(0.5, celebrating ? 0.75 : 0.5);
@@ -942,7 +942,7 @@ function tickFrame(g: GameState, dt: number) {
     if (g.boss.texture !== next) g.boss.texture = next;
     g.boss.anchor.set(0.5, 0.5);
     const baseScale = BOSS_HEIGHT / (g.boss.texture.height || 1);
-    // Breathing — slower + deeper; in phase 3, pants faster
+    // Breathing - slower + deeper; in phase 3, pants faster
     const bDiv = phase === 3 ? 550 : 1100;
     const bBreatheX = 1 + Math.sin(g.time / bDiv) * 0.018;
     const bBreatheY = 1 + Math.sin(g.time / bDiv) * 0.028;
@@ -1017,7 +1017,7 @@ function tickFrame(g: GameState, dt: number) {
     g.bossGlow.alpha = g.bossGlowAlpha;
   }
 
-  // Tighter RIM layer — bright silhouette pop, follows the wide glow's
+  // Tighter RIM layer - bright silhouette pop, follows the wide glow's
   // hit flash but with a higher baseline + peak so the character body
   // visually separates from the dark arena background.
   if (g.heroRim && g.hero) {
@@ -1036,7 +1036,7 @@ function tickFrame(g: GameState, dt: number) {
     g.bossRim.alpha = rimA;
   }
 
-  // Floor energy rings — under each fighter, HP-driven. Outer ring is
+  // Floor energy rings - under each fighter, HP-driven. Outer ring is
   // sized down + dimmed as that fighter loses HP, so the kid sees the
   // stakes without reading numbers.
   if (g.heroFloorRing && g.hero) {
@@ -1102,7 +1102,7 @@ function tickFrame(g: GameState, dt: number) {
     }
   }
 
-  // Hero / boss alpha (intro fade-in) — apply directly to sprites
+  // Hero / boss alpha (intro fade-in) - apply directly to sprites
   if (g.hero) g.hero.alpha = g.heroAlpha;
   if (g.boss) g.boss.alpha = g.bossAlpha;
 
@@ -1186,7 +1186,7 @@ export default function BossBattle({
 }: BossBattleProps) {
   const canvasHostRef = useRef<HTMLDivElement>(null);
 
-  // Mobile detection — used to gate the HeroSelectAtmosphere R3F
+  // Mobile detection - used to gate the HeroSelectAtmosphere R3F
   // canvas so phones don't run it alongside Arena3D + PixiJS.
   const isMobile = useIsMobile();
 
@@ -1197,7 +1197,7 @@ export default function BossBattle({
     [questions]
   );
 
-  // Per-pool advance pointers — "next index to pick".
+  // Per-pool advance pointers - "next index to pick".
   const easyIdxRef = useRef(1);
   const medIdxRef = useRef(0);
   const hardIdxRef = useRef(0);
@@ -1211,11 +1211,11 @@ export default function BossBattle({
   const [heroHp, setHeroHp] = useState(HP_MAX);
   const [bossHp, setBossHp] = useState(HP_MAX);
   const [combo, setCombo] = useState(0);
-  // SHIELD power-up — single charge per fight, auto-armed at start.
+  // SHIELD power-up - single charge per fight, auto-armed at start.
   // Wrong-answer handler consumes it instead of taking damage.
   const [shieldArmed, setShieldArmed] = useState(true);
   const [shieldConsumedKey, setShieldConsumedKey] = useState(0);
-  // Tracks whether the kid spent their shield this run — drives the
+  // Tracks whether the kid spent their shield this run - drives the
   // "Shield Saved Me!" achievement.
   const [usedShield, setUsedShield] = useState(false);
   const [questionIdx, setQuestionIdx] = useState(0);
@@ -1262,7 +1262,7 @@ export default function BossBattle({
     return () => window.removeEventListener("resize", onResize);
   }, []);
 
-  // Derive boss phase (0-3) from HP — matches the PixiJS internal mapping.
+  // Derive boss phase (0-3) from HP - matches the PixiJS internal mapping.
   const arenaPhase: 0 | 1 | 2 | 3 = useMemo(() => {
     const pct = bossHp / HP_MAX;
     if (pct <= 0.25) return 3;
@@ -1271,7 +1271,7 @@ export default function BossBattle({
     return 0;
   }, [bossHp]);
 
-  // Victory mood override — once result is "won", lock arena to victory lighting.
+  // Victory mood override - once result is "won", lock arena to victory lighting.
   useEffect(() => {
     if (result === "won") {
       if (arenaMoodTimerRef.current) {
@@ -1339,7 +1339,7 @@ export default function BossBattle({
   // Super attack power-up
   const [superReady, setSuperReady] = useState(false);
 
-  // Timer — initial budget follows adaptive difficulty level.
+  // Timer - initial budget follows adaptive difficulty level.
   // 0 = easy (18s), 1 = medium (14s), 2 = hard (11s).
   const difficultyTimerMs = (level: 0 | 1 | 2): number =>
     level === 0 ? 18000 : level === 1 ? 14000 : 11000;
@@ -1367,7 +1367,7 @@ export default function BossBattle({
   // Victory stats stagger
   const [statsStage, setStatsStage] = useState(0);
 
-  // Pre-question countdown (3, 2, 1, GO!) — null = not active
+  // Pre-question countdown (3, 2, 1, GO!) - null = not active
   const [countdownPhase, setCountdownPhase] = useState<3 | 2 | 1 | "GO" | null>(null);
 
   // Speech bubbles
@@ -1475,7 +1475,7 @@ export default function BossBattle({
     playSound("lessonStart");
   }, []);
 
-  // Start battle BGM once a hero is locked in — quiet during intro, full at gameplay
+  // Start battle BGM once a hero is locked in - quiet during intro, full at gameplay
   useEffect(() => {
     if (!selectedHero) return;
     SoundManager.getInstance().setVolume("music", 0.5); // 0.5 × 0.10 base = 0.05
@@ -1487,14 +1487,14 @@ export default function BossBattle({
     };
   }, [selectedHero, gameKey]);
 
-  // Intro choreography — fires once the Pixi scene reports `ready`
+  // Intro choreography - fires once the Pixi scene reports `ready`
   useEffect(() => {
     if (!ready || !selectedHero) return;
     setIntroStage("dark");
     const timers: number[] = [];
     const g = gameRef.current;
 
-    // 0ms: dark — hero/boss hidden, boss offset -300
+    // 0ms: dark - hero/boss hidden, boss offset -300
     g.heroAlpha = 0;
     g.bossAlpha = 0;
     g.bossYOffset = -300;
@@ -1535,7 +1535,7 @@ export default function BossBattle({
       });
     }, 3300));
 
-    // 4100ms: Boss lands — shake + particles + roar
+    // 4100ms: Boss lands - shake + particles + roar
     timers.push(window.setTimeout(() => {
       setIntroStage("impact");
       if (g.boss) {
@@ -1672,12 +1672,12 @@ export default function BossBattle({
         const W = window.innerWidth;
         const H = window.innerHeight;
 
-        // NOTE: the static background sprite was removed — the 3D Arena
+        // NOTE: the static background sprite was removed - the 3D Arena
         // (Three.js) renders behind the transparent PixiJS canvas now.
         // We keep `textures.bg` loaded only so existing type contracts hold.
         void W; void H;
 
-        // Reactive background overlay stays — it paints event flashes
+        // Reactive background overlay stays - it paints event flashes
         // (hit / super / victory tints) over the 3D scene through the
         // transparent Pixi canvas.
         const bgOverlay = new Graphics();
@@ -1696,7 +1696,7 @@ export default function BossBattle({
         try { bossShadow.filters = [new BlurFilter({ strength: 8 })]; } catch { /* filter unsupported */ }
         app.stage.addChild(bossShadow);
 
-        // Reflections — flipped character sprites tinted down
+        // Reflections - flipped character sprites tinted down
         const heroSet = textures[selectedHero];
         const heroReflection = new Sprite(heroSet.idle);
         heroReflection.anchor.set(0.5, 1);
@@ -1708,7 +1708,7 @@ export default function BossBattle({
         bossReflection.alpha = 0.1;
         app.stage.addChild(bossReflection);
 
-        // Floor energy rings — concentric arcs beneath each fighter,
+        // Floor energy rings - concentric arcs beneath each fighter,
         // HP-driven scale + alpha. Drawn first so they sit on the floor
         // BELOW everything else.
         const heroFloorRing = new Graphics();
@@ -1730,7 +1730,7 @@ export default function BossBattle({
         bossGlow.alpha = 0.07;
         app.stage.addChild(bossGlow);
 
-        // Tighter rim layer in front of the wide glow — same colour,
+        // Tighter rim layer in front of the wide glow - same colour,
         // smaller radius, brighter alpha. Brings the silhouette out from
         // the dark Arena3D background.
         const heroRim = new Graphics();
@@ -1916,7 +1916,7 @@ export default function BossBattle({
         playSound("correct");
         showCenterFeedback("correct");
 
-        // Adaptive difficulty — 3 correct in a row bumps level up (max 2).
+        // Adaptive difficulty - 3 correct in a row bumps level up (max 2).
         g.consecutiveWrong = 0;
         g.consecutiveCorrect += 1;
         if (g.consecutiveCorrect >= 3 && g.difficultyLevel < 2) {
@@ -1958,7 +1958,7 @@ export default function BossBattle({
           showHeroSpeech(HERO_LINES_7[Math.floor(Math.random() * HERO_LINES_7.length)]);
         }
 
-        // Phase transition — boss HP crossed 75%, 50%, or 25%. Each
+        // Phase transition - boss HP crossed 75%, 50%, or 25%. Each
         // threshold escalates the visceral payoff (rage mode kicks in
         // at the lower crossings).
         const prevPct = bossHp / HP_MAX;
@@ -1970,7 +1970,7 @@ export default function BossBattle({
         } else if (crossed(0.5)) {
           playSound("phaseChange"); playSound("bossRoar");
           showPhaseAnnouncement("phase2");
-          // Rage mode kicks in — extra arena shake + danger pulse
+          // Rage mode kicks in - extra arena shake + danger pulse
           // beyond the standard phase announcement.
           bumpArenaShake(10);
           pulseArenaDanger(700);
@@ -1979,7 +1979,7 @@ export default function BossBattle({
         } else if (crossed(0.25)) {
           playSound("phaseChange"); playSound("bossRoar");
           showPhaseAnnouncement("final");
-          // Desperate phase — heavier shake, longer danger pulse,
+          // Desperate phase - heavier shake, longer danger pulse,
           // bigger overlay flash.
           bumpArenaShake(13);
           pulseArenaDanger(900);
@@ -1988,7 +1988,7 @@ export default function BossBattle({
         }
 
         if (newBossHp <= 0) {
-          // FINAL-BLOW SEQUENCE — freeze frame, zoom, white flash, then
+          // FINAL-BLOW SEQUENCE - freeze frame, zoom, white flash, then
           // triggerVictory plays out the explosion + celebration.
           triggerHitStop(g, 280);
           if (g.boss) cameraPulse(g, 1.18, g.boss.x, g.boss.y, -25);
@@ -2000,7 +2000,7 @@ export default function BossBattle({
         }
       } else {
         // SHIELD: if armed, the kid's defensive charge absorbs this hit
-        // entirely — no damage, no combo break, no super-disarm. Single
+        // entirely - no damage, no combo break, no super-disarm. Single
         // charge per fight. Plays a softer "block" feedback then advances
         // the question.
         if (shieldArmed) {
@@ -2010,7 +2010,7 @@ export default function BossBattle({
           setStats((s) => ({ ...s, totalAsked: s.totalAsked + 1 }));
           playSound("hitImpact");
           showCenterFeedback("shielded");
-          // Hero stays defiant — quick block animation via existing taunt.
+          // Hero stays defiant - quick block animation via existing taunt.
           g.heroAnim = "celebrate";
           g.heroAnimTimer = 350;
           setExplanationVisible(true);
@@ -2040,7 +2040,7 @@ export default function BossBattle({
         showCenterFeedback("wrong");
         showBossTaunt();
 
-        // Adaptive difficulty — 2 wrong in a row drops level (min 0).
+        // Adaptive difficulty - 2 wrong in a row drops level (min 0).
         g.consecutiveCorrect = 0;
         g.consecutiveWrong += 1;
         if (g.consecutiveWrong >= 2 && g.difficultyLevel > 0) {
@@ -2056,7 +2056,7 @@ export default function BossBattle({
         bumpArenaShake(7);
         pulseArenaDanger(500);
 
-        // Post-wrong — reveal correct answer + explanation for ~1.7s before advancing
+        // Post-wrong - reveal correct answer + explanation for ~1.7s before advancing
         setExplanationVisible(true);
 
         if (newHeroHp <= 0) {
@@ -2072,7 +2072,7 @@ export default function BossBattle({
         advanceQuestion();
         setFeedback(null);
         setLocked(false);
-        // New question — difficulty may have shifted; rebuild timer budget.
+        // New question - difficulty may have shifted; rebuild timer budget.
         const nextBudget = difficultyTimerMs(g.difficultyLevel);
         setCurrentQuestionMs(nextBudget);
         questionStartTsRef.current = performance.now();
@@ -2102,7 +2102,7 @@ export default function BossBattle({
     [locked, result, ready, introStage, countdownPhase, phaseAnnouncement, currentQ, resolveAnswer]
   );
 
-  // Phase-based bg tint — soft red as the boss nears death.
+  // Phase-based bg tint - soft red as the boss nears death.
   // Also mirror HP-pct into gameRef so the tick can read it without props.
   useEffect(() => {
     const g = gameRef.current;
@@ -2126,7 +2126,7 @@ export default function BossBattle({
     gameRef.current.superZoomActive = superReady;
   }, [superReady]);
 
-  // Parallax mouse tracking — disable on narrow screens + touch
+  // Parallax mouse tracking - disable on narrow screens + touch
   useEffect(() => {
     if (typeof window === "undefined") return;
     const isTouch = "ontouchstart" in window || window.innerWidth < 768;
@@ -2141,7 +2141,7 @@ export default function BossBattle({
     return () => window.removeEventListener("mousemove", onMove);
   }, []);
 
-  // Timer countdown — only during active gameplay (not intro, countdown, or phase transitions)
+  // Timer countdown - only during active gameplay (not intro, countdown, or phase transitions)
   useEffect(() => {
     if (introStage !== "done" || result || countdownPhase !== null || phaseAnnouncement !== null) return;
     const id = window.setInterval(() => {
@@ -2156,7 +2156,7 @@ export default function BossBattle({
         lastTickSecondRef.current = secLeft;
       }
       if (remaining <= 0 && !locked) {
-        // Time up — treat as wrong answer, no index
+        // Time up - treat as wrong answer, no index
         timerRunningRef.current = false;
         setLocked(true);
         setFeedback({ index: -1, correct: false });
@@ -2166,7 +2166,7 @@ export default function BossBattle({
     return () => window.clearInterval(id);
   }, [introStage, result, locked, countdownPhase, phaseAnnouncement, resolveAnswer]);
 
-  // Auto-fire onEnd only on defeat — victory waits for "Continue →" click.
+  // Auto-fire onEnd only on defeat - victory waits for "Continue →" click.
   useEffect(() => {
     if (result !== "lost" || !onEnd) return;
     const accuracy =
@@ -2175,7 +2175,7 @@ export default function BossBattle({
     onEnd(false, { combo: stats.maxCombo, accuracy, xp });
   }, [result, stats, onEnd]);
 
-  // Pending level-up info — shown between "Continue →" click and onEnd.
+  // Pending level-up info - shown between "Continue →" click and onEnd.
   const [pendingLevelUp, setPendingLevelUp] = useState<
     { oldRank: RankInfo; newRank: RankInfo; totalXP: number } | null
   >(null);
@@ -2271,7 +2271,7 @@ export default function BossBattle({
     setGameKey((k) => k + 1);
   };
 
-  // Victory stats stagger — reveal one stat line every ~0.5s, then stars + button.
+  // Victory stats stagger - reveal one stat line every ~0.5s, then stars + button.
   // Stage meanings:
   //  0 = heading only, 1 = accuracy, 2 = combo, 3 = questions, 4 = fastest,
   //  5 = XP, 6 = stars revealing, 7 = stars done + Play Again button
@@ -2334,7 +2334,7 @@ export default function BossBattle({
     }
   }, [achievementResult]);
 
-  // Edge-glow arena lighting — picks the highest-priority game state and
+  // Edge-glow arena lighting - picks the highest-priority game state and
   // applies a coloured inset box-shadow across the play area. Smooth
   // transitions on state changes via CSS `transition: box-shadow`.
   const edgeGlow = useMemo(() => {
@@ -2362,25 +2362,25 @@ export default function BossBattle({
     >
       {!selectedHero && (
         <div className="bb-sel-screen">
-          {/* Live R3F atmosphere — cosmic atrium, sits behind the CSS
+          {/* Live R3F atmosphere - cosmic atrium, sits behind the CSS
               decoration layers and the cards. */}
           <div className="bb-sel-canvas" aria-hidden="true">
             {!isMobile && <HeroSelectAtmosphere />}
           </div>
 
-          {/* Background layers — cosmic blobs + bottom horizon haze */}
+          {/* Background layers - cosmic blobs + bottom horizon haze */}
           <div className="bb-sel-mesh bb-sel-mesh-blue" />
           <div className="bb-sel-mesh bb-sel-mesh-purple" />
           <div className="bb-sel-haze" />
           <div className="bb-sel-beam" />
 
-          {/* Subtle full-bleed vignette + ultra-fine grain overlay —
+          {/* Subtle full-bleed vignette + ultra-fine grain overlay -
               focuses attention to the centre and adds the "filmic"
               quality high-end games tend to have. */}
           <div className="bb-sel-vignette" aria-hidden="true" />
           <div className="bb-sel-grain" aria-hidden="true" />
 
-          {/* Lightning streaks scattered across the screen — was 6,
+          {/* Lightning streaks scattered across the screen - was 6,
               trimmed to 3 to ease GPU paint while the R3F atmosphere
               runs behind. */}
           {[
@@ -2401,7 +2401,7 @@ export default function BossBattle({
             />
           ))}
 
-          {/* Drifting particles — warm cosmic palette to match the
+          {/* Drifting particles - warm cosmic palette to match the
               lock screen (gold / coral / pink / cosmic / cyan). */}
           <div className="bb-sel-particles" aria-hidden="true">
             {Array.from({ length: 14 }).map((_, i) => (
@@ -2420,7 +2420,7 @@ export default function BossBattle({
             ))}
           </div>
 
-          {/* Tesla arc across the centre — fires every ~2.6s. Two zigzag
+          {/* Tesla arc across the centre - fires every ~2.6s. Two zigzag
               SVG paths (cyan + bright white core) for proper electric
               bolt look. Sits between the hero cards. */}
           <svg
@@ -2621,12 +2621,12 @@ export default function BossBattle({
           })()}
 
           <p className="bb-sel-footer">
-            Both heroes have the same powers — pick your favourite!
+            Both heroes have the same powers - pick your favourite!
           </p>
         </div>
       )}
 
-      {/* 3D Arena — sits BEHIND the PixiJS canvas. */}
+      {/* 3D Arena - sits BEHIND the PixiJS canvas. */}
       {selectedHero && (
         <div
           aria-hidden="true"
@@ -2638,7 +2638,7 @@ export default function BossBattle({
             // Adam = cool tech-blue; Layla = cosmic violet/pink. The
             // hue-rotate is a global filter on the rendered Arena3D
             // canvas so every inline-coloured mesh inside (wireframe
-            // globe, conduits, hex nodes, arcs) shifts together —
+            // globe, conduits, hex nodes, arcs) shifts together -
             // way cheaper than threading heroId through every color
             // literal in the 2800-line scene.
             filter: selectedHero === "adam" ? "hue-rotate(-70deg) saturate(0.95)" : "none",
@@ -2659,7 +2659,7 @@ export default function BossBattle({
         </div>
       )}
 
-      {/* PixiJS canvas — transparent, sits above the 3D arena. */}
+      {/* PixiJS canvas - transparent, sits above the 3D arena. */}
       {selectedHero && (
         <div
           ref={canvasHostRef}
@@ -2734,7 +2734,7 @@ export default function BossBattle({
         </div>
       )}
 
-      {/* Edge-glow arena lighting — single inset shadow whose colour /
+      {/* Edge-glow arena lighting - single inset shadow whose colour /
           spread / blur change with game state (super armed → cyan,
           boss rage → orange/red, combo 5+ → gold). Smooth box-shadow
           transition + a gentle pulse keep it alive. */}
@@ -2776,8 +2776,8 @@ export default function BossBattle({
             {phaseAnnouncement === "angry"
               ? "HACKER RACCOON IS GETTING ANGRY!"
               : phaseAnnouncement === "phase2"
-                ? "PHASE 2 — DANGER RISING!"
-                : "FINAL PHASE — FINISH HIM!"}
+                ? "PHASE 2 - DANGER RISING!"
+                : "FINAL PHASE - FINISH HIM!"}
           </div>
         </>
       )}
@@ -2878,7 +2878,7 @@ export default function BossBattle({
                 boxShadow: "inset 0 1px 3px rgba(0,0,0,0.5)",
               }}
             >
-              {/* Ghost (delayed) fill — drains slowly after a hit */}
+              {/* Ghost (delayed) fill - drains slowly after a hit */}
               <div
                 className="bb-hp-ghost"
                 style={{
@@ -3033,7 +3033,7 @@ export default function BossBattle({
         </div>
       )}
 
-      {/* SHIELD power-up HUD chip — top-left, below HP bars. Pulsing
+      {/* SHIELD power-up HUD chip - top-left, below HP bars. Pulsing
           cyan when armed; dimmed when consumed. Single charge per fight. */}
       {selectedHero && !result && introStage === "done" && (
         <div
@@ -3048,7 +3048,7 @@ export default function BossBattle({
             alignItems: "center",
             gap: 8,
           }}
-          title={shieldArmed ? "Shield charge ready — absorbs next wrong answer" : "Shield charge already used"}
+          title={shieldArmed ? "Shield charge ready - absorbs next wrong answer" : "Shield charge already used"}
         >
           <div
             style={{
@@ -3090,7 +3090,7 @@ export default function BossBattle({
         </div>
       )}
 
-      {/* Boss-attack TELEGRAPH EMBLEM — a brief icon (🪤/🔨/🌀) floats
+      {/* Boss-attack TELEGRAPH EMBLEM - a brief icon (🪤/🔨/🌀) floats
           above the raccoon when each new question reveals, colour-glowing
           to match the attack-type banner. Pure visual punctuation. */}
       {selectedHero && !result && q && introStage === "done" && countdownPhase === null && phaseAnnouncement === null && (() => {
@@ -3147,7 +3147,7 @@ export default function BossBattle({
         );
       })()}
 
-      {/* SHIELDED! pop — fires when the shield absorbs a wrong answer.
+      {/* SHIELDED! pop - fires when the shield absorbs a wrong answer.
           Centred ring + label, auto-fades. */}
       {shieldConsumedKey > 0 && (
         <div
@@ -3240,7 +3240,7 @@ export default function BossBattle({
             </div>
           )}
 
-          {/* ATTACK-TYPE BANNER — uses the hoisted ATTACK_META so the
+          {/* ATTACK-TYPE BANNER - uses the hoisted ATTACK_META so the
               card border, the banner, and the boss-emblem float all
               share the same colour/icon/tag for the current attack. */}
           {(() => {
@@ -3273,7 +3273,7 @@ export default function BossBattle({
                     opacity: 0.9,
                   }}
                 >
-                  ⚡ Boss Attack — {meta.tag}
+                  ⚡ Boss Attack - {meta.tag}
                 </div>
                 <div
                   style={{
@@ -3372,7 +3372,7 @@ export default function BossBattle({
         );
       })()}
 
-      {/* End screen — defeat (kept simple, auto-ends to parent) */}
+      {/* End screen - defeat (kept simple, auto-ends to parent) */}
       {selectedHero && result === "lost" && (
         <div
           style={{
@@ -3454,7 +3454,7 @@ export default function BossBattle({
         </div>
       )}
 
-      {/* Victory overlay — celebration screen with staggered stats */}
+      {/* Victory overlay - celebration screen with staggered stats */}
       {selectedHero && result === "won" && (() => {
         const heroCelebrateSrc = selectedHero === "layla"
           ? ASSET_PATHS.laylaCelebrate
@@ -3533,7 +3533,7 @@ export default function BossBattle({
                     { n: 1, label: "Accuracy", value: <CountUp target={finalAccuracy} suffix="%" />, accent: "#60a5fa" },
                     { n: 2, label: "Best Combo", value: <CountUp target={stats.maxCombo} suffix="×" />, accent: "#34d399" },
                     { n: 3, label: "Questions", value: <CountUp target={stats.totalAsked} />, accent: "#a78bfa" },
-                    { n: 4, label: "Fastest Answer", value: fastestMs !== null ? `${(fastestMs / 1000).toFixed(1)}s` : "—", accent: "#f97316" },
+                    { n: 4, label: "Fastest Answer", value: fastestMs !== null ? `${(fastestMs / 1000).toFixed(1)}s` : "-", accent: "#f97316" },
                     { n: 5, label: "XP Earned", value: <CountUp target={finalXp} />, accent: "#fbbf24", big: true },
                   ].map((row) => (
                     statsStage >= row.n && (
@@ -3573,7 +3573,7 @@ export default function BossBattle({
                 </div>
               )}
 
-              {/* Achievement badge row — only renders the badges earned
+              {/* Achievement badge row - only renders the badges earned
                   this run, with a "NEW!" pip if it's a first-time unlock. */}
               {statsStage >= 6 && achievementResult && achievementResult.freshlyEarned.length > 0 && (
                 <div className="bb-victory-badges">
@@ -3626,7 +3626,7 @@ export default function BossBattle({
         );
       })()}
 
-      {/* Level-up celebration — shown between victory screen and onEnd */}
+      {/* Level-up celebration - shown between victory screen and onEnd */}
       {pendingLevelUp && (
         <LevelUpCelebration
           oldRank={pendingLevelUp.oldRank}
@@ -3746,7 +3746,7 @@ export default function BossBattle({
         }
         .bb-answer-shake { animation: bbShakeWrong .4s ease-in-out !important }
 
-        /* — Character selection screen — AAA redesign — */
+        /* - Character selection screen - AAA redesign - */
         @keyframes bbSelMeshBlue {
           0%,100% { transform: translate(-10%, -10%) scale(1) }
           50% { transform: translate(10%, 8%) scale(1.1) }
@@ -3791,7 +3791,7 @@ export default function BossBattle({
           position: absolute; inset: 0;
           display: flex; flex-direction: column;
           align-items: center; justify-content: center;
-          /* Cinematic radial — same lineage as the FINAL SHOWDOWN
+          /* Cinematic radial - same lineage as the FINAL SHOWDOWN
              lock screen. Cosmic-violet warmth bleeding through navy. */
           background: radial-gradient(ellipse at 50% 70%, #2a0d2e 0%, #1a1f4d 35%, #0f1530 70%, #04050d 100%);
           padding: 40px 24px;
@@ -3799,7 +3799,7 @@ export default function BossBattle({
           overflow: hidden;
           font-family: 'DM Sans', sans-serif;
         }
-        /* Live R3F canvas — sits behind every other decoration so the
+        /* Live R3F canvas - sits behind every other decoration so the
            CSS blobs / lightning / particles / Tesla layer over it. */
         .bb-sel-canvas {
           position: absolute;
@@ -3811,7 +3811,7 @@ export default function BossBattle({
           width: 100%;
           height: 100%;
         }
-        /* Filmic vignette — soft dark halo at the edges that focuses
+        /* Filmic vignette - soft dark halo at the edges that focuses
            attention to the centre. Uses a transparent radial so the
            R3F atmosphere still reads through. */
         .bb-sel-vignette {
@@ -3820,9 +3820,9 @@ export default function BossBattle({
           background: radial-gradient(ellipse at 50% 50%, transparent 35%, rgba(0, 0, 0, 0.55) 100%);
           pointer-events: none;
           z-index: 0;
-          /* pulse animation removed — was constant repaint */
+          /* pulse animation removed - was constant repaint */
         }
-        /* Ultra-fine grain — SVG noise as a base64 data URI so we don't
+        /* Ultra-fine grain - SVG noise as a base64 data URI so we don't
            need to ship an asset. Adds the subtle "filmic" texture top-
            tier games have. Very low opacity so it never reads as noise,
            only as material warmth. */
@@ -3840,7 +3840,7 @@ export default function BossBattle({
           50%      { opacity: 1.0; }
         }
 
-        /* Cosmic cloud blobs — top-left violet, top-right pink, bottom
+        /* Cosmic cloud blobs - top-left violet, top-right pink, bottom
            coral horizon haze. Same blobs as the lock screen. */
         .bb-sel-mesh {
           position: absolute;
@@ -3870,7 +3870,7 @@ export default function BossBattle({
           filter: blur(70px);
           pointer-events: none;
         }
-        /* Lightning streak (warm gold) — used inline in the JSX. */
+        /* Lightning streak (warm gold) - used inline in the JSX. */
         .bb-sel-bolt {
           position: absolute;
           top: 0;
@@ -3880,7 +3880,7 @@ export default function BossBattle({
           pointer-events: none;
           animation: bbSelBoltStrike ease-in-out infinite;
         }
-        /* Horizontal light beam — kept as a subtle horizon line. */
+        /* Horizontal light beam - kept as a subtle horizon line. */
         .bb-sel-beam {
           position: absolute;
           top: 50%; left: 0; right: 0;
@@ -3889,7 +3889,7 @@ export default function BossBattle({
           box-shadow: 0 0 24px rgba(255, 215, 138, 0.12);
           pointer-events: none;
         }
-        /* Tesla arc — flickers across the centre OR badge. */
+        /* Tesla arc - flickers across the centre OR badge. */
         .bb-sel-tesla {
           position: absolute;
           top: 50%;
@@ -3939,7 +3939,7 @@ export default function BossBattle({
           opacity: 0;
         }
 
-        /* Title — shimmering cosmic gradient with chromatic glitch jumps,
+        /* Title - shimmering cosmic gradient with chromatic glitch jumps,
            same lineage as the FINAL SHOWDOWN lock-screen title. */
         .bb-sel-title {
           position: relative;
@@ -3996,7 +3996,7 @@ export default function BossBattle({
           94% { transform: translate(0, 0); filter: drop-shadow(-2px 0 0 #00e5ff) drop-shadow(2px 0 0 #ff5fb3) drop-shadow(0 0 30px rgba(255, 95, 179, 0.45)); }
         }
 
-        /* Cards wrapper — card ▸ OR ▸ card, all centred */
+        /* Cards wrapper - card ▸ OR ▸ card, all centred */
         .bb-sel-cards {
           position: relative;
           z-index: 1;
@@ -4008,7 +4008,7 @@ export default function BossBattle({
           width: 100%;
         }
 
-        /* Card — premium holographic glass panel. Frosted-glass body,
+        /* Card - premium holographic glass panel. Frosted-glass body,
            edge bevel via layered inset highlights, animated gradient
            top accent in the hero's colour, plus a slow holographic
            scanline that sweeps top-to-bottom. */
@@ -4043,7 +4043,7 @@ export default function BossBattle({
                       box-shadow 0.35s ease,
                       opacity 0.4s ease;
         }
-        /* Static top accent strip — was animated cycling, now static
+        /* Static top accent strip - was animated cycling, now static
            to ease repaint cost. Same hero-colour glow read. */
         .bb-sel-card::before {
           content: "";
@@ -4058,7 +4058,7 @@ export default function BossBattle({
           z-index: 3;
           pointer-events: none;
         }
-        /* Card scanline removed — was running per-card on infinite
+        /* Card scanline removed - was running per-card on infinite
            loop alongside the R3F atmosphere; perceptible jank during
            heavy frames. */
         @keyframes bbSelAccentSlide {
@@ -4187,7 +4187,7 @@ export default function BossBattle({
           margin: 0 0 14px;
         }
 
-        /* Stats — tick-mark style. 10 segments per bar, filled count
+        /* Stats - tick-mark style. 10 segments per bar, filled count
            = round(value/10), leading filled tick pulses subtly. Each
            tick reveals with a staggered cascade. */
         .bb-sel-stats {
@@ -4261,7 +4261,7 @@ export default function BossBattle({
           text-shadow: none;
         }
 
-        /* Select button — premium feel: layered inset highlights for
+        /* Select button - premium feel: layered inset highlights for
            a beveled 3D edge, sustained shimmer sweep, hover lift. */
         .bb-sel-btn {
           position: relative;
@@ -4278,7 +4278,7 @@ export default function BossBattle({
           cursor: pointer;
           overflow: hidden;
           /* Top-edge highlight + bottom-edge shadow + inner stroke +
-             outer drop — gives it a tactile 3D button feel. */
+             outer drop - gives it a tactile 3D button feel. */
           box-shadow:
             inset 0 1px 0 rgba(255, 255, 255, 0.28),
             inset 0 -1px 0 rgba(0, 0, 0, 0.45),
@@ -4291,7 +4291,7 @@ export default function BossBattle({
             box-shadow 0.25s ease;
         }
         .bb-sel-btn::before {
-          /* Subtle top sheen — flat highlight band on the top half so
+          /* Subtle top sheen - flat highlight band on the top half so
              it reads as a beveled glass surface. */
           content: "";
           position: absolute;
@@ -4335,7 +4335,7 @@ export default function BossBattle({
           z-index: 0;
         }
 
-        /* OR divider — vertical between cards. Cosmic gold→pink chip
+        /* OR divider - vertical between cards. Cosmic gold→pink chip
            with a soft halo, matching the VS chip on the lock screen. */
         .bb-sel-or {
           position: relative;
@@ -4418,7 +4418,7 @@ export default function BossBattle({
           }
         }
 
-        /* — HP bar juice — */
+        /* - HP bar juice - */
         .bb-hp-fill { animation: bbStripeMove 0.6s linear infinite }
         @keyframes bbStripeMove { to { background-position: 24px 0, 0 0 } }
         @keyframes bbHpLowHero {
@@ -4433,14 +4433,14 @@ export default function BossBattle({
         }
         .bb-hp-shake { animation: bbHpShake 0.28s ease-in-out infinite !important }
 
-        /* — Timer bar — */
+        /* - Timer bar - */
         @keyframes bbTimerPulse {
           0%,100% { filter: brightness(1) }
           50% { filter: brightness(1.5) }
         }
         .bb-timer-pulse { animation: bbTimerPulse 0.35s ease-in-out infinite }
 
-        /* — Super attack ready banner — */
+        /* - Super attack ready banner - */
         @keyframes bbSuperPulse {
           0%,100% { transform: scale(1) }
           50% { transform: scale(1.08) }
@@ -4461,7 +4461,7 @@ export default function BossBattle({
           animation: bbSuperPulse 0.9s ease-in-out infinite;
         }
 
-        /* — Attack announcement strip — */
+        /* - Attack announcement strip - */
         @keyframes bbAnnounceSlide {
           0% { opacity: 0; transform: translate(-100px, 0) }
           30% { opacity: 1; transform: translate(0, 0) }
@@ -4488,7 +4488,7 @@ export default function BossBattle({
         .bb-announce-gold { text-shadow: 0 0 18px rgba(250,204,21,0.95), 0 0 36px rgba(249,115,22,0.55), 2px 2px 0 rgba(0,0,0,0.6); color: #fde047 }
         .bb-announce-cyan { text-shadow: 0 0 14px rgba(34,211,238,0.9), 0 0 28px rgba(14,165,233,0.5), 2px 2px 0 rgba(0,0,0,0.6); color: #22d3ee; font-size: 28px }
 
-        /* — Intro banners — */
+        /* - Intro banners - */
         @keyframes bbIntroFade {
           0% { opacity: 0; transform: translate(-50%, -50%) scale(0.8) }
           20% { opacity: 1; transform: translate(-50%, -50%) scale(1.05) }
@@ -4530,7 +4530,7 @@ export default function BossBattle({
           animation: bbIntroFade 1.3s ease-out forwards;
         }
 
-        /* — Victory stats — */
+        /* - Victory stats - */
         @keyframes bbStatSlideIn {
           0% { opacity: 0; transform: translateY(20px) }
           100% { opacity: 1; transform: translateY(0) }
@@ -4575,7 +4575,7 @@ export default function BossBattle({
         }
         .bb-play-again { animation: bbStatSlideIn 0.5s ease-out both }
 
-        /* — Pre-question countdown — */
+        /* - Pre-question countdown - */
         @keyframes bbCountdownIn {
           0% { opacity: 0; transform: translate(-50%, -50%) scale(1.6) }
           40% { opacity: 1; transform: translate(-50%, -50%) scale(1) }
@@ -4601,7 +4601,7 @@ export default function BossBattle({
           animation-duration: 0.5s;
         }
 
-        /* — Speech bubbles — */
+        /* - Speech bubbles - */
         @keyframes bbSpeechIn {
           0% { opacity: 0; transform: translateX(-50%) translateY(8px) scale(0.85) }
           25% { opacity: 1; transform: translateX(-50%) translateY(0) scale(1) }
@@ -4640,7 +4640,7 @@ export default function BossBattle({
         .bb-speech-tail-boss { border-top-color: #2d1b69 }
         .bb-speech-tail-hero { border-top-color: #1e3a5f }
 
-        /* — Centre correct/wrong flash — */
+        /* - Centre correct/wrong flash - */
         @keyframes bbCenterFbIn {
           0% { opacity: 0; transform: translate(-50%, -50%) scale(0.5) }
           30% { opacity: 1; transform: translate(-50%, -50%) scale(1) }
@@ -4663,7 +4663,7 @@ export default function BossBattle({
         .bb-center-fb-correct { color: #10b981 }
         .bb-center-fb-wrong { color: #ef4444 }
 
-        /* — Phase transition banner — */
+        /* - Phase transition banner - */
         @keyframes bbPhaseDarken {
           0% { opacity: 0 }
           15% { opacity: 0.4 }
@@ -4708,7 +4708,7 @@ export default function BossBattle({
           animation: bbPhaseBanner 1.8s ease-out forwards, bbPhasePulse 0.6s ease-in-out infinite;
         }
 
-        /* — Victory overhaul — */
+        /* - Victory overhaul - */
         @keyframes bbFallConfetti {
           0% { transform: translate3d(0, -30px, 0) rotate(0deg); opacity: 0 }
           10% { opacity: 1 }

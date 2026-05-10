@@ -1,7 +1,7 @@
 "use client";
 
 /*
- * WelcomeScene — Case 0 post-video reveal.
+ * WelcomeScene - Case 0 post-video reveal.
  *
  * Cinematic incident-report moment: stormy dusk sky, polaroid-framed
  * Adam-and-Layla-hacked photo with red "TRANSMISSION INTERCEPTED" stamp,
@@ -47,7 +47,7 @@ export default function WelcomeScene({
 }: WelcomeSceneProps) {
   return (
     <SceneFrame>
-      {/* Cyber backdrop — transparent layers over the lesson page's
+      {/* Cyber backdrop - transparent layers over the lesson page's
           dark navy bg, with cyan/cosmic nebula bleeds + drifting
           particles in cyber palette. The Pixar warm scene layers are
           preserved on the marketing home; this scene runs inside the
@@ -58,7 +58,7 @@ export default function WelcomeScene({
       <StarField count={60} />
       <FloatingParticles count={20} />
 
-      {/* Lightning flash overlay — subtle, periodic */}
+      {/* Lightning flash overlay - subtle, periodic */}
       <div
         aria-hidden
         style={{
@@ -95,7 +95,7 @@ export default function WelcomeScene({
         <CaptionPlaque text={caption} />
       </div>
 
-      {/* Floating raccoon glyph in the corner — the antagonist's calling card.
+      {/* Floating raccoon glyph in the corner - the antagonist's calling card.
           Drop-shadow was harsh red; switched to coral/pink so the antagonist
           still reads as "warning" without breaking the cyber palette. */}
       <motion.div
@@ -116,7 +116,7 @@ export default function WelcomeScene({
         🦝
       </motion.div>
 
-      {/* Cyber-styled CTA — replaces PrimaryButton (warm gold gradient)
+      {/* Cyber-styled CTA - replaces PrimaryButton (warm gold gradient)
           for the cyber app surface. Position absolute at the bottom
           centre, above the lesson page's bottom edge. */}
       <div
@@ -243,7 +243,7 @@ function Polaroid({ src }: { src: string }) {
           letterSpacing: 1,
         }}
       >
-        Wk 1, Day 0 — Adam & Layla
+        Wk 1, Day 0 - Adam & Layla
       </div>
     </div>
   );

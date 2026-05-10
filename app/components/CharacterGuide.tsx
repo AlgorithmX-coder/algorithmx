@@ -19,7 +19,7 @@ export interface CharacterGuideProps {
   onMessageComplete?: () => void;
 }
 
-/* Animation timing — must stay in sync with the CSS keyframes below. */
+/* Animation timing - must stay in sync with the CSS keyframes below. */
 const TYPE_MS = 30;
 const TYPE_SOUND_INTERVAL_MS = 260;
 const EXIT_MS = 250;
@@ -95,7 +95,7 @@ export default function CharacterGuide({
   useEffect(() => {
     const hasMessage = message.length > 0;
 
-    // First render — just play the enter + bubble once, no exit dance.
+    // First render - just play the enter + bubble once, no exit dance.
     if (isFirstRunRef.current) {
       isFirstRunRef.current = false;
       if (!hasMessage) return;
@@ -110,7 +110,7 @@ export default function CharacterGuide({
       };
     }
 
-    // No real change — skip.
+    // No real change - skip.
     if (
       prevPropsRef.current.message === message &&
       prevPropsRef.current.mood === mood
@@ -123,7 +123,7 @@ export default function CharacterGuide({
     completeCalledRef.current = false;
     clearTimers();
 
-    // 1) Exit — hide bubble + animate character down/fade
+    // 1) Exit - hide bubble + animate character down/fade
     setBubbleVisible(false);
     setTypedText("");
     setPhase("exiting");
@@ -244,7 +244,7 @@ export default function CharacterGuide({
       >
         <defs>
           <filter id="cgEdgeClean" x="-5%" y="-5%" width="110%" height="110%">
-            {/* Was radius="1.2" — but at smaller render sizes that ate
+            {/* Was radius="1.2" - but at smaller render sizes that ate
                 hair tips, fingers and silhouette detail (testers
                 reported characters looking "distorted" / "chunky").
                 0.4 still kills semi-transparent edge fringe but
@@ -291,7 +291,7 @@ export default function CharacterGuide({
           width: auto;
           display: block;
           pointer-events: none;
-          /* Filter chain (order matters — filters apply left-to-right):
+          /* Filter chain (order matters - filters apply left-to-right):
              1. url(#cgEdgeClean) erodes the alpha channel by ~1.2px so
                 the semi-transparent matting fringe around the
                 silhouette is dropped before the drop-shadows compute.
@@ -302,7 +302,7 @@ export default function CharacterGuide({
             url(#cgEdgeClean)
             drop-shadow(0 10px 14px rgba(0, 0, 0, 0.65))
             drop-shadow(0 0 22px rgba(0, 229, 255, 0.32));
-          /* Soft fade on the very bottom — defensive backup for shoes/
+          /* Soft fade on the very bottom - defensive backup for shoes/
              feet area. Tightened from 92% → 96% now that the lighter
              erode no longer compounds with the mask. */
           -webkit-mask-image: linear-gradient(180deg, black 0%, black 96%, transparent 100%);
@@ -310,7 +310,7 @@ export default function CharacterGuide({
         }
         /* Static state while hidden between exit and enter. */
         .cg-char-hidden { opacity: 0; transform: translateY(30px); }
-        /* Exit animation — fill forwards so final frame persists. */
+        /* Exit animation - fill forwards so final frame persists. */
         .cg-char-exiting {
           animation: cgExit ${EXIT_MS}ms ease-in forwards;
         }
