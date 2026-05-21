@@ -1,2 +1,58 @@
 @import "tailwindcss";
 
+/* Landing-v2 theme tokens. Tailwind v4 strips bare `:root { --custom: ... }`
+ * declarations unless they're inside `@theme`, so we declare them there
+ * AND mirror to `:root` via plain CSS for runtime var() use. */
+@theme {
+  --color-lv2-ink: #04050d;
+  --color-lv2-paper: #e8edff;
+  --color-lv2-cyan: #00e5ff;
+  --color-lv2-cyan-soft: #7df0ff;
+  --color-lv2-cosmic: #7c5cff;
+}
+
+@layer base {
+  :root {
+    /* Brand palette - dark zone (cinematic + footer) */
+    --lv2-ink: #04050d;
+    --lv2-paper: #e8edff;
+    --lv2-cyan: #00e5ff;
+    --lv2-cyan-soft: #7df0ff;
+    --lv2-cosmic: #7c5cff;
+    --lv2-lime: #7eff97;
+    --lv2-text-muted: #a2a6b4;
+
+    /* Bright zone (supporting sections - stats, subjects, how, etc.).
+     * Two-zone split: dark hero showroom, bright product page. */
+    --lv2-bg-bright: #ffffff;
+    --lv2-bg-bright-alt: #f6f7fb;
+    --lv2-ink-bright: #0a0f1c;
+    --lv2-body-bright: #475569;
+    --lv2-muted-bright: #94a3b8;
+    --lv2-border-bright: #e2e8f0;
+    --lv2-border-bright-soft: #eef0f5;
+
+    /* Spacing rail - viewport-relative, capped on huge displays */
+    --lv2-rail: min(3.646vw, 5.833rem);
+
+    /* Easing curves */
+    --lv2-ease-out: cubic-bezier(0, 0, 0.58, 1);
+    --lv2-ease-soft: cubic-bezier(0.16, 1, 0.3, 1);
+
+    /* Font families - populated by next/font in app/layout.tsx */
+    --lv2-font-display: var(--font-inter), "Inter", system-ui, -apple-system, sans-serif;
+    --lv2-font-mono: var(--font-geist-mono), "Geist Mono", ui-monospace, monospace;
+  }
+}
+
+/* Reduce-motion guard. Belt-and-braces with the GlobalGameStyles
+ * data-attribute version used inside the lesson shell. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}

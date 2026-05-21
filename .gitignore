@@ -49,3 +49,6 @@ next-env.d.ts
 
 # Claude Code local skills (machine-specific, not project code)
 .claude/skills/
+
+# Internal iteration screenshots (not for production)
+docs/research-v2/
