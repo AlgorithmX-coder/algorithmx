@@ -17,10 +17,10 @@ interface HeroOverlayProps {
   progress: MotionValue<number>;
 }
 
-const EYEBROW = "// REINVENTING TECHNOLOGY EDUCATION";
+const EYEBROW = "// SIX FIELDS  ·  AGES 6 TO ADULT";
 const HEADLINE = "Technology education for every stage of life.";
 const SUBLINE =
-  "Game-first lessons that make real cybersecurity, coding, AI, and product thinking land for ages 6 to adult. Cyber Heroes Academy is the first course, available today.";
+  "Six fields of technology — cybersecurity, coding, AI, apps, entrepreneurship, robotics — for ages 6 to adult. Cyber Heroes Academy, our first course, is live today.";
 
 export default function HeroOverlay({ progress }: HeroOverlayProps) {
   /* Visibility timing — pulled forward so the headline reveals DURING
@@ -185,19 +185,19 @@ export default function HeroOverlay({ progress }: HeroOverlayProps) {
           }}
         >
           <Link
-            href="/cyberheroes"
+            href="#subjects"
             data-plausible="landing-v2-hero-primary"
             style={ctaPrimary}
           >
-            Explore Cyber Heroes
+            Explore courses
             <span aria-hidden style={{ marginLeft: 8 }}>→</span>
           </Link>
           <Link
-            href="/signup"
+            href="/cyberheroes"
             data-plausible="landing-v2-hero-secondary"
             style={ctaSecondary}
           >
-            Get Started
+            Start with Cyber Heroes
           </Link>
         </div>
       </div>

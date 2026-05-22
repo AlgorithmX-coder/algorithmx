@@ -29,7 +29,7 @@ import HeroOverlay from "./HeroOverlay";
  * sticky pin still works; the user just doesn't see the choreography.
  */
 
-const VaultScene = dynamic(() => import("./VaultScene"), { ssr: false });
+const VaultScene = dynamic(() => import("./LaptopScene"), { ssr: false });
 
 export default function HeroCinematic() {
   const railRef = useRef<HTMLElement>(null);
@@ -80,7 +80,7 @@ export default function HeroCinematic() {
         // 250vh = roughly 2.5 viewport heights of scroll for the
         // full cinematic + hero rest pad. Tuned by feel; cut to
         // 200vh later if it drags.
-        height: "250vh",
+        height: "150vh",
         background: "var(--lv2-ink, #04050d)",
       }}
     >

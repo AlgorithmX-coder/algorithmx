@@ -16,20 +16,23 @@ const STATS = [
     value: 72,
     suffix: "%",
     color: "#ff3ad6",
+    /* Parents - safety angle */
     label: "of children encounter online threats before age 10",
   },
   {
-    value: 93,
+    value: 85,
     suffix: "%",
     color: "#00f5ff",
-    label: "of UK employers say cybersecurity skills are now essential",
+    /* Universal - future tech literacy across all ages */
+    label: "of jobs in 2030 will require digital + AI skills",
   },
   {
     value: 65,
     prefix: "£",
     suffix: "K",
     color: "#ffc94a",
-    label: "average UK cybersecurity salary in 2026",
+    /* Adult / career angle - broadened from cyber-only to tech-sector */
+    label: "average UK tech-sector salary in 2026",
   },
 ];
 
