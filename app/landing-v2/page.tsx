@@ -1,6 +1,7 @@
 import HeroCinematic from "@/app/components/landing-v2/HeroCinematic";
 import Nav from "@/app/components/landing-v2/Nav";
 import ProblemStats from "@/app/components/landing-v2/ProblemStats";
+import ChooseYourPath from "@/app/components/landing-v2/ChooseYourPath";
 import SubjectShowcase from "@/app/components/landing-v2/SubjectShowcase";
 import HowItWorks from "@/app/components/landing-v2/HowItWorks";
 import Testimonials from "@/app/components/landing-v2/Testimonials";
@@ -37,6 +38,7 @@ export default function LandingV2() {
       <Nav />
       <main>
         <HeroCinematic />
+        <ChooseYourPath />
         <ProblemStats />
         <SubjectShowcase />
         <HowItWorks />
