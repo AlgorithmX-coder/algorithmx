@@ -144,10 +144,9 @@ function ScrollHint({
 }: {
   scrollYProgress: ReturnType<typeof useScroll>["scrollYProgress"];
 }) {
-  /* Visible at 0..0.45 progress, fades out once the chip explodes. */
-  const opacity = useTransform(scrollYProgress, [0, 0.05, 0.4, 0.55], [
-    0, 1, 1, 0,
-  ]);
+  /* Visible immediately at frame 0 (no dead-zone fade-in), fades out
+   * around mid-scroll once the cinematic is in motion. */
+  const opacity = useTransform(scrollYProgress, [0, 0.4, 0.55], [1, 1, 0]);
   return (
     <motion.div
       style={{

@@ -124,138 +124,250 @@ function useLidBrandTexture(): THREE.Texture | null {
   }, []);
 }
 
-/* Canvas-painted texture for the screen content. ALGORITHMX OS boot
- * sequence that references all six fields of the platform - not just
- * Cyber Heroes. Communicates platform breadth at a glance. */
+/* OLED-sharp screen texture. Pure-black background + multi-coloured
+ * syntax tokens (keywords cyan, status badges in subject accent, paths
+ * white, comments amber). Rendered at 2x resolution then sampled with
+ * 16x anisotropic filtering so the text reads razor-sharp on the lid
+ * plane. No soft tint background washes - real OLED panels have pure
+ * black pixels with vibrant emissive content. */
 function useScreenTexture(): THREE.Texture | null {
   return useMemo(() => {
     if (typeof document === "undefined") return null;
     const c = document.createElement("canvas");
-    c.width = 1024;
-    c.height = 640;
+    c.width = 2048;
+    c.height = 1280;
     const ctx = c.getContext("2d");
     if (!ctx) return null;
-    /* Background gradient */
-    const grad = ctx.createLinearGradient(0, 0, 0, c.height);
-    grad.addColorStop(0, "#020610");
-    grad.addColorStop(0.5, "#031024");
-    grad.addColorStop(1, "#020610");
-    ctx.fillStyle = grad;
+    /* Best-quality canvas rendering */
+    ctx.imageSmoothingEnabled = true;
+    ctx.imageSmoothingQuality = "high";
+
+    /* OLED pure-black background */
+    ctx.fillStyle = "#000000";
     ctx.fillRect(0, 0, c.width, c.height);
 
-    /* Soft cyan glow vignette */
-    const glow = ctx.createRadialGradient(
-      c.width / 2,
-      c.height / 2,
-      40,
-      c.width / 2,
-      c.height / 2,
-      c.width / 1.4,
-    );
-    glow.addColorStop(0, "rgba(0,245,255,0.15)");
-    glow.addColorStop(1, "rgba(0,245,255,0)");
-    ctx.fillStyle = glow;
-    ctx.fillRect(0, 0, c.width, c.height);
+    /* Top-bar subtle cyan accent strip (mimics "active terminal" bar) */
+    ctx.fillStyle = "rgba(0,245,255,0.06)";
+    ctx.fillRect(0, 0, c.width, 6);
 
-    /* Boot lines */
-    ctx.font = "28px ui-monospace, 'Courier New', monospace";
+    /* Boot header - mixed colours: prompt "$ >" in dim cyan, command
+     *  body in bright white, comments / status in accents. Crisp shadow
+     *  only - no big halo. */
+    const fontMono = "ui-monospace, 'JetBrains Mono', 'Courier New', monospace";
     ctx.textAlign = "left";
     ctx.textBaseline = "middle";
-    ctx.shadowColor = "rgba(0,245,255,0.8)";
-    ctx.shadowBlur = 10;
-    ctx.fillStyle = COLORS.cyanSoft;
-    const headerLines = [
-      "> ALGORITHMX_OS v1.0",
-      "> loading curriculum...",
-      "> 6 streams ready  ages 6 - adult",
-    ];
-    headerLines.forEach((line, i) => {
-      ctx.fillText(line, 56, 90 + i * 44);
-    });
 
-    /* Six subject lines in their accent colors - shows the breadth */
-    const subjects: Array<[string, string, string]> = [
-      ["CYBERSECURITY", "LIVE", "#5fffa3"],
-      ["GAME DEV", "2026", "#9ff5ff"],
-      ["AI & ML", "2026", "#cba8ff"],
-      ["APP DEV", "2027", "#ffd07a"],
-      ["ENTREPRENEURSHIP", "2027", "#ffc94a"],
-      ["ROBOTICS", "2027", "#ff3ad6"],
+    const drawTokens = (
+      tokens: Array<{ text: string; color: string; bold?: boolean }>,
+      x: number,
+      y: number,
+      size: number,
+    ) => {
+      let cursorX = x;
+      for (const tok of tokens) {
+        const weight = tok.bold ? "bold" : "500";
+        ctx.font = `${weight} ${size}px ${fontMono}`;
+        ctx.shadowBlur = 0;
+        ctx.fillStyle = tok.color;
+        ctx.fillText(tok.text, cursorX, y);
+        cursorX += ctx.measureText(tok.text).width;
+      }
+    };
+
+    /* HEADER */
+    drawTokens(
+      [
+        { text: "> ", color: "rgba(0,245,255,0.55)" },
+        { text: "ALGORITHMX_OS", color: "#00f5ff", bold: true },
+        { text: " v1.0", color: "#7df0ff" },
+        { text: "    // booting", color: "rgba(0,245,255,0.5)" },
+      ],
+      88,
+      120,
+      48,
+    );
+    drawTokens(
+      [
+        { text: "> ", color: "rgba(0,245,255,0.55)" },
+        { text: "loading", color: "#ffd07a" },
+        { text: " curriculum.json...", color: "#ffffff" },
+      ],
+      88,
+      188,
+      44,
+    );
+    drawTokens(
+      [
+        { text: "> ", color: "rgba(0,245,255,0.55)" },
+        { text: "6 streams ready", color: "#5fffa3" },
+        { text: "  /  ", color: "rgba(255,255,255,0.4)" },
+        { text: "ages 6", color: "#ffffff" },
+        { text: " — ", color: "rgba(255,255,255,0.4)" },
+        { text: "adult", color: "#ffffff" },
+      ],
+      88,
+      256,
+      40,
+    );
+
+    /* Thin divider rule */
+    ctx.fillStyle = "rgba(0,245,255,0.18)";
+    ctx.fillRect(88, 310, c.width - 176, 2);
+
+    /* SIX SUBJECT LINES - each with its accent + status badge */
+    const subjects: Array<{ name: string; status: string; color: string }> = [
+      { name: "CYBERSECURITY", status: "LIVE", color: "#5fffa3" },
+      { name: "GAME DEV", status: "2026", color: "#9ff5ff" },
+      { name: "AI & ML", status: "2026", color: "#cba8ff" },
+      { name: "APP DEV", status: "2027", color: "#ffd07a" },
+      { name: "ENTREPRENEURSHIP", status: "2027", color: "#ffc94a" },
+      { name: "ROBOTICS", status: "2027", color: "#ff3ad6" },
     ];
-    ctx.font = "24px ui-monospace, monospace";
-    subjects.forEach(([name, status, color], i) => {
-      const y = 250 + i * 38;
-      ctx.shadowBlur = 8;
-      ctx.shadowColor = color + "cc";
-      ctx.fillStyle = color;
-      ctx.fillText(">  " + name, 80, y);
-      /* Status badge on the right */
-      const statusX = c.width - 220;
-      ctx.fillStyle = color;
-      ctx.fillRect(statusX - 8, y - 14, 130, 28);
+    subjects.forEach((s, i) => {
+      const y = 380 + i * 78;
+      /* Indicator dot in the accent color */
+      ctx.fillStyle = s.color;
+      ctx.shadowColor = s.color;
+      ctx.shadowBlur = 16;
+      ctx.beginPath();
+      ctx.arc(110, y, 8, 0, Math.PI * 2);
+      ctx.fill();
       ctx.shadowBlur = 0;
+      /* Subject name in accent colour */
+      ctx.font = `bold 44px ${fontMono}`;
+      ctx.fillStyle = s.color;
+      ctx.fillText(s.name, 150, y);
+      /* Status badge - solid filled pill, bold text inside */
+      const badgeText = s.status;
+      ctx.font = `bold 30px ${fontMono}`;
+      const tw = ctx.measureText(badgeText).width;
+      const padX = 28;
+      const bw = tw + padX * 2;
+      const bh = 50;
+      const bx = c.width - 110 - bw;
+      const by = y - bh / 2;
+      ctx.fillStyle = s.color;
+      ctx.beginPath();
+      const r = 8;
+      ctx.moveTo(bx + r, by);
+      ctx.lineTo(bx + bw - r, by);
+      ctx.quadraticCurveTo(bx + bw, by, bx + bw, by + r);
+      ctx.lineTo(bx + bw, by + bh - r);
+      ctx.quadraticCurveTo(bx + bw, by + bh, bx + bw - r, by + bh);
+      ctx.lineTo(bx + r, by + bh);
+      ctx.quadraticCurveTo(bx, by + bh, bx, by + bh - r);
+      ctx.lineTo(bx, by + r);
+      ctx.quadraticCurveTo(bx, by, bx + r, by);
+      ctx.closePath();
+      ctx.fill();
+      /* Badge text in deep ink against the accent fill */
       ctx.fillStyle = "#04050d";
-      ctx.font = "bold 18px ui-monospace, monospace";
       ctx.textAlign = "center";
-      ctx.fillText(status, statusX + 57, y + 1);
-      ctx.font = "24px ui-monospace, monospace";
+      ctx.fillText(badgeText, bx + bw / 2, y + 2);
       ctx.textAlign = "left";
     });
 
-    /* Footer brand mark */
-    ctx.shadowBlur = 6;
-    ctx.shadowColor = "rgba(0,245,255,0.8)";
-    ctx.fillStyle = COLORS.cyanSoft;
-    ctx.font = "bold 20px ui-monospace, monospace";
+    /* Footer brand strip - very subtle */
+    ctx.fillStyle = "rgba(0,245,255,0.2)";
+    ctx.fillRect(88, c.height - 70, c.width - 176, 1);
+    ctx.font = `600 28px ${fontMono}`;
+    ctx.fillStyle = "rgba(0,245,255,0.6)";
     ctx.textAlign = "center";
-    ctx.fillText("ALGORITHMX  //  TECHNOLOGY EDUCATION", c.width / 2, c.height - 40);
+    ctx.fillText(
+      "ALGORITHMX  //  TECHNOLOGY EDUCATION",
+      c.width / 2,
+      c.height - 38,
+    );
 
     const tex = new THREE.CanvasTexture(c);
     tex.colorSpace = THREE.SRGBColorSpace;
+    tex.anisotropy = 16;
+    tex.minFilter = THREE.LinearMipmapLinearFilter;
+    tex.magFilter = THREE.LinearFilter;
+    tex.generateMipmaps = true;
     tex.needsUpdate = true;
     return tex;
   }, []);
 }
 
-/* Lazy texture cache for keyboard key labels. Each unique label string
- * is painted to a tiny canvas once and reused across every key with
- * that label. Cyan-soft glowing letterforms so they self-illuminate
- * when rendered with additive blending - reads as "backlit keycaps". */
+/* Lazy texture cache for keyboard key labels. Cached by `label|haloColor`
+ * so the same letter painted with different halo hues (per-column RGB)
+ * produces a unique texture per hue. White core is shared - it carries
+ * the readability; the halo carries the column's brand hue. */
 const keyLabelCache = new Map<string, THREE.Texture | null>();
-function getKeyLabelTexture(label: string): THREE.Texture | null {
-  if (keyLabelCache.has(label)) return keyLabelCache.get(label) ?? null;
+/* Convert hex (#rrggbb) to "r,g,b" so we can build shadowColor with
+ *  alpha. Returns "159,245,255" for "#9ff5ff" etc. */
+function hexToRgbStr(hex: string): string {
+  const h = hex.replace("#", "");
+  const r = parseInt(h.slice(0, 2), 16);
+  const g = parseInt(h.slice(2, 4), 16);
+  const b = parseInt(h.slice(4, 6), 16);
+  return `${r},${g},${b}`;
+}
+function getKeyLabelTexture(
+  label: string,
+  haloColor: string = "#9ff5ff",
+): THREE.Texture | null {
+  const cacheKey = `${label}|${haloColor}`;
+  if (keyLabelCache.has(cacheKey)) return keyLabelCache.get(cacheKey) ?? null;
   if (typeof document === "undefined") {
-    keyLabelCache.set(label, null);
+    keyLabelCache.set(cacheKey, null);
     return null;
   }
   const c = document.createElement("canvas");
-  c.width = 256;
-  c.height = 128;
+  c.width = 512;
+  c.height = 256;
   const ctx = c.getContext("2d");
   if (!ctx) {
-    keyLabelCache.set(label, null);
+    keyLabelCache.set(cacheKey, null);
     return null;
   }
   ctx.clearRect(0, 0, c.width, c.height);
-  /* Aggressive cyan glow underlay */
-  ctx.shadowColor = "rgba(0,245,255,1)";
-  ctx.shadowBlur = 28;
-  ctx.fillStyle = "#7df0ff";
-  const fontSize = label.length === 1 ? 108 : Math.max(56, 110 - label.length * 8);
+  ctx.imageSmoothingEnabled = true;
+  ctx.imageSmoothingQuality = "high";
+  /* Tighter halo (blur 18 -> 10) so the letter doesn't bleed into its
+   *  neighbours. Halo colour now per-column for the RGB system. */
+  const rgb = hexToRgbStr(haloColor);
+  ctx.shadowColor = `rgba(${rgb},0.95)`;
+  ctx.shadowBlur = 10;
+  ctx.fillStyle = haloColor;
+  const fontSize = label.length === 1 ? 220 : Math.max(112, 220 - label.length * 16);
   ctx.font = `900 ${fontSize}px ui-sans-serif, system-ui, sans-serif`;
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
-  ctx.fillText(label, c.width / 2, c.height / 2 + 4);
-  /* Bright white core pass on top for letterform clarity */
+  ctx.fillText(label, c.width / 2, c.height / 2 + 8);
+  /* Bright white core - sharp letterform on top of the coloured halo */
   ctx.shadowBlur = 0;
   ctx.fillStyle = "#ffffff";
-  ctx.fillText(label, c.width / 2, c.height / 2 + 4);
+  ctx.fillText(label, c.width / 2, c.height / 2 + 8);
   const tex = new THREE.CanvasTexture(c);
   tex.colorSpace = THREE.SRGBColorSpace;
-  tex.anisotropy = 8;
+  tex.anisotropy = 16;
+  tex.minFilter = THREE.LinearMipmapLinearFilter;
+  tex.magFilter = THREE.LinearFilter;
+  tex.generateMipmaps = true;
   tex.needsUpdate = true;
-  keyLabelCache.set(label, tex);
+  keyLabelCache.set(cacheKey, tex);
   return tex;
+}
+
+/* Per-column RGB palette for the keyboard. Curated luxe palette - NOT
+ * a raw HSL rainbow. Each column gets a fixed hue based on its
+ * horizontal position in the row, so the keyboard reads as vertical
+ * stripes of colour. */
+const COLUMN_PALETTE = [
+  "#00e5ff", // cyan
+  "#7df0ff", // cyan-pale
+  "#cba8ff", // violet
+  "#ff3ad6", // magenta
+  "#ff7a9f", // coral
+  "#ffd07a", // amber
+  "#5fffa3", // green
+];
+function hueForRowPos(t: number): string {
+  /* t in [0, 1] from left to right of a row */
+  const tt = Math.max(0, Math.min(0.9999, t));
+  return COLUMN_PALETTE[Math.floor(tt * COLUMN_PALETTE.length)];
 }
 
 /* Binary-glyph particle textures. Instead of generic circles drifting
@@ -718,15 +830,17 @@ function Laptop({
       lidRef.current.rotation.x = lidAngle.current;
     }
 
-    /* Screen ignite - content fades up + glow breathes as lid opens */
+    /* Screen ignite - content fades up + glow breathes as lid opens.
+     * Glow plane is now much subtler (was 0.4 peak, blew out the lid);
+     * the screen content alone reads as the emissive light source. */
     const screenT = smoothstep(0.35, 0.65, p);
     if (screenContentMat.current) {
       screenContentMat.current.transparent = true;
       screenContentMat.current.opacity = screenT;
     }
     if (screenGlowMat.current) {
-      const breathe = 0.85 + Math.sin(t * 1.4) * 0.15;
-      screenGlowMat.current.opacity = screenT * 0.4 * breathe;
+      const breathe = 0.9 + Math.sin(t * 1.4) * 0.1;
+      screenGlowMat.current.opacity = screenT * 0.08 * breathe;
     }
 
     /* LED breathing */
@@ -744,8 +858,10 @@ function Laptop({
     }
     if (hexFloorMatRef.current) {
       const draw = smoothstep(0.0, 0.5, p);
-      const pulse = 0.85 + Math.sin(t * 0.9) * 0.1;
-      hexFloorMatRef.current.opacity = draw * 0.45 * pulse;
+      const pulse = 0.9 + Math.sin(t * 0.9) * 0.08;
+      /* Brighter floor (0.45 -> 0.7) so the laptop reads as physically
+       * sitting on a surface, not floating in violet space. */
+      hexFloorMatRef.current.opacity = draw * 0.7 * pulse;
     }
 
     /* DATA RAIN scrolls downward via texture offset.y. Slow speed so
@@ -754,16 +870,16 @@ function Laptop({
       dataRainTex.offset.y = (dataRainTex.offset.y + 0.025 * delta) % 1;
     }
 
-    /* VOLUMETRIC SCREEN BEAM - soft cyan halo plane that floats above
-     * the laptop, billboards to camera, opacity tied to lid-open. Reads
-     * as "the screen is casting light into the room". */
+    /* VOLUMETRIC SCREEN BEAM - soft cyan halo plane BEHIND the laptop.
+     * Was a 5x5 in-front-of-camera beam that flooded the chassis. Now
+     * a tight back-light cast that reads as "the screen is bleeding a
+     * faint glow into the air behind the lid" - subtle, restrained. */
     if (screenBeamRef.current) {
       screenBeamRef.current.lookAt(state.camera.position);
       const mat = screenBeamRef.current.material as THREE.MeshBasicMaterial;
-      const breathe = 0.85 + Math.sin(t * 1.3) * 0.15;
-      mat.opacity = smoothstep(0.35, 0.6, p) * 0.85 * breathe;
-      /* Scale up a touch as the beam intensifies */
-      const s = 1 + smoothstep(0.35, 1, p) * 0.3;
+      const breathe = 0.9 + Math.sin(t * 1.3) * 0.1;
+      mat.opacity = smoothstep(0.35, 0.6, p) * 0.16 * breathe;
+      const s = 1 + smoothstep(0.35, 1, p) * 0.15;
       screenBeamRef.current.scale.set(s, s, 1);
     }
 
@@ -929,12 +1045,14 @@ function Laptop({
         })}
       </group>
 
-      {/* VOLUMETRIC SCREEN BEAM - large cyan radial glow plane that
-       *  billboards to the camera. Hidden when lid is closed; ramps
-       *  in as the screen ignites. */}
+      {/* SCREEN BACK-LIGHT - small cyan halo plane placed BEHIND the
+       *  laptop (z=-1.4) so it reads as "the screen is bleeding light
+       *  onto the air behind the lid" rather than as a glow cloud
+       *  floating in front of the chassis. Down from a 5x5 in-front
+       *  beam to a 2.4x2.4 backlight at low opacity. */}
       {screenBeamTex && (
-        <mesh ref={screenBeamRef} position={[RIG_X, 1.4, 0]}>
-          <planeGeometry args={[5, 5]} />
+        <mesh ref={screenBeamRef} position={[RIG_X, 1.3, -1.4]}>
+          <planeGeometry args={[2.4, 2.4]} />
           <meshBasicMaterial
             map={screenBeamTex}
             transparent
@@ -968,8 +1086,13 @@ function Laptop({
         </mesh>
       ))}
 
-      {/* LAPTOP */}
-      <group position={[RIG_X, 0, 0]}>
+      {/* LAPTOP - cinematic asymmetry: ~6° yaw (-Y) turns the screen
+       *  off the camera's normal axis so the emissive plane no longer
+       *  blasts directly into the lens; ~3° tilt (-X) lifts the back so
+       *  the screen faces slightly skyward, away from the high camera.
+       *  Reflections now glide across the chassis edges instead of
+       *  presenting as a flat front face. */}
+      <group position={[RIG_X, 0, 0]} rotation={[-0.05, -0.11, 0]}>
         <RoundedBox args={[BASE_W, BASE_H, BASE_D]} radius={0.03} smoothness={4}>
           <meshPhysicalMaterial
             color={COLORS.steel}
@@ -998,9 +1121,9 @@ function Laptop({
 
         {/* BACKLIT KEYBOARD AMBIENT GLOW - very faint cyan blanket so
          *  the keyboard well shows a subtle backlight under the keys.
-         *  Lowered opacity (0.2 -> 0.08) now that per-key underglows
-         *  are also softer - the combined effect reads as real
-         *  ultrabook backlight, not "carnival lights". */}
+         *  Reduced again (0.08 -> 0.035) now that the per-column hues
+         *  carry the brand colour. The blanket is just ambient "panel
+         *  is alive" glow, not the main light source. */}
         <mesh
           position={[0, BASE_H / 2 + 0.002, -0.15]}
           rotation={[-Math.PI / 2, 0, 0]}
@@ -1009,7 +1132,7 @@ function Laptop({
           <meshBasicMaterial
             color={COLORS.cyan}
             transparent
-            opacity={0.08}
+            opacity={0.035}
             blending={THREE.AdditiveBlending}
             depthWrite={false}
             toneMapped={false}
@@ -1140,6 +1263,10 @@ function Laptop({
             return row.keys.map((key, kIdx) => {
               const x = cursorX + key.w / 2;
               cursorX += key.w + KEY_GAP;
+              /* Per-column hue from horizontal position in the row.
+               * Accent keys (WASD / Space / Enter / Arrows / Fn) still
+               * override with their explicit brand colour. */
+              const colHue = hueForRowPos((x + totalW / 2) / totalW);
               const accentColor =
                 key.accent === "wasd"
                   ? COLOR_WASD
@@ -1151,11 +1278,16 @@ function Laptop({
                         ? COLOR_ARROW
                         : key.accent === "fn"
                           ? COLOR_FN
-                          : "#7df0ff"; // subtle cyan-soft default
-              const glowOp = key.accent ? 0.4 : 0.18;
+                          : colHue;
+              /* Lower underglow opacity (was 0.18/0.4) so the colours
+               * read as discreet RGB segments not "carnival lights".
+               * Accent keys still a touch brighter than column hues. */
+              const glowOp = key.accent ? 0.26 : 0.11;
               const capColor =
-                key.accent === "wasd" ? "#1a0e1a" : "#0e1018";
-              const labelTex = key.label ? getKeyLabelTexture(key.label) : null;
+                key.accent === "wasd" ? "#15101a" : "#0a0c13";
+              const labelTex = key.label
+                ? getKeyLabelTexture(key.label, accentColor)
+                : null;
               /* Label plane size - scales with key width. Capped so wide
                * keys (Tab / Caps / Shift / Enter) don't get oversized
                * text, but bigger than before so letters read clearly. */
@@ -1164,19 +1296,29 @@ function Laptop({
               return (
                 <group
                   key={`r${rIdx}-k${kIdx}`}
-                  position={[x, BASE_H / 2 + 0.003, row.z]}
+                  position={[x, BASE_H / 2 + 0.004, row.z]}
                 >
+                  {/* Machined keycap - taller bevel (0.005 -> 0.014) so
+                   * the side faces catch HDR reflections and the keys
+                   * read as physical objects, not stickers. Clearcoat
+                   * adds the micro-spec response of anodised key tops. */}
                   <mesh>
-                    <boxGeometry args={[key.w * 0.94, 0.005, row.depth * 0.94]} />
-                    <meshStandardMaterial
+                    <boxGeometry args={[key.w * 0.94, 0.014, row.depth * 0.94]} />
+                    <meshPhysicalMaterial
                       color={capColor}
-                      roughness={0.5}
-                      metalness={0.45}
+                      roughness={0.32}
+                      metalness={0.62}
+                      clearcoat={0.45}
+                      clearcoatRoughness={0.28}
+                      envMapIntensity={1.0}
                     />
                   </mesh>
-                  {/* Subtle underglow */}
-                  <mesh position={[0, -0.0028, 0]} rotation={[-Math.PI / 2, 0, 0]}>
-                    <planeGeometry args={[key.w * 1.02, row.depth * 1.04]} />
+                  {/* Tighter underglow - column-hue rim of light spilling
+                   *  from beneath the keycap. Smaller plane (1.02 -> 1.0)
+                   *  so the spill stays inside the key footprint instead
+                   *  of bleeding to neighbours. */}
+                  <mesh position={[0, -0.005, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+                    <planeGeometry args={[key.w * 1.0, row.depth * 1.0]} />
                     <meshBasicMaterial
                       color={accentColor}
                       transparent
@@ -1186,31 +1328,30 @@ function Laptop({
                       toneMapped={false}
                     />
                   </mesh>
-                  {/* GLOWING KEY LABEL - bright cyan letterform with a
-                   *  soft cyan haze behind it so the letters read clearly
-                   *  even against the HDR-lit keyboard well. Two-pass:
-                   *  one wider additive haze + one tighter solid letter. */}
+                  {/* GLOWING KEY LABEL - white-core letterform sitting on
+                   *  a TIGHT column-hue halo. Haze pass dropped from 0.5
+                   *  to 0.22 so the letterform stays razor-sharp instead
+                   *  of bleeding into the neighbouring keys. */}
                   {labelTex && (
                     <>
-                      {/* Soft cyan haze behind the letter for "backlit" feel */}
+                      {/* Tight column-hue haze behind the letter */}
                       <mesh
-                        position={[0, 0.0028, 0]}
+                        position={[0, 0.008, 0]}
                         rotation={[-Math.PI / 2, 0, 0]}
                       >
-                        <planeGeometry args={[labelW * 1.15, labelH * 1.15]} />
+                        <planeGeometry args={[labelW * 1.08, labelH * 1.08]} />
                         <meshBasicMaterial
                           map={labelTex}
                           transparent
-                          opacity={0.5}
+                          opacity={0.22}
                           blending={THREE.AdditiveBlending}
                           depthWrite={false}
                           toneMapped={false}
                         />
                       </mesh>
-                      {/* Crisp letter on top - normal blending so it
-                       *  stays visible against any background brightness */}
+                      {/* Crisp letter on the keycap top surface */}
                       <mesh
-                        position={[0, 0.0033, 0]}
+                        position={[0, 0.0086, 0]}
                         rotation={[-Math.PI / 2, 0, 0]}
                       >
                         <planeGeometry args={[labelW, labelH]} />

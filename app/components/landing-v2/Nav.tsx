@@ -19,19 +19,33 @@ import { Ico, useMagnetic } from "./utilities";
  */
 export default function Nav() {
   const [scrollY, setScrollY] = useState(0);
-  const cinematicH = 1100; // rough sticky-pin range
+  const [vh, setVh] = useState(900);
   useEffect(() => {
     const onScroll = () => setScrollY(window.scrollY);
+    const onResize = () => setVh(window.innerHeight);
     onScroll();
+    onResize();
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    window.addEventListener("resize", onResize);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onResize);
+    };
   }, []);
 
   /* The whole page now sits on the unified dark backdrop, so the nav
    * stays dark throughout. The only state change is "transparent at top
    * vs. faintly tinted once scrolled" - to mark the page is "alive". */
   const isLight = false;
-  void cinematicH;
+
+  /* CINEMATIC IMMERSION: hide the CTA pill while the laptop cinematic
+   * is in its sticky pin (first ~70% of viewport height). The intentional
+   * hero CTAs ("Explore courses" + "Start with Cyber Heroes") carry the
+   * conversion role during the cinematic; the nav CTA returns once the
+   * user has scrolled past it and the brand intro is over. */
+  const cinematicGuard = Math.max(0, Math.min(1, (scrollY - vh * 0.4) / (vh * 0.3)));
+  const ctaOpacity = cinematicGuard;
+  const ctaPointer: "auto" | "none" = ctaOpacity < 0.5 ? "none" : "auto";
 
   const bg =
     scrollY > 24
@@ -126,7 +140,14 @@ export default function Nav() {
           <Link
             ref={ctaRef}
             href="/cyberheroes"
-            style={ctaPill}
+            style={{
+              ...ctaPill,
+              opacity: ctaOpacity,
+              pointerEvents: ctaPointer,
+              transition: "opacity .35s ease",
+            }}
+            aria-hidden={ctaOpacity < 0.5}
+            tabIndex={ctaOpacity < 0.5 ? -1 : 0}
           >
             Get Started <Ico name="arrow" size={14} sw={2.2} />
           </Link>

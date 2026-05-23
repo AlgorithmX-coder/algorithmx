@@ -104,8 +104,11 @@ export default function HeroOverlay({ progress }: HeroOverlayProps) {
           pointerEvents: "none",
         }}
       >
-      {/* Radial scrim - keeps the headline legible against the
-       *  cosmic-violet bloom without darkening the whole scene. */}
+      {/* Radial scrim - PULLED LEFT (32% -> 20%) and SHRUNK (70%/55% ->
+       *  50%/45%) so it darkens only the headline area instead of
+       *  bleeding across the laptop's left edge. Falls off faster on
+       *  the right (75% -> 60%) so the chassis sits in clean dark
+       *  space, not in the scrim's penumbra. */}
       <motion.div
         aria-hidden
         style={{
@@ -113,9 +116,9 @@ export default function HeroOverlay({ progress }: HeroOverlayProps) {
           position: "absolute",
           inset: 0,
           background:
-            "radial-gradient(ellipse 70% 55% at 32% 50%, " +
-            "rgba(4,5,13,0.7) 0%, rgba(4,5,13,0.45) 40%, " +
-            "rgba(4,5,13,0) 75%)",
+            "radial-gradient(ellipse 50% 45% at 20% 55%, " +
+            "rgba(4,5,13,0.78) 0%, rgba(4,5,13,0.4) 32%, " +
+            "rgba(4,5,13,0) 60%)",
           pointerEvents: "none",
         }}
       />
@@ -153,7 +156,10 @@ export default function HeroOverlay({ progress }: HeroOverlayProps) {
             fontWeight: 400,
             margin: 0,
             color: "var(--lv2-paper)",
-            maxWidth: "18ch",
+            /* 18ch -> 13ch: stops headline overlapping the laptop on
+             *  ~1440-1920px viewports. Visual hierarchy: headline on the
+             *  left, laptop on the right, clean negative space between. */
+            maxWidth: "13ch",
             textShadow:
               "0 2px 12px rgba(4,5,13,0.9), 0 8px 36px rgba(4,5,13,0.7)",
           }}
@@ -167,7 +173,9 @@ export default function HeroOverlay({ progress }: HeroOverlayProps) {
             fontSize: "clamp(0.95rem, 1.2vw, 1.0625rem)",
             lineHeight: 1.55,
             color: "rgba(232, 237, 255, 0.88)",
-            maxWidth: "54ch",
+            /* 54ch -> 42ch: keeps the body copy inside the headline's
+             *  column so the right edge stays clear of the laptop. */
+            maxWidth: "42ch",
             margin: "calc(var(--lv2-rail) * 0.25) 0 0",
             textShadow:
               "0 1px 8px rgba(4,5,13,0.9), 0 4px 20px rgba(4,5,13,0.6)",
