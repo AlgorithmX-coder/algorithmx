@@ -465,6 +465,148 @@ function paintScreen(canvas: HTMLCanvasElement, stage: number) {
   paintBrandStrip(ctx, canvas);
 }
 
+/* HOLOGRAPHIC COURSE CARDS - emerge from the screen at Chapter 04.
+ * Each card is a canvas-painted texture on a 3D plane with translucent
+ * dark background, accent-coloured glow rim, scanline overlay, icon
+ * glyph, stream name, status pill, age range and example project. Six
+ * cards in a fanned arc above and in front of the laptop. */
+
+const STREAM_ICONS: ReadonlyArray<string> = [
+  "⌬", // cybersecurity
+  "◈", // game dev
+  "◐", // AI & ML
+  "▢", // app dev
+  "◬", // entrepreneurship
+  "◇", // robotics
+];
+
+function makeHoloCardTexture(
+  stream: (typeof STREAMS)[number],
+  icon: string,
+  indexLabel: string,
+): THREE.Texture | null {
+  if (typeof document === "undefined") return null;
+  const c = document.createElement("canvas");
+  c.width = 768;
+  c.height = 512;
+  const ctx = c.getContext("2d");
+  if (!ctx) return null;
+  ctx.clearRect(0, 0, c.width, c.height);
+  ctx.imageSmoothingEnabled = true;
+  ctx.imageSmoothingQuality = "high";
+
+  const accent = stream.color;
+  const accentRgb = hexToRgbStr(accent);
+
+  /* Background panel - dark translucent so the card reads as a glass
+   * UI element, not a solid sticker. The PlaneMaterial alpha + this
+   * fill stack to produce the right hologram opacity. */
+  ctx.fillStyle = "rgba(6,10,20,0.82)";
+  roundRect(ctx, 0, 0, c.width, c.height, 26);
+  ctx.fill();
+
+  /* Accent rim border with glow - the unmistakable hologram tell. */
+  ctx.lineWidth = 4;
+  ctx.strokeStyle = accent;
+  ctx.shadowColor = accent;
+  ctx.shadowBlur = 22;
+  roundRect(ctx, 5, 5, c.width - 10, c.height - 10, 24);
+  ctx.stroke();
+  ctx.shadowBlur = 0;
+
+  /* Scanlines - faint horizontal stripes for CRT/projected-hologram feel */
+  ctx.fillStyle = `rgba(${accentRgb},0.04)`;
+  for (let y = 12; y < c.height - 12; y += 5) {
+    ctx.fillRect(12, y, c.width - 24, 1);
+  }
+
+  /* Corner brackets - top-left and bottom-right for JARVIS-style UI */
+  ctx.strokeStyle = accent;
+  ctx.lineWidth = 3;
+  ctx.beginPath();
+  ctx.moveTo(28, 56); ctx.lineTo(28, 28); ctx.lineTo(56, 28);
+  ctx.moveTo(c.width - 56, c.height - 28); ctx.lineTo(c.width - 28, c.height - 28); ctx.lineTo(c.width - 28, c.height - 56);
+  ctx.stroke();
+
+  /* TOP: icon + stream name + status pill */
+  ctx.font = `bold 76px ${FONT_SANS}`;
+  ctx.fillStyle = accent;
+  ctx.shadowColor = accent;
+  ctx.shadowBlur = 16;
+  ctx.textAlign = "left";
+  ctx.textBaseline = "middle";
+  ctx.fillText(icon, 52, 96);
+  ctx.shadowBlur = 0;
+
+  ctx.font = `bold 30px ${FONT_MONO}`;
+  ctx.fillStyle = "#ffffff";
+  /* Auto-shrink if stream name is long */
+  let nameSize = 30;
+  while (ctx.measureText(stream.name).width > 420 && nameSize > 20) {
+    nameSize -= 2;
+    ctx.font = `bold ${nameSize}px ${FONT_MONO}`;
+  }
+  ctx.fillText(stream.name, 132, 96);
+
+  /* Status pill (top-right) */
+  ctx.font = `bold 22px ${FONT_MONO}`;
+  const sw = ctx.measureText(stream.status).width;
+  const spad = 16;
+  const sbw = sw + spad * 2;
+  const sbh = 36;
+  const sbx = c.width - 52 - sbw;
+  const sby = 96 - sbh / 2;
+  ctx.fillStyle = accent;
+  roundRect(ctx, sbx, sby, sbw, sbh, 7);
+  ctx.fill();
+  ctx.fillStyle = "#04050d";
+  ctx.textAlign = "center";
+  ctx.fillText(stream.status, sbx + sbw / 2, 96);
+  ctx.textAlign = "left";
+
+  /* Divider */
+  ctx.fillStyle = `rgba(${accentRgb},0.28)`;
+  ctx.fillRect(52, 166, c.width - 104, 1);
+
+  /* MIDDLE: AGES heading (large accent display) */
+  ctx.font = `900 96px ${FONT_SANS}`;
+  ctx.fillStyle = accent;
+  ctx.shadowColor = accent;
+  ctx.shadowBlur = 24;
+  ctx.textAlign = "center";
+  ctx.fillText(`AGES ${stream.age}`, c.width / 2, 268);
+  ctx.shadowBlur = 0;
+
+  /* PROJECT label + name */
+  ctx.font = `500 22px ${FONT_MONO}`;
+  ctx.fillStyle = "rgba(232,237,255,0.55)";
+  ctx.fillText("EXAMPLE PROJECT", c.width / 2, 348);
+  ctx.font = `bold 34px ${FONT_SANS}`;
+  ctx.fillStyle = "#ffffff";
+  ctx.fillText(`"${stream.project}"`, c.width / 2, 398);
+
+  /* Bottom-left: stream index */
+  ctx.font = `500 18px ${FONT_MONO}`;
+  ctx.fillStyle = `rgba(${accentRgb},0.7)`;
+  ctx.textAlign = "left";
+  ctx.fillText(indexLabel, 52, c.height - 32);
+
+  /* Bottom-right: terminal-style decoration */
+  ctx.fillStyle = `rgba(${accentRgb},0.4)`;
+  ctx.font = `500 16px ${FONT_MONO}`;
+  ctx.textAlign = "right";
+  ctx.fillText("// ALGORITHMX.OS", c.width - 52, c.height - 32);
+
+  const tex = new THREE.CanvasTexture(c);
+  tex.colorSpace = THREE.SRGBColorSpace;
+  tex.anisotropy = 16;
+  tex.minFilter = THREE.LinearMipmapLinearFilter;
+  tex.magFilter = THREE.LinearFilter;
+  tex.generateMipmaps = true;
+  tex.needsUpdate = true;
+  return tex;
+}
+
 interface LivingScreen {
   tex: THREE.Texture | null;
   repaint: (stage: number) => void;
@@ -891,6 +1033,150 @@ export default function LaptopScene({ progress, reducedMotion = false }: LaptopS
         <Noise opacity={0.035} blendFunction={BlendFunction.OVERLAY} />
       </EffectComposer>
     </Canvas>
+  );
+}
+
+/* HOLOGRAPHIC CARDS - 6 floating panels that emerge from the screen
+ * during Chapter 04 (Choose your stream). Each card carries a stream's
+ * icon, name, age range, status and example project. Cards stagger
+ * their emerge animation (lerped from screen origin to a fanned arc
+ * above and in front of the laptop), bob gently, and fade in fully. */
+function HolographicCards({ progress }: { progress: MotionValue<number> }) {
+  /* 2 x 3 grid IN FRONT of the laptop. Cards sit at z=1.4 (well clear
+   * of the lid surface) so the laptop chassis never occludes them.
+   * Positioned to the RIGHT of the laptop centre so they don't collide
+   * with the headline column (HTML overlay at zIndex 3). Yaws angle
+   * each card slightly toward the camera at world x~4.2.
+   *
+   * Y values tuned so the top row sits BELOW the viewport's top crop
+   * line (vertical half-FOV ~1.6 at this camera distance puts the top
+   * edge around world y=2.2). Delays tightened so all 6 cards are
+   * fully emerged by progress 0.68 (end of Chapter 04). */
+  const cardData = useMemo(
+    () => [
+      /* Top row - upper band */
+      { stream: STREAMS[0], target: new THREE.Vector3(0.4, 1.95, 1.4), delay: 0.0, yaw: 0.35 },
+      { stream: STREAMS[1], target: new THREE.Vector3(1.35, 1.95, 1.4), delay: 0.03, yaw: 0.2 },
+      { stream: STREAMS[2], target: new THREE.Vector3(2.3, 1.95, 1.4), delay: 0.06, yaw: 0.05 },
+      /* Bottom row - lower band */
+      { stream: STREAMS[3], target: new THREE.Vector3(0.4, 1.1, 1.4), delay: 0.04, yaw: 0.35 },
+      { stream: STREAMS[4], target: new THREE.Vector3(1.35, 1.1, 1.4), delay: 0.07, yaw: 0.2 },
+      { stream: STREAMS[5], target: new THREE.Vector3(2.3, 1.1, 1.4), delay: 0.1, yaw: 0.05 },
+    ],
+    [],
+  );
+
+  const cardTextures = useMemo(
+    () =>
+      cardData.map((card, i) =>
+        makeHoloCardTexture(
+          card.stream,
+          STREAM_ICONS[i],
+          `STREAM ${String(i + 1).padStart(2, "0")} / 06`,
+        ),
+      ),
+    [cardData],
+  );
+
+  const cardRefs = useRef<(THREE.Group | null)[]>([
+    null, null, null, null, null, null,
+  ]);
+  const matRefs = useRef<(THREE.MeshBasicMaterial | null)[]>([
+    null, null, null, null, null, null,
+  ]);
+  const rimRefs = useRef<(THREE.MeshBasicMaterial | null)[]>([
+    null, null, null, null, null, null,
+  ]);
+
+  /* Cards START at the screen origin (above the lid, where the screen
+   * lives) and lerp out to their target positions. */
+  const START_X = RIG_X;
+  const START_Y = 1.3;
+  const START_Z = -0.2;
+
+  useFrame((state) => {
+    const p = progress.get();
+    const t = state.clock.elapsedTime;
+    cardData.forEach((card, i) => {
+      const g = cardRefs.current[i];
+      const m = matRefs.current[i];
+      const r = rimRefs.current[i];
+      if (!g || !m) return;
+      /* Per-card progress with staggered delay across Chapter 04 */
+      const cardP = smoothstep(0.5 + card.delay, 0.62 + card.delay, p);
+      const targetX = RIG_X + card.target.x;
+      const targetY = card.target.y;
+      const targetZ = card.target.z;
+      /* Subtle vertical bob, only once the card has emerged */
+      const bob = Math.sin(t * 0.6 + i * 0.7) * 0.06;
+      g.position.set(
+        lerp(START_X, targetX, cardP),
+        lerp(START_Y, targetY, cardP) + bob * cardP,
+        lerp(START_Z, targetZ, cardP),
+      );
+      /* Slow rotation drift around target yaw */
+      g.rotation.y = card.yaw + Math.sin(t * 0.4 + i) * 0.025 * cardP;
+      g.rotation.x = Math.sin(t * 0.3 + i * 0.5) * 0.012 * cardP;
+      /* Scale up from 0.25 to 1.0 */
+      const sc = lerp(0.25, 1, cardP);
+      g.scale.set(sc, sc, sc);
+      /* Opacity ramp - card material + rim glow plane */
+      m.opacity = cardP * 0.92;
+      if (r) {
+        const rimBreathe = 0.85 + Math.sin(t * 1.6 + i) * 0.15;
+        r.opacity = cardP * 0.32 * rimBreathe;
+      }
+    });
+  });
+
+  return (
+    <>
+      {cardData.map((card, i) => {
+        const tex = cardTextures[i];
+        if (!tex) return null;
+        return (
+          <group
+            key={i}
+            ref={(el) => {
+              cardRefs.current[i] = el;
+            }}
+            position={[START_X, START_Y, START_Z]}
+          >
+            {/* Card content panel - the canvas-painted texture */}
+            <mesh>
+              <planeGeometry args={[1.5, 1.0]} />
+              <meshBasicMaterial
+                ref={(el) => {
+                  matRefs.current[i] = el;
+                }}
+                map={tex}
+                transparent
+                opacity={0}
+                depthWrite={false}
+                toneMapped={false}
+              />
+            </mesh>
+            {/* Outer rim glow - additive plane slightly larger than the
+             *  card, accent-coloured, that gives the card its hologram
+             *  outer-halo. */}
+            <mesh position={[0, 0, -0.001]}>
+              <planeGeometry args={[1.62, 1.12]} />
+              <meshBasicMaterial
+                ref={(el) => {
+                  rimRefs.current[i] = el;
+                }}
+                color={card.stream.color}
+                transparent
+                opacity={0}
+                blending={THREE.AdditiveBlending}
+                depthWrite={false}
+                toneMapped={false}
+              />
+            </mesh>
+          </group>
+        );
+      })}
+    </>
   );
 }
 
@@ -1926,6 +2212,13 @@ function Laptop({
           </group>
         </group>
       </group>
+
+      {/* HOLOGRAPHIC COURSE CARDS - 6 floating cards that emerge from
+       *  the screen during Chapter 04. Rendered OUTSIDE the rotated
+       *  laptop group so the cards aren't yawed/tilted with the chassis
+       *  (they need to face the viewer for legibility), but INSIDE the
+       *  parallaxRef so cursor parallax still applies. */}
+      <HolographicCards progress={progress} />
     </group>
   );
 }
