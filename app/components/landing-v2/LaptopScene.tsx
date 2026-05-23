@@ -310,12 +310,10 @@ function makeScreenGlowTexture(): THREE.Texture | null {
   return tex;
 }
 
-/* Slow data-rain texture - vertical columns of monospace characters
- * tiled into a tall texture. Animated via offset.y in useFrame so the
- * columns appear to flow downward. Sits FAR behind the laptop as a
- * subtle "data world" backdrop. Brightness fades toward the bottom of
- * each column so leading characters read as fresh / trailing ones as
- * dimmer (the Matrix lookbut quieter). */
+/* Slow data-rain texture - vertical columns of monospace characters.
+ * Animated via offset.y in useFrame. Edges fade to transparent via a
+ * radial mask so the rain reads as a contained "pool of data" behind
+ * the laptop instead of blanketing the whole background. */
 function makeDataRainTexture(): THREE.Texture | null {
   if (typeof document === "undefined") return null;
   const c = document.createElement("canvas");
@@ -323,11 +321,12 @@ function makeDataRainTexture(): THREE.Texture | null {
   c.height = 1024;
   const ctx = c.getContext("2d");
   if (!ctx) return null;
-  ctx.fillStyle = "#020610";
-  ctx.fillRect(0, 0, c.width, c.height);
+  /* Transparent base so the texture only contributes where chars are
+   *  drawn (additive blending). */
+  ctx.clearRect(0, 0, c.width, c.height);
 
   const chars = "01{}[]<>#%&*+=/⌬◇◢◣△◬◯";
-  const cols = 26;
+  const cols = 22;
   const colW = c.width / cols;
   const rowH = 32;
   ctx.font = "bold 22px ui-monospace, 'Courier New', monospace";
@@ -335,21 +334,28 @@ function makeDataRainTexture(): THREE.Texture | null {
   ctx.textBaseline = "middle";
   for (let col = 0; col < cols; col++) {
     const x = col * colW + colW / 2;
-    /* Each column has its own starting offset + a "head" position */
     const colSeed = Math.random();
     const headY = colSeed * c.height;
     const colRows = Math.floor(c.height / rowH);
     for (let r = 0; r < colRows; r++) {
       const y = (headY + r * rowH) % c.height;
-      /* Brightness decays with distance from head */
-      const brightness = Math.max(0.04, 1 - r * 0.045);
-      ctx.fillStyle = `rgba(159, 245, 255, ${brightness * 0.55})`;
+      /* Radial falloff so chars at the texture edges are much dimmer.
+       *  This is what stops the rain from "covering all" - the edges
+       *  fade out, leaving only the centre visible. */
+      const dx = (x - c.width / 2) / (c.width / 2);
+      const dy = (y - c.height / 2) / (c.height / 2);
+      const distSq = dx * dx + dy * dy;
+      const edgeFade = Math.max(0, 1 - distSq);
+      const brightness = Math.max(0.02, 1 - r * 0.045) * edgeFade;
+      if (brightness < 0.05) continue;
+      ctx.fillStyle = `rgba(159, 245, 255, ${brightness * 0.5})`;
       const ch = chars[Math.floor(Math.random() * chars.length)];
       ctx.fillText(ch, x, y);
     }
   }
   const tex = new THREE.CanvasTexture(c);
-  tex.wrapS = THREE.RepeatWrapping;
+  /* Only repeat vertically (so the falloff stays visible horizontally) */
+  tex.wrapS = THREE.ClampToEdgeWrapping;
   tex.wrapT = THREE.RepeatWrapping;
   tex.needsUpdate = true;
   return tex;
@@ -752,16 +758,15 @@ function Laptop({
       )}
 
       {/* SLOW DATA RAIN - vertical cascading code far behind the
-       *  laptop. Texture offset.y is animated each frame so columns
-       *  flow downward. Sits between the fog haze and the laptop so
-       *  it reads as the "data world" the device is plugged into. */}
+       *  laptop. Sized + faded so it reads as a CONTAINED data pool
+       *  behind the laptop, not a blanket covering the whole sky. */}
       {dataRainTex && (
-        <mesh position={[RIG_X, 1.4, -6.0]}>
-          <planeGeometry args={[14, 10]} />
+        <mesh position={[RIG_X, 1.4, -7.5]}>
+          <planeGeometry args={[7, 5]} />
           <meshBasicMaterial
             map={dataRainTex}
             transparent
-            opacity={0.45}
+            opacity={0.55}
             blending={THREE.AdditiveBlending}
             depthWrite={false}
             toneMapped={false}
