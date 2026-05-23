@@ -1,8 +1,14 @@
 "use client";
 
-import { useMemo, useRef } from "react";
+import { useMemo, useRef, Suspense } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { RoundedBox } from "@react-three/drei";
+import { RoundedBox, Environment } from "@react-three/drei";
+import {
+  EffectComposer,
+  Vignette,
+  Noise,
+} from "@react-three/postprocessing";
+import { BlendFunction } from "postprocessing";
 import * as THREE from "three";
 import type { MotionValue } from "framer-motion";
 
@@ -231,19 +237,18 @@ function getKeyLabelTexture(label: string): THREE.Texture | null {
     return null;
   }
   ctx.clearRect(0, 0, c.width, c.height);
-  /* Stronger cyan glow + bigger crisp letterform */
+  /* Aggressive cyan glow underlay */
   ctx.shadowColor = "rgba(0,245,255,1)";
-  ctx.shadowBlur = 22;
-  ctx.fillStyle = "#ffffff";
-  /* Size shrinks for longer labels (e.g., "shift", "enter", "tab") */
-  const fontSize = label.length === 1 ? 96 : Math.max(48, 96 - label.length * 8);
+  ctx.shadowBlur = 28;
+  ctx.fillStyle = "#7df0ff";
+  const fontSize = label.length === 1 ? 108 : Math.max(56, 110 - label.length * 8);
   ctx.font = `900 ${fontSize}px ui-sans-serif, system-ui, sans-serif`;
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
   ctx.fillText(label, c.width / 2, c.height / 2 + 4);
-  /* Second pass without shadow to sharpen the core letterform */
+  /* Bright white core pass on top for letterform clarity */
   ctx.shadowBlur = 0;
-  ctx.fillStyle = "#e4f8ff";
+  ctx.fillStyle = "#ffffff";
   ctx.fillText(label, c.width / 2, c.height / 2 + 4);
   const tex = new THREE.CanvasTexture(c);
   tex.colorSpace = THREE.SRGBColorSpace;
@@ -306,6 +311,38 @@ function makeScreenGlowTexture(): THREE.Texture | null {
   ctx.fillStyle = g;
   ctx.fillRect(0, 0, c.width, c.height);
   const tex = new THREE.CanvasTexture(c);
+  tex.needsUpdate = true;
+  return tex;
+}
+
+/* Procedural brushed-aluminum normal map. Horizontal scratch lines
+ * encoded as tangent-space perturbations - gives the lid + base a
+ * directional brushed-metal microsurface so reflections shimmer like
+ * real anodized aluminum instead of a perfect mirror. */
+function makeBrushedNormalTexture(): THREE.Texture | null {
+  if (typeof document === "undefined") return null;
+  const size = 512;
+  const c = document.createElement("canvas");
+  c.width = c.height = size;
+  const ctx = c.getContext("2d");
+  if (!ctx) return null;
+  /* Base = +Z normal (128, 128, 255) */
+  ctx.fillStyle = "rgb(128,128,255)";
+  ctx.fillRect(0, 0, size, size);
+  /* Random horizontal scratch lines perturb the R channel */
+  for (let i = 0; i < 700; i++) {
+    const y = Math.random() * size;
+    const len = 60 + Math.random() * 240;
+    const x = Math.random() * (size - len);
+    const r = 128 + (Math.random() - 0.5) * 28;
+    const g = 128 + (Math.random() - 0.5) * 8;
+    ctx.fillStyle = `rgb(${Math.round(r)},${Math.round(g)},255)`;
+    ctx.fillRect(x, y, len, 1);
+  }
+  const tex = new THREE.CanvasTexture(c);
+  tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
+  tex.repeat.set(3, 0.7);
+  tex.colorSpace = THREE.NoColorSpace;
   tex.needsUpdate = true;
   return tex;
 }
@@ -476,7 +513,14 @@ function makeSoftShadowTexture(): THREE.Texture | null {
 export default function LaptopScene({ progress, reducedMotion = false }: LaptopSceneProps) {
   return (
     <Canvas
+      dpr={[1.5, 2.5]}
       camera={{ position: [4.6, 3.0, 6.5], fov: 38 }}
+      gl={{
+        antialias: true,
+        alpha: true,
+        powerPreference: "high-performance",
+        toneMapping: THREE.ACESFilmicToneMapping,
+      }}
       style={{
         width: "100%",
         height: "100%",
@@ -488,13 +532,35 @@ export default function LaptopScene({ progress, reducedMotion = false }: LaptopS
     >
       <color attach="background" args={[COLORS.ink]} />
 
-      <ambientLight intensity={1.1} color="#dde6ff" />
-      <directionalLight position={[4, 6, 5]} intensity={2.0} color="#ffffff" />
-      <pointLight position={[-3, 2.5, 4]} intensity={0.8} color={COLORS.cyan} />
+      {/* HDRI environment lighting - studio preset wrapped in Suspense
+       *  so a slow CDN fetch doesn't block the rest of the render. */}
+      <Suspense fallback={null}>
+        <Environment preset="studio" environmentIntensity={0.4} />
+      </Suspense>
+
+      <ambientLight intensity={0.85} color="#dde6ff" />
+      <directionalLight position={[4, 6, 5]} intensity={1.8} color="#ffffff" />
+      <pointLight position={[-3, 2.5, 4]} intensity={0.75} color={COLORS.cyan} />
       {/* Rim light from behind to highlight the lid's top edge */}
-      <pointLight position={[2, 4, -3]} intensity={0.6} color="#ffffff" />
+      <pointLight position={[2, 4, -3]} intensity={0.55} color="#ffffff" />
 
       <Laptop progress={progress} reducedMotion={reducedMotion} />
+
+      {/* Cinematic post-processing - Vignette + Noise only. Bloom is
+       *  excluded because it consistently kills the render in this
+       *  combination of versions (@react-three/postprocessing 3.0.4 +
+       *  postprocessing 6.39 + Next 16 Turbopack); the visible quality
+       *  win from HDR + clearcoat materials covers most of what bloom
+       *  would have added. */}
+      <EffectComposer multisampling={0} enableNormalPass={false}>
+        <Vignette
+          eskil={false}
+          offset={0.22}
+          darkness={0.85}
+          blendFunction={BlendFunction.NORMAL}
+        />
+        <Noise opacity={0.035} blendFunction={BlendFunction.OVERLAY} />
+      </EffectComposer>
     </Canvas>
   );
 }
@@ -515,6 +581,7 @@ function Laptop({
   const dataRainTex = useMemo(() => makeDataRainTexture(), []);
   const hexFloorTex = useMemo(() => makeHexGridTexture(), []);
   const hexFloorMatRef = useRef<THREE.MeshBasicMaterial>(null);
+  const brushedNormalTex = useMemo(() => makeBrushedNormalTexture(), []);
   const parallaxRef = useRef<THREE.Group>(null);
   const lidRef = useRef<THREE.Group>(null);
   const ledMat = useRef<THREE.MeshStandardMaterial>(null);
@@ -597,16 +664,25 @@ function Laptop({
     const p = progress.get();
     const t = state.clock.elapsedTime;
 
-    /* Camera path - starts LOW and CLOSE so the closed-laptop slim
-     *  profile reads as 3D (not a flat line from above). As the lid
-     *  opens, camera rises + pulls back to frame the screen. */
+    /* Camera path - scroll-driven dolly + LOW-AMPLITUDE IDLE MICRO-
+     * MOTION on top so the shot feels like a handheld product shoot
+     * instead of a perfectly locked-off render. Three offset sin waves
+     * at different frequencies create the natural "breath" of a real
+     * operator's hands. */
     const camP = smoothstep(0, 1, p);
+    const microX = Math.sin(t * 0.51) * 0.025 + Math.sin(t * 1.27) * 0.012;
+    const microY = Math.cos(t * 0.43) * 0.020 + Math.sin(t * 0.81) * 0.010;
+    const microZ = Math.sin(t * 0.37) * 0.022;
     state.camera.position.set(
-      lerp(4.6, 4.0, camP),
-      lerp(1.6, 2.4, camP),
-      lerp(5.8, 5.6, camP),
+      lerp(4.6, 4.0, camP) + microX,
+      lerp(1.6, 2.4, camP) + microY,
+      lerp(5.8, 5.6, camP) + microZ,
     );
-    state.camera.lookAt(RIG_X, lerp(0.1, 0.9, camP), 0);
+    state.camera.lookAt(
+      RIG_X + microX * 0.3,
+      lerp(0.1, 0.9, camP) + microY * 0.3,
+      0,
+    );
 
     /* Mouse parallax - whole rig tilts subtly toward cursor */
     if (parallaxRef.current) {
@@ -895,10 +971,16 @@ function Laptop({
       {/* LAPTOP */}
       <group position={[RIG_X, 0, 0]}>
         <RoundedBox args={[BASE_W, BASE_H, BASE_D]} radius={0.03} smoothness={4}>
-          <meshStandardMaterial
+          <meshPhysicalMaterial
             color={COLORS.steel}
-            metalness={0.42}
-            roughness={0.5}
+            metalness={0.82}
+            roughness={0.38}
+            clearcoat={0.6}
+            clearcoatRoughness={0.32}
+            anisotropy={0.7}
+            normalMap={brushedNormalTex}
+            normalScale={new THREE.Vector2(0.18, 0.18)}
+            envMapIntensity={1.2}
           />
         </RoundedBox>
 
@@ -911,42 +993,8 @@ function Laptop({
           <meshStandardMaterial color={COLORS.keyboard} roughness={0.7} />
         </mesh>
 
-        {/* SPEAKER GRILLES - perforated strips flanking the keyboard.
-         *  Real ultrabooks (MacBook Pro 16, Razer Blade, XPS) have these
-         *  bracketing the keyboard. Implemented as two thin dark panels
-         *  with a dot-perforation overlay drawn on a separate canvas. */}
-        {[-1, 1].map((side) => (
-          <group
-            key={`speaker-${side}`}
-            position={[
-              side * (BASE_W * 0.46),
-              BASE_H / 2 + 0.001,
-              -0.15,
-            ]}
-          >
-            <mesh rotation={[-Math.PI / 2, 0, 0]}>
-              <planeGeometry args={[0.16, BASE_D * 0.52]} />
-              <meshStandardMaterial color="#040608" roughness={0.92} />
-            </mesh>
-            {/* Perforation dots (8 rows × 3 cols) */}
-            {Array.from({ length: 8 }).flatMap((_, row) =>
-              Array.from({ length: 3 }).map((_, col) => (
-                <mesh
-                  key={`${row}-${col}`}
-                  position={[
-                    (col - 1) * 0.045,
-                    0.0005,
-                    -0.5 + row * 0.14,
-                  ]}
-                  rotation={[-Math.PI / 2, 0, 0]}
-                >
-                  <circleGeometry args={[0.012, 10]} />
-                  <meshStandardMaterial color="#0b1018" roughness={0.5} />
-                </mesh>
-              )),
-            )}
-          </group>
-        ))}
+        {/* Speaker grilles removed - they read as black blobs flanking
+         *  the keyboard at this camera angle, not as ultrabook speakers. */}
 
         {/* BACKLIT KEYBOARD AMBIENT GLOW - very faint cyan blanket so
          *  the keyboard well shows a subtle backlight under the keys.
@@ -1138,24 +1186,43 @@ function Laptop({
                       toneMapped={false}
                     />
                   </mesh>
-                  {/* GLOWING KEY LABEL - cyan letterform painted on top
-                   *  of the keycap. Additive blending so it reads as a
-                   *  self-illuminated backlit letter, not a sticker. */}
+                  {/* GLOWING KEY LABEL - bright cyan letterform with a
+                   *  soft cyan haze behind it so the letters read clearly
+                   *  even against the HDR-lit keyboard well. Two-pass:
+                   *  one wider additive haze + one tighter solid letter. */}
                   {labelTex && (
-                    <mesh
-                      position={[0, 0.0032, 0]}
-                      rotation={[-Math.PI / 2, 0, 0]}
-                    >
-                      <planeGeometry args={[labelW, labelH]} />
-                      <meshBasicMaterial
-                        map={labelTex}
-                        transparent
-                        opacity={0.95}
-                        blending={THREE.AdditiveBlending}
-                        depthWrite={false}
-                        toneMapped={false}
-                      />
-                    </mesh>
+                    <>
+                      {/* Soft cyan haze behind the letter for "backlit" feel */}
+                      <mesh
+                        position={[0, 0.0028, 0]}
+                        rotation={[-Math.PI / 2, 0, 0]}
+                      >
+                        <planeGeometry args={[labelW * 1.15, labelH * 1.15]} />
+                        <meshBasicMaterial
+                          map={labelTex}
+                          transparent
+                          opacity={0.5}
+                          blending={THREE.AdditiveBlending}
+                          depthWrite={false}
+                          toneMapped={false}
+                        />
+                      </mesh>
+                      {/* Crisp letter on top - normal blending so it
+                       *  stays visible against any background brightness */}
+                      <mesh
+                        position={[0, 0.0033, 0]}
+                        rotation={[-Math.PI / 2, 0, 0]}
+                      >
+                        <planeGeometry args={[labelW, labelH]} />
+                        <meshBasicMaterial
+                          map={labelTex}
+                          transparent
+                          opacity={1}
+                          depthWrite={false}
+                          toneMapped={false}
+                        />
+                      </mesh>
+                    </>
                   )}
                 </group>
               );
@@ -1271,10 +1338,16 @@ function Laptop({
         >
           <group position={[0, LID_H / 2, LID_D / 2 - 0.04]}>
             <RoundedBox args={[LID_W, LID_H, LID_D]} radius={0.025} smoothness={4}>
-              <meshStandardMaterial
+              <meshPhysicalMaterial
                 color={COLORS.steel}
-                metalness={0.55}
-                roughness={0.38}
+                metalness={0.85}
+                roughness={0.32}
+                clearcoat={0.7}
+                clearcoatRoughness={0.26}
+                anisotropy={0.8}
+                normalMap={brushedNormalTex}
+                normalScale={new THREE.Vector2(0.16, 0.16)}
+                envMapIntensity={1.3}
               />
             </RoundedBox>
 
