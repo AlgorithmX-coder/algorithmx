@@ -310,6 +310,103 @@ function makeScreenGlowTexture(): THREE.Texture | null {
   return tex;
 }
 
+/* Slow data-rain texture - vertical columns of monospace characters
+ * tiled into a tall texture. Animated via offset.y in useFrame so the
+ * columns appear to flow downward. Sits FAR behind the laptop as a
+ * subtle "data world" backdrop. Brightness fades toward the bottom of
+ * each column so leading characters read as fresh / trailing ones as
+ * dimmer (the Matrix lookbut quieter). */
+function makeDataRainTexture(): THREE.Texture | null {
+  if (typeof document === "undefined") return null;
+  const c = document.createElement("canvas");
+  c.width = 1024;
+  c.height = 1024;
+  const ctx = c.getContext("2d");
+  if (!ctx) return null;
+  ctx.fillStyle = "#020610";
+  ctx.fillRect(0, 0, c.width, c.height);
+
+  const chars = "01{}[]<>#%&*+=/⌬◇◢◣△◬◯";
+  const cols = 26;
+  const colW = c.width / cols;
+  const rowH = 32;
+  ctx.font = "bold 22px ui-monospace, 'Courier New', monospace";
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  for (let col = 0; col < cols; col++) {
+    const x = col * colW + colW / 2;
+    /* Each column has its own starting offset + a "head" position */
+    const colSeed = Math.random();
+    const headY = colSeed * c.height;
+    const colRows = Math.floor(c.height / rowH);
+    for (let r = 0; r < colRows; r++) {
+      const y = (headY + r * rowH) % c.height;
+      /* Brightness decays with distance from head */
+      const brightness = Math.max(0.04, 1 - r * 0.045);
+      ctx.fillStyle = `rgba(159, 245, 255, ${brightness * 0.55})`;
+      const ch = chars[Math.floor(Math.random() * chars.length)];
+      ctx.fillText(ch, x, y);
+    }
+  }
+  const tex = new THREE.CanvasTexture(c);
+  tex.wrapS = THREE.RepeatWrapping;
+  tex.wrapT = THREE.RepeatWrapping;
+  tex.needsUpdate = true;
+  return tex;
+}
+
+/* Hexagonal PCB-style grid texture - replaces the line-based floor
+ * grid with something that reads as a real engineering / circuit board
+ * pattern. Tiles seamlessly when repeated. */
+function makeHexGridTexture(): THREE.Texture | null {
+  if (typeof document === "undefined") return null;
+  const c = document.createElement("canvas");
+  c.width = 512;
+  c.height = 512;
+  const ctx = c.getContext("2d");
+  if (!ctx) return null;
+  ctx.clearRect(0, 0, c.width, c.height);
+  const hexR = 32;
+  const hexW = hexR * Math.sqrt(3);
+  const hexH = hexR * 1.5;
+  ctx.strokeStyle = "rgba(0, 245, 255, 0.6)";
+  ctx.lineWidth = 1.4;
+  for (let row = -1; row <= c.height / hexH + 2; row++) {
+    for (let col = -1; col <= c.width / hexW + 2; col++) {
+      const x = col * hexW + (row % 2 === 0 ? 0 : hexW / 2);
+      const y = row * hexH;
+      ctx.beginPath();
+      for (let i = 0; i < 6; i++) {
+        const angle = (Math.PI / 3) * i + Math.PI / 6;
+        const hx = x + hexR * Math.cos(angle);
+        const hy = y + hexR * Math.sin(angle);
+        if (i === 0) ctx.moveTo(hx, hy);
+        else ctx.lineTo(hx, hy);
+      }
+      ctx.closePath();
+      ctx.stroke();
+    }
+  }
+  /* Sparse highlighted vertices for "via points" - tiny brighter dots */
+  ctx.fillStyle = "rgba(0, 245, 255, 0.95)";
+  for (let row = -1; row <= c.height / hexH + 2; row++) {
+    for (let col = -1; col <= c.width / hexW + 2; col++) {
+      if ((row + col) % 5 !== 0) continue; // sparse pattern
+      const x = col * hexW + (row % 2 === 0 ? 0 : hexW / 2);
+      const y = row * hexH;
+      ctx.beginPath();
+      ctx.arc(x, y, 2.5, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  }
+  const tex = new THREE.CanvasTexture(c);
+  tex.wrapS = THREE.RepeatWrapping;
+  tex.wrapT = THREE.RepeatWrapping;
+  tex.repeat.set(4, 4);
+  tex.needsUpdate = true;
+  return tex;
+}
+
 /* Atmospheric haze texture - faint cyan-violet radial gradient on
  * canvas. Sits far behind the laptop and gives the scene depth without
  * adding a literal fog mesh (which would interact badly with our
@@ -409,6 +506,9 @@ function Laptop({
   const screenBeamTex = useMemo(() => makeScreenGlowTexture(), []);
   const screenBeamRef = useRef<THREE.Mesh>(null);
   const fogHazeTex = useMemo(() => makeFogHazeTexture(), []);
+  const dataRainTex = useMemo(() => makeDataRainTexture(), []);
+  const hexFloorTex = useMemo(() => makeHexGridTexture(), []);
+  const hexFloorMatRef = useRef<THREE.MeshBasicMaterial>(null);
   const parallaxRef = useRef<THREE.Group>(null);
   const lidRef = useRef<THREE.Group>(null);
   const ledMat = useRef<THREE.MeshStandardMaterial>(null);
@@ -552,11 +652,24 @@ function Laptop({
       ledMat.current.emissiveIntensity = 1.5 + Math.sin(t * 2.1) * 0.5;
     }
 
-    /* Holographic grid draws in over the first half of scroll */
+    /* Holographic grid + hex-PCB floor draws in over the first half of
+     * scroll. The legacy line grid (gridMat) stays as a faint accent
+     * underneath; the hex texture is the main visible floor pattern. */
     if (gridMat.current) {
       const draw = smoothstep(0.0, 0.5, p);
       const pulse = 0.85 + Math.sin(t * 0.8) * 0.1;
-      gridMat.current.opacity = draw * 0.32 * pulse;
+      gridMat.current.opacity = draw * 0.12 * pulse;
+    }
+    if (hexFloorMatRef.current) {
+      const draw = smoothstep(0.0, 0.5, p);
+      const pulse = 0.85 + Math.sin(t * 0.9) * 0.1;
+      hexFloorMatRef.current.opacity = draw * 0.45 * pulse;
+    }
+
+    /* DATA RAIN scrolls downward via texture offset.y. Slow speed so
+     * it reads as ambient drift not a busy strobe. */
+    if (dataRainTex) {
+      dataRainTex.offset.y = (dataRainTex.offset.y + 0.025 * delta) % 1;
     }
 
     /* VOLUMETRIC SCREEN BEAM - soft cyan halo plane that floats above
@@ -638,6 +751,24 @@ function Laptop({
         </mesh>
       )}
 
+      {/* SLOW DATA RAIN - vertical cascading code far behind the
+       *  laptop. Texture offset.y is animated each frame so columns
+       *  flow downward. Sits between the fog haze and the laptop so
+       *  it reads as the "data world" the device is plugged into. */}
+      {dataRainTex && (
+        <mesh position={[RIG_X, 1.4, -6.0]}>
+          <planeGeometry args={[14, 10]} />
+          <meshBasicMaterial
+            map={dataRainTex}
+            transparent
+            opacity={0.45}
+            blending={THREE.AdditiveBlending}
+            depthWrite={false}
+            toneMapped={false}
+          />
+        </mesh>
+      )}
+
       {/* Soft contact shadow under the laptop. Radial-gradient texture
        *  so the shadow has natural falloff instead of a hard ellipse
        *  edge. Stretched along Z so it matches the laptop's footprint. */}
@@ -656,7 +787,30 @@ function Laptop({
         </mesh>
       )}
 
-      {/* Holographic floor grid drawing in as you scroll */}
+      {/* HEX-PCB FLOOR - hexagonal circuit-board pattern as the main
+       *  visible floor texture. Reads as real engineering grid, not
+       *  generic graph paper. Tiled 4x4 via texture repeat. */}
+      {hexFloorTex && (
+        <mesh
+          position={[RIG_X, -BASE_H / 2 - 0.028, 0]}
+          rotation={[-Math.PI / 2, 0, 0]}
+        >
+          <planeGeometry args={[8, 8]} />
+          <meshBasicMaterial
+            ref={hexFloorMatRef}
+            map={hexFloorTex}
+            transparent
+            opacity={0}
+            blending={THREE.AdditiveBlending}
+            depthWrite={false}
+            toneMapped={false}
+          />
+        </mesh>
+      )}
+
+      {/* Holographic line grid - kept as a faint underlay so the floor
+       *  has both hex pattern + subtle line accents. Opacity is now
+       *  much lower than before. */}
       <lineSegments
         geometry={gridGeom}
         position={[RIG_X, -BASE_H / 2 - 0.03, 0]}
