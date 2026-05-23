@@ -23,69 +23,26 @@ const SUBLINE =
   "Six fields of technology — cybersecurity, coding, AI, apps, entrepreneurship, robotics — for ages 6 to adult. Cyber Heroes Academy, our first course, is live today.";
 
 export default function HeroOverlay({ progress }: HeroOverlayProps) {
-  /* Visibility timing — pulled forward so the headline reveals DURING
-   * the motion phase (when light streaks are flying past the chip), not
-   * just at the rest beat. Modelled on terminal-industries.com's pattern:
-   * "subject moves through space, headline fades in" rather than "subject
-   * sits still, headline appears after".
+  /* Headline reveals at CHAPTER 03 (Curriculum loading), AFTER the lid
+   * has finished opening (lid hits open at progress ~0.40). The closed-
+   * laptop stage (chapters 01 & 02) stays mysterious and minimal: only
+   * the chapter label + scroll cue + Nav are on screen.
    *
-   * 0.08 → opacity starts climbing
-   * 0.28 → fully visible
-   * Holds through to the AX glyph reveal. */
-  const opacity = useTransform(progress, [0.08, 0.28], [0, 1]);
-  const y = useTransform(progress, [0.08, 0.28], [22, 0]);
-  const blur = useTransform(progress, [0.08, 0.28], [8, 0]);
+   * 0.42 -> opacity starts climbing (lid is fully open by now)
+   * 0.55 -> fully visible
+   * Holds through chapters 04-06. */
+  const opacity = useTransform(progress, [0.42, 0.55], [0, 1]);
+  const y = useTransform(progress, [0.42, 0.55], [22, 0]);
+  const blur = useTransform(progress, [0.42, 0.55], [8, 0]);
   const filter = useTransform(blur, (v) => `blur(${v}px)`);
-  const scrimOpacity = useTransform(progress, [0.05, 0.28], [0, 1]);
+  const scrimOpacity = useTransform(progress, [0.40, 0.55], [0, 1]);
 
-  /* The brand wordmark is always present at scroll 0; it fades out once
-   * the headline takes over (no longer needed because the brand is in
-   * the eyebrow). */
-  const wordmarkOpacity = useTransform(progress, [0, 0.08, 0.28], [1, 1, 0]);
+  /* The persistent ALGORITHMX wordmark previously rendered here was
+   * removed: the global Nav (Nav.tsx) carries the brand from scroll 0,
+   * and the duplicate created visual noise in the top-left corner. */
 
   return (
     <>
-      {/* Persistent ALGORITHMX wordmark - visible from scroll 0 so the
-       *  brand is on screen even before the headline fades in. Sits
-       *  in the top-left of the viewport. */}
-      <motion.div
-        style={{
-          opacity: wordmarkOpacity,
-          position: "absolute",
-          top: "calc(var(--lv2-rail) * 0.85)",
-          left: "var(--lv2-rail)",
-          zIndex: 4,
-          pointerEvents: "none",
-          display: "flex",
-          alignItems: "center",
-          gap: 10,
-          color: "var(--lv2-paper)",
-        }}
-      >
-        <span
-          aria-hidden
-          style={{
-            width: 10,
-            height: 10,
-            borderRadius: 2,
-            background: "var(--lv2-cyan)",
-            boxShadow: "0 0 14px rgba(0,229,255,0.65)",
-          }}
-        />
-        <span
-          style={{
-            fontFamily: "var(--lv2-font-mono)",
-            fontSize: 13,
-            fontWeight: 600,
-            letterSpacing: "0.32em",
-            textTransform: "uppercase",
-            textShadow: "0 2px 18px rgba(4,5,13,0.95)",
-          }}
-        >
-          ALGORITHMX
-        </span>
-      </motion.div>
-
       <motion.div
         style={{
           opacity,

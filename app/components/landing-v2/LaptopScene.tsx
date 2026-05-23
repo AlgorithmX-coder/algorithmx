@@ -124,170 +124,382 @@ function useLidBrandTexture(): THREE.Texture | null {
   }, []);
 }
 
-/* OLED-sharp screen texture. Pure-black background + multi-coloured
- * syntax tokens (keywords cyan, status badges in subject accent, paths
- * white, comments amber). Rendered at 2x resolution then sampled with
- * 16x anisotropic filtering so the text reads razor-sharp on the lid
- * plane. No soft tint background washes - real OLED panels have pure
- * black pixels with vibrant emissive content. */
-function useScreenTexture(): THREE.Texture | null {
-  return useMemo(() => {
-    if (typeof document === "undefined") return null;
-    const c = document.createElement("canvas");
-    c.width = 2048;
-    c.height = 1280;
-    const ctx = c.getContext("2d");
-    if (!ctx) return null;
-    /* Best-quality canvas rendering */
-    ctx.imageSmoothingEnabled = true;
-    ctx.imageSmoothingQuality = "high";
+/* LIVING SCREEN - multi-stage canvas texture that repaints as scroll
+ * crosses chapter boundaries. Replaces the previous static screen with
+ * a real boot sequence -> dashboard -> projects -> READY narrative.
+ *
+ * Stages (computed from scroll progress in useFrame):
+ *   0  DORMANT      pure black with a tiny power-led indicator
+ *   1-6 BOOT        6 progressive lines of OS boot text + OK badges
+ *   7  STREAMS      6-stream dashboard with status / age / project
+ *   8  PROJECTS     active-project progression panel with progress bars
+ *   9  READY        big "READY" stamp + 6-stream dots + CTA hint
+ *
+ * Repaints only happen on stage changes (max 10 times across the whole
+ * cinematic) so it's cheap. The texture object is stable; we just push
+ * new pixels and set needsUpdate. */
+const FONT_MONO = "ui-monospace, 'JetBrains Mono', 'Courier New', monospace";
+const FONT_SANS = "ui-sans-serif, system-ui, sans-serif";
 
-    /* OLED pure-black background */
-    ctx.fillStyle = "#000000";
-    ctx.fillRect(0, 0, c.width, c.height);
+const BOOT_LINES: ReadonlyArray<{ pre: string; main: string; color: string }> = [
+  { pre: "INITIALISING ", main: "ALGORITHMX OS v1.0", color: "#00f5ff" },
+  { pre: "LOADING ", main: "curriculum.json", color: "#ffd07a" },
+  { pre: "DETECTING AGE RANGE: ", main: "6 → ADULT", color: "#5fffa3" },
+  { pre: "LOADING ", main: "6 LEARNING STREAMS", color: "#cba8ff" },
+  { pre: "STATUS: ", main: "CYBER HEROES ACADEMY LIVE", color: "#5fffa3" },
+  { pre: "STATUS: ", main: "STUDENT PATHWAYS READY", color: "#9ff5ff" },
+];
 
-    /* Top-bar subtle cyan accent strip (mimics "active terminal" bar) */
-    ctx.fillStyle = "rgba(0,245,255,0.06)";
-    ctx.fillRect(0, 0, c.width, 6);
+const STREAMS = [
+  { name: "CYBERSECURITY", status: "LIVE", age: "9-16", project: "Password defender", color: "#5fffa3" },
+  { name: "GAME DEVELOPMENT", status: "2026", age: "8-16", project: "Pixel platformer", color: "#9ff5ff" },
+  { name: "AI & MACHINE LEARNING", status: "2026", age: "11+", project: "Image classifier", color: "#cba8ff" },
+  { name: "APP DEVELOPMENT", status: "2027", age: "12+", project: "Habit tracker", color: "#ffd07a" },
+  { name: "ENTREPRENEURSHIP", status: "2027", age: "13+", project: "Pitch deck builder", color: "#ffc94a" },
+  { name: "ROBOTICS", status: "2027", age: "10+", project: "Maze-solver bot", color: "#ff3ad6" },
+] as const;
 
-    /* Boot header - mixed colours: prompt "$ >" in dim cyan, command
-     *  body in bright white, comments / status in accents. Crisp shadow
-     *  only - no big halo. */
-    const fontMono = "ui-monospace, 'JetBrains Mono', 'Courier New', monospace";
-    ctx.textAlign = "left";
-    ctx.textBaseline = "middle";
+function computeScreenStage(p: number): number {
+  /* Lid begins opening at 0.18, fully open by 0.40 (see Laptop useFrame).
+   * Boot text begins as the screen first ignites (~0.22) and completes
+   * just before the lid finishes opening, so when the lid lands open
+   * the screen has already booted and the dashboard greets the user. */
+  if (p < 0.22) return 0;
+  if (p < 0.26) return 1;
+  if (p < 0.29) return 2;
+  if (p < 0.32) return 3;
+  if (p < 0.35) return 4;
+  if (p < 0.38) return 5;
+  if (p < 0.50) return 6; // boot complete (all 6 lines + OK)
+  if (p < 0.68) return 7; // streams dashboard
+  if (p < 0.85) return 8; // projects
+  return 9; // ready
+}
 
-    const drawTokens = (
-      tokens: Array<{ text: string; color: string; bold?: boolean }>,
-      x: number,
-      y: number,
-      size: number,
-    ) => {
-      let cursorX = x;
-      for (const tok of tokens) {
-        const weight = tok.bold ? "bold" : "500";
-        ctx.font = `${weight} ${size}px ${fontMono}`;
-        ctx.shadowBlur = 0;
-        ctx.fillStyle = tok.color;
-        ctx.fillText(tok.text, cursorX, y);
-        cursorX += ctx.measureText(tok.text).width;
-      }
-    };
+function roundRect(
+  ctx: CanvasRenderingContext2D,
+  x: number,
+  y: number,
+  w: number,
+  h: number,
+  r: number,
+) {
+  ctx.beginPath();
+  ctx.moveTo(x + r, y);
+  ctx.lineTo(x + w - r, y);
+  ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+  ctx.lineTo(x + w, y + h - r);
+  ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+  ctx.lineTo(x + r, y + h);
+  ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+  ctx.lineTo(x, y + r);
+  ctx.quadraticCurveTo(x, y, x + r, y);
+  ctx.closePath();
+}
 
-    /* HEADER */
-    drawTokens(
-      [
-        { text: "> ", color: "rgba(0,245,255,0.55)" },
-        { text: "ALGORITHMX_OS", color: "#00f5ff", bold: true },
-        { text: " v1.0", color: "#7df0ff" },
-        { text: "    // booting", color: "rgba(0,245,255,0.5)" },
-      ],
-      88,
-      120,
-      48,
-    );
-    drawTokens(
-      [
-        { text: "> ", color: "rgba(0,245,255,0.55)" },
-        { text: "loading", color: "#ffd07a" },
-        { text: " curriculum.json...", color: "#ffffff" },
-      ],
-      88,
-      188,
-      44,
-    );
-    drawTokens(
-      [
-        { text: "> ", color: "rgba(0,245,255,0.55)" },
-        { text: "6 streams ready", color: "#5fffa3" },
-        { text: "  /  ", color: "rgba(255,255,255,0.4)" },
-        { text: "ages 6", color: "#ffffff" },
-        { text: " — ", color: "rgba(255,255,255,0.4)" },
-        { text: "adult", color: "#ffffff" },
-      ],
-      88,
-      256,
-      40,
-    );
+function paintTitleBar(
+  ctx: CanvasRenderingContext2D,
+  c: HTMLCanvasElement,
+  stage: number,
+) {
+  ctx.font = `bold 36px ${FONT_MONO}`;
+  ctx.fillStyle = "#00f5ff";
+  ctx.textAlign = "left";
+  ctx.textBaseline = "middle";
+  ctx.fillText("ALGORITHMX_OS", 96, 90);
+  ctx.font = `600 28px ${FONT_MONO}`;
+  ctx.fillStyle = "rgba(232,237,255,0.55)";
+  ctx.textAlign = "right";
+  const mode =
+    stage <= 6 ? "BOOTING" : stage === 7 ? "STREAMS" : stage === 8 ? "PROJECTS" : "READY";
+  ctx.fillText(`MODE  ${mode}`, c.width - 96, 90);
+  /* Active blinking dot next to MODE */
+  ctx.fillStyle = stage === 9 ? "#5fffa3" : "#00f5ff";
+  ctx.shadowColor = stage === 9 ? "#5fffa3" : "#00f5ff";
+  ctx.shadowBlur = 16;
+  ctx.beginPath();
+  ctx.arc(c.width - 96 - ctx.measureText(`MODE  ${mode}`).width - 22, 90, 9, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.shadowBlur = 0;
+  /* Divider */
+  ctx.fillStyle = "rgba(0,245,255,0.18)";
+  ctx.fillRect(96, 138, c.width - 192, 2);
+}
 
-    /* Thin divider rule */
-    ctx.fillStyle = "rgba(0,245,255,0.18)";
-    ctx.fillRect(88, 310, c.width - 176, 2);
+function paintBrandStrip(ctx: CanvasRenderingContext2D, c: HTMLCanvasElement) {
+  ctx.fillStyle = "rgba(0,245,255,0.16)";
+  ctx.fillRect(96, c.height - 64, c.width - 192, 1);
+  ctx.font = `600 24px ${FONT_MONO}`;
+  ctx.fillStyle = "rgba(0,245,255,0.5)";
+  ctx.textAlign = "center";
+  ctx.fillText(
+    "ALGORITHMX  //  TECHNOLOGY EDUCATION  //  AGES 6 → ADULT",
+    c.width / 2,
+    c.height - 32,
+  );
+}
 
-    /* SIX SUBJECT LINES - each with its accent + status badge */
-    const subjects: Array<{ name: string; status: string; color: string }> = [
-      { name: "CYBERSECURITY", status: "LIVE", color: "#5fffa3" },
-      { name: "GAME DEV", status: "2026", color: "#9ff5ff" },
-      { name: "AI & ML", status: "2026", color: "#cba8ff" },
-      { name: "APP DEV", status: "2027", color: "#ffd07a" },
-      { name: "ENTREPRENEURSHIP", status: "2027", color: "#ffc94a" },
-      { name: "ROBOTICS", status: "2027", color: "#ff3ad6" },
-    ];
-    subjects.forEach((s, i) => {
-      const y = 380 + i * 78;
-      /* Indicator dot in the accent color */
-      ctx.fillStyle = s.color;
-      ctx.shadowColor = s.color;
-      ctx.shadowBlur = 16;
-      ctx.beginPath();
-      ctx.arc(110, y, 8, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.shadowBlur = 0;
-      /* Subject name in accent colour */
-      ctx.font = `bold 44px ${fontMono}`;
-      ctx.fillStyle = s.color;
-      ctx.fillText(s.name, 150, y);
-      /* Status badge - solid filled pill, bold text inside */
-      const badgeText = s.status;
-      ctx.font = `bold 30px ${fontMono}`;
-      const tw = ctx.measureText(badgeText).width;
-      const padX = 28;
+function paintBootSequence(
+  ctx: CanvasRenderingContext2D,
+  c: HTMLCanvasElement,
+  visibleLines: number,
+) {
+  ctx.textAlign = "left";
+  ctx.textBaseline = "middle";
+  const startY = 230;
+  const lineH = 96;
+  for (let i = 0; i < visibleLines; i++) {
+    const y = startY + i * lineH;
+    const line = BOOT_LINES[i];
+    let x = 112;
+    /* > prompt */
+    ctx.font = `bold 44px ${FONT_MONO}`;
+    ctx.fillStyle = "rgba(0,245,255,0.55)";
+    ctx.fillText("> ", x, y);
+    x += ctx.measureText("> ").width;
+    /* pre text in dim white */
+    ctx.fillStyle = "rgba(232,237,255,0.78)";
+    ctx.fillText(line.pre, x, y);
+    x += ctx.measureText(line.pre).width;
+    /* main in accent */
+    ctx.fillStyle = line.color;
+    ctx.fillText(line.main, x, y);
+    x += ctx.measureText(line.main).width;
+    /* OK badge on completed lines */
+    if (i < visibleLines - 1) {
+      ctx.font = `bold 26px ${FONT_MONO}`;
+      const tw = ctx.measureText("OK").width;
+      const padX = 20;
       const bw = tw + padX * 2;
-      const bh = 50;
-      const bx = c.width - 110 - bw;
+      const bh = 38;
+      const bx = x + 24;
       const by = y - bh / 2;
-      ctx.fillStyle = s.color;
-      ctx.beginPath();
-      const r = 8;
-      ctx.moveTo(bx + r, by);
-      ctx.lineTo(bx + bw - r, by);
-      ctx.quadraticCurveTo(bx + bw, by, bx + bw, by + r);
-      ctx.lineTo(bx + bw, by + bh - r);
-      ctx.quadraticCurveTo(bx + bw, by + bh, bx + bw - r, by + bh);
-      ctx.lineTo(bx + r, by + bh);
-      ctx.quadraticCurveTo(bx, by + bh, bx, by + bh - r);
-      ctx.lineTo(bx, by + r);
-      ctx.quadraticCurveTo(bx, by, bx + r, by);
-      ctx.closePath();
+      ctx.fillStyle = "#5fffa3";
+      roundRect(ctx, bx, by, bw, bh, 6);
       ctx.fill();
-      /* Badge text in deep ink against the accent fill */
       ctx.fillStyle = "#04050d";
       ctx.textAlign = "center";
-      ctx.fillText(badgeText, bx + bw / 2, y + 2);
+      ctx.fillText("OK", bx + bw / 2, y + 1);
       ctx.textAlign = "left";
-    });
+    } else {
+      /* Active line: cursor block */
+      ctx.fillStyle = "#00f5ff";
+      ctx.shadowColor = "#00f5ff";
+      ctx.shadowBlur = 14;
+      ctx.fillRect(x + 16, y - 24, 18, 48);
+      ctx.shadowBlur = 0;
+    }
+  }
+}
 
-    /* Footer brand strip - very subtle */
-    ctx.fillStyle = "rgba(0,245,255,0.2)";
-    ctx.fillRect(88, c.height - 70, c.width - 176, 1);
-    ctx.font = `600 28px ${fontMono}`;
-    ctx.fillStyle = "rgba(0,245,255,0.6)";
+function paintStreamsDashboard(
+  ctx: CanvasRenderingContext2D,
+  c: HTMLCanvasElement,
+) {
+  ctx.font = `600 26px ${FONT_MONO}`;
+  ctx.fillStyle = "rgba(232,237,255,0.55)";
+  ctx.textAlign = "left";
+  ctx.textBaseline = "middle";
+  ctx.fillText("// 6 LEARNING STREAMS  /  CHOOSE YOUR PATH", 96, 184);
+
+  const startY = 266;
+  const rowH = 98;
+  STREAMS.forEach((s, i) => {
+    const y = startY + i * rowH;
+    /* Accent indicator dot */
+    ctx.fillStyle = s.color;
+    ctx.shadowColor = s.color;
+    ctx.shadowBlur = 18;
+    ctx.beginPath();
+    ctx.arc(118, y, 10, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.shadowBlur = 0;
+    /* Stream name */
+    ctx.font = `bold 40px ${FONT_MONO}`;
+    ctx.fillStyle = s.color;
+    ctx.textAlign = "left";
+    ctx.fillText(s.name, 158, y - 14);
+    /* Age + project subtitle */
+    ctx.font = `500 24px ${FONT_MONO}`;
+    ctx.fillStyle = "rgba(232,237,255,0.48)";
+    ctx.fillText(`AGES ${s.age}   //   ${s.project}`, 158, y + 24);
+    /* Status badge (right side) */
+    const badgeText = s.status;
+    ctx.font = `bold 26px ${FONT_MONO}`;
+    const tw = ctx.measureText(badgeText).width;
+    const padX = 24;
+    const bw = tw + padX * 2;
+    const bh = 44;
+    const bx = c.width - 118 - bw;
+    const by = y - bh / 2;
+    ctx.fillStyle = s.color;
+    roundRect(ctx, bx, by, bw, bh, 8);
+    ctx.fill();
+    ctx.fillStyle = "#04050d";
     ctx.textAlign = "center";
-    ctx.fillText(
-      "ALGORITHMX  //  TECHNOLOGY EDUCATION",
-      c.width / 2,
-      c.height - 38,
-    );
+    ctx.fillText(badgeText, bx + bw / 2, y + 1);
+    ctx.textAlign = "left";
+  });
+}
 
-    const tex = new THREE.CanvasTexture(c);
+function paintProjectsDashboard(
+  ctx: CanvasRenderingContext2D,
+  c: HTMLCanvasElement,
+) {
+  ctx.font = `600 26px ${FONT_MONO}`;
+  ctx.fillStyle = "rgba(232,237,255,0.55)";
+  ctx.textAlign = "left";
+  ctx.textBaseline = "middle";
+  ctx.fillText("// ACTIVE PROJECTS  /  WHAT YOU'LL BUILD", 96, 184);
+
+  const projects = [
+    { name: "Password Defender", stream: "CYBERSECURITY", pct: 72, color: "#5fffa3" },
+    { name: "Phishing Lab",      stream: "CYBERSECURITY", pct: 48, color: "#5fffa3" },
+    { name: "Pixel Platformer",  stream: "GAME DEV",      pct: 30, color: "#9ff5ff" },
+    { name: "Image Classifier",  stream: "AI & ML",       pct: 18, color: "#cba8ff" },
+  ];
+  const startY = 274;
+  const rowH = 178;
+  projects.forEach((p, i) => {
+    const y = startY + i * rowH;
+    /* Left accent rim */
+    ctx.fillStyle = p.color;
+    ctx.fillRect(96, y - 56, 4, 112);
+    /* Project name */
+    ctx.font = `bold 40px ${FONT_MONO}`;
+    ctx.fillStyle = "#ffffff";
+    ctx.textAlign = "left";
+    ctx.fillText(p.name, 132, y - 18);
+    /* Stream subtitle */
+    ctx.font = `500 22px ${FONT_MONO}`;
+    ctx.fillStyle = p.color;
+    ctx.fillText(p.stream, 132, y + 22);
+    /* Progress bar */
+    const barX = 132;
+    const barY = y + 58;
+    const barW = c.width - barX - 220;
+    const barH = 14;
+    ctx.fillStyle = "rgba(232,237,255,0.08)";
+    roundRect(ctx, barX, barY, barW, barH, 7);
+    ctx.fill();
+    ctx.fillStyle = p.color;
+    roundRect(ctx, barX, barY, barW * (p.pct / 100), barH, 7);
+    ctx.fill();
+    /* % label */
+    ctx.font = `bold 30px ${FONT_MONO}`;
+    ctx.fillStyle = p.color;
+    ctx.textAlign = "right";
+    ctx.fillText(`${p.pct}%`, c.width - 118, y + 68);
+  });
+}
+
+function paintReadyState(
+  ctx: CanvasRenderingContext2D,
+  c: HTMLCanvasElement,
+) {
+  ctx.font = `600 26px ${FONT_MONO}`;
+  ctx.fillStyle = "rgba(232,237,255,0.55)";
+  ctx.textAlign = "left";
+  ctx.textBaseline = "middle";
+  ctx.fillText("// SYSTEM READY  /  AWAITING USER INPUT", 96, 184);
+
+  /* Big READY stamp */
+  ctx.font = `900 240px ${FONT_SANS}`;
+  ctx.fillStyle = "#5fffa3";
+  ctx.shadowColor = "rgba(95,255,163,0.85)";
+  ctx.shadowBlur = 60;
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  ctx.fillText("READY", c.width / 2, c.height / 2 - 40);
+  ctx.shadowBlur = 0;
+
+  /* Subtitle */
+  ctx.font = `600 38px ${FONT_MONO}`;
+  ctx.fillStyle = "rgba(232,237,255,0.6)";
+  ctx.fillText("CHOOSE A STREAM TO BEGIN", c.width / 2, c.height / 2 + 160);
+
+  /* Six stream dots strip near bottom */
+  const dotY = c.height - 180;
+  const span = 80;
+  const startX = c.width / 2 - ((STREAMS.length - 1) * span) / 2;
+  STREAMS.forEach((s, i) => {
+    const x = startX + i * span;
+    ctx.fillStyle = s.color;
+    ctx.shadowColor = s.color;
+    ctx.shadowBlur = 22;
+    ctx.beginPath();
+    ctx.arc(x, dotY, 14, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.shadowBlur = 0;
+  });
+}
+
+function paintScreen(canvas: HTMLCanvasElement, stage: number) {
+  const ctx = canvas.getContext("2d");
+  if (!ctx) return;
+  ctx.imageSmoothingEnabled = true;
+  ctx.imageSmoothingQuality = "high";
+  /* OLED pure black */
+  ctx.fillStyle = "#000000";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  if (stage === 0) {
+    /* Dormant: tiny indicator near top-left so the screen isn't a
+     * perfectly black rectangle (which can read as "broken display"). */
+    ctx.fillStyle = "rgba(0,245,255,0.55)";
+    ctx.shadowColor = "rgba(0,245,255,0.9)";
+    ctx.shadowBlur = 24;
+    ctx.beginPath();
+    ctx.arc(96, 90, 8, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.shadowBlur = 0;
+    return;
+  }
+  /* Top cyan accent strip */
+  ctx.fillStyle = "rgba(0,245,255,0.08)";
+  ctx.fillRect(0, 0, canvas.width, 6);
+  paintTitleBar(ctx, canvas, stage);
+  if (stage >= 1 && stage <= 6) paintBootSequence(ctx, canvas, stage);
+  else if (stage === 7) paintStreamsDashboard(ctx, canvas);
+  else if (stage === 8) paintProjectsDashboard(ctx, canvas);
+  else paintReadyState(ctx, canvas);
+  paintBrandStrip(ctx, canvas);
+}
+
+interface LivingScreen {
+  tex: THREE.Texture | null;
+  repaint: (stage: number) => void;
+}
+
+function useLivingScreen(): LivingScreen {
+  const refs = useMemo<{ canvas: HTMLCanvasElement; tex: THREE.Texture } | null>(() => {
+    if (typeof document === "undefined") return null;
+    const canvas = document.createElement("canvas");
+    canvas.width = 2048;
+    canvas.height = 1280;
+    const tex = new THREE.CanvasTexture(canvas);
     tex.colorSpace = THREE.SRGBColorSpace;
     tex.anisotropy = 16;
     tex.minFilter = THREE.LinearMipmapLinearFilter;
     tex.magFilter = THREE.LinearFilter;
     tex.generateMipmaps = true;
-    tex.needsUpdate = true;
-    return tex;
+    return { canvas, tex };
   }, []);
+  const repaint = useMemo(
+    () => (stage: number) => {
+      if (!refs) return;
+      paintScreen(refs.canvas, stage);
+      refs.tex.needsUpdate = true;
+    },
+    [refs],
+  );
+  /* Initial paint at stage 0 */
+  useMemo(() => {
+    if (refs) {
+      paintScreen(refs.canvas, 0);
+      refs.tex.needsUpdate = true;
+    }
+  }, [refs]);
+  return { tex: refs?.tex ?? null, repaint };
 }
 
 /* Lazy texture cache for keyboard key labels. Cached by `label|haloColor`
@@ -594,26 +806,31 @@ function makeFogHazeTexture(): THREE.Texture | null {
 }
 
 /* Soft contact-shadow texture - radial gradient with smooth falloff so
- * the shadow under the laptop doesn't have a hard ellipse edge. */
+ * the shadow under the laptop doesn't have a hard ellipse edge.
+ * Strengthened (deeper core, longer falloff) for a heavier sense of
+ * physical contact with the floor. */
 function makeSoftShadowTexture(): THREE.Texture | null {
   if (typeof window === "undefined") return null;
   const c = document.createElement("canvas");
-  c.width = 512;
-  c.height = 256;
+  c.width = 1024;
+  c.height = 512;
   const ctx = c.getContext("2d");
   if (!ctx) return null;
   ctx.clearRect(0, 0, c.width, c.height);
+  /* Two-stop gradient: tight black core under the chassis, longer soft
+   * falloff out to the edge of the plane. */
   const g = ctx.createRadialGradient(
     c.width / 2,
     c.height / 2,
-    20,
+    18,
     c.width / 2,
     c.height / 2,
-    c.width / 2.1,
+    c.width / 2.0,
   );
-  g.addColorStop(0, "rgba(0,0,0,0.85)");
-  g.addColorStop(0.35, "rgba(0,0,0,0.5)");
-  g.addColorStop(0.75, "rgba(0,0,0,0.15)");
+  g.addColorStop(0, "rgba(0,0,0,0.96)");
+  g.addColorStop(0.2, "rgba(0,0,0,0.78)");
+  g.addColorStop(0.5, "rgba(0,0,0,0.32)");
+  g.addColorStop(0.85, "rgba(0,0,0,0.06)");
   g.addColorStop(1, "rgba(0,0,0,0)");
   ctx.fillStyle = g;
   ctx.fillRect(0, 0, c.width, c.height);
@@ -685,7 +902,8 @@ function Laptop({
   reducedMotion: boolean;
 }) {
   const lidBrandTex = useLidBrandTexture();
-  const screenTex = useScreenTexture();
+  const screen = useLivingScreen();
+  const screenStageRef = useRef(-1);
   const softShadowTex = useMemo(() => makeSoftShadowTexture(), []);
   const screenBeamTex = useMemo(() => makeScreenGlowTexture(), []);
   const screenBeamRef = useRef<THREE.Mesh>(null);
@@ -699,6 +917,8 @@ function Laptop({
   const ledMat = useRef<THREE.MeshStandardMaterial>(null);
   const screenContentMat = useRef<THREE.MeshBasicMaterial>(null);
   const screenGlowMat = useRef<THREE.MeshBasicMaterial>(null);
+  const keyboardBacklightMat = useRef<THREE.MeshBasicMaterial>(null);
+  const screenSpillMat = useRef<THREE.MeshBasicMaterial>(null);
   const gridMat = useRef<THREE.LineBasicMaterial>(null);
   const particleGroup = useRef<THREE.Group>(null);
 
@@ -810,30 +1030,34 @@ function Laptop({
       );
     }
 
-    /* Lid hinge with SMOOTH DAMPING - exponential follow with no
-     * overshoot. Real laptop hinges have friction not springs, so the
-     * lid trails the scroll-target by a beat (heavy / mechanical feel)
-     * but never bounces past it. */
-    const openT = smoothstep(0.2, 0.6, p);
+    /* Lid hinge - SMOOTH DAMPING with no overshoot. Mapped to the
+     * Chapter 02 -> Chapter 03 window (0.18 -> 0.40) so the lid finishes
+     * opening just as the headline reveal begins at 0.42. Was 0.20-0.60
+     * on the old 150vh rail. */
+    const openT = smoothstep(0.18, 0.4, p);
     const targetAngle = lerp(LID_CLOSED_ANGLE, LID_OPEN_ANGLE, openT);
     const dt = Math.min(0.05, delta);
-    /* lerpFactor = 1 - exp(-k * dt) gives a frame-rate-independent
-     *  smooth approach. k=10 settles in ~0.3s; k=14 settles in ~0.2s.
-     *  Tuned so the lid feels weighty but never overshoots. */
     const followSpeed = 1 - Math.exp(-12 * dt);
     lidAngle.current = lerp(lidAngle.current, targetAngle, followSpeed);
-    /* Kept here only because the old spring used it - drain velocity
-     *  toward zero so any leftover state from the previous build
-     *  doesn't introduce phantom bounces. */
     lidVelocity.current = 0;
     if (lidRef.current) {
       lidRef.current.rotation.x = lidAngle.current;
     }
 
-    /* Screen ignite - content fades up + glow breathes as lid opens.
-     * Glow plane is now much subtler (was 0.4 peak, blew out the lid);
-     * the screen content alone reads as the emissive light source. */
-    const screenT = smoothstep(0.35, 0.65, p);
+    /* Living screen - repaint canvas when the chapter-driven stage
+     * crosses a boundary. Stages: 0=dormant, 1-6=boot lines, 7=streams
+     * dashboard, 8=projects, 9=ready. */
+    const stage = computeScreenStage(p);
+    if (stage !== screenStageRef.current) {
+      screenStageRef.current = stage;
+      screen.repaint(stage);
+    }
+
+    /* Screen ignite - content fades up + spill onto keyboard ramps with
+     * the lid-open angle. Mapped 0.30 -> 0.50 so the screen content
+     * appears just BEFORE the lid finishes opening and is fully visible
+     * by Chapter 03. */
+    const screenT = smoothstep(0.3, 0.5, p);
     if (screenContentMat.current) {
       screenContentMat.current.transparent = true;
       screenContentMat.current.opacity = screenT;
@@ -842,25 +1066,38 @@ function Laptop({
       const breathe = 0.9 + Math.sin(t * 1.4) * 0.1;
       screenGlowMat.current.opacity = screenT * 0.08 * breathe;
     }
+    /* SCREEN-GLOW SPILL onto the keyboard - additive cyan plane above
+     * the keyboard well whose opacity tracks the screen-ignite curve.
+     * Reads as "the screen is illuminating the keys" as the lid opens. */
+    if (screenSpillMat.current) {
+      const breathe = 0.92 + Math.sin(t * 1.1) * 0.08;
+      screenSpillMat.current.opacity = screenT * 0.18 * breathe;
+    }
+    /* KEYBOARD BACKLIGHT ACTIVATION - the per-key RGB underglow ambient
+     * blanket fades in across Chapter 03 so the keyboard "powers on"
+     * when the lid lands open. Without this the keys read as already-lit
+     * before the laptop is even open. */
+    if (keyboardBacklightMat.current) {
+      const backlight = smoothstep(0.35, 0.55, p);
+      keyboardBacklightMat.current.opacity = backlight * 0.06;
+    }
 
     /* LED breathing */
     if (ledMat.current) {
       ledMat.current.emissiveIntensity = 1.5 + Math.sin(t * 2.1) * 0.5;
     }
 
-    /* Holographic grid + hex-PCB floor draws in over the first half of
-     * scroll. The legacy line grid (gridMat) stays as a faint accent
-     * underneath; the hex texture is the main visible floor pattern. */
+    /* Holographic grid + hex-PCB floor draws in across Chapter 02 + 03
+     * (0.10 -> 0.40), so by the time the lid finishes opening the laptop
+     * is sitting on a fully visible surface. */
     if (gridMat.current) {
-      const draw = smoothstep(0.0, 0.5, p);
+      const draw = smoothstep(0.1, 0.4, p);
       const pulse = 0.85 + Math.sin(t * 0.8) * 0.1;
       gridMat.current.opacity = draw * 0.12 * pulse;
     }
     if (hexFloorMatRef.current) {
-      const draw = smoothstep(0.0, 0.5, p);
+      const draw = smoothstep(0.1, 0.4, p);
       const pulse = 0.9 + Math.sin(t * 0.9) * 0.08;
-      /* Brighter floor (0.45 -> 0.7) so the laptop reads as physically
-       * sitting on a surface, not floating in violet space. */
       hexFloorMatRef.current.opacity = draw * 0.7 * pulse;
     }
 
@@ -870,16 +1107,14 @@ function Laptop({
       dataRainTex.offset.y = (dataRainTex.offset.y + 0.025 * delta) % 1;
     }
 
-    /* VOLUMETRIC SCREEN BEAM - soft cyan halo plane BEHIND the laptop.
-     * Was a 5x5 in-front-of-camera beam that flooded the chassis. Now
-     * a tight back-light cast that reads as "the screen is bleeding a
-     * faint glow into the air behind the lid" - subtle, restrained. */
+    /* VOLUMETRIC SCREEN BACK-LIGHT - soft cyan halo BEHIND the laptop.
+     * Ramps with the screen-ignite curve and holds through chapters 03-06. */
     if (screenBeamRef.current) {
       screenBeamRef.current.lookAt(state.camera.position);
       const mat = screenBeamRef.current.material as THREE.MeshBasicMaterial;
       const breathe = 0.9 + Math.sin(t * 1.3) * 0.1;
-      mat.opacity = smoothstep(0.35, 0.6, p) * 0.16 * breathe;
-      const s = 1 + smoothstep(0.35, 1, p) * 0.15;
+      mat.opacity = smoothstep(0.3, 0.5, p) * 0.16 * breathe;
+      const s = 1 + smoothstep(0.3, 1, p) * 0.15;
       screenBeamRef.current.scale.set(s, s, 1);
     }
 
@@ -966,9 +1201,30 @@ function Laptop({
         </mesh>
       )}
 
+      {/* DARK BASE FLOOR PLANE - sits beneath the hex grid + soft shadow
+       *  so the floor reads as a solid surface (laptop has something to
+       *  sit on) rather than transparent space. A proper reflective
+       *  floor (MeshReflectorMaterial) caused render-loop timeouts and
+       *  produced sharp slab artifacts from the laptop's underside; a
+       *  cheaper static dark plane is the right Phase 1 choice. */}
+      <mesh
+        position={[RIG_X, -BASE_H / 2 - 0.045, 0]}
+        rotation={[-Math.PI / 2, 0, 0]}
+      >
+        <planeGeometry args={[14, 14]} />
+        <meshStandardMaterial
+          color="#04060c"
+          roughness={0.6}
+          metalness={0.55}
+          envMapIntensity={0.6}
+        />
+      </mesh>
+
       {/* Soft contact shadow under the laptop. Radial-gradient texture
        *  so the shadow has natural falloff instead of a hard ellipse
-       *  edge. Stretched along Z so it matches the laptop's footprint. */}
+       *  edge. Stretched along Z so it matches the laptop's footprint.
+       *  Opacity bumped to 1.0 and texture deepened for stronger
+       *  physical grounding now that the floor reflects underneath. */}
       {softShadowTex && (
         <mesh
           position={[RIG_X, -BASE_H / 2 - 0.018, 0.3]}
@@ -978,7 +1234,7 @@ function Laptop({
           <meshBasicMaterial
             map={softShadowTex}
             transparent
-            opacity={0.85}
+            opacity={1.0}
             depthWrite={false}
           />
         </mesh>
@@ -1119,20 +1375,43 @@ function Laptop({
         {/* Speaker grilles removed - they read as black blobs flanking
          *  the keyboard at this camera angle, not as ultrabook speakers. */}
 
-        {/* BACKLIT KEYBOARD AMBIENT GLOW - very faint cyan blanket so
-         *  the keyboard well shows a subtle backlight under the keys.
-         *  Reduced again (0.08 -> 0.035) now that the per-column hues
-         *  carry the brand colour. The blanket is just ambient "panel
-         *  is alive" glow, not the main light source. */}
+        {/* BACKLIT KEYBOARD AMBIENT GLOW - cyan blanket that activates
+         *  in Chapter 03 (keyboard "powers on" as the lid finishes
+         *  opening). Opacity is driven per-frame from useFrame so the
+         *  keyboard is visibly dark when the lid is closed. */}
         <mesh
           position={[0, BASE_H / 2 + 0.002, -0.15]}
           rotation={[-Math.PI / 2, 0, 0]}
         >
           <planeGeometry args={[BASE_W * 0.82, BASE_D * 0.5]} />
           <meshBasicMaterial
+            ref={keyboardBacklightMat}
             color={COLORS.cyan}
             transparent
-            opacity={0.035}
+            opacity={0}
+            blending={THREE.AdditiveBlending}
+            depthWrite={false}
+            toneMapped={false}
+          />
+        </mesh>
+
+        {/* SCREEN-GLOW SPILL onto the keyboard - additive cyan plane
+         *  hovering a touch above the keyboard well. Its opacity tracks
+         *  the screen-ignite curve, so as the lid opens and the screen
+         *  ignites, you see cyan light "spilling" onto the keys (just
+         *  like a real laptop's screen casts colour onto its keyboard
+         *  in a dim room). Tinted slightly toward the screen with a
+         *  vertical gradient via the texture. */}
+        <mesh
+          position={[0, BASE_H / 2 + 0.0035, -0.2]}
+          rotation={[-Math.PI / 2, 0, 0]}
+        >
+          <planeGeometry args={[BASE_W * 0.78, BASE_D * 0.46]} />
+          <meshBasicMaterial
+            ref={screenSpillMat}
+            color={"#7df0ff"}
+            transparent
+            opacity={0}
             blending={THREE.AdditiveBlending}
             depthWrite={false}
             toneMapped={false}
@@ -1591,8 +1870,10 @@ function Laptop({
               <meshBasicMaterial color="#02030a" toneMapped={false} />
             </mesh>
 
-            {/* Screen CONTENT - fades up as the lid opens. */}
-            {screenTex && (
+            {/* Screen CONTENT - living multi-stage canvas. Repaints in
+             *  useFrame when the chapter-driven stage changes (boot ->
+             *  streams -> projects -> ready). Fades up across Chapter 03. */}
+            {screen.tex && (
               <mesh
                 position={[0, -LID_H / 2 - 0.0015, 0]}
                 rotation={[Math.PI / 2, 0, 0]}
@@ -1600,7 +1881,7 @@ function Laptop({
                 <planeGeometry args={[LID_W * 0.86, LID_D * 0.82]} />
                 <meshBasicMaterial
                   ref={screenContentMat}
-                  map={screenTex}
+                  map={screen.tex}
                   transparent
                   opacity={0}
                   toneMapped={false}

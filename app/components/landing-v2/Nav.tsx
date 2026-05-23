@@ -38,12 +38,16 @@ export default function Nav() {
    * vs. faintly tinted once scrolled" - to mark the page is "alive". */
   const isLight = false;
 
-  /* CINEMATIC IMMERSION: hide the CTA pill while the laptop cinematic
-   * is in its sticky pin (first ~70% of viewport height). The intentional
-   * hero CTAs ("Explore courses" + "Start with Cyber Heroes") carry the
-   * conversion role during the cinematic; the nav CTA returns once the
-   * user has scrolled past it and the brand intro is over. */
-  const cinematicGuard = Math.max(0, Math.min(1, (scrollY - vh * 0.4) / (vh * 0.3)));
+  /* CINEMATIC IMMERSION: the LaptopScene cinematic rail is 280vh, so
+   * the sticky pin holds the cinematic in view until scrollY ~1.8 * vh.
+   * The Nav CTA stays hidden through all 6 chapters and fades back in
+   * around chapter 06 -> first website section. The two hero CTAs
+   * ("Explore courses" + "Start with Cyber Heroes") carry the conversion
+   * role throughout the cinematic. */
+  const cinematicGuard = Math.max(
+    0,
+    Math.min(1, (scrollY - vh * 1.6) / (vh * 0.3)),
+  );
   const ctaOpacity = cinematicGuard;
   const ctaPointer: "auto" | "none" = ctaOpacity < 0.5 ? "none" : "auto";
 
