@@ -7,6 +7,7 @@ import HowItWorks from "@/app/components/landing-v2/HowItWorks";
 import Testimonials from "@/app/components/landing-v2/Testimonials";
 import FinalCTA from "@/app/components/landing-v2/FinalCTA";
 import Footer from "@/app/components/landing-v2/Footer";
+import Algo from "@/app/components/landing-v2/Algo";
 import SmoothScroll from "@/app/components/SmoothScroll";
 import SpotlightCursor from "@/app/components/landing-v2/SpotlightCursor";
 import GlobalBackdrop from "@/app/components/landing-v2/GlobalBackdrop";
@@ -46,6 +47,7 @@ export default function LandingV2() {
         <FinalCTA />
       </main>
       <Footer />
+      <Algo />
     </SmoothScroll>
   );
 }

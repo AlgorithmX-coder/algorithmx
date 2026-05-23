@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FadeUp } from "./utilities";
 
@@ -106,6 +106,23 @@ const AUDIENCES: Audience[] = [
 export default function ChooseYourPath() {
   const [active, setActive] = useState<AudienceId>("parent");
   const current = AUDIENCES.find((a) => a.id === active) ?? AUDIENCES[0];
+
+  /* Broadcast audience changes so the ALGO widget (and any future
+   * consumers) can adapt their recommendation. Custom event keeps
+   * the components decoupled - no shared context required. We also
+   * stash the current value on window so late-mounting subscribers
+   * (like ALGO, which only mounts after the user scrolls past the
+   * cinematic) can read the current audience without needing to wait
+   * for the next change. */
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    (window as unknown as { __lvAudience?: string }).__lvAudience = active;
+    window.dispatchEvent(
+      new CustomEvent("algo:audience-changed", {
+        detail: { audience: active },
+      }),
+    );
+  }, [active]);
 
   return (
     <section
