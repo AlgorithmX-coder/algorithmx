@@ -516,21 +516,22 @@ function Laptop({
       );
     }
 
-    /* Lid hinge with SPRING INERTIA - the lid follows the scroll-derived
-     * target angle through a damped spring, so it overshoots slightly
-     * when scroll moves quickly then settles. Reads as "heavy aluminum
-     * lid with real hinge mechanics" rather than perfect lerp tracking. */
+    /* Lid hinge with SMOOTH DAMPING - exponential follow with no
+     * overshoot. Real laptop hinges have friction not springs, so the
+     * lid trails the scroll-target by a beat (heavy / mechanical feel)
+     * but never bounces past it. */
     const openT = smoothstep(0.2, 0.6, p);
     const targetAngle = lerp(LID_CLOSED_ANGLE, LID_OPEN_ANGLE, openT);
-    /* Critically-damped spring tuned for a hint of overshoot on fast
-     *  scroll. stiffness ~38, damping ~7.5. Clamp dt to avoid the
-     *  spring blowing up on tab refocus / first-frame spikes. */
     const dt = Math.min(0.05, delta);
-    const stiffness = 38;
-    const damping = 7.5;
-    const force = (targetAngle - lidAngle.current) * stiffness;
-    lidVelocity.current += (force - lidVelocity.current * damping) * dt;
-    lidAngle.current += lidVelocity.current * dt;
+    /* lerpFactor = 1 - exp(-k * dt) gives a frame-rate-independent
+     *  smooth approach. k=10 settles in ~0.3s; k=14 settles in ~0.2s.
+     *  Tuned so the lid feels weighty but never overshoots. */
+    const followSpeed = 1 - Math.exp(-12 * dt);
+    lidAngle.current = lerp(lidAngle.current, targetAngle, followSpeed);
+    /* Kept here only because the old spring used it - drain velocity
+     *  toward zero so any leftover state from the previous build
+     *  doesn't introduce phantom bounces. */
+    lidVelocity.current = 0;
     if (lidRef.current) {
       lidRef.current.rotation.x = lidAngle.current;
     }
