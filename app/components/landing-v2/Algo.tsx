@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
+import { useCinematicReleaseProgress } from "./utilities";
 
 /**
  * ALGO - the AlgorithmX OS path advisor.
@@ -88,24 +89,76 @@ const AUDIENCE_LABEL_SHORT: Record<Exclude<AudienceId, null>, string> = {
   school: "Schools",
 };
 
+/* Scroll-context status phrases. Each one is paired with the DOM id
+ * of the section that activates it (matches the `id="..."` on the
+ * page sections). When that section enters the viewport, ALGO's
+ * status line crossfades to the matching phrase. */
+const SECTION_PHRASES: ReadonlyArray<{ id: string; phrase: string }> = [
+  { id: "choose-your-path", phrase: "Awaiting audience input." },
+  { id: "the-state-of-play", phrase: "Reading stats." },
+  { id: "subjects", phrase: "Six streams detected." },
+  { id: "how", phrase: "Parsing programme structure." },
+  { id: "age-progression", phrase: "Aligning age band." },
+  { id: "projects", phrase: "Project pool ready." },
+  { id: "parent-trust", phrase: "Validating safety policy." },
+  { id: "testimonials", phrase: "Reading family signal." },
+  { id: "faq", phrase: "Resolving objections." },
+  { id: "final-cta", phrase: "Path locked. Ready when you are." },
+];
+
 export default function Algo() {
-  const [visible, setVisible] = useState(false);
   const [expanded, setExpanded] = useState(false);
   const [audience, setAudience] = useState<AudienceId>(null);
+  const [activeSectionId, setActiveSectionId] = useState<string | null>(null);
 
-  /* Reveal once the user has scrolled past the cinematic. The cinematic
-   * rail is 280vh, so the sticky pin releases at scrollY ~= 1.8 * vh.
-   * Showing at 1.6 * vh gives ALGO a beat to fade in just before the
-   * cinematic releases. */
+  /* Use the shared cinematic-release hook so ALGO appears at the same
+   * moment the Nav CTA returns - both honour the viewport-aware
+   * cinematic rail height. visible is a boolean derived from the fade
+   * value crossing 0.5 (avoids ALGO flickering during the fade window). */
+  const releaseProgress = useCinematicReleaseProgress();
+  const visible = releaseProgress > 0.5;
+
+  /* IntersectionObserver: which page section is currently most in view?
+   * Updates the status line so ALGO feels like it's "watching" the user
+   * scroll through the page. */
   useEffect(() => {
     if (typeof window === "undefined") return;
-    const onScroll = () => {
-      const threshold = window.innerHeight * 1.6;
-      setVisible(window.scrollY > threshold);
+    if (typeof IntersectionObserver === "undefined") return;
+    const observed: HTMLElement[] = [];
+    SECTION_PHRASES.forEach(({ id }) => {
+      const el = document.getElementById(id);
+      if (el) observed.push(el);
+    });
+    if (observed.length === 0) return;
+    /* Track which sections are intersecting; pick the one nearest the
+     * top of the viewport as the "active" section. */
+    const seen = new Map<string, IntersectionObserverEntry>();
+    const recompute = () => {
+      let best: { id: string; top: number } | null = null;
+      seen.forEach((entry, id) => {
+        if (!entry.isIntersecting) return;
+        const top = entry.boundingClientRect.top;
+        /* Prefer sections that have just entered (top near 0 or
+         * positive but small). Sections far up the page (top negative)
+         * are de-prioritised in favour of the one currently dominant. */
+        const score = top >= -100 ? Math.abs(top) : Math.abs(top) + 10000;
+        if (best === null || score < best.top) {
+          best = { id, top: score };
+        }
+      });
+      setActiveSectionId(best ? (best as { id: string }).id : null);
     };
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          seen.set(entry.target.id, entry);
+        });
+        recompute();
+      },
+      { rootMargin: "-30% 0px -40% 0px", threshold: [0, 0.1, 0.5, 1] },
+    );
+    observed.forEach((el) => io.observe(el));
+    return () => io.disconnect();
   }, []);
 
   /* Listen for audience-change events dispatched by ChooseYourPath.
@@ -131,9 +184,19 @@ export default function Algo() {
   }, []);
 
   const suggestion = audience ? AUDIENCE_SUGGESTIONS[audience] : DEFAULT_SUGGESTION;
-  const statusLine = audience
-    ? `Path for ${AUDIENCE_LABEL_SHORT[audience]}.`
-    : "Standing by.";
+  /* Status priority:
+   *   1. scroll-context phrase (what section is visible)
+   *   2. audience-pinned phrase (what they picked in ChooseYourPath)
+   *   3. default "standing by"
+   * Section phrase wins so the user feels ALGO is alive and following
+   * their scroll; audience info still surfaces inside the expanded
+   * panel. */
+  const sectionPhrase = SECTION_PHRASES.find(
+    (s) => s.id === activeSectionId,
+  )?.phrase;
+  const statusLine =
+    sectionPhrase ??
+    (audience ? `Path for ${AUDIENCE_LABEL_SHORT[audience]}.` : "Standing by.");
 
   return (
     <AnimatePresence>

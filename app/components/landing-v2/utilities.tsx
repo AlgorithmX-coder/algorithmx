@@ -4,6 +4,63 @@ import { useEffect, useRef, useState, type RefObject } from "react";
 import { motion, useInView } from "framer-motion";
 import { ICON_PATHS, ICON_RECTS } from "./data";
 
+/* useMediaQuery - reactive subscription to a CSS media query. SSR safe
+ * (returns the fallback value during initial render so hydration is
+ * stable). Use this when styled-jsx scoped breakpoints don't reach
+ * elements inside framer-motion AnimatePresence (class isn't applied
+ * to the dynamically rendered motion.div consistently). */
+export function useMediaQuery(query: string, fallback = false): boolean {
+  const [matches, setMatches] = useState(fallback);
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const mq = window.matchMedia(query);
+    setMatches(mq.matches);
+    const onChange = () => setMatches(mq.matches);
+    mq.addEventListener("change", onChange);
+    return () => mq.removeEventListener("change", onChange);
+  }, [query]);
+  return matches;
+}
+
+/* useCinematicReleaseProgress - 0..1 fade value for any UI that should
+ * appear AFTER the LaptopScene cinematic releases its sticky pin. The
+ * rail height is 280vh on desktop / 180vh on phones, so the actual
+ * release scroll position depends on viewport. Single source of truth
+ * so Nav (Get Started CTA) and Algo (corner widget) stay in sync. */
+export function useCinematicReleaseProgress(): number {
+  const [value, setValue] = useState(0);
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    let frame = 0;
+    const compute = () => {
+      const vh = window.innerHeight;
+      const isCompact = window.matchMedia("(max-width: 768px)").matches;
+      /* Cinematic rail height in vh (mirrors HeroCinematic.tsx) */
+      const railVh = isCompact ? 1.8 : 2.8;
+      /* Sticky releases at scrollY = (railVh - 1) * vh. Fade the value
+       * in over the next 0.3 vh of scroll so consumers can ease in. */
+      const releaseAt = (railVh - 1) * vh;
+      const fadeWindow = vh * 0.3;
+      const raw = (window.scrollY - releaseAt) / fadeWindow;
+      const clamped = Math.max(0, Math.min(1, raw));
+      setValue(clamped);
+    };
+    const schedule = () => {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(compute);
+    };
+    compute();
+    window.addEventListener("scroll", schedule, { passive: true });
+    window.addEventListener("resize", schedule);
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", schedule);
+      window.removeEventListener("resize", schedule);
+    };
+  }, []);
+  return value;
+}
+
 /* SVG icon - thin-stroke line icons in the landing-v2 style. */
 export function Ico({
   name,

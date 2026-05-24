@@ -12,6 +12,7 @@ import { FadeUp, Marquee, Ico } from "./utilities";
 export default function Testimonials() {
   return (
     <section
+      id="testimonials"
       style={{
         position: "relative",
         padding: "calc(var(--lv2-rail) * 2.2) 0",

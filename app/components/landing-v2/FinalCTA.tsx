@@ -15,6 +15,7 @@ export default function FinalCTA() {
   useMagnetic(secondaryRef, { strength: 0.32, radius: 110 });
   return (
     <section
+      id="final-cta"
       style={{
         position: "relative",
         padding: "calc(var(--lv2-rail) * 2.4) var(--lv2-rail)",

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import { Ico, useMagnetic } from "./utilities";
+import { Ico, useCinematicReleaseProgress, useMagnetic } from "./utilities";
 
 /**
  * Landing-v2 top nav.
@@ -19,18 +19,11 @@ import { Ico, useMagnetic } from "./utilities";
  */
 export default function Nav() {
   const [scrollY, setScrollY] = useState(0);
-  const [vh, setVh] = useState(900);
   useEffect(() => {
     const onScroll = () => setScrollY(window.scrollY);
-    const onResize = () => setVh(window.innerHeight);
     onScroll();
-    onResize();
     window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onResize);
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onResize);
-    };
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
   /* The whole page now sits on the unified dark backdrop, so the nav
@@ -38,17 +31,12 @@ export default function Nav() {
    * vs. faintly tinted once scrolled" - to mark the page is "alive". */
   const isLight = false;
 
-  /* CINEMATIC IMMERSION: the LaptopScene cinematic rail is 280vh, so
-   * the sticky pin holds the cinematic in view until scrollY ~1.8 * vh.
-   * The Nav CTA stays hidden through all 6 chapters and fades back in
-   * around chapter 06 -> first website section. The two hero CTAs
-   * ("Explore courses" + "Start with Cyber Heroes") carry the conversion
-   * role throughout the cinematic. */
-  const cinematicGuard = Math.max(
-    0,
-    Math.min(1, (scrollY - vh * 1.6) / (vh * 0.3)),
-  );
-  const ctaOpacity = cinematicGuard;
+  /* CINEMATIC IMMERSION: hide the CTA pill while the LaptopScene
+   * cinematic is still in its sticky pin. Threshold is viewport-aware
+   * (cinematic rail is 280vh on desktop / 180vh on mobile) and lives
+   * in a shared hook so Nav + Algo always agree on what "cinematic
+   * is done" means. */
+  const ctaOpacity = useCinematicReleaseProgress();
   const ctaPointer: "auto" | "none" = ctaOpacity < 0.5 ? "none" : "auto";
 
   const bg =

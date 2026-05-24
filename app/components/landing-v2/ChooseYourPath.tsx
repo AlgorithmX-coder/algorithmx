@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { FadeUp } from "./utilities";
+import { FadeUp, useMediaQuery } from "./utilities";
 
 /**
  * ChooseYourPath. The first proper page section after the cinematic.
@@ -106,6 +106,10 @@ const AUDIENCES: Audience[] = [
 export default function ChooseYourPath() {
   const [active, setActive] = useState<AudienceId>("parent");
   const current = AUDIENCES.find((a) => a.id === active) ?? AUDIENCES[0];
+  /* JS-driven breakpoint - styled-jsx scoped classes inside AnimatePresence
+   * don't always reach the rotating motion.div, so we drive the layout
+   * from a real media-query subscription. */
+  const isCompact = useMediaQuery("(max-width: 820px)");
 
   /* Broadcast audience changes so the ALGO widget (and any future
    * consumers) can adapt their recommendation. Custom event keeps
@@ -263,14 +267,15 @@ export default function ChooseYourPath() {
                   border: "1px solid rgba(232,237,255,0.1)",
                   borderTop: `2px solid ${current.recommended.accent}`,
                   borderRadius: 22,
-                  padding: "44px 46px",
+                  padding: isCompact ? "30px 24px" : "44px 46px",
                   boxShadow:
                     "0 1px 3px rgba(0,0,0,0.4), 0 16px 48px rgba(0,0,0,0.32)",
                   display: "grid",
-                  gridTemplateColumns: "minmax(0, 1.2fr) minmax(0, 1fr)",
-                  gap: 40,
+                  gridTemplateColumns: isCompact
+                    ? "1fr"
+                    : "minmax(0, 1.2fr) minmax(0, 1fr)",
+                  gap: isCompact ? 24 : 40,
                 }}
-                className="lv2-cyp-card"
               >
                 {/* Left column: heading + copy */}
                 <div>
@@ -426,15 +431,6 @@ export default function ChooseYourPath() {
         </FadeUp>
       </div>
 
-      <style jsx>{`
-        @media (max-width: 820px) {
-          .lv2-cyp-card {
-            grid-template-columns: 1fr !important;
-            gap: 26px !important;
-            padding: 32px 26px !important;
-          }
-        }
-      `}</style>
     </section>
   );
 }

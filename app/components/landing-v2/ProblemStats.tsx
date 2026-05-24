@@ -39,6 +39,7 @@ const STATS = [
 export default function ProblemStats() {
   return (
     <section
+      id="the-state-of-play"
       style={{
         position: "relative",
         padding: "calc(var(--lv2-rail) * 2.2) var(--lv2-rail)",

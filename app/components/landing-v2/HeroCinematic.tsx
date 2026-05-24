@@ -36,12 +36,26 @@ const VaultScene = dynamic(() => import("./LaptopScene"), { ssr: false });
 export default function HeroCinematic() {
   const railRef = useRef<HTMLElement>(null);
   const [reducedMotion, setReducedMotion] = useState(false);
+  const [isCompact, setIsCompact] = useState(false);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
     const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
     setReducedMotion(mq.matches);
     const onChange = () => setReducedMotion(mq.matches);
+    mq.addEventListener("change", onChange);
+    return () => mq.removeEventListener("change", onChange);
+  }, []);
+
+  /* Shorten the cinematic rail on phones/small tablets. 280vh on a
+   * 812-tall iPhone viewport is 2274px of scroll just for the hero -
+   * brutal. 180vh (~1460px) keeps the 6 chapter beats but trims the
+   * dead pad between them. */
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const mq = window.matchMedia("(max-width: 768px)");
+    setIsCompact(mq.matches);
+    const onChange = () => setIsCompact(mq.matches);
     mq.addEventListener("change", onChange);
     return () => mq.removeEventListener("change", onChange);
   }, []);
@@ -79,10 +93,10 @@ export default function HeroCinematic() {
       ref={railRef}
       style={{
         position: "relative",
-        /* 280vh = 6 scroll-locked chapters with breathing room. Each
-         * chapter gets ~30vh of scroll budget after rest pads. Long
-         * enough to be guided, short enough not to drag. */
-        height: "280vh",
+        /* 280vh on desktop = 6 chapters with breathing room. 180vh on
+         * phones/small tablets so the cinematic doesn't feel endless on
+         * a tall portrait viewport. */
+        height: isCompact ? "180vh" : "280vh",
         background: "var(--lv2-ink, #04050d)",
       }}
     >

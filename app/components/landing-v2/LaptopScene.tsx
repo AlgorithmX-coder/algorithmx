@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useRef, Suspense } from "react";
+import { useEffect, useMemo, useRef, useState, Suspense } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { RoundedBox, Environment } from "@react-three/drei";
 import {
@@ -947,6 +947,53 @@ function makeFogHazeTexture(): THREE.Texture | null {
   return tex;
 }
 
+/* Floor sheen texture - simulates the polished floor catching the
+ * chassis silhouette as a reflection, WITHOUT actually computing a
+ * mirror render pass (drei's MeshReflectorMaterial was unstable on
+ * this drei/three combo and produced sharp slab artifacts of the
+ * laptop's underside). A vertical gradient that's brightest where
+ * the chassis sits and fades into the floor, painted additively at
+ * low opacity. Cheap, stable, gives the eye what it needs. */
+function makeFloorSheenTexture(): THREE.Texture | null {
+  if (typeof window === "undefined") return null;
+  const w = 1024;
+  const h = 512;
+  const c = document.createElement("canvas");
+  c.width = w;
+  c.height = h;
+  const ctx = c.getContext("2d");
+  if (!ctx) return null;
+  ctx.clearRect(0, 0, w, h);
+  /* Vertical sheen: brightest at the top (where the chassis "begins")
+   * and fading to transparent at the bottom (where reflection naturally
+   * dies). Cool cyan-blue tint matches the screen-glow palette. */
+  const g = ctx.createLinearGradient(0, 0, 0, h);
+  g.addColorStop(0.0, "rgba(120,180,225,0.55)");
+  g.addColorStop(0.18, "rgba(80,140,200,0.32)");
+  g.addColorStop(0.45, "rgba(40,80,140,0.14)");
+  g.addColorStop(0.85, "rgba(20,40,80,0.04)");
+  g.addColorStop(1.0, "rgba(0,0,0,0)");
+  ctx.fillStyle = g;
+  ctx.fillRect(0, 0, w, h);
+  /* Horizontal taper: punch alpha so the bright strip fades at the
+   * left and right edges (matches the chassis silhouette better than
+   * a rectangular slab). */
+  const img = ctx.getImageData(0, 0, w, h);
+  const cx = w / 2;
+  for (let y = 0; y < h; y++) {
+    for (let x = 0; x < w; x++) {
+      const dx = (x - cx) / (w / 2);
+      const taper = Math.max(0, 1 - dx * dx * 1.1);
+      const i = (y * w + x) * 4;
+      img.data[i + 3] = Math.round(img.data[i + 3] * taper);
+    }
+  }
+  ctx.putImageData(img, 0, 0);
+  const tex = new THREE.CanvasTexture(c);
+  tex.needsUpdate = true;
+  return tex;
+}
+
 /* Soft contact-shadow texture - radial gradient with smooth falloff so
  * the shadow under the laptop doesn't have a hard ellipse edge.
  * Strengthened (deeper core, longer falloff) for a heavier sense of
@@ -982,6 +1029,21 @@ function makeSoftShadowTexture(): THREE.Texture | null {
 }
 
 export default function LaptopScene({ progress, reducedMotion = false }: LaptopSceneProps) {
+  /* Viewport-aware feature flags. The holographic card grid only makes
+   * sense on laptop+ viewports where the camera frustum gives the cards
+   * room to breathe. On phones/tablets the cards over-dominate the
+   * narrow frame, so we just hide them and let the screen dashboard
+   * carry the streams story. */
+  const [cardsEnabled, setCardsEnabled] = useState(true);
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const mq = window.matchMedia("(min-width: 1024px)");
+    setCardsEnabled(mq.matches);
+    const onChange = () => setCardsEnabled(mq.matches);
+    mq.addEventListener("change", onChange);
+    return () => mq.removeEventListener("change", onChange);
+  }, []);
+
   return (
     <Canvas
       dpr={[1.5, 2.5]}
@@ -1015,7 +1077,7 @@ export default function LaptopScene({ progress, reducedMotion = false }: LaptopS
       {/* Rim light from behind to highlight the lid's top edge */}
       <pointLight position={[2, 4, -3]} intensity={0.55} color="#ffffff" />
 
-      <Laptop progress={progress} reducedMotion={reducedMotion} />
+      <Laptop progress={progress} reducedMotion={reducedMotion} cardsEnabled={cardsEnabled} />
 
       {/* Cinematic post-processing - Vignette + Noise only. Bloom is
        *  excluded because it consistently kills the render in this
@@ -1041,7 +1103,19 @@ export default function LaptopScene({ progress, reducedMotion = false }: LaptopS
  * icon, name, age range, status and example project. Cards stagger
  * their emerge animation (lerped from screen origin to a fanned arc
  * above and in front of the laptop), bob gently, and fade in fully. */
-function HolographicCards({ progress }: { progress: MotionValue<number> }) {
+function HolographicCards({
+  progress,
+  enabled,
+}: {
+  progress: MotionValue<number>;
+  enabled: boolean;
+}) {
+  /* On phones and small tablets the 3D card grid blows past the viewport
+   * (cards positioned for a 1440px aspect ratio are huge at 768px and
+   * smaller). Skip rendering entirely below the laptop breakpoint - the
+   * cinematic + screen dashboard still tell the streams story without
+   * them. */
+  if (!enabled) return null;
   /* 2 x 3 grid IN FRONT of the laptop. Cards sit at z=1.4 (well clear
    * of the lid surface) so the laptop chassis never occludes them.
    * Positioned to the RIGHT of the laptop centre so they don't collide
@@ -1183,14 +1257,17 @@ function HolographicCards({ progress }: { progress: MotionValue<number> }) {
 function Laptop({
   progress,
   reducedMotion: _rm,
+  cardsEnabled,
 }: {
   progress: MotionValue<number>;
   reducedMotion: boolean;
+  cardsEnabled: boolean;
 }) {
   const lidBrandTex = useLidBrandTexture();
   const screen = useLivingScreen();
   const screenStageRef = useRef(-1);
   const softShadowTex = useMemo(() => makeSoftShadowTexture(), []);
+  const floorSheenTex = useMemo(() => makeFloorSheenTexture(), []);
   const screenBeamTex = useMemo(() => makeScreenGlowTexture(), []);
   const screenBeamRef = useRef<THREE.Mesh>(null);
   const fogHazeTex = useMemo(() => makeFogHazeTexture(), []);
@@ -1488,11 +1565,9 @@ function Laptop({
       )}
 
       {/* DARK BASE FLOOR PLANE - sits beneath the hex grid + soft shadow
-       *  so the floor reads as a solid surface (laptop has something to
-       *  sit on) rather than transparent space. A proper reflective
-       *  floor (MeshReflectorMaterial) caused render-loop timeouts and
-       *  produced sharp slab artifacts from the laptop's underside; a
-       *  cheaper static dark plane is the right Phase 1 choice. */}
+       *  so the floor reads as a solid surface. Higher metalness + low
+       *  roughness so the HDR environment lighting picks up subtle
+       *  highlights and the floor reads as polished. */}
       <mesh
         position={[RIG_X, -BASE_H / 2 - 0.045, 0]}
         rotation={[-Math.PI / 2, 0, 0]}
@@ -1500,11 +1575,34 @@ function Laptop({
         <planeGeometry args={[14, 14]} />
         <meshStandardMaterial
           color="#04060c"
-          roughness={0.6}
-          metalness={0.55}
-          envMapIntensity={0.6}
+          roughness={0.45}
+          metalness={0.65}
+          envMapIntensity={0.85}
         />
       </mesh>
+
+      {/* FLOOR SHEEN - faux reflection: a vertical-gradient bright
+       *  patch directly under the chassis that reads as the polished
+       *  floor catching the chassis silhouette. Tapered horizontally
+       *  so it doesn't look like a rectangular slab. Positioned a
+       *  fraction above the base floor (less z-fighting) and in FRONT
+       *  of the chassis where reflections naturally land. */}
+      {floorSheenTex && (
+        <mesh
+          position={[RIG_X, -BASE_H / 2 - 0.043, 1.2]}
+          rotation={[-Math.PI / 2, 0, 0]}
+        >
+          <planeGeometry args={[5.4, 3.4]} />
+          <meshBasicMaterial
+            map={floorSheenTex}
+            transparent
+            opacity={0.42}
+            blending={THREE.AdditiveBlending}
+            depthWrite={false}
+            toneMapped={false}
+          />
+        </mesh>
+      )}
 
       {/* Soft contact shadow under the laptop. Radial-gradient texture
        *  so the shadow has natural falloff instead of a hard ellipse
@@ -2217,8 +2315,9 @@ function Laptop({
        *  the screen during Chapter 04. Rendered OUTSIDE the rotated
        *  laptop group so the cards aren't yawed/tilted with the chassis
        *  (they need to face the viewer for legibility), but INSIDE the
-       *  parallaxRef so cursor parallax still applies. */}
-      <HolographicCards progress={progress} />
+       *  parallaxRef so cursor parallax still applies. Hidden on
+       *  small viewports where they over-dominate. */}
+      <HolographicCards progress={progress} enabled={cardsEnabled} />
     </group>
   );
 }
