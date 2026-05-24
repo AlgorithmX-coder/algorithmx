@@ -4,7 +4,11 @@ import ProblemStats from "@/app/components/landing-v2/ProblemStats";
 import ChooseYourPath from "@/app/components/landing-v2/ChooseYourPath";
 import SubjectShowcase from "@/app/components/landing-v2/SubjectShowcase";
 import HowItWorks from "@/app/components/landing-v2/HowItWorks";
+import AgeProgression from "@/app/components/landing-v2/AgeProgression";
+import ProjectShowcase from "@/app/components/landing-v2/ProjectShowcase";
+import ParentTrust from "@/app/components/landing-v2/ParentTrust";
 import Testimonials from "@/app/components/landing-v2/Testimonials";
+import FAQ from "@/app/components/landing-v2/FAQ";
 import FinalCTA from "@/app/components/landing-v2/FinalCTA";
 import Footer from "@/app/components/landing-v2/Footer";
 import Algo from "@/app/components/landing-v2/Algo";
@@ -43,7 +47,11 @@ export default function LandingV2() {
         <ProblemStats />
         <SubjectShowcase />
         <HowItWorks />
+        <AgeProgression />
+        <ProjectShowcase />
+        <ParentTrust />
         <Testimonials />
+        <FAQ />
         <FinalCTA />
       </main>
       <Footer />
