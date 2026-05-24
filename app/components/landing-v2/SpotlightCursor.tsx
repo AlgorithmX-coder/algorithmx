@@ -3,75 +3,145 @@
 import { useEffect, useRef } from "react";
 
 /**
- * Soft spotlight that follows the cursor across the whole page.
+ * Cursor-reactive AlgorithmX OS light - a two-layer cyan/violet spotlight
+ * that tracks the cursor across the whole page.
  *
- * Uses mix-blend-mode: screen so the spotlight only adds brightness; it
- * has no visible effect on white/bright backgrounds. On the dark zones
- * (cinematic + footer) it creates a cyan flashlight effect that adds
- * tactile "I am here" feedback for the user. On the bright product
- * sections it stays invisible. Best of both.
+ * Two layers stacked:
+ *   1. Outer halo (560px, very soft cyan-to-violet falloff)
+ *   2. Inner lens (180px, brighter cyan core)
  *
- * pointer-events: none so it never intercepts clicks. z-index: 9000 sits
- * below the nav (z-50) but above content.
+ * Both use mix-blend-mode: screen so they ONLY brighten what's beneath -
+ * invisible on light backgrounds, vibrant on the dark sci-fi sections.
+ * Inner lens is a touch faster to follow than the outer halo (lerp 0.32
+ * vs 0.22) so it feels like the bright spot snaps to the cursor while
+ * the soft halo trails behind. Gives the eye a sense of weight + speed.
+ *
+ * pointer-events: none on both. z-index between nav (50) and modal
+ * level, but below the nav itself (so the nav doesn't get distorted).
+ *
+ * Disabled on touch-only devices (pointer:coarse) where a fixed
+ * "flashlight" doesn't make sense.
  */
 export default function SpotlightCursor() {
-  const ref = useRef<HTMLDivElement>(null);
+  const haloRef = useRef<HTMLDivElement>(null);
+  const lensRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    /* Start off-screen until first move */
-    el.style.transform = "translate3d(-9999px, -9999px, 0)";
+    if (typeof window === "undefined") return;
+    /* Skip on touch-only devices - there's no persistent cursor */
+    const hasFinePointer = window.matchMedia("(pointer: fine)").matches;
+    if (!hasFinePointer) return;
+
+    const halo = haloRef.current;
+    const lens = lensRef.current;
+    if (!halo || !lens) return;
+
+    halo.style.transform = "translate3d(-9999px, -9999px, 0)";
+    lens.style.transform = "translate3d(-9999px, -9999px, 0)";
+    halo.style.opacity = "0";
+    lens.style.opacity = "0";
 
     let raf = 0;
     let targetX = -9999;
     let targetY = -9999;
-    let curX = -9999;
-    let curY = -9999;
+    let haloX = -9999;
+    let haloY = -9999;
+    let lensX = -9999;
+    let lensY = -9999;
+    let visible = false;
+    let targetOpacity = 0;
+    let curOpacity = 0;
+
+    const HALO_SIZE = 560;
+    const LENS_SIZE = 180;
 
     const tick = () => {
-      /* Smooth follow */
-      curX += (targetX - curX) * 0.22;
-      curY += (targetY - curY) * 0.22;
-      el.style.transform = `translate3d(${curX}px, ${curY}px, 0)`;
+      /* Different follow speeds give the cursor light a sense of mass:
+       * the lens snaps, the halo trails. */
+      haloX += (targetX - haloX) * 0.22;
+      haloY += (targetY - haloY) * 0.22;
+      lensX += (targetX - lensX) * 0.34;
+      lensY += (targetY - lensY) * 0.34;
+      curOpacity += (targetOpacity - curOpacity) * 0.18;
+      halo.style.transform = `translate3d(${haloX - HALO_SIZE / 2}px, ${haloY - HALO_SIZE / 2}px, 0)`;
+      lens.style.transform = `translate3d(${lensX - LENS_SIZE / 2}px, ${lensY - LENS_SIZE / 2}px, 0)`;
+      halo.style.opacity = String(curOpacity);
+      lens.style.opacity = String(curOpacity);
       raf = requestAnimationFrame(tick);
     };
 
     const onMove = (e: PointerEvent) => {
-      targetX = e.clientX - 220;
-      targetY = e.clientY - 220;
+      targetX = e.clientX;
+      targetY = e.clientY;
+      if (!visible) {
+        /* First move: snap rather than slide from off-screen */
+        haloX = targetX;
+        haloY = targetY;
+        lensX = targetX;
+        lensY = targetY;
+        visible = true;
+      }
+      targetOpacity = 1;
     };
     const onLeave = () => {
-      targetX = -9999;
-      targetY = -9999;
+      targetOpacity = 0;
+    };
+    const onEnter = () => {
+      targetOpacity = 1;
     };
 
     window.addEventListener("pointermove", onMove, { passive: true });
-    window.addEventListener("pointerleave", onLeave);
+    document.addEventListener("pointerleave", onLeave);
+    document.addEventListener("pointerenter", onEnter);
     raf = requestAnimationFrame(tick);
     return () => {
       cancelAnimationFrame(raf);
       window.removeEventListener("pointermove", onMove);
-      window.removeEventListener("pointerleave", onLeave);
+      document.removeEventListener("pointerleave", onLeave);
+      document.removeEventListener("pointerenter", onEnter);
     };
   }, []);
 
   return (
-    <div
-      ref={ref}
-      aria-hidden
-      style={{
-        position: "fixed",
-        top: 0,
-        left: 0,
-        width: 440,
-        height: 440,
-        pointerEvents: "none",
-        zIndex: 9000,
-        mixBlendMode: "screen",
-        background:
-          "radial-gradient(circle at center, rgba(0,229,255,0.22) 0%, rgba(124,92,255,0.12) 35%, transparent 70%)",
-        willChange: "transform",
-      }}
-    />
+    <>
+      {/* Outer halo - soft cyan-to-violet falloff that trails the cursor */}
+      <div
+        ref={haloRef}
+        aria-hidden
+        style={{
+          position: "fixed",
+          top: 0,
+          left: 0,
+          width: 560,
+          height: 560,
+          pointerEvents: "none",
+          zIndex: 25,
+          mixBlendMode: "screen",
+          background:
+            "radial-gradient(circle at center, rgba(0,229,255,0.30) 0%, rgba(124,92,255,0.18) 30%, rgba(124,92,255,0.06) 55%, transparent 75%)",
+          willChange: "transform, opacity",
+          opacity: 0,
+        }}
+      />
+      {/* Inner lens - tighter brighter cyan core that snaps to the cursor */}
+      <div
+        ref={lensRef}
+        aria-hidden
+        style={{
+          position: "fixed",
+          top: 0,
+          left: 0,
+          width: 180,
+          height: 180,
+          pointerEvents: "none",
+          zIndex: 26,
+          mixBlendMode: "screen",
+          background:
+            "radial-gradient(circle at center, rgba(0,245,255,0.45) 0%, rgba(0,229,255,0.18) 35%, transparent 70%)",
+          willChange: "transform, opacity",
+          opacity: 0,
+        }}
+      />
+    </>
   );
 }
