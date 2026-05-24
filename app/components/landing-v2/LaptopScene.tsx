@@ -1282,6 +1282,13 @@ function Laptop({
   const screenGlowMat = useRef<THREE.MeshBasicMaterial>(null);
   const keyboardBacklightMat = useRef<THREE.MeshBasicMaterial>(null);
   const screenSpillMat = useRef<THREE.MeshBasicMaterial>(null);
+  /* KEYBOARD LIGHT WAVE state: refs to every per-key underglow material
+   * (so useFrame can boost opacities), plus a one-shot start-time so
+   * the wave fires exactly once as the lid hits its open angle. */
+  const keyUnderglowRefs = useRef<
+    Array<{ mat: THREE.MeshBasicMaterial | null; tx: number; baseOp: number }>
+  >([]);
+  const waveStartTimeRef = useRef(-1);
   const gridMat = useRef<THREE.LineBasicMaterial>(null);
   const particleGroup = useRef<THREE.Group>(null);
 
@@ -1443,6 +1450,40 @@ function Laptop({
     if (keyboardBacklightMat.current) {
       const backlight = smoothstep(0.35, 0.55, p);
       keyboardBacklightMat.current.opacity = backlight * 0.06;
+    }
+
+    /* KEYBOARD LIGHT WAVE - one-shot left-to-right pulse that fires the
+     * moment the lid finishes opening. Reads as the OS "powering on"
+     * the keyboard - a wave of brighter light sweeps across the keys
+     * and dissipates, leaving them at their normal column-hue underglow.
+     * Triggers once per session at openT > 0.85 (lid is essentially
+     * fully open). */
+    if (waveStartTimeRef.current < 0 && openT > 0.85) {
+      waveStartTimeRef.current = t;
+    }
+    if (waveStartTimeRef.current >= 0 && keyUnderglowRefs.current.length > 0) {
+      const elapsed = t - waveStartTimeRef.current;
+      const WAVE_DURATION = 1.6;
+      if (elapsed < WAVE_DURATION + 0.4) {
+        /* Wave position 0..1.2 (overshoots so the wave fully exits the
+         * right edge before the boost is removed). */
+        const wavePos = (elapsed / WAVE_DURATION) * 1.2;
+        const WAVE_SIGMA = 0.13;
+        const WAVE_PEAK = 0.65;
+        for (const entry of keyUnderglowRefs.current) {
+          if (!entry.mat) continue;
+          const dist = entry.tx - wavePos;
+          const boost = Math.exp(-(dist * dist) / (2 * WAVE_SIGMA * WAVE_SIGMA)) *
+            WAVE_PEAK;
+          entry.mat.opacity = Math.min(1, entry.baseOp + boost);
+        }
+      } else {
+        /* Wave done - settle every key to its base opacity. */
+        for (const entry of keyUnderglowRefs.current) {
+          if (!entry.mat) continue;
+          entry.mat.opacity = entry.baseOp;
+        }
+      }
     }
 
     /* LED breathing */
@@ -1918,6 +1959,12 @@ function Laptop({
           const COLOR_ARROW = "#ffc94a";
           const COLOR_FN = "#cba8ff";
 
+          /* Reset the wave-target registry on each render. Each key
+           * gets a unique global index assigned in row-major order so
+           * useFrame can update materials without re-allocating. */
+          const FULL_KEYBOARD_W = 3.0;
+          let globalKeyIdx = 0;
+          keyUnderglowRefs.current = [];
           return ROWS.flatMap((row, rIdx) => {
             const totalW =
               row.keys.reduce((s, k) => s + k.w, 0) +
@@ -1926,6 +1973,13 @@ function Laptop({
             return row.keys.map((key, kIdx) => {
               const x = cursorX + key.w / 2;
               cursorX += key.w + KEY_GAP;
+              /* Normalised horizontal position 0..1 across the
+               * keyboard, used by the light-wave to compute boost. */
+              const keyTx = Math.max(
+                0,
+                Math.min(1, (x + FULL_KEYBOARD_W / 2) / FULL_KEYBOARD_W),
+              );
+              const myKeyIdx = globalKeyIdx++;
               /* Per-column hue from horizontal position in the row.
                * Accent keys (WASD / Space / Enter / Arrows / Fn) still
                * override with their explicit brand colour. */
@@ -1979,10 +2033,19 @@ function Laptop({
                   {/* Tighter underglow - column-hue rim of light spilling
                    *  from beneath the keycap. Smaller plane (1.02 -> 1.0)
                    *  so the spill stays inside the key footprint instead
-                   *  of bleeding to neighbours. */}
+                   *  of bleeding to neighbours. Registered with the
+                   *  keyUnderglowRefs array so the keyboard light wave
+                   *  can pulse this material's opacity as it sweeps. */}
                   <mesh position={[0, -0.005, 0]} rotation={[-Math.PI / 2, 0, 0]}>
                     <planeGeometry args={[key.w * 1.0, row.depth * 1.0]} />
                     <meshBasicMaterial
+                      ref={(el) => {
+                        keyUnderglowRefs.current[myKeyIdx] = {
+                          mat: el,
+                          tx: keyTx,
+                          baseOp: glowOp,
+                        };
+                      }}
                       color={accentColor}
                       transparent
                       opacity={glowOp}

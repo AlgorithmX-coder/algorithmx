@@ -106,7 +106,9 @@ export default function Footer() {
           <a
             href="mailto:support@algorithmx.co.uk"
             style={{
-              color: "rgba(232,237,255,0.45)",
+              /* Bumped from 0.45 -> 0.7 alpha so the support email
+               * meets WCAG AA contrast (~4.5:1) on the dark backdrop. */
+              color: "rgba(232,237,255,0.7)",
               fontSize: 12,
               fontFamily: "var(--lv2-font-mono)",
               letterSpacing: "0.06em",
@@ -117,7 +119,9 @@ export default function Footer() {
           </a>
           <p
             style={{
-              color: "rgba(232,237,255,0.4)",
+              /* Bumped from 0.4 -> 0.65 alpha so the copyright line
+               * meets WCAG AA contrast on the dark backdrop. */
+              color: "rgba(232,237,255,0.65)",
               fontSize: 11,
               fontFamily: "var(--lv2-font-mono)",
               letterSpacing: "0.06em",
