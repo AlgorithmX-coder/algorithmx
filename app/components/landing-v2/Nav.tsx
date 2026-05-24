@@ -120,18 +120,32 @@ export default function Nav() {
         <LiveTelemetry isLight={isLight} />
 
         <div className="lv2-nav-links">
-          <a href="#subjects" style={{ ...navLink, color: textColorMuted }}>
+          <a
+            className="lv2-nav-secondary"
+            href="#subjects"
+            style={{ ...navLink, color: textColorMuted }}
+          >
             Subjects
           </a>
-          <a href="#how" style={{ ...navLink, color: textColorMuted }}>
+          <a
+            className="lv2-nav-secondary"
+            href="#how"
+            style={{ ...navLink, color: textColorMuted }}
+          >
             How It Works
           </a>
-          <Link href="/login" style={{ ...navLink, color: textColorMuted }}>
+          <Link
+            className="lv2-nav-secondary"
+            href="/login"
+            style={{ ...navLink, color: textColorMuted }}
+          >
             Log In
           </Link>
           <Link
             ref={ctaRef}
             href="/cyberheroes"
+            data-cta
+            className="lv2-nav-cta"
             style={{
               ...ctaPill,
               opacity: ctaOpacity,
@@ -141,7 +155,8 @@ export default function Nav() {
             aria-hidden={ctaOpacity < 0.5}
             tabIndex={ctaOpacity < 0.5 ? -1 : 0}
           >
-            Get Started <Ico name="arrow" size={14} sw={2.2} />
+            <span className="lv2-nav-cta-label">Get Started</span>
+            <Ico name="arrow" size={14} sw={2.2} />
           </Link>
         </div>
       </div>
@@ -152,9 +167,30 @@ export default function Nav() {
           align-items: center;
           gap: 24px;
         }
+        /* Tablet: hide secondary links earlier (was 900px) so the bar
+         * never overflows. CTA pill stays visible. */
         @media (max-width: 900px) {
-          .lv2-nav-links > a:not([data-cta]) {
-            display: none;
+          :global(.lv2-nav-secondary) {
+            display: none !important;
+          }
+        }
+        /* Phone: shrink the CTA pill so it doesn't wrap or push the
+         * wordmark off-screen. Just an icon-style pill with a short
+         * label, plenty of touch area without dominating the bar. */
+        @media (max-width: 540px) {
+          :global(.lv2-nav-cta) {
+            padding: 9px 14px !important;
+            font-size: 11px !important;
+            letter-spacing: 0.14em !important;
+            gap: 6px !important;
+          }
+          :global(.lv2-nav-cta-label) {
+            /* Optional: tighten if needed */
+          }
+        }
+        @media (max-width: 380px) {
+          :global(.lv2-nav-cta) {
+            padding: 9px 12px !important;
           }
         }
       `}</style>
