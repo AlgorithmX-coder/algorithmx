@@ -1791,22 +1791,29 @@ function Laptop({
        *  while the chassis stays parallel to the ground. */}
       <group position={[RIG_X, 0, 0]} rotation={[0, -0.11, 0]}>
         <RoundedBox args={[BASE_W, BASE_H, BASE_D]} radius={0.03} smoothness={5}>
+          {/* Lower metalness (0.82 -> 0.55) so the chassis reads silver
+            * from the analytic lights alone, without depending on the
+            * studio HDR being fully loaded. Clearcoat (0.7) still
+            * carries the polished aluminium feel. Once HDR resolves it
+            * just adds extra crispness to highlights. */}
           <meshPhysicalMaterial
             color={COLORS.steel}
-            metalness={0.82}
+            metalness={0.55}
             roughness={0.34}
-            clearcoat={0.65}
-            clearcoatRoughness={0.28}
+            clearcoat={0.7}
+            clearcoatRoughness={0.26}
             anisotropy={0.7}
             normalMap={brushedNormalTex}
             normalScale={new THREE.Vector2(0.1, 0.1)}
-            envMapIntensity={1.2}
+            envMapIntensity={1.0}
           />
         </RoundedBox>
 
-        {/* Keyboard well - recessed dark panel */}
+        {/* Keyboard well - recessed dark panel. Bumped offset 0.001 ->
+         *  0.005 to give clear depth separation from the chassis top
+         *  surface (matches the trackpad fix). */}
         <mesh
-          position={[0, BASE_H / 2 + 0.001, -0.15]}
+          position={[0, BASE_H / 2 + 0.005, -0.15]}
           rotation={[-Math.PI / 2, 0, 0]}
         >
           <planeGeometry args={[BASE_W * 0.86, BASE_D * 0.55]} />
@@ -2115,9 +2122,12 @@ function Laptop({
 
         {/* TRACKPAD positioned below the keyboard */}
 
-        {/* Trackpad */}
+        {/* Trackpad - bumped vertical offset from +0.001 to +0.008 above
+         *  the chassis top. The previous 0.001 gap was small enough that
+         *  perspective depth precision z-fought with the chassis top
+         *  surface, causing a visible flicker on the trackpad. */}
         <mesh
-          position={[0, BASE_H / 2 + 0.001, 0.78]}
+          position={[0, BASE_H / 2 + 0.008, 0.78]}
           rotation={[-Math.PI / 2, 0, 0]}
         >
           <planeGeometry args={[1.1, 0.7]} />
@@ -2221,16 +2231,18 @@ function Laptop({
         >
           <group position={[0, LID_H / 2, LID_D / 2 - 0.04]}>
             <RoundedBox args={[LID_W, LID_H, LID_D]} radius={0.025} smoothness={5}>
+              {/* Same metalness drop as the chassis (0.85 -> 0.6) so
+                * the lid reads silver before HDR loads. */}
               <meshPhysicalMaterial
                 color={COLORS.steel}
-                metalness={0.85}
+                metalness={0.6}
                 roughness={0.28}
-                clearcoat={0.75}
+                clearcoat={0.78}
                 clearcoatRoughness={0.22}
                 anisotropy={0.8}
                 normalMap={brushedNormalTex}
                 normalScale={new THREE.Vector2(0.09, 0.09)}
-                envMapIntensity={1.3}
+                envMapIntensity={1.1}
               />
             </RoundedBox>
 
