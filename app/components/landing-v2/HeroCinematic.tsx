@@ -265,93 +265,176 @@ function ChapterLabel({
   );
 }
 
+/* Scroll hint - two phases:
+ *
+ *   Phase A (chapters 01-02, p 0..0.34)
+ *     Full glassy capsule with pulsing cyan dot, mono caps "Scroll to
+ *     continue" label, and a refined single chevron below. Reads as a
+ *     deliberate system call-to-action.
+ *
+ *   Phase B (chapters 03-05, p 0.42..0.92)
+ *     Minimal chevron-only indicator. Lives lower in the frame so it
+ *     never competes with the headline or hero CTAs once they reveal.
+ *     Reads as a subtle "still more below" system hint.
+ *
+ * Both phases share the same cyan accent + soft glow so they feel like
+ * the same OS element at different scales. Crossfades between phases. */
 function ScrollHint({
   scrollYProgress,
 }: {
   scrollYProgress: ReturnType<typeof useScroll>["scrollYProgress"];
 }) {
-  /* Visible immediately at frame 0 (no dead-zone fade-in), fades out
-   * around mid-scroll once the cinematic is in motion. */
-  const opacity = useTransform(scrollYProgress, [0, 0.4, 0.55], [1, 1, 0]);
-  return (
-    <motion.div
-      style={{
-        opacity,
-        position: "absolute",
-        bottom: "calc(var(--lv2-rail) * 1.1)",
-        left: "50%",
-        transform: "translateX(-50%)",
-        zIndex: 3,
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        gap: 14,
-        color: "var(--lv2-paper)",
-        fontFamily: "var(--lv2-font-mono)",
-        fontSize: 13,
-        fontWeight: 600,
-        letterSpacing: "0.32em",
-        textTransform: "uppercase",
-        pointerEvents: "none",
-        textShadow: "0 2px 18px rgba(4,5,13,0.95)",
-      }}
-      aria-hidden
-    >
-      <motion.span
-        style={{
-          display: "inline-flex",
-          alignItems: "center",
-          gap: 12,
-          padding: "10px 18px",
-          borderRadius: 999,
-          border: "1px solid rgba(0,229,255,0.45)",
-          background: "rgba(4,5,13,0.55)",
-          backdropFilter: "blur(6px)",
-        }}
-        animate={{ opacity: [0.65, 1, 0.65] }}
-        transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut" }}
-      >
-        <span
-          aria-hidden
-          style={{
-            width: 8,
-            height: 8,
-            borderRadius: 999,
-            background: "var(--lv2-cyan)",
-            boxShadow: "0 0 12px rgba(0,229,255,0.85)",
-          }}
-        />
-        Scroll to continue
-      </motion.span>
-      <motion.div
-        animate={{ y: [0, 8, 0], opacity: [0.6, 1, 0.6] }}
-        transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
-        style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 2 }}
-      >
-        <Chevron />
-        <Chevron muted />
-      </motion.div>
-    </motion.div>
+  const capsuleOpacity = useTransform(
+    scrollYProgress,
+    [0, 0.28, 0.38],
+    [1, 1, 0],
   );
-}
-
-function Chevron({ muted = false }: { muted?: boolean }) {
+  const minimalOpacity = useTransform(
+    scrollYProgress,
+    [0.38, 0.5, 0.92, 1.0],
+    [0, 1, 1, 0],
+  );
   return (
-    <svg
-      width="22"
-      height="10"
-      viewBox="0 0 22 10"
-      fill="none"
-      aria-hidden
-      style={{ opacity: muted ? 0.35 : 1 }}
-    >
-      <path
-        d="M2 2L11 8L20 2"
-        stroke="var(--lv2-cyan)"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
+    <>
+      {/* PHASE A - glassy capsule */}
+      <motion.div
+        style={{
+          opacity: capsuleOpacity,
+          position: "absolute",
+          bottom: "calc(var(--lv2-rail) * 1.2)",
+          left: "50%",
+          transform: "translateX(-50%)",
+          zIndex: 3,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          gap: 14,
+          color: "var(--lv2-paper)",
+          fontFamily: "var(--lv2-font-mono)",
+          fontSize: 12,
+          fontWeight: 600,
+          letterSpacing: "0.28em",
+          textTransform: "uppercase",
+          pointerEvents: "none",
+          WebkitFontSmoothing: "antialiased",
+          MozOsxFontSmoothing: "grayscale",
+        }}
+        aria-hidden
+      >
+        <motion.span
+          style={{
+            display: "inline-flex",
+            alignItems: "center",
+            gap: 12,
+            padding: "9px 20px",
+            borderRadius: 999,
+            border: "1px solid rgba(0,229,255,0.28)",
+            background: "rgba(4,5,13,0.58)",
+            backdropFilter: "blur(14px) saturate(1.4)",
+            WebkitBackdropFilter: "blur(14px) saturate(1.4)",
+            boxShadow:
+              "inset 0 1px 0 rgba(232,237,255,0.06), 0 8px 26px rgba(0,229,255,0.16)",
+          }}
+          animate={{
+            boxShadow: [
+              "inset 0 1px 0 rgba(232,237,255,0.06), 0 6px 22px rgba(0,229,255,0.10)",
+              "inset 0 1px 0 rgba(232,237,255,0.06), 0 10px 32px rgba(0,229,255,0.28)",
+              "inset 0 1px 0 rgba(232,237,255,0.06), 0 6px 22px rgba(0,229,255,0.10)",
+            ],
+          }}
+          transition={{ duration: 2.6, repeat: Infinity, ease: "easeInOut" }}
+        >
+          <motion.span
+            aria-hidden
+            style={{
+              width: 7,
+              height: 7,
+              borderRadius: 999,
+              background: "var(--lv2-cyan)",
+            }}
+            animate={{
+              boxShadow: [
+                "0 0 8px rgba(0,229,255,0.55)",
+                "0 0 16px rgba(0,229,255,0.95)",
+                "0 0 8px rgba(0,229,255,0.55)",
+              ],
+            }}
+            transition={{ duration: 2.0, repeat: Infinity, ease: "easeInOut" }}
+          />
+          Scroll to continue
+        </motion.span>
+        <motion.svg
+          width="22"
+          height="11"
+          viewBox="0 0 22 11"
+          fill="none"
+          animate={{ y: [0, 4, 0], opacity: [0.55, 1, 0.55] }}
+          transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
+          style={{
+            filter: "drop-shadow(0 0 6px rgba(0,229,255,0.45))",
+          }}
+        >
+          <path
+            d="M2 2L11 9L20 2"
+            stroke="var(--lv2-cyan)"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </motion.svg>
+      </motion.div>
+
+      {/* PHASE B - minimal chevron + tiny SCROLL caption */}
+      <motion.div
+        style={{
+          opacity: minimalOpacity,
+          position: "absolute",
+          bottom: "calc(var(--lv2-rail) * 0.85)",
+          left: "50%",
+          transform: "translateX(-50%)",
+          zIndex: 3,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          gap: 6,
+          pointerEvents: "none",
+        }}
+        aria-hidden
+      >
+        <motion.svg
+          width="18"
+          height="9"
+          viewBox="0 0 18 9"
+          fill="none"
+          animate={{ y: [0, 3, 0], opacity: [0.5, 1, 0.5] }}
+          transition={{ duration: 2.0, repeat: Infinity, ease: "easeInOut" }}
+          style={{
+            filter: "drop-shadow(0 0 4px rgba(0,229,255,0.5))",
+          }}
+        >
+          <path
+            d="M2 2L9 7L16 2"
+            stroke="var(--lv2-cyan)"
+            strokeWidth="1.4"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </motion.svg>
+        <span
+          style={{
+            fontFamily: "var(--lv2-font-mono)",
+            fontSize: 9,
+            fontWeight: 600,
+            letterSpacing: "0.32em",
+            textTransform: "uppercase",
+            color: "rgba(232,237,255,0.4)",
+            WebkitFontSmoothing: "antialiased",
+            MozOsxFontSmoothing: "grayscale",
+          }}
+        >
+          Scroll
+        </span>
+      </motion.div>
+    </>
   );
 }
