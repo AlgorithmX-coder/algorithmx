@@ -1598,44 +1598,28 @@ function Laptop({
        * against the cleaner cinematic direction. The fog haze + hex
        * floor alone carry the atmospheric depth now. */}
 
-      {/* DARK BASE FLOOR PLANE - extended to 60x60 (was 14x14) so the
-       *  plane's edges are well outside the camera frustum at every
-       *  cinematic camera position. Was showing zig-zag aliased edges
-       *  partway across the frame; now the floor reads as infinite.
-       *  Material kept low-metalness + low env so it stays dark instead
-       *  of bouncing the bright analytic lights as grey. */}
+      {/* DARK BASE FLOOR PLANE - true black with zero metalness and
+       *  zero env contribution so the bright analytic lights (ambient
+       *  1.25, directional 2.4) can't bounce off it as grey. 60x60
+       *  units so the edges are well outside any camera frustum. */}
       <mesh
         position={[RIG_X, -BASE_H / 2 - 0.045, 0]}
         rotation={[-Math.PI / 2, 0, 0]}
       >
         <planeGeometry args={[60, 60]} />
         <meshStandardMaterial
-          color="#02030a"
-          roughness={0.7}
-          metalness={0.25}
-          envMapIntensity={0.35}
+          color="#000000"
+          roughness={1}
+          metalness={0}
+          envMapIntensity={0}
         />
       </mesh>
 
-      {/* FLOOR SHEEN - subtle hint of polished reflection under the
-       *  chassis. Halved from previous opacity so the floor doesn't
-       *  look like a bright pad of cyan. */}
-      {floorSheenTex && (
-        <mesh
-          position={[RIG_X, -BASE_H / 2 - 0.043, 1.2]}
-          rotation={[-Math.PI / 2, 0, 0]}
-        >
-          <planeGeometry args={[5.4, 3.4]} />
-          <meshBasicMaterial
-            map={floorSheenTex}
-            transparent
-            opacity={0.18}
-            blending={THREE.AdditiveBlending}
-            depthWrite={false}
-            toneMapped={false}
-          />
-        </mesh>
-      )}
+      {/* Floor sheen plane intentionally removed in this pass. The
+       *  additive cyan-blue gradient under the chassis was brightening
+       *  the floor patch the eye naturally lands on, making the whole
+       *  surface read as silver instead of black. The soft contact
+       *  shadow alone now grounds the chassis to the floor. */}
 
       {/* Soft contact shadow under the laptop. Radial-gradient texture
        *  so the shadow has natural falloff instead of a hard ellipse
