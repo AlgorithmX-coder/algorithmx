@@ -1577,21 +1577,10 @@ function Laptop({
 
   return (
     <group ref={parallaxRef}>
-      {/* ATMOSPHERIC FOG HAZE - large radial-gradient plane far behind
-       *  the laptop. Adds depth without literal volumetric fog. Dropped
-       *  from 0.7 -> 0.4 opacity for a cleaner Apple-style backdrop. */}
-      {fogHazeTex && (
-        <mesh position={[RIG_X, 1.0, -4.0]}>
-          <planeGeometry args={[16, 12]} />
-          <meshBasicMaterial
-            map={fogHazeTex}
-            transparent
-            opacity={0.4}
-            depthWrite={false}
-            toneMapped={false}
-          />
-        </mesh>
-      )}
+      {/* Fog haze plane intentionally removed in this pass. Its
+       *  cyan-violet radial gradient was bleeding around the laptop
+       *  and brightening the floor area; with it gone the floor +
+       *  surrounding space stay properly black. */}
 
       {/* Data rain layer intentionally removed in this pass - it added
        * "tech" texture but competed with the laptop and read as clutter

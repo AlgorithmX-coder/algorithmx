@@ -85,8 +85,11 @@ export default function HeroCinematic() {
     reducedMotion ? 1 : v,
   );
 
-  /* Backdrop gradient that subtly hue-shifts with progress. */
-  const bgOpacity = useTransform(smoothScroll, [0, 0.4], [0.65, 1]);
+  /* Backdrop gradient that subtly hue-shifts with progress. Capped at
+   * a lower max (was 1.0) so the violet/cyan radial glow stays quiet
+   * - we want the laptop to dominate against a near-black void, not
+   * sit inside a bright cosmic cloud. */
+  const bgOpacity = useTransform(smoothScroll, [0, 0.4], [0.35, 0.6]);
 
   return (
     <section
@@ -110,8 +113,9 @@ export default function HeroCinematic() {
           overflow: "hidden",
         }}
       >
-        {/* Layer 0 - radial backdrop. Quiet on its own; the canvas
-         *  paints over the top of it. */}
+        {/* Layer 0 - subtle radial backdrop. Gradient intensities
+         *  reduced (violet 0.22 -> 0.10, cyan 0.16 -> 0.06) so the
+         *  cosmic glow whispers rather than competes with the laptop. */}
         <motion.div
           aria-hidden
           style={{
@@ -119,8 +123,8 @@ export default function HeroCinematic() {
             inset: 0,
             opacity: bgOpacity,
             background:
-              "radial-gradient(ellipse at 50% 60%, rgba(124,92,255,0.22), transparent 55%), " +
-              "radial-gradient(ellipse at 30% 30%, rgba(0,229,255,0.16), transparent 60%), " +
+              "radial-gradient(ellipse at 50% 60%, rgba(124,92,255,0.10), transparent 55%), " +
+              "radial-gradient(ellipse at 30% 30%, rgba(0,229,255,0.06), transparent 60%), " +
               "var(--lv2-ink, #04050d)",
           }}
         />
