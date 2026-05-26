@@ -683,11 +683,14 @@ function getKeyLabelTexture(
   ctx.clearRect(0, 0, c.width, c.height);
   ctx.imageSmoothingEnabled = true;
   ctx.imageSmoothingQuality = "high";
-  /* Tighter halo (blur 18 -> 10) so the letter doesn't bleed into its
-   *  neighbours. Halo colour now per-column for the RGB system. */
+  /* Crisp letter with a tight glow. shadowBlur 10 -> 5 keeps the halo
+   * contained right around the letterform so the core stays razor
+   * sharp instead of bleeding into a fuzzy aura. Halo alpha also
+   * dropped 0.95 -> 0.7 so the cyan tint reads as accent rather than
+   * dominant. */
   const rgb = hexToRgbStr(haloColor);
-  ctx.shadowColor = `rgba(${rgb},0.95)`;
-  ctx.shadowBlur = 10;
+  ctx.shadowColor = `rgba(${rgb},0.7)`;
+  ctx.shadowBlur = 5;
   ctx.fillStyle = haloColor;
   const fontSize = label.length === 1 ? 220 : Math.max(112, 220 - label.length * 16);
   ctx.font = `900 ${fontSize}px ui-sans-serif, system-ui, sans-serif`;
@@ -1086,20 +1089,23 @@ export default function LaptopScene({ progress, reducedMotion = false }: LaptopS
 
       <Laptop progress={progress} reducedMotion={reducedMotion} cardsEnabled={cardsEnabled} />
 
-      {/* Cinematic post-processing - Vignette + Noise only. Bloom is
-       *  excluded because it consistently kills the render in this
-       *  combination of versions (@react-three/postprocessing 3.0.4 +
-       *  postprocessing 6.39 + Next 16 Turbopack); the visible quality
-       *  win from HDR + clearcoat materials covers most of what bloom
-       *  would have added. */}
-      <EffectComposer multisampling={0} enableNormalPass={false}>
+      {/* Cinematic post-processing.
+       *  - multisampling=4 enables MSAA inside the post-processing
+       *    render target so chassis edges, card edges, and screen-text
+       *    edges no longer go jaggy after Vignette/Noise sample them.
+       *    (Was 0, which silently dropped the canvas-level antialias.)
+       *  - Film grain dropped to almost imperceptible (0.035 -> 0.012)
+       *    so it stops adding the perceived "fuzzy texture" over
+       *    everything.
+       *  - Bloom is still excluded - it crashes this drei/three combo. */}
+      <EffectComposer multisampling={4} enableNormalPass={false}>
         <Vignette
           eskil={false}
           offset={0.22}
           darkness={0.85}
           blendFunction={BlendFunction.NORMAL}
         />
-        <Noise opacity={0.035} blendFunction={BlendFunction.OVERLAY} />
+        <Noise opacity={0.012} blendFunction={BlendFunction.OVERLAY} />
       </EffectComposer>
     </Canvas>
   );
@@ -1784,16 +1790,16 @@ function Laptop({
        *  Yaw alone keeps reflections gliding across the chassis edges
        *  while the chassis stays parallel to the ground. */}
       <group position={[RIG_X, 0, 0]} rotation={[0, -0.11, 0]}>
-        <RoundedBox args={[BASE_W, BASE_H, BASE_D]} radius={0.03} smoothness={4}>
+        <RoundedBox args={[BASE_W, BASE_H, BASE_D]} radius={0.03} smoothness={5}>
           <meshPhysicalMaterial
             color={COLORS.steel}
             metalness={0.82}
-            roughness={0.38}
-            clearcoat={0.6}
-            clearcoatRoughness={0.32}
+            roughness={0.34}
+            clearcoat={0.65}
+            clearcoatRoughness={0.28}
             anisotropy={0.7}
             normalMap={brushedNormalTex}
-            normalScale={new THREE.Vector2(0.18, 0.18)}
+            normalScale={new THREE.Vector2(0.1, 0.1)}
             envMapIntensity={1.2}
           />
         </RoundedBox>
@@ -2065,9 +2071,9 @@ function Laptop({
                     />
                   </mesh>
                   {/* GLOWING KEY LABEL - white-core letterform sitting on
-                   *  a TIGHT column-hue halo. Haze pass dropped from 0.5
-                   *  to 0.22 so the letterform stays razor-sharp instead
-                   *  of bleeding into the neighbouring keys. */}
+                   *  a TIGHT column-hue halo. Haze pass dropped to 0.10
+                   *  so the cyan accent is a whisper around the core
+                   *  letter rather than a soft fuzz that masks it. */}
                   {labelTex && (
                     <>
                       {/* Tight column-hue haze behind the letter */}
@@ -2075,11 +2081,11 @@ function Laptop({
                         position={[0, 0.008, 0]}
                         rotation={[-Math.PI / 2, 0, 0]}
                       >
-                        <planeGeometry args={[labelW * 1.08, labelH * 1.08]} />
+                        <planeGeometry args={[labelW * 1.06, labelH * 1.06]} />
                         <meshBasicMaterial
                           map={labelTex}
                           transparent
-                          opacity={0.22}
+                          opacity={0.1}
                           blending={THREE.AdditiveBlending}
                           depthWrite={false}
                           toneMapped={false}
@@ -2214,16 +2220,16 @@ function Laptop({
           position={[0, BASE_H / 2, -BASE_D / 2 + 0.04]}
         >
           <group position={[0, LID_H / 2, LID_D / 2 - 0.04]}>
-            <RoundedBox args={[LID_W, LID_H, LID_D]} radius={0.025} smoothness={4}>
+            <RoundedBox args={[LID_W, LID_H, LID_D]} radius={0.025} smoothness={5}>
               <meshPhysicalMaterial
                 color={COLORS.steel}
                 metalness={0.85}
-                roughness={0.32}
-                clearcoat={0.7}
-                clearcoatRoughness={0.26}
+                roughness={0.28}
+                clearcoat={0.75}
+                clearcoatRoughness={0.22}
                 anisotropy={0.8}
                 normalMap={brushedNormalTex}
-                normalScale={new THREE.Vector2(0.16, 0.16)}
+                normalScale={new THREE.Vector2(0.09, 0.09)}
                 envMapIntensity={1.3}
               />
             </RoundedBox>

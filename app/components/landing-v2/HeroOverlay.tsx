@@ -109,12 +109,15 @@ export default function HeroOverlay({ progress }: HeroOverlayProps) {
             fontWeight: 400,
             margin: 0,
             color: "var(--lv2-paper)",
-            /* 18ch -> 13ch: stops headline overlapping the laptop on
-             *  ~1440-1920px viewports. Visual hierarchy: headline on the
-             *  left, laptop on the right, clean negative space between. */
             maxWidth: "13ch",
+            /* Softened text-shadow blurs (12px/36px -> 6px/24px) so the
+             * dark halo behind the type doesn't visually soften the
+             * letterforms. Font-smoothing forced antialiased for a
+             * crisper letter edge on all platforms. */
             textShadow:
-              "0 2px 12px rgba(4,5,13,0.9), 0 8px 36px rgba(4,5,13,0.7)",
+              "0 1px 6px rgba(4,5,13,0.9), 0 4px 24px rgba(4,5,13,0.7)",
+            WebkitFontSmoothing: "antialiased",
+            MozOsxFontSmoothing: "grayscale",
           }}
         >
           {HEADLINE}
@@ -125,13 +128,13 @@ export default function HeroOverlay({ progress }: HeroOverlayProps) {
             fontFamily: "var(--lv2-font-display)",
             fontSize: "clamp(0.95rem, 1.2vw, 1.0625rem)",
             lineHeight: 1.55,
-            color: "rgba(232, 237, 255, 0.88)",
-            /* 54ch -> 42ch: keeps the body copy inside the headline's
-             *  column so the right edge stays clear of the laptop. */
+            color: "rgba(232, 237, 255, 0.92)",
             maxWidth: "42ch",
             margin: "calc(var(--lv2-rail) * 0.25) 0 0",
             textShadow:
-              "0 1px 8px rgba(4,5,13,0.9), 0 4px 20px rgba(4,5,13,0.6)",
+              "0 1px 4px rgba(4,5,13,0.9), 0 2px 14px rgba(4,5,13,0.6)",
+            WebkitFontSmoothing: "antialiased",
+            MozOsxFontSmoothing: "grayscale",
           }}
         >
           {SUBLINE}
@@ -172,7 +175,7 @@ const ctaPrimary: React.CSSProperties = {
   color: "var(--lv2-ink)",
   fontFamily: "var(--lv2-font-mono)",
   fontSize: 12,
-  fontWeight: 600,
+  fontWeight: 700,
   letterSpacing: "0.18em",
   textTransform: "uppercase",
   padding: "14px 22px",
@@ -181,6 +184,8 @@ const ctaPrimary: React.CSSProperties = {
   display: "inline-flex",
   alignItems: "center",
   boxShadow: "0 8px 28px rgba(0,229,255,0.32)",
+  WebkitFontSmoothing: "antialiased",
+  MozOsxFontSmoothing: "grayscale",
 };
 
 const ctaSecondary: React.CSSProperties = {
@@ -189,11 +194,13 @@ const ctaSecondary: React.CSSProperties = {
   border: "1px solid rgba(232,237,255,0.22)",
   fontFamily: "var(--lv2-font-mono)",
   fontSize: 12,
-  fontWeight: 600,
+  fontWeight: 700,
   letterSpacing: "0.18em",
   textTransform: "uppercase",
   padding: "14px 22px",
   borderRadius: 999,
   textDecoration: "none",
   backdropFilter: "blur(8px)",
+  WebkitFontSmoothing: "antialiased",
+  MozOsxFontSmoothing: "grayscale",
 };
