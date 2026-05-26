@@ -1598,16 +1598,17 @@ function Laptop({
        * against the cleaner cinematic direction. The fog haze + hex
        * floor alone carry the atmospheric depth now. */}
 
-      {/* DARK BASE FLOOR PLANE - deep matte black-ink so the laptop's
-       *  silhouette reads cleanly without the floor competing for
-       *  attention. Was metalness 0.65 / env 0.85 which made the floor
-       *  bounce the bright analytic lights as grey - now low metalness
-       *  + low env so the floor stays dark even with strong lighting. */}
+      {/* DARK BASE FLOOR PLANE - extended to 60x60 (was 14x14) so the
+       *  plane's edges are well outside the camera frustum at every
+       *  cinematic camera position. Was showing zig-zag aliased edges
+       *  partway across the frame; now the floor reads as infinite.
+       *  Material kept low-metalness + low env so it stays dark instead
+       *  of bouncing the bright analytic lights as grey. */}
       <mesh
         position={[RIG_X, -BASE_H / 2 - 0.045, 0]}
         rotation={[-Math.PI / 2, 0, 0]}
       >
-        <planeGeometry args={[14, 14]} />
+        <planeGeometry args={[60, 60]} />
         <meshStandardMaterial
           color="#02030a"
           roughness={0.7}
@@ -1758,13 +1759,13 @@ function Laptop({
         </mesh>
       ))}
 
-      {/* LAPTOP - cinematic asymmetry: ~6° yaw (-Y) turns the screen
-       *  off the camera's normal axis so the emissive plane no longer
-       *  blasts directly into the lens; ~3° tilt (-X) lifts the back so
-       *  the screen faces slightly skyward, away from the high camera.
-       *  Reflections now glide across the chassis edges instead of
-       *  presenting as a flat front face. */}
-      <group position={[RIG_X, 0, 0]} rotation={[-0.05, -0.11, 0]}>
+      {/* LAPTOP - cinematic asymmetry from a 6° YAW only (Y axis). The
+       *  previous build also had a 3° X-tilt which dropped the front of
+       *  the chassis below the floor plane and lifted the back, making
+       *  the laptop read as floating rather than sitting on the surface.
+       *  Yaw alone keeps reflections gliding across the chassis edges
+       *  while the chassis stays parallel to the ground. */}
+      <group position={[RIG_X, 0, 0]} rotation={[0, -0.11, 0]}>
         <RoundedBox args={[BASE_W, BASE_H, BASE_D]} radius={0.03} smoothness={4}>
           <meshPhysicalMaterial
             color={COLORS.steel}
