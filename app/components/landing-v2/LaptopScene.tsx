@@ -19,11 +19,14 @@ interface LaptopSceneProps {
 
 const COLORS = {
   ink: "#04050d",
-  /* Premium space-gray aluminum body (was generic silver). Tuned to sit
-   * just above pure black so the laptop reads with edge definition
-   * against the dark scene. */
-  steel: "#4a505f",
-  steelEdge: "#646b7b",
+  /* Lighter brushed-aluminum body. Was #4a505f, which paired with the
+   * high metalness (0.82) and roughness (0.38) read as dark grey while
+   * the studio HDR was still loading from the drei CDN. With this
+   * brighter base the diffuse contribution alone keeps the chassis
+   * silver, so the laptop never has the "dark grey -> suddenly silver"
+   * pop on first paint. */
+  steel: "#7d8294",
+  steelEdge: "#9095a5",
   /* Deep matte panels */
   keyboard: "#080a10",
   trackpad: "#11141c",
@@ -1066,16 +1069,19 @@ export default function LaptopScene({ progress, reducedMotion = false }: LaptopS
       <color attach="background" args={[COLORS.ink]} />
 
       {/* HDRI environment lighting - studio preset wrapped in Suspense
-       *  so a slow CDN fetch doesn't block the rest of the render. */}
+       *  so a slow CDN fetch doesn't block the rest of the render. The
+       *  ambient + directional lights below are strong enough that the
+       *  chassis reads silver even before this HDR resolves; once it
+       *  loads, it just adds polish (clearcoat highlights etc). */}
       <Suspense fallback={null}>
-        <Environment preset="studio" environmentIntensity={0.4} />
+        <Environment preset="studio" environmentIntensity={0.55} />
       </Suspense>
 
-      <ambientLight intensity={0.85} color="#dde6ff" />
-      <directionalLight position={[4, 6, 5]} intensity={1.8} color="#ffffff" />
-      <pointLight position={[-3, 2.5, 4]} intensity={0.75} color={COLORS.cyan} />
+      <ambientLight intensity={1.25} color="#dde6ff" />
+      <directionalLight position={[4, 6, 5]} intensity={2.4} color="#ffffff" />
+      <pointLight position={[-3, 2.5, 4]} intensity={0.85} color={COLORS.cyan} />
       {/* Rim light from behind to highlight the lid's top edge */}
-      <pointLight position={[2, 4, -3]} intensity={0.55} color="#ffffff" />
+      <pointLight position={[2, 4, -3]} intensity={0.85} color="#ffffff" />
 
       <Laptop progress={progress} reducedMotion={reducedMotion} cardsEnabled={cardsEnabled} />
 
