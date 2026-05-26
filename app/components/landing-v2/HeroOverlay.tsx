@@ -23,19 +23,15 @@ const SUBLINE =
   "Six fields of technology — cybersecurity, coding, AI, apps, entrepreneurship, robotics — for ages 6 to adult. Cyber Heroes Academy, our first course, is live today.";
 
 export default function HeroOverlay({ progress }: HeroOverlayProps) {
-  /* Headline reveals at CHAPTER 03 (Curriculum loading), AFTER the lid
-   * has finished opening (lid hits open at progress ~0.40). The closed-
-   * laptop stage (chapters 01 & 02) stays mysterious and minimal: only
-   * the chapter label + scroll cue + Nav are on screen.
-   *
-   * 0.42 -> opacity starts climbing (lid is fully open by now)
-   * 0.55 -> fully visible
-   * Holds through chapters 04-06. */
-  const opacity = useTransform(progress, [0.42, 0.55], [0, 1]);
-  const y = useTransform(progress, [0.42, 0.55], [22, 0]);
-  const blur = useTransform(progress, [0.42, 0.55], [8, 0]);
+  /* Headline reveals AFTER the keyboard has lit up - so the sequence
+   * reads "lid opens -> screen boots -> keys glow -> headline appears".
+   * Pushed back from 0.42 -> 0.55 to 0.68 -> 0.78 so each beat gets
+   * its own moment instead of stacking in the middle. */
+  const opacity = useTransform(progress, [0.68, 0.78], [0, 1]);
+  const y = useTransform(progress, [0.68, 0.78], [22, 0]);
+  const blur = useTransform(progress, [0.68, 0.78], [8, 0]);
   const filter = useTransform(blur, (v) => `blur(${v}px)`);
-  const scrimOpacity = useTransform(progress, [0.40, 0.55], [0, 1]);
+  const scrimOpacity = useTransform(progress, [0.66, 0.78], [0, 1]);
 
   /* The persistent ALGORITHMX wordmark previously rendered here was
    * removed: the global Nav (Nav.tsx) carries the brand from scroll 0,

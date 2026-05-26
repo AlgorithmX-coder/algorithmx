@@ -163,20 +163,21 @@ const STREAMS = [
 ] as const;
 
 function computeScreenStage(p: number): number {
-  /* Lid begins opening at 0.18, fully open by 0.40 (see Laptop useFrame).
-   * Boot text begins as the screen first ignites (~0.22) and completes
-   * just before the lid finishes opening, so when the lid lands open
-   * the screen has already booted and the dashboard greets the user. */
-  if (p < 0.22) return 0;
-  if (p < 0.26) return 1;
-  if (p < 0.29) return 2;
-  if (p < 0.32) return 3;
-  if (p < 0.35) return 4;
-  if (p < 0.38) return 5;
-  if (p < 0.50) return 6; // boot complete (all 6 lines + OK)
-  if (p < 0.68) return 7; // streams dashboard
-  if (p < 0.85) return 8; // projects
-  return 9; // ready
+  /* Tightly sequenced: lid opens 0.32->0.50, then screen ignites at
+   * 0.50 and the boot lines type out 0.52->0.62, settling on the full
+   * streams dashboard from 0.65. Subsequent dashboards (projects,
+   * ready) come AFTER the cards have emerged so the screen narrative
+   * progresses with the hero moment instead of jumping ahead. */
+  if (p < 0.50) return 0;
+  if (p < 0.52) return 1;
+  if (p < 0.54) return 2;
+  if (p < 0.56) return 3;
+  if (p < 0.58) return 4;
+  if (p < 0.60) return 5;
+  if (p < 0.65) return 6; // boot complete (all 6 lines + OK)
+  if (p < 0.86) return 7; // streams dashboard (during card emerge)
+  if (p < 0.95) return 8; // projects (after cards settled)
+  return 9; // ready (final hero moment)
 }
 
 function roundRect(
@@ -1133,14 +1134,16 @@ function HolographicCards({
    * is the hero. */
   const cardData = useMemo(
     () => [
-      /* Top row - upper band, comfortably above the keyboard */
+      /* Top row - upper band, comfortably above the keyboard.
+       * Delays tightened (max 0.04) so all 6 cards finish emerging
+       * by progress ~0.92, leaving 0.08 of settled-hero scroll. */
       { stream: STREAMS[0], target: new THREE.Vector3(1.2, 2.4, 1.5), delay: 0.0, yaw: 0.3 },
-      { stream: STREAMS[1], target: new THREE.Vector3(1.9, 2.4, 1.5), delay: 0.03, yaw: 0.16 },
-      { stream: STREAMS[2], target: new THREE.Vector3(2.6, 2.4, 1.5), delay: 0.06, yaw: 0.03 },
+      { stream: STREAMS[1], target: new THREE.Vector3(1.9, 2.4, 1.5), delay: 0.015, yaw: 0.16 },
+      { stream: STREAMS[2], target: new THREE.Vector3(2.6, 2.4, 1.5), delay: 0.03, yaw: 0.03 },
       /* Bottom row - still well above the keyboard */
-      { stream: STREAMS[3], target: new THREE.Vector3(1.2, 1.65, 1.5), delay: 0.04, yaw: 0.3 },
-      { stream: STREAMS[4], target: new THREE.Vector3(1.9, 1.65, 1.5), delay: 0.07, yaw: 0.16 },
-      { stream: STREAMS[5], target: new THREE.Vector3(2.6, 1.65, 1.5), delay: 0.1, yaw: 0.03 },
+      { stream: STREAMS[3], target: new THREE.Vector3(1.2, 1.65, 1.5), delay: 0.015, yaw: 0.3 },
+      { stream: STREAMS[4], target: new THREE.Vector3(1.9, 1.65, 1.5), delay: 0.03, yaw: 0.16 },
+      { stream: STREAMS[5], target: new THREE.Vector3(2.6, 1.65, 1.5), delay: 0.045, yaw: 0.03 },
     ],
     [],
   );
@@ -1181,8 +1184,11 @@ function HolographicCards({
       const m = matRefs.current[i];
       const r = rimRefs.current[i];
       if (!g || !m) return;
-      /* Per-card progress with staggered delay across Chapter 04 */
-      const cardP = smoothstep(0.5 + card.delay, 0.62 + card.delay, p);
+      /* Per-card progress - cards emerge AFTER the headline (which
+       * lands at 0.78). Window 0.78 -> 0.90 with tight staggered delays
+       * (max 0.06) so all 6 cards are out by ~0.92 leaving 0.08 of
+       * settled-hero scroll at the end. */
+      const cardP = smoothstep(0.78 + card.delay, 0.88 + card.delay, p);
       const targetX = RIG_X + card.target.x;
       const targetY = card.target.y;
       const targetZ = card.target.z;
@@ -1275,6 +1281,15 @@ function Laptop({
   const lidBrandTex = useLidBrandTexture();
   const screen = useLivingScreen();
   const screenStageRef = useRef(-1);
+  /* Crossfade state for MAJOR stage transitions (boot -> streams ->
+   * projects -> ready). When a major transition fires, we dip the
+   * screen content opacity for ~0.18s, repaint at the dip's midpoint,
+   * then ramp back up. Boot-line transitions (1..6) don't trigger the
+   * crossfade - those should pop one at a time like a typewriter. */
+  const screenCrossfadeRef = useRef<
+    | { startT: number; toStage: number; painted: boolean }
+    | null
+  >(null);
   const softShadowTex = useMemo(() => makeSoftShadowTexture(), []);
   const floorSheenTex = useMemo(() => makeFloorSheenTexture(), []);
   const screenBeamTex = useMemo(() => makeScreenGlowTexture(), []);
@@ -1412,65 +1427,94 @@ function Laptop({
       );
     }
 
-    /* Lid hinge - SMOOTH DAMPING with no overshoot. Mapped to the
-     * Chapter 02 -> Chapter 03 window (0.18 -> 0.40) so the lid finishes
-     * opening just as the headline reveal begins at 0.42. Was 0.20-0.60
-     * on the old 150vh rail. */
-    const openT = smoothstep(0.18, 0.4, p);
+    /* Lid hinge - SMOOTH DAMPING with no overshoot. Lid opens fully
+     * across Chapter 03 (0.32 -> 0.50). The damped exponential follow
+     * trails the scroll target by a beat, so even at the END of the
+     * opening window the lid is still settling - which reads as
+     * mechanical weight rather than a snap-to. */
+    const openT = smoothstep(0.32, 0.5, p);
     const targetAngle = lerp(LID_CLOSED_ANGLE, LID_OPEN_ANGLE, openT);
     const dt = Math.min(0.05, delta);
-    const followSpeed = 1 - Math.exp(-12 * dt);
+    const followSpeed = 1 - Math.exp(-10 * dt);
     lidAngle.current = lerp(lidAngle.current, targetAngle, followSpeed);
     lidVelocity.current = 0;
     if (lidRef.current) {
       lidRef.current.rotation.x = lidAngle.current;
     }
 
-    /* Living screen - repaint canvas when the chapter-driven stage
-     * crosses a boundary. Stages: 0=dormant, 1-6=boot lines, 7=streams
-     * dashboard, 8=projects, 9=ready. */
+    /* Living screen - stage transitions. The minor boot-line stages
+     * (1..6) repaint immediately because they're meant to feel like a
+     * typewriter. The MAJOR transitions (boot->streams at 6->7,
+     * streams->projects at 7->8, projects->ready at 8->9) trigger a
+     * brief opacity dip during which the canvas is repainted - the
+     * dip masks the otherwise hard content swap. */
     const stage = computeScreenStage(p);
-    if (stage !== screenStageRef.current) {
+    const prevStage = screenStageRef.current;
+    if (stage !== prevStage) {
+      const isMajor =
+        (prevStage <= 6 && stage >= 7) ||
+        (prevStage === 7 && stage === 8) ||
+        (prevStage === 8 && stage === 9);
+      if (isMajor) {
+        screenCrossfadeRef.current = { startT: t, toStage: stage, painted: false };
+        // canvas keeps showing prev stage until the dip midpoint
+      } else {
+        screen.repaint(stage);
+      }
       screenStageRef.current = stage;
-      screen.repaint(stage);
+    }
+    /* Compute the crossfade opacity multiplier, doing the repaint at
+     * the dip midpoint so the viewer never sees the cut. */
+    let stageOpMul = 1.0;
+    const cf = screenCrossfadeRef.current;
+    if (cf) {
+      const elapsed = t - cf.startT;
+      const HALF = 0.2;
+      if (elapsed < HALF) {
+        stageOpMul = 1 - elapsed / HALF;
+      } else if (elapsed < HALF * 2) {
+        if (!cf.painted) {
+          screen.repaint(cf.toStage);
+          cf.painted = true;
+        }
+        stageOpMul = (elapsed - HALF) / HALF;
+      } else {
+        screenCrossfadeRef.current = null;
+      }
     }
 
-    /* Screen ignite - content fades up + spill onto keyboard ramps with
-     * the lid-open angle. Mapped 0.30 -> 0.50 so the screen content
-     * appears just BEFORE the lid finishes opening and is fully visible
-     * by Chapter 03. */
-    const screenT = smoothstep(0.3, 0.5, p);
+    /* Screen ignite - content fades up AFTER the lid lands open
+     * (0.50 -> 0.60). Was 0.30 -> 0.50, which started the screen during
+     * the lid's motion and made the two beats fight each other. Now
+     * the lid lands, the screen is dark for a beat, then ignites. */
+    const screenT = smoothstep(0.5, 0.6, p);
     if (screenContentMat.current) {
       screenContentMat.current.transparent = true;
-      screenContentMat.current.opacity = screenT;
+      screenContentMat.current.opacity = screenT * stageOpMul;
     }
     if (screenGlowMat.current) {
       const breathe = 0.9 + Math.sin(t * 1.4) * 0.1;
-      screenGlowMat.current.opacity = screenT * 0.08 * breathe;
+      screenGlowMat.current.opacity = screenT * 0.08 * breathe * stageOpMul;
     }
-    /* SCREEN-GLOW SPILL onto the keyboard - additive cyan plane above
-     * the keyboard well whose opacity tracks the screen-ignite curve.
-     * Reads as "the screen is illuminating the keys" as the lid opens. */
+    /* Screen-glow spill onto keyboard - tracks screenT so the spill
+     * appears in lockstep with the screen content. */
     if (screenSpillMat.current) {
       const breathe = 0.92 + Math.sin(t * 1.1) * 0.08;
       screenSpillMat.current.opacity = screenT * 0.18 * breathe;
     }
-    /* KEYBOARD BACKLIGHT ACTIVATION - the per-key RGB underglow ambient
-     * blanket fades in across Chapter 03 so the keyboard "powers on"
-     * when the lid lands open. Without this the keys read as already-lit
-     * before the laptop is even open. */
+    /* Keyboard backlight activation - now comes AFTER the screen has
+     * ignited (0.58 -> 0.68). The eye reads the sequence as
+     * "screen on -> keys glow on -> wave fires" rather than them all
+     * lighting at once. */
     if (keyboardBacklightMat.current) {
-      const backlight = smoothstep(0.35, 0.55, p);
+      const backlight = smoothstep(0.58, 0.68, p);
       keyboardBacklightMat.current.opacity = backlight * 0.06;
     }
 
-    /* KEYBOARD LIGHT WAVE - one-shot left-to-right pulse that fires the
-     * moment the lid finishes opening. Reads as the OS "powering on"
-     * the keyboard - a wave of brighter light sweeps across the keys
-     * and dissipates, leaving them at their normal column-hue underglow.
-     * Triggers once per session at openT > 0.85 (lid is essentially
-     * fully open). */
-    if (waveStartTimeRef.current < 0 && openT > 0.85) {
+    /* Keyboard light wave - now also gated on the BACKLIGHT being mostly
+     * on (and the lid being fully open), so the wave fires after the
+     * keys have visibly powered on rather than during the lid motion. */
+    if (waveStartTimeRef.current < 0 && openT > 0.85 && p > 0.6) {
       waveStartTimeRef.current = t;
     }
     if (waveStartTimeRef.current >= 0 && keyUnderglowRefs.current.length > 0) {
@@ -1503,17 +1547,17 @@ function Laptop({
       ledMat.current.emissiveIntensity = 1.5 + Math.sin(t * 2.1) * 0.5;
     }
 
-    /* Floor grids - kept VERY subtle (was 0.12 / 0.70 peak). At low
-     * opacity the hex pattern reads as a subliminal "engineered floor"
-     * texture rather than a competing graphic, and the line grid is
-     * just barely-visible accent under it. Apple-style discipline. */
+    /* Floor grids - drawn in DURING the activation/lid-opening window
+     * (0.18 -> 0.42) so the "stage" is set just as the lid begins to
+     * lift. By the time the lid finishes opening, the floor texture is
+     * fully resolved and the eye moves naturally to the screen. */
     if (gridMat.current) {
-      const draw = smoothstep(0.1, 0.4, p);
+      const draw = smoothstep(0.18, 0.42, p);
       const pulse = 0.85 + Math.sin(t * 0.8) * 0.1;
       gridMat.current.opacity = draw * 0.04 * pulse;
     }
     if (hexFloorMatRef.current) {
-      const draw = smoothstep(0.1, 0.4, p);
+      const draw = smoothstep(0.18, 0.42, p);
       const pulse = 0.9 + Math.sin(t * 0.9) * 0.08;
       hexFloorMatRef.current.opacity = draw * 0.18 * pulse;
     }
@@ -1524,14 +1568,15 @@ function Laptop({
       dataRainTex.offset.y = (dataRainTex.offset.y + 0.025 * delta) % 1;
     }
 
-    /* VOLUMETRIC SCREEN BACK-LIGHT - soft cyan halo BEHIND the laptop.
-     * Ramps with the screen-ignite curve and holds through chapters 03-06. */
+    /* Screen back-light halo - tracks the screen ignite curve
+     * (0.50 -> 0.60) so it appears with the screen content, not while
+     * the lid is still moving. */
     if (screenBeamRef.current) {
       screenBeamRef.current.lookAt(state.camera.position);
       const mat = screenBeamRef.current.material as THREE.MeshBasicMaterial;
       const breathe = 0.9 + Math.sin(t * 1.3) * 0.1;
-      mat.opacity = smoothstep(0.3, 0.5, p) * 0.16 * breathe;
-      const s = 1 + smoothstep(0.3, 1, p) * 0.15;
+      mat.opacity = smoothstep(0.5, 0.6, p) * 0.16 * breathe;
+      const s = 1 + smoothstep(0.5, 1, p) * 0.15;
       screenBeamRef.current.scale.set(s, s, 1);
     }
 
