@@ -1122,26 +1122,25 @@ function HolographicCards({
    * cinematic + screen dashboard still tell the streams story without
    * them. */
   if (!enabled) return null;
-  /* 2 x 3 grid IN FRONT of the laptop. Cards sit at z=1.4 (well clear
-   * of the lid surface) so the laptop chassis never occludes them.
-   * Positioned to the RIGHT of the laptop centre so they don't collide
-   * with the headline column (HTML overlay at zIndex 3). Yaws angle
-   * each card slightly toward the camera at world x~4.2.
+  /* 2 x 3 grid pushed RIGHT of the laptop so the left half of the
+   * frame stays clean for the headline column (HTML overlay at
+   * zIndex 3). Card positions are relative to RIG_X (1.4), so the
+   * leftmost card sits at world x ~2.3 - well clear of the headline.
    *
-   * Y values tuned so the top row sits BELOW the viewport's top crop
-   * line (vertical half-FOV ~1.6 at this camera distance puts the top
-   * edge around world y=2.2). Delays tightened so all 6 cards are
-   * fully emerged by progress 0.68 (end of Chapter 04). */
+   * Cards are also SMALLER and dimmer in this composition pass
+   * (plane 1.5x1.0 -> 1.05x0.7, opacity peak 0.92 -> 0.78). Reads as
+   * "supporting detail" rather than the primary subject. The laptop
+   * is the hero. */
   const cardData = useMemo(
     () => [
-      /* Top row - upper band */
-      { stream: STREAMS[0], target: new THREE.Vector3(0.4, 1.95, 1.4), delay: 0.0, yaw: 0.35 },
-      { stream: STREAMS[1], target: new THREE.Vector3(1.35, 1.95, 1.4), delay: 0.03, yaw: 0.2 },
-      { stream: STREAMS[2], target: new THREE.Vector3(2.3, 1.95, 1.4), delay: 0.06, yaw: 0.05 },
-      /* Bottom row - lower band */
-      { stream: STREAMS[3], target: new THREE.Vector3(0.4, 1.1, 1.4), delay: 0.04, yaw: 0.35 },
-      { stream: STREAMS[4], target: new THREE.Vector3(1.35, 1.1, 1.4), delay: 0.07, yaw: 0.2 },
-      { stream: STREAMS[5], target: new THREE.Vector3(2.3, 1.1, 1.4), delay: 0.1, yaw: 0.05 },
+      /* Top row - upper band, comfortably above the keyboard */
+      { stream: STREAMS[0], target: new THREE.Vector3(1.2, 2.4, 1.5), delay: 0.0, yaw: 0.3 },
+      { stream: STREAMS[1], target: new THREE.Vector3(1.9, 2.4, 1.5), delay: 0.03, yaw: 0.16 },
+      { stream: STREAMS[2], target: new THREE.Vector3(2.6, 2.4, 1.5), delay: 0.06, yaw: 0.03 },
+      /* Bottom row - still well above the keyboard */
+      { stream: STREAMS[3], target: new THREE.Vector3(1.2, 1.65, 1.5), delay: 0.04, yaw: 0.3 },
+      { stream: STREAMS[4], target: new THREE.Vector3(1.9, 1.65, 1.5), delay: 0.07, yaw: 0.16 },
+      { stream: STREAMS[5], target: new THREE.Vector3(2.6, 1.65, 1.5), delay: 0.1, yaw: 0.03 },
     ],
     [],
   );
@@ -1200,11 +1199,13 @@ function HolographicCards({
       /* Scale up from 0.25 to 1.0 */
       const sc = lerp(0.25, 1, cardP);
       g.scale.set(sc, sc, sc);
-      /* Opacity ramp - card material + rim glow plane */
-      m.opacity = cardP * 0.92;
+      /* Opacity ramp - card material + rim glow plane. Reduced in the
+       * composition pass so cards read as supporting detail (peak 0.78
+       * + rim 0.18) instead of competing with the laptop for focus. */
+      m.opacity = cardP * 0.78;
       if (r) {
         const rimBreathe = 0.85 + Math.sin(t * 1.6 + i) * 0.15;
-        r.opacity = cardP * 0.32 * rimBreathe;
+        r.opacity = cardP * 0.18 * rimBreathe;
       }
     });
   });
@@ -1222,9 +1223,11 @@ function HolographicCards({
             }}
             position={[START_X, START_Y, START_Z]}
           >
-            {/* Card content panel - the canvas-painted texture */}
+            {/* Card content panel - shrunk to 1.05 x 0.7 (was 1.5 x 1.0)
+             *  in the composition pass so cards read as supporting
+             *  detail rather than the primary subject. */}
             <mesh>
-              <planeGeometry args={[1.5, 1.0]} />
+              <planeGeometry args={[1.05, 0.7]} />
               <meshBasicMaterial
                 ref={(el) => {
                   matRefs.current[i] = el;
@@ -1236,11 +1239,11 @@ function HolographicCards({
                 toneMapped={false}
               />
             </mesh>
-            {/* Outer rim glow - additive plane slightly larger than the
-             *  card, accent-coloured, that gives the card its hologram
-             *  outer-halo. */}
+            {/* Outer rim glow - accent-coloured additive halo. Tighter
+             *  than before (1.14 x 0.78 vs 1.62 x 1.12) to match the
+             *  smaller card. */}
             <mesh position={[0, 0, -0.001]}>
-              <planeGeometry args={[1.62, 1.12]} />
+              <planeGeometry args={[1.14, 0.78]} />
               <meshBasicMaterial
                 ref={(el) => {
                   rimRefs.current[i] = el;
@@ -1308,15 +1311,18 @@ function Laptop({
    * index so the swarm reads as floating data fragments. */
   const glyphTextures = useMemo(() => makeGlyphTextures(), []);
 
-  /* Particle data - 40 drifting glyph-fragments instead of generic dots */
+  /* Particle data - reduced from 40 -> 12 in the composition pass. A
+   * sparse handful reads as "ambient tech texture" without blanketing
+   * the scene. Pushed slightly further out so they stay clear of the
+   * laptop's silhouette. */
   const particles = useMemo(() => {
-    return Array.from({ length: 40 }, () => ({
-      x: (Math.random() - 0.5) * 8,
-      y: 0.4 + Math.random() * 2.5,
+    return Array.from({ length: 12 }, () => ({
+      x: (Math.random() - 0.5) * 9,
+      y: 0.4 + Math.random() * 2.8,
       z: (Math.random() - 0.5) * 5,
       phase: Math.random() * Math.PI * 2,
       speed: 0.3 + Math.random() * 0.6,
-      size: 0.09 + Math.random() * 0.07,
+      size: 0.08 + Math.random() * 0.06,
       glyphIdx: Math.floor(Math.random() * GLYPHS.length),
     }));
   }, []);
@@ -1497,18 +1503,19 @@ function Laptop({
       ledMat.current.emissiveIntensity = 1.5 + Math.sin(t * 2.1) * 0.5;
     }
 
-    /* Holographic grid + hex-PCB floor draws in across Chapter 02 + 03
-     * (0.10 -> 0.40), so by the time the lid finishes opening the laptop
-     * is sitting on a fully visible surface. */
+    /* Floor grids - kept VERY subtle (was 0.12 / 0.70 peak). At low
+     * opacity the hex pattern reads as a subliminal "engineered floor"
+     * texture rather than a competing graphic, and the line grid is
+     * just barely-visible accent under it. Apple-style discipline. */
     if (gridMat.current) {
       const draw = smoothstep(0.1, 0.4, p);
       const pulse = 0.85 + Math.sin(t * 0.8) * 0.1;
-      gridMat.current.opacity = draw * 0.12 * pulse;
+      gridMat.current.opacity = draw * 0.04 * pulse;
     }
     if (hexFloorMatRef.current) {
       const draw = smoothstep(0.1, 0.4, p);
       const pulse = 0.9 + Math.sin(t * 0.9) * 0.08;
-      hexFloorMatRef.current.opacity = draw * 0.7 * pulse;
+      hexFloorMatRef.current.opacity = draw * 0.18 * pulse;
     }
 
     /* DATA RAIN scrolls downward via texture offset.y. Slow speed so
@@ -1555,23 +1562,15 @@ function Laptop({
       mat.opacity = 0.32 + wave * 0.55;
     }
 
-    /* SUBJECT MOTES - small drifting motes on far orbits. Light up
-     * subtly as scroll passes each subject's reveal trigger. No halos
-     * anymore, no large scaling - they stay ambient. */
+    /* Subject motes intentionally hidden in this pass - 6 floating
+     * accent orbs read as visual noise against the cleaner cinematic
+     * direction. The on-screen stream dashboard already carries the
+     * "6 streams" idea; we don't need motes too. */
     for (let i = 0; i < subjectOrbs.length; i++) {
-      const orb = subjectOrbs[i];
       const ref = orbRefs.current[i];
-      const angle = orb.phase + t * orb.speed;
-      const x = RIG_X + Math.cos(angle) * orb.radius;
-      const z = Math.sin(angle) * orb.radius;
-      const y = orb.y + Math.sin(t * 0.6 + i) * 0.08;
-      const lit = smoothstep(orb.trigger, orb.trigger + 0.04, p);
-      const breathe = 0.85 + Math.sin(t * 2.2 + i) * 0.15;
       if (ref) {
-        ref.position.set(x, y, z);
         const mat = ref.material as THREE.MeshBasicMaterial;
-        /* Lower-key opacity: 0.18 idle, 0.45 lit. No more scaling pop. */
-        mat.opacity = 0.18 + lit * 0.27 * breathe;
+        mat.opacity = 0;
       }
     }
   });
@@ -1579,61 +1578,47 @@ function Laptop({
   return (
     <group ref={parallaxRef}>
       {/* ATMOSPHERIC FOG HAZE - large radial-gradient plane far behind
-       *  the laptop. Adds Blade-Runner depth without literal volumetric
-       *  fog (which would conflict with additive elements). */}
+       *  the laptop. Adds depth without literal volumetric fog. Dropped
+       *  from 0.7 -> 0.4 opacity for a cleaner Apple-style backdrop. */}
       {fogHazeTex && (
         <mesh position={[RIG_X, 1.0, -4.0]}>
           <planeGeometry args={[16, 12]} />
           <meshBasicMaterial
             map={fogHazeTex}
             transparent
-            opacity={0.7}
+            opacity={0.4}
             depthWrite={false}
             toneMapped={false}
           />
         </mesh>
       )}
 
-      {/* SLOW DATA RAIN - vertical cascading code far behind the
-       *  laptop. Sized + faded so it reads as a CONTAINED data pool
-       *  behind the laptop, not a blanket covering the whole sky. */}
-      {dataRainTex && (
-        <mesh position={[RIG_X, 1.4, -7.5]}>
-          <planeGeometry args={[7, 5]} />
-          <meshBasicMaterial
-            map={dataRainTex}
-            transparent
-            opacity={0.55}
-            blending={THREE.AdditiveBlending}
-            depthWrite={false}
-            toneMapped={false}
-          />
-        </mesh>
-      )}
+      {/* Data rain layer intentionally removed in this pass - it added
+       * "tech" texture but competed with the laptop and read as clutter
+       * against the cleaner cinematic direction. The fog haze + hex
+       * floor alone carry the atmospheric depth now. */}
 
-      {/* DARK BASE FLOOR PLANE - sits beneath the hex grid + soft shadow
-       *  so the floor reads as a solid surface. Higher metalness + low
-       *  roughness so the HDR environment lighting picks up subtle
-       *  highlights and the floor reads as polished. */}
+      {/* DARK BASE FLOOR PLANE - deep matte black-ink so the laptop's
+       *  silhouette reads cleanly without the floor competing for
+       *  attention. Was metalness 0.65 / env 0.85 which made the floor
+       *  bounce the bright analytic lights as grey - now low metalness
+       *  + low env so the floor stays dark even with strong lighting. */}
       <mesh
         position={[RIG_X, -BASE_H / 2 - 0.045, 0]}
         rotation={[-Math.PI / 2, 0, 0]}
       >
         <planeGeometry args={[14, 14]} />
         <meshStandardMaterial
-          color="#04060c"
-          roughness={0.45}
-          metalness={0.65}
-          envMapIntensity={0.85}
+          color="#02030a"
+          roughness={0.7}
+          metalness={0.25}
+          envMapIntensity={0.35}
         />
       </mesh>
 
-      {/* FLOOR SHEEN - faux reflection: a vertical-gradient bright
-       *  patch directly under the chassis that reads as the polished
-       *  floor catching the chassis silhouette. Tapered horizontally
-       *  so it doesn't look like a rectangular slab. Positioned a
-       *  fraction above the base floor (less z-fighting) and in FRONT
-       *  of the chassis where reflections naturally land. */}
+      {/* FLOOR SHEEN - subtle hint of polished reflection under the
+       *  chassis. Halved from previous opacity so the floor doesn't
+       *  look like a bright pad of cyan. */}
       {floorSheenTex && (
         <mesh
           position={[RIG_X, -BASE_H / 2 - 0.043, 1.2]}
@@ -1643,7 +1628,7 @@ function Laptop({
           <meshBasicMaterial
             map={floorSheenTex}
             transparent
-            opacity={0.42}
+            opacity={0.18}
             blending={THREE.AdditiveBlending}
             depthWrite={false}
             toneMapped={false}
