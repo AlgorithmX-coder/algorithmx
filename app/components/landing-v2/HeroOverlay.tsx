@@ -68,9 +68,9 @@ export default function HeroOverlay({ progress }: HeroOverlayProps) {
           position: "absolute",
           inset: 0,
           background:
-            "radial-gradient(ellipse 48% 50% at 20% 52%, " +
-            "rgba(4,5,13,0.88) 0%, rgba(4,5,13,0.45) 28%, " +
-            "rgba(4,5,13,0) 52%)",
+            "radial-gradient(ellipse 46% 52% at 20% 52%, " +
+            "rgba(4,5,13,0.92) 0%, rgba(4,5,13,0.5) 26%, " +
+            "rgba(4,5,13,0) 50%)",
           pointerEvents: "none",
         }}
       />
