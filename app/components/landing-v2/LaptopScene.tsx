@@ -1036,19 +1036,27 @@ function makeSoftShadowTexture(): THREE.Texture | null {
 }
 
 export default function LaptopScene({ progress, reducedMotion = false }: LaptopSceneProps) {
-  /* Viewport-aware feature flags. The holographic card grid only makes
-   * sense on laptop+ viewports where the camera frustum gives the cards
-   * room to breathe. On phones/tablets the cards over-dominate the
-   * narrow frame, so we just hide them and let the screen dashboard
-   * carry the streams story. */
-  const [cardsEnabled, setCardsEnabled] = useState(true);
+  /* Viewport tier drives a scale + position multiplier on the
+   * holographic cards so they emerge correctly on every device. On
+   * desktop they render at full size; on tablet they shrink to ~75%
+   * and tuck closer to the laptop; on phone they shrink to ~55% and
+   * tuck closer still. That keeps the "cards emerge from the screen"
+   * narrative consistent everywhere, without the desktop-sized grid
+   * blowing past the narrow portrait frustum. */
+  const [viewportTier, setViewportTier] = useState<"phone" | "tablet" | "desktop">(
+    "desktop",
+  );
   useEffect(() => {
     if (typeof window === "undefined") return;
-    const mq = window.matchMedia("(min-width: 1024px)");
-    setCardsEnabled(mq.matches);
-    const onChange = () => setCardsEnabled(mq.matches);
-    mq.addEventListener("change", onChange);
-    return () => mq.removeEventListener("change", onChange);
+    const compute = () => {
+      const w = window.innerWidth;
+      if (w < 640) setViewportTier("phone");
+      else if (w < 1024) setViewportTier("tablet");
+      else setViewportTier("desktop");
+    };
+    compute();
+    window.addEventListener("resize", compute);
+    return () => window.removeEventListener("resize", compute);
   }, []);
 
   return (
@@ -1092,7 +1100,7 @@ export default function LaptopScene({ progress, reducedMotion = false }: LaptopS
       {/* Rim light from behind to highlight the lid's top edge */}
       <pointLight position={[2, 4, -3]} intensity={0.6} color="#ffffff" />
 
-      <Laptop progress={progress} reducedMotion={reducedMotion} cardsEnabled={cardsEnabled} />
+      <Laptop progress={progress} reducedMotion={reducedMotion} viewportTier={viewportTier} />
 
       {/* Cinematic post-processing.
        *  - multisampling=4 enables MSAA inside the post-processing
@@ -1123,17 +1131,21 @@ export default function LaptopScene({ progress, reducedMotion = false }: LaptopS
  * above and in front of the laptop), bob gently, and fade in fully. */
 function HolographicCards({
   progress,
-  enabled,
+  viewportTier,
 }: {
   progress: MotionValue<number>;
-  enabled: boolean;
+  viewportTier: "phone" | "tablet" | "desktop";
 }) {
-  /* On phones and small tablets the 3D card grid blows past the viewport
-   * (cards positioned for a 1440px aspect ratio are huge at 768px and
-   * smaller). Skip rendering entirely below the laptop breakpoint - the
-   * cinematic + screen dashboard still tell the streams story without
-   * them. */
-  if (!enabled) return null;
+  /* Tier config drives a uniform scale on the cards + a multiplier on
+   * the X offset from RIG_X. On smaller viewports the camera's
+   * horizontal FOV is narrower (taller portrait aspect), so we both
+   * shrink the cards AND tuck them closer to the laptop so they stay
+   * inside the frustum without overlapping the headline. */
+  const tier = useMemo(() => {
+    if (viewportTier === "phone") return { scale: 0.55, xMul: 0.55 };
+    if (viewportTier === "tablet") return { scale: 0.75, xMul: 0.78 };
+    return { scale: 1.0, xMul: 1.0 };
+  }, [viewportTier]);
   /* 2 x 3 grid pushed RIGHT of the laptop so the left half of the
    * frame stays clean for the headline column (HTML overlay at
    * zIndex 3). Card positions are relative to RIG_X (1.4), so the
@@ -1211,7 +1223,7 @@ function HolographicCards({
        * (max 0.06) so all 6 cards are out by ~0.92 leaving 0.08 of
        * settled-hero scroll at the end. */
       const cardP = smoothstep(0.78 + card.delay, 0.88 + card.delay, p);
-      const targetX = RIG_X + card.target.x;
+      const targetX = RIG_X + card.target.x * tier.xMul;
       const targetY = card.target.y;
       const targetZ = card.target.z;
       /* Subtle vertical bob, only once the card has emerged */
@@ -1224,8 +1236,10 @@ function HolographicCards({
       /* Slow rotation drift around target yaw */
       g.rotation.y = card.yaw + Math.sin(t * 0.4 + i) * 0.025 * cardP;
       g.rotation.x = Math.sin(t * 0.3 + i * 0.5) * 0.012 * cardP;
-      /* Scale up from 0.25 to 1.0 */
-      const sc = lerp(0.25, 1, cardP);
+      /* Scale up from 0.25 to tier.scale (1.0 on desktop, 0.75 tablet,
+       * 0.55 phone) so the cards stay inside the narrower portrait
+       * frustum on smaller devices. */
+      const sc = lerp(0.25, tier.scale, cardP);
       g.scale.set(sc, sc, sc);
       /* Opacity ramp scaled by per-card opacityMul so the middle
        * column reads as the dominant pair, right column as secondary,
@@ -1293,11 +1307,11 @@ function HolographicCards({
 function Laptop({
   progress,
   reducedMotion: _rm,
-  cardsEnabled,
+  viewportTier,
 }: {
   progress: MotionValue<number>;
   reducedMotion: boolean;
-  cardsEnabled: boolean;
+  viewportTier: "phone" | "tablet" | "desktop";
 }) {
   const lidBrandTex = useLidBrandTexture();
   const screen = useLivingScreen();
@@ -2421,9 +2435,10 @@ function Laptop({
        *  the screen during Chapter 04. Rendered OUTSIDE the rotated
        *  laptop group so the cards aren't yawed/tilted with the chassis
        *  (they need to face the viewer for legibility), but INSIDE the
-       *  parallaxRef so cursor parallax still applies. Hidden on
-       *  small viewports where they over-dominate. */}
-      <HolographicCards progress={progress} enabled={cardsEnabled} />
+       *  parallaxRef so cursor parallax still applies. Viewport tier
+       *  scales them down on phone/tablet so they fit the narrower
+       *  portrait frustum. */}
+      <HolographicCards progress={progress} viewportTier={viewportTier} />
     </group>
   );
 }

@@ -152,7 +152,10 @@ export default function Testimonials() {
             fontWeight: 700,
             letterSpacing: "0.32em",
             textTransform: "uppercase",
-            color: "rgba(232,237,255,0.5)",
+            /* Alpha 0.5 -> 0.7 so the label meets WCAG AA contrast on
+             * the dark backdrop (was the only remaining Lighthouse
+             * accessibility issue). */
+            color: "rgba(232,237,255,0.7)",
             marginBottom: 28,
           }}
         >
