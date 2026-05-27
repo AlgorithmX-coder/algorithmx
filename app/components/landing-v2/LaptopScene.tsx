@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState, Suspense } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { RoundedBox, Environment } from "@react-three/drei";
+import { RoundedBox, Environment, Lightformer } from "@react-three/drei";
 import {
   EffectComposer,
   Vignette,
@@ -1080,14 +1080,57 @@ export default function LaptopScene({ progress, reducedMotion = false }: LaptopS
     >
       <color attach="background" args={[COLORS.ink]} />
 
-      {/* HDRI environment lighting - studio preset wrapped in Suspense
-       *  so a slow CDN fetch doesn't block the rest of the render. The
-       *  ambient + directional lights below are strong enough that the
-       *  chassis reads silver even before this HDR resolves; once it
-       *  loads, it just adds polish (clearcoat highlights etc). */}
-      <Suspense fallback={null}>
-        <Environment preset="studio" environmentIntensity={0.55} />
-      </Suspense>
+      {/* PROCEDURAL studio environment built from Lightformer rects -
+       *  renders to a small cubemap on the very first frame, no CDN
+       *  download, no Suspense fallback gap. Was Environment
+       *  preset="studio" which depended on an HDR fetched from drei's
+       *  CDN; while that file was in flight, scene.environment was
+       *  null and the metallic chassis had nothing to reflect -
+       *  THAT was the brief dark-grey flash on page load. With
+       *  Lightformers the env is ready before paint 1 so the chassis
+       *  reads as silver immediately and consistently.
+       *
+       *  resolution=128 + frames=1 means the cubemap renders once and
+       *  is cached - effectively free at runtime. */}
+      <Environment background={false} resolution={128} frames={1}>
+        {/* Key light - bright warm-white from upper-front-right */}
+        <Lightformer
+          form="rect"
+          intensity={3.4}
+          color="#ffffff"
+          position={[5, 6, 4]}
+          rotation={[-Math.PI / 4, 0, 0]}
+          scale={[6, 6, 1]}
+        />
+        {/* Fill - soft cool-blue from upper-left */}
+        <Lightformer
+          form="rect"
+          intensity={2}
+          color="#dde6ff"
+          position={[-5, 4, 3]}
+          rotation={[0, Math.PI / 3, 0]}
+          scale={[6, 5, 1]}
+        />
+        {/* Rim - cooler back-light to give the lid edge a highlight */}
+        <Lightformer
+          form="rect"
+          intensity={1.6}
+          color="#aab8ff"
+          position={[0, 5, -5]}
+          rotation={[Math.PI / 2, 0, 0]}
+          scale={[8, 4, 1]}
+        />
+        {/* Bottom bounce - subtle warm fill from below so the chassis
+         *  underside isn't pitch-black */}
+        <Lightformer
+          form="rect"
+          intensity={0.9}
+          color="#3d4660"
+          position={[0, -3, 2]}
+          rotation={[Math.PI / 2, 0, 0]}
+          scale={[10, 4, 1]}
+        />
+      </Environment>
 
       {/* Lighting dialled back further: directional 1.85 -> 1.55, ambient
        *  1.1 -> 1.0. Chassis still reads silver but the front-bottom
