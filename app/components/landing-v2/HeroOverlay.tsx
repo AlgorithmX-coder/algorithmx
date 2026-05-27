@@ -57,11 +57,10 @@ export default function HeroOverlay({ progress }: HeroOverlayProps) {
           pointerEvents: "none",
         }}
       >
-      {/* Radial scrim - PULLED LEFT (32% -> 20%) and SHRUNK (70%/55% ->
-       *  50%/45%) so it darkens only the headline area instead of
-       *  bleeding across the laptop's left edge. Falls off faster on
-       *  the right (75% -> 60%) so the chassis sits in clean dark
-       *  space, not in the scrim's penumbra. */}
+      {/* Radial scrim - stronger core (0.78 -> 0.88) so the headline
+       *  reads with maximum contrast against the dark backdrop, plus a
+       *  faster falloff on the right (60% -> 52%) so the laptop sits
+       *  in completely clean dark space - no scrim penumbra at all. */}
       <motion.div
         aria-hidden
         style={{
@@ -69,9 +68,9 @@ export default function HeroOverlay({ progress }: HeroOverlayProps) {
           position: "absolute",
           inset: 0,
           background:
-            "radial-gradient(ellipse 50% 45% at 20% 55%, " +
-            "rgba(4,5,13,0.78) 0%, rgba(4,5,13,0.4) 32%, " +
-            "rgba(4,5,13,0) 60%)",
+            "radial-gradient(ellipse 48% 50% at 20% 52%, " +
+            "rgba(4,5,13,0.88) 0%, rgba(4,5,13,0.45) 28%, " +
+            "rgba(4,5,13,0) 52%)",
           pointerEvents: "none",
         }}
       />
@@ -103,17 +102,17 @@ export default function HeroOverlay({ progress }: HeroOverlayProps) {
         <h1
           style={{
             fontFamily: "var(--lv2-font-display)",
-            fontSize: "clamp(2.5rem, 6.2vw, 6rem)",
-            lineHeight: 0.95,
-            letterSpacing: "-0.03em",
+            /* Slightly reduced (6vw -> 5.4vw, cap 6rem -> 5.25rem) for
+             * better balance against the laptop on wide viewports.
+             * Still reads as the primary headline; just doesn't
+             * dominate the frame the way 96px did. */
+            fontSize: "clamp(2.25rem, 5.4vw, 5.25rem)",
+            lineHeight: 0.97,
+            letterSpacing: "-0.028em",
             fontWeight: 400,
             margin: 0,
             color: "var(--lv2-paper)",
             maxWidth: "13ch",
-            /* Softened text-shadow blurs (12px/36px -> 6px/24px) so the
-             * dark halo behind the type doesn't visually soften the
-             * letterforms. Font-smoothing forced antialiased for a
-             * crisper letter edge on all platforms. */
             textShadow:
               "0 1px 6px rgba(4,5,13,0.9), 0 4px 24px rgba(4,5,13,0.7)",
             WebkitFontSmoothing: "antialiased",

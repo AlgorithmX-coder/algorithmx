@@ -1081,11 +1081,16 @@ export default function LaptopScene({ progress, reducedMotion = false }: LaptopS
         <Environment preset="studio" environmentIntensity={0.55} />
       </Suspense>
 
-      <ambientLight intensity={1.25} color="#dde6ff" />
-      <directionalLight position={[4, 6, 5]} intensity={2.4} color="#ffffff" />
-      <pointLight position={[-3, 2.5, 4]} intensity={0.85} color={COLORS.cyan} />
+      {/* Final refinement: directional intensity 2.4 -> 1.85 and ambient
+       *  1.25 -> 1.1 to dial back the overexposed white reflection on
+       *  the chassis base. Chassis still reads clearly silver from frame
+       *  1 (metalness is now 0.55) but no longer has a hot specular
+       *  blowout where the directional light hits flat. */}
+      <ambientLight intensity={1.1} color="#dde6ff" />
+      <directionalLight position={[4, 6, 5]} intensity={1.85} color="#ffffff" />
+      <pointLight position={[-3, 2.5, 4]} intensity={0.7} color={COLORS.cyan} />
       {/* Rim light from behind to highlight the lid's top edge */}
-      <pointLight position={[2, 4, -3]} intensity={0.85} color="#ffffff" />
+      <pointLight position={[2, 4, -3]} intensity={0.7} color="#ffffff" />
 
       <Laptop progress={progress} reducedMotion={reducedMotion} cardsEnabled={cardsEnabled} />
 
@@ -1138,18 +1143,26 @@ function HolographicCards({
    * (plane 1.5x1.0 -> 1.05x0.7, opacity peak 0.92 -> 0.78). Reads as
    * "supporting detail" rather than the primary subject. The laptop
    * is the hero. */
+  /* Cards arranged with a visual hierarchy: middle column is the
+   * focal pair (opacityMul 1.0), right column is supporting
+   * (opacityMul 0.62), left column whispers in the background
+   * (opacityMul 0.32). Reads as "2 dominant cards + 2 secondary
+   * + 2 pushed back" instead of an even 2x3 wall.
+   *
+   * Positions pushed right (leftmost rel RIG_X 1.2 -> 1.4) so the
+   * left column stays well clear of the headline. Z-depth varies by
+   * column too - hero pair sits forward (1.55), edges pushed back
+   * (1.40) - gives subtle parallax depth. */
   const cardData = useMemo(
     () => [
-      /* Top row - upper band, comfortably above the keyboard.
-       * Delays tightened (max 0.04) so all 6 cards finish emerging
-       * by progress ~0.92, leaving 0.08 of settled-hero scroll. */
-      { stream: STREAMS[0], target: new THREE.Vector3(1.2, 2.4, 1.5), delay: 0.0, yaw: 0.3 },
-      { stream: STREAMS[1], target: new THREE.Vector3(1.9, 2.4, 1.5), delay: 0.015, yaw: 0.16 },
-      { stream: STREAMS[2], target: new THREE.Vector3(2.6, 2.4, 1.5), delay: 0.03, yaw: 0.03 },
-      /* Bottom row - still well above the keyboard */
-      { stream: STREAMS[3], target: new THREE.Vector3(1.2, 1.65, 1.5), delay: 0.015, yaw: 0.3 },
-      { stream: STREAMS[4], target: new THREE.Vector3(1.9, 1.65, 1.5), delay: 0.03, yaw: 0.16 },
-      { stream: STREAMS[5], target: new THREE.Vector3(2.6, 1.65, 1.5), delay: 0.045, yaw: 0.03 },
+      /* Top row */
+      { stream: STREAMS[0], target: new THREE.Vector3(1.4, 2.35, 1.4), delay: 0.0, yaw: 0.28, opacityMul: 0.32 },
+      { stream: STREAMS[1], target: new THREE.Vector3(2.05, 2.35, 1.55), delay: 0.015, yaw: 0.14, opacityMul: 1.0 },
+      { stream: STREAMS[2], target: new THREE.Vector3(2.7, 2.35, 1.4), delay: 0.03, yaw: 0.02, opacityMul: 0.62 },
+      /* Bottom row */
+      { stream: STREAMS[3], target: new THREE.Vector3(1.4, 1.6, 1.4), delay: 0.015, yaw: 0.28, opacityMul: 0.32 },
+      { stream: STREAMS[4], target: new THREE.Vector3(2.05, 1.6, 1.55), delay: 0.03, yaw: 0.14, opacityMul: 1.0 },
+      { stream: STREAMS[5], target: new THREE.Vector3(2.7, 1.6, 1.4), delay: 0.045, yaw: 0.02, opacityMul: 0.62 },
     ],
     [],
   );
@@ -1211,13 +1224,15 @@ function HolographicCards({
       /* Scale up from 0.25 to 1.0 */
       const sc = lerp(0.25, 1, cardP);
       g.scale.set(sc, sc, sc);
-      /* Opacity ramp - card material + rim glow plane. Reduced in the
-       * composition pass so cards read as supporting detail (peak 0.78
-       * + rim 0.18) instead of competing with the laptop for focus. */
-      m.opacity = cardP * 0.78;
+      /* Opacity ramp scaled by per-card opacityMul so the middle
+       * column reads as the dominant pair, right column as secondary,
+       * left column as faded background presence. Base peak dropped
+       * 0.78 -> 0.65 so even the "hero" cards stay calmer than the
+       * laptop itself. */
+      m.opacity = cardP * 0.65 * card.opacityMul;
       if (r) {
         const rimBreathe = 0.85 + Math.sin(t * 1.6 + i) * 0.15;
-        r.opacity = cardP * 0.18 * rimBreathe;
+        r.opacity = cardP * 0.15 * rimBreathe * card.opacityMul;
       }
     });
   });
@@ -1235,11 +1250,12 @@ function HolographicCards({
             }}
             position={[START_X, START_Y, START_Z]}
           >
-            {/* Card content panel - shrunk to 1.05 x 0.7 (was 1.5 x 1.0)
-             *  in the composition pass so cards read as supporting
-             *  detail rather than the primary subject. */}
+            {/* Card content panel - 0.9 x 0.6 (was 1.05 x 0.7). Smaller
+             *  again in the final refinement pass so cards read as
+             *  ambient supporting detail rather than competing with
+             *  the laptop. */}
             <mesh>
-              <planeGeometry args={[1.05, 0.7]} />
+              <planeGeometry args={[0.9, 0.6]} />
               <meshBasicMaterial
                 ref={(el) => {
                   matRefs.current[i] = el;
@@ -1251,11 +1267,9 @@ function HolographicCards({
                 toneMapped={false}
               />
             </mesh>
-            {/* Outer rim glow - accent-coloured additive halo. Tighter
-             *  than before (1.14 x 0.78 vs 1.62 x 1.12) to match the
-             *  smaller card. */}
+            {/* Outer rim glow - matches the smaller card */}
             <mesh position={[0, 0, -0.001]}>
-              <planeGeometry args={[1.14, 0.78]} />
+              <planeGeometry args={[0.98, 0.66]} />
               <meshBasicMaterial
                 ref={(el) => {
                   rimRefs.current[i] = el;
@@ -1791,21 +1805,22 @@ function Laptop({
        *  while the chassis stays parallel to the ground. */}
       <group position={[RIG_X, 0, 0]} rotation={[0, -0.11, 0]}>
         <RoundedBox args={[BASE_W, BASE_H, BASE_D]} radius={0.03} smoothness={5}>
-          {/* Lower metalness (0.82 -> 0.55) so the chassis reads silver
-            * from the analytic lights alone, without depending on the
-            * studio HDR being fully loaded. Clearcoat (0.7) still
-            * carries the polished aluminium feel. Once HDR resolves it
-            * just adds extra crispness to highlights. */}
+          {/* Final refinement: clearcoat 0.7 -> 0.45 and roughness
+            * 0.34 -> 0.42 / clearcoatRoughness 0.26 -> 0.4. The
+            * chassis used to have a hot mirror-like sheen on its
+            * front-bottom edge; now it reads as proper brushed
+            * aluminium - matte enough to not blow out, polished
+            * enough to catch HDR highlights crisply. */}
           <meshPhysicalMaterial
             color={COLORS.steel}
             metalness={0.55}
-            roughness={0.34}
-            clearcoat={0.7}
-            clearcoatRoughness={0.26}
-            anisotropy={0.7}
+            roughness={0.42}
+            clearcoat={0.45}
+            clearcoatRoughness={0.4}
+            anisotropy={0.6}
             normalMap={brushedNormalTex}
-            normalScale={new THREE.Vector2(0.1, 0.1)}
-            envMapIntensity={1.0}
+            normalScale={new THREE.Vector2(0.12, 0.12)}
+            envMapIntensity={0.85}
           />
         </RoundedBox>
 
@@ -2231,18 +2246,19 @@ function Laptop({
         >
           <group position={[0, LID_H / 2, LID_D / 2 - 0.04]}>
             <RoundedBox args={[LID_W, LID_H, LID_D]} radius={0.025} smoothness={5}>
-              {/* Same metalness drop as the chassis (0.85 -> 0.6) so
-                * the lid reads silver before HDR loads. */}
+              {/* Lid uses the same softer clearcoat treatment as the
+               * chassis to keep both surfaces matching - brushed
+               * aluminium feel rather than mirror-bright plastic. */}
               <meshPhysicalMaterial
                 color={COLORS.steel}
                 metalness={0.6}
-                roughness={0.28}
-                clearcoat={0.78}
-                clearcoatRoughness={0.22}
-                anisotropy={0.8}
+                roughness={0.36}
+                clearcoat={0.5}
+                clearcoatRoughness={0.36}
+                anisotropy={0.7}
                 normalMap={brushedNormalTex}
-                normalScale={new THREE.Vector2(0.09, 0.09)}
-                envMapIntensity={1.1}
+                normalScale={new THREE.Vector2(0.11, 0.11)}
+                envMapIntensity={0.9}
               />
             </RoundedBox>
 

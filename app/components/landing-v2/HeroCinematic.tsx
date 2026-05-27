@@ -166,14 +166,18 @@ export default function HeroCinematic() {
 
 /* Chapter label rail - one motion.div per chapter, all stacked in the
  * same screen position; each fades in over its scroll range and out at
- * the next chapter so the user sees the active chapter highlighted. */
+ * the next chapter so the user sees the active chapter highlighted.
+ *
+ * Moved from bottom-left to TOP-LEFT (just below the nav) in the final
+ * refinement pass so it no longer collides with the hero CTAs at the
+ * bottom of the column. */
 function ChapterRail({ progress }: { progress: MotionValue<number> }) {
   return (
     <div
       aria-hidden
       style={{
         position: "absolute",
-        bottom: "calc(var(--lv2-rail) * 2.4)",
+        top: "calc(var(--lv2-rail) * 3.6)",
         left: "var(--lv2-rail)",
         zIndex: 4,
         pointerEvents: "none",
