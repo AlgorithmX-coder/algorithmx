@@ -19,10 +19,17 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { motion } from "motion/react";
-import { playSound } from "@/app/lib/sounds";
-import { playSoftWrong } from "@/app/lib/gameEngine";
+import {
+  useExerciseFeedback,
+  useGameAudio,
+  useMotionIntensity,
+} from "@/app/lib/gameEngine";
+// correctAnswerBurst is KEPT (not routed through fx.unlock/fx.correct)
+// because the toolkit equivalents fire smaller bursts + push a toast;
+// matching the current single-fire completion burst exactly requires
+// the legacy helper. Flagged in the migration report.
 import { correctAnswerBurst } from "@/app/lib/celebrations";
-import { useComfortMode } from "@/app/lib/comfortMode";
+import ExerciseFrame from "@/app/components/lesson/ExerciseFrame";
 import WrongAnswerPanel from "@/app/components/lesson/WrongAnswerPanel";
 import HintBubble from "@/app/components/lesson/HintBubble";
 import GameButton from "@/app/components/lesson/GameButton";
@@ -73,8 +80,12 @@ export default function WeakSorter({
   onWrong,
   onHintReached,
 }: WeakSorterProps) {
-  const comfort = useComfortMode();
-  const reduce = comfort.enabled || comfort.prefersReducedMotion;
+  // Toolkit hooks. `reduce` preserves the original threshold
+  // (enabled || prefersReducedMotion) by mapping to intensity < 1.
+  const audio = useGameAudio();
+  const fx = useExerciseFeedback();
+  const intensity = useMotionIntensity();
+  const reduce = intensity < 1;
 
   const [idx, setIdx] = useState<number>(0);
   const [correctCount, setCorrectCount] = useState<number>(0);
@@ -124,7 +135,7 @@ export default function WeakSorter({
     if (feedback || !current) return;
     const correct = reasonId === current.reasonId;
     if (correct) {
-      playSound("correct");
+      audio.correct();
       setCorrectCount((n) => n + 1);
       setWrongOnCurrent(0);
       setPulseKey((k) => k + 1);
@@ -146,7 +157,7 @@ export default function WeakSorter({
         setCardKey((k) => k + 1);
       }, advanceDelay);
     } else {
-      playSoftWrong();
+      audio.wrong();
       setWrongTotal((n) => n + 1);
       setWrongOnCurrent((n) => n + 1);
       onWrong?.();
@@ -190,21 +201,11 @@ export default function WeakSorter({
       : 0;
     const stars = wrongTotal === 0 ? 3 : wrongTotal <= 2 ? 2 : 1;
     return (
-      <div
-        style={{
-          position: "relative",
-          width: "100%",
-          maxWidth: 1100,
-          margin: "0 auto",
-          padding: 28,
-          borderRadius: 28,
-          background:
-            "linear-gradient(180deg, #0f1530 0%, #1a2147 55%, #252d5e 100%)",
-          color: "#fff7e6",
-          fontFamily:
-            "ui-rounded, 'Fredoka', 'Quicksand', system-ui, -apple-system, sans-serif",
-          textAlign: "center",
-        }}
+      <ExerciseFrame
+        maxWidth={1100}
+        padding={28}
+        background="linear-gradient(180deg, #0f1530 0%, #1a2147 55%, #252d5e 100%)"
+        style={{ color: "#fff7e6", textAlign: "center" }}
       >
         <div style={{ fontSize: 64, marginBottom: 8 }}>🕵️</div>
         <h2
@@ -233,25 +234,17 @@ export default function WeakSorter({
         >
           Continue →
         </GameButton>
-      </div>
+        {fx.layer()}
+      </ExerciseFrame>
     );
   }
 
   return (
-    <div
-      style={{
-        position: "relative",
-        width: "100%",
-        maxWidth: 1100,
-        margin: "0 auto",
-        padding: 24,
-        borderRadius: 28,
-        background:
-          "linear-gradient(180deg, #0f1530 0%, #1a2147 55%, #252d5e 100%)",
-        color: "#fff7e6",
-        fontFamily:
-          "ui-rounded, 'Fredoka', 'Quicksand', system-ui, -apple-system, sans-serif",
-      }}
+    <ExerciseFrame
+      maxWidth={1100}
+      padding={24}
+      background="linear-gradient(180deg, #0f1530 0%, #1a2147 55%, #252d5e 100%)"
+      style={{ color: "#fff7e6" }}
     >
       {/* Header */}
       <div
@@ -405,7 +398,7 @@ export default function WeakSorter({
                 el.style.borderColor = "#fff";
                 el.style.transform = "translateY(-2px)";
                 el.style.boxShadow = `0 8px 24px -8px ${tint.border}`;
-                playSound("hover");
+                audio.hover();
               }}
               onPointerLeave={(e) => {
                 const el = e.currentTarget as HTMLButtonElement;
@@ -470,6 +463,7 @@ export default function WeakSorter({
           onContinue={dismissFeedback}
         />
       )}
-    </div>
+      {fx.layer()}
+    </ExerciseFrame>
   );
 }
