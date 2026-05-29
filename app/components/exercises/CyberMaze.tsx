@@ -1,14 +1,25 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
+// playSound KEPT for sounds without useGameAudio facade equivalents:
+// "pop", "confetti". Flagged in migration report.
 import { playSound } from "@/app/lib/sounds";
+// KEPT + FLAGGED: correctAnswerBurst (no toolkit equivalent),
+// intensity-gated below.
 import { correctAnswerBurst } from "@/app/lib/celebrations";
 import ExerciseIntro from "./ExerciseIntro";
+import ExerciseFrame from "@/app/components/lesson/ExerciseFrame";
 import { validateMaze, pathFromExit } from "./maze-helpers";
 import { PixarFinishOverlay } from "@/app/components/scene";
 import WrongAnswerPanel from "@/app/components/lesson/WrongAnswerPanel";
 import HintBubble from "@/app/components/lesson/HintBubble";
-import { setupHiDpiCanvas, scaledParticleCount, playSoftWrong } from "@/app/lib/gameEngine";
+import {
+  setupHiDpiCanvas,
+  scaledParticleCount,
+  useExerciseFeedback,
+  useGameAudio,
+  useMotionIntensity,
+} from "@/app/lib/gameEngine";
 
 export interface MazeQuestion {
   question: string;
@@ -182,6 +193,17 @@ export default function CyberMaze({
     [questions]
   );
 
+  // Toolkit hooks. CyberMaze had no comfort handling before this
+  // migration; intensityRef mirrors intensity so rAF/loops can read
+  // it safely without stale closures.
+  const audio = useGameAudio();
+  const fx = useExerciseFeedback();
+  const intensity = useMotionIntensity();
+  const intensityRef = useRef(intensity);
+  useEffect(() => {
+    intensityRef.current = intensity;
+  }, [intensity]);
+
   const walls = useMemo(() => {
     return VALIDATED.grid.map((row) => row.map((v) => v === 1));
   }, []);
@@ -315,7 +337,7 @@ export default function CyberMaze({
       // trigger question
       s.activeGateIdx = gateIdx;
       setActiveQuestion(s.gates[gateIdx].qIdx);
-      playSound("select");
+      audio.select();
       return;
     }
     // move
@@ -335,7 +357,7 @@ export default function CyberMaze({
     if (tIdx >= 0) {
       s.tokens[tIdx].collected = true;
       s.tokensCollected += 1;
-      playSound("xpGain");
+      audio.xpTick();
       // sparkle burst (adaptive: low-power tier renders fewer dots)
       const sparkleCount = scaledParticleCount(10);
       for (let i = 0; i < sparkleCount; i++) {
@@ -357,7 +379,8 @@ export default function CyberMaze({
     if (newRow === ROWS - 1 && newCol === COLS - 1) {
       s.complete = true;
       playSound("confetti");
-      void correctAnswerBurst();
+      // Intensity-gated: strict reduced-motion skips the burst.
+      if (intensityRef.current > 0) void correctAnswerBurst();
       window.setTimeout(() => setFinished(true), 1000);
     }
     setRender((n) => n + 1);
@@ -384,7 +407,7 @@ export default function CyberMaze({
       // Open the gate, play correct, continue motion into that cell
       gate.open = true;
       s.questionsAnswered += 1;
-      playSound("correct");
+      audio.correct();
       onCorrect?.();
       // burst at gate
       const gx = gate.col * CELL + CELL / 2;
@@ -417,7 +440,7 @@ export default function CyberMaze({
       // wrong: push back a cell in any open direction away from gate
       s.wrongCount += 1;
       gate.flashUntil = performance.now() + 500;
-      playSoftWrong();
+      audio.wrong();
       onWrong?.();
       // Pause-on-wrong: explain the correct answer before letting the
       // child move on. The maze gate stays closed so they'll have to
@@ -904,31 +927,21 @@ export default function CyberMaze({
   const stars = s.wrongCount === 0 ? 3 : s.wrongCount <= 2 ? 2 : 1;
 
   return (
-    <div
+    <ExerciseFrame
+      maxWidth={1000}
+      aspectRatio={{ w: 486, h: 378 }}
+      reserve={220}
+      padding={14}
+      background="linear-gradient(180deg, #2a1240 0%, #1a2147 35%, #252d5e 70%, #3a7bff 92%, #7df0ff 100%)"
       style={{
-        position: "relative",
-        width: "100%",
-        // Maze canvas is 486×378 (aspect ~1.286). Reserve 220px for
-        // HUD + safe-area + outer padding so the maze never gets
-        // clipped at the bottom on short viewports.
-        // Expanded cap: the maze grid scales up with the viewport.
-        // Capped at 1000px because the maze cells start to feel
-        // oversized beyond that.
-        maxWidth: "min(1000px, calc((100dvh - 220px) * 486 / 378))",
-        margin: "0 auto",
-        borderRadius: 28,
-        overflow: "hidden",
-        background:
-          "linear-gradient(180deg, #2a1240 0%, #1a2147 35%, #252d5e 70%, #3a7bff 92%, #7df0ff 100%)",
         boxShadow:
           "0 40px 90px -30px rgba(40, 22, 12, 0.55), 0 0 0 1px rgba(255,210,170,0.25) inset",
         color: "#e8edff",
-        fontFamily:
-          "ui-rounded, 'Fredoka', 'Quicksand', system-ui, -apple-system, sans-serif",
-        padding: 14,
       }}
-      tabIndex={0}
     >
+      {/* Inner div carries tabIndex (focus target for keyboard nav)
+          since ExerciseFrame doesn't surface that attribute. */}
+      <div tabIndex={0} style={{ outline: "none" }}>
       <div
         style={{
           display: "flex",
@@ -1076,11 +1089,11 @@ export default function CyberMaze({
           subline={`${s.questionsAnswered}/${s.gates.length} gates · ${s.tokensCollected}/${s.tokens.length} tokens · ${secs}s · ${s.wrongCount} wrong`}
           stars={stars}
           onContinue={() => {
-            playSound("click");
+            audio.tap();
             onComplete(s.questionsAnswered);
           }}
           onRetry={() => {
-            playSound("select");
+            audio.select();
             resetExercise();
           }}
         />
@@ -1125,6 +1138,8 @@ export default function CyberMaze({
           </div>
         )}
       <span style={{ display: "none" }}>{render}</span>
-    </div>
+      {fx.layer()}
+      </div>
+    </ExerciseFrame>
   );
 }
