@@ -12,10 +12,19 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { motion } from "motion/react";
 import { playSound } from "@/app/lib/sounds";
+// KEPT + FLAGGED: correctAnswerBurst (streak-aware burst, no toolkit
+// equivalent). Intensity-gated below.
 import { correctAnswerBurst } from "@/app/lib/celebrations";
 import ExerciseIntro from "./ExerciseIntro";
 import ExerciseHowTo from "./ExerciseHowTo";
+import ExerciseFrame from "@/app/components/lesson/ExerciseFrame";
 import { COLOR, SHADOW, SPRING } from "@/app/components/scene/tokens";
+// useComfortMode KEPT (not replaced by useMotionIntensity). Reason:
+// the canvas uses `comfortRef.current` to feed `transitTimeMs`, which
+// adjusts game timing per the comfort toggle ONLY (NOT OS reduced
+// motion). useMotionIntensity collapses both signals into one number
+// and would change difficulty for prefers-reduced-motion users.
+// Flagged in migration report.
 import { useComfortMode } from "@/app/lib/comfortMode";
 import WrongAnswerPanel from "@/app/components/lesson/WrongAnswerPanel";
 import HintBubble from "@/app/components/lesson/HintBubble";
@@ -25,7 +34,9 @@ import {
   easeOutBack,
   ease01,
   scaledParticleCount,
-  playSoftWrong,
+  useExerciseFeedback,
+  useGameAudio,
+  useMotionIntensity,
 } from "@/app/lib/gameEngine";
 
 export interface CyberScannerPassword {
@@ -186,6 +197,17 @@ export default function CyberScanner({
   useEffect(() => {
     comfortRef.current = comfort.enabled;
   }, [comfort.enabled]);
+  // Toolkit hooks. `intensity` gates the big-FX helper below; audio
+  // and fx route the legacy raw-sound + bespoke-particle calls.
+  // Mirrored into a ref so the rAF loop's stale closure can still
+  // read the current value when comfort toggles mid-run.
+  const audio = useGameAudio();
+  const fx = useExerciseFeedback();
+  const intensity = useMotionIntensity();
+  const intensityRef = useRef(intensity);
+  useEffect(() => {
+    intensityRef.current = intensity;
+  }, [intensity]);
 
   // Pause-on-wrong feedback overlay. While `feedback` is non-null the
   // card stays on screen and the next card does not spawn - the child
@@ -283,7 +305,7 @@ export default function CyberScanner({
     c.absorbStartY = CARD_Y;
     if (correct) {
       c.outcome = "correct";
-      playSound("correct");
+      audio.correct();
       s.correct += 1;
       s.streak += 1;
       s.bestStreak = Math.max(s.bestStreak, s.streak);
@@ -296,7 +318,7 @@ export default function CyberScanner({
       onCorrect?.();
     } else {
       c.outcome = "wrong";
-      playSoftWrong();
+      audio.wrong();
       s.wrong += 1;
       s.streak = 0;
       burst(c.absorbStartX, c.absorbStartY, CV.burstWrong, scaledParticleCount(12));
@@ -403,7 +425,8 @@ export default function CyberScanner({
           s.finished = true;
           // Pass best streak so the finale burst scales with how
           // confidently the kid played - bigger streak = bigger party.
-          void correctAnswerBurst(s.bestStreak);
+          // Intensity-gated: strict reduced-motion skips the burst.
+          if (intensityRef.current > 0) void correctAnswerBurst(s.bestStreak);
           setRender((n) => n + 1);
         }
         return;
@@ -453,7 +476,7 @@ export default function CyberScanner({
           addFloater("TIME'S UP!", x - 30, BEAM_Y - 40, CV.floaterSlow, 22);
           s.streak = 0;
           s.wrong += 1;
-          playSoftWrong();
+          audio.wrong();
           onWrong?.();
           // Pause-on-timeout: show the same friendly overlay rather
           // than punishing with a fast auto-advance. Got-It will move
@@ -745,31 +768,14 @@ export default function CyberScanner({
     s.correct === total ? 3 : s.correct >= Math.ceil(total * 0.7) ? 2 : 1;
 
   return (
-    <div
+    <ExerciseFrame
+      maxWidth={1400}
+      aspectRatio={{ w: 720, h: 340 }}
+      reserve={280}
+      background="linear-gradient(180deg, #0f1530 0%, #1a2147 55%, #252d5e 100%)"
       style={{
-        position: "relative",
-        width: "100%",
-        // The wrapper caps width AND derives its width from available
-        // vertical room. 720/340 is the canvas aspect ratio. The
-        // reserve (280px) covers HUD + safe-area-bottom + hint area
-        // + STRONG/WEAK button row + LessonStage padding. With this
-        // calc, on a short browser window (e.g. 700px tall) the
-        // wrapper shrinks horizontally so the canvas+buttons fit
-        // vertically without clipping.
-        // Expanded cap: the playable area now scales up with the
-        // viewport instead of sitting in a fixed 760px island. The
-        // calc-from-height term still caps the canvas vertically so
-        // it never clips on short windows.
-        maxWidth: "min(1400px, calc((100dvh - 280px) * 720 / 340))",
-        margin: "0 auto",
-        borderRadius: 28,
-        overflow: "hidden",
-        background:
-          "linear-gradient(180deg, #0f1530 0%, #1a2147 55%, #252d5e 100%)",
         boxShadow: SHADOW.sceneFrame,
         color: COLOR.inkDeep,
-        fontFamily:
-          "ui-rounded, 'Fredoka', 'Quicksand', system-ui, -apple-system, sans-serif",
       }}
     >
       <ExerciseHowTo
@@ -852,11 +858,11 @@ export default function CyberScanner({
         stars={stars}
         speedBonuses={s.speedBonuses}
         onContinue={() => {
-          playSound("click");
+          audio.tap();
           onComplete(s.correct);
         }}
         onRetry={() => {
-          playSound("select");
+          audio.select();
           resetExercise();
         }}
       />}
@@ -879,7 +885,8 @@ export default function CyberScanner({
         />
       )}
       <span style={{ display: "none" }}>{render}</span>
-    </div>
+      {fx.layer()}
+    </ExerciseFrame>
   );
 }
 
@@ -898,6 +905,7 @@ function ScannerButton({
   disabled: boolean;
   onClick: () => void;
 }) {
+  const audio = useGameAudio();
   return (
     <motion.button
       type="button"
@@ -906,7 +914,7 @@ function ScannerButton({
       whileHover={!disabled ? { y: -3, scale: 1.03 } : undefined}
       whileTap={!disabled ? { scale: 0.96, y: 1 } : undefined}
       transition={SPRING.snappy}
-      onMouseEnter={() => !disabled && playSound("hover")}
+      onMouseEnter={() => !disabled && audio.hover()}
       style={{
         flex: 1,
         height: 64,
