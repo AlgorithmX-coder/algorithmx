@@ -150,6 +150,36 @@ export default function MissionDebrief({
         />
       )}
 
+      {/* Concept progress pips - one per card; gold when revealed */}
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          gap: 8,
+          marginBottom: 14,
+        }}
+        aria-label={`${revealedCount} of ${concepts.length} concepts revealed`}
+      >
+        {concepts.map((c, i) => {
+          const on = i < revealedCount;
+          return (
+            <span
+              key={c.id}
+              style={{
+                width: 28,
+                height: 6,
+                borderRadius: 3,
+                background: on
+                  ? `linear-gradient(90deg, ${c.accent}, #fde047)`
+                  : "rgba(255,255,255,0.12)",
+                boxShadow: on ? `0 0 8px ${c.accent}aa` : "none",
+                transition: "background 240ms ease, box-shadow 240ms ease",
+              }}
+            />
+          );
+        })}
+      </div>
+
       {/* Concept cards - reveal one at a time with spring + audio tick */}
       <div
         style={{
@@ -242,19 +272,88 @@ export default function MissionDebrief({
         })}
       </div>
 
-      {/* Continue */}
-      <div style={{ display: "flex", justifyContent: "center" }}>
-        <GameButton
-          variant="primary"
-          size="lg"
-          onClick={handleContinue}
-          disabled={!done}
-          icon={done ? "🎉" : undefined}
-          style={{ minWidth: 240 }}
+      {/* "ALL UNLOCKED" achievement stamp + reward headline + CTA */}
+      {done && (
+        <motion.div
+          initial={intensity === 0 ? { opacity: 0 } : { opacity: 0, y: 14 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.42 }}
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            gap: 14,
+          }}
         >
-          {done ? "Claim your stickers →" : "..."}
-        </GameButton>
-      </div>
+          <motion.div
+            initial={
+              intensity === 0
+                ? { opacity: 0 }
+                : { opacity: 0, scale: 1.4, rotate: -5 }
+            }
+            animate={{ opacity: 1, scale: 1, rotate: -3 }}
+            transition={
+              intensity === 0
+                ? { duration: 0.16 }
+                : { type: "spring", stiffness: 340, damping: 13, delay: 0.05 }
+            }
+            style={{
+              padding: "6px 18px",
+              borderRadius: 8,
+              background: "rgba(253,224,71,0.95)",
+              border: "3px double rgba(15,21,48,0.7)",
+              color: "#1a1033",
+              fontFamily: "'Space Grotesk', sans-serif",
+              fontWeight: 900,
+              fontSize: 12,
+              letterSpacing: "0.28em",
+              textTransform: "uppercase",
+              boxShadow: "0 8px 18px rgba(253,224,71,0.5)",
+            }}
+          >
+            ✓ All {concepts.length} skills unlocked
+          </motion.div>
+          <div
+            style={{
+              fontFamily: "'Space Grotesk', sans-serif",
+              fontSize: "clamp(20px, 3.6vw, 28px)",
+              fontWeight: 900,
+              background:
+                "linear-gradient(135deg, #fde047 0%, #ff7a59 60%, #ff5fb3 100%)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              backgroundClip: "text",
+              textShadow: "0 0 22px rgba(253,224,71,0.45)",
+              textAlign: "center",
+              letterSpacing: "0.02em",
+            }}
+          >
+            Time to claim your reward
+          </div>
+          <GameButton
+            variant="primary"
+            size="lg"
+            onClick={handleContinue}
+            icon="🎉"
+            style={{ minWidth: 240 }}
+          >
+            Claim your stickers →
+          </GameButton>
+        </motion.div>
+      )}
+      {!done && (
+        <div style={{ display: "flex", justifyContent: "center" }}>
+          <GameButton
+            variant="primary"
+            size="lg"
+            onClick={handleContinue}
+            disabled
+            style={{ minWidth: 240, opacity: 0.55 }}
+          >
+            Revealing skills…
+          </GameButton>
+        </div>
+      )}
 
       {fx.layer()}
     </ExerciseFrame>

@@ -49,14 +49,33 @@ export default async function CyberHQPage() {
   return (
     <main
       style={{
+        position: "relative",
         minHeight: "100vh",
         background: `radial-gradient(ellipse at 50% -10%, #1d1f4d 0%, #0f1530 35%, ${C.pageBg} 70%, #04050d 100%)`,
         color: C.text,
         fontFamily: FONT_STACK,
         padding: "32px 18px 60px",
+        overflow: "hidden",
       }}
     >
-      <div style={{ maxWidth: 1000, margin: "0 auto" }}>
+      {/* Ambient particle field - subtle drifting dots so the room is
+          never visually still. CSS-only; respects reduced motion via
+          @media (prefers-reduced-motion). */}
+      <div aria-hidden className="hq-ambient-field">
+        {Array.from({ length: 14 }).map((_, i) => (
+          <span
+            key={i}
+            className="hq-ambient-dot"
+            style={{
+              left: `${(i * 73) % 100}%`,
+              animationDelay: `${(i * 0.6) % 5}s`,
+              animationDuration: `${10 + (i % 5) * 2}s`,
+            }}
+          />
+        ))}
+      </div>
+
+      <div style={{ position: "relative", maxWidth: 1000, margin: "0 auto" }}>
         {/* Back link */}
         <Link
           href="/dashboard"
@@ -166,14 +185,20 @@ export default async function CyberHQPage() {
               }}
             >
               <div
+                className="hq-progress-fill"
                 style={{
+                  position: "relative",
                   height: "100%",
                   width: `${earnedPct}%`,
                   background: `linear-gradient(90deg, ${C.gold}, #ff7a59)`,
                   boxShadow: `0 0 12px ${C.gold}88`,
                   transition: "width 380ms cubic-bezier(0.16, 1, 0.3, 1)",
+                  overflow: "hidden",
                 }}
-              />
+              >
+                {/* Shimmer overlay sweeps across the filled portion */}
+                <span aria-hidden className="hq-progress-shimmer" />
+              </div>
             </div>
             <div
               style={{
@@ -213,6 +238,7 @@ export default async function CyberHQPage() {
             return (
               <div
                 key={s.id}
+                className={isEarned ? "hq-sticker-earned" : undefined}
                 style={{
                   padding: "20px 18px 18px",
                   borderRadius: 18,
@@ -228,6 +254,7 @@ export default async function CyberHQPage() {
                   textAlign: "center",
                   position: "relative",
                   opacity: isEarned ? 1 : 0.55,
+                  overflow: "hidden",
                 }}
               >
                 <div
@@ -279,6 +306,72 @@ export default async function CyberHQPage() {
             );
           })}
         </div>
+
+        {/* Ambient + shimmer + breathing keyframes. Server component =
+            inline <style> for the global selectors. Reduced-motion users
+            get a hard stop on all of these. */}
+        <style>{`
+          .hq-ambient-field {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+          }
+          .hq-ambient-dot {
+            position: absolute;
+            top: -8px;
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            background: #fff8dc;
+            box-shadow: 0 0 8px rgba(253, 224, 71, 0.75);
+            opacity: 0;
+            animation-name: hqAmbientDrift;
+            animation-iteration-count: infinite;
+            animation-timing-function: linear;
+          }
+          @keyframes hqAmbientDrift {
+            0%   { opacity: 0; transform: translateY(0)    scale(0.6); }
+            15%  { opacity: 0.85; }
+            85%  { opacity: 0.85; }
+            100% { opacity: 0; transform: translateY(110vh) scale(1.05); }
+          }
+          .hq-progress-shimmer {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, transparent 0%, rgba(255, 248, 220, 0.65) 50%, transparent 100%);
+            transform: translateX(-100%);
+            animation: hqShimmerSweep 2.8s ease-in-out infinite;
+          }
+          @keyframes hqShimmerSweep {
+            0%   { transform: translateX(-100%); }
+            60%  { transform: translateX(100%); }
+            100% { transform: translateX(100%); }
+          }
+          .hq-sticker-earned {
+            animation: hqStickerBreathe 4.6s ease-in-out infinite;
+          }
+          @keyframes hqStickerBreathe {
+            0%, 100% {
+              box-shadow:
+                0 14px 36px rgba(253, 224, 71, 0.25),
+                0 0 0 1px rgba(255, 209, 88, 0.4) inset;
+            }
+            50% {
+              box-shadow:
+                0 16px 44px rgba(253, 224, 71, 0.4),
+                0 0 0 1px rgba(255, 209, 88, 0.55) inset;
+            }
+          }
+          @media (prefers-reduced-motion: reduce) {
+            .hq-ambient-dot,
+            .hq-progress-shimmer,
+            .hq-sticker-earned {
+              animation: none !important;
+            }
+            .hq-ambient-dot { opacity: 0; }
+          }
+        `}</style>
 
         {/* Helpful CTA */}
         {earnedCount === 0 && (

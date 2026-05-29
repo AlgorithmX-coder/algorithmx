@@ -57,6 +57,7 @@ import PhishInspector from "@/app/components/exercises/PhishInspector";
 import PasswordVault from "@/app/components/exercises/PasswordVault";
 import MissionDebrief from "@/app/components/lesson/MissionDebrief";
 import StickerUnlock from "@/app/components/lesson/StickerUnlock";
+import BossVictoryScene from "@/app/components/lesson/BossVictoryScene";
 import { awardStickers } from "@/app/lib/stickers.actions";
 
 import {
@@ -1187,37 +1188,17 @@ function DynamicLessonInner() {
       case "bossBattle":
         if (bossDone) {
           return (
-            <FullScene bg="linear-gradient(180deg, #0a0505 0%, #1a1033 100%)" glow="radial-gradient(circle, rgba(245,158,11,0.3), transparent)">
-              <Card>
-                <div style={{ textAlign: "center" }}>
-                  <motion.div
-                    initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
-                    transition={{ type: "spring", stiffness: 300 }}
-                    style={{ fontSize: 72, marginBottom: 10 }}
-                  >
-                    🏆
-                  </motion.div>
-                  <h2
-                    style={{
-                      fontSize: 30,
-                      fontWeight: 900,
-                      background: "linear-gradient(135deg, #f59e0b, #ef4444, #3b82f6)",
-                      WebkitBackgroundClip: "text",
-                      WebkitTextFillColor: "transparent",
-                      marginBottom: 12,
-                    }}
-                  >
-                    Hacker Raccoon DEFEATED!
-                  </h2>
-                  {bossStats && (
-                    <p style={{ color: "#d1d5db", marginBottom: 20 }}>
-                      Accuracy {bossStats.accuracy}% · Best combo {bossStats.combo} · +{bossStats.xp} XP
-                    </p>
-                  )}
-                  <OrangeButton onClick={() => navigate(screen + 1)}>Claim Badge →</OrangeButton>
-                </div>
-              </Card>
+            <FullScene
+              bg="radial-gradient(ellipse at 50% 30%, #2a0a14 0%, #160a2e 50%, #04050d 100%)"
+              glow="radial-gradient(circle, rgba(245,158,11,0.35), transparent)"
+            >
+              <BossVictoryScene
+                badgeIcon={content.badgeIcon}
+                badgeName={content.badgeName}
+                weekNumber={content.weekNumber}
+                stats={bossStats}
+                onClaim={() => navigate(screen + 1)}
+              />
             </FullScene>
           );
         }
@@ -1260,59 +1241,182 @@ function DynamicLessonInner() {
 
       case "completion":
         return (
-          <FullScene bg="linear-gradient(180deg, #1a1508 0%, #0a0a1a 100%)" glow="radial-gradient(circle, rgba(245,158,11,0.3), transparent)">
-            <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }}>
-              <Card>
-                <div style={{ textAlign: "center" }}>
-                  <motion.div
-                    animate={{ rotate: [0, -6, 6, 0] }}
-                    transition={{ duration: 1.4, repeat: Infinity, ease: "easeInOut" }}
-                    style={{ fontSize: 84, marginBottom: 10 }}
-                  >
-                    {content.badgeIcon}
-                  </motion.div>
-                  <h2
+          <FullScene
+            bg="radial-gradient(ellipse at 50% 30%, #2a1a08 0%, #1a1033 50%, #04050d 100%)"
+            glow="radial-gradient(circle, rgba(253,224,71,0.4), transparent)"
+          >
+            <div
+              style={{
+                position: "relative",
+                width: "100%",
+                maxWidth: 720,
+                margin: "0 auto",
+                padding: "12px 20px 24px",
+                color: "#fff7e6",
+                fontFamily:
+                  "ui-rounded, 'Fredoka', 'Quicksand', system-ui, -apple-system, sans-serif",
+                textAlign: "center",
+              }}
+            >
+              {/* Rotating laurels / rays behind the badge */}
+              <div
+                aria-hidden
+                style={{
+                  position: "absolute",
+                  top: 10,
+                  left: "50%",
+                  width: 360,
+                  height: 360,
+                  transform: "translateX(-50%)",
+                  background:
+                    "conic-gradient(from 0deg, rgba(253,224,71,0.32) 0deg, transparent 12deg, rgba(253,224,71,0.32) 30deg, transparent 42deg, rgba(253,224,71,0.32) 60deg, transparent 72deg, rgba(253,224,71,0.32) 90deg, transparent 102deg, rgba(253,224,71,0.32) 120deg, transparent 132deg, rgba(253,224,71,0.32) 150deg, transparent 162deg, rgba(253,224,71,0.32) 180deg, transparent 192deg, rgba(253,224,71,0.32) 210deg, transparent 222deg, rgba(253,224,71,0.32) 240deg, transparent 252deg, rgba(253,224,71,0.32) 270deg, transparent 282deg, rgba(253,224,71,0.32) 300deg, transparent 312deg, rgba(253,224,71,0.32) 330deg, transparent 342deg)",
+                  filter: "blur(2px)",
+                  opacity: 0.5,
+                  mixBlendMode: "screen",
+                  borderRadius: "50%",
+                  animation: comfort.prefersReducedMotion
+                    ? undefined
+                    : "completionRaysSpin 26s linear infinite",
+                  pointerEvents: "none",
+                }}
+              />
+              {/* Badge bloom */}
+              <motion.div
+                initial={{ opacity: 0, scale: 0.5 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ type: "spring", stiffness: 220, damping: 13 }}
+                style={{
+                  position: "relative",
+                  width: 140,
+                  height: 140,
+                  margin: "8px auto 14px",
+                  borderRadius: "50%",
+                  display: "grid",
+                  placeItems: "center",
+                  background:
+                    "radial-gradient(circle at 30% 28%, #fff8dc 0%, #fde047 40%, #ff7a59 80%, #b8862a 100%)",
+                  border: "4px solid #fff8dc",
+                  boxShadow:
+                    "0 18px 38px rgba(253, 224, 71, 0.55), inset 0 0 0 5px rgba(255,255,255,0.18), 0 0 60px rgba(253, 224, 71, 0.35)",
+                  fontSize: 72,
+                }}
+              >
+                {content.badgeIcon}
+              </motion.div>
+              {/* "Week N badge unlocked" tag */}
+              <div
+                style={{
+                  display: "inline-block",
+                  padding: "5px 14px",
+                  borderRadius: 999,
+                  background: "rgba(253,224,71,0.12)",
+                  border: "1px solid rgba(253,224,71,0.45)",
+                  fontFamily: "'JetBrains Mono', monospace",
+                  fontSize: 10,
+                  letterSpacing: "0.22em",
+                  fontWeight: 800,
+                  color: "#fde047",
+                  textTransform: "uppercase",
+                  marginBottom: 8,
+                  textShadow: "0 0 8px rgba(253,224,71,0.45)",
+                }}
+              >
+                Week {content.weekNumber} complete
+              </div>
+              {/* Headline */}
+              <h2
+                style={{
+                  margin: "0 0 6px",
+                  fontSize: "clamp(28px, 5vw, 38px)",
+                  fontWeight: 900,
+                  background:
+                    "linear-gradient(135deg, #fde047 0%, #ff7a59 60%, #ff5fb3 100%)",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                  backgroundClip: "text",
+                  letterSpacing: "0.02em",
+                  textShadow: "0 0 22px rgba(253,224,71,0.45)",
+                }}
+              >
+                {content.badgeName}
+              </h2>
+              <p
+                style={{
+                  margin: "0 0 18px",
+                  fontSize: 15,
+                  color: "#cbd5e1",
+                  lineHeight: 1.45,
+                }}
+              >
+                You completed Week {content.weekNumber}. Your badge is on its way to{" "}
+                <strong style={{ color: "#fde047" }}>Cyber HQ</strong>.
+              </p>
+              {/* Stat tile row - XP earned */}
+              <div
+                style={{
+                  display: "inline-flex",
+                  gap: 12,
+                  marginBottom: 22,
+                  padding: "10px 20px",
+                  borderRadius: 14,
+                  background: "rgba(10, 16, 36, 0.78)",
+                  border: "1.5px solid rgba(253,224,71,0.55)",
+                  boxShadow: "0 10px 20px rgba(0,0,0,0.45), 0 0 18px rgba(253,224,71,0.18)",
+                }}
+              >
+                <div style={{ textAlign: "left" }}>
+                  <div
                     style={{
-                      fontSize: 32,
-                      fontWeight: 900,
-                      background: "linear-gradient(135deg, #f59e0b, #fbbf24, #3b82f6)",
-                      WebkitBackgroundClip: "text",
-                      WebkitTextFillColor: "transparent",
-                      marginBottom: 10,
+                      fontFamily: "'JetBrains Mono', monospace",
+                      fontSize: 9,
+                      letterSpacing: "0.2em",
+                      fontWeight: 800,
+                      color: "#fde047",
+                      textTransform: "uppercase",
+                      marginBottom: 2,
                     }}
                   >
-                    Mission Complete!
-                  </h2>
-                  <p style={{ color: "#d1d5db", fontSize: 16, marginBottom: 14 }}>
-                    You earned the <strong style={{ color: "#fbbf24" }}>{content.badgeName}</strong> badge.
-                  </p>
-                  <p style={{ color: "#9ca3af", fontSize: 14, marginBottom: 24 }}>
-                    XP earned: {lessonXp}
-                  </p>
-                  <div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
-                    <OrangeButton onClick={() => router.push("/cyberheroes")}>
-                      Back to Cyber Heroes
-                    </OrangeButton>
-                    <button
-                      type="button"
-                      onClick={() => router.push(`/lesson/${content.weekNumber + 1}`)}
-                      style={{
-                        background: "transparent",
-                        color: "#93c5fd",
-                        fontWeight: 700,
-                        borderRadius: 14,
-                        padding: "12px 28px",
-                        fontSize: 14,
-                        border: "2px solid rgba(96,165,250,0.55)",
-                        cursor: "pointer",
-                      }}
-                    >
-                      Next Week →
-                    </button>
+                    XP earned
+                  </div>
+                  <div
+                    style={{
+                      fontFamily: "'Space Grotesk', sans-serif",
+                      fontSize: 22,
+                      fontWeight: 900,
+                      color: "#fff7e6",
+                      lineHeight: 1,
+                    }}
+                  >
+                    +{lessonXp}
                   </div>
                 </div>
-              </Card>
-            </motion.div>
+              </div>
+              {/* CTAs */}
+              <div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
+                <GameButton
+                  variant="secondary"
+                  size="lg"
+                  icon="🏠"
+                  onClick={() => router.push("/cyberhq")}
+                >
+                  Cyber HQ
+                </GameButton>
+                <GameButton
+                  variant="primary"
+                  size="lg"
+                  icon="→"
+                  onClick={() => router.push(`/lesson/${content.weekNumber + 1}`)}
+                >
+                  Next Week
+                </GameButton>
+              </div>
+              <style jsx global>{`
+                @keyframes completionRaysSpin {
+                  from { transform: translateX(-50%) rotate(0deg); }
+                  to   { transform: translateX(-50%) rotate(360deg); }
+                }
+              `}</style>
+            </div>
           </FullScene>
         );
 

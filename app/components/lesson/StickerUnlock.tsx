@@ -133,90 +133,200 @@ export default function StickerUnlock({
 
       <div
         style={{
+          position: "relative",
           display: "grid",
           gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
           gap: 16,
           marginBottom: 22,
+          paddingBottom: 18,
         }}
       >
         {stickers.map((s, i) => {
           const visible = i < droppedCount;
           return (
-            <motion.div
+            <div
               key={s.id}
-              initial={
-                intensity === 0
-                  ? { opacity: 0 }
-                  : { opacity: 0, scale: 0.4, rotate: -18, y: -30 }
-              }
-              animate={
-                visible
-                  ? intensity === 0
-                    ? { opacity: 1 }
-                    : { opacity: 1, scale: 1, rotate: 0, y: 0 }
-                  : intensity === 0
-                    ? { opacity: 0 }
-                    : { opacity: 0, scale: 0.4, rotate: -18, y: -30 }
-              }
-              transition={
-                intensity === 0
-                  ? { duration: 0.2 }
-                  : { type: "spring", stiffness: 320, damping: 14 }
-              }
               style={{
-                padding: "20px 18px 18px",
-                borderRadius: 22,
-                background: visible
-                  ? "linear-gradient(180deg, rgba(255, 209, 88, 0.22), rgba(15, 21, 48, 0.85))"
-                  : "rgba(15, 21, 48, 0.55)",
-                border: visible
-                  ? "2.5px solid rgba(253, 224, 71, 0.8)"
-                  : "2px dashed rgba(148, 163, 184, 0.3)",
-                boxShadow: visible
-                  ? "0 14px 40px rgba(253, 224, 71, 0.28), 0 0 0 1px rgba(255, 209, 88, 0.4) inset"
-                  : "none",
-                textAlign: "center",
-                fontFamily:
-                  "ui-rounded, 'Fredoka', 'Quicksand', system-ui, -apple-system, sans-serif",
+                position: "relative",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "stretch",
               }}
             >
-              <div
+              {/* Light beam from above - fades in once the sticker lands */}
+              <span
+                aria-hidden
                 style={{
-                  fontSize: 64,
-                  lineHeight: 1,
-                  marginBottom: 8,
-                  filter: visible
-                    ? "drop-shadow(0 0 24px rgba(253, 224, 71, 0.65))"
-                    : undefined,
+                  position: "absolute",
+                  top: -60,
+                  left: "50%",
+                  width: 130,
+                  height: 100,
+                  transform: "translateX(-50%)",
+                  clipPath: "polygon(34% 0%, 66% 0%, 88% 100%, 12% 100%)",
+                  background:
+                    "linear-gradient(180deg, rgba(255,248,220,0.7) 0%, rgba(253,224,71,0.55) 45%, rgba(255,122,89,0.25) 80%, transparent 100%)",
+                  filter: "blur(6px)",
+                  opacity: visible ? 0.9 : 0,
+                  transition: `opacity ${intensity === 0 ? 80 : 420}ms ease-out`,
+                  mixBlendMode: "screen",
+                  pointerEvents: "none",
+                }}
+              />
+              <motion.div
+                initial={
+                  intensity === 0
+                    ? { opacity: 0 }
+                    : { opacity: 0, scale: 0.4, rotate: -18, y: -30 }
+                }
+                animate={
+                  visible
+                    ? intensity === 0
+                      ? { opacity: 1 }
+                      : { opacity: 1, scale: 1, rotate: 0, y: 0 }
+                    : intensity === 0
+                      ? { opacity: 0 }
+                      : { opacity: 0, scale: 0.4, rotate: -18, y: -30 }
+                }
+                transition={
+                  intensity === 0
+                    ? { duration: 0.2 }
+                    : { type: "spring", stiffness: 320, damping: 14 }
+                }
+                style={{
+                  position: "relative",
+                  padding: "20px 18px 18px",
+                  borderRadius: 22,
+                  background: visible
+                    ? "linear-gradient(180deg, rgba(255, 209, 88, 0.22), rgba(15, 21, 48, 0.85))"
+                    : "rgba(15, 21, 48, 0.55)",
+                  border: visible
+                    ? "2.5px solid rgba(253, 224, 71, 0.8)"
+                    : "2px dashed rgba(148, 163, 184, 0.3)",
+                  boxShadow: visible
+                    ? "0 14px 40px rgba(253, 224, 71, 0.28), 0 0 0 1px rgba(255, 209, 88, 0.4) inset"
+                    : "none",
+                  textAlign: "center",
+                  fontFamily:
+                    "ui-rounded, 'Fredoka', 'Quicksand', system-ui, -apple-system, sans-serif",
                 }}
               >
-                {s.icon}
-              </div>
-              <div
+                {/* Halo behind the sticker icon when visible */}
+                {visible && (
+                  <span
+                    aria-hidden
+                    style={{
+                      position: "absolute",
+                      top: 18,
+                      left: "50%",
+                      width: 90,
+                      height: 90,
+                      transform: "translateX(-50%)",
+                      borderRadius: "50%",
+                      background:
+                        "radial-gradient(circle, rgba(253,224,71,0.5) 0%, transparent 70%)",
+                      filter: "blur(8px)",
+                      animation:
+                        intensity > 0
+                          ? "stickerHaloPulse 3.2s ease-in-out infinite"
+                          : undefined,
+                    }}
+                  />
+                )}
+                <div
+                  style={{
+                    position: "relative",
+                    fontSize: 64,
+                    lineHeight: 1,
+                    marginBottom: 8,
+                    filter: visible
+                      ? "drop-shadow(0 0 24px rgba(253, 224, 71, 0.7))"
+                      : undefined,
+                  }}
+                >
+                  {s.icon}
+                </div>
+                <div
+                  style={{
+                    position: "relative",
+                    fontFamily: "'Space Grotesk', sans-serif",
+                    fontSize: 17,
+                    fontWeight: 900,
+                    color: visible ? "#fff7e6" : "#64748b",
+                    marginBottom: 6,
+                    letterSpacing: "0.02em",
+                  }}
+                >
+                  {s.name}
+                </div>
+                <div
+                  style={{
+                    position: "relative",
+                    fontSize: 12,
+                    color: visible ? "#cbd5e1" : "#475569",
+                    lineHeight: 1.45,
+                  }}
+                >
+                  {s.description}
+                </div>
+              </motion.div>
+              {/* Gold pedestal disc beneath each card */}
+              <span
+                aria-hidden
                 style={{
-                  fontFamily: "'Space Grotesk', sans-serif",
-                  fontSize: 17,
-                  fontWeight: 900,
-                  color: visible ? "#fff7e6" : "#64748b",
-                  marginBottom: 6,
-                  letterSpacing: "0.02em",
+                  alignSelf: "center",
+                  marginTop: -6,
+                  width: "70%",
+                  height: 12,
+                  borderRadius: "50%",
+                  background: visible
+                    ? "radial-gradient(ellipse at center, rgba(253,224,71,0.9) 0%, rgba(184,134,42,0.55) 55%, transparent 100%)"
+                    : "radial-gradient(ellipse at center, rgba(148,163,184,0.35) 0%, transparent 100%)",
+                  filter: "blur(2px)",
+                  transition: "background 280ms ease",
                 }}
-              >
-                {s.name}
-              </div>
-              <div
-                style={{
-                  fontSize: 12,
-                  color: visible ? "#cbd5e1" : "#475569",
-                  lineHeight: 1.45,
-                }}
-              >
-                {s.description}
-              </div>
-            </motion.div>
+              />
+            </div>
           );
         })}
       </div>
+
+      {/* ALL EARNED stamp - lands when the third sticker is on the shelf */}
+      {allDropped && (
+        <motion.div
+          key="all-earned-stamp"
+          initial={
+            intensity === 0
+              ? { opacity: 0 }
+              : { opacity: 0, scale: 1.5, rotate: -6 }
+          }
+          animate={{ opacity: 1, scale: 1, rotate: -3 }}
+          transition={
+            intensity === 0
+              ? { duration: 0.16 }
+              : { type: "spring", stiffness: 360, damping: 13, delay: 0.1 }
+          }
+          style={{
+            position: "relative",
+            margin: "0 auto 18px",
+            display: "inline-block",
+            padding: "6px 18px",
+            borderRadius: 8,
+            background: "rgba(253,224,71,0.95)",
+            border: "3px double rgba(15,21,48,0.7)",
+            color: "#1a1033",
+            fontFamily: "'Space Grotesk', sans-serif",
+            fontWeight: 900,
+            fontSize: 12,
+            letterSpacing: "0.28em",
+            textTransform: "uppercase",
+            boxShadow: "0 8px 18px rgba(253,224,71,0.5)",
+            textAlign: "center",
+          }}
+        >
+          ✓ All 3 stickers earned
+        </motion.div>
+      )}
 
       {allDropped && (
         <motion.div
@@ -250,6 +360,13 @@ export default function StickerUnlock({
       )}
 
       {fx.layer()}
+
+      <style jsx global>{`
+        @keyframes stickerHaloPulse {
+          0%, 100% { opacity: 0.55; transform: translateX(-50%) scale(1);    }
+          50%      { opacity: 0.95; transform: translateX(-50%) scale(1.18); }
+        }
+      `}</style>
     </ExerciseFrame>
   );
 }

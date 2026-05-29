@@ -526,6 +526,7 @@ export default function PasswordVault({
                 visible={openStage === "opening" || openStage === "revealed"}
                 pushedIn={openStage === "revealed"}
                 intensity={intensity}
+                locks={locks}
               />
               <VaultDoor
                 openStage={openStage}
@@ -1398,18 +1399,91 @@ function LockBeams({
 /* Vault interior reveal                                          */
 /* ────────────────────────────────────────────────────────────── */
 
+/**
+ * Treasure-chamber interior reveal.
+ *
+ * What you see when the vault has finished opening: a layered
+ * chamber with a perspective floor, a volumetric light shaft hitting
+ * the central Password Protector Core (a relic shield on a pedestal),
+ * five floating rule-artifact pedestals arcing around the core (one
+ * per lock the child unlocked, each with its emoji + a single-line
+ * recap of the rule), a "You protected the secrets!" ribbon, and a
+ * sticker teaser hinting at the reward landing on the next screen.
+ *
+ * Cascade is internal to this component: the core arrives first
+ * (scale-up + settle + audio), then artifacts cascade in one by one
+ * with audio stings, then the ribbon and sticker teaser settle in.
+ * Comfort mode collapses the cascade to an instant show; reduced
+ * motion strips orbits and shimmer entirely.
+ */
 function VaultInteriorReveal({
   visible,
   pushedIn,
   intensity,
+  locks,
 }: {
   visible: boolean;
   pushedIn: boolean;
   intensity: number;
+  locks: PasswordVaultLock[];
 }) {
-  // Renders BEHIND the door halves. Becomes visible the instant the
-  // halves start to swing - the door is what hides it until then.
-  // Push-in scaling kicks in at "revealed" so the centrepiece grows.
+  const audio = useGameAudio();
+  // revealStep advances 0→8 once `pushedIn` becomes true. Each step
+  // gates a piece of the chamber so the eye reads a clear cascade
+  // instead of an instant dump of treasure.
+  const [revealStep, setRevealStep] = useState(0);
+  const cascadeFiredRef = useRef(false);
+
+  useEffect(() => {
+    if (!pushedIn || cascadeFiredRef.current) return;
+    cascadeFiredRef.current = true;
+
+    // Cascade duration scales with motion intensity. Reduced-motion
+    // (intensity 0) shows everything immediately.
+    if (intensity === 0) {
+      setRevealStep(99);
+      return;
+    }
+
+    const scale = intensity < 1 ? 0.6 : 1;
+    const t = (ms: number) => Math.max(40, Math.round(ms * scale));
+    const beats: number[] = [200, 420, 540, 660, 780, 900, 1120, 1320];
+
+    const timers: number[] = [];
+    beats.forEach((delay, i) => {
+      timers.push(
+        window.setTimeout(() => {
+          setRevealStep(i + 1);
+          // Audio stings on the core + each of the 5 artifacts (steps 1–6).
+          if (i <= 5) audio.starEarned();
+        }, t(delay))
+      );
+    });
+    return () => timers.forEach((id) => window.clearTimeout(id));
+  }, [pushedIn, intensity, audio]);
+
+  // 5 artifacts arc around the core with hand-tuned positions so the
+  // composition reads at a glance. Order matches LOCK_POSITIONS so
+  // the artifact for each rule sits roughly above its lock on the door.
+  const artifacts = ARTIFACT_LAYOUT.map((slot, i) => {
+    const lock = locks[i];
+    if (!lock) return null;
+    const recap = ARTIFACT_RECAP[lock.id] ?? "";
+    return (
+      <ArtifactPedestal
+        key={lock.id}
+        x={slot.x}
+        y={slot.y}
+        icon={lock.icon}
+        label={lock.ruleLabel}
+        recap={recap}
+        accent={slot.accent}
+        visible={revealStep >= 2 + i}
+        intensity={intensity}
+      />
+    );
+  });
+
   return (
     <div
       aria-hidden={!visible}
@@ -1422,52 +1496,487 @@ function VaultInteriorReveal({
         pointerEvents: "none",
       }}
     >
-      {/* Interior chamber walls (radial dark) */}
+      {/* Chamber backdrop (deep cosmic) */}
       <div
         style={{
           position: "absolute",
           inset: 4,
           borderRadius: 18,
           background:
-            "radial-gradient(circle at center, #2b1a4a 0%, #150a2e 50%, #060214 100%)",
+            "radial-gradient(ellipse at 50% 32%, #2c1a55 0%, #150a2e 45%, #060214 100%)",
           boxShadow:
-            "inset 0 0 60px rgba(0,0,0,0.85), inset 0 0 0 2px rgba(253,224,71,0.18)",
+            "inset 0 0 70px rgba(0,0,0,0.9), inset 0 0 0 2px rgba(253,224,71,0.18)",
         }}
       />
-      {/* Sun-burst rays */}
+
+      {/* Perspective floor with grid lines for depth */}
+      <div
+        aria-hidden
+        style={{
+          position: "absolute",
+          left: 4,
+          right: 4,
+          bottom: 4,
+          height: "44%",
+          borderBottomLeftRadius: 14,
+          borderBottomRightRadius: 14,
+          background:
+            "linear-gradient(180deg, transparent 0%, rgba(30,12,80,0.55) 35%, rgba(8,4,22,0.95) 100%), repeating-linear-gradient(90deg, transparent 0 39px, rgba(253,224,71,0.16) 39px 40px), repeating-linear-gradient(0deg, transparent 0 39px, rgba(125,240,255,0.1) 39px 40px)",
+          transform: "perspective(560px) rotateX(46deg)",
+          transformOrigin: "50% 100%",
+          borderTop: "1px solid rgba(253,224,71,0.28)",
+          boxShadow:
+            "inset 0 12px 24px rgba(124,92,255,0.25), 0 -1px 14px rgba(253,224,71,0.18)",
+        }}
+      />
+
+      {/* Sun-burst rays (kept from prior pass) */}
       <div
         aria-hidden
         style={{
           position: "absolute",
           inset: 0,
           background:
-            "conic-gradient(from 0deg, rgba(253,224,71,0.55) 0deg, transparent 8deg, rgba(253,224,71,0.55) 30deg, transparent 38deg, rgba(253,224,71,0.55) 60deg, transparent 68deg, rgba(253,224,71,0.55) 90deg, transparent 98deg, rgba(253,224,71,0.55) 120deg, transparent 128deg, rgba(253,224,71,0.55) 150deg, transparent 158deg, rgba(253,224,71,0.55) 180deg, transparent 188deg, rgba(253,224,71,0.55) 210deg, transparent 218deg, rgba(253,224,71,0.55) 240deg, transparent 248deg, rgba(253,224,71,0.55) 270deg, transparent 278deg, rgba(253,224,71,0.55) 300deg, transparent 308deg, rgba(253,224,71,0.55) 330deg, transparent 338deg)",
+            "conic-gradient(from 0deg, rgba(253,224,71,0.4) 0deg, transparent 8deg, rgba(253,224,71,0.4) 30deg, transparent 38deg, rgba(253,224,71,0.4) 60deg, transparent 68deg, rgba(253,224,71,0.4) 90deg, transparent 98deg, rgba(253,224,71,0.4) 120deg, transparent 128deg, rgba(253,224,71,0.4) 150deg, transparent 158deg, rgba(253,224,71,0.4) 180deg, transparent 188deg, rgba(253,224,71,0.4) 210deg, transparent 218deg, rgba(253,224,71,0.4) 240deg, transparent 248deg, rgba(253,224,71,0.4) 270deg, transparent 278deg, rgba(253,224,71,0.4) 300deg, transparent 308deg, rgba(253,224,71,0.4) 330deg, transparent 338deg)",
           filter: "blur(2px)",
-          opacity: 0.45,
+          opacity: 0.35,
           mixBlendMode: "screen",
           animation:
             intensity > 0
-              ? "vaultRaysSpin 16s linear infinite"
+              ? "vaultRaysSpin 18s linear infinite"
               : undefined,
         }}
       />
-      {/* Centre shield + orbiting rule glyphs */}
+
+      {/* Volumetric light shaft from above onto the core */}
+      <LightShaft visible={revealStep >= 1} intensity={intensity} />
+
+      {/* Central composition - all anchored from the chamber centre.
+          We scale the wrapper from 0.86 → 1.04 once pushedIn fires so
+          the whole tableau pushes toward the camera slightly. */}
       <div
         style={{
           position: "absolute",
           inset: 0,
-          display: "grid",
-          placeItems: "center",
-          transform: pushedIn ? "scale(1.08)" : "scale(0.85)",
+          transform: pushedIn ? "scale(1.04)" : "scale(0.86)",
           transition: `transform ${intensity === 0 ? 80 : 720}ms cubic-bezier(0.22, 1, 0.36, 1)`,
         }}
       >
-        <ShieldCentrepiece intensity={intensity} />
-        <OrbitingGlyphs intensity={intensity} />
+        {/* Artifact pedestals (5, arc'd around + above the core) */}
+        {artifacts}
+
+        {/* Password Protector Core */}
+        <div
+          style={{
+            position: "absolute",
+            top: "54%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            display: "grid",
+            placeItems: "center",
+          }}
+        >
+          <CoreRelic visible={revealStep >= 1} intensity={intensity} />
+        </div>
+
+        {/* Recap ribbon */}
+        <RecapRibbon visible={revealStep >= 7} intensity={intensity} />
+
+        {/* Sticker teaser (hints the next screen's reward) */}
+        <StickerTeaser visible={revealStep >= 8} intensity={intensity} />
       </div>
-      {/* Sparkle particles drifting upward */}
+
+      {/* Sparkles continue drifting */}
       {intensity > 0 && <SparkleField />}
     </div>
+  );
+}
+
+/* ── Treasure-chamber helpers ──────────────────────────────────── */
+
+/** Recap line per rule. Single short sentence, child-readable. */
+const ARTIFACT_RECAP: Record<string, string> = {
+  length:   "Long is strong",
+  mix:      "Mix all the types",
+  personal: "Never your name",
+  common:   "Not a common word",
+  secret:   "Only you and a parent",
+};
+
+/**
+ * Pedestal positions in the chamber, expressed in % from the chamber
+ * centre. The 5 slots arc around the upper half so the core sits at
+ * the visual base of the composition (eye reads top-to-bottom toward
+ * the reward). Accent colours match the wider Cyber Heroes palette.
+ */
+const ARTIFACT_LAYOUT: { x: number; y: number; accent: string }[] = [
+  { x: -32, y: -16, accent: "#00e5ff" }, // length (left)
+  { x: -18, y: -36, accent: "#7eff97" }, // mix (upper left)
+  { x:   0, y: -42, accent: "#fde047" }, // personal (top)
+  { x:  18, y: -36, accent: "#ff5fb3" }, // common (upper right)
+  { x:  32, y: -16, accent: "#a855f7" }, // secret (right)
+];
+
+function LightShaft({
+  visible,
+  intensity,
+}: {
+  visible: boolean;
+  intensity: number;
+}) {
+  return (
+    <div
+      aria-hidden
+      style={{
+        position: "absolute",
+        top: -10,
+        left: "50%",
+        transform: "translateX(-50%)",
+        width: 220,
+        height: "78%",
+        clipPath: "polygon(38% 0%, 62% 0%, 86% 100%, 14% 100%)",
+        background:
+          "linear-gradient(180deg, rgba(255,248,220,0.65) 0%, rgba(253,224,71,0.45) 30%, rgba(0,229,255,0.25) 65%, transparent 100%)",
+        filter: "blur(8px)",
+        opacity: visible ? 0.85 : 0,
+        transition: `opacity ${intensity === 0 ? 80 : 480}ms ease-out`,
+        mixBlendMode: "screen",
+        animation:
+          visible && intensity > 0
+            ? "vaultShaftDrift 5.2s ease-in-out infinite"
+            : undefined,
+      }}
+    />
+  );
+}
+
+function CoreRelic({
+  visible,
+  intensity,
+}: {
+  visible: boolean;
+  intensity: number;
+}) {
+  // The relic itself = ShieldCentrepiece sitting on a stone pedestal
+  // with a pulsing aura ring. Arrives with a scale-overshoot settle
+  // and a wide soft glow that brightens the floor around it.
+  return (
+    <motion.div
+      initial={
+        intensity === 0
+          ? { opacity: 0 }
+          : { opacity: 0, scale: 0.45 }
+      }
+      animate={
+        visible
+          ? intensity === 0
+            ? { opacity: 1 }
+            : { opacity: 1, scale: 1 }
+          : intensity === 0
+            ? { opacity: 0 }
+            : { opacity: 0, scale: 0.45 }
+      }
+      transition={
+        intensity === 0
+          ? { duration: 0.12 }
+          : { type: "spring", stiffness: 220, damping: 14 }
+      }
+      style={{
+        position: "relative",
+        width: 220,
+        height: 260,
+        display: "grid",
+        placeItems: "center",
+      }}
+    >
+      {/* Aura ring */}
+      <span
+        aria-hidden
+        style={{
+          position: "absolute",
+          width: 220,
+          height: 220,
+          top: 14,
+          borderRadius: "50%",
+          background:
+            "radial-gradient(circle, rgba(253,224,71,0.55) 0%, rgba(124,92,255,0.25) 45%, transparent 75%)",
+          filter: "blur(12px)",
+          animation:
+            intensity > 0
+              ? "vaultCoreAura 4.2s ease-in-out infinite"
+              : undefined,
+        }}
+      />
+      {/* Pedestal disc */}
+      <span
+        aria-hidden
+        style={{
+          position: "absolute",
+          bottom: 4,
+          width: 168,
+          height: 28,
+          borderRadius: "50%",
+          background:
+            "radial-gradient(ellipse at center, #fde047 0%, #b8862a 40%, #2a1a08 100%)",
+          boxShadow:
+            "0 6px 18px rgba(253,224,71,0.65), 0 0 0 1px rgba(255,255,255,0.18) inset",
+        }}
+      />
+      {/* Shield sits on the pedestal */}
+      <div style={{ position: "relative", marginTop: -10 }}>
+        <ShieldCentrepiece intensity={intensity} />
+      </div>
+    </motion.div>
+  );
+}
+
+function ArtifactPedestal({
+  x,
+  y,
+  icon,
+  label,
+  recap,
+  accent,
+  visible,
+  intensity,
+}: {
+  x: number;
+  y: number;
+  icon: string;
+  label: string;
+  recap: string;
+  accent: string;
+  visible: boolean;
+  intensity: number;
+}) {
+  return (
+    <motion.div
+      initial={
+        intensity === 0
+          ? { opacity: 0 }
+          : { opacity: 0, scale: 0.35, y: -10 }
+      }
+      animate={
+        visible
+          ? intensity === 0
+            ? { opacity: 1 }
+            : { opacity: 1, scale: 1, y: 0 }
+          : intensity === 0
+            ? { opacity: 0 }
+            : { opacity: 0, scale: 0.35, y: -10 }
+      }
+      transition={
+        intensity === 0
+          ? { duration: 0.12 }
+          : { type: "spring", stiffness: 320, damping: 16 }
+      }
+      style={{
+        position: "absolute",
+        top: `${50 + y}%`,
+        left: `${50 + x}%`,
+        transform: "translate(-50%, -50%)",
+        width: 130,
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        gap: 2,
+      }}
+    >
+      {/* The artifact icon floats above its tile */}
+      <span
+        aria-hidden
+        style={{
+          width: 54,
+          height: 54,
+          borderRadius: "50%",
+          display: "grid",
+          placeItems: "center",
+          fontSize: 28,
+          background: `radial-gradient(circle at 30% 30%, ${accent}cc 0%, ${accent}55 50%, rgba(8,4,22,0.95) 100%)`,
+          boxShadow: `0 0 22px ${accent}aa, inset 0 0 0 1.5px rgba(255,255,255,0.35), inset 0 -4px 8px rgba(0,0,0,0.45)`,
+          filter: `drop-shadow(0 0 8px ${accent})`,
+          animation:
+            intensity > 0
+              ? "vaultArtifactBob 3.4s ease-in-out infinite"
+              : undefined,
+        }}
+      >
+        {icon}
+      </span>
+      {/* Recap tile */}
+      <div
+        style={{
+          marginTop: 4,
+          padding: "5px 10px 6px",
+          borderRadius: 10,
+          background: "rgba(10, 14, 36, 0.88)",
+          border: `1px solid ${accent}88`,
+          boxShadow: `0 6px 14px rgba(0,0,0,0.55), 0 0 12px ${accent}33`,
+          textAlign: "center",
+          minWidth: 110,
+        }}
+      >
+        <div
+          style={{
+            fontFamily: "'JetBrains Mono', monospace",
+            fontSize: 8,
+            letterSpacing: "0.18em",
+            fontWeight: 800,
+            color: accent,
+            textTransform: "uppercase",
+            textShadow: `0 0 6px ${accent}88`,
+            marginBottom: 1,
+          }}
+        >
+          {label}
+        </div>
+        <div
+          style={{
+            fontFamily: "'Space Grotesk', sans-serif",
+            fontSize: 11,
+            fontWeight: 700,
+            color: "#fff7e6",
+            lineHeight: 1.2,
+          }}
+        >
+          {recap}
+        </div>
+      </div>
+      {/* Pedestal disc */}
+      <span
+        aria-hidden
+        style={{
+          marginTop: 4,
+          width: 70,
+          height: 8,
+          borderRadius: "50%",
+          background: `radial-gradient(ellipse at center, ${accent} 0%, ${accent}44 60%, transparent 100%)`,
+          filter: "blur(2px)",
+          opacity: 0.85,
+        }}
+      />
+    </motion.div>
+  );
+}
+
+function RecapRibbon({
+  visible,
+  intensity,
+}: {
+  visible: boolean;
+  intensity: number;
+}) {
+  return (
+    <motion.div
+      initial={intensity === 0 ? { opacity: 0 } : { opacity: 0, y: 14 }}
+      animate={
+        visible
+          ? { opacity: 1, y: 0 }
+          : intensity === 0
+            ? { opacity: 0 }
+            : { opacity: 0, y: 14 }
+      }
+      transition={{ duration: intensity === 0 ? 0.15 : 0.42 }}
+      style={{
+        position: "absolute",
+        bottom: 70,
+        left: "50%",
+        transform: "translateX(-50%)",
+        padding: "8px 18px",
+        borderRadius: 999,
+        background:
+          "linear-gradient(135deg, rgba(253,224,71,0.92) 0%, rgba(255,122,89,0.92) 60%, rgba(255,95,179,0.92) 100%)",
+        boxShadow:
+          "0 10px 26px rgba(253,224,71,0.45), 0 0 0 1px rgba(255,255,255,0.3) inset",
+        color: "#1a1033",
+        fontFamily: "'Space Grotesk', sans-serif",
+        fontWeight: 900,
+        fontSize: 13,
+        letterSpacing: "0.06em",
+        textTransform: "uppercase",
+        whiteSpace: "nowrap",
+      }}
+    >
+      You protected the secrets!
+    </motion.div>
+  );
+}
+
+function StickerTeaser({
+  visible,
+  intensity,
+}: {
+  visible: boolean;
+  intensity: number;
+}) {
+  // Three sticker icons preview what's about to land on the next
+  // screen. Pure visual link to the reward; no nav button here so
+  // the StickerUnlock screen remains the ceremonial moment.
+  const stickers = ["🔐", "🤐", "🔍"];
+  return (
+    <motion.div
+      initial={intensity === 0 ? { opacity: 0 } : { opacity: 0, y: 12 }}
+      animate={
+        visible
+          ? { opacity: 1, y: 0 }
+          : intensity === 0
+            ? { opacity: 0 }
+            : { opacity: 0, y: 12 }
+      }
+      transition={{ duration: intensity === 0 ? 0.15 : 0.36, delay: 0.05 }}
+      style={{
+        position: "absolute",
+        bottom: 36,
+        left: "50%",
+        transform: "translateX(-50%)",
+        display: "flex",
+        alignItems: "center",
+        gap: 8,
+        padding: "6px 14px 6px 10px",
+        borderRadius: 999,
+        background: "rgba(10, 16, 36, 0.82)",
+        border: "1px solid rgba(125,240,255,0.4)",
+        boxShadow:
+          "0 8px 20px rgba(0,0,0,0.5), 0 0 18px rgba(0,229,255,0.18)",
+        color: "#fff7e6",
+      }}
+    >
+      <div style={{ display: "flex", gap: -4 }}>
+        {stickers.map((s, i) => (
+          <span
+            key={i}
+            aria-hidden
+            style={{
+              width: 26,
+              height: 26,
+              borderRadius: "50%",
+              display: "grid",
+              placeItems: "center",
+              fontSize: 14,
+              background:
+                "radial-gradient(circle at 30% 30%, #fde047 0%, #ff7a59 60%, #b8862a 100%)",
+              border: "2px solid #0f1530",
+              marginLeft: i === 0 ? 0 : -8,
+              boxShadow: "0 0 8px rgba(253,224,71,0.65)",
+            }}
+          >
+            {s}
+          </span>
+        ))}
+      </div>
+      <span
+        style={{
+          fontFamily: "'JetBrains Mono', monospace",
+          fontSize: 10,
+          letterSpacing: "0.18em",
+          fontWeight: 800,
+          color: "#fde047",
+          textShadow: "0 0 8px rgba(253,224,71,0.5)",
+        }}
+      >
+        +3 STICKERS →
+      </span>
+    </motion.div>
   );
 }
 
@@ -1551,57 +2060,6 @@ function ShieldCentrepiece({ intensity }: { intensity: number }) {
           MASTER
         </text>
       </svg>
-    </div>
-  );
-}
-
-function OrbitingGlyphs({ intensity }: { intensity: number }) {
-  const glyphs = ["📏", "🎨", "🪪", "📕", "🤐"];
-  // 5 emoji glyphs orbit the shield. Anchored at centre via absolute
-  // position and rotated by index*72deg; each glyph is then offset
-  // outward and counter-rotated to stay upright while the parent spins.
-  return (
-    <div
-      aria-hidden
-      style={{
-        position: "absolute",
-        inset: 0,
-        display: "grid",
-        placeItems: "center",
-      }}
-    >
-      <div
-        style={{
-          position: "relative",
-          width: 320,
-          height: 320,
-          animation:
-            intensity > 0
-              ? "vaultOrbitSpin 14s linear infinite"
-              : undefined,
-        }}
-      >
-        {glyphs.map((g, i) => (
-          <span
-            key={g + i}
-            style={{
-              position: "absolute",
-              top: "50%",
-              left: "50%",
-              transform: `rotate(${i * 72}deg) translate(0, -150px) rotate(${-i * 72}deg)`,
-              fontSize: 30,
-              filter:
-                "drop-shadow(0 0 12px rgba(253,224,71,0.8)) drop-shadow(0 0 4px rgba(255,255,255,0.6))",
-              animation:
-                intensity > 0
-                  ? `vaultGlyphBob 3s ease-in-out infinite ${i * 0.3}s`
-                  : undefined,
-            }}
-          >
-            {g}
-          </span>
-        ))}
-      </div>
     </div>
   );
 }
@@ -1903,17 +2361,21 @@ function SceneStyles() {
         from { transform: rotate(0deg); }
         to   { transform: rotate(360deg); }
       }
-      @keyframes vaultOrbitSpin {
-        from { transform: rotate(0deg); }
-        to   { transform: rotate(360deg); }
-      }
       @keyframes vaultShieldFloat {
         0%, 100% { transform: translateY(0); }
         50%      { transform: translateY(-10px); }
       }
-      @keyframes vaultGlyphBob {
-        0%, 100% { translate: 0 0; }
-        50%      { translate: 0 -6px; }
+      @keyframes vaultShaftDrift {
+        0%, 100% { opacity: 0.85; filter: blur(8px); }
+        50%      { opacity: 0.6;  filter: blur(11px); }
+      }
+      @keyframes vaultCoreAura {
+        0%, 100% { transform: scale(1);    opacity: 0.95; }
+        50%      { transform: scale(1.08); opacity: 0.7;  }
+      }
+      @keyframes vaultArtifactBob {
+        0%, 100% { transform: translateY(0); }
+        50%      { transform: translateY(-5px); }
       }
       @keyframes vaultSparkleRise {
         0%   { opacity: 0; transform: translateY(0) scale(0.6); }
