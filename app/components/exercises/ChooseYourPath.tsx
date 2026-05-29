@@ -12,12 +12,19 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { motion } from "motion/react";
-import { playSound } from "@/app/lib/sounds";
-import { playSoftWrong } from "@/app/lib/gameEngine";
+import {
+  useExerciseFeedback,
+  useGameAudio,
+  useMotionIntensity,
+} from "@/app/lib/gameEngine";
+// KEPT + FLAGGED: correctAnswerBurst (richer burst than fx.correct;
+// replacing would shrink the celebration and add an unwanted toast)
+// and wrongAnswerShake (no toolkit equivalent for body-level shake).
 import {
   correctAnswerBurst,
   wrongAnswerShake,
 } from "@/app/lib/celebrations";
+import ExerciseFrame from "@/app/components/lesson/ExerciseFrame";
 import ExerciseIntro from "./ExerciseIntro";
 import { COLOR, SHADOW, SPRING } from "@/app/components/scene/tokens";
 
@@ -151,6 +158,13 @@ export default function ChooseYourPath({
 }: ChooseYourPathProps) {
   useEffect(ensureStyles, []);
 
+  // Toolkit hooks. `intensity` gates big-FX calls so strict
+  // reduced-motion users skip the burst/shake; comfort and default
+  // users still get them (intensity 0.45 or 1 both satisfy > 0).
+  const audio = useGameAudio();
+  const fx = useExerciseFeedback();
+  const intensity = useMotionIntensity();
+
   const list = useMemo(() => scenarios ?? DEFAULT_SCENARIOS, [scenarios]);
 
   const [showIntro, setShowIntro] = useState(true);
@@ -227,10 +241,11 @@ export default function ChooseYourPath({
     setPicked(choiceIdx);
     setPhase("consequence");
     const choice = scenario.choices[choiceIdx];
-    playSound("select");
+    audio.select();
     if (choice.isSafe) {
-      playSound("correct");
-      void correctAnswerBurst();
+      audio.correct();
+      // Kept helper - intensity-gated so strict reduced-motion skips it.
+      if (intensity > 0) void correctAnswerBurst();
       setCorrectCount((n) => n + 1);
       onCorrect?.();
       const burst: Particle[] = [];
@@ -247,15 +262,18 @@ export default function ChooseYourPath({
       }
       setParticles(burst);
     } else {
-      playSoftWrong();
-      wrongAnswerShake();
+      audio.wrong();
+      // Kept helper - intensity-gated as above. The legacy helper
+      // also plays its own hard-wrong cue alongside the body shake;
+      // preserved (double-cue) so the wrong moment doesn't get softer.
+      if (intensity > 0) wrongAnswerShake();
       onWrong?.();
     }
     window.setTimeout(() => setPhase("review"), 2200);
   };
 
   const next = () => {
-    playSound("click");
+    audio.tap();
     if (idx + 1 >= list.length) {
       setFinished(true);
       return;
@@ -281,11 +299,11 @@ export default function ChooseYourPath({
         total={list.length}
         stars={stars}
         onContinue={() => {
-          playSound("click");
+          audio.tap();
           onComplete(correctCount);
         }}
         onRetry={() => {
-          playSound("select");
+          audio.select();
           resetExercise();
         }}
       />
@@ -298,29 +316,18 @@ export default function ChooseYourPath({
   const correctIdx = scenario.choices.findIndex((c) => c.isSafe);
 
   return (
-    <div
+    <ExerciseFrame
+      maxWidth={1200}
+      padding="22px 22px 26px"
+      background="linear-gradient(180deg, #2a1240 0%, #1a2147 35%, #252d5e 70%, #3a7bff 92%, #7df0ff 100%)"
       style={{
-        position: "relative",
-        width: "100%",
-        // Expanded so the door-choice composition scales with the
-        // viewport. maxHeight cap removed - the scene doesn't have
-        // overflow risk on short screens.
-        maxWidth: 1200,
-        margin: "0 auto",
-        borderRadius: 28,
-        overflow: "hidden",
-        background:
-          "linear-gradient(180deg, #2a1240 0%, #1a2147 35%, #252d5e 70%, #3a7bff 92%, #7df0ff 100%)",
         boxShadow: SHADOW.sceneFrame,
         color: COLOR.cream,
-        padding: "22px 22px 26px",
         textAlign: "center",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
         gap: 6,
-        fontFamily:
-          "ui-rounded, 'Fredoka', 'Quicksand', system-ui, -apple-system, sans-serif",
       }}
     >
       {/* Sun glow */}
@@ -445,7 +452,7 @@ export default function ChooseYourPath({
                   aria-label={`Choose: ${c.text}`}
                   onClick={() => picking && pickDoor(i)}
                   disabled={!picking}
-                  onMouseEnter={() => picking && playSound("hover")}
+                  onMouseEnter={() => picking && audio.hover()}
                   style={{
                     position: "absolute",
                     inset: 0,
@@ -703,7 +710,8 @@ export default function ChooseYourPath({
           onStart={() => setShowIntro(false)}
         />
       )}
-    </div>
+      {fx.layer()}
+    </ExerciseFrame>
   );
 }
 
@@ -788,31 +796,30 @@ function FinishOverlay({
   onRetry: () => void;
 }) {
   return (
-    <motion.div
-      initial={{ opacity: 0, scale: 0.95 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 0.4 }}
+    <ExerciseFrame
+      maxWidth={1200}
+      padding={32}
+      background="linear-gradient(180deg, #2a1240 0%, #1a2147 50%, #252d5e 100%)"
       style={{
-        position: "relative",
-        width: "100%",
-        minHeight: 500,
-        maxHeight: "calc(100vh - 140px)",
-        borderRadius: 28,
-        overflow: "hidden",
-        background:
-          "linear-gradient(180deg, #2a1240 0%, #1a2147 50%, #252d5e 100%)",
         boxShadow: SHADOW.sceneFrame,
         color: COLOR.cream,
-        padding: 32,
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-        textAlign: "center",
-        fontFamily:
-          "ui-rounded, 'Fredoka', 'Quicksand', system-ui, -apple-system, sans-serif",
       }}
     >
+      <motion.div
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.4 }}
+        style={{
+          width: "100%",
+          minHeight: 500,
+          maxHeight: "calc(100vh - 140px)",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          textAlign: "center",
+        }}
+      >
       <div
         style={{
           fontSize: 12,
@@ -924,6 +931,7 @@ function FinishOverlay({
           ↻ Try Again
         </motion.button>
       </div>
-    </motion.div>
+      </motion.div>
+    </ExerciseFrame>
   );
 }
