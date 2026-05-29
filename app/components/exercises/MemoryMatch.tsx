@@ -14,16 +14,25 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { motion } from "motion/react";
+// playSound KEPT for the three sounds with no useGameAudio facade
+// equivalent: "pop", "sortCorrect", "confetti". Flagged in report.
 import { playSound } from "@/app/lib/sounds";
-import { playSoftWrong } from "@/app/lib/gameEngine";
+import {
+  useExerciseFeedback,
+  useGameAudio,
+  useMotionIntensity,
+} from "@/app/lib/gameEngine";
+// KEPT + FLAGGED: correctAnswerBurst (streak-aware burst not available
+// from fx.correct/fx.unlock) and badgeEarnedCelebration (no toolkit
+// equivalent). Both intensity-gated below.
 import {
   badgeEarnedCelebration,
   correctAnswerBurst,
 } from "@/app/lib/celebrations";
 import ExerciseIntro from "./ExerciseIntro";
 import ExerciseHowTo from "./ExerciseHowTo";
+import ExerciseFrame from "@/app/components/lesson/ExerciseFrame";
 import { COLOR, SHADOW, SPRING } from "@/app/components/scene/tokens";
-import { useComfortMode } from "@/app/lib/comfortMode";
 import HintBubble from "@/app/components/lesson/HintBubble";
 
 export interface MemoryPair {
@@ -169,8 +178,12 @@ export default function MemoryMatch({
     const tier: 1 | 2 | 3 = mismatchCount >= 5 ? 3 : 2;
     onHintReached(tier);
   }, [mismatchCount, onHintReached]);
-  const comfort = useComfortMode();
-  const reduce = comfort.enabled || comfort.prefersReducedMotion;
+  // Toolkit hooks. `reduce` preserves the original threshold by
+  // mapping comfort/prefersReducedMotion to intensity < 1.
+  const audio = useGameAudio();
+  const fx = useExerciseFeedback();
+  const intensity = useMotionIntensity();
+  const reduce = intensity < 1;
 
   /* ─── PHASE B: REBUILD FROM MEMORY ─────────────────────────────
    * After all pairs are matched in Phase A, we don't go straight to
@@ -318,7 +331,7 @@ export default function MemoryMatch({
         onCorrect?.();
       }, 320);
     } else {
-      playSoftWrong();
+      audio.wrong();
       setStreak(0);
       setShakeIdxs([aIdx, bIdx]);
       setMismatchCount((n) => n + 1);
@@ -345,7 +358,8 @@ export default function MemoryMatch({
       playSound("sortCorrect");
       // Pass best streak so the finale burst scales with how cleanly
       // the kid solved the board - perfect run = full-screen party.
-      void correctAnswerBurst(bestStreak);
+      // Gated for strict reduced-motion users.
+      if (intensity > 0) void correctAnswerBurst(bestStreak);
       window.setTimeout(() => {
         setWaveOn(false);
         // Phase A complete - pivot to the memory-rebuild transition
@@ -359,7 +373,7 @@ export default function MemoryMatch({
   /** Kick off Phase B: flip every card face-down again, reset the
    *  prompt index, and switch into rebuild mode. */
   const startRebuild = () => {
-    playSound("click");
+    audio.tap();
     setCards((prev) =>
       prev.map((c) => ({ ...c, flipped: false, matched: false }))
     );
@@ -396,7 +410,7 @@ export default function MemoryMatch({
 
     if (isCorrect) {
       window.setTimeout(() => {
-        playSound("correct");
+        audio.correct();
         playSound("sortCorrect");
         addBurst(idx, card.colour);
         setCards((prev) => {
@@ -415,7 +429,7 @@ export default function MemoryMatch({
             // Phase B complete - celebrate, then open the FinishOverlay
             setPhase("done");
             playSound("confetti");
-            void badgeEarnedCelebration();
+            if (intensity > 0) void badgeEarnedCelebration();
             window.setTimeout(() => setFinished(true), 1400);
           } else {
             setRebuildPromptIdx(nextPrompt);
@@ -426,7 +440,7 @@ export default function MemoryMatch({
     } else {
       // Wrong card - let the kid see what it actually was for ~1.1s,
       // then flip it back face-down so they can try again.
-      playSoftWrong();
+      audio.wrong();
       setShakeIdxs([idx]);
       onWrong?.();
       window.setTimeout(() => {
@@ -463,30 +477,28 @@ export default function MemoryMatch({
   const ss = (totalSeconds % 60).toString().padStart(2, "0");
 
   return (
-    <div
-      data-mm-root
+    <ExerciseFrame
+      maxWidth={600}
+      padding="0 0 22px"
+      background="linear-gradient(180deg, #0f1530 0%, #1a2147 55%, #080a16 100%)"
       style={{
-        position: "relative",
-        width: "100%",
-        // Narrower frame keeps individual cards smaller so all 12 fit
-        // vertically without an inner scroll. The page itself can still
-        // scroll if a really tiny viewport demands it.
-        maxWidth: 600,
-        margin: "0 auto",
-        padding: "0 0 22px",
-        borderRadius: 28,
-        // Cyber Heroes Lab frame - abyss navy gradient with a subtle
-        // cyan inner glow so the chip card backs sit cleanly inside.
-        background:
-          "linear-gradient(180deg, #0f1530 0%, #1a2147 55%, #080a16 100%)",
         boxShadow:
           "0 30px 60px -20px rgba(0, 0, 0, 0.7), 0 0 32px rgba(0, 229, 255, 0.18), 0 0 0 1px rgba(0, 229, 255, 0.22) inset",
         color: "#e8edff",
-        overflow: "hidden",
-        fontFamily:
-          "ui-rounded, 'Fredoka', 'Quicksand', system-ui, -apple-system, sans-serif",
       }}
     >
+      {/* Inner wrapper keeps the data-mm-root hook used by addBurst's
+          parent.getBoundingClientRect() positioning math. The wrapper
+          fills its parent so the calculated coords match what they
+          were when the outer div carried the attribute itself. */}
+      <div
+        data-mm-root
+        style={{
+          position: "relative",
+          width: "100%",
+          height: "100%",
+        }}
+      >
       <PixarBackdrop />
 
       <div style={{ position: "relative", zIndex: 1, padding: "0 18px" }}>
@@ -730,11 +742,11 @@ export default function MemoryMatch({
           bestStreak={bestStreak}
           stars={stars}
           onContinue={() => {
-            playSound("click");
+            audio.tap();
             onComplete(stars);
           }}
           onRetry={() => {
-            playSound("select");
+            audio.select();
             resetExercise();
           }}
         />
@@ -780,7 +792,9 @@ export default function MemoryMatch({
           Tap the face-down card you remember
         </div>
       )}
-    </div>
+      {fx.layer()}
+      </div>
+    </ExerciseFrame>
   );
 }
 
