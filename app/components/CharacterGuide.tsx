@@ -343,6 +343,16 @@ export default function CharacterGuide({
             bottom: 110px !important;
           }
         }
+        /* On viewports too narrow OR too short to safely overlay the
+           lesson content, hide the character guide entirely. The
+           playable area takes priority. Threshold matches the
+           breakpoints where Adam + Layla + bubble would crowd the
+           exercise frame (max 760px + 24px padding either side =
+           ~810px clear width needed). */
+        @media (max-width: 860px), (max-height: 640px) {
+          .cg-char { display: none !important; }
+          .cg-bubble { display: none !important; }
+        }
       `}</style>
     </div>
   );

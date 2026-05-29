@@ -6,6 +6,9 @@ import { correctAnswerBurst } from "@/app/lib/celebrations";
 import ExerciseIntro from "./ExerciseIntro";
 import { validateMaze, pathFromExit } from "./maze-helpers";
 import { PixarFinishOverlay } from "@/app/components/scene";
+import WrongAnswerPanel from "@/app/components/lesson/WrongAnswerPanel";
+import HintBubble from "@/app/components/lesson/HintBubble";
+import { setupHiDpiCanvas, scaledParticleCount, playSoftWrong } from "@/app/lib/gameEngine";
 
 export interface MazeQuestion {
   question: string;
@@ -18,6 +21,20 @@ export interface CyberMazeProps {
   onComplete: (score: number) => void;
   onCorrect?: () => void;
   onWrong?: () => void;
+  /**
+   * Fires once per answer (correct or wrong). `questionIndex` is the
+   * 0-based position in the `questions` prop - the parent translates
+   * this into a stable key like "maze-2" for persistence. No question
+   * text is leaked through this callback by design.
+   */
+  onAnswered?: (data: {
+    questionIndex: number;
+    selectedIndex: number;
+    correctIndex: number;
+    wasCorrect: boolean;
+  }) => void;
+  /** See CyberScanner.onHintReached. */
+  onHintReached?: (tier: 1 | 2 | 3) => void;
 }
 
 // 7 rows × 9 cols. 0 = open, 1 = wall. Start (0,0), Exit (6,8).
@@ -157,6 +174,8 @@ export default function CyberMaze({
   onComplete,
   onCorrect,
   onWrong,
+  onAnswered,
+  onHintReached,
 }: CyberMazeProps) {
   const qList = useMemo(
     () => (questions.length > 0 ? questions : DEFAULT_QUESTIONS),
@@ -214,6 +233,29 @@ export default function CyberMaze({
   const [render, setRender] = useState(0);
   const [finished, setFinished] = useState(false);
   const [showIntro, setShowIntro] = useState(true);
+  const [feedback, setFeedback] = useState<null | {
+    title: string;
+    explanation: string;
+    tip?: string;
+  }>(null);
+  const [wrongOnGate, setWrongOnGate] = useState<Record<number, number>>({});
+
+  // Hint-tier emission. CyberMaze gates surface the HintBubble when
+  // a single gate has been failed >= 2 times, so the screen reaches
+  // tier 2 first and tier 3 at 3+ wrongs on the same gate. We
+  // compute the max across all gates so the screen's overall tier
+  // reflects the worst point. The hook dedupes per-screen, so
+  // re-emitting on every wrongOnGate change is safe.
+  useEffect(() => {
+    if (!onHintReached) return;
+    let maxOnAnyGate = 0;
+    for (const v of Object.values(wrongOnGate)) {
+      if (v > maxOnAnyGate) maxOnAnyGate = v;
+    }
+    if (maxOnAnyGate < 2) return;
+    const tier: 1 | 2 | 3 = maxOnAnyGate >= 3 ? 3 : 2;
+    onHintReached(tier);
+  }, [wrongOnGate, onHintReached]);
 
   const resetExercise = () => {
     state.current = {
@@ -294,8 +336,9 @@ export default function CyberMaze({
       s.tokens[tIdx].collected = true;
       s.tokensCollected += 1;
       playSound("xpGain");
-      // sparkle burst
-      for (let i = 0; i < 10; i++) {
+      // sparkle burst (adaptive: low-power tier renders fewer dots)
+      const sparkleCount = scaledParticleCount(10);
+      for (let i = 0; i < sparkleCount; i++) {
         const a = Math.random() * Math.PI * 2;
         const sp = 2 + Math.random() * 3;
         s.particles.push({
@@ -325,6 +368,18 @@ export default function CyberMaze({
     if (s.activeGateIdx === null) return;
     const gate = s.gates[s.activeGateIdx];
     const q = qList[gate.qIdx];
+
+    // Per-question hook for persistence + analytics. Fires once per
+    // answer regardless of correct/wrong - the parent decides what
+    // to persist. `questionIndex` is the position in the input list
+    // so the parent can build a stable key.
+    onAnswered?.({
+      questionIndex: gate.qIdx,
+      selectedIndex: choice,
+      correctIndex: q.correctIndex,
+      wasCorrect: choice === q.correctIndex,
+    });
+
     if (choice === q.correctIndex) {
       // Open the gate, play correct, continue motion into that cell
       gate.open = true;
@@ -334,7 +389,8 @@ export default function CyberMaze({
       // burst at gate
       const gx = gate.col * CELL + CELL / 2;
       const gy = gate.row * CELL + CELL / 2;
-      for (let i = 0; i < 14; i++) {
+      const gateBurst = scaledParticleCount(14);
+      for (let i = 0; i < gateBurst; i++) {
         const a = Math.random() * Math.PI * 2;
         const sp = 2 + Math.random() * 4;
         s.particles.push({
@@ -361,8 +417,20 @@ export default function CyberMaze({
       // wrong: push back a cell in any open direction away from gate
       s.wrongCount += 1;
       gate.flashUntil = performance.now() + 500;
-      playSound("wrong");
+      playSoftWrong();
       onWrong?.();
+      // Pause-on-wrong: explain the correct answer before letting the
+      // child move on. The maze gate stays closed so they'll have to
+      // re-attempt the question on the next pass.
+      setWrongOnGate((prev) => ({
+        ...prev,
+        [s.activeGateIdx!]: (prev[s.activeGateIdx!] ?? 0) + 1,
+      }));
+      setFeedback({
+        title: "Not quite",
+        explanation: `The right answer was "${q.answers[q.correctIndex]}". Read the question again next time you reach this gate.`,
+        tip: "Use what we learned: strong passwords are long, mixed, secret and unique.",
+      });
       // push back to previous cell (approx): move player back to start-side neighbour
       // simplest: bump back by one cell in direction away from gate, or stay
       const dirs: Array<[number, number]> = [
@@ -442,16 +510,33 @@ export default function CyberMaze({
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-    canvas.width = BOARD_W;
-    canvas.height = BOARD_H;
+    // Hi-DPI buffer so the maze grid lines, gate glyphs and token
+    // sparkles render at native pixel sharpness on Retina/2x screens.
+    const setup = setupHiDpiCanvas(canvas, {
+      logicalWidth: BOARD_W,
+      logicalHeight: BOARD_H,
+      maxDpr: 2,
+    });
+    if (!setup) return;
+    const ctx = setup.ctx;
 
     let running = true;
     let lastTime = performance.now();
 
+    const onVis = () => {
+      if (document.hidden) lastTime = performance.now();
+    };
+    document.addEventListener("visibilitychange", onVis);
+
     const tick = (now: number) => {
       if (!running) return;
+      // True-pause when tab is hidden. The maze loop draws fog, a
+      // trail, and particles every frame - none of which need to
+      // tick while invisible.
+      if (document.hidden) {
+        rafRef.current = requestAnimationFrame(tick);
+        return;
+      }
       const dt = Math.min(50, now - lastTime);
       lastTime = now;
       const s = state.current;
@@ -808,6 +893,7 @@ export default function CyberMaze({
     return () => {
       running = false;
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
+      document.removeEventListener("visibilitychange", onVis);
       ctx.clearRect(0, 0, BOARD_W, BOARD_H);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -822,9 +908,14 @@ export default function CyberMaze({
       style={{
         position: "relative",
         width: "100%",
-        maxWidth: 640,
+        // Maze canvas is 486×378 (aspect ~1.286). Reserve 220px for
+        // HUD + safe-area + outer padding so the maze never gets
+        // clipped at the bottom on short viewports.
+        // Expanded cap: the maze grid scales up with the viewport.
+        // Capped at 1000px because the maze cells start to feel
+        // oversized beyond that.
+        maxWidth: "min(1000px, calc((100dvh - 220px) * 486 / 378))",
         margin: "0 auto",
-        maxHeight: "calc(100vh - 140px)",
         borderRadius: 28,
         overflow: "hidden",
         background:
@@ -1003,6 +1094,36 @@ export default function CyberMaze({
           onStart={() => setShowIntro(false)}
         />
       )}
+      {feedback && (
+        <WrongAnswerPanel
+          title={feedback.title}
+          explanation={feedback.explanation}
+          tip={feedback.tip}
+          speaker="layla"
+          onContinue={() => setFeedback(null)}
+        />
+      )}
+      {/* Tiered hint - kicks in when the same gate has been failed twice */}
+      {!feedback &&
+        activeQuestion !== null &&
+        s.activeGateIdx !== null &&
+        (wrongOnGate[s.activeGateIdx] ?? 0) >= 2 && (
+          <div
+            style={{
+              position: "absolute",
+              left: 12,
+              right: 12,
+              bottom: 12,
+              zIndex: 10,
+            }}
+          >
+            <HintBubble
+              tier={(wrongOnGate[s.activeGateIdx] ?? 0) >= 3 ? 3 : 2}
+              speaker="adam"
+              text="Read the question slowly. One answer matches what we learned earlier - the other three don't."
+            />
+          </div>
+        )}
       <span style={{ display: "none" }}>{render}</span>
     </div>
   );

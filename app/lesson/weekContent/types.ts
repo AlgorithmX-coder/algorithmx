@@ -18,6 +18,21 @@ export interface WeekContent {
   };
 
   /**
+   * Multi-phase boss support (Week 1+). When present, supersedes
+   * `bossQuestions` for the boss render: BossBattle organises the
+   * fight as N labelled acts (Strength / Secrecy / Uniqueness /
+   * Phishing / Final Showdown) with phase-change announcements + a
+   * persistent phase badge in the HUD + per-phase result tracking
+   * persisted to QuestionResponse + analytics.
+   *
+   * Phase shape mirrors the BossPhase union in
+   * `app/components/game/BossBattle.tsx`. Only the "mcq" kind is
+   * implemented today; the other kinds (miniHospital, miniRescue,
+   * miniInspector) are reserved for the upcoming mini-mechanic phases.
+   */
+  bossPhases?: BossPhaseDef[];
+
+  /**
    * Per-screen character reactions (by screen index). Either character can be
    * null for that screen - the other will use their idle pose.
    */
@@ -29,6 +44,23 @@ export interface WeekContent {
     }
   >;
 }
+
+/** Phase definition shape used by week-content data files. Mirrors
+ *  the BossPhase union exported from BossBattle. */
+export type BossPhaseDef = {
+  kind: "mcq";
+  id: string;
+  label: string;
+  announceText: string;
+  announceTone: "blue" | "red" | "gold" | "cyan";
+  questions: {
+    question: string;
+    answers: string[];
+    correctIndex: number;
+    explanation?: string;
+    key?: string;
+  }[];
+};
 
 export interface BossQuestion {
   question: string;
@@ -49,6 +81,13 @@ export type ScreenDef =
       title: string;
       content: string;
       bullets?: string[];
+      /**
+       * Optional Adam/Layla narration. Each line is read aloud in order
+       * by the InfoNarration block on the info screen. Lines should be
+       * short (≤ 12 words) and use plain language a 6–9 year old can
+       * follow.
+       */
+      narration?: { speaker?: "adam" | "layla"; lines: string[] };
     }
   | {
       type: "cyberScanner";
@@ -61,8 +100,293 @@ export type ScreenDef =
   | { type: "passwordLab" }
   | { type: "crackTheCode" }
   | {
+      /**
+       * Password Vault - the flagship first-person guided scene.
+       *
+       * A cinematic vault door with 5 glowing locks. The child taps a
+       * lock, the camera pans/zooms to it, and a focused 2D challenge
+       * panel appears overlaid on the scene. Each lock teaches one of
+       * the 5 password rules:
+       *
+       *   1. length
+       *   2. mix of characters
+       *   3. no personal info
+       *   4. not common / guessable
+       *   5. unique / secret
+       *
+       * Wrong answers pause + teach via WrongAnswerPanel. Correct
+       * answers activate the lock with a juicy animation. All 5
+       * active → the vault door opens with a premium light burst +
+       * confetti, then onComplete fires.
+       *
+       * This is the reusable scene template for Phish Inspector,
+       * Account Rescue and BossBattle scene work in future weeks -
+       * the hotspot + 2D-overlay-panel + camera-pan pattern is the
+       * commercial-quality pattern this exercise proves out.
+       */
+      type: "passwordVault";
+      locks: {
+        /** Stable id used in QuestionResponse keys (e.g. "length"). */
+        id: string;
+        /** Short uppercase label shown on/under the lock ("LENGTH"). */
+        ruleLabel: string;
+        /** Emoji / glyph rendered inside the lock face. */
+        icon: string;
+        /** The challenge prompt shown when the lock is focused. */
+        prompt: string;
+        /** Multiple-choice answers; exactly one must have isCorrect. */
+        choices: {
+          text: string;
+          isCorrect: boolean;
+          /** Shown in the WrongAnswerPanel when the child picks this. */
+          explanation: string;
+        }[];
+        /** Optional speaker hint for the WrongAnswerPanel ("layla"|"adam"). */
+        speaker?: "adam" | "layla";
+      }[];
+      /** Optional Adam/Layla guidance ribbon copy keyed by state. */
+      guidance?: {
+        intro?: string;
+        progress?: string;
+        complete?: string;
+      };
+    }
+  | {
       type: "conveyorBelt";
       items: { text: string; category: "strong" | "weak" }[];
+    }
+  | {
+      /**
+       * Week 1's reworked sorter. Instead of classifying strong vs weak
+       * (already covered by CyberScanner), the child names *why* a weak
+       * password is weak by tapping one of 4 reason buttons.
+       *
+       * `reasons` is a stable, ordered list of all reason ids the
+       * exercise can present as buttons. `items` reference those ids by
+       * `reasonId`.
+       *
+       * `hints[1|2|3]` is the tiered hint copy shown after 1/2/3 wrong
+       * answers within this screen.
+       */
+      type: "weakSorter";
+      reasons: { id: string; label: string; example: string }[];
+      items: {
+        text: string;
+        reasonId: string;
+        /** Sentence shown in the WrongAnswerPanel when the child mis-sorts this item. */
+        explanation: string;
+      }[];
+      hints?: { tier1: string; tier2: string; tier3: string };
+    }
+  | {
+      /**
+       * Phish Inspector. The deliberate counterpart to SpamBlaster's
+       * reaction-speed shooter: an email opens with 4 inspect zones
+       * the child must tap (Who sent it / What's the link / How does
+       * it sound / What's it promising). Each tap reveals a red flag
+       * or green check + a kid-friendly explanation. ZAP and SAFE
+       * decision buttons unlock only after all 4 zones are inspected.
+       *
+       * Teaches the mental model of phishing literacy: don't react,
+       * inspect first. Pedagogically the cleanest counter to "all
+       * scary pop-ups, all the time" because it tells the child what
+       * to LOOK AT.
+       */
+      type: "phishInspector";
+      emails: {
+        id: string;
+        sender: string;
+        subject: string;
+        body: string;
+        isPhishing: boolean;
+        inspections: {
+          senderNote: string;
+          senderIsRedFlag: boolean;
+          linkText: string;
+          linkNote: string;
+          linkIsRedFlag: boolean;
+          urgencyNote: string;
+          urgencyIsRedFlag: boolean;
+          claimNote: string;
+          claimIsRedFlag: boolean;
+        };
+      }[];
+      hints?: { tier1: string; tier2: string };
+    }
+  | {
+      /**
+       * Mission Debrief. Final-act recap that consolidates the lesson
+       * by CONCEPT instead of by screen. Four cards
+       * (Strength / Secrecy / Uniqueness / Phishing) light up in
+       * sequence with optional Layla narration. Receives no stat data
+       * yet - that comes in a follow-up Prisma migration. For now the
+       * cards just celebrate "you learned X" with a fixed line per
+       * concept.
+       */
+      type: "missionDebrief";
+      title: string;
+      subtitle?: string;
+      concepts: {
+        id: string;
+        label: string;
+        accent: string; // hex
+        icon: string;
+        summary: string;
+      }[];
+      narration?: { speaker?: "adam" | "layla"; lines: string[] };
+    }
+  | {
+      /**
+       * Sticker Unlock screen. Fires the reward-loop celebration when
+       * the lesson is completed. Stickers are persisted server-side
+       * (EarnedSticker table) by the parent renderer; this component
+       * just shows the animated reveal and a "View HQ" CTA.
+       */
+      type: "stickerUnlock";
+      title: string;
+      stickers: {
+        id: string;
+        name: string;
+        icon: string;
+        /** Tagline shown under the sticker. */
+        description: string;
+      }[];
+    }
+  | {
+      /**
+       * Pop-up Panic. A sequence of scary fake pop-ups; the child has
+       * to find and tap the X (close) button on each, NOT the tempting
+       * OK button. Teaches the "close it and tell a grown-up" instinct
+       * - a phishing-adjacent skill the current build under-teaches.
+       *
+       * Curriculum-clean: each popup uses bait patterns already taught
+       * on the Phishing teaching screen (free prize / urgent threat /
+       * scary countdown / unknown sender claim).
+       */
+      type: "popupPanic";
+      popups: {
+        /** Stable id e.g. "pop-1". */
+        id: string;
+        /** Headline shown big in the popup. */
+        title: string;
+        /** Optional supporting line under the headline. */
+        body?: string;
+        /** Emoji that prefixes the title for visual flavour. */
+        icon?: string;
+        /** Why this popup is a trick - shown in the wrong-answer panel if the child taps OK. */
+        whyTrick: string;
+      }[];
+      hints?: { tier1: string; tier2: string; tier3: string };
+    }
+  | {
+      /**
+       * Three Random Words Builder. The child picks 3 unrelated nouns
+       * from a wall to form a memorable strong passphrase, watching a
+       * strength meter rise. Demonstrates the NCSC "three random
+       * words" approach: length beats complexity, and you can keep
+       * passwords memorable without sacrificing strength.
+       *
+       * Categories on the words are used to surface a small bonus
+       * when the child picks 3 different categories (encourages
+       * variety without forcing it).
+       */
+      type: "threeRandomWords";
+      /** Word bank. 24-30 entries recommended. */
+      words: {
+        id: string;
+        text: string;
+        category: "animal" | "object" | "place" | "food";
+      }[];
+      /** Number of words to pick. Default 3. */
+      slots?: number;
+      hints?: { tier1: string; tier2: string };
+    }
+  | {
+      /**
+       * Account Rescue Mission. Three account tiles share the same
+       * leaked password (the Raccoon hit one of them). The child taps
+       * each account and assigns a new password from a shared bank.
+       * The constraint: every account must end up with a DIFFERENT
+       * new password. Practical uniqueness drill.
+       */
+      type: "accountRescue";
+      /** The shared starter password all accounts initially use. */
+      sharedPassword: string;
+      /** Which account in `accounts` the Raccoon has compromised (id). */
+      leakedAccountId: string;
+      accounts: {
+        id: string;
+        /** Display name e.g. "Roblox". */
+        label: string;
+        /** Optional emoji icon. */
+        icon?: string;
+      }[];
+      /** Bank of strong replacement password options. Need >= accounts.length. */
+      passwordBank: {
+        id: string;
+        /** The password text shown on the chip. */
+        text: string;
+      }[];
+      hints?: { tier1: string; tier2: string };
+    }
+  | {
+      /**
+       * Password Hospital - the construction (vs recognition) exercise.
+       *
+       * Each "patient" is a weak password. The child:
+       *   1. Diagnoses why it is weak (taps one of 4 reason buttons).
+       *      Wrong picks pause with WrongAnswerPanel; hints escalate
+       *      after repeated wrongs on the same patient.
+       *   2. Repairs it by tapping action cards from a toolbox
+       *      (add letters / add number / add symbol / mix case /
+       *      remove name+date / scramble keyboard pattern). Each tap
+       *      transforms the working password text and raises a
+       *      strength meter.
+       *   3. Discharges the patient once the strength threshold is
+       *      crossed - a "HEALED!" beat fires.
+       *
+       * Curriculum-clean: every reasonId here is taught in the
+       * preceding info / scanner / sorter screens. No 2FA, no
+       * password managers. Discharge threshold is computed inline
+       * from a kid-friendly strength heuristic - not a real entropy
+       * calc, intentionally.
+       */
+      type: "passwordHospital";
+      /**
+       * Reusable diagnosis buttons. Same id space as weakSorter's
+       * reasons so question keys stay consistent across screens.
+       */
+      reasons: { id: string; label: string }[];
+      patients: {
+        /** Stable id for QuestionResponse keys. e.g. "pat-1". */
+        id: string;
+        /** The weak password the child starts with. */
+        password: string;
+        /** Which reason the child should pick in phase 1. */
+        primaryReason: string;
+        /**
+         * Friendly one-line context shown above the patient card
+         * during diagnosis. Optional; keep short.
+         */
+        chartNote?: string;
+        /**
+         * Explanation for the diagnosis WrongAnswerPanel when the
+         * child mis-diagnoses this patient.
+         */
+        diagnosisExplanation: string;
+        /**
+         * Recommended repair actions (by action id). Used for hint
+         * targeting in phase 2 - the panel can nudge "try adding a
+         * symbol" if the child taps non-recommended fixes.
+         */
+        recommendedActions: string[];
+      }[];
+      hints?: {
+        diagnosisTier1: string;
+        diagnosisTier2: string;
+        repairTier1: string;
+        repairTier2: string;
+      };
     }
   | {
       type: "chooseYourPath";

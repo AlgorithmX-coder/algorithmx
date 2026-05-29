@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { useParams, useRouter } from "next/navigation";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import { motion } from "framer-motion";
@@ -13,7 +13,14 @@ import {
   wrongAnswerShake,
 } from "@/app/lib/celebrations";
 import LessonHUD from "@/app/components/LessonHUD";
-import CharacterGuide, { type CharacterMood } from "@/app/components/CharacterGuide";
+// CharacterGuide swap: the legacy PNG-only component is replaced with
+// RiveCharacterGuide, which has the same prop API but adds a Rive
+// runtime branch (currently dormant - PNG fallback active until a
+// .riv asset is committed). Strict reduced-motion users always get
+// the PNG fallback.
+import RiveCharacterGuide, {
+  type CharacterMood,
+} from "@/app/components/lesson/RiveCharacterGuide";
 import StoryCutscene from "@/app/components/StoryCutscene";
 import ScreenTransition, {
   type TransitionType,
@@ -21,6 +28,14 @@ import ScreenTransition, {
 import ScreenShake from "@/app/components/ScreenShake";
 import ExerciseErrorBoundary from "@/app/components/ExerciseErrorBoundary";
 import LessonAmbience from "@/app/components/LessonAmbience";
+import InfoNarration from "@/app/components/lesson/InfoNarration";
+import GameButton from "@/app/components/lesson/GameButton";
+import LessonStage, {
+  LESSON_HUD_HEIGHT,
+} from "@/app/components/lesson/LessonStage";
+import { ComfortModeProvider, useComfortMode } from "@/app/lib/comfortMode";
+import { useLessonProgress } from "@/app/lib/useLessonProgress";
+import { analytics } from "@/app/lib/analytics";
 
 // Exercise components
 import CyberScanner from "@/app/components/exercises/CyberScanner";
@@ -28,11 +43,21 @@ import ProtectTheData from "@/app/components/exercises/ProtectTheData";
 import PasswordLab from "@/app/components/exercises/PasswordLab";
 import CrackTheCode from "@/app/components/exercises/CrackTheCode";
 import ConveyorBelt from "@/app/components/exercises/ConveyorBelt";
+import WeakSorter from "@/app/components/exercises/WeakSorter";
+import PasswordHospital from "@/app/components/exercises/PasswordHospital";
+import PopupPanic from "@/app/components/exercises/PopupPanic";
+import ThreeRandomWords from "@/app/components/exercises/ThreeRandomWords";
+import AccountRescue from "@/app/components/exercises/AccountRescue";
 import ChooseYourPath from "@/app/components/exercises/ChooseYourPath";
 import MemoryMatch from "@/app/components/exercises/MemoryMatch";
 import FirewallBuilder from "@/app/components/exercises/FirewallBuilder";
 import SpamBlaster from "@/app/components/exercises/SpamBlaster";
 import CyberMaze from "@/app/components/exercises/CyberMaze";
+import PhishInspector from "@/app/components/exercises/PhishInspector";
+import PasswordVault from "@/app/components/exercises/PasswordVault";
+import MissionDebrief from "@/app/components/lesson/MissionDebrief";
+import StickerUnlock from "@/app/components/lesson/StickerUnlock";
+import { awardStickers } from "@/app/lib/stickers.actions";
 
 import {
   getWeekContent,
@@ -62,26 +87,133 @@ const BossBattle = dynamic(
 );
 
 /**
+ * Set of screen types treated as "interactive exercise" for chrome
+ * decisions: which transition fires, which BGM plays, and whether
+ * Adam/Layla's floating character guides are mounted.
+ *
+ * Exercise screens want a clean, undistracted playable area - the
+ * persistent character cards on either side fight for attention with
+ * the gameplay, so we hide them on these screens. Info / mission /
+ * completion / cutscene screens still get them since those screens
+ * ARE the narration.
+ */
+const EXERCISE_SCREEN_TYPES = new Set<ScreenDef["type"]>([
+  "cyberScanner",
+  "protectTheData",
+  "passwordLab",
+  "crackTheCode",
+  "conveyorBelt",
+  "weakSorter",
+  "passwordHospital",
+  "popupPanic",
+  "threeRandomWords",
+  "accountRescue",
+  "chooseYourPath",
+  "memoryMatch",
+  "firewallBuilder",
+  "spamBlaster",
+  "cyberMaze",
+  "phishInspector",
+  "missionDebrief",
+  "stickerUnlock",
+  "passwordVault",
+]);
+
+/**
  * Choose a transition style per screen type - exercise screens get a
  * fade-scale lens-change feel; boss battle is a dramatic wipe.
  */
 function transitionForScreen(def: ScreenDef | undefined, dir: "forward" | "back"): TransitionType {
   if (!def) return dir === "back" ? "slideLeft" : "slideRight";
   if (def.type === "bossBattle") return "wipeDown";
-  const exerciseTypes: ScreenDef["type"][] = [
-    "cyberScanner",
-    "protectTheData",
-    "passwordLab",
-    "crackTheCode",
-    "conveyorBelt",
-    "chooseYourPath",
-    "memoryMatch",
-    "firewallBuilder",
-    "spamBlaster",
-    "cyberMaze",
-  ];
-  if (exerciseTypes.includes(def.type)) return "fadeScale";
+  if (EXERCISE_SCREEN_TYPES.has(def.type)) return "fadeScale";
   return dir === "back" ? "slideLeft" : "slideRight";
+}
+
+/* ─────────────── RESUME BANNER ───────────────
+ * Small top-of-page overlay that appears when the lesson page mounts
+ * and finds an unfinished LessonAttempt. The child picks Continue
+ * (jump back to last screen) or Restart from beginning (fresh
+ * attempt). No auto-jump - we always wait for an explicit choice.
+ */
+function ResumeBanner({
+  resumeIndex,
+  totalScreens,
+  onContinue,
+  onRestart,
+}: {
+  resumeIndex: number;
+  totalScreens: number;
+  onContinue: () => void;
+  onRestart: () => void;
+}) {
+  return (
+    <div
+      role="dialog"
+      aria-label="Resume lesson"
+      style={{
+        position: "fixed",
+        top: 80,
+        left: 16,
+        right: 16,
+        zIndex: 70,
+        margin: "0 auto",
+        maxWidth: 520,
+        background: "rgba(15, 21, 48, 0.95)",
+        border: "1px solid rgba(0, 229, 255, 0.5)",
+        borderRadius: 16,
+        padding: "16px 18px",
+        boxShadow: "0 18px 40px rgba(0, 0, 0, 0.45), 0 0 24px rgba(0, 229, 255, 0.18)",
+        backdropFilter: "blur(10px)",
+        WebkitBackdropFilter: "blur(10px)",
+        fontFamily: "'DM Sans', system-ui, sans-serif",
+        color: "#e7ecff",
+      }}
+    >
+      <div style={{ fontSize: 14, fontWeight: 800, marginBottom: 4, color: "#7df0ff" }}>
+        Welcome back!
+      </div>
+      <div style={{ fontSize: 13, color: "#cbd5e1", marginBottom: 12 }}>
+        You stopped at screen {resumeIndex + 1} of {totalScreens}. Pick up where
+        you left off, or start fresh.
+      </div>
+      <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+        <button
+          type="button"
+          onClick={onContinue}
+          autoFocus
+          style={{
+            background: "linear-gradient(135deg, #00e5ff, #7c5cff)",
+            color: "#0f1530",
+            fontWeight: 800,
+            borderRadius: 12,
+            padding: "10px 18px",
+            fontSize: 14,
+            border: "none",
+            cursor: "pointer",
+          }}
+        >
+          Continue →
+        </button>
+        <button
+          type="button"
+          onClick={onRestart}
+          style={{
+            background: "transparent",
+            color: "#93c5fd",
+            fontWeight: 700,
+            borderRadius: 12,
+            padding: "10px 18px",
+            fontSize: 14,
+            border: "1.5px solid rgba(96,165,250,0.55)",
+            cursor: "pointer",
+          }}
+        >
+          Restart from beginning
+        </button>
+      </div>
+    </div>
+  );
 }
 
 /* ─────────────── NOT FOUND / COMING SOON FALLBACKS ─────────────── */
@@ -130,66 +262,39 @@ function WeekNotReady({ week }: { week: number }) {
 /* ─────────────── FULL-SCREEN CONTENT SCREEN WRAPPERS ─────────────── */
 
 function FullScene({ children, bg, glow }: { children: React.ReactNode; bg?: string; glow?: string }) {
+  // Thin wrapper around the shared LessonStage. Existing call sites
+  // keep their <FullScene bg=… glow=…> usage and inherit the new
+  // viewport-safe sizing (100dvh - HUD - safe-area). The glow
+  // cross-fade keyframe lives at the document level so every stage
+  // can reference it without duplicating the @keyframes block.
   return (
-    <div
-      style={{
-        minHeight: "calc(100vh - 120px)",
-        background: bg ?? "linear-gradient(180deg, #0a0a1a 0%, #1a1033 100%)",
-        position: "relative",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-        padding: "40px 24px",
-        overflow: "hidden",
-      }}
-    >
-      {glow && (
-        <div
-          style={{
-            position: "absolute",
-            top: "20%",
-            left: "50%",
-            transform: "translateX(-50%)",
-            width: 600,
-            height: 600,
-            borderRadius: "50%",
-            background: glow,
-            filter: "blur(120px)",
-            opacity: 0.3,
-            pointerEvents: "none",
-          }}
-        />
-      )}
-      <div style={{ position: "relative", zIndex: 1, width: "100%", maxWidth: 900 }}>
-        {children}
-      </div>
-    </div>
+    <LessonStage bg={bg} glow={glow}>
+      {children}
+    </LessonStage>
   );
 }
 
+// Document-level keyframe for the FullScene/LessonStage glow cross-fade.
+// Injected once at module load instead of per-render.
+if (typeof document !== "undefined") {
+  const KEY = "ax-fullscene-glow-keyframes";
+  if (!document.getElementById(KEY)) {
+    const style = document.createElement("style");
+    style.id = KEY;
+    style.textContent = `@keyframes fullSceneGlowIn { from { opacity: 0 } to { opacity: 0.3 } }`;
+    document.head.appendChild(style);
+  }
+}
+
 function OrangeButton({ onClick, children, sound = "click" }: { onClick: () => void; children: React.ReactNode; sound?: string }) {
+  // Thin compat wrapper over <GameButton>. Existing callers pass
+  // `sound` to override the click SFX; everything else (hover lift,
+  // press scale, disabled, comfort-mode awareness) comes from
+  // GameButton.
   return (
-    <button
-      type="button"
-      onClick={() => {
-        playSFX(sound);
-        onClick();
-      }}
-      style={{
-        background: "linear-gradient(135deg, #f97316, #f59e0b)",
-        color: "#fff",
-        fontWeight: 800,
-        borderRadius: 14,
-        padding: "14px 36px",
-        fontSize: 16,
-        border: "none",
-        cursor: "pointer",
-        boxShadow: "0 0 18px rgba(249,115,22,0.5)",
-      }}
-    >
+    <GameButton variant="primary" size="lg" clickSound={sound} onClick={onClick}>
       {children}
-    </button>
+    </GameButton>
   );
 }
 
@@ -239,8 +344,27 @@ function LessonLoading() {
 }
 
 export default function DynamicLesson() {
+  return (
+    <ComfortModeProvider>
+      <DynamicLessonInner />
+    </ComfortModeProvider>
+  );
+}
+
+function DynamicLessonInner() {
   const rawParams = useParams<{ week: string }>();
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const comfort = useComfortMode();
+
+  // QA deep-link: ?screen=N jumps straight to that screen on mount.
+  // Bypasses the resume banner. Out-of-range values are clamped.
+  const deepLinkScreen = (() => {
+    const raw = searchParams?.get("screen");
+    if (!raw) return null;
+    const n = Number(raw);
+    return Number.isFinite(n) && n >= 0 ? Math.floor(n) : null;
+  })();
 
   // `useParams` in App Router is synchronous, but we still guard for the
   // edge case where a value comes through as `undefined` (empty routing state)
@@ -284,6 +408,121 @@ export default function DynamicLesson() {
 
   const totalScreens = content?.screens.length ?? 0;
 
+  /* ─────────── Persistence + analytics ───────────
+   * useLessonProgress starts/resumes a LessonAttempt on mount, then
+   * exposes save callbacks the lesson wires into its navigate + boss
+   * end paths. All server calls are best-effort - failures are
+   * logged but don't crash gameplay. */
+  const screenTypes = useMemo<readonly string[]>(
+    () => (content?.screens ?? []).map((s) => s.type),
+    [content]
+  );
+  const progress = useLessonProgress({
+    weekNumber: Number.isFinite(weekNum) ? weekNum : 0,
+    screenTypes,
+  });
+  // Track XP at the start of each screen so we can compute per-screen
+  // XP earned (lessonXp delta) when saving the screen result.
+  const screenXpBaselineRef = useRef<number>(0);
+  // Avoid double-completing or double-quitting on unmount.
+  const lessonCompletedRef = useRef<boolean>(false);
+  // Guard so the sticker server action only fires once per lesson
+  // life, even if the child bounces forward/back across the unlock
+  // screen. The action is idempotent server-side too, but skipping
+  // the round-trip is cheaper and keeps logs clean.
+  const stickersAwardedRef = useRef<boolean>(false);
+  // Resume - we no longer auto-jump. The hook surfaces a
+  // `pendingResume` flag when an unfinished attempt is found; we
+  // render a small banner with Continue / Restart and only change
+  // `screen` once the child picks. For brand-new attempts the banner
+  // never appears so the lesson starts on screen 0 immediately.
+  const resumedRef = useRef<boolean>(false);
+  useEffect(() => {
+    if (resumedRef.current) return;
+    if (progress.resumeIndex === null) return;
+
+    // QA deep-link wins over both first-visit and pending-resume.
+    // We clamp to valid range, jump, mark the clock, dismiss the
+    // resume banner if it was about to show, and flag done.
+    if (deepLinkScreen !== null && content) {
+      const target = Math.max(
+        0,
+        Math.min(content.screens.length - 1, deepLinkScreen)
+      );
+      setScreen(target);
+      progress.markScreenStart(target);
+      screenXpBaselineRef.current = lessonXp;
+      if (progress.pendingResume) progress.acknowledgeResume();
+      resumedRef.current = true;
+      return;
+    }
+
+    // First-visit case: no progress to resume, just mark the
+    // starting stopwatch and move on.
+    if (!progress.pendingResume) {
+      progress.markScreenStart(screen);
+      screenXpBaselineRef.current = lessonXp;
+      resumedRef.current = true;
+    }
+  }, [progress, screen, lessonXp, deepLinkScreen, content]);
+
+  const onResumeContinue = useCallback(() => {
+    const target = Math.max(
+      0,
+      Math.min((content?.screens.length ?? 1) - 1, progress.resumeIndex ?? 0)
+    );
+    setScreen(target);
+    progress.markScreenStart(target);
+    screenXpBaselineRef.current = lessonXp;
+    progress.acknowledgeResume();
+    resumedRef.current = true;
+
+    // Edge case: the previous session reached the completion screen
+    // but reloaded before completeAttempt committed (e.g. tab
+    // refresh, navigation, transient network drop). The stored row
+    // is unfinished AT the completion screen. Re-fire complete() to
+    // close it off. Safe to pass totalXp = lessonXp here (0 on
+    // fresh mount) because completeAttempt is raise-only on totalXp
+    // and finalScreenIndex - it can't lower previously stored
+    // values.
+    const arrivingType = content?.screens[target]?.type;
+    if (arrivingType === "completion" && !lessonCompletedRef.current) {
+      lessonCompletedRef.current = true;
+      progress.complete({
+        totalXp: lessonXp,
+        finalScreenIndex: target,
+      });
+    }
+  }, [content?.screens, progress, lessonXp]);
+
+  const onResumeRestart = useCallback(async () => {
+    setScreen(0);
+    setLessonXp(0);
+    setWrongCounts({});
+    setBossDone(false);
+    setBossStats(null);
+    screenXpBaselineRef.current = 0;
+    await progress.restart();
+    progress.markScreenStart(0);
+    resumedRef.current = true;
+  }, [progress]);
+
+  // Mirror `screen` into a ref so the unmount cleanup can read the
+  // latest value (the cleanup callback captures the initial closure).
+  const screenRef = useRef<number>(0);
+  useEffect(() => {
+    screenRef.current = screen;
+  }, [screen]);
+
+  // exercise_quit on unmount if the lesson isn't completed.
+  useEffect(() => {
+    return () => {
+      if (lessonCompletedRef.current) return;
+      progress.reportExerciseQuit(screenRef.current);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   // Window dims for the 3D arena
   const [winDim, setWinDim] = useState<{ w: number; h: number }>(() =>
     typeof window === "undefined" ? { w: 1280, h: 720 } : { w: window.innerWidth, h: window.innerHeight }
@@ -294,13 +533,30 @@ export default function DynamicLesson() {
     return () => window.removeEventListener("resize", onResize);
   }, []);
 
+  // Sticker award - fired the first time a stickerUnlock screen is
+  // mounted in this lesson run. We pull the catalogue ids from the
+  // screen def itself so the data file stays the source of truth,
+  // and we swallow auth failures (unauthed preview = silent no-op).
+  useEffect(() => {
+    if (!content || stickersAwardedRef.current) return;
+    const def = content.screens[screen];
+    if (def?.type !== "stickerUnlock") return;
+    const ids = def.stickers.map((s) => s.id);
+    if (ids.length === 0) return;
+    stickersAwardedRef.current = true;
+    awardStickers(ids).catch((err) => {
+      // eslint-disable-next-line no-console
+      console.warn("[DynamicLesson] awardStickers failed:", err);
+    });
+  }, [screen, content]);
+
   // BGM: lesson for content screens, battle for exercise/boss.
   useEffect(() => {
     if (!content || !cutsceneDone) return;
     const def = content.screens[screen];
     const isBattle =
       def?.type === "bossBattle" ||
-      (def && ["cyberScanner", "protectTheData", "conveyorBelt", "spamBlaster", "firewallBuilder", "cyberMaze"].includes(def.type));
+      (def && ["cyberScanner", "protectTheData", "conveyorBelt", "weakSorter", "passwordHospital", "popupPanic", "threeRandomWords", "accountRescue", "spamBlaster", "firewallBuilder", "cyberMaze", "phishInspector", "passwordVault"].includes(def.type));
     try {
       playBGM(isBattle ? "bgmBattle" : "bgmLesson");
     } catch {
@@ -333,10 +589,44 @@ export default function DynamicLesson() {
       playSFX("transition");
       setScreen((prev) => {
         navDirRef.current = to < prev ? "back" : "forward";
-        return Math.max(0, Math.min(totalScreens - 1, to));
+        const next = Math.max(0, Math.min(totalScreens - 1, to));
+
+        // Persistence: save the screen we're LEAVING (only when moving
+        // forward past the leaving screen and only when it's a real
+        // advance, not a back-navigation).
+        if (next > prev) {
+          const w = wrongCounts[prev] ?? 0;
+          const stars = w === 0 ? 3 : w <= 1 ? 2 : 1;
+          const xpEarned = Math.max(0, lessonXp - screenXpBaselineRef.current);
+          const leavingType = content.screens[prev]?.type ?? "unknown";
+          progress.saveScreen({
+            screenIndex: prev,
+            wrongCount: w,
+            xpEarned,
+            starsEarned: stars,
+          });
+          // Baseline + clock reset for the screen we're entering.
+          screenXpBaselineRef.current = lessonXp;
+          progress.markScreenStart(next);
+
+          // Lesson completion - when the child reaches the `completion`
+          // screen the lesson is effectively over (even if they stay
+          // on the screen). Mark complete + emit analytics here so
+          // the row gets a `completedAt` even if they close the tab
+          // before clicking the final CTA.
+          const arrivingType = content.screens[next]?.type;
+          if (arrivingType === "completion" && !lessonCompletedRef.current) {
+            lessonCompletedRef.current = true;
+            progress.complete({
+              totalXp: lessonXp,
+              finalScreenIndex: next,
+            });
+          }
+        }
+        return next;
       });
     },
-    [content, totalScreens]
+    [content, totalScreens, wrongCounts, lessonXp, progress]
   );
 
   // Arrow-key navigation (disabled during boss overlay)
@@ -514,6 +804,12 @@ export default function DynamicLesson() {
                 <h2 style={{ fontSize: 26, fontWeight: 900, color: "#fff", margin: "0 0 12px", textAlign: "center" }}>
                   {def.title}
                 </h2>
+                {def.narration && (
+                  <InfoNarration
+                    lines={def.narration.lines}
+                    speaker={def.narration.speaker ?? "adam"}
+                  />
+                )}
                 <p style={{ color: "#cbd5e1", fontSize: 15, lineHeight: 1.6, marginBottom: 18 }}>{def.content}</p>
                 {def.bullets && (
                   <ul style={{ listStyle: "none", padding: 0, margin: "0 0 20px" }}>
@@ -558,6 +854,7 @@ export default function DynamicLesson() {
               onComplete={() => navigate(screen + 1)}
               onCorrect={() => awardXp(25)}
               onWrong={() => addWrong(screen)}
+              onHintReached={(tier) => progress.reportHint(screen, tier)}
             />
           </FullScene>
         );
@@ -592,6 +889,7 @@ export default function DynamicLesson() {
               onComplete={() => navigate(screen + 1)}
               onCorrect={() => awardXp(25)}
               onWrong={() => addWrong(screen)}
+              onHintReached={(tier) => progress.reportHint(screen, tier)}
             />
           </FullScene>
         );
@@ -604,6 +902,134 @@ export default function DynamicLesson() {
               onComplete={() => navigate(screen + 1)}
               onCorrect={() => awardXp(25)}
               onWrong={() => addWrong(screen)}
+            />
+          </FullScene>
+        );
+
+      case "weakSorter":
+        return (
+          <FullScene bg="linear-gradient(180deg, #050a1a 0%, #1a1033 100%)">
+            <WeakSorter
+              reasons={def.reasons}
+              items={def.items}
+              hints={def.hints}
+              onComplete={() => navigate(screen + 1)}
+              onCorrect={() => awardXp(25)}
+              onWrong={() => addWrong(screen)}
+              onHintReached={(tier) => progress.reportHint(screen, tier)}
+            />
+          </FullScene>
+        );
+
+      case "passwordHospital":
+        return (
+          <FullScene bg="linear-gradient(180deg, #050a1a 0%, #122318 100%)">
+            <PasswordHospital
+              reasons={def.reasons}
+              patients={def.patients}
+              hints={def.hints}
+              onComplete={() => navigate(screen + 1)}
+              onCorrect={() => awardXp(25)}
+              onWrong={() => addWrong(screen)}
+              onHintReached={(tier) => progress.reportHint(screen, tier)}
+              onAnswered={(o) => {
+                // Persist per-patient diagnosis + healed events.
+                // questionKey is "hospital-{patientId}-{diagnosis|healed}";
+                // the working password text is never sent.
+                progress.saveQuestion({
+                  screenIndex: screen,
+                  questionKey: o.questionKey,
+                  selectedIndex: o.selectedIndex,
+                  correctIndex: o.correctIndex,
+                  wasCorrect: o.wasCorrect,
+                });
+                if (!o.wasCorrect) {
+                  progress.reportWrong(screen, o.questionKey);
+                }
+              }}
+            />
+          </FullScene>
+        );
+
+      case "popupPanic":
+        return (
+          <FullScene bg="linear-gradient(180deg, #050a1a 0%, #1a0f2a 100%)">
+            <PopupPanic
+              popups={def.popups}
+              hints={def.hints}
+              onComplete={() => navigate(screen + 1)}
+              onCorrect={() => awardXp(25)}
+              onWrong={() => addWrong(screen)}
+              onHintReached={(tier) => progress.reportHint(screen, tier)}
+              onAnswered={(o) => {
+                progress.saveQuestion({
+                  screenIndex: screen,
+                  questionKey: o.questionKey,
+                  selectedIndex: o.selectedIndex,
+                  correctIndex: o.correctIndex,
+                  wasCorrect: o.wasCorrect,
+                });
+                if (!o.wasCorrect) {
+                  progress.reportWrong(screen, o.questionKey);
+                }
+              }}
+            />
+          </FullScene>
+        );
+
+      case "threeRandomWords":
+        return (
+          <FullScene bg="linear-gradient(180deg, #050a1a 0%, #1a1f4d 100%)">
+            <ThreeRandomWords
+              words={def.words}
+              slots={def.slots}
+              hints={def.hints}
+              onComplete={() => navigate(screen + 1)}
+              onCorrect={() => awardXp(25)}
+              onWrong={() => addWrong(screen)}
+              onHintReached={(tier) => progress.reportHint(screen, tier)}
+              onAnswered={(o) => {
+                // questionKey embeds the chosen word ids as a suffix
+                // ("trw-build@w-tiger+w-mountain+w-cookie"); enough
+                // for parent-dashboard aggregation without storing
+                // the assembled passphrase text.
+                progress.saveQuestion({
+                  screenIndex: screen,
+                  questionKey: o.questionKey,
+                  selectedIndex: o.selectedIndex,
+                  correctIndex: o.correctIndex,
+                  wasCorrect: o.wasCorrect,
+                });
+              }}
+            />
+          </FullScene>
+        );
+
+      case "accountRescue":
+        return (
+          <FullScene bg="linear-gradient(180deg, #050a1a 0%, #1a1f4d 100%)">
+            <AccountRescue
+              sharedPassword={def.sharedPassword}
+              leakedAccountId={def.leakedAccountId}
+              accounts={def.accounts}
+              passwordBank={def.passwordBank}
+              hints={def.hints}
+              onComplete={() => navigate(screen + 1)}
+              onCorrect={() => awardXp(25)}
+              onWrong={() => addWrong(screen)}
+              onHintReached={(tier) => progress.reportHint(screen, tier)}
+              onAnswered={(o) => {
+                progress.saveQuestion({
+                  screenIndex: screen,
+                  questionKey: o.questionKey,
+                  selectedIndex: o.selectedIndex,
+                  correctIndex: o.correctIndex,
+                  wasCorrect: o.wasCorrect,
+                });
+                if (!o.wasCorrect) {
+                  progress.reportWrong(screen, o.questionKey);
+                }
+              }}
             />
           </FullScene>
         );
@@ -628,6 +1054,7 @@ export default function DynamicLesson() {
               onComplete={() => navigate(screen + 1)}
               onCorrect={() => awardXp(25)}
               onWrong={() => addWrong(screen)}
+              onHintReached={(tier) => progress.reportHint(screen, tier)}
             />
           </FullScene>
         );
@@ -651,6 +1078,7 @@ export default function DynamicLesson() {
               onComplete={() => navigate(screen + 1)}
               onCorrect={() => awardXp(25)}
               onWrong={() => addWrong(screen)}
+              onHintReached={(tier) => progress.reportHint(screen, tier)}
             />
           </FullScene>
         );
@@ -663,6 +1091,95 @@ export default function DynamicLesson() {
               onComplete={() => navigate(screen + 1)}
               onCorrect={() => awardXp(25)}
               onWrong={() => addWrong(screen)}
+              onHintReached={(tier) => progress.reportHint(screen, tier)}
+              onAnswered={(o) => {
+                progress.saveQuestion({
+                  screenIndex: screen,
+                  questionKey: `maze-${o.questionIndex}`,
+                  selectedIndex: o.selectedIndex,
+                  correctIndex: o.correctIndex,
+                  wasCorrect: o.wasCorrect,
+                });
+                if (!o.wasCorrect) {
+                  progress.reportWrong(screen, `maze-${o.questionIndex}`);
+                }
+              }}
+            />
+          </FullScene>
+        );
+
+      case "passwordVault":
+        return (
+          <FullScene bg="radial-gradient(ellipse at center, #1a1f4d 0%, #0a0e25 50%, #050714 100%)">
+            <PasswordVault
+              locks={def.locks}
+              guidance={def.guidance}
+              onComplete={() => navigate(screen + 1)}
+              onCorrect={() => awardXp(30)}
+              onWrong={() => addWrong(screen)}
+              onHintReached={(tier) => progress.reportHint(screen, tier)}
+              onAnswered={(o) => {
+                progress.saveQuestion({
+                  screenIndex: screen,
+                  questionKey: o.questionKey,
+                  selectedIndex: o.selectedIndex,
+                  correctIndex: o.correctIndex,
+                  wasCorrect: o.wasCorrect,
+                });
+                if (!o.wasCorrect) {
+                  progress.reportWrong(screen, o.questionKey);
+                }
+              }}
+            />
+          </FullScene>
+        );
+
+      case "phishInspector":
+        return (
+          <FullScene bg="linear-gradient(180deg, #050a1a 0%, #1a1033 100%)">
+            <PhishInspector
+              emails={def.emails}
+              hints={def.hints}
+              onComplete={() => navigate(screen + 1)}
+              onCorrect={() => awardXp(30)}
+              onWrong={() => addWrong(screen)}
+              onHintReached={(tier) => progress.reportHint(screen, tier)}
+              onAnswered={(o) => {
+                progress.saveQuestion({
+                  screenIndex: screen,
+                  questionKey: o.questionKey,
+                  selectedIndex: o.selectedIndex,
+                  correctIndex: o.correctIndex,
+                  wasCorrect: o.wasCorrect,
+                });
+                if (!o.wasCorrect) {
+                  progress.reportWrong(screen, o.questionKey);
+                }
+              }}
+            />
+          </FullScene>
+        );
+
+      case "missionDebrief":
+        return (
+          <FullScene bg="linear-gradient(180deg, #050a1a 0%, #1a1f4d 100%)">
+            <MissionDebrief
+              title={def.title}
+              subtitle={def.subtitle}
+              concepts={def.concepts}
+              narration={def.narration}
+              onComplete={() => navigate(screen + 1)}
+            />
+          </FullScene>
+        );
+
+      case "stickerUnlock":
+        return (
+          <FullScene bg="linear-gradient(180deg, #050a1a 0%, #1f1240 100%)">
+            <StickerUnlock
+              title={def.title}
+              stickers={def.stickers}
+              onComplete={() => navigate(screen + 1)}
             />
           </FullScene>
         );
@@ -727,7 +1244,13 @@ export default function DynamicLesson() {
                 <p style={{ color: "#fca5a5", fontSize: 20, fontWeight: 600, marginBottom: 32 }}>
                   Hacker Raccoon is waiting...
                 </p>
-                <OrangeButton sound="transition" onClick={() => setShowBoss(true)}>
+                <OrangeButton
+                  sound="transition"
+                  onClick={() => {
+                    progress.reportBossStarted();
+                    setShowBoss(true);
+                  }}
+                >
                   START BATTLE →
                 </OrangeButton>
               </div>
@@ -831,6 +1354,18 @@ export default function DynamicLesson() {
 
       <LessonAmbience />
 
+      {/* Resume banner - only renders when the server returned an
+          unfinished attempt with progress > 0 AND the child hasn't
+          chosen continue or restart yet. */}
+      {progress.pendingResume && progress.resumeIndex !== null && (
+        <ResumeBanner
+          resumeIndex={progress.resumeIndex}
+          totalScreens={totalScreens}
+          onContinue={onResumeContinue}
+          onRestart={onResumeRestart}
+        />
+      )}
+
       <LessonHUD
         characterName="ADAM"
         characterImage="/game/characters/adam-idle.png"
@@ -841,20 +1376,43 @@ export default function DynamicLesson() {
         xpEarned={lessonXp}
       />
 
-      <CharacterGuide
-        character="adam"
-        position="left"
-        mood={toMood(reaction.adam?.mood)}
-        message={reaction.adam?.message ?? ""}
-      />
-      <CharacterGuide
-        character="layla"
-        position="right"
-        mood={toMood(reaction.layla?.mood)}
-        message={reaction.layla?.message ?? ""}
-      />
+      {/* Character guides are mounted ONLY on the boss battle screen.
+          Adam/Layla flank the Hacker Raccoon fight; every other
+          lesson surface stays character-free. */}
+      {def?.type === "bossBattle" && (
+        <>
+          <RiveCharacterGuide
+            character="adam"
+            position="left"
+            mood={toMood(reaction.adam?.mood)}
+            message={reaction.adam?.message ?? ""}
+          />
+          <RiveCharacterGuide
+            character="layla"
+            position="right"
+            mood={toMood(reaction.layla?.mood)}
+            message={reaction.layla?.message ?? ""}
+          />
+        </>
+      )}
 
-      <main style={{ position: "relative", zIndex: 1, maxWidth: 1100, margin: "0 auto", padding: "0 0 80px" }}>
+      <main
+        style={{
+          position: "relative",
+          zIndex: 1,
+          // No max-width here. The per-screen LessonStage background
+          // gradient fills the whole viewport edge-to-edge so the
+          // Three.js arena doesn't show through as a two-tone strip
+          // on wide monitors. The exercise content inside LessonStage
+          // still caps at 900px and stays centred, so the playable
+          // area is unchanged.
+          width: "100%",
+          paddingTop: LESSON_HUD_HEIGHT,
+          paddingLeft: 0,
+          paddingRight: 0,
+          paddingBottom: "max(20px, env(safe-area-inset-bottom, 0px))",
+        }}
+      >
         <ScreenTransition
           transitionKey={screen}
           type={transitionForScreen(def, navDirRef.current)}
@@ -877,15 +1435,58 @@ export default function DynamicLesson() {
         <div style={{ position: "fixed", inset: 0, zIndex: 80 }}>
           <BossBattle
             bossName="HACKER RACCOON"
-            questions={[
-              ...content.bossQuestions.easy,
-              ...content.bossQuestions.medium,
-              ...content.bossQuestions.hard,
-            ].map((q) => ({
-              question: q.question,
-              answers: q.answers,
-              correctIndex: q.correctIndex,
-            }))}
+            // Prefer the new phased boss (5 acts: Strength / Secrecy /
+            // Uniqueness / Phishing / Final Showdown). BossBattle
+            // internally flattens phases into a serial question list
+            // while tagging each question with phase metadata, so
+            // combat behaviour is unchanged. Fall back to the flat
+            // legacy questions list if a week hasn't been migrated to
+            // phases yet.
+            phases={content.bossPhases}
+            questions={
+              content.bossPhases && content.bossPhases.length > 0
+                ? undefined
+                : [
+                    ...content.bossQuestions.easy.map((q, i) => ({
+                      question: q.question,
+                      answers: q.answers,
+                      correctIndex: q.correctIndex,
+                      key: `boss-easy-${i}`,
+                    })),
+                    ...content.bossQuestions.medium.map((q, i) => ({
+                      question: q.question,
+                      answers: q.answers,
+                      correctIndex: q.correctIndex,
+                      key: `boss-medium-${i}`,
+                    })),
+                    ...content.bossQuestions.hard.map((q, i) => ({
+                      question: q.question,
+                      answers: q.answers,
+                      correctIndex: q.correctIndex,
+                      key: `boss-hard-${i}`,
+                    })),
+                  ]
+            }
+            onQuestionAnswered={(o) => {
+              // Persist per-question. The phaseId travels with the
+              // outcome (when phased) so the parent dashboard can
+              // attribute wrong-answer clusters to specific acts.
+              // We embed phaseId into the questionKey when present
+              // so QuestionResponse rows are act-queryable without a
+              // schema migration.
+              const keyWithPhase =
+                o.phaseId ? `${o.key}@${o.phaseId}` : o.key;
+              progress.saveQuestion({
+                screenIndex: screen,
+                questionKey: keyWithPhase,
+                selectedIndex: o.selectedIndex,
+                correctIndex: o.correctIndex,
+                wasCorrect: o.wasCorrect,
+              });
+              if (!o.wasCorrect) {
+                progress.reportWrong(screen, keyWithPhase);
+              }
+            }}
             onEnd={(won, stats) => {
               setShowBoss(false);
               setBossDone(true);
@@ -894,6 +1495,35 @@ export default function DynamicLesson() {
                 accuracy: stats.accuracy ?? 0,
                 xp: stats.xp ?? 0,
               });
+              // Persist boss result.
+              progress.saveBoss({
+                won,
+                accuracy: stats.accuracy ?? 0,
+                totalQuestions: stats.totalQuestions ?? 0,
+                correctCount: stats.correctCount ?? 0,
+                wrongCount: stats.wrongCount ?? 0,
+                bestCombo: stats.combo ?? 0,
+                durationMs: stats.durationMs ?? 0,
+                badgeEarned: won,
+                badgeId: won ? `week-${content.weekNumber}` : undefined,
+              });
+              // Per-phase analytics roll-up. Each phase emits its own
+              // boss_completed-like event so the dashboard can show
+              // "strongest skill" / "weakest skill" without a Prisma
+              // migration. The aggregate boss_completed still fires
+              // via progress.saveBoss().
+              for (const pr of stats.phaseResults ?? []) {
+                analytics.bossCompleted({
+                  weekNumber: content.weekNumber,
+                  won: pr.wrongCount === 0,
+                  accuracy:
+                    pr.totalQuestions > 0
+                      ? Math.round((pr.correctCount / pr.totalQuestions) * 100)
+                      : 0,
+                  bestCombo: 0,
+                  durationMs: 0,
+                });
+              }
               if (won) {
                 awardXp(150);
                 void correctAnswerBurst();

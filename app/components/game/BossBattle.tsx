@@ -39,21 +39,106 @@ const HeroSelectAtmosphere = dynamic(
 );
 
 import { useIsMobile } from "@/app/lib/useIsMobile";
+import { useComfortMode } from "@/app/lib/comfortMode";
+import {
+  getQualitySettings,
+  scaledParticleCount,
+  playSoftWrong,
+} from "@/app/lib/gameEngine";
 
 export interface Question {
   question: string;
   answers: string[];
   correctIndex: number;
   explanation?: string;
+  /**
+   * Stable identifier passed back to onQuestionAnswered so the parent
+   * can persist per-question outcomes without storing question text.
+   * If omitted, defaults to "boss-<index>" inside the component.
+   */
+  key?: string;
+}
+
+/** Per-question outcome emitted from BossBattle to the parent. */
+export interface BossQuestionOutcome {
+  /** Stable key, falls back to "boss-<index>". */
+  key: string;
+  selectedIndex: number; // -1 if timed out
+  correctIndex: number;
+  wasCorrect: boolean;
+  /** 1-based position in the boss run. */
+  position: number;
+  /** Phase id this question belonged to. Empty string when phases are
+   *  not used (legacy flat-question mode). */
+  phaseId?: string;
+}
+
+/**
+ * Multi-phase boss support.
+ *
+ * The boss is currently a single sustained 15-question run. The Week 1
+ * plan restructures it into 5 concept-tagged acts: Strength, Secrecy,
+ * Uniqueness, Phishing, Final Showdown. Each phase contains its own
+ * curated questions. Phases are an optional prop - boss falls back to
+ * the flat `questions` list when `phases` is absent, so older callers
+ * are unaffected.
+ *
+ * The `kind: "mcq"` discriminator is the only kind implemented today.
+ * `"miniHospital" | "miniRescue" | "miniInspector"` are reserved for
+ * the upcoming mini-mechanic phases (Hospital-in-boss, Account-rescue-
+ * in-boss, Phish-Inspector-in-boss). The renderer will branch on kind
+ * when those land.
+ */
+export type BossPhase =
+  | {
+      kind: "mcq";
+      /** Stable id like "phase-strength". Persisted to analytics. */
+      id: string;
+      /** Display label, e.g. "Strength" - shown in the phase badge. */
+      label: string;
+      /** Short tagline shown in the phase-change announcement, e.g. "Round 1 - The Strength Test!" */
+      announceText: string;
+      /** Announcement colour tone. Must be one of the existing toast tones. */
+      announceTone: "blue" | "red" | "gold" | "cyan";
+      questions: Question[];
+    };
+
+/** Per-phase result included in the boss end stats. */
+export interface BossPhaseResult {
+  phaseId: string;
+  label: string;
+  correctCount: number;
+  wrongCount: number;
+  totalQuestions: number;
+}
+
+/** Final stats emitted on boss end - enriched beyond the legacy
+ * combo/accuracy/xp triple so callers can persist proper analytics. */
+export interface BossEndStats {
+  combo: number;
+  accuracy: number;
+  xp: number;
+  totalQuestions: number;
+  correctCount: number;
+  wrongCount: number;
+  durationMs: number;
+  /** Per-phase breakdown when phased mode was used. Empty otherwise. */
+  phaseResults: BossPhaseResult[];
 }
 
 export interface BossBattleProps {
+  /** Legacy flat question list. Used when `phases` is absent. */
   questions?: Question[];
+  /** New phased mode. When set, supersedes `questions`. */
+  phases?: BossPhase[];
   bossName?: string;
-  onEnd?: (
-    won: boolean,
-    stats: { combo: number; accuracy: number; xp: number }
-  ) => void;
+  onEnd?: (won: boolean, stats: BossEndStats) => void;
+  /**
+   * Optional per-question hook fired the moment each answer resolves
+   * (correct, wrong, or timed out). Used by the lesson to write a
+   * QuestionResponse row + emit the wrong_answer analytics event.
+   */
+  onQuestionAnswered?: (outcome: BossQuestionOutcome) => void;
 }
 
 const EASY_QUESTIONS: Question[] = [
@@ -305,6 +390,15 @@ interface GameState {
   bossAlpha: number;           // boss sprite alpha - for intro reveal
   bossYOffset: number;         // vertical offset for intro drop-in
   hitStopUntil: number;        // timestamp (g.time + N) when hit-stop ends
+  /**
+   * Comfort-mode flag mirrored from the React `comfort.enabled` hook.
+   * When true the helper functions soften effects: shorter hit-stop,
+   * lower-intensity shake, no overlay flashes above a threshold.
+   * Set from the component via a useEffect so module-level helpers
+   * (playerAttack, bossAttack, triggerHitStop) can react without
+   * needing direct access to the hook.
+   */
+  comfortReduceMotion: boolean;
   // 3D-ish stagecraft
   heroShadow: Graphics | null;
   bossShadow: Graphics | null;
@@ -384,6 +478,12 @@ function schedule(g: GameState, delay: number, fn: () => void) {
   g.timers.push({ delay, fn });
 }
 
+// Hard cap on simultaneous Pixi particles so long sessions never
+// accumulate enough to tank framerate on mobile. When the cap is hit
+// new spawns are silently skipped - the oldest particles will fade
+// out within ~1s and free up slots.
+const BB_PARTICLE_CAP = 220;
+
 function spawnParticles(
   g: GameState,
   x: number,
@@ -392,7 +492,13 @@ function spawnParticles(
   colors: number[]
 ) {
   if (!g.stage) return;
-  for (let i = 0; i < count; i++) {
+  // Adaptive quality: low-tier devices render fewer particles. This
+  // single wrap covers every spawnParticles call in the file
+  // (player attacks, boss attacks, victory burst, defeat dust, intro
+  // dust) without touching each call site.
+  const scaled = scaledParticleCount(count);
+  for (let i = 0; i < scaled; i++) {
+    if (g.particles.length >= BB_PARTICLE_CAP) break;
     const color = colors[Math.floor(Math.random() * colors.length)];
     const size = 2 + Math.random() * 4;
     const gfx = new Graphics();
@@ -505,18 +611,42 @@ function spawnDamageFx(
 }
 
 function triggerShake(g: GameState, intensity: number, duration: number) {
-  g.shakeIntensity = Math.max(g.shakeIntensity, intensity);
+  // Comfort mode caps shake at ~40% intensity so vestibular-sensitive
+  // children get the visual cue without the punch.
+  const scaled = g.comfortReduceMotion ? intensity * 0.4 : intensity;
+  g.shakeIntensity = Math.max(g.shakeIntensity, scaled);
   g.shakeDuration = Math.max(g.shakeDuration, duration);
-  if (intensity >= 6) playSound("screenShake");
+  if (intensity >= 6 && !g.comfortReduceMotion) playSound("screenShake");
 }
 
 /** Pause rendering for N ms ("hit-stop" freeze). */
 function triggerHitStop(g: GameState, ms: number) {
   if (!g.app) return;
+  // Comfort mode shortens hit-stop dramatically so the freeze doesn't
+  // feel like the game is broken. We keep a minimum of 16ms (1 frame
+  // at 60Hz) so the impact still registers physically.
+  const effective = g.comfortReduceMotion ? Math.min(ms, 16) : ms;
+  if (effective <= 0) return;
   g.app.ticker.speed = 0;
   window.setTimeout(() => {
     if (g.app) g.app.ticker.speed = 1;
-  }, ms);
+  }, effective);
+}
+
+/**
+ * Slow-motion: ramps `ticker.speed` down to `factor` (e.g. 0.4) and
+ * holds for `duration` ms, then snaps back to 1. Used for the final
+ * blow + defeat moments so the climax reads as cinematic instead of
+ * abrupt. Skipped entirely under comfort mode (the time dilation
+ * feels broken when motion is supposed to be reduced).
+ */
+function triggerSlowMo(g: GameState, factor: number, duration: number) {
+  if (!g.app) return;
+  if (g.comfortReduceMotion) return;
+  g.app.ticker.speed = factor;
+  window.setTimeout(() => {
+    if (g.app) g.app.ticker.speed = 1;
+  }, duration);
 }
 
 /**
@@ -1181,8 +1311,10 @@ function CountUp({
 
 export default function BossBattle({
   questions,
+  phases,
   bossName = "HACKER RACCOON",
   onEnd,
+  onQuestionAnswered,
 }: BossBattleProps) {
   const canvasHostRef = useRef<HTMLDivElement>(null);
 
@@ -1190,12 +1322,66 @@ export default function BossBattle({
   // canvas so phones don't run it alongside Arena3D + PixiJS.
   const isMobile = useIsMobile();
 
-  // When custom questions are passed in, we use them verbatim and skip the
-  // adaptive 3-pool system (backwards-compatible with older callers).
-  const customQuestions = useMemo(
-    () => (questions && questions.length > 0 ? questions : null),
-    [questions]
-  );
+  /**
+   * Question source resolution:
+   *   1. If `phases` is set → flatten into a single list, remember which
+   *      phase each question belongs to, and feed the existing
+   *      sequential customQuestions advance logic with the flat list.
+   *      This keeps the entire combat / answer / damage layer untouched
+   *      and adds phasing as a derived layer on top.
+   *   2. Else if `questions` is set → use that flat list (legacy path).
+   *   3. Else → fall back to the local EASY/MEDIUM/HARD pools with the
+   *      adaptive difficulty system.
+   *
+   * `phaseOfQuestion[i]` returns the BossPhase metadata for the
+   * question at flat index `i`. Used by phase-badge UI + phase-change
+   * announcements + per-phase stats tracking.
+   */
+  const customQuestions = useMemo<Question[] | null>(() => {
+    if (phases && phases.length > 0) {
+      const flat: Question[] = [];
+      for (const p of phases) {
+        for (const q of p.questions) flat.push(q);
+      }
+      return flat;
+    }
+    if (questions && questions.length > 0) return questions;
+    return null;
+  }, [phases, questions]);
+
+  const phaseOfQuestion = useMemo<BossPhase[] | null>(() => {
+    if (!phases || phases.length === 0) return null;
+    const out: BossPhase[] = [];
+    for (const p of phases) {
+      for (let i = 0; i < p.questions.length; i++) out.push(p);
+    }
+    return out;
+  }, [phases]);
+
+  /**
+   * Per-phase running totals. Updated inside resolveAnswer when a
+   * phased question resolves. Survives across renders via ref so
+   * setState pressure isn't an issue. Emitted via onEnd as
+   * `phaseResults` so the parent can persist + analytics it.
+   */
+  const phaseStatsRef = useRef<Map<string, BossPhaseResult>>(new Map());
+  useEffect(() => {
+    if (!phases) {
+      phaseStatsRef.current.clear();
+      return;
+    }
+    const m = new Map<string, BossPhaseResult>();
+    for (const p of phases) {
+      m.set(p.id, {
+        phaseId: p.id,
+        label: p.label,
+        correctCount: 0,
+        wrongCount: 0,
+        totalQuestions: p.questions.length,
+      });
+    }
+    phaseStatsRef.current = m;
+  }, [phases]);
 
   // Per-pool advance pointers - "next index to pick".
   const easyIdxRef = useRef(1);
@@ -1223,6 +1409,15 @@ export default function BossBattle({
   const [locked, setLocked] = useState(false);
   const [result, setResult] = useState<null | "won" | "lost">(null);
   const [stats, setStats] = useState({ totalAsked: 0, correct: 0, maxCombo: 0 });
+  /**
+   * Boss-start timestamp for duration analytics. Captured on mount;
+   * close enough to gameplay start (~2-3s intro overhead is OK for
+   * "how long did this fight take" telemetry).
+   */
+  const bossStartedAtRef = useRef<number>(0);
+  useEffect(() => {
+    bossStartedAtRef.current = performance.now();
+  }, []);
   const [gameKey, setGameKey] = useState(0);
   const [shakeWrong, setShakeWrong] = useState(false);
   const [loadError, setLoadError] = useState<string | null>(null);
@@ -1341,8 +1536,22 @@ export default function BossBattle({
 
   // Timer - initial budget follows adaptive difficulty level.
   // 0 = easy (18s), 1 = medium (14s), 2 = hard (11s).
-  const difficultyTimerMs = (level: 0 | 1 | 2): number =>
-    level === 0 ? 18000 : level === 1 ? 14000 : 11000;
+  const comfort = useComfortMode();
+  // Sync comfort flag into the GameState ref so module-level helpers
+  // (triggerHitStop, triggerShake, triggerSlowMo, playerAttack,
+  // bossAttack) can read it without going through the React hook.
+  useEffect(() => {
+    gameRef.current.comfortReduceMotion =
+      comfort.enabled || comfort.prefersReducedMotion;
+  }, [comfort.enabled, comfort.prefersReducedMotion]);
+  // Comfort mode extends per-question budget by 60% so slow readers
+  // and motor-delayed children aren't penalised for thinking time.
+  // Reads via closure - any difficultyTimerMs call after comfort
+  // toggles will pick up the new value on the NEXT question.
+  const difficultyTimerMs = (level: 0 | 1 | 2): number => {
+    const base = level === 0 ? 18000 : level === 1 ? 14000 : 11000;
+    return Math.round(base * (comfort.enabled ? 1.6 : 1));
+  };
   const difficultyDamage = (level: 0 | 1 | 2): number =>
     level === 0 ? 10 : level === 1 ? 13 : 16;
   const [currentQuestionMs, setCurrentQuestionMs] = useState(18000);
@@ -1437,6 +1646,7 @@ export default function BossBattle({
     bgOverlayAlpha: 0, bgOverlayColor: 0x000000, bgOverlayPulseAlpha: 0,
     heroAlpha: 1, bossAlpha: 1, bossYOffset: 0,
     hitStopUntil: 0,
+    comfortReduceMotion: false,
     heroShadow: null, bossShadow: null,
     heroReflection: null, bossReflection: null,
     heroGlow: null, bossGlow: null,
@@ -1602,13 +1812,18 @@ export default function BossBattle({
 
     (async () => {
       try {
+        // Cap renderer resolution at the adaptive-quality dpr cap
+        // (default 2). 3x phones were paying for 9x the pixel work
+        // with no visible gain on small screens.
+        const dprCap = getQualitySettings().dprCap;
+        const effectiveDpr = Math.min(window.devicePixelRatio || 1, dprCap);
         await app.init({
           width: window.innerWidth,
           height: window.innerHeight,
           backgroundAlpha: 0,
           antialias: true,
           autoDensity: true,
-          resolution: window.devicePixelRatio || 1,
+          resolution: effectiveDpr,
         });
         if (cancelled) {
           app.destroy(true);
@@ -1890,6 +2105,62 @@ export default function BossBattle({
       const cq = currentQ;
       const correct = !timedOut && idx === cq.correctIndex;
 
+      // Phase context for this answer (only present in phased mode).
+      // We look up the phase via the flat-index map built at mount;
+      // this is decoupled from the question advance logic so phases
+      // never touch the combat path.
+      const currentPhase =
+        phaseOfQuestion ? phaseOfQuestion[stats.totalAsked] : null;
+
+      // Emit a per-question outcome BEFORE state mutations so the
+      // parent can persist a QuestionResponse row + analytics event
+      // even if downstream effects later fail. The questionKey falls
+      // back to a position-based id when the data file didn't supply
+      // a stable one. When phased, phaseId travels with the outcome
+      // so the parent dashboard can attribute wrong-answers to acts.
+      onQuestionAnswered?.({
+        key: cq.key ?? `boss-${stats.totalAsked}`,
+        selectedIndex: timedOut ? -1 : idx,
+        correctIndex: cq.correctIndex,
+        wasCorrect: correct,
+        position: stats.totalAsked + 1,
+        phaseId: currentPhase?.id,
+      });
+
+      // Tally per-phase totals + detect phase boundary crossing.
+      // Phase boundary cross = (current question index is the last in
+      // its phase) AND there's a next phase. Fire an announcement
+      // with the next phase's announce text so the child knows the
+      // mood is changing.
+      if (currentPhase && phaseOfQuestion && phases) {
+        const stat = phaseStatsRef.current.get(currentPhase.id);
+        if (stat) {
+          if (correct) stat.correctCount += 1;
+          else stat.wrongCount += 1;
+        }
+        const nextIndex = stats.totalAsked + 1;
+        const nextPhase =
+          nextIndex < phaseOfQuestion.length ? phaseOfQuestion[nextIndex] : null;
+        const isLastQuestionOverall = nextIndex >= phaseOfQuestion.length;
+        // Only announce when we actually cross into a new phase AND
+        // the hero isn't about to win/lose. The end-of-fight
+        // animations get their own cinematic - don't pile on.
+        if (
+          nextPhase &&
+          nextPhase.id !== currentPhase.id &&
+          !isLastQuestionOverall
+        ) {
+          // Schedule the announcement AFTER the existing answer
+          // feedback + advance delay (current code waits ~1.3s on
+          // correct, 2.5s on wrong before advancing). 200ms earlier
+          // than the advance feels like the announcement led the
+          // question swap.
+          window.setTimeout(() => {
+            showAnnouncement(nextPhase.announceText, nextPhase.announceTone);
+          }, correct ? 1100 : 2300);
+        }
+      }
+
       // Pause the timer and record speed for this question.
       timerRunningRef.current = false;
       const answerMs =
@@ -1989,10 +2260,17 @@ export default function BossBattle({
 
         if (newBossHp <= 0) {
           // FINAL-BLOW SEQUENCE - freeze frame, zoom, white flash, then
-          // triggerVictory plays out the explosion + celebration.
+          // a slow-motion beat carries the win-burst before snapping
+          // back to normal and revealing the results card.
           triggerHitStop(g, 280);
-          if (g.boss) cameraPulse(g, 1.18, g.boss.x, g.boss.y, -25);
-          flashOverlay(g, 0xffffff, 0.35, 500);
+          // Slow-mo holds AFTER the freeze, through the triggerVictory
+          // burst (which fires at 380ms below). 600ms at 0.4× speed
+          // = the explosion + golden flash play in dramatic slow-mo.
+          window.setTimeout(() => triggerSlowMo(g, 0.4, 600), 280);
+          if (g.boss) cameraPulse(g, 1.22, g.boss.x, g.boss.y, -25);
+          // Stronger flash on the final blow - reads as the moment of
+          // triumph rather than just another particle burst.
+          flashOverlay(g, 0xffffff, 0.55, 600);
           bumpArenaShake(14);
           window.setTimeout(() => triggerVictory(g), 380);
           window.setTimeout(() => setResult("won"), 2200);
@@ -2036,7 +2314,10 @@ export default function BossBattle({
         setCombo(0);
         setSuperReady(false);
         setStats((s) => ({ ...s, totalAsked: s.totalAsked + 1 }));
-        playSound("wrong");
+        // Softer "no, try again" cue instead of the sharp buzzer.
+        // The wrong path already plays bossAttack SFX a moment later
+        // which carries the impact; this just signals "incorrect".
+        playSoftWrong();
         showCenterFeedback("wrong");
         showBossTaunt();
 
@@ -2060,6 +2341,12 @@ export default function BossBattle({
         setExplanationVisible(true);
 
         if (newHeroHp <= 0) {
+          // DEFEAT SEQUENCE - small hit-stop, then a brief red-tinted
+          // slow-mo carries the boss's victory taunt before the
+          // results card appears.
+          triggerHitStop(g, 180);
+          window.setTimeout(() => triggerSlowMo(g, 0.45, 500), 180);
+          flashOverlay(g, 0xef4444, 0.35, 500);
           window.setTimeout(() => triggerDefeat(g), 300);
           window.setTimeout(() => setResult("lost"), 1800);
           return;
@@ -2087,6 +2374,8 @@ export default function BossBattle({
       showAnnouncement, showCenterFeedback, showBossTaunt, showHeroSpeech,
       showPhaseAnnouncement, advanceQuestion,
       bumpArenaShake, pulseArenaDanger,
+      onQuestionAnswered, stats.totalAsked,
+      phaseOfQuestion, phases, showAnnouncement,
     ]
   );
 
@@ -2172,7 +2461,18 @@ export default function BossBattle({
     const accuracy =
       stats.totalAsked > 0 ? Math.round((stats.correct / stats.totalAsked) * 100) : 0;
     const xp = 100 + stats.correct * 15 + stats.maxCombo * 25;
-    onEnd(false, { combo: stats.maxCombo, accuracy, xp });
+    const durationMs = Math.max(0, performance.now() - bossStartedAtRef.current);
+    onEnd(false, {
+      combo: stats.maxCombo,
+      accuracy,
+      xp,
+      totalQuestions: stats.totalAsked,
+      correctCount: stats.correct,
+      wrongCount: Math.max(0, stats.totalAsked - stats.correct),
+      durationMs: Math.round(durationMs),
+      // Snapshot of per-phase totals; empty array in legacy (non-phased) mode.
+      phaseResults: Array.from(phaseStatsRef.current.values()),
+    });
   }, [result, stats, onEnd]);
 
   // Pending level-up info - shown between "Continue →" click and onEnd.
@@ -2209,7 +2509,17 @@ export default function BossBattle({
         ? Math.round((stats.correct / stats.totalAsked) * 100)
         : 0;
     const xp = 100 + stats.correct * 15 + stats.maxCombo * 25;
-    onEnd(true, { combo: stats.maxCombo, accuracy, xp });
+    const durationMs = Math.max(0, performance.now() - bossStartedAtRef.current);
+    onEnd(true, {
+      combo: stats.maxCombo,
+      accuracy,
+      xp,
+      totalQuestions: stats.totalAsked,
+      correctCount: stats.correct,
+      wrongCount: Math.max(0, stats.totalAsked - stats.correct),
+      durationMs: Math.round(durationMs),
+      phaseResults: Array.from(phaseStatsRef.current.values()),
+    });
   }, [onEnd, stats]);
 
   const handleContinue = useCallback(() => {
@@ -2824,9 +3134,11 @@ export default function BossBattle({
       <div
         style={{
           position: "absolute",
-          top: 14,
-          left: 20,
-          right: 20,
+          // Respect iOS safe-area-inset-top so the bars don't slide
+          // behind a notch / Dynamic Island. Falls back to 14px.
+          top: "max(14px, env(safe-area-inset-top, 0px))",
+          left: "max(20px, env(safe-area-inset-left, 0px))",
+          right: "max(20px, env(safe-area-inset-right, 0px))",
           display: "flex",
           gap: 24,
           pointerEvents: "none",
@@ -2902,7 +3214,11 @@ export default function BossBattle({
                       : "linear-gradient(90deg, #f97316 0%, #ef4444 100%)"
                   }`,
                   backgroundSize: "20px 20px, 100% 100%",
-                  transition: "width 0.2s ease-out",
+                  // Punchy easeOutExpo for the bar drain - fast first
+                  // 60% then settles. Pairs with the ghost-bar trailing
+                  // yellow underneath (already eased at 0.8s) so each
+                  // hit reads as: bar snaps down → yellow drains after.
+                  transition: "width 0.45s cubic-bezier(0.16, 1, 0.3, 1)",
                 }}
               />
             </div>
@@ -2961,7 +3277,8 @@ export default function BossBattle({
                   width: `${bossPct * 100}%`,
                   backgroundImage: "repeating-linear-gradient(45deg, transparent, transparent 5px, rgba(255,255,255,0.1) 5px, rgba(255,255,255,0.1) 10px), linear-gradient(90deg, #ef4444 0%, #f97316 100%)",
                   backgroundSize: "20px 20px, 100% 100%",
-                  transition: "width 0.2s ease-out",
+                  // Match hero bar - punchy drain, ghost trails.
+                  transition: "width 0.45s cubic-bezier(0.16, 1, 0.3, 1)",
                 }}
               />
             </div>
@@ -2982,56 +3299,92 @@ export default function BossBattle({
       </div>
       )}
 
-      {/* Combo counter */}
-      {selectedHero && combo > 1 && (
-        <div
-          key={combo}
-          style={{
-            position: "absolute",
-            top: 70,
-            right: 20,
-            pointerEvents: "none",
-            animation: "bbComboPop 0.45s ease-out",
-            fontFamily: "'Space Grotesk', sans-serif",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "flex-end",
-            gap: 2,
-            zIndex: 2,
-          }}
-        >
-          <div
-            style={{
-              fontSize: Math.min(48, 24 + combo * 4),
-              fontWeight: 700,
-              color: "#fde047",
-              textShadow: "0 0 14px rgba(250,204,21,0.7), 2px 2px 0 rgba(0,0,0,0.6)",
-              letterSpacing: "-0.02em",
-              lineHeight: 1,
-            }}
-          >
-            {combo}× COMBO
-          </div>
-          {combo >= 3 && (
+      {/* Combo counter - scales harder with combo size: bigger font,
+          colour shifts yellow → orange → magenta, glow ramps up, and
+          a screen-edge accent vignette kicks in at combo 5+. */}
+      {selectedHero && combo > 1 && (() => {
+        // Tiered visual escalation by combo size.
+        const tier = combo >= 7 ? 3 : combo >= 5 ? 2 : combo >= 3 ? 1 : 0;
+        const fontSize = Math.min(72, 24 + combo * 5);
+        const palette: Array<{ text: string; glow: string; shadow: string; chip: string }> = [
+          { text: "#fde047", glow: "rgba(250,204,21,0.7)", shadow: "rgba(250,204,21,0.5)", chip: "linear-gradient(90deg, #fde047, #f97316)" },
+          { text: "#fde047", glow: "rgba(250,204,21,0.85)", shadow: "rgba(250,204,21,0.7)", chip: "linear-gradient(90deg, #fde047, #f97316)" },
+          { text: "#fb923c", glow: "rgba(249,115,22,0.95)", shadow: "rgba(249,115,22,0.8)", chip: "linear-gradient(90deg, #fb923c, #ef4444)" },
+          { text: "#f472b6", glow: "rgba(244,114,182,1)", shadow: "rgba(244,114,182,0.85)", chip: "linear-gradient(90deg, #f472b6, #a855f7)" },
+        ];
+        const p = palette[tier];
+        const label = combo >= 7 ? "MEGA STRIKE" : combo >= 5 ? "TRIPLE STRIKE" : "DOUBLE STRIKE";
+        return (
+          <>
             <div
+              key={combo}
               style={{
-                padding: "2px 10px",
-                borderRadius: 999,
-                background: "linear-gradient(90deg, #fde047, #f97316)",
-                color: "#1a0612",
-                fontSize: 11,
-                fontWeight: 900,
-                letterSpacing: "0.15em",
-                fontFamily: "'JetBrains Mono', monospace",
-                boxShadow: "0 0 14px rgba(250,204,21,0.6)",
-                textTransform: "uppercase",
+                position: "absolute",
+                top: 70,
+                right: 20,
+                pointerEvents: "none",
+                animation: `bbComboPop ${0.45 + tier * 0.05}s cubic-bezier(0.34, 1.56, 0.64, 1)`,
+                fontFamily: "'Space Grotesk', sans-serif",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "flex-end",
+                gap: 2,
+                zIndex: 2,
               }}
             >
-              ⚡ {combo >= 5 ? "TRIPLE STRIKE" : "DOUBLE STRIKE"}
+              <div
+                style={{
+                  fontSize,
+                  fontWeight: 900,
+                  color: p.text,
+                  textShadow: `0 0 ${14 + tier * 8}px ${p.glow}, 0 0 ${24 + tier * 12}px ${p.shadow}, 2px 2px 0 rgba(0,0,0,0.6)`,
+                  letterSpacing: "-0.02em",
+                  lineHeight: 1,
+                  filter: tier >= 2 ? `drop-shadow(0 0 ${4 + tier * 2}px ${p.glow})` : undefined,
+                }}
+              >
+                {combo}× COMBO
+              </div>
+              {combo >= 3 && (
+                <div
+                  style={{
+                    padding: "2px 10px",
+                    borderRadius: 999,
+                    background: p.chip,
+                    color: "#1a0612",
+                    fontSize: 11,
+                    fontWeight: 900,
+                    letterSpacing: "0.15em",
+                    fontFamily: "'JetBrains Mono', monospace",
+                    boxShadow: `0 0 ${14 + tier * 8}px ${p.glow}`,
+                    textTransform: "uppercase",
+                  }}
+                >
+                  ⚡ {label}
+                </div>
+              )}
             </div>
-          )}
-        </div>
-      )}
+            {/* Screen-edge vignette at high combo - subtle but signals
+                "you are on fire". Pulses while the combo is live. */}
+            {tier >= 2 && (
+              <div
+                aria-hidden
+                key={`combo-vignette-${tier}`}
+                style={{
+                  position: "absolute",
+                  inset: 0,
+                  pointerEvents: "none",
+                  zIndex: 1,
+                  background: `radial-gradient(ellipse at center, transparent 55%, ${p.glow} 100%)`,
+                  opacity: tier === 3 ? 0.4 : 0.22,
+                  animation: "bbComboVignettePulse 1.6s ease-in-out infinite",
+                  mixBlendMode: "screen",
+                }}
+              />
+            )}
+          </>
+        );
+      })()}
 
       {/* SHIELD power-up HUD chip - top-left, below HP bars. Pulsing
           cyan when armed; dimmed when consumed. Single charge per fight. */}
@@ -3178,16 +3531,103 @@ export default function BossBattle({
         </div>
       )}
 
+      {/* Phase badge - only renders in phased mode. Compact pill that
+          sits near the top centre, above the boss sprite zone, below
+          the HP bars + safe-area inset. Surfaces "Phase 2 of 5 -
+          Secrecy" so the child reads progression as acts, not as a
+          flat 14-question march. */}
+      {selectedHero &&
+        !result &&
+        introStage === "done" &&
+        countdownPhase === null &&
+        phaseAnnouncement === null &&
+        phaseOfQuestion &&
+        phases && phases.length > 0 &&
+        (() => {
+          const currentPhase = phaseOfQuestion[stats.totalAsked] ?? phaseOfQuestion[phaseOfQuestion.length - 1];
+          if (!currentPhase) return null;
+          const phaseIndex = phases.findIndex((p) => p.id === currentPhase.id);
+          if (phaseIndex < 0) return null;
+          const toneBg: Record<typeof currentPhase.announceTone, string> = {
+            blue: "linear-gradient(90deg, rgba(59,130,246,0.22), rgba(124,92,255,0.18))",
+            red: "linear-gradient(90deg, rgba(239,68,68,0.22), rgba(255,95,179,0.18))",
+            gold: "linear-gradient(90deg, rgba(251,191,36,0.22), rgba(249,115,22,0.18))",
+            cyan: "linear-gradient(90deg, rgba(0,229,255,0.22), rgba(125,240,255,0.16))",
+          };
+          const toneText: Record<typeof currentPhase.announceTone, string> = {
+            blue: "#93c5fd",
+            red: "#fca5a5",
+            gold: "#fde047",
+            cyan: "#7df0ff",
+          };
+          const toneBorder: Record<typeof currentPhase.announceTone, string> = {
+            blue: "rgba(59,130,246,0.55)",
+            red: "rgba(239,68,68,0.5)",
+            gold: "rgba(251,191,36,0.55)",
+            cyan: "rgba(0,229,255,0.5)",
+          };
+          return (
+            <div
+              key={`phase-badge-${currentPhase.id}`}
+              aria-live="polite"
+              style={{
+                position: "absolute",
+                top: "calc(max(56px, env(safe-area-inset-top, 0px) + 42px))",
+                left: "50%",
+                transform: "translateX(-50%)",
+                zIndex: 3,
+                pointerEvents: "none",
+                padding: "5px 14px",
+                borderRadius: 999,
+                background: toneBg[currentPhase.announceTone],
+                border: `1px solid ${toneBorder[currentPhase.announceTone]}`,
+                color: toneText[currentPhase.announceTone],
+                fontFamily: "'JetBrains Mono', monospace",
+                fontSize: 11,
+                fontWeight: 800,
+                letterSpacing: "0.18em",
+                textTransform: "uppercase",
+                whiteSpace: "nowrap",
+                boxShadow: `0 4px 14px rgba(8,10,22,0.4), 0 0 16px ${toneBorder[currentPhase.announceTone]}`,
+                backdropFilter: "blur(6px)",
+                WebkitBackdropFilter: "blur(6px)",
+                animation: "bbPhaseBadgeIn 280ms cubic-bezier(0.34, 1.56, 0.64, 1)",
+              }}
+            >
+              <span style={{ opacity: 0.7 }}>
+                Phase {phaseIndex + 1} of {phases.length}
+              </span>
+              <span aria-hidden style={{ opacity: 0.45, margin: "0 6px" }}>·</span>
+              <span>{currentPhase.label}</span>
+            </div>
+          );
+        })()}
+
       {/* Question panel */}
       {selectedHero && !result && q && introStage === "done" && countdownPhase === null && phaseAnnouncement === null && (() => {
         const currentAttack = ATTACK_META[stats.totalAsked % 3];
         return (
         <div
+          // Re-key on every question advance so the animation fires
+          // each time. Previously the card mutated in place which
+          // read as a hard swap.
+          key={`qcard-${stats.totalAsked}`}
           style={{
             position: "absolute",
-            left: 16,
-            right: 16,
-            bottom: 16,
+            // Respect iOS safe-area-inset on every edge. On phones
+            // with a home indicator the bottom inset is ~34px, so
+            // without this the question card would sit under it.
+            left: "max(16px, env(safe-area-inset-left, 0px))",
+            right: "max(16px, env(safe-area-inset-right, 0px))",
+            bottom: "max(16px, env(safe-area-inset-bottom, 0px))",
+            // On short browser windows (e.g. 700px tall) the card
+            // could grow tall enough to cover the boss sprite. Cap
+            // it at ~45% of the viewport so the combat layer stays
+            // visible above. Internal scroll inside the card kicks
+            // in if its content (question + 4 answers + explanation)
+            // exceeds this height.
+            maxHeight: "calc(45dvh - env(safe-area-inset-bottom, 0px))",
+            overflowY: "auto",
             background:
               "linear-gradient(180deg, rgba(15,23,42,0.96), rgba(30,27,75,0.96))",
             backdropFilter: "blur(10px)",
@@ -3197,6 +3637,11 @@ export default function BossBattle({
             boxShadow: `0 -10px 40px ${currentAttack.glow}, 0 0 0 1px ${currentAttack.color}33`,
             zIndex: 2,
             transition: "border-color 0.3s ease, box-shadow 0.3s ease",
+            // Slide-fade in from below for every new question. Skipped
+            // under comfort-mode/reduced-motion via the CSS class on
+            // the parent. Pairs with the eased HP drain that fires
+            // simultaneously so the whole screen reads as "next round".
+            animation: "bbQuestionIn 0.42s cubic-bezier(0.16, 1, 0.3, 1) both",
           }}
         >
           {/* Timer bar */}
@@ -3642,6 +4087,24 @@ export default function BossBattle({
           0% { transform: scale(0.6); opacity: 0 }
           60% { transform: scale(1.15); opacity: 1 }
           100% { transform: scale(1); opacity: 1 }
+        }
+        @keyframes bbComboVignettePulse {
+          0%,100% { opacity: 0.18 }
+          50% { opacity: 0.45 }
+        }
+        @keyframes bbQuestionIn {
+          0% { opacity: 0; transform: translateY(14px) scale(0.97) }
+          60% { opacity: 1; transform: translateY(-2px) scale(1.01) }
+          100% { opacity: 1; transform: translateY(0) scale(1) }
+        }
+        @keyframes bbPhaseBadgeIn {
+          0% { opacity: 0; transform: translateX(-50%) translateY(-6px) scale(0.9) }
+          60% { opacity: 1; transform: translateX(-50%) translateY(1px) scale(1.04) }
+          100% { opacity: 1; transform: translateX(-50%) translateY(0) scale(1) }
+        }
+        @keyframes bbQuestionOut {
+          0% { opacity: 1; transform: translateY(0) scale(1) }
+          100% { opacity: 0; transform: translateY(-12px) scale(0.98) }
         }
         @keyframes bbShieldIdlePulse {
           0%,100% {

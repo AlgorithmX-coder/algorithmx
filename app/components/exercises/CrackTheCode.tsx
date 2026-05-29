@@ -2,17 +2,24 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { playSound } from "@/app/lib/sounds";
+import { playSoftWrong } from "@/app/lib/gameEngine";
 import {
   correctAnswerBurst,
   badgeEarnedCelebration,
   wrongAnswerShake,
 } from "@/app/lib/celebrations";
 import ExerciseIntro from "./ExerciseIntro";
+import { useComfortMode } from "@/app/lib/comfortMode";
+import WrongAnswerPanel from "@/app/components/lesson/WrongAnswerPanel";
+import HintBubble from "@/app/components/lesson/HintBubble";
 
 export interface CrackTheCodeProps {
   onComplete: (score: number) => void;
   onCorrect?: () => void;
   onWrong?: () => void;
+  /** See CyberScanner.onHintReached. CrackTheCode shows the hint after
+   * 2+ failed unlock attempts, so this fires tier 2 / 3 only. */
+  onHintReached?: (tier: 1 | 2 | 3) => void;
 }
 
 interface RingConfig {
@@ -63,13 +70,17 @@ const RINGS: RingConfig[] = [
     radius: 160,
   },
   {
-    id: "storage",
-    label: "STORAGE",
+    // Inner ring used to test "Password manager" - that concept is not
+    // taught in Week 1, so this ring now tests SECRECY (who knows the
+    // password), which IS taught in Week 1's "What Is a Password?" screen
+    // and reinforced in the Golden Rules.
+    id: "secrecy",
+    label: "WHO KNOWS IT",
     options: [
-      "Written on sticky note",
-      "Same for everything",
-      "Password manager",
-      "Shared with friends",
+      "My best friend",
+      "My whole class",
+      "Only me (and a parent)",
+      "Anyone who asks",
     ],
     correct: 2,
     colour: "#a855f7",
@@ -134,6 +145,7 @@ export default function CrackTheCode({
   onComplete,
   onCorrect,
   onWrong,
+  onHintReached,
 }: CrackTheCodeProps) {
   useEffect(ensureStyles, []);
 
@@ -145,7 +157,23 @@ export default function CrackTheCode({
   );
   const [ringFlash, setRingFlash] = useState<Record<number, "red" | null>>({});
   const [attempts, setAttempts] = useState(0);
+
+  // Hint-tier emission. CrackTheCode surfaces a HintBubble once
+  // attempts hits 2 (tier 2) and again at 3+ (tier 3). The unlock
+  // is binary so we don't fire tier 1.
+  useEffect(() => {
+    if (!onHintReached) return;
+    if (attempts < 2) return;
+    const tier: 1 | 2 | 3 = attempts >= 3 ? 3 : 2;
+    onHintReached(tier);
+  }, [attempts, onHintReached]);
   const [unlocked, setUnlocked] = useState(false);
+  const comfort = useComfortMode();
+  const [feedback, setFeedback] = useState<null | {
+    title: string;
+    explanation: string;
+    tip?: string;
+  }>(null);
   const [shakeAll, setShakeAll] = useState(false);
   const [prevCorrect, setPrevCorrect] = useState<boolean[]>(() =>
     RINGS.map(() => false)
@@ -222,7 +250,7 @@ export default function CrackTheCode({
     defendLockRef.current = true;
     setDefendMisses((n) => n + 1);
     setDefendFeedback("miss");
-    playSound("wrong");
+    playSoftWrong();
     wrongAnswerShake();
     onWrong?.();
     window.setTimeout(() => {
@@ -286,15 +314,29 @@ export default function CrackTheCode({
       void correctAnswerBurst();
       void badgeEarnedCelebration();
     } else {
-      playSound("wrong");
-      wrongAnswerShake();
-      setShakeAll(true);
+      playSoftWrong();
+      // Comfort mode skips the device-shake haptic.
+      if (!(comfort.enabled || comfort.prefersReducedMotion)) {
+        wrongAnswerShake();
+        setShakeAll(true);
+      }
       const flashMap: Record<number, "red" | null> = {};
       wrongIdx.forEach((i) => (flashMap[i] = "red"));
       setRingFlash(flashMap);
       window.setTimeout(() => setShakeAll(false), 600);
-      window.setTimeout(() => setRingFlash({}), 700);
+      window.setTimeout(() => setRingFlash({}), 1400);
       onWrong?.();
+      // Specific-mistake explanation: name the rings that are still
+      // wrong rather than just shaking the device.
+      const wrongLabels = wrongIdx.map((i) => RINGS[i].label).join(", ");
+      setFeedback({
+        title:
+          wrongIdx.length === 1
+            ? "One ring is still off"
+            : `${wrongIdx.length} rings are still off`,
+        explanation: `Check the ${wrongLabels} ring${wrongIdx.length > 1 ? "s" : ""}. Spin to find the answer that matches what we learned about passwords.`,
+        tip: "One rule per ring: character types, length, pattern and who knows it.",
+      });
     }
   };
 
@@ -1101,6 +1143,25 @@ export default function CrackTheCode({
           </div>
         )}
       </div>
+      {/* Tiered hint after repeated wrong attempts */}
+      {!unlocked && attempts >= 2 && !feedback && (
+        <div style={{ position: "absolute", left: 12, right: 12, bottom: 12, zIndex: 10 }}>
+          <HintBubble
+            tier={attempts >= 3 ? 3 : 2}
+            speaker="adam"
+            text="Each ring matches a rule. Outer = which character types? Then = length (8+). Then = pattern (avoid words and birthdays). Inner = who knows it."
+          />
+        </div>
+      )}
+      {feedback && (
+        <WrongAnswerPanel
+          title={feedback.title}
+          explanation={feedback.explanation}
+          tip={feedback.tip}
+          speaker="adam"
+          onContinue={() => setFeedback(null)}
+        />
+      )}
     </div>
   );
 }

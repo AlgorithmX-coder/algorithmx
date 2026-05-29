@@ -1,6 +1,7 @@
 import { auth } from "@/app/lib/auth";
 import { prisma } from "@/app/lib/prisma";
 import { redirect } from "next/navigation";
+import Link from "next/link";
 import {
   RevealOnScroll,
   AnimatedBar,
@@ -126,46 +127,96 @@ export default async function ParentDashboard() {
 
   const child = childProfiles[0];
 
+  // Pull the Module list for titles/descriptions/order, then derive
+  // status entirely from LessonAttempt so /parent and
+  // /parent/week/[week] agree. Legacy Progress is still upserted on
+  // lesson complete via completeAttempt's sync, but it's no longer
+  // the source of truth for this dashboard.
   const course = await prisma.course.findFirst({
     where: { title: "Cyber Heroes Academy" },
     include: {
       modules: {
         orderBy: { order: "asc" },
-        include: {
-          progress: {
-            where: { userId: session.user.id! },
-          },
-        },
       },
     },
   });
 
-  let foundCurrentNext = false;
-  const modules = (course?.modules ?? []).map(
-    (module: NonNullable<typeof course>["modules"][number], idx: number) => {
-      const status = module.progress[0]?.status ?? "NOT_STARTED";
-      const isCompleted = status === "COMPLETED";
-      const isInProgress = status === "IN_PROGRESS";
-      const isWeekOne = module.weekNumber === 1;
-      const prevModule = idx > 0 ? course!.modules[idx - 1] : null;
-      const prevCompleted = prevModule?.progress[0]?.status === "COMPLETED";
-      const isUnlocked = isWeekOne || prevCompleted || isCompleted || isInProgress;
-      const isCurrentNext = isUnlocked && !isCompleted && !foundCurrentNext;
-      if (isCurrentNext) foundCurrentNext = true;
-      return {
-        id: module.id,
-        weekNumber: module.weekNumber,
-        title: module.title,
-        description: module.description,
-        status,
-        isCompleted,
-        isInProgress,
-        isUnlocked,
-        isCurrentNext,
-        prevWeek: !isUnlocked && prevModule ? prevModule.weekNumber : null,
-      };
+  const courseModules = course?.modules ?? [];
+  const weekNumbers = courseModules.map((m) => m.weekNumber);
+  // Fetch one row per (userId, weekNumber) representing the
+  // best-known state. groupBy gives us the latest attempt summary;
+  // for completion we just need any completed=true row to exist.
+  const attempts = await prisma.lessonAttempt.findMany({
+    where: {
+      userId: session.user.id!,
+      weekNumber: { in: weekNumbers.length > 0 ? weekNumbers : [-1] },
     },
-  );
+    select: {
+      weekNumber: true,
+      completed: true,
+      finalScreenIndex: true,
+      startedAt: true,
+      // Abandoned attempts are kept on disk for analytics but should
+      // not contribute to the IN_PROGRESS status - the child has
+      // explicitly Restarted past them.
+      abandonedAt: true,
+    },
+    orderBy: { startedAt: "desc" },
+  });
+  // Build a map: weekNumber -> "COMPLETED" | "IN_PROGRESS" | "NOT_STARTED"
+  // Rules in priority order:
+  //   1. Any completed=true row -> COMPLETED.
+  //   2. Any LIVE (non-abandoned) row with finalScreenIndex > 0
+  //      -> IN_PROGRESS.
+  //   3. Otherwise -> NOT_STARTED.
+  const weekStatus = new Map<
+    number,
+    "COMPLETED" | "IN_PROGRESS" | "NOT_STARTED"
+  >();
+  for (const a of attempts) {
+    const existing = weekStatus.get(a.weekNumber);
+    if (a.completed) {
+      weekStatus.set(a.weekNumber, "COMPLETED");
+      continue;
+    }
+    if (existing === "COMPLETED") continue;
+    // Only LIVE rows can flip the state to IN_PROGRESS. An abandoned
+    // attempt with finalScreenIndex > 0 doesn't qualify - the child
+    // has moved on from it.
+    if (a.abandonedAt === null && a.finalScreenIndex > 0) {
+      weekStatus.set(a.weekNumber, "IN_PROGRESS");
+      continue;
+    }
+    if (!existing) weekStatus.set(a.weekNumber, "NOT_STARTED");
+  }
+
+  let foundCurrentNext = false;
+  const modules = courseModules.map((module, idx) => {
+    const status = weekStatus.get(module.weekNumber) ?? "NOT_STARTED";
+    const isCompleted = status === "COMPLETED";
+    const isInProgress = status === "IN_PROGRESS";
+    const isWeekOne = module.weekNumber === 1;
+    const prevModule = idx > 0 ? courseModules[idx - 1] : null;
+    const prevCompleted = prevModule
+      ? weekStatus.get(prevModule.weekNumber) === "COMPLETED"
+      : false;
+    const isUnlocked =
+      isWeekOne || prevCompleted || isCompleted || isInProgress;
+    const isCurrentNext = isUnlocked && !isCompleted && !foundCurrentNext;
+    if (isCurrentNext) foundCurrentNext = true;
+    return {
+      id: module.id,
+      weekNumber: module.weekNumber,
+      title: module.title,
+      description: module.description,
+      status,
+      isCompleted,
+      isInProgress,
+      isUnlocked,
+      isCurrentNext,
+      prevWeek: !isUnlocked && prevModule ? prevModule.weekNumber : null,
+    };
+  });
 
   const completedCount = modules.filter((m) => m.isCompleted).length;
   const totalModules = modules.length;
@@ -729,30 +780,33 @@ export default async function ParentDashboard() {
               <StaggeredList className="space-y-3">
                 {modules.map((mod) => {
                   const isCurrent = mod.isCurrentNext;
-                  return (
-                    <div
-                      key={mod.id}
-                      className="rounded-3xl flex items-center gap-4 sm:gap-5"
-                      style={{
-                        padding: "18px 24px",
-                        background: isCurrent
-                          ? "linear-gradient(135deg, rgba(124, 92, 255, 0.16), rgba(255, 215, 138, 0.10))"
-                          : mod.isCompleted
-                            ? "linear-gradient(135deg, rgba(124, 200, 154, 0.12), rgba(15, 21, 48, 0.5))"
-                            : C.card,
-                        border: isCurrent
-                          ? `2px solid rgba(124, 92, 255, 0.7)`
-                          : mod.isCompleted
-                            ? "1px solid rgba(124, 200, 154, 0.4)"
-                            : `1px solid ${C.border}`,
-                        boxShadow: isCurrent
-                          ? "0 0 28px rgba(124, 92, 255, 0.32), 0 14px 28px -10px rgba(8, 10, 22, 0.5)"
-                          : "0 10px 22px -10px rgba(8, 10, 22, 0.45)",
-                        backdropFilter: "blur(10px)",
-                        WebkitBackdropFilter: "blur(10px)",
-                        opacity: mod.isUnlocked ? 1 : 0.45,
-                      }}
-                    >
+                  // Unlocked rows are anchors that deep-link to the
+                  // /parent/week/[week] persistence report. Locked
+                  // rows render the same body inside a plain div.
+                  const rowStyle: React.CSSProperties = {
+                    textDecoration: "none",
+                    color: "inherit",
+                    cursor: mod.isUnlocked ? "pointer" : "default",
+                    padding: "18px 24px",
+                    background: isCurrent
+                      ? "linear-gradient(135deg, rgba(124, 92, 255, 0.16), rgba(255, 215, 138, 0.10))"
+                      : mod.isCompleted
+                        ? "linear-gradient(135deg, rgba(124, 200, 154, 0.12), rgba(15, 21, 48, 0.5))"
+                        : C.card,
+                    border: isCurrent
+                      ? `2px solid rgba(124, 92, 255, 0.7)`
+                      : mod.isCompleted
+                        ? "1px solid rgba(124, 200, 154, 0.4)"
+                        : `1px solid ${C.border}`,
+                    boxShadow: isCurrent
+                      ? "0 0 28px rgba(124, 92, 255, 0.32), 0 14px 28px -10px rgba(8, 10, 22, 0.5)"
+                      : "0 10px 22px -10px rgba(8, 10, 22, 0.45)",
+                    backdropFilter: "blur(10px)",
+                    WebkitBackdropFilter: "blur(10px)",
+                    opacity: mod.isUnlocked ? 1 : 0.45,
+                  };
+                  const rowBody = (
+                    <>
                       {/* Week badge */}
                       <div
                         className="shrink-0 flex items-center justify-center font-black text-sm"
@@ -865,6 +919,28 @@ export default async function ParentDashboard() {
                           </span>
                         )}
                       </div>
+                    </>
+                  );
+
+                  if (mod.isUnlocked) {
+                    return (
+                      <Link
+                        key={mod.id}
+                        href={`/parent/week/${mod.weekNumber}`}
+                        className="rounded-3xl flex items-center gap-4 sm:gap-5"
+                        style={rowStyle}
+                      >
+                        {rowBody}
+                      </Link>
+                    );
+                  }
+                  return (
+                    <div
+                      key={mod.id}
+                      className="rounded-3xl flex items-center gap-4 sm:gap-5"
+                      style={rowStyle}
+                    >
+                      {rowBody}
                     </div>
                   );
                 })}

@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { playSound } from "@/app/lib/sounds";
+import { playSoftWrong } from "@/app/lib/gameEngine";
 import ExerciseIntro from "./ExerciseIntro";
 import ExerciseHowTo from "./ExerciseHowTo";
 import { PixarFinishOverlay } from "@/app/components/scene";
@@ -240,7 +241,7 @@ export default function ConveyorBelt({
             : null;
 
       if (outcome === "miss") {
-        playSound("wrong");
+        playSoftWrong();
         setMissedBanner(true);
         onWrong?.();
         setStreak(0);
@@ -355,10 +356,13 @@ export default function ConveyorBelt({
       style={{
         position: "relative",
         width: "100%",
-        maxWidth: 760,
+        // Expanded cap. The belt+lever scene scales up cleanly because
+        // the conveyor stripes are tile-repeating. maxHeight in dvh
+        // ensures short windows don't clip.
+        maxWidth: 1200,
         margin: "0 auto",
         height: 500,
-        maxHeight: "calc(100vh - 140px)",
+        maxHeight: "calc(100dvh - 220px)",
         borderRadius: 28,
         overflow: "hidden",
         background:

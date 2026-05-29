@@ -5,6 +5,7 @@ import { getProgressionState, getRank, RANKS } from "@/app/lib/progression";
 import { CyberIconOrEmoji } from "@/app/components/CyberIcon";
 import AnimatedCounter from "@/app/components/AnimatedCounter";
 import { getCaseMeta } from "@/app/lib/caseTitles";
+import { useComfortMode } from "@/app/lib/comfortMode";
 
 export interface LessonHUDProps {
   /** Optional - legacy single-character name (unused now, both heroes are shown). */
@@ -31,6 +32,7 @@ export default function LessonHUD({
 }: LessonHUDProps) {
   const [totalXP, setTotalXP] = useState<number>(0);
   const [xpPulseKey, setXpPulseKey] = useState(0);
+  const comfort = useComfortMode();
 
   // Sync rank info from localStorage on mount and whenever lesson XP shifts.
   useEffect(() => {
@@ -317,6 +319,44 @@ export default function LessonHUD({
         >
           <AnimatedCounter value={xpEarned} prefix="+" suffix=" XP" />
         </div>
+        <button
+          type="button"
+          onClick={comfort.toggle}
+          aria-label={
+            comfort.enabled ? "Turn off comfort mode" : "Turn on comfort mode"
+          }
+          aria-pressed={comfort.enabled}
+          title={
+            comfort.enabled
+              ? "Comfort mode ON - slower games, less motion"
+              : "Comfort mode OFF - tap for slower games and less motion"
+          }
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 6,
+            height: 32,
+            padding: "0 12px",
+            borderRadius: 999,
+            background: comfort.enabled
+              ? "linear-gradient(135deg, rgba(126, 255, 151, 0.22), rgba(0, 229, 255, 0.18))"
+              : "rgba(15, 21, 48, 0.55)",
+            border: `1px solid ${comfort.enabled ? "rgba(126, 255, 151, 0.7)" : "rgba(125, 240, 255, 0.32)"}`,
+            color: comfort.enabled ? "#7eff97" : "#fff7e6",
+            fontFamily: "'Space Grotesk', sans-serif",
+            fontWeight: 700,
+            fontSize: 11,
+            letterSpacing: "0.08em",
+            textTransform: "uppercase",
+            cursor: "pointer",
+            transition: "all 180ms ease-out",
+          }}
+        >
+          <span aria-hidden style={{ fontSize: 14 }}>
+            {comfort.enabled ? "🌿" : "🌀"}
+          </span>
+          <span>Comfort</span>
+        </button>
         {onMuteToggle && (
           <button
             type="button"

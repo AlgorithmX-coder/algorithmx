@@ -11,6 +11,7 @@
 
 import { useEffect, useRef } from "react";
 import * as THREE from "three";
+import { getQualitySettings } from "@/app/lib/gameEngine";
 
 export interface LessonArena3DProps {
   width: number;
@@ -634,7 +635,11 @@ export default function LessonArena3D({
       antialias: true,
       powerPreference: "high-performance",
     });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    // Align with the shared adaptive-quality dpr cap so low-power
+    // devices render the backdrop at 1x while high-end stays at 2x.
+    renderer.setPixelRatio(
+      Math.min(window.devicePixelRatio || 1, getQualitySettings().dprCap)
+    );
     renderer.setSize(width, height, false);
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;

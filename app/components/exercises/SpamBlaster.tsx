@@ -5,6 +5,10 @@ import { playSound } from "@/app/lib/sounds";
 import { correctAnswerBurst } from "@/app/lib/celebrations";
 import ExerciseIntro from "./ExerciseIntro";
 import { PixarFinishOverlay } from "@/app/components/scene";
+import { useComfortMode } from "@/app/lib/comfortMode";
+import WrongAnswerPanel from "@/app/components/lesson/WrongAnswerPanel";
+import HintBubble from "@/app/components/lesson/HintBubble";
+import { setupHiDpiCanvas, scaledParticleCount, playSoftWrong } from "@/app/lib/gameEngine";
 
 export interface SpamEmail {
   sender: string;
@@ -18,6 +22,8 @@ export interface SpamBlasterProps {
   onComplete: (score: number) => void;
   onCorrect?: () => void;
   onWrong?: () => void;
+  /** See CyberScanner.onHintReached - same tier semantics. */
+  onHintReached?: (tier: 1 | 2 | 3) => void;
 }
 
 const DEFAULT_EMAILS: SpamEmail[] = [
@@ -117,12 +123,42 @@ export default function SpamBlaster({
   onComplete,
   onCorrect,
   onWrong,
+  onHintReached,
 }: SpamBlasterProps) {
   const list = useMemo(() => emails ?? DEFAULT_EMAILS, [emails]);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const rafRef = useRef<number | null>(null);
   const [showIntro, setShowIntro] = useState(true);
   const [resetKey, setResetKey] = useState(0);
+
+  const comfort = useComfortMode();
+  const comfortRef = useRef(comfort.enabled);
+  useEffect(() => {
+    comfortRef.current = comfort.enabled;
+  }, [comfort.enabled]);
+
+  // Pause-on-wrong overlay. While `feedback` is set, the game loop
+  // stops moving emails and spawning, and pointer input is ignored.
+  const [feedback, setFeedback] = useState<null | {
+    title: string;
+    explanation: string;
+    tip?: string;
+  }>(null);
+  const pausedRef = useRef(false);
+  useEffect(() => {
+    pausedRef.current = !!feedback;
+  }, [feedback]);
+  const [wrongCount, setWrongCount] = useState(0);
+
+  // Hint-tier emission. Same convention as CyberScanner: tier 1 at
+  // first wrong, tier 2 at second, tier 3 at third or more. Hook
+  // dedupes by max-per-screen so over-emit is safe.
+  useEffect(() => {
+    if (!onHintReached) return;
+    if (wrongCount === 0) return;
+    const tier: 1 | 2 | 3 = wrongCount === 1 ? 1 : wrongCount === 2 ? 2 : 3;
+    onHintReached(tier);
+  }, [wrongCount, onHintReached]);
 
   const state = useRef({
     spawnedIdx: 0,
@@ -185,6 +221,8 @@ export default function SpamBlaster({
 
   // Hit test on canvas pointer
   const onPointerDown = (e: React.PointerEvent<HTMLCanvasElement>) => {
+    // Swallow pointer input while the wrong-answer panel is open.
+    if (pausedRef.current) return;
     const canvas = canvasRef.current;
     if (!canvas) return;
     const rect = canvas.getBoundingClientRect();
@@ -281,7 +319,7 @@ export default function SpamBlaster({
     if (em.resolved) return;
     em.resolved = true;
     em.alive = false;
-    spawnFragments(em, "#ef4444", 10 + Math.floor(Math.random() * 4));
+    spawnFragments(em, "#ef4444", scaledParticleCount(10 + Math.floor(Math.random() * 4)));
     addFloater("ZAP!", em.x, em.y, "#ff5fb3", 800);
     if (em.clue) addClue(em.clue, em.x, em.y - 40);
     s.zapped += 1;
@@ -293,11 +331,16 @@ export default function SpamBlaster({
 
   const nudgeSafe = (em: LiveEmail) => {
     addFloater("OOPS! That was a real email!", em.x, em.y - 30, "#ffd158", 1100);
-    playSound("wrong");
+    playSoftWrong();
     state.current.streak = 0;
     onWrong?.();
-    // wobble
     em.vx += (Math.random() - 0.5) * 2;
+    setWrongCount((n) => n + 1);
+    setFeedback({
+      title: "That email was real!",
+      explanation: `"${em.sender}" was a normal email - not phishing. Only zap messages that look like tricks (free prizes, URGENT password demands, scary pop-ups).`,
+      tip: "Real friends, teachers and parents are NOT bait. Read the sender first.",
+    });
   };
 
   const pinPhishingHit = (em: LiveEmail) => {
@@ -310,8 +353,18 @@ export default function SpamBlaster({
     s.monitorFlashUntil = performance.now() + 380;
     s.monitorShakeUntil = performance.now() + 380;
     addFloater("HACKED!", MONITOR_X, MONITOR_Y - MONITOR_H / 2 - 20, "#ef4444", 1200);
-    playSound("wrong");
+    playSoftWrong();
     onWrong?.();
+    setWrongCount((n) => n + 1);
+    setFeedback({
+      title: "A phishing email got through!",
+      explanation: `"${em.subject}" from "${em.sender}" was bait. ${em.clue || "Look for scare tactics, urgent passwords or free prizes."}`,
+      tip: "Phishing emails try to RUSH or REWARD you. Slow down and check.",
+    });
+  };
+
+  const gotIt = () => {
+    setFeedback(null);
   };
 
   const safeDelivered = (em: LiveEmail) => {
@@ -357,27 +410,44 @@ export default function SpamBlaster({
     setShowIntro(true);
     setResetKey((k) => k + 1);
     setRender((n) => n + 1);
+    setFeedback(null);
+    setWrongCount(0);
   };
 
   useEffect(() => {
     if (showIntro) return;
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-    canvas.width = CANVAS_W;
-    canvas.height = CANVAS_H;
+    // Hi-DPI setup: previously the canvas buffer was pinned to 720×500
+    // and CSS-stretched, which gave soft email text on Retina. Now we
+    // size the buffer to logical * dpr and scale the context once.
+    const setup = setupHiDpiCanvas(canvas, {
+      logicalWidth: CANVAS_W,
+      logicalHeight: CANVAS_H,
+      maxDpr: 2,
+    });
+    if (!setup) return;
+    const ctx = setup.ctx;
 
     let running = true;
     let lastTime = performance.now();
     // Longer lead-in after the intro dismisses - 2 s grace before first email.
     state.current.nextSpawnAt = performance.now() + 2000;
 
+    const onVis = () => {
+      // After tab return, rebaseline so emails don't teleport.
+      if (document.hidden) lastTime = performance.now();
+    };
+    document.addEventListener("visibilitychange", onVis);
+
     const trySpawn = (now: number) => {
       const s = state.current;
       if (s.spawnedIdx >= list.length) return;
       const aliveCount = s.live.filter((e) => e.alive && !e.resolved).length;
-      if (aliveCount >= maxParallel(s.spawnedIdx)) return;
+      // Comfort mode caps simultaneous targets at 1 - no parallel
+      // moving objects, no perceptual overload.
+      const cap = comfortRef.current ? 1 : maxParallel(s.spawnedIdx);
+      if (aliveCount >= cap) return;
       if (now < s.nextSpawnAt) return;
       const em = list[s.spawnedIdx];
       // random edge spawn
@@ -400,7 +470,10 @@ export default function SpamBlaster({
       const dx = MONITOR_X - x;
       const dy = MONITOR_Y - MONITOR_H / 2 - y;
       const len = Math.max(1, Math.hypot(dx, dy));
-      const speed = speedForIndex(s.spawnedIdx);
+      // Comfort mode reduces approach speed so children have time to
+      // read both the sender and the subject before deciding.
+      const speed =
+        speedForIndex(s.spawnedIdx) * (comfortRef.current ? 0.5 : 1);
       s.live.push({
         idx: s.spawnedIdx,
         sender: em.sender,
@@ -686,37 +759,48 @@ export default function SpamBlaster({
 
     const tick = (now: number) => {
       if (!running) return;
+      // True-pause when tab hidden - no update, no draw, just re-arm
+      // rAF. Saves the CPU work the throttled loop would do.
+      if (document.hidden) {
+        rafRef.current = requestAnimationFrame(tick);
+        return;
+      }
       const dt = Math.min(50, now - lastTime);
       lastTime = now;
       const frames = dt / (1000 / 60);
       const s = state.current;
 
-      trySpawn(now);
+      // Pause-on-wrong: freeze spawning and movement while the
+      // wrong-answer panel is open. The render still paints the
+      // last frame so the canvas isn't blank behind the overlay.
+      if (!pausedRef.current) {
+        trySpawn(now);
 
-      for (const em of s.live) {
-        if (!em.alive) continue;
-        if (em.resolved) continue;
-        em.x += em.vx * frames;
-        em.y += em.vy * frames;
+        for (const em of s.live) {
+          if (!em.alive) continue;
+          if (em.resolved) continue;
+          em.x += em.vx * frames;
+          em.y += em.vy * frames;
 
-        // Check if reached monitor
-        const dx = em.x - MONITOR_X;
-        const dy = em.y - (MONITOR_Y - MONITOR_H / 4);
-        if (Math.abs(dx) < MONITOR_W / 2 - 10 && Math.abs(dy) < MONITOR_H / 2 - 10) {
-          if (em.isPhishing) {
-            pinPhishingHit(em);
-          } else {
-            em.enteringMonitor = true;
-            safeDelivered(em);
+          // Check if reached monitor
+          const dx = em.x - MONITOR_X;
+          const dy = em.y - (MONITOR_Y - MONITOR_H / 4);
+          if (Math.abs(dx) < MONITOR_W / 2 - 10 && Math.abs(dy) < MONITOR_H / 2 - 10) {
+            if (em.isPhishing) {
+              pinPhishingHit(em);
+            } else {
+              em.enteringMonitor = true;
+              safeDelivered(em);
+            }
           }
         }
-      }
 
-      // entering-monitor shrink (after resolved safe)
-      for (const em of s.live) {
-        if (em.enteringMonitor && em.resolved) {
-          em.scale *= Math.pow(0.86, frames);
-          if (em.scale < 0.05) em.alive = false;
+        // entering-monitor shrink (after resolved safe)
+        for (const em of s.live) {
+          if (em.enteringMonitor && em.resolved) {
+            em.scale *= Math.pow(0.86, frames);
+            if (em.scale < 0.05) em.alive = false;
+          }
         }
       }
 
@@ -1131,6 +1215,7 @@ export default function SpamBlaster({
     return () => {
       running = false;
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
+      document.removeEventListener("visibilitychange", onVis);
       ctx.clearRect(0, 0, CANVAS_W, CANVAS_H);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -1146,9 +1231,15 @@ export default function SpamBlaster({
       style={{
         position: "relative",
         width: "100%",
-        maxWidth: 760,
+        // Width derives from available vertical room via the 720/500
+        // canvas aspect ratio. Reserve (220px) covers HUD + safe area
+        // + LessonStage padding. SpamBlaster has overlays only
+        // (no flow-layout buttons below the canvas) so the chrome
+        // reserve is smaller than CyberScanner's.
+        // Expanded cap so the inbox scene scales with the viewport
+        // instead of sitting in a fixed 760px frame.
+        maxWidth: "min(1400px, calc((100dvh - 220px) * 720 / 500))",
         margin: "0 auto",
-        maxHeight: "calc(100vh - 140px)",
         borderRadius: 28,
         overflow: "hidden",
         background:
@@ -1198,6 +1289,45 @@ export default function SpamBlaster({
           onStart={() => setShowIntro(false)}
         />
       )}
+
+      {/* Tiered hint - shown below the canvas after wrong tries */}
+      {wrongCount > 0 && !feedback && !s.finished && (
+        <div style={{ position: "absolute", left: 12, right: 12, bottom: 12, zIndex: 10 }}>
+          {wrongCount === 1 && (
+            <HintBubble
+              tier={1}
+              speaker="layla"
+              text="Slow down and read the SENDER first. Friends, teachers and family are real. 'Prize Central' or 'Account Security' usually means trouble."
+            />
+          )}
+          {wrongCount === 2 && (
+            <HintBubble
+              tier={2}
+              speaker="layla"
+              text="Phishing has three big signs: (1) free prize, (2) URGENT or scary message, (3) asks for your password."
+              example="'YOU WON A FREE iPHONE' / 'URGENT: enter your password' = bait"
+            />
+          )}
+          {wrongCount >= 3 && (
+            <HintBubble
+              tier={3}
+              speaker="adam"
+              text="Quick rule: If a message rushes you, scares you, or offers free stuff for nothing - it's phishing. Zap it. Real messages are calm and from people you know."
+            />
+          )}
+        </div>
+      )}
+
+      {feedback && (
+        <WrongAnswerPanel
+          title={feedback.title}
+          explanation={feedback.explanation}
+          tip={feedback.tip}
+          speaker="layla"
+          onContinue={gotIt}
+        />
+      )}
+
       {/* `render` is read so state-bumps trigger re-render for the finish overlay */}
       <span style={{ display: "none" }}>{render}</span>
     </div>

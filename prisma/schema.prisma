@@ -30,6 +30,9 @@ model User {
   progress       Progress[]
   children       ChildProfile[]
   passwordResetTokens PasswordResetToken[]
+  lessonAttempts LessonAttempt[]
+  preferences    UserPreference?
+  earnedStickers EarnedSticker[]
 }
 
 model ChildProfile {
@@ -103,4 +106,143 @@ model WaitlistEntry {
 
   @@unique([email, courseSlug])
   @@index([courseSlug])
+}
+
+/// A single play-through of a week's lesson by a user. Multiple
+/// attempts are allowed per (userId, weekNumber) - attemptNumber
+/// disambiguates. The most recent uncompleted row drives resume.
+model LessonAttempt {
+  id               String   @id @default(cuid())
+  userId           String
+  weekNumber       Int
+  attemptNumber    Int      @default(1)
+  startedAt        DateTime @default(now())
+  completedAt      DateTime?
+  completed        Boolean  @default(false)
+  totalXp          Int      @default(0)
+  /// Highest screen index the child has reached. Drives resume: when
+  /// the lesson page mounts and finds an unfinished attempt, it
+  /// offers to jump back to this index.
+  finalScreenIndex Int      @default(0)
+  /// Timestamp at which the child clicked "Restart from beginning"
+  /// (or the server otherwise retired the attempt). Non-null rows are
+  /// kept for analytics history but are NEVER returned by
+  /// startOrResumeAttempt - the resume query filters them out so
+  /// abandoned attempts can't be silently picked back up.
+  abandonedAt      DateTime?
+
+  user              User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  screenResults     ScreenResult[]
+  questionResponses QuestionResponse[]
+  bossResult        BossResult?
+
+  @@index([userId, weekNumber])
+  @@index([userId, completed])
+}
+
+/// Per-screen outcome captured when the child advances. Star logic
+/// follows the existing client-side rule: 0 wrong -> 3, 1 wrong -> 2,
+/// 2+ wrong -> 1.
+model ScreenResult {
+  id              String    @id @default(cuid())
+  attemptId       String
+  screenIndex     Int
+  /// Matches ScreenDef.type from app/lesson/weekContent/types.ts.
+  /// Stored as a string so analytics tables don't depend on an enum
+  /// migration every time we add a screen kind.
+  screenType      String
+  startedAt       DateTime  @default(now())
+  completedAt     DateTime?
+  durationMs      Int       @default(0)
+  wrongCount      Int       @default(0)
+  /// 0 = no hint shown, 1/2/3 = tiered hints surfaced.
+  hintTierReached Int       @default(0)
+  xpEarned        Int       @default(0)
+  starsEarned     Int       @default(3)
+
+  attempt         LessonAttempt @relation(fields: [attemptId], references: [id], onDelete: Cascade)
+
+  @@unique([attemptId, screenIndex])
+  @@index([attemptId])
+}
+
+/// Question-level tracking for quiz-style exercises (CyberMaze) and
+/// the boss battle. Stores stable identifiers only - no PII, no full
+/// question text - so we can identify questions that are too hard or
+/// unclear without storing personal data.
+model QuestionResponse {
+  id            String   @id @default(cuid())
+  attemptId     String
+  screenIndex   Int
+  /// Stable identifier shaped like "<source>:<tier>:<index>", e.g.
+  /// "boss-easy-0", "boss-hard-3", "maze-2". Never the question text.
+  questionKey   String
+  /// Index the child picked. -1 if the question timed out.
+  selectedIndex Int
+  correctIndex  Int
+  wasCorrect    Boolean
+  /// Which try at this same question within this attempt - lets
+  /// retries be distinguished from first encounters.
+  attemptIndex  Int      @default(1)
+  answeredAt    DateTime @default(now())
+
+  attempt       LessonAttempt @relation(fields: [attemptId], references: [id], onDelete: Cascade)
+
+  @@index([attemptId])
+  @@index([questionKey, wasCorrect])
+}
+
+/// One per LessonAttempt that contains a boss battle (Week 1+).
+model BossResult {
+  id             String   @id @default(cuid())
+  attemptId      String   @unique
+  won            Boolean
+  /// 0-100 integer percentage.
+  accuracy       Int
+  totalQuestions Int
+  correctCount   Int
+  wrongCount     Int
+  bestCombo      Int      @default(0)
+  durationMs     Int      @default(0)
+  badgeEarned    Boolean  @default(false)
+  /// Stable badge identifier (e.g. "password-protector"). Optional.
+  badgeId        String?
+  createdAt      DateTime @default(now())
+
+  attempt        LessonAttempt @relation(fields: [attemptId], references: [id], onDelete: Cascade)
+}
+
+/// Accessibility / comfort preferences persisted per user account so
+/// the same setting follows the child across devices. Stored
+/// separately from User to keep the auth row lean and so we can grow
+/// this model without touching User.
+model UserPreference {
+  userId           String   @id
+  comfortMode      Boolean  @default(false)
+  narrationEnabled Boolean  @default(true)
+  reducedMotion    Boolean  @default(false)
+  updatedAt        DateTime @updatedAt
+
+  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+/// First stab at the reward-loop persistence layer (Cyber HQ).
+/// Each row records that a specific (userId, stickerId) pair has been
+/// earned. Stickers themselves are a static catalogue in code (no
+/// table) so adding a new sticker is a code change, not a DB row.
+/// Awards are idempotent via the composite unique index - calling
+/// awardStickers twice with the same ids does not produce duplicates.
+model EarnedSticker {
+  id         String   @id @default(cuid())
+  userId     String
+  /// Stable catalogue id, e.g. "password-master".
+  stickerId  String
+  /// Optional week the sticker was earned in (analytics + dashboard).
+  weekNumber Int?
+  earnedAt   DateTime @default(now())
+
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, stickerId])
+  @@index([userId])
 }

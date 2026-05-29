@@ -712,9 +712,10 @@ export default function ProtectTheData({
       style={{
         position: "relative",
         width: "100%",
-        maxWidth: 760,
+        // Expanded cap.
+        maxWidth: 1200,
         margin: "0 auto",
-        maxHeight: "calc(100vh - 140px)",
+        maxHeight: "calc(100dvh - 220px)",
         borderRadius: 28,
         overflow: "hidden",
         background:

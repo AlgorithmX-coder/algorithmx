@@ -1,12 +1,11 @@
 import type { WeekContent } from "./types";
 
 /**
- * Data-driven port of Week 1. The legacy bespoke player at
- * app/lesson/LessonPlayer.tsx still exists and is unchanged - this file is
- * consumed by the new /lesson/[week] dynamic route. Some of the legacy
- * screens (shield-drag simulator, password-builder slots, phishing-explainer
- * cards, golden-rules tap-to-reveal) don't map cleanly to the ScreenDef
- * union, so they've been replaced by equivalent `info` screens here.
+ * Week 1 - data-driven content.
+ *
+ * Curve rule: every concept is TAUGHT before it is TESTED. Concepts
+ * outside Week 1's scope (password managers, two-step authentication,
+ * hashing, etc.) are intentionally absent and belong in later weeks.
  */
 export const WEEK_1: WeekContent = {
   weekNumber: 1,
@@ -26,15 +25,20 @@ export const WEEK_1: WeekContent = {
   ],
 
   screens: [
+    // 0
     { type: "video", videoPlaceholder: "Week 1: Passwords intro video" },
+
+    // 1
     {
       type: "mission",
       objectives: [
-        "Understand what a password is (and isn't)",
-        "Learn the rules of a STRONG password",
-        "Spot weak passwords a hacker could crack",
+        "Find out what a password really is",
+        "Learn what makes a password strong",
+        "Spot bad passwords a hacker could crack",
       ],
     },
+
+    // 2 - core teaching: what + four strength rules
     {
       type: "info",
       title: "What Is a Password?",
@@ -46,7 +50,19 @@ export const WEEK_1: WeekContent = {
         "Mix uppercase, lowercase, numbers, and symbols",
         "Don't use your name, birthday, or 'password'",
       ],
+      narration: {
+        speaker: "adam",
+        lines: [
+          "A password is your secret code.",
+          "It tells the computer it's really YOU.",
+          "Keep it secret - even from your best friend.",
+          "Long passwords are stronger than short ones.",
+          "Mix big letters, small letters, numbers and symbols.",
+        ],
+      },
     },
+
+    // 3 - first practice: classify (everything tested has been taught)
     {
       type: "cyberScanner",
       items: [
@@ -62,21 +78,288 @@ export const WEEK_1: WeekContent = {
         { text: "X#9kL2$mP!", isStrong: true, explanation: "Random characters, very strong" },
       ],
     },
+
+    // 4 - build
     { type: "passwordLab" },
-    { type: "crackTheCode" },
+
+    // 5 - NEW: Three Random Words Builder. Demonstrates the
+    // length-beats-complexity insight via tactile play - tap 3 words
+    // from a wall, watch the strength meter rise, swap freely.
+    // Variety bonus when 3 different categories chosen.
     {
-      type: "conveyorBelt",
-      items: [
-        { text: "Dragon2020", category: "weak" },
-        { text: "Tr0pic4l$un!", category: "strong" },
-        { text: "bluesky", category: "weak" },
-        { text: "R0ckst@r_2024", category: "strong" },
-        { text: "letmein", category: "weak" },
-        { text: "G4l@xy_Qu3st!", category: "strong" },
-        { text: "myname123", category: "weak" },
-        { text: "X#7kP$mL2!", category: "strong" },
+      type: "threeRandomWords",
+      slots: 3,
+      words: [
+        // animals
+        { id: "w-tiger", text: "tiger", category: "animal" },
+        { id: "w-otter", text: "otter", category: "animal" },
+        { id: "w-falcon", text: "falcon", category: "animal" },
+        { id: "w-dolphin", text: "dolphin", category: "animal" },
+        { id: "w-llama", text: "llama", category: "animal" },
+        { id: "w-bumblebee", text: "bumblebee", category: "animal" },
+        // objects
+        { id: "w-kettle", text: "kettle", category: "object" },
+        { id: "w-rocket", text: "rocket", category: "object" },
+        { id: "w-lantern", text: "lantern", category: "object" },
+        { id: "w-compass", text: "compass", category: "object" },
+        { id: "w-trumpet", text: "trumpet", category: "object" },
+        { id: "w-puzzle", text: "puzzle", category: "object" },
+        // places
+        { id: "w-mountain", text: "mountain", category: "place" },
+        { id: "w-island", text: "island", category: "place" },
+        { id: "w-meadow", text: "meadow", category: "place" },
+        { id: "w-jungle", text: "jungle", category: "place" },
+        { id: "w-harbour", text: "harbour", category: "place" },
+        { id: "w-volcano", text: "volcano", category: "place" },
+        // foods
+        { id: "w-pancake", text: "pancake", category: "food" },
+        { id: "w-mango", text: "mango", category: "food" },
+        { id: "w-noodle", text: "noodle", category: "food" },
+        { id: "w-cookie", text: "cookie", category: "food" },
+        { id: "w-pretzel", text: "pretzel", category: "food" },
+        { id: "w-pickle", text: "pickle", category: "food" },
+      ],
+      hints: {
+        tier1: "Pick any 3 words - they don't need to make sense. The longer your passphrase, the harder it is to crack.",
+        tier2: "Try mixing categories - one animal, one object, one place. The combo is what makes it memorable AND strong.",
+      },
+    },
+
+    // 6 - flagship synthesis. Replaces the legacy CrackTheCode rings
+    // with the Password Vault scene: 5 glowing locks on a cinematic
+    // vault door, one per password rule (length / mix / no personal /
+    // not common / secret). Tap a lock to focus-zoom the camera, get
+    // the challenge in a 2D overlay panel, wrong answers teach via
+    // WrongAnswerPanel, all 5 active opens the vault. This is the
+    // commercial-quality reusable scene template the brief asks for.
+    {
+      type: "passwordVault",
+      guidance: {
+        intro: "Tap a glowing lock to begin.",
+        progress: "Keep going - each rule opens a lock!",
+        complete: "VAULT OPEN - the Raccoon can't get in!",
+      },
+      locks: [
+        {
+          id: "length",
+          ruleLabel: "LENGTH",
+          icon: "📏",
+          prompt: "Which password is LONG enough?",
+          speaker: "adam",
+          choices: [
+            { text: "cat", isCorrect: false, explanation: "Only 3 letters - way under the 8-character rule." },
+            { text: "Tiger!7", isCorrect: false, explanation: "Only 7 characters. The rule is 8 OR MORE." },
+            { text: "MyL0ng_Pass!", isCorrect: true, explanation: "" },
+            { text: "abc", isCorrect: false, explanation: "Just 3 letters - cracked in less than a second." },
+          ],
+        },
+        {
+          id: "mix",
+          ruleLabel: "MIX",
+          icon: "🎨",
+          prompt: "Which password mixes ALL the character types?",
+          speaker: "layla",
+          choices: [
+            { text: "tigertigertiger", isCorrect: false, explanation: "All lowercase - no numbers, no symbols, no capitals." },
+            { text: "Tr0pic4l$un!", isCorrect: true, explanation: "" },
+            { text: "12345678", isCorrect: false, explanation: "Just numbers - no letters and no symbols." },
+            { text: "ABCDEFGHIJ", isCorrect: false, explanation: "All capitals - no lowercase, no numbers, no symbols." },
+          ],
+        },
+        {
+          id: "personal",
+          ruleLabel: "PERSONAL",
+          icon: "🪪",
+          prompt: "Which password does NOT use personal info?",
+          speaker: "adam",
+          choices: [
+            { text: "Sam2014!", isCorrect: false, explanation: "That's a name and what looks like a birth year - easy for anyone who knows you." },
+            { text: "Maya0511", isCorrect: false, explanation: "A name plus a date - hackers try names and birthdays first." },
+            { text: "Volcano$Mango7", isCorrect: true, explanation: "" },
+            { text: "Smith123", isCorrect: false, explanation: "That looks like a surname plus '123' - very easy to guess." },
+          ],
+        },
+        {
+          id: "common",
+          ruleLabel: "COMMON",
+          icon: "📕",
+          prompt: "Which password is NOT in a hacker's top-guess list?",
+          speaker: "layla",
+          choices: [
+            { text: "password", isCorrect: false, explanation: "Literally the #1 most-guessed password in the world." },
+            { text: "qwerty", isCorrect: false, explanation: "Keyboard row in order - hackers try this in the first 5 attempts." },
+            { text: "Compass!Otter9", isCorrect: true, explanation: "" },
+            { text: "football", isCorrect: false, explanation: "Common dictionary word - top-100 every year." },
+          ],
+        },
+        {
+          id: "secret",
+          ruleLabel: "SECRET",
+          icon: "🤐",
+          prompt: "Who should know your password?",
+          speaker: "adam",
+          choices: [
+            { text: "Just my best friend", isCorrect: false, explanation: "Even best friends shouldn't know. Accounts get hacked that way." },
+            { text: "Anyone who asks nicely", isCorrect: false, explanation: "Never. People who really need access ask a grown-up - not you." },
+            { text: "Only me (and a parent)", isCorrect: true, explanation: "" },
+            { text: "My whole class", isCorrect: false, explanation: "That's not a secret any more - that's a public announcement!" },
+          ],
+        },
       ],
     },
+
+    // 7 - reworked sorter. CyberScanner already covers strong/weak
+    // classification, so this screen now teaches the *reasons* a
+    // password is weak. Each card is a weak password; the child taps
+    // the reason it's weak from 4 buttons. Wrong answer pauses with a
+    // specific, kid-friendly explanation.
+    {
+      type: "weakSorter",
+      reasons: [
+        { id: "too-short", label: "Too short", example: "abc" },
+        { id: "common-word", label: "Common word", example: "football" },
+        { id: "personal", label: "Has your name or birthday", example: "Sam2014" },
+        { id: "keyboard", label: "Keyboard pattern", example: "qwerty" },
+      ],
+      items: [
+        { text: "abc", reasonId: "too-short", explanation: "Only 3 letters - way under the 8-character rule." },
+        { text: "football", reasonId: "common-word", explanation: "It's a word from the dictionary - hackers try every common word first." },
+        { text: "Sam2014", reasonId: "personal", explanation: "It looks like a name and a birthday - the easiest things for someone to guess about you." },
+        { text: "qwerty", reasonId: "keyboard", explanation: "These letters sit in a row on the keyboard - the FIRST pattern hackers try." },
+        { text: "123", reasonId: "too-short", explanation: "Only 3 characters AND they're numbers in order - the Raccoon cracks this in less than a second." },
+        { text: "dragon", reasonId: "common-word", explanation: "It's a popular word - 'dragon' is in every hacker's top-100 password list." },
+        { text: "Maya0511", reasonId: "personal", explanation: "A name plus four numbers that look like a date - someone who knows you could guess this fast." },
+        { text: "asdfgh", reasonId: "keyboard", explanation: "Another row of keys in order - just like qwerty, a classic keyboard pattern." },
+      ],
+      hints: {
+        tier1: "Look at WHY it's weak: is it too short, a real word, about you, or just keyboard keys in a row?",
+        tier2: "Count the letters first. If it's under 8 - that's 'Too short'. Then check if it's a word you'd find in a book.",
+        tier3: "Each reason has a clear sign. 'too-short' = fewer than 8 characters. 'common-word' = a real English word. 'personal' = a name or numbers that look like a birthday. 'keyboard' = letters in a straight line on the keyboard.",
+      },
+    },
+
+    // 8 - Password Hospital. Moves the child from RECOGNITION
+    // (WeakSorter directly above) to CONSTRUCTION. Same reason ids as
+    // WeakSorter so analytics aggregations are consistent. Curriculum
+    // discipline holds: no 2FA, no password managers - every fix
+    // action maps to a rule already taught on screen 2.
+    {
+      type: "passwordHospital",
+      reasons: [
+        { id: "too-short", label: "Too short" },
+        { id: "common-word", label: "Common word" },
+        { id: "personal", label: "Has name / birthday" },
+        { id: "keyboard", label: "Keyboard pattern" },
+      ],
+      patients: [
+        {
+          id: "pat-1",
+          password: "abc",
+          primaryReason: "too-short",
+          chartNote: "Patient #1 - admitted critically short",
+          diagnosisExplanation: "Only 3 characters. The 8-character rule isn't optional - shorter passwords are cracked in seconds.",
+          recommendedActions: ["addLetters", "addNumber", "addSymbol"],
+        },
+        {
+          id: "pat-2",
+          password: "football",
+          primaryReason: "common-word",
+          chartNote: "Patient #2 - found in the top-100 password list",
+          diagnosisExplanation: "Hackers try common dictionary words first. 'football' is one of the top guesses every year.",
+          recommendedActions: ["mixCase", "addNumber", "addSymbol", "addLetters"],
+        },
+        {
+          id: "pat-3",
+          password: "qwerty",
+          primaryReason: "keyboard",
+          chartNote: "Patient #3 - keyboard run from the home row",
+          diagnosisExplanation: "Those letters sit in a row on the keyboard. It's the FIRST pattern any hacker tries.",
+          recommendedActions: ["scramble", "addLetters", "mixCase", "addSymbol"],
+        },
+        {
+          id: "pat-4",
+          password: "Sam2014",
+          primaryReason: "personal",
+          chartNote: "Patient #4 - name plus a year",
+          diagnosisExplanation: "It's a name and what looks like a birth year. Anyone who knows you could guess this in a few tries.",
+          recommendedActions: ["removePersonal", "addLetters", "addSymbol"],
+        },
+        {
+          id: "pat-5",
+          password: "123",
+          primaryReason: "too-short",
+          chartNote: "Patient #5 - tiny AND just numbers",
+          diagnosisExplanation: "Only 3 characters, and they're numbers in order. Cracked in less than a second.",
+          recommendedActions: ["addLetters", "addSymbol", "mixCase"],
+        },
+        {
+          id: "pat-6",
+          password: "dragon",
+          primaryReason: "common-word",
+          chartNote: "Patient #6 - popular word, no extras",
+          diagnosisExplanation: "'dragon' is everyone's favourite word to use. No upper case, no numbers, no symbols.",
+          recommendedActions: ["mixCase", "addNumber", "addSymbol", "addLetters"],
+        },
+      ],
+      hints: {
+        diagnosisTier1: "Look closely - does it have letters in a row, real words, parts of someone's name, or is it just very short?",
+        diagnosisTier2: "Count characters. Under 8 = Too short. Real word you'd find in a book = Common word. Name + year = Has name/birthday. Letters in a row on the keyboard = Keyboard pattern.",
+        repairTier1: "Each fix does ONE thing. Use the green check on the patient card to see what it still needs.",
+        repairTier2: "The big wins are: adding length, adding a symbol, mixing case, and removing names. Try each one and watch the strength meter.",
+      },
+    },
+
+    // 9 - uniqueness teaching (lands BEFORE Golden Rules so "UNIQUE" isn't a surprise)
+    {
+      type: "info",
+      title: "One Password, One Account",
+      content:
+        "Imagine you have ONE key that opens your house, your locker AND your bike lock. If a thief steals that key, they can open EVERYTHING. Passwords work the same way - if you use the same one for Roblox, your email and your school account, a hacker who steals one gets them all.",
+      bullets: [
+        "Use a DIFFERENT password for every account",
+        "If you reuse passwords, one hack can become many hacks",
+        "Each password should be strong AND different",
+        "Ask a parent to help you keep track",
+      ],
+      narration: {
+        speaker: "layla",
+        lines: [
+          "Imagine ONE key opens your house AND your bike.",
+          "If a thief steals it, they open both!",
+          "Passwords are the same.",
+          "Use a DIFFERENT one for every account.",
+          "If one gets stolen, the others stay safe.",
+        ],
+      },
+    },
+
+    // 10 - NEW: Account Rescue. Practical uniqueness drill right after
+    // the teaching screen above. The Raccoon hacked one of 3 accounts
+    // sharing the same password; the child assigns a different new
+    // password to each. Duplicate picks are blocked at assignment time.
+    {
+      type: "accountRescue",
+      sharedPassword: "Dragon2014",
+      leakedAccountId: "acc-roblox",
+      accounts: [
+        { id: "acc-roblox", label: "Roblox", icon: "🎮" },
+        { id: "acc-school", label: "School", icon: "📚" },
+        { id: "acc-email", label: "Email", icon: "✉️" },
+      ],
+      passwordBank: [
+        { id: "pw-1", text: "Tiger#Mountain42" },
+        { id: "pw-2", text: "Cookie!Lantern9" },
+        { id: "pw-3", text: "Otter$Rocket27" },
+        { id: "pw-4", text: "Mango_Compass85" },
+        { id: "pw-5", text: "Falcon&Jungle13" },
+      ],
+      hints: {
+        tier1: "Every account needs its OWN password. Pick a different one from the bank for each account.",
+        tier2: "Look closely - one password can only be used by ONE account. If it's already in use, find another.",
+      },
+    },
+
+    // 11 - recap (all five rules have now been taught)
     {
       type: "info",
       title: "The 5 Golden Rules",
@@ -88,18 +371,129 @@ export const WEEK_1: WeekContent = {
         "Make it UNIQUE - different for every account",
         "NEVER use your name, birthday, or 'password'",
       ],
+      narration: {
+        speaker: "adam",
+        lines: [
+          "Time to remember the five Golden Rules!",
+          "One - keep it SECRET. Never share it.",
+          "Two - make it LONG. Eight characters or more.",
+          "Three - MIX letters, numbers and symbols.",
+          "Four - make it UNIQUE for every account.",
+          "Five - never use your name, birthday or the word 'password'.",
+        ],
+      },
     },
+
+    // 12 - phishing teaching (lands BEFORE SpamBlaster)
     {
-      type: "memoryMatch",
-      pairs: [
-        { term: "Password", match: "Your secret code to prove it's you", colour: "#60a5fa" },
-        { term: "Strong", match: "Long, mixed, hard to guess", colour: "#34d399" },
-        { term: "Weak", match: "Short, common, easy to guess", colour: "#ef4444" },
-        { term: "Unique", match: "Different for every account", colour: "#8b5cf6" },
-        { term: "Password Manager", match: "App that remembers passwords safely", colour: "#fbbf24" },
-        { term: "2FA", match: "A second check to prove it's you", colour: "#f97316" },
+      type: "info",
+      title: "Watch Out for Phishing",
+      content:
+        "Phishing (say it like 'fishing') is when a hacker sends a FAKE message that tries to trick you into giving away your password or clicking a bad link. The Hacker Raccoon is great at this - he pretends to be your school, a game, or even a free-prize website. Real schools and real games NEVER ask for your password in a message.",
+      bullets: [
+        "If a message offers a free prize - it's bait",
+        "If a message says 'URGENT' and demands your password - it's bait",
+        "If a message comes from someone you don't know - be careful",
+        "When in doubt, show a parent",
       ],
+      narration: {
+        speaker: "layla",
+        lines: [
+          "Phishing sounds like 'fishing' - and it works the same way.",
+          "A hacker drops bait. Hoping you bite.",
+          "Free prize? Bait.",
+          "'URGENT - type your password!' Bait.",
+          "Message from someone you don't know? Be careful.",
+          "If you're not sure, show a parent.",
+        ],
+      },
     },
+
+    // 13 - NEW: Phish Inspector. The DELIBERATE counterpart to
+    // SpamBlaster's reaction-speed shooter. Each email opens with 4
+    // inspect zones; the child must tap WHO sent it, WHAT the link
+    // is, HOW it sounds, and WHAT it's promising before ZAP/SAFE
+    // unlocks. Teaches "don't react, inspect first" - the missing
+    // mental model SpamBlaster alone doesn't build.
+    {
+      type: "phishInspector",
+      emails: [
+        {
+          id: "email-roblox",
+          sender: "RobIox Security <support@robIox-secure.com>",
+          subject: "URGENT: Verify your account or it will be DELETED",
+          body: "Dear player, we detected suspicious activity on your account. Tap the link below and enter your password within 60 seconds to keep your account active.",
+          isPhishing: true,
+          inspections: {
+            senderNote:
+              "Look closely - 'RobIox' has a capital I instead of a lowercase l. Real Roblox emails come from @roblox.com, never random secure-sounding domains.",
+            senderIsRedFlag: true,
+            linkText: "robIox-security.com",
+            linkNote:
+              "Same trick again - that's not roblox.com. Hackers use lookalike letters so the link LOOKS real at a glance.",
+            linkIsRedFlag: true,
+            urgencyNote:
+              "'URGENT' plus a 60-second countdown is a pressure tactic. Real companies never panic you into action.",
+            urgencyIsRedFlag: true,
+            claimNote:
+              "Real services NEVER ask you to type your password in an email. That's the whole trick.",
+            claimIsRedFlag: true,
+          },
+        },
+        {
+          id: "email-school",
+          sender: "Mrs Johnson <m.johnson@yourschool.edu>",
+          subject: "Reminder: PE kit tomorrow",
+          body: "Hi class - quick reminder to bring your PE kit for tomorrow's lesson. Have a great evening!",
+          isPhishing: false,
+          inspections: {
+            senderNote:
+              "Mrs Johnson is your real teacher, writing from your school's real email address.",
+            senderIsRedFlag: false,
+            linkText: "(no link)",
+            linkNote: "No suspicious links here - just a normal message.",
+            linkIsRedFlag: false,
+            urgencyNote:
+              "Friendly tone, no panic words, no scary countdowns.",
+            urgencyIsRedFlag: false,
+            claimNote:
+              "She isn't asking you to type anything secret - it's just a reminder.",
+            claimIsRedFlag: false,
+          },
+        },
+        {
+          id: "email-vbucks",
+          sender: "V-Bucks Giveaway <freevbucks@prize-central.io>",
+          subject: "🎉 You won 10,000 FREE V-Bucks!",
+          body: "Congratulations! Tap the link below and log in with your Fortnite password to claim. Offer expires in 5 minutes!",
+          isPhishing: true,
+          inspections: {
+            senderNote:
+              "Real V-Bucks come from Epic Games, not 'prize-central.io'. Anyone offering free V-Bucks is a scam.",
+            senderIsRedFlag: true,
+            linkText: "free-vbucks-now.io",
+            linkNote:
+              "Random made-up website. Real Fortnite logins only ever happen INSIDE Fortnite or on epicgames.com.",
+            linkIsRedFlag: true,
+            urgencyNote:
+              "'Expires in 5 minutes!' is pure pressure - they want you to act before you think.",
+            urgencyIsRedFlag: true,
+            claimNote:
+              "Asking for your Fortnite password is the scam. You log into Fortnite IN Fortnite - never through an email.",
+            claimIsRedFlag: true,
+          },
+        },
+      ],
+      hints: {
+        tier1:
+          "Tap all 4 inspect zones before deciding. Look at WHO sent it, WHAT the link is, HOW it sounds, and WHAT it's asking for.",
+        tier2:
+          "Even ONE red flag means it's a phish. Most fake emails have several - sneaky sender, fake link, scary urgency, password ask.",
+      },
+    },
+
+    // 14 - phishing reaction-speed drill (after Inspector teaches the
+    // mental model). Same sequence as before but bumped one index.
     {
       type: "spamBlaster",
       emails: [
@@ -115,6 +509,71 @@ export const WEEK_1: WeekContent = {
         { sender: "Account Security", subject: "Verify your account or it will be DELETED", isPhishing: true, clue: "Scare tactics = phishing" },
       ],
     },
+
+    // 15 - Pop-up Panic. Drills the close-and-tell instinct against
+    // the most common phishing-adjacent UX trick: pop-ups with a big
+    // tempting OK and a small (but always tappable) X.
+    {
+      type: "popupPanic",
+      popups: [
+        {
+          id: "pop-prize",
+          icon: "🎁",
+          title: "YOU WON A FREE iPHONE!",
+          body: "Tap OK to claim your prize before it expires.",
+          whyTrick: "Real companies don't give away iPhones via pop-ups. Anything offering a 'free prize' for a tap is bait.",
+        },
+        {
+          id: "pop-virus",
+          icon: "⚠️",
+          title: "VIRUS DETECTED!",
+          body: "Click OK to scan and clean your computer.",
+          whyTrick: "Real antivirus software never warns you through a website pop-up. This one wants you to install something nasty.",
+        },
+        {
+          id: "pop-delete",
+          icon: "⏱️",
+          title: "ACCOUNT DELETED IN 60 SECONDS",
+          body: "Type your password here to keep it.",
+          whyTrick: "Countdown threats are pure pressure tactics. Real apps don't ever delete your account from a pop-up.",
+        },
+        {
+          id: "pop-vbucks",
+          icon: "💰",
+          title: "FREE 10,000 V-BUCKS",
+          body: "Just tap OK and the V-Bucks are yours.",
+          whyTrick: "Free in-game currency is one of the oldest scams targeting kids. Real games sell V-Bucks - they don't give them away via pop-ups.",
+        },
+        {
+          id: "pop-phone",
+          icon: "📞",
+          title: "YOUR DEVICE WILL LOCK",
+          body: "Call this number now to stop it.",
+          whyTrick: "No real company asks you to phone a number from a pop-up. That number leads to a scammer pretending to be tech support.",
+        },
+      ],
+      hints: {
+        tier1: "Look for the small X in the corner of the pop-up. The big OK is the trap.",
+        tier2: "Top-right of the pop-up. Tap the X, not the colourful button.",
+        tier3: "Every pop-up has an X in the top corner. The OK button is always the wrong choice - tap the X and tell a grown-up.",
+      },
+    },
+
+    // 16 - vocabulary consolidation. Password Manager and 2FA pairs removed
+    // (not taught in Week 1). Replaced with concepts now taught: Phishing + Secret.
+    {
+      type: "memoryMatch",
+      pairs: [
+        { term: "Password", match: "Your secret code to prove it's you", colour: "#60a5fa" },
+        { term: "Strong", match: "Long, mixed, hard to guess", colour: "#34d399" },
+        { term: "Weak", match: "Short, common, easy to guess", colour: "#ef4444" },
+        { term: "Unique", match: "Different for every account", colour: "#8b5cf6" },
+        { term: "Phishing", match: "A fake message that wants to trick you", colour: "#ff5fb3" },
+        { term: "Secret", match: "Only you know it", colour: "#fbbf24" },
+      ],
+    },
+
+    // 17
     {
       type: "chooseYourPath",
       scenarios: [
@@ -128,62 +587,214 @@ export const WEEK_1: WeekContent = {
         {
           setup: "A pop-up says your account is hacked and you must enter your password on this page RIGHT NOW. What do you do?",
           choices: [
-            { text: "Enter it quickly - sounds urgent!", isSafe: false, consequence: "That was a scam. You just gave your password to a hacker." },
+            { text: "Enter it quickly - sounds urgent!", isSafe: false, consequence: "That was a phishing trick. You just gave your password to a hacker." },
             { text: "Close it and tell a parent", isSafe: true, consequence: "Great thinking! Real companies don't demand passwords via pop-ups." },
           ],
         },
       ],
     },
+
+    // 18 - end-of-lesson maze recap. 2FA and "where to store passwords" (Password
+    // Manager) questions removed. Replaced with uniqueness + phishing recall.
     {
       type: "cyberMaze",
       questions: [
         { question: "What makes a password STRONG?", answers: ["Mix of letters, numbers, symbols, 8+ long", "Your birthday", "The word 'password'", "One letter"], correctIndex: 0 },
         { question: "Who should know your password?", answers: ["Only you (and a parent for safety)", "Your best friend", "Everyone in your class", "Everyone who asks"], correctIndex: 0 },
         { question: "A good password does NOT include...", answers: ["Your name or birthday", "Numbers", "Symbols", "Uppercase letters"], correctIndex: 0 },
-        { question: "2FA adds...", answers: ["A second check to prove it's you", "A second password", "Two usernames", "Double-clicks"], correctIndex: 0 },
-        { question: "Where should you STORE passwords?", answers: ["In a password manager", "On a sticky note", "In a text to a friend", "The same note for every account"], correctIndex: 0 },
+        { question: "If a hacker steals ONE of your passwords, which other accounts are at risk?", answers: ["Any other account where you used the same password", "Only the one that was stolen", "No accounts at all", "Only accounts you opened that day"], correctIndex: 0 },
+        { question: "A pop-up says you won a free phone if you type your password. What is it?", answers: ["A phishing trick", "A real prize", "A school message", "A game"], correctIndex: 0 },
       ],
     },
+
+    // 19
     { type: "bossBattle" },
+
+    // 20 - NEW: Mission Debrief. Final-act recap that consolidates
+    // the lesson by CONCEPT (Strength / Secrecy / Uniqueness /
+    // Phishing). Four cards reveal in sequence with Layla narration,
+    // then the child taps through to claim their stickers.
+    {
+      type: "missionDebrief",
+      title: "Mission Complete!",
+      subtitle: "Here's what you mastered this week.",
+      concepts: [
+        {
+          id: "strength",
+          label: "Strong Passwords",
+          accent: "#00e5ff",
+          icon: "💪",
+          summary: "You can build long, mixed passwords the Raccoon can't crack.",
+        },
+        {
+          id: "secrecy",
+          label: "Keep It Secret",
+          accent: "#fde047",
+          icon: "🤐",
+          summary: "Even best friends don't need your passwords. Adults help instead.",
+        },
+        {
+          id: "uniqueness",
+          label: "One Per Account",
+          accent: "#7c5cff",
+          icon: "🗝️",
+          summary: "Every account gets its own password. One leak doesn't open all doors.",
+        },
+        {
+          id: "phishing",
+          label: "Spot the Trick",
+          accent: "#ff5fb3",
+          icon: "🔍",
+          summary: "Inspect the sender, link, urgency and ask before you click.",
+        },
+      ],
+      narration: {
+        speaker: "layla",
+        lines: [
+          "Wow! Look at everything you learned this week.",
+          "Strong passwords - long and mixed.",
+          "Secret passwords - even from your best friend.",
+          "Unique passwords - one for every account.",
+          "And you can spot phishing tricks too.",
+          "Time to claim your stickers!",
+        ],
+      },
+    },
+
+    // 21 - NEW: Sticker Unlock. The reward-loop celebration. Three
+    // stickers drop in sequence with confetti + audio per sticker.
+    // Server-side awarding happens in DynamicLesson on lesson
+    // completion; this screen is the visual moment.
+    {
+      type: "stickerUnlock",
+      title: "Stickers Unlocked!",
+      stickers: [
+        {
+          id: "password-master",
+          name: "Password Master",
+          icon: "🔐",
+          description: "Built strong passwords the Raccoon can't crack.",
+        },
+        {
+          id: "secret-keeper",
+          name: "Secret Keeper",
+          icon: "🤐",
+          description: "Stood firm when asked to share. Passwords stay secret.",
+        },
+        {
+          id: "phish-spotter",
+          name: "Phish Spotter",
+          icon: "🔍",
+          description: "Inspected the bait and didn't bite. Sharp eyes!",
+        },
+      ],
+    },
+
+    // 22
     { type: "completion" },
   ],
 
+  // Multi-phase boss (Week 1). The flat `bossQuestions` block below
+  // is retained for backwards compat (BossBattle falls back to it if
+  // `bossPhases` is unset), but the live boss is driven by the 5-act
+  // structure defined here:
+  //
+  //   Phase 1 - Strength  (3 Q)  "Which is stronger?"
+  //   Phase 2 - Secrecy   (2 Q)  "Who should know it?"
+  //   Phase 3 - Uniqueness(2 Q)  "Same password everywhere?"
+  //   Phase 4 - Phishing  (3 Q)  "Spot the trick"
+  //   Phase 5 - Final     (4 Q)  Scenario combo
+  //
+  // Total: 14 questions (down from 15), tighter narrative arc, every
+  // question tagged with a concept for parent-dashboard attribution.
+  // Curriculum discipline: every concept is taught in earlier screens.
+  // No 2FA, no password managers, no jargon.
+  bossPhases: [
+    {
+      kind: "mcq",
+      id: "phase-strength",
+      label: "Strength",
+      announceText: "Round 1 - The Strength Test!",
+      announceTone: "cyan",
+      questions: [
+        { question: "Which is the STRONGEST password?", answers: ["Tr0pic4l$unR1se!", "password", "12345", "yourname"], correctIndex: 0, explanation: "A mix of uppercase, lowercase, numbers and symbols - long, too.", key: "boss-strength-1" },
+        { question: "A password should be at least how long?", answers: ["8 characters", "3 letters", "1 number", "Just your name"], correctIndex: 0, explanation: "8+ characters is the safe minimum.", key: "boss-strength-2" },
+        { question: "Why is 'Tropical$unR1se!' stronger than 'TropicalSunrise'?", answers: ["It mixes case, numbers and symbols - much harder to crack", "It is shorter", "It is the same", "It has a capital T"], correctIndex: 0, explanation: "Character variety makes passwords much harder to guess.", key: "boss-strength-3" },
+      ],
+    },
+    {
+      kind: "mcq",
+      id: "phase-secrecy",
+      label: "Secrecy",
+      announceText: "Round 2 - Keep It Secret!",
+      announceTone: "gold",
+      questions: [
+        { question: "Should you share your password with a best friend?", answers: ["Never", "Yes", "Only on weekends", "Only at school"], correctIndex: 0, explanation: "Passwords are always secret, even from friends.", key: "boss-secrecy-1" },
+        { question: "Your big sister's friend says 'I forgot my password - can I borrow yours just for today?' What do you do?", answers: ["Tell her to ask an adult for help", "Lend it - it's just for a day", "Make a new one together and share it", "Tell her but ask her not to share"], correctIndex: 0, explanation: "Passwords are never lent - even for a minute. The right help is from a grown-up.", key: "boss-secrecy-2" },
+      ],
+    },
+    {
+      kind: "mcq",
+      id: "phase-uniqueness",
+      label: "Uniqueness",
+      announceText: "Round 3 - One Key Per Door!",
+      announceTone: "blue",
+      questions: [
+        { question: "Using the same password for everything is...", answers: ["Risky - one hack unlocks them all", "Safer - easier to remember", "Required", "Normal"], correctIndex: 0, explanation: "If one account is stolen, every account is - always use different passwords.", key: "boss-uniqueness-1" },
+        { question: "You used the SAME password for your school account AND Roblox. Roblox just got hacked. What should you do?", answers: ["Change BOTH passwords to different ones", "Nothing - it's only Roblox", "Change just your Roblox password", "Stop using Roblox forever"], correctIndex: 0, explanation: "When one is stolen, change every place it was used - and make each new one different.", key: "boss-uniqueness-2" },
+      ],
+    },
+    {
+      kind: "mcq",
+      id: "phase-phishing",
+      label: "Phishing",
+      announceText: "Round 4 - Spot the Trick!",
+      announceTone: "red",
+      questions: [
+        { question: "A message says 'URGENT: type your password to keep your account.' What kind of message is this?", answers: ["A phishing trick", "A normal school message", "A friend asking nicely", "A safe alert"], correctIndex: 0, explanation: "Real services never demand your password by message - that's phishing.", key: "boss-phishing-1" },
+        { question: "A pop-up says 'Your account will be deleted in 60 seconds unless you type your password here NOW.' What's the trick?", answers: ["They want you to panic so you don't think", "Your account really is being deleted", "It's a game", "They want to help you"], correctIndex: 0, explanation: "Scary countdown pop-ups are phishing - real apps never delete your account from a pop-up.", key: "boss-phishing-2" },
+        { question: "A stranger online says 'I'll give you free game money if you tell me your password.' What's the smartest thing to do?", answers: ["Say no and tell a parent", "Tell them - free money sounds great", "Tell them but only half of it", "Make a new password and tell them the old one"], correctIndex: 0, explanation: "Nobody real gives you free stuff for a password - that's the Hacker Raccoon's trick.", key: "boss-phishing-3" },
+      ],
+    },
+    {
+      kind: "mcq",
+      id: "phase-final",
+      label: "Final Showdown",
+      announceText: "FINAL ROUND - The Raccoon's last stand!",
+      announceTone: "red",
+      questions: [
+        { question: "What is a password?", answers: ["A secret code to prove it's you", "A type of game", "A song lyric", "A school subject"], correctIndex: 0, explanation: "A password is your secret code to log in.", key: "boss-final-1" },
+        { question: "Why shouldn't you write your password on a sticky note under your keyboard?", answers: ["Anyone who lifts the keyboard can read it", "The ink fades", "Paper is bad", "Stickies are too small"], correctIndex: 0, explanation: "A password only works if nobody else can see it.", key: "boss-final-2" },
+        { question: "Which makes guessing a password take much longer?", answers: ["More characters and a random mix", "Using your name", "Making it shorter", "Using only numbers"], correctIndex: 0, explanation: "Every extra character makes guessing take much, much longer.", key: "boss-final-3" },
+        { question: "A website you use got hacked and your password leaked. What should you do everywhere ELSE you used that same password?", answers: ["Change it on every account where you used it", "Do nothing", "Only change it on the hacked site", "Delete the internet"], correctIndex: 0, explanation: "Change it everywhere it was reused - this is why unique passwords matter.", key: "boss-final-4" },
+      ],
+    },
+  ],
+
+  // Legacy 15-question flat fallback. Kept so the boss still works if
+  // `bossPhases` is ever cleared. Identical content distribution to
+  // the prior pre-phase version.
   bossQuestions: {
     easy: [
-      { question: "What is a password?", answers: ["A secret code to prove it's you", "A type of game", "A song lyric", "A school subject"], correctIndex: 0, explanation: "A password is your secret code to log in" },
-      { question: "Which is STRONGER?", answers: ["Tr0pic4l$unR1se!", "password", "12345", "yourname"], correctIndex: 0, explanation: "Mix of uppercase, lowercase, numbers, and symbols - and long" },
-      { question: "Should you share your password with a friend?", answers: ["Yes", "Never", "Only on weekends", "Only at school"], correctIndex: 1, explanation: "Passwords are always secret, even from friends" },
-      { question: "A password should be at least...", answers: ["8 characters long", "3 letters", "1 number", "Your name"], correctIndex: 0, explanation: "8+ characters is the minimum for a strong password" },
-      { question: "Which is the WEAKEST password?", answers: ["password123", "G4m3r#Pr0!", "X#9kL2$mP!", "Cyb3r$h13ld_2024!"], correctIndex: 0, explanation: "'password' is literally the worst password - everyone tries it first" },
-      { question: "What does 2FA stand for?", answers: ["Two-Factor Authentication", "Two Free Apples", "Too Fast Again", "Total Fun Adventure"], correctIndex: 0, explanation: "Two-Factor Authentication - a second check to prove it's you" },
-      { question: "A password manager...", answers: ["Remembers your passwords safely", "Tells your friends your password", "Makes weaker passwords", "Only works offline"], correctIndex: 0, explanation: "Password managers keep all your passwords encrypted and safe" },
-      { question: "Using the same password for everything is...", answers: ["Safer - easier to remember", "Risky - one hack unlocks them all", "Normal", "Required"], correctIndex: 1, explanation: "If one account is hacked, EVERY account is - always use unique passwords" },
-      { question: "The Hacker Raccoon tries to guess your password using...", answers: ["Common words and dates", "Telepathy", "Luck", "Cats"], correctIndex: 0, explanation: "Hackers use lists of common passwords and dates - don't use them!" },
-      { question: "Your password should NOT be...", answers: ["Something the Raccoon could guess", "A random mix", "Long", "Unique"], correctIndex: 0, explanation: "Anything a hacker could easily guess (name, birthday, 'password') is weak" },
+      { question: "What is a password?", answers: ["A secret code to prove it's you", "A type of game", "A song lyric", "A school subject"], correctIndex: 0, explanation: "A password is your secret code to log in." },
+      { question: "Which is the STRONGEST password?", answers: ["Tr0pic4l$unR1se!", "password", "12345", "yourname"], correctIndex: 0, explanation: "A mix of uppercase, lowercase, numbers and symbols - long, too." },
+      { question: "Should you share your password with a best friend?", answers: ["Never", "Yes", "Only on weekends", "Only at school"], correctIndex: 0, explanation: "Passwords are always secret, even from friends." },
+      { question: "A password should be at least how long?", answers: ["8 characters", "3 letters", "1 number", "Just your name"], correctIndex: 0, explanation: "8+ characters is the safe minimum." },
+      { question: "Using the same password for everything is...", answers: ["Risky - one hack unlocks them all", "Safer - easier to remember", "Required", "Normal"], correctIndex: 0, explanation: "If one account is stolen, every account is - always use different passwords." },
     ],
     medium: [
-      { question: "Why shouldn't you write your password on a sticky note?", answers: ["Anyone who sees it can use it", "The ink fades", "Paper is bad", "Stickies are too small"], correctIndex: 0, explanation: "Written passwords are visible to anyone nearby - use a password manager instead" },
-      { question: "If your friend guesses your password, you should...", answers: ["Change it immediately", "Keep using it", "Let them log in for you", "Share it with more people"], correctIndex: 0, explanation: "Once a password is known by someone else, change it right away" },
-      { question: "A password manager needs ONE strong password (the 'master') because...", answers: ["It unlocks all your other passwords, so it must be extra strong", "It saves time", "It looks cooler", "It's required by law"], correctIndex: 0, explanation: "Your master password is the key to everything - make it strong and unique" },
-      { question: "Why is 'Tropical$unR1se!' stronger than 'TropicalSunrise'?", answers: ["Mixed case + numbers + symbols = harder to crack", "It's longer", "It's shorter", "It's the same"], correctIndex: 0, explanation: "Character variety makes passwords exponentially harder to crack" },
-      { question: "2FA using your phone means...", answers: ["You need both your password AND a code sent to your phone", "Your phone IS your password", "You don't need a password", "Your phone picks the password"], correctIndex: 0, explanation: "Two-factor means two checks - password + phone code is a classic combo" },
-      { question: "Which stops a hacker trying thousands of guesses per second?", answers: ["Long random passwords", "Short common passwords", "Your nickname", "Nothing stops them"], correctIndex: 0, explanation: "Every extra character makes brute-force attacks take exponentially longer" },
-      { question: "A 'passphrase' like 'correct-horse-battery-staple' works because...", answers: ["It's long + random words = hard to crack but easy to remember", "It's funny", "It uses dashes", "It has animals"], correctIndex: 0, explanation: "Random-word passphrases are both strong AND memorable" },
-      { question: "Why should your email password be especially strong?", answers: ["Your email can reset all your other accounts", "Emails cost more", "It's a legal rule", "It's the default"], correctIndex: 0, explanation: "Your email is the 'master key' - hacking it usually lets hackers reset every other account" },
-      { question: "If a website is hacked and your password is leaked, you should...", answers: ["Change it on that site AND anywhere else you used it", "Do nothing", "Only change it on that site", "Delete the internet"], correctIndex: 0, explanation: "Change it everywhere it's been reused - this is why unique passwords matter" },
-      { question: "A 'keylogger' is malware that...", answers: ["Records everything you type including passwords", "Locks your keys", "Plays music", "Changes your wallpaper"], correctIndex: 0, explanation: "Keyloggers steal passwords as you type - one reason to keep your computer updated and scanned" },
+      { question: "Why shouldn't you write your password on a sticky note under your keyboard?", answers: ["Anyone who lifts the keyboard can read it", "The ink fades", "Paper is bad", "Stickies are too small"], correctIndex: 0, explanation: "A password only works if nobody else can see it." },
+      { question: "Why is 'Tropical$unR1se!' stronger than 'TropicalSunrise'?", answers: ["It mixes case, numbers and symbols - much harder to crack", "It is shorter", "It is the same", "It has a capital T"], correctIndex: 0, explanation: "Character variety makes passwords much harder to guess." },
+      { question: "Which makes guessing a password take much longer?", answers: ["More characters and a random mix", "Using your name", "Making it shorter", "Using only numbers"], correctIndex: 0, explanation: "Every extra character makes guessing take much, much longer." },
+      { question: "A website you use got hacked and your password leaked. What should you do everywhere ELSE you used that same password?", answers: ["Change it on every account where you used it", "Do nothing", "Only change it on the hacked site", "Delete the internet"], correctIndex: 0, explanation: "Change it everywhere it was reused - this is why unique passwords matter." },
+      { question: "A message says 'URGENT: type your password to keep your account.' What kind of message is this?", answers: ["A phishing trick", "A normal school message", "A friend asking nicely", "A safe alert"], correctIndex: 0, explanation: "Real services never demand your password by message - that's phishing." },
     ],
     hard: [
-      { question: "Why do some sites force you to change passwords every 90 days?", answers: ["If a password has leaked without you knowing, a change limits the damage - though unique long passwords + 2FA are now considered more important", "It's a legal requirement", "It speeds up the site", "For fun"], correctIndex: 0, explanation: "Periodic rotation used to be standard. Modern guidance is: unique strong passwords + 2FA matter more" },
-      { question: "A 'brute force attack' is when a hacker...", answers: ["Tries every possible password combination until one works", "Uses physical force", "Guesses once", "Asks nicely"], correctIndex: 0, explanation: "Computers can try millions of password combinations per second - that's why length matters" },
-      { question: "A 'dictionary attack' tries...", answers: ["Every word in the dictionary as a password", "Spelling lessons", "Dictionary pages", "Random letters"], correctIndex: 0, explanation: "Common words fall in seconds - never use single dictionary words" },
-      { question: "Why is a 6-character password insecure even if 'random'?", answers: ["Modern computers can try all 6-character combinations in seconds", "6 is an unlucky number", "It's too long", "It needs emoji"], correctIndex: 0, explanation: "Length is the single biggest factor - at least 8 characters is the safe minimum" },
-      { question: "'Salting' a password hash means...", answers: ["Adding random extra data before hashing, so identical passwords look different in storage", "Using sea salt", "Making it tasty", "Nothing technical"], correctIndex: 0, explanation: "Salt protects databases - even if two users pick the same password, their stored hashes differ" },
-      { question: "A password stored as a 'hash' means...", answers: ["A scrambled version that can't easily be reversed back to the password", "Written on paper", "In a fridge", "Sent by post"], correctIndex: 0, explanation: "Hashes are one-way scrambles - even the website can't see your actual password" },
-      { question: "If a site stores passwords in 'plaintext' it means...", answers: ["Passwords are stored as-is - a huge security risk", "They're printed out", "Plain black and white", "Only letters, no numbers"], correctIndex: 0, explanation: "Plaintext storage is how big leaks happen - avoid sites that show you your own password in an email" },
-      { question: "Why is reusing passwords catastrophic once one site is breached?", answers: ["Hackers test leaked password + username combos on every major site (credential stuffing)", "It's not catastrophic", "It slows down websites", "Nothing special"], correctIndex: 0, explanation: "Credential stuffing is huge - one breach + password reuse = many breached accounts" },
-      { question: "A 'passkey' is a newer alternative to passwords that...", answers: ["Uses your device's biometrics or a cryptographic key instead of a typed password", "Is just a longer password", "Requires a physical key", "Doesn't exist"], correctIndex: 0, explanation: "Passkeys use public-key cryptography + your device - they can't be phished" },
-      { question: "The strongest single habit for password safety is...", answers: ["Use a password manager + 2FA on every account that supports it", "Memorise one super password", "Never go online", "Only use your pet's name"], correctIndex: 0, explanation: "Password manager = unique strong passwords everywhere. 2FA = hackers can't get in even if they steal one" },
+      { question: "A stranger online says 'I'll give you free game money if you tell me your password.' What's the smartest thing to do?", answers: ["Say no and tell a parent", "Tell them - free money sounds great", "Tell them but only half of it", "Make a new password and tell them the old one"], correctIndex: 0, explanation: "Nobody real gives you free stuff for a password - that's the Hacker Raccoon's trick." },
+      { question: "Your big sister's friend says 'I forgot my password - can I borrow yours just for today?' What do you do?", answers: ["Tell her to ask an adult for help", "Lend it - it's just for a day", "Make a new one together and share it", "Tell her but ask her not to share"], correctIndex: 0, explanation: "Passwords are never lent - even for a minute. The right help is from a grown-up." },
+      { question: "You used the SAME password for your school account AND Roblox. Roblox just got hacked. What should you do?", answers: ["Change BOTH passwords to different ones", "Nothing - it's only Roblox", "Change just your Roblox password", "Stop using Roblox forever"], correctIndex: 0, explanation: "When one is stolen, change every place it was used - and make each new one different." },
+      { question: "A pop-up says 'Your account will be deleted in 60 seconds unless you type your password here NOW.' What's the trick?", answers: ["They want you to panic so you don't think", "Your account really is being deleted", "It's a game", "They want to help you"], correctIndex: 0, explanation: "Scary countdown pop-ups are phishing - real apps never delete your account from a pop-up." },
+      { question: "You wrote your password on a sticky note under your keyboard so you don't forget. Why is that a problem?", answers: ["Anyone who sits at your computer can lift the keyboard and read it", "The paper might tear", "The ink will fade", "It isn't a problem"], correctIndex: 0, explanation: "A password only works if you're the only one who knows where it is." },
     ],
   },
 
@@ -193,14 +804,23 @@ export const WEEK_1: WeekContent = {
     2: { adam: { mood: "thinking", message: "Passwords are your secret code." }, layla: null },
     3: { adam: null, layla: { mood: "excited", message: "Scan each password!" } },
     4: { adam: { mood: "excited", message: "Let's brew a super-strong password!" }, layla: null },
-    5: { adam: null, layla: { mood: "thinking", message: "Crack the code with all 4 rings." } },
-    6: { adam: { mood: "excited", message: "Sort them fast on the belt!" }, layla: null },
-    7: { adam: null, layla: { mood: "thumbsup", message: "The 5 Golden Rules - memorise them!" } },
-    8: { adam: { mood: "curious", message: "Match the password concepts." }, layla: null },
-    9: { adam: null, layla: { mood: "worried", message: "Zap the phishing emails!" } },
-    10: { adam: { mood: "thinking", message: "Pick the safe door." }, layla: null },
-    11: { adam: null, layla: { mood: "excited", message: "Navigate the maze!" } },
-    12: { adam: { mood: "excited", message: "Boss battle - let's beat the Raccoon!" }, layla: null },
-    13: { adam: null, layla: { mood: "thumbsup", message: "Password Protector badge earned!" } },
+    5: { adam: null, layla: { mood: "curious", message: "Three random words - long beats clever every time." } },
+    6: { adam: { mood: "excited", message: "Open every lock on the vault door!" }, layla: null },
+    7: { adam: null, layla: { mood: "thinking", message: "Each of these is WEAK - tell me WHY." } },
+    8: { adam: { mood: "excited", message: "Welcome to the Hospital - let's heal these weak passwords!" }, layla: null },
+    9: { adam: { mood: "thinking", message: "One key, one door - never reuse passwords." }, layla: null },
+    10: { adam: null, layla: { mood: "worried", message: "The Raccoon's in - rescue every account!" } },
+    11: { adam: null, layla: { mood: "thumbsup", message: "The 5 Golden Rules - memorise them!" } },
+    12: { adam: { mood: "worried", message: "Phishing is the Raccoon's favourite trick - watch out!" }, layla: null },
+    13: { adam: null, layla: { mood: "curious", message: "Inspect each email before deciding - look for the red flags." } },
+    14: { adam: null, layla: { mood: "worried", message: "Zap the phishing emails!" } },
+    15: { adam: { mood: "worried", message: "Find the X - never tap OK on a scary pop-up." }, layla: null },
+    16: { adam: { mood: "curious", message: "Match the password concepts." }, layla: null },
+    17: { adam: null, layla: { mood: "thinking", message: "Pick the safe door." } },
+    18: { adam: { mood: "excited", message: "Navigate the maze!" }, layla: null },
+    19: { adam: null, layla: { mood: "excited", message: "Boss battle - let's beat the Raccoon!" } },
+    20: { adam: { mood: "thumbsup", message: "Look at everything you learned this week!" }, layla: null },
+    21: { adam: null, layla: { mood: "excited", message: "Stickers earned - they're going to your Cyber HQ!" } },
+    22: { adam: { mood: "thumbsup", message: "Password Protector badge earned!" }, layla: null },
   },
 };

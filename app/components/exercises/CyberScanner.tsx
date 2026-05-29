@@ -16,6 +16,17 @@ import { correctAnswerBurst } from "@/app/lib/celebrations";
 import ExerciseIntro from "./ExerciseIntro";
 import ExerciseHowTo from "./ExerciseHowTo";
 import { COLOR, SHADOW, SPRING } from "@/app/components/scene/tokens";
+import { useComfortMode } from "@/app/lib/comfortMode";
+import WrongAnswerPanel from "@/app/components/lesson/WrongAnswerPanel";
+import HintBubble from "@/app/components/lesson/HintBubble";
+import {
+  setupHiDpiCanvas,
+  easeOutCubic,
+  easeOutBack,
+  ease01,
+  scaledParticleCount,
+  playSoftWrong,
+} from "@/app/lib/gameEngine";
 
 export interface CyberScannerPassword {
   text: string;
@@ -28,6 +39,12 @@ export interface CyberScannerProps {
   onComplete: (score: number) => void;
   onCorrect?: () => void;
   onWrong?: () => void;
+  /**
+   * Fires when a new tier of HintBubble becomes visible.
+   * Tier mapping: 1 wrong = tier 1, 2 wrong = tier 2, 3+ = tier 3.
+   * The parent useLessonProgress hook dedupes by max-per-screen.
+   */
+  onHintReached?: (tier: 1 | 2 | 3) => void;
 }
 
 const DEFAULT_PASSWORDS: CyberScannerPassword[] = [
@@ -104,11 +121,16 @@ const CV = {
   hudStreak: "#7df0ff",
 } as const;
 
-function transitTimeMs(i: number) {
-  if (i === 0) return 10500;
-  if (i < 4) return 8000;
-  if (i < 7) return 6000;
-  return 4500;
+function transitTimeMs(i: number, comfort: boolean) {
+  // Standard pacing for older / quick learners.
+  let base: number;
+  if (i === 0) base = 10500;
+  else if (i < 4) base = 8000;
+  else if (i < 7) base = 6000;
+  else base = 4500;
+  // Comfort mode: a lot more reading time per card. We don't go to
+  // Infinity because the card needs to drift across the beam visually.
+  return comfort ? Math.round(base * 2.2) + 4000 : base;
 }
 
 interface RunningCard {
@@ -151,6 +173,7 @@ export default function CyberScanner({
   onComplete,
   onCorrect,
   onWrong,
+  onHintReached,
 }: CyberScannerProps) {
   const list = useMemo(() => passwords ?? DEFAULT_PASSWORDS, [passwords]);
 
@@ -158,6 +181,34 @@ export default function CyberScanner({
   const rafRef = useRef<number | null>(null);
   const [showIntro, setShowIntro] = useState(true);
   const [resetKey, setResetKey] = useState(0);
+  const comfort = useComfortMode();
+  const comfortRef = useRef(comfort.enabled);
+  useEffect(() => {
+    comfortRef.current = comfort.enabled;
+  }, [comfort.enabled]);
+
+  // Pause-on-wrong feedback overlay. While `feedback` is non-null the
+  // card stays on screen and the next card does not spawn - the child
+  // must tap "Got it" to continue.
+  const [feedback, setFeedback] = useState<null | {
+    title: string;
+    explanation: string;
+    tip?: string;
+  }>(null);
+  // Tiered-hint counter (1/2/3 wrong on this screen).
+  const [wrongCount, setWrongCount] = useState(0);
+
+  // Hint-tier emission: when wrongCount crosses a tier threshold,
+  // notify the parent. The parent's useLessonProgress hook keeps the
+  // running max per screen and emits a hint_used analytics event the
+  // first time each tier is reached. Safe to over-emit here - the
+  // hook dedupes.
+  useEffect(() => {
+    if (!onHintReached) return;
+    if (wrongCount === 0) return;
+    const tier: 1 | 2 | 3 = wrongCount === 1 ? 1 : wrongCount === 2 ? 2 : 3;
+    onHintReached(tier);
+  }, [wrongCount, onHintReached]);
 
   const state = useRef({
     idx: 0,
@@ -222,6 +273,8 @@ export default function CyberScanner({
     const s = state.current;
     const c = s.card;
     if (!c || c.resolved) return;
+    // Paused waiting for "Got it" - swallow button presses.
+    if (feedback) return;
     const now = performance.now();
     const progress = Math.min(1, (now - c.startTime) / c.duration);
     const correct = guess === c.isStrong;
@@ -234,7 +287,7 @@ export default function CyberScanner({
       s.correct += 1;
       s.streak += 1;
       s.bestStreak = Math.max(s.bestStreak, s.streak);
-      burst(c.absorbStartX, c.absorbStartY, CV.burstCorrect, 14);
+      burst(c.absorbStartX, c.absorbStartY, CV.burstCorrect, scaledParticleCount(14));
       addFloater("CORRECT!", c.absorbStartX, c.absorbStartY - 30, CV.floaterCorrect, 22);
       if (progress <= 0.3) {
         s.speedBonuses += 1;
@@ -243,21 +296,43 @@ export default function CyberScanner({
       onCorrect?.();
     } else {
       c.outcome = "wrong";
-      playSound("wrong");
+      playSoftWrong();
       s.wrong += 1;
       s.streak = 0;
-      burst(c.absorbStartX, c.absorbStartY, CV.burstWrong, 12);
+      burst(c.absorbStartX, c.absorbStartY, CV.burstWrong, scaledParticleCount(12));
       addFloater("WRONG!", c.absorbStartX, c.absorbStartY - 30, CV.floaterWrong, 22);
-      s.explanationText = `${c.isStrong ? "STRONG" : "WEAK"}: ${c.explanation}`;
-      s.explanationUntil = now + 2400;
-      s.explanationColour = c.isStrong ? CV.explainStrong : CV.explainWeak;
       onWrong?.();
+      // Pause-on-wrong: stop spawning the next card, show overlay,
+      // wait for "Got it". The card stays resolved on the beam and is
+      // cleared by the gotIt handler.
+      setWrongCount((n) => n + 1);
+      setFeedback({
+        title: c.isStrong ? "That one was STRONG" : "That one was WEAK",
+        explanation: c.explanation,
+        tip: c.isStrong
+          ? "Strong passwords mix UPPER, lower, numbers and symbols, and have 8+ characters."
+          : "Weak passwords are short, common, or things people could guess about you.",
+      });
+      return;
     }
+    // Correct path: advance after the absorb animation.
     window.setTimeout(() => {
       s.card = null;
       s.idx = c.idx + 1;
       s.nextStartAt = performance.now() + 600;
     }, 700);
+  };
+
+  // Got-It handler: clear pause, advance to next card.
+  const gotIt = () => {
+    setFeedback(null);
+    const s = state.current;
+    if (s.card) {
+      const c = s.card;
+      s.card = null;
+      s.idx = c.idx + 1;
+      s.nextStartAt = performance.now() + 400;
+    }
   };
 
   const cardX = (c: RunningCard, now: number) => {
@@ -288,6 +363,8 @@ export default function CyberScanner({
     setShowIntro(true);
     setResetKey((k) => k + 1);
     setRender((n) => n + 1);
+    setFeedback(null);
+    setWrongCount(0);
   };
 
   // Render loop
@@ -295,14 +372,28 @@ export default function CyberScanner({
     if (showIntro) return;
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-    canvas.width = CANVAS_W;
-    canvas.height = CANVAS_H;
+    // Hi-DPI setup so card text + shield glyphs are crisp on Retina.
+    // Without this the canvas was being upscaled by the browser from
+    // 720×340 → ~1440×680 on 2x displays, producing soft text.
+    const setup = setupHiDpiCanvas(canvas, {
+      logicalWidth: CANVAS_W,
+      logicalHeight: CANVAS_H,
+      maxDpr: 2,
+    });
+    if (!setup) return;
+    const ctx = setup.ctx;
 
     let running = true;
     let lastTime = performance.now();
     state.current.nextStartAt = performance.now() + 2200;
+
+    // Visibility-aware: when the tab is hidden the browser still
+    // delivers rAF callbacks but at ~1Hz, which made cards "teleport"
+    // on tab return. Re-baseline lastTime when visibility flips.
+    const onVis = () => {
+      if (document.hidden) lastTime = performance.now();
+    };
+    document.addEventListener("visibilitychange", onVis);
 
     const spawnNext = (now: number) => {
       const s = state.current;
@@ -325,7 +416,7 @@ export default function CyberScanner({
         isStrong: p.isStrong,
         explanation: p.explanation,
         startTime: now,
-        duration: transitTimeMs(s.idx),
+        duration: transitTimeMs(s.idx, comfortRef.current),
         resolved: false,
         outcome: null,
         absorbProgress: 0,
@@ -336,6 +427,15 @@ export default function CyberScanner({
 
     const tick = (now: number) => {
       if (!running) return;
+      // True-pause when the tab is hidden: skip all update + draw
+      // work entirely. The browser still delivers throttled frames
+      // (~1Hz) so we just re-arm rAF and bail. lastTime is
+      // rebaselined via the visibilitychange listener so dt doesn't
+      // explode on resume.
+      if (document.hidden) {
+        rafRef.current = requestAnimationFrame(tick);
+        return;
+      }
       const dt = Math.min(50, now - lastTime);
       lastTime = now;
       const frames = dt / (1000 / 60);
@@ -350,26 +450,30 @@ export default function CyberScanner({
           c.resolved = true;
           c.outcome = "slow";
           const x = CANVAS_W - CARD_W / 2;
-          addFloater("TOO SLOW!", x - 30, BEAM_Y - 40, CV.floaterSlow, 22);
-          addFloater("🦝", x + 50, BEAM_Y - 10, "#ff7a59", 40, 1200);
+          addFloater("TIME'S UP!", x - 30, BEAM_Y - 40, CV.floaterSlow, 22);
           s.streak = 0;
           s.wrong += 1;
-          s.explanationText = `${c.isStrong ? "STRONG" : "WEAK"}: ${c.explanation}`;
-          s.explanationUntil = now + 2400;
-          s.explanationColour = c.isStrong ? CV.explainStrong : CV.explainWeak;
-          playSound("wrong");
+          playSoftWrong();
           onWrong?.();
-          window.setTimeout(() => {
-            s.card = null;
-            s.idx = c.idx + 1;
-            s.nextStartAt = performance.now() + 600;
-          }, 700);
+          // Pause-on-timeout: show the same friendly overlay rather
+          // than punishing with a fast auto-advance. Got-It will move
+          // to the next card.
+          setWrongCount((n) => n + 1);
+          setFeedback({
+            title: "That one ran out of time",
+            explanation: `It was ${c.isStrong ? "STRONG" : "WEAK"} - ${c.explanation}`,
+            tip: "It's OK to take your time. Tap STRONG or WEAK before the card crosses the beam.",
+          });
         }
       }
 
       if (s.card && s.card.resolved && s.card.outcome === "correct") {
         s.card.absorbProgress = Math.min(1, s.card.absorbProgress + 0.08 * frames);
       }
+      // Eased absorb position for nicer "snap into the shield" feel.
+      // Linear progress made the card look like it was on a rail; an
+      // easeOutBack overshoots slightly then settles, which reads as
+      // a real magnetic pull.
 
       s.particles = s.particles
         .map((p) => ({
@@ -471,10 +575,12 @@ export default function CyberScanner({
         let y: number;
         let scale: number;
         if (c.resolved && c.outcome === "correct") {
-          const t = c.absorbProgress;
+          const tRaw = c.absorbProgress;
+          const t = ease01(tRaw, easeOutBack);
+          const tScale = ease01(tRaw, easeOutCubic);
           x = c.absorbStartX + (SHIELD_X - c.absorbStartX) * t;
           y = c.absorbStartY + (SHIELD_Y - c.absorbStartY) * t;
-          scale = 1 - t * 0.85;
+          scale = 1 - tScale * 0.85;
         } else {
           x = cardX(c, now);
           y = CARD_Y;
@@ -626,6 +732,7 @@ export default function CyberScanner({
     return () => {
       running = false;
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
+      document.removeEventListener("visibilitychange", onVis);
       ctx.clearRect(0, 0, CANVAS_W, CANVAS_H);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -642,9 +749,19 @@ export default function CyberScanner({
       style={{
         position: "relative",
         width: "100%",
-        maxWidth: 760,
+        // The wrapper caps width AND derives its width from available
+        // vertical room. 720/340 is the canvas aspect ratio. The
+        // reserve (280px) covers HUD + safe-area-bottom + hint area
+        // + STRONG/WEAK button row + LessonStage padding. With this
+        // calc, on a short browser window (e.g. 700px tall) the
+        // wrapper shrinks horizontally so the canvas+buttons fit
+        // vertically without clipping.
+        // Expanded cap: the playable area now scales up with the
+        // viewport instead of sitting in a fixed 760px island. The
+        // calc-from-height term still caps the canvas vertically so
+        // it never clips on short windows.
+        maxWidth: "min(1400px, calc((100dvh - 280px) * 720 / 340))",
         margin: "0 auto",
-        maxHeight: "calc(100vh - 140px)",
         borderRadius: 28,
         overflow: "hidden",
         background:
@@ -673,6 +790,33 @@ export default function CyberScanner({
         }}
         aria-label="Cyber Scanner game"
       />
+
+      {/* Tiered hint - reserves layout space so the buttons don't jump */}
+      <div style={{ minHeight: 0, padding: wrongCount > 0 ? "10px 22px 0" : 0 }}>
+        {wrongCount === 1 && (
+          <HintBubble
+            tier={1}
+            speaker="adam"
+            text="Look at the password's LENGTH first - 8 or more characters is the safe minimum. Then check if it uses both LETTERS and numbers/symbols."
+          />
+        )}
+        {wrongCount === 2 && (
+          <HintBubble
+            tier={2}
+            speaker="adam"
+            text="STRONG = long AND mixed AND not a word you'd find in a book. WEAK = short, common, or about you."
+            example="STRONG: Tr0pic4l$un!   WEAK: football"
+          />
+        )}
+        {wrongCount >= 3 && (
+          <HintBubble
+            tier={3}
+            speaker="layla"
+            text="Quick rule card: 8+ characters · mix UPPER + lower + numbers + symbols · no real words · no your-name."
+            example="Tr0pic4l$un!  ✅    password123  ❌"
+          />
+        )}
+      </div>
 
       {/* Big tactile answer buttons */}
       <div
@@ -723,6 +867,15 @@ export default function CyberScanner({
           icon="🔍"
           controls="Tap the buttons below"
           onStart={() => setShowIntro(false)}
+        />
+      )}
+      {feedback && (
+        <WrongAnswerPanel
+          title={feedback.title}
+          explanation={feedback.explanation}
+          tip={feedback.tip}
+          speaker="layla"
+          onContinue={gotIt}
         />
       )}
       <span style={{ display: "none" }}>{render}</span>

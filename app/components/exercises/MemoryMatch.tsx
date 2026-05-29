@@ -15,6 +15,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { motion } from "motion/react";
 import { playSound } from "@/app/lib/sounds";
+import { playSoftWrong } from "@/app/lib/gameEngine";
 import {
   badgeEarnedCelebration,
   correctAnswerBurst,
@@ -22,6 +23,8 @@ import {
 import ExerciseIntro from "./ExerciseIntro";
 import ExerciseHowTo from "./ExerciseHowTo";
 import { COLOR, SHADOW, SPRING } from "@/app/components/scene/tokens";
+import { useComfortMode } from "@/app/lib/comfortMode";
+import HintBubble from "@/app/components/lesson/HintBubble";
 
 export interface MemoryPair {
   term: string;
@@ -35,6 +38,9 @@ export interface MemoryMatchProps {
   onComplete: (score: number) => void;
   onCorrect?: () => void;
   onWrong?: () => void;
+  /** See CyberScanner.onHintReached. MemoryMatch shows the hint when
+   * mismatchCount >= 3, so this fires tier 2 / 3 only. */
+  onHintReached?: (tier: 1 | 2 | 3) => void;
 }
 
 const DEFAULT_PAIRS: MemoryPair[] = [
@@ -132,6 +138,7 @@ export default function MemoryMatch({
   onComplete,
   onCorrect,
   onWrong,
+  onHintReached,
 }: MemoryMatchProps) {
   useEffect(ensureStyles, []);
 
@@ -151,6 +158,19 @@ export default function MemoryMatch({
   const [popIdxs, setPopIdxs] = useState<number[]>([]);
   const [waveOn, setWaveOn] = useState(false);
   const [finished, setFinished] = useState(false);
+  const [mismatchCount, setMismatchCount] = useState(0);
+
+  // Hint-tier emission. MemoryMatch surfaces the HintBubble after
+  // 3 mismatches (tier 2) and escalates at 5+ (tier 3). Tier 1 isn't
+  // used here - the mechanic itself is the gentlest feedback already.
+  useEffect(() => {
+    if (!onHintReached) return;
+    if (mismatchCount < 3) return;
+    const tier: 1 | 2 | 3 = mismatchCount >= 5 ? 3 : 2;
+    onHintReached(tier);
+  }, [mismatchCount, onHintReached]);
+  const comfort = useComfortMode();
+  const reduce = comfort.enabled || comfort.prefersReducedMotion;
 
   /* ─── PHASE B: REBUILD FROM MEMORY ─────────────────────────────
    * After all pairs are matched in Phase A, we don't go straight to
@@ -298,9 +318,10 @@ export default function MemoryMatch({
         onCorrect?.();
       }, 320);
     } else {
-      playSound("wrong");
+      playSoftWrong();
       setStreak(0);
       setShakeIdxs([aIdx, bIdx]);
+      setMismatchCount((n) => n + 1);
       onWrong?.();
       window.setTimeout(() => {
         setShakeIdxs([]);
@@ -405,7 +426,7 @@ export default function MemoryMatch({
     } else {
       // Wrong card - let the kid see what it actually was for ~1.1s,
       // then flip it back face-down so they can try again.
-      playSound("wrong");
+      playSoftWrong();
       setShakeIdxs([idx]);
       onWrong?.();
       window.setTimeout(() => {
@@ -583,6 +604,17 @@ export default function MemoryMatch({
           </div>
         )}
 
+        {/* Tiered hint: after a few mismatches Adam steps in. */}
+        {mismatchCount >= 3 && matchedPairIds.length < pairList.length && (
+          <div style={{ padding: "0 12px 12px" }}>
+            <HintBubble
+              tier={mismatchCount >= 5 ? 3 : 2}
+              speaker="adam"
+              text="Try to remember WHERE you saw each meaning. Tap two that go together - a word and what it means."
+            />
+          </div>
+        )}
+
         {/* Card grid */}
         <div
           style={{
@@ -594,12 +626,16 @@ export default function MemoryMatch({
         >
           {cards.map((c, idx) => {
             const showFace = c.flipped || c.matched;
+            // Comfort mode (or OS-level prefers-reduced-motion) drops
+            // the shake on mismatch and the wave on completion. The
+            // pop on match stays - it's a quick celebratory accent,
+            // not a motion-trigger.
             const extraAnim =
-              waveOn && c.matched
+              waveOn && c.matched && !reduce
                 ? `mmWave 0.5s ease-out ${c.waveDelay}s`
                 : popIdxs.includes(idx)
                   ? "mmPop 0.4s ease-out"
-                  : shakeIdxs.includes(idx)
+                  : shakeIdxs.includes(idx) && !reduce
                     ? "mmShake 0.35s ease-in-out 2"
                     : undefined;
             const jSeed =

@@ -13,6 +13,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { motion } from "motion/react";
 import { playSound } from "@/app/lib/sounds";
+import { playSoftWrong } from "@/app/lib/gameEngine";
 import {
   correctAnswerBurst,
   wrongAnswerShake,
@@ -246,7 +247,7 @@ export default function ChooseYourPath({
       }
       setParticles(burst);
     } else {
-      playSound("wrong");
+      playSoftWrong();
       wrongAnswerShake();
       onWrong?.();
     }
@@ -301,9 +302,11 @@ export default function ChooseYourPath({
       style={{
         position: "relative",
         width: "100%",
-        maxWidth: 760,
+        // Expanded so the door-choice composition scales with the
+        // viewport. maxHeight cap removed - the scene doesn't have
+        // overflow risk on short screens.
+        maxWidth: 1200,
         margin: "0 auto",
-        maxHeight: "calc(100vh - 140px)",
         borderRadius: 28,
         overflow: "hidden",
         background:

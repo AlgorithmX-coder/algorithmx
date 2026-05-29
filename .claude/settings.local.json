@@ -34,7 +34,26 @@
       "Bash(pip install *)",
       "Bash(python3 *)",
       "Bash(python *)",
-      "Bash(git commit *)"
+      "Bash(git commit *)",
+      "Bash(ls \"c:/Users/Asad Jalal/code/algorithmx/app/components\" \"c:/Users/Asad Jalal/code/algorithmx/app/components/exercises\" \"c:/Users/Asad Jalal/code/algorithmx/app/components/game\" 2>nul)",
+      "Bash(awk 'NR>900 && NR<1100' \"c:/Users/Asad Jalal/code/algorithmx/app/components/exercises/SpamBlaster.tsx\")",
+      "Bash(awk 'NR>1100 && NR<1300' \"c:/Users/Asad Jalal/code/algorithmx/app/components/exercises/SpamBlaster.tsx\")",
+      "Bash(awk 'NR>520 && NR<700' \"c:/Users/Asad Jalal/code/algorithmx/app/components/exercises/SpamBlaster.tsx\")",
+      "Bash(awk '/handleAnswer|onAnswer|setActiveQuestion\\\\\\(null\\\\\\)|answerCorrect|answer.*correct/ {print NR\": \"$0}' \"c:/Users/Asad Jalal/code/algorithmx/app/components/exercises/CyberMaze.tsx\")",
+      "Bash(awk '/^  return \\\\\\(/ {print NR}; /<\\\\/div>/ {last=NR} END {print \"last </div>: \" last}' \"c:/Users/Asad Jalal/code/algorithmx/app/components/exercises/CyberMaze.tsx\")",
+      "Bash(awk '/handleSubmit|handleAttempt|submit|attempt|onSubmit|isAttempt/ {print NR\": \"$0}' \"c:/Users/Asad Jalal/code/algorithmx/app/components/exercises/CrackTheCode.tsx\")",
+      "Bash(awk '/export default function MemoryMatch/ {print NR}' \"c:/Users/Asad Jalal/code/algorithmx/app/components/exercises/MemoryMatch.tsx\")",
+      "Bash(npx --no-install tsc --noEmit --pretty false)",
+      "Bash(tee /tmp/tsc-out.txt)",
+      "Read(//tmp/**)",
+      "PowerShell(npx tsc --noEmit 2>&1 | Select-Object -First 80; \"EXIT=$LASTEXITCODE\")",
+      "Bash(curl -s -o /dev/null -w \"HTTP %{http_code} -> /\\\\n\" http://localhost:3000/)",
+      "Bash(curl -s -o /dev/null -w \"HTTP %{http_code} -> /lesson/1\\\\n\" http://localhost:3000/lesson/1)",
+      "PowerShell(npx tsc --noEmit 2>&1 | Select-Object -First 20; \"EXIT=$LASTEXITCODE\")",
+      "PowerShell(npx tsc --noEmit 2>&1 | Select-Object -First 40; \"EXIT=$LASTEXITCODE\")"
+    ],
+    "additionalDirectories": [
+      "C:\\Users\\Asad Jalal\\code\\algorithmx"
     ]
   }
 }
