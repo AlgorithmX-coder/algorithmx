@@ -3,12 +3,22 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { motion } from "motion/react";
+// playSound KEPT for sounds without useGameAudio facade equivalents:
+// "pour", "sortCorrect", "confetti", "pop". Flagged in report.
 import { playSound } from "@/app/lib/sounds";
+import {
+  useExerciseFeedback,
+  useGameAudio,
+  useMotionIntensity,
+} from "@/app/lib/gameEngine";
+// KEPT + FLAGGED: correctAnswerBurst and badgeEarnedCelebration have
+// no toolkit facade equivalents. Both intensity-gated below.
 import {
   correctAnswerBurst,
   badgeEarnedCelebration,
 } from "@/app/lib/celebrations";
 import ExerciseIntro from "./ExerciseIntro";
+import ExerciseFrame from "@/app/components/lesson/ExerciseFrame";
 import { COLOR, SHADOW, SPRING } from "@/app/components/scene/tokens";
 
 export interface PasswordLabProps {
@@ -148,6 +158,13 @@ export default function PasswordLab({
 }: PasswordLabProps) {
   useEffect(ensureStyles, []);
 
+  // Toolkit hooks. PasswordLab had no comfort handling before this
+  // migration; the new `intensity` gate covers strict reduced-motion
+  // users on the big finale helpers below.
+  const audio = useGameAudio();
+  const fx = useExerciseFeedback();
+  const intensity = useMotionIntensity();
+
   const containerRef = useRef<HTMLDivElement | null>(null);
   const cauldronRef = useRef<HTMLDivElement | null>(null);
   const splashIdRef = useRef(0);
@@ -276,12 +293,15 @@ export default function PasswordLab({
     if (added.length === 5 && !completed) {
       setCompleted(true);
       playSound("confetti");
-      playSound("badgeEarned");
-      void correctAnswerBurst();
-      void badgeEarnedCelebration();
+      audio.badgeEarned();
+      // Big-FX helpers intensity-gated for strict reduced-motion.
+      if (intensity > 0) {
+        void correctAnswerBurst();
+        void badgeEarnedCelebration();
+      }
       spawnSplash("#fbbf24", 28);
     }
-  }, [added.length, completed, spawnSplash]);
+  }, [added.length, completed, spawnSplash, audio, intensity]);
 
   const [bubbleTick, setBubbleTick] = useState(0);
   useEffect(() => {
@@ -302,34 +322,31 @@ export default function PasswordLab({
   );
 
   return (
-    <div
-      ref={containerRef}
-      onPointerMove={handlePointerMove}
-      onPointerUp={handlePointerUp}
+    <ExerciseFrame
+      maxWidth={1500}
+      padding="20px 18px 30px"
+      background={
+        "radial-gradient(ellipse at 50% 80%, rgba(124, 92, 255, 0.45), transparent 60%)," +
+        "radial-gradient(ellipse at 50% 20%, rgba(125, 240, 255, 0.4), transparent 55%)," +
+        "linear-gradient(180deg, #2a1240 0%, #1a2147 35%, #252d5e 70%, #3a7bff 92%, #7df0ff 100%)"
+      }
+      touchActionNone
       style={{
-        position: "relative",
-        width: "100%",
         minHeight: 520,
         maxHeight: "calc(100vh - 140px)",
-        borderRadius: 28,
-        overflow: "hidden",
-        background:
-          // Was a violet halo at the bottom + a warm cream halo at the
-          // top - two competing colour temperatures inside one cauldron
-          // scene.  Replaced the warm cream halo with a cyan halo so the
-          // sky reads cool-on-cool.
-          "radial-gradient(ellipse at 50% 80%, rgba(124, 92, 255, 0.45), transparent 60%)," +
-          "radial-gradient(ellipse at 50% 20%, rgba(125, 240, 255, 0.4), transparent 55%)," +
-          "linear-gradient(180deg, #2a1240 0%, #1a2147 35%, #252d5e 70%, #3a7bff 92%, #7df0ff 100%)",
         boxShadow: SHADOW.sceneFrame,
-        padding: "20px 18px 30px",
         color: COLOR.cream,
         userSelect: "none",
-        touchAction: "none",
-        fontFamily:
-          "ui-rounded, 'Fredoka', 'Quicksand', system-ui, -apple-system, sans-serif",
       }}
     >
+      {/* Inner wrapper carries the pointer handlers + ref since
+          ExerciseFrame doesn't forwardRef or pass arbitrary events. */}
+      <div
+        ref={containerRef}
+        onPointerMove={handlePointerMove}
+        onPointerUp={handlePointerUp}
+        style={{ position: "relative", width: "100%", height: "100%" }}
+      >
       {/* Magical lab backdrop - drifting alchemy runes & floor lights */}
       <style>{`
         @keyframes plRuneDrift { 0%,100% { transform: translateY(0) rotate(0deg); opacity: 0.18; } 50% { transform: translateY(-14px) rotate(8deg); opacity: 0.45; } }
@@ -827,7 +844,7 @@ export default function PasswordLab({
             <motion.button
               type="button"
               onClick={() => {
-                playSound("click");
+                audio.tap();
                 // Phase A done → advance to the Build-Your-Own
                 // password sandbox instead of completing immediately.
                 setLabPhase("sandbox");
@@ -854,7 +871,7 @@ export default function PasswordLab({
             <motion.button
               type="button"
               onClick={() => {
-                playSound("select");
+                audio.select();
                 resetExercise();
               }}
               whileHover={{ scale: 1.04 }}
@@ -954,7 +971,9 @@ export default function PasswordLab({
             document.body
           );
         })()}
-    </div>
+      </div>
+      {fx.layer()}
+    </ExerciseFrame>
   );
 }
 
@@ -981,6 +1000,9 @@ function BuildPasswordSandbox({
   setBuilt: (next: string[]) => void;
   onSave: (pwd: string) => void;
 }) {
+  // Sandbox has its own audio hook so the parent doesn't need to
+  // thread the facade through props.
+  const audio = useGameAudio();
   const pwd = built.join("");
   // Strength heuristic: characters + variety of categories.
   const hasWord = built.some((b) => /^[A-Za-z]+$/.test(b));
@@ -1005,7 +1027,7 @@ function BuildPasswordSandbox({
   const removeLast = () => {
     if (built.length === 0) return;
     setBuilt(built.slice(0, -1));
-    playSound("click");
+    audio.tap();
   };
 
   return (
