@@ -1,14 +1,30 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
+// playSound KEPT for the "pop" cue (safe-email-through) which has no
+// useGameAudio facade equivalent. Flagged in migration report.
 import { playSound } from "@/app/lib/sounds";
+// KEPT + FLAGGED: correctAnswerBurst (no toolkit equivalent),
+// intensity-gated below via intensityRef.
 import { correctAnswerBurst } from "@/app/lib/celebrations";
 import ExerciseIntro from "./ExerciseIntro";
+import ExerciseFrame from "@/app/components/lesson/ExerciseFrame";
 import { PixarFinishOverlay } from "@/app/components/scene";
+// useComfortMode KEPT (not collapsed into useMotionIntensity). Reason:
+// comfortRef.current feeds game-timing logic (line ~449: parallel-card
+// cap; line ~476: card-speed halving). useMotionIntensity would
+// conflate OS reduced-motion with the user comfort toggle, changing
+// difficulty for prefers-reduced-motion users. Flagged in report.
 import { useComfortMode } from "@/app/lib/comfortMode";
 import WrongAnswerPanel from "@/app/components/lesson/WrongAnswerPanel";
 import HintBubble from "@/app/components/lesson/HintBubble";
-import { setupHiDpiCanvas, scaledParticleCount, playSoftWrong } from "@/app/lib/gameEngine";
+import {
+  setupHiDpiCanvas,
+  scaledParticleCount,
+  useExerciseFeedback,
+  useGameAudio,
+  useMotionIntensity,
+} from "@/app/lib/gameEngine";
 
 export interface SpamEmail {
   sender: string;
@@ -136,6 +152,15 @@ export default function SpamBlaster({
   useEffect(() => {
     comfortRef.current = comfort.enabled;
   }, [comfort.enabled]);
+  // Toolkit hooks. `intensityRef` mirrors intensity so the rAF/game
+  // loops can read the current value without stale closures.
+  const audio = useGameAudio();
+  const fx = useExerciseFeedback();
+  const intensity = useMotionIntensity();
+  const intensityRef = useRef(intensity);
+  useEffect(() => {
+    intensityRef.current = intensity;
+  }, [intensity]);
 
   // Pause-on-wrong overlay. While `feedback` is set, the game loop
   // stops moving emails and spawning, and pointer input is ignored.
@@ -263,7 +288,7 @@ export default function SpamBlaster({
       colour: phishing ? "#ff5577" : "#00e5ff",
       kind: phishing ? "phishing" : "safe",
     });
-    playSound("click");
+    audio.tap();
     window.setTimeout(() => {
       if (phishing) zapPhishing(hit);
       else nudgeSafe(hit);
@@ -325,13 +350,13 @@ export default function SpamBlaster({
     s.zapped += 1;
     s.streak += 1;
     s.bestStreak = Math.max(s.bestStreak, s.streak);
-    playSound("correct");
+    audio.correct();
     onCorrect?.();
   };
 
   const nudgeSafe = (em: LiveEmail) => {
     addFloater("OOPS! That was a real email!", em.x, em.y - 30, "#ffd158", 1100);
-    playSoftWrong();
+    audio.wrong();
     state.current.streak = 0;
     onWrong?.();
     em.vx += (Math.random() - 0.5) * 2;
@@ -353,7 +378,7 @@ export default function SpamBlaster({
     s.monitorFlashUntil = performance.now() + 380;
     s.monitorShakeUntil = performance.now() + 380;
     addFloater("HACKED!", MONITOR_X, MONITOR_Y - MONITOR_H / 2 - 20, "#ef4444", 1200);
-    playSoftWrong();
+    audio.wrong();
     onWrong?.();
     setWrongCount((n) => n + 1);
     setFeedback({
@@ -752,7 +777,8 @@ export default function SpamBlaster({
       if (s.finished) return;
       if (s.spawnedIdx >= list.length && s.live.every((e) => !e.alive)) {
         s.finished = true;
-        void correctAnswerBurst();
+        // Intensity-gated: strict reduced-motion skips the burst.
+        if (intensityRef.current > 0) void correctAnswerBurst();
         setRender((n) => n + 1);
       }
     };
@@ -1227,28 +1253,15 @@ export default function SpamBlaster({
   const accuracy = total > 0 ? Math.round(((s.zapped + s.inbox) / total) * 100) : 0;
 
   return (
-    <div
+    <ExerciseFrame
+      maxWidth={1400}
+      aspectRatio={{ w: 720, h: 500 }}
+      reserve={220}
+      background="linear-gradient(180deg, #2a1240 0%, #1a2147 35%, #252d5e 70%, #3a7bff 92%, #7df0ff 100%)"
+      touchActionNone
       style={{
-        position: "relative",
-        width: "100%",
-        // Width derives from available vertical room via the 720/500
-        // canvas aspect ratio. Reserve (220px) covers HUD + safe area
-        // + LessonStage padding. SpamBlaster has overlays only
-        // (no flow-layout buttons below the canvas) so the chrome
-        // reserve is smaller than CyberScanner's.
-        // Expanded cap so the inbox scene scales with the viewport
-        // instead of sitting in a fixed 760px frame.
-        maxWidth: "min(1400px, calc((100dvh - 220px) * 720 / 500))",
-        margin: "0 auto",
-        borderRadius: 28,
-        overflow: "hidden",
-        background:
-          "linear-gradient(180deg, #2a1240 0%, #1a2147 35%, #252d5e 70%, #3a7bff 92%, #7df0ff 100%)",
         boxShadow:
           "0 40px 90px -30px rgba(40, 22, 12, 0.55), 0 0 0 1px rgba(255,210,170,0.25) inset",
-        touchAction: "none",
-        fontFamily:
-          "ui-rounded, 'Fredoka', 'Quicksand', system-ui, -apple-system, sans-serif",
       }}
     >
       <canvas
@@ -1271,11 +1284,11 @@ export default function SpamBlaster({
           subline={`Zapped ${s.zapped}/${s.totalPhishing} · Delivered ${s.inbox}/${s.totalSafe} · Viruses ${s.viruses}`}
           stars={stars}
           onContinue={() => {
-            playSound("click");
+            audio.tap();
             onComplete(s.zapped + s.inbox);
           }}
           onRetry={() => {
-            playSound("select");
+            audio.select();
             resetExercise();
           }}
         />
@@ -1330,7 +1343,8 @@ export default function SpamBlaster({
 
       {/* `render` is read so state-bumps trigger re-render for the finish overlay */}
       <span style={{ display: "none" }}>{render}</span>
-    </div>
+      {fx.layer()}
+    </ExerciseFrame>
   );
 }
 
