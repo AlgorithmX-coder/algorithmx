@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
@@ -72,7 +72,15 @@ function CyberFloatingIcons() {
   );
 }
 
-export default function LoginPage() {
+/**
+ * Inner component that actually reads useSearchParams. Wrapped in a
+ * <Suspense> boundary by the exported `LoginPage` below - required by
+ * Next.js 16 for any client component that calls useSearchParams in
+ * a route that's still statically prerendered (otherwise the build
+ * errors with "useSearchParams() should be wrapped in a suspense
+ * boundary").
+ */
+function LoginPageInner() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const isDesktop = useIsDesktop(1024);
@@ -492,5 +500,32 @@ export default function LoginPage() {
         }
       `}</style>
     </div>
+  );
+}
+
+/**
+ * Suspense wrapper for the inner client component. Required by
+ * Next.js 16's CSR-bailout rules whenever a prerendered route reads
+ * search params - the boundary lets the page emit a static shell on
+ * the server and hydrate the dynamic param-aware content client-side
+ * without aborting the build.
+ *
+ * Fallback is deliberately a transparent placeholder of the same
+ * background colour so there's no flash before hydration.
+ */
+export default function LoginPage() {
+  return (
+    <Suspense
+      fallback={
+        <div
+          style={{
+            minHeight: "100vh",
+            background: "#06070d",
+          }}
+        />
+      }
+    >
+      <LoginPageInner />
+    </Suspense>
   );
 }
