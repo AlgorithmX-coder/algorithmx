@@ -217,12 +217,14 @@ function paintTitleBar(
   const mode =
     stage <= 6 ? "BOOTING" : stage === 7 ? "STREAMS" : stage === 8 ? "PROJECTS" : "READY";
   ctx.fillText(`MODE  ${mode}`, c.width - 96, 90);
-  /* Active blinking dot next to MODE */
+  /* Mode-indicator dot — bloom cut (16 → 7) and radius trimmed
+   * (9 → 6). Same logic as the streams-row dots: it was reading as
+   * the brightest pixel in the title bar before this. */
   ctx.fillStyle = stage === 9 ? "#5fffa3" : "#00f5ff";
   ctx.shadowColor = stage === 9 ? "#5fffa3" : "#00f5ff";
-  ctx.shadowBlur = 16;
+  ctx.shadowBlur = 7;
   ctx.beginPath();
-  ctx.arc(c.width - 96 - ctx.measureText(`MODE  ${mode}`).width - 22, 90, 9, 0, Math.PI * 2);
+  ctx.arc(c.width - 96 - ctx.measureText(`MODE  ${mode}`).width - 22, 90, 6, 0, Math.PI * 2);
   ctx.fill();
   ctx.shadowBlur = 0;
   /* Divider */
@@ -310,36 +312,48 @@ function paintStreamsDashboard(
   const rowH = 98;
   STREAMS.forEach((s, i) => {
     const y = startY + i * rowH;
-    /* Accent indicator dot */
+    /* Accent indicator dot — bloom cut again (9 → 4) and dot radius
+     * trimmed (9 → 7). With six rows of these, the cumulative glow
+     * was what made the dashboard read as "neon city". */
     ctx.fillStyle = s.color;
     ctx.shadowColor = s.color;
-    ctx.shadowBlur = 18;
+    ctx.shadowBlur = 4;
     ctx.beginPath();
-    ctx.arc(118, y, 10, 0, Math.PI * 2);
+    ctx.arc(116, y, 7, 0, Math.PI * 2);
     ctx.fill();
     ctx.shadowBlur = 0;
-    /* Stream name */
-    ctx.font = `bold 40px ${FONT_MONO}`;
-    ctx.fillStyle = s.color;
+    /* Stream name — accent colour at 65% alpha (was 0.88). Still
+     * reads as the coloured row but doesn't shout. */
+    ctx.font = `bold 38px ${FONT_MONO}`;
+    ctx.fillStyle = `rgba(${hexToRgbStr(s.color)},0.65)`;
     ctx.textAlign = "left";
-    ctx.fillText(s.name, 158, y - 14);
-    /* Age + project subtitle */
-    ctx.font = `500 24px ${FONT_MONO}`;
-    ctx.fillStyle = "rgba(232,237,255,0.48)";
-    ctx.fillText(`AGES ${s.age}   //   ${s.project}`, 158, y + 24);
-    /* Status badge (right side) */
+    ctx.fillText(s.name, 152, y - 14);
+    /* Age + project subtitle — quieter (0.48 → 0.4) so the row
+     * hierarchy points to the stream name, not the metadata. */
+    ctx.font = `500 22px ${FONT_MONO}`;
+    ctx.fillStyle = "rgba(232,237,255,0.4)";
+    ctx.fillText(`AGES ${s.age}   //   ${s.project}`, 152, y + 22);
+    /* Status badge — now an OUTLINED pill in the accent colour
+     * instead of a saturated solid fill. The previous solid badge
+     * was a bright accent rectangle on every row, six of them
+     * stacked = a vertical column of neon stripes on the right.
+     * Outlined feels like dashboard UI, not signage. */
     const badgeText = s.status;
-    ctx.font = `bold 26px ${FONT_MONO}`;
+    ctx.font = `bold 22px ${FONT_MONO}`;
     const tw = ctx.measureText(badgeText).width;
-    const padX = 24;
+    const padX = 20;
     const bw = tw + padX * 2;
-    const bh = 44;
+    const bh = 36;
     const bx = c.width - 118 - bw;
     const by = y - bh / 2;
-    ctx.fillStyle = s.color;
-    roundRect(ctx, bx, by, bw, bh, 8);
+    ctx.fillStyle = `rgba(${hexToRgbStr(s.color)},0.12)`;
+    roundRect(ctx, bx, by, bw, bh, 7);
     ctx.fill();
-    ctx.fillStyle = "#04050d";
+    ctx.strokeStyle = `rgba(${hexToRgbStr(s.color)},0.55)`;
+    ctx.lineWidth = 1.2;
+    roundRect(ctx, bx, by, bw, bh, 7);
+    ctx.stroke();
+    ctx.fillStyle = `rgba(${hexToRgbStr(s.color)},0.92)`;
     ctx.textAlign = "center";
     ctx.fillText(badgeText, bx + bw / 2, y + 1);
     ctx.textAlign = "left";
@@ -366,32 +380,38 @@ function paintProjectsDashboard(
   const rowH = 178;
   projects.forEach((p, i) => {
     const y = startY + i * rowH;
-    /* Left accent rim */
-    ctx.fillStyle = p.color;
-    ctx.fillRect(96, y - 56, 4, 112);
-    /* Project name */
-    ctx.font = `bold 40px ${FONT_MONO}`;
-    ctx.fillStyle = "#ffffff";
+    /* Left accent rim — now 45% alpha so it reads as a quiet
+     * vertical divider instead of a neon strip. */
+    ctx.fillStyle = `rgba(${hexToRgbStr(p.color)},0.45)`;
+    ctx.fillRect(96, y - 56, 3, 112);
+    /* Project name — kept white but dropped to 92% alpha so the
+     * pure-white edges stop punching through the screen glass. */
+    ctx.font = `bold 38px ${FONT_MONO}`;
+    ctx.fillStyle = "rgba(255,255,255,0.92)";
     ctx.textAlign = "left";
-    ctx.fillText(p.name, 132, y - 18);
-    /* Stream subtitle */
+    ctx.fillText(p.name, 130, y - 18);
+    /* Stream subtitle — accent colour at 60% alpha, was full strength
+     * which had the green / cyan text shouting alongside the bar. */
     ctx.font = `500 22px ${FONT_MONO}`;
-    ctx.fillStyle = p.color;
-    ctx.fillText(p.stream, 132, y + 22);
-    /* Progress bar */
-    const barX = 132;
+    ctx.fillStyle = `rgba(${hexToRgbStr(p.color)},0.6)`;
+    ctx.fillText(p.stream, 130, y + 22);
+    /* Progress bar — alpha pulled DOWN HARD this pass (0.62 → 0.4)
+     * and bar height trimmed (10 → 8 px). At 0.4 the fills register
+     * as soft progress indicators, not neon stripes. */
+    const barX = 130;
     const barY = y + 58;
     const barW = c.width - barX - 220;
-    const barH = 14;
-    ctx.fillStyle = "rgba(232,237,255,0.08)";
-    roundRect(ctx, barX, barY, barW, barH, 7);
+    const barH = 8;
+    ctx.fillStyle = "rgba(232,237,255,0.07)";
+    roundRect(ctx, barX, barY, barW, barH, 4);
     ctx.fill();
-    ctx.fillStyle = p.color;
-    roundRect(ctx, barX, barY, barW * (p.pct / 100), barH, 7);
+    ctx.fillStyle = `rgba(${hexToRgbStr(p.color)},0.4)`;
+    roundRect(ctx, barX, barY, barW * (p.pct / 100), barH, 4);
     ctx.fill();
-    /* % label */
-    ctx.font = `bold 30px ${FONT_MONO}`;
-    ctx.fillStyle = p.color;
+    /* % label dimmed further (0.75 → 0.55) so the percentage stops
+     * competing for attention with the project name. */
+    ctx.font = `bold 26px ${FONT_MONO}`;
+    ctx.fillStyle = `rgba(${hexToRgbStr(p.color)},0.55)`;
     ctx.textAlign = "right";
     ctx.fillText(`${p.pct}%`, c.width - 118, y + 68);
   });
@@ -871,57 +891,148 @@ function makeDataRainTexture(): THREE.Texture | null {
   return tex;
 }
 
-/* Hexagonal PCB-style grid texture - replaces the line-based floor
- * grid with something that reads as a real engineering / circuit board
- * pattern. Tiles seamlessly when repeated. */
+/* Hexagonal PCB-style grid texture. SINGLE-TILE rendering with a
+ * built-in radial alpha mask, ClampToEdge wrapping — this completely
+ * eliminates the seam artefacts the previous tiled implementation
+ * suffered from (canvas dimensions were not integer multiples of the
+ * hex pitch, so every tile edge cut hexes in half and the half-cells
+ * overlapped at the joins).
+ *
+ * The texture is sampled exactly once across the whole floor plane:
+ *   - no repeat → no joins → no doubled lines
+ *   - built-in radial alpha → hexes are vivid under the laptop and
+ *     fade naturally to invisible toward the floor edges (no need for
+ *     extra masking planes / fog tricks)
+ *   - sparse "via" nodes only on inner hex cells, deterministically
+ *     hashed so the same node pattern paints every mount
+ *
+ * Pointy-top hex math: circumradius R, horizontal pitch R·√3, vertical
+ * row pitch 1.5·R, odd rows offset by half a horizontal pitch. */
 function makeHexGridTexture(): THREE.Texture | null {
   if (typeof document === "undefined") return null;
+  /* HD pass: canvas resolution doubled (1024 → 2048) and every
+   * drawing dimension scaled with it (R, lineWidth, node radius) so
+   * the *world* hex size is unchanged but each cell is rendered at
+   * 4× the texel count. The previous 1024 canvas mapped across a
+   * 36-unit plane was sampling at glancing camera angles into low
+   * mip levels and producing stairstep / dotted artefacts on the
+   * stroke outlines. 2048 + max anisotropy = crisp PCB look. */
+  const S = 2048;
   const c = document.createElement("canvas");
-  c.width = 512;
+  c.width = c.height = S;
+  const ctx = c.getContext("2d");
+  if (!ctx) return null;
+  ctx.imageSmoothingEnabled = true;
+  ctx.imageSmoothingQuality = "high";
+  ctx.clearRect(0, 0, S, S);
+
+  const R = 16;
+  const hexW = R * Math.sqrt(3);
+  const rowH = R * 1.5;
+  const cx = S / 2;
+  const cy = S / 2;
+  const fadeR = S * 0.52;
+
+  const cols = Math.ceil(S / hexW) + 2;
+  const rows = Math.ceil(S / rowH) + 2;
+
+  const hexes: Array<{ x: number; y: number; a: number }> = [];
+  for (let row = -1; row < rows; row++) {
+    const xOff = row & 1 ? hexW / 2 : 0;
+    for (let col = -1; col < cols; col++) {
+      const x = col * hexW + xOff;
+      const y = row * rowH;
+      const dx = (x - cx) / fadeR;
+      const dy = (y - cy) / fadeR;
+      const d2 = dx * dx + dy * dy;
+      if (d2 > 1.0) continue;
+      const t = Math.max(0, 1 - d2);
+      const a = t * t; // quadratic — fills the frame, soft outer fade
+      hexes.push({ x, y, a });
+    }
+  }
+
+  /* Pass 1: hex outlines. lineWidth scaled to the 2048 canvas (now
+   * 1.7 px instead of sub-pixel 0.85) so each stroke renders as a
+   * proper pixel-aligned line, not a sub-pixel ghost that the canvas
+   * smears across two rows. Alpha multiplier also bumped (0.55 → 0.7)
+   * for a brighter, more confidently "drawn" line. */
+  ctx.lineCap = "round";
+  ctx.lineJoin = "round";
+  for (const h of hexes) {
+    if (h.a < 0.02) continue;
+    ctx.strokeStyle = `rgba(0,229,255,${0.7 * h.a})`;
+    ctx.lineWidth = 1.7;
+    ctx.beginPath();
+    for (let i = 0; i < 6; i++) {
+      const ang = (Math.PI / 3) * i + Math.PI / 6;
+      const px = h.x + R * Math.cos(ang);
+      const py = h.y + R * Math.sin(ang);
+      if (i === 0) ctx.moveTo(px, py);
+      else ctx.lineTo(px, py);
+    }
+    ctx.closePath();
+    ctx.stroke();
+  }
+
+  /* Pass 2: sparse via-style nodes at hex centres. Dot radius scaled
+   * to the 2048 canvas. Hash threshold tuned so densities stay
+   * roughly the same as before. */
+  for (const h of hexes) {
+    const seed = Math.sin(h.x * 12.9898 + h.y * 78.233) * 43758.5453;
+    const r = seed - Math.floor(seed);
+    if (r > 0.05) continue;
+    if (h.a < 0.15) continue;
+    const dotA = h.a * 0.9;
+    ctx.fillStyle = `rgba(127,240,255,${dotA})`;
+    ctx.beginPath();
+    ctx.arc(h.x, h.y, 2.2, 0, Math.PI * 2);
+    ctx.fill();
+  }
+
+  const tex = new THREE.CanvasTexture(c);
+  tex.wrapS = THREE.ClampToEdgeWrapping;
+  tex.wrapT = THREE.ClampToEdgeWrapping;
+  tex.minFilter = THREE.LinearMipmapLinearFilter;
+  tex.magFilter = THREE.LinearFilter;
+  tex.anisotropy = 16;
+  tex.generateMipmaps = true;
+  tex.colorSpace = THREE.SRGBColorSpace;
+  tex.needsUpdate = true;
+  return tex;
+}
+
+/* Soft cyan-blue contact-light glow projected onto the floor directly
+ * beneath the laptop. Reads as "screen + chassis edge bleeding light
+ * onto the polished surface". Cooler and weaker than the screen beam
+ * so it grounds the laptop without competing with the chassis. */
+function makeContactUnderglowTexture(): THREE.Texture | null {
+  if (typeof document === "undefined") return null;
+  const c = document.createElement("canvas");
+  c.width = 1024;
   c.height = 512;
   const ctx = c.getContext("2d");
   if (!ctx) return null;
   ctx.clearRect(0, 0, c.width, c.height);
-  const hexR = 32;
-  const hexW = hexR * Math.sqrt(3);
-  const hexH = hexR * 1.5;
-  ctx.strokeStyle = "rgba(0, 245, 255, 0.6)";
-  ctx.lineWidth = 1.4;
-  for (let row = -1; row <= c.height / hexH + 2; row++) {
-    for (let col = -1; col <= c.width / hexW + 2; col++) {
-      const x = col * hexW + (row % 2 === 0 ? 0 : hexW / 2);
-      const y = row * hexH;
-      ctx.beginPath();
-      for (let i = 0; i < 6; i++) {
-        const angle = (Math.PI / 3) * i + Math.PI / 6;
-        const hx = x + hexR * Math.cos(angle);
-        const hy = y + hexR * Math.sin(angle);
-        if (i === 0) ctx.moveTo(hx, hy);
-        else ctx.lineTo(hx, hy);
-      }
-      ctx.closePath();
-      ctx.stroke();
-    }
-  }
-  /* Sparse highlighted vertices for "via points" - tiny brighter dots */
-  ctx.fillStyle = "rgba(0, 245, 255, 0.95)";
-  for (let row = -1; row <= c.height / hexH + 2; row++) {
-    for (let col = -1; col <= c.width / hexW + 2; col++) {
-      if ((row + col) % 5 !== 0) continue; // sparse pattern
-      const x = col * hexW + (row % 2 === 0 ? 0 : hexW / 2);
-      const y = row * hexH;
-      ctx.beginPath();
-      ctx.arc(x, y, 2.5, 0, Math.PI * 2);
-      ctx.fill();
-    }
-  }
+  const g = ctx.createRadialGradient(
+    c.width / 2,
+    c.height / 2,
+    24,
+    c.width / 2,
+    c.height / 2,
+    c.width / 2.6,
+  );
+  g.addColorStop(0, "rgba(86,205,255,0.55)");
+  g.addColorStop(0.35, "rgba(60,150,220,0.22)");
+  g.addColorStop(0.7, "rgba(40,80,150,0.07)");
+  g.addColorStop(1, "rgba(0,0,0,0)");
+  ctx.fillStyle = g;
+  ctx.fillRect(0, 0, c.width, c.height);
   const tex = new THREE.CanvasTexture(c);
-  tex.wrapS = THREE.RepeatWrapping;
-  tex.wrapT = THREE.RepeatWrapping;
-  tex.repeat.set(4, 4);
   tex.needsUpdate = true;
   return tex;
 }
+
 
 /* Atmospheric haze texture - faint cyan-violet radial gradient on
  * canvas. Sits far behind the laptop and gives the scene depth without
@@ -1078,7 +1189,15 @@ export default function LaptopScene({ progress, reducedMotion = false }: LaptopS
         camera.lookAt(RIG_X, 0, 0);
       }}
     >
-      <color attach="background" args={[COLORS.ink]} />
+      {/* Canvas background intentionally left UNSET (alpha-clear). The
+       *  page-level GlobalBackdrop sits behind every section and carries
+       *  the deep-ink colour plus the ambient orb/particle motion. A
+       *  transparent canvas lets that environment read THROUGH the hero
+       *  instead of standing as an opaque ink slab — which is what used
+       *  to produce the hard horizontal seam below the laptop when the
+       *  sticky pin released and ChooseYourPath revealed the (different)
+       *  backdrop underneath. Now hero + next section share one
+       *  continuous atmosphere. */}
 
       {/* PROCEDURAL studio environment built from Lightformer rects -
        *  renders to a small cubemap on the very first frame, no CDN
@@ -1155,10 +1274,16 @@ export default function LaptopScene({ progress, reducedMotion = false }: LaptopS
        *    everything.
        *  - Bloom is still excluded - it crashes this drei/three combo. */}
       <EffectComposer multisampling={4} enableNormalPass={false}>
+        {/* Vignette darkness softened (0.85 -> 0.5) so the lower edge
+         *  no longer crushes into a deep ink ring right where the hero
+         *  meets the next section. The frame still vignettes inward
+         *  enough to focus the eye, but the bottom of the canvas now
+         *  blends smoothly into the page mist instead of stamping a
+         *  hard dark band that betrays the section boundary. */}
         <Vignette
           eskil={false}
-          offset={0.22}
-          darkness={0.85}
+          offset={0.26}
+          darkness={0.5}
           blendFunction={BlendFunction.NORMAL}
         />
         <Noise opacity={0.012} blendFunction={BlendFunction.OVERLAY} />
@@ -1180,14 +1305,17 @@ function HolographicCards({
   viewportTier: "phone" | "tablet" | "desktop";
 }) {
   /* Tier config drives a uniform scale on the cards + a multiplier on
-   * the X offset from RIG_X. On smaller viewports the camera's
-   * horizontal FOV is narrower (taller portrait aspect), so we both
-   * shrink the cards AND tuck them closer to the laptop so they stay
-   * inside the frustum without overlapping the headline. */
+   * the X offset from RIG_X.
+   *
+   * Card targets are SYMMETRIC around RIG_X with tight spacing so the
+   * 2×3 grid clusters over the laptop screen rather than fanning out
+   * to the sides. Scales shrunk one more notch (desktop 0.78 → 0.6)
+   * so the smaller cluster reads as "holograms emerging from the
+   * display" instead of "panels floating beside the laptop". */
   const tier = useMemo(() => {
-    if (viewportTier === "phone") return { scale: 0.55, xMul: 0.55 };
-    if (viewportTier === "tablet") return { scale: 0.75, xMul: 0.78 };
-    return { scale: 1.0, xMul: 1.0 };
+    if (viewportTier === "phone") return { scale: 0.36, xMul: 0.65 };
+    if (viewportTier === "tablet") return { scale: 0.46, xMul: 0.85 };
+    return { scale: 0.52, xMul: 1.0 };
   }, [viewportTier]);
   /* 2 x 3 grid pushed RIGHT of the laptop so the left half of the
    * frame stays clean for the headline column (HTML overlay at
@@ -1208,19 +1336,23 @@ function HolographicCards({
    * left column stays well clear of the headline. Z-depth varies by
    * column too - hero pair sits forward (1.55), edges pushed back
    * (1.40) - gives subtle parallax depth. */
-  /* Visual hierarchy tightened further: middle column stays dominant
-   * (1.0), right column secondary (0.55), left column nearly fades
-   * out (0.18) so only 2 cards visually compete with the laptop. */
+  /* Card cluster lifted ABOVE the lid top. With the lid fully open
+   * (rot −2.0 rad around the hinge) the lid's upper edge sits at
+   * world y ≈ 1.89. Cards now at y ≥ 2.1 → no overlap with screen
+   * content. Bottom row at 2.1 (just above the lid top), top row at
+   * 2.7 (well above). Z pulled forward a touch (1.05–1.2 → 0.95–1.1)
+   * so cards still read as "hovering in front of the lid", not as a
+   * floating UI strip behind the headline. */
   const cardData = useMemo(
     () => [
       /* Top row */
-      { stream: STREAMS[0], target: new THREE.Vector3(1.55, 2.35, 1.35), delay: 0.0, yaw: 0.28, opacityMul: 0.18 },
-      { stream: STREAMS[1], target: new THREE.Vector3(2.15, 2.35, 1.55), delay: 0.015, yaw: 0.14, opacityMul: 1.0 },
-      { stream: STREAMS[2], target: new THREE.Vector3(2.75, 2.35, 1.4), delay: 0.03, yaw: 0.02, opacityMul: 0.55 },
+      { stream: STREAMS[0], target: new THREE.Vector3(-0.8, 2.7, 0.95), delay: 0.0, yaw: 0.22, opacityMul: 0.78 },
+      { stream: STREAMS[1], target: new THREE.Vector3(0.0, 2.7, 1.1), delay: 0.015, yaw: 0.0, opacityMul: 1.0 },
+      { stream: STREAMS[2], target: new THREE.Vector3(0.8, 2.7, 0.95), delay: 0.03, yaw: -0.22, opacityMul: 0.78 },
       /* Bottom row */
-      { stream: STREAMS[3], target: new THREE.Vector3(1.55, 1.65, 1.35), delay: 0.015, yaw: 0.28, opacityMul: 0.18 },
-      { stream: STREAMS[4], target: new THREE.Vector3(2.15, 1.65, 1.55), delay: 0.03, yaw: 0.14, opacityMul: 1.0 },
-      { stream: STREAMS[5], target: new THREE.Vector3(2.75, 1.65, 1.4), delay: 0.045, yaw: 0.02, opacityMul: 0.55 },
+      { stream: STREAMS[3], target: new THREE.Vector3(-0.8, 2.1, 0.95), delay: 0.015, yaw: 0.22, opacityMul: 0.78 },
+      { stream: STREAMS[4], target: new THREE.Vector3(0.0, 2.1, 1.1), delay: 0.03, yaw: 0.0, opacityMul: 1.0 },
+      { stream: STREAMS[5], target: new THREE.Vector3(0.8, 2.1, 0.95), delay: 0.045, yaw: -0.22, opacityMul: 0.78 },
     ],
     [],
   );
@@ -1261,11 +1393,14 @@ function HolographicCards({
       const m = matRefs.current[i];
       const r = rimRefs.current[i];
       if (!g || !m) return;
-      /* Per-card progress - cards emerge AFTER the headline (which
-       * lands at 0.78). Window 0.78 -> 0.90 with tight staggered delays
-       * (max 0.06) so all 6 cards are out by ~0.92 leaving 0.08 of
-       * settled-hero scroll at the end. */
-      const cardP = smoothstep(0.78 + card.delay, 0.88 + card.delay, p);
+      /* Per-card progress - emerge window pulled FORWARD into chapter
+       * 05 ("Build real projects") so the cards exist while the
+       * chapter label literally says so. Was 0.78 → 0.88 which left
+       * the first 10% of chapter 05 (0.68 → 0.78) showing nothing
+       * but the streams dashboard — chapter label and visual didn't
+       * agree. New window 0.70 → 0.82 puts the cards on-screen for
+       * the whole back half of chapter 05 and through chapter 06. */
+      const cardP = smoothstep(0.7 + card.delay, 0.82 + card.delay, p);
       const targetX = RIG_X + card.target.x * tier.xMul;
       const targetY = card.target.y;
       const targetZ = card.target.z;
@@ -1374,8 +1509,23 @@ function Laptop({
   const screenBeamRef = useRef<THREE.Mesh>(null);
   const fogHazeTex = useMemo(() => makeFogHazeTexture(), []);
   const dataRainTex = useMemo(() => makeDataRainTexture(), []);
-  const hexFloorTex = useMemo(() => makeHexGridTexture(), []);
+  /* TEX_VERSION exists ONLY to invalidate Next.js Fast-Refresh's
+   * useMemo cache. Bump it whenever makeHexGridTexture's drawing
+   * params change (lineWidth, stroke alpha, R, fadeR). With empty
+   * deps, an edit to the texture function wouldn't trigger a regen
+   * on Fast Refresh — the stale GPU texture stayed bound. Including
+   * a version literal in the deps forces useMemo to re-run on save. */
+  const HEX_TEX_VERSION = "v3-aggressive-refine";
+  const hexFloorTex = useMemo(
+    () => makeHexGridTexture(),
+    [HEX_TEX_VERSION],
+  );
   const hexFloorMatRef = useRef<THREE.MeshBasicMaterial>(null);
+  /* Underglow that grounds the laptop with a soft cyan-blue light pool
+   * on the floor. Opacity is driven by the screen-ignite curve so the
+   * floor only catches light once the screen is alive. */
+  const contactGlowTex = useMemo(() => makeContactUnderglowTexture(), []);
+  const contactGlowMatRef = useRef<THREE.MeshBasicMaterial>(null);
   const brushedNormalTex = useMemo(() => makeBrushedNormalTexture(), []);
   const parallaxRef = useRef<THREE.Group>(null);
   const lidRef = useRef<THREE.Group>(null);
@@ -1391,7 +1541,6 @@ function Laptop({
     Array<{ mat: THREE.MeshBasicMaterial | null; tx: number; baseOp: number }>
   >([]);
   const waveStartTimeRef = useRef(-1);
-  const gridMat = useRef<THREE.LineBasicMaterial>(null);
   const particleGroup = useRef<THREE.Group>(null);
 
   /* Lid hinge spring state - gives the lid mechanical inertia so it
@@ -1443,27 +1592,11 @@ function Laptop({
   const edgeStripRefs = useRef<(THREE.MeshBasicMaterial | null)[]>(
     Array(EDGE_SEGMENTS).fill(null),
   );
-
-  /* Holographic floor grid geometry */
-  const gridGeom = useMemo(() => {
-    const size = 8;
-    const divisions = 14;
-    const step = size / divisions;
-    const positions: number[] = [];
-    for (let i = 0; i <= divisions; i++) {
-      const t = -size / 2 + i * step;
-      positions.push(-size / 2, 0, t);
-      positions.push(size / 2, 0, t);
-      positions.push(t, 0, -size / 2);
-      positions.push(t, 0, size / 2);
-    }
-    const g = new THREE.BufferGeometry();
-    g.setAttribute(
-      "position",
-      new THREE.BufferAttribute(new Float32Array(positions), 3),
-    );
-    return g;
-  }, []);
+  /* Cyan side-trim rails down each side of the lid. Refs so we can gate
+   * their opacity on lid-open progress — when the laptop is closed the
+   * trim should be dark, igniting as the lid lifts. */
+  const lidTrimMatLeft = useRef<THREE.MeshBasicMaterial>(null);
+  const lidTrimMatRight = useRef<THREE.MeshBasicMaterial>(null);
 
   const { pointer } = useThree();
 
@@ -1485,8 +1618,14 @@ function Laptop({
       lerp(1.6, 2.4, camP) + microY,
       lerp(5.8, 5.6, camP) + microZ,
     );
+    /* Camera lookAt shifted LEFT of the laptop by 0.55 world units so
+     * the chassis sits right-of-centre in the frame, opening up the
+     * left third for the headline column. Without this offset the
+     * camera framed the laptop dead-centre, which kept the headline
+     * physically overlapping the screen content. */
+    const LOOKAT_LEFT_SHIFT = 0.55;
     state.camera.lookAt(
-      RIG_X + microX * 0.3,
+      RIG_X - LOOKAT_LEFT_SHIFT + microX * 0.3,
       lerp(0.1, 0.9, camP) + microY * 0.3,
       0,
     );
@@ -1625,19 +1764,26 @@ function Laptop({
       ledMat.current.emissiveIntensity = 1.5 + Math.sin(t * 2.1) * 0.5;
     }
 
-    /* Floor grids - drawn in DURING the activation/lid-opening window
-     * (0.18 -> 0.42) so the "stage" is set just as the lid begins to
-     * lift. By the time the lid finishes opening, the floor texture is
-     * fully resolved and the eye moves naturally to the screen. */
-    if (gridMat.current) {
-      const draw = smoothstep(0.18, 0.42, p);
-      const pulse = 0.85 + Math.sin(t * 0.8) * 0.1;
-      gridMat.current.opacity = draw * 0.04 * pulse;
-    }
+    /* Hex floor opacity dropped AGAIN, hard: 0.18 → 0.10 (peak
+     * material alpha). Combined with the text-pocket scrim in
+     * HeroCinematic, the floor reads as pure atmosphere — visible
+     * just under the chassis as a faint cyan grounding pattern, and
+     * almost gone everywhere else. The hierarchy headline > laptop
+     * > CTAs > floor is now visually enforced, not just intended. */
     if (hexFloorMatRef.current) {
       const draw = smoothstep(0.18, 0.42, p);
-      const pulse = 0.9 + Math.sin(t * 0.9) * 0.08;
-      hexFloorMatRef.current.opacity = draw * 0.18 * pulse;
+      const pulse = 0.92 + Math.sin(t * 0.9) * 0.06;
+      hexFloorMatRef.current.opacity = draw * 0.1 * pulse;
+    }
+    /* Contact underglow — soft cyan light pool the laptop sheds onto
+     * the floor as the screen ignites. Halved (0.32 → 0.18) because
+     * with the floor pattern now nearly absent, the cyan underglow
+     * was the loudest thing on the floor. Halving it lets the
+     * laptop's silhouette dominate visual reading again. */
+    if (contactGlowMatRef.current) {
+      const glow = smoothstep(0.5, 0.7, p);
+      const breathe = 0.9 + Math.sin(t * 1.2) * 0.1;
+      contactGlowMatRef.current.opacity = glow * 0.18 * breathe;
     }
 
     /* DATA RAIN scrolls downward via texture offset.y. Slow speed so
@@ -1674,16 +1820,22 @@ function Laptop({
       });
     }
 
-    /* ROLLING LIGHT WAVE on the edge strip - phased opacity per
-     * segment. Slowed down to ~5s cycle so it reads as ambient breath,
-     * not a strobe. */
+    /* ROLLING LIGHT WAVE on the edge strip + side trim rails. Both
+     * are now gated on lid-open progress: when the lid is shut (openT
+     * ≈ 0) the cyan accents are fully dark, igniting as the lid lifts
+     * and reaching full brightness once the lid is open. Previously
+     * they pulsed at 0.32 → 0.87 regardless of lid state, so the
+     * closed-laptop frame leaked a visible cyan rim. */
+    const lidLitMul = openT * openT; // ease-in so it builds with the hinge
     for (let i = 0; i < EDGE_SEGMENTS; i++) {
       const mat = edgeStripRefs.current[i];
       if (!mat) continue;
       const phase = (i / EDGE_SEGMENTS) * Math.PI * 2;
       const wave = Math.max(0, Math.sin(t * 1.1 - phase * 1.4));
-      mat.opacity = 0.32 + wave * 0.55;
+      mat.opacity = (0.32 + wave * 0.55) * lidLitMul;
     }
+    if (lidTrimMatLeft.current) lidTrimMatLeft.current.opacity = 0.55 * lidLitMul;
+    if (lidTrimMatRight.current) lidTrimMatRight.current.opacity = 0.55 * lidLitMul;
 
     /* Subject motes intentionally hidden in this pass - 6 floating
      * accent orbs read as visual noise against the cleaner cinematic
@@ -1711,14 +1863,18 @@ function Laptop({
        * floor alone carry the atmospheric depth now. */}
 
       {/* DARK BASE FLOOR PLANE - true black with zero metalness and
-       *  zero env contribution so the bright analytic lights (ambient
-       *  1.25, directional 2.4) can't bounce off it as grey. 60x60
-       *  units so the edges are well outside any camera frustum. */}
+       *  zero env contribution so the bright analytic lights can't
+       *  bounce off it as grey. ENLARGED 60 → 200 units. The 60-unit
+       *  edge was visible as a horizon line because the camera's
+       *  top-of-frame ray (only ~1.9° below horizontal at this rig)
+       *  intersects the floor ~74 world units away — past the old
+       *  plane's edge. With 200 units the plane edge sits at ~100
+       *  world units, well past any camera ray that could see it. */}
       <mesh
         position={[RIG_X, -BASE_H / 2 - 0.045, 0]}
         rotation={[-Math.PI / 2, 0, 0]}
       >
-        <planeGeometry args={[60, 60]} />
+        <planeGeometry args={[200, 200]} />
         <meshStandardMaterial
           color="#000000"
           roughness={1}
@@ -1727,41 +1883,38 @@ function Laptop({
         />
       </mesh>
 
-      {/* Floor sheen plane intentionally removed in this pass. The
-       *  additive cyan-blue gradient under the chassis was brightening
-       *  the floor patch the eye naturally lands on, making the whole
-       *  surface read as silver instead of black. The soft contact
-       *  shadow alone now grounds the chassis to the floor. */}
-
-      {/* Soft contact shadow under the laptop. Radial-gradient texture
-       *  so the shadow has natural falloff instead of a hard ellipse
-       *  edge. Stretched along Z so it matches the laptop's footprint.
-       *  Opacity bumped to 1.0 and texture deepened for stronger
-       *  physical grounding now that the floor reflects underneath. */}
-      {softShadowTex && (
-        <mesh
-          position={[RIG_X, -BASE_H / 2 - 0.018, 0.3]}
-          rotation={[-Math.PI / 2, 0, 0]}
-        >
-          <planeGeometry args={[5.6, 3.6]} />
-          <meshBasicMaterial
-            map={softShadowTex}
-            transparent
-            opacity={1.0}
-            depthWrite={false}
-          />
-        </mesh>
-      )}
-
-      {/* HEX-PCB FLOOR - hexagonal circuit-board pattern as the main
-       *  visible floor texture. Reads as real engineering grid, not
-       *  generic graph paper. Tiled 4x4 via texture repeat. */}
+      {/* HEX-PCB FLOOR - single source of truth for the visible floor
+       *  pattern.
+       *
+       *  Previously this slab was a tangle of three coplanar layers
+       *  (hex texture tiled 4x4, an orthogonal lineSegments cartesian
+       *  grid, a shadow plane) all sitting within 0.012 units of each
+       *  other in Y. The hex texture's tile pitch wasn't an integer
+       *  divisor of its 512px canvas, so each of its 16 visible tile
+       *  joins cut hexes in half and the half-cells overlapped at the
+       *  seam — that was the "doubled lines / inconsistent pattern"
+       *  the eye picked up. The cartesian line grid on top compounded
+       *  the read as "what is this pattern actually?".
+       *
+       *  New approach:
+       *    - Drop the cartesian line grid entirely (was fighting hex)
+       *    - One 14x14 plane, sampled once across a 1024px canvas
+       *      that bakes its radial alpha mask in (no tiling)
+       *    - ClampToEdge so the canvas edge never repeats
+       *    - Plane sits a touch below the shadow so the shadow's
+       *      soft ellipse paints OVER the floor pattern at the
+       *      contact point — keeps the grounding shadow readable
+       *      while the hex pattern fills the surrounding floor.
+       *
+       *  Result: clean engineering grid, vivid near the chassis,
+       *  soft natural fade outward, no joins, no doubled lines, no
+       *  z-fighting. */}
       {hexFloorTex && (
         <mesh
-          position={[RIG_X, -BASE_H / 2 - 0.028, 0]}
+          position={[RIG_X, -BASE_H / 2 - 0.035, 0]}
           rotation={[-Math.PI / 2, 0, 0]}
         >
-          <planeGeometry args={[8, 8]} />
+          <planeGeometry args={[36, 36]} />
           <meshBasicMaterial
             ref={hexFloorMatRef}
             map={hexFloorTex}
@@ -1774,23 +1927,53 @@ function Laptop({
         </mesh>
       )}
 
-      {/* Holographic line grid - kept as a faint underlay so the floor
-       *  has both hex pattern + subtle line accents. Opacity is now
-       *  much lower than before. */}
-      <lineSegments
-        geometry={gridGeom}
-        position={[RIG_X, -BASE_H / 2 - 0.03, 0]}
-      >
-        <lineBasicMaterial
-          ref={gridMat}
-          color={COLORS.cyan}
-          transparent
-          opacity={0}
-          toneMapped={false}
-          blending={THREE.AdditiveBlending}
-          depthWrite={false}
-        />
-      </lineSegments>
+      {/* CONTACT UNDERGLOW — scaled 0.86× from 6.4×4.0 to 5.5×3.44 to
+       *  match the new laptop footprint. Otherwise the cyan pool
+       *  would visibly extend past the chassis edge. */}
+      {contactGlowTex && (
+        <mesh
+          position={[RIG_X, -BASE_H / 2 - 0.026, 0.18]}
+          rotation={[-Math.PI / 2, 0, 0]}
+        >
+          <planeGeometry args={[5.5, 3.44]} />
+          <meshBasicMaterial
+            ref={contactGlowMatRef}
+            map={contactGlowTex}
+            transparent
+            opacity={0}
+            blending={THREE.AdditiveBlending}
+            depthWrite={false}
+            toneMapped={false}
+          />
+        </mesh>
+      )}
+
+      {/* Soft contact shadow under the laptop. Painted ABOVE the hex
+       *  grid and the underglow so the chassis still reads as
+       *  physically grounded. Plane scaled 0.86× (5.6×3.6 → 4.82×3.10)
+       *  to match the new laptop footprint — otherwise the dark
+       *  ellipse would extend a visible halo past the chassis edge. */}
+      {softShadowTex && (
+        <mesh
+          position={[RIG_X, -BASE_H / 2 - 0.018, 0.3]}
+          rotation={[-Math.PI / 2, 0, 0]}
+        >
+          <planeGeometry args={[4.82, 3.1]} />
+          <meshBasicMaterial
+            map={softShadowTex}
+            transparent
+            opacity={1.0}
+            depthWrite={false}
+          />
+        </mesh>
+      )}
+
+      {/* (Horizon mist plane removed — a flat 3D plane projects a hard
+       *  diagonal top edge from the camera's perspective even when its
+       *  texture fades to transparent, producing the dark trapezoid that
+       *  was visible at chapter 01. The seam-smoothing job is fully
+       *  handled by the CSS dissolve-zone layer in HeroCinematic, which
+       *  fades in screen-space and so never projects an edge.) */}
 
       {/* DRIFTING GLYPH PARTICLES - small luminous "0/1/{}/>" fragments
        *  reading as "data / neural energy" rather than abstract dots. */}
@@ -1861,7 +2044,12 @@ function Laptop({
        *  the laptop read as floating rather than sitting on the surface.
        *  Yaw alone keeps reflections gliding across the chassis edges
        *  while the chassis stays parallel to the ground. */}
-      <group position={[RIG_X, 0, 0]} rotation={[0, -0.11, 0]}>
+      {/* Laptop group scaled to 0.86 (-14% cumulative). The chassis
+       *  no longer crowds the headline column. Cards live in a sibling
+       *  group (HolographicCards) so they stay at full scale; only the
+       *  chassis shrinks. Contact shadow + underglow planes are also
+       *  re-sized to 0.86× their original footprint to match. */}
+      <group position={[RIG_X, 0, 0]} rotation={[0, -0.11, 0]} scale={0.86}>
         <RoundedBox args={[BASE_W, BASE_H, BASE_D]} radius={0.03} smoothness={5}>
           {/* Brushed-aluminium dialled in: metalness 0.55 -> 0.42,
             * roughness 0.42 -> 0.55, clearcoat 0.45 -> 0.28,
@@ -2337,7 +2525,7 @@ function Laptop({
                     }}
                     color={COLORS.cyan}
                     transparent
-                    opacity={0.4}
+                    opacity={0}
                     blending={THREE.AdditiveBlending}
                     toneMapped={false}
                     depthWrite={false}
@@ -2346,16 +2534,19 @@ function Laptop({
               );
             })}
 
-            {/* Cyan trim down each side of the lid */}
+            {/* Cyan trim down each side of the lid — opacity driven
+             *  per-frame by useFrame against the lid-open progress so
+             *  the trim is dark on a closed laptop. */}
             <mesh
               position={[-LID_W / 2 + 0.003, 0, 0]}
               rotation={[0, 0, 0]}
             >
               <boxGeometry args={[0.006, 0.012, LID_D * 0.88]} />
               <meshBasicMaterial
+                ref={lidTrimMatLeft}
                 color={COLORS.cyan}
                 transparent
-                opacity={0.55}
+                opacity={0}
                 blending={THREE.AdditiveBlending}
                 toneMapped={false}
                 depthWrite={false}
@@ -2367,9 +2558,10 @@ function Laptop({
             >
               <boxGeometry args={[0.006, 0.012, LID_D * 0.88]} />
               <meshBasicMaterial
+                ref={lidTrimMatRight}
                 color={COLORS.cyan}
                 transparent
-                opacity={0.55}
+                opacity={0}
                 blending={THREE.AdditiveBlending}
                 toneMapped={false}
                 depthWrite={false}

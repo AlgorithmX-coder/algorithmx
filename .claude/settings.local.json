@@ -8,8 +8,44 @@
       "Bash(awk 'NR>=1100 && NR<=1140' \"/c/Users/Asad Jalal/code/algorithmx/app/components/exercises/CyberMaze.tsx\")",
       "Bash(git -c user.name=\"Asad Jalal\" -c user.email=\"asadjalal96@outlook.com\" commit -m \"migrate CyberMaze to toolkit \\(behaviour-preserving\\)\")",
       "PowerShell(Get-NetTCPConnection -State Listen -LocalPort 3000 -ErrorAction SilentlyContinue)",
-      "PowerShell($response = try { Invoke-WebRequest -Uri \"http://localhost:3000\" -UseBasicParsing -TimeoutSec 5 -ErrorAction Stop } catch { $null }; if \\($response\\) { \"OK - status $\\($response.StatusCode\\), $\\($response.RawContentLength\\) bytes\" } else { \"NOT RESPONDING\" })"
+      "PowerShell($response = try { Invoke-WebRequest -Uri \"http://localhost:3000\" -UseBasicParsing -TimeoutSec 5 -ErrorAction Stop } catch { $null }; if \\($response\\) { \"OK - status $\\($response.StatusCode\\), $\\($response.RawContentLength\\) bytes\" } else { \"NOT RESPONDING\" })",
+      "Bash(git -c 'user.name=Asad Jalal' -c user.email=asadjalal96@outlook.com commit -m ' *)",
+      "Bash(git push *)",
+      "Bash(npx prisma *)",
+      "Read(//c/c/Users/Asad Jalal/code/algorithmx/node_modules/**)",
+      "Bash(xargs grep -l \"defineConfig\\\\|seed\")",
+      "Bash(PRISMA_USER_CONSENT_FOR_DANGEROUS_AI_ACTION=\"Yes, reset it\" npx prisma migrate reset --force)",
+      "Bash(PRISMA_USER_CONSENT_FOR_DANGEROUS_AI_ACTION=\"Yes, reset it\" npx prisma migrate dev --name account-hub-refactor)",
+      "Bash(PRISMA_USER_CONSENT_FOR_DANGEROUS_AI_ACTION=\"Yes, reset it\" npx prisma migrate dev --name account-hub-refactor --create-only)",
+      "Bash(npx tsx *)",
+      "Bash(node --env-file=.env.local scripts/elevenlabs-voices.mjs)",
+      "Bash(echo \"Total errors: $\\(npx tsc --noEmit 2>&1)",
+      "Bash(git checkout *)",
+      "Bash(cd \"/c/Users/Asad Jalal/code/algorithmx\" && echo \"=== imports of lessonProgress.actions ===\" && grep -rn \"lessonProgress\\\\.actions\\\\|from.*lessonProgress\" app --include=\"*.ts\" --include=\"*.tsx\" | head -20 && echo \"=== imports of stickers.actions ===\" && grep -rn \"stickers\\\\.actions\\\\|from.*stickers\\\\.actions\" app --include=\"*.ts\" --include=\"*.tsx\" | head -20)",
+      "Read(//c/c/Users/Asad Jalal/code/algorithmx/**)",
+      "Bash(cd \"/c/Users/Asad Jalal/code/algorithmx\" && npx tsx verify-batch2.ts && rm verify-batch2.ts)",
+      "Bash(node -e ' *)",
+      "Bash(curl -s -o /dev/null -w \"GET / -> HTTP %{http_code}\\\\n\" --max-time 15 http://localhost:3000/)",
+      "Bash(curl -s -o /dev/null -w \"GET /lesson/1?screen=2 -> HTTP %{http_code}\\\\n\" --max-time 30 \"http://localhost:3000/lesson/1?screen=2\")",
+      "Bash(netstat -ano)",
+      "Bash(node --env-file=.env.local scripts/elevenlabs-show-voice.mjs cgSgspJ2msm6clMCkdW9)",
+      "Bash(mkdir -p \"C:/Users/Asad Jalal/code/algorithmx/app/purchase/[slug]\")",
+      "Bash(echo \"---exit:$?\")",
+      "Bash(grep -E \"\\(app/hub|app/components/hub|app\\\\\\\\\\\\\\\\hub|app\\\\\\\\\\\\\\\\components\\\\\\\\\\\\\\\\hub\\)\")",
+      "PowerShell(Write-Output \"=== Listening Node ports ===\"; Get-NetTCPConnection -State Listen -ErrorAction SilentlyContinue | Where-Object { try { \\(Get-Process -Id $_.OwningProcess -ErrorAction Stop\\).ProcessName -match \"node\" } catch { $false } } | Select-Object LocalAddress, LocalPort, OwningProcess | Format-Table -AutoSize; Write-Output \"=== All node processes ===\"; Get-Process node -ErrorAction SilentlyContinue | Select-Object Id, StartTime, @{N=\"MemMB\";E={[math]::Round\\($_.WorkingSet64/1MB,1\\)}}, Path | Format-Table -AutoSize)",
+      "Bash(node -e \"const m=require\\('./public/audio/voice/manifest.json'\\); m.entries.filter\\(e=>e.speaker==='layla'\\).slice\\(0,3\\).forEach\\(e=>console.log\\(e.file,'-',e.text\\)\\);\")",
+      "Bash(grep -cE \"^\\\\s*$\" app/parent/page.tsx)",
+      "PowerShell(Write-Output \"=== Is :3000 still listening? ===\"; Get-NetTCPConnection -State Listen -LocalPort 3000 -ErrorAction SilentlyContinue | Select-Object LocalAddress, LocalPort, OwningProcess | Format-Table -AutoSize; Write-Output \"=== HTTP probe ===\"; try { $r = Invoke-WebRequest -Uri \"http://localhost:3000/\" -UseBasicParsing -TimeoutSec 8 -ErrorAction Stop; Write-Output \"Status: $\\($r.StatusCode\\)\"; Write-Output \"Length: $\\($r.RawContentLength\\) bytes\" } catch { Write-Output \"FAIL: $\\($_.Exception.Message\\)\" })",
+      "Bash(rm -f \"/c/Users/Asad Jalal/code/algorithmx/public/audio/voice/\"*.mp3)",
+      "Bash(node --env-file=.env.local scripts/elevenlabs-generate-narration.mjs)",
+      "Bash(rm -f \"/c/Users/Asad Jalal/code/algorithmx/public/audio/voice/\"*.mp3 *)",
+      "Bash(echo \"---my files: $\\(npx tsc --noEmit 2>&1)"
     ],
-    "defaultMode": "bypassPermissions"
+    "defaultMode": "bypassPermissions",
+    "additionalDirectories": [
+      "c:\\c\\Users\\Asad Jalal\\code\\algorithmx",
+      "C:\\Users\\Asad Jalal\\code\\algorithmx\\app\\purchase",
+      "C:\\Users\\Asad Jalal\\code\\algorithmx\\public\\audio\\voice"
+    ]
   }
 }

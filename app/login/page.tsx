@@ -2,67 +2,32 @@
 
 import { useState } from "react";
 import { signIn } from "next-auth/react";
-import { useRouter } from "next/navigation";
-import dynamic from "next/dynamic";
-import { motion, AnimatePresence } from "framer-motion";
+import { useRouter, useSearchParams } from "next/navigation";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { CyberPanelBackdrop } from "@/app/components/CyberFutureScenes";
-import { CYBER_PALETTE, CYBER_GRAD, CYBER_SHADOW } from "@/app/components/scene/cyberTokens";
-
-// 3D wireframe globe - code-split so the Three.js bundle only ships when
-// the user actually loads /login (not on every other route).
-const CyberGlobe = dynamic(() => import("@/app/components/CyberGlobe"), {
-  ssr: false,
-});
+import { CYBER_PALETTE, CYBER_GRAD } from "@/app/components/scene/cyberTokens";
+import AuthSphere from "@/app/components/auth/AuthSphere";
+import AuthField from "@/app/components/auth/AuthField";
+import AuthButton, { type AuthButtonState } from "@/app/components/auth/AuthButton";
+import AuthTerminalPanel from "@/app/components/auth/AuthTerminalPanel";
+import AccessGrantedOverlay from "@/app/components/auth/AccessGrantedOverlay";
+import { useIsDesktop } from "@/app/components/auth/useIsDesktop";
 
 const C = CYBER_PALETTE;
 const GRAD = CYBER_GRAD.hero;
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-/* ─── PARTICLE NODES (left side decoration) ──────────────────
- * Pulsing cyan/violet/pink dots floating around the form column.
- * Replaces the warm FloatingOrbs from the Pixar dusk version. */
-function CyberParticles() {
-  return (
-    <div className="fixed inset-0 pointer-events-none overflow-hidden" style={{ zIndex: 0 }}>
-      {[
-        { size: 8,  top: "8%",  left: "6%",   color: C.cyan,    dur: 9,  delay: 0 },
-        { size: 6,  top: "18%", right: "10%", color: C.cosmic,  dur: 11, delay: 1 },
-        { size: 10, top: "35%", left: "3%",   color: C.cyan,    dur: 13, delay: 2 },
-        { size: 5,  top: "52%", right: "5%",  color: C.neon,    dur: 8,  delay: 0.5 },
-        { size: 7,  top: "70%", left: "12%",  color: C.cosmic,  dur: 10, delay: 3 },
-        { size: 9,  top: "82%", right: "8%",  color: C.cyan,    dur: 12, delay: 1.5 },
-      ].map((o, i) => (
-        <motion.div
-          key={i}
-          className="absolute rounded-full"
-          animate={{ y: [0, -18, 0], scale: [1, 1.15, 1], opacity: [0.5, 0.95, 0.5] }}
-          transition={{ duration: o.dur, ease: "easeInOut", repeat: Infinity, delay: o.delay }}
-          style={{
-            width: o.size,
-            height: o.size,
-            top: o.top,
-            left: "left" in o ? o.left : undefined,
-            right: "right" in o ? o.right : undefined,
-            backgroundColor: o.color,
-            boxShadow: `0 0 ${o.size * 5}px ${o.color}, 0 0 ${o.size * 9}px ${o.color}99`,
-          }}
-        />
-      ))}
-    </div>
-  );
-}
-
-/* ─── FLOATING SECURITY GLYPHS (right panel) ────────────────
- * Same set of icons as the Pixar version, but with cyan glow and a
- * monospace data-tag rendered next to a few of them - gives the
- * right panel a "cyber lab readout" feel. */
+/* Floating cyber glyphs - decorative, desktop only. Same set as before
+ * but only mounted on lg+ to keep mobile breathing. */
 function CyberFloatingIcons() {
+  const reduced = useReducedMotion();
   const icons = [
-    { emoji: "🔑", top: "15%", left: "25%", delay: 0,   dur: 7,   tag: "AUTH" },
-    { emoji: "⭐", top: "28%", right: "18%", delay: 1.5, dur: 6 },
-    { emoji: "🔒", top: "55%", left: "18%", delay: 0.5, dur: 8,   tag: "ENC" },
-    { emoji: "🛡️", top: "70%", right: "22%", delay: 2,   dur: 6.5 },
-    { emoji: "✨", top: "42%", left: "65%", delay: 3,   dur: 9 },
-    { emoji: "🔐", top: "88%", left: "40%", delay: 1,   dur: 7.5, tag: "VAULT" },
+    { emoji: "🔑", top: "15%", left: "60%", delay: 0, dur: 7, tag: "AUTH" },
+    { emoji: "⭐", top: "28%", right: "12%", delay: 1.5, dur: 6 },
+    { emoji: "🔒", top: "62%", left: "62%", delay: 0.5, dur: 8, tag: "ENC" },
+    { emoji: "🛡️", top: "78%", right: "16%", delay: 2, dur: 6.5 },
+    { emoji: "✨", top: "42%", left: "85%", delay: 3, dur: 9 },
+    { emoji: "🔐", top: "88%", left: "70%", delay: 1, dur: 7.5, tag: "VAULT" },
   ];
   return (
     <>
@@ -70,7 +35,7 @@ function CyberFloatingIcons() {
         <motion.div
           key={i}
           className="absolute"
-          animate={{ y: [-10, 10, -10] }}
+          animate={reduced ? undefined : { y: [-10, 10, -10] }}
           transition={{ duration: ic.dur, ease: "easeInOut", repeat: Infinity, delay: ic.delay }}
           style={{
             top: ic.top,
@@ -79,25 +44,23 @@ function CyberFloatingIcons() {
             display: "flex",
             alignItems: "center",
             gap: 6,
-            opacity: 0.85,
-            filter: `drop-shadow(0 0 14px ${C.cyan}aa) drop-shadow(0 0 28px ${C.cosmic}55)`,
+            opacity: 0.7,
+            filter: `drop-shadow(0 0 14px ${C.cyan}aa)`,
           }}
         >
-          <span style={{ fontSize: 24 }}>{ic.emoji}</span>
+          <span style={{ fontSize: 22 }}>{ic.emoji}</span>
           {ic.tag && (
             <span
               style={{
                 fontSize: 9,
                 letterSpacing: 2,
                 fontWeight: 800,
-                fontFamily:
-                  "ui-monospace, 'JetBrains Mono', Menlo, monospace",
+                fontFamily: "ui-monospace, 'JetBrains Mono', Menlo, monospace",
                 color: C.cyan,
                 padding: "2px 6px",
                 background: "rgba(8, 10, 22, 0.7)",
                 border: `1px solid ${C.cyan}77`,
                 borderRadius: 4,
-                textShadow: `0 0 6px ${C.cyan}`,
               }}
             >
               {ic.tag}
@@ -111,24 +74,61 @@ function CyberFloatingIcons() {
 
 export default function LoginPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const isDesktop = useIsDesktop(1024);
+  const reduced = !!useReducedMotion();
+
+  /* Respect ?callbackUrl=… when a gated route bounced the user here.
+   * Same-origin guard: only accept paths that begin with "/" and not
+   * "//" (which would be a protocol-relative URL to another host).
+   * Anything sketchy falls back to /dashboard. */
+  const callbackRaw = searchParams.get("callbackUrl");
+  const safeCallback =
+    callbackRaw && callbackRaw.startsWith("/") && !callbackRaw.startsWith("//")
+      ? callbackRaw
+      : "/dashboard";
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [touched, setTouched] = useState<{ email?: boolean; password?: boolean }>({});
+  const [formError, setFormError] = useState("");
+  const [phase, setPhase] = useState<"idle" | "loading" | "success">("idle");
 
-  const validate = () => {
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { setError("Please enter a valid email address"); return false; }
-    if (password.length < 1) { setError("Please enter your password"); return false; }
-    return true;
+  const emailValid = EMAIL_RE.test(email);
+  const emailInvalid = touched.email && email.length > 0 && !emailValid;
+  const passwordPresent = password.length > 0;
+
+  /* Sphere stage mapping - login only needs commsRing / shieldLayer /
+   * accessGranted. identityRing + vaultLock stay off. */
+  const sphereStage = {
+    commsRing: emailValid,
+    shieldLayer: passwordPresent && emailValid,
+    accessGranted: phase === "success",
   };
+
+  const buttonState: AuthButtonState =
+    phase === "loading"
+      ? "loading"
+      : phase === "success"
+        ? "success"
+        : "idle";
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError("");
-    if (!validate()) return;
-    setLoading(true);
+    setFormError("");
+    setTouched({ email: true, password: true });
 
+    if (!emailValid) {
+      setFormError("Please enter a valid email address.");
+      return;
+    }
+    if (!passwordPresent) {
+      setFormError("Please enter your password.");
+      return;
+    }
+
+    setPhase("loading");
     const res = await signIn("credentials", {
       email,
       password,
@@ -136,13 +136,42 @@ export default function LoginPage() {
     });
 
     if (res?.error) {
-      setError("Invalid email or password");
-      setLoading(false);
+      setFormError("Those details don't match an account. Try again or sign up.");
+      setPhase("idle");
       return;
     }
 
-    router.push("/dashboard");
+    setPhase("success");
+    // Brief premium transition before redirect - kept short so the
+    // user never feels trapped. Navigation happens client-side via
+    // router.push which is reliable; no fallback needed.
+    window.setTimeout(() => {
+      router.push(safeCallback);
+    }, 750);
   };
+
+  const passwordToggle = (
+    <button
+      type="button"
+      onClick={() => setShowPassword((v) => !v)}
+      aria-label={showPassword ? "Hide password" : "Show password"}
+      style={{
+        display: "inline-flex",
+        alignItems: "center",
+        justifyContent: "center",
+        width: 32,
+        height: 32,
+        borderRadius: 8,
+        background: "transparent",
+        border: "none",
+        color: "rgba(232, 237, 255, 0.7)",
+        cursor: "pointer",
+        fontSize: 16,
+      }}
+    >
+      {showPassword ? "🙈" : "👁️"}
+    </button>
+  );
 
   return (
     <div
@@ -150,82 +179,80 @@ export default function LoginPage() {
       style={{
         background: CYBER_GRAD.page,
         color: C.textBright,
+        overflowX: "hidden",
       }}
     >
-      <CyberParticles />
-
-      {/* ─── UNIFIED BACKDROP - extends across the entire viewport ───
-          Was a split-screen with the live globe only on the right.
-          User flagged that the two sides still felt like separate
-          screens; now the rotating wireframe globe + cyan/cosmic halo
-          + floating glyphs + ALGORITHMX terminal label all render in
-          a single full-viewport layer behind everything. The form
-          floats on top, anchored to the left half. */}
-      <div className="absolute inset-0" style={{ zIndex: 0, overflow: "hidden", pointerEvents: "none" }}>
+      {/* ─── BACKDROP LAYER ─── */}
+      <div
+        aria-hidden
+        className="absolute inset-0"
+        style={{ zIndex: 0, overflow: "hidden", pointerEvents: "none" }}
+      >
         <CyberPanelBackdrop />
 
-        {/* Live R3F globe - fills the whole viewport behind the form */}
+        {/* The sphere - reactive to form progress. CSS variant on
+            mobile/tablet for performance; full R3F on desktop. */}
         <div className="absolute inset-0">
-          <CyberGlobe />
+          <AuthSphere stage={sphereStage} mobile={!isDesktop} />
         </div>
 
-        {/* Floating security glyphs spread across the whole viewport,
-            biased to the right so they pool around the globe centre. */}
-        <CyberFloatingIcons />
-
-        {/* ALGORITHMX label + terminal prompt - anchored just below
-            the centre, biased toward the right half so it sits behind
-            the globe and beside the form, not under it. */}
-        <motion.div
-          className="absolute flex flex-col items-center"
-          style={{
-            top: "50%",
-            left: "70%",
-            transform: "translate(-50%, 80px)",
-            zIndex: 2,
-          }}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ type: "spring", stiffness: 200, damping: 20, delay: 0.6 }}
-        >
-          <span
-            className="text-3xl font-black tracking-widest"
+        {/* Desktop-only chrome: floating glyphs + ALGORITHMX label */}
+        <div className="hidden lg:block">
+          <CyberFloatingIcons />
+          <motion.div
+            className="absolute flex flex-col items-center"
             style={{
-              fontFamily: "'Space Grotesk', system-ui, sans-serif",
-              color: C.textBright,
-              textShadow: `0 0 22px ${C.cyan}aa, 0 0 44px ${C.cosmic}66`,
-              letterSpacing: 6,
+              top: "50%",
+              left: "70%",
+              transform: "translate(-50%, 100px)",
+              zIndex: 2,
             }}
+            initial={reduced ? { opacity: 0 } : { opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ type: "spring", stiffness: 200, damping: 20, delay: 0.5 }}
           >
-            ALGORITHMX
-          </span>
-          <div
-            style={{
-              fontFamily: "ui-monospace, 'JetBrains Mono', Menlo, monospace",
-              fontSize: 12,
-              color: C.cyan,
-              marginTop: 18,
-              letterSpacing: 1,
-              textShadow: `0 0 8px ${C.cyan}`,
-            }}
-          >
-            <span style={{ color: C.cosmic }}>$</span> ax_login --auth
-            <span style={{ marginLeft: 6, animation: "loginCursorBlink 1s steps(1) infinite" }}>▮</span>
-          </div>
-        </motion.div>
+            <span
+              className="text-3xl font-black tracking-widest"
+              style={{
+                fontFamily: "'Space Grotesk', system-ui, sans-serif",
+                color: C.textBright,
+                textShadow: `0 0 22px ${C.cyan}aa, 0 0 44px ${C.cosmic}66`,
+                letterSpacing: 6,
+              }}
+            >
+              ALGORITHMX
+            </span>
+            <div
+              style={{
+                fontFamily: "ui-monospace, 'JetBrains Mono', Menlo, monospace",
+                fontSize: 12,
+                color: C.cyan,
+                marginTop: 18,
+                letterSpacing: 1,
+                textShadow: `0 0 8px ${C.cyan}`,
+              }}
+            >
+              <span style={{ color: C.cosmic }}>$</span> ax_login --auth
+              <span style={{ marginLeft: 6, animation: "loginCursorBlink 1s steps(1) infinite" }}>▮</span>
+            </div>
+          </motion.div>
+        </div>
       </div>
 
-      {/* ─── LEFT SIDE: FORM ─── */}
-      <div className="flex-1 flex flex-col items-center justify-center px-6 py-12 relative" style={{ zIndex: 3 }}>
-        <div className="w-full max-w-md relative" style={{ zIndex: 2 }}>
+      {/* ─── FORM COLUMN ─── */}
+      <div
+        className="flex-1 flex flex-col items-center justify-center px-5 sm:px-8 py-12 relative"
+        style={{ zIndex: 3 }}
+      >
+        <div className="w-full max-w-md relative">
           {/* Logo */}
-          <div className="mb-10">
+          <div className="mb-8">
             <a href="/" className="inline-flex items-center gap-2.5">
               <div
                 className="w-10 h-10 rounded-xl flex items-center justify-center"
                 style={{
                   background: GRAD,
-                  boxShadow: CYBER_SHADOW.buttonGlow,
+                  boxShadow: `0 0 22px ${C.cyan}77`,
                 }}
               >
                 <span
@@ -237,7 +264,11 @@ export default function LoginPage() {
               </div>
               <span
                 className="text-xl font-black"
-                style={{ color: C.textBright, fontFamily: "'Space Grotesk', system-ui, sans-serif", letterSpacing: "-0.01em" }}
+                style={{
+                  color: C.textBright,
+                  fontFamily: "'Space Grotesk', system-ui, sans-serif",
+                  letterSpacing: "-0.01em",
+                }}
               >
                 Algorithm
                 <span
@@ -250,239 +281,139 @@ export default function LoginPage() {
             </a>
           </div>
 
-          {/* Heading */}
-          <div
-            style={{
-              display: "inline-block",
-              fontSize: 11,
-              letterSpacing: 5,
-              color: C.cyan,
-              fontWeight: 800,
-              textTransform: "uppercase",
-              padding: "5px 16px",
-              background: "rgba(8, 10, 22, 0.7)",
-              backdropFilter: "blur(8px)",
-              WebkitBackdropFilter: "blur(8px)",
-              border: `1px solid ${C.cyan}66`,
-              borderRadius: 999,
-              marginBottom: 14,
-              fontFamily: "ui-monospace, 'JetBrains Mono', Menlo, monospace",
-              boxShadow: `0 0 16px ${C.cyan}33`,
-              textShadow: `0 0 8px ${C.cyan}`,
-            }}
-          >
-            ◇ ACCESS TERMINAL ◇
-          </div>
-          <h1
-            className="text-4xl sm:text-5xl font-black mb-3"
-            style={{
-              fontFamily: "'Space Grotesk', system-ui, sans-serif",
-              background: GRAD,
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-              backgroundClip: "text",
-              letterSpacing: "-0.025em",
-              filter: `drop-shadow(0 2px 0 rgba(8,10,22,0.9)) drop-shadow(0 0 28px ${C.cyan}88) drop-shadow(0 0 60px ${C.cosmic}55)`,
-              animation: "loginHoloShift 3.6s ease-in-out infinite",
-            }}
-          >
-            Welcome back, hero.
-          </h1>
-          <p
-            className="mb-8 text-base sm:text-lg"
-            style={{
-              color: C.textBright,
-              fontWeight: 600,
-              textShadow: "0 1px 12px rgba(8,10,22,0.95), 0 0 24px rgba(8,10,22,0.7)",
-            }}
-          >
-            Authenticate to continue your cybersecurity training.
-          </p>
+          <AuthTerminalPanel>
+            <div
+              style={{
+                display: "inline-block",
+                fontSize: 11,
+                letterSpacing: 5,
+                color: C.cyan,
+                fontWeight: 800,
+                textTransform: "uppercase",
+                padding: "5px 14px",
+                background: "rgba(8, 10, 22, 0.6)",
+                border: `1px solid ${C.cyan}66`,
+                borderRadius: 999,
+                marginBottom: 14,
+                fontFamily: "ui-monospace, 'JetBrains Mono', Menlo, monospace",
+                textShadow: `0 0 8px ${C.cyan}`,
+              }}
+            >
+              ◇ ACCESS TERMINAL ◇
+            </div>
+            <h1
+              className="text-3xl sm:text-4xl font-black mb-3"
+              style={{
+                fontFamily: "'Space Grotesk', system-ui, sans-serif",
+                background: GRAD,
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+                backgroundClip: "text",
+                letterSpacing: "-0.025em",
+                filter: `drop-shadow(0 2px 0 rgba(8,10,22,0.9)) drop-shadow(0 0 22px ${C.cyan}77)`,
+              }}
+            >
+              Welcome back, hero.
+            </h1>
+            <p
+              className="mb-6 text-base"
+              style={{
+                color: C.textBright,
+                fontWeight: 600,
+                textShadow: "0 1px 12px rgba(8,10,22,0.95)",
+              }}
+            >
+              Log in to continue your Cyber Heroes mission.
+            </p>
 
-          {/* Form card - invisible container.
-              No background, no border, no shadow, no top-edge
-              gradient strip, no padding box visible. Just a layout
-              wrapper. The form fields below carry their own dark
-              backgrounds so they remain legible against the live
-              globe scene. Net effect: NO card. Form fields literally
-              float in the scene. */}
-          <motion.div
-            className="p-7 sm:p-8 relative"
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ type: "spring", stiffness: 200, damping: 20 }}
-          >
-
-            {/* Error */}
+            {/* Form-level error - calm amber, not harsh red, role=alert */}
             <AnimatePresence>
-              {error && (
+              {formError && (
                 <motion.div
-                  initial={{ opacity: 0, y: -10 }}
+                  key="formerr"
+                  role="alert"
+                  aria-live="polite"
+                  initial={reduced ? { opacity: 0 } : { opacity: 0, y: -8 }}
                   animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
+                  exit={reduced ? { opacity: 0 } : { opacity: 0, y: -8 }}
                   transition={{ duration: 0.2 }}
-                  className="mb-5 p-3.5 rounded-2xl text-sm font-semibold"
+                  className="mb-4 px-3.5 py-3 rounded-2xl text-sm font-semibold"
                   style={{
-                    background: "rgba(255, 85, 119, 0.12)",
-                    border: `1px solid ${C.error}88`,
-                    color: "#ff8aa3",
+                    background: `${C.amber}1a`,
+                    border: `1px solid ${C.amber}88`,
+                    color: "#ffd9a3",
                     backdropFilter: "blur(8px)",
-                    boxShadow: `0 0 18px ${C.error}33`,
                   }}
                 >
-                  {error}
+                  {formError}
                 </motion.div>
               )}
             </AnimatePresence>
 
-            <form onSubmit={handleSubmit} className="space-y-5">
-              {/* Email */}
-              <div>
-                <label
-                  className="block font-black mb-2"
-                  style={{
-                    color: C.cyan,
-                    fontSize: 13,
-                    letterSpacing: 2.5,
-                    textTransform: "uppercase",
-                    fontFamily: "ui-monospace, 'JetBrains Mono', Menlo, monospace",
-                    textShadow: `0 0 10px ${C.cyan}aa, 0 1px 6px rgba(8,10,22,0.9)`,
-                  }}
-                >
-                  ✉  Email
-                </label>
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="w-full pl-4 pr-4 rounded-xl transition-all duration-300 focus:outline-none"
-                  style={{
-                    height: 52,
-                    fontSize: 16,
-                    fontWeight: 600,
-                    color: C.textBright,
-                    background: "rgba(8, 10, 22, 0.82)",
-                    border: `1.5px solid ${C.cyan}55`,
-                    fontFamily: "'DM Sans', system-ui, sans-serif",
-                    backdropFilter: "blur(6px)",
-                    WebkitBackdropFilter: "blur(6px)",
-                  }}
-                  onFocus={(e) => {
-                    e.currentTarget.style.borderColor = C.cyan;
-                    e.currentTarget.style.boxShadow = `0 0 22px ${C.cyan}55, 0 0 0 1px ${C.cyan} inset`;
-                  }}
-                  onBlur={(e) => {
-                    e.currentTarget.style.borderColor = `${C.cyan}33`;
-                    e.currentTarget.style.boxShadow = "none";
-                  }}
-                  placeholder="hero@cyberheroes.com"
-                />
-              </div>
+            <form onSubmit={handleSubmit} className="space-y-2" noValidate>
+              <AuthField
+                id="login-email"
+                label="✉  Email"
+                type="email"
+                value={email}
+                onChange={setEmail}
+                onBlur={() => setTouched((t) => ({ ...t, email: true }))}
+                state={
+                  emailInvalid ? "invalid" : emailValid ? "valid" : "idle"
+                }
+                error={emailInvalid ? "That doesn't look like a valid email." : null}
+                autoComplete="email"
+                inputMode="email"
+                placeholder="hero@cyberheroes.com"
+                required
+              />
 
-              {/* Password */}
               <div>
-                <div className="flex items-center justify-between mb-2">
-                  <label
-                    className="block font-black"
-                    style={{
-                      color: C.cyan,
-                      fontSize: 13,
-                      letterSpacing: 2.5,
-                      textTransform: "uppercase",
-                      fontFamily: "ui-monospace, 'JetBrains Mono', Menlo, monospace",
-                      textShadow: `0 0 10px ${C.cyan}aa, 0 1px 6px rgba(8,10,22,0.9)`,
-                    }}
-                  >
-                    🔒  Password
-                  </label>
+                <AuthField
+                  id="login-password"
+                  label="🔒  Password"
+                  type={showPassword ? "text" : "password"}
+                  value={password}
+                  onChange={setPassword}
+                  onBlur={() => setTouched((t) => ({ ...t, password: true }))}
+                  state={
+                    touched.password && !passwordPresent
+                      ? "invalid"
+                      : passwordPresent
+                        ? "valid"
+                        : "idle"
+                  }
+                  error={touched.password && !passwordPresent ? "Please enter your password." : null}
+                  autoComplete="current-password"
+                  placeholder="Enter your password"
+                  rightSlot={passwordToggle}
+                  required
+                />
+                <div className="flex justify-end -mt-2 mb-3">
                   <a
                     href="/forgot-password"
                     className="font-black transition hover:opacity-80"
                     style={{
                       color: C.cyanSoft,
-                      fontSize: 13,
-                      textShadow: `0 0 10px ${C.cosmic}aa, 0 1px 6px rgba(8,10,22,0.9)`,
+                      fontSize: 12.5,
+                      textShadow: `0 0 8px ${C.cosmic}88`,
                     }}
                   >
                     Forgot password?
                   </a>
                 </div>
-                <div className="relative">
-                  <input
-                    type={showPassword ? "text" : "password"}
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    className="w-full pl-4 pr-12 rounded-xl transition-all duration-300 focus:outline-none"
-                    style={{
-                      height: 52,
-                      fontSize: 16,
-                      fontWeight: 600,
-                      color: C.textBright,
-                      background: "rgba(8, 10, 22, 0.82)",
-                      border: `1.5px solid ${C.cyan}55`,
-                      fontFamily: "'DM Sans', system-ui, sans-serif",
-                      backdropFilter: "blur(6px)",
-                      WebkitBackdropFilter: "blur(6px)",
-                    }}
-                    onFocus={(e) => {
-                      e.currentTarget.style.borderColor = C.cyan;
-                      e.currentTarget.style.boxShadow = `0 0 22px ${C.cyan}55, 0 0 0 1px ${C.cyan} inset`;
-                    }}
-                    onBlur={(e) => {
-                      e.currentTarget.style.borderColor = `${C.cyan}33`;
-                      e.currentTarget.style.boxShadow = "none";
-                    }}
-                    placeholder="Enter your password"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 transition text-sm"
-                    style={{ color: C.textMuted }}
-                  >
-                    {showPassword ? "🙈" : "👁️"}
-                  </button>
-                </div>
               </div>
 
-              {/* Submit - backlit cyan/violet pill */}
-              <motion.button
-                type="submit"
-                disabled={loading}
-                whileHover={{ y: -2, scale: 1.02 }}
-                whileTap={{ scale: 0.97 }}
-                transition={{ type: "spring", stiffness: 320, damping: 20 }}
-                className="w-full font-black text-base rounded-full transition-colors duration-300 disabled:opacity-50 relative overflow-hidden"
-                style={{
-                  height: 52,
-                  background: GRAD,
-                  color: C.abyss,
-                  fontFamily: "'Space Grotesk', system-ui, sans-serif",
-                  letterSpacing: 1,
-                  textTransform: "uppercase",
-                  boxShadow: CYBER_SHADOW.buttonGlow,
-                  border: "none",
-                }}
-              >
-                <span style={{ position: "relative", zIndex: 2 }}>
-                  {loading ? "Authenticating..." : "Log In →"}
-                </span>
-                {/* Shine sweep */}
-                <span
-                  aria-hidden
-                  style={{
-                    position: "absolute",
-                    inset: 0,
-                    background:
-                      "linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.3) 50%, transparent 70%)",
-                    animation: "loginButtonShine 3s ease-in-out infinite",
-                  }}
-                />
-              </motion.button>
+              <AuthButton
+                state={buttonState}
+                idleLabel="Log in →"
+                loadingLabel="Verifying access…"
+                successLabel="Access granted"
+              />
             </form>
 
             <p
-              className="text-center mt-6"
+              className="text-center mt-5"
               style={{
                 color: C.text,
                 fontSize: 14,
@@ -494,15 +425,18 @@ export default function LoginPage() {
               <a
                 href="/signup"
                 className="font-black transition hover:opacity-80"
-                style={{ color: C.cyan, textShadow: `0 0 10px ${C.cyan}aa, 0 1px 6px rgba(8,10,22,0.9)` }}
+                style={{
+                  color: C.cyan,
+                  textShadow: `0 0 10px ${C.cyan}aa`,
+                }}
               >
-                Sign Up
+                Sign up
               </a>
             </p>
-          </motion.div>
+          </AuthTerminalPanel>
 
-          {/* Trust badges - now in monospace cyber-readout style */}
-          <div className="flex items-center justify-center gap-4 mt-6 flex-wrap">
+          {/* Trust badges - keep, but moved below the panel + brackets */}
+          <div className="flex items-center justify-center gap-4 mt-12 flex-wrap">
             {[
               { icon: "🔒", label: "ENC: 256-BIT" },
               { icon: "👨‍👩‍👧‍👦", label: "FAMILY SAFE" },
@@ -510,13 +444,13 @@ export default function LoginPage() {
             ].map((b, i) => (
               <motion.span
                 key={i}
-                initial={{ opacity: 0, y: 20 }}
+                initial={reduced ? { opacity: 0 } : { opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ type: "spring", stiffness: 200, damping: 20, delay: 0.3 + i * 0.1 }}
                 className="flex items-center gap-1.5"
                 style={{
                   color: C.textSoft,
-                  fontSize: 12,
+                  fontSize: 11,
                   fontWeight: 700,
                   fontFamily: "ui-monospace, 'JetBrains Mono', Menlo, monospace",
                   letterSpacing: 1.5,
@@ -530,13 +464,15 @@ export default function LoginPage() {
         </div>
       </div>
 
-      {/* ─── RIGHT SIDE - empty spacer on lg+ so the form anchors to
-          the left half. The unified backdrop layer above already
-          renders the globe / icons / ALGORITHMX label spanning both
-          halves; this column just reserves layout space. */}
-      <div
-        className="hidden lg:flex flex-1 items-center justify-center relative"
-        aria-hidden
+      {/* Right-side empty spacer on desktop so the form anchors to
+          the left half. The backdrop layer above renders the sphere
+          + ALGORITHMX label across both halves. */}
+      <div className="hidden lg:flex flex-1 items-center justify-center relative" aria-hidden />
+
+      <AccessGrantedOverlay
+        show={phase === "success"}
+        title="Access granted"
+        subtitle="Routing to Cyber HQ…"
       />
 
       <style>{`
@@ -544,25 +480,15 @@ export default function LoginPage() {
           0%, 49% { opacity: 1; }
           50%, 100% { opacity: 0; }
         }
-        @keyframes loginHoloShift {
-          0%,100% { filter: drop-shadow(0 0 22px ${C.cyan}66); }
-          50%     { filter: drop-shadow(0 0 30px ${C.cosmic}88); }
-        }
-        @keyframes loginButtonShine {
-          0%   { transform: translateX(-100%); }
-          60%  { transform: translateX(100%); }
-          100% { transform: translateX(100%); }
-        }
-        /* Placeholder text was too dim against the dark glass inputs.
-           Brighter, bolder placeholder so the kid (and parent) can
-           actually read the hint. */
+        /* Brighter placeholder so kids/parents can actually read the
+           hint over the dark glass inputs. */
         input::placeholder {
-          color: rgba(232, 237, 255, 0.85);
+          color: rgba(232, 237, 255, 0.7);
           font-weight: 600;
           opacity: 1;
         }
         input:focus::placeholder {
-          color: rgba(232, 237, 255, 0.55);
+          color: rgba(232, 237, 255, 0.45);
         }
       `}</style>
     </div>

@@ -6,10 +6,13 @@ import { STEPS } from "./data";
 import { FadeUp } from "./utilities";
 
 /**
- * 4-step "How It Works" - Choose / Pick / Enrol / Learn & Certify.
+ * 5-step "How It Works" - Choose / Pick / Enrol / Learn & Build /
+ * Earn a Qualification.
  *
  * Bright theme. Animated gradient progress line draws across as the
- * section comes into view. Steps pop in with cascading scale-in.
+ * section comes into view. Steps pop in with cascading scale-in. The
+ * 5th step communicates the qualification route honestly: "working
+ * toward CyberFirst & ASDAN recognition" (not yet accredited).
  */
 export default function HowItWorks() {
   const ref = useRef<HTMLDivElement>(null);
@@ -100,7 +103,7 @@ export default function HowItWorks() {
               style={{
                 height: "100%",
                 background:
-                  "linear-gradient(90deg, #00f5ff, #5fffa3, #ff7a3d, #ffc94a)",
+                  "linear-gradient(90deg, #00f5ff, #5fffa3, #ff7a3d, #ffc94a, #a667ff)",
                 boxShadow: "0 0 16px rgba(0,229,255,0.6)",
                 width: inView ? "100%" : "0%",
                 transition: "width 1.8s cubic-bezier(0.16,1,0.3,1)",

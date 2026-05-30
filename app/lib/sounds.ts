@@ -92,7 +92,12 @@ const SFX_REGISTRY: Record<string, SoundEntry> = {
  * Invariant: BGM_MAX_VOLUME must stay well below any SFX volume
  * (lowest SFX is 0.5; a 5× headroom keeps music subtle).
  */
-const BGM_MAX_VOLUME = 0.04;
+// 0.02 = whisper-faint background bed. The narration voice (George /
+// Sarah) is the primary audio; music sits underneath as room tone,
+// not as a competing layer. Halved from the previous 0.04 after
+// narration was added - the voice needs to dominate the mix without
+// fighting the music for attention.
+const BGM_MAX_VOLUME = 0.012;
 const BGM_REGISTRY: Record<string, SoundEntry> = {
   bgmLesson: { path: "/audio/sfx/bgm-lesson.mp3", volume: BGM_MAX_VOLUME },
   bgmBattle: { path: "/audio/sfx/bgm-battle.mp3", volume: BGM_MAX_VOLUME },
@@ -431,7 +436,24 @@ export function playSound(key: string): void {
   SoundManager.getInstance().play(key);
 }
 
+/**
+ * Set to `true` to globally disable all BGM/music while tuning the
+ * narration. Every `playBGM(...)` call becomes a no-op and any
+ * currently-playing track is stopped. Flip back to `false` to
+ * restore lesson + battle music.
+ *
+ * Currently `false` - music plays at the whisper-faint BGM_MAX_VOLUME
+ * defined above, sitting underneath the narration voice as room tone.
+ */
+const BGM_DISABLED = false;
+
 export function playBGM(trackOrKey: string): void {
+  if (BGM_DISABLED) {
+    // Also stop anything that was already playing before the flag
+    // was flipped (e.g. SSR-hydrated track started on a prior visit).
+    SoundManager.getInstance().stopBGM(0);
+    return;
+  }
   SoundManager.getInstance().playBGM(trackOrKey);
 }
 

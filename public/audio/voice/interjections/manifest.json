@@ -1,0 +1,198 @@
+{
+  "generatedAt": "2026-05-30T09:09:41.948Z",
+  "model": "eleven_v3",
+  "voice": {
+    "id": "bIHbv24MWmeRgasZH58o",
+    "name": "Will"
+  },
+  "voiceSettings": {
+    "stability": 0.5,
+    "similarity_boost": 0.85,
+    "style": 0,
+    "use_speaker_boost": true,
+    "speed": 0.95
+  },
+  "triggers": {
+    "correct": [
+      {
+        "key": "2a599cfbff7e5642",
+        "text": "Nice work!",
+        "file": "/audio/voice/interjections/2a599cfbff7e5642.mp3"
+      },
+      {
+        "key": "2761de5b3fc3c870",
+        "text": "Brilliant!",
+        "file": "/audio/voice/interjections/2761de5b3fc3c870.mp3"
+      },
+      {
+        "key": "e16e216de82465bc",
+        "text": "You got it!",
+        "file": "/audio/voice/interjections/e16e216de82465bc.mp3"
+      },
+      {
+        "key": "2141a626614877d5",
+        "text": "Yes!",
+        "file": "/audio/voice/interjections/2141a626614877d5.mp3"
+      },
+      {
+        "key": "abec752eb54e914f",
+        "text": "That's right!",
+        "file": "/audio/voice/interjections/abec752eb54e914f.mp3"
+      },
+      {
+        "key": "8e5cd38df3feb76a",
+        "text": "Spot on!",
+        "file": "/audio/voice/interjections/8e5cd38df3feb76a.mp3"
+      },
+      {
+        "key": "76b515bd18c54bb4",
+        "text": "Great job!",
+        "file": "/audio/voice/interjections/76b515bd18c54bb4.mp3"
+      },
+      {
+        "key": "c6883d017d74b2ba",
+        "text": "Awesome!",
+        "file": "/audio/voice/interjections/c6883d017d74b2ba.mp3"
+      }
+    ],
+    "wrong": [
+      {
+        "key": "81d217e188ed9147",
+        "text": "Try again!",
+        "file": "/audio/voice/interjections/81d217e188ed9147.mp3"
+      },
+      {
+        "key": "ad75262b9530f4a4",
+        "text": "Not quite!",
+        "file": "/audio/voice/interjections/ad75262b9530f4a4.mp3"
+      },
+      {
+        "key": "539022d3d73eba24",
+        "text": "Have another go!",
+        "file": "/audio/voice/interjections/539022d3d73eba24.mp3"
+      },
+      {
+        "key": "91e98b1d7f2c951a",
+        "text": "Hmm, look again!",
+        "file": "/audio/voice/interjections/91e98b1d7f2c951a.mp3"
+      },
+      {
+        "key": "c393200e62bcb611",
+        "text": "Nearly!",
+        "file": "/audio/voice/interjections/c393200e62bcb611.mp3"
+      },
+      {
+        "key": "741577ae2b014f4b",
+        "text": "Almost!",
+        "file": "/audio/voice/interjections/741577ae2b014f4b.mp3"
+      }
+    ],
+    "streak3": [
+      {
+        "key": "84162507ca526efa",
+        "text": "Three in a row!",
+        "file": "/audio/voice/interjections/84162507ca526efa.mp3"
+      },
+      {
+        "key": "47509a411b24810a",
+        "text": "Nice streak!",
+        "file": "/audio/voice/interjections/47509a411b24810a.mp3"
+      },
+      {
+        "key": "215fa65ef3c1ac7f",
+        "text": "Keep going!",
+        "file": "/audio/voice/interjections/215fa65ef3c1ac7f.mp3"
+      }
+    ],
+    "streak5": [
+      {
+        "key": "e84c57ce07d618be",
+        "text": "Five in a row!",
+        "file": "/audio/voice/interjections/e84c57ce07d618be.mp3"
+      },
+      {
+        "key": "db328d86b84c633c",
+        "text": "On fire!",
+        "file": "/audio/voice/interjections/db328d86b84c633c.mp3"
+      },
+      {
+        "key": "4ac526193662c1cc",
+        "text": "You're crushing it!",
+        "file": "/audio/voice/interjections/4ac526193662c1cc.mp3"
+      }
+    ],
+    "streak7": [
+      {
+        "key": "86fe7b62b57d54d8",
+        "text": "Seven straight!",
+        "file": "/audio/voice/interjections/86fe7b62b57d54d8.mp3"
+      },
+      {
+        "key": "29d5a906213752d1",
+        "text": "Unstoppable!",
+        "file": "/audio/voice/interjections/29d5a906213752d1.mp3"
+      },
+      {
+        "key": "0629cf6cd7eba994",
+        "text": "Cyber Hero!",
+        "file": "/audio/voice/interjections/0629cf6cd7eba994.mp3"
+      }
+    ],
+    "unlock": [
+      {
+        "key": "2141a626614877d5",
+        "text": "Yes!",
+        "file": "/audio/voice/interjections/2141a626614877d5.mp3"
+      },
+      {
+        "key": "7a4bfcd484ed50c3",
+        "text": "Unlocked!",
+        "file": "/audio/voice/interjections/7a4bfcd484ed50c3.mp3"
+      },
+      {
+        "key": "c6883d017d74b2ba",
+        "text": "Awesome!",
+        "file": "/audio/voice/interjections/c6883d017d74b2ba.mp3"
+      },
+      {
+        "key": "92bf220d88a718eb",
+        "text": "Wow!",
+        "file": "/audio/voice/interjections/92bf220d88a718eb.mp3"
+      }
+    ],
+    "victory": [
+      {
+        "key": "bb8ae1a3e1cea031",
+        "text": "You did it!",
+        "file": "/audio/voice/interjections/bb8ae1a3e1cea031.mp3"
+      },
+      {
+        "key": "0629cf6cd7eba994",
+        "text": "Cyber Hero!",
+        "file": "/audio/voice/interjections/0629cf6cd7eba994.mp3"
+      },
+      {
+        "key": "aa752d0da7e9a8d0",
+        "text": "Amazing!",
+        "file": "/audio/voice/interjections/aa752d0da7e9a8d0.mp3"
+      },
+      {
+        "key": "59f731de2fd9dd20",
+        "text": "Mission complete!",
+        "file": "/audio/voice/interjections/59f731de2fd9dd20.mp3"
+      }
+    ],
+    "lessonStart": [
+      {
+        "key": "415ce09e22747472",
+        "text": "Let's go!",
+        "file": "/audio/voice/interjections/415ce09e22747472.mp3"
+      },
+      {
+        "key": "a58e266b58e74693",
+        "text": "Ready? Here we go!",
+        "file": "/audio/voice/interjections/a58e266b58e74693.mp3"
+      }
+    ]
+  }
+}

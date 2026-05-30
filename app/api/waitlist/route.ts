@@ -1,12 +1,6 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/app/lib/prisma";
 
-const VALID_SLUGS = new Set([
-  "cyberexplorers",
-  "cyberstart",
-  "cyberstart-pro",
-]);
-
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export async function POST(req: Request) {
@@ -17,24 +11,39 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
   }
 
-  const { email, courseSlug, source } = (body ?? {}) as {
+  const { email, productSlug, source } = (body ?? {}) as {
     email?: string;
-    courseSlug?: string;
+    productSlug?: string;
     source?: string;
   };
 
   if (!email || !EMAIL_RE.test(email)) {
     return NextResponse.json({ error: "Invalid email" }, { status: 400 });
   }
-  if (!courseSlug || !VALID_SLUGS.has(courseSlug)) {
-    return NextResponse.json({ error: "Invalid course" }, { status: 400 });
+  if (!productSlug) {
+    return NextResponse.json(
+      { error: "We can't find that course" },
+      { status: 400 },
+    );
   }
 
   try {
+    const product = await prisma.product.findUnique({
+      where: { slug: productSlug },
+      select: { id: true },
+    });
+
+    if (!product) {
+      return NextResponse.json(
+        { error: "We can't find that course" },
+        { status: 400 },
+      );
+    }
+
     await prisma.waitlistEntry.upsert({
-      where: { email_courseSlug: { email, courseSlug } },
-      update: { source: source ?? undefined },
-      create: { email, courseSlug, source: source ?? null },
+      where: { email_productId: { email, productId: product.id } },
+      update: source ? { source } : {},
+      create: { email, productId: product.id, source: source ?? null },
     });
     return NextResponse.json({ ok: true });
   } catch (err) {

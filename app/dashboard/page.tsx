@@ -12,26 +12,21 @@ import {
   DashboardSky,
   DashboardParticles,
 } from "@/app/components/DashboardAtmosphere";
-import SubscribeButton from "@/app/components/SubscribeButton";
-import { hasLessonAccess } from "@/app/lib/paywall";
+import { hasEntitlement, getAge } from "@/app/lib/entitlements";
+import { resolveActiveChildProfileId } from "@/app/lib/progressService";
 
-/* ───────────────── PIXAR PALETTE ───────────────── */
-// Centralised so every surface, gradient, and shadow on the dashboard
-// pulls from the same warm dusk vocabulary as the Week 1 lesson.
+/* ───────────────── CYBER PALETTE ─────────────────
+   Local subset of the cyber tokens — kept inline so the dashboard
+   surfaces don't have to thread the central token import through every
+   style block. Mirrors the dusk-cyber vocabulary used across the app. */
 const C = {
-  // Backgrounds
   pageBg: "#080a16",
   card: "rgba(15, 21, 48, 0.72)",
-  cardSolid: "#0f1530",
-  parchment: "rgba(255, 245, 220, 0.95)",
   border: "rgba(0, 229, 255, 0.22)",
   borderStrong: "rgba(0, 229, 255, 0.45)",
-  // Type
   text: "#e8edff",
   textSoft: "#c5cdf0",
   textMuted: "rgba(125, 240, 255, 0.55)",
-  inkDeep: "#3b2615",
-  // Accents
   goldLight: "#00e5ff",
   goldMid: "#7c5cff",
   goldDeep: "#3a7bff",
@@ -40,7 +35,6 @@ const C = {
   ember: "#ff7a59",
   moss: "#7eff97",
   mossLight: "#a0ffb0",
-  blossom: "#f7c1d6",
   cream: "#7df0ff",
 };
 const GRAD_GOLD = `linear-gradient(135deg, ${C.goldLight}, ${C.goldMid}, ${C.goldDeep})`;
@@ -55,12 +49,9 @@ const SHADOW_PRIMARY =
 const FONT_STACK =
   "ui-rounded, 'Fredoka', 'Quicksand', 'Nunito', system-ui, -apple-system, sans-serif";
 
+const PRODUCT_SLUG = "cyber-heroes";
+
 function ShieldLogo({ size = 22 }: { size?: number }) {
-  // Futuristic AI-cyber shield - replaces the 2-tone gold-fill shield
-  // the user spotted on the dashboard course card. Hex-bevel
-  // silhouette, cyan→cosmic gradient stroke, circuit cross + node
-  // dots inside, drop-shadow glow halo. Same shape language as the
-  // CyberIcon library's "shield" glyph.
   return (
     <svg
       width={size}
@@ -110,100 +101,92 @@ function CheckIcon({ size = 18, color = C.mossLight }: { size?: number; color?: 
   );
 }
 
-function LockIcon({ size = 18, color = C.textMuted }: { size?: number; color?: string }) {
+function StarRow({ stars }: { stars: number }) {
+  // Show three pips, filled = stars earned. Used on completed week
+  // rows so a 3-star perfect run is immediately visible.
+  const clamped = Math.max(0, Math.min(3, stars));
   return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" aria-hidden>
-      <rect x="5" y="11" width="14" height="9" rx="2" stroke={color} strokeWidth="2" />
-      <path d="M8 11V8a4 4 0 1 1 8 0v3" stroke={color} strokeWidth="2" strokeLinecap="round" />
-    </svg>
+    <span className="inline-flex items-center gap-0.5" aria-label={`${clamped} of 3 stars`}>
+      {[0, 1, 2].map((i) => (
+        <span
+          key={i}
+          aria-hidden
+          style={{
+            fontSize: 12,
+            color: i < clamped ? "#ffd158" : "rgba(125, 240, 255, 0.25)",
+            filter: i < clamped ? "drop-shadow(0 0 4px rgba(255,209,88,0.6))" : "none",
+          }}
+        >
+          ★
+        </span>
+      ))}
+    </span>
   );
 }
 
-export default async function DashboardPage({
-  searchParams,
-}: {
-  searchParams: Promise<{ payment?: string }>;
-}) {
+export default async function DashboardPage() {
+  // ── GATE ─────────────────────────────────────────────────────────
+  // 1) Must be signed in. 2) Must own the cyber-heroes product. The
+  // hub handles purchase + upsell now, so unentitled users bounce
+  // back there instead of seeing an in-dashboard paywall.
   const session = await auth();
-  if (!session?.user) redirect("/login");
+  if (!session?.user?.id) redirect("/login");
+  const ok = await hasEntitlement(session.user.id, PRODUCT_SLUG);
+  if (!ok) redirect("/hub");
 
-  const params = await searchParams;
-  const paymentJustSucceeded = params.payment === "success";
-  const paymentJustCancelled = params.payment === "cancelled";
+  // ── DATA ─────────────────────────────────────────────────────────
+  const userId = session.user.id;
 
-  const [user, childProfiles] = await Promise.all([
-    prisma.user.findUnique({
-      where: { id: session.user.id! },
-      select: { stripeStatus: true, stripePaidAt: true },
-    }),
-    prisma.childProfile.findMany({
-      where: { userId: session.user.id! },
-      orderBy: { createdAt: "desc" },
-    }),
-  ]);
-
+  const childProfiles = await prisma.childProfile.findMany({
+    where: { userId },
+    select: { id: true, name: true, dateOfBirth: true, favouriteColour: true },
+    orderBy: { createdAt: "desc" },
+  });
   if (childProfiles.length === 0) redirect("/onboarding");
 
-  const activeChild = childProfiles[0];
-  // hasAccess honours the shared paywall helper - both Stripe status
-  // AND the PAYWALL_DISABLED env flag. Flip the flag on Vercel to
-  // hide the upsell card during testing and let the parent walk
-  // straight into the course.
-  const hasAccess = hasLessonAccess(user);
+  const activeChildId = (await resolveActiveChildProfileId(userId)) ?? childProfiles[0].id;
+  const activeChild =
+    childProfiles.find((c) => c.id === activeChildId) ?? childProfiles[0];
 
-  const course = await prisma.course.findFirst({
-    where: { title: "Cyber Heroes Academy" },
+  const product = await prisma.product.findUnique({
+    where: { slug: PRODUCT_SLUG },
     include: {
-      modules: {
-        orderBy: { order: "asc" },
-        include: {
-          progress: {
-            where: { userId: session.user.id! },
-          },
-        },
-      },
+      courseContents: { orderBy: { week: "asc" } },
     },
   });
 
-  const completedCount =
-    course?.modules.filter(
-      (m: NonNullable<typeof course>["modules"][number]) =>
-        m.progress[0]?.status === "COMPLETED",
-    ).length ?? 0;
+  // If the seed hasn't been run, render a minimal empty state instead
+  // of crashing. Same shell, no module list.
+  const courseContents = product?.courseContents ?? [];
 
-  const totalModules = course?.modules.length ?? 0;
-  const progressPct = totalModules > 0 ? (completedCount / totalModules) * 100 : 0;
-  const remaining = Math.max(0, totalModules - completedCount);
+  const progressRows = product
+    ? await prisma.progress.findMany({
+        where: { childProfileId: activeChild.id, productId: product.id },
+        select: { week: true, screen: true, stars: true, completedAt: true },
+      })
+    : [];
 
-  let foundCurrentNext = false;
-  const modules = (course?.modules ?? []).map(
-    (module: NonNullable<typeof course>["modules"][number], idx: number) => {
-      const status = module.progress[0]?.status ?? "NOT_STARTED";
-      const isCompleted = status === "COMPLETED";
-      const isInProgress = status === "IN_PROGRESS";
-      const isWeekOne = module.weekNumber === 1;
-      const prevModule = idx > 0 ? course!.modules[idx - 1] : null;
-      const prevCompleted = prevModule?.progress[0]?.status === "COMPLETED";
-      const isUnlocked = isWeekOne || prevCompleted || isCompleted || isInProgress;
+  const progressByWeek = new Map(progressRows.map((p) => [p.week, p]));
 
-      const isCurrentNext = isUnlocked && !isCompleted && !foundCurrentNext;
-      if (isCurrentNext) foundCurrentNext = true;
+  const completedCount = progressRows.filter((p) => p.completedAt !== null).length;
+  const totalWeeks = courseContents.length;
+  const progressPct = totalWeeks > 0 ? (completedCount / totalWeeks) * 100 : 0;
+  const remaining = Math.max(0, totalWeeks - completedCount);
 
-      return {
-        id: module.id,
-        weekNumber: module.weekNumber,
-        title: module.title,
-        description: module.description,
-        isCompleted,
-        isInProgress,
-        isUnlocked,
-        isCurrentNext,
-        prevWeek: !isUnlocked && prevModule ? prevModule.weekNumber : null,
-      };
-    },
-  );
+  // Pick the "current" week — first non-completed week that has either
+  // started or is the lowest week number (everything is unlocked once
+  // entitled; we just highlight where to go next).
+  let nextWeek: number | null = null;
+  for (const cc of courseContents) {
+    const p = progressByWeek.get(cc.week);
+    if (!p || !p.completedAt) {
+      nextWeek = cc.week;
+      break;
+    }
+  }
 
-  const userName = activeChild.childName ?? session.user.name ?? "Cyber Hero";
+  const childAge = getAge(activeChild.dateOfBirth);
+  const userName = activeChild.name ?? session.user.name ?? "Cyber Hero";
   const raccoonPower = Math.round(100 - progressPct);
   const raccoonStrong = raccoonPower > 50;
 
@@ -213,17 +196,20 @@ export default async function DashboardPage({
           title: "Ready to begin, Cyber Hero?",
           body: "Your first mission is waiting. Start Week 1 and take your first step toward defeating the Hacker Raccoon!",
           cta: "Start Week 1 →",
+          href: `/lesson/${nextWeek ?? 1}`,
         }
-      : completedCount >= totalModules && totalModules > 0
+      : completedCount >= totalWeeks && totalWeeks > 0
         ? {
             title: "You saved the day!",
             body: "Every week complete. The Raccoon has been defeated. Keep your skills sharp and revisit any lesson anytime.",
-            cta: "Revisit a Lesson →",
+            cta: "Revisit Week 1 →",
+            href: `/lesson/1`,
           }
         : {
             title: "You're on a roll!",
-            body: `${completedCount} week${completedCount !== 1 ? "s" : ""} done, ${remaining} to go. Keep the momentum - each lesson weakens the Raccoon.`,
-            cta: "Continue Mission →",
+            body: `${completedCount} week${completedCount !== 1 ? "s" : ""} done, ${remaining} to go. Keep the momentum — each lesson weakens the Raccoon.`,
+            cta: `Continue Week ${nextWeek ?? 1} →`,
+            href: `/lesson/${nextWeek ?? 1}`,
           };
 
   const stats = [
@@ -268,8 +254,7 @@ export default async function DashboardPage({
       <div
         className="dash min-h-screen relative"
         style={{
-          background:
-            `radial-gradient(ellipse at 50% -10%, #1d1f4d 0%, #0f1530 35%, ${C.pageBg} 70%, #04050d 100%)`,
+          background: `radial-gradient(ellipse at 50% -10%, #1d1f4d 0%, #0f1530 35%, ${C.pageBg} 70%, #04050d 100%)`,
         }}
       >
         <DashboardSky />
@@ -286,7 +271,7 @@ export default async function DashboardPage({
           }}
         >
           <div className="max-w-[1100px] mx-auto px-6 md:px-10 py-4 flex items-center justify-between">
-            <a href="/" className="flex items-center gap-2.5" style={{ textDecoration: "none" }}>
+            <a href="/hub" className="flex items-center gap-2.5" style={{ textDecoration: "none" }}>
               <div
                 className="flex items-center justify-center"
                 style={{
@@ -338,10 +323,16 @@ export default async function DashboardPage({
                   style={{ color: C.textSoft, paddingRight: 4 }}
                 >
                   {userName}
+                  <span
+                    className="ml-1.5"
+                    style={{ color: C.textMuted, fontWeight: 700 }}
+                  >
+                    · age {childAge}
+                  </span>
                 </span>
               </div>
               <a
-                href="/parent"
+                href="/hub"
                 className="hidden sm:inline-block"
                 style={{
                   background: "rgba(255, 215, 138, 0.12)",
@@ -354,7 +345,7 @@ export default async function DashboardPage({
                   textDecoration: "none",
                 }}
               >
-                Parent View
+                Hub
               </a>
               <form
                 action={async () => {
@@ -440,12 +431,9 @@ export default async function DashboardPage({
                     : "Continue your adventure with Adam & Layla."}
                 </p>
 
-                {/* Primary CTA - only for new users so the path from
-                    landing-on-dashboard to in-lesson is one tap. Existing
-                    users hit "Continue" on their current week card below. */}
                 {completedCount === 0 && (
                   <a
-                    href="/lesson"
+                    href={`/lesson/${nextWeek ?? 1}`}
                     className="inline-flex items-center gap-2 font-black mb-6 transition-all duration-200 hover:scale-105"
                     style={{
                       background: GRAD_GOLD_PILL,
@@ -478,7 +466,7 @@ export default async function DashboardPage({
                       Overall Progress
                     </span>
                     <span className="font-black" style={{ color: C.goldLight }}>
-                      {completedCount} of {totalModules} weeks
+                      {completedCount} of {totalWeeks} weeks
                     </span>
                   </div>
                   <AnimatedBar
@@ -519,204 +507,11 @@ export default async function DashboardPage({
                       priority
                     />
                   </div>
-                  <div
-                    className="absolute"
-                    style={{ top: -6, right: -6, fontSize: 14, color: C.goldLight }}
-                    aria-hidden
-                  >
-                    ✦
-                  </div>
-                  <div
-                    className="absolute"
-                    style={{ bottom: 10, left: -8, fontSize: 10, color: C.goldLight }}
-                    aria-hidden
-                  >
-                    ✦
-                  </div>
                 </div>
               </div>
             </section>
           </RevealOnScroll>
 
-          {/* ── PAYMENT BANNERS ── */}
-          {paymentJustSucceeded && hasAccess && (
-            <div
-              className="rounded-3xl mb-8 p-5 sm:p-6 flex items-center gap-4 relative overflow-hidden"
-              style={{
-                background:
-                  "linear-gradient(135deg, rgba(126, 255, 151, 0.18), rgba(0, 229, 255, 0.14))",
-                border: "1px solid rgba(126, 255, 151, 0.5)",
-                boxShadow: "0 0 30px rgba(126, 255, 151, 0.25)",
-              }}
-            >
-              <span style={{ fontSize: 36 }}>🎉</span>
-              <div className="flex-1">
-                <h3
-                  className="display font-bold text-lg"
-                  style={{ color: C.mossLight }}
-                >
-                  Welcome to the Academy!
-                </h3>
-                <p
-                  className="text-sm font-bold"
-                  style={{ color: C.textSoft, opacity: 0.92 }}
-                >
-                  Payment confirmed - all 20 weeks of missions are unlocked.
-                </p>
-              </div>
-            </div>
-          )}
-          {paymentJustSucceeded && !hasAccess && (
-            <div
-              className="rounded-3xl mb-8 p-5 sm:p-6 flex items-center gap-4"
-              style={{
-                background: "rgba(255, 215, 138, 0.14)",
-                border: "1px solid rgba(255, 215, 138, 0.5)",
-              }}
-            >
-              <span style={{ fontSize: 32 }}>⏳</span>
-              <div className="flex-1">
-                <h3 className="display font-bold text-lg" style={{ color: C.text }}>
-                  Confirming your payment…
-                </h3>
-                <p
-                  className="text-sm font-bold"
-                  style={{ color: C.textSoft, opacity: 0.92 }}
-                >
-                  This usually takes a few seconds. Refresh this page if it
-                  doesn&apos;t flip on its own.
-                </p>
-              </div>
-            </div>
-          )}
-          {paymentJustCancelled && (
-            <div
-              className="rounded-3xl mb-8 p-5 sm:p-6 flex items-center gap-4"
-              style={{
-                background: "rgba(255, 122, 89, 0.14)",
-                border: "1px solid rgba(255, 122, 89, 0.5)",
-              }}
-            >
-              <span style={{ fontSize: 32 }}>👋</span>
-              <div className="flex-1">
-                <h3 className="display font-bold text-lg" style={{ color: C.text }}>
-                  Checkout cancelled - no charge.
-                </h3>
-                <p
-                  className="text-sm font-bold"
-                  style={{ color: C.textSoft, opacity: 0.92 }}
-                >
-                  Take your time. Come back any time to enrol your child.
-                </p>
-              </div>
-            </div>
-          )}
-
-          {/* ── PAYWALL (unpaid users only) ─────────────────────────
-               Shown until Stripe webhook flips stripeStatus to active.
-               Replaces the stats / modules / encouragement below. */}
-          {!hasAccess && (
-            <RevealOnScroll>
-              <section
-                className="rounded-3xl p-7 sm:p-10 mb-10 text-center relative overflow-hidden"
-                style={{
-                  background:
-                    "linear-gradient(135deg, rgba(124, 92, 255, 0.14), rgba(0, 229, 255, 0.10), rgba(255, 95, 179, 0.10))",
-                  border: `1px solid ${C.borderStrong}`,
-                  backdropFilter: "blur(14px)",
-                  WebkitBackdropFilter: "blur(14px)",
-                  boxShadow:
-                    "0 0 50px rgba(124, 92, 255, 0.25), 0 24px 50px -16px rgba(8, 10, 22, 0.6)",
-                }}
-              >
-                <div
-                  style={{
-                    display: "inline-flex",
-                    alignItems: "center",
-                    gap: 8,
-                    padding: "5px 14px",
-                    borderRadius: 999,
-                    background: "rgba(255, 209, 88, 0.16)",
-                    border: "1px solid rgba(255, 209, 88, 0.45)",
-                    color: "#ffd158",
-                    fontSize: 11,
-                    fontWeight: 800,
-                    letterSpacing: "0.2em",
-                    textTransform: "uppercase",
-                    marginBottom: 18,
-                    fontFamily: "ui-monospace, 'JetBrains Mono', Menlo, monospace",
-                  }}
-                >
-                  ◇ One Step Left ◇
-                </div>
-                <h2
-                  className="display text-2xl sm:text-3xl lg:text-4xl font-bold mb-4 leading-tight"
-                  style={{
-                    background:
-                      "linear-gradient(135deg, #00e5ff, #7c5cff, #ff5fb3)",
-                    WebkitBackgroundClip: "text",
-                    WebkitTextFillColor: "transparent",
-                    backgroundClip: "text",
-                    letterSpacing: "-0.02em",
-                  }}
-                >
-                  Unlock {activeChild.childName}&rsquo;s Cyber Hero adventure
-                </h2>
-                <p
-                  className="text-base sm:text-lg leading-relaxed mb-6 max-w-xl mx-auto"
-                  style={{ color: C.textSoft }}
-                >
-                  20 weeks of animated missions, 100+ interactive activities, 4
-                  printable certificates. One-time £99 per child &mdash; lifetime
-                  access, no subscriptions.
-                </p>
-
-                <ul
-                  className="text-left max-w-md mx-auto mb-8 space-y-2"
-                  style={{ color: C.textSoft }}
-                >
-                  {[
-                    "Full 20-week Cyber Heroes Academy",
-                    "All boss battles, mini-games & badges",
-                    "Parent dashboard with weekly progress",
-                    "GDPR-compliant · No data sold · No ads",
-                  ].map((item) => (
-                    <li
-                      key={item}
-                      className="flex items-center gap-2.5 text-sm font-bold"
-                    >
-                      <CheckIcon size={16} color={C.mossLight} />
-                      <span>{item}</span>
-                    </li>
-                  ))}
-                </ul>
-
-                <SubscribeButton
-                  label="Enrol Now · £99 →"
-                  className="rounded-full font-black"
-                  style={{
-                    padding: "16px 36px",
-                    fontSize: 17,
-                    background: GRAD_GOLD_PILL,
-                    color: C.goldDark,
-                    boxShadow: SHADOW_PRIMARY,
-                    border: "none",
-                    letterSpacing: "0.02em",
-                    textTransform: "uppercase",
-                  }}
-                />
-                <p
-                  className="text-xs font-bold mt-4"
-                  style={{ color: C.textMuted }}
-                >
-                  Secure checkout via Stripe · Card payment in test mode
-                </p>
-              </section>
-            </RevealOnScroll>
-          )}
-
-          {hasAccess && (
-            <>
           {/* ── STAT CARDS ROW ── */}
           <RevealOnScroll delay={120}>
             <section className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
@@ -783,7 +578,7 @@ export default async function DashboardPage({
             </section>
           </RevealOnScroll>
 
-          {course ? (
+          {product ? (
             <>
               {/* ── HACKER RACCOON ── */}
               <RevealOnScroll delay={80}>
@@ -834,7 +629,7 @@ export default async function DashboardPage({
                       className="display font-bold text-lg mb-2"
                       style={{ color: C.text }}
                     >
-                      {completedCount >= totalModules && totalModules > 0
+                      {completedCount >= totalWeeks && totalWeeks > 0
                         ? "You defeated the Hacker Raccoon!"
                         : "The Hacker Raccoon is still out there…"}
                     </h3>
@@ -842,9 +637,9 @@ export default async function DashboardPage({
                       className="text-sm leading-relaxed mb-4"
                       style={{ color: C.textSoft, opacity: 0.9 }}
                     >
-                      {completedCount >= totalModules && totalModules > 0
+                      {completedCount >= totalWeeks && totalWeeks > 0
                         ? "Amazing work, Cyber Hero! You've completed every lesson and saved the day."
-                        : `Complete all ${totalModules} weeks to defeat him. Each lesson weakens his power.`}
+                        : `Complete all ${totalWeeks} weeks to defeat him. Each lesson weakens his power.`}
                     </p>
                     <div>
                       <div className="flex justify-between text-xs font-black mb-1.5">
@@ -865,16 +660,16 @@ export default async function DashboardPage({
                       >
                         {completedCount === 0
                           ? "Start your first lesson to begin weakening the raccoon."
-                          : completedCount >= totalModules
+                          : completedCount >= totalWeeks
                             ? "The raccoon's power has been fully drained."
-                            : `${completedCount} lesson${completedCount !== 1 ? "s" : ""} down - keep going!`}
+                            : `${completedCount} lesson${completedCount !== 1 ? "s" : ""} down — keep going!`}
                       </p>
                     </div>
                   </div>
                 </section>
               </RevealOnScroll>
 
-              {/* ── COURSE HEADER ── */}
+              {/* ── PRODUCT HEADER ── */}
               <RevealOnScroll delay={120}>
                 <section
                   className="rounded-3xl p-6 sm:p-8 mb-8 flex flex-col sm:flex-row items-center gap-6"
@@ -894,17 +689,17 @@ export default async function DashboardPage({
                         filter: "drop-shadow(0 0 18px rgba(124, 92, 255, 0.5))",
                       }}
                     >
-                      {course.emoji}
+                      {product.emoji}
                     </span>
                     <div className="min-w-0">
                       <h2
                         className="display text-xl sm:text-2xl font-bold leading-snug"
                         style={{ color: C.text }}
                       >
-                        {course.title}
+                        {product.name}
                       </h2>
                       <p className="text-sm font-bold" style={{ color: C.textSoft, opacity: 0.85 }}>
-                        Ages {course.ageRange} · {course.weeksCount} Weeks · {course.duration}
+                        Ages {product.ageRange} · {product.weeksCount} Weeks · {product.duration}
                       </p>
                     </div>
                   </div>
@@ -921,37 +716,37 @@ export default async function DashboardPage({
                 </section>
               </RevealOnScroll>
 
-              {/* ── MODULE LIST ── */}
+              {/* ── WEEK LIST ── */}
               <StaggeredList className="space-y-3 mb-12">
-                {modules.map((mod: (typeof modules)[number]) => {
-                  const isCurrent = mod.isCurrentNext;
+                {courseContents.map((cc) => {
+                  const p = progressByWeek.get(cc.week);
+                  const isCompleted = !!p?.completedAt;
+                  const isInProgress = !!p && !isCompleted;
+                  const isCurrent = cc.week === nextWeek;
 
                   return (
                     <div
-                      key={mod.id}
+                      key={cc.id}
                       className="rounded-3xl flex items-center gap-4 sm:gap-5 transition-all duration-300"
                       style={{
                         padding: isCurrent ? "24px 24px" : "20px 24px",
                         background: isCurrent
                           ? "linear-gradient(135deg, rgba(124, 92, 255, 0.16), rgba(255, 215, 138, 0.10))"
-                          : mod.isCompleted
+                          : isCompleted
                             ? "linear-gradient(135deg, rgba(124, 200, 154, 0.12), rgba(15, 21, 48, 0.5))"
                             : C.card,
                         border: isCurrent
                           ? `2px solid rgba(124, 92, 255, 0.7)`
-                          : mod.isCompleted
+                          : isCompleted
                             ? "1px solid rgba(124, 200, 154, 0.4)"
                             : `1px solid ${C.border}`,
                         boxShadow: isCurrent
                           ? "0 0 32px rgba(124, 92, 255, 0.35), 0 18px 36px -12px rgba(8, 10, 22, 0.55)"
-                          : mod.isCompleted
+                          : isCompleted
                             ? "0 12px 24px -10px rgba(8, 10, 22, 0.45)"
                             : "0 10px 22px -10px rgba(8, 10, 22, 0.45)",
                         backdropFilter: "blur(10px)",
                         WebkitBackdropFilter: "blur(10px)",
-                        opacity: mod.isUnlocked ? 1 : 0.45,
-                        cursor: mod.isUnlocked ? "default" : "not-allowed",
-                        pointerEvents: mod.isUnlocked ? undefined : ("none" as const),
                       }}
                     >
                       {/* Week badge */}
@@ -961,70 +756,70 @@ export default async function DashboardPage({
                           width: 52,
                           height: 52,
                           borderRadius: 16,
-                          background: mod.isCompleted
+                          background: isCompleted
                             ? "rgba(124, 200, 154, 0.22)"
                             : isCurrent
                               ? GRAD_GOLD_PILL
                               : "rgba(0, 229, 255, 0.06)",
-                          color: mod.isCompleted
+                          color: isCompleted
                             ? C.mossLight
                             : isCurrent
                               ? C.goldDark
-                              : C.textMuted,
-                          boxShadow: mod.isCompleted
+                              : C.textSoft,
+                          boxShadow: isCompleted
                             ? "0 0 18px rgba(124, 200, 154, 0.45)"
                             : isCurrent
                               ? "0 0 22px rgba(124, 92, 255, 0.55)"
                               : "none",
                         }}
                       >
-                        {mod.isCompleted ? (
-                          <CheckIcon size={22} color={C.mossLight} />
-                        ) : mod.isUnlocked ? (
-                          `W${mod.weekNumber}`
-                        ) : (
-                          <LockIcon size={20} color={C.textMuted} />
-                        )}
+                        {isCompleted ? <CheckIcon size={22} color={C.mossLight} /> : `W${cc.week}`}
                       </div>
 
                       {/* Content */}
                       <div className="flex-1 min-w-0">
                         <div
-                          className="font-black uppercase mb-0.5"
+                          className="font-black uppercase mb-0.5 flex items-center gap-2 flex-wrap"
                           style={{
                             fontSize: 10,
                             letterSpacing: "0.15em",
-                            color: mod.isCompleted
+                            color: isCompleted
                               ? "rgba(168, 227, 187, 0.85)"
                               : isCurrent
                                 ? C.goldLight
                                 : "rgba(125, 240, 255, 0.5)",
                           }}
                         >
-                          Week {mod.weekNumber}
+                          <span>Week {cc.week}</span>
+                          {isCompleted && p && p.stars > 0 && <StarRow stars={p.stars} />}
+                          {isInProgress && p && (
+                            <span style={{ color: C.goldLight, letterSpacing: "0.05em" }}>
+                              · screen {p.screen}
+                            </span>
+                          )}
                         </div>
                         <h3
                           className="display font-bold text-sm sm:text-base leading-snug"
                           style={{
                             color: C.text,
-                            opacity: mod.isCompleted ? 0.82 : 1,
+                            opacity: isCompleted ? 0.82 : 1,
                           }}
                         >
-                          {mod.title}
+                          {cc.title}
                         </h3>
                         <p
                           className="text-xs mt-1 leading-relaxed line-clamp-2"
                           style={{ color: C.textMuted }}
                         >
-                          {mod.description}
+                          {cc.description}
                         </p>
                       </div>
 
                       {/* Action */}
                       <div className="shrink-0">
-                        {mod.isCompleted ? (
+                        {isCompleted ? (
                           <a
-                            href="/lesson"
+                            href={`/lesson/${cc.week}`}
                             className="inline-flex items-center gap-1.5 font-black transition-all duration-200 hover:scale-105"
                             style={{
                               background: "rgba(124, 200, 154, 0.16)",
@@ -1037,11 +832,11 @@ export default async function DashboardPage({
                             }}
                           >
                             <CheckIcon size={14} color={C.mossLight} />
-                            Completed
+                            Replay
                           </a>
                         ) : isCurrent ? (
                           <a
-                            href="/lesson"
+                            href={`/lesson/${cc.week}`}
                             className="inline-block font-black transition-all duration-200 hover:scale-105"
                             style={{
                               background: GRAD_GOLD_PILL,
@@ -1055,11 +850,11 @@ export default async function DashboardPage({
                               letterSpacing: "0.02em",
                             }}
                           >
-                            {mod.isInProgress ? "Continue →" : "Start Lesson →"}
+                            {isInProgress ? "Continue →" : "Start Lesson →"}
                           </a>
-                        ) : mod.isUnlocked ? (
+                        ) : (
                           <a
-                            href="/lesson"
+                            href={`/lesson/${cc.week}`}
                             className="inline-block font-black transition-all duration-200 hover:scale-105"
                             style={{
                               background: GRAD_GOLD_PILL,
@@ -1074,21 +869,6 @@ export default async function DashboardPage({
                           >
                             Start Lesson →
                           </a>
-                        ) : (
-                          <span
-                            className="inline-flex items-center gap-1.5 font-bold whitespace-nowrap"
-                            style={{
-                              background: "rgba(0, 229, 255, 0.04)",
-                              border: `1px solid ${C.border}`,
-                              color: C.textMuted,
-                              borderRadius: 100,
-                              padding: "8px 14px",
-                              fontSize: 11,
-                            }}
-                          >
-                            <LockIcon size={12} color={C.textMuted} />
-                            {mod.prevWeek !== null ? `Complete W${mod.prevWeek}` : "Locked"}
-                          </span>
                         )}
                       </div>
                     </div>
@@ -1140,7 +920,7 @@ export default async function DashboardPage({
                     {encouragement.body}
                   </p>
                   <a
-                    href="/lesson"
+                    href={encouragement.href}
                     className="inline-block font-black transition-all duration-200 hover:scale-105"
                     style={{
                       background: GRAD_GOLD_PILL,
@@ -1169,11 +949,9 @@ export default async function DashboardPage({
               }}
             >
               <p className="font-bold" style={{ color: C.textMuted }}>
-                No course found. Please run the seed script.
+                Cyber Heroes content is not yet available. Please run the seed script.
               </p>
             </div>
-          )}
-            </>
           )}
         </div>
       </div>

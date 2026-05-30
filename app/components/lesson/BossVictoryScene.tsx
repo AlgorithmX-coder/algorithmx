@@ -75,8 +75,11 @@ export default function BossVictoryScene({
     const beats = [220, 520, 720, 880, 1040, 1200, 1480, 1700, 1900];
     const timers: number[] = [];
 
-    // Initial big-win sting + confetti
+    // Initial big-win sting + confetti.
     audio.victory();
+    // Signature boss-defeated SFX (ascending fanfare + defeated
+    // raccoon descending grumble + crystalline finale).
+    audio.signature("boss-defeated");
     if (intensity > 0) {
       fx.unlock({ text: "VICTORY!" });
     }
@@ -88,7 +91,12 @@ export default function BossVictoryScene({
           // Stat tiles (steps 4–7) get the xp tick chime
           if (i >= 3 && i <= 6) audio.xpTick();
           // Badge bloom
-          if (i === 7) audio.badgeEarned();
+          if (i === 7) {
+            audio.badgeEarned();
+            // Signature badge-bloom: warm bell + heraldic flourish on
+            // top of the existing badge chime.
+            audio.signature("badge-bloom");
+          }
         }, t(delay))
       );
     });

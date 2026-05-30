@@ -61,6 +61,10 @@ export default function StickerUnlock({
     const id = window.setTimeout(
       () => {
         setDroppedCount((n) => n + 1);
+        // Signature sticker-drop SFX (paper-flutter + chime) layered
+        // over the existing unlock chime for that "this is a real
+        // sticker landing" character.
+        audio.signature("sticker-drop");
         audio.unlock();
         if (intensity > 0) {
           fx.unlock({

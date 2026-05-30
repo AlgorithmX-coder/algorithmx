@@ -1,0 +1,71 @@
+{
+  "generatedAt": "2026-05-30T10:39:59.577Z",
+  "endpoint": "https://api.elevenlabs.io/v1/sound-generation",
+  "outputFormat": "mp3_44100_128",
+  "entries": [
+    {
+      "id": "vault-open",
+      "key": "b7825e223e86b725",
+      "file": "/audio/sfx-signature/vault-open.mp3",
+      "prompt": "Heavy metal vault door unsealing: deep mechanical clunks, hydraulic hiss, single dramatic clang as it unlocks, then a low resonant boom. Cinematic, slightly futuristic, family-friendly tone.",
+      "durationSeconds": 2.5,
+      "description": "Plays when the Password Vault door swings open at the end of all 5 locks active."
+    },
+    {
+      "id": "vault-reveal",
+      "key": "25908623acbcb18e",
+      "file": "/audio/sfx-signature/vault-reveal.mp3",
+      "prompt": "Magical treasure-chamber reveal: cascading bell chimes, ethereal shimmer, soft choir swell, ascending sparkle. Warm, awe-inspiring, kid-friendly fantasy.",
+      "durationSeconds": 2.5,
+      "description": "Plays when the vault interior treasure chamber becomes visible (the shield core + artifacts)."
+    },
+    {
+      "id": "sticker-drop",
+      "key": "2fd5c3c9852c1a2d",
+      "file": "/audio/sfx-signature/sticker-drop.mp3",
+      "prompt": "Playful sticker landing: quick paper-fluttering whoosh, light pop, tiny celebratory chime. Snappy, cute, ~half second.",
+      "durationSeconds": 0.9,
+      "description": "Plays as each individual sticker lands on its shelf in StickerUnlock."
+    },
+    {
+      "id": "boss-defeated",
+      "key": "ed675a92e920ca0f",
+      "file": "/audio/sfx-signature/boss-defeated.mp3",
+      "prompt": "Triumphant boss defeat stinger: ascending heroic fanfare, victory bells, descending raccoon-like grumble of defeat, bright crystalline finale. Family-friendly, not scary.",
+      "durationSeconds": 2.5,
+      "description": "Plays when the Hacker Raccoon is defeated at the end of the boss battle."
+    },
+    {
+      "id": "badge-bloom",
+      "key": "e45227c1b01241a5",
+      "file": "/audio/sfx-signature/badge-bloom.mp3",
+      "prompt": "Golden badge unlock: warm bell-like resonance with shimmer wash, soft heraldic flourish, glowing finale chord. Reward-feel, satisfying, ~1.5 seconds.",
+      "durationSeconds": 1.5,
+      "description": "Plays when the badge appears in the Mission Complete / completion ceremony."
+    },
+    {
+      "id": "mission-start",
+      "key": "917aa322480fa394",
+      "file": "/audio/sfx-signature/mission-start.mp3",
+      "prompt": "Heroic mission briefing sting: brief warm fanfare, ascending chord with light percussion, sparkle finish. Inviting and adventurous, family-friendly, ~1.4 seconds.",
+      "durationSeconds": 1.4,
+      "description": "Plays on the Mission Brief screen (screen 1) to mark the start of the lesson."
+    },
+    {
+      "id": "hq-entry",
+      "key": "c2cd413331a4245d",
+      "file": "/audio/sfx-signature/hq-entry.mp3",
+      "prompt": "Welcoming chamber entrance: soft door-open swoosh, magical entryway swell, distant bell chimes, warm ambient bloom. Friendly, slightly mystical, kid-safe, ~2.5 seconds.",
+      "durationSeconds": 2.5,
+      "description": "Plays once when the Cyber HQ page (/cyberhq) is opened."
+    },
+    {
+      "id": "mission-complete",
+      "key": "bef930b48d247890",
+      "file": "/audio/sfx-signature/mission-complete.mp3",
+      "prompt": "Triumphant mission-complete fanfare: bright golden brass chord resolving into a warm major cadence, shimmering bell tail. Celebratory, family-friendly, ~2.5 seconds.",
+      "durationSeconds": 2.5,
+      "description": "Plays on the final completion screen (screen 22) when the badge ceremony lands."
+    }
+  ]
+}

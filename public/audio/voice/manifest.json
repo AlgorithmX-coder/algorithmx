@@ -1,0 +1,97 @@
+{
+  "generatedAt": "2026-05-30T08:55:03.655Z",
+  "model": "eleven_v3",
+  "voiceSettings": {
+    "stability": 0.5,
+    "similarity_boost": 0.85,
+    "style": 0,
+    "use_speaker_boost": true,
+    "speed": 0.92
+  },
+  "voices": {
+    "adam": {
+      "id": "bIHbv24MWmeRgasZH58o",
+      "name": "Will"
+    },
+    "layla": {
+      "id": "bIHbv24MWmeRgasZH58o",
+      "name": "Will"
+    }
+  },
+  "chunkStrategy": "block",
+  "entries": [
+    {
+      "key": "e12ca002e326b9ed",
+      "speaker": "adam",
+      "voice": "Will",
+      "text": "A password is your secret code. It tells the computer it's really YOU. Keep it secret - even from your best friend. Long passwords are stronger than short ones. Mix big letters, small letters, numbers and symbols.",
+      "lines": [
+        "A password is your secret code.",
+        "It tells the computer it's really YOU.",
+        "Keep it secret - even from your best friend.",
+        "Long passwords are stronger than short ones.",
+        "Mix big letters, small letters, numbers and symbols."
+      ],
+      "file": "/audio/voice/e12ca002e326b9ed.mp3"
+    },
+    {
+      "key": "1855be342c4f3ae8",
+      "speaker": "layla",
+      "voice": "Will",
+      "text": "Imagine ONE key opens your house AND your bike. If a thief steals it, they open both! Passwords are the same. Use a DIFFERENT one for every account. If one gets stolen, the others stay safe.",
+      "lines": [
+        "Imagine ONE key opens your house AND your bike.",
+        "If a thief steals it, they open both!",
+        "Passwords are the same.",
+        "Use a DIFFERENT one for every account.",
+        "If one gets stolen, the others stay safe."
+      ],
+      "file": "/audio/voice/1855be342c4f3ae8.mp3"
+    },
+    {
+      "key": "366009fdae98df49",
+      "speaker": "adam",
+      "voice": "Will",
+      "text": "Time to remember the five Golden Rules! One - keep it SECRET. Never share it. Two - make it LONG. Eight characters or more. Three - MIX letters, numbers and symbols. Four - make it UNIQUE for every account. Five - never use your name, birthday or the word 'password'.",
+      "lines": [
+        "Time to remember the five Golden Rules!",
+        "One - keep it SECRET. Never share it.",
+        "Two - make it LONG. Eight characters or more.",
+        "Three - MIX letters, numbers and symbols.",
+        "Four - make it UNIQUE for every account.",
+        "Five - never use your name, birthday or the word 'password'."
+      ],
+      "file": "/audio/voice/366009fdae98df49.mp3"
+    },
+    {
+      "key": "e87a0af7e7f9fff7",
+      "speaker": "layla",
+      "voice": "Will",
+      "text": "Phishing sounds like 'fishing' - and it works the same way. A hacker drops bait. Hoping you bite. Free prize? Bait. 'URGENT - type your password!' Bait. Message from someone you don't know? Be careful. If you're not sure, show a parent.",
+      "lines": [
+        "Phishing sounds like 'fishing' - and it works the same way.",
+        "A hacker drops bait. Hoping you bite.",
+        "Free prize? Bait.",
+        "'URGENT - type your password!' Bait.",
+        "Message from someone you don't know? Be careful.",
+        "If you're not sure, show a parent."
+      ],
+      "file": "/audio/voice/e87a0af7e7f9fff7.mp3"
+    },
+    {
+      "key": "74354f19b796a607",
+      "speaker": "layla",
+      "voice": "Will",
+      "text": "Wow! Look at everything you learned this week. Strong passwords - long and mixed. Secret passwords - even from your best friend. Unique passwords - one for every account. And you can spot phishing tricks too. Time to claim your stickers!",
+      "lines": [
+        "Wow! Look at everything you learned this week.",
+        "Strong passwords - long and mixed.",
+        "Secret passwords - even from your best friend.",
+        "Unique passwords - one for every account.",
+        "And you can spot phishing tricks too.",
+        "Time to claim your stickers!"
+      ],
+      "file": "/audio/voice/74354f19b796a607.mp3"
+    }
+  ]
+}

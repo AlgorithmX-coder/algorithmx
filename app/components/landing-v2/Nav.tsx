@@ -198,12 +198,39 @@ export default function Nav() {
   );
 }
 
+/* Live-active drift. Always in [1000, 5000] — random-walks ±0–35
+ * every 1.8s, clamped to the band. Reads as a real product analytics
+ * metric rather than a jumpy random picker that would flick from 1100
+ * → 4800 → 1300 each tick.
+ *
+ * SSR-safe seed: useState starts at the stable mid-band value (3000),
+ * so server-rendered HTML matches the client hydration pass. The
+ * random anchor pick + drift only fires inside useEffect, which never
+ * runs during SSR. */
+const ACTIVE_MIN = 1000;
+const ACTIVE_MAX = 5000;
+/* Per-tick drift cap. ±12 per 1.8s keeps the counter visibly "alive"
+ * without flicking 30+ each step (which read as broken). */
+const ACTIVE_STEP_MAX = 12;
+const ACTIVE_SSR_SEED = 3000;
+
 function LiveTelemetry({ isLight }: { isLight: boolean }) {
-  const [active, setActive] = useState(127);
+  const [active, setActive] = useState(ACTIVE_SSR_SEED);
   const [uptime, setUptime] = useState(41);
   useEffect(() => {
+    /* Jump from the SSR seed to a fresh random anchor on first client
+     * tick so two visitors don't see the same opening number. */
+    setActive(
+      ACTIVE_MIN + Math.floor(Math.random() * (ACTIVE_MAX - ACTIVE_MIN + 1)),
+    );
     const i = setInterval(() => {
-      setActive(120 + Math.floor(Math.random() * 14));
+      setActive((prev) => {
+        const step = Math.floor((Math.random() * 2 - 1) * ACTIVE_STEP_MAX);
+        const next = prev + step;
+        if (next < ACTIVE_MIN) return ACTIVE_MIN + Math.floor(Math.random() * 40);
+        if (next > ACTIVE_MAX) return ACTIVE_MAX - Math.floor(Math.random() * 40);
+        return next;
+      });
       setUptime(38 + Math.floor(Math.random() * 8));
     }, 1800);
     return () => clearInterval(i);
@@ -239,7 +266,7 @@ function LiveTelemetry({ isLight }: { isLight: boolean }) {
             animation: "lv2NavPulse 1.6s ease-in-out infinite",
           }}
         />
-        {active} ACTIVE
+        {active.toLocaleString("en-US")} ACTIVE
       </span>
       <span style={{ opacity: 0.7 }}>6 STREAMS</span>
       <span style={{ opacity: 0.7 }}>UPTIME {uptime}ms</span>

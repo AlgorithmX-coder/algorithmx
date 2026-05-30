@@ -5,14 +5,15 @@ import { FadeUp } from "./utilities";
 
 /**
  * SubjectShowcase. Six stream cards in a 2x3 grid - one per technology
- * stream, each showing the real status (LIVE NOW / COMING 2026 / 2027)
- * and an example project.
+ * subject. Cybersecurity is the only live subject; clicking its card
+ * takes families to the /cybersecurity subject page where the four
+ * cyber tracks (ages 6 → 18+) are listed in age order.
  *
- * Previous version was a tab navigation + 3-4 sub-course tiers per
- * subject ("Cyber Explorers", "CyberStart", "CyberStart Pro" etc.) -
- * those courses don't exist as products. Replaced with the canonical
- * 6-stream architecture used in the cinematic dashboard, ChooseYourPath,
- * AgeProgression, and ALGO so the whole page tells one story.
+ * The other five subjects do NOT have subject pages yet and MUST NOT
+ * link to a dead route. They render the same card but with a soft
+ * "Coming soon" treatment and a non-interactive CTA, so the homepage
+ * never leaves the family at a 404. Batch 8+ will introduce per-
+ * subject pages and re-enable those links one by one.
  */
 
 interface Stream {
@@ -24,7 +25,10 @@ interface Stream {
   blurb: string;
   project: string;
   accent: string;
-  href: string;
+  /** href is non-null ONLY for live subjects. Coming-soon subjects
+   *  must not link anywhere — keeping href off the type for them
+   *  prevents accidental relinking on a future edit. */
+  href: string | null;
   cta: string;
 }
 
@@ -32,15 +36,19 @@ const STREAMS: Stream[] = [
   {
     id: "cybersecurity",
     name: "Cybersecurity",
-    ages: "Ages 6 → Adult",
+    /* Subject page covers four age tracks: cyber-heroes (6–9),
+     * cyberexplorers (10–13), cyberstart (14–16), cyberstart-pro
+     * (16–18+). Surface "Ages 6–18+ · 4 tracks" so the card reads
+     * as a SUBJECT, not as one of the tracks underneath it. */
+    ages: "Ages 6–18+ · 4 tracks",
     status: "LIVE NOW",
     isLive: true,
     blurb:
-      "From spotting scams at age 6 to portfolio-grade pen-testing as an adult. Online safety is the gateway skill.",
+      "From spotting scams at age 6 to portfolio-grade pen-testing at 18. Online safety is the gateway skill.",
     project: "Build a Password Defender · 8 missions",
     accent: "#5fffa3",
-    href: "/cyberheroes",
-    cta: "Start Cyber Heroes",
+    href: "/cybersecurity",
+    cta: "View course",
   },
   {
     id: "game-dev",
@@ -52,7 +60,7 @@ const STREAMS: Stream[] = [
       "Pixel art, physics, state machines, and what makes a jump feel good. Scratch through Unity through Unreal.",
     project: "Ship a Pixel Platformer level",
     accent: "#9ff5ff",
-    href: "#",
+    href: null,
     cta: "Coming 2026",
   },
   {
@@ -65,7 +73,7 @@ const STREAMS: Stream[] = [
       "Train a real model, inspect its bias, deploy it. Cuts through hype with hands-on intuition for how AI actually works.",
     project: "Train an Image Classifier",
     accent: "#cba8ff",
-    href: "#",
+    href: null,
     cta: "Coming 2026",
   },
   {
@@ -78,7 +86,7 @@ const STREAMS: Stream[] = [
       "Real apps on real phones. State, persistence, notifications, design. Build something your friends actually install.",
     project: "Ship a Habit Tracker",
     accent: "#ffd07a",
-    href: "#",
+    href: null,
     cta: "Coming 2027",
   },
   {
@@ -91,7 +99,7 @@ const STREAMS: Stream[] = [
       "Discovery interviews, market sizing, MVP design, pitch craft. The non-coding half of building a tech business.",
     project: "Pitch a 10-slide deck to a real VC panel",
     accent: "#ffc94a",
-    href: "#",
+    href: null,
     cta: "Coming 2027",
   },
   {
@@ -104,7 +112,7 @@ const STREAMS: Stream[] = [
       "Sensors, pathfinding, motor control, autonomy. Code virtual robots first, then graduate to physical kits.",
     project: "Code a Maze-Solver Bot",
     accent: "#ff3ad6",
-    href: "#",
+    href: null,
     cta: "Coming 2027",
   },
 ];
@@ -375,36 +383,60 @@ function StreamCard({ stream }: { stream: Stream }) {
         </span>
       </div>
 
-      <Link
-        href={stream.href}
-        style={{
-          ...ctaStyle,
-          marginTop: 4,
-          padding: "12px 18px",
-          borderRadius: 999,
-          fontFamily: "var(--lv2-font-mono)",
-          fontSize: 11,
-          fontWeight: 700,
-          letterSpacing: "0.18em",
-          textTransform: "uppercase",
-          textDecoration: "none",
-          display: "inline-flex",
-          alignItems: "center",
-          justifyContent: "center",
-          gap: 8,
-          pointerEvents: stream.isLive ? "auto" : "none",
-          opacity: stream.isLive ? 1 : 0.7,
-        }}
-        aria-disabled={!stream.isLive}
-        tabIndex={stream.isLive ? 0 : -1}
-      >
-        {stream.cta}
-        {stream.isLive && (
-          <span aria-hidden style={{ marginLeft: 2 }}>
-            →
-          </span>
-        )}
-      </Link>
+      {/* Live subjects render a real Link to their subject page. Coming-
+       *  soon subjects render an inert span styled identically — NOT a
+       *  Link with href="#", which still shows up as a valid anchor to
+       *  the browser and used to slip into clicks before the
+       *  pointer-events:none caught them. With no anchor in the DOM
+       *  there's zero risk of a dead navigation. */}
+      {stream.isLive && stream.href ? (
+        <Link
+          href={stream.href}
+          style={{
+            ...ctaStyle,
+            marginTop: 4,
+            padding: "12px 18px",
+            borderRadius: 999,
+            fontFamily: "var(--lv2-font-mono)",
+            fontSize: 11,
+            fontWeight: 700,
+            letterSpacing: "0.18em",
+            textTransform: "uppercase",
+            textDecoration: "none",
+            display: "inline-flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: 8,
+          }}
+        >
+          {stream.cta}
+          <span aria-hidden style={{ marginLeft: 2 }}>→</span>
+        </Link>
+      ) : (
+        <span
+          role="presentation"
+          aria-disabled
+          style={{
+            ...ctaStyle,
+            marginTop: 4,
+            padding: "12px 18px",
+            borderRadius: 999,
+            fontFamily: "var(--lv2-font-mono)",
+            fontSize: 11,
+            fontWeight: 700,
+            letterSpacing: "0.18em",
+            textTransform: "uppercase",
+            display: "inline-flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: 8,
+            opacity: 0.7,
+            cursor: "not-allowed",
+          }}
+        >
+          {stream.cta}
+        </span>
+      )}
     </article>
   );
 }

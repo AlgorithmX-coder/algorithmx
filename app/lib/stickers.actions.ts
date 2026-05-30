@@ -1,77 +1,45 @@
 "use server";
 
 /**
- * Cyber HQ sticker persistence.
+ * Cyber HQ sticker actions — derived from Progress.
  *
- * Stickers are a static catalogue in code (STICKER_CATALOGUE below);
- * the DB only tracks which user has earned which sticker id (with
- * optional weekNumber). All writes go through `awardStickers` which:
+ * The old EarnedSticker table was dropped. Stickers are now derived
+ * at read-time from completed Progress rows: completing week N
+ * unlocks every sticker in the catalogue with `weekNumber === N`.
+ * No new persistence table.
  *
- *   - Authenticates via auth()
- *   - Validates each sticker id against the catalogue (a leaked
- *     server-action call can't make up a sticker the catalogue
- *     doesn't know about)
- *   - Filters out duplicates (idempotent - awarding a sticker the
- *     user already has is a no-op, not an error)
+ * The catalogue + types live in `./stickers-data` because Next.js
+ * 16 forbids non-async exports from a `"use server"` file. We
+ * re-export the types here so call-sites that historically imported
+ * them from `stickers.actions` keep compiling unchanged.
  *
- * Reads (`getEarnedStickers`) return the user's earned set joined
- * against the catalogue so the parent dashboard and /cyberhq route
- * can render them in one go.
+ * Trade-offs vs the old shape:
+ *   - Per-exercise stickers (e.g. "phish-spotter" historically
+ *     awarded mid-week for getting a phishing question right) are
+ *     now coarsely tied to week completion. If a designer wants
+ *     sub-week granularity again, introduce a sticker-claim table
+ *     in a later batch — do NOT bolt a new column onto Progress.
+ *   - `awardStickers` is a no-op that returns []. The "newly
+ *     earned" celebration won't fire from this call — instead the
+ *     completion screen should diff a getEarnedStickers before/after
+ *     call if it wants the same UX. Today the one-time celebration
+ *     on week completion is acceptable.
  */
 
 import { auth } from "@/app/lib/auth";
 import { prisma } from "@/app/lib/prisma";
+import { resolveActiveChildProfileId } from "@/app/lib/progressService";
+import {
+  STICKER_CATALOGUE,
+  type EarnedStickerDTO,
+} from "./stickers-data";
 
-export interface StickerCatalogueItem {
-  id: string;
-  name: string;
-  icon: string;
-  description: string;
-  weekNumber: number;
-}
+// Re-export so existing `import { EarnedStickerDTO } from
+// "@/app/lib/stickers.actions"` call sites keep working. Types
+// are erased at build time and don't violate the use-server rule.
+export type { EarnedStickerDTO, StickerCatalogueItem } from "./stickers-data";
 
-/**
- * The canonical list of all stickers in the game. Adding a sticker
- * here is the ONLY way to introduce a new one - awardStickers checks
- * incoming ids against this list and silently drops unknowns. Order
- * here also drives the default sort on /cyberhq.
- */
-export const STICKER_CATALOGUE: readonly StickerCatalogueItem[] = [
-  {
-    id: "password-master",
-    name: "Password Master",
-    icon: "🔐",
-    description: "Built strong passwords the Raccoon can't crack.",
-    weekNumber: 1,
-  },
-  {
-    id: "secret-keeper",
-    name: "Secret Keeper",
-    icon: "🤐",
-    description: "Stood firm when asked to share. Passwords stay secret.",
-    weekNumber: 1,
-  },
-  {
-    id: "phish-spotter",
-    name: "Phish Spotter",
-    icon: "🔍",
-    description: "Inspected the bait and didn't bite. Sharp eyes!",
-    weekNumber: 1,
-  },
-];
-
-const CATALOGUE_BY_ID = new Map(
-  STICKER_CATALOGUE.map((s) => [s.id, s] as const)
-);
-
-export interface EarnedStickerDTO {
-  id: string;
-  name: string;
-  icon: string;
-  description: string;
-  weekNumber: number;
-  earnedAt: Date;
-}
+const PRODUCT_SLUG = "cyber-heroes";
 
 async function requireUserId(): Promise<string> {
   const session = await auth();
@@ -81,94 +49,61 @@ async function requireUserId(): Promise<string> {
 }
 
 /**
- * Award one or more stickers to the authenticated user. Idempotent:
- * stickers the user already has are silently skipped. Returns the
- * set of stickers that were NEWLY earned this call (for the
- * unlock-celebration UI).
+ * No-op write — kept on the API surface so DynamicLesson's call site
+ * doesn't have to change. Sticker membership is derived at read time
+ * by `getEarnedStickers` from completed Progress rows; there is no
+ * persistence step to perform here.
  */
 export async function awardStickers(
-  stickerIds: string[]
+  stickerIds: string[],
 ): Promise<EarnedStickerDTO[]> {
-  const userId = await requireUserId();
-  if (!Array.isArray(stickerIds) || stickerIds.length === 0) return [];
-
-  // Filter to valid catalogue ids only.
-  const valid = Array.from(
-    new Set(
-      stickerIds
-        .filter((id): id is string => typeof id === "string")
-        .filter((id) => CATALOGUE_BY_ID.has(id))
-    )
-  );
-  if (valid.length === 0) return [];
-
-  // Find which of the requested ids the user already has so we don't
-  // count them as "newly earned".
-  const existing = await prisma.earnedSticker.findMany({
-    where: { userId, stickerId: { in: valid } },
-    select: { stickerId: true },
-  });
-  const existingIds = new Set(existing.map((e) => e.stickerId));
-  const toCreate = valid.filter((id) => !existingIds.has(id));
-  if (toCreate.length === 0) return [];
-
-  // createMany with skipDuplicates so a race against another tab
-  // can't violate the (userId, stickerId) unique index.
-  await prisma.earnedSticker.createMany({
-    data: toCreate.map((stickerId) => {
-      const meta = CATALOGUE_BY_ID.get(stickerId)!;
-      return {
-        userId,
-        stickerId,
-        weekNumber: meta.weekNumber,
-      };
-    }),
-    skipDuplicates: true,
-  });
-
-  // Re-query the rows we just inserted to get their earnedAt
-  // timestamps. Keeps the return shape stable for the client.
-  const fresh = await prisma.earnedSticker.findMany({
-    where: { userId, stickerId: { in: toCreate } },
-    orderBy: { earnedAt: "asc" },
-  });
-  return fresh.map((row) => {
-    const meta = CATALOGUE_BY_ID.get(row.stickerId)!;
-    return {
-      id: row.stickerId,
-      name: meta.name,
-      icon: meta.icon,
-      description: meta.description,
-      weekNumber: meta.weekNumber,
-      earnedAt: row.earnedAt,
-    };
-  });
+  // Still authenticate so an unsigned caller fails the same way it
+  // used to. Then return [] so the celebration no-ops gracefully.
+  await requireUserId();
+  void stickerIds;
+  return [];
 }
 
 /**
- * Read the authenticated user's earned-stickers catalogue. Used by
- * /cyberhq and the parent dashboard. Joins against the in-code
- * catalogue so unknown ids (e.g. a sticker we later removed) silently
- * drop instead of crashing the render.
+ * Every sticker the signed-in family's active child has earned,
+ * derived from completed Progress rows on the cyber-heroes product.
+ * `earnedAt` = the Progress.completedAt timestamp for the week that
+ * unlocked the sticker. Stickers whose weekNumber doesn't map to a
+ * completed Progress row are omitted (i.e. still locked on /cyberhq).
  */
 export async function getEarnedStickers(): Promise<EarnedStickerDTO[]> {
   const userId = await requireUserId();
-  const rows = await prisma.earnedSticker.findMany({
-    where: { userId },
-    orderBy: { earnedAt: "asc" },
+  const childProfileId = await resolveActiveChildProfileId(userId);
+  if (!childProfileId) return [];
+
+  const completed = await prisma.progress.findMany({
+    where: {
+      childProfileId,
+      product: { slug: PRODUCT_SLUG },
+      completedAt: { not: null },
+    },
+    select: { week: true, completedAt: true },
   });
-  return rows
-    .map((row) => {
-      const meta = CATALOGUE_BY_ID.get(row.stickerId);
-      if (!meta) return null;
-      return {
-        id: row.stickerId,
-        name: meta.name,
-        icon: meta.icon,
-        description: meta.description,
-        weekNumber: meta.weekNumber,
-        earnedAt: row.earnedAt,
-      } satisfies EarnedStickerDTO;
-    })
-    .filter((s): s is EarnedStickerDTO => s !== null);
+
+  // week → completedAt for O(1) lookup below.
+  const completedByWeek = new Map<number, Date>();
+  for (const row of completed) {
+    if (row.completedAt) completedByWeek.set(row.week, row.completedAt);
+  }
+
+  const result: EarnedStickerDTO[] = [];
+  for (const sticker of STICKER_CATALOGUE) {
+    const earnedAt = completedByWeek.get(sticker.weekNumber);
+    if (!earnedAt) continue;
+    result.push({
+      id: sticker.id,
+      name: sticker.name,
+      icon: sticker.icon,
+      description: sticker.description,
+      weekNumber: sticker.weekNumber,
+      earnedAt,
+    });
+  }
+
+  return result;
 }

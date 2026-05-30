@@ -321,6 +321,9 @@ export default function PasswordVault({
         () => {
           setOpenStage("opening");
           audio.victory();
+          // Signature vault-open SFX (ElevenLabs sound-generation):
+          // mechanical clunks + hydraulic hiss + final dramatic clang.
+          audio.signature("vault-open");
           // Multi-burst confetti during the door swing.
           fireBurst(0.5, 0.55, 90 * intensity, 110);
           window.setTimeout(
@@ -344,6 +347,9 @@ export default function PasswordVault({
         () => {
           setOpenStage("revealed");
           audio.badgeEarned();
+          // Signature vault-reveal SFX: cascading chimes + ethereal
+          // shimmer for the treasure-chamber reveal moment.
+          audio.signature("vault-reveal");
           onAnswered?.({
             questionKey: "vault-opened",
             selectedIndex: 0,

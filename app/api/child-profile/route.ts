@@ -22,23 +22,56 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const body = await req.json();
-  const { childName, age, avatarColor } = body;
-
-  if (!childName || typeof childName !== "string" || childName.trim().length === 0) {
-    return NextResponse.json({ error: "Child name is required" }, { status: 400 });
+  const body = await req.json().catch(() => null);
+  if (!body || typeof body !== "object") {
+    return NextResponse.json({ error: "Invalid request body" }, { status: 400 });
   }
 
-  if (typeof age !== "number" || age < 4 || age > 18) {
-    return NextResponse.json({ error: "Age must be between 4 and 18" }, { status: 400 });
+  const { name, dateOfBirth, favouriteColour } = body as {
+    name?: unknown;
+    dateOfBirth?: unknown;
+    favouriteColour?: unknown;
+  };
+
+  if (typeof name !== "string" || name.trim().length === 0) {
+    return NextResponse.json({ error: "Name is required" }, { status: 400 });
+  }
+
+  if (typeof dateOfBirth !== "string" || dateOfBirth.trim().length === 0) {
+    return NextResponse.json(
+      { error: "Date of birth is required" },
+      { status: 400 },
+    );
+  }
+
+  const dob = new Date(dateOfBirth);
+  if (Number.isNaN(dob.getTime())) {
+    return NextResponse.json(
+      { error: "Date of birth must be a valid date" },
+      { status: 400 },
+    );
+  }
+
+  if (dob.getTime() >= Date.now()) {
+    return NextResponse.json(
+      { error: "Date of birth must be in the past" },
+      { status: 400 },
+    );
+  }
+
+  if (typeof favouriteColour !== "string" || favouriteColour.trim().length === 0) {
+    return NextResponse.json(
+      { error: "Favourite colour is required" },
+      { status: 400 },
+    );
   }
 
   const child = await prisma.childProfile.create({
     data: {
       userId: session.user.id,
-      childName: childName.trim(),
-      age,
-      avatarColor: avatarColor || "purple",
+      name: name.trim(),
+      dateOfBirth: dob,
+      favouriteColour: favouriteColour.trim(),
     },
   });
 

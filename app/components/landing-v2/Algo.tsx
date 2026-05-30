@@ -94,12 +94,9 @@ const AUDIENCE_LABEL_SHORT: Record<Exclude<AudienceId, null>, string> = {
  * page sections). When that section enters the viewport, ALGO's
  * status line crossfades to the matching phrase. */
 const SECTION_PHRASES: ReadonlyArray<{ id: string; phrase: string }> = [
-  { id: "choose-your-path", phrase: "Awaiting audience input." },
   { id: "the-state-of-play", phrase: "Reading stats." },
   { id: "subjects", phrase: "Six streams detected." },
   { id: "how", phrase: "Parsing programme structure." },
-  { id: "age-progression", phrase: "Aligning age band." },
-  { id: "projects", phrase: "Project pool ready." },
   { id: "parent-trust", phrase: "Validating safety policy." },
   { id: "testimonials", phrase: "Reading family signal." },
   { id: "faq", phrase: "Resolving objections." },

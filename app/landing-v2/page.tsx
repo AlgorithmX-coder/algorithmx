@@ -1,11 +1,8 @@
 import HeroCinematic from "@/app/components/landing-v2/HeroCinematic";
 import Nav from "@/app/components/landing-v2/Nav";
 import ProblemStats from "@/app/components/landing-v2/ProblemStats";
-import ChooseYourPath from "@/app/components/landing-v2/ChooseYourPath";
 import SubjectShowcase from "@/app/components/landing-v2/SubjectShowcase";
 import HowItWorks from "@/app/components/landing-v2/HowItWorks";
-import AgeProgression from "@/app/components/landing-v2/AgeProgression";
-import ProjectShowcase from "@/app/components/landing-v2/ProjectShowcase";
 import ParentTrust from "@/app/components/landing-v2/ParentTrust";
 import Testimonials from "@/app/components/landing-v2/Testimonials";
 import FAQ from "@/app/components/landing-v2/FAQ";
@@ -17,19 +14,23 @@ import SpotlightCursor from "@/app/components/landing-v2/SpotlightCursor";
 import GlobalBackdrop from "@/app/components/landing-v2/GlobalBackdrop";
 
 /**
- * /landing-v2 - full preview of the cinematic landing redesign.
+ * /landing-v2 - production homepage (re-exported by /).
  *
- * Mirrors every section of the production homepage but restyled for the
- * sci-fi dark theme that the HeroCinematic chip establishes:
+ * Sections, in scroll order:
  *
  *   1. Top nav (sticky, glassmorphic dark)
- *   2. HeroCinematic - scroll-pinned 3D AX-1 chip + headline
+ *   2. HeroCinematic - scroll-pinned 3D laptop scene + headline
  *   3. ProblemStats - 3 stat cards
  *   4. SubjectShowcase - 6 subject tabs + course cards
- *   5. HowItWorks - 4-step process line
- *   6. Testimonials + trust logos marquee
- *   7. FinalCTA - rotating-gradient ring around primary CTA
- *   8. Footer - 4-col dark
+ *   5. HowItWorks - 5-step process line (incl. qualification step)
+ *   6. ParentTrust - safety + safeguarding messaging
+ *   7. Testimonials + trust logos marquee
+ *   8. FAQ
+ *   9. FinalCTA - rotating-gradient ring around primary CTA
+ *  10. Footer - 4-col dark
+ *
+ * Previous batch removed three sections: "Who is this for?", "One
+ * platform, four stages of growth", and "What you'll actually build".
  *
  * Wrapped in SmoothScroll (Lenis) so wheel events advance scroll smoothly
  * and the 3D scroll-tied animations glide.
@@ -43,12 +44,9 @@ export default function LandingV2() {
       <Nav />
       <main>
         <HeroCinematic />
-        <ChooseYourPath />
         <ProblemStats />
         <SubjectShowcase />
         <HowItWorks />
-        <AgeProgression />
-        <ProjectShowcase />
         <ParentTrust />
         <Testimonials />
         <FAQ />

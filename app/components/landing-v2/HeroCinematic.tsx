@@ -100,7 +100,14 @@ export default function HeroCinematic() {
          * phones/small tablets so the cinematic doesn't feel endless on
          * a tall portrait viewport. */
         height: isCompact ? "180vh" : "280vh",
-        background: "var(--lv2-ink, #04050d)",
+        /* No background on the section itself — GlobalBackdrop (fixed,
+         * z-index -1) carries the deep-ink colour and the ambient orb
+         * + particle motion behind every section of the page. By
+         * leaving this transparent the cinematic shares ONE continuous
+         * environment with ChooseYourPath instead of stamping a slab
+         * of ink that ended in a hard horizontal seam where the sticky
+         * pin released. */
+        background: "transparent",
       }}
     >
       {/* Sticky pin that holds the cinematic in the viewport. */}
@@ -113,9 +120,13 @@ export default function HeroCinematic() {
           overflow: "hidden",
         }}
       >
-        {/* Layer 0 - subtle radial backdrop. Gradient intensities
-         *  reduced (violet 0.22 -> 0.10, cyan 0.16 -> 0.06) so the
-         *  cosmic glow whispers rather than competes with the laptop. */}
+        {/* Layer 0 - subtle radial wash that ADDS a touch of violet /
+         *  cyan glow on top of GlobalBackdrop. The previous final stop
+         *  was an opaque var(--lv2-ink) — that's what hid the page
+         *  atmosphere behind a solid slab and produced the seam. Now
+         *  the base is transparent so GlobalBackdrop's drifting orbs
+         *  read THROUGH the hero, and the two radial gradients only
+         *  paint where they intend to (no opaque fallback fill). */}
         <motion.div
           aria-hidden
           style={{
@@ -124,8 +135,7 @@ export default function HeroCinematic() {
             opacity: bgOpacity,
             background:
               "radial-gradient(ellipse at 50% 60%, rgba(124,92,255,0.10), transparent 55%), " +
-              "radial-gradient(ellipse at 30% 30%, rgba(0,229,255,0.06), transparent 60%), " +
-              "var(--lv2-ink, #04050d)",
+              "radial-gradient(ellipse at 30% 30%, rgba(0,229,255,0.06), transparent 60%)",
           }}
         />
 
@@ -134,7 +144,11 @@ export default function HeroCinematic() {
           <VaultScene progress={progress} reducedMotion={reducedMotion} />
         </div>
 
-        {/* Layer 2 - vignette to keep edges dark */}
+        {/* Layer 2 - softened edge vignette. Was a heavy edge-to-edge
+         *  radial that crushed the bottom of the canvas to 60% ink
+         *  exactly where the seam to the next section sat. Now lighter
+         *  (0.6 -> 0.35 at edge, larger transparent core) so the
+         *  vignette focuses without bruising. */}
         <div
           aria-hidden
           style={{
@@ -143,7 +157,85 @@ export default function HeroCinematic() {
             zIndex: 2,
             pointerEvents: "none",
             background:
-              "radial-gradient(ellipse at center, transparent 55%, rgba(4,5,13,0.6) 100%)",
+              "radial-gradient(ellipse at center, transparent 60%, rgba(4,5,13,0.35) 100%)",
+          }}
+        />
+
+        {/* Layer 2a - TOP CRISP. Top stop pushed up to 0.94 ink so the
+         *  area just under the nav is nearly fully dark — the navbar
+         *  now reads as a crisp header strip with a hard shoulder of
+         *  atmosphere below it, instead of the grey haze that was
+         *  bleeding through before. */}
+        <div
+          aria-hidden
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            right: 0,
+            height: "26vh",
+            zIndex: 2,
+            pointerEvents: "none",
+            background:
+              "linear-gradient(to bottom, " +
+              "rgba(4,5,13,0.94) 0%, " +
+              "rgba(4,5,13,0.6) 35%, " +
+              "rgba(4,5,13,0.18) 75%, " +
+              "rgba(4,5,13,0) 100%)",
+          }}
+        />
+
+        {/* Layer 2c - PERSISTENT TEXT POCKET. A soft elliptical dark
+         *  pool centred on the left text column that quietens the hex
+         *  floor and atmosphere behind the headline. Runs from scroll
+         *  0 (outside HeroOverlay's opacity gate, which only fades
+         *  in at 0.68) so the pocket is established long before the
+         *  headline arrives — the left third of the floor is already
+         *  visually "the readable column" by the time text lands.
+         *  Soft radial edges so it never reads as a rectangle. */}
+        <div
+          aria-hidden
+          style={{
+            position: "absolute",
+            inset: 0,
+            zIndex: 2,
+            pointerEvents: "none",
+            background:
+              "radial-gradient(ellipse 48% 70% at 22% 55%, " +
+              "rgba(4,5,13,0.78) 0%, " +
+              "rgba(4,5,13,0.5) 28%, " +
+              "rgba(4,5,13,0.22) 50%, " +
+              "rgba(4,5,13,0) 72%)",
+          }}
+        />
+
+        {/* Layer 2b - DISSOLVE ZONE. The single most important layer
+         *  for the cinematic feel: a tall gradient at the bottom of
+         *  the sticky frame that fades the hero into atmosphere. The
+         *  laptop floor at the lower-middle of the viewport gets a
+         *  whisper of mist over it; the very bottom of the viewport
+         *  reads as deep-ink fog. Crucially this also covers the
+         *  exact pixel-row where the sticky pin will release into
+         *  the next section, so the boundary becomes a soft mist
+         *  shoulder rather than a horizontal cut. Sits above the
+         *  vignette but below the brand UI (zIndex 3) so the headline
+         *  and CTAs remain crisp. */}
+        <div
+          aria-hidden
+          style={{
+            position: "absolute",
+            left: 0,
+            right: 0,
+            bottom: 0,
+            height: "46vh",
+            zIndex: 2,
+            pointerEvents: "none",
+            background:
+              "linear-gradient(to bottom, " +
+              "rgba(4,5,13,0) 0%, " +
+              "rgba(4,5,13,0.18) 35%, " +
+              "rgba(4,5,13,0.52) 72%, " +
+              "rgba(4,5,13,0.78) 100%)",
           }}
         />
 
@@ -168,22 +260,30 @@ export default function HeroCinematic() {
  * same screen position; each fades in over its scroll range and out at
  * the next chapter so the user sees the active chapter highlighted.
  *
- * Moved from bottom-left to TOP-LEFT (just below the nav) in the final
- * refinement pass so it no longer collides with the hero CTAs at the
- * bottom of the column. */
+ * Position: bottom-right corner of the viewport. The previous top-left
+ * slot kept colliding with whatever HTML brand UI sat in the left
+ * column — first the hero CTAs, then the eyebrow + headline. The
+ * eyebrow and chapter labels share the same monospace ALL-CAPS // tag
+ * style, so when they were stacked vertically the user read them as
+ * one paragraph instead of two distinct UI elements.
+ *
+ * Bottom-right is also where premium cinematic experiences (Apple
+ * product reveals, etc.) put chapter / progress indicators — film-cue
+ * positioning, away from any HTML content. */
 function ChapterRail({ progress }: { progress: MotionValue<number> }) {
   return (
     <div
       aria-hidden
       style={{
         position: "absolute",
-        top: "calc(var(--lv2-rail) * 3.6)",
-        left: "var(--lv2-rail)",
+        bottom: "calc(var(--lv2-rail) * 1.0)",
+        right: "var(--lv2-rail)",
         zIndex: 4,
         pointerEvents: "none",
         display: "flex",
         flexDirection: "column",
         gap: 6,
+        alignItems: "flex-end",
       }}
     >
       {CHAPTERS.map((ch, i) => (
@@ -231,7 +331,7 @@ function ChapterLabel({
         y,
         position: "absolute",
         bottom: 0,
-        left: 0,
+        right: 0,
         display: "flex",
         alignItems: "center",
         gap: 14,

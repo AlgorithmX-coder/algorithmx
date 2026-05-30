@@ -11,12 +11,19 @@ import { prisma } from "@/app/lib/prisma";
  * The test user lives at e2e@algorithmx.test with password `e2e-test-pw`.
  * Tests should never depend on any other user - this endpoint is the
  * single source of truth for the fixture.
+ *
+ * Access is granted via an Entitlement row (source=MANUAL) against the
+ * cyber-heroes Product — replacing the old stripeStatus="active" hack.
  */
 
 const TEST_EMAIL = "e2e@algorithmx.test";
 const TEST_PASSWORD = "e2e-test-pw";
 const TEST_CHILD_NAME = "Test Hero";
-const TEST_CHILD_AGE = 9;
+// Fixed DOB — makes the child ~9 years old as of 2026, matching the
+// previous TEST_CHILD_AGE=9 fixture. Derive age at read-time, never store.
+const TEST_CHILD_DOB = new Date("2017-01-01");
+const TEST_CHILD_COLOUR = "blue";
+const TEST_PRODUCT_SLUG = "cyber-heroes";
 
 function isTestModeEnabled() {
   return process.env.E2E_TESTS === "1";
@@ -25,6 +32,35 @@ function isTestModeEnabled() {
 export async function POST() {
   if (!isTestModeEnabled()) {
     return NextResponse.json({ error: "Not found" }, { status: 404 });
+  }
+
+  // The cyber-heroes Product (and its week-1 CourseContent) must be
+  // populated by `prisma db seed`. The seed route only verifies — it
+  // does not duplicate catalogue data.
+  const product = await prisma.product.findUnique({
+    where: { slug: TEST_PRODUCT_SLUG },
+  });
+  if (!product) {
+    return NextResponse.json(
+      {
+        error:
+          "cyber-heroes Product is missing. Run 'prisma db seed' before running e2e tests.",
+      },
+      { status: 500 },
+    );
+  }
+
+  const week1Content = await prisma.courseContent.findUnique({
+    where: { productId_week: { productId: product.id, week: 1 } },
+  });
+  if (!week1Content) {
+    return NextResponse.json(
+      {
+        error:
+          "Week-1 CourseContent for cyber-heroes is missing. Run 'prisma db seed' before running e2e tests.",
+      },
+      { status: 500 },
+    );
   }
 
   const hashedPassword = await bcrypt.hash(TEST_PASSWORD, 10);
@@ -36,17 +72,27 @@ export async function POST() {
       name: "E2E Test Parent",
       hashedPassword,
       role: "learner",
-      // Mark the test user as enrolled so the paywall doesn't bounce
-      // /lesson/* requests during e2e runs.
-      stripeStatus: "active",
-      stripePaidAt: new Date(),
     },
     update: {
       hashedPassword,
-      stripeStatus: "active",
-      stripePaidAt: new Date(),
+      role: "learner",
     },
   });
+
+  // Wipe Progress for any of the test user's existing children before
+  // we delete the children themselves. Progress now hangs off
+  // childProfileId, not userId — so query via the child rows.
+  const existingChildren = await prisma.childProfile.findMany({
+    where: { userId: user.id },
+    select: { id: true },
+  });
+  if (existingChildren.length > 0) {
+    await prisma.progress.deleteMany({
+      where: {
+        childProfileId: { in: existingChildren.map((c) => c.id) },
+      },
+    });
+  }
 
   // Ensure exactly one child profile exists. Delete-then-create so we
   // start each test run with a clean slate.
@@ -54,52 +100,34 @@ export async function POST() {
   await prisma.childProfile.create({
     data: {
       userId: user.id,
-      childName: TEST_CHILD_NAME,
-      age: TEST_CHILD_AGE,
-      avatarColor: "blue",
+      name: TEST_CHILD_NAME,
+      dateOfBirth: TEST_CHILD_DOB,
+      favouriteColour: TEST_CHILD_COLOUR,
     },
   });
 
-  // Wipe any in-flight progress so tests start fresh.
-  await prisma.progress.deleteMany({ where: { userId: user.id } });
-
-  // Ensure the Cyber Heroes course + week-1 module exist so /lesson
-  // doesn't 404 in a freshly-cloned test environment.
-  let course = await prisma.course.findFirst({
-    where: { title: "Cyber Heroes Academy" },
+  // Grant access to the cyber-heroes Product via a manual entitlement.
+  // Idempotent — upsert on the (userId, productId) composite unique.
+  await prisma.entitlement.upsert({
+    where: {
+      userId_productId: { userId: user.id, productId: product.id },
+    },
+    create: {
+      userId: user.id,
+      productId: product.id,
+      source: "MANUAL",
+    },
+    update: {
+      source: "MANUAL",
+    },
   });
-  if (!course) {
-    course = await prisma.course.create({
-      data: {
-        title: "Cyber Heroes Academy",
-        description: "Beginner cybersecurity for ages 6-10.",
-        ageRange: "6-10",
-        duration: "45 min/week",
-        weeksCount: 20,
-        emoji: "🛡️",
-        color: "hsl(195, 100%, 50%)",
-      },
-    });
-  }
-  const week1 = await prisma.module.findFirst({
-    where: { courseId: course.id, weekNumber: 1 },
-  });
-  if (!week1) {
-    await prisma.module.create({
-      data: {
-        courseId: course.id,
-        weekNumber: 1,
-        order: 1,
-        title: "Passwords: The Secret Code",
-        description: "Learn what passwords are and how to make them strong.",
-      },
-    });
-  }
 
   return NextResponse.json({
     ok: true,
     email: TEST_EMAIL,
     password: TEST_PASSWORD,
+    // Keep `childName` in the response payload — the e2e specs read
+    // this key, even though the DB column is now `name`.
     childName: TEST_CHILD_NAME,
   });
 }

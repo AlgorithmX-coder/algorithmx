@@ -150,7 +150,7 @@ export default function HeroOverlay({ progress }: HeroOverlayProps) {
           <Link
             href="#subjects"
             data-plausible="landing-v2-hero-primary"
-            style={ctaPrimary}
+            className="lv2-hero-cta lv2-hero-cta-primary"
           >
             Explore courses
             <span aria-hidden style={{ marginLeft: 8 }}>→</span>
@@ -158,48 +158,92 @@ export default function HeroOverlay({ progress }: HeroOverlayProps) {
           <Link
             href="/cyberheroes"
             data-plausible="landing-v2-hero-secondary"
-            style={ctaSecondary}
+            className="lv2-hero-cta lv2-hero-cta-secondary"
           >
             Start with Cyber Heroes
           </Link>
         </div>
       </div>
     </motion.div>
+
+    {/* Scoped CSS for the hero CTAs — needed for :hover/:focus states,
+     *  which inline style objects can't express. Both CTAs share a
+     *  geometry; the secondary gets a refined glass treatment with
+     *  cyan-accented border, inner highlight, and an ambient cyan
+     *  glow that intensifies on hover so it reads as premium rather
+     *  than ghosted. */}
+    <style jsx global>{`
+      .lv2-hero-cta {
+        font-family: var(--lv2-font-mono);
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        padding: 14px 22px;
+        border-radius: 999px;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        transition:
+          transform 0.22s cubic-bezier(0.16, 1, 0.3, 1),
+          box-shadow 0.28s ease,
+          border-color 0.22s ease,
+          background 0.22s ease,
+          color 0.22s ease;
+        will-change: transform, box-shadow;
+      }
+      .lv2-hero-cta-primary {
+        background: var(--lv2-cyan);
+        color: var(--lv2-ink);
+        box-shadow:
+          inset 0 1px 0 rgba(255, 255, 255, 0.35),
+          0 8px 28px rgba(0, 229, 255, 0.32);
+      }
+      .lv2-hero-cta-primary:hover,
+      .lv2-hero-cta-primary:focus-visible {
+        transform: translateY(-1px);
+        box-shadow:
+          inset 0 1px 0 rgba(255, 255, 255, 0.45),
+          0 10px 36px rgba(0, 229, 255, 0.48);
+      }
+      .lv2-hero-cta-secondary {
+        /* Glass tint MORE opaque (0.55 → 0.72) so the button never
+         * gets swallowed by the hex floor pattern underneath. Border
+         * cyan is held back to 0.30 and the ambient glow trimmed
+         * (0.14 → 0.10) so the secondary doesn't compete with the
+         * primary cyan CTA — it reads as a confident dark companion. */
+        background: rgba(11, 16, 28, 0.72);
+        color: var(--lv2-paper);
+        border: 1px solid rgba(0, 229, 255, 0.3);
+        backdrop-filter: blur(14px) saturate(1.35);
+        -webkit-backdrop-filter: blur(14px) saturate(1.35);
+        box-shadow:
+          inset 0 1px 0 rgba(232, 237, 255, 0.08),
+          inset 0 0 0 1px rgba(0, 229, 255, 0.05),
+          0 8px 26px rgba(0, 229, 255, 0.1);
+      }
+      .lv2-hero-cta-secondary:hover,
+      .lv2-hero-cta-secondary:focus-visible {
+        transform: translateY(-1px);
+        background: rgba(15, 22, 38, 0.82);
+        border-color: rgba(0, 229, 255, 0.55);
+        box-shadow:
+          inset 0 1px 0 rgba(232, 237, 255, 0.14),
+          inset 0 0 0 1px rgba(0, 229, 255, 0.16),
+          0 12px 34px rgba(0, 229, 255, 0.22);
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .lv2-hero-cta {
+          transition: none;
+        }
+        .lv2-hero-cta:hover,
+        .lv2-hero-cta:focus-visible {
+          transform: none;
+        }
+      }
+    `}</style>
     </>
   );
 }
-
-const ctaPrimary: React.CSSProperties = {
-  background: "var(--lv2-cyan)",
-  color: "var(--lv2-ink)",
-  fontFamily: "var(--lv2-font-mono)",
-  fontSize: 12,
-  fontWeight: 700,
-  letterSpacing: "0.18em",
-  textTransform: "uppercase",
-  padding: "14px 22px",
-  borderRadius: 999,
-  textDecoration: "none",
-  display: "inline-flex",
-  alignItems: "center",
-  boxShadow: "0 8px 28px rgba(0,229,255,0.32)",
-  WebkitFontSmoothing: "antialiased",
-  MozOsxFontSmoothing: "grayscale",
-};
-
-const ctaSecondary: React.CSSProperties = {
-  background: "rgba(232,237,255,0.06)",
-  color: "var(--lv2-paper)",
-  border: "1px solid rgba(232,237,255,0.22)",
-  fontFamily: "var(--lv2-font-mono)",
-  fontSize: 12,
-  fontWeight: 700,
-  letterSpacing: "0.18em",
-  textTransform: "uppercase",
-  padding: "14px 22px",
-  borderRadius: 999,
-  textDecoration: "none",
-  backdropFilter: "blur(8px)",
-  WebkitFontSmoothing: "antialiased",
-  MozOsxFontSmoothing: "grayscale",
-};

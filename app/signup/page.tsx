@@ -1,182 +1,185 @@
 "use client";
 
-import { useState } from "react";
-import dynamic from "next/dynamic";
+import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
-import { motion, AnimatePresence } from "framer-motion";
-import { ParticleNetworkScene } from "@/app/components/CyberFutureScenes";
-import { CyberIconOrEmoji } from "@/app/components/CyberIcon";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
+import { CyberPanelBackdrop } from "@/app/components/CyberFutureScenes";
+import { CYBER_PALETTE, CYBER_GRAD } from "@/app/components/scene/cyberTokens";
+import AuthSphere from "@/app/components/auth/AuthSphere";
+import AuthField from "@/app/components/auth/AuthField";
+import AuthButton, { type AuthButtonState } from "@/app/components/auth/AuthButton";
+import AuthTerminalPanel from "@/app/components/auth/AuthTerminalPanel";
+import AccessGrantedOverlay from "@/app/components/auth/AccessGrantedOverlay";
+import { useIsDesktop } from "@/app/components/auth/useIsDesktop";
 
-// Heavy R3F atlas - only ship to the client, only render lg+ where the
-// right panel is visible. Avoids hydration churn and keeps mobile fast.
-const HeroAtlas = dynamic(() => import("@/app/components/HeroAtlas"), {
-  ssr: false,
-  loading: () => null,
-});
+const C = CYBER_PALETTE;
+const GRAD = CYBER_GRAD.hero;
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-/* ─── PIXAR PALETTE ─── */
-const C = {
-  pageBg: "#080a16",
-  panelBg: "rgba(15, 21, 48, 0.4)",
-  card: "rgba(15, 21, 48, 0.72)",
-  border: "rgba(0, 229, 255, 0.22)",
-  borderStrong: "rgba(0, 229, 255, 0.45)",
-  text: "#e8edff",
-  textSoft: "#c5cdf0",
-  textMuted: "rgba(125, 240, 255, 0.55)",
-  goldLight: "#00e5ff",
-  goldMid: "#7c5cff",
-  goldDeep: "#3a7bff",
-  goldDark: "#080a16",
-  coral: "#ff5fb3",
-  ember: "#ff7a59",
-  cream: "#e8edff",
-};
-const GRAD = `linear-gradient(135deg, ${C.goldLight}, ${C.goldMid})`;
-
-/* ─── FLOATING ORBS - WARM ─── */
-function FloatingOrbs() {
+/* Password-rule chip. Inactive: dim outline only. Passed: subtle cyan
+ * glow with a tick. Springs in to confirm the rule. */
+function RuleChip({ pass, label }: { pass: boolean; label: string }) {
+  const reduced = useReducedMotion();
   return (
-    <div className="fixed inset-0 pointer-events-none overflow-hidden" style={{ zIndex: 0 }}>
-      {[
-        { size: 8, top: "8%", left: "6%", color: "#00e5ff", dur: 9, delay: 0 },
-        { size: 6, top: "18%", right: "10%", color: "#ff5fb3", dur: 11, delay: 1 },
-        { size: 10, top: "35%", left: "3%", color: "#7c5cff", dur: 13, delay: 2 },
-        { size: 5, top: "52%", right: "5%", color: "#00e5ff", dur: 8, delay: 0.5 },
-        { size: 7, top: "70%", left: "12%", color: "#7c5cff", dur: 10, delay: 3 },
-        { size: 9, top: "82%", right: "8%", color: "#7c5cff", dur: 12, delay: 1.5 },
-      ].map((o, i) => (
-        <motion.div
-          key={i}
-          className="absolute rounded-full"
-          animate={{ y: [0, -18, 0], scale: [1, 1.1, 1], opacity: [0.45, 0.7, 0.45] }}
-          transition={{ duration: o.dur, ease: "easeInOut", repeat: Infinity, delay: o.delay }}
-          style={{
-            width: o.size,
-            height: o.size,
-            top: o.top,
-            left: "left" in o ? o.left : undefined,
-            right: "right" in o ? o.right : undefined,
-            backgroundColor: o.color,
-            boxShadow: `0 0 ${o.size * 4}px ${o.color}`,
-          }}
-        />
-      ))}
-    </div>
+    <motion.span
+      animate={
+        pass && !reduced
+          ? { scale: [1, 1.06, 1] }
+          : undefined
+      }
+      transition={{ duration: 0.32, ease: "easeOut" }}
+      style={{
+        display: "inline-flex",
+        alignItems: "center",
+        gap: 6,
+        padding: "4px 10px",
+        borderRadius: 999,
+        fontSize: 11,
+        fontWeight: 800,
+        fontFamily: "ui-monospace, 'JetBrains Mono', Menlo, monospace",
+        background: pass ? `${C.cyan}1f` : "rgba(255,255,255,0.03)",
+        border: `1px solid ${pass ? `${C.cyan}88` : "rgba(232,237,255,0.12)"}`,
+        color: pass ? C.cyanSoft : "rgba(232,237,255,0.5)",
+        letterSpacing: 0.7,
+        textTransform: "uppercase",
+        boxShadow: pass ? `0 0 12px ${C.cyan}33` : "none",
+        transition: "background 240ms ease, border-color 240ms ease, color 240ms ease, box-shadow 240ms ease",
+      }}
+    >
+      <span aria-hidden style={{ fontSize: 10, lineHeight: 1, color: pass ? C.lime : "inherit" }}>
+        {pass ? "✓" : "○"}
+      </span>
+      <span>{label}</span>
+    </motion.span>
   );
 }
 
-/* ─── FLOATING ICONS ─── */
-function FloatingIcons() {
+/* Desktop floating glyphs - decorative, reduced-motion aware. */
+function CyberFloatingIcons() {
+  const reduced = useReducedMotion();
   const icons = [
-    { emoji: "🔒", top: "12%", left: "20%", delay: 0, dur: 6 },
-    { emoji: "🔑", top: "25%", right: "15%", delay: 1, dur: 7 },
-    { emoji: "⭐", top: "60%", left: "15%", delay: 2, dur: 8 },
-    { emoji: "🛡️", top: "75%", right: "20%", delay: 0.5, dur: 6.5 },
-    { emoji: "🔐", top: "40%", left: "70%", delay: 3, dur: 9 },
-    { emoji: "✨", top: "85%", left: "45%", delay: 1.5, dur: 7.5 },
+    { emoji: "🔑", top: "15%", left: "60%", delay: 0, dur: 7, tag: "AUTH" },
+    { emoji: "⭐", top: "28%", right: "12%", delay: 1.5, dur: 6 },
+    { emoji: "🔒", top: "62%", left: "62%", delay: 0.5, dur: 8, tag: "ENC" },
+    { emoji: "🛡️", top: "78%", right: "16%", delay: 2, dur: 6.5 },
+    { emoji: "✨", top: "42%", left: "85%", delay: 3, dur: 9 },
   ];
   return (
     <>
       {icons.map((ic, i) => (
         <motion.div
           key={i}
-          className="absolute text-2xl"
-          animate={{ y: [-10, 10, -10] }}
+          className="absolute"
+          animate={reduced ? undefined : { y: [-10, 10, -10] }}
           transition={{ duration: ic.dur, ease: "easeInOut", repeat: Infinity, delay: ic.delay }}
           style={{
             top: ic.top,
             left: "left" in ic ? ic.left : undefined,
             right: "right" in ic ? ic.right : undefined,
+            display: "flex",
+            alignItems: "center",
+            gap: 6,
             opacity: 0.7,
-            filter: "drop-shadow(0 0 12px rgba(124, 92, 255, 0.55))",
+            filter: `drop-shadow(0 0 14px ${C.cyan}aa)`,
           }}
         >
-          {ic.emoji}
+          <span style={{ fontSize: 22 }}>{ic.emoji}</span>
+          {ic.tag && (
+            <span
+              style={{
+                fontSize: 9,
+                letterSpacing: 2,
+                fontWeight: 800,
+                fontFamily: "ui-monospace, 'JetBrains Mono', Menlo, monospace",
+                color: C.cyan,
+                padding: "2px 6px",
+                background: "rgba(8, 10, 22, 0.7)",
+                border: `1px solid ${C.cyan}77`,
+                borderRadius: 4,
+              }}
+            >
+              {ic.tag}
+            </span>
+          )}
         </motion.div>
       ))}
     </>
   );
 }
 
-/* Live password-rule chip. Cyan + check when satisfied, dim with a
- * dot when still pending. */
-function RuleChip({ pass, label }: { pass: boolean; label: string }) {
-  return (
-    <span
-      style={{
-        display: "inline-flex",
-        alignItems: "center",
-        gap: 6,
-        padding: "3px 10px",
-        borderRadius: 999,
-        background: pass ? "rgba(0,229,255,0.14)" : "rgba(255,255,255,0.04)",
-        border: `1px solid ${pass ? "rgba(0,229,255,0.55)" : "rgba(255,255,255,0.12)"}`,
-        color: pass ? "#7df0ff" : "rgba(232,237,255,0.55)",
-        letterSpacing: 0.5,
-        textTransform: "uppercase",
-        transition: "all 220ms ease",
-      }}
-    >
-      <span aria-hidden style={{ fontSize: 10 }}>{pass ? "✓" : "•"}</span>
-      <span>{label}</span>
-    </span>
-  );
-}
-
 export default function SignupPage() {
   const router = useRouter();
+  const isDesktop = useIsDesktop(1024);
+  const reduced = !!useReducedMotion();
+
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false); // independent reveal
+  const [touched, setTouched] = useState<{
+    name?: boolean;
+    email?: boolean;
+    password?: boolean;
+    confirm?: boolean;
+  }>({});
+  const [formError, setFormError] = useState("");
+  const [phase, setPhase] = useState<"idle" | "loading" | "success">("idle");
 
-  /* Password-rule checks. Shown live as the kid types so they see the
-   * dots fill in rather than only learning what's wrong on submit. */
+  /* Derived state - kept in one block so the sphere mapping is easy
+   * to scan against the rules. */
+  const nameOk = name.trim().length > 0;
+  const emailOk = EMAIL_RE.test(email);
   const ruleLength = password.length >= 8;
   const ruleUpper = /[A-Z]/.test(password);
   const ruleSpecial = /[^A-Za-z0-9]/.test(password);
-  const ruleMatch = confirmPassword.length > 0 && password === confirmPassword;
-  const passwordReady = ruleLength && ruleUpper && ruleSpecial;
-  const allReady = passwordReady && ruleMatch;
+  const passwordOk = ruleLength && ruleUpper && ruleSpecial;
+  const confirmOk = confirmPassword.length > 0 && password === confirmPassword;
+  const allReady = nameOk && emailOk && passwordOk && confirmOk;
 
-  const validate = () => {
-    if (!name.trim()) {
-      setError("Please enter your full name");
-      return false;
-    }
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      setError("Please enter a valid email address");
-      return false;
-    }
-    if (!ruleLength) {
-      setError("Password must be at least 8 characters");
-      return false;
-    }
-    if (!ruleUpper) {
-      setError("Password must include a capital letter");
-      return false;
-    }
-    if (!ruleSpecial) {
-      setError("Password must include a special character (e.g. ! @ # ?)");
-      return false;
-    }
-    if (!ruleMatch) {
-      setError("The two passwords do not match. Please type them again.");
-      return false;
-    }
-    return true;
+  /* What the user still needs to do - feeds the disabled button hint. */
+  const missingHint = useMemo(() => {
+    const need: string[] = [];
+    if (!nameOk) need.push("name");
+    if (!emailOk) need.push("valid email");
+    if (!passwordOk) need.push("strong password");
+    if (!confirmOk) need.push("matching confirm");
+    if (need.length === 0) return undefined;
+    return `Still needed: ${need.join(", ")}.`;
+  }, [nameOk, emailOk, passwordOk, confirmOk]);
+
+  /* Sphere stage - drives the AuthSphere rings/core. */
+  const sphereStage = {
+    identityRing: nameOk,
+    commsRing: emailOk,
+    shieldLayer: passwordOk,
+    vaultLock: confirmOk && passwordOk,
+    accessGranted: phase === "success",
   };
+
+  const buttonState: AuthButtonState =
+    phase === "loading"
+      ? "loading"
+      : phase === "success"
+        ? "success"
+        : allReady
+          ? "idle"
+          : "disabled";
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError("");
-    if (!validate()) return;
-    setLoading(true);
+    setFormError("");
+    setTouched({ name: true, email: true, password: true, confirm: true });
 
+    if (!allReady) {
+      // The disabled button hint already explains what's missing; mirror
+      // it as a calm form-level error for screen readers.
+      setFormError(missingHint ?? "Please complete every field before continuing.");
+      return;
+    }
+
+    setPhase("loading");
     try {
       const res = await fetch("/api/signup", {
         method: "POST",
@@ -187,121 +190,173 @@ export default function SignupPage() {
       const data = await res.json();
 
       if (!res.ok) {
-        setError(data.error || "We couldn't create your account. Please try again.");
-        setLoading(false);
+        setFormError(data.error || "We couldn't create your account. Please try again.");
+        setPhase("idle");
         return;
       }
 
-      router.push("/login?registered=true");
+      setPhase("success");
+      window.setTimeout(() => {
+        router.push("/login?registered=true");
+      }, 800);
     } catch (err) {
       const detail = err instanceof Error ? err.message : "Network error";
-      setError(`Couldn't reach the server. ${detail}. If this keeps happening, email support@algorithmx.co.uk.`);
-      setLoading(false);
+      setFormError(`Couldn't reach the server. ${detail}. If this keeps happening, email support@algorithmx.co.uk.`);
+      setPhase("idle");
     }
   };
+
+  const passwordToggle = (
+    <button
+      type="button"
+      onClick={() => setShowPassword((v) => !v)}
+      aria-label={showPassword ? "Hide password" : "Show password"}
+      style={{
+        display: "inline-flex",
+        alignItems: "center",
+        justifyContent: "center",
+        width: 32,
+        height: 32,
+        borderRadius: 8,
+        background: "transparent",
+        border: "none",
+        color: "rgba(232, 237, 255, 0.7)",
+        cursor: "pointer",
+        fontSize: 16,
+      }}
+    >
+      {showPassword ? "🙈" : "👁️"}
+    </button>
+  );
+
+  const confirmToggle = (
+    <button
+      type="button"
+      onClick={() => setShowConfirm((v) => !v)}
+      aria-label={showConfirm ? "Hide confirmation password" : "Show confirmation password"}
+      style={{
+        display: "inline-flex",
+        alignItems: "center",
+        justifyContent: "center",
+        width: 32,
+        height: 32,
+        borderRadius: 8,
+        background: "transparent",
+        border: "none",
+        color: "rgba(232, 237, 255, 0.7)",
+        cursor: "pointer",
+        fontSize: 16,
+      }}
+    >
+      {showConfirm ? "🙈" : "👁️"}
+    </button>
+  );
 
   return (
     <div
       className="min-h-screen flex relative"
       style={{
-        background: `radial-gradient(ellipse at 50% -10%, #1d1f4d 0%, #0f1530 35%, ${C.pageBg} 70%, #04050d 100%)`,
-        color: C.text,
+        background: CYBER_GRAD.page,
+        color: C.textBright,
+        overflowX: "hidden",
       }}
     >
-      {/* Left-side floating orbs over the form column */}
-      <FloatingOrbs />
+      {/* ─── BACKDROP LAYER ─── */}
+      <div
+        aria-hidden
+        className="absolute inset-0"
+        style={{ zIndex: 0, overflow: "hidden", pointerEvents: "none" }}
+      >
+        <CyberPanelBackdrop />
 
-      {/* ─── UNIFIED BACKDROP - extends across the entire viewport ───
-          Mirrors the login page restructure: one absolute layer
-          renders the ParticleNetworkScene + HeroAtlas + ALGORITHMX
-          terminal across the full viewport, with the form floating
-          on top anchored to the left half. */}
-      <div className="absolute inset-0" style={{ zIndex: 0, overflow: "hidden", pointerEvents: "none" }}>
-        <ParticleNetworkScene />
-
-        <FloatingIcons />
-
-        {/* Live R3F atlas - pulsing crystal core, wireframe shells,
-            four tilted orbital rings. Fills the whole viewport so the
-            form on the left has the orbital scene as its direct
-            backdrop, same as the login globe. */}
         <div className="absolute inset-0">
-          <HeroAtlas />
+          <AuthSphere stage={sphereStage} mobile={!isDesktop} />
         </div>
 
-        {/* Centre label + terminal prompt - biased toward the right
-            half so it sits beside (not under) the form column. */}
-        <motion.div
-          className="absolute flex flex-col items-center"
-          style={{
-            top: "50%",
-            left: "70%",
-            transform: "translate(-50%, 80px)",
-            zIndex: 2,
-          }}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ type: "spring", stiffness: 200, damping: 20, delay: 0.6 }}
-        >
-          <span
-            className="text-3xl font-black tracking-widest"
+        {/* Desktop-only chrome */}
+        <div className="hidden lg:block">
+          <CyberFloatingIcons />
+          <motion.div
+            className="absolute flex flex-col items-center"
             style={{
-              fontFamily: "'Space Grotesk', system-ui, sans-serif",
-              color: C.cream,
-              textShadow:
-                "0 0 22px rgba(124, 92, 255, 0.6), 0 4px 12px rgba(8, 10, 22, 0.5)",
-              letterSpacing: 6,
+              top: "50%",
+              left: "70%",
+              transform: "translate(-50%, 100px)",
+              zIndex: 2,
             }}
+            initial={reduced ? { opacity: 0 } : { opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ type: "spring", stiffness: 200, damping: 20, delay: 0.5 }}
           >
-            ALGORITHMX
-          </span>
-          <div
-            style={{
-              fontFamily: "ui-monospace, 'JetBrains Mono', Menlo, monospace",
-              fontSize: 12,
-              color: C.goldLight,
-              marginTop: 18,
-              letterSpacing: 1,
-            }}
-          >
-            <span style={{ color: C.goldMid }}>$</span> ax_signup --new-hero
-            <span style={{ marginLeft: 6, animation: "spCursorBlink 1s steps(1) infinite" }}>▮</span>
-          </div>
-          <p
-            className="text-xs mt-4 text-center"
-            style={{ color: C.textSoft, opacity: 0.75, letterSpacing: 0.5 }}
-          >
-            4 Courses · Ages 6–18+ · 100% Interactive
-          </p>
-        </motion.div>
+            <span
+              className="text-3xl font-black tracking-widest"
+              style={{
+                fontFamily: "'Space Grotesk', system-ui, sans-serif",
+                color: C.textBright,
+                textShadow: `0 0 22px ${C.cyan}aa, 0 0 44px ${C.cosmic}66`,
+                letterSpacing: 6,
+              }}
+            >
+              ALGORITHMX
+            </span>
+            <div
+              style={{
+                fontFamily: "ui-monospace, 'JetBrains Mono', Menlo, monospace",
+                fontSize: 12,
+                color: C.cyan,
+                marginTop: 18,
+                letterSpacing: 1,
+                textShadow: `0 0 8px ${C.cyan}`,
+              }}
+            >
+              <span style={{ color: C.cosmic }}>$</span> ax_signup --new-hero
+              <span style={{ marginLeft: 6, animation: "spCursorBlink 1s steps(1) infinite" }}>▮</span>
+            </div>
+            <p
+              className="text-xs mt-4 text-center"
+              style={{
+                color: C.textSoft,
+                opacity: 0.8,
+                letterSpacing: 0.5,
+                textShadow: "0 1px 6px rgba(8,10,22,0.9)",
+              }}
+            >
+              4 Courses · Ages 6–18+ · 100% Interactive
+            </p>
+          </motion.div>
+        </div>
       </div>
 
-      {/* ─── LEFT SIDE: FORM ─── */}
+      {/* ─── FORM COLUMN ─── */}
       <div
-        className="flex-1 flex flex-col items-center justify-center px-6 py-12 relative"
+        className="flex-1 flex flex-col items-center justify-center px-5 sm:px-8 py-12 relative"
         style={{ zIndex: 3 }}
       >
-        <div className="w-full max-w-md relative" style={{ zIndex: 2 }}>
+        <div className="w-full max-w-md relative">
           {/* Logo */}
-          <div className="mb-10">
+          <div className="mb-8">
             <a href="/" className="inline-flex items-center gap-2.5">
               <div
                 className="w-10 h-10 rounded-xl flex items-center justify-center"
                 style={{
                   background: GRAD,
-                  boxShadow: "0 0 20px rgba(124, 92, 255, 0.4)",
+                  boxShadow: `0 0 22px ${C.cyan}77`,
                 }}
               >
                 <span
                   className="text-sm font-black"
-                  style={{ color: C.goldDark, fontFamily: "'Space Grotesk', system-ui, sans-serif" }}
+                  style={{ color: C.abyss, fontFamily: "'Space Grotesk', system-ui, sans-serif" }}
                 >
                   AX
                 </span>
               </div>
               <span
                 className="text-xl font-black"
-                style={{ color: C.text, fontFamily: "'Space Grotesk', system-ui, sans-serif" }}
+                style={{
+                  color: C.textBright,
+                  fontFamily: "'Space Grotesk', system-ui, sans-serif",
+                  letterSpacing: "-0.01em",
+                }}
               >
                 Algorithm
                 <span
@@ -314,351 +369,256 @@ export default function SignupPage() {
             </a>
           </div>
 
-          <div
-            style={{
-              display: "inline-block",
-              fontSize: 11,
-              letterSpacing: 5,
-              color: C.goldLight,
-              fontWeight: 800,
-              textTransform: "uppercase",
-              padding: "5px 16px",
-              background: "rgba(15, 21, 48, 0.55)",
-              backdropFilter: "blur(8px)",
-              WebkitBackdropFilter: "blur(8px)",
-              border: `1px solid ${C.borderStrong}`,
-              borderRadius: 999,
-              marginBottom: 12,
-              fontFamily: "'Space Grotesk', system-ui, sans-serif",
-            }}
-          >
-            ✦ New Hero ✦
-          </div>
-          <h1
-            className="text-3xl sm:text-4xl font-black mb-2"
-            style={{
-              fontFamily: "'Space Grotesk', system-ui, sans-serif",
-              background: "linear-gradient(135deg, #7df0ff, #00e5ff, #7c5cff)",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-              backgroundClip: "text",
-              letterSpacing: "-0.01em",
-            }}
-          >
-            Join the Adventure
-          </h1>
-          <p
-            className="mb-8 text-base"
-            style={{ color: C.text, opacity: 1, fontWeight: 600 }}
-          >
-            Create your family&apos;s account and start learning cybersecurity today.
-          </p>
+          <AuthTerminalPanel>
+            <div
+              style={{
+                display: "inline-block",
+                fontSize: 11,
+                letterSpacing: 5,
+                color: C.cyan,
+                fontWeight: 800,
+                textTransform: "uppercase",
+                padding: "5px 14px",
+                background: "rgba(8, 10, 22, 0.6)",
+                border: `1px solid ${C.cyan}66`,
+                borderRadius: 999,
+                marginBottom: 14,
+                fontFamily: "ui-monospace, 'JetBrains Mono', Menlo, monospace",
+                textShadow: `0 0 8px ${C.cyan}`,
+              }}
+            >
+              ✦ NEW HERO ENROLMENT ✦
+            </div>
+            <h1
+              className="text-3xl sm:text-4xl font-black mb-3"
+              style={{
+                fontFamily: "'Space Grotesk', system-ui, sans-serif",
+                background: GRAD,
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+                backgroundClip: "text",
+                letterSpacing: "-0.025em",
+                filter: `drop-shadow(0 2px 0 rgba(8,10,22,0.9)) drop-shadow(0 0 22px ${C.cyan}77)`,
+              }}
+            >
+              Join the adventure
+            </h1>
+            <p
+              className="mb-6 text-base"
+              style={{
+                color: C.textBright,
+                fontWeight: 600,
+                textShadow: "0 1px 12px rgba(8,10,22,0.95)",
+              }}
+            >
+              Create your family&apos;s secure account and begin the Cyber Heroes adventure.
+            </p>
 
-          {/* Form card - invisible container, matching the login.
-              No background, no border, no shadow, no rounded panel.
-              Just a layout wrapper. Each input field below carries its
-              own dark glass background so they stay legible against the
-              live scene. Net effect: form fields float over the
-              backdrop with no enclosing surface. */}
-          <motion.div
-            className="p-7 sm:p-8"
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ type: "spring", stiffness: 200, damping: 20 }}
-          >
-            {/* Error */}
             <AnimatePresence>
-              {error && (
+              {formError && (
                 <motion.div
-                  initial={{ opacity: 0, y: -10 }}
+                  key="formerr"
+                  role="alert"
+                  aria-live="polite"
+                  initial={reduced ? { opacity: 0 } : { opacity: 0, y: -8 }}
                   animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
+                  exit={reduced ? { opacity: 0 } : { opacity: 0, y: -8 }}
                   transition={{ duration: 0.2 }}
-                  className="mb-5 p-3.5 rounded-2xl text-sm font-semibold"
+                  className="mb-4 px-3.5 py-3 rounded-2xl text-sm font-semibold"
                   style={{
-                    background: "rgba(255, 95, 179, 0.15)",
-                    border: "1px solid rgba(255, 95, 179, 0.5)",
-                    color: "#f4a89a",
+                    background: `${C.amber}1a`,
+                    border: `1px solid ${C.amber}88`,
+                    color: "#ffd9a3",
                     backdropFilter: "blur(8px)",
                   }}
                 >
-                  {error}
+                  {formError}
                 </motion.div>
               )}
             </AnimatePresence>
 
-            <form onSubmit={handleSubmit} className="space-y-5">
-              {/* Name */}
-              <div>
-                <label className="block text-sm font-bold mb-2" style={{ color: C.textSoft }}>
-                  Full Name
-                </label>
-                <div className="relative">
-                  <span
-                    className="absolute left-4 top-1/2 -translate-y-1/2 text-base"
-                    style={{ color: C.textMuted }}
-                  >
-                    👤
-                  </span>
-                  <input
-                    type="text"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    className="w-full pl-11 pr-4 rounded-2xl font-medium transition-all duration-300 focus:outline-none"
-                    style={{
-                      height: 50,
-                      fontSize: 15,
-                      color: C.text,
-                      background: "rgba(8, 10, 22, 0.5)",
-                      border: `1px solid ${C.border}`,
-                      fontFamily: "Nunito, sans-serif",
-                    }}
-                    onFocus={(e) => {
-                      e.currentTarget.style.borderColor = C.goldLight;
-                      e.currentTarget.style.boxShadow = "0 0 22px rgba(124, 92, 255, 0.25)";
-                    }}
-                    onBlur={(e) => {
-                      e.currentTarget.style.borderColor = C.border;
-                      e.currentTarget.style.boxShadow = "none";
-                    }}
-                    placeholder="Enter your full name"
-                  />
-                </div>
-              </div>
+            <form onSubmit={handleSubmit} className="space-y-2" noValidate>
+              <AuthField
+                id="signup-name"
+                label="👤  Full name"
+                type="text"
+                value={name}
+                onChange={setName}
+                onBlur={() => setTouched((t) => ({ ...t, name: true }))}
+                state={
+                  touched.name && !nameOk ? "invalid" : nameOk ? "valid" : "idle"
+                }
+                error={touched.name && !nameOk ? "We need a name to set up the account." : null}
+                autoComplete="name"
+                placeholder="Parent or guardian's name"
+                required
+              />
 
-              {/* Email */}
-              <div>
-                <label className="block text-sm font-bold mb-2" style={{ color: C.textSoft }}>
-                  Email
-                </label>
-                <div className="relative">
-                  <span
-                    className="absolute left-4 top-1/2 -translate-y-1/2"
-                    style={{ color: C.textMuted, lineHeight: 0 }}
-                  >
-                    <CyberIconOrEmoji emoji="✉️" size={18} accent="cyan" glow={false} />
-                  </span>
-                  <input
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    className="w-full pl-11 pr-4 rounded-2xl font-medium transition-all duration-300 focus:outline-none"
-                    style={{
-                      height: 50,
-                      fontSize: 15,
-                      color: C.text,
-                      background: "rgba(8, 10, 22, 0.5)",
-                      border: `1px solid ${C.border}`,
-                      fontFamily: "Nunito, sans-serif",
-                    }}
-                    onFocus={(e) => {
-                      e.currentTarget.style.borderColor = C.goldLight;
-                      e.currentTarget.style.boxShadow = "0 0 22px rgba(124, 92, 255, 0.25)";
-                    }}
-                    onBlur={(e) => {
-                      e.currentTarget.style.borderColor = C.border;
-                      e.currentTarget.style.boxShadow = "none";
-                    }}
-                    placeholder="Enter your email"
-                  />
-                </div>
-              </div>
+              <AuthField
+                id="signup-email"
+                label="✉  Email"
+                type="email"
+                value={email}
+                onChange={setEmail}
+                onBlur={() => setTouched((t) => ({ ...t, email: true }))}
+                state={
+                  touched.email && email.length > 0 && !emailOk
+                    ? "invalid"
+                    : emailOk
+                      ? "valid"
+                      : "idle"
+                }
+                error={
+                  touched.email && email.length > 0 && !emailOk
+                    ? "That doesn't look like a valid email."
+                    : null
+                }
+                autoComplete="email"
+                inputMode="email"
+                placeholder="parent@example.com"
+                required
+              />
 
-              {/* Password */}
               <div>
-                <label className="block text-sm font-bold mb-2" style={{ color: C.textSoft }}>
-                  Password
-                </label>
-                <div className="relative">
-                  <span
-                    className="absolute left-4 top-1/2 -translate-y-1/2"
-                    style={{ color: C.textMuted, lineHeight: 0 }}
-                  >
-                    <CyberIconOrEmoji emoji="🔒" size={18} accent="cyan" glow={false} />
-                  </span>
-                  <input
-                    type={showPassword ? "text" : "password"}
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    className="w-full pl-11 pr-12 rounded-2xl font-medium transition-all duration-300 focus:outline-none"
-                    style={{
-                      height: 50,
-                      fontSize: 15,
-                      color: C.text,
-                      background: "rgba(8, 10, 22, 0.5)",
-                      border: `1px solid ${C.border}`,
-                      fontFamily: "Nunito, sans-serif",
-                    }}
-                    onFocus={(e) => {
-                      e.currentTarget.style.borderColor = C.goldLight;
-                      e.currentTarget.style.boxShadow = "0 0 22px rgba(124, 92, 255, 0.25)";
-                    }}
-                    onBlur={(e) => {
-                      e.currentTarget.style.borderColor = C.border;
-                      e.currentTarget.style.boxShadow = "none";
-                    }}
-                    placeholder="Create a password (min 8 characters)"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 transition text-sm"
-                    style={{ color: C.textMuted }}
-                  >
-                    {showPassword ? "🙈" : "👁️"}
-                  </button>
-                </div>
-
-                {/* Live password-rule indicators. Each lights up cyan
-                    when its rule is satisfied. */}
-                <div className="mt-3 flex flex-wrap gap-2 text-[11px] font-bold">
+                <AuthField
+                  id="signup-password"
+                  label="🔒  Password"
+                  type={showPassword ? "text" : "password"}
+                  value={password}
+                  onChange={setPassword}
+                  onBlur={() => setTouched((t) => ({ ...t, password: true }))}
+                  state={
+                    touched.password && password.length > 0 && !passwordOk
+                      ? "invalid"
+                      : passwordOk
+                        ? "valid"
+                        : "idle"
+                  }
+                  error={null}
+                  autoComplete="new-password"
+                  placeholder="Create a strong password"
+                  rightSlot={passwordToggle}
+                  required
+                />
+                {/* Live password-rule chips. Wrap cleanly on narrow widths. */}
+                <div
+                  className="-mt-2 mb-3 flex flex-wrap gap-2"
+                  aria-label="Password requirements"
+                >
                   <RuleChip pass={ruleLength} label="8+ chars" />
                   <RuleChip pass={ruleUpper} label="Capital letter" />
                   <RuleChip pass={ruleSpecial} label="Special char" />
                 </div>
               </div>
 
-              {/* Confirm password */}
-              <div>
-                <label
-                  className="block text-sm font-bold mb-2"
-                  style={{ color: C.textSoft }}
-                >
-                  Confirm password
-                </label>
-                <div className="relative">
-                  <span
-                    className="absolute left-4 top-1/2 -translate-y-1/2"
-                    style={{ color: C.textMuted, lineHeight: 0 }}
-                  >
-                    <CyberIconOrEmoji emoji="🔁" size={18} accent="cyan" glow={false} />
-                  </span>
-                  <input
-                    type={showPassword ? "text" : "password"}
-                    value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
-                    className="w-full pl-11 pr-4 rounded-2xl font-medium transition-all duration-300 focus:outline-none"
-                    style={{
-                      height: 50,
-                      fontSize: 15,
-                      color: C.text,
-                      background: "rgba(8, 10, 22, 0.5)",
-                      border: `1px solid ${
-                        confirmPassword.length === 0
-                          ? C.border
-                          : ruleMatch
-                            ? C.goldLight
-                            : C.coral
-                      }`,
-                      fontFamily: "Nunito, sans-serif",
-                    }}
-                    onFocus={(e) => {
-                      e.currentTarget.style.boxShadow = "0 0 22px rgba(124, 92, 255, 0.25)";
-                    }}
-                    onBlur={(e) => {
-                      e.currentTarget.style.boxShadow = "none";
-                    }}
-                    placeholder="Type your password again"
-                  />
-                </div>
-                {confirmPassword.length > 0 && !ruleMatch && (
-                  <div
-                    className="mt-2 text-xs font-semibold"
-                    style={{ color: C.coral }}
-                  >
-                    The two passwords do not match.
-                  </div>
-                )}
-              </div>
+              <AuthField
+                id="signup-confirm"
+                label="🔁  Confirm password"
+                type={showConfirm ? "text" : "password"}
+                value={confirmPassword}
+                onChange={setConfirmPassword}
+                onBlur={() => setTouched((t) => ({ ...t, confirm: true }))}
+                state={
+                  touched.confirm && confirmPassword.length > 0 && !confirmOk
+                    ? "invalid"
+                    : confirmOk
+                      ? "valid"
+                      : "idle"
+                }
+                error={
+                  touched.confirm && confirmPassword.length > 0 && !confirmOk
+                    ? "The two passwords do not match."
+                    : null
+                }
+                autoComplete="new-password"
+                placeholder="Type your password again"
+                rightSlot={confirmToggle}
+                required
+              />
 
-              {/* Submit */}
-              <motion.button
-                type="submit"
-                disabled={loading || !allReady}
-                whileHover={allReady ? { y: -2, scale: 1.02 } : undefined}
-                whileTap={allReady ? { scale: 0.97 } : undefined}
-                transition={{ type: "spring", stiffness: 320, damping: 20 }}
-                className="w-full font-black text-base rounded-full transition-colors duration-300 disabled:opacity-50"
-                style={{
-                  height: 50,
-                  background: GRAD,
-                  color: C.goldDark,
-                  fontFamily: "'Space Grotesk', system-ui, sans-serif",
-                  letterSpacing: 1.5,
-                  textTransform: "uppercase",
-                  boxShadow:
-                    "0 18px 36px -10px rgba(255,120,40,0.6), 0 0 0 1px rgba(255,235,200,0.55) inset, 0 -3px 0 rgba(180,80,30,0.4) inset",
-                }}
-              >
-                {loading ? "Creating Account..." : "Create Account →"}
-              </motion.button>
+              <AuthButton
+                state={buttonState}
+                idleLabel="Create account →"
+                loadingLabel="Creating secure account…"
+                successLabel="Account secured"
+                disabledHint={missingHint}
+              />
             </form>
 
-            <p className="text-center text-sm mt-6" style={{ color: C.textMuted }}>
+            <p
+              className="text-center mt-5"
+              style={{
+                color: C.text,
+                fontSize: 14,
+                fontWeight: 600,
+                textShadow: "0 1px 6px rgba(8,10,22,0.9)",
+              }}
+            >
               Already have an account?{" "}
               <a
                 href="/login"
-                className="font-bold transition hover:opacity-80"
-                style={{ color: C.goldLight }}
+                className="font-black transition hover:opacity-80"
+                style={{
+                  color: C.cyan,
+                  textShadow: `0 0 10px ${C.cyan}aa`,
+                }}
               >
-                Log In
+                Log in
               </a>
             </p>
-          </motion.div>
+          </AuthTerminalPanel>
 
           {/* Trust badges */}
-          <div className="flex items-center justify-center gap-6 mt-6 flex-wrap">
+          <div className="flex items-center justify-center gap-4 mt-12 flex-wrap">
             {[
-              { icon: "🔒", label: "Secure" },
-              { icon: "👨‍👩‍👧‍👦", label: "Family Friendly" },
-              { icon: "🛡️", label: "COPPA Compliant" },
+              { icon: "🔒", label: "ENC: 256-BIT" },
+              { icon: "👨‍👩‍👧‍👦", label: "FAMILY SAFE" },
+              { icon: "🛡️", label: "COPPA COMPLIANT" },
             ].map((b, i) => (
               <motion.span
                 key={i}
-                initial={{ opacity: 0, y: 20 }}
+                initial={reduced ? { opacity: 0 } : { opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ type: "spring", stiffness: 200, damping: 20, delay: 0.3 + i * 0.1 }}
-                className="text-xs flex items-center gap-1.5"
-                style={{ color: C.textMuted }}
+                className="flex items-center gap-1.5"
+                style={{
+                  color: C.textSoft,
+                  fontSize: 11,
+                  fontWeight: 700,
+                  fontFamily: "ui-monospace, 'JetBrains Mono', Menlo, monospace",
+                  letterSpacing: 1.5,
+                  textShadow: "0 1px 6px rgba(8,10,22,0.9)",
+                }}
               >
-                <CyberIconOrEmoji emoji={b.icon} size={14} accent="cyan" glow={false} /> {b.label}
+                <span>{b.icon}</span> {b.label}
               </motion.span>
             ))}
           </div>
         </div>
       </div>
 
-      {/* ─── RIGHT SIDE - empty layout spacer on lg+ so the form
-          anchors to the left half. The unified backdrop layer above
-          renders ParticleNetworkScene + HeroAtlas + ALGORITHMX label
-          spanning both halves; this column just reserves space. */}
-      <div
-        className="hidden lg:flex flex-1 items-center justify-center relative"
-        aria-hidden
-      >
+      <div className="hidden lg:flex flex-1 items-center justify-center relative" aria-hidden />
 
-        <style>{`
-          @keyframes spIntroSpin {
-            to { transform: rotate(360deg); }
-          }
-          @keyframes spCursorBlink {
-            0%, 49% { opacity: 1; }
-            50%, 100% { opacity: 0; }
-          }
-          /* Placeholder text was too dim against the dark glass inputs.
-             Brighter + bolder so it reads clearly without the kid
-             squinting. Fades when the input is focused so the typed
-             value still gets visual priority. */
-          input::placeholder {
-            color: rgba(232, 237, 255, 0.85);
-            font-weight: 600;
-            opacity: 1;
-          }
-          input:focus::placeholder {
-            color: rgba(232, 237, 255, 0.5);
-          }
-        `}</style>
-      </div>
+      <AccessGrantedOverlay
+        show={phase === "success"}
+        title="Account secured"
+        subtitle="Cyber HQ unlocked · Routing to login…"
+      />
+
+      <style>{`
+        @keyframes spCursorBlink {
+          0%, 49% { opacity: 1; }
+          50%, 100% { opacity: 0; }
+        }
+        input::placeholder {
+          color: rgba(232, 237, 255, 0.7);
+          font-weight: 600;
+          opacity: 1;
+        }
+        input:focus::placeholder {
+          color: rgba(232, 237, 255, 0.45);
+        }
+      `}</style>
     </div>
   );
 }

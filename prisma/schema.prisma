@@ -7,215 +7,93 @@ datasource db {
   provider = "postgresql"
 }
 
-enum ProgressStatus {
-  NOT_STARTED
-  IN_PROGRESS
-  COMPLETED
-}
+// ============================================================
+// LAYER 1 — ACCOUNT (NextAuth-compatible, product-neutral)
+// ============================================================
+// User = a single parent / family account. The Account, Session
+// and VerificationToken tables match the standard NextAuth
+// Prisma-adapter shape so an OAuth provider (Google etc.) can
+// be wired in without another migration. Nothing in this layer
+// references any product.
 
 model User {
-  id             String     @id @default(cuid())
+  id             String    @id @default(cuid())
   name           String?
-  email          String     @unique
+  email          String    @unique
+  emailVerified  DateTime?
+  image          String?
+  /// bcrypt hash for the credentials provider. Null for users
+  /// who only signed in via OAuth.
   hashedPassword String?
-  role           String     @default("learner")
-  // Stripe — one-time £99 lifetime purchase.  When stripeStatus is
-  // 'active' or 'paid', the user has full access to /lesson/*.  All
-  // other states (null, 'pending', 'cancelled', 'refunded') gate access.
-  stripeCustomerId String?  @unique
-  stripeStatus     String?
-  stripePaidAt     DateTime?
-  createdAt      DateTime   @default(now())
-  updatedAt      DateTime   @updatedAt
-  progress       Progress[]
-  children       ChildProfile[]
+  role           String    @default("learner")
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  accounts            Account[]
+  sessions            Session[]
+  children            ChildProfile[]
+  entitlements        Entitlement[]
   passwordResetTokens PasswordResetToken[]
-  lessonAttempts LessonAttempt[]
-  preferences    UserPreference?
-  earnedStickers EarnedSticker[]
+  preferences         UserPreference?
 }
 
-model ChildProfile {
-  id          String   @id @default(cuid())
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@index([userId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
   userId      String
-  user        User     @relation(fields: [userId], references: [id])
-  childName   String
-  age         Int
-  avatarColor String   @default("purple")
-  createdAt   DateTime @default(now())
+  expires      DateTime
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
 }
 
-model Course {
-  id          String   @id @default(cuid())
-  title       String
-  description String
-  ageRange    String
-  duration    String
-  weeksCount  Int
-  emoji       String
-  color       String
-  createdAt   DateTime @default(now())
-  modules     Module[]
-}
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
 
-model Module {
-  id          String     @id @default(cuid())
-  courseId    String
-  course      Course     @relation(fields: [courseId], references: [id])
-  weekNumber  Int
-  title       String
-  description String
-  order       Int
-  createdAt   DateTime   @default(now())
-  progress    Progress[]
-}
-
-model Progress {
-  id          String         @id @default(cuid())
-  userId      String
-  user        User           @relation(fields: [userId], references: [id])
-  moduleId    String
-  module      Module         @relation(fields: [moduleId], references: [id])
-  status      ProgressStatus @default(NOT_STARTED)
-  completedAt DateTime?
-  createdAt   DateTime       @default(now())
-
-  @@unique([userId, moduleId])
+  @@unique([identifier, token])
 }
 
 model PasswordResetToken {
-  id        String   @id @default(cuid())
-  /** SHA-256 hex of the token (so a leaked DB doesn't expose live tokens). */
-  tokenHash String   @unique
+  id        String    @id @default(cuid())
+  /// SHA-256 hex of the token — a leaked DB does not expose live tokens.
+  tokenHash String    @unique
   userId    String
-  user      User     @relation(fields: [userId], references: [id])
   expiresAt DateTime
   usedAt    DateTime?
-  createdAt DateTime @default(now())
+  createdAt DateTime  @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
   @@index([expiresAt])
 }
 
-model WaitlistEntry {
-  id         String   @id @default(cuid())
-  email      String
-  courseSlug String
-  source     String?
-  createdAt  DateTime @default(now())
-
-  @@unique([email, courseSlug])
-  @@index([courseSlug])
-}
-
-/// A single play-through of a week's lesson by a user. Multiple
-/// attempts are allowed per (userId, weekNumber) - attemptNumber
-/// disambiguates. The most recent uncompleted row drives resume.
-model LessonAttempt {
-  id               String   @id @default(cuid())
-  userId           String
-  weekNumber       Int
-  attemptNumber    Int      @default(1)
-  startedAt        DateTime @default(now())
-  completedAt      DateTime?
-  completed        Boolean  @default(false)
-  totalXp          Int      @default(0)
-  /// Highest screen index the child has reached. Drives resume: when
-  /// the lesson page mounts and finds an unfinished attempt, it
-  /// offers to jump back to this index.
-  finalScreenIndex Int      @default(0)
-  /// Timestamp at which the child clicked "Restart from beginning"
-  /// (or the server otherwise retired the attempt). Non-null rows are
-  /// kept for analytics history but are NEVER returned by
-  /// startOrResumeAttempt - the resume query filters them out so
-  /// abandoned attempts can't be silently picked back up.
-  abandonedAt      DateTime?
-
-  user              User               @relation(fields: [userId], references: [id], onDelete: Cascade)
-  screenResults     ScreenResult[]
-  questionResponses QuestionResponse[]
-  bossResult        BossResult?
-
-  @@index([userId, weekNumber])
-  @@index([userId, completed])
-}
-
-/// Per-screen outcome captured when the child advances. Star logic
-/// follows the existing client-side rule: 0 wrong -> 3, 1 wrong -> 2,
-/// 2+ wrong -> 1.
-model ScreenResult {
-  id              String    @id @default(cuid())
-  attemptId       String
-  screenIndex     Int
-  /// Matches ScreenDef.type from app/lesson/weekContent/types.ts.
-  /// Stored as a string so analytics tables don't depend on an enum
-  /// migration every time we add a screen kind.
-  screenType      String
-  startedAt       DateTime  @default(now())
-  completedAt     DateTime?
-  durationMs      Int       @default(0)
-  wrongCount      Int       @default(0)
-  /// 0 = no hint shown, 1/2/3 = tiered hints surfaced.
-  hintTierReached Int       @default(0)
-  xpEarned        Int       @default(0)
-  starsEarned     Int       @default(3)
-
-  attempt         LessonAttempt @relation(fields: [attemptId], references: [id], onDelete: Cascade)
-
-  @@unique([attemptId, screenIndex])
-  @@index([attemptId])
-}
-
-/// Question-level tracking for quiz-style exercises (CyberMaze) and
-/// the boss battle. Stores stable identifiers only - no PII, no full
-/// question text - so we can identify questions that are too hard or
-/// unclear without storing personal data.
-model QuestionResponse {
-  id            String   @id @default(cuid())
-  attemptId     String
-  screenIndex   Int
-  /// Stable identifier shaped like "<source>:<tier>:<index>", e.g.
-  /// "boss-easy-0", "boss-hard-3", "maze-2". Never the question text.
-  questionKey   String
-  /// Index the child picked. -1 if the question timed out.
-  selectedIndex Int
-  correctIndex  Int
-  wasCorrect    Boolean
-  /// Which try at this same question within this attempt - lets
-  /// retries be distinguished from first encounters.
-  attemptIndex  Int      @default(1)
-  answeredAt    DateTime @default(now())
-
-  attempt       LessonAttempt @relation(fields: [attemptId], references: [id], onDelete: Cascade)
-
-  @@index([attemptId])
-  @@index([questionKey, wasCorrect])
-}
-
-/// One per LessonAttempt that contains a boss battle (Week 1+).
-model BossResult {
-  id             String   @id @default(cuid())
-  attemptId      String   @unique
-  won            Boolean
-  /// 0-100 integer percentage.
-  accuracy       Int
-  totalQuestions Int
-  correctCount   Int
-  wrongCount     Int
-  bestCombo      Int      @default(0)
-  durationMs     Int      @default(0)
-  badgeEarned    Boolean  @default(false)
-  /// Stable badge identifier (e.g. "password-protector"). Optional.
-  badgeId        String?
-  createdAt      DateTime @default(now())
-
-  attempt        LessonAttempt @relation(fields: [attemptId], references: [id], onDelete: Cascade)
-}
-
-/// Accessibility / comfort preferences persisted per user account so
-/// the same setting follows the child across devices. Stored
-/// separately from User to keep the auth row lean and so we can grow
-/// this model without touching User.
+/// Per-account accessibility / comfort preferences. Lives on the
+/// account, not on any product — same setting follows the family
+/// across every track they're enrolled in.
 model UserPreference {
   userId           String   @id
   comfortMode      Boolean  @default(false)
@@ -223,26 +101,183 @@ model UserPreference {
   reducedMotion    Boolean  @default(false)
   updatedAt        DateTime @updatedAt
 
-  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
-/// First stab at the reward-loop persistence layer (Cyber HQ).
-/// Each row records that a specific (userId, stickerId) pair has been
-/// earned. Stickers themselves are a static catalogue in code (no
-/// table) so adding a new sticker is a code change, not a DB row.
-/// Awards are idempotent via the composite unique index - calling
-/// awardStickers twice with the same ids does not produce duplicates.
-model EarnedSticker {
-  id         String   @id @default(cuid())
-  userId     String
-  /// Stable catalogue id, e.g. "password-master".
-  stickerId  String
-  /// Optional week the sticker was earned in (analytics + dashboard).
-  weekNumber Int?
-  earnedAt   DateTime @default(now())
+// ============================================================
+// LAYER 2 — PRODUCT (the multi-track catalogue)
+// ============================================================
+// One row per purchasable/grantable learning track. Adding a
+// new track is a Product row + content — no schema migration.
 
-  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+enum ProductStatus {
+  ACTIVE
+  COMING_SOON
+}
 
-  @@unique([userId, stickerId])
+model Product {
+  id        String        @id @default(cuid())
+  slug      String        @unique
+  name      String
+  ageMin    Int
+  ageMax    Int
+  /// Price stored in PENCE to avoid floating-point money bugs.
+  /// 9900 = £99.00. UI is responsible for formatting to £xx.xx.
+  priceGBP  Int
+  weeks     Int
+  status    ProductStatus @default(COMING_SOON)
+  /// Catalog display metadata (lifted from old Course; only the four
+  /// fields the dashboard actually read are surfaced — description and
+  /// color were dead code).
+  emoji      String
+  ageRange   String
+  duration   String
+  /// Stored as a cache of `COUNT(CourseContent WHERE productId = id)`.
+  /// Seeded from the real row count so the two can never disagree —
+  /// content edits must update this in lock-step (see seed.ts pattern).
+  weeksCount Int
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+
+  entitlements   Entitlement[]
+  progress       Progress[]
+  waitlist       WaitlistEntry[]
+  courseContents CourseContent[]
+}
+
+// ============================================================
+// LAYER 2b — COURSE CONTENT (per-week lesson data, product-scoped)
+// ============================================================
+// Replaces the old Course/Module pair. Catalog metadata lives on
+// Product; per-week lesson data lives here. One row per
+// (product, week). Faithful port of the old Module: every field
+// preserved, courseId → productId, weekNumber → week. Both `week`
+// and `order` are kept since the brief said "do not drop or invent
+// fields" — the seed has always set them equal but the schema
+// preserves the distinction. `updatedAt` is the only intentional
+// addition (post-launch content edits).
+
+model CourseContent {
+  id          String   @id @default(cuid())
+  productId   String
+  week        Int
+  title       String
+  description String
+  order       Int
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  product  Product    @relation(fields: [productId], references: [id], onDelete: Cascade)
+  progress Progress[]
+
+  @@unique([productId, week])
+  @@index([productId])
+}
+
+// ============================================================
+// LAYER 3 — ENTITLEMENT (the access gate)
+// ============================================================
+// Does this family have access to this product? One row per
+// (user, product). `source` records WHY the grant exists so
+// refunds / bundle changes / manual overrides stay traceable.
+
+enum EntitlementSource {
+  MANUAL
+  PURCHASE
+  BUNDLE
+}
+
+model Entitlement {
+  id        String            @id @default(cuid())
+  userId    String
+  productId String
+  grantedAt DateTime          @default(now())
+  source    EntitlementSource
+
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, productId])
   @@index([userId])
+  @@index([productId])
+}
+
+// ============================================================
+// LAYER 4 — PROFILE (children hang off the family account)
+// ============================================================
+// A ChildProfile is product-neutral — the same kid plays every
+// track the parent has bought. dateOfBirth is stored as the
+// canonical age source; UI/derive-on-read computes the current
+// integer age. Never store a stale integer.
+
+model ChildProfile {
+  id              String   @id @default(cuid())
+  userId          String
+  name            String
+  dateOfBirth     DateTime
+  favouriteColour String
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  user     User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  progress Progress[]
+
+  @@index([userId])
+}
+
+// ============================================================
+// LAYER 5 — PROGRESS (per child × product × week)
+// ============================================================
+// One row per (childProfile, product, week). `screen` is the
+// furthest screen the child has reached this week; `stars` is
+// the best stars earned (clamped 0–3 at the app layer). When
+// `completedAt` is set, the week is finished. Idempotent
+// writes via the composite unique index.
+
+model Progress {
+  id              String    @id @default(cuid())
+  childProfileId  String
+  productId       String
+  /// FK to the specific CourseContent row this progress belongs to.
+  /// Denormalised against (productId, week) — the API is responsible
+  /// for ensuring they agree — but kept as a hard FK so dropping a
+  /// week's content cascades to its progress rows and the
+  /// `include: { courseContent: ... }` pattern works for dashboard reads.
+  courseContentId String
+  week            Int
+  screen          Int
+  stars           Int
+  completedAt     DateTime?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  childProfile  ChildProfile  @relation(fields: [childProfileId], references: [id], onDelete: Cascade)
+  product       Product       @relation(fields: [productId], references: [id], onDelete: Cascade)
+  courseContent CourseContent @relation(fields: [courseContentId], references: [id], onDelete: Cascade)
+
+  @@unique([childProfileId, productId, week])
+  @@index([childProfileId])
+  @@index([productId])
+  @@index([courseContentId])
+}
+
+// ============================================================
+// SUPPORTING — WAITLIST
+// ============================================================
+// Parent expresses interest in a product before it launches.
+// Was keyed off a free-text courseSlug; now FK'd to Product so
+// "remind me when this is live" notifications stay consistent
+// with the catalogue.
+
+model WaitlistEntry {
+  id        String   @id @default(cuid())
+  email     String
+  productId String
+  source    String?
+  createdAt DateTime @default(now())
+
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@unique([email, productId])
+  @@index([productId])
 }

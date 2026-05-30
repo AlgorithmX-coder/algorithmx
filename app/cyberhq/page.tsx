@@ -15,10 +15,12 @@
 import { auth } from "@/app/lib/auth";
 import { redirect } from "next/navigation";
 import Link from "next/link";
-import {
-  STICKER_CATALOGUE,
-  getEarnedStickers,
-} from "@/app/lib/stickers.actions";
+// STICKER_CATALOGUE moved to a plain data module (Next.js 16 forbids
+// non-async exports from "use server" files). Actions stay in
+// stickers.actions.ts.
+import { STICKER_CATALOGUE } from "@/app/lib/stickers-data";
+import { getEarnedStickers } from "@/app/lib/stickers.actions";
+import PlaySignatureOnMount from "@/app/components/lesson/PlaySignatureOnMount";
 
 const C = {
   pageBg: "#080a16",
@@ -58,6 +60,11 @@ export default async function CyberHQPage() {
         overflow: "hidden",
       }}
     >
+      {/* Signature SFX: gentle door-open swoosh + chamber ambience
+          when the child enters Cyber HQ. Tiny client island - parent
+          stays server-rendered. */}
+      <PlaySignatureOnMount id="hq-entry" delayMs={150} />
+
       {/* Ambient particle field - subtle drifting dots so the room is
           never visually still. CSS-only; respects reduced motion via
           @media (prefers-reduced-motion). */}

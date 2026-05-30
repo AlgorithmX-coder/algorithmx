@@ -1,1000 +1,385 @@
+/**
+ * Parent dashboard - at-a-glance progress report.
+ *
+ * Option (a) view: per-child summary of "X of N weeks complete, T stars".
+ * No per-question analytics. The granular models (LessonAttempt,
+ * QuestionResponse, ScreenResult, BossResult) have been dropped — the
+ * source of truth is the flat Progress table.
+ *
+ * Server component:
+ *   1. auth() + hasEntitlement gate (entitlement is the access check;
+ *      the paywall env flag is gone).
+ *   2. Pulls every ChildProfile for the user and every Progress row
+ *      for those children scoped to cyber-heroes in a single query.
+ *   3. Fetches the Product so the "X of weeksCount" denominator is
+ *      DB-driven, not hardcoded.
+ *   4. Renders a calm, parent-facing read-out per child — no playful
+ *      animation, tighter layout. Still dark cyber for cohesion.
+ */
+
 import { auth } from "@/app/lib/auth";
 import { prisma } from "@/app/lib/prisma";
 import { redirect } from "next/navigation";
 import Link from "next/link";
+import { hasEntitlement, getAge } from "@/app/lib/entitlements";
 import {
-  RevealOnScroll,
-  AnimatedBar,
-  AnimatedRing,
-  StaggeredList,
-} from "@/app/components/AnimatedDashboardV2";
-import {
-  DashboardSky,
-  DashboardParticles,
-} from "@/app/components/DashboardAtmosphere";
-import { getCertificateUrl, getAchievedMilestones } from "@/app/lib/certificates";
+  CYBER_PALETTE as P,
+  CYBER_GRAD as G,
+  CYBER_SHADOW as S,
+} from "@/app/components/scene/cyberTokens";
 
-/* ───────────────── PIXAR PALETTE (shared with dashboard) ───────────────── */
-const C = {
-  pageBg: "#080a16",
-  card: "rgba(15, 21, 48, 0.72)",
-  border: "rgba(0, 229, 255, 0.22)",
-  borderStrong: "rgba(0, 229, 255, 0.45)",
-  text: "#e8edff",
-  textSoft: "#c5cdf0",
-  textMuted: "rgba(125, 240, 255, 0.55)",
-  inkDeep: "#3b2615",
-  goldLight: "#00e5ff",
-  goldMid: "#7c5cff",
-  goldDeep: "#3a7bff",
-  goldDark: "#080a16",
-  coral: "#ff5fb3",
-  ember: "#ff7a59",
-  moss: "#7eff97",
-  mossLight: "#a0ffb0",
-  cream: "#7df0ff",
-};
-const GRAD_GOLD = `linear-gradient(135deg, ${C.goldLight}, ${C.goldMid}, ${C.goldDeep})`;
-const GRAD_GOLD_PILL = `linear-gradient(135deg, ${C.goldLight}, ${C.goldMid})`;
-const GRAD_NAME = `linear-gradient(135deg, ${C.cream}, ${C.goldLight}, ${C.goldMid})`;
-const GRAD_RACCOON = `linear-gradient(90deg, ${C.ember}, ${C.coral}, ${C.goldMid})`;
-const SHADOW_PRIMARY =
-  "0 18px 36px -10px rgba(255,120,40,0.6), 0 0 0 1px rgba(255,235,200,0.55) inset, 0 -3px 0 rgba(180,80,30,0.4) inset";
-const FONT_STACK =
-  "ui-rounded, 'Fredoka', 'Quicksand', 'Nunito', system-ui, -apple-system, sans-serif";
+export const dynamic = "force-dynamic";
 
-const WEEK_SUMMARIES: Record<number, string> = {
-  1: "Your child learned how to create strong, memorable passwords and why reusing passwords is dangerous.",
-  2: "Your child can now identify personal information that should never be shared online, like full names, addresses, and school details.",
-  3: "Your child learned to recognise suspicious online strangers and what to do if someone they don't know contacts them.",
-  4: "Your child can now spot common online scams and phishing attempts designed to trick kids.",
-  5: "Your child learned what cyberbullying looks like, how to respond safely, and when to tell a trusted adult.",
-  6: "Your child now understands safe gaming practices including privacy settings and avoiding toxic interactions.",
-  7: "Your child learned about in-game purchases, loot boxes, and how to avoid spending real money without permission.",
-  8: "Your child understands why sharing photos and videos online can be permanent and how to stay safe.",
-  9: "Your child can now evaluate whether an app is safe before downloading, including checking permissions.",
-  10: "Your child learned to navigate YouTube safely, recognise inappropriate content, and use safety settings.",
-  11: "Your child knows exactly what to do and who to tell if something scary or wrong happens online.",
-  12: "Your child understands that online actions leave a permanent trail and how to keep their digital footprint positive.",
-  13: "Your child learned about healthy screen time habits and balancing online and offline activities.",
-  14: "Your child understands how smart home devices work and the privacy considerations around them.",
-  15: "Your child can now identify when they're talking to AI, understands its limitations, and knows not to trust it blindly.",
-  16: "Your child learned to check links before clicking and understands the risks of scanning unknown QR codes.",
-  17: "Your child understands social media risks including privacy settings, oversharing, and age restrictions.",
-  18: "Your child learned how to safely share tablets and computers without exposing personal information.",
-  19: "Your child can now help protect the whole family's online safety and teach others what they've learned.",
-  20: "Your child completed the final mission and is now a certified Cyber Hero with comprehensive online safety knowledge.",
+const PRODUCT_SLUG = "cyber-heroes";
+
+type WeekState = "completed" | "in_progress" | "not_started";
+interface WeekCell { week: number; state: WeekState; stars: number; }
+interface ChildSummary {
+  id: string;
+  name: string;
+  age: number;
+  completedCount: number;
+  totalStars: number;
+  weeks: WeekCell[];
+}
+
+const FONT = "'DM Sans', 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif";
+
+const CARD: React.CSSProperties = {
+  background: G.glass,
+  border: `1px solid ${P.cyan}33`,
+  borderRadius: 18,
+  padding: 28,
+  boxShadow: S.cardCyan,
+  backdropFilter: "blur(14px)",
+  WebkitBackdropFilter: "blur(14px)",
 };
 
-function ShieldLogo({ size = 22 }: { size?: number }) {
+function StarGlyph({ color }: { color: string }) {
   return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" aria-hidden>
-      <defs>
-        <linearGradient id="parentShieldGrad" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stopColor={C.cream} />
-          <stop offset="55%" stopColor={C.goldLight} />
-          <stop offset="100%" stopColor={C.goldDeep} />
-        </linearGradient>
-      </defs>
-      <path
-        d="M12 2.5 4 5.2v6.3c0 4.7 3.3 8.7 8 10 4.7-1.3 8-5.3 8-10V5.2L12 2.5Z"
-        fill="url(#parentShieldGrad)"
-      />
-      <path
-        d="m9 12 2.2 2.2L15 10.4"
-        stroke={C.goldDark}
-        strokeWidth="1.8"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
+    <svg width={9} height={9} viewBox="0 0 24 24" fill={color} aria-hidden style={{ display: "block" }}>
+      <path d="M12 2.5l2.9 6.2 6.6.8-4.9 4.6 1.4 6.7L12 17.6l-6 3.2 1.4-6.7L2.5 9.5l6.6-.8L12 2.5z" />
     </svg>
   );
 }
 
-function CheckIcon({ size = 18, color = C.mossLight }: { size?: number; color?: string }) {
+function Stars({ count }: { count: number }) {
+  const safe = Math.max(0, Math.min(3, count));
   return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" aria-hidden>
-      <path
-        d="M5 12.5 10 17.5 19 7.5"
-        stroke={color}
-        strokeWidth="3"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
-}
-
-function LockIcon({ size = 18, color = C.textMuted }: { size?: number; color?: string }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" aria-hidden>
-      <rect x="5" y="11" width="14" height="9" rx="2" stroke={color} strokeWidth="2" />
-      <path d="M8 11V8a4 4 0 1 1 8 0v3" stroke={color} strokeWidth="2" strokeLinecap="round" />
-    </svg>
+    <div style={{ display: "flex", gap: 1.5 }} aria-label={`${safe} stars`}>
+      {Array.from({ length: safe }).map((_, i) => <StarGlyph key={i} color={P.amber} />)}
+    </div>
   );
 }
 
 export default async function ParentDashboard() {
+  /* ── GATE ───────────────────────────────────────────────────── */
   const session = await auth();
-  if (!session?.user) redirect("/login");
+  if (!session?.user?.id) redirect("/login");
+  const ok = await hasEntitlement(session.user.id, PRODUCT_SLUG);
+  if (!ok) redirect("/hub");
+  const userId = session.user.id;
 
-  const childProfiles = await prisma.childProfile.findMany({
-    where: { userId: session.user.id! },
-    orderBy: { createdAt: "desc" },
-  });
+  /* ── DATA ───────────────────────────────────────────────────── */
+  const [product, childProfiles] = await Promise.all([
+    prisma.product.findUnique({
+      where: { slug: PRODUCT_SLUG },
+      select: { id: true, name: true, weeksCount: true },
+    }),
+    prisma.childProfile.findMany({
+      where: { userId },
+      select: { id: true, name: true, dateOfBirth: true },
+      orderBy: { createdAt: "asc" },
+    }),
+  ]);
+  if (!product) redirect("/hub");
+  const weeksCount = product.weeksCount;
 
-  if (childProfiles.length === 0) redirect("/onboarding");
+  const childIds = childProfiles.map((c) => c.id);
+  const progressRows = childIds.length
+    ? await prisma.progress.findMany({
+        where: {
+          childProfileId: { in: childIds },
+          product: { slug: PRODUCT_SLUG },
+        },
+        select: { childProfileId: true, week: true, stars: true, completedAt: true },
+      })
+    : [];
 
-  const child = childProfiles[0];
-
-  // Pull the Module list for titles/descriptions/order, then derive
-  // status entirely from LessonAttempt so /parent and
-  // /parent/week/[week] agree. Legacy Progress is still upserted on
-  // lesson complete via completeAttempt's sync, but it's no longer
-  // the source of truth for this dashboard.
-  const course = await prisma.course.findFirst({
-    where: { title: "Cyber Heroes Academy" },
-    include: {
-      modules: {
-        orderBy: { order: "asc" },
-      },
-    },
-  });
-
-  const courseModules = course?.modules ?? [];
-  const weekNumbers = courseModules.map((m) => m.weekNumber);
-  // Fetch one row per (userId, weekNumber) representing the
-  // best-known state. groupBy gives us the latest attempt summary;
-  // for completion we just need any completed=true row to exist.
-  const attempts = await prisma.lessonAttempt.findMany({
-    where: {
-      userId: session.user.id!,
-      weekNumber: { in: weekNumbers.length > 0 ? weekNumbers : [-1] },
-    },
-    select: {
-      weekNumber: true,
-      completed: true,
-      finalScreenIndex: true,
-      startedAt: true,
-      // Abandoned attempts are kept on disk for analytics but should
-      // not contribute to the IN_PROGRESS status - the child has
-      // explicitly Restarted past them.
-      abandonedAt: true,
-    },
-    orderBy: { startedAt: "desc" },
-  });
-  // Build a map: weekNumber -> "COMPLETED" | "IN_PROGRESS" | "NOT_STARTED"
-  // Rules in priority order:
-  //   1. Any completed=true row -> COMPLETED.
-  //   2. Any LIVE (non-abandoned) row with finalScreenIndex > 0
-  //      -> IN_PROGRESS.
-  //   3. Otherwise -> NOT_STARTED.
-  const weekStatus = new Map<
-    number,
-    "COMPLETED" | "IN_PROGRESS" | "NOT_STARTED"
-  >();
-  for (const a of attempts) {
-    const existing = weekStatus.get(a.weekNumber);
-    if (a.completed) {
-      weekStatus.set(a.weekNumber, "COMPLETED");
-      continue;
-    }
-    if (existing === "COMPLETED") continue;
-    // Only LIVE rows can flip the state to IN_PROGRESS. An abandoned
-    // attempt with finalScreenIndex > 0 doesn't qualify - the child
-    // has moved on from it.
-    if (a.abandonedAt === null && a.finalScreenIndex > 0) {
-      weekStatus.set(a.weekNumber, "IN_PROGRESS");
-      continue;
-    }
-    if (!existing) weekStatus.set(a.weekNumber, "NOT_STARTED");
+  // Bucket by child → week so per-child render is O(weeksCount), not O(rows).
+  const byChild = new Map<string, Map<number, { stars: number; completedAt: Date | null }>>();
+  for (const cid of childIds) byChild.set(cid, new Map());
+  for (const r of progressRows) {
+    byChild.get(r.childProfileId)?.set(r.week, { stars: r.stars, completedAt: r.completedAt });
   }
 
-  let foundCurrentNext = false;
-  const modules = courseModules.map((module, idx) => {
-    const status = weekStatus.get(module.weekNumber) ?? "NOT_STARTED";
-    const isCompleted = status === "COMPLETED";
-    const isInProgress = status === "IN_PROGRESS";
-    const isWeekOne = module.weekNumber === 1;
-    const prevModule = idx > 0 ? courseModules[idx - 1] : null;
-    const prevCompleted = prevModule
-      ? weekStatus.get(prevModule.weekNumber) === "COMPLETED"
-      : false;
-    const isUnlocked =
-      isWeekOne || prevCompleted || isCompleted || isInProgress;
-    const isCurrentNext = isUnlocked && !isCompleted && !foundCurrentNext;
-    if (isCurrentNext) foundCurrentNext = true;
+  const summaries: ChildSummary[] = childProfiles.map((c) => {
+    const byWeek = byChild.get(c.id) ?? new Map();
+    let completedCount = 0;
+    let totalStars = 0;
+    const weeks: WeekCell[] = [];
+    for (let w = 1; w <= weeksCount; w++) {
+      const row = byWeek.get(w);
+      let state: WeekState = "not_started";
+      let stars = 0;
+      if (row) {
+        if (row.completedAt) {
+          state = "completed";
+          completedCount += 1;
+          stars = row.stars;
+          totalStars += row.stars;
+        } else {
+          state = "in_progress";
+          stars = row.stars;
+        }
+      }
+      weeks.push({ week: w, state, stars });
+    }
     return {
-      id: module.id,
-      weekNumber: module.weekNumber,
-      title: module.title,
-      description: module.description,
-      status,
-      isCompleted,
-      isInProgress,
-      isUnlocked,
-      isCurrentNext,
-      prevWeek: !isUnlocked && prevModule ? prevModule.weekNumber : null,
+      id: c.id,
+      name: c.name,
+      age: getAge(c.dateOfBirth),
+      completedCount,
+      totalStars,
+      weeks,
     };
   });
 
-  const completedCount = modules.filter((m) => m.isCompleted).length;
-  const totalModules = modules.length;
-  const progressPct = totalModules > 0 ? (completedCount / totalModules) * 100 : 0;
-  const raccoonPower = Math.round(100 - progressPct);
-  const raccoonStrong = raccoonPower > 50;
-
-  const childName = child.childName ?? "your child";
-
-  const completedModules = modules.filter((m) => m.isCompleted);
-
-  const encouragement =
-    completedCount === 0
-      ? {
-          title: "Ready for the first mission?",
-          body: `Encourage ${childName} to start their first mission - it only takes 45 minutes.`,
-        }
-      : completedCount >= totalModules && totalModules > 0
-        ? {
-            title: "Certified Cyber Hero!",
-            body: `Congratulations! ${childName} has completed the entire Cyber Heroes Academy. Consider enrolling them in Cyber Explorers next.`,
-          }
-        : {
-            title: "Great progress so far",
-            body: `${childName} is making great progress! They've completed ${completedCount} out of ${totalModules} weeks.`,
-          };
-
+  /* ── RENDER ─────────────────────────────────────────────────── */
   return (
-    <>
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fredoka:wght@500;600;700;800&display=swap');
-        .parent { font-family: ${FONT_STACK}; color: ${C.text}; }
-        .parent h1, .parent h2, .parent h3, .parent h4, .parent .display { font-family: 'Fredoka', ${FONT_STACK}; }
-      `}</style>
-
-      <div
-        className="parent min-h-screen relative"
+    <div style={{ minHeight: "100vh", background: G.page, color: P.text, fontFamily: FONT }}>
+      <nav
         style={{
-          background:
-            `radial-gradient(ellipse at 50% -10%, #1d1f4d 0%, #0f1530 35%, ${C.pageBg} 70%, #04050d 100%)`,
+          position: "sticky", top: 0, zIndex: 10,
+          background: G.glassDarker,
+          borderBottom: `1px solid ${P.cyan}22`,
+          backdropFilter: "blur(16px)",
+          WebkitBackdropFilter: "blur(16px)",
         }}
       >
-        <DashboardSky />
-        <DashboardParticles />
-
-        {/* ── NAV ── */}
-        <nav
-          className="sticky top-0 z-50"
+        <div
           style={{
-            background: "rgba(20, 8, 24, 0.78)",
-            backdropFilter: "blur(20px)",
-            WebkitBackdropFilter: "blur(20px)",
-            borderBottom: `1px solid ${C.border}`,
+            maxWidth: 1080, margin: "0 auto", padding: "14px 24px",
+            display: "flex", alignItems: "center", justifyContent: "space-between",
           }}
         >
-          <div className="max-w-[1100px] mx-auto px-6 md:px-10 py-4 flex items-center justify-between">
-            <a href="/" className="flex items-center gap-2.5" style={{ textDecoration: "none" }}>
-              <div
-                className="flex items-center justify-center"
-                style={{
-                  width: 40,
-                  height: 40,
-                  borderRadius: 100,
-                  background: GRAD_GOLD_PILL,
-                  boxShadow: "0 4px 14px rgba(255, 155, 74, 0.4)",
-                }}
-              >
-                <ShieldLogo size={22} />
-              </div>
-              <span
-                className="display text-lg font-bold"
-                style={{ color: C.text, letterSpacing: "-0.01em" }}
-              >
-                Parent Dashboard
-              </span>
-            </a>
-            <div className="flex items-center gap-3">
-              <a
-                href="/dashboard"
-                className="hidden sm:inline-block"
-                style={{
-                  background: "rgba(255, 215, 138, 0.12)",
-                  border: `1px solid ${C.borderStrong}`,
-                  borderRadius: 100,
-                  padding: "7px 16px",
-                  fontSize: 13,
-                  fontWeight: 700,
-                  color: C.goldLight,
-                  textDecoration: "none",
-                }}
-              >
-                ← Back to Child View
-              </a>
-              <form
-                action={async () => {
-                  "use server";
-                  const { signOut } = await import("@/app/lib/auth");
-                  await signOut({ redirectTo: "/" });
-                }}
-              >
-                <button
-                  style={{
-                    background: "transparent",
-                    border: `1px solid ${C.border}`,
-                    borderRadius: 100,
-                    padding: "7px 16px",
-                    color: C.textSoft,
-                    fontSize: 13,
-                    fontWeight: 700,
-                    cursor: "pointer",
-                    fontFamily: "inherit",
-                  }}
-                >
-                  Log Out
-                </button>
-              </form>
-            </div>
+          <div style={{ fontWeight: 700, fontSize: 15, letterSpacing: "0.02em", color: P.textBright }}>
+            Parent Dashboard
           </div>
-        </nav>
-
-        <div
-          className="relative max-w-[1100px] mx-auto px-6 md:px-10 py-10"
-          style={{ zIndex: 1 }}
-        >
-          {/* ── WELCOME ── */}
-          <RevealOnScroll>
-            <section className="mb-10">
-              <div
-                className="inline-flex items-center gap-2 mb-4"
-                style={{
-                  background: "rgba(255, 215, 138, 0.14)",
-                  border: `1px solid ${C.borderStrong}`,
-                  borderRadius: 100,
-                  padding: "5px 14px",
-                  fontSize: 12,
-                  fontWeight: 800,
-                  color: C.goldLight,
-                  letterSpacing: "0.05em",
-                  textTransform: "uppercase",
-                }}
-              >
-                <span
-                  style={{
-                    width: 8,
-                    height: 8,
-                    borderRadius: 100,
-                    background: C.goldLight,
-                    boxShadow: `0 0 10px ${C.goldLight}`,
-                    display: "inline-block",
-                  }}
-                />
-                Parent View
-              </div>
-              <h1
-                className="display text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight mb-3"
-                style={{ color: C.text }}
-              >
-                Parent Dashboard -{" "}
-                <span
-                  style={{
-                    background: GRAD_NAME,
-                    WebkitBackgroundClip: "text",
-                    WebkitTextFillColor: "transparent",
-                    backgroundClip: "text",
-                  }}
-                >
-                  {childName}
-                </span>
-              </h1>
-              <p
-                className="text-base sm:text-lg leading-relaxed"
-                style={{ color: C.textSoft, opacity: 0.9 }}
-              >
-                Track {childName}&apos;s cybersecurity learning journey.
-              </p>
-            </section>
-          </RevealOnScroll>
-
-          {/* ── PROGRESS OVERVIEW ── */}
-          <RevealOnScroll delay={80}>
-            <section
-              className="rounded-3xl p-6 sm:p-8 mb-10"
+          <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
+            <Link
+              href="/hub"
               style={{
-                background: C.card,
-                border: `1px solid ${C.border}`,
-                backdropFilter: "blur(14px)",
-                WebkitBackdropFilter: "blur(14px)",
-                boxShadow:
-                  "0 24px 50px -16px rgba(8, 10, 22, 0.6), 0 0 0 1px rgba(0, 229, 255, 0.05) inset",
+                color: P.cyanSoft, fontSize: 13, fontWeight: 600, textDecoration: "none",
+                padding: "6px 14px", borderRadius: 999, border: `1px solid ${P.cyan}33`,
               }}
             >
-              <div className="flex flex-col sm:flex-row items-center gap-6 sm:gap-8">
-                <div className="shrink-0">
-                  <AnimatedRing
-                    percent={progressPct}
-                    gradientFrom={C.goldLight}
-                    gradientTo={C.goldMid}
-                    glow="rgba(124, 92, 255, 0.55)"
-                    track="rgba(0, 229, 255, 0.12)"
-                    label={C.goldLight}
-                  />
-                </div>
-                <div className="flex-1 w-full">
-                  <h2
-                    className="display text-xl sm:text-2xl font-bold mb-2"
-                    style={{ color: C.text }}
-                  >
-                    Overall Progress
-                  </h2>
-                  <p className="text-sm mb-4" style={{ color: C.textSoft, opacity: 0.9 }}>
-                    <span className="font-black" style={{ color: C.goldLight }}>
-                      {completedCount}
-                    </span>{" "}
-                    of{" "}
-                    <span className="font-black" style={{ color: C.text }}>
-                      {totalModules}
-                    </span>{" "}
-                    weeks completed
-                  </p>
-                  <div className="mb-5">
-                    <AnimatedBar
-                      percent={progressPct}
-                      gradient={GRAD_GOLD}
-                      glowColor="rgba(124, 92, 255, 0.55)"
-                      height={14}
-                    />
-                  </div>
-                  <div>
-                    <div className="flex justify-between text-xs font-black mb-1.5">
-                      <span style={{ color: C.coral, letterSpacing: 1 }}>
-                        Raccoon Power Remaining
-                      </span>
-                      <span style={{ color: C.coral }}>{raccoonPower}%</span>
-                    </div>
-                    <AnimatedBar
-                      percent={raccoonPower}
-                      gradient={GRAD_RACCOON}
-                      glowColor="rgba(240, 142, 126, 0.5)"
-                      height={10}
-                    />
-                    <p
-                      style={{
-                        fontSize: 13,
-                        color: C.textSoft,
-                        opacity: 0.85,
-                        lineHeight: 1.7,
-                        marginTop: 12,
-                        marginBottom: 8,
-                      }}
-                    >
-                      The Hacker Raccoon represents real-world cyber threats (from phishing scams to password attacks) adapted to reflect the latest tactics children encounter online. As your child completes each lesson, they build the skills to recognise and defend against these threats, so you can feel confident they&apos;re prepared.
-                    </p>
-                    <p className="text-[11px] font-bold mt-2" style={{ color: C.textMuted }}>
-                      {raccoonStrong
-                        ? "The Hacker Raccoon still has most of his power. Each lesson weakens him."
-                        : "The Hacker Raccoon is on the ropes. Most of his power has been drained."}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </section>
-          </RevealOnScroll>
-
-          {/* ── WHAT CHILD HAS LEARNED ── */}
-          <RevealOnScroll delay={120}>
-            <section className="mb-12">
-              <div
-                className="inline-flex items-center gap-2 mb-4"
-                style={{
-                  background: "rgba(124, 200, 154, 0.18)",
-                  border: "1px solid rgba(124, 200, 154, 0.55)",
-                  borderRadius: 100,
-                  padding: "5px 14px",
-                  fontSize: 12,
-                  fontWeight: 800,
-                  color: C.mossLight,
-                  letterSpacing: "0.05em",
-                  textTransform: "uppercase",
-                  boxShadow: "0 0 14px rgba(124, 200, 154, 0.3)",
-                }}
-              >
-                <span
-                  style={{
-                    width: 8,
-                    height: 8,
-                    borderRadius: 100,
-                    background: C.moss,
-                    boxShadow: `0 0 10px ${C.moss}`,
-                    display: "inline-block",
-                  }}
-                />
-                Learning Progress
-              </div>
-              <h2
-                className="display text-2xl sm:text-3xl font-bold mb-6"
-                style={{ color: C.text }}
-              >
-                What {childName} Has Learned So Far
-              </h2>
-
-              {completedModules.length === 0 ? (
-                <div
-                  className="rounded-3xl p-8 text-center"
-                  style={{
-                    background: C.card,
-                    border: `1px solid ${C.border}`,
-                    backdropFilter: "blur(12px)",
-                    WebkitBackdropFilter: "blur(12px)",
-                  }}
-                >
-                  <p className="text-base" style={{ color: C.textSoft, opacity: 0.85 }}>
-                    No lessons completed yet - once {childName} finishes their first week, you&apos;ll see a summary of what they learned here.
-                  </p>
-                </div>
-              ) : (
-                <StaggeredList className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {completedModules.map((mod) => (
-                    <div
-                      key={mod.id}
-                      className="rounded-2xl p-5"
-                      style={{
-                        background:
-                          "linear-gradient(135deg, rgba(124, 200, 154, 0.14), rgba(15, 21, 48, 0.6))",
-                        border: "1px solid rgba(124, 200, 154, 0.4)",
-                        boxShadow:
-                          "0 0 18px rgba(124, 200, 154, 0.16), 0 14px 28px -10px rgba(8, 10, 22, 0.5)",
-                        backdropFilter: "blur(12px)",
-                        WebkitBackdropFilter: "blur(12px)",
-                      }}
-                    >
-                      <div className="flex items-center gap-3 mb-3">
-                        <div
-                          className="shrink-0 flex items-center justify-center"
-                          style={{
-                            width: 44,
-                            height: 44,
-                            borderRadius: 14,
-                            background: "rgba(124, 200, 154, 0.22)",
-                            boxShadow: "0 0 16px rgba(124, 200, 154, 0.4)",
-                          }}
-                        >
-                          <CheckIcon size={22} color={C.mossLight} />
-                        </div>
-                        <div className="min-w-0 flex-1">
-                          <div
-                            className="font-black uppercase mb-0.5"
-                            style={{
-                              fontSize: 10,
-                              letterSpacing: "0.15em",
-                              color: "rgba(168, 227, 187, 0.85)",
-                            }}
-                          >
-                            Week {mod.weekNumber}
-                          </div>
-                          <h3
-                            className="display font-bold text-base leading-snug"
-                            style={{ color: C.text }}
-                          >
-                            {mod.title}
-                          </h3>
-                        </div>
-                      </div>
-                      <p
-                        className="text-sm leading-relaxed"
-                        style={{ color: C.textSoft, opacity: 0.92 }}
-                      >
-                        {WEEK_SUMMARIES[mod.weekNumber] ??
-                          `${childName} completed the Week ${mod.weekNumber} lesson.`}
-                      </p>
-                    </div>
-                  ))}
-                </StaggeredList>
-              )}
-            </section>
-          </RevealOnScroll>
-
-          {/* ── CERTIFICATES & ACHIEVEMENTS ── */}
-          <RevealOnScroll delay={100}>
-            <section className="mb-12">
-              <div
-                className="inline-flex items-center gap-2 mb-4"
-                style={{
-                  background: "rgba(255, 215, 138, 0.14)",
-                  border: `1px solid ${C.borderStrong}`,
-                  borderRadius: 100,
-                  padding: "5px 14px",
-                  fontSize: 12,
-                  fontWeight: 800,
-                  color: C.goldLight,
-                  letterSpacing: "0.05em",
-                  textTransform: "uppercase",
-                  boxShadow: "0 0 14px rgba(124, 92, 255, 0.3)",
-                }}
-              >
-                <span
-                  style={{
-                    width: 8,
-                    height: 8,
-                    borderRadius: 100,
-                    background: C.goldLight,
-                    boxShadow: `0 0 10px ${C.goldLight}`,
-                    display: "inline-block",
-                  }}
-                />
-                ★ Achievements
-              </div>
-              <h2
-                className="display text-2xl sm:text-3xl font-bold mb-2"
-                style={{ color: C.text }}
-              >
-                Certificates &amp; Milestones
-              </h2>
-              <p className="text-sm mb-6" style={{ color: C.textSoft, opacity: 0.85 }}>
-                Download and print certificates for {childName}&apos;s achievements.
-              </p>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {getAchievedMilestones(completedCount).map((m) => (
-                  <div
-                    key={m.week}
-                    style={{
-                      background: m.achieved
-                        ? "linear-gradient(135deg, rgba(255, 215, 138, 0.16), rgba(15, 21, 48, 0.7))"
-                        : C.card,
-                      borderRadius: 18,
-                      padding: 24,
-                      border: m.achieved
-                        ? `1px solid ${C.borderStrong}`
-                        : `1px solid ${C.border}`,
-                      boxShadow: m.achieved
-                        ? "0 0 24px rgba(124, 92, 255, 0.22), 0 14px 28px -10px rgba(8, 10, 22, 0.55)"
-                        : "0 10px 22px -10px rgba(8, 10, 22, 0.45)",
-                      opacity: m.achieved ? 1 : 0.55,
-                      backdropFilter: "blur(12px)",
-                      WebkitBackdropFilter: "blur(12px)",
-                    }}
-                  >
-                    <div className="flex items-start gap-3 mb-3">
-                      <div
-                        style={{
-                          fontSize: 36,
-                          lineHeight: 1,
-                          filter: m.achieved
-                            ? "drop-shadow(0 0 14px rgba(124, 92, 255, 0.55))"
-                            : undefined,
-                        }}
-                        aria-hidden
-                      >
-                        {m.icon}
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <h3
-                          className="display font-bold text-lg leading-tight"
-                          style={{ color: C.text }}
-                        >
-                          {m.title}
-                        </h3>
-                      </div>
-                      {m.achieved ? (
-                        <span
-                          className="inline-flex items-center font-black whitespace-nowrap"
-                          style={{
-                            background: "rgba(124, 200, 154, 0.18)",
-                            color: C.mossLight,
-                            border: "1px solid rgba(124, 200, 154, 0.5)",
-                            borderRadius: 100,
-                            padding: "5px 12px",
-                            fontSize: 11,
-                          }}
-                        >
-                          Achieved!
-                        </span>
-                      ) : (
-                        <span
-                          className="inline-flex items-center font-bold whitespace-nowrap"
-                          style={{
-                            background: "rgba(0, 229, 255, 0.04)",
-                            border: `1px solid ${C.border}`,
-                            color: C.textMuted,
-                            borderRadius: 100,
-                            padding: "5px 12px",
-                            fontSize: 11,
-                          }}
-                        >
-                          {m.weeksRemaining} week{m.weeksRemaining === 1 ? "" : "s"} to go
-                        </span>
-                      )}
-                    </div>
-
-                    <p
-                      className="mb-4"
-                      style={{
-                        fontSize: 13,
-                        color: C.textSoft,
-                        opacity: 0.9,
-                        lineHeight: 1.6,
-                      }}
-                    >
-                      {m.description}
-                    </p>
-
-                    <AnimatedBar
-                      percent={m.progress}
-                      gradient={
-                        m.achieved
-                          ? `linear-gradient(135deg, ${C.mossLight}, ${C.moss})`
-                          : GRAD_GOLD
-                      }
-                      glowColor={
-                        m.achieved
-                          ? "rgba(124, 200, 154, 0.45)"
-                          : "rgba(124, 92, 255, 0.5)"
-                      }
-                      height={10}
-                    />
-
-                    <p
-                      className="mt-2"
-                      style={{ fontSize: 11, color: C.textMuted, fontWeight: 600 }}
-                    >
-                      Week {m.week} milestone
-                    </p>
-
-                    {m.achieved && (
-                      <div className="mt-4">
-                        <a
-                          href={getCertificateUrl(childName, m.week)}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-block font-black"
-                          style={{
-                            background: GRAD_GOLD_PILL,
-                            color: C.goldDark,
-                            boxShadow: SHADOW_PRIMARY,
-                            borderRadius: 100,
-                            padding: "10px 20px",
-                            fontSize: 13,
-                            textDecoration: "none",
-                            letterSpacing: "0.02em",
-                          }}
-                        >
-                          Download Certificate ↓
-                        </a>
-                      </div>
-                    )}
-                  </div>
-                ))}
-              </div>
-            </section>
-          </RevealOnScroll>
-
-          {/* ── FULL MODULE LIST ── */}
-          <RevealOnScroll delay={80}>
-            <section className="mb-12">
-              <h2
-                className="display text-2xl font-bold mb-4"
-                style={{ color: C.text }}
-              >
-                Full Curriculum
-              </h2>
-              <StaggeredList className="space-y-3">
-                {modules.map((mod) => {
-                  const isCurrent = mod.isCurrentNext;
-                  // Unlocked rows are anchors that deep-link to the
-                  // /parent/week/[week] persistence report. Locked
-                  // rows render the same body inside a plain div.
-                  const rowStyle: React.CSSProperties = {
-                    textDecoration: "none",
-                    color: "inherit",
-                    cursor: mod.isUnlocked ? "pointer" : "default",
-                    padding: "18px 24px",
-                    background: isCurrent
-                      ? "linear-gradient(135deg, rgba(124, 92, 255, 0.16), rgba(255, 215, 138, 0.10))"
-                      : mod.isCompleted
-                        ? "linear-gradient(135deg, rgba(124, 200, 154, 0.12), rgba(15, 21, 48, 0.5))"
-                        : C.card,
-                    border: isCurrent
-                      ? `2px solid rgba(124, 92, 255, 0.7)`
-                      : mod.isCompleted
-                        ? "1px solid rgba(124, 200, 154, 0.4)"
-                        : `1px solid ${C.border}`,
-                    boxShadow: isCurrent
-                      ? "0 0 28px rgba(124, 92, 255, 0.32), 0 14px 28px -10px rgba(8, 10, 22, 0.5)"
-                      : "0 10px 22px -10px rgba(8, 10, 22, 0.45)",
-                    backdropFilter: "blur(10px)",
-                    WebkitBackdropFilter: "blur(10px)",
-                    opacity: mod.isUnlocked ? 1 : 0.45,
-                  };
-                  const rowBody = (
-                    <>
-                      {/* Week badge */}
-                      <div
-                        className="shrink-0 flex items-center justify-center font-black text-sm"
-                        style={{
-                          width: 48,
-                          height: 48,
-                          borderRadius: 14,
-                          background: mod.isCompleted
-                            ? "rgba(124, 200, 154, 0.22)"
-                            : isCurrent
-                              ? GRAD_GOLD_PILL
-                              : "rgba(0, 229, 255, 0.06)",
-                          color: mod.isCompleted
-                            ? C.mossLight
-                            : isCurrent
-                              ? C.goldDark
-                              : C.textMuted,
-                          boxShadow: mod.isCompleted
-                            ? "0 0 16px rgba(124, 200, 154, 0.45)"
-                            : isCurrent
-                              ? "0 0 20px rgba(124, 92, 255, 0.5)"
-                              : "none",
-                        }}
-                      >
-                        {mod.isCompleted ? (
-                          <CheckIcon size={20} color={C.mossLight} />
-                        ) : mod.isUnlocked ? (
-                          `W${mod.weekNumber}`
-                        ) : (
-                          <LockIcon size={18} color={C.textMuted} />
-                        )}
-                      </div>
-
-                      <div className="flex-1 min-w-0">
-                        <div
-                          className="font-black uppercase mb-0.5"
-                          style={{
-                            fontSize: 10,
-                            letterSpacing: "0.15em",
-                            color: mod.isCompleted
-                              ? "rgba(168, 227, 187, 0.85)"
-                              : isCurrent
-                                ? C.goldLight
-                                : "rgba(125, 240, 255, 0.5)",
-                          }}
-                        >
-                          Week {mod.weekNumber}
-                        </div>
-                        <h3
-                          className="display font-bold text-sm sm:text-base leading-snug"
-                          style={{
-                            color: C.text,
-                            opacity: mod.isCompleted ? 0.82 : 1,
-                          }}
-                        >
-                          {mod.title}
-                        </h3>
-                        <p
-                          className="text-xs mt-1 leading-relaxed line-clamp-2"
-                          style={{ color: C.textMuted }}
-                        >
-                          {mod.description}
-                        </p>
-                      </div>
-
-                      <div className="shrink-0">
-                        {mod.isCompleted ? (
-                          <span
-                            className="inline-flex items-center gap-1.5 font-black whitespace-nowrap"
-                            style={{
-                              background: "rgba(124, 200, 154, 0.16)",
-                              color: C.mossLight,
-                              border: "1px solid rgba(124, 200, 154, 0.5)",
-                              borderRadius: 100,
-                              padding: "7px 14px",
-                              fontSize: 11,
-                            }}
-                          >
-                            <CheckIcon size={12} color={C.mossLight} />
-                            Completed
-                          </span>
-                        ) : isCurrent ? (
-                          <span
-                            className="inline-block font-black whitespace-nowrap"
-                            style={{
-                              background: "rgba(124, 92, 255, 0.18)",
-                              color: C.goldLight,
-                              border: `1px solid ${C.borderStrong}`,
-                              borderRadius: 100,
-                              padding: "7px 14px",
-                              fontSize: 11,
-                            }}
-                          >
-                            In Progress
-                          </span>
-                        ) : (
-                          <span
-                            className="inline-flex items-center gap-1.5 font-bold whitespace-nowrap"
-                            style={{
-                              background: "rgba(0, 229, 255, 0.04)",
-                              border: `1px solid ${C.border}`,
-                              color: C.textMuted,
-                              borderRadius: 100,
-                              padding: "7px 14px",
-                              fontSize: 11,
-                            }}
-                          >
-                            <LockIcon size={12} color={C.textMuted} />
-                            Locked
-                          </span>
-                        )}
-                      </div>
-                    </>
-                  );
-
-                  if (mod.isUnlocked) {
-                    return (
-                      <Link
-                        key={mod.id}
-                        href={`/parent/week/${mod.weekNumber}`}
-                        className="rounded-3xl flex items-center gap-4 sm:gap-5"
-                        style={rowStyle}
-                      >
-                        {rowBody}
-                      </Link>
-                    );
-                  }
-                  return (
-                    <div
-                      key={mod.id}
-                      className="rounded-3xl flex items-center gap-4 sm:gap-5"
-                      style={rowStyle}
-                    >
-                      {rowBody}
-                    </div>
-                  );
-                })}
-              </StaggeredList>
-            </section>
-          </RevealOnScroll>
-
-          {/* ── BOTTOM ENCOURAGEMENT ── */}
-          <RevealOnScroll delay={80}>
-            <section
-              className="rounded-3xl p-8 sm:p-10 text-center relative overflow-hidden mb-6"
-              style={{
-                background:
-                  "linear-gradient(135deg, rgba(255, 215, 138, 0.18), rgba(196, 60, 106, 0.16))",
-                border: `1px solid ${C.borderStrong}`,
-                boxShadow:
-                  "0 0 50px rgba(124, 92, 255, 0.18), 0 24px 50px -16px rgba(8, 10, 22, 0.6)",
-                backdropFilter: "blur(12px)",
-                WebkitBackdropFilter: "blur(12px)",
+              Hub
+            </Link>
+            <form
+              action={async () => {
+                "use server";
+                const { signOut } = await import("@/app/lib/auth");
+                await signOut({ redirectTo: "/" });
               }}
             >
-              <div
+              <button
+                type="submit"
                 style={{
-                  fontSize: 11,
-                  fontWeight: 800,
-                  letterSpacing: 5,
-                  color: C.goldLight,
-                  textTransform: "uppercase",
-                  marginBottom: 8,
+                  background: "transparent", color: P.textSoft, fontSize: 13, fontWeight: 600,
+                  padding: "6px 14px", borderRadius: 999, border: `1px solid ${P.cyan}22`,
+                  cursor: "pointer", fontFamily: "inherit",
                 }}
               >
-                ✦ Cyber Hero Academy ✦
-              </div>
-              <h3
-                className="display text-2xl sm:text-3xl font-bold mb-3"
-                style={{
-                  background: GRAD_GOLD,
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                  backgroundClip: "text",
-                }}
-              >
-                {encouragement.title}
-              </h3>
-              <p
-                className="text-base max-w-xl mx-auto leading-relaxed"
-                style={{ color: C.textSoft, opacity: 0.92 }}
-              >
-                {encouragement.body}
-              </p>
-            </section>
-          </RevealOnScroll>
+                Log out
+              </button>
+            </form>
+          </div>
         </div>
+      </nav>
+
+      <main style={{ maxWidth: 1080, margin: "0 auto", padding: "40px 24px 80px" }}>
+        <header style={{ marginBottom: 32 }}>
+          <div
+            style={{
+              fontSize: 11, fontWeight: 700, letterSpacing: "0.18em",
+              textTransform: "uppercase", color: P.cyan, marginBottom: 10,
+            }}
+          >
+            {product.name} · Progress Report
+          </div>
+          <h1
+            style={{
+              fontSize: 30, lineHeight: 1.15, fontWeight: 700, color: P.textBright,
+              margin: 0, letterSpacing: "-0.01em",
+            }}
+          >
+            Your family at a glance
+          </h1>
+          <p style={{ marginTop: 10, fontSize: 15, color: P.textSoft, lineHeight: 1.6, maxWidth: 620 }}>
+            A simple read-out of weeks completed and stars earned. Tap any
+            started week for a more detailed look at how it went.
+          </p>
+        </header>
+
+        {summaries.length === 0 && (
+          <section style={CARD}>
+            <h2 style={{ fontSize: 18, fontWeight: 700, color: P.textBright, margin: 0, marginBottom: 6 }}>
+              No child profiles yet
+            </h2>
+            <p style={{ color: P.textSoft, fontSize: 14, lineHeight: 1.6, margin: 0 }}>
+              Add a child to start tracking their journey through {product.name}.
+            </p>
+            <Link
+              href="/onboarding"
+              style={{
+                display: "inline-block", marginTop: 16, padding: "10px 18px", borderRadius: 999,
+                background: G.hero, color: P.abyss, fontWeight: 700, fontSize: 14,
+                textDecoration: "none", boxShadow: S.buttonGlow,
+              }}
+            >
+              Add a child profile
+            </Link>
+          </section>
+        )}
+
+        <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
+          {summaries.map((c) => (
+            <ChildCard key={c.id} child={c} weeksCount={weeksCount} />
+          ))}
+        </div>
+      </main>
+    </div>
+  );
+}
+
+/* ───────────────────────── CHILD CARD ───────────────────────── */
+
+function ChildCard({ child, weeksCount }: { child: ChildSummary; weeksCount: number; }) {
+  const pct = weeksCount > 0 ? Math.round((child.completedCount / weeksCount) * 100) : 0;
+  return (
+    <section style={CARD}>
+      <div
+        style={{
+          display: "flex", alignItems: "baseline", justifyContent: "space-between",
+          flexWrap: "wrap", gap: 12, marginBottom: 6,
+        }}
+      >
+        <h2 style={{ margin: 0, fontSize: 22, fontWeight: 700, color: P.textBright, letterSpacing: "-0.01em" }}>
+          {child.name}{" "}
+          <span style={{ fontSize: 14, color: P.textMuted, fontWeight: 500 }}>
+            ({child.age} yo)
+          </span>
+        </h2>
       </div>
-    </>
+
+      <p style={{ margin: 0, color: P.textSoft, fontSize: 14, lineHeight: 1.6 }}>
+        <span style={{ color: P.cyan, fontWeight: 700 }}>{child.completedCount}</span>{" "}
+        of {weeksCount} weeks complete
+        <span style={{ color: P.textMuted, margin: "0 8px" }}>·</span>
+        <span style={{ color: P.amber, fontWeight: 700 }}>{child.totalStars}</span>{" "}
+        total stars
+      </p>
+
+      <div
+        style={{
+          marginTop: 14, height: 6, width: "100%",
+          background: `${P.cyan}14`, borderRadius: 999, overflow: "hidden",
+        }}
+        aria-hidden
+      >
+        <div style={{ height: "100%", width: `${pct}%`, background: G.hero, borderRadius: 999 }} />
+      </div>
+
+      <div
+        style={{
+          marginTop: 22,
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fill, minmax(58px, 1fr))",
+          gap: 10,
+        }}
+      >
+        {child.weeks.map((w) => <WeekDot key={w.week} cell={w} />)}
+      </div>
+
+      <div
+        style={{
+          marginTop: 18, display: "flex", flexWrap: "wrap", gap: 18,
+          fontSize: 12, color: P.textMuted,
+        }}
+      >
+        <LegendSwatch color={P.lime} label="Complete" />
+        <LegendSwatch color={P.amber} label="In progress" />
+        <LegendSwatch color={`${P.cyan}22`} ringColor={`${P.cyan}33`} label="Not started" />
+      </div>
+    </section>
+  );
+}
+
+/* ───────────────────────── WEEK DOT ───────────────────────── */
+
+function WeekDot({ cell }: { cell: WeekCell }) {
+  const { week, state, stars } = cell;
+  let bg: string; let border: string; let textColor: string; let glow: string | undefined;
+  if (state === "completed") {
+    bg = `linear-gradient(135deg, ${P.lime}, ${P.cyan})`;
+    border = `1px solid ${P.lime}99`;
+    textColor = P.abyss;
+    glow = `0 0 16px ${P.lime}55`;
+  } else if (state === "in_progress") {
+    bg = `${P.amber}26`;
+    border = `1px solid ${P.amber}88`;
+    textColor = P.amber;
+    glow = `0 0 12px ${P.amber}33`;
+  } else {
+    bg = `${P.cyan}0d`;
+    border = `1px solid ${P.cyan}22`;
+    textColor = P.textMuted;
+  }
+
+  const body = (
+    <div
+      style={{
+        position: "relative", aspectRatio: "1 / 1", borderRadius: 12,
+        background: bg, border, boxShadow: glow,
+        display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
+        gap: 2, cursor: state === "not_started" ? "default" : "pointer",
+        transition: "transform 120ms ease",
+      }}
+      title={`Week ${week} — ${
+        state === "completed" ? `complete (${stars}★)`
+          : state === "in_progress" ? "in progress"
+          : "not started"
+      }`}
+    >
+      <div style={{ fontSize: 11, fontWeight: 700, color: textColor, letterSpacing: "0.04em", lineHeight: 1 }}>
+        W{week}
+      </div>
+      {state === "completed" && stars > 0 && (
+        <div style={{ marginTop: 2 }}><Stars count={stars} /></div>
+      )}
+    </div>
+  );
+
+  if (state === "not_started") return body;
+  return (
+    <Link href={`/parent/week/${week}`} style={{ textDecoration: "none" }} aria-label={`Open week ${week} details`}>
+      {body}
+    </Link>
+  );
+}
+
+function LegendSwatch({ color, ringColor, label }: { color: string; ringColor?: string; label: string; }) {
+  return (
+    <div style={{ display: "inline-flex", alignItems: "center", gap: 6 }}>
+      <span
+        style={{
+          width: 10, height: 10, borderRadius: 4, background: color,
+          border: ringColor ? `1px solid ${ringColor}` : undefined,
+          display: "inline-block",
+        }}
+      />
+      {label}
+    </div>
   );
 }

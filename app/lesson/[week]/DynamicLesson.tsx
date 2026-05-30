@@ -6,6 +6,7 @@ import Link from "next/link";
 import dynamic from "next/dynamic";
 import { motion } from "framer-motion";
 import { playSound as playSFX, playBGM, stopBGM } from "@/app/lib/sounds";
+import { useGameAudio } from "@/app/lib/gameEngine";
 import { addXP, type RankInfo } from "@/app/lib/progression";
 import {
   correctAnswerBurst,
@@ -357,6 +358,7 @@ function DynamicLessonInner() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const comfort = useComfortMode();
+  const audio = useGameAudio();
 
   // QA deep-link: ?screen=N jumps straight to that screen on mount.
   // Bypasses the resume banner. Out-of-range values are clamped.
@@ -555,15 +557,43 @@ function DynamicLessonInner() {
   useEffect(() => {
     if (!content || !cutsceneDone) return;
     const def = content.screens[screen];
-    const isBattle =
-      def?.type === "bossBattle" ||
-      (def && ["cyberScanner", "protectTheData", "conveyorBelt", "weakSorter", "passwordHospital", "popupPanic", "threeRandomWords", "accountRescue", "spamBlaster", "firewallBuilder", "cyberMaze", "phishInspector", "passwordVault"].includes(def.type));
+    // bgmBattle is RESERVED for the final boss fight only - the
+    // urgent track was bleeding into exercise screens like
+    // CyberScanner and undermining the calm "learning" tone. Every
+    // non-boss screen now plays bgmLesson (faint, ambient bed).
+    const isBoss = def?.type === "bossBattle";
     try {
-      playBGM(isBattle ? "bgmBattle" : "bgmLesson");
+      playBGM(isBoss ? "bgmBattle" : "bgmLesson");
     } catch {
       /* BGM optional */
     }
   }, [screen, content, cutsceneDone]);
+
+  // Signature SFX on key screen entries. One-shot per screen change
+  // - fires when the screen index lands on a mission brief or final
+  // completion. Boss victory has its own SFX wired inside
+  // BossVictoryScene; vault open/reveal inside PasswordVault.
+  useEffect(() => {
+    if (!content || !cutsceneDone) return;
+    const def = content.screens[screen];
+    if (!def) return;
+    if (def.type === "mission") {
+      // Small delay so the screen-transition cue doesn't clash with
+      // the heroic mission-start sting.
+      const id = window.setTimeout(() => audio.signature("mission-start"), 320);
+      return () => window.clearTimeout(id);
+    }
+    if (def.type === "completion") {
+      // Big fanfare first, then the warmer badge-bloom shimmer.
+      // Staggered so they read as a phrase, not a clash.
+      const t1 = window.setTimeout(() => audio.signature("mission-complete"), 240);
+      const t2 = window.setTimeout(() => audio.signature("badge-bloom"), 1100);
+      return () => {
+        window.clearTimeout(t1);
+        window.clearTimeout(t2);
+      };
+    }
+  }, [screen, content, cutsceneDone, audio]);
 
   useEffect(
     () => () => {
