@@ -46,7 +46,11 @@ export default function ProblemStats() {
         color: "var(--lv2-paper)",
       }}
     >
-      <SeamLine />
+      {/* No top dissolve. The hex floor texture now fades itself at
+       *  the near-camera edge (PASS 3 in makeHexGridTexture inside
+       *  LaptopScene), so GlobalBackdrop reads through the seam
+       *  cleanly — masking it with an ink overlay would re-introduce
+       *  the dark band we just eliminated. */}
       <div
         style={{
           position: "relative",
@@ -115,8 +119,10 @@ export default function ProblemStats() {
   );
 }
 
-/* Faint cyan-gradient hairline at the top of each section. Provides
- * subtle definition without crashing colors. */
+/* Faint cyan-gradient hairline at the top of each section. Softened
+ * (alpha 0.32 → 0.14) so it whispers a section boundary rather than
+ * stamping a deliberate line — the surrounding dissolve gradients do
+ * most of the work of separating sections now. */
 export function SeamLine() {
   return (
     <div
@@ -128,8 +134,9 @@ export function SeamLine() {
         right: "10%",
         height: 1,
         background:
-          "linear-gradient(90deg, transparent, rgba(0,229,255,0.32), transparent)",
+          "linear-gradient(90deg, transparent, rgba(0,229,255,0.14), transparent)",
         pointerEvents: "none",
+        zIndex: 1,
       }}
     />
   );

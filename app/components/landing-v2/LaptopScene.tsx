@@ -890,6 +890,33 @@ function makeHexGridTexture(): THREE.Texture | null {
   }
   ctx.shadowBlur = 0;
 
+  /* PASS 3 — ASYMMETRIC VERTICAL FADE on the near-camera floor.
+   *
+   * The floor plane is rotated -π/2 around X, so canvas-bottom pixels
+   * (high Y) render in the LOWER viewport (the floor area closest to
+   * the camera). That area's bright hex pattern was creating the
+   * visible seam against ProblemStats below, because the texture's
+   * radial fade is symmetric and didn't account for the asymmetric
+   * camera angle.
+   *
+   * `destination-out` composite subtracts alpha from already-drawn
+   * pixels. Gradient stays at 0 (unchanged) through the centre half
+   * of the canvas (laptop pool stays vivid), then ramps up to nearly
+   * full erasure at the canvas bottom — so the near-camera floor
+   * tapers cleanly into nothing instead of cutting off at a hard
+   * edge. GlobalBackdrop now reads through the seam directly; no
+   * heavy ink overlay needed downstream. */
+  ctx.globalCompositeOperation = "destination-out";
+  const nearCameraFade = ctx.createLinearGradient(0, 0, 0, S);
+  nearCameraFade.addColorStop(0.0,  "rgba(0,0,0,0)");
+  nearCameraFade.addColorStop(0.55, "rgba(0,0,0,0)");
+  nearCameraFade.addColorStop(0.78, "rgba(0,0,0,0.55)");
+  nearCameraFade.addColorStop(0.92, "rgba(0,0,0,0.88)");
+  nearCameraFade.addColorStop(1.0,  "rgba(0,0,0,0.96)");
+  ctx.fillStyle = nearCameraFade;
+  ctx.fillRect(0, 0, S, S);
+  ctx.globalCompositeOperation = "source-over";
+
   const tex = new THREE.CanvasTexture(c);
   tex.wrapS = THREE.ClampToEdgeWrapping;
   tex.wrapT = THREE.ClampToEdgeWrapping;
@@ -1146,7 +1173,7 @@ const SLAB_CURRICULUM: ReadonlyArray<readonly string[]> = [
 
 /* DETAIL slab texture — the richer face that crossfades over the
  *  compact one when a slab is hovered. Adds a "WHAT YOU'LL LEARN"
- *  bullets block + a "TRY A FREE LESSON" CTA pill at the bottom.
+ *  bullets block above the stream details.
  *  Same 3:4 portrait aspect as makeSlabTexture (480x640 vs 384x512)
  *  so it shares the same planeGeometry — only the texture swaps. */
 function makeSlabDetailTexture(
@@ -1327,26 +1354,6 @@ function makeSlabDetailTexture(
   ctx.font = `500 12px ${FONT_MONO}`;
   ctx.fillStyle = "rgba(232,237,255,0.6)";
   ctx.fillText(`AGES ${stream.age}  ·  FIRST: ${stream.project}`, 32, 532);
-
-  /* CTA pill — bottom-centred, accent-filled with arrow */
-  const ctaText = "TRY A FREE LESSON  →";
-  ctx.font = `bold 16px ${FONT_MONO}`;
-  const ctw = ctx.measureText(ctaText).width;
-  const cpad = 22;
-  const cbw = ctw + cpad * 2;
-  const cbh = 40;
-  const cbx = (c.width - cbw) / 2;
-  const cby = c.height - 60;
-  ctx.fillStyle = accent;
-  ctx.shadowColor = accent;
-  ctx.shadowBlur = 16;
-  roundRect(ctx, cbx, cby, cbw, cbh, 18);
-  ctx.fill();
-  ctx.shadowBlur = 0;
-  ctx.fillStyle = "#04050d";
-  ctx.textAlign = "center";
-  ctx.textBaseline = "middle";
-  ctx.fillText(ctaText, cbx + cbw / 2, cby + cbh / 2);
 
   const out = new THREE.CanvasTexture(c);
   out.colorSpace = THREE.SRGBColorSpace;
@@ -1893,7 +1900,7 @@ function Laptop({
    * deps, an edit to the texture function wouldn't trigger a regen
    * on Fast Refresh — the stale GPU texture stayed bound. Including
    * a version literal in the deps forces useMemo to re-run on save. */
-  const HEX_TEX_VERSION = "v3-aggressive-refine";
+  const HEX_TEX_VERSION = "v4-near-camera-fade";
   const hexFloorTex = useMemo(
     () => makeHexGridTexture(),
     [HEX_TEX_VERSION],

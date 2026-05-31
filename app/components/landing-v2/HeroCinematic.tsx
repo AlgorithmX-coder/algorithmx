@@ -31,7 +31,17 @@ export const CHAPTERS: ReadonlyArray<{ id: string; title: string; range: [number
   { id: "06", title: "Start your journey", range: [0.85, 1.0] },
 ];
 
-const VaultScene = dynamic(() => import("./LaptopScene"), { ssr: false });
+/* Loading fallback fills the cold-start gap (~150-400ms typical) between
+ *  HTML paint and WebGL first-frame. Without this the laptop area sits
+ *  blank — visible as a noticeable empty hole below the headline column.
+ *  A brand-consistent "// INITIALISING" terminal-style indicator slots
+ *  into the laptop's spot until ScreenSlabs/Laptop mount. The cinematic
+ *  narrative starts at chapter 01 "System dormant" anyway, so this reads
+ *  diegetically as the system literally powering up. */
+const VaultScene = dynamic(() => import("./LaptopScene"), {
+  ssr: false,
+  loading: () => <SceneLoading />,
+});
 
 export default function HeroCinematic() {
   const railRef = useRef<HTMLElement>(null);
@@ -139,8 +149,38 @@ export default function HeroCinematic() {
           }}
         />
 
-        {/* Layer 1 - the 3D scene */}
-        <div style={{ position: "absolute", inset: 0, zIndex: 1 }}>
+        {/* Layer 1 - the 3D scene.
+         *
+         *  CSS mask fades the BOTTOM of the canvas to fully transparent
+         *  so the 3D scene bleeds smoothly into GlobalBackdrop (which
+         *  sits at z-index -1, fixed-position, visible everywhere)
+         *  instead of cutting off at the sticky-pin's hard pixel edge.
+         *
+         *  Fade starts at 64% from top — well below the laptop's bottom
+         *  edge so the chassis is never clipped — and reaches full
+         *  transparency at 100%. Everything below the fade reads as
+         *  pure GlobalBackdrop, identical to ProblemStats and every
+         *  other section, so the scroll into the next section is one
+         *  continuous environment with no visible boundary. */}
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            zIndex: 1,
+            maskImage:
+              "linear-gradient(to bottom, " +
+              "black 0%, " +
+              "black 64%, " +
+              "rgba(0,0,0,0.55) 84%, " +
+              "transparent 100%)",
+            WebkitMaskImage:
+              "linear-gradient(to bottom, " +
+              "black 0%, " +
+              "black 64%, " +
+              "rgba(0,0,0,0.55) 84%, " +
+              "transparent 100%)",
+          }}
+        >
           <VaultScene progress={progress} reducedMotion={reducedMotion} />
         </div>
 
@@ -209,35 +249,11 @@ export default function HeroCinematic() {
           }}
         />
 
-        {/* Layer 2b - DISSOLVE ZONE. The single most important layer
-         *  for the cinematic feel: a tall gradient at the bottom of
-         *  the sticky frame that fades the hero into atmosphere. The
-         *  laptop floor at the lower-middle of the viewport gets a
-         *  whisper of mist over it; the very bottom of the viewport
-         *  reads as deep-ink fog. Crucially this also covers the
-         *  exact pixel-row where the sticky pin will release into
-         *  the next section, so the boundary becomes a soft mist
-         *  shoulder rather than a horizontal cut. Sits above the
-         *  vignette but below the brand UI (zIndex 3) so the headline
-         *  and CTAs remain crisp. */}
-        <div
-          aria-hidden
-          style={{
-            position: "absolute",
-            left: 0,
-            right: 0,
-            bottom: 0,
-            height: "46vh",
-            zIndex: 2,
-            pointerEvents: "none",
-            background:
-              "linear-gradient(to bottom, " +
-              "rgba(4,5,13,0) 0%, " +
-              "rgba(4,5,13,0.18) 35%, " +
-              "rgba(4,5,13,0.52) 72%, " +
-              "rgba(4,5,13,0.78) 100%)",
-          }}
-        />
+        {/* Layer 2b removed: the canvas now masks itself to transparent
+         *  at the bottom (see Layer 1 maskImage), so the cinematic
+         *  bleeds directly into the GlobalBackdrop sitting behind it.
+         *  Any ink overlay here would just darken GlobalBackdrop in
+         *  the seam zone and re-introduce the band we eliminated. */}
 
         {/* Layer 3 - static brand UI (headline reveals at Chapter 03) */}
         <HeroOverlay progress={progress} />
@@ -540,5 +556,46 @@ function ScrollHint({
         </span>
       </motion.div>
     </>
+  );
+}
+
+/* Loading state shown by the dynamic import while LaptopScene's
+ *  JS bundle + WebGL context come up. Mono "// INITIALISING" with a
+ *  blinking cursor — terminal aesthetic that ties into the cinematic's
+ *  "System dormant → activating" opening narrative. Centered in the
+ *  area where the laptop will land so the gap doesn't read as a void. */
+function SceneLoading() {
+  return (
+    <div
+      aria-hidden
+      style={{
+        width: "100%",
+        height: "100%",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        gap: 10,
+        fontFamily: "var(--lv2-font-mono)",
+        fontSize: 11,
+        fontWeight: 600,
+        letterSpacing: "0.28em",
+        textTransform: "uppercase",
+        color: "rgba(0, 229, 255, 0.55)",
+      }}
+    >
+      <span>// INITIALISING</span>
+      <motion.span
+        aria-hidden
+        animate={{ opacity: [1, 1, 0.18, 0.18] }}
+        transition={{ duration: 1.0, repeat: Infinity, ease: "linear" }}
+        style={{
+          display: "inline-block",
+          width: 7,
+          height: 13,
+          background: "var(--lv2-cyan)",
+          boxShadow: "0 0 10px rgba(0, 229, 255, 0.7)",
+        }}
+      />
+    </div>
   );
 }
