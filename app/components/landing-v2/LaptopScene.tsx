@@ -153,31 +153,32 @@ const BOOT_LINES: ReadonlyArray<{ pre: string; main: string; color: string }> = 
   { pre: "STATUS: ", main: "STUDENT PATHWAYS READY", color: "#9ff5ff" },
 ];
 
+/* `outcome` is the verb+ambition line per stream, written for the
+ * audience that actually takes the course. Currently consumed by
+ * SubjectShowcase below the hero; kept on STREAMS here so the laptop
+ * screen content can surface it in future iterations if needed. */
 const STREAMS = [
-  { name: "CYBERSECURITY", status: "LIVE", age: "9-16", project: "Password defender", color: "#5fffa3" },
-  { name: "GAME DEVELOPMENT", status: "2026", age: "8-16", project: "Pixel platformer", color: "#9ff5ff" },
-  { name: "AI & MACHINE LEARNING", status: "2026", age: "11+", project: "Image classifier", color: "#cba8ff" },
-  { name: "APP DEVELOPMENT", status: "2027", age: "12+", project: "Habit tracker", color: "#ffd07a" },
-  { name: "ENTREPRENEURSHIP", status: "2027", age: "13+", project: "Pitch deck builder", color: "#ffc94a" },
-  { name: "ROBOTICS", status: "2027", age: "10+", project: "Maze-solver bot", color: "#ff3ad6" },
+  { name: "CYBERSECURITY",         status: "LIVE", age: "9-16", project: "Password defender",  outcome: "DEFEND AGAINST CYBER ATTACKS", color: "#5fffa3" },
+  { name: "GAME DEVELOPMENT",      status: "2026", age: "8-16", project: "Pixel platformer",   outcome: "DESIGN GAMES PEOPLE PLAY",     color: "#9ff5ff" },
+  { name: "AI & MACHINE LEARNING", status: "2026", age: "11+",  project: "Image classifier",   outcome: "BUILD INTELLIGENT MACHINES",   color: "#cba8ff" },
+  { name: "APP DEVELOPMENT",       status: "2027", age: "12+",  project: "Habit tracker",      outcome: "DELIVER REAL INDUSTRY PROJECTS", color: "#ffd07a" },
+  { name: "ENTREPRENEURSHIP",      status: "2027", age: "13+",  project: "Pitch deck builder", outcome: "LAUNCH YOUR OWN COMPANY",      color: "#ffc94a" },
+  { name: "ROBOTICS",              status: "2027", age: "10+",  project: "Maze-solver bot",    outcome: "ENGINEER ROBOTS THAT MOVE",    color: "#ff3ad6" },
 ] as const;
 
 function computeScreenStage(p: number): number {
-  /* Tightly sequenced: lid opens 0.32->0.50, then screen ignites at
-   * 0.50 and the boot lines type out 0.52->0.62, settling on the full
-   * streams dashboard from 0.65. Subsequent dashboards (projects,
-   * ready) come AFTER the cards have emerged so the screen narrative
-   * progresses with the hero moment instead of jumping ahead. */
+  /* Lid opens 0.32→0.50, screen ignites at 0.50, boot lines type
+   * 0.52→0.62, dashboards land 0.65→0.95, READY is the final beat. */
   if (p < 0.50) return 0;
   if (p < 0.52) return 1;
   if (p < 0.54) return 2;
   if (p < 0.56) return 3;
   if (p < 0.58) return 4;
   if (p < 0.60) return 5;
-  if (p < 0.65) return 6; // boot complete (all 6 lines + OK)
-  if (p < 0.86) return 7; // streams dashboard (during card emerge)
-  if (p < 0.95) return 8; // projects (after cards settled)
-  return 9; // ready (final hero moment)
+  if (p < 0.65) return 6; // boot complete
+  if (p < 0.86) return 7; // streams dashboard
+  if (p < 0.95) return 8; // active projects
+  return 9; // ready
 }
 
 function roundRect(
@@ -489,148 +490,6 @@ function paintScreen(canvas: HTMLCanvasElement, stage: number) {
   paintBrandStrip(ctx, canvas);
 }
 
-/* HOLOGRAPHIC COURSE CARDS - emerge from the screen at Chapter 04.
- * Each card is a canvas-painted texture on a 3D plane with translucent
- * dark background, accent-coloured glow rim, scanline overlay, icon
- * glyph, stream name, status pill, age range and example project. Six
- * cards in a fanned arc above and in front of the laptop. */
-
-const STREAM_ICONS: ReadonlyArray<string> = [
-  "⌬", // cybersecurity
-  "◈", // game dev
-  "◐", // AI & ML
-  "▢", // app dev
-  "◬", // entrepreneurship
-  "◇", // robotics
-];
-
-function makeHoloCardTexture(
-  stream: (typeof STREAMS)[number],
-  icon: string,
-  indexLabel: string,
-): THREE.Texture | null {
-  if (typeof document === "undefined") return null;
-  const c = document.createElement("canvas");
-  c.width = 768;
-  c.height = 512;
-  const ctx = c.getContext("2d");
-  if (!ctx) return null;
-  ctx.clearRect(0, 0, c.width, c.height);
-  ctx.imageSmoothingEnabled = true;
-  ctx.imageSmoothingQuality = "high";
-
-  const accent = stream.color;
-  const accentRgb = hexToRgbStr(accent);
-
-  /* Background panel - dark translucent so the card reads as a glass
-   * UI element, not a solid sticker. The PlaneMaterial alpha + this
-   * fill stack to produce the right hologram opacity. */
-  ctx.fillStyle = "rgba(6,10,20,0.82)";
-  roundRect(ctx, 0, 0, c.width, c.height, 26);
-  ctx.fill();
-
-  /* Accent rim border with glow - the unmistakable hologram tell. */
-  ctx.lineWidth = 4;
-  ctx.strokeStyle = accent;
-  ctx.shadowColor = accent;
-  ctx.shadowBlur = 22;
-  roundRect(ctx, 5, 5, c.width - 10, c.height - 10, 24);
-  ctx.stroke();
-  ctx.shadowBlur = 0;
-
-  /* Scanlines - faint horizontal stripes for CRT/projected-hologram feel */
-  ctx.fillStyle = `rgba(${accentRgb},0.04)`;
-  for (let y = 12; y < c.height - 12; y += 5) {
-    ctx.fillRect(12, y, c.width - 24, 1);
-  }
-
-  /* Corner brackets - top-left and bottom-right for JARVIS-style UI */
-  ctx.strokeStyle = accent;
-  ctx.lineWidth = 3;
-  ctx.beginPath();
-  ctx.moveTo(28, 56); ctx.lineTo(28, 28); ctx.lineTo(56, 28);
-  ctx.moveTo(c.width - 56, c.height - 28); ctx.lineTo(c.width - 28, c.height - 28); ctx.lineTo(c.width - 28, c.height - 56);
-  ctx.stroke();
-
-  /* TOP: icon + stream name + status pill */
-  ctx.font = `bold 76px ${FONT_SANS}`;
-  ctx.fillStyle = accent;
-  ctx.shadowColor = accent;
-  ctx.shadowBlur = 16;
-  ctx.textAlign = "left";
-  ctx.textBaseline = "middle";
-  ctx.fillText(icon, 52, 96);
-  ctx.shadowBlur = 0;
-
-  ctx.font = `bold 30px ${FONT_MONO}`;
-  ctx.fillStyle = "#ffffff";
-  /* Auto-shrink if stream name is long */
-  let nameSize = 30;
-  while (ctx.measureText(stream.name).width > 420 && nameSize > 20) {
-    nameSize -= 2;
-    ctx.font = `bold ${nameSize}px ${FONT_MONO}`;
-  }
-  ctx.fillText(stream.name, 132, 96);
-
-  /* Status pill (top-right) */
-  ctx.font = `bold 22px ${FONT_MONO}`;
-  const sw = ctx.measureText(stream.status).width;
-  const spad = 16;
-  const sbw = sw + spad * 2;
-  const sbh = 36;
-  const sbx = c.width - 52 - sbw;
-  const sby = 96 - sbh / 2;
-  ctx.fillStyle = accent;
-  roundRect(ctx, sbx, sby, sbw, sbh, 7);
-  ctx.fill();
-  ctx.fillStyle = "#04050d";
-  ctx.textAlign = "center";
-  ctx.fillText(stream.status, sbx + sbw / 2, 96);
-  ctx.textAlign = "left";
-
-  /* Divider */
-  ctx.fillStyle = `rgba(${accentRgb},0.28)`;
-  ctx.fillRect(52, 166, c.width - 104, 1);
-
-  /* MIDDLE: AGES heading (large accent display) */
-  ctx.font = `900 96px ${FONT_SANS}`;
-  ctx.fillStyle = accent;
-  ctx.shadowColor = accent;
-  ctx.shadowBlur = 24;
-  ctx.textAlign = "center";
-  ctx.fillText(`AGES ${stream.age}`, c.width / 2, 268);
-  ctx.shadowBlur = 0;
-
-  /* PROJECT label + name */
-  ctx.font = `500 22px ${FONT_MONO}`;
-  ctx.fillStyle = "rgba(232,237,255,0.55)";
-  ctx.fillText("EXAMPLE PROJECT", c.width / 2, 348);
-  ctx.font = `bold 34px ${FONT_SANS}`;
-  ctx.fillStyle = "#ffffff";
-  ctx.fillText(`"${stream.project}"`, c.width / 2, 398);
-
-  /* Bottom-left: stream index */
-  ctx.font = `500 18px ${FONT_MONO}`;
-  ctx.fillStyle = `rgba(${accentRgb},0.7)`;
-  ctx.textAlign = "left";
-  ctx.fillText(indexLabel, 52, c.height - 32);
-
-  /* Bottom-right: terminal-style decoration */
-  ctx.fillStyle = `rgba(${accentRgb},0.4)`;
-  ctx.font = `500 16px ${FONT_MONO}`;
-  ctx.textAlign = "right";
-  ctx.fillText("// ALGORITHMX.OS", c.width - 52, c.height - 32);
-
-  const tex = new THREE.CanvasTexture(c);
-  tex.colorSpace = THREE.SRGBColorSpace;
-  tex.anisotropy = 16;
-  tex.minFilter = THREE.LinearMipmapLinearFilter;
-  tex.magFilter = THREE.LinearFilter;
-  tex.generateMipmaps = true;
-  tex.needsUpdate = true;
-  return tex;
-}
-
 interface LivingScreen {
   tex: THREE.Texture | null;
   repaint: (stage: number) => void;
@@ -755,7 +614,11 @@ function hueForRowPos(t: number): string {
  * in space, each particle is a small luminous "0", "1", or code fragment
  * — reads as "data / neural energy" not abstract noise. Built once at
  * module-mount on canvas, then shared across all particle instances. */
-const GLYPHS = ["0", "1", "{", "}", ">", "#", "/", "0x"] as const;
+/* "0x" removed — at the cinematic camera distance it read as literal
+ * floating text near the hero, not as a code-particle drift glyph
+ * like the rest. The remaining seven single-char glyphs keep the
+ * "code in the air" ambience without anyone going "what's that 0x?". */
+const GLYPHS = ["0", "1", "{", "}", ">", "#", "/"] as const;
 
 function makeGlyphTextures(): (THREE.Texture | null)[] {
   if (typeof document === "undefined") return GLYPHS.map(() => null);
@@ -931,7 +794,10 @@ function makeHexGridTexture(): THREE.Texture | null {
   const rowH = R * 1.5;
   const cx = S / 2;
   const cy = S / 2;
-  const fadeR = S * 0.52;
+  /* fadeR tightened further (0.46 → 0.40) for a true cinematic
+   * stage pool. Outer hexes vanish hard so the laptop stands in a
+   * spot-lit pool of light, not a tiled wallpaper. */
+  const fadeR = S * 0.4;
 
   const cols = Math.ceil(S / hexW) + 2;
   const rows = Math.ceil(S / rowH) + 2;
@@ -947,10 +813,39 @@ function makeHexGridTexture(): THREE.Texture | null {
       const d2 = dx * dx + dy * dy;
       if (d2 > 1.0) continue;
       const t = Math.max(0, 1 - d2);
-      const a = t * t; // quadratic — fills the frame, soft outer fade
+      /* Cubic falloff (was quadratic) - the inner pool stays vivid
+       * but the outer hexes drop off faster, giving a more
+       * deliberate "spot-lit stage" feel under the laptop instead
+       * of a wallpaper texture filling the frame. */
+      const a = t * t * t;
       hexes.push({ x, y, a });
     }
   }
+
+  /* Centre accent pool — pumped up significantly. This is the
+   * spot-light under the laptop. Inner stop brighter (0.22 → 0.38)
+   * and outer stop tightened so the brightness falloff feels
+   * deliberate, not diffused. Pool radius also pulled in a touch
+   * (0.28 → 0.26) so the brightest area is concentrated under the
+   * laptop rather than spread across the floor.
+   *
+   * Painted first so the hex strokes draw on top of it. */
+  const poolGrad = ctx.createRadialGradient(cx, cy, 0, cx, cy, S * 0.26);
+  poolGrad.addColorStop(0, "rgba(0,229,255,0.38)");
+  poolGrad.addColorStop(0.4, "rgba(0,229,255,0.15)");
+  poolGrad.addColorStop(1, "rgba(0,229,255,0)");
+  ctx.fillStyle = poolGrad;
+  ctx.fillRect(0, 0, S, S);
+
+  /* Inner micro-pool — second radial gradient TIGHTER than the
+   * main pool, providing the "really bright right under the laptop"
+   * hotspot. Adds a deliberate light source feel — like a stage
+   * spot pointed straight down. */
+  const hotGrad = ctx.createRadialGradient(cx, cy, 0, cx, cy, S * 0.1);
+  hotGrad.addColorStop(0, "rgba(127,240,255,0.25)");
+  hotGrad.addColorStop(1, "rgba(127,240,255,0)");
+  ctx.fillStyle = hotGrad;
+  ctx.fillRect(0, 0, S, S);
 
   /* Pass 1: hex outlines. lineWidth scaled to the 2048 canvas (now
    * 1.7 px instead of sub-pixel 0.85) so each stroke renders as a
@@ -975,20 +870,25 @@ function makeHexGridTexture(): THREE.Texture | null {
     ctx.stroke();
   }
 
-  /* Pass 2: sparse via-style nodes at hex centres. Dot radius scaled
-   * to the 2048 canvas. Hash threshold tuned so densities stay
-   * roughly the same as before. */
+  /* Pass 2: via-style nodes — restricted to the INNER zone only so
+   * they read as deliberate accents under the laptop, not random
+   * peppering across the whole stage. Threshold tightened (0.05 →
+   * 0.035) so fewer dots overall. Alpha cap above 0.45 only — the
+   * outer hexes that DO get a node are too dim to register. */
   for (const h of hexes) {
+    if (h.a < 0.45) continue; // inner zone only
     const seed = Math.sin(h.x * 12.9898 + h.y * 78.233) * 43758.5453;
     const r = seed - Math.floor(seed);
-    if (r > 0.05) continue;
-    if (h.a < 0.15) continue;
-    const dotA = h.a * 0.9;
+    if (r > 0.035) continue;
+    const dotA = h.a * 1.0;
     ctx.fillStyle = `rgba(127,240,255,${dotA})`;
+    ctx.shadowColor = "rgba(127,240,255,0.85)";
+    ctx.shadowBlur = 4;
     ctx.beginPath();
-    ctx.arc(h.x, h.y, 2.2, 0, Math.PI * 2);
+    ctx.arc(h.x, h.y, 2.6, 0, Math.PI * 2);
     ctx.fill();
   }
+  ctx.shadowBlur = 0;
 
   const tex = new THREE.CanvasTexture(c);
   tex.wrapS = THREE.ClampToEdgeWrapping;
@@ -1063,6 +963,399 @@ function makeFogHazeTexture(): THREE.Texture | null {
   const tex = new THREE.CanvasTexture(c);
   tex.needsUpdate = true;
   return tex;
+}
+
+/* SCREEN-EMITTED SLABS — three holographic panels that emerge OUT of
+ *  the screen face along Z toward the camera. Sized + positioned to
+ *  stay within the laptop silhouette so they never crash into the
+ *  headline column on the left of the frame. */
+
+const SLAB_STREAM_ICONS: ReadonlyArray<string> = ["⌬", "◐", "▢"];
+
+function makeSlabTexture(
+  stream: (typeof STREAMS)[number],
+  icon: string,
+): THREE.Texture | null {
+  if (typeof document === "undefined") return null;
+  const c = document.createElement("canvas");
+  c.width = 384;
+  c.height = 512;
+  const ctx = c.getContext("2d");
+  if (!ctx) return null;
+  ctx.clearRect(0, 0, c.width, c.height);
+  ctx.imageSmoothingEnabled = true;
+  ctx.imageSmoothingQuality = "high";
+
+  const accent = stream.color;
+  const accentRgb = hexToRgbStr(accent);
+
+  /* Dark glass panel — slightly translucent so the screen behind
+   *  still bleeds through faintly. */
+  const bgGrad = ctx.createLinearGradient(0, 0, 0, c.height);
+  bgGrad.addColorStop(0, "rgba(6,9,18,0.80)");
+  bgGrad.addColorStop(1, "rgba(2,4,10,0.84)");
+  ctx.fillStyle = bgGrad;
+  roundRect(ctx, 0, 0, c.width, c.height, 18);
+  ctx.fill();
+
+  /* Inner accent halo behind the outcome text */
+  const halo = ctx.createRadialGradient(
+    c.width / 2, c.height * 0.42, 14,
+    c.width / 2, c.height * 0.42, c.width * 0.7,
+  );
+  halo.addColorStop(0, `rgba(${accentRgb},0.28)`);
+  halo.addColorStop(0.55, `rgba(${accentRgb},0.06)`);
+  halo.addColorStop(1, `rgba(${accentRgb},0)`);
+  ctx.fillStyle = halo;
+  ctx.fillRect(0, 0, c.width, c.height);
+
+  /* Accent rim */
+  ctx.lineWidth = 2;
+  ctx.strokeStyle = `rgba(${accentRgb},0.85)`;
+  ctx.shadowColor = accent;
+  ctx.shadowBlur = 14;
+  roundRect(ctx, 3, 3, c.width - 6, c.height - 6, 16);
+  ctx.stroke();
+  ctx.shadowBlur = 0;
+
+  /* Corner brackets (JARVIS tell) */
+  ctx.strokeStyle = accent;
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.moveTo(20, 40); ctx.lineTo(20, 20); ctx.lineTo(40, 20);
+  ctx.moveTo(c.width - 40, c.height - 20); ctx.lineTo(c.width - 20, c.height - 20); ctx.lineTo(c.width - 20, c.height - 40);
+  ctx.stroke();
+
+  /* Icon top */
+  ctx.font = `bold 46px ${FONT_SANS}`;
+  ctx.fillStyle = accent;
+  ctx.shadowColor = accent;
+  ctx.shadowBlur = 14;
+  ctx.textAlign = "left";
+  ctx.textBaseline = "alphabetic";
+  ctx.fillText(icon, 28, 80);
+  ctx.shadowBlur = 0;
+
+  /* Outcome — 2-line balanced split with auto-fit font size */
+  const words = stream.outcome.split(" ");
+  let lines: string[];
+  if (words.length <= 2) {
+    lines = words.length === 1 ? [words[0]] : words;
+  } else {
+    ctx.font = `900 56px ${FONT_SANS}`;
+    let bestSplit = Math.ceil(words.length / 2);
+    let bestDelta = Infinity;
+    for (let i = 1; i < words.length; i++) {
+      const a = words.slice(0, i).join(" ");
+      const b = words.slice(i).join(" ");
+      const d = Math.abs(ctx.measureText(a).width - ctx.measureText(b).width);
+      if (d < bestDelta) { bestDelta = d; bestSplit = i; }
+    }
+    lines = [
+      words.slice(0, bestSplit).join(" "),
+      words.slice(bestSplit).join(" "),
+    ];
+  }
+  let size = 54;
+  const maxW = c.width - 56;
+  while (
+    size > 24 &&
+    lines.some((ln) => {
+      ctx.font = `900 ${size}px ${FONT_SANS}`;
+      return ctx.measureText(ln).width > maxW;
+    })
+  ) {
+    size -= 2;
+  }
+  ctx.font = `900 ${size}px ${FONT_SANS}`;
+  ctx.fillStyle = "#ffffff";
+  ctx.shadowColor = `rgba(${accentRgb},0.55)`;
+  ctx.shadowBlur = 16;
+  ctx.textAlign = "left";
+  const lineH = size * 1.06;
+  const blockTop = 140;
+  const blockBot = c.height - 130;
+  const blockH = lines.length * lineH;
+  const startY = blockTop + (blockBot - blockTop - blockH) / 2 + size * 0.82;
+  lines.forEach((ln, i) => {
+    ctx.fillText(ln, 28, startY + i * lineH);
+  });
+  ctx.shadowBlur = 0;
+
+  /* Divider */
+  ctx.fillStyle = `rgba(${accentRgb},0.32)`;
+  ctx.fillRect(28, c.height - 108, c.width - 56, 1);
+
+  /* Stream name + age sub */
+  ctx.font = `bold 17px ${FONT_MONO}`;
+  ctx.fillStyle = accent;
+  ctx.shadowColor = accent;
+  ctx.shadowBlur = 8;
+  ctx.fillText(stream.name, 28, c.height - 78);
+  ctx.shadowBlur = 0;
+  ctx.font = `500 13px ${FONT_MONO}`;
+  ctx.fillStyle = "rgba(232,237,255,0.55)";
+  ctx.fillText(`AGES ${stream.age}  ·  ${stream.project}`, 28, c.height - 56);
+
+  /* Status pill bottom-right */
+  ctx.font = `bold 13px ${FONT_MONO}`;
+  const sw = ctx.measureText(stream.status).width;
+  const spad = 11;
+  const sbw = sw + spad * 2;
+  const sbh = 22;
+  const sbx = c.width - 28 - sbw;
+  const sby = c.height - 42;
+  ctx.fillStyle = accent;
+  ctx.shadowColor = accent;
+  ctx.shadowBlur = 10;
+  roundRect(ctx, sbx, sby, sbw, sbh, 5);
+  ctx.fill();
+  ctx.shadowBlur = 0;
+  ctx.fillStyle = "#04050d";
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  ctx.fillText(stream.status, sbx + sbw / 2, sby + sbh / 2);
+
+  const out = new THREE.CanvasTexture(c);
+  out.colorSpace = THREE.SRGBColorSpace;
+  out.anisotropy = 16;
+  out.minFilter = THREE.LinearMipmapLinearFilter;
+  out.magFilter = THREE.LinearFilter;
+  out.generateMipmaps = true;
+  out.needsUpdate = true;
+  return out;
+}
+
+/* Per-stream curriculum bullets surfaced when a slab is hovered.
+ *  Indexed by the STREAMS array so the right bullets land on the
+ *  right card regardless of which streams the hero surfaces. */
+const SLAB_CURRICULUM: ReadonlyArray<readonly string[]> = [
+  /* 0 CYBERSECURITY */
+  ["Stop phishing scams cold", "Build passwords nobody cracks", "Hunt threats like a pro"],
+  /* 1 GAME DEVELOPMENT */
+  ["Design game mechanics that hook", "Animate pixel-art characters", "Publish your first game"],
+  /* 2 AI & MACHINE LEARNING */
+  ["Train models that see images", "Build a neural network from zero", "Spot bias before it ships"],
+  /* 3 APP DEVELOPMENT */
+  ["Design UIs people actually love", "Wire apps to live data", "Ship to the web in one click"],
+  /* 4 ENTREPRENEURSHIP */
+  ["Validate your idea fast", "Build a pitch that converts", "Win your first customer"],
+  /* 5 ROBOTICS */
+  ["Wire sensors and motors", "Code a maze-solving bot", "Build it for real"],
+];
+
+/* DETAIL slab texture — the richer face that crossfades over the
+ *  compact one when a slab is hovered. Adds a "WHAT YOU'LL LEARN"
+ *  bullets block + a "TRY A FREE LESSON" CTA pill at the bottom.
+ *  Same 3:4 portrait aspect as makeSlabTexture (480x640 vs 384x512)
+ *  so it shares the same planeGeometry — only the texture swaps. */
+function makeSlabDetailTexture(
+  stream: (typeof STREAMS)[number],
+  icon: string,
+  bullets: ReadonlyArray<string>,
+): THREE.Texture | null {
+  if (typeof document === "undefined") return null;
+  const c = document.createElement("canvas");
+  c.width = 480;
+  c.height = 640;
+  const ctx = c.getContext("2d");
+  if (!ctx) return null;
+  ctx.clearRect(0, 0, c.width, c.height);
+  ctx.imageSmoothingEnabled = true;
+  ctx.imageSmoothingQuality = "high";
+
+  const accent = stream.color;
+  const accentRgb = hexToRgbStr(accent);
+
+  /* Glass panel — slightly denser than the compact face so the
+   *  hover state reads as "this card has more presence". */
+  const bgGrad = ctx.createLinearGradient(0, 0, 0, c.height);
+  bgGrad.addColorStop(0, "rgba(8,12,22,0.92)");
+  bgGrad.addColorStop(1, "rgba(2,4,10,0.95)");
+  ctx.fillStyle = bgGrad;
+  roundRect(ctx, 0, 0, c.width, c.height, 22);
+  ctx.fill();
+
+  /* Inner accent halo behind the outcome */
+  const halo = ctx.createRadialGradient(
+    c.width / 2, c.height * 0.32, 18,
+    c.width / 2, c.height * 0.32, c.width * 0.75,
+  );
+  halo.addColorStop(0, `rgba(${accentRgb},0.34)`);
+  halo.addColorStop(0.55, `rgba(${accentRgb},0.08)`);
+  halo.addColorStop(1, `rgba(${accentRgb},0)`);
+  ctx.fillStyle = halo;
+  ctx.fillRect(0, 0, c.width, c.height);
+
+  /* Brighter accent rim than compact (active state) */
+  ctx.lineWidth = 2;
+  ctx.strokeStyle = `rgba(${accentRgb},0.95)`;
+  ctx.shadowColor = accent;
+  ctx.shadowBlur = 20;
+  roundRect(ctx, 3, 3, c.width - 6, c.height - 6, 20);
+  ctx.stroke();
+  ctx.shadowBlur = 0;
+
+  /* Corner brackets */
+  ctx.strokeStyle = accent;
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.moveTo(24, 48); ctx.lineTo(24, 24); ctx.lineTo(48, 24);
+  ctx.moveTo(c.width - 48, c.height - 24); ctx.lineTo(c.width - 24, c.height - 24); ctx.lineTo(c.width - 24, c.height - 48);
+  ctx.stroke();
+
+  /* Icon top-left */
+  ctx.font = `bold 44px ${FONT_SANS}`;
+  ctx.fillStyle = accent;
+  ctx.shadowColor = accent;
+  ctx.shadowBlur = 16;
+  ctx.textAlign = "left";
+  ctx.textBaseline = "alphabetic";
+  ctx.fillText(icon, 32, 80);
+  ctx.shadowBlur = 0;
+
+  /* Status pill top-right */
+  ctx.font = `bold 13px ${FONT_MONO}`;
+  const stw = ctx.measureText(stream.status).width;
+  const stbw = stw + 22;
+  const stbh = 22;
+  const stbx = c.width - 32 - stbw;
+  const stby = 50;
+  ctx.fillStyle = accent;
+  ctx.shadowColor = accent;
+  ctx.shadowBlur = 10;
+  roundRect(ctx, stbx, stby, stbw, stbh, 5);
+  ctx.fill();
+  ctx.shadowBlur = 0;
+  ctx.fillStyle = "#04050d";
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  ctx.fillText(stream.status, stbx + stbw / 2, stby + stbh / 2);
+
+  /* Outcome — 2-line balanced split, smaller than compact (room for bullets) */
+  const words = stream.outcome.split(" ");
+  let lines: string[];
+  if (words.length <= 2) {
+    lines = words.length === 1 ? [words[0]] : words;
+  } else {
+    ctx.font = `900 48px ${FONT_SANS}`;
+    let bestSplit = Math.ceil(words.length / 2);
+    let bestDelta = Infinity;
+    for (let i = 1; i < words.length; i++) {
+      const a = words.slice(0, i).join(" ");
+      const b = words.slice(i).join(" ");
+      const d = Math.abs(ctx.measureText(a).width - ctx.measureText(b).width);
+      if (d < bestDelta) { bestDelta = d; bestSplit = i; }
+    }
+    lines = [
+      words.slice(0, bestSplit).join(" "),
+      words.slice(bestSplit).join(" "),
+    ];
+  }
+  let size = 48;
+  const maxW = c.width - 64;
+  while (
+    size > 22 &&
+    lines.some((ln) => {
+      ctx.font = `900 ${size}px ${FONT_SANS}`;
+      return ctx.measureText(ln).width > maxW;
+    })
+  ) {
+    size -= 2;
+  }
+  ctx.font = `900 ${size}px ${FONT_SANS}`;
+  ctx.fillStyle = "#ffffff";
+  ctx.shadowColor = `rgba(${accentRgb},0.6)`;
+  ctx.shadowBlur = 14;
+  ctx.textAlign = "left";
+  ctx.textBaseline = "alphabetic";
+  const lineH = size * 1.06;
+  const outcomeStartY = 140 + size * 0.8;
+  lines.forEach((ln, i) => {
+    ctx.fillText(ln, 32, outcomeStartY + i * lineH);
+  });
+  ctx.shadowBlur = 0;
+
+  /* Divider above bullets */
+  ctx.fillStyle = `rgba(${accentRgb},0.32)`;
+  ctx.fillRect(32, 280, c.width - 64, 1);
+
+  /* Section header */
+  ctx.font = `bold 12px ${FONT_MONO}`;
+  ctx.fillStyle = `rgba(${accentRgb},0.85)`;
+  ctx.textAlign = "left";
+  ctx.textBaseline = "alphabetic";
+  ctx.fillText("// WHAT YOU'LL LEARN", 32, 308);
+
+  /* Three bullets */
+  const bulletY = 348;
+  const bulletH = 38;
+  bullets.forEach((b, i) => {
+    /* Marker */
+    ctx.font = `bold 22px ${FONT_SANS}`;
+    ctx.fillStyle = accent;
+    ctx.shadowColor = accent;
+    ctx.shadowBlur = 6;
+    ctx.fillText("▸", 32, bulletY + i * bulletH);
+    ctx.shadowBlur = 0;
+    /* Body — auto-shrink if too long */
+    let bsz = 19;
+    ctx.font = `500 ${bsz}px ${FONT_SANS}`;
+    while (bsz > 14 && ctx.measureText(b).width > c.width - 80) {
+      bsz -= 1;
+      ctx.font = `500 ${bsz}px ${FONT_SANS}`;
+    }
+    ctx.fillStyle = "rgba(232,237,255,0.92)";
+    ctx.fillText(b, 60, bulletY + i * bulletH);
+  });
+
+  /* Divider above footer */
+  ctx.fillStyle = `rgba(${accentRgb},0.32)`;
+  ctx.fillRect(32, 478, c.width - 64, 1);
+
+  /* Stream name */
+  ctx.font = `bold 16px ${FONT_MONO}`;
+  ctx.fillStyle = accent;
+  ctx.shadowColor = accent;
+  ctx.shadowBlur = 8;
+  ctx.textAlign = "left";
+  ctx.textBaseline = "alphabetic";
+  ctx.fillText(stream.name, 32, 508);
+  ctx.shadowBlur = 0;
+
+  /* Age + first project sub-line */
+  ctx.font = `500 12px ${FONT_MONO}`;
+  ctx.fillStyle = "rgba(232,237,255,0.6)";
+  ctx.fillText(`AGES ${stream.age}  ·  FIRST: ${stream.project}`, 32, 532);
+
+  /* CTA pill — bottom-centred, accent-filled with arrow */
+  const ctaText = "TRY A FREE LESSON  →";
+  ctx.font = `bold 16px ${FONT_MONO}`;
+  const ctw = ctx.measureText(ctaText).width;
+  const cpad = 22;
+  const cbw = ctw + cpad * 2;
+  const cbh = 40;
+  const cbx = (c.width - cbw) / 2;
+  const cby = c.height - 60;
+  ctx.fillStyle = accent;
+  ctx.shadowColor = accent;
+  ctx.shadowBlur = 16;
+  roundRect(ctx, cbx, cby, cbw, cbh, 18);
+  ctx.fill();
+  ctx.shadowBlur = 0;
+  ctx.fillStyle = "#04050d";
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  ctx.fillText(ctaText, cbx + cbw / 2, cby + cbh / 2);
+
+  const out = new THREE.CanvasTexture(c);
+  out.colorSpace = THREE.SRGBColorSpace;
+  out.anisotropy = 16;
+  out.minFilter = THREE.LinearMipmapLinearFilter;
+  out.magFilter = THREE.LinearFilter;
+  out.generateMipmaps = true;
+  out.needsUpdate = true;
+  return out;
 }
 
 /* Floor sheen texture - simulates the polished floor catching the
@@ -1147,29 +1440,6 @@ function makeSoftShadowTexture(): THREE.Texture | null {
 }
 
 export default function LaptopScene({ progress, reducedMotion = false }: LaptopSceneProps) {
-  /* Viewport tier drives a scale + position multiplier on the
-   * holographic cards so they emerge correctly on every device. On
-   * desktop they render at full size; on tablet they shrink to ~75%
-   * and tuck closer to the laptop; on phone they shrink to ~55% and
-   * tuck closer still. That keeps the "cards emerge from the screen"
-   * narrative consistent everywhere, without the desktop-sized grid
-   * blowing past the narrow portrait frustum. */
-  const [viewportTier, setViewportTier] = useState<"phone" | "tablet" | "desktop">(
-    "desktop",
-  );
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    const compute = () => {
-      const w = window.innerWidth;
-      if (w < 640) setViewportTier("phone");
-      else if (w < 1024) setViewportTier("tablet");
-      else setViewportTier("desktop");
-    };
-    compute();
-    window.addEventListener("resize", compute);
-    return () => window.removeEventListener("resize", compute);
-  }, []);
-
   return (
     <Canvas
       dpr={[1.5, 2.5]}
@@ -1262,7 +1532,7 @@ export default function LaptopScene({ progress, reducedMotion = false }: LaptopS
       {/* Rim light from behind to highlight the lid's top edge */}
       <pointLight position={[2, 4, -3]} intensity={0.6} color="#ffffff" />
 
-      <Laptop progress={progress} reducedMotion={reducedMotion} viewportTier={viewportTier} />
+      <Laptop progress={progress} reducedMotion={reducedMotion} />
 
       {/* Cinematic post-processing.
        *  - multisampling=4 enables MSAA inside the post-processing
@@ -1292,163 +1562,223 @@ export default function LaptopScene({ progress, reducedMotion = false }: LaptopS
   );
 }
 
-/* HOLOGRAPHIC CARDS - 6 floating panels that emerge from the screen
- * during Chapter 04 (Choose your stream). Each card carries a stream's
- * icon, name, age range, status and example project. Cards stagger
- * their emerge animation (lerped from screen origin to a fanned arc
- * above and in front of the laptop), bob gently, and fade in fully. */
-function HolographicCards({
-  progress,
-  viewportTier,
-}: {
-  progress: MotionValue<number>;
-  viewportTier: "phone" | "tablet" | "desktop";
-}) {
-  /* Tier config drives a uniform scale on the cards + a multiplier on
-   * the X offset from RIG_X.
-   *
-   * Card targets are SYMMETRIC around RIG_X with tight spacing so the
-   * 2×3 grid clusters over the laptop screen rather than fanning out
-   * to the sides. Scales shrunk one more notch (desktop 0.78 → 0.6)
-   * so the smaller cluster reads as "holograms emerging from the
-   * display" instead of "panels floating beside the laptop". */
-  const tier = useMemo(() => {
-    if (viewportTier === "phone") return { scale: 0.36, xMul: 0.65 };
-    if (viewportTier === "tablet") return { scale: 0.46, xMul: 0.85 };
-    return { scale: 0.52, xMul: 1.0 };
-  }, [viewportTier]);
-  /* 2 x 3 grid pushed RIGHT of the laptop so the left half of the
-   * frame stays clean for the headline column (HTML overlay at
-   * zIndex 3). Card positions are relative to RIG_X (1.4), so the
-   * leftmost card sits at world x ~2.3 - well clear of the headline.
-   *
-   * Cards are also SMALLER and dimmer in this composition pass
-   * (plane 1.5x1.0 -> 1.05x0.7, opacity peak 0.92 -> 0.78). Reads as
-   * "supporting detail" rather than the primary subject. The laptop
-   * is the hero. */
-  /* Cards arranged with a visual hierarchy: middle column is the
-   * focal pair (opacityMul 1.0), right column is supporting
-   * (opacityMul 0.62), left column whispers in the background
-   * (opacityMul 0.32). Reads as "2 dominant cards + 2 secondary
-   * + 2 pushed back" instead of an even 2x3 wall.
-   *
-   * Positions pushed right (leftmost rel RIG_X 1.2 -> 1.4) so the
-   * left column stays well clear of the headline. Z-depth varies by
-   * column too - hero pair sits forward (1.55), edges pushed back
-   * (1.40) - gives subtle parallax depth. */
-  /* Card cluster lifted ABOVE the lid top. With the lid fully open
-   * (rot −2.0 rad around the hinge) the lid's upper edge sits at
-   * world y ≈ 1.89. Cards now at y ≥ 2.1 → no overlap with screen
-   * content. Bottom row at 2.1 (just above the lid top), top row at
-   * 2.7 (well above). Z pulled forward a touch (1.05–1.2 → 0.95–1.1)
-   * so cards still read as "hovering in front of the lid", not as a
-   * floating UI strip behind the headline. */
-  const cardData = useMemo(
+/* SCREEN SLABS — three holographic panels that emerge straight forward
+ *  out of the laptop screen during the back half of chapter 05. Tight
+ *  X spread (±0.46) keeps the cluster inside the laptop silhouette so
+ *  it never overlaps the headline column. Z lerps from the screen
+ *  face (~-0.4) out to in-front-of-screen (~+0.6) — that motion is
+ *  the entire "coming out" effect. */
+/* No-op raycast: visible meshes (compact / detail / rim) opt out of
+ *  hit-testing so all pointer events route through the dedicated
+ *  hit-plane mesh per slab. Without this, the cursor can flip between
+ *  child meshes inside a group and fire spurious Enter/Leave events. */
+const NO_RAYCAST = () => {};
+
+function ScreenSlabs({ progress }: { progress: MotionValue<number> }) {
+  const slabs = useMemo(
     () => [
-      /* Top row */
-      { stream: STREAMS[0], target: new THREE.Vector3(-0.8, 2.7, 0.95), delay: 0.0, yaw: 0.22, opacityMul: 0.78 },
-      { stream: STREAMS[1], target: new THREE.Vector3(0.0, 2.7, 1.1), delay: 0.015, yaw: 0.0, opacityMul: 1.0 },
-      { stream: STREAMS[2], target: new THREE.Vector3(0.8, 2.7, 0.95), delay: 0.03, yaw: -0.22, opacityMul: 0.78 },
-      /* Bottom row */
-      { stream: STREAMS[3], target: new THREE.Vector3(-0.8, 2.1, 0.95), delay: 0.015, yaw: 0.22, opacityMul: 0.78 },
-      { stream: STREAMS[4], target: new THREE.Vector3(0.0, 2.1, 1.1), delay: 0.03, yaw: 0.0, opacityMul: 1.0 },
-      { stream: STREAMS[5], target: new THREE.Vector3(0.8, 2.1, 0.95), delay: 0.045, yaw: -0.22, opacityMul: 0.78 },
+      { stream: STREAMS[0], streamIdx: 0, icon: SLAB_STREAM_ICONS[0], x: -0.62 }, // CYBERSECURITY
+      { stream: STREAMS[2], streamIdx: 2, icon: SLAB_STREAM_ICONS[1], x:  0.0  }, // AI & ML (centre)
+      { stream: STREAMS[3], streamIdx: 3, icon: SLAB_STREAM_ICONS[2], x:  0.62 }, // APP DEV
     ],
     [],
   );
 
-  const cardTextures = useMemo(
+  /* Two texture sets: compact (default) and detail (revealed on hover). */
+  const compactTextures = useMemo(
+    () => slabs.map((s) => makeSlabTexture(s.stream, s.icon)),
+    [slabs],
+  );
+  const detailTextures = useMemo(
     () =>
-      cardData.map((card, i) =>
-        makeHoloCardTexture(
-          card.stream,
-          STREAM_ICONS[i],
-          `STREAM ${String(i + 1).padStart(2, "0")} / 06`,
-        ),
+      slabs.map((s) =>
+        makeSlabDetailTexture(s.stream, s.icon, SLAB_CURRICULUM[s.streamIdx]),
       ),
-    [cardData],
+    [slabs],
   );
 
-  const cardRefs = useRef<(THREE.Group | null)[]>([
-    null, null, null, null, null, null,
-  ]);
-  const matRefs = useRef<(THREE.MeshBasicMaterial | null)[]>([
-    null, null, null, null, null, null,
-  ]);
-  const rimRefs = useRef<(THREE.MeshBasicMaterial | null)[]>([
-    null, null, null, null, null, null,
-  ]);
+  const groupRefs = useRef<(THREE.Group | null)[]>([null, null, null]);
+  const matRefs = useRef<(THREE.MeshBasicMaterial | null)[]>([null, null, null]);
+  const detailMatRefs = useRef<(THREE.MeshBasicMaterial | null)[]>([null, null, null]);
+  const rimRefs = useRef<(THREE.MeshBasicMaterial | null)[]>([null, null, null]);
 
-  /* Cards START at the screen origin (above the lid, where the screen
-   * lives) and lerp out to their target positions. */
-  const START_X = RIG_X;
-  const START_Y = 1.3;
-  const START_Z = -0.2;
+  /* Hover state. Tracked as a ref so useFrame can read it without
+   *  re-binding every render; mirrored from React state via effect. */
+  const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
+  const hoveredRef = useRef<number | null>(null);
+  useEffect(() => {
+    hoveredRef.current = hoveredIdx;
+  }, [hoveredIdx]);
 
-  useFrame((state) => {
+  /* Tiny debounce on Leave so cursor moves between child meshes (or
+   *  briefly off the hit plane edge) don't flicker the bloom away.
+   *  Enter cancels the pending clear. */
+  const leaveTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  /* Touch detection. `(pointer: coarse)` is the standard CSS media
+   *  query for "primary input is touch" — covers phones, finger-only
+   *  tablets, and anything where hover isn't reliable. iPad-with-
+   *  trackpad reports `fine` and gets the desktop hover path. */
+  const isTouchDevice = useRef(false);
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    isTouchDevice.current = window.matchMedia("(pointer: coarse)").matches;
+    return () => {
+      if (leaveTimer.current) clearTimeout(leaveTimer.current);
+      if (typeof document !== "undefined") document.body.style.cursor = "";
+    };
+  }, []);
+
+  const handleEnter = (i: number) => {
+    if (leaveTimer.current) {
+      clearTimeout(leaveTimer.current);
+      leaveTimer.current = null;
+    }
+    setHoveredIdx((prev) => (prev === i ? prev : i));
+    if (typeof document !== "undefined") document.body.style.cursor = "pointer";
+  };
+  const handleLeave = () => {
+    if (leaveTimer.current) clearTimeout(leaveTimer.current);
+    leaveTimer.current = setTimeout(() => {
+      setHoveredIdx(null);
+      if (typeof document !== "undefined") document.body.style.cursor = "";
+      leaveTimer.current = null;
+    }, 60);
+  };
+  const handleClick = (stream: (typeof STREAMS)[number]) => {
+    if (typeof window === "undefined") return;
+    /* LIVE streams go straight to the course; planned streams scroll
+     *  the user down to SubjectShowcase where they can join the
+     *  waitlist or browse the others. */
+    if (stream.status === "LIVE") {
+      window.location.href = "/cyberheroes";
+    } else {
+      document.getElementById("subjects")?.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
+  /* Geometry constants for the emerge animation. SLAB_Y 1.55 +
+   * SLAB_X_OFFSET 0.32 centre the cluster on the screen face. Slabs
+   * travel along Z from START_Z (at the screen face) to END_Z
+   * (clearly in front of the screen, toward camera). */
+  const SLAB_Y = 1.55;
+  const SLAB_X_OFFSET = 0.32;
+  const START_Z = -0.4;
+  const END_Z = 0.6;
+
+  useFrame((state, delta) => {
     const p = progress.get();
     const t = state.clock.elapsedTime;
-    cardData.forEach((card, i) => {
-      const g = cardRefs.current[i];
+    const hovered = hoveredRef.current;
+    /* Frame-rate-independent spring follow for hover transitions */
+    const follow = 1 - Math.exp(-14 * Math.min(0.05, delta));
+
+    /* Auto-dismiss the expanded card when the slabs scroll out of
+     *  view (matters for touch users — without this, returning to
+     *  the cinematic later would re-open whatever was last tapped). */
+    if (hovered !== null && (p < 0.68 || p > 1.0)) {
+      setHoveredIdx(null);
+    }
+
+    slabs.forEach((s, i) => {
+      const g = groupRefs.current[i];
       const m = matRefs.current[i];
+      const dm = detailMatRefs.current[i];
       const r = rimRefs.current[i];
       if (!g || !m) return;
-      /* Per-card progress - emerge window pulled FORWARD into chapter
-       * 05 ("Build real projects") so the cards exist while the
-       * chapter label literally says so. Was 0.78 → 0.88 which left
-       * the first 10% of chapter 05 (0.68 → 0.78) showing nothing
-       * but the streams dashboard — chapter label and visual didn't
-       * agree. New window 0.70 → 0.82 puts the cards on-screen for
-       * the whole back half of chapter 05 and through chapter 06. */
-      const cardP = smoothstep(0.7 + card.delay, 0.82 + card.delay, p);
-      const targetX = RIG_X + card.target.x * tier.xMul;
-      const targetY = card.target.y;
-      const targetZ = card.target.z;
-      /* Subtle vertical bob, only once the card has emerged */
-      const bob = Math.sin(t * 0.6 + i * 0.7) * 0.06;
+
+      const delay = i === 1 ? 0 : 0.025;
+      const emergeP = smoothstep(0.72 + delay, 0.86 + delay, p);
+
+      const isHovered = hovered === i;
+      const someoneHovered = hovered !== null;
+      const isSibling = someoneHovered && !isHovered;
+
+      /* Bloom multipliers: hovered = scale way up + lift forward
+       *  (text needs to be comfortably readable, not just visible);
+       *  sibling = recede hard to clear space for the much-larger
+       *  hovered card. At 2.4× the outcome text lands around 60px
+       *  and the bullets around 22px in viewport space — well above
+       *  the 16-18px floor for body text. */
+      const hoverScaleMul = isHovered ? 2.4 : isSibling ? 0.62 : 1.0;
+      const hoverZLift = isHovered ? 0.42 : 0;
+
+      const bob = Math.sin(t * 0.6 + i * 0.8) * 0.02;
+      const targetX = RIG_X + SLAB_X_OFFSET + s.x;
+      const targetY = SLAB_Y + bob * emergeP;
+      const targetZ = lerp(START_Z, END_Z, emergeP) + hoverZLift * emergeP;
+
+      /* Position is set directly (no spring) so the bob stays smooth
+       *  and the Z lift on hover lerps via the targetZ value itself. */
       g.position.set(
-        lerp(START_X, targetX, cardP),
-        lerp(START_Y, targetY, cardP) + bob * cardP,
-        lerp(START_Z, targetZ, cardP),
+        lerp(g.position.x, targetX, follow),
+        lerp(g.position.y, targetY, follow),
+        lerp(g.position.z, targetZ, follow),
       );
-      /* Slow rotation drift around target yaw */
-      g.rotation.y = card.yaw + Math.sin(t * 0.4 + i) * 0.025 * cardP;
-      g.rotation.x = Math.sin(t * 0.3 + i * 0.5) * 0.012 * cardP;
-      /* Scale up from 0.25 to tier.scale (1.0 on desktop, 0.75 tablet,
-       * 0.55 phone) so the cards stay inside the narrower portrait
-       * frustum on smaller devices. */
-      const sc = lerp(0.25, tier.scale, cardP);
+
+      /* Yaw drift — quieter when hovered (focused stillness) */
+      const yawMul = isHovered ? 0.2 : 1.0;
+      g.rotation.y = Math.sin(t * 0.35 + i) * 0.012 * emergeP * yawMul;
+
+      const targetScale = lerp(0.4, hoverScaleMul, emergeP);
+      const sc = lerp(g.scale.x, targetScale, follow);
       g.scale.set(sc, sc, sc);
-      /* Opacity ramp scaled by per-card opacityMul so the middle
-       * column reads as the dominant pair, right column as secondary,
-       * left column as faded background presence. Base peak dropped
-       * 0.78 -> 0.65 so even the "hero" cards stay calmer than the
-       * laptop itself. */
-      m.opacity = cardP * 0.65 * card.opacityMul;
+
+      /* Compact face: full opacity when not hovered, fades almost out
+       *  when this slab is hovered (detail face takes over), dims when
+       *  a sibling is hovered. */
+      const compactTarget = isHovered ? 0.05 : isSibling ? 0.4 : 0.92;
+      m.opacity = lerp(m.opacity, emergeP * compactTarget, follow);
+
+      /* Detail face: 0 unless hovered, then 0.96 */
+      if (dm) {
+        const detailTarget = isHovered ? 0.96 : 0;
+        dm.opacity = lerp(dm.opacity, emergeP * detailTarget, follow);
+      }
+
+      /* Rim glow: brighter on hover, dimmer on siblings */
       if (r) {
-        const rimBreathe = 0.85 + Math.sin(t * 1.6 + i) * 0.15;
-        r.opacity = cardP * 0.15 * rimBreathe * card.opacityMul;
+        const breathe = 0.7 + Math.sin(t * 1.4 + i) * 0.3;
+        const rimMul = isHovered ? 1.7 : isSibling ? 0.45 : 1.0;
+        const rimTarget = emergeP * 0.18 * breathe * rimMul;
+        r.opacity = lerp(r.opacity, rimTarget, follow);
       }
     });
   });
 
   return (
     <>
-      {cardData.map((card, i) => {
-        const tex = cardTextures[i];
+      {slabs.map((s, i) => {
+        const tex = compactTextures[i];
+        const dtex = detailTextures[i];
         if (!tex) return null;
         return (
           <group
             key={i}
             ref={(el) => {
-              cardRefs.current[i] = el;
+              groupRefs.current[i] = el;
             }}
-            position={[START_X, START_Y, START_Z]}
+            position={[RIG_X + SLAB_X_OFFSET + s.x, SLAB_Y, START_Z]}
           >
-            {/* Card content panel - 0.78 x 0.52 (was 0.9 x 0.6). Smaller
-             *  yet again so cards stay firmly in supporting role. */}
-            <mesh>
-              <planeGeometry args={[0.78, 0.52]} />
+            {/* Rim glow (back of stack) */}
+            <mesh position={[0, 0, -0.002]} raycast={NO_RAYCAST}>
+              <planeGeometry args={[0.64, 0.82]} />
+              <meshBasicMaterial
+                ref={(el) => {
+                  rimRefs.current[i] = el;
+                }}
+                color={s.stream.color}
+                transparent
+                opacity={0}
+                blending={THREE.AdditiveBlending}
+                depthWrite={false}
+                toneMapped={false}
+              />
+            </mesh>
+
+            {/* Compact face (default) */}
+            <mesh raycast={NO_RAYCAST}>
+              <planeGeometry args={[0.54, 0.72]} />
               <meshBasicMaterial
                 ref={(el) => {
                   matRefs.current[i] = el;
@@ -1460,20 +1790,70 @@ function HolographicCards({
                 toneMapped={false}
               />
             </mesh>
-            {/* Outer rim glow - matches the smaller card */}
-            <mesh position={[0, 0, -0.001]}>
-              <planeGeometry args={[0.85, 0.58]} />
-              <meshBasicMaterial
-                ref={(el) => {
-                  rimRefs.current[i] = el;
-                }}
-                color={card.stream.color}
-                transparent
-                opacity={0}
-                blending={THREE.AdditiveBlending}
-                depthWrite={false}
-                toneMapped={false}
-              />
+
+            {/* Detail face (revealed on hover) — slightly forward in
+             *  local Z so it renders over the compact face when both
+             *  are partially visible mid-crossfade. */}
+            {dtex && (
+              <mesh position={[0, 0, 0.001]} raycast={NO_RAYCAST}>
+                <planeGeometry args={[0.54, 0.72]} />
+                <meshBasicMaterial
+                  ref={(el) => {
+                    detailMatRefs.current[i] = el;
+                  }}
+                  map={dtex}
+                  transparent
+                  opacity={0}
+                  depthWrite={false}
+                  toneMapped={false}
+                />
+              </mesh>
+            )}
+
+            {/* Hit plane — invisible, slightly oversized, the ONLY mesh
+             *  the raycaster considers. Pointer events bubble nowhere
+             *  else so cursor transitions inside the group can't flicker
+             *  the hover state.
+             *
+             *  Desktop (mouse): hover expands, click navigates.
+             *  Touch  (phone / iPad finger): hover is unreliable or
+             *    absent, so we route everything through click:
+             *      1st tap on a card  → expand it
+             *      2nd tap on same    → navigate
+             *      tap on different   → switch the expanded card */}
+            <mesh
+              position={[0, 0, 0.01]}
+              onPointerOver={(e) => {
+                if (isTouchDevice.current) return;
+                e.stopPropagation();
+                handleEnter(i);
+              }}
+              onPointerOut={(e) => {
+                if (isTouchDevice.current) return;
+                e.stopPropagation();
+                handleLeave();
+              }}
+              onClick={(e) => {
+                e.stopPropagation();
+                if (!isTouchDevice.current) {
+                  handleClick(s.stream);
+                  return;
+                }
+                /* Touch: first tap on an unfocused card expands it;
+                 *  second tap (already focused) navigates. */
+                if (hoveredRef.current === i) {
+                  handleClick(s.stream);
+                } else {
+                  if (leaveTimer.current) {
+                    clearTimeout(leaveTimer.current);
+                    leaveTimer.current = null;
+                  }
+                  setHoveredIdx(i);
+                }
+              }}
+            >
+              <planeGeometry args={[0.64, 0.82]} />
+              <meshBasicMaterial transparent opacity={0} depthWrite={false} />
             </mesh>
           </group>
         );
@@ -1485,11 +1865,9 @@ function HolographicCards({
 function Laptop({
   progress,
   reducedMotion: _rm,
-  viewportTier,
 }: {
   progress: MotionValue<number>;
   reducedMotion: boolean;
-  viewportTier: "phone" | "tablet" | "desktop";
 }) {
   const lidBrandTex = useLidBrandTexture();
   const screen = useLivingScreen();
@@ -2044,11 +2422,9 @@ function Laptop({
        *  the laptop read as floating rather than sitting on the surface.
        *  Yaw alone keeps reflections gliding across the chassis edges
        *  while the chassis stays parallel to the ground. */}
-      {/* Laptop group scaled to 0.86 (-14% cumulative). The chassis
-       *  no longer crowds the headline column. Cards live in a sibling
-       *  group (HolographicCards) so they stay at full scale; only the
-       *  chassis shrinks. Contact shadow + underglow planes are also
-       *  re-sized to 0.86× their original footprint to match. */}
+      {/* Laptop scale 0.86 keeps the chassis clear of the headline
+       *  column; the contact shadow + underglow planes below are
+       *  sized to match. */}
       <group position={[RIG_X, 0, 0]} rotation={[0, -0.11, 0]} scale={0.86}>
         <RoundedBox args={[BASE_W, BASE_H, BASE_D]} radius={0.03} smoothness={5}>
           {/* Brushed-aluminium dialled in: metalness 0.55 -> 0.42,
@@ -2666,14 +3042,11 @@ function Laptop({
         </group>
       </group>
 
-      {/* HOLOGRAPHIC COURSE CARDS - 6 floating cards that emerge from
-       *  the screen during Chapter 04. Rendered OUTSIDE the rotated
-       *  laptop group so the cards aren't yawed/tilted with the chassis
-       *  (they need to face the viewer for legibility), but INSIDE the
-       *  parallaxRef so cursor parallax still applies. Viewport tier
-       *  scales them down on phone/tablet so they fit the narrower
-       *  portrait frustum. */}
-      <HolographicCards progress={progress} viewportTier={viewportTier} />
+      {/* SCREEN SLABS — three holo panels that emerge straight out of
+       *  the screen toward the camera. Rendered OUTSIDE the rotated
+       *  laptop group (so they always face the viewer for legibility)
+       *  but INSIDE parallaxRef so cursor parallax still applies. */}
+      <ScreenSlabs progress={progress} />
     </group>
   );
 }

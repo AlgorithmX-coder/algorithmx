@@ -17,7 +17,11 @@ interface HeroOverlayProps {
   progress: MotionValue<number>;
 }
 
-const EYEBROW = "// SIX FIELDS  ·  AGES 6 TO ADULT";
+/* Eyebrow rewritten - "AGES 6 TO ADULT" framing read as a parents-
+ * brochure spec sheet (and was redundant with the headline's "every
+ * stage of life"). Replaced with a mission-grade line that signals
+ * the platform's ambition before the headline lands. */
+const EYEBROW = "// SIX FIELDS  ·  BUILT FOR THE FUTURE";
 const HEADLINE = "Technology education for every stage of life.";
 const SUBLINE =
   "Six fields of technology — cybersecurity, coding, AI, apps, entrepreneurship, robotics — for ages 6 to adult. Cyber Heroes Academy, our first course, is live today.";
@@ -74,6 +78,12 @@ export default function HeroOverlay({ progress }: HeroOverlayProps) {
           pointerEvents: "none",
         }}
       />
+      {/* Inner content div has pointerEvents: none so its empty right
+       *  half (the 1180px-wide centred container extends well past the
+       *  headline column) doesn't swallow pointer events destined for
+       *  the 3D canvas underneath — that's where the interactive hero
+       *  slabs live. Pointer events are re-enabled on the actual
+       *  interactive elements: the CTA row below. */}
       <div
         style={{
           maxWidth: 1180,
@@ -82,7 +92,7 @@ export default function HeroOverlay({ progress }: HeroOverlayProps) {
           display: "flex",
           flexDirection: "column",
           gap: "calc(var(--lv2-rail) * 0.4)",
-          pointerEvents: "auto",
+          pointerEvents: "none",
           position: "relative",
         }}
       >
@@ -145,6 +155,7 @@ export default function HeroOverlay({ progress }: HeroOverlayProps) {
             gap: 12,
             marginTop: "calc(var(--lv2-rail) * 0.6)",
             flexWrap: "wrap",
+            pointerEvents: "auto",
           }}
         >
           <Link
