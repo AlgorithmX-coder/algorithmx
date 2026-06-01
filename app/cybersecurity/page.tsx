@@ -51,6 +51,22 @@ const TRACK_BLURBS: Record<string, string> = {
     "Pen-testing, threat modelling, and security projects that strengthen UCAS and college applications.",
 };
 
+/* Display-layer overrides for track name + age range. The DB still
+ * carries the seeded names ("Cyber Heroes Academy", "CyberStart",
+ * "CyberStart Pro") and original age bands, but the homepage now
+ * markets the four courses under simpler names and slightly retuned
+ * ranges. Overriding at render time avoids touching the DB schema /
+ * Stripe / entitlement plumbing which is keyed on slug, not name. */
+const TRACK_DISPLAY_OVERRIDES: Record<
+  string,
+  { name: string; ageRange: string }
+> = {
+  "cyber-heroes": { name: "Cyber Heroes", ageRange: "6–9" },
+  cyberexplorers: { name: "Cyber Explorers", ageRange: "10–13" },
+  cyberstart: { name: "Cyber Academy", ageRange: "14–17" },
+  "cyberstart-pro": { name: "Cyber Pro", ageRange: "18+" },
+};
+
 /* Per-track accent — borrowed from the homepage SubjectShowcase
  * cybersecurity stream's green so the subject reads consistently
  * across the site, then walks up the spectrum to violet for the
@@ -64,12 +80,12 @@ const TRACK_ACCENTS: Record<string, string> = {
 };
 
 export const metadata: Metadata = {
-  title: "Cybersecurity — Tracks for Every Age, 6 to 18+ | AlgorithmX",
+  title: "Cybersecurity. Tracks for Every Age, 6 to 18+ | AlgorithmX",
   description:
     "Four cybersecurity tracks covering ages 6 to 18+. From spotting scams as a child to portfolio-grade pen-testing as a college applicant. Pick by your child's age.",
   alternates: { canonical: "https://www.algorithmx.co.uk/cybersecurity" },
   openGraph: {
-    title: "Cybersecurity for every age — AlgorithmX",
+    title: "Cybersecurity for every age | AlgorithmX",
     description:
       "Four cybersecurity tracks. Ages 6 to 18+. One subject, every stage.",
     url: "https://www.algorithmx.co.uk/cybersecurity",
@@ -249,13 +265,14 @@ export default async function CybersecurityPage() {
               const blurb =
                 TRACK_BLURBS[p.slug] ??
                 "Hands-on cybersecurity at the right level for this age.";
+              const displayOverride = TRACK_DISPLAY_OVERRIDES[p.slug];
               return (
                 <TrackCard
                   key={p.slug}
                   slug={p.slug}
                   emoji={p.emoji}
-                  name={p.name}
-                  ageRange={p.ageRange}
+                  name={displayOverride?.name ?? p.name}
+                  ageRange={displayOverride?.ageRange ?? p.ageRange}
                   duration={p.duration}
                   priceLabel={formatPrice(p.priceGBP)}
                   weeksCount={p.weeksCount}
