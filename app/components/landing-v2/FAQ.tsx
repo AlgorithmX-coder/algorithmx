@@ -22,7 +22,7 @@ const FAQS: QA[] = [
   },
   {
     q: "How much does it cost?",
-    a: "Cyber Heroes Academy is £99 for lifetime access. One payment, no subscription, all 8 missions and future updates included. School and family pricing available on request.",
+    a: "Each course varies from £99 to £149 for lifetime access. One payment, no subscription, all missions and future updates included. School and family pricing available on request.",
   },
   {
     q: "What if my child has never coded before?",
@@ -37,16 +37,8 @@ const FAQS: QA[] = [
     a: "No ads, no in-app purchases, no third-party trackers, no chat features that connect children to strangers. The platform is closed by design and content is reviewed by educators.",
   },
   {
-    q: "Can I get a refund?",
-    a: "Yes. If your family doesn't get value from Cyber Heroes in the first 30 days, email us and we'll refund the full £99. No forms, no friction.",
-  },
-  {
     q: "Do you offer school licensing?",
-    a: "Yes. KS2-KS4 packages with classroom-ready lesson plans, teacher dashboards, and volume discounts. We're piloting with a small number of UK schools for autumn 2026. Book a demo via the school path above.",
-  },
-  {
-    q: "What happens when other streams launch?",
-    a: "Existing Cyber Heroes families get early access pricing on each new stream as it launches. Game Dev and AI are on the 2026 roadmap; App Dev, Entrepreneurship, and Robotics in 2027.",
+    a: "Yes we do. Please get in contact to discuss licensing options, classroom-ready lesson plans, teacher dashboards, and volume discounts for your school.",
   },
 ];
 

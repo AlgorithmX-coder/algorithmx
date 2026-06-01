@@ -1566,13 +1566,12 @@ export default function LaptopScene({ progress, reducedMotion = false }: LaptopS
        *  glossy plastic. */}
       <ambientLight intensity={1.0} color="#dde6ff" />
       <directionalLight position={[4, 6, 5]} intensity={1.55} color="#ffffff" />
-      {/* LEFT-SIDE FILL — balances the strong right-front key
-       *  directional above. Without it, the LEFT face of the lid sat
-       *  in shadow and read as a dark vertical band against the
-       *  brushed-aluminium material. Neutral soft-white at moderate
-       *  intensity (0.85) so it fills without flattening the key
-       *  light's modelling. */}
-      <directionalLight position={[-4, 4, 5]} intensity={0.85} color="#e8eef8" />
+      {/* LEFT-SIDE FILL — balances the right-front key. Pulled back
+       *  from 0.85 to 0.55 once the lid material was made less
+       *  reflective: with the calmer material, less fill is enough
+       *  to remove the dark-side band, and lower fill keeps the
+       *  central specular highlight from washing the brand out. */}
+      <directionalLight position={[-4, 4, 5]} intensity={0.55} color="#e8eef8" />
       <pointLight position={[-3, 2.5, 4]} intensity={0.6} color={COLORS.cyan} />
       {/* Rim light from behind to highlight the lid's top edge */}
       <pointLight position={[2, 4, -3]} intensity={0.6} color="#ffffff" />
@@ -2232,8 +2231,13 @@ function Laptop({
       lidBrandMatRef.current.opacity = brandBreathe;
     }
     if (lidBloomMatRef.current) {
+      /* Bloom toned WAY down (peak 0.32 → 0.16) so it sits as a
+       * faint halo behind the wordmark instead of stacking with
+       * the wordmark's own additive cyan and washing the logo
+       * out. The logo is still the focal element; this is just
+       * the soft light spill around it. */
       const bloomBreathe = 0.7 + Math.sin(t * 0.55 + 0.4) * 0.3;
-      lidBloomMatRef.current.opacity = 0.32 * bloomBreathe;
+      lidBloomMatRef.current.opacity = 0.16 * bloomBreathe;
     }
     if (standbyLedMatRef.current) {
       const ledBreathe = 0.5 + Math.sin(t * 0.7) * 0.2;
@@ -2494,19 +2498,18 @@ function Laptop({
        *  sized to match. */}
       <group position={[RIG_X, 0, 0]} rotation={[0, -0.11, 0]} scale={0.86}>
         <RoundedBox args={[BASE_W, BASE_H, BASE_D]} radius={0.03} smoothness={5}>
-          {/* Chassis matched to the lid's premium satin-aluminium
-            * treatment so the lid + base read as one milled body. */}
+          {/* Chassis matched to the lid's calmer satin treatment. */}
           <meshPhysicalMaterial
             color={COLORS.steel}
-            metalness={0.58}
-            roughness={0.46}
-            clearcoat={0.42}
-            clearcoatRoughness={0.42}
-            anisotropy={0.85}
+            metalness={0.45}
+            roughness={0.58}
+            clearcoat={0.28}
+            clearcoatRoughness={0.55}
+            anisotropy={0.78}
             anisotropyRotation={Math.PI / 2}
             normalMap={brushedNormalTex}
-            normalScale={new THREE.Vector2(0.15, 0.15)}
-            envMapIntensity={0.78}
+            normalScale={new THREE.Vector2(0.14, 0.14)}
+            envMapIntensity={0.6}
           />
         </RoundedBox>
 
@@ -2998,23 +3001,24 @@ function Laptop({
         >
           <group position={[0, LID_H / 2, LID_D / 2 - 0.04]}>
             <RoundedBox args={[LID_W, LID_H, LID_D]} radius={0.025} smoothness={5}>
-              {/* Premium satin-brushed aluminium. Bumped metalness +
-               *  clearcoat for a tighter, more refined surface; anisotropy
-               *  pushed to 0.9 with horizontal rotation so the brush
-               *  pattern reads as a real machined grain rather than
-               *  generic noise. envMapIntensity slightly higher so the
-               *  bevel highlights catch light cleanly. */}
+              {/* Satin-brushed aluminium — calmer than the first pass.
+               *  The earlier numbers (metalness 0.62 / roughness 0.42 /
+               *  envMap 0.85) made the lid pick up the scene's key
+               *  light as a hot specular blob right where the brand
+               *  wordmark sits, washing the logo out. These values
+               *  keep most of the brushed look but tame the central
+               *  highlight so the wordmark reads on first glance. */}
               <meshPhysicalMaterial
                 color={COLORS.steel}
-                metalness={0.62}
-                roughness={0.42}
-                clearcoat={0.5}
-                clearcoatRoughness={0.38}
-                anisotropy={0.9}
+                metalness={0.50}
+                roughness={0.55}
+                clearcoat={0.32}
+                clearcoatRoughness={0.5}
+                anisotropy={0.85}
                 anisotropyRotation={Math.PI / 2}
                 normalMap={brushedNormalTex}
-                normalScale={new THREE.Vector2(0.16, 0.16)}
-                envMapIntensity={0.85}
+                normalScale={new THREE.Vector2(0.14, 0.14)}
+                envMapIntensity={0.65}
               />
             </RoundedBox>
 
