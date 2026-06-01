@@ -887,7 +887,7 @@ export default function HomePage() {
               <a href="/login" className="text-sm font-bold text-gray-300 hover:text-white transition-colors hidden sm:block">
                 Log In
               </a>
-              <motion.a href="/signup"
+              <motion.a href="/signup?course=cyber-heroes"
                 whileHover={{ scale: 1.05, y: -2, boxShadow: BTN_GLOW_HOVER }}
                 whileTap={{ scale: 0.95 }}
                 className="px-5 py-2.5 rounded-2xl text-sm font-bold text-white"
@@ -946,7 +946,7 @@ export default function HomePage() {
                 <span>Built by parents, for parents. UK-based.</span>
               </div>
               <div className="flex gap-4 flex-wrap justify-center lg:justify-start">
-                <motion.a href="/signup"
+                <motion.a href="/signup?course=cyber-heroes"
                   whileHover={{ scale: 1.05, y: -2, boxShadow: BTN_GLOW_HOVER }}
                   whileTap={{ scale: 0.95 }}
                   className="px-7 py-4 font-bold text-white text-base"
@@ -1185,7 +1185,7 @@ export default function HomePage() {
             <p className="text-gray-300 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed mb-8">
               Join Adam and Layla on their adventure to become cybersecurity experts. Help them stay safe from the Hacker Raccoon and learn how to protect yourself too!
             </p>
-            <motion.a href="/signup"
+            <motion.a href="/signup?course=cyber-heroes"
               whileHover={{ scale: 1.05, y: -2, boxShadow: BTN_GLOW_HOVER }}
               whileTap={{ scale: 0.95 }}
               className="inline-block px-7 py-4 font-bold text-white text-base"
@@ -1400,7 +1400,7 @@ export default function HomePage() {
             <p style={{ color: "#9ca3af", fontSize: 16, marginBottom: 20, maxWidth: 480, margin: "0 auto 20px" }}>
               Enrol today to reveal every week, every game, every badge. One payment - lifetime access to the full Cyber Heroes journey.
             </p>
-            <motion.a href="/signup"
+            <motion.a href="/signup?course=cyber-heroes"
               whileHover={{ scale: 1.05, y: -2, boxShadow: BTN_GLOW_HOVER }} whileTap={{ scale: 0.95 }}
               style={{ display: "inline-block", background: BTN_GRAD, color: "#fff", fontSize: 18, fontWeight: 700, padding: "14px 36px", borderRadius: 14, textDecoration: "none", boxShadow: BTN_GLOW }}>
               Enrol Now - £99
@@ -1887,7 +1887,7 @@ export default function HomePage() {
                   </li>
                 ))}
               </ul>
-              <motion.a href="/signup"
+              <motion.a href="/signup?course=cyber-heroes"
                 whileHover={{ scale: 1.05, y: -2, boxShadow: BTN_GLOW_HOVER }} whileTap={{ scale: 0.95 }}
                 style={{
                   display: "inline-block", width: "100%",
@@ -1953,7 +1953,7 @@ export default function HomePage() {
                 <p className="text-gray-400 text-base sm:text-lg max-w-lg mx-auto mb-8">
                   Join families across the UK giving their children the online safety skills they&apos;ll carry for life.
                 </p>
-                <motion.a href="/signup"
+                <motion.a href="/signup?course=cyber-heroes"
                   whileHover={{ scale: 1.05, y: -2, boxShadow: BTN_GLOW_HOVER }}
                   whileTap={{ scale: 0.95 }}
                   className="inline-block px-10 py-5 font-bold text-white text-lg"

@@ -38,9 +38,9 @@ const STREAMS: Stream[] = [
     name: "Cybersecurity",
     /* Subject page covers four age tracks: cyber-heroes (6–9),
      * cyberexplorers (10–13), cyberstart (14–16), cyberstart-pro
-     * (16–18+). Surface "Ages 6–18+ · 4 tracks" so the card reads
+     * (16–18+). Surface "Ages 6 → Adult · 4 tracks" so the card reads
      * as a SUBJECT, not as one of the tracks underneath it. */
-    ages: "Ages 6–18+ · 4 tracks",
+    ages: "Ages 6 → Adult · 4 tracks",
     status: "LIVE NOW",
     isLive: true,
     blurb:

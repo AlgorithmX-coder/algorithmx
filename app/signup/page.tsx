@@ -1,7 +1,7 @@
 "use client";
 
-import { useMemo, useState } from "react";
-import { useRouter } from "next/navigation";
+import { Suspense, useMemo, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { CyberPanelBackdrop } from "@/app/components/CyberFutureScenes";
 import { CYBER_PALETTE, CYBER_GRAD } from "@/app/components/scene/cyberTokens";
@@ -60,7 +60,7 @@ function CyberFloatingIcons() {
   const icons = [
     { emoji: "🔑", top: "15%", left: "60%", delay: 0, dur: 7, tag: "AUTH" },
     { emoji: "⭐", top: "28%", right: "12%", delay: 1.5, dur: 6 },
-    { emoji: "🔒", top: "62%", left: "62%", delay: 0.5, dur: 8, tag: "ENC" },
+    { emoji: "🔒", top: "62%", left: "62%", delay: 0.5, dur: 8, tag: "ENCRYPTED" },
     { emoji: "🛡️", top: "78%", right: "16%", delay: 2, dur: 6.5 },
     { emoji: "✨", top: "42%", left: "85%", delay: 3, dur: 9 },
   ];
@@ -107,10 +107,19 @@ function CyberFloatingIcons() {
   );
 }
 
-export default function SignupPage() {
+function SignupPageInner() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const isDesktop = useIsDesktop(1024);
   const reduced = !!useReducedMotion();
+
+  /* If the user arrived from a specific course card (eg
+   * /signup?course=cyber-heroes) we preserve that intent so the hub can
+   * highlight it after login. Validate to a slug shape so the value is
+   * safe to round-trip through the callbackUrl. */
+  const courseRaw = searchParams.get("course");
+  const course =
+    courseRaw && /^[a-z0-9-]{1,40}$/.test(courseRaw) ? courseRaw : null;
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -196,8 +205,13 @@ export default function SignupPage() {
       }
 
       setPhase("success");
+      // Account is created but not signed in yet, so we route through
+      // /login. We carry the intended hub destination (with the selected
+      // course, if any) as a callbackUrl so login lands them on their hub.
+      const hubTarget = course ? `/hub?selected=${course}` : "/hub";
+      const loginUrl = `/login?registered=true&callbackUrl=${encodeURIComponent(hubTarget)}`;
       window.setTimeout(() => {
-        router.push("/login?registered=true");
+        router.push(loginUrl);
       }, 800);
     } catch (err) {
       const detail = err instanceof Error ? err.message : "Network error";
@@ -309,7 +323,7 @@ export default function SignupPage() {
                 textShadow: `0 0 8px ${C.cyan}`,
               }}
             >
-              <span style={{ color: C.cosmic }}>$</span> ax_signup --new-hero
+              <span style={{ color: C.cosmic }}>$</span> ax_signup --create-learning-hub
               <span style={{ marginLeft: 6, animation: "spCursorBlink 1s steps(1) infinite" }}>▮</span>
             </div>
             <p
@@ -321,7 +335,7 @@ export default function SignupPage() {
                 textShadow: "0 1px 6px rgba(8,10,22,0.9)",
               }}
             >
-              4 Courses · Ages 6–18+ · 100% Interactive
+              6 streams · family access · secure learner hub
             </p>
           </motion.div>
         </div>
@@ -387,7 +401,7 @@ export default function SignupPage() {
                 textShadow: `0 0 8px ${C.cyan}`,
               }}
             >
-              ✦ NEW HERO ENROLMENT ✦
+              ✦ NEW ACCOUNT SETUP ✦
             </div>
             <h1
               className="text-3xl sm:text-4xl font-black mb-3"
@@ -401,7 +415,7 @@ export default function SignupPage() {
                 filter: `drop-shadow(0 2px 0 rgba(8,10,22,0.9)) drop-shadow(0 0 22px ${C.cyan}77)`,
               }}
             >
-              Join the adventure
+              Create your AlgorithmX account
             </h1>
             <p
               className="mb-6 text-base"
@@ -411,7 +425,7 @@ export default function SignupPage() {
                 textShadow: "0 1px 12px rgba(8,10,22,0.95)",
               }}
             >
-              Create your family&apos;s secure account and begin the Cyber Heroes adventure.
+              Set up one secure account for your family and access every AlgorithmX course from your learning hub.
             </p>
 
             <AnimatePresence>
@@ -571,9 +585,9 @@ export default function SignupPage() {
           {/* Trust badges */}
           <div className="flex items-center justify-center gap-4 mt-12 flex-wrap">
             {[
-              { icon: "🔒", label: "ENC: 256-BIT" },
+              { icon: "🔒", label: "ENCRYPTED" },
               { icon: "👨‍👩‍👧‍👦", label: "FAMILY SAFE" },
-              { icon: "🛡️", label: "COPPA COMPLIANT" },
+              { icon: "🛡️", label: "UK GDPR ALIGNED" },
             ].map((b, i) => (
               <motion.span
                 key={i}
@@ -602,7 +616,7 @@ export default function SignupPage() {
       <AccessGrantedOverlay
         show={phase === "success"}
         title="Account secured"
-        subtitle="Cyber HQ unlocked · Routing to login…"
+        subtitle="Account ready · Routing to login…"
       />
 
       <style>{`
@@ -620,5 +634,28 @@ export default function SignupPage() {
         }
       `}</style>
     </div>
+  );
+}
+
+/**
+ * Suspense wrapper for the inner client component — required by Next.js
+ * 16 because SignupPageInner now reads useSearchParams (to preserve the
+ * ?course= intent). Mirrors the pattern in /login. Fallback is a flat
+ * background panel so there's no flash before hydration.
+ */
+export default function SignupPage() {
+  return (
+    <Suspense
+      fallback={
+        <div
+          style={{
+            minHeight: "100vh",
+            background: "#06070d",
+          }}
+        />
+      }
+    >
+      <SignupPageInner />
+    </Suspense>
   );
 }

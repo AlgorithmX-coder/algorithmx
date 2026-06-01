@@ -40,10 +40,21 @@ function formatPrice(pence: number): string {
   return pounds % 1 === 0 ? `£${pounds.toFixed(0)}` : `£${pounds.toFixed(2)}`;
 }
 
-export default async function HubPage() {
+export default async function HubPage({
+  searchParams,
+}: {
+  /* ?selected=<slug> arrives from the login/signup journey when the user
+     came in via a specific course card. We use it only to gently highlight
+     the matching track — the account still belongs to the whole platform. */
+  searchParams: Promise<{ selected?: string }>;
+}) {
   const session = await auth();
   if (!session?.user?.id) redirect("/login");
   const userId = session.user.id;
+
+  const { selected } = await searchParams;
+  const selectedSlug =
+    selected && /^[a-z0-9-]{1,40}$/.test(selected) ? selected : null;
 
   /* Three independent reads — could be Promise.all'd but Prisma already
      pipelines these and the page is server-rendered. Keep readable. */
@@ -302,6 +313,7 @@ export default async function HubPage() {
                   ctaHref={ctaHref}
                   ctaLabel={ctaLabel}
                   landingHref={landingRouteFor(product.slug)}
+                  highlighted={product.slug === selectedSlug}
                   index={i}
                 />
               );

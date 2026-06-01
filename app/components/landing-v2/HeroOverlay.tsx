@@ -24,7 +24,7 @@ interface HeroOverlayProps {
 const EYEBROW = "// SIX FIELDS  ·  BUILT FOR THE FUTURE";
 const HEADLINE = "Technology education for every stage of life.";
 const SUBLINE =
-  "Four cyber courses for ages 6 to adult: Cyber Heroes, Cyber Explorers, Cyber Academy (14-17), and Cyber Pro (18+). Cyber Heroes is live today.";
+  "Six technology streams for ages 6 to adult — cybersecurity, game development, AI, app development, entrepreneurship and robotics. Cyber Heroes is live today; the rest land through 2026–27.";
 
 export default function HeroOverlay({ progress }: HeroOverlayProps) {
   /* Headline reveals AFTER the keyboard has lit up - so the sequence
