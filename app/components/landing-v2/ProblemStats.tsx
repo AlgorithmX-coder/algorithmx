@@ -98,7 +98,7 @@ export default function ProblemStats() {
             }}
           >
             Whether you&rsquo;re protecting your child or building your career,
-            AlgorithmX has the right course.
+            AlgorithmX has the right pathway.
           </p>
         </FadeUp>
       </div>
