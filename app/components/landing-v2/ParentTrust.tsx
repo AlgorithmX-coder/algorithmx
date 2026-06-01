@@ -25,7 +25,7 @@ const PILLARS: Pillar[] = [
   {
     title: "Age-appropriate, always",
     copy:
-      "Content is staged for ages 6-8, 9-12, 13-16. We meet your child where they are — never push, never patronise.",
+      "Content is staged for ages 6-8, 9-12, 13-16. We meet your child where they are. Never push, never patronise.",
     accent: "#9ff5ff",
   },
   {
@@ -49,7 +49,7 @@ const PILLARS: Pillar[] = [
   {
     title: "Real-world relevance",
     copy:
-      "Skills that matter outside the screen — spotting scams, evaluating sources, building something useful.",
+      "Skills that matter outside the screen: spotting scams, evaluating sources, building something useful.",
     accent: "#ff3ad6",
   },
 ];

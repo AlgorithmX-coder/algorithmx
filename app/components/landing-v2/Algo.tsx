@@ -42,7 +42,7 @@ const DEFAULT_SUGGESTION: Suggestion = {
   stream: "CYBER HEROES ACADEMY",
   accent: "#5fffa3",
   status: "LIVE NOW",
-  project: "Build a Password Defender — the only stream live today.",
+  project: "Build a Password Defender. The only stream live today.",
   href: "/cyberheroes",
   cta: "Start Cyber Heroes",
 };
@@ -68,7 +68,7 @@ const AUDIENCE_SUGGESTIONS: Record<Exclude<AudienceId, null>, Suggestion> = {
     stream: "CYBERSECURITY",
     accent: "#cba8ff",
     status: "LIVE NOW",
-    project: "Build a portfolio. UK tech avg £65K — start here.",
+    project: "Build a portfolio. UK tech avg £65K. Start here.",
     href: "/cyberheroes",
     cta: "Start Cybersecurity",
   },

@@ -30,7 +30,7 @@ const FAQS: QA[] = [
   },
   {
     q: "How much time per week is needed?",
-    a: "Each Cyber Heroes mission takes 30-45 minutes. Kids can finish the 8-mission programme in a weekend or stretch it across two months. There's no schedule — it's self-paced.",
+    a: "Each Cyber Heroes mission takes 30-45 minutes. Kids can finish the 8-mission programme in a weekend or stretch it across two months. There's no schedule. It's self-paced.",
   },
   {
     q: "Is it safe? Are there ads?",
@@ -42,7 +42,7 @@ const FAQS: QA[] = [
   },
   {
     q: "Do you offer school licensing?",
-    a: "Yes — KS2-KS4 packages with classroom-ready lesson plans, teacher dashboards, and volume discounts. We're piloting with a small number of UK schools for autumn 2026. Book a demo via the school path above.",
+    a: "Yes. KS2-KS4 packages with classroom-ready lesson plans, teacher dashboards, and volume discounts. We're piloting with a small number of UK schools for autumn 2026. Book a demo via the school path above.",
   },
   {
     q: "What happens when other streams launch?",
