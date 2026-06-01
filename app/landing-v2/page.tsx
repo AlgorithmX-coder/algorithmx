@@ -12,6 +12,7 @@ import Algo from "@/app/components/landing-v2/Algo";
 import SmoothScroll from "@/app/components/SmoothScroll";
 import SpotlightCursor from "@/app/components/landing-v2/SpotlightCursor";
 import GlobalBackdrop from "@/app/components/landing-v2/GlobalBackdrop";
+import AmbientFutureBackdrop from "@/app/components/landing-v2/AmbientFutureBackdrop";
 
 /**
  * /landing-v2 - production homepage (re-exported by /).
@@ -40,6 +41,7 @@ export default function LandingV2() {
   return (
     <SmoothScroll>
       <GlobalBackdrop />
+      <AmbientFutureBackdrop />
       <SpotlightCursor />
       <Nav />
       <main>

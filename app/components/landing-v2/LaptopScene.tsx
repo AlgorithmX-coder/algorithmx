@@ -127,6 +127,37 @@ function useLidBrandTexture(): THREE.Texture | null {
   }, []);
 }
 
+/* Soft wide bloom that sits behind the brand wordmark on the lid.
+ * Separate from the brand texture so it can breathe on its own slow
+ * wave and have a much wider radius without smearing the letterforms.
+ * Reads as ambient light spill around the logo, not a second logo. */
+function useLidBloomTexture(): THREE.Texture | null {
+  return useMemo(() => {
+    if (typeof document === "undefined") return null;
+    const c = document.createElement("canvas");
+    c.width = 1024;
+    c.height = 512;
+    const ctx = c.getContext("2d");
+    if (!ctx) return null;
+    ctx.clearRect(0, 0, c.width, c.height);
+    const g = ctx.createRadialGradient(
+      c.width / 2, c.height / 2, 24,
+      c.width / 2, c.height / 2, c.width / 2.4,
+    );
+    g.addColorStop(0, "rgba(0,245,255,0.42)");
+    g.addColorStop(0.35, "rgba(0,229,255,0.18)");
+    g.addColorStop(0.7, "rgba(0,180,220,0.05)");
+    g.addColorStop(1, "rgba(0,160,200,0)");
+    ctx.fillStyle = g;
+    ctx.fillRect(0, 0, c.width, c.height);
+    const tex = new THREE.CanvasTexture(c);
+    tex.colorSpace = THREE.SRGBColorSpace;
+    tex.anisotropy = 16;
+    tex.needsUpdate = true;
+    return tex;
+  }, []);
+}
+
 /* LIVING SCREEN - multi-stage canvas texture that repaints as scroll
  * crosses chapter boundaries. Replaces the previous static screen with
  * a real boot sequence -> dashboard -> projects -> READY narrative.
@@ -1535,6 +1566,13 @@ export default function LaptopScene({ progress, reducedMotion = false }: LaptopS
        *  glossy plastic. */}
       <ambientLight intensity={1.0} color="#dde6ff" />
       <directionalLight position={[4, 6, 5]} intensity={1.55} color="#ffffff" />
+      {/* LEFT-SIDE FILL — balances the strong right-front key
+       *  directional above. Without it, the LEFT face of the lid sat
+       *  in shadow and read as a dark vertical band against the
+       *  brushed-aluminium material. Neutral soft-white at moderate
+       *  intensity (0.85) so it fills without flattening the key
+       *  light's modelling. */}
+      <directionalLight position={[-4, 4, 5]} intensity={0.85} color="#e8eef8" />
       <pointLight position={[-3, 2.5, 4]} intensity={0.6} color={COLORS.cyan} />
       {/* Rim light from behind to highlight the lid's top edge */}
       <pointLight position={[2, 4, -3]} intensity={0.6} color="#ffffff" />
@@ -1877,6 +1915,15 @@ function Laptop({
   reducedMotion: boolean;
 }) {
   const lidBrandTex = useLidBrandTexture();
+  const lidBloomTex = useLidBloomTexture();
+  /* Refs for the closed-laptop premium-polish layers: the wordmark
+   *  pulses on a slow breath, the wider bloom behind it pulses on an
+   *  out-of-phase slower wave so the glow never feels mechanical,
+   *  and the front-edge standby LED pulses on its own subtle wave
+   *  so the laptop reads as "in standby" even when fully closed. */
+  const lidBrandMatRef = useRef<THREE.MeshBasicMaterial>(null);
+  const lidBloomMatRef = useRef<THREE.MeshBasicMaterial>(null);
+  const standbyLedMatRef = useRef<THREE.MeshBasicMaterial>(null);
   const screen = useLivingScreen();
   const screenStageRef = useRef(-1);
   /* Crossfade state for MAJOR stage transitions (boot -> streams ->
@@ -1971,12 +2018,6 @@ function Laptop({
   );
   const orbRefs = useRef<(THREE.Mesh | null)[]>([null, null, null, null, null, null]);
 
-  /* Rolling-wave edge strip - 10 segments with phased opacity so a
-   * bright pulse appears to travel along the front of the lid. */
-  const EDGE_SEGMENTS = 10;
-  const edgeStripRefs = useRef<(THREE.MeshBasicMaterial | null)[]>(
-    Array(EDGE_SEGMENTS).fill(null),
-  );
   /* Cyan side-trim rails down each side of the lid. Refs so we can gate
    * their opacity on lid-open progress — when the laptop is closed the
    * trim should be dark, igniting as the lid lifts. */
@@ -2160,15 +2201,43 @@ function Laptop({
       const pulse = 0.92 + Math.sin(t * 0.9) * 0.06;
       hexFloorMatRef.current.opacity = draw * 0.1 * pulse;
     }
-    /* Contact underglow — soft cyan light pool the laptop sheds onto
-     * the floor as the screen ignites. Halved (0.32 → 0.18) because
-     * with the floor pattern now nearly absent, the cyan underglow
-     * was the loudest thing on the floor. Halving it lets the
-     * laptop's silhouette dominate visual reading again. */
+    /* Contact underglow — soft cyan light pool grounding the chassis.
+     * Now has a small always-on baseline so the CLOSED laptop reads
+     * as a premium product with a faint shadow-and-glow under it, not
+     * a model floating on a dark plate. Baseline holds throughout the
+     * cinematic; an additional pop layers in when the screen ignites. */
     if (contactGlowMatRef.current) {
-      const glow = smoothstep(0.5, 0.7, p);
+      const baseline = 0.07;
+      const ignite = smoothstep(0.5, 0.7, p) * 0.12;
       const breathe = 0.9 + Math.sin(t * 1.2) * 0.1;
-      contactGlowMatRef.current.opacity = glow * 0.18 * breathe;
+      contactGlowMatRef.current.opacity = (baseline + ignite) * breathe;
+    }
+
+    /* CLOSED-LAPTOP PREMIUM POLISH — three small per-frame pulses
+     * that give the dormant device its "alive product" presence:
+     *
+     *   1. Brand wordmark breathes on a slow 0.85 Hz wave between 70%
+     *      and 100% so the logo glow never feels static
+     *   2. Soft outer bloom around the wordmark pulses on a SLOWER
+     *      out-of-phase wave (0.55 Hz) so the layered glow never
+     *      moves in lock-step
+     *   3. Front-edge standby LED on its own 0.7 Hz wave at low
+     *      amplitude — quiet "standby" tell, not an RGB strip
+     *
+     * All three run for the whole cinematic; none of them gate on
+     * lid-open progress, because their job is to make the CLOSED
+     * laptop feel premium. */
+    if (lidBrandMatRef.current) {
+      const brandBreathe = 0.78 + Math.sin(t * 0.85) * 0.18;
+      lidBrandMatRef.current.opacity = brandBreathe;
+    }
+    if (lidBloomMatRef.current) {
+      const bloomBreathe = 0.7 + Math.sin(t * 0.55 + 0.4) * 0.3;
+      lidBloomMatRef.current.opacity = 0.32 * bloomBreathe;
+    }
+    if (standbyLedMatRef.current) {
+      const ledBreathe = 0.5 + Math.sin(t * 0.7) * 0.2;
+      standbyLedMatRef.current.opacity = ledBreathe;
     }
 
     /* DATA RAIN scrolls downward via texture offset.y. Slow speed so
@@ -2205,20 +2274,11 @@ function Laptop({
       });
     }
 
-    /* ROLLING LIGHT WAVE on the edge strip + side trim rails. Both
-     * are now gated on lid-open progress: when the lid is shut (openT
-     * ≈ 0) the cyan accents are fully dark, igniting as the lid lifts
-     * and reaching full brightness once the lid is open. Previously
-     * they pulsed at 0.32 → 0.87 regardless of lid state, so the
-     * closed-laptop frame leaked a visible cyan rim. */
-    const lidLitMul = openT * openT; // ease-in so it builds with the hinge
-    for (let i = 0; i < EDGE_SEGMENTS; i++) {
-      const mat = edgeStripRefs.current[i];
-      if (!mat) continue;
-      const phase = (i / EDGE_SEGMENTS) * Math.PI * 2;
-      const wave = Math.max(0, Math.sin(t * 1.1 - phase * 1.4));
-      mat.opacity = (0.32 + wave * 0.55) * lidLitMul;
-    }
+    /* Side-trim rails only — gated on lid-open progress so they're
+     *  dark when the lid is closed and light up as the lid lifts. The
+     *  previous front-edge rolling-wave strip was removed (read as a
+     *  cyan bar across the top of the open screen). */
+    const lidLitMul = openT * openT;
     if (lidTrimMatLeft.current) lidTrimMatLeft.current.opacity = 0.55 * lidLitMul;
     if (lidTrimMatRight.current) lidTrimMatRight.current.opacity = 0.55 * lidLitMul;
 
@@ -2434,22 +2494,19 @@ function Laptop({
        *  sized to match. */}
       <group position={[RIG_X, 0, 0]} rotation={[0, -0.11, 0]} scale={0.86}>
         <RoundedBox args={[BASE_W, BASE_H, BASE_D]} radius={0.03} smoothness={5}>
-          {/* Brushed-aluminium dialled in: metalness 0.55 -> 0.42,
-            * roughness 0.42 -> 0.55, clearcoat 0.45 -> 0.28,
-            * clearcoatRoughness 0.40 -> 0.55. Less metal + more
-            * roughness + a softer thinner clearcoat = a matte brushed
-            * tone instead of glossy plastic. Bevel highlights stay
-            * crisp because the underlying geometry hasn't changed. */}
+          {/* Chassis matched to the lid's premium satin-aluminium
+            * treatment so the lid + base read as one milled body. */}
           <meshPhysicalMaterial
             color={COLORS.steel}
-            metalness={0.42}
-            roughness={0.55}
-            clearcoat={0.28}
-            clearcoatRoughness={0.55}
-            anisotropy={0.55}
+            metalness={0.58}
+            roughness={0.46}
+            clearcoat={0.42}
+            clearcoatRoughness={0.42}
+            anisotropy={0.85}
+            anisotropyRotation={Math.PI / 2}
             normalMap={brushedNormalTex}
-            normalScale={new THREE.Vector2(0.14, 0.14)}
-            envMapIntensity={0.7}
+            normalScale={new THREE.Vector2(0.15, 0.15)}
+            envMapIntensity={0.78}
           />
         </RoundedBox>
 
@@ -2850,6 +2907,72 @@ function Laptop({
           <meshStandardMaterial color="#02030a" roughness={0.95} />
         </mesh>
 
+        {/* HINGE BAR — slim metallic cylinder along the back edge of
+         *  the chassis right at the lid-pivot line. Static (does NOT
+         *  rotate with the lid) so it reads as the structural hinge
+         *  the lid pivots on. Dark satin steel, slightly more reflec-
+         *  tive than the chassis so the eye can pick it out as a
+         *  separate mechanical part. */}
+        <mesh
+          position={[0, BASE_H / 2 + 0.002, -BASE_D / 2 + 0.04]}
+          rotation={[0, 0, Math.PI / 2]}
+        >
+          <cylinderGeometry args={[0.018, 0.018, LID_W * 0.86, 16]} />
+          <meshPhysicalMaterial
+            color="#1c2030"
+            metalness={0.7}
+            roughness={0.38}
+            clearcoat={0.5}
+            clearcoatRoughness={0.35}
+            envMapIntensity={0.9}
+          />
+        </mesh>
+        {/* Hinge end-caps — tiny black washers at each end of the
+         *  hinge bar. Reads as the screwed-down hinge mounts. */}
+        {[-1, 1].map((side) => (
+          <mesh
+            key={`hinge-cap-${side}`}
+            position={[
+              side * (LID_W * 0.43),
+              BASE_H / 2 + 0.002,
+              -BASE_D / 2 + 0.04,
+            ]}
+            rotation={[0, 0, Math.PI / 2]}
+          >
+            <cylinderGeometry args={[0.026, 0.026, 0.012, 18]} />
+            <meshPhysicalMaterial
+              color="#0a0c14"
+              metalness={0.55}
+              roughness={0.5}
+            />
+          </mesh>
+        ))}
+
+        {/* STANDBY ACCENT LINE — a tiny cyan front-edge sliver on the
+         *  base. Always faintly lit (driven by useFrame so it breathes
+         *  gently) so the closed laptop reads as a powered-down-but-
+         *  alive product, not a static prop. Sized small and placed
+         *  near the front-right corner so it never feels like a light
+         *  bar. */}
+        <mesh
+          position={[
+            BASE_W / 2 - 0.45,
+            -BASE_H / 2 - 0.0015,
+            BASE_D / 2 + 0.0015,
+          ]}
+        >
+          <boxGeometry args={[0.18, 0.005, 0.004]} />
+          <meshBasicMaterial
+            ref={standbyLedMatRef}
+            color={COLORS.cyan}
+            transparent
+            opacity={0.45}
+            blending={THREE.AdditiveBlending}
+            depthWrite={false}
+            toneMapped={false}
+          />
+        </mesh>
+
         {/* Rubber feet underneath - 4 small dark discs */}
         {[
           [-BASE_W / 2 + 0.25, BASE_D / 2 - 0.25],
@@ -2875,47 +2998,32 @@ function Laptop({
         >
           <group position={[0, LID_H / 2, LID_D / 2 - 0.04]}>
             <RoundedBox args={[LID_W, LID_H, LID_D]} radius={0.025} smoothness={5}>
-              {/* Lid matched to the chassis matte-brushed treatment. */}
+              {/* Premium satin-brushed aluminium. Bumped metalness +
+               *  clearcoat for a tighter, more refined surface; anisotropy
+               *  pushed to 0.9 with horizontal rotation so the brush
+               *  pattern reads as a real machined grain rather than
+               *  generic noise. envMapIntensity slightly higher so the
+               *  bevel highlights catch light cleanly. */}
               <meshPhysicalMaterial
                 color={COLORS.steel}
-                metalness={0.48}
-                roughness={0.5}
-                clearcoat={0.32}
-                clearcoatRoughness={0.5}
-                anisotropy={0.6}
+                metalness={0.62}
+                roughness={0.42}
+                clearcoat={0.5}
+                clearcoatRoughness={0.38}
+                anisotropy={0.9}
+                anisotropyRotation={Math.PI / 2}
                 normalMap={brushedNormalTex}
-                normalScale={new THREE.Vector2(0.13, 0.13)}
-                envMapIntensity={0.75}
+                normalScale={new THREE.Vector2(0.16, 0.16)}
+                envMapIntensity={0.85}
               />
             </RoundedBox>
 
-            {/* ROLLING-WAVE EDGE STRIP - 10 segments with phased opacity
-             *  so a bright pulse appears to travel along the front of
-             *  the lid like a real gaming-laptop light bar. */}
-            {Array.from({ length: EDGE_SEGMENTS }).map((_, i) => {
-              const totalSpan = LID_W * 0.82;
-              const segW = totalSpan / EDGE_SEGMENTS;
-              const x = -totalSpan / 2 + segW / 2 + i * segW;
-              return (
-                <mesh
-                  key={`edge-${i}`}
-                  position={[x, -LID_H / 2 - 0.002, LID_D / 2 - 0.005]}
-                >
-                  <boxGeometry args={[segW * 0.92, 0.012, 0.006]} />
-                  <meshBasicMaterial
-                    ref={(el) => {
-                      edgeStripRefs.current[i] = el;
-                    }}
-                    color={COLORS.cyan}
-                    transparent
-                    opacity={0}
-                    blending={THREE.AdditiveBlending}
-                    toneMapped={false}
-                    depthWrite={false}
-                  />
-                </mesh>
-              );
-            })}
+            {/* Rolling-wave lid edge strip removed — when the lid
+             *  opens, that front edge becomes the top edge of the
+             *  visible screen face, and the cyan light bar read as
+             *  a gamer-laptop accent rather than a premium product
+             *  detail. The side trim rails below stay (they live on
+             *  the left/right edges and never sit above the screen). */}
 
             {/* Cyan trim down each side of the lid — opacity driven
              *  per-frame by useFrame against the lid-open progress so
@@ -2951,10 +3059,34 @@ function Laptop({
               />
             </mesh>
 
+            {/* Soft outer bloom plane — wider radial glow that sits
+             *  just below the wordmark plate in render order. Slow
+             *  out-of-phase breathe so the bloom feels separate from
+             *  the wordmark and the laptop never reads as mechanical.
+             *  Rendered FIRST so the brand plate paints on top. */}
+            {lidBloomTex && (
+              <mesh
+                position={[0, LID_H / 2 + 0.0005, 0]}
+                rotation={[-Math.PI / 2, 0, 0]}
+              >
+                <planeGeometry args={[LID_W * 0.82, LID_D * 0.62]} />
+                <meshBasicMaterial
+                  ref={lidBloomMatRef}
+                  map={lidBloomTex}
+                  transparent
+                  opacity={0.3}
+                  blending={THREE.AdditiveBlending}
+                  depthWrite={false}
+                  toneMapped={false}
+                />
+              </mesh>
+            )}
+
             {/* GLOWING BRAND LOGO on the outer lid face. Sized to ~55%
              *  of the lid width so the badge has breathing room around
-             *  it - no more halo lake. Additive blending keeps it
-             *  glowing on the dark aluminum. */}
+             *  it. Material ref so useFrame can pulse the wordmark on
+             *  a slow breath — gives the closed laptop a quiet "in
+             *  standby" presence. */}
             {lidBrandTex && (
               <mesh
                 position={[0, LID_H / 2 + 0.001, 0]}
@@ -2962,8 +3094,10 @@ function Laptop({
               >
                 <planeGeometry args={[LID_W * 0.55, LID_D * 0.35]} />
                 <meshBasicMaterial
+                  ref={lidBrandMatRef}
                   map={lidBrandTex}
                   transparent
+                  opacity={1}
                   blending={THREE.AdditiveBlending}
                   depthWrite={false}
                   toneMapped={false}
@@ -2982,25 +3116,29 @@ function Laptop({
               <meshStandardMaterial color="#0a0c14" roughness={0.6} metalness={0.4} />
             </mesh>
 
-            {/* ACTUAL SCREEN BASE - smaller than the bezel so a clean
-             *  ~3.5% bezel border shows around the active display. */}
+            {/* ACTUAL SCREEN BASE — widened (LID_W*0.86 → LID_W*0.93)
+             *  to nearly fill the bezel horizontally. With the laptop
+             *  yawed -0.11 rad, the LEFT bezel sits more
+             *  perpendicular to the camera and renders at near-full
+             *  width while the right is foreshortened — the old 5%
+             *  bezel margin appeared as a noticeable dark band on the
+             *  left. Modern-ultrabook-thin bezel everywhere is also
+             *  closer to where premium laptop design has landed. */}
             <mesh
               position={[0, -LID_H / 2 - 0.001, 0]}
               rotation={[Math.PI / 2, 0, 0]}
             >
-              <planeGeometry args={[LID_W * 0.86, LID_D * 0.82]} />
+              <planeGeometry args={[LID_W * 0.93, LID_D * 0.86]} />
               <meshBasicMaterial color="#02030a" toneMapped={false} />
             </mesh>
 
-            {/* Screen CONTENT - living multi-stage canvas. Repaints in
-             *  useFrame when the chapter-driven stage changes (boot ->
-             *  streams -> projects -> ready). Fades up across Chapter 03. */}
+            {/* Screen CONTENT — matches the new wider screen base. */}
             {screen.tex && (
               <mesh
                 position={[0, -LID_H / 2 - 0.0015, 0]}
                 rotation={[Math.PI / 2, 0, 0]}
               >
-                <planeGeometry args={[LID_W * 0.86, LID_D * 0.82]} />
+                <planeGeometry args={[LID_W * 0.93, LID_D * 0.86]} />
                 <meshBasicMaterial
                   ref={screenContentMat}
                   map={screen.tex}
@@ -3011,12 +3149,14 @@ function Laptop({
               </mesh>
             )}
 
-            {/* Cyan ambient glow above the screen content */}
+            {/* Cyan ambient glow — scaled to match the new screen
+             *  size so the additive tint covers the full visible
+             *  display area (was 0.84/0.80, now 0.91/0.84). */}
             <mesh
               position={[0, -LID_H / 2 - 0.002, 0]}
               rotation={[Math.PI / 2, 0, 0]}
             >
-              <planeGeometry args={[LID_W * 0.84, LID_D * 0.80]} />
+              <planeGeometry args={[LID_W * 0.91, LID_D * 0.84]} />
               <meshBasicMaterial
                 ref={screenGlowMat}
                 color={COLORS.cyan}
