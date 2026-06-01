@@ -423,7 +423,7 @@ function SignupPageInner() {
                 textShadow: "0 1px 12px rgba(8,10,22,0.95)",
               }}
             >
-              Set up one secure account for your family and access every AlgorithmX course from your learning hub.
+              Set up one secure account and access every AlgorithmX course from your learning hub.
             </p>
 
             <AnimatePresence>
@@ -462,7 +462,7 @@ function SignupPageInner() {
                 }
                 error={touched.name && !nameOk ? "We need a name to set up the account." : null}
                 autoComplete="name"
-                placeholder="Parent or guardian's name"
+                placeholder="Your full name"
                 required
               />
 
@@ -487,7 +487,7 @@ function SignupPageInner() {
                 }
                 autoComplete="email"
                 inputMode="email"
-                placeholder="parent@example.com"
+                placeholder="you@example.com"
                 required
               />
 
