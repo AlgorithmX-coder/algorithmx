@@ -22,6 +22,7 @@ import Link from "next/link";
 import ProductCard, { type ProductCardVariant } from "@/app/components/hub/ProductCard";
 import AgeProgressionBanner from "@/app/components/hub/AgeProgressionBanner";
 import { landingRouteFor } from "@/app/lib/courseLandings";
+import { safeCourseSlug } from "@/app/lib/courseIntent";
 
 const C = CYBER_PALETTE;
 const GRAD = CYBER_GRAD.hero;
@@ -53,8 +54,7 @@ export default async function HubPage({
   const userId = session.user.id;
 
   const { selected } = await searchParams;
-  const selectedSlug =
-    selected && /^[a-z0-9-]{1,40}$/.test(selected) ? selected : null;
+  const selectedSlug = safeCourseSlug(selected);
 
   /* Three independent reads — could be Promise.all'd but Prisma already
      pipelines these and the page is server-rendered. Keep readable. */

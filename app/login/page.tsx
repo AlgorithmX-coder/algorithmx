@@ -12,6 +12,7 @@ import AuthButton, { type AuthButtonState } from "@/app/components/auth/AuthButt
 import AuthTerminalPanel from "@/app/components/auth/AuthTerminalPanel";
 import AccessGrantedOverlay from "@/app/components/auth/AccessGrantedOverlay";
 import { useIsDesktop } from "@/app/components/auth/useIsDesktop";
+import { safeCourseSlug, hubTargetFor } from "@/app/lib/courseIntent";
 
 const C = CYBER_PALETTE;
 const GRAD = CYBER_GRAD.hero;
@@ -96,15 +97,11 @@ function LoginPageInner() {
    * Note we land on /hub, not /dashboard: the account is for the whole
    * AlgorithmX platform, and the hub is where every enrolled course lives. */
   const callbackRaw = searchParams.get("callbackUrl");
-  const courseRaw = searchParams.get("course");
-  const course =
-    courseRaw && /^[a-z0-9-]{1,40}$/.test(courseRaw) ? courseRaw : null;
+  const course = safeCourseSlug(searchParams.get("course"));
   const safeCallback =
     callbackRaw && callbackRaw.startsWith("/") && !callbackRaw.startsWith("//")
       ? callbackRaw
-      : course
-        ? `/hub?selected=${course}`
-        : "/hub";
+      : hubTargetFor(course);
 
   /* Surfaced after signup (/login?registered=true) so the user knows the
    * account was created and this is the expected next step. */

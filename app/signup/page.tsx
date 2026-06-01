@@ -11,6 +11,7 @@ import AuthButton, { type AuthButtonState } from "@/app/components/auth/AuthButt
 import AuthTerminalPanel from "@/app/components/auth/AuthTerminalPanel";
 import AccessGrantedOverlay from "@/app/components/auth/AccessGrantedOverlay";
 import { useIsDesktop } from "@/app/components/auth/useIsDesktop";
+import { safeCourseSlug, hubTargetFor } from "@/app/lib/courseIntent";
 
 const C = CYBER_PALETTE;
 const GRAD = CYBER_GRAD.hero;
@@ -117,9 +118,7 @@ function SignupPageInner() {
    * /signup?course=cyber-heroes) we preserve that intent so the hub can
    * highlight it after login. Validate to a slug shape so the value is
    * safe to round-trip through the callbackUrl. */
-  const courseRaw = searchParams.get("course");
-  const course =
-    courseRaw && /^[a-z0-9-]{1,40}$/.test(courseRaw) ? courseRaw : null;
+  const course = safeCourseSlug(searchParams.get("course"));
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -208,8 +207,7 @@ function SignupPageInner() {
       // Account is created but not signed in yet, so we route through
       // /login. We carry the intended hub destination (with the selected
       // course, if any) as a callbackUrl so login lands them on their hub.
-      const hubTarget = course ? `/hub?selected=${course}` : "/hub";
-      const loginUrl = `/login?registered=true&callbackUrl=${encodeURIComponent(hubTarget)}`;
+      const loginUrl = `/login?registered=true&callbackUrl=${encodeURIComponent(hubTargetFor(course))}`;
       window.setTimeout(() => {
         router.push(loginUrl);
       }, 800);

@@ -43,6 +43,10 @@ export default function Nav() {
     scrollY > 24
       ? "1px solid rgba(0,229,255,0.16)"
       : "1px solid transparent";
+  /* Glassy at the very top → settles onto a faint shadow once scrolled,
+   * so the strip reads as a layer lifting off the page. No layout change. */
+  const shadow =
+    scrollY > 24 ? "0 10px 34px rgba(2,4,12,0.45)" : "0 0 0 rgba(0,0,0,0)";
   const textColor = "var(--lv2-paper)";
   const textColorMuted = "rgba(232,237,255,0.78)";
 
@@ -61,6 +65,7 @@ export default function Nav() {
         backdropFilter: "blur(20px) saturate(1.6)",
         WebkitBackdropFilter: "blur(20px) saturate(1.6)",
         borderBottom: border,
+        boxShadow: shadow,
         transition:
           "background .3s ease, border-color .3s ease, box-shadow .3s ease",
       }}
