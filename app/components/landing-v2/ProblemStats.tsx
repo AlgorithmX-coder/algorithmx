@@ -97,8 +97,8 @@ export default function ProblemStats() {
               letterSpacing: "-0.01em",
             }}
           >
-            Whether you&rsquo;re protecting your child or building your career
-            &mdash; AlgorithmX has the right course.
+            Whether you&rsquo;re protecting your child or building your career,
+            AlgorithmX has the right course.
           </p>
         </FadeUp>
       </div>

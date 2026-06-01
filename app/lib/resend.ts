@@ -148,7 +148,7 @@ export function passwordResetTemplate(args: {
                   ${resetUrl}
                 </p>
                 <p style="margin:0;font-size:13px;line-height:1.6;color:rgba(197,205,240,0.65);">
-                  Didn&rsquo;t request this? You can safely ignore this email &mdash; your password won&rsquo;t change.
+                  Didn&rsquo;t request this? You can safely ignore this email. Your password won&rsquo;t change.
                 </p>
               </td>
             </tr>
