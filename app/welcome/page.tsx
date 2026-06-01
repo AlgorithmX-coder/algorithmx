@@ -298,7 +298,7 @@ export default function WelcomePage() {
           )}
         </AnimatePresence>
 
-        {/* PHASE 4: The story + raccoon peek */}
+        {/* PHASE 4: The story */}
         <AnimatePresence>
           {phase >= 4 && (
             <motion.div className="relative mb-3"
@@ -308,13 +308,6 @@ export default function WelcomePage() {
               <p className="text-gray-300 text-base sm:text-lg leading-relaxed">
                 We need <strong className="text-white">YOUR</strong> help to learn about cybersecurity and defeat the Hacker Raccoon!
               </p>
-              {/* Raccoon peeking */}
-              <div className="fixed right-0 top-1/2 -translate-y-1/2 pointer-events-none" style={{ zIndex: 10 }}>
-                <motion.img src="/characters/raccoon-sneaking.png" alt="Hacker Raccoon" width={60} height={60}
-                  initial={{ x: "100%" }}
-                  animate={{ x: ["100%", "85%", "100%"] }}
-                  transition={{ duration: 2.5, ease: "easeInOut" }} />
-              </div>
             </motion.div>
           )}
         </AnimatePresence>
