@@ -39,16 +39,21 @@ const CYBER_TRACK_SLUGS = [
 ] as const;
 
 /* Track-level taglines NOT in the DB (the DB carries weekly content
- * only). Keyed by slug so a change here lands without a migration. */
+ * only). Keyed by slug so a change here lands without a migration.
+ *
+ * Copy is marketing-led, parent-facing, and built around a shared
+ * shape: one value/benefit beat for the parent, then the technical
+ * proof-point that backs it up. Reads as premium and credible, not
+ * as a dry syllabus. */
 const TRACK_BLURBS: Record<string, string> = {
   "cyber-heroes":
-    "Strong passwords, scam-spotting, gaming safety. The gateway to every online skill.",
+    "A confident, safe start in technology. Through animated missions with Adam and Layla, children learn strong passwords, scam-spotting and smart online habits they can use every day.",
   cyberexplorers:
-    "Phishing labs, social-engineering basics, and the first OPSEC habits that stick for life.",
+    "Turn curiosity into practical cyber skill. Guided labs cover phishing, social engineering, and online safety, building the digital confidence that lasts.",
   cyberstart:
-    "Network defence, capture-the-flag puzzles, and portfolio-grade incident response.",
+    "Build portfolio-ready cyber skills through network defence, capture-the-flag challenges, and incident response projects designed for serious learners.",
   "cyberstart-pro":
-    "Pen-testing, threat modelling, and security projects that strengthen UCAS and college applications.",
+    "Develop career-grade cyber capability through pen-testing, threat modelling, and security projects built for university, work, and professional growth.",
 };
 
 /* Display-layer overrides for track name + age range. The DB still
@@ -65,6 +70,14 @@ const TRACK_DISPLAY_OVERRIDES: Record<
   cyberexplorers: { name: "Cyber Explorers", ageRange: "10–13" },
   cyberstart: { name: "Cyber Academy", ageRange: "14–17" },
   "cyberstart-pro": { name: "Cyber Pro", ageRange: "18+" },
+};
+
+/* Per-track character art. Only the LIVE Cyber Heroes track has a
+ * dedicated animated cast (Adam + Layla) — they replace the emoji on
+ * the card to signal the story-led, animated format. Other tracks
+ * omit this and keep their abstract emoji identifier. */
+const TRACK_CHARACTER_IMAGES: Record<string, string> = {
+  "cyber-heroes": "/characters/adam-layla-happy.png",
 };
 
 /* Per-track accent — borrowed from the homepage SubjectShowcase
@@ -158,7 +171,7 @@ export default async function CybersecurityPage() {
           style={{
             position: "relative",
             padding:
-              "calc(var(--lv2-rail) * 3.2) var(--lv2-rail) calc(var(--lv2-rail) * 1.4)",
+              "calc(var(--lv2-rail) * 4.0) var(--lv2-rail) calc(var(--lv2-rail) * 1.4)",
             maxWidth: 1180,
             margin: "0 auto",
             textAlign: "center",
@@ -237,7 +250,7 @@ export default async function CybersecurityPage() {
               <span aria-hidden style={{ opacity: 0.4 }}>·</span>
               <span>4 tracks</span>
               <span aria-hidden style={{ opacity: 0.4 }}>·</span>
-              <span>1 continuous subject</span>
+              <span>one continuous journey</span>
             </div>
           </FadeUp>
         </section>
@@ -266,6 +279,7 @@ export default async function CybersecurityPage() {
                 TRACK_BLURBS[p.slug] ??
                 "Hands-on cybersecurity at the right level for this age.";
               const displayOverride = TRACK_DISPLAY_OVERRIDES[p.slug];
+              const characterImage = TRACK_CHARACTER_IMAGES[p.slug];
               return (
                 <TrackCard
                   key={p.slug}
@@ -282,6 +296,7 @@ export default async function CybersecurityPage() {
                   fitForChildren={childFits[p.slug] ?? []}
                   accent={accent}
                   index={i}
+                  characterImage={characterImage}
                 />
               );
             })}

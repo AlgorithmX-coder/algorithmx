@@ -39,6 +39,11 @@ export interface TrackCardProps {
   accent: string;
   /** Entrance stagger index. */
   index: number;
+  /** Optional character art that replaces the emoji slot on this card.
+   *  Used by the live Cyber Heroes track to signal its animated, story-
+   *  led format. Passed as a public-folder path (e.g. "/characters/...").
+   *  Other tracks omit this and keep the emoji as their identifier. */
+  characterImage?: string;
 }
 
 export default function TrackCard({
@@ -54,6 +59,7 @@ export default function TrackCard({
   fitForChildren,
   accent,
   index,
+  characterImage,
 }: TrackCardProps) {
   const reduced = useReducedMotion();
   const [hover, setHover] = useState(false);
@@ -73,6 +79,13 @@ export default function TrackCard({
       onMouseLeave={() => setHover(false)}
       style={{
         position: "relative",
+        /* isolation creates a clean stacking context so the
+         *  characterImage layer's z-index doesn't escape the card,
+         *  and overflow:hidden clips it to the rounded corners.
+         *  Only applied when characterImage is set so other cards'
+         *  behaviour (e.g. unclipped hover shadows) is untouched. */
+        isolation: characterImage ? "isolate" : undefined,
+        overflow: characterImage ? "hidden" : undefined,
         background: "rgba(13,15,24,0.72)",
         backdropFilter: "blur(14px) saturate(1.4)",
         WebkitBackdropFilter: "blur(14px) saturate(1.4)",
@@ -91,25 +104,99 @@ export default function TrackCard({
           "transform .35s cubic-bezier(0.16,1,0.3,1), box-shadow .35s cubic-bezier(0.16,1,0.3,1)",
       }}
     >
-      {/* Header row — emoji + status pill */}
+      {/* Atmospheric background layer — animated-world ambience for the
+       *  one track that has it. The full character image fills the card
+       *  at low opacity, with a heavy diagonal dark scrim that fades
+       *  from solid dark-glass on the lower-left (where the headline
+       *  and blurb live) to mostly clear on the upper-right (where the
+       *  scene shows through under the status pill). Reads as a glimpse
+       *  into the show, not a stamped-on picture. */}
+      {characterImage && (
+        <>
+          <div
+            aria-hidden
+            style={{
+              position: "absolute",
+              inset: 0,
+              backgroundImage: `url(${characterImage})`,
+              backgroundSize: "cover",
+              /* Pull the focal point toward the right-lower portion
+               *  of the source so Adam and Layla settle into the
+               *  centre-right of the card, well away from the headline
+               *  and blurb stack on the left. */
+              backgroundPosition: "right 75%",
+              /* Bumped 0.32 → 0.48 so the characters are recognisable
+               *  without becoming the dominant visual; the scrim below
+               *  picks up the readability slack. */
+              opacity: 0.48,
+              zIndex: 0,
+              pointerEvents: "none",
+            }}
+          />
+          <div
+            aria-hidden
+            style={{
+              position: "absolute",
+              inset: 0,
+              /* Three layered scrims:
+               *  - 110° diagonal: near-solid dark glass on the left
+               *    (text zone) → almost-clear on the upper-right
+               *    (where the scene shows through)
+               *  - vertical bottom darkener: extra protection for
+               *    the price/CTA row
+               *  - radial pool behind title+blurb: a soft ellipse
+               *    centred over the main copy area that quietly
+               *    boosts contrast there without touching the
+               *    upper-right corner or the lower-right where Adam
+               *    and Layla settle. Text reads at any image bright-
+               *    ness; characters stay softly visible. */
+              background:
+                "radial-gradient(ellipse 62% 44% at 30% 54%, " +
+                "rgba(13,15,24,0.42) 0%, " +
+                "rgba(13,15,24,0.20) 60%, " +
+                "rgba(13,15,24,0) 100%), " +
+                "linear-gradient(110deg, " +
+                "rgba(13,15,24,0.97) 0%, " +
+                "rgba(13,15,24,0.90) 28%, " +
+                "rgba(13,15,24,0.58) 56%, " +
+                "rgba(13,15,24,0.22) 88%, " +
+                "rgba(13,15,24,0.14) 100%), " +
+                "linear-gradient(180deg, " +
+                "rgba(13,15,24,0) 0%, " +
+                "rgba(13,15,24,0) 55%, " +
+                "rgba(13,15,24,0.32) 100%)",
+              zIndex: 0,
+              pointerEvents: "none",
+            }}
+          />
+        </>
+      )}
+
+      {/* Header row — emoji + status pill (emoji is the visual
+       *  identifier on cards without characterImage; the background
+       *  scene is the identifier on cards that have one). */}
       <div
         style={{
+          position: "relative",
+          zIndex: 1,
           display: "flex",
           alignItems: "center",
           gap: 14,
           flexWrap: "wrap",
         }}
       >
-        <span
-          aria-hidden
-          style={{
-            fontSize: 36,
-            lineHeight: 1,
-            filter: `drop-shadow(0 0 12px ${accent}77)`,
-          }}
-        >
-          {emoji}
-        </span>
+        {!characterImage && (
+          <span
+            aria-hidden
+            style={{
+              fontSize: 36,
+              lineHeight: 1,
+              filter: `drop-shadow(0 0 12px ${accent}77)`,
+            }}
+          >
+            {emoji}
+          </span>
+        )}
         <span
           style={{
             fontFamily: "var(--lv2-font-mono)",
@@ -129,8 +216,36 @@ export default function TrackCard({
         </span>
       </div>
 
+      {/* Animation-led feature tag — only renders for tracks that have
+       *  character art behind them. Reads as a premium feature label,
+       *  not a loud badge: small mono caps, accent-tinted text, no
+       *  fill. Sits between the header row and the AGES block.
+       *
+       *  Slightly enlarged (10 → 11.5px) and tracking pulled in (0.24
+       *  → 0.18em) for cleaner legibility against the brighter
+       *  background image; opacity at full so it reads on first scan
+       *  but the small size + mono treatment keep it subtle. */}
+      {characterImage && (
+        <p
+          style={{
+            position: "relative",
+            zIndex: 1,
+            margin: "-4px 0 -4px",
+            fontFamily: "var(--lv2-font-mono)",
+            fontSize: 11.5,
+            fontWeight: 700,
+            letterSpacing: "0.18em",
+            textTransform: "uppercase",
+            color: accent,
+            textShadow: "0 1px 4px rgba(4,5,13,0.6)",
+          }}
+        >
+          Animation-led · Adam &amp; Layla
+        </p>
+      )}
+
       {/* AGES (display prominence) + duration */}
-      <div>
+      <div style={{ position: "relative", zIndex: 1 }}>
         <div
           style={{
             fontFamily: "var(--lv2-font-mono)",
@@ -175,6 +290,8 @@ export default function TrackCard({
       {/* Track name */}
       <h3
         style={{
+          position: "relative",
+          zIndex: 1,
           fontFamily: "var(--lv2-font-display)",
           fontSize: "1.45rem",
           fontWeight: 500,
@@ -189,6 +306,8 @@ export default function TrackCard({
 
       <p
         style={{
+          position: "relative",
+          zIndex: 1,
           fontFamily: "var(--lv2-font-display)",
           fontSize: 14.5,
           lineHeight: 1.55,
@@ -206,6 +325,8 @@ export default function TrackCard({
       {fitForChildren.length > 0 && (
         <div
           style={{
+            position: "relative",
+            zIndex: 1,
             display: "flex",
             alignItems: "center",
             gap: 8,
@@ -233,6 +354,8 @@ export default function TrackCard({
       {/* Price + CTA row */}
       <div
         style={{
+          position: "relative",
+          zIndex: 1,
           borderTop: "1px solid rgba(232,237,255,0.08)",
           paddingTop: 16,
           display: "flex",
