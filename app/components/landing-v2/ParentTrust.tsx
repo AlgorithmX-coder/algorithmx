@@ -43,7 +43,7 @@ const PILLARS: Pillar[] = [
   {
     title: "One transparent price",
     copy:
-      "£99 lifetime access to Cyber Heroes Academy. No subscription, no surprise upgrades, cancel-anytime guarantee.",
+      "£99 lifetime access to Cyber Heroes Academy. One-time payment, no subscription, no surprise upgrades.",
     accent: "#ffc94a",
   },
   {

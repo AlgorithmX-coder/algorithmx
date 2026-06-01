@@ -322,7 +322,7 @@ function OrderSummary({
               fontFamily: "'DM Sans', system-ui, sans-serif",
             }}
           >
-            <span>One-time payment · No subscription · 14-day refund.</span>
+            <span>One-time payment · No subscription · Lifetime access.</span>
             <Link
               href="/hub"
               style={{

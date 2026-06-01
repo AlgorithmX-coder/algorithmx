@@ -129,7 +129,7 @@ export default function FinalCTA() {
                   textTransform: "uppercase",
                 }}
               >
-                One-time payment · Lifetime access · 30-day guarantee
+                One-time payment · Lifetime access
               </p>
               <p style={{ marginTop: 10, fontSize: 12 }}>
                 <a

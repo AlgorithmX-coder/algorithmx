@@ -69,7 +69,7 @@ the only active product right now.
   `/password` — auth pages with cyber theme (Three.js globe / R3F
   HeroAtlas, glass inputs, particle fields). Currently the 3D globe
   may not render in prod due to a yet-undiagnosed runtime issue.
-- `/privacy`, `/terms` — GDPR / refund policy
+- `/privacy`, `/terms` — GDPR + acceptable use
 - `/onboarding` — post-signup child-profile creation step
 
 ### Authed pages
@@ -477,8 +477,8 @@ Cyberheroes page uses `ParticleNetworkScene`, `CyberPanelBackdrop`,
 points), `CyberFloatingIcons`, glass inputs.
 
 Privacy + Terms pages list the company contact as
-`support@algorithmx.co.uk`. Refund policy: 30-day no-questions
-money-back.
+`support@algorithmx.co.uk`. All purchases are final — no refund
+policy is offered.
 
 ---
 

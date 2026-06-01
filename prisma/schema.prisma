@@ -179,7 +179,7 @@ model CourseContent {
 // ============================================================
 // Does this family have access to this product? One row per
 // (user, product). `source` records WHY the grant exists so
-// refunds / bundle changes / manual overrides stay traceable.
+// bundle changes / manual overrides / chargebacks stay traceable.
 
 enum EntitlementSource {
   MANUAL

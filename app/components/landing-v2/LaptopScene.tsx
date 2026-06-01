@@ -60,29 +60,19 @@ function useLidBrandTexture(): THREE.Texture | null {
     if (!ctx) return null;
     ctx.clearRect(0, 0, c.width, c.height);
 
-    /* TIGHT halo behind the logo - stays close to the wordmark instead
-     *  of bleeding across the whole lid. Inner radius bigger, outer
-     *  radius much smaller than before. */
-    const haloR = c.width / 4.2;
-    const halo = ctx.createRadialGradient(
-      c.width / 2,
-      c.height / 2,
-      haloR * 0.35,
-      c.width / 2,
-      c.height / 2,
-      haloR,
-    );
-    halo.addColorStop(0, "rgba(0,245,255,0.22)");
-    halo.addColorStop(0.6, "rgba(0,245,255,0.07)");
-    halo.addColorStop(1, "rgba(0,245,255,0)");
-    ctx.fillStyle = halo;
-    ctx.fillRect(0, 0, c.width, c.height);
+    /* The wordmark is now rendered with NORMAL blending against the
+     *  lid surface (was additive — additive cyan on a bright specular
+     *  highlight washes out the letters into the highlight). So this
+     *  texture is letters-only on a transparent background; the soft
+     *  cyan halo around the logo is provided by the separate bloom
+     *  plane (still additive) sitting just below this mesh in render
+     *  order. Result: letters read crisply regardless of how the lid
+     *  is catching the light, while the surrounding glow is unchanged. */
 
-    /* AX chevron badge - bold filled mark above the wordmark, sized to
-     *  match the wordmark proportions. */
-    ctx.shadowColor = "rgba(0,245,255,1)";
-    ctx.shadowBlur = 10;
-    ctx.fillStyle = "#9ff5ff";
+    /* AX chevron — opaque cyan with a tight glow */
+    ctx.shadowColor = "rgba(0,245,255,0.85)";
+    ctx.shadowBlur = 8;
+    ctx.fillStyle = "#a8f5ff";
     ctx.beginPath();
     ctx.moveTo(c.width / 2 - 90, c.height / 2 - 160);
     ctx.lineTo(c.width / 2, c.height / 2 - 220);
@@ -93,15 +83,18 @@ function useLidBrandTexture(): THREE.Texture | null {
     ctx.closePath();
     ctx.fill();
 
-    /* Wordmark - bright cyan with TIGHT shadow so the letterforms stay
-     *  crisp instead of blurring into a halo lake. */
-    ctx.shadowColor = "rgba(0,245,255,0.85)";
-    ctx.shadowBlur = 8;
-    ctx.fillStyle = "#00f5ff";
+    /* Wordmark — solid bright cyan, opaque. Stroke first for a
+     *  slightly heavier letterform that holds up against any lid
+     *  state; fill on top with the bright body colour. */
+    ctx.shadowColor = "rgba(0,229,255,0.65)";
+    ctx.shadowBlur = 6;
     ctx.font = "900 180px ui-sans-serif, system-ui, sans-serif";
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
-    /* Manual letter-spacing draw */
+    ctx.strokeStyle = "#7df0ff";
+    ctx.lineWidth = 4;
+    ctx.fillStyle = "#b8faff";
+
     const letters = "ALGORITHMX";
     const spacing = 12;
     const totalW = letters
@@ -110,13 +103,14 @@ function useLidBrandTexture(): THREE.Texture | null {
     let cursorX = c.width / 2 - totalW / 2;
     for (const ch of letters) {
       const w = ctx.measureText(ch).width;
+      ctx.strokeText(ch, cursorX + w / 2, c.height / 2 + 20);
       ctx.fillText(ch, cursorX + w / 2, c.height / 2 + 20);
       cursorX += w + spacing;
     }
 
-    /* Thin accent rule under the wordmark - clean nameplate finish */
-    ctx.shadowBlur = 4;
-    ctx.fillStyle = "rgba(0,245,255,0.45)";
+    /* Thin accent rule under the wordmark — clean nameplate finish */
+    ctx.shadowBlur = 0;
+    ctx.fillStyle = "rgba(125,240,255,0.75)";
     ctx.fillRect(c.width / 2 - 260, c.height / 2 + 110, 520, 3);
 
     const tex = new THREE.CanvasTexture(c);
@@ -1481,7 +1475,7 @@ export default function LaptopScene({ progress, reducedMotion = false }: LaptopS
   return (
     <Canvas
       dpr={[1.5, 2.5]}
-      camera={{ position: [4.6, 3.0, 6.5], fov: 38 }}
+      camera={{ position: [4.6, 3.4, 6.4], fov: 38 }}
       gl={{
         antialias: true,
         alpha: true,
@@ -2029,29 +2023,33 @@ function Laptop({
     const p = progress.get();
     const t = state.clock.elapsedTime;
 
-    /* Camera path - scroll-driven dolly + LOW-AMPLITUDE IDLE MICRO-
+    /* Camera path — scroll-driven dolly + LOW-AMPLITUDE IDLE MICRO-
      * MOTION on top so the shot feels like a handheld product shoot
-     * instead of a perfectly locked-off render. Three offset sin waves
-     * at different frequencies create the natural "breath" of a real
-     * operator's hands. */
+     * instead of a perfectly locked-off render.
+     *
+     * Opening shot now starts HIGH (y = 3.4) — looking down at the
+     * dormant closed laptop from above — and descends to the previous
+     * side-on framing (y = 2.4) as scroll progresses and the lid
+     * opens. Reads as the camera "approaching" the device rather than
+     * the laptop just being there in front of you. */
     const camP = smoothstep(0, 1, p);
     const microX = Math.sin(t * 0.51) * 0.025 + Math.sin(t * 1.27) * 0.012;
     const microY = Math.cos(t * 0.43) * 0.020 + Math.sin(t * 0.81) * 0.010;
     const microZ = Math.sin(t * 0.37) * 0.022;
     state.camera.position.set(
       lerp(4.6, 4.0, camP) + microX,
-      lerp(1.6, 2.4, camP) + microY,
-      lerp(5.8, 5.6, camP) + microZ,
+      lerp(3.4, 2.4, camP) + microY,
+      lerp(6.4, 5.6, camP) + microZ,
     );
     /* Camera lookAt shifted LEFT of the laptop by 0.55 world units so
      * the chassis sits right-of-centre in the frame, opening up the
-     * left third for the headline column. Without this offset the
-     * camera framed the laptop dead-centre, which kept the headline
-     * physically overlapping the screen content. */
+     * left third for the headline column. lookAt-Y starts negative
+     * (camera tipped down onto the closed lid) and rises to 0.9
+     * (eye-level on the open screen) so the descent feels guided. */
     const LOOKAT_LEFT_SHIFT = 0.55;
     state.camera.lookAt(
       RIG_X - LOOKAT_LEFT_SHIFT + microX * 0.3,
-      lerp(0.1, 0.9, camP) + microY * 0.3,
+      lerp(-0.15, 0.9, camP) + microY * 0.3,
       0,
     );
 
@@ -3086,11 +3084,15 @@ function Laptop({
               </mesh>
             )}
 
-            {/* GLOWING BRAND LOGO on the outer lid face. Sized to ~55%
-             *  of the lid width so the badge has breathing room around
-             *  it. Material ref so useFrame can pulse the wordmark on
-             *  a slow breath — gives the closed laptop a quiet "in
-             *  standby" presence. */}
+            {/* BRAND LOGO on the outer lid face. Sized to ~55% of the
+             *  lid width so the badge has breathing room around it.
+             *  NORMAL blending (not additive): the letters now paint
+             *  over the lid surface instead of adding light to it,
+             *  so the wordmark stays crisp and readable even when
+             *  the lid's specular highlight is bright underneath.
+             *  Material ref so useFrame can still pulse the wordmark
+             *  on a slow breath via opacity — gives the closed
+             *  laptop a quiet "in standby" presence. */}
             {lidBrandTex && (
               <mesh
                 position={[0, LID_H / 2 + 0.001, 0]}
@@ -3102,7 +3104,7 @@ function Laptop({
                   map={lidBrandTex}
                   transparent
                   opacity={1}
-                  blending={THREE.AdditiveBlending}
+                  blending={THREE.NormalBlending}
                   depthWrite={false}
                   toneMapped={false}
                 />

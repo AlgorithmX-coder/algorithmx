@@ -4,7 +4,7 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: "Terms of Service | AlgorithmX",
   description:
-    "Terms of service for AlgorithmX Cyber Heroes Academy - refund policy, account use, content licence.",
+    "Terms of service for AlgorithmX Cyber Heroes Academy: account use, acceptable use, and content licence.",
 };
 
 export default function TermsPage() {
@@ -65,16 +65,6 @@ export default function TermsPage() {
           </p>
         </Section>
 
-        <Section title="Refund policy">
-          <p>
-            We offer a 30-day money-back guarantee, no questions asked. If your
-            child isn&rsquo;t engaged within the first 30 days of purchase, email{" "}
-            <ContactEmail /> with your order details and we&rsquo;ll process a
-            full refund. After the refund, we delete your child&rsquo;s progress
-            data; if you change your mind later, you&rsquo;re welcome to re-enrol.
-          </p>
-        </Section>
-
         <Section title="Acceptable use">
           <p>
             The course is for personal use within your household. You may not
@@ -96,9 +86,9 @@ export default function TermsPage() {
 
         <Section title="Changes to these terms">
           <p>
-            If we materially change these terms (for example a refund-window
-            change), we&rsquo;ll email account holders ahead of the change.
-            Day-to-day clarifications get posted here without notice.
+            If we materially change these terms, we&rsquo;ll email account
+            holders ahead of the change. Day-to-day clarifications get posted
+            here without notice.
           </p>
         </Section>
 
