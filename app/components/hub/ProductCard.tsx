@@ -244,7 +244,7 @@ export default function ProductCard({
         <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
           <Link
             href={ctaHref}
-            aria-label={`${ctaLabel} — ${name}`}
+            aria-label={`${ctaLabel}: ${name}`}
             style={{
               display: "inline-flex",
               alignItems: "center",
@@ -304,7 +304,7 @@ function ViewCourseLink({
   return (
     <Link
       href={href}
-      aria-label={`View course — ${name}`}
+      aria-label={`View course: ${name}`}
       onMouseEnter={() => setLinkHover(true)}
       onMouseLeave={() => setLinkHover(false)}
       style={{

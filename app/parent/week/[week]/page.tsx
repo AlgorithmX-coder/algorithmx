@@ -244,7 +244,7 @@ export default async function ParentWeekDetail({ params }: PageProps) {
               } else {
                 stateLine = (
                   <>
-                    In progress — screen {row.screen + 1}
+                    In progress · screen {row.screen + 1}
                   </>
                 );
                 accent = C.cyan;

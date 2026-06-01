@@ -733,7 +733,7 @@ function PatientCard({
           minHeight: 36,
         }}
       >
-        {currentPassword || "—"}
+        {currentPassword || "·"}
       </div>
 
       {/* HEALED stamp */}

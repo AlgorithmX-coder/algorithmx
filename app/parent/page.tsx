@@ -346,7 +346,7 @@ function WeekDot({ cell }: { cell: WeekCell }) {
         gap: 2, cursor: state === "not_started" ? "default" : "pointer",
         transition: "transform 120ms ease",
       }}
-      title={`Week ${week} — ${
+      title={`Week ${week} · ${
         state === "completed" ? `complete (${stars}★)`
           : state === "in_progress" ? "in progress"
           : "not started"

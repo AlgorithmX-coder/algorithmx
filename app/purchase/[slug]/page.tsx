@@ -127,9 +127,9 @@ function OrderSummary({
   const included = [
     `${product.weeksCount > 0 ? `${product.weeksCount} weekly` : "Weekly"} interactive missions`,
     "Boss battles, badges and a printable hero certificate",
-    "Progress saved per child — multiple kids on one account",
+    "Progress saved per child. Multiple kids on one account",
     "Family-safe: COPPA-aware, no third-party tracking",
-    "Lifetime access — buy once, replay any time",
+    "Lifetime access. Buy once, replay any time",
   ];
 
   return (

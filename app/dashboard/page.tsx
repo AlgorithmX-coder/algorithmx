@@ -207,7 +207,7 @@ export default async function DashboardPage() {
           }
         : {
             title: "You're on a roll!",
-            body: `${completedCount} week${completedCount !== 1 ? "s" : ""} done, ${remaining} to go. Keep the momentum — each lesson weakens the Raccoon.`,
+            body: `${completedCount} week${completedCount !== 1 ? "s" : ""} done, ${remaining} to go. Keep the momentum. Each lesson weakens the Raccoon.`,
             cta: `Continue Week ${nextWeek ?? 1} →`,
             href: `/lesson/${nextWeek ?? 1}`,
           };
@@ -662,7 +662,7 @@ export default async function DashboardPage() {
                           ? "Start your first lesson to begin weakening the raccoon."
                           : completedCount >= totalWeeks
                             ? "The raccoon's power has been fully drained."
-                            : `${completedCount} lesson${completedCount !== 1 ? "s" : ""} down — keep going!`}
+                            : `${completedCount} lesson${completedCount !== 1 ? "s" : ""} down. Keep going!`}
                       </p>
                     </div>
                   </div>
