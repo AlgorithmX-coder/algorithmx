@@ -26,7 +26,7 @@ export const WEEK_1: WeekContent = {
 
   screens: [
     // 0
-    { type: "video", videoPlaceholder: "Week 1: Passwords intro video" },
+    { type: "video", videoPlaceholder: "Week 1: Passwords intro video", videoSrc: "/videos/module-01-intro.mp4" },
 
     // 1
     {

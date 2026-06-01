@@ -74,7 +74,11 @@ export interface BossQuestion {
  * switches on `type` to mount the right component with the right data.
  */
 export type ScreenDef =
-  | { type: "video"; videoPlaceholder: string }
+  // `videoSrc` is the path to a real playable file (e.g.
+  // "/videos/module-01-intro.mp4"). When present the lesson renders an
+  // actual <video> player; when omitted it falls back to the decorative
+  // placeholder play button (used for weeks whose video isn't filmed yet).
+  | { type: "video"; videoPlaceholder: string; videoSrc?: string }
   | { type: "mission"; objectives: string[] }
   | {
       type: "info";

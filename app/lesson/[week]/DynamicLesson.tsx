@@ -320,6 +320,110 @@ function Card({ children, extra }: { children: React.ReactNode; extra?: React.CS
   );
 }
 
+// Real intro-video player for the `video` screen. Until the learner
+// presses play we show the decorative play button as a poster overlay;
+// the click is the user gesture that lets the browser play with sound.
+// Native controls take over once started. A load/playback error falls
+// back to the same "Skip video" affordance the placeholder uses, so a
+// missing file never traps the learner on a dead screen.
+function VideoScreen({
+  caption,
+  videoSrc,
+  onSkip,
+}: {
+  caption: string;
+  videoSrc: string;
+  onSkip: () => void;
+}) {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [started, setStarted] = useState(false);
+  const [failed, setFailed] = useState(false);
+
+  const play = () => {
+    const v = videoRef.current;
+    if (!v) return;
+    setStarted(true);
+    // play() rejects if the browser still blocks it; native controls
+    // (now visible) give the learner a manual fallback.
+    void v.play().catch(() => {});
+  };
+
+  return (
+    <FullScene bg="linear-gradient(180deg, #0a0a1a 0%, #1a1033 100%)">
+      <Card>
+        <div style={{ textAlign: "center" }}>
+          <div
+            style={{
+              position: "relative",
+              borderRadius: 20,
+              overflow: "hidden",
+              border: "2px solid rgba(59,130,246,0.4)",
+              aspectRatio: "16 / 9",
+              background: "#000",
+              marginBottom: 22,
+            }}
+          >
+            {!failed ? (
+              <video
+                ref={videoRef}
+                src={videoSrc}
+                controls={started}
+                playsInline
+                onError={() => setFailed(true)}
+                onEnded={onSkip}
+                style={{ width: "100%", height: "100%", objectFit: "contain", display: "block" }}
+              />
+            ) : (
+              <div
+                style={{
+                  position: "absolute",
+                  inset: 0,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  color: "#9ca3af",
+                  fontSize: 14,
+                  padding: 16,
+                  textAlign: "center",
+                }}
+              >
+                Video couldn&apos;t load — tap &ldquo;Skip video&rdquo; to continue.
+              </div>
+            )}
+
+            {!started && !failed && (
+              <button
+                type="button"
+                onClick={play}
+                aria-label="Play"
+                style={{
+                  position: "absolute",
+                  top: "50%",
+                  left: "50%",
+                  transform: "translate(-50%, -50%)",
+                  width: 96,
+                  height: 96,
+                  borderRadius: "50%",
+                  background: "linear-gradient(135deg, #3b82f6, #8b5cf6)",
+                  border: "none",
+                  cursor: "pointer",
+                  fontSize: 42,
+                  color: "#fff",
+                  boxShadow: "0 0 36px rgba(59,130,246,0.6)",
+                }}
+              >
+                ▶
+              </button>
+            )}
+          </div>
+          <p style={{ color: "#9ca3af", fontSize: 14, marginBottom: 18 }}>{caption}</p>
+          <OrangeButton onClick={onSkip}>Skip video →</OrangeButton>
+        </div>
+      </Card>
+    </FullScene>
+  );
+}
+
 /* ─────────────── MAIN ─────────────── */
 
 function LessonLoading() {
@@ -722,6 +826,18 @@ function DynamicLessonInner() {
 
     switch (def.type) {
       case "video":
+        // When a real file is wired up (`videoSrc`), play it. Weeks whose
+        // video isn't filmed yet fall back to the decorative play button
+        // that simply advances to the next screen.
+        if (def.videoSrc) {
+          return (
+            <VideoScreen
+              caption={def.videoPlaceholder}
+              videoSrc={def.videoSrc}
+              onSkip={() => navigate(screen + 1)}
+            />
+          );
+        }
         return (
           <FullScene bg="linear-gradient(180deg, #0a0a1a 0%, #1a1033 100%)">
             <Card>
