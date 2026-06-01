@@ -14,7 +14,14 @@ import CyberStartLanding from "./CyberStartLanding";
  * component. The crafted marketing copy (features grid, hero blurb,
  * etc.) stays hardcoded in the client landing — it's deliberate
  * authored copy, not catalogue data.
+ *
+ * Rendered dynamically: the Product is read from the DB on every
+ * request, so there's nothing to statically prerender at build time
+ * (and the build has no database). force-dynamic keeps the page out of
+ * static generation; on Vercel it's served per-request from the DB.
  */
+export const dynamic = "force-dynamic";
+
 export default async function CyberStartPage() {
   const product = await prisma.product.findUnique({
     where: { slug: "cyberstart" },

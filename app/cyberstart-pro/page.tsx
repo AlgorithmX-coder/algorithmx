@@ -11,7 +11,14 @@ import CyberStartProLanding from "./CyberStartProLanding";
  * Server shell fetches the Product so emoji/name/ageRange/duration/
  * priceGBP/weeksCount come from the DB rather than living in the
  * component.
+ *
+ * Rendered dynamically: the Product is read from the DB on every
+ * request, so there's nothing to statically prerender at build time
+ * (and the build has no database). force-dynamic keeps the page out of
+ * static generation; on Vercel it's served per-request from the DB.
  */
+export const dynamic = "force-dynamic";
+
 export default async function CyberStartProPage() {
   const product = await prisma.product.findUnique({
     where: { slug: "cyberstart-pro" },

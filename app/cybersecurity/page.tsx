@@ -29,7 +29,13 @@ import TrackCard from "./TrackCard";
  * Server component. Fetches the four tracks by slug from the catalogue
  * and the signed-in user's children (if any) to drive a soft
  * "great fit for {name}" highlight on the matching track card.
+ *
+ * Rendered dynamically: this page reads the catalogue from the DB and
+ * personalises on the signed-in user's children, so it can't be a
+ * static prerender. force-dynamic keeps it out of build-time static
+ * generation (the build has no database); it's rendered per request.
  */
+export const dynamic = "force-dynamic";
 
 const CYBER_TRACK_SLUGS = [
   "cyber-heroes",
