@@ -280,15 +280,18 @@ export default function Nav() {
           gap: 8px;
           transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
         }
-        :global(.lv2-nav-cta-inner) svg {
+        /* svg comes from the <Ico> component (different file) so it carries
+           no styled-jsx scope — these selectors must be fully global to
+           match it, including the .lv2-nav-cta-inner span in the chain. */
+        :global(.lv2-nav-cta-inner svg) {
           transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
         }
-        :global(.lv2-nav-cta:hover) .lv2-nav-cta-inner,
-        :global(.lv2-nav-cta:focus-visible) .lv2-nav-cta-inner {
+        :global(.lv2-nav-cta:hover .lv2-nav-cta-inner),
+        :global(.lv2-nav-cta:focus-visible .lv2-nav-cta-inner) {
           transform: translateY(-1px);
         }
-        :global(.lv2-nav-cta:hover) .lv2-nav-cta-inner svg,
-        :global(.lv2-nav-cta:focus-visible) .lv2-nav-cta-inner svg {
+        :global(.lv2-nav-cta:hover .lv2-nav-cta-inner svg),
+        :global(.lv2-nav-cta:focus-visible .lv2-nav-cta-inner svg) {
           transform: translateX(3px);
         }
         :global(.lv2-nav-cta:hover)::before {
@@ -410,7 +413,7 @@ export default function Nav() {
             opacity: 0;
           }
           :global(.lv2-nav-cta-inner),
-          :global(.lv2-nav-cta-inner) svg,
+          :global(.lv2-nav-cta-inner svg),
           :global(.lv2-nav-secondary),
           :global(.lv2-nav-secondary)::after {
             transition: none;
