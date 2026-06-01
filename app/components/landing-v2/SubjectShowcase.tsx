@@ -45,7 +45,7 @@ const STREAMS: Stream[] = [
     isLive: true,
     blurb:
       "From spotting scams at age 6 to delivering a full penetration-test report on a live web app as an adult. Online safety is the gateway skill.",
-    project: "Build a Password Defender · 8 missions",
+    project: "Pen-test a live web app & ship the security report",
     accent: "#5fffa3",
     href: "/cybersecurity",
     cta: "View course",
