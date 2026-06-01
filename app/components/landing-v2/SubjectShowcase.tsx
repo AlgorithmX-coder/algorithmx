@@ -192,9 +192,9 @@ export default function SubjectShowcase() {
                 margin: "18px auto 0",
               }}
             >
-              Cyber Heroes Academy is live today. The other five are on the
-              2026 – 2027 roadmap, each built around a real project you can
-              show off.
+              Cyber Security is live today. The other five are on the
+              2026 – 2027 roadmap, each built around a real projects to
+              kickstart your career in IT!
             </p>
           </FadeUp>
         </div>
