@@ -361,7 +361,7 @@ export default function SampleLessonPreview() {
                   </p>
                   <div className="flex flex-col sm:flex-row gap-3 justify-center">
                     <motion.a
-                      href="/signup"
+                      href="/signup?course=cyber-heroes"
                       whileHover={{ scale: 1.04, y: -2 }}
                       whileTap={{ scale: 0.96 }}
                       className="inline-flex items-center justify-center rounded-full font-black"

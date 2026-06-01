@@ -10,7 +10,7 @@ import { CYBER_PALETTE } from "@/app/components/scene/cyberTokens";
  * Pairs with AuthSphere's `accessGranted` stage:
  *   - sphere rings align + core flares
  *   - this overlay fades the form down + brings up "Access granted"
- *     / "Cyber HQ unlocked" with a sweep of light
+ *     with a sweep of light
  *
  * The overlay is purely visual. The parent owns the timer that
  * eventually calls `router.push(...)`. The component never traps
@@ -23,14 +23,14 @@ export interface AccessGrantedOverlayProps {
   show: boolean;
   /** Bold one-line callout. Defaults differ per page (eg "Access granted"). */
   title?: string;
-  /** Optional subtitle ("Routing to Cyber HQ…"). */
+  /** Optional subtitle ("Routing to your hub…"). */
   subtitle?: string;
 }
 
 export default function AccessGrantedOverlay({
   show,
   title = "Access granted",
-  subtitle = "Routing to Cyber HQ…",
+  subtitle = "Routing to your hub…",
 }: AccessGrantedOverlayProps) {
   const reduced = !!useReducedMotion();
 

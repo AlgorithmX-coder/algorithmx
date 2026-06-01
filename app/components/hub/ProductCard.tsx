@@ -47,6 +47,13 @@ export interface ProductCardProps {
    * to gate the link to products that actually have a landing page.
    */
   landingHref?: string | null;
+  /**
+   * When true the card is the one the user arrived to select (via
+   * /hub?selected=<slug> from the login/signup journey). Adds a soft
+   * outer ring + a "SELECTED" pill so it reads as "this is where you came
+   * for" — without overriding the variant's own colours/CTA.
+   */
+  highlighted?: boolean;
   /** Entrance stagger index (0,1,2,…). */
   index?: number;
 }
@@ -62,6 +69,7 @@ export default function ProductCard({
   ctaHref,
   ctaLabel,
   landingHref,
+  highlighted = false,
   index = 0,
 }: ProductCardProps) {
   const reduced = useReducedMotion();
@@ -114,7 +122,9 @@ export default function ProductCard({
         borderRadius: 22,
         background: surface,
         border,
-        boxShadow: shadow,
+        boxShadow: highlighted
+          ? `${shadow}, 0 0 0 2px ${C.cyan}99, 0 0 44px ${C.cyan}44`
+          : shadow,
         backdropFilter: "blur(8px)",
         opacity: isComing ? 0.78 : 1,
         transition: "box-shadow 280ms ease, border-color 280ms ease",
@@ -143,6 +153,31 @@ export default function ProductCard({
           animate={{ rotate: 360 }}
           transition={{ duration: 22, ease: "linear", repeat: Infinity }}
         />
+      )}
+
+      {/* "Selected" pill (top-left) — marks the track the user arrived to
+          choose. Sits opposite the status pill so the two never collide. */}
+      {highlighted && (
+        <div
+          style={{
+            position: "absolute",
+            top: 14,
+            left: 14,
+            fontSize: 10,
+            letterSpacing: 2,
+            fontWeight: 800,
+            fontFamily: "ui-monospace, 'JetBrains Mono', Menlo, monospace",
+            padding: "4px 10px",
+            borderRadius: 999,
+            color: C.cyan,
+            background: "rgba(8, 10, 22, 0.6)",
+            border: `1px solid ${C.cyan}88`,
+            textShadow: `0 0 8px ${C.cyan}aa`,
+            zIndex: 1,
+          }}
+        >
+          ◇ SELECTED
+        </div>
       )}
 
       {/* Status pill (top-right) — only for non-default variants */}

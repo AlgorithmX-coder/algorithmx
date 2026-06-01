@@ -22,6 +22,7 @@ import Link from "next/link";
 import ProductCard, { type ProductCardVariant } from "@/app/components/hub/ProductCard";
 import AgeProgressionBanner from "@/app/components/hub/AgeProgressionBanner";
 import { landingRouteFor } from "@/app/lib/courseLandings";
+import { safeCourseSlug } from "@/app/lib/courseIntent";
 
 const C = CYBER_PALETTE;
 const GRAD = CYBER_GRAD.hero;
@@ -40,10 +41,20 @@ function formatPrice(pence: number): string {
   return pounds % 1 === 0 ? `£${pounds.toFixed(0)}` : `£${pounds.toFixed(2)}`;
 }
 
-export default async function HubPage() {
+export default async function HubPage({
+  searchParams,
+}: {
+  /* ?selected=<slug> arrives from the login/signup journey when the user
+     came in via a specific course card. We use it only to gently highlight
+     the matching track — the account still belongs to the whole platform. */
+  searchParams: Promise<{ selected?: string }>;
+}) {
   const session = await auth();
   if (!session?.user?.id) redirect("/login");
   const userId = session.user.id;
+
+  const { selected } = await searchParams;
+  const selectedSlug = safeCourseSlug(selected);
 
   /* Three independent reads — could be Promise.all'd but Prisma already
      pipelines these and the page is server-rendered. Keep readable. */
@@ -302,6 +313,7 @@ export default async function HubPage() {
                   ctaHref={ctaHref}
                   ctaLabel={ctaLabel}
                   landingHref={landingRouteFor(product.slug)}
+                  highlighted={product.slug === selectedSlug}
                   index={i}
                 />
               );

@@ -12,6 +12,7 @@ import AuthButton, { type AuthButtonState } from "@/app/components/auth/AuthButt
 import AuthTerminalPanel from "@/app/components/auth/AuthTerminalPanel";
 import AccessGrantedOverlay from "@/app/components/auth/AccessGrantedOverlay";
 import { useIsDesktop } from "@/app/components/auth/useIsDesktop";
+import { safeCourseSlug, hubTargetFor } from "@/app/lib/courseIntent";
 
 const C = CYBER_PALETTE;
 const GRAD = CYBER_GRAD.hero;
@@ -24,10 +25,10 @@ function CyberFloatingIcons() {
   const icons = [
     { emoji: "🔑", top: "15%", left: "60%", delay: 0, dur: 7, tag: "AUTH" },
     { emoji: "⭐", top: "28%", right: "12%", delay: 1.5, dur: 6 },
-    { emoji: "🔒", top: "62%", left: "62%", delay: 0.5, dur: 8, tag: "ENC" },
+    { emoji: "🔒", top: "62%", left: "62%", delay: 0.5, dur: 8, tag: "ENCRYPTED" },
     { emoji: "🛡️", top: "78%", right: "16%", delay: 2, dur: 6.5 },
     { emoji: "✨", top: "42%", left: "85%", delay: 3, dur: 9 },
-    { emoji: "🔐", top: "88%", left: "70%", delay: 1, dur: 7.5, tag: "VAULT" },
+    { emoji: "🔐", top: "88%", left: "70%", delay: 1, dur: 7.5, tag: "COURSE HUB" },
   ];
   return (
     <>
@@ -86,15 +87,25 @@ function LoginPageInner() {
   const isDesktop = useIsDesktop(1024);
   const reduced = !!useReducedMotion();
 
-  /* Respect ?callbackUrl=… when a gated route bounced the user here.
-   * Same-origin guard: only accept paths that begin with "/" and not
-   * "//" (which would be a protocol-relative URL to another host).
-   * Anything sketchy falls back to /dashboard. */
+  /* Where to land after a successful login. Priority:
+   *   1. ?callbackUrl=…  — a gated route bounced the user here. Same-origin
+   *      guard: only accept paths that begin with "/" and not "//" (which
+   *      would be a protocol-relative URL to another host).
+   *   2. ?course=<slug>  — the user came in via a specific course card; send
+   *      them to the hub with that course pre-selected.
+   *   3. /hub            — the platform home base, the default for everyone.
+   * Note we land on /hub, not /dashboard: the account is for the whole
+   * AlgorithmX platform, and the hub is where every enrolled course lives. */
   const callbackRaw = searchParams.get("callbackUrl");
+  const course = safeCourseSlug(searchParams.get("course"));
   const safeCallback =
     callbackRaw && callbackRaw.startsWith("/") && !callbackRaw.startsWith("//")
       ? callbackRaw
-      : "/dashboard";
+      : hubTargetFor(course);
+
+  /* Surfaced after signup (/login?registered=true) so the user knows the
+   * account was created and this is the expected next step. */
+  const justRegistered = searchParams.get("registered") === "true";
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -240,9 +251,20 @@ function LoginPageInner() {
                 textShadow: `0 0 8px ${C.cyan}`,
               }}
             >
-              <span style={{ color: C.cosmic }}>$</span> ax_login --auth
+              <span style={{ color: C.cosmic }}>$</span> ax_login --course-hub
               <span style={{ marginLeft: 6, animation: "loginCursorBlink 1s steps(1) infinite" }}>▮</span>
             </div>
+            <p
+              className="text-xs mt-4 text-center"
+              style={{
+                color: C.textSoft,
+                opacity: 0.8,
+                letterSpacing: 0.5,
+                textShadow: "0 1px 6px rgba(8,10,22,0.9)",
+              }}
+            >
+              Your courses · progress · learner dashboard
+            </p>
           </motion.div>
         </div>
       </div>
@@ -321,7 +343,7 @@ function LoginPageInner() {
                 filter: `drop-shadow(0 2px 0 rgba(8,10,22,0.9)) drop-shadow(0 0 22px ${C.cyan}77)`,
               }}
             >
-              Welcome back, hero.
+              Welcome back to AlgorithmX
             </h1>
             <p
               className="mb-6 text-base"
@@ -331,8 +353,29 @@ function LoginPageInner() {
                 textShadow: "0 1px 12px rgba(8,10,22,0.95)",
               }}
             >
-              Log in to continue your Cyber Heroes mission.
+              Log in to access your courses, learner progress and AlgorithmX hub.
             </p>
+
+            {/* Post-signup confirmation - calm cyan, reassures the user the
+                account exists and logging in is the expected next step. */}
+            {justRegistered && !formError && (
+              <motion.div
+                role="status"
+                aria-live="polite"
+                initial={reduced ? { opacity: 0 } : { opacity: 0, y: -8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.2 }}
+                className="mb-4 px-3.5 py-3 rounded-2xl text-sm font-semibold"
+                style={{
+                  background: `${C.cyan}14`,
+                  border: `1px solid ${C.cyan}66`,
+                  color: C.cyanSoft,
+                  backdropFilter: "blur(8px)",
+                }}
+              >
+                Account created. Log in to open your AlgorithmX hub.
+              </motion.div>
+            )}
 
             {/* Form-level error - calm amber, not harsh red, role=alert */}
             <AnimatePresence>
@@ -372,7 +415,7 @@ function LoginPageInner() {
                 error={emailInvalid ? "That doesn't look like a valid email." : null}
                 autoComplete="email"
                 inputMode="email"
-                placeholder="hero@cyberheroes.com"
+                placeholder="parent@example.com"
                 required
               />
 
@@ -446,9 +489,9 @@ function LoginPageInner() {
           {/* Trust badges - keep, but moved below the panel + brackets */}
           <div className="flex items-center justify-center gap-4 mt-12 flex-wrap">
             {[
-              { icon: "🔒", label: "ENC: 256-BIT" },
+              { icon: "🔒", label: "ENCRYPTED" },
               { icon: "👨‍👩‍👧‍👦", label: "FAMILY SAFE" },
-              { icon: "🛡️", label: "COPPA COMPLIANT" },
+              { icon: "🛡️", label: "UK GDPR ALIGNED" },
             ].map((b, i) => (
               <motion.span
                 key={i}
@@ -480,7 +523,7 @@ function LoginPageInner() {
       <AccessGrantedOverlay
         show={phase === "success"}
         title="Access granted"
-        subtitle="Routing to Cyber HQ…"
+        subtitle="Routing to your hub…"
       />
 
       <style>{`

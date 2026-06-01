@@ -80,7 +80,7 @@ export default function CyberStartLanding({ product }: { product: Product }) {
             </a>
             <div className="flex items-center gap-4">
               <a href="/login" className="text-sm font-bold text-gray-300 hover:text-white transition-colors hidden sm:block">Log In</a>
-              <motion.a href="/signup"
+              <motion.a href="/signup?course=cyberstart"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 className="px-5 py-2.5 rounded-2xl text-sm font-black text-white"
