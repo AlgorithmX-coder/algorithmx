@@ -180,13 +180,15 @@ export default function WelcomePage() {
   const [childName, setChildName] = useState("Cyber Hero");
   const [loaded, setLoaded] = useState(false);
 
-  // Fetch child profile
+  // Fetch child profile. The API returns the schema-shape field
+  // (`name`), not the old wizard-local `childName`. Reading the wrong
+  // field used to silently fall back to "Cyber Hero".
   useEffect(() => {
     fetch("/api/child-profile")
       .then((r) => r.json())
       .then((data) => {
-        if (Array.isArray(data) && data.length > 0 && data[0].childName) {
-          setChildName(data[0].childName);
+        if (Array.isArray(data) && data.length > 0 && data[0].name) {
+          setChildName(data[0].name);
         }
         setLoaded(true);
       })

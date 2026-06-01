@@ -27,7 +27,27 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Invalid request body" }, { status: 400 });
   }
 
-  const { name, dateOfBirth, favouriteColour } = body as {
+  // Contract-drift guard. Previously a wizard-vs-API field rename
+  // silently surfaced as "Name is required" because the caller sent
+  // `childName` instead of `name` — the type check below failed
+  // first and the real problem (wrong field shape) was invisible.
+  // Naming the missing fields and echoing what was received makes
+  // the next mismatch obvious from the network panel alone.
+  const bodyShape = body as Record<string, unknown>;
+  const required = ["name", "dateOfBirth", "favouriteColour"] as const;
+  const missing = required.filter((k) => !(k in bodyShape));
+  if (missing.length > 0) {
+    return NextResponse.json(
+      {
+        error: `Missing required field${missing.length > 1 ? "s" : ""}: ${missing.join(", ")}`,
+        expected: required,
+        received: Object.keys(bodyShape),
+      },
+      { status: 400 },
+    );
+  }
+
+  const { name, dateOfBirth, favouriteColour } = bodyShape as {
     name?: unknown;
     dateOfBirth?: unknown;
     favouriteColour?: unknown;

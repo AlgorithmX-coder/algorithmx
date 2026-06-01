@@ -81,10 +81,33 @@ export default function OnboardingPage() {
     setError("");
     setLoading(true);
     try {
+      /* The API expects the canonical schema shape: `name`,
+       *  `dateOfBirth` (ISO date string), `favouriteColour`. The
+       *  wizard collects `childName`, `age` (integer years), and
+       *  `avatarColor` (a slug), so we translate at the boundary
+       *  rather than renaming wizard state.
+       *
+       *  Age → DOB: store DOB as today minus the given number of
+       *  years. The platform reads back via getAge(dob) which
+       *  computes age from DOB, so this round-trips correctly (the
+       *  child stays the same integer age for one year, then
+       *  increments). */
+      const ageYears = age ?? 0;
+      const today = new Date();
+      const dob = new Date(
+        today.getFullYear() - ageYears,
+        today.getMonth(),
+        today.getDate(),
+      );
+
       const res = await fetch("/api/child-profile", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ childName: childName.trim(), age, avatarColor }),
+        body: JSON.stringify({
+          name: childName.trim(),
+          dateOfBirth: dob.toISOString(),
+          favouriteColour: avatarColor,
+        }),
       });
       const data = await res.json();
       if (!res.ok) {
