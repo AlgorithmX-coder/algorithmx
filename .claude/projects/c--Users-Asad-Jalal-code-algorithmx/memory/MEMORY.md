@@ -1,0 +1,1 @@
+- [Bold not subtle](design-bold-not-subtle.md) — landing-v2 visuals should skew bold/futuristic; restrained passes get rejected as "too subtle"

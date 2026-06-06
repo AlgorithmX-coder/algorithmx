@@ -1,0 +1,9 @@
+{
+  "recommendations": [
+    "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode",
+    "cesium.gltf-vscode",
+    "ohziinteractivestudio.ohzi-vscode-glb-viewer"
+  ],
+  "unwantedRecommendations": []
+}

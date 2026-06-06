@@ -7,10 +7,17 @@ import {
   EffectComposer,
   Vignette,
   Noise,
+  SMAA,
+  Bloom,
+  N8AO,
+  BrightnessContrast,
+  HueSaturation,
 } from "@react-three/postprocessing";
-import { BlendFunction } from "postprocessing";
+import { BlendFunction, SMAAPreset } from "postprocessing";
 import * as THREE from "three";
 import type { MotionValue } from "framer-motion";
+import ReactorPlatform from "./ReactorPlatform";
+import TechChamber from "./TechChamber";
 
 interface LaptopSceneProps {
   progress: MotionValue<number>;
@@ -19,14 +26,15 @@ interface LaptopSceneProps {
 
 const COLORS = {
   ink: "#04050d",
-  /* Lighter brushed-aluminum body. Was #4a505f, which paired with the
-   * high metalness (0.82) and roughness (0.38) read as dark grey while
-   * the studio HDR was still loading from the drei CDN. With this
-   * brighter base the diffuse contribution alone keeps the chassis
-   * silver, so the laptop never has the "dark grey -> suddenly silver"
-   * pop on first paint. */
-  steel: "#7d8294",
-  steelEdge: "#9095a5",
+  /* Dark gunmetal aluminium body, matched to the reference product
+   * shots: a deep blue-slate anodised finish that reads near-black in
+   * shadow and picks up a bright machined sheen on the top edges where
+   * the studio rim light grazes it. (Was #7d8294 silver.) The dark base
+   * is the intended resting colour now — no "dark -> silver" pop to
+   * avoid; the env map only adds subtle reflections on top of the dark
+   * diffuse, so first paint and lit paint are both gunmetal. */
+  steel: "#2b2f3a",
+  steelEdge: "#5a6273",
   /* Deep matte panels */
   keyboard: "#080a10",
   trackpad: "#11141c",
@@ -150,6 +158,137 @@ function useLidBloomTexture(): THREE.Texture | null {
     tex.needsUpdate = true;
     return tex;
   }, []);
+}
+
+/* DECK BADGE — a ThinkPad-X1-style brand badge for the palm rest
+ * (front-right of the deck). "Algorithm" in brushed silver with a
+ * glowing red dot on the "i", followed by an oversized glowing red
+ * "X". Returns TWO textures sharing the exact same layout:
+ *   - crisp:  the silver letters + sharp red glyphs (normal-blended)
+ *   - glow:   ONLY the red elements, drawn big + blurred + with a hot
+ *             pinkish core, so an additive plane on top adds real,
+ *             bloom-catching red light (the "brighter light" cue).
+ * Both planes share one transform so they register pixel-for-pixel. */
+const BADGE_W = 512;
+const BADGE_H = 256;
+function badgeLayout(ctx: CanvasRenderingContext2D) {
+  const x0 = 40;
+  const baseY = 188;
+  const algoFont = "800 70px ui-sans-serif, system-ui, sans-serif";
+  const xFont = "900 156px ui-sans-serif, system-ui, sans-serif";
+  ctx.font = algoFont;
+  const algoW = ctx.measureText("Algorithm").width;
+  const preI = ctx.measureText("Algor").width;
+  const iW = ctx.measureText("i").width;
+  return {
+    x0,
+    baseY,
+    algoFont,
+    xFont,
+    algoW,
+    dotX: x0 + preI + iW * 0.5,
+    dotY: baseY - 52,
+    dotR: 7,
+    xX: x0 + algoW - 6,
+    xY: baseY + 22,
+  };
+}
+function makeDeckBadgeTextures(): {
+  crisp: THREE.Texture | null;
+  glow: THREE.Texture | null;
+} {
+  if (typeof document === "undefined") return { crisp: null, glow: null };
+  const mk = () => {
+    const c = document.createElement("canvas");
+    c.width = BADGE_W;
+    c.height = BADGE_H;
+    const ctx = c.getContext("2d");
+    if (ctx) {
+      ctx.clearRect(0, 0, c.width, c.height);
+      ctx.imageSmoothingEnabled = true;
+      ctx.imageSmoothingQuality = "high";
+      ctx.textAlign = "left";
+      ctx.textBaseline = "alphabetic";
+    }
+    return { c, ctx };
+  };
+
+  /* ── crisp layer ── */
+  const { c: cc, ctx: cctx } = mk();
+  if (!cctx) return { crisp: null, glow: null };
+  const L = badgeLayout(cctx);
+  /* brushed-silver vertical gradient for the wordmark */
+  const silver = cctx.createLinearGradient(0, L.baseY - 56, 0, L.baseY + 6);
+  silver.addColorStop(0, "#f2f5fa");
+  silver.addColorStop(0.5, "#c2c9d4");
+  silver.addColorStop(1, "#9aa2b0");
+  cctx.font = L.algoFont;
+  cctx.fillStyle = silver;
+  cctx.shadowColor = "rgba(8,10,16,0.6)";
+  cctx.shadowBlur = 3;
+  cctx.shadowOffsetY = 1;
+  cctx.fillText("Algorithm", L.x0, L.baseY);
+  cctx.shadowOffsetY = 0;
+  /* big red X */
+  cctx.font = L.xFont;
+  cctx.shadowColor = "rgba(255,40,60,0.95)";
+  cctx.shadowBlur = 18;
+  cctx.fillStyle = "#ff2f40";
+  cctx.fillText("X", L.xX, L.xY);
+  /* hot core pass so the X reads bright, not flat */
+  cctx.shadowBlur = 0;
+  cctx.fillStyle = "rgba(255,150,165,0.55)";
+  cctx.font = L.xFont;
+  cctx.fillText("X", L.xX, L.xY);
+  /* red dot on the i */
+  cctx.shadowColor = "rgba(255,40,60,0.95)";
+  cctx.shadowBlur = 14;
+  cctx.fillStyle = "#ff3344";
+  cctx.beginPath();
+  cctx.arc(L.dotX, L.dotY, L.dotR, 0, Math.PI * 2);
+  cctx.fill();
+  const crisp = new THREE.CanvasTexture(cc);
+  crisp.colorSpace = THREE.SRGBColorSpace;
+  crisp.anisotropy = 16;
+  crisp.needsUpdate = true;
+
+  /* ── glow layer (red only, big + blurred + hot pink core → blooms) ── */
+  const { c: gc, ctx: gctx } = mk();
+  if (gctx) {
+    gctx.globalCompositeOperation = "lighter";
+    /* soft red light pool behind the X */
+    const pool = gctx.createRadialGradient(
+      L.xX + 70, L.xY - 50, 4,
+      L.xX + 70, L.xY - 50, 150,
+    );
+    pool.addColorStop(0, "rgba(255,60,80,0.55)");
+    pool.addColorStop(1, "rgba(255,40,60,0)");
+    gctx.fillStyle = pool;
+    gctx.fillRect(0, 0, gc.width, gc.height);
+    /* blurred red X */
+    gctx.shadowColor = "rgba(255,50,70,1)";
+    gctx.shadowBlur = 40;
+    gctx.font = L.xFont;
+    gctx.fillStyle = "#ff5566";
+    gctx.fillText("X", L.xX, L.xY);
+    /* hot near-white-pink core so it crosses the bloom threshold */
+    gctx.shadowBlur = 10;
+    gctx.fillStyle = "rgba(255,170,185,0.9)";
+    gctx.fillText("X", L.xX, L.xY);
+    /* blurred i-dot */
+    gctx.shadowColor = "rgba(255,50,70,1)";
+    gctx.shadowBlur = 22;
+    gctx.fillStyle = "#ff6677";
+    gctx.beginPath();
+    gctx.arc(L.dotX, L.dotY, L.dotR + 1, 0, Math.PI * 2);
+    gctx.fill();
+  }
+  const glow = new THREE.CanvasTexture(gc);
+  glow.colorSpace = THREE.SRGBColorSpace;
+  glow.anisotropy = 16;
+  glow.needsUpdate = true;
+
+  return { crisp, glow };
 }
 
 /* LIVING SCREEN - multi-stage canvas texture that repaints as scroll
@@ -484,6 +623,122 @@ function paintReadyState(
   });
 }
 
+/* COSMIC-SWIRL WALLPAPER — the blue tilted-orbital desktop background
+ * from the reference product shots. A deep blue core haze, a set of
+ * tilted concentric orbit rings (partial arcs so they read as orbits
+ * in motion), a bright diagonal cross-flare through a hot centre, and a
+ * deterministic particle starfield that fans out along the orbital
+ * plane. Painted directly on the screen canvas BELOW the OS narrative,
+ * so the laptop matches the photos on load while the boot/dashboard
+ * story still plays on top. `intensity` dims the whole wallpaper so it
+ * can sit full-strength under the dormant/boot stages and pushed-back
+ * under the busy dashboard stages. Fully deterministic (sine-hash) so
+ * every repaint and the SSR/reduced-motion bake are identical. */
+function paintCosmicSwirl(
+  ctx: CanvasRenderingContext2D,
+  c: HTMLCanvasElement,
+  intensity: number,
+) {
+  if (intensity <= 0.01) return;
+  const cx = c.width * 0.5;
+  const cy = c.height * 0.46;
+  const tilt = -0.32; // orbital-plane tilt to match the photos
+  const hash = (n: number) => {
+    const s = Math.sin(n * 127.1) * 43758.5453;
+    return s - Math.floor(s);
+  };
+  ctx.save();
+
+  /* 1. Deep blue core haze pooling at the orbital centre */
+  const core = ctx.createRadialGradient(cx, cy, 0, cx, cy, c.width * 0.52);
+  core.addColorStop(0, `rgba(30,96,156,${0.5 * intensity})`);
+  core.addColorStop(0.28, `rgba(14,52,98,${0.36 * intensity})`);
+  core.addColorStop(0.62, `rgba(5,20,44,${0.2 * intensity})`);
+  core.addColorStop(1, "rgba(0,0,0,0)");
+  ctx.fillStyle = core;
+  ctx.fillRect(0, 0, c.width, c.height);
+
+  /* 2. Tilted concentric orbit rings — partial elliptical arcs */
+  ctx.lineCap = "round";
+  const rings = 9;
+  for (let i = 0; i < rings; i++) {
+    const t = (i + 1) / rings;
+    const rx = c.width * (0.07 + t * 0.45);
+    const ry = rx * (0.3 + 0.1 * Math.sin(i * 1.3));
+    const a0 = hash(i * 3.1) * Math.PI * 2;
+    const a1 = a0 + Math.PI * (0.65 + hash(i * 7.7) * 1.15);
+    const alpha = (0.46 - t * 0.3) * intensity;
+    if (alpha <= 0.02) continue;
+    /* soft glow underlay */
+    ctx.strokeStyle = `rgba(64,182,236,${alpha * 0.5})`;
+    ctx.shadowColor = "rgba(46,166,232,0.85)";
+    ctx.shadowBlur = 22 * intensity;
+    ctx.lineWidth = 5;
+    ctx.beginPath();
+    ctx.ellipse(cx, cy, rx, ry, tilt, a0, a1);
+    ctx.stroke();
+    /* crisp cyan core line */
+    ctx.shadowBlur = 0;
+    ctx.strokeStyle = `rgba(156,236,255,${alpha})`;
+    ctx.lineWidth = 1.6;
+    ctx.beginPath();
+    ctx.ellipse(cx, cy, rx, ry, tilt, a0, a1);
+    ctx.stroke();
+  }
+
+  /* 3. Bright diagonal cross-flare through the hot centre */
+  const flares = [
+    { ang: tilt + 0.16, len: c.width * 0.5, w: 3 },
+    { ang: tilt + Math.PI / 2 + 0.12, len: c.width * 0.3, w: 2 },
+  ];
+  ctx.shadowColor = "rgba(150,228,255,0.95)";
+  ctx.shadowBlur = 36 * intensity;
+  for (const f of flares) {
+    const x0 = cx - Math.cos(f.ang) * f.len;
+    const y0 = cy - Math.sin(f.ang) * f.len;
+    const x1 = cx + Math.cos(f.ang) * f.len;
+    const y1 = cy + Math.sin(f.ang) * f.len;
+    const g = ctx.createLinearGradient(x0, y0, x1, y1);
+    g.addColorStop(0, "rgba(130,222,255,0)");
+    g.addColorStop(0.5, `rgba(206,247,255,${0.85 * intensity})`);
+    g.addColorStop(1, "rgba(130,222,255,0)");
+    ctx.strokeStyle = g;
+    ctx.lineWidth = f.w;
+    ctx.beginPath();
+    ctx.moveTo(x0, y0);
+    ctx.lineTo(x1, y1);
+    ctx.stroke();
+  }
+  ctx.shadowBlur = 0;
+
+  /* 4. Hot core glint */
+  const glint = ctx.createRadialGradient(cx, cy, 0, cx, cy, c.width * 0.09);
+  glint.addColorStop(0, `rgba(224,250,255,${0.8 * intensity})`);
+  glint.addColorStop(0.5, `rgba(124,212,255,${0.28 * intensity})`);
+  glint.addColorStop(1, "rgba(124,212,255,0)");
+  ctx.fillStyle = glint;
+  ctx.fillRect(0, 0, c.width, c.height);
+
+  /* 5. Particle starfield fanning out along the tilted orbital plane */
+  for (let i = 0; i < 260; i++) {
+    const ang = hash(i * 1.7) * Math.PI * 2;
+    const rad = Math.pow(hash(i * 2.3), 0.6) * c.width * 0.5;
+    const px = cx + Math.cos(ang + tilt) * rad;
+    const py = cy + Math.sin(ang + tilt) * rad * 0.42;
+    const b = (1 - rad / (c.width * 0.54)) * intensity;
+    if (b <= 0.05) continue;
+    const size = hash(i * 5.1) * 1.7 + 0.4;
+    ctx.fillStyle = `rgba(${Math.round(180 + hash(i * 9) * 60)},230,255,${
+      b * (0.45 + hash(i * 4) * 0.55)
+    })`;
+    ctx.beginPath();
+    ctx.arc(px, py, size, 0, Math.PI * 2);
+    ctx.fill();
+  }
+
+  ctx.restore();
+}
+
 function paintScreen(canvas: HTMLCanvasElement, stage: number) {
   const ctx = canvas.getContext("2d");
   if (!ctx) return;
@@ -492,9 +747,19 @@ function paintScreen(canvas: HTMLCanvasElement, stage: number) {
   /* OLED pure black */
   ctx.fillStyle = "#000000";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
+  /* Cosmic-swirl wallpaper behind everything. Full strength on the
+   * dormant/boot stages (it IS the screen then), pushed back under the
+   * dashboard stages so the UI text stays legible on top of it. */
+  const swirlIntensity = stage === 0 ? 1 : stage <= 6 ? 0.85 : 0.5;
+  paintCosmicSwirl(ctx, canvas, swirlIntensity);
+  if (stage >= 7) {
+    /* Dark scrim so the dashboards read cleanly over the wallpaper */
+    ctx.fillStyle = "rgba(2,6,16,0.5)";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+  }
   if (stage === 0) {
-    /* Dormant: tiny indicator near top-left so the screen isn't a
-     * perfectly black rectangle (which can read as "broken display"). */
+    /* Dormant: the swirl wallpaper plus a tiny power indicator so the
+     * screen reads as an idle desktop, not a broken display. */
     ctx.fillStyle = "rgba(0,245,255,0.55)";
     ctx.shadowColor = "rgba(0,245,255,0.9)";
     ctx.shadowBlur = 24;
@@ -779,32 +1044,47 @@ function makeDataRainTexture(): THREE.Texture | null {
   return tex;
 }
 
-/* Hexagonal PCB-style grid texture. SINGLE-TILE rendering with a
- * built-in radial alpha mask, ClampToEdge wrapping — this completely
- * eliminates the seam artefacts the previous tiled implementation
- * suffered from (canvas dimensions were not integer multiples of the
- * hex pitch, so every tile edge cut hexes in half and the half-cells
- * overlapped at the joins).
+/* ──────────────────────────────────────────────────────────────────────
+ * ALGORITHMX CORE — environment textures (replaces the old hex grid).
  *
- * The texture is sampled exactly once across the whole floor plane:
- *   - no repeat → no joins → no doubled lines
- *   - built-in radial alpha → hexes are vivid under the laptop and
- *     fade naturally to invisible toward the floor edges (no need for
- *     extra masking planes / fog tricks)
- *   - sparse "via" nodes only on inner hex cells, deterministically
- *     hashed so the same node pattern paints every mount
+ * The floor is no longer a hex field. It is a precision-machined POLAR
+ * INSTRUMENT PLATE centred under the laptop: a few asymmetric, segmented
+ * engineered rings, ~16 radial circuit CHANNELS that conduct light inward
+ * toward the device, encoder ticks, via nodes, and a couple of deliberate
+ * VOID-GAP sectors cut clean through the plate so the haze / strata / true
+ * void read beneath it. Everything is additive + self-lit (no scene lights
+ * touch it → the laptop render is untouched). Bloom is faked with baked
+ * canvas shadowBlur (real Bloom crashes this drei/three combo).
  *
- * Pointy-top hex math: circumradius R, horizontal pitch R·√3, vertical
- * row pitch 1.5·R, odd rows offset by half a horizontal pitch. */
-function makeHexGridTexture(): THREE.Texture | null {
+ * Three variants share this one generator so the whole platform is just a
+ * couple of canvas allocations:
+ *   - "surface": the crisp top plate (rings + channels + ticks + via + core)
+ *   - "soft":    a larger, blurred-only GHOST of the plate for the mid
+ *                parallax stratum (atmospheric perspective beneath)
+ *   - "deep":    only the faint outer arc fragments for the deepest stratum
+ *
+ * Determinism: every "random" placement is a fixed sine-hash so SSR and the
+ * reduced-motion static bake are identical every mount. */
+/* Shared quality tuning for the additive GROUND/ENVIRONMENT textures. These
+ * planes are viewed at a very shallow (near edge-on) camera angle, so without
+ * anisotropic filtering they minify into a blurry/aliased smear toward the
+ * far edge. Max anisotropy + trilinear mipmaps keep the rings, circuit lines
+ * and haze crisp at distance. (Laptop-grounding textures are deliberately
+ * NOT routed through this — they're part of the locked laptop look.) */
+function tuneGroundTexture(tex: THREE.Texture): void {
+  tex.anisotropy = 16;
+  tex.minFilter = THREE.LinearMipmapLinearFilter;
+  tex.magFilter = THREE.LinearFilter;
+  tex.generateMipmaps = true;
+}
+
+/* PLATFORM SUBSTRATE — dense machined gunmetal the reactor arcs are recessed
+ * into. Concentric PANEL BANDS divided into plates by radial seams, each plate
+ * tone-varied with a lit outer rim + dark inner shadow, sparse inset greebles
+ * and tiny embedded light dots. NORMAL-blended so it paints real darks (the
+ * manufactured detail in the reference). */
+function makePlatformSubstrateTexture(): THREE.Texture | null {
   if (typeof document === "undefined") return null;
-  /* HD pass: canvas resolution doubled (1024 → 2048) and every
-   * drawing dimension scaled with it (R, lineWidth, node radius) so
-   * the *world* hex size is unchanged but each cell is rendered at
-   * 4× the texel count. The previous 1024 canvas mapped across a
-   * 36-unit plane was sampling at glancing camera angles into low
-   * mip levels and producing stairstep / dotted artefacts on the
-   * stroke outlines. 2048 + max anisotropy = crisp PCB look. */
   const S = 2048;
   const c = document.createElement("canvas");
   c.width = c.height = S;
@@ -813,143 +1093,384 @@ function makeHexGridTexture(): THREE.Texture | null {
   ctx.imageSmoothingEnabled = true;
   ctx.imageSmoothingQuality = "high";
   ctx.clearRect(0, 0, S, S);
-
-  const R = 16;
-  const hexW = R * Math.sqrt(3);
-  const rowH = R * 1.5;
   const cx = S / 2;
   const cy = S / 2;
-  /* fadeR tightened further (0.46 → 0.40) for a true cinematic
-   * stage pool. Outer hexes vanish hard so the laptop stands in a
-   * spot-lit pool of light, not a tiled wallpaper. */
-  const fadeR = S * 0.4;
+  const Rmax = S * 0.46;
+  const hash = (n: number) => {
+    const s = Math.sin(n * 127.1) * 43758.5453;
+    return s - Math.floor(s);
+  };
 
-  const cols = Math.ceil(S / hexW) + 2;
-  const rows = Math.ceil(S / rowH) + 2;
-
-  const hexes: Array<{ x: number; y: number; a: number }> = [];
-  for (let row = -1; row < rows; row++) {
-    const xOff = row & 1 ? hexW / 2 : 0;
-    for (let col = -1; col < cols; col++) {
-      const x = col * hexW + xOff;
-      const y = row * rowH;
-      const dx = (x - cx) / fadeR;
-      const dy = (y - cy) / fadeR;
-      const d2 = dx * dx + dy * dy;
-      if (d2 > 1.0) continue;
-      const t = Math.max(0, 1 - d2);
-      /* Cubic falloff (was quadratic) - the inner pool stays vivid
-       * but the outer hexes drop off faster, giving a more
-       * deliberate "spot-lit stage" feel under the laptop instead
-       * of a wallpaper texture filling the frame. */
-      const a = t * t * t;
-      hexes.push({ x, y, a });
-    }
-  }
-
-  /* Centre accent pool — pumped up significantly. This is the
-   * spot-light under the laptop. Inner stop brighter (0.22 → 0.38)
-   * and outer stop tightened so the brightness falloff feels
-   * deliberate, not diffused. Pool radius also pulled in a touch
-   * (0.28 → 0.26) so the brightest area is concentrated under the
-   * laptop rather than spread across the floor.
-   *
-   * Painted first so the hex strokes draw on top of it. */
-  const poolGrad = ctx.createRadialGradient(cx, cy, 0, cx, cy, S * 0.26);
-  poolGrad.addColorStop(0, "rgba(0,229,255,0.38)");
-  poolGrad.addColorStop(0.4, "rgba(0,229,255,0.15)");
-  poolGrad.addColorStop(1, "rgba(0,229,255,0)");
-  ctx.fillStyle = poolGrad;
+  /* CLEAN DEEP-NAVY SURFACE — a smooth dark base the flowing ribbons sit
+   * on (replaces the old concentric machined-plate circuitry, which
+   * clashed with the new ribbon floor). Deep navy at the centre, fading
+   * to transparent before the edge so the platform still reads as
+   * suspended over the void, with a faint cooler pool under the chassis. */
+  const base = ctx.createRadialGradient(cx, cy, 0, cx, cy, Rmax * 1.04);
+  base.addColorStop(0, "rgba(16,26,46,0.96)");
+  base.addColorStop(0.45, "rgba(10,17,33,0.9)");
+  base.addColorStop(0.78, "rgba(5,9,20,0.6)");
+  base.addColorStop(1, "rgba(0,0,0,0)");
+  ctx.fillStyle = base;
   ctx.fillRect(0, 0, S, S);
 
-  /* Inner micro-pool — second radial gradient TIGHTER than the
-   * main pool, providing the "really bright right under the laptop"
-   * hotspot. Adds a deliberate light source feel — like a stage
-   * spot pointed straight down. */
-  const hotGrad = ctx.createRadialGradient(cx, cy, 0, cx, cy, S * 0.1);
-  hotGrad.addColorStop(0, "rgba(127,240,255,0.25)");
-  hotGrad.addColorStop(1, "rgba(127,240,255,0)");
-  ctx.fillStyle = hotGrad;
+  /* very faint cool sheen pooling under the chassis */
+  const sheen = ctx.createRadialGradient(cx, cy, 0, cx, cy, S * 0.3);
+  sheen.addColorStop(0, "rgba(40,90,150,0.12)");
+  sheen.addColorStop(1, "rgba(40,90,150,0)");
+  ctx.fillStyle = sheen;
   ctx.fillRect(0, 0, S, S);
 
-  /* Pass 1: hex outlines. lineWidth scaled to the 2048 canvas (now
-   * 1.7 px instead of sub-pixel 0.85) so each stroke renders as a
-   * proper pixel-aligned line, not a sub-pixel ghost that the canvas
-   * smears across two rows. Alpha multiplier also bumped (0.55 → 0.7)
-   * for a brighter, more confidently "drawn" line. */
-  ctx.lineCap = "round";
-  ctx.lineJoin = "round";
-  for (const h of hexes) {
-    if (h.a < 0.02) continue;
-    ctx.strokeStyle = `rgba(0,229,255,${0.7 * h.a})`;
-    ctx.lineWidth = 1.7;
+  /* extremely subtle concentric brushed tone — low contrast, no plates,
+   * just enough to keep the dark surface from banding flat. */
+  for (let i = 0; i < 22; i++) {
+    const r = (i / 22) * Rmax;
+    const v = i % 2 ? 22 : 8;
+    ctx.strokeStyle = `rgba(${v},${v + 8},${v + 20},0.04)`;
+    ctx.lineWidth = 7;
     ctx.beginPath();
-    for (let i = 0; i < 6; i++) {
-      const ang = (Math.PI / 3) * i + Math.PI / 6;
-      const px = h.x + R * Math.cos(ang);
-      const py = h.y + R * Math.sin(ang);
-      if (i === 0) ctx.moveTo(px, py);
-      else ctx.lineTo(px, py);
-    }
-    ctx.closePath();
+    ctx.arc(cx, cy, r, 0, Math.PI * 2);
     ctx.stroke();
   }
+  void hash;
 
-  /* Pass 2: via-style nodes — restricted to the INNER zone only so
-   * they read as deliberate accents under the laptop, not random
-   * peppering across the whole stage. Threshold tightened (0.05 →
-   * 0.035) so fewer dots overall. Alpha cap above 0.45 only — the
-   * outer hexes that DO get a node are too dim to register. */
-  for (const h of hexes) {
-    if (h.a < 0.45) continue; // inner zone only
-    const seed = Math.sin(h.x * 12.9898 + h.y * 78.233) * 43758.5453;
-    const r = seed - Math.floor(seed);
-    if (r > 0.035) continue;
-    const dotA = h.a * 1.0;
-    ctx.fillStyle = `rgba(127,240,255,${dotA})`;
-    ctx.shadowColor = "rgba(127,240,255,0.85)";
-    ctx.shadowBlur = 4;
-    ctx.beginPath();
-    ctx.arc(h.x, h.y, 2.6, 0, Math.PI * 2);
-    ctx.fill();
-  }
-  ctx.shadowBlur = 0;
-
-  /* PASS 3 — ASYMMETRIC VERTICAL FADE on the near-camera floor.
-   *
-   * The floor plane is rotated -π/2 around X, so canvas-bottom pixels
-   * (high Y) render in the LOWER viewport (the floor area closest to
-   * the camera). That area's bright hex pattern was creating the
-   * visible seam against ProblemStats below, because the texture's
-   * radial fade is symmetric and didn't account for the asymmetric
-   * camera angle.
-   *
-   * `destination-out` composite subtracts alpha from already-drawn
-   * pixels. Gradient stays at 0 (unchanged) through the centre half
-   * of the canvas (laptop pool stays vivid), then ramps up to nearly
-   * full erasure at the canvas bottom — so the near-camera floor
-   * tapers cleanly into nothing instead of cutting off at a hard
-   * edge. GlobalBackdrop now reads through the seam directly; no
-   * heavy ink overlay needed downstream. */
+  /* near-camera fade */
   ctx.globalCompositeOperation = "destination-out";
-  const nearCameraFade = ctx.createLinearGradient(0, 0, 0, S);
-  nearCameraFade.addColorStop(0.0,  "rgba(0,0,0,0)");
-  nearCameraFade.addColorStop(0.55, "rgba(0,0,0,0)");
-  nearCameraFade.addColorStop(0.78, "rgba(0,0,0,0.55)");
-  nearCameraFade.addColorStop(0.92, "rgba(0,0,0,0.88)");
-  nearCameraFade.addColorStop(1.0,  "rgba(0,0,0,0.96)");
-  ctx.fillStyle = nearCameraFade;
+  const ncf = ctx.createLinearGradient(0, 0, 0, S);
+  ncf.addColorStop(0.0, "rgba(0,0,0,0)");
+  ncf.addColorStop(0.52, "rgba(0,0,0,0)");
+  ncf.addColorStop(0.66, "rgba(0,0,0,0.6)");
+  ncf.addColorStop(0.8, "rgba(0,0,0,0.92)");
+  ncf.addColorStop(1.0, "rgba(0,0,0,1)");
+  ctx.fillStyle = ncf;
   ctx.fillRect(0, 0, S, S);
   ctx.globalCompositeOperation = "source-over";
 
   const tex = new THREE.CanvasTexture(c);
   tex.wrapS = THREE.ClampToEdgeWrapping;
   tex.wrapT = THREE.ClampToEdgeWrapping;
-  tex.minFilter = THREE.LinearMipmapLinearFilter;
-  tex.magFilter = THREE.LinearFilter;
-  tex.anisotropy = 16;
-  tex.generateMipmaps = true;
   tex.colorSpace = THREE.SRGBColorSpace;
+  tuneGroundTexture(tex);
+  tex.needsUpdate = true;
+  return tex;
+}
+
+/* REACTOR ARCS (illumination) — concentric arc-SEGMENT rings glowing in a
+ * disciplined cyan -> electric-blue -> sparse-violet family (NO white cores).
+ * Brightest in a mid radius band, fading inner + outer, with dotted tech
+ * segments on some arcs and a fine concentric hub. Additive; sits inside the
+ * substrate grooves. The "soft" / "deep" variants are blurred ghosts for the
+ * parallax strata. */
+function makeInstrumentPlateTexture(
+  variant: "surface" | "soft" | "deep" = "surface",
+): THREE.Texture | null {
+  if (typeof document === "undefined") return null;
+  const S = 2048;
+  const c = document.createElement("canvas");
+  c.width = c.height = S;
+  const ctx = c.getContext("2d");
+  if (!ctx) return null;
+  ctx.imageSmoothingEnabled = true;
+  ctx.imageSmoothingQuality = "high";
+  ctx.clearRect(0, 0, S, S);
+  const soft = variant === "soft";
+  const deep = variant === "deep";
+  const cx = S / 2;
+  const cy = S / 2;
+  const Rmax = S * (deep ? 0.46 : soft ? 0.42 : 0.4);
+  const hash = (n: number) => {
+    const s = Math.sin(n * 127.1) * 43758.5453;
+    return s - Math.floor(s);
+  };
+  /* FLOWING-RIBBON ENERGY FLOOR — smooth, glowing, organically-drifting
+   * elliptical light ribbons sweeping around the chassis (replaces the
+   * busy segmented-ring/circuitry plate). Few, thick, smooth and bloom-
+   * fed so the floor reads as a high-end "energy chamber" surface, not a
+   * reticle. Deterministic (sine-hash) so SSR + reduced-motion bakes are
+   * identical. */
+
+  /* central energy pool under the chassis — brighter blue-white core */
+  if (!deep) {
+    const pool = ctx.createRadialGradient(cx, cy, 0, cx, cy, S * 0.24);
+    pool.addColorStop(0, soft ? "rgba(80,185,255,0.12)" : "rgba(130,212,255,0.3)");
+    pool.addColorStop(0.42, soft ? "rgba(40,130,255,0.05)" : "rgba(48,150,255,0.13)");
+    pool.addColorStop(1, "rgba(0,0,0,0)");
+    ctx.fillStyle = pool;
+    ctx.fillRect(0, 0, S, S);
+  }
+
+  ctx.lineCap = "round";
+  const glow = (blur: number, col: string) => {
+    ctx.shadowColor = col;
+    ctx.shadowBlur = blur;
+  };
+  const noGlow = () => {
+    ctx.shadowBlur = 0;
+  };
+
+  const N = deep ? 7 : soft ? 9 : 12;
+  const baseTilt = -0.18; // shared tilt so the outer bands read as a family
+  for (let i = 0; i < N; i++) {
+    const t = i / (N - 1);
+    /* fairly even spacing so the outer bands space like a parallel family */
+    const rN = 0.12 + Math.pow(t, 1.05) * 0.92;
+    const rx = rN * Rmax;
+    /* HYBRID: round/concentric near the centre → progressively FLAT,
+     * elongated parallel bands toward the edges (the reference's
+     * curved-wall flow). `flat` runs 0 (inner) → 1 (outer). */
+    const flat = smoothstep(0.25, 0.85, rN);
+    const squash = lerp(0.6, 0.15, flat);
+    const ry = rx * squash;
+    /* per-ribbon centre drift shrinks outward so the flat outer bands
+     * nest as near-parallel streaks; inner ones keep an organic offset. */
+    const driftA = hash(i * 7.1) * Math.PI * 2;
+    const driftR = (hash(i * 2.9) - 0.5) * S * 0.05 * (1 - flat * 0.7);
+    const ex = cx + Math.cos(driftA) * driftR;
+    const ey = cy + Math.sin(driftA) * driftR * 0.4;
+    /* tilt converges to the shared base tilt outward (parallel family) */
+    const rot = baseTilt + (hash(i * 5.7) - 0.5) * 0.32 * (1 - flat * 0.6);
+    /* longer arcs toward the edges so the flat bands sweep right across */
+    const a0 = hash(i * 4.3) * Math.PI * 2;
+    const a1 = a0 + Math.PI * (1.0 + hash(i * 9.2) * 0.6 + flat * 0.45);
+    const a = (1 - rN * 0.5) * (soft ? 0.6 : deep ? 0.42 : 1.0);
+    if (a < 0.03) continue;
+    /* palette: mostly cyan/blue with sparse violet accents */
+    const isViolet = i === 3 || i === 8;
+    const isBlue = i % 3 === 1;
+    const rgb = isViolet ? "138,108,255" : isBlue ? "46,128,255" : "40,206,255";
+    const lite = isViolet ? "196,176,255" : isBlue ? "170,212,255" : "160,238,255";
+    /* soft wide glow underlay (bloom feeds on this) */
+    ctx.strokeStyle = `rgba(${rgb},${a * (soft ? 0.5 : 0.42)})`;
+    ctx.lineWidth = soft ? 8 : deep ? 5 : 6;
+    glow(soft ? 15 : 11, `rgba(${rgb},0.95)`);
+    ctx.beginPath();
+    ctx.ellipse(ex, ey, rx, ry, rot, a0, a1);
+    ctx.stroke();
+    noGlow();
+    if (!soft && !deep) {
+      /* crisp colour body */
+      ctx.strokeStyle = `rgba(${rgb},${a})`;
+      ctx.lineWidth = 2.2;
+      ctx.beginPath();
+      ctx.ellipse(ex, ey, rx, ry, rot, a0, a1);
+      ctx.stroke();
+      /* bright inner core for the hot centre of the ribbon */
+      ctx.strokeStyle = `rgba(${lite},${a * 0.85})`;
+      ctx.lineWidth = 1.0;
+      ctx.beginPath();
+      ctx.ellipse(ex, ey, rx, ry, rot, a0, a1);
+      ctx.stroke();
+    }
+  }
+
+  /* CROSS-FLOW STREAKS — a few long smooth sweeping light trails for the
+   * "data in motion" read, kept subtle so they support, not clutter. */
+  if (!deep) {
+    const streaks = soft ? 2 : 3;
+    for (let i = 0; i < streaks; i++) {
+      const yy = cy + (hash(i * 13.1) - 0.5) * S * 0.5;
+      const amp = S * (0.08 + hash(i * 6.3) * 0.1);
+      const col = i % 2 ? "46,128,255" : "40,206,255";
+      ctx.strokeStyle = `rgba(${col},${soft ? 0.14 : 0.26})`;
+      ctx.lineWidth = soft ? 5 : 3.5;
+      glow(soft ? 10 : 8, `rgba(${col},0.9)`);
+      ctx.beginPath();
+      ctx.moveTo(-S * 0.05, yy);
+      ctx.quadraticCurveTo(cx, yy - amp, S * 1.05, yy + amp * 0.4);
+      ctx.stroke();
+      noGlow();
+    }
+  }
+
+  /* bright centre core glint (surface) */
+  if (!soft && !deep) {
+    const core = ctx.createRadialGradient(cx, cy, 0, cx, cy, S * 0.06);
+    core.addColorStop(0, "rgba(184,240,255,0.6)");
+    core.addColorStop(0.5, "rgba(96,194,255,0.2)");
+    core.addColorStop(1, "rgba(96,194,255,0)");
+    ctx.fillStyle = core;
+    ctx.fillRect(0, 0, S, S);
+  }
+
+  /* near-camera fade */
+  ctx.globalCompositeOperation = "destination-out";
+  const ncf = ctx.createLinearGradient(0, 0, 0, S);
+  ncf.addColorStop(0.0, "rgba(0,0,0,0)");
+  ncf.addColorStop(0.52, "rgba(0,0,0,0)");
+  ncf.addColorStop(0.66, "rgba(0,0,0,0.6)");
+  ncf.addColorStop(0.8, "rgba(0,0,0,0.92)");
+  ncf.addColorStop(1.0, "rgba(0,0,0,1)");
+  ctx.fillStyle = ncf;
+  ctx.fillRect(0, 0, S, S);
+  ctx.globalCompositeOperation = "source-over";
+
+  const tex = new THREE.CanvasTexture(c);
+  tex.wrapS = THREE.ClampToEdgeWrapping;
+  tex.wrapT = THREE.ClampToEdgeWrapping;
+  tex.colorSpace = THREE.SRGBColorSpace;
+  tuneGroundTexture(tex);
+  tex.needsUpdate = true;
+  return tex;
+}
+
+function makeMegastructureTexture(): THREE.Texture | null {
+  if (typeof document === "undefined") return null;
+  const W = 1024;
+  const H = 512;
+  const c = document.createElement("canvas");
+  c.width = W;
+  c.height = H;
+  const ctx = c.getContext("2d");
+  if (!ctx) return null;
+  ctx.clearRect(0, 0, W, H);
+  ctx.lineCap = "round";
+  // right-biased centre for the distant ring
+  const mx = W * 0.66;
+  const my = H * 0.92;
+  ctx.shadowColor = "rgba(0,229,255,0.7)";
+  // a few faint concentric arc fragments
+  const arcs = [
+    { r: 150, a0: -2.4, a1: -0.9, a: 0.1 },
+    { r: 210, a0: -2.2, a1: -1.4, a: 0.07 },
+    { r: 270, a0: -2.6, a1: -1.8, a: 0.05 },
+    { r: 120, a0: -1.6, a1: -0.5, a: 0.08 },
+  ];
+  for (const arc of arcs) {
+    ctx.strokeStyle = `rgba(0,229,255,${arc.a})`;
+    ctx.lineWidth = 2.2;
+    ctx.shadowBlur = 8;
+    ctx.beginPath();
+    ctx.arc(mx, my, arc.r, arc.a0, arc.a1);
+    ctx.stroke();
+  }
+  // a couple of thin distant spires (violet-tinted secondary accent)
+  const spires = [
+    { x: W * 0.5, top: H * 0.42, a: 0.05 },
+    { x: W * 0.78, top: H * 0.5, a: 0.045 },
+    { x: W * 0.6, top: H * 0.55, a: 0.04 },
+  ];
+  for (const sp of spires) {
+    ctx.strokeStyle = `rgba(124,92,255,${sp.a})`;
+    ctx.lineWidth = 1.6;
+    ctx.shadowBlur = 6;
+    ctx.beginPath();
+    ctx.moveTo(sp.x, my);
+    ctx.lineTo(sp.x, sp.top);
+    ctx.stroke();
+  }
+  ctx.shadowBlur = 0;
+  const tex = new THREE.CanvasTexture(c);
+  tex.colorSpace = THREE.SRGBColorSpace;
+  tuneGroundTexture(tex);
+  tex.needsUpdate = true;
+  return tex;
+}
+
+/* Small additive glow sprite used for the inward-travelling SIGNAL PACKETS
+ * that ride the radial channels toward the laptop. A soft cyan core with a
+ * near-white centre — the motion conveys direction, so the sprite itself is
+ * a simple round glow (orientation-free). */
+function makeSignalPacketTexture(): THREE.Texture | null {
+  if (typeof document === "undefined") return null;
+  const S = 128;
+  const c = document.createElement("canvas");
+  c.width = c.height = S;
+  const ctx = c.getContext("2d");
+  if (!ctx) return null;
+  ctx.clearRect(0, 0, S, S);
+  const g = ctx.createRadialGradient(S / 2, S / 2, 0, S / 2, S / 2, S / 2);
+  g.addColorStop(0, "rgba(220,250,255,1)");
+  g.addColorStop(0.3, "rgba(0,229,255,0.7)");
+  g.addColorStop(1, "rgba(0,229,255,0)");
+  ctx.fillStyle = g;
+  ctx.fillRect(0, 0, S, S);
+  const tex = new THREE.CanvasTexture(c);
+  tex.colorSpace = THREE.SRGBColorSpace;
+  tuneGroundTexture(tex);
+  tex.needsUpdate = true;
+  return tex;
+}
+
+/* Sub-surface MACHINE WELL — sits just beneath the instrument plate to give
+ * the burst zone real depth: a soft recessed central well (darker core
+ * ringed by a faint glow) plus a few concentric structural rings at a
+ * DIFFERENT scale to the surface, so looking "into" the platform you sense a
+ * more complex machine below the top plane. Additive + low opacity so it
+ * reads as a glowing structural layer, never muddy. */
+function makeMachineWellTexture(): THREE.Texture | null {
+  if (typeof document === "undefined") return null;
+  const S = 1024;
+  const c = document.createElement("canvas");
+  c.width = c.height = S;
+  const ctx = c.getContext("2d");
+  if (!ctx) return null;
+  ctx.clearRect(0, 0, S, S);
+  const cx = S / 2;
+  const cy = S / 2;
+  const hash = (n: number) => {
+    const s = Math.sin(n * 127.1) * 43758.5453;
+    return s - Math.floor(s);
+  };
+  /* soft recessed well — a faint ring of glow around a darker core */
+  const well = ctx.createRadialGradient(cx, cy, 0, cx, cy, S * 0.34);
+  well.addColorStop(0, "rgba(0,180,255,0.0)");
+  well.addColorStop(0.55, "rgba(0,200,255,0.10)");
+  well.addColorStop(0.78, "rgba(0,160,255,0.05)");
+  well.addColorStop(1, "rgba(0,0,0,0)");
+  ctx.fillStyle = well;
+  ctx.fillRect(0, 0, S, S);
+  /* concentric structural rings (different scale from the surface plate) */
+  ctx.lineCap = "round";
+  const rings = [0.2, 0.31, 0.45, 0.6];
+  for (let i = 0; i < rings.length; i++) {
+    const r = rings[i] * S * 0.5;
+    const a = (1 - rings[i]) * 0.16;
+    ctx.strokeStyle = `rgba(0,210,255,${a})`;
+    ctx.lineWidth = i % 2 ? 1.0 : 1.8;
+    ctx.shadowColor = "rgba(0,210,255,0.7)";
+    ctx.shadowBlur = 6;
+    ctx.beginPath();
+    /* break each into a couple of arcs so it reads as engineered, not a disc */
+    const segs = 3 + (i % 2);
+    for (let s = 0; s < segs; s++) {
+      const span = (Math.PI * 2) / segs;
+      const j = (hash(i * 5.1 + s) - 0.5) * span * 0.3;
+      ctx.beginPath();
+      ctx.arc(cx, cy, r, s * span + j + 0.12, (s + 1) * span + j - 0.12);
+      ctx.stroke();
+    }
+  }
+  ctx.shadowBlur = 0;
+  const tex = new THREE.CanvasTexture(c);
+  tex.wrapS = THREE.ClampToEdgeWrapping;
+  tex.wrapT = THREE.ClampToEdgeWrapping;
+  tex.colorSpace = THREE.SRGBColorSpace;
+  tuneGroundTexture(tex);
+  tex.needsUpdate = true;
+  return tex;
+}
+
+/* Volumetric depth haze — a single soft radial cyan-blue glow that sits
+ * LOW inside the hex well, between the mid and deep strata. Drawn additive
+ * at very low opacity so the gap beneath the floating surface reads as
+ * luminous fog / atmosphere rather than empty black. This is what gives the
+ * "space / void visible beneath" feel without adding any geometry. */
+function makeDepthHazeTexture(): THREE.Texture | null {
+  if (typeof document === "undefined") return null;
+  const c = document.createElement("canvas");
+  c.width = c.height = 512;
+  const ctx = c.getContext("2d");
+  if (!ctx) return null;
+  ctx.clearRect(0, 0, 512, 512);
+  const g = ctx.createRadialGradient(256, 256, 0, 256, 256, 256);
+  g.addColorStop(0, "rgba(40,180,255,0.5)");
+  g.addColorStop(0.45, "rgba(20,120,220,0.18)");
+  g.addColorStop(1, "rgba(0,0,0,0)");
+  ctx.fillStyle = g;
+  ctx.fillRect(0, 0, 512, 512);
+  const tex = new THREE.CanvasTexture(c);
+  tex.colorSpace = THREE.SRGBColorSpace;
+  tuneGroundTexture(tex);
   tex.needsUpdate = true;
   return tex;
 }
@@ -1472,9 +1993,25 @@ function makeSoftShadowTexture(): THREE.Texture | null {
 }
 
 export default function LaptopScene({ progress, reducedMotion = false }: LaptopSceneProps) {
+  /* Device quality tier — computed once on the client (this component is
+   * ssr:false, so reading matchMedia/navigator here is safe and never
+   * remounts the canvas). Low-power devices (touch / few cores) render at a
+   * lower DPR ceiling + lighter MSAA to stay smooth; desktop gets the full
+   * resolution + heavier MSAA for crisp geometry edges. SMAA runs on every
+   * tier (cheap) and carries the thin-line / silhouette edge quality. The
+   * APPROVED DESIGN is identical on every tier — only resolution / AA cost
+   * scale. */
+  const [lowPower] = useState(() => {
+    if (typeof window === "undefined") return false;
+    const coarse = window.matchMedia("(pointer: coarse)").matches;
+    const fewCores = (navigator.hardwareConcurrency || 8) <= 4;
+    return coarse || fewCores;
+  });
+  const dprRange: [number, number] = lowPower ? [1.25, 2] : [1.5, 2.5];
+  const msaa = lowPower ? 2 : 6;
   return (
     <Canvas
-      dpr={[1.5, 2.5]}
+      dpr={dprRange}
       camera={{ position: [4.6, 3.4, 6.4], fov: 38 }}
       gl={{
         antialias: true,
@@ -1513,7 +2050,7 @@ export default function LaptopScene({ progress, reducedMotion = false }: LaptopS
        *
        *  resolution=128 + frames=1 means the cubemap renders once and
        *  is cached - effectively free at runtime. */}
-      <Environment background={false} resolution={128} frames={1}>
+      <Environment background={false} resolution={lowPower ? 128 : 256} frames={1}>
         {/* Key light - bright warm-white from upper-front-right */}
         <Lightformer
           form="rect"
@@ -1570,31 +2107,72 @@ export default function LaptopScene({ progress, reducedMotion = false }: LaptopS
       {/* Rim light from behind to highlight the lid's top edge */}
       <pointLight position={[2, 4, -3]} intensity={0.6} color="#ffffff" />
 
+      {/* Background depth chamber (architectural silhouettes + rear light
+       *  shaft + haze) — sits behind everything, self-lit, never competes. */}
+      <TechChamber progress={progress} reducedMotion={reducedMotion} lowPower={lowPower} />
+
+      {/* Physical layered reactor the laptop floats above (real metal tiers +
+       *  emissive trims + segmented ring), igniting outward with scroll. */}
+      <ReactorPlatform progress={progress} reducedMotion={reducedMotion} lowPower={lowPower} />
+
       <Laptop progress={progress} reducedMotion={reducedMotion} />
 
       {/* Cinematic post-processing.
-       *  - multisampling=4 enables MSAA inside the post-processing
-       *    render target so chassis edges, card edges, and screen-text
-       *    edges no longer go jaggy after Vignette/Noise sample them.
-       *    (Was 0, which silently dropped the canvas-level antialias.)
-       *  - Film grain dropped to almost imperceptible (0.035 -> 0.012)
-       *    so it stops adding the perceived "fuzzy texture" over
-       *    everything.
-       *  - Bloom is still excluded - it crashes this drei/three combo. */}
-      <EffectComposer multisampling={4} enableNormalPass={false}>
-        {/* Vignette darkness softened (0.85 -> 0.5) so the lower edge
-         *  no longer crushes into a deep ink ring right where the hero
-         *  meets the next section. The frame still vignettes inward
-         *  enough to focus the eye, but the bottom of the canvas now
-         *  blends smoothly into the page mist instead of stamping a
-         *  hard dark band that betrays the section boundary. */}
+       *  - multisampling = tiered MSAA (6 desktop / 2 low-power) AA's
+       *    geometry edges (chassis silhouette, burst/echo rings, cards).
+       *  - SMAA (added) AA's the FINAL image — geometry AND textured edges
+       *    (the thin platform circuit lines), which MSAA alone can't reach;
+       *    this is what removes the glancing-angle shimmer / crawling on the
+       *    ground linework during motion. Same package (postprocessing), no
+       *    new dependency.
+       *  - Film grain kept low (0.012) so it dithers gradients without
+       *    reading as fuzzy texture.
+       *  - Post BLOOM intentionally NOT added: a scene/threshold bloom would
+       *    alter the locked laptop (its bright screen/edges) and risks the
+       *    known crash; the environment glow stays baked + SMAA-crisp. */}
+      {/* RENDER-QUALITY POST STACK — this is what lifts the scene from "flat
+       *  cartoon strokes" toward a cinematic product render:
+       *   1. N8AO  — ambient occlusion: real contact-shadow depth between the
+       *      laptop, the reactor tiers and the platform, so nothing reads as
+       *      pasted-on. The single biggest anti-"flat" cue.
+       *   2. Bloom — controlled, luminance-thresholded + mipmap-blurred so
+       *      ONLY genuinely emissive surfaces (energy lines, ring trims,
+       *      screen) bleed light; emissives stop looking like drawn strokes
+       *      and start looking like light.
+       *   3. SMAA  — edge AA / anti-shimmer.
+       *   4. BrightnessContrast + HueSaturation — gentle grade: deeper blacks,
+       *      richer contrast and a touch more colour so mid-tones aren't flat.
+       *   5. Vignette + Noise — focus + gradient dither.
+       *  AO/Bloom scale down (half-res, fewer samples, lower intensity) on the
+       *  low-power tier to protect frame-rate. */}
+      <EffectComposer multisampling={msaa} enableNormalPass={false}>
+        <N8AO
+          quality={lowPower ? "low" : "high"}
+          aoRadius={1.0}
+          distanceFalloff={1.0}
+          intensity={lowPower ? 1.6 : 2.1}
+          halfRes={lowPower}
+          color="#03060c"
+        />
+        <Bloom
+          intensity={lowPower ? 0.45 : 0.6}
+          luminanceThreshold={0.62}
+          luminanceSmoothing={0.28}
+          radius={0.6}
+          mipmapBlur
+        />
+        <SMAA preset={SMAAPreset.HIGH} />
+        <BrightnessContrast brightness={-0.015} contrast={0.07} />
+        <HueSaturation hue={0} saturation={0.08} />
+        {/* Vignette darkness softened so the lower edge blends into the page
+         *  mist instead of stamping a hard dark band at the section boundary. */}
         <Vignette
           eskil={false}
           offset={0.26}
           darkness={0.5}
           blendFunction={BlendFunction.NORMAL}
         />
-        <Noise opacity={0.012} blendFunction={BlendFunction.OVERLAY} />
+        <Noise opacity={0.006} blendFunction={BlendFunction.OVERLAY} />
       </EffectComposer>
     </Canvas>
   );
@@ -1902,13 +2480,14 @@ function ScreenSlabs({ progress }: { progress: MotionValue<number> }) {
 
 function Laptop({
   progress,
-  reducedMotion: _rm,
+  reducedMotion,
 }: {
   progress: MotionValue<number>;
   reducedMotion: boolean;
 }) {
   const lidBrandTex = useLidBrandTexture();
   const lidBloomTex = useLidBloomTexture();
+  const deckBadge = useMemo(() => makeDeckBadgeTextures(), []);
   /* Refs for the closed-laptop premium-polish layers: the wordmark
    *  pulses on a slow breath, the wider bloom behind it pulses on an
    *  out-of-phase slower wave so the glow never feels mechanical,
@@ -1934,18 +2513,91 @@ function Laptop({
   const screenBeamRef = useRef<THREE.Mesh>(null);
   const fogHazeTex = useMemo(() => makeFogHazeTexture(), []);
   const dataRainTex = useMemo(() => makeDataRainTexture(), []);
-  /* TEX_VERSION exists ONLY to invalidate Next.js Fast-Refresh's
-   * useMemo cache. Bump it whenever makeHexGridTexture's drawing
-   * params change (lineWidth, stroke alpha, R, fadeR). With empty
-   * deps, an edit to the texture function wouldn't trigger a regen
-   * on Fast Refresh — the stale GPU texture stayed bound. Including
-   * a version literal in the deps forces useMemo to re-run on save. */
-  const HEX_TEX_VERSION = "v4-near-camera-fade";
-  const hexFloorTex = useMemo(
-    () => makeHexGridTexture(),
-    [HEX_TEX_VERSION],
+  /* TEX_VERSION exists ONLY to invalidate Next.js Fast-Refresh's useMemo
+   * cache. Bump it whenever the instrument-plate drawing params change so an
+   * edit to the texture function regenerates the GPU texture on save. */
+  const PLATE_TEX_VERSION = "v11-reactor-floor";
+  /* Dark engineered SUBSTRATE the channels are recessed into (normal-blended
+   * material with groove troughs + lit rim bevels). Sits beneath the glow. */
+  const plateSubstrateTex = useMemo(
+    () => makePlatformSubstrateTexture(),
+    [PLATE_TEX_VERSION],
   );
-  const hexFloorMatRef = useRef<THREE.MeshBasicMaterial>(null);
+  const plateSubstrateMatRef = useRef<THREE.MeshBasicMaterial>(null);
+  /* Crisp top instrument plate (rings + channels + ticks + via + core). */
+  const plateSurfaceTex = useMemo(
+    () => makeInstrumentPlateTexture("surface"),
+    [PLATE_TEX_VERSION],
+  );
+  /* Blurred ghost plate for the mid parallax stratum. */
+  const plateSoftTex = useMemo(
+    () => makeInstrumentPlateTexture("soft"),
+    [PLATE_TEX_VERSION],
+  );
+  /* Faint outer-arc fragments for the deepest stratum. */
+  const plateDeepTex = useMemo(
+    () => makeInstrumentPlateTexture("deep"),
+    [PLATE_TEX_VERSION],
+  );
+  const depthHazeTex = useMemo(() => makeDepthHazeTexture(), []);
+  /* Tier-3 far megastructure silhouette + the inward signal-packet sprite. */
+  const megaStructureTex = useMemo(() => makeMegastructureTexture(), []);
+  const signalPacketTex = useMemo(() => makeSignalPacketTexture(), []);
+  /* Sub-surface machine-well layer (depth beneath the burst). */
+  const machineWellTex = useMemo(() => makeMachineWellTexture(), []);
+  const machineWellMatRef = useRef<THREE.MeshBasicMaterial>(null);
+  const plateSurfaceMatRef = useRef<THREE.MeshBasicMaterial>(null);
+  const plateMidMatRef = useRef<THREE.MeshBasicMaterial>(null);
+  const plateDeepMatRef = useRef<THREE.MeshBasicMaterial>(null);
+  const plateMidMeshRef = useRef<THREE.Mesh>(null);
+  const plateDeepMeshRef = useRef<THREE.Mesh>(null);
+  const depthHazeMatRef = useRef<THREE.MeshBasicMaterial>(null);
+  const megaStructureMatRef = useRef<THREE.MeshBasicMaterial>(null);
+  /* Outward ignition wavefront (a thin additive ring that sweeps out as the
+   * lid opens) + the pool of inward-travelling signal packets. */
+  const sweepMatRef = useRef<THREE.MeshBasicMaterial>(null);
+  const sweepMeshRef = useRef<THREE.Mesh>(null);
+  const packetRefs = useRef<Array<THREE.Mesh | null>>([]);
+  /* SECONDARY ACTIVATION — two follow-up "echo" ring ripples that fire after
+   * the main sweep (staggered), and a ring of connection nodes that light up
+   * in SEQUENCE as the burst energises (the platform powering up zone by
+   * zone). All support the main sweep; none is louder than it. */
+  const echoMeshRefs = useRef<Array<THREE.Mesh | null>>([]);
+  const echoMatRefs = useRef<Array<THREE.MeshBasicMaterial | null>>([]);
+  const nodeMatRefs = useRef<Array<THREE.MeshBasicMaterial | null>>([]);
+  /* Six activation nodes on a ring around the laptop, at deterministic
+   * angles, each with a sequence slot 0..1 for the power-up order. */
+  const activationNodes = useMemo(
+    () =>
+      Array.from({ length: 6 }, (_, i) => {
+        const h = (n: number) => {
+          const s = Math.sin(n * 91.7) * 43758.5453;
+          return s - Math.floor(s);
+        };
+        const ang = (i / 6) * Math.PI * 2 + (h(i) - 0.5) * 0.25;
+        const R = 5.0; // world radius on the bus ring
+        return { x: Math.cos(ang) * R, z: Math.sin(ang) * R, seq: i / 6 };
+      }),
+    [],
+  );
+  /* Deterministic packet seeds: each rides a radial channel angle inward,
+   * with its own phase + speed. 8 packets — restrained. */
+  const packets = useMemo(
+    () =>
+      Array.from({ length: 8 }, (_, i) => {
+        const h = (n: number) => {
+          const s = Math.sin(n * 127.1) * 43758.5453;
+          return s - Math.floor(s);
+        };
+        const ch = Math.floor(h(i * 3.1) * 16); // pick one of 16 channels
+        return {
+          angle: (ch / 16) * Math.PI * 2 + (h(ch * 5.7) - 0.5) * 0.12,
+          phase: h(i * 7.7),
+          speed: 0.06 + h(i * 2.3) * 0.05,
+        };
+      }),
+    [],
+  );
   /* Underglow that grounds the laptop with a soft cyan-blue light pool
    * on the floor. Opacity is driven by the screen-ignite curve so the
    * floor only catches light once the screen is alive. */
@@ -1966,7 +2618,6 @@ function Laptop({
     Array<{ mat: THREE.MeshBasicMaterial | null; tx: number; baseOp: number }>
   >([]);
   const waveStartTimeRef = useRef(-1);
-  const particleGroup = useRef<THREE.Group>(null);
 
   /* Lid hinge spring state - gives the lid mechanical inertia so it
    * overshoots slightly when scroll moves fast then settles, like a
@@ -1974,25 +2625,12 @@ function Laptop({
   const lidAngle = useRef(LID_CLOSED_ANGLE);
   const lidVelocity = useRef(0);
 
-  /* Glyph textures (one per character). Particles each pick a random
-   * index so the swarm reads as floating data fragments. */
-  const glyphTextures = useMemo(() => makeGlyphTextures(), []);
-
-  /* Particle data - reduced from 40 -> 12 in the composition pass. A
-   * sparse handful reads as "ambient tech texture" without blanketing
-   * the scene. Pushed slightly further out so they stay clear of the
-   * laptop's silhouette. */
-  const particles = useMemo(() => {
-    return Array.from({ length: 12 }, () => ({
-      x: (Math.random() - 0.5) * 9,
-      y: 0.4 + Math.random() * 2.8,
-      z: (Math.random() - 0.5) * 5,
-      phase: Math.random() * Math.PI * 2,
-      speed: 0.3 + Math.random() * 0.6,
-      size: 0.08 + Math.random() * 0.06,
-      glyphIdx: Math.floor(Math.random() * GLYPHS.length),
-    }));
-  }, []);
+  /* Drifting glyph particles RETIRED for the AlgorithmX Core environment.
+   * They were floating code-glyph icons that (a) read as exactly the
+   * "random floating icons" the brief rejects and (b) were the only
+   * environment element that drifted in FRONT of the laptop, additively
+   * tinting its pixels. The instrument platform + inward signal packets +
+   * far megastructure carry the "intelligent system" read instead. */
 
   /* SIX SUBJECT MOTES - one per stream, each in its accent colour.
    * Now small ambient particles orbiting far from the laptop (no halos,
@@ -2053,16 +2691,22 @@ function Laptop({
       0,
     );
 
-    /* Mouse parallax - whole rig tilts subtly toward cursor */
+    /* Mouse parallax - whole rig tilts subtly toward cursor. Disabled under
+     * reduced motion (the rig eases back to a neutral, untilted rest pose);
+     * the well's depth survives via the static atmospheric-perspective cue,
+     * so reduced-motion users keep the suspended-floor read without the
+     * pointer-driven sway. */
     if (parallaxRef.current) {
+      const targetY = reducedMotion ? 0 : pointer.x * 0.12;
+      const targetX = reducedMotion ? 0 : -pointer.y * 0.08;
       parallaxRef.current.rotation.y = THREE.MathUtils.lerp(
         parallaxRef.current.rotation.y,
-        pointer.x * 0.12,
+        targetY,
         0.05,
       );
       parallaxRef.current.rotation.x = THREE.MathUtils.lerp(
         parallaxRef.current.rotation.x,
-        -pointer.y * 0.08,
+        targetX,
         0.05,
       );
     }
@@ -2187,16 +2831,132 @@ function Laptop({
       ledMat.current.emissiveIntensity = 1.5 + Math.sin(t * 2.1) * 0.5;
     }
 
-    /* Hex floor opacity dropped AGAIN, hard: 0.18 → 0.10 (peak
-     * material alpha). Combined with the text-pocket scrim in
-     * HeroCinematic, the floor reads as pure atmosphere — visible
-     * just under the chassis as a faint cyan grounding pattern, and
-     * almost gone everywhere else. The hierarchy headline > laptop
-     * > CTAs > floor is now visually enforced, not just intended. */
-    if (hexFloorMatRef.current) {
-      const draw = smoothstep(0.18, 0.42, p);
-      const pulse = 0.92 + Math.sin(t * 0.9) * 0.06;
-      hexFloorMatRef.current.opacity = draw * 0.1 * pulse;
+    /* ── ALGORITHMX CORE — environment activation ──────────────────────
+     * Reads the existing scroll/lid progress `p` (never writes it) and the
+     * clock `t`. The plate boots in with `draw`; the rings ignite OUTWARD via
+     * the sweep wavefront as the lid opens; signal packets conduct INWARD
+     * along the channels. Peak opacities stay low so the environment never
+     * out-brightens or out-details the laptop. Under reduced motion every
+     * time-based term is frozen and the sweep/packets settle to a static
+     * end-state — the full architecture + depth still render. */
+    const draw = smoothstep(0.18, 0.42, p);
+    const pulse = reducedMotion ? 1 : 0.92 + Math.sin(t * 0.9) * 0.06;
+    /* activationT tracks the lid opening (lid animates 0.32→0.50). */
+    const activationT = smoothstep(0.3, 0.55, p);
+    /* Dark substrate fades in with the plate; held just under full so the
+     * recessed material reads without becoming a heavy slab. Static (no
+     * pulse) — it's physical material, not energy. */
+    /* NEW ENERGY-CHAMBER FLOOR opacities. The previous values kept these
+     * layers near-invisible (surface peaked at 0.12) and fully gated
+     * behind `draw`, so the floor only whispered in mid-scroll. Now each
+     * layer has a strong BASELINE (visible from the very top of the hero,
+     * matching the reference) plus a scroll-driven boost as the chamber
+     * powers up. */
+    if (plateSubstrateMatRef.current) {
+      plateSubstrateMatRef.current.opacity = 0.6 + draw * 0.35;
+    }
+    if (plateSurfaceMatRef.current) {
+      plateSurfaceMatRef.current.opacity = (0.42 + draw * 0.45) * pulse;
+    }
+    if (plateMidMatRef.current) {
+      const midPulse = reducedMotion ? 1 : 0.9 + Math.sin(t * 0.66 + 1.3) * 0.1;
+      plateMidMatRef.current.opacity = (0.2 + draw * 0.22) * midPulse;
+    }
+    if (plateDeepMatRef.current) {
+      const deepPulse = reducedMotion ? 1 : 0.88 + Math.sin(t * 0.48 + 2.7) * 0.12;
+      plateDeepMatRef.current.opacity = (0.1 + draw * 0.12) * deepPulse;
+    }
+    if (depthHazeMatRef.current) {
+      const hazePulse = reducedMotion ? 1 : 0.85 + Math.sin(t * 0.4) * 0.15;
+      depthHazeMatRef.current.opacity = (0.04 + draw * 0.05) * hazePulse;
+    }
+    if (megaStructureMatRef.current) {
+      megaStructureMatRef.current.opacity = 0.04 + draw * 0.05;
+    }
+    /* Sub-surface machine well — faint depth glow beneath the floor. */
+    if (machineWellMatRef.current) {
+      const wellPulse = reducedMotion ? 1 : 0.85 + Math.sin(t * 0.5 + 0.6) * 0.15;
+      machineWellMatRef.current.opacity = (0.12 + draw * 0.22) * wellPulse;
+    }
+
+    /* OUTWARD IGNITION SWEEP — a thin ring expanding chassis→edge as the lid
+     * opens, brightest mid-sweep then gone (so steady + reduced-motion show
+     * the static lit plate, not a parked ring). THE MAIN EXPLOSION — logic
+     * unchanged from the approved version. */
+    if (sweepMeshRef.current && sweepMatRef.current) {
+      const sweepR = 0.4 + activationT * 12.5; // base ring radius is 1u
+      sweepMeshRef.current.scale.set(sweepR, sweepR, 1);
+      const sweepFade = Math.sin(Math.PI * activationT); // 0→1→0 across the open
+      sweepMatRef.current.opacity = reducedMotion ? 0 : sweepFade * 0.28;
+    }
+
+    /* SECONDARY ECHO RIPPLES — two follow-up rings, each lagging the main
+     * sweep by a staggered amount, expanding a bit further and fainter. They
+     * read as energy echoes radiating from the burst. Transient: zero at rest
+     * and under reduced motion (the static end-state is the lit plate). */
+    for (let i = 0; i < echoMeshRefs.current.length; i++) {
+      const em = echoMeshRefs.current[i];
+      const emat = echoMatRefs.current[i];
+      if (!em || !emat) continue;
+      const lag = 0.05 + i * 0.06;
+      const echoT = smoothstep(0.3 + lag, 0.58 + lag, p);
+      const er = 0.4 + echoT * (13.5 + i * 1.5);
+      em.scale.set(er, er, 1);
+      emat.opacity = reducedMotion ? 0 : Math.sin(Math.PI * echoT) * (0.14 - i * 0.04);
+    }
+
+    /* SEQUENTIAL ACTIVATION NODES — light up in order as the burst energises
+     * (zone-by-zone power-up), then hold with a gentle out-of-phase pulse.
+     * Under reduced motion all nodes are simply lit (static end-state). */
+    for (let i = 0; i < nodeMatRefs.current.length; i++) {
+      const nmat = nodeMatRefs.current[i];
+      if (!nmat) continue;
+      const node = activationNodes[i];
+      if (reducedMotion) {
+        nmat.opacity = draw * 0.5;
+        continue;
+      }
+      // each node switches on as activationT passes its sequence slot
+      const on = smoothstep(node.seq * 0.85, node.seq * 0.85 + 0.12, activationT);
+      const hold = 0.78 + Math.sin(t * 1.1 + i * 1.7) * 0.22;
+      nmat.opacity = draw * on * hold * 0.55;
+    }
+
+    /* INWARD SIGNAL PACKETS — ride the radial channels toward the laptop.
+     * `s` runs 0 (edge) → 1 (centre). Under reduced motion they freeze at
+     * their seed phase as static lit nodes. */
+    const PLATE_R = 11.5; // world radius of the active plate
+    const platY = -BASE_H / 2 - 0.033;
+    for (let i = 0; i < packets.length; i++) {
+      const m = packetRefs.current[i];
+      if (!m) continue;
+      const pk = packets[i];
+      const s = reducedMotion
+        ? pk.phase
+        : (pk.phase + t * pk.speed) % 1; // advances toward centre over time
+      const r = (1 - s) * PLATE_R; // edge → centre
+      m.position.set(
+        RIG_X + Math.cos(pk.angle) * r,
+        platY,
+        Math.sin(pk.angle) * r,
+      );
+      const mat = m.material as THREE.MeshBasicMaterial;
+      // visible across the run, fading at both ends; gated on activation+draw
+      const along = Math.sin(Math.PI * s);
+      mat.opacity = draw * activationT * along * 0.5;
+    }
+
+    /* Per-stratum idle drift — gives the depth life before the cursor moves.
+     * Frozen under reduced motion. */
+    if (!reducedMotion) {
+      if (plateMidMeshRef.current) {
+        plateMidMeshRef.current.position.x = RIG_X + Math.sin(t * 0.13) * 0.12;
+        plateMidMeshRef.current.position.z = Math.cos(t * 0.11) * 0.12;
+      }
+      if (plateDeepMeshRef.current) {
+        plateDeepMeshRef.current.position.x = RIG_X + Math.sin(t * 0.09 + 1.7) * 0.2;
+        plateDeepMeshRef.current.position.z = Math.cos(t * 0.075 + 0.9) * 0.2;
+      }
     }
     /* Contact underglow — soft cyan light pool grounding the chassis.
      * Now has a small always-on baseline so the CLOSED laptop reads
@@ -2260,21 +3020,6 @@ function Laptop({
       screenBeamRef.current.scale.set(s, s, 1);
     }
 
-    /* Glyph particles drift + billboard toward camera */
-    if (particleGroup.current) {
-      particleGroup.current.children.forEach((child, i) => {
-        const par = particles[i];
-        if (!par) return;
-        const drift = Math.sin(t * par.speed + par.phase) * 0.18;
-        child.position.set(
-          par.x + drift,
-          par.y + Math.cos(t * par.speed * 0.7) * 0.1,
-          par.z + Math.sin(t * par.speed * 0.5) * 0.15,
-        );
-        /* Always face the camera so glyphs are readable */
-        child.lookAt(state.camera.position);
-      });
-    }
 
     /* Side-trim rails only — gated on lid-open progress so they're
      *  dark when the lid is closed and light up as the lid lifts. The
@@ -2309,16 +3054,23 @@ function Laptop({
        * against the cleaner cinematic direction. The fog haze + hex
        * floor alone carry the atmospheric depth now. */}
 
-      {/* DARK BASE FLOOR PLANE - true black with zero metalness and
-       *  zero env contribution so the bright analytic lights can't
-       *  bounce off it as grey. ENLARGED 60 → 200 units. The 60-unit
-       *  edge was visible as a horizon line because the camera's
-       *  top-of-frame ray (only ~1.9° below horizontal at this rig)
-       *  intersects the floor ~74 world units away — past the old
-       *  plane's edge. With 200 units the plane edge sits at ~100
-       *  world units, well past any camera ray that could see it. */}
+      {/* DARK VOID FLOOR PLANE - true black with zero metalness and zero
+       *  env contribution so the bright analytic lights can't bounce off
+       *  it as grey. 200 units so its edge sits ~100 world units out, well
+       *  past any camera ray (the old horizon-line concern).
+       *
+       *  PUSHED DOWN to -2.25 (was -0.045). This is the floor of the
+       *  holographic well: the crisp hex surface now FLOATS ~2.2 units
+       *  above it, with the mid + deep hex strata and the depth haze
+       *  suspended in the gap between. Looking down through the
+       *  semi-transparent surface, that gap reads as lit atmosphere
+       *  receding into black — the "void visible beneath" the brief asks
+       *  for. From the camera's shallow angle the 200-unit plane still
+       *  fills the whole lower frame, so dropping it 2 units does NOT
+       *  flood the page backdrop in; only the small region right under
+       *  the laptop opens up into depth. */}
       <mesh
-        position={[RIG_X, -BASE_H / 2 - 0.045, 0]}
+        position={[RIG_X, -BASE_H / 2 - 2.25, 0]}
         rotation={[-Math.PI / 2, 0, 0]}
       >
         <planeGeometry args={[200, 200]} />
@@ -2330,41 +3082,256 @@ function Laptop({
         />
       </mesh>
 
-      {/* HEX-PCB FLOOR - single source of truth for the visible floor
-       *  pattern.
-       *
-       *  Previously this slab was a tangle of three coplanar layers
-       *  (hex texture tiled 4x4, an orthogonal lineSegments cartesian
-       *  grid, a shadow plane) all sitting within 0.012 units of each
-       *  other in Y. The hex texture's tile pitch wasn't an integer
-       *  divisor of its 512px canvas, so each of its 16 visible tile
-       *  joins cut hexes in half and the half-cells overlapped at the
-       *  seam — that was the "doubled lines / inconsistent pattern"
-       *  the eye picked up. The cartesian line grid on top compounded
-       *  the read as "what is this pattern actually?".
-       *
-       *  New approach:
-       *    - Drop the cartesian line grid entirely (was fighting hex)
-       *    - One 14x14 plane, sampled once across a 1024px canvas
-       *      that bakes its radial alpha mask in (no tiling)
-       *    - ClampToEdge so the canvas edge never repeats
-       *    - Plane sits a touch below the shadow so the shadow's
-       *      soft ellipse paints OVER the floor pattern at the
-       *      contact point — keeps the grounding shadow readable
-       *      while the hex pattern fills the surrounding floor.
-       *
-       *  Result: clean engineering grid, vivid near the chassis,
-       *  soft natural fade outward, no joins, no doubled lines, no
-       *  z-fighting. */}
-      {hexFloorTex && (
+      {/* PLATFORM SUBSTRATE — dark engineered material with the channels
+       *  recessed into it (groove troughs + lit rim bevels). NORMAL-blended
+       *  (so it can paint real darks/shadows, unlike the additive glow) and
+       *  sits a hair BELOW the illumination plate so the bright cores read as
+       *  light sitting INSIDE the grooves → the lines become dimensional,
+       *  embedded channels instead of flat strokes. Self-lit material plane;
+       *  it does not light or touch the laptop. */}
+      {plateSubstrateTex && (
+        <mesh
+          position={[RIG_X, -BASE_H / 2 - 0.038, 0]}
+          rotation={[-Math.PI / 2, 0, 0]}
+          renderOrder={-1}
+        >
+          <planeGeometry args={[36, 36]} />
+          <meshBasicMaterial
+            ref={plateSubstrateMatRef}
+            map={plateSubstrateTex}
+            transparent
+            opacity={0}
+            depthWrite={false}
+            toneMapped={false}
+          />
+        </mesh>
+      )}
+
+      {/* TIER 1 — INSTRUMENT PLATE (immediate platform beneath the laptop).
+       *  The crisp polar plate: segmented engineered rings + radial circuit
+       *  channels conducting inward + encoder ticks + via nodes + void-gap
+       *  cutouts, all baked additive (self-lit, never touches the laptop
+       *  render). Same transform/scale as the floor it replaces. */}
+      {plateSurfaceTex && (
         <mesh
           position={[RIG_X, -BASE_H / 2 - 0.035, 0]}
           rotation={[-Math.PI / 2, 0, 0]}
         >
           <planeGeometry args={[36, 36]} />
           <meshBasicMaterial
-            ref={hexFloorMatRef}
-            map={hexFloorTex}
+            ref={plateSurfaceMatRef}
+            map={plateSurfaceTex}
+            transparent
+            opacity={0}
+            blending={THREE.AdditiveBlending}
+            depthWrite={false}
+            toneMapped={false}
+          />
+        </mesh>
+      )}
+
+      {/* SUB-SURFACE MACHINE WELL — a recessed structural layer just below the
+       *  plate, glimpsed through the void-gaps + centre, so the burst zone
+       *  reads as the top of a deeper machine. Concentrated under the laptop,
+       *  faint, never muddy. */}
+      {machineWellTex && (
+        <mesh
+          position={[RIG_X, -BASE_H / 2 - 0.28, 0]}
+          rotation={[-Math.PI / 2, 0, 0]}
+        >
+          <planeGeometry args={[22, 22]} />
+          <meshBasicMaterial
+            ref={machineWellMatRef}
+            map={machineWellTex}
+            transparent
+            opacity={0}
+            blending={THREE.AdditiveBlending}
+            depthWrite={false}
+            toneMapped={false}
+          />
+        </mesh>
+      )}
+
+      {/* OUTWARD IGNITION SWEEP — a thin additive ring wavefront that expands
+       *  from the chassis to the plate edge as the lid opens, reading as the
+       *  rings "igniting outward". A transient: it fades to nothing once the
+       *  lid is open, so the steady / reduced-motion state is the static
+       *  lit plate (driven entirely in useFrame; frozen under reduced
+       *  motion). THE MAIN EXPLOSION — preserved exactly. */}
+      <mesh
+        ref={sweepMeshRef}
+        position={[RIG_X, -BASE_H / 2 - 0.034, 0]}
+        rotation={[-Math.PI / 2, 0, 0]}
+        scale={1}
+      >
+        <ringGeometry args={[0.9, 1.0, 64]} />
+        <meshBasicMaterial
+          ref={sweepMatRef}
+          color={COLORS.cyan}
+          transparent
+          opacity={0}
+          blending={THREE.AdditiveBlending}
+          depthWrite={false}
+          toneMapped={false}
+        />
+      </mesh>
+
+      {/* SECONDARY ECHO RIPPLES — two thinner follow-up rings that fire just
+       *  after the main sweep (staggered), reading as energy echoes radiating
+       *  from the burst. Fainter than the hero sweep; transient (gone at rest
+       *  and under reduced motion). */}
+      {[0, 1].map((i) => (
+        <mesh
+          key={`echo-${i}`}
+          ref={(el) => {
+            echoMeshRefs.current[i] = el;
+          }}
+          position={[RIG_X, -BASE_H / 2 - 0.0345, 0]}
+          rotation={[-Math.PI / 2, 0, 0]}
+        >
+          <ringGeometry args={[0.94, 1.0, 64]} />
+          <meshBasicMaterial
+            ref={(el) => {
+              echoMatRefs.current[i] = el;
+            }}
+            color={i === 0 ? COLORS.cyan : COLORS.cyanSoft}
+            transparent
+            opacity={0}
+            blending={THREE.AdditiveBlending}
+            depthWrite={false}
+            toneMapped={false}
+          />
+        </mesh>
+      ))}
+
+      {/* SEQUENTIAL ACTIVATION NODES — connection nodes on the bus ring that
+       *  light up in order as the platform powers up, then hold with a gentle
+       *  pulse. Static (all lit) under reduced motion. */}
+      {signalPacketTex &&
+        activationNodes.map((n, i) => (
+          <mesh
+            key={`node-${i}`}
+            position={[RIG_X + n.x, -BASE_H / 2 - 0.033, n.z]}
+            rotation={[-Math.PI / 2, 0, 0]}
+          >
+            <planeGeometry args={[0.62, 0.62]} />
+            <meshBasicMaterial
+              ref={(el) => {
+                nodeMatRefs.current[i] = el;
+              }}
+              map={signalPacketTex}
+              transparent
+              opacity={0}
+              blending={THREE.AdditiveBlending}
+              depthWrite={false}
+              toneMapped={false}
+            />
+          </mesh>
+        ))}
+
+      {/* INWARD SIGNAL PACKETS — a small pool of additive glow sprites that
+       *  ride the radial channels from the plate edge inward toward the
+       *  laptop (data conducting into the core). Positions are mutated in
+       *  useFrame from deterministic seeds (no per-frame allocation); under
+       *  reduced motion they freeze as static lit nodes along the channels. */}
+      <group>
+        {signalPacketTex &&
+          packets.map((_, i) => (
+            <mesh
+              key={`pkt-${i}`}
+              ref={(el) => {
+                packetRefs.current[i] = el;
+              }}
+              position={[RIG_X, -BASE_H / 2 - 0.033, 0]}
+              rotation={[-Math.PI / 2, 0, 0]}
+            >
+              <planeGeometry args={[0.5, 0.5]} />
+              <meshBasicMaterial
+                map={signalPacketTex}
+                transparent
+                opacity={0}
+                blending={THREE.AdditiveBlending}
+                depthWrite={false}
+                toneMapped={false}
+              />
+            </mesh>
+          ))}
+      </group>
+
+      {/* TIER 2 — MID-DEPTH GHOST PLATE + volumetric haze. A larger, blurred
+       *  ghost of the plate plus the depth haze read as a second array
+       *  receding into luminous fog beneath the surface. Static depth cue;
+       *  kept in all modes (only the drift/pulse are frozen for reduced
+       *  motion). */}
+      {plateSoftTex && (
+        <mesh
+          ref={plateMidMeshRef}
+          position={[RIG_X, -BASE_H / 2 - 0.9, 0]}
+          rotation={[-Math.PI / 2, 0, 0]}
+        >
+          <planeGeometry args={[40, 40]} />
+          <meshBasicMaterial
+            ref={plateMidMatRef}
+            map={plateSoftTex}
+            transparent
+            opacity={0}
+            blending={THREE.AdditiveBlending}
+            depthWrite={false}
+            toneMapped={false}
+          />
+        </mesh>
+      )}
+
+      {depthHazeTex && (
+        <mesh
+          position={[RIG_X, -BASE_H / 2 - 1.35, 0]}
+          rotation={[-Math.PI / 2, 0, 0]}
+        >
+          <planeGeometry args={[44, 44]} />
+          <meshBasicMaterial
+            ref={depthHazeMatRef}
+            map={depthHazeTex}
+            transparent
+            opacity={0}
+            blending={THREE.AdditiveBlending}
+            depthWrite={false}
+            toneMapped={false}
+          />
+        </mesh>
+      )}
+
+      {/* Deepest stratum — only the faint outer arc fragments, bluer, so the
+       *  array dissolves into the void. */}
+      {plateDeepTex && (
+        <mesh
+          ref={plateDeepMeshRef}
+          position={[RIG_X, -BASE_H / 2 - 1.9, 0]}
+          rotation={[-Math.PI / 2, 0, 0]}
+        >
+          <planeGeometry args={[48, 48]} />
+          <meshBasicMaterial
+            ref={plateDeepMatRef}
+            map={plateDeepTex}
+            transparent
+            opacity={0}
+            color="#cfe8ff"
+            blending={THREE.AdditiveBlending}
+            depthWrite={false}
+            toneMapped={false}
+          />
+        </mesh>
+      )}
+
+      {/* TIER 3 — FAR MEGASTRUCTURE silhouette. A single, barely-visible
+       *  distant arc-ring + spires set far back and right-biased, implying
+       *  the array continues into deep space while the headline (left) third
+       *  stays dark. Additive, very low opacity; static. */}
+      {megaStructureTex && (
+        <mesh position={[RIG_X + 1.5, 1.4, -9]}>
+          <planeGeometry args={[26, 13]} />
+          <meshBasicMaterial
+            ref={megaStructureMatRef}
+            map={megaStructureTex}
             transparent
             opacity={0}
             blending={THREE.AdditiveBlending}
@@ -2422,27 +3389,10 @@ function Laptop({
        *  handled by the CSS dissolve-zone layer in HeroCinematic, which
        *  fades in screen-space and so never projects an edge.) */}
 
-      {/* DRIFTING GLYPH PARTICLES - small luminous "0/1/{}/>" fragments
-       *  reading as "data / neural energy" rather than abstract dots. */}
-      <group ref={particleGroup}>
-        {particles.map((par, i) => {
-          const tex = glyphTextures[par.glyphIdx];
-          if (!tex) return null;
-          return (
-            <mesh key={i} position={[par.x, par.y, par.z]}>
-              <planeGeometry args={[par.size, par.size]} />
-              <meshBasicMaterial
-                map={tex}
-                transparent
-                opacity={0.85}
-                blending={THREE.AdditiveBlending}
-                toneMapped={false}
-                depthWrite={false}
-              />
-            </mesh>
-          );
-        })}
-      </group>
+      {/* DRIFTING GLYPH PARTICLES retired — see note at their former
+       *  declaration. The scene's "intelligent system" read is now carried
+       *  by the instrument platform, the inward signal packets and the far
+       *  megastructure, none of which draw in front of the laptop. */}
 
       {/* SCREEN BACK-LIGHT - small cyan halo plane placed BEHIND the
        *  laptop (z=-1.4) so it reads as "the screen is bleeding light
@@ -2496,13 +3446,16 @@ function Laptop({
        *  sized to match. */}
       <group position={[RIG_X, 0, 0]} rotation={[0, -0.11, 0]} scale={0.86}>
         <RoundedBox args={[BASE_W, BASE_H, BASE_D]} radius={0.03} smoothness={5}>
-          {/* Chassis matched to the lid's calmer satin treatment. */}
+          {/* Dark gunmetal chassis. Higher metalness + env intensity than
+           *  the old silver so the deep base still catches a bright
+           *  machined sheen along the top edges (the reference look)
+           *  instead of going flat matte black. */}
           <meshPhysicalMaterial
             color={COLORS.steel}
-            metalness={0.45}
-            roughness={0.58}
-            clearcoat={0.28}
-            clearcoatRoughness={0.55}
+            metalness={0.62}
+            roughness={0.66}
+            clearcoat={0.3}
+            clearcoatRoughness={0.5}
             anisotropy={0.78}
             anisotropyRotation={Math.PI / 2}
             normalMap={brushedNormalTex}
@@ -2511,14 +3464,17 @@ function Laptop({
           />
         </RoundedBox>
 
-        {/* Keyboard well - recessed dark panel. Bumped offset 0.001 ->
-         *  0.005 to give clear depth separation from the chassis top
-         *  surface (matches the trackpad fix). */}
+        {/* Keyboard well - recessed dark panel. Depth pulled in (0.55 ->
+         *  0.44) and shifted back (z -0.15 -> -0.29) so the well hugs
+         *  the key block and its front edge sits just below the last
+         *  row. Previously it ran on toward the trackpad, leaving a
+         *  dark "strip" between the keyboard and trackpad; now the
+         *  gunmetal chassis shows through there as a real palm rest. */}
         <mesh
-          position={[0, BASE_H / 2 + 0.005, -0.15]}
+          position={[0, BASE_H / 2 + 0.005, -0.29]}
           rotation={[-Math.PI / 2, 0, 0]}
         >
-          <planeGeometry args={[BASE_W * 0.86, BASE_D * 0.55]} />
+          <planeGeometry args={[BASE_W * 0.86, BASE_D * 0.44]} />
           <meshStandardMaterial color={COLORS.keyboard} roughness={0.7} />
         </mesh>
 
@@ -2530,10 +3486,10 @@ function Laptop({
          *  opening). Opacity is driven per-frame from useFrame so the
          *  keyboard is visibly dark when the lid is closed. */}
         <mesh
-          position={[0, BASE_H / 2 + 0.002, -0.15]}
+          position={[0, BASE_H / 2 + 0.002, -0.30]}
           rotation={[-Math.PI / 2, 0, 0]}
         >
-          <planeGeometry args={[BASE_W * 0.82, BASE_D * 0.5]} />
+          <planeGeometry args={[BASE_W * 0.82, BASE_D * 0.42]} />
           <meshBasicMaterial
             ref={keyboardBacklightMat}
             color={COLORS.cyan}
@@ -2553,10 +3509,10 @@ function Laptop({
          *  in a dim room). Tinted slightly toward the screen with a
          *  vertical gradient via the texture. */}
         <mesh
-          position={[0, BASE_H / 2 + 0.0035, -0.2]}
+          position={[0, BASE_H / 2 + 0.0035, -0.30]}
           rotation={[-Math.PI / 2, 0, 0]}
         >
-          <planeGeometry args={[BASE_W * 0.78, BASE_D * 0.46]} />
+          <planeGeometry args={[BASE_W * 0.78, BASE_D * 0.40]} />
           <meshBasicMaterial
             ref={screenSpillMat}
             color={"#7df0ff"}
@@ -2836,6 +3792,44 @@ function Laptop({
           <meshStandardMaterial color={COLORS.trackpad} roughness={0.35} />
         </mesh>
 
+        {/* DECK BADGE — ThinkPad-X1-style: brushed-silver "Algorithm"
+         *  with a glowing red i-dot + an oversized glowing red "X", set
+         *  on a shallow ascending diagonal (text top toward top-right).
+         *  Two stacked planes: an additive red GLOW underneath (the
+         *  bright bloom-catching light) and the crisp silver+red wordmark
+         *  on top. */}
+        {deckBadge.glow && (
+          <mesh
+            position={[1.2, BASE_H / 2 + 0.0045, 0.92]}
+            rotation={[-Math.PI / 2, 0, Math.PI / 7]}
+          >
+            <planeGeometry args={[0.56, 0.28]} />
+            <meshBasicMaterial
+              map={deckBadge.glow}
+              transparent
+              opacity={1}
+              blending={THREE.AdditiveBlending}
+              depthWrite={false}
+              toneMapped={false}
+            />
+          </mesh>
+        )}
+        {deckBadge.crisp && (
+          <mesh
+            position={[1.2, BASE_H / 2 + 0.005, 0.92]}
+            rotation={[-Math.PI / 2, 0, Math.PI / 7]}
+          >
+            <planeGeometry args={[0.52, 0.26]} />
+            <meshBasicMaterial
+              map={deckBadge.crisp}
+              transparent
+              opacity={1}
+              depthWrite={false}
+              toneMapped={false}
+            />
+          </mesh>
+        )}
+
         {/* Power LED */}
         <mesh
           position={[BASE_W / 2 + 0.001, 0, -BASE_D / 2 + 0.35]}
@@ -3008,15 +4002,15 @@ function Laptop({
                *  highlight so the wordmark reads on first glance. */}
               <meshPhysicalMaterial
                 color={COLORS.steel}
-                metalness={0.50}
-                roughness={0.55}
-                clearcoat={0.32}
-                clearcoatRoughness={0.5}
+                metalness={0.62}
+                roughness={0.66}
+                clearcoat={0.34}
+                clearcoatRoughness={0.48}
                 anisotropy={0.85}
                 anisotropyRotation={Math.PI / 2}
                 normalMap={brushedNormalTex}
                 normalScale={new THREE.Vector2(0.14, 0.14)}
-                envMapIntensity={0.65}
+                envMapIntensity={0.6}
               />
             </RoundedBox>
 

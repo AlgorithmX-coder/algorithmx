@@ -2,34 +2,31 @@
 
 import { motion, useReducedMotion, type HTMLMotionProps } from "framer-motion";
 import type { ReactNode } from "react";
-import { CYBER_GRAD, CYBER_PALETTE, CYBER_SHADOW } from "@/app/components/scene/cyberTokens";
+import { ACCESS, ACCESS_FONT, ACCESS_GRAD, rgba } from "./accessTokens";
+import { IconArrow, IconCheck, IconKey } from "./icons";
 
 /**
- * AuthButton - primary CTA on the auth pages.
+ * AuthButton — the execute-access control.
  *
- * State drives copy + visuals. The button width is preserved across
- * state changes so the layout never jumps - the parent passes one
- * label per state and AuthButton swaps which is rendered.
+ * Reads as a deliberate system command, not a generic gradient CTA: a
+ * sculpted dark control with a single violet→cyan activity edge. The
+ * state decides how much it's "armed":
  *
- * States:
- *   idle      - hero gradient, hover lifts, press compresses
- *   loading   - dimmed gradient + scanline + spinner; disabled
- *   success   - lime pulse, lock icon, locked-out
- *   disabled  - flat opacity, no hover lift, locked-out
+ *   disabled — dim, locked, requirements unmet (shows what's missing)
+ *   idle     — ARMED: form valid, ready to execute (brighter edge + glow)
+ *   loading  — executing: spinner + scanline, locked
+ *   success  — access granted: cyan flare, settled
+ *
+ * Width is preserved across states so the layout never jumps.
  */
 
 export type AuthButtonState = "idle" | "loading" | "success" | "disabled";
 
-export interface AuthButtonProps
-  extends Omit<HTMLMotionProps<"button">, "children" | "ref"> {
+export interface AuthButtonProps extends Omit<HTMLMotionProps<"button">, "children" | "ref"> {
   state?: AuthButtonState;
-  /** Label rendered in the idle state. */
   idleLabel: ReactNode;
-  /** Label rendered while submitting. */
   loadingLabel?: ReactNode;
-  /** Label rendered briefly after success, pre-redirect. */
   successLabel?: ReactNode;
-  /** Hint displayed under the button when disabled (eg "Fill all fields"). */
   disabledHint?: string;
 }
 
@@ -37,7 +34,7 @@ export default function AuthButton({
   state = "idle",
   idleLabel,
   loadingLabel = "Working…",
-  successLabel = "Done ✓",
+  successLabel = "Done",
   disabledHint,
   type = "submit",
   ...rest
@@ -46,11 +43,16 @@ export default function AuthButton({
   const isLoading = state === "loading";
   const isSuccess = state === "success";
   const isDisabled = state === "disabled";
+  const isArmed = state === "idle";
   const lockedOut = isLoading || isSuccess || isDisabled;
 
   const label = isSuccess ? successLabel : isLoading ? loadingLabel : idleLabel;
 
-  const successGradient = `linear-gradient(135deg, ${CYBER_PALETTE.lime} 0%, ${CYBER_PALETTE.cyan} 100%)`;
+  const background = isSuccess
+    ? `linear-gradient(120deg, ${ACCESS.violet} 0%, ${ACCESS.cyan} 100%)`
+    : isArmed || isLoading
+      ? ACCESS_GRAD.executeArmed
+      : ACCESS_GRAD.execute;
 
   return (
     <div>
@@ -60,32 +62,31 @@ export default function AuthButton({
         disabled={lockedOut || rest.disabled}
         aria-busy={isLoading || undefined}
         aria-live="polite"
-        whileHover={
-          !lockedOut && !reduced
-            ? { y: -2, scale: 1.015, transition: { duration: 0.18 } }
-            : undefined
-        }
-        whileTap={!lockedOut ? { scale: 0.97 } : undefined}
-        transition={{ type: "spring", stiffness: 320, damping: 22 }}
-        className="w-full relative overflow-hidden rounded-full"
+        whileHover={!lockedOut && !reduced ? { y: -1, transition: { duration: 0.18 } } : undefined}
+        whileTap={!lockedOut ? { scale: 0.985 } : undefined}
+        transition={{ type: "spring", stiffness: 320, damping: 24 }}
+        className="w-full relative overflow-hidden"
         style={{
-          height: 52,
-          minHeight: 52,
-          background: isSuccess ? successGradient : CYBER_GRAD.hero,
-          color: CYBER_PALETTE.abyss,
-          fontFamily: "'Space Grotesk', system-ui, sans-serif",
-          fontWeight: 900,
-          fontSize: 15.5,
-          letterSpacing: 1,
+          height: 54,
+          minHeight: 54,
+          borderRadius: 12,
+          background,
+          color: "#06080f",
+          fontFamily: ACCESS_FONT.display,
+          fontWeight: 800,
+          fontSize: 14,
+          letterSpacing: 2,
           textTransform: "uppercase",
           border: "none",
           cursor: lockedOut ? "default" : "pointer",
           boxShadow: isSuccess
-            ? `0 0 28px ${CYBER_PALETTE.lime}88, 0 8px 22px -6px ${CYBER_PALETTE.lime}66, 0 0 0 1px ${CYBER_PALETTE.lime}99 inset`
-            : isDisabled
-              ? "0 8px 22px -6px rgba(0,0,0,0.45), 0 0 0 1px rgba(125,240,255,0.18) inset"
-              : CYBER_SHADOW.buttonGlow,
-          opacity: isDisabled ? 0.55 : isLoading ? 0.88 : 1,
+            ? `0 0 30px ${rgba(ACCESS.cyan, 0.45)}, 0 10px 26px -10px ${rgba(ACCESS.cyan, 0.5)}, 0 0 0 1px ${rgba(ACCESS.cyan, 0.6)} inset`
+            : isArmed
+              ? `0 0 22px ${rgba(ACCESS.cyan, 0.28)}, 0 10px 24px -10px ${rgba(ACCESS.violet, 0.45)}, 0 0 0 1px rgba(255,255,255,0.14) inset`
+              : isDisabled
+                ? `0 8px 22px -10px rgba(0,0,0,0.6), 0 0 0 1px rgba(150,168,224,0.1) inset`
+                : `0 8px 22px -10px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.1) inset`,
+          opacity: isDisabled ? 0.5 : isLoading ? 0.92 : 1,
           transition: "background 320ms ease, box-shadow 320ms ease, opacity 220ms ease",
         }}
       >
@@ -96,38 +97,36 @@ export default function AuthButton({
             display: "inline-flex",
             alignItems: "center",
             justifyContent: "center",
-            gap: 8,
+            gap: 10,
           }}
         >
-          {isLoading && (
+          {/* Leading status glyph */}
+          {isLoading ? (
             <span
               aria-hidden
               style={{
                 display: "inline-block",
-                width: 14,
-                height: 14,
+                width: 15,
+                height: 15,
                 borderRadius: "50%",
-                border: `2px solid ${CYBER_PALETTE.abyss}44`,
-                borderTopColor: CYBER_PALETTE.abyss,
+                border: "2px solid rgba(6,8,15,0.35)",
+                borderTopColor: "#06080f",
                 animation: reduced ? undefined : "abSpin 0.7s linear infinite",
               }}
             />
+          ) : isSuccess ? (
+            <IconCheck size={17} />
+          ) : (
+            <IconKey size={16} />
           )}
-          {isSuccess && (
-            <span
-              aria-hidden
-              style={{
-                display: "inline-block",
-                fontSize: 14,
-              }}
-            >
-              ✓
-            </span>
-          )}
+
           {label}
+
+          {/* Trailing execute arrow — only when armed */}
+          {isArmed && <IconArrow size={16} />}
         </span>
 
-        {/* Loading scanline - left-to-right sweep over the surface. */}
+        {/* Loading scanline — single sweep, communicates execution. */}
         {isLoading && !reduced && (
           <span
             aria-hidden
@@ -135,38 +134,24 @@ export default function AuthButton({
               position: "absolute",
               inset: 0,
               background:
-                "linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.45) 50%, transparent 70%)",
+                "linear-gradient(110deg, transparent 35%, rgba(255,255,255,0.4) 50%, transparent 65%)",
               animation: "abScanline 1.1s ease-in-out infinite",
             }}
           />
         )}
 
-        {/* Idle shine - slower, more elegant. Disabled when reduced. */}
-        {!lockedOut && !reduced && (
-          <span
-            aria-hidden
-            style={{
-              position: "absolute",
-              inset: 0,
-              background:
-                "linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.3) 50%, transparent 70%)",
-              animation: "abShine 3.6s ease-in-out infinite",
-            }}
-          />
-        )}
-
-        {/* Success pulse - a single expanding ring on transition in. */}
+        {/* Success pulse — one expanding ring. */}
         {isSuccess && !reduced && (
           <motion.span
             aria-hidden
-            initial={{ scale: 0.85, opacity: 0.7 }}
-            animate={{ scale: 1.35, opacity: 0 }}
+            initial={{ scale: 0.9, opacity: 0.6 }}
+            animate={{ scale: 1.25, opacity: 0 }}
             transition={{ duration: 0.7, ease: "easeOut" }}
             style={{
               position: "absolute",
               inset: 0,
-              borderRadius: 999,
-              boxShadow: `0 0 0 3px ${CYBER_PALETTE.lime}`,
+              borderRadius: 12,
+              boxShadow: `0 0 0 2px ${ACCESS.cyan}`,
               pointerEvents: "none",
             }}
           />
@@ -176,13 +161,12 @@ export default function AuthButton({
       {isDisabled && disabledHint && (
         <div
           style={{
-            marginTop: 8,
+            marginTop: 10,
             textAlign: "center",
-            fontSize: 12,
-            color: "rgba(232, 237, 255, 0.6)",
-            fontFamily: "'DM Sans', system-ui, sans-serif",
-            fontWeight: 600,
-            textShadow: "0 1px 6px rgba(8,10,22,0.9)",
+            fontSize: 11.5,
+            color: ACCESS.textMuted,
+            fontFamily: ACCESS_FONT.mono,
+            letterSpacing: 0.4,
           }}
         >
           {disabledHint}
@@ -191,12 +175,7 @@ export default function AuthButton({
 
       <style>{`
         @keyframes abScanline {
-          0%   { transform: translateX(-100%); }
-          100% { transform: translateX(100%); }
-        }
-        @keyframes abShine {
-          0%   { transform: translateX(-100%); }
-          60%  { transform: translateX(100%); }
+          0% { transform: translateX(-100%); }
           100% { transform: translateX(100%); }
         }
         @keyframes abSpin {
