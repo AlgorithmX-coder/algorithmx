@@ -1,0 +1,14 @@
+import { chromium } from "playwright";
+import { join } from "node:path";
+const D = join("scripts", "verify-out");
+const EDGE = "C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe";
+const b = await chromium.launch({ executablePath: EDGE });
+const ctx = await b.newContext({ viewport: { width: 1440, height: 900 }, deviceScaleFactor: 1.5, reducedMotion: "reduce" });
+await ctx.addCookies([{ name: "site_auth", value: "true", domain: "localhost", path: "/", httpOnly: false, secure: false, sameSite: "Lax" }]);
+const pg = await ctx.newPage();
+pg.on("pageerror", (e) => console.error("[pageerror]", e.message));
+await pg.goto("http://localhost:3000", { waitUntil: "domcontentloaded", timeout: 45000 });
+await pg.waitForTimeout(3000);
+await pg.screenshot({ path: join(D, "hex-reduced-1440x900.png") });
+console.log("recaptured reduced");
+await b.close();

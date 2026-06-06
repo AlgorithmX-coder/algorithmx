@@ -1,36 +1,29 @@
 "use client";
 
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { CYBER_PALETTE } from "@/app/components/scene/cyberTokens";
+import { ACCESS, ACCESS_FONT, rgba } from "./accessTokens";
+import { IconCheck } from "./icons";
 
 /**
- * AccessGrantedOverlay - the brief premium transition shown between
- * a successful submit and the redirect.
+ * AccessGrantedOverlay — the final beat of the success payoff.
  *
- * Pairs with AuthSphere's `accessGranted` stage:
- *   - sphere rings align + core flares
- *   - this overlay fades the form down + brings up "Access granted"
- *     with a sweep of light
- *
- * The overlay is purely visual. The parent owns the timer that
- * eventually calls `router.push(...)`. The component never traps
- * the user - close it by removing the prop, or just navigate.
- * Keep the visible duration to 600-900ms.
+ * Pairs with the engine's `accessGranted` stage (rings align, core
+ * flares) and the status stack (all VERIFIED). This overlay is the last
+ * layer: a brief cyan scan + a settled "Access granted" plate, then the
+ * parent's timer calls router.push. Purely visual; never traps the user.
+ * Keep the visible window to ~700ms. Honors reduced-motion.
  */
 
 export interface AccessGrantedOverlayProps {
-  /** Whether to show the overlay. Toggle to true on submit success. */
   show: boolean;
-  /** Bold one-line callout. Defaults differ per page (eg "Access granted"). */
   title?: string;
-  /** Optional subtitle ("Routing to your hub…"). */
   subtitle?: string;
 }
 
 export default function AccessGrantedOverlay({
   show,
   title = "Access granted",
-  subtitle = "Routing to your hub…",
+  subtitle = "Routing to your hub",
 }: AccessGrantedOverlayProps) {
   const reduced = !!useReducedMotion();
 
@@ -53,80 +46,75 @@ export default function AccessGrantedOverlay({
             alignItems: "center",
             justifyContent: "center",
             pointerEvents: "auto",
-            backdropFilter: "blur(2px)",
-            WebkitBackdropFilter: "blur(2px)",
-            background:
-              `radial-gradient(ellipse at 50% 50%, ${CYBER_PALETTE.cyan}22 0%, rgba(8,10,22,0.55) 60%, rgba(8,10,22,0.78) 100%)`,
+            backdropFilter: "blur(3px)",
+            WebkitBackdropFilter: "blur(3px)",
+            background: `radial-gradient(ellipse at 50% 50%, ${rgba(ACCESS.cyan, 0.12)} 0%, ${rgba(ACCESS.abyss, 0.62)} 55%, ${rgba(ACCESS.void, 0.82)} 100%)`,
           }}
         >
-          {/* Sweep of light - vertical bar that scans across once. */}
+          {/* Cyan scan sweep */}
           {!reduced && (
             <motion.div
               aria-hidden
               initial={{ x: "-30vw", opacity: 0 }}
-              animate={{ x: "30vw", opacity: [0, 0.9, 0] }}
+              animate={{ x: "30vw", opacity: [0, 0.8, 0] }}
               transition={{ duration: 0.7, ease: "easeOut" }}
               style={{
                 position: "absolute",
                 top: 0,
                 bottom: 0,
-                width: "30vw",
-                background: `linear-gradient(90deg, transparent 0%, ${CYBER_PALETTE.cyan}66 50%, transparent 100%)`,
-                filter: "blur(20px)",
+                width: "28vw",
+                background: `linear-gradient(90deg, transparent 0%, ${rgba(ACCESS.cyan, 0.4)} 50%, transparent 100%)`,
+                filter: "blur(22px)",
                 mixBlendMode: "screen",
               }}
             />
           )}
 
           <motion.div
-            initial={reduced ? { opacity: 0 } : { opacity: 0, scale: 0.94 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ type: "spring", stiffness: 260, damping: 20, delay: 0.05 }}
+            initial={reduced ? { opacity: 0 } : { opacity: 0, scale: 0.96, y: 6 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            transition={{ type: "spring", stiffness: 260, damping: 22, delay: 0.05 }}
             style={{
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
-              gap: 14,
-              padding: "32px 44px",
-              borderRadius: 22,
-              background: "rgba(8, 10, 22, 0.78)",
-              border: `1px solid ${CYBER_PALETTE.cyan}66`,
-              boxShadow: `0 0 60px ${CYBER_PALETTE.cyan}55, 0 24px 60px -10px rgba(0,0,0,0.75)`,
-              backdropFilter: "blur(10px)",
-              WebkitBackdropFilter: "blur(10px)",
+              gap: 16,
+              padding: "30px 46px",
+              borderRadius: 18,
+              background: rgba(ACCESS.abyss, 0.82),
+              border: `1px solid ${rgba(ACCESS.cyan, 0.4)}`,
+              boxShadow: `0 0 50px ${rgba(ACCESS.cyan, 0.3)}, 0 24px 60px -12px rgba(0,0,0,0.78)`,
+              backdropFilter: "blur(12px)",
+              WebkitBackdropFilter: "blur(12px)",
             }}
           >
-            {/* Check rosette */}
             <motion.div
-              initial={reduced ? { opacity: 0 } : { scale: 0.4, opacity: 0 }}
+              initial={reduced ? { opacity: 0 } : { scale: 0.5, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               transition={{ type: "spring", stiffness: 380, damping: 18 }}
               style={{
-                width: 56,
-                height: 56,
-                borderRadius: "50%",
+                width: 54,
+                height: 54,
+                borderRadius: 14,
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                fontSize: 28,
-                fontWeight: 900,
-                background: `linear-gradient(135deg, ${CYBER_PALETTE.lime}, ${CYBER_PALETTE.cyan})`,
-                color: CYBER_PALETTE.abyss,
-                boxShadow: `0 0 30px ${CYBER_PALETTE.lime}aa, inset 0 0 0 2px rgba(255,255,255,0.35)`,
+                background: `linear-gradient(135deg, ${ACCESS.violet}, ${ACCESS.cyan})`,
+                color: "#06080f",
+                boxShadow: `0 0 28px ${rgba(ACCESS.cyan, 0.6)}, inset 0 0 0 1px rgba(255,255,255,0.3)`,
               }}
               aria-hidden
             >
-              ✓
+              <IconCheck size={26} />
             </motion.div>
 
             <div
               style={{
-                fontFamily: "'Space Grotesk', system-ui, sans-serif",
-                fontWeight: 900,
-                fontSize: 22,
-                letterSpacing: 0.5,
-                color: CYBER_PALETTE.textBright,
-                textShadow: `0 0 18px ${CYBER_PALETTE.cyan}77`,
+                fontFamily: ACCESS_FONT.display,
+                fontWeight: 800,
+                fontSize: 21,
+                letterSpacing: 0.3,
+                color: ACCESS.textBright,
                 textAlign: "center",
               }}
             >
@@ -135,13 +123,12 @@ export default function AccessGrantedOverlay({
 
             <div
               style={{
-                fontFamily: "ui-monospace, 'JetBrains Mono', Menlo, monospace",
-                fontSize: 11,
+                fontFamily: ACCESS_FONT.mono,
+                fontSize: 10.5,
                 letterSpacing: 2.4,
                 textTransform: "uppercase",
-                color: CYBER_PALETTE.cyan,
-                textShadow: `0 0 8px ${CYBER_PALETTE.cyan}aa`,
-                opacity: 0.85,
+                color: ACCESS.cyan,
+                opacity: 0.9,
                 textAlign: "center",
               }}
             >

@@ -1,0 +1,331 @@
+/* ──────────────────────────────────────────────────────────────────────
+ * ALGORITHMX CORE — environment textures (replaces the old hex grid).
+ *
+ * The floor is no longer a hex field. It is a precision-machined POLAR
+ * INSTRUMENT PLATE centred under the laptop: a few asymmetric, segmented
+ * engineered rings, ~16 radial circuit CHANNELS that conduct light inward
+ * toward the device, encoder ticks, via nodes, and a couple of deliberate
+ * VOID-GAP sectors cut clean through the plate so the haze / strata / true
+ * void read beneath it. Everything is additive + self-lit (no scene lights
+ * touch it → the laptop render is untouched). Bloom is faked with baked
+ * canvas shadowBlur (real Bloom crashes this drei/three combo).
+ *
+ * Three variants share this one generator so the whole platform is just a
+ * couple of canvas allocations:
+ *   - "surface": the crisp top plate (rings + channels + ticks + via + core)
+ *   - "soft":    a larger, blurred-only GHOST of the plate for the mid
+ *                parallax stratum (atmospheric perspective beneath)
+ *   - "deep":    only the faint outer arc fragments for the deepest stratum
+ *
+ * Determinism: every "random" placement is a fixed sine-hash so SSR and the
+ * reduced-motion static bake are identical every mount. */
+function makeInstrumentPlateTexture(
+  variant: "surface" | "soft" | "deep" = "surface",
+): THREE.Texture | null {
+  if (typeof document === "undefined") return null;
+  const S = 2048;
+  const c = document.createElement("canvas");
+  c.width = c.height = S;
+  const ctx = c.getContext("2d");
+  if (!ctx) return null;
+  ctx.imageSmoothingEnabled = true;
+  ctx.imageSmoothingQuality = "high";
+  ctx.clearRect(0, 0, S, S);
+
+  const soft = variant === "soft";
+  const deep = variant === "deep";
+  const cx = S / 2;
+  const cy = S / 2;
+  /* platform pixel radius — deeper / softer strata reach a touch wider so,
+   * stacked below, they read as a larger array receding into the void. */
+  const Rmax = S * (deep ? 0.4 : soft ? 0.36 : 0.33);
+  const hash = (n: number) => {
+    const s = Math.sin(n * 127.1) * 43758.5453;
+    return s - Math.floor(s);
+  };
+
+  /* VOID-GAP sectors — angular wedges cut clean through the plate so the
+   * viewer sees into the depth/void. Placed at far / side angles (not under
+   * the laptop's front contact) so grounding is preserved. */
+  const gaps = [
+    { a: 2.5, w: 0.4 },
+    { a: -2.15, w: 0.32 },
+  ];
+  const inGap = (ang: number) => {
+    for (const g of gaps) {
+      let d = ang - g.a;
+      while (d > Math.PI) d -= 2 * Math.PI;
+      while (d < -Math.PI) d += 2 * Math.PI;
+      if (Math.abs(d) < g.w) return true;
+    }
+    return false;
+  };
+
+  /* Energy pool under the chassis — the spot-lit "core" glow (kept from the
+   * old floor so the under-laptop energy read survives). Deep stratum skips
+   * it so the far layer stays pure structure. */
+  if (!deep) {
+    const pool = ctx.createRadialGradient(cx, cy, 0, cx, cy, S * 0.24);
+    pool.addColorStop(0, soft ? "rgba(0,229,255,0.10)" : "rgba(0,229,255,0.30)");
+    pool.addColorStop(0.5, soft ? "rgba(0,229,255,0.04)" : "rgba(0,229,255,0.10)");
+    pool.addColorStop(1, "rgba(0,229,255,0)");
+    ctx.fillStyle = pool;
+    ctx.fillRect(0, 0, S, S);
+  }
+
+  ctx.lineCap = "round";
+  ctx.lineJoin = "round";
+  const glow = (blur: number) => {
+    ctx.shadowColor = "rgba(0,245,255,0.9)";
+    ctx.shadowBlur = blur;
+  };
+  const noGlow = () => {
+    ctx.shadowBlur = 0;
+  };
+  const radAlpha = (rN: number) => {
+    const t = Math.max(0, 1 - rN);
+    return t * t;
+  };
+
+  /* RINGS — inner two are near-complete machined rings under the chassis;
+   * the outer ones break into deterministic arc SEGMENTS so they read as
+   * engineered, not merely drawn. Each arc gets a baked-glow under-stroke
+   * then a thin crisp top line (surface only). */
+  const rings = deep ? [0.62, 0.82] : [0.16, 0.27, 0.42, 0.6, 0.8];
+  for (let ri = 0; ri < rings.length; ri++) {
+    const rN = rings[ri];
+    const rPx = rN * Rmax;
+    const aBase = radAlpha(rN) * (soft ? 0.7 : deep ? 0.5 : 1.0);
+    if (aBase < 0.03) continue;
+    const segmented = ri >= 2 || deep;
+    const segs = segmented ? 4 + (ri % 3) : 1;
+    for (let s = 0; s < segs; s++) {
+      let a0: number;
+      let a1: number;
+      if (segs === 1) {
+        a0 = -Math.PI * 0.96;
+        a1 = Math.PI * 0.96; // near-complete, tiny gap at the far edge
+      } else {
+        const span = (Math.PI * 2) / segs;
+        const jitter = (hash(ri * 9.7 + s * 3.3) - 0.5) * span * 0.3;
+        const gapFrac = 0.18 + hash(ri * 4.1 + s) * 0.14;
+        a0 = s * span + jitter + span * gapFrac * 0.5;
+        a1 = (s + 1) * span + jitter - span * gapFrac * 0.5;
+      }
+      if (inGap((a0 + a1) / 2)) continue;
+      const lw = soft ? 3.0 : deep ? 2.2 : ri < 2 ? 2.0 : 1.6;
+      ctx.strokeStyle = `rgba(0,229,255,${aBase * (soft ? 0.6 : 0.5)})`;
+      ctx.lineWidth = lw * (soft ? 1.4 : 2.0);
+      glow(soft ? 8 : 5);
+      ctx.beginPath();
+      ctx.arc(cx, cy, rPx, a0, a1);
+      ctx.stroke();
+      noGlow();
+      if (!soft && !deep) {
+        ctx.strokeStyle = `rgba(0,229,255,${aBase})`;
+        ctx.lineWidth = lw;
+        ctx.beginPath();
+        ctx.arc(cx, cy, rPx, a0, a1);
+        ctx.stroke();
+      }
+    }
+  }
+
+  /* RADIAL CHANNELS — conductors running from the outer ring inward to a via
+   * node at the inner ring, brightest near the centre (light is conducted
+   * TOWARD the device). Surface + soft only; the deep stratum stays pure
+   * arcs. Slightly uneven angles so it never reads as a symmetric reticle. */
+  if (!deep) {
+    const chCount = 16;
+    for (let i = 0; i < chCount; i++) {
+      const ang = (i / chCount) * Math.PI * 2 + (hash(i * 5.7) - 0.5) * 0.12;
+      if (inGap(ang)) continue;
+      const rOut = 0.8 * Rmax;
+      const rIn = 0.18 * Rmax;
+      const x0 = cx + Math.cos(ang) * rOut;
+      const y0 = cy + Math.sin(ang) * rOut;
+      const x1 = cx + Math.cos(ang) * rIn;
+      const y1 = cy + Math.sin(ang) * rIn;
+      const ca = soft ? 0.18 : 0.42;
+      const grad = ctx.createLinearGradient(x0, y0, x1, y1);
+      grad.addColorStop(0, "rgba(0,229,255,0)");
+      grad.addColorStop(0.55, `rgba(0,229,255,${ca * 0.5})`);
+      grad.addColorStop(1, `rgba(0,229,255,${ca})`);
+      ctx.strokeStyle = grad;
+      ctx.lineWidth = soft ? 2.0 : 1.3;
+      glow(soft ? 6 : 3);
+      ctx.beginPath();
+      ctx.moveTo(x0, y0);
+      ctx.lineTo(x1, y1);
+      ctx.stroke();
+      noGlow();
+      if (!soft) {
+        ctx.fillStyle = `rgba(127,240,255,${ca})`;
+        glow(4);
+        ctx.beginPath();
+        ctx.arc(x1, y1, 3.0, 0, Math.PI * 2);
+        ctx.fill();
+        noGlow();
+      }
+    }
+
+    /* Encoder graduation ticks on a mid radius — precision-instrument tell.
+     * Surface only, low alpha, never busy. */
+    if (!soft) {
+      const tickN = 48;
+      const rT = 0.34 * Rmax;
+      for (let i = 0; i < tickN; i++) {
+        const ang = (i / tickN) * Math.PI * 2;
+        if (inGap(ang)) continue;
+        const long = i % 4 === 0;
+        const r0 = rT - (long ? 10 : 5);
+        const r1 = rT + (long ? 10 : 5);
+        ctx.strokeStyle = `rgba(0,229,255,${long ? 0.3 : 0.15})`;
+        ctx.lineWidth = long ? 1.6 : 1.0;
+        ctx.beginPath();
+        ctx.moveTo(cx + Math.cos(ang) * r0, cy + Math.sin(ang) * r0);
+        ctx.lineTo(cx + Math.cos(ang) * r1, cy + Math.sin(ang) * r1);
+        ctx.stroke();
+      }
+      /* A single restrained violet accent arc on the outer ring (secondary
+       * colour, used sparingly per the palette rule). */
+      ctx.strokeStyle = "rgba(124,92,255,0.22)";
+      ctx.lineWidth = 2.0;
+      glow(6);
+      ctx.beginPath();
+      ctx.arc(cx, cy, 0.8 * Rmax, -0.5, 0.35);
+      ctx.stroke();
+      noGlow();
+      /* Centre core glint — tiny near-white precision highlight. */
+      const core = ctx.createRadialGradient(cx, cy, 0, cx, cy, S * 0.05);
+      core.addColorStop(0, "rgba(200,250,255,0.22)");
+      core.addColorStop(1, "rgba(200,250,255,0)");
+      ctx.fillStyle = core;
+      ctx.fillRect(0, 0, S, S);
+    }
+  }
+
+  /* Carve the VOID-GAP wedges clean through everything drawn so far, with a
+   * soft inner edge — these are the holes the viewer sees the depth through. */
+  ctx.globalCompositeOperation = "destination-out";
+  for (const g of gaps) {
+    ctx.beginPath();
+    ctx.moveTo(cx, cy);
+    ctx.arc(cx, cy, Rmax * 1.15, g.a - g.w, g.a + g.w);
+    ctx.closePath();
+    const gg = ctx.createRadialGradient(cx, cy, 0, cx, cy, Rmax * 1.15);
+    gg.addColorStop(0, "rgba(0,0,0,0)");
+    gg.addColorStop(0.22, "rgba(0,0,0,0.92)");
+    gg.addColorStop(1, "rgba(0,0,0,0.92)");
+    ctx.fillStyle = gg;
+    ctx.fill();
+  }
+  ctx.globalCompositeOperation = "source-over";
+
+  /* Near-camera asymmetric fade — the floor plane is rotated -π/2 about X so
+   * canvas-bottom is the foreground; dissolve it hard into black so the
+   * platform reads as suspended, not extending toward the viewer. */
+  ctx.globalCompositeOperation = "destination-out";
+  const ncf = ctx.createLinearGradient(0, 0, 0, S);
+  ncf.addColorStop(0.0, "rgba(0,0,0,0)");
+  ncf.addColorStop(0.5, "rgba(0,0,0,0)");
+  ncf.addColorStop(0.64, "rgba(0,0,0,0.55)");
+  ncf.addColorStop(0.76, "rgba(0,0,0,0.9)");
+  ncf.addColorStop(0.88, "rgba(0,0,0,1)");
+  ncf.addColorStop(1.0, "rgba(0,0,0,1)");
+  ctx.fillStyle = ncf;
+  ctx.fillRect(0, 0, S, S);
+  ctx.globalCompositeOperation = "source-over";
+
+  const tex = new THREE.CanvasTexture(c);
+  tex.wrapS = THREE.ClampToEdgeWrapping;
+  tex.wrapT = THREE.ClampToEdgeWrapping;
+  tex.minFilter = THREE.LinearMipmapLinearFilter;
+  tex.magFilter = THREE.LinearFilter;
+  tex.anisotropy = 16;
+  tex.generateMipmaps = true;
+  tex.colorSpace = THREE.SRGBColorSpace;
+  tex.needsUpdate = true;
+  return tex;
+}
+
+/* Tier-3 FAR MEGASTRUCTURE silhouette — a single, barely-visible distant
+ * arc-ring fragment + a couple of thin monolith spires, implying the
+ * intelligence array continues into deep space. Drawn right-biased and at
+ * tiny alpha; placed far behind on its own plane so it never competes with
+ * the laptop and the left (headline) third stays dark. */
+function makeMegastructureTexture(): THREE.Texture | null {
+  if (typeof document === "undefined") return null;
+  const W = 1024;
+  const H = 512;
+  const c = document.createElement("canvas");
+  c.width = W;
+  c.height = H;
+  const ctx = c.getContext("2d");
+  if (!ctx) return null;
+  ctx.clearRect(0, 0, W, H);
+  ctx.lineCap = "round";
+  // right-biased centre for the distant ring
+  const mx = W * 0.66;
+  const my = H * 0.92;
+  ctx.shadowColor = "rgba(0,229,255,0.7)";
+  // a few faint concentric arc fragments
+  const arcs = [
+    { r: 150, a0: -2.4, a1: -0.9, a: 0.1 },
+    { r: 210, a0: -2.2, a1: -1.4, a: 0.07 },
+    { r: 270, a0: -2.6, a1: -1.8, a: 0.05 },
+    { r: 120, a0: -1.6, a1: -0.5, a: 0.08 },
+  ];
+  for (const arc of arcs) {
+    ctx.strokeStyle = `rgba(0,229,255,${arc.a})`;
+    ctx.lineWidth = 2.2;
+    ctx.shadowBlur = 8;
+    ctx.beginPath();
+    ctx.arc(mx, my, arc.r, arc.a0, arc.a1);
+    ctx.stroke();
+  }
+  // a couple of thin distant spires (violet-tinted secondary accent)
+  const spires = [
+    { x: W * 0.5, top: H * 0.42, a: 0.05 },
+    { x: W * 0.78, top: H * 0.5, a: 0.045 },
+    { x: W * 0.6, top: H * 0.55, a: 0.04 },
+  ];
+  for (const sp of spires) {
+    ctx.strokeStyle = `rgba(124,92,255,${sp.a})`;
+    ctx.lineWidth = 1.6;
+    ctx.shadowBlur = 6;
+    ctx.beginPath();
+    ctx.moveTo(sp.x, my);
+    ctx.lineTo(sp.x, sp.top);
+    ctx.stroke();
+  }
+  ctx.shadowBlur = 0;
+  const tex = new THREE.CanvasTexture(c);
+  tex.colorSpace = THREE.SRGBColorSpace;
+  tex.needsUpdate = true;
+  return tex;
+}
+
+/* Small additive glow sprite used for the inward-travelling SIGNAL PACKETS
+ * that ride the radial channels toward the laptop. A soft cyan core with a
+ * near-white centre — the motion conveys direction, so the sprite itself is
+ * a simple round glow (orientation-free). */
+function makeSignalPacketTexture(): THREE.Texture | null {
+  if (typeof document === "undefined") return null;
+  const S = 128;
+  const c = document.createElement("canvas");
+  c.width = c.height = S;
+  const ctx = c.getContext("2d");
+  if (!ctx) return null;
+  ctx.clearRect(0, 0, S, S);
+  const g = ctx.createRadialGradient(S / 2, S / 2, 0, S / 2, S / 2, S / 2);
+  g.addColorStop(0, "rgba(220,250,255,1)");
+  g.addColorStop(0.3, "rgba(0,229,255,0.7)");
+  g.addColorStop(1, "rgba(0,229,255,0)");
+  ctx.fillStyle = g;
+  ctx.fillRect(0, 0, S, S);
+  const tex = new THREE.CanvasTexture(c);
+  tex.colorSpace = THREE.SRGBColorSpace;
+  tex.needsUpdate = true;
+  return tex;
+}
