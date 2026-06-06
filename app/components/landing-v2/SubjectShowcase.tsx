@@ -4,16 +4,12 @@ import Link from "next/link";
 import { FadeUp } from "./utilities";
 
 /**
- * SubjectShowcase. Six stream cards in a 2x3 grid - one per technology
- * subject. Cybersecurity is the only live subject; clicking its card
- * takes families to the /cybersecurity subject page where the four
- * cyber tracks (ages 6 → 18+) are listed in age order.
- *
- * The other five subjects do NOT have subject pages yet and MUST NOT
- * link to a dead route. They render the same card but with a soft
- * "Coming soon" treatment and a non-interactive CTA, so the homepage
- * never leaves the family at a 404. Batch 8+ will introduce per-
- * subject pages and re-enable those links one by one.
+ * SubjectShowcase — the "Pick your stream" section. Six stream cards in a
+ * 2×3 grid, restyled as HUD panels (reference): per-stream accent glow,
+ * corner brackets, a hexagon stream icon with a short circuit tail, a
+ * status badge, a flagship-project block, and a full-width CTA (a real
+ * link for the live Cybersecurity subject, an inert locked "Coming 20XX"
+ * for the rest so the homepage never leaves a family at a 404).
  */
 
 interface Stream {
@@ -25,9 +21,8 @@ interface Stream {
   blurb: string;
   project: string;
   accent: string;
-  /** href is non-null ONLY for live subjects. Coming-soon subjects
-   *  must not link anywhere — keeping href off the type for them
-   *  prevents accidental relinking on a future edit. */
+  /** Feather-style 24×24 icon path drawn in the hexagon badge. */
+  icon: string;
   href: string | null;
   cta: string;
 }
@@ -36,17 +31,14 @@ const STREAMS: Stream[] = [
   {
     id: "cybersecurity",
     name: "Cybersecurity",
-    /* Subject page covers four age tracks: cyber-heroes (6–9),
-     * cyberexplorers (10–13), cyberstart (14–16), cyberstart-pro
-     * (16–18+). Surface "Ages 6 → Adult · 4 tracks" so the card reads
-     * as a SUBJECT, not as one of the tracks underneath it. */
     ages: "Ages 6 → Adult · 4 tracks",
     status: "LIVE NOW",
     isLive: true,
     blurb:
       "From spotting scams at age 6 to delivering a full penetration-test report on a live web app as an adult. Online safety is the gateway skill.",
     project: "Pen-test a live web app & ship the security report",
-    accent: "#5fffa3",
+    accent: "#3ee88f",
+    icon: "M12 2l8 3v6c0 5-3.5 8-8 11-4.5-3-8-6-8-11V5l8-3z",
     href: "/cybersecurity",
     cta: "View course",
   },
@@ -59,7 +51,8 @@ const STREAMS: Stream[] = [
     blurb:
       "Pixel art, physics, state machines, and what makes a jump feel good. Scratch through Unity through Unreal.",
     project: "Ship a Pixel Platformer level",
-    accent: "#9ff5ff",
+    accent: "#4aa8ff",
+    icon: "M7 8h10a4 4 0 014 4 4 4 0 01-4 4H7a4 4 0 01-4-4 4 4 0 014-4z M8 12h3 M9.5 10.5v3 M15.5 11.5h.01 M17.5 13h.01",
     href: null,
     cta: "Coming 2026",
   },
@@ -72,7 +65,8 @@ const STREAMS: Stream[] = [
     blurb:
       "Train a real model, inspect its bias, deploy it. Cuts through hype with hands-on intuition for how AI actually works.",
     project: "Train an Image Classifier",
-    accent: "#cba8ff",
+    accent: "#a472ff",
+    icon: "M8 8h8v8H8z M5 10V8h2 M5 14v2h2 M17 8h2v2 M17 16h2v-2 M10 5V3h2 M14 5V3h-2 M10 21v-2 M14 19v2",
     href: null,
     cta: "Coming 2026",
   },
@@ -85,7 +79,8 @@ const STREAMS: Stream[] = [
     blurb:
       "Real apps on real phones. State, persistence, notifications, design. Build something your friends actually install.",
     project: "Ship a Habit Tracker",
-    accent: "#ffd07a",
+    accent: "#ffae4d",
+    icon: "M7 2h10a1 1 0 011 1v18a1 1 0 01-1 1H7a1 1 0 01-1-1V3a1 1 0 011-1z M11 18h2",
     href: null,
     cta: "Coming 2027",
   },
@@ -99,6 +94,7 @@ const STREAMS: Stream[] = [
       "Discovery interviews, market sizing, MVP design, pitch craft. The non-coding half of building a tech business.",
     project: "Pitch a 10-slide deck to a real VC panel",
     accent: "#ffc94a",
+    icon: "M13 2L3 14h7l-1 8 10-12h-7l1-8z",
     href: null,
     cta: "Coming 2027",
   },
@@ -111,7 +107,8 @@ const STREAMS: Stream[] = [
     blurb:
       "Sensors, pathfinding, motor control, autonomy. Code virtual robots first, then graduate to physical kits.",
     project: "Code a Maze-Solver Bot",
-    accent: "#ff3ad6",
+    accent: "#ff5b7a",
+    icon: "M12 2v3 M5 8h14a1 1 0 011 1v9a1 1 0 01-1 1H5a1 1 0 01-1-1V9a1 1 0 011-1z M9 13h.01 M15 13h.01 M2 12v3 M22 12v3",
     href: null,
     cta: "Coming 2027",
   },
@@ -128,7 +125,6 @@ export default function SubjectShowcase() {
         color: "var(--lv2-paper)",
       }}
     >
-      {/* Top seam line */}
       <div
         aria-hidden
         style={{
@@ -143,13 +139,7 @@ export default function SubjectShowcase() {
         }}
       />
 
-      <div
-        style={{
-          position: "relative",
-          maxWidth: 1180,
-          margin: "0 auto",
-        }}
-      >
+      <div style={{ position: "relative", maxWidth: 1180, margin: "0 auto" }}>
         <div style={{ textAlign: "center", marginBottom: 56 }}>
           <FadeUp>
             <p
@@ -163,7 +153,7 @@ export default function SubjectShowcase() {
                 marginBottom: 14,
               }}
             >
-              // SIX STREAMS
+              // SIX STREAMS //
             </p>
           </FadeUp>
           <FadeUp delay={0.05}>
@@ -192,9 +182,9 @@ export default function SubjectShowcase() {
                 margin: "18px auto 0",
               }}
             >
-              Cyber Security is live today. The other five are on the
-              2026 – 2027 roadmap, each built around a real projects to
-              kickstart your career in IT!
+              Cyber Security is live today. The other five are on the 2026 – 2027
+              roadmap, each built around real projects to kickstart your career
+              in IT!
             </p>
           </FadeUp>
         </div>
@@ -212,7 +202,7 @@ export default function SubjectShowcase() {
         .lv2-streams-grid {
           display: grid;
           grid-template-columns: repeat(3, 1fr);
-          gap: 20px;
+          gap: 22px;
         }
         @media (max-width: 960px) {
           .lv2-streams-grid {
@@ -229,83 +219,144 @@ export default function SubjectShowcase() {
   );
 }
 
+/* L-shaped corner bracket */
+function Bracket({
+  accent,
+  corner,
+}: {
+  accent: string;
+  corner: "tl" | "tr" | "bl" | "br";
+}) {
+  const size = 18;
+  const off = 10;
+  const base: React.CSSProperties = {
+    position: "absolute",
+    width: size,
+    height: size,
+    pointerEvents: "none",
+  };
+  const pos: React.CSSProperties =
+    corner === "tl"
+      ? { top: off, left: off, borderTop: `2px solid ${accent}`, borderLeft: `2px solid ${accent}` }
+      : corner === "tr"
+        ? { top: off, right: off, borderTop: `2px solid ${accent}`, borderRight: `2px solid ${accent}` }
+        : corner === "bl"
+          ? { bottom: off, left: off, borderBottom: `2px solid ${accent}`, borderLeft: `2px solid ${accent}` }
+          : { bottom: off, right: off, borderBottom: `2px solid ${accent}`, borderRight: `2px solid ${accent}` };
+  return <span aria-hidden style={{ ...base, ...pos }} />;
+}
+
 function StreamCard({ stream }: { stream: Stream }) {
-  const ctaStyle: React.CSSProperties = stream.isLive
-    ? {
-        background: stream.accent,
-        color: "var(--lv2-ink)",
-        border: "none",
-        boxShadow: `0 8px 24px ${stream.accent}55`,
-      }
-    : {
-        background: "transparent",
-        color: stream.accent,
-        border: `1px solid ${stream.accent}55`,
-      };
+  const a = stream.accent;
   return (
     <article
-      style={{
-        background: "rgba(13,15,24,0.72)",
-        backdropFilter: "blur(14px) saturate(1.4)",
-        WebkitBackdropFilter: "blur(14px) saturate(1.4)",
-        border: "1px solid rgba(232,237,255,0.08)",
-        borderTop: `2px solid ${stream.accent}`,
-        borderRadius: 18,
-        padding: "28px 26px 26px",
-        display: "flex",
-        flexDirection: "column",
-        gap: 14,
-        height: "100%",
-        boxShadow:
-          "0 1px 3px rgba(0,0,0,0.4), 0 12px 36px rgba(0,0,0,0.28)",
-        transition:
-          "transform .35s cubic-bezier(0.16,1,0.3,1), box-shadow .35s cubic-bezier(0.16,1,0.3,1), border-color .35s ease",
-      }}
+      className="lv2-stream-card"
+      style={
+        {
+          "--accent": a,
+          position: "relative",
+          background:
+            `radial-gradient(120% 80% at 50% -10%, ${a}1c, transparent 60%), linear-gradient(180deg, rgba(11,15,26,0.92), rgba(4,7,14,0.94))`,
+          border: `1px solid ${a}55`,
+          borderRadius: 16,
+          padding: "30px 26px 24px",
+          display: "flex",
+          flexDirection: "column",
+          gap: 14,
+          height: "100%",
+          boxShadow: `0 0 0 1px rgba(0,0,0,0.3), 0 18px 50px rgba(0,0,0,0.4), inset 0 0 40px ${a}10`,
+          transition:
+            "transform .35s cubic-bezier(0.16,1,0.3,1), box-shadow .35s cubic-bezier(0.16,1,0.3,1)",
+        } as React.CSSProperties
+      }
       onMouseOver={(e) => {
-        (e.currentTarget as HTMLDivElement).style.transform = "translateY(-4px)";
-        (e.currentTarget as HTMLDivElement).style.boxShadow =
-          `0 1px 3px rgba(0,0,0,0.4), 0 22px 56px ${stream.accent}38`;
+        const el = e.currentTarget as HTMLDivElement;
+        el.style.transform = "translateY(-4px)";
+        el.style.boxShadow = `0 0 0 1px ${a}66, 0 26px 64px ${a}33, inset 0 0 56px ${a}1c`;
       }}
       onMouseOut={(e) => {
-        (e.currentTarget as HTMLDivElement).style.transform = "translateY(0)";
-        (e.currentTarget as HTMLDivElement).style.boxShadow =
-          "0 1px 3px rgba(0,0,0,0.4), 0 12px 36px rgba(0,0,0,0.28)";
+        const el = e.currentTarget as HTMLDivElement;
+        el.style.transform = "translateY(0)";
+        el.style.boxShadow = `0 0 0 1px rgba(0,0,0,0.3), 0 18px 50px rgba(0,0,0,0.4), inset 0 0 40px ${a}10`;
       }}
     >
-      {/* Header row: accent dot + status pill */}
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          gap: 10,
-          flexWrap: "wrap",
-        }}
-      >
-        <span
-          aria-hidden
-          style={{
-            width: 10,
-            height: 10,
-            borderRadius: 999,
-            background: stream.accent,
-            boxShadow: `0 0 14px ${stream.accent}b3`,
-          }}
-        />
+      <Bracket accent={a} corner="tl" />
+      <Bracket accent={a} corner="tr" />
+      <Bracket accent={a} corner="bl" />
+      <Bracket accent={a} corner="br" />
+
+      {/* Header: hexagon icon + circuit tail, status badge */}
+      <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
         <span
           style={{
-            fontFamily: "var(--lv2-font-mono)",
-            fontSize: 10,
-            fontWeight: 700,
-            letterSpacing: "0.22em",
-            textTransform: "uppercase",
-            color: stream.isLive ? "var(--lv2-ink)" : stream.accent,
-            background: stream.isLive ? stream.accent : "transparent",
-            border: stream.isLive ? "none" : `1px solid ${stream.accent}66`,
-            padding: stream.isLive ? "3px 9px" : "2px 8px",
-            borderRadius: 999,
-            marginLeft: "auto",
+            position: "relative",
+            width: 46,
+            height: 52,
+            flexShrink: 0,
+            display: "inline-flex",
+            alignItems: "center",
+            justifyContent: "center",
           }}
         >
+          <svg width="46" height="52" viewBox="0 0 46 52" style={{ position: "absolute", inset: 0 }} aria-hidden>
+            <polygon
+              points="23,2 44,14.5 44,37.5 23,50 2,37.5 2,14.5"
+              fill={`${a}1f`}
+              stroke={a}
+              strokeWidth="1.5"
+            />
+          </svg>
+          <svg
+            width="22"
+            height="22"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke={a}
+            strokeWidth="1.9"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            style={{ position: "relative" }}
+            aria-hidden
+          >
+            <path d={stream.icon} />
+          </svg>
+        </span>
+        {/* circuit tail */}
+        <svg width="60" height="20" viewBox="0 0 60 20" style={{ opacity: 0.6 }} aria-hidden>
+          <path d="M0 10h40l8-6" fill="none" stroke={a} strokeWidth="1.4" />
+          <circle cx="48" cy="4" r="2.5" fill={a} />
+        </svg>
+
+        <span
+          style={{
+            marginLeft: "auto",
+            display: "inline-flex",
+            alignItems: "center",
+            gap: 7,
+            fontFamily: "var(--lv2-font-mono)",
+            fontSize: 11,
+            fontWeight: 700,
+            letterSpacing: "0.16em",
+            textTransform: "uppercase",
+            color: a,
+            background: stream.isLive ? `${a}1f` : "transparent",
+            border: `1px solid ${a}77`,
+            padding: "5px 12px",
+            borderRadius: 999,
+          }}
+        >
+          {stream.isLive && (
+            <span
+              aria-hidden
+              style={{
+                width: 7,
+                height: 7,
+                borderRadius: 999,
+                background: a,
+                boxShadow: `0 0 10px ${a}`,
+              }}
+            />
+          )}
           {stream.status}
         </span>
       </div>
@@ -313,10 +364,10 @@ function StreamCard({ stream }: { stream: Stream }) {
       <h3
         style={{
           fontFamily: "var(--lv2-font-display)",
-          fontSize: "1.6rem",
+          fontSize: "1.55rem",
           fontWeight: 500,
           color: "var(--lv2-paper)",
-          margin: 0,
+          margin: "2px 0 0",
           letterSpacing: "-0.018em",
           lineHeight: 1.1,
         }}
@@ -329,7 +380,7 @@ function StreamCard({ stream }: { stream: Stream }) {
           fontFamily: "var(--lv2-font-mono)",
           fontSize: 11,
           fontWeight: 600,
-          letterSpacing: "0.2em",
+          letterSpacing: "0.18em",
           textTransform: "uppercase",
           color: "rgba(232,237,255,0.5)",
         }}
@@ -342,7 +393,7 @@ function StreamCard({ stream }: { stream: Stream }) {
           fontFamily: "var(--lv2-font-display)",
           fontSize: 14.5,
           lineHeight: 1.55,
-          color: "rgba(232,237,255,0.78)",
+          color: "rgba(232,237,255,0.74)",
           margin: 0,
           flex: 1,
         }}
@@ -352,7 +403,7 @@ function StreamCard({ stream }: { stream: Stream }) {
 
       <div
         style={{
-          borderTop: "1px solid rgba(232,237,255,0.08)",
+          borderTop: `1px solid ${a}22`,
           paddingTop: 14,
           display: "flex",
           flexDirection: "column",
@@ -363,10 +414,10 @@ function StreamCard({ stream }: { stream: Stream }) {
           style={{
             fontFamily: "var(--lv2-font-mono)",
             fontSize: 10,
-            fontWeight: 600,
-            letterSpacing: "0.22em",
+            fontWeight: 700,
+            letterSpacing: "0.2em",
             textTransform: "uppercase",
-            color: "rgba(232,237,255,0.45)",
+            color: a,
           }}
         >
           // FLAGSHIP PROJECT
@@ -383,60 +434,50 @@ function StreamCard({ stream }: { stream: Stream }) {
         </span>
       </div>
 
-      {/* Live subjects render a real Link to their subject page. Coming-
-       *  soon subjects render an inert span styled identically — NOT a
-       *  Link with href="#", which still shows up as a valid anchor to
-       *  the browser and used to slip into clicks before the
-       *  pointer-events:none caught them. With no anchor in the DOM
-       *  there's zero risk of a dead navigation. */}
       {stream.isLive && stream.href ? (
-        <Link
-          href={stream.href}
-          style={{
-            ...ctaStyle,
-            marginTop: 4,
-            padding: "12px 18px",
-            borderRadius: 999,
-            fontFamily: "var(--lv2-font-mono)",
-            fontSize: 11,
-            fontWeight: 700,
-            letterSpacing: "0.18em",
-            textTransform: "uppercase",
-            textDecoration: "none",
-            display: "inline-flex",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: 8,
-          }}
-        >
+        <Link href={stream.href} style={ctaStyle(a, true)}>
           {stream.cta}
           <span aria-hidden style={{ marginLeft: 2 }}>→</span>
         </Link>
       ) : (
-        <span
-          role="presentation"
-          aria-disabled
-          style={{
-            ...ctaStyle,
-            marginTop: 4,
-            padding: "12px 18px",
-            borderRadius: 999,
-            fontFamily: "var(--lv2-font-mono)",
-            fontSize: 11,
-            fontWeight: 700,
-            letterSpacing: "0.18em",
-            textTransform: "uppercase",
-            display: "inline-flex",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: 8,
-            opacity: 0.7,
-            cursor: "not-allowed",
-          }}
-        >
+        <span role="presentation" aria-disabled style={ctaStyle(a, false)}>
           {stream.cta}
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke={a} strokeWidth="2.2" aria-hidden>
+            <rect x="5" y="11" width="14" height="10" rx="2" />
+            <path d="M8 11V7a4 4 0 018 0v4" strokeLinecap="round" />
+          </svg>
         </span>
       )}
+
+      <style jsx>{`
+        .lv2-stream-card {
+          will-change: transform;
+        }
+      `}</style>
     </article>
   );
+}
+
+function ctaStyle(a: string, live: boolean): React.CSSProperties {
+  return {
+    marginTop: 6,
+    padding: "13px 18px",
+    borderRadius: 10,
+    fontFamily: "var(--lv2-font-mono)",
+    fontSize: 11,
+    fontWeight: 700,
+    letterSpacing: "0.18em",
+    textTransform: "uppercase",
+    textDecoration: "none",
+    display: "inline-flex",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 8,
+    background: live ? a : `${a}12`,
+    color: live ? "var(--lv2-ink)" : a,
+    border: live ? "none" : `1px solid ${a}55`,
+    boxShadow: live ? `0 8px 26px ${a}55, 0 0 18px ${a}66` : "none",
+    cursor: live ? "pointer" : "not-allowed",
+    opacity: live ? 1 : 0.92,
+  };
 }

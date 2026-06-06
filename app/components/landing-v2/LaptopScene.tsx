@@ -331,18 +331,11 @@ const STREAMS = [
 ] as const;
 
 function computeScreenStage(p: number): number {
-  /* Lid opens 0.32→0.50, screen ignites at 0.50, boot lines type
-   * 0.52→0.62, dashboards land 0.65→0.95, READY is the final beat. */
-  if (p < 0.50) return 0;
-  if (p < 0.52) return 1;
-  if (p < 0.54) return 2;
-  if (p < 0.56) return 3;
-  if (p < 0.58) return 4;
-  if (p < 0.60) return 5;
-  if (p < 0.65) return 6; // boot complete
-  if (p < 0.86) return 7; // streams dashboard
-  if (p < 0.95) return 8; // active projects
-  return 9; // ready
+  /* Two states only now: 0 = dormant (lid closed, screen dark), 1 = the
+   * full NEXORA-style orbital dashboard (always on once the lid opens and
+   * the screen ignites at ~0.50). The dashboard is static, so it repaints
+   * just once on the 0→1 transition. */
+  return p < 0.5 ? 0 : 1;
 }
 
 function roundRect(
@@ -739,6 +732,258 @@ function paintCosmicSwirl(
   ctx.restore();
 }
 
+/* NEXORA-STYLE ORBITAL DASHBOARD — the laptop's on-screen UI (reference 1).
+ * A full mission-control layout: top nav bar, left system-status sidebar, a
+ * central real-time orbital visualisation (reuses the cosmic-swirl), right-
+ * hand SYSTEM HEALTH / MISSION FEED / QUICK ACTIONS panels, and a bottom
+ * orbital-parameters strip. Static — painted once when the screen lights. */
+function paintOrbitalDashboard(
+  ctx: CanvasRenderingContext2D,
+  c: HTMLCanvasElement,
+) {
+  const W = c.width;
+  const H = c.height;
+  const CY = "#3fd0ff";
+  const OK = "#4be08a";
+  const DIM = "rgba(205,218,242,0.5)";
+  const TXT = "#e9f0ff";
+
+  /* deep navy base */
+  const bg = ctx.createLinearGradient(0, 0, 0, H);
+  bg.addColorStop(0, "#070c18");
+  bg.addColorStop(1, "#04070f");
+  ctx.fillStyle = bg;
+  ctx.fillRect(0, 0, W, H);
+
+  const T = (
+    s: string,
+    x: number,
+    y: number,
+    font: string,
+    color: string,
+    align: CanvasTextAlign = "left",
+    baseline: CanvasTextBaseline = "alphabetic",
+  ) => {
+    ctx.font = font;
+    ctx.fillStyle = color;
+    ctx.textAlign = align;
+    ctx.textBaseline = baseline;
+    ctx.fillText(s, x, y);
+  };
+  const panel = (x: number, y: number, w: number, h: number) => {
+    roundRect(ctx, x, y, w, h, 16);
+    ctx.fillStyle = "rgba(9,15,28,0.9)";
+    ctx.fill();
+    ctx.strokeStyle = "rgba(90,150,220,0.22)";
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+  };
+  const dot = (x: number, y: number, r: number, col: string) => {
+    ctx.fillStyle = col;
+    ctx.beginPath();
+    ctx.arc(x, y, r, 0, Math.PI * 2);
+    ctx.fill();
+  };
+
+  /* central orbital visualisation, clipped to the centre column */
+  ctx.save();
+  ctx.beginPath();
+  ctx.rect(372, 150, 1010, 880);
+  ctx.clip();
+  paintCosmicSwirl(ctx, c, 1.0);
+  ctx.restore();
+
+  /* centre labels over the viz */
+  T("ORBITAL OVERVIEW", 410, 224, `700 46px ${FONT_SANS}`, TXT);
+  dot(424, 258, 7, CY);
+  T("REAL-TIME VIEW", 442, 266, `600 20px ${FONT_MONO}`, CY);
+  T("CORE", 928, 432, `600 20px ${FONT_MONO}`, DIM);
+  T("ENERGY OUTPUT", 928, 462, `500 17px ${FONT_MONO}`, DIM);
+  T("98.7%", 928, 500, `700 30px ${FONT_SANS}`, CY);
+
+  /* ---------- TOP BAR ---------- */
+  ctx.fillStyle = "rgba(6,11,22,0.92)";
+  ctx.fillRect(0, 0, W, 104);
+  ctx.strokeStyle = "rgba(90,150,220,0.18)";
+  ctx.lineWidth = 1.5;
+  ctx.beginPath();
+  ctx.moveTo(0, 104);
+  ctx.lineTo(W, 104);
+  ctx.stroke();
+  ctx.strokeStyle = CY;
+  ctx.lineWidth = 3;
+  ctx.beginPath();
+  ctx.arc(80, 52, 16, 0, Math.PI * 2);
+  ctx.stroke();
+  dot(80, 52, 5, CY);
+  T("ALGORITHMX", 112, 63, `700 30px ${FONT_SANS}`, TXT);
+  const tabs = ["OVERVIEW", "SYSTEMS", "NETWORK", "ANALYTICS", "LOGS"];
+  let tx = 720;
+  tabs.forEach((tb, i) => {
+    const active = i === 0;
+    T(tb, tx, 60, `600 20px ${FONT_MONO}`, active ? TXT : DIM);
+    ctx.font = `600 20px ${FONT_MONO}`;
+    const w = ctx.measureText(tb).width;
+    if (active) {
+      ctx.fillStyle = CY;
+      ctx.fillRect(tx, 78, w, 3);
+    }
+    tx += w + 54;
+  });
+  T("SYS-07", W - 80, 60, `600 20px ${FONT_MONO}`, CY, "right");
+  dot(W - 196, 52, 9, CY);
+  ctx.strokeStyle = DIM;
+  ctx.lineWidth = 2.4;
+  ctx.beginPath();
+  ctx.arc(W - 300, 50, 9, 0, Math.PI * 2);
+  ctx.stroke();
+  ctx.beginPath();
+  ctx.moveTo(W - 293, 57);
+  ctx.lineTo(W - 285, 65);
+  ctx.stroke();
+  ctx.beginPath();
+  ctx.arc(W - 246, 50, 9, Math.PI, Math.PI * 2);
+  ctx.stroke();
+
+  /* ---------- LEFT SIDEBAR ---------- */
+  panel(36, 128, 312, 1064);
+  T("SYSTEM STATUS", 66, 186, `600 16px ${FONT_MONO}`, DIM);
+  T("100%", 66, 248, `700 56px ${FONT_SANS}`, CY);
+  T("OPERATIONAL", 66, 282, `600 15px ${FONT_MONO}`, DIM);
+  /* mini waveform */
+  ctx.strokeStyle = CY;
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  const wy = 320;
+  for (let i = 0; i <= 40; i++) {
+    const x = 66 + i * 6;
+    const yy = wy + Math.sin(i * 0.9) * (i % 7 === 0 ? 14 : 6);
+    if (i === 0) ctx.moveTo(x, yy);
+    else ctx.lineTo(x, yy);
+  }
+  ctx.stroke();
+  /* nav list */
+  const nav = [
+    "DASHBOARD",
+    "ORBITAL MAP",
+    "ASSETS",
+    "MISSIONS",
+    "CONFIGURATION",
+    "SECURITY",
+    "REPORTS",
+  ];
+  let ny = 392;
+  nav.forEach((n, i) => {
+    const active = i === 0;
+    if (active) {
+      roundRect(ctx, 52, ny - 30, 280, 52, 10);
+      ctx.fillStyle = "rgba(63,208,255,0.12)";
+      ctx.fill();
+      ctx.fillStyle = CY;
+      ctx.fillRect(52, ny - 30, 4, 52);
+    }
+    /* little square glyph */
+    ctx.strokeStyle = active ? CY : DIM;
+    ctx.lineWidth = 2;
+    ctx.strokeRect(72, ny - 12, 18, 18);
+    T(n, 108, ny + 4, `600 19px ${FONT_MONO}`, active ? TXT : DIM);
+    ny += 68;
+  });
+  /* system time */
+  T("SYSTEM TIME", 66, 1110, `600 15px ${FONT_MONO}`, DIM);
+  T("23:47:12", 66, 1152, `700 34px ${FONT_SANS}`, CY);
+  T("UTC −00:00", 66, 1180, `500 15px ${FONT_MONO}`, DIM);
+
+  /* ---------- RIGHT: SYSTEM HEALTH ---------- */
+  const rx = W - 36 - 600;
+  const rw = 600;
+  panel(rx, 128, rw, 420);
+  T("SYSTEM HEALTH", rx + 30, 184, `600 18px ${FONT_MONO}`, TXT);
+  T("×", rx + rw - 34, 188, `500 26px ${FONT_SANS}`, DIM, "right");
+  /* gauge */
+  const gx = rx + 130;
+  const gy = 330;
+  const gr = 76;
+  ctx.lineWidth = 16;
+  ctx.strokeStyle = "rgba(90,150,220,0.18)";
+  ctx.beginPath();
+  ctx.arc(gx, gy, gr, 0, Math.PI * 2);
+  ctx.stroke();
+  ctx.strokeStyle = CY;
+  ctx.lineCap = "round";
+  ctx.beginPath();
+  ctx.arc(gx, gy, gr, -Math.PI / 2, -Math.PI / 2 + Math.PI * 2 * 0.999);
+  ctx.stroke();
+  ctx.lineCap = "butt";
+  T("100%", gx, gy - 4, `700 36px ${FONT_SANS}`, TXT, "center", "middle");
+  T("OPTIMAL", gx, gy + 30, `600 14px ${FONT_MONO}`, DIM, "center", "middle");
+  /* metric list */
+  const metrics = ["POWER", "SHIELDS", "ENGINES", "COMMS"];
+  let my = 270;
+  metrics.forEach((m) => {
+    dot(gx + 130, my - 6, 5, CY);
+    T(m, gx + 150, my, `600 18px ${FONT_MONO}`, DIM);
+    T("100%", rx + rw - 30, my, `700 20px ${FONT_SANS}`, TXT, "right");
+    my += 44;
+  });
+
+  /* ---------- RIGHT: MISSION FEED ---------- */
+  panel(rx, 568, rw, 380);
+  T("MISSION FEED", rx + 30, 624, `600 18px ${FONT_MONO}`, TXT);
+  T("×", rx + rw - 34, 628, `500 26px ${FONT_SANS}`, DIM, "right");
+  const feed = [
+    ["23:46:58", "System check complete"],
+    ["23:46:31", "All nodes operational"],
+    ["23:46:02", "Data synchronization complete"],
+  ];
+  let fy = 690;
+  feed.forEach(([time, msg]) => {
+    dot(rx + 36, fy + 6, 5, OK);
+    T(time, rx + 56, fy, `600 16px ${FONT_MONO}`, CY);
+    T(msg, rx + 56, fy + 30, `500 18px ${FONT_SANS}`, "rgba(225,233,250,0.82)");
+    fy += 78;
+  });
+  T("VIEW ALL", rx + rw / 2, 922, `700 16px ${FONT_MONO}`, CY, "center");
+
+  /* ---------- RIGHT: QUICK ACTIONS ---------- */
+  panel(rx, 968, rw, 224);
+  T("QUICK ACTIONS", rx + 30, 1024, `600 18px ${FONT_MONO}`, TXT);
+  const actions = ["SCAN", "PING", "SYNC"];
+  const bw = (rw - 60 - 40) / 3;
+  actions.forEach((a, i) => {
+    const bx = rx + 30 + i * (bw + 20);
+    const by = 1060;
+    roundRect(ctx, bx, by, bw, 96, 12);
+    ctx.fillStyle = "rgba(63,208,255,0.08)";
+    ctx.fill();
+    ctx.strokeStyle = "rgba(63,208,255,0.3)";
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+    ctx.strokeStyle = CY;
+    ctx.lineWidth = 2.5;
+    ctx.beginPath();
+    ctx.arc(bx + bw / 2, by + 36, 13, 0, Math.PI * 2);
+    ctx.stroke();
+    T(a, bx + bw / 2, by + 78, `700 16px ${FONT_MONO}`, TXT, "center");
+  });
+
+  /* ---------- BOTTOM: ORBITAL PARAMETERS ---------- */
+  panel(372, 1064, 1010, 128);
+  T("ORBITAL PARAMETERS", 402, 1104, `600 15px ${FONT_MONO}`, DIM);
+  const params: [string, string][] = [
+    ["ALTITUDE", "35,786 km"],
+    ["VELOCITY", "7.67 km/s"],
+    ["INCLINATION", "98.2°"],
+    ["PERIOD", "92.7 min"],
+  ];
+  const pcw = 1010 / 4;
+  params.forEach(([k, v], i) => {
+    const px = 402 + i * pcw;
+    T(k, px, 1144, `500 15px ${FONT_MONO}`, DIM);
+    T(v, px, 1178, `700 26px ${FONT_SANS}`, TXT);
+  });
+}
+
 function paintScreen(canvas: HTMLCanvasElement, stage: number) {
   const ctx = canvas.getContext("2d");
   if (!ctx) return;
@@ -747,19 +992,10 @@ function paintScreen(canvas: HTMLCanvasElement, stage: number) {
   /* OLED pure black */
   ctx.fillStyle = "#000000";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
-  /* Cosmic-swirl wallpaper behind everything. Full strength on the
-   * dormant/boot stages (it IS the screen then), pushed back under the
-   * dashboard stages so the UI text stays legible on top of it. */
-  const swirlIntensity = stage === 0 ? 1 : stage <= 6 ? 0.85 : 0.5;
-  paintCosmicSwirl(ctx, canvas, swirlIntensity);
-  if (stage >= 7) {
-    /* Dark scrim so the dashboards read cleanly over the wallpaper */
-    ctx.fillStyle = "rgba(2,6,16,0.5)";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-  }
   if (stage === 0) {
-    /* Dormant: the swirl wallpaper plus a tiny power indicator so the
-     * screen reads as an idle desktop, not a broken display. */
+    /* Dormant (lid closed): a dim orbital wallpaper + a tiny power dot so
+     * the screen reads as an idle desktop, not a broken display. */
+    paintCosmicSwirl(ctx, canvas, 0.5);
     ctx.fillStyle = "rgba(0,245,255,0.55)";
     ctx.shadowColor = "rgba(0,245,255,0.9)";
     ctx.shadowBlur = 24;
@@ -769,15 +1005,8 @@ function paintScreen(canvas: HTMLCanvasElement, stage: number) {
     ctx.shadowBlur = 0;
     return;
   }
-  /* Top cyan accent strip */
-  ctx.fillStyle = "rgba(0,245,255,0.08)";
-  ctx.fillRect(0, 0, canvas.width, 6);
-  paintTitleBar(ctx, canvas, stage);
-  if (stage >= 1 && stage <= 6) paintBootSequence(ctx, canvas, stage);
-  else if (stage === 7) paintStreamsDashboard(ctx, canvas);
-  else if (stage === 8) paintProjectsDashboard(ctx, canvas);
-  else paintReadyState(ctx, canvas);
-  paintBrandStrip(ctx, canvas);
+  /* Lit: the full orbital dashboard, always on. */
+  paintOrbitalDashboard(ctx, canvas);
 }
 
 interface LivingScreen {
@@ -1543,151 +1772,252 @@ function makeFogHazeTexture(): THREE.Texture | null {
  *  stay within the laptop silhouette so they never crash into the
  *  headline column on the left of the frame. */
 
-const SLAB_STREAM_ICONS: ReadonlyArray<string> = ["⌬", "◐", "▢"];
+const SLAB_STREAM_ICONS: ReadonlyArray<string> = ["⛨", "❖", "▣"];
+
+/* Per-card HUD metadata (reference 2): category label, blurb, a progress
+ * bar value, level and duration. Indexed by the STREAMS array so the right
+ * data lands on whichever streams the hero surfaces. */
+type SlabMeta = {
+  category: string;
+  desc: string;
+  progress: number;
+  level: string;
+  duration: string;
+};
+const SLAB_CARD_META: ReadonlyArray<SlabMeta> = [
+  { category: "CYBER SECURITY", desc: "Learn to protect systems, analyze threats, and secure the digital world.", progress: 72, level: "Intermediate", duration: "12 Weeks" },
+  { category: "GAME DEVELOPMENT", desc: "Design mechanics, animate pixel art, and ship a game people play.", progress: 40, level: "Beginner", duration: "14 Weeks" },
+  { category: "AI & MACHINE LEARNING", desc: "Master AI foundations, machine learning, and build smart systems.", progress: 48, level: "Advanced", duration: "16 Weeks" },
+  { category: "APP DEVELOPMENT", desc: "Build production-ready apps and solve real-world problems.", progress: 30, level: "Advanced", duration: "10 Weeks" },
+  { category: "ENTREPRENEURSHIP", desc: "Validate ideas, craft a pitch, and launch a real business.", progress: 24, level: "Intermediate", duration: "12 Weeks" },
+  { category: "ROBOTICS", desc: "Wire sensors and motors, then code robots that move.", progress: 20, level: "Beginner", duration: "12 Weeks" },
+];
 
 function makeSlabTexture(
   stream: (typeof STREAMS)[number],
   icon: string,
+  meta: SlabMeta,
 ): THREE.Texture | null {
   if (typeof document === "undefined") return null;
   const c = document.createElement("canvas");
-  c.width = 384;
-  c.height = 512;
+  c.width = 420;
+  c.height = 540;
   const ctx = c.getContext("2d");
   if (!ctx) return null;
   ctx.clearRect(0, 0, c.width, c.height);
   ctx.imageSmoothingEnabled = true;
   ctx.imageSmoothingQuality = "high";
+  const W = c.width;
+  const H = c.height;
+  const PAD = 30;
 
   const accent = stream.color;
-  const accentRgb = hexToRgbStr(accent);
+  const rgb = hexToRgbStr(accent);
 
-  /* Dark glass panel — slightly translucent so the screen behind
-   *  still bleeds through faintly. */
-  const bgGrad = ctx.createLinearGradient(0, 0, 0, c.height);
-  bgGrad.addColorStop(0, "rgba(6,9,18,0.80)");
-  bgGrad.addColorStop(1, "rgba(2,4,10,0.84)");
+  /* Dark glass panel with a faint accent wash from the top corner */
+  const bgGrad = ctx.createLinearGradient(0, 0, 0, H);
+  bgGrad.addColorStop(0, "rgba(8,12,22,0.9)");
+  bgGrad.addColorStop(1, "rgba(3,5,12,0.92)");
   ctx.fillStyle = bgGrad;
-  roundRect(ctx, 0, 0, c.width, c.height, 18);
+  roundRect(ctx, 0, 0, W, H, 20);
   ctx.fill();
+  const wash = ctx.createRadialGradient(W * 0.5, 80, 20, W * 0.5, 80, W * 0.9);
+  wash.addColorStop(0, `rgba(${rgb},0.16)`);
+  wash.addColorStop(1, `rgba(${rgb},0)`);
+  ctx.fillStyle = wash;
+  ctx.fillRect(0, 0, W, H);
 
-  /* Inner accent halo behind the outcome text */
-  const halo = ctx.createRadialGradient(
-    c.width / 2, c.height * 0.42, 14,
-    c.width / 2, c.height * 0.42, c.width * 0.7,
-  );
-  halo.addColorStop(0, `rgba(${accentRgb},0.28)`);
-  halo.addColorStop(0.55, `rgba(${accentRgb},0.06)`);
-  halo.addColorStop(1, `rgba(${accentRgb},0)`);
-  ctx.fillStyle = halo;
-  ctx.fillRect(0, 0, c.width, c.height);
-
-  /* Accent rim */
+  /* Glowing accent border */
   ctx.lineWidth = 2;
-  ctx.strokeStyle = `rgba(${accentRgb},0.85)`;
+  ctx.strokeStyle = `rgba(${rgb},0.85)`;
   ctx.shadowColor = accent;
-  ctx.shadowBlur = 14;
-  roundRect(ctx, 3, 3, c.width - 6, c.height - 6, 16);
+  ctx.shadowBlur = 18;
+  roundRect(ctx, 4, 4, W - 8, H - 8, 17);
   ctx.stroke();
   ctx.shadowBlur = 0;
 
-  /* Corner brackets (JARVIS tell) */
+  /* Corner brackets on all four corners (HUD tell) */
+  ctx.strokeStyle = accent;
+  ctx.lineWidth = 2.5;
+  ctx.shadowColor = accent;
+  ctx.shadowBlur = 8;
+  const b = 26;
+  const m = 16;
+  ctx.beginPath();
+  ctx.moveTo(m, m + b); ctx.lineTo(m, m); ctx.lineTo(m + b, m);
+  ctx.moveTo(W - m - b, m); ctx.lineTo(W - m, m); ctx.lineTo(W - m, m + b);
+  ctx.moveTo(m, H - m - b); ctx.lineTo(m, H - m); ctx.lineTo(m + b, H - m);
+  ctx.moveTo(W - m - b, H - m); ctx.lineTo(W - m, H - m); ctx.lineTo(W - m, H - m - b);
+  ctx.stroke();
+  ctx.shadowBlur = 0;
+
+  /* Hexagon icon (top-left) with a short circuit-line tail */
+  const hx = PAD + 26;
+  const hy = 70;
+  const hr = 26;
+  const hexPath = (cx: number, cy: number, r: number) => {
+    ctx.beginPath();
+    for (let i = 0; i < 6; i++) {
+      const a = -Math.PI / 2 + i * (Math.PI / 3);
+      const x = cx + Math.cos(a) * r;
+      const y = cy + Math.sin(a) * r;
+      if (i === 0) ctx.moveTo(x, y);
+      else ctx.lineTo(x, y);
+    }
+    ctx.closePath();
+  };
+  hexPath(hx, hy, hr);
+  ctx.fillStyle = `rgba(${rgb},0.14)`;
+  ctx.fill();
   ctx.strokeStyle = accent;
   ctx.lineWidth = 2;
-  ctx.beginPath();
-  ctx.moveTo(20, 40); ctx.lineTo(20, 20); ctx.lineTo(40, 20);
-  ctx.moveTo(c.width - 40, c.height - 20); ctx.lineTo(c.width - 20, c.height - 20); ctx.lineTo(c.width - 20, c.height - 40);
-  ctx.stroke();
-
-  /* Icon top */
-  ctx.font = `bold 46px ${FONT_SANS}`;
-  ctx.fillStyle = accent;
   ctx.shadowColor = accent;
-  ctx.shadowBlur = 14;
-  ctx.textAlign = "left";
-  ctx.textBaseline = "alphabetic";
-  ctx.fillText(icon, 28, 80);
+  ctx.shadowBlur = 12;
+  ctx.stroke();
   ctx.shadowBlur = 0;
+  ctx.font = `600 24px ${FONT_SANS}`;
+  ctx.fillStyle = accent;
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  ctx.fillText(icon, hx, hy + 1);
+  /* circuit tail */
+  ctx.strokeStyle = `rgba(${rgb},0.5)`;
+  ctx.lineWidth = 1.6;
+  ctx.beginPath();
+  ctx.moveTo(hx + hr + 4, hy);
+  ctx.lineTo(hx + hr + 40, hy);
+  ctx.lineTo(hx + hr + 52, hy - 12);
+  ctx.stroke();
+  ctx.fillStyle = accent;
+  ctx.beginPath();
+  ctx.arc(hx + hr + 52, hy - 12, 3, 0, Math.PI * 2);
+  ctx.fill();
 
-  /* Outcome — 2-line balanced split with auto-fit font size */
+  /* Status badge (top-right) — filled for LIVE, outlined for COMING */
+  const isLive = stream.status === "LIVE";
+  const badge = isLive ? "LIVE NOW" : `COMING ${stream.status}`;
+  ctx.font = `700 14px ${FONT_MONO}`;
+  ctx.textAlign = "left";
+  ctx.textBaseline = "middle";
+  const dotW = isLive ? 16 : 0;
+  const bw = ctx.measureText(badge).width + 24 + dotW;
+  const bh = 30;
+  const bx = W - PAD - bw;
+  const by = 56;
+  roundRect(ctx, bx, by, bw, bh, 15);
+  if (isLive) {
+    ctx.fillStyle = `rgba(${rgb},0.18)`;
+    ctx.fill();
+  }
+  ctx.strokeStyle = `rgba(${rgb},0.7)`;
+  ctx.lineWidth = 1.4;
+  ctx.stroke();
+  let btx = bx + 14;
+  if (isLive) {
+    ctx.fillStyle = accent;
+    ctx.shadowColor = accent;
+    ctx.shadowBlur = 8;
+    ctx.beginPath();
+    ctx.arc(btx, by + bh / 2, 4, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.shadowBlur = 0;
+    btx += dotW;
+  }
+  ctx.fillStyle = accent;
+  ctx.fillText(badge, btx, by + bh / 2 + 1);
+
+  /* Title (the outcome) — 2-line balanced split, auto-fit */
   const words = stream.outcome.split(" ");
   let lines: string[];
   if (words.length <= 2) {
-    lines = words.length === 1 ? [words[0]] : words;
+    lines = words;
   } else {
-    ctx.font = `900 56px ${FONT_SANS}`;
+    ctx.font = `800 40px ${FONT_SANS}`;
     let bestSplit = Math.ceil(words.length / 2);
     let bestDelta = Infinity;
     for (let i = 1; i < words.length; i++) {
       const a = words.slice(0, i).join(" ");
-      const b = words.slice(i).join(" ");
-      const d = Math.abs(ctx.measureText(a).width - ctx.measureText(b).width);
+      const bb = words.slice(i).join(" ");
+      const d = Math.abs(ctx.measureText(a).width - ctx.measureText(bb).width);
       if (d < bestDelta) { bestDelta = d; bestSplit = i; }
     }
-    lines = [
-      words.slice(0, bestSplit).join(" "),
-      words.slice(bestSplit).join(" "),
-    ];
+    lines = [words.slice(0, bestSplit).join(" "), words.slice(bestSplit).join(" ")];
   }
-  let size = 54;
-  const maxW = c.width - 56;
-  while (
-    size > 24 &&
-    lines.some((ln) => {
-      ctx.font = `900 ${size}px ${FONT_SANS}`;
-      return ctx.measureText(ln).width > maxW;
-    })
-  ) {
-    size -= 2;
-  }
-  ctx.font = `900 ${size}px ${FONT_SANS}`;
+  let size = 38;
+  const maxW = W - PAD * 2;
+  while (size > 22 && lines.some((ln) => {
+    ctx.font = `800 ${size}px ${FONT_SANS}`;
+    return ctx.measureText(ln).width > maxW;
+  })) size -= 2;
+  ctx.font = `800 ${size}px ${FONT_SANS}`;
   ctx.fillStyle = "#ffffff";
-  ctx.shadowColor = `rgba(${accentRgb},0.55)`;
-  ctx.shadowBlur = 16;
   ctx.textAlign = "left";
-  const lineH = size * 1.06;
-  const blockTop = 140;
-  const blockBot = c.height - 130;
-  const blockH = lines.length * lineH;
-  const startY = blockTop + (blockBot - blockTop - blockH) / 2 + size * 0.82;
-  lines.forEach((ln, i) => {
-    ctx.fillText(ln, 28, startY + i * lineH);
+  ctx.textBaseline = "alphabetic";
+  const titleH = size * 1.08;
+  let ty = 168;
+  lines.forEach((ln, i) => ctx.fillText(ln, PAD, ty + i * titleH));
+  ty += (lines.length - 1) * titleH;
+
+  /* Description — word-wrapped, dim */
+  const wrap = (text: string, mw: number, font: string) => {
+    ctx.font = font;
+    const ws = text.split(" ");
+    const out: string[] = [];
+    let line = "";
+    for (const w of ws) {
+      const test = line ? `${line} ${w}` : w;
+      if (ctx.measureText(test).width > mw && line) {
+        out.push(line);
+        line = w;
+      } else line = test;
+    }
+    if (line) out.push(line);
+    return out;
+  };
+  const descFont = `500 18px ${FONT_SANS}`;
+  const descLines = wrap(meta.desc, maxW, descFont).slice(0, 3);
+  ctx.font = descFont;
+  ctx.fillStyle = "rgba(220,228,245,0.62)";
+  let dy = ty + 44;
+  descLines.forEach((ln) => {
+    ctx.fillText(ln, PAD, dy);
+    dy += 27;
   });
-  ctx.shadowBlur = 0;
 
-  /* Divider */
-  ctx.fillStyle = `rgba(${accentRgb},0.32)`;
-  ctx.fillRect(28, c.height - 108, c.width - 56, 1);
-
-  /* Stream name + age sub */
-  ctx.font = `bold 17px ${FONT_MONO}`;
+  /* Progress bar */
+  const py = H - 150;
+  ctx.font = `600 13px ${FONT_MONO}`;
+  ctx.fillStyle = "rgba(220,228,245,0.5)";
+  ctx.textAlign = "left";
+  ctx.fillText("PROGRESS", PAD, py);
+  ctx.font = `700 18px ${FONT_SANS}`;
   ctx.fillStyle = accent;
-  ctx.shadowColor = accent;
-  ctx.shadowBlur = 8;
-  ctx.fillText(stream.name, 28, c.height - 78);
-  ctx.shadowBlur = 0;
-  ctx.font = `500 13px ${FONT_MONO}`;
-  ctx.fillStyle = "rgba(232,237,255,0.55)";
-  ctx.fillText(`AGES ${stream.age}  ·  ${stream.project}`, 28, c.height - 56);
-
-  /* Status pill bottom-right */
-  ctx.font = `bold 13px ${FONT_MONO}`;
-  const sw = ctx.measureText(stream.status).width;
-  const spad = 11;
-  const sbw = sw + spad * 2;
-  const sbh = 22;
-  const sbx = c.width - 28 - sbw;
-  const sby = c.height - 42;
+  ctx.textAlign = "right";
+  ctx.fillText(`${meta.progress}%`, W - PAD, py + 2);
+  const barY = py + 16;
+  const barW = W - PAD * 2;
+  ctx.fillStyle = "rgba(230,238,255,0.1)";
+  roundRect(ctx, PAD, barY, barW, 8, 4);
+  ctx.fill();
   ctx.fillStyle = accent;
   ctx.shadowColor = accent;
   ctx.shadowBlur = 10;
-  roundRect(ctx, sbx, sby, sbw, sbh, 5);
+  roundRect(ctx, PAD, barY, (barW * meta.progress) / 100, 8, 4);
   ctx.fill();
   ctx.shadowBlur = 0;
-  ctx.fillStyle = "#04050d";
-  ctx.textAlign = "center";
-  ctx.textBaseline = "middle";
-  ctx.fillText(stream.status, sbx + sbw / 2, sby + sbh / 2);
+
+  /* Divider + LEVEL / DURATION footer */
+  ctx.fillStyle = `rgba(${rgb},0.22)`;
+  ctx.fillRect(PAD, H - 96, barW, 1);
+  ctx.textAlign = "left";
+  ctx.font = `600 12px ${FONT_MONO}`;
+  ctx.fillStyle = "rgba(220,228,245,0.5)";
+  ctx.fillText("LEVEL", PAD, H - 64);
+  ctx.fillText("DURATION", W / 2 + 6, H - 64);
+  ctx.font = `600 19px ${FONT_SANS}`;
+  ctx.fillStyle = "#eef3ff";
+  ctx.fillText(meta.level, PAD, H - 36);
+  ctx.fillText(meta.duration, W / 2 + 6, H - 36);
 
   const out = new THREE.CanvasTexture(c);
   out.colorSpace = THREE.SRGBColorSpace;
@@ -2202,7 +2532,7 @@ function ScreenSlabs({ progress }: { progress: MotionValue<number> }) {
 
   /* Two texture sets: compact (default) and detail (revealed on hover). */
   const compactTextures = useMemo(
-    () => slabs.map((s) => makeSlabTexture(s.stream, s.icon)),
+    () => slabs.map((s) => makeSlabTexture(s.stream, s.icon, SLAB_CARD_META[s.streamIdx])),
     [slabs],
   );
   const detailTextures = useMemo(
