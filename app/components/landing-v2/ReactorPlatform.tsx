@@ -39,18 +39,25 @@ type BlockDef = {
 
 /* Positions are relative to the chamber centre (RIG_X). The laptop sits
  * near the origin, so panels are scattered clear of its footprint. */
+/* Edge hues are deliberately BRIGHT near-white-cyan/blue: a saturated
+ * mid-cyan sits below the bloom luminance threshold and never blooms, so
+ * the edges read as flat 1px lines. These lighter tints cross the
+ * threshold and bloom into the crisp glowing edge-trim the reference has. */
 const BLOCKS: BlockDef[] = [
-  /* near + mid floor panels — raised tech steps flanking the laptop */
-  { pos: [-3.2, -0.05, 1.2], size: [1.8, 0.42, 1.5], ignite: [0.18, 0.36], hue: "#33a6ff", edge: 0.5 },
-  { pos: [3.4, -0.08, 0.2], size: [1.6, 0.46, 1.7], ignite: [0.24, 0.42], hue: "#33a6ff", edge: 0.5 },
-  { pos: [-2.4, -0.1, -2.4], size: [1.4, 0.5, 1.4], ignite: [0.32, 0.5], hue: "#2f8fff", edge: 0.42 },
-  { pos: [3.0, -0.12, -2.8], size: [1.7, 0.5, 1.5], ignite: [0.4, 0.58], hue: "#7c5cff", edge: 0.38 },
-  { pos: [-4.8, -0.15, -0.6], size: [1.3, 0.6, 1.3], ignite: [0.46, 0.64], hue: "#2f8fff", edge: 0.36 },
-  { pos: [4.7, -0.16, -1.8], size: [1.2, 0.6, 1.2], ignite: [0.5, 0.68], hue: "#33a6ff", edge: 0.34 },
+  /* near + mid floor panels — biased toward the laptop (right) so they
+   * frame it instead of crowding the headline column on the left. */
+  { pos: [3.2, -0.06, 1.0], size: [1.6, 0.4, 1.5], ignite: [0.18, 0.36], hue: "#bfeaff", edge: 0.9 },
+  { pos: [4.6, -0.12, -0.9], size: [1.5, 0.5, 1.6], ignite: [0.26, 0.44], hue: "#bfeaff", edge: 0.85 },
+  { pos: [2.8, -0.12, -2.9], size: [1.7, 0.5, 1.5], ignite: [0.36, 0.54], hue: "#a9d4ff", edge: 0.8 },
+  { pos: [5.2, -0.16, -2.6], size: [1.3, 0.6, 1.3], ignite: [0.44, 0.62], hue: "#cbbcff", edge: 0.7 }, // violet accent
+  /* a couple on the left, pushed BACK so they add depth without sitting
+   * under the headline. */
+  { pos: [-3.4, -0.12, -3.4], size: [1.5, 0.5, 1.5], ignite: [0.3, 0.5], hue: "#a9d4ff", edge: 0.75 },
+  { pos: [-4.8, -0.18, -1.6], size: [1.3, 0.62, 1.3], ignite: [0.4, 0.6], hue: "#bfeaff", edge: 0.7 },
   /* far monoliths — tall dark slabs receding into the chamber depth */
-  { pos: [-3.0, 1.2, -8.0], size: [1.4, 5.0, 0.6], ignite: [0.3, 0.7], hue: "#1f4f8f", edge: 0.26, far: true },
-  { pos: [3.5, 1.6, -8.6], size: [1.1, 6.0, 0.6], ignite: [0.35, 0.75], hue: "#1f4f8f", edge: 0.22, far: true },
-  { pos: [0.4, 2.0, -9.2], size: [1.6, 6.6, 0.5], ignite: [0.4, 0.8], hue: "#1f4f8f", edge: 0.2, far: true },
+  { pos: [-3.0, 1.2, -8.2], size: [1.4, 5.0, 0.6], ignite: [0.3, 0.7], hue: "#6fa8e0", edge: 0.5, far: true },
+  { pos: [3.6, 1.6, -8.8], size: [1.1, 6.0, 0.6], ignite: [0.35, 0.75], hue: "#6fa8e0", edge: 0.46, far: true },
+  { pos: [0.6, 2.0, -9.4], size: [1.6, 6.6, 0.5], ignite: [0.4, 0.8], hue: "#6fa8e0", edge: 0.42, far: true },
 ];
 
 function Block({
@@ -106,14 +113,19 @@ export default function ReactorPlatform({
   reducedMotion?: boolean;
   lowPower?: boolean;
 }) {
-  /* shared dark-navy panel body — memoised, reused across every block. */
+  /* shared panel body — a lighter navy than before with a faint emissive
+   * floor so the faces read as lit PANELS (catching the key light as a
+   * gradient across the face, like the reference) instead of black holes.
+   * Memoised, reused across every block. */
   const bodyMat = useMemo(
     () =>
       new THREE.MeshStandardMaterial({
-        color: "#0b1220",
-        metalness: 0.55,
-        roughness: 0.55,
-        envMapIntensity: 0.4,
+        color: "#16223a",
+        metalness: 0.5,
+        roughness: 0.5,
+        envMapIntensity: 0.75,
+        emissive: new THREE.Color("#0a1426"),
+        emissiveIntensity: 0.6,
       }),
     [],
   );

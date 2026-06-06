@@ -1208,24 +1208,30 @@ function makeInstrumentPlateTexture(
     ctx.shadowBlur = 0;
   };
 
-  const N = deep ? 6 : soft ? 8 : 10;
+  const N = deep ? 7 : soft ? 9 : 12;
+  const baseTilt = -0.18; // shared tilt so the outer bands read as a family
   for (let i = 0; i < N; i++) {
     const t = i / (N - 1);
-    /* radius grows outward, denser toward the centre */
-    const rN = 0.12 + Math.pow(t, 1.15) * 0.9;
+    /* fairly even spacing so the outer bands space like a parallel family */
+    const rN = 0.12 + Math.pow(t, 1.05) * 0.92;
     const rx = rN * Rmax;
-    const squash = 0.5 + 0.24 * hash(i * 3.3); // perspective ellipse squash
+    /* HYBRID: round/concentric near the centre → progressively FLAT,
+     * elongated parallel bands toward the edges (the reference's
+     * curved-wall flow). `flat` runs 0 (inner) → 1 (outer). */
+    const flat = smoothstep(0.25, 0.85, rN);
+    const squash = lerp(0.6, 0.15, flat);
     const ry = rx * squash;
-    /* organic per-ribbon drift of the centre + a slight tilt, so the set
-     * never reads as perfectly concentric — it flows. */
+    /* per-ribbon centre drift shrinks outward so the flat outer bands
+     * nest as near-parallel streaks; inner ones keep an organic offset. */
     const driftA = hash(i * 7.1) * Math.PI * 2;
-    const driftR = (hash(i * 2.9) - 0.5) * S * 0.07;
+    const driftR = (hash(i * 2.9) - 0.5) * S * 0.05 * (1 - flat * 0.7);
     const ex = cx + Math.cos(driftA) * driftR;
-    const ey = cy + Math.sin(driftA) * driftR * 0.5;
-    const rot = (hash(i * 5.7) - 0.5) * 0.55 - 0.22;
-    /* a long, sweeping partial arc (a flowing band, not a closed ring) */
+    const ey = cy + Math.sin(driftA) * driftR * 0.4;
+    /* tilt converges to the shared base tilt outward (parallel family) */
+    const rot = baseTilt + (hash(i * 5.7) - 0.5) * 0.32 * (1 - flat * 0.6);
+    /* longer arcs toward the edges so the flat bands sweep right across */
     const a0 = hash(i * 4.3) * Math.PI * 2;
-    const a1 = a0 + Math.PI * (1.05 + hash(i * 9.2) * 0.7);
+    const a1 = a0 + Math.PI * (1.0 + hash(i * 9.2) * 0.6 + flat * 0.45);
     const a = (1 - rN * 0.5) * (soft ? 0.6 : deep ? 0.42 : 1.0);
     if (a < 0.03) continue;
     /* palette: mostly cyan/blue with sparse violet accents */
@@ -2150,8 +2156,8 @@ export default function LaptopScene({ progress, reducedMotion = false }: LaptopS
         />
         <Bloom
           intensity={lowPower ? 0.45 : 0.6}
-          luminanceThreshold={0.78}
-          luminanceSmoothing={0.12}
+          luminanceThreshold={0.62}
+          luminanceSmoothing={0.28}
           radius={0.6}
           mipmapBlur
         />
