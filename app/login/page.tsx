@@ -71,8 +71,6 @@ function LoginPageInner() {
   };
 
   /* 0–1 completion, used to intensify the scene's light spill on the form. */
-  const progressNorm = [emailValid, passwordPresent && emailValid].filter(Boolean).length / 2;
-
   const buttonState: AuthButtonState = phase === "loading" ? "loading" : granted ? "success" : "idle";
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -135,12 +133,10 @@ function LoginPageInner() {
     >
       <AuthBackdrop />
 
-      {/* Tablet/mobile: the reactor sits behind the form slab. */}
-      {!isDesktop && (
-        <div className="absolute inset-0" style={{ zIndex: 0, pointerEvents: "none" }}>
-          <AuthReactorScene state={machineState} />
-        </div>
-      )}
+      {/* Full-bleed moving chamber with the reactor centred; form floats over it. */}
+      <div className="absolute inset-0" style={{ zIndex: 1, pointerEvents: "none" }}>
+        <AuthReactorScene state={machineState} />
+      </div>
 
       <div
         className="relative mx-auto min-h-screen w-full items-center gap-8 px-6"
@@ -317,25 +313,6 @@ function LoginPageInner() {
           </div>
         </div>
 
-        {/* RIGHT — the Sentinel (desktop). A faint light spill on the form
-            edge ties the two together. */}
-        {isDesktop && (
-          <div className="relative self-stretch">
-            <div
-              aria-hidden
-              className="absolute inset-y-0 left-0"
-              style={{
-                width: 160,
-                background: `linear-gradient(90deg, ${rgba(ACCESS.violet, 0.06 + progressNorm * 0.1)} 0%, transparent 100%)`,
-                pointerEvents: "none",
-                transition: "background 600ms ease",
-              }}
-            />
-            <div className="absolute inset-0">
-              <AuthReactorScene state={machineState} />
-            </div>
-          </div>
-        )}
       </div>
 
       {/* Desktop: the Living Hub's fly-in carries the success moment.

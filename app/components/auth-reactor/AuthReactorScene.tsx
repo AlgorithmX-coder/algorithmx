@@ -16,7 +16,7 @@ function CanvasInner({ state }: { state: AuthMachineState }) {
   return (
     <Canvas
       dpr={QUALITY[state.quality].dpr}
-      camera={{ position: [0, 0.15, 6.2], fov: 42 }}
+      camera={{ position: [0, 0.5, 6.6], fov: 42 }}
       gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
       style={{ width: "100%", height: "100%", background: "transparent", pointerEvents: "none" }}
     >

@@ -4,6 +4,7 @@ import { useFrame } from "@react-three/fiber";
 import { useControls } from "leva";
 import * as THREE from "three";
 import AuthReactorEnvironment from "./AuthReactorEnvironment";
+import AuthReactorChamber from "./AuthReactorChamber";
 import AuthReactorLighting from "./AuthReactorLighting";
 import AuthReactorEffects from "./AuthReactorEffects";
 import AuthReactorModel from "./AuthReactorModel";
@@ -20,12 +21,15 @@ function Rig({ stage, reducedMotion }: { stage: AuthReactorStage; reducedMotion:
   useFrame((st, dt) => {
     const cam = st.camera;
     const success = stage === 7;
-    const tz = reducedMotion ? 6.2 : success ? 5.2 : 6.2;
-    const dx = reducedMotion || success ? 0 : Math.sin(st.clock.elapsedTime * 0.1) * 0.25;
-    cam.position.z = lerp(cam.position.z, tz, Math.min(1, dt * (success ? 2.2 : 1.4)));
-    cam.position.x = lerp(cam.position.x, dx, Math.min(1, dt * 1.4));
-    cam.position.y = lerp(cam.position.y, 0.15, Math.min(1, dt * 1.4));
-    cam.lookAt(0, 0, 0);
+    const t = st.clock.elapsedTime;
+    // Slightly elevated, looking down a touch so the chamber floor reads.
+    const tz = reducedMotion ? 6.6 : success ? 5.6 : 6.6;
+    const dx = reducedMotion || success ? 0 : Math.sin(t * 0.1) * 0.3;
+    const dy = reducedMotion ? 0.5 : 0.5 + (success ? -0.1 : Math.sin(t * 0.07) * 0.1);
+    cam.position.z = lerp(cam.position.z, tz, Math.min(1, dt * (success ? 2 : 1.2)));
+    cam.position.x = lerp(cam.position.x, dx, Math.min(1, dt * 1.2));
+    cam.position.y = lerp(cam.position.y, dy, Math.min(1, dt * 1.2));
+    cam.lookAt(0, -0.15, 0);
   });
   return null;
 }
@@ -51,6 +55,7 @@ export default function AuthReactorController({ state }: { state: AuthMachineSta
   return (
     <>
       <AuthReactorEnvironment quality={state.quality} />
+      <AuthReactorChamber quality={state.quality} reducedMotion={state.reducedMotion} />
       <AuthReactorLighting energy={energy} isError={stage === 8} />
       <AuthReactorModel
         stage={stage}

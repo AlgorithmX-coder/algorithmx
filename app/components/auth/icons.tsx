@@ -136,3 +136,12 @@ export function IconArrow(p: IconProps) {
     </Base>
   );
 }
+
+/** Power bolt. */
+export function IconBolt(p: IconProps) {
+  return (
+    <Base {...p}>
+      <path d="M13 2 4.5 13.5H11l-1 8.5L19.5 10.5H13l0-8.5z" />
+    </Base>
+  );
+}

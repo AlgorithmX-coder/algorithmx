@@ -28,6 +28,8 @@ export interface AuthButtonProps extends Omit<HTMLMotionProps<"button">, "childr
   loadingLabel?: ReactNode;
   successLabel?: ReactNode;
   disabledHint?: string;
+  /** Leading glyph for idle/armed/disabled states (default: key). */
+  leadingIcon?: ReactNode;
 }
 
 export default function AuthButton({
@@ -36,6 +38,7 @@ export default function AuthButton({
   loadingLabel = "Working…",
   successLabel = "Done",
   disabledHint,
+  leadingIcon,
   type = "submit",
   ...rest
 }: AuthButtonProps) {
@@ -117,7 +120,7 @@ export default function AuthButton({
           ) : isSuccess ? (
             <IconCheck size={17} />
           ) : (
-            <IconKey size={16} />
+            leadingIcon ?? <IconKey size={16} />
           )}
 
           {label}
