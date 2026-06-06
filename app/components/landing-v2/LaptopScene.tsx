@@ -160,44 +160,135 @@ function useLidBloomTexture(): THREE.Texture | null {
   }, []);
 }
 
-/* DECK BADGE — a small printed brand badge for the palm rest (front-
- * right of the deck). Two lines: "AlgorithmX" in blue over a larger
- * "AX" monogram in red, each with a tight matching halo so it reads as
- * a subtly back-lit printed badge on the gunmetal. Letters-only on a
- * transparent background. */
-function makeDeckBadgeTexture(): THREE.Texture | null {
-  if (typeof document === "undefined") return null;
-  const c = document.createElement("canvas");
-  c.width = 512;
-  c.height = 256;
-  const ctx = c.getContext("2d");
-  if (!ctx) return null;
-  ctx.clearRect(0, 0, c.width, c.height);
-  ctx.imageSmoothingEnabled = true;
-  ctx.imageSmoothingQuality = "high";
-  const cx = c.width / 2;
-  ctx.textAlign = "center";
-  ctx.textBaseline = "middle";
+/* DECK BADGE — a ThinkPad-X1-style brand badge for the palm rest
+ * (front-right of the deck). "Algorithm" in brushed silver with a
+ * glowing red dot on the "i", followed by an oversized glowing red
+ * "X". Returns TWO textures sharing the exact same layout:
+ *   - crisp:  the silver letters + sharp red glyphs (normal-blended)
+ *   - glow:   ONLY the red elements, drawn big + blurred + with a hot
+ *             pinkish core, so an additive plane on top adds real,
+ *             bloom-catching red light (the "brighter light" cue).
+ * Both planes share one transform so they register pixel-for-pixel. */
+const BADGE_W = 512;
+const BADGE_H = 256;
+function badgeLayout(ctx: CanvasRenderingContext2D) {
+  const x0 = 40;
+  const baseY = 188;
+  const algoFont = "800 70px ui-sans-serif, system-ui, sans-serif";
+  const xFont = "900 156px ui-sans-serif, system-ui, sans-serif";
+  ctx.font = algoFont;
+  const algoW = ctx.measureText("Algorithm").width;
+  const preI = ctx.measureText("Algor").width;
+  const iW = ctx.measureText("i").width;
+  return {
+    x0,
+    baseY,
+    algoFont,
+    xFont,
+    algoW,
+    dotX: x0 + preI + iW * 0.5,
+    dotY: baseY - 52,
+    dotR: 7,
+    xX: x0 + algoW - 6,
+    xY: baseY + 22,
+  };
+}
+function makeDeckBadgeTextures(): {
+  crisp: THREE.Texture | null;
+  glow: THREE.Texture | null;
+} {
+  if (typeof document === "undefined") return { crisp: null, glow: null };
+  const mk = () => {
+    const c = document.createElement("canvas");
+    c.width = BADGE_W;
+    c.height = BADGE_H;
+    const ctx = c.getContext("2d");
+    if (ctx) {
+      ctx.clearRect(0, 0, c.width, c.height);
+      ctx.imageSmoothingEnabled = true;
+      ctx.imageSmoothingQuality = "high";
+      ctx.textAlign = "left";
+      ctx.textBaseline = "alphabetic";
+    }
+    return { c, ctx };
+  };
 
-  /* "AlgorithmX" wordmark — blue */
-  ctx.shadowColor = "rgba(70,150,255,0.6)";
-  ctx.shadowBlur = 8;
-  ctx.font = "800 66px ui-sans-serif, system-ui, sans-serif";
-  ctx.fillStyle = "#7db4ff";
-  ctx.fillText("AlgorithmX", cx, 74);
+  /* ── crisp layer ── */
+  const { c: cc, ctx: cctx } = mk();
+  if (!cctx) return { crisp: null, glow: null };
+  const L = badgeLayout(cctx);
+  /* brushed-silver vertical gradient for the wordmark */
+  const silver = cctx.createLinearGradient(0, L.baseY - 56, 0, L.baseY + 6);
+  silver.addColorStop(0, "#f2f5fa");
+  silver.addColorStop(0.5, "#c2c9d4");
+  silver.addColorStop(1, "#9aa2b0");
+  cctx.font = L.algoFont;
+  cctx.fillStyle = silver;
+  cctx.shadowColor = "rgba(8,10,16,0.6)";
+  cctx.shadowBlur = 3;
+  cctx.shadowOffsetY = 1;
+  cctx.fillText("Algorithm", L.x0, L.baseY);
+  cctx.shadowOffsetY = 0;
+  /* big red X */
+  cctx.font = L.xFont;
+  cctx.shadowColor = "rgba(255,40,60,0.95)";
+  cctx.shadowBlur = 18;
+  cctx.fillStyle = "#ff2f40";
+  cctx.fillText("X", L.xX, L.xY);
+  /* hot core pass so the X reads bright, not flat */
+  cctx.shadowBlur = 0;
+  cctx.fillStyle = "rgba(255,150,165,0.55)";
+  cctx.font = L.xFont;
+  cctx.fillText("X", L.xX, L.xY);
+  /* red dot on the i */
+  cctx.shadowColor = "rgba(255,40,60,0.95)";
+  cctx.shadowBlur = 14;
+  cctx.fillStyle = "#ff3344";
+  cctx.beginPath();
+  cctx.arc(L.dotX, L.dotY, L.dotR, 0, Math.PI * 2);
+  cctx.fill();
+  const crisp = new THREE.CanvasTexture(cc);
+  crisp.colorSpace = THREE.SRGBColorSpace;
+  crisp.anisotropy = 16;
+  crisp.needsUpdate = true;
 
-  /* "AX" monogram — red, larger */
-  ctx.shadowColor = "rgba(255,70,90,0.6)";
-  ctx.shadowBlur = 10;
-  ctx.font = "900 128px ui-sans-serif, system-ui, sans-serif";
-  ctx.fillStyle = "#ff5566";
-  ctx.fillText("AX", cx, 178);
+  /* ── glow layer (red only, big + blurred + hot pink core → blooms) ── */
+  const { c: gc, ctx: gctx } = mk();
+  if (gctx) {
+    gctx.globalCompositeOperation = "lighter";
+    /* soft red light pool behind the X */
+    const pool = gctx.createRadialGradient(
+      L.xX + 70, L.xY - 50, 4,
+      L.xX + 70, L.xY - 50, 150,
+    );
+    pool.addColorStop(0, "rgba(255,60,80,0.55)");
+    pool.addColorStop(1, "rgba(255,40,60,0)");
+    gctx.fillStyle = pool;
+    gctx.fillRect(0, 0, gc.width, gc.height);
+    /* blurred red X */
+    gctx.shadowColor = "rgba(255,50,70,1)";
+    gctx.shadowBlur = 40;
+    gctx.font = L.xFont;
+    gctx.fillStyle = "#ff5566";
+    gctx.fillText("X", L.xX, L.xY);
+    /* hot near-white-pink core so it crosses the bloom threshold */
+    gctx.shadowBlur = 10;
+    gctx.fillStyle = "rgba(255,170,185,0.9)";
+    gctx.fillText("X", L.xX, L.xY);
+    /* blurred i-dot */
+    gctx.shadowColor = "rgba(255,50,70,1)";
+    gctx.shadowBlur = 22;
+    gctx.fillStyle = "#ff6677";
+    gctx.beginPath();
+    gctx.arc(L.dotX, L.dotY, L.dotR + 1, 0, Math.PI * 2);
+    gctx.fill();
+  }
+  const glow = new THREE.CanvasTexture(gc);
+  glow.colorSpace = THREE.SRGBColorSpace;
+  glow.anisotropy = 16;
+  glow.needsUpdate = true;
 
-  const tex = new THREE.CanvasTexture(c);
-  tex.colorSpace = THREE.SRGBColorSpace;
-  tex.anisotropy = 16;
-  tex.needsUpdate = true;
-  return tex;
+  return { crisp, glow };
 }
 
 /* LIVING SCREEN - multi-stage canvas texture that repaints as scroll
@@ -987,15 +1078,11 @@ function tuneGroundTexture(tex: THREE.Texture): void {
   tex.generateMipmaps = true;
 }
 
-/* PLATFORM SUBSTRATE — the dark engineered MATERIAL the luminous channels are
- * cut into. This is the layer that makes the lines read as 3D: it is
- * NORMAL-blended (not additive), so unlike the glow layer it can paint real
- * DARKS — recessed groove troughs and directional rim shadows — plus a
- * lighter lit bevel edge. Drawn under the illumination layer so the bright
- * cores sit INSIDE the grooves. Geometry (ring radii + channel angles +
- * Rmax) is kept identical to the surface variant of the illumination plate so
- * the cores land in the grooves. Light is treated as coming from canvas-top
- * (the far side), so the near wall of each recess catches the highlight. */
+/* PLATFORM SUBSTRATE — dense machined gunmetal the reactor arcs are recessed
+ * into. Concentric PANEL BANDS divided into plates by radial seams, each plate
+ * tone-varied with a lit outer rim + dark inner shadow, sparse inset greebles
+ * and tiny embedded light dots. NORMAL-blended so it paints real darks (the
+ * manufactured detail in the reference). */
 function makePlatformSubstrateTexture(): THREE.Texture | null {
   if (typeof document === "undefined") return null;
   const S = 2048;
@@ -1008,145 +1095,52 @@ function makePlatformSubstrateTexture(): THREE.Texture | null {
   ctx.clearRect(0, 0, S, S);
   const cx = S / 2;
   const cy = S / 2;
-  const Rmax = S * 0.33; // matches the surface illumination plate
+  const Rmax = S * 0.46;
   const hash = (n: number) => {
     const s = Math.sin(n * 127.1) * 43758.5453;
     return s - Math.floor(s);
   };
-  const gaps = [
-    { a: 2.5, w: 0.4 },
-    { a: -2.15, w: 0.32 },
-  ];
 
-  /* 1. Dark engineered material disc — a subtle near-black panel that fades
-   *    to transparent well before the edge (so the platform still reads as
-   *    suspended over the void, not a solid slab). A faint cooler centre
-   *    suggests light pooling under the chassis. */
-  const base = ctx.createRadialGradient(cx, cy, 0, cx, cy, Rmax * 1.05);
-  base.addColorStop(0, "rgba(12,19,30,0.92)");
-  base.addColorStop(0.55, "rgba(8,13,22,0.82)");
-  base.addColorStop(0.82, "rgba(4,7,13,0.45)");
+  /* CLEAN DEEP-NAVY SURFACE — a smooth dark base the flowing ribbons sit
+   * on (replaces the old concentric machined-plate circuitry, which
+   * clashed with the new ribbon floor). Deep navy at the centre, fading
+   * to transparent before the edge so the platform still reads as
+   * suspended over the void, with a faint cooler pool under the chassis. */
+  const base = ctx.createRadialGradient(cx, cy, 0, cx, cy, Rmax * 1.04);
+  base.addColorStop(0, "rgba(16,26,46,0.96)");
+  base.addColorStop(0.45, "rgba(10,17,33,0.9)");
+  base.addColorStop(0.78, "rgba(5,9,20,0.6)");
   base.addColorStop(1, "rgba(0,0,0,0)");
   ctx.fillStyle = base;
   ctx.fillRect(0, 0, S, S);
-  /* faint concentric brushed tone — deterministic, very low contrast, gives
-   * the surface a machined-metal substrate feel rather than flat fill */
-  for (let i = 0; i < 26; i++) {
-    const r = (i / 26) * Rmax;
-    ctx.strokeStyle = `rgba(${i % 2 ? 26 : 4},${i % 2 ? 36 : 10},${i % 2 ? 52 : 18},0.05)`;
-    ctx.lineWidth = 6;
+
+  /* very faint cool sheen pooling under the chassis */
+  const sheen = ctx.createRadialGradient(cx, cy, 0, cx, cy, S * 0.3);
+  sheen.addColorStop(0, "rgba(40,90,150,0.12)");
+  sheen.addColorStop(1, "rgba(40,90,150,0)");
+  ctx.fillStyle = sheen;
+  ctx.fillRect(0, 0, S, S);
+
+  /* extremely subtle concentric brushed tone — low contrast, no plates,
+   * just enough to keep the dark surface from banding flat. */
+  for (let i = 0; i < 22; i++) {
+    const r = (i / 22) * Rmax;
+    const v = i % 2 ? 22 : 8;
+    ctx.strokeStyle = `rgba(${v},${v + 8},${v + 20},0.04)`;
+    ctx.lineWidth = 7;
     ctx.beginPath();
     ctx.arc(cx, cy, r, 0, Math.PI * 2);
     ctx.stroke();
   }
+  void hash;
 
-  ctx.lineCap = "round";
-  ctx.lineJoin = "round";
-  /* recessed-channel profile: a dark shadow rim on the far edge, the dark
-   * groove trough, then a lit bevel rim on the near edge — drawn by offsetting
-   * the same path in canvas-Y for a consistent top-light direction. */
-  const profile = (draw: () => void, w: number, fade: number) => {
-    /* far wall — deep shadow rim (the recess reads darker than the base) */
-    ctx.save();
-    ctx.translate(0, -2.6);
-    ctx.lineWidth = w * 0.6;
-    ctx.strokeStyle = `rgba(0,1,3,${0.72 * fade})`;
-    draw();
-    ctx.restore();
-    /* groove trough — the dark channel cut into the material */
-    ctx.lineWidth = w;
-    ctx.strokeStyle = `rgba(1,3,7,${0.92 * fade})`;
-    draw();
-    /* near wall — bright lit bevel edge (top-light), the strongest 3D cue */
-    ctx.save();
-    ctx.translate(0, 2.6);
-    ctx.lineWidth = w * 0.34;
-    ctx.strokeStyle = `rgba(158,188,218,${0.72 * fade})`;
-    draw();
-    ctx.restore();
-    /* a faint second highlight just inside the lit edge for a rounded,
-     * glass-like channel lip rather than a flat chamfer */
-    ctx.save();
-    ctx.translate(0, 1.4);
-    ctx.lineWidth = w * 0.18;
-    ctx.strokeStyle = `rgba(200,222,242,${0.4 * fade})`;
-    draw();
-    ctx.restore();
-  };
-
-  /* 2. RING grooves (continuous machined channels; the light flowing through
-   *    them is segmented by the illumination layer above). */
-  const rings = [0.16, 0.27, 0.42, 0.6, 0.8];
-  for (const rN of rings) {
-    const rPx = rN * Rmax;
-    const fade = Math.max(0.15, 1 - rN * 0.8);
-    profile(() => {
-      ctx.beginPath();
-      ctx.arc(cx, cy, rPx, 0, Math.PI * 2);
-      ctx.stroke();
-    }, rN < 0.3 ? 9 : 7, fade);
-  }
-
-  /* 3. RADIAL CHANNEL grooves — same angles as the illumination channels. */
-  for (let i = 0; i < 16; i++) {
-    const ang = (i / 16) * Math.PI * 2 + (hash(i * 5.7) - 0.5) * 0.12;
-    const x0 = cx + Math.cos(ang) * 0.8 * Rmax;
-    const y0 = cy + Math.sin(ang) * 0.8 * Rmax;
-    const x1 = cx + Math.cos(ang) * 0.16 * Rmax;
-    const y1 = cy + Math.sin(ang) * 0.16 * Rmax;
-    profile(() => {
-      ctx.beginPath();
-      ctx.moveTo(x0, y0);
-      ctx.lineTo(x1, y1);
-      ctx.stroke();
-    }, 7, 0.85);
-  }
-
-  /* 4. recessed node housings on the bus ring — small machined pockets. */
-  for (let i = 0; i < 12; i++) {
-    const ang = (i / 12) * Math.PI * 2;
-    const x = cx + Math.cos(ang) * 0.42 * Rmax;
-    const y = cy + Math.sin(ang) * 0.42 * Rmax;
-    if (hash(i * 3.7) < 0.5) continue;
-    ctx.save();
-    ctx.translate(0, -1.4);
-    ctx.strokeStyle = "rgba(0,1,4,0.55)";
-    ctx.lineWidth = 2.4;
-    ctx.strokeRect(x - 9, y - 9, 18, 18);
-    ctx.restore();
-    ctx.fillStyle = "rgba(2,5,11,0.8)";
-    ctx.fillRect(x - 8, y - 8, 16, 16);
-    ctx.save();
-    ctx.translate(0, 1.4);
-    ctx.strokeStyle = "rgba(120,150,182,0.45)";
-    ctx.lineWidth = 1.4;
-    ctx.strokeRect(x - 8, y - 8, 16, 16);
-    ctx.restore();
-  }
-
-  /* 5. carve the void-gap wedges clean through the substrate too, so the
-   *    depth/void still reads through them. */
+  /* near-camera fade */
   ctx.globalCompositeOperation = "destination-out";
-  for (const g of gaps) {
-    ctx.beginPath();
-    ctx.moveTo(cx, cy);
-    ctx.arc(cx, cy, Rmax * 1.2, g.a - g.w, g.a + g.w);
-    ctx.closePath();
-    const gg = ctx.createRadialGradient(cx, cy, 0, cx, cy, Rmax * 1.2);
-    gg.addColorStop(0, "rgba(0,0,0,0)");
-    gg.addColorStop(0.22, "rgba(0,0,0,1)");
-    gg.addColorStop(1, "rgba(0,0,0,1)");
-    ctx.fillStyle = gg;
-    ctx.fill();
-  }
-  /* 6. near-camera fade (matches the illumination plate) so the foreground
-   *    dissolves into black rather than presenting a hard slab edge. */
   const ncf = ctx.createLinearGradient(0, 0, 0, S);
   ncf.addColorStop(0.0, "rgba(0,0,0,0)");
-  ncf.addColorStop(0.5, "rgba(0,0,0,0)");
-  ncf.addColorStop(0.64, "rgba(0,0,0,0.55)");
-  ncf.addColorStop(0.76, "rgba(0,0,0,0.9)");
-  ncf.addColorStop(0.88, "rgba(0,0,0,1)");
+  ncf.addColorStop(0.52, "rgba(0,0,0,0)");
+  ncf.addColorStop(0.66, "rgba(0,0,0,0.6)");
+  ncf.addColorStop(0.8, "rgba(0,0,0,0.92)");
   ncf.addColorStop(1.0, "rgba(0,0,0,1)");
   ctx.fillStyle = ncf;
   ctx.fillRect(0, 0, S, S);
@@ -1161,6 +1155,12 @@ function makePlatformSubstrateTexture(): THREE.Texture | null {
   return tex;
 }
 
+/* REACTOR ARCS (illumination) — concentric arc-SEGMENT rings glowing in a
+ * disciplined cyan -> electric-blue -> sparse-violet family (NO white cores).
+ * Brightest in a mid radius band, fading inner + outer, with dotted tech
+ * segments on some arcs and a fine concentric hub. Additive; sits inside the
+ * substrate grooves. The "soft" / "deep" variants are blurred ghosts for the
+ * parallax strata. */
 function makeInstrumentPlateTexture(
   variant: "surface" | "soft" | "deep" = "surface",
 ): THREE.Texture | null {
@@ -1173,323 +1173,126 @@ function makeInstrumentPlateTexture(
   ctx.imageSmoothingEnabled = true;
   ctx.imageSmoothingQuality = "high";
   ctx.clearRect(0, 0, S, S);
-
   const soft = variant === "soft";
   const deep = variant === "deep";
   const cx = S / 2;
   const cy = S / 2;
-  /* platform pixel radius — deeper / softer strata reach a touch wider so,
-   * stacked below, they read as a larger array receding into the void. */
-  const Rmax = S * (deep ? 0.4 : soft ? 0.36 : 0.33);
+  const Rmax = S * (deep ? 0.46 : soft ? 0.42 : 0.4);
   const hash = (n: number) => {
     const s = Math.sin(n * 127.1) * 43758.5453;
     return s - Math.floor(s);
   };
+  /* FLOWING-RIBBON ENERGY FLOOR — smooth, glowing, organically-drifting
+   * elliptical light ribbons sweeping around the chassis (replaces the
+   * busy segmented-ring/circuitry plate). Few, thick, smooth and bloom-
+   * fed so the floor reads as a high-end "energy chamber" surface, not a
+   * reticle. Deterministic (sine-hash) so SSR + reduced-motion bakes are
+   * identical. */
 
-  /* VOID-GAP sectors — angular wedges cut clean through the plate so the
-   * viewer sees into the depth/void. Placed at far / side angles (not under
-   * the laptop's front contact) so grounding is preserved. */
-  const gaps = [
-    { a: 2.5, w: 0.4 },
-    { a: -2.15, w: 0.32 },
-  ];
-  const inGap = (ang: number) => {
-    for (const g of gaps) {
-      let d = ang - g.a;
-      while (d > Math.PI) d -= 2 * Math.PI;
-      while (d < -Math.PI) d += 2 * Math.PI;
-      if (Math.abs(d) < g.w) return true;
-    }
-    return false;
-  };
-
-  /* Energy pool under the chassis — the spot-lit "core" glow (kept from the
-   * old floor so the under-laptop energy read survives). Deep stratum skips
-   * it so the far layer stays pure structure. */
+  /* central energy pool under the chassis — brighter blue-white core */
   if (!deep) {
     const pool = ctx.createRadialGradient(cx, cy, 0, cx, cy, S * 0.24);
-    pool.addColorStop(0, soft ? "rgba(0,229,255,0.10)" : "rgba(0,229,255,0.30)");
-    pool.addColorStop(0.5, soft ? "rgba(0,229,255,0.04)" : "rgba(0,229,255,0.10)");
-    pool.addColorStop(1, "rgba(0,229,255,0)");
+    pool.addColorStop(0, soft ? "rgba(80,185,255,0.12)" : "rgba(130,212,255,0.3)");
+    pool.addColorStop(0.42, soft ? "rgba(40,130,255,0.05)" : "rgba(48,150,255,0.13)");
+    pool.addColorStop(1, "rgba(0,0,0,0)");
     ctx.fillStyle = pool;
     ctx.fillRect(0, 0, S, S);
   }
 
   ctx.lineCap = "round";
-  ctx.lineJoin = "round";
-  const glow = (blur: number) => {
-    ctx.shadowColor = "rgba(0,245,255,0.9)";
+  const glow = (blur: number, col: string) => {
+    ctx.shadowColor = col;
     ctx.shadowBlur = blur;
   };
   const noGlow = () => {
     ctx.shadowBlur = 0;
   };
-  const radAlpha = (rN: number) => {
-    const t = Math.max(0, 1 - rN);
-    return t * t;
-  };
 
-  /* RINGS — inner two are near-complete machined rings under the chassis;
-   * the outer ones break into deterministic arc SEGMENTS so they read as
-   * engineered, not merely drawn. Each arc gets a baked-glow under-stroke
-   * then a thin crisp top line (surface only). */
-  const rings = deep ? [0.62, 0.82] : [0.16, 0.27, 0.42, 0.6, 0.8];
-  for (let ri = 0; ri < rings.length; ri++) {
-    const rN = rings[ri];
-    const rPx = rN * Rmax;
-    const aBase = radAlpha(rN) * (soft ? 0.7 : deep ? 0.5 : 1.0);
-    if (aBase < 0.03) continue;
-    const segmented = ri >= 2 || deep;
-    const segs = segmented ? 4 + (ri % 3) : 1;
-    for (let s = 0; s < segs; s++) {
-      let a0: number;
-      let a1: number;
-      if (segs === 1) {
-        a0 = -Math.PI * 0.96;
-        a1 = Math.PI * 0.96; // near-complete, tiny gap at the far edge
-      } else {
-        const span = (Math.PI * 2) / segs;
-        const jitter = (hash(ri * 9.7 + s * 3.3) - 0.5) * span * 0.3;
-        const gapFrac = 0.18 + hash(ri * 4.1 + s) * 0.14;
-        a0 = s * span + jitter + span * gapFrac * 0.5;
-        a1 = (s + 1) * span + jitter - span * gapFrac * 0.5;
-      }
-      if (inGap((a0 + a1) / 2)) continue;
-      const lw = soft ? 3.0 : deep ? 2.2 : ri < 2 ? 2.0 : 1.6;
-      ctx.strokeStyle = `rgba(0,229,255,${aBase * (soft ? 0.6 : 0.42)})`;
-      ctx.lineWidth = lw * (soft ? 1.4 : 1.7);
-      glow(soft ? 7 : 3);
+  const N = deep ? 6 : soft ? 8 : 10;
+  for (let i = 0; i < N; i++) {
+    const t = i / (N - 1);
+    /* radius grows outward, denser toward the centre */
+    const rN = 0.12 + Math.pow(t, 1.15) * 0.9;
+    const rx = rN * Rmax;
+    const squash = 0.5 + 0.24 * hash(i * 3.3); // perspective ellipse squash
+    const ry = rx * squash;
+    /* organic per-ribbon drift of the centre + a slight tilt, so the set
+     * never reads as perfectly concentric — it flows. */
+    const driftA = hash(i * 7.1) * Math.PI * 2;
+    const driftR = (hash(i * 2.9) - 0.5) * S * 0.07;
+    const ex = cx + Math.cos(driftA) * driftR;
+    const ey = cy + Math.sin(driftA) * driftR * 0.5;
+    const rot = (hash(i * 5.7) - 0.5) * 0.55 - 0.22;
+    /* a long, sweeping partial arc (a flowing band, not a closed ring) */
+    const a0 = hash(i * 4.3) * Math.PI * 2;
+    const a1 = a0 + Math.PI * (1.05 + hash(i * 9.2) * 0.7);
+    const a = (1 - rN * 0.5) * (soft ? 0.6 : deep ? 0.42 : 1.0);
+    if (a < 0.03) continue;
+    /* palette: mostly cyan/blue with sparse violet accents */
+    const isViolet = i === 3 || i === 8;
+    const isBlue = i % 3 === 1;
+    const rgb = isViolet ? "138,108,255" : isBlue ? "46,128,255" : "40,206,255";
+    const lite = isViolet ? "196,176,255" : isBlue ? "170,212,255" : "160,238,255";
+    /* soft wide glow underlay (bloom feeds on this) */
+    ctx.strokeStyle = `rgba(${rgb},${a * (soft ? 0.5 : 0.42)})`;
+    ctx.lineWidth = soft ? 8 : deep ? 5 : 6;
+    glow(soft ? 15 : 11, `rgba(${rgb},0.95)`);
+    ctx.beginPath();
+    ctx.ellipse(ex, ey, rx, ry, rot, a0, a1);
+    ctx.stroke();
+    noGlow();
+    if (!soft && !deep) {
+      /* crisp colour body */
+      ctx.strokeStyle = `rgba(${rgb},${a})`;
+      ctx.lineWidth = 2.2;
       ctx.beginPath();
-      ctx.arc(cx, cy, rPx, a0, a1);
+      ctx.ellipse(ex, ey, rx, ry, rot, a0, a1);
       ctx.stroke();
-      noGlow();
-      if (!soft && !deep) {
-        /* crisp cyan body */
-        ctx.strokeStyle = `rgba(0,229,255,${aBase})`;
-        ctx.lineWidth = lw;
-        ctx.beginPath();
-        ctx.arc(cx, cy, rPx, a0, a1);
-        ctx.stroke();
-        /* hot near-white core — thin, no blur — the energy in the groove */
-        ctx.strokeStyle = `rgba(196,250,255,${aBase * 0.85})`;
-        ctx.lineWidth = Math.max(0.8, lw * 0.45);
-        ctx.beginPath();
-        ctx.arc(cx, cy, rPx, a0, a1);
-        ctx.stroke();
-      }
-    }
-  }
-
-  /* RADIAL CHANNELS — conductors running from the outer ring inward to a via
-   * node at the inner ring, brightest near the centre (light is conducted
-   * TOWARD the device). Surface + soft only; the deep stratum stays pure
-   * arcs. Slightly uneven angles so it never reads as a symmetric reticle. */
-  if (!deep) {
-    const chCount = 16;
-    for (let i = 0; i < chCount; i++) {
-      const ang = (i / chCount) * Math.PI * 2 + (hash(i * 5.7) - 0.5) * 0.12;
-      if (inGap(ang)) continue;
-      const rOut = 0.8 * Rmax;
-      const rIn = 0.18 * Rmax;
-      const x0 = cx + Math.cos(ang) * rOut;
-      const y0 = cy + Math.sin(ang) * rOut;
-      const x1 = cx + Math.cos(ang) * rIn;
-      const y1 = cy + Math.sin(ang) * rIn;
-      const ca = soft ? 0.18 : 0.42;
-      const grad = ctx.createLinearGradient(x0, y0, x1, y1);
-      grad.addColorStop(0, "rgba(0,229,255,0)");
-      grad.addColorStop(0.55, `rgba(0,229,255,${ca * 0.5})`);
-      grad.addColorStop(1, `rgba(0,229,255,${ca})`);
-      ctx.strokeStyle = grad;
-      ctx.lineWidth = soft ? 2.0 : 1.2;
-      glow(soft ? 5 : 2);
-      ctx.beginPath();
-      ctx.moveTo(x0, y0);
-      ctx.lineTo(x1, y1);
-      ctx.stroke();
-      noGlow();
-      if (!soft) {
-        /* hot near-white core down the channel — crisp, conducts inward */
-        const hot = ctx.createLinearGradient(x0, y0, x1, y1);
-        hot.addColorStop(0, "rgba(196,250,255,0)");
-        hot.addColorStop(0.6, `rgba(196,250,255,${ca * 0.5})`);
-        hot.addColorStop(1, `rgba(224,252,255,${ca * 0.9})`);
-        ctx.strokeStyle = hot;
-        ctx.lineWidth = 0.8;
-        ctx.beginPath();
-        ctx.moveTo(x0, y0);
-        ctx.lineTo(x1, y1);
-        ctx.stroke();
-        /* via node where the channel meets the inner ring */
-        ctx.fillStyle = `rgba(127,240,255,${ca})`;
-        glow(4);
-        ctx.beginPath();
-        ctx.arc(x1, y1, 3.0, 0, Math.PI * 2);
-        ctx.fill();
-        noGlow();
-      }
-    }
-
-    /* Encoder graduation ticks on a mid radius — precision-instrument tell.
-     * Surface only, low alpha, never busy. */
-    if (!soft) {
-      const tickN = 48;
-      const rT = 0.34 * Rmax;
-      for (let i = 0; i < tickN; i++) {
-        const ang = (i / tickN) * Math.PI * 2;
-        if (inGap(ang)) continue;
-        const long = i % 4 === 0;
-        const r0 = rT - (long ? 10 : 5);
-        const r1 = rT + (long ? 10 : 5);
-        ctx.strokeStyle = `rgba(0,229,255,${long ? 0.3 : 0.15})`;
-        ctx.lineWidth = long ? 1.6 : 1.0;
-        ctx.beginPath();
-        ctx.moveTo(cx + Math.cos(ang) * r0, cy + Math.sin(ang) * r0);
-        ctx.lineTo(cx + Math.cos(ang) * r1, cy + Math.sin(ang) * r1);
-        ctx.stroke();
-      }
-      /* A single restrained violet accent arc on the outer ring (secondary
-       * colour, used sparingly per the palette rule). */
-      ctx.strokeStyle = "rgba(124,92,255,0.22)";
-      ctx.lineWidth = 2.0;
-      glow(6);
-      ctx.beginPath();
-      ctx.arc(cx, cy, 0.8 * Rmax, -0.5, 0.35);
-      ctx.stroke();
-      noGlow();
-      /* Centre core glint — tiny near-white precision highlight. */
-      const core = ctx.createRadialGradient(cx, cy, 0, cx, cy, S * 0.05);
-      core.addColorStop(0, "rgba(200,250,255,0.22)");
-      core.addColorStop(1, "rgba(200,250,255,0)");
-      ctx.fillStyle = core;
-      ctx.fillRect(0, 0, S, S);
-    }
-  }
-
-  /* ── ADDITIVE ENRICHMENT (surface only) ──────────────────────────────
-   * More layered circular structure + engineered circuitry built AROUND the
-   * burst zone: fine dashed orbital rings, a connection-node bus with
-   * tangential connectors, sparse radial sector divisions, and orbital
-   * satellite marks. All baked (zero draw-call cost, identical every mount),
-   * concentrated near the centre and calmer outward. The main sweep ring is
-   * a separate, bolder mesh — this is supporting precision detail, never
-   * louder than the burst. */
-  if (!soft && !deep) {
-    /* (a) fine dashed orbital rings between the main rings */
-    const fineRings = [0.22, 0.35, 0.5, 0.68];
-    for (let fr = 0; fr < fineRings.length; fr++) {
-      const rPx = fineRings[fr] * Rmax;
-      const a = radAlpha(fineRings[fr]) * 0.5;
-      if (a < 0.03) continue;
-      const dashes = 64 + fr * 16;
-      const da = ((Math.PI * 2) / dashes) * 0.42;
-      for (let d = 0; d < dashes; d++) {
-        const ang = (d / dashes) * Math.PI * 2;
-        if (inGap(ang)) continue;
-        if (hash(fr * 13.3 + d) > 0.62) continue; // deterministic dashes
-        ctx.strokeStyle = `rgba(0,229,255,${a * 0.5})`;
-        ctx.lineWidth = 1.0;
-        ctx.beginPath();
-        ctx.arc(cx, cy, rPx, ang - da, ang + da);
-        ctx.stroke();
-      }
-    }
-
-    /* (b) connection-node bus — junction pads on a mid ring with short
-     * tangential connectors between some of them (the platform's circuitry). */
-    const busR = 0.42 * Rmax;
-    const nodeCount = 12;
-    let prevAng: number | null = null;
-    for (let i = 0; i <= nodeCount; i++) {
-      const ang = (i / nodeCount) * Math.PI * 2;
-      const x = cx + Math.cos(ang) * busR;
-      const y = cy + Math.sin(ang) * busR;
-      if (
-        prevAng !== null &&
-        !inGap((ang + prevAng) / 2) &&
-        hash(i * 7.1) > 0.35
-      ) {
-        ctx.strokeStyle = "rgba(0,229,255,0.16)";
-        ctx.lineWidth = 1.2;
-        glow(3);
-        ctx.beginPath();
-        ctx.arc(cx, cy, busR, prevAng, ang);
-        ctx.stroke();
-        noGlow();
-      }
-      if (!inGap(ang)) {
-        ctx.fillStyle = "rgba(127,240,255,0.3)";
-        glow(4);
-        ctx.beginPath();
-        ctx.arc(x, y, 2.4, 0, Math.PI * 2);
-        ctx.fill();
-        noGlow();
-        if (hash(i * 3.7) > 0.5) {
-          ctx.strokeStyle = "rgba(0,229,255,0.22)";
-          ctx.lineWidth = 1.0;
-          ctx.strokeRect(x - 5, y - 5, 10, 10);
-        }
-      }
-      prevAng = ang;
-    }
-
-    /* (c) sparse radial sector divisions framing the array */
-    const divs = 8;
-    for (let i = 0; i < divs; i++) {
-      const ang = (i / divs) * Math.PI * 2 + 0.2;
-      if (inGap(ang)) continue;
-      const r0 = 0.5 * Rmax;
-      const r1 = 0.74 * Rmax;
-      ctx.strokeStyle = "rgba(0,229,255,0.1)";
+      /* bright inner core for the hot centre of the ribbon */
+      ctx.strokeStyle = `rgba(${lite},${a * 0.85})`;
       ctx.lineWidth = 1.0;
       ctx.beginPath();
-      ctx.moveTo(cx + Math.cos(ang) * r0, cy + Math.sin(ang) * r0);
-      ctx.lineTo(cx + Math.cos(ang) * r1, cy + Math.sin(ang) * r1);
+      ctx.ellipse(ex, ey, rx, ry, rot, a0, a1);
       ctx.stroke();
     }
+  }
 
-    /* (d) orbital satellite marks riding the outer ring */
-    for (let i = 0; i < 5; i++) {
-      const ang = hash(i * 17.3) * Math.PI * 2;
-      if (inGap(ang)) continue;
-      const x = cx + Math.cos(ang) * 0.8 * Rmax;
-      const y = cy + Math.sin(ang) * 0.8 * Rmax;
-      ctx.fillStyle = "rgba(200,250,255,0.25)";
-      glow(5);
+  /* CROSS-FLOW STREAKS — a few long smooth sweeping light trails for the
+   * "data in motion" read, kept subtle so they support, not clutter. */
+  if (!deep) {
+    const streaks = soft ? 2 : 3;
+    for (let i = 0; i < streaks; i++) {
+      const yy = cy + (hash(i * 13.1) - 0.5) * S * 0.5;
+      const amp = S * (0.08 + hash(i * 6.3) * 0.1);
+      const col = i % 2 ? "46,128,255" : "40,206,255";
+      ctx.strokeStyle = `rgba(${col},${soft ? 0.14 : 0.26})`;
+      ctx.lineWidth = soft ? 5 : 3.5;
+      glow(soft ? 10 : 8, `rgba(${col},0.9)`);
       ctx.beginPath();
-      ctx.arc(x, y, 1.8, 0, Math.PI * 2);
-      ctx.fill();
+      ctx.moveTo(-S * 0.05, yy);
+      ctx.quadraticCurveTo(cx, yy - amp, S * 1.05, yy + amp * 0.4);
+      ctx.stroke();
       noGlow();
     }
   }
 
-  /* Carve the VOID-GAP wedges clean through everything drawn so far, with a
-   * soft inner edge — these are the holes the viewer sees the depth through. */
-  ctx.globalCompositeOperation = "destination-out";
-  for (const g of gaps) {
-    ctx.beginPath();
-    ctx.moveTo(cx, cy);
-    ctx.arc(cx, cy, Rmax * 1.15, g.a - g.w, g.a + g.w);
-    ctx.closePath();
-    const gg = ctx.createRadialGradient(cx, cy, 0, cx, cy, Rmax * 1.15);
-    gg.addColorStop(0, "rgba(0,0,0,0)");
-    gg.addColorStop(0.22, "rgba(0,0,0,0.92)");
-    gg.addColorStop(1, "rgba(0,0,0,0.92)");
-    ctx.fillStyle = gg;
-    ctx.fill();
+  /* bright centre core glint (surface) */
+  if (!soft && !deep) {
+    const core = ctx.createRadialGradient(cx, cy, 0, cx, cy, S * 0.06);
+    core.addColorStop(0, "rgba(184,240,255,0.6)");
+    core.addColorStop(0.5, "rgba(96,194,255,0.2)");
+    core.addColorStop(1, "rgba(96,194,255,0)");
+    ctx.fillStyle = core;
+    ctx.fillRect(0, 0, S, S);
   }
-  ctx.globalCompositeOperation = "source-over";
 
-  /* Near-camera asymmetric fade — the floor plane is rotated -π/2 about X so
-   * canvas-bottom is the foreground; dissolve it hard into black so the
-   * platform reads as suspended, not extending toward the viewer. */
+  /* near-camera fade */
   ctx.globalCompositeOperation = "destination-out";
   const ncf = ctx.createLinearGradient(0, 0, 0, S);
   ncf.addColorStop(0.0, "rgba(0,0,0,0)");
-  ncf.addColorStop(0.5, "rgba(0,0,0,0)");
-  ncf.addColorStop(0.64, "rgba(0,0,0,0.55)");
-  ncf.addColorStop(0.76, "rgba(0,0,0,0.9)");
-  ncf.addColorStop(0.88, "rgba(0,0,0,1)");
+  ncf.addColorStop(0.52, "rgba(0,0,0,0)");
+  ncf.addColorStop(0.66, "rgba(0,0,0,0.6)");
+  ncf.addColorStop(0.8, "rgba(0,0,0,0.92)");
   ncf.addColorStop(1.0, "rgba(0,0,0,1)");
   ctx.fillStyle = ncf;
   ctx.fillRect(0, 0, S, S);
@@ -1498,20 +1301,12 @@ function makeInstrumentPlateTexture(
   const tex = new THREE.CanvasTexture(c);
   tex.wrapS = THREE.ClampToEdgeWrapping;
   tex.wrapT = THREE.ClampToEdgeWrapping;
-  tex.minFilter = THREE.LinearMipmapLinearFilter;
-  tex.magFilter = THREE.LinearFilter;
-  tex.anisotropy = 16;
-  tex.generateMipmaps = true;
   tex.colorSpace = THREE.SRGBColorSpace;
+  tuneGroundTexture(tex);
   tex.needsUpdate = true;
   return tex;
 }
 
-/* Tier-3 FAR MEGASTRUCTURE silhouette — a single, barely-visible distant
- * arc-ring fragment + a couple of thin monolith spires, implying the
- * intelligence array continues into deep space. Drawn right-biased and at
- * tiny alpha; placed far behind on its own plane so it never competes with
- * the laptop and the left (headline) third stays dark. */
 function makeMegastructureTexture(): THREE.Texture | null {
   if (typeof document === "undefined") return null;
   const W = 1024;
@@ -2686,7 +2481,7 @@ function Laptop({
 }) {
   const lidBrandTex = useLidBrandTexture();
   const lidBloomTex = useLidBloomTexture();
-  const deckBadgeTex = useMemo(() => makeDeckBadgeTexture(), []);
+  const deckBadge = useMemo(() => makeDeckBadgeTextures(), []);
   /* Refs for the closed-laptop premium-polish layers: the wordmark
    *  pulses on a slow breath, the wider bloom behind it pulses on an
    *  out-of-phase slower wave so the glow never feels mechanical,
@@ -2715,7 +2510,7 @@ function Laptop({
   /* TEX_VERSION exists ONLY to invalidate Next.js Fast-Refresh's useMemo
    * cache. Bump it whenever the instrument-plate drawing params change so an
    * edit to the texture function regenerates the GPU texture on save. */
-  const PLATE_TEX_VERSION = "v10b-recessed-channels";
+  const PLATE_TEX_VERSION = "v11-reactor-floor";
   /* Dark engineered SUBSTRATE the channels are recessed into (normal-blended
    * material with groove troughs + lit rim bevels). Sits beneath the glow. */
   const plateSubstrateTex = useMemo(
@@ -3045,32 +2840,37 @@ function Laptop({
     /* Dark substrate fades in with the plate; held just under full so the
      * recessed material reads without becoming a heavy slab. Static (no
      * pulse) — it's physical material, not energy. */
+    /* NEW ENERGY-CHAMBER FLOOR opacities. The previous values kept these
+     * layers near-invisible (surface peaked at 0.12) and fully gated
+     * behind `draw`, so the floor only whispered in mid-scroll. Now each
+     * layer has a strong BASELINE (visible from the very top of the hero,
+     * matching the reference) plus a scroll-driven boost as the chamber
+     * powers up. */
     if (plateSubstrateMatRef.current) {
-      plateSubstrateMatRef.current.opacity = draw * 0.9;
+      plateSubstrateMatRef.current.opacity = 0.6 + draw * 0.35;
     }
     if (plateSurfaceMatRef.current) {
-      plateSurfaceMatRef.current.opacity = draw * 0.12 * pulse;
+      plateSurfaceMatRef.current.opacity = (0.42 + draw * 0.45) * pulse;
     }
     if (plateMidMatRef.current) {
       const midPulse = reducedMotion ? 1 : 0.9 + Math.sin(t * 0.66 + 1.3) * 0.1;
-      plateMidMatRef.current.opacity = draw * 0.034 * midPulse;
+      plateMidMatRef.current.opacity = (0.2 + draw * 0.22) * midPulse;
     }
     if (plateDeepMatRef.current) {
       const deepPulse = reducedMotion ? 1 : 0.88 + Math.sin(t * 0.48 + 2.7) * 0.12;
-      plateDeepMatRef.current.opacity = draw * 0.016 * deepPulse;
+      plateDeepMatRef.current.opacity = (0.1 + draw * 0.12) * deepPulse;
     }
     if (depthHazeMatRef.current) {
       const hazePulse = reducedMotion ? 1 : 0.85 + Math.sin(t * 0.4) * 0.15;
-      depthHazeMatRef.current.opacity = draw * 0.038 * hazePulse;
+      depthHazeMatRef.current.opacity = (0.04 + draw * 0.05) * hazePulse;
     }
     if (megaStructureMatRef.current) {
-      megaStructureMatRef.current.opacity = draw * 0.05;
+      megaStructureMatRef.current.opacity = 0.04 + draw * 0.05;
     }
-    /* Sub-surface machine well — fades in with the plate; a faint slow
-     * breath suggests the deeper machine is live. */
+    /* Sub-surface machine well — faint depth glow beneath the floor. */
     if (machineWellMatRef.current) {
       const wellPulse = reducedMotion ? 1 : 0.85 + Math.sin(t * 0.5 + 0.6) * 0.15;
-      machineWellMatRef.current.opacity = draw * 0.5 * wellPulse;
+      machineWellMatRef.current.opacity = (0.12 + draw * 0.22) * wellPulse;
     }
 
     /* OUTWARD IGNITION SWEEP — a thin ring expanding chassis→edge as the lid
@@ -3293,7 +3093,6 @@ function Laptop({
           <meshBasicMaterial
             ref={plateSubstrateMatRef}
             map={plateSubstrateTex}
-            dithering
             transparent
             opacity={0}
             depthWrite={false}
@@ -3316,7 +3115,6 @@ function Laptop({
           <meshBasicMaterial
             ref={plateSurfaceMatRef}
             map={plateSurfaceTex}
-            dithering
             transparent
             opacity={0}
             blending={THREE.AdditiveBlending}
@@ -3339,7 +3137,6 @@ function Laptop({
           <meshBasicMaterial
             ref={machineWellMatRef}
             map={machineWellTex}
-            dithering
             transparent
             opacity={0}
             blending={THREE.AdditiveBlending}
@@ -3470,7 +3267,6 @@ function Laptop({
           <meshBasicMaterial
             ref={plateMidMatRef}
             map={plateSoftTex}
-            dithering
             transparent
             opacity={0}
             blending={THREE.AdditiveBlending}
@@ -3489,7 +3285,6 @@ function Laptop({
           <meshBasicMaterial
             ref={depthHazeMatRef}
             map={depthHazeTex}
-            dithering
             transparent
             opacity={0}
             blending={THREE.AdditiveBlending}
@@ -3511,10 +3306,9 @@ function Laptop({
           <meshBasicMaterial
             ref={plateDeepMatRef}
             map={plateDeepTex}
-            dithering
             transparent
             opacity={0}
-            color={COLORS.cyanSoft}
+            color="#cfe8ff"
             blending={THREE.AdditiveBlending}
             depthWrite={false}
             toneMapped={false}
@@ -3532,7 +3326,6 @@ function Laptop({
           <meshBasicMaterial
             ref={megaStructureMatRef}
             map={megaStructureTex}
-            dithering
             transparent
             opacity={0}
             blending={THREE.AdditiveBlending}
@@ -3654,14 +3447,14 @@ function Laptop({
           <meshPhysicalMaterial
             color={COLORS.steel}
             metalness={0.62}
-            roughness={0.5}
+            roughness={0.66}
             clearcoat={0.3}
             clearcoatRoughness={0.5}
             anisotropy={0.78}
             anisotropyRotation={Math.PI / 2}
             normalMap={brushedNormalTex}
             normalScale={new THREE.Vector2(0.14, 0.14)}
-            envMapIntensity={0.9}
+            envMapIntensity={0.6}
           />
         </RoundedBox>
 
@@ -3993,19 +3786,36 @@ function Laptop({
           <meshStandardMaterial color={COLORS.trackpad} roughness={0.35} />
         </mesh>
 
-        {/* DECK BADGE — "AlgorithmX" (blue) over "AX" (red) on the
-         *  front-right palm rest. The Z rotation spins the badge flat on
-         *  the deck so the text top points toward the top-right of the
-         *  frame. Normal blending keeps the red/blue true on the dark
-         *  gunmetal (additive washed them toward white). */}
-        {deckBadgeTex && (
+        {/* DECK BADGE — ThinkPad-X1-style: brushed-silver "Algorithm"
+         *  with a glowing red i-dot + an oversized glowing red "X", set
+         *  on a shallow ascending diagonal (text top toward top-right).
+         *  Two stacked planes: an additive red GLOW underneath (the
+         *  bright bloom-catching light) and the crisp silver+red wordmark
+         *  on top. */}
+        {deckBadge.glow && (
+          <mesh
+            position={[1.2, BASE_H / 2 + 0.0045, 0.92]}
+            rotation={[-Math.PI / 2, 0, Math.PI / 7]}
+          >
+            <planeGeometry args={[0.56, 0.28]} />
+            <meshBasicMaterial
+              map={deckBadge.glow}
+              transparent
+              opacity={1}
+              blending={THREE.AdditiveBlending}
+              depthWrite={false}
+              toneMapped={false}
+            />
+          </mesh>
+        )}
+        {deckBadge.crisp && (
           <mesh
             position={[1.2, BASE_H / 2 + 0.005, 0.92]}
-            rotation={[-Math.PI / 2, 0, -Math.PI / 4]}
+            rotation={[-Math.PI / 2, 0, Math.PI / 7]}
           >
-            <planeGeometry args={[0.46, 0.23]} />
+            <planeGeometry args={[0.52, 0.26]} />
             <meshBasicMaterial
-              map={deckBadgeTex}
+              map={deckBadge.crisp}
               transparent
               opacity={1}
               depthWrite={false}
@@ -4187,14 +3997,14 @@ function Laptop({
               <meshPhysicalMaterial
                 color={COLORS.steel}
                 metalness={0.62}
-                roughness={0.5}
+                roughness={0.66}
                 clearcoat={0.34}
                 clearcoatRoughness={0.48}
                 anisotropy={0.85}
                 anisotropyRotation={Math.PI / 2}
                 normalMap={brushedNormalTex}
                 normalScale={new THREE.Vector2(0.14, 0.14)}
-                envMapIntensity={0.88}
+                envMapIntensity={0.6}
               />
             </RoundedBox>
 

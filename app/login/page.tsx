@@ -6,7 +6,7 @@ import { signIn } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import AuthBackdrop from "@/app/components/auth/AuthBackdrop";
-import VaultAperture, { type AuthMachinePhase, type AuthMachineState } from "@/app/components/auth/VaultAperture";
+import { AuthReactorScene, type AuthMachinePhase, type AuthMachineState } from "@/app/components/auth-reactor";
 import AuthField from "@/app/components/auth/AuthField";
 import AuthButton, { type AuthButtonState } from "@/app/components/auth/AuthButton";
 import AuthTerminalPanel from "@/app/components/auth/AuthTerminalPanel";
@@ -135,10 +135,10 @@ function LoginPageInner() {
     >
       <AuthBackdrop />
 
-      {/* Tablet/mobile: the vault sits behind the form slab. */}
+      {/* Tablet/mobile: the reactor sits behind the form slab. */}
       {!isDesktop && (
         <div className="absolute inset-0" style={{ zIndex: 0, pointerEvents: "none" }}>
-          <VaultAperture state={machineState} />
+          <AuthReactorScene state={machineState} />
         </div>
       )}
 
@@ -332,7 +332,7 @@ function LoginPageInner() {
               }}
             />
             <div className="absolute inset-0">
-              <VaultAperture state={machineState} />
+              <AuthReactorScene state={machineState} />
             </div>
           </div>
         )}
