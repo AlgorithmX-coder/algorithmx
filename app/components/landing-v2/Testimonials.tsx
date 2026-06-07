@@ -174,39 +174,34 @@ export default function Testimonials() {
               alignItems: "center",
               justifyContent: "center",
               minHeight: 56,
-              padding: "0 22px",
-              opacity: 0.9,
+              padding: "0 30px",
             }}
           >
-            {l.src ? (
-              <img
-                src={l.src}
-                alt={l.name}
-                width={48}
-                height={48}
-                loading="lazy"
-                style={{ objectFit: "contain" }}
-              />
-            ) : (
-              <span
-                style={{
-                  fontFamily: "var(--lv2-font-mono)",
-                  fontSize: 11,
-                  fontWeight: 700,
-                  letterSpacing: "0.18em",
-                  textTransform: "uppercase",
-                  color: "rgba(232,237,255,0.78)",
-                  padding: "10px 18px",
-                  border: "1px solid rgba(232,237,255,0.12)",
-                  borderRadius: 8,
-                  background: "rgba(13,15,24,0.6)",
-                  backdropFilter: "blur(10px)",
-                  whiteSpace: "nowrap",
-                }}
-              >
-                {l.name}
-              </span>
-            )}
+            {/* Every logo is a transparent-bg SVG; brightness(0) invert(1)
+             *  flattens it to one white tone (already-white marks stay
+             *  white) so the whole row reads as a single cohesive
+             *  "trusted by" wall on the dark backdrop. Resting at 60%
+             *  opacity, lifting to full on hover. */}
+            <img
+              src={l.src}
+              alt={l.name}
+              loading="lazy"
+              style={{
+                height: 30,
+                width: "auto",
+                maxWidth: 150,
+                objectFit: "contain",
+                opacity: 0.6,
+                filter: "brightness(0) invert(1)",
+                transition: "opacity .3s ease",
+              }}
+              onMouseOver={(e) => {
+                (e.currentTarget as HTMLImageElement).style.opacity = "1";
+              }}
+              onMouseOut={(e) => {
+                (e.currentTarget as HTMLImageElement).style.opacity = "0.6";
+              }}
+            />
           </div>
         )}
       />

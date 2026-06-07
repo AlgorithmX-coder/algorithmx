@@ -11,7 +11,7 @@ import Footer from "@/app/components/landing-v2/Footer";
 import Algo from "@/app/components/landing-v2/Algo";
 import SmoothScroll from "@/app/components/SmoothScroll";
 import SpotlightCursor from "@/app/components/landing-v2/SpotlightCursor";
-import GlobalBackdrop from "@/app/components/landing-v2/GlobalBackdrop";
+import CosmicNetworkBackground from "@/app/components/backgrounds/CosmicNetworkBackground";
 import AmbientFutureBackdrop from "@/app/components/landing-v2/AmbientFutureBackdrop";
 
 /**
@@ -40,7 +40,7 @@ import AmbientFutureBackdrop from "@/app/components/landing-v2/AmbientFutureBack
 export default function LandingV2() {
   return (
     <SmoothScroll>
-      <GlobalBackdrop />
+      <CosmicNetworkBackground />
       <AmbientFutureBackdrop />
       <SpotlightCursor />
       <Nav />
