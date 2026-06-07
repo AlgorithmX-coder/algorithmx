@@ -41,19 +41,25 @@ export interface ClimaxStage {
 }
 
 export interface ClimaxController {
-  /** The current stage id, or `null` before `start()` / after completion. */
+  /**
+   * The current stage id, or `null` before `start()`. The TERMINAL stage
+   * PERSISTS — once entered, `stage` stays pinned to the last stage's id
+   * (the scene's final resting state, e.g. the vault's "revealed"); it
+   * never falls back to `null`. Use `isComplete` to detect the end.
+   */
   stage: string | null;
-  /** Current stage index (-1 before start, === stages.length when complete). */
+  /** Current stage index (-1 before start; clamps at stages.length - 1). */
   index: number;
   /** Begin the sequence. Idempotent — a second call is ignored. */
   start: () => void;
-  /** True once the final stage's duration has elapsed. */
+  /** True once the final stage's duration has elapsed (stage stays pinned). */
   isComplete: boolean;
 }
 
 export function useClimaxSequence(stages: ClimaxStage[]): ClimaxController {
   const { t } = useTimingScaler();
   const [index, setIndex] = useState(-1);
+  const [complete, setComplete] = useState(false);
 
   const timersRef = useRef<number[]>([]);
   const startedRef = useRef(false);
@@ -79,7 +85,7 @@ export function useClimaxSequence(stages: ClimaxStage[]): ClimaxController {
 
     const s = stagesRef.current;
     if (s.length === 0) {
-      setIndex(0); // immediately "complete" for an empty sequence
+      setComplete(true); // empty sequence is immediately complete
       return;
     }
 
@@ -87,14 +93,21 @@ export function useClimaxSequence(stages: ClimaxStage[]): ClimaxController {
     setIndex(0);
     s[0].onEnter?.();
 
-    // Schedule each subsequent transition at the cumulative scaled time.
+    // Schedule each transition at the cumulative scaled time. The final
+    // stage does NOT advance past itself — it persists as the resting
+    // state; its timer only flips `complete`.
     let acc = 0;
     for (let i = 0; i < s.length; i++) {
       acc += tRef.current(s[i].durationMs);
+      const isLast = i === s.length - 1;
       const nextIndex = i + 1;
       const id = window.setTimeout(() => {
-        setIndex(nextIndex);
-        s[nextIndex]?.onEnter?.();
+        if (isLast) {
+          setComplete(true);
+        } else {
+          setIndex(nextIndex);
+          s[nextIndex]?.onEnter?.();
+        }
       }, acc);
       timersRef.current.push(id);
     }
@@ -104,7 +117,6 @@ export function useClimaxSequence(stages: ClimaxStage[]): ClimaxController {
   useEffect(() => clearTimers, [clearTimers]);
 
   const stage = index >= 0 && index < stages.length ? stages[index].id : null;
-  const isComplete = index >= stages.length;
 
-  return { stage, index, start, isComplete };
+  return { stage, index, start, isComplete: complete };
 }
