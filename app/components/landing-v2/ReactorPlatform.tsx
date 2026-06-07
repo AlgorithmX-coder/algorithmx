@@ -74,21 +74,37 @@ function Block({
   const geo = useMemo(() => new THREE.BoxGeometry(...def.size), [def]);
   const edges = useMemo(() => new THREE.EdgesGeometry(geo), [geo]);
   const lineRef = useRef<THREE.LineBasicMaterial>(null);
+  const groupRef = useRef<THREE.Group>(null);
+
+  /* Reveal window: the panel scales up from nothing (assembles in) as the
+   * laptop lid opens. Clamped so NOTHING appears while the laptop is closed
+   * (< ~0.30); each panel is staggered off its own ignite start so they
+   * build in sequence rather than all at once. */
+  const revealStart = Math.max(0.3, def.ignite[0]);
+  const revealEnd = revealStart + 0.2;
 
   useFrame((state) => {
-    if (!lineRef.current) return;
     const p = progress.get();
-    const lit = smoothstep(def.ignite[0], def.ignite[1], p);
-    const pulse = reducedMotion
-      ? 1
-      : 0.8 + Math.sin(state.clock.elapsedTime * 1.2 + def.pos[0] * 1.7) * 0.2;
-    /* baseline so the panel edges read from the top of the hero, with a
-     * scroll-driven boost as each zone ignites. */
-    lineRef.current.opacity = (0.4 + lit * 0.6) * def.edge * pulse;
+    const reveal = smoothstep(revealStart, revealEnd, p);
+    if (groupRef.current) {
+      // floor at a hair above 0 so the geometry never degenerates to NaN
+      groupRef.current.scale.setScalar(Math.max(0.0001, reveal));
+    }
+    if (lineRef.current) {
+      const lit = smoothstep(def.ignite[0], def.ignite[1], p);
+      const pulse = reducedMotion
+        ? 1
+        : 0.8 + Math.sin(state.clock.elapsedTime * 1.2 + def.pos[0] * 1.7) * 0.2;
+      /* edge-trim ignites as each zone powers up, multiplied by the reveal
+       * so it ramps with the assemble-in instead of popping on. */
+      lineRef.current.opacity = (0.4 + lit * 0.6) * def.edge * pulse * reveal;
+    }
   });
 
   return (
-    <group position={def.pos}>
+    /* starts at ~0 scale so there's no flash of full-size panels on first
+     * paint at the top of the hero (progress 0). */
+    <group ref={groupRef} position={def.pos} scale={0.0001}>
       <mesh geometry={geo} material={bodyMat} />
       <lineSegments geometry={edges}>
         <lineBasicMaterial
