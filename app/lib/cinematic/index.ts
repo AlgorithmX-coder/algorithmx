@@ -16,3 +16,4 @@ export * from "./SceneShell";
 export { default as ChallengePanel } from "./ChallengePanel";
 export * from "./ChallengePanel";
 export * from "./useHotspotPanel";
+export * from "./RevealChoreography";
