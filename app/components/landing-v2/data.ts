@@ -378,13 +378,32 @@ export const TESTIMONIALS: Testimonial[] = [
   },
 ];
 
+/* Trust / partner logos for the homepage marquee.
+ *
+ * All sources are transparent-background SVGs so they render uniformly as
+ * white silhouettes via `filter: brightness(0) invert(1)` (see
+ * Testimonials.tsx). The big-tech / tooling marks come from the Simple
+ * Icons set (public/logos/brands/*.svg — single-path, monochrome); the
+ * UK accreditations (NCSC, King's Trust) are flat-white SVGs already
+ * designed for dark backgrounds. Keeping every logo a single white tone
+ * gives the cohesive "trusted by" wall the dark cosmic theme wants,
+ * instead of a clash of baked white/black/coloured logo backgrounds. */
 export const TRUST_LOGOS = [
-  { name: "CyberFirst", src: "/images/logos/cyberfirst.svg" },
-  { name: "ASDAN", src: "/images/logos/asdan.svg" },
-  { name: "GDPR Aligned" },
-  { name: "DfE Curriculum" },
-  { name: "Safer Internet Centre" },
-  { name: "BSI Cyber Essentials" },
+  { name: "Microsoft", src: "/logos/brands/microsoft.svg" },
+  { name: "Google", src: "/logos/brands/google.svg" },
+  { name: "Apple", src: "/logos/brands/apple.svg" },
+  { name: "Amazon Web Services", src: "/logos/brands/amazonwebservices.svg" },
+  { name: "NVIDIA", src: "/logos/brands/nvidia.svg" },
+  { name: "IBM", src: "/logos/brands/ibm.svg" },
+  { name: "Cisco", src: "/logos/brands/cisco.svg" },
+  { name: "Oracle", src: "/logos/brands/oracle.svg" },
+  { name: "Intel", src: "/logos/brands/intel.svg" },
+  { name: "Meta", src: "/logos/brands/meta.svg" },
+  { name: "Unity", src: "/logos/brands/unity.svg" },
+  { name: "Raspberry Pi", src: "/logos/brands/raspberrypi.svg" },
+  { name: "CompTIA", src: "/logos/brands/comptia.svg" },
+  { name: "NCSC", src: "/logos/ncsc.svg" },
+  { name: "King's Trust", src: "/logos/kingstrust.svg" },
 ];
 
 /* SVG icon paths (subset shared with the homepage). */

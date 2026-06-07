@@ -179,6 +179,10 @@ export default function WelcomePage() {
   const [phase, setPhase] = useState(0);
   const [childName, setChildName] = useState("Cyber Hero");
   const [loaded, setLoaded] = useState(false);
+  // Navigating to /dashboard is a server-gated, heavier route — without
+  // this flag the click gives no feedback while it resolves (and if the
+  // entitlement gate bounces the user to /hub, it can feel like a no-op).
+  const [starting, setStarting] = useState(false);
 
   // Fetch child profile. The API returns the schema-shape field
   // (`name`), not the old wizard-local `childName`. Reading the wrong
@@ -214,6 +218,7 @@ export default function WelcomePage() {
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
         * { font-family: 'Nunito', sans-serif; }
+        @keyframes welcomeSpin { to { transform: rotate(360deg); } }
       `}</style>
 
       <FloatingOrbs />
@@ -345,17 +350,41 @@ export default function WelcomePage() {
               animate={{ opacity: 1, scale: 1 }}
               transition={{ type: "spring", stiffness: 200, damping: 15 }}>
               <motion.button
-                onClick={() => router.push("/dashboard")}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.98 }}
+                onClick={() => {
+                  if (starting) return;
+                  setStarting(true);
+                  router.push("/dashboard");
+                }}
+                disabled={starting}
+                whileHover={!starting ? { scale: 1.05 } : {}}
+                whileTap={!starting ? { scale: 0.98 } : {}}
                 animate={{ boxShadow: ["0 4px 25px rgba(139,92,246,0.4)", "0 8px 40px rgba(139,92,246,0.7)", "0 4px 25px rgba(139,92,246,0.4)"] }}
                 transition={{ duration: 2, ease: "easeInOut", repeat: Infinity }}
-                className="w-full sm:w-auto px-12 py-5 rounded-2xl font-black text-white text-lg sm:text-xl cursor-pointer"
+                className="w-full sm:w-auto px-12 py-5 rounded-2xl font-black text-white text-lg sm:text-xl inline-flex items-center justify-center gap-3"
                 style={{
                   background: GRAD,
                   minHeight: 56,
+                  cursor: starting ? "wait" : "pointer",
+                  opacity: starting ? 0.85 : 1,
                 }}>
-                Let&apos;s Start! 🚀
+                {starting ? (
+                  <>
+                    <span
+                      aria-hidden
+                      style={{
+                        width: 20,
+                        height: 20,
+                        borderRadius: "50%",
+                        border: "2.5px solid rgba(255,255,255,0.35)",
+                        borderTopColor: "#fff",
+                        animation: "welcomeSpin 0.7s linear infinite",
+                      }}
+                    />
+                    Loading your academy…
+                  </>
+                ) : (
+                  <>Let&apos;s Start! 🚀</>
+                )}
               </motion.button>
             </motion.div>
           )}

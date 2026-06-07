@@ -66,9 +66,10 @@ function makeHazeTexture(): THREE.Texture | null {
   const ctx = c.getContext("2d");
   if (!ctx) return null;
   ctx.clearRect(0, 0, S, S);
-  const g = ctx.createRadialGradient(S / 2, S * 0.62, 0, S / 2, S * 0.62, S * 0.55);
-  g.addColorStop(0, "rgba(30,110,190,0.4)");
-  g.addColorStop(0.5, "rgba(18,60,130,0.14)");
+  const g = ctx.createRadialGradient(S / 2, S * 0.66, 0, S / 2, S * 0.66, S * 0.62);
+  g.addColorStop(0, "rgba(34,120,205,0.52)");
+  g.addColorStop(0.45, "rgba(22,78,150,0.22)");
+  g.addColorStop(0.75, "rgba(14,50,110,0.08)");
   g.addColorStop(1, "rgba(0,0,0,0)");
   ctx.fillStyle = g;
   ctx.fillRect(0, 0, S, S);
@@ -104,7 +105,7 @@ export default function TechChamber({
       beamRef.current.opacity = lit * (reducedMotion ? 0.34 : 0.3 + Math.sin(t * 0.7) * 0.06);
     }
     if (hazeRef.current) {
-      hazeRef.current.opacity = smoothstep(0.32, 0.82, p) * 0.18 * (reducedMotion ? 1 : 0.92 + Math.sin(t * 0.4) * 0.08);
+      hazeRef.current.opacity = smoothstep(0.32, 0.82, p) * 0.34 * (reducedMotion ? 1 : 0.92 + Math.sin(t * 0.4) * 0.08);
     }
     if (wallLightRef.current) {
       wallLightRef.current.opacity = smoothstep(0.36, 0.78, p) * 0.18;
@@ -148,8 +149,8 @@ export default function TechChamber({
 
       {/* atmospheric haze wash for aerial perspective */}
       {hazeTex && (
-        <mesh position={[0, 1.2, -6]}>
-          <planeGeometry args={[34, 20]} />
+        <mesh position={[0, 0.4, -6.5]}>
+          <planeGeometry args={[50, 28]} />
           <meshBasicMaterial
             ref={hazeRef}
             map={hazeTex}

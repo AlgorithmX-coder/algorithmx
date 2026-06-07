@@ -201,11 +201,11 @@ export default function HeroCinematic() {
           }}
         />
 
-        {/* Layer 2a - TOP CRISP. Top stop pushed up to 0.94 ink so the
-         *  area just under the nav is nearly fully dark — the navbar
-         *  now reads as a crisp header strip with a hard shoulder of
-         *  atmosphere below it, instead of the grey haze that was
-         *  bleeding through before. */}
+        {/* Layer 2a - TOP SHADE. Keeps the area under the nav dark for a
+         *  crisp header, but now fades over a TALLER span with extra
+         *  intermediate stops so it melts smoothly into the scene — no
+         *  hard horizontal shoulder/band where the dark meets the lit
+         *  floor (was 26vh with a steep 0.94→0.6 drop in the first 35%). */}
         <div
           aria-hidden
           style={{
@@ -213,14 +213,16 @@ export default function HeroCinematic() {
             top: 0,
             left: 0,
             right: 0,
-            height: "26vh",
+            height: "44vh",
             zIndex: 2,
             pointerEvents: "none",
             background:
               "linear-gradient(to bottom, " +
-              "rgba(4,5,13,0.94) 0%, " +
-              "rgba(4,5,13,0.6) 35%, " +
-              "rgba(4,5,13,0.18) 75%, " +
+              "rgba(4,5,13,0.9) 0%, " +
+              "rgba(4,5,13,0.74) 18%, " +
+              "rgba(4,5,13,0.54) 36%, " +
+              "rgba(4,5,13,0.32) 56%, " +
+              "rgba(4,5,13,0.13) 78%, " +
               "rgba(4,5,13,0) 100%)",
           }}
         />

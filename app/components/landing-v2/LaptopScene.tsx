@@ -16,7 +16,6 @@ import {
 import { BlendFunction, SMAAPreset } from "postprocessing";
 import * as THREE from "three";
 import type { MotionValue } from "framer-motion";
-import ReactorPlatform from "./ReactorPlatform";
 import TechChamber from "./TechChamber";
 
 interface LaptopSceneProps {
@@ -2441,9 +2440,8 @@ export default function LaptopScene({ progress, reducedMotion = false }: LaptopS
        *  shaft + haze) — sits behind everything, self-lit, never competes. */}
       <TechChamber progress={progress} reducedMotion={reducedMotion} lowPower={lowPower} />
 
-      {/* Physical layered reactor the laptop floats above (real metal tiers +
-       *  emissive trims + segmented ring), igniting outward with scroll. */}
-      <ReactorPlatform progress={progress} reducedMotion={reducedMotion} lowPower={lowPower} />
+      {/* Geometric platform blocks removed — the laptop now sits over the
+       *  open ribbon floor receding into the distance, no panels around it. */}
 
       <Laptop progress={progress} reducedMotion={reducedMotion} />
 
@@ -3173,40 +3171,37 @@ function Laptop({
     const pulse = reducedMotion ? 1 : 0.92 + Math.sin(t * 0.9) * 0.06;
     /* activationT tracks the lid opening (lid animates 0.32→0.50). */
     const activationT = smoothstep(0.3, 0.55, p);
-    /* Dark substrate fades in with the plate; held just under full so the
-     * recessed material reads without becoming a heavy slab. Static (no
-     * pulse) — it's physical material, not energy. */
-    /* NEW ENERGY-CHAMBER FLOOR opacities. The previous values kept these
-     * layers near-invisible (surface peaked at 0.12) and fully gated
-     * behind `draw`, so the floor only whispered in mid-scroll. Now each
-     * layer has a strong BASELINE (visible from the very top of the hero,
-     * matching the reference) plus a scroll-driven boost as the chamber
-     * powers up. */
+    /* FLOOR REVEAL — at the very top of the hero ONLY the laptop is
+     * visible; the whole energy-chamber floor stays hidden and then comes
+     * in as the lid opens (lid animates 0.32→0.50). So every floor/depth
+     * layer is gated on this curve with NO baseline — they are exactly 0
+     * until the laptop starts opening, then ramp to full. */
+    const floorReveal = smoothstep(0.32, 0.6, p);
     if (plateSubstrateMatRef.current) {
-      plateSubstrateMatRef.current.opacity = 0.6 + draw * 0.35;
+      plateSubstrateMatRef.current.opacity = floorReveal * 0.95;
     }
     if (plateSurfaceMatRef.current) {
-      plateSurfaceMatRef.current.opacity = (0.42 + draw * 0.45) * pulse;
+      plateSurfaceMatRef.current.opacity = floorReveal * 0.87 * pulse;
     }
     if (plateMidMatRef.current) {
       const midPulse = reducedMotion ? 1 : 0.9 + Math.sin(t * 0.66 + 1.3) * 0.1;
-      plateMidMatRef.current.opacity = (0.2 + draw * 0.22) * midPulse;
+      plateMidMatRef.current.opacity = floorReveal * 0.42 * midPulse;
     }
     if (plateDeepMatRef.current) {
       const deepPulse = reducedMotion ? 1 : 0.88 + Math.sin(t * 0.48 + 2.7) * 0.12;
-      plateDeepMatRef.current.opacity = (0.1 + draw * 0.12) * deepPulse;
+      plateDeepMatRef.current.opacity = floorReveal * 0.22 * deepPulse;
     }
     if (depthHazeMatRef.current) {
       const hazePulse = reducedMotion ? 1 : 0.85 + Math.sin(t * 0.4) * 0.15;
-      depthHazeMatRef.current.opacity = (0.04 + draw * 0.05) * hazePulse;
+      depthHazeMatRef.current.opacity = floorReveal * 0.09 * hazePulse;
     }
     if (megaStructureMatRef.current) {
-      megaStructureMatRef.current.opacity = 0.04 + draw * 0.05;
+      megaStructureMatRef.current.opacity = floorReveal * 0.09;
     }
     /* Sub-surface machine well — faint depth glow beneath the floor. */
     if (machineWellMatRef.current) {
       const wellPulse = reducedMotion ? 1 : 0.85 + Math.sin(t * 0.5 + 0.6) * 0.15;
-      machineWellMatRef.current.opacity = (0.12 + draw * 0.22) * wellPulse;
+      machineWellMatRef.current.opacity = floorReveal * 0.34 * wellPulse;
     }
 
     /* OUTWARD IGNITION SWEEP — a thin ring expanding chassis→edge as the lid

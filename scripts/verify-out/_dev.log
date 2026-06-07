@@ -1,0 +1,20 @@
+
+> algorithmx@0.1.0 dev
+> next dev
+
+⚠ Port 3000 is in use by process 12092, using available port 3001 instead.
+▲ Next.js 16.2.2 (Turbopack)
+- Local:         http://localhost:3001
+- Network:       http://172.26.4.56:3001
+- Environments: .env.local, .env
+✓ Ready in 636ms
+[@sentry/nextjs] DEPRECATION WARNING: disableLogger is deprecated and will be removed in a future version. Use webpack.treeshake.removeDebugLogging instead. (Not supported with Turbopack.)
+⨯ Another next dev server is already running.
+
+- Local:        http://localhost:3000
+- PID:          12092
+- Dir:          C:\Users\Asad Jalal\code\algorithmx
+- Log:          .next\dev\logs\next-development.log
+
+Run taskkill /PID 12092 /F to stop it.
+[?25h

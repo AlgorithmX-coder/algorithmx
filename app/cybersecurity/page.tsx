@@ -8,7 +8,7 @@ import { landingRouteFor } from "@/app/lib/courseLandings";
 
 import Nav from "@/app/components/landing-v2/Nav";
 import Footer from "@/app/components/landing-v2/Footer";
-import GlobalBackdrop from "@/app/components/landing-v2/GlobalBackdrop";
+import CosmicNetworkBackground from "@/app/components/backgrounds/CosmicNetworkBackground";
 import { FadeUp } from "@/app/components/landing-v2/utilities";
 
 import TrackCard from "./TrackCard";
@@ -163,7 +163,7 @@ export default async function CybersecurityPage() {
 
   return (
     <>
-      <GlobalBackdrop />
+      <CosmicNetworkBackground />
       <Nav />
       <main
         style={{
@@ -195,7 +195,7 @@ export default async function CybersecurityPage() {
                 marginBottom: 18,
               }}
             >
-              // CYBERSECURITY · 4 TRACKS · AGES 6 → 18+
+              {"// CYBERSECURITY · 4 TRACKS · AGES 6 → 18+"}
             </p>
           </FadeUp>
 
