@@ -11,3 +11,8 @@ export * from "./juice";
 export * from "./juiceKeyframes";
 export * from "./useTimingScaler";
 export * from "./useClimaxSequence";
+export { default as SceneShell } from "./SceneShell";
+export * from "./SceneShell";
+export { default as ChallengePanel } from "./ChallengePanel";
+export * from "./ChallengePanel";
+export * from "./useHotspotPanel";
