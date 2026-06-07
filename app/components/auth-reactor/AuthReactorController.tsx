@@ -17,19 +17,21 @@ const lerp = THREE.MathUtils.lerp;
 
 /** The single layer that turns form state → visual state, merges optional dev
  *  overrides, and composes the scene. Form components never touch this. */
-function Rig({ stage, reducedMotion }: { stage: AuthReactorStage; reducedMotion: boolean }) {
+function Rig({ stage, reducedMotion, lookAtX }: { stage: AuthReactorStage; reducedMotion: boolean; lookAtX: number }) {
   useFrame((st, dt) => {
     const cam = st.camera;
     const success = stage === 7;
     const t = st.clock.elapsedTime;
-    // Slightly elevated, looking down a touch so the chamber floor reads.
-    const tz = reducedMotion ? 6.6 : success ? 5.6 : 6.6;
-    const dx = reducedMotion || success ? 0 : Math.sin(t * 0.1) * 0.3;
-    const dy = reducedMotion ? 0.5 : 0.5 + (success ? -0.1 : Math.sin(t * 0.07) * 0.1);
+    // Slightly elevated, looking down a touch so the chamber floor reads. The
+    // negative lookAt-X (desktop) yaws the view so the reactor sits centre-right
+    // over a full-bleed floor, leaving the left for the form.
+    const tz = reducedMotion ? 6.0 : success ? 5.2 : 6.0;
+    const dx = reducedMotion || success ? 0 : Math.sin(t * 0.1) * 0.25;
+    const dy = reducedMotion ? 0.35 : 0.35 + (success ? -0.05 : Math.sin(t * 0.07) * 0.08);
     cam.position.z = lerp(cam.position.z, tz, Math.min(1, dt * (success ? 2 : 1.2)));
     cam.position.x = lerp(cam.position.x, dx, Math.min(1, dt * 1.2));
     cam.position.y = lerp(cam.position.y, dy, Math.min(1, dt * 1.2));
-    cam.lookAt(0, -0.15, 0);
+    cam.lookAt(lookAtX, -0.05, 0);
   });
   return null;
 }
@@ -67,7 +69,7 @@ export default function AuthReactorController({ state }: { state: AuthMachineSta
         coreOverride={coreOverride}
       />
       <AuthReactorEffects quality={state.quality} />
-      <Rig stage={stage} reducedMotion={state.reducedMotion} />
+      <Rig stage={stage} reducedMotion={state.reducedMotion} lookAtX={state.quality === "high" ? -1.7 : 0} />
     </>
   );
 }

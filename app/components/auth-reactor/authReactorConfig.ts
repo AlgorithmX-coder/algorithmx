@@ -89,6 +89,6 @@ export const RIG = {
   clampRetractedZ: 0.04,
   ringBaseSpeed: [0.12, -0.18, 0.26] as const, // outer / middle / inner idle spin
   ringSubmitBoost: 3.2, // brief acceleration on submit
-  tilt: [0.16, 0.12, 0] as [number, number, number],
-  scale: 0.85,
+  tilt: [0.2, 0.06, 0] as [number, number, number], // more downward tilt → reads 3D (panel tops visible)
+  scale: 1.0,
 } as const;

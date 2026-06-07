@@ -82,9 +82,9 @@ export default function Nav() {
       <div
         className="lv2-nav-inner"
         style={{
-          maxWidth: 1320,
+          maxWidth: "100%",
           margin: "0 auto",
-          padding: "0 var(--lv2-rail)",
+          padding: "0 clamp(28px, 3.5vw, 96px)",
           height: 68,
           display: "flex",
           alignItems: "center",

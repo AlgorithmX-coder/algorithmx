@@ -27,11 +27,13 @@ export default function AuthReactorLighting({ energy, isError }: { energy: numbe
 
   return (
     <>
-      <ambientLight intensity={0.3} />
-      <directionalLight position={[3, 3, 6]} intensity={1.5} color={REACTOR.cyan} />
-      <directionalLight position={[-5, 1, 1]} intensity={1} color={REACTOR.violet} />
-      <directionalLight position={[0, 4, 3]} intensity={0.4} color="#aab6e0" />
-      <directionalLight position={[3, -2, 3]} intensity={0.35} color="#ffcaa0" />
+      <ambientLight intensity={0.26} />
+      <directionalLight position={[3, 3, 6]} intensity={2.0} color={REACTOR.cyan} />
+      <directionalLight position={[-5, 1, 1]} intensity={1.2} color={REACTOR.violet} />
+      <directionalLight position={[0, 4, 3]} intensity={0.6} color="#aab6e0" />
+      <directionalLight position={[3, -2, 3]} intensity={0.4} color="#ffcaa0" />
+      {/* back rim to separate the silhouette from the chamber */}
+      <directionalLight position={[-2, 2, -5]} intensity={0.7} color={REACTOR.cyan} />
       <pointLight ref={spill} position={[0, 0, 0.4]} intensity={0.6} color={REACTOR.dormant} distance={9} decay={2} />
     </>
   );

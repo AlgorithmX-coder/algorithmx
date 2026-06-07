@@ -13,7 +13,7 @@ export default function AuthReactorEffects({ quality }: { quality: ReactorQualit
   if (!QUALITY[quality].postprocessing) return null;
   return (
     <EffectComposer multisampling={QUALITY[quality].multisampling}>
-      <Bloom intensity={0.55} luminanceThreshold={0.72} luminanceSmoothing={0.18} radius={0.42} mipmapBlur />
+      <Bloom intensity={0.7} luminanceThreshold={0.6} luminanceSmoothing={0.14} radius={0.36} mipmapBlur />
       <Vignette eskil={false} offset={0.24} darkness={0.78} />
     </EffectComposer>
   );

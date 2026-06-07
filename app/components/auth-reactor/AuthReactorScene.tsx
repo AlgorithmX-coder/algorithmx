@@ -16,9 +16,16 @@ function CanvasInner({ state }: { state: AuthMachineState }) {
   return (
     <Canvas
       dpr={QUALITY[state.quality].dpr}
-      camera={{ position: [0, 0.5, 6.6], fov: 42 }}
+      camera={{ position: [0, 0.35, 6.0], fov: 42 }}
       gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
-      style={{ width: "100%", height: "100%", background: "transparent", pointerEvents: "none" }}
+      style={{
+        width: "100%",
+        height: "100%",
+        // One continuous chamber backdrop (a soft blue glow centre-right fading
+        // to near-black) so the page reads as a single lit volume, not two halves.
+        background: "radial-gradient(130% 105% at 66% 44%, #121b3d 0%, #0a0e20 46%, #06070f 100%)",
+        pointerEvents: "none",
+      }}
     >
       <Suspense fallback={null}>
         <AuthReactorController state={state} />

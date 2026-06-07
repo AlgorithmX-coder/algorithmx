@@ -2,7 +2,7 @@
 
 import { useMemo, useRef } from "react";
 import { useFrame } from "@react-three/fiber";
-import { Grid } from "@react-three/drei";
+import { Grid, MeshReflectorMaterial } from "@react-three/drei";
 import * as THREE from "three";
 import { REACTOR } from "./authReactorConfig";
 import type { ReactorQuality } from "./authReactorTypes";
@@ -42,9 +42,9 @@ function BackPortal({ reducedMotion }: { reducedMotion: boolean }) {
   const arcs = useRef<THREE.Group[]>([]);
   const rings = useMemo(
     () => [
-      { r: 2.0, arc: Math.PI * 1.5, tube: 0.012, color: REACTOR.cyan, speed: 0.06 },
-      { r: 2.45, arc: Math.PI * 1.1, tube: 0.008, color: REACTOR.violet, speed: -0.04 },
-      { r: 2.9, arc: Math.PI * 1.7, tube: 0.006, color: REACTOR.cyan, speed: 0.03 },
+      { r: 2.4, arc: Math.PI * 1.9, tube: 0.01, color: REACTOR.cyan, speed: 0.05 },
+      { r: 2.95, arc: Math.PI * 1.95, tube: 0.008, color: "#5a6ad0", speed: -0.035 },
+      { r: 3.55, arc: Math.PI * 1.85, tube: 0.006, color: REACTOR.cyan, speed: 0.025 },
     ],
     [],
   );
@@ -60,31 +60,12 @@ function BackPortal({ reducedMotion }: { reducedMotion: boolean }) {
       {rings.map((r, i) => (
         <group key={i} ref={(el) => { if (el) arcs.current[i] = el; }} rotation={[0, 0, (i * Math.PI) / 3]}>
           <mesh rotation={[0, 0, -r.arc / 2]}>
-            <torusGeometry args={[r.r, r.tube, 8, 200, r.arc]} />
-            <meshBasicMaterial color={r.color} transparent opacity={0.5} toneMapped={false} />
+            <torusGeometry args={[r.r, r.tube, 8, 220, r.arc]} />
+            <meshBasicMaterial color={r.color} transparent opacity={0.4} toneMapped={false} />
           </mesh>
         </group>
       ))}
-      {/* soft portal halo */}
-      <mesh position={[0, 0, -0.3]}>
-        <circleGeometry args={[2.4, 64]} />
-        <meshBasicMaterial color={REACTOR.violet} transparent opacity={0.07} toneMapped={false} blending={THREE.AdditiveBlending} depthWrite={false} />
-      </mesh>
     </group>
-  );
-}
-
-/* ── Vertical light shaft from the top ── */
-function LightShaft({ reducedMotion }: { reducedMotion: boolean }) {
-  const mat = useRef<THREE.MeshBasicMaterial>(null);
-  useFrame((st) => {
-    if (mat.current && !reducedMotion) mat.current.opacity = 0.06 + Math.sin(st.clock.elapsedTime * 0.8) * 0.02;
-  });
-  return (
-    <mesh position={[0, 3.2, -2.2]}>
-      <cylinderGeometry args={[0.15, 2.0, 6, 32, 1, true]} />
-      <meshBasicMaterial ref={mat} color={REACTOR.cyan} transparent opacity={0.07} side={THREE.DoubleSide} toneMapped={false} blending={THREE.AdditiveBlending} depthWrite={false} />
-    </mesh>
   );
 }
 
@@ -96,18 +77,37 @@ function Floor({ reducedMotion, quality }: { reducedMotion: boolean; quality: Re
   });
   return (
     <group position={[0, -1.55, 0]}>
+      {/* Reflective floor (desktop) — the reactor + platform glow reflect in it. */}
+      {quality === "high" && (
+        <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0, 0]}>
+          <planeGeometry args={[70, 70]} />
+          <MeshReflectorMaterial
+            blur={[320, 90]}
+            resolution={1024}
+            mixBlur={1}
+            mixStrength={30}
+            roughness={0.9}
+            depthScale={1.1}
+            minDepthThreshold={0.4}
+            maxDepthThreshold={1.3}
+            color="#080b18"
+            metalness={0.55}
+            mirror={0.45}
+          />
+        </mesh>
+      )}
       <Grid
         args={[30, 30]}
-        cellSize={0.6}
-        cellThickness={0.6}
-        cellColor="#1b2b55"
+        cellSize={0.7}
+        cellThickness={0.55}
+        cellColor="#223861"
         sectionSize={3}
-        sectionThickness={1}
+        sectionThickness={1.1}
         sectionColor={REACTOR.cyan}
-        fadeDistance={16}
-        fadeStrength={2}
+        fadeDistance={32}
+        fadeStrength={1.1}
         infiniteGrid={quality !== "low"}
-        position={[0, 0.01, 0]}
+        position={[0, 0.012, 0]}
       />
       {/* concentric station rings */}
       <group ref={ring} rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.02, 0]}>
@@ -119,9 +119,18 @@ function Floor({ reducedMotion, quality }: { reducedMotion: boolean; quality: Re
           <torusGeometry args={[1.5, 0.02, 8, 200]} />
           <meshBasicMaterial color={AMBER} transparent opacity={0.85} toneMapped={false} />
         </mesh>
+        {/* outer ground rings sweeping out in front of the pedestal */}
         <mesh>
-          <torusGeometry args={[2.1, 0.006, 8, 220]} />
-          <meshBasicMaterial color={REACTOR.violet} transparent opacity={0.45} toneMapped={false} />
+          <torusGeometry args={[2.55, 0.014, 8, 240]} />
+          <meshBasicMaterial color={REACTOR.cyan} transparent opacity={0.6} toneMapped={false} />
+        </mesh>
+        <mesh>
+          <torusGeometry args={[2.92, 0.02, 8, 240]} />
+          <meshBasicMaterial color={AMBER} transparent opacity={0.5} toneMapped={false} />
+        </mesh>
+        <mesh>
+          <torusGeometry args={[3.4, 0.008, 8, 260]} />
+          <meshBasicMaterial color={REACTOR.cyan} transparent opacity={0.3} toneMapped={false} />
         </mesh>
       </group>
     </group>
@@ -228,10 +237,20 @@ export default function AuthReactorChamber({ quality, reducedMotion }: { quality
   const low = quality === "low";
   return (
     <group>
+      {/* Soft nebula glow far back so the chamber reads as one lit volume. */}
+      <mesh position={[0, 1.6, -6]}>
+        <circleGeometry args={[3.6, 48]} />
+        <meshBasicMaterial color="#27379e" transparent opacity={0.06} toneMapped={false} blending={THREE.AdditiveBlending} depthWrite={false} />
+      </mesh>
       <Floor reducedMotion={reducedMotion} quality={quality} />
       <Pedestal />
       <BackPortal reducedMotion={reducedMotion} />
-      {!low && <LightShaft reducedMotion={reducedMotion} />}
+      {/* Soft violet rim glow on the reactor's right edge (reference accent). */}
+      <mesh position={[1.55, 0.15, -0.45]}>
+        <circleGeometry args={[1.0, 48]} />
+        <meshBasicMaterial color={REACTOR.violet} transparent opacity={0.07} toneMapped={false} blending={THREE.AdditiveBlending} depthWrite={false} />
+      </mesh>
+      {/* (No light shaft — additive cone bloomed too hard; reference top beam is negligible.) */}
       {high && (
         <>
           <SideWall side={1} reducedMotion={reducedMotion} />
