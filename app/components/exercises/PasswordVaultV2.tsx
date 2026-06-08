@@ -151,12 +151,23 @@ export default function PasswordVaultV2({
 }: PasswordVaultProps) {
   const audio = useGameAudio();
   const fx = useExerciseFeedback();
-  const { intensity, t } = useTimingScaler();
+  const { intensity, t, reduced } = useTimingScaler();
 
   const [doorReject, setDoorReject] = useState(0);
   const [showRevealUI, setShowRevealUI] = useState(false);
   const climaxStartedRef = useRef(false);
   const extraTimersRef = useRef<number[]>([]);
+
+  // Establishing shot: on mount the camera holds a tight push-in on the
+  // sealed door, then pulls back to reveal the full vault + locks. Until
+  // it settles, the locks are non-interactive and fade in.
+  const [established, setEstablished] = useState(false);
+  useEffect(() => {
+    // setState only inside the async callback (never synchronously in the
+    // effect body). Reduced motion collapses the hold to ~0.
+    const id = window.setTimeout(() => setEstablished(true), reduced ? 0 : 1150);
+    return () => window.clearTimeout(id);
+  }, [reduced]);
 
   // Narrow viewport → bottom-sheet challenge panel; wide → side card.
   const [isNarrow, setIsNarrow] = useState(false);
@@ -274,7 +285,7 @@ export default function PasswordVaultV2({
       fx.correct({ xp: 30, text: `${lock?.ruleLabel ?? ""} ✓` });
       audio.unlock();
     },
-    locked: climax.stage !== null,
+    locked: climax.stage !== null || !established,
   });
 
   // Kick off the climax the moment every lock is active.
@@ -296,10 +307,16 @@ export default function PasswordVaultV2({
   const revealActive = stage === "revealed" || stage === "master";
 
   /* ───────── Camera (engine SceneShell) ───────── */
+  // Priority: climax push-in > establishing hold > hotspot focus/overview.
+  const establishing = !established && !vaultLocked;
   const camera: SceneCamera = vaultLocked
     ? { kind: "focus", x: 0, y: 0, zoom: STAGE_ZOOM[stage] ?? 1.4 }
-    : hotspot.camera;
-  const cameraTransitionMs = vaultLocked ? 720 : undefined;
+    : establishing
+      ? { kind: "focus", x: 0, y: -4, zoom: 1.22 }
+      : hotspot.camera;
+  // 0ms while holding the establishing frame (it's the mount pose); the
+  // pull-back to overview then rides the default 620ms ease.
+  const cameraTransitionMs = vaultLocked ? 720 : establishing ? 0 : 900;
 
   /* ───────── Guidance ribbon copy ───────── */
   const activeCount = hotspot.activeCount;
@@ -401,6 +418,7 @@ export default function PasswordVaultV2({
           >
             {locks.map((l) => {
               const on = hotspot.isActive(l.id);
+              const justOn = hotspot.recentlyActivated === l.id;
               return (
                 <span
                   key={l.id}
@@ -411,16 +429,56 @@ export default function PasswordVaultV2({
                     background: on
                       ? "linear-gradient(90deg, #7eff97, #00e5ff)"
                       : "rgba(255,255,255,0.15)",
-                    boxShadow: on ? "0 0 8px rgba(126,255,151,0.55)" : "none",
+                    boxShadow: on ? "0 0 10px rgba(126,255,151,0.6)" : "none",
                     transition: "background 240ms ease",
+                    animation: justOn && intensity > 0 ? "v2PipPop 520ms ease-out" : undefined,
                   }}
                 />
               );
             })}
           </div>
 
-          {/* CLANG flash */}
+          {/* Scene vignette — depth + focus toward the centre (static, RM-safe) */}
+          <div
+            aria-hidden
+            style={{
+              position: "absolute",
+              inset: 0,
+              zIndex: 8,
+              pointerEvents: "none",
+              background:
+                "radial-gradient(ellipse at 50% 46%, transparent 38%, rgba(4,5,13,0.26) 78%, rgba(4,5,13,0.58) 100%)",
+            }}
+          />
+
+          {/* CLANG flash + expanding shockwave ring */}
           <FlashOverlay show={stage === "unlocking"} intensity={intensity} />
+          {stage === "unlocking" && intensity > 0 && (
+            <span
+              aria-hidden
+              style={{
+                position: "absolute",
+                top: "48%",
+                left: "50%",
+                transform: "translate(-50%, -50%)",
+                zIndex: 22,
+                pointerEvents: "none",
+              }}
+            >
+              <span
+                style={{
+                  display: "block",
+                  width: 220,
+                  height: 220,
+                  borderRadius: "50%",
+                  border: "4px solid rgba(253,224,71,0.9)",
+                  boxShadow:
+                    "0 0 30px rgba(253,224,71,0.7), inset 0 0 24px rgba(253,224,71,0.4)",
+                  animation: "v2Ring 640ms cubic-bezier(0.2,0.8,0.2,1) forwards",
+                }}
+              />
+            </span>
+          )}
 
           {/* Light burst on opening */}
           <AnimatePresence>
@@ -541,7 +599,8 @@ export default function PasswordVaultV2({
                     fontSize: "clamp(28px, 5vw, 46px)",
                     letterSpacing: "0.04em",
                     background:
-                      "linear-gradient(135deg, #fde047 0%, #ff7a59 50%, #ff5fb3 100%)",
+                      "linear-gradient(110deg, #fde047 0%, #fff8dc 25%, #ff7a59 50%, #ff5fb3 75%, #fde047 100%)",
+                    backgroundSize: "220% 100%",
                     WebkitBackgroundClip: "text",
                     WebkitTextFillColor: "transparent",
                     backgroundClip: "text",
@@ -549,6 +608,7 @@ export default function PasswordVaultV2({
                     marginBottom: 12,
                     textAlign: "center",
                     filter: "drop-shadow(0 6px 24px rgba(253,224,71,0.4))",
+                    animation: intensity > 0 ? "v2TextSheen 2.6s ease-in-out infinite" : undefined,
                   }}
                 >
                   VAULT MASTER!
@@ -571,8 +631,9 @@ export default function PasswordVaultV2({
         </>
       }
     >
-      {/* Engine keyframe library (mounted once) */}
+      {/* Engine + vault keyframe libraries (mounted once) */}
       <JuiceKeyframes />
+      <VaultV2FX />
 
       {/* Camera-transformed world */}
       <ChamberDecor />
@@ -600,6 +661,7 @@ export default function PasswordVaultV2({
           onArtifactReveal={() => audio.starEarned()}
         />
         {revealActive && <SparkleField intensity={intensity} />}
+        {revealActive && <ChamberDust intensity={intensity} />}
 
         <VaultDoor
           open={doorOpen}
@@ -613,14 +675,16 @@ export default function PasswordVaultV2({
           {(stage === "anticipation" || stage === "unlocking") && (
             <Beams positions={beamPositions} intensity={intensity} />
           )}
-          {locks.map((lock) => (
+          {locks.map((lock, i) => (
             <LockHotspot
               key={lock.id}
               lock={lock}
+              index={i}
+              entered={established}
               active={hotspot.isActive(lock.id)}
               focused={hotspot.focusedId === lock.id}
               activatedJustNow={hotspot.recentlyActivated === lock.id}
-              disabled={!!hotspot.wrong || vaultLocked}
+              disabled={!!hotspot.wrong || vaultLocked || !established}
               intensity={intensity}
               onTap={() => hotspot.focusHotspot(lock.id)}
             />
@@ -766,6 +830,8 @@ function VaultDoor({
 
   return (
     <>
+      {/* Solid rim — recedes once the vault opens so the treasure chamber
+          reads as the hero (the legacy vault left it covering the reveal). */}
       <div
         aria-hidden
         style={{
@@ -776,8 +842,11 @@ function VaultDoor({
             "linear-gradient(135deg, #3a4470 0%, #1a2147 40%, #2a3460 100%)",
           boxShadow:
             "0 30px 80px rgba(0,0,0,0.6), 0 0 0 2px rgba(125,240,255,0.22) inset",
+          opacity: open ? 0.16 : 1,
+          transition: "opacity 760ms ease",
         }}
       />
+      {/* Caution stripes — fully fade on open so they stop masking the chamber. */}
       <div
         aria-hidden
         style={{
@@ -786,7 +855,8 @@ function VaultDoor({
           borderRadius: 22,
           background:
             "repeating-linear-gradient(45deg, rgba(253,224,71,0.5) 0 14px, rgba(15,21,48,0.85) 14px 28px)",
-          opacity: 0.45,
+          opacity: open ? 0 : 0.45,
+          transition: "opacity 600ms ease",
           pointerEvents: "none",
         }}
       />
@@ -908,7 +978,9 @@ function VaultDoor({
         <DoorScratches mirrored />
       </motion.div>
 
-      {!open && <VaultDial statusStage={statusStage} intensity={intensity} />}
+      {!open && (
+        <VaultDial statusStage={statusStage} activeCount={activeCount} intensity={intensity} />
+      )}
 
       <div
         style={{
@@ -927,13 +999,17 @@ function VaultDoor({
 
 function VaultDial({
   statusStage,
+  activeCount = 0,
   intensity,
 }: {
   statusStage: string | null;
+  activeCount?: number;
   intensity: number;
 }) {
+  // Idle spin accelerates as locks are solved — the vault "charging up".
+  const progressSpin = Math.max(3.2, 12 - activeCount * 1.7);
   const spinSec =
-    statusStage === "anticipation" ? 1.4 : statusStage === "unlocking" ? 0.7 : 12;
+    statusStage === "anticipation" ? 1.4 : statusStage === "unlocking" ? 0.7 : progressSpin;
   const showSpin = intensity > 0;
   return (
     <div
@@ -1061,6 +1137,8 @@ function DoorScratches({ mirrored }: { mirrored?: boolean }) {
 
 function LockHotspot({
   lock,
+  index,
+  entered,
   active,
   focused,
   activatedJustNow,
@@ -1069,6 +1147,8 @@ function LockHotspot({
   onTap,
 }: {
   lock: PasswordVaultLock;
+  index: number;
+  entered: boolean;
   active: boolean;
   focused: boolean;
   activatedJustNow: boolean;
@@ -1077,12 +1157,16 @@ function LockHotspot({
   onTap: () => void;
 }) {
   const pos = LOCK_POSITIONS[lock.id] ?? { x: 0, y: 0 };
+  const [hover, setHover] = useState(false);
+  const lifted = hover && !active && !disabled && intensity > 0;
 
   return (
     <button
       type="button"
       onClick={onTap}
       disabled={disabled}
+      onMouseEnter={() => setHover(true)}
+      onMouseLeave={() => setHover(false)}
       aria-label={`${lock.ruleLabel} lock - ${active ? "unlocked" : "tap to try"}`}
       style={{
         position: "absolute",
@@ -1101,6 +1185,9 @@ function LockHotspot({
         outline: focused ? "3px solid #00e5ff" : "none",
         outlineOffset: 4,
         WebkitTapHighlightColor: "transparent",
+        // Staggered fade-in entrance after the establishing pull-back.
+        opacity: entered || intensity === 0 ? 1 : 0,
+        transition: `opacity 460ms ease ${index * 90}ms`,
       }}
     >
       <span
@@ -1112,9 +1199,10 @@ function LockHotspot({
           background: active
             ? "radial-gradient(circle, rgba(126,255,151,0.6) 0%, transparent 70%)"
             : "radial-gradient(circle, rgba(0,229,255,0.5) 0%, transparent 70%)",
-          filter: "blur(8px)",
+          filter: lifted ? "blur(10px) brightness(1.35)" : "blur(8px)",
+          transition: "filter 180ms ease",
           animation:
-            !active && !focused && intensity > 0
+            !active && !focused && !hover && intensity > 0
               ? "cineLockPulse 2.4s ease-in-out infinite"
               : undefined,
         }}
@@ -1123,10 +1211,14 @@ function LockHotspot({
         aria-hidden
         animate={
           activatedJustNow && intensity > 0
-            ? { rotate: [0, -8, 14, 0], scale: [1, 1.18, 1.05, 1] }
-            : { rotate: 0, scale: 1 }
+            ? { rotate: [0, -8, 14, 0], scale: [1, 1.22, 1.06, 1] }
+            : { rotate: 0, scale: lifted ? 1.09 : 1 }
         }
-        transition={{ duration: activatedJustNow ? 0.55 : 0.2 }}
+        transition={
+          activatedJustNow
+            ? { duration: 0.55 }
+            : { type: "spring", stiffness: 360, damping: 22 }
+        }
         style={{
           position: "absolute",
           inset: 0,
@@ -1136,22 +1228,49 @@ function LockHotspot({
             : "radial-gradient(circle at 30% 30%, #7ad3ff 0%, #1f6ea3 45%, #0a1e30 100%)",
           boxShadow: active
             ? "0 0 28px rgba(126,255,151,0.7), inset 0 0 0 2px rgba(255,255,255,0.3), inset 0 -8px 12px rgba(0,0,0,0.45)"
-            : "0 0 18px rgba(0,229,255,0.55), inset 0 0 0 2px rgba(255,255,255,0.25), inset 0 -8px 12px rgba(0,0,0,0.4)",
+            : lifted
+              ? "0 0 30px rgba(0,229,255,0.85), inset 0 0 0 2px rgba(255,255,255,0.4), inset 0 -8px 12px rgba(0,0,0,0.4)"
+              : "0 0 18px rgba(0,229,255,0.55), inset 0 0 0 2px rgba(255,255,255,0.25), inset 0 -8px 12px rgba(0,0,0,0.4)",
         }}
       />
+      {/* Soft spark + hard shockwave ring on activation */}
       {activatedJustNow && intensity > 0 && (
-        <span
-          aria-hidden
-          style={{
-            position: "absolute",
-            inset: -22,
-            borderRadius: "50%",
-            background:
-              "radial-gradient(circle, rgba(253,224,71,0.85) 0%, transparent 60%)",
-            animation: "cineSpark 700ms ease-out forwards",
-            pointerEvents: "none",
-          }}
-        />
+        <>
+          <span
+            aria-hidden
+            style={{
+              position: "absolute",
+              inset: -22,
+              borderRadius: "50%",
+              background:
+                "radial-gradient(circle, rgba(253,224,71,0.85) 0%, transparent 60%)",
+              animation: "cineSpark 700ms ease-out forwards",
+              pointerEvents: "none",
+            }}
+          />
+          <span
+            aria-hidden
+            style={{
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+              pointerEvents: "none",
+            }}
+          >
+            <span
+              style={{
+                display: "block",
+                width: 104,
+                height: 104,
+                borderRadius: "50%",
+                border: "3px solid rgba(126,255,151,0.9)",
+                boxShadow: "0 0 16px rgba(126,255,151,0.6)",
+                animation: "v2Ring 680ms cubic-bezier(0.2,0.8,0.2,1) forwards",
+              }}
+            />
+          </span>
+        </>
       )}
       <span
         style={{
@@ -1203,7 +1322,37 @@ function ShieldCentrepiece({ intensity }: { intensity: number }) {
           "drop-shadow(0 14px 28px rgba(253,224,71,0.35)) drop-shadow(0 0 22px rgba(0,229,255,0.4))",
       }}
     >
-      <svg viewBox="0 0 200 230" width="200" height="230" style={{ display: "block" }}>
+      {/* Rotating ray halo behind the relic */}
+      {intensity > 0 && (
+        <span
+          aria-hidden
+          style={{
+            position: "absolute",
+            inset: -46,
+            borderRadius: "50%",
+            background:
+              "conic-gradient(from 0deg, rgba(253,224,71,0.55) 0deg, transparent 16deg, rgba(0,229,255,0.4) 60deg, transparent 78deg, rgba(253,224,71,0.55) 120deg, transparent 138deg, rgba(255,95,179,0.4) 200deg, transparent 220deg, rgba(253,224,71,0.55) 280deg, transparent 300deg)",
+            filter: "blur(7px)",
+            opacity: 0.5,
+            mixBlendMode: "screen",
+            animation: "v2HaloSpin 16s linear infinite",
+          }}
+        />
+      )}
+      {/* Pulsing aura */}
+      <span
+        aria-hidden
+        style={{
+          position: "absolute",
+          inset: -12,
+          borderRadius: "50%",
+          background:
+            "radial-gradient(circle, rgba(253,224,71,0.45) 0%, rgba(124,92,255,0.2) 45%, transparent 68%)",
+          filter: "blur(10px)",
+          animation: intensity > 0 ? "cineCoreAura 4s ease-in-out infinite" : undefined,
+        }}
+      />
+      <svg viewBox="0 0 200 230" width="200" height="230" style={{ display: "block", position: "relative" }}>
         <defs>
           <linearGradient id="v2ShieldFill" x1="0%" y1="0%" x2="0%" y2="100%">
             <stop offset="0%" stopColor="#fde047" />
@@ -1238,6 +1387,110 @@ function ShieldCentrepiece({ intensity }: { intensity: number }) {
           MASTER
         </text>
       </svg>
+      {/* Metallic glint sweeping across the shield (clipped to its silhouette) */}
+      {intensity > 0 && (
+        <span
+          aria-hidden
+          style={{
+            position: "absolute",
+            inset: 0,
+            overflow: "hidden",
+            clipPath: "polygon(50% 3%, 92% 17%, 92% 52%, 50% 96%, 8% 52%, 8% 17%)",
+            pointerEvents: "none",
+          }}
+        >
+          <span
+            style={{
+              position: "absolute",
+              top: 0,
+              bottom: 0,
+              left: 0,
+              width: "45%",
+              background:
+                "linear-gradient(90deg, transparent, rgba(255,255,255,0.55), transparent)",
+              mixBlendMode: "screen",
+              animation: "v2Shine 3.4s ease-in-out infinite",
+            }}
+          />
+        </span>
+      )}
     </div>
+  );
+}
+
+/* ────────────────────────────────────────────────────────────── */
+/* Step B FX — chamber dust + vault-specific keyframes            */
+/* ────────────────────────────────────────────────────────────── */
+
+/** Warm golden motes drifting up through the open treasure chamber. */
+function ChamberDust({ intensity }: { intensity: number }) {
+  if (intensity === 0) return null;
+  const motes = [
+    { x: 26, s: 5, d: 0, dur: 6.0 },
+    { x: 40, s: 3, d: 1.2, dur: 7.5 },
+    { x: 52, s: 6, d: 2.1, dur: 6.8 },
+    { x: 63, s: 4, d: 0.6, dur: 8.0 },
+    { x: 74, s: 5, d: 1.8, dur: 7.0 },
+    { x: 34, s: 3, d: 3.0, dur: 8.5 },
+    { x: 58, s: 4, d: 2.6, dur: 6.2 },
+    { x: 46, s: 5, d: 1.4, dur: 7.8 },
+  ];
+  return (
+    <div aria-hidden style={{ position: "absolute", inset: 0, overflow: "hidden", pointerEvents: "none" }}>
+      {motes.map((m, i) => (
+        <span
+          key={i}
+          style={{
+            position: "absolute",
+            left: `${m.x}%`,
+            bottom: "8%",
+            width: m.s,
+            height: m.s,
+            borderRadius: "50%",
+            background:
+              "radial-gradient(circle, #fff8dc 0%, rgba(253,224,71,0.6) 60%, transparent 100%)",
+            boxShadow: "0 0 8px rgba(253,224,71,0.7)",
+            animation: `v2Dust ${m.dur}s ease-in-out ${m.d}s infinite`,
+          }}
+        />
+      ))}
+    </div>
+  );
+}
+
+/** Vault-specific keyframes (Step B). Engine keyframes come from
+ *  <JuiceKeyframes/>; these are the vault's bespoke flourishes. */
+function VaultV2FX() {
+  return (
+    <style jsx global>{`
+      @keyframes v2Ring {
+        0%   { opacity: 0.9; transform: scale(0.35); }
+        100% { opacity: 0;   transform: scale(2.6); }
+      }
+      @keyframes v2HaloSpin {
+        from { transform: rotate(0deg); }
+        to   { transform: rotate(360deg); }
+      }
+      @keyframes v2Shine {
+        0%   { transform: translateX(-180%) skewX(-20deg); }
+        60%  { transform: translateX(230%) skewX(-20deg); }
+        100% { transform: translateX(230%) skewX(-20deg); }
+      }
+      @keyframes v2Dust {
+        0%   { opacity: 0;    transform: translateY(0) scale(0.5); }
+        15%  { opacity: 0.85; }
+        85%  { opacity: 0.7;  }
+        100% { opacity: 0;    transform: translateY(-210px) scale(1.15); }
+      }
+      @keyframes v2TextSheen {
+        0%, 100% { background-position: 0% 50%; }
+        50%      { background-position: 100% 50%; }
+      }
+      @keyframes v2PipPop {
+        0%   { transform: scale(1); }
+        45%  { transform: scale(1.6); }
+        100% { transform: scale(1); }
+      }
+    `}</style>
   );
 }
