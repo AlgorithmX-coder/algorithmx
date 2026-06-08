@@ -79,12 +79,9 @@ export default function Testimonials() {
             <div
               style={{
                 width: 360,
-                /* Opaque dark fill instead of a translucent
-                 * backdrop-filter blur: a blur recomputed every frame
-                 * on a dozen cards sliding in the marquee was the main
-                 * cause of the testimonial-strip stutter. Over the deep
-                 * ink backdrop this reads visually identical. */
-                background: "rgba(15,17,27,0.94)",
+                background: "rgba(13,15,24,0.72)",
+                backdropFilter: "blur(14px) saturate(1.4)",
+                WebkitBackdropFilter: "blur(14px) saturate(1.4)",
                 border: "1px solid rgba(232,237,255,0.08)",
                 borderLeft: `4px solid ${t.accent}`,
                 borderRadius: 16,

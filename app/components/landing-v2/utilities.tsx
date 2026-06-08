@@ -27,8 +27,7 @@ export function useMediaQuery(query: string, fallback = false): boolean {
  * Detected from the WebGL renderer string. Memoised at module scope so we
  * only ever create one throwaway context. On browsers that mask the
  * renderer (privacy modes) it returns false — we don't force the static
- * fallback on an unknown GPU. Consumers: HeroCinematic (renders the
- * laptop as a static final frame) and LaptopScene (quality tier). */
+ * fallback on an unknown GPU. */
 let _weakGpu: boolean | null = null;
 export function isWeakGpu(): boolean {
   if (_weakGpu !== null) return _weakGpu;

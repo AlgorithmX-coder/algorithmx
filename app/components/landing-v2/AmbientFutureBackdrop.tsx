@@ -2,13 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
-import {
-  motion,
-  useScroll,
-  useTransform,
-  useMotionValueEvent,
-  type MotionValue,
-} from "framer-motion";
+import { motion, useScroll, useTransform, type MotionValue } from "framer-motion";
 import * as THREE from "three";
 import { isWeakGpu } from "./utilities";
 
@@ -1392,8 +1386,8 @@ export default function AmbientFutureBackdrop() {
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
     const smallViewport = window.matchMedia("(max-width: 640px)");
     /* Integrated/software GPUs can't afford a SECOND full WebGL layer on top
-     * of the hero — disable the ambient scenes there (same as we already do
-     * on small viewports). GlobalBackdrop still carries the atmosphere. */
+     * of the hero — disable the ambient scenes there (same as small
+     * viewports). GlobalBackdrop still carries the atmosphere. */
     const weak = isWeakGpu();
     const compute = () => {
       setEnabled(!reducedMotion.matches && !smallViewport.matches && !weak);
@@ -1418,26 +1412,6 @@ export default function AmbientFutureBackdrop() {
     [0.14, 0.20, 0.98, 1.0],
     [0, 1, 1, 0],
   );
-
-  /* Pause this WebGL canvas while it's invisible. Its opacity envelope
-   * is 0 for the whole hero cinematic (scroll < 0.14) and at the very
-   * bottom — but a default Canvas keeps rendering all five scenes every
-   * frame regardless, fighting the laptop scene for the GPU during the
-   * hero. Gating frameloop to the visible scroll band hands the GPU to
-   * the laptop while it's on screen, then powers this layer up only
-   * once it actually fades in. */
-  const [active, setActive] = useState(false);
-  const inBand = (v: number) => v > 0.12 && v < 0.995;
-  useMotionValueEvent(scrollYProgress, "change", (v) => {
-    const next = inBand(v);
-    setActive((prev) => (prev === next ? prev : next));
-  });
-  /* Reloads can restore scroll mid-page; sync once after mount so the
-   * canvas isn't frozen-blank until the first scroll event. */
-  useEffect(() => {
-    setActive(inBand(scrollYProgress.get()));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   if (!enabled) return null;
 
@@ -1490,7 +1464,6 @@ export default function AmbientFutureBackdrop() {
       />
 
       <Canvas
-        frameloop={active ? "always" : "never"}
         dpr={[1, 1.5]}
         camera={{ position: [0, 0, 6], fov: 55 }}
         gl={{

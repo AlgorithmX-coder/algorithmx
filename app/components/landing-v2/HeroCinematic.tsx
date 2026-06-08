@@ -50,12 +50,10 @@ export default function HeroCinematic() {
   /* How the hero's laptop layer is rendered:
    *   "live"   - real-time WebGL cinematic (capable / discrete GPUs)
    *   "scrub"  - pre-rendered frame sequence scrubbed by scroll. Integrated
-   *              GPUs (Intel Iris Xe etc.) can't run the live scene above
-   *              ~5fps, so they get the SAME closed→open animation played
-   *              back from baked frames — smooth on any GPU.
-   *   "static" - prefers-reduced-motion: the final frame, no animation.
-   * SSR-safe default is "live"; corrected on the client once we can read
-   * the GPU + reduced-motion. */
+   *              GPUs can't run the live scene smoothly, so they get the SAME
+   *              closed→open animation played back from baked frames.
+   *   "static" - prefers-reduced-motion: final frame, no animation.
+   * SSR-safe default "live"; corrected on the client. */
   const [heroMode, setHeroMode] = useState<"live" | "scrub" | "static">("live");
   const [isCompact, setIsCompact] = useState(false);
 
@@ -102,10 +100,9 @@ export default function HeroCinematic() {
     mass: 0.4,
   });
 
-  /* In "static" (prefers-reduced-motion) mode, clamp progress to 1 so the
-   * scene shows its final state and HeroOverlay is fully visible from frame
-   * 0. "live" and "scrub" both follow the scroll so the closed→open
-   * cinematic plays. */
+  /* In "static" (reduced-motion) mode, clamp progress to 1 so the scene
+   * shows its final state. "live" and "scrub" follow scroll so the
+   * closed→open cinematic plays. */
   const progress = useTransform(smoothScroll, (v) =>
     heroMode === "static" ? 1 : v,
   );
@@ -199,9 +196,8 @@ export default function HeroCinematic() {
           {heroMode === "live" ? (
             <VaultScene progress={progress} reducedMotion={false} />
           ) : (
-            /* scrub (integrated GPU) + static (reduced-motion) both play
-             *  the baked frame sequence; progress is clamped to 1 for
-             *  static so it holds the final frame. */
+            /* scrub (integrated GPU) + static (reduced-motion) play the
+             *  baked frame sequence; progress clamped to 1 for static. */
             <HeroScrubSequence progress={progress} />
           )}
         </div>

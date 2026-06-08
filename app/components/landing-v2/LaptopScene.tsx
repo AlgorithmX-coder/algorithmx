@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState, type ReactElement } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { RoundedBox, Environment, Lightformer } from "@react-three/drei";
 import {
@@ -17,15 +17,13 @@ import { BlendFunction, SMAAPreset } from "postprocessing";
 import * as THREE from "three";
 import type { MotionValue } from "framer-motion";
 import TechChamber from "./TechChamber";
-import { isWeakGpu } from "./utilities";
 
 interface LaptopSceneProps {
   progress: MotionValue<number>;
   reducedMotion?: boolean;
-  /* Dev-only: used by the /dev/herocap frame-capture route. Forces the
-   * full-quality stack, an always-on loop, and a readable drawing buffer
-   * (preserveDrawingBuffer) so each scroll position can be read out with
-   * canvas.toDataURL. Never set in production. */
+  /* Dev-only (/dev/herocap): forces an always-on loop + readable drawing
+   * buffer so each scroll position can be captured with canvas.toDataURL
+   * for the scroll-scrubbed playback frames. Never set in production. */
   capture?: boolean;
 }
 
@@ -335,19 +333,12 @@ const STREAMS = [
   { name: "ROBOTICS",              status: "2027", age: "10+",  project: "Maze-solver bot",    outcome: "ENGINEER ROBOTS THAT MOVE",    color: "#ff3ad6" },
 ] as const;
 
-function computeScreenStage(_p: number): number {
-  /* Single static stage. The dashboard is the only thing ever drawn to
-   * the screen canvas, and the screen mesh starts at opacity 0 — it's
-   * invisible until `screenT` (p 0.50→0.60) fades the content in. The old
-   * "dormant" stage-0 wallpaper was painted but never seen (the content
-   * mesh is fully transparent while the lid is closed), and the 0→1 flip
-   * forced a full 2048×1280 canvas repaint + GPU texture re-upload INSIDE
-   * useFrame at exactly p=0.50 — a guaranteed one-frame hitch landing on
-   * the tail of the lid-open animation. We now paint the dashboard once at
-   * mount and never repaint on the hot frame; the reveal is pure opacity.
-   * Returning a constant means the useFrame stage-transition block below
-   * compares 1===1 forever and never repaints. */
-  return 1;
+function computeScreenStage(p: number): number {
+  /* Two states only now: 0 = dormant (lid closed, screen dark), 1 = the
+   * full NEXORA-style orbital dashboard (always on once the lid opens and
+   * the screen ignites at ~0.50). The dashboard is static, so it repaints
+   * just once on the 0→1 transition. */
+  return p < 0.5 ? 0 : 1;
 }
 
 function roundRect(
@@ -1048,13 +1039,10 @@ function useLivingScreen(): LivingScreen {
     },
     [refs],
   );
-  /* One-shot paint of the static dashboard at mount, off the animation
-   * hot path. The texture uploads on the first render (while the lid is
-   * still closed and the screen mesh is transparent) so nothing has to be
-   * painted or re-uploaded mid-opening. */
+  /* Initial paint at stage 0 */
   useMemo(() => {
     if (refs) {
-      paintScreen(refs.canvas, 1);
+      paintScreen(refs.canvas, 0);
       refs.tex.needsUpdate = true;
     }
   }, [refs]);
@@ -2350,29 +2338,16 @@ export default function LaptopScene({ progress, reducedMotion = false, capture =
     if (typeof window === "undefined") return false;
     const coarse = window.matchMedia("(pointer: coarse)").matches;
     const fewCores = (navigator.hardwareConcurrency || 8) <= 4;
-    /* GPU class by renderer string. Core count is a poor proxy: a 16-core
-     * laptop with an integrated Intel Iris Xe was getting the full post
-     * stack and rendering the hero at ~4fps. Integrated/software GPUs go
-     * onto the lighter tier (and HeroCinematic also renders them as a
-     * static final frame). */
-    return coarse || fewCores || isWeakGpu();
+    return coarse || fewCores;
   });
-  /* The quality cuts only apply when the scene is actually ANIMATING on
-   * weak hardware. A static hero (reduced-motion / integrated GPU) renders
-   * only a few warm-up frames then freezes, so its one-off cost is
-   * irrelevant — it gets the FULL stack (N8AO grounds the lighting so the
-   * final climax frame doesn't overexpose to white). */
-  const liteRender = lowPower && !reducedMotion && !capture;
-  const dprRange: [number, number] = liteRender ? [1, 1.5] : [1.5, 2];
-  const msaa = liteRender ? 0 : 4;
+  const dprRange: [number, number] = lowPower ? [1.25, 2] : [1.5, 2.5];
+  const msaa = lowPower ? 2 : 6;
 
-  /* Pause the WebGL render loop whenever the hero has scrolled out of
-   * view. The scene's post stack (ambient occlusion + bloom) is far too
-   * heavy to keep rendering full-cost while the user is reading the
-   * sections below — that off-screen cost is what made the testimonial
-   * / logo marquees stutter. IntersectionObserver flips frameloop to
-   * "never" (zero GPU) once the pinned hero is gone, and back to
-   * "always" when it returns. */
+  /* Pause the live render loop when the hero is scrolled out of view, so
+   * the heavy scene doesn't keep burning GPU while the user reads the
+   * sections below. (Integrated GPUs use the pre-rendered scrub instead and
+   * never mount this; this benefits capable GPUs.) During capture we force
+   * an always-on loop + readable buffer. */
   const wrapRef = useRef<HTMLDivElement>(null);
   const [frameloop, setFrameloop] = useState<"always" | "never">("always");
   useEffect(() => {
@@ -2385,31 +2360,7 @@ export default function LaptopScene({ progress, reducedMotion = false, capture =
     io.observe(el);
     return () => io.disconnect();
   }, []);
-
-  /* Static hero (reduced-motion or integrated GPU): render for a short
-   * warm-up so textures + the baked Environment paint the final frame,
-   * then FREEZE the loop ("never") — a crisp still at zero ongoing GPU
-   * cost. This is what keeps the whole page smooth for integrated-GPU
-   * visitors: the heavy scene is painted a few times then never again,
-   * instead of re-rendering 60×/sec. When animating, the IntersectionObserver
-   * value drives always/never. */
-  const [staticFrozen, setStaticFrozen] = useState(false);
-  useEffect(() => {
-    if (!reducedMotion) return;
-    setStaticFrozen(false);
-    /* Full-quality static frame needs a few seconds of warm-up on a slow
-     * GPU (N8AO ≈ 600ms/frame) to paint a complete, settled image before
-     * we freeze the loop. */
-    const t = setTimeout(() => setStaticFrozen(true), 3000);
-    return () => clearTimeout(t);
-  }, [reducedMotion]);
-  const effectiveFrameloop = capture
-    ? "always"
-    : reducedMotion
-      ? staticFrozen
-        ? "never"
-        : "always"
-      : frameloop;
+  const effectiveFrameloop = capture ? "always" : frameloop;
 
   return (
     <div ref={wrapRef} style={{ width: "100%", height: "100%" }}>
@@ -2550,50 +2501,33 @@ export default function LaptopScene({ progress, reducedMotion = false, capture =
        *  AO/Bloom scale down (half-res, fewer samples, lower intensity) on the
        *  low-power tier to protect frame-rate. */}
       <EffectComposer multisampling={msaa} enableNormalPass={false}>
-        {/* Effects built as a filtered array so the animating low-power tier
-         *  can omit the two heaviest passes (N8AO + film grain) without
-         *  handing the EffectComposer `false`/`undefined` children. N8AO is
-         *  the single most expensive pass — dropping it is the difference
-         *  between ~4fps and a usable hero on integrated GPUs. Static and
-         *  discrete-GPU renders keep the full contact-shadow + grain stack. */}
-        {(
-          [
-            liteRender ? null : (
-              <N8AO
-                key="ao"
-                quality="high"
-                aoRadius={1.0}
-                distanceFalloff={1.0}
-                intensity={2.1}
-                halfRes={false}
-                color="#03060c"
-              />
-            ),
-            <Bloom
-              key="bloom"
-              intensity={liteRender ? 0.4 : 0.6}
-              luminanceThreshold={0.62}
-              luminanceSmoothing={0.28}
-              radius={0.6}
-              mipmapBlur
-            />,
-            <SMAA key="smaa" preset={liteRender ? SMAAPreset.MEDIUM : SMAAPreset.HIGH} />,
-            <BrightnessContrast key="bc" brightness={-0.015} contrast={0.07} />,
-            <HueSaturation key="hs" hue={0} saturation={0.08} />,
-            /* Vignette darkness softened so the lower edge blends into the
-             *  page mist instead of stamping a hard dark band at the seam. */
-            <Vignette
-              key="vig"
-              eskil={false}
-              offset={0.26}
-              darkness={0.5}
-              blendFunction={BlendFunction.NORMAL}
-            />,
-            liteRender ? null : (
-              <Noise key="noise" opacity={0.006} blendFunction={BlendFunction.OVERLAY} />
-            ),
-          ] as Array<ReactElement | null>
-        ).filter((e): e is ReactElement => e !== null)}
+        <N8AO
+          quality={lowPower ? "low" : "high"}
+          aoRadius={1.0}
+          distanceFalloff={1.0}
+          intensity={lowPower ? 1.6 : 2.1}
+          halfRes={lowPower}
+          color="#03060c"
+        />
+        <Bloom
+          intensity={lowPower ? 0.45 : 0.6}
+          luminanceThreshold={0.62}
+          luminanceSmoothing={0.28}
+          radius={0.6}
+          mipmapBlur
+        />
+        <SMAA preset={SMAAPreset.HIGH} />
+        <BrightnessContrast brightness={-0.015} contrast={0.07} />
+        <HueSaturation hue={0} saturation={0.08} />
+        {/* Vignette darkness softened so the lower edge blends into the page
+         *  mist instead of stamping a hard dark band at the section boundary. */}
+        <Vignette
+          eskil={false}
+          offset={0.26}
+          darkness={0.5}
+          blendFunction={BlendFunction.NORMAL}
+        />
+        <Noise opacity={0.006} blendFunction={BlendFunction.OVERLAY} />
       </EffectComposer>
     </Canvas>
     </div>
@@ -2919,10 +2853,7 @@ function Laptop({
   const lidBloomMatRef = useRef<THREE.MeshBasicMaterial>(null);
   const standbyLedMatRef = useRef<THREE.MeshBasicMaterial>(null);
   const screen = useLivingScreen();
-  /* Init to the only stage (1). The canvas is already painted with the
-   * dashboard at mount, so the useFrame transition block sees 1===1 and
-   * never repaints — keeping the heavy paint/upload off the hot frame. */
-  const screenStageRef = useRef(1);
+  const screenStageRef = useRef(-1);
   /* Crossfade state for MAJOR stage transitions (boot -> streams ->
    * projects -> ready). When a major transition fires, we dip the
    * screen content opacity for ~0.18s, repaint at the dip's midpoint,
@@ -3272,18 +3203,8 @@ function Laptop({
      * visible; the whole energy-chamber floor stays hidden and then comes
      * in as the lid opens (lid animates 0.32→0.50). So every floor/depth
      * layer is gated on this curve with NO baseline — they are exactly 0
-     * until the laptop starts opening, then ramp to full.
-     *
-     * Window shifted later (was 0.32→0.60). The floor layers are large,
-     * semi-transparent overdraw planes; ramping them in from 0.32 made the
-     * whole environment fade up DURING the lid's fastest motion (the lid
-     * eases 0.32→0.50, peaking ~0.41), so the GPU was lighting + AO-ing +
-     * blooming the entire chamber at the exact moment the lid needed frames
-     * to move smoothly — that fps dip read as the lid "stuttering open".
-     * Starting at 0.44 puts the heavy reveal AFTER the lid's peak motion
-     * and in lockstep with the screen ignition (0.50→0.60), so it now reads
-     * as "device powers on → chamber materialises around it". */
-    const floorReveal = smoothstep(0.44, 0.66, p);
+     * until the laptop starts opening, then ramp to full. */
+    const floorReveal = smoothstep(0.32, 0.6, p);
     if (plateSubstrateMatRef.current) {
       plateSubstrateMatRef.current.opacity = floorReveal * 0.95;
     }
