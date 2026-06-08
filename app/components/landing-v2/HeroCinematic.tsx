@@ -5,6 +5,7 @@ import { motion, useScroll, useTransform, useSpring, type MotionValue } from "fr
 import dynamic from "next/dynamic";
 import HeroOverlay from "./HeroOverlay";
 import HeroScrubSequence from "./HeroScrubSequence";
+import HeroCardHotspots from "./HeroCardHotspots";
 import { isWeakGpu } from "./utilities";
 
 /**
@@ -287,6 +288,11 @@ export default function HeroCinematic() {
          *  Driven by the smoothed scroll value so the fade-out tracks
          *  the rest of the cinematic. */}
         <ScrollHint scrollYProgress={smoothScroll} />
+
+        {/* Clickable/hover hotspots over the course cards — only on the
+         *  pre-rendered (scrub/static) hero, where the cards are a flat image.
+         *  On the live hero the 3D cards handle their own hover + click. */}
+        {heroMode !== "live" && <HeroCardHotspots progress={progress} />}
       </div>
     </section>
   );
