@@ -32,7 +32,6 @@ import {
   useClimaxSequence,
   useTimingScaler,
   RevealStage,
-  StickerTeaser,
   type RevealArtifact,
   JuiceKeyframes,
   fireBurst,
@@ -89,7 +88,7 @@ const LOCK_POSITIONS: Record<string, { x: number; y: number }> = {
   secret:   { x: -26, y: -8 },
 };
 
-const DOOR_SIZE = 520; // gateway diameter (also the camera focus basis)
+const DOOR_SIZE = 660; // gateway diameter (also the camera focus basis)
 const ZOOM_FACTOR = 1.75;
 
 const STAGE_MS = {
@@ -105,8 +104,10 @@ const STAGE_ZOOM: Record<string, number> = {
   anticipation: 1.22,
   unlocking: 1.32,
   opening: 1.4,
-  revealed: 1.78,
-  master: 1.78,
+  // The door blooms at 1.4×, then the camera PULLS BACK to 1.0 to frame the
+  // whole treasure chamber — otherwise the artifacts crowd the shield.
+  revealed: 1.0,
+  master: 1.0,
 };
 
 const ARTIFACT_RECAP: Record<string, string> = {
@@ -117,12 +118,13 @@ const ARTIFACT_RECAP: Record<string, string> = {
   secret:   "Only you and a parent",
 };
 
+// Crown arc ABOVE the shield, spread wide so no tile touches the relic.
 const ARTIFACT_LAYOUT: { x: number; y: number; accent: string }[] = [
-  { x: -32, y: -16, accent: "#00e5ff" },
-  { x: -18, y: -36, accent: "#7eff97" },
-  { x:   0, y: -42, accent: "#fde047" },
-  { x:  18, y: -36, accent: "#ff5fb3" },
-  { x:  32, y: -16, accent: "#a855f7" },
+  { x: -42, y: -28, accent: "#00e5ff" }, // length (left)
+  { x: -23, y: -46, accent: "#7eff97" }, // mix (upper-left)
+  { x:   0, y: -52, accent: "#fde047" }, // personal (top)
+  { x:  23, y: -46, accent: "#ff5fb3" }, // common (upper-right)
+  { x:  42, y: -28, accent: "#a855f7" }, // secret (right)
 ];
 
 /* ────────────────────────────────────────────────────────────── */
@@ -334,11 +336,12 @@ export default function PasswordVaultV2({
       focusBasis={DOOR_SIZE}
       defaultZoom={ZOOM_FACTOR}
       shakeClass={shakeClass}
-      maxWidth={1100}
-      reserve={210}
+      maxWidth={1480}
+      reserve={140}
       overlay={
         <>
-          {/* Guidance ribbon */}
+          {/* Guidance ribbon (hidden during the final reveal) */}
+          {!revealActive && (
           <div
             style={{
               position: "absolute",
@@ -367,8 +370,10 @@ export default function PasswordVaultV2({
           >
             {guidanceMessage}
           </div>
+          )}
 
-          {/* Progress pips */}
+          {/* Progress pips (hidden once the chamber reveals) */}
+          {!revealActive && (
           <div
             style={{
               position: "absolute",
@@ -402,6 +407,7 @@ export default function PasswordVaultV2({
               );
             })}
           </div>
+          )}
 
           {/* Scene vignette */}
           <div
@@ -602,8 +608,6 @@ export default function PasswordVaultV2({
           active={revealActive}
           centrepiece={<RelicCore intensity={intensity} />}
           artifacts={artifacts}
-          ribbonText="You protected the secrets!"
-          teaser={<StickerTeaser icons={["🔐", "🤐", "🔍"]} />}
           onCentrepieceReveal={() => audio.starEarned()}
           onArtifactReveal={() => audio.starEarned()}
         />
@@ -872,9 +876,9 @@ function EnergyRings({
   const spinMul =
     statusStage === "anticipation" ? 3.2 : statusStage === "unlocking" ? 6 : 1 + charge * 1.6;
   const rings = [
-    { d: 464, dur: 30, rev: false },
-    { d: 372, dur: 22, rev: true },
-    { d: 292, dur: 38, rev: false },
+    { d: 590, dur: 30, rev: false },
+    { d: 474, dur: 22, rev: true },
+    { d: 372, dur: 38, rev: false },
   ];
   return (
     <>
@@ -950,7 +954,7 @@ function EnergyCore({
   intensity: number;
 }) {
   const hot = statusStage === "armed" || statusStage === "anticipation" || statusStage === "unlocking";
-  const size = 120;
+  const size = 150;
   const inner = hot ? "#fff3b0" : "#7df0ff";
   const mid = hot ? "#ff9a4d" : "#1f6ea3";
   const glow = hot ? "rgba(253,224,71,0.85)" : "rgba(0,229,255,0.7)";
@@ -1115,7 +1119,7 @@ function HexSigil({
   const [hover, setHover] = useState(false);
   const lifted = hover && !active && !disabled && intensity > 0;
   const stroke = active ? "#7eff97" : "#00e5ff";
-  const SIZE = 84;
+  const SIZE = 104;
   const HEX = "50,4 92,27 92,73 50,96 8,73 8,27";
 
   return (
@@ -1270,8 +1274,8 @@ function RelicCore({ intensity }: { intensity: number }) {
     <div
       style={{
         position: "relative",
-        width: 200,
-        height: 230,
+        width: 168,
+        height: 193,
         animation: intensity > 0 ? "cineShieldFloat 4.5s ease-in-out infinite" : undefined,
         filter:
           "drop-shadow(0 14px 28px rgba(253,224,71,0.35)) drop-shadow(0 0 22px rgba(0,229,255,0.45))",
@@ -1305,7 +1309,7 @@ function RelicCore({ intensity }: { intensity: number }) {
           animation: intensity > 0 ? "cineCoreAura 4s ease-in-out infinite" : undefined,
         }}
       />
-      <svg viewBox="0 0 200 230" width="200" height="230" style={{ display: "block", position: "relative" }}>
+      <svg viewBox="0 0 200 230" width="168" height="193" style={{ display: "block", position: "relative" }}>
         <defs>
           <linearGradient id="relicFill" x1="0%" y1="0%" x2="0%" y2="100%">
             <stop offset="0%" stopColor="#fde047" />

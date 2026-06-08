@@ -90,12 +90,13 @@ export default function VaultV2DemoPage() {
   return (
     <div
       style={{
-        minHeight: "100dvh",
+        position: "fixed",
+        inset: 0,
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        padding: 16,
-        background: "linear-gradient(180deg, #050714 0%, #0a0e25 100%)",
+        padding: 0,
+        background: "#04050d",
       }}
     >
       <PasswordVaultV2
