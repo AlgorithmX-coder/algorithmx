@@ -145,10 +145,35 @@ export default function HeroScrubSequence({
   }, []);
 
   return (
-    <canvas
-      ref={canvasRef}
-      aria-hidden
-      style={{ width: "100%", height: "100%", display: "block" }}
-    />
+    <div style={{ position: "relative", width: "100%", height: "100%" }}>
+      {/* Instant closed-laptop still behind the canvas so the laptop is
+       *  visible the moment the page paints — no blank gap while the frame
+       *  sequence streams in. The canvas draws the scrubbed frame on top
+       *  once frames are decoded. */}
+      <img
+        src="/hero-seq/frame-000.webp"
+        alt=""
+        aria-hidden
+        style={{
+          position: "absolute",
+          inset: 0,
+          width: "100%",
+          height: "100%",
+          objectFit: "cover",
+          display: "block",
+        }}
+      />
+      <canvas
+        ref={canvasRef}
+        aria-hidden
+        style={{
+          position: "absolute",
+          inset: 0,
+          width: "100%",
+          height: "100%",
+          display: "block",
+        }}
+      />
+    </div>
   );
 }

@@ -579,43 +579,23 @@ function ScrollHint({
   );
 }
 
-/* Loading state shown by the dynamic import while LaptopScene's
- *  JS bundle + WebGL context come up. Mono "// INITIALISING" with a
- *  blinking cursor — terminal aesthetic that ties into the cinematic's
- *  "System dormant → activating" opening narrative. Centered in the
- *  area where the laptop will land so the gap doesn't read as a void. */
+/* Loading state shown while LaptopScene's JS bundle + WebGL context come
+ *  up. Instead of a "// INITIALISING" placeholder (which read as the page
+ *  hanging before the laptop appeared), show the closed-laptop still
+ *  immediately — the same frame the scrub/live scene resolves to — so the
+ *  laptop is on screen from the first paint and the handoff is seamless. */
 function SceneLoading() {
   return (
-    <div
+    <img
+      src="/hero-seq/frame-000.webp"
+      alt=""
       aria-hidden
       style={{
         width: "100%",
         height: "100%",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        gap: 10,
-        fontFamily: "var(--lv2-font-mono)",
-        fontSize: 11,
-        fontWeight: 600,
-        letterSpacing: "0.28em",
-        textTransform: "uppercase",
-        color: "rgba(0, 229, 255, 0.55)",
+        objectFit: "cover",
+        display: "block",
       }}
-    >
-      <span>// INITIALISING</span>
-      <motion.span
-        aria-hidden
-        animate={{ opacity: [1, 1, 0.18, 0.18] }}
-        transition={{ duration: 1.0, repeat: Infinity, ease: "linear" }}
-        style={{
-          display: "inline-block",
-          width: 7,
-          height: 13,
-          background: "var(--lv2-cyan)",
-          boxShadow: "0 0 10px rgba(0, 229, 255, 0.7)",
-        }}
-      />
-    </div>
+    />
   );
 }
