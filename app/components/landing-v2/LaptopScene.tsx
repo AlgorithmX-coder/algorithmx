@@ -2346,10 +2346,39 @@ export default function LaptopScene({ progress, reducedMotion = false }: LaptopS
     const fewCores = (navigator.hardwareConcurrency || 8) <= 4;
     return coarse || fewCores;
   });
-  const dprRange: [number, number] = lowPower ? [1.25, 2] : [1.5, 2.5];
-  const msaa = lowPower ? 2 : 6;
+  /* DPR ceiling 2.5 -> 2 and MSAA 6 -> 4 on desktop. The post stack
+   * (N8AO + Bloom + SMAA) runs per output pixel, so cost scales with
+   * dpr^2; 2.5 -> 2 is a ~36% pixel reduction across the whole stack
+   * and 6x -> 4x MSAA is visually near-identical. This is the
+   * "resolution / AA only" scaling the approved design already permits,
+   * and it's what makes the lid-open choreography hold 60fps. */
+  const dprRange: [number, number] = lowPower ? [1.25, 2] : [1.5, 2];
+  const msaa = lowPower ? 2 : 4;
+
+  /* Pause the WebGL render loop whenever the hero has scrolled out of
+   * view. The scene's post stack (ambient occlusion + bloom) is far too
+   * heavy to keep rendering full-cost while the user is reading the
+   * sections below — that off-screen cost is what made the testimonial
+   * / logo marquees stutter. IntersectionObserver flips frameloop to
+   * "never" (zero GPU) once the pinned hero is gone, and back to
+   * "always" when it returns. */
+  const wrapRef = useRef<HTMLDivElement>(null);
+  const [frameloop, setFrameloop] = useState<"always" | "never">("always");
+  useEffect(() => {
+    const el = wrapRef.current;
+    if (!el || typeof IntersectionObserver === "undefined") return;
+    const io = new IntersectionObserver(
+      ([entry]) => setFrameloop(entry.isIntersecting ? "always" : "never"),
+      { rootMargin: "200px" },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
   return (
+    <div ref={wrapRef} style={{ width: "100%", height: "100%" }}>
     <Canvas
+      frameloop={frameloop}
       dpr={dprRange}
       camera={{ position: [4.6, 3.4, 6.4], fov: 38 }}
       gl={{
@@ -2513,6 +2542,7 @@ export default function LaptopScene({ progress, reducedMotion = false }: LaptopS
         <Noise opacity={0.006} blendFunction={BlendFunction.OVERLAY} />
       </EffectComposer>
     </Canvas>
+    </div>
   );
 }
 

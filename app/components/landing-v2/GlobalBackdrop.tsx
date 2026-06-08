@@ -54,7 +54,18 @@ export default function GlobalBackdrop() {
     };
     window.addEventListener("resize", onResize);
 
+    /* Cap the particle field to ~30fps. Slow-drifting twinkle dots look
+     * identical at 30fps but cost half the per-frame canvas work, which
+     * matters because this loop runs on the main thread alongside the
+     * WebGL scenes and Lenis. */
+    let lastDraw = 0;
+    const FRAME_MS = 1000 / 30;
     const tick = (t: number) => {
+      if (t - lastDraw < FRAME_MS) {
+        raf = requestAnimationFrame(tick);
+        return;
+      }
+      lastDraw = t;
       ctx.clearRect(0, 0, w, h);
       for (const d of dots) {
         d.x += d.vx;
