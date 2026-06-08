@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { motion, useScroll, useTransform, type MotionValue } from "framer-motion";
 import * as THREE from "three";
+import { isWeakGpu } from "./utilities";
 
 /**
  * AmbientFutureBackdrop. A single fixed-position WebGL layer that
@@ -1384,8 +1385,12 @@ export default function AmbientFutureBackdrop() {
     if (typeof window === "undefined") return;
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
     const smallViewport = window.matchMedia("(max-width: 640px)");
+    /* Integrated/software GPUs can't afford a SECOND full WebGL layer on top
+     * of the hero — disable the ambient scenes there (same as we already do
+     * on small viewports). GlobalBackdrop still carries the atmosphere. */
+    const weak = isWeakGpu();
     const compute = () => {
-      setEnabled(!reducedMotion.matches && !smallViewport.matches);
+      setEnabled(!reducedMotion.matches && !smallViewport.matches && !weak);
     };
     compute();
     reducedMotion.addEventListener("change", compute);

@@ -22,6 +22,37 @@ export function useMediaQuery(query: string, fallback = false): boolean {
   return matches;
 }
 
+/* isWeakGpu - true on integrated / software GPUs that can't drive the
+ * heavy WebGL hero cinematic smoothly (measured ~5fps on Intel Iris Xe).
+ * Detected from the WebGL renderer string. Memoised at module scope so we
+ * only ever create one throwaway context. On browsers that mask the
+ * renderer (privacy modes) it returns false — we don't force the static
+ * fallback on an unknown GPU. Consumers: HeroCinematic (renders the
+ * laptop as a static final frame) and LaptopScene (quality tier). */
+let _weakGpu: boolean | null = null;
+export function isWeakGpu(): boolean {
+  if (_weakGpu !== null) return _weakGpu;
+  if (typeof document === "undefined") return false;
+  try {
+    const gl =
+      document.createElement("canvas").getContext("webgl") ||
+      (document.createElement("canvas").getContext(
+        "experimental-webgl",
+      ) as WebGLRenderingContext | null);
+    const ext = gl && gl.getExtension("WEBGL_debug_renderer_info");
+    const r = ext
+      ? String(gl.getParameter(ext.UNMASKED_RENDERER_WEBGL))
+      : "";
+    _weakGpu =
+      /intel|iris|\buhd\b|hd graphics|mali|adreno|powervr|swiftshader|llvmpipe|basic render/i.test(
+        r,
+      );
+  } catch {
+    _weakGpu = false;
+  }
+  return _weakGpu;
+}
+
 /* useCinematicReleaseProgress - 0..1 fade value for any UI that should
  * appear AFTER the LaptopScene cinematic releases its sticky pin. The
  * rail height is 280vh on desktop / 180vh on phones, so the actual

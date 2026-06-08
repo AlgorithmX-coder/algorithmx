@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState, type ReactElement } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { RoundedBox, Environment, Lightformer } from "@react-three/drei";
 import {
@@ -18,10 +18,16 @@ import * as THREE from "three";
 import type { MotionValue } from "framer-motion";
 import ReactorPlatform from "./ReactorPlatform";
 import TechChamber from "./TechChamber";
+import { isWeakGpu } from "./utilities";
 
 interface LaptopSceneProps {
   progress: MotionValue<number>;
   reducedMotion?: boolean;
+  /* Dev-only: used by the /dev/herocap frame-capture route. Forces the
+   * full-quality stack, an always-on loop, and a readable drawing buffer
+   * (preserveDrawingBuffer) so each scroll position can be read out with
+   * canvas.toDataURL. Never set in production. */
+  capture?: boolean;
 }
 
 const COLORS = {
@@ -1992,7 +1998,7 @@ function makeSoftShadowTexture(): THREE.Texture | null {
   return tex;
 }
 
-export default function LaptopScene({ progress, reducedMotion = false }: LaptopSceneProps) {
+export default function LaptopScene({ progress, reducedMotion = false, capture = false }: LaptopSceneProps) {
   /* Device quality tier — computed once on the client (this component is
    * ssr:false, so reading matchMedia/navigator here is safe and never
    * remounts the canvas). Low-power devices (touch / few cores) render at a
@@ -2005,18 +2011,86 @@ export default function LaptopScene({ progress, reducedMotion = false }: LaptopS
     if (typeof window === "undefined") return false;
     const coarse = window.matchMedia("(pointer: coarse)").matches;
     const fewCores = (navigator.hardwareConcurrency || 8) <= 4;
-    return coarse || fewCores;
+    /* GPU class by renderer string. Core count is a poor proxy: a 16-core
+     * laptop with an integrated Intel Iris Xe was getting the full post
+     * stack and rendering the hero at ~4fps. Integrated/software GPUs go
+     * onto the lighter tier (and HeroCinematic also renders them as a
+     * static final frame). */
+    return coarse || fewCores || isWeakGpu();
   });
-  const dprRange: [number, number] = lowPower ? [1.25, 2] : [1.5, 2.5];
-  const msaa = lowPower ? 2 : 6;
+  /* Quality tier. The post stack (N8AO ambient occlusion + Bloom) is the
+   * dominant per-frame GPU cost — on integrated GPUs it drops the hero to
+   * single-digit fps. The low-power tier (now incl. integrated GPUs above)
+   * caps DPR low, disables MSAA, and drops N8AO + film grain in the
+   * EffectComposer below; the laptop still renders with Bloom + SMAA edges,
+   * just without the most expensive contact-shadow pass. Capable discrete
+   * GPUs keep the full cinematic stack. */
+  /* The quality cuts only apply when the scene is actually ANIMATING on
+   * weak hardware. A static hero (reduced-motion / integrated GPU) renders
+   * only a few warm-up frames then freezes, so its one-off cost is
+   * irrelevant — it gets the FULL stack (N8AO grounds the lighting so the
+   * final climax frame doesn't overexpose to white). */
+  const liteRender = lowPower && !reducedMotion && !capture;
+  const dprRange: [number, number] = liteRender ? [1, 1.5] : [1.5, 2];
+  const msaa = liteRender ? 0 : 4;
+
+  /* Pause the WebGL render loop whenever the hero has scrolled out of
+   * view. The scene's post stack (ambient occlusion + bloom) is far too
+   * heavy to keep rendering full-cost while the user is reading the
+   * sections below — that off-screen cost is what made the testimonial
+   * / logo marquees stutter. IntersectionObserver flips frameloop to
+   * "never" (zero GPU) once the pinned hero is gone, and back to
+   * "always" when it returns. */
+  const wrapRef = useRef<HTMLDivElement>(null);
+  const [frameloop, setFrameloop] = useState<"always" | "never">("always");
+  useEffect(() => {
+    const el = wrapRef.current;
+    if (!el || typeof IntersectionObserver === "undefined") return;
+    const io = new IntersectionObserver(
+      ([entry]) => setFrameloop(entry.isIntersecting ? "always" : "never"),
+      { rootMargin: "200px" },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
+  /* Static hero (reduced-motion or integrated GPU): render for a short
+   * warm-up so textures + the baked Environment paint the final frame,
+   * then FREEZE the loop ("never") — a crisp still at zero ongoing GPU
+   * cost. This is what keeps the whole page smooth for integrated-GPU
+   * visitors: the heavy scene is painted a few times then never again,
+   * instead of re-rendering 60×/sec. (frameloop "demand" proved
+   * unreliable here — switching to it post-mount didn't stop the loop.)
+   * When animating, the IntersectionObserver value drives always/never. */
+  const [staticFrozen, setStaticFrozen] = useState(false);
+  useEffect(() => {
+    if (!reducedMotion) return;
+    setStaticFrozen(false);
+    /* Full-quality static frame needs a few seconds of warm-up on a slow
+     * GPU (N8AO ≈ 600ms/frame) to paint a complete, settled image before
+     * we freeze the loop. */
+    const t = setTimeout(() => setStaticFrozen(true), 3000);
+    return () => clearTimeout(t);
+  }, [reducedMotion]);
+  const effectiveFrameloop = capture
+    ? "always"
+    : reducedMotion
+      ? staticFrozen
+        ? "never"
+        : "always"
+      : frameloop;
+
   return (
+    <div ref={wrapRef} style={{ width: "100%", height: "100%" }}>
     <Canvas
+      frameloop={effectiveFrameloop}
       dpr={dprRange}
       camera={{ position: [4.6, 3.4, 6.4], fov: 38 }}
       gl={{
         antialias: true,
         alpha: true,
         powerPreference: "high-performance",
+        preserveDrawingBuffer: capture,
         toneMapping: THREE.ACESFilmicToneMapping,
       }}
       style={{
@@ -2146,35 +2220,53 @@ export default function LaptopScene({ progress, reducedMotion = false }: LaptopS
        *  AO/Bloom scale down (half-res, fewer samples, lower intensity) on the
        *  low-power tier to protect frame-rate. */}
       <EffectComposer multisampling={msaa} enableNormalPass={false}>
-        <N8AO
-          quality={lowPower ? "low" : "high"}
-          aoRadius={1.0}
-          distanceFalloff={1.0}
-          intensity={lowPower ? 1.6 : 2.1}
-          halfRes={lowPower}
-          color="#03060c"
-        />
-        <Bloom
-          intensity={lowPower ? 0.45 : 0.6}
-          luminanceThreshold={0.62}
-          luminanceSmoothing={0.28}
-          radius={0.6}
-          mipmapBlur
-        />
-        <SMAA preset={SMAAPreset.HIGH} />
-        <BrightnessContrast brightness={-0.015} contrast={0.07} />
-        <HueSaturation hue={0} saturation={0.08} />
-        {/* Vignette darkness softened so the lower edge blends into the page
-         *  mist instead of stamping a hard dark band at the section boundary. */}
-        <Vignette
-          eskil={false}
-          offset={0.26}
-          darkness={0.5}
-          blendFunction={BlendFunction.NORMAL}
-        />
-        <Noise opacity={0.006} blendFunction={BlendFunction.OVERLAY} />
+        {/* Effects built as a filtered array so the low-power tier can omit
+         *  the two heaviest passes (N8AO + film grain) without handing the
+         *  EffectComposer `false`/`undefined` children. N8AO is the single
+         *  most expensive pass — dropping it is the difference between ~4fps
+         *  and a usable hero on integrated GPUs; discrete GPUs keep the full
+         *  contact-shadow + grain stack. */}
+        {(
+          [
+            liteRender ? null : (
+              <N8AO
+                key="ao"
+                quality="high"
+                aoRadius={1.0}
+                distanceFalloff={1.0}
+                intensity={2.1}
+                halfRes={false}
+                color="#03060c"
+              />
+            ),
+            <Bloom
+              key="bloom"
+              intensity={liteRender ? 0.4 : 0.6}
+              luminanceThreshold={0.62}
+              luminanceSmoothing={0.28}
+              radius={0.6}
+              mipmapBlur
+            />,
+            <SMAA key="smaa" preset={liteRender ? SMAAPreset.MEDIUM : SMAAPreset.HIGH} />,
+            <BrightnessContrast key="bc" brightness={-0.015} contrast={0.07} />,
+            <HueSaturation key="hs" hue={0} saturation={0.08} />,
+            /* Vignette darkness softened so the lower edge blends into the
+             *  page mist instead of stamping a hard dark band at the seam. */
+            <Vignette
+              key="vig"
+              eskil={false}
+              offset={0.26}
+              darkness={0.5}
+              blendFunction={BlendFunction.NORMAL}
+            />,
+            liteRender ? null : (
+              <Noise key="noise" opacity={0.006} blendFunction={BlendFunction.OVERLAY} />
+            ),
+          ] as Array<ReactElement | null>
+        ).filter((e): e is ReactElement => e !== null)}
       </EffectComposer>
     </Canvas>
+    </div>
   );
 }
 
