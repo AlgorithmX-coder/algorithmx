@@ -2366,7 +2366,7 @@ export default function LaptopScene({ progress, reducedMotion = false, capture =
     <div ref={wrapRef} style={{ width: "100%", height: "100%" }}>
     <Canvas
       frameloop={effectiveFrameloop}
-      dpr={dprRange}
+      dpr={capture ? 3 : dprRange}
       camera={{ position: [4.6, 3.4, 6.4], fov: 38 }}
       gl={{
         antialias: true,
