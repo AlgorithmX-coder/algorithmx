@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { motion, useScroll, useTransform, useSpring, type MotionValue } from "framer-motion";
 import dynamic from "next/dynamic";
 import HeroOverlay from "./HeroOverlay";
+import { isWeakGpu } from "./utilities";
 
 /**
  * HeroCinematic. The scroll-pinned wrapper for the AlgorithmX OS
@@ -51,10 +52,17 @@ export default function HeroCinematic() {
   useEffect(() => {
     if (typeof window === "undefined") return;
     const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
-    setReducedMotion(mq.matches);
-    const onChange = () => setReducedMotion(mq.matches);
-    mq.addEventListener("change", onChange);
-    return () => mq.removeEventListener("change", onChange);
+    /* Integrated/software GPUs can't animate the cinematic smoothly
+     * (~5fps on Intel Iris Xe), so they get the same treatment as
+     * prefers-reduced-motion: progress is clamped to 1 and the laptop
+     * renders as a crisp static final frame (LaptopScene then freezes
+     * its render loop, costing zero ongoing GPU). A static hero reads
+     * far better than a 5-22fps stuttering one. */
+    const weak = isWeakGpu();
+    const apply = () => setReducedMotion(mq.matches || weak);
+    apply();
+    mq.addEventListener("change", apply);
+    return () => mq.removeEventListener("change", apply);
   }, []);
 
   /* Shorten the cinematic rail on phones/small tablets. 280vh on a
