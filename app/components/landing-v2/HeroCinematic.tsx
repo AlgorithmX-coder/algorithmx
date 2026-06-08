@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { motion, useScroll, useTransform, useSpring, type MotionValue } from "framer-motion";
 import dynamic from "next/dynamic";
 import HeroOverlay from "./HeroOverlay";
+import HeroScrubSequence from "./HeroScrubSequence";
 import { isWeakGpu } from "./utilities";
 
 /**
@@ -46,20 +47,24 @@ const VaultScene = dynamic(() => import("./LaptopScene"), {
 
 export default function HeroCinematic() {
   const railRef = useRef<HTMLElement>(null);
-  const [reducedMotion, setReducedMotion] = useState(false);
+  /* How the hero's laptop layer is rendered:
+   *   "live"   - real-time WebGL cinematic (capable / discrete GPUs)
+   *   "scrub"  - pre-rendered frame sequence scrubbed by scroll. Integrated
+   *              GPUs (Intel Iris Xe etc.) can't run the live scene above
+   *              ~5fps, so they get the SAME closed→open animation played
+   *              back from baked frames — smooth on any GPU.
+   *   "static" - prefers-reduced-motion: the final frame, no animation.
+   * SSR-safe default is "live"; corrected on the client once we can read
+   * the GPU + reduced-motion. */
+  const [heroMode, setHeroMode] = useState<"live" | "scrub" | "static">("live");
   const [isCompact, setIsCompact] = useState(false);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
     const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
-    /* Integrated/software GPUs can't animate the cinematic smoothly
-     * (~5fps on Intel Iris Xe), so they get the same treatment as
-     * prefers-reduced-motion: progress is clamped to 1 and the laptop
-     * renders as a crisp static final frame (LaptopScene then freezes
-     * its render loop, costing zero ongoing GPU). A static hero reads
-     * far better than a 5-22fps stuttering one. */
     const weak = isWeakGpu();
-    const apply = () => setReducedMotion(mq.matches || weak);
+    const apply = () =>
+      setHeroMode(mq.matches ? "static" : weak ? "scrub" : "live");
     apply();
     mq.addEventListener("change", apply);
     return () => mq.removeEventListener("change", apply);
@@ -97,10 +102,12 @@ export default function HeroCinematic() {
     mass: 0.4,
   });
 
-  /* If reduced motion is on, clamp progress to 1 so VaultScene renders
-   * the final state and HeroOverlay is fully visible from frame 0. */
+  /* In "static" (prefers-reduced-motion) mode, clamp progress to 1 so the
+   * scene shows its final state and HeroOverlay is fully visible from frame
+   * 0. "live" and "scrub" both follow the scroll so the closed→open
+   * cinematic plays. */
   const progress = useTransform(smoothScroll, (v) =>
-    reducedMotion ? 1 : v,
+    heroMode === "static" ? 1 : v,
   );
 
   /* Backdrop gradient that subtly hue-shifts with progress. Capped at
@@ -189,7 +196,14 @@ export default function HeroCinematic() {
               "transparent 100%)",
           }}
         >
-          <VaultScene progress={progress} reducedMotion={reducedMotion} />
+          {heroMode === "live" ? (
+            <VaultScene progress={progress} reducedMotion={false} />
+          ) : (
+            /* scrub (integrated GPU) + static (reduced-motion) both play
+             *  the baked frame sequence; progress is clamped to 1 for
+             *  static so it holds the final frame. */
+            <HeroScrubSequence progress={progress} />
+          )}
         </div>
 
         {/* Layer 2 - softened edge vignette. Was a heavy edge-to-edge
