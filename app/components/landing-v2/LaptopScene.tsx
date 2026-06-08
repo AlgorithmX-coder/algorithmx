@@ -2470,7 +2470,7 @@ export default function LaptopScene({ progress, reducedMotion = false, capture =
       {/* Geometric platform blocks removed — the laptop now sits over the
        *  open ribbon floor receding into the distance, no panels around it. */}
 
-      <Laptop progress={progress} reducedMotion={reducedMotion} />
+      <Laptop progress={progress} reducedMotion={reducedMotion} capture={capture} />
 
       {/* Cinematic post-processing.
        *  - multisampling = tiered MSAA (6 desktop / 2 low-power) AA's
@@ -2837,9 +2837,11 @@ function ScreenSlabs({ progress }: { progress: MotionValue<number> }) {
 function Laptop({
   progress,
   reducedMotion,
+  capture = false,
 }: {
   progress: MotionValue<number>;
   reducedMotion: boolean;
+  capture?: boolean;
 }) {
   const lidBrandTex = useLidBrandTexture();
   const lidBloomTex = useLidBloomTexture();
@@ -3027,9 +3029,13 @@ function Laptop({
      * opens. Reads as the camera "approaching" the device rather than
      * the laptop just being there in front of you. */
     const camP = smoothstep(0, 1, p);
-    const microX = Math.sin(t * 0.51) * 0.025 + Math.sin(t * 1.27) * 0.012;
-    const microY = Math.cos(t * 0.43) * 0.020 + Math.sin(t * 0.81) * 0.010;
-    const microZ = Math.sin(t * 0.37) * 0.022;
+    /* Idle "handheld" micro-drift — disabled during frame capture so the
+     * baked scrub frames differ ONLY by scroll progress. Otherwise each
+     * frame lands on a different drift phase and the laptop appears to
+     * wiggle left/right as you scrub. The live scene keeps the drift. */
+    const microX = capture ? 0 : Math.sin(t * 0.51) * 0.025 + Math.sin(t * 1.27) * 0.012;
+    const microY = capture ? 0 : Math.cos(t * 0.43) * 0.020 + Math.sin(t * 0.81) * 0.010;
+    const microZ = capture ? 0 : Math.sin(t * 0.37) * 0.022;
     state.camera.position.set(
       lerp(4.6, 4.0, camP) + microX,
       lerp(3.4, 2.4, camP) + microY,
