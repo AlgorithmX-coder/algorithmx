@@ -22,6 +22,11 @@ import { isWeakGpu } from "./utilities";
 interface LaptopSceneProps {
   progress: MotionValue<number>;
   reducedMotion?: boolean;
+  /* Dev-only: used by the /dev/herocap frame-capture route. Forces the
+   * full-quality stack, an always-on loop, and a readable drawing buffer
+   * (preserveDrawingBuffer) so each scroll position can be read out with
+   * canvas.toDataURL. Never set in production. */
+  capture?: boolean;
 }
 
 const COLORS = {
@@ -2332,7 +2337,7 @@ function makeSoftShadowTexture(): THREE.Texture | null {
   return tex;
 }
 
-export default function LaptopScene({ progress, reducedMotion = false }: LaptopSceneProps) {
+export default function LaptopScene({ progress, reducedMotion = false, capture = false }: LaptopSceneProps) {
   /* Device quality tier — computed once on the client (this component is
    * ssr:false, so reading matchMedia/navigator here is safe and never
    * remounts the canvas). Low-power devices (touch / few cores) render at a
@@ -2357,7 +2362,7 @@ export default function LaptopScene({ progress, reducedMotion = false }: LaptopS
    * only a few warm-up frames then freezes, so its one-off cost is
    * irrelevant — it gets the FULL stack (N8AO grounds the lighting so the
    * final climax frame doesn't overexpose to white). */
-  const liteRender = lowPower && !reducedMotion;
+  const liteRender = lowPower && !reducedMotion && !capture;
   const dprRange: [number, number] = liteRender ? [1, 1.5] : [1.5, 2];
   const msaa = liteRender ? 0 : 4;
 
@@ -2398,11 +2403,13 @@ export default function LaptopScene({ progress, reducedMotion = false }: LaptopS
     const t = setTimeout(() => setStaticFrozen(true), 3000);
     return () => clearTimeout(t);
   }, [reducedMotion]);
-  const effectiveFrameloop = reducedMotion
-    ? staticFrozen
-      ? "never"
-      : "always"
-    : frameloop;
+  const effectiveFrameloop = capture
+    ? "always"
+    : reducedMotion
+      ? staticFrozen
+        ? "never"
+        : "always"
+      : frameloop;
 
   return (
     <div ref={wrapRef} style={{ width: "100%", height: "100%" }}>
@@ -2414,6 +2421,7 @@ export default function LaptopScene({ progress, reducedMotion = false }: LaptopS
         antialias: true,
         alpha: true,
         powerPreference: "high-performance",
+        preserveDrawingBuffer: capture,
         toneMapping: THREE.ACESFilmicToneMapping,
       }}
       style={{
