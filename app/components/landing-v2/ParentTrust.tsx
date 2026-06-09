@@ -208,14 +208,22 @@ export default function ParentTrust() {
 
         {/* Parent quotes */}
         <div className="lv2-quotes-grid" style={{ marginTop: 56 }}>
-          {QUOTES.map((q, i) => (
+          {QUOTES.map((q, i) => {
+            const accent = i === 0 ? "#3fe0c8" : "#a98bff";
+            const initials = q.attribution
+              .split(/\s+/)
+              .map((w) => w[0])
+              .join("")
+              .slice(0, 2)
+              .toUpperCase();
+            return (
             <FadeUp key={q.attribution} delay={0.1 * i + 0.5}>
               <blockquote
                 style={{
                   background: "rgba(13,15,24,0.78)",
                   backdropFilter: "blur(14px) saturate(1.4)",
                   WebkitBackdropFilter: "blur(14px) saturate(1.4)",
-                  border: "1px solid rgba(0,229,255,0.18)",
+                  border: `1px solid ${accent}33`,
                   borderRadius: 18,
                   padding: "28px 30px",
                   margin: 0,
@@ -232,7 +240,7 @@ export default function ParentTrust() {
                     fontSize: 36,
                     fontWeight: 700,
                     lineHeight: 1,
-                    color: "var(--lv2-cyan)",
+                    color: accent,
                   }}
                 >
                   &ldquo;
@@ -251,39 +259,65 @@ export default function ParentTrust() {
                 <footer
                   style={{
                     display: "flex",
-                    flexDirection: "column",
-                    gap: 4,
+                    alignItems: "center",
+                    gap: 14,
                     marginTop: "auto",
                   }}
                 >
+                  {/* Initials avatar — no photos, just a colour-rimmed monogram */}
                   <span
+                    aria-hidden
                     style={{
-                      fontFamily: "var(--lv2-font-mono)",
-                      fontSize: 11,
+                      flexShrink: 0,
+                      width: 46,
+                      height: 46,
+                      borderRadius: "50%",
+                      border: `2px solid ${accent}`,
+                      background: `radial-gradient(circle at 50% 35%, ${accent}22, rgba(8,10,18,0.9))`,
+                      boxShadow: `0 0 18px ${accent}44`,
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      fontFamily: "var(--lv2-font-display)",
+                      fontSize: 15,
                       fontWeight: 700,
-                      letterSpacing: "0.18em",
-                      textTransform: "uppercase",
-                      color: "var(--lv2-cyan-soft)",
+                      letterSpacing: "0.02em",
+                      color: accent,
                     }}
                   >
-                    {q.attribution}
+                    {initials}
                   </span>
-                  <span
-                    style={{
-                      fontFamily: "var(--lv2-font-mono)",
-                      fontSize: 10,
-                      fontWeight: 500,
-                      letterSpacing: "0.18em",
-                      textTransform: "uppercase",
-                      color: "rgba(232,237,255,0.5)",
-                    }}
-                  >
-                    {q.context}
+                  <span style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+                    <span
+                      style={{
+                        fontFamily: "var(--lv2-font-mono)",
+                        fontSize: 11,
+                        fontWeight: 700,
+                        letterSpacing: "0.18em",
+                        textTransform: "uppercase",
+                        color: accent,
+                      }}
+                    >
+                      {q.attribution}
+                    </span>
+                    <span
+                      style={{
+                        fontFamily: "var(--lv2-font-mono)",
+                        fontSize: 10,
+                        fontWeight: 500,
+                        letterSpacing: "0.18em",
+                        textTransform: "uppercase",
+                        color: "rgba(232,237,255,0.5)",
+                      }}
+                    >
+                      {q.context}
+                    </span>
                   </span>
                 </footer>
               </blockquote>
             </FadeUp>
-          ))}
+            );
+          })}
         </div>
       </div>
 
