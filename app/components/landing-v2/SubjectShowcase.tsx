@@ -100,7 +100,7 @@ const STREAMS: Stream[] = [
   },
   {
     id: "robotics",
-    name: "Robotics",
+    name: "Robotic Engineering",
     ages: "Ages 10 → Adult",
     status: "COMING 2027",
     isLive: false,

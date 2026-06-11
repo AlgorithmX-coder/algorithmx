@@ -48,12 +48,38 @@ export default function FinalCTA() {
           >
             <div
               style={{
-                background: "#0a0f1c",
+                position: "relative",
+                overflow: "hidden",
+                background:
+                  "radial-gradient(125% 90% at 50% -10%, #141b30 0%, #0a0f1c 52%, #06080f 100%)",
                 borderRadius: 24,
                 padding: "60px 40px",
                 textAlign: "center",
               }}
             >
+              {/* cosmic glow + faint stars inside the card */}
+              <div
+                aria-hidden
+                style={{
+                  position: "absolute",
+                  inset: 0,
+                  pointerEvents: "none",
+                  background:
+                    "radial-gradient(55% 45% at 50% 26%, rgba(70,150,255,0.16), transparent 70%), radial-gradient(45% 40% at 82% 86%, rgba(168,139,255,0.14), transparent 72%)",
+                }}
+              />
+              <div
+                aria-hidden
+                style={{
+                  position: "absolute",
+                  inset: 0,
+                  pointerEvents: "none",
+                  opacity: 0.55,
+                  backgroundImage:
+                    "radial-gradient(1px 1px at 18% 28%, rgba(200,220,255,0.7), transparent), radial-gradient(1px 1px at 72% 18%, rgba(200,220,255,0.55), transparent), radial-gradient(1.4px 1.4px at 86% 58%, rgba(180,210,255,0.6), transparent), radial-gradient(1px 1px at 33% 74%, rgba(200,220,255,0.45), transparent), radial-gradient(1px 1px at 58% 46%, rgba(200,220,255,0.4), transparent), radial-gradient(1.3px 1.3px at 12% 62%, rgba(180,210,255,0.55), transparent), radial-gradient(1px 1px at 90% 32%, rgba(200,220,255,0.45), transparent)",
+                }}
+              />
+              <div style={{ position: "relative" }}>
               <p
                 style={{
                   fontFamily: "var(--lv2-font-mono)",
@@ -78,7 +104,17 @@ export default function FinalCTA() {
                   lineHeight: 1.05,
                 }}
               >
-                Ready to start?
+                Ready to{" "}
+                <span
+                  style={{
+                    background: "linear-gradient(90deg,#36d6ff,#a98bff)",
+                    WebkitBackgroundClip: "text",
+                    backgroundClip: "text",
+                    color: "transparent",
+                  }}
+                >
+                  start?
+                </span>
               </h2>
               <p
                 style={{
@@ -142,6 +178,7 @@ export default function FinalCTA() {
                   Questions? support@algorithmx.co.uk
                 </a>
               </p>
+              </div>
             </div>
           </div>
         </FadeUp>
@@ -164,7 +201,7 @@ export default function FinalCTA() {
 }
 
 const ctaPrimary: React.CSSProperties = {
-  background: "#00e5ff",
+  background: "linear-gradient(135deg, #3ee0ff 0%, #6f8cff 55%, #a98bff 100%)",
   color: "#04050d",
   fontFamily: "var(--lv2-font-mono)",
   fontSize: 12,
@@ -177,7 +214,8 @@ const ctaPrimary: React.CSSProperties = {
   display: "inline-flex",
   alignItems: "center",
   gap: 8,
-  boxShadow: "0 8px 28px rgba(0,229,255,0.34)",
+  boxShadow:
+    "0 10px 30px rgba(90,150,255,0.45), inset 0 0 0 1px rgba(255,255,255,0.08)",
   willChange: "transform",
 };
 

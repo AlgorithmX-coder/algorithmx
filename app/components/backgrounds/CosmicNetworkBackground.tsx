@@ -127,7 +127,16 @@ export default function CosmicNetworkBackground({
       return;
     }
     const update = () => {
-      const range = Math.max(360, window.innerHeight * formationViewports);
+      const scrollable = Math.max(
+        1,
+        document.documentElement.scrollHeight - window.innerHeight,
+      );
+      /* spread the assembly across the page (floor of a few viewports for
+       * short pages) so you watch the stars align into the galaxy */
+      const range = Math.max(
+        window.innerHeight * formationViewports,
+        scrollable * FORM_FRACTION,
+      );
       formP.set(clamp01(window.scrollY / range));
     };
     update();
@@ -473,6 +482,9 @@ const TILT = -0.5;
 const GALAXY_SPIN = (Math.PI * 2) / 42;
 /* max upward parallax drift (px) of the whole field across the page */
 const FIELD_PARALLAX = 80;
+/* fraction of the page over which the stars stream in + ASSEMBLE the galaxy
+ * (spread out so you watch it form, instead of it finishing behind the hero) */
+const FORM_FRACTION = 0.45;
 
 function buildParticles(w: number, h: number, count: number): Particle[] {
   const rnd = mulberry32(1337 + count);
