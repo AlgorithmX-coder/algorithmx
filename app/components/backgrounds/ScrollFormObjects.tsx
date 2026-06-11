@@ -182,43 +182,23 @@ export default function ScrollFormObjects() {
         overflow: "hidden",
       }}
     >
-      {/* ② holographic code editor — left side */}
+      {/* ② holographic code — left side, no panel (floats over space) */}
       <div
         className="sfo-code"
         style={{
           position: "absolute",
-          left: "clamp(10px, 3.5vw, 80px)",
+          left: "clamp(14px, 4.5vw, 104px)",
           top: "50%",
           transform: "translateY(-50%)",
-          width: "clamp(300px, 31vw, 432px)",
+          width: "clamp(300px, 31vw, 440px)",
           opacity: 0,
-          borderRadius: 14,
-          border: "1px solid rgba(120,180,255,0.22)",
-          background: "linear-gradient(160deg, rgba(13,18,32,0.82), rgba(8,11,22,0.82))",
-          backdropFilter: "blur(8px)",
-          WebkitBackdropFilter: "blur(8px)",
-          boxShadow: "0 24px 70px rgba(0,0,0,0.5), 0 0 40px rgba(60,130,255,0.12)",
-          overflow: "hidden",
+          fontFamily: "var(--lv2-font-mono, monospace)",
+          fontSize: 13.5,
+          lineHeight: "1.62em",
+          textShadow: "0 1px 12px rgba(2,4,10,0.95), 0 0 2px rgba(2,4,10,0.9)",
         }}
       >
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: 7,
-            padding: "9px 13px",
-            borderBottom: "1px solid rgba(120,180,255,0.14)",
-            background: "rgba(255,255,255,0.02)",
-          }}
-        >
-          <span style={{ width: 9, height: 9, borderRadius: 9, background: "#ff5f57" }} />
-          <span style={{ width: 9, height: 9, borderRadius: 9, background: "#febc2e" }} />
-          <span style={{ width: 9, height: 9, borderRadius: 9, background: "#28c840" }} />
-          <span style={{ marginLeft: 8, fontFamily: "var(--lv2-font-mono, monospace)", fontSize: 11, letterSpacing: "0.12em", color: "rgba(180,200,255,0.6)" }}>
-            learn.js
-          </span>
-        </div>
-        <div style={{ padding: "14px 16px", fontFamily: "var(--lv2-font-mono, monospace)", fontSize: 13, lineHeight: "1.55em" }}>
+        <div>
           {CODE.map((line, i) => (
             <div key={i} className="sfo-line" style={{ opacity: 0, whiteSpace: "pre", display: "flex" }}>
               <span style={{ width: 22, flexShrink: 0, color: "rgba(120,140,190,0.4)", userSelect: "none" }}>
@@ -242,10 +222,10 @@ export default function ScrollFormObjects() {
         className="sfo-robot"
         style={{
           position: "absolute",
-          right: "clamp(10px, 4vw, 96px)",
-          top: "41%",
+          right: "clamp(12px, 4.5vw, 104px)",
+          top: "30%",
           transform: "translateY(-50%)",
-          width: "clamp(200px, 22vw, 290px)",
+          width: "clamp(180px, 19vw, 256px)",
           opacity: 0,
           filter: "drop-shadow(0 0 10px rgba(80,170,255,0.45))",
         }}
