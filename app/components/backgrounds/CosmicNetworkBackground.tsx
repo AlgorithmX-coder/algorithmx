@@ -451,7 +451,7 @@ function NebulaGlows({
  * as formP rises, with a staggered window so they stream in (inner first).
  * ────────────────────────────────────────────────────────────────────── */
 interface Particle {
-  hx: number; hy: number; // home (fraction of w,h)
+  hx: number; hy: number; // home (fraction of w,h) — non-galaxy
   dx: number; dy: number; // dispersed (fraction)
   t0: number; t1: number; // formation window in formP
   size: number;
@@ -460,11 +460,19 @@ interface Particle {
   phase: number;
   tw: number;
   drift: number; // depth proxy for parallax + micro-drift
+  /* galaxy stars store base-angle trig + radius so the spiral can spin every
+   * frame (look identical when rot=0; just adds rotation) */
+  gal: boolean;
+  gCos: number; gSin: number; gRad: number; gjx: number; gjy: number;
 }
 
 const GCX = 0.8; // galaxy centre (fraction)
 const GCY = 0.62;
 const TILT = -0.5;
+/* continuous galaxy spin (radians/sec) so it visibly moves as you scroll */
+const GALAXY_SPIN = (Math.PI * 2) / 42;
+/* max upward parallax drift (px) of the whole field across the page */
+const FIELD_PARALLAX = 80;
 
 function buildParticles(w: number, h: number, count: number): Particle[] {
   const rnd = mulberry32(1337 + count);
@@ -480,18 +488,12 @@ function buildParticles(w: number, h: number, count: number): Particle[] {
   const nF = count - nG - nN;
   const arms = 2;
 
-  /* spiral galaxy (bottom-right) — winds in from outside */
+  /* spiral galaxy (bottom-right) — winds in from outside, then spins */
   for (let i = 0; i < nG; i++) {
     const arm = i % arms;
     const t = Math.pow(rnd(), 0.85);
     const ang = (arm / arms) * Math.PI * 2 + t * Math.PI * 3.0 + (rnd() - 0.5) * 0.28;
     const rad = 0.03 + t * 0.2;
-    const lx = Math.cos(ang) * rad;
-    const ly = Math.sin(ang) * rad * 0.5;
-    const rxp = lx * Math.cos(TILT) - ly * Math.sin(TILT);
-    const ryp = lx * Math.sin(TILT) + ly * Math.cos(TILT);
-    const hx = GCX + rxp * fx + (rnd() - 0.5) * 0.008;
-    const hy = GCY + ryp * fy + (rnd() - 0.5) * 0.008;
     /* dispersed: same arm, swung out + unwound */
     const dAng = ang + 0.9;
     const dRad = rad * 2.5 + 0.18;
@@ -501,7 +503,10 @@ function buildParticles(w: number, h: number, count: number): Particle[] {
     const dry = dlx * Math.sin(TILT) + dly * Math.cos(TILT);
     const t0 = 0.04 + t * 0.5 + rnd() * 0.05;
     ps.push({
-      hx, hy,
+      hx: 0, hy: 0, // galaxy home recomputed per frame (spin)
+      gal: true,
+      gCos: Math.cos(ang), gSin: Math.sin(ang), gRad: rad,
+      gjx: (rnd() - 0.5) * 0.008, gjy: (rnd() - 0.5) * 0.008,
       dx: GCX + drx * fx + (rnd() - 0.5) * 0.1,
       dy: GCY + dry * fy + (rnd() - 0.5) * 0.1,
       t0, t1: Math.min(1, t0 + 0.32),
@@ -528,6 +533,7 @@ function buildParticles(w: number, h: number, count: number): Particle[] {
     const t0 = 0.18 + rnd() * 0.5;
     ps.push({
       hx, hy,
+      gal: false, gCos: 0, gSin: 0, gRad: 0, gjx: 0, gjy: 0,
       dx: cx + (hx - cx) * 2.2 + (rnd() - 0.5) * 0.16,
       dy: cy + (hy - cy) * 2.2 + (rnd() - 0.5) * 0.16,
       t0, t1: Math.min(1, t0 + 0.3),
@@ -548,6 +554,7 @@ function buildParticles(w: number, h: number, count: number): Particle[] {
     const t0 = rnd() * 0.72;
     ps.push({
       hx, hy,
+      gal: false, gCos: 0, gSin: 0, gRad: 0, gjx: 0, gjy: 0,
       dx: cx + (hx - cx) * ex + (rnd() - 0.5) * 0.08,
       dy: cy + (hy - cy) * ex + (rnd() - 0.5) * 0.08,
       t0, t1: Math.min(1, t0 + 0.3),
@@ -596,16 +603,26 @@ function FormationField({
     let h = 0;
     let particles: Particle[] = [];
     let motes: Array<{ x: number; y: number; s: number; a: number; ph: number }> = [];
+    let coreGrad: CanvasGradient | null = null;
+    let docScroll = 1;
+    let scrollY = typeof window !== "undefined" ? window.scrollY : 0;
 
     const build = () => {
       w = window.innerWidth;
       h = window.innerHeight;
+      docScroll = Math.max(1, document.documentElement.scrollHeight - h);
       canvas.width = Math.floor(w * dpr);
       canvas.height = Math.floor(h * dpr);
       canvas.style.width = w + "px";
       canvas.style.height = h + "px";
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       particles = buildParticles(w, h, count);
+      /* hoist the galaxy-core gradient (geometry only changes on resize) so
+       * it isn't reallocated every animation frame */
+      coreGrad = ctx.createRadialGradient(GCX * w, GCY * h, 0, GCX * w, GCY * h, Math.min(w, h) * 0.12);
+      coreGrad.addColorStop(0, "rgba(245,248,255,1)");
+      coreGrad.addColorStop(0.35, "rgba(190,205,255,0.4)");
+      coreGrad.addColorStop(1, "rgba(150,180,255,0)");
       const rnd = mulberry32(404);
       const mc = tier === "mobile" ? 18 : 40;
       motes = Array.from({ length: mc }, () => ({
@@ -629,27 +646,42 @@ function FormationField({
     };
     if (enableParallax) window.addEventListener("pointermove", onPointer, { passive: true });
 
+    /* page scroll drives the field parallax drift */
+    const onPageScroll = () => {
+      scrollY = window.scrollY;
+    };
+    window.addEventListener("scroll", onPageScroll, { passive: true });
+
     const TWO_PI = Math.PI * 2;
 
-    const drawCore = (p: number) => {
+    const drawCore = (p: number, parY: number) => {
       const a = smooth((p - 0.42) / 0.5) * 0.85 * intensity;
-      if (a <= 0.01) return;
-      const cx = GCX * w;
-      const cy = GCY * h;
+      if (a <= 0.01 || !coreGrad) return;
       const r = Math.min(w, h) * 0.12;
-      const g = ctx.createRadialGradient(cx, cy, 0, cx, cy, r);
-      g.addColorStop(0, `rgba(245,248,255,${a})`);
-      g.addColorStop(0.35, `rgba(190,205,255,${a * 0.4})`);
-      g.addColorStop(1, "rgba(150,180,255,0)");
-      ctx.fillStyle = g;
+      ctx.save();
+      ctx.translate(0, parY);
+      ctx.globalAlpha = a;
+      ctx.fillStyle = coreGrad;
       ctx.beginPath();
-      ctx.arc(cx, cy, r, 0, TWO_PI);
+      ctx.arc(GCX * w, GCY * h, r, 0, TWO_PI);
       ctx.fill();
+      ctx.restore();
     };
 
     const renderParticles = (p: number, ts: number, motion: number) => {
       ctx.clearRect(0, 0, w, h);
       ctx.globalCompositeOperation = "lighter";
+
+      const gmin = Math.min(w, h);
+      const gfx = gmin / w;
+      const gfy = gmin / h;
+      const cosT = Math.cos(TILT);
+      const sinT = Math.sin(TILT);
+      const rot = motion ? ts * GALAXY_SPIN : 0;
+      const cosR = Math.cos(rot);
+      const sinR = Math.sin(rot);
+      /* whole field drifts gently upward as you scroll (parallax depth) */
+      const parY = motion ? -clamp01(scrollY / docScroll) * FIELD_PARALLAX : 0;
 
       /* always-on faint motes so the top of the page isn't pure black */
       for (const m of motes) {
@@ -657,18 +689,30 @@ function FormationField({
         const a = m.a * tw * intensity;
         ctx.fillStyle = `rgba(200,220,255,${a})`;
         ctx.beginPath();
-        ctx.arc(m.x * w, m.y * h, m.s, 0, TWO_PI);
+        ctx.arc(m.x * w, m.y * h + parY, m.s, 0, TWO_PI);
         ctx.fill();
       }
 
-      drawCore(p);
+      drawCore(p, parY);
 
       for (let i = 0; i < particles.length; i++) {
         const s = particles[i];
+        /* galaxy stars: recompute spinning home each frame (angle addition,
+         * no per-particle trig) */
+        let hx = s.hx;
+        let hy = s.hy;
+        if (s.gal) {
+          const cosA = s.gCos * cosR - s.gSin * sinR;
+          const sinA = s.gSin * cosR + s.gCos * sinR;
+          const lx = cosA * s.gRad;
+          const ly = sinA * s.gRad * 0.5;
+          hx = GCX + (lx * cosT - ly * sinT) * gfx + s.gjx;
+          hy = GCY + (lx * sinT + ly * cosT) * gfy + s.gjy;
+        }
         const lp = smooth((p - s.t0) / (s.t1 - s.t0));
         if (lp <= 0.001) continue;
-        let x = lerp(s.dx, s.hx, lp) * w;
-        let y = lerp(s.dy, s.hy, lp) * h;
+        let x = lerp(s.dx, hx, lp) * w;
+        let y = lerp(s.dy, hy, lp) * h + parY;
         if (motion) {
           const dr = s.drift;
           x += eased.x * (2 + dr * 9) + Math.sin(ts * 0.18 + s.phase) * dr * 2.2;
@@ -704,6 +748,7 @@ function FormationField({
       return () => {
         window.removeEventListener("resize", onResizeStatic);
         window.removeEventListener("resize", onResize);
+        window.removeEventListener("scroll", onPageScroll);
         if (enableParallax) window.removeEventListener("pointermove", onPointer);
         clearTimeout(rt);
       };
@@ -792,6 +837,7 @@ function FormationField({
       clearTimeout(rt);
       document.removeEventListener("visibilitychange", onVisibility);
       window.removeEventListener("resize", onResize);
+      window.removeEventListener("scroll", onPageScroll);
       if (enableParallax) window.removeEventListener("pointermove", onPointer);
     };
   }, [count, tier, reducedMotion, enableParallax, enableShootingStars, intensity, formP]);
