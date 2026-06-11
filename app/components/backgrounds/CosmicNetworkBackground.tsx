@@ -36,6 +36,11 @@ export interface CosmicNetworkBackgroundProps {
   enableShootingStars?: boolean;
   starDensity?: number;
   dimCenter?: boolean;
+  /** Base cosmic image (place in /public). Falls back to the procedural
+   *  galaxy if the file is missing, so the background never breaks. */
+  imageSrc?: string;
+  /** Navy overlay opacity on top of the image, for text contrast (0..1). */
+  overlayDarkness?: number;
   className?: string;
 }
 
@@ -101,6 +106,8 @@ export default function CosmicNetworkBackground({
   enableShootingStars = true,
   starDensity = 1,
   dimCenter = true,
+  imageSrc,
+  overlayDarkness = 0.3,
   className,
 }: CosmicNetworkBackgroundProps) {
   const caps = useCapabilities();
@@ -127,7 +134,13 @@ export default function CosmicNetworkBackground({
         contain: "layout paint",
       }}
     >
-      <CosmicBaseLayer tier={caps.tier} intensity={intensity} y={parallaxOn ? baseY : undefined} />
+      <CosmicBaseLayer
+        tier={caps.tier}
+        intensity={intensity}
+        y={parallaxOn ? baseY : undefined}
+        imageSrc={imageSrc}
+        overlayDarkness={overlayDarkness}
+      />
       <NebulaGlows reducedMotion={caps.reducedMotion} intensity={intensity} y={parallaxOn ? nebulaY : undefined} />
       <StarField
         caps={caps}
@@ -161,31 +174,77 @@ function paintCosmicBase(ctx: CanvasRenderingContext2D, w: number, h: number, ti
 
   const min = Math.min(w, h);
 
-  /* nebula clouds — layered soft radial blobs, positioned like the brief's
-   * reference (cool clouds toward the edges, calmer centre). */
+  /* nebula clouds — layered soft radial blobs matching the reference photo:
+   * bright violet cluster top-right, blue/cyan cloud bottom-left, a soft
+   * magenta core low-centre, and the galaxy halo bottom-right. */
   type Cloud = { x: number; y: number; r: number; col: [number, number, number]; a: number };
   const clouds: Cloud[] = [
-    { x: w * 0.85, y: h * 0.16, r: min * 0.42, col: [120, 90, 230], a: 0.5 }, // violet TR
-    { x: w * 0.92, y: h * 0.1, r: min * 0.26, col: [90, 120, 255], a: 0.4 },
-    { x: w * 0.16, y: h * 0.68, r: min * 0.4, col: [70, 150, 240], a: 0.45 }, // blue/cyan BL
-    { x: w * 0.1, y: h * 0.74, r: min * 0.24, col: [150, 90, 235], a: 0.32 },
-    { x: w * 0.55, y: h * 0.82, r: min * 0.46, col: [150, 70, 200], a: 0.22 }, // magenta low-centre
-    { x: w * 0.8, y: h * 0.66, r: min * 0.5, col: [60, 110, 230], a: 0.3 }, // galaxy halo BR
+    { x: w * 0.82, y: h * 0.15, r: min * 0.34, col: [150, 95, 235], a: 0.62 }, // violet cluster TR
+    { x: w * 0.9, y: h * 0.1, r: min * 0.2, col: [120, 110, 255], a: 0.5 },
+    { x: w * 0.75, y: h * 0.2, r: min * 0.16, col: [205, 130, 255], a: 0.4 }, // pink highlight TR
+    { x: w * 0.15, y: h * 0.64, r: min * 0.34, col: [60, 150, 245], a: 0.6 }, // cyan-blue cloud BL
+    { x: w * 0.11, y: h * 0.7, r: min * 0.2, col: [150, 100, 240], a: 0.42 }, // violet edge BL
+    { x: w * 0.26, y: h * 0.6, r: min * 0.14, col: [120, 200, 255], a: 0.4 }, // cyan highlight BL
+    { x: w * 0.52, y: h * 0.74, r: min * 0.22, col: [195, 80, 205], a: 0.3 }, // magenta core low-centre
+    { x: w * 0.62, y: h * 0.84, r: min * 0.16, col: [165, 80, 220], a: 0.26 },
+    { x: w * 0.8, y: h * 0.62, r: min * 0.4, col: [70, 120, 235], a: 0.34 }, // galaxy halo BR
+    { x: w * 0.45, y: h * 0.45, r: min * 0.55, col: [40, 70, 170], a: 0.1 }, // faint deep wash
   ];
   ctx.globalCompositeOperation = "lighter";
   for (const c of clouds) {
     /* break each cloud into a few offset sub-blobs for organic turbulence */
-    for (let i = 0; i < 5; i++) {
-      const ox = c.x + (rnd() - 0.5) * c.r * 0.7;
-      const oy = c.y + (rnd() - 0.5) * c.r * 0.7;
-      const rr = c.r * (0.45 + rnd() * 0.55);
+    for (let i = 0; i < 6; i++) {
+      const ox = c.x + (rnd() - 0.5) * c.r * 0.8;
+      const oy = c.y + (rnd() - 0.5) * c.r * 0.8;
+      const rr = c.r * (0.4 + rnd() * 0.6);
       const g = ctx.createRadialGradient(ox, oy, 0, ox, oy, rr);
       const [r, gn, b] = c.col;
-      g.addColorStop(0, `rgba(${r},${gn},${b},${(c.a * (0.5 + rnd() * 0.5)) / 5})`);
-      g.addColorStop(0.5, `rgba(${r},${gn},${b},${(c.a * 0.12) / 1})`);
+      g.addColorStop(0, `rgba(${r},${gn},${b},${(c.a * (0.5 + rnd() * 0.5)) / 6})`);
+      g.addColorStop(0.5, `rgba(${r},${gn},${b},${(c.a * 0.1) / 1})`);
       g.addColorStop(1, "rgba(0,0,0,0)");
       ctx.fillStyle = g;
       ctx.fillRect(0, 0, w, h);
+    }
+  }
+  /* tiny bright knots inside the two main nebulae (star-forming glints) */
+  for (const knot of [
+    { x: w * 0.8, y: h * 0.16 },
+    { x: w * 0.18, y: h * 0.64 },
+  ]) {
+    for (let i = 0; i < 9; i++) {
+      const kx = knot.x + (rnd() - 0.5) * min * 0.16;
+      const ky = knot.y + (rnd() - 0.5) * min * 0.16;
+      const kr = rnd() * min * 0.012 + 1;
+      const g = ctx.createRadialGradient(kx, ky, 0, kx, ky, kr * 6);
+      g.addColorStop(0, `rgba(220,225,255,${0.5 * rnd() + 0.2})`);
+      g.addColorStop(1, "rgba(120,140,255,0)");
+      ctx.fillStyle = g;
+      ctx.beginPath();
+      ctx.arc(kx, ky, kr * 6, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  }
+
+  /* wispy filaments inside the two main nebulae for HD texture (elongated,
+   * very faint soft streaks rather than uniform blobs) */
+  for (const f of [
+    { x: w * 0.8, y: h * 0.16, ang: -0.6, col: [185, 125, 255] as const },
+    { x: w * 0.17, y: h * 0.64, ang: 0.5, col: [95, 170, 250] as const },
+  ]) {
+    for (let i = 0; i < 5; i++) {
+      ctx.save();
+      ctx.translate(f.x + (rnd() - 0.5) * min * 0.14, f.y + (rnd() - 0.5) * min * 0.14);
+      ctx.rotate(f.ang + (rnd() - 0.5) * 0.8);
+      ctx.scale(1, 0.28);
+      const fr = min * (0.05 + rnd() * 0.09);
+      const g = ctx.createRadialGradient(0, 0, 0, 0, 0, fr);
+      g.addColorStop(0, `rgba(${f.col[0]},${f.col[1]},${f.col[2]},${0.05 + rnd() * 0.04})`);
+      g.addColorStop(1, "rgba(0,0,0,0)");
+      ctx.fillStyle = g;
+      ctx.beginPath();
+      ctx.arc(0, 0, fr, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
     }
   }
 
@@ -254,6 +313,125 @@ function paintCosmicBase(ctx: CanvasRenderingContext2D, w: number, h: number, ti
     ctx.arc(x, y, size, 0, Math.PI * 2);
     ctx.fill();
   }
+
+  /* hero stars — a few bright stars with a glow + 4-point diffraction spike
+   * for that crisp, high-definition sparkle */
+  const brightN = tier === "mobile" ? 6 : tier === "tablet" ? 11 : 16;
+  for (let i = 0; i < brightN; i++) {
+    const x = rnd() * w;
+    const y = rnd() * h;
+    const a = 0.55 + rnd() * 0.4;
+    const violet = rnd() < 0.3;
+    const col = violet ? "rgba(205,185,255," : "rgba(216,233,255,";
+    const gr2 = 7 + rnd() * 9;
+    const g = ctx.createRadialGradient(x, y, 0, x, y, gr2);
+    g.addColorStop(0, `${col}${a * 0.85})`);
+    g.addColorStop(1, `${col}0)`);
+    ctx.fillStyle = g;
+    ctx.beginPath();
+    ctx.arc(x, y, gr2, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.fillStyle = `${col}${a})`;
+    ctx.beginPath();
+    ctx.arc(x, y, 1 + rnd() * 0.7, 0, Math.PI * 2);
+    ctx.fill();
+    const sp = 5 + rnd() * 8;
+    ctx.strokeStyle = `${col}${a * 0.45})`;
+    ctx.lineWidth = 0.8;
+    ctx.beginPath();
+    ctx.moveTo(x - sp, y);
+    ctx.lineTo(x + sp, y);
+    ctx.moveTo(x, y - sp);
+    ctx.lineTo(x, y + sp);
+    ctx.stroke();
+  }
+
+  /* ── faint futuristic HUD overlay (matches the reference photo) ───────── */
+  const PI2 = Math.PI * 2;
+  const hud = (a: number) => `rgba(130,185,255,${a})`;
+  ctx.lineWidth = 1;
+
+  /* concentric scanner rings, top-left */
+  const rx = w * 0.1;
+  const ry = h * 0.22;
+  for (let i = 0; i < 4; i++) {
+    const rr = min * (0.035 + i * 0.03);
+    ctx.strokeStyle = hud(0.2 - i * 0.025);
+    ctx.beginPath();
+    const start = i % 2 ? -0.3 : 0.7;
+    ctx.arc(rx, ry, rr, start, start + (i % 2 ? 4.4 : 5.3));
+    ctx.stroke();
+  }
+  ctx.fillStyle = hud(0.5);
+  ctx.beginPath();
+  ctx.arc(rx, ry, 1.6, 0, PI2);
+  ctx.fill();
+  ctx.strokeStyle = hud(0.16);
+  ctx.beginPath();
+  ctx.moveTo(rx, ry);
+  ctx.lineTo(rx + min * 0.13, ry - min * 0.055);
+  ctx.stroke();
+
+  /* small registration crosses, edge-biased (centre kept clear) */
+  for (const [fx, fy] of [
+    [0.3, 0.11], [0.71, 0.4], [0.88, 0.31], [0.06, 0.46],
+    [0.46, 0.16], [0.93, 0.72], [0.35, 0.88], [0.66, 0.27],
+  ]) {
+    const cx = fx * w;
+    const cy = fy * h;
+    ctx.strokeStyle = hud(0.28);
+    ctx.beginPath();
+    ctx.moveTo(cx - 4, cy);
+    ctx.lineTo(cx + 4, cy);
+    ctx.moveTo(cx, cy - 4);
+    ctx.lineTo(cx, cy + 4);
+    ctx.stroke();
+  }
+
+  /* faint hexagon glyph, mid-right */
+  const hx = w * 0.63;
+  const hy = h * 0.54;
+  const hr = min * 0.05;
+  ctx.strokeStyle = hud(0.1);
+  ctx.beginPath();
+  for (let i = 0; i < 6; i++) {
+    const a = (Math.PI / 3) * i - Math.PI / 6;
+    const px = hx + Math.cos(a) * hr;
+    const py = hy + Math.sin(a) * hr;
+    if (i === 0) ctx.moveTo(px, py);
+    else ctx.lineTo(px, py);
+  }
+  ctx.closePath();
+  ctx.stroke();
+
+  /* circuit traces with end nodes, lower-left + top */
+  ctx.strokeStyle = hud(0.14);
+  ctx.beginPath();
+  ctx.moveTo(w * 0.04, h * 0.86);
+  ctx.lineTo(w * 0.12, h * 0.86);
+  ctx.lineTo(w * 0.15, h * 0.9);
+  ctx.lineTo(w * 0.23, h * 0.9);
+  ctx.moveTo(w * 0.69, h * 0.08);
+  ctx.lineTo(w * 0.78, h * 0.08);
+  ctx.lineTo(w * 0.81, h * 0.12);
+  ctx.stroke();
+  ctx.fillStyle = hud(0.4);
+  for (const [nx, ny] of [[0.23, 0.9], [0.81, 0.12]]) {
+    ctx.beginPath();
+    ctx.arc(nx * w, ny * h, 1.6, 0, PI2);
+    ctx.fill();
+  }
+
+  /* dashed scan segment, lower-centre */
+  ctx.save();
+  ctx.setLineDash([4, 5]);
+  ctx.strokeStyle = hud(0.16);
+  ctx.beginPath();
+  ctx.moveTo(w * 0.46, h * 0.93);
+  ctx.lineTo(w * 0.6, h * 0.93);
+  ctx.stroke();
+  ctx.restore();
+
   ctx.globalCompositeOperation = "source-over";
 }
 
@@ -261,12 +439,17 @@ function CosmicBaseLayer({
   tier,
   intensity,
   y,
+  imageSrc,
+  overlayDarkness,
 }: {
   tier: Tier;
   intensity: number;
   y?: MotionValue<number>;
+  imageSrc?: string;
+  overlayDarkness: number;
 }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [imgLoaded, setImgLoaded] = useState(false);
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -303,18 +486,88 @@ function CosmicBaseLayer({
   }, [tier]);
 
   return (
-    <motion.canvas
-      ref={canvasRef}
-      style={{
-        position: "absolute",
-        top: 0,
-        left: 0,
-        width: "100%",
-        opacity: Math.min(1, 0.92 * intensity),
-        y,
-        willChange: "transform",
-      }}
-    />
+    <>
+      {/* parallaxed deep layer: procedural galaxy (fallback) + base image */}
+      <motion.div
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          right: 0,
+          height: "112%",
+          y,
+          willChange: "transform",
+        }}
+      >
+        {/* autonomous "camera" drift — slow float + breathe so the universe
+         *  feels alive and 3D even when idle (disabled for reduced-motion) */}
+        <div className="cnb-camera" style={{ position: "absolute", inset: 0 }}>
+        <canvas
+          ref={canvasRef}
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: "100%",
+            /* hide the procedural fallback once the image has painted in */
+            opacity: imgLoaded ? 0 : Math.min(1, 0.92 * intensity),
+            transition: "opacity 0.8s ease",
+          }}
+        />
+        {imageSrc && (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={imageSrc}
+            alt=""
+            aria-hidden
+            decoding="async"
+            fetchPriority="high"
+            onLoad={() => setImgLoaded(true)}
+            onError={() => setImgLoaded(false)}
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+              objectPosition: "center",
+              opacity: imgLoaded ? Math.min(1, intensity) : 0,
+              transition: "opacity 1.1s ease",
+            }}
+          />
+        )}
+        </div>
+      </motion.div>
+      {/* navy contrast overlay (not parallaxed → stable readability) */}
+      <div
+        aria-hidden
+        style={{
+          position: "absolute",
+          inset: 0,
+          background: `linear-gradient(180deg,
+            rgba(4,6,16,${Math.min(0.85, overlayDarkness + 0.08)}) 0%,
+            rgba(4,6,16,${overlayDarkness * 0.5}) 26%,
+            rgba(4,6,16,${overlayDarkness * 0.5}) 68%,
+            rgba(4,6,16,${Math.min(0.9, overlayDarkness + 0.14)}) 100%)`,
+        }}
+      />
+      <style jsx>{`
+        .cnb-camera {
+          will-change: transform;
+          animation: cnbCamera 92s ease-in-out infinite alternate;
+          transform-origin: 55% 60%;
+        }
+        @keyframes cnbCamera {
+          0% { transform: translate3d(0, 0, 0) scale(1.02); }
+          50% { transform: translate3d(1.1%, -0.8%, 0) scale(1.055); }
+          100% { transform: translate3d(-0.9%, 0.5%, 0) scale(1.03); }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .cnb-camera { animation: none !important; transform: scale(1.02); }
+        }
+      `}</style>
+    </>
   );
 }
 
