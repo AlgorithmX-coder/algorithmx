@@ -54,7 +54,7 @@ const PATHWAYS = [
   { icon: "shield" as const, label: "Cyber Security", color: "#ff3ad6" },
   { icon: "brain" as const, label: "AI & Machine Learning", color: "#00f5ff" },
   { icon: "code" as const, label: "App Development", color: "#7c5cff" },
-  { icon: "robot" as const, label: "Robotics", color: "#ffc94a" },
+  { icon: "robot" as const, label: "Robotic Engineering", color: "#ffc94a" },
 ];
 
 const OUTCOMES = [

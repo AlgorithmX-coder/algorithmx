@@ -71,7 +71,7 @@ export default function Footer() {
               { name: "AI / ML", href: "#" },
               { name: "App Dev", href: "#" },
               { name: "Entrepreneurship", href: "#" },
-              { name: "Robotics", href: "#" },
+              { name: "Robotic Engineering", href: "#" },
             ]}
           />
           <FooterColumn
