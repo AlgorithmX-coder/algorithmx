@@ -12,6 +12,7 @@ import Algo from "@/app/components/landing-v2/Algo";
 import SmoothScroll from "@/app/components/SmoothScroll";
 import SpotlightCursor from "@/app/components/landing-v2/SpotlightCursor";
 import CosmicNetworkBackground from "@/app/components/backgrounds/CosmicNetworkBackground";
+import ScrollFormObjects from "@/app/components/backgrounds/ScrollFormObjects";
 import AmbientFutureBackdrop from "@/app/components/landing-v2/AmbientFutureBackdrop";
 
 /**
@@ -41,6 +42,7 @@ export default function LandingV2() {
   return (
     <SmoothScroll>
       <CosmicNetworkBackground />
+      <ScrollFormObjects />
       <AmbientFutureBackdrop />
       <SpotlightCursor />
       <Nav />
