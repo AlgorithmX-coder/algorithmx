@@ -36,6 +36,11 @@ export interface CosmicNetworkBackgroundProps {
   enableShootingStars?: boolean;
   starDensity?: number;
   dimCenter?: boolean;
+  /** Base cosmic image (place in /public). Falls back to the procedural
+   *  galaxy if the file is missing, so the background never breaks. */
+  imageSrc?: string;
+  /** Navy overlay opacity on top of the image, for text contrast (0..1). */
+  overlayDarkness?: number;
   className?: string;
 }
 
@@ -101,6 +106,8 @@ export default function CosmicNetworkBackground({
   enableShootingStars = true,
   starDensity = 1,
   dimCenter = true,
+  imageSrc = "/images/algorithmx-cosmic-background.webp",
+  overlayDarkness = 0.34,
   className,
 }: CosmicNetworkBackgroundProps) {
   const caps = useCapabilities();
@@ -127,7 +134,13 @@ export default function CosmicNetworkBackground({
         contain: "layout paint",
       }}
     >
-      <CosmicBaseLayer tier={caps.tier} intensity={intensity} y={parallaxOn ? baseY : undefined} />
+      <CosmicBaseLayer
+        tier={caps.tier}
+        intensity={intensity}
+        y={parallaxOn ? baseY : undefined}
+        imageSrc={imageSrc}
+        overlayDarkness={overlayDarkness}
+      />
       <NebulaGlows reducedMotion={caps.reducedMotion} intensity={intensity} y={parallaxOn ? nebulaY : undefined} />
       <StarField
         caps={caps}
@@ -261,12 +274,17 @@ function CosmicBaseLayer({
   tier,
   intensity,
   y,
+  imageSrc,
+  overlayDarkness,
 }: {
   tier: Tier;
   intensity: number;
   y?: MotionValue<number>;
+  imageSrc?: string;
+  overlayDarkness: number;
 }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [imgLoaded, setImgLoaded] = useState(false);
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -303,18 +321,69 @@ function CosmicBaseLayer({
   }, [tier]);
 
   return (
-    <motion.canvas
-      ref={canvasRef}
-      style={{
-        position: "absolute",
-        top: 0,
-        left: 0,
-        width: "100%",
-        opacity: Math.min(1, 0.92 * intensity),
-        y,
-        willChange: "transform",
-      }}
-    />
+    <>
+      {/* parallaxed deep layer: procedural galaxy (fallback) + base image */}
+      <motion.div
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          right: 0,
+          height: "112%",
+          y,
+          willChange: "transform",
+        }}
+      >
+        <canvas
+          ref={canvasRef}
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: "100%",
+            /* hide the procedural fallback once the image has painted in */
+            opacity: imgLoaded ? 0 : Math.min(1, 0.92 * intensity),
+            transition: "opacity 0.8s ease",
+          }}
+        />
+        {imageSrc && (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={imageSrc}
+            alt=""
+            aria-hidden
+            decoding="async"
+            fetchPriority="high"
+            onLoad={() => setImgLoaded(true)}
+            onError={() => setImgLoaded(false)}
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+              objectPosition: "center",
+              opacity: imgLoaded ? Math.min(1, intensity) : 0,
+              transition: "opacity 1.1s ease",
+            }}
+          />
+        )}
+      </motion.div>
+      {/* navy contrast overlay (not parallaxed → stable readability) */}
+      <div
+        aria-hidden
+        style={{
+          position: "absolute",
+          inset: 0,
+          background: `linear-gradient(180deg,
+            rgba(4,6,16,${Math.min(0.85, overlayDarkness + 0.08)}) 0%,
+            rgba(4,6,16,${overlayDarkness * 0.5}) 26%,
+            rgba(4,6,16,${overlayDarkness * 0.5}) 68%,
+            rgba(4,6,16,${Math.min(0.9, overlayDarkness + 0.14)}) 100%)`,
+        }}
+      />
+    </>
   );
 }
 
