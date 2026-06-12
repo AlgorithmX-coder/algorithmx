@@ -39,9 +39,10 @@ function makeBeamTexture(): THREE.Texture | null {
   ctx.clearRect(0, 0, w, h);
   // vertical shaft: bright base fading up + horizontal taper to soft edges
   const g = ctx.createLinearGradient(0, h, 0, 0);
-  g.addColorStop(0, "rgba(120,225,255,0.5)");
-  g.addColorStop(0.4, "rgba(40,170,255,0.22)");
-  g.addColorStop(1, "rgba(20,80,180,0)");
+  /* softer, dimmer cyan→violet portal beam so it whispers in deep space */
+  g.addColorStop(0, "rgba(120,190,255,0.4)");
+  g.addColorStop(0.4, "rgba(92,112,235,0.16)");
+  g.addColorStop(1, "rgba(40,44,120,0)");
   ctx.fillStyle = g;
   ctx.fillRect(0, 0, w, h);
   const taper = ctx.createLinearGradient(0, 0, w, 0);
@@ -67,9 +68,11 @@ function makeHazeTexture(): THREE.Texture | null {
   if (!ctx) return null;
   ctx.clearRect(0, 0, S, S);
   const g = ctx.createRadialGradient(S / 2, S * 0.66, 0, S / 2, S * 0.66, S * 0.62);
-  g.addColorStop(0, "rgba(34,120,205,0.52)");
-  g.addColorStop(0.45, "rgba(22,78,150,0.22)");
-  g.addColorStop(0.75, "rgba(14,50,110,0.08)");
+  /* deep-space depth glow (was a bright blue room wall) — dimmer + a touch
+   * of violet so it reads as faint nebula depth, not a lit backdrop */
+  g.addColorStop(0, "rgba(48,72,150,0.34)");
+  g.addColorStop(0.45, "rgba(42,54,120,0.16)");
+  g.addColorStop(0.75, "rgba(28,38,92,0.06)");
   g.addColorStop(1, "rgba(0,0,0,0)");
   ctx.fillStyle = g;
   ctx.fillRect(0, 0, S, S);
@@ -102,13 +105,14 @@ export default function TechChamber({
      * fade in — so the closed-laptop state has a clean, empty backdrop. */
     if (beamRef.current) {
       const lit = smoothstep(0.32, 0.62, p);
-      beamRef.current.opacity = lit * (reducedMotion ? 0.34 : 0.3 + Math.sin(t * 0.7) * 0.06);
+      beamRef.current.opacity = lit * (reducedMotion ? 0.06 : 0.05 + Math.sin(t * 0.7) * 0.02);
     }
     if (hazeRef.current) {
-      hazeRef.current.opacity = smoothstep(0.32, 0.82, p) * 0.34 * (reducedMotion ? 1 : 0.92 + Math.sin(t * 0.4) * 0.08);
+      hazeRef.current.opacity = smoothstep(0.32, 0.82, p) * 0.08 * (reducedMotion ? 1 : 0.92 + Math.sin(t * 0.4) * 0.08);
     }
     if (wallLightRef.current) {
-      wallLightRef.current.opacity = smoothstep(0.36, 0.78, p) * 0.18;
+      /* distant wall bar removed for the deep-space backdrop */
+      wallLightRef.current.opacity = 0;
     }
     void delta;
   });

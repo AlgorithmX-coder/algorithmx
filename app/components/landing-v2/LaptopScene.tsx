@@ -1421,13 +1421,22 @@ function makeInstrumentPlateTexture(
    * reticle. Deterministic (sine-hash) so SSR + reduced-motion bakes are
    * identical. */
 
-  /* central energy pool under the chassis — brighter blue-white core */
+  /* DEEP-SPACE NEBULA POOL under the chassis — a soft cyan core with an
+   * offset violet bloom (replaces the bright blue-white energy pool) so the
+   * ground reads as the same calm deep space as the rest of the page */
   if (!deep) {
-    const pool = ctx.createRadialGradient(cx, cy, 0, cx, cy, S * 0.24);
-    pool.addColorStop(0, soft ? "rgba(80,185,255,0.12)" : "rgba(130,212,255,0.3)");
-    pool.addColorStop(0.42, soft ? "rgba(40,130,255,0.05)" : "rgba(48,150,255,0.13)");
+    const cyA = soft ? 0.06 : 0.15;
+    const pool = ctx.createRadialGradient(cx, cy, 0, cx, cy, S * 0.32);
+    pool.addColorStop(0, `rgba(70,150,255,${cyA})`);
+    pool.addColorStop(0.42, `rgba(56,118,235,${cyA * 0.4})`);
     pool.addColorStop(1, "rgba(0,0,0,0)");
     ctx.fillStyle = pool;
+    ctx.fillRect(0, 0, S, S);
+    const vA = soft ? 0.05 : 0.12;
+    const vio = ctx.createRadialGradient(cx + S * 0.05, cy - S * 0.03, 0, cx + S * 0.05, cy - S * 0.03, S * 0.27);
+    vio.addColorStop(0, `rgba(150,110,255,${vA})`);
+    vio.addColorStop(1, "rgba(0,0,0,0)");
+    ctx.fillStyle = vio;
     ctx.fillRect(0, 0, S, S);
   }
 
@@ -1440,7 +1449,7 @@ function makeInstrumentPlateTexture(
     ctx.shadowBlur = 0;
   };
 
-  const N = deep ? 7 : soft ? 9 : 12;
+  const N = 0; // energy ribbons removed — deep-space floor (see star dusting below)
   const baseTilt = -0.18; // shared tilt so the outer bands read as a family
   for (let i = 0; i < N; i++) {
     const t = i / (N - 1);
@@ -1498,7 +1507,7 @@ function makeInstrumentPlateTexture(
   /* CROSS-FLOW STREAKS — a few long smooth sweeping light trails for the
    * "data in motion" read, kept subtle so they support, not clutter. */
   if (!deep) {
-    const streaks = soft ? 2 : 3;
+    const streaks = 0; // cross-flow streaks removed — deep-space floor
     for (let i = 0; i < streaks; i++) {
       const yy = cy + (hash(i * 13.1) - 0.5) * S * 0.5;
       const amp = S * (0.08 + hash(i * 6.3) * 0.1);
@@ -1514,14 +1523,40 @@ function makeInstrumentPlateTexture(
     }
   }
 
-  /* bright centre core glint (surface) */
-  if (!soft && !deep) {
-    const core = ctx.createRadialGradient(cx, cy, 0, cx, cy, S * 0.06);
-    core.addColorStop(0, "rgba(184,240,255,0.6)");
-    core.addColorStop(0.5, "rgba(96,194,255,0.2)");
-    core.addColorStop(1, "rgba(96,194,255,0)");
-    ctx.fillStyle = core;
-    ctx.fillRect(0, 0, S, S);
+  /* faint star dusting across the plate (area-uniform, deterministic) */
+  const starN = deep ? 46 : soft ? 80 : 150;
+  for (let i = 0; i < starN; i++) {
+    const ang = hash(i * 1.7) * Math.PI * 2;
+    const rr = Math.sqrt(hash(i * 3.3)) * Rmax;
+    const x = cx + Math.cos(ang) * rr;
+    const y = cy + Math.sin(ang) * rr;
+    const br = hash(i * 5.1);
+    const a = (0.12 + br * 0.5) * (soft ? 0.5 : deep ? 0.4 : 1);
+    const sz = (br > 0.92 ? 1.7 : 0.5 + br * 0.9) * (soft ? 1.4 : 1);
+    const violet = hash(i * 9.4) < 0.24;
+    const col = violet ? "192,162,255" : "200,224,255";
+    if (br > 0.93 && !soft && !deep) glow(6, `rgba(${col},0.9)`);
+    ctx.fillStyle = `rgba(${col},${a})`;
+    ctx.beginPath();
+    ctx.arc(x, y, sz, 0, Math.PI * 2);
+    ctx.fill();
+    noGlow();
+  }
+
+  /* very faint palette contour hints — a whisper of structure, no glare */
+  if (!deep) {
+    for (let k = 0; k < 4; k++) {
+      const r = Rmax * (0.34 + k * 0.17);
+      const violet = k % 2 === 1;
+      ctx.strokeStyle = violet
+        ? `rgba(150,120,255,${soft ? 0.025 : 0.05})`
+        : `rgba(80,150,235,${soft ? 0.025 : 0.05})`;
+      ctx.lineWidth = soft ? 4 : 1.5;
+      const a0 = hash(k * 12.2) * Math.PI * 2;
+      ctx.beginPath();
+      ctx.ellipse(cx, cy, r, r * 0.32, -0.18, a0, a0 + Math.PI * (1.2 + hash(k * 3.1) * 0.6));
+      ctx.stroke();
+    }
   }
 
   /* near-camera fade */
