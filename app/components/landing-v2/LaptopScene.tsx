@@ -1678,35 +1678,88 @@ function makeInstrumentPlateTexture(
     noGlow();
   }
 
-  /* (5) MARKER NODES — glowing planet markers with halo + tick ring */
+  /* (5) MARKER OBJECTS — the ring markers are now realistic bright STARS
+   * (chromatic glow + diffraction spikes) and a couple of small distant
+   * SPIRAL GALAXIES, instead of plain dots. */
   if (!soft && !deep) {
+    const drawStar = (x: number, y: number, s: number, rgb: string) => {
+      const g = ctx.createRadialGradient(x, y, 0, x, y, s * 3);
+      g.addColorStop(0, "rgba(255,255,255,0.95)");
+      g.addColorStop(0.16, `rgba(${rgb},0.55)`);
+      g.addColorStop(0.5, `rgba(${rgb},0.16)`);
+      g.addColorStop(1, `rgba(${rgb},0)`);
+      ctx.fillStyle = g;
+      ctx.beginPath();
+      ctx.arc(x, y, s * 3, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.lineCap = "round";
+      const spike = (ang: number, len: number, lw: number, a: number) => {
+        const ex = x + Math.cos(ang) * len;
+        const ey = y + Math.sin(ang) * len;
+        const sg = ctx.createLinearGradient(x, y, ex, ey);
+        sg.addColorStop(0, `rgba(236,248,255,${a})`);
+        sg.addColorStop(1, `rgba(${rgb},0)`);
+        ctx.strokeStyle = sg;
+        ctx.lineWidth = lw;
+        ctx.beginPath();
+        ctx.moveTo(x, y);
+        ctx.lineTo(ex, ey);
+        ctx.stroke();
+      };
+      for (let k = 0; k < 4; k++) spike((k * Math.PI) / 2, s * 6, 1.6, 0.7);
+      for (let k = 0; k < 4; k++) spike((k * Math.PI) / 2 + Math.PI / 4, s * 2.6, 1, 0.3);
+      ctx.fillStyle = "rgba(255,255,255,0.98)";
+      ctx.beginPath();
+      ctx.arc(x, y, s * 0.6, 0, Math.PI * 2);
+      ctx.fill();
+    };
+    const drawGalaxy = (x: number, y: number, s: number, tilt: number, rgb: string) => {
+      ctx.save();
+      ctx.translate(x, y);
+      ctx.rotate(tilt);
+      ctx.scale(1, 0.42);
+      const g = ctx.createRadialGradient(0, 0, 0, 0, 0, s * 2.4);
+      g.addColorStop(0, "rgba(242,247,255,0.55)");
+      g.addColorStop(0.3, `rgba(${rgb},0.22)`);
+      g.addColorStop(1, `rgba(${rgb},0)`);
+      ctx.fillStyle = g;
+      ctx.beginPath();
+      ctx.arc(0, 0, s * 2.4, 0, Math.PI * 2);
+      ctx.fill();
+      for (let arm = 0; arm < 2; arm++) {
+        const base = arm * Math.PI;
+        for (let t = 0; t < 44; t++) {
+          const tt = t / 44;
+          const ang = base + tt * Math.PI * 2.6;
+          const rad = s * 0.3 + tt * s * 2.1;
+          ctx.fillStyle = `rgba(212,230,255,${(1 - tt) * 0.5})`;
+          ctx.beginPath();
+          ctx.arc(Math.cos(ang) * rad, Math.sin(ang) * rad, (1 - tt) * 1.3 + 0.3, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+      ctx.restore();
+      const cg = ctx.createRadialGradient(x, y, 0, x, y, s * 0.9);
+      cg.addColorStop(0, "rgba(255,255,255,0.95)");
+      cg.addColorStop(1, `rgba(${rgb},0)`);
+      ctx.fillStyle = cg;
+      ctx.beginPath();
+      ctx.arc(x, y, s * 0.9, 0, Math.PI * 2);
+      ctx.fill();
+    };
     const markers = [
-      { ri: 7, ang: 2.4 },
-      { ri: 8, ang: -0.5 },
-      { ri: 6, ang: 1.5 },
-      { ri: 9, ang: 3.7 },
+      { ri: 7, ang: 2.4, kind: "star", rgb: "150,205,255", s: 12, tilt: 0 },
+      { ri: 8, ang: -0.5, kind: "galaxy", rgb: "150,180,255", s: 22, tilt: -0.5 },
+      { ri: 6, ang: 1.5, kind: "star", rgb: "200,216,255", s: 10, tilt: 0 },
+      { ri: 9, ang: 3.7, kind: "galaxy", rgb: "176,152,255", s: 18, tilt: 0.7 },
+      { ri: 5, ang: 0.55, kind: "star", rgb: "255,220,182", s: 9, tilt: 0 },
     ];
     for (const mk of markers) {
       const r = Rmax * (0.1 + (mk.ri / ringN) * 0.95);
       const x = cx + Math.cos(mk.ang) * r;
       const y = cy + Math.sin(mk.ang) * r;
-      const g = ctx.createRadialGradient(x, y, 0, x, y, 24);
-      g.addColorStop(0, "rgba(202,240,255,0.95)");
-      g.addColorStop(0.35, "rgba(110,200,255,0.4)");
-      g.addColorStop(1, "rgba(110,200,255,0)");
-      ctx.fillStyle = g;
-      ctx.beginPath();
-      ctx.arc(x, y, 24, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.fillStyle = "rgba(232,248,255,0.98)";
-      ctx.beginPath();
-      ctx.arc(x, y, 2.6, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.strokeStyle = "rgba(150,216,255,0.5)";
-      ctx.lineWidth = 1;
-      ctx.beginPath();
-      ctx.arc(x, y, 9, 0, Math.PI * 2);
-      ctx.stroke();
+      if (mk.kind === "galaxy") drawGalaxy(x, y, mk.s, mk.tilt, mk.rgb);
+      else drawStar(x, y, mk.s, mk.rgb);
     }
   }
 
