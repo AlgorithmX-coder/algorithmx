@@ -93,12 +93,13 @@ export default function HeroCinematic() {
    * scroll quickly enough to feel responsive, smooth enough to never
    * jitter".
    *
-   * - stiffness 90 / damping 28 / mass 0.4 -> ~150ms settling at
-   *   typical scroll velocities, no visible lag, no overshoot. */
+   * - stiffness 170 / damping 26 / mass 0.22 -> ~70ms settling, snappier so
+   *   the laptop + scenes track the scroll almost immediately. Overdamped
+   *   (ratio ~2.1) so there is still no overshoot / jitter. */
   const smoothScroll = useSpring(scrollYProgress, {
-    stiffness: 90,
-    damping: 28,
-    mass: 0.4,
+    stiffness: 170,
+    damping: 26,
+    mass: 0.22,
   });
 
   /* In "static" (reduced-motion) mode, clamp progress to 1 so the scene
