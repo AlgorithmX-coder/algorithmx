@@ -1523,39 +1523,111 @@ function makeInstrumentPlateTexture(
     }
   }
 
-  /* faint star dusting across the plate (area-uniform, deterministic) */
-  const starN = deep ? 46 : soft ? 80 : 150;
+  /* === ORBITAL STAR-MAP FLOOR (matches the reference photo) === */
+
+  /* NEBULA CLOUD — an offset blue cloud with brighter star-forming knots
+   * (the bright nebula region of the reference) */
+  if (!deep) {
+    const clouds = [
+      { x: cx + S * 0.11, y: cy + S * 0.06, r: S * 0.27, a: soft ? 0.1 : 0.24, col: "58,120,230" },
+      { x: cx + S * 0.17, y: cy + S * 0.13, r: S * 0.17, a: soft ? 0.08 : 0.2, col: "96,150,255" },
+      { x: cx - S * 0.05, y: cy - S * 0.02, r: S * 0.21, a: soft ? 0.06 : 0.13, col: "70,112,220" },
+    ];
+    for (const cl of clouds) {
+      for (let b = 0; b < 5; b++) {
+        const ox = cl.x + (hash(b * 3.1 + cl.r) - 0.5) * cl.r * 0.7;
+        const oy = cl.y + (hash(b * 7.3 + cl.r) - 0.5) * cl.r * 0.7;
+        const rr = cl.r * (0.4 + hash(b * 5.7) * 0.6);
+        const g = ctx.createRadialGradient(ox, oy, 0, ox, oy, rr);
+        g.addColorStop(0, `rgba(${cl.col},${cl.a * 0.5})`);
+        g.addColorStop(0.5, `rgba(${cl.col},${cl.a * 0.14})`);
+        g.addColorStop(1, "rgba(0,0,0,0)");
+        ctx.fillStyle = g;
+        ctx.fillRect(0, 0, S, S);
+      }
+    }
+    /* bright star-cluster knots inside the nebula */
+    for (let i = 0; i < 26; i++) {
+      const kx = cx + S * 0.1 + (hash(i * 2.1) - 0.5) * S * 0.38;
+      const ky = cy + S * 0.08 + (hash(i * 3.7) - 0.5) * S * 0.32;
+      const kr = hash(i * 5.3) * 1.8 + 0.5;
+      glow(5, "rgba(180,212,255,0.9)");
+      ctx.fillStyle = `rgba(212,230,255,${0.45 + hash(i * 9.1) * 0.4})`;
+      ctx.beginPath();
+      ctx.arc(kx, ky, kr, 0, Math.PI * 2);
+      ctx.fill();
+      noGlow();
+    }
+  }
+
+  /* FINE STAR DUSTING across the whole plate (area-uniform, deterministic) */
+  const starN = deep ? 90 : soft ? 150 : 280;
   for (let i = 0; i < starN; i++) {
     const ang = hash(i * 1.7) * Math.PI * 2;
     const rr = Math.sqrt(hash(i * 3.3)) * Rmax;
     const x = cx + Math.cos(ang) * rr;
     const y = cy + Math.sin(ang) * rr;
     const br = hash(i * 5.1);
-    const a = (0.12 + br * 0.5) * (soft ? 0.5 : deep ? 0.4 : 1);
-    const sz = (br > 0.92 ? 1.7 : 0.5 + br * 0.9) * (soft ? 1.4 : 1);
-    const violet = hash(i * 9.4) < 0.24;
-    const col = violet ? "192,162,255" : "200,224,255";
-    if (br > 0.93 && !soft && !deep) glow(6, `rgba(${col},0.9)`);
-    ctx.fillStyle = `rgba(${col},${a})`;
+    const a = (0.1 + br * 0.45) * (soft ? 0.55 : deep ? 0.4 : 1);
+    const sz = (br > 0.95 ? 1.5 : 0.4 + br * 0.8) * (soft ? 1.3 : 1);
+    ctx.fillStyle = hash(i * 9.4) < 0.2 ? `rgba(192,165,255,${a})` : `rgba(202,224,255,${a})`;
     ctx.beginPath();
     ctx.arc(x, y, sz, 0, Math.PI * 2);
     ctx.fill();
+  }
+
+  /* CONCENTRIC ORBITAL RINGS — circles on the texture read as the reference's
+   * tilted orbital ellipses once the floor recedes from camera */
+  const ringN = deep ? 4 : soft ? 6 : 8;
+  for (let i = 0; i < ringN; i++) {
+    const r = Rmax * (0.14 + (i / ringN) * 0.92);
+    const a = (soft ? 0.1 : deep ? 0.06 : 0.18) * (1 - (i / ringN) * 0.35);
+    ctx.strokeStyle = `rgba(120,200,255,${a})`;
+    ctx.lineWidth = soft ? 3 : 1.4;
+    glow(soft ? 9 : 6, "rgba(90,180,255,0.75)");
+    ctx.beginPath();
+    ctx.arc(cx, cy, r, 0, Math.PI * 2);
+    ctx.stroke();
     noGlow();
   }
 
-  /* very faint palette contour hints — a whisper of structure, no glare */
+  /* CROSSHAIR / RETICLE AXES through the centre */
   if (!deep) {
-    for (let k = 0; k < 4; k++) {
-      const r = Rmax * (0.34 + k * 0.17);
-      const violet = k % 2 === 1;
-      ctx.strokeStyle = violet
-        ? `rgba(150,120,255,${soft ? 0.025 : 0.05})`
-        : `rgba(80,150,235,${soft ? 0.025 : 0.05})`;
-      ctx.lineWidth = soft ? 4 : 1.5;
-      const a0 = hash(k * 12.2) * Math.PI * 2;
+    ctx.strokeStyle = `rgba(120,200,255,${soft ? 0.05 : 0.11})`;
+    ctx.lineWidth = soft ? 2.5 : 1;
+    glow(4, "rgba(90,180,255,0.6)");
+    for (const ang of [Math.PI / 2, 0.32, Math.PI / 2 + 1.15]) {
       ctx.beginPath();
-      ctx.ellipse(cx, cy, r, r * 0.32, -0.18, a0, a0 + Math.PI * (1.2 + hash(k * 3.1) * 0.6));
+      ctx.moveTo(cx - Math.cos(ang) * Rmax, cy - Math.sin(ang) * Rmax);
+      ctx.lineTo(cx + Math.cos(ang) * Rmax, cy + Math.sin(ang) * Rmax);
       ctx.stroke();
+    }
+    noGlow();
+  }
+
+  /* BRIGHT MARKER NODES on the rings (the reference's glowing planet markers) */
+  if (!soft && !deep) {
+    const markers = [
+      { ri: 6, ang: 2.45 },
+      { ri: 7, ang: -0.55 },
+      { ri: 5, ang: 1.5 },
+    ];
+    for (const mk of markers) {
+      const r = Rmax * (0.14 + (mk.ri / ringN) * 0.92);
+      const x = cx + Math.cos(mk.ang) * r;
+      const y = cy + Math.sin(mk.ang) * r;
+      const g = ctx.createRadialGradient(x, y, 0, x, y, 20);
+      g.addColorStop(0, "rgba(196,238,255,0.95)");
+      g.addColorStop(0.4, "rgba(110,200,255,0.4)");
+      g.addColorStop(1, "rgba(110,200,255,0)");
+      ctx.fillStyle = g;
+      ctx.beginPath();
+      ctx.arc(x, y, 20, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = "rgba(224,246,255,0.95)";
+      ctx.beginPath();
+      ctx.arc(x, y, 2.4, 0, Math.PI * 2);
+      ctx.fill();
     }
   }
 
@@ -2950,6 +3022,8 @@ function Laptop({
    * lid opens) + the pool of inward-travelling signal packets. */
   const sweepMatRef = useRef<THREE.MeshBasicMaterial>(null);
   const sweepMeshRef = useRef<THREE.Mesh>(null);
+  const flashMatRef = useRef<THREE.MeshBasicMaterial>(null);
+  const flashMeshRef = useRef<THREE.Mesh>(null);
   const packetRefs = useRef<Array<THREE.Mesh | null>>([]);
   /* SECONDARY ACTIVATION — two follow-up "echo" ring ripples that fire after
    * the main sweep (staggered), and a ring of connection nodes that light up
@@ -3278,10 +3352,19 @@ function Laptop({
      * the static lit plate, not a parked ring). THE MAIN EXPLOSION — logic
      * unchanged from the approved version. */
     if (sweepMeshRef.current && sweepMatRef.current) {
-      const sweepR = 0.4 + activationT * 12.5; // base ring radius is 1u
+      const sweepR = 0.4 + activationT * 15; // base ring radius is 1u
       sweepMeshRef.current.scale.set(sweepR, sweepR, 1);
       const sweepFade = Math.sin(Math.PI * activationT); // 0→1→0 across the open
-      sweepMatRef.current.opacity = reducedMotion ? 0 : sweepFade * 0.28;
+      sweepMatRef.current.opacity = reducedMotion ? 0 : sweepFade * 0.62;
+    }
+
+    /* CENTRAL FLASH — a sharp bright bloom at the open moment (the "bang"):
+     * quick scale-up + fast fade so it punches then clears. */
+    if (flashMeshRef.current && flashMatRef.current) {
+      const flash = Math.pow(Math.sin(Math.PI * activationT), 3);
+      const fs = 3.4 + activationT * 8;
+      flashMeshRef.current.scale.set(fs, fs, 1);
+      flashMatRef.current.opacity = reducedMotion ? 0 : flash * 0.55;
     }
 
     /* SECONDARY ECHO RIPPLES — two follow-up rings, each lagging the main
@@ -3294,9 +3377,9 @@ function Laptop({
       if (!em || !emat) continue;
       const lag = 0.05 + i * 0.06;
       const echoT = smoothstep(0.3 + lag, 0.58 + lag, p);
-      const er = 0.4 + echoT * (13.5 + i * 1.5);
+      const er = 0.4 + echoT * (16 + i * 2.5);
       em.scale.set(er, er, 1);
-      emat.opacity = reducedMotion ? 0 : Math.sin(Math.PI * echoT) * (0.14 - i * 0.04);
+      emat.opacity = reducedMotion ? 0 : Math.sin(Math.PI * echoT) * (0.34 - i * 0.09);
     }
 
     /* SEQUENTIAL ACTIVATION NODES — light up in order as the burst energises
@@ -3558,7 +3641,7 @@ function Laptop({
         rotation={[-Math.PI / 2, 0, 0]}
         scale={1}
       >
-        <ringGeometry args={[0.9, 1.0, 64]} />
+        <ringGeometry args={[0.42, 1.0, 96]} />
         <meshBasicMaterial
           ref={sweepMatRef}
           color={COLORS.cyan}
@@ -3569,6 +3652,29 @@ function Laptop({
           toneMapped={false}
         />
       </mesh>
+
+      {/* CENTRAL FLASH — the "bang": a bright central bloom that pops as the
+       *  lid opens then clears (transient; off at rest + reduced motion). */}
+      {signalPacketTex && (
+        <mesh
+          ref={flashMeshRef}
+          position={[RIG_X, -BASE_H / 2 - 0.033, 0]}
+          rotation={[-Math.PI / 2, 0, 0]}
+          scale={1}
+        >
+          <planeGeometry args={[2, 2]} />
+          <meshBasicMaterial
+            ref={flashMatRef}
+            map={signalPacketTex}
+            color={COLORS.cyan}
+            transparent
+            opacity={0}
+            blending={THREE.AdditiveBlending}
+            depthWrite={false}
+            toneMapped={false}
+          />
+        </mesh>
+      )}
 
       {/* SECONDARY ECHO RIPPLES — two thinner follow-up rings that fire just
        *  after the main sweep (staggered), reading as energy echoes radiating
@@ -3583,7 +3689,7 @@ function Laptop({
           position={[RIG_X, -BASE_H / 2 - 0.0345, 0]}
           rotation={[-Math.PI / 2, 0, 0]}
         >
-          <ringGeometry args={[0.94, 1.0, 64]} />
+          <ringGeometry args={[0.66, 1.0, 96]} />
           <meshBasicMaterial
             ref={(el) => {
               echoMatRefs.current[i] = el;
