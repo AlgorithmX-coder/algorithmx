@@ -1397,7 +1397,9 @@ function makeInstrumentPlateTexture(
   variant: "surface" | "soft" | "deep" = "surface",
 ): THREE.Texture | null {
   if (typeof document === "undefined") return null;
-  const S = 2048;
+  /* HD: the crisp top plate renders at 3072² so the orbital lines, stars and
+   * nebula stay sharp in the near field (parallax ghosts stay at 2048). */
+  const S = variant === "surface" ? 3072 : 2048;
   const c = document.createElement("canvas");
   c.width = c.height = S;
   const ctx = c.getContext("2d");
@@ -1523,80 +1525,151 @@ function makeInstrumentPlateTexture(
     }
   }
 
-  /* === ORBITAL STAR-MAP FLOOR (matches the reference photo) === */
+  /* ===================== HD DEEP-SPACE ENVIRONMENT =====================
+   * A real orbital star-map looking down into space: a multi-colour nebula
+   * with dust lanes + star-forming cores, a dense varied star field with
+   * bright diffraction-spike stars, fine ticked orbital rings, a reticle and
+   * haloed marker nodes. Deterministic (sine-hash). */
+  ctx.globalCompositeOperation = "lighter";
 
-  /* NEBULA CLOUD — an offset blue cloud with brighter star-forming knots
-   * (the bright nebula region of the reference) */
+  /* (1) NEBULA FIELD — many layered soft clouds in varied cosmic colours,
+   * clustered around an offset centre for an organic deep-space cloud */
   if (!deep) {
-    const clouds = [
-      { x: cx + S * 0.11, y: cy + S * 0.06, r: S * 0.27, a: soft ? 0.1 : 0.24, col: "58,120,230" },
-      { x: cx + S * 0.17, y: cy + S * 0.13, r: S * 0.17, a: soft ? 0.08 : 0.2, col: "96,150,255" },
-      { x: cx - S * 0.05, y: cy - S * 0.02, r: S * 0.21, a: soft ? 0.06 : 0.13, col: "70,112,220" },
+    const NCX = cx + S * 0.09;
+    const NCY = cy + S * 0.05;
+    const palette = [
+      [60, 120, 235], [96, 146, 255], [150, 110, 255],
+      [120, 78, 210], [66, 150, 230], [40, 196, 232],
     ];
-    for (const cl of clouds) {
-      for (let b = 0; b < 5; b++) {
-        const ox = cl.x + (hash(b * 3.1 + cl.r) - 0.5) * cl.r * 0.7;
-        const oy = cl.y + (hash(b * 7.3 + cl.r) - 0.5) * cl.r * 0.7;
-        const rr = cl.r * (0.4 + hash(b * 5.7) * 0.6);
-        const g = ctx.createRadialGradient(ox, oy, 0, ox, oy, rr);
-        g.addColorStop(0, `rgba(${cl.col},${cl.a * 0.5})`);
-        g.addColorStop(0.5, `rgba(${cl.col},${cl.a * 0.14})`);
-        g.addColorStop(1, "rgba(0,0,0,0)");
-        ctx.fillStyle = g;
-        ctx.fillRect(0, 0, S, S);
-      }
+    const nebN = soft ? 16 : 34;
+    for (let i = 0; i < nebN; i++) {
+      const a = hash(i * 1.3) * Math.PI * 2;
+      const rr = Math.pow(hash(i * 2.7), 0.7) * S * 0.36;
+      const ox = NCX + Math.cos(a) * rr;
+      const oy = NCY + Math.sin(a) * rr * 0.82;
+      const blob = S * (0.045 + hash(i * 3.9) * 0.13);
+      const col = palette[Math.floor(hash(i * 4.6) * palette.length) % palette.length];
+      const al = (soft ? 0.045 : 0.11) * (0.5 + hash(i * 5.5) * 0.7);
+      const g = ctx.createRadialGradient(ox, oy, 0, ox, oy, blob);
+      g.addColorStop(0, `rgba(${col[0]},${col[1]},${col[2]},${al})`);
+      g.addColorStop(0.5, `rgba(${col[0]},${col[1]},${col[2]},${al * 0.3})`);
+      g.addColorStop(1, "rgba(0,0,0,0)");
+      ctx.fillStyle = g;
+      ctx.fillRect(0, 0, S, S);
     }
-    /* bright star-cluster knots inside the nebula */
-    for (let i = 0; i < 26; i++) {
-      const kx = cx + S * 0.1 + (hash(i * 2.1) - 0.5) * S * 0.38;
-      const ky = cy + S * 0.08 + (hash(i * 3.7) - 0.5) * S * 0.32;
-      const kr = hash(i * 5.3) * 1.8 + 0.5;
-      glow(5, "rgba(180,212,255,0.9)");
-      ctx.fillStyle = `rgba(212,230,255,${0.45 + hash(i * 9.1) * 0.4})`;
-      ctx.beginPath();
-      ctx.arc(kx, ky, kr, 0, Math.PI * 2);
-      ctx.fill();
-      noGlow();
+    /* DUST LANES — carve dark filaments through the cloud for structure */
+    ctx.globalCompositeOperation = "destination-out";
+    for (let i = 0; i < (soft ? 6 : 13); i++) {
+      const a = hash(i * 8.1) * Math.PI * 2;
+      const rr = hash(i * 9.3) * S * 0.3;
+      const ox = NCX + Math.cos(a) * rr;
+      const oy = NCY + Math.sin(a) * rr * 0.8;
+      const blob = S * (0.03 + hash(i * 7.2) * 0.085);
+      const g = ctx.createRadialGradient(ox, oy, 0, ox, oy, blob);
+      g.addColorStop(0, `rgba(0,0,0,${0.16 + hash(i * 6.1) * 0.2})`);
+      g.addColorStop(1, "rgba(0,0,0,0)");
+      ctx.fillStyle = g;
+      ctx.fillRect(0, 0, S, S);
+    }
+    ctx.globalCompositeOperation = "lighter";
+    /* star-forming bright cores inside the nebula */
+    for (let i = 0; i < (soft ? 4 : 10); i++) {
+      const a = hash(i * 11.1) * Math.PI * 2;
+      const rr = hash(i * 12.3) * S * 0.2;
+      const ox = NCX + Math.cos(a) * rr;
+      const oy = NCY + Math.sin(a) * rr * 0.8;
+      const g = ctx.createRadialGradient(ox, oy, 0, ox, oy, S * 0.05);
+      g.addColorStop(0, "rgba(196,218,255,0.2)");
+      g.addColorStop(1, "rgba(120,160,255,0)");
+      ctx.fillStyle = g;
+      ctx.fillRect(0, 0, S, S);
     }
   }
 
-  /* FINE STAR DUSTING across the whole plate (area-uniform, deterministic) */
-  const starN = deep ? 90 : soft ? 150 : 280;
+  /* (2) STAR FIELD — dense + varied size/brightness/colour (slightly
+   * centre-weighted), white-blue with warm + violet accents */
+  const starN = deep ? 170 : soft ? 300 : 560;
   for (let i = 0; i < starN; i++) {
     const ang = hash(i * 1.7) * Math.PI * 2;
-    const rr = Math.sqrt(hash(i * 3.3)) * Rmax;
+    const rr = Math.pow(hash(i * 3.3), 0.5) * Rmax;
     const x = cx + Math.cos(ang) * rr;
     const y = cy + Math.sin(ang) * rr;
     const br = hash(i * 5.1);
-    const a = (0.1 + br * 0.45) * (soft ? 0.55 : deep ? 0.4 : 1);
-    const sz = (br > 0.95 ? 1.5 : 0.4 + br * 0.8) * (soft ? 1.3 : 1);
-    ctx.fillStyle = hash(i * 9.4) < 0.2 ? `rgba(192,165,255,${a})` : `rgba(202,224,255,${a})`;
+    const a = (0.08 + br * 0.45) * (soft ? 0.55 : deep ? 0.4 : 1);
+    const sz = (br > 0.97 ? 1.5 : 0.32 + br * 0.7) * (soft ? 1.2 : 1);
+    const ch = hash(i * 9.4);
+    const col = ch < 0.12 ? "255,212,172" : ch < 0.22 ? "192,165,255" : ch < 0.32 ? "172,210,255" : "210,226,255";
+    ctx.fillStyle = `rgba(${col},${a})`;
     ctx.beginPath();
     ctx.arc(x, y, sz, 0, Math.PI * 2);
     ctx.fill();
   }
+  /* bright HERO STARS — glow + 4-point diffraction spikes */
+  if (!deep) {
+    const heroN = soft ? 7 : 16;
+    for (let i = 0; i < heroN; i++) {
+      const ang = hash(i * 2.3 + 0.5) * Math.PI * 2;
+      const rr = Math.pow(hash(i * 4.1 + 0.3), 0.6) * Rmax * 0.92;
+      const x = cx + Math.cos(ang) * rr;
+      const y = cy + Math.sin(ang) * rr;
+      const warm = hash(i * 6.6) < 0.25;
+      const col = warm ? "255,222,182" : "206,228,255";
+      const a = (0.5 + hash(i * 7.7) * 0.4) * (soft ? 0.6 : 1);
+      const g = ctx.createRadialGradient(x, y, 0, x, y, 13);
+      g.addColorStop(0, `rgba(${col},${a})`);
+      g.addColorStop(1, `rgba(${col},0)`);
+      ctx.fillStyle = g;
+      ctx.beginPath();
+      ctx.arc(x, y, 13, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = `rgba(255,255,255,${a})`;
+      ctx.beginPath();
+      ctx.arc(x, y, 1.3, 0, Math.PI * 2);
+      ctx.fill();
+      const sp = 8 + hash(i * 8.8) * 10;
+      ctx.strokeStyle = `rgba(${col},${a * 0.5})`;
+      ctx.lineWidth = 0.9;
+      ctx.beginPath();
+      ctx.moveTo(x - sp, y);
+      ctx.lineTo(x + sp, y);
+      ctx.moveTo(x, y - sp);
+      ctx.lineTo(x, y + sp);
+      ctx.stroke();
+    }
+  }
 
-  /* CONCENTRIC ORBITAL RINGS — circles on the texture read as the reference's
-   * tilted orbital ellipses once the floor recedes from camera */
-  const ringN = deep ? 4 : soft ? 6 : 8;
+  /* (3) ORBITAL RINGS — fine crisp lines + subtle glow + tick marks */
+  const ringN = deep ? 5 : soft ? 7 : 10;
   for (let i = 0; i < ringN; i++) {
-    const r = Rmax * (0.14 + (i / ringN) * 0.92);
-    const a = (soft ? 0.1 : deep ? 0.06 : 0.18) * (1 - (i / ringN) * 0.35);
-    ctx.strokeStyle = `rgba(120,200,255,${a})`;
-    ctx.lineWidth = soft ? 3 : 1.4;
-    glow(soft ? 9 : 6, "rgba(90,180,255,0.75)");
+    const r = Rmax * (0.1 + (i / ringN) * 0.95);
+    const a = (soft ? 0.08 : deep ? 0.05 : 0.14) * (1 - (i / ringN) * 0.3);
+    ctx.strokeStyle = `rgba(132,202,255,${a})`;
+    ctx.lineWidth = soft ? 2.2 : 1.1;
+    glow(soft ? 7 : 4, "rgba(90,180,255,0.6)");
     ctx.beginPath();
     ctx.arc(cx, cy, r, 0, Math.PI * 2);
     ctx.stroke();
     noGlow();
+    if (!soft && !deep && i % 3 === 1) {
+      const ticks = 60;
+      ctx.strokeStyle = `rgba(132,202,255,${a * 0.7})`;
+      ctx.lineWidth = 0.8;
+      for (let k = 0; k < ticks; k++) {
+        const ta = (k / ticks) * Math.PI * 2;
+        ctx.beginPath();
+        ctx.moveTo(cx + Math.cos(ta) * (r - 4), cy + Math.sin(ta) * (r - 4));
+        ctx.lineTo(cx + Math.cos(ta) * (r + 4), cy + Math.sin(ta) * (r + 4));
+        ctx.stroke();
+      }
+    }
   }
 
-  /* CROSSHAIR / RETICLE AXES through the centre */
+  /* (4) RETICLE AXES through the centre */
   if (!deep) {
-    ctx.strokeStyle = `rgba(120,200,255,${soft ? 0.05 : 0.11})`;
-    ctx.lineWidth = soft ? 2.5 : 1;
-    glow(4, "rgba(90,180,255,0.6)");
-    for (const ang of [Math.PI / 2, 0.32, Math.PI / 2 + 1.15]) {
+    ctx.strokeStyle = `rgba(132,202,255,${soft ? 0.05 : 0.1})`;
+    ctx.lineWidth = soft ? 2 : 0.9;
+    glow(4, "rgba(90,180,255,0.5)");
+    for (const ang of [Math.PI / 2, 0.3, Math.PI / 2 + 1.2]) {
       ctx.beginPath();
       ctx.moveTo(cx - Math.cos(ang) * Rmax, cy - Math.sin(ang) * Rmax);
       ctx.lineTo(cx + Math.cos(ang) * Rmax, cy + Math.sin(ang) * Rmax);
@@ -1605,29 +1678,88 @@ function makeInstrumentPlateTexture(
     noGlow();
   }
 
-  /* BRIGHT MARKER NODES on the rings (the reference's glowing planet markers) */
+  /* (5) MARKER OBJECTS — the ring markers are now realistic bright STARS
+   * (chromatic glow + diffraction spikes) and a couple of small distant
+   * SPIRAL GALAXIES, instead of plain dots. */
   if (!soft && !deep) {
-    const markers = [
-      { ri: 6, ang: 2.45 },
-      { ri: 7, ang: -0.55 },
-      { ri: 5, ang: 1.5 },
-    ];
-    for (const mk of markers) {
-      const r = Rmax * (0.14 + (mk.ri / ringN) * 0.92);
-      const x = cx + Math.cos(mk.ang) * r;
-      const y = cy + Math.sin(mk.ang) * r;
-      const g = ctx.createRadialGradient(x, y, 0, x, y, 20);
-      g.addColorStop(0, "rgba(196,238,255,0.95)");
-      g.addColorStop(0.4, "rgba(110,200,255,0.4)");
-      g.addColorStop(1, "rgba(110,200,255,0)");
+    const drawStar = (x: number, y: number, s: number, rgb: string) => {
+      const g = ctx.createRadialGradient(x, y, 0, x, y, s * 3);
+      g.addColorStop(0, "rgba(255,255,255,0.95)");
+      g.addColorStop(0.16, `rgba(${rgb},0.55)`);
+      g.addColorStop(0.5, `rgba(${rgb},0.16)`);
+      g.addColorStop(1, `rgba(${rgb},0)`);
       ctx.fillStyle = g;
       ctx.beginPath();
-      ctx.arc(x, y, 20, 0, Math.PI * 2);
+      ctx.arc(x, y, s * 3, 0, Math.PI * 2);
       ctx.fill();
-      ctx.fillStyle = "rgba(224,246,255,0.95)";
+      ctx.lineCap = "round";
+      const spike = (ang: number, len: number, lw: number, a: number) => {
+        const ex = x + Math.cos(ang) * len;
+        const ey = y + Math.sin(ang) * len;
+        const sg = ctx.createLinearGradient(x, y, ex, ey);
+        sg.addColorStop(0, `rgba(236,248,255,${a})`);
+        sg.addColorStop(1, `rgba(${rgb},0)`);
+        ctx.strokeStyle = sg;
+        ctx.lineWidth = lw;
+        ctx.beginPath();
+        ctx.moveTo(x, y);
+        ctx.lineTo(ex, ey);
+        ctx.stroke();
+      };
+      for (let k = 0; k < 4; k++) spike((k * Math.PI) / 2, s * 6, 1.6, 0.7);
+      for (let k = 0; k < 4; k++) spike((k * Math.PI) / 2 + Math.PI / 4, s * 2.6, 1, 0.3);
+      ctx.fillStyle = "rgba(255,255,255,0.98)";
       ctx.beginPath();
-      ctx.arc(x, y, 2.4, 0, Math.PI * 2);
+      ctx.arc(x, y, s * 0.6, 0, Math.PI * 2);
       ctx.fill();
+    };
+    const drawGalaxy = (x: number, y: number, s: number, tilt: number, rgb: string) => {
+      ctx.save();
+      ctx.translate(x, y);
+      ctx.rotate(tilt);
+      ctx.scale(1, 0.42);
+      const g = ctx.createRadialGradient(0, 0, 0, 0, 0, s * 2.4);
+      g.addColorStop(0, "rgba(242,247,255,0.55)");
+      g.addColorStop(0.3, `rgba(${rgb},0.22)`);
+      g.addColorStop(1, `rgba(${rgb},0)`);
+      ctx.fillStyle = g;
+      ctx.beginPath();
+      ctx.arc(0, 0, s * 2.4, 0, Math.PI * 2);
+      ctx.fill();
+      for (let arm = 0; arm < 2; arm++) {
+        const base = arm * Math.PI;
+        for (let t = 0; t < 44; t++) {
+          const tt = t / 44;
+          const ang = base + tt * Math.PI * 2.6;
+          const rad = s * 0.3 + tt * s * 2.1;
+          ctx.fillStyle = `rgba(212,230,255,${(1 - tt) * 0.5})`;
+          ctx.beginPath();
+          ctx.arc(Math.cos(ang) * rad, Math.sin(ang) * rad, (1 - tt) * 1.3 + 0.3, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+      ctx.restore();
+      const cg = ctx.createRadialGradient(x, y, 0, x, y, s * 0.9);
+      cg.addColorStop(0, "rgba(255,255,255,0.95)");
+      cg.addColorStop(1, `rgba(${rgb},0)`);
+      ctx.fillStyle = cg;
+      ctx.beginPath();
+      ctx.arc(x, y, s * 0.9, 0, Math.PI * 2);
+      ctx.fill();
+    };
+    const markers = [
+      { ri: 7, ang: 2.4, kind: "star", rgb: "150,205,255", s: 12, tilt: 0 },
+      { ri: 8, ang: -0.5, kind: "galaxy", rgb: "150,180,255", s: 22, tilt: -0.5 },
+      { ri: 6, ang: 1.5, kind: "star", rgb: "200,216,255", s: 10, tilt: 0 },
+      { ri: 9, ang: 3.7, kind: "galaxy", rgb: "176,152,255", s: 18, tilt: 0.7 },
+      { ri: 5, ang: 0.55, kind: "star", rgb: "255,220,182", s: 9, tilt: 0 },
+    ];
+    for (const mk of markers) {
+      const r = Rmax * (0.1 + (mk.ri / ringN) * 0.95);
+      const x = cx + Math.cos(mk.ang) * r;
+      const y = cy + Math.sin(mk.ang) * r;
+      if (mk.kind === "galaxy") drawGalaxy(x, y, mk.s, mk.tilt, mk.rgb);
+      else drawStar(x, y, mk.s, mk.rgb);
     }
   }
 
@@ -1646,6 +1778,125 @@ function makeInstrumentPlateTexture(
   const tex = new THREE.CanvasTexture(c);
   tex.wrapS = THREE.ClampToEdgeWrapping;
   tex.wrapT = THREE.ClampToEdgeWrapping;
+  tex.colorSpace = THREE.SRGBColorSpace;
+  tuneGroundTexture(tex);
+  tex.needsUpdate = true;
+  return tex;
+}
+
+/* SHOCKWAVE — a textured energy wavefront (replaces the flat ring): a hot
+ * white-cyan leading edge with a soft trailing glow, fine radial filaments and
+ * sparkle along the front. Mapped onto an expanding plane so the whole
+ * structure scales as one cinematic blast ring. Additive. */
+function makeShockwaveTexture(): THREE.Texture | null {
+  if (typeof document === "undefined") return null;
+  const S = 512;
+  const c = document.createElement("canvas");
+  c.width = c.height = S;
+  const ctx = c.getContext("2d");
+  if (!ctx) return null;
+  ctx.clearRect(0, 0, S, S);
+  const cx = S / 2;
+  const cy = S / 2;
+  const R = S / 2;
+  const hash = (n: number) => {
+    const s = Math.sin(n * 127.1) * 43758.5453;
+    return s - Math.floor(s);
+  };
+  const g = ctx.createRadialGradient(cx, cy, 0, cx, cy, R);
+  g.addColorStop(0, "rgba(40,170,255,0)");
+  g.addColorStop(0.5, "rgba(70,200,255,0.04)");
+  g.addColorStop(0.74, "rgba(120,225,255,0.22)");
+  g.addColorStop(0.87, "rgba(150,235,255,0.55)");
+  g.addColorStop(0.93, "rgba(232,250,255,0.95)");
+  g.addColorStop(0.97, "rgba(120,215,255,0.3)");
+  g.addColorStop(1, "rgba(120,215,255,0)");
+  ctx.fillStyle = g;
+  ctx.beginPath();
+  ctx.arc(cx, cy, R, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.globalCompositeOperation = "lighter";
+  ctx.lineCap = "round";
+  const spokes = 130;
+  for (let i = 0; i < spokes; i++) {
+    const a = (i / spokes) * Math.PI * 2 + hash(i) * 0.05;
+    const len = (0.04 + hash(i * 3.1) * 0.12) * R;
+    const r1 = R * (0.86 + hash(i * 5.3) * 0.08);
+    const r0 = r1 - len;
+    ctx.strokeStyle = `rgba(196,242,255,${0.05 + hash(i * 7.7) * 0.18})`;
+    ctx.lineWidth = 1 + hash(i * 2.2) * 1.5;
+    ctx.beginPath();
+    ctx.moveTo(cx + Math.cos(a) * r0, cy + Math.sin(a) * r0);
+    ctx.lineTo(cx + Math.cos(a) * r1, cy + Math.sin(a) * r1);
+    ctx.stroke();
+  }
+  for (let i = 0; i < 70; i++) {
+    const a = hash(i * 1.7) * Math.PI * 2;
+    const r = R * (0.88 + hash(i * 4.4) * 0.06);
+    ctx.fillStyle = `rgba(238,251,255,${0.4 + hash(i * 9) * 0.5})`;
+    ctx.beginPath();
+    ctx.arc(cx + Math.cos(a) * r, cy + Math.sin(a) * r, 0.8 + hash(i * 6) * 1.4, 0, Math.PI * 2);
+    ctx.fill();
+  }
+  ctx.globalCompositeOperation = "source-over";
+  const tex = new THREE.CanvasTexture(c);
+  tex.colorSpace = THREE.SRGBColorSpace;
+  tuneGroundTexture(tex);
+  tex.needsUpdate = true;
+  return tex;
+}
+
+/* FLASH BURST — the central "bang": a hot core bloom with long diffraction
+ * rays + a halo ring (replaces the plain round glow). Additive. */
+function makeFlashBurstTexture(): THREE.Texture | null {
+  if (typeof document === "undefined") return null;
+  const S = 512;
+  const c = document.createElement("canvas");
+  c.width = c.height = S;
+  const ctx = c.getContext("2d");
+  if (!ctx) return null;
+  ctx.clearRect(0, 0, S, S);
+  const cx = S / 2;
+  const cy = S / 2;
+  const R = S / 2;
+  const hash = (n: number) => {
+    const s = Math.sin(n * 91.3) * 43758.5453;
+    return s - Math.floor(s);
+  };
+  ctx.globalCompositeOperation = "lighter";
+  const g = ctx.createRadialGradient(cx, cy, 0, cx, cy, R * 0.55);
+  g.addColorStop(0, "rgba(255,255,255,0.95)");
+  g.addColorStop(0.25, "rgba(192,236,255,0.5)");
+  g.addColorStop(0.6, "rgba(90,200,255,0.12)");
+  g.addColorStop(1, "rgba(90,200,255,0)");
+  ctx.fillStyle = g;
+  ctx.beginPath();
+  ctx.arc(cx, cy, R * 0.55, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.lineCap = "round";
+  const rays = 16;
+  for (let i = 0; i < rays; i++) {
+    const a = (i / rays) * Math.PI * 2;
+    const main = i % 4 === 0;
+    const len = (main ? 0.96 : 0.4 + hash(i * 3) * 0.3) * R;
+    const al = main ? 0.6 : 0.18 + hash(i * 5) * 0.12;
+    const grad = ctx.createLinearGradient(cx, cy, cx + Math.cos(a) * len, cy + Math.sin(a) * len);
+    grad.addColorStop(0, `rgba(238,251,255,${al})`);
+    grad.addColorStop(1, "rgba(120,210,255,0)");
+    ctx.strokeStyle = grad;
+    ctx.lineWidth = main ? 3 : 1.2;
+    ctx.beginPath();
+    ctx.moveTo(cx, cy);
+    ctx.lineTo(cx + Math.cos(a) * len, cy + Math.sin(a) * len);
+    ctx.stroke();
+  }
+  ctx.strokeStyle = "rgba(192,240,255,0.25)";
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.arc(cx, cy, R * 0.5, 0, Math.PI * 2);
+  ctx.stroke();
+  ctx.globalCompositeOperation = "source-over";
+  const tex = new THREE.CanvasTexture(c);
   tex.colorSpace = THREE.SRGBColorSpace;
   tuneGroundTexture(tex);
   tex.needsUpdate = true;
@@ -3008,6 +3259,8 @@ function Laptop({
   /* Tier-3 far megastructure silhouette + the inward signal-packet sprite. */
   const megaStructureTex = useMemo(() => makeMegastructureTexture(), []);
   const signalPacketTex = useMemo(() => makeSignalPacketTexture(), []);
+  const shockwaveTex = useMemo(() => makeShockwaveTexture(), []);
+  const flashBurstTex = useMemo(() => makeFlashBurstTexture(), []);
   /* Sub-surface machine-well layer (depth beneath the burst). */
   const machineWellTex = useMemo(() => makeMachineWellTexture(), []);
   const machineWellMatRef = useRef<THREE.MeshBasicMaterial>(null);
@@ -3641,10 +3894,11 @@ function Laptop({
         rotation={[-Math.PI / 2, 0, 0]}
         scale={1}
       >
-        <ringGeometry args={[0.42, 1.0, 96]} />
+        <planeGeometry args={[2, 2]} />
         <meshBasicMaterial
           ref={sweepMatRef}
-          color={COLORS.cyan}
+          map={shockwaveTex}
+          color="#ffffff"
           transparent
           opacity={0}
           blending={THREE.AdditiveBlending}
@@ -3655,7 +3909,7 @@ function Laptop({
 
       {/* CENTRAL FLASH — the "bang": a bright central bloom that pops as the
        *  lid opens then clears (transient; off at rest + reduced motion). */}
-      {signalPacketTex && (
+      {flashBurstTex && (
         <mesh
           ref={flashMeshRef}
           position={[RIG_X, -BASE_H / 2 - 0.033, 0]}
@@ -3665,8 +3919,8 @@ function Laptop({
           <planeGeometry args={[2, 2]} />
           <meshBasicMaterial
             ref={flashMatRef}
-            map={signalPacketTex}
-            color={COLORS.cyan}
+            map={flashBurstTex}
+            color="#ffffff"
             transparent
             opacity={0}
             blending={THREE.AdditiveBlending}
@@ -3689,12 +3943,13 @@ function Laptop({
           position={[RIG_X, -BASE_H / 2 - 0.0345, 0]}
           rotation={[-Math.PI / 2, 0, 0]}
         >
-          <ringGeometry args={[0.66, 1.0, 96]} />
+          <planeGeometry args={[2, 2]} />
           <meshBasicMaterial
             ref={(el) => {
               echoMatRefs.current[i] = el;
             }}
-            color={i === 0 ? COLORS.cyan : COLORS.cyanSoft}
+            map={shockwaveTex}
+            color="#ffffff"
             transparent
             opacity={0}
             blending={THREE.AdditiveBlending}
