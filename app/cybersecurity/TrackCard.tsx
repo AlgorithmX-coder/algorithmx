@@ -86,19 +86,27 @@ export default function TrackCard({
          *  behaviour (e.g. unclipped hover shadows) is untouched. */
         isolation: characterImage ? "isolate" : undefined,
         overflow: characterImage ? "hidden" : undefined,
-        background: "rgba(13,15,24,0.72)",
-        backdropFilter: "blur(14px) saturate(1.4)",
-        WebkitBackdropFilter: "blur(14px) saturate(1.4)",
-        border: "1px solid rgba(232,237,255,0.08)",
-        borderTop: `2px solid ${accent}`,
-        borderRadius: 20,
-        padding: "30px 28px 26px",
+        /* Translucent frosted fill — more see-through + a stronger blur
+         *  so the cosmic backdrop reads through the glass and the card
+         *  feels seated in the scene rather than stamped on top. */
+        background:
+          "linear-gradient(180deg, rgba(16,19,30,0.58) 0%, rgba(10,12,20,0.46) 100%)",
+        backdropFilter: "blur(22px) saturate(1.3)",
+        WebkitBackdropFilter: "blur(22px) saturate(1.3)",
+        /* No hard accent rule across the top (that was the "sharp" tell).
+         *  Identity now comes from a soft accent halo below; the border
+         *  is just a whisper to catch the edge. */
+        border: "1px solid rgba(232,237,255,0.06)",
+        borderRadius: 24,
+        padding: "34px 30px 30px",
         display: "flex",
         flexDirection: "column",
         gap: 16,
+        /* Diffuse, spread-negative shadows: a soft dark seat with no crisp
+         *  edge + a gentle accent aura that melts into the space behind. */
         boxShadow: hover
-          ? `0 1px 3px rgba(0,0,0,0.4), 0 22px 56px ${accent}33`
-          : "0 1px 3px rgba(0,0,0,0.4), 0 12px 36px rgba(0,0,0,0.28)",
+          ? `0 30px 72px -28px rgba(0,0,0,0.55), 0 0 66px -12px ${accent}4d`
+          : `0 22px 56px -30px rgba(0,0,0,0.5), 0 0 46px -16px ${accent}2e`,
         transform: hover && !reduced ? "translateY(-4px)" : "translateY(0)",
         transition:
           "transform .35s cubic-bezier(0.16,1,0.3,1), box-shadow .35s cubic-bezier(0.16,1,0.3,1)",
