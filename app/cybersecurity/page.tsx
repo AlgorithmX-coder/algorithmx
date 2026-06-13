@@ -348,7 +348,7 @@ export default async function CybersecurityPage() {
         .lv2-cyber-tracks-grid {
           display: grid;
           grid-template-columns: repeat(2, minmax(0, 1fr));
-          gap: 22px;
+          gap: 34px;
         }
         @media (max-width: 820px) {
           .lv2-cyber-tracks-grid {
