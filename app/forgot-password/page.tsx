@@ -1,242 +1,220 @@
 "use client";
 
 import { useState } from "react";
-import { motion } from "framer-motion";
-import { VoidPortalScene } from "@/app/components/CyberFutureScenes";
-import { CyberIconOrEmoji } from "@/app/components/CyberIcon";
+import Link from "next/link";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
+import AuthBackdrop from "@/app/components/auth/AuthBackdrop";
+import { AuthReactorScene, type AuthMachinePhase, type AuthMachineState } from "@/app/components/auth-reactor";
+import AuthField from "@/app/components/auth/AuthField";
+import AuthButton, { type AuthButtonState } from "@/app/components/auth/AuthButton";
+import AuthTerminalPanel from "@/app/components/auth/AuthTerminalPanel";
+import { useIsDesktop } from "@/app/components/auth/useIsDesktop";
+import { ACCESS, ACCESS_FONT, ACCESS_GRAD, rgba } from "@/app/components/auth/accessTokens";
+import { IconContact, IconCredentials, IconCheck, IconKey } from "@/app/components/auth/icons";
 
-const C = {
-  pageBg: "#080a16",
-  card: "rgba(15, 21, 48, 0.78)",
-  border: "rgba(0, 229, 255, 0.35)",
-  borderStrong: "rgba(0, 229, 255, 0.6)",
-  text: "#e8edff",
-  textSoft: "#c5cdf0",
-  textMuted: "rgba(125, 240, 255, 0.55)",
-  goldLight: "#00e5ff",
-  goldMid: "#7c5cff",
-  goldDeep: "#3a7bff",
-  goldDark: "#080a16",
-  cream: "#e8edff",
-};
-const GRAD = `linear-gradient(135deg, ${C.goldLight}, ${C.goldMid})`;
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export default function ForgotPasswordPage() {
+  const isDesktop = useIsDesktop(1200);
+  const isTabletUp = useIsDesktop(768);
+  const coreQuality = isDesktop ? "high" : isTabletUp ? "medium" : "low";
+  const reduced = !!useReducedMotion();
+
   const [email, setEmail] = useState("");
-  const [submitted, setSubmitted] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [touched, setTouched] = useState(false);
+  const [focusField, setFocusField] = useState<AuthMachineState["focus"]>(null);
+  const [error, setError] = useState("");
+  const [phase, setPhase] = useState<"idle" | "loading" | "sent">("idle");
 
-  const [loading, setLoading] = useState(false);
+  const emailValid = EMAIL_RE.test(email);
+  const emailInvalid = touched && email.length > 0 && !emailValid;
+  const sent = phase === "sent";
 
-  async function handleSubmit(e: React.FormEvent) {
+  const portalEnergy = sent ? 1 : phase === "loading" ? 0.96 : emailValid ? 1 : 0;
+
+  const machinePhase: AuthMachinePhase = sent
+    ? "success"
+    : phase === "loading"
+      ? "submitting"
+      : error
+        ? "error"
+        : emailValid
+          ? "armed"
+          : "idle";
+  const machineState: AuthMachineState = {
+    modulesOnline: sent ? 6 : emailValid ? 4 : 0,
+    focus: focusField,
+    phase: machinePhase,
+    reducedMotion: reduced,
+    quality: coreQuality,
+  };
+
+  const buttonState: AuthButtonState =
+    phase === "loading" ? "loading" : sent ? "success" : emailValid ? "idle" : "disabled";
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError(null);
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      setError("Please enter a valid email address");
+    setError("");
+    setTouched(true);
+    if (!emailValid) {
+      setError("Enter a valid email address.");
       return;
     }
-    setLoading(true);
+    setPhase("loading");
     try {
+      // Always succeeds from the UI's point of view — the API never reveals
+      // whether the email matched an account (anti-enumeration).
       await fetch("/api/forgot-password", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email }),
       });
-      // Always show success - the API never reveals whether the email
-      // matched a real account, so we never reveal it either.  Prevents
-      // user enumeration.
-      setSubmitted(true);
     } catch {
-      // Network failure: still show success (same anti-enumeration
-      // posture). The retry happens via the email itself if it didn't
-      // arrive.
-      setSubmitted(true);
-    } finally {
-      setLoading(false);
+      /* swallow — same posture; the email itself is the retry path */
     }
-  }
+    setPhase("sent");
+  };
 
   return (
-    <div
-      className="min-h-screen flex items-center justify-center px-4"
-      style={{
-        background: `radial-gradient(ellipse at 50% -10%, #1d1f4d 0%, #0f1530 35%, ${C.pageBg} 70%, #04050d 100%)`,
-        color: C.text,
-      }}
-    >
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Space+Grotesk:wght@500;600;700;800&display=swap');
-        * { font-family: 'Nunito', sans-serif; }
-      `}</style>
+    <div className="min-h-screen relative" style={{ background: ACCESS_GRAD.page, color: ACCESS.textBright, overflowX: "hidden" }}>
+      <AuthBackdrop energy={portalEnergy} submitting={phase === "loading"} success={sent} />
 
-      <VoidPortalScene />
+      {!isDesktop && (
+        <div className="absolute inset-0" style={{ zIndex: 0, pointerEvents: "none" }}>
+          <AuthReactorScene state={machineState} />
+        </div>
+      )}
 
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="w-full max-w-md rounded-3xl p-8"
+      <div
+        className="relative mx-auto min-h-screen w-full items-center gap-8 px-6"
         style={{
-          background: C.card,
-          backdropFilter: "blur(16px)",
-          WebkitBackdropFilter: "blur(16px)",
-          border: `1px solid ${C.border}`,
-          boxShadow:
-            "0 30px 60px -20px rgba(8, 10, 22, 0.7), 0 0 40px rgba(124, 92, 255, 0.18), 0 0 0 1px rgba(0, 229, 255, 0.05) inset",
-          position: "relative",
-          zIndex: 10,
+          zIndex: 2,
+          maxWidth: 1440,
+          display: isDesktop ? "grid" : "block",
+          gridTemplateColumns: isDesktop ? "minmax(0, 460px) minmax(0, 1fr)" : undefined,
+          gridTemplateRows: isDesktop ? "minmax(100vh, auto)" : undefined,
         }}
       >
-        <div
-          style={{
-            display: "inline-block",
-            fontSize: 11,
-            letterSpacing: 5,
-            color: C.goldLight,
-            fontWeight: 800,
-            textTransform: "uppercase",
-            padding: "5px 16px",
-            background: "rgba(15, 21, 48, 0.55)",
-            borderStyle: "solid",
-            borderWidth: 1,
-            borderColor: C.borderStrong,
-            borderRadius: 999,
-            marginBottom: 12,
-            fontFamily: "'Space Grotesk', system-ui, sans-serif",
-          }}
-        >
-          ✦ Beacon Lit ✦
+        <div className="flex flex-col justify-center py-14">
+          <div className="w-full max-w-md">
+            <div className="mb-9">
+              <Link href="/" className="inline-flex items-center gap-2.5">
+                <div className="flex items-center justify-center" style={{ width: 38, height: 38, borderRadius: 10, background: ACCESS_GRAD.brand, boxShadow: `0 0 18px ${rgba(ACCESS.cyan, 0.3)}` }}>
+                  <span style={{ color: "#06080f", fontFamily: ACCESS_FONT.display, fontWeight: 800, fontSize: 14 }}>AX</span>
+                </div>
+                <span style={{ color: ACCESS.textBright, fontFamily: ACCESS_FONT.display, fontWeight: 800, fontSize: 19, letterSpacing: "-0.01em" }}>
+                  Algorithm<span style={{ background: ACCESS_GRAD.brand, WebkitBackgroundClip: "text", backgroundClip: "text", color: "transparent" }}>X</span>
+                </span>
+              </Link>
+            </div>
+
+            <AuthTerminalPanel>
+              <h1 className="mb-2" style={{ fontFamily: ACCESS_FONT.display, fontSize: "clamp(1.9rem, 2.6vw, 2.3rem)", fontWeight: 800, color: ACCESS.textBright, letterSpacing: "-0.02em", lineHeight: 1.08 }}>
+                Reset your password
+              </h1>
+              <p className="mb-7" style={{ color: ACCESS.textSoft, fontSize: 15, fontWeight: 500, lineHeight: 1.5 }}>
+                Enter your email and we&apos;ll send a secure link to set a new one.
+              </p>
+
+              {sent ? (
+                <motion.div
+                  role="status"
+                  aria-live="polite"
+                  initial={reduced ? { opacity: 0 } : { opacity: 0, y: -8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.25 }}
+                  style={{ padding: "16px", borderRadius: 12, background: rgba(ACCESS.cyan, 0.08), border: `1px solid ${rgba(ACCESS.cyan, 0.4)}` }}
+                >
+                  <div className="flex items-center gap-2 mb-1.5" style={{ fontWeight: 800, color: ACCESS.textBright }}>
+                    <IconCheck size={16} /> Check your email
+                  </div>
+                  <div style={{ fontSize: 13.5, color: ACCESS.textSoft, lineHeight: 1.55 }}>
+                    If an account exists for <span style={{ color: ACCESS.cyanSoft, fontWeight: 700 }}>{email}</span>, a reset link is on its way.
+                  </div>
+                </motion.div>
+              ) : (
+                <>
+                  <AnimatePresence>
+                    {error && (
+                      <motion.div
+                        key="err"
+                        role="alert"
+                        aria-live="polite"
+                        initial={reduced ? { opacity: 0 } : { opacity: 0, y: -8 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={reduced ? { opacity: 0 } : { opacity: 0, y: -8 }}
+                        transition={{ duration: 0.2 }}
+                        className="mb-4"
+                        style={{ padding: "12px 14px", borderRadius: 12, fontSize: 13.5, fontWeight: 600, background: rgba(ACCESS.warn, 0.1), border: `1px solid ${rgba(ACCESS.warn, 0.5)}`, color: ACCESS.warnSoft }}
+                      >
+                        {error}
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+
+                  <form onSubmit={handleSubmit} className="space-y-1" noValidate>
+                    <AuthField
+                      id="forgot-email"
+                      label="Email"
+                      type="email"
+                      value={email}
+                      onChange={setEmail}
+                      onFocus={() => setFocusField("email")}
+                      onBlur={() => {
+                        setTouched(true);
+                        setFocusField(null);
+                      }}
+                      state={emailInvalid ? "invalid" : emailValid ? "valid" : "idle"}
+                      error={emailInvalid ? "That email doesn't look right." : null}
+                      icon={<IconContact size={18} />}
+                      autoComplete="email"
+                      inputMode="email"
+                      placeholder="parent@example.com"
+                      required
+                    />
+                    <div className="pt-1">
+                      <AuthButton
+                        state={buttonState}
+                        idleLabel="Send reset link"
+                        loadingLabel="Sending…"
+                        successLabel="Sent"
+                        disabledHint={!emailValid ? "Enter your email to continue." : undefined}
+                      />
+                    </div>
+                  </form>
+                </>
+              )}
+
+              <p className="text-center mt-5" style={{ color: ACCESS.textSoft, fontSize: 13.5, fontWeight: 500 }}>
+                Remembered it?{" "}
+                <a href="/login" style={{ color: ACCESS.cyan, fontWeight: 700 }} className="transition hover:opacity-80">Log in</a>
+              </p>
+            </AuthTerminalPanel>
+
+            <p className="text-center mt-8" style={{ fontFamily: ACCESS_FONT.mono, fontSize: 11, letterSpacing: 2, color: ACCESS.textMuted }}>
+              Six streams. One key.
+            </p>
+            <div className="flex items-center justify-center gap-5 mt-6 flex-wrap">
+              {[
+                { icon: <IconCredentials size={14} />, label: "ENCRYPTED" },
+                { icon: <IconKey size={14} />, label: "SECURE RESET" },
+              ].map((b, i) => (
+                <span key={i} className="inline-flex items-center gap-1.5" style={{ color: ACCESS.textMuted, fontSize: 10.5, fontWeight: 700, fontFamily: ACCESS_FONT.mono, letterSpacing: 1.4 }}>
+                  {b.icon} {b.label}
+                </span>
+              ))}
+            </div>
+          </div>
         </div>
 
-        <h1
-          className="text-3xl font-black mb-2"
-          style={{
-            fontFamily: "'Space Grotesk', system-ui, sans-serif",
-            background: "linear-gradient(135deg, #7df0ff, #00e5ff, #7c5cff)",
-            WebkitBackgroundClip: "text",
-            WebkitTextFillColor: "transparent",
-            backgroundClip: "text",
-            letterSpacing: "-0.01em",
-          }}
-        >
-          Find your way back
-        </h1>
-        <p style={{ color: C.textSoft, opacity: 0.92, marginBottom: 24 }}>
-          Enter your email and we&apos;ll send you a link to reset your password.
-        </p>
-
-        {submitted ? (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.3 }}
-            className="rounded-2xl p-5"
-            style={{
-              background: "rgba(124, 200, 154, 0.16)",
-              border: "1px solid rgba(124, 200, 154, 0.55)",
-              color: "#a0ffb0",
-            }}
-          >
-            <div className="font-bold mb-1">✓ Check your email</div>
-            <div className="text-sm" style={{ color: C.textSoft, opacity: 0.9 }}>
-              If an account exists for{" "}
-              <span style={{ fontWeight: 700, color: C.goldLight }}>{email}</span>, a reset link is on the way.
+        {isDesktop && (
+          <div className="relative self-stretch">
+            <div className="absolute inset-0">
+              <AuthReactorScene state={machineState} />
             </div>
-          </motion.div>
-        ) : (
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div>
-              <label className="block text-sm font-bold mb-2" style={{ color: C.textSoft }}>
-                Email
-              </label>
-              <div className="relative">
-                <span
-                  className="absolute left-4 top-1/2 -translate-y-1/2"
-                  style={{ color: C.textMuted, lineHeight: 0 }}
-                >
-                  <CyberIconOrEmoji emoji="✉️" size={18} accent="cyan" glow={false} />
-                </span>
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="you@example.com"
-                  className="w-full pl-11 pr-4 rounded-2xl font-medium transition-all duration-300 focus:outline-none"
-                  style={{
-                    height: 50,
-                    fontSize: 15,
-                    color: C.text,
-                    background: "rgba(8, 10, 22, 0.5)",
-                    border: `1px solid rgba(0, 229, 255, 0.22)`,
-                  }}
-                  onFocus={(e) => {
-                    e.currentTarget.style.borderColor = C.goldLight;
-                    e.currentTarget.style.boxShadow = "0 0 22px rgba(124, 92, 255, 0.25)";
-                  }}
-                  onBlur={(e) => {
-                    e.currentTarget.style.borderColor = "rgba(0, 229, 255, 0.22)";
-                    e.currentTarget.style.boxShadow = "none";
-                  }}
-                />
-              </div>
-            </div>
-
-            {error && (
-              <motion.div
-                initial={{ opacity: 0, y: -6 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="text-sm font-semibold p-3 rounded-2xl"
-                style={{
-                  background: "rgba(255, 95, 179, 0.18)",
-                  border: "1px solid rgba(255, 95, 179, 0.5)",
-                  color: "#f4a89a",
-                }}
-              >
-                {error}
-              </motion.div>
-            )}
-
-            <motion.button
-              type="submit"
-              disabled={loading}
-              whileHover={loading ? {} : { y: -2, scale: 1.02 }}
-              whileTap={loading ? {} : { scale: 0.97 }}
-              transition={{ type: "spring", stiffness: 320, damping: 20 }}
-              className="w-full font-black rounded-full"
-              style={{
-                height: 50,
-                background: GRAD,
-                color: C.goldDark,
-                fontFamily: "'Space Grotesk', system-ui, sans-serif",
-                letterSpacing: 1.5,
-                textTransform: "uppercase",
-                fontSize: 16,
-                border: "none",
-                cursor: loading ? "wait" : "pointer",
-                opacity: loading ? 0.7 : 1,
-                // Was warm orange drop + warm cream inner highlight + warm
-                // brown bottom rim. Pulled to cyan drop + cyan inner glint
-                // + abyss bottom rim, matching every other cyber CTA.
-                boxShadow:
-                  "0 18px 36px -10px rgba(0, 229, 255, 0.65), 0 0 0 1px rgba(125, 240, 255, 0.55) inset, 0 -3px 0 rgba(8, 10, 22, 0.55) inset",
-              }}
-            >
-              {loading ? "Sending…" : "Send Reset Link"}
-            </motion.button>
-          </form>
+          </div>
         )}
-
-        <p className="text-center text-sm mt-6" style={{ color: C.textMuted }}>
-          Remembered it?{" "}
-          <a
-            href="/login"
-            className="font-bold transition hover:opacity-80"
-            style={{ color: C.goldLight }}
-          >
-            Back to log in
-          </a>
-        </p>
-      </motion.div>
+      </div>
     </div>
   );
 }

@@ -10,8 +10,6 @@ import AuthReactorLoading from "./AuthReactorLoading";
 import { QUALITY } from "./authReactorConfig";
 import type { AuthMachineState } from "./authReactorTypes";
 
-const DEV = process.env.NODE_ENV !== "production";
-
 function CanvasInner({ state }: { state: AuthMachineState }) {
   return (
     <Canvas
@@ -46,7 +44,10 @@ export default function AuthReactorScene({ state }: { state: AuthMachineState })
       <AuthReactorErrorBoundary>
         <CanvasLazy state={state} />
       </AuthReactorErrorBoundary>
-      {DEV && <Leva collapsed />}
+      {/* Always mount Leva (hidden) so it owns the panel root — otherwise the
+          controller's useControls() makes leva auto-inject a VISIBLE default
+          panel. `hidden` keeps it gone everywhere (dev preview + production). */}
+      <Leva hidden />
     </>
   );
 }
