@@ -3447,7 +3447,21 @@ function Laptop({
     lidAngle.current = lerp(lidAngle.current, targetAngle, followSpeed);
     lidVelocity.current = 0;
     if (lidRef.current) {
-      lidRef.current.rotation.x = lidAngle.current;
+      /* Idle hinge "breathing" — a slow, low-amplitude sway layered on
+       * top of the scroll-driven open angle so the OPEN lid reads as a
+       * live, running machine instead of a frozen render (the screen is
+       * a child of the lid, so it breathes too). Scaled by openT (zero
+       * while closed, full once open) so the life only appears AS the
+       * laptop opens up, and zeroed during frame capture / reduced
+       * motion so the baked scrub frames stay deterministic — the same
+       * pattern as the camera micro-drift above. Two slow sines
+       * (~11s / ~18s periods) keep it an organic drift, never a jitter. */
+      const lidIdle =
+        capture || reducedMotion
+          ? 0
+          : (Math.sin(t * 0.55) * 0.006 + Math.sin(t * 0.34 + 0.8) * 0.004) *
+            openT;
+      lidRef.current.rotation.x = lidAngle.current + lidIdle;
     }
 
     /* Living screen - stage transitions. The minor boot-line stages
