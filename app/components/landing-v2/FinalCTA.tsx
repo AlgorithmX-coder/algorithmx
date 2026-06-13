@@ -21,19 +21,10 @@ export default function FinalCTA() {
         padding: "calc(var(--lv2-rail) * 2.4) var(--lv2-rail)",
       }}
     >
-      <div
-        aria-hidden
-        style={{
-          position: "absolute",
-          top: 0,
-          left: "10%",
-          right: "10%",
-          height: 1,
-          background:
-            "linear-gradient(90deg, transparent, rgba(0,229,255,0.32), transparent)",
-          pointerEvents: "none",
-        }}
-      />
+      {/* Top divider hairline removed — it drew a faint horizontal seam
+       * across the section. FAQ above and this section are both
+       * transparent over the fixed cosmic backdrop, so with the line
+       * gone they flow as one continuous space into the CTA card. */}
       <div style={{ maxWidth: 680, margin: "0 auto" }}>
         <FadeUp>
           <div
