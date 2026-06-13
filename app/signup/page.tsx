@@ -108,6 +108,14 @@ function SignupPageInner() {
 
   const granted = phase === "success";
 
+  /* Portal energy (0..1) — charges the background chamber as the form fills,
+   * with a submit/success surge. Mirrors the reactor's own state. */
+  const portalEnergy = granted
+    ? 1
+    : phase === "loading"
+      ? 0.96
+      : [nameOk, emailOk, passwordOk, confirmOk].filter(Boolean).length / 4;
+
   /* Stream Orrery state — built from the same field booleans + phase the
    * form already tracks, so the instrument and the form always agree.
    * modulesOnline counts valid required fields (0–4 during input); success
@@ -128,10 +136,6 @@ function SignupPageInner() {
     reducedMotion: reduced,
     quality: coreQuality,
   };
-
-  /* 0–1 completion, used to intensify the scene's light spill on the form. */
-  const progressNorm =
-    [nameOk, emailOk, passwordOk, confirmOk && passwordOk].filter(Boolean).length / 4;
 
   const buttonState: AuthButtonState =
     phase === "loading" ? "loading" : granted ? "success" : allReady ? "idle" : "disabled";
@@ -218,7 +222,7 @@ function SignupPageInner() {
       className="min-h-screen relative"
       style={{ background: ACCESS_GRAD.page, color: ACCESS.textBright, overflowX: "hidden" }}
     >
-      <AuthBackdrop />
+      <AuthBackdrop energy={portalEnergy} submitting={phase === "loading"} success={granted} />
 
       {/* Tablet/mobile: the reactor sits behind the form slab. */}
       {!isDesktop && (
@@ -439,20 +443,10 @@ function SignupPageInner() {
           </div>
         </div>
 
-        {/* RIGHT — the Sentinel (desktop). A faint light spill on the form
-            edge ties the two together. */}
+        {/* RIGHT — the reactor (desktop). It floats inside the shared full-bleed
+            portal chamber painted by AuthBackdrop, so there's no column seam. */}
         {isDesktop && (
           <div className="relative self-stretch">
-            <div
-              aria-hidden
-              className="absolute inset-y-0 left-0"
-              style={{
-                width: 160,
-                background: `linear-gradient(90deg, ${rgba(ACCESS.violet, 0.06 + progressNorm * 0.1)} 0%, transparent 100%)`,
-                pointerEvents: "none",
-                transition: "background 600ms ease",
-              }}
-            />
             <div className="absolute inset-0">
               <AuthReactorScene state={machineState} />
             </div>
