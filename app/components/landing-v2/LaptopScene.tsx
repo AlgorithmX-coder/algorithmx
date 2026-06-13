@@ -3459,7 +3459,7 @@ function Laptop({
       const lidIdle =
         capture || reducedMotion
           ? 0
-          : (Math.sin(t * 0.55) * 0.006 + Math.sin(t * 0.34 + 0.8) * 0.004) *
+          : (Math.sin(t * 0.55) * 0.012 + Math.sin(t * 0.34 + 0.8) * 0.008) *
             openT;
       lidRef.current.rotation.x = lidAngle.current + lidIdle;
     }
