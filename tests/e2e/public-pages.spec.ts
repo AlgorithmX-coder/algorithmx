@@ -49,11 +49,16 @@ test.describe("Public pages render", () => {
       page.getByRole("heading", { name: /Reset your password/i })
     ).toBeVisible();
 
-    // A valid email reaches the success state. force:true skips Playwright's
-    // stability wait, which the auth pages' ambient animation otherwise makes
-    // flaky — the button is visible + enabled, so this is a real submit.
+    // A valid email reaches the success state. Submit via the form's
+    // requestSubmit() rather than clicking/pressing: a successful submit swaps
+    // the whole form out for the success panel, unmounting the element under
+    // any in-flight Playwright click/press, which then hangs for the full
+    // action timeout (the flake we kept hitting). requestSubmit() fires React's
+    // onSubmit (preventDefault honoured) and returns immediately. Wait for the
+    // button to be enabled first so React has validated the email.
     await page.locator("#forgot-email").fill("test@example.com");
-    await page.getByRole("button", { name: /Send reset link/i }).click({ force: true });
+    await expect(page.getByRole("button", { name: /Send reset link/i })).toBeEnabled();
+    await page.evaluate(() => document.querySelector("form")?.requestSubmit());
     await expect(page.getByText(/Check your email/i)).toBeVisible();
     await expect(page.getByText("test@example.com")).toBeVisible();
   });

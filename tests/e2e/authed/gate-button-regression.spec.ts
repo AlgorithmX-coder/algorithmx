@@ -53,8 +53,16 @@ test.describe("Gate-button regression guards", () => {
     // user - the success state must offer a way home.
     await page.goto("/forgot-password");
     await page.locator("#forgot-email").fill("test@example.com");
-    // force:true skips the stability wait the animated auth pages flake on.
-    await page.getByRole("button", { name: /Send reset link/i }).click({ force: true });
+    // Submit via the form's requestSubmit() rather than clicking/pressing: a
+    // successful submit swaps the form out for the success panel, unmounting
+    // the element under any in-flight Playwright action, which then hangs for
+    // the full action timeout (the flake). requestSubmit() fires React's
+    // onSubmit and returns immediately. Wait for the button to enable first so
+    // React has validated the email.
+    await expect(
+      page.getByRole("button", { name: /Send reset link/i })
+    ).toBeEnabled();
+    await page.evaluate(() => document.querySelector("form")?.requestSubmit());
     await expect(page.getByText(/Check your email/i)).toBeVisible();
     // The page always offers a way home ("Remembered it? Log in"), shown in
     // both the form and the success state. .first() avoids strict-mode if a
