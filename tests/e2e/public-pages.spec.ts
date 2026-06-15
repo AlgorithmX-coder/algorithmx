@@ -49,18 +49,14 @@ test.describe("Public pages render", () => {
       page.getByRole("heading", { name: /Reset your password/i })
     ).toBeVisible();
 
-    // A valid email reaches the success state. Two traps the auth page sets,
-    // both of which made this spec flaky under CI load:
-    //   1. the submit button stays `disabled` until React validates the email,
-    //      so a click before that re-render is a silent no-op — wait for it
-    //      to be enabled (otherwise "Check your email" never appears);
-    //   2. the button's whileHover spring nudges its box when the cursor
-    //      lands on it, so Playwright's stability check flakes — force the
-    //      click to skip it. The button is enabled here, so it's a real submit.
+    // A valid email reaches the success state. Submit via Enter — the same
+    // pattern global-setup uses for login — because clicking the AuthButton
+    // makes Playwright hang on "waiting for scheduled navigations to finish"
+    // (its mandatory post-click nav wait). Wait for the button to enable
+    // first so React has validated the email before we submit.
     await page.locator("#forgot-email").fill("test@example.com");
-    const submit = page.getByRole("button", { name: /Send reset link/i });
-    await expect(submit).toBeEnabled();
-    await submit.click({ force: true });
+    await expect(page.getByRole("button", { name: /Send reset link/i })).toBeEnabled();
+    await page.locator("#forgot-email").press("Enter");
     await expect(page.getByText(/Check your email/i)).toBeVisible();
     await expect(page.getByText("test@example.com")).toBeVisible();
   });
