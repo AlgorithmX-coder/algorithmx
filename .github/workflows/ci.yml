@@ -48,6 +48,33 @@ jobs:
     name: playwright e2e
     runs-on: ubuntu-latest
     timeout-minutes: 20
+
+    # Ephemeral Postgres for the run. Previously DATABASE_URL fell back to a
+    # non-existent stub whenever the E2E_DATABASE_URL secret was unset, so
+    # /api/test/seed could never connect (empty 500) and globalSetup always
+    # failed before any spec ran.
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: algorithmx_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 12
+
+    env:
+      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/algorithmx_test
+      AUTH_SECRET: ci-stub-secret
+      AUTH_TRUST_HOST: "true"
+      NEXTAUTH_URL: http://localhost:3100
+      E2E_TESTS: "1"
+
     steps:
       - uses: actions/checkout@v4
 
@@ -63,27 +90,20 @@ jobs:
 
       - run: npx prisma generate
 
-      # Build once; the playwright config will boot `next start` itself.
+      # Apply the schema, then seed the catalogue the e2e fixtures need: the
+      # cyber-heroes Product + week-1 CourseContent that /api/test/seed
+      # verifies. Without this the seed endpoint 500s and globalSetup fails.
+      - name: Set up test database
+        run: |
+          npx prisma migrate deploy
+          npx prisma db seed
+
+      # Build once; the playwright config boots `next start` itself.
       - name: Build production bundle
         run: npm run build
-        env:
-          # Build doesn't need a real database, but next-auth complains
-          # without these.  Real values are injected on Vercel.
-          DATABASE_URL: postgres://stub:stub@localhost:5432/stub
-          AUTH_SECRET: ci-stub-secret
-          NEXTAUTH_URL: http://localhost:3100
 
       - name: Run Playwright tests
         run: npm run test:e2e
-        env:
-          # NB: real DATABASE_URL needs to come from a CI secret pointing
-          # at a disposable test database. The /api/test/seed endpoint
-          # creates the e2e user + course; it does not stand up a DB.
-          DATABASE_URL: ${{ secrets.E2E_DATABASE_URL || 'postgres://stub:stub@localhost:5432/stub' }}
-          AUTH_SECRET: ci-stub-secret
-          AUTH_TRUST_HOST: "true"
-          NEXTAUTH_URL: http://localhost:3100
-          E2E_TESTS: "1"
 
       - name: Upload Playwright report
         if: always()
