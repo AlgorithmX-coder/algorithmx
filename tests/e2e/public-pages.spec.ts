@@ -49,14 +49,16 @@ test.describe("Public pages render", () => {
       page.getByRole("heading", { name: /Reset your password/i })
     ).toBeVisible();
 
-    // A valid email reaches the success state. Submit via Enter — the same
-    // pattern global-setup uses for login — because clicking the AuthButton
-    // makes Playwright hang on "waiting for scheduled navigations to finish"
-    // (its mandatory post-click nav wait). Wait for the button to enable
-    // first so React has validated the email before we submit.
+    // A valid email reaches the success state. Submit via the form's
+    // requestSubmit() rather than clicking/pressing: a successful submit swaps
+    // the whole form out for the success panel, unmounting the element under
+    // any in-flight Playwright click/press, which then hangs for the full
+    // action timeout (the flake we kept hitting). requestSubmit() fires React's
+    // onSubmit (preventDefault honoured) and returns immediately. Wait for the
+    // button to be enabled first so React has validated the email.
     await page.locator("#forgot-email").fill("test@example.com");
     await expect(page.getByRole("button", { name: /Send reset link/i })).toBeEnabled();
-    await page.locator("#forgot-email").press("Enter");
+    await page.evaluate(() => document.querySelector("form")?.requestSubmit());
     await expect(page.getByText(/Check your email/i)).toBeVisible();
     await expect(page.getByText("test@example.com")).toBeVisible();
   });
