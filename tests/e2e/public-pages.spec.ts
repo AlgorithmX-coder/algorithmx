@@ -49,11 +49,14 @@ test.describe("Public pages render", () => {
       page.getByRole("heading", { name: /Reset your password/i })
     ).toBeVisible();
 
-    // A valid email reaches the success state. force:true skips Playwright's
-    // stability wait, which the auth pages' ambient animation otherwise makes
-    // flaky — the button is visible + enabled, so this is a real submit.
+    // A valid email reaches the success state. The submit button stays
+    // `disabled` until React validates the email, so wait for it to enable
+    // before clicking — a force-click can land on the still-disabled button
+    // and never submit, which is what made this spec flaky under CI load.
     await page.locator("#forgot-email").fill("test@example.com");
-    await page.getByRole("button", { name: /Send reset link/i }).click({ force: true });
+    const submit = page.getByRole("button", { name: /Send reset link/i });
+    await expect(submit).toBeEnabled();
+    await submit.click();
     await expect(page.getByText(/Check your email/i)).toBeVisible();
     await expect(page.getByText("test@example.com")).toBeVisible();
   });

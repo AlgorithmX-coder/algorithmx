@@ -53,8 +53,13 @@ test.describe("Gate-button regression guards", () => {
     // user - the success state must offer a way home.
     await page.goto("/forgot-password");
     await page.locator("#forgot-email").fill("test@example.com");
-    // force:true skips the stability wait the animated auth pages flake on.
-    await page.getByRole("button", { name: /Send reset link/i }).click({ force: true });
+    // The submit button stays `disabled` until React validates the email.
+    // A force-click can land on the still-disabled button before that
+    // re-render and silently fail to submit (the flake we kept hitting under
+    // CI load). Wait for it to enable, then do a real click.
+    const submit = page.getByRole("button", { name: /Send reset link/i });
+    await expect(submit).toBeEnabled();
+    await submit.click();
     await expect(page.getByText(/Check your email/i)).toBeVisible();
     // The page always offers a way home ("Remembered it? Log in"), shown in
     // both the form and the success state. .first() avoids strict-mode if a
