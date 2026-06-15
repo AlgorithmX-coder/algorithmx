@@ -49,11 +49,11 @@ test.describe("Public pages render", () => {
       page.getByRole("heading", { name: /Reset your password/i })
     ).toBeVisible();
 
-    // A valid email reaches the success state. Submit via Enter — the auth
-    // pages animate, which makes pointer-clicks on the submit button flaky;
-    // keyboard submit is robust (and exercises the same handler).
+    // A valid email reaches the success state. force:true skips Playwright's
+    // stability wait, which the auth pages' ambient animation otherwise makes
+    // flaky — the button is visible + enabled, so this is a real submit.
     await page.locator("#forgot-email").fill("test@example.com");
-    await page.locator("#forgot-email").press("Enter");
+    await page.getByRole("button", { name: /Send reset link/i }).click({ force: true });
     await expect(page.getByText(/Check your email/i)).toBeVisible();
     await expect(page.getByText("test@example.com")).toBeVisible();
   });
@@ -82,11 +82,9 @@ test.describe("Public pages render", () => {
     page,
   }) => {
     await page.goto("/login");
-    // Activate the link by keyboard — the animated auth page makes pointer
-    // clicks flaky, but focus + Enter reliably follows the link.
-    const forgot = page.locator('a[href="/forgot-password"]').first();
-    await forgot.focus();
-    await forgot.press("Enter");
+    // force:true skips the stability wait the animated auth page otherwise
+    // flakes on; the link is visible and points to /forgot-password.
+    await page.locator('a[href="/forgot-password"]').first().click({ force: true });
     await expect(page).toHaveURL(/\/forgot-password/);
   });
 

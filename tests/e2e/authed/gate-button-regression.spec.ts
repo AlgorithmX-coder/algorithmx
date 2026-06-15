@@ -53,8 +53,8 @@ test.describe("Gate-button regression guards", () => {
     // user - the success state must offer a way home.
     await page.goto("/forgot-password");
     await page.locator("#forgot-email").fill("test@example.com");
-    // Submit via Enter — pointer-clicks on the animated auth pages are flaky.
-    await page.locator("#forgot-email").press("Enter");
+    // force:true skips the stability wait the animated auth pages flake on.
+    await page.getByRole("button", { name: /Send reset link/i }).click({ force: true });
     await expect(page.getByText(/Check your email/i)).toBeVisible();
     // The page always offers a way home ("Remembered it? Log in"), shown in
     // both the form and the success state. .first() avoids strict-mode if a
