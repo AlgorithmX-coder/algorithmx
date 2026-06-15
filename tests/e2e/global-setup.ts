@@ -59,14 +59,25 @@ export default async function globalSetup(config: FullConfig) {
   // auth-surface polish has changed before and broke this setup silently).
   await page.locator("#login-email").fill(TEST_EMAIL);
   await page.locator("#login-password").fill(TEST_PASSWORD);
-  await Promise.all([
-    // Login now lands on /hub (platform home base) by default; keep the
-    // older destinations too in case a callbackUrl flow is used.
-    page.waitForURL(/\/(hub|welcome|dashboard|lesson)/i, { timeout: 15_000 }),
-    // Submit via Enter — robust to the submit button's label (it's a
-    // type="submit" AuthButton now reading "Resume", no longer "Log In").
-    page.locator("#login-password").press("Enter"),
-  ]);
+  // Submit via Enter — robust to the submit button's label (it's a
+  // type="submit" AuthButton now reading "Resume", no longer "Log In").
+  await page.locator("#login-password").press("Enter");
+
+  // Login now lands on /hub (platform home base) by default; keep the older
+  // destinations too in case a callbackUrl flow is used. On failure, dump the
+  // actual state so the real cause is visible in CI (not just a timeout).
+  try {
+    await page.waitForURL(/\/(hub|welcome|dashboard|lesson)/i, { timeout: 20_000 });
+  } catch {
+    const url = page.url();
+    const text = (await page.locator("body").innerText().catch(() => ""))
+      .replace(/\s+/g, " ")
+      .slice(0, 400);
+    const cookieNames = (await context.cookies()).map((c) => c.name).join(",");
+    throw new Error(
+      `globalSetup: login did not reach the app. url=${url} cookies=[${cookieNames}] page="${text}"`,
+    );
+  }
 
   // 3. Persist storageState for reuse by all authed specs.
   await context.storageState({ path: STORAGE_STATE });
