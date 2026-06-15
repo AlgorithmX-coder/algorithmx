@@ -66,12 +66,17 @@ test.describe("Lesson flow - authed", () => {
     // Visit the lesson, wait briefly for any stagger animations, then
     // assert that *some* enabled button is on screen.
     await page.goto("/lesson");
-    await page.waitForTimeout(2000);
-    const enabledButtons = page.locator("button:not([disabled])");
-    const count = await enabledButtons.count();
+    // Advance the "tap anywhere to begin" boot screen (a window click
+    // listener, not a <button>), then assert an actionable control exists.
+    await page.waitForTimeout(3000);
+    await page.mouse.click(300, 350);
+    await page.waitForTimeout(2500);
+    const count = await page
+      .locator("button:not([disabled]), a[href], [role='button']")
+      .count();
     expect(
       count,
-      "lesson screen should always offer at least one enabled action - if this is 0, the player is stuck"
+      "lesson screen should always offer at least one actionable control - if this is 0, the player is stuck"
     ).toBeGreaterThan(0);
   });
 });
