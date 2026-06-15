@@ -60,7 +60,9 @@ export default async function globalSetup(config: FullConfig) {
   await page.locator("#login-email").fill(TEST_EMAIL);
   await page.locator("#login-password").fill(TEST_PASSWORD);
   await Promise.all([
-    page.waitForURL(/\/(welcome|dashboard|lesson)/i, { timeout: 15_000 }),
+    // Login now lands on /hub (platform home base) by default; keep the
+    // older destinations too in case a callbackUrl flow is used.
+    page.waitForURL(/\/(hub|welcome|dashboard|lesson)/i, { timeout: 15_000 }),
     page.getByRole("button", { name: /Log In/i }).click(),
   ]);
 
