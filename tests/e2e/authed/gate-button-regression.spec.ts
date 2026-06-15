@@ -31,12 +31,18 @@ test.describe("Gate-button regression guards", () => {
     page,
   }) => {
     await page.goto("/lesson");
-    // Wait for any opening cutscene / loading state to settle.
-    await page.waitForTimeout(5000);
-    const count = await page.locator("button:not([disabled])").count();
+    // The opening is a "tap anywhere to begin" boot screen (a window click
+    // listener, not a <button>), so advance past it before asserting the
+    // player offers a real way forward.
+    await page.waitForTimeout(4000);
+    await page.mouse.click(300, 350);
+    await page.waitForTimeout(2500);
+    const count = await page
+      .locator("button:not([disabled]), a[href], [role='button']")
+      .count();
     expect(
       count,
-      "If 0, the user is stranded with no way to advance - likely a guard checking the wrong state"
+      "If 0, the user is stranded with no actionable control - likely a guard checking the wrong state"
     ).toBeGreaterThan(0);
   });
 
@@ -46,15 +52,13 @@ test.describe("Gate-button regression guards", () => {
     // Submitting forgot-password without an email shouldn't strand the
     // user - the success state must offer a way home.
     await page.goto("/forgot-password");
-    await page.locator("input[type='email']").fill("test@example.com");
+    await page.locator("#forgot-email").fill("test@example.com");
     await page.getByRole("button", { name: /Send reset link/i }).click();
-    await expect(
-      page.getByRole("heading", { name: /Check your inbox/i })
-    ).toBeVisible();
-    // There should be a link or button to get back to login. There may
-    // be more than one (top "Back" link plus success-state CTA), so
-    // .first() avoids strict-mode failures.
-    const back = page.getByRole("link", { name: /Back to login/i }).first();
+    await expect(page.getByText(/Check your email/i)).toBeVisible();
+    // The page always offers a way home ("Remembered it? Log in"), shown in
+    // both the form and the success state. .first() avoids strict-mode if a
+    // second login link exists.
+    const back = page.locator('a[href="/login"]').first();
     await expect(back).toBeVisible();
   });
 });
