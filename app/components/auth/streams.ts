@@ -23,5 +23,5 @@ export const STREAMS: Stream[] = [
   { id: "ai", label: "AI & ML", color: "#5b8cff" }, // blue
   { id: "app", label: "App Dev", color: "#36e0c8" }, // teal
   { id: "venture", label: "Entrepreneurship", color: "#e0b25b" }, // warm accent
-  { id: "robotics", label: "Robotics", color: "#9fb4e0" }, // steel
+  { id: "robotics", label: "Robotic Engineering", color: "#9fb4e0" }, // steel
 ];

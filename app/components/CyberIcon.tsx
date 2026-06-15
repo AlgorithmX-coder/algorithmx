@@ -52,7 +52,11 @@ export type CyberIconName =
   | "chip"
   | "network"
   | "alert"
-  | "ai-spark";
+  | "ai-spark"
+  | "family"
+  | "flame"
+  | "clock"
+  | "chevron";
 
 export type CyberIconAccent =
   | "cyan"
@@ -362,6 +366,33 @@ const GLYPHS: Record<CyberIconName, (gid: string) => React.ReactNode> = {
       <path d="M12 9v5" stroke={`url(#${g})`} strokeWidth={1.8} strokeLinecap="round" />
       <circle cx="12" cy="17" r="1" fill={`url(#${g})`} />
     </>
+  ),
+  /* FAMILY - two head+shoulders silhouettes (parent + child) */
+  family: (g) => (
+    <>
+      <circle cx="8" cy="8.5" r="3" stroke={`url(#${g})`} strokeWidth={1.6} fill="none" />
+      <path d="M3 19.5v-1a5 5 0 0 1 10 0v1" stroke={`url(#${g})`} strokeWidth={1.6} fill="none" strokeLinecap="round" />
+      <circle cx="16.8" cy="9.5" r="2.4" stroke={`url(#${g})`} strokeWidth={1.5} fill="none" />
+      <path d="M13.6 19.5v-.8a3.8 3.8 0 0 1 7.4 0v.8" stroke={`url(#${g})`} strokeWidth={1.5} fill="none" strokeLinecap="round" />
+    </>
+  ),
+  /* FLAME - streak / energy */
+  flame: (g) => (
+    <>
+      <path d="M12 2.5c2.6 3.4 5 5.4 5 9.4a5 5 0 0 1-10 0c0-1.8.7-3.1 1.8-4.1.2 1.4 1 2.1 2 2.1 1.3 0 2-1 1.6-2.7C12 5.6 11 4.6 12 2.5z" stroke={`url(#${g})`} strokeWidth={1.6} fill="none" strokeLinejoin="round" />
+      <circle cx="12" cy="15.5" r="1" fill={`url(#${g})`} />
+    </>
+  ),
+  /* CLOCK - learning time */
+  clock: (g) => (
+    <>
+      <circle cx="12" cy="12" r="9" stroke={`url(#${g})`} strokeWidth={1.6} fill="none" />
+      <path d="M12 7v5l3.4 2" stroke={`url(#${g})`} strokeWidth={1.6} fill="none" strokeLinecap="round" strokeLinejoin="round" />
+    </>
+  ),
+  /* CHEVRON - directional / "go" */
+  chevron: (g) => (
+    <path d="M9 5.5l6.5 6.5L9 18.5" stroke={`url(#${g})`} strokeWidth={1.8} fill="none" strokeLinecap="round" strokeLinejoin="round" />
   ),
   /* AI-SPARK - diamond burst with halo (the "AI brain spark") */
   "ai-spark": (g) => (

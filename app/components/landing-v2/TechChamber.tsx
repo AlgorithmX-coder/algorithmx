@@ -1,17 +1,18 @@
 "use client";
 
 /**
- * TechChamber — understated background depth so the platform no longer floats
- * in an empty void. Three depth bands behind the laptop:
- *   - far architectural SILHOUETTES (instanced dark columns ringing the scene)
+ * TechChamber — understated background depth behind the laptop. Two
+ * additive light bands only (the dark architectural column silhouettes were
+ * removed — they read as odd floating black blocks):
  *   - a central rear LIGHT SHAFT / portal beam (the bright vertical glow in
  *     the reference), additive, brightening through the activation phases
  *   - a faint atmospheric HAZE wash for aerial perspective
  *
- * All self-lit additive / dark matte — adds NO new lights, so the laptop
- * render is untouched. Deliberately quiet: it supports the laptop and reads
- * as a chamber, never competing with the hero. Reduced motion only freezes
- * the slow drift; the depth + lighting state are preserved.
+ * Both are gated to be invisible while the laptop is closed (scroll < ~0.32)
+ * and fade in as the lid opens, so the top of the hero reads as a clean,
+ * empty backdrop with just the device, and the chamber assembles in on
+ * scroll. All self-lit additive — adds NO new lights, so the laptop render
+ * is untouched. Reduced motion only freezes the slow drift.
  */
 
 import { useFrame } from "@react-three/fiber";
@@ -38,9 +39,10 @@ function makeBeamTexture(): THREE.Texture | null {
   ctx.clearRect(0, 0, w, h);
   // vertical shaft: bright base fading up + horizontal taper to soft edges
   const g = ctx.createLinearGradient(0, h, 0, 0);
-  g.addColorStop(0, "rgba(120,225,255,0.5)");
-  g.addColorStop(0.4, "rgba(40,170,255,0.22)");
-  g.addColorStop(1, "rgba(20,80,180,0)");
+  /* softer, dimmer cyan→violet portal beam so it whispers in deep space */
+  g.addColorStop(0, "rgba(120,190,255,0.4)");
+  g.addColorStop(0.4, "rgba(92,112,235,0.16)");
+  g.addColorStop(1, "rgba(40,44,120,0)");
   ctx.fillStyle = g;
   ctx.fillRect(0, 0, w, h);
   const taper = ctx.createLinearGradient(0, 0, w, 0);
@@ -65,9 +67,12 @@ function makeHazeTexture(): THREE.Texture | null {
   const ctx = c.getContext("2d");
   if (!ctx) return null;
   ctx.clearRect(0, 0, S, S);
-  const g = ctx.createRadialGradient(S / 2, S * 0.62, 0, S / 2, S * 0.62, S * 0.55);
-  g.addColorStop(0, "rgba(30,110,190,0.4)");
-  g.addColorStop(0.5, "rgba(18,60,130,0.14)");
+  const g = ctx.createRadialGradient(S / 2, S * 0.66, 0, S / 2, S * 0.66, S * 0.62);
+  /* deep-space depth glow (was a bright blue room wall) — dimmer + a touch
+   * of violet so it reads as faint nebula depth, not a lit backdrop */
+  g.addColorStop(0, "rgba(48,72,150,0.34)");
+  g.addColorStop(0.45, "rgba(42,54,120,0.16)");
+  g.addColorStop(0.75, "rgba(28,38,92,0.06)");
   g.addColorStop(1, "rgba(0,0,0,0)");
   ctx.fillStyle = g;
   ctx.fillRect(0, 0, S, S);
@@ -80,10 +85,11 @@ function makeHazeTexture(): THREE.Texture | null {
 export default function TechChamber({
   progress,
   reducedMotion = false,
-  lowPower = false,
 }: {
   progress: MotionValue<number>;
   reducedMotion?: boolean;
+  /* accepted but unused since the dark columns (the only lowPower-gated
+   * geometry) were removed; kept so the call site needn't change. */
   lowPower?: boolean;
 }) {
   const beamTex = useMemo(() => makeBeamTexture(), []);
@@ -92,75 +98,27 @@ export default function TechChamber({
   const hazeRef = useRef<THREE.MeshBasicMaterial>(null);
   const wallLightRef = useRef<THREE.MeshBasicMaterial>(null);
 
-  /* Matte, near-light-absorbing material so the columns stay DARK
-   * silhouettes (their whole job — depth framing). The previous
-   * metalness 0.7 / roughness 0.6 / envMap 0.25 made them mirror the
-   * bright white key Lightformer (intensity 3.4) + the 1.55 directional
-   * light, so their faces blew out to flat white slabs in frame. Low
-   * metalness + high roughness + near-zero env kills that specular so
-   * they read as the dark architecture they're meant to be. */
-  const columnMat = useMemo(
-    () =>
-      new THREE.MeshStandardMaterial({
-        color: "#080b11",
-        metalness: 0.1,
-        roughness: 0.95,
-        envMapIntensity: 0.04,
-      }),
-    [],
-  );
-
-  /* far architectural columns ringing the chamber (mostly behind + sides). */
-  const COL_N = lowPower ? 7 : 12;
-  const colRef = useRef<THREE.InstancedMesh>(null);
-  const dummy = useMemo(() => new THREE.Object3D(), []);
-  const setupColumns = () => {
-    if (!colRef.current) return;
-    for (let i = 0; i < COL_N; i++) {
-      // bias to the rear hemisphere so columns frame depth, not the foreground
-      const a = Math.PI * 0.15 + (i / COL_N) * Math.PI * 1.7;
-      const r = 22 + (i % 3) * 4;
-      const hgt = 14 + (i % 4) * 5;
-      dummy.position.set(Math.cos(a) * r, hgt / 2 - 6, Math.sin(a) * r - 4);
-      dummy.rotation.set(0, -a, 0);
-      dummy.scale.set(1.6 + (i % 2) * 0.8, hgt, 1.6 + (i % 3) * 0.5);
-      dummy.updateMatrix();
-      colRef.current.setMatrixAt(i, dummy.matrix);
-    }
-    colRef.current.instanceMatrix.needsUpdate = true;
-  };
-
   useFrame((state, delta) => {
     const p = progress.get();
     const t = state.clock.elapsedTime;
+    /* All three bands stay at 0 until the lid begins to open (~0.32), then
+     * fade in — so the closed-laptop state has a clean, empty backdrop. */
     if (beamRef.current) {
-      const lit = smoothstep(0.1, 0.6, p);
-      beamRef.current.opacity = lit * (reducedMotion ? 0.34 : 0.3 + Math.sin(t * 0.7) * 0.06);
+      const lit = smoothstep(0.32, 0.62, p);
+      beamRef.current.opacity = lit * (reducedMotion ? 0.06 : 0.05 + Math.sin(t * 0.7) * 0.02);
     }
     if (hazeRef.current) {
-      hazeRef.current.opacity = (0.08 + smoothstep(0.2, 0.8, p) * 0.14) * (reducedMotion ? 1 : 0.92 + Math.sin(t * 0.4) * 0.08);
+      hazeRef.current.opacity = smoothstep(0.32, 0.82, p) * 0.08 * (reducedMotion ? 1 : 0.92 + Math.sin(t * 0.4) * 0.08);
     }
     if (wallLightRef.current) {
-      wallLightRef.current.opacity = smoothstep(0.3, 0.75, p) * 0.18;
+      /* distant wall bar removed for the deep-space backdrop */
+      wallLightRef.current.opacity = 0;
     }
     void delta;
   });
 
   return (
     <group position={[RIG_X, 0, 0]}>
-      {/* far architectural column silhouettes (depth + framing) */}
-      <instancedMesh
-        ref={(el) => {
-          colRef.current = el;
-          if (el) setupColumns();
-        }}
-        args={[undefined, undefined, COL_N]}
-        material={columnMat}
-        frustumCulled={false}
-      >
-        <boxGeometry args={[1, 1, 1]} />
-      </instancedMesh>
-
       {/* central rear light shaft / portal (the vertical glow behind laptop) */}
       {beamTex && (
         <mesh position={[0, 1.8, -7]}>
@@ -195,8 +153,8 @@ export default function TechChamber({
 
       {/* atmospheric haze wash for aerial perspective */}
       {hazeTex && (
-        <mesh position={[0, 1.2, -6]}>
-          <planeGeometry args={[34, 20]} />
+        <mesh position={[0, 0.4, -6.5]}>
+          <planeGeometry args={[50, 28]} />
           <meshBasicMaterial
             ref={hazeRef}
             map={hazeTex}

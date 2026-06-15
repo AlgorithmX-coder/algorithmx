@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState, type ReactElement } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { RoundedBox, Environment, Lightformer } from "@react-three/drei";
 import {
@@ -16,17 +16,14 @@ import {
 import { BlendFunction, SMAAPreset } from "postprocessing";
 import * as THREE from "three";
 import type { MotionValue } from "framer-motion";
-import ReactorPlatform from "./ReactorPlatform";
 import TechChamber from "./TechChamber";
-import { isWeakGpu } from "./utilities";
 
 interface LaptopSceneProps {
   progress: MotionValue<number>;
   reducedMotion?: boolean;
-  /* Dev-only: used by the /dev/herocap frame-capture route. Forces the
-   * full-quality stack, an always-on loop, and a readable drawing buffer
-   * (preserveDrawingBuffer) so each scroll position can be read out with
-   * canvas.toDataURL. Never set in production. */
+  /* Dev-only (/dev/herocap): forces an always-on loop + readable drawing
+   * buffer so each scroll position can be captured with canvas.toDataURL
+   * for the scroll-scrubbed playback frames. Never set in production. */
   capture?: boolean;
 }
 
@@ -337,18 +334,11 @@ const STREAMS = [
 ] as const;
 
 function computeScreenStage(p: number): number {
-  /* Lid opens 0.32→0.50, screen ignites at 0.50, boot lines type
-   * 0.52→0.62, dashboards land 0.65→0.95, READY is the final beat. */
-  if (p < 0.50) return 0;
-  if (p < 0.52) return 1;
-  if (p < 0.54) return 2;
-  if (p < 0.56) return 3;
-  if (p < 0.58) return 4;
-  if (p < 0.60) return 5;
-  if (p < 0.65) return 6; // boot complete
-  if (p < 0.86) return 7; // streams dashboard
-  if (p < 0.95) return 8; // active projects
-  return 9; // ready
+  /* Two states only now: 0 = dormant (lid closed, screen dark), 1 = the
+   * full NEXORA-style orbital dashboard (always on once the lid opens and
+   * the screen ignites at ~0.50). The dashboard is static, so it repaints
+   * just once on the 0→1 transition. */
+  return p < 0.5 ? 0 : 1;
 }
 
 function roundRect(
@@ -745,6 +735,258 @@ function paintCosmicSwirl(
   ctx.restore();
 }
 
+/* NEXORA-STYLE ORBITAL DASHBOARD — the laptop's on-screen UI (reference 1).
+ * A full mission-control layout: top nav bar, left system-status sidebar, a
+ * central real-time orbital visualisation (reuses the cosmic-swirl), right-
+ * hand SYSTEM HEALTH / MISSION FEED / QUICK ACTIONS panels, and a bottom
+ * orbital-parameters strip. Static — painted once when the screen lights. */
+function paintOrbitalDashboard(
+  ctx: CanvasRenderingContext2D,
+  c: HTMLCanvasElement,
+) {
+  const W = c.width;
+  const H = c.height;
+  const CY = "#3fd0ff";
+  const OK = "#4be08a";
+  const DIM = "rgba(205,218,242,0.5)";
+  const TXT = "#e9f0ff";
+
+  /* deep navy base */
+  const bg = ctx.createLinearGradient(0, 0, 0, H);
+  bg.addColorStop(0, "#070c18");
+  bg.addColorStop(1, "#04070f");
+  ctx.fillStyle = bg;
+  ctx.fillRect(0, 0, W, H);
+
+  const T = (
+    s: string,
+    x: number,
+    y: number,
+    font: string,
+    color: string,
+    align: CanvasTextAlign = "left",
+    baseline: CanvasTextBaseline = "alphabetic",
+  ) => {
+    ctx.font = font;
+    ctx.fillStyle = color;
+    ctx.textAlign = align;
+    ctx.textBaseline = baseline;
+    ctx.fillText(s, x, y);
+  };
+  const panel = (x: number, y: number, w: number, h: number) => {
+    roundRect(ctx, x, y, w, h, 16);
+    ctx.fillStyle = "rgba(9,15,28,0.9)";
+    ctx.fill();
+    ctx.strokeStyle = "rgba(90,150,220,0.22)";
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+  };
+  const dot = (x: number, y: number, r: number, col: string) => {
+    ctx.fillStyle = col;
+    ctx.beginPath();
+    ctx.arc(x, y, r, 0, Math.PI * 2);
+    ctx.fill();
+  };
+
+  /* central orbital visualisation, clipped to the centre column */
+  ctx.save();
+  ctx.beginPath();
+  ctx.rect(372, 150, 1010, 880);
+  ctx.clip();
+  paintCosmicSwirl(ctx, c, 1.0);
+  ctx.restore();
+
+  /* centre labels over the viz */
+  T("ORBITAL OVERVIEW", 410, 224, `700 46px ${FONT_SANS}`, TXT);
+  dot(424, 258, 7, CY);
+  T("REAL-TIME VIEW", 442, 266, `600 20px ${FONT_MONO}`, CY);
+  T("CORE", 928, 432, `600 20px ${FONT_MONO}`, DIM);
+  T("ENERGY OUTPUT", 928, 462, `500 17px ${FONT_MONO}`, DIM);
+  T("98.7%", 928, 500, `700 30px ${FONT_SANS}`, CY);
+
+  /* ---------- TOP BAR ---------- */
+  ctx.fillStyle = "rgba(6,11,22,0.92)";
+  ctx.fillRect(0, 0, W, 104);
+  ctx.strokeStyle = "rgba(90,150,220,0.18)";
+  ctx.lineWidth = 1.5;
+  ctx.beginPath();
+  ctx.moveTo(0, 104);
+  ctx.lineTo(W, 104);
+  ctx.stroke();
+  ctx.strokeStyle = CY;
+  ctx.lineWidth = 3;
+  ctx.beginPath();
+  ctx.arc(80, 52, 16, 0, Math.PI * 2);
+  ctx.stroke();
+  dot(80, 52, 5, CY);
+  T("ALGORITHMX", 112, 63, `700 30px ${FONT_SANS}`, TXT);
+  const tabs = ["OVERVIEW", "SYSTEMS", "NETWORK", "ANALYTICS", "LOGS"];
+  let tx = 720;
+  tabs.forEach((tb, i) => {
+    const active = i === 0;
+    T(tb, tx, 60, `600 20px ${FONT_MONO}`, active ? TXT : DIM);
+    ctx.font = `600 20px ${FONT_MONO}`;
+    const w = ctx.measureText(tb).width;
+    if (active) {
+      ctx.fillStyle = CY;
+      ctx.fillRect(tx, 78, w, 3);
+    }
+    tx += w + 54;
+  });
+  T("SYS-07", W - 80, 60, `600 20px ${FONT_MONO}`, CY, "right");
+  dot(W - 196, 52, 9, CY);
+  ctx.strokeStyle = DIM;
+  ctx.lineWidth = 2.4;
+  ctx.beginPath();
+  ctx.arc(W - 300, 50, 9, 0, Math.PI * 2);
+  ctx.stroke();
+  ctx.beginPath();
+  ctx.moveTo(W - 293, 57);
+  ctx.lineTo(W - 285, 65);
+  ctx.stroke();
+  ctx.beginPath();
+  ctx.arc(W - 246, 50, 9, Math.PI, Math.PI * 2);
+  ctx.stroke();
+
+  /* ---------- LEFT SIDEBAR ---------- */
+  panel(36, 128, 312, 1064);
+  T("SYSTEM STATUS", 66, 186, `600 16px ${FONT_MONO}`, DIM);
+  T("100%", 66, 248, `700 56px ${FONT_SANS}`, CY);
+  T("OPERATIONAL", 66, 282, `600 15px ${FONT_MONO}`, DIM);
+  /* mini waveform */
+  ctx.strokeStyle = CY;
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  const wy = 320;
+  for (let i = 0; i <= 40; i++) {
+    const x = 66 + i * 6;
+    const yy = wy + Math.sin(i * 0.9) * (i % 7 === 0 ? 14 : 6);
+    if (i === 0) ctx.moveTo(x, yy);
+    else ctx.lineTo(x, yy);
+  }
+  ctx.stroke();
+  /* nav list */
+  const nav = [
+    "DASHBOARD",
+    "ORBITAL MAP",
+    "ASSETS",
+    "MISSIONS",
+    "CONFIGURATION",
+    "SECURITY",
+    "REPORTS",
+  ];
+  let ny = 392;
+  nav.forEach((n, i) => {
+    const active = i === 0;
+    if (active) {
+      roundRect(ctx, 52, ny - 30, 280, 52, 10);
+      ctx.fillStyle = "rgba(63,208,255,0.12)";
+      ctx.fill();
+      ctx.fillStyle = CY;
+      ctx.fillRect(52, ny - 30, 4, 52);
+    }
+    /* little square glyph */
+    ctx.strokeStyle = active ? CY : DIM;
+    ctx.lineWidth = 2;
+    ctx.strokeRect(72, ny - 12, 18, 18);
+    T(n, 108, ny + 4, `600 19px ${FONT_MONO}`, active ? TXT : DIM);
+    ny += 68;
+  });
+  /* system time */
+  T("SYSTEM TIME", 66, 1110, `600 15px ${FONT_MONO}`, DIM);
+  T("23:47:12", 66, 1152, `700 34px ${FONT_SANS}`, CY);
+  T("UTC −00:00", 66, 1180, `500 15px ${FONT_MONO}`, DIM);
+
+  /* ---------- RIGHT: SYSTEM HEALTH ---------- */
+  const rx = W - 36 - 600;
+  const rw = 600;
+  panel(rx, 128, rw, 420);
+  T("SYSTEM HEALTH", rx + 30, 184, `600 18px ${FONT_MONO}`, TXT);
+  T("×", rx + rw - 34, 188, `500 26px ${FONT_SANS}`, DIM, "right");
+  /* gauge */
+  const gx = rx + 130;
+  const gy = 330;
+  const gr = 76;
+  ctx.lineWidth = 16;
+  ctx.strokeStyle = "rgba(90,150,220,0.18)";
+  ctx.beginPath();
+  ctx.arc(gx, gy, gr, 0, Math.PI * 2);
+  ctx.stroke();
+  ctx.strokeStyle = CY;
+  ctx.lineCap = "round";
+  ctx.beginPath();
+  ctx.arc(gx, gy, gr, -Math.PI / 2, -Math.PI / 2 + Math.PI * 2 * 0.999);
+  ctx.stroke();
+  ctx.lineCap = "butt";
+  T("100%", gx, gy - 4, `700 36px ${FONT_SANS}`, TXT, "center", "middle");
+  T("OPTIMAL", gx, gy + 30, `600 14px ${FONT_MONO}`, DIM, "center", "middle");
+  /* metric list */
+  const metrics = ["POWER", "SHIELDS", "ENGINES", "COMMS"];
+  let my = 270;
+  metrics.forEach((m) => {
+    dot(gx + 130, my - 6, 5, CY);
+    T(m, gx + 150, my, `600 18px ${FONT_MONO}`, DIM);
+    T("100%", rx + rw - 30, my, `700 20px ${FONT_SANS}`, TXT, "right");
+    my += 44;
+  });
+
+  /* ---------- RIGHT: MISSION FEED ---------- */
+  panel(rx, 568, rw, 380);
+  T("MISSION FEED", rx + 30, 624, `600 18px ${FONT_MONO}`, TXT);
+  T("×", rx + rw - 34, 628, `500 26px ${FONT_SANS}`, DIM, "right");
+  const feed = [
+    ["23:46:58", "System check complete"],
+    ["23:46:31", "All nodes operational"],
+    ["23:46:02", "Data synchronization complete"],
+  ];
+  let fy = 690;
+  feed.forEach(([time, msg]) => {
+    dot(rx + 36, fy + 6, 5, OK);
+    T(time, rx + 56, fy, `600 16px ${FONT_MONO}`, CY);
+    T(msg, rx + 56, fy + 30, `500 18px ${FONT_SANS}`, "rgba(225,233,250,0.82)");
+    fy += 78;
+  });
+  T("VIEW ALL", rx + rw / 2, 922, `700 16px ${FONT_MONO}`, CY, "center");
+
+  /* ---------- RIGHT: QUICK ACTIONS ---------- */
+  panel(rx, 968, rw, 224);
+  T("QUICK ACTIONS", rx + 30, 1024, `600 18px ${FONT_MONO}`, TXT);
+  const actions = ["SCAN", "PING", "SYNC"];
+  const bw = (rw - 60 - 40) / 3;
+  actions.forEach((a, i) => {
+    const bx = rx + 30 + i * (bw + 20);
+    const by = 1060;
+    roundRect(ctx, bx, by, bw, 96, 12);
+    ctx.fillStyle = "rgba(63,208,255,0.08)";
+    ctx.fill();
+    ctx.strokeStyle = "rgba(63,208,255,0.3)";
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+    ctx.strokeStyle = CY;
+    ctx.lineWidth = 2.5;
+    ctx.beginPath();
+    ctx.arc(bx + bw / 2, by + 36, 13, 0, Math.PI * 2);
+    ctx.stroke();
+    T(a, bx + bw / 2, by + 78, `700 16px ${FONT_MONO}`, TXT, "center");
+  });
+
+  /* ---------- BOTTOM: ORBITAL PARAMETERS ---------- */
+  panel(372, 1064, 1010, 128);
+  T("ORBITAL PARAMETERS", 402, 1104, `600 15px ${FONT_MONO}`, DIM);
+  const params: [string, string][] = [
+    ["ALTITUDE", "35,786 km"],
+    ["VELOCITY", "7.67 km/s"],
+    ["INCLINATION", "98.2°"],
+    ["PERIOD", "92.7 min"],
+  ];
+  const pcw = 1010 / 4;
+  params.forEach(([k, v], i) => {
+    const px = 402 + i * pcw;
+    T(k, px, 1144, `500 15px ${FONT_MONO}`, DIM);
+    T(v, px, 1178, `700 26px ${FONT_SANS}`, TXT);
+  });
+}
+
 function paintScreen(canvas: HTMLCanvasElement, stage: number) {
   const ctx = canvas.getContext("2d");
   if (!ctx) return;
@@ -753,19 +995,10 @@ function paintScreen(canvas: HTMLCanvasElement, stage: number) {
   /* OLED pure black */
   ctx.fillStyle = "#000000";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
-  /* Cosmic-swirl wallpaper behind everything. Full strength on the
-   * dormant/boot stages (it IS the screen then), pushed back under the
-   * dashboard stages so the UI text stays legible on top of it. */
-  const swirlIntensity = stage === 0 ? 1 : stage <= 6 ? 0.85 : 0.5;
-  paintCosmicSwirl(ctx, canvas, swirlIntensity);
-  if (stage >= 7) {
-    /* Dark scrim so the dashboards read cleanly over the wallpaper */
-    ctx.fillStyle = "rgba(2,6,16,0.5)";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-  }
   if (stage === 0) {
-    /* Dormant: the swirl wallpaper plus a tiny power indicator so the
-     * screen reads as an idle desktop, not a broken display. */
+    /* Dormant (lid closed): a dim orbital wallpaper + a tiny power dot so
+     * the screen reads as an idle desktop, not a broken display. */
+    paintCosmicSwirl(ctx, canvas, 0.5);
     ctx.fillStyle = "rgba(0,245,255,0.55)";
     ctx.shadowColor = "rgba(0,245,255,0.9)";
     ctx.shadowBlur = 24;
@@ -775,15 +1008,8 @@ function paintScreen(canvas: HTMLCanvasElement, stage: number) {
     ctx.shadowBlur = 0;
     return;
   }
-  /* Top cyan accent strip */
-  ctx.fillStyle = "rgba(0,245,255,0.08)";
-  ctx.fillRect(0, 0, canvas.width, 6);
-  paintTitleBar(ctx, canvas, stage);
-  if (stage >= 1 && stage <= 6) paintBootSequence(ctx, canvas, stage);
-  else if (stage === 7) paintStreamsDashboard(ctx, canvas);
-  else if (stage === 8) paintProjectsDashboard(ctx, canvas);
-  else paintReadyState(ctx, canvas);
-  paintBrandStrip(ctx, canvas);
+  /* Lit: the full orbital dashboard, always on. */
+  paintOrbitalDashboard(ctx, canvas);
 }
 
 interface LivingScreen {
@@ -1171,7 +1397,9 @@ function makeInstrumentPlateTexture(
   variant: "surface" | "soft" | "deep" = "surface",
 ): THREE.Texture | null {
   if (typeof document === "undefined") return null;
-  const S = 2048;
+  /* HD: the crisp top plate renders at 3072² so the orbital lines, stars and
+   * nebula stay sharp in the near field (parallax ghosts stay at 2048). */
+  const S = variant === "surface" ? 3072 : 2048;
   const c = document.createElement("canvas");
   c.width = c.height = S;
   const ctx = c.getContext("2d");
@@ -1195,13 +1423,22 @@ function makeInstrumentPlateTexture(
    * reticle. Deterministic (sine-hash) so SSR + reduced-motion bakes are
    * identical. */
 
-  /* central energy pool under the chassis — brighter blue-white core */
+  /* DEEP-SPACE NEBULA POOL under the chassis — a soft cyan core with an
+   * offset violet bloom (replaces the bright blue-white energy pool) so the
+   * ground reads as the same calm deep space as the rest of the page */
   if (!deep) {
-    const pool = ctx.createRadialGradient(cx, cy, 0, cx, cy, S * 0.24);
-    pool.addColorStop(0, soft ? "rgba(80,185,255,0.12)" : "rgba(130,212,255,0.3)");
-    pool.addColorStop(0.42, soft ? "rgba(40,130,255,0.05)" : "rgba(48,150,255,0.13)");
+    const cyA = soft ? 0.06 : 0.15;
+    const pool = ctx.createRadialGradient(cx, cy, 0, cx, cy, S * 0.32);
+    pool.addColorStop(0, `rgba(70,150,255,${cyA})`);
+    pool.addColorStop(0.42, `rgba(56,118,235,${cyA * 0.4})`);
     pool.addColorStop(1, "rgba(0,0,0,0)");
     ctx.fillStyle = pool;
+    ctx.fillRect(0, 0, S, S);
+    const vA = soft ? 0.05 : 0.12;
+    const vio = ctx.createRadialGradient(cx + S * 0.05, cy - S * 0.03, 0, cx + S * 0.05, cy - S * 0.03, S * 0.27);
+    vio.addColorStop(0, `rgba(150,110,255,${vA})`);
+    vio.addColorStop(1, "rgba(0,0,0,0)");
+    ctx.fillStyle = vio;
     ctx.fillRect(0, 0, S, S);
   }
 
@@ -1214,7 +1451,7 @@ function makeInstrumentPlateTexture(
     ctx.shadowBlur = 0;
   };
 
-  const N = deep ? 7 : soft ? 9 : 12;
+  const N = 0; // energy ribbons removed — deep-space floor (see star dusting below)
   const baseTilt = -0.18; // shared tilt so the outer bands read as a family
   for (let i = 0; i < N; i++) {
     const t = i / (N - 1);
@@ -1272,7 +1509,7 @@ function makeInstrumentPlateTexture(
   /* CROSS-FLOW STREAKS — a few long smooth sweeping light trails for the
    * "data in motion" read, kept subtle so they support, not clutter. */
   if (!deep) {
-    const streaks = soft ? 2 : 3;
+    const streaks = 0; // cross-flow streaks removed — deep-space floor
     for (let i = 0; i < streaks; i++) {
       const yy = cy + (hash(i * 13.1) - 0.5) * S * 0.5;
       const amp = S * (0.08 + hash(i * 6.3) * 0.1);
@@ -1288,14 +1525,242 @@ function makeInstrumentPlateTexture(
     }
   }
 
-  /* bright centre core glint (surface) */
+  /* ===================== HD DEEP-SPACE ENVIRONMENT =====================
+   * A real orbital star-map looking down into space: a multi-colour nebula
+   * with dust lanes + star-forming cores, a dense varied star field with
+   * bright diffraction-spike stars, fine ticked orbital rings, a reticle and
+   * haloed marker nodes. Deterministic (sine-hash). */
+  ctx.globalCompositeOperation = "lighter";
+
+  /* (1) NEBULA FIELD — many layered soft clouds in varied cosmic colours,
+   * clustered around an offset centre for an organic deep-space cloud */
+  if (!deep) {
+    const NCX = cx + S * 0.09;
+    const NCY = cy + S * 0.05;
+    const palette = [
+      [60, 120, 235], [96, 146, 255], [150, 110, 255],
+      [120, 78, 210], [66, 150, 230], [40, 196, 232],
+    ];
+    const nebN = soft ? 16 : 34;
+    for (let i = 0; i < nebN; i++) {
+      const a = hash(i * 1.3) * Math.PI * 2;
+      const rr = Math.pow(hash(i * 2.7), 0.7) * S * 0.36;
+      const ox = NCX + Math.cos(a) * rr;
+      const oy = NCY + Math.sin(a) * rr * 0.82;
+      const blob = S * (0.045 + hash(i * 3.9) * 0.13);
+      const col = palette[Math.floor(hash(i * 4.6) * palette.length) % palette.length];
+      const al = (soft ? 0.045 : 0.11) * (0.5 + hash(i * 5.5) * 0.7);
+      const g = ctx.createRadialGradient(ox, oy, 0, ox, oy, blob);
+      g.addColorStop(0, `rgba(${col[0]},${col[1]},${col[2]},${al})`);
+      g.addColorStop(0.5, `rgba(${col[0]},${col[1]},${col[2]},${al * 0.3})`);
+      g.addColorStop(1, "rgba(0,0,0,0)");
+      ctx.fillStyle = g;
+      ctx.fillRect(0, 0, S, S);
+    }
+    /* DUST LANES — carve dark filaments through the cloud for structure */
+    ctx.globalCompositeOperation = "destination-out";
+    for (let i = 0; i < (soft ? 6 : 13); i++) {
+      const a = hash(i * 8.1) * Math.PI * 2;
+      const rr = hash(i * 9.3) * S * 0.3;
+      const ox = NCX + Math.cos(a) * rr;
+      const oy = NCY + Math.sin(a) * rr * 0.8;
+      const blob = S * (0.03 + hash(i * 7.2) * 0.085);
+      const g = ctx.createRadialGradient(ox, oy, 0, ox, oy, blob);
+      g.addColorStop(0, `rgba(0,0,0,${0.16 + hash(i * 6.1) * 0.2})`);
+      g.addColorStop(1, "rgba(0,0,0,0)");
+      ctx.fillStyle = g;
+      ctx.fillRect(0, 0, S, S);
+    }
+    ctx.globalCompositeOperation = "lighter";
+    /* star-forming bright cores inside the nebula */
+    for (let i = 0; i < (soft ? 4 : 10); i++) {
+      const a = hash(i * 11.1) * Math.PI * 2;
+      const rr = hash(i * 12.3) * S * 0.2;
+      const ox = NCX + Math.cos(a) * rr;
+      const oy = NCY + Math.sin(a) * rr * 0.8;
+      const g = ctx.createRadialGradient(ox, oy, 0, ox, oy, S * 0.05);
+      g.addColorStop(0, "rgba(196,218,255,0.2)");
+      g.addColorStop(1, "rgba(120,160,255,0)");
+      ctx.fillStyle = g;
+      ctx.fillRect(0, 0, S, S);
+    }
+  }
+
+  /* (2) STAR FIELD — dense + varied size/brightness/colour (slightly
+   * centre-weighted), white-blue with warm + violet accents */
+  const starN = deep ? 170 : soft ? 300 : 560;
+  for (let i = 0; i < starN; i++) {
+    const ang = hash(i * 1.7) * Math.PI * 2;
+    const rr = Math.pow(hash(i * 3.3), 0.5) * Rmax;
+    const x = cx + Math.cos(ang) * rr;
+    const y = cy + Math.sin(ang) * rr;
+    const br = hash(i * 5.1);
+    const a = (0.08 + br * 0.45) * (soft ? 0.55 : deep ? 0.4 : 1);
+    const sz = (br > 0.97 ? 1.5 : 0.32 + br * 0.7) * (soft ? 1.2 : 1);
+    const ch = hash(i * 9.4);
+    const col = ch < 0.12 ? "255,212,172" : ch < 0.22 ? "192,165,255" : ch < 0.32 ? "172,210,255" : "210,226,255";
+    ctx.fillStyle = `rgba(${col},${a})`;
+    ctx.beginPath();
+    ctx.arc(x, y, sz, 0, Math.PI * 2);
+    ctx.fill();
+  }
+  /* bright HERO STARS — glow + 4-point diffraction spikes */
+  if (!deep) {
+    const heroN = soft ? 7 : 16;
+    for (let i = 0; i < heroN; i++) {
+      const ang = hash(i * 2.3 + 0.5) * Math.PI * 2;
+      const rr = Math.pow(hash(i * 4.1 + 0.3), 0.6) * Rmax * 0.92;
+      const x = cx + Math.cos(ang) * rr;
+      const y = cy + Math.sin(ang) * rr;
+      const warm = hash(i * 6.6) < 0.25;
+      const col = warm ? "255,222,182" : "206,228,255";
+      const a = (0.5 + hash(i * 7.7) * 0.4) * (soft ? 0.6 : 1);
+      const g = ctx.createRadialGradient(x, y, 0, x, y, 13);
+      g.addColorStop(0, `rgba(${col},${a})`);
+      g.addColorStop(1, `rgba(${col},0)`);
+      ctx.fillStyle = g;
+      ctx.beginPath();
+      ctx.arc(x, y, 13, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = `rgba(255,255,255,${a})`;
+      ctx.beginPath();
+      ctx.arc(x, y, 1.3, 0, Math.PI * 2);
+      ctx.fill();
+      const sp = 8 + hash(i * 8.8) * 10;
+      ctx.strokeStyle = `rgba(${col},${a * 0.5})`;
+      ctx.lineWidth = 0.9;
+      ctx.beginPath();
+      ctx.moveTo(x - sp, y);
+      ctx.lineTo(x + sp, y);
+      ctx.moveTo(x, y - sp);
+      ctx.lineTo(x, y + sp);
+      ctx.stroke();
+    }
+  }
+
+  /* (3) ORBITAL RINGS — fine crisp lines + subtle glow + tick marks */
+  const ringN = deep ? 5 : soft ? 7 : 10;
+  for (let i = 0; i < ringN; i++) {
+    const r = Rmax * (0.1 + (i / ringN) * 0.95);
+    const a = (soft ? 0.08 : deep ? 0.05 : 0.14) * (1 - (i / ringN) * 0.3);
+    ctx.strokeStyle = `rgba(132,202,255,${a})`;
+    ctx.lineWidth = soft ? 2.2 : 1.1;
+    glow(soft ? 7 : 4, "rgba(90,180,255,0.6)");
+    ctx.beginPath();
+    ctx.arc(cx, cy, r, 0, Math.PI * 2);
+    ctx.stroke();
+    noGlow();
+    if (!soft && !deep && i % 3 === 1) {
+      const ticks = 60;
+      ctx.strokeStyle = `rgba(132,202,255,${a * 0.7})`;
+      ctx.lineWidth = 0.8;
+      for (let k = 0; k < ticks; k++) {
+        const ta = (k / ticks) * Math.PI * 2;
+        ctx.beginPath();
+        ctx.moveTo(cx + Math.cos(ta) * (r - 4), cy + Math.sin(ta) * (r - 4));
+        ctx.lineTo(cx + Math.cos(ta) * (r + 4), cy + Math.sin(ta) * (r + 4));
+        ctx.stroke();
+      }
+    }
+  }
+
+  /* (4) RETICLE AXES through the centre */
+  if (!deep) {
+    ctx.strokeStyle = `rgba(132,202,255,${soft ? 0.05 : 0.1})`;
+    ctx.lineWidth = soft ? 2 : 0.9;
+    glow(4, "rgba(90,180,255,0.5)");
+    for (const ang of [Math.PI / 2, 0.3, Math.PI / 2 + 1.2]) {
+      ctx.beginPath();
+      ctx.moveTo(cx - Math.cos(ang) * Rmax, cy - Math.sin(ang) * Rmax);
+      ctx.lineTo(cx + Math.cos(ang) * Rmax, cy + Math.sin(ang) * Rmax);
+      ctx.stroke();
+    }
+    noGlow();
+  }
+
+  /* (5) MARKER OBJECTS — the ring markers are now realistic bright STARS
+   * (chromatic glow + diffraction spikes) and a couple of small distant
+   * SPIRAL GALAXIES, instead of plain dots. */
   if (!soft && !deep) {
-    const core = ctx.createRadialGradient(cx, cy, 0, cx, cy, S * 0.06);
-    core.addColorStop(0, "rgba(184,240,255,0.6)");
-    core.addColorStop(0.5, "rgba(96,194,255,0.2)");
-    core.addColorStop(1, "rgba(96,194,255,0)");
-    ctx.fillStyle = core;
-    ctx.fillRect(0, 0, S, S);
+    const drawStar = (x: number, y: number, s: number, rgb: string) => {
+      const g = ctx.createRadialGradient(x, y, 0, x, y, s * 3);
+      g.addColorStop(0, "rgba(255,255,255,0.95)");
+      g.addColorStop(0.16, `rgba(${rgb},0.55)`);
+      g.addColorStop(0.5, `rgba(${rgb},0.16)`);
+      g.addColorStop(1, `rgba(${rgb},0)`);
+      ctx.fillStyle = g;
+      ctx.beginPath();
+      ctx.arc(x, y, s * 3, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.lineCap = "round";
+      const spike = (ang: number, len: number, lw: number, a: number) => {
+        const ex = x + Math.cos(ang) * len;
+        const ey = y + Math.sin(ang) * len;
+        const sg = ctx.createLinearGradient(x, y, ex, ey);
+        sg.addColorStop(0, `rgba(236,248,255,${a})`);
+        sg.addColorStop(1, `rgba(${rgb},0)`);
+        ctx.strokeStyle = sg;
+        ctx.lineWidth = lw;
+        ctx.beginPath();
+        ctx.moveTo(x, y);
+        ctx.lineTo(ex, ey);
+        ctx.stroke();
+      };
+      for (let k = 0; k < 4; k++) spike((k * Math.PI) / 2, s * 6, 1.6, 0.7);
+      for (let k = 0; k < 4; k++) spike((k * Math.PI) / 2 + Math.PI / 4, s * 2.6, 1, 0.3);
+      ctx.fillStyle = "rgba(255,255,255,0.98)";
+      ctx.beginPath();
+      ctx.arc(x, y, s * 0.6, 0, Math.PI * 2);
+      ctx.fill();
+    };
+    const drawGalaxy = (x: number, y: number, s: number, tilt: number, rgb: string) => {
+      ctx.save();
+      ctx.translate(x, y);
+      ctx.rotate(tilt);
+      ctx.scale(1, 0.42);
+      const g = ctx.createRadialGradient(0, 0, 0, 0, 0, s * 2.4);
+      g.addColorStop(0, "rgba(242,247,255,0.55)");
+      g.addColorStop(0.3, `rgba(${rgb},0.22)`);
+      g.addColorStop(1, `rgba(${rgb},0)`);
+      ctx.fillStyle = g;
+      ctx.beginPath();
+      ctx.arc(0, 0, s * 2.4, 0, Math.PI * 2);
+      ctx.fill();
+      for (let arm = 0; arm < 2; arm++) {
+        const base = arm * Math.PI;
+        for (let t = 0; t < 44; t++) {
+          const tt = t / 44;
+          const ang = base + tt * Math.PI * 2.6;
+          const rad = s * 0.3 + tt * s * 2.1;
+          ctx.fillStyle = `rgba(212,230,255,${(1 - tt) * 0.5})`;
+          ctx.beginPath();
+          ctx.arc(Math.cos(ang) * rad, Math.sin(ang) * rad, (1 - tt) * 1.3 + 0.3, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+      ctx.restore();
+      const cg = ctx.createRadialGradient(x, y, 0, x, y, s * 0.9);
+      cg.addColorStop(0, "rgba(255,255,255,0.95)");
+      cg.addColorStop(1, `rgba(${rgb},0)`);
+      ctx.fillStyle = cg;
+      ctx.beginPath();
+      ctx.arc(x, y, s * 0.9, 0, Math.PI * 2);
+      ctx.fill();
+    };
+    const markers = [
+      { ri: 7, ang: 2.4, kind: "star", rgb: "150,205,255", s: 12, tilt: 0 },
+      { ri: 8, ang: -0.5, kind: "galaxy", rgb: "150,180,255", s: 22, tilt: -0.5 },
+      { ri: 6, ang: 1.5, kind: "star", rgb: "200,216,255", s: 10, tilt: 0 },
+      { ri: 9, ang: 3.7, kind: "galaxy", rgb: "176,152,255", s: 18, tilt: 0.7 },
+      { ri: 5, ang: 0.55, kind: "star", rgb: "255,220,182", s: 9, tilt: 0 },
+    ];
+    for (const mk of markers) {
+      const r = Rmax * (0.1 + (mk.ri / ringN) * 0.95);
+      const x = cx + Math.cos(mk.ang) * r;
+      const y = cy + Math.sin(mk.ang) * r;
+      if (mk.kind === "galaxy") drawGalaxy(x, y, mk.s, mk.tilt, mk.rgb);
+      else drawStar(x, y, mk.s, mk.rgb);
+    }
   }
 
   /* near-camera fade */
@@ -1313,6 +1778,125 @@ function makeInstrumentPlateTexture(
   const tex = new THREE.CanvasTexture(c);
   tex.wrapS = THREE.ClampToEdgeWrapping;
   tex.wrapT = THREE.ClampToEdgeWrapping;
+  tex.colorSpace = THREE.SRGBColorSpace;
+  tuneGroundTexture(tex);
+  tex.needsUpdate = true;
+  return tex;
+}
+
+/* SHOCKWAVE — a textured energy wavefront (replaces the flat ring): a hot
+ * white-cyan leading edge with a soft trailing glow, fine radial filaments and
+ * sparkle along the front. Mapped onto an expanding plane so the whole
+ * structure scales as one cinematic blast ring. Additive. */
+function makeShockwaveTexture(): THREE.Texture | null {
+  if (typeof document === "undefined") return null;
+  const S = 512;
+  const c = document.createElement("canvas");
+  c.width = c.height = S;
+  const ctx = c.getContext("2d");
+  if (!ctx) return null;
+  ctx.clearRect(0, 0, S, S);
+  const cx = S / 2;
+  const cy = S / 2;
+  const R = S / 2;
+  const hash = (n: number) => {
+    const s = Math.sin(n * 127.1) * 43758.5453;
+    return s - Math.floor(s);
+  };
+  const g = ctx.createRadialGradient(cx, cy, 0, cx, cy, R);
+  g.addColorStop(0, "rgba(40,170,255,0)");
+  g.addColorStop(0.5, "rgba(70,200,255,0.04)");
+  g.addColorStop(0.74, "rgba(120,225,255,0.22)");
+  g.addColorStop(0.87, "rgba(150,235,255,0.55)");
+  g.addColorStop(0.93, "rgba(232,250,255,0.95)");
+  g.addColorStop(0.97, "rgba(120,215,255,0.3)");
+  g.addColorStop(1, "rgba(120,215,255,0)");
+  ctx.fillStyle = g;
+  ctx.beginPath();
+  ctx.arc(cx, cy, R, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.globalCompositeOperation = "lighter";
+  ctx.lineCap = "round";
+  const spokes = 130;
+  for (let i = 0; i < spokes; i++) {
+    const a = (i / spokes) * Math.PI * 2 + hash(i) * 0.05;
+    const len = (0.04 + hash(i * 3.1) * 0.12) * R;
+    const r1 = R * (0.86 + hash(i * 5.3) * 0.08);
+    const r0 = r1 - len;
+    ctx.strokeStyle = `rgba(196,242,255,${0.05 + hash(i * 7.7) * 0.18})`;
+    ctx.lineWidth = 1 + hash(i * 2.2) * 1.5;
+    ctx.beginPath();
+    ctx.moveTo(cx + Math.cos(a) * r0, cy + Math.sin(a) * r0);
+    ctx.lineTo(cx + Math.cos(a) * r1, cy + Math.sin(a) * r1);
+    ctx.stroke();
+  }
+  for (let i = 0; i < 70; i++) {
+    const a = hash(i * 1.7) * Math.PI * 2;
+    const r = R * (0.88 + hash(i * 4.4) * 0.06);
+    ctx.fillStyle = `rgba(238,251,255,${0.4 + hash(i * 9) * 0.5})`;
+    ctx.beginPath();
+    ctx.arc(cx + Math.cos(a) * r, cy + Math.sin(a) * r, 0.8 + hash(i * 6) * 1.4, 0, Math.PI * 2);
+    ctx.fill();
+  }
+  ctx.globalCompositeOperation = "source-over";
+  const tex = new THREE.CanvasTexture(c);
+  tex.colorSpace = THREE.SRGBColorSpace;
+  tuneGroundTexture(tex);
+  tex.needsUpdate = true;
+  return tex;
+}
+
+/* FLASH BURST — the central "bang": a hot core bloom with long diffraction
+ * rays + a halo ring (replaces the plain round glow). Additive. */
+function makeFlashBurstTexture(): THREE.Texture | null {
+  if (typeof document === "undefined") return null;
+  const S = 512;
+  const c = document.createElement("canvas");
+  c.width = c.height = S;
+  const ctx = c.getContext("2d");
+  if (!ctx) return null;
+  ctx.clearRect(0, 0, S, S);
+  const cx = S / 2;
+  const cy = S / 2;
+  const R = S / 2;
+  const hash = (n: number) => {
+    const s = Math.sin(n * 91.3) * 43758.5453;
+    return s - Math.floor(s);
+  };
+  ctx.globalCompositeOperation = "lighter";
+  const g = ctx.createRadialGradient(cx, cy, 0, cx, cy, R * 0.55);
+  g.addColorStop(0, "rgba(255,255,255,0.95)");
+  g.addColorStop(0.25, "rgba(192,236,255,0.5)");
+  g.addColorStop(0.6, "rgba(90,200,255,0.12)");
+  g.addColorStop(1, "rgba(90,200,255,0)");
+  ctx.fillStyle = g;
+  ctx.beginPath();
+  ctx.arc(cx, cy, R * 0.55, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.lineCap = "round";
+  const rays = 16;
+  for (let i = 0; i < rays; i++) {
+    const a = (i / rays) * Math.PI * 2;
+    const main = i % 4 === 0;
+    const len = (main ? 0.96 : 0.4 + hash(i * 3) * 0.3) * R;
+    const al = main ? 0.6 : 0.18 + hash(i * 5) * 0.12;
+    const grad = ctx.createLinearGradient(cx, cy, cx + Math.cos(a) * len, cy + Math.sin(a) * len);
+    grad.addColorStop(0, `rgba(238,251,255,${al})`);
+    grad.addColorStop(1, "rgba(120,210,255,0)");
+    ctx.strokeStyle = grad;
+    ctx.lineWidth = main ? 3 : 1.2;
+    ctx.beginPath();
+    ctx.moveTo(cx, cy);
+    ctx.lineTo(cx + Math.cos(a) * len, cy + Math.sin(a) * len);
+    ctx.stroke();
+  }
+  ctx.strokeStyle = "rgba(192,240,255,0.25)";
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.arc(cx, cy, R * 0.5, 0, Math.PI * 2);
+  ctx.stroke();
+  ctx.globalCompositeOperation = "source-over";
+  const tex = new THREE.CanvasTexture(c);
   tex.colorSpace = THREE.SRGBColorSpace;
   tuneGroundTexture(tex);
   tex.needsUpdate = true;
@@ -1549,151 +2133,252 @@ function makeFogHazeTexture(): THREE.Texture | null {
  *  stay within the laptop silhouette so they never crash into the
  *  headline column on the left of the frame. */
 
-const SLAB_STREAM_ICONS: ReadonlyArray<string> = ["⌬", "◐", "▢"];
+const SLAB_STREAM_ICONS: ReadonlyArray<string> = ["⛨", "❖", "▣"];
+
+/* Per-card HUD metadata (reference 2): category label, blurb, a progress
+ * bar value, level and duration. Indexed by the STREAMS array so the right
+ * data lands on whichever streams the hero surfaces. */
+type SlabMeta = {
+  category: string;
+  desc: string;
+  progress: number;
+  level: string;
+  duration: string;
+};
+const SLAB_CARD_META: ReadonlyArray<SlabMeta> = [
+  { category: "CYBER SECURITY", desc: "Learn to protect systems, analyze threats, and secure the digital world.", progress: 72, level: "Intermediate", duration: "12 Weeks" },
+  { category: "GAME DEVELOPMENT", desc: "Design mechanics, animate pixel art, and ship a game people play.", progress: 40, level: "Beginner", duration: "14 Weeks" },
+  { category: "AI & MACHINE LEARNING", desc: "Master AI foundations, machine learning, and build smart systems.", progress: 48, level: "Advanced", duration: "16 Weeks" },
+  { category: "APP DEVELOPMENT", desc: "Build production-ready apps and solve real-world problems.", progress: 30, level: "Advanced", duration: "10 Weeks" },
+  { category: "ENTREPRENEURSHIP", desc: "Validate ideas, craft a pitch, and launch a real business.", progress: 24, level: "Intermediate", duration: "12 Weeks" },
+  { category: "ROBOTICS", desc: "Wire sensors and motors, then code robots that move.", progress: 20, level: "Beginner", duration: "12 Weeks" },
+];
 
 function makeSlabTexture(
   stream: (typeof STREAMS)[number],
   icon: string,
+  meta: SlabMeta,
 ): THREE.Texture | null {
   if (typeof document === "undefined") return null;
   const c = document.createElement("canvas");
-  c.width = 384;
-  c.height = 512;
+  c.width = 420;
+  c.height = 540;
   const ctx = c.getContext("2d");
   if (!ctx) return null;
   ctx.clearRect(0, 0, c.width, c.height);
   ctx.imageSmoothingEnabled = true;
   ctx.imageSmoothingQuality = "high";
+  const W = c.width;
+  const H = c.height;
+  const PAD = 30;
 
   const accent = stream.color;
-  const accentRgb = hexToRgbStr(accent);
+  const rgb = hexToRgbStr(accent);
 
-  /* Dark glass panel — slightly translucent so the screen behind
-   *  still bleeds through faintly. */
-  const bgGrad = ctx.createLinearGradient(0, 0, 0, c.height);
-  bgGrad.addColorStop(0, "rgba(6,9,18,0.80)");
-  bgGrad.addColorStop(1, "rgba(2,4,10,0.84)");
+  /* Dark glass panel with a faint accent wash from the top corner */
+  const bgGrad = ctx.createLinearGradient(0, 0, 0, H);
+  bgGrad.addColorStop(0, "rgba(8,12,22,0.9)");
+  bgGrad.addColorStop(1, "rgba(3,5,12,0.92)");
   ctx.fillStyle = bgGrad;
-  roundRect(ctx, 0, 0, c.width, c.height, 18);
+  roundRect(ctx, 0, 0, W, H, 20);
   ctx.fill();
+  const wash = ctx.createRadialGradient(W * 0.5, 80, 20, W * 0.5, 80, W * 0.9);
+  wash.addColorStop(0, `rgba(${rgb},0.16)`);
+  wash.addColorStop(1, `rgba(${rgb},0)`);
+  ctx.fillStyle = wash;
+  ctx.fillRect(0, 0, W, H);
 
-  /* Inner accent halo behind the outcome text */
-  const halo = ctx.createRadialGradient(
-    c.width / 2, c.height * 0.42, 14,
-    c.width / 2, c.height * 0.42, c.width * 0.7,
-  );
-  halo.addColorStop(0, `rgba(${accentRgb},0.28)`);
-  halo.addColorStop(0.55, `rgba(${accentRgb},0.06)`);
-  halo.addColorStop(1, `rgba(${accentRgb},0)`);
-  ctx.fillStyle = halo;
-  ctx.fillRect(0, 0, c.width, c.height);
-
-  /* Accent rim */
+  /* Glowing accent border */
   ctx.lineWidth = 2;
-  ctx.strokeStyle = `rgba(${accentRgb},0.85)`;
+  ctx.strokeStyle = `rgba(${rgb},0.85)`;
   ctx.shadowColor = accent;
-  ctx.shadowBlur = 14;
-  roundRect(ctx, 3, 3, c.width - 6, c.height - 6, 16);
+  ctx.shadowBlur = 18;
+  roundRect(ctx, 4, 4, W - 8, H - 8, 17);
   ctx.stroke();
   ctx.shadowBlur = 0;
 
-  /* Corner brackets (JARVIS tell) */
+  /* Corner brackets on all four corners (HUD tell) */
+  ctx.strokeStyle = accent;
+  ctx.lineWidth = 2.5;
+  ctx.shadowColor = accent;
+  ctx.shadowBlur = 8;
+  const b = 26;
+  const m = 16;
+  ctx.beginPath();
+  ctx.moveTo(m, m + b); ctx.lineTo(m, m); ctx.lineTo(m + b, m);
+  ctx.moveTo(W - m - b, m); ctx.lineTo(W - m, m); ctx.lineTo(W - m, m + b);
+  ctx.moveTo(m, H - m - b); ctx.lineTo(m, H - m); ctx.lineTo(m + b, H - m);
+  ctx.moveTo(W - m - b, H - m); ctx.lineTo(W - m, H - m); ctx.lineTo(W - m, H - m - b);
+  ctx.stroke();
+  ctx.shadowBlur = 0;
+
+  /* Hexagon icon (top-left) with a short circuit-line tail */
+  const hx = PAD + 26;
+  const hy = 70;
+  const hr = 26;
+  const hexPath = (cx: number, cy: number, r: number) => {
+    ctx.beginPath();
+    for (let i = 0; i < 6; i++) {
+      const a = -Math.PI / 2 + i * (Math.PI / 3);
+      const x = cx + Math.cos(a) * r;
+      const y = cy + Math.sin(a) * r;
+      if (i === 0) ctx.moveTo(x, y);
+      else ctx.lineTo(x, y);
+    }
+    ctx.closePath();
+  };
+  hexPath(hx, hy, hr);
+  ctx.fillStyle = `rgba(${rgb},0.14)`;
+  ctx.fill();
   ctx.strokeStyle = accent;
   ctx.lineWidth = 2;
-  ctx.beginPath();
-  ctx.moveTo(20, 40); ctx.lineTo(20, 20); ctx.lineTo(40, 20);
-  ctx.moveTo(c.width - 40, c.height - 20); ctx.lineTo(c.width - 20, c.height - 20); ctx.lineTo(c.width - 20, c.height - 40);
-  ctx.stroke();
-
-  /* Icon top */
-  ctx.font = `bold 46px ${FONT_SANS}`;
-  ctx.fillStyle = accent;
   ctx.shadowColor = accent;
-  ctx.shadowBlur = 14;
-  ctx.textAlign = "left";
-  ctx.textBaseline = "alphabetic";
-  ctx.fillText(icon, 28, 80);
+  ctx.shadowBlur = 12;
+  ctx.stroke();
   ctx.shadowBlur = 0;
+  ctx.font = `600 24px ${FONT_SANS}`;
+  ctx.fillStyle = accent;
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  ctx.fillText(icon, hx, hy + 1);
+  /* circuit tail */
+  ctx.strokeStyle = `rgba(${rgb},0.5)`;
+  ctx.lineWidth = 1.6;
+  ctx.beginPath();
+  ctx.moveTo(hx + hr + 4, hy);
+  ctx.lineTo(hx + hr + 40, hy);
+  ctx.lineTo(hx + hr + 52, hy - 12);
+  ctx.stroke();
+  ctx.fillStyle = accent;
+  ctx.beginPath();
+  ctx.arc(hx + hr + 52, hy - 12, 3, 0, Math.PI * 2);
+  ctx.fill();
 
-  /* Outcome — 2-line balanced split with auto-fit font size */
+  /* Status badge (top-right) — filled for LIVE, outlined for COMING */
+  const isLive = stream.status === "LIVE";
+  const badge = isLive ? "LIVE NOW" : `COMING ${stream.status}`;
+  ctx.font = `700 14px ${FONT_MONO}`;
+  ctx.textAlign = "left";
+  ctx.textBaseline = "middle";
+  const dotW = isLive ? 16 : 0;
+  const bw = ctx.measureText(badge).width + 24 + dotW;
+  const bh = 30;
+  const bx = W - PAD - bw;
+  const by = 56;
+  roundRect(ctx, bx, by, bw, bh, 15);
+  if (isLive) {
+    ctx.fillStyle = `rgba(${rgb},0.18)`;
+    ctx.fill();
+  }
+  ctx.strokeStyle = `rgba(${rgb},0.7)`;
+  ctx.lineWidth = 1.4;
+  ctx.stroke();
+  let btx = bx + 14;
+  if (isLive) {
+    ctx.fillStyle = accent;
+    ctx.shadowColor = accent;
+    ctx.shadowBlur = 8;
+    ctx.beginPath();
+    ctx.arc(btx, by + bh / 2, 4, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.shadowBlur = 0;
+    btx += dotW;
+  }
+  ctx.fillStyle = accent;
+  ctx.fillText(badge, btx, by + bh / 2 + 1);
+
+  /* Title (the outcome) — 2-line balanced split, auto-fit */
   const words = stream.outcome.split(" ");
   let lines: string[];
   if (words.length <= 2) {
-    lines = words.length === 1 ? [words[0]] : words;
+    lines = words;
   } else {
-    ctx.font = `900 56px ${FONT_SANS}`;
+    ctx.font = `800 40px ${FONT_SANS}`;
     let bestSplit = Math.ceil(words.length / 2);
     let bestDelta = Infinity;
     for (let i = 1; i < words.length; i++) {
       const a = words.slice(0, i).join(" ");
-      const b = words.slice(i).join(" ");
-      const d = Math.abs(ctx.measureText(a).width - ctx.measureText(b).width);
+      const bb = words.slice(i).join(" ");
+      const d = Math.abs(ctx.measureText(a).width - ctx.measureText(bb).width);
       if (d < bestDelta) { bestDelta = d; bestSplit = i; }
     }
-    lines = [
-      words.slice(0, bestSplit).join(" "),
-      words.slice(bestSplit).join(" "),
-    ];
+    lines = [words.slice(0, bestSplit).join(" "), words.slice(bestSplit).join(" ")];
   }
-  let size = 54;
-  const maxW = c.width - 56;
-  while (
-    size > 24 &&
-    lines.some((ln) => {
-      ctx.font = `900 ${size}px ${FONT_SANS}`;
-      return ctx.measureText(ln).width > maxW;
-    })
-  ) {
-    size -= 2;
-  }
-  ctx.font = `900 ${size}px ${FONT_SANS}`;
+  let size = 38;
+  const maxW = W - PAD * 2;
+  while (size > 22 && lines.some((ln) => {
+    ctx.font = `800 ${size}px ${FONT_SANS}`;
+    return ctx.measureText(ln).width > maxW;
+  })) size -= 2;
+  ctx.font = `800 ${size}px ${FONT_SANS}`;
   ctx.fillStyle = "#ffffff";
-  ctx.shadowColor = `rgba(${accentRgb},0.55)`;
-  ctx.shadowBlur = 16;
   ctx.textAlign = "left";
-  const lineH = size * 1.06;
-  const blockTop = 140;
-  const blockBot = c.height - 130;
-  const blockH = lines.length * lineH;
-  const startY = blockTop + (blockBot - blockTop - blockH) / 2 + size * 0.82;
-  lines.forEach((ln, i) => {
-    ctx.fillText(ln, 28, startY + i * lineH);
+  ctx.textBaseline = "alphabetic";
+  const titleH = size * 1.08;
+  let ty = 168;
+  lines.forEach((ln, i) => ctx.fillText(ln, PAD, ty + i * titleH));
+  ty += (lines.length - 1) * titleH;
+
+  /* Description — word-wrapped, dim */
+  const wrap = (text: string, mw: number, font: string) => {
+    ctx.font = font;
+    const ws = text.split(" ");
+    const out: string[] = [];
+    let line = "";
+    for (const w of ws) {
+      const test = line ? `${line} ${w}` : w;
+      if (ctx.measureText(test).width > mw && line) {
+        out.push(line);
+        line = w;
+      } else line = test;
+    }
+    if (line) out.push(line);
+    return out;
+  };
+  const descFont = `500 18px ${FONT_SANS}`;
+  const descLines = wrap(meta.desc, maxW, descFont).slice(0, 3);
+  ctx.font = descFont;
+  ctx.fillStyle = "rgba(220,228,245,0.62)";
+  let dy = ty + 44;
+  descLines.forEach((ln) => {
+    ctx.fillText(ln, PAD, dy);
+    dy += 27;
   });
-  ctx.shadowBlur = 0;
 
-  /* Divider */
-  ctx.fillStyle = `rgba(${accentRgb},0.32)`;
-  ctx.fillRect(28, c.height - 108, c.width - 56, 1);
-
-  /* Stream name + age sub */
-  ctx.font = `bold 17px ${FONT_MONO}`;
+  /* Progress bar */
+  const py = H - 150;
+  ctx.font = `600 13px ${FONT_MONO}`;
+  ctx.fillStyle = "rgba(220,228,245,0.5)";
+  ctx.textAlign = "left";
+  ctx.fillText("PROGRESS", PAD, py);
+  ctx.font = `700 18px ${FONT_SANS}`;
   ctx.fillStyle = accent;
-  ctx.shadowColor = accent;
-  ctx.shadowBlur = 8;
-  ctx.fillText(stream.name, 28, c.height - 78);
-  ctx.shadowBlur = 0;
-  ctx.font = `500 13px ${FONT_MONO}`;
-  ctx.fillStyle = "rgba(232,237,255,0.55)";
-  ctx.fillText(`AGES ${stream.age}  ·  ${stream.project}`, 28, c.height - 56);
-
-  /* Status pill bottom-right */
-  ctx.font = `bold 13px ${FONT_MONO}`;
-  const sw = ctx.measureText(stream.status).width;
-  const spad = 11;
-  const sbw = sw + spad * 2;
-  const sbh = 22;
-  const sbx = c.width - 28 - sbw;
-  const sby = c.height - 42;
+  ctx.textAlign = "right";
+  ctx.fillText(`${meta.progress}%`, W - PAD, py + 2);
+  const barY = py + 16;
+  const barW = W - PAD * 2;
+  ctx.fillStyle = "rgba(230,238,255,0.1)";
+  roundRect(ctx, PAD, barY, barW, 8, 4);
+  ctx.fill();
   ctx.fillStyle = accent;
   ctx.shadowColor = accent;
   ctx.shadowBlur = 10;
-  roundRect(ctx, sbx, sby, sbw, sbh, 5);
+  roundRect(ctx, PAD, barY, (barW * meta.progress) / 100, 8, 4);
   ctx.fill();
   ctx.shadowBlur = 0;
-  ctx.fillStyle = "#04050d";
-  ctx.textAlign = "center";
-  ctx.textBaseline = "middle";
-  ctx.fillText(stream.status, sbx + sbw / 2, sby + sbh / 2);
+
+  /* Divider + LEVEL / DURATION footer */
+  ctx.fillStyle = `rgba(${rgb},0.22)`;
+  ctx.fillRect(PAD, H - 96, barW, 1);
+  ctx.textAlign = "left";
+  ctx.font = `600 12px ${FONT_MONO}`;
+  ctx.fillStyle = "rgba(220,228,245,0.5)";
+  ctx.fillText("LEVEL", PAD, H - 64);
+  ctx.fillText("DURATION", W / 2 + 6, H - 64);
+  ctx.font = `600 19px ${FONT_SANS}`;
+  ctx.fillStyle = "#eef3ff";
+  ctx.fillText(meta.level, PAD, H - 36);
+  ctx.fillText(meta.duration, W / 2 + 6, H - 36);
 
   const out = new THREE.CanvasTexture(c);
   out.colorSpace = THREE.SRGBColorSpace;
@@ -2011,36 +2696,16 @@ export default function LaptopScene({ progress, reducedMotion = false, capture =
     if (typeof window === "undefined") return false;
     const coarse = window.matchMedia("(pointer: coarse)").matches;
     const fewCores = (navigator.hardwareConcurrency || 8) <= 4;
-    /* GPU class by renderer string. Core count is a poor proxy: a 16-core
-     * laptop with an integrated Intel Iris Xe was getting the full post
-     * stack and rendering the hero at ~4fps. Integrated/software GPUs go
-     * onto the lighter tier (and HeroCinematic also renders them as a
-     * static final frame). */
-    return coarse || fewCores || isWeakGpu();
+    return coarse || fewCores;
   });
-  /* Quality tier. The post stack (N8AO ambient occlusion + Bloom) is the
-   * dominant per-frame GPU cost — on integrated GPUs it drops the hero to
-   * single-digit fps. The low-power tier (now incl. integrated GPUs above)
-   * caps DPR low, disables MSAA, and drops N8AO + film grain in the
-   * EffectComposer below; the laptop still renders with Bloom + SMAA edges,
-   * just without the most expensive contact-shadow pass. Capable discrete
-   * GPUs keep the full cinematic stack. */
-  /* The quality cuts only apply when the scene is actually ANIMATING on
-   * weak hardware. A static hero (reduced-motion / integrated GPU) renders
-   * only a few warm-up frames then freezes, so its one-off cost is
-   * irrelevant — it gets the FULL stack (N8AO grounds the lighting so the
-   * final climax frame doesn't overexpose to white). */
-  const liteRender = lowPower && !reducedMotion && !capture;
-  const dprRange: [number, number] = liteRender ? [1, 1.5] : [1.5, 2];
-  const msaa = liteRender ? 0 : 4;
+  const dprRange: [number, number] = lowPower ? [1.25, 2] : [1.5, 2.5];
+  const msaa = lowPower ? 2 : 6;
 
-  /* Pause the WebGL render loop whenever the hero has scrolled out of
-   * view. The scene's post stack (ambient occlusion + bloom) is far too
-   * heavy to keep rendering full-cost while the user is reading the
-   * sections below — that off-screen cost is what made the testimonial
-   * / logo marquees stutter. IntersectionObserver flips frameloop to
-   * "never" (zero GPU) once the pinned hero is gone, and back to
-   * "always" when it returns. */
+  /* Pause the live render loop when the hero is scrolled out of view, so
+   * the heavy scene doesn't keep burning GPU while the user reads the
+   * sections below. (Integrated GPUs use the pre-rendered scrub instead and
+   * never mount this; this benefits capable GPUs.) During capture we force
+   * an always-on loop + readable buffer. */
   const wrapRef = useRef<HTMLDivElement>(null);
   const [frameloop, setFrameloop] = useState<"always" | "never">("always");
   useEffect(() => {
@@ -2053,38 +2718,13 @@ export default function LaptopScene({ progress, reducedMotion = false, capture =
     io.observe(el);
     return () => io.disconnect();
   }, []);
-
-  /* Static hero (reduced-motion or integrated GPU): render for a short
-   * warm-up so textures + the baked Environment paint the final frame,
-   * then FREEZE the loop ("never") — a crisp still at zero ongoing GPU
-   * cost. This is what keeps the whole page smooth for integrated-GPU
-   * visitors: the heavy scene is painted a few times then never again,
-   * instead of re-rendering 60×/sec. (frameloop "demand" proved
-   * unreliable here — switching to it post-mount didn't stop the loop.)
-   * When animating, the IntersectionObserver value drives always/never. */
-  const [staticFrozen, setStaticFrozen] = useState(false);
-  useEffect(() => {
-    if (!reducedMotion) return;
-    setStaticFrozen(false);
-    /* Full-quality static frame needs a few seconds of warm-up on a slow
-     * GPU (N8AO ≈ 600ms/frame) to paint a complete, settled image before
-     * we freeze the loop. */
-    const t = setTimeout(() => setStaticFrozen(true), 3000);
-    return () => clearTimeout(t);
-  }, [reducedMotion]);
-  const effectiveFrameloop = capture
-    ? "always"
-    : reducedMotion
-      ? staticFrozen
-        ? "never"
-        : "always"
-      : frameloop;
+  const effectiveFrameloop = capture ? "always" : frameloop;
 
   return (
     <div ref={wrapRef} style={{ width: "100%", height: "100%" }}>
     <Canvas
       frameloop={effectiveFrameloop}
-      dpr={dprRange}
+      dpr={capture ? 3 : dprRange}
       camera={{ position: [4.6, 3.4, 6.4], fov: 38 }}
       gl={{
         antialias: true,
@@ -2185,11 +2825,10 @@ export default function LaptopScene({ progress, reducedMotion = false, capture =
        *  shaft + haze) — sits behind everything, self-lit, never competes. */}
       <TechChamber progress={progress} reducedMotion={reducedMotion} lowPower={lowPower} />
 
-      {/* Physical layered reactor the laptop floats above (real metal tiers +
-       *  emissive trims + segmented ring), igniting outward with scroll. */}
-      <ReactorPlatform progress={progress} reducedMotion={reducedMotion} lowPower={lowPower} />
+      {/* Geometric platform blocks removed — the laptop now sits over the
+       *  open ribbon floor receding into the distance, no panels around it. */}
 
-      <Laptop progress={progress} reducedMotion={reducedMotion} />
+      <Laptop progress={progress} reducedMotion={reducedMotion} capture={capture} />
 
       {/* Cinematic post-processing.
        *  - multisampling = tiered MSAA (6 desktop / 2 low-power) AA's
@@ -2220,50 +2859,33 @@ export default function LaptopScene({ progress, reducedMotion = false, capture =
        *  AO/Bloom scale down (half-res, fewer samples, lower intensity) on the
        *  low-power tier to protect frame-rate. */}
       <EffectComposer multisampling={msaa} enableNormalPass={false}>
-        {/* Effects built as a filtered array so the low-power tier can omit
-         *  the two heaviest passes (N8AO + film grain) without handing the
-         *  EffectComposer `false`/`undefined` children. N8AO is the single
-         *  most expensive pass — dropping it is the difference between ~4fps
-         *  and a usable hero on integrated GPUs; discrete GPUs keep the full
-         *  contact-shadow + grain stack. */}
-        {(
-          [
-            liteRender ? null : (
-              <N8AO
-                key="ao"
-                quality="high"
-                aoRadius={1.0}
-                distanceFalloff={1.0}
-                intensity={2.1}
-                halfRes={false}
-                color="#03060c"
-              />
-            ),
-            <Bloom
-              key="bloom"
-              intensity={liteRender ? 0.4 : 0.6}
-              luminanceThreshold={0.62}
-              luminanceSmoothing={0.28}
-              radius={0.6}
-              mipmapBlur
-            />,
-            <SMAA key="smaa" preset={liteRender ? SMAAPreset.MEDIUM : SMAAPreset.HIGH} />,
-            <BrightnessContrast key="bc" brightness={-0.015} contrast={0.07} />,
-            <HueSaturation key="hs" hue={0} saturation={0.08} />,
-            /* Vignette darkness softened so the lower edge blends into the
-             *  page mist instead of stamping a hard dark band at the seam. */
-            <Vignette
-              key="vig"
-              eskil={false}
-              offset={0.26}
-              darkness={0.5}
-              blendFunction={BlendFunction.NORMAL}
-            />,
-            liteRender ? null : (
-              <Noise key="noise" opacity={0.006} blendFunction={BlendFunction.OVERLAY} />
-            ),
-          ] as Array<ReactElement | null>
-        ).filter((e): e is ReactElement => e !== null)}
+        <N8AO
+          quality={lowPower ? "low" : "high"}
+          aoRadius={1.0}
+          distanceFalloff={1.0}
+          intensity={lowPower ? 1.6 : 2.1}
+          halfRes={lowPower}
+          color="#03060c"
+        />
+        <Bloom
+          intensity={lowPower ? 0.45 : 0.6}
+          luminanceThreshold={0.62}
+          luminanceSmoothing={0.28}
+          radius={0.6}
+          mipmapBlur
+        />
+        <SMAA preset={SMAAPreset.HIGH} />
+        <BrightnessContrast brightness={-0.015} contrast={0.07} />
+        <HueSaturation hue={0} saturation={0.08} />
+        {/* Vignette darkness softened so the lower edge blends into the page
+         *  mist instead of stamping a hard dark band at the section boundary. */}
+        <Vignette
+          eskil={false}
+          offset={0.26}
+          darkness={0.5}
+          blendFunction={BlendFunction.NORMAL}
+        />
+        <Noise opacity={0.006} blendFunction={BlendFunction.OVERLAY} />
       </EffectComposer>
     </Canvas>
     </div>
@@ -2294,7 +2916,7 @@ function ScreenSlabs({ progress }: { progress: MotionValue<number> }) {
 
   /* Two texture sets: compact (default) and detail (revealed on hover). */
   const compactTextures = useMemo(
-    () => slabs.map((s) => makeSlabTexture(s.stream, s.icon)),
+    () => slabs.map((s) => makeSlabTexture(s.stream, s.icon, SLAB_CARD_META[s.streamIdx])),
     [slabs],
   );
   const detailTextures = useMemo(
@@ -2573,9 +3195,11 @@ function ScreenSlabs({ progress }: { progress: MotionValue<number> }) {
 function Laptop({
   progress,
   reducedMotion,
+  capture = false,
 }: {
   progress: MotionValue<number>;
   reducedMotion: boolean;
+  capture?: boolean;
 }) {
   const lidBrandTex = useLidBrandTexture();
   const lidBloomTex = useLidBloomTexture();
@@ -2635,6 +3259,8 @@ function Laptop({
   /* Tier-3 far megastructure silhouette + the inward signal-packet sprite. */
   const megaStructureTex = useMemo(() => makeMegastructureTexture(), []);
   const signalPacketTex = useMemo(() => makeSignalPacketTexture(), []);
+  const shockwaveTex = useMemo(() => makeShockwaveTexture(), []);
+  const flashBurstTex = useMemo(() => makeFlashBurstTexture(), []);
   /* Sub-surface machine-well layer (depth beneath the burst). */
   const machineWellTex = useMemo(() => makeMachineWellTexture(), []);
   const machineWellMatRef = useRef<THREE.MeshBasicMaterial>(null);
@@ -2649,6 +3275,8 @@ function Laptop({
    * lid opens) + the pool of inward-travelling signal packets. */
   const sweepMatRef = useRef<THREE.MeshBasicMaterial>(null);
   const sweepMeshRef = useRef<THREE.Mesh>(null);
+  const flashMatRef = useRef<THREE.MeshBasicMaterial>(null);
+  const flashMeshRef = useRef<THREE.Mesh>(null);
   const packetRefs = useRef<Array<THREE.Mesh | null>>([]);
   /* SECONDARY ACTIVATION — two follow-up "echo" ring ripples that fire after
    * the main sweep (staggered), and a ring of connection nodes that light up
@@ -2763,9 +3391,13 @@ function Laptop({
      * opens. Reads as the camera "approaching" the device rather than
      * the laptop just being there in front of you. */
     const camP = smoothstep(0, 1, p);
-    const microX = Math.sin(t * 0.51) * 0.025 + Math.sin(t * 1.27) * 0.012;
-    const microY = Math.cos(t * 0.43) * 0.020 + Math.sin(t * 0.81) * 0.010;
-    const microZ = Math.sin(t * 0.37) * 0.022;
+    /* Idle "handheld" micro-drift — disabled during frame capture so the
+     * baked scrub frames differ ONLY by scroll progress. Otherwise each
+     * frame lands on a different drift phase and the laptop appears to
+     * wiggle left/right as you scrub. The live scene keeps the drift. */
+    const microX = capture ? 0 : Math.sin(t * 0.51) * 0.025 + Math.sin(t * 1.27) * 0.012;
+    const microY = capture ? 0 : Math.cos(t * 0.43) * 0.020 + Math.sin(t * 0.81) * 0.010;
+    const microZ = capture ? 0 : Math.sin(t * 0.37) * 0.022;
     state.camera.position.set(
       lerp(4.6, 4.0, camP) + microX,
       lerp(3.4, 2.4, camP) + microY,
@@ -2815,7 +3447,21 @@ function Laptop({
     lidAngle.current = lerp(lidAngle.current, targetAngle, followSpeed);
     lidVelocity.current = 0;
     if (lidRef.current) {
-      lidRef.current.rotation.x = lidAngle.current;
+      /* Idle hinge "breathing" — a slow, low-amplitude sway layered on
+       * top of the scroll-driven open angle so the OPEN lid reads as a
+       * live, running machine instead of a frozen render (the screen is
+       * a child of the lid, so it breathes too). Scaled by openT (zero
+       * while closed, full once open) so the life only appears AS the
+       * laptop opens up, and zeroed during frame capture / reduced
+       * motion so the baked scrub frames stay deterministic — the same
+       * pattern as the camera micro-drift above. Two slow sines
+       * (~11s / ~18s periods) keep it an organic drift, never a jitter. */
+      const lidIdle =
+        capture || reducedMotion
+          ? 0
+          : (Math.sin(t * 0.55) * 0.012 + Math.sin(t * 0.34 + 0.8) * 0.008) *
+            openT;
+      lidRef.current.rotation.x = lidAngle.current + lidIdle;
     }
 
     /* Living screen - stage transitions. The minor boot-line stages
@@ -2935,40 +3581,37 @@ function Laptop({
     const pulse = reducedMotion ? 1 : 0.92 + Math.sin(t * 0.9) * 0.06;
     /* activationT tracks the lid opening (lid animates 0.32→0.50). */
     const activationT = smoothstep(0.3, 0.55, p);
-    /* Dark substrate fades in with the plate; held just under full so the
-     * recessed material reads without becoming a heavy slab. Static (no
-     * pulse) — it's physical material, not energy. */
-    /* NEW ENERGY-CHAMBER FLOOR opacities. The previous values kept these
-     * layers near-invisible (surface peaked at 0.12) and fully gated
-     * behind `draw`, so the floor only whispered in mid-scroll. Now each
-     * layer has a strong BASELINE (visible from the very top of the hero,
-     * matching the reference) plus a scroll-driven boost as the chamber
-     * powers up. */
+    /* FLOOR REVEAL — at the very top of the hero ONLY the laptop is
+     * visible; the whole energy-chamber floor stays hidden and then comes
+     * in as the lid opens (lid animates 0.32→0.50). So every floor/depth
+     * layer is gated on this curve with NO baseline — they are exactly 0
+     * until the laptop starts opening, then ramp to full. */
+    const floorReveal = smoothstep(0.32, 0.6, p);
     if (plateSubstrateMatRef.current) {
-      plateSubstrateMatRef.current.opacity = 0.6 + draw * 0.35;
+      plateSubstrateMatRef.current.opacity = floorReveal * 0.95;
     }
     if (plateSurfaceMatRef.current) {
-      plateSurfaceMatRef.current.opacity = (0.42 + draw * 0.45) * pulse;
+      plateSurfaceMatRef.current.opacity = floorReveal * 0.87 * pulse;
     }
     if (plateMidMatRef.current) {
       const midPulse = reducedMotion ? 1 : 0.9 + Math.sin(t * 0.66 + 1.3) * 0.1;
-      plateMidMatRef.current.opacity = (0.2 + draw * 0.22) * midPulse;
+      plateMidMatRef.current.opacity = floorReveal * 0.42 * midPulse;
     }
     if (plateDeepMatRef.current) {
       const deepPulse = reducedMotion ? 1 : 0.88 + Math.sin(t * 0.48 + 2.7) * 0.12;
-      plateDeepMatRef.current.opacity = (0.1 + draw * 0.12) * deepPulse;
+      plateDeepMatRef.current.opacity = floorReveal * 0.22 * deepPulse;
     }
     if (depthHazeMatRef.current) {
       const hazePulse = reducedMotion ? 1 : 0.85 + Math.sin(t * 0.4) * 0.15;
-      depthHazeMatRef.current.opacity = (0.04 + draw * 0.05) * hazePulse;
+      depthHazeMatRef.current.opacity = floorReveal * 0.09 * hazePulse;
     }
     if (megaStructureMatRef.current) {
-      megaStructureMatRef.current.opacity = 0.04 + draw * 0.05;
+      megaStructureMatRef.current.opacity = floorReveal * 0.09;
     }
     /* Sub-surface machine well — faint depth glow beneath the floor. */
     if (machineWellMatRef.current) {
       const wellPulse = reducedMotion ? 1 : 0.85 + Math.sin(t * 0.5 + 0.6) * 0.15;
-      machineWellMatRef.current.opacity = (0.12 + draw * 0.22) * wellPulse;
+      machineWellMatRef.current.opacity = floorReveal * 0.34 * wellPulse;
     }
 
     /* OUTWARD IGNITION SWEEP — a thin ring expanding chassis→edge as the lid
@@ -2976,10 +3619,19 @@ function Laptop({
      * the static lit plate, not a parked ring). THE MAIN EXPLOSION — logic
      * unchanged from the approved version. */
     if (sweepMeshRef.current && sweepMatRef.current) {
-      const sweepR = 0.4 + activationT * 12.5; // base ring radius is 1u
+      const sweepR = 0.4 + activationT * 15; // base ring radius is 1u
       sweepMeshRef.current.scale.set(sweepR, sweepR, 1);
       const sweepFade = Math.sin(Math.PI * activationT); // 0→1→0 across the open
-      sweepMatRef.current.opacity = reducedMotion ? 0 : sweepFade * 0.28;
+      sweepMatRef.current.opacity = reducedMotion ? 0 : sweepFade * 0.62;
+    }
+
+    /* CENTRAL FLASH — a sharp bright bloom at the open moment (the "bang"):
+     * quick scale-up + fast fade so it punches then clears. */
+    if (flashMeshRef.current && flashMatRef.current) {
+      const flash = Math.pow(Math.sin(Math.PI * activationT), 3);
+      const fs = 3.4 + activationT * 8;
+      flashMeshRef.current.scale.set(fs, fs, 1);
+      flashMatRef.current.opacity = reducedMotion ? 0 : flash * 0.55;
     }
 
     /* SECONDARY ECHO RIPPLES — two follow-up rings, each lagging the main
@@ -2992,9 +3644,9 @@ function Laptop({
       if (!em || !emat) continue;
       const lag = 0.05 + i * 0.06;
       const echoT = smoothstep(0.3 + lag, 0.58 + lag, p);
-      const er = 0.4 + echoT * (13.5 + i * 1.5);
+      const er = 0.4 + echoT * (16 + i * 2.5);
       em.scale.set(er, er, 1);
-      emat.opacity = reducedMotion ? 0 : Math.sin(Math.PI * echoT) * (0.14 - i * 0.04);
+      emat.opacity = reducedMotion ? 0 : Math.sin(Math.PI * echoT) * (0.34 - i * 0.09);
     }
 
     /* SEQUENTIAL ACTIVATION NODES — light up in order as the burst energises
@@ -3256,10 +3908,11 @@ function Laptop({
         rotation={[-Math.PI / 2, 0, 0]}
         scale={1}
       >
-        <ringGeometry args={[0.9, 1.0, 64]} />
+        <planeGeometry args={[2, 2]} />
         <meshBasicMaterial
           ref={sweepMatRef}
-          color={COLORS.cyan}
+          map={shockwaveTex}
+          color="#ffffff"
           transparent
           opacity={0}
           blending={THREE.AdditiveBlending}
@@ -3267,6 +3920,29 @@ function Laptop({
           toneMapped={false}
         />
       </mesh>
+
+      {/* CENTRAL FLASH — the "bang": a bright central bloom that pops as the
+       *  lid opens then clears (transient; off at rest + reduced motion). */}
+      {flashBurstTex && (
+        <mesh
+          ref={flashMeshRef}
+          position={[RIG_X, -BASE_H / 2 - 0.033, 0]}
+          rotation={[-Math.PI / 2, 0, 0]}
+          scale={1}
+        >
+          <planeGeometry args={[2, 2]} />
+          <meshBasicMaterial
+            ref={flashMatRef}
+            map={flashBurstTex}
+            color="#ffffff"
+            transparent
+            opacity={0}
+            blending={THREE.AdditiveBlending}
+            depthWrite={false}
+            toneMapped={false}
+          />
+        </mesh>
+      )}
 
       {/* SECONDARY ECHO RIPPLES — two thinner follow-up rings that fire just
        *  after the main sweep (staggered), reading as energy echoes radiating
@@ -3281,12 +3957,13 @@ function Laptop({
           position={[RIG_X, -BASE_H / 2 - 0.0345, 0]}
           rotation={[-Math.PI / 2, 0, 0]}
         >
-          <ringGeometry args={[0.94, 1.0, 64]} />
+          <planeGeometry args={[2, 2]} />
           <meshBasicMaterial
             ref={(el) => {
               echoMatRefs.current[i] = el;
             }}
-            color={i === 0 ? COLORS.cyan : COLORS.cyanSoft}
+            map={shockwaveTex}
+            color="#ffffff"
             transparent
             opacity={0}
             blending={THREE.AdditiveBlending}

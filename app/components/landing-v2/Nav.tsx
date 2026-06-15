@@ -82,14 +82,14 @@ export default function Nav() {
       <div
         className="lv2-nav-inner"
         style={{
-          maxWidth: 1320,
+          maxWidth: "100%",
           margin: "0 auto",
-          padding: "0 var(--lv2-rail)",
+          padding: "0 clamp(28px, 3.5vw, 96px)",
           height: 68,
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
-          gap: 16,
+          gap: 28,
           position: "relative",
           zIndex: 1,
         }}
@@ -102,6 +102,7 @@ export default function Nav() {
             alignItems: "center",
             gap: 13,
             textDecoration: "none",
+            flexShrink: 0,
           }}
         >
           <BrandCube />
@@ -161,7 +162,8 @@ export default function Nav() {
         .lv2-nav-links {
           display: flex;
           align-items: center;
-          gap: 26px;
+          gap: 32px;
+          flex-shrink: 0;
         }
 
         /* ── Background depth layers ───────────────────────────────── */
@@ -901,12 +903,16 @@ function LiveTelemetry({ isLight }: { isLight: boolean }) {
         .lv2-telemetry {
           display: flex;
           align-items: center;
+          flex-shrink: 0;
         }
-        /* Grouped capsule — gives the read-outs a console housing. */
+        /* Grouped capsule — gives the read-outs a console housing.
+           nowrap keeps every read-out on a single line (no "AGE / TRACKS"
+           wrapping when horizontal room gets tight). */
         .lv2-tel-shell {
           position: relative;
           display: inline-flex;
           align-items: center;
+          white-space: nowrap;
           padding: 6px 6px;
           border-radius: 999px;
           border: 1px solid rgba(0, 229, 255, 0.14);
@@ -1137,7 +1143,11 @@ function LiveTelemetry({ isLight }: { isLight: boolean }) {
             opacity: 1;
           }
         }
-        @media (max-width: 1100px) {
+        /* Hide the telemetry console below this width: with the brand,
+           console and links all flex-shrink:0 (so nothing wraps), the
+           console is the optional piece that's dropped first to keep the
+           bar from overflowing and to give the links breathing room. */
+        @media (max-width: 1240px) {
           .lv2-telemetry {
             display: none !important;
           }
@@ -1154,6 +1164,7 @@ const navLink: React.CSSProperties = {
   letterSpacing: "0.2em",
   textTransform: "uppercase",
   textDecoration: "none",
+  whiteSpace: "nowrap",
   // includes text-shadow + transform so the hover glow/lift ease in (the
   // .lv2-nav-secondary CSS transition is otherwise overridden by this rule).
   transition:

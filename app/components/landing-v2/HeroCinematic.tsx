@@ -5,6 +5,7 @@ import { motion, useScroll, useTransform, useSpring, type MotionValue } from "fr
 import dynamic from "next/dynamic";
 import HeroOverlay from "./HeroOverlay";
 import HeroScrubSequence from "./HeroScrubSequence";
+import HeroCardHotspots from "./HeroCardHotspots";
 import { isWeakGpu } from "./utilities";
 
 /**
@@ -50,12 +51,10 @@ export default function HeroCinematic() {
   /* How the hero's laptop layer is rendered:
    *   "live"   - real-time WebGL cinematic (capable / discrete GPUs)
    *   "scrub"  - pre-rendered frame sequence scrubbed by scroll. Integrated
-   *              GPUs (Intel Iris Xe etc.) can't run the live scene above
-   *              ~5fps, so they get the SAME closed→open animation played
-   *              back from baked frames — smooth on any GPU.
-   *   "static" - prefers-reduced-motion: the final frame, no animation.
-   * SSR-safe default is "live"; corrected on the client once we can read
-   * the GPU + reduced-motion. */
+   *              GPUs can't run the live scene smoothly, so they get the SAME
+   *              closed→open animation played back from baked frames.
+   *   "static" - prefers-reduced-motion: final frame, no animation.
+   * SSR-safe default "live"; corrected on the client. */
   const [heroMode, setHeroMode] = useState<"live" | "scrub" | "static">("live");
   const [isCompact, setIsCompact] = useState(false);
 
@@ -94,18 +93,20 @@ export default function HeroCinematic() {
    * scroll quickly enough to feel responsive, smooth enough to never
    * jitter".
    *
-   * - stiffness 90 / damping 28 / mass 0.4 -> ~150ms settling at
-   *   typical scroll velocities, no visible lag, no overshoot. */
+   * - stiffness 50 / damping 18 / mass 0.6 -> ~280ms eased glide. Soft +
+   *   slightly slow so the laptop + scenes FLOW through the frames (keep
+   *   easing after the wheel stops) instead of snapping 1:1 to scroll (which
+   *   reads as static/mechanical). Overdamped (ratio ~1.6) so it glides
+   *   smoothly with no overshoot / jitter. */
   const smoothScroll = useSpring(scrollYProgress, {
-    stiffness: 90,
-    damping: 28,
-    mass: 0.4,
+    stiffness: 50,
+    damping: 18,
+    mass: 0.6,
   });
 
-  /* In "static" (prefers-reduced-motion) mode, clamp progress to 1 so the
-   * scene shows its final state and HeroOverlay is fully visible from frame
-   * 0. "live" and "scrub" both follow the scroll so the closed→open
-   * cinematic plays. */
+  /* In "static" (reduced-motion) mode, clamp progress to 1 so the scene
+   * shows its final state. "live" and "scrub" follow scroll so the
+   * closed→open cinematic plays. */
   const progress = useTransform(smoothScroll, (v) =>
     heroMode === "static" ? 1 : v,
   );
@@ -199,9 +200,8 @@ export default function HeroCinematic() {
           {heroMode === "live" ? (
             <VaultScene progress={progress} reducedMotion={false} />
           ) : (
-            /* scrub (integrated GPU) + static (reduced-motion) both play
-             *  the baked frame sequence; progress is clamped to 1 for
-             *  static so it holds the final frame. */
+            /* scrub (integrated GPU) + static (reduced-motion) play the
+             *  baked frame sequence; progress clamped to 1 for static. */
             <HeroScrubSequence progress={progress} />
           )}
         </div>
@@ -223,11 +223,11 @@ export default function HeroCinematic() {
           }}
         />
 
-        {/* Layer 2a - TOP CRISP. Top stop pushed up to 0.94 ink so the
-         *  area just under the nav is nearly fully dark — the navbar
-         *  now reads as a crisp header strip with a hard shoulder of
-         *  atmosphere below it, instead of the grey haze that was
-         *  bleeding through before. */}
+        {/* Layer 2a - TOP SHADE. Keeps the area under the nav dark for a
+         *  crisp header, but now fades over a TALLER span with extra
+         *  intermediate stops so it melts smoothly into the scene — no
+         *  hard horizontal shoulder/band where the dark meets the lit
+         *  floor (was 26vh with a steep 0.94→0.6 drop in the first 35%). */}
         <div
           aria-hidden
           style={{
@@ -235,14 +235,16 @@ export default function HeroCinematic() {
             top: 0,
             left: 0,
             right: 0,
-            height: "26vh",
+            height: "44vh",
             zIndex: 2,
             pointerEvents: "none",
             background:
               "linear-gradient(to bottom, " +
-              "rgba(4,5,13,0.94) 0%, " +
-              "rgba(4,5,13,0.6) 35%, " +
-              "rgba(4,5,13,0.18) 75%, " +
+              "rgba(4,5,13,0.9) 0%, " +
+              "rgba(4,5,13,0.74) 18%, " +
+              "rgba(4,5,13,0.54) 36%, " +
+              "rgba(4,5,13,0.32) 56%, " +
+              "rgba(4,5,13,0.13) 78%, " +
               "rgba(4,5,13,0) 100%)",
           }}
         />
@@ -289,6 +291,11 @@ export default function HeroCinematic() {
          *  Driven by the smoothed scroll value so the fade-out tracks
          *  the rest of the cinematic. */}
         <ScrollHint scrollYProgress={smoothScroll} />
+
+        {/* Clickable/hover hotspots over the course cards — only on the
+         *  pre-rendered (scrub/static) hero, where the cards are a flat image.
+         *  On the live hero the 3D cards handle their own hover + click. */}
+        {heroMode !== "live" && <HeroCardHotspots progress={progress} />}
       </div>
     </section>
   );
@@ -581,43 +588,23 @@ function ScrollHint({
   );
 }
 
-/* Loading state shown by the dynamic import while LaptopScene's
- *  JS bundle + WebGL context come up. Mono "// INITIALISING" with a
- *  blinking cursor — terminal aesthetic that ties into the cinematic's
- *  "System dormant → activating" opening narrative. Centered in the
- *  area where the laptop will land so the gap doesn't read as a void. */
+/* Loading state shown while LaptopScene's JS bundle + WebGL context come
+ *  up. Instead of a "// INITIALISING" placeholder (which read as the page
+ *  hanging before the laptop appeared), show the closed-laptop still
+ *  immediately — the same frame the scrub/live scene resolves to — so the
+ *  laptop is on screen from the first paint and the handoff is seamless. */
 function SceneLoading() {
   return (
-    <div
+    <img
+      src="/hero-seq/frame-000.webp"
+      alt=""
       aria-hidden
       style={{
         width: "100%",
         height: "100%",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        gap: 10,
-        fontFamily: "var(--lv2-font-mono)",
-        fontSize: 11,
-        fontWeight: 600,
-        letterSpacing: "0.28em",
-        textTransform: "uppercase",
-        color: "rgba(0, 229, 255, 0.55)",
+        objectFit: "cover",
+        display: "block",
       }}
-    >
-      <span>// INITIALISING</span>
-      <motion.span
-        aria-hidden
-        animate={{ opacity: [1, 1, 0.18, 0.18] }}
-        transition={{ duration: 1.0, repeat: Infinity, ease: "linear" }}
-        style={{
-          display: "inline-block",
-          width: 7,
-          height: 13,
-          background: "var(--lv2-cyan)",
-          boxShadow: "0 0 10px rgba(0, 229, 255, 0.7)",
-        }}
-      />
-    </div>
+    />
   );
 }

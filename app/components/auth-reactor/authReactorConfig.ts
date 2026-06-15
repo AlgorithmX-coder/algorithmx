@@ -56,7 +56,9 @@ export function energyForStage(stage: AuthReactorStage): number {
 /* ── Palette (reuse the auth tokens so the whole surface stays coherent) ── */
 export const REACTOR = {
   darkMetal: "#15131f",
-  brass: "#c9a25e",
+  // Cool blue-steel (was warm brass #c9a25e) so the metal reflects the
+  // blue/violet portal instead of an orange/gold sheen.
+  brass: "#9fb2e6",
   cyan: ACCESS.cyan,
   violet: ACCESS.violet,
   dormant: ACCESS.dormant,

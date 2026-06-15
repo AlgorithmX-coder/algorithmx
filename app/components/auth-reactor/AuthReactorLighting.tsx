@@ -31,7 +31,7 @@ export default function AuthReactorLighting({ energy, isError }: { energy: numbe
       <directionalLight position={[3, 3, 6]} intensity={1.5} color={REACTOR.cyan} />
       <directionalLight position={[-5, 1, 1]} intensity={1} color={REACTOR.violet} />
       <directionalLight position={[0, 4, 3]} intensity={0.4} color="#aab6e0" />
-      <directionalLight position={[3, -2, 3]} intensity={0.35} color="#ffcaa0" />
+      <directionalLight position={[3, -2, 3]} intensity={0.35} color="#b6a6ff" />
       <pointLight ref={spill} position={[0, 0, 0.4]} intensity={0.6} color={REACTOR.dormant} distance={9} decay={2} />
     </>
   );

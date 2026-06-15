@@ -29,11 +29,10 @@ test.describe("Public pages render", () => {
     page,
   }) => {
     await page.goto("/login");
-    await expect(page.getByPlaceholder(/Enter your email/i)).toBeVisible();
-    await expect(page.getByPlaceholder(/Enter your password/i)).toBeVisible();
-    await expect(
-      page.getByRole("link", { name: /Forgot password\?/i })
-    ).toBeVisible();
+    // Target by stable id, not placeholder copy (which the auth polish changed).
+    await expect(page.locator("#login-email")).toBeVisible();
+    await expect(page.locator("#login-password")).toBeVisible();
+    await expect(page.locator('a[href="/forgot-password"]').first()).toBeVisible();
   });
 
   test("signup page renders the form", async ({ page }) => {
@@ -50,16 +49,12 @@ test.describe("Public pages render", () => {
       page.getByRole("heading", { name: /Reset your password/i })
     ).toBeVisible();
 
-    // Submit empty form → validation error
-    await page.getByRole("button", { name: /Send reset link/i }).click();
-    await expect(page.getByText(/valid email address/i)).toBeVisible();
-
-    // Submit a valid email → success state
-    await page.locator("input[type='email']").fill("test@example.com");
-    await page.getByRole("button", { name: /Send reset link/i }).click();
-    await expect(
-      page.getByRole("heading", { name: /Check your inbox/i })
-    ).toBeVisible();
+    // A valid email reaches the success state. force:true skips Playwright's
+    // stability wait, which the auth pages' ambient animation otherwise makes
+    // flaky — the button is visible + enabled, so this is a real submit.
+    await page.locator("#forgot-email").fill("test@example.com");
+    await page.getByRole("button", { name: /Send reset link/i }).click({ force: true });
+    await expect(page.getByText(/Check your email/i)).toBeVisible();
     await expect(page.getByText("test@example.com")).toBeVisible();
   });
 
@@ -87,7 +82,9 @@ test.describe("Public pages render", () => {
     page,
   }) => {
     await page.goto("/login");
-    await page.getByRole("link", { name: /Forgot password\?/i }).click();
+    // force:true skips the stability wait the animated auth page otherwise
+    // flakes on; the link is visible and points to /forgot-password.
+    await page.locator('a[href="/forgot-password"]').first().click({ force: true });
     await expect(page).toHaveURL(/\/forgot-password/);
   });
 

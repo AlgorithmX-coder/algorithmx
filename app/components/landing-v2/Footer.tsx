@@ -10,10 +10,24 @@ export default function Footer() {
     <footer
       style={{
         position: "relative",
-        background: "rgba(2,3,8,0.96)",
+        /* Blend into the page background instead of stamping an opaque
+         * slab with a hard top edge. The old `rgba(2,3,8,0.96)` fill +
+         * 1px cyan borderTop drew a visible horizontal seam where the
+         * footer met the (transparent) FinalCTA section above, cutting
+         * across the fixed cosmic backdrop. Now the fill is a vertical
+         * gradient that starts fully transparent at the very top — so
+         * the cosmic bg / code panel read straight THROUGH the seam —
+         * and deepens to near-opaque ink by ~26% down, well before the
+         * footer columns, so the text keeps its dark, legible bed. The
+         * hard border is gone; the fade IS the divider. */
+        background:
+          "linear-gradient(to bottom, " +
+          "rgba(2,3,8,0) 0%, " +
+          "rgba(2,3,8,0.5) 10%, " +
+          "rgba(2,3,8,0.88) 26%, " +
+          "rgba(2,3,8,0.97) 100%)",
         color: "rgba(232,237,255,0.7)",
-        padding: "calc(var(--lv2-rail) * 1.6) var(--lv2-rail) calc(var(--lv2-rail) * 1)",
-        borderTop: "1px solid rgba(0,229,255,0.12)",
+        padding: "calc(var(--lv2-rail) * 2.4) var(--lv2-rail) calc(var(--lv2-rail) * 1)",
       }}
     >
       <div style={{ maxWidth: 1200, margin: "0 auto" }}>
@@ -71,7 +85,7 @@ export default function Footer() {
               { name: "AI / ML", href: "#" },
               { name: "App Dev", href: "#" },
               { name: "Entrepreneurship", href: "#" },
-              { name: "Robotics", href: "#" },
+              { name: "Robotic Engineering", href: "#" },
             ]}
           />
           <FooterColumn

@@ -55,12 +55,31 @@ export default async function globalSetup(config: FullConfig) {
   ]);
 
   await page.goto("/login");
-  await page.getByPlaceholder(/Enter your email/i).fill(TEST_EMAIL);
-  await page.getByPlaceholder(/Enter your password/i).fill(TEST_PASSWORD);
-  await Promise.all([
-    page.waitForURL(/\/(welcome|dashboard|lesson)/i, { timeout: 15_000 }),
-    page.getByRole("button", { name: /Log In/i }).click(),
-  ]);
+  // Target the inputs by their stable ids (not placeholder copy, which the
+  // auth-surface polish has changed before and broke this setup silently).
+  await page.locator("#login-email").fill(TEST_EMAIL);
+  await page.locator("#login-password").fill(TEST_PASSWORD);
+  // Submit via Enter — robust to the submit button's label (it's a
+  // type="submit" AuthButton now reading "Resume", no longer "Log In").
+  await page.locator("#login-password").press("Enter");
+
+  // globalSetup only needs a real session for storageState. Login sets the
+  // auth session cookie on success; the app then runs a client-side redirect
+  // to /hub, but we deliberately do NOT depend on that navigation (it has
+  // proven brittle to wait on by URL). Poll for the session cookie instead.
+  let authed = false;
+  for (let i = 0; i < 60 && !authed; i++) {
+    authed = (await context.cookies()).some((c) => c.name.includes("authjs.session-token"));
+    if (!authed) await page.waitForTimeout(250);
+  }
+  if (!authed) {
+    const text = (await page.locator("body").innerText().catch(() => ""))
+      .replace(/\s+/g, " ")
+      .slice(0, 300);
+    throw new Error(
+      `globalSetup: login did not establish a session. url=${page.url()} page="${text}"`,
+    );
+  }
 
   // 3. Persist storageState for reuse by all authed specs.
   await context.storageState({ path: STORAGE_STATE });

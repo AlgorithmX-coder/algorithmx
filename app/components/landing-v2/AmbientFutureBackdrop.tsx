@@ -1386,8 +1386,8 @@ export default function AmbientFutureBackdrop() {
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
     const smallViewport = window.matchMedia("(max-width: 640px)");
     /* Integrated/software GPUs can't afford a SECOND full WebGL layer on top
-     * of the hero — disable the ambient scenes there (same as we already do
-     * on small viewports). GlobalBackdrop still carries the atmosphere. */
+     * of the hero — disable the ambient scenes there (same as small
+     * viewports). GlobalBackdrop still carries the atmosphere. */
     const weak = isWeakGpu();
     const compute = () => {
       setEnabled(!reducedMotion.matches && !smallViewport.matches && !weak);
