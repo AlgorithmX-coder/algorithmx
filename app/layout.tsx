@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Inter } from "next/font/google";
+import { Geist, Geist_Mono, Inter, Space_Grotesk, DM_Sans } from "next/font/google";
 import { Analytics } from "@vercel/analytics/react";
 import DevFpsCounter from "./components/DevFpsCounter";
 import PlausibleScript from "./components/PlausibleScript";
@@ -20,6 +20,25 @@ const geistMono = Geist_Mono({
 const inter = Inter({
   variable: "--font-inter",
   weight: ["400", "500", "600"],
+  subsets: ["latin"],
+  display: "swap",
+});
+
+// Space Grotesk + DM Sans power the /hub family dashboard (and the
+// auth/dashboard cyber surfaces that reference them). They were
+// previously named in inline font-family strings but never loaded, so
+// those surfaces silently fell back to system-ui. Loading them here as
+// CSS variables makes the intended typography real app-wide.
+const spaceGrotesk = Space_Grotesk({
+  variable: "--font-space-grotesk",
+  weight: ["400", "500", "600", "700"],
+  subsets: ["latin"],
+  display: "swap",
+});
+
+const dmSans = DM_Sans({
+  variable: "--font-dm-sans",
+  weight: ["400", "500", "600", "700"],
   subsets: ["latin"],
   display: "swap",
 });
@@ -46,7 +65,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} ${inter.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} ${inter.variable} ${spaceGrotesk.variable} ${dmSans.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
         {children}
