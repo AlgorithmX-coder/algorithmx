@@ -63,7 +63,9 @@ export default async function globalSetup(config: FullConfig) {
     // Login now lands on /hub (platform home base) by default; keep the
     // older destinations too in case a callbackUrl flow is used.
     page.waitForURL(/\/(hub|welcome|dashboard|lesson)/i, { timeout: 15_000 }),
-    page.getByRole("button", { name: /Log In/i }).click(),
+    // Submit via Enter — robust to the submit button's label (it's a
+    // type="submit" AuthButton now reading "Resume", no longer "Log In").
+    page.locator("#login-password").press("Enter"),
   ]);
 
   // 3. Persist storageState for reuse by all authed specs.
