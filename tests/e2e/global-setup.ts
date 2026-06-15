@@ -63,19 +63,21 @@ export default async function globalSetup(config: FullConfig) {
   // type="submit" AuthButton now reading "Resume", no longer "Log In").
   await page.locator("#login-password").press("Enter");
 
-  // Login now lands on /hub (platform home base) by default; keep the older
-  // destinations too in case a callbackUrl flow is used. On failure, dump the
-  // actual state so the real cause is visible in CI (not just a timeout).
-  try {
-    await page.waitForURL(/\/(hub|welcome|dashboard|lesson)/i, { timeout: 20_000 });
-  } catch {
-    const url = page.url();
+  // globalSetup only needs a real session for storageState. Login sets the
+  // auth session cookie on success; the app then runs a client-side redirect
+  // to /hub, but we deliberately do NOT depend on that navigation (it has
+  // proven brittle to wait on by URL). Poll for the session cookie instead.
+  let authed = false;
+  for (let i = 0; i < 60 && !authed; i++) {
+    authed = (await context.cookies()).some((c) => c.name.includes("authjs.session-token"));
+    if (!authed) await page.waitForTimeout(250);
+  }
+  if (!authed) {
     const text = (await page.locator("body").innerText().catch(() => ""))
       .replace(/\s+/g, " ")
-      .slice(0, 400);
-    const cookieNames = (await context.cookies()).map((c) => c.name).join(",");
+      .slice(0, 300);
     throw new Error(
-      `globalSetup: login did not reach the app. url=${url} cookies=[${cookieNames}] page="${text}"`,
+      `globalSetup: login did not establish a session. url=${page.url()} page="${text}"`,
     );
   }
 
