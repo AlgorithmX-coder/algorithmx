@@ -1,21 +1,18 @@
 "use client";
 
 /**
- * Password Vault — engine rebuild, HOLOGRAPHIC ENERGY GATEWAY skin
- * (Phase 0 Batch 6c).
+ * Password Vault — HOLOGRAPHIC ENERGY GATEWAY.
  *
- * Same logic, contract and reveal as the parity rebuild — but the grey
- * bank-vault metal is gone. The vault is now a floating holographic
- * gateway: a neon hex frame, concentric rotating energy rings, a central
- * plasma core, and five glowing hex-sigil locks arranged in a clean
- * pentagon (no more centre-dial overlap). Solving a sigil ignites it and
- * arcs energy to the core; all five dilate the rings and bloom the core
- * into the PASSWORD MASTER relic.
+ * A floating holographic gateway: a neon hex frame, concentric rotating
+ * energy rings, a central plasma core, and five glowing hex-sigil locks
+ * arranged in a clean pentagon. Solving a sigil ignites it and arcs energy
+ * to the core; all five dilate the rings and bloom the core into the
+ * PASSWORD MASTER relic.
  *
  * Composed from the shared cinematic engine (SceneShell / useHotspotPanel
  * / ChallengePanel / useClimaxSequence / useTimingScaler / RevealStage /
- * juice). Props, callback contract and questionKeys (`vault-{id}`,
- * `vault-opened`) are unchanged. Every flourish has a reduced-motion path.
+ * juice). Callback contract and questionKeys are `vault-{id}` +
+ * `vault-opened`. Every flourish has a reduced-motion path.
  */
 
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -131,7 +128,7 @@ const ARTIFACT_LAYOUT: { x: number; y: number; accent: string }[] = [
 /* Component                                                      */
 /* ────────────────────────────────────────────────────────────── */
 
-export default function PasswordVaultV2({
+export default function PasswordVault({
   locks,
   guidance,
   onComplete,
