@@ -758,7 +758,7 @@ export default function HomePage() {
   return (
     <div style={{ background: "transparent", minHeight: "100vh" }}>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Nunito:wght@400;600;700;800;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Nunito:wght@400;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap');
         * { font-family: 'Nunito', sans-serif; }
         h1, h2, h3, h4, .display-font { font-family: 'Space Grotesk', system-ui, sans-serif; letter-spacing: -0.015em; }
         .mono { font-family: 'JetBrains Mono', monospace; }
