@@ -55,8 +55,10 @@ export default async function globalSetup(config: FullConfig) {
   ]);
 
   await page.goto("/login");
-  await page.getByPlaceholder(/Enter your email/i).fill(TEST_EMAIL);
-  await page.getByPlaceholder(/Enter your password/i).fill(TEST_PASSWORD);
+  // Target the inputs by their stable ids (not placeholder copy, which the
+  // auth-surface polish has changed before and broke this setup silently).
+  await page.locator("#login-email").fill(TEST_EMAIL);
+  await page.locator("#login-password").fill(TEST_PASSWORD);
   await Promise.all([
     page.waitForURL(/\/(welcome|dashboard|lesson)/i, { timeout: 15_000 }),
     page.getByRole("button", { name: /Log In/i }).click(),
