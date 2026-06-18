@@ -25,39 +25,40 @@ if (!KEY) {
   process.exit(1);
 }
 
-// SINGLE-NARRATOR mode: Will reads everything.
-//   Switched from George after tester feedback "too old + AI".
-//   Will is YOUNG + RELAXED + AMERICAN conversational - reads as
-//   "cool older sibling/young teacher" instead of George's
-//   middle-aged British storyteller. Same kid-warmth, younger
-//   register.
-//   The speaker tag on each block is preserved in the manifest
-//   for any future "switch back to two voices" move; both ids
-//   currently point to the same voice ID.
+// SINGLE-NARRATOR mode: Jessica reads everything.
+//   Children's narrator for the 6-9 audience: ElevenLabs "Jessica -
+//   Playful, Bright, Warm" - a young, conversational voice that reads as
+//   a FUN STORYTELLER / cool older sibling, NOT a classroom teacher.
+//   Switched from Alice (a British "educator" voice) which tested "too
+//   teachery". American, like the original Will the audience was fine with.
+//   The speaker tag on each block is preserved for any future "two
+//   distinct voices" move; both ids currently point to one voice ID.
 const VOICE = {
-  adam:  { id: "bIHbv24MWmeRgasZH58o", name: "Will" },
-  layla: { id: "bIHbv24MWmeRgasZH58o", name: "Will" },
+  adam:  { id: "cgSgspJ2msm6clMCkdW9", name: "Jessica" },
+  layla: { id: "cgSgspJ2msm6clMCkdW9", name: "Jessica" },
 };
 
-// v5-natural tune. After v4 still read as "AI":
-//   stability    0.50 - LOWER than v4. The even monotone of high
-//                       stability was itself a "this is synthetic"
-//                       signal. Lower = more natural micro-variation
-//                       between syllables, which is what human voices
-//                       actually do.
-//   similarity   0.85 - close to voice's natural timbre.
-//   style        0.00 - no performance boost. Any > 0 reads as TV
-//                       presenter playing kid voices, not real human.
+// v9-expressive tune. The flat "reading-from-a-script" delivery came
+// from high stability + ZERO style. For a children's STORYTELLER we want
+// flow, natural pauses, and clear question/emphasis intonation - so we
+// open her up (eleven_v3 responds strongly to these):
+//   stability   0.35 - LOW = expressive, dynamic delivery with natural
+//                       rises/falls and pauses (eleven_v3's Creative-
+//                       leaning range). High stability = the monotone.
+//   similarity  0.80 - a little looser so she isn't locked to a rigid
+//                       timbre and can move with the line.
+//   style       0.40 - performance/expressiveness ON. THIS carries the
+//                       rhetorical-question tone, emphasis and warmth.
 //   speaker boost true - presence/clarity.
-//   speed        0.92 - back to v2 sweet spot. 0.85 was too slow for
-//                       adult ears + sometimes felt unnatural enough
-//                       to read as "AI playing it safe".
+//   speed       0.95 - natural conversational flow; the *pauses* come from
+//                       punctuation + expression, not uniform slowness
+//                       (0.90 read as careful/deliberate).
 const VOICE_SETTINGS = {
-  stability: 0.5,
-  similarity_boost: 0.85,
-  style: 0.0,
+  stability: 0.35,
+  similarity_boost: 0.8,
+  style: 0.4,
   use_speaker_boost: true,
-  speed: 0.92,
+  speed: 0.95,
 };
 
 // Model priority: try eleven_v3 first (newest, most natural per
@@ -67,7 +68,7 @@ const VOICE_SETTINGS = {
 const MODELS_IN_PRIORITY_ORDER = ["eleven_v3", "eleven_multilingual_v2"];
 const OUTPUT_FORMAT = "mp3_44100_128";
 
-const GENERATION_VERSION = "v7-will-natural";
+const GENERATION_VERSION = "v10-jessica-playful";
 
 const OUT_DIR = join("public", "audio", "voice");
 const MANIFEST_PATH = join(OUT_DIR, "manifest.json");

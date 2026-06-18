@@ -17,6 +17,17 @@
 import { useEffect, useMemo, useState } from "react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
+import { WEEK_1 } from "@/app/lesson/weekContent/week1";
+import type { ScreenDef } from "@/app/lesson/weekContent/types";
+
+/** Pull a screen's real Week-1 data by type, typed. */
+function w1<T extends ScreenDef["type"]>(type: T) {
+  return WEEK_1.screens.find((s) => s.type === type) as Extract<
+    ScreenDef,
+    { type: T }
+  >;
+}
+const noop = () => {};
 
 const MissionBriefScene = dynamic(
   () => import("@/app/components/game/MissionBriefScene"),
@@ -80,6 +91,38 @@ const ChooseYourPath = dynamic(
 );
 const BattleArena = dynamic(
   () => import("@/app/components/exercises/BattleArena"),
+  { ssr: false }
+);
+const QuickCheck = dynamic(
+  () => import("@/app/components/exercises/QuickCheck"),
+  { ssr: false }
+);
+const ThreeRandomWords = dynamic(
+  () => import("@/app/components/exercises/ThreeRandomWords"),
+  { ssr: false }
+);
+const PasswordHospital = dynamic(
+  () => import("@/app/components/exercises/PasswordHospital"),
+  { ssr: false }
+);
+const WeakSorter = dynamic(
+  () => import("@/app/components/exercises/WeakSorter"),
+  { ssr: false }
+);
+const BossBattle = dynamic(
+  () => import("@/app/components/game/BossBattle"),
+  { ssr: false }
+);
+const MissionDebrief = dynamic(
+  () => import("@/app/components/lesson/MissionDebrief"),
+  { ssr: false }
+);
+const StickerUnlock = dynamic(
+  () => import("@/app/components/lesson/StickerUnlock"),
+  { ssr: false }
+);
+const InfoScene = dynamic(
+  () => import("@/app/components/lesson/InfoScene"),
   { ssr: false }
 );
 
@@ -396,6 +439,202 @@ const CASES: CaseEntry[] = [
       />
     ),
   },
+  {
+    id: 19,
+    name: "Quick Check · LIE",
+    status: "redesigned",
+    render: () => (
+      <QuickCheck
+        mode="lie"
+        prompt="Is that true?"
+        raccoonLine="tiger is totally unbreakable — trust me!"
+        choices={[
+          { text: "TRUE", isCorrect: false },
+          { text: "FALSE", isCorrect: true },
+        ]}
+        praise="Nice try, Raccoon! Caught the lie. ✓"
+        onComplete={(s) => alert(`QuickCheck complete (score: ${s})`)}
+        onCorrect={() => {}}
+        onWrong={() => {}}
+      />
+    ),
+  },
+  {
+    id: 20,
+    name: "Quick Check · FINISH",
+    status: "redesigned",
+    render: () => (
+      <QuickCheck
+        mode="finish"
+        prompt="A strong password is ___."
+        choices={[
+          { text: "long & mixed", isCorrect: true },
+          { text: "your name", isCorrect: false },
+          { text: "123456", isCorrect: false },
+          { text: "short", isCorrect: false },
+        ]}
+        onComplete={(s) => alert(`QuickCheck complete (score: ${s})`)}
+        onCorrect={() => {}}
+        onWrong={() => {}}
+      />
+    ),
+  },
+  {
+    id: 21,
+    name: "Quick Check · SPEED",
+    status: "redesigned",
+    render: () => (
+      <QuickCheck
+        mode="speed"
+        prompt="Tap the LONGEST password!"
+        speedMs={5000}
+        choices={[
+          { text: "cat", isCorrect: false },
+          { text: "Tiger7", isCorrect: false },
+          { text: "otter-rocket-mango", isCorrect: true },
+          { text: "sun", isCorrect: false },
+        ]}
+        onComplete={(s) => alert(`QuickCheck complete (score: ${s})`)}
+        onCorrect={() => {}}
+        onWrong={() => {}}
+      />
+    ),
+  },
+  {
+    id: 22,
+    name: "Quick Check · RECALL",
+    status: "redesigned",
+    render: () => (
+      <QuickCheck
+        mode="recall"
+        prompt="Who should know your password?"
+        choices={[
+          { text: "Only me (and a parent)", isCorrect: true },
+          { text: "My best friend", isCorrect: false },
+          { text: "My whole class", isCorrect: false },
+          { text: "Anyone who asks", isCorrect: false },
+        ]}
+        onComplete={(s) => alert(`QuickCheck complete (score: ${s})`)}
+        onCorrect={() => {}}
+        onWrong={() => {}}
+      />
+    ),
+  },
+  {
+    id: 23,
+    name: "W1 · Three Random Words",
+    status: "redesigned",
+    render: () => {
+      const s = w1("threeRandomWords");
+      return (
+        <ThreeRandomWords
+          words={s.words}
+          slots={s.slots}
+          hints={s.hints}
+          onComplete={noop}
+          onCorrect={noop}
+          onWrong={noop}
+        />
+      );
+    },
+  },
+  {
+    id: 24,
+    name: "W1 · Password Hospital",
+    status: "redesigned",
+    render: () => {
+      const s = w1("passwordHospital");
+      return (
+        <PasswordHospital
+          reasons={s.reasons}
+          patients={s.patients}
+          hints={s.hints}
+          onComplete={noop}
+          onCorrect={noop}
+          onWrong={noop}
+          onAnswered={noop}
+          onHintReached={noop}
+        />
+      );
+    },
+  },
+  {
+    id: 25,
+    name: "W1 · Weak Sorter",
+    status: "redesigned",
+    render: () => {
+      const s = w1("weakSorter");
+      return (
+        <WeakSorter
+          reasons={s.reasons}
+          items={s.items}
+          hints={s.hints}
+          onComplete={noop}
+          onCorrect={noop}
+          onWrong={noop}
+          onHintReached={noop}
+        />
+      );
+    },
+  },
+  {
+    id: 26,
+    name: "W1 · Boss (5 phases)",
+    status: "redesigned",
+    render: () => (
+      <BossBattle
+        phases={WEEK_1.bossPhases}
+        bossName="Hacker Raccoon"
+        onEnd={noop}
+        onQuestionAnswered={noop}
+      />
+    ),
+  },
+  {
+    id: 27,
+    name: "W1 · Mission Debrief",
+    status: "redesigned",
+    render: () => {
+      const s = w1("missionDebrief");
+      return (
+        <MissionDebrief
+          title={s.title}
+          subtitle={s.subtitle}
+          concepts={s.concepts}
+          narration={s.narration}
+          onComplete={noop}
+        />
+      );
+    },
+  },
+  {
+    id: 28,
+    name: "W1 · Sticker Unlock",
+    status: "redesigned",
+    render: () => {
+      const s = w1("stickerUnlock");
+      return (
+        <StickerUnlock title={s.title} stickers={s.stickers} onComplete={noop} />
+      );
+    },
+  },
+  {
+    id: 29,
+    name: "W1 · Info (Learn)",
+    status: "redesigned",
+    render: () => {
+      const s = w1("info");
+      return (
+        <InfoScene
+          title={s.title}
+          content={s.content}
+          bullets={s.bullets}
+          narration={s.narration}
+          onNext={noop}
+        />
+      );
+    },
+  },
 ];
 
 /* ───────────────────────── PAGE ───────────────────────── */
@@ -404,13 +643,16 @@ export default function PreviewPage() {
   const [caseId, setCaseId] = useState<number>(1);
   const [phase, setPhase] = useState<number>(3);
 
-  // Sync from URL on mount
+  // Sync from the URL AFTER mount — keeps SSR + first client render identical
+  // (no hydration mismatch); the post-mount update is intentional here.
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
-    const c = Number(params.get("case") ?? "1");
-    const p = Number(params.get("phase") ?? "3");
-    if (Number.isFinite(c)) setCaseId(c);
-    if (Number.isFinite(p)) setPhase(p);
+    const c = Number(params.get("case"));
+    const p = Number(params.get("phase"));
+    /* eslint-disable react-hooks/set-state-in-effect */
+    if (params.get("case") != null && Number.isFinite(c)) setCaseId(c);
+    if (params.get("phase") != null && Number.isFinite(p)) setPhase(p);
+    /* eslint-enable react-hooks/set-state-in-effect */
   }, []);
 
   // Push URL changes as state changes (so reload preserves selection)

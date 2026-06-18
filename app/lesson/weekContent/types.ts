@@ -105,6 +105,27 @@ export type ScreenDef =
   | { type: "crackTheCode" }
   | {
       /**
+       * QuickCheck - the short "Prove it" beat that closes each concept
+       * loop. One question, no hints, an instant win. Four flavours via
+       * `mode` so five in a row never feel the same:
+       *   finish - complete the rule ("Keep it ___")
+       *   speed  - beat the urgency bar (never hard-fails)
+       *   lie    - catch the Raccoon's claim (TRUE / FALSE)
+       *   recall - one-tap "which?"
+       */
+      type: "quickCheck";
+      mode: "finish" | "speed" | "lie" | "recall";
+      prompt: string;
+      choices: { text: string; isCorrect: boolean }[];
+      /** `lie` mode: the Raccoon's bogus claim shown in his speech bubble. */
+      raccoonLine?: string;
+      praise?: string;
+      nudge?: string;
+      /** `speed` mode urgency window (ms). Cosmetic. */
+      speedMs?: number;
+    }
+  | {
+      /**
        * Password Vault - the flagship first-person guided scene.
        *
        * A cinematic vault door with 5 glowing locks. The child taps a

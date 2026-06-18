@@ -96,7 +96,8 @@ const SFX_REGISTRY: Record<string, SoundEntry> = {
 // Sarah) is the primary audio; music sits underneath as room tone,
 // not as a competing layer. Halved from the previous 0.04 after
 // narration was added - the voice needs to dominate the mix without
-// fighting the music for attention.
+// fighting the music for attention. (BGM is disabled below until the
+// volume-scaling bug is fixed.)
 const BGM_MAX_VOLUME = 0.012;
 const BGM_REGISTRY: Record<string, SoundEntry> = {
   bgmLesson: { path: "/audio/sfx/bgm-lesson.mp3", volume: BGM_MAX_VOLUME },
@@ -442,10 +443,11 @@ export function playSound(key: string): void {
  * currently-playing track is stopped. Flip back to `false` to
  * restore lesson + battle music.
  *
- * Currently `false` - music plays at the whisper-faint BGM_MAX_VOLUME
- * defined above, sitting underneath the narration voice as room tone.
+ * Currently `true` - background music is OFF. Even at its low configured
+ * volume it came through too loud, which points to a volume-scaling bug
+ * to fix before re-enabling. Disabled for now to keep lessons clean.
  */
-const BGM_DISABLED = false;
+const BGM_DISABLED = true;
 
 export function playBGM(trackOrKey: string): void {
   if (BGM_DISABLED) {
