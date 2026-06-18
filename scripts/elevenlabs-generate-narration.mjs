@@ -25,17 +25,18 @@ if (!KEY) {
   process.exit(1);
 }
 
-// SINGLE-NARRATOR mode: Jessica reads everything.
-//   Children's narrator for the 6-9 audience: ElevenLabs "Jessica -
-//   Playful, Bright, Warm" - a young, conversational voice that reads as
-//   a FUN STORYTELLER / cool older sibling, NOT a classroom teacher.
-//   Switched from Alice (a British "educator" voice) which tested "too
-//   teachery". American, like the original Will the audience was fine with.
-//   The speaker tag on each block is preserved for any future "two
-//   distinct voices" move; both ids currently point to one voice ID.
+// SINGLE-NARRATOR mode: Sarah is the hero-mentor and reads everything.
+//   Chosen by ear 2026-06-18 from a 5-voice audition (see
+//   scripts/elevenlabs-audition.mjs + cyberheroes-narrator-spec memory):
+//   ElevenLabs "Sarah - Mature, Reassuring, Confident" (female, young,
+//   American). Warm + reassuring fits the "empowering, never frightening"
+//   rule for cyber-safety content; reads as a hero-mentor coach, not a
+//   teacher. (Previously Jessica; before that Alice, which tested "too
+//   teachery".) Both content speakers map to Sarah = one consistent mentor;
+//   the speaker tag is preserved for any future second-voice move.
 const VOICE = {
-  adam:  { id: "cgSgspJ2msm6clMCkdW9", name: "Jessica" },
-  layla: { id: "cgSgspJ2msm6clMCkdW9", name: "Jessica" },
+  adam:  { id: "EXAVITQu4vr4xnSDxMaL", name: "Sarah" },
+  layla: { id: "EXAVITQu4vr4xnSDxMaL", name: "Sarah" },
 };
 
 // v9-expressive tune. The flat "reading-from-a-script" delivery came
@@ -53,10 +54,19 @@ const VOICE = {
 //   speed       0.95 - natural conversational flow; the *pauses* come from
 //                       punctuation + expression, not uniform slowness
 //                       (0.90 read as careful/deliberate).
+// Tuned for a child-presenter read: excited, clear, NOT dragged.
+//   stability   0.35 - raised from 0.25. Ultra-low stability made eleven_v3
+//                      stretch/drag words unevenly ("sounds dragged at times");
+//                      0.35 steadies the prosody while staying expressive.
+//   similarity  0.70 - looser so she isn't locked rigidly to the timbre.
+//   style       0.70 - raised from 0.55 for MORE excitement/energy.
+//   speed       0.95 - a touch slower than 1.0 so it's clear for 6-9 yr olds
+//                      (de-dragging is handled by stability + tighter pauses,
+//                      not by going even slower).
 const VOICE_SETTINGS = {
   stability: 0.35,
-  similarity_boost: 0.8,
-  style: 0.4,
+  similarity_boost: 0.7,
+  style: 0.7,
   use_speaker_boost: true,
   speed: 0.95,
 };
@@ -68,7 +78,7 @@ const VOICE_SETTINGS = {
 const MODELS_IN_PRIORITY_ORDER = ["eleven_v3", "eleven_multilingual_v2"];
 const OUTPUT_FORMAT = "mp3_44100_128";
 
-const GENERATION_VERSION = "v10-jessica-playful";
+const GENERATION_VERSION = "v14-sarah-excited";
 
 const OUT_DIR = join("public", "audio", "voice");
 const MANIFEST_PATH = join(OUT_DIR, "manifest.json");

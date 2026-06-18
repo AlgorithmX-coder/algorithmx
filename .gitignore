@@ -52,3 +52,6 @@ next-env.d.ts
 
 # Internal iteration screenshots (not for production)
 docs/research-v2/
+
+# Screenshot/test output
+scripts/shot-out/

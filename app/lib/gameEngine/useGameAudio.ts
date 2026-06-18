@@ -36,8 +36,8 @@
  * SoundManager's category scaling. This module is about events.
  */
 
-import { useMemo } from "react";
-import { playSound, stopBGM, playBGM } from "@/app/lib/sounds";
+import { useEffect, useMemo } from "react";
+import { playSound, stopBGM, playBGM, SoundManager } from "@/app/lib/sounds";
 import { playSoftWrong, playBossHit, playVictoryStinger, playDefeatStinger } from "@/app/lib/gameEngine/audio";
 
 let lastHoverAt = 0;
@@ -70,6 +70,9 @@ const INTERJECTIONS_PREF_KEY = "algorithmx-voice-interjections-v1";
 // Chime fires first, voice lands a fraction after. Without the stagger
 // the two transients overlap and the chime gets masked.
 const INTERJECTION_STAGGER_MS = 140;
+// Interjections are raw HTMLAudioElements too (not routed through Howler),
+// so cap their volume rather than letting `new Audio()` default to 1.0.
+const INTERJECTION_VOLUME = 0.75;
 
 /**
  * Master kill-switch for the voiced interjection layer. Flip to
@@ -176,6 +179,7 @@ function fireInterjection(trigger: InterjectionTrigger) {
       stopCurrentInterjection();
       const el = new Audio(choice.file);
       el.preload = "auto";
+      el.volume = INTERJECTION_VOLUME; // never the 1.0 default
       currentInterjectionEl = el;
       el.addEventListener(
         "ended",
@@ -216,6 +220,13 @@ interface SignatureSfxManifest {
 }
 
 const SIGNATURE_SFX_MANIFEST_URL = "/audio/sfx-signature/manifest.json";
+
+// Signature cues are raw HTMLAudioElements (not routed through the Howler
+// SoundManager), so a bare `new Audio()` plays at the browser default of
+// 1.0 - FULL volume. That made the mission-start sting blast when the
+// lesson began. Cap it to a controlled, impactful-but-not-loud level.
+// Nudge to taste.
+const SIGNATURE_SFX_VOLUME = 0.4;
 
 // Module-level cache - one fetch per session.
 let signatureSfxManifest: SignatureSfxManifest | null = null;
@@ -266,6 +277,7 @@ function playSignature(id: string) {
     stopCurrentSignature();
     const el = new Audio(entry.file);
     el.preload = "auto";
+    el.volume = SIGNATURE_SFX_VOLUME; // never the 1.0 default - see constant
     currentSignatureEl = el;
     el.addEventListener(
       "ended",
@@ -327,6 +339,10 @@ export interface GameAudio {
   // designed branded cue by id. See app/lib/sfx-signature.ts for the
   // catalogue of available ids.
   signature: (id: string) => void;
+  // Tactile game-interaction cues (Howler registry, low-latency).
+  cardFlip: () => void; // memory/match card flip
+  drop: () => void; // placing/sorting a tile (stamp/thunk)
+  heal: () => void; // repairing/fixing something (sparkle)
 }
 
 /**
@@ -335,6 +351,17 @@ export interface GameAudio {
  * the lifetime of the component).
  */
 export function useGameAudio(): GameAudio {
+  // Load the SFX registry into Howler. SoundManager.play(key) is a silent
+  // no-op until preloadSFX() has run - and DynamicLesson never preloaded,
+  // so every game sound was inaudible. Idempotent (guarded internally).
+  useEffect(() => {
+    try {
+      SoundManager.getInstance().preloadSFX();
+    } catch {
+      /* ignore */
+    }
+  }, []);
+
   return useMemo<GameAudio>(
     () => ({
       hover: () => {
@@ -347,6 +374,10 @@ export function useGameAudio(): GameAudio {
       transition: () => playSound("transition"),
       back: () => playSound("back"),
       select: () => playSound("select"),
+      // Tactile game-interaction cues.
+      cardFlip: () => playSound("cardFlip"),
+      drop: () => playSound("drop"),
+      heal: () => playSound("heal"),
 
       // Default `wrong` is the SOFT variant. Use `hardWrong` only when
       // the context legitimately calls for a sharper cue (e.g. boss

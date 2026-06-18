@@ -23,6 +23,29 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useComfortMode } from "@/app/lib/comfortMode";
 
+// The narration is played via a raw `new Audio()`, which defaults to 1.0
+// (FULL volume) - that was the loud blast when a lesson screen opened, so
+// it must always be set explicitly. The voice should be clear and dominant
+// but comfortable; 0.50 keeps it clearly above the faint music bed (0.03)
+// without hurting young ears.
+const NARRATION_VOLUME = 0.5;
+
+// Narration auto-plays when a Learn screen opens (back ON now that the
+// voice/delivery is approved and the volume is capped + safe). Set to
+// `false` for button-only.
+const NARRATION_AUTOPLAY = true;
+
+// The narration `lines` carry the SPOKEN script, which includes eleven_v3
+// emotional tags like [warmly] / [excited] / [whispers] that direct the
+// performed delivery. Those must never appear in the on-screen captions -
+// strip anything in square brackets (and tidy spacing) for display only.
+function stripTags(line: string): string {
+  return line
+    .replace(/\[[^\]]*\]/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
 export interface InfoNarrationProps {
   /** Short lines read in order. Keep each ≤ 12 words. */
   lines: string[];
@@ -222,6 +245,7 @@ export default function InfoNarration({
 
       const el = new Audio(file);
       el.preload = "auto";
+      el.volume = NARRATION_VOLUME; // never the raw 1.0 default - see constant
       audioElRef.current = el;
       el.addEventListener(
         "ended",
@@ -298,7 +322,7 @@ export default function InfoNarration({
   // screen transition can settle before audio fires.
   const autoFiredRef = useRef(false);
   useEffect(() => {
-    if (!autoPlay || !enabled) return;
+    if (!NARRATION_AUTOPLAY || !autoPlay || !enabled) return;
     if (mode === "loading" || mode === "captions") return;
     if (autoFiredRef.current) return;
     autoFiredRef.current = true;
@@ -445,7 +469,7 @@ export default function InfoNarration({
                   boxShadow: "0 0 6px rgba(125, 240, 255, 0.6)",
                 }}
               />
-              {l}
+              {stripTags(l)}
             </li>
           ))}
         </ul>

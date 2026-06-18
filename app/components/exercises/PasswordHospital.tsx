@@ -409,6 +409,7 @@ export default function PasswordHospital({
 
       if (delta >= 8) {
         // Meaningful improvement.
+        audio.heal(); // repair sparkle as the password gets stronger
         fx.toast({
           text: `+${Math.round(delta)} STRENGTH`,
           tone: "bonus",

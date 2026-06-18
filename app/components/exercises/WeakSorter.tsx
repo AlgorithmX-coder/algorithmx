@@ -136,6 +136,7 @@ export default function WeakSorter({
     const correct = reasonId === current.reasonId;
     if (correct) {
       audio.correct();
+      audio.drop(); // tactile stamp as the answer locks into place
       setCorrectCount((n) => n + 1);
       setWrongOnCurrent(0);
       setPulseKey((k) => k + 1);

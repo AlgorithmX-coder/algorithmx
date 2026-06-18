@@ -136,19 +136,24 @@ export default function InfoScene({
           />
         )}
 
-        {/* Content */}
-        <p
-          style={{
-            color: "#cbd5e1",
-            fontSize: 16,
-            lineHeight: 1.65,
-            textAlign: "center",
-            maxWidth: 620,
-            margin: "14px auto 22px",
-          }}
-        >
-          {content}
-        </p>
+        {/* Content - only when there's NO narration. With narration, the
+            spoken captions + the rule chips already carry the teaching, so
+            this paragraph would just be a third copy of the same text for
+            a 6-9 yr old. Kept as a fallback for any non-narrated screen. */}
+        {!narration && content && (
+          <p
+            style={{
+              color: "#cbd5e1",
+              fontSize: 16,
+              lineHeight: 1.65,
+              textAlign: "center",
+              maxWidth: 620,
+              margin: "14px auto 22px",
+            }}
+          >
+            {content}
+          </p>
+        )}
 
         {/* Rule chips */}
         {bullets && (

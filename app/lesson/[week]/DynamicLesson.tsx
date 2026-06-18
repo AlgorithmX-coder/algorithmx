@@ -359,8 +359,10 @@ function VideoScreen({
   const play = () => {
     const v = videoRef.current;
     if (!v) return;
-    // Muted for testing — isolating whether the loud audio is the video.
-    v.volume = 0;
+    // The bookend videos play their own soundtrack (the lesson BGM bed is
+    // held off until the first non-video screen). A touch below full so a
+    // hot baked mix can't blast.
+    v.volume = 0.6;
     setStarted(true);
     // play() rejects if the browser still blocks it; native controls
     // (now visible) give the learner a manual fallback.
@@ -389,8 +391,9 @@ function VideoScreen({
                 controls={started}
                 playsInline
                 onPlay={(e) => {
-                  // Muted for testing — isolating the loud audio source.
-                  e.currentTarget.volume = 0;
+                  // Video plays its own soundtrack; the lesson BGM bed is
+                  // held off during video screens so nothing competes.
+                  e.currentTarget.volume = 0.6;
                 }}
                 onError={() => setFailed(true)}
                 onEnded={onSkip}
@@ -597,9 +600,11 @@ function DynamicLessonInner() {
   }, [progress, screen, lessonXp, deepLinkScreen, content]);
 
   const onResumeContinue = useCallback(() => {
+    // resumeIndex is the last COMPLETED screen, so "Keep going" advances to
+    // the NEXT one - otherwise it would replay the screen they just finished.
     const target = Math.max(
       0,
-      Math.min((content?.screens.length ?? 1) - 1, progress.resumeIndex ?? 0)
+      Math.min((content?.screens.length ?? 1) - 1, (progress.resumeIndex ?? 0) + 1)
     );
     setScreen(target);
     progress.markScreenStart(target);
@@ -689,8 +694,17 @@ function DynamicLessonInner() {
     // CyberScanner and undermining the calm "learning" tone. Every
     // non-boss screen now plays bgmLesson (faint, ambient bed).
     const isBoss = def?.type === "bossBattle";
+    const isVideo = def?.type === "video";
     try {
-      playBGM(isBoss ? "bgmBattle" : "bgmLesson");
+      if (isVideo) {
+        // The bookend (intro/outro) videos carry their own soundtrack -
+        // no music bed underneath them. The faint lesson bed only kicks
+        // in on the first non-video screen (the mission brief onward),
+        // i.e. "when the lesson begins".
+        stopBGM(0);
+      } else {
+        playBGM(isBoss ? "bgmBattle" : "bgmLesson");
+      }
     } catch {
       /* BGM optional */
     }

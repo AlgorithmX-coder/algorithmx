@@ -62,10 +62,12 @@ export const WEEK_1: WeekContent = {
       narration: {
         speaker: "adam",
         lines: [
-          "A password is your secret key.",
-          "It tells the computer it's really YOU.",
-          "A weak key? The Raccoon snaps it.",
-          "A strong key keeps him locked out.",
+          "[warmly] Hey there, Cyber Hero! I've got a secret... just for you.",
+          "[whispers] Come a little closer.",
+          "Your password is like a magic key — and it's all yours.",
+          "It's how the computer knows it's really YOU.",
+          "[nervous] A weak little key? Uh-oh... that lets the sneaky Raccoon slip right in.",
+          "[excited] But a big, strong one? [laughs] He doesn't stand a chance!",
         ],
       },
     },
@@ -109,10 +111,10 @@ export const WEEK_1: WeekContent = {
       narration: {
         speaker: "layla",
         lines: [
-          "The longer the password, the stronger it is.",
-          "Try three random words.",
-          "Like otter... rocket... mango!",
-          "Long, strong, and easy to remember.",
+          "[excited] Ooh, want to know a clever trick?",
+          "The longer your key, the harder it is to crack!",
+          "[excited] So glue three silly words together — like otter, rocket, mango!",
+          "[laughs] Long, strong, and super easy to remember!",
         ],
       },
     },
@@ -182,10 +184,10 @@ export const WEEK_1: WeekContent = {
       narration: {
         speaker: "adam",
         lines: [
-          "Mix it up to make it tough.",
-          "Big letters, small letters, numbers, symbols.",
-          "A plain word like 'tiger'? Too easy.",
-          "Mix it, and the Raccoon's stuck.",
+          "[excited] Now let's make that key SUPER tough!",
+          "Mix it all up — big letters, little letters, numbers, and squiggly symbols!",
+          "[nervous] A plain word like 'tiger'? The Raccoon gobbles that up in one bite.",
+          "[excited] But scramble it like that — [laughs] and he's totally stumped!",
         ],
       },
     },
@@ -255,10 +257,10 @@ export const WEEK_1: WeekContent = {
       narration: {
         speaker: "layla",
         lines: [
-          "A password only works if it's secret.",
-          "Don't tell your best friend.",
-          "Don't leave it where people can see.",
-          "Only a grown-up you trust helps.",
+          "[warmly] Okay — this is the MOST important part. Lean in close...",
+          "[whispers] A password only works if you keep it secret.",
+          "Don't tell your best friend. Don't leave it where anyone can peek!",
+          "[warmly] The only person who ever helps is a grown-up you really trust. Deal?",
         ],
       },
     },
@@ -312,10 +314,10 @@ export const WEEK_1: WeekContent = {
       narration: {
         speaker: "adam",
         lines: [
-          "The Raccoon guesses the obvious first.",
-          "Your name? Your birthday? Too easy.",
-          "123456? He tries that first.",
-          "Pick something he'd never guess.",
+          "[excited] Let's get inside the sneaky Raccoon's head!",
+          "[whispers] He guesses the easy stuff first. Your name? [nervous] Your birthday?",
+          "And one-two-three-four-five-six? [laughs] That's the FIRST thing he tries!",
+          "[excited] So pick something he'd NEVER guess — and outsmart him!",
         ],
       },
     },
@@ -392,11 +394,10 @@ export const WEEK_1: WeekContent = {
       narration: {
         speaker: "layla",
         lines: [
-          "Look at everything you learned this week!",
-          "A password is your secret key.",
-          "Make it long, and mix it up.",
-          "Keep it secret, and nothing obvious.",
-          "Time to claim your stickers!",
+          "[excited] WOW — look at everything you learned this week!",
+          "Your password is your secret key — make it nice and long,",
+          "[excited] mix it ALL up, keep it super secret, and nothing the Raccoon could ever guess!",
+          "[laughs] You did it, Cyber Hero! [excited] Now — time to claim your stickers!",
         ],
       },
     },

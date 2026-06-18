@@ -71,6 +71,11 @@ const SFX_REGISTRY: Record<string, SoundEntry> = {
   chatReceive: { path: "/audio/sfx/chat-receive.mp3", volume: 0.6 },
   lock: { path: "/audio/sfx/lock.mp3", volume: 0.6 },
   pour: { path: "/audio/sfx/pour.mp3", volume: 0.6 },
+  // Game-interaction SFX (ElevenLabs sound-gen, see
+  // scripts/elevenlabs-generate-game-sfx.mjs)
+  cardFlip: { path: "/audio/sfx/card-flip.mp3", volume: 0.45 },
+  drop: { path: "/audio/sfx/drop.mp3", volume: 0.45 },
+  heal: { path: "/audio/sfx/heal.mp3", volume: 0.6 },
 
   // - legacy aliases (older call sites) -
   "badge-earned": { path: "/audio/sfx/badge-earned.mp3", volume: 0.6 },
@@ -96,9 +101,9 @@ const SFX_REGISTRY: Record<string, SoundEntry> = {
 // Sarah) is the primary audio; music sits underneath as room tone,
 // not as a competing layer. Halved from the previous 0.04 after
 // narration was added - the voice needs to dominate the mix without
-// fighting the music for attention. (BGM is disabled below until the
-// volume-scaling bug is fixed.)
-const BGM_MAX_VOLUME = 0.012;
+// fighting the music for attention. 0.03 = a faint, audible background bed;
+// playBGM hard-caps at this value so it can never exceed it. Nudge to taste.
+const BGM_MAX_VOLUME = 0.03;
 const BGM_REGISTRY: Record<string, SoundEntry> = {
   bgmLesson: { path: "/audio/sfx/bgm-lesson.mp3", volume: BGM_MAX_VOLUME },
   bgmBattle: { path: "/audio/sfx/bgm-battle.mp3", volume: BGM_MAX_VOLUME },
@@ -464,12 +469,15 @@ export function playSound(key: string): void {
  * currently-playing track is stopped. Flip back to `false` to
  * restore lesson + battle music.
  *
- * Currently `false` - re-enabled after hardening playBGM: the volume is now
- * NaN-guarded and HARD-CAPPED at the configured base, so the runtime fault
- * that blasted it to full volume can't recur. It should sit faint under the
- * narration.
+ * Currently `false` - music ON as a faint bed. The earlier "loud" was a
+ * stale dev server ignoring volume changes; with that fixed plus the
+ * hardened (capped + NaN-safe) playBGM, it now plays at the real, faint
+ * configured level.
+ *
+ * 2026-06-18: forced back to `true` - user wants the music OFF entirely.
+ * Every playBGM() is a no-op and any playing track is stopped.
  */
-const BGM_DISABLED = false;
+const BGM_DISABLED = true;
 
 export function playBGM(trackOrKey: string): void {
   if (BGM_DISABLED) {
