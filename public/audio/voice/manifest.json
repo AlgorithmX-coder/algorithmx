@@ -1,12 +1,12 @@
 {
-  "generatedAt": "2026-06-18T21:03:40.168Z",
+  "generatedAt": "2026-06-18T22:20:14.991Z",
   "model": "eleven_v3",
   "voiceSettings": {
     "stability": 0.35,
     "similarity_boost": 0.7,
     "style": 0.7,
     "use_speaker_boost": true,
-    "speed": 0.95
+    "speed": 0.85
   },
   "voices": {
     "adam": {
@@ -21,7 +21,7 @@
   "chunkStrategy": "block",
   "entries": [
     {
-      "key": "2c8a36d556c60888",
+      "key": "bbaa58a4de63b7d2",
       "speaker": "adam",
       "voice": "Sarah",
       "text": "[warmly] Hey there, Cyber Hero! I've got a secret... just for you. [whispers] Come a little closer. Your password is like a magic key — and it's all yours. It's how the computer knows it's really YOU. [nervous] A weak little key? Uh-oh... that lets the sneaky Raccoon slip right in. [excited] But a big, strong one? [laughs] He doesn't stand a chance!",
@@ -33,10 +33,10 @@
         "[nervous] A weak little key? Uh-oh... that lets the sneaky Raccoon slip right in.",
         "[excited] But a big, strong one? [laughs] He doesn't stand a chance!"
       ],
-      "file": "/audio/voice/2c8a36d556c60888.mp3"
+      "file": "/audio/voice/bbaa58a4de63b7d2.mp3"
     },
     {
-      "key": "f58b21bc514c7992",
+      "key": "2acbe3018293991b",
       "speaker": "layla",
       "voice": "Sarah",
       "text": "[excited] Ooh, want to know a clever trick? The longer your key, the harder it is to crack! [excited] So glue three silly words together — like otter, rocket, mango! [laughs] Long, strong, and super easy to remember!",
@@ -46,10 +46,10 @@
         "[excited] So glue three silly words together — like otter, rocket, mango!",
         "[laughs] Long, strong, and super easy to remember!"
       ],
-      "file": "/audio/voice/f58b21bc514c7992.mp3"
+      "file": "/audio/voice/2acbe3018293991b.mp3"
     },
     {
-      "key": "f8058432264cb55b",
+      "key": "506cbaf4f1b6cf69",
       "speaker": "adam",
       "voice": "Sarah",
       "text": "[excited] Now let's make that key SUPER tough! Mix it all up — big letters, little letters, numbers, and squiggly symbols! [nervous] A plain word like 'tiger'? The Raccoon gobbles that up in one bite. [excited] But scramble it like that — [laughs] and he's totally stumped!",
@@ -59,10 +59,10 @@
         "[nervous] A plain word like 'tiger'? The Raccoon gobbles that up in one bite.",
         "[excited] But scramble it like that — [laughs] and he's totally stumped!"
       ],
-      "file": "/audio/voice/f8058432264cb55b.mp3"
+      "file": "/audio/voice/506cbaf4f1b6cf69.mp3"
     },
     {
-      "key": "74526215a4fcd68a",
+      "key": "4d7658c896422684",
       "speaker": "layla",
       "voice": "Sarah",
       "text": "[warmly] Okay — this is the MOST important part. Lean in close... [whispers] A password only works if you keep it secret. Don't tell your best friend. Don't leave it where anyone can peek! [warmly] The only person who ever helps is a grown-up you really trust. Deal?",
@@ -72,10 +72,10 @@
         "Don't tell your best friend. Don't leave it where anyone can peek!",
         "[warmly] The only person who ever helps is a grown-up you really trust. Deal?"
       ],
-      "file": "/audio/voice/74526215a4fcd68a.mp3"
+      "file": "/audio/voice/4d7658c896422684.mp3"
     },
     {
-      "key": "4759f73d32bd0f18",
+      "key": "0f1b4009db50ffc4",
       "speaker": "adam",
       "voice": "Sarah",
       "text": "[excited] Let's get inside the sneaky Raccoon's head! [whispers] He guesses the easy stuff first. Your name? [nervous] Your birthday? And one-two-three-four-five-six? [laughs] That's the FIRST thing he tries! [excited] So pick something he'd NEVER guess — and outsmart him!",
@@ -85,10 +85,10 @@
         "And one-two-three-four-five-six? [laughs] That's the FIRST thing he tries!",
         "[excited] So pick something he'd NEVER guess — and outsmart him!"
       ],
-      "file": "/audio/voice/4759f73d32bd0f18.mp3"
+      "file": "/audio/voice/0f1b4009db50ffc4.mp3"
     },
     {
-      "key": "7a09f79572e0622c",
+      "key": "99b863c9f2f09f40",
       "speaker": "layla",
       "voice": "Sarah",
       "text": "[excited] WOW — look at everything you learned this week! Your password is your secret key — make it nice and long, [excited] mix it ALL up, keep it super secret, and nothing the Raccoon could ever guess! [laughs] You did it, Cyber Hero! [excited] Now — time to claim your stickers!",
@@ -98,7 +98,7 @@
         "[excited] mix it ALL up, keep it super secret, and nothing the Raccoon could ever guess!",
         "[laughs] You did it, Cyber Hero! [excited] Now — time to claim your stickers!"
       ],
-      "file": "/audio/voice/7a09f79572e0622c.mp3"
+      "file": "/audio/voice/99b863c9f2f09f40.mp3"
     }
   ]
 }

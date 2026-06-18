@@ -60,15 +60,15 @@ const VOICE = {
 //                      0.35 steadies the prosody while staying expressive.
 //   similarity  0.70 - looser so she isn't locked rigidly to the timbre.
 //   style       0.70 - raised from 0.55 for MORE excitement/energy.
-//   speed       0.95 - a touch slower than 1.0 so it's clear for 6-9 yr olds
-//                      (de-dragging is handled by stability + tighter pauses,
-//                      not by going even slower).
+//   speed       0.85 - clearly slower: a 6-9 TEACHING pace so kids have time
+//                      to absorb each idea. Stability 0.35 keeps it from
+//                      dragging at this slower speed.
 const VOICE_SETTINGS = {
   stability: 0.35,
   similarity_boost: 0.7,
   style: 0.7,
   use_speaker_boost: true,
-  speed: 0.95,
+  speed: 0.85,
 };
 
 // Model priority: try eleven_v3 first (newest, most natural per
@@ -78,7 +78,7 @@ const VOICE_SETTINGS = {
 const MODELS_IN_PRIORITY_ORDER = ["eleven_v3", "eleven_multilingual_v2"];
 const OUTPUT_FORMAT = "mp3_44100_128";
 
-const GENERATION_VERSION = "v14-sarah-excited";
+const GENERATION_VERSION = "v15-sarah-slower";
 
 const OUT_DIR = join("public", "audio", "voice");
 const MANIFEST_PATH = join(OUT_DIR, "manifest.json");
