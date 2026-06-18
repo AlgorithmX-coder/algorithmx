@@ -106,7 +106,7 @@ export const WEEK_1: WeekContent = {
         "Longer = stronger",
         "Three random words make a great password",
         "Easy to remember, hard to crack",
-        "Aim for 8 letters or more",
+        "Aim for 8 characters or more",
       ],
       narration: {
         speaker: "layla",
