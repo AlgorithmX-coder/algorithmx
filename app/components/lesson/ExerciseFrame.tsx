@@ -108,6 +108,12 @@ export default function ExerciseFrame({
         maxWidth: widthCss,
         margin: "0 auto",
         padding,
+        // Floor so the frame can never collapse to padding-only height. An
+        // absolutely-positioned overlay (intro / complete beat) adds no flow
+        // height, so without this floor the frame shrinks and overflow:hidden
+        // clips the centered overlay's title. Only kicks in when content is
+        // shorter than this; real exercises are taller and unaffected.
+        minHeight: 420,
         borderRadius: 28,
         overflow: "hidden",
         background: background ?? undefined,
