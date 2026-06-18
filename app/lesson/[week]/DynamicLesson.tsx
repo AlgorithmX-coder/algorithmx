@@ -14,6 +14,7 @@ import {
   wrongAnswerShake,
 } from "@/app/lib/celebrations";
 import LessonHUD from "@/app/components/LessonHUD";
+import { deriveCaseMeta } from "@/app/lib/caseTitles";
 // CharacterGuide swap: the legacy PNG-only component is replaced with
 // RiveCharacterGuide, which has the same prop API but adds a Rive
 // runtime branch (currently dormant - PNG fallback active until a
@@ -1674,6 +1675,7 @@ function DynamicLessonInner() {
         currentScreen={screen}
         totalScreens={totalScreens}
         xpEarned={lessonXp}
+        caseMeta={deriveCaseMeta(def, screen)}
       />
 
       {/* Character guides are mounted ONLY on the boss battle screen.

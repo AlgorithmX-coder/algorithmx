@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { getProgressionState, getRank, RANKS } from "@/app/lib/progression";
 import { CyberIconOrEmoji } from "@/app/components/CyberIcon";
 import AnimatedCounter from "@/app/components/AnimatedCounter";
-import { getCaseMeta } from "@/app/lib/caseTitles";
+import type { CaseMeta } from "@/app/lib/caseTitles";
 import { useComfortMode } from "@/app/lib/comfortMode";
 
 export interface LessonHUDProps {
@@ -17,6 +17,8 @@ export interface LessonHUDProps {
   currentScreen: number;
   totalScreens: number;
   xpEarned: number;
+  /** Case-chip meta for the current screen, derived from its actual type. */
+  caseMeta?: CaseMeta | null;
   onMuteToggle?: () => void;
   muted?: boolean;
 }
@@ -27,6 +29,7 @@ export default function LessonHUD({
   currentScreen,
   totalScreens,
   xpEarned,
+  caseMeta,
   onMuteToggle,
   muted = false,
 }: LessonHUDProps) {
@@ -248,10 +251,7 @@ export default function LessonHUD({
           >
             Week {weekNumber}: {weekTitle}
           </div>
-          {(() => {
-            const meta = getCaseMeta(currentScreen);
-            if (!meta) return null;
-            return (
+          {caseMeta && (
               <span
                 key={`hud-case-${currentScreen}`}
                 style={{
@@ -274,12 +274,11 @@ export default function LessonHUD({
                     "hudCaseChipIn 360ms cubic-bezier(0.16,1,0.3,1) both",
                 }}
               >
-                <span style={{ opacity: 0.7 }}>{meta.label}</span>
+                <span style={{ opacity: 0.7 }}>{caseMeta.label}</span>
                 <span aria-hidden style={{ opacity: 0.5 }}>·</span>
-                <span style={{ color: "#fff7e6" }}>{meta.title}</span>
+                <span style={{ color: "#fff7e6" }}>{caseMeta.title}</span>
               </span>
-            );
-          })()}
+          )}
         </div>
         <div
           style={{
