@@ -101,9 +101,10 @@ const SFX_REGISTRY: Record<string, SoundEntry> = {
 // Sarah) is the primary audio; music sits underneath as room tone,
 // not as a competing layer. Halved from the previous 0.04 after
 // narration was added - the voice needs to dominate the mix without
-// fighting the music for attention. 0.03 = a faint, audible background bed;
-// playBGM hard-caps at this value so it can never exceed it. Nudge to taste.
-const BGM_MAX_VOLUME = 0.03;
+// fighting the music for attention. BGM is disabled below regardless; if it is
+// ever re-enabled, playBGM hard-caps at this very low level. The earlier
+// "loud" was a stale dev server ignoring volume changes, since fixed.
+const BGM_MAX_VOLUME = 0.012;
 const BGM_REGISTRY: Record<string, SoundEntry> = {
   bgmLesson: { path: "/audio/sfx/bgm-lesson.mp3", volume: BGM_MAX_VOLUME },
   bgmBattle: { path: "/audio/sfx/bgm-battle.mp3", volume: BGM_MAX_VOLUME },
@@ -469,13 +470,9 @@ export function playSound(key: string): void {
  * currently-playing track is stopped. Flip back to `false` to
  * restore lesson + battle music.
  *
- * Currently `false` - music ON as a faint bed. The earlier "loud" was a
- * stale dev server ignoring volume changes; with that fixed plus the
- * hardened (capped + NaN-safe) playBGM, it now plays at the real, faint
- * configured level.
- *
- * 2026-06-18: forced back to `true` - user wants the music OFF entirely.
- * Every playBGM() is a no-op and any playing track is stopped.
+ * Currently `true` - background music is OFF (the user wants it off entirely).
+ * Every playBGM() is a no-op and any playing track is stopped. playBGM is now
+ * hardened (capped + NaN-safe), so it's safe to flip back to `false` if wanted.
  */
 const BGM_DISABLED = true;
 
