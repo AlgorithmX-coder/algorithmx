@@ -113,7 +113,12 @@ export default function WelcomeScene({
           animation: "raccoonTaunt 3s ease-in-out infinite",
         }}
       >
-        🦝
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/game/characters/raccoon-head.png"
+          alt="The Hacker Raccoon"
+          style={{ width: 104, height: 104, borderRadius: "50%", objectFit: "cover", display: "block", border: "2px solid rgba(255,95,179,0.5)" }}
+        />
       </motion.div>
 
       {/* Cyber-styled CTA - replaces PrimaryButton (warm gold gradient)

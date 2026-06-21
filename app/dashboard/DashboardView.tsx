@@ -206,7 +206,7 @@ export default function DashboardView({
     { label: "Weeks Done", value: completedCount, color: C.cyan, glow: "rgba(54,214,255,0.5)", icon: <CalendarIcon color={C.cyan} /> },
     { label: "Remaining", value: remaining, color: C.blue, glow: "rgba(77,155,255,0.5)", icon: <HourglassIcon color={C.blue} /> },
     { label: "Badges Earned", value: completedCount, color: C.violetSoft, glow: "rgba(139,108,255,0.5)", icon: <StarIcon color={C.violetSoft} /> },
-    { label: "Raccoon Power", value: `${raccoonPower}%`, color: C.pink, glow: "rgba(255,77,157,0.5)", icon: <span style={{ fontSize: 22, lineHeight: 1 }} aria-hidden>🦝</span> },
+    { label: "Raccoon Power", value: `${raccoonPower}%`, color: C.pink, glow: "rgba(255,77,157,0.5)", icon: <Image src="/game/characters/raccoon-head.png" alt="" width={26} height={26} style={{ borderRadius: "50%", objectFit: "cover", display: "block" }} /> },
   ];
 
   return (

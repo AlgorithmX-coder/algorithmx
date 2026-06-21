@@ -36,7 +36,17 @@ export const WEEK_1: WeekContent = {
     // 0 — OPENING VIDEO: "The Break-In" (Raccoon cracks a weak password)
     { type: "video", videoPlaceholder: "Week 1: The Break-In", videoSrc: "/videos/module-01-intro.mp4" },
 
-    // 1 — Mission brief
+    // 1 — ALERT: incident report with this week's topic image
+    {
+      type: "alert",
+      photoSrc: "/cyberheroes/alerts/week-01.png",
+      title: "ALERT INCOMING",
+      badge: "Incident Report",
+      caption: "The Hacker Raccoon is hunting for Adam and Layla's passwords. They need YOUR help!",
+      ctaLabel: "Start the Mission →",
+    },
+
+    // 2 — Mission brief
     {
       type: "mission",
       objectives: [
@@ -59,6 +69,8 @@ export const WEEK_1: WeekContent = {
         "A strong key keeps hackers out",
         "Only you should ever have it",
       ],
+      bulletIcons: ["🆔", "🔑", "🛡️", "🤫"],
+      emblem: "🔒",
       narration: {
         speaker: "adam",
         lines: [
@@ -108,6 +120,8 @@ export const WEEK_1: WeekContent = {
         "Easy to remember, hard to crack",
         "Aim for 8 characters or more",
       ],
+      bulletIcons: ["📏", "🎲", "🧠", "🔢"],
+      emblem: "💪",
       narration: {
         speaker: "layla",
         lines: [
@@ -181,6 +195,8 @@ export const WEEK_1: WeekContent = {
         "Don't use a plain word like 'tiger'",
         "A mixed-up key is the hardest to crack",
       ],
+      bulletIcons: ["🔠", "🔣", "🚫", "🌀"],
+      emblem: "🎨",
       narration: {
         speaker: "adam",
         lines: [
@@ -254,6 +270,8 @@ export const WEEK_1: WeekContent = {
         "Only a parent / trusted grown-up helps",
         "A shared secret isn't a secret any more",
       ],
+      bulletIcons: ["🤐", "🙈", "👪", "🔓"],
+      emblem: "🤫",
       narration: {
         speaker: "layla",
         lines: [
@@ -311,6 +329,8 @@ export const WEEK_1: WeekContent = {
         "Not 123456 or 'password'",
         "Not keyboard rows like 'qwerty'",
       ],
+      bulletIcons: ["🏷️", "🎂", "🔢", "⌨️"],
+      emblem: "🚫",
       narration: {
         speaker: "adam",
         lines: [

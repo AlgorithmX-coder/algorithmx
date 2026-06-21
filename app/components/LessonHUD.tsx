@@ -96,13 +96,13 @@ export default function LessonHUD({
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src="/game/characters/adam-idle.png"
+              src="/game/characters/adam-head.png"
               alt="Adam"
               style={{
                 width: "100%",
                 height: "100%",
                 objectFit: "cover",
-                objectPosition: "top",
+                objectPosition: "center 22%",
                 pointerEvents: "none",
               }}
             />
@@ -123,13 +123,13 @@ export default function LessonHUD({
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src="/game/characters/layla-idle.png"
+              src="/game/characters/layla-head.png"
               alt="Layla"
               style={{
                 width: "100%",
                 height: "100%",
                 objectFit: "cover",
-                objectPosition: "top",
+                objectPosition: "center 22%",
                 pointerEvents: "none",
               }}
             />

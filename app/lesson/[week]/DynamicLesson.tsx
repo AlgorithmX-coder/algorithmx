@@ -89,6 +89,10 @@ const BossBattle = dynamic(
   () => import("@/app/components/game/BossBattle"),
   { ssr: false }
 );
+const WelcomeScene = dynamic(
+  () => import("@/app/components/game/WelcomeScene"),
+  { ssr: false }
+);
 
 /**
  * Set of screen types treated as "interactive exercise" for chrome
@@ -160,10 +164,30 @@ function ResumeBanner({
   onContinue: () => void;
   onRestart: () => void;
 }) {
+  // Esc, or a click/tap anywhere off the banner, means "I'm carrying on" -
+  // so both resolve to Continue (resume to the next screen). This matches a
+  // child's instinct that clicking away dismisses the prompt rather than
+  // leaving it stuck on screen.
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onContinue();
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [onContinue]);
+
   return (
-    <div
-      role="dialog"
-      aria-label="Resume lesson"
+    <>
+      {/* Transparent catcher behind the banner: a click off the banner
+          resolves to Continue without leaking to the lesson underneath. */}
+      <div
+        aria-hidden
+        onClick={onContinue}
+        style={{ position: "fixed", inset: 0, zIndex: 69, background: "transparent" }}
+      />
+      <div
+        role="dialog"
+        aria-label="Resume lesson"
       style={{
         position: "fixed",
         top: 80,
@@ -232,7 +256,8 @@ function ResumeBanner({
           Start over
         </button>
       </div>
-    </div>
+      </div>
+    </>
   );
 }
 
@@ -922,6 +947,20 @@ function DynamicLessonInner() {
           </FullScene>
         );
 
+      case "alert":
+        return (
+          <FullScene>
+            <WelcomeScene
+              photoSrc={def.photoSrc}
+              title={def.title}
+              badge={def.badge}
+              caption={def.caption}
+              ctaLabel={def.ctaLabel}
+              onContinue={() => navigate(screen + 1)}
+            />
+          </FullScene>
+        );
+
       case "mission":
         return (
           <FullScene bg="linear-gradient(180deg, #0a0e2a 0%, #1a1033 100%)" glow="radial-gradient(circle, rgba(59,130,246,0.2), transparent)">
@@ -1021,6 +1060,8 @@ function DynamicLessonInner() {
               title={def.title}
               content={def.content}
               bullets={def.bullets}
+              bulletIcons={def.bulletIcons}
+              emblem={def.emblem}
               narration={def.narration}
               onNext={() => navigate(screen + 1)}
             />

@@ -76,6 +76,8 @@ export function deriveCaseMeta(
       return index === 0
         ? { label: "PROLOGUE", title: "The Mission Begins" }
         : { label: "FINALE", title: "The Showdown" };
+    case "alert":
+      return { label: "ALERT", title: "Incident Report" };
     case "mission":
       return { label: "BRIEFING", title: "Your Mission" };
     case "info":
