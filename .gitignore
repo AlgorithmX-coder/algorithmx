@@ -55,3 +55,6 @@ docs/research-v2/
 
 # Screenshot/test output
 scripts/shot-out/
+
+# OpenArt scratch renders (test output, not for production)
+.openart-tmp/
