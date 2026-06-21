@@ -14,6 +14,7 @@ import {
   wrongAnswerShake,
 } from "@/app/lib/celebrations";
 import LessonHUD from "@/app/components/LessonHUD";
+import { deriveCaseMeta } from "@/app/lib/caseTitles";
 // CharacterGuide swap: the legacy PNG-only component is replaced with
 // RiveCharacterGuide, which has the same prop API but adds a Rive
 // runtime branch (currently dormant - PNG fallback active until a
@@ -29,7 +30,7 @@ import ScreenTransition, {
 import ScreenShake from "@/app/components/ScreenShake";
 import ExerciseErrorBoundary from "@/app/components/ExerciseErrorBoundary";
 import LessonAmbience from "@/app/components/LessonAmbience";
-import InfoNarration from "@/app/components/lesson/InfoNarration";
+import InfoScene from "@/app/components/lesson/InfoScene";
 import GameButton from "@/app/components/lesson/GameButton";
 import LessonStage, {
   LESSON_HUD_HEIGHT,
@@ -56,6 +57,7 @@ import SpamBlaster from "@/app/components/exercises/SpamBlaster";
 import CyberMaze from "@/app/components/exercises/CyberMaze";
 import PhishInspector from "@/app/components/exercises/PhishInspector";
 import PasswordVault from "@/app/components/exercises/PasswordVault";
+import QuickCheck from "@/app/components/exercises/QuickCheck";
 import MissionDebrief from "@/app/components/lesson/MissionDebrief";
 import StickerUnlock from "@/app/components/lesson/StickerUnlock";
 import BossVictoryScene from "@/app/components/lesson/BossVictoryScene";
@@ -85,6 +87,10 @@ const LessonArena3D = dynamic(
 );
 const BossBattle = dynamic(
   () => import("@/app/components/game/BossBattle"),
+  { ssr: false }
+);
+const WelcomeScene = dynamic(
+  () => import("@/app/components/game/WelcomeScene"),
   { ssr: false }
 );
 
@@ -138,21 +144,50 @@ function transitionForScreen(def: ScreenDef | undefined, dir: "forward" | "back"
  * (jump back to last screen) or Restart from beginning (fresh
  * attempt). No auto-jump - we always wait for an explicit choice.
  */
+/** Friendly "where you left off" label for the resume banner: the concept
+ *  (nearest info-screen title at or before the resume point) so we can name
+ *  it for the child instead of an opaque "screen 6 of 23". */
+function resumeConcept(screens: WeekContent["screens"], idx: number): string | null {
+  for (let i = Math.min(idx, screens.length - 1); i >= 0; i--) {
+    const s = screens[i];
+    if (s.type === "info" && s.title) return s.title;
+  }
+  return null;
+}
+
 function ResumeBanner({
-  resumeIndex,
-  totalScreens,
+  concept,
   onContinue,
   onRestart,
 }: {
-  resumeIndex: number;
-  totalScreens: number;
+  concept: string | null;
   onContinue: () => void;
   onRestart: () => void;
 }) {
+  // Esc, or a click/tap anywhere off the banner, means "I'm carrying on" -
+  // so both resolve to Continue (resume to the next screen). This matches a
+  // child's instinct that clicking away dismisses the prompt rather than
+  // leaving it stuck on screen.
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onContinue();
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [onContinue]);
+
   return (
-    <div
-      role="dialog"
-      aria-label="Resume lesson"
+    <>
+      {/* Transparent catcher behind the banner: a click off the banner
+          resolves to Continue without leaking to the lesson underneath. */}
+      <div
+        aria-hidden
+        onClick={onContinue}
+        style={{ position: "fixed", inset: 0, zIndex: 69, background: "transparent" }}
+      />
+      <div
+        role="dialog"
+        aria-label="Resume lesson"
       style={{
         position: "fixed",
         top: 80,
@@ -172,12 +207,19 @@ function ResumeBanner({
         color: "#e7ecff",
       }}
     >
-      <div style={{ fontSize: 14, fontWeight: 800, marginBottom: 4, color: "#7df0ff" }}>
-        Welcome back!
+      <div style={{ fontSize: 15, fontWeight: 800, marginBottom: 4, color: "#7df0ff" }}>
+        Welcome back, Cyber Hero! 🦸
       </div>
-      <div style={{ fontSize: 13, color: "#cbd5e1", marginBottom: 12 }}>
-        You stopped at screen {resumeIndex + 1} of {totalScreens}. Pick up where
-        you left off, or start fresh.
+      <div style={{ fontSize: 13.5, color: "#cbd5e1", marginBottom: 12, lineHeight: 1.5 }}>
+        {concept ? (
+          <>
+            Last time, you were learning{" "}
+            <strong style={{ color: "#fff" }}>{concept}</strong>. Want to carry on,
+            or start the mission again?
+          </>
+        ) : (
+          <>Carry on from where you were, or start the mission again from the top?</>
+        )}
       </div>
       <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
         <button
@@ -195,7 +237,7 @@ function ResumeBanner({
             cursor: "pointer",
           }}
         >
-          Continue →
+          Keep going →
         </button>
         <button
           type="button"
@@ -211,10 +253,11 @@ function ResumeBanner({
             cursor: "pointer",
           }}
         >
-          Restart from beginning
+          Start over
         </button>
       </div>
-    </div>
+      </div>
+    </>
   );
 }
 
@@ -342,6 +385,10 @@ function VideoScreen({
   const play = () => {
     const v = videoRef.current;
     if (!v) return;
+    // The bookend videos play their own soundtrack (the lesson BGM bed is
+    // held off until the first non-video screen). A touch below full so a
+    // hot baked mix can't blast.
+    v.volume = 0.6;
     setStarted(true);
     // play() rejects if the browser still blocks it; native controls
     // (now visible) give the learner a manual fallback.
@@ -369,6 +416,11 @@ function VideoScreen({
                 src={videoSrc}
                 controls={started}
                 playsInline
+                onPlay={(e) => {
+                  // Video plays its own soundtrack; the lesson BGM bed is
+                  // held off during video screens so nothing competes.
+                  e.currentTarget.volume = 0.6;
+                }}
                 onError={() => setFailed(true)}
                 onEnded={onSkip}
                 style={{ width: "100%", height: "100%", objectFit: "contain", display: "block" }}
@@ -574,9 +626,11 @@ function DynamicLessonInner() {
   }, [progress, screen, lessonXp, deepLinkScreen, content]);
 
   const onResumeContinue = useCallback(() => {
+    // resumeIndex is the last COMPLETED screen, so "Keep going" advances to
+    // the NEXT one - otherwise it would replay the screen they just finished.
     const target = Math.max(
       0,
-      Math.min((content?.screens.length ?? 1) - 1, progress.resumeIndex ?? 0)
+      Math.min((content?.screens.length ?? 1) - 1, (progress.resumeIndex ?? 0) + 1)
     );
     setScreen(target);
     progress.markScreenStart(target);
@@ -666,8 +720,17 @@ function DynamicLessonInner() {
     // CyberScanner and undermining the calm "learning" tone. Every
     // non-boss screen now plays bgmLesson (faint, ambient bed).
     const isBoss = def?.type === "bossBattle";
+    const isVideo = def?.type === "video";
     try {
-      playBGM(isBoss ? "bgmBattle" : "bgmLesson");
+      if (isVideo) {
+        // The bookend (intro/outro) videos carry their own soundtrack -
+        // no music bed underneath them. The faint lesson bed only kicks
+        // in on the first non-video screen (the mission brief onward),
+        // i.e. "when the lesson begins".
+        stopBGM(0);
+      } else {
+        playBGM(isBoss ? "bgmBattle" : "bgmLesson");
+      }
     } catch {
       /* BGM optional */
     }
@@ -884,6 +947,20 @@ function DynamicLessonInner() {
           </FullScene>
         );
 
+      case "alert":
+        return (
+          <FullScene>
+            <WelcomeScene
+              photoSrc={def.photoSrc}
+              title={def.title}
+              badge={def.badge}
+              caption={def.caption}
+              ctaLabel={def.ctaLabel}
+              onContinue={() => navigate(screen + 1)}
+            />
+          </FullScene>
+        );
+
       case "mission":
         return (
           <FullScene bg="linear-gradient(180deg, #0a0e2a 0%, #1a1033 100%)" glow="radial-gradient(circle, rgba(59,130,246,0.2), transparent)">
@@ -891,50 +968,83 @@ function DynamicLessonInner() {
               <Card>
                 <div style={{ textAlign: "center" }}>
                   <div style={{ fontSize: 44, marginBottom: 10 }}>{content.badgeIcon}</div>
-                  <h2 style={{ fontSize: 28, fontWeight: 900, color: "#fff", margin: "0 0 8px" }}>
+                  <h2
+                    style={{
+                      fontSize: 28,
+                      fontWeight: 900,
+                      margin: "0 0 8px",
+                      background: "linear-gradient(135deg, #7df0ff, #a78bfa)",
+                      WebkitBackgroundClip: "text",
+                      WebkitTextFillColor: "transparent",
+                    }}
+                  >
                     Week {content.weekNumber}: {content.title}
                   </h2>
-                  <p style={{ color: "#9ca3af", fontSize: 15, marginBottom: 24 }}>
-                    Your mission objectives:
+                  <p
+                    style={{
+                      color: "#7df0ff",
+                      fontSize: 12,
+                      letterSpacing: "0.2em",
+                      textTransform: "uppercase",
+                      fontWeight: 800,
+                      marginBottom: 22,
+                    }}
+                  >
+                    ◇ Your Mission ◇
                   </p>
-                  <ul style={{ listStyle: "none", padding: 0, margin: "0 0 24px", textAlign: "left", maxWidth: 480, marginInline: "auto" }}>
-                    {def.objectives.map((obj, i) => (
-                      <motion.li
-                        key={i}
-                        initial={{ opacity: 0, x: -10 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: 0.1 + i * 0.12 }}
-                        style={{
-                          display: "flex",
-                          gap: 12,
-                          alignItems: "flex-start",
-                          padding: "10px 14px",
-                          marginBottom: 10,
-                          background: "rgba(59,130,246,0.08)",
-                          border: "1px solid rgba(59,130,246,0.3)",
-                          borderRadius: 10,
-                        }}
-                      >
-                        <span
+                  <ul
+                    style={{
+                      listStyle: "none",
+                      padding: 0,
+                      margin: "0 0 24px",
+                      textAlign: "left",
+                      maxWidth: 480,
+                      marginInline: "auto",
+                      display: "grid",
+                      gap: 10,
+                    }}
+                  >
+                    {def.objectives.map((obj, i) => {
+                      const ac = ["#00e5ff", "#7eff97", "#ffd158", "#ff5fb3"][i % 4];
+                      return (
+                        <motion.li
+                          key={i}
+                          initial={{ opacity: 0, x: -10 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ delay: 0.1 + i * 0.12, type: "spring", stiffness: 300, damping: 24 }}
                           style={{
-                            width: 24,
-                            height: 24,
-                            borderRadius: "50%",
-                            background: "#3b82f6",
-                            color: "#fff",
-                            display: "inline-flex",
+                            display: "flex",
+                            gap: 12,
                             alignItems: "center",
-                            justifyContent: "center",
-                            fontSize: 12,
-                            fontWeight: 900,
-                            flexShrink: 0,
+                            padding: "13px 16px",
+                            background: `${ac}12`,
+                            border: `1px solid ${ac}55`,
+                            borderRadius: 14,
+                            boxShadow: `0 8px 22px -16px ${ac}, inset 0 1px 0 rgba(255,255,255,0.12)`,
                           }}
                         >
-                          {i + 1}
-                        </span>
-                        <span style={{ color: "#e2e8f0", fontSize: 15 }}>{obj}</span>
-                      </motion.li>
-                    ))}
+                          <span
+                            style={{
+                              width: 28,
+                              height: 28,
+                              borderRadius: "50%",
+                              background: ac,
+                              color: "#06080f",
+                              display: "inline-flex",
+                              alignItems: "center",
+                              justifyContent: "center",
+                              fontSize: 14,
+                              fontWeight: 900,
+                              flexShrink: 0,
+                              boxShadow: `0 0 14px -2px ${ac}`,
+                            }}
+                          >
+                            {i + 1}
+                          </span>
+                          <span style={{ color: "#eef2ff", fontSize: 15, fontWeight: 600 }}>{obj}</span>
+                        </motion.li>
+                      );
+                    })}
                   </ul>
                   <OrangeButton onClick={() => navigate(screen + 1)}>Accept Mission →</OrangeButton>
                 </div>
@@ -945,51 +1055,16 @@ function DynamicLessonInner() {
 
       case "info":
         return (
-          <FullScene bg="linear-gradient(180deg, #0a1020 0%, #1a1033 100%)" glow="radial-gradient(circle, rgba(59,130,246,0.15), transparent)">
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-              <Card>
-                <h2 style={{ fontSize: 26, fontWeight: 900, color: "#fff", margin: "0 0 12px", textAlign: "center" }}>
-                  {def.title}
-                </h2>
-                {def.narration && (
-                  <InfoNarration
-                    lines={def.narration.lines}
-                    speaker={def.narration.speaker ?? "adam"}
-                  />
-                )}
-                <p style={{ color: "#cbd5e1", fontSize: 15, lineHeight: 1.6, marginBottom: 18 }}>{def.content}</p>
-                {def.bullets && (
-                  <ul style={{ listStyle: "none", padding: 0, margin: "0 0 20px" }}>
-                    {def.bullets.map((b, i) => (
-                      <motion.li
-                        key={i}
-                        initial={{ opacity: 0, x: -8 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: 0.08 + i * 0.1 }}
-                        style={{
-                          display: "flex",
-                          gap: 10,
-                          padding: "10px 14px",
-                          marginBottom: 8,
-                          background: "rgba(52,211,153,0.06)",
-                          borderLeft: "3px solid #34d399",
-                          borderRadius: "0 8px 8px 0",
-                          color: "#e2e8f0",
-                          fontSize: 14,
-                          lineHeight: 1.5,
-                        }}
-                      >
-                        <span style={{ color: "#34d399", flexShrink: 0 }}>✓</span>
-                        <span>{b}</span>
-                      </motion.li>
-                    ))}
-                  </ul>
-                )}
-                <div style={{ textAlign: "center" }}>
-                  <OrangeButton onClick={() => navigate(screen + 1)}>Next →</OrangeButton>
-                </div>
-              </Card>
-            </motion.div>
+          <FullScene bg="linear-gradient(180deg, #0a1020 0%, #060a1c 100%)">
+            <InfoScene
+              title={def.title}
+              content={def.content}
+              bullets={def.bullets}
+              bulletIcons={def.bulletIcons}
+              emblem={def.emblem}
+              narration={def.narration}
+              onNext={() => navigate(screen + 1)}
+            />
           </FullScene>
         );
 
@@ -1064,6 +1139,24 @@ function DynamicLessonInner() {
               onCorrect={() => awardXp(25)}
               onWrong={() => addWrong(screen)}
               onHintReached={(tier) => progress.reportHint(screen, tier)}
+            />
+          </FullScene>
+        );
+
+      case "quickCheck":
+        return (
+          <FullScene bg="linear-gradient(180deg, #060a1c 0%, #131a3e 100%)">
+            <QuickCheck
+              mode={def.mode}
+              prompt={def.prompt}
+              choices={def.choices}
+              raccoonLine={def.raccoonLine}
+              praise={def.praise}
+              nudge={def.nudge}
+              speedMs={def.speedMs}
+              onComplete={() => navigate(screen + 1)}
+              onCorrect={() => awardXp(15)}
+              onWrong={() => addWrong(screen)}
             />
           </FullScene>
         );
@@ -1609,8 +1702,7 @@ function DynamicLessonInner() {
           chosen continue or restart yet. */}
       {progress.pendingResume && progress.resumeIndex !== null && (
         <ResumeBanner
-          resumeIndex={progress.resumeIndex}
-          totalScreens={totalScreens}
+          concept={resumeConcept(content.screens, progress.resumeIndex)}
           onContinue={onResumeContinue}
           onRestart={onResumeRestart}
         />
@@ -1624,6 +1716,7 @@ function DynamicLessonInner() {
         currentScreen={screen}
         totalScreens={totalScreens}
         xpEarned={lessonXp}
+        caseMeta={deriveCaseMeta(def, screen)}
       />
 
       {/* Character guides are mounted ONLY on the boss battle screen.

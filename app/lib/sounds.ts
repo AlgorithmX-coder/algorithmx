@@ -71,6 +71,11 @@ const SFX_REGISTRY: Record<string, SoundEntry> = {
   chatReceive: { path: "/audio/sfx/chat-receive.mp3", volume: 0.6 },
   lock: { path: "/audio/sfx/lock.mp3", volume: 0.6 },
   pour: { path: "/audio/sfx/pour.mp3", volume: 0.6 },
+  // Game-interaction SFX (ElevenLabs sound-gen, see
+  // scripts/elevenlabs-generate-game-sfx.mjs)
+  cardFlip: { path: "/audio/sfx/card-flip.mp3", volume: 0.45 },
+  drop: { path: "/audio/sfx/drop.mp3", volume: 0.45 },
+  heal: { path: "/audio/sfx/heal.mp3", volume: 0.6 },
 
   // - legacy aliases (older call sites) -
   "badge-earned": { path: "/audio/sfx/badge-earned.mp3", volume: 0.6 },
@@ -96,8 +101,9 @@ const SFX_REGISTRY: Record<string, SoundEntry> = {
 // Sarah) is the primary audio; music sits underneath as room tone,
 // not as a competing layer. Halved from the previous 0.04 after
 // narration was added - the voice needs to dominate the mix without
-// fighting the music for attention. (BGM is disabled below until the
-// volume-scaling bug is fixed.)
+// fighting the music for attention. BGM is disabled below regardless; if it is
+// ever re-enabled, playBGM hard-caps at this very low level. The earlier
+// "loud" was a stale dev server ignoring volume changes, since fixed.
 const BGM_MAX_VOLUME = 0.012;
 const BGM_REGISTRY: Record<string, SoundEntry> = {
   bgmLesson: { path: "/audio/sfx/bgm-lesson.mp3", volume: BGM_MAX_VOLUME },
@@ -199,14 +205,24 @@ export class SoundManager {
     const registered = BGM_REGISTRY[trackOrKey];
     const src = registered ? registered.path : `/audio/music/${trackOrKey}.mp3`;
     const baseVolume = registered ? registered.volume : BGM_MAX_VOLUME;
-    const target = baseVolume * this.categoryScale.music;
+    // Hardened volume. A non-finite categoryScale (e.g. a corrupt stored
+    // volume pref) used to make `target` NaN, and Howler plays NaN volume at
+    // FULL blast. Guard the scale, and HARD-CAP at the configured base so BGM
+    // can never exceed its intended (faint) level whatever the input.
+    const scale = Number.isFinite(this.categoryScale.music)
+      ? this.categoryScale.music
+      : 1;
+    const target = Math.max(0, Math.min(baseVolume, baseVolume * scale));
     this.currentBGMTargetVolume = target;
 
     const previous = this.currentBGM;
     const next = new Howl({
       src: [src],
       loop: true,
-      volume: 0,
+      // Start AT target (not 0). If the fade-in below is ever missed or raced
+      // (fade() called before the clip loads), the worst case is a hard start
+      // at the faint target - never the Howl default of full volume.
+      volume: target,
       onloaderror: () => {
         if (this.currentBGM === next) {
           this.currentBGM = null;
@@ -219,7 +235,16 @@ export class SoundManager {
     });
 
     next.play();
-    next.fade(0, target, CROSSFADE_MS);
+    // Cosmetic fade-in, fired once playback actually starts so it can't be
+    // dropped by a fade()-before-load race.
+    next.once("play", () => {
+      try {
+        next.volume(0);
+        next.fade(0, target, CROSSFADE_MS);
+      } catch {
+        next.volume(target);
+      }
+    });
 
     this.currentBGM = next;
     this.currentBGMTrack = trackOrKey;
@@ -340,7 +365,9 @@ export class SoundManager {
   }
 
   setVolume(category: Category, vol: number): void {
-    const clamped = Math.max(0, Math.min(1, vol));
+    // Guard against a non-finite slider/pref value (undefined/NaN) - left
+    // unchecked it propagates to Howler as NaN, which plays at full volume.
+    const clamped = Number.isFinite(vol) ? Math.max(0, Math.min(1, vol)) : 1;
     this.categoryScale[category] = clamped;
 
     if (category === "sfx") {
@@ -358,7 +385,7 @@ export class SoundManager {
           this.currentBGMTrack && BGM_REGISTRY[this.currentBGMTrack]
             ? BGM_REGISTRY[this.currentBGMTrack].volume
             : BGM_MAX_VOLUME;
-        const target = base * clamped;
+        const target = Math.max(0, Math.min(base, base * clamped));
         this.currentBGMTargetVolume = target;
         try {
           this.currentBGM.volume(target);
@@ -443,9 +470,9 @@ export function playSound(key: string): void {
  * currently-playing track is stopped. Flip back to `false` to
  * restore lesson + battle music.
  *
- * Currently `true` - background music is OFF. Even at its low configured
- * volume it came through too loud, which points to a volume-scaling bug
- * to fix before re-enabling. Disabled for now to keep lessons clean.
+ * Currently `true` - background music is OFF (the user wants it off entirely).
+ * Every playBGM() is a no-op and any playing track is stopped. playBGM is now
+ * hardened (capped + NaN-safe), so it's safe to flip back to `false` if wanted.
  */
 const BGM_DISABLED = true;
 

@@ -25,39 +25,50 @@ if (!KEY) {
   process.exit(1);
 }
 
-// SINGLE-NARRATOR mode: Will reads everything.
-//   Switched from George after tester feedback "too old + AI".
-//   Will is YOUNG + RELAXED + AMERICAN conversational - reads as
-//   "cool older sibling/young teacher" instead of George's
-//   middle-aged British storyteller. Same kid-warmth, younger
-//   register.
-//   The speaker tag on each block is preserved in the manifest
-//   for any future "switch back to two voices" move; both ids
-//   currently point to the same voice ID.
+// SINGLE-NARRATOR mode: Sarah is the hero-mentor and reads everything.
+//   Chosen by ear 2026-06-18 from a 5-voice audition (see
+//   scripts/elevenlabs-audition.mjs + cyberheroes-narrator-spec memory):
+//   ElevenLabs "Sarah - Mature, Reassuring, Confident" (female, young,
+//   American). Warm + reassuring fits the "empowering, never frightening"
+//   rule for cyber-safety content; reads as a hero-mentor coach, not a
+//   teacher. (Previously Jessica; before that Alice, which tested "too
+//   teachery".) Both content speakers map to Sarah = one consistent mentor;
+//   the speaker tag is preserved for any future second-voice move.
 const VOICE = {
-  adam:  { id: "bIHbv24MWmeRgasZH58o", name: "Will" },
-  layla: { id: "bIHbv24MWmeRgasZH58o", name: "Will" },
+  adam:  { id: "EXAVITQu4vr4xnSDxMaL", name: "Sarah" },
+  layla: { id: "EXAVITQu4vr4xnSDxMaL", name: "Sarah" },
 };
 
-// v5-natural tune. After v4 still read as "AI":
-//   stability    0.50 - LOWER than v4. The even monotone of high
-//                       stability was itself a "this is synthetic"
-//                       signal. Lower = more natural micro-variation
-//                       between syllables, which is what human voices
-//                       actually do.
-//   similarity   0.85 - close to voice's natural timbre.
-//   style        0.00 - no performance boost. Any > 0 reads as TV
-//                       presenter playing kid voices, not real human.
+// v9-expressive tune. The flat "reading-from-a-script" delivery came
+// from high stability + ZERO style. For a children's STORYTELLER we want
+// flow, natural pauses, and clear question/emphasis intonation - so we
+// open her up (eleven_v3 responds strongly to these):
+//   stability   0.35 - LOW = expressive, dynamic delivery with natural
+//                       rises/falls and pauses (eleven_v3's Creative-
+//                       leaning range). High stability = the monotone.
+//   similarity  0.80 - a little looser so she isn't locked to a rigid
+//                       timbre and can move with the line.
+//   style       0.40 - performance/expressiveness ON. THIS carries the
+//                       rhetorical-question tone, emphasis and warmth.
 //   speaker boost true - presence/clarity.
-//   speed        0.92 - back to v2 sweet spot. 0.85 was too slow for
-//                       adult ears + sometimes felt unnatural enough
-//                       to read as "AI playing it safe".
+//   speed       0.95 - natural conversational flow; the *pauses* come from
+//                       punctuation + expression, not uniform slowness
+//                       (0.90 read as careful/deliberate).
+// Tuned for a child-presenter read: excited, clear, NOT dragged.
+//   stability   0.35 - raised from 0.25. Ultra-low stability made eleven_v3
+//                      stretch/drag words unevenly ("sounds dragged at times");
+//                      0.35 steadies the prosody while staying expressive.
+//   similarity  0.70 - looser so she isn't locked rigidly to the timbre.
+//   style       0.70 - raised from 0.55 for MORE excitement/energy.
+//   speed       0.85 - clearly slower: a 6-9 TEACHING pace so kids have time
+//                      to absorb each idea. Stability 0.35 keeps it from
+//                      dragging at this slower speed.
 const VOICE_SETTINGS = {
-  stability: 0.5,
-  similarity_boost: 0.85,
-  style: 0.0,
+  stability: 0.35,
+  similarity_boost: 0.7,
+  style: 0.7,
   use_speaker_boost: true,
-  speed: 0.92,
+  speed: 0.85,
 };
 
 // Model priority: try eleven_v3 first (newest, most natural per
@@ -67,7 +78,7 @@ const VOICE_SETTINGS = {
 const MODELS_IN_PRIORITY_ORDER = ["eleven_v3", "eleven_multilingual_v2"];
 const OUTPUT_FORMAT = "mp3_44100_128";
 
-const GENERATION_VERSION = "v7-will-natural";
+const GENERATION_VERSION = "v15-sarah-slower";
 
 const OUT_DIR = join("public", "audio", "voice");
 const MANIFEST_PATH = join(OUT_DIR, "manifest.json");

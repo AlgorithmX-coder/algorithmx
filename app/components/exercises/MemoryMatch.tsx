@@ -254,7 +254,7 @@ export default function MemoryMatch({
     if (showIntro) return;
     const c = cards[idx];
     if (!c || c.flipped || c.matched || finished) return;
-    playSound("pop");
+    playSound("cardFlip");
     setFlipCount((n) => n + 1);
     setCards((prev) => {
       const next = prev.slice();
@@ -396,7 +396,7 @@ export default function MemoryMatch({
     rebuildLockRef.current = true;
     setRebuildAttempts((n) => n + 1);
     setFlipCount((n) => n + 1);
-    playSound("pop");
+    playSound("cardFlip");
 
     // Flip the clicked card so its face is visible.
     setCards((prev) => {

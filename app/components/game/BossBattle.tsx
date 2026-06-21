@@ -1585,23 +1585,59 @@ export default function BossBattle({
   const bossTauntTimerRef = useRef<number | null>(null);
   const heroSpeechTimerRef = useRef<number | null>(null);
   const BOSS_TAUNTS = useMemo(
-    () => ["You can't stop me!", "Is that all you've got?", "Too slow!", "I'm unstoppable!", "Give up now!", "Pathetic!"],
+    // Order MUST match taunt-1..taunt-6 in scripts/elevenlabs-generate-villain.mjs.
+    // Cheeky comedic-menace - a villain to love beating, never cruel.
+    () => ["Too easy!", "You'll never crack me!", "Nice try, kiddo!", "Is that all you've got?", "I'm the sneakiest around!", "Catch me if you can!"],
     []
   );
+  // The Hacker Raccoon's voice (Callum, ElevenLabs). Raw Audio, capped +
+  // one-at-a-time. Files at /audio/villain/{slug}.mp3.
+  const villainAudioRef = useRef<HTMLAudioElement | null>(null);
+  const playVillain = useCallback((slug: string) => {
+    try {
+      if (villainAudioRef.current) {
+        villainAudioRef.current.pause();
+        villainAudioRef.current = null;
+      }
+      const el = new Audio(`/audio/villain/${slug}.mp3`);
+      el.volume = 0.6;
+      villainAudioRef.current = el;
+      void el.play().catch(() => {});
+    } catch {
+      /* villain voice optional */
+    }
+  }, []);
   const HERO_LINES_3 = useMemo(() => ["I'm on fire!", "Let's go!", "Keep it up!"], []);
   const HERO_LINES_5 = useMemo(() => ["Unstoppable!", "We've got this!", "Power up!"], []);
   const HERO_LINES_7 = useMemo(() => ["LEGENDARY!", "Nothing can stop us!", "Maximum power!"], []);
   const showBossTaunt = useCallback(() => {
-    const t = BOSS_TAUNTS[Math.floor(Math.random() * BOSS_TAUNTS.length)];
-    setBossTaunt(t);
+    const i = Math.floor(Math.random() * BOSS_TAUNTS.length);
+    setBossTaunt(BOSS_TAUNTS[i]);
+    playVillain(`taunt-${i + 1}`); // voice matches the bubble
     if (bossTauntTimerRef.current) window.clearTimeout(bossTauntTimerRef.current);
     bossTauntTimerRef.current = window.setTimeout(() => setBossTaunt(null), 1500);
-  }, [BOSS_TAUNTS]);
+  }, [BOSS_TAUNTS, playVillain]);
   const showHeroSpeech = useCallback((line: string) => {
     setHeroSpeech(line);
     if (heroSpeechTimerRef.current) window.clearTimeout(heroSpeechTimerRef.current);
     heroSpeechTimerRef.current = window.setTimeout(() => setHeroSpeech(null), 1500);
   }, []);
+
+  // Hacker Raccoon voice: a cocky intro as he appears, and a defeat line
+  // when he's beaten. (Taunts mid-fight fire from showBossTaunt.)
+  useEffect(() => {
+    const id = window.setTimeout(() => playVillain("intro"), 900);
+    return () => {
+      window.clearTimeout(id);
+      if (villainAudioRef.current) {
+        villainAudioRef.current.pause();
+        villainAudioRef.current = null;
+      }
+    };
+  }, [playVillain]);
+  useEffect(() => {
+    if (result === "won") playVillain("defeat");
+  }, [result, playVillain]);
 
   // Centre screen correct/wrong flash
   const [centerFeedback, setCenterFeedback] = useState<"correct" | "wrong" | "shielded" | null>(null);

@@ -81,10 +81,24 @@ export type ScreenDef =
   | { type: "video"; videoPlaceholder: string; videoSrc?: string }
   | { type: "mission"; objectives: string[] }
   | {
+      /** Post-intro "incident report" reveal with the week's topic image. */
+      type: "alert";
+      /** Per-week scene image shown in the polaroid (e.g. /cyberheroes/alerts/week-01.png). */
+      photoSrc?: string;
+      title?: string;
+      badge?: string;
+      caption?: string;
+      ctaLabel?: string;
+    }
+  | {
       type: "info";
       title: string;
       content: string;
       bullets?: string[];
+      /** Optional per-bullet topic icon (emoji), shown in a badge on each row. */
+      bulletIcons?: string[];
+      /** Optional header emblem glyph for this concept (defaults to 🔒). */
+      emblem?: string;
       /**
        * Optional Adam/Layla narration. Each line is read aloud in order
        * by the InfoNarration block on the info screen. Lines should be
@@ -103,6 +117,27 @@ export type ScreenDef =
     }
   | { type: "passwordLab" }
   | { type: "crackTheCode" }
+  | {
+      /**
+       * QuickCheck - the short "Prove it" beat that closes each concept
+       * loop. One question, no hints, an instant win. Four flavours via
+       * `mode` so five in a row never feel the same:
+       *   finish - complete the rule ("Keep it ___")
+       *   speed  - beat the urgency bar (never hard-fails)
+       *   lie    - catch the Raccoon's claim (TRUE / FALSE)
+       *   recall - one-tap "which?"
+       */
+      type: "quickCheck";
+      mode: "finish" | "speed" | "lie" | "recall";
+      prompt: string;
+      choices: { text: string; isCorrect: boolean }[];
+      /** `lie` mode: the Raccoon's bogus claim shown in his speech bubble. */
+      raccoonLine?: string;
+      praise?: string;
+      nudge?: string;
+      /** `speed` mode urgency window (ms). Cosmetic. */
+      speedMs?: number;
+    }
   | {
       /**
        * Password Vault - the flagship first-person guided scene.

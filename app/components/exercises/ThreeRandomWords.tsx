@@ -144,7 +144,7 @@ export default function ThreeRandomWords({
       const next = [...picked];
       next[nextEmptySlot] = wordId;
       setPicked(next);
-      audio.tap();
+      audio.drop(); // word snaps into the slot
     },
     [picked, nextEmptySlot, phase, fx, audio]
   );

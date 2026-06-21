@@ -1,97 +1,104 @@
 {
-  "generatedAt": "2026-05-30T08:55:03.655Z",
+  "generatedAt": "2026-06-18T22:20:14.991Z",
   "model": "eleven_v3",
   "voiceSettings": {
-    "stability": 0.5,
-    "similarity_boost": 0.85,
-    "style": 0,
+    "stability": 0.35,
+    "similarity_boost": 0.7,
+    "style": 0.7,
     "use_speaker_boost": true,
-    "speed": 0.92
+    "speed": 0.85
   },
   "voices": {
     "adam": {
-      "id": "bIHbv24MWmeRgasZH58o",
-      "name": "Will"
+      "id": "EXAVITQu4vr4xnSDxMaL",
+      "name": "Sarah"
     },
     "layla": {
-      "id": "bIHbv24MWmeRgasZH58o",
-      "name": "Will"
+      "id": "EXAVITQu4vr4xnSDxMaL",
+      "name": "Sarah"
     }
   },
   "chunkStrategy": "block",
   "entries": [
     {
-      "key": "e12ca002e326b9ed",
+      "key": "bbaa58a4de63b7d2",
       "speaker": "adam",
-      "voice": "Will",
-      "text": "A password is your secret code. It tells the computer it's really YOU. Keep it secret - even from your best friend. Long passwords are stronger than short ones. Mix big letters, small letters, numbers and symbols.",
+      "voice": "Sarah",
+      "text": "[warmly] Hey there, Cyber Hero! I've got a secret... just for you. [whispers] Come a little closer. Your password is like a magic key — and it's all yours. It's how the computer knows it's really YOU. [nervous] A weak little key? Uh-oh... that lets the sneaky Raccoon slip right in. [excited] But a big, strong one? [laughs] He doesn't stand a chance!",
       "lines": [
-        "A password is your secret code.",
-        "It tells the computer it's really YOU.",
-        "Keep it secret - even from your best friend.",
-        "Long passwords are stronger than short ones.",
-        "Mix big letters, small letters, numbers and symbols."
+        "[warmly] Hey there, Cyber Hero! I've got a secret... just for you.",
+        "[whispers] Come a little closer.",
+        "Your password is like a magic key — and it's all yours.",
+        "It's how the computer knows it's really YOU.",
+        "[nervous] A weak little key? Uh-oh... that lets the sneaky Raccoon slip right in.",
+        "[excited] But a big, strong one? [laughs] He doesn't stand a chance!"
       ],
-      "file": "/audio/voice/e12ca002e326b9ed.mp3"
+      "file": "/audio/voice/bbaa58a4de63b7d2.mp3"
     },
     {
-      "key": "1855be342c4f3ae8",
+      "key": "2acbe3018293991b",
       "speaker": "layla",
-      "voice": "Will",
-      "text": "Imagine ONE key opens your house AND your bike. If a thief steals it, they open both! Passwords are the same. Use a DIFFERENT one for every account. If one gets stolen, the others stay safe.",
+      "voice": "Sarah",
+      "text": "[excited] Ooh, want to know a clever trick? The longer your key, the harder it is to crack! [excited] So glue three silly words together — like otter, rocket, mango! [laughs] Long, strong, and super easy to remember!",
       "lines": [
-        "Imagine ONE key opens your house AND your bike.",
-        "If a thief steals it, they open both!",
-        "Passwords are the same.",
-        "Use a DIFFERENT one for every account.",
-        "If one gets stolen, the others stay safe."
+        "[excited] Ooh, want to know a clever trick?",
+        "The longer your key, the harder it is to crack!",
+        "[excited] So glue three silly words together — like otter, rocket, mango!",
+        "[laughs] Long, strong, and super easy to remember!"
       ],
-      "file": "/audio/voice/1855be342c4f3ae8.mp3"
+      "file": "/audio/voice/2acbe3018293991b.mp3"
     },
     {
-      "key": "366009fdae98df49",
+      "key": "506cbaf4f1b6cf69",
       "speaker": "adam",
-      "voice": "Will",
-      "text": "Time to remember the five Golden Rules! One - keep it SECRET. Never share it. Two - make it LONG. Eight characters or more. Three - MIX letters, numbers and symbols. Four - make it UNIQUE for every account. Five - never use your name, birthday or the word 'password'.",
+      "voice": "Sarah",
+      "text": "[excited] Now let's make that key SUPER tough! Mix it all up — big letters, little letters, numbers, and squiggly symbols! [nervous] A plain word like 'tiger'? The Raccoon gobbles that up in one bite. [excited] But scramble it like that — [laughs] and he's totally stumped!",
       "lines": [
-        "Time to remember the five Golden Rules!",
-        "One - keep it SECRET. Never share it.",
-        "Two - make it LONG. Eight characters or more.",
-        "Three - MIX letters, numbers and symbols.",
-        "Four - make it UNIQUE for every account.",
-        "Five - never use your name, birthday or the word 'password'."
+        "[excited] Now let's make that key SUPER tough!",
+        "Mix it all up — big letters, little letters, numbers, and squiggly symbols!",
+        "[nervous] A plain word like 'tiger'? The Raccoon gobbles that up in one bite.",
+        "[excited] But scramble it like that — [laughs] and he's totally stumped!"
       ],
-      "file": "/audio/voice/366009fdae98df49.mp3"
+      "file": "/audio/voice/506cbaf4f1b6cf69.mp3"
     },
     {
-      "key": "e87a0af7e7f9fff7",
+      "key": "4d7658c896422684",
       "speaker": "layla",
-      "voice": "Will",
-      "text": "Phishing sounds like 'fishing' - and it works the same way. A hacker drops bait. Hoping you bite. Free prize? Bait. 'URGENT - type your password!' Bait. Message from someone you don't know? Be careful. If you're not sure, show a parent.",
+      "voice": "Sarah",
+      "text": "[warmly] Okay — this is the MOST important part. Lean in close... [whispers] A password only works if you keep it secret. Don't tell your best friend. Don't leave it where anyone can peek! [warmly] The only person who ever helps is a grown-up you really trust. Deal?",
       "lines": [
-        "Phishing sounds like 'fishing' - and it works the same way.",
-        "A hacker drops bait. Hoping you bite.",
-        "Free prize? Bait.",
-        "'URGENT - type your password!' Bait.",
-        "Message from someone you don't know? Be careful.",
-        "If you're not sure, show a parent."
+        "[warmly] Okay — this is the MOST important part. Lean in close...",
+        "[whispers] A password only works if you keep it secret.",
+        "Don't tell your best friend. Don't leave it where anyone can peek!",
+        "[warmly] The only person who ever helps is a grown-up you really trust. Deal?"
       ],
-      "file": "/audio/voice/e87a0af7e7f9fff7.mp3"
+      "file": "/audio/voice/4d7658c896422684.mp3"
     },
     {
-      "key": "74354f19b796a607",
-      "speaker": "layla",
-      "voice": "Will",
-      "text": "Wow! Look at everything you learned this week. Strong passwords - long and mixed. Secret passwords - even from your best friend. Unique passwords - one for every account. And you can spot phishing tricks too. Time to claim your stickers!",
+      "key": "0f1b4009db50ffc4",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] Let's get inside the sneaky Raccoon's head! [whispers] He guesses the easy stuff first. Your name? [nervous] Your birthday? And one-two-three-four-five-six? [laughs] That's the FIRST thing he tries! [excited] So pick something he'd NEVER guess — and outsmart him!",
       "lines": [
-        "Wow! Look at everything you learned this week.",
-        "Strong passwords - long and mixed.",
-        "Secret passwords - even from your best friend.",
-        "Unique passwords - one for every account.",
-        "And you can spot phishing tricks too.",
-        "Time to claim your stickers!"
+        "[excited] Let's get inside the sneaky Raccoon's head!",
+        "[whispers] He guesses the easy stuff first. Your name? [nervous] Your birthday?",
+        "And one-two-three-four-five-six? [laughs] That's the FIRST thing he tries!",
+        "[excited] So pick something he'd NEVER guess — and outsmart him!"
       ],
-      "file": "/audio/voice/74354f19b796a607.mp3"
+      "file": "/audio/voice/0f1b4009db50ffc4.mp3"
+    },
+    {
+      "key": "99b863c9f2f09f40",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[excited] WOW — look at everything you learned this week! Your password is your secret key — make it nice and long, [excited] mix it ALL up, keep it super secret, and nothing the Raccoon could ever guess! [laughs] You did it, Cyber Hero! [excited] Now — time to claim your stickers!",
+      "lines": [
+        "[excited] WOW — look at everything you learned this week!",
+        "Your password is your secret key — make it nice and long,",
+        "[excited] mix it ALL up, keep it super secret, and nothing the Raccoon could ever guess!",
+        "[laughs] You did it, Cyber Hero! [excited] Now — time to claim your stickers!"
+      ],
+      "file": "/audio/voice/99b863c9f2f09f40.mp3"
     }
   ]
 }

@@ -39,3 +39,62 @@ export const CASE_TITLES: Record<number, CaseMeta> = {
 export function getCaseMeta(screen: number): CaseMeta | undefined {
   return CASE_TITLES[screen];
 }
+
+// Friendly names per exercise/game type (used for the "DRILL" chip title).
+const GAME_TITLES: Record<string, string> = {
+  memoryMatch: "Memory Match",
+  threeRandomWords: "Build a Passphrase",
+  passwordHospital: "Password Hospital",
+  chooseYourPath: "Choose Your Path",
+  weakSorter: "Weakness Detective",
+  passwordLab: "Password Lab",
+  crackTheCode: "Crack the Code",
+  firewallBuilder: "Firewall Builder",
+  phishInspector: "Phish Inspector",
+  inboxSimulator: "Inbox Simulator",
+  spamBlaster: "Spam Blaster",
+  popupPanic: "Popup Panic",
+  accountRescue: "Account Rescue",
+  protectTheData: "Protect the Data",
+  cyberMaze: "Cyber Maze",
+  chatSimulator: "Chat Simulator",
+};
+
+/**
+ * Derive the case-chip meta from the ACTUAL screen, so it's correct for
+ * every week. The old per-index CASE_TITLES map was a stale 18-screen
+ * layout that mislabelled real lessons (e.g. "BOSS" on a learning screen
+ * in Week 1's 23-screen structure). Prefer this for any data-driven lesson.
+ */
+export function deriveCaseMeta(
+  def: { type: string; title?: string } | null | undefined,
+  index: number,
+): CaseMeta | null {
+  if (!def) return null;
+  switch (def.type) {
+    case "video":
+      return index === 0
+        ? { label: "PROLOGUE", title: "The Mission Begins" }
+        : { label: "FINALE", title: "The Showdown" };
+    case "alert":
+      return { label: "ALERT", title: "Incident Report" };
+    case "mission":
+      return { label: "BRIEFING", title: "Your Mission" };
+    case "info":
+      return { label: "LEARN", title: def.title ?? "Lesson" };
+    case "quickCheck":
+      return { label: "QUICK CHECK", title: "Prove It!" };
+    case "cyberScanner":
+      return { label: "FINAL DRILL", title: "Cyber Scanner" };
+    case "bossBattle":
+      return { label: "BOSS", title: "Hacker Raccoon" };
+    case "missionDebrief":
+      return { label: "DEBRIEF", title: def.title ?? "Mission Complete" };
+    case "stickerUnlock":
+      return { label: "REWARDS", title: "Stickers Unlocked" };
+    case "completion":
+      return { label: "VICTORY", title: "Week Complete" };
+    default:
+      return { label: "DRILL", title: GAME_TITLES[def.type] ?? "Training Drill" };
+  }
+}
