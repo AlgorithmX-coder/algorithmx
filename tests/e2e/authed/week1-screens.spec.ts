@@ -25,10 +25,12 @@ test.describe("Week 1 new screens - no dead-ends", () => {
 
       await page.goto(`/lesson/1?screen=${idx}`);
 
-      // The recap must render its plain takeaway...
-      await expect(page.getByText(/You just learned/i)).toBeVisible({
-        timeout: 10_000,
-      });
+      // The recap must render its plain takeaway. Match the eyebrow label
+      // exactly — a loose regex also hits the narration caption that echoes
+      // the takeaway ("You just learned what a…"), tripping strict mode.
+      await expect(
+        page.getByText("You just learned", { exact: true }),
+      ).toBeVisible({ timeout: 10_000 });
       // ...and always offer an enabled way forward (no dead-end).
       await expect(
         page.getByRole("button", { name: /Keep going/i }),
@@ -42,7 +44,11 @@ test.describe("Week 1 new screens - no dead-ends", () => {
     page,
   }) => {
     await page.goto("/lesson/1?screen=22");
-    await expect(page.getByText(/mastered/i)).toBeVisible({ timeout: 10_000 });
+    // Target the headline specifically — the narration caption also says
+    // "…you've mastered…", which would trip strict mode on a bare getByText.
+    await expect(
+      page.getByRole("heading", { name: /mastered/i }),
+    ).toBeVisible({ timeout: 10_000 });
     await expect(
       page.getByRole("button", { name: /I'm ready|Keep going/i }),
     ).toBeEnabled({ timeout: 10_000 });
