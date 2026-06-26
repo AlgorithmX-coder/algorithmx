@@ -7,7 +7,7 @@ import dynamic from "next/dynamic";
 import { motion } from "framer-motion";
 import { playSound as playSFX, playBGM, stopBGM } from "@/app/lib/sounds";
 import { useGameAudio } from "@/app/lib/gameEngine";
-import { addXP, type RankInfo } from "@/app/lib/progression";
+import { addXP, hydrateProgressionFromServer, type RankInfo } from "@/app/lib/progression";
 import {
   correctAnswerBurst,
   badgeEarnedCelebration,
@@ -616,6 +616,14 @@ function DynamicLessonInner({ qaEnabled }: { qaEnabled: boolean }) {
   useEffect(() => {
     setMutedState(isAudioMuted());
     return subscribeAudioMute((m) => setMutedState(m));
+  }, []);
+
+  // Pull durable XP / rank / stars / badges from the server into the
+  // local progression blob once on mount, so a cleared browser or a
+  // fresh device shows the child's real totals instead of a zeroed
+  // local state. Silent max-merge; never lowers local, never throws.
+  useEffect(() => {
+    void hydrateProgressionFromServer();
   }, []);
   const handleMuteToggle = useCallback(() => {
     setMutedState((prev) => {
