@@ -73,7 +73,7 @@ export interface BossQuestion {
  * A single lesson screen. The rendering logic in `app/lesson/[week]/page.tsx`
  * switches on `type` to mount the right component with the right data.
  */
-export type ScreenDef =
+export type ScreenDef = (
   // `videoSrc` is the path to a real playable file (e.g.
   // "/videos/module-01-intro.mp4"). When present the lesson renders an
   // actual <video> player; when omitted it falls back to the decorative
@@ -339,6 +339,8 @@ export type ScreenDef =
       /** Number of words to pick. Default 3. */
       slots?: number;
       hints?: { tier1: string; tier2: string };
+      /** Spoken, paced intro that explains the task before play (read aloud). */
+      narration?: { speaker?: "adam" | "layla"; lines: string[] };
     }
   | {
       /**
@@ -460,5 +462,43 @@ export type ScreenDef =
         correctIndex: number;
       }[];
     }
+  | {
+      /**
+       * Concept Recap checkpoint — fires after each Learn→Play→Prove loop
+       * to consolidate the win and chunk the week into clear chapters
+       * (so it doesn't feel like flicking through screens). Shows a
+       * celebratory "Concept X of N", a plain one-line takeaway of what
+       * was just learned, what's coming next, and a progress track.
+       * Narrated by Sarah via the shared `narration` field.
+       */
+      type: "recap";
+      /** 1-based index of the concept just completed. */
+      concept: number;
+      /** Total concepts in the week (for the progress track). */
+      total: number;
+      /** Plain one-line takeaway, e.g. "A password is a secret code…". */
+      learned: string;
+      /** What's coming next. Omit/replace with a finale line on the last. */
+      next?: string;
+      /** Header emblem glyph (defaults to ✅). */
+      emblem?: string;
+    }
   | { type: "bossBattle" }
-  | { type: "completion" };
+  | { type: "completion" }
+) & {
+  /**
+   * Optional spoken intro narration — available on ANY screen. Exercises use
+   * it for a paced, read-aloud "here's what to do" intro; info screens use it
+   * as the in-screen teaching narration. The ElevenLabs generator scans for
+   * `narration: { speaker, lines }` blocks here, so this also drives the audio.
+   */
+  narration?: { speaker?: "adam" | "layla"; lines: string[] };
+  /**
+   * Optional "teach-once" coach line played IN the exercise at the first
+   * action (e.g. "Go on — tap any word to begin!"), then it gets out of the
+   * way. Distinct from the intro `narration`: this reinforces the first rep
+   * contextually, on the board. The ElevenLabs generator also scans
+   * `coachLines: { speaker, lines }` blocks so these get a recorded voice.
+   */
+  coachLines?: { speaker?: "adam" | "layla"; lines: string[] };
+};

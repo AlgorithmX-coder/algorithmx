@@ -31,6 +31,7 @@ import {
 import ExerciseFrame from "@/app/components/lesson/ExerciseFrame";
 import GameButton from "@/app/components/lesson/GameButton";
 import InfoNarration from "@/app/components/lesson/InfoNarration";
+import PixIcon from "@/app/components/lesson/PixIcon";
 
 export interface DebriefConcept {
   id: string;
@@ -232,7 +233,7 @@ export default function MissionDebrief({
                   filter: visible ? `drop-shadow(0 0 14px ${c.accent}88)` : undefined,
                 }}
               >
-                {c.icon}
+                <PixIcon emoji={c.icon} size={50} />
               </div>
               <div
                 style={{

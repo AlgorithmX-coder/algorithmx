@@ -84,6 +84,8 @@ export function deriveCaseMeta(
       return { label: "LEARN", title: def.title ?? "Lesson" };
     case "quickCheck":
       return { label: "QUICK CHECK", title: "Prove It!" };
+    case "recap":
+      return { label: "CHECKPOINT", title: "Concept Complete" };
     case "cyberScanner":
       return { label: "FINAL DRILL", title: "Cyber Scanner" };
     case "bossBattle":

@@ -20,6 +20,7 @@ import {
 import { playSound, playBGM, stopBGM, SoundManager } from "@/app/lib/sounds";
 import { addXP, earnBadge, type RankInfo } from "@/app/lib/progression";
 import LevelUpCelebration from "@/app/components/LevelUpCelebration";
+import PixIcon from "@/app/components/lesson/PixIcon";
 
 // Three.js arena environment - dynamically imported so SSR doesn't try to
 // execute WebGL code. Renders behind the transparent PixiJS canvas.
@@ -1082,8 +1083,11 @@ function tickFrame(g: GameState, dt: number) {
     // Menacing idle: compound sway + slow drift + vertical bob
     const bossSwayX = Math.sin(g.time / 700) * 6 + Math.sin(g.time / 3000) * 3;
     const bossBobY = Math.sin(g.time / 600) * 3;
-    const rageJitterX = phase === 3 ? (Math.random() - 0.5) * 3 : 0;
-    const rageJitterY = phase === 3 ? (Math.random() - 0.5) * 2 : 0;
+    // Phase-3 "rage" jitter is high-frequency random motion — skip it under
+    // comfort / reduced-motion (vestibular safety) so the boss just sways.
+    const rageJitter = phase === 3 && !g.comfortReduceMotion;
+    const rageJitterX = rageJitter ? (Math.random() - 0.5) * 3 : 0;
+    const rageJitterY = rageJitter ? (Math.random() - 0.5) * 2 : 0;
     g.boss.x = g.baseBossX + g.bossOffsetX + bossSwayX + rageJitterX + g.mouseOffsetX * 5;
     g.boss.y = g.baseBossY + bossBobY + g.bossYOffset + rageJitterY + g.mouseOffsetY * 3;
     const bossPhaseTint = phase === 3 ? 0xffb0b0 : phase === 2 ? 0xffd0d0 : 0xf0e0ff;
@@ -1702,15 +1706,10 @@ export default function BossBattle({
   });
 
   const chooseHero = (h: HeroId) => {
-    if (selecting || selectedHero) {
-      console.log("[BossBattle] chooseHero blocked", { requested: h, selecting, selectedHero });
-      return;
-    }
-    console.log("[BossBattle] chooseHero start →", h);
+    if (selecting || selectedHero) return;
     playSound("select");
     setSelecting(h);
     window.setTimeout(() => {
-      console.log("[BossBattle] chooseHero commit →", h);
       setSelectedHero(h);
     }, 600);
   };
@@ -1884,7 +1883,6 @@ export default function BossBattle({
         }
         canvasHostRef.current.appendChild(canvas);
 
-        console.log("[BossBattle] loading assets", ASSET_PATHS);
         const [
           bg,
           adamIdle, adamAttack, adamHurt, adamCelebrate, /* adamSelect */,
@@ -2052,11 +2050,6 @@ export default function BossBattle({
         };
         app.ticker.add(tickerFn);
 
-        console.log("[BossBattle] ready", {
-          W, H, selectedHero,
-          canvas: { cssW: canvas.clientWidth, cssH: canvas.clientHeight, bufW: canvas.width, bufH: canvas.height },
-          bossIdle: { w: textures.boss.idle.width, h: textures.boss.idle.height },
-        });
         setReady(true);
       } catch (err) {
         console.error("[BossBattle] init failed", err);
@@ -3107,7 +3100,7 @@ export default function BossBattle({
           className={`bb-center-fb bb-center-fb-${centerFeedback}`}
           aria-live="polite"
         >
-          {centerFeedback === "correct" ? "✓ CORRECT!" : centerFeedback === "shielded" ? "🛡 SHIELDED!" : "✗ WRONG"}
+          {centerFeedback === "correct" ? "✓ CORRECT!" : centerFeedback === "shielded" ? <><PixIcon emoji="🛡" size={18} style={{verticalAlign:"-3px", marginRight:4}} /> SHIELDED!</> : "✗ WRONG"}
         </div>
       )}
 
@@ -3192,7 +3185,7 @@ export default function BossBattle({
               flexShrink: 0, fontSize: 14,
             }}
           >
-            <span style={{ filter: "drop-shadow(0 1px 1px rgba(0,0,0,0.6))" }}>🛡</span>
+            <span style={{ filter: "drop-shadow(0 1px 1px rgba(0,0,0,0.6))" }}><PixIcon emoji="🛡" size={18} /></span>
           </div>
           <div style={{ flex: 1 }}>
             <div
@@ -3329,7 +3322,7 @@ export default function BossBattle({
               flexShrink: 0, fontSize: 14,
             }}
           >
-            <span style={{ filter: "drop-shadow(0 1px 1px rgba(0,0,0,0.6))" }}>💀</span>
+            <span style={{ filter: "drop-shadow(0 1px 1px rgba(0,0,0,0.6))" }}><PixIcon emoji="💀" size={18} /></span>
           </div>
         </div>
       </div>
@@ -3396,7 +3389,7 @@ export default function BossBattle({
                     textTransform: "uppercase",
                   }}
                 >
-                  ⚡ {label}
+                  <PixIcon emoji="⚡" size={18} style={{verticalAlign:"-3px", marginRight:4}} /> {label}
                 </div>
               )}
             </div>
@@ -3461,7 +3454,7 @@ export default function BossBattle({
               filter: shieldArmed ? "none" : "grayscale(70%)",
             }}
           >
-            🛡
+            <PixIcon emoji="🛡" size={24} />
           </div>
           <div
             style={{
@@ -3514,7 +3507,7 @@ export default function BossBattle({
                 filter: `drop-shadow(0 4px 8px ${currentAttack.glow})`,
               }}
             >
-              {currentAttack.icon}
+              <PixIcon emoji={currentAttack.icon} size={40} />
             </div>
             <div
               style={{
@@ -3717,7 +3710,7 @@ export default function BossBattle({
 
           {superReady && (
             <div className="bb-super-ready" aria-live="polite">
-              ⚡ SUPER ATTACK READY!
+              <PixIcon emoji="⚡" size={18} style={{verticalAlign:"-3px", marginRight:4}} /> SUPER ATTACK READY!
             </div>
           )}
 
@@ -3754,7 +3747,7 @@ export default function BossBattle({
                     opacity: 0.9,
                   }}
                 >
-                  ⚡ Boss Attack - {meta.tag}
+                  <PixIcon emoji="⚡" size={18} style={{verticalAlign:"-3px", marginRight:4}} /> Boss Attack - {meta.tag}
                 </div>
                 <div
                   style={{
@@ -3766,7 +3759,7 @@ export default function BossBattle({
                     textShadow: `0 0 10px ${meta.glow}`,
                   }}
                 >
-                  {meta.icon} {meta.name}
+                  <PixIcon emoji={meta.icon} size={18} /> {meta.name}
                 </div>
               </div>
             );
@@ -4071,7 +4064,7 @@ export default function BossBattle({
                         }}
                         title={a.desc}
                       >
-                        <span className="bb-badge-icon" style={{ filter: `drop-shadow(0 0 8px ${a.accent})` }}>{a.icon}</span>
+                        <span className="bb-badge-icon" style={{ filter: `drop-shadow(0 0 8px ${a.accent})` }}><PixIcon emoji={a.icon} size={26} /></span>
                         <div className="bb-badge-text">
                           <span className="bb-badge-label" style={{ color: a.accent }}>{a.label}</span>
                           <span className="bb-badge-desc">{a.desc}</span>

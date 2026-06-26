@@ -1,5 +1,7 @@
 "use client";
 
+import PixIcon from "@/app/components/lesson/PixIcon";
+
 /**
  * ExerciseHowTo - small persistent instruction bar at the top of an
  * exercise wrapper. Pixar-warm styling: dusk-glass pills with cream
@@ -108,7 +110,7 @@ export default function ExerciseHowTo({
               WebkitBackdropFilter: "blur(6px)",
             }}
           >
-            <span style={{ fontSize: 14 }}>{s.glyph}</span>
+            <PixIcon emoji={s.glyph} size={18} />
             <span>{s.text}</span>
           </div>
         ))}

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-18T22:20:14.991Z",
+  "generatedAt": "2026-06-25T12:39:49.035Z",
   "model": "eleven_v3",
   "voiceSettings": {
     "stability": 0.35,
@@ -36,6 +36,43 @@
       "file": "/audio/voice/bbaa58a4de63b7d2.mp3"
     },
     {
+      "key": "6b033fabfff16b6d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] Let's match the cyber words to their meanings! Flip two cards to find a matching pair. [warmly] Take your time — and remember where they are!",
+      "lines": [
+        "[excited] Let's match the cyber words to their meanings!",
+        "Flip two cards to find a matching pair.",
+        "[warmly] Take your time — and remember where they are!"
+      ],
+      "file": "/audio/voice/6b033fabfff16b6d.mp3"
+    },
+    {
+      "key": "daf5b4ff7b17d94b",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[excited] Awesome matching! Now let's test your memory. You'll get ten seconds to remember where each card is. Then they flip over — tap where you think each one is!",
+      "lines": [
+        "[excited] Awesome matching! Now let's test your memory.",
+        "You'll get ten seconds to remember where each card is.",
+        "Then they flip over — tap where you think each one is!"
+      ],
+      "file": "/audio/voice/daf5b4ff7b17d94b.mp3"
+    },
+    {
+      "key": "2488ebd04ff5e906",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[warmly] Brilliant work, Cyber Hero! You just learned what a password really is. It's a secret code that proves it's really you. [excited] Next, let's make it super strong!",
+      "lines": [
+        "[warmly] Brilliant work, Cyber Hero!",
+        "You just learned what a password really is.",
+        "It's a secret code that proves it's really you.",
+        "[excited] Next, let's make it super strong!"
+      ],
+      "file": "/audio/voice/2488ebd04ff5e906.mp3"
+    },
+    {
       "key": "2acbe3018293991b",
       "speaker": "layla",
       "voice": "Sarah",
@@ -47,6 +84,42 @@
         "[laughs] Long, strong, and super easy to remember!"
       ],
       "file": "/audio/voice/2acbe3018293991b.mp3"
+    },
+    {
+      "key": "0741eef6a33b720c",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[excited] Time to build a password the Raccoon can't crack! Tap any three silly words from the wall. The longer and sillier, the stronger it gets! [warmly] Take your time — pick words you'll remember.",
+      "lines": [
+        "[excited] Time to build a password the Raccoon can't crack!",
+        "Tap any three silly words from the wall.",
+        "The longer and sillier, the stronger it gets!",
+        "[warmly] Take your time — pick words you'll remember."
+      ],
+      "file": "/audio/voice/0741eef6a33b720c.mp3"
+    },
+    {
+      "key": "22f698b309f4412a",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "Go on — tap any word you like to begin!",
+      "lines": [
+        "Go on — tap any word you like to begin!"
+      ],
+      "file": "/audio/voice/22f698b309f4412a.mp3"
+    },
+    {
+      "key": "d0e3c60c9fbdf197",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] Amazing — you're getting stronger already! You just learned that long passwords are strong passwords. Three random words make a key that's super hard to crack. [warmly] Now, let's mix things up!",
+      "lines": [
+        "[excited] Amazing — you're getting stronger already!",
+        "You just learned that long passwords are strong passwords.",
+        "Three random words make a key that's super hard to crack.",
+        "[warmly] Now, let's mix things up!"
+      ],
+      "file": "/audio/voice/d0e3c60c9fbdf197.mp3"
     },
     {
       "key": "506cbaf4f1b6cf69",
@@ -62,6 +135,42 @@
       "file": "/audio/voice/506cbaf4f1b6cf69.mp3"
     },
     {
+      "key": "9fce1bdf628af348",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] Uh oh — these passwords are poorly! You're the cyber-doctor. First, work out what's WRONG with each one. Then use your tools to make it strong — watch the meter climb! [warmly] No rush, Doctor — take your time.",
+      "lines": [
+        "[excited] Uh oh — these passwords are poorly! You're the cyber-doctor.",
+        "First, work out what's WRONG with each one.",
+        "Then use your tools to make it strong — watch the meter climb!",
+        "[warmly] No rush, Doctor — take your time."
+      ],
+      "file": "/audio/voice/9fce1bdf628af348.mp3"
+    },
+    {
+      "key": "a181879ed1233053",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Look at the patient — what's wrong with this password?",
+      "lines": [
+        "Look at the patient — what's wrong with this password?"
+      ],
+      "file": "/audio/voice/a181879ed1233053.mp3"
+    },
+    {
+      "key": "dde1753309b6b7eb",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[excited] Wow — look at you go! You just learned how to mix it all up. Big letters, little letters, numbers and symbols make a password really tough. [warmly] Next up — a super important one. Keeping it secret.",
+      "lines": [
+        "[excited] Wow — look at you go!",
+        "You just learned how to mix it all up.",
+        "Big letters, little letters, numbers and symbols make a password really tough.",
+        "[warmly] Next up — a super important one. Keeping it secret."
+      ],
+      "file": "/audio/voice/dde1753309b6b7eb.mp3"
+    },
+    {
       "key": "4d7658c896422684",
       "speaker": "layla",
       "voice": "Sarah",
@@ -75,6 +184,31 @@
       "file": "/audio/voice/4d7658c896422684.mp3"
     },
     {
+      "key": "5bd1bdb80e78a432",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[warmly] The Raccoon's set some sneaky traps for you. Read each one carefully — think, what would YOU do? [excited] Then pick the safe path. You've got this!",
+      "lines": [
+        "[warmly] The Raccoon's set some sneaky traps for you.",
+        "Read each one carefully — think, what would YOU do?",
+        "[excited] Then pick the safe path. You've got this!"
+      ],
+      "file": "/audio/voice/5bd1bdb80e78a432.mp3"
+    },
+    {
+      "key": "5d87e9d7564ed3bf",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[warmly] You're doing so well, Cyber Hero. You just learned the golden rule — keep it secret. Never share your password, not even with your best friend. [excited] One more thing to master before the big battle!",
+      "lines": [
+        "[warmly] You're doing so well, Cyber Hero.",
+        "You just learned the golden rule — keep it secret.",
+        "Never share your password, not even with your best friend.",
+        "[excited] One more thing to master before the big battle!"
+      ],
+      "file": "/audio/voice/5d87e9d7564ed3bf.mp3"
+    },
+    {
       "key": "0f1b4009db50ffc4",
       "speaker": "adam",
       "voice": "Sarah",
@@ -86,6 +220,43 @@
         "[excited] So pick something he'd NEVER guess — and outsmart him!"
       ],
       "file": "/audio/voice/0f1b4009db50ffc4.mp3"
+    },
+    {
+      "key": "a67ecfe0c2e2c1bc",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] Detective time, Cyber Hero! Each password here is weak. Look closely and work out WHY it's weak. [warmly] Too short? A real word? About you? Take your time.",
+      "lines": [
+        "[excited] Detective time, Cyber Hero! Each password here is weak.",
+        "Look closely and work out WHY it's weak.",
+        "[warmly] Too short? A real word? About you? Take your time."
+      ],
+      "file": "/audio/voice/a67ecfe0c2e2c1bc.mp3"
+    },
+    {
+      "key": "4a2d7efa88bbb3b4",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] Incredible — you've mastered all five secrets! You just learned to dodge the obvious ones. No names, no birthdays, no one-two-three. [warmly] You're ready, Cyber Hero. [excited] Time to show that Raccoon who's boss!",
+      "lines": [
+        "[excited] Incredible — you've mastered all five secrets!",
+        "You just learned to dodge the obvious ones. No names, no birthdays, no one-two-three.",
+        "[warmly] You're ready, Cyber Hero.",
+        "[excited] Time to show that Raccoon who's boss!"
+      ],
+      "file": "/audio/voice/4a2d7efa88bbb3b4.mp3"
+    },
+    {
+      "key": "a3c791f44b0dc49e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] Final drill, Cyber Hero! Passwords will drift past. Quickly tap STRONG or WEAK for each one. [warmly] Trust everything you've learned — you're ready!",
+      "lines": [
+        "[excited] Final drill, Cyber Hero! Passwords will drift past.",
+        "Quickly tap STRONG or WEAK for each one.",
+        "[warmly] Trust everything you've learned — you're ready!"
+      ],
+      "file": "/audio/voice/a3c791f44b0dc49e.mp3"
     },
     {
       "key": "99b863c9f2f09f40",

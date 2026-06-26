@@ -24,6 +24,7 @@ import {
 } from "@/app/lib/gameEngine";
 import ExerciseFrame from "@/app/components/lesson/ExerciseFrame";
 import GameButton from "@/app/components/lesson/GameButton";
+import PixIcon from "@/app/components/lesson/PixIcon";
 
 export interface StickerData {
   id: string;
@@ -248,7 +249,7 @@ export default function StickerUnlock({
                       : undefined,
                   }}
                 >
-                  {s.icon}
+                  <PixIcon emoji={s.icon} size={64} />
                 </div>
                 <div
                   style={{

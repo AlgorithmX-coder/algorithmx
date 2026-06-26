@@ -28,6 +28,8 @@ import ExerciseIntroBeat, {
 } from "@/app/components/lesson/ExerciseBeats";
 import GameButton from "@/app/components/lesson/GameButton";
 import HintBubble from "@/app/components/lesson/HintBubble";
+import CoachCaption from "@/app/components/lesson/CoachCaption";
+import PixIcon from "@/app/components/lesson/PixIcon";
 
 export interface RandomWord {
   id: string;
@@ -40,6 +42,10 @@ export interface ThreeRandomWordsProps {
   /** Number of slots. Defaults to 3. */
   slots?: number;
   hints?: { tier1: string; tier2: string };
+  /** Spoken, paced intro that explains the task (read aloud before play). */
+  introNarration?: { speaker?: "adam" | "layla"; lines: string[] };
+  /** Teach-once coach line played at the first word pick, then dismissed. */
+  coachLines?: { speaker?: "adam" | "layla"; lines: string[] };
   onComplete: (score: number) => void;
   onCorrect?: () => void;
   onWrong?: () => void;
@@ -84,6 +90,8 @@ export default function ThreeRandomWords({
   words,
   slots: slotCount = 3,
   hints,
+  introNarration,
+  coachLines,
   onComplete,
   onCorrect,
   onWrong,
@@ -521,7 +529,7 @@ export default function ThreeRandomWords({
                 textShadow: "0 1px 1px rgba(255, 255, 255, 0.3)",
               }}
             >
-              ✨ {strength.label}!
+              <PixIcon emoji="✨" size={22} style={{ marginRight: 6 }} /> {strength.label}!
             </div>
           </motion.div>
         )}
@@ -532,8 +540,15 @@ export default function ThreeRandomWords({
           title="Three Random Words"
           subtitle="Tap 3 words from the wall. Long random combos are way harder to crack than short clever ones."
           icon="✦"
+          narration={introNarration}
+          character={introNarration?.speaker ?? "layla"}
           onDismiss={() => setPhase("active")}
         />
+      )}
+
+      {/* Teach-once: nudge the first pick, then it dismisses itself / on pick */}
+      {coachLines && phase === "active" && pickedWords.length === 0 && (
+        <CoachCaption lines={coachLines.lines} speaker={coachLines.speaker} />
       )}
 
       {fx.layer()}

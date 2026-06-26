@@ -1,4 +1,5 @@
 {
+  "skipDangerousModePermissionPrompt": true,
   "permissions": {
     "allow": [
       "Bash(node -e \"const pkg = require\\('./node_modules/framer-motion/package.json'\\); console.log\\(pkg.version\\);\")",
@@ -72,7 +73,10 @@
       "Bash(echo \"TSC EXIT: $?\")",
       "PowerShell(Stop-Process -Id 24104 -Force -ErrorAction SilentlyContinue; Start-Sleep -Seconds 2; $p = Get-NetTCPConnection -LocalPort 3000 -State Listen -ErrorAction SilentlyContinue; if \\($p\\) { \"port 3000 still in use by PID $\\($p.OwningProcess\\)\" } else { \"port 3000 free\" })",
       "Bash(Select-String -Pattern \"LaptopScene\")",
-      "PowerShell($env:PORT=\"3000\"; npm run dev)"
+      "PowerShell($env:PORT=\"3000\"; npm run dev)",
+      "Bash(grep -qiE \"Ready in|started server|Local:\" /tmp/cyberdev.log)",
+      "Bash(break)",
+      "Read(//tmp/**)"
     ],
     "defaultMode": "bypassPermissions",
     "additionalDirectories": [

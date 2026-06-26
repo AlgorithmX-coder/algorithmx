@@ -27,8 +27,8 @@ export interface HintBubbleProps {
 }
 
 const AVATAR_SRC: Record<"adam" | "layla", string> = {
-  adam: "/game/characters/adam-idle.png",
-  layla: "/game/characters/layla-idle.png",
+  adam: "/game/characters/adam-head.png",
+  layla: "/game/characters/layla-head.png",
 };
 
 const TIER_COLOUR: Record<1 | 2 | 3, { border: string; glow: string; label: string }> =
@@ -98,7 +98,7 @@ export default function HintBubble({
             width: "100%",
             height: "100%",
             objectFit: "cover",
-            objectPosition: "top",
+            objectPosition: "center 22%",
           }}
         />
       </div>

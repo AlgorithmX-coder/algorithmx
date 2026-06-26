@@ -17,6 +17,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { motion } from "motion/react";
+import PixIcon from "@/app/components/lesson/PixIcon";
 
 /* ───────────────────────── PUBLIC API ───────────────────────── */
 
@@ -79,9 +80,6 @@ export default function MissionBriefScene({
       <BeamRays />
 
       <MissionCardsRow missions={missions} phase={phase} />
-
-      <CharacterPortrait src="/characters/adam.png" name="ADAM" side="left" />
-      <CharacterPortrait src="/characters/layla.png" name="LAYLA" side="right" />
 
       <TitlePlate title={title} />
       <ProgressDots phase={phase} />
@@ -620,7 +618,7 @@ function MissionCard({
             filter: `drop-shadow(0 0 18px ${mission.glow})`,
           }}
         >
-          {mission.icon}
+          <PixIcon emoji={mission.icon} size={52} />
         </div>
         {/* Objective label */}
         <div
@@ -654,86 +652,6 @@ function MissionCard({
         >
           {mission.text}
         </div>
-      </div>
-    </motion.div>
-  );
-}
-
-/* ───────────────────────── CHARACTER PORTRAIT ───────────────────────── */
-
-function CharacterPortrait({
-  src,
-  name,
-  side,
-}: {
-  src: string;
-  name: string;
-  side: "left" | "right";
-}) {
-  const isLeft = side === "left";
-  return (
-    <motion.div
-      initial={{ opacity: 0, x: isLeft ? -30 : 30, scale: 0.85 }}
-      animate={{ opacity: 1, x: 0, scale: 1 }}
-      transition={{ type: "spring", stiffness: 220, damping: 22, delay: 0.55 }}
-      style={{
-        position: "absolute",
-        bottom: 22,
-        left: isLeft ? 22 : undefined,
-        right: isLeft ? undefined : 22,
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        gap: 6,
-        zIndex: 7,
-        pointerEvents: "none",
-      }}
-    >
-      <div
-        style={{
-          width: 92,
-          height: 92,
-          borderRadius: "50%",
-          overflow: "hidden",
-          background: "#1a2147",
-          // Cyber rim - was warm cream + amber. Now cyan/violet halo
-          // that matches every other character treatment in the lesson.
-          boxShadow:
-            "0 0 0 3px rgba(125, 240, 255, 0.85), " +
-            "0 0 0 5px rgba(124, 92, 255, 0.5), " +
-            "0 14px 28px -8px rgba(8, 10, 22, 0.7), " +
-            "0 0 24px rgba(0, 229, 255, 0.45)",
-          animation: "portraitBob 3.4s ease-in-out infinite",
-        }}
-      >
-        <div
-          role="img"
-          aria-label={name}
-          style={{
-            width: "100%",
-            height: "100%",
-            backgroundImage: `url(${src})`,
-            backgroundSize: "180% auto",
-            backgroundPosition: "center 18%",
-            backgroundRepeat: "no-repeat",
-          }}
-        />
-      </div>
-      <div
-        style={{
-          padding: "3px 12px",
-          background: "rgba(15, 21, 48, 0.78)",
-          backdropFilter: "blur(6px)",
-          WebkitBackdropFilter: "blur(6px)",
-          border: "1px solid rgba(125, 240, 255, 0.45)",
-          borderRadius: 999,
-          color: "#e8edff",
-          fontSize: 10,
-          fontWeight: 800,
-          letterSpacing: 2.5,
-        }}
-      >
-        {name}
       </div>
     </motion.div>
   );

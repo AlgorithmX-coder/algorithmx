@@ -16,6 +16,7 @@ import { useMotionIntensity } from "@/app/lib/gameEngine";
 import ExerciseFrame from "@/app/components/lesson/ExerciseFrame";
 import GameButton from "@/app/components/lesson/GameButton";
 import InfoNarration from "@/app/components/lesson/InfoNarration";
+import PixIcon from "@/app/components/lesson/PixIcon";
 
 export interface InfoSceneProps {
   title: string;
@@ -108,7 +109,7 @@ export default function InfoScene({
                 boxShadow: "0 6px 20px -6px rgba(255,206,90,0.5), inset 0 2px 6px rgba(255,233,170,0.35), inset 0 -6px 12px rgba(0,0,0,0.4)",
               }}
             >
-              {emblem}
+              <PixIcon emoji={emblem} size={46} />
             </motion.div>
             <span aria-hidden style={{ color: "#ffe7a8", fontSize: 14, opacity: 0.85, textShadow: "0 0 10px rgba(255,206,90,0.6)" }}>✦</span>
           </div>
@@ -174,7 +175,7 @@ export default function InfoScene({
                       background: `linear-gradient(180deg, ${accent}3a, ${accent}14)`,
                       border: `1px solid ${accent}66`,
                       boxShadow: `inset 0 1px 0 ${accent}77, 0 0 10px -3px ${accent}`,
-                    }}>{icon}</span>
+                    }}><PixIcon emoji={icon} size={26} /></span>
                   )}
                 </motion.div>
               );

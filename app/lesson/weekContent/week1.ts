@@ -57,7 +57,7 @@ export const WEEK_1: WeekContent = {
     },
 
     /* ─────────── BEAT 1 · KEY ─────────── */
-    // 2 — Learn
+    // 3 — Learn
     {
       type: "info",
       title: "What Is a Password?",
@@ -83,7 +83,7 @@ export const WEEK_1: WeekContent = {
         ],
       },
     },
-    // 3 — Game: MATCH (Cyber Words)
+    // 4 — Game: MATCH (Cyber Words)
     {
       type: "memoryMatch",
       pairs: [
@@ -92,8 +92,26 @@ export const WEEK_1: WeekContent = {
         { term: "Hacker", match: "Tries to break in", colour: "#ff5fb3" },
         { term: "Secret", match: "Only you know it", colour: "#ffd158" },
       ],
+      narration: {
+        speaker: "adam",
+        lines: [
+          "[excited] Let's match the cyber words to their meanings!",
+          "Flip two cards to find a matching pair.",
+          "[warmly] Take your time — and remember where they are!",
+        ],
+      },
+      // Played at the "Rebuild From Memory" phase-2 card so the second
+      // mini-game is explained out loud too, not just on the first phase.
+      coachLines: {
+        speaker: "layla",
+        lines: [
+          "[excited] Awesome matching! Now let's test your memory.",
+          "You'll get ten seconds to remember where each card is.",
+          "Then they flip over — tap where you think each one is!",
+        ],
+      },
     },
-    // 4 — Prove: FINISH
+    // 5 — Prove: FINISH
     {
       type: "quickCheck",
       mode: "finish",
@@ -107,8 +125,27 @@ export const WEEK_1: WeekContent = {
       praise: "Exactly - it proves it's YOU! ✓",
     },
 
+    // — Recap · Concept 1 of 5 (What Is a Password?)
+    {
+      type: "recap",
+      concept: 1,
+      total: 5,
+      learned: "A password is a secret code that proves it's really YOU.",
+      next: "making your password super strong",
+      emblem: "🔑",
+      narration: {
+        speaker: "layla",
+        lines: [
+          "[warmly] Brilliant work, Cyber Hero!",
+          "You just learned what a password really is.",
+          "It's a secret code that proves it's really you.",
+          "[excited] Next, let's make it super strong!",
+        ],
+      },
+    },
+
     /* ─────────── BEAT 2 · LONG ─────────── */
-    // 5 — Learn
+    // 6 — Learn
     {
       type: "info",
       title: "Long Is Strong",
@@ -118,7 +155,7 @@ export const WEEK_1: WeekContent = {
         "Longer = stronger",
         "Three random words make a great password",
         "Easy to remember, hard to crack",
-        "Aim for 8 characters or more",
+        "The longer, the stronger - no limit!",
       ],
       bulletIcons: ["📏", "🎲", "🧠", "🔢"],
       emblem: "💪",
@@ -132,7 +169,7 @@ export const WEEK_1: WeekContent = {
         ],
       },
     },
-    // 6 — Game: BUILD (Three Random Words)
+    // 7 — Game: BUILD (Three Random Words)
     {
       type: "threeRandomWords",
       slots: 3,
@@ -166,8 +203,21 @@ export const WEEK_1: WeekContent = {
         tier1: "Pick any 3 words - they don't need to make sense. The longer your passphrase, the harder it is to crack.",
         tier2: "Try mixing categories - one animal, one object, one place. The combo is what makes it memorable AND strong.",
       },
+      narration: {
+        speaker: "layla",
+        lines: [
+          "[excited] Time to build a password the Raccoon can't crack!",
+          "Tap any three silly words from the wall.",
+          "The longer and sillier, the stronger it gets!",
+          "[warmly] Take your time — pick words you'll remember.",
+        ],
+      },
+      coachLines: {
+        speaker: "layla",
+        lines: ["Go on — tap any word you like to begin!"],
+      },
     },
-    // 7 — Prove: SPEED
+    // 8 — Prove: SPEED
     {
       type: "quickCheck",
       mode: "speed",
@@ -182,8 +232,27 @@ export const WEEK_1: WeekContent = {
       praise: "Fast AND right - long is strong! ✓",
     },
 
+    // — Recap · Concept 2 of 5 (Long Is Strong)
+    {
+      type: "recap",
+      concept: 2,
+      total: 5,
+      learned: "The longer your password, the harder it is to crack.",
+      next: "mixing it up to really stump the Raccoon",
+      emblem: "💪",
+      narration: {
+        speaker: "adam",
+        lines: [
+          "[excited] Amazing — you're getting stronger already!",
+          "You just learned that long passwords are strong passwords.",
+          "Three random words make a key that's super hard to crack.",
+          "[warmly] Now, let's mix things up!",
+        ],
+      },
+    },
+
     /* ─────────── BEAT 3 · MIX ─────────── */
-    // 8 — Learn
+    // 9 — Learn
     {
       type: "info",
       title: "Mix It Up",
@@ -207,7 +276,7 @@ export const WEEK_1: WeekContent = {
         ],
       },
     },
-    // 9 — Game: REPAIR (Fix the Weak Password)
+    // 10 — Game: REPAIR (Fix the Weak Password)
     {
       type: "passwordHospital",
       reasons: [
@@ -242,8 +311,21 @@ export const WEEK_1: WeekContent = {
         repairTier1: "Each fix does one thing. Watch the strength meter climb.",
         repairTier2: "The big wins: mix the case, add a number, add a symbol.",
       },
+      narration: {
+        speaker: "adam",
+        lines: [
+          "[excited] Uh oh — these passwords are poorly! You're the cyber-doctor.",
+          "First, work out what's WRONG with each one.",
+          "Then use your tools to make it strong — watch the meter climb!",
+          "[warmly] No rush, Doctor — take your time.",
+        ],
+      },
+      coachLines: {
+        speaker: "adam",
+        lines: ["Look at the patient — what's wrong with this password?"],
+      },
     },
-    // 10 — Prove: LIE
+    // 11 — Prove: LIE
     {
       type: "quickCheck",
       mode: "lie",
@@ -257,8 +339,28 @@ export const WEEK_1: WeekContent = {
       nudge: "Look again - 'tiger' has no mix at all.",
     },
 
+    // — Recap · Concept 3 of 5 (Mix It Up)
+    {
+      type: "recap",
+      concept: 3,
+      total: 5,
+      learned:
+        "Mixing big letters, small letters, numbers and symbols makes a password tough.",
+      next: "keeping your password secret",
+      emblem: "🎨",
+      narration: {
+        speaker: "layla",
+        lines: [
+          "[excited] Wow — look at you go!",
+          "You just learned how to mix it all up.",
+          "Big letters, little letters, numbers and symbols make a password really tough.",
+          "[warmly] Next up — a super important one. Keeping it secret.",
+        ],
+      },
+    },
+
     /* ─────────── BEAT 4 · SECRET ─────────── */
-    // 11 — Learn
+    // 12 — Learn
     {
       type: "info",
       title: "Keep It Secret",
@@ -282,7 +384,7 @@ export const WEEK_1: WeekContent = {
         ],
       },
     },
-    // 12 — Game: DECIDE (What Would You Do?)
+    // 13 — Game: DECIDE (What Would You Do?)
     {
       type: "chooseYourPath",
       scenarios: [
@@ -301,8 +403,16 @@ export const WEEK_1: WeekContent = {
           ],
         },
       ],
+      narration: {
+        speaker: "layla",
+        lines: [
+          "[warmly] The Raccoon's set some sneaky traps for you.",
+          "Read each one carefully — think, what would YOU do?",
+          "[excited] Then pick the safe path. You've got this!",
+        ],
+      },
     },
-    // 13 — Prove: RECALL
+    // 14 — Prove: RECALL
     {
       type: "quickCheck",
       mode: "recall",
@@ -316,8 +426,27 @@ export const WEEK_1: WeekContent = {
       praise: "Right - it stays your secret! ✓",
     },
 
+    // — Recap · Concept 4 of 5 (Keep It Secret)
+    {
+      type: "recap",
+      concept: 4,
+      total: 5,
+      learned: "Never share your password — not even with your best friend.",
+      next: "spotting passwords that are too easy to guess",
+      emblem: "🤫",
+      narration: {
+        speaker: "layla",
+        lines: [
+          "[warmly] You're doing so well, Cyber Hero.",
+          "You just learned the golden rule — keep it secret.",
+          "Never share your password, not even with your best friend.",
+          "[excited] One more thing to master before the big battle!",
+        ],
+      },
+    },
+
     /* ─────────── BEAT 5 · OBVIOUS ─────────── */
-    // 14 — Learn
+    // 15 — Learn
     {
       type: "info",
       title: "Don't Pick the Obvious",
@@ -341,32 +470,40 @@ export const WEEK_1: WeekContent = {
         ],
       },
     },
-    // 15 — Game: SORT (Why Is It Weak?)
+    // 16 — Game: SORT (Why Is It Weak?)
     {
       type: "weakSorter",
       reasons: [
         { id: "too-short", label: "Too short", example: "abc" },
         { id: "common-word", label: "Common word", example: "football" },
-        { id: "personal", label: "Has your name or birthday", example: "Sam2014" },
+        { id: "personal", label: "Has your name or birthday", example: "OliviaSmith2016" },
         { id: "keyboard", label: "Keyboard pattern", example: "qwerty" },
       ],
       items: [
-        { text: "abc", reasonId: "too-short", explanation: "Only 3 letters - way under the 8-character rule." },
+        { text: "abc", reasonId: "too-short", explanation: "Only 3 letters - far too tiny to keep anything safe." },
         { text: "football", reasonId: "common-word", explanation: "A word from the dictionary - hackers try common words first." },
-        { text: "Sam2014", reasonId: "personal", explanation: "A name and a birthday - the easiest things to guess about you." },
+        { text: "OliviaSmith2016", reasonId: "personal", explanation: "A name and a birthday - the easiest things to guess about you." },
         { text: "qwerty", reasonId: "keyboard", explanation: "These letters sit in a row on the keyboard - the FIRST pattern hackers try." },
         { text: "123", reasonId: "too-short", explanation: "Only 3 characters, and numbers in order - cracked in under a second." },
         { text: "dragon", reasonId: "common-word", explanation: "A popular word - 'dragon' is in every hacker's top-100 list." },
-        { text: "Maya0511", reasonId: "personal", explanation: "A name plus what looks like a date - quick to guess if someone knows you." },
+        { text: "JacobSmith0511", reasonId: "personal", explanation: "A name plus what looks like a date - quick to guess if someone knows you." },
         { text: "asdfgh", reasonId: "keyboard", explanation: "Another row of keys in order - just like qwerty." },
       ],
       hints: {
         tier1: "Look at WHY it's weak: too short, a real word, about you, or just keyboard keys in a row?",
-        tier2: "Count the letters first. Under 8 = 'Too short'. Then check if it's a word you'd find in a book.",
-        tier3: "'too-short' = under 8 chars. 'common-word' = a real word. 'personal' = a name/birthday. 'keyboard' = letters in a straight line.",
+        tier2: "Is it really tiny - just a few letters? That's 'Too short'. Or is it a word you'd find in a book?",
+        tier3: "'too-short' = really tiny, just a few letters. 'common-word' = a real word. 'personal' = a name/birthday. 'keyboard' = letters in a straight line.",
+      },
+      narration: {
+        speaker: "adam",
+        lines: [
+          "[excited] Detective time, Cyber Hero! Each password here is weak.",
+          "Look closely and work out WHY it's weak.",
+          "[warmly] Too short? A real word? About you? Take your time.",
+        ],
       },
     },
-    // 16 — Prove: RECALL (which would the Raccoon guess first)
+    // 17 — Prove: RECALL (which would the Raccoon guess first)
     {
       type: "quickCheck",
       mode: "recall",
@@ -380,26 +517,54 @@ export const WEEK_1: WeekContent = {
       praise: "Yep - 'password' is the #1 worst! ✓",
     },
 
-    // 17 — Consolidation: "The Raccoon's Notebook" (fun mixed recap)
+    // — Recap · Concept 5 of 5 (Don't Pick the Obvious)
+    {
+      type: "recap",
+      concept: 5,
+      total: 5,
+      learned:
+        "Stay away from obvious passwords — not your name, your birthday, or 123456.",
+      next: "one final challenge, then the big boss battle",
+      emblem: "🕵️",
+      narration: {
+        speaker: "adam",
+        lines: [
+          "[excited] Incredible — you've mastered all five secrets!",
+          "You just learned to dodge the obvious ones. No names, no birthdays, no one-two-three.",
+          "[warmly] You're ready, Cyber Hero.",
+          "[excited] Time to show that Raccoon who's boss!",
+        ],
+      },
+    },
+
+    // 18 — Consolidation: "The Raccoon's Notebook" (fun mixed recap)
     {
       type: "cyberScanner",
       items: [
         { text: "password123", isStrong: false, explanation: "Obvious AND a common word - the Raccoon's favourite." },
-        { text: "Tr0pic4l$un!", isStrong: true, explanation: "Long, with capitals, numbers and symbols. Strong!" },
+        { text: "Otter-Rocket-Mango7!", isStrong: true, explanation: "Three random words, mixed up - long and strong!" },
         { text: "qwerty", isStrong: false, explanation: "A keyboard row - the first pattern hackers try." },
         { text: "otter-rocket-mango", isStrong: true, explanation: "Three random words - long and hard to crack." },
         { text: "Sam2014", isStrong: false, explanation: "A name and a birthday - easy to guess about you." },
         { text: "MyL0ng_Pass!", isStrong: true, explanation: "Long and mixed - keeps the Raccoon out." },
       ],
+      narration: {
+        speaker: "adam",
+        lines: [
+          "[excited] Final drill, Cyber Hero! Passwords will drift past.",
+          "Quickly tap STRONG or WEAK for each one.",
+          "[warmly] Trust everything you've learned — you're ready!",
+        ],
+      },
     },
 
-    // 18 — BOSS BATTLE (5 phases)
+    // 19 — BOSS BATTLE (5 phases)
     { type: "bossBattle" },
 
-    // 19 — CLOSING VIDEO: "The Bounce" (Raccoon attacks again, bounces off)
+    // 20 — CLOSING VIDEO: "The Bounce" (Raccoon attacks again, bounces off)
     { type: "video", videoPlaceholder: "Week 1: The Bounce", videoSrc: "/videos/module-01-outro.mp4" },
 
-    // 20 — Mission Debrief (consolidate by concept)
+    // 21 — Mission Debrief (consolidate by concept)
     {
       type: "missionDebrief",
       title: "Mission Complete!",
@@ -422,7 +587,7 @@ export const WEEK_1: WeekContent = {
       },
     },
 
-    // 21 — Sticker Unlock
+    // 22 — Sticker Unlock
     {
       type: "stickerUnlock",
       title: "Stickers Unlocked!",
@@ -433,7 +598,7 @@ export const WEEK_1: WeekContent = {
       ],
     },
 
-    // 22 — Completion
+    // 23 — Completion
     { type: "completion" },
   ],
 
@@ -447,7 +612,7 @@ export const WEEK_1: WeekContent = {
       announceTone: "cyan",
       questions: [
         { question: "Which is strongest because it's LONG?", answers: ["otter-rocket-mango", "cat", "Tiger7", "sun"], correctIndex: 0, explanation: "Three random words make a long, hard-to-crack password.", key: "boss-length-1" },
-        { question: "A password should be at least how long?", answers: ["8 characters", "3 letters", "1 number", "your initials"], correctIndex: 0, explanation: "8+ characters is the safe minimum.", key: "boss-length-2" },
+        { question: "What makes a password nice and long?", answers: ["Three random words", "3 letters", "1 number", "your initials"], correctIndex: 0, explanation: "Three random words make it long and strong!", key: "boss-length-2" },
       ],
     },
     {
@@ -457,8 +622,8 @@ export const WEEK_1: WeekContent = {
       announceText: "Round 2 - Mix It Up!",
       announceTone: "blue",
       questions: [
-        { question: "Which password MIXES all the types?", answers: ["Tr0pic4l$un!", "tigertiger", "12345678", "FOOTBALL"], correctIndex: 0, explanation: "Capitals, small letters, numbers AND symbols - a real mix.", key: "boss-mix-1" },
-        { question: "Why is 'Tr0pic4l$un!' stronger than 'tropicalsun'?", answers: ["It mixes capitals, numbers and symbols", "It's shorter", "It's a real word", "No reason"], correctIndex: 0, explanation: "A mix of character types is much harder to crack.", key: "boss-mix-2" },
+        { question: "Which password MIXES all the types?", answers: ["Otter-Rocket7!", "tigertiger", "12345678", "FOOTBALL"], correctIndex: 0, explanation: "Capitals, small letters, numbers AND symbols - a real mix.", key: "boss-mix-1" },
+        { question: "What makes the STRONGEST password?", answers: ["Three random words, mixed up", "A short word with a number", "Your name and birthday", "1234"], correctIndex: 0, explanation: "Long, random and mixed - the toughest of all!", key: "boss-mix-2" },
       ],
     },
     {
@@ -501,10 +666,10 @@ export const WEEK_1: WeekContent = {
     easy: [
       { question: "What is a password?", answers: ["A secret code to prove it's you", "A type of game", "A song", "A school subject"], correctIndex: 0, explanation: "A password is your secret code to log in." },
       { question: "Which is strongest because it's LONG?", answers: ["otter-rocket-mango", "cat", "Tiger7", "sun"], correctIndex: 0, explanation: "Three random words make a long, hard-to-crack password." },
-      { question: "A password should be at least how long?", answers: ["8 characters", "3 letters", "1 number", "your initials"], correctIndex: 0, explanation: "8+ characters is the safe minimum." },
+      { question: "What makes a password nice and long?", answers: ["Three random words", "3 letters", "1 number", "your initials"], correctIndex: 0, explanation: "Three random words make it long and strong!" },
     ],
     medium: [
-      { question: "Which password MIXES all the types?", answers: ["Tr0pic4l$un!", "tigertiger", "12345678", "FOOTBALL"], correctIndex: 0, explanation: "Capitals, small letters, numbers AND symbols." },
+      { question: "Which password MIXES all the types?", answers: ["Otter-Rocket7!", "tigertiger", "12345678", "FOOTBALL"], correctIndex: 0, explanation: "Capitals, small letters, numbers AND symbols." },
       { question: "Your best friend asks for your password. You say...", answers: ["No - it's my secret", "Sure!", "Only half", "I'll write it down"], correctIndex: 0, explanation: "Passwords are always secret, even from friends." },
       { question: "Which is the WORST password?", answers: ["password", "Kettle-Jungle-7!", "Otter$Rocket9", "Mango!Lantern2"], correctIndex: 0, explanation: "'password' is the most-guessed password in the world." },
     ],
@@ -515,29 +680,38 @@ export const WEEK_1: WeekContent = {
     ],
   },
 
+  // Keyed by SCREEN INDEX (0-28). Must stay in lock-step with `screens` above -
+  // if a screen is inserted/removed, shift these too (the trailing labels help).
+  // The 5 "recap" checkpoints (after each Prove beat) are indices 6/10/14/18/22.
   reactions: {
-    0: { adam: { mood: "excited", message: "Mission 1 - let's go, Cyber Hero!" }, layla: null },
-    1: { adam: null, layla: { mood: "curious", message: "Here's the plan for today." } },
-    2: { adam: { mood: "thinking", message: "A password is your secret key." }, layla: null },
-    3: { adam: null, layla: { mood: "excited", message: "Match the cyber words!" } },
-    4: { adam: { mood: "thumbsup", message: "Prove it - finish the rule!" }, layla: null },
-    5: { adam: null, layla: { mood: "curious", message: "Long beats clever every time." } },
-    6: { adam: { mood: "excited", message: "Pick three random words!" }, layla: null },
-    7: { adam: null, layla: { mood: "excited", message: "Quick - tap the longest!" } },
-    8: { adam: { mood: "thinking", message: "Now let's MIX it up." }, layla: null },
-    9: { adam: { mood: "excited", message: "Heal these weak passwords!" }, layla: null },
-    10: { adam: null, layla: { mood: "worried", message: "The Raccoon's telling fibs - catch him!" } },
-    11: { adam: null, layla: { mood: "thinking", message: "Keep your password secret." } },
-    12: { adam: { mood: "curious", message: "Pick the safe choice." }, layla: null },
-    13: { adam: null, layla: { mood: "thumbsup", message: "Who should know it? You decide." } },
-    14: { adam: { mood: "worried", message: "Never pick the obvious ones." }, layla: null },
-    15: { adam: null, layla: { mood: "thinking", message: "Tell me WHY each one is weak." } },
-    16: { adam: { mood: "excited", message: "Which would he guess first?" }, layla: null },
-    17: { adam: null, layla: { mood: "excited", message: "Rip the weak ones from his notebook!" } },
-    18: { adam: { mood: "worried", message: "Boss battle - lock him out!" }, layla: null },
-    19: { adam: null, layla: { mood: "excited", message: "Watch the Raccoon bounce right off!" } },
-    20: { adam: { mood: "thumbsup", message: "Look at everything you mastered!" }, layla: null },
-    21: { adam: null, layla: { mood: "excited", message: "Stickers earned - off to your Cyber HQ!" } },
-    22: { adam: { mood: "thumbsup", message: "Password Protector badge earned!" }, layla: null },
+    0: { adam: { mood: "excited", message: "Mission 1 - let's go, Cyber Hero!" }, layla: null }, // intro video
+    1: { adam: { mood: "worried", message: "Alert! The Raccoon's after our passwords - let's stop him!" }, layla: null }, // alert
+    2: { adam: null, layla: { mood: "curious", message: "Here's the plan for today." } }, // mission brief
+    3: { adam: { mood: "thinking", message: "A password is your secret key." }, layla: null }, // learn: key
+    4: { adam: null, layla: { mood: "excited", message: "Match the cyber words!" } }, // game: match
+    5: { adam: { mood: "thumbsup", message: "Prove it - finish the rule!" }, layla: null }, // prove: finish
+    6: { adam: null, layla: { mood: "excited", message: "You did it! One secret down - keep going!" } }, // recap 1
+    7: { adam: null, layla: { mood: "curious", message: "Long beats clever every time." } }, // learn: long
+    8: { adam: { mood: "excited", message: "Pick three random words!" }, layla: null }, // game: build
+    9: { adam: null, layla: { mood: "excited", message: "Quick - tap the longest!" } }, // prove: speed
+    10: { adam: { mood: "thumbsup", message: "Stronger every round - nice!" }, layla: null }, // recap 2
+    11: { adam: { mood: "thinking", message: "Now let's MIX it up." }, layla: null }, // learn: mix
+    12: { adam: { mood: "excited", message: "Heal these weak passwords!" }, layla: null }, // game: repair
+    13: { adam: null, layla: { mood: "worried", message: "The Raccoon's telling fibs - catch him!" } }, // prove: lie
+    14: { adam: null, layla: { mood: "excited", message: "Three secrets mastered - amazing!" } }, // recap 3
+    15: { adam: null, layla: { mood: "thinking", message: "Keep your password secret." } }, // learn: secret
+    16: { adam: { mood: "curious", message: "Pick the safe choice." }, layla: null }, // game: decide
+    17: { adam: null, layla: { mood: "thumbsup", message: "Who should know it? You decide." } }, // prove: recall
+    18: { adam: { mood: "thumbsup", message: "Almost there, Cyber Hero!" }, layla: null }, // recap 4
+    19: { adam: { mood: "worried", message: "Never pick the obvious ones." }, layla: null }, // learn: obvious
+    20: { adam: { mood: "thinking", message: "Tell me WHY each one is weak." }, layla: null }, // game: sort
+    21: { adam: { mood: "excited", message: "Which would he guess first?" }, layla: null }, // prove: recall
+    22: { adam: null, layla: { mood: "excited", message: "All five! You're ready for the boss!" } }, // recap 5
+    23: { adam: null, layla: { mood: "excited", message: "Rip the weak ones from his notebook!" } }, // consolidation
+    24: { adam: { mood: "worried", message: "Boss battle - lock him out!" }, layla: null }, // boss
+    25: { adam: null, layla: { mood: "excited", message: "Watch the Raccoon bounce right off!" } }, // outro video
+    26: { adam: { mood: "thumbsup", message: "Look at everything you mastered!" }, layla: null }, // debrief
+    27: { adam: null, layla: { mood: "excited", message: "Stickers earned - off to your Cyber HQ!" } }, // stickers
+    28: { adam: { mood: "thumbsup", message: "Password Protector badge earned!" }, layla: null }, // completion
   },
 };

@@ -15,9 +15,19 @@ import { playSound } from "@/app/lib/sounds";
 // KEPT + FLAGGED: correctAnswerBurst (streak-aware burst, no toolkit
 // equivalent). Intensity-gated below.
 import { correctAnswerBurst } from "@/app/lib/celebrations";
-import ExerciseIntro from "./ExerciseIntro";
+import ExerciseIntroBeat from "@/app/components/lesson/ExerciseBeats";
 import ExerciseHowTo from "./ExerciseHowTo";
 import ExerciseFrame from "@/app/components/lesson/ExerciseFrame";
+import PixIcon from "@/app/components/lesson/PixIcon";
+
+// Preloaded shield icon for the on-canvas scanner badge. The canvas draws
+// with ctx.drawImage (it can't mount the <PixIcon> React component), so we
+// load the generated 3D shield once at module init and blit it each frame.
+let shieldIconImg: HTMLImageElement | null = null;
+if (typeof window !== "undefined") {
+  shieldIconImg = new Image();
+  shieldIconImg.src = "/cyberheroes/icons/shield.png";
+}
 import { COLOR, SHADOW, SPRING } from "@/app/components/scene/tokens";
 // useComfortMode KEPT (not replaced by useMotionIntensity). Reason:
 // the canvas uses `comfortRef.current` to feed `transitTimeMs`, which
@@ -47,6 +57,7 @@ export interface CyberScannerPassword {
 
 export interface CyberScannerProps {
   passwords?: CyberScannerPassword[];
+  introNarration?: { speaker?: "adam" | "layla"; lines: string[] };
   onComplete: (score: number) => void;
   onCorrect?: () => void;
   onWrong?: () => void;
@@ -181,6 +192,7 @@ interface Particle {
 
 export default function CyberScanner({
   passwords,
+  introNarration,
   onComplete,
   onCorrect,
   onWrong,
@@ -584,12 +596,10 @@ export default function CyberScanner({
       ctx.beginPath();
       ctx.arc(SHIELD_X, SHIELD_Y, 25, 0, Math.PI * 2);
       ctx.fill();
-      // Glyph
-      ctx.fillStyle = CV.shieldGlyph;
-      ctx.font = "900 22px ui-rounded, 'Fredoka', system-ui, sans-serif";
-      ctx.textAlign = "center";
-      ctx.textBaseline = "middle";
-      ctx.fillText("🛡", SHIELD_X, SHIELD_Y);
+      // Shield icon image (canvas can't mount the <PixIcon> component).
+      if (shieldIconImg && shieldIconImg.complete && shieldIconImg.naturalWidth > 0) {
+        ctx.drawImage(shieldIconImg, SHIELD_X - 18, SHIELD_Y - 18, 36, 36);
+      }
 
       // Active card
       const c = s.card;
@@ -637,8 +647,11 @@ export default function CyberScanner({
         roundRect(ctx, -CARD_W / 2, -CARD_H / 2, CARD_W, CARD_H, 14);
         ctx.stroke();
 
-        // Wrong-flash overlay
-        if (c.resolved && c.outcome === "wrong" && Math.sin(now / 60) > 0) {
+        // Wrong-flash overlay. Strict reduced-motion gets a STEADY tint
+        // instead of the ~2.6 Hz on/off strobe.
+        const wrongFlash =
+          intensityRef.current === 0 ? true : Math.sin(now / 60) > 0;
+        if (c.resolved && c.outcome === "wrong" && wrongFlash) {
           ctx.fillStyle = "rgba(255, 95, 179, 0.18)";
           roundRect(ctx, -CARD_W / 2, -CARD_H / 2, CARD_W, CARD_H, 14);
           ctx.fill();
@@ -838,14 +851,16 @@ export default function CyberScanner({
         }}
       >
         <ScannerButton
-          label="🛡  STRONG"
+          icon="🛡"
+          label="STRONG"
           tint="#4a9a6a"
           accent="#7eff97"
           disabled={s.finished}
           onClick={() => resolveCurrent(true)}
         />
         <ScannerButton
-          label="💀  WEAK"
+          icon="💀"
+          label="WEAK"
           tint="#ff7a59"
           accent="#ff5fb3"
           disabled={s.finished}
@@ -867,12 +882,13 @@ export default function CyberScanner({
         }}
       />}
       {showIntro && (
-        <ExerciseIntro
+        <ExerciseIntroBeat
           title="Cyber Scanner"
-          description="Passwords will float across the scanner. Tap STRONG or WEAK before they escape!"
+          subtitle="Passwords will float across the scanner. Tap STRONG or WEAK before they escape!"
           icon="🔍"
-          controls="Tap the buttons below"
-          onStart={() => setShowIntro(false)}
+          narration={introNarration}
+          character={introNarration?.speaker ?? "adam"}
+          onDismiss={() => setShowIntro(false)}
         />
       )}
       {feedback && (
@@ -896,12 +912,14 @@ function ScannerButton({
   tint,
   accent,
   label,
+  icon,
   disabled,
   onClick,
 }: {
   tint: string;
   accent: string;
   label: string;
+  icon?: string;
   disabled: boolean;
   onClick: () => void;
 }) {
@@ -934,6 +952,9 @@ function ScannerButton({
         textShadow: "0 1px 2px rgba(8, 10, 22, 0.55)",
       }}
     >
+      {icon && (
+        <PixIcon emoji={icon} size={24} style={{ marginRight: 8, verticalAlign: "-5px" }} />
+      )}
       {label}
     </motion.button>
   );

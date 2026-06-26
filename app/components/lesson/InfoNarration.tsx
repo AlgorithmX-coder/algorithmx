@@ -22,6 +22,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useComfortMode } from "@/app/lib/comfortMode";
+import { isAudioMuted, subscribeAudioMute } from "@/app/lib/audioMute";
 
 // The narration is played via a raw `new Audio()`, which defaults to 1.0
 // (FULL volume) - that was the loud blast when a lesson screen opened, so
@@ -75,27 +76,7 @@ interface Manifest {
   entries: ManifestEntry[];
 }
 
-const NARRATION_PREF_KEY = "algorithmx-narration-on-v1";
 const MANIFEST_URL = "/audio/voice/manifest.json";
-
-function readPref(): boolean {
-  if (typeof window === "undefined") return true;
-  try {
-    const raw = window.localStorage.getItem(NARRATION_PREF_KEY);
-    return raw === null ? true : raw === "true";
-  } catch {
-    return true;
-  }
-}
-
-function writePref(value: boolean) {
-  if (typeof window === "undefined") return;
-  try {
-    window.localStorage.setItem(NARRATION_PREF_KEY, String(value));
-  } catch {
-    /* noop */
-  }
-}
 
 // Module-level singleton so we fetch the manifest once for the whole
 // session, not on every InfoNarration mount. Fetch resolves to null
@@ -158,7 +139,6 @@ export default function InfoNarration({
   autoPlay = true,
 }: InfoNarrationProps) {
   const comfort = useComfortMode();
-  const [enabled, setEnabled] = useState<boolean>(true);
   const [speaking, setSpeaking] = useState<boolean>(false);
   const [activeLine, setActiveLine] = useState<number>(-1);
   // Resolved playback mode for this block. "loading" until the
@@ -181,10 +161,6 @@ export default function InfoNarration({
 
   const ttsSupported =
     typeof window !== "undefined" && "speechSynthesis" in window;
-
-  useEffect(() => {
-    setEnabled(readPref());
-  }, []);
 
   // Resolve mode once the manifest loads.
   useEffect(() => {
@@ -322,24 +298,24 @@ export default function InfoNarration({
   // screen transition can settle before audio fires.
   const autoFiredRef = useRef(false);
   useEffect(() => {
-    if (!NARRATION_AUTOPLAY || !autoPlay || !enabled) return;
+    // Narration autoplays everywhere by default — the master mute (the HUD
+    // speaker button) is the ONLY thing that holds it back.
+    if (!NARRATION_AUTOPLAY || !autoPlay) return;
+    if (isAudioMuted()) return;
     if (mode === "loading" || mode === "captions") return;
     if (autoFiredRef.current) return;
     autoFiredRef.current = true;
     const id = window.setTimeout(speak, 400);
     return () => window.clearTimeout(id);
-  }, [autoPlay, enabled, mode, speak]);
+  }, [autoPlay, mode, speak]);
 
   // Stop when unmounting / navigating away.
   useEffect(() => () => stop(), [stop]);
 
-  const toggleEnabled = () => {
-    const next = !enabled;
-    setEnabled(next);
-    writePref(next);
-    if (!next) stop();
-    else speak();
-  };
+  // Master mute (HUD button) stops the voice instantly + keeps it off.
+  useEffect(() => subscribeAudioMute((muted) => {
+    if (muted) stop();
+  }), [stop]);
 
   // Show the audio button whenever EITHER source is usable. In
   // captions-only mode we hide it - there's nothing to play.
@@ -473,25 +449,6 @@ export default function InfoNarration({
             </li>
           ))}
         </ul>
-
-        {audioAvailable && (
-          <button
-            type="button"
-            onClick={toggleEnabled}
-            style={{
-              marginTop: 8,
-              background: "transparent",
-              border: "none",
-              color: "#94a3b8",
-              fontSize: 11,
-              cursor: "pointer",
-              padding: 0,
-              textDecoration: "underline",
-            }}
-          >
-            {enabled ? "Auto-read is on" : "Auto-read is off"}
-          </button>
-        )}
       </div>
     </div>
   );

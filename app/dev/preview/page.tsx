@@ -125,25 +125,32 @@ const InfoScene = dynamic(
   () => import("@/app/components/lesson/InfoScene"),
   { ssr: false }
 );
+const ConceptRecap = dynamic(
+  () => import("@/app/components/lesson/ConceptRecap"),
+  { ssr: false }
+);
 
 /* ───────────────────────── MOCK DATA ───────────────────────── */
 
+// Mirrors the real Week-1 mission objectives + the icon/colour mapping
+// in DynamicLesson's MissionBriefCase, so this preview matches the live
+// lesson mission screen exactly.
 const MOCK_MISSIONS = [
   {
-    icon: "🔐",
-    text: "Learn what passwords are",
-    colour: "#22d3ee",
-    glow: "rgba(34,211,238,0.55)",
+    icon: "🔑",
+    text: "Find out what a password really is",
+    colour: "#00e5ff",
+    glow: "rgba(0,229,255,0.55)",
   },
   {
     icon: "🛡️",
-    text: "Build a super strong password",
-    colour: "#a78bfa",
-    glow: "rgba(167,139,250,0.55)",
+    text: "Build a password the Raccoon can't crack",
+    colour: "#7c5cff",
+    glow: "rgba(124,92,255,0.55)",
   },
   {
     icon: "🦝",
-    text: "Defeat the Hacker Raccoon",
+    text: "Beat the Raccoon and lock him out for good",
     colour: "#f59e0b",
     glow: "rgba(245,158,11,0.6)",
   },
@@ -531,6 +538,7 @@ const CASES: CaseEntry[] = [
           words={s.words}
           slots={s.slots}
           hints={s.hints}
+          coachLines={s.coachLines}
           onComplete={noop}
           onCorrect={noop}
           onWrong={noop}
@@ -549,6 +557,7 @@ const CASES: CaseEntry[] = [
           reasons={s.reasons}
           patients={s.patients}
           hints={s.hints}
+          coachLines={s.coachLines}
           onComplete={noop}
           onCorrect={noop}
           onWrong={noop}
@@ -631,6 +640,25 @@ const CASES: CaseEntry[] = [
           bullets={s.bullets}
           narration={s.narration}
           onNext={noop}
+        />
+      );
+    },
+  },
+  {
+    id: 30,
+    name: "W1 · Concept Recap",
+    status: "redesigned",
+    render: () => {
+      const s = w1("recap");
+      return (
+        <ConceptRecap
+          concept={s.concept}
+          total={s.total}
+          learned={s.learned}
+          next={s.next}
+          emblem={s.emblem}
+          narration={s.narration}
+          onContinue={noop}
         />
       );
     },

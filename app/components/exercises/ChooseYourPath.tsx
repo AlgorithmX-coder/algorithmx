@@ -25,7 +25,8 @@ import {
   wrongAnswerShake,
 } from "@/app/lib/celebrations";
 import ExerciseFrame from "@/app/components/lesson/ExerciseFrame";
-import ExerciseIntro from "./ExerciseIntro";
+import ExerciseIntroBeat from "@/app/components/lesson/ExerciseBeats";
+import PixIcon from "@/app/components/lesson/PixIcon";
 import { COLOR, SHADOW, SPRING } from "@/app/components/scene/tokens";
 
 export interface ChoiceOption {
@@ -42,6 +43,7 @@ export interface Scenario {
 
 export interface ChooseYourPathProps {
   scenarios?: Scenario[];
+  introNarration?: { speaker?: "adam" | "layla"; lines: string[] };
   onComplete: (score: number) => void;
   onCorrect?: () => void;
   onWrong?: () => void;
@@ -152,6 +154,7 @@ const DOOR_PALETTE = [DOOR_PALETTE_CYBER, DOOR_PALETTE_CYBER];
 
 export default function ChooseYourPath({
   scenarios,
+  introNarration,
   onComplete,
   onCorrect,
   onWrong,
@@ -319,6 +322,7 @@ export default function ChooseYourPath({
     <ExerciseFrame
       maxWidth={1200}
       padding="22px 22px 26px"
+      decor={false}
       background="linear-gradient(180deg, #2a1240 0%, #1a2147 35%, #252d5e 70%, #3a7bff 92%, #7df0ff 100%)"
       style={{
         boxShadow: SHADOW.sceneFrame,
@@ -468,8 +472,8 @@ export default function ChooseYourPath({
                     padding: 0,
                     display: "flex",
                     flexDirection: "column",
-                    alignItems: "center",
-                    justifyContent: "flex-end",
+                    alignItems: "stretch",
+                    justifyContent: "stretch",
                     background: palette.body,
                     borderStyle: "solid",
                     borderWidth: 4,
@@ -496,98 +500,84 @@ export default function ChooseYourPath({
                       "0 18px 40px -10px rgba(20, 8, 5, 0.7), 0 0 0 1px rgba(0, 229, 255, 0.15) inset, 0 -6px 0 rgba(0, 0, 0, 0.35) inset";
                   }}
                 >
-                  {/* Top arch keystone */}
-                  <div
-                    style={{
-                      position: "absolute",
-                      top: 8,
-                      left: "50%",
-                      transform: "translateX(-50%)",
-                      width: 60,
-                      height: 24,
-                      borderRadius: "30px 30px 8px 8px",
-                      background: palette.panel,
-                      borderStyle: "solid",
-                      borderWidth: 2,
-                      borderColor: palette.rim,
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      color: palette.handle,
-                      fontSize: 16,
-                      fontWeight: 900,
-                    }}
-                  >
-                    ✦
-                  </div>
-                  {/* Door panels (two stacked rectangles) */}
-                  <div
-                    aria-hidden
-                    style={{
-                      position: "absolute",
-                      top: 44,
-                      left: 14,
-                      right: 14,
-                      height: 80,
-                      borderRadius: 6,
-                      background: palette.panel,
-                      borderStyle: "solid",
-                      borderWidth: 2,
-                      borderColor: palette.rim,
-                      boxShadow: "inset 0 2px 6px rgba(0, 0, 0, 0.4)",
-                    }}
-                  />
-                  <div
-                    aria-hidden
-                    style={{
-                      position: "absolute",
-                      top: 130,
-                      left: 14,
-                      right: 14,
-                      bottom: 70,
-                      borderRadius: 6,
-                      background: palette.panel,
-                      borderStyle: "solid",
-                      borderWidth: 2,
-                      borderColor: palette.rim,
-                      boxShadow: "inset 0 2px 6px rgba(0, 0, 0, 0.4)",
-                    }}
-                  />
-                  {/* Brass handle */}
-                  <div
-                    aria-hidden
-                    style={{
-                      position: "absolute",
-                      top: "50%",
-                      right: 22,
-                      transform: "translateY(-50%)",
-                      width: 14,
-                      height: 14,
-                      borderRadius: "50%",
-                      background:
-                        "radial-gradient(circle at 35% 30%, #7df0ff 0%, #ffd158 50%, #b07015 100%)",
-                      boxShadow:
-                        "0 0 8px rgba(255, 200, 90, 0.5), 0 1px 2px rgba(0, 0, 0, 0.4)",
-                    }}
-                  />
-
-                  {/* Caption strip at bottom */}
+                  {/* Clean, identical choice card. Both look the SAME before a
+                      pick (no giveaway): a glowing door emblem so it reads
+                      instantly as "a path you choose", the option text as the
+                      hero, and an obvious tap affordance. Replaces the old CSS
+                      pseudo-door (empty panels + a floating brass dot) that read
+                      as nothing. */}
                   <div
                     style={{
                       position: "relative",
                       zIndex: 1,
                       width: "100%",
-                      padding: "10px 12px",
-                      background:
-                        "linear-gradient(180deg, rgba(8, 10, 22, 0), rgba(4, 5, 13, 0.92))",
-                      color: "#e8edff",
-                      fontSize: 14,
-                      fontWeight: 700,
-                      lineHeight: 1.3,
-                      textShadow: "0 1px 3px rgba(0, 0, 0, 0.6)",
+                      height: "100%",
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                      padding: "18px 16px 16px",
+                      gap: 10,
                     }}
                   >
-                    {c.text}
+                    {/* Door emblem in a glowing portal ring */}
+                    <div
+                      aria-hidden
+                      style={{
+                        width: 54,
+                        height: 54,
+                        borderRadius: "50%",
+                        flexShrink: 0,
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        fontSize: 26,
+                        background:
+                          "radial-gradient(circle at 50% 36%, rgba(125,240,255,0.32), rgba(15,21,48,0.92))",
+                        border: `2px solid ${palette.rim}`,
+                        boxShadow:
+                          "0 0 18px rgba(0,229,255,0.45), inset 0 0 12px rgba(0,229,255,0.22)",
+                      }}
+                    >
+                      <PixIcon emoji="🚪" size={32} />
+                    </div>
+
+                    {/* Option text — the hero */}
+                    <div
+                      style={{
+                        flex: 1,
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        textAlign: "center",
+                        color: "#eef4ff",
+                        fontSize: 17,
+                        fontWeight: 800,
+                        lineHeight: 1.3,
+                        textShadow: "0 2px 6px rgba(0, 0, 0, 0.6)",
+                      }}
+                    >
+                      {c.text}
+                    </div>
+
+                    {/* Tap affordance — identical on both */}
+                    <div
+                      style={{
+                        width: "100%",
+                        padding: "9px 10px",
+                        borderRadius: 10,
+                        flexShrink: 0,
+                        background: "rgba(0, 229, 255, 0.12)",
+                        border: "1px solid rgba(0, 229, 255, 0.4)",
+                        color: "#7df0ff",
+                        fontSize: 12,
+                        fontWeight: 800,
+                        letterSpacing: 1,
+                        textTransform: "uppercase",
+                      }}
+                    >
+                      Tap to choose →
+                    </div>
                   </div>
                 </button>
               </div>
@@ -702,12 +692,13 @@ export default function ChooseYourPath({
       )}
 
       {showIntro && (
-        <ExerciseIntro
+        <ExerciseIntroBeat
           title="Choose Your Path"
-          description="You'll face real online situations. Pick a door to see what happens - choose wisely!"
+          subtitle="You'll face real online situations. Pick a door to see what happens - choose wisely!"
           icon="🚪"
-          controls="Click a door to choose"
-          onStart={() => setShowIntro(false)}
+          narration={introNarration}
+          character={introNarration?.speaker ?? "layla"}
+          onDismiss={() => setShowIntro(false)}
         />
       )}
       {fx.layer()}
@@ -773,7 +764,7 @@ function RevealPanel({ choice }: { choice: ChoiceOption }) {
             filter: "drop-shadow(0 0 16px rgba(255, 95, 179, 0.55))",
           }}
         >
-          🦝
+          <PixIcon emoji="🦝" size={42} />
         </div>
       )}
     </div>
