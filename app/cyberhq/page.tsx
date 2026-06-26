@@ -20,6 +20,10 @@ import Link from "next/link";
 // stickers.actions.ts.
 import { STICKER_CATALOGUE } from "@/app/lib/stickers-data";
 import { getEarnedStickers } from "@/app/lib/stickers.actions";
+import { BADGE_CATALOGUE } from "@/app/lib/badges-data";
+import { getEarnedBadges } from "@/app/lib/badges.actions";
+import { getProgressionSnapshot } from "@/app/lib/lessonProgress.actions";
+import { getRank } from "@/app/lib/progression";
 import PlaySignatureOnMount from "@/app/components/lesson/PlaySignatureOnMount";
 
 const C = {
@@ -42,11 +46,25 @@ export default async function CyberHQPage() {
   const session = await auth();
   if (!session?.user) redirect("/login");
 
-  const earned = await getEarnedStickers();
+  const [earned, earnedBadges, snapshot] = await Promise.all([
+    getEarnedStickers(),
+    getEarnedBadges(),
+    getProgressionSnapshot(),
+  ]);
   const earnedIds = new Set(earned.map((s) => s.id));
   const earnedCount = earned.length;
   const totalCount = STICKER_CATALOGUE.length;
   const earnedPct = totalCount > 0 ? Math.round((earnedCount / totalCount) * 100) : 0;
+
+  // Badges — derived from completed weeks, same as stickers.
+  const earnedBadgeIds = new Set(earnedBadges.map((b) => b.id));
+  const badgeEarnedCount = earnedBadges.length;
+  const badgeTotalCount = BADGE_CATALOGUE.length;
+
+  // Durable XP / rank, summed server-side across the child's weeks.
+  const totalXp = snapshot.totalXp;
+  const rank = getRank(totalXp);
+  const collectionsEmpty = earnedCount === 0 && badgeEarnedCount === 0;
 
   return (
     <main
@@ -133,7 +151,8 @@ export default async function CyberHQPage() {
             Your Cyber HQ
           </h1>
           <p style={{ color: C.textSoft, fontSize: 15, margin: 0 }}>
-            Stickers you&apos;ve earned by beating the Hacker Raccoon.
+            Badges, stickers and XP you&apos;ve earned by beating the Hacker
+            Raccoon.
           </p>
         </div>
 
@@ -152,6 +171,51 @@ export default async function CyberHQPage() {
             flexWrap: "wrap",
           }}
         >
+          {/* Rank + durable total XP (summed server-side across weeks). */}
+          <div>
+            <div
+              style={{
+                fontSize: 10,
+                letterSpacing: "0.18em",
+                color: C.textMuted,
+                textTransform: "uppercase",
+                fontWeight: 800,
+                marginBottom: 4,
+              }}
+            >
+              Rank
+            </div>
+            <div style={{ display: "flex", alignItems: "center", gap: 9 }}>
+              <span style={{ fontSize: 26, lineHeight: 1 }} aria-hidden>
+                {rank.current.icon}
+              </span>
+              <div>
+                <div
+                  style={{
+                    fontSize: 20,
+                    fontWeight: 900,
+                    color: rank.current.colour,
+                    lineHeight: 1.1,
+                  }}
+                >
+                  {rank.current.name}
+                </div>
+                <div
+                  style={{
+                    fontFamily: "'JetBrains Mono', monospace",
+                    fontSize: 12,
+                    color: C.textSoft,
+                  }}
+                >
+                  {totalXp.toLocaleString()} XP
+                  {rank.next
+                    ? ` · ${rank.xpNeededForNext.toLocaleString()} to ${rank.next.name}`
+                    : " · max rank"}
+                </div>
+              </div>
+            </div>
+          </div>
+
           <div>
             <div
               style={{
@@ -220,6 +284,93 @@ export default async function CyberHQPage() {
             </div>
           </div>
         </section>
+
+        {/* Badge case — one trophy per week (earned = completed that week). */}
+        <h2
+          style={{
+            fontSize: 18,
+            fontWeight: 800,
+            margin: "0 0 4px",
+            color: C.text,
+            letterSpacing: "0.02em",
+          }}
+        >
+          Badge case
+        </h2>
+        <p style={{ color: C.textMuted, fontSize: 12, margin: "0 0 14px" }}>
+          {badgeEarnedCount} of {badgeTotalCount} week badges earned
+        </p>
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))",
+            gap: 12,
+            marginBottom: 34,
+          }}
+        >
+          {BADGE_CATALOGUE.map((b) => {
+            const isEarned = earnedBadgeIds.has(b.id);
+            return (
+              <div
+                key={b.id}
+                className={isEarned ? "hq-sticker-earned" : undefined}
+                style={{
+                  padding: "16px 12px 14px",
+                  borderRadius: 16,
+                  background: isEarned
+                    ? "linear-gradient(180deg, rgba(255, 209, 88, 0.22), rgba(15, 21, 48, 0.85))"
+                    : "rgba(15, 21, 48, 0.55)",
+                  border: isEarned
+                    ? `2.5px solid ${C.borderEarned}`
+                    : "2px dashed rgba(148, 163, 184, 0.3)",
+                  boxShadow: isEarned
+                    ? "0 14px 36px rgba(253, 224, 71, 0.25), 0 0 0 1px rgba(255, 209, 88, 0.4) inset"
+                    : "none",
+                  textAlign: "center",
+                  opacity: isEarned ? 1 : 0.5,
+                  overflow: "hidden",
+                }}
+              >
+                <div
+                  style={{
+                    fontSize: 40,
+                    lineHeight: 1,
+                    marginBottom: 6,
+                    filter: isEarned
+                      ? "drop-shadow(0 0 14px rgba(253, 224, 71, 0.55))"
+                      : "grayscale(80%) opacity(0.5)",
+                  }}
+                  aria-hidden
+                >
+                  {isEarned ? b.icon : "🔒"}
+                </div>
+                <div
+                  style={{
+                    fontSize: 9,
+                    letterSpacing: "0.16em",
+                    color: isEarned ? C.gold : C.textMuted,
+                    textTransform: "uppercase",
+                    fontWeight: 800,
+                    marginBottom: 3,
+                  }}
+                >
+                  Week {b.week}
+                </div>
+                <div
+                  style={{
+                    fontSize: 13,
+                    fontWeight: 800,
+                    color: isEarned ? C.text : "#475569",
+                    lineHeight: 1.2,
+                    fontFamily: "'Space Grotesk', sans-serif",
+                  }}
+                >
+                  {b.name}
+                </div>
+              </div>
+            );
+          })}
+        </div>
 
         {/* Sticker wall */}
         <h2
@@ -381,7 +532,7 @@ export default async function CyberHQPage() {
         `}</style>
 
         {/* Helpful CTA */}
-        {earnedCount === 0 && (
+        {collectionsEmpty && (
           <div
             style={{
               marginTop: 28,
