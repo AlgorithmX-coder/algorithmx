@@ -29,11 +29,13 @@ import {
   badgeEarnedCelebration,
   correctAnswerBurst,
 } from "@/app/lib/celebrations";
-import ExerciseIntro from "./ExerciseIntro";
+import ExerciseIntroBeat from "@/app/components/lesson/ExerciseBeats";
 import ExerciseHowTo from "./ExerciseHowTo";
 import ExerciseFrame from "@/app/components/lesson/ExerciseFrame";
 import { COLOR, SHADOW, SPRING } from "@/app/components/scene/tokens";
 import HintBubble from "@/app/components/lesson/HintBubble";
+import PixIcon from "@/app/components/lesson/PixIcon";
+import InfoNarration from "@/app/components/lesson/InfoNarration";
 
 export interface MemoryPair {
   term: string;
@@ -44,6 +46,9 @@ export interface MemoryPair {
 
 export interface MemoryMatchProps {
   pairs?: MemoryPair[];
+  introNarration?: { speaker?: "adam" | "layla"; lines: string[] };
+  /** Spoken explanation for the phase-2 "Rebuild From Memory" mini-game. */
+  coachLines?: { speaker?: "adam" | "layla"; lines: string[] };
   onComplete: (score: number) => void;
   onCorrect?: () => void;
   onWrong?: () => void;
@@ -144,6 +149,8 @@ interface Burst {
 
 export default function MemoryMatch({
   pairs,
+  introNarration,
+  coachLines,
   onComplete,
   onCorrect,
   onWrong,
@@ -156,6 +163,7 @@ export default function MemoryMatch({
   const [cards, setCards] = useState<Card[]>(() => buildDeck(pairList));
 
   const [showIntro, setShowIntro] = useState(true);
+  const [memoriseSecs, setMemoriseSecs] = useState<number | null>(null);
   const [flippedIdxs, setFlippedIdxs] = useState<number[]>([]);
   const [matchedPairIds, setMatchedPairIds] = useState<number[]>([]);
   const [flipCount, setFlipCount] = useState(0);
@@ -194,7 +202,7 @@ export default function MemoryMatch({
    *
    * Same content, completely different mechanic - adds ~60-90s to
    * the screen without being "more questions". */
-  type Phase = "playing" | "phase-a-finished" | "rebuild" | "done";
+  type Phase = "playing" | "phase-a-finished" | "memorise" | "rebuild" | "done";
   const [phase, setPhase] = useState<Phase>("playing");
   const [rebuildPromptIdx, setRebuildPromptIdx] = useState(0);
   const [rebuildHits, setRebuildHits] = useState(0);
@@ -370,10 +378,19 @@ export default function MemoryMatch({
     }, 500);
   };
 
+  /** Phase A → "memorise": keep the matched board face-up and give the
+   *  child a 10-second window to memorise where everything is BEFORE the
+   *  cards flip down for the recall test. */
+  const startMemorise = () => {
+    audio.tap();
+    setMemoriseSecs(10);
+    setPhase("memorise");
+  };
+
   /** Kick off Phase B: flip every card face-down again, reset the
    *  prompt index, and switch into rebuild mode. */
   const startRebuild = () => {
-    audio.tap();
+    setMemoriseSecs(null);
     setCards((prev) =>
       prev.map((c) => ({ ...c, flipped: false, matched: false }))
     );
@@ -384,6 +401,22 @@ export default function MemoryMatch({
     rebuildLockRef.current = false;
     setPhase("rebuild");
   };
+
+  // 10-second "memorise" countdown: the matched board stays face-up; each
+  // tick decrements, and at 0 the cards flip down and the recall test begins.
+  useEffect(() => {
+    if (phase !== "memorise" || memoriseSecs === null) return;
+    if (memoriseSecs <= 0) {
+      startRebuild();
+      return;
+    }
+    const id = window.setTimeout(
+      () => setMemoriseSecs((s) => (s === null ? null : s - 1)),
+      1000
+    );
+    return () => window.clearTimeout(id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [phase, memoriseSecs]);
 
   /** Click handler for rebuild mode - flips ONE card and checks it
    *  against the currently-prompted term's meaning. Right answer
@@ -753,12 +786,13 @@ export default function MemoryMatch({
       )}
 
       {showIntro && (
-        <ExerciseIntro
+        <ExerciseIntroBeat
           title="Memory Match"
-          description="Flip the cards and match each term with its meaning! Fewer flips earn more stars."
+          subtitle="Flip the cards and match each term with its meaning! Fewer flips earn more stars."
           icon="🧠"
-          controls="Click cards to flip them"
-          onStart={() => setShowIntro(false)}
+          narration={introNarration}
+          character={introNarration?.speaker ?? "adam"}
+          onDismiss={() => setShowIntro(false)}
         />
       )}
 
@@ -766,7 +800,10 @@ export default function MemoryMatch({
           board after the wave celebration finishes. The cards are
           still face-up behind the dim, so the kid sees what they're
           about to commit to memory. */}
-      {phase === "phase-a-finished" && <PhaseTransitionCard onStart={startRebuild} />}
+      {phase === "phase-a-finished" && (
+        <PhaseTransitionCard onStart={startMemorise} coachLines={coachLines} />
+      )}
+      {phase === "memorise" && <MemoriseCountdown secs={memoriseSecs ?? 0} />}
 
       {/* Tiny "do you remember?" reminder while rebuild is active.
           Sits at the bottom of the frame so it doesn't crowd the
@@ -798,13 +835,56 @@ export default function MemoryMatch({
   );
 }
 
+/* ───────────────────────── MEMORISE COUNTDOWN ─────────────
+ * The 10-second window where the matched board stays face-up so the child
+ * can memorise the layout before it flips down for the recall test. A
+ * non-blocking top banner — the cards MUST stay visible behind it. */
+function MemoriseCountdown({ secs }: { secs: number }) {
+  return (
+    <div
+      aria-live="polite"
+      style={{
+        position: "absolute",
+        top: 0,
+        left: 0,
+        right: 0,
+        zIndex: 22,
+        padding: "16px 16px 26px",
+        textAlign: "center",
+        pointerEvents: "none",
+        background:
+          "linear-gradient(180deg, rgba(8,10,22,0.95) 0%, rgba(8,10,22,0.55) 60%, transparent 100%)",
+        fontFamily:
+          "ui-rounded, 'Fredoka', 'Quicksand', system-ui, -apple-system, sans-serif",
+      }}
+    >
+      <div style={{ fontSize: 14, fontWeight: 800, letterSpacing: "0.08em", textTransform: "uppercase", color: "#7df0ff" }}>
+        <PixIcon emoji="🧠" size={18} style={{ marginRight: 6 }} />
+        Memorise where the cards are!
+      </div>
+      <div style={{ fontSize: 46, fontWeight: 900, lineHeight: 1.15, color: "#ffd158", textShadow: "0 0 20px rgba(255,209,88,0.65)" }}>
+        {secs}
+      </div>
+      <div style={{ fontSize: 12, fontWeight: 700, color: "rgba(231,236,255,0.7)" }}>
+        Then they flip over for the test…
+      </div>
+    </div>
+  );
+}
+
 /* ───────────────────────── PHASE TRANSITION CARD ─────────────
  * Modal-style overlay that pops between Phase A and Phase B. Same
  * visual language as ExerciseIntro but smaller and re-themed for
  * "level 2" - gold-rimmed plum card with a brain glyph and a single
  * START button. */
 
-function PhaseTransitionCard({ onStart }: { onStart: () => void }) {
+function PhaseTransitionCard({
+  onStart,
+  coachLines,
+}: {
+  onStart: () => void;
+  coachLines?: { speaker?: "adam" | "layla"; lines: string[] };
+}) {
   return (
     <div
       role="dialog"
@@ -867,7 +947,7 @@ function PhaseTransitionCard({ onStart }: { onStart: () => void }) {
               "drop-shadow(0 0 18px rgba(0, 229, 255, 0.65)) drop-shadow(0 0 32px rgba(124, 92, 255, 0.4))",
           }}
         >
-          🧠
+          <PixIcon emoji="🧠" size={60} />
         </div>
         <h2
           style={{
@@ -884,19 +964,30 @@ function PhaseTransitionCard({ onStart }: { onStart: () => void }) {
         >
           Rebuild From Memory!
         </h2>
-        <p
-          style={{
-            fontSize: 15,
-            color: "#c5cdf0",
-            opacity: 0.92,
-            margin: "0 0 18px",
-            lineHeight: 1.55,
-          }}
-        >
-          The cards are flipping face-down again. We&apos;ll show you a
-          term - tap the card you remember holds the matching meaning.
-          Hit them all in one go for a 3-star finish!
-        </p>
+        {coachLines && coachLines.lines.length > 0 ? (
+          // The NARRATOR (Sarah) briefs the task — autoplays, persistent,
+          // shown as the ♪ narration block (no character face).
+          <div style={{ textAlign: "left", margin: "2px 0 16px" }}>
+            <InfoNarration
+              lines={coachLines.lines}
+              speaker={coachLines.speaker ?? "layla"}
+            />
+          </div>
+        ) : (
+          <p
+            style={{
+              fontSize: 15,
+              color: "#c5cdf0",
+              opacity: 0.92,
+              margin: "0 0 18px",
+              lineHeight: 1.55,
+            }}
+          >
+            First, take 10 seconds to memorise where all the cards are! Then
+            they flip over and we&apos;ll test you — tap the card you remember
+            holds each meaning. Hit them all in one go for a 3-star finish!
+          </p>
+        )}
         <button
           type="button"
           onClick={onStart}
@@ -916,7 +1007,7 @@ function PhaseTransitionCard({ onStart }: { onStart: () => void }) {
               "0 18px 36px -10px rgba(255,120,40,0.6), 0 0 0 1px rgba(255,235,200,0.55) inset, 0 -3px 0 rgba(180,80,30,0.4) inset",
           }}
         >
-          Start Memory Test →
+          Start Memorising →
         </button>
       </div>
     </div>
@@ -1446,6 +1537,34 @@ function buildDeck(pairList: MemoryPair[]): Card[] {
       waveDelay: 0,
     });
   });
-  const s = shuffle(raw);
-  return s.map((c, idx) => ({ ...c, waveDelay: idx * 0.05 }));
+  // Deal so NO pair lands adjacent — the matched pairs were ending up
+  // side-by-side, which defeats the memory challenge. Reject any layout
+  // where a pair's two cards are at array distance 1 (horizontal
+  // neighbours) or 3/4 (vertical neighbours in the 3- and 4-column
+  // responsive grids); retry, keeping the least-bad fallback.
+  const ADJ = new Set([1, 3, 4]);
+  let best = shuffle(raw);
+  let bestBad = Infinity;
+  for (let attempt = 0; attempt < 200; attempt++) {
+    const s = shuffle(raw);
+    const pos = new Map<number, number[]>();
+    s.forEach((c, i) => {
+      const a = pos.get(c.pairId);
+      if (a) a.push(i);
+      else pos.set(c.pairId, [i]);
+    });
+    let bad = 0;
+    pos.forEach((idxs) => {
+      if (idxs.length === 2 && ADJ.has(Math.abs(idxs[0] - idxs[1]))) bad++;
+    });
+    if (bad === 0) {
+      best = s;
+      break;
+    }
+    if (bad < bestBad) {
+      bestBad = bad;
+      best = s;
+    }
+  }
+  return best.map((c, idx) => ({ ...c, waveDelay: idx * 0.05 }));
 }

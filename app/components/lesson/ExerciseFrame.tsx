@@ -68,6 +68,14 @@ export interface ExerciseFrameProps {
    */
   padding?: number | string;
   /**
+   * Subtle "command-center" depth layer painted BEHIND the content
+   * (faint cyber grid + corner light-glows + top sheen) so plain DOM
+   * boards don't read as a flat gradient. Default true. Set false for
+   * exercises that already ship their own rich scene backdrop (e.g.
+   * ChooseYourPath) so the grid doesn't fight their art.
+   */
+  decor?: boolean;
+  /**
    * Adds `touchAction: "none"` to the frame (canvas/game exercises
    * generally want this to suppress browser scroll on swipe).
    * Default false.
@@ -90,6 +98,7 @@ export default function ExerciseFrame({
   background = COSMIC_BG,
   padding = 0,
   touchActionNone = false,
+  decor = true,
   style,
   children,
 }: ExerciseFrameProps) {
@@ -125,7 +134,121 @@ export default function ExerciseFrame({
         ...style,
       }}
     >
+      {decor && background && <FrameDecor />}
       {children}
+    </div>
+  );
+}
+
+/*
+ * Depth layer. Sits at z-index:-1 so it paints above the frame's own
+ * gradient background but below ALL content (positioned or not), which
+ * keeps gameplay perfectly legible while giving the board a lit
+ * "command-center" feel instead of a flat wash. Deliberately subtle —
+ * the brief is "richer, not busier / not overstimulating".
+ */
+function FrameDecor() {
+  return (
+    <div
+      aria-hidden
+      style={{
+        position: "absolute",
+        inset: 0,
+        zIndex: -1,
+        pointerEvents: "none",
+        borderRadius: "inherit",
+        overflow: "hidden",
+      }}
+    >
+      {/* faint cyber grid, masked to fade out toward the edges */}
+      <div
+        style={{
+          position: "absolute",
+          inset: 0,
+          backgroundImage:
+            "linear-gradient(rgba(0,229,255,0.05) 1px, transparent 1px)," +
+            "linear-gradient(90deg, rgba(0,229,255,0.05) 1px, transparent 1px)",
+          backgroundSize: "46px 46px",
+          maskImage:
+            "radial-gradient(ellipse at 50% 38%, #000 50%, transparent 100%)",
+          WebkitMaskImage:
+            "radial-gradient(ellipse at 50% 38%, #000 50%, transparent 100%)",
+        }}
+      />
+      {/* soft corner light-glows for depth */}
+      <div
+        style={{
+          position: "absolute",
+          top: "-12%",
+          left: "-8%",
+          width: 360,
+          height: 360,
+          borderRadius: "50%",
+          background: "radial-gradient(circle, rgba(0,229,255,0.16) 0%, transparent 70%)",
+          filter: "blur(22px)",
+        }}
+      />
+      <div
+        style={{
+          position: "absolute",
+          bottom: "-14%",
+          right: "-8%",
+          width: 420,
+          height: 420,
+          borderRadius: "50%",
+          background: "radial-gradient(circle, rgba(124,92,255,0.15) 0%, transparent 70%)",
+          filter: "blur(24px)",
+        }}
+      />
+      {/* top sheen so the frame reads as a lit glass surface */}
+      <div
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          right: 0,
+          height: 130,
+          background: "linear-gradient(180deg, rgba(255,255,255,0.05), transparent)",
+        }}
+      />
+      {/* command-center corner brackets — "framing" that reads as an
+          intentional HUD surface rather than a plain card edge */}
+      {([
+        { top: 14, left: 14, bt: true, bl: true },
+        { top: 14, right: 14, bt: true, br: true },
+        { bottom: 14, left: 14, bb: true, bl: true },
+        { bottom: 14, right: 14, bb: true, br: true },
+      ] as Array<{
+        top?: number;
+        bottom?: number;
+        left?: number;
+        right?: number;
+        bt?: boolean;
+        bb?: boolean;
+        bl?: boolean;
+        br?: boolean;
+      }>).map((c, i) => (
+        <div
+          key={i}
+          style={{
+            position: "absolute",
+            top: c.top,
+            bottom: c.bottom,
+            left: c.left,
+            right: c.right,
+            width: 20,
+            height: 20,
+            borderTop: c.bt ? "2px solid rgba(125,240,255,0.32)" : undefined,
+            borderBottom: c.bb ? "2px solid rgba(125,240,255,0.32)" : undefined,
+            borderLeft: c.bl ? "2px solid rgba(125,240,255,0.32)" : undefined,
+            borderRight: c.br ? "2px solid rgba(125,240,255,0.32)" : undefined,
+            borderTopLeftRadius: c.bt && c.bl ? 8 : undefined,
+            borderTopRightRadius: c.bt && c.br ? 8 : undefined,
+            borderBottomLeftRadius: c.bb && c.bl ? 8 : undefined,
+            borderBottomRightRadius: c.bb && c.br ? 8 : undefined,
+          }}
+        />
+      ))}
     </div>
   );
 }

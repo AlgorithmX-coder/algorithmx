@@ -15,6 +15,7 @@ import {
 } from "@/app/lib/celebrations";
 import LessonHUD from "@/app/components/LessonHUD";
 import { deriveCaseMeta } from "@/app/lib/caseTitles";
+import { isAudioMuted, setAudioMuted, subscribeAudioMute } from "@/app/lib/audioMute";
 // CharacterGuide swap: the legacy PNG-only component is replaced with
 // RiveCharacterGuide, which has the same prop API but adds a Rive
 // runtime branch (currently dormant - PNG fallback active until a
@@ -32,6 +33,7 @@ import ExerciseErrorBoundary from "@/app/components/ExerciseErrorBoundary";
 import LessonAmbience from "@/app/components/LessonAmbience";
 import InfoScene from "@/app/components/lesson/InfoScene";
 import GameButton from "@/app/components/lesson/GameButton";
+import PixIcon from "@/app/components/lesson/PixIcon";
 import LessonStage, {
   LESSON_HUD_HEIGHT,
 } from "@/app/components/lesson/LessonStage";
@@ -59,6 +61,7 @@ import PhishInspector from "@/app/components/exercises/PhishInspector";
 import PasswordVault from "@/app/components/exercises/PasswordVault";
 import QuickCheck from "@/app/components/exercises/QuickCheck";
 import MissionDebrief from "@/app/components/lesson/MissionDebrief";
+import ConceptRecap from "@/app/components/lesson/ConceptRecap";
 import StickerUnlock from "@/app/components/lesson/StickerUnlock";
 import BossVictoryScene from "@/app/components/lesson/BossVictoryScene";
 import { awardStickers } from "@/app/lib/stickers.actions";
@@ -91,6 +94,10 @@ const BossBattle = dynamic(
 );
 const WelcomeScene = dynamic(
   () => import("@/app/components/game/WelcomeScene"),
+  { ssr: false }
+);
+const MissionBriefScene = dynamic(
+  () => import("@/app/components/game/MissionBriefScene"),
   { ssr: false }
 );
 
@@ -363,6 +370,54 @@ function Card({ children, extra }: { children: React.ReactNode; extra?: React.CS
   );
 }
 
+/* ─────────────── MISSION BRIEF ─────────────── */
+/*
+ * Wires the rich MissionBriefScene (cosmic backdrop, holo pedestal,
+ * glossy objective cards, Adam & Layla, "◇ Mission Briefing ◇" plate,
+ * progress dots) into the lesson's "mission" screen — replacing the
+ * plain numbered-list card that shipped before. The scene reveals one
+ * objective card per `phase` step, so we auto-advance phase 0→3 on a
+ * timer, which lights the progress dots and finally surfaces the
+ * Accept button.
+ */
+const MISSION_CARD_STYLES = [
+  { icon: "🔑", colour: "#00e5ff", glow: "rgba(0,229,255,0.55)" },
+  { icon: "🛡️", colour: "#7c5cff", glow: "rgba(124,92,255,0.55)" },
+  { icon: "🦝", colour: "#f59e0b", glow: "rgba(245,158,11,0.6)" },
+];
+
+function MissionBriefCase({
+  objectives,
+  onAccept,
+}: {
+  objectives: string[];
+  onAccept: () => void;
+}) {
+  const missions = useMemo(
+    () =>
+      objectives.map((text, i) => {
+        const s = MISSION_CARD_STYLES[i % MISSION_CARD_STYLES.length];
+        return { text, icon: s.icon, colour: s.colour, glow: s.glow };
+      }),
+    [objectives]
+  );
+
+  // Reveal cards one at a time, then surface the Accept button. The
+  // scene shows card i when phase > i and the button at phase >= 3.
+  const [phase, setPhase] = useState(0);
+  useEffect(() => {
+    const target = Math.max(3, objectives.length);
+    const timers = Array.from({ length: target }, (_, i) =>
+      window.setTimeout(() => setPhase(i + 1), 450 + i * 620)
+    );
+    return () => timers.forEach((t) => window.clearTimeout(t));
+  }, [objectives.length]);
+
+  return (
+    <MissionBriefScene phase={phase} missions={missions} onAccept={onAccept} />
+  );
+}
+
 // Real intro-video player for the `video` screen. Until the learner
 // presses play we show the decorative play button as a poster overlay;
 // the click is the user gesture that lets the browser play with sound.
@@ -501,15 +556,21 @@ function LessonLoading() {
   );
 }
 
-export default function DynamicLesson() {
+export default function DynamicLesson({
+  qaEnabled = false,
+}: {
+  /** Server-set (E2E_TESTS) flag that re-enables the ?screen QA deep-link
+   *  in production builds for Playwright. Never true in a real deploy. */
+  qaEnabled?: boolean;
+}) {
   return (
     <ComfortModeProvider>
-      <DynamicLessonInner />
+      <DynamicLessonInner qaEnabled={qaEnabled} />
     </ComfortModeProvider>
   );
 }
 
-function DynamicLessonInner() {
+function DynamicLessonInner({ qaEnabled }: { qaEnabled: boolean }) {
   const rawParams = useParams<{ week: string }>();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -517,8 +578,10 @@ function DynamicLessonInner() {
   const audio = useGameAudio();
 
   // QA deep-link: ?screen=N jumps straight to that screen on mount.
-  // Bypasses the resume banner. Out-of-range values are clamped.
+  // Bypasses the resume banner. Out-of-range values are clamped. DEV-ONLY —
+  // disabled in production so kids can't skip past the learning to the boss.
   const deepLinkScreen = (() => {
+    if (process.env.NODE_ENV === "production" && !qaEnabled) return null;
     const raw = searchParams?.get("screen");
     if (!raw) return null;
     const n = Number(raw);
@@ -538,10 +601,6 @@ function DynamicLessonInner() {
 
   // One-time debug trace on mount / when params change - visible in the
   // browser console so the user can paste it back if something is off.
-  useEffect(() => {
-    // eslint-disable-next-line no-console
-    console.log("[DynamicLesson] rawParams:", rawParams, "weekNum:", weekNum, "content:", content ? `Week ${content.weekNumber}: ${content.title}` : null);
-  }, [rawParams, weekNum, content]);
 
   // All hooks run unconditionally - we short-circuit with a fallback render below.
   // Intro cutscene disabled - lesson lands directly on screen 0. Default the
@@ -550,9 +609,25 @@ function DynamicLessonInner() {
   const [screen, setScreen] = useState(0);
   const [lessonXp, setLessonXp] = useState(0);
   const [wrongCounts, setWrongCounts] = useState<Record<number, number>>({});
+
+  // Master audio mute — drives the HUD mute button. Audio (sounds + voice)
+  // plays by default; this one control mutes everything for the week.
+  const [muted, setMutedState] = useState(false);
+  useEffect(() => {
+    setMutedState(isAudioMuted());
+    return subscribeAudioMute((m) => setMutedState(m));
+  }, []);
+  const handleMuteToggle = useCallback(() => {
+    setMutedState((prev) => {
+      const next = !prev;
+      setAudioMuted(next);
+      return next;
+    });
+  }, []);
   const [shakeTrigger, setShakeTrigger] = useState(0);
   const [showBoss, setShowBoss] = useState(false);
   const [bossDone, setBossDone] = useState(false);
+  const [bossWon, setBossWon] = useState(false);
   const [bossStats, setBossStats] = useState<{ combo: number; accuracy: number; xp: number } | null>(null);
   const [arena3DMood, setArena3DMood] = useState<"normal" | "correct" | "wrong" | "celebration">("normal");
   const [arena3DPulse, setArena3DPulse] = useState(0);
@@ -661,6 +736,7 @@ function DynamicLessonInner() {
     setLessonXp(0);
     setWrongCounts({});
     setBossDone(false);
+    setBossWon(false);
     setBossStats(null);
     screenXpBaselineRef.current = 0;
     await progress.restart();
@@ -884,6 +960,22 @@ function DynamicLessonInner() {
   const reaction = content.reactions[screen] ?? { adam: null, layla: null };
   const stars = (wrongCounts[screen] ?? 0) === 0 ? 3 : (wrongCounts[screen] ?? 0) <= 1 ? 2 : 1;
 
+  // A11y: when the child advances, move focus to the new screen region so
+  // screen readers announce it and keyboard/switch users land in the new
+  // content. Skips the first mount (the resume banner manages its own focus).
+  const screenRegionRef = useRef<HTMLDivElement>(null);
+  const firstScreenFocusRef = useRef(true);
+  useEffect(() => {
+    if (firstScreenFocusRef.current) {
+      firstScreenFocusRef.current = false;
+      return;
+    }
+    const t = window.setTimeout(() => {
+      screenRegionRef.current?.focus({ preventScroll: true });
+    }, 60);
+    return () => window.clearTimeout(t);
+  }, [screen]);
+
   const renderScreen = (): React.ReactNode => {
     if (!def) return null;
 
@@ -963,93 +1055,11 @@ function DynamicLessonInner() {
 
       case "mission":
         return (
-          <FullScene bg="linear-gradient(180deg, #0a0e2a 0%, #1a1033 100%)" glow="radial-gradient(circle, rgba(59,130,246,0.2), transparent)">
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-              <Card>
-                <div style={{ textAlign: "center" }}>
-                  <div style={{ fontSize: 44, marginBottom: 10 }}>{content.badgeIcon}</div>
-                  <h2
-                    style={{
-                      fontSize: 28,
-                      fontWeight: 900,
-                      margin: "0 0 8px",
-                      background: "linear-gradient(135deg, #7df0ff, #a78bfa)",
-                      WebkitBackgroundClip: "text",
-                      WebkitTextFillColor: "transparent",
-                    }}
-                  >
-                    Week {content.weekNumber}: {content.title}
-                  </h2>
-                  <p
-                    style={{
-                      color: "#7df0ff",
-                      fontSize: 12,
-                      letterSpacing: "0.2em",
-                      textTransform: "uppercase",
-                      fontWeight: 800,
-                      marginBottom: 22,
-                    }}
-                  >
-                    ◇ Your Mission ◇
-                  </p>
-                  <ul
-                    style={{
-                      listStyle: "none",
-                      padding: 0,
-                      margin: "0 0 24px",
-                      textAlign: "left",
-                      maxWidth: 480,
-                      marginInline: "auto",
-                      display: "grid",
-                      gap: 10,
-                    }}
-                  >
-                    {def.objectives.map((obj, i) => {
-                      const ac = ["#00e5ff", "#7eff97", "#ffd158", "#ff5fb3"][i % 4];
-                      return (
-                        <motion.li
-                          key={i}
-                          initial={{ opacity: 0, x: -10 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          transition={{ delay: 0.1 + i * 0.12, type: "spring", stiffness: 300, damping: 24 }}
-                          style={{
-                            display: "flex",
-                            gap: 12,
-                            alignItems: "center",
-                            padding: "13px 16px",
-                            background: `${ac}12`,
-                            border: `1px solid ${ac}55`,
-                            borderRadius: 14,
-                            boxShadow: `0 8px 22px -16px ${ac}, inset 0 1px 0 rgba(255,255,255,0.12)`,
-                          }}
-                        >
-                          <span
-                            style={{
-                              width: 28,
-                              height: 28,
-                              borderRadius: "50%",
-                              background: ac,
-                              color: "#06080f",
-                              display: "inline-flex",
-                              alignItems: "center",
-                              justifyContent: "center",
-                              fontSize: 14,
-                              fontWeight: 900,
-                              flexShrink: 0,
-                              boxShadow: `0 0 14px -2px ${ac}`,
-                            }}
-                          >
-                            {i + 1}
-                          </span>
-                          <span style={{ color: "#eef2ff", fontSize: 15, fontWeight: 600 }}>{obj}</span>
-                        </motion.li>
-                      );
-                    })}
-                  </ul>
-                  <OrangeButton onClick={() => navigate(screen + 1)}>Accept Mission →</OrangeButton>
-                </div>
-              </Card>
-            </motion.div>
+          <FullScene bg="linear-gradient(180deg, #0a0e2a 0%, #1a1033 100%)">
+            <MissionBriefCase
+              objectives={def.objectives}
+              onAccept={() => navigate(screen + 1)}
+            />
           </FullScene>
         );
 
@@ -1068,11 +1078,27 @@ function DynamicLessonInner() {
           </FullScene>
         );
 
+      case "recap":
+        return (
+          <FullScene bg="linear-gradient(180deg, #07140f 0%, #060a1c 100%)">
+            <ConceptRecap
+              concept={def.concept}
+              total={def.total}
+              learned={def.learned}
+              next={def.next}
+              emblem={def.emblem}
+              narration={def.narration}
+              onContinue={() => navigate(screen + 1)}
+            />
+          </FullScene>
+        );
+
       case "cyberScanner":
         return (
           <FullScene bg="linear-gradient(180deg, #050a1a 0%, #1a1033 100%)">
             <CyberScanner
               passwords={def.items}
+              introNarration={def.narration}
               onComplete={() => navigate(screen + 1)}
               onCorrect={() => awardXp(25)}
               onWrong={() => addWrong(screen)}
@@ -1135,6 +1161,7 @@ function DynamicLessonInner() {
               reasons={def.reasons}
               items={def.items}
               hints={def.hints}
+              introNarration={def.narration}
               onComplete={() => navigate(screen + 1)}
               onCorrect={() => awardXp(25)}
               onWrong={() => addWrong(screen)}
@@ -1168,6 +1195,8 @@ function DynamicLessonInner() {
               reasons={def.reasons}
               patients={def.patients}
               hints={def.hints}
+              introNarration={def.narration}
+              coachLines={def.coachLines}
               onComplete={() => navigate(screen + 1)}
               onCorrect={() => awardXp(25)}
               onWrong={() => addWrong(screen)}
@@ -1224,6 +1253,8 @@ function DynamicLessonInner() {
               words={def.words}
               slots={def.slots}
               hints={def.hints}
+              introNarration={def.narration}
+              coachLines={def.coachLines}
               onComplete={() => navigate(screen + 1)}
               onCorrect={() => awardXp(25)}
               onWrong={() => addWrong(screen)}
@@ -1279,6 +1310,7 @@ function DynamicLessonInner() {
           <FullScene bg="linear-gradient(180deg, #0a0a2a 0%, #1a1033 100%)">
             <ChooseYourPath
               scenarios={def.scenarios}
+              introNarration={def.narration}
               onComplete={() => navigate(screen + 1)}
               onCorrect={() => awardXp(25)}
               onWrong={() => addWrong(screen)}
@@ -1291,6 +1323,8 @@ function DynamicLessonInner() {
           <FullScene bg="linear-gradient(180deg, #0a0a2a 0%, #1a1033 100%)">
             <MemoryMatch
               pairs={def.pairs}
+              introNarration={def.narration}
+              coachLines={def.coachLines}
               onComplete={() => navigate(screen + 1)}
               onCorrect={() => awardXp(25)}
               onWrong={() => addWrong(screen)}
@@ -1425,7 +1459,7 @@ function DynamicLessonInner() {
         );
 
       case "bossBattle":
-        if (bossDone) {
+        if (bossDone && bossWon) {
           return (
             <FullScene
               bg="radial-gradient(ellipse at 50% 30%, #2a0a14 0%, #160a2e 50%, #04050d 100%)"
@@ -1438,6 +1472,78 @@ function DynamicLessonInner() {
                 stats={bossStats}
                 onClaim={() => navigate(screen + 1)}
               />
+            </FullScene>
+          );
+        }
+        if (bossDone && !bossWon) {
+          // Empowering, not punishing: the child sees they didn't win THIS
+          // time, is warmly encouraged to retry, and is never hard-blocked
+          // (a quiet "Keep going" prevents a struggling kid from being stuck).
+          return (
+            <FullScene
+              bg="linear-gradient(180deg, #1a0a14 0%, #0a0a1a 100%)"
+              glow="radial-gradient(circle, rgba(124,92,255,0.25), transparent)"
+            >
+              <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}>
+                <Card>
+                  <div style={{ textAlign: "center" }}>
+                    <div style={{ margin: "0 auto 10px" }}>
+                      <PixIcon emoji="🦝" size={72} />
+                    </div>
+                    <h2
+                      style={{
+                        fontSize: 28,
+                        fontWeight: 900,
+                        margin: "0 0 8px",
+                        background: "linear-gradient(135deg, #7df0ff, #a78bfa)",
+                        WebkitBackgroundClip: "text",
+                        WebkitTextFillColor: "transparent",
+                      }}
+                    >
+                      So close, Cyber Hero!
+                    </h2>
+                    <p
+                      style={{
+                        color: "#cbd5e1",
+                        fontSize: 15,
+                        lineHeight: 1.5,
+                        margin: "0 0 22px",
+                        maxWidth: 420,
+                        marginInline: "auto",
+                      }}
+                    >
+                      The Hacker Raccoon is a tricky one — but you&apos;ve got
+                      this. Want another go?
+                    </p>
+                    <OrangeButton
+                      onClick={() => {
+                        setBossDone(false);
+                        setBossWon(false);
+                        setShowBoss(true);
+                      }}
+                    >
+                      Try Again →
+                    </OrangeButton>
+                    <div style={{ marginTop: 14 }}>
+                      <button
+                        type="button"
+                        onClick={() => navigate(screen + 1)}
+                        style={{
+                          background: "transparent",
+                          border: "none",
+                          color: "#94a3b8",
+                          fontSize: 13,
+                          cursor: "pointer",
+                          textDecoration: "underline",
+                          fontFamily: "inherit",
+                        }}
+                      >
+                        Keep going →
+                      </button>
+                    </div>
+                  </div>
+                </Card>
+              </motion.div>
             </FullScene>
           );
         }
@@ -1540,7 +1646,7 @@ function DynamicLessonInner() {
                   fontSize: 72,
                 }}
               >
-                {content.badgeIcon}
+                <PixIcon emoji={content.badgeIcon} size={84} />
               </motion.div>
               {/* "Week N badge unlocked" tag */}
               <div
@@ -1717,6 +1823,8 @@ function DynamicLessonInner() {
         totalScreens={totalScreens}
         xpEarned={lessonXp}
         caseMeta={deriveCaseMeta(def, screen)}
+        muted={muted}
+        onMuteToggle={handleMuteToggle}
       />
 
       {/* Character guides are mounted ONLY on the boss battle screen.
@@ -1763,12 +1871,20 @@ function DynamicLessonInner() {
           onTransitionStart={() => playSFX("transition")}
         >
           <ScreenShake trigger={shakeTrigger}>
-            <ExerciseErrorBoundary
-              key={screen}
-              onSkip={() => navigate(Math.min(totalScreens - 1, screen + 1))}
+            <div
+              ref={screenRegionRef}
+              tabIndex={-1}
+              role="region"
+              aria-label="Lesson screen"
+              style={{ outline: "none" }}
             >
-              {renderScreen()}
-            </ExerciseErrorBoundary>
+              <ExerciseErrorBoundary
+                key={screen}
+                onSkip={() => navigate(Math.min(totalScreens - 1, screen + 1))}
+              >
+                {renderScreen()}
+              </ExerciseErrorBoundary>
+            </div>
           </ScreenShake>
         </ScreenTransition>
       </main>
@@ -1833,6 +1949,7 @@ function DynamicLessonInner() {
             onEnd={(won, stats) => {
               setShowBoss(false);
               setBossDone(true);
+              setBossWon(won);
               setBossStats({
                 combo: stats.combo ?? 0,
                 accuracy: stats.accuracy ?? 0,

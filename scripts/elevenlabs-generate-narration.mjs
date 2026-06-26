@@ -93,7 +93,10 @@ const weekFiles = (await readdir(WEEK_CONTENT_DIR))
   .filter((f) => /^week\d+\.ts$/.test(f))
   .sort();
 
-const blockRe = /narration:\s*\{\s*speaker:\s*"(adam|layla)",\s*lines:\s*\[([\s\S]*?)\]\s*,?\s*\}/g;
+// Scans both the intro `narration:` blocks and the in-exercise
+// `coachLines:` blocks (teach-once first-action lines) so every spoken
+// line in the content gets a recorded Sarah voice.
+const blockRe = /(?:narration|coachLines):\s*\{\s*speaker:\s*"(adam|layla)",\s*lines:\s*\[([\s\S]*?)\]\s*,?\s*\}/g;
 const blocks = [];
 
 for (const fname of weekFiles) {

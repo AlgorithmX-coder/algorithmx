@@ -27,6 +27,7 @@ import {
 } from "@/app/lib/gameEngine";
 import { correctAnswerBurst } from "@/app/lib/celebrations";
 import ExerciseFrame from "@/app/components/lesson/ExerciseFrame";
+import PixIcon from "@/app/components/lesson/PixIcon";
 
 export type QuickCheckMode = "finish" | "speed" | "lie" | "recall";
 
@@ -61,6 +62,36 @@ const MODE_LABEL: Record<QuickCheckMode, string> = {
 };
 
 const ACCENTS = ["#00e5ff", "#7c5cff", "#7eff97", "#ffd158"];
+
+const HEAD_SRC: Record<"adam" | "layla", string> = {
+  adam: "/game/characters/adam-head.png",
+  layla: "/game/characters/layla-head.png",
+};
+
+// Non-lie modes felt flat — just a badge + prompt over empty space, while
+// `lie` mode came alive because the Raccoon *poses* the challenge. So we give
+// finish/speed/recall a coach who poses the challenge the same way: a hero
+// head + a short spoken-style line. Keeps all five prove-it beats
+// character-led and distinct, without a heavy intro (they stay snappy).
+const MODE_HERALD: Record<
+  Exclude<QuickCheckMode, "lie">,
+  { speaker: "adam" | "layla"; line: string }
+> = {
+  finish: { speaker: "layla", line: "Can you finish the rule?" },
+  speed: { speaker: "adam", line: "Quick — beat the clock!" },
+  recall: { speaker: "layla", line: "Do you remember this one?" },
+};
+
+// Fisher-Yates. The authored choices often list the correct answer first,
+// which teaches "just tap the first one" — so we shuffle once per mount.
+function shuffleChoices<T>(arr: T[]): T[] {
+  const out = arr.slice();
+  for (let i = out.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [out[i], out[j]] = [out[j], out[i]];
+  }
+  return out;
+}
 
 export default function QuickCheck({
   mode,
@@ -113,7 +144,7 @@ export default function QuickCheck({
 
   const handlePick = (i: number) => {
     if (solved) return;
-    if (choices[i].isCorrect) {
+    if (shuffledChoices[i].isCorrect) {
       onCorrectFire();
     } else {
       audio.wrong();
@@ -135,6 +166,9 @@ export default function QuickCheck({
       })),
     []
   );
+
+  // Shuffle once per mount so the correct answer isn't predictably first.
+  const shuffledChoices = useMemo(() => shuffleChoices(choices), [choices]);
 
   // render the prompt with the blank emphasised for `finish`
   const promptNode =
@@ -264,11 +298,10 @@ export default function QuickCheck({
         >
           <div
             style={{
-              fontSize: 46,
               filter: "drop-shadow(0 6px 14px rgba(192,132,252,0.5))",
             }}
           >
-            🦝
+            <PixIcon emoji="🦝" size={54} />
           </div>
           <div
             style={{
@@ -286,6 +319,66 @@ export default function QuickCheck({
             }}
           >
             “{raccoonLine}”
+          </div>
+        </motion.div>
+      )}
+
+      {/* Coach herald (finish / speed / recall) — a hero poses the challenge,
+          mirroring the Raccoon in lie mode so every prove-it beat is
+          character-led instead of a prompt floating in empty space. */}
+      {mode !== "lie" && (
+        <motion.div
+          initial={reduce ? false : { scale: 0.9, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ type: "spring", stiffness: 300, damping: 22, delay: 0.1 }}
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 14,
+            justifyContent: "center",
+            margin: "22px 0 6px",
+            position: "relative",
+            zIndex: 2,
+          }}
+        >
+          <div
+            style={{
+              width: 64,
+              height: 64,
+              borderRadius: "50%",
+              flexShrink: 0,
+              overflow: "hidden",
+              background: "#0c1230",
+              boxShadow:
+                "0 0 0 3px rgba(125,240,255,0.85), 0 0 0 5px rgba(124,92,255,0.45), 0 0 22px rgba(0,229,255,0.45)",
+            }}
+          >
+            <img
+              src={HEAD_SRC[MODE_HERALD[mode].speaker]}
+              alt=""
+              style={{
+                width: "100%",
+                height: "100%",
+                objectFit: "cover",
+                objectPosition: "center 22%",
+              }}
+            />
+          </div>
+          <div
+            style={{
+              position: "relative",
+              maxWidth: 420,
+              padding: "12px 18px",
+              borderRadius: 16,
+              background: "rgba(0,229,255,0.10)",
+              border: "1px solid rgba(125,240,255,0.45)",
+              color: "#dff6ff",
+              fontWeight: 700,
+              fontSize: 17,
+              lineHeight: 1.3,
+            }}
+          >
+            {MODE_HERALD[mode].line}
           </div>
         </motion.div>
       )}
@@ -340,7 +433,7 @@ export default function QuickCheck({
           margin: "0 auto",
         }}
       >
-        {choices.map((c, i) => {
+        {shuffledChoices.map((c, i) => {
           const accent = ACCENTS[i % ACCENTS.length];
           const isWrongPick = wrongIdx === i;
           const isSolvedRight = solved && c.isCorrect;

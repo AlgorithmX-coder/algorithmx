@@ -32,12 +32,19 @@
  *   )}
  */
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useMotionIntensity } from "@/app/lib/gameEngine/useMotionIntensity";
 import { useGameAudio } from "@/app/lib/gameEngine/useGameAudio";
 import GameButton from "@/app/components/lesson/GameButton";
+import InfoNarration from "@/app/components/lesson/InfoNarration";
+import PixIcon from "@/app/components/lesson/PixIcon";
 
 /* ─────────────── Intro beat ─────────────── */
+
+const HEAD_SRC: Record<"adam" | "layla", string> = {
+  adam: "/game/characters/adam-head.png",
+  layla: "/game/characters/layla-head.png",
+};
 
 export interface ExerciseIntroBeatProps {
   title: string;
@@ -47,6 +54,18 @@ export interface ExerciseIntroBeatProps {
   onDismiss: () => void;
   /** Auto-dismiss after this many ms. 0 = manual only. Default 0. */
   autoMs?: number;
+  /**
+   * Optional spoken narration that explains the task. When present, the
+   * intro becomes the RICH, character-led, PACED variant: a portrait + the
+   * narration read aloud + the start button held back until the child has
+   * had time to hear it (we never want kids clicking straight past the
+   * instructions). Falls back to the simple title/subtitle card otherwise.
+   */
+  narration?: { speaker?: "adam" | "layla"; lines: string[] };
+  /** Which character fronts the intro (defaults to the narration speaker). */
+  character?: "adam" | "layla";
+  /** Warm welcoming eyebrow shown above the title (e.g. "Welcome, Cyber Hero!"). */
+  welcome?: string;
 }
 
 export default function ExerciseIntroBeat({
@@ -54,18 +73,54 @@ export default function ExerciseIntroBeat({
   subtitle,
   icon,
   onDismiss,
+  welcome = "Welcome, Cyber Hero!",
   autoMs = 0,
+  narration,
+  character,
 }: ExerciseIntroBeatProps) {
   const intensity = useMotionIntensity();
   const audio = useGameAudio();
+  const paced = !!narration && narration.lines.length > 0;
+  const speaker = character ?? narration?.speaker ?? "adam";
+  const accent = speaker === "adam" ? "#00e5ff" : "#ff5fb3";
+  // Hold the start button back until the child has had time to hear the
+  // narration. Non-paced intros are ready immediately.
+  // Seconds to hold the start button while the narration plays — shown as a
+  // visible countdown so the child clearly knows WHEN they can move on
+  // (≈ the spoken length; Sarah runs slow at speed 0.85).
+  const gateSecs = paced
+    ? Math.min(Math.round((narration?.lines.length ?? 1) * 2.4 + 1), 11)
+    : 0;
+  const [secsLeft, setSecsLeft] = useState(gateSecs);
+  const canStart = !paced || secsLeft <= 0;
 
   useEffect(() => {
     audio.transition();
-    if (autoMs > 0) {
-      const id = window.setTimeout(onDismiss, autoMs);
-      return () => window.clearTimeout(id);
-    }
-  }, [audio, autoMs, onDismiss]);
+  }, [audio]);
+
+  // Paced countdown: ONE stable interval (deps [paced] only) so frequent
+  // re-renders from the game underneath (e.g. Memory Match's timer) can't keep
+  // resetting a per-tick timeout and freeze the counter. Clears itself at 0.
+  useEffect(() => {
+    if (!paced) return;
+    const id = window.setInterval(() => {
+      setSecsLeft((s) => {
+        if (s <= 1) {
+          window.clearInterval(id);
+          return 0;
+        }
+        return s - 1;
+      });
+    }, 1000);
+    return () => window.clearInterval(id);
+  }, [paced]);
+
+  // Non-paced auto-dismiss (legacy autoMs callers).
+  useEffect(() => {
+    if (paced || autoMs <= 0) return;
+    const id = window.setTimeout(onDismiss, autoMs);
+    return () => window.clearTimeout(id);
+  }, [paced, autoMs, onDismiss]);
 
   return (
     <div
@@ -80,33 +135,87 @@ export default function ExerciseIntroBeat({
         alignItems: "center",
         justifyContent: "center",
         padding: 20,
-        background: "rgba(8, 10, 22, 0.85)",
+        background: "rgba(8, 10, 22, 0.88)",
         backdropFilter: "blur(10px)",
         WebkitBackdropFilter: "blur(10px)",
         animation: intensity === 0 ? undefined : "exIntroFade 240ms ease-out",
+        fontFamily:
+          "ui-rounded, 'Fredoka', 'Quicksand', system-ui, -apple-system, sans-serif",
       }}
     >
       <div
         style={{
-          maxWidth: 420,
+          width: "100%",
+          maxWidth: paced ? 470 : 420,
           textAlign: "center",
           color: "#fff7e6",
-          fontFamily:
-            "ui-rounded, 'Fredoka', 'Quicksand', system-ui, -apple-system, sans-serif",
+          background: paced
+            ? "linear-gradient(180deg, rgba(18,24,58,0.92) 0%, rgba(10,14,36,0.94) 100%)"
+            : "transparent",
+          border: paced ? `1px solid ${accent}55` : "none",
+          borderRadius: paced ? 22 : 0,
+          padding: paced ? "26px 22px 24px" : 0,
+          boxShadow: paced
+            ? "0 24px 60px -28px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.08)"
+            : "none",
         }}
       >
-        {icon && (
+        {paced ? (
           <div
             style={{
-              fontSize: 56,
-              marginBottom: 6,
+              width: 86,
+              height: 86,
+              borderRadius: "50%",
+              margin: "0 auto 12px",
+              overflow: "hidden",
+              border: `3px solid ${accent}`,
+              boxShadow: `0 0 22px ${accent}88`,
+              background: "#0f1530",
               animation:
                 intensity === 0
                   ? undefined
                   : "exIntroIconPop 600ms cubic-bezier(0.34, 1.56, 0.64, 1)",
             }}
           >
-            {icon}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={HEAD_SRC[speaker]}
+              alt={speaker === "adam" ? "Adam" : "Layla"}
+              style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 22%" }}
+            />
+          </div>
+        ) : (
+          icon && (
+            <div
+              style={{
+                fontSize: 56,
+                marginBottom: 6,
+                animation:
+                  intensity === 0
+                    ? undefined
+                    : "exIntroIconPop 600ms cubic-bezier(0.34, 1.56, 0.64, 1)",
+              }}
+            >
+              <PixIcon emoji={icon} size={64} />
+            </div>
+          )
+        )}
+        {welcome && (
+          <div
+            style={{
+              display: "inline-block",
+              margin: "0 0 10px",
+              padding: "5px 16px",
+              borderRadius: 999,
+              background: `${accent}1a`,
+              border: `1px solid ${accent}66`,
+              color: accent,
+              fontSize: 13,
+              fontWeight: 800,
+              letterSpacing: "0.03em",
+            }}
+          >
+            ✦ {welcome} ✦
           </div>
         )}
         <h2
@@ -123,25 +232,46 @@ export default function ExerciseIntroBeat({
         >
           {title}
         </h2>
-        {subtitle && (
-          <p
+
+        {paced ? (
+          <div style={{ margin: "10px 0 16px", textAlign: "left" }}>
+            <InfoNarration lines={narration!.lines} speaker={speaker} />
+          </div>
+        ) : (
+          subtitle && (
+            <p
+              style={{
+                margin: "0 0 18px",
+                color: "#cbd5e1",
+                fontSize: 15,
+                lineHeight: 1.4,
+              }}
+            >
+              {subtitle}
+            </p>
+          )
+        )}
+
+        {canStart ? (
+          <GameButton variant="primary" size="lg" onClick={onDismiss}>
+            {paced ? "I'm ready →" : "Let's go →"}
+          </GameButton>
+        ) : (
+          <div
             style={{
-              margin: "0 0 18px",
-              color: "#cbd5e1",
-              fontSize: 15,
-              lineHeight: 1.4,
+              padding: "13px 0 4px",
+              color: accent,
+              fontSize: 13,
+              fontWeight: 800,
+              letterSpacing: "0.06em",
+              textTransform: "uppercase",
+              opacity: 0.9,
+              animation: intensity === 0 ? undefined : "exIntroListen 1.6s ease-in-out infinite",
             }}
           >
-            {subtitle}
-          </p>
+            🔊 Listen first… {secsLeft}
+          </div>
         )}
-        <GameButton
-          variant="primary"
-          size="lg"
-          onClick={onDismiss}
-        >
-          Let&apos;s go →
-        </GameButton>
       </div>
       <style>{`
         @keyframes exIntroFade {
@@ -152,6 +282,10 @@ export default function ExerciseIntroBeat({
           0%   { opacity: 0; transform: scale(0.4); }
           60%  { opacity: 1; transform: scale(1.18); }
           100% { opacity: 1; transform: scale(1); }
+        }
+        @keyframes exIntroListen {
+          0%, 100% { opacity: 0.5; }
+          50% { opacity: 1; }
         }
       `}</style>
     </div>
@@ -170,6 +304,8 @@ export interface ExerciseCompleteBeatProps {
   onContinue: () => void;
   /** Retry (reset exercise). Optional. */
   onRetry?: () => void;
+  /** Warm encouraging line under the title (defaults to a generic one). */
+  encouragement?: string;
 }
 
 export function ExerciseCompleteBeat({
@@ -178,6 +314,7 @@ export function ExerciseCompleteBeat({
   statLines = [],
   onContinue,
   onRetry,
+  encouragement = "You're getting stronger, Cyber Hero!",
 }: ExerciseCompleteBeatProps) {
   const intensity = useMotionIntensity();
   const audio = useGameAudio();
@@ -246,6 +383,11 @@ export function ExerciseCompleteBeat({
         >
           {title}
         </h2>
+        {encouragement && (
+          <p style={{ margin: "0 0 14px", color: "#9fe9ff", fontSize: 15, fontWeight: 700, lineHeight: 1.4 }}>
+            {encouragement}
+          </p>
+        )}
         {statLines.length > 0 && (
           <ul
             style={{

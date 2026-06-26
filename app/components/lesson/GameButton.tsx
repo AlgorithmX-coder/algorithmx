@@ -23,6 +23,7 @@ import type { ButtonHTMLAttributes, ReactNode } from "react";
 import { useCallback } from "react";
 import { playSound } from "@/app/lib/sounds";
 import { useComfortMode } from "@/app/lib/comfortMode";
+import PixIcon from "@/app/components/lesson/PixIcon";
 
 export type GameButtonVariant =
   | "primary"   // orange hero CTA (Next/Continue/Accept)
@@ -173,7 +174,11 @@ export default function GameButton({
       }}
       {...rest}
     >
-      {icon && <span aria-hidden style={{ fontSize: "1.1em" }}>{icon}</span>}
+      {icon && (
+        <span aria-hidden style={{ display: "inline-flex", alignItems: "center" }}>
+          <PixIcon emoji={icon} size={20} />
+        </span>
+      )}
       <span>{children}</span>
     </button>
   );

@@ -54,6 +54,8 @@ import ExerciseIntroBeat, {
 import GameButton from "@/app/components/lesson/GameButton";
 import WrongAnswerPanel from "@/app/components/lesson/WrongAnswerPanel";
 import HintBubble from "@/app/components/lesson/HintBubble";
+import CoachCaption from "@/app/components/lesson/CoachCaption";
+import PixIcon from "@/app/components/lesson/PixIcon";
 
 /* ─────────────── Types from week-content ─────────────── */
 
@@ -82,6 +84,9 @@ export interface PasswordHospitalProps {
   reasons: HospitalReason[];
   patients: HospitalPatient[];
   hints?: HospitalHints;
+  introNarration?: { speaker?: "adam" | "layla"; lines: string[] };
+  /** Teach-once coach line played on Patient #1's diagnosis, then dismissed. */
+  coachLines?: { speaker?: "adam" | "layla"; lines: string[] };
   onComplete: (score: number) => void;
   onCorrect?: () => void;
   onWrong?: () => void;
@@ -296,6 +301,8 @@ export default function PasswordHospital({
   reasons,
   patients,
   hints,
+  introNarration,
+  coachLines,
   onComplete,
   onCorrect,
   onWrong,
@@ -488,6 +495,27 @@ export default function PasswordHospital({
     intensity,
   ]);
 
+  // Escape hatch: if a child really can't get this patient to full health,
+  // let them move on (never hard-blocked). Surfaced only after they've
+  // genuinely struggled (3+ unhelpful repairs). No "HEALED!" celebration
+  // since it wasn't fully fixed, but recorded as engaged.
+  const skipPatient = useCallback(() => {
+    if (!patient || phase !== "repair") return;
+    onAnswered?.({
+      questionKey: `hospital-${patient.id}-skipped`,
+      selectedIndex: 0,
+      correctIndex: 0,
+      wasCorrect: false,
+    });
+    const nextIdx = patientIdx + 1;
+    if (nextIdx >= patients.length) {
+      setPhase("finished");
+    } else {
+      setPatientIdx(nextIdx);
+      setPhase("diagnosis");
+    }
+  }, [patient, phase, patientIdx, patients.length, onAnswered]);
+
   /* ─── Hint tier display ─── */
 
   const diagnosisHintTier =
@@ -596,6 +624,7 @@ export default function PasswordHospital({
           reasons={reasons}
           onPick={handleDiagnosis}
           disabled={!!feedback}
+          reshuffleKey={patientIdx}
         />
       )}
       {phase === "repair" && patient && (
@@ -603,6 +632,8 @@ export default function PasswordHospital({
           onApply={handleRepair}
           onDischarge={discharge}
           canDischarge={isHealed}
+          onSkip={skipPatient}
+          showSkip={unhelpfulRepairsOnCurrent >= 3 && !isHealed}
           intensity={intensity}
         />
       )}
@@ -613,8 +644,15 @@ export default function PasswordHospital({
           title="Password Hospital"
           subtitle="Diagnose each weak password, then repair it back to full strength."
           icon="🏥"
+          narration={introNarration}
+          character={introNarration?.speaker ?? "adam"}
           onDismiss={() => setPhase("diagnosis")}
         />
+      )}
+
+      {/* Teach-once: walk them through Patient #1's first step, then go quiet */}
+      {coachLines && phase === "diagnosis" && patientIdx === 0 && (
+        <CoachCaption lines={coachLines.lines} speaker={coachLines.speaker} />
       )}
 
       {/* Wrong-diagnosis pause */}
@@ -692,7 +730,7 @@ function PatientCard({
             letterSpacing: "0.06em",
           }}
         >
-          📋 {patient.chartNote}
+          <PixIcon emoji="📋" size={14} style={{ marginRight: 5 }} /> {patient.chartNote}
         </div>
       )}
 
@@ -851,11 +889,25 @@ function DiagnosisRow({
   reasons,
   onPick,
   disabled,
+  reshuffleKey,
 }: {
   reasons: HospitalReason[];
   onPick: (reasonId: string, index: number) => void;
   disabled: boolean;
+  reshuffleKey: number;
 }) {
+  // Shuffle the button ORDER (re-rolled per patient via reshuffleKey) so the
+  // correct diagnosis isn't always the same button. Each reason keeps its
+  // canonical index, so correctness + analytics are unaffected.
+  const display = useMemo(() => {
+    const arr = reasons.map((r, i) => ({ r, i }));
+    for (let k = arr.length - 1; k > 0; k--) {
+      const j = Math.floor(Math.random() * (k + 1));
+      [arr[k], arr[j]] = [arr[j], arr[k]];
+    }
+    return arr;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [reasons, reshuffleKey]);
   return (
     <div>
       <div
@@ -877,7 +929,7 @@ function DiagnosisRow({
           gap: 12,
         }}
       >
-        {reasons.map((r, i) => (
+        {display.map(({ r, i }) => (
           <GameButton
             key={r.id}
             variant="quiz"
@@ -898,11 +950,15 @@ function RepairToolbox({
   onApply,
   onDischarge,
   canDischarge,
+  onSkip,
+  showSkip,
   intensity,
 }: {
   onApply: (id: RepairActionId) => void;
   onDischarge: () => void;
   canDischarge: boolean;
+  onSkip: () => void;
+  showSkip: boolean;
   intensity: number;
 }) {
   return (
@@ -965,6 +1021,25 @@ function RepairToolbox({
           {canDischarge ? "Discharge patient →" : "Keep repairing"}
         </GameButton>
       </div>
+      {showSkip && (
+        <div style={{ display: "flex", justifyContent: "center", marginTop: 12 }}>
+          <button
+            type="button"
+            onClick={onSkip}
+            style={{
+              background: "transparent",
+              border: "none",
+              color: "#94a3b8",
+              fontSize: 13,
+              cursor: "pointer",
+              textDecoration: "underline",
+              fontFamily: "inherit",
+            }}
+          >
+            This one&apos;s tricky — skip to the next patient →
+          </button>
+        </div>
+      )}
     </div>
   );
 }

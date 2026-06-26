@@ -29,6 +29,7 @@ import {
   useMotionIntensity,
 } from "@/app/lib/gameEngine";
 import GameButton from "@/app/components/lesson/GameButton";
+import PixIcon from "@/app/components/lesson/PixIcon";
 
 export interface BossVictoryStats {
   combo: number;
@@ -245,7 +246,7 @@ export default function BossVictoryScene({
               transform: "rotate(8deg)",
             }}
           >
-            🦝
+            <PixIcon emoji="🦝" size={130} />
           </span>
           {/* Big diagonal NO stamp */}
           <span

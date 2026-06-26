@@ -33,6 +33,8 @@ import ExerciseFrame from "@/app/components/lesson/ExerciseFrame";
 import WrongAnswerPanel from "@/app/components/lesson/WrongAnswerPanel";
 import HintBubble from "@/app/components/lesson/HintBubble";
 import GameButton from "@/app/components/lesson/GameButton";
+import ExerciseIntroBeat from "@/app/components/lesson/ExerciseBeats";
+import PixIcon from "@/app/components/lesson/PixIcon";
 
 export interface WeakReason {
   id: string;
@@ -56,6 +58,7 @@ export interface WeakSorterProps {
   reasons: WeakReason[];
   items: WeakItem[];
   hints?: WeakSorterHints;
+  introNarration?: { speaker?: "adam" | "layla"; lines: string[] };
   onComplete: (score: number) => void;
   onCorrect?: () => void;
   onWrong?: () => void;
@@ -75,6 +78,7 @@ export default function WeakSorter({
   reasons,
   items,
   hints,
+  introNarration,
   onComplete,
   onCorrect,
   onWrong,
@@ -87,6 +91,7 @@ export default function WeakSorter({
   const intensity = useMotionIntensity();
   const reduce = intensity < 1;
 
+  const [showIntro, setShowIntro] = useState(true);
   const [idx, setIdx] = useState<number>(0);
   const [correctCount, setCorrectCount] = useState<number>(0);
   const [wrongTotal, setWrongTotal] = useState<number>(0);
@@ -208,7 +213,7 @@ export default function WeakSorter({
         background="linear-gradient(180deg, #0f1530 0%, #1a2147 55%, #252d5e 100%)"
         style={{ color: "#fff7e6", textAlign: "center" }}
       >
-        <div style={{ fontSize: 64, marginBottom: 8 }}>🕵️</div>
+        <div style={{ fontSize: 64, marginBottom: 8 }}><PixIcon emoji="🕵️" size={70} /></div>
         <h2
           style={{
             margin: "0 0 6px",
@@ -226,7 +231,7 @@ export default function WeakSorter({
           reasons.
         </p>
         <p style={{ color: "#94a3b8", margin: "0 0 18px" }}>
-          {accuracy}% · {"⭐".repeat(stars)}
+          {accuracy}% · {Array.from({ length: stars }, (_, i) => (<PixIcon key={i} emoji="⭐" size={16} />))}
         </p>
         <GameButton
           variant="primary"
@@ -247,6 +252,16 @@ export default function WeakSorter({
       background="linear-gradient(180deg, #0f1530 0%, #1a2147 55%, #252d5e 100%)"
       style={{ color: "#fff7e6" }}
     >
+      {showIntro && (
+        <ExerciseIntroBeat
+          title="Weakness Detective"
+          subtitle="For each password, work out WHY it's weak."
+          icon="🕵️"
+          narration={introNarration}
+          character={introNarration?.speaker ?? "adam"}
+          onDismiss={() => setShowIntro(false)}
+        />
+      )}
       {/* Header */}
       <div
         style={{

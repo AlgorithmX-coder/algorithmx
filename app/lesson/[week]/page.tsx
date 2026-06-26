@@ -29,5 +29,7 @@ export default async function WeekRoutePage() {
     if (!ok) redirect("/hub");
   }
 
-  return <DynamicLesson />;
+  // E2E_TESTS (set only by the Playwright webServer) re-enables the
+  // ?screen QA deep-link so the click-through test can visit every screen.
+  return <DynamicLesson qaEnabled={process.env.E2E_TESTS === "1"} />;
 }
