@@ -247,12 +247,6 @@ model Progress {
   week            Int
   screen          Int
   stars           Int
-  /// Best total XP the child earned on this week, max-merged on each
-  /// write so a weaker replay can never lower it. Cumulative XP / rank
-  /// is the sum of this across the child's weeks. Badges + stickers
-  /// stay derived from `completedAt`; XP is a quantity, so it is the
-  /// one reward that must be stored rather than derived.
-  xp              Int       @default(0)
   completedAt     DateTime?
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt

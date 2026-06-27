@@ -214,11 +214,9 @@ export async function saveBossResult(input: BossResultInput): Promise<void> {
 }
 
 /**
- * Mark the week complete. Sets `completedAt = now`, raises the stored
- * `screen` to `finalScreenIndex`, and persists the week's total XP
- * (max-merged so a weaker replay can't lower it). Cumulative XP / rank
- * is the sum of this across the child's weeks; the client progression
- * blob is hydrated from it on the next lesson load.
+ * Mark the week complete. Sets `completedAt = now` and raises the
+ * stored `screen` to `finalScreenIndex`. XP is no longer persisted
+ * server-side; client analytics still reports it.
  */
 export async function completeAttempt(
   input: CompleteAttemptInput,
@@ -237,66 +235,9 @@ export async function completeAttempt(
     week,
     screen: finalScreenIndex,
     stars: 0, // do not lower; merged via max
-    xp: clampInt(input.totalXp, 0, 1_000_000, 0),
     completed: true,
     skipOwnershipCheck: true,
   });
-}
-
-/* ─────────────── progression snapshot (server → client hydrate) ─────────────── */
-
-export interface ProgressionWeekSnapshot {
-  week: number;
-  /** Best total XP stored for this week. */
-  xp: number;
-  stars: number;
-  completed: boolean;
-}
-
-export interface ProgressionSnapshot {
-  /** Sum of per-week xp — the durable cumulative total. */
-  totalXp: number;
-  weeks: ProgressionWeekSnapshot[];
-  /** `week-N` badge ids for every completed week (matches WEEK_BADGES). */
-  badgeIds: string[];
-}
-
-/**
- * Durable reward state for the signed-in family's active child, read
- * from Progress. The client merges this into its localStorage
- * progression blob on lesson load (max-merge, never lowering local),
- * so XP / rank / badges survive a cleared browser or a new device.
- *
- * Returns an empty snapshot (never throws) when there's no session or
- * no child yet, so the client hydrate path stays a no-op for guests.
- */
-export async function getProgressionSnapshot(): Promise<ProgressionSnapshot> {
-  const empty: ProgressionSnapshot = { totalXp: 0, weeks: [], badgeIds: [] };
-
-  const session = await auth();
-  const userId = session?.user?.id;
-  if (!userId) return empty;
-
-  const childProfileId = await resolveActiveChildProfileId(userId);
-  if (!childProfileId) return empty;
-
-  const rows = await prisma.progress.findMany({
-    where: { childProfileId, product: { slug: PRODUCT_SLUG } },
-    select: { week: true, xp: true, stars: true, completedAt: true },
-  });
-
-  const weeks: ProgressionWeekSnapshot[] = rows.map((r) => ({
-    week: r.week,
-    xp: r.xp,
-    stars: r.stars,
-    completed: r.completedAt !== null,
-  }));
-
-  return {
-    totalXp: weeks.reduce((sum, w) => sum + w.xp, 0),
-    weeks,
-    badgeIds: weeks.filter((w) => w.completed).map((w) => `week-${w.week}`),
-  };
 }
 
 /**
