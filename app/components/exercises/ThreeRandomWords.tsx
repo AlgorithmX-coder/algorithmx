@@ -538,6 +538,8 @@ export default function ThreeRandomWords({
       {phase === "intro" && (
         <ExerciseIntroBeat
           title="Three Random Words"
+          logo="/cyberheroes/logos/three-words.png"
+          welcome="Your second challenge!"
           subtitle="Tap 3 words from the wall. Long random combos are way harder to crack than short clever ones."
           icon="✦"
           narration={introNarration}

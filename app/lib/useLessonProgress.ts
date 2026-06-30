@@ -128,7 +128,9 @@ export function useLessonProgress(
         // Only surface the resume banner if there's actually progress
         // to resume to. A brand-new attempt (lastScreenIndex === 0)
         // should not show the banner.
-        setPendingResume(r.isResume && r.lastScreenIndex > 0);
+        // Don't nag "resume" on an already-completed week - a replay should
+        // just start fresh, not offer to jump to where they finished.
+        setPendingResume(r.isResume && r.lastScreenIndex > 0 && !r.completed);
         lessonStartedAt.current = performance.now();
         analytics.lessonStarted({
           weekNumber: r.weekNumber,

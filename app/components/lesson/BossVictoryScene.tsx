@@ -239,14 +239,18 @@ export default function BossVictoryScene({
           <span
             aria-hidden
             style={{
-              fontSize: 130,
               filter:
                 "drop-shadow(0 8px 16px rgba(0,0,0,0.6)) grayscale(0.3) brightness(0.85)",
               opacity: 0.85,
               transform: "rotate(8deg)",
+              display: "inline-block",
             }}
           >
-            <PixIcon emoji="🦝" size={130} />
+            <img
+              src="/game/characters/raccoon-defeated.png"
+              alt=""
+              style={{ width: 150, height: 150, objectFit: "contain" }}
+            />
           </span>
           {/* Big diagonal NO stamp */}
           <span

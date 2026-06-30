@@ -62,6 +62,8 @@ import PixIcon from "@/app/components/lesson/PixIcon";
 export interface HospitalReason {
   id: string;
   label: string;
+  /** Optional short example shown under the label, e.g. "like 'abc'". */
+  example?: string;
 }
 
 export interface HospitalPatient {
@@ -642,6 +644,8 @@ export default function PasswordHospital({
       {phase === "intro" && (
         <ExerciseIntroBeat
           title="Password Hospital"
+          logo="/cyberheroes/logos/password-hospital.png"
+          welcome="Your third challenge!"
           subtitle="Diagnose each weak password, then repair it back to full strength."
           icon="🏥"
           narration={introNarration}
@@ -938,7 +942,14 @@ function DiagnosisRow({
             onClick={() => onPick(r.id, i)}
             style={{ minHeight: 64, justifyContent: "flex-start", textAlign: "left" }}
           >
-            {r.label}
+            <span style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", lineHeight: 1.25 }}>
+              <span>{r.label}</span>
+              {r.example && (
+                <span style={{ fontSize: 12, fontWeight: 400, opacity: 0.6 }}>
+                  {r.example}
+                </span>
+              )}
+            </span>
           </GameButton>
         ))}
       </div>

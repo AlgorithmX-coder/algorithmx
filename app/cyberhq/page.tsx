@@ -20,7 +20,12 @@ import Link from "next/link";
 // stickers.actions.ts.
 import { STICKER_CATALOGUE } from "@/app/lib/stickers-data";
 import { getEarnedStickers } from "@/app/lib/stickers.actions";
+import { BADGE_CATALOGUE } from "@/app/lib/badges-data";
+import { getEarnedBadges } from "@/app/lib/badges.actions";
+import { getProgressionSnapshot } from "@/app/lib/lessonProgress.actions";
+import { getRank } from "@/app/lib/progression";
 import PlaySignatureOnMount from "@/app/components/lesson/PlaySignatureOnMount";
+import PixIcon from "@/app/components/lesson/PixIcon";
 
 const C = {
   pageBg: "#080a16",
@@ -42,11 +47,25 @@ export default async function CyberHQPage() {
   const session = await auth();
   if (!session?.user) redirect("/login");
 
-  const earned = await getEarnedStickers();
+  const [earned, earnedBadges, snapshot] = await Promise.all([
+    getEarnedStickers(),
+    getEarnedBadges(),
+    getProgressionSnapshot(),
+  ]);
   const earnedIds = new Set(earned.map((s) => s.id));
   const earnedCount = earned.length;
   const totalCount = STICKER_CATALOGUE.length;
   const earnedPct = totalCount > 0 ? Math.round((earnedCount / totalCount) * 100) : 0;
+
+  // Badges — derived from completed weeks, same as stickers.
+  const earnedBadgeIds = new Set(earnedBadges.map((b) => b.id));
+  const badgeEarnedCount = earnedBadges.length;
+  const badgeTotalCount = BADGE_CATALOGUE.length;
+
+  // Durable XP / rank, summed server-side across the child's weeks.
+  const totalXp = snapshot.totalXp;
+  const rank = getRank(totalXp);
+  const collectionsEmpty = earnedCount === 0 && badgeEarnedCount === 0;
 
   return (
     <main
@@ -82,7 +101,16 @@ export default async function CyberHQPage() {
         ))}
       </div>
 
-      <div style={{ position: "relative", maxWidth: 1000, margin: "0 auto" }}>
+      {/* Rich cosmic backdrop — nebulae, a constellation, a planet + the
+          glowing horizon arc, matching the dashboard mockup. */}
+      <div aria-hidden className="hq-cosmos">
+        <span className="hq-neb hq-neb-a" />
+        <span className="hq-neb hq-neb-b" />
+        <span className="hq-grid" />
+        <span className="hq-scan" />
+      </div>
+
+      <div style={{ position: "relative", maxWidth: 1000, margin: "0 auto", zIndex: 1 }}>
         {/* Back link */}
         <Link
           href="/dashboard"
@@ -102,39 +130,40 @@ export default async function CyberHQPage() {
           ← Back to dashboard
         </Link>
 
-        {/* Header */}
-        <div style={{ marginBottom: 28 }}>
-          <span
+        {/* Header — the lab scene EMBEDDED into the page background: no card
+            frame, edges feathered with a radial mask so it dissolves into the
+            techy backdrop instead of sitting in a box. */}
+        <div style={{ position: "relative", marginBottom: 22 }}>
+          <div
             style={{
-              display: "inline-block",
-              fontSize: 11,
-              letterSpacing: "0.22em",
-              color: C.gold,
-              textTransform: "uppercase",
-              fontWeight: 800,
-              marginBottom: 8,
-              textShadow: `0 0 12px ${C.gold}55`,
+              position: "relative",
+              WebkitMaskImage: "radial-gradient(ellipse 94% 96% at 50% 42%, #000 50%, transparent 100%)",
+              maskImage: "radial-gradient(ellipse 94% 96% at 50% 42%, #000 50%, transparent 100%)",
             }}
           >
-            ✦ Cyber Hero Headquarters
-          </span>
-          <h1
-            style={{
-              fontSize: 34,
-              fontWeight: 900,
-              margin: "0 0 8px",
-              background: `linear-gradient(135deg, ${C.cyan}, ${C.violet}, ${C.gold})`,
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-              backgroundClip: "text",
-              lineHeight: 1.1,
-            }}
-          >
-            Your Cyber HQ
-          </h1>
-          <p style={{ color: C.textSoft, fontSize: 15, margin: 0 }}>
-            Stickers you&apos;ve earned by beating the Hacker Raccoon.
-          </p>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/cyberhq/lab-v3.png"
+              alt="Adam and Layla in the Cyber HQ lab"
+              width={1500}
+              height={838}
+              style={{ width: "100%", height: "clamp(250px, 40vw, 420px)", objectFit: "cover", objectPosition: "center 40%", display: "block" }}
+            />
+            {/* Darken the lower band for the title (feathers with the mask). */}
+            <div aria-hidden style={{ position: "absolute", inset: 0, background: "linear-gradient(180deg, rgba(8,10,22,0) 44%, rgba(8,10,22,0.38) 74%, rgba(8,10,22,0.85) 100%)" }} />
+          </div>
+          {/* Title — crisp, over the feathered lower area. */}
+          <div style={{ position: "absolute", left: "clamp(18px, 4vw, 40px)", right: 24, bottom: "clamp(2px, 1.5vw, 14px)" }}>
+            <span style={{ display: "inline-block", fontSize: 11, letterSpacing: "0.22em", color: C.gold, textTransform: "uppercase", fontWeight: 800, marginBottom: 6, textShadow: `0 0 14px ${C.gold}, 0 1px 6px rgba(0,0,0,0.9)` }}>
+              ✦ Cyber Hero Headquarters
+            </span>
+            <h1 style={{ fontSize: "clamp(26px, 5vw, 40px)", fontWeight: 900, margin: "0 0 4px", background: `linear-gradient(135deg, ${C.cyan}, ${C.violet}, ${C.gold})`, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text", lineHeight: 1.1, filter: "drop-shadow(0 2px 12px rgba(0,0,0,0.85))" }}>
+              Your Cyber HQ
+            </h1>
+            <p style={{ color: C.text, fontSize: 14, margin: 0, maxWidth: 460, textShadow: "0 1px 10px rgba(0,0,0,0.95)" }}>
+              Badges, stickers and XP you and your heroes have earned by beating the Hacker Raccoon.
+            </p>
+          </div>
         </div>
 
         {/* Progress summary */}
@@ -152,6 +181,51 @@ export default async function CyberHQPage() {
             flexWrap: "wrap",
           }}
         >
+          {/* Rank + durable total XP (summed server-side across weeks). */}
+          <div>
+            <div
+              style={{
+                fontSize: 10,
+                letterSpacing: "0.18em",
+                color: C.textMuted,
+                textTransform: "uppercase",
+                fontWeight: 800,
+                marginBottom: 4,
+              }}
+            >
+              Rank
+            </div>
+            <div style={{ display: "flex", alignItems: "center", gap: 9 }}>
+              <span style={{ display: "inline-flex", lineHeight: 1 }} aria-hidden>
+                <PixIcon emoji={rank.current.icon} size={30} />
+              </span>
+              <div>
+                <div
+                  style={{
+                    fontSize: 20,
+                    fontWeight: 900,
+                    color: rank.current.colour,
+                    lineHeight: 1.1,
+                  }}
+                >
+                  {rank.current.name}
+                </div>
+                <div
+                  style={{
+                    fontFamily: "'JetBrains Mono', monospace",
+                    fontSize: 12,
+                    color: C.textSoft,
+                  }}
+                >
+                  {totalXp.toLocaleString()} XP
+                  {rank.next
+                    ? ` · ${rank.xpNeededForNext.toLocaleString()} to ${rank.next.name}`
+                    : " · max rank"}
+                </div>
+              </div>
+            </div>
+          </div>
+
           <div>
             <div
               style={{
@@ -221,6 +295,93 @@ export default async function CyberHQPage() {
           </div>
         </section>
 
+        {/* Badge case — one trophy per week (earned = completed that week). */}
+        <h2
+          style={{
+            fontSize: 18,
+            fontWeight: 800,
+            margin: "0 0 4px",
+            color: C.text,
+            letterSpacing: "0.02em",
+          }}
+        >
+          Badge case
+        </h2>
+        <p style={{ color: C.textMuted, fontSize: 12, margin: "0 0 14px" }}>
+          {badgeEarnedCount} of {badgeTotalCount} week badges earned
+        </p>
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))",
+            gap: 12,
+            marginBottom: 34,
+          }}
+        >
+          {BADGE_CATALOGUE.map((b) => {
+            const isEarned = earnedBadgeIds.has(b.id);
+            return (
+              <div
+                key={b.id}
+                className={isEarned ? "hq-sticker-earned" : undefined}
+                style={{
+                  padding: "16px 12px 14px",
+                  borderRadius: 16,
+                  background: isEarned
+                    ? "linear-gradient(180deg, rgba(255, 209, 88, 0.22), rgba(15, 21, 48, 0.85))"
+                    : "rgba(15, 21, 48, 0.55)",
+                  border: isEarned
+                    ? `2.5px solid ${C.borderEarned}`
+                    : "2px dashed rgba(148, 163, 184, 0.3)",
+                  boxShadow: isEarned
+                    ? "0 14px 36px rgba(253, 224, 71, 0.25), 0 0 0 1px rgba(255, 209, 88, 0.4) inset"
+                    : "none",
+                  textAlign: "center",
+                  opacity: isEarned ? 1 : 0.5,
+                  overflow: "hidden",
+                }}
+              >
+                <div
+                  style={{
+                    marginBottom: 6,
+                    display: "flex",
+                    justifyContent: "center",
+                    filter: isEarned
+                      ? "drop-shadow(0 0 14px rgba(253, 224, 71, 0.55))"
+                      : "grayscale(85%) opacity(0.55)",
+                  }}
+                  aria-hidden
+                >
+                  <PixIcon emoji={isEarned ? b.icon : "🔒"} size={44} />
+                </div>
+                <div
+                  style={{
+                    fontSize: 9,
+                    letterSpacing: "0.16em",
+                    color: isEarned ? C.gold : C.textMuted,
+                    textTransform: "uppercase",
+                    fontWeight: 800,
+                    marginBottom: 3,
+                  }}
+                >
+                  Week {b.week}
+                </div>
+                <div
+                  style={{
+                    fontSize: 13,
+                    fontWeight: 800,
+                    color: isEarned ? C.text : "#475569",
+                    lineHeight: 1.2,
+                    fontFamily: "'Space Grotesk', sans-serif",
+                  }}
+                >
+                  {b.name}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
         {/* Sticker wall */}
         <h2
           style={{
@@ -266,16 +427,16 @@ export default async function CyberHQPage() {
               >
                 <div
                   style={{
-                    fontSize: 56,
-                    lineHeight: 1,
                     marginBottom: 8,
+                    display: "flex",
+                    justifyContent: "center",
                     filter: isEarned
                       ? "drop-shadow(0 0 18px rgba(253, 224, 71, 0.55))"
-                      : "grayscale(80%) opacity(0.5)",
+                      : "grayscale(85%) opacity(0.55)",
                   }}
                   aria-hidden
                 >
-                  {isEarned ? s.icon : "🔒"}
+                  <PixIcon emoji={isEarned ? s.icon : "🔒"} size={60} />
                 </div>
                 <div
                   style={{
@@ -318,6 +479,12 @@ export default async function CyberHQPage() {
             inline <style> for the global selectors. Reduced-motion users
             get a hard stop on all of these. */}
         <style>{`
+          .hq-cosmos { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+          .hq-neb { position: absolute; border-radius: 50%; filter: blur(38px); }
+          .hq-neb-a { top: -14%; left: -10%; width: 54vw; height: 54vw; background: radial-gradient(circle, rgba(124,92,255,0.17), transparent 62%); }
+          .hq-neb-b { bottom: -12%; right: -10%; width: 50vw; height: 50vw; background: radial-gradient(circle, rgba(0,229,255,0.13), transparent 60%); }
+          .hq-grid { position: absolute; inset: -2px; background-image: linear-gradient(rgba(0,229,255,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(0,229,255,0.06) 1px, transparent 1px); background-size: 46px 46px; -webkit-mask-image: radial-gradient(ellipse 92% 82% at 50% 22%, #000 26%, transparent 82%); mask-image: radial-gradient(ellipse 92% 82% at 50% 22%, #000 26%, transparent 82%); }
+          .hq-scan { position: absolute; inset: 0; background: repeating-linear-gradient(0deg, rgba(0,229,255,0.022) 0, rgba(0,229,255,0.022) 1px, transparent 1px, transparent 3px); opacity: 0.55; }
           .hq-ambient-field {
             position: absolute;
             inset: 0;
@@ -370,10 +537,16 @@ export default async function CyberHQPage() {
                 0 0 0 1px rgba(255, 209, 88, 0.55) inset;
             }
           }
+          .hq-heroes { animation: hqHeroFloat 5s ease-in-out infinite; }
+          @keyframes hqHeroFloat {
+            0%, 100% { transform: translateY(0); }
+            50%      { transform: translateY(-9px); }
+          }
           @media (prefers-reduced-motion: reduce) {
             .hq-ambient-dot,
             .hq-progress-shimmer,
-            .hq-sticker-earned {
+            .hq-sticker-earned,
+            .hq-heroes {
               animation: none !important;
             }
             .hq-ambient-dot { opacity: 0; }
@@ -381,7 +554,7 @@ export default async function CyberHQPage() {
         `}</style>
 
         {/* Helpful CTA */}
-        {earnedCount === 0 && (
+        {collectionsEmpty && (
           <div
             style={{
               marginTop: 28,

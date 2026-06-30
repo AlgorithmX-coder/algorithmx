@@ -64,6 +64,10 @@ export interface ExerciseIntroBeatProps {
   narration?: { speaker?: "adam" | "layla"; lines: string[] };
   /** Which character fronts the intro (defaults to the narration speaker). */
   character?: "adam" | "layla";
+  /** Optional exercise logo path. When set, the intro shows this themed logo
+   *  INSTEAD of the speaker portrait — the narrator isn't a character, so a
+   *  logo avoids a face/voice mismatch on the intro. */
+  logo?: string;
   /** Warm welcoming eyebrow shown above the title (e.g. "Welcome, Cyber Hero!"). */
   welcome?: string;
 }
@@ -77,6 +81,7 @@ export default function ExerciseIntroBeat({
   autoMs = 0,
   narration,
   character,
+  logo,
 }: ExerciseIntroBeatProps) {
   const intensity = useMotionIntensity();
   const audio = useGameAudio();
@@ -89,7 +94,7 @@ export default function ExerciseIntroBeat({
   // visible countdown so the child clearly knows WHEN they can move on
   // (≈ the spoken length; Sarah runs slow at speed 0.85).
   const gateSecs = paced
-    ? Math.min(Math.round((narration?.lines.length ?? 1) * 2.4 + 1), 11)
+    ? Math.min(Math.round((narration?.lines.length ?? 1) * 1.1 + 1), 5)
     : 0;
   const [secsLeft, setSecsLeft] = useState(gateSecs);
   const canStart = !paced || secsLeft <= 0;
@@ -179,9 +184,13 @@ export default function ExerciseIntroBeat({
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src={HEAD_SRC[speaker]}
-              alt={speaker === "adam" ? "Adam" : "Layla"}
-              style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 22%" }}
+              src={logo ?? HEAD_SRC[speaker]}
+              alt={logo ? "" : speaker === "adam" ? "Adam" : "Layla"}
+              style={
+                logo
+                  ? { width: "100%", height: "100%", objectFit: "contain", padding: 12 }
+                  : { width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 22%" }
+              }
             />
           </div>
         ) : (

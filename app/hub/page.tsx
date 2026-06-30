@@ -45,31 +45,35 @@ const FONT_MONO = "ui-monospace, 'JetBrains Mono', Menlo, monospace";
  * still come straight from the DB. */
 const TRACK_CONFIG: Record<
   string,
-  { tagline: string; icon: CyberIconName; accent: CyberIconAccent; accentHex: string }
+  { tagline: string; icon: CyberIconName; accent: CyberIconAccent; accentHex: string; illustration?: string }
 > = {
   "cyber-heroes": {
     tagline: "Become a hero of the digital world. Learn. Defend. Lead.",
     icon: "shield",
     accent: "cyan",
     accentHex: C.cyan,
+    illustration: "/hub/track-cyber-heroes.png",
   },
   cyberexplorers: {
     tagline: "Explore. Discover. Understand the digital universe.",
     icon: "compass",
     accent: "electric",
     accentHex: C.electric,
+    illustration: "/hub/track-cyberexplorers.png",
   },
   cyberstart: {
     tagline: "Build skills. Create projects. Launch your future.",
     icon: "rocket",
     accent: "neon",
     accentHex: C.neon,
+    illustration: "/hub/track-cyberstart.png",
   },
   "cyberstart-pro": {
     tagline: "Advanced paths for future innovators and leaders.",
     icon: "graduation",
     accent: "cosmic",
     accentHex: C.cosmic,
+    illustration: "/hub/track-cyberstart-pro.png",
   },
 };
 
@@ -338,8 +342,12 @@ export default async function HubPage() {
               </span>
             </h1>
             <p style={{ margin: 0, fontSize: 17, fontWeight: 500, color: C.textSoft, fontFamily: FONT_BODY }}>
-              Choose an adventure for your family.
+              Choose your next adventure. <span aria-hidden>🚀</span>
             </p>
+            <div style={{ display: "inline-flex", alignItems: "center", gap: 9, marginTop: 16, padding: "9px 15px", borderRadius: 999, background: "rgba(125,240,255,0.06)", border: `1px solid ${C.cyan}33`, fontFamily: FONT_BODY, fontSize: 13, fontWeight: 600, color: C.textSoft, maxWidth: 370 }}>
+              <span aria-hidden style={{ color: C.amber, fontSize: 14, flexShrink: 0 }}>✦</span>
+              Every mission you complete makes you a stronger digital hero!
+            </div>
           </div>
 
           {/* Stats strip */}
@@ -412,7 +420,7 @@ export default async function HubPage() {
                 whiteSpace: "nowrap",
               }}
             >
-              Tracks
+              Your Adventure Tracks
             </h2>
             <div style={{ flex: 1, height: 1, background: `linear-gradient(90deg, ${C.cyan}55, transparent)` }} />
           </div>
@@ -423,7 +431,7 @@ export default async function HubPage() {
               const owned = ownedSlugs.has(product.slug);
               const isLive = product.status === "ACTIVE";
               const enterHref = owned ? "/dashboard" : `/purchase/${product.slug}`;
-              const enterLabel = owned ? "Enter" : "Get started";
+              const enterLabel = owned ? "Continue Adventure" : "Get started";
               return (
                 <HubTrackCard
                   key={product.id}
@@ -433,6 +441,7 @@ export default async function HubPage() {
                   iconName={cfg.icon}
                   accent={cfg.accent}
                   accentHex={cfg.accentHex}
+                  illustration={cfg.illustration}
                   ageRange={product.ageRange}
                   duration={product.duration}
                   weeksCount={product.weeksCount}
@@ -489,7 +498,8 @@ export default async function HubPage() {
                     flexShrink: 0,
                   }}
                 >
-                  <CyberIcon name="shield" size={24} accent="cyan" glow />
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src="/hub/icon-mission.png" alt="" width={40} height={40} style={{ width: 40, height: 40, objectFit: "contain", mixBlendMode: "screen" }} />
                 </div>
                 <div style={{ flex: 1, minWidth: 130 }}>
                   <div style={{ fontFamily: FONT_DISPLAY, fontSize: 16, fontWeight: 700, color: C.textBright, lineHeight: 1.2 }}>
@@ -527,7 +537,7 @@ export default async function HubPage() {
           </div>
 
           {/* Course Progress */}
-          <div className="hub-bottom-cell" style={{ flex: 1, minWidth: 200, padding: "20px 24px", borderLeft: "1px solid rgba(125,240,255,0.1)" }}>
+          <div className="hub-bottom-cell" style={{ flex: 1, minWidth: 200, padding: "20px 24px", borderLeft: "1px solid rgba(125,240,255,0.1)", position: "relative", overflow: "hidden" }}>
             <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 14 }}>
               <CyberIcon name="bolt" size={18} accent="cosmic" glow />
               <span style={{ fontFamily: FONT_DISPLAY, fontSize: 13, fontWeight: 700, letterSpacing: 1, textTransform: "uppercase", color: C.cosmicSoft }}>
@@ -542,16 +552,21 @@ export default async function HubPage() {
               <div style={{ width: `${progressPct}%`, height: "100%", borderRadius: 999, background: CYBER_GRAD.hero, boxShadow: `0 0 12px ${C.cosmic}88` }} />
             </div>
             <div style={{ marginTop: 7, fontFamily: FONT_BODY, fontSize: 12, color: C.textSoft }}>{progressPct}% complete</div>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/hub/icon-progress.png" alt="" aria-hidden width={80} height={80} style={{ position: "absolute", right: 6, bottom: 4, width: 80, height: 80, objectFit: "contain", mixBlendMode: "screen", opacity: 0.8, pointerEvents: "none" }} />
           </div>
 
           {/* Family Activity */}
-          <div className="hub-bottom-cell" style={{ flex: 1, minWidth: 200, padding: "20px 24px", borderLeft: "1px solid rgba(125,240,255,0.1)" }}>
+          <div className="hub-bottom-cell" style={{ flex: 1, minWidth: 200, padding: "20px 24px", borderLeft: "1px solid rgba(125,240,255,0.1)", position: "relative", overflow: "hidden" }}>
             <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 14 }}>
               <CyberIcon name="family" size={18} accent="lime" glow />
               <span style={{ fontFamily: FONT_DISPLAY, fontSize: 13, fontWeight: 700, letterSpacing: 1, textTransform: "uppercase", color: C.lime }}>
                 Family
               </span>
             </div>
+            {/* Adam & Layla stand in for the generic family figures. */}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/hub/family-heroes.png" alt="" aria-hidden width={116} height={104} style={{ position: "absolute", right: 4, bottom: 0, width: 116, height: "auto", objectFit: "contain", pointerEvents: "none", filter: "drop-shadow(0 6px 13px rgba(0,0,0,0.55))" }} />
             <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
               {children.length > 0 ? (
                 <div style={{ display: "flex" }}>
@@ -644,7 +659,7 @@ export default async function HubPage() {
         }
         .hub-tracks {
           display: grid;
-          grid-template-columns: repeat(4, minmax(0, 1fr));
+          grid-template-columns: minmax(0, 1.4fr) repeat(3, minmax(0, 1fr));
           gap: 20px;
           align-items: stretch;
         }

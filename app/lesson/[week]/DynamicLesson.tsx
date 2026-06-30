@@ -7,7 +7,7 @@ import dynamic from "next/dynamic";
 import { motion } from "framer-motion";
 import { playSound as playSFX, playBGM, stopBGM } from "@/app/lib/sounds";
 import { useGameAudio } from "@/app/lib/gameEngine";
-import { addXP, type RankInfo } from "@/app/lib/progression";
+import { addXP, hydrateProgressionFromServer, type RankInfo } from "@/app/lib/progression";
 import {
   correctAnswerBurst,
   badgeEarnedCelebration,
@@ -166,30 +166,32 @@ function ResumeBanner({
   concept,
   onContinue,
   onRestart,
+  onDismiss,
 }: {
   concept: string | null;
   onContinue: () => void;
   onRestart: () => void;
+  onDismiss: () => void;
 }) {
-  // Esc, or a click/tap anywhere off the banner, means "I'm carrying on" -
-  // so both resolve to Continue (resume to the next screen). This matches a
-  // child's instinct that clicking away dismisses the prompt rather than
-  // leaving it stuck on screen.
+  // Esc, or a click/tap anywhere off the banner, just DISMISSES the prompt and
+  // leaves the child where they are (the start) - the least surprising "I'll
+  // ignore this and carry on" behaviour. Resuming forward stays an explicit
+  // choice via the "Keep going" button.
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onContinue();
+      if (e.key === "Escape") onDismiss();
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [onContinue]);
+  }, [onDismiss]);
 
   return (
     <>
       {/* Transparent catcher behind the banner: a click off the banner
-          resolves to Continue without leaking to the lesson underneath. */}
+          dismisses it (child stays put) without leaking to the lesson under. */}
       <div
         aria-hidden
-        onClick={onContinue}
+        onClick={onDismiss}
         style={{ position: "fixed", inset: 0, zIndex: 69, background: "transparent" }}
       />
       <div
@@ -617,6 +619,14 @@ function DynamicLessonInner({ qaEnabled }: { qaEnabled: boolean }) {
     setMutedState(isAudioMuted());
     return subscribeAudioMute((m) => setMutedState(m));
   }, []);
+
+  // Pull durable XP / rank / stars / badges from the server into the
+  // local progression blob once on mount, so a cleared browser or a
+  // fresh device shows the child's real totals instead of a zeroed
+  // local state. Silent max-merge; never lowers local, never throws.
+  useEffect(() => {
+    void hydrateProgressionFromServer();
+  }, []);
   const handleMuteToggle = useCallback(() => {
     setMutedState((prev) => {
       const next = !prev;
@@ -730,6 +740,15 @@ function DynamicLessonInner({ qaEnabled }: { qaEnabled: boolean }) {
       });
     }
   }, [content?.screens, progress, lessonXp]);
+
+  // Off-click / Esc: just close the banner and stay where they are (screen 0).
+  // No forward jump - resuming stays an explicit "Keep going" choice.
+  const onResumeDismiss = useCallback(() => {
+    progress.acknowledgeResume();
+    progress.markScreenStart(screen);
+    screenXpBaselineRef.current = lessonXp;
+    resumedRef.current = true;
+  }, [progress, screen, lessonXp]);
 
   const onResumeRestart = useCallback(async () => {
     setScreen(0);
@@ -1548,28 +1567,170 @@ function DynamicLessonInner({ qaEnabled }: { qaEnabled: boolean }) {
           );
         }
         return (
-          <FullScene bg="linear-gradient(180deg, #1a0505 0%, #0a0a1a 100%)" glow="radial-gradient(circle, rgba(239,68,68,0.35), transparent)">
-            <motion.div initial={{ opacity: 0, scale: 0.6 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: "spring", stiffness: 220 }}>
-              <div style={{ textAlign: "center" }}>
-                <motion.h1
-                  animate={{ scale: [1, 1.05, 1] }}
-                  transition={{ duration: 2, repeat: Infinity }}
+          <FullScene
+            bg="radial-gradient(ellipse at 50% 36%, #2a0810 0%, #14060f 48%, #04050d 100%)"
+            glow="radial-gradient(circle, rgba(239,68,68,0.42), transparent)"
+          >
+            <style>{`
+              @keyframes bossVillainFloat { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-14px)} }
+              @keyframes bossAuraPulse { 0%,100%{opacity:.5;transform:scale(1)} 50%{opacity:.85;transform:scale(1.07)} }
+              @keyframes bossDangerBlink { 0%,100%{opacity:.45} 50%{opacity:1} }
+              @keyframes bossBubbleIn { 0%{opacity:0;transform:translateY(10px) rotate(-3deg) scale(.85)} 60%{opacity:1;transform:translateY(0) rotate(2deg) scale(1.04)} 100%{opacity:1;transform:translateY(0) rotate(-1.5deg) scale(1)} }
+              @keyframes bossScanline { from{background-position:0 0} to{background-position:0 6px} }
+            `}</style>
+
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5 }}
+              style={{
+                position: "relative",
+                width: "100%",
+                maxWidth: 740,
+                margin: "0 auto",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: 6,
+                padding: "4px 16px",
+                textAlign: "center",
+              }}
+            >
+              {/* Faint moving scanlines for a "hacker lair" CRT feel */}
+              <div
+                aria-hidden
+                style={{
+                  position: "absolute",
+                  inset: -60,
+                  pointerEvents: "none",
+                  background:
+                    "repeating-linear-gradient(0deg, rgba(255,255,255,0.04) 0px, rgba(255,255,255,0.04) 1px, transparent 1px, transparent 4px)",
+                  animation: "bossScanline 1s steps(6) infinite",
+                  opacity: 0.4,
+                  mixBlendMode: "overlay",
+                }}
+              />
+
+              {/* Danger tag */}
+              <div
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: 9,
+                  padding: "4px 15px",
+                  borderRadius: 999,
+                  border: "1px solid rgba(239,68,68,0.55)",
+                  background: "rgba(239,68,68,0.12)",
+                  color: "#fca5a5",
+                  fontFamily: "'JetBrains Mono', monospace",
+                  fontSize: 11,
+                  fontWeight: 800,
+                  letterSpacing: "0.28em",
+                  textTransform: "uppercase",
+                  animation: "bossDangerBlink 1.4s ease-in-out infinite",
+                }}
+              >
+                <span style={{ width: 7, height: 7, borderRadius: "50%", background: "#ef4444", boxShadow: "0 0 8px #ef4444", display: "inline-block" }} />
+                Final Showdown
+                <span style={{ width: 7, height: 7, borderRadius: "50%", background: "#ef4444", boxShadow: "0 0 8px #ef4444", display: "inline-block" }} />
+              </div>
+
+              {/* Title */}
+              <motion.h1
+                animate={{ scale: [1, 1.04, 1] }}
+                transition={{ duration: 2.4, repeat: Infinity }}
+                style={{
+                  fontSize: "clamp(44px, 8vw, 76px)",
+                  fontWeight: 900,
+                  margin: "0",
+                  background: "linear-gradient(135deg, #ef4444, #f97316, #fbbf24)",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                  backgroundClip: "text",
+                  letterSpacing: 2,
+                  lineHeight: 1,
+                  textShadow: "0 0 40px rgba(239,68,68,0.4)",
+                  filter: "drop-shadow(0 6px 18px rgba(239,68,68,0.35))",
+                }}
+              >
+                BOSS BATTLE
+              </motion.h1>
+
+              {/* Villain stage */}
+              <div style={{ position: "relative", display: "grid", placeItems: "center", width: "100%", margin: "2px 0" }}>
+                {/* Pulsing aura */}
+                <div
+                  aria-hidden
                   style={{
-                    fontSize: 72,
-                    fontWeight: 900,
-                    background: "linear-gradient(135deg, #ef4444, #f97316, #fbbf24)",
-                    WebkitBackgroundClip: "text",
-                    WebkitTextFillColor: "transparent",
-                    letterSpacing: 2,
-                    marginBottom: 10,
-                    textShadow: "0 0 40px rgba(239,68,68,0.35)",
+                    position: "absolute",
+                    width: "min(82vw, 660px)",
+                    height: "min(52vh, 460px)",
+                    borderRadius: "50%",
+                    background:
+                      "radial-gradient(ellipse, rgba(239,68,68,0.45) 0%, rgba(124,58,237,0.3) 42%, transparent 70%)",
+                    filter: "blur(6px)",
+                    animation: "bossAuraPulse 3s ease-in-out infinite",
+                  }}
+                />
+
+                {/* Villain taunt */}
+                <div
+                  style={{
+                    position: "absolute",
+                    top: "4%",
+                    right: "2%",
+                    zIndex: 3,
+                    maxWidth: 196,
+                    padding: "10px 14px",
+                    borderRadius: 16,
+                    background: "rgba(12,16,40,0.92)",
+                    border: "1.5px solid rgba(0,229,255,0.45)",
+                    color: "#dbeafe",
+                    fontFamily: "'Space Grotesk', sans-serif",
+                    fontWeight: 700,
+                    fontSize: 14,
+                    lineHeight: 1.25,
+                    textAlign: "left",
+                    boxShadow: "0 10px 24px rgba(0,0,0,0.5), 0 0 18px rgba(0,229,255,0.25)",
+                    animation: "bossBubbleIn 0.6s cubic-bezier(0.34,1.56,0.64,1) 0.5s both",
                   }}
                 >
-                  BOSS BATTLE
-                </motion.h1>
-                <p style={{ color: "#fca5a5", fontSize: 20, fontWeight: 600, marginBottom: 32 }}>
-                  Hacker Raccoon is waiting...
-                </p>
+                  Ha! You&rsquo;ll never crack <span style={{ color: "#5eead4" }}>my codes!</span>
+                  <span
+                    aria-hidden
+                    style={{
+                      position: "absolute",
+                      bottom: -8,
+                      left: 26,
+                      width: 15,
+                      height: 15,
+                      background: "rgba(12,16,40,0.92)",
+                      borderRight: "1.5px solid rgba(0,229,255,0.45)",
+                      borderBottom: "1.5px solid rgba(0,229,255,0.45)",
+                      transform: "rotate(45deg)",
+                    }}
+                  />
+                </div>
+
+                {/* The Hacker Raccoon */}
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="/game/characters/raccoon-idle.png"
+                  alt="Hacker Raccoon, the boss"
+                  style={{
+                    position: "relative",
+                    zIndex: 2,
+                    height: "min(42vh, 380px)",
+                    width: "auto",
+                    filter: "drop-shadow(0 20px 32px rgba(0,0,0,0.7))",
+                    animation: "bossVillainFloat 4s ease-in-out infinite",
+                  }}
+                />
+              </div>
+
+              {/* Start button */}
+              <div style={{ marginTop: 2 }}>
                 <OrangeButton
                   sound="transition"
                   onClick={() => {
@@ -1811,6 +1972,7 @@ function DynamicLessonInner({ qaEnabled }: { qaEnabled: boolean }) {
           concept={resumeConcept(content.screens, progress.resumeIndex)}
           onContinue={onResumeContinue}
           onRestart={onResumeRestart}
+          onDismiss={onResumeDismiss}
         />
       )}
 
@@ -1827,10 +1989,9 @@ function DynamicLessonInner({ qaEnabled }: { qaEnabled: boolean }) {
         onMuteToggle={handleMuteToggle}
       />
 
-      {/* Character guides are mounted ONLY on the boss battle screen.
-          Adam/Layla flank the Hacker Raccoon fight; every other
-          lesson surface stays character-free. */}
-      {def?.type === "bossBattle" && (
+      {/* Character guides flank the Hacker Raccoon FIGHT only (showBoss).
+          The boss INTRO + every other lesson surface stays character-free. */}
+      {def?.type === "bossBattle" && showBoss && (
         <>
           <RiveCharacterGuide
             character="adam"

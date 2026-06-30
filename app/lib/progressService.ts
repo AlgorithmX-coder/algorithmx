@@ -25,6 +25,13 @@ export type UpsertProgressInput = {
   week: number;
   screen: number;
   stars: number;
+  /**
+   * Best total XP earned on this week. Optional: callers that only
+   * touch screen/stars omit it and the stored xp is left untouched
+   * (it's max-merged, never lowered). Negative / non-finite values
+   * are coerced to 0.
+   */
+  xp?: number;
   completed?: boolean;
   /** Set true ONLY by callers that already verified ownership. */
   skipOwnershipCheck?: boolean;
@@ -51,6 +58,7 @@ export async function upsertProgress(
     week,
     screen,
     stars,
+    xp,
     completed,
     skipOwnershipCheck,
   } = input;
@@ -58,6 +66,9 @@ export async function upsertProgress(
   if (stars < 0 || stars > 3 || !Number.isFinite(stars)) {
     return { ok: false, error: { kind: "invalid_stars" } };
   }
+
+  const incomingXp =
+    typeof xp === "number" && Number.isFinite(xp) && xp > 0 ? Math.trunc(xp) : 0;
 
   if (!skipOwnershipCheck) {
     const child = await prisma.childProfile.findUnique({
@@ -92,11 +103,12 @@ export async function upsertProgress(
         week,
       },
     },
-    select: { stars: true, screen: true, completedAt: true },
+    select: { stars: true, screen: true, xp: true, completedAt: true },
   });
 
   const nextScreen = existing ? Math.max(existing.screen, screen) : screen;
   const nextStars = existing ? Math.max(existing.stars, stars) : stars;
+  const nextXp = Math.max(existing?.xp ?? 0, incomingXp);
   const nextCompletedAt = existing?.completedAt
     ? existing.completedAt
     : completed === true
@@ -118,11 +130,13 @@ export async function upsertProgress(
       week,
       screen: nextScreen,
       stars: nextStars,
+      xp: nextXp,
       completedAt: nextCompletedAt,
     },
     update: {
       screen: nextScreen,
       stars: nextStars,
+      xp: nextXp,
       completedAt: nextCompletedAt,
     },
   });

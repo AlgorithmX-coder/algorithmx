@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-25T12:39:49.035Z",
+  "generatedAt": "2026-06-28T00:13:28.466Z",
   "model": "eleven_v3",
   "voiceSettings": {
     "stability": 0.35,
@@ -135,17 +135,17 @@
       "file": "/audio/voice/506cbaf4f1b6cf69.mp3"
     },
     {
-      "key": "9fce1bdf628af348",
+      "key": "6bad0d1658004aa5",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[excited] Uh oh — these passwords are poorly! You're the cyber-doctor. First, work out what's WRONG with each one. Then use your tools to make it strong — watch the meter climb! [warmly] No rush, Doctor — take your time.",
+      "text": "[excited] Uh oh — these passwords are sick! You're the cyber-doctor. First, work out what's WRONG with each one. Then use your tools to make it strong — watch the meter climb! [warmly] No rush, Doctor — take your time.",
       "lines": [
-        "[excited] Uh oh — these passwords are poorly! You're the cyber-doctor.",
+        "[excited] Uh oh — these passwords are sick! You're the cyber-doctor.",
         "First, work out what's WRONG with each one.",
         "Then use your tools to make it strong — watch the meter climb!",
         "[warmly] No rush, Doctor — take your time."
       ],
-      "file": "/audio/voice/9fce1bdf628af348.mp3"
+      "file": "/audio/voice/6bad0d1658004aa5.mp3"
     },
     {
       "key": "a181879ed1233053",

@@ -22,7 +22,7 @@
  */
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import {
   CYBER_PALETTE,
@@ -48,6 +48,8 @@ export interface HubTrackCardProps {
   iconName: CyberIconName;
   accent: CyberIconAccent;
   accentHex: string;
+  /** Optional 3D illustration path; replaces the flat CyberIcon emblem when set. */
+  illustration?: string;
   ageRange: string;
   duration: string;
   weeksCount: number;
@@ -93,6 +95,7 @@ export default function HubTrackCard({
   iconName,
   accent,
   accentHex,
+  illustration,
   ageRange,
   duration,
   weeksCount,
@@ -216,30 +219,40 @@ export default function HubTrackCard({
         {isLive ? "ACTIVE" : "COMING SOON"}
       </span>
 
-      {/* Emblem */}
-      <div
-        style={{
-          position: "relative",
-          zIndex: 1,
-          width: 64,
-          height: 64,
-          borderRadius: 18,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          background: `radial-gradient(circle at 50% 40%, ${accentHex}22, rgba(8,10,22,0.35) 70%)`,
-          border: `1px solid ${accentHex}33`,
-          marginBottom: 2,
-        }}
-      >
-        <CyberIcon
-          name={iconName}
-          size={36}
-          accent={accent}
-          glow
-          pulse={isLive}
-        />
-      </div>
+      {/* Emblem — a big 3D illustration (screen-blended so its near-black
+          backing vanishes onto the card) when supplied; otherwise the flat
+          CyberIcon glyph in a tile. */}
+      {illustration ? (
+        <div style={{ position: "relative", zIndex: 1, width: 116, height: 116, marginBottom: 2, display: "flex", alignItems: "center", justifyContent: "center" }}>
+          <div aria-hidden style={{ position: "absolute", inset: "-8%", borderRadius: "50%", background: `radial-gradient(circle, ${accentHex}30 0%, transparent 68%)`, filter: "blur(9px)" }} />
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={illustration}
+            alt=""
+            width={116}
+            height={116}
+            style={{ position: "relative", width: 116, height: 116, objectFit: "contain", mixBlendMode: "screen", filter: `drop-shadow(0 8px 18px ${accentHex}55)` }}
+          />
+        </div>
+      ) : (
+        <div
+          style={{
+            position: "relative",
+            zIndex: 1,
+            width: 64,
+            height: 64,
+            borderRadius: 18,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            background: `radial-gradient(circle at 50% 40%, ${accentHex}22, rgba(8,10,22,0.35) 70%)`,
+            border: `1px solid ${accentHex}33`,
+            marginBottom: 2,
+          }}
+        >
+          <CyberIcon name={iconName} size={36} accent={accent} glow pulse={isLive} />
+        </div>
+      )}
 
       {/* Name */}
       <h3
@@ -329,56 +342,30 @@ export default function HubTrackCard({
         <div style={{ position: "relative", zIndex: 1, display: "flex", flexDirection: "column", gap: 12 }}>
           {showProgress && (
             <div>
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "baseline",
-                  justifyContent: "space-between",
-                  gap: 8,
-                  marginBottom: 7,
-                }}
-              >
-                <span
-                  style={{
-                    fontFamily: FONT_MONO,
-                    fontSize: 11,
-                    fontWeight: 700,
-                    letterSpacing: 0.5,
-                    color: C.cyanSoft,
-                  }}
-                >
-                  {rankLabel ?? "Your progress"}
+              <div style={{ fontFamily: FONT_MONO, fontSize: 10, fontWeight: 700, letterSpacing: 1.4, textTransform: "uppercase", color: C.cyanSoft, marginBottom: 9 }}>
+                Your Adventure Path
+              </div>
+              {/* Node trail: earned rank ★ → locked steps → treasure chest. */}
+              <div style={{ display: "flex", alignItems: "center", marginBottom: 11 }}>
+                {ADVENTURE_NODES.map((kind, i) => (
+                  <Fragment key={i}>
+                    <PathNode kind={kind} cyan={C.cyan} />
+                    {i < ADVENTURE_NODES.length - 1 && (
+                      <span aria-hidden style={{ flex: 1, height: 0, borderTop: `2px dotted ${C.cyan}55`, margin: "0 3px" }} />
+                    )}
+                  </Fragment>
+                ))}
+              </div>
+              <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", gap: 8, marginBottom: 7 }}>
+                <span style={{ fontFamily: FONT_MONO, fontSize: 11, fontWeight: 700, letterSpacing: 0.5, color: C.cyanSoft }}>
+                  {rankLabel ?? "Cyber Rookie"}
                 </span>
-                <span
-                  style={{
-                    fontFamily: FONT_DISPLAY,
-                    fontSize: 12.5,
-                    fontWeight: 700,
-                    color: C.textSoft,
-                  }}
-                >
+                <span style={{ fontFamily: FONT_DISPLAY, fontSize: 12.5, fontWeight: 700, color: C.textSoft }}>
                   {progressPct}% Complete
                 </span>
               </div>
-              <div
-                style={{
-                  width: "100%",
-                  height: 8,
-                  borderRadius: 999,
-                  background: "rgba(255,255,255,0.07)",
-                  overflow: "hidden",
-                }}
-              >
-                <div
-                  style={{
-                    width: `${barFill}%`,
-                    height: "100%",
-                    borderRadius: 999,
-                    background: CYBER_GRAD.hero,
-                    boxShadow: `0 0 14px ${accentHex}88`,
-                    transition: reduced ? "none" : "width 1.1s cubic-bezier(0.34,1.56,0.64,1)",
-                  }}
-                />
+              <div style={{ width: "100%", height: 8, borderRadius: 999, background: "rgba(255,255,255,0.07)", overflow: "hidden" }}>
+                <div style={{ width: `${barFill}%`, height: "100%", borderRadius: 999, background: CYBER_GRAD.hero, boxShadow: `0 0 14px ${accentHex}88`, transition: reduced ? "none" : "width 1.1s cubic-bezier(0.34,1.56,0.64,1)" }} />
               </div>
             </div>
           )}
@@ -463,8 +450,51 @@ function ViewCourseLink({
         transform: hover && !reduced ? "translateY(-1px)" : "none",
       }}
     >
-      View course
+      Explore Course
       <span aria-hidden style={{ transform: hover && !reduced ? "translateX(2px)" : "none", transition: "transform 180ms ease" }}>→</span>
     </Link>
+  );
+}
+
+/** The active card's "Adventure Path" node trail: earned ★ → locked → chest. */
+const ADVENTURE_NODES = ["star", "dot", "lock", "lock", "chest"] as const;
+
+function LockGlyph() {
+  return (
+    <svg width={12} height={12} viewBox="0 0 24 24" fill="none" aria-hidden>
+      <rect x="5" y="10.5" width="14" height="9" rx="2" stroke="rgba(125,240,255,0.55)" strokeWidth="2" />
+      <path d="M8 10.5V8a4 4 0 0 1 8 0v2.5" stroke="rgba(125,240,255,0.55)" strokeWidth="2" />
+    </svg>
+  );
+}
+
+function PathNode({ kind, cyan }: { kind: string; cyan: string }) {
+  if (kind === "chest") {
+    return (
+      <span style={{ flexShrink: 0, width: 34, height: 34, display: "inline-flex", alignItems: "center", justifyContent: "center" }}>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/hub/chest.png" alt="" width={34} height={34} style={{ width: 34, height: 34, objectFit: "contain", filter: "drop-shadow(0 0 7px rgba(253,224,71,0.65))" }} />
+      </span>
+    );
+  }
+  const earned = kind === "star";
+  return (
+    <span
+      style={{
+        flexShrink: 0,
+        width: 28,
+        height: 28,
+        borderRadius: "50%",
+        display: "inline-flex",
+        alignItems: "center",
+        justifyContent: "center",
+        background: earned ? "radial-gradient(circle at 40% 32%, #fff0bf, #fbbf24 58%, #b8862a)" : "rgba(8,10,22,0.7)",
+        border: earned ? "1.5px solid #fff3c4" : `1.5px solid ${cyan}33`,
+        boxShadow: earned ? "0 0 12px rgba(253,224,71,0.6)" : "none",
+      }}
+    >
+      {kind === "star" && <span style={{ fontSize: 14, lineHeight: 1, color: "#7a4d00" }}>★</span>}
+      {kind === "lock" && <LockGlyph />}
+    </span>
   );
 }

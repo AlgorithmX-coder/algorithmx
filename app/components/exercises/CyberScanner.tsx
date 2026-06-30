@@ -795,7 +795,7 @@ export default function CyberScanner({
         title="Cyber Scanner"
         steps={[
           { glyph: "🛡", text: "Tap STRONG for safe passwords" },
-          { glyph: "💀", text: "Tap WEAK for guessable ones" },
+          { glyph: "🚫", text: "Tap WEAK for guessable ones" },
           { glyph: "⚡", text: "Decide before they cross the beam" },
         ]}
         accent="#3a7bff"
@@ -859,7 +859,7 @@ export default function CyberScanner({
           onClick={() => resolveCurrent(true)}
         />
         <ScannerButton
-          icon="💀"
+          icon="🚫"
           label="WEAK"
           tint="#ff7a59"
           accent="#ff5fb3"
@@ -884,6 +884,8 @@ export default function CyberScanner({
       {showIntro && (
         <ExerciseIntroBeat
           title="Cyber Scanner"
+          logo="/cyberheroes/logos/cyber-scanner.png"
+          welcome="The final drill!"
           subtitle="Passwords will float across the scanner. Tap STRONG or WEAK before they escape!"
           icon="🔍"
           narration={introNarration}
