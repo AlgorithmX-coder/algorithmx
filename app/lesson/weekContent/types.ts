@@ -397,7 +397,7 @@ export type ScreenDef = (
        * Reusable diagnosis buttons. Same id space as weakSorter's
        * reasons so question keys stay consistent across screens.
        */
-      reasons: { id: string; label: string }[];
+      reasons: { id: string; label: string; example?: string }[];
       patients: {
         /** Stable id for QuestionResponse keys. e.g. "pat-1". */
         id: string;

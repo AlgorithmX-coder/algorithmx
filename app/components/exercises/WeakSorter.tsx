@@ -255,6 +255,8 @@ export default function WeakSorter({
       {showIntro && (
         <ExerciseIntroBeat
           title="Weakness Detective"
+          logo="/cyberheroes/logos/weak-sorter.png"
+          welcome="Your final challenge!"
           subtitle="For each password, work out WHY it's weak."
           icon="🕵️"
           narration={introNarration}

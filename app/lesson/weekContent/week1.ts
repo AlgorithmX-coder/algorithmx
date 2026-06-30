@@ -200,7 +200,7 @@ export const WEEK_1: WeekContent = {
         { id: "w-pickle", text: "pickle", category: "food" },
       ],
       hints: {
-        tier1: "Pick any 3 words - they don't need to make sense. The longer your passphrase, the harder it is to crack.",
+        tier1: "Pick any 3 words - they don't need to make sense. The longer your password, the harder it is to crack.",
         tier2: "Try mixing categories - one animal, one object, one place. The combo is what makes it memorable AND strong.",
       },
       narration: {
@@ -280,10 +280,10 @@ export const WEEK_1: WeekContent = {
     {
       type: "passwordHospital",
       reasons: [
-        { id: "common-word", label: "Plain word - no mix" },
-        { id: "too-short", label: "Too short" },
-        { id: "personal", label: "Has a name" },
-        { id: "keyboard", label: "Keyboard row" },
+        { id: "common-word", label: "Plain word - no mix", example: "like 'banana'" },
+        { id: "too-short", label: "Too short", example: "like 'cat'" },
+        { id: "personal", label: "Has a name", example: "like your name" },
+        { id: "keyboard", label: "Keyboard row", example: "like 'asdf'" },
       ],
       patients: [
         {
@@ -296,13 +296,49 @@ export const WEEK_1: WeekContent = {
           recommendedActions: ["mixCase", "addNumber", "addSymbol", "addLetters"],
         },
         {
-          id: "pat-sunshine",
-          password: "sunshine",
-          primaryReason: "common-word",
-          chartNote: "Patient #2 - lovely word, zero mix",
+          id: "pat-abc",
+          password: "abc",
+          primaryReason: "too-short",
+          chartNote: "Patient #2 - admitted critically short",
           diagnosisExplanation:
-            "'sunshine' has no mix. Add capitals, numbers and symbols to toughen it right up.",
-          recommendedActions: ["mixCase", "addNumber", "addSymbol"],
+            "Only 3 letters - far too short. Short passwords are cracked in seconds. It needs to be much longer.",
+          recommendedActions: ["addLetters", "addNumber", "addSymbol"],
+        },
+        {
+          id: "pat-qwerty",
+          password: "qwerty",
+          primaryReason: "keyboard",
+          chartNote: "Patient #3 - a keyboard run from the home row",
+          diagnosisExplanation:
+            "Those letters sit in a row on the keyboard. It's the FIRST pattern any hacker tries.",
+          recommendedActions: ["scramble", "addLetters", "mixCase", "addSymbol"],
+        },
+        {
+          id: "pat-sam",
+          password: "Sam2014",
+          primaryReason: "personal",
+          chartNote: "Patient #4 - a name plus a year",
+          diagnosisExplanation:
+            "It's a name and a year. Anyone who knows you could guess this in a few tries. Take the personal bits out.",
+          recommendedActions: ["removePersonal", "addLetters", "addSymbol"],
+        },
+        {
+          id: "pat-dragon",
+          password: "dragon",
+          primaryReason: "common-word",
+          chartNote: "Patient #5 - a popular word, no extras",
+          diagnosisExplanation:
+            "'dragon' is one of everyone's favourite words to use. No capitals, no numbers, no symbols.",
+          recommendedActions: ["mixCase", "addNumber", "addSymbol", "addLetters"],
+        },
+        {
+          id: "pat-123",
+          password: "123",
+          primaryReason: "too-short",
+          chartNote: "Patient #6 - tiny, and just numbers",
+          diagnosisExplanation:
+            "Only 3 characters, and they're numbers in a row. Cracked in less than a second.",
+          recommendedActions: ["addLetters", "addSymbol", "mixCase"],
         },
       ],
       hints: {
@@ -314,7 +350,7 @@ export const WEEK_1: WeekContent = {
       narration: {
         speaker: "adam",
         lines: [
-          "[excited] Uh oh — these passwords are poorly! You're the cyber-doctor.",
+          "[excited] Uh oh — these passwords are sick! You're the cyber-doctor.",
           "First, work out what's WRONG with each one.",
           "Then use your tools to make it strong — watch the meter climb!",
           "[warmly] No rush, Doctor — take your time.",
@@ -330,7 +366,7 @@ export const WEEK_1: WeekContent = {
       type: "quickCheck",
       mode: "lie",
       prompt: "Is that true?",
-      raccoonLine: "tiger is totally unbreakable - trust me!",
+      raccoonLine: "the password 'tiger' is totally unbreakable - trust me!",
       choices: [
         { text: "TRUE", isCorrect: false },
         { text: "FALSE", isCorrect: true },
@@ -613,6 +649,7 @@ export const WEEK_1: WeekContent = {
       questions: [
         { question: "Which is strongest because it's LONG?", answers: ["otter-rocket-mango", "cat", "Tiger7", "sun"], correctIndex: 0, explanation: "Three random words make a long, hard-to-crack password.", key: "boss-length-1" },
         { question: "What makes a password nice and long?", answers: ["Three random words", "3 letters", "1 number", "your initials"], correctIndex: 0, explanation: "Three random words make it long and strong!", key: "boss-length-2" },
+        { question: "Which password is the LONGEST?", answers: ["Kettle-Jungle-Pancake", "dog", "Sun9", "ab"], correctIndex: 0, explanation: "More words make it longer - and longer is stronger.", key: "boss-length-3" },
       ],
     },
     {
@@ -624,6 +661,7 @@ export const WEEK_1: WeekContent = {
       questions: [
         { question: "Which password MIXES all the types?", answers: ["Otter-Rocket7!", "tigertiger", "12345678", "FOOTBALL"], correctIndex: 0, explanation: "Capitals, small letters, numbers AND symbols - a real mix.", key: "boss-mix-1" },
         { question: "What makes the STRONGEST password?", answers: ["Three random words, mixed up", "A short word with a number", "Your name and birthday", "1234"], correctIndex: 0, explanation: "Long, random and mixed - the toughest of all!", key: "boss-mix-2" },
+        { question: "Which one has a good MIX?", answers: ["Lantern-Trumpet8!", "banana", "ALLCAPSWORD", "0000"], correctIndex: 0, explanation: "Big and small letters, a number AND a symbol - a real mix.", key: "boss-mix-3" },
       ],
     },
     {
@@ -635,6 +673,7 @@ export const WEEK_1: WeekContent = {
       questions: [
         { question: "Your best friend asks for your password. You say...", answers: ["No - it's my secret", "Sure!", "Only half of it", "I'll write it down for you"], correctIndex: 0, explanation: "Passwords are always secret, even from friends.", key: "boss-secret-1" },
         { question: "Where should your password live?", answers: ["In your head (a parent can help)", "On a sticky note on your screen", "In the class group chat", "On your school bag"], correctIndex: 0, explanation: "A password only works if nobody else can see it.", key: "boss-secret-2" },
+        { question: "Who is allowed to know your password?", answers: ["Just you (a parent can help)", "Your whole class", "Anyone who asks", "Your favourite YouTuber"], correctIndex: 0, explanation: "A password is only yours - keep it secret.", key: "boss-secret-3" },
       ],
     },
     {
@@ -646,6 +685,7 @@ export const WEEK_1: WeekContent = {
       questions: [
         { question: "Which is the WORST password?", answers: ["password", "Kettle-Jungle-7!", "Otter$Rocket9", "Mango!Lantern2"], correctIndex: 0, explanation: "'password' is the most-guessed password in the world.", key: "boss-obvious-1" },
         { question: "Which should you NEVER use?", answers: ["Your birthday", "three random words", "a symbol", "a capital letter"], correctIndex: 0, explanation: "Birthdays are easy to guess about you.", key: "boss-obvious-2" },
+        { question: "Which is too EASY to guess?", answers: ["123456", "Mango-Compass-7!", "Otter$Lantern9", "Jungle!Kettle2"], correctIndex: 0, explanation: "123456 is one of the most-guessed passwords ever.", key: "boss-obvious-3" },
       ],
     },
     {
@@ -657,6 +697,7 @@ export const WEEK_1: WeekContent = {
       questions: [
         { question: "Pick the Raccoon-proof password:", answers: ["Otter$Rocket9Mango!", "cat", "yourname2014", "123456"], correctIndex: 0, explanation: "Long, mixed, no plain words and nothing obvious.", key: "boss-final-1" },
         { question: "The Raccoon says 'just tell me ONE letter of your password.' You...", answers: ["Tell him nothing", "Tell one letter", "Tell him a hint", "Tell a friend instead"], correctIndex: 0, explanation: "Not one letter - your password stays completely secret.", key: "boss-final-2" },
+        { question: "The Raccoon says 'I'll guess your pet's name!' Your password should...", answers: ["Have nothing about you in it", "Be your pet's name", "Be your birthday", "Be 'password'"], correctIndex: 0, explanation: "Keep personal things OUT - use random words instead.", key: "boss-final-3" },
       ],
     },
   ],

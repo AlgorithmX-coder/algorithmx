@@ -60,6 +60,8 @@ export interface StartOrResumeResult {
   lastScreenIndex: number;
   /** True when an existing unfinished attempt was returned. */
   isResume: boolean;
+  /** True when this week's row is already completed — don't offer "resume". */
+  completed: boolean;
 }
 
 export interface ScreenResultInput {
@@ -147,6 +149,7 @@ export async function startOrResumeAttempt(
     weekNumber,
     lastScreenIndex: result.row.screen,
     isResume: result.row.screen > 0,
+    completed: result.row.completedAt !== null,
   };
 }
 

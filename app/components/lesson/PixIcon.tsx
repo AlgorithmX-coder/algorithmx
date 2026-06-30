@@ -74,6 +74,8 @@ const MAP: Record<string, string> = {
   "🏆": "trophy",
   "🏅": "medal",
   "🥇": "medal",
+  "🔰": "rookie-badge",
+  "👑": "crown",
   // energy / boss / misc
   "⚡": "lightning",
   "💎": "diamond",

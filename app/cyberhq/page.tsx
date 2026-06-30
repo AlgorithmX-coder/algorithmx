@@ -25,6 +25,7 @@ import { getEarnedBadges } from "@/app/lib/badges.actions";
 import { getProgressionSnapshot } from "@/app/lib/lessonProgress.actions";
 import { getRank } from "@/app/lib/progression";
 import PlaySignatureOnMount from "@/app/components/lesson/PlaySignatureOnMount";
+import PixIcon from "@/app/components/lesson/PixIcon";
 
 const C = {
   pageBg: "#080a16",
@@ -100,7 +101,16 @@ export default async function CyberHQPage() {
         ))}
       </div>
 
-      <div style={{ position: "relative", maxWidth: 1000, margin: "0 auto" }}>
+      {/* Rich cosmic backdrop — nebulae, a constellation, a planet + the
+          glowing horizon arc, matching the dashboard mockup. */}
+      <div aria-hidden className="hq-cosmos">
+        <span className="hq-neb hq-neb-a" />
+        <span className="hq-neb hq-neb-b" />
+        <span className="hq-grid" />
+        <span className="hq-scan" />
+      </div>
+
+      <div style={{ position: "relative", maxWidth: 1000, margin: "0 auto", zIndex: 1 }}>
         {/* Back link */}
         <Link
           href="/dashboard"
@@ -120,40 +130,40 @@ export default async function CyberHQPage() {
           ← Back to dashboard
         </Link>
 
-        {/* Header */}
-        <div style={{ marginBottom: 28 }}>
-          <span
+        {/* Header — the lab scene EMBEDDED into the page background: no card
+            frame, edges feathered with a radial mask so it dissolves into the
+            techy backdrop instead of sitting in a box. */}
+        <div style={{ position: "relative", marginBottom: 22 }}>
+          <div
             style={{
-              display: "inline-block",
-              fontSize: 11,
-              letterSpacing: "0.22em",
-              color: C.gold,
-              textTransform: "uppercase",
-              fontWeight: 800,
-              marginBottom: 8,
-              textShadow: `0 0 12px ${C.gold}55`,
+              position: "relative",
+              WebkitMaskImage: "radial-gradient(ellipse 94% 96% at 50% 42%, #000 50%, transparent 100%)",
+              maskImage: "radial-gradient(ellipse 94% 96% at 50% 42%, #000 50%, transparent 100%)",
             }}
           >
-            ✦ Cyber Hero Headquarters
-          </span>
-          <h1
-            style={{
-              fontSize: 34,
-              fontWeight: 900,
-              margin: "0 0 8px",
-              background: `linear-gradient(135deg, ${C.cyan}, ${C.violet}, ${C.gold})`,
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-              backgroundClip: "text",
-              lineHeight: 1.1,
-            }}
-          >
-            Your Cyber HQ
-          </h1>
-          <p style={{ color: C.textSoft, fontSize: 15, margin: 0 }}>
-            Badges, stickers and XP you&apos;ve earned by beating the Hacker
-            Raccoon.
-          </p>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/cyberhq/lab-v3.png"
+              alt="Adam and Layla in the Cyber HQ lab"
+              width={1500}
+              height={838}
+              style={{ width: "100%", height: "clamp(250px, 40vw, 420px)", objectFit: "cover", objectPosition: "center 40%", display: "block" }}
+            />
+            {/* Darken the lower band for the title (feathers with the mask). */}
+            <div aria-hidden style={{ position: "absolute", inset: 0, background: "linear-gradient(180deg, rgba(8,10,22,0) 44%, rgba(8,10,22,0.38) 74%, rgba(8,10,22,0.85) 100%)" }} />
+          </div>
+          {/* Title — crisp, over the feathered lower area. */}
+          <div style={{ position: "absolute", left: "clamp(18px, 4vw, 40px)", right: 24, bottom: "clamp(2px, 1.5vw, 14px)" }}>
+            <span style={{ display: "inline-block", fontSize: 11, letterSpacing: "0.22em", color: C.gold, textTransform: "uppercase", fontWeight: 800, marginBottom: 6, textShadow: `0 0 14px ${C.gold}, 0 1px 6px rgba(0,0,0,0.9)` }}>
+              ✦ Cyber Hero Headquarters
+            </span>
+            <h1 style={{ fontSize: "clamp(26px, 5vw, 40px)", fontWeight: 900, margin: "0 0 4px", background: `linear-gradient(135deg, ${C.cyan}, ${C.violet}, ${C.gold})`, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text", lineHeight: 1.1, filter: "drop-shadow(0 2px 12px rgba(0,0,0,0.85))" }}>
+              Your Cyber HQ
+            </h1>
+            <p style={{ color: C.text, fontSize: 14, margin: 0, maxWidth: 460, textShadow: "0 1px 10px rgba(0,0,0,0.95)" }}>
+              Badges, stickers and XP you and your heroes have earned by beating the Hacker Raccoon.
+            </p>
+          </div>
         </div>
 
         {/* Progress summary */}
@@ -186,8 +196,8 @@ export default async function CyberHQPage() {
               Rank
             </div>
             <div style={{ display: "flex", alignItems: "center", gap: 9 }}>
-              <span style={{ fontSize: 26, lineHeight: 1 }} aria-hidden>
-                {rank.current.icon}
+              <span style={{ display: "inline-flex", lineHeight: 1 }} aria-hidden>
+                <PixIcon emoji={rank.current.icon} size={30} />
               </span>
               <div>
                 <div
@@ -333,16 +343,16 @@ export default async function CyberHQPage() {
               >
                 <div
                   style={{
-                    fontSize: 40,
-                    lineHeight: 1,
                     marginBottom: 6,
+                    display: "flex",
+                    justifyContent: "center",
                     filter: isEarned
                       ? "drop-shadow(0 0 14px rgba(253, 224, 71, 0.55))"
-                      : "grayscale(80%) opacity(0.5)",
+                      : "grayscale(85%) opacity(0.55)",
                   }}
                   aria-hidden
                 >
-                  {isEarned ? b.icon : "🔒"}
+                  <PixIcon emoji={isEarned ? b.icon : "🔒"} size={44} />
                 </div>
                 <div
                   style={{
@@ -417,16 +427,16 @@ export default async function CyberHQPage() {
               >
                 <div
                   style={{
-                    fontSize: 56,
-                    lineHeight: 1,
                     marginBottom: 8,
+                    display: "flex",
+                    justifyContent: "center",
                     filter: isEarned
                       ? "drop-shadow(0 0 18px rgba(253, 224, 71, 0.55))"
-                      : "grayscale(80%) opacity(0.5)",
+                      : "grayscale(85%) opacity(0.55)",
                   }}
                   aria-hidden
                 >
-                  {isEarned ? s.icon : "🔒"}
+                  <PixIcon emoji={isEarned ? s.icon : "🔒"} size={60} />
                 </div>
                 <div
                   style={{
@@ -469,6 +479,12 @@ export default async function CyberHQPage() {
             inline <style> for the global selectors. Reduced-motion users
             get a hard stop on all of these. */}
         <style>{`
+          .hq-cosmos { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+          .hq-neb { position: absolute; border-radius: 50%; filter: blur(38px); }
+          .hq-neb-a { top: -14%; left: -10%; width: 54vw; height: 54vw; background: radial-gradient(circle, rgba(124,92,255,0.17), transparent 62%); }
+          .hq-neb-b { bottom: -12%; right: -10%; width: 50vw; height: 50vw; background: radial-gradient(circle, rgba(0,229,255,0.13), transparent 60%); }
+          .hq-grid { position: absolute; inset: -2px; background-image: linear-gradient(rgba(0,229,255,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(0,229,255,0.06) 1px, transparent 1px); background-size: 46px 46px; -webkit-mask-image: radial-gradient(ellipse 92% 82% at 50% 22%, #000 26%, transparent 82%); mask-image: radial-gradient(ellipse 92% 82% at 50% 22%, #000 26%, transparent 82%); }
+          .hq-scan { position: absolute; inset: 0; background: repeating-linear-gradient(0deg, rgba(0,229,255,0.022) 0, rgba(0,229,255,0.022) 1px, transparent 1px, transparent 3px); opacity: 0.55; }
           .hq-ambient-field {
             position: absolute;
             inset: 0;
@@ -521,10 +537,16 @@ export default async function CyberHQPage() {
                 0 0 0 1px rgba(255, 209, 88, 0.55) inset;
             }
           }
+          .hq-heroes { animation: hqHeroFloat 5s ease-in-out infinite; }
+          @keyframes hqHeroFloat {
+            0%, 100% { transform: translateY(0); }
+            50%      { transform: translateY(-9px); }
+          }
           @media (prefers-reduced-motion: reduce) {
             .hq-ambient-dot,
             .hq-progress-shimmer,
-            .hq-sticker-earned {
+            .hq-sticker-earned,
+            .hq-heroes {
               animation: none !important;
             }
             .hq-ambient-dot { opacity: 0; }

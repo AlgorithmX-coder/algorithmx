@@ -788,6 +788,8 @@ export default function MemoryMatch({
       {showIntro && (
         <ExerciseIntroBeat
           title="Memory Match"
+          logo="/cyberheroes/logos/memory-match.png"
+          welcome="Your first challenge!"
           subtitle="Flip the cards and match each term with its meaning! Fewer flips earn more stars."
           icon="🧠"
           narration={introNarration}

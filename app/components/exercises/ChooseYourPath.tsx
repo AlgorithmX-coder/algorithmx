@@ -694,6 +694,8 @@ export default function ChooseYourPath({
       {showIntro && (
         <ExerciseIntroBeat
           title="Choose Your Path"
+          logo="/cyberheroes/logos/choose-path.png"
+          welcome="Your fourth challenge!"
           subtitle="You'll face real online situations. Pick a door to see what happens - choose wisely!"
           icon="🚪"
           narration={introNarration}

@@ -58,3 +58,4 @@ scripts/shot-out/
 
 # OpenArt scratch renders (test output, not for production)
 .openart-tmp/
+art-review/

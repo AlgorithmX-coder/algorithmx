@@ -266,7 +266,7 @@ const ATTACK_META = [
   { name: "TRICK QUESTION",  icon: "🌀", color: "#7c5cff", glow: "rgba(124, 92, 255, 0.55)", tag: "Don't get fooled",        emblemColor: 0x7c5cff },
 ] as const;
 const HERO_HEIGHT = 260;
-const BOSS_HEIGHT = 300;
+const BOSS_HEIGHT = 350;
 
 const ASSET_PATHS = {
   bg: "/game/backgrounds/cyber-classroom.png",
@@ -1040,6 +1040,11 @@ function tickFrame(g: GameState, dt: number) {
   if (g.heroTintFlashMs > 0) g.heroTintFlashMs = Math.max(0, g.heroTintFlashMs - dt);
   if (g.bossTintFlashMs > 0) g.bossTintFlashMs = Math.max(0, g.bossTintFlashMs - dt);
 
+  // Both fighters scale down on short / laptop viewports so they stay clear of
+  // the HP bar (top) and the ~45dvh question panel (bottom). Stays 1.0 on tall
+  // screens (>=860px) so the (bigger) boss reads as looming, not cramped.
+  const fitFactor = Math.min(1, window.innerHeight / 860);
+
   // Hero transform + texture
   if (g.hero && g.textures) {
     const heroSet = g.textures[g.selectedHero];
@@ -1049,7 +1054,7 @@ function tickFrame(g: GameState, dt: number) {
     // down + lift the sprite so the head and hands stay on-screen.
     const celebrating = g.heroAnim === "celebrate";
     g.hero.anchor.set(0.5, celebrating ? 0.75 : 0.5);
-    const effectiveHeight = celebrating ? HERO_HEIGHT * 0.8 : HERO_HEIGHT;
+    const effectiveHeight = (celebrating ? HERO_HEIGHT * 0.8 : HERO_HEIGHT) * fitFactor;
     const baseScale = effectiveHeight / (g.hero.texture.height || 1);
     const hBreatheX = 1 + Math.sin(g.time / 800) * 0.015;
     const hBreatheY = 1 + Math.sin(g.time / 800) * 0.025;
@@ -1072,7 +1077,7 @@ function tickFrame(g: GameState, dt: number) {
     const next = g.textures.boss[g.bossAnim];
     if (g.boss.texture !== next) g.boss.texture = next;
     g.boss.anchor.set(0.5, 0.5);
-    const baseScale = BOSS_HEIGHT / (g.boss.texture.height || 1);
+    const baseScale = (BOSS_HEIGHT * fitFactor) / (g.boss.texture.height || 1);
     // Breathing - slower + deeper; in phase 3, pants faster
     const bDiv = phase === 3 ? 550 : 1100;
     const bBreatheX = 1 + Math.sin(g.time / bDiv) * 0.018;
@@ -2960,7 +2965,7 @@ export default function BossBattle({
           })()}
 
           <p className="bb-sel-footer">
-            Both heroes have the same powers - pick your favourite!
+            Pick the hero you like best - both are awesome!
           </p>
         </div>
       )}
@@ -3185,7 +3190,7 @@ export default function BossBattle({
               flexShrink: 0, fontSize: 14,
             }}
           >
-            <span style={{ filter: "drop-shadow(0 1px 1px rgba(0,0,0,0.6))" }}><PixIcon emoji="🛡" size={18} /></span>
+            <img src={selectedHero === "layla" ? "/game/characters/layla-head.png" : "/game/characters/adam-head.png"} alt="" style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: "50%" }} />
           </div>
           <div style={{ flex: 1 }}>
             <div
@@ -3322,7 +3327,7 @@ export default function BossBattle({
               flexShrink: 0, fontSize: 14,
             }}
           >
-            <span style={{ filter: "drop-shadow(0 1px 1px rgba(0,0,0,0.6))" }}><PixIcon emoji="💀" size={18} /></span>
+            <img src="/game/characters/raccoon-head.png" alt="" style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: "50%" }} />
           </div>
         </div>
       </div>
@@ -3662,7 +3667,7 @@ export default function BossBattle({
             backdropFilter: "blur(10px)",
             border: `2px solid ${currentAttack.color}66`,
             borderRadius: 18,
-            padding: "20px 22px",
+            padding: "clamp(11px, 1.8vh, 20px) 22px",
             boxShadow: `0 -10px 40px ${currentAttack.glow}, 0 0 0 1px ${currentAttack.color}33`,
             zIndex: 2,
             transition: "border-color 0.3s ease, box-shadow 0.3s ease",
@@ -4189,6 +4194,12 @@ export default function BossBattle({
           .bb-answer-grid { grid-template-columns: 1fr !important; }
           .bb-answer { font-size: 15px; padding: 16px 14px; min-height: 52px; }
           .bb-answer-letter { width: 32px; height: 32px; font-size: 14px; }
+        }
+        /* Short / laptop viewports: tighten the answer buttons so the
+           question + all 4 options fit the 45dvh panel without scrolling. */
+        @media (max-height: 760px) {
+          .bb-answer { padding: 9px 14px !important; font-size: 13px !important; }
+          .bb-answer-grid { gap: 8px !important; }
         }
         .bb-answer {
           display: flex; align-items: center; gap: 12px;
@@ -4910,6 +4921,18 @@ export default function BossBattle({
           }
         }
 
+        /* Short / laptop viewports (not just narrow ones): the desktop card
+           height pushed the "CHOOSE YOUR HERO" title off the top of the screen.
+           Shrink the cards + spacing by HEIGHT so the whole face-off fits with
+           no scrolling. */
+        @media (max-height: 820px) {
+          .bb-sel-screen { padding: 14px 24px; }
+          .bb-sel-title { font-size: 30px; margin: 6px 0 0; }
+          .bb-sel-card { min-height: 0; }
+          .bb-sel-spot { min-height: 180px; }
+          .bb-sel-img { max-height: 190px !important; height: auto !important; }
+        }
+
         /* - HP bar juice - */
         .bb-hp-fill { animation: bbStripeMove 0.6s linear infinite }
         @keyframes bbStripeMove { to { background-position: 24px 0, 0 0 } }
@@ -5233,7 +5256,11 @@ export default function BossBattle({
           position: absolute;
           inset: 0;
           display: flex;
-          align-items: center;
+          /* flex-start + auto vertical margins on the content = centred when it
+             fits, top-aligned + scrollable when the viewport is too short, so
+             the Continue button is never clipped off the bottom (was the
+             "nothing to continue" dead-end on laptops). */
+          align-items: flex-start;
           justify-content: center;
           background:
             radial-gradient(ellipse at center, rgba(40,20,10,0.78), rgba(10,10,20,0.95));
@@ -5241,7 +5268,16 @@ export default function BossBattle({
           animation: bbFadeIn 0.6s ease-out;
           padding: 20px;
           z-index: 4;
-          overflow: hidden;
+          overflow-y: auto;
+        }
+        /* Short / laptop viewports: shrink the panel so trophy → hero → stats →
+           Continue all fit without the button dropping below the fold. */
+        @media (max-height: 820px) {
+          .bb-victory-hero { width: 200px; height: 280px; padding-top: 28px; }
+          .bb-victory-title { font-size: 40px; }
+          .bb-victory-subtitle { margin-bottom: 10px; }
+          .bb-victory-body { gap: 20px; }
+          .bb-trophy { width: 60px; height: 60px; }
         }
         .bb-confetti-bg, .bb-gold-rain {
           position: absolute;
@@ -5271,6 +5307,8 @@ export default function BossBattle({
           position: relative;
           max-width: 880px;
           width: 100%;
+          margin-top: auto;
+          margin-bottom: auto;
           display: flex;
           flex-direction: column;
           align-items: center;
