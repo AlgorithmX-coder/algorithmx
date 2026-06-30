@@ -38,6 +38,13 @@ const SHADOW_CARD = "0 24px 48px -22px rgba(2, 4, 12, 0.85)";
 const FONT_BODY = "var(--font-dm-sans), 'DM Sans', system-ui, -apple-system, sans-serif";
 const FONT_DISPLAY = "var(--font-space-grotesk), 'Space Grotesk', system-ui, -apple-system, sans-serif";
 
+/* Weeks that have a generated themed holographic backdrop strip in
+   /public/dashboard/week-bg. Grow this as art lands so a card never points
+   at a missing image. */
+const WEEK_BG_AVAILABLE = new Set<number>([
+  1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+]);
+
 /* ───────────────── ICONS ───────────────── */
 function ShieldLogo({ size = 22 }: { size?: number }) {
   return (
@@ -124,6 +131,16 @@ function LogoutIcon({ size = 16, color = C.textSoft }: { size?: number; color?: 
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none" aria-hidden>
       <path d="M14 4.5H7.5A2.5 2.5 0 0 0 5 7v10a2.5 2.5 0 0 0 2.5 2.5H14" stroke={color} strokeWidth="1.7" strokeLinecap="round" />
       <path d="M17 8.5 20.5 12 17 15.5M20 12h-9" stroke={color} strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+function TrophyIcon({ size = 16, color = C.violetSoft }: { size?: number; color?: string }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" aria-hidden>
+      <path d="M7 4.5h10v4a5 5 0 0 1-10 0v-4Z" stroke={color} strokeWidth="1.7" strokeLinejoin="round" />
+      <path d="M7 6H4.5v1.5a3 3 0 0 0 3 3M17 6h2.5v1.5a3 3 0 0 1-3 3" stroke={color} strokeWidth="1.7" strokeLinecap="round" />
+      <path d="M12 13.5V17m-3 2.5h6m-5 0c0-1.4 1-2.5 2-2.5s2 1.1 2 2.5" stroke={color} strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   );
 }
@@ -247,6 +264,9 @@ export default function DashboardView({
                 </span>
               </div>
               <a href="/hub" className="hidden sm:inline-flex items-center lift" style={{ background: "rgba(54,214,255,0.08)", border: `1px solid ${C.borderStrong}`, borderRadius: 100, padding: "8px 18px", fontSize: 13, fontWeight: 800, color: C.cyan, textDecoration: "none" }}>Hub</a>
+              <a href="/cyberhq" className="hidden sm:inline-flex items-center gap-1.5 lift" style={{ background: "rgba(139,108,255,0.1)", border: `1px solid rgba(139,108,255,0.45)`, borderRadius: 100, padding: "8px 18px", fontSize: 13, fontWeight: 800, color: C.violetSoft, textDecoration: "none" }}>
+                <TrophyIcon size={15} /> Cyber HQ
+              </a>
               {onLogout ? (
                 <form action={onLogout}>
                   <button className="inline-flex items-center gap-1.5 lift" style={{ background: "transparent", border: `1px solid ${C.border}`, borderRadius: 100, padding: "8px 16px", color: C.textSoft, fontSize: 13, fontWeight: 800, cursor: "pointer", fontFamily: "inherit" }}>
@@ -384,7 +404,7 @@ export default function DashboardView({
                   return (
                     <div
                       key={w.id}
-                      className="rounded-3xl flex items-center gap-4 sm:gap-5"
+                      className="relative overflow-hidden rounded-3xl flex items-center gap-4 sm:gap-5"
                       style={{
                         padding: isCurrent ? "22px 22px" : "18px 22px",
                         background: isCurrent
@@ -398,7 +418,35 @@ export default function DashboardView({
                         WebkitBackdropFilter: "blur(10px)",
                       }}
                     >
-                      <div className="shrink-0 flex items-center justify-center font-black text-sm" style={{
+                      {/* Faint themed holographic backdrop (screen-blended so the
+                          pure-black art vanishes and only the glow remains). */}
+                      {WEEK_BG_AVAILABLE.has(w.week) && (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img
+                          src={`/dashboard/week-bg/week-${w.week}.png`}
+                          alt=""
+                          aria-hidden
+                          loading="lazy"
+                          style={{
+                            position: "absolute",
+                            top: 0,
+                            bottom: 0,
+                            left: "25%",
+                            right: 0,
+                            height: "100%",
+                            objectFit: "cover",
+                            objectPosition: "center",
+                            opacity: isCompleted ? 0.4 : 0.58,
+                            mixBlendMode: "screen",
+                            pointerEvents: "none",
+                            zIndex: 0,
+                            WebkitMaskImage: "linear-gradient(90deg, transparent 0%, #000 17%, #000 73%, transparent 100%)",
+                            maskImage: "linear-gradient(90deg, transparent 0%, #000 17%, #000 73%, transparent 100%)",
+                          }}
+                        />
+                      )}
+
+                      <div className="relative z-[1] shrink-0 flex items-center justify-center font-black text-sm" style={{
                         width: 52, height: 52, borderRadius: 100,
                         background: isCompleted ? "rgba(126,255,151,0.16)" : isCurrent ? GRAD_PRIMARY : "rgba(54,214,255,0.08)",
                         color: isCompleted ? C.mossLight : isCurrent ? C.dark : C.textSoft,
@@ -408,7 +456,7 @@ export default function DashboardView({
                         {isCompleted ? <CheckIcon size={22} color={C.mossLight} /> : `W${w.week}`}
                       </div>
 
-                      <div className="flex-1 min-w-0">
+                      <div className="relative z-[1] flex-1 min-w-0">
                         <div className="font-black uppercase mb-0.5 flex items-center gap-2 flex-wrap" style={{ fontSize: 10, letterSpacing: "0.15em", color: isCompleted ? "rgba(160,255,176,0.85)" : isCurrent ? C.cyan : "rgba(143,233,255,0.6)" }}>
                           <span>Week {w.week}</span>
                           {isCompleted && w.stars > 0 && <StarRow stars={w.stars} />}
@@ -418,7 +466,7 @@ export default function DashboardView({
                         <p className="text-xs sm:text-sm mt-1 leading-relaxed line-clamp-2" style={{ color: C.textMuted }}>{w.description}</p>
                       </div>
 
-                      <div className="shrink-0">
+                      <div className="relative z-[1] shrink-0">
                         {isCompleted ? (
                           <a href={w.href} className="inline-flex items-center gap-1.5 font-black lift" style={{ background: "rgba(126,255,151,0.14)", color: C.mossLight, border: "1px solid rgba(126,255,151,0.45)", borderRadius: 100, padding: "10px 18px", fontSize: 12, textDecoration: "none" }}>
                             <CheckIcon size={14} color={C.mossLight} /> Replay
