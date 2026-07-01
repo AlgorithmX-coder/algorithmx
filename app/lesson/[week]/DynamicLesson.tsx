@@ -139,10 +139,12 @@ const EXERCISE_SCREEN_TYPES = new Set<ScreenDef["type"]>([
  * fade-scale lens-change feel; boss battle is a dramatic wipe.
  */
 function transitionForScreen(def: ScreenDef | undefined, dir: "forward" | "back"): TransitionType {
-  if (!def) return dir === "back" ? "slideLeft" : "slideRight";
+  if (!def) return dir === "back" ? "slideLeft" : "decrypt";
   if (def.type === "bossBattle") return "wipeDown";
   if (EXERCISE_SCREEN_TYPES.has(def.type)) return "fadeScale";
-  return dir === "back" ? "slideLeft" : "slideRight";
+  // Forward moves between narrative/content pages get the cyber "decrypt"
+  // reveal; going back stays a plain slide (decrypting in reverse feels wrong).
+  return dir === "back" ? "slideLeft" : "decrypt";
 }
 
 /* ─────────────── RESUME BANNER ───────────────
