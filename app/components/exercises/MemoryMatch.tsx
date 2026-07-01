@@ -545,6 +545,35 @@ export default function MemoryMatch({
           accent="#3a7bff"
         />
         <div style={{ height: 14 }} />
+        {/* Title */}
+        <div style={{ textAlign: "center", marginBottom: 14 }}>
+          <h2
+            style={{
+              margin: "0 0 4px",
+              fontFamily: "'Space Grotesk', sans-serif",
+              fontSize: 26,
+              fontWeight: 900,
+              letterSpacing: "-0.01em",
+              color: "#eaf2ff",
+            }}
+          >
+            Memory{" "}
+            <span
+              style={{
+                background: "linear-gradient(120deg, #00e5ff, #7c5cff)",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+                backgroundClip: "text",
+              }}
+            >
+              Match
+            </span>
+          </h2>
+          <p style={{ margin: 0, fontSize: 14, color: "#94a3b8" }}>
+            Flip the cards, find the matching pairs — remember where they are!{" "}
+            <span aria-hidden>✦</span>
+          </p>
+        </div>
         {/* HUD */}
         <div
           style={{

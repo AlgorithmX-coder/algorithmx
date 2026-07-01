@@ -282,6 +282,36 @@ export default function ThreeRandomWords({
         </span>
       </div>
 
+      {/* Title */}
+      <div style={{ textAlign: "center", marginBottom: 16 }}>
+        <h2
+          style={{
+            margin: "0 0 4px",
+            fontFamily: "'Space Grotesk', sans-serif",
+            fontSize: 26,
+            fontWeight: 900,
+            letterSpacing: "-0.01em",
+            color: "#eaf2ff",
+          }}
+        >
+          Build a{" "}
+          <span
+            style={{
+              background: "linear-gradient(120deg, #7df0ff, #7c5cff)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              backgroundClip: "text",
+            }}
+          >
+            Passphrase
+          </span>
+        </h2>
+        <p style={{ margin: 0, fontSize: 14, color: "#94a3b8" }}>
+          Glue silly random words together — long, memorable, hard to crack!{" "}
+          <span aria-hidden>✦</span>
+        </p>
+      </div>
+
       {/* Slots */}
       <div
         style={{

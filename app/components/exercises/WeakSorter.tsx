@@ -74,6 +74,14 @@ const REASON_TINT: Record<number, { border: string; bg: string }> = {
   3: { border: "#00e5ff", bg: "rgba(0, 229, 255, 0.12)" },
 };
 
+// Themed 3D icon per weakness reason (shared vocabulary with Password Hospital).
+const REASON_ICON: Record<string, string> = {
+  "too-short": "📏",
+  "common-word": "🍌",
+  keyboard: "⌨️",
+  personal: "🆔",
+};
+
 export default function WeakSorter({
   reasons,
   items,
@@ -296,6 +304,35 @@ export default function WeakSorter({
         </span>
       </div>
 
+      {/* Title */}
+      <div style={{ textAlign: "center", marginBottom: 16 }}>
+        <h2
+          style={{
+            margin: "0 0 4px",
+            fontFamily: "'Space Grotesk', sans-serif",
+            fontSize: 28,
+            fontWeight: 900,
+            letterSpacing: "-0.01em",
+            color: "#eaf2ff",
+          }}
+        >
+          Spot the{" "}
+          <span
+            style={{
+              background: "linear-gradient(120deg, #ff9bcb, #ffd158)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              backgroundClip: "text",
+            }}
+          >
+            Weakness
+          </span>
+        </h2>
+        <p style={{ margin: 0, fontSize: 14, color: "#94a3b8" }}>
+          Each password came in weak — work out why! <span aria-hidden>✦</span>
+        </p>
+      </div>
+
       {/* The weak password - slides in from the right on advance,
           gets a green flash + stamp overlay on correct, scales softly
           on wrong (handled by pulseKey). */}
@@ -456,17 +493,58 @@ export default function WeakSorter({
                 touchAction: "manipulation",
               }}
             >
-              <div style={{ fontSize: 16, marginBottom: 4 }}>{r.label}</div>
-              <div
-                style={{
-                  fontFamily: "'JetBrains Mono', monospace",
-                  fontSize: 12,
-                  color: "#cbd5e1",
-                  fontWeight: 500,
-                }}
-              >
-                e.g. {r.example}
-              </div>
+              <span style={{ display: "flex", alignItems: "center", gap: 12, width: "100%" }}>
+                {/* themed 3D icon chip */}
+                <span
+                  aria-hidden
+                  style={{
+                    width: 50,
+                    height: 50,
+                    flexShrink: 0,
+                    borderRadius: 14,
+                    background: "rgba(255,255,255,0.06)",
+                    border: `1px solid ${tint.border}55`,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <PixIcon emoji={REASON_ICON[r.id] ?? "❓"} size={34} />
+                </span>
+                <span style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", flex: 1, minWidth: 0, lineHeight: 1.25 }}>
+                  <span style={{ fontSize: 16, fontWeight: 800 }}>{r.label}</span>
+                  <span
+                    style={{
+                      fontFamily: "'JetBrains Mono', monospace",
+                      fontSize: 12,
+                      color: "#cbd5e1",
+                      fontWeight: 500,
+                    }}
+                  >
+                    e.g. {r.example}
+                  </span>
+                </span>
+                {/* number badge */}
+                <span
+                  aria-hidden
+                  style={{
+                    width: 24,
+                    height: 24,
+                    flexShrink: 0,
+                    borderRadius: "50%",
+                    border: `1.5px solid ${tint.border}66`,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    fontSize: 12,
+                    fontWeight: 800,
+                    color: "#cbd5e1",
+                    fontFamily: "'JetBrains Mono', monospace",
+                  }}
+                >
+                  {i + 1}
+                </span>
+              </span>
             </button>
           );
         })}

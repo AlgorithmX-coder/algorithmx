@@ -95,31 +95,6 @@ export default function WelcomeScene({
         <CaptionPlaque text={caption} />
       </div>
 
-      {/* Floating raccoon glyph in the corner - the antagonist's calling card.
-          Drop-shadow was harsh red; switched to coral/pink so the antagonist
-          still reads as "warning" without breaking the cyber palette. */}
-      <motion.div
-        initial={{ opacity: 0, scale: 0.5, rotate: -20 }}
-        animate={{ opacity: 1, scale: 1, rotate: 0 }}
-        transition={{ ...SPRING.bouncy, delay: 0.9 }}
-        style={{
-          position: "absolute",
-          top: 120,
-          right: 60,
-          fontSize: 78,
-          filter:
-            "drop-shadow(0 0 24px rgba(255, 95, 179, 0.55)) drop-shadow(0 0 48px rgba(255, 122, 89, 0.32))",
-          zIndex: 7,
-          animation: "raccoonTaunt 3s ease-in-out infinite",
-        }}
-      >
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src="/game/characters/raccoon-head.png"
-          alt="The Hacker Raccoon"
-          style={{ width: 104, height: 104, borderRadius: "50%", objectFit: "cover", display: "block", border: "2px solid rgba(255,95,179,0.5)" }}
-        />
-      </motion.div>
 
       {/* Cyber-styled CTA - replaces PrimaryButton (warm gold gradient)
           for the cyber app surface. Position absolute at the bottom

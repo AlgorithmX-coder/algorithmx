@@ -14,6 +14,7 @@
  */
 
 import { useComfortMode } from "@/app/lib/comfortMode";
+import PixIcon from "@/app/components/lesson/PixIcon";
 
 export interface HintBubbleProps {
   /** Visual intensity. */
@@ -22,14 +23,9 @@ export interface HintBubbleProps {
   text: string;
   /** Optional example string ("e.g. Tr0pic4l$un!"). */
   example?: string;
-  /** Speaker for the avatar. */
+  /** Retained for call-site compatibility; no longer renders a face. */
   speaker?: "adam" | "layla";
 }
-
-const AVATAR_SRC: Record<"adam" | "layla", string> = {
-  adam: "/game/characters/adam-head.png",
-  layla: "/game/characters/layla-head.png",
-};
 
 const TIER_COLOUR: Record<1 | 2 | 3, { border: string; glow: string; label: string }> =
   {
@@ -50,7 +46,6 @@ export default function HintBubble({
   tier,
   text,
   example,
-  speaker = "adam",
 }: HintBubbleProps) {
   const comfort = useComfortMode();
   const reduce = comfort.enabled || comfort.prefersReducedMotion;
@@ -84,23 +79,15 @@ export default function HintBubble({
           width: 36,
           height: 36,
           borderRadius: "50%",
-          overflow: "hidden",
           border: `2px solid ${palette.border}`,
           flexShrink: 0,
-          background: "#0f1530",
+          background: "rgba(15, 21, 48, 0.6)",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
         }}
       >
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src={AVATAR_SRC[speaker]}
-          alt={speaker === "adam" ? "Adam" : "Layla"}
-          style={{
-            width: "100%",
-            height: "100%",
-            objectFit: "cover",
-            objectPosition: "center 22%",
-          }}
-        />
+        <PixIcon emoji="💡" size={22} />
       </div>
       <div style={{ textAlign: "left", flex: 1 }}>
         <div

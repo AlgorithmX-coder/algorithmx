@@ -63,16 +63,13 @@ const MODE_LABEL: Record<QuickCheckMode, string> = {
 
 const ACCENTS = ["#00e5ff", "#7c5cff", "#7eff97", "#ffd158"];
 
-const HEAD_SRC: Record<"adam" | "layla", string> = {
-  adam: "/game/characters/adam-head.png",
-  layla: "/game/characters/layla-head.png",
+// Themed 3D icon that fronts each prove-it beat (no characters — matches the
+// exercise redesign). The short line still poses the challenge.
+const MODE_ICON: Record<Exclude<QuickCheckMode, "lie">, string> = {
+  finish: "🎯",
+  speed: "⚡",
+  recall: "🧠",
 };
-
-// Non-lie modes felt flat — just a badge + prompt over empty space, while
-// `lie` mode came alive because the Raccoon *poses* the challenge. So we give
-// finish/speed/recall a coach who poses the challenge the same way: a hero
-// head + a short spoken-style line. Keeps all five prove-it beats
-// character-led and distinct, without a heavy intro (they stay snappy).
 const MODE_HERALD: Record<
   Exclude<QuickCheckMode, "lie">,
   { speaker: "adam" | "layla"; line: string }
@@ -323,9 +320,8 @@ export default function QuickCheck({
         </motion.div>
       )}
 
-      {/* Coach herald (finish / speed / recall) — a hero poses the challenge,
-          mirroring the Raccoon in lie mode so every prove-it beat is
-          character-led instead of a prompt floating in empty space. */}
+      {/* Challenge herald (finish / speed / recall) — a themed 3D icon + a
+          short line poses the challenge (no characters). */}
       {mode !== "lie" && (
         <motion.div
           initial={reduce ? false : { scale: 0.9, opacity: 0 }}
@@ -347,22 +343,15 @@ export default function QuickCheck({
               height: 64,
               borderRadius: "50%",
               flexShrink: 0,
-              overflow: "hidden",
               background: "#0c1230",
               boxShadow:
                 "0 0 0 3px rgba(125,240,255,0.85), 0 0 0 5px rgba(124,92,255,0.45), 0 0 22px rgba(0,229,255,0.45)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
             }}
           >
-            <img
-              src={HEAD_SRC[MODE_HERALD[mode].speaker]}
-              alt=""
-              style={{
-                width: "100%",
-                height: "100%",
-                objectFit: "cover",
-                objectPosition: "center 22%",
-              }}
-            />
+            <PixIcon emoji={MODE_ICON[mode]} size={38} />
           </div>
           <div
             style={{
