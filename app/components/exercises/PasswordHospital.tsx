@@ -583,6 +583,36 @@ export default function PasswordHospital({
         </span>
       </div>
 
+      {/* Title */}
+      <div style={{ textAlign: "center", marginBottom: 18 }}>
+        <h2
+          style={{
+            margin: "0 0 4px",
+            fontFamily: "'Space Grotesk', sans-serif",
+            fontSize: 30,
+            fontWeight: 900,
+            letterSpacing: "-0.01em",
+            color: "#eaf2ff",
+          }}
+        >
+          Fix the{" "}
+          <span
+            style={{
+              background: "linear-gradient(120deg, #a98bff, #ff5fb3)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              backgroundClip: "text",
+            }}
+          >
+            Sick Password
+          </span>
+        </h2>
+        <p style={{ margin: 0, fontSize: 14, color: "#94a3b8" }}>
+          Help diagnose weak passwords and make them strong again!{" "}
+          <span aria-hidden>✦</span>
+        </p>
+      </div>
+
       {/* Patient bed card */}
       {patient && (
         <PatientCard
@@ -638,6 +668,30 @@ export default function PasswordHospital({
           showSkip={unhelpfulRepairsOnCurrent >= 3 && !isHealed}
           intensity={intensity}
         />
+      )}
+
+      {/* Persistent tip bar */}
+      {(phase === "diagnosis" || phase === "repair") && (
+        <div
+          style={{
+            marginTop: 16,
+            display: "flex",
+            alignItems: "center",
+            gap: 12,
+            padding: "12px 18px",
+            borderRadius: 14,
+            background: "rgba(251, 191, 36, 0.08)",
+            border: "1px solid rgba(251, 191, 36, 0.28)",
+          }}
+        >
+          <span aria-hidden style={{ flexShrink: 0 }}>
+            <PixIcon emoji="💡" size={24} />
+          </span>
+          <span style={{ fontSize: 13.5, color: "#e9d8a6", lineHeight: 1.4 }}>
+            Strong passwords mix letters, numbers, and symbols — the longer and
+            more random, the stronger!
+          </span>
+        </div>
       )}
 
       {/* Intro beat */}
@@ -889,6 +943,14 @@ function StrengthMeter({
   );
 }
 
+// Each diagnosis reason gets a themed 3D icon (rendered via PixIcon).
+const REASON_ICON: Record<string, string> = {
+  "too-short": "📏",
+  "common-word": "🍌",
+  keyboard: "⌨️",
+  personal: "🆔",
+};
+
 function DiagnosisRow({
   reasons,
   onPick,
@@ -933,22 +995,62 @@ function DiagnosisRow({
           gap: 12,
         }}
       >
-        {display.map(({ r, i }) => (
+        {display.map(({ r, i }, pos) => (
           <GameButton
             key={r.id}
             variant="quiz"
             size="lg"
             disabled={disabled}
             onClick={() => onPick(r.id, i)}
-            style={{ minHeight: 64, justifyContent: "flex-start", textAlign: "left" }}
+            style={{ minHeight: 80, justifyContent: "flex-start", textAlign: "left", paddingLeft: 12 }}
           >
-            <span style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", lineHeight: 1.25 }}>
-              <span>{r.label}</span>
-              {r.example && (
-                <span style={{ fontSize: 12, fontWeight: 400, opacity: 0.6 }}>
-                  {r.example}
-                </span>
-              )}
+            <span style={{ display: "flex", alignItems: "center", gap: 14, width: "100%" }}>
+              {/* themed 3D icon chip */}
+              <span
+                aria-hidden
+                style={{
+                  width: 54,
+                  height: 54,
+                  flexShrink: 0,
+                  borderRadius: 15,
+                  background: "rgba(124, 92, 255, 0.16)",
+                  border: "1px solid rgba(124, 92, 255, 0.4)",
+                  boxShadow: "inset 0 1px 0 rgba(255,255,255,0.08)",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <PixIcon emoji={REASON_ICON[r.id] ?? "❓"} size={36} />
+              </span>
+              <span style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", lineHeight: 1.25, flex: 1, minWidth: 0 }}>
+                <span style={{ fontWeight: 800 }}>{r.label}</span>
+                {r.example && (
+                  <span style={{ fontSize: 12, fontWeight: 400, opacity: 0.6 }}>
+                    {r.example}
+                  </span>
+                )}
+              </span>
+              {/* number badge */}
+              <span
+                aria-hidden
+                style={{
+                  width: 26,
+                  height: 26,
+                  flexShrink: 0,
+                  borderRadius: "50%",
+                  border: "1.5px solid rgba(148,163,184,0.4)",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  fontSize: 13,
+                  fontWeight: 800,
+                  color: "#94a3b8",
+                  fontFamily: "'JetBrains Mono', monospace",
+                }}
+              >
+                {pos + 1}
+              </span>
             </span>
           </GameButton>
         ))}

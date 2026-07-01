@@ -352,6 +352,33 @@ export default function ChooseYourPath({
         }}
       />
 
+      {/* Title */}
+      <h2
+        style={{
+          position: "relative",
+          zIndex: 1,
+          margin: "0 0 8px",
+          fontFamily: "'Space Grotesk', sans-serif",
+          fontSize: 24,
+          fontWeight: 900,
+          letterSpacing: "-0.01em",
+          color: "#eaf2ff",
+          textShadow: "0 2px 10px rgba(8, 10, 22, 0.6)",
+        }}
+      >
+        Choose Your{" "}
+        <span
+          style={{
+            background: "linear-gradient(120deg, #00e5ff, #7c5cff)",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+            backgroundClip: "text",
+          }}
+        >
+          Path
+        </span>
+      </h2>
+
       {/* Scenario badge */}
       <div
         style={{

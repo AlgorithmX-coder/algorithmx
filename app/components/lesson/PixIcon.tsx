@@ -60,6 +60,7 @@ const MAP: Record<string, string> = {
   "🏷️": "name-tag",
   "🏷": "name-tag",
   "🎂": "cake",
+  "🍌": "banana",
   "⌨️": "keyboard",
   // rewards / feedback
   "🎉": "party",

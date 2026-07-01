@@ -41,11 +41,6 @@ import PixIcon from "@/app/components/lesson/PixIcon";
 
 /* ─────────────── Intro beat ─────────────── */
 
-const HEAD_SRC: Record<"adam" | "layla", string> = {
-  adam: "/game/characters/adam-head.png",
-  layla: "/game/characters/layla-head.png",
-};
-
 export interface ExerciseIntroBeatProps {
   title: string;
   subtitle?: string;
@@ -81,7 +76,6 @@ export default function ExerciseIntroBeat({
   autoMs = 0,
   narration,
   character,
-  logo,
 }: ExerciseIntroBeatProps) {
   const intensity = useMotionIntensity();
   const audio = useGameAudio();
@@ -137,8 +131,10 @@ export default function ExerciseIntroBeat({
         inset: 0,
         zIndex: 25,
         display: "flex",
+        flexDirection: "column",
         alignItems: "center",
-        justifyContent: "center",
+        justifyContent: "flex-start",
+        overflowY: "auto",
         padding: 20,
         background: "rgba(8, 10, 22, 0.88)",
         backdropFilter: "blur(10px)",
@@ -152,6 +148,7 @@ export default function ExerciseIntroBeat({
         style={{
           width: "100%",
           maxWidth: paced ? 470 : 420,
+          margin: "auto 0",
           textAlign: "center",
           color: "#fff7e6",
           background: paced
@@ -165,49 +162,22 @@ export default function ExerciseIntroBeat({
             : "none",
         }}
       >
-        {paced ? (
+        {/* R10: no character/logo emblem on paced (narrated) intros — the
+            narrator isn't a character, so the intro leads with the title. The
+            legacy non-paced variant keeps its small object icon. */}
+        {!paced && icon && (
           <div
             style={{
-              width: 86,
-              height: 86,
-              borderRadius: "50%",
-              margin: "0 auto 12px",
-              overflow: "hidden",
-              border: `3px solid ${accent}`,
-              boxShadow: `0 0 22px ${accent}88`,
-              background: "#0f1530",
+              fontSize: 56,
+              marginBottom: 6,
               animation:
                 intensity === 0
                   ? undefined
                   : "exIntroIconPop 600ms cubic-bezier(0.34, 1.56, 0.64, 1)",
             }}
           >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={logo ?? HEAD_SRC[speaker]}
-              alt={logo ? "" : speaker === "adam" ? "Adam" : "Layla"}
-              style={
-                logo
-                  ? { width: "100%", height: "100%", objectFit: "contain", padding: 12 }
-                  : { width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 22%" }
-              }
-            />
+            <PixIcon emoji={icon} size={64} />
           </div>
-        ) : (
-          icon && (
-            <div
-              style={{
-                fontSize: 56,
-                marginBottom: 6,
-                animation:
-                  intensity === 0
-                    ? undefined
-                    : "exIntroIconPop 600ms cubic-bezier(0.34, 1.56, 0.64, 1)",
-              }}
-            >
-              <PixIcon emoji={icon} size={64} />
-            </div>
-          )
         )}
         {welcome && (
           <div

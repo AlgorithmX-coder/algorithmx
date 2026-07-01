@@ -57,11 +57,6 @@ function stripTags(s: string): string {
   return s.replace(/\[[^\]]*\]/g, "").replace(/\s+/g, " ").trim();
 }
 
-const HEAD_SRC: Record<"adam" | "layla", string> = {
-  adam: "/game/characters/adam-head.png",
-  layla: "/game/characters/layla-head.png",
-};
-
 export interface CoachCaptionProps {
   lines: string[];
   speaker?: "adam" | "layla";
@@ -149,7 +144,7 @@ export default function CoachCaption({
         display: "flex",
         alignItems: "center",
         gap: 12,
-        padding: "12px 18px 12px 12px",
+        padding: "12px 18px",
         borderRadius: 999,
         background: "rgba(10, 16, 38, 0.92)",
         border: "1px solid rgba(125, 240, 255, 0.5)",
@@ -163,29 +158,6 @@ export default function CoachCaption({
       }}
     >
       <style>{`@keyframes coachCaptionIn {from{opacity:0;transform:translate(-50%,14px)}to{opacity:1;transform:translate(-50%,0)}}`}</style>
-      <div
-        style={{
-          width: 44,
-          height: 44,
-          flexShrink: 0,
-          borderRadius: "50%",
-          overflow: "hidden",
-          background: "#0c1230",
-          boxShadow:
-            "0 0 0 2px rgba(125,240,255,0.8), 0 0 14px rgba(0,229,255,0.45)",
-        }}
-      >
-        <img
-          src={HEAD_SRC[speaker]}
-          alt=""
-          style={{
-            width: "100%",
-            height: "100%",
-            objectFit: "cover",
-            objectPosition: "center 22%",
-          }}
-        />
-      </div>
       <span style={{ fontSize: 15, fontWeight: 700, lineHeight: 1.3 }}>
         <span aria-hidden style={{ marginRight: 6 }}>
           🔊
