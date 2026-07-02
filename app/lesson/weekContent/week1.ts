@@ -88,9 +88,9 @@ export const WEEK_1: WeekContent = {
       type: "memoryMatch",
       pairs: [
         { term: "Password", match: "Your secret code", colour: "#00e5ff" },
-        { term: "Key", match: "Opens a lock", colour: "#7eff97" },
-        { term: "Hacker", match: "Tries to break in", colour: "#ff5fb3" },
-        { term: "Secret", match: "Only you know it", colour: "#ffd158" },
+        { term: "Strong", match: "Long and mixed up", colour: "#7eff97" },
+        { term: "Hacker", match: "Guesses your password", colour: "#ff5fb3" },
+        { term: "Secret", match: "Never share it", colour: "#ffd158" },
       ],
       narration: {
         speaker: "adam",
