@@ -4,12 +4,14 @@ import Link from "next/link";
 import { FadeUp } from "./utilities";
 
 /**
- * SubjectShowcase — the "Pick your stream" section. Six stream cards in a
- * 2×3 grid, restyled as HUD panels (reference): per-stream accent glow,
- * corner brackets, a hexagon stream icon with a short circuit tail, a
- * status badge, a flagship-project block, and a full-width CTA (a real
- * link for the live Cybersecurity subject, an inert locked "Coming 20XX"
- * for the rest so the homepage never leaves a family at a 404).
+ * SubjectShowcase — the "Pick your stream" section.
+ *
+ * Restructured so the one live product leads. Cybersecurity is promoted to
+ * a full-width FEATURED card (two-column HUD panel: hero copy + a flagship-
+ * project showcase, carrying the section's only CTA button). The other five
+ * streams drop to a compact, de-emphasized ROADMAP strip below — corner
+ * brackets and accent kept, but muted so the live card owns the eye. The
+ * layout now mirrors the subhead: one live today, five on the roadmap.
  */
 
 interface Stream {
@@ -115,6 +117,9 @@ const STREAMS: Stream[] = [
 ];
 
 export default function SubjectShowcase() {
+  const featured = STREAMS.find((s) => s.isLive)!;
+  const upcoming = STREAMS.filter((s) => !s.isLive);
+
   return (
     <section
       id="subjects"
@@ -189,28 +194,54 @@ export default function SubjectShowcase() {
           </FadeUp>
         </div>
 
-        <div className="lv2-streams-grid">
-          {STREAMS.map((s, i) => (
-            <FadeUp key={s.id} delay={0.06 * i + 0.16}>
-              <StreamCard stream={s} />
-            </FadeUp>
-          ))}
+        <FadeUp delay={0.16}>
+          <FeaturedStreamCard stream={featured} />
+        </FadeUp>
+
+        <div style={{ marginTop: 40 }}>
+          <FadeUp delay={0.22}>
+            <p
+              style={{
+                fontFamily: "var(--lv2-font-mono)",
+                fontSize: 11,
+                fontWeight: 600,
+                letterSpacing: "0.26em",
+                textTransform: "uppercase",
+                color: "rgba(232,237,255,0.45)",
+                margin: "0 0 20px",
+              }}
+            >
+              // ON THE ROADMAP
+            </p>
+          </FadeUp>
+          <div className="lv2-roadmap-grid">
+            {upcoming.map((s, i) => (
+              <FadeUp key={s.id} delay={0.06 * i + 0.26}>
+                <RoadmapCard stream={s} />
+              </FadeUp>
+            ))}
+          </div>
         </div>
       </div>
 
       <style jsx>{`
-        .lv2-streams-grid {
+        .lv2-roadmap-grid {
           display: grid;
-          grid-template-columns: repeat(3, 1fr);
-          gap: 22px;
+          grid-template-columns: repeat(5, 1fr);
+          gap: 16px;
         }
-        @media (max-width: 960px) {
-          .lv2-streams-grid {
+        @media (max-width: 1080px) {
+          .lv2-roadmap-grid {
+            grid-template-columns: repeat(3, 1fr);
+          }
+        }
+        @media (max-width: 720px) {
+          .lv2-roadmap-grid {
             grid-template-columns: repeat(2, 1fr);
           }
         }
-        @media (max-width: 600px) {
-          .lv2-streams-grid {
+        @media (max-width: 460px) {
+          .lv2-roadmap-grid {
             grid-template-columns: 1fr;
           }
         }
@@ -223,12 +254,14 @@ export default function SubjectShowcase() {
 function Bracket({
   accent,
   corner,
+  size = 18,
+  off = 10,
 }: {
   accent: string;
   corner: "tl" | "tr" | "bl" | "br";
+  size?: number;
+  off?: number;
 }) {
-  const size = 18;
-  const off = 10;
   const base: React.CSSProperties = {
     position: "absolute",
     width: size,
@@ -246,130 +279,327 @@ function Bracket({
   return <span aria-hidden style={{ ...base, ...pos }} />;
 }
 
-function StreamCard({ stream }: { stream: Stream }) {
+/* Hexagon stream badge with the thin-line icon centred inside. */
+function HexIcon({
+  accent,
+  icon,
+  size = 46,
+}: {
+  accent: string;
+  icon: string;
+  size?: number;
+}) {
+  const k = size / 46;
+  const w = 46 * k;
+  const h = 52 * k;
+  const pts = [
+    [23, 2],
+    [44, 14.5],
+    [44, 37.5],
+    [23, 50],
+    [2, 37.5],
+    [2, 14.5],
+  ]
+    .map(([x, y]) => `${x * k},${y * k}`)
+    .join(" ");
+  const inner = 22 * k;
+  return (
+    <span
+      style={{
+        position: "relative",
+        width: w,
+        height: h,
+        flexShrink: 0,
+        display: "inline-flex",
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
+      <svg width={w} height={h} viewBox={`0 0 ${w} ${h}`} style={{ position: "absolute", inset: 0 }} aria-hidden>
+        <polygon points={pts} fill={`${accent}1f`} stroke={accent} strokeWidth={1.5} />
+      </svg>
+      <svg
+        width={inner}
+        height={inner}
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke={accent}
+        strokeWidth="1.9"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        style={{ position: "relative" }}
+        aria-hidden
+      >
+        <path d={icon} />
+      </svg>
+    </span>
+  );
+}
+
+/* Status pill — filled + pulse dot when live, muted outline otherwise. */
+function StatusPill({ accent, status, live }: { accent: string; status: string; live: boolean }) {
+  return (
+    <span
+      style={{
+        display: "inline-flex",
+        alignItems: "center",
+        gap: 7,
+        fontFamily: "var(--lv2-font-mono)",
+        fontSize: 11,
+        fontWeight: 700,
+        letterSpacing: "0.16em",
+        textTransform: "uppercase",
+        color: live ? accent : "rgba(232,237,255,0.6)",
+        background: live ? `${accent}1f` : "transparent",
+        border: `1px solid ${live ? `${accent}77` : "rgba(232,237,255,0.22)"}`,
+        padding: "5px 12px",
+        borderRadius: 999,
+      }}
+    >
+      {live && (
+        <span
+          aria-hidden
+          style={{
+            width: 7,
+            height: 7,
+            borderRadius: 999,
+            background: accent,
+            boxShadow: `0 0 10px ${accent}`,
+          }}
+        />
+      )}
+      {status}
+    </span>
+  );
+}
+
+/* FEATURED — full-width, two-column hero panel for the live stream. */
+function FeaturedStreamCard({ stream }: { stream: Stream }) {
   const a = stream.accent;
   return (
     <article
-      className="lv2-stream-card"
+      className="lv2-featured-card"
       style={
         {
           "--accent": a,
           position: "relative",
-          background:
-            `radial-gradient(120% 80% at 50% -10%, ${a}1c, transparent 60%), linear-gradient(180deg, rgba(11,15,26,0.92), rgba(4,7,14,0.94))`,
-          border: `1px solid ${a}55`,
-          borderRadius: 16,
-          padding: "30px 26px 24px",
-          display: "flex",
-          flexDirection: "column",
-          gap: 14,
-          height: "100%",
-          boxShadow: `0 0 0 1px rgba(0,0,0,0.3), 0 18px 50px rgba(0,0,0,0.4), inset 0 0 40px ${a}10`,
-          transition:
-            "transform .35s cubic-bezier(0.16,1,0.3,1), box-shadow .35s cubic-bezier(0.16,1,0.3,1)",
+          background: `radial-gradient(110% 130% at 12% -20%, ${a}24, transparent 55%), linear-gradient(180deg, rgba(11,15,26,0.94), rgba(4,7,14,0.96))`,
+          border: `1px solid ${a}66`,
+          borderRadius: 20,
+          overflow: "hidden",
+          boxShadow: `0 0 0 1px rgba(0,0,0,0.3), 0 26px 70px rgba(0,0,0,0.45), inset 0 0 70px ${a}14`,
+          transition: "transform .35s cubic-bezier(0.16,1,0.3,1), box-shadow .35s cubic-bezier(0.16,1,0.3,1)",
         } as React.CSSProperties
       }
       onMouseOver={(e) => {
         const el = e.currentTarget as HTMLDivElement;
         el.style.transform = "translateY(-4px)";
-        el.style.boxShadow = `0 0 0 1px ${a}66, 0 26px 64px ${a}33, inset 0 0 56px ${a}1c`;
+        el.style.boxShadow = `0 0 0 1px ${a}66, 0 34px 84px ${a}30, inset 0 0 84px ${a}20`;
       }}
       onMouseOut={(e) => {
         const el = e.currentTarget as HTMLDivElement;
         el.style.transform = "translateY(0)";
-        el.style.boxShadow = `0 0 0 1px rgba(0,0,0,0.3), 0 18px 50px rgba(0,0,0,0.4), inset 0 0 40px ${a}10`;
+        el.style.boxShadow = `0 0 0 1px rgba(0,0,0,0.3), 0 26px 70px rgba(0,0,0,0.45), inset 0 0 70px ${a}14`;
       }}
     >
-      <Bracket accent={a} corner="tl" />
-      <Bracket accent={a} corner="tr" />
-      <Bracket accent={a} corner="bl" />
-      <Bracket accent={a} corner="br" />
+      <Bracket accent={a} corner="tl" size={22} off={14} />
+      <Bracket accent={a} corner="tr" size={22} off={14} />
+      <Bracket accent={a} corner="bl" size={22} off={14} />
+      <Bracket accent={a} corner="br" size={22} off={14} />
 
-      {/* Header: hexagon icon + circuit tail, status badge */}
-      <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-        <span
-          style={{
-            position: "relative",
-            width: 46,
-            height: 52,
-            flexShrink: 0,
-            display: "inline-flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <svg width="46" height="52" viewBox="0 0 46 52" style={{ position: "absolute", inset: 0 }} aria-hidden>
-            <polygon
-              points="23,2 44,14.5 44,37.5 23,50 2,37.5 2,14.5"
-              fill={`${a}1f`}
-              stroke={a}
-              strokeWidth="1.5"
-            />
-          </svg>
-          <svg
-            width="22"
-            height="22"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke={a}
-            strokeWidth="1.9"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            style={{ position: "relative" }}
-            aria-hidden
+      <div className="lv2-featured-inner">
+        {/* Left: hero copy + CTA */}
+        <div className="lv2-featured-copy">
+          <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
+            <HexIcon accent={a} icon={stream.icon} size={58} />
+            <svg width="60" height="20" viewBox="0 0 60 20" style={{ opacity: 0.6 }} aria-hidden>
+              <path d="M0 10h40l8-6" fill="none" stroke={a} strokeWidth="1.4" />
+              <circle cx="48" cy="4" r="2.5" fill={a} />
+            </svg>
+            <span style={{ marginLeft: "auto" }}>
+              <StatusPill accent={a} status={stream.status} live />
+            </span>
+          </div>
+
+          <h3
+            style={{
+              fontFamily: "var(--lv2-font-display)",
+              fontSize: "clamp(2rem, 3.4vw, 2.7rem)",
+              fontWeight: 500,
+              color: "var(--lv2-paper)",
+              margin: "18px 0 0",
+              letterSpacing: "-0.022em",
+              lineHeight: 1.05,
+            }}
           >
-            <path d={stream.icon} />
-          </svg>
-        </span>
-        {/* circuit tail */}
-        <svg width="60" height="20" viewBox="0 0 60 20" style={{ opacity: 0.6 }} aria-hidden>
-          <path d="M0 10h40l8-6" fill="none" stroke={a} strokeWidth="1.4" />
-          <circle cx="48" cy="4" r="2.5" fill={a} />
-        </svg>
+            {stream.name}
+          </h3>
 
-        <span
+          <div
+            style={{
+              fontFamily: "var(--lv2-font-mono)",
+              fontSize: 12,
+              fontWeight: 600,
+              letterSpacing: "0.18em",
+              textTransform: "uppercase",
+              color: "rgba(232,237,255,0.55)",
+              marginTop: 10,
+            }}
+          >
+            {stream.ages}
+          </div>
+
+          <p
+            style={{
+              fontFamily: "var(--lv2-font-display)",
+              fontSize: "clamp(0.95rem, 1.15vw, 1.0625rem)",
+              lineHeight: 1.6,
+              color: "rgba(232,237,255,0.78)",
+              margin: "18px 0 0",
+              maxWidth: 460,
+            }}
+          >
+            {stream.blurb}
+          </p>
+
+          {stream.href && (
+            <Link href={stream.href} style={ctaStyle(a)}>
+              {stream.cta}
+              <span aria-hidden style={{ marginLeft: 2 }}>→</span>
+            </Link>
+          )}
+        </div>
+
+        {/* Right: flagship-project showcase */}
+        <div
+          className="lv2-featured-project"
           style={{
-            marginLeft: "auto",
-            display: "inline-flex",
-            alignItems: "center",
-            gap: 7,
-            fontFamily: "var(--lv2-font-mono)",
-            fontSize: 11,
-            fontWeight: 700,
-            letterSpacing: "0.16em",
-            textTransform: "uppercase",
-            color: a,
-            background: stream.isLive ? `${a}1f` : "transparent",
-            border: `1px solid ${a}77`,
-            padding: "5px 12px",
-            borderRadius: 999,
+            border: `1px solid ${a}3a`,
+            background: `linear-gradient(180deg, ${a}14, transparent 90%)`,
+            borderRadius: 16,
+            padding: "28px 26px",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            gap: 14,
           }}
         >
-          {stream.isLive && (
-            <span
-              aria-hidden
-              style={{
-                width: 7,
-                height: 7,
-                borderRadius: 999,
-                background: a,
-                boxShadow: `0 0 10px ${a}`,
-              }}
-            />
-          )}
-          {stream.status}
-        </span>
+          <span
+            style={{
+              fontFamily: "var(--lv2-font-mono)",
+              fontSize: 10,
+              fontWeight: 700,
+              letterSpacing: "0.24em",
+              textTransform: "uppercase",
+              color: a,
+            }}
+          >
+            // FLAGSHIP PROJECT
+          </span>
+          <span
+            style={{
+              fontFamily: "var(--lv2-font-display)",
+              fontSize: "clamp(1.15rem, 1.7vw, 1.45rem)",
+              fontWeight: 500,
+              color: "var(--lv2-paper)",
+              lineHeight: 1.32,
+            }}
+          >
+            {stream.project}
+          </span>
+          <span
+            style={{
+              fontFamily: "var(--lv2-font-mono)",
+              fontSize: 11.5,
+              lineHeight: 1.6,
+              color: "rgba(232,237,255,0.5)",
+              marginTop: 2,
+            }}
+          >
+            Every stream ends in a real, shippable project.
+          </span>
+        </div>
+      </div>
+
+      <style jsx>{`
+        .lv2-featured-card {
+          will-change: transform;
+        }
+        .lv2-featured-inner {
+          display: grid;
+          grid-template-columns: 1.35fr 1fr;
+          gap: 34px;
+          align-items: stretch;
+          padding: 38px 40px;
+        }
+        @media (max-width: 820px) {
+          .lv2-featured-inner {
+            grid-template-columns: 1fr;
+            gap: 24px;
+            padding: 30px 26px;
+          }
+        }
+      `}</style>
+    </article>
+  );
+}
+
+/* ROADMAP — compact, de-emphasized card for an upcoming stream. */
+function RoadmapCard({ stream }: { stream: Stream }) {
+  const a = stream.accent;
+  return (
+    <article
+      className="lv2-roadmap-card"
+      style={
+        {
+          "--accent": a,
+          position: "relative",
+          background:
+            "linear-gradient(180deg, rgba(11,15,26,0.6), rgba(4,7,14,0.72))",
+          border: `1px solid ${a}2e`,
+          borderRadius: 14,
+          padding: "22px 20px",
+          display: "flex",
+          flexDirection: "column",
+          gap: 12,
+          height: "100%",
+          opacity: 0.9,
+          transition:
+            "transform .3s cubic-bezier(0.16,1,0.3,1), box-shadow .3s cubic-bezier(0.16,1,0.3,1), border-color .3s, opacity .3s",
+        } as React.CSSProperties
+      }
+      onMouseOver={(e) => {
+        const el = e.currentTarget as HTMLDivElement;
+        el.style.transform = "translateY(-3px)";
+        el.style.opacity = "1";
+        el.style.borderColor = `${a}66`;
+        el.style.boxShadow = `0 16px 40px rgba(0,0,0,0.4), inset 0 0 34px ${a}12`;
+      }}
+      onMouseOut={(e) => {
+        const el = e.currentTarget as HTMLDivElement;
+        el.style.transform = "translateY(0)";
+        el.style.opacity = "0.9";
+        el.style.borderColor = `${a}2e`;
+        el.style.boxShadow = "none";
+      }}
+    >
+      <Bracket accent={`${a}88`} corner="tl" size={12} off={8} />
+      <Bracket accent={`${a}88`} corner="br" size={12} off={8} />
+
+      <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 10 }}>
+        <HexIcon accent={a} icon={stream.icon} size={38} />
+        <StatusPill accent={a} status={stream.status} live={false} />
       </div>
 
       <h3
         style={{
           fontFamily: "var(--lv2-font-display)",
-          fontSize: "1.55rem",
+          fontSize: "1.05rem",
           fontWeight: 500,
           color: "var(--lv2-paper)",
           margin: "2px 0 0",
-          letterSpacing: "-0.018em",
-          lineHeight: 1.1,
+          letterSpacing: "-0.012em",
+          lineHeight: 1.18,
         }}
       >
         {stream.name}
@@ -378,79 +608,52 @@ function StreamCard({ stream }: { stream: Stream }) {
       <div
         style={{
           fontFamily: "var(--lv2-font-mono)",
-          fontSize: 11,
+          fontSize: 10,
           fontWeight: 600,
-          letterSpacing: "0.18em",
+          letterSpacing: "0.14em",
           textTransform: "uppercase",
-          color: "rgba(232,237,255,0.5)",
+          color: "rgba(232,237,255,0.42)",
         }}
       >
         {stream.ages}
       </div>
 
-      <p
-        style={{
-          fontFamily: "var(--lv2-font-display)",
-          fontSize: 14.5,
-          lineHeight: 1.55,
-          color: "rgba(232,237,255,0.74)",
-          margin: 0,
-          flex: 1,
-        }}
-      >
-        {stream.blurb}
-      </p>
-
       <div
         style={{
           borderTop: `1px solid ${a}22`,
-          paddingTop: 14,
+          paddingTop: 12,
+          marginTop: "auto",
           display: "flex",
           flexDirection: "column",
-          gap: 6,
+          gap: 5,
         }}
       >
         <span
           style={{
             fontFamily: "var(--lv2-font-mono)",
-            fontSize: 10,
+            fontSize: 9,
             fontWeight: 700,
             letterSpacing: "0.2em",
             textTransform: "uppercase",
-            color: a,
+            color: `${a}cc`,
           }}
         >
-          // FLAGSHIP PROJECT
+          // FLAGSHIP
         </span>
         <span
           style={{
             fontFamily: "var(--lv2-font-display)",
-            fontSize: 14,
-            color: "var(--lv2-paper)",
-            lineHeight: 1.45,
+            fontSize: 12.5,
+            color: "rgba(232,237,255,0.72)",
+            lineHeight: 1.4,
           }}
         >
           {stream.project}
         </span>
       </div>
 
-      {stream.isLive && stream.href ? (
-        <Link href={stream.href} style={ctaStyle(a, true)}>
-          {stream.cta}
-          <span aria-hidden style={{ marginLeft: 2 }}>→</span>
-        </Link>
-      ) : (
-        <span role="presentation" aria-disabled style={ctaStyle(a, false)}>
-          {stream.cta}
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke={a} strokeWidth="2.2" aria-hidden>
-            <rect x="5" y="11" width="14" height="10" rx="2" />
-            <path d="M8 11V7a4 4 0 018 0v4" strokeLinecap="round" />
-          </svg>
-        </span>
-      )}
-
       <style jsx>{`
-        .lv2-stream-card {
+        .lv2-roadmap-card {
           will-change: transform;
         }
       `}</style>
@@ -458,13 +661,14 @@ function StreamCard({ stream }: { stream: Stream }) {
   );
 }
 
-function ctaStyle(a: string, live: boolean): React.CSSProperties {
+function ctaStyle(a: string): React.CSSProperties {
   return {
-    marginTop: 6,
-    padding: "13px 18px",
-    borderRadius: 10,
+    alignSelf: "flex-start",
+    marginTop: 26,
+    padding: "15px 26px",
+    borderRadius: 11,
     fontFamily: "var(--lv2-font-mono)",
-    fontSize: 11,
+    fontSize: 12,
     fontWeight: 700,
     letterSpacing: "0.18em",
     textTransform: "uppercase",
@@ -473,11 +677,10 @@ function ctaStyle(a: string, live: boolean): React.CSSProperties {
     alignItems: "center",
     justifyContent: "center",
     gap: 8,
-    background: live ? a : `${a}12`,
-    color: live ? "var(--lv2-ink)" : a,
-    border: live ? "none" : `1px solid ${a}55`,
-    boxShadow: live ? `0 8px 26px ${a}55, 0 0 18px ${a}66` : "none",
-    cursor: live ? "pointer" : "not-allowed",
-    opacity: live ? 1 : 0.92,
+    background: a,
+    color: "var(--lv2-ink)",
+    border: "none",
+    boxShadow: `0 8px 26px ${a}55, 0 0 18px ${a}66`,
+    cursor: "pointer",
   };
 }
