@@ -431,17 +431,21 @@ export default function DashboardView({
                             position: "absolute",
                             top: 0,
                             bottom: 0,
-                            left: "25%",
+                            // R12 — right-anchored motif: sit in the right ~46% of
+                            // the card, clear of the title/description, fading into
+                            // the card on its inner (left) edge. Tucks behind the
+                            // opaque CTA button (z-1) on the far right.
+                            left: "54%",
                             right: 0,
                             height: "100%",
                             objectFit: "cover",
                             objectPosition: "center",
-                            opacity: isCompleted ? 0.4 : 0.58,
+                            opacity: isCompleted ? 0.4 : 0.55,
                             mixBlendMode: "screen",
                             pointerEvents: "none",
                             zIndex: 0,
-                            WebkitMaskImage: "linear-gradient(90deg, transparent 0%, #000 17%, #000 73%, transparent 100%)",
-                            maskImage: "linear-gradient(90deg, transparent 0%, #000 17%, #000 73%, transparent 100%)",
+                            WebkitMaskImage: "linear-gradient(90deg, transparent 0%, #000 40%, #000 100%)",
+                            maskImage: "linear-gradient(90deg, transparent 0%, #000 40%, #000 100%)",
                           }}
                         />
                       )}

@@ -543,31 +543,24 @@ export default function ChooseYourPath({
                       flexDirection: "column",
                       alignItems: "center",
                       justifyContent: "space-between",
-                      padding: "18px 16px 16px",
-                      gap: 10,
+                      padding: "22px 18px 18px",
+                      gap: 14,
                     }}
                   >
-                    {/* Door emblem in a glowing portal ring */}
-                    <div
+                    {/* Neutral 'path' motif — a glowing route node + arrow,
+                        identical on both cards so there's no safe/unsafe
+                        giveaway. Replaces the old door emblem. */}
+                    <svg
+                      width="52"
+                      height="22"
+                      viewBox="0 0 52 22"
                       aria-hidden
-                      style={{
-                        width: 54,
-                        height: 54,
-                        borderRadius: "50%",
-                        flexShrink: 0,
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        fontSize: 26,
-                        background:
-                          "radial-gradient(circle at 50% 36%, rgba(125,240,255,0.32), rgba(15,21,48,0.92))",
-                        border: `2px solid ${palette.rim}`,
-                        boxShadow:
-                          "0 0 18px rgba(0,229,255,0.45), inset 0 0 12px rgba(0,229,255,0.22)",
-                      }}
+                      style={{ flexShrink: 0, filter: "drop-shadow(0 0 8px rgba(0,229,255,0.55))" }}
                     >
-                      <PixIcon emoji="🚪" size={32} />
-                    </div>
+                      <line x1="8" y1="11" x2="38" y2="11" stroke="#7df0ff" strokeWidth="2" strokeLinecap="round" strokeDasharray="1 5" />
+                      <circle cx="8" cy="11" r="4.5" fill="#0f1530" stroke="#00e5ff" strokeWidth="2" />
+                      <path d="M38 4l8 7-8 7" fill="none" stroke="#00e5ff" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
 
                     {/* Option text — the hero */}
                     <div
@@ -578,9 +571,10 @@ export default function ChooseYourPath({
                         justifyContent: "center",
                         textAlign: "center",
                         color: "#eef4ff",
-                        fontSize: 17,
+                        fontSize: 18.5,
                         fontWeight: 800,
-                        lineHeight: 1.3,
+                        lineHeight: 1.32,
+                        letterSpacing: "-0.01em",
                         textShadow: "0 2px 6px rgba(0, 0, 0, 0.6)",
                       }}
                     >
@@ -591,16 +585,17 @@ export default function ChooseYourPath({
                     <div
                       style={{
                         width: "100%",
-                        padding: "9px 10px",
-                        borderRadius: 10,
+                        padding: "11px 10px",
+                        borderRadius: 12,
                         flexShrink: 0,
-                        background: "rgba(0, 229, 255, 0.12)",
-                        border: "1px solid rgba(0, 229, 255, 0.4)",
-                        color: "#7df0ff",
+                        background: "linear-gradient(180deg, rgba(0,229,255,0.2), rgba(0,229,255,0.07))",
+                        border: "1px solid rgba(0, 229, 255, 0.5)",
+                        color: "#aef2ff",
                         fontSize: 12,
                         fontWeight: 800,
-                        letterSpacing: 1,
+                        letterSpacing: 1.5,
                         textTransform: "uppercase",
+                        boxShadow: "inset 0 0 14px rgba(0,229,255,0.12)",
                       }}
                     >
                       Tap to choose →

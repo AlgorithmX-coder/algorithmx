@@ -1433,6 +1433,8 @@ export default function BossBattle({
   const [ready, setReady] = useState(false);
   const [selectedHero, setSelectedHero] = useState<HeroId | null>(null);
   const [selecting, setSelecting] = useState<HeroId | null>(null);
+  // R15 — cinematic boss-intro splash shown once before "Choose Your Hero".
+  const [showBossIntro, setShowBossIntro] = useState(true);
 
   // ── Arena3D (Three.js scene) wiring ──
   const [arenaMood, setArenaMood] = useState<"normal" | "danger" | "victory">(
@@ -1566,6 +1568,10 @@ export default function BossBattle({
   const [currentQuestionMs, setCurrentQuestionMs] = useState(18000);
   const [timerMs, setTimerMs] = useState(18000);
   const timerRunningRef = useRef(false);
+  // R17 — timestamp of the final blow (boss HP hit 0). The victory watchdog
+  // uses it to force-resolve the win if the primary setResult("won") timer is
+  // ever lost. null = boss not yet defeated this attempt.
+  const bossDefeatedAtRef = useRef<number | null>(null);
   const questionStartTsRef = useRef<number | null>(null);
   const lastTickSecondRef = useRef<number>(18);
   const [fastestMs, setFastestMs] = useState<number | null>(null);
@@ -2293,6 +2299,9 @@ export default function BossBattle({
         }
 
         if (newBossHp <= 0) {
+          // R17 — mark defeat time so the watchdog can force-resolve victory
+          // if the setResult("won") timer below is ever lost (tab throttle, etc.).
+          if (bossDefeatedAtRef.current === null) bossDefeatedAtRef.current = performance.now();
           // FINAL-BLOW SEQUENCE - freeze frame, zoom, white flash, then
           // a slow-motion beat carries the win-burst before snapping
           // back to normal and revealing the results card.
@@ -2591,6 +2600,7 @@ export default function BossBattle({
     setFeedback(null);
     setLocked(false);
     setResult(null);
+    bossDefeatedAtRef.current = null;
     setStats({ totalAsked: 0, correct: 0, maxCombo: 0 });
     setFastestMs(null);
     setAnnouncement(null);
@@ -2643,10 +2653,28 @@ export default function BossBattle({
       }, 4000 + i * 300));
     }
     schedule.push(window.setTimeout(() => setStatsStage(7), 4000 + starCount * 300 + 400));
+    // R17 backstop — Continue lives behind statsStage>=7; guarantee it becomes
+    // reachable even if the staged reveal above is ever interrupted.
+    schedule.push(window.setTimeout(() => setStatsStage((s) => (s < 7 ? 7 : s)), 8000));
     return () => {
       for (const id of schedule) window.clearTimeout(id);
     };
   }, [result, stats.totalAsked, stats.correct]);
+
+  // R17 — victory watchdog. The win transition rides a single fire-and-forget
+  // setTimeout(setResult("won"), 2200) in the final-blow handler; if that timer
+  // is ever lost the boss dead-ends on the gold slow-mo with no victory screen.
+  // Once the boss is defeated in game state, force-resolve the win a few seconds
+  // later if it still hasn't landed — comfortably after the intended 2.2s beat,
+  // so the normal happy-path timing is never affected.
+  useEffect(() => {
+    if (result !== null) return;
+    const id = window.setInterval(() => {
+      const t = bossDefeatedAtRef.current;
+      if (t !== null && performance.now() - t > 4000) setResult("won");
+    }, 1000);
+    return () => window.clearInterval(id);
+  }, [result]);
 
   const finalAccuracy =
     stats.totalAsked > 0 ? Math.round((stats.correct / stats.totalAsked) * 100) : 0;
@@ -2704,7 +2732,121 @@ export default function BossBattle({
         fontFamily: "'DM Sans', sans-serif",
       }}
     >
-      {!selectedHero && (
+      {/* R15 — cinematic boss-intro splash (epic Adam & Layla vs Raccoon art),
+          shown once before the hero picker. "Choose Your Hero" is gated behind
+          !showBossIntro so selection stays fully intact. */}
+      {showBossIntro && (
+        <div
+          role="dialog"
+          aria-label="Boss battle intro"
+          style={{
+            position: "absolute",
+            inset: 0,
+            zIndex: 60,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "flex-end",
+            textAlign: "center",
+            backgroundColor: "#05060f",
+            backgroundImage: "url(/game/boss/week-1-showdown.webp)",
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+          }}
+        >
+          <div
+            aria-hidden
+            style={{
+              position: "absolute",
+              inset: 0,
+              background:
+                "linear-gradient(180deg, rgba(5,6,15,0.5) 0%, rgba(5,6,15,0.05) 30%, rgba(5,6,15,0.35) 60%, rgba(5,6,15,0.94) 100%)",
+            }}
+          />
+          <div
+            style={{
+              position: "relative",
+              zIndex: 1,
+              maxWidth: 720,
+              padding: "0 24px clamp(40px, 8vh, 96px)",
+            }}
+          >
+            <div
+              style={{
+                fontFamily: "'Space Grotesk', sans-serif",
+                fontSize: 13,
+                fontWeight: 800,
+                letterSpacing: "0.32em",
+                textTransform: "uppercase",
+                color: "#ff5b7a",
+                marginBottom: 10,
+                textShadow: "0 2px 12px rgba(0,0,0,0.85)",
+              }}
+            >
+              ⚠ Final Boss
+            </div>
+            <h1
+              style={{
+                fontFamily: "'Space Grotesk', sans-serif",
+                fontSize: "clamp(2.2rem, 6vw, 4rem)",
+                fontWeight: 900,
+                lineHeight: 1.02,
+                margin: 0,
+                color: "#fff",
+                letterSpacing: "-0.02em",
+                textShadow: "0 4px 24px rgba(0,0,0,0.9)",
+              }}
+            >
+              {bossName}
+            </h1>
+            <p
+              style={{
+                fontSize: "clamp(1rem, 1.6vw, 1.2rem)",
+                color: "#dbe6ff",
+                margin: "12px auto 26px",
+                maxWidth: 520,
+                lineHeight: 1.5,
+                textShadow: "0 2px 10px rgba(0,0,0,0.9)",
+              }}
+            >
+              He&apos;s after every password in the city. Team up with Adam &amp;
+              Layla and lock him out for good!
+            </p>
+            <button
+              type="button"
+              onClick={() => {
+                playSound("select");
+                setShowBossIntro(false);
+              }}
+              style={{
+                border: "none",
+                cursor: "pointer",
+                fontFamily: "'Space Grotesk', sans-serif",
+                fontSize: 17,
+                fontWeight: 800,
+                letterSpacing: "0.04em",
+                color: "#04060f",
+                padding: "16px 40px",
+                borderRadius: 999,
+                background: "linear-gradient(135deg, #00e5ff, #7c5cff)",
+                boxShadow:
+                  "0 12px 34px -8px rgba(0,229,255,0.6), 0 0 0 1px rgba(255,255,255,0.18) inset",
+                transition: "transform 0.2s ease",
+              }}
+              onMouseOver={(e) => {
+                e.currentTarget.style.transform = "translateY(-2px) scale(1.03)";
+              }}
+              onMouseOut={(e) => {
+                e.currentTarget.style.transform = "none";
+              }}
+            >
+              Enter the Battle →
+            </button>
+          </div>
+        </div>
+      )}
+
+      {!selectedHero && !showBossIntro && (
         <div className="bb-sel-screen">
           {/* Live R3F atmosphere - cosmic atrium, sits behind the CSS
               decoration layers and the cards. */}
