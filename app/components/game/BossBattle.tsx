@@ -32,13 +32,6 @@ const Arena3D = dynamic(() => import("./Arena3D"), { ssr: false });
 // so the separate realm canvas is overkill. File kept on disk for
 // possible reuse.
 
-// Live R3F backdrop for the CHOOSE YOUR HERO screen - calmer cousin of
-// BossEnergyCore, sets a "preparation" mood before the boss reactor.
-const HeroSelectAtmosphere = dynamic(
-  () => import("@/app/components/HeroSelectAtmosphere"),
-  { ssr: false },
-);
-
 import { useIsMobile } from "@/app/lib/useIsMobile";
 import { useComfortMode } from "@/app/lib/comfortMode";
 import {
@@ -2848,84 +2841,34 @@ export default function BossBattle({
 
       {!selectedHero && !showBossIntro && (
         <div className="bb-sel-screen">
-          {/* Live R3F atmosphere - cosmic atrium, sits behind the CSS
-              decoration layers and the cards. */}
-          <div className="bb-sel-canvas" aria-hidden="true">
-            {!isMobile && <HeroSelectAtmosphere />}
-          </div>
-
-          {/* Background layers - cosmic blobs + bottom horizon haze */}
+          {/* R21 — smooth cosmic backdrop: soft theme-coloured glows + a gentle
+              central aura (replaces the R3F wireframe / tesla / lightning / grain). */}
           <div className="bb-sel-mesh bb-sel-mesh-blue" />
           <div className="bb-sel-mesh bb-sel-mesh-purple" />
-          <div className="bb-sel-haze" />
-          <div className="bb-sel-beam" />
+          <div className="bb-sel-aura" aria-hidden="true" />
 
-          {/* Subtle full-bleed vignette + ultra-fine grain overlay -
-              focuses attention to the centre and adds the "filmic"
-              quality high-end games tend to have. */}
+          {/* Soft vignette to focus attention on the centre. */}
           <div className="bb-sel-vignette" aria-hidden="true" />
-          <div className="bb-sel-grain" aria-hidden="true" />
 
-          {/* Lightning streaks scattered across the screen - was 6,
-              trimmed to 3 to ease GPU paint while the R3F atmosphere
-              runs behind. */}
-          {[
-            { left: "12%", h: 240, dur: 7,   delay: 0 },
-            { left: "55%", h: 280, dur: 9,   delay: 3 },
-            { left: "88%", h: 200, dur: 8.5, delay: 5 },
-          ].map((b, i) => (
-            <span
-              key={`bolt-${i}`}
-              className="bb-sel-bolt"
-              aria-hidden="true"
-              style={{
-                left: b.left,
-                height: b.h,
-                animationDuration: `${b.dur}s`,
-                animationDelay: `${b.delay}s`,
-              }}
-            />
-          ))}
 
-          {/* Drifting particles - warm cosmic palette to match the
-              lock screen (gold / coral / pink / cosmic / cyan). */}
+          {/* Drifting particles - soft, sparse, cyan/violet theme palette. */}
           <div className="bb-sel-particles" aria-hidden="true">
-            {Array.from({ length: 14 }).map((_, i) => (
+            {Array.from({ length: isMobile ? 10 : 18 }).map((_, i) => (
               <span
                 key={i}
                 className="bb-sel-particle"
                 style={{
-                  left: `${(i * 4.17 + (i % 3) * 2.5) % 100}%`,
-                  width: `${2 + (i % 3)}px`,
-                  height: `${2 + (i % 3)}px`,
-                  background: ["#ffd158", "#ffb347", "#ff5fb3", "#7c5cff", "#7df0ff"][i % 5],
-                  animationDelay: `${(i * 0.95) % 12}s`,
-                  animationDuration: `${14 + (i % 6) * 2.5}s`,
+                  left: `${(i * 5.3 + (i % 4) * 2) % 100}%`,
+                  width: `${1.5 + (i % 3)}px`,
+                  height: `${1.5 + (i % 3)}px`,
+                  background: ["#7df0ff", "#a98bff", "#c7f9ff", "#8b6cff", "#e8edff"][i % 5],
+                  animationDelay: `${(i * 0.8) % 12}s`,
+                  animationDuration: `${16 + (i % 6) * 2.5}s`,
                 }}
               />
             ))}
           </div>
 
-          {/* Tesla arc across the centre - fires every ~2.6s. Two zigzag
-              SVG paths (cyan + bright white core) for proper electric
-              bolt look. Sits between the hero cards. */}
-          <svg
-            className="bb-sel-tesla"
-            viewBox="0 0 100 30"
-            preserveAspectRatio="none"
-            aria-hidden="true"
-          >
-            <path
-              d="M0,15 L8,8 L16,20 L24,10 L32,18 L40,7 L48,16 L56,12 L64,22 L72,9 L80,17 L88,11 L100,15"
-              stroke="#7df0ff"
-              style={{ color: "#7df0ff" }}
-            />
-            <path
-              d="M0,15 L8,8 L16,20 L24,10 L32,18 L40,7 L48,16 L56,12 L64,22 L72,9 L80,17 L88,11 L100,15"
-              stroke="#ffffff"
-              style={{ strokeWidth: 0.3, opacity: 0.9 }}
-            />
-          </svg>
 
           {/* Title block */}
           <h1 className="bb-sel-title">CHOOSE YOUR HERO</h1>
@@ -4438,7 +4381,10 @@ export default function BossBattle({
           align-items: center; justify-content: center;
           /* Cinematic radial - same lineage as the FINAL SHOWDOWN
              lock screen. Cosmic-violet warmth bleeding through navy. */
-          background: radial-gradient(ellipse at 50% 70%, #2a0d2e 0%, #1a1f4d 35%, #0f1530 70%, #04050d 100%);
+          background:
+            radial-gradient(ellipse 100% 80% at 50% -15%, rgba(124,92,255,0.30), transparent 55%),
+            radial-gradient(ellipse 90% 70% at 50% 115%, rgba(0,229,255,0.14), transparent 55%),
+            radial-gradient(circle at 50% 45%, #1a1444 0%, #120f30 44%, #08081c 74%, #04050d 100%);
           padding: 40px 24px;
           z-index: 5;
           overflow: hidden;
@@ -4495,25 +4441,26 @@ export default function BossBattle({
           filter: blur(60px);
         }
         .bb-sel-mesh-blue {
-          top: -28vmax; left: -22vmax;
-          background: radial-gradient(circle, rgba(124,92,255,0.38), transparent 65%);
-          animation: bbSelMeshBlue 22s ease-in-out infinite;
+          top: -30vmax; left: -24vmax;
+          background: radial-gradient(circle, rgba(124,92,255,0.34), transparent 66%);
+          animation: bbSelMeshBlue 24s ease-in-out infinite;
         }
         .bb-sel-mesh-purple {
-          top: -24vmax; right: -22vmax;
-          background: radial-gradient(circle, rgba(255,95,179,0.30), transparent 65%);
-          animation: bbSelMeshPurple 26s ease-in-out infinite reverse;
+          top: -26vmax; right: -24vmax;
+          background: radial-gradient(circle, rgba(0,229,255,0.22), transparent 66%);
+          animation: bbSelMeshPurple 28s ease-in-out infinite reverse;
         }
-        .bb-sel-haze {
+        /* R21 - soft central aura behind the cards; the smooth focal glow. */
+        .bb-sel-aura {
           position: absolute;
-          bottom: -10%;
-          left: 30%;
-          width: 560px;
-          height: 320px;
+          top: 46%; left: 50%;
+          width: 68vmax; height: 46vmax;
+          transform: translate(-50%, -50%);
           border-radius: 50%;
-          background: radial-gradient(circle, rgba(255, 122, 89, 0.28), transparent 65%);
-          filter: blur(70px);
+          background: radial-gradient(ellipse at center, rgba(110,130,255,0.18), rgba(0,229,255,0.06) 46%, transparent 72%);
+          filter: blur(55px);
           pointer-events: none;
+          z-index: 0;
         }
         /* Lightning streak (warm gold) - used inline in the JSX. */
         .bb-sel-bolt {

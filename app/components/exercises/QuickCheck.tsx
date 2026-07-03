@@ -75,7 +75,7 @@ const MODE_HERALD: Record<
   { speaker: "adam" | "layla"; line: string }
 > = {
   finish: { speaker: "layla", line: "Can you finish the rule?" },
-  speed: { speaker: "adam", line: "Quick — beat the clock!" },
+  speed: { speaker: "adam", line: "Quick! Beat the clock!" },
   recall: { speaker: "layla", line: "Do you remember this one?" },
 };
 
@@ -502,7 +502,7 @@ export default function QuickCheck({
 function defaultPraise(mode: QuickCheckMode): string {
   switch (mode) {
     case "lie":
-      return "Nice — you spotted the trick! ✓";
+      return "Nice! You spotted the trick! ✓";
     case "speed":
       return "Fast AND right! ✓";
     default:
@@ -513,10 +513,10 @@ function defaultPraise(mode: QuickCheckMode): string {
 function defaultNudge(mode: QuickCheckMode): string {
   switch (mode) {
     case "lie":
-      return "Look again — is that really true?";
+      return "Look again, is that really true?";
     case "finish":
-      return "Not quite — which word finishes the rule?";
+      return "Not quite, which word finishes the rule?";
     default:
-      return "Not quite — have another go!";
+      return "Not quite, have another go!";
   }
 }
