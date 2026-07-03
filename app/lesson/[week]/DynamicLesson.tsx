@@ -1501,6 +1501,7 @@ function DynamicLessonInner({ qaEnabled }: { qaEnabled: boolean }) {
                 badgeIcon={content.badgeIcon}
                 badgeName={content.badgeName}
                 weekNumber={content.weekNumber}
+                missionTitle={content.title}
                 stats={bossStats}
                 onClaim={() => navigate(screen + 1)}
               />

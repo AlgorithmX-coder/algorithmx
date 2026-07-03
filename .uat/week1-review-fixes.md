@@ -108,6 +108,84 @@ imagery; **PixIcon 3D icons, no raw emoji**.
       cosmic gradient + soft mesh glows + a central aura; recoloured particles to
       the theme. `app/components/game/BossBattle.tsx`.
 
+- [x] **R22 — Boss answers were ALWAYS option A.** Every `week1.ts` bossPhases
+      question authors `correctIndex: 0`, and BossBattle rendered answers in data
+      order with no shuffle, so a kid could just spam the first option and win.
+      Fix: shuffle each question's answer order once in BossBattle's
+      `customQuestions` useMemo (Fisher-Yates on the answers, remap correctIndex).
+      Applies to the phases path AND the legacy questions list; shared component so
+      every week benefits. BossBattle is client-only (ssr:false) so Math.random()
+      is safe / no hydration mismatch. Also wired the `/test/bossbattle` QA harness
+      to pass `WEEK_1.bossPhases` (was falling back to generic default questions).
+- [x] **R23 — Password examples were repetitive (otter-rocket-mango everywhere).**
+      Diversified 25 strong-password examples across `week1.ts` (boss phases +
+      quickChecks + cyberScanner + the teaching example) into distinct, fun combos:
+      dragon-taco-comet, Wizard-Penguin-Volcano, Robot-Comet7!, Cactus-Banjo8!,
+      Comet$Dragon7Waffle!, etc. Added 6 creative words (dragon, penguin, robot,
+      comet, taco, waffle) to the Three Random Words pick-bank so kids can build
+      them too.
+
+- [x] **R24 — More boss questions.** Boss went from 15 to 25 questions (5 per
+      phase), all password-themed and creative: four-word combos
+      (`Kangaroo-Waffle-Comet-Pickle`), "someone is watching you type", "share your
+      password to win the game", pet-name traps, "I crack passwords all day", etc.
+      `week1.ts` bossPhases (prod content).
+- [x] **R25 — Redesign the badge/victory screen to the "MISSION COMPLETE" reference.**
+      Gold shield on glowing orbital rings + rays, a MISSION COMPLETE! ribbon, the
+      "Week N Badge Earned!" flourish, the badge name as a big silver-gradient title,
+      a mission subtitle, three icon stat cards (XP / Accuracy / Best combo), gold
+      corner brackets + confetti. Applied to the REAL lesson victory
+      (`app/components/lesson/BossVictoryScene.tsx`, keeps its audio + Claim Badge /
+      Visit Cyber HQ buttons; `missionTitle` now passed from DynamicLesson) AND the
+      `/test/bossbattle` harness badge screen. Verified both via screenshot.
+
+- [x] **R26 — Boss FIGHT arena background redesign (depth + declutter + soften).**
+      Analysed first via a 4-agent workflow: the fight backdrop is an isolated z0
+      layer = a 2897-line raw-Three.js `Arena3D` scene behind a transparent Pixi
+      character canvas + DOM HUD, so it can be retextured with zero risk to combat.
+      Changes (all in `app/components/game/Arena3D.tsx`, game layer untouched):
+      (1) added a cosmic far-plane backdrop sphere — baked per-hero deep-space
+      gradient + soft nebula + starfield (`makeCosmosTexture`), unlit/no-fog, drawn
+      first, so the arena floats in space instead of a flat black void; (2) made the
+      back wall + side walls translucent (opacity 0.34 / 0.20, depthWrite off) so the
+      cosmos reads through them as faint holographic layers = real depth; (3) removed
+      the near-black ceiling (opened the top to space + saved a lit surface);
+      (4) trimmed the busiest decor — particles 50→30, code snippets 15→9. Net perf
+      neutral-to-better. Verified in the fight state via screenshot. Note: Adam's
+      wrapper hue-rotate tints the (blue) backdrop teal, which matches his teal arena.
+
+- [x] **R27 — Completely redeveloped the boss FIGHT background from the battle
+      splash.** (Supersedes R26's in-place Arena3D tweaks.) Generated a
+      character-free neon-cyberspace battlefield matching the boss splash
+      (firewalls with flame, matrix data streams, glowing circuit-grid floor with
+      a central node, sparks) via OpenArt (splash as reference), optimised to
+      155KB `public/game/boss/arena-bg.webp`. Replaced the entire 2897-line
+      Three.js `Arena3D` scene with this image backdrop in the z0 wrapper
+      (`BossBattle.tsx` ~3075): cover image + slow drift + phase-escalation tint
+      (warms→red at phases 2-3) + impact flash (keyed on shake) + depth vignette;
+      Layla hue-shifts the cyan environment to violet. Removed the now-unused
+      `dynamic`/`Arena3D` imports (big perf win — drops a whole WebGL context that
+      ran alongside PixiJS). The Pixi character layer + DOM HUD + countdown are
+      untouched. `Arena3D.tsx` is now dead code (kept for now; revert-friendly).
+      Cohesive with the intro splash → the reveal now flows straight into the fight.
+
+- [x] **R28 — "Where is the raccoon sound?" — villain voice was far off / silent.**
+      Analysed the whole boss-audio path (`sounds.ts` SoundManager/Howler,
+      `audioMute.ts` master mute, `BossBattle.playVillain`). Three real defects, all
+      in `BossBattle.tsx`: **(1) wrong timing** — the intro line fired 900ms after
+      the component *mounts*, i.e. during the "Choose Your Hero" splash, seconds
+      BEFORE the raccoon drops into the arena → it played to an empty screen, then
+      silence when he actually landed. Moved it into the intro choreography's
+      `impact` stage (~4450ms, a beat after the roar) so his voice matches his
+      entrance. **(2) ignored the mute button** — the voice is raw `<audio>` (not
+      Howler), so `Howler.mute()` couldn't touch it: it played straight through the
+      HUD mute and never stopped. Now `playVillain` early-returns on `isAudioMuted()`
+      and a `subscribeAudioMute` listener cuts any line the instant the child mutes
+      (mirrors how the coach narration handles mute). **(3) too quiet** — raw 0.6
+      read as "far off" next to the 0.9 coach voice; raised to 0.92 so he lands with
+      weight. Taunts + defeat line flow through the same fixed path. Boss SFX
+      (`bossRoar`/`bossDefeated`) already went through Howler and were fine.
+
 ### Fixed this round (R7–R11)
 - [x] **R7 — Remove raccoon glyph on the alert/incident screen.** The floating
       Hacker-Raccoon avatar in the top-right corner of the "ALERT INCOMING /

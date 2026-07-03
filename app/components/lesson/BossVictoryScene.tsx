@@ -3,33 +3,16 @@
 /**
  * Boss Victory Scene - the post-bossBattle payoff.
  *
- * Replaces the legacy `<Card>` with 🏆 + headline + 1 stat line. The
- * old card collapsed the biggest interactive moment of the lesson
- * into a generic confirmation. This scene treats the win as a real
- * celebration:
- *
- *   1. Defeated-Raccoon stamp arrives with rotation+overshoot settle
- *   2. "VICTORY!" wordmark blooms with gradient + drop shadow
- *   3. 4 stat tiles cascade in with audio stings (accuracy, best
- *      combo, phases cleared, XP earned)
- *   4. Badge bloom: badgeIcon + badgeName with halo + sparkle ring
- *   5. Continue + Cyber HQ CTAs land last
- *
- * Routed through the existing toolkit (useExerciseFeedback,
- * useGameAudio, useMotionIntensity) so juice is consistent with the
- * other premium screens.
+ * "Mission complete" celebration matching the badge-earned reference:
+ * a gold shield on glowing orbital rings + rays, a MISSION COMPLETE!
+ * ribbon, the "Week N Badge Earned!" flourish, the badge name as a big
+ * gradient title, three icon stat cards, and the lesson CTAs. Audio
+ * stings + motion-intensity handling preserved from the toolkit.
  */
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { motion } from "motion/react";
-import {
-  useExerciseFeedback,
-  useGameAudio,
-  useMotionIntensity,
-} from "@/app/lib/gameEngine";
-import GameButton from "@/app/components/lesson/GameButton";
-import PixIcon from "@/app/components/lesson/PixIcon";
+import { useGameAudio, useMotionIntensity } from "@/app/lib/gameEngine";
 
 export interface BossVictoryStats {
   combo: number;
@@ -43,66 +26,42 @@ export interface BossVictorySceneProps {
   badgeIcon: string;
   badgeName: string;
   weekNumber: number;
+  /** Mission name for the subtitle, e.g. "Passwords: The Secret Code". */
+  missionTitle?: string;
   stats: BossVictoryStats | null;
   onClaim: () => void;
 }
 
 export default function BossVictoryScene({
-  badgeIcon,
   badgeName,
   weekNumber,
+  missionTitle,
   stats,
   onClaim,
 }: BossVictorySceneProps) {
   const audio = useGameAudio();
-  const fx = useExerciseFeedback();
   const intensity = useMotionIntensity();
   const router = useRouter();
-  const [step, setStep] = useState(0);
+  const [shown, setShown] = useState(false);
   const firedRef = useRef(false);
 
-  // Cascade — comfort/reduced motion compresses or skips beats.
   useEffect(() => {
     if (firedRef.current) return;
     firedRef.current = true;
-
-    if (intensity === 0) {
-      setStep(99);
-      return;
-    }
-
-    const scale = intensity < 1 ? 0.55 : 1;
-    const t = (ms: number) => Math.max(60, Math.round(ms * scale));
-    const beats = [220, 520, 720, 880, 1040, 1200, 1480, 1700, 1900];
-    const timers: number[] = [];
-
-    // Initial big-win sting + confetti.
+    setShown(true);
+    // Big-win sting + defeated raccoon signature.
     audio.victory();
-    // Signature boss-defeated SFX (ascending fanfare + defeated
-    // raccoon descending grumble + crystalline finale).
     audio.signature("boss-defeated");
-    if (intensity > 0) {
-      fx.unlock({ text: "VICTORY!" });
-    }
-
-    beats.forEach((delay, i) => {
-      timers.push(
-        window.setTimeout(() => {
-          setStep(i + 1);
-          // Stat tiles (steps 4–7) get the xp tick chime
-          if (i >= 3 && i <= 6) audio.xpTick();
-          // Badge bloom
-          if (i === 7) {
-            audio.badgeEarned();
-            // Signature badge-bloom: warm bell + heraldic flourish on
-            // top of the existing badge chime.
-            audio.signature("badge-bloom");
-          }
-        }, t(delay))
-      );
-    });
-    return () => timers.forEach((id) => window.clearTimeout(id));
-  }, [audio, fx, intensity]);
+    // Badge bloom a beat later.
+    const t = window.setTimeout(
+      () => {
+        audio.badgeEarned();
+        audio.signature("badge-bloom");
+      },
+      intensity === 0 ? 120 : 900,
+    );
+    return () => window.clearTimeout(t);
+  }, [audio, intensity]);
 
   const handleHQ = useCallback(() => {
     audio.tap();
@@ -114,496 +73,286 @@ export default function BossVictoryScene({
     onClaim();
   }, [audio, onClaim]);
 
-  // Stat tile data is computed from stats prop with safe fallbacks.
-  const phasesCleared = stats?.phasesCleared ?? stats?.totalPhases ?? 5;
-  const totalPhases = stats?.totalPhases ?? 5;
-  const tiles: { id: string; label: string; value: string; accent: string; visibleAt: number }[] = [
-    {
-      id: "accuracy",
-      label: "Accuracy",
-      value: `${stats?.accuracy ?? 0}%`,
-      accent: "#7eff97",
-      visibleAt: 4,
-    },
-    {
-      id: "combo",
-      label: "Best combo",
-      value: `×${stats?.combo ?? 0}`,
-      accent: "#00e5ff",
-      visibleAt: 5,
-    },
-    {
-      id: "phases",
-      label: "Phases cleared",
-      value: `${phasesCleared}/${totalPhases}`,
-      accent: "#ff5fb3",
-      visibleAt: 6,
-    },
-    {
-      id: "xp",
-      label: "XP earned",
-      value: `+${stats?.xp ?? 0}`,
-      accent: "#fde047",
-      visibleAt: 7,
-    },
-  ];
+  const anim = intensity > 0;
+  const cornerBase: React.CSSProperties = {
+    position: "absolute",
+    width: 26,
+    height: 26,
+    borderColor: "rgba(251,191,36,0.6)",
+    pointerEvents: "none",
+  };
 
   return (
     <div
       style={{
         position: "relative",
         width: "100%",
-        maxWidth: 980,
+        maxWidth: 1040,
         margin: "0 auto",
-        padding: "20px clamp(12px, 3vw, 28px)",
+        padding: "8px clamp(8px,2vw,24px)",
+        fontFamily: "'DM Sans', system-ui, -apple-system, sans-serif",
         color: "#fff7e6",
-        fontFamily:
-          "ui-rounded, 'Fredoka', 'Quicksand', system-ui, -apple-system, sans-serif",
       }}
     >
       <SceneStyles />
 
-      {/* Decorative rays behind everything */}
-      <div
-        aria-hidden
-        style={{
-          position: "absolute",
-          inset: 0,
-          background:
-            "conic-gradient(from 0deg, rgba(253,224,71,0.32) 0deg, transparent 12deg, rgba(253,224,71,0.32) 30deg, transparent 42deg, rgba(253,224,71,0.32) 60deg, transparent 72deg, rgba(253,224,71,0.32) 90deg, transparent 102deg, rgba(253,224,71,0.32) 120deg, transparent 132deg, rgba(253,224,71,0.32) 150deg, transparent 162deg, rgba(253,224,71,0.32) 180deg, transparent 192deg, rgba(253,224,71,0.32) 210deg, transparent 222deg, rgba(253,224,71,0.32) 240deg, transparent 252deg, rgba(253,224,71,0.32) 270deg, transparent 282deg, rgba(253,224,71,0.32) 300deg, transparent 312deg, rgba(253,224,71,0.32) 330deg, transparent 342deg)",
-          filter: "blur(2px)",
-          opacity: 0.55,
-          mixBlendMode: "screen",
-          animation:
-            intensity > 0 ? "bossRaysSpin 22s linear infinite" : undefined,
-          pointerEvents: "none",
-        }}
-      />
-
-      {/* Defeated raccoon panel */}
-      <div
-        style={{
-          position: "relative",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          marginBottom: 16,
-        }}
-      >
-        <motion.div
-          initial={
-            intensity === 0
-              ? { opacity: 0 }
-              : { opacity: 0, scale: 0.4, rotate: -25 }
-          }
-          animate={
-            step >= 1
-              ? intensity === 0
-                ? { opacity: 1 }
-                : { opacity: 1, scale: 1, rotate: -6 }
-              : intensity === 0
-                ? { opacity: 0 }
-                : { opacity: 0, scale: 0.4, rotate: -25 }
-          }
-          transition={
-            intensity === 0
-              ? { duration: 0.14 }
-              : { type: "spring", stiffness: 220, damping: 11 }
-          }
-          style={{
-            position: "relative",
-            width: 220,
-            height: 220,
-            display: "grid",
-            placeItems: "center",
-            marginBottom: 4,
-          }}
-        >
-          {/* Star burst halo */}
-          <span
-            aria-hidden
-            style={{
-              position: "absolute",
-              inset: -28,
-              borderRadius: "50%",
-              background:
-                "radial-gradient(circle, rgba(253,224,71,0.45) 0%, transparent 65%)",
-              filter: "blur(8px)",
-              animation:
-                intensity > 0
-                  ? "bossHaloPulse 2.6s ease-in-out infinite"
-                  : undefined,
-            }}
-          />
-          {/* The raccoon (defeated + crossed) */}
-          <span
-            aria-hidden
-            style={{
-              filter:
-                "drop-shadow(0 8px 16px rgba(0,0,0,0.6)) grayscale(0.3) brightness(0.85)",
-              opacity: 0.85,
-              transform: "rotate(8deg)",
-              display: "inline-block",
-            }}
-          >
-            <img
-              src="/game/characters/raccoon-defeated.png"
-              alt=""
-              style={{ width: 150, height: 150, objectFit: "contain" }}
+      {/* Confetti (decorative, gated on motion) */}
+      {anim && (
+        <div aria-hidden style={{ position: "absolute", inset: "-40px 0 0", pointerEvents: "none", overflow: "hidden" }}>
+          {Array.from({ length: 34 }).map((_, i) => (
+            <span
+              key={i}
+              className="mcc-confetti"
+              style={{
+                left: `${(i * 2.9 + (i % 5) * 3.1) % 100}%`,
+                width: i % 3 === 0 ? 11 : 6,
+                height: i % 3 === 0 ? 6 : 12,
+                background: ["#fbbf24", "#f59e0b", "#a78bfa", "#7c5cff", "#fde047", "#c084fc"][i % 6],
+                animationDelay: `${(i * 0.24) % 5}s`,
+                animationDuration: `${3.8 + (i % 4) * 0.9}s`,
+              }}
             />
-          </span>
-          {/* Big diagonal NO stamp */}
-          <span
-            aria-hidden
-            style={{
-              position: "absolute",
-              width: 240,
-              height: 12,
-              background:
-                "linear-gradient(90deg, transparent 0%, #ef4444 18%, #ef4444 82%, transparent 100%)",
-              borderRadius: 6,
-              transform: "rotate(-22deg)",
-              boxShadow: "0 0 12px rgba(239,68,68,0.85)",
-              opacity: 0.95,
-            }}
-          />
-          {/* Z-z-z above its head */}
-          <span
-            aria-hidden
-            style={{
-              position: "absolute",
-              top: 6,
-              right: 14,
-              fontFamily: "'Space Grotesk', sans-serif",
-              fontWeight: 900,
-              fontSize: 22,
-              color: "#bfeaff",
-              textShadow: "0 0 8px rgba(125,240,255,0.6)",
-              transform: "rotate(12deg)",
-            }}
-          >
-            zzz
-          </span>
-        </motion.div>
+          ))}
+        </div>
+      )}
 
-        {/* DEFEATED stamp */}
-        <motion.div
-          initial={
-            intensity === 0
-              ? { opacity: 0 }
-              : { opacity: 0, scale: 1.5, rotate: -8 }
-          }
-          animate={
-            step >= 2
-              ? intensity === 0
-                ? { opacity: 1 }
-                : { opacity: 1, scale: 1, rotate: -4 }
-              : intensity === 0
-                ? { opacity: 0 }
-                : { opacity: 0, scale: 1.5, rotate: -8 }
-          }
-          transition={
-            intensity === 0
-              ? { duration: 0.12 }
-              : { type: "spring", stiffness: 360, damping: 14 }
-          }
-          style={{
-            padding: "6px 18px",
-            borderRadius: 8,
-            background: "rgba(239,68,68,0.92)",
-            border: "3px double rgba(255,255,255,0.85)",
-            color: "#fff",
-            fontFamily: "'Space Grotesk', sans-serif",
-            fontWeight: 900,
-            fontSize: 13,
-            letterSpacing: "0.32em",
-            textTransform: "uppercase",
-            boxShadow: "0 6px 14px rgba(239,68,68,0.55)",
-            textShadow: "0 1px 0 rgba(0,0,0,0.4)",
-          }}
-        >
-          Defeated
-        </motion.div>
-      </div>
-
-      {/* VICTORY wordmark */}
-      <motion.h1
-        initial={
-          intensity === 0
-            ? { opacity: 0 }
-            : { opacity: 0, scale: 0.6, y: 20 }
-        }
-        animate={
-          step >= 3
-            ? intensity === 0
-              ? { opacity: 1 }
-              : { opacity: 1, scale: 1, y: 0 }
-            : intensity === 0
-              ? { opacity: 0 }
-              : { opacity: 0, scale: 0.6, y: 20 }
-        }
-        transition={
-          intensity === 0
-            ? { duration: 0.16 }
-            : { type: "spring", stiffness: 280, damping: 14 }
-        }
-        style={{
-          margin: "0 auto 18px",
-          fontSize: "clamp(40px, 7.5vw, 72px)",
-          fontWeight: 900,
-          letterSpacing: "0.06em",
-          textAlign: "center",
-          background:
-            "linear-gradient(135deg, #fde047 0%, #ff7a59 50%, #ff5fb3 100%)",
-          WebkitBackgroundClip: "text",
-          WebkitTextFillColor: "transparent",
-          backgroundClip: "text",
-          textShadow: "0 0 32px rgba(253, 224, 71, 0.5)",
-          filter: "drop-shadow(0 8px 28px rgba(253,224,71,0.45))",
-        }}
-      >
-        VICTORY!
-      </motion.h1>
-
-      {/* Stat tiles */}
+      {/* Card */}
       <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))",
-          gap: 12,
-          marginBottom: 22,
-          maxWidth: 760,
-          marginInline: "auto",
-        }}
-      >
-        {tiles.map((tile) => (
-          <StatTile
-            key={tile.id}
-            label={tile.label}
-            value={tile.value}
-            accent={tile.accent}
-            visible={step >= tile.visibleAt}
-            intensity={intensity}
-          />
-        ))}
-      </div>
-
-      {/* Badge bloom */}
-      <motion.div
-        initial={
-          intensity === 0
-            ? { opacity: 0 }
-            : { opacity: 0, scale: 0.4 }
-        }
-        animate={
-          step >= 8
-            ? intensity === 0
-              ? { opacity: 1 }
-              : { opacity: 1, scale: 1 }
-            : intensity === 0
-              ? { opacity: 0 }
-              : { opacity: 0, scale: 0.4 }
-        }
-        transition={
-          intensity === 0
-            ? { duration: 0.16 }
-            : { type: "spring", stiffness: 220, damping: 13 }
-        }
+        className={anim ? "mcc-card mcc-card-in" : "mcc-card"}
         style={{
           position: "relative",
+          borderRadius: 26,
+          padding: "clamp(16px,3vw,38px) clamp(18px,4vw,56px) clamp(22px,3vw,34px)",
+          background: "linear-gradient(180deg, rgba(22,18,54,0.6), rgba(11,9,30,0.64))",
+          border: "1.5px solid rgba(96,140,255,0.32)",
+          boxShadow: "0 26px 80px rgba(0,0,0,0.55), inset 0 0 70px rgba(70,48,140,0.22)",
+          backdropFilter: "blur(6px)",
+          WebkitBackdropFilter: "blur(6px)",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          marginBottom: 18,
+          textAlign: "center",
+          opacity: shown || !anim ? 1 : 0,
         }}
       >
-        <span
-          aria-hidden
-          style={{
-            position: "absolute",
-            inset: -36,
-            borderRadius: "50%",
-            background:
-              "radial-gradient(circle, rgba(253,224,71,0.55) 0%, rgba(124,92,255,0.18) 50%, transparent 80%)",
-            filter: "blur(14px)",
-            animation:
-              intensity > 0 ? "bossHaloPulse 3.4s ease-in-out infinite" : undefined,
-          }}
-        />
-        <div
-          style={{
-            position: "relative",
-            width: 96,
-            height: 96,
-            borderRadius: "50%",
-            display: "grid",
-            placeItems: "center",
-            background:
-              "radial-gradient(circle at 30% 28%, #fff8dc 0%, #fde047 35%, #ff7a59 75%, #b8862a 100%)",
-            border: "3px solid #fff8dc",
-            boxShadow:
-              "0 12px 28px rgba(253, 224, 71, 0.55), inset 0 0 0 4px rgba(255,255,255,0.18)",
-            fontSize: 48,
-          }}
-        >
-          {badgeIcon}
+        {/* Gold corner brackets */}
+        <span style={{ ...cornerBase, top: 14, left: 14, borderTop: "2px solid", borderLeft: "2px solid", borderTopLeftRadius: 10 }} />
+        <span style={{ ...cornerBase, top: 14, right: 14, borderTop: "2px solid", borderRight: "2px solid", borderTopRightRadius: 10 }} />
+        <span style={{ ...cornerBase, bottom: 14, left: 14, borderBottom: "2px solid", borderLeft: "2px solid", borderBottomLeftRadius: 10 }} />
+        <span style={{ ...cornerBase, bottom: 14, right: 14, borderBottom: "2px solid", borderRight: "2px solid", borderBottomRightRadius: 10 }} />
+
+        {/* Shield stage */}
+        <div style={{ position: "relative", width: 260, height: 224, display: "grid", placeItems: "center", marginBottom: 4 }}>
+          <span aria-hidden className={anim ? "mcc-rays" : "mcc-rays mcc-rays-static"} />
+          <span aria-hidden className="mcc-ring mcc-ring-1" style={anim ? undefined : { animation: "none" }} />
+          <span aria-hidden className="mcc-ring mcc-ring-2" style={anim ? undefined : { animation: "none" }} />
+          <span aria-hidden className="mcc-ring mcc-ring-3" style={anim ? undefined : { animation: "none" }} />
+          <ShieldMark anim={anim} />
+          <div className="mcc-ribbon">
+            <span aria-hidden>★</span> MISSION COMPLETE! <span aria-hidden>★</span>
+          </div>
         </div>
+
+        {/* Week N Badge Earned */}
         <div
           style={{
-            marginTop: 10,
-            fontFamily: "'JetBrains Mono', monospace",
-            fontSize: 10,
-            letterSpacing: "0.22em",
-            fontWeight: 800,
-            color: "#fde047",
-            textTransform: "uppercase",
-            textShadow: "0 0 10px rgba(253,224,71,0.6)",
-          }}
-        >
-          Week {weekNumber} badge unlocked
-        </div>
-        <div
-          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 14,
+            marginTop: 18,
+            color: "#fbbf24",
             fontFamily: "'Space Grotesk', sans-serif",
-            fontSize: 22,
+            fontWeight: 800,
+            fontSize: "clamp(15px,2vw,21px)",
+            letterSpacing: "0.01em",
+            textShadow: "0 0 16px rgba(251,191,36,0.5)",
+          }}
+        >
+          <span aria-hidden style={{ opacity: 0.7, letterSpacing: "-2px" }}>‹‹‹</span>
+          Week {weekNumber} Badge Earned!
+          <span aria-hidden style={{ opacity: 0.7, letterSpacing: "-2px" }}>›››</span>
+        </div>
+
+        {/* Badge name title */}
+        <h1
+          style={{
+            margin: "4px 0 6px",
+            fontFamily: "'Space Grotesk', sans-serif",
             fontWeight: 900,
-            color: "#fff7e6",
-            textShadow: "0 0 14px rgba(253,224,71,0.45)",
+            fontSize: "clamp(38px,6.4vw,80px)",
+            lineHeight: 1.02,
+            letterSpacing: "-0.022em",
+            background: "linear-gradient(180deg, #ffffff 0%, #d4dcf7 52%, #9fabd8 100%)",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+            backgroundClip: "text",
+            filter: "drop-shadow(0 4px 22px rgba(160,180,255,0.28))",
           }}
         >
           {badgeName}
+        </h1>
+
+        {/* Subtitle */}
+        <p style={{ color: "#b3a4e0", fontSize: "clamp(14px,1.6vw,18px)", margin: "0 0 clamp(20px,3vw,30px)", opacity: 0.92 }}>
+          {missionTitle
+            ? `You completed the ${missionTitle} mission!`
+            : "You completed this week's mission!"}
+        </p>
+
+        {/* Stat cards */}
+        <div style={{ display: "flex", alignItems: "stretch", justifyContent: "center", flexWrap: "wrap", gap: 0, marginBottom: "clamp(22px,3vw,34px)" }}>
+          <StatCard accent="#fbbf24" label="XP earned" value={`+${stats?.xp ?? 0}`} icon={<XpIcon />} />
+          <StatDivider />
+          <StatCard accent="#34d399" label="Accuracy" value={`${stats?.accuracy ?? 0}%`} icon={<TargetIcon />} />
+          <StatDivider />
+          <StatCard accent="#a78bfa" label="Best combo" value={`${stats?.combo ?? 0}x`} icon={<BoltIcon />} />
         </div>
-      </motion.div>
 
-      {/* CTAs */}
-      <motion.div
-        initial={intensity === 0 ? { opacity: 0 } : { opacity: 0, y: 12 }}
-        animate={
-          step >= 9
-            ? { opacity: 1, y: 0 }
-            : intensity === 0
-              ? { opacity: 0 }
-              : { opacity: 0, y: 12 }
-        }
-        transition={{ duration: intensity === 0 ? 0.15 : 0.3 }}
-        style={{
-          display: "flex",
-          gap: 12,
-          justifyContent: "center",
-          flexWrap: "wrap",
-        }}
-      >
-        <GameButton
-          variant="secondary"
-          size="lg"
-          icon="🏠"
-          onClick={handleHQ}
-        >
-          Visit Cyber HQ
-        </GameButton>
-        <GameButton
-          variant="primary"
-          size="lg"
-          icon="→"
-          onClick={handleClaim}
-        >
-          Claim Badge
-        </GameButton>
-      </motion.div>
-
-      {fx.layer()}
+        {/* CTAs */}
+        <div style={{ display: "flex", gap: 16, flexWrap: "wrap", justifyContent: "center", width: "100%" }}>
+          <button type="button" onClick={handleHQ} className="mcc-btn mcc-btn-secondary">
+            <ShieldMini /> Visit Cyber HQ
+          </button>
+          <button type="button" onClick={handleClaim} className="mcc-btn mcc-btn-primary">
+            Claim Badge <span aria-hidden>→</span>
+          </button>
+        </div>
+      </div>
     </div>
   );
 }
 
-/* ── Stat tile ─────────────────────────────────────────────────── */
-
-function StatTile({
-  label,
-  value,
-  accent,
-  visible,
-  intensity,
-}: {
-  label: string;
-  value: string;
-  accent: string;
-  visible: boolean;
-  intensity: number;
-}) {
+/* ── Shield + icons ────────────────────────────────────────────── */
+function ShieldMark({ anim }: { anim: boolean }) {
   return (
-    <motion.div
-      initial={
-        intensity === 0
-          ? { opacity: 0 }
-          : { opacity: 0, scale: 0.5, y: 14 }
-      }
-      animate={
-        visible
-          ? intensity === 0
-            ? { opacity: 1 }
-            : { opacity: 1, scale: 1, y: 0 }
-          : intensity === 0
-            ? { opacity: 0 }
-            : { opacity: 0, scale: 0.5, y: 14 }
-      }
-      transition={
-        intensity === 0
-          ? { duration: 0.12 }
-          : { type: "spring", stiffness: 320, damping: 16 }
-      }
-      style={{
-        padding: "14px 16px 12px",
-        borderRadius: 14,
-        background: "rgba(10, 16, 36, 0.78)",
-        border: `1.5px solid ${accent}88`,
-        boxShadow: `0 10px 20px rgba(0,0,0,0.45), 0 0 18px ${accent}33`,
-        textAlign: "center",
-      }}
-    >
-      <div
-        style={{
-          fontFamily: "'JetBrains Mono', monospace",
-          fontSize: 9,
-          letterSpacing: "0.2em",
-          fontWeight: 800,
-          color: accent,
-          textTransform: "uppercase",
-          marginBottom: 4,
-          textShadow: `0 0 6px ${accent}88`,
-        }}
-      >
-        {label}
-      </div>
-      <div
-        style={{
-          fontFamily: "'Space Grotesk', sans-serif",
-          fontSize: 26,
-          fontWeight: 900,
-          color: "#fff7e6",
-          lineHeight: 1,
-          textShadow: `0 0 14px ${accent}55`,
-        }}
-      >
-        {value}
-      </div>
-    </motion.div>
+    <svg className={anim ? "mcc-shield" : undefined} viewBox="0 0 120 140" width="148" height="172" aria-hidden style={{ position: "relative", zIndex: 2 }}>
+      <defs>
+        <linearGradient id="mccShield" x1="0" y1="0" x2="0.35" y2="1">
+          <stop offset="0%" stopColor="#fff2c2" />
+          <stop offset="34%" stopColor="#fbbf24" />
+          <stop offset="100%" stopColor="#d97706" />
+        </linearGradient>
+        <linearGradient id="mccShieldEdge" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stopColor="#fff7d6" />
+          <stop offset="100%" stopColor="#b45309" />
+        </linearGradient>
+      </defs>
+      <path d="M60 5 L106 23 V70 Q106 112 60 135 Q14 112 14 70 V23 Z" fill="url(#mccShield)" stroke="url(#mccShieldEdge)" strokeWidth="4" strokeLinejoin="round" />
+      <path d="M60 12 L100 27 V70 Q100 106 60 127 Q20 106 20 70 V27 Z" fill="none" stroke="rgba(255,255,255,0.35)" strokeWidth="1.5" />
+      <path d="M41 70 l13 15 l27 -33" stroke="#5a3a05" strokeWidth="8" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
   );
 }
 
-/* ── Keyframes (scoped) ────────────────────────────────────────── */
+function ShieldMini() {
+  return (
+    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden>
+      <path d="M12 3l7 2.6V11c0 4.4-3 7-7 8.4C8 18 5 15.4 5 11V5.6L12 3z" strokeLinejoin="round" />
+      <path d="M9.2 11.5l1.9 2 3.7-4.2" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
 
+function StatCard({ accent, label, value, icon }: { accent: string; label: string; value: string; icon: React.ReactNode }) {
+  return (
+    <div style={{ display: "flex", alignItems: "center", gap: 14, padding: "16px clamp(16px,2.2vw,28px)", borderRadius: 18, background: "rgba(12,10,32,0.55)", border: "1px solid rgba(120,130,190,0.18)", minWidth: 184 }}>
+      <span style={{ flexShrink: 0, width: 44, height: 44, borderRadius: 12, display: "grid", placeItems: "center", color: accent, background: `${accent}1e`, border: `1px solid ${accent}55`, boxShadow: `0 0 16px ${accent}33` }}>
+        {icon}
+      </span>
+      <span style={{ textAlign: "left", lineHeight: 1.1 }}>
+        <span style={{ display: "block", fontSize: 12.5, fontWeight: 600, color: "#a7b0d6", marginBottom: 3 }}>{label}:</span>
+        <span style={{ display: "block", fontFamily: "'Space Grotesk', sans-serif", fontSize: 30, fontWeight: 900, color: accent, textShadow: `0 0 16px ${accent}55` }}>{value}</span>
+      </span>
+    </div>
+  );
+}
+
+function StatDivider() {
+  return <span aria-hidden style={{ alignSelf: "center", width: 1, height: 46, margin: "0 clamp(6px,1.4vw,18px)", background: "linear-gradient(180deg, transparent, rgba(150,160,220,0.4), transparent)" }} />;
+}
+
+function XpIcon() {
+  return (
+    <svg viewBox="0 0 32 32" width="26" height="26" aria-hidden>
+      <polygon points="16,3 27,9.5 27,22.5 16,29 5,22.5 5,9.5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
+      <text x="16" y="20.5" textAnchor="middle" fontSize="10" fontWeight="900" fill="currentColor" fontFamily="'Space Grotesk', sans-serif">XP</text>
+    </svg>
+  );
+}
+function TargetIcon() {
+  return (
+    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
+      <circle cx="12" cy="12" r="8.5" />
+      <circle cx="12" cy="12" r="4.5" />
+      <circle cx="12" cy="12" r="1.4" fill="currentColor" stroke="none" />
+    </svg>
+  );
+}
+function BoltIcon() {
+  return (
+    <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden>
+      <path d="M13 2L4 14h6l-1 8 9-12h-6l1-8z" fill="currentColor" />
+    </svg>
+  );
+}
+
+/* ── Scoped styles ─────────────────────────────────────────────── */
 function SceneStyles() {
   return (
     <style jsx global>{`
-      @keyframes bossRaysSpin {
-        from { transform: rotate(0deg); }
-        to   { transform: rotate(360deg); }
+      @keyframes mccConfettiFall {
+        0% { transform: translateY(-14vh) rotate(0deg); opacity: 0; }
+        12% { opacity: 1; }
+        100% { transform: translateY(120vh) rotate(540deg); opacity: 0.9; }
       }
-      @keyframes bossHaloPulse {
-        0%, 100% { transform: scale(1);    opacity: 0.95; }
-        50%      { transform: scale(1.1);  opacity: 0.7;  }
+      .mcc-confetti { position: absolute; top: -8vh; border-radius: 2px; animation-name: mccConfettiFall; animation-timing-function: linear; animation-iteration-count: infinite; }
+      @keyframes mccCardIn { from { opacity: 0; transform: translateY(16px) scale(0.97); } to { opacity: 1; transform: none; } }
+      .mcc-card-in { animation: mccCardIn 0.5s cubic-bezier(0.16,1,0.3,1) both; }
+      @keyframes mccShieldFloat {
+        0%,100% { transform: translateY(0); filter: drop-shadow(0 10px 22px rgba(217,119,6,0.55)) drop-shadow(0 0 30px rgba(251,191,36,0.5)); }
+        50% { transform: translateY(-6px); filter: drop-shadow(0 14px 28px rgba(217,119,6,0.65)) drop-shadow(0 0 46px rgba(251,191,36,0.75)); }
       }
+      .mcc-shield { animation: mccShieldFloat 3s ease-in-out infinite; }
+      .mcc-rays {
+        position: absolute; width: 330px; height: 330px; top: -50px; border-radius: 50%;
+        background: conic-gradient(from 0deg,
+          rgba(253,224,71,0.30) 0deg, transparent 10deg, rgba(253,224,71,0.30) 20deg, transparent 30deg,
+          rgba(253,224,71,0.30) 40deg, transparent 50deg, rgba(253,224,71,0.30) 60deg, transparent 70deg,
+          rgba(253,224,71,0.30) 80deg, transparent 90deg, rgba(253,224,71,0.30) 100deg, transparent 110deg,
+          rgba(253,224,71,0.30) 120deg, transparent 130deg, rgba(253,224,71,0.30) 140deg, transparent 150deg,
+          rgba(253,224,71,0.30) 160deg, transparent 170deg, rgba(253,224,71,0.30) 180deg, transparent 190deg,
+          rgba(253,224,71,0.30) 200deg, transparent 210deg, rgba(253,224,71,0.30) 220deg, transparent 230deg,
+          rgba(253,224,71,0.30) 240deg, transparent 250deg, rgba(253,224,71,0.30) 260deg, transparent 270deg,
+          rgba(253,224,71,0.30) 280deg, transparent 290deg, rgba(253,224,71,0.30) 300deg, transparent 310deg,
+          rgba(253,224,71,0.30) 320deg, transparent 330deg, rgba(253,224,71,0.30) 340deg, transparent 350deg);
+        filter: blur(1px);
+        -webkit-mask-image: radial-gradient(circle, #000 20%, transparent 70%);
+        mask-image: radial-gradient(circle, #000 20%, transparent 70%);
+        animation: mccRaySpin 26s linear infinite; opacity: 0.7;
+      }
+      .mcc-rays-static { animation: none; opacity: 0.5; }
+      @keyframes mccRaySpin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+      .mcc-ring { position: absolute; border-radius: 50%; border: 2px solid rgba(251,191,36,0.5); box-shadow: 0 0 18px rgba(251,191,36,0.4); transform: rotateX(72deg); animation: mccRingPulse 3.2s ease-in-out infinite; }
+      .mcc-ring-1 { width: 190px; height: 190px; top: 70px; }
+      .mcc-ring-2 { width: 250px; height: 250px; top: 56px; opacity: 0.6; animation-delay: .4s; }
+      .mcc-ring-3 { width: 310px; height: 310px; top: 40px; opacity: 0.35; animation-delay: .8s; }
+      @keyframes mccRingPulse { 0%,100% { opacity: 0.5; } 50% { opacity: 0.15; } }
+      .mcc-ribbon {
+        position: absolute; bottom: 6px; left: 50%; transform: translateX(-50%); white-space: nowrap; z-index: 3;
+        background: linear-gradient(180deg, #7c5cff, #5b3fd6); color: #fff; font-family: 'Space Grotesk', sans-serif; font-weight: 800;
+        font-size: 14px; letter-spacing: 0.06em; padding: 8px 26px; border-radius: 6px;
+        box-shadow: 0 8px 20px rgba(60,30,140,0.55), inset 0 1px 0 rgba(255,255,255,0.3);
+      }
+      .mcc-ribbon span { color: #ffd94a; }
+      .mcc-ribbon::before, .mcc-ribbon::after { content: ""; position: absolute; top: 100%; width: 0; height: 0; border-style: solid; }
+      .mcc-ribbon::before { left: 0; border-width: 7px 0 0 12px; border-color: transparent transparent transparent #3f2ba0; }
+      .mcc-ribbon::after { right: 0; border-width: 7px 12px 0 0; border-color: transparent #3f2ba0 transparent transparent; }
+      .mcc-btn { display: inline-flex; align-items: center; gap: 10px; cursor: pointer; padding: 15px 30px; border-radius: 100px; font-weight: 800; font-size: 16px; font-family: 'DM Sans', system-ui, sans-serif; letter-spacing: 0.01em; transition: transform .18s ease, box-shadow .18s ease; }
+      .mcc-btn:hover { transform: translateY(-2px); }
+      .mcc-btn-secondary { background: rgba(18,16,44,0.7); color: #dbe3ff; border: 1.5px solid rgba(120,130,190,0.4); }
+      .mcc-btn-secondary:hover { border-color: rgba(150,165,230,0.7); }
+      .mcc-btn-primary { background: linear-gradient(135deg, #f97316, #ea580c); color: #fff; border: none; box-shadow: 0 10px 30px rgba(249,115,22,0.55), 0 0 0 1px rgba(255,255,255,0.14) inset; }
+      .mcc-btn-primary:hover { box-shadow: 0 14px 38px rgba(249,115,22,0.7), 0 0 0 1px rgba(255,255,255,0.2) inset; }
     `}</style>
   );
 }

@@ -150,7 +150,7 @@ export const WEEK_1: WeekContent = {
       type: "info",
       title: "Long Is Strong",
       content:
-        "The longer your password, the harder it is to crack. The easiest trick? Stick THREE RANDOM WORDS together - like otter-rocket-mango. Long, strong, AND easy to remember!",
+        "The longer your password, the harder it is to crack. The easiest trick? Stick THREE RANDOM WORDS together - like dragon-taco-comet. Long, strong, AND easy to remember!",
       bullets: [
         "Longer = stronger",
         "Three random words make a great password",
@@ -164,7 +164,7 @@ export const WEEK_1: WeekContent = {
         lines: [
           "[excited] Ooh, want to know a clever trick?",
           "The longer your key, the harder it is to crack!",
-          "[excited] So glue three silly words together, like otter, rocket, mango!",
+          "[excited] So glue three silly words together, like dragon, taco, comet!",
           "[laughs] Long, strong, and super easy to remember!",
         ],
       },
@@ -198,6 +198,12 @@ export const WEEK_1: WeekContent = {
         { id: "w-cookie", text: "cookie", category: "food" },
         { id: "w-pretzel", text: "pretzel", category: "food" },
         { id: "w-pickle", text: "pickle", category: "food" },
+        { id: "w-dragon", text: "dragon", category: "animal" },
+        { id: "w-penguin", text: "penguin", category: "animal" },
+        { id: "w-robot", text: "robot", category: "object" },
+        { id: "w-comet", text: "comet", category: "object" },
+        { id: "w-taco", text: "taco", category: "food" },
+        { id: "w-waffle", text: "waffle", category: "food" },
       ],
       hints: {
         tier1: "Pick any 3 words - they don't need to make sense. The longer your password, the harder it is to crack.",
@@ -226,7 +232,7 @@ export const WEEK_1: WeekContent = {
       choices: [
         { text: "cat", isCorrect: false },
         { text: "Tiger7", isCorrect: false },
-        { text: "otter-rocket-mango", isCorrect: true },
+        { text: "dragon-taco-comet", isCorrect: true },
         { text: "sun", isCorrect: false },
       ],
       praise: "Fast AND right - long is strong! ✓",
@@ -546,9 +552,9 @@ export const WEEK_1: WeekContent = {
       prompt: "Which password would a hacker guess FIRST?",
       choices: [
         { text: "password", isCorrect: true },
-        { text: "Kettle-Jungle-7!", isCorrect: false },
-        { text: "Otter$Rocket9", isCorrect: false },
-        { text: "Mango!Lantern2", isCorrect: false },
+        { text: "Dragon-Pickle9!", isCorrect: false },
+        { text: "Comet$Turtle3", isCorrect: false },
+        { text: "Waffle!Ninja6", isCorrect: false },
       ],
       praise: "Yep - 'password' is the #1 worst! ✓",
     },
@@ -578,9 +584,9 @@ export const WEEK_1: WeekContent = {
       type: "cyberScanner",
       items: [
         { text: "password123", isStrong: false, explanation: "Obvious AND a common word - the Raccoon's favourite." },
-        { text: "Otter-Rocket-Mango7!", isStrong: true, explanation: "Three random words, mixed up - long and strong!" },
+        { text: "Comet-Dragon-Waffle7!", isStrong: true, explanation: "Three random words, mixed up - long and strong!" },
         { text: "qwerty", isStrong: false, explanation: "A keyboard row - the first pattern hackers try." },
-        { text: "otter-rocket-mango", isStrong: true, explanation: "Three random words - long and hard to crack." },
+        { text: "dragon-taco-comet", isStrong: true, explanation: "Three random words - long and hard to crack." },
         { text: "Sam2014", isStrong: false, explanation: "A name and a birthday - easy to guess about you." },
         { text: "MyL0ng_Pass!", isStrong: true, explanation: "Long and mixed - keeps the Raccoon out." },
       ],
@@ -647,9 +653,11 @@ export const WEEK_1: WeekContent = {
       announceText: "Round 1 - The Length Test!",
       announceTone: "cyan",
       questions: [
-        { question: "Which is strongest because it's LONG?", answers: ["otter-rocket-mango", "cat", "Tiger7", "sun"], correctIndex: 0, explanation: "Three random words make a long, hard-to-crack password.", key: "boss-length-1" },
+        { question: "Which is strongest because it's LONG?", answers: ["dragon-taco-comet", "cat", "Tiger7", "sun"], correctIndex: 0, explanation: "Three random words make a long, hard-to-crack password.", key: "boss-length-1" },
         { question: "What makes a password nice and long?", answers: ["Three random words", "3 letters", "1 number", "your initials"], correctIndex: 0, explanation: "Three random words make it long and strong!", key: "boss-length-2" },
-        { question: "Which password is the LONGEST?", answers: ["Kettle-Jungle-Pancake", "dog", "Sun9", "ab"], correctIndex: 0, explanation: "More words make it longer - and longer is stronger.", key: "boss-length-3" },
+        { question: "Which password is the LONGEST?", answers: ["Wizard-Penguin-Volcano", "dog", "Sun9", "ab"], correctIndex: 0, explanation: "More words make it longer - and longer is stronger.", key: "boss-length-3" },
+        { question: "Which password is HARDEST to crack because it's so long?", answers: ["Kangaroo-Waffle-Comet-Pickle", "hi", "Cat3", "moon"], correctIndex: 0, explanation: "Four random words make it super long and super tough!", key: "boss-length-4" },
+        { question: "Adding MORE words to your password makes it...", answers: ["Longer and stronger", "Weaker", "Easier to guess", "Shorter"], correctIndex: 0, explanation: "Every extra word makes it much harder to crack!", key: "boss-length-5" },
       ],
     },
     {
@@ -659,9 +667,11 @@ export const WEEK_1: WeekContent = {
       announceText: "Round 2 - Mix It Up!",
       announceTone: "blue",
       questions: [
-        { question: "Which password MIXES all the types?", answers: ["Otter-Rocket7!", "tigertiger", "12345678", "FOOTBALL"], correctIndex: 0, explanation: "Capitals, small letters, numbers AND symbols - a real mix.", key: "boss-mix-1" },
+        { question: "Which password MIXES all the types?", answers: ["Robot-Comet7!", "tigertiger", "12345678", "FOOTBALL"], correctIndex: 0, explanation: "Capitals, small letters, numbers AND symbols - a real mix.", key: "boss-mix-1" },
         { question: "What makes the STRONGEST password?", answers: ["Three random words, mixed up", "A short word with a number", "Your name and birthday", "1234"], correctIndex: 0, explanation: "Long, random and mixed - the toughest of all!", key: "boss-mix-2" },
-        { question: "Which one has a good MIX?", answers: ["Lantern-Trumpet8!", "banana", "ALLCAPSWORD", "0000"], correctIndex: 0, explanation: "Big and small letters, a number AND a symbol - a real mix.", key: "boss-mix-3" },
+        { question: "Which one has a good MIX?", answers: ["Cactus-Banjo8!", "banana", "ALLCAPSWORD", "0000"], correctIndex: 0, explanation: "Big and small letters, a number AND a symbol - a real mix.", key: "boss-mix-3" },
+        { question: "Which one mixes big letters, small letters, numbers AND a symbol?", answers: ["Ninja-Waffle9!", "ninjawaffle", "NINJAWAFFLE", "99999999"], correctIndex: 0, explanation: "A real mix uses all four: capitals, small letters, numbers and symbols.", key: "boss-mix-4" },
+        { question: "How do you make the word 'penguin' much stronger?", answers: ["Add more words, a capital, a number and a symbol", "Write it twice", "Make it ALL CAPITALS", "Add a 1 at the end"], correctIndex: 0, explanation: "Mix it up: more words plus capitals, numbers and symbols!", key: "boss-mix-5" },
       ],
     },
     {
@@ -674,6 +684,8 @@ export const WEEK_1: WeekContent = {
         { question: "Your best friend asks for your password. You say...", answers: ["No - it's my secret", "Sure!", "Only half of it", "I'll write it down for you"], correctIndex: 0, explanation: "Passwords are always secret, even from friends.", key: "boss-secret-1" },
         { question: "Where should your password live?", answers: ["In your head (a parent can help)", "On a sticky note on your screen", "In the class group chat", "On your school bag"], correctIndex: 0, explanation: "A password only works if nobody else can see it.", key: "boss-secret-2" },
         { question: "Who is allowed to know your password?", answers: ["Just you (a parent can help)", "Your whole class", "Anyone who asks", "Your favourite YouTuber"], correctIndex: 0, explanation: "A password is only yours - keep it secret.", key: "boss-secret-3" },
+        { question: "A teammate says 'share your password and we'll win the game!' You...", answers: ["Say no, it stays my secret", "Share it to win", "Share just half of it", "Type it in the chat"], correctIndex: 0, explanation: "No game is ever worth your password, keep it secret!", key: "boss-secret-4" },
+        { question: "Someone is watching as you type your password. What do you do?", answers: ["Wait until they look away", "Type it in anyway", "Say it out loud", "Ask them to type it"], correctIndex: 0, explanation: "Never let anyone watch you type your secret password!", key: "boss-secret-5" },
       ],
     },
     {
@@ -683,9 +695,11 @@ export const WEEK_1: WeekContent = {
       announceText: "Round 4 - Nothing Obvious!",
       announceTone: "red",
       questions: [
-        { question: "Which is the WORST password?", answers: ["password", "Kettle-Jungle-7!", "Otter$Rocket9", "Mango!Lantern2"], correctIndex: 0, explanation: "'password' is the most-guessed password in the world.", key: "boss-obvious-1" },
+        { question: "Which is the WORST password?", answers: ["password", "Dragon-Pickle9!", "Comet$Turtle3", "Waffle!Ninja6"], correctIndex: 0, explanation: "'password' is the most-guessed password in the world.", key: "boss-obvious-1" },
         { question: "Which should you NEVER use?", answers: ["Your birthday", "three random words", "a symbol", "a capital letter"], correctIndex: 0, explanation: "Birthdays are easy to guess about you.", key: "boss-obvious-2" },
-        { question: "Which is too EASY to guess?", answers: ["123456", "Mango-Compass-7!", "Otter$Lantern9", "Jungle!Kettle2"], correctIndex: 0, explanation: "123456 is one of the most-guessed passwords ever.", key: "boss-obvious-3" },
+        { question: "Which is too EASY to guess?", answers: ["123456", "Taco-Wizard5!", "Robot$Penguin8", "Volcano!Cactus3"], correctIndex: 0, explanation: "123456 is one of the most-guessed passwords ever.", key: "boss-obvious-3" },
+        { question: "Which password would the Raccoon guess FIRST?", answers: ["qwerty", "Dragon-Comet-Waffle8!", "Turtle$Banjo3", "Ninja-Volcano9!"], correctIndex: 0, explanation: "'qwerty' is just keys in a row, the first thing hackers try!", key: "boss-obvious-4" },
+        { question: "Why is your PET'S name a weak password?", answers: ["People who know you could guess it", "It is far too long", "It has no letters in it", "Pets do not have names"], correctIndex: 0, explanation: "Anyone who knows you could guess your pet's name!", key: "boss-obvious-5" },
       ],
     },
     {
@@ -695,9 +709,11 @@ export const WEEK_1: WeekContent = {
       announceText: "FINAL ROUND - Lock Him Out!",
       announceTone: "red",
       questions: [
-        { question: "Pick the Raccoon-proof password:", answers: ["Otter$Rocket9Mango!", "cat", "yourname2014", "123456"], correctIndex: 0, explanation: "Long, mixed, no plain words and nothing obvious.", key: "boss-final-1" },
+        { question: "Pick the Raccoon-proof password:", answers: ["Comet$Dragon7Waffle!", "cat", "yourname2014", "123456"], correctIndex: 0, explanation: "Long, mixed, no plain words and nothing obvious.", key: "boss-final-1" },
         { question: "The Raccoon says 'just tell me ONE letter of your password.' You...", answers: ["Tell him nothing", "Tell one letter", "Tell him a hint", "Tell a friend instead"], correctIndex: 0, explanation: "Not one letter - your password stays completely secret.", key: "boss-final-2" },
         { question: "The Raccoon says 'I'll guess your pet's name!' Your password should...", answers: ["Have nothing about you in it", "Be your pet's name", "Be your birthday", "Be 'password'"], correctIndex: 0, explanation: "Keep personal things OUT - use random words instead.", key: "boss-final-3" },
+        { question: "The Raccoon laughs 'I crack passwords all day, give up!' You...", answers: ["Use a long, mixed, random password he can't crack", "Use your own name", "Use 1234", "Give him a little hint"], correctIndex: 0, explanation: "A long, random, mixed password beats him every time!", key: "boss-final-4" },
+        { question: "Pick the STRONGEST password of them all:", answers: ["Comet-Dragon-Waffle-Ninja7!", "dragon", "Dragon2016", "dragondragon"], correctIndex: 0, explanation: "Four random words PLUS a capital, number and symbol, unbeatable!", key: "boss-final-5" },
       ],
     },
   ],
@@ -706,16 +722,16 @@ export const WEEK_1: WeekContent = {
   bossQuestions: {
     easy: [
       { question: "What is a password?", answers: ["A secret code to prove it's you", "A type of game", "A song", "A school subject"], correctIndex: 0, explanation: "A password is your secret code to log in." },
-      { question: "Which is strongest because it's LONG?", answers: ["otter-rocket-mango", "cat", "Tiger7", "sun"], correctIndex: 0, explanation: "Three random words make a long, hard-to-crack password." },
+      { question: "Which is strongest because it's LONG?", answers: ["dragon-taco-comet", "cat", "Tiger7", "sun"], correctIndex: 0, explanation: "Three random words make a long, hard-to-crack password." },
       { question: "What makes a password nice and long?", answers: ["Three random words", "3 letters", "1 number", "your initials"], correctIndex: 0, explanation: "Three random words make it long and strong!" },
     ],
     medium: [
-      { question: "Which password MIXES all the types?", answers: ["Otter-Rocket7!", "tigertiger", "12345678", "FOOTBALL"], correctIndex: 0, explanation: "Capitals, small letters, numbers AND symbols." },
+      { question: "Which password MIXES all the types?", answers: ["Robot-Comet7!", "tigertiger", "12345678", "FOOTBALL"], correctIndex: 0, explanation: "Capitals, small letters, numbers AND symbols." },
       { question: "Your best friend asks for your password. You say...", answers: ["No - it's my secret", "Sure!", "Only half", "I'll write it down"], correctIndex: 0, explanation: "Passwords are always secret, even from friends." },
-      { question: "Which is the WORST password?", answers: ["password", "Kettle-Jungle-7!", "Otter$Rocket9", "Mango!Lantern2"], correctIndex: 0, explanation: "'password' is the most-guessed password in the world." },
+      { question: "Which is the WORST password?", answers: ["password", "Dragon-Pickle9!", "Comet$Turtle3", "Waffle!Ninja6"], correctIndex: 0, explanation: "'password' is the most-guessed password in the world." },
     ],
     hard: [
-      { question: "Pick the Raccoon-proof password:", answers: ["Otter$Rocket9Mango!", "cat", "yourname2014", "123456"], correctIndex: 0, explanation: "Long, mixed, nothing obvious." },
+      { question: "Pick the Raccoon-proof password:", answers: ["Comet$Dragon7Waffle!", "cat", "yourname2014", "123456"], correctIndex: 0, explanation: "Long, mixed, nothing obvious." },
       { question: "The Raccoon says 'just tell me ONE letter.' You...", answers: ["Tell him nothing", "Tell one letter", "Tell a hint", "Tell a friend"], correctIndex: 0, explanation: "Your password stays completely secret." },
       { question: "Which should you NEVER use in a password?", answers: ["Your birthday", "A symbol", "A capital letter", "A random word"], correctIndex: 0, explanation: "Birthdays are easy to guess about you." },
     ],
