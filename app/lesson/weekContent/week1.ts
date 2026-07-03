@@ -33,10 +33,10 @@ export const WEEK_1: WeekContent = {
   ],
 
   screens: [
-    // 0 — OPENING VIDEO: "The Break-In" (Raccoon cracks a weak password)
+    // 0 - OPENING VIDEO: "The Break-In" (Raccoon cracks a weak password)
     { type: "video", videoPlaceholder: "Week 1: The Break-In", videoSrc: "/videos/module-01-intro.mp4" },
 
-    // 1 — ALERT: incident report with this week's topic image
+    // 1 - ALERT: incident report with this week's topic image
     {
       type: "alert",
       photoSrc: "/cyberheroes/alerts/week-01.png",
@@ -46,7 +46,7 @@ export const WEEK_1: WeekContent = {
       ctaLabel: "Start the Mission →",
     },
 
-    // 2 — Mission brief
+    // 2 - Mission brief
     {
       type: "mission",
       objectives: [
@@ -57,7 +57,7 @@ export const WEEK_1: WeekContent = {
     },
 
     /* ─────────── BEAT 1 · KEY ─────────── */
-    // 3 — Learn
+    // 3 - Learn
     {
       type: "info",
       title: "What Is a Password?",
@@ -76,14 +76,14 @@ export const WEEK_1: WeekContent = {
         lines: [
           "[warmly] Hey there, Cyber Hero! I've got a secret... just for you.",
           "[whispers] Come a little closer.",
-          "Your password is like a magic key — and it's all yours.",
+          "Your password is like a magic key, and it's all yours.",
           "It's how the computer knows it's really YOU.",
           "[nervous] A weak little key? Uh-oh... that lets the sneaky Raccoon slip right in.",
           "[excited] But a big, strong one? [laughs] He doesn't stand a chance!",
         ],
       },
     },
-    // 4 — Game: MATCH (Cyber Words)
+    // 4 - Game: MATCH (Cyber Words)
     {
       type: "memoryMatch",
       pairs: [
@@ -97,7 +97,7 @@ export const WEEK_1: WeekContent = {
         lines: [
           "[excited] Let's match the cyber words to their meanings!",
           "Flip two cards to find a matching pair.",
-          "[warmly] Take your time — and remember where they are!",
+          "[warmly] Take your time, and remember where they are!",
         ],
       },
       // Played at the "Rebuild From Memory" phase-2 card so the second
@@ -107,11 +107,11 @@ export const WEEK_1: WeekContent = {
         lines: [
           "[excited] Awesome matching! Now let's test your memory.",
           "You'll get ten seconds to remember where each card is.",
-          "Then they flip over — tap where you think each one is!",
+          "Then they flip over, tap where you think each one is!",
         ],
       },
     },
-    // 5 — Prove: FINISH
+    // 5 - Prove: FINISH
     {
       type: "quickCheck",
       mode: "finish",
@@ -125,7 +125,7 @@ export const WEEK_1: WeekContent = {
       praise: "Exactly - it proves it's YOU! ✓",
     },
 
-    // — Recap · Concept 1 of 5 (What Is a Password?)
+    // - Recap · Concept 1 of 5 (What Is a Password?)
     {
       type: "recap",
       concept: 1,
@@ -145,7 +145,7 @@ export const WEEK_1: WeekContent = {
     },
 
     /* ─────────── BEAT 2 · LONG ─────────── */
-    // 6 — Learn
+    // 6 - Learn
     {
       type: "info",
       title: "Long Is Strong",
@@ -164,12 +164,12 @@ export const WEEK_1: WeekContent = {
         lines: [
           "[excited] Ooh, want to know a clever trick?",
           "The longer your key, the harder it is to crack!",
-          "[excited] So glue three silly words together — like otter, rocket, mango!",
+          "[excited] So glue three silly words together, like otter, rocket, mango!",
           "[laughs] Long, strong, and super easy to remember!",
         ],
       },
     },
-    // 7 — Game: BUILD (Three Random Words)
+    // 7 - Game: BUILD (Three Random Words)
     {
       type: "threeRandomWords",
       slots: 3,
@@ -209,15 +209,15 @@ export const WEEK_1: WeekContent = {
           "[excited] Time to build a password the Raccoon can't crack!",
           "Tap any three silly words from the wall.",
           "The longer and sillier, the stronger it gets!",
-          "[warmly] Take your time — pick words you'll remember.",
+          "[warmly] Take your time, pick words you'll remember.",
         ],
       },
       coachLines: {
         speaker: "layla",
-        lines: ["Go on — tap any word you like to begin!"],
+        lines: ["Go on, tap any word you like to begin!"],
       },
     },
-    // 8 — Prove: SPEED
+    // 8 - Prove: SPEED
     {
       type: "quickCheck",
       mode: "speed",
@@ -232,7 +232,7 @@ export const WEEK_1: WeekContent = {
       praise: "Fast AND right - long is strong! ✓",
     },
 
-    // — Recap · Concept 2 of 5 (Long Is Strong)
+    // - Recap · Concept 2 of 5 (Long Is Strong)
     {
       type: "recap",
       concept: 2,
@@ -243,7 +243,7 @@ export const WEEK_1: WeekContent = {
       narration: {
         speaker: "adam",
         lines: [
-          "[excited] Amazing — you're getting stronger already!",
+          "[excited] Amazing! You're getting stronger already!",
           "You just learned that long passwords are strong passwords.",
           "Three random words make a key that's super hard to crack.",
           "[warmly] Now, let's mix things up!",
@@ -252,7 +252,7 @@ export const WEEK_1: WeekContent = {
     },
 
     /* ─────────── BEAT 3 · MIX ─────────── */
-    // 9 — Learn
+    // 9 - Learn
     {
       type: "info",
       title: "Mix It Up",
@@ -270,13 +270,13 @@ export const WEEK_1: WeekContent = {
         speaker: "adam",
         lines: [
           "[excited] Now let's make that key SUPER tough!",
-          "Mix it all up — big letters, little letters, numbers, and squiggly symbols!",
+          "Mix it all up, big letters, little letters, numbers, and squiggly symbols!",
           "[nervous] A plain word like 'tiger'? The Raccoon gobbles that up in one bite.",
-          "[excited] But scramble it like that — [laughs] and he's totally stumped!",
+          "[excited] But scramble it like that, [laughs] and he's totally stumped!",
         ],
       },
     },
-    // 10 — Game: REPAIR (Fix the Weak Password)
+    // 10 - Game: REPAIR (Fix the Weak Password)
     {
       type: "passwordHospital",
       reasons: [
@@ -350,18 +350,18 @@ export const WEEK_1: WeekContent = {
       narration: {
         speaker: "adam",
         lines: [
-          "[excited] Uh oh — these passwords are sick! You're the cyber-doctor.",
+          "[excited] Uh oh! These passwords are sick! You're the cyber-doctor.",
           "First, work out what's WRONG with each one.",
-          "Then use your tools to make it strong — watch the meter climb!",
-          "[warmly] No rush, Doctor — take your time.",
+          "Then use your tools to make it strong, watch the meter climb!",
+          "[warmly] No rush, Doctor. Take your time.",
         ],
       },
       coachLines: {
         speaker: "adam",
-        lines: ["Look at the patient — what's wrong with this password?"],
+        lines: ["Look at the patient. What's wrong with this password?"],
       },
     },
-    // 11 — Prove: LIE
+    // 11 - Prove: LIE
     {
       type: "quickCheck",
       mode: "lie",
@@ -375,7 +375,7 @@ export const WEEK_1: WeekContent = {
       nudge: "Look again - 'tiger' has no mix at all.",
     },
 
-    // — Recap · Concept 3 of 5 (Mix It Up)
+    // - Recap · Concept 3 of 5 (Mix It Up)
     {
       type: "recap",
       concept: 3,
@@ -387,16 +387,16 @@ export const WEEK_1: WeekContent = {
       narration: {
         speaker: "layla",
         lines: [
-          "[excited] Wow — look at you go!",
+          "[excited] Wow! Look at you go!",
           "You just learned how to mix it all up.",
           "Big letters, little letters, numbers and symbols make a password really tough.",
-          "[warmly] Next up — a super important one. Keeping it secret.",
+          "[warmly] Next up, a super important one. Keeping it secret.",
         ],
       },
     },
 
     /* ─────────── BEAT 4 · SECRET ─────────── */
-    // 12 — Learn
+    // 12 - Learn
     {
       type: "info",
       title: "Keep It Secret",
@@ -413,14 +413,14 @@ export const WEEK_1: WeekContent = {
       narration: {
         speaker: "layla",
         lines: [
-          "[warmly] Okay — this is the MOST important part. Lean in close...",
+          "[warmly] Okay, this is the MOST important part. Lean in close...",
           "[whispers] A password only works if you keep it secret.",
           "Don't tell your best friend. Don't leave it where anyone can peek!",
           "[warmly] The only person who ever helps is a grown-up you really trust. Deal?",
         ],
       },
     },
-    // 13 — Game: DECIDE (What Would You Do?)
+    // 13 - Game: DECIDE (What Would You Do?)
     {
       type: "chooseYourPath",
       scenarios: [
@@ -443,12 +443,12 @@ export const WEEK_1: WeekContent = {
         speaker: "layla",
         lines: [
           "[warmly] The Raccoon's set some sneaky traps for you.",
-          "Read each one carefully — think, what would YOU do?",
+          "Read each one carefully. Think, what would YOU do?",
           "[excited] Then pick the safe path. You've got this!",
         ],
       },
     },
-    // 14 — Prove: RECALL
+    // 14 - Prove: RECALL
     {
       type: "quickCheck",
       mode: "recall",
@@ -462,19 +462,19 @@ export const WEEK_1: WeekContent = {
       praise: "Right - it stays your secret! ✓",
     },
 
-    // — Recap · Concept 4 of 5 (Keep It Secret)
+    // - Recap · Concept 4 of 5 (Keep It Secret)
     {
       type: "recap",
       concept: 4,
       total: 5,
-      learned: "Never share your password — not even with your best friend.",
+      learned: "Never share your password, not even with your best friend.",
       next: "spotting passwords that are too easy to guess",
       emblem: "🤫",
       narration: {
         speaker: "layla",
         lines: [
           "[warmly] You're doing so well, Cyber Hero.",
-          "You just learned the golden rule — keep it secret.",
+          "You just learned the golden rule, keep it secret.",
           "Never share your password, not even with your best friend.",
           "[excited] One more thing to master before the big battle!",
         ],
@@ -482,7 +482,7 @@ export const WEEK_1: WeekContent = {
     },
 
     /* ─────────── BEAT 5 · OBVIOUS ─────────── */
-    // 15 — Learn
+    // 15 - Learn
     {
       type: "info",
       title: "Don't Pick the Obvious",
@@ -502,11 +502,11 @@ export const WEEK_1: WeekContent = {
           "[excited] Let's get inside the sneaky Raccoon's head!",
           "[whispers] He guesses the easy stuff first. Your name? [nervous] Your birthday?",
           "And one-two-three-four-five-six? [laughs] That's the FIRST thing he tries!",
-          "[excited] So pick something he'd NEVER guess — and outsmart him!",
+          "[excited] So pick something he'd NEVER guess, and outsmart him!",
         ],
       },
     },
-    // 16 — Game: SORT (Why Is It Weak?)
+    // 16 - Game: SORT (Why Is It Weak?)
     {
       type: "weakSorter",
       reasons: [
@@ -539,7 +539,7 @@ export const WEEK_1: WeekContent = {
         ],
       },
     },
-    // 17 — Prove: RECALL (which would the Raccoon guess first)
+    // 17 - Prove: RECALL (which would the Raccoon guess first)
     {
       type: "quickCheck",
       mode: "recall",
@@ -553,19 +553,19 @@ export const WEEK_1: WeekContent = {
       praise: "Yep - 'password' is the #1 worst! ✓",
     },
 
-    // — Recap · Concept 5 of 5 (Don't Pick the Obvious)
+    // - Recap · Concept 5 of 5 (Don't Pick the Obvious)
     {
       type: "recap",
       concept: 5,
       total: 5,
       learned:
-        "Stay away from obvious passwords — not your name, your birthday, or 123456.",
+        "Stay away from obvious passwords, not your name, your birthday, or 123456.",
       next: "one final challenge, then the big boss battle",
       emblem: "🕵️",
       narration: {
         speaker: "adam",
         lines: [
-          "[excited] Incredible — you've mastered all five secrets!",
+          "[excited] Incredible! You've mastered all five secrets!",
           "You just learned to dodge the obvious ones. No names, no birthdays, no one-two-three.",
           "[warmly] You're ready, Cyber Hero.",
           "[excited] Time to show that Raccoon who's boss!",
@@ -573,7 +573,7 @@ export const WEEK_1: WeekContent = {
       },
     },
 
-    // 18 — Consolidation: "The Raccoon's Notebook" (fun mixed recap)
+    // 18 - Consolidation: "The Raccoon's Notebook" (fun mixed recap)
     {
       type: "cyberScanner",
       items: [
@@ -589,18 +589,18 @@ export const WEEK_1: WeekContent = {
         lines: [
           "[excited] Final drill, Cyber Hero! Passwords will drift past.",
           "Quickly tap STRONG or WEAK for each one.",
-          "[warmly] Trust everything you've learned — you're ready!",
+          "[warmly] Trust everything you've learned, you're ready!",
         ],
       },
     },
 
-    // 19 — BOSS BATTLE (5 phases)
+    // 19 - BOSS BATTLE (5 phases)
     { type: "bossBattle" },
 
-    // 20 — CLOSING VIDEO: "The Bounce" (Raccoon attacks again, bounces off)
+    // 20 - CLOSING VIDEO: "The Bounce" (Raccoon attacks again, bounces off)
     { type: "video", videoPlaceholder: "Week 1: The Bounce", videoSrc: "/videos/module-01-outro.mp4" },
 
-    // 21 — Mission Debrief (consolidate by concept)
+    // 21 - Mission Debrief (consolidate by concept)
     {
       type: "missionDebrief",
       title: "Mission Complete!",
@@ -615,15 +615,15 @@ export const WEEK_1: WeekContent = {
       narration: {
         speaker: "layla",
         lines: [
-          "[excited] WOW — look at everything you learned this week!",
-          "Your password is your secret key — make it nice and long,",
+          "[excited] WOW! Look at everything you learned this week!",
+          "Your password is your secret key, make it nice and long,",
           "[excited] mix it ALL up, keep it super secret, and nothing the Raccoon could ever guess!",
-          "[laughs] You did it, Cyber Hero! [excited] Now — time to claim your stickers!",
+          "[laughs] You did it, Cyber Hero! [excited] Now, time to claim your stickers!",
         ],
       },
     },
 
-    // 22 — Sticker Unlock
+    // 22 - Sticker Unlock
     {
       type: "stickerUnlock",
       title: "Stickers Unlocked!",
@@ -634,7 +634,7 @@ export const WEEK_1: WeekContent = {
       ],
     },
 
-    // 23 — Completion
+    // 23 - Completion
     { type: "completion" },
   ],
 

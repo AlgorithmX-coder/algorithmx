@@ -942,6 +942,19 @@ function DynamicLessonInner({ qaEnabled }: { qaEnabled: boolean }) {
     return () => window.removeEventListener("keydown", onKey);
   }, [screen, totalScreens, content, navigate, cutsceneDone, showBoss]);
 
+  // R19 — the old "BOSS BATTLE / FINAL SHOWDOWN" pre-fight frame is gone; the
+  // BossBattle intro splash ("Enter the Battle") is now the boss reveal. Enter
+  // the boss automatically on landing on the bossBattle screen. Guarded by
+  // !bossDone (onEnd sets showBoss=false + bossDone=true together) so a
+  // finished/retry flow never re-triggers it.
+  useEffect(() => {
+    const type = content?.screens[screen]?.type;
+    if (type === "bossBattle" && !bossDone && !showBoss) {
+      progress.reportBossStarted();
+      setShowBoss(true);
+    }
+  }, [content, screen, bossDone, showBoss, progress]);
+
   const awardXp = useCallback((amount: number) => {
     if (!content) return;
     const result = addXP(amount, `week-${content.weekNumber}`);
@@ -1566,182 +1579,13 @@ function DynamicLessonInner({ qaEnabled }: { qaEnabled: boolean }) {
             </FullScene>
           );
         }
+        // R19 — the old "BOSS BATTLE / FINAL SHOWDOWN" pre-fight frame is removed.
+        // The BossBattle intro splash ("Enter the Battle") is now the boss reveal,
+        // auto-entered by the effect above. A bare near-black scene shows for the
+        // one frame before BossBattle's fixed overlay mounts (same bg, no flash).
         return (
-          <FullScene
-            bg="radial-gradient(ellipse at 50% 36%, #2a0810 0%, #14060f 48%, #04050d 100%)"
-            glow="radial-gradient(circle, rgba(239,68,68,0.42), transparent)"
-          >
-            <style>{`
-              @keyframes bossVillainFloat { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-14px)} }
-              @keyframes bossAuraPulse { 0%,100%{opacity:.5;transform:scale(1)} 50%{opacity:.85;transform:scale(1.07)} }
-              @keyframes bossDangerBlink { 0%,100%{opacity:.45} 50%{opacity:1} }
-              @keyframes bossBubbleIn { 0%{opacity:0;transform:translateY(10px) rotate(-3deg) scale(.85)} 60%{opacity:1;transform:translateY(0) rotate(2deg) scale(1.04)} 100%{opacity:1;transform:translateY(0) rotate(-1.5deg) scale(1)} }
-              @keyframes bossScanline { from{background-position:0 0} to{background-position:0 6px} }
-            `}</style>
-
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.5 }}
-              style={{
-                position: "relative",
-                width: "100%",
-                maxWidth: 740,
-                margin: "0 auto",
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                justifyContent: "center",
-                gap: 6,
-                padding: "4px 16px",
-                textAlign: "center",
-              }}
-            >
-              {/* Faint moving scanlines for a "hacker lair" CRT feel */}
-              <div
-                aria-hidden
-                style={{
-                  position: "absolute",
-                  inset: -60,
-                  pointerEvents: "none",
-                  background:
-                    "repeating-linear-gradient(0deg, rgba(255,255,255,0.04) 0px, rgba(255,255,255,0.04) 1px, transparent 1px, transparent 4px)",
-                  animation: "bossScanline 1s steps(6) infinite",
-                  opacity: 0.4,
-                  mixBlendMode: "overlay",
-                }}
-              />
-
-              {/* Danger tag */}
-              <div
-                style={{
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: 9,
-                  padding: "4px 15px",
-                  borderRadius: 999,
-                  border: "1px solid rgba(239,68,68,0.55)",
-                  background: "rgba(239,68,68,0.12)",
-                  color: "#fca5a5",
-                  fontFamily: "'JetBrains Mono', monospace",
-                  fontSize: 11,
-                  fontWeight: 800,
-                  letterSpacing: "0.28em",
-                  textTransform: "uppercase",
-                  animation: "bossDangerBlink 1.4s ease-in-out infinite",
-                }}
-              >
-                <span style={{ width: 7, height: 7, borderRadius: "50%", background: "#ef4444", boxShadow: "0 0 8px #ef4444", display: "inline-block" }} />
-                Final Showdown
-                <span style={{ width: 7, height: 7, borderRadius: "50%", background: "#ef4444", boxShadow: "0 0 8px #ef4444", display: "inline-block" }} />
-              </div>
-
-              {/* Title */}
-              <motion.h1
-                animate={{ scale: [1, 1.04, 1] }}
-                transition={{ duration: 2.4, repeat: Infinity }}
-                style={{
-                  fontSize: "clamp(44px, 8vw, 76px)",
-                  fontWeight: 900,
-                  margin: "0",
-                  background: "linear-gradient(135deg, #ef4444, #f97316, #fbbf24)",
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                  backgroundClip: "text",
-                  letterSpacing: 2,
-                  lineHeight: 1,
-                  textShadow: "0 0 40px rgba(239,68,68,0.4)",
-                  filter: "drop-shadow(0 6px 18px rgba(239,68,68,0.35))",
-                }}
-              >
-                BOSS BATTLE
-              </motion.h1>
-
-              {/* Villain stage */}
-              <div style={{ position: "relative", display: "grid", placeItems: "center", width: "100%", margin: "2px 0" }}>
-                {/* Pulsing aura */}
-                <div
-                  aria-hidden
-                  style={{
-                    position: "absolute",
-                    width: "min(82vw, 660px)",
-                    height: "min(52vh, 460px)",
-                    borderRadius: "50%",
-                    background:
-                      "radial-gradient(ellipse, rgba(239,68,68,0.45) 0%, rgba(124,58,237,0.3) 42%, transparent 70%)",
-                    filter: "blur(6px)",
-                    animation: "bossAuraPulse 3s ease-in-out infinite",
-                  }}
-                />
-
-                {/* Villain taunt */}
-                <div
-                  style={{
-                    position: "absolute",
-                    top: "4%",
-                    right: "2%",
-                    zIndex: 3,
-                    maxWidth: 196,
-                    padding: "10px 14px",
-                    borderRadius: 16,
-                    background: "rgba(12,16,40,0.92)",
-                    border: "1.5px solid rgba(0,229,255,0.45)",
-                    color: "#dbeafe",
-                    fontFamily: "'Space Grotesk', sans-serif",
-                    fontWeight: 700,
-                    fontSize: 14,
-                    lineHeight: 1.25,
-                    textAlign: "left",
-                    boxShadow: "0 10px 24px rgba(0,0,0,0.5), 0 0 18px rgba(0,229,255,0.25)",
-                    animation: "bossBubbleIn 0.6s cubic-bezier(0.34,1.56,0.64,1) 0.5s both",
-                  }}
-                >
-                  Ha! You&rsquo;ll never crack <span style={{ color: "#5eead4" }}>my codes!</span>
-                  <span
-                    aria-hidden
-                    style={{
-                      position: "absolute",
-                      bottom: -8,
-                      left: 26,
-                      width: 15,
-                      height: 15,
-                      background: "rgba(12,16,40,0.92)",
-                      borderRight: "1.5px solid rgba(0,229,255,0.45)",
-                      borderBottom: "1.5px solid rgba(0,229,255,0.45)",
-                      transform: "rotate(45deg)",
-                    }}
-                  />
-                </div>
-
-                {/* The Hacker Raccoon */}
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src="/game/characters/raccoon-idle.png"
-                  alt="Hacker Raccoon, the boss"
-                  style={{
-                    position: "relative",
-                    zIndex: 2,
-                    height: "min(42vh, 380px)",
-                    width: "auto",
-                    filter: "drop-shadow(0 20px 32px rgba(0,0,0,0.7))",
-                    animation: "bossVillainFloat 4s ease-in-out infinite",
-                  }}
-                />
-              </div>
-
-              {/* Start button */}
-              <div style={{ marginTop: 2 }}>
-                <OrangeButton
-                  sound="transition"
-                  onClick={() => {
-                    progress.reportBossStarted();
-                    setShowBoss(true);
-                  }}
-                >
-                  START BATTLE →
-                </OrangeButton>
-              </div>
-            </motion.div>
+          <FullScene bg="#05060f" glow="radial-gradient(circle, transparent, transparent)">
+            <span aria-hidden />
           </FullScene>
         );
 
