@@ -25,6 +25,7 @@ import { getEarnedBadges } from "@/app/lib/badges.actions";
 import { getProgressionSnapshot } from "@/app/lib/lessonProgress.actions";
 import { getRank } from "@/app/lib/progression";
 import PlaySignatureOnMount from "@/app/components/lesson/PlaySignatureOnMount";
+import PlayHubAmbientOnMount from "@/app/components/PlayHubAmbientOnMount";
 import PixIcon from "@/app/components/lesson/PixIcon";
 
 const C = {
@@ -83,6 +84,11 @@ export default async function CyberHQPage() {
           when the child enters Cyber HQ. Tiny client island - parent
           stays server-rendered. */}
       <PlaySignatureOnMount id="hq-entry" delayMs={150} />
+
+      {/* Looping ambient bed ("Guardian Calm") while the child is in the
+          hub. Client island; fades out on leave and honors the global
+          mute. Only the hub gets BGM (see BGM_ALLOWLIST in sounds.ts). */}
+      <PlayHubAmbientOnMount />
 
       {/* Ambient particle field - subtle drifting dots so the room is
           never visually still. CSS-only; respects reduced motion via

@@ -93,9 +93,15 @@ const SFX_REGISTRY: Record<string, SoundEntry> = {
 
 /**
  * BGM_REGISTRY - looped background music tracks.
- * Volume is capped at 0.10 so voice + SFX always sit clearly on top.
- * Invariant: BGM_MAX_VOLUME must stay well below any SFX volume
- * (lowest SFX is 0.5; a 5× headroom keeps music subtle).
+ *
+ * Two tiers:
+ *  - Under-narration beds (bgmLesson/Battle/Victory) are capped at
+ *    BGM_MAX_VOLUME so the spoken voice + SFX always sit clearly on top.
+ *  - Standalone beds that play where NOTHING is talking (bgmHub - the
+ *    Cyber HQ hub) run louder: still below the lowest SFX (0.45) so
+ *    interaction sounds stay on top, but actually audible.
+ * playBGM hard-caps each track at its own `volume`, so these values are
+ * ceilings, not just starting points.
  */
 // 0.02 = whisper-faint background bed. The narration voice (George /
 // Sarah) is the primary audio; music sits underneath as room tone,
@@ -109,6 +115,10 @@ const BGM_REGISTRY: Record<string, SoundEntry> = {
   bgmLesson: { path: "/audio/sfx/bgm-lesson.mp3", volume: BGM_MAX_VOLUME },
   bgmBattle: { path: "/audio/sfx/bgm-battle.mp3", volume: BGM_MAX_VOLUME },
   bgmVictory: { path: "/audio/sfx/bgm-victory.mp3", volume: BGM_MAX_VOLUME },
+  // Cyber HQ hub bed ("Guardian Calm", ElevenLabs Music). Intentionally
+  // NOT capped at BGM_MAX_VOLUME - the hub has no narration to duck
+  // under, so it plays warm and audible (still below the 0.45 SFX floor).
+  bgmHub: { path: "/audio/sfx/bgm-hq.mp3", volume: 0.18 },
 };
 
 const SFX_KEYS = Object.keys(SFX_REGISTRY);
@@ -465,21 +475,20 @@ export function playSound(key: string): void {
 }
 
 /**
- * Set to `true` to globally disable all BGM/music while tuning the
- * narration. Every `playBGM(...)` call becomes a no-op and any
- * currently-playing track is stopped. Flip back to `false` to
- * restore lesson + battle music.
+ * BGM is globally OFF except for the tracks in this allowlist - an
+ * allowlist rather than a boolean so a single surface can have music
+ * without reviving the rest. The lesson stays silent (narration owns
+ * it) and battle/victory stay off; only the Cyber HQ hub bed plays.
  *
- * Currently `true` - background music is OFF (the user wants it off entirely).
- * Every playBGM() is a no-op and any playing track is stopped. playBGM is now
- * hardened (capped + NaN-safe), so it's safe to flip back to `false` if wanted.
+ * Any track NOT listed is a no-op that also stops whatever is currently
+ * playing (covers an SSR-hydrated track from a prior visit). playBGM is
+ * hardened (per-track volume cap + NaN-safe), so re-enabling another
+ * surface later is just adding its key here.
  */
-const BGM_DISABLED = true;
+const BGM_ALLOWLIST = new Set<string>(["bgmHub"]);
 
 export function playBGM(trackOrKey: string): void {
-  if (BGM_DISABLED) {
-    // Also stop anything that was already playing before the flag
-    // was flipped (e.g. SSR-hydrated track started on a prior visit).
+  if (!BGM_ALLOWLIST.has(trackOrKey)) {
     SoundManager.getInstance().stopBGM(0);
     return;
   }
