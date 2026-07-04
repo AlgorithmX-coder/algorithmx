@@ -60,6 +60,11 @@ import CyberMaze from "@/app/components/exercises/CyberMaze";
 import PhishInspector from "@/app/components/exercises/PhishInspector";
 import PasswordVault from "@/app/components/exercises/PasswordVault";
 import QuickCheck from "@/app/components/exercises/QuickCheck";
+import RevealBoard from "@/app/components/exercises/RevealBoard";
+import ConveyorSort from "@/app/components/exercises/ConveyorSort";
+import RequestInspector from "@/app/components/exercises/RequestInspector";
+import UsernameBuilder from "@/app/components/exercises/UsernameBuilder";
+import PauseDecide from "@/app/components/exercises/PauseDecide";
 import MissionDebrief from "@/app/components/lesson/MissionDebrief";
 import ConceptRecap from "@/app/components/lesson/ConceptRecap";
 import StickerUnlock from "@/app/components/lesson/StickerUnlock";
@@ -132,6 +137,10 @@ const EXERCISE_SCREEN_TYPES = new Set<ScreenDef["type"]>([
   "missionDebrief",
   "stickerUnlock",
   "passwordVault",
+  "reveal",
+  "conveyorSort",
+  "requestInspector",
+  "usernameBuilder",
 ]);
 
 /**
@@ -1119,6 +1128,7 @@ function DynamicLessonInner({ qaEnabled }: { qaEnabled: boolean }) {
               title={def.title}
               badge={def.badge}
               caption={def.caption}
+              photoCaption={def.photoCaption}
               ctaLabel={def.ctaLabel}
               onContinue={() => navigate(screen + 1)}
             />
@@ -1170,6 +1180,7 @@ function DynamicLessonInner({ qaEnabled }: { qaEnabled: boolean }) {
           <FullScene bg="linear-gradient(180deg, #050a1a 0%, #1a1033 100%)">
             <CyberScanner
               passwords={def.items}
+              labels={def.labels}
               introNarration={def.narration}
               onComplete={() => navigate(screen + 1)}
               onCorrect={() => awardXp(25)}
@@ -1377,7 +1388,137 @@ function DynamicLessonInner({ qaEnabled }: { qaEnabled: boolean }) {
           </FullScene>
         );
 
+      case "reveal":
+        return (
+          <FullScene bg="linear-gradient(180deg, #120b06 0%, #1a1033 100%)">
+            <RevealBoard
+              title={def.title}
+              subtitle={def.subtitle}
+              items={def.items}
+              finale={def.finale}
+              introNarration={def.narration}
+              coachLines={def.coachLines}
+              onComplete={() => navigate(screen + 1)}
+              onCorrect={() => awardXp(25)}
+              onAnswered={(o) => {
+                // questionKey is "reveal-{itemId}" — records which cards the
+                // child opened; a REVEAL has no wrong answers by design.
+                progress.saveQuestion({
+                  screenIndex: screen,
+                  questionKey: o.questionKey,
+                  selectedIndex: o.selectedIndex,
+                  correctIndex: o.correctIndex,
+                  wasCorrect: o.wasCorrect,
+                });
+              }}
+            />
+          </FullScene>
+        );
+
+      case "conveyorSort":
+        return (
+          <FullScene bg="linear-gradient(180deg, #050a1a 0%, #101a3d 100%)">
+            <ConveyorSort
+              categories={def.categories}
+              items={def.items}
+              hints={def.hints}
+              introNarration={def.narration}
+              coachLines={def.coachLines}
+              onComplete={() => navigate(screen + 1)}
+              onCorrect={() => awardXp(25)}
+              onWrong={() => addWrong(screen)}
+              onHintReached={(tier) => progress.reportHint(screen, tier)}
+              onAnswered={(o) => {
+                progress.saveQuestion({
+                  screenIndex: screen,
+                  questionKey: o.questionKey,
+                  selectedIndex: o.selectedIndex,
+                  correctIndex: o.correctIndex,
+                  wasCorrect: o.wasCorrect,
+                });
+                if (!o.wasCorrect) {
+                  progress.reportWrong(screen, o.questionKey);
+                }
+              }}
+            />
+          </FullScene>
+        );
+
+      case "requestInspector":
+        return (
+          <FullScene bg="linear-gradient(180deg, #050a1a 0%, #16102e 100%)">
+            <RequestInspector
+              requests={def.requests}
+              hints={def.hints}
+              introNarration={def.narration}
+              coachLines={def.coachLines}
+              onComplete={() => navigate(screen + 1)}
+              onCorrect={() => awardXp(25)}
+              onWrong={() => addWrong(screen)}
+              onHintReached={(tier) => progress.reportHint(screen, tier)}
+              onAnswered={(o) => {
+                progress.saveQuestion({
+                  screenIndex: screen,
+                  questionKey: o.questionKey,
+                  selectedIndex: o.selectedIndex,
+                  correctIndex: o.correctIndex,
+                  wasCorrect: o.wasCorrect,
+                });
+                if (!o.wasCorrect) {
+                  progress.reportWrong(screen, o.questionKey);
+                }
+              }}
+            />
+          </FullScene>
+        );
+
+      case "usernameBuilder":
+        return (
+          <FullScene bg="linear-gradient(180deg, #0a0a2a 0%, #14103a 100%)">
+            <UsernameBuilder
+              slots={def.slots}
+              parts={def.parts}
+              hints={def.hints}
+              introNarration={def.narration}
+              coachLines={def.coachLines}
+              onComplete={() => navigate(screen + 1)}
+              onCorrect={() => awardXp(25)}
+              onWrong={() => addWrong(screen)}
+              onHintReached={(tier) => progress.reportHint(screen, tier)}
+              onAnswered={(o) => {
+                // questionKey is "forge-{slotId}@{partId}" — records safe
+                // picks AND leak-trap taps for the parent dashboard.
+                progress.saveQuestion({
+                  screenIndex: screen,
+                  questionKey: o.questionKey,
+                  selectedIndex: o.selectedIndex,
+                  correctIndex: o.correctIndex,
+                  wasCorrect: o.wasCorrect,
+                });
+                if (!o.wasCorrect) {
+                  progress.reportWrong(screen, o.questionKey);
+                }
+              }}
+            />
+          </FullScene>
+        );
+
       case "chooseYourPath":
+        // presentation: "device" mounts the Pause Button skin (Week 2's
+        // in-app moments) instead of Week 1's adventure-doors component.
+        if (def.presentation === "device") {
+          return (
+            <FullScene bg="linear-gradient(180deg, #0a0a2a 0%, #12163a 100%)">
+              <PauseDecide
+                scenarios={def.scenarios}
+                introNarration={def.narration}
+                onComplete={() => navigate(screen + 1)}
+                onCorrect={() => awardXp(25)}
+                onWrong={() => addWrong(screen)}
+              />
+            </FullScene>
+          );
+        }
         return (
           <FullScene bg="linear-gradient(180deg, #0a0a2a 0%, #1a1033 100%)">
             <ChooseYourPath
