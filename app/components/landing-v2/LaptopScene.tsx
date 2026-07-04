@@ -58,6 +58,24 @@ const LID_D = 2.42;
 const LID_CLOSED_ANGLE = 0; // fully closed at scroll 0
 const LID_OPEN_ANGLE = -2.0; // ~115° back when open
 
+/* ===== EXPLOSION FOOTAGE (real pre-rendered volumetric burst) =====
+ * The activation "explosion" is REAL footage: an offline-rendered
+ * volumetric plasma detonation (locked-off camera, pure black plate,
+ * full detonate -> expand -> dissipate arc) baked into an 8x8 flipbook
+ * atlas and scrubbed by scroll in a shader. Black background + additive
+ * blending = no alpha channel needed (black IS transparent), so the
+ * footage composites straight over the live laptop like a film element.
+ * Frame 0 and frame 63 are both black, so the quad is invisible at rest
+ * and after the burst by construction. Built by
+ * scripts/build-explosion-atlas.mjs from the source clip. */
+const FX_ATLAS_URL = "/hero-fx/explosion-atlas.webp";
+const FX_COLS = 8;
+const FX_ROWS = 8;
+const FX_FRAMES = FX_COLS * FX_ROWS;
+/* Scratch vector for the per-frame camera-forward offset (avoids a
+ * per-frame allocation in useFrame). */
+const FX_FORWARD = new THREE.Vector3();
+
 /* Canvas-painted glowing brand logo for the lid. Rendered at 2x
  * resolution then sampled down so the wordmark stays razor-sharp on
  * a 3D plane. Light halo + tight shadow so letters don't blur. */
@@ -2885,7 +2903,13 @@ export default function LaptopScene({ progress, reducedMotion = false, capture =
           darkness={0.5}
           blendFunction={BlendFunction.NORMAL}
         />
-        <Noise opacity={0.006} blendFunction={BlendFunction.OVERLAY} />
+        {/* Grain dither is skipped during frame capture: it writes noise
+         *  across TRANSPARENT pixels too, which reads as speckle once the
+         *  alpha frames are composited over the page backdrop. Live render
+         *  keeps it. */}
+        {!capture && (
+          <Noise opacity={0.006} blendFunction={BlendFunction.OVERLAY} />
+        )}
       </EffectComposer>
     </Canvas>
     </div>
@@ -3261,6 +3285,83 @@ function Laptop({
   const signalPacketTex = useMemo(() => makeSignalPacketTexture(), []);
   const shockwaveTex = useMemo(() => makeShockwaveTexture(), []);
   const flashBurstTex = useMemo(() => makeFlashBurstTexture(), []);
+  /* EXPLOSION FOOTAGE — flipbook atlas of the real pre-rendered burst.
+   * Mips are off so adjacent atlas tiles never bleed into each other at
+   * minification; the quad is near-screen-sized so magnification is the
+   * common case anyway. */
+  const fxAtlasTex = useMemo(() => {
+    if (typeof window === "undefined") return null;
+    const tex = new THREE.TextureLoader().load(FX_ATLAS_URL);
+    tex.colorSpace = THREE.SRGBColorSpace;
+    tex.minFilter = THREE.LinearFilter;
+    tex.magFilter = THREE.LinearFilter;
+    tex.generateMipmaps = false;
+    tex.wrapS = THREE.ClampToEdgeWrapping;
+    tex.wrapT = THREE.ClampToEdgeWrapping;
+    return tex;
+  }, []);
+  /* Flipbook scrub shader: samples frame floor(uFrame) and the next one
+   * and cross-blends by the fraction, so the scroll-scrubbed playback is
+   * smooth even though only 64 frames are stored. BLACK_LIFT subtracts
+   * the footage's video-black pedestal (~2.5-3%) so the quad contributes
+   * exactly nothing outside the burst (additive: black == invisible). */
+  const fxMaterial = useMemo(() => {
+    if (!fxAtlasTex) return null;
+    return new THREE.ShaderMaterial({
+      uniforms: {
+        uAtlas: { value: fxAtlasTex },
+        uFrame: { value: 0 },
+        uOpacity: { value: 0 },
+      },
+      vertexShader: `
+        varying vec2 vUv;
+        void main() {
+          vUv = uv;
+          gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+        }
+      `,
+      fragmentShader: `
+        uniform sampler2D uAtlas;
+        uniform float uFrame;
+        uniform float uOpacity;
+        varying vec2 vUv;
+        const vec2 GRID = vec2(${FX_COLS}.0, ${FX_ROWS}.0);
+        const float BLACK_LIFT = 0.03;
+
+        vec3 frameColor(float idx) {
+          float i = clamp(idx, 0.0, GRID.x * GRID.y - 1.0);
+          vec2 cell = vec2(mod(i, GRID.x), GRID.y - 1.0 - floor(i / GRID.x));
+          vec2 uv = (vUv + cell) / GRID;
+          return texture2D(uAtlas, uv).rgb;
+        }
+
+        void main() {
+          float f = floor(uFrame);
+          vec3 c = mix(frameColor(f), frameColor(f + 1.0), uFrame - f);
+          c = max(c - BLACK_LIFT, 0.0) / (1.0 - BLACK_LIFT);
+          /* Soft edge fade so the quad boundary can never print as a
+           * hard line when the mid-clip cloud reaches the footage's
+           * frame edges (a rectangle-shaped cut reads instantly as
+           * "video on a card"; this keeps it reading as a volume). */
+          float edge =
+            smoothstep(0.0, 0.10, vUv.x) * smoothstep(0.0, 0.10, 1.0 - vUv.x) *
+            smoothstep(0.0, 0.14, vUv.y) * smoothstep(0.0, 0.14, 1.0 - vUv.y);
+          vec3 outc = c * edge * uOpacity;
+          /* Alpha = the amount of light added, not 1.0. Additive RGB is
+           * unaffected (ONE,ONE), but the DESTINATION alpha accumulates
+           * honestly — so the transparent-canvas composite (live page
+           * and herocap frame bakes) gains coverage only where the burst
+           * actually glows, instead of stamping the whole quad opaque. */
+          gl_FragColor = vec4(outc, max(outc.r, max(outc.g, outc.b)));
+        }
+      `,
+      transparent: true,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false,
+      depthTest: true,
+    });
+  }, [fxAtlasTex]);
+  const fxMeshRef = useRef<THREE.Mesh>(null);
   /* Sub-surface machine-well layer (depth beneath the burst). */
   const machineWellTex = useMemo(() => makeMachineWellTexture(), []);
   const machineWellMatRef = useRef<THREE.MeshBasicMaterial>(null);
@@ -3626,12 +3727,32 @@ function Laptop({
     }
 
     /* CENTRAL FLASH — a sharp bright bloom at the open moment (the "bang"):
-     * quick scale-up + fast fade so it punches then clears. */
+     * quick scale-up + fast fade so it punches then clears. Toned down
+     * (0.55 -> 0.2) now the footage burst carries the white-hot core —
+     * this survives as a floor-level light kick under the detonation. */
     if (flashMeshRef.current && flashMatRef.current) {
       const flash = Math.pow(Math.sin(Math.PI * activationT), 3);
       const fs = 3.4 + activationT * 8;
       flashMeshRef.current.scale.set(fs, fs, 1);
-      flashMatRef.current.opacity = reducedMotion ? 0 : flash * 0.55;
+      flashMatRef.current.opacity = reducedMotion ? 0 : flash * 0.2;
+    }
+
+    /* EXPLOSION FOOTAGE — scrub the real pre-rendered volumetric burst.
+     * activationT maps the scroll beat directly onto the footage's own
+     * lifecycle (frame 0 black -> detonate -> expand -> dissipate ->
+     * frame 63 black), so no opacity gating is needed: outside the beat
+     * the sampled frame is black and additive-black is invisible. The
+     * quad billboards to the camera and sits just BEHIND the laptop
+     * along the view direction, so the chassis silhouettes against the
+     * blast and the burst reads as erupting around the machine. */
+    if (fxMeshRef.current && fxMaterial) {
+      fxMeshRef.current.quaternion.copy(state.camera.quaternion);
+      state.camera.getWorldDirection(FX_FORWARD);
+      fxMeshRef.current.position
+        .set(RIG_X, 0.5, 0)
+        .addScaledVector(FX_FORWARD, 1.25);
+      fxMaterial.uniforms.uFrame.value = activationT * (FX_FRAMES - 1);
+      fxMaterial.uniforms.uOpacity.value = reducedMotion ? 0 : 1;
     }
 
     /* SECONDARY ECHO RIPPLES — two follow-up rings, each lagging the main
@@ -3941,6 +4062,28 @@ function Laptop({
             depthWrite={false}
             toneMapped={false}
           />
+        </mesh>
+      )}
+
+      {/* EXPLOSION FOOTAGE — the real pre-rendered volumetric burst,
+       *  composited over the live scene like a film element. A camera-
+       *  facing 16:9 quad scrubbing an 8x8 flipbook of offline-rendered
+       *  plasma footage (see FX_ATLAS_URL block comment). Additive over
+       *  a black plate = no alpha needed; frames 0/63 are black so it is
+       *  invisible at rest. Position + billboard + frame index are all
+       *  driven in useFrame off activationT. */}
+      {fxMaterial && (
+        <mesh
+          ref={fxMeshRef}
+          position={[RIG_X, 0.5, -1.25]}
+          frustumCulled={false}
+        >
+          {/* 11.5x6.5 world units: at the camera's distance the burst's
+           *  spherical shell wraps the chassis with void still visible
+           *  around it — an eruption FROM the laptop, not a backdrop
+           *  swap. (16x9 read as a full-screen environment takeover.) */}
+          <planeGeometry args={[11.5, 6.5]} />
+          <primitive object={fxMaterial} attach="material" />
         </mesh>
       )}
 
