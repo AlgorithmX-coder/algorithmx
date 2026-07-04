@@ -5,7 +5,6 @@
  * Manual Application.init() + canvas append; no framework wrappers.
  */
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import dynamic from "next/dynamic";
 import {
   Application,
   Assets,
@@ -18,13 +17,11 @@ import {
   type Ticker,
 } from "pixi.js";
 import { playSound, playBGM, stopBGM, SoundManager } from "@/app/lib/sounds";
+import { isAudioMuted, subscribeAudioMute } from "@/app/lib/audioMute";
 import { addXP, earnBadge, type RankInfo } from "@/app/lib/progression";
 import LevelUpCelebration from "@/app/components/LevelUpCelebration";
 import PixIcon from "@/app/components/lesson/PixIcon";
 
-// Three.js arena environment - dynamically imported so SSR doesn't try to
-// execute WebGL code. Renders behind the transparent PixiJS canvas.
-const Arena3D = dynamic(() => import("./Arena3D"), { ssr: false });
 
 // CosmicRealmBackdrop import removed - was a third WebGL context running
 // alongside Arena3D + PixiJS, contributing to the perceived jank. The
@@ -1340,14 +1337,31 @@ export default function BossBattle({
    * announcements + per-phase stats tracking.
    */
   const customQuestions = useMemo<Question[] | null>(() => {
+    // Shuffle each question's answer order so the correct one isn't always in
+    // the same slot. Week 1's phases all author correctIndex:0, so without this
+    // a kid could just spam the first option (A) and win. Shuffled once here
+    // (memoised on [phases, questions]) so positions stay stable for the fight.
+    // BossBattle is client-only (dynamic ssr:false), so Math.random() is safe.
+    const shuffleAnswers = (q: Question): Question => {
+      const order = q.answers.map((_, i) => i);
+      for (let i = order.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [order[i], order[j]] = [order[j], order[i]];
+      }
+      return {
+        ...q,
+        answers: order.map((i) => q.answers[i]),
+        correctIndex: order.indexOf(q.correctIndex),
+      };
+    };
     if (phases && phases.length > 0) {
       const flat: Question[] = [];
       for (const p of phases) {
-        for (const q of p.questions) flat.push(q);
+        for (const q of p.questions) flat.push(shuffleAnswers(q));
       }
       return flat;
     }
-    if (questions && questions.length > 0) return questions;
+    if (questions && questions.length > 0) return questions.map(shuffleAnswers);
     return null;
   }, [phases, questions]);
 
@@ -1598,22 +1612,47 @@ export default function BossBattle({
     () => ["Too easy!", "You'll never crack me!", "Nice try, kiddo!", "Is that all you've got?", "I'm the sneakiest around!", "Catch me if you can!"],
     []
   );
-  // The Hacker Raccoon's voice (Callum, ElevenLabs). Raw Audio, capped +
-  // one-at-a-time. Files at /audio/villain/{slug}.mp3.
+  // The Hacker Raccoon's voice (Callum, ElevenLabs). Files at
+  // /audio/villain/{slug}.mp3. This is raw <audio>, NOT Howler — so, like
+  // the coach narration, it has to honour the master mute itself (Howler's
+  // global mute can't reach it) and sit at the narration-voice level so the
+  // villain reads as an in-your-face presence, not a distant murmur.
   const villainAudioRef = useRef<HTMLAudioElement | null>(null);
   const playVillain = useCallback((slug: string) => {
+    if (isAudioMuted()) return; // respect the single HUD mute button
     try {
       if (villainAudioRef.current) {
         villainAudioRef.current.pause();
         villainAudioRef.current = null;
       }
       const el = new Audio(`/audio/villain/${slug}.mp3`);
-      el.volume = 0.6;
+      // 0.6 read as "far off" next to the 0.9 coach voice — match it so the
+      // raccoon lands with weight.
+      el.volume = 0.92;
       villainAudioRef.current = el;
       void el.play().catch(() => {});
     } catch {
       /* villain voice optional */
     }
+  }, []);
+  // Raw <audio> can't be silenced through Howler, so subscribe to the master
+  // mute: cut the raccoon off the instant the child mutes, and stop him on
+  // unmount. (isAudioMuted() above gates *starting* a line; this stops one
+  // already playing.)
+  useEffect(() => {
+    const stop = () => {
+      if (villainAudioRef.current) {
+        villainAudioRef.current.pause();
+        villainAudioRef.current = null;
+      }
+    };
+    const unsub = subscribeAudioMute((muted) => {
+      if (muted) stop();
+    });
+    return () => {
+      unsub();
+      stop();
+    };
   }, []);
   const HERO_LINES_3 = useMemo(() => ["I'm on fire!", "Let's go!", "Keep it up!"], []);
   const HERO_LINES_5 = useMemo(() => ["Unstoppable!", "We've got this!", "Power up!"], []);
@@ -1631,18 +1670,11 @@ export default function BossBattle({
     heroSpeechTimerRef.current = window.setTimeout(() => setHeroSpeech(null), 1500);
   }, []);
 
-  // Hacker Raccoon voice: a cocky intro as he appears, and a defeat line
-  // when he's beaten. (Taunts mid-fight fire from showBossTaunt.)
-  useEffect(() => {
-    const id = window.setTimeout(() => playVillain("intro"), 900);
-    return () => {
-      window.clearTimeout(id);
-      if (villainAudioRef.current) {
-        villainAudioRef.current.pause();
-        villainAudioRef.current = null;
-      }
-    };
-  }, [playVillain]);
+  // Hacker Raccoon voice: the cocky intro line now fires from the intro
+  // choreography at the moment he lands in the arena (see the `impact`
+  // stage below) — not on mount, when he isn't even on screen yet. The
+  // defeat line fires here when he's beaten. (Taunts mid-fight fire from
+  // showBossTaunt.)
   useEffect(() => {
     if (result === "won") playVillain("defeat");
   }, [result, playVillain]);
@@ -1795,6 +1827,11 @@ export default function BossBattle({
       // Gameplay volume
       SoundManager.getInstance().setVolume("music", 1);
     }, 4100));
+
+    // 4450ms: the raccoon's cocky intro line, a beat after the roar so it's
+    // roar-then-voice as he lands (his voice matches his entrance, instead
+    // of the old mount-time fire that played into an empty pre-fight splash).
+    timers.push(window.setTimeout(() => playVillain("intro"), 4450));
 
     // 4600ms: Intro done → run 3-2-1-GO! countdown
     timers.push(window.setTimeout(() => {
@@ -3055,7 +3092,12 @@ export default function BossBattle({
         </div>
       )}
 
-      {/* 3D Arena - sits BEHIND the PixiJS canvas. */}
+      {/* Battle-arena backdrop - a calm, balanced cyberspace field (no walls,
+          no floor) behind the transparent PixiJS canvas: an even dark plate so
+          the fighters pop, with a code-drawn "stage" glow locked to the two
+          character anchors (hero x~28%, boss x~68%, foot line ~57%) so they read
+          as standing on one shared, proportioned stage. Slow drift +
+          phase-escalation tint + hit flash keep it alive; Layla shifts violet. */}
       {selectedHero && (
         <div
           aria-hidden="true"
@@ -3064,26 +3106,107 @@ export default function BossBattle({
             inset: 0,
             zIndex: 0,
             pointerEvents: "none",
-            // Adam = cool tech-blue; Layla = cosmic violet/pink. The
-            // hue-rotate is a global filter on the rendered Arena3D
-            // canvas so every inline-coloured mesh inside (wireframe
-            // globe, conduits, hex nodes, arcs) shifts together -
-            // way cheaper than threading heroId through every color
-            // literal in the 2800-line scene.
-            filter: selectedHero === "adam" ? "hue-rotate(-70deg) saturate(0.95)" : "none",
-            background: selectedHero === "adam"
-              ? "radial-gradient(ellipse at 50% 60%, #08243a 0%, #08142e 35%, #04050d 100%)"
-              : "radial-gradient(ellipse at 50% 60%, #1a0e22 0%, #0f1530 35%, #04050d 100%)",
+            overflow: "hidden",
+            background: "#060814",
           }}
         >
-          <Arena3D
-            width={viewport.w}
-            height={viewport.h}
-            phase={arenaPhase}
-            shakeIntensity={arenaShake.mag}
-            shakeKey={arenaShake.key}
-            mood={arenaMood}
-            heroId={selectedHero ?? "adam"}
+          <style>{`
+            @keyframes bbArenaDrift { 0% { transform: scale(1.03) translateY(0); } 100% { transform: scale(1.09) translateY(-1.6%); } }
+            .bb-arena-bg { animation: bbArenaDrift 34s ease-in-out infinite alternate; will-change: transform; }
+            @keyframes bbArenaHit { from { opacity: 0.85; } to { opacity: 0; } }
+          `}</style>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/game/boss/arena-bg.webp"
+            alt=""
+            className="bb-arena-bg"
+            style={{
+              position: "absolute",
+              inset: 0,
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+              objectPosition: "center 40%",
+              filter: selectedHero === "layla" ? "hue-rotate(58deg) saturate(1.05)" : "none",
+            }}
+          />
+          {/* Cool-correction: multiply a soft cyan over the plate's warm centre
+              core so the middle reads clean teal, not muddy warm. Pure white
+              toward the edges = multiply identity = no change out there. */}
+          <div
+            style={{
+              position: "absolute",
+              inset: 0,
+              mixBlendMode: "multiply",
+              background:
+                "radial-gradient(ellipse 46% 40% at 50% 44%, rgba(150,205,232,1) 0%, rgba(232,241,248,1) 46%, rgba(255,255,255,1) 68%)",
+            }}
+          />
+          {/* Phase/mood escalation tint */}
+          <div
+            style={{
+              position: "absolute",
+              inset: 0,
+              mixBlendMode: "screen",
+              transition: "background 0.8s ease",
+              background:
+                arenaMood === "victory"
+                  ? "radial-gradient(ellipse at 50% 45%, rgba(253,224,71,0.20), transparent 70%)"
+                  : arenaPhase >= 3
+                    ? "radial-gradient(ellipse at 50% 42%, rgba(239,68,68,0.26), transparent 72%)"
+                    : arenaPhase >= 2
+                      ? "radial-gradient(ellipse at 50% 42%, rgba(255,122,89,0.18), transparent 72%)"
+                      : "transparent",
+            }}
+          />
+          {/* Impact flash - remounts on each shake (key) to replay */}
+          {arenaShake.mag > 0 && (
+            <div
+              key={arenaShake.key}
+              style={{
+                position: "absolute",
+                inset: 0,
+                background:
+                  "radial-gradient(ellipse at 50% 45%, rgba(255,240,200,0.22), transparent 62%)",
+                animation: "bbArenaHit 0.42s ease-out forwards",
+                mixBlendMode: "screen",
+              }}
+            />
+          )}
+          {/* Grounding "stage" - soft glow pools locked to the exact Pixi
+              character anchors (hero x~28%, boss x~68%, foot line ~57%) so the
+              two fighters read as standing on ONE shared lit stage. A wide low
+              band ties them together; a pool under each plants that fighter.
+              Screen-blended (adds light only) - no bricks, no literal floor. */}
+          <div
+            style={{
+              position: "absolute",
+              inset: 0,
+              mixBlendMode: "screen",
+              pointerEvents: "none",
+              background: [
+                // wide low band tying both fighters onto one stage
+                "radial-gradient(ellipse 58% 16% at 48% 62%, rgba(96,160,215,0.30), transparent 72%)",
+                // hero (Adam) foot pool - feet sit ~57%; halo + bright core
+                "radial-gradient(ellipse 16% 8.5% at 28% 58%, rgba(140,195,255,0.6), transparent 72%)",
+                "radial-gradient(ellipse 8% 4% at 28% 58%, rgba(205,232,255,0.55), transparent 78%)",
+                // boss (Raccoon, taller) foot pool - feet sit ~59.5%
+                "radial-gradient(ellipse 17% 9% at 68% 60.5%, rgba(190,150,255,0.6), transparent 72%)",
+                "radial-gradient(ellipse 9% 4.5% at 68% 60.5%, rgba(228,208,255,0.5), transparent 78%)",
+              ].join(", "),
+            }}
+          />
+          {/* Symmetric edge vignette + top fade only - NO bottom/ground fade,
+              so nothing reads as a floor. The radial darkens the outer edges
+              evenly (focuses the centred fighters); the top fade blends the
+              matrix rain into the HUD. */}
+          <div
+            style={{
+              position: "absolute",
+              inset: 0,
+              background:
+                "radial-gradient(ellipse 112% 94% at 50% 46%, transparent 60%, rgba(4,5,14,0.44) 100%), linear-gradient(180deg, rgba(4,5,14,0.42) 0%, transparent 18%)",
+            }}
           />
         </div>
       )}
