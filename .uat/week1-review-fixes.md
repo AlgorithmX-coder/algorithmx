@@ -186,6 +186,26 @@ imagery; **PixIcon 3D icons, no raw emoji**.
       weight. Taunts + defeat line flow through the same fixed path. Boss SFX
       (`bossRoar`/`bossDefeated`) already went through Howler and were fine.
 
+- [x] **R29 — Boss arena "proportioned" redo (walls/floor removed, characters
+      grounded).** The R27 backdrop still had firewall brick-walls + a flaming
+      floor, and the first void replacement looked unproportioned (a giant black
+      hole dwarfed the fighters and left them floating). Root cause: the plate
+      was designed blind to where the characters actually stand. Fix, keyed to
+      the real Pixi anchors (hero centre x~28% / foot ~57%, boss x~68% / foot
+      ~59.5%; from `baseHeroX/Y`, `baseBossX/Y`, `HERO_HEIGHT`/`BOSS_HEIGHT`):
+      (1) generated a calm, balanced, even-dark cyberspace field (no dominating
+      shape, no walls, no bricks, no floor) via OpenART nano-banana-pro, picked
+      from 8 candidates, optimised to a 48KB `arena-bg.webp`; (2) added a
+      code-drawn "stage" grounding layer in the z0 DOM wrapper - a wide low band
+      + a bright halo/core glow-pool under each fighter at their exact foot
+      height - so the two read as standing on ONE shared stage (the game's
+      existing Pixi floor-rings + reflections were getting lost against the busy
+      void and now read clearly); (3) a multiply cool-correction layer to kill
+      the plate's warm centre core (clean teal); (4) removed the old heavy
+      bottom "ground" fade so nothing reads as a floor. All in `BossBattle.tsx`
+      + the asset; no game-logic/Pixi changes. Verified with characters
+      composited in-frame (Playwright).
+
 ### Fixed this round (R7–R11)
 - [x] **R7 — Remove raccoon glyph on the alert/incident screen.** The floating
       Hacker-Raccoon avatar in the top-right corner of the "ALERT INCOMING /

@@ -3092,10 +3092,12 @@ export default function BossBattle({
         </div>
       )}
 
-      {/* Battle-arena backdrop - a neon cyberspace battlefield (rebuilt from
-          the boss splash) behind the transparent PixiJS canvas. Slow drift +
-          phase-escalation tint + hit flash keep it alive; Layla shifts the
-          cyan environment toward her violet theme. */}
+      {/* Battle-arena backdrop - a calm, balanced cyberspace field (no walls,
+          no floor) behind the transparent PixiJS canvas: an even dark plate so
+          the fighters pop, with a code-drawn "stage" glow locked to the two
+          character anchors (hero x~28%, boss x~68%, foot line ~57%) so they read
+          as standing on one shared, proportioned stage. Slow drift +
+          phase-escalation tint + hit flash keep it alive; Layla shifts violet. */}
       {selectedHero && (
         <div
           aria-hidden="true"
@@ -3124,8 +3126,20 @@ export default function BossBattle({
               width: "100%",
               height: "100%",
               objectFit: "cover",
-              objectPosition: "center 44%",
+              objectPosition: "center 40%",
               filter: selectedHero === "layla" ? "hue-rotate(58deg) saturate(1.05)" : "none",
+            }}
+          />
+          {/* Cool-correction: multiply a soft cyan over the plate's warm centre
+              core so the middle reads clean teal, not muddy warm. Pure white
+              toward the edges = multiply identity = no change out there. */}
+          <div
+            style={{
+              position: "absolute",
+              inset: 0,
+              mixBlendMode: "multiply",
+              background:
+                "radial-gradient(ellipse 46% 40% at 50% 44%, rgba(150,205,232,1) 0%, rgba(232,241,248,1) 46%, rgba(255,255,255,1) 68%)",
             }}
           />
           {/* Phase/mood escalation tint */}
@@ -3159,13 +3173,39 @@ export default function BossBattle({
               }}
             />
           )}
-          {/* Depth vignette + ground/top fades so the fighters sit into the floor */}
+          {/* Grounding "stage" - soft glow pools locked to the exact Pixi
+              character anchors (hero x~28%, boss x~68%, foot line ~57%) so the
+              two fighters read as standing on ONE shared lit stage. A wide low
+              band ties them together; a pool under each plants that fighter.
+              Screen-blended (adds light only) - no bricks, no literal floor. */}
+          <div
+            style={{
+              position: "absolute",
+              inset: 0,
+              mixBlendMode: "screen",
+              pointerEvents: "none",
+              background: [
+                // wide low band tying both fighters onto one stage
+                "radial-gradient(ellipse 58% 16% at 48% 62%, rgba(96,160,215,0.30), transparent 72%)",
+                // hero (Adam) foot pool - feet sit ~57%; halo + bright core
+                "radial-gradient(ellipse 16% 8.5% at 28% 58%, rgba(140,195,255,0.6), transparent 72%)",
+                "radial-gradient(ellipse 8% 4% at 28% 58%, rgba(205,232,255,0.55), transparent 78%)",
+                // boss (Raccoon, taller) foot pool - feet sit ~59.5%
+                "radial-gradient(ellipse 17% 9% at 68% 60.5%, rgba(190,150,255,0.6), transparent 72%)",
+                "radial-gradient(ellipse 9% 4.5% at 68% 60.5%, rgba(228,208,255,0.5), transparent 78%)",
+              ].join(", "),
+            }}
+          />
+          {/* Symmetric edge vignette + top fade only - NO bottom/ground fade,
+              so nothing reads as a floor. The radial darkens the outer edges
+              evenly (focuses the centred fighters); the top fade blends the
+              matrix rain into the HUD. */}
           <div
             style={{
               position: "absolute",
               inset: 0,
               background:
-                "radial-gradient(ellipse 92% 72% at 50% 40%, transparent 54%, rgba(4,5,14,0.5) 100%), linear-gradient(180deg, rgba(4,5,14,0.32) 0%, transparent 20%, transparent 66%, rgba(4,5,14,0.72) 100%)",
+                "radial-gradient(ellipse 112% 94% at 50% 46%, transparent 60%, rgba(4,5,14,0.44) 100%), linear-gradient(180deg, rgba(4,5,14,0.42) 0%, transparent 18%)",
             }}
           />
         </div>
