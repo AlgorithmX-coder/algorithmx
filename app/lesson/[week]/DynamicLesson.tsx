@@ -438,6 +438,11 @@ function VideoScreen({
   const videoRef = useRef<HTMLVideoElement>(null);
   const [started, setStarted] = useState(false);
   const [failed, setFailed] = useState(false);
+  // Ease the tail of the clip to black — picture AND soundtrack — so the
+  // bookend videos don't cut off sharply into the next screen. Applies to
+  // whatever mp4 is set, including a hand-produced final cut.
+  const FADE_OUT_SECS = 1.3;
+  const [fadingOut, setFadingOut] = useState(false);
 
   const play = () => {
     const v = videoRef.current;
@@ -450,6 +455,24 @@ function VideoScreen({
     // play() rejects if the browser still blocks it; native controls
     // (now visible) give the learner a manual fallback.
     void v.play().catch(() => {});
+  };
+
+  // Drive the fade from playback position: within the last FADE_OUT_SECS,
+  // ramp the volume down and flip the black overlay on (CSS transition times
+  // it to reach full black exactly as the clip ends). Scrubbing back past the
+  // threshold restores volume + clears the fade.
+  const handleTimeUpdate = (e: React.SyntheticEvent<HTMLVideoElement>) => {
+    const v = e.currentTarget;
+    const dur = v.duration;
+    if (!Number.isFinite(dur) || dur <= 0) return;
+    const remaining = dur - v.currentTime;
+    if (remaining <= FADE_OUT_SECS) {
+      if (!fadingOut) setFadingOut(true);
+      v.volume = Math.max(0, Math.min(0.6, (0.6 * remaining) / FADE_OUT_SECS));
+    } else if (fadingOut) {
+      setFadingOut(false);
+      v.volume = 0.6;
+    }
   };
 
   return (
@@ -479,6 +502,7 @@ function VideoScreen({
                   e.currentTarget.volume = 0.6;
                 }}
                 onError={() => setFailed(true)}
+                onTimeUpdate={handleTimeUpdate}
                 onEnded={onSkip}
                 style={{ width: "100%", height: "100%", objectFit: "contain", display: "block" }}
               />
@@ -498,6 +522,22 @@ function VideoScreen({
               >
                 Video couldn&apos;t load — tap &ldquo;Skip video&rdquo; to continue.
               </div>
+            )}
+
+            {/* Fade-to-black overlay - eased in over the clip's final moment so
+                the ending is a soft dip to black, not a hard cut. */}
+            {started && !failed && (
+              <div
+                aria-hidden="true"
+                style={{
+                  position: "absolute",
+                  inset: 0,
+                  background: "#000",
+                  pointerEvents: "none",
+                  opacity: fadingOut ? 1 : 0,
+                  transition: `opacity ${FADE_OUT_SECS}s linear`,
+                }}
+              />
             )}
 
             {!started && !failed && (
