@@ -206,6 +206,20 @@ imagery; **PixIcon 3D icons, no raw emoji**.
       + the asset; no game-logic/Pixi changes. Verified with characters
       composited in-frame (Playwright).
 
+- [x] **R30 — Closing/outro episode video ("The Bounce") — PLACEHOLDER.** The
+      end-of-week video bookend was already wired (`week1.ts` screen 20, after the
+      boss → BossVictoryScene "Claim Badge" → `navigate(screen+1)` →
+      `/videos/module-01-outro.mp4`), but the file was a generic placeholder.
+      Generated a proper placeholder matching the intended beat ("Raccoon attacks
+      again, bounces off"): animated the existing `week-1-showdown.webp` splash
+      (so Adam, Layla + the raccoon stay on-model) into a victory via OpenART
+      Seedance 2.0 image2video — the heroes raise a shield, the raccoon lunges,
+      bounces off and tumbles away defeated, heroes celebrate; 8s, 720p, with a
+      synced soundtrack. Installed at `public/videos/module-01-outro.mp4` (5.2MB,
+      down from 8.4MB); browser-playability verified (Playwright: readyState 4,
+      playback advances). NOTE: this is a PLACEHOLDER — the user will hand-produce
+      the final version and swap the file. No code changes (pure asset).
+
 ### Fixed this round (R7–R11)
 - [x] **R7 — Remove raccoon glyph on the alert/incident screen.** The floating
       Hacker-Raccoon avatar in the top-right corner of the "ALERT INCOMING /
