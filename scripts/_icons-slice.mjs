@@ -1,10 +1,13 @@
-// Slice the 3x2 OpenArt icon grids into individual transparent PNGs.
+// Slice the OpenArt icon grids into individual transparent PNGs.
 //
-// For each grid: cut into 6 cells (3 cols x 2 rows), flood-fill the white
-// background to transparent FROM THE EDGES (so interior whites — a checkmark,
-// the no-entry centre — survive), trim, and normalise onto a 256x256 canvas.
+// For each grid: cut into cells (cols x rows, defaults 3x2), flood-fill the
+// white background to transparent FROM THE EDGES (so interior whites — a
+// checkmark, the no-entry centre — survive), trim, and normalise onto a
+// 256x256 canvas.
 //
-// node scripts/_icons-slice.mjs
+// node scripts/_icons-slice.mjs [file-substring]
+//   With an argument, only grids whose file path contains it are sliced
+//   (e.g. `w2-grid1` to re-slice one grid without touching the rest).
 import sharp from "sharp";
 import { mkdir } from "node:fs/promises";
 
@@ -18,6 +21,12 @@ const GRIDS = [
   { file: ".openart-tmp/grid6-misc.png", names: ["muscle", "rocket", "gift", "hammer", "padlock-key", "sparkle-star"] },
   { file: ".openart-tmp/grid7-tools.png", names: ["lowercase-blocks", "trash", "shuffle", "clipboard", "link", "gear"] },
   { file: ".openart-tmp/grid8-feedback.png", names: ["skull", "home", "thumbs-up", "lightbulb", "bell", "eye"] },
+  // Week 2 · Private Info (4x3 grid)
+  { file: ".openart-tmp/w2-grid1-privacy.png", cols: 4, rows: 3, smartCuts: true, names: [
+    "map-pin", "school", "smartphone", "mask",
+    "globe", "question-mark", "gamepad", "envelope",
+    "hero-cape", "pause-button", "stop-hand", "speech-bubble",
+  ] },
 ];
 
 const OUT = "public/cyberheroes/icons";
@@ -34,19 +43,56 @@ function isBg(r, g, b) {
   return r > 202 && g > 202 && b > 202 && max - min < 28;
 }
 
-async function sliceGrid({ file, names }) {
+// Generated grids don't always land on an exact lattice — icons can cross the
+// uniform W/cols boundaries. smartCuts scans the grid for blank gullies
+// (rows/columns containing only background) and places each cut inside the
+// gully nearest its ideal lattice position, so a tall or shifted icon is
+// never split. Falls back to the lattice position when no gully exists.
+async function findCuts(file, cols, rows) {
+  const { data, info } = await sharp(file).ensureAlpha().raw().toBuffer({ resolveWithObject: true });
+  const { width: W, height: H } = info;
+  const colHas = new Uint8Array(W);
+  const rowHas = new Uint8Array(H);
+  for (let y = 0; y < H; y++) {
+    for (let x = 0; x < W; x++) {
+      const o = (y * W + x) * 4;
+      if (!isBg(data[o], data[o + 1], data[o + 2])) { colHas[x] = 1; rowHas[y] = 1; }
+    }
+  }
+  const cutsIn = (has, size, parts) => {
+    const cuts = [0];
+    for (let i = 1; i < parts; i++) {
+      const ideal = Math.round((size * i) / parts);
+      let best = ideal, bestDist = Infinity;
+      for (let p = 0; p < size; p++) {
+        if (has[p]) continue;
+        const d = Math.abs(p - ideal);
+        if (d < bestDist) { bestDist = d; best = p; }
+      }
+      cuts.push(best);
+    }
+    cuts.push(size);
+    return cuts;
+  };
+  return { xCuts: cutsIn(colHas, W, cols), yCuts: cutsIn(rowHas, H, rows) };
+}
+
+async function sliceGrid({ file, names, cols = 3, rows = 2, smartCuts = false }) {
   const meta = await sharp(file).metadata();
   const W = meta.width ?? 1360;
   const H = meta.height ?? 1360;
-  const cols = 3, rows = 2;
   const cw = Math.floor(W / cols);
   const ch = Math.floor(H / rows);
+  const cuts = smartCuts ? await findCuts(file, cols, rows) : null;
 
-  for (let idx = 0; idx < 6; idx++) {
+  for (let idx = 0; idx < cols * rows; idx++) {
     const row = Math.floor(idx / cols);
     const col = idx % cols;
+    const box = cuts
+      ? { left: cuts.xCuts[col], top: cuts.yCuts[row], width: cuts.xCuts[col + 1] - cuts.xCuts[col], height: cuts.yCuts[row + 1] - cuts.yCuts[row] }
+      : { left: col * cw, top: row * ch, width: cw, height: ch };
     const { data, info } = await sharp(file)
-      .extract({ left: col * cw, top: row * ch, width: cw, height: ch })
+      .extract(box)
       .ensureAlpha()
       .raw()
       .toBuffer({ resolveWithObject: true });
@@ -85,7 +131,9 @@ async function sliceGrid({ file, names }) {
   }
 }
 
+const filter = process.argv[2];
 for (const g of GRIDS) {
+  if (filter && !g.file.includes(filter)) continue;
   await sliceGrid(g);
 }
 console.log("\ndone -> " + OUT);
