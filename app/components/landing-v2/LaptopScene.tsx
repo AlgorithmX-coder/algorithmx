@@ -12,8 +12,9 @@ import {
   N8AO,
   BrightnessContrast,
   HueSaturation,
+  ToneMapping,
 } from "@react-three/postprocessing";
-import { BlendFunction, SMAAPreset } from "postprocessing";
+import { BlendFunction, SMAAPreset, ToneMappingMode } from "postprocessing";
 import * as THREE from "three";
 import type { MotionValue } from "framer-motion";
 import TechChamber from "./TechChamber";
@@ -2893,6 +2894,16 @@ export default function LaptopScene({ progress, reducedMotion = false, capture =
           mipmapBlur
         />
         <SMAA preset={SMAAPreset.HIGH} />
+        {/* ACES FILMIC — the missing tone-map stage. The Canvas asks for
+         *  ACESFilmicToneMapping, but react-postprocessing disables the
+         *  renderer's tone mapping while a composer is mounted, so the
+         *  buffer reaching the grade was raw HDR. BrightnessContrast ends
+         *  with a hard per-channel min(color, 1.0) — every sub-pixel HDR
+         *  specular glint on the chassis edge radius clipped to PURE
+         *  WHITE, printing a dashed white outline along the silhouette.
+         *  Tone-mapping first compresses those glints filmically (soft
+         *  sheen, no dots) and restores the curve the scene was lit for. */}
+        <ToneMapping mode={ToneMappingMode.ACES_FILMIC} />
         <BrightnessContrast brightness={-0.015} contrast={0.07} />
         <HueSaturation hue={0} saturation={0.08} />
         {/* Vignette darkness softened so the lower edge blends into the page
@@ -2903,13 +2914,15 @@ export default function LaptopScene({ progress, reducedMotion = false, capture =
           darkness={0.5}
           blendFunction={BlendFunction.NORMAL}
         />
-        {/* Grain dither is skipped during frame capture: it writes noise
+        {/* Grain dither zeroed during frame capture: it writes noise
          *  across TRANSPARENT pixels too, which reads as speckle once the
-         *  alpha frames are composited over the page backdrop. Live render
-         *  keeps it. */}
-        {!capture && (
-          <Noise opacity={0.006} blendFunction={BlendFunction.OVERLAY} />
-        )}
+         *  alpha frames are composited over the page backdrop. (Kept
+         *  mounted — conditional children break EffectComposer's types;
+         *  opacity 0 is a no-op.) Live render keeps it. */}
+        <Noise
+          opacity={capture ? 0 : 0.006}
+          blendFunction={BlendFunction.OVERLAY}
+        />
       </EffectComposer>
     </Canvas>
     </div>
