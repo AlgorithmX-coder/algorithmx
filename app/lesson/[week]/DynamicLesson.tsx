@@ -65,6 +65,7 @@ import ConveyorSort from "@/app/components/exercises/ConveyorSort";
 import RequestInspector from "@/app/components/exercises/RequestInspector";
 import UsernameBuilder from "@/app/components/exercises/UsernameBuilder";
 import PauseDecide from "@/app/components/exercises/PauseDecide";
+import VaultDrop from "@/app/components/exercises/VaultDrop";
 import MissionDebrief from "@/app/components/lesson/MissionDebrief";
 import ConceptRecap from "@/app/components/lesson/ConceptRecap";
 import StickerUnlock from "@/app/components/lesson/StickerUnlock";
@@ -95,6 +96,10 @@ const LessonArena3D = dynamic(
 );
 const BossBattle = dynamic(
   () => import("@/app/components/game/BossBattle"),
+  { ssr: false }
+);
+const ProfileForgeBoss = dynamic(
+  () => import("@/app/components/game/ProfileForgeBoss"),
   { ssr: false }
 );
 const WelcomeScene = dynamic(
@@ -141,6 +146,7 @@ const EXERCISE_SCREEN_TYPES = new Set<ScreenDef["type"]>([
   "conveyorSort",
   "requestInspector",
   "usernameBuilder",
+  "vaultDrop",
 ]);
 
 /**
@@ -1415,6 +1421,34 @@ function DynamicLessonInner({ qaEnabled }: { qaEnabled: boolean }) {
           </FullScene>
         );
 
+      case "vaultDrop":
+        return (
+          <FullScene bg="linear-gradient(180deg, #0a0d24 0%, #141b42 100%)">
+            <VaultDrop
+              items={def.items}
+              hints={def.hints}
+              introNarration={def.narration}
+              coachLines={def.coachLines}
+              onComplete={() => navigate(screen + 1)}
+              onCorrect={() => awardXp(25)}
+              onWrong={() => addWrong(screen)}
+              onHintReached={(tier) => progress.reportHint(screen, tier)}
+              onAnswered={(o) => {
+                progress.saveQuestion({
+                  screenIndex: screen,
+                  questionKey: o.questionKey,
+                  selectedIndex: o.selectedIndex,
+                  correctIndex: o.correctIndex,
+                  wasCorrect: o.wasCorrect,
+                });
+                if (!o.wasCorrect) {
+                  progress.reportWrong(screen, o.questionKey);
+                }
+              }}
+            />
+          </FullScene>
+        );
+
       case "conveyorSort":
         return (
           <FullScene bg="linear-gradient(180deg, #050a1a 0%, #101a3d 100%)">
@@ -2079,6 +2113,66 @@ function DynamicLessonInner({ qaEnabled }: { qaEnabled: boolean }) {
       {/* Boss battle fullscreen overlay */}
       {showBoss && (
         <div style={{ position: "fixed", inset: 0, zIndex: 80 }}>
+          {content.bossForge ? (
+            /* Bespoke BUILD-FINAL boss (Week 2's Profile Forge). Emits the
+               same outcome/stats shapes as BossBattle, so persistence,
+               analytics and the victory flow below are shared verbatim. */
+            <ProfileForgeBoss
+              forge={content.bossForge}
+              bossName="HACKER RACCOON"
+              onQuestionAnswered={(o) => {
+                const keyWithPhase = o.phaseId ? `${o.key}@${o.phaseId}` : o.key;
+                progress.saveQuestion({
+                  screenIndex: screen,
+                  questionKey: keyWithPhase,
+                  selectedIndex: o.selectedIndex,
+                  correctIndex: o.correctIndex,
+                  wasCorrect: o.wasCorrect,
+                });
+                if (!o.wasCorrect) {
+                  progress.reportWrong(screen, keyWithPhase);
+                }
+              }}
+              onEnd={(won, stats) => {
+                setShowBoss(false);
+                setBossDone(true);
+                setBossWon(won);
+                setBossStats({
+                  combo: stats.combo ?? 0,
+                  accuracy: stats.accuracy ?? 0,
+                  xp: stats.xp ?? 0,
+                });
+                progress.saveBoss({
+                  won,
+                  accuracy: stats.accuracy ?? 0,
+                  totalQuestions: stats.totalQuestions ?? 0,
+                  correctCount: stats.correctCount ?? 0,
+                  wrongCount: stats.wrongCount ?? 0,
+                  bestCombo: stats.combo ?? 0,
+                  durationMs: stats.durationMs ?? 0,
+                  badgeEarned: won,
+                  badgeId: won ? `week-${content.weekNumber}` : undefined,
+                });
+                for (const pr of stats.phaseResults ?? []) {
+                  analytics.bossCompleted({
+                    weekNumber: content.weekNumber,
+                    won: pr.wrongCount === 0,
+                    accuracy:
+                      pr.totalQuestions > 0
+                        ? Math.round((pr.correctCount / pr.totalQuestions) * 100)
+                        : 0,
+                    bestCombo: 0,
+                    durationMs: 0,
+                  });
+                }
+                if (won) {
+                  awardXp(150);
+                  void correctAnswerBurst();
+                  void badgeEarnedCelebration();
+                }
+              }}
+            />
+          ) : (
           <BossBattle
             bossName="HACKER RACCOON"
             // Prefer the new phased boss (5 acts: Strength / Secrecy /
@@ -2179,6 +2273,7 @@ function DynamicLessonInner({ qaEnabled }: { qaEnabled: boolean }) {
               }
             }}
           />
+          )}
         </div>
       )}
 

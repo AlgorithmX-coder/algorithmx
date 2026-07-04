@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-04T20:54:31.897Z",
+  "generatedAt": "2026-07-04T22:54:07.855Z",
   "model": "eleven_v3",
   "voiceSettings": {
     "stability": 0.35,
@@ -337,27 +337,29 @@
       "file": "/audio/voice/b652172f185e8347.mp3"
     },
     {
-      "key": "e68d4923ffb2f675",
+      "key": "a2bb995b5dced7b5",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[excited] The Sorting Machine is ready! Cards ride the belt, and YOU work the chutes. Favourites go to SHARE. Anything about who or where you are... KEEP PRIVATE! [warmly] Sort each card before it reaches the scanner. Go!",
+      "text": "[excited] Welcome to the Treasure Table! Every card is a piece of info about you. [warmly] Grab each one and DRAG it where it belongs. Favourites go up to the share board. [whispers] Who-you-are and where-you-are... straight into the vault. [excited] No rush. You're the guard here!",
       "lines": [
-        "[excited] The Sorting Machine is ready!",
-        "Cards ride the belt, and YOU work the chutes.",
-        "Favourites go to SHARE. Anything about who or where you are... KEEP PRIVATE!",
-        "[warmly] Sort each card before it reaches the scanner. Go!"
+        "[excited] Welcome to the Treasure Table!",
+        "Every card is a piece of info about you.",
+        "[warmly] Grab each one and DRAG it where it belongs.",
+        "Favourites go up to the share board.",
+        "[whispers] Who-you-are and where-you-are... straight into the vault.",
+        "[excited] No rush. You're the guard here!"
       ],
-      "file": "/audio/voice/e68d4923ffb2f675.mp3"
+      "file": "/audio/voice/a2bb995b5dced7b5.mp3"
     },
     {
-      "key": "8f346e8aa6f971b1",
+      "key": "8715d7183d60425e",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "Here comes the first card - which chute does it belong in?",
+      "text": "Grab that first treasure and drag it - board or vault?",
       "lines": [
-        "Here comes the first card - which chute does it belong in?"
+        "Grab that first treasure and drag it - board or vault?"
       ],
-      "file": "/audio/voice/8f346e8aa6f971b1.mp3"
+      "file": "/audio/voice/8715d7183d60425e.mp3"
     },
     {
       "key": "1182f16b5f6457f1",

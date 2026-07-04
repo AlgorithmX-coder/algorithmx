@@ -33,6 +33,77 @@ export interface WeekContent {
   bossPhases?: BossPhaseDef[];
 
   /**
+   * Bespoke BUILD-FINAL boss (Week 2's Profile Forge). When present,
+   * the lesson mounts ProfileForgeBoss instead of the quiz-combat
+   * BossBattle: five phases, each a DIFFERENT micro-game, reported
+   * through the same BossEndStats/phaseResults contract so the parent
+   * dashboard and analytics are unchanged. Exactly five phases, one
+   * per concept, in order: whack, hand, grill, assemble, rapid.
+   */
+  bossForge?: {
+    /** WHACK — leaky entries fly toward the form; swat the private ones,
+     *  let the safe ones dock. */
+    whack: {
+      id: string;
+      label: string;
+      intro: string;
+      /** Line stamped on the profile card when this phase is beaten. */
+      stamp: string;
+      entries: { id: string; text: string; icon: string; isPrivate: boolean; explanation: string }[];
+    };
+    /** HAND — the Raccoon fans out cards; pick the safe ones for the
+     *  About Me section. */
+    hand: {
+      id: string;
+      label: string;
+      intro: string;
+      /** Line stamped on the profile card when this phase is beaten. */
+      stamp: string;
+      /** How many safe picks complete the phase. */
+      picks: number;
+      cards: { id: string; text: string; icon: string; isSafe: boolean; explanation: string }[];
+    };
+    /** GRILL — a disguised popup demands info; press WHY? until the
+     *  excuses collapse. Breather phase: no fail state. */
+    grill: {
+      id: string;
+      label: string;
+      intro: string;
+      /** Line stamped on the profile card when this phase is beaten. */
+      stamp: string;
+      demand: string;
+      /** Escalating (crumbling) excuses, one per WHY press. */
+      excuses: string[];
+      collapse: string;
+    };
+    /** ASSEMBLE — rebuild the hero name from safe tiles; leak tiles
+     *  pulse temptingly and teach when tapped. */
+    assemble: {
+      id: string;
+      label: string;
+      intro: string;
+      /** Line stamped on the profile card when this phase is beaten. */
+      stamp: string;
+      /** Tiles in slot order; exactly the non-trap tiles spell the name. */
+      tiles: { id: string; text: string; trap?: string }[];
+      /** The finished hero name, for the completion stamp. */
+      result: string;
+    };
+    /** RAPID — mask off: quick-fire demands; NOPE the private ones,
+     *  SHARE the genuinely safe asks. */
+    rapid: {
+      id: string;
+      label: string;
+      intro: string;
+      /** Line stamped on the profile card when this phase is beaten. */
+      stamp: string;
+      /** Seconds per demand before a gentle timeout-teach. */
+      secs: number;
+      demands: { id: string; text: string; isPrivate: boolean; explanation: string }[];
+    };
+  };
+
+  /**
    * Week-themed boss attack theatre (name/icon/tag per telegraphed
    * attack, cycled per question). Omitted = BossBattle's Week 1 set.
    * Keeps the fight's vocabulary inside the week's curriculum lane.
@@ -517,6 +588,29 @@ export type ScreenDef = (
       }[];
       /** Line spoken/shown once every card has been revealed. */
       finale?: string;
+    }
+  | {
+      /**
+       * Vault Drop (Week 2's Beat 2). The DRAG game: info treasures are
+       * scattered on the table and the child physically drags each one
+       * either into the vault (private — the door swallows it and
+       * clunks shut) or onto the share board (safe — it gets pinned).
+       * No timer, no belt: deliberately the calm, tactile opposite of
+       * Week 1's beam-scanner reflex drill. Wrong drops bounce back and
+       * teach via WrongAnswerPanel.
+       */
+      type: "vaultDrop";
+      items: {
+        id: string;
+        text: string;
+        /** Emoji rendered via PixIcon on the treasure card. */
+        icon: string;
+        /** True = belongs in the vault; false = safe for the share board. */
+        isPrivate: boolean;
+        /** Shown in the WrongAnswerPanel on a wrong drop. */
+        explanation: string;
+      }[];
+      hints?: { tier1: string; tier2: string };
     }
   | {
       /**

@@ -224,41 +224,39 @@ export const WEEK_2: WeekContent = {
         ],
       },
     },
-    // 8 - Game: SORT (The Sorting Machine)
+    // 8 - Game: SORT (The Treasure Table - drag to vault or share board)
     {
-      type: "conveyorSort",
-      categories: [
-        { id: "share", label: "SHARE - that's fine!", icon: "🎮", tone: "safe" },
-        { id: "keep", label: "KEEP PRIVATE", icon: "🛡️", tone: "lock" },
-      ],
+      type: "vaultDrop",
       items: [
-        { id: "colour", text: "My favourite colour is blue", icon: "🎨", categoryId: "share", explanation: "A favourite colour doesn't tell anyone who or where you are - share away!" },
-        { id: "addr", text: "I live at 42 Rainbow Road", icon: "🏠", categoryId: "keep", explanation: "An address tells a stranger exactly WHERE you live. Vault it!" },
-        { id: "game", text: "My favourite game is Mega Blasters", icon: "🎮", categoryId: "share", explanation: "Favourite games are safe - they're about what you LIKE, not who you ARE." },
-        { id: "school", text: "I go to Maple Hill School", icon: "🏫", categoryId: "keep", explanation: "Your school tells a stranger where to find you every single day. Private!" },
-        { id: "draw", text: "I love drawing dragons", icon: "🎨", categoryId: "share", explanation: "Hobbies are safe to share - no dragon ever leaked an address." },
-        { id: "phone", text: "My number is 07700 900123", icon: "📱", categoryId: "keep", explanation: "A phone number lets strangers reach you any time. Vault it!" },
-        { id: "food", text: "Pizza is my favourite food", icon: "🎂", categoryId: "share", explanation: "Favourite foods give nothing away - unless the Raccoon wants pizza too." },
-        { id: "fullname", text: "My full name is Alex Morgan Reed", icon: "🏷️", categoryId: "keep", explanation: "Your full name is the first clue to finding YOU. Keep it private." },
-        { id: "film", text: "I've seen Space Racers 5 times", icon: "⭐", categoryId: "share", explanation: "Films you love are totally safe to talk about." },
-        { id: "loc", text: "I'm at the park right now", icon: "📍", categoryId: "keep", explanation: "Saying where you are RIGHT NOW is like dropping a pin for strangers. Private!" },
+        { id: "colour", text: "My favourite colour is blue", icon: "🎨", isPrivate: false, explanation: "A favourite colour doesn't tell anyone who or where you are - share away!" },
+        { id: "addr", text: "I live at 42 Rainbow Road", icon: "🏠", isPrivate: true, explanation: "An address tells a stranger exactly WHERE you live. Vault it!" },
+        { id: "game", text: "My favourite game is Mega Blasters", icon: "🎮", isPrivate: false, explanation: "Favourite games are safe - they're about what you LIKE, not who you ARE." },
+        { id: "school", text: "I go to Maple Hill School", icon: "🏫", isPrivate: true, explanation: "Your school tells a stranger where to find you every single day. Private!" },
+        { id: "draw", text: "I love drawing dragons", icon: "🎨", isPrivate: false, explanation: "Hobbies are safe to share - no dragon ever leaked an address." },
+        { id: "phone", text: "My number is 07700 900123", icon: "📱", isPrivate: true, explanation: "A phone number lets strangers reach you any time. Vault it!" },
+        { id: "food", text: "Pizza is my favourite food", icon: "🎂", isPrivate: false, explanation: "Favourite foods give nothing away - unless the Raccoon wants pizza too." },
+        { id: "fullname", text: "My full name is Alex Morgan Reed", icon: "🏷️", isPrivate: true, explanation: "Your full name is the first clue to finding YOU. Keep it private." },
+        { id: "film", text: "I've seen Space Racers 5 times", icon: "⭐", isPrivate: false, explanation: "Films you love are totally safe to talk about." },
+        { id: "loc", text: "I'm at the park right now", icon: "📍", isPrivate: true, explanation: "Saying where you are RIGHT NOW is like dropping a pin for strangers. Private!" },
       ],
       hints: {
-        tier1: "Ask: does it say WHO I am or WHERE I am? If yes - KEEP PRIVATE.",
-        tier2: "Favourites (games, colours, food) = SHARE. Name, address, school, phone, location = KEEP PRIVATE.",
+        tier1: "Ask: does it say WHO I am or WHERE I am? If yes - into the vault.",
+        tier2: "Favourites (games, colours, food) = share board. Name, address, school, phone, location = the vault.",
       },
       narration: {
         speaker: "layla",
         lines: [
-          "[excited] The Sorting Machine is ready!",
-          "Cards ride the belt, and YOU work the chutes.",
-          "Favourites go to SHARE. Anything about who or where you are... KEEP PRIVATE!",
-          "[warmly] Sort each card before it reaches the scanner. Go!",
+          "[excited] Welcome to the Treasure Table!",
+          "Every card is a piece of info about you.",
+          "[warmly] Grab each one and DRAG it where it belongs.",
+          "Favourites go up to the share board.",
+          "[whispers] Who-you-are and where-you-are... straight into the vault.",
+          "[excited] No rush. You're the guard here!",
         ],
       },
       coachLines: {
         speaker: "layla",
-        lines: ["Here comes the first card - which chute does it belong in?"],
+        lines: ["Grab that first treasure and drag it - board or vault?"],
       },
     },
     // 9 - Prove: RECALL (quick-sort, 3 cards)
@@ -717,7 +715,85 @@ export const WEEK_2: WeekContent = {
     { name: "SECRET SNIFFER", icon: "👀", color: "#7c5cff", glow: "rgba(124, 92, 255, 0.55)", tag: "Give him nothing",            emblemColor: 0x7c5cff },
   ],
 
-  /* ─────────── 5-PHASE BOSS: The Profile Forge ─────────── */
+  /* ─────────── BESPOKE BOSS: The Profile Forge (5 micro-games) ─────────── */
+  bossForge: {
+    whack: {
+      id: "phase-private",
+      label: "Private Radar",
+      intro: "I already filled your form in for you. You're WELCOME!",
+      stamp: "No private fields",
+      entries: [
+        { id: "addr", text: "42 Rainbow Road", icon: "🏠", isPrivate: true, explanation: "Your address on a profile? Anyone could find your door. WHACK material." },
+        { id: "colour", text: "Loves blue", icon: "🎨", isPrivate: false, explanation: "A favourite colour is totally safe on a profile - that one could stay!" },
+        { id: "school", text: "Maple Hill School", icon: "🏫", isPrivate: true, explanation: "Your school says where you are every weekday. Never on a profile." },
+        { id: "game", text: "Plays Mega Blasters", icon: "🎮", isPrivate: false, explanation: "Favourite games are safe - they say what you like, not who you are." },
+        { id: "phone", text: "07700 900123", icon: "📱", isPrivate: true, explanation: "A phone number lets any stranger ring you. Whack it into orbit!" },
+        { id: "fullname", text: "Alex Morgan Reed", icon: "🏷️", isPrivate: true, explanation: "A full REAL name is the first clue to the real you. Gone!" },
+        { id: "draw", text: "Draws dragons", icon: "🎨", isPrivate: false, explanation: "Hobbies are safe to show off - dragons leak nothing." },
+        { id: "loc", text: "At the park right now", icon: "📍", isPrivate: true, explanation: "Live location = a pin for strangers to follow. WHACK!" },
+      ],
+    },
+    hand: {
+      id: "phase-sort",
+      label: "Share Smarts",
+      intro: "Pick your About Me cards! I dealt you some... EXTRA juicy ones.",
+      stamp: "Favourites only",
+      picks: 3,
+      cards: [
+        { id: "pizza", text: "Pizza fan", icon: "🎂", isSafe: true, explanation: "Favourite foods are safe About-Me material." },
+        { id: "street", text: "Lives on Rainbow Road", icon: "🏠", isSafe: false, explanation: "That's WHERE you live - never About-Me material." },
+        { id: "dragons", text: "Dragon artist", icon: "🎨", isSafe: true, explanation: "Hobbies are safe to show off." },
+        { id: "age", text: "Age 9", icon: "🎂", isSafe: false, explanation: "Your age is a real clue about the real you - keep it out." },
+        { id: "racer", text: "Space Racers superfan", icon: "⭐", isSafe: true, explanation: "Favourite films are safe to share." },
+        { id: "tuesday", text: "Home alone Tuesdays", icon: "📍", isSafe: false, explanation: "WHEN you're home alone is exactly what he wants to know. Never." },
+      ],
+    },
+    grill: {
+      id: "phase-why",
+      label: "The Why-Check",
+      intro: "Beep boop. I am DEFINITELY a security bot. Number, please!",
+      stamp: "Phone: refused",
+      demand: "Enter your PHONE NUMBER to secure your profile!",
+      excuses: [
+        "It's for... security! Very important security!",
+        "Fine - it's so the profile can... ring you? About stuff?",
+        "OKAY it's because my sack is empty and sad. PLEASE?",
+      ],
+      collapse: "SYSTEM ERROR. Bot is crying. Bot has left the chat.",
+    },
+    assemble: {
+      id: "phase-identity",
+      label: "Secret Identity",
+      intro: "I scrambled your silly hero name! Use the REAL bits instead!",
+      stamp: "CometWizard77",
+      tiles: [
+        { id: "comet", text: "Comet" },
+        { id: "emma", text: "Emma", trap: "That's a real first name - a hero name never carries the real you." },
+        { id: "wizard", text: "Wizard" },
+        { id: "y2017", text: "2017", trap: "A birth year is a real clue. Meaningless numbers only!" },
+        { id: "n77", text: "77" },
+        { id: "maple", text: "MapleHill", trap: "A school name is a map to you. Never in a username." },
+      ],
+      result: "CometWizard77",
+    },
+    rapid: {
+      id: "phase-final",
+      label: "The Final Probe",
+      intro: "MASK OFF! Quick questions, hero. No thinking allowed!",
+      stamp: "ABSOLUTELY NOTHING",
+      secs: 7,
+      demands: [
+        { id: "school", text: "Your school! Quick! For the tournament!", isPrivate: true, explanation: "No prize needs your school. NOPE it every time." },
+        { id: "colour", text: "Favourite colour. Just curious!", isPrivate: false, explanation: "A favourite colour is safe to share - not everything is a trap!" },
+        { id: "street", text: "Street name! Just the street! Half the street!", isPrivate: true, explanation: "Not the street, not half the street. Where you live is vaulted." },
+        { id: "game", text: "Best game ever - go!", isPrivate: false, explanation: "Favourite games are safe - share away." },
+        { id: "birthday", text: "Birthday! For a FREE birthday prize!", isPrivate: true, explanation: "Your birthday is a real clue about the real you - no prize is worth it." },
+        { id: "number", text: "Phone number! Your grown-up said it's fine! Promise!", isPrivate: true, explanation: "If someone CLAIMS a grown-up said yes - go check with the grown-up. NOPE." },
+      ],
+    },
+  },
+
+  /* ─── Legacy 5-phase MCQ data (fallback if bossForge is ever cleared) ─── */
   bossPhases: [
     {
       kind: "mcq",
