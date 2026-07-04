@@ -709,6 +709,14 @@ export const WEEK_2: WeekContent = {
     { type: "completion" },
   ],
 
+  // Week-lane attack theatre: info-grabbing tricks only (no phishing
+  // vocabulary - that's W4's lane).
+  bossAttacks: [
+    { name: "NOSY FORM",      icon: "✉️", color: "#ff5fb3", glow: "rgba(255, 95, 179, 0.55)", tag: "Don't fill it in",            emblemColor: 0xff5fb3 },
+    { name: "PRIZE BAIT",     icon: "🎁", color: "#ffb347", glow: "rgba(255, 179, 71, 0.55)", tag: "Never trade info for prizes", emblemColor: 0xffb347 },
+    { name: "SECRET SNIFFER", icon: "👀", color: "#7c5cff", glow: "rgba(124, 92, 255, 0.55)", tag: "Give him nothing",            emblemColor: 0x7c5cff },
+  ],
+
   /* ─────────── 5-PHASE BOSS: The Profile Forge ─────────── */
   bossPhases: [
     {
@@ -717,6 +725,12 @@ export const WEEK_2: WeekContent = {
       label: "Private Radar",
       announceText: "Round 1 - Private Radar!",
       announceTone: "cyan",
+      forge: {
+        fieldLabel: "PROFILE SETUP",
+        entry: "No private fields",
+        probe: "Fill in EVERYTHING... address, school, ALL of it!",
+        foiled: "WHAT?! You skipped all the juicy fields!",
+      },
       questions: [
         { question: "The profile form asks for LOTS of things. Which one is PRIVATE?", answers: ["Home address", "Favourite game", "Favourite colour", "A nickname"], correctIndex: 0, explanation: "An address tells strangers WHERE you live - never on a profile.", key: "boss-private-1" },
         { question: "Which of these is safe to put on your profile?", answers: ["Your favourite food", "Your school's name", "Your phone number", "Your full name"], correctIndex: 0, explanation: "Favourites are safe - the rest point straight at the real you.", key: "boss-private-2" },
@@ -731,6 +745,12 @@ export const WEEK_2: WeekContent = {
       label: "Share Smarts",
       announceText: "Round 2 - Share Smarts!",
       announceTone: "blue",
+      forge: {
+        fieldLabel: "ABOUT ME",
+        entry: "Pizza fan & dragon artist",
+        probe: "Put your street in the About Me! Everyone does it!",
+        foiled: "Favourites?! I can't DO anything with favourites!",
+      },
       questions: [
         { question: "Pick the card that's FINE to share on your profile:", answers: ["'I love drawing dragons'", "'I live at 42 Rainbow Road'", "'My number is 07700 900123'", "'I'm at the park right now'"], correctIndex: 0, explanation: "Hobbies give nothing away - the others say where you are or how to reach you.", key: "boss-sort-1" },
         { question: "The Raccoon begs: 'just say which STREET you live on!' You...", answers: ["Keep it private - streets are location info", "Tell him - it's only a street", "Tell him half the street name", "Draw him a map"], correctIndex: 0, explanation: "A street name is where-you-are info. Vault. Locked. Done.", key: "boss-sort-2" },
@@ -745,6 +765,12 @@ export const WEEK_2: WeekContent = {
       label: "The Why-Check",
       announceText: "Round 3 - The Why-Check!",
       announceTone: "gold",
+      forge: {
+        fieldLabel: "PHONE NUMBER",
+        entry: "Refused - not needed",
+        probe: "The form NEEDS your number... trust the form!",
+        foiled: "You asked WHY! Nobody asks why! NO FAIR!",
+      },
       questions: [
         { question: "Mid-forge, a popup asks for your PHONE NUMBER 'to keep your profile safe'. What's the hero question?", answers: ["Why would a profile need my number?", "What colour is the popup?", "How fast can I type it?", "Is the font nice?"], correctIndex: 0, explanation: "Ask WHY first - a game profile works fine without your number.", key: "boss-why-1" },
         { question: "A kitten quiz wants your home address. Does it NEED it?", answers: ["No - a quiz doesn't visit your house", "Yes - for kitten delivery", "Yes - quizzes need addresses", "Maybe half of it"], correctIndex: 0, explanation: "A quiz needs ZERO of that to work. Too nosy!", key: "boss-why-2" },
@@ -759,6 +785,12 @@ export const WEEK_2: WeekContent = {
       label: "Secret Identity",
       announceText: "Round 4 - Secret Identity!",
       announceTone: "red",
+      forge: {
+        fieldLabel: "USERNAME",
+        entry: "CometWizard77",
+        probe: "Pssst... your REAL name is way cooler!",
+        foiled: "CometWizard... WHO?! That tells me NOTHING!",
+      },
       questions: [
         { question: "The Raccoon purrs: 'use your REAL name - it's way cooler!' Pick your username:", answers: ["CometWizard77", "emma2017", "Jake_Age9", "MapleHill_Star"], correctIndex: 0, explanation: "Nice try, Raccoon - hero names only, no clues about the real you.", key: "boss-id-1" },
         { question: "What's wrong with 'emma2017' as a username?", answers: ["A real name AND a birth year - two leaks", "Too short", "No capital letters", "Nothing"], correctIndex: 0, explanation: "It hands over a name and a birth year in one go.", key: "boss-id-2" },
@@ -773,6 +805,12 @@ export const WEEK_2: WeekContent = {
       label: "The Final Probe",
       announceText: "FINAL ROUND - The Raccoon's Last Probe!",
       announceTone: "red",
+      forge: {
+        fieldLabel: "THE RACCOON GETS",
+        entry: "ABSOLUTELY NOTHING",
+        probe: "Mask off! Tell me ONE thing, hero. Just ONE!",
+        foiled: "A blank form?! NOOO! Foiled AGAIN!",
+      },
       questions: [
         { question: "Mask off! The Raccoon shouts: 'tell me your school and win 1000 COINS!' You...", answers: ["Refuse - and tell a grown-up", "Tell him - coins!", "Tell him a nearby school", "Ask for 2000 coins"], correctIndex: 0, explanation: "No prize is ever worth your private info - and a grown-up should hear about this.", key: "boss-final-1" },
         { question: "He tries: 'your parents SAID you could tell me your address!' You...", answers: ["Pause and actually ask your grown-up", "Believe him", "Tell him half the address", "Tell him the postcode only"], correctIndex: 0, explanation: "If someone claims a grown-up said yes - go CHECK with the grown-up.", key: "boss-final-2" },

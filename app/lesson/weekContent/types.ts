@@ -33,6 +33,20 @@ export interface WeekContent {
   bossPhases?: BossPhaseDef[];
 
   /**
+   * Week-themed boss attack theatre (name/icon/tag per telegraphed
+   * attack, cycled per question). Omitted = BossBattle's Week 1 set.
+   * Keeps the fight's vocabulary inside the week's curriculum lane.
+   */
+  bossAttacks?: {
+    name: string;
+    icon: string;
+    color: string;
+    glow: string;
+    tag: string;
+    emblemColor: number;
+  }[];
+
+  /**
    * Per-screen character reactions (by screen index). Either character can be
    * null for that screen - the other will use their idle pose.
    */
@@ -60,6 +74,17 @@ export type BossPhaseDef = {
     explanation?: string;
     key?: string;
   }[];
+  /**
+   * Profile Forge chrome (Week 2 BUILD-FINAL). Mirrors the forge field
+   * on BossBattle's BossPhase: the profile card stamps `entry` when the
+   * phase is beaten, `probe`/`foiled` are the Raccoon's lines.
+   */
+  forge?: {
+    fieldLabel: string;
+    entry: string;
+    probe: string;
+    foiled: string;
+  };
 };
 
 export interface BossQuestion {

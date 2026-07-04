@@ -2089,6 +2089,7 @@ function DynamicLessonInner({ qaEnabled }: { qaEnabled: boolean }) {
             // legacy questions list if a week hasn't been migrated to
             // phases yet.
             phases={content.bossPhases}
+            attacks={content.bossAttacks}
             questions={
               content.bossPhases && content.bossPhases.length > 0
                 ? undefined

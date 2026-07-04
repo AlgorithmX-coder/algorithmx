@@ -92,6 +92,25 @@ export type BossPhase =
       /** Announcement colour tone. Must be one of the existing toast tones. */
       announceTone: "blue" | "red" | "gold" | "cyan";
       questions: Question[];
+      /**
+       * Profile Forge chrome (Week 2's BUILD-FINAL form). When phases
+       * carry forge data the boss mounts the forge layer: a profile card
+       * that stamps `entry` as each phase completes, the Raccoon's
+       * intel meter (flashes on a wrong answer - he ALMOST got
+       * something), and his probe/foiled lines per phase. Pure
+       * presentation on top of the mcq machinery - stats, analytics and
+       * the dashboard contract are untouched.
+       */
+      forge?: {
+        /** Profile field this phase defends, e.g. "USERNAME". */
+        fieldLabel: string;
+        /** What gets stamped on the profile card when the phase is beaten. */
+        entry: string;
+        /** The Raccoon's demand while the phase runs. */
+        probe: string;
+        /** The Raccoon's reaction when the phase completes. */
+        foiled: string;
+      };
     };
 
 /** Per-phase result included in the boss end stats. */
@@ -130,6 +149,8 @@ export interface BossBattleProps {
    * QuestionResponse row + emit the wrong_answer analytics event.
    */
   onQuestionAnswered?: (outcome: BossQuestionOutcome) => void;
+  /** Week-themed attack theatre. Defaults to the Week 1 set. */
+  attacks?: BossAttackMeta[];
 }
 
 const EASY_QUESTIONS: Question[] = [
@@ -249,8 +270,20 @@ function computeAchievementsForRun(input: {
 }
 
 // Three telegraphed boss-attack types - cycled per question. Pure
-// visual/narrative variation; the answer logic doesn't change.
-const ATTACK_META = [
+// visual/narrative variation; the answer logic doesn't change. Weeks can
+// pass their own set via the `attacks` prop so the theatre stays inside
+// the week's curriculum lane (e.g. "PHISHING LURE" is W1/W4 vocabulary
+// and must not headline a Week 2 privacy fight).
+export interface BossAttackMeta {
+  name: string;
+  icon: string;
+  color: string;
+  glow: string;
+  tag: string;
+  emblemColor: number;
+}
+
+const ATTACK_META: readonly BossAttackMeta[] = [
   { name: "PHISHING LURE",   icon: "🪤", color: "#ff5fb3", glow: "rgba(255, 95, 179, 0.55)", tag: "Don't take the bait",     emblemColor: 0xff5fb3 },
   { name: "BRUTE FORCE",     icon: "🔨", color: "#ffb347", glow: "rgba(255, 179, 71, 0.55)", tag: "Hold your ground",        emblemColor: 0xffb347 },
   { name: "TRICK QUESTION",  icon: "🌀", color: "#7c5cff", glow: "rgba(124, 92, 255, 0.55)", tag: "Don't get fooled",        emblemColor: 0x7c5cff },
@@ -1314,7 +1347,9 @@ export default function BossBattle({
   bossName = "HACKER RACCOON",
   onEnd,
   onQuestionAnswered,
+  attacks,
 }: BossBattleProps) {
+  const attackSet = attacks && attacks.length > 0 ? attacks : ATTACK_META;
   const canvasHostRef = useRef<HTMLDivElement>(null);
 
   // Mobile detection - used to gate the HeroSelectAtmosphere R3F
@@ -1699,6 +1734,14 @@ export default function BossBattle({
 
   // Post-wrong explanation hold (highlighted correct answer + yellow explanation line)
   const [explanationVisible, setExplanationVisible] = useState(false);
+
+  // Profile Forge layer (phases with forge data). Stamped phase ids in
+  // completion order, the Raccoon's "foiled" flash line, and the intel
+  // meter's near-miss flash on a wrong answer.
+  const forgeActive = !!phases?.some((p) => p.forge);
+  const [forgeStamped, setForgeStamped] = useState<string[]>([]);
+  const [forgeFoiled, setForgeFoiled] = useState<string | null>(null);
+  const [forgeIntelFlash, setForgeIntelFlash] = useState(false);
 
   const gameRef = useRef<GameState>({
     app: null, stage: null, textures: null,
@@ -2229,6 +2272,28 @@ export default function BossBattle({
             showAnnouncement(nextPhase.announceText, nextPhase.announceTone);
           }, correct ? 1100 : 2300);
         }
+
+        // Profile Forge: a wrong answer flashes the intel meter (he
+        // ALMOST got something); completing a phase stamps its entry on
+        // the profile card and plays the Raccoon's foiled line. The
+        // final phase stamps on the last question instead of a cross.
+        if (currentPhase.forge) {
+          if (!correct) {
+            setForgeIntelFlash(true);
+            window.setTimeout(() => setForgeIntelFlash(false), 1400);
+          }
+          const crossing = !!nextPhase && nextPhase.id !== currentPhase.id;
+          if (crossing || isLastQuestionOverall) {
+            const foiledLine = currentPhase.forge.foiled;
+            window.setTimeout(() => {
+              setForgeStamped((prev) =>
+                prev.includes(currentPhase.id) ? prev : [...prev, currentPhase.id],
+              );
+              setForgeFoiled(foiledLine);
+              window.setTimeout(() => setForgeFoiled(null), 2600);
+            }, correct ? 900 : 2100);
+          }
+        }
       }
 
       // Pause the timer and record speed for this question.
@@ -2642,6 +2707,9 @@ export default function BossBattle({
     setCenterFeedback(null);
     setPhaseAnnouncement(null);
     setExplanationVisible(false);
+    setForgeStamped([]);
+    setForgeFoiled(null);
+    setForgeIntelFlash(false);
     const g = gameRef.current;
     g.difficultyLevel = 0;
     g.consecutiveCorrect = 0;
@@ -3689,7 +3757,7 @@ export default function BossBattle({
           above the raccoon when each new question reveals, colour-glowing
           to match the attack-type banner. Pure visual punctuation. */}
       {selectedHero && !result && q && introStage === "done" && countdownPhase === null && phaseAnnouncement === null && (() => {
-        const currentAttack = ATTACK_META[stats.totalAsked % 3];
+        const currentAttack = attackSet[stats.totalAsked % attackSet.length];
         return (
           <div
             key={`atk-emblem-${stats.totalAsked}`}
@@ -3845,9 +3913,143 @@ export default function BossBattle({
           );
         })()}
 
+      {/* Profile Forge panel - only when phases carry forge data. The
+          profile card assembles on the left as phases fall; the intel
+          meter stays at ZERO leaks (a wrong answer flashes it - the
+          Raccoon ALMOST got something - but corrected answers never
+          leak). Hidden on narrow screens via the bb-forge media rule. */}
+      {forgeActive &&
+        selectedHero &&
+        !result &&
+        introStage === "done" &&
+        countdownPhase === null &&
+        phaseOfQuestion &&
+        phases &&
+        (() => {
+          const currentPhase =
+            phaseOfQuestion[stats.totalAsked] ?? phaseOfQuestion[phaseOfQuestion.length - 1];
+          return (
+            <div
+              className="bb-forge-panel"
+              aria-live="polite"
+              style={{
+                position: "absolute",
+                top: "calc(max(96px, env(safe-area-inset-top, 0px) + 82px))",
+                left: 10,
+                zIndex: 3,
+                width: 178,
+                pointerEvents: "none",
+                display: "flex",
+                flexDirection: "column",
+                gap: 6,
+                fontFamily: "'JetBrains Mono', monospace",
+              }}
+            >
+              <div
+                style={{
+                  padding: "6px 10px",
+                  borderRadius: 10,
+                  background: "rgba(8,10,22,0.78)",
+                  border: "1px solid rgba(0,229,255,0.4)",
+                  color: "#7df0ff",
+                  fontSize: 10,
+                  fontWeight: 800,
+                  letterSpacing: "0.16em",
+                  textAlign: "center",
+                }}
+              >
+                PROFILE FORGE
+              </div>
+
+              {/* The assembling profile card */}
+              <div
+                style={{
+                  padding: "8px 10px",
+                  borderRadius: 10,
+                  background: "rgba(10,14,34,0.82)",
+                  border: "1px solid rgba(122,140,255,0.4)",
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: 5,
+                }}
+              >
+                {phases.map((p) => {
+                  if (!p.forge) return null;
+                  const stamped = forgeStamped.includes(p.id);
+                  const isCurrent = currentPhase?.id === p.id && !stamped;
+                  return (
+                    <div key={p.id} style={{ opacity: stamped ? 1 : isCurrent ? 0.95 : 0.38 }}>
+                      <div
+                        style={{
+                          fontSize: 8.5,
+                          fontWeight: 800,
+                          letterSpacing: "0.12em",
+                          color: stamped ? "#7eff97" : isCurrent ? "#ffd158" : "#5d689e",
+                        }}
+                      >
+                        {p.forge.fieldLabel}
+                      </div>
+                      <div
+                        style={{
+                          fontSize: 11,
+                          fontWeight: 800,
+                          color: stamped ? "#e7ecff" : "#4d578a",
+                          animation: stamped ? "bbForgeStampIn 400ms cubic-bezier(0.34,1.56,0.64,1)" : undefined,
+                        }}
+                      >
+                        {stamped ? `✓ ${p.forge.entry}` : isCurrent ? "…defending…" : "· · ·"}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+
+              {/* Intel meter - zero leaks, flashes on a near miss */}
+              <div
+                style={{
+                  padding: "6px 10px",
+                  borderRadius: 10,
+                  background: forgeIntelFlash ? "rgba(70,14,32,0.9)" : "rgba(8,10,22,0.78)",
+                  border: forgeIntelFlash ? "1px solid #ff5fb3" : "1px solid rgba(255,95,179,0.35)",
+                  color: forgeIntelFlash ? "#ff9bcb" : "#b06a8c",
+                  fontSize: 9.5,
+                  fontWeight: 800,
+                  letterSpacing: "0.1em",
+                  textAlign: "center",
+                  transition: "background 200ms ease, border-color 200ms ease",
+                  animation: forgeIntelFlash ? "bbForgeShake 380ms ease" : undefined,
+                }}
+              >
+                {forgeIntelFlash ? "SO CLOSE! …still 0" : "RACCOON'S INTEL: 0 LEAKS"}
+              </div>
+
+              {/* Probe / foiled speech */}
+              {(forgeFoiled || currentPhase?.forge) && (
+                <div
+                  key={forgeFoiled ?? currentPhase?.id}
+                  style={{
+                    padding: "7px 10px",
+                    borderRadius: 10,
+                    background: forgeFoiled ? "rgba(50,20,64,0.92)" : "rgba(30,16,44,0.82)",
+                    border: forgeFoiled ? "1px solid #c084fc" : "1px solid rgba(192,132,252,0.4)",
+                    color: forgeFoiled ? "#ebd6ff" : "#c9a8e8",
+                    fontSize: 10.5,
+                    fontWeight: 700,
+                    lineHeight: 1.4,
+                    fontStyle: "italic",
+                    animation: "bbForgeStampIn 300ms ease-out",
+                  }}
+                >
+                  🦝 “{forgeFoiled ?? currentPhase?.forge?.probe}”
+                </div>
+              )}
+            </div>
+          );
+        })()}
+
       {/* Question panel */}
       {selectedHero && !result && q && introStage === "done" && countdownPhase === null && phaseAnnouncement === null && (() => {
-        const currentAttack = ATTACK_META[stats.totalAsked % 3];
+        const currentAttack = attackSet[stats.totalAsked % attackSet.length];
         return (
         <div
           // Re-key on every question advance so the animation fires
@@ -4343,6 +4545,22 @@ export default function BossBattle({
           0% { opacity: 0; transform: translateX(-50%) translateY(-6px) scale(0.9) }
           60% { opacity: 1; transform: translateX(-50%) translateY(1px) scale(1.04) }
           100% { opacity: 1; transform: translateX(-50%) translateY(0) scale(1) }
+        }
+        @keyframes bbForgeStampIn {
+          0% { opacity: 0; transform: scale(0.7) }
+          60% { opacity: 1; transform: scale(1.1) }
+          100% { opacity: 1; transform: scale(1) }
+        }
+        @keyframes bbForgeShake {
+          0%, 100% { transform: translateX(0) }
+          25% { transform: translateX(-3px) }
+          50% { transform: translateX(3px) }
+          75% { transform: translateX(-2px) }
+        }
+        /* The forge panel needs side room; hide it on narrow screens so
+           it never fights the question card for space. */
+        @media (max-width: 820px) {
+          .bb-forge-panel { display: none !important; }
         }
         @keyframes bbQuestionOut {
           0% { opacity: 1; transform: translateY(0) scale(1) }
