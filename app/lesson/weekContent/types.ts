@@ -88,6 +88,8 @@ export type ScreenDef = (
       title?: string;
       badge?: string;
       caption?: string;
+      /** Handwritten note on the polaroid frame (defaults to the Week 1 note). */
+      photoCaption?: string;
       ctaLabel?: string;
     }
   | {
@@ -110,6 +112,24 @@ export type ScreenDef = (
   | {
       type: "cyberScanner";
       items: { text: string; isStrong: boolean; explanation: string }[];
+      /**
+       * Re-theme the scanner's copy (verdict buttons, how-to rows, tips,
+       * tiered hints). Omitted = Week 1's STRONG/WEAK password drill.
+       * Mirrors CyberScannerLabels in CyberScanner.tsx.
+       */
+      labels?: {
+        positive: string;
+        negative: string;
+        positiveHint: string;
+        negativeHint: string;
+        tipWhenPositive: string;
+        tipWhenNegative: string;
+        hint1: string;
+        hint2: string;
+        hint2Example: string;
+        hint3: string;
+        hint3Example: string;
+      };
     }
   | {
       type: "protectTheData";
@@ -434,7 +454,121 @@ export type ScreenDef = (
       scenarios: {
         setup: string;
         choices: { text: string; isSafe: boolean; consequence: string }[];
+        /** `device` presentation: what app/site this moment happens in. */
+        frame?: { appName: string; icon: string };
       }[];
+      /**
+       * Presentation variant. `device` stages each scenario as an in-world
+       * device screen (app chrome + a big PAUSE action) instead of the
+       * classic text card — Week 2's "The Pause Button" skin. Omitting it
+       * keeps the classic Week 1 look.
+       */
+      presentation?: "device";
+    }
+  | {
+      /**
+       * REVEAL engine (Week 2+). A board of face-down cards; tapping one
+       * flips it and plays a short cause→effect vignette (2-4 beats), then
+       * closes on a counter-line ("…so it stays PRIVATE") and stamps the
+       * card. All cards revealed → a finale beat fires onComplete. Fully
+       * data-driven: the same component powers who-could-misuse (W2),
+       * unmask-profile (W3), loot-box odds (W7), screenshot-permanence
+       * (W8) and the other ~11 REVEAL beats in the build sheet.
+       */
+      type: "reveal";
+      title: string;
+      subtitle?: string;
+      items: {
+        /** Stable id used in QuestionResponse keys (e.g. "address"). */
+        id: string;
+        /** Card face label ("Home Address"). */
+        label: string;
+        /** Emoji rendered via PixIcon on the card face. */
+        icon: string;
+        /** The vignette beats played after the flip, in order. */
+        steps: { icon?: string; text: string }[];
+        /** Closing counter-line for this card. */
+        counter: string;
+      }[];
+      /** Line spoken/shown once every card has been revealed. */
+      finale?: string;
+    }
+  | {
+      /**
+       * Conveyor sorter (Week 2+). Items ride a belt toward a scanner and
+       * the child sends each into one of TWO chutes before it arrives.
+       * Wrong sorts pause the belt and teach (WrongAnswerPanel). Distinct
+       * from weakSorter (static four-way diagnosis) and cyberScanner
+       * (drifting strong/weak taps): this is a physical machine with
+       * binary categories as data.
+       */
+      type: "conveyorSort";
+      /** Exactly two categories. `tone` picks the chute styling. */
+      categories: { id: string; label: string; icon: string; tone: "safe" | "lock" }[];
+      items: {
+        id: string;
+        text: string;
+        /** Optional emoji badge on the card. */
+        icon?: string;
+        categoryId: string;
+        /** Shown in the WrongAnswerPanel on a mis-sort. */
+        explanation: string;
+      }[];
+      hints?: { tier1: string; tier2: string };
+    }
+  | {
+      /**
+       * Request Inspector (Week 2). The deliberate "why are they asking?"
+       * drill: a cheerful app sign-up form arrives and the child must tap
+       * every inspect zone (who's asking / what do they want / do they
+       * NEED it / what happens if I type it) before the decision buttons
+       * ("Fill it in" / "Too nosy!") unlock. Generalises the
+       * phishInspector pattern with data-driven zones — the lesson here
+       * is need-vs-want on legit-looking apps, NOT spotting fakes (W4).
+       */
+      type: "requestInspector";
+      requests: {
+        id: string;
+        appName: string;
+        /** Emoji rendered via PixIcon as the app logo. */
+        appIcon: string;
+        /** The app's cheerful pitch line. */
+        tagline: string;
+        /** Field labels the form asks for. */
+        asksFor: string[];
+        /** True when the request over-asks and should be refused. */
+        isNosy: boolean;
+        zones: {
+          id: string;
+          label: string;
+          note: string;
+          isRedFlag: boolean;
+        }[];
+        /** Explanation shown after the child's verdict. */
+        verdictNote: string;
+      }[];
+      hints?: { tier1: string; tier2: string };
+    }
+  | {
+      /**
+       * Secret Identity Machine (Week 2). Three part-reels (hero word /
+       * creature / lucky number) forge a username. TRAP parts carrying
+       * real-life details (a first name, an age, a birth year, a school)
+       * are mixed in: picking one trips a LEAK! alarm + teach panel and
+       * drops the disguise meter; safe picks raise it. Meter full → the
+       * avatar's ID badge is stamped. Judges identity-leakage, not
+       * password strength — deliberately unlike threeRandomWords.
+       */
+      type: "usernameBuilder";
+      slots: { id: string; label: string; icon: string }[];
+      parts: {
+        id: string;
+        text: string;
+        slotId: string;
+        /** If set, this part LEAKS real info; value = why (teach copy). */
+        trap?: string;
+      }[];
+      hints?: { tier1: string; tier2: string };
     }
   | {
       type: "memoryMatch";
