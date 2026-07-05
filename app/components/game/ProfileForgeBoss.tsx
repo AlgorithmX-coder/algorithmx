@@ -60,7 +60,9 @@ const RACCOON = {
   defeated: "/game/characters/raccoon-defeated.png",
 } as const;
 const HERO = {
-  idle: "/game/characters/adam-idle.png",
+  // Forge-specific idle: Adam filling in his profile behind his shield —
+  // the hero is literally doing the week's lesson while under siege.
+  idle: "/game/characters/adam-writing.png",
   attack: "/game/characters/adam-attack.png",
   celebrate: "/game/characters/adam-celebrate.png",
 } as const;
