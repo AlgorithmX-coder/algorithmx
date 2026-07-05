@@ -776,115 +776,285 @@ type JudgeFn = (
   at?: { x: number; y: number },
 ) => void;
 
+type FlyerStatus = "waiting" | "flying" | "whacked" | "docked" | "leaked";
+interface Flyer {
+  entry: ForgeData["whack"]["entries"][number];
+  wave: number;
+  lane: number;         // 0..2 vertical lane
+  progress: number;     // 0..1 right → left
+  status: FlyerStatus;
+  bobSeed: number;
+}
+
+/** WHACK, wave-based: the Raccoon hurls entries across the OPEN arena at a
+ *  big holographic profile form. Up to three fly at once on bobbing paths;
+ *  private ones pulse red as they close in. Whacks explode into a comic
+ *  starburst; leaks visibly crack a form field until scrubbed. */
 function WhackPhase({ data, paused, judge, done, reduce, accent }: { data: ForgeData["whack"]; paused: boolean; judge: JudgeFn; done: () => void; reduce: boolean; accent: string }) {
-  const [idx, setIdx] = useState(0);
-  const [progress, setProgress] = useState(0);
-  const [docked, setDocked] = useState<string[]>([]);
-  const [whacked, setWhacked] = useState<null | string>(null);
-  const entry = data.entries[idx];
+  const WAVES: number[][] = useMemo(() => {
+    // 8 entries → waves of 3 / 3 / 2, preserving authored order.
+    const sizes = [3, 3, 2];
+    const out: number[][] = [];
+    let i = 0;
+    for (const s of sizes) {
+      out.push(Array.from({ length: Math.min(s, data.entries.length - i) }, (_, k) => i + k));
+      i += s;
+      if (i >= data.entries.length) break;
+    }
+    return out;
+  }, [data.entries.length]);
+
+  const [flyers, setFlyers] = useState<Flyer[]>(() =>
+    data.entries.map((entry, i) => ({
+      entry,
+      wave: i < 3 ? 0 : i < 6 ? 1 : 2,
+      lane: i % 3,
+      progress: 0,
+      status: "waiting",
+      bobSeed: (entry.id.charCodeAt(0) % 5) + 3,
+    })),
+  );
+  const [wave, setWave] = useState(0);
+  const [waveBanner, setWaveBanner] = useState<string | null>(null);
+  const [bursts, setBursts] = useState<{ id: string; x: number; y: number; label: string }[]>([]);
+  const [leakFlash, setLeakFlash] = useState<string | null>(null);
+  const zoneRef = useRef<HTMLDivElement>(null);
   const finishedRef = useRef(false);
   const pausedRef = useRef(paused);
   pausedRef.current = paused;
 
-  const advance = useCallback(() => {
-    setProgress(0);
-    setWhacked(null);
-    setIdx((i) => {
-      if (i + 1 >= data.entries.length && !finishedRef.current) {
-        finishedRef.current = true;
-        window.setTimeout(done, 420);
-      }
-      return i + 1;
-    });
-  }, [data.entries.length, done]);
-
+  // Launch a wave: banner slam, then stagger its flyers into the air.
   useEffect(() => {
-    if (!entry) return;
-    const flightMs = reduce ? 7200 : 4600;
+    if (wave >= WAVES.length) return;
+    setWaveBanner(wave === WAVES.length - 1 ? "FINAL WAVE!" : `WAVE ${wave + 1} INCOMING!`);
+    playSound("phaseChange");
+    const bannerMs = reduce ? 600 : 1100;
+    const timers: number[] = [
+      window.setTimeout(() => setWaveBanner(null), bannerMs),
+      ...WAVES[wave].map((entryIdx, k) =>
+        window.setTimeout(() => {
+          playSound("projectile");
+          setFlyers((f) => f.map((fl, i) => (i === entryIdx ? { ...fl, status: "flying" } : fl)));
+        }, bannerMs + 150 + k * (reduce ? 1400 : 850)),
+      ),
+    ];
+    return () => timers.forEach((t) => window.clearTimeout(t));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [wave, reduce]);
+
+  // Flight loop: all airborne flyers advance together.
+  useEffect(() => {
+    const speeds = [6800, 5800, 4900]; // ms per crossing, faster each wave
     const tick = 40;
     const id = window.setInterval(() => {
       if (pausedRef.current) return;
-      setProgress((p) => Math.min(1, p + tick / flightMs));
+      setFlyers((f) =>
+        f.map((fl) =>
+          fl.status === "flying"
+            ? { ...fl, progress: Math.min(1, fl.progress + tick / ((reduce ? 1.7 : 1) * speeds[fl.wave])) }
+            : fl,
+        ),
+      );
     }, tick);
     return () => window.clearInterval(id);
-  }, [idx, entry, reduce]);
+  }, [reduce]);
 
+  // Arrivals: safe → dock; private → LEAK (crack the form + teach).
   useEffect(() => {
-    if (progress < 1 || !entry || whacked) return;
-    if (entry.isPrivate) {
-      judge(`forge-whack-${entry.id}`, false, 0, 1, { title: "It docked! That one was PRIVATE", explanation: entry.explanation });
-      advance();
+    const arrived = flyers.find((fl) => fl.status === "flying" && fl.progress >= 1);
+    if (!arrived) return;
+    if (arrived.entry.isPrivate) {
+      setFlyers((f) => f.map((fl) => (fl.entry.id === arrived.entry.id ? { ...fl, status: "leaked" } : fl)));
+      setLeakFlash(arrived.entry.id);
+      playSound("bossAttack");
+      judge(`forge-whack-${arrived.entry.id}`, false, 0, 1, { title: "It hit the form! That one was PRIVATE", explanation: arrived.entry.explanation });
+      window.setTimeout(() => setLeakFlash(null), 2400);
     } else {
-      judge(`forge-whack-${entry.id}`, true, 0, 0);
-      setDocked((d) => [...d, entry.id]);
-      advance();
+      playSound("drop");
+      setFlyers((f) => f.map((fl) => (fl.entry.id === arrived.entry.id ? { ...fl, status: "docked" } : fl)));
+      judge(`forge-whack-${arrived.entry.id}`, true, 0, 0);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [progress]);
+  }, [flyers]);
 
-  const whack = (e: React.MouseEvent) => {
-    if (!entry || paused || whacked) return;
+  // Wave / phase completion.
+  useEffect(() => {
+    if (wave >= WAVES.length) return;
+    const waveDone = WAVES[wave].every((i) => {
+      const s = flyers[i].status;
+      return s === "whacked" || s === "docked" || s === "leaked";
+    });
+    if (!waveDone || waveBanner) return;
+    if (wave + 1 < WAVES.length) {
+      const t = window.setTimeout(() => setWave((w) => w + 1), 650);
+      return () => window.clearTimeout(t);
+    }
+    if (!finishedRef.current) {
+      finishedRef.current = true;
+      window.setTimeout(done, 650);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [flyers, wave, waveBanner]);
+
+  const whack = (fl: Flyer, e: React.MouseEvent) => {
+    if (paused || fl.status !== "flying") return;
     const at = { x: e.clientX, y: e.clientY };
-    if (entry.isPrivate) {
+    const rect = zoneRef.current?.getBoundingClientRect();
+    if (fl.entry.isPrivate) {
       playSound("hitImpact");
-      setWhacked(entry.id);
-      judge(`forge-whack-${entry.id}`, true, 1, 1, undefined, at);
-      window.setTimeout(advance, reduce ? 120 : 340);
+      setFlyers((f) => f.map((x) => (x.entry.id === fl.entry.id ? { ...x, status: "whacked" } : x)));
+      if (rect && !reduce) {
+        const b = { id: fl.entry.id, x: e.clientX - rect.left, y: e.clientY - rect.top, label: "WHACK!" };
+        setBursts((bs) => [...bs.slice(-3), b]);
+        window.setTimeout(() => setBursts((bs) => bs.filter((q) => q.id !== b.id)), 600);
+      }
+      judge(`forge-whack-${fl.entry.id}`, true, 1, 1, undefined, at);
     } else {
-      judge(`forge-whack-${entry.id}`, false, 1, 0, { title: "Oops - that one was fine!", explanation: entry.explanation }, at);
-      advance();
+      judge(`forge-whack-${fl.entry.id}`, false, 1, 0, { title: "Oops - that one was fine!", explanation: fl.entry.explanation }, at);
+      // The safe card survives the mis-whack and keeps flying to dock.
     }
   };
 
+  const dockedList = flyers.filter((f) => f.status === "docked");
+  const resolved = flyers.filter((f) => f.status !== "waiting" && f.status !== "flying").length;
+
   return (
-    <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: 10, minHeight: 0, justifyContent: "center" }}>
-      <PhaseHint accent={accent} text="He's pre-filling YOUR form! WHACK the private stuff — let the safe stuff dock." />
-      {/* A contained flight lane, not a full-stage blackout — the arena and
-          both characters stay lit around it. */}
-      <div style={{ position: "relative", height: 200, width: "100%", maxWidth: 780, margin: "0 auto", borderRadius: 16, background: "rgba(5,7,18,0.35)", border: `1px solid ${accent}55`, overflow: "hidden", boxShadow: `inset 0 0 40px rgba(0,0,0,0.5), 0 0 24px ${accent}22` }}>
-        {/* form dock */}
-        <div style={{ position: "absolute", left: 10, top: "50%", transform: "translateY(-50%)", width: 116, padding: "8px 9px", borderRadius: 10, background: "#eef1ff", color: "#39406b", fontFamily: MONO, fontSize: 8.5, fontWeight: 800, boxShadow: "0 8px 24px rgba(0,0,0,0.5)" }}>
-          <div style={{ letterSpacing: "0.08em", marginBottom: 4 }}>PROFILE FORM</div>
-          {docked.slice(-3).map((id) => {
-            const e = data.entries.find((x) => x.id === id);
-            return <div key={id} style={{ padding: "2px 4px", marginBottom: 2, borderRadius: 4, background: "#d9f7e3", color: "#166534", fontSize: 8 }}>✓ {e?.text}</div>;
-          })}
-          {docked.length === 0 && <div style={{ color: "#8b93bd" }}>waiting…</div>}
+    <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: 6, minHeight: 0, justifyContent: "center" }}>
+      <PhaseHint accent={accent} text="He's hurling entries at YOUR form! WHACK the private ones — let the safe ones dock." />
+
+      {/* Open combat zone — no box, the arena IS the lane. */}
+      <div ref={zoneRef} style={{ position: "relative", height: 300, width: "100%", maxWidth: 940, margin: "0 auto" }}>
+        {/* Holo profile form (the thing under siege) */}
+        <div
+          style={{
+            position: "absolute", left: 0, top: "50%", transform: "translateY(-50%)", width: 168, zIndex: 6,
+            borderRadius: 12, padding: "10px 11px 12px",
+            background: "linear-gradient(180deg, rgba(160,240,255,0.16), rgba(90,140,255,0.1))",
+            border: "1.5px solid rgba(125,240,255,0.7)",
+            boxShadow: "0 0 30px rgba(0,229,255,0.3), inset 0 0 24px rgba(0,229,255,0.12)",
+            backdropFilter: "blur(5px)",
+            fontFamily: MONO,
+          }}
+        >
+          <div style={{ fontSize: 9.5, fontWeight: 800, letterSpacing: "0.12em", color: "#7df0ff", marginBottom: 6, textAlign: "center", textShadow: "0 0 10px rgba(0,229,255,0.8)" }}>
+            ⛨ YOUR PROFILE FORM
+          </div>
+          {dockedList.length === 0 && !leakFlash && (
+            <div style={{ fontSize: 9, fontWeight: 700, color: "#9fd8ff", textAlign: "center", padding: "8px 0" }}>defend me!</div>
+          )}
+          {dockedList.slice(-4).map((f) => (
+            <motion.div
+              key={f.entry.id}
+              initial={reduce ? false : { x: 40, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              style={{ display: "flex", alignItems: "center", gap: 4, padding: "3.5px 6px", marginBottom: 3, borderRadius: 6, background: "rgba(52,211,153,0.2)", border: "1px solid rgba(126,255,151,0.55)", color: "#b8ffcb", fontSize: 8.5, fontWeight: 800 }}
+            >
+              ✓ {f.entry.text}
+            </motion.div>
+          ))}
+          <AnimatePresence>
+            {leakFlash && (
+              <motion.div
+                key={leakFlash}
+                initial={{ opacity: 0, scale: reduce ? 1 : 1.4 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0 }}
+                style={{ padding: "4px 6px", borderRadius: 6, background: "rgba(255,47,109,0.28)", border: "1.5px solid #ff5fb3", color: "#ffc2d9", fontSize: 8.5, fontWeight: 900 }}
+              >
+                ⚠ {data.entries.find((x) => x.id === leakFlash)?.text} — SCRUB IT!
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
 
-        <AnimatePresence>
-          {entry && idx < data.entries.length && (
+        {/* Defence line */}
+        <div aria-hidden style={{ position: "absolute", left: 186, top: 8, bottom: 8, width: 3, zIndex: 4, background: "repeating-linear-gradient(180deg, rgba(0,229,255,0.85) 0 12px, transparent 12px 22px)", boxShadow: "0 0 14px rgba(0,229,255,0.6)", borderRadius: 2 }} />
+
+        {/* Flyers */}
+        {flyers.map((fl) => {
+          if (fl.status !== "flying" && fl.status !== "whacked") return null;
+          const laneTop = 14 + fl.lane * 34; // % of zone height
+          const bob = reduce ? 0 : Math.sin(fl.progress * Math.PI * fl.bobSeed) * 5;
+          const closing = fl.entry.isPrivate && fl.progress > 0.7;
+          return (
             <motion.button
-              key={entry.id}
-              onClick={whack}
-              disabled={paused}
-              initial={reduce ? false : { opacity: 0, scale: 0.8 }}
-              animate={whacked === entry.id && !reduce
-                ? { opacity: 0, scale: 1.25, rotate: -35, y: -120 }
-                : { opacity: 1, scale: 1, rotate: [0, -2, 2, 0] }}
-              exit={reduce ? undefined : { opacity: 0, scale: 0.65 }}
-              transition={whacked === entry.id ? { duration: 0.34 } : { rotate: { duration: 0.9, repeat: Infinity }, default: { duration: 0.25 } }}
-              whileTap={reduce ? undefined : { scale: 0.88 }}
-              aria-label={`Flying entry: ${entry.text}. Tap to whack it away.`}
+              key={fl.entry.id}
+              onClick={(e) => whack(fl, e)}
+              disabled={paused || fl.status !== "flying"}
+              animate={
+                fl.status === "whacked" && !reduce
+                  ? { opacity: 0, scale: 1.4, rotate: -50, y: -140 }
+                  : { opacity: 1, scale: closing && !reduce ? [1, 1.06, 1] : 1 }
+              }
+              transition={fl.status === "whacked" ? { duration: 0.36 } : closing ? { duration: 0.5, repeat: Infinity } : { duration: 0.2 }}
+              whileTap={reduce ? undefined : { scale: 0.85 }}
+              aria-label={`Flying entry: ${fl.entry.text}. Tap to whack it away.`}
               style={{
-                position: "absolute", top: "50%",
-                left: `${16 + (1 - progress) * 68}%`,
-                transform: "translateY(-50%)",
-                display: "flex", alignItems: "center", gap: 7, padding: "12px 15px", borderRadius: 12,
+                position: "absolute",
+                top: `calc(${laneTop}% + ${bob}px)`,
+                left: `${20 + (1 - fl.progress) * 72}%`,
+                display: "flex", alignItems: "center", gap: 7, padding: "11px 14px", borderRadius: 12,
                 cursor: "pointer", touchAction: "manipulation", fontFamily: "inherit",
-                background: "linear-gradient(180deg, #ffe9a8 0%, #f5c854 100%)",
-                border: "2px solid #ffdf8e",
-                boxShadow: `0 0 22px rgba(255,214,110,0.65), 0 10px 20px -6px rgba(0,0,0,0.7)`,
-                color: "#4a3208", fontSize: 14.5, fontWeight: 900, whiteSpace: "nowrap", zIndex: 5,
+                background: closing
+                  ? "linear-gradient(180deg, #ffb3c8 0%, #ff7597 100%)"
+                  : "linear-gradient(180deg, #ffe9a8 0%, #f5c854 100%)",
+                border: closing ? "2px solid #ff5fb3" : "2px solid #ffdf8e",
+                boxShadow: closing
+                  ? "0 0 26px rgba(255,47,109,0.75), 0 10px 20px -6px rgba(0,0,0,0.7)"
+                  : "0 0 20px rgba(255,214,110,0.6), 0 10px 20px -6px rgba(0,0,0,0.7)",
+                color: "#4a3208", fontSize: 14, fontWeight: 900, whiteSpace: "nowrap", zIndex: 5,
               }}
             >
-              <PixIcon emoji={entry.icon} size={24} /> {entry.text}
+              <PixIcon emoji={fl.entry.icon} size={22} /> {fl.entry.text}
             </motion.button>
+          );
+        })}
+
+        {/* Comic whack bursts */}
+        <AnimatePresence>
+          {bursts.map((b) => (
+            <motion.div
+              key={b.id}
+              initial={{ opacity: 1, scale: 0.4, rotate: -14 }}
+              animate={{ opacity: 0, scale: 1.7, rotate: 6 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.55, ease: "easeOut" }}
+              aria-hidden
+              style={{
+                position: "absolute", left: b.x, top: b.y, transform: "translate(-50%, -50%)", zIndex: 8, pointerEvents: "none",
+                fontFamily: MONO, fontSize: 30, fontWeight: 900, letterSpacing: "0.04em",
+                color: "#fff35c", WebkitTextStroke: "2px #b91c1c",
+                textShadow: "0 0 22px rgba(255,209,88,0.9), 0 4px 0 #b91c1c",
+              }}
+            >
+              💥{b.label}
+            </motion.div>
+          ))}
+        </AnimatePresence>
+
+        {/* Wave banner */}
+        <AnimatePresence>
+          {waveBanner && (
+            <motion.div
+              key={waveBanner}
+              initial={reduce ? { opacity: 0 } : { opacity: 0, scale: 2.2 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: reduce ? 1 : 0.9 }}
+              transition={{ type: "spring", stiffness: 260, damping: 16 }}
+              style={{
+                position: "absolute", left: "50%", top: "50%", transform: "translate(-50%, -50%)", zIndex: 9,
+                fontFamily: MONO, fontSize: 30, fontWeight: 900, letterSpacing: "0.18em", whiteSpace: "nowrap",
+                color: "#ffd158", textShadow: "0 0 30px rgba(255,209,88,0.9), 0 3px 8px rgba(0,0,0,0.9)",
+              }}
+            >
+              {waveBanner}
+            </motion.div>
           )}
         </AnimatePresence>
       </div>
+
       <div style={{ textAlign: "center", fontFamily: MONO, fontSize: 10.5, fontWeight: 800, color: "#9fb1ff", textShadow: "0 2px 4px rgba(0,0,0,0.8)" }}>
-        ENTRY {Math.min(idx + 1, data.entries.length)} / {data.entries.length} · TAP = WHACK
+        WAVE {Math.min(wave + 1, WAVES.length)}/{WAVES.length} · {resolved}/{data.entries.length} HANDLED · TAP = WHACK
       </div>
     </div>
   );
