@@ -835,7 +835,7 @@ function WhackPhase({ data, paused, judge, done, reduce, accent }: { data: Forge
         window.setTimeout(() => {
           playSound("projectile");
           setFlyers((f) => f.map((fl, i) => (i === entryIdx ? { ...fl, status: "flying" } : fl)));
-        }, bannerMs + 150 + k * (reduce ? 1400 : 850)),
+        }, bannerMs + 150 + k * (reduce ? 1800 : 1250)),
       ),
     ];
     return () => timers.forEach((t) => window.clearTimeout(t));
@@ -844,7 +844,9 @@ function WhackPhase({ data, paused, judge, done, reduce, accent }: { data: Forge
 
   // Flight loop: all airborne flyers advance together.
   useEffect(() => {
-    const speeds = [6800, 5800, 4900]; // ms per crossing, faster each wave
+    // Tuned down after play-testing: young readers need time to READ the
+    // card before judging it. Still escalates wave to wave.
+    const speeds = [10500, 9000, 7600]; // ms per crossing
     const tick = 40;
     const id = window.setInterval(() => {
       if (pausedRef.current) return;
