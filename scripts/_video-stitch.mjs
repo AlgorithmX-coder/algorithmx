@@ -150,6 +150,33 @@ const BUILDS = {
     ],
     endCard: { lines: ["IMPOSTOR EJECTED!", "YOU DID IT, CYBER HERO!"], hold: 2.5 },
   },
+  "week7-intro": {
+    out: "public/videos/module-07-intro.mp4",
+    shots: [
+      { clip: "intro-s1" },
+      { clip: "intro-s2", vo: { file: "intro-s2", at: 1.5, duck: 0.35 } },
+      { clip: "intro-s3" },
+      { clip: "intro-s4" },
+      { clip: "intro-s5" },
+      { clip: "intro-s6", vo: { file: "intro-s6", at: 1.5, duck: 0.35 } },
+      { clip: "intro-s7" },
+      { clip: "intro-s8" },
+      // 4.52s line in a 5.06s clip - starts immediately.
+      { clip: "intro-s9", vo: { file: "intro-s9", at: 0.2, duck: 0.35 } },
+    ],
+    endCard: { lines: ["WEEK 7", "COINS ARE REAL MONEY"], hold: 2.5 },
+  },
+  "week7-outro": {
+    out: "public/videos/module-07-outro.mp4",
+    shots: [
+      { clip: "outro-s1" },
+      { clip: "outro-s2" },
+      { clip: "outro-s3", vo: { file: "outro-s3", at: 2.0, duck: 0.35 } },
+      { clip: "outro-s4" },
+      { clip: "outro-s5", vo: { file: "outro-s5", at: 1.5, duck: 0.35 } },
+    ],
+    endCard: { lines: ["WALLET GUARDED!", "YOU DID IT, CYBER HERO!"], hold: 2.5 },
+  },
 };
 
 const [assetsDir, buildName] = process.argv.slice(2);
