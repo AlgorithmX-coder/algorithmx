@@ -146,11 +146,13 @@ function ParticleLayer({ apiRef, disabled }: { apiRef: React.MutableRefObject<Pa
         p.x += p.vx;
         p.y += p.vy;
         p.vy += p.gravity;
-        const t = 1 - p.life / p.max;
-        ctx.globalAlpha = Math.max(0, t);
+        // Clamp: fractional lifetimes can overshoot by one tick, and a
+        // negative arc radius throws (which would kill this rAF loop).
+        const t = Math.max(0, 1 - p.life / p.max);
+        ctx.globalAlpha = t;
         ctx.fillStyle = p.colour;
         ctx.beginPath();
-        ctx.arc(p.x, p.y, p.size * t, 0, Math.PI * 2);
+        ctx.arc(p.x, p.y, Math.max(0.01, p.size * t), 0, Math.PI * 2);
         ctx.fill();
       }
       ctx.globalAlpha = 1;
@@ -778,7 +780,7 @@ type JudgeFn = (
   at?: { x: number; y: number },
 ) => void;
 
-type FlyerStatus = "waiting" | "flying" | "whacked" | "docked" | "leaked";
+type FlyerStatus = "waiting" | "flying" | "whacked" | "gone" | "docked" | "leaked";
 interface Flyer {
   entry: ForgeData["whack"]["entries"][number];
   wave: number;
@@ -852,13 +854,17 @@ function WhackPhase({ data, paused, judge, done, reduce, accent }: { data: Forge
     const tick = 40;
     const id = window.setInterval(() => {
       if (pausedRef.current) return;
-      setFlyers((f) =>
-        f.map((fl) =>
+      setFlyers((f) => {
+        // Keep the array identity stable when nothing is airborne —
+        // otherwise every 40ms tick re-renders and starves the
+        // wave-advance timer below.
+        if (!f.some((fl) => fl.status === "flying")) return f;
+        return f.map((fl) =>
           fl.status === "flying"
             ? { ...fl, progress: Math.min(1, fl.progress + tick / ((reduce ? 1.7 : 1) * speeds[fl.wave])) }
             : fl,
-        ),
-      );
+        );
+      });
     }, tick);
     return () => window.clearInterval(id);
   }, [reduce]);
@@ -881,19 +887,23 @@ function WhackPhase({ data, paused, judge, done, reduce, accent }: { data: Forge
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [flyers]);
 
-  // Wave / phase completion.
+  // Wave / phase completion. The advance timer lives behind a ref so
+  // unrelated re-renders can never cancel-and-restarve it.
+  const advanceScheduled = useRef(false);
   useEffect(() => {
-    if (wave >= WAVES.length) return;
+    if (wave >= WAVES.length || advanceScheduled.current) return;
     const waveDone = WAVES[wave].every((i) => {
       const s = flyers[i].status;
-      return s === "whacked" || s === "docked" || s === "leaked";
+      return s === "whacked" || s === "gone" || s === "docked" || s === "leaked";
     });
     if (!waveDone || waveBanner) return;
+    advanceScheduled.current = true;
     if (wave + 1 < WAVES.length) {
-      const t = window.setTimeout(() => setWave((w) => w + 1), 650);
-      return () => window.clearTimeout(t);
-    }
-    if (!finishedRef.current) {
+      window.setTimeout(() => {
+        advanceScheduled.current = false;
+        setWave((w) => w + 1);
+      }, 650);
+    } else if (!finishedRef.current) {
       finishedRef.current = true;
       window.setTimeout(done, 650);
     }
@@ -907,6 +917,10 @@ function WhackPhase({ data, paused, judge, done, reduce, accent }: { data: Forge
     if (fl.entry.isPrivate) {
       playSound("hitImpact");
       setFlyers((f) => f.map((x) => (x.entry.id === fl.entry.id ? { ...x, status: "whacked" } : x)));
+      // Unmount the ghost once its fly-off animation lands.
+      window.setTimeout(() => {
+        setFlyers((f) => f.map((x) => (x.entry.id === fl.entry.id && x.status === "whacked" ? { ...x, status: "gone" } : x)));
+      }, 520);
       if (rect && !reduce) {
         const b = { id: fl.entry.id, x: e.clientX - rect.left, y: e.clientY - rect.top, label: "WHACK!" };
         setBursts((bs) => [...bs.slice(-3), b]);
@@ -1007,6 +1021,9 @@ function WhackPhase({ data, paused, judge, done, reduce, accent }: { data: Forge
                   ? "0 0 26px rgba(255,47,109,0.75), 0 10px 20px -6px rgba(0,0,0,0.7)"
                   : "0 0 20px rgba(255,214,110,0.6), 0 10px 20px -6px rgba(0,0,0,0.7)",
                 color: "#4a3208", fontSize: 14, fontWeight: 900, whiteSpace: "nowrap", zIndex: 5,
+                // Whacked ghosts finish their fly-off animation but must
+                // never intercept another tap.
+                pointerEvents: fl.status === "flying" ? undefined : "none",
               }}
             >
               <PixIcon emoji={fl.entry.icon} size={22} /> {fl.entry.text}
