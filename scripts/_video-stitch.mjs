@@ -45,6 +45,33 @@ const BUILDS = {
     ],
     endCard: { lines: ["SECRETS GUARDED!", "YOU DID IT, CYBER HERO!"], hold: 2.5 },
   },
+  "week3-intro": {
+    out: "public/videos/module-03-intro.mp4",
+    shots: [
+      { clip: "intro-s1" },
+      { clip: "intro-s2", vo: { file: "intro-s2", at: 1.2, duck: 0.35 } },
+      { clip: "intro-s3" },
+      { clip: "intro-s4" },
+      { clip: "intro-s5" },
+      { clip: "intro-s6" },
+      { clip: "intro-s7", vo: { file: "intro-s7", at: 1.0, duck: 0.35 } },
+      { clip: "intro-s8" },
+      // 4.44s line in a 5.06s clip - must start immediately.
+      { clip: "intro-s9", vo: { file: "intro-s9", at: 0.3, duck: 0.35 } },
+    ],
+    endCard: { lines: ["WEEK 3", "SPOT THE PRETEND FRIENDS"], hold: 2.5 },
+  },
+  "week3-outro": {
+    out: "public/videos/module-03-outro.mp4",
+    shots: [
+      { clip: "outro-s1" },
+      { clip: "outro-s2" },
+      { clip: "outro-s3" },
+      { clip: "outro-s4", vo: { file: "outro-s4", at: 0.8, duck: 0.35 } },
+      { clip: "outro-s5", vo: { file: "outro-s5", at: 1.8, duck: 0.35 } },
+    ],
+    endCard: { lines: ["STRANGER SPOTTED!", "YOU DID IT, CYBER HERO!"], hold: 2.5 },
+  },
 };
 
 const [assetsDir, buildName] = process.argv.slice(2);
