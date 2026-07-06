@@ -59,8 +59,11 @@ test.describe("Public pages render", () => {
     await page.locator("#forgot-email").fill("test@example.com");
     await expect(page.getByRole("button", { name: /Send reset link/i })).toBeEnabled();
     await page.evaluate(() => document.querySelector("form")?.requestSubmit());
-    await expect(page.getByText(/Check your email/i)).toBeVisible();
-    await expect(page.getByText("test@example.com")).toBeVisible();
+    // 15s budget: software-WebGL auth backdrop + parallel workers can stall
+    // this tab's re-render well past the 5s default even though the API
+    // answers in ~40ms (see gate-button-regression.spec.ts for the trace).
+    await expect(page.getByText(/Check your email/i)).toBeVisible({ timeout: 15_000 });
+    await expect(page.getByText("test@example.com")).toBeVisible({ timeout: 15_000 });
   });
 
   test("course pages don't crash", async ({ page }) => {
