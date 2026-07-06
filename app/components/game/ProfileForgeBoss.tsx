@@ -50,7 +50,7 @@ export interface ProfileForgeBossProps {
   }) => void;
 }
 
-type Stage = "entrance" | "ready" | "announce" | "play" | "phaseClear" | "victory";
+type Stage = "entrance" | "select" | "announce" | "play" | "phaseClear" | "victory";
 
 const RACCOON = {
   idle: "/game/characters/raccoon-idle.png",
@@ -59,13 +59,49 @@ const RACCOON = {
   hurt: "/game/characters/raccoon-hurt.png",
   defeated: "/game/characters/raccoon-defeated.png",
 } as const;
-const HERO = {
-  // Forge-specific idle: Adam filling in his profile behind his shield —
-  // the hero is literally doing the week's lesson while under siege.
-  idle: "/game/characters/adam-writing.png",
-  attack: "/game/characters/adam-attack.png",
-  celebrate: "/game/characters/adam-celebrate.png",
+
+/** Playable heroes. Each carries a full arena theme — glows, washes and
+ *  title gradients retint to the chosen character. The forge-specific
+ *  idle pose (writing behind their shield) exists for both. */
+const HEROES = {
+  adam: {
+    name: "ADAM",
+    tagline: "Cool and steady",
+    portrait: "/game/characters/adam-head.png",
+    sprites: {
+      idle: "/game/characters/adam-writing.png",
+      attack: "/game/characters/adam-attack.png",
+      celebrate: "/game/characters/adam-celebrate.png",
+    },
+    theme: {
+      accent: "#00e5ff",
+      glow: "rgba(0,229,255,0.45)",
+      washA: "rgba(0,150,255,0.16)",
+      washB: "rgba(0,229,255,0.12)",
+      title: "linear-gradient(135deg, #00e5ff 0%, #3b82f6 55%, #7c5cff 100%)",
+      floor: "rgba(0,229,255,0.4)",
+    },
+  },
+  layla: {
+    name: "LAYLA",
+    tagline: "Quick and clever",
+    portrait: "/game/characters/layla-head.png",
+    sprites: {
+      idle: "/game/characters/layla-writing.png",
+      attack: "/game/characters/layla-attack.png",
+      celebrate: "/game/characters/layla-celebrate.png",
+    },
+    theme: {
+      accent: "#ff5fb3",
+      glow: "rgba(255,95,179,0.45)",
+      washA: "rgba(255,95,179,0.16)",
+      washB: "rgba(192,132,252,0.12)",
+      title: "linear-gradient(135deg, #ff5fb3 0%, #c084fc 55%, #7c5cff 100%)",
+      floor: "rgba(255,95,179,0.45)",
+    },
+  },
 } as const;
+type HeroKey = keyof typeof HEROES;
 
 const PHASE_ORDER = ["whack", "hand", "grill", "assemble", "rapid"] as const;
 type PhaseKey = (typeof PHASE_ORDER)[number];
@@ -234,11 +270,12 @@ export default function ProfileForgeBoss({
 
   const [stage, setStage] = useState<Stage>("entrance");
   const [entranceBeat, setEntranceBeat] = useState(0);
+  const [hero, setHero] = useState<HeroKey | null>(null);
   const [phaseIdx, setPhaseIdx] = useState(0);
   const [scheme, setScheme] = useState(100);
   const [stamped, setStamped] = useState<PhaseKey[]>([]);
   const [raccoonMood, setRaccoonMood] = useState<keyof typeof RACCOON>("taunt");
-  const [heroMood, setHeroMood] = useState<keyof typeof HERO>("idle");
+  const [heroMood, setHeroMood] = useState<"idle" | "attack" | "celebrate">("idle");
   const [raccoonLine, setRaccoonLine] = useState<string | null>(null);
   const [teach, setTeach] = useState<null | { title: string; explanation: string }>(null);
   const [combo, setCombo] = useState(0);
@@ -274,17 +311,33 @@ export default function ProfileForgeBoss({
     statsRef.current = m;
   }, [phaseMeta]);
 
-  /* Entrance cinematic: dark → spotlight roar → title slam → ready. */
+  /* Entrance cinematic: dark → spotlight roar → title slam → hero select. */
   useEffect(() => {
     if (stage !== "entrance") return;
     const beats = reduce ? [300, 700, 1100] : [900, 2100, 3400];
     const timers = [
       window.setTimeout(() => { setEntranceBeat(1); playSound("bossRoar"); playVillain("intro"); setShakeNonce((n) => n + 1); }, beats[0]),
       window.setTimeout(() => { setEntranceBeat(2); playSound("phaseChange"); }, beats[1]),
-      window.setTimeout(() => setStage("ready"), beats[2]),
+      window.setTimeout(() => setStage("select"), beats[2]),
     ];
     return () => timers.forEach((t) => window.clearTimeout(t));
   }, [stage, reduce]);
+
+  const chooseHero = (key: HeroKey) => {
+    playSound("select");
+    setHero(key);
+    phaseWrongs.current = 0;
+    playSound("phaseChange");
+    setStage("announce");
+  };
+
+  // Battle clock starts the first time the announce stage is reached
+  // (an effect, to keep impure timing calls out of render-scope fns).
+  useEffect(() => {
+    if (stage === "announce" && startTs.current === 0) {
+      startTs.current = performance.now();
+    }
+  }, [stage]);
 
   const shake = useCallback(() => setShakeNonce((n) => n + 1), []);
   const doFlash = useCallback((kind: "hit" | "phase" | "wrong") => {
@@ -361,13 +414,6 @@ export default function ProfileForgeBoss({
     },
     [phaseIdx, phaseMeta, onQuestionAnswered, combo, reduce, addPopup, doFlash, flashMood, shake],
   );
-
-  const beginBattle = () => {
-    startTs.current = performance.now();
-    phaseWrongs.current = 0;
-    playSound("phaseChange");
-    setStage("announce");
-  };
 
   useEffect(() => {
     if (stage !== "announce") return;
@@ -448,7 +494,16 @@ export default function ProfileForgeBoss({
         }}
       />
       <DataRain disabled={reduce} />
-      <div aria-hidden style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse at 72% 34%, rgba(255,95,179,0.16) 0%, transparent 46%), radial-gradient(ellipse at 20% 70%, rgba(0,229,255,0.14) 0%, transparent 46%)" }} />
+      {/* Arena colour washes retint to the chosen hero's theme. */}
+      <div
+        aria-hidden
+        style={{
+          position: "absolute",
+          inset: 0,
+          background: `radial-gradient(ellipse at 72% 34%, ${hero ? HEROES[hero].theme.washA : "rgba(255,95,179,0.16)"} 0%, transparent 46%), radial-gradient(ellipse at 20% 70%, ${hero ? HEROES[hero].theme.washB : "rgba(0,229,255,0.14)"} 0%, transparent 46%)`,
+          transition: "background 700ms ease",
+        }}
+      />
       <div aria-hidden style={{ position: "absolute", inset: 0, boxShadow: "inset 0 0 160px 50px rgba(3,4,12,0.9)" }} />
       {/* scanlines */}
       <div aria-hidden style={{ position: "absolute", inset: 0, opacity: 0.07, background: "repeating-linear-gradient(0deg, transparent 0 3px, rgba(255,255,255,0.5) 3px 4px)" }} />
@@ -473,15 +528,19 @@ export default function ProfileForgeBoss({
       </AnimatePresence>
 
       {/* ── Characters ── */}
-      <motion.img
-        src={HERO[heroMood]}
-        alt=""
-        aria-hidden
-        animate={reduce ? undefined : heroMood === "attack" ? { x: 24, scale: 1.06 } : { x: 0, scale: 1, y: [0, -5, 0] }}
-        transition={heroMood === "attack" ? { duration: 0.2 } : { duration: 2.6, repeat: Infinity, ease: "easeInOut" }}
-        style={{ position: "absolute", left: "3%", bottom: "13%", height: "34%", zIndex: 2, filter: "drop-shadow(0 16px 20px rgba(0,0,0,0.7))" }}
-      />
-      <div aria-hidden style={{ position: "absolute", left: "3%", bottom: "11%", width: "16%", height: 22, borderRadius: "50%", background: "radial-gradient(ellipse, rgba(0,229,255,0.4), transparent 70%)" }} />
+      {hero && (
+        <>
+          <motion.img
+            src={HEROES[hero].sprites[heroMood]}
+            alt=""
+            aria-hidden
+            animate={reduce ? undefined : heroMood === "attack" ? { x: 24, scale: 1.06 } : { x: 0, scale: 1, y: [0, -5, 0] }}
+            transition={heroMood === "attack" ? { duration: 0.2 } : { duration: 2.6, repeat: Infinity, ease: "easeInOut" }}
+            style={{ position: "absolute", left: "3%", bottom: "13%", height: "34%", zIndex: 2, filter: `drop-shadow(0 16px 20px rgba(0,0,0,0.7)) drop-shadow(0 0 22px ${HEROES[hero].theme.glow})` }}
+          />
+          <div aria-hidden style={{ position: "absolute", left: "3%", bottom: "11%", width: "16%", height: 22, borderRadius: "50%", background: `radial-gradient(ellipse, ${HEROES[hero].theme.floor}, transparent 70%)` }} />
+        </>
+      )}
 
       <motion.img
         key={raccoonMood}
@@ -526,10 +585,11 @@ export default function ProfileForgeBoss({
       {stage !== "entrance" && (
         <div style={{ position: "absolute", top: 0, left: 0, right: 0, zIndex: 20, padding: "12px 16px 8px", display: "flex", flexDirection: "column", gap: 7 }}>
           <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-            <span style={{ fontFamily: MONO, fontSize: 11, fontWeight: 800, letterSpacing: "0.14em", color: "#ff9bcb", textShadow: "0 0 12px rgba(255,95,179,0.7)", whiteSpace: "nowrap" }}>
+            <span style={{ fontFamily: MONO, fontSize: 11, fontWeight: 800, letterSpacing: "0.14em", color: "#9dff87", textShadow: "0 0 12px rgba(120,255,90,0.7)", whiteSpace: "nowrap" }}>
               🦝 {bossName}&apos;S SCHEME
             </span>
-            {/* Segmented scheme meter */}
+            {/* Segmented scheme meter — the Raccoon's matrix-green, so it
+                never clashes with either hero's theme. */}
             <div style={{ flex: 1, display: "flex", gap: 4 }} role="progressbar" aria-valuenow={scheme} aria-valuemin={0} aria-valuemax={100}>
               {PHASE_ORDER.map((k, i) => {
                 const alive = scheme > i * 20;
@@ -539,9 +599,9 @@ export default function ProfileForgeBoss({
                     animate={alive ? { opacity: 1, scaleY: 1 } : { opacity: 0.25, scaleY: 0.55 }}
                     style={{
                       flex: 1, height: 16, borderRadius: 5,
-                      background: alive ? "linear-gradient(180deg, #ff7ac2, #d12a72)" : "#3a1f33",
-                      border: "1px solid rgba(255,155,203,0.5)",
-                      boxShadow: alive ? "0 0 12px rgba(255,95,179,0.5)" : "none",
+                      background: alive ? "linear-gradient(180deg, #8dff5a, #2fae4e)" : "#1e3322",
+                      border: "1px solid rgba(140,255,120,0.5)",
+                      boxShadow: alive ? "0 0 12px rgba(120,255,90,0.45)" : "none",
                     }}
                   />
                 );
@@ -552,7 +612,13 @@ export default function ProfileForgeBoss({
             </span>
           </div>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-            <div style={{ fontFamily: MONO, fontSize: 10, fontWeight: 800, letterSpacing: "0.12em", color: tone.accent }}>
+            <div style={{ fontFamily: MONO, fontSize: 10, fontWeight: 800, letterSpacing: "0.12em", color: tone.accent, display: "flex", alignItems: "center", gap: 6 }}>
+              {hero && (
+                <span style={{ color: HEROES[hero].theme.accent, textShadow: `0 0 10px ${HEROES[hero].theme.glow}` }}>
+                  ★ {HEROES[hero].name}
+                </span>
+              )}
+              {hero && <span style={{ opacity: 0.5 }}>·</span>}
               PHASE {Math.min(phaseIdx + 1, 5)}/5 · {currentPhase.label.toUpperCase()}
             </div>
             <AnimatePresence>
@@ -649,20 +715,54 @@ export default function ProfileForgeBoss({
             </motion.div>
           )}
 
-          {stage === "ready" && (
-            <motion.div key="ready" initial={reduce ? false : { opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} style={{ margin: "auto", textAlign: "center", maxWidth: 470, zIndex: 15 }}>
-              <h2 style={{ margin: "0 0 8px", fontSize: 34, fontWeight: 900, background: "linear-gradient(135deg, #ff5fb3, #c084fc, #00e5ff)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
-                THE PROFILE FORGE
+          {stage === "select" && (
+            <motion.div key="select" initial={reduce ? false : { opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} style={{ margin: "auto", textAlign: "center", maxWidth: 560, width: "100%", zIndex: 15 }}>
+              <h2 style={{ margin: "0 0 2px", fontSize: 30, fontWeight: 900, background: "linear-gradient(135deg, #ffd158, #ff8f6b)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", filter: "drop-shadow(0 4px 16px rgba(255,209,88,0.4))" }}>
+                CHOOSE YOUR HERO
               </h2>
-              <p style={{ margin: "0 0 4px", fontSize: 16, lineHeight: 1.5, fontWeight: 800, textShadow: "0 2px 8px rgba(0,0,0,0.8)" }}>
-                Build your profile. Survive his five tricks.
+              <p style={{ margin: "0 0 16px", fontSize: 13.5, fontWeight: 700, fontStyle: "italic", color: "#e3c8ff", textShadow: "0 2px 6px rgba(0,0,0,0.9)" }}>
+                🦝 “Pick whoever you want. I&apos;ll beat them BOTH!”
               </p>
-              <p style={{ margin: "0 0 18px", fontSize: 15, fontWeight: 900, color: "#7eff97", textShadow: "0 0 14px rgba(126,255,151,0.5)" }}>
-                GIVE HIM NOTHING.
-              </p>
-              <GameButton variant="primary" size="lg" onClick={beginBattle}>
-                ⚔ Begin the Siege
-              </GameButton>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }}>
+                {(Object.keys(HEROES) as HeroKey[]).map((key) => {
+                  const h = HEROES[key];
+                  return (
+                    <motion.button
+                      key={key}
+                      onClick={() => chooseHero(key)}
+                      whileHover={reduce ? undefined : { y: -6, scale: 1.03 }}
+                      whileTap={reduce ? undefined : { scale: 0.95 }}
+                      style={{
+                        display: "flex", flexDirection: "column", alignItems: "center", gap: 8,
+                        padding: "16px 12px 14px", borderRadius: 18, cursor: "pointer",
+                        touchAction: "manipulation", fontFamily: "inherit",
+                        background: "linear-gradient(180deg, rgba(10,14,34,0.85), rgba(6,8,20,0.9))",
+                        border: `2.5px solid ${h.theme.accent}`,
+                        boxShadow: `0 0 26px ${h.theme.glow}, inset 0 1px 0 rgba(255,255,255,0.1)`,
+                        color: "#fff7e6",
+                      }}
+                      aria-label={`Play as ${h.name}`}
+                    >
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img src={h.sprites.idle} alt="" style={{ height: 132, objectFit: "contain", filter: `drop-shadow(0 10px 14px rgba(0,0,0,0.6)) drop-shadow(0 0 16px ${h.theme.glow})` }} />
+                      <span style={{ fontSize: 19, fontWeight: 900, letterSpacing: "0.08em", color: h.theme.accent, textShadow: `0 0 14px ${h.theme.glow}` }}>
+                        {h.name}
+                      </span>
+                      <span style={{ fontSize: 11.5, fontWeight: 700, color: "#9fb1ff" }}>{h.tagline}</span>
+                      <span
+                        style={{
+                          marginTop: 2, padding: "7px 26px", borderRadius: 999,
+                          background: `linear-gradient(180deg, ${h.theme.accent}, ${h.theme.accent}99)`,
+                          color: "#081018", fontSize: 13, fontWeight: 900, letterSpacing: "0.1em",
+                          boxShadow: `0 8px 20px -6px ${h.theme.glow}`,
+                        }}
+                      >
+                        SELECT
+                      </span>
+                    </motion.button>
+                  );
+                })}
+              </div>
             </motion.div>
           )}
 
@@ -734,7 +834,7 @@ export default function ProfileForgeBoss({
                 ))}
                 <div style={{ marginTop: 7, fontSize: 11, fontWeight: 900, color: "#b91c1c", letterSpacing: "0.06em" }}>SCHEME STATUS: FOILED</div>
               </motion.div>
-              <h2 style={{ margin: "0 0 6px", fontSize: 30, fontWeight: 900, background: "linear-gradient(135deg, #7eff97, #00e5ff)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", filter: "drop-shadow(0 4px 18px rgba(126,255,151,0.4))" }}>
+              <h2 style={{ margin: "0 0 6px", fontSize: 30, fontWeight: 900, background: hero ? HEROES[hero].theme.title : "linear-gradient(135deg, #7eff97, #00e5ff)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", filter: `drop-shadow(0 4px 18px ${hero ? HEROES[hero].theme.glow : "rgba(126,255,151,0.4)"})` }}>
                 The form came back BLANK!
               </h2>
               <div style={{ fontFamily: MONO, fontSize: 13, fontWeight: 900, color: "#ffd158", marginBottom: 14, textShadow: "0 0 12px rgba(255,209,88,0.6)" }}>
