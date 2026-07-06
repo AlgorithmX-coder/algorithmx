@@ -72,6 +72,58 @@ const BUILDS = {
     ],
     endCard: { lines: ["STRANGER SPOTTED!", "YOU DID IT, CYBER HERO!"], hold: 2.5 },
   },
+  "week4-intro": {
+    out: "public/videos/module-04-intro.mp4",
+    shots: [
+      { clip: "intro-s1" },
+      { clip: "intro-s2", vo: { file: "intro-s2", at: 1.5, duck: 0.35 } },
+      { clip: "intro-s3" },
+      { clip: "intro-s4" },
+      { clip: "intro-s5" },
+      { clip: "intro-s6", vo: { file: "intro-s6", at: 1.5, duck: 0.35 } },
+      { clip: "intro-s7" },
+      { clip: "intro-s8" },
+      { clip: "intro-s9", vo: { file: "intro-s9", at: 0.5, duck: 0.35 } },
+    ],
+    endCard: { lines: ["WEEK 4", "SMELL THE TRICK"], hold: 2.5 },
+  },
+  "week4-outro": {
+    out: "public/videos/module-04-outro.mp4",
+    shots: [
+      { clip: "outro-s1" },
+      { clip: "outro-s2" },
+      { clip: "outro-s3" },
+      { clip: "outro-s4", vo: { file: "outro-s4", at: 0.6, duck: 0.35 } },
+      { clip: "outro-s5" },
+    ],
+    endCard: { lines: ["SCAM SQUASHED!", "YOU DID IT, CYBER HERO!"], hold: 2.5 },
+  },
+  "week5-intro": {
+    out: "public/videos/module-05-intro.mp4",
+    shots: [
+      { clip: "intro-s1" },
+      { clip: "intro-s2", vo: { file: "intro-s2", at: 1.5, duck: 0.35 } },
+      { clip: "intro-s3" },
+      { clip: "intro-s4" },
+      { clip: "intro-s5" },
+      { clip: "intro-s6", vo: { file: "intro-s6", at: 1.5, duck: 0.35 } },
+      { clip: "intro-s7" },
+      { clip: "intro-s8" },
+      { clip: "intro-s9", vo: { file: "intro-s9", at: 0.4, duck: 0.35 } },
+    ],
+    endCard: { lines: ["WEEK 5", "DON'T FEED THE STORM"], hold: 2.5 },
+  },
+  "week5-outro": {
+    out: "public/videos/module-05-outro.mp4",
+    shots: [
+      { clip: "outro-s1" },
+      { clip: "outro-s2" },
+      { clip: "outro-s3" },
+      { clip: "outro-s4", vo: { file: "outro-s4", at: 0.7, duck: 0.35 } },
+      { clip: "outro-s5" },
+    ],
+    endCard: { lines: ["STORM STOPPED!", "YOU DID IT, CYBER HERO!"], hold: 2.5 },
+  },
 };
 
 const [assetsDir, buildName] = process.argv.slice(2);
