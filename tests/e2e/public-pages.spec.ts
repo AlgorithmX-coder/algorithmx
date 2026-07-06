@@ -91,9 +91,12 @@ test.describe("Public pages render", () => {
   }) => {
     await page.goto("/login");
     // force:true skips the stability wait the animated auth page otherwise
-    // flakes on; the link is visible and points to /forgot-password.
-    await page.locator('a[href="/forgot-password"]').first().click({ force: true });
-    await expect(page).toHaveURL(/\/forgot-password/);
+    // flakes on; the link is visible and points to /forgot-password. 15s
+    // budgets for the same reason as the forgot-password specs above: the
+    // WebGL auth backdrop renders in software on CI and parallel workers can
+    // stall this tab's first paint/navigation well past the 5s defaults.
+    await page.locator('a[href="/forgot-password"]').first().click({ force: true, timeout: 15_000 });
+    await expect(page).toHaveURL(/\/forgot-password/, { timeout: 15_000 });
   });
 
   test("auth-required routes redirect away when logged out", async ({
