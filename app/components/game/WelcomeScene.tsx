@@ -33,6 +33,8 @@ export interface WelcomeSceneProps {
   photoSrc?: string;
   /** Caption beneath the polaroid. */
   caption?: string;
+  /** Handwritten label on the polaroid frame. Defaults to the Week 1 note. */
+  photoCaption?: string;
   /** Continue-button label. */
   ctaLabel?: string;
 }
@@ -43,6 +45,7 @@ export default function WelcomeScene({
   badge = "Incident Report",
   photoSrc = "/characters/adam-layla-hacked.png",
   caption = "Adam and Layla just got hacked by the Hacker Raccoon. They need YOUR help.",
+  photoCaption = "Wk 1, Day 0 - Adam & Layla",
   ctaLabel = "I'll Save Them →",
 }: WelcomeSceneProps) {
   return (
@@ -91,7 +94,7 @@ export default function WelcomeScene({
           gap: 18,
         }}
       >
-        <Polaroid src={photoSrc} />
+        <Polaroid src={photoSrc} caption={photoCaption} />
         <CaptionPlaque text={caption} />
       </div>
 
@@ -160,7 +163,7 @@ export default function WelcomeScene({
 
 /* ───────────────────────── POLAROID ───────────────────────── */
 
-function Polaroid({ src }: { src: string }) {
+function Polaroid({ src, caption }: { src: string; caption: string }) {
   return (
     <div
       style={{
@@ -223,7 +226,7 @@ function Polaroid({ src }: { src: string }) {
           letterSpacing: 1,
         }}
       >
-        Wk 1, Day 0 - Adam & Layla
+        {caption}
       </div>
     </div>
   );

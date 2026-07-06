@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-28T00:13:28.466Z",
+  "generatedAt": "2026-07-04T22:54:07.855Z",
   "model": "eleven_v3",
   "voiceSettings": {
     "stability": 0.35,
@@ -21,43 +21,43 @@
   "chunkStrategy": "block",
   "entries": [
     {
-      "key": "bbaa58a4de63b7d2",
+      "key": "c53034ffff6980db",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[warmly] Hey there, Cyber Hero! I've got a secret... just for you. [whispers] Come a little closer. Your password is like a magic key — and it's all yours. It's how the computer knows it's really YOU. [nervous] A weak little key? Uh-oh... that lets the sneaky Raccoon slip right in. [excited] But a big, strong one? [laughs] He doesn't stand a chance!",
+      "text": "[warmly] Hey there, Cyber Hero! I've got a secret... just for you. [whispers] Come a little closer. Your password is like a magic key, and it's all yours. It's how the computer knows it's really YOU. [nervous] A weak little key? Uh-oh... that lets the sneaky Raccoon slip right in. [excited] But a big, strong one? [laughs] He doesn't stand a chance!",
       "lines": [
         "[warmly] Hey there, Cyber Hero! I've got a secret... just for you.",
         "[whispers] Come a little closer.",
-        "Your password is like a magic key — and it's all yours.",
+        "Your password is like a magic key, and it's all yours.",
         "It's how the computer knows it's really YOU.",
         "[nervous] A weak little key? Uh-oh... that lets the sneaky Raccoon slip right in.",
         "[excited] But a big, strong one? [laughs] He doesn't stand a chance!"
       ],
-      "file": "/audio/voice/bbaa58a4de63b7d2.mp3"
+      "file": "/audio/voice/c53034ffff6980db.mp3"
     },
     {
-      "key": "6b033fabfff16b6d",
+      "key": "6d724dc4015b7fe4",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[excited] Let's match the cyber words to their meanings! Flip two cards to find a matching pair. [warmly] Take your time — and remember where they are!",
+      "text": "[excited] Let's match the cyber words to their meanings! Flip two cards to find a matching pair. [warmly] Take your time, and remember where they are!",
       "lines": [
         "[excited] Let's match the cyber words to their meanings!",
         "Flip two cards to find a matching pair.",
-        "[warmly] Take your time — and remember where they are!"
+        "[warmly] Take your time, and remember where they are!"
       ],
-      "file": "/audio/voice/6b033fabfff16b6d.mp3"
+      "file": "/audio/voice/6d724dc4015b7fe4.mp3"
     },
     {
-      "key": "daf5b4ff7b17d94b",
+      "key": "8b4da7d3609c9b5f",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[excited] Awesome matching! Now let's test your memory. You'll get ten seconds to remember where each card is. Then they flip over — tap where you think each one is!",
+      "text": "[excited] Awesome matching! Now let's test your memory. You'll get ten seconds to remember where each card is. Then they flip over, tap where you think each one is!",
       "lines": [
         "[excited] Awesome matching! Now let's test your memory.",
         "You'll get ten seconds to remember where each card is.",
-        "Then they flip over — tap where you think each one is!"
+        "Then they flip over, tap where you think each one is!"
       ],
-      "file": "/audio/voice/daf5b4ff7b17d94b.mp3"
+      "file": "/audio/voice/8b4da7d3609c9b5f.mp3"
     },
     {
       "key": "2488ebd04ff5e906",
@@ -73,153 +73,153 @@
       "file": "/audio/voice/2488ebd04ff5e906.mp3"
     },
     {
-      "key": "2acbe3018293991b",
+      "key": "3a6df4e4a90af6b1",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[excited] Ooh, want to know a clever trick? The longer your key, the harder it is to crack! [excited] So glue three silly words together — like otter, rocket, mango! [laughs] Long, strong, and super easy to remember!",
+      "text": "[excited] Ooh, want to know a clever trick? The longer your key, the harder it is to crack! [excited] So glue three silly words together, like dragon, taco, comet! [laughs] Long, strong, and super easy to remember!",
       "lines": [
         "[excited] Ooh, want to know a clever trick?",
         "The longer your key, the harder it is to crack!",
-        "[excited] So glue three silly words together — like otter, rocket, mango!",
+        "[excited] So glue three silly words together, like dragon, taco, comet!",
         "[laughs] Long, strong, and super easy to remember!"
       ],
-      "file": "/audio/voice/2acbe3018293991b.mp3"
+      "file": "/audio/voice/3a6df4e4a90af6b1.mp3"
     },
     {
-      "key": "0741eef6a33b720c",
+      "key": "ea1cbee2c221e0dc",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[excited] Time to build a password the Raccoon can't crack! Tap any three silly words from the wall. The longer and sillier, the stronger it gets! [warmly] Take your time — pick words you'll remember.",
+      "text": "[excited] Time to build a password the Raccoon can't crack! Tap any three silly words from the wall. The longer and sillier, the stronger it gets! [warmly] Take your time, pick words you'll remember.",
       "lines": [
         "[excited] Time to build a password the Raccoon can't crack!",
         "Tap any three silly words from the wall.",
         "The longer and sillier, the stronger it gets!",
-        "[warmly] Take your time — pick words you'll remember."
+        "[warmly] Take your time, pick words you'll remember."
       ],
-      "file": "/audio/voice/0741eef6a33b720c.mp3"
+      "file": "/audio/voice/ea1cbee2c221e0dc.mp3"
     },
     {
-      "key": "22f698b309f4412a",
+      "key": "0460c239a169ef9d",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "Go on — tap any word you like to begin!",
+      "text": "Go on, tap any word you like to begin!",
       "lines": [
-        "Go on — tap any word you like to begin!"
+        "Go on, tap any word you like to begin!"
       ],
-      "file": "/audio/voice/22f698b309f4412a.mp3"
+      "file": "/audio/voice/0460c239a169ef9d.mp3"
     },
     {
-      "key": "d0e3c60c9fbdf197",
+      "key": "2d4fc7026ea65bbc",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[excited] Amazing — you're getting stronger already! You just learned that long passwords are strong passwords. Three random words make a key that's super hard to crack. [warmly] Now, let's mix things up!",
+      "text": "[excited] Amazing! You're getting stronger already! You just learned that long passwords are strong passwords. Three random words make a key that's super hard to crack. [warmly] Now, let's mix things up!",
       "lines": [
-        "[excited] Amazing — you're getting stronger already!",
+        "[excited] Amazing! You're getting stronger already!",
         "You just learned that long passwords are strong passwords.",
         "Three random words make a key that's super hard to crack.",
         "[warmly] Now, let's mix things up!"
       ],
-      "file": "/audio/voice/d0e3c60c9fbdf197.mp3"
+      "file": "/audio/voice/2d4fc7026ea65bbc.mp3"
     },
     {
-      "key": "506cbaf4f1b6cf69",
+      "key": "4afc63aff8357505",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[excited] Now let's make that key SUPER tough! Mix it all up — big letters, little letters, numbers, and squiggly symbols! [nervous] A plain word like 'tiger'? The Raccoon gobbles that up in one bite. [excited] But scramble it like that — [laughs] and he's totally stumped!",
+      "text": "[excited] Now let's make that key SUPER tough! Mix it all up, big letters, little letters, numbers, and squiggly symbols! [nervous] A plain word like 'tiger'? The Raccoon gobbles that up in one bite. [excited] But scramble it like that, [laughs] and he's totally stumped!",
       "lines": [
         "[excited] Now let's make that key SUPER tough!",
-        "Mix it all up — big letters, little letters, numbers, and squiggly symbols!",
+        "Mix it all up, big letters, little letters, numbers, and squiggly symbols!",
         "[nervous] A plain word like 'tiger'? The Raccoon gobbles that up in one bite.",
-        "[excited] But scramble it like that — [laughs] and he's totally stumped!"
+        "[excited] But scramble it like that, [laughs] and he's totally stumped!"
       ],
-      "file": "/audio/voice/506cbaf4f1b6cf69.mp3"
+      "file": "/audio/voice/4afc63aff8357505.mp3"
     },
     {
-      "key": "6bad0d1658004aa5",
+      "key": "c4fa40fa9fd0d601",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[excited] Uh oh — these passwords are sick! You're the cyber-doctor. First, work out what's WRONG with each one. Then use your tools to make it strong — watch the meter climb! [warmly] No rush, Doctor — take your time.",
+      "text": "[excited] Uh oh! These passwords are sick! You're the cyber-doctor. First, work out what's WRONG with each one. Then use your tools to make it strong, watch the meter climb! [warmly] No rush, Doctor. Take your time.",
       "lines": [
-        "[excited] Uh oh — these passwords are sick! You're the cyber-doctor.",
+        "[excited] Uh oh! These passwords are sick! You're the cyber-doctor.",
         "First, work out what's WRONG with each one.",
-        "Then use your tools to make it strong — watch the meter climb!",
-        "[warmly] No rush, Doctor — take your time."
+        "Then use your tools to make it strong, watch the meter climb!",
+        "[warmly] No rush, Doctor. Take your time."
       ],
-      "file": "/audio/voice/6bad0d1658004aa5.mp3"
+      "file": "/audio/voice/c4fa40fa9fd0d601.mp3"
     },
     {
-      "key": "a181879ed1233053",
+      "key": "21cfe14959d2e00a",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Look at the patient — what's wrong with this password?",
+      "text": "Look at the patient. What's wrong with this password?",
       "lines": [
-        "Look at the patient — what's wrong with this password?"
+        "Look at the patient. What's wrong with this password?"
       ],
-      "file": "/audio/voice/a181879ed1233053.mp3"
+      "file": "/audio/voice/21cfe14959d2e00a.mp3"
     },
     {
-      "key": "dde1753309b6b7eb",
+      "key": "b1fc7c79dde7ce48",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[excited] Wow — look at you go! You just learned how to mix it all up. Big letters, little letters, numbers and symbols make a password really tough. [warmly] Next up — a super important one. Keeping it secret.",
+      "text": "[excited] Wow! Look at you go! You just learned how to mix it all up. Big letters, little letters, numbers and symbols make a password really tough. [warmly] Next up, a super important one. Keeping it secret.",
       "lines": [
-        "[excited] Wow — look at you go!",
+        "[excited] Wow! Look at you go!",
         "You just learned how to mix it all up.",
         "Big letters, little letters, numbers and symbols make a password really tough.",
-        "[warmly] Next up — a super important one. Keeping it secret."
+        "[warmly] Next up, a super important one. Keeping it secret."
       ],
-      "file": "/audio/voice/dde1753309b6b7eb.mp3"
+      "file": "/audio/voice/b1fc7c79dde7ce48.mp3"
     },
     {
-      "key": "4d7658c896422684",
+      "key": "9934ff4901cdba19",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[warmly] Okay — this is the MOST important part. Lean in close... [whispers] A password only works if you keep it secret. Don't tell your best friend. Don't leave it where anyone can peek! [warmly] The only person who ever helps is a grown-up you really trust. Deal?",
+      "text": "[warmly] Okay, this is the MOST important part. Lean in close... [whispers] A password only works if you keep it secret. Don't tell your best friend. Don't leave it where anyone can peek! [warmly] The only person who ever helps is a grown-up you really trust. Deal?",
       "lines": [
-        "[warmly] Okay — this is the MOST important part. Lean in close...",
+        "[warmly] Okay, this is the MOST important part. Lean in close...",
         "[whispers] A password only works if you keep it secret.",
         "Don't tell your best friend. Don't leave it where anyone can peek!",
         "[warmly] The only person who ever helps is a grown-up you really trust. Deal?"
       ],
-      "file": "/audio/voice/4d7658c896422684.mp3"
+      "file": "/audio/voice/9934ff4901cdba19.mp3"
     },
     {
-      "key": "5bd1bdb80e78a432",
+      "key": "d9d39a49551edc5c",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[warmly] The Raccoon's set some sneaky traps for you. Read each one carefully — think, what would YOU do? [excited] Then pick the safe path. You've got this!",
+      "text": "[warmly] The Raccoon's set some sneaky traps for you. Read each one carefully. Think, what would YOU do? [excited] Then pick the safe path. You've got this!",
       "lines": [
         "[warmly] The Raccoon's set some sneaky traps for you.",
-        "Read each one carefully — think, what would YOU do?",
+        "Read each one carefully. Think, what would YOU do?",
         "[excited] Then pick the safe path. You've got this!"
       ],
-      "file": "/audio/voice/5bd1bdb80e78a432.mp3"
+      "file": "/audio/voice/d9d39a49551edc5c.mp3"
     },
     {
-      "key": "5d87e9d7564ed3bf",
+      "key": "566c460a19188631",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[warmly] You're doing so well, Cyber Hero. You just learned the golden rule — keep it secret. Never share your password, not even with your best friend. [excited] One more thing to master before the big battle!",
+      "text": "[warmly] You're doing so well, Cyber Hero. You just learned the golden rule, keep it secret. Never share your password, not even with your best friend. [excited] One more thing to master before the big battle!",
       "lines": [
         "[warmly] You're doing so well, Cyber Hero.",
-        "You just learned the golden rule — keep it secret.",
+        "You just learned the golden rule, keep it secret.",
         "Never share your password, not even with your best friend.",
         "[excited] One more thing to master before the big battle!"
       ],
-      "file": "/audio/voice/5d87e9d7564ed3bf.mp3"
+      "file": "/audio/voice/566c460a19188631.mp3"
     },
     {
-      "key": "0f1b4009db50ffc4",
+      "key": "125177e180d8467d",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[excited] Let's get inside the sneaky Raccoon's head! [whispers] He guesses the easy stuff first. Your name? [nervous] Your birthday? And one-two-three-four-five-six? [laughs] That's the FIRST thing he tries! [excited] So pick something he'd NEVER guess — and outsmart him!",
+      "text": "[excited] Let's get inside the sneaky Raccoon's head! [whispers] He guesses the easy stuff first. Your name? [nervous] Your birthday? And one-two-three-four-five-six? [laughs] That's the FIRST thing he tries! [excited] So pick something he'd NEVER guess, and outsmart him!",
       "lines": [
         "[excited] Let's get inside the sneaky Raccoon's head!",
         "[whispers] He guesses the easy stuff first. Your name? [nervous] Your birthday?",
         "And one-two-three-four-five-six? [laughs] That's the FIRST thing he tries!",
-        "[excited] So pick something he'd NEVER guess — and outsmart him!"
+        "[excited] So pick something he'd NEVER guess, and outsmart him!"
       ],
-      "file": "/audio/voice/0f1b4009db50ffc4.mp3"
+      "file": "/audio/voice/125177e180d8467d.mp3"
     },
     {
       "key": "a67ecfe0c2e2c1bc",
@@ -234,42 +234,316 @@
       "file": "/audio/voice/a67ecfe0c2e2c1bc.mp3"
     },
     {
-      "key": "4a2d7efa88bbb3b4",
+      "key": "49b660cf14a53f4d",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[excited] Incredible — you've mastered all five secrets! You just learned to dodge the obvious ones. No names, no birthdays, no one-two-three. [warmly] You're ready, Cyber Hero. [excited] Time to show that Raccoon who's boss!",
+      "text": "[excited] Incredible! You've mastered all five secrets! You just learned to dodge the obvious ones. No names, no birthdays, no one-two-three. [warmly] You're ready, Cyber Hero. [excited] Time to show that Raccoon who's boss!",
       "lines": [
-        "[excited] Incredible — you've mastered all five secrets!",
+        "[excited] Incredible! You've mastered all five secrets!",
         "You just learned to dodge the obvious ones. No names, no birthdays, no one-two-three.",
         "[warmly] You're ready, Cyber Hero.",
         "[excited] Time to show that Raccoon who's boss!"
       ],
-      "file": "/audio/voice/4a2d7efa88bbb3b4.mp3"
+      "file": "/audio/voice/49b660cf14a53f4d.mp3"
     },
     {
-      "key": "a3c791f44b0dc49e",
+      "key": "32bf3d60f4fe8a97",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[excited] Final drill, Cyber Hero! Passwords will drift past. Quickly tap STRONG or WEAK for each one. [warmly] Trust everything you've learned — you're ready!",
+      "text": "[excited] Final drill, Cyber Hero! Passwords will drift past. Quickly tap STRONG or WEAK for each one. [warmly] Trust everything you've learned, you're ready!",
       "lines": [
         "[excited] Final drill, Cyber Hero! Passwords will drift past.",
         "Quickly tap STRONG or WEAK for each one.",
-        "[warmly] Trust everything you've learned — you're ready!"
+        "[warmly] Trust everything you've learned, you're ready!"
       ],
-      "file": "/audio/voice/a3c791f44b0dc49e.mp3"
+      "file": "/audio/voice/32bf3d60f4fe8a97.mp3"
     },
     {
-      "key": "99b863c9f2f09f40",
+      "key": "d7deef07485d9b75",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[excited] WOW — look at everything you learned this week! Your password is your secret key — make it nice and long, [excited] mix it ALL up, keep it super secret, and nothing the Raccoon could ever guess! [laughs] You did it, Cyber Hero! [excited] Now — time to claim your stickers!",
+      "text": "[excited] WOW! Look at everything you learned this week! Your password is your secret key, make it nice and long, [excited] mix it ALL up, keep it super secret, and nothing the Raccoon could ever guess! [laughs] You did it, Cyber Hero! [excited] Now, time to claim your stickers!",
       "lines": [
-        "[excited] WOW — look at everything you learned this week!",
-        "Your password is your secret key — make it nice and long,",
+        "[excited] WOW! Look at everything you learned this week!",
+        "Your password is your secret key, make it nice and long,",
         "[excited] mix it ALL up, keep it super secret, and nothing the Raccoon could ever guess!",
-        "[laughs] You did it, Cyber Hero! [excited] Now — time to claim your stickers!"
+        "[laughs] You did it, Cyber Hero! [excited] Now, time to claim your stickers!"
       ],
-      "file": "/audio/voice/99b863c9f2f09f40.mp3"
+      "file": "/audio/voice/d7deef07485d9b75.mp3"
+    },
+    {
+      "key": "24e69e302153f951",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[warmly] Welcome back, Cyber Hero. Lean in... this one's big. Some things about you are PRIVATE. That means... just for you. Your name. Your address. Your school. Your phone number. [whispers] They tell a stranger WHO you are, and WHERE you are. [nervous] And the sneaky Raccoon? He collects them like treasure. [excited] So today, we learn to guard them like heroes!",
+      "lines": [
+        "[warmly] Welcome back, Cyber Hero. Lean in... this one's big.",
+        "Some things about you are PRIVATE. That means... just for you.",
+        "Your name. Your address. Your school. Your phone number.",
+        "[whispers] They tell a stranger WHO you are, and WHERE you are.",
+        "[nervous] And the sneaky Raccoon? He collects them like treasure.",
+        "[excited] So today, we learn to guard them like heroes!"
+      ],
+      "file": "/audio/voice/24e69e302153f951.mp3"
+    },
+    {
+      "key": "2d6cf36e560a801a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[whispers] Look! We found the Raccoon's secret wish list! It's everything he WISHES he knew about you. [excited] Tap each card to see his sneaky plan... then slam it shut with a shield!",
+      "lines": [
+        "[whispers] Look! We found the Raccoon's secret wish list!",
+        "It's everything he WISHES he knew about you.",
+        "[excited] Tap each card to see his sneaky plan...",
+        "then slam it shut with a shield!"
+      ],
+      "file": "/audio/voice/2d6cf36e560a801a.mp3"
+    },
+    {
+      "key": "4402b17dcaf52595",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Go on - tap any golden card to peek at his plan!",
+      "lines": [
+        "Go on - tap any golden card to peek at his plan!"
+      ],
+      "file": "/audio/voice/4402b17dcaf52595.mp3"
+    },
+    {
+      "key": "c8b2f2d55f9836b1",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[warmly] Brilliant start, Cyber Hero! You found all five treasures the Raccoon hunts for. Your name, address, school, phone, and where you are... all PRIVATE. [excited] Next up, let's get sorting!",
+      "lines": [
+        "[warmly] Brilliant start, Cyber Hero!",
+        "You found all five treasures the Raccoon hunts for.",
+        "Your name, address, school, phone, and where you are... all PRIVATE.",
+        "[excited] Next up, let's get sorting!"
+      ],
+      "file": "/audio/voice/c8b2f2d55f9836b1.mp3"
+    },
+    {
+      "key": "b652172f185e8347",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[excited] Good news! You don't have to keep EVERYTHING secret. Love drawing? Say it! Favourite colour is blue? Shout it! [laughs] Favourites don't tell anyone who you are. [whispers] But if it points at YOU, your name, your school, your street... [warmly] ...that goes straight in the vault. Ready to sort?",
+      "lines": [
+        "[excited] Good news! You don't have to keep EVERYTHING secret.",
+        "Love drawing? Say it! Favourite colour is blue? Shout it!",
+        "[laughs] Favourites don't tell anyone who you are.",
+        "[whispers] But if it points at YOU, your name, your school, your street...",
+        "[warmly] ...that goes straight in the vault. Ready to sort?"
+      ],
+      "file": "/audio/voice/b652172f185e8347.mp3"
+    },
+    {
+      "key": "a2bb995b5dced7b5",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[excited] Welcome to the Treasure Table! Every card is a piece of info about you. [warmly] Grab each one and DRAG it where it belongs. Favourites go up to the share board. [whispers] Who-you-are and where-you-are... straight into the vault. [excited] No rush. You're the guard here!",
+      "lines": [
+        "[excited] Welcome to the Treasure Table!",
+        "Every card is a piece of info about you.",
+        "[warmly] Grab each one and DRAG it where it belongs.",
+        "Favourites go up to the share board.",
+        "[whispers] Who-you-are and where-you-are... straight into the vault.",
+        "[excited] No rush. You're the guard here!"
+      ],
+      "file": "/audio/voice/a2bb995b5dced7b5.mp3"
+    },
+    {
+      "key": "8715d7183d60425e",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "Grab that first treasure and drag it - board or vault?",
+      "lines": [
+        "Grab that first treasure and drag it - board or vault?"
+      ],
+      "file": "/audio/voice/8715d7183d60425e.mp3"
+    },
+    {
+      "key": "1182f16b5f6457f1",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] Look at you sort! The machine's never run better. Favourites? Share away. Who you are, where you are? Straight in the vault. [warmly] Now for my favourite trick of all...",
+      "lines": [
+        "[excited] Look at you sort! The machine's never run better.",
+        "Favourites? Share away.",
+        "Who you are, where you are? Straight in the vault.",
+        "[warmly] Now for my favourite trick of all..."
+      ],
+      "file": "/audio/voice/1182f16b5f6457f1.mp3"
+    },
+    {
+      "key": "75e5c9502cb946cb",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[warmly] Here's the question that beats almost every trick... [whispers] WHY are they asking? A drawing app needs a nickname. Fair enough! [nervous] But a kitten quiz that wants your HOME ADDRESS? [laughs] A quiz doesn't visit your house! Too nosy! [excited] Let's inspect some forms, detective.",
+      "lines": [
+        "[warmly] Here's the question that beats almost every trick...",
+        "[whispers] WHY are they asking?",
+        "A drawing app needs a nickname. Fair enough!",
+        "[nervous] But a kitten quiz that wants your HOME ADDRESS?",
+        "[laughs] A quiz doesn't visit your house! Too nosy!",
+        "[excited] Let's inspect some forms, detective."
+      ],
+      "file": "/audio/voice/75e5c9502cb946cb.mp3"
+    },
+    {
+      "key": "9058b10a1856b0d7",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] Detective time! Forms are coming in. Inspect all four clues on each one... who's asking, what they want, whether they NEED it, and what happens next. [warmly] Then make the call: fair ask... or too nosy?",
+      "lines": [
+        "[excited] Detective time! Forms are coming in.",
+        "Inspect all four clues on each one...",
+        "who's asking, what they want, whether they NEED it, and what happens next.",
+        "[warmly] Then make the call: fair ask... or too nosy?"
+      ],
+      "file": "/audio/voice/9058b10a1856b0d7.mp3"
+    },
+    {
+      "key": "1b523a7b23ed6fb0",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Tap every magnifying glass before you decide!",
+      "lines": [
+        "Tap every magnifying glass before you decide!"
+      ],
+      "file": "/audio/voice/1b523a7b23ed6fb0.mp3"
+    },
+    {
+      "key": "fa4667e069926c21",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[excited] Three down! You're a proper form detective now. One little question beats the trick every time... [whispers] why are they asking? [excited] Next: the coolest part of being a hero. Your SECRET IDENTITY!",
+      "lines": [
+        "[excited] Three down! You're a proper form detective now.",
+        "One little question beats the trick every time...",
+        "[whispers] why are they asking?",
+        "[excited] Next: the coolest part of being a hero. Your SECRET IDENTITY!"
+      ],
+      "file": "/audio/voice/fa4667e069926c21.mp3"
+    },
+    {
+      "key": "fa1b787610dde96e",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[whispers] Every hero has a secret identity... [excited] and online, your username IS your mask! But careful. Put your real name or birthday in it... [nervous] and the mask has a hole in it. [laughs] emma2017? The Raccoon reads that like a name tag! [excited] Come on - let's forge you a PROPER hero name.",
+      "lines": [
+        "[whispers] Every hero has a secret identity...",
+        "[excited] and online, your username IS your mask!",
+        "But careful. Put your real name or birthday in it...",
+        "[nervous] and the mask has a hole in it.",
+        "[laughs] emma2017? The Raccoon reads that like a name tag!",
+        "[excited] Come on - let's forge you a PROPER hero name."
+      ],
+      "file": "/audio/voice/fa1b787610dde96e.mp3"
+    },
+    {
+      "key": "47628fe398892350",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[excited] Welcome to the Secret Identity Machine! Pick a hero word, a sidekick, and a lucky number. [whispers] But watch out... some parts LEAK who you really are. [warmly] Fill the disguise meter and stamp your hero badge!",
+      "lines": [
+        "[excited] Welcome to the Secret Identity Machine!",
+        "Pick a hero word, a sidekick, and a lucky number.",
+        "[whispers] But watch out... some parts LEAK who you really are.",
+        "[warmly] Fill the disguise meter and stamp your hero badge!"
+      ],
+      "file": "/audio/voice/47628fe398892350.mp3"
+    },
+    {
+      "key": "8ce782cdacaa22b9",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "Tap a part for each reel - and dodge anything that sounds like the REAL you!",
+      "lines": [
+        "Tap a part for each reel - and dodge anything that sounds like the REAL you!"
+      ],
+      "file": "/audio/voice/8ce782cdacaa22b9.mp3"
+    },
+    {
+      "key": "dc19badef230fe77",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] Your secret identity is FORGED! No name, no birthday, no school. Just pure hero. [laughs] The Raccoon can stare at it all day and learn nothing. [warmly] One last power to collect. The golden rule.",
+      "lines": [
+        "[excited] Your secret identity is FORGED!",
+        "No name, no birthday, no school. Just pure hero.",
+        "[laughs] The Raccoon can stare at it all day and learn nothing.",
+        "[warmly] One last power to collect. The golden rule."
+      ],
+      "file": "/audio/voice/dc19badef230fe77.mp3"
+    },
+    {
+      "key": "2f5954b1f6a5845d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[warmly] Last one, and it's the golden rule. Sometimes you won't be sure. That's okay! [whispers] Heroes don't guess... [excited] they hit PAUSE and call for backup! A parent. A carer. A teacher. Your backup team. [warmly] If you're not sure - ask first. Every single time.",
+      "lines": [
+        "[warmly] Last one, and it's the golden rule.",
+        "Sometimes you won't be sure. That's okay!",
+        "[whispers] Heroes don't guess...",
+        "[excited] they hit PAUSE and call for backup!",
+        "A parent. A carer. A teacher. Your backup team.",
+        "[warmly] If you're not sure - ask first. Every single time."
+      ],
+      "file": "/audio/voice/2f5954b1f6a5845d.mp3"
+    },
+    {
+      "key": "d7c82fb74cc38086",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[warmly] Time to practise the golden rule. Tricky moments are about to pop up on screen. [whispers] Feel that 'hmm, not sure' feeling? That's your hero sense! [excited] When it tingles... hit PAUSE!",
+      "lines": [
+        "[warmly] Time to practise the golden rule.",
+        "Tricky moments are about to pop up on screen.",
+        "[whispers] Feel that 'hmm, not sure' feeling? That's your hero sense!",
+        "[excited] When it tingles... hit PAUSE!"
+      ],
+      "file": "/audio/voice/d7c82fb74cc38086.mp3"
+    },
+    {
+      "key": "b7f6c5b93fd3579e",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[excited] That's all FIVE powers, Cyber Hero! You know what's private, what to share, when to ask why... you've got a secret identity, AND the golden rule. [whispers] The Raccoon has no idea what's coming. [excited] Quick final drill - then we forge your profile!",
+      "lines": [
+        "[excited] That's all FIVE powers, Cyber Hero!",
+        "You know what's private, what to share, when to ask why...",
+        "you've got a secret identity, AND the golden rule.",
+        "[whispers] The Raccoon has no idea what's coming.",
+        "[excited] Quick final drill - then we forge your profile!"
+      ],
+      "file": "/audio/voice/b7f6c5b93fd3579e.mp3"
+    },
+    {
+      "key": "928e2d8dbea04ca9",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[excited] Final drill! Info cards are drifting past. Tap SAFE if it's fine to share... and RISKY if it belongs in the vault. [warmly] Trust your training - you've got this!",
+      "lines": [
+        "[excited] Final drill! Info cards are drifting past.",
+        "Tap SAFE if it's fine to share...",
+        "and RISKY if it belongs in the vault.",
+        "[warmly] Trust your training - you've got this!"
+      ],
+      "file": "/audio/voice/928e2d8dbea04ca9.mp3"
+    },
+    {
+      "key": "982cc8ad224246e0",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[excited] Look at EVERYTHING you mastered this week! You guard your private treasure, share the safe stuff, ask WHY, wear your hero mask... [laughs] and when you're not sure, you ask your backup team! [excited] The Raccoon's form came back BLANK. Time for stickers!",
+      "lines": [
+        "[excited] Look at EVERYTHING you mastered this week!",
+        "You guard your private treasure, share the safe stuff,",
+        "ask WHY, wear your hero mask...",
+        "[laughs] and when you're not sure, you ask your backup team!",
+        "[excited] The Raccoon's form came back BLANK. Time for stickers!"
+      ],
+      "file": "/audio/voice/982cc8ad224246e0.mp3"
     }
   ]
 }

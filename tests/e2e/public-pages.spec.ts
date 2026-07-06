@@ -59,8 +59,11 @@ test.describe("Public pages render", () => {
     await page.locator("#forgot-email").fill("test@example.com");
     await expect(page.getByRole("button", { name: /Send reset link/i })).toBeEnabled();
     await page.evaluate(() => document.querySelector("form")?.requestSubmit());
-    await expect(page.getByText(/Check your email/i)).toBeVisible();
-    await expect(page.getByText("test@example.com")).toBeVisible();
+    // 15s budget: software-WebGL auth backdrop + parallel workers can stall
+    // this tab's re-render well past the 5s default even though the API
+    // answers in ~40ms (see gate-button-regression.spec.ts for the trace).
+    await expect(page.getByText(/Check your email/i)).toBeVisible({ timeout: 15_000 });
+    await expect(page.getByText("test@example.com")).toBeVisible({ timeout: 15_000 });
   });
 
   test("course pages don't crash", async ({ page }) => {
@@ -88,9 +91,12 @@ test.describe("Public pages render", () => {
   }) => {
     await page.goto("/login");
     // force:true skips the stability wait the animated auth page otherwise
-    // flakes on; the link is visible and points to /forgot-password.
-    await page.locator('a[href="/forgot-password"]').first().click({ force: true });
-    await expect(page).toHaveURL(/\/forgot-password/);
+    // flakes on; the link is visible and points to /forgot-password. 15s
+    // budgets for the same reason as the forgot-password specs above: the
+    // WebGL auth backdrop renders in software on CI and parallel workers can
+    // stall this tab's first paint/navigation well past the 5s defaults.
+    await page.locator('a[href="/forgot-password"]').first().click({ force: true, timeout: 15_000 });
+    await expect(page).toHaveURL(/\/forgot-password/, { timeout: 15_000 });
   });
 
   test("auth-required routes redirect away when logged out", async ({

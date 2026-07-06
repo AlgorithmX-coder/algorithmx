@@ -33,6 +33,181 @@ export interface WeekContent {
   bossPhases?: BossPhaseDef[];
 
   /**
+   * Bespoke BUILD-FINAL boss (Week 2's Profile Forge). When present,
+   * the lesson mounts ProfileForgeBoss instead of the quiz-combat
+   * BossBattle: five phases, each a DIFFERENT micro-game, reported
+   * through the same BossEndStats/phaseResults contract so the parent
+   * dashboard and analytics are unchanged. Exactly five phases, one
+   * per concept, in order: whack, hand, grill, assemble, rapid.
+   */
+  bossForge?: {
+    /** WHACK — leaky entries fly toward the form; swat the private ones,
+     *  let the safe ones dock. */
+    whack: {
+      id: string;
+      label: string;
+      intro: string;
+      /** Line stamped on the profile card when this phase is beaten. */
+      stamp: string;
+      entries: { id: string; text: string; icon: string; isPrivate: boolean; explanation: string }[];
+    };
+    /** HAND — the Raccoon fans out cards; pick the safe ones for the
+     *  About Me section. */
+    hand: {
+      id: string;
+      label: string;
+      intro: string;
+      /** Line stamped on the profile card when this phase is beaten. */
+      stamp: string;
+      /** How many safe picks complete the phase. */
+      picks: number;
+      cards: { id: string; text: string; icon: string; isSafe: boolean; explanation: string }[];
+    };
+    /** GRILL — a disguised popup demands info; press WHY? until the
+     *  excuses collapse. Breather phase: no fail state. */
+    grill: {
+      id: string;
+      label: string;
+      intro: string;
+      /** Line stamped on the profile card when this phase is beaten. */
+      stamp: string;
+      demand: string;
+      /** Escalating (crumbling) excuses, one per WHY press. */
+      excuses: string[];
+      collapse: string;
+    };
+    /** ASSEMBLE — rebuild the hero name from safe tiles; leak tiles
+     *  pulse temptingly and teach when tapped. */
+    assemble: {
+      id: string;
+      label: string;
+      intro: string;
+      /** Line stamped on the profile card when this phase is beaten. */
+      stamp: string;
+      /** Tiles in slot order; exactly the non-trap tiles spell the name. */
+      tiles: { id: string; text: string; trap?: string }[];
+      /** The finished hero name, for the completion stamp. */
+      result: string;
+    };
+    /** RAPID — mask off: quick-fire demands; NOPE the private ones,
+     *  SHARE the genuinely safe asks. */
+    rapid: {
+      id: string;
+      label: string;
+      intro: string;
+      /** Line stamped on the profile card when this phase is beaten. */
+      stamp: string;
+      /** Seconds per demand before a gentle timeout-teach. */
+      secs: number;
+      demands: { id: string; text: string; isPrivate: boolean; explanation: string }[];
+    };
+  };
+
+  /**
+   * Bespoke COMBAT boss (Week 1's Cracking Machine). When present, the
+   * lesson mounts VaultBoss instead of the quiz-combat BossBattle.
+   *
+   * KID-FIRST CONTRACT (ages 6-9): the whole fight uses exactly two
+   * verbs — TAP a big stationary thing, and press-and-HOLD one button.
+   * Nothing is timed, nothing moves that must be caught, and there are
+   * no trap options. One password is built across all five phases
+   * (build words → mix → keep secret → not obvious → forge to 400
+   * years). Each phase opens with ONE spoken coach line (`coach`, read
+   * by Will — no reading required) while the target pulses.
+   *
+   * Reported through the same BossEndStats/phaseResults contract with
+   * the SAME phase ids as the shipped quiz boss, so family analytics
+   * stay continuous. No lose state.
+   */
+  bossVault?: {
+    /** LENGTH — tap the big word blocks; each SLAMS onto the vault door.
+     *  All blocks are good: a guaranteed confidence win to open. */
+    wall: {
+      id: string;
+      label: string;
+      intro: string;
+      crackTime: string;
+      /** The word blocks, in display order. Tapping all of them wins. */
+      blocks: string[];
+      /** One spoken instruction (audio: /audio/coach/vault-go-wall.mp3). */
+      coach: string;
+    };
+    /** MIX — tap each mixer once; the password transforms and his
+     *  decoder screen cracks tap by tap until it explodes. */
+    scrambler: {
+      id: string;
+      label: string;
+      intro: string;
+      crackTime: string;
+      /** The plain password his decoder locks onto (phase 1's result). */
+      baseWord: string;
+      mixers: { id: string; label: string; icon: string; kind: "caps" | "number" | "symbol" }[];
+      coach: string;
+    };
+    /** SECRET — press-and-hold to cover the keypad when spy eyes open.
+     *  Slow telegraph, generous forgiveness. */
+    cover: {
+      id: string;
+      label: string;
+      intro: string;
+      crackTime: string;
+      /** Snoop events to survive, and how long each eye stays open. */
+      snoops: number;
+      openSecs: number;
+      /** Teach copy when a peek lands uncovered. */
+      explanation: string;
+      coach: string;
+    };
+    /** OBVIOUS — tap the junk passwords to feed them to the Guess-o-Tron
+     *  until it overloads; YOUR golden password isn't on his list. */
+    feed: {
+      id: string;
+      label: string;
+      intro: string;
+      crackTime: string;
+      /** Junk passwords; `note` is the fun fact shown as each is eaten. */
+      junk: { id: string; text: string; note: string }[];
+      /** The child's golden un-guessable password (not feedable). */
+      yours: string;
+      coach: string;
+    };
+    /** FINAL — press-and-HOLD the golden forge button to charge the
+     *  password to 400 years, then refuse the sweet talk and watch the
+     *  machine detonate against it. */
+    final: {
+      id: string;
+      label: string;
+      intro: string;
+      crackTime: string;
+      /** The finished 400-year password. */
+      forged: string;
+      /** Total seconds of held charge needed (release just pauses). */
+      chargeSecs: number;
+      /** Counter text at 1/3, 2/3 and full charge. */
+      milestones: [string, string, string];
+      /** His last-ditch ask, the refusal label, and the teach if told. */
+      sweetTalk: string;
+      refuse: string;
+      tellExplanation: string;
+      coach: string;
+    };
+  };
+
+  /**
+   * Week-themed boss attack theatre (name/icon/tag per telegraphed
+   * attack, cycled per question). Omitted = BossBattle's Week 1 set.
+   * Keeps the fight's vocabulary inside the week's curriculum lane.
+   */
+  bossAttacks?: {
+    name: string;
+    icon: string;
+    color: string;
+    glow: string;
+    tag: string;
+    emblemColor: number;
+  }[];
+
+  /**
    * Per-screen character reactions (by screen index). Either character can be
    * null for that screen - the other will use their idle pose.
    */
@@ -60,6 +235,17 @@ export type BossPhaseDef = {
     explanation?: string;
     key?: string;
   }[];
+  /**
+   * Profile Forge chrome (Week 2 BUILD-FINAL). Mirrors the forge field
+   * on BossBattle's BossPhase: the profile card stamps `entry` when the
+   * phase is beaten, `probe`/`foiled` are the Raccoon's lines.
+   */
+  forge?: {
+    fieldLabel: string;
+    entry: string;
+    probe: string;
+    foiled: string;
+  };
 };
 
 export interface BossQuestion {
@@ -88,6 +274,8 @@ export type ScreenDef = (
       title?: string;
       badge?: string;
       caption?: string;
+      /** Handwritten note on the polaroid frame (defaults to the Week 1 note). */
+      photoCaption?: string;
       ctaLabel?: string;
     }
   | {
@@ -110,6 +298,24 @@ export type ScreenDef = (
   | {
       type: "cyberScanner";
       items: { text: string; isStrong: boolean; explanation: string }[];
+      /**
+       * Re-theme the scanner's copy (verdict buttons, how-to rows, tips,
+       * tiered hints). Omitted = Week 1's STRONG/WEAK password drill.
+       * Mirrors CyberScannerLabels in CyberScanner.tsx.
+       */
+      labels?: {
+        positive: string;
+        negative: string;
+        positiveHint: string;
+        negativeHint: string;
+        tipWhenPositive: string;
+        tipWhenNegative: string;
+        hint1: string;
+        hint2: string;
+        hint2Example: string;
+        hint3: string;
+        hint3Example: string;
+      };
     }
   | {
       type: "protectTheData";
@@ -434,7 +640,144 @@ export type ScreenDef = (
       scenarios: {
         setup: string;
         choices: { text: string; isSafe: boolean; consequence: string }[];
+        /** `device` presentation: what app/site this moment happens in. */
+        frame?: { appName: string; icon: string };
       }[];
+      /**
+       * Presentation variant. `device` stages each scenario as an in-world
+       * device screen (app chrome + a big PAUSE action) instead of the
+       * classic text card — Week 2's "The Pause Button" skin. Omitting it
+       * keeps the classic Week 1 look.
+       */
+      presentation?: "device";
+    }
+  | {
+      /**
+       * REVEAL engine (Week 2+). A board of face-down cards; tapping one
+       * flips it and plays a short cause→effect vignette (2-4 beats), then
+       * closes on a counter-line ("…so it stays PRIVATE") and stamps the
+       * card. All cards revealed → a finale beat fires onComplete. Fully
+       * data-driven: the same component powers who-could-misuse (W2),
+       * unmask-profile (W3), loot-box odds (W7), screenshot-permanence
+       * (W8) and the other ~11 REVEAL beats in the build sheet.
+       */
+      type: "reveal";
+      title: string;
+      subtitle?: string;
+      items: {
+        /** Stable id used in QuestionResponse keys (e.g. "address"). */
+        id: string;
+        /** Card face label ("Home Address"). */
+        label: string;
+        /** Emoji rendered via PixIcon on the card face. */
+        icon: string;
+        /** The vignette beats played after the flip, in order. */
+        steps: { icon?: string; text: string }[];
+        /** Closing counter-line for this card. */
+        counter: string;
+      }[];
+      /** Line spoken/shown once every card has been revealed. */
+      finale?: string;
+    }
+  | {
+      /**
+       * Vault Drop (Week 2's Beat 2). The DRAG game: info treasures are
+       * scattered on the table and the child physically drags each one
+       * either into the vault (private — the door swallows it and
+       * clunks shut) or onto the share board (safe — it gets pinned).
+       * No timer, no belt: deliberately the calm, tactile opposite of
+       * Week 1's beam-scanner reflex drill. Wrong drops bounce back and
+       * teach via WrongAnswerPanel.
+       */
+      type: "vaultDrop";
+      items: {
+        id: string;
+        text: string;
+        /** Emoji rendered via PixIcon on the treasure card. */
+        icon: string;
+        /** True = belongs in the vault; false = safe for the share board. */
+        isPrivate: boolean;
+        /** Shown in the WrongAnswerPanel on a wrong drop. */
+        explanation: string;
+      }[];
+      hints?: { tier1: string; tier2: string };
+    }
+  | {
+      /**
+       * Conveyor sorter (Week 2+). Items ride a belt toward a scanner and
+       * the child sends each into one of TWO chutes before it arrives.
+       * Wrong sorts pause the belt and teach (WrongAnswerPanel). Distinct
+       * from weakSorter (static four-way diagnosis) and cyberScanner
+       * (drifting strong/weak taps): this is a physical machine with
+       * binary categories as data.
+       */
+      type: "conveyorSort";
+      /** Exactly two categories. `tone` picks the chute styling. */
+      categories: { id: string; label: string; icon: string; tone: "safe" | "lock" }[];
+      items: {
+        id: string;
+        text: string;
+        /** Optional emoji badge on the card. */
+        icon?: string;
+        categoryId: string;
+        /** Shown in the WrongAnswerPanel on a mis-sort. */
+        explanation: string;
+      }[];
+      hints?: { tier1: string; tier2: string };
+    }
+  | {
+      /**
+       * Request Inspector (Week 2). The deliberate "why are they asking?"
+       * drill: a cheerful app sign-up form arrives and the child must tap
+       * every inspect zone (who's asking / what do they want / do they
+       * NEED it / what happens if I type it) before the decision buttons
+       * ("Fill it in" / "Too nosy!") unlock. Generalises the
+       * phishInspector pattern with data-driven zones — the lesson here
+       * is need-vs-want on legit-looking apps, NOT spotting fakes (W4).
+       */
+      type: "requestInspector";
+      requests: {
+        id: string;
+        appName: string;
+        /** Emoji rendered via PixIcon as the app logo. */
+        appIcon: string;
+        /** The app's cheerful pitch line. */
+        tagline: string;
+        /** Field labels the form asks for. */
+        asksFor: string[];
+        /** True when the request over-asks and should be refused. */
+        isNosy: boolean;
+        zones: {
+          id: string;
+          label: string;
+          note: string;
+          isRedFlag: boolean;
+        }[];
+        /** Explanation shown after the child's verdict. */
+        verdictNote: string;
+      }[];
+      hints?: { tier1: string; tier2: string };
+    }
+  | {
+      /**
+       * Secret Identity Machine (Week 2). Three part-reels (hero word /
+       * creature / lucky number) forge a username. TRAP parts carrying
+       * real-life details (a first name, an age, a birth year, a school)
+       * are mixed in: picking one trips a LEAK! alarm + teach panel and
+       * drops the disguise meter; safe picks raise it. Meter full → the
+       * avatar's ID badge is stamped. Judges identity-leakage, not
+       * password strength — deliberately unlike threeRandomWords.
+       */
+      type: "usernameBuilder";
+      slots: { id: string; label: string; icon: string }[];
+      parts: {
+        id: string;
+        text: string;
+        slotId: string;
+        /** If set, this part LEAKS real info; value = why (teach copy). */
+        trap?: string;
+      }[];
+      hints?: { tier1: string; tier2: string };
     }
   | {
       type: "memoryMatch";

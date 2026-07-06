@@ -119,6 +119,11 @@ const BGM_REGISTRY: Record<string, SoundEntry> = {
   // NOT capped at BGM_MAX_VOLUME - the hub has no narration to duck
   // under, so it plays warm and audible (still below the 0.45 SFX floor).
   bgmHub: { path: "/audio/sfx/bgm-hq.mp3", volume: 0.18 },
+  // Vault Boss bed (industrial loop, ElevenLabs Music). Sits between the
+  // faint lesson beds and the hub: the boss layers one-shot coach/villain
+  // voice clips (0.45-0.55) plus SFX on top, so the bed must stay clearly
+  // under both while still being felt as a battle pulse.
+  bgmBoss: { path: "/audio/sfx/bgm-boss.mp3", volume: 0.09 },
 };
 
 const SFX_KEYS = Object.keys(SFX_REGISTRY);
@@ -478,14 +483,15 @@ export function playSound(key: string): void {
  * BGM is globally OFF except for the tracks in this allowlist - an
  * allowlist rather than a boolean so a single surface can have music
  * without reviving the rest. The lesson stays silent (narration owns
- * it) and battle/victory stay off; only the Cyber HQ hub bed plays.
+ * it) and battle/victory stay off; only the Cyber HQ hub bed and the
+ * Vault Boss battle bed play.
  *
  * Any track NOT listed is a no-op that also stops whatever is currently
  * playing (covers an SSR-hydrated track from a prior visit). playBGM is
  * hardened (per-track volume cap + NaN-safe), so re-enabling another
  * surface later is just adding its key here.
  */
-const BGM_ALLOWLIST = new Set<string>(["bgmHub"]);
+const BGM_ALLOWLIST = new Set<string>(["bgmHub", "bgmBoss"]);
 
 export function playBGM(trackOrKey: string): void {
   if (!BGM_ALLOWLIST.has(trackOrKey)) {

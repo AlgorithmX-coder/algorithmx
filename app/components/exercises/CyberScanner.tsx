@@ -67,7 +67,52 @@ export interface CyberScannerProps {
    * The parent useLessonProgress hook dedupes by max-per-screen.
    */
   onHintReached?: (tier: 1 | 2 | 3) => void;
+  /**
+   * Re-theme labels. The scanner mechanic is week-agnostic (tap the
+   * positive/negative verdict before the card crosses the beam); only the
+   * words change. Defaults preserve Week 1's STRONG/WEAK password drill;
+   * Week 2 passes SAFE/RISKY for the share-or-keep-private recap.
+   */
+  labels?: CyberScannerLabels;
 }
+
+export interface CyberScannerLabels {
+  /** Verdict button for isStrong: true (e.g. "STRONG" / "SAFE"). */
+  positive: string;
+  /** Verdict button for isStrong: false (e.g. "WEAK" / "RISKY"). */
+  negative: string;
+  /** Instruction glyph rows on the intro card. */
+  positiveHint: string;
+  negativeHint: string;
+  /** Wrong-answer tips per direction. */
+  tipWhenPositive: string;
+  tipWhenNegative: string;
+  /** Tiered hint copy (1 wrong / 2 wrongs / 3+ wrongs). */
+  hint1: string;
+  hint2: string;
+  hint2Example: string;
+  hint3: string;
+  hint3Example: string;
+}
+
+const DEFAULT_LABELS: CyberScannerLabels = {
+  positive: "STRONG",
+  negative: "WEAK",
+  positiveHint: "Tap STRONG for safe passwords",
+  negativeHint: "Tap WEAK for guessable ones",
+  tipWhenPositive:
+    "Strong passwords mix UPPER, lower, numbers and symbols, and have 8+ characters.",
+  tipWhenNegative:
+    "Weak passwords are short, common, or things people could guess about you.",
+  hint1:
+    "Look at the password's LENGTH first - 8 or more characters is the safe minimum. Then check if it uses both LETTERS and numbers/symbols.",
+  hint2:
+    "STRONG = long AND mixed AND not a word you'd find in a book. WEAK = short, common, or about you.",
+  hint2Example: "STRONG: Tr0pic4l$un!   WEAK: football",
+  hint3:
+    "Quick rule card: 8+ characters · mix UPPER + lower + numbers + symbols · no real words · no your-name.",
+  hint3Example: "Tr0pic4l$un!  ✅    password123  ❌",
+};
 
 const DEFAULT_PASSWORDS: CyberScannerPassword[] = [
   { text: "password123", isStrong: false, explanation: "Too common and predictable" },
@@ -197,8 +242,10 @@ export default function CyberScanner({
   onCorrect,
   onWrong,
   onHintReached,
+  labels,
 }: CyberScannerProps) {
   const list = useMemo(() => passwords ?? DEFAULT_PASSWORDS, [passwords]);
+  const L = useMemo(() => ({ ...DEFAULT_LABELS, ...labels }), [labels]);
 
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const rafRef = useRef<number | null>(null);
@@ -341,11 +388,9 @@ export default function CyberScanner({
       // cleared by the gotIt handler.
       setWrongCount((n) => n + 1);
       setFeedback({
-        title: c.isStrong ? "That one was STRONG" : "That one was WEAK",
+        title: c.isStrong ? `That one was ${L.positive}` : `That one was ${L.negative}`,
         explanation: c.explanation,
-        tip: c.isStrong
-          ? "Strong passwords mix UPPER, lower, numbers and symbols, and have 8+ characters."
-          : "Weak passwords are short, common, or things people could guess about you.",
+        tip: c.isStrong ? L.tipWhenPositive : L.tipWhenNegative,
       });
       return;
     }
@@ -496,8 +541,8 @@ export default function CyberScanner({
           setWrongCount((n) => n + 1);
           setFeedback({
             title: "That one ran out of time",
-            explanation: `It was ${c.isStrong ? "STRONG" : "WEAK"} - ${c.explanation}`,
-            tip: "It's OK to take your time. Tap STRONG or WEAK before the card crosses the beam.",
+            explanation: `It was ${c.isStrong ? L.positive : L.negative} - ${c.explanation}`,
+            tip: `It's OK to take your time. Tap ${L.positive} or ${L.negative} before the card crosses the beam.`,
           });
         }
       }
@@ -794,8 +839,8 @@ export default function CyberScanner({
       <ExerciseHowTo
         title="Cyber Scanner"
         steps={[
-          { glyph: "🛡", text: "Tap STRONG for safe passwords" },
-          { glyph: "🚫", text: "Tap WEAK for guessable ones" },
+          { glyph: "🛡", text: L.positiveHint },
+          { glyph: "🚫", text: L.negativeHint },
           { glyph: "⚡", text: "Decide before they cross the beam" },
         ]}
         accent="#3a7bff"
@@ -813,27 +858,13 @@ export default function CyberScanner({
       {/* Tiered hint - reserves layout space so the buttons don't jump */}
       <div style={{ minHeight: 0, padding: wrongCount > 0 ? "10px 22px 0" : 0 }}>
         {wrongCount === 1 && (
-          <HintBubble
-            tier={1}
-            speaker="adam"
-            text="Look at the password's LENGTH first - 8 or more characters is the safe minimum. Then check if it uses both LETTERS and numbers/symbols."
-          />
+          <HintBubble tier={1} speaker="adam" text={L.hint1} />
         )}
         {wrongCount === 2 && (
-          <HintBubble
-            tier={2}
-            speaker="adam"
-            text="STRONG = long AND mixed AND not a word you'd find in a book. WEAK = short, common, or about you."
-            example="STRONG: Tr0pic4l$un!   WEAK: football"
-          />
+          <HintBubble tier={2} speaker="adam" text={L.hint2} example={L.hint2Example} />
         )}
         {wrongCount >= 3 && (
-          <HintBubble
-            tier={3}
-            speaker="layla"
-            text="Quick rule card: 8+ characters · mix UPPER + lower + numbers + symbols · no real words · no your-name."
-            example="Tr0pic4l$un!  ✅    password123  ❌"
-          />
+          <HintBubble tier={3} speaker="layla" text={L.hint3} example={L.hint3Example} />
         )}
       </div>
 
@@ -852,7 +883,7 @@ export default function CyberScanner({
       >
         <ScannerButton
           icon="🛡"
-          label="STRONG"
+          label={L.positive}
           tint="#4a9a6a"
           accent="#7eff97"
           disabled={s.finished}
@@ -860,7 +891,7 @@ export default function CyberScanner({
         />
         <ScannerButton
           icon="🚫"
-          label="WEAK"
+          label={L.negative}
           tint="#ff7a59"
           accent="#ff5fb3"
           disabled={s.finished}

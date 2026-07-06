@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-05-30T10:39:59.577Z",
+  "generatedAt": "2026-07-06T13:43:13.017Z",
   "endpoint": "https://api.elevenlabs.io/v1/sound-generation",
   "outputFormat": "mp3_44100_128",
   "entries": [
@@ -66,6 +66,54 @@
       "prompt": "Triumphant mission-complete fanfare: bright golden brass chord resolving into a warm major cadence, shimmering bell tail. Celebratory, family-friendly, ~2.5 seconds.",
       "durationSeconds": 2.5,
       "description": "Plays on the final completion screen (screen 22) when the badge ceremony lands."
+    },
+    {
+      "id": "vault-word-slam",
+      "key": "8cf8508070e517a5",
+      "file": "/audio/sfx-signature/vault-word-slam.mp3",
+      "prompt": "Giant cartoon word block stamping onto a metal vault door: a short whoosh into one big satisfying rubber-stamp THUNK with a bright confirmation chime tail. Chunky, joyful, kid-friendly, under a second.",
+      "durationSeconds": 1,
+      "description": "VaultBoss BUILD phase: a word block slams onto the vault door."
+    },
+    {
+      "id": "vault-mixer-pop",
+      "key": "05627a41921b0e04",
+      "file": "/audio/sfx-signature/vault-mixer-pop.mp3",
+      "prompt": "Fizzy magical transformation pop: a bubbly champagne-cork pop into a quick sparkling shimmer, like letters fizzing and rearranging. Bright, playful, kid-friendly, under a second.",
+      "durationSeconds": 0.9,
+      "description": "VaultBoss MIX phase: a mixer button transforms the password."
+    },
+    {
+      "id": "vault-forge-charge",
+      "key": "e19369a8244eef71",
+      "file": "/audio/sfx-signature/vault-forge-charge.mp3",
+      "prompt": "Rising power-charge hum: a warm sci-fi charge-up swelling upward with sparkly overtones and a gentle heartbeat pulse, building excitement without tension. Kid-friendly, about two and a half seconds.",
+      "durationSeconds": 2.5,
+      "description": "VaultBoss FINAL phase: the forge button charges the 400-year password."
+    },
+    {
+      "id": "vault-chomp",
+      "key": "b878e16e87ad7bcd",
+      "file": "/audio/sfx-signature/vault-chomp.mp3",
+      "prompt": "Comedic robot chomp: quick mechanical jaw snap with a springy metallic boing and a tiny gulp. Silly cartoon robot eating something, kid-friendly, well under a second.",
+      "durationSeconds": 0.8,
+      "description": "VaultBoss REEL phase: the Guess-o-Tron devours an obvious password."
+    },
+    {
+      "id": "vault-overload",
+      "key": "9d97cd1215b0ed78",
+      "file": "/audio/sfx-signature/vault-overload.mp3",
+      "prompt": "Cartoon machine overload alarm: muffled industrial klaxon with rising steam-pressure whistle and rattling bolts, comedic not frightening, about a second and a half.",
+      "durationSeconds": 1.5,
+      "description": "VaultBoss FINAL phase: the CRACK-O-MATIC redlines and starts to overload."
+    },
+    {
+      "id": "vault-detonate",
+      "key": "8664088d65658924",
+      "file": "/audio/sfx-signature/vault-detonate.mp3",
+      "prompt": "Cartoon machine falling apart in a comedic explosion: springs boinging away, bolts pinging off metal, one soft harmless boom with a whistling spring tail. Funny, family-friendly, about two seconds.",
+      "durationSeconds": 2.2,
+      "description": "VaultBoss victory: the CRACK-O-MATIC detonates against the 400-year password."
     }
   ]
 }

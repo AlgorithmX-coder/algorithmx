@@ -63,11 +63,15 @@ test.describe("Gate-button regression guards", () => {
       page.getByRole("button", { name: /Send reset link/i })
     ).toBeEnabled();
     await page.evaluate(() => document.querySelector("form")?.requestSubmit());
-    await expect(page.getByText(/Check your email/i)).toBeVisible();
+    // 15s budget: the auth pages run a WebGL reactor scene that CI renders in
+    // SOFTWARE (llvmpipe). Under parallel-worker CPU contention the tab's main
+    // thread crawls — trace showed the API answering in 40ms but the success
+    // re-render landing after the default 5s expect window.
+    await expect(page.getByText(/Check your email/i)).toBeVisible({ timeout: 15_000 });
     // The page always offers a way home ("Remembered it? Log in"), shown in
     // both the form and the success state. .first() avoids strict-mode if a
     // second login link exists.
     const back = page.locator('a[href="/login"]').first();
-    await expect(back).toBeVisible();
+    await expect(back).toBeVisible({ timeout: 15_000 });
   });
 });

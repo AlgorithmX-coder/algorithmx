@@ -92,4 +92,54 @@ export const SIGNATURE_SFX: readonly SignatureSfx[] = [
     promptInfluence: 0.45,
     description: "Plays on the final completion screen (screen 22) when the badge ceremony lands.",
   },
+
+  /* ── Week 1 Vault Boss (The Cracking Machine) ───────────────────── */
+  {
+    id: "vault-word-slam",
+    prompt:
+      "Giant cartoon word block stamping onto a metal vault door: a short whoosh into one big satisfying rubber-stamp THUNK with a bright confirmation chime tail. Chunky, joyful, kid-friendly, under a second.",
+    durationSeconds: 1.0,
+    promptInfluence: 0.5,
+    description: "VaultBoss BUILD phase: a word block slams onto the vault door.",
+  },
+  {
+    id: "vault-mixer-pop",
+    prompt:
+      "Fizzy magical transformation pop: a bubbly champagne-cork pop into a quick sparkling shimmer, like letters fizzing and rearranging. Bright, playful, kid-friendly, under a second.",
+    durationSeconds: 0.9,
+    promptInfluence: 0.5,
+    description: "VaultBoss MIX phase: a mixer button transforms the password.",
+  },
+  {
+    id: "vault-forge-charge",
+    prompt:
+      "Rising power-charge hum: a warm sci-fi charge-up swelling upward with sparkly overtones and a gentle heartbeat pulse, building excitement without tension. Kid-friendly, about two and a half seconds.",
+    durationSeconds: 2.5,
+    promptInfluence: 0.45,
+    description: "VaultBoss FINAL phase: the forge button charges the 400-year password.",
+  },
+  {
+    id: "vault-chomp",
+    prompt:
+      "Comedic robot chomp: quick mechanical jaw snap with a springy metallic boing and a tiny gulp. Silly cartoon robot eating something, kid-friendly, well under a second.",
+    durationSeconds: 0.8,
+    promptInfluence: 0.5,
+    description: "VaultBoss REEL phase: the Guess-o-Tron devours an obvious password.",
+  },
+  {
+    id: "vault-overload",
+    prompt:
+      "Cartoon machine overload alarm: muffled industrial klaxon with rising steam-pressure whistle and rattling bolts, comedic not frightening, about a second and a half.",
+    durationSeconds: 1.5,
+    promptInfluence: 0.45,
+    description: "VaultBoss FINAL phase: the CRACK-O-MATIC redlines and starts to overload.",
+  },
+  {
+    id: "vault-detonate",
+    prompt:
+      "Cartoon machine falling apart in a comedic explosion: springs boinging away, bolts pinging off metal, one soft harmless boom with a whistling spring tail. Funny, family-friendly, about two seconds.",
+    durationSeconds: 2.2,
+    promptInfluence: 0.45,
+    description: "VaultBoss victory: the CRACK-O-MATIC detonates against the 400-year password.",
+  },
 ];

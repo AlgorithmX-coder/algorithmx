@@ -60,6 +60,12 @@ import CyberMaze from "@/app/components/exercises/CyberMaze";
 import PhishInspector from "@/app/components/exercises/PhishInspector";
 import PasswordVault from "@/app/components/exercises/PasswordVault";
 import QuickCheck from "@/app/components/exercises/QuickCheck";
+import RevealBoard from "@/app/components/exercises/RevealBoard";
+import ConveyorSort from "@/app/components/exercises/ConveyorSort";
+import RequestInspector from "@/app/components/exercises/RequestInspector";
+import UsernameBuilder from "@/app/components/exercises/UsernameBuilder";
+import PauseDecide from "@/app/components/exercises/PauseDecide";
+import VaultDrop from "@/app/components/exercises/VaultDrop";
 import MissionDebrief from "@/app/components/lesson/MissionDebrief";
 import ConceptRecap from "@/app/components/lesson/ConceptRecap";
 import StickerUnlock from "@/app/components/lesson/StickerUnlock";
@@ -90,6 +96,14 @@ const LessonArena3D = dynamic(
 );
 const BossBattle = dynamic(
   () => import("@/app/components/game/BossBattle"),
+  { ssr: false }
+);
+const ProfileForgeBoss = dynamic(
+  () => import("@/app/components/game/ProfileForgeBoss"),
+  { ssr: false }
+);
+const VaultBoss = dynamic(
+  () => import("@/app/components/game/VaultBoss"),
   { ssr: false }
 );
 const WelcomeScene = dynamic(
@@ -132,6 +146,11 @@ const EXERCISE_SCREEN_TYPES = new Set<ScreenDef["type"]>([
   "missionDebrief",
   "stickerUnlock",
   "passwordVault",
+  "reveal",
+  "conveyorSort",
+  "requestInspector",
+  "usernameBuilder",
+  "vaultDrop",
 ]);
 
 /**
@@ -438,6 +457,11 @@ function VideoScreen({
   const videoRef = useRef<HTMLVideoElement>(null);
   const [started, setStarted] = useState(false);
   const [failed, setFailed] = useState(false);
+  // Ease the tail of the clip to black — picture AND soundtrack — so the
+  // bookend videos don't cut off sharply into the next screen. Applies to
+  // whatever mp4 is set, including a hand-produced final cut.
+  const FADE_OUT_SECS = 1.3;
+  const [fadingOut, setFadingOut] = useState(false);
 
   const play = () => {
     const v = videoRef.current;
@@ -450,6 +474,24 @@ function VideoScreen({
     // play() rejects if the browser still blocks it; native controls
     // (now visible) give the learner a manual fallback.
     void v.play().catch(() => {});
+  };
+
+  // Drive the fade from playback position: within the last FADE_OUT_SECS,
+  // ramp the volume down and flip the black overlay on (CSS transition times
+  // it to reach full black exactly as the clip ends). Scrubbing back past the
+  // threshold restores volume + clears the fade.
+  const handleTimeUpdate = (e: React.SyntheticEvent<HTMLVideoElement>) => {
+    const v = e.currentTarget;
+    const dur = v.duration;
+    if (!Number.isFinite(dur) || dur <= 0) return;
+    const remaining = dur - v.currentTime;
+    if (remaining <= FADE_OUT_SECS) {
+      if (!fadingOut) setFadingOut(true);
+      v.volume = Math.max(0, Math.min(0.6, (0.6 * remaining) / FADE_OUT_SECS));
+    } else if (fadingOut) {
+      setFadingOut(false);
+      v.volume = 0.6;
+    }
   };
 
   return (
@@ -479,6 +521,7 @@ function VideoScreen({
                   e.currentTarget.volume = 0.6;
                 }}
                 onError={() => setFailed(true)}
+                onTimeUpdate={handleTimeUpdate}
                 onEnded={onSkip}
                 style={{ width: "100%", height: "100%", objectFit: "contain", display: "block" }}
               />
@@ -498,6 +541,22 @@ function VideoScreen({
               >
                 Video couldn&apos;t load — tap &ldquo;Skip video&rdquo; to continue.
               </div>
+            )}
+
+            {/* Fade-to-black overlay - eased in over the clip's final moment so
+                the ending is a soft dip to black, not a hard cut. */}
+            {started && !failed && (
+              <div
+                aria-hidden="true"
+                style={{
+                  position: "absolute",
+                  inset: 0,
+                  background: "#000",
+                  pointerEvents: "none",
+                  opacity: fadingOut ? 1 : 0,
+                  transition: `opacity ${FADE_OUT_SECS}s linear`,
+                }}
+              />
             )}
 
             {!started && !failed && (
@@ -1079,6 +1138,7 @@ function DynamicLessonInner({ qaEnabled }: { qaEnabled: boolean }) {
               title={def.title}
               badge={def.badge}
               caption={def.caption}
+              photoCaption={def.photoCaption}
               ctaLabel={def.ctaLabel}
               onContinue={() => navigate(screen + 1)}
             />
@@ -1130,6 +1190,7 @@ function DynamicLessonInner({ qaEnabled }: { qaEnabled: boolean }) {
           <FullScene bg="linear-gradient(180deg, #050a1a 0%, #1a1033 100%)">
             <CyberScanner
               passwords={def.items}
+              labels={def.labels}
               introNarration={def.narration}
               onComplete={() => navigate(screen + 1)}
               onCorrect={() => awardXp(25)}
@@ -1337,7 +1398,165 @@ function DynamicLessonInner({ qaEnabled }: { qaEnabled: boolean }) {
           </FullScene>
         );
 
+      case "reveal":
+        return (
+          <FullScene bg="linear-gradient(180deg, #120b06 0%, #1a1033 100%)">
+            <RevealBoard
+              title={def.title}
+              subtitle={def.subtitle}
+              items={def.items}
+              finale={def.finale}
+              introNarration={def.narration}
+              coachLines={def.coachLines}
+              onComplete={() => navigate(screen + 1)}
+              onCorrect={() => awardXp(25)}
+              onAnswered={(o) => {
+                // questionKey is "reveal-{itemId}" — records which cards the
+                // child opened; a REVEAL has no wrong answers by design.
+                progress.saveQuestion({
+                  screenIndex: screen,
+                  questionKey: o.questionKey,
+                  selectedIndex: o.selectedIndex,
+                  correctIndex: o.correctIndex,
+                  wasCorrect: o.wasCorrect,
+                });
+              }}
+            />
+          </FullScene>
+        );
+
+      case "vaultDrop":
+        return (
+          <FullScene bg="linear-gradient(180deg, #0a0d24 0%, #141b42 100%)">
+            <VaultDrop
+              items={def.items}
+              hints={def.hints}
+              introNarration={def.narration}
+              coachLines={def.coachLines}
+              onComplete={() => navigate(screen + 1)}
+              onCorrect={() => awardXp(25)}
+              onWrong={() => addWrong(screen)}
+              onHintReached={(tier) => progress.reportHint(screen, tier)}
+              onAnswered={(o) => {
+                progress.saveQuestion({
+                  screenIndex: screen,
+                  questionKey: o.questionKey,
+                  selectedIndex: o.selectedIndex,
+                  correctIndex: o.correctIndex,
+                  wasCorrect: o.wasCorrect,
+                });
+                if (!o.wasCorrect) {
+                  progress.reportWrong(screen, o.questionKey);
+                }
+              }}
+            />
+          </FullScene>
+        );
+
+      case "conveyorSort":
+        return (
+          <FullScene bg="linear-gradient(180deg, #050a1a 0%, #101a3d 100%)">
+            <ConveyorSort
+              categories={def.categories}
+              items={def.items}
+              hints={def.hints}
+              introNarration={def.narration}
+              coachLines={def.coachLines}
+              onComplete={() => navigate(screen + 1)}
+              onCorrect={() => awardXp(25)}
+              onWrong={() => addWrong(screen)}
+              onHintReached={(tier) => progress.reportHint(screen, tier)}
+              onAnswered={(o) => {
+                progress.saveQuestion({
+                  screenIndex: screen,
+                  questionKey: o.questionKey,
+                  selectedIndex: o.selectedIndex,
+                  correctIndex: o.correctIndex,
+                  wasCorrect: o.wasCorrect,
+                });
+                if (!o.wasCorrect) {
+                  progress.reportWrong(screen, o.questionKey);
+                }
+              }}
+            />
+          </FullScene>
+        );
+
+      case "requestInspector":
+        return (
+          <FullScene bg="linear-gradient(180deg, #050a1a 0%, #16102e 100%)">
+            <RequestInspector
+              requests={def.requests}
+              hints={def.hints}
+              introNarration={def.narration}
+              coachLines={def.coachLines}
+              onComplete={() => navigate(screen + 1)}
+              onCorrect={() => awardXp(25)}
+              onWrong={() => addWrong(screen)}
+              onHintReached={(tier) => progress.reportHint(screen, tier)}
+              onAnswered={(o) => {
+                progress.saveQuestion({
+                  screenIndex: screen,
+                  questionKey: o.questionKey,
+                  selectedIndex: o.selectedIndex,
+                  correctIndex: o.correctIndex,
+                  wasCorrect: o.wasCorrect,
+                });
+                if (!o.wasCorrect) {
+                  progress.reportWrong(screen, o.questionKey);
+                }
+              }}
+            />
+          </FullScene>
+        );
+
+      case "usernameBuilder":
+        return (
+          <FullScene bg="linear-gradient(180deg, #0a0a2a 0%, #14103a 100%)">
+            <UsernameBuilder
+              slots={def.slots}
+              parts={def.parts}
+              hints={def.hints}
+              introNarration={def.narration}
+              coachLines={def.coachLines}
+              onComplete={() => navigate(screen + 1)}
+              onCorrect={() => awardXp(25)}
+              onWrong={() => addWrong(screen)}
+              onHintReached={(tier) => progress.reportHint(screen, tier)}
+              onAnswered={(o) => {
+                // questionKey is "forge-{slotId}@{partId}" — records safe
+                // picks AND leak-trap taps for the parent dashboard.
+                progress.saveQuestion({
+                  screenIndex: screen,
+                  questionKey: o.questionKey,
+                  selectedIndex: o.selectedIndex,
+                  correctIndex: o.correctIndex,
+                  wasCorrect: o.wasCorrect,
+                });
+                if (!o.wasCorrect) {
+                  progress.reportWrong(screen, o.questionKey);
+                }
+              }}
+            />
+          </FullScene>
+        );
+
       case "chooseYourPath":
+        // presentation: "device" mounts the Pause Button skin (Week 2's
+        // in-app moments) instead of Week 1's adventure-doors component.
+        if (def.presentation === "device") {
+          return (
+            <FullScene bg="linear-gradient(180deg, #0a0a2a 0%, #12163a 100%)">
+              <PauseDecide
+                scenarios={def.scenarios}
+                introNarration={def.narration}
+                onComplete={() => navigate(screen + 1)}
+                onCorrect={() => awardXp(25)}
+                onWrong={() => addWrong(screen)}
+              />
+            </FullScene>
+          );
+        }
         return (
           <FullScene bg="linear-gradient(180deg, #0a0a2a 0%, #1a1033 100%)">
             <ChooseYourPath
@@ -1898,6 +2117,125 @@ function DynamicLessonInner({ qaEnabled }: { qaEnabled: boolean }) {
       {/* Boss battle fullscreen overlay */}
       {showBoss && (
         <div style={{ position: "fixed", inset: 0, zIndex: 80 }}>
+          {content.bossVault ? (
+            /* Bespoke COMBAT boss (Week 1's Cracking Machine). Same
+               outcome/stats shapes as BossBattle; same phase ids as the
+               shipped quiz boss, so dashboards stay continuous. */
+            <VaultBoss
+              vault={content.bossVault}
+              bossName="HACKER RACCOON"
+              onQuestionAnswered={(o) => {
+                const keyWithPhase = o.phaseId ? `${o.key}@${o.phaseId}` : o.key;
+                progress.saveQuestion({
+                  screenIndex: screen,
+                  questionKey: keyWithPhase,
+                  selectedIndex: o.selectedIndex,
+                  correctIndex: o.correctIndex,
+                  wasCorrect: o.wasCorrect,
+                });
+                if (!o.wasCorrect) {
+                  progress.reportWrong(screen, keyWithPhase);
+                }
+              }}
+              onEnd={(won, stats) => {
+                setShowBoss(false);
+                setBossDone(true);
+                setBossWon(won);
+                setBossStats({
+                  combo: stats.combo ?? 0,
+                  accuracy: stats.accuracy ?? 0,
+                  xp: stats.xp ?? 0,
+                });
+                progress.saveBoss({
+                  won,
+                  accuracy: stats.accuracy ?? 0,
+                  totalQuestions: stats.totalQuestions ?? 0,
+                  correctCount: stats.correctCount ?? 0,
+                  wrongCount: stats.wrongCount ?? 0,
+                  bestCombo: stats.combo ?? 0,
+                  durationMs: stats.durationMs ?? 0,
+                  badgeEarned: won,
+                  badgeId: won ? `week-${content.weekNumber}` : undefined,
+                });
+                for (const pr of stats.phaseResults ?? []) {
+                  analytics.bossCompleted({
+                    weekNumber: content.weekNumber,
+                    won: pr.wrongCount === 0,
+                    accuracy:
+                      pr.totalQuestions > 0
+                        ? Math.round((pr.correctCount / pr.totalQuestions) * 100)
+                        : 0,
+                    bestCombo: 0,
+                    durationMs: 0,
+                  });
+                }
+                if (won) {
+                  awardXp(150);
+                  void correctAnswerBurst();
+                  void badgeEarnedCelebration();
+                }
+              }}
+            />
+          ) : content.bossForge ? (
+            /* Bespoke BUILD-FINAL boss (Week 2's Profile Forge). Emits the
+               same outcome/stats shapes as BossBattle, so persistence,
+               analytics and the victory flow below are shared verbatim. */
+            <ProfileForgeBoss
+              forge={content.bossForge}
+              bossName="HACKER RACCOON"
+              onQuestionAnswered={(o) => {
+                const keyWithPhase = o.phaseId ? `${o.key}@${o.phaseId}` : o.key;
+                progress.saveQuestion({
+                  screenIndex: screen,
+                  questionKey: keyWithPhase,
+                  selectedIndex: o.selectedIndex,
+                  correctIndex: o.correctIndex,
+                  wasCorrect: o.wasCorrect,
+                });
+                if (!o.wasCorrect) {
+                  progress.reportWrong(screen, keyWithPhase);
+                }
+              }}
+              onEnd={(won, stats) => {
+                setShowBoss(false);
+                setBossDone(true);
+                setBossWon(won);
+                setBossStats({
+                  combo: stats.combo ?? 0,
+                  accuracy: stats.accuracy ?? 0,
+                  xp: stats.xp ?? 0,
+                });
+                progress.saveBoss({
+                  won,
+                  accuracy: stats.accuracy ?? 0,
+                  totalQuestions: stats.totalQuestions ?? 0,
+                  correctCount: stats.correctCount ?? 0,
+                  wrongCount: stats.wrongCount ?? 0,
+                  bestCombo: stats.combo ?? 0,
+                  durationMs: stats.durationMs ?? 0,
+                  badgeEarned: won,
+                  badgeId: won ? `week-${content.weekNumber}` : undefined,
+                });
+                for (const pr of stats.phaseResults ?? []) {
+                  analytics.bossCompleted({
+                    weekNumber: content.weekNumber,
+                    won: pr.wrongCount === 0,
+                    accuracy:
+                      pr.totalQuestions > 0
+                        ? Math.round((pr.correctCount / pr.totalQuestions) * 100)
+                        : 0,
+                    bestCombo: 0,
+                    durationMs: 0,
+                  });
+                }
+                if (won) {
+                  awardXp(150);
+                  void correctAnswerBurst();
+                  void badgeEarnedCelebration();
+                }
+              }}
+            />
+          ) : (
           <BossBattle
             bossName="HACKER RACCOON"
             // Prefer the new phased boss (5 acts: Strength / Secrecy /
@@ -1908,6 +2246,7 @@ function DynamicLessonInner({ qaEnabled }: { qaEnabled: boolean }) {
             // legacy questions list if a week hasn't been migrated to
             // phases yet.
             phases={content.bossPhases}
+            attacks={content.bossAttacks}
             questions={
               content.bossPhases && content.bossPhases.length > 0
                 ? undefined
@@ -1997,6 +2336,7 @@ function DynamicLessonInner({ qaEnabled }: { qaEnabled: boolean }) {
               }
             }}
           />
+          )}
         </div>
       )}
 

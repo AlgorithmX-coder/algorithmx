@@ -644,7 +644,72 @@ export const WEEK_1: WeekContent = {
     { type: "completion" },
   ],
 
-  /* ─────────── 5-PHASE BOSS: The Crack-Proof Vault ─────────── */
+  /* ─────────── BESPOKE BOSS: The Cracking Machine (5 micro-games) ───────────
+     Phase ids MATCH the shipped quiz boss (phase-length/mix/secret/obvious/
+     final) so family dashboards stay continuous across the swap. */
+  bossVault: {
+    // ONE password is built across the whole fight:
+    // dragon → dragon-taco-comet → Dragon-Taco-Comet7! → sealed at 400 years.
+    wall: {
+      id: "phase-length",
+      label: "Build It LONG",
+      intro: "My battering ram eats short passwords for breakfast!",
+      crackTime: "3 DAYS",
+      blocks: ["dragon", "taco", "comet"],
+      coach: "Tap the word blocks - make it LONG!",
+    },
+    scrambler: {
+      id: "phase-mix",
+      label: "Mix It UP",
+      intro: "Plain little letters? My decoder will chew through those in seconds!",
+      crackTime: "87 YEARS",
+      baseWord: "dragon-taco-comet",
+      mixers: [
+        { id: "mix-caps", label: "BIG letters", icon: "🔠", kind: "caps" },
+        { id: "mix-num", label: "A number", icon: "🔢", kind: "number" },
+        { id: "mix-sym", label: "A symbol", icon: "🔣", kind: "symbol" },
+      ],
+      coach: "Tap every mixer - mix it UP!",
+    },
+    cover: {
+      id: "phase-secret",
+      label: "Keep It SECRET",
+      intro: "Type it in, type it in… I LOVE watching people type!",
+      crackTime: "STILL 87 YEARS - AND SECRET",
+      snoops: 3,
+      openSecs: 3.2,
+      explanation: "When his eye is open, cover your typing! In real life, shield the keypad with your hand - a password someone SAW isn't a secret any more.",
+      coach: "Spy eye? Press and HOLD to cover!",
+    },
+    feed: {
+      id: "phase-obvious",
+      label: "Don't Be OBVIOUS",
+      intro: "My Guess-o-Tron knows every password kids pick. Feed it!",
+      crackTime: "214 YEARS",
+      junk: [
+        { id: "j-123456", text: "123456", note: "His number ONE favourite guess!" },
+        { id: "j-password", text: "password", note: "He tries the word 'password' every single time!" },
+        { id: "j-qwerty", text: "qwerty", note: "Keyboard letters in a row - guess number three!" },
+      ],
+      yours: "Dragon-Taco-Comet7!",
+      coach: "Feed him the obvious ones - he can't guess YOURS!",
+    },
+    final: {
+      id: "phase-final",
+      label: "The 400-Year Lock",
+      intro: "FINAL ROUND! Nobody out-passwords the CRACK-O-MATIC!",
+      crackTime: "400 YEARS",
+      forged: "Dragon-Taco-Comet7!",
+      chargeSecs: 4,
+      milestones: ["3 DAYS", "87 YEARS", "400 YEARS"],
+      sweetTalk: "Beautiful password! Truly. Just whisper it to me once - I'll only use it for NICE things!",
+      refuse: "Never! It's secret!",
+      tellExplanation: "A password only works while it's secret - not even a very polite raccoon gets to hear it.",
+      coach: "HOLD the golden button - charge to 400 years!",
+    },
+  },
+
+  /* ─── Legacy 5-phase MCQ data (fallback if bossVault is ever cleared) ─── */
   bossPhases: [
     {
       kind: "mcq",
