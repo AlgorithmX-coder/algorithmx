@@ -107,6 +107,26 @@ export function playVillain(file: string) {
   void el.play().catch(() => {});
 }
 
+/** Coach voice clips (Will — the single product mentor voice). Same
+ *  capped + mute-gated raw-Audio contract as playVillain, but tracked so
+ *  a new line (or the mute toggle / leaving the how-to card) can cut the
+ *  previous one — coach lines run ~10s, unlike the villain barks. */
+let coachEl: HTMLAudioElement | null = null;
+export function playCoach(file: string) {
+  if (typeof window === "undefined" || isAudioMuted()) return;
+  stopCoach();
+  const el = new Audio(`/audio/coach/${file}.mp3`);
+  el.volume = 0.55;
+  coachEl = el;
+  void el.play().catch(() => {});
+}
+export function stopCoach() {
+  if (coachEl) {
+    coachEl.pause();
+    coachEl = null;
+  }
+}
+
 /* ─────────────────────── particle + rain layers ─────────────────────── */
 
 interface Particle {

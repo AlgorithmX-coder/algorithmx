@@ -105,39 +105,47 @@ export interface WeekContent {
 
   /**
    * Bespoke COMBAT boss (Week 1's Cracking Machine). When present, the
-   * lesson mounts VaultBoss instead of the quiz-combat BossBattle: five
-   * phases, one per password rule, each a different micro-game, reported
-   * through the same BossEndStats/phaseResults contract (SAME phase ids
-   * as the shipped quiz boss so family analytics stay continuous). The
-   * TIME-TO-CRACK meter stamps `crackTime` as each phase falls.
+   * lesson mounts VaultBoss instead of the quiz-combat BossBattle.
+   *
+   * KID-FIRST CONTRACT (ages 6-9): the whole fight uses exactly two
+   * verbs — TAP a big stationary thing, and press-and-HOLD one button.
+   * Nothing is timed, nothing moves that must be caught, and there are
+   * no trap options. One password is built across all five phases
+   * (build words → mix → keep secret → not obvious → forge to 400
+   * years). Each phase opens with ONE spoken coach line (`coach`, read
+   * by Will — no reading required) while the target pulses.
+   *
+   * Reported through the same BossEndStats/phaseResults contract with
+   * the SAME phase ids as the shipped quiz boss, so family analytics
+   * stay continuous. No lose state.
    */
   bossVault?: {
-    /** LENGTH — stack word-bricks on the door while the ram pounds. */
+    /** LENGTH — tap the big word blocks; each SLAMS onto the vault door.
+     *  All blocks are good: a guaranteed confidence win to open. */
     wall: {
       id: string;
       label: string;
       intro: string;
       crackTime: string;
-      /** Bricks in the tray; `weak` ones crumble and teach (value = why). */
-      bricks: { id: string; text: string; weak?: string }[];
-      /** Solid bricks needed to finish the wall. */
-      target: number;
+      /** The word blocks, in display order. Tapping all of them wins. */
+      blocks: string[];
+      /** One spoken instruction (audio: /audio/coach/vault-go-wall.mp3). */
+      coach: string;
     };
-    /** MIX — inject all four character types before his decoder fills. */
+    /** MIX — tap each mixer once; the password transforms and his
+     *  decoder screen cracks tap by tap until it explodes. */
     scrambler: {
       id: string;
       label: string;
       intro: string;
       crackTime: string;
-      /** The plain word his decoder locks onto. */
+      /** The plain password his decoder locks onto (phase 1's result). */
       baseWord: string;
-      injectors: { id: string; label: string; icon: string; kind: "caps" | "lower" | "number" | "symbol" }[];
-      /** Decoy injectors that would weaken the password (teach on tap). */
-      traps: { id: string; label: string; icon: string; explanation: string }[];
-      /** Seconds for his decoder to fill unaided. */
-      decodeSecs: number;
+      mixers: { id: string; label: string; icon: string; kind: "caps" | "number" | "symbol" }[];
+      coach: string;
     };
-    /** SECRET — press-and-hold to cover the keypad when spy eyes open. */
+    /** SECRET — press-and-hold to cover the keypad when spy eyes open.
+     *  Slow telegraph, generous forgiveness. */
     cover: {
       id: string;
       label: string;
@@ -148,35 +156,40 @@ export interface WeekContent {
       openSecs: number;
       /** Teach copy when a peek lands uncovered. */
       explanation: string;
+      coach: string;
     };
-    /** OBVIOUS — stop the spinning reel on the un-guessable options. */
-    reel: {
+    /** OBVIOUS — tap the junk passwords to feed them to the Guess-o-Tron
+     *  until it overloads; YOUR golden password isn't on his list. */
+    feed: {
       id: string;
       label: string;
       intro: string;
       crackTime: string;
-      /** Reel entries in cycle order; `obvious` ones teach (value = why). */
-      entries: { id: string; text: string; obvious?: string }[];
-      /** Strong stops needed to finish. */
-      target: number;
-      /** ms the reel rests on each entry. */
-      stepMs: number;
+      /** Junk passwords; `note` is the fun fact shown as each is eaten. */
+      junk: { id: string; text: string; note: string }[];
+      /** The child's golden un-guessable password (not feedable). */
+      yours: string;
+      coach: string;
     };
-    /** FINAL — build the 400-year password, refuse the sweet talk, watch
-     *  his machine detonate against it. */
+    /** FINAL — press-and-HOLD the golden forge button to charge the
+     *  password to 400 years, then refuse the sweet talk and watch the
+     *  machine detonate against it. */
     final: {
       id: string;
       label: string;
       intro: string;
       crackTime: string;
-      /** Word tiles; pick 3 safe ones (traps teach). */
-      words: { id: string; text: string; trap?: string }[];
-      /** The mix boosters to apply after the words. */
-      boosters: { id: string; label: string; icon: string }[];
+      /** The finished 400-year password. */
+      forged: string;
+      /** Total seconds of held charge needed (release just pauses). */
+      chargeSecs: number;
+      /** Counter text at 1/3, 2/3 and full charge. */
+      milestones: [string, string, string];
       /** His last-ditch ask, the refusal label, and the teach if told. */
       sweetTalk: string;
       refuse: string;
       tellExplanation: string;
+      coach: string;
     };
   };
 

@@ -59,3 +59,6 @@ scripts/shot-out/
 # OpenArt scratch renders (test output, not for production)
 .openart-tmp/
 art-review/
+
+# Playwright MCP session artifacts (snapshots/logs from browser-driven verification)
+.playwright-mcp/
