@@ -102,6 +102,10 @@ const ProfileForgeBoss = dynamic(
   () => import("@/app/components/game/ProfileForgeBoss"),
   { ssr: false }
 );
+const VaultBoss = dynamic(
+  () => import("@/app/components/game/VaultBoss"),
+  { ssr: false }
+);
 const WelcomeScene = dynamic(
   () => import("@/app/components/game/WelcomeScene"),
   { ssr: false }
@@ -2113,7 +2117,66 @@ function DynamicLessonInner({ qaEnabled }: { qaEnabled: boolean }) {
       {/* Boss battle fullscreen overlay */}
       {showBoss && (
         <div style={{ position: "fixed", inset: 0, zIndex: 80 }}>
-          {content.bossForge ? (
+          {content.bossVault ? (
+            /* Bespoke COMBAT boss (Week 1's Cracking Machine). Same
+               outcome/stats shapes as BossBattle; same phase ids as the
+               shipped quiz boss, so dashboards stay continuous. */
+            <VaultBoss
+              vault={content.bossVault}
+              bossName="HACKER RACCOON"
+              onQuestionAnswered={(o) => {
+                const keyWithPhase = o.phaseId ? `${o.key}@${o.phaseId}` : o.key;
+                progress.saveQuestion({
+                  screenIndex: screen,
+                  questionKey: keyWithPhase,
+                  selectedIndex: o.selectedIndex,
+                  correctIndex: o.correctIndex,
+                  wasCorrect: o.wasCorrect,
+                });
+                if (!o.wasCorrect) {
+                  progress.reportWrong(screen, keyWithPhase);
+                }
+              }}
+              onEnd={(won, stats) => {
+                setShowBoss(false);
+                setBossDone(true);
+                setBossWon(won);
+                setBossStats({
+                  combo: stats.combo ?? 0,
+                  accuracy: stats.accuracy ?? 0,
+                  xp: stats.xp ?? 0,
+                });
+                progress.saveBoss({
+                  won,
+                  accuracy: stats.accuracy ?? 0,
+                  totalQuestions: stats.totalQuestions ?? 0,
+                  correctCount: stats.correctCount ?? 0,
+                  wrongCount: stats.wrongCount ?? 0,
+                  bestCombo: stats.combo ?? 0,
+                  durationMs: stats.durationMs ?? 0,
+                  badgeEarned: won,
+                  badgeId: won ? `week-${content.weekNumber}` : undefined,
+                });
+                for (const pr of stats.phaseResults ?? []) {
+                  analytics.bossCompleted({
+                    weekNumber: content.weekNumber,
+                    won: pr.wrongCount === 0,
+                    accuracy:
+                      pr.totalQuestions > 0
+                        ? Math.round((pr.correctCount / pr.totalQuestions) * 100)
+                        : 0,
+                    bestCombo: 0,
+                    durationMs: 0,
+                  });
+                }
+                if (won) {
+                  awardXp(150);
+                  void correctAnswerBurst();
+                  void badgeEarnedCelebration();
+                }
+              }}
+            />
+          ) : content.bossForge ? (
             /* Bespoke BUILD-FINAL boss (Week 2's Profile Forge). Emits the
                same outcome/stats shapes as BossBattle, so persistence,
                analytics and the victory flow below are shared verbatim. */

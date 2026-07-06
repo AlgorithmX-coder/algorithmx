@@ -644,7 +644,95 @@ export const WEEK_1: WeekContent = {
     { type: "completion" },
   ],
 
-  /* ─────────── 5-PHASE BOSS: The Crack-Proof Vault ─────────── */
+  /* ─────────── BESPOKE BOSS: The Cracking Machine (5 micro-games) ───────────
+     Phase ids MATCH the shipped quiz boss (phase-length/mix/secret/obvious/
+     final) so family dashboards stay continuous across the swap. */
+  bossVault: {
+    wall: {
+      id: "phase-length",
+      label: "Build the Wall",
+      intro: "My battering ram eats short passwords for breakfast!",
+      crackTime: "3 DAYS",
+      target: 4,
+      bricks: [
+        { id: "b-dragon", text: "dragon" },
+        { id: "b-cat", text: "cat", weak: "Only 3 letters - tiny bricks crumble! The longer the password, the stronger the wall." },
+        { id: "b-taco", text: "taco" },
+        { id: "b-hi", text: "hi", weak: "Two letters?! His ram wouldn't even slow down. Pick bigger words!" },
+        { id: "b-comet", text: "comet" },
+        { id: "b-wizard", text: "wizard" },
+        { id: "b-123", text: "123", weak: "Numbers in a row are the FIRST thing his machine tries. Crumble!" },
+      ],
+    },
+    scrambler: {
+      id: "phase-mix",
+      label: "The Scrambler",
+      intro: "A plain word? My decoder will chew through that in seconds!",
+      crackTime: "87 YEARS",
+      baseWord: "tiger",
+      decodeSecs: 18,
+      injectors: [
+        { id: "inj-caps", label: "BIG letters", icon: "🔠", kind: "caps" },
+        { id: "inj-lower", label: "More letters", icon: "🔡", kind: "lower" },
+        { id: "inj-num", label: "A number", icon: "🔢", kind: "number" },
+        { id: "inj-sym", label: "A symbol", icon: "🔣", kind: "symbol" },
+      ],
+      traps: [
+        { id: "trap-name", label: "Add your name", icon: "🏷️", explanation: "Your name makes it EASIER to guess, not harder - anyone who knows you could try it." },
+        { id: "trap-bday", label: "Add your birthday", icon: "🎂", explanation: "Birthdays are one of the first things his machine tries. Keep them out!" },
+      ],
+    },
+    cover: {
+      id: "phase-secret",
+      label: "Cover the Keypad",
+      intro: "Type it in, type it in… I LOVE watching people type!",
+      crackTime: "STILL 87 YEARS - AND SECRET",
+      snoops: 5,
+      openSecs: 2.6,
+      explanation: "When his eye is open, cover your typing! In real life, shield the keypad with your hand - a password someone SAW isn't a secret any more.",
+    },
+    reel: {
+      id: "phase-obvious",
+      label: "Stop the Reel",
+      intro: "Go on, pick something easy. I've got a list of favourites!",
+      crackTime: "214 YEARS",
+      target: 3,
+      stepMs: 900,
+      entries: [
+        { id: "r-123456", text: "123456", obvious: "The most-guessed password on Earth - his Guess-o-Tron tries it FIRST." },
+        { id: "r-comet", text: "Comet-Panda7!" },
+        { id: "r-qwerty", text: "qwerty", obvious: "Keyboard keys in a row - guess number two on his list!" },
+        { id: "r-wizard", text: "Wizard-Taco9!" },
+        { id: "r-name", text: "emma2016", obvious: "A name and a year - anyone who knows you could guess it." },
+        { id: "r-volcano", text: "Volcano-Otter3!" },
+        { id: "r-password", text: "password", obvious: "The word 'password' as a password?! He didn't even need the machine for that one." },
+      ],
+    },
+    final: {
+      id: "phase-final",
+      label: "The 400-Year Lock",
+      intro: "FINAL ROUND! Nobody out-passwords the CRACK-O-MATIC!",
+      crackTime: "400 YEARS",
+      words: [
+        { id: "f-comet", text: "comet" },
+        { id: "f-yourname", text: "yourname", trap: "Never build a password from your own name - it's the first guess!" },
+        { id: "f-pickle", text: "pickle" },
+        { id: "f-password", text: "password", trap: "The machine knows that one better than any word alive." },
+        { id: "f-falcon", text: "falcon" },
+        { id: "f-2016", text: "2016", trap: "A year looks like a birthday - real clues make weak passwords." },
+      ],
+      boosters: [
+        { id: "boost-caps", label: "A BIG letter", icon: "🔠" },
+        { id: "boost-num", label: "A number", icon: "🔢" },
+        { id: "boost-sym", label: "A symbol", icon: "🔣" },
+      ],
+      sweetTalk: "Beautiful password! Truly. Just whisper it to me once - I'll only use it for NICE things!",
+      refuse: "Never! It's secret!",
+      tellExplanation: "A password only works while it's secret - not even a very polite raccoon gets to hear it.",
+    },
+  },
+
+  /* ─── Legacy 5-phase MCQ data (fallback if bossVault is ever cleared) ─── */
   bossPhases: [
     {
       kind: "mcq",

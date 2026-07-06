@@ -104,6 +104,83 @@ export interface WeekContent {
   };
 
   /**
+   * Bespoke COMBAT boss (Week 1's Cracking Machine). When present, the
+   * lesson mounts VaultBoss instead of the quiz-combat BossBattle: five
+   * phases, one per password rule, each a different micro-game, reported
+   * through the same BossEndStats/phaseResults contract (SAME phase ids
+   * as the shipped quiz boss so family analytics stay continuous). The
+   * TIME-TO-CRACK meter stamps `crackTime` as each phase falls.
+   */
+  bossVault?: {
+    /** LENGTH — stack word-bricks on the door while the ram pounds. */
+    wall: {
+      id: string;
+      label: string;
+      intro: string;
+      crackTime: string;
+      /** Bricks in the tray; `weak` ones crumble and teach (value = why). */
+      bricks: { id: string; text: string; weak?: string }[];
+      /** Solid bricks needed to finish the wall. */
+      target: number;
+    };
+    /** MIX — inject all four character types before his decoder fills. */
+    scrambler: {
+      id: string;
+      label: string;
+      intro: string;
+      crackTime: string;
+      /** The plain word his decoder locks onto. */
+      baseWord: string;
+      injectors: { id: string; label: string; icon: string; kind: "caps" | "lower" | "number" | "symbol" }[];
+      /** Decoy injectors that would weaken the password (teach on tap). */
+      traps: { id: string; label: string; icon: string; explanation: string }[];
+      /** Seconds for his decoder to fill unaided. */
+      decodeSecs: number;
+    };
+    /** SECRET — press-and-hold to cover the keypad when spy eyes open. */
+    cover: {
+      id: string;
+      label: string;
+      intro: string;
+      crackTime: string;
+      /** Snoop events to survive, and how long each eye stays open. */
+      snoops: number;
+      openSecs: number;
+      /** Teach copy when a peek lands uncovered. */
+      explanation: string;
+    };
+    /** OBVIOUS — stop the spinning reel on the un-guessable options. */
+    reel: {
+      id: string;
+      label: string;
+      intro: string;
+      crackTime: string;
+      /** Reel entries in cycle order; `obvious` ones teach (value = why). */
+      entries: { id: string; text: string; obvious?: string }[];
+      /** Strong stops needed to finish. */
+      target: number;
+      /** ms the reel rests on each entry. */
+      stepMs: number;
+    };
+    /** FINAL — build the 400-year password, refuse the sweet talk, watch
+     *  his machine detonate against it. */
+    final: {
+      id: string;
+      label: string;
+      intro: string;
+      crackTime: string;
+      /** Word tiles; pick 3 safe ones (traps teach). */
+      words: { id: string; text: string; trap?: string }[];
+      /** The mix boosters to apply after the words. */
+      boosters: { id: string; label: string; icon: string }[];
+      /** His last-ditch ask, the refusal label, and the teach if told. */
+      sweetTalk: string;
+      refuse: string;
+      tellExplanation: string;
+    };
+  };
+
+  /**
    * Week-themed boss attack theatre (name/icon/tag per telegraphed
    * attack, cycled per question). Omitted = BossBattle's Week 1 set.
    * Keeps the fight's vocabulary inside the week's curriculum lane.
