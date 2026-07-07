@@ -67,6 +67,7 @@ import ProfileInspector from "@/app/components/exercises/ProfileInspector";
 import ReplyCards from "@/app/components/exercises/ReplyCards";
 import HookSort from "@/app/components/exercises/HookSort";
 import SenderLineup from "@/app/components/exercises/SenderLineup";
+import StepOrder from "@/app/components/exercises/StepOrder";
 import ChatSimulator from "@/app/components/exercises/ChatSimulator";
 import UsernameBuilder from "@/app/components/exercises/UsernameBuilder";
 import PauseDecide from "@/app/components/exercises/PauseDecide";
@@ -159,6 +160,7 @@ const EXERCISE_SCREEN_TYPES = new Set<ScreenDef["type"]>([
   "chatSimulator",
   "hookSort",
   "senderLineup",
+  "stepOrder",
   "usernameBuilder",
   "vaultDrop",
 ]);
@@ -1416,6 +1418,7 @@ function DynamicLessonInner({ qaEnabled }: { qaEnabled: boolean }) {
               subtitle={def.subtitle}
               items={def.items}
               finale={def.finale}
+              boardIcon={def.boardIcon}
               introNarration={def.narration}
               coachLines={def.coachLines}
               onComplete={() => navigate(screen + 1)}
@@ -1553,6 +1556,10 @@ function DynamicLessonInner({ qaEnabled }: { qaEnabled: boolean }) {
           <FullScene bg="linear-gradient(180deg, #050a1a 0%, #131033 100%)">
             <ReplyCards
               rounds={def.rounds}
+              skin={def.skin}
+              introTitle={def.introTitle}
+              introSubtitle={def.introSubtitle}
+              introIcon={def.introIcon}
               hints={def.hints}
               introNarration={def.narration}
               coachLines={def.coachLines}
@@ -1592,6 +1599,37 @@ function DynamicLessonInner({ qaEnabled }: { qaEnabled: boolean }) {
                 }}
               />
             </div>
+          </FullScene>
+        );
+
+      case "stepOrder":
+        return (
+          <FullScene bg="linear-gradient(180deg, #050a1a 0%, #0a3a4d 100%)">
+            <StepOrder
+              steps={def.steps}
+              introTitle={def.introTitle}
+              introSubtitle={def.introSubtitle}
+              introIcon={def.introIcon}
+              hints={def.hints}
+              introNarration={def.narration}
+              coachLines={def.coachLines}
+              onComplete={() => navigate(screen + 1)}
+              onCorrect={() => awardXp(25)}
+              onWrong={() => addWrong(screen)}
+              onHintReached={(tier) => progress.reportHint(screen, tier)}
+              onAnswered={(o) => {
+                progress.saveQuestion({
+                  screenIndex: screen,
+                  questionKey: o.questionKey,
+                  selectedIndex: o.selectedIndex,
+                  correctIndex: o.correctIndex,
+                  wasCorrect: o.wasCorrect,
+                });
+                if (!o.wasCorrect) {
+                  progress.reportWrong(screen, o.questionKey);
+                }
+              }}
+            />
           </FullScene>
         );
 

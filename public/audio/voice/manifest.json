@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-07T19:04:30.983Z",
+  "generatedAt": "2026-07-07T19:38:14.581Z",
   "model": "eleven_v3",
   "voiceSettings": {
     "stability": 0.35,
@@ -1073,6 +1073,280 @@
         "[excited] Every scam went straight back to sender. Sticker time!"
       ],
       "file": "/audio/voice/b73cf36247e7e255.mp3"
+    },
+    {
+      "key": "51a1d486c017b323",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[warmly] Welcome back, Cyber Hero. This week is a big-hearted one. Friends joke around. And when BOTH of you are laughing... that's just fun! [whispers] But bullying is different. It's mean on purpose. And it happens again and again. Here's the test: is everyone laughing... or is someone hurting? [excited] Let's practise telling them apart!",
+      "lines": [
+        "[warmly] Welcome back, Cyber Hero. This week is a big-hearted one.",
+        "Friends joke around. And when BOTH of you are laughing... that's just fun!",
+        "[whispers] But bullying is different.",
+        "It's mean on purpose. And it happens again and again.",
+        "Here's the test: is everyone laughing... or is someone hurting?",
+        "[excited] Let's practise telling them apart!"
+      ],
+      "file": "/audio/voice/51a1d486c017b323.mp3"
+    },
+    {
+      "key": "b08146886e24ac81",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[excited] The sorting machine is back - with a heart upgrade! Chat moments are riding the belt. [warmly] Both laughing? Send it to the fun chute. [whispers] Mean on purpose? That chute stops it cold. [excited] Trust the test - is someone hurting?",
+      "lines": [
+        "[excited] The sorting machine is back - with a heart upgrade!",
+        "Chat moments are riding the belt.",
+        "[warmly] Both laughing? Send it to the fun chute.",
+        "[whispers] Mean on purpose? That chute stops it cold.",
+        "[excited] Trust the test - is someone hurting?"
+      ],
+      "file": "/audio/voice/b08146886e24ac81.mp3"
+    },
+    {
+      "key": "6d73a258bfeb08e2",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "Here comes the first one - both laughing, or mean on purpose?",
+      "lines": [
+        "Here comes the first one - both laughing, or mean on purpose?"
+      ],
+      "file": "/audio/voice/6d73a258bfeb08e2.mp3"
+    },
+    {
+      "key": "3543926a0a41b01d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[warmly] Great start, Cyber Hero. You know the test now: is everyone laughing... or is someone hurting? [whispers] Now lean in close. Because the next one is the most important thing we will EVER tell you.",
+      "lines": [
+        "[warmly] Great start, Cyber Hero.",
+        "You know the test now: is everyone laughing... or is someone hurting?",
+        "[whispers] Now lean in close.",
+        "Because the next one is the most important thing we will EVER tell you."
+      ],
+      "file": "/audio/voice/3543926a0a41b01d.mp3"
+    },
+    {
+      "key": "53b6798b2f1d84ff",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[warmly] Come close. This is the big one. If anyone is ever mean to you online... it is NOT. YOUR. FAULT. Not because of what you posted. Not because of anything about you. [whispers] Mean words only describe the person typing them. [warmly] You never deserve it. Full stop. Let's make that feeling strong.",
+      "lines": [
+        "[warmly] Come close. This is the big one.",
+        "If anyone is ever mean to you online...",
+        "it is NOT. YOUR. FAULT.",
+        "Not because of what you posted. Not because of anything about you.",
+        "[whispers] Mean words only describe the person typing them.",
+        "[warmly] You never deserve it. Full stop. Let's make that feeling strong."
+      ],
+      "file": "/audio/voice/53b6798b2f1d84ff.mp3"
+    },
+    {
+      "key": "f8044edac9ded523",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[warmly] When mean words land, grey little doubt clouds show up. 'Maybe it's my fault.' 'Maybe something's wrong with me.' [whispers] Every single one of those clouds is WRONG. [excited] Tap each cloud and pop it with the truth!",
+      "lines": [
+        "[warmly] When mean words land, grey little doubt clouds show up.",
+        "'Maybe it's my fault.' 'Maybe something's wrong with me.'",
+        "[whispers] Every single one of those clouds is WRONG.",
+        "[excited] Tap each cloud and pop it with the truth!"
+      ],
+      "file": "/audio/voice/f8044edac9ded523.mp3"
+    },
+    {
+      "key": "ead351496e0b474f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Tap any grey cloud - the truth is waiting inside!",
+      "lines": [
+        "Tap any grey cloud - the truth is waiting inside!"
+      ],
+      "file": "/audio/voice/ead351496e0b474f.mp3"
+    },
+    {
+      "key": "37cca6eb4d3fbe58",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[warmly] That truth is your armour now. Not your fault. Not ever. [whispers] Keep it somewhere safe - you might need it one day. [excited] Next: the clever move when mean words actually land.",
+      "lines": [
+        "[warmly] That truth is your armour now.",
+        "Not your fault. Not ever.",
+        "[whispers] Keep it somewhere safe - you might need it one day.",
+        "[excited] Next: the clever move when mean words actually land."
+      ],
+      "file": "/audio/voice/37cca6eb4d3fbe58.mp3"
+    },
+    {
+      "key": "0f2bd422a0449798",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[warmly] When mean words land, your tummy goes hot. Everything in you wants to fire back something MEANER. [whispers] But mean messages are a fire... and angry replies? They're wood. [excited] Don't feed the fire, and it runs out of things to burn. Staying calm isn't weak. It's the strongest move there is.",
+      "lines": [
+        "[warmly] When mean words land, your tummy goes hot.",
+        "Everything in you wants to fire back something MEANER.",
+        "[whispers] But mean messages are a fire...",
+        "and angry replies? They're wood.",
+        "[excited] Don't feed the fire, and it runs out of things to burn.",
+        "Staying calm isn't weak. It's the strongest move there is."
+      ],
+      "file": "/audio/voice/0f2bd422a0449798.mp3"
+    },
+    {
+      "key": "1ba6a3a65b437619",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[warmly] Practice time - and these moments feel HOT. Your face burns, your fingers itch to fire back. [whispers] That heat is the fire asking for wood. [excited] Show it who's boss. Stay calm!",
+      "lines": [
+        "[warmly] Practice time - and these moments feel HOT.",
+        "Your face burns, your fingers itch to fire back.",
+        "[whispers] That heat is the fire asking for wood.",
+        "[excited] Show it who's boss. Stay calm!"
+      ],
+      "file": "/audio/voice/1ba6a3a65b437619.mp3"
+    },
+    {
+      "key": "47ebf82732a49e3a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] Three powers! You kept your cool in the hottest moments. No wood for the fire. Not one stick. [warmly] Now for my favourite part of this whole week... the moment YOU get to be the hero of the story.",
+      "lines": [
+        "[excited] Three powers! You kept your cool in the hottest moments.",
+        "No wood for the fire. Not one stick.",
+        "[warmly] Now for my favourite part of this whole week...",
+        "the moment YOU get to be the hero of the story."
+      ],
+      "file": "/audio/voice/47ebf82732a49e3a.mp3"
+    },
+    {
+      "key": "f85e8624dc67609c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[warmly] Here's something huge. You don't have to WRITE a mean message to spread one. Forwarding it... laughing at it... even one little laughing emoji... [whispers] that all tells the bully: 'more, please.' [excited] But flip it around! ONE kind message can turn a whole chat. Four doors are coming up. Only one is the kind one!",
+      "lines": [
+        "[warmly] Here's something huge.",
+        "You don't have to WRITE a mean message to spread one.",
+        "Forwarding it... laughing at it... even one little laughing emoji...",
+        "[whispers] that all tells the bully: 'more, please.'",
+        "[excited] But flip it around! ONE kind message can turn a whole chat.",
+        "Four doors are coming up. Only one is the kind one!"
+      ],
+      "file": "/audio/voice/f85e8624dc67609c.mp3"
+    },
+    {
+      "key": "c4a8bf2ad04c1213",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[warmly] A mean post just landed in the chat. Four doors swing open in front of you. [whispers] Three of them join the meanness - some sneakily. [excited] Find the hero's door. It's the KIND one!",
+      "lines": [
+        "[warmly] A mean post just landed in the chat.",
+        "Four doors swing open in front of you.",
+        "[whispers] Three of them join the meanness - some sneakily.",
+        "[excited] Find the hero's door. It's the KIND one!"
+      ],
+      "file": "/audio/voice/c4a8bf2ad04c1213.mp3"
+    },
+    {
+      "key": "bf521c0854dddeaa",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Read all four doors - then walk through the kind one!",
+      "lines": [
+        "Read all four doors - then walk through the kind one!"
+      ],
+      "file": "/audio/voice/bf521c0854dddeaa.mp3"
+    },
+    {
+      "key": "6ceefe3ec98cc4f8",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[excited] Four powers! You found the kind door every time. No forwards. No laughing along. [warmly] Just one hero, being kind, out loud. One last power now - and it's a warm one.",
+      "lines": [
+        "[excited] Four powers! You found the kind door every time.",
+        "No forwards. No laughing along.",
+        "[warmly] Just one hero, being kind, out loud.",
+        "One last power now - and it's a warm one."
+      ],
+      "file": "/audio/voice/6ceefe3ec98cc4f8.mp3"
+    },
+    {
+      "key": "761012192dd73763",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[warmly] Last power. And it might be the warmest one. Mean words are heavy. Too heavy for one hero to carry. [whispers] So heroes don't carry them alone. Don't reply. Keep the message so a grown-up can see it. Then tell someone you trust. [excited] Telling isn't snitching - it's how the hurting STOPS. Let's walk the path!",
+      "lines": [
+        "[warmly] Last power. And it might be the warmest one.",
+        "Mean words are heavy. Too heavy for one hero to carry.",
+        "[whispers] So heroes don't carry them alone.",
+        "Don't reply. Keep the message so a grown-up can see it.",
+        "Then tell someone you trust.",
+        "[excited] Telling isn't snitching - it's how the hurting STOPS. Let's walk the path!"
+      ],
+      "file": "/audio/voice/761012192dd73763.mp3"
+    },
+    {
+      "key": "ffe1513c9d1aa0ee",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[warmly] See the river? Mean words are on this side. Feeling better is on the other. [whispers] Three stepping stones take you across. [excited] Tap the steps in the order a hero would take them!",
+      "lines": [
+        "[warmly] See the river? Mean words are on this side.",
+        "Feeling better is on the other.",
+        "[whispers] Three stepping stones take you across.",
+        "[excited] Tap the steps in the order a hero would take them!"
+      ],
+      "file": "/audio/voice/ffe1513c9d1aa0ee.mp3"
+    },
+    {
+      "key": "356594e17d3000c1",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "Which step comes first? Tap it and hop on!",
+      "lines": [
+        "Which step comes first? Tap it and hop on!"
+      ],
+      "file": "/audio/voice/356594e17d3000c1.mp3"
+    },
+    {
+      "key": "96a2a046fb0f513c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] That's all FIVE powers, Cyber Hero! You know what bullying is, you know it's never your fault, you stay calm, you choose the kind door... [warmly] and you never, ever carry it alone. [excited] Quick final drill - then let's make a whole chat kind again!",
+      "lines": [
+        "[excited] That's all FIVE powers, Cyber Hero!",
+        "You know what bullying is, you know it's never your fault,",
+        "you stay calm, you choose the kind door...",
+        "[warmly] and you never, ever carry it alone.",
+        "[excited] Quick final drill - then let's make a whole chat kind again!"
+      ],
+      "file": "/audio/voice/96a2a046fb0f513c.mp3"
+    },
+    {
+      "key": "b494e567dde3bcdb",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] Final drill! Choices are drifting past. Tap HERO MOVE for the kind and calm ones... and FEEDS IT for anything that helps meanness grow. [warmly] Five powers. One big heart. Show me!",
+      "lines": [
+        "[excited] Final drill! Choices are drifting past.",
+        "Tap HERO MOVE for the kind and calm ones...",
+        "and FEEDS IT for anything that helps meanness grow.",
+        "[warmly] Five powers. One big heart. Show me!"
+      ],
+      "file": "/audio/voice/b494e567dde3bcdb.mp3"
+    },
+    {
+      "key": "b9a8fc5183cb945e",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[excited] Look at EVERYTHING you mastered this week! You know the laugh test, you know it's never your fault, you starve the fire, you open the kind door... [warmly] and you never carry heavy words alone. [excited] The whole chat turned kind - because of YOU. Sticker time!",
+      "lines": [
+        "[excited] Look at EVERYTHING you mastered this week!",
+        "You know the laugh test, you know it's never your fault,",
+        "you starve the fire, you open the kind door...",
+        "[warmly] and you never carry heavy words alone.",
+        "[excited] The whole chat turned kind - because of YOU. Sticker time!"
+      ],
+      "file": "/audio/voice/b9a8fc5183cb945e.mp3"
     }
   ]
 }

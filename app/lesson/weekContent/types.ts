@@ -671,6 +671,8 @@ export type ScreenDef = (
       type: "reveal";
       title: string;
       subtitle?: string;
+      /** PixIcon key fronting the board header (default the Raccoon). */
+      boardIcon?: string;
       items: {
         /** Stable id used in QuestionResponse keys (e.g. "address"). */
         id: string;
@@ -855,6 +857,12 @@ export type ScreenDef = (
        * meter or branching (that's chatSimulator's job).
        */
       type: "replyCards";
+      /** Visual skin: fanned chat cards (default) or tall kindness DOORS (W5). */
+      skin?: "cards" | "doors";
+      /** Intro copy overrides (re-theme per week). */
+      introTitle?: string;
+      introSubtitle?: string;
+      introIcon?: string;
       rounds: {
         id: string;
         /** Who the message is from (display name shown on the bubble). */
@@ -863,9 +871,32 @@ export type ScreenDef = (
         fromIcon: string;
         /** The incoming message. */
         message: string;
-        /** Exactly 3 reply cards; one has isSafe: true. */
+        /** 3-4 reply cards; exactly one has isSafe: true. */
         replies: { text: string; isSafe: boolean; explanation: string }[];
       }[];
+      hints?: { tier1: string; tier2: string };
+    }
+  | {
+      /**
+       * Step Order (Week 5+). The stepping-stones ORDER game: shuffled
+       * step tiles below a river; tap them in the order you'd do them
+       * and each hops onto the next stone. Gentle - a wrong tap wobbles
+       * and teaches, nothing fails. Re-themable via the intro fields
+       * (W5 calm path, W11 protocol, W13 power-off ritual).
+       */
+      type: "stepOrder";
+      /** Steps in CORRECT order; display order is shuffled. */
+      steps: {
+        id: string;
+        text: string;
+        /** Emoji rendered via PixIcon on the tile/stone. */
+        icon: string;
+        /** Line shown when this step lands. */
+        affirmation?: string;
+      }[];
+      introTitle: string;
+      introSubtitle?: string;
+      introIcon?: string;
       hints?: { tier1: string; tier2: string };
     }
   | {

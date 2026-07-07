@@ -34,11 +34,18 @@ export interface ReplyRound {
   from: string;
   fromIcon: string;
   message: string;
+  /** 3-4 options; exactly one isSafe. */
   replies: ReplyOption[];
 }
 
 export interface ReplyCardsProps {
   rounds: ReplyRound[];
+  /** Visual skin: fanned chat cards (default) or tall kindness DOORS (W5). */
+  skin?: "cards" | "doors";
+  /** Intro copy overrides (re-theme per week). */
+  introTitle?: string;
+  introSubtitle?: string;
+  introIcon?: string;
   hints?: { tier1: string; tier2: string };
   introNarration?: { speaker?: "adam" | "layla"; lines: string[] };
   coachLines?: { speaker?: "adam" | "layla"; lines: string[] };
@@ -54,10 +61,14 @@ export interface ReplyCardsProps {
   }) => void;
 }
 
-const CARD_TILT = [-4, 0, 4];
+const CARD_TILT = [-4, 0, 4, -2];
 
 export default function ReplyCards({
   rounds,
+  skin = "cards",
+  introTitle,
+  introSubtitle,
+  introIcon,
   hints,
   introNarration,
   coachLines,
@@ -134,9 +145,9 @@ export default function ReplyCards({
 
       {showIntro && (
         <ExerciseIntroBeat
-          title="The Safe Reply"
-          subtitle="A message lands. Pick the reply a hero would send."
-          icon="💬"
+          title={introTitle ?? "The Safe Reply"}
+          subtitle={introSubtitle ?? "A message lands. Pick the reply a hero would send."}
+          icon={introIcon ?? "💬"}
           narration={introNarration}
           character={introNarration?.speaker}
           onDismiss={() => setShowIntro(false)}
@@ -237,7 +248,7 @@ export default function ReplyCards({
                 <div
                   style={{
                     display: "grid",
-                    gridTemplateColumns: "repeat(3, minmax(0,1fr))",
+                    gridTemplateColumns: `repeat(${round.replies.length}, minmax(0,1fr))`,
                     gap: 12,
                     alignItems: "stretch",
                   }}
@@ -249,26 +260,65 @@ export default function ReplyCards({
                       onClick={() => pick(i)}
                       onPointerEnter={() => audio.hover()}
                       initial={reduce ? false : { y: 30, opacity: 0, rotate: 0 }}
-                      animate={{ y: 0, opacity: 1, rotate: reduce ? 0 : CARD_TILT[i % 3] }}
+                      animate={{
+                        y: 0,
+                        opacity: 1,
+                        rotate: reduce || skin === "doors" ? 0 : CARD_TILT[i % CARD_TILT.length],
+                      }}
                       transition={{ delay: reduce ? 0 : 0.08 * i, type: "spring", stiffness: 260, damping: 20 }}
                       whileHover={reduce ? undefined : { y: -6, rotate: 0, scale: 1.03 }}
                       whileTap={{ scale: 0.97 }}
-                      style={{
-                        minHeight: 108,
-                        padding: "14px 12px",
-                        borderRadius: 16,
-                        border: "2px solid rgba(125,240,255,0.5)",
-                        background: "linear-gradient(165deg, rgba(0,229,255,0.16), rgba(12,18,48,0.9))",
-                        color: "#eaf9ff",
-                        fontSize: 14.5,
-                        fontWeight: 800,
-                        lineHeight: 1.35,
-                        cursor: "pointer",
-                        fontFamily: "inherit",
-                        boxShadow: "0 14px 30px -18px rgba(0,229,255,0.8)",
-                        touchAction: "manipulation",
-                      }}
+                      style={
+                        skin === "doors"
+                          ? {
+                              position: "relative",
+                              minHeight: 168,
+                              padding: "26px 24px 16px 12px",
+                              borderRadius: "48px 48px 10px 10px",
+                              border: "2.5px solid rgba(255, 209, 88, 0.6)",
+                              background:
+                                "linear-gradient(180deg, rgba(255,209,88,0.18) 0%, rgba(84,52,18,0.92) 100%)",
+                              color: "#fff3d6",
+                              fontSize: 14.5,
+                              fontWeight: 800,
+                              lineHeight: 1.35,
+                              cursor: "pointer",
+                              fontFamily: "inherit",
+                              boxShadow: "0 16px 34px -18px rgba(255,209,88,0.85)",
+                              touchAction: "manipulation",
+                            }
+                          : {
+                              minHeight: 108,
+                              padding: "14px 12px",
+                              borderRadius: 16,
+                              border: "2px solid rgba(125,240,255,0.5)",
+                              background: "linear-gradient(165deg, rgba(0,229,255,0.16), rgba(12,18,48,0.9))",
+                              color: "#eaf9ff",
+                              fontSize: 14.5,
+                              fontWeight: 800,
+                              lineHeight: 1.35,
+                              cursor: "pointer",
+                              fontFamily: "inherit",
+                              boxShadow: "0 14px 30px -18px rgba(0,229,255,0.8)",
+                              touchAction: "manipulation",
+                            }
+                      }
                     >
+                      {skin === "doors" && (
+                        <span
+                          aria-hidden
+                          style={{
+                            position: "absolute",
+                            right: 12,
+                            top: "52%",
+                            width: 9,
+                            height: 9,
+                            borderRadius: "50%",
+                            background: "#ffd158",
+                            boxShadow: "0 0 8px rgba(255,209,88,0.9)",
+                          }}
+                        />
+                      )}
                       {r.text}
                     </motion.button>
                   ))}

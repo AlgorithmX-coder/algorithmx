@@ -34,7 +34,7 @@ Every pattern use across all 20 weeks, each with its unique dressing. **Rule: be
 | W2.2 shipped | cyberScanner conveyor — cards ride a belt past a scanner |
 | W3.3 | **Message Sorting Machine** *(BUILT — conveyorSort's first-ever outing)* — chat messages ride the belt; green FRIENDLY chute vs red RED FLAG chute (new red "flag" tone) |
 | W4.1 | **The Fishing Dock** *(BUILT — new hookSort)* — one message dangles per line; REEL IN (real) or CUT THE LINE (scam), no timer, one catch in play |
-| W5.1 | **Two megaphones** — lines float as speech bubbles; feed to the "joke both laugh at" megaphone or the "mean on purpose" muzzle |
+| W5.1 | **Kind-or-Mean machine** *(BUILT — conveyorSort re-dress: BOTH LAUGHING safe chute vs MEAN ON PURPOSE flag chute; chat-moment cards, two weeks after its W3 outing in a different domain)* |
 | W8.4 | **Theatre doors** — a photo walks toward three doors (Friends / School / Whole World); open the right door for each |
 | W9.1 | **Shop shelves** — app boxes slide in; shelve in the bright Official Store or the back-alley crate |
 | W13.1 | **Day-wheel** — drag activity tiles onto a big clock face; screen tiles glow blue, real-life tiles glow gold; balance the wheel |
@@ -66,7 +66,7 @@ Every pattern use across all 20 weeks, each with its unique dressing. **Rule: be
 | W1.4 / W2.5 shipped | chooseYourPath scenario cards |
 | W3.5 | **The Uh-Oh Meter** *(BUILT — chatSimulator)* — phone-framed live chat; the meter climbs as it gets icky; three choice moments ending in stop-and-tell |
 | W4.5 | **Bite or Don't** *(BUILT — chooseYourPath classic-card re-dress)* — three rush-you scenarios (fake prize, stuck parcel, virus pop-up); NIBBLE vs STOP-CHECK-SHOW |
-| W5.3 | **Two reply pens** — a mean message; pick the fire pen (clap-back) or calm pen; fire pen makes flames spread, calm pen cools the thread |
+| W5.3 | **Don't Feed the Fire** *(BUILT — chooseYourPath device skin)* — three hot moments in chat/lobby frames; fire-back vs stay-calm with fire/wood consequences |
 | W6.3 | **Lobby doors** — mid-game a player says "chat on Discord?"; choose STAY IN GAME / FOLLOW — following opens onto the raccoon's fort |
 | W7.4 | **Till moment** — at a checkout with a coin meter; choose ASK FIRST / BUY NOW; asking summons the grown-up, buying drains the piggy bank |
 | W9.5 | **Install handshake** — a shiny app install; choose GET GROWN-UP / INSTALL ALONE; together-install shows the safe path |
@@ -85,7 +85,7 @@ Every pattern use across all 20 weeks, each with its unique dressing. **Rule: be
 |---|---|
 | W2.1 shipped | tap a detail → who could misuse it |
 | W3.1 | **The Disguise Kit** *(BUILT — reveal board re-dress)* — four disguise pieces (photo/age/name/friendliness); flip each → the trick behind it |
-| W5.2 | **Balloon pop** — grey doubt-clouds ("it's my fault…"); pop each → a bright supportive truth balloon rises |
+| W5.2 | **Pop the Doubt Clouds** *(BUILT — RevealBoard with new boardIcon prop, 💬 not the Raccoon)* — four grey doubt-clouds ("it's my fault…"); each pops into the supportive truth |
 | W7.2 | **Loot-box glass** — an exciting crate; tap to make it glass → see the 100-marble odds jar inside (1 gold, 99 grey) |
 | W8.1 | **Copy pigeons** (film tie-in) — delete a shared photo → it vanishes locally but paper pigeons stay on every rooftop |
 | W9.4 | **Price-tag flip** — a FREE app; flip the tag → the real costs slide out (ads, purchases, your data icons) |
@@ -111,7 +111,7 @@ Every pattern use across all 20 weeks, each with its unique dressing. **Rule: be
 |---|---|
 | W3.4 | **Reply cards fan** *(BUILT — new replyCards)* — three tilted reply cards fan out per incoming message; the safe one slots into the chat with a green glow |
 | W4.4 | **The Lookalike Lineup** *(BUILT — new senderLineup)* — four sender badges on podiums, exactly one lookalike (swapped letters, weird address); tap it → IMPOSTER! stamp |
-| W5.4 | **Four doors of kindness** — laugh-along, forward, ignore, support; tap the kind action, the hallway lights up |
+| W5.4 | **The Four Doors** *(BUILT — replyCards new DOORS skin, 4 choices)* — arched golden doors per scenario; laugh-along/forward/ignore/support — only the kind door is the hero's |
 | W8.5 | **Share lever** — one photo, big brass SHARE/DON'T levers; sound-off decidable from the photo's clues |
 | W9.2 | **Icon parade** — five near-identical cat app icons march past; tap the genuine one (rosette), the copycat's eyes cross |
 | W11.4 | **Camera vs bin** — a nasty message with two buttons; tap CAMERA (screenshot) not BIN — camera freezes it into an evidence frame |
@@ -141,7 +141,7 @@ Every pattern use across all 20 weeks, each with its unique dressing. **Rule: be
 | W19.3 | **Family-rules quilt** — each family member contributes a rule patch (moon zone, ask-first, dinner basket); quilt only complete when every member has sewn one |
 
 ### ORDER (sequence steps; NEW small mechanic) — 3 uses
-| W5.5 | **Calm-path stepping stones** — arrange stones across a river: don't-react → save it → tell someone |
+| W5.5 | **The Calm Path** *(BUILT — new stepOrder engine, reusable for W11/W13)* — stepping stones across a river; tap shuffled step tiles in order: don't reply → keep it → tell |
 | W11.5 | **Protocol launchpad** — stack the rocket stages in order: stop → block → screenshot → tell → Childline; launch on correct order |
 | W13.5 | **Power-off ritual strip** — arrange comic panels: finish level → say bye to pet → power off → park in garage → pick what's next |
 
