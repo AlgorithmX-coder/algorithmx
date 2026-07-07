@@ -311,6 +311,32 @@ const BUILDS = {
     ],
     endCard: { lines: ["GOOD TRACKS MADE!", "YOU DID IT, CYBER HERO!"], hold: 2.5 },
   },
+  "week13-intro": {
+    out: "public/videos/module-13-intro.mp4",
+    shots: [
+      { clip: "intro-s1" },
+      { clip: "intro-s2", vo: { file: "intro-s2", at: 2.0, duck: 0.35 } },
+      { clip: "intro-s3" },
+      { clip: "intro-s4" },
+      { clip: "intro-s5" },
+      { clip: "intro-s6", vo: { file: "intro-s6", at: 2.0, duck: 0.35 } },
+      { clip: "intro-s7" },
+      { clip: "intro-s8" },
+      { clip: "intro-s9", vo: { file: "intro-s9", at: 0.5, duck: 0.35 } },
+    ],
+    endCard: { lines: ["WEEK 13", "NOTICE THE SIGNS"], hold: 2.5 },
+  },
+  "week13-outro": {
+    out: "public/videos/module-13-outro.mp4",
+    shots: [
+      { clip: "outro-s1" },
+      { clip: "outro-s2" },
+      { clip: "outro-s3", vo: { file: "outro-s3", at: 6.0, duck: 0.35 } },
+      { clip: "outro-s4" },
+      { clip: "outro-s5" },
+    ],
+    endCard: { lines: ["BATTERY GUARDED!", "YOU DID IT, CYBER HERO!"], hold: 2.5 },
+  },
 };
 
 const [assetsDir, buildName] = process.argv.slice(2);
