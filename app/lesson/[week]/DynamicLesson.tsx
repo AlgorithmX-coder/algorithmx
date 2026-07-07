@@ -65,6 +65,8 @@ import ConveyorSort from "@/app/components/exercises/ConveyorSort";
 import RequestInspector from "@/app/components/exercises/RequestInspector";
 import ProfileInspector from "@/app/components/exercises/ProfileInspector";
 import ReplyCards from "@/app/components/exercises/ReplyCards";
+import HookSort from "@/app/components/exercises/HookSort";
+import SenderLineup from "@/app/components/exercises/SenderLineup";
 import ChatSimulator from "@/app/components/exercises/ChatSimulator";
 import UsernameBuilder from "@/app/components/exercises/UsernameBuilder";
 import PauseDecide from "@/app/components/exercises/PauseDecide";
@@ -155,6 +157,8 @@ const EXERCISE_SCREEN_TYPES = new Set<ScreenDef["type"]>([
   "profileInspector",
   "replyCards",
   "chatSimulator",
+  "hookSort",
+  "senderLineup",
   "usernameBuilder",
   "vaultDrop",
 ]);
@@ -1681,10 +1685,71 @@ function DynamicLessonInner({ qaEnabled }: { qaEnabled: boolean }) {
           <FullScene bg="linear-gradient(180deg, #050a1a 0%, #1a1033 100%)">
             <SpamBlaster
               emails={def.emails}
+              introTitle={def.introTitle}
+              introDescription={def.introDescription}
+              headline={def.headline}
+              missLabel={def.missLabel}
+              introNarration={def.narration}
               onComplete={() => navigate(screen + 1)}
               onCorrect={() => awardXp(25)}
               onWrong={() => addWrong(screen)}
               onHintReached={(tier) => progress.reportHint(screen, tier)}
+            />
+          </FullScene>
+        );
+
+      case "hookSort":
+        return (
+          <FullScene bg="linear-gradient(180deg, #050a1a 0%, #06355c 100%)">
+            <HookSort
+              items={def.items}
+              hints={def.hints}
+              introNarration={def.narration}
+              coachLines={def.coachLines}
+              onComplete={() => navigate(screen + 1)}
+              onCorrect={() => awardXp(25)}
+              onWrong={() => addWrong(screen)}
+              onHintReached={(tier) => progress.reportHint(screen, tier)}
+              onAnswered={(o) => {
+                progress.saveQuestion({
+                  screenIndex: screen,
+                  questionKey: o.questionKey,
+                  selectedIndex: o.selectedIndex,
+                  correctIndex: o.correctIndex,
+                  wasCorrect: o.wasCorrect,
+                });
+                if (!o.wasCorrect) {
+                  progress.reportWrong(screen, o.questionKey);
+                }
+              }}
+            />
+          </FullScene>
+        );
+
+      case "senderLineup":
+        return (
+          <FullScene bg="linear-gradient(180deg, #050a1a 0%, #16103a 100%)">
+            <SenderLineup
+              rounds={def.rounds}
+              hints={def.hints}
+              introNarration={def.narration}
+              coachLines={def.coachLines}
+              onComplete={() => navigate(screen + 1)}
+              onCorrect={() => awardXp(25)}
+              onWrong={() => addWrong(screen)}
+              onHintReached={(tier) => progress.reportHint(screen, tier)}
+              onAnswered={(o) => {
+                progress.saveQuestion({
+                  screenIndex: screen,
+                  questionKey: o.questionKey,
+                  selectedIndex: o.selectedIndex,
+                  correctIndex: o.correctIndex,
+                  wasCorrect: o.wasCorrect,
+                });
+                if (!o.wasCorrect) {
+                  progress.reportWrong(screen, o.questionKey);
+                }
+              }}
             />
           </FullScene>
         );
@@ -1746,6 +1811,9 @@ function DynamicLessonInner({ qaEnabled }: { qaEnabled: boolean }) {
             <PhishInspector
               emails={def.emails}
               hints={def.hints}
+              introTitle={def.introTitle}
+              introSubtitle={def.introSubtitle}
+              introNarration={def.narration}
               onComplete={() => navigate(screen + 1)}
               onCorrect={() => awardXp(30)}
               onWrong={() => addWrong(screen)}

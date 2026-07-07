@@ -1,244 +1,737 @@
 import type { WeekContent } from "./types";
 
+/**
+ * Week 4 - Scams & Tricks: Real or Fake?
+ *
+ * Built to the locked Cyber Heroes template (docs/cyberheroes/curriculum-buildsheet.md
+ * + docs/cyberheroes/content-plans/weeks-03-20-content-plan.md):
+ *
+ *   Opening video  -> alert -> mission brief
+ *   5 BEATS, each = Learn (info) -> Game -> Prove (quickCheck) -> recap:
+ *     1 WHAT     what a scam is                    | hookSort       | finish
+ *     2 TOOGOOD  too good to be true               | spamBlaster    | speed
+ *     3 HURRY    urgency + fear are the trick      | phishInspector | lie
+ *     4 SENDERS  fake senders (NOT links - W16)    | senderLineup   | recall
+ *     5 NOBITE   stop, check, show a grown-up      | chooseYourPath | order
+ *   Consolidation (cyberScanner, Trick Scanner skin) -> boss (placeholder
+ *   quiz boss until the bespoke W4 COMBAT is designed) -> closing video
+ *   -> debrief -> stickers -> completion.
+ *
+ * Game freshness: hookSort and senderLineup DEBUT here; spamBlaster and
+ * phishInspector get their first-ever week outing (re-dressed); the
+ * decide beat uses the classic card look (W2 used the device skin).
+ * Lane-clean: fake SENDERS and too-good MESSAGES only - no link/QR
+ * mechanics (W16), no free-currency generators (W7), no fake PEOPLE
+ * (W3 owns profiles).
+ */
 export const WEEK_4: WeekContent = {
   weekNumber: 4,
-  title: "Scams & Tricks: Don't Get Fooled!",
+  title: "Scams & Tricks: Real or Fake?",
   topic: "scams",
-  badgeName: "Scam Detector",
-  badgeIcon: "🕵️",
+  badgeName: "Trick Catcher",
+  badgeIcon: "🪤",
 
   introCutscene: [
-    { text: "CYBER HEROES ACADEMY\nWEEK 4: SCAMS & TRICKS", bg: "normal", duration: 3000 },
-    { character: "both", characterMood: "excited", text: "Back for Week 4, Cyber Hero? You're doing great!", sound: "lessonStart", duration: 5000 },
-    { character: "raccoon", characterMood: "idle", text: "\"CONGRATULATIONS! You're our 1,000,000th visitor! Click here to claim your FREE iPhone!!!\"", bg: "danger", textColour: "#fca5a5", sound: "bossRoar", duration: 5500 },
-    { character: "adam", characterMood: "worried", text: "The Hacker Raccoon is running FAKE prize scams! He's trying to trick kids into giving away passwords and info.", bg: "danger", duration: 5500 },
-    { character: "layla", characterMood: "thinking", text: "A scam is a trick that makes you THINK you're getting something good, when really someone's trying to steal from you.", duration: 5500 },
-    { character: "adam", characterMood: "thumbsup", text: "If it sounds TOO GOOD TO BE TRUE - it probably is! Free prizes, huge wins, mystery gifts... they're usually scams.", duration: 5500 },
-    { character: "layla", characterMood: "excited", text: "Today we'll learn to spot ALL of Raccoon's sneaky scams. Let's become Scam Detectors!", sound: "select", duration: 5000 },
-    { text: "MISSION START! 🕵️", bg: "normal", sound: "confetti", duration: 2000 },
+    { text: "CYBER HEROES ACADEMY\nWEEK 4: REAL OR FAKE?", bg: "normal", duration: 2600 },
   ],
 
   screens: [
-    { type: "video", videoPlaceholder: "Week 4: Scams & Tricks intro video" },
+    // 0 - OPENING VIDEO: the V-Bucks blast
+    { type: "video", videoPlaceholder: "Week 4: The Prize That Wasn't", videoSrc: "/videos/module-04-intro.mp4" },
+
+    // 1 - ALERT: incident report
+    {
+      type: "alert",
+      photoSrc: "/cyberheroes/alerts/week-04.png",
+      title: "ALERT INCOMING",
+      badge: "Incident Report",
+      caption: "The Raccoon blasted out 'YOU WON 10,000 V-BUCKS!' to every kid in the city - and someone clicked. There was no prize. There never is. Time to learn his tricks!",
+      photoCaption: "Wk 4 - The Prize That Wasn't",
+      ctaLabel: "Start the Mission →",
+    },
+
+    // 2 - Mission brief
     {
       type: "mission",
       objectives: [
-        "Understand what scams are and why they work",
-        "Spot the 5 common scam warning signs",
-        "Know exactly what to do when you see a scam",
+        "Learn what a scam really is - a trick in a costume",
+        "Spot 'too good to be true' and 'hurry up!' a mile away",
+        "Master the no-bite rule: stop, check, show a grown-up",
       ],
     },
+
+    /* ─────────── BEAT 1 · WHAT A SCAM IS ─────────── */
+    // 3 - Learn
     {
       type: "info",
       title: "What Is a Scam?",
       content:
-        "A scam is a trick designed to steal your money, passwords, or personal info by pretending to offer something good. Scammers are like the Hacker Raccoon - they make things LOOK real, but they're fake.",
+        "A scam is a TRICK dressed up as something nice. It wants one of three things: your info, your family's money, or your click. Real messages just say normal things. Scams always want something back - that's how you spot them.",
       bullets: [
-        "Scams feel exciting - a prize, a reward, a freebie",
-        "They rush you - 'act NOW or miss out!'",
-        "They ask for info - your password, address, or parent's card",
-        "They hide the truth - the 'prize' never actually exists",
+        "A scam is a trick in a costume",
+        "It wants your info, money or clicks",
+        "Real messages don't beg or push",
+        "Scams always want something from you",
+        "You can learn to spot every single one",
       ],
+      bulletIcons: ["🪤", "👀", "💬", "🎁", "🏆"],
+      emblem: "🪤",
+      narration: {
+        speaker: "adam",
+        lines: [
+          "[warmly] Welcome back, Cyber Hero. New mission!",
+          "This week we hunt SCAMS.",
+          "A scam is a trick... wearing a costume.",
+          "[whispers] It wants your info, your family's money, or your click.",
+          "[excited] But here's the good news. Tricks follow patterns!",
+          "Learn the patterns, and no scam can touch you.",
+        ],
+      },
     },
+    // 4 - Game: SORT (the Fishing Dock - hookSort debut)
     {
-      type: "cyberScanner",
+      type: "hookSort",
       items: [
-        { text: "'Congratulations! You won a free iPad!'", isStrong: false, explanation: "Random prize pop-ups are almost always scams" },
-        { text: "An email from your real school account", isStrong: true, explanation: "Known sender, normal school stuff - safe" },
-        { text: "'Your account will be DELETED in 1 hour - click now!'", isStrong: false, explanation: "Urgency is a scam classic - they want you to panic and click" },
-        { text: "A text from Mum reminding you about dinner", isStrong: true, explanation: "From someone you know, normal content - safe" },
-        { text: "'Click here for 10,000 FREE Robux!'", isStrong: false, explanation: "Free currency offers are the #1 scam targeting kids" },
-        { text: "Your dad sharing a photo in the family chat", isStrong: true, explanation: "Trusted sender, expected content - safe" },
-        { text: "'We noticed suspicious activity. Enter your password NOW.'", isStrong: false, explanation: "Real companies never ask for your password by email" },
-        { text: "A calendar reminder for football practice", isStrong: true, explanation: "Your own reminder - totally safe" },
-        { text: "'You've been chosen for a secret reward! Keep it hidden.'", isStrong: false, explanation: "Secrecy is a massive red flag in any scam" },
-        { text: "A teacher's weekly homework message", isStrong: true, explanation: "Expected message from a known trusted sender" },
+        { id: "mum-dinner", text: "Mum: Dinner in 10 minutes!", icon: "🏠", isScam: false, explanation: "A normal message from someone you know - reel it in!" },
+        { id: "prize-draw", text: "You WON a prize draw you never entered!", icon: "🎁", isScam: true, explanation: "You can't win a draw you never entered. Classic bait - cut it loose!" },
+        { id: "teammate", text: "Your teammate: Good game yesterday!", icon: "⭐", isScam: false, explanation: "Friendly game chat from a real teammate - keep it." },
+        { id: "free-coins", text: "FREE game coins! Just type your password here", icon: "🪤", isScam: true, explanation: "NOTHING free ever needs your password. That's the whole trick." },
+        { id: "school-day", text: "School: Non-uniform day on Friday", icon: "🏫", isScam: false, explanation: "A normal school notice - real and useful." },
+        { id: "parcel", text: "Your parcel is stuck! Pay £1 to release it", icon: "✉️", isScam: true, explanation: "Real parcels don't get 'stuck' for £1. Tiny payments are how they grab card numbers." },
+        { id: "billionaire", text: "A billionaire is giving away money - reply FAST!", icon: "💎", isScam: true, explanation: "Billionaires don't message kids. 'Reply fast' is the rush trick." },
+        { id: "library", text: "Library: Your book is ready to collect", icon: "✅", isScam: false, explanation: "A normal library message - nothing asked for, nothing fishy." },
       ],
+      hints: {
+        tier1: "Ask: does it WANT something from me - info, money, or a click?",
+        tier2: "Normal messages just tell you things. Scams offer prizes, beg for passwords, or demand tiny payments.",
+      },
+      narration: {
+        speaker: "adam",
+        lines: [
+          "[excited] Welcome to the Fishing Dock!",
+          "Messages are hanging on the lines.",
+          "[warmly] Real ones? Reel them in - they're keepers.",
+          "[whispers] Scams? Snip! Cut the line and let them sink.",
+          "[excited] Take your time. One catch at a time!",
+        ],
+      },
+      coachLines: {
+        speaker: "adam",
+        lines: ["Read the first catch - then reel it in or cut it loose!"],
+      },
     },
+    // 5 - Prove: FINISH
+    {
+      type: "quickCheck",
+      mode: "finish",
+      prompt: "A scam is a ___ in a costume.",
+      choices: [
+        { text: "trick", isCorrect: true },
+        { text: "game", isCorrect: false },
+        { text: "prize", isCorrect: false },
+        { text: "friend", isCorrect: false },
+      ],
+      praise: "Exactly - a trick in a costume! ✓",
+    },
+
+    // 6 - Recap · Concept 1 of 5
+    {
+      type: "recap",
+      concept: 1,
+      total: 5,
+      learned: "A scam is a trick in a costume - it wants your info, money or clicks.",
+      next: "the oldest bait in the book: too good to be true",
+      emblem: "🪤",
+      narration: {
+        speaker: "layla",
+        lines: [
+          "[warmly] Great start, Cyber Hero!",
+          "You sorted the whole dock - real ones kept, scams sunk.",
+          "Remember: scams always WANT something.",
+          "[excited] Next up - the shiniest bait of all!",
+        ],
+      },
+    },
+
+    /* ─────────── BEAT 2 · TOO GOOD TO BE TRUE ─────────── */
+    // 7 - Learn
     {
       type: "info",
-      title: "The 5 Scam Warning Signs",
-      content: "Every scam has at least ONE of these signs. Spot any of them and you know something's off.",
+      title: "Too Good To Be True",
+      content:
+        "FREE iPhone! 10,000 V-Bucks! You're our millionth visitor! Here's the hero rule: if it sounds TOO amazing, it isn't real. Nobody gives away treasure to strangers. The more amazing the prize, the bigger the trick.",
       bullets: [
-        "Too good to be true - 'FREE' massive prizes out of nowhere",
-        "Urgent pressure - 'Act NOW or lose it!' to stop you thinking",
-        "Asks for secrets - passwords, card numbers, or home address",
-        "Weird spelling or links - 'r0blox.xyz' instead of 'roblox.com'",
-        "Asks you to keep it a secret from parents - ALWAYS a red flag",
+        "'FREE' + amazing = almost always a trick",
+        "'You WON!' - but you never entered",
+        "Nobody gives treasure to strangers",
+        "The bigger the prize, the bigger the trick",
+        "Real free things never ask for anything back",
       ],
+      bulletIcons: ["🎁", "🏆", "💎", "🪤", "✅"],
+      emblem: "🎁",
+      narration: {
+        speaker: "layla",
+        lines: [
+          "[excited] Free iPhone! Ten thousand V-Bucks! A puppy!",
+          "[laughs] Sounds amazing, right?",
+          "[whispers] That's exactly the point. It's BAIT.",
+          "Nobody gives away treasure to strangers. Nobody.",
+          "[warmly] If it sounds too good to be true... it isn't true.",
+          "[excited] Ready to blast some bait? Let's go!",
+        ],
+      },
     },
+    // 8 - Game: ARCADE (spamBlaster's first week outing - Too-Good Blaster)
     {
       type: "spamBlaster",
+      introTitle: "Too-Good Blaster!",
+      introDescription: "Offers are flying in! ZAP the too-good-to-be-true ones - let the normal messages through!",
+      headline: "⚡ ZAP THE TOO-GOOD OFFERS! ⚡",
+      missLabel: "TRICKS",
       emails: [
-        { sender: "FreeStuffDaily", subject: "🎉 YOU WON A PS5!!! Click to claim!", isPhishing: true, clue: "Random prize you never entered = scam" },
-        { sender: "Mum", subject: "Can you pick up milk on the way home?", isPhishing: false, clue: "" },
-        { sender: "Robux Team", subject: "FREE 10,000 Robux - enter password now!", isPhishing: true, clue: "Real Roblox NEVER asks for your password by email" },
-        { sender: "Ms Thompson", subject: "Class photo next Thursday - smart uniform", isPhishing: false, clue: "" },
-        { sender: "Security Alert", subject: "URGENT: Your account will be DELETED in 1 hour", isPhishing: true, clue: "Fake urgency + threats = classic scam" },
-        { sender: "Best Friend Jenna", subject: "Did you see that funny tiktok I sent?", isPhishing: false, clue: "" },
-        { sender: "App1e Supp0rt", subject: "Verify your Apple ID immediately", isPhishing: true, clue: "Notice the zeros - 'App1e' with a 1, not an L" },
-        { sender: "School Office", subject: "Parents' evening rescheduled to Oct 12th", isPhishing: false, clue: "" },
-        { sender: "Lucky Winner", subject: "Final chance - claim your £500 Amazon voucher!", isPhishing: true, clue: "'Final chance' + random prize = pressure scam" },
-        { sender: "Uncle Dave", subject: "Happy birthday for tomorrow! 🎂", isPhishing: false, clue: "" },
+        { sender: "Prize Central", subject: "You WON a FREE iPhone!", isPhishing: true, clue: "You can't win a draw you never entered" },
+        { sender: "Sam", subject: "Funny cat video from break!", isPhishing: false, clue: "" },
+        { sender: "V-Bucks Giveaway", subject: "FREE 10,000 V-BUCKS - claim NOW!", isPhishing: true, clue: "Free game money is always bait" },
+        { sender: "Coach Lee", subject: "Football moved to 4pm today", isPhishing: false, clue: "" },
+        { sender: "Lucky Visitor", subject: "You're our 1,000,000th visitor! Collect your prize!", isPhishing: true, clue: "No website counts visitors like this" },
+        { sender: "Grandma", subject: "See you Sunday for roast!", isPhishing: false, clue: "" },
+        { sender: "Mega Deals", subject: "FREE tablet for the first 10 kids!", isPhishing: true, clue: "'Free for the first 10' is a rush trick" },
+        { sender: "Library", subject: "Your dragon book is ready", isPhishing: false, clue: "" },
+        { sender: "Puppy Prizes", subject: "You won a PUPPY! Click to claim!", isPhishing: true, clue: "Nobody posts you a free puppy" },
+        { sender: "Golden Tickets", subject: "Golden ticket winner - that's YOU!", isPhishing: true, clue: "Too amazing = not real" },
       ],
+      narration: {
+        speaker: "adam",
+        lines: [
+          "[excited] Bait incoming! Offers are flying at your screen.",
+          "Free iPhones. Free V-Bucks. Free puppies!",
+          "[laughs] All bait. ZAP every too-good offer!",
+          "[warmly] But careful - normal messages fly through too. Let those pass!",
+        ],
+      },
     },
+    // 9 - Prove: SPEED
+    {
+      type: "quickCheck",
+      mode: "speed",
+      prompt: "Quick - which one is BAIT?",
+      speedMs: 5000,
+      choices: [
+        { text: "FREE tablet - first 10 kids only!", isCorrect: true },
+        { text: "Football practice moved to 4pm", isCorrect: false },
+        { text: "Your library book is ready", isCorrect: false },
+      ],
+      praise: "Zapped in record time! ✓",
+    },
+
+    // 10 - Recap · Concept 2 of 5
+    {
+      type: "recap",
+      concept: 2,
+      total: 5,
+      learned: "If it sounds too good to be true, it isn't true. Amazing prizes are bait.",
+      next: "the trick that makes your heart race - HURRY!",
+      emblem: "🎁",
+      narration: {
+        speaker: "adam",
+        lines: [
+          "[excited] Two tricks down! Your bait-detector is gleaming.",
+          "Free stuff from strangers? ZAPPED.",
+          "[laughs] The Raccoon's puppy prize fooled nobody today.",
+          "[whispers] But his next trick doesn't offer... it SCARES.",
+        ],
+      },
+    },
+
+    /* ─────────── BEAT 3 · HURRY! / SCARY ─────────── */
+    // 11 - Learn
+    {
+      type: "info",
+      title: "The Hurry-Up Trick",
+      content:
+        "ONLY 10 MINUTES LEFT! Your account will be DELETED! Scams rush you and scare you ON PURPOSE - because a racing heart doesn't stop to think. Here's the secret: real companies NEVER give you scary countdowns. Feeling rushed IS the red flag.",
+      bullets: [
+        "Countdowns and deadlines = the rush trick",
+        "Scary warnings = the fear trick",
+        "A racing heart doesn't stop to think",
+        "Real companies never threaten you",
+        "Feeling rushed? That IS the red flag",
+      ],
+      bulletIcons: ["🔔", "💀", "⚡", "✅", "🚫"],
+      emblem: "🔔",
+      narration: {
+        speaker: "adam",
+        lines: [
+          "[nervous] URGENT! Ten minutes left! Your account will be DELETED!",
+          "[warmly] Feel your heart speed up? That's the trick working.",
+          "Scams rush you and scare you on purpose...",
+          "[whispers] because a racing heart doesn't stop to think.",
+          "[excited] So here's your superpower: feeling rushed IS the red flag.",
+          "Spot the rush, and the trick falls apart. Inspector time!",
+        ],
+      },
+    },
+    // 12 - Game: INSPECT (phishInspector's first week outing - the Trick Inspector)
+    {
+      type: "phishInspector",
+      introTitle: "The Trick Inspector",
+      introSubtitle: "Don't just react - INSPECT. Check all 4 clues, then decide: safe or trick?",
+      emails: [
+        {
+          id: "acct-panic",
+          sender: "Account Security",
+          subject: "URGENT: your game account will be DELETED in 10 MINUTES!",
+          body: "We detected a problem! Click FIX IT NOW within 10 minutes or lose EVERYTHING you own forever!",
+          isPhishing: true,
+          inspections: {
+            senderNote: "'Account Security' - but real games message you INSIDE the game, not like this.",
+            senderIsRedFlag: true,
+            linkText: "FIX IT NOW button",
+            linkNote: "A big panic button begging for a click. We're not clicking ANYTHING while we check.",
+            linkIsRedFlag: true,
+            urgencyNote: "TEN MINUTES?! Real companies never give you a scary countdown. Ever.",
+            urgencyIsRedFlag: true,
+            claimNote: "'Lose EVERYTHING forever' - big scary threats are the fear trick at full volume.",
+            claimIsRedFlag: true,
+          },
+        },
+        {
+          id: "school-books",
+          sender: "Mrs Patel (Maple Hill School)",
+          subject: "Library books due back Friday",
+          body: "Just a reminder that class 4B's library books are due back this Friday. Thanks! Mrs Patel",
+          isPhishing: false,
+          inspections: {
+            senderNote: "Your actual teacher, from the school's own address. Checks out.",
+            senderIsRedFlag: false,
+            linkText: "No links at all",
+            linkNote: "Nothing to click - it just tells you something useful.",
+            linkIsRedFlag: false,
+            urgencyNote: "A calm, normal reminder. No countdown, no panic.",
+            urgencyIsRedFlag: false,
+            claimNote: "Asks for nothing. Real messages don't want anything back.",
+            claimIsRedFlag: false,
+          },
+        },
+        {
+          id: "tablet-tonight",
+          sender: "PrizeBot 3000",
+          subject: "LAST CHANCE! Your FREE tablet expires TONIGHT!",
+          body: "You were chosen! Claim your FREE tablet before MIDNIGHT or it goes to someone else. Hurry!!!",
+          isPhishing: true,
+          inspections: {
+            senderNote: "'PrizeBot 3000'? You've never heard of it - and it's 'chosen' you out of nowhere.",
+            senderIsRedFlag: true,
+            linkText: "CLAIM NOW link",
+            linkNote: "The whole message exists to make you tap this. That's the goal of the trick.",
+            linkIsRedFlag: true,
+            urgencyNote: "'Expires TONIGHT!' - a deadline to stop you thinking. The rush trick again.",
+            urgencyIsRedFlag: true,
+            claimNote: "A free tablet for doing nothing? Too good to be true = not true.",
+            claimIsRedFlag: true,
+          },
+        },
+      ],
+      hints: {
+        tier1: "Check how it makes you FEEL. Rushed or scared = the trick is working on you.",
+        tier2: "Real messages are calm and want nothing. Countdowns, threats and panic buttons = trick, every time.",
+      },
+      narration: {
+        speaker: "adam",
+        lines: [
+          "[excited] Inspector on duty! Messages are coming in.",
+          "Check all four clues on each one...",
+          "who sent it, what it wants you to press, how it sounds, and what it promises.",
+          "[warmly] Rushed and scary... or calm and normal? You decide!",
+        ],
+      },
+    },
+    // 13 - Prove: LIE
+    {
+      type: "quickCheck",
+      mode: "lie",
+      prompt: "Is that true?",
+      raccoonLine: "you have 60 seconds to click, or your account is GONE FOREVER! Tick tock!",
+      choices: [
+        { text: "TRUE", isCorrect: false },
+        { text: "FALSE", isCorrect: true },
+      ],
+      praise: "Busted! Real companies NEVER do countdowns. ✓",
+      nudge: "Who actually talks like that - a real company, or a trickster?",
+    },
+
+    // 14 - Recap · Concept 3 of 5
+    {
+      type: "recap",
+      concept: 3,
+      total: 5,
+      learned: "Scams rush and scare you on purpose. Feeling rushed IS the red flag.",
+      next: "the disguise trick - senders that LOOK real",
+      emblem: "🔔",
+      narration: {
+        speaker: "layla",
+        lines: [
+          "[excited] Three tricks down!",
+          "Countdowns, threats, panic buttons...",
+          "[laughs] you inspected them all and never once got rushed.",
+          "[whispers] But his sneakiest trick is next. The lookalike...",
+        ],
+      },
+    },
+
+    /* ─────────── BEAT 4 · FAKE SENDERS ─────────── */
+    // 15 - Learn
+    {
+      type: "info",
+      title: "The Lookalike Sender",
+      content:
+        "The sneakiest scams pretend to be someone you TRUST - your game, your school, even family. But look closely and the disguise slips: a letter swapped for a number, a weird address, a name that's almost-but-not-quite right. Real senders you can check; lookalikes fall apart when you look.",
+      bullets: [
+        "Scams dress up as people you trust",
+        "Look close: swapped letters, sneaky numbers",
+        "Check the address, not just the name",
+        "Almost-right is all-wrong",
+        "Not sure? Check with a grown-up first",
+      ],
+      bulletIcons: ["🎭", "🔍", "✉️", "🚫", "👪"],
+      emblem: "🕵️",
+      narration: {
+        speaker: "layla",
+        lines: [
+          "[whispers] Now for the sneakiest trick of all.",
+          "A message that LOOKS like it's from your game... or your school.",
+          "[warmly] But look closely. A letter becomes a number.",
+          "The address is weird. Something's just... off.",
+          "[excited] Almost-right is ALL-WRONG.",
+          "Time to line up some senders and bust the imposter!",
+        ],
+      },
+    },
+    // 16 - Game: SELECT (Sender Lineup debut)
+    {
+      type: "senderLineup",
+      rounds: [
+        {
+          id: "game-update",
+          prompt: "Four messages say your game needs attention. One sender is wearing a disguise - bust it!",
+          senders: [
+            { id: "mega-real", name: "Mega Blasters", detail: "message centre, inside the game", icon: "🎮", isFake: false, note: "Real games talk to you INSIDE the game - that's the safe channel." },
+            { id: "school", name: "Maple Hill School", detail: "office@maplehill.sch.uk", icon: "🏫", isFake: false, note: "Your actual school, from its own address. Checks out." },
+            { id: "mega-fake", name: "Mega B1asters", detail: "prize@mega-blasterz.win", icon: "🎮", isFake: true, note: "Look close: a '1' where the 'l' should be, and a weird '.win' address. IMPOSTER." },
+            { id: "grandma", name: "Grandma", detail: "saved in the family phone", icon: "👪", isFake: false, note: "A saved family contact - as real as it gets." },
+          ],
+        },
+        {
+          id: "spelling-prize",
+          prompt: "Someone says you won a spelling prize. Who's the imposter?",
+          senders: [
+            { id: "teacher", name: "Mrs Patel", detail: "your teacher, school email", icon: "🏫", isFake: false, note: "Your real teacher would be the one to tell you - and she asks for nothing." },
+            { id: "dad", name: "Dad", detail: "saved family contact", icon: "👪", isFake: false, note: "A saved family contact. Real." },
+            { id: "office", name: "School Office", detail: "office@maplehill.sch.uk", icon: "✅", isFake: false, note: "The school's own address again - consistent and checkable." },
+            { id: "prizes4u", name: "Spelling Prizes 4U", detail: "winner@freeprizes.biz", icon: "🎁", isFake: true, note: "A prize company you've never heard of, from 'freeprizes.biz'? IMPOSTER." },
+          ],
+        },
+        {
+          id: "gift-card",
+          prompt: "A gift card has arrived... apparently. Spot the disguise!",
+          senders: [
+            { id: "roblox-real", name: "Roblox", detail: "gift message, inside the app", icon: "🎮", isFake: false, note: "Inside the app = the real channel." },
+            { id: "roblox-fake", name: "R0BLOX Rewards", detail: "gift@roblox-rewards.club", icon: "🎮", isFake: true, note: "A ZERO instead of an 'O', plus a '.club' address. Almost-right is all-wrong!" },
+            { id: "cousin", name: "Your cousin", detail: "saved family contact", icon: "⭐", isFake: false, note: "A real saved contact sending a real gift. Lovely!" },
+            { id: "shop", name: "Game Shop receipt", detail: "after Mum bought the card", icon: "✅", isFake: false, note: "A receipt for something a grown-up actually bought. Real." },
+          ],
+        },
+      ],
+      hints: {
+        tier1: "Read every NAME letter by letter - and check where the message is really from.",
+        tier2: "Swapped letters (1 for l, 0 for O) and weird addresses (.win, .biz, .club) give the imposter away.",
+      },
+      narration: {
+        speaker: "layla",
+        lines: [
+          "[excited] The lineup is ready!",
+          "Four senders on the podiums. Three are real.",
+          "[whispers] One is a lookalike in disguise.",
+          "[warmly] Read carefully, letter by letter... then bust the imposter!",
+        ],
+      },
+      coachLines: {
+        speaker: "layla",
+        lines: ["Check each name AND its address - then tap the imposter!"],
+      },
+    },
+    // 17 - Prove: RECALL
+    {
+      type: "quickCheck",
+      mode: "recall",
+      prompt: "Which sender is the FAKE?",
+      choices: [
+        { text: "Mega B1asters - prize@mega-blasterz.win", isCorrect: true },
+        { text: "Grandma - saved family contact", isCorrect: false },
+        { text: "School Office - the school's own address", isCorrect: false },
+        { text: "Mega Blasters - inside the game", isCorrect: false },
+      ],
+      praise: "That sneaky '1' didn't fool you! ✓",
+    },
+
+    // 18 - Recap · Concept 4 of 5
+    {
+      type: "recap",
+      concept: 4,
+      total: 5,
+      learned: "Lookalike senders swap letters and use weird addresses. Almost-right is all-wrong.",
+      next: "the golden move that beats every scam at once",
+      emblem: "🕵️",
+      narration: {
+        speaker: "adam",
+        lines: [
+          "[excited] Four tricks down! Nothing gets past you.",
+          "Ones for L's, zeros for O's...",
+          "[laughs] you read every disguise like a book.",
+          "[warmly] One last move to learn. And it beats ALL of them.",
+        ],
+      },
+    },
+
+    /* ─────────── BEAT 5 · DON'T BITE ─────────── */
+    // 19 - Learn
+    {
+      type: "info",
+      title: "Don't Bite: Stop, Check, Show",
+      content:
+        "Here's the move that beats every scam ever made: DON'T BITE. Step 1 - STOP. Don't click, don't reply, don't rush. Step 2 - CHECK. Read it slowly. Who sent it? What does it want? Step 3 - SHOW a grown-up. Every time. A scam only works if you bite - so don't!",
+      bullets: [
+        "Step 1: STOP - no clicking, no rushing",
+        "Step 2: CHECK - read it slowly",
+        "Step 3: SHOW a grown-up",
+        "A scam only works if you bite",
+        "Not biting beats every trick ever made",
+      ],
+      bulletIcons: ["✋", "🔍", "👪", "🪤", "🏆"],
+      emblem: "✋",
+      narration: {
+        speaker: "adam",
+        lines: [
+          "[warmly] Last lesson - and it's the golden one.",
+          "Every scam, every trick, every disguise...",
+          "[excited] loses to the same three steps.",
+          "STOP. Don't click, don't rush.",
+          "CHECK. Read it slowly, like a detective.",
+          "[whispers] And SHOW a grown-up. Every single time.",
+          "[excited] A scam only works if you bite. So... don't bite!",
+        ],
+      },
+    },
+    // 20 - Game: DECIDE (Bite or Don't - classic card look)
     {
       type: "chooseYourPath",
       scenarios: [
         {
-          setup: "A pop-up says: 'CONGRATULATIONS! You're the 1,000,000th visitor! Click here to claim your FREE iPhone!!!' What do you do?",
+          setup: "A message flashes: 'You WON 10,000 V-Bucks! Click in 10 seconds or lose them FOREVER!'",
           choices: [
-            { text: "Click it - free iPhone!", isSafe: false, consequence: "Oh no! That was a scam. The website tried to steal your personal info - no iPhone exists." },
-            { text: "Close the pop-up and tell a parent", isSafe: true, consequence: "Perfect! Random prize pop-ups are NEVER real. You dodged a scam." },
+            { text: "Click fast - only 10 seconds!", isSafe: false, consequence: "There were never any V-Bucks. Rushing you is HOW the trick works - and the click was all he wanted." },
+            { text: "STOP - check - show a grown-up", isSafe: true, consequence: "Hero move! You paused, and the 'prize' vanished... because it never existed. No bite, no trick." },
           ],
         },
         {
-          setup: "Someone messages you on a game: 'I work for Roblox! If you give me your password, I'll add 50,000 Robux to your account!' What do you do?",
+          setup: "A text says: 'Your parcel is waiting! Enter a parent's card number to release it.'",
           choices: [
-            { text: "Share your password - 50,000 Robux is amazing!", isSafe: false, consequence: "Disaster! They stole your account, your Robux, AND any payment info linked to it." },
-            { text: "Report them and tell a parent", isSafe: true, consequence: "Real Roblox staff would NEVER ask for your password. You spotted the scam perfectly." },
+            { text: "Type in the card number - I want my parcel!", isSafe: false, consequence: "There is no parcel - and now a stranger has the card number. Card numbers NEVER go into surprise messages." },
+            { text: "STOP - check - show a grown-up", isSafe: true, consequence: "Perfect! A grown-up checked: no parcel was ever coming. The 'stuck parcel' is one of the oldest tricks going." },
           ],
         },
         {
-          setup: "You get an email: 'Dear costumer, your acount is comprimised. Clik here to fix.' What do you notice?",
+          setup: "A pop-up screams: 'Your computer has 5 VIRUSES! Call this number NOW!'",
           choices: [
-            { text: "Click the link - it says my account is in trouble!", isSafe: false, consequence: "The spelling mistakes were a clue! Real companies proofread their emails. You just clicked a dangerous link." },
-            { text: "Spot the bad spelling and delete it", isSafe: true, consequence: "Excellent! Real companies never send emails this badly spelled. Classic scam signs." },
-          ],
-        },
-        {
-          setup: "A text says: 'HMRC: You're owed £250. Click here to claim within 24 hours.' What should you do?",
-          choices: [
-            { text: "Click - it might be real money owed to you!", isSafe: false, consequence: "HMRC doesn't text random links. This was a phishing scam and clicking it put your family at risk." },
-            { text: "Delete it and show a parent", isSafe: true, consequence: "Smart! Government agencies never text surprise money offers. Always check with an adult." },
+            { text: "Panic and call the number", isSafe: false, consequence: "The 'virus warning' WAS the trick - the people on that number are the tricksters themselves." },
+            { text: "STOP - close it - show a grown-up", isSafe: true, consequence: "Exactly right. Scary pop-ups are ads in monster costumes. A grown-up can check the computer properly." },
           ],
         },
       ],
+      narration: {
+        speaker: "adam",
+        lines: [
+          "[warmly] Practice time - the tricky moments are coming.",
+          "Each one will push you to act FAST.",
+          "[whispers] That push is your signal.",
+          "[excited] Stop. Check. Show. Let's see you do it!",
+        ],
+      },
     },
+    // 21 - Prove: PUT-IN-ORDER
     {
-      type: "memoryMatch",
-      pairs: [
-        { term: "Phishing", match: "Fake messages trying to steal info", colour: "#ef4444" },
-        { term: "Scareware", match: "Fake 'YOUR COMPUTER HAS A VIRUS!' pop-ups", colour: "#f97316" },
-        { term: "Fake Prize", match: "'You won!' when you never entered", colour: "#fbbf24" },
-        { term: "Urgent Pressure", match: "'Act NOW or lose your account!'", colour: "#8b5cf6" },
-        { term: "Red Flag URL", match: "r0blox.xyz instead of roblox.com", colour: "#60a5fa" },
-        { term: "Safe Response", match: "Don't click. Show a parent.", colour: "#34d399" },
+      type: "quickCheck",
+      mode: "order",
+      prompt: "A tricky message lands. Tap the hero steps IN ORDER:",
+      choices: [
+        { text: "STOP - don't click", isCorrect: true },
+        { text: "CHECK it slowly", isCorrect: true },
+        { text: "SHOW a grown-up", isCorrect: true },
       ],
+      praise: "Stop. Check. Show. Trick-proof! ✓",
+      nudge: "What's the very FIRST thing - before any checking?",
     },
+
+    // 22 - Recap · Concept 5 of 5
     {
-      type: "info",
-      title: "STOP. THINK. CHECK.",
-      content: "Before you click ANYTHING that feels exciting or urgent, follow these three steps:",
-      bullets: [
-        "STOP - don't click right away, even if it feels urgent",
-        "THINK - does this sound too good to be true? Am I being rushed?",
-        "CHECK - show a trusted adult BEFORE doing anything",
-      ],
+      type: "recap",
+      concept: 5,
+      total: 5,
+      learned: "Stop, check, show a grown-up. A scam only works if you bite - so don't bite.",
+      next: "one final drill, then the Raccoon's inbox of tricks",
+      emblem: "✋",
+      narration: {
+        speaker: "layla",
+        lines: [
+          "[excited] That's all FIVE trick-beating powers!",
+          "You know what scams are, you smell the bait,",
+          "you never rush, you bust every lookalike...",
+          "[whispers] and you never, ever bite.",
+          "[excited] Final drill - then let's empty his whole inbox of tricks!",
+        ],
+      },
     },
+
+    // 23 - Consolidation: The Trick Scanner (W1 scanner engine, W4 content)
     {
-      type: "protectTheData",
+      type: "cyberScanner",
+      labels: {
+        positive: "REAL",
+        negative: "TRICK",
+        positiveHint: "Tap REAL for normal, calm messages",
+        negativeHint: "Tap TRICK for bait, rush and lookalikes",
+        tipWhenPositive: "Calm messages from people you can check, wanting nothing back - real.",
+        tipWhenNegative: "Prizes, countdowns, threats and lookalike senders - tricks, every one.",
+        hint1: "Ask the hero questions: does it WANT something? Is it RUSHING me? Is the sender almost-but-not-quite right?",
+        hint2: "REAL = calm + checkable + wants nothing. TRICK = prizes, panic, deadlines, swapped letters.",
+        hint2Example: "REAL: 'Practice moved to 4pm'   TRICK: 'FREE iPhone - 10 minutes left!'",
+        hint3: "Quick rule card: too good = trick · countdown = trick · lookalike name = trick · calm and checkable = real.",
+        hint3Example: "'R0BLOX Rewards' ❌    'Library book ready' ✅",
+      },
       items: [
-        { text: "Your password", isPrivate: true },
-        { text: "Your favourite colour", isPrivate: false },
-        { text: "Your parent's credit card number", isPrivate: true },
-        { text: "Your favourite film", isPrivate: false },
-        { text: "Your home address", isPrivate: true },
-        { text: "Your favourite hobby", isPrivate: false },
-        { text: "Your birthday (exact date)", isPrivate: true },
-        { text: "Your pet's name", isPrivate: true },
-        { text: "Your favourite pizza topping", isPrivate: false },
-        { text: "Your bank account info", isPrivate: true },
-        { text: "Your favourite sport", isPrivate: false },
-        { text: "Your email password", isPrivate: true },
+        { text: "'Football practice moved to 4pm' - Coach Lee", isStrong: true, explanation: "Calm, useful, from a real known sender." },
+        { text: "'FREE iPhone! Claim in 10 minutes!' - Prize Central", isStrong: false, explanation: "Bait AND a countdown - a double trick." },
+        { text: "'Your account will be DELETED unless you click NOW'", isStrong: false, explanation: "Fear + rush = the scariest costume tricks wear." },
+        { text: "'See you Sunday for roast!' - Grandma", isStrong: true, explanation: "A real message from a saved family contact." },
+        { text: "'Gift card inside!' - R0BLOX Rewards (.club)", isStrong: false, explanation: "A zero for an O and a weird address - lookalike imposter." },
+        { text: "'Your dragon book is ready' - Library", isStrong: true, explanation: "Calm, wants nothing, easy to check. Real." },
       ],
+      narration: {
+        speaker: "layla",
+        lines: [
+          "[excited] Final drill! Messages are drifting past.",
+          "Tap REAL for the calm, normal ones...",
+          "and TRICK for bait, panic and lookalikes.",
+          "[warmly] Five powers. One scanner. Show me!",
+        ],
+      },
     },
-    {
-      type: "firewallBuilder",
-      goodBlocks: [
-        "Stop before clicking",
-        "Ask a parent",
-        "Check the URL carefully",
-        "Delete suspicious emails",
-        "Report scams to the platform",
-        "Never share passwords",
-        "Look for spelling mistakes",
-        "Ignore urgency pressure",
-      ],
-      badBlocks: [
-        "Click every flashy link",
-        "Believe every 'You won!' message",
-        "Enter passwords in pop-ups",
-        "Ignore weird URLs",
-      ],
-    },
-    {
-      type: "cyberMaze",
-      questions: [
-        { question: "If something online sounds TOO GOOD TO BE TRUE it probably...", answers: ["Is a scam", "Just got lucky", "Is a gift", "Is a reward"], correctIndex: 0 },
-        { question: "A message that says 'act NOW or lose everything!' is using...", answers: ["Fake urgency to pressure you", "Normal politeness", "Grammar", "A joke"], correctIndex: 0 },
-        { question: "Real companies NEVER ask for your password by...", answers: ["Email or text message", "Their official login page", "Customer support phone lines", "Their mobile app"], correctIndex: 0 },
-        { question: "One red flag in a URL is...", answers: ["Weird spelling like 'r0blox.xyz'", "The word 'home'", "A dot between words", "Lower-case letters"], correctIndex: 0 },
-        { question: "The safest reaction to a suspicious message is...", answers: ["Stop, think, show a trusted adult", "Click it fast to not miss out", "Reply and ask them to prove it", "Share it with friends"], correctIndex: 0 },
-      ],
-    },
+
+    // 24 - BOSS BATTLE (placeholder quiz boss - bespoke W4 COMBAT comes with the boss batch)
     { type: "bossBattle" },
+
+    // 25 - CLOSING VIDEO: every scam returns to sender
+    { type: "video", videoPlaceholder: "Week 4: Return to Sender", videoSrc: "/videos/module-04-outro.mp4" },
+
+    // 26 - Mission Debrief
+    {
+      type: "missionDebrief",
+      title: "Mission Complete!",
+      subtitle: "Here's everything you mastered this week.",
+      concepts: [
+        { id: "what", label: "Trick Radar", accent: "#ffb347", icon: "🪤", summary: "A scam is a trick in a costume - it always wants your info, money or clicks." },
+        { id: "toogood", label: "Bait Detector", accent: "#ffd158", icon: "🎁", summary: "Too good to be true = not true. Amazing prizes from strangers are bait." },
+        { id: "hurry", label: "Panic-Proof", accent: "#ff5fb3", icon: "🔔", summary: "Countdowns and threats are the rush trick. Feeling rushed IS the red flag." },
+        { id: "senders", label: "Imposter Buster", accent: "#00e5ff", icon: "🕵️", summary: "Lookalike senders swap letters and hide behind weird addresses. Busted." },
+        { id: "nobite", label: "The No-Bite Rule", accent: "#7eff97", icon: "✋", summary: "Stop. Check. Show a grown-up. A scam only works if you bite." },
+      ],
+      narration: {
+        speaker: "layla",
+        lines: [
+          "[excited] Look at EVERYTHING you mastered this week!",
+          "You smell bait a mile away, no countdown can rush you,",
+          "no lookalike can fool you...",
+          "[laughs] and you never, ever bite!",
+          "[excited] Every scam went straight back to sender. Sticker time!",
+        ],
+      },
+    },
+
+    // 27 - Sticker Unlock
+    {
+      type: "stickerUnlock",
+      title: "Stickers Unlocked!",
+      stickers: [
+        { id: "bait-dodger", name: "Bait Dodger", icon: "🎁", description: "No prize can fool this hero." },
+        { id: "panic-proof", name: "Panic-Proof", icon: "🔔", description: "Countdowns bounce right off." },
+        { id: "imposter-buster", name: "Imposter Buster", icon: "🕵️", description: "Spots the lookalike every time." },
+      ],
+    },
+
+    // 28 - Completion
     { type: "completion" },
   ],
 
+  // Week-lane attack theatre: scam-message tricks only (no fake-people
+  // vocabulary - that's W3's lane; no link/QR mechanics - W16).
+  bossAttacks: [
+    { name: "FAKE PRIZE",      icon: "🎁", color: "#ffd158", glow: "rgba(255, 209, 88, 0.55)",  tag: "Too good = not true",       emblemColor: 0xffd158 },
+    { name: "COUNTDOWN SCARE", icon: "🔔", color: "#ff5fb3", glow: "rgba(255, 95, 179, 0.55)",  tag: "Real companies don't rush", emblemColor: 0xff5fb3 },
+    { name: "LOOKALIKE",       icon: "🎭", color: "#c084fc", glow: "rgba(192, 132, 252, 0.55)", tag: "Almost-right is all-wrong", emblemColor: 0xc084fc },
+  ],
+
+  // Placeholder quiz boss (the bespoke W4 COMBAT - the Inbox of Tricks -
+  // is designed separately with the boss batch).
   bossQuestions: {
     easy: [
-      { question: "What is a scam?", answers: ["A trick to steal your info or money", "A type of computer game", "A fun email", "A school subject"], correctIndex: 0, explanation: "Scams are tricks designed to take something from you" },
-      { question: "A pop-up says 'You won a free phone!' Should you click?", answers: ["Yes - free phone!", "No - random prizes are scams", "Maybe - only on Tuesdays", "Yes if it has emojis"], correctIndex: 1, explanation: "Random prize pop-ups are almost always scams" },
-      { question: "'URGENT! Click NOW!' is using what trick?", answers: ["Kindness", "Fake urgency to make you panic-click", "Politeness", "A secret code"], correctIndex: 1, explanation: "Scammers rush you so you don't have time to think" },
-      { question: "If an email has lots of spelling mistakes it's probably...", answers: ["A scam", "From a teacher", "Official", "Urgent"], correctIndex: 0, explanation: "Real companies check their spelling - bad spelling is a major scam sign" },
-      { question: "Real Roblox staff ask for your password when?", answers: ["Every Monday", "Never", "Only for big prizes", "Only if you ask"], correctIndex: 1, explanation: "Real game companies NEVER ask for your password by chat or email" },
-      { question: "If a stranger offers you 'free V-Bucks' for your info they are...", answers: ["Being very kind", "Running a scam", "A Fortnite employee", "Celebrating their birthday"], correctIndex: 1, explanation: "'Free' currency offers are the most common scam targeting kids" },
-      { question: "Before clicking anything suspicious you should...", answers: ["Click it quickly", "Show a trusted adult first", "Forward it to friends", "Reply to the sender"], correctIndex: 1, explanation: "Always check with a parent or teacher before clicking anything unexpected" },
-      { question: "Which URL looks fake?", answers: ["roblox.com", "r0blox-free.xyz", "bbc.co.uk", "google.com"], correctIndex: 1, explanation: "Zeros instead of letters and weird endings like .xyz are scam red flags" },
-      { question: "A scam that asks for your password is called...", answers: ["Phishing", "Texting", "Cooking", "Typing"], correctIndex: 0, explanation: "Phishing is when scammers 'fish' for your passwords and info" },
-      { question: "The Hacker Raccoon wants you to click quickly so you...", answers: ["Have fun", "Don't have time to think", "Can message him", "Learn faster"], correctIndex: 1, explanation: "Scammers rush you because they know you'd spot the scam if you thought about it" },
+      { question: "What does a scam always WANT?", answers: ["Your info, money or clicks", "To be your friend", "Nothing at all", "To play games"], correctIndex: 0, explanation: "Scams always want something back - that's how you spot them." },
+      { question: "'FREE iPhone - you WON!' But you never entered anything. That's...", answers: ["Bait - too good to be true", "Your lucky day", "A nice surprise", "Worth one little click"], correctIndex: 0, explanation: "You can't win a draw you never entered. Amazing prizes are bait." },
+      { question: "A message gives you a scary 10-minute countdown. Real companies...", answers: ["NEVER do that - it's the rush trick", "Do it all the time", "Only do it on Mondays", "Do it to be helpful"], correctIndex: 0, explanation: "Countdowns exist to stop you thinking. Feeling rushed IS the red flag." },
     ],
     medium: [
-      { question: "'Scareware' is a scam that uses...", answers: ["Funny pictures", "Fake virus warnings to scare you into clicking", "Real viruses", "Free games"], correctIndex: 1, explanation: "Scareware pretends your device has a virus to make you panic-click a fake fix" },
-      { question: "A text from 'HMRC' about a refund is almost always...", answers: ["Real - they owe you money", "A scam - HMRC doesn't text random links", "A test", "From your teacher"], correctIndex: 1, explanation: "Government agencies never text you surprise money through random links" },
-      { question: "What does 'phishing' mean?", answers: ["Fishing with friends", "Using fake messages to 'fish' for your info", "A type of virus", "A game in Minecraft"], correctIndex: 1, explanation: "Phishing is the name for scam messages trying to hook your personal info" },
-      { question: "A 'too good to be true' offer usually is...", answers: ["True", "Not true - it's a scam", "Illegal but real", "A surprise gift"], correctIndex: 1, explanation: "If something seems impossibly good, it's almost always a lie" },
-      { question: "You get an email from 'App1e Support'. What's wrong?", answers: ["Nothing, that's normal", "The '1' is a fake letter in Apple - it's a scam", "Apple wrote it wrong", "The sender is typing fast"], correctIndex: 1, explanation: "Scammers use numbers that look like letters to trick you: 'App1e' not 'Apple'" },
-      { question: "Why do scammers want you to keep things a secret from parents?", answers: ["Parents spoil surprises", "Because parents would spot the scam", "It's tradition", "Privacy reasons"], correctIndex: 1, explanation: "Scammers know adults are harder to trick, so they try to isolate kids" },
-      { question: "A scam offering free stuff often really wants...", answers: ["Your passwords or info", "To be kind", "To give you presents", "To have fun"], correctIndex: 0, explanation: "The 'free' thing is just bait - what they really want is your information" },
-      { question: "Which is the safest response to a suspicious pop-up?", answers: ["Click 'X' and close the tab, then tell an adult", "Click 'OK' to make it go away", "Click the big button in the middle", "Reply to it"], correctIndex: 0, explanation: "Always close suspicious pop-ups with the X and tell a trusted adult" },
-      { question: "A game chat message says 'I'm a mod, give me your password to verify.' What's happening?", answers: ["They're a real moderator being helpful", "It's a scam - mods never need your password", "They're doing a prize draw", "It's a test from the game"], correctIndex: 1, explanation: "Real moderators have their own tools - they NEVER need your password" },
-      { question: "If you clicked a scam link by accident you should...", answers: ["Keep it secret", "Tell a trusted adult immediately so they can help", "Delete the whole internet", "Ignore it"], correctIndex: 1, explanation: "Mistakes happen - telling an adult quickly helps fix things fast" },
+      { question: "Which sender is the imposter?", answers: ["R0BLOX Rewards - gift@roblox-rewards.club", "Roblox - inside the app", "Grandma - saved contact", "School Office - school address"], correctIndex: 0, explanation: "A zero for an O and a weird address - almost-right is all-wrong." },
+      { question: "A pop-up screams 'You have 5 VIRUSES! Call NOW!' What is it?", answers: ["The trick itself - close it and show a grown-up", "A helpful warning", "A real virus checker", "A game"], correctIndex: 0, explanation: "Scary pop-ups are ads in monster costumes - the panic IS the trick." },
+      { question: "What are the three no-bite steps?", answers: ["Stop, check, show a grown-up", "Click, read, delete", "Run, hide, wait", "Reply, ask, click"], correctIndex: 0, explanation: "Stop. Check. Show. A scam only works if you bite." },
     ],
     hard: [
-      { question: "'Vishing' is phishing that uses what?", answers: ["Videos only", "Voice calls - fake phone calls", "Vikings", "Vowels"], correctIndex: 1, explanation: "Vishing = voice + phishing, when scammers phone pretending to be banks or support" },
-      { question: "'Smishing' is a scam that uses...", answers: ["Smell", "SMS (text messages)", "Smudging", "Smiles"], correctIndex: 1, explanation: "Smishing = SMS + phishing, scam text messages with fake links" },
-      { question: "A scammer pretending to be from your school district asks for your full name and class. What should you do?", answers: ["Reply - they already know your school", "Never share info unless a parent confirms they're real", "Give only your first name", "Ask them to prove it online"], correctIndex: 1, explanation: "Scammers research public info to sound real. Always verify through a parent, not through the scammer" },
-      { question: "Why do scammers often target kids specifically?", answers: ["Kids have the best computers", "Kids may have less experience spotting tricks and fewer checks on their devices", "It's a game", "It's random"], correctIndex: 1, explanation: "Scammers know kids are learning online safety - that's why we teach it early" },
-      { question: "A 'romance scam' targets people by...", answers: ["Giving roses", "Pretending to fall in love to steal money or info", "Celebrating Valentine's Day", "Playing romantic songs"], correctIndex: 1, explanation: "Romance scams are about fake feelings - another reason never to trust strangers online" },
-      { question: "If a scam email has YOUR name and school in it why shouldn't you trust it?", answers: ["Your info can be found publicly - that doesn't make a sender real", "It's always real if they know you", "Scammers can't guess names", "Schools leak everything"], correctIndex: 0, explanation: "Just because a message knows things about you doesn't mean the sender is genuine - that info is often public" },
-      { question: "A scammer uses 'social engineering' which means...", answers: ["Building actual social networks", "Manipulating people using psychology instead of hacking computers", "Fixing roads", "Teaching social studies"], correctIndex: 1, explanation: "Social engineering is hacking people's minds - trust, fear, urgency - rather than hacking computers" },
-      { question: "You see a 'charity fundraiser' email asking for a bank transfer. How do you verify it?", answers: ["Ignore the email and search for the real charity directly", "Send a small amount first as a test", "Forward it to friends", "Reply asking for proof"], correctIndex: 0, explanation: "Don't use links IN the email. Go to the real charity's website separately and check" },
-      { question: "A scam message uses 'deepfake' audio of a family member asking for help. The clue it's fake is...", answers: ["Even the voice can be faked - always verify by calling them back on a known number", "Family members never ask for help", "Deepfakes aren't real yet", "Audio can't be faked"], correctIndex: 0, explanation: "Modern scams can fake voices. If someone 'family' asks for urgent help, call them back on a number you already know" },
-      { question: "The best long-term defence against scams is...", answers: ["Having the newest phone", "Staying curious and suspicious - especially when rushed or excited", "Blocking everyone", "Never going online"], correctIndex: 1, explanation: "Scams evolve but the tactics - rush, fake excitement, asking for info - stay the same. Stay alert" },
+      { question: "Why do scams RUSH you on purpose?", answers: ["A racing heart doesn't stop to think", "They're in a hurry", "Their offers really expire", "They're just excited"], correctIndex: 0, explanation: "The rush is engineered - slow down and the whole trick falls apart." },
+      { question: "'Your parcel is stuck - pay £1 to release it.' What's really going on?", answers: ["A trick to grab the card number", "A real delivery problem", "A bargain", "A postage discount"], correctIndex: 0, explanation: "The £1 isn't the prize - the card number is. Cards never go into surprise messages." },
+      { question: "What beats EVERY scam ever made?", answers: ["Not biting - stop, check, show", "Clicking really fast", "A strong password", "Turning the screen off"], correctIndex: 0, explanation: "Every trick needs a bite to work. No bite, no trick." },
     ],
   },
 
+  // Keyed by SCREEN INDEX (0-28). Must stay in lock-step with `screens` above -
+  // if a screen is inserted/removed, shift these too (the trailing labels help).
+  // The 5 "recap" checkpoints (after each Prove beat) are indices 6/10/14/18/22.
   reactions: {
-    0: { adam: { mood: "excited", message: "Welcome to Scam School, Cyber Hero!" }, layla: null },
-    1: { adam: null, layla: { mood: "curious", message: "Today we learn how scams trick people." } },
-    2: { adam: { mood: "thinking", message: "Scams are tricks - they LOOK real but they're fake." }, layla: null },
-    3: { adam: null, layla: { mood: "excited", message: "Scan each message - is it safe or a scam?" } },
-    4: { adam: { mood: "worried", message: "Five warning signs every scam uses. Memorise them!" }, layla: null },
-    5: { adam: null, layla: { mood: "thumbsup", message: "Zap every phishing email!" } },
-    6: { adam: { mood: "thinking", message: "Real decisions - which door is the safe one?" }, layla: null },
-    7: { adam: null, layla: { mood: "curious", message: "Match up the scam terms!" } },
-    8: { adam: { mood: "thumbsup", message: "Stop. Think. Check. Three steps to beat any scam." }, layla: null },
-    9: { adam: null, layla: { mood: "excited", message: "Protect the private stuff - scammers want it!" } },
-    10: { adam: { mood: "excited", message: "Build the scam-blocking firewall!" }, layla: null },
-    11: { adam: null, layla: { mood: "thinking", message: "Answer each gate to escape the scam maze." } },
-    12: { adam: { mood: "excited", message: "Boss battle - the Raccoon's ultimate scam!" }, layla: null },
-    13: { adam: null, layla: { mood: "thumbsup", message: "Scam Detector unlocked. Nothing gets past you!" } },
+    0: { adam: { mood: "excited", message: "Mission 4 - real or fake?" }, layla: null }, // intro video
+    1: { adam: { mood: "worried", message: "10,000 V-Bucks... and someone bit!" }, layla: null }, // alert
+    2: { adam: null, layla: { mood: "curious", message: "Here's the plan for today." } }, // mission brief
+    3: { adam: { mood: "thinking", message: "A trick... in a costume." }, layla: null }, // learn: what
+    4: { adam: { mood: "excited", message: "Reel in the real - cut the scams!" }, layla: null }, // game: hookSort
+    5: { adam: null, layla: { mood: "thumbsup", message: "Finish the rule!" } }, // prove: finish
+    6: { adam: null, layla: { mood: "excited", message: "One power down - four to go!" } }, // recap 1
+    7: { adam: null, layla: { mood: "curious", message: "If it's TOO amazing... it's bait." } }, // learn: toogood
+    8: { adam: { mood: "excited", message: "ZAP that bait!" }, layla: null }, // game: spamBlaster
+    9: { adam: null, layla: { mood: "excited", message: "Quick - spot the bait!" } }, // prove: speed
+    10: { adam: { mood: "thumbsup", message: "Bait detector: gleaming!" }, layla: null }, // recap 2
+    11: { adam: { mood: "thinking", message: "Feeling rushed IS the red flag." }, layla: null }, // learn: hurry
+    12: { adam: { mood: "curious", message: "Inspect all four clues, detective." }, layla: null }, // game: phishInspector
+    13: { adam: null, layla: { mood: "worried", message: "He's fibbing - catch him!" } }, // prove: lie
+    14: { adam: null, layla: { mood: "excited", message: "Panic-proof: certified!" } }, // recap 3
+    15: { adam: null, layla: { mood: "thinking", message: "Almost-right is all-wrong." } }, // learn: senders
+    16: { adam: { mood: "excited", message: "Bust that imposter!" }, layla: null }, // game: senderLineup
+    17: { adam: null, layla: { mood: "excited", message: "Which one was fake?" } }, // prove: recall
+    18: { adam: { mood: "thumbsup", message: "No disguise gets past you." }, layla: null }, // recap 4
+    19: { adam: { mood: "thinking", message: "Stop. Check. Show. Every time." }, layla: null }, // learn: nobite
+    20: { adam: { mood: "curious", message: "Feel the push to rush? That's the signal." }, layla: null }, // game: decide
+    21: { adam: null, layla: { mood: "excited", message: "Put the hero steps in order!" } }, // prove: order
+    22: { adam: null, layla: { mood: "excited", message: "All five powers - boss time soon!" } }, // recap 5
+    23: { adam: null, layla: { mood: "excited", message: "Real or trick - scan them fast!" } }, // consolidation
+    24: { adam: { mood: "worried", message: "The Inbox of Tricks - empty it!" }, layla: null }, // boss
+    25: { adam: null, layla: { mood: "excited", message: "Return to sender - all of them!" } }, // outro video
+    26: { adam: { mood: "thumbsup", message: "Look at everything you mastered!" }, layla: null }, // debrief
+    27: { adam: null, layla: { mood: "excited", message: "Stickers earned - off to Cyber HQ!" } }, // stickers
+    28: { adam: { mood: "thumbsup", message: "Trick Catcher badge earned!" }, layla: null }, // completion
   },
 };

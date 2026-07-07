@@ -33,7 +33,7 @@ Every pattern use across all 20 weeks, each with its unique dressing. **Rule: be
 | W1.5 shipped | weakSorter — drop passwords into strong/weak testing rig |
 | W2.2 shipped | cyberScanner conveyor — cards ride a belt past a scanner |
 | W3.3 | **Message Sorting Machine** *(BUILT — conveyorSort's first-ever outing)* — chat messages ride the belt; green FRIENDLY chute vs red RED FLAG chute (new red "flag" tone) |
-| W4.1 | **Fishing lines** — messages dangle on hooks in water; reel in the real ones, cut the scam lines |
+| W4.1 | **The Fishing Dock** *(BUILT — new hookSort)* — one message dangles per line; REEL IN (real) or CUT THE LINE (scam), no timer, one catch in play |
 | W5.1 | **Two megaphones** — lines float as speech bubbles; feed to the "joke both laugh at" megaphone or the "mean on purpose" muzzle |
 | W8.4 | **Theatre doors** — a photo walks toward three doors (Friends / School / Whole World); open the right door for each |
 | W9.1 | **Shop shelves** — app boxes slide in; shelve in the bright Official Store or the back-alley crate |
@@ -49,7 +49,7 @@ Every pattern use across all 20 weeks, each with its unique dressing. **Rule: be
 |---|---|
 | W2.3 shipped | requestInspector — examine an info request |
 | W3.2 | **Profile Detective** *(BUILT — new profileInspector)* — friend-request card with stat chips; 4 inspect zones (joined / friends & photos / how it talks / what it asks) unlock the REAL-or-FAKE verdict |
-| W4.3 | **Alarm-wire tracing** — a scary message with pulsing words; tap the urgency words to snip their wires and the message powers down |
+| W4.3 | **The Trick Inspector** *(BUILT — phishInspector's first week outing, re-dressed)* — 4 inspect zones per message with urgency/fear focus; ZAP-or-SAFE verdict unlocks after full inspection |
 | W6.5 | **Sniffer-bot** — a download page; drive a little robot dog over it, it growls at each dodgy clue you tap |
 | W7.3 | **Banner X-ray slider** — drag an X-ray bar across a shop banner; pressure tricks glow through the paint |
 | W8.3 | **Detective corkboard** (film tie-in) — the photo pinned centre; drag string from clue (crest, sign, pin) to what it gives away |
@@ -65,7 +65,7 @@ Every pattern use across all 20 weeks, each with its unique dressing. **Rule: be
 |---|---|
 | W1.4 / W2.5 shipped | chooseYourPath scenario cards |
 | W3.5 | **The Uh-Oh Meter** *(BUILT — chatSimulator)* — phone-framed live chat; the meter climbs as it gets icky; three choice moments ending in stop-and-tell |
-| W4.5 | **Bite or don't** — a glittering prize hook dangles; choose NIBBLE / STOP-CHECK-SHOW; the hook's shadow reveals the raccoon |
+| W4.5 | **Bite or Don't** *(BUILT — chooseYourPath classic-card re-dress)* — three rush-you scenarios (fake prize, stuck parcel, virus pop-up); NIBBLE vs STOP-CHECK-SHOW |
 | W5.3 | **Two reply pens** — a mean message; pick the fire pen (clap-back) or calm pen; fire pen makes flames spread, calm pen cools the thread |
 | W6.3 | **Lobby doors** — mid-game a player says "chat on Discord?"; choose STAY IN GAME / FOLLOW — following opens onto the raccoon's fort |
 | W7.4 | **Till moment** — at a checkout with a coin meter; choose ASK FIRST / BUY NOW; asking summons the grown-up, buying drains the piggy bank |
@@ -100,7 +100,7 @@ Every pattern use across all 20 weeks, each with its unique dressing. **Rule: be
 ### ARCADE (gentle-pace zap/catch) — 5 uses
 | Use | Dressing |
 |---|---|
-| W4.2 | **Too-good balloons** — prize balloons drift up; pop only the impossible ones ("free 10,000 coins!"); real offers float past |
+| W4.2 | **Too-Good Blaster** *(BUILT — spamBlaster's first week outing, re-dressed via new headline/missLabel/intro props)* — zap the too-good offers flying in; real messages pass to the inbox |
 | W6.1 | **Chat goalie** — you're the keeper; oversharing lines fly at the goal, punch them away; friendly lines pass into the net |
 | W7.5 | **Generator whack** — "FREE COINS" machines pop from the arcade floor; bop them before they gobble the account key (no lose state — they retreat) |
 | W10.4 | **Reply-frog catch** — comment-frogs leap at your screen; catch unsafe replies in a net before you'd send them |
@@ -110,7 +110,7 @@ Every pattern use across all 20 weeks, each with its unique dressing. **Rule: be
 | Use | Dressing |
 |---|---|
 | W3.4 | **Reply cards fan** *(BUILT — new replyCards)* — three tilted reply cards fan out per incoming message; the safe one slots into the chat with a green glow |
-| W4.4 | **Lookalike lineup** — four sender badges on podiums (one letter off, wrong colour…); tap the imposter, its moustache falls off |
+| W4.4 | **The Lookalike Lineup** *(BUILT — new senderLineup)* — four sender badges on podiums, exactly one lookalike (swapped letters, weird address); tap it → IMPOSTER! stamp |
 | W5.4 | **Four doors of kindness** — laugh-along, forward, ignore, support; tap the kind action, the hallway lights up |
 | W8.5 | **Share lever** — one photo, big brass SHARE/DON'T levers; sound-off decidable from the photo's clues |
 | W9.2 | **Icon parade** — five near-identical cat app icons march past; tap the genuine one (rosette), the copycat's eyes cross |

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-07T17:32:04.140Z",
+  "generatedAt": "2026-07-07T19:04:30.983Z",
   "model": "eleven_v3",
   "voiceSettings": {
     "stability": 0.35,
@@ -818,6 +818,261 @@
         "[excited] The Raccoon's mask fell RIGHT off. Time for stickers!"
       ],
       "file": "/audio/voice/4b58206e6cef388f.mp3"
+    },
+    {
+      "key": "b57fd7dc00db0ef3",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[warmly] Welcome back, Cyber Hero. New mission! This week we hunt SCAMS. A scam is a trick... wearing a costume. [whispers] It wants your info, your family's money, or your click. [excited] But here's the good news. Tricks follow patterns! Learn the patterns, and no scam can touch you.",
+      "lines": [
+        "[warmly] Welcome back, Cyber Hero. New mission!",
+        "This week we hunt SCAMS.",
+        "A scam is a trick... wearing a costume.",
+        "[whispers] It wants your info, your family's money, or your click.",
+        "[excited] But here's the good news. Tricks follow patterns!",
+        "Learn the patterns, and no scam can touch you."
+      ],
+      "file": "/audio/voice/b57fd7dc00db0ef3.mp3"
+    },
+    {
+      "key": "ee3fa0d0a81942c1",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] Welcome to the Fishing Dock! Messages are hanging on the lines. [warmly] Real ones? Reel them in - they're keepers. [whispers] Scams? Snip! Cut the line and let them sink. [excited] Take your time. One catch at a time!",
+      "lines": [
+        "[excited] Welcome to the Fishing Dock!",
+        "Messages are hanging on the lines.",
+        "[warmly] Real ones? Reel them in - they're keepers.",
+        "[whispers] Scams? Snip! Cut the line and let them sink.",
+        "[excited] Take your time. One catch at a time!"
+      ],
+      "file": "/audio/voice/ee3fa0d0a81942c1.mp3"
+    },
+    {
+      "key": "f1c99cd3a8682ea5",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Read the first catch - then reel it in or cut it loose!",
+      "lines": [
+        "Read the first catch - then reel it in or cut it loose!"
+      ],
+      "file": "/audio/voice/f1c99cd3a8682ea5.mp3"
+    },
+    {
+      "key": "9c5fd11da272a10f",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[warmly] Great start, Cyber Hero! You sorted the whole dock - real ones kept, scams sunk. Remember: scams always WANT something. [excited] Next up - the shiniest bait of all!",
+      "lines": [
+        "[warmly] Great start, Cyber Hero!",
+        "You sorted the whole dock - real ones kept, scams sunk.",
+        "Remember: scams always WANT something.",
+        "[excited] Next up - the shiniest bait of all!"
+      ],
+      "file": "/audio/voice/9c5fd11da272a10f.mp3"
+    },
+    {
+      "key": "8b1a8f1d412a3e5d",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[excited] Free iPhone! Ten thousand V-Bucks! A puppy! [laughs] Sounds amazing, right? [whispers] That's exactly the point. It's BAIT. Nobody gives away treasure to strangers. Nobody. [warmly] If it sounds too good to be true... it isn't true. [excited] Ready to blast some bait? Let's go!",
+      "lines": [
+        "[excited] Free iPhone! Ten thousand V-Bucks! A puppy!",
+        "[laughs] Sounds amazing, right?",
+        "[whispers] That's exactly the point. It's BAIT.",
+        "Nobody gives away treasure to strangers. Nobody.",
+        "[warmly] If it sounds too good to be true... it isn't true.",
+        "[excited] Ready to blast some bait? Let's go!"
+      ],
+      "file": "/audio/voice/8b1a8f1d412a3e5d.mp3"
+    },
+    {
+      "key": "5feee7eb7197df14",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] Bait incoming! Offers are flying at your screen. Free iPhones. Free V-Bucks. Free puppies! [laughs] All bait. ZAP every too-good offer! [warmly] But careful - normal messages fly through too. Let those pass!",
+      "lines": [
+        "[excited] Bait incoming! Offers are flying at your screen.",
+        "Free iPhones. Free V-Bucks. Free puppies!",
+        "[laughs] All bait. ZAP every too-good offer!",
+        "[warmly] But careful - normal messages fly through too. Let those pass!"
+      ],
+      "file": "/audio/voice/5feee7eb7197df14.mp3"
+    },
+    {
+      "key": "679b1f462cdab372",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] Two tricks down! Your bait-detector is gleaming. Free stuff from strangers? ZAPPED. [laughs] The Raccoon's puppy prize fooled nobody today. [whispers] But his next trick doesn't offer... it SCARES.",
+      "lines": [
+        "[excited] Two tricks down! Your bait-detector is gleaming.",
+        "Free stuff from strangers? ZAPPED.",
+        "[laughs] The Raccoon's puppy prize fooled nobody today.",
+        "[whispers] But his next trick doesn't offer... it SCARES."
+      ],
+      "file": "/audio/voice/679b1f462cdab372.mp3"
+    },
+    {
+      "key": "47679223101a5d4d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[nervous] URGENT! Ten minutes left! Your account will be DELETED! [warmly] Feel your heart speed up? That's the trick working. Scams rush you and scare you on purpose... [whispers] because a racing heart doesn't stop to think. [excited] So here's your superpower: feeling rushed IS the red flag. Spot the rush, and the trick falls apart. Inspector time!",
+      "lines": [
+        "[nervous] URGENT! Ten minutes left! Your account will be DELETED!",
+        "[warmly] Feel your heart speed up? That's the trick working.",
+        "Scams rush you and scare you on purpose...",
+        "[whispers] because a racing heart doesn't stop to think.",
+        "[excited] So here's your superpower: feeling rushed IS the red flag.",
+        "Spot the rush, and the trick falls apart. Inspector time!"
+      ],
+      "file": "/audio/voice/47679223101a5d4d.mp3"
+    },
+    {
+      "key": "3a7883fc709fe9f8",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] Inspector on duty! Messages are coming in. Check all four clues on each one... who sent it, what it wants you to press, how it sounds, and what it promises. [warmly] Rushed and scary... or calm and normal? You decide!",
+      "lines": [
+        "[excited] Inspector on duty! Messages are coming in.",
+        "Check all four clues on each one...",
+        "who sent it, what it wants you to press, how it sounds, and what it promises.",
+        "[warmly] Rushed and scary... or calm and normal? You decide!"
+      ],
+      "file": "/audio/voice/3a7883fc709fe9f8.mp3"
+    },
+    {
+      "key": "55f7167ffa66789c",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[excited] Three tricks down! Countdowns, threats, panic buttons... [laughs] you inspected them all and never once got rushed. [whispers] But his sneakiest trick is next. The lookalike...",
+      "lines": [
+        "[excited] Three tricks down!",
+        "Countdowns, threats, panic buttons...",
+        "[laughs] you inspected them all and never once got rushed.",
+        "[whispers] But his sneakiest trick is next. The lookalike..."
+      ],
+      "file": "/audio/voice/55f7167ffa66789c.mp3"
+    },
+    {
+      "key": "eab319bea4678f54",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[whispers] Now for the sneakiest trick of all. A message that LOOKS like it's from your game... or your school. [warmly] But look closely. A letter becomes a number. The address is weird. Something's just... off. [excited] Almost-right is ALL-WRONG. Time to line up some senders and bust the imposter!",
+      "lines": [
+        "[whispers] Now for the sneakiest trick of all.",
+        "A message that LOOKS like it's from your game... or your school.",
+        "[warmly] But look closely. A letter becomes a number.",
+        "The address is weird. Something's just... off.",
+        "[excited] Almost-right is ALL-WRONG.",
+        "Time to line up some senders and bust the imposter!"
+      ],
+      "file": "/audio/voice/eab319bea4678f54.mp3"
+    },
+    {
+      "key": "3e5c878aae06e0fb",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[excited] The lineup is ready! Four senders on the podiums. Three are real. [whispers] One is a lookalike in disguise. [warmly] Read carefully, letter by letter... then bust the imposter!",
+      "lines": [
+        "[excited] The lineup is ready!",
+        "Four senders on the podiums. Three are real.",
+        "[whispers] One is a lookalike in disguise.",
+        "[warmly] Read carefully, letter by letter... then bust the imposter!"
+      ],
+      "file": "/audio/voice/3e5c878aae06e0fb.mp3"
+    },
+    {
+      "key": "d39618ec2090f587",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "Check each name AND its address - then tap the imposter!",
+      "lines": [
+        "Check each name AND its address - then tap the imposter!"
+      ],
+      "file": "/audio/voice/d39618ec2090f587.mp3"
+    },
+    {
+      "key": "bf120116c761e4c8",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] Four tricks down! Nothing gets past you. Ones for L's, zeros for O's... [laughs] you read every disguise like a book. [warmly] One last move to learn. And it beats ALL of them.",
+      "lines": [
+        "[excited] Four tricks down! Nothing gets past you.",
+        "Ones for L's, zeros for O's...",
+        "[laughs] you read every disguise like a book.",
+        "[warmly] One last move to learn. And it beats ALL of them."
+      ],
+      "file": "/audio/voice/bf120116c761e4c8.mp3"
+    },
+    {
+      "key": "b67b7436d3280ddb",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[warmly] Last lesson - and it's the golden one. Every scam, every trick, every disguise... [excited] loses to the same three steps. STOP. Don't click, don't rush. CHECK. Read it slowly, like a detective. [whispers] And SHOW a grown-up. Every single time. [excited] A scam only works if you bite. So... don't bite!",
+      "lines": [
+        "[warmly] Last lesson - and it's the golden one.",
+        "Every scam, every trick, every disguise...",
+        "[excited] loses to the same three steps.",
+        "STOP. Don't click, don't rush.",
+        "CHECK. Read it slowly, like a detective.",
+        "[whispers] And SHOW a grown-up. Every single time.",
+        "[excited] A scam only works if you bite. So... don't bite!"
+      ],
+      "file": "/audio/voice/b67b7436d3280ddb.mp3"
+    },
+    {
+      "key": "451062f37fa22d00",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[warmly] Practice time - the tricky moments are coming. Each one will push you to act FAST. [whispers] That push is your signal. [excited] Stop. Check. Show. Let's see you do it!",
+      "lines": [
+        "[warmly] Practice time - the tricky moments are coming.",
+        "Each one will push you to act FAST.",
+        "[whispers] That push is your signal.",
+        "[excited] Stop. Check. Show. Let's see you do it!"
+      ],
+      "file": "/audio/voice/451062f37fa22d00.mp3"
+    },
+    {
+      "key": "e46baa8538001d5e",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[excited] That's all FIVE trick-beating powers! You know what scams are, you smell the bait, you never rush, you bust every lookalike... [whispers] and you never, ever bite. [excited] Final drill - then let's empty his whole inbox of tricks!",
+      "lines": [
+        "[excited] That's all FIVE trick-beating powers!",
+        "You know what scams are, you smell the bait,",
+        "you never rush, you bust every lookalike...",
+        "[whispers] and you never, ever bite.",
+        "[excited] Final drill - then let's empty his whole inbox of tricks!"
+      ],
+      "file": "/audio/voice/e46baa8538001d5e.mp3"
+    },
+    {
+      "key": "d08da27b71747bc9",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[excited] Final drill! Messages are drifting past. Tap REAL for the calm, normal ones... and TRICK for bait, panic and lookalikes. [warmly] Five powers. One scanner. Show me!",
+      "lines": [
+        "[excited] Final drill! Messages are drifting past.",
+        "Tap REAL for the calm, normal ones...",
+        "and TRICK for bait, panic and lookalikes.",
+        "[warmly] Five powers. One scanner. Show me!"
+      ],
+      "file": "/audio/voice/d08da27b71747bc9.mp3"
+    },
+    {
+      "key": "b73cf36247e7e255",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[excited] Look at EVERYTHING you mastered this week! You smell bait a mile away, no countdown can rush you, no lookalike can fool you... [laughs] and you never, ever bite! [excited] Every scam went straight back to sender. Sticker time!",
+      "lines": [
+        "[excited] Look at EVERYTHING you mastered this week!",
+        "You smell bait a mile away, no countdown can rush you,",
+        "no lookalike can fool you...",
+        "[laughs] and you never, ever bite!",
+        "[excited] Every scam went straight back to sender. Sticker time!"
+      ],
+      "file": "/audio/voice/b73cf36247e7e255.mp3"
     }
   ]
 }

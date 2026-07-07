@@ -442,6 +442,9 @@ export type ScreenDef = (
        * to LOOK AT.
        */
       type: "phishInspector";
+      /** Intro copy overrides (re-theme per week). */
+      introTitle?: string;
+      introSubtitle?: string;
       emails: {
         id: string;
         sender: string;
@@ -764,6 +767,51 @@ export type ScreenDef = (
     }
   | {
       /**
+       * Hook Sort (Week 4). The Fishing Dock: one message at a time
+       * dangles on a line; REEL IN the real ones, CUT THE LINE on scams.
+       * Calm binary sort - no belt, no timer, one catch in play.
+       */
+      type: "hookSort";
+      items: {
+        id: string;
+        text: string;
+        /** Emoji rendered via PixIcon on the dangling card. */
+        icon?: string;
+        /** True = a scam; the right call is CUT THE LINE. */
+        isScam: boolean;
+        /** Shown in the WrongAnswerPanel on a wrong call. */
+        explanation: string;
+      }[];
+      hints?: { tier1: string; tier2: string };
+    }
+  | {
+      /**
+       * Sender Lineup (Week 4). Four sender badges on podiums; exactly
+       * one is a lookalike imposter. Tap the imposter to bust it. Fake
+       * SENDERS only - link mechanics are Week 16's lane.
+       */
+      type: "senderLineup";
+      rounds: {
+        id: string;
+        /** The situation, e.g. "Four messages say your game needs an update…" */
+        prompt: string;
+        senders: {
+          id: string;
+          name: string;
+          /** Small supporting detail (e.g. the from-address). */
+          detail: string;
+          /** Emoji rendered via PixIcon as the badge crest. */
+          icon: string;
+          /** True = the imposter (exactly one per round). */
+          isFake: boolean;
+          /** Teach copy: why fake / why it checks out. */
+          note: string;
+        }[];
+      }[];
+      hints?: { tier1: string; tier2: string };
+    }
+  | {
+      /**
        * Profile Inspector (Week 3). The social-profile sibling of
        * requestInspector: a friendly-looking profile card arrives and the
        * child must tap every inspect zone (when it joined / friends &
@@ -879,6 +927,13 @@ export type ScreenDef = (
         isPhishing: boolean;
         clue: string;
       }[];
+      /** Intro card copy overrides (re-theme per week). */
+      introTitle?: string;
+      introDescription?: string;
+      /** In-canvas goal headline override. */
+      headline?: string;
+      /** HUD label for tricks that slipped through (default "VIRUSES"). */
+      missLabel?: string;
     }
   | {
       type: "cyberMaze";
