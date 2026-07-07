@@ -68,6 +68,8 @@ import ReplyCards from "@/app/components/exercises/ReplyCards";
 import HookSort from "@/app/components/exercises/HookSort";
 import SenderLineup from "@/app/components/exercises/SenderLineup";
 import StepOrder from "@/app/components/exercises/StepOrder";
+import SettingsSwitch from "@/app/components/exercises/SettingsSwitch";
+import ButtonHunt from "@/app/components/exercises/ButtonHunt";
 import ChatSimulator from "@/app/components/exercises/ChatSimulator";
 import UsernameBuilder from "@/app/components/exercises/UsernameBuilder";
 import PauseDecide from "@/app/components/exercises/PauseDecide";
@@ -161,6 +163,8 @@ const EXERCISE_SCREEN_TYPES = new Set<ScreenDef["type"]>([
   "hookSort",
   "senderLineup",
   "stepOrder",
+  "settingsSwitch",
+  "buttonHunt",
   "usernameBuilder",
   "vaultDrop",
 ]);
@@ -1501,6 +1505,12 @@ function DynamicLessonInner({ qaEnabled }: { qaEnabled: boolean }) {
             <RequestInspector
               requests={def.requests}
               hints={def.hints}
+              badgeLabel={def.badgeLabel}
+              introTitle={def.introTitle}
+              introSubtitle={def.introSubtitle}
+              introIcon={def.introIcon}
+              fairLabel={def.fairLabel}
+              nosyLabel={def.nosyLabel}
               introNarration={def.narration}
               coachLines={def.coachLines}
               onComplete={() => navigate(screen + 1)}
@@ -1599,6 +1609,71 @@ function DynamicLessonInner({ qaEnabled }: { qaEnabled: boolean }) {
                 }}
               />
             </div>
+          </FullScene>
+        );
+
+      case "settingsSwitch":
+        return (
+          <FullScene bg="linear-gradient(180deg, #050a1a 0%, #0e1c3a 100%)">
+            <SettingsSwitch
+              panelTitle={def.panelTitle}
+              rows={def.rows}
+              introTitle={def.introTitle}
+              introSubtitle={def.introSubtitle}
+              introIcon={def.introIcon}
+              hints={def.hints}
+              introNarration={def.narration}
+              coachLines={def.coachLines}
+              onComplete={() => navigate(screen + 1)}
+              onCorrect={() => awardXp(25)}
+              onWrong={() => addWrong(screen)}
+              onHintReached={(tier) => progress.reportHint(screen, tier)}
+              onAnswered={(o) => {
+                progress.saveQuestion({
+                  screenIndex: screen,
+                  questionKey: o.questionKey,
+                  selectedIndex: o.selectedIndex,
+                  correctIndex: o.correctIndex,
+                  wasCorrect: o.wasCorrect,
+                });
+                if (!o.wasCorrect) {
+                  progress.reportWrong(screen, o.questionKey);
+                }
+              }}
+            />
+          </FullScene>
+        );
+
+      case "buttonHunt":
+        return (
+          <FullScene bg="linear-gradient(180deg, #050a1a 0%, #10322a 100%)">
+            <ButtonHunt
+              menuTitle={def.menuTitle}
+              scenario={def.scenario}
+              buttons={def.buttons}
+              introTitle={def.introTitle}
+              introSubtitle={def.introSubtitle}
+              introIcon={def.introIcon}
+              hints={def.hints}
+              introNarration={def.narration}
+              coachLines={def.coachLines}
+              onComplete={() => navigate(screen + 1)}
+              onCorrect={() => awardXp(25)}
+              onWrong={() => addWrong(screen)}
+              onHintReached={(tier) => progress.reportHint(screen, tier)}
+              onAnswered={(o) => {
+                progress.saveQuestion({
+                  screenIndex: screen,
+                  questionKey: o.questionKey,
+                  selectedIndex: o.selectedIndex,
+                  correctIndex: o.correctIndex,
+                  wasCorrect: o.wasCorrect,
+                });
+                if (!o.wasCorrect) {
+                  progress.reportWrong(screen, o.questionKey);
+                }
+              }}
+            />
           </FullScene>
         );
 

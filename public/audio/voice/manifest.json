@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-07T19:38:14.581Z",
+  "generatedAt": "2026-07-07T19:57:47.908Z",
   "model": "eleven_v3",
   "voiceSettings": {
     "stability": 0.35,
@@ -1347,6 +1347,270 @@
         "[excited] The whole chat turned kind - because of YOU. Sticker time!"
       ],
       "file": "/audio/voice/b9a8fc5183cb945e.mp3"
+    },
+    {
+      "key": "48fec9d3e353148e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] Welcome back, Cyber Hero. Grab your controller! Game chat is BRILLIANT for game talk. Tactics! Rematches! Nice shot! [whispers] But your real-life info never goes in there. Your name. Your age. Your school. Where you live. [excited] Game talk in - real-life info OUT. You're the goalie!",
+      "lines": [
+        "[excited] Welcome back, Cyber Hero. Grab your controller!",
+        "Game chat is BRILLIANT for game talk.",
+        "Tactics! Rematches! Nice shot!",
+        "[whispers] But your real-life info never goes in there.",
+        "Your name. Your age. Your school. Where you live.",
+        "[excited] Game talk in - real-life info OUT. You're the goalie!"
+      ],
+      "file": "/audio/voice/48fec9d3e353148e.mp3"
+    },
+    {
+      "key": "1c9c5afa335b2c2e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] You're in goal, hero! Chat lines are flying toward the send button. Game talk? Let it fly through - it's safe. [whispers] Real-life info? Name, school, address, home-alone times... [excited] PUNCH those away before they leak!",
+      "lines": [
+        "[excited] You're in goal, hero!",
+        "Chat lines are flying toward the send button.",
+        "Game talk? Let it fly through - it's safe.",
+        "[whispers] Real-life info? Name, school, address, home-alone times...",
+        "[excited] PUNCH those away before they leak!"
+      ],
+      "file": "/audio/voice/1c9c5afa335b2c2e.mp3"
+    },
+    {
+      "key": "d1cb62811e250cdf",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[excited] What a goalie! Not one leak got past you. Game talk flowed, real-life info bounced. [warmly] But guarding every message is hard work... [whispers] so next, we make the LOBBY do the guarding for you.",
+      "lines": [
+        "[excited] What a goalie! Not one leak got past you.",
+        "Game talk flowed, real-life info bounced.",
+        "[warmly] But guarding every message is hard work...",
+        "[whispers] so next, we make the LOBBY do the guarding for you."
+      ],
+      "file": "/audio/voice/d1cb62811e250cdf.mp3"
+    },
+    {
+      "key": "081a04e076bc12be",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[whispers] Want to hear a hero secret? Your game can guard you all by itself. [excited] Friends-only means only people you KNOW can join. A hero name keeps your real one hidden. And a friends-only mic? Strangers can't even hear you. [warmly] Set the settings once... and you're safe every game after. Let's flip them!",
+      "lines": [
+        "[whispers] Want to hear a hero secret?",
+        "Your game can guard you all by itself.",
+        "[excited] Friends-only means only people you KNOW can join.",
+        "A hero name keeps your real one hidden.",
+        "And a friends-only mic? Strangers can't even hear you.",
+        "[warmly] Set the settings once... and you're safe every game after. Let's flip them!"
+      ],
+      "file": "/audio/voice/081a04e076bc12be.mp3"
+    },
+    {
+      "key": "ec63af5cbb45aa44",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[excited] Here's the lobby settings panel! Some rows are already safe and green. [whispers] But three are wide open to strangers... [excited] Find the risky ones and FLIP them safe!",
+      "lines": [
+        "[excited] Here's the lobby settings panel!",
+        "Some rows are already safe and green.",
+        "[whispers] But three are wide open to strangers...",
+        "[excited] Find the risky ones and FLIP them safe!"
+      ],
+      "file": "/audio/voice/ec63af5cbb45aa44.mp3"
+    },
+    {
+      "key": "2600d776e3bbbc5f",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "Red rows are leaking - tap one to flip it safe!",
+      "lines": [
+        "Red rows are leaking - tap one to flip it safe!"
+      ],
+      "file": "/audio/voice/2600d776e3bbbc5f.mp3"
+    },
+    {
+      "key": "b4e83a1781883035",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] Lobby: LOCKED. Beautiful work. Friends-only join, hero name, friends-only mic. [whispers] But some tricksters still get in... and they all try the same sneaky move. Listen closely.",
+      "lines": [
+        "[excited] Lobby: LOCKED. Beautiful work.",
+        "Friends-only join, hero name, friends-only mic.",
+        "[whispers] But some tricksters still get in...",
+        "and they all try the same sneaky move. Listen closely."
+      ],
+      "file": "/audio/voice/b4e83a1781883035.mp3"
+    },
+    {
+      "key": "fa6ebcb91ad77440",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[warmly] Game chat is a guarded playground. Rules. Moderators. Report buttons. Guards everywhere! [whispers] So tricksters always try the same move... 'Hey, let's chat on a different app instead!' [nervous] Because over THERE... the guards can't see them. [excited] You know this one from Week 3. Moving the chat? Red flag!",
+      "lines": [
+        "[warmly] Game chat is a guarded playground.",
+        "Rules. Moderators. Report buttons. Guards everywhere!",
+        "[whispers] So tricksters always try the same move...",
+        "'Hey, let's chat on a different app instead!'",
+        "[nervous] Because over THERE... the guards can't see them.",
+        "[excited] You know this one from Week 3. Moving the chat? Red flag!"
+      ],
+      "file": "/audio/voice/fa6ebcb91ad77440.mp3"
+    },
+    {
+      "key": "d7b9e5be11190b32",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[warmly] Time to practise, right inside a lobby chat. A player is about to get very friendly... [whispers] and then try to move you somewhere else. [excited] Watch the meter. Trust your training!",
+      "lines": [
+        "[warmly] Time to practise, right inside a lobby chat.",
+        "A player is about to get very friendly...",
+        "[whispers] and then try to move you somewhere else.",
+        "[excited] Watch the meter. Trust your training!"
+      ],
+      "file": "/audio/voice/d7b9e5be11190b32.mp3"
+    },
+    {
+      "key": "500ade47138a4b4a",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[excited] Three powers! The 'somewhere else' trick bounced right off you. Game chat has guards, and you stayed with them. [warmly] Speaking of guards... [excited] it's time you met the two mightiest buttons in any game!",
+      "lines": [
+        "[excited] Three powers! The 'somewhere else' trick bounced right off you.",
+        "Game chat has guards, and you stayed with them.",
+        "[warmly] Speaking of guards...",
+        "[excited] it's time you met the two mightiest buttons in any game!"
+      ],
+      "file": "/audio/voice/500ade47138a4b4a.mp3"
+    },
+    {
+      "key": "7c5d4e4d17af4066",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[excited] Meet the two mightiest buttons in any game! REPORT tells the game's guards: 'check this player!' BLOCK makes them vanish from YOUR game. Poof! No messages, no joining, they can't even see you. [warmly] Report first, then block. [excited] Using them isn't mean - it's exactly what they're for. Let's find them!",
+      "lines": [
+        "[excited] Meet the two mightiest buttons in any game!",
+        "REPORT tells the game's guards: 'check this player!'",
+        "BLOCK makes them vanish from YOUR game. Poof!",
+        "No messages, no joining, they can't even see you.",
+        "[warmly] Report first, then block.",
+        "[excited] Using them isn't mean - it's exactly what they're for. Let's find them!"
+      ],
+      "file": "/audio/voice/7c5d4e4d17af4066.mp3"
+    },
+    {
+      "key": "ceed8360bbffa250",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[warmly] There's the player menu - six buttons. Two of them are your power buttons. [whispers] Report first... it calls the guards. [excited] Then block. Find them both!",
+      "lines": [
+        "[warmly] There's the player menu - six buttons.",
+        "Two of them are your power buttons.",
+        "[whispers] Report first... it calls the guards.",
+        "[excited] Then block. Find them both!"
+      ],
+      "file": "/audio/voice/ceed8360bbffa250.mp3"
+    },
+    {
+      "key": "6e8f9efb6eb85e7b",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "Which button calls the game's guards? Tap it first!",
+      "lines": [
+        "Which button calls the game's guards? Tap it first!"
+      ],
+      "file": "/audio/voice/6e8f9efb6eb85e7b.mp3"
+    },
+    {
+      "key": "9991ed15decef20c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] Four powers! You found both buttons in seconds. Report. Block. Tell. [laughs] GoldRush_Gary never knew what hit him. [whispers] One last trap guards the game zone... the 'free' download.",
+      "lines": [
+        "[excited] Four powers! You found both buttons in seconds.",
+        "Report. Block. Tell.",
+        "[laughs] GoldRush_Gary never knew what hit him.",
+        "[whispers] One last trap guards the game zone... the 'free' download."
+      ],
+      "file": "/audio/voice/9991ed15decef20c.mp3"
+    },
+    {
+      "key": "7f7bab560afe036c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] Free skins! Unlimited speed! Just download this mod! [warmly] Sounds amazing, right? Careful. [whispers] Downloads from OUTSIDE the real game can hide nasty surprises. Some steal accounts. Some break computers. Real games sell their stuff inside the game. [excited] Anything outside? Grown-up check first. Let's inspect some downloads!",
+      "lines": [
+        "[excited] Free skins! Unlimited speed! Just download this mod!",
+        "[warmly] Sounds amazing, right? Careful.",
+        "[whispers] Downloads from OUTSIDE the real game can hide nasty surprises.",
+        "Some steal accounts. Some break computers.",
+        "Real games sell their stuff inside the game.",
+        "[excited] Anything outside? Grown-up check first. Let's inspect some downloads!"
+      ],
+      "file": "/audio/voice/7f7bab560afe036c.mp3"
+    },
+    {
+      "key": "5495d91adb3df342",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] Download pages incoming - inspect like a pro! Check who made it, what it wants, whether the REAL game would ever do this... [warmly] then make the call: safe... or trap?",
+      "lines": [
+        "[excited] Download pages incoming - inspect like a pro!",
+        "Check who made it, what it wants,",
+        "whether the REAL game would ever do this...",
+        "[warmly] then make the call: safe... or trap?"
+      ],
+      "file": "/audio/voice/5495d91adb3df342.mp3"
+    },
+    {
+      "key": "1b523a7b23ed6fb0",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Tap every magnifying glass before you decide!",
+      "lines": [
+        "Tap every magnifying glass before you decide!"
+      ],
+      "file": "/audio/voice/1b523a7b23ed6fb0.mp3"
+    },
+    {
+      "key": "b4c0eb8df7c0ac89",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[excited] That's all FIVE powers, Cyber Hero! Chat guarded, lobby locked, 'somewhere else' refused, power buttons found, download traps closed. [whispers] Your game zone is a fortress now. [excited] Final drill - then he's coming to test it!",
+      "lines": [
+        "[excited] That's all FIVE powers, Cyber Hero!",
+        "Chat guarded, lobby locked, 'somewhere else' refused,",
+        "power buttons found, download traps closed.",
+        "[whispers] Your game zone is a fortress now.",
+        "[excited] Final drill - then he's coming to test it!"
+      ],
+      "file": "/audio/voice/b4c0eb8df7c0ac89.mp3"
+    },
+    {
+      "key": "9aa571bde55eb9ec",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[excited] Final drill! Game-zone moments are drifting past. Tap SAFE PLAY for the guarded moves... and DANGER ZONE for leaks and traps. [warmly] Your fortress, your rules. Show me!",
+      "lines": [
+        "[excited] Final drill! Game-zone moments are drifting past.",
+        "Tap SAFE PLAY for the guarded moves...",
+        "and DANGER ZONE for leaks and traps.",
+        "[warmly] Your fortress, your rules. Show me!"
+      ],
+      "file": "/audio/voice/9aa571bde55eb9ec.mp3"
+    },
+    {
+      "key": "175d491d20a08065",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[excited] Look at EVERYTHING you mastered this week! You guard the chat, you lock the lobby, you stay with the guards, you wield the power buttons... [laughs] and no 'free skin' trap will EVER fool you. [excited] The intruder got booted from the lobby. Sticker time!",
+      "lines": [
+        "[excited] Look at EVERYTHING you mastered this week!",
+        "You guard the chat, you lock the lobby,",
+        "you stay with the guards, you wield the power buttons...",
+        "[laughs] and no 'free skin' trap will EVER fool you.",
+        "[excited] The intruder got booted from the lobby. Sticker time!"
+      ],
+      "file": "/audio/voice/175d491d20a08065.mp3"
     }
   ]
 }

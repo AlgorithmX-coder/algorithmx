@@ -745,6 +745,13 @@ export type ScreenDef = (
        * is need-vs-want on legit-looking apps, NOT spotting fakes (W4).
        */
       type: "requestInspector";
+      /** Card chip + intro + verdict re-dress (default the W2 form skin). */
+      badgeLabel?: string;
+      introTitle?: string;
+      introSubtitle?: string;
+      introIcon?: string;
+      fairLabel?: string;
+      nosyLabel?: string;
       requests: {
         id: string;
         appName: string;
@@ -765,6 +772,54 @@ export type ScreenDef = (
         /** Explanation shown after the child's verdict. */
         verdictNote: string;
       }[];
+      hints?: { tier1: string; tier2: string };
+    }
+  | {
+      /**
+       * Settings Switch (Week 6+). A realistic settings panel with toggle
+       * rows; find the RISKY ones and flip them safe. Already-safe rows
+       * teach gently when tapped. Re-themable per week (W6 lobby, W14
+       * devices, W17 profile, W19 family rounds).
+       */
+      type: "settingsSwitch";
+      panelTitle: string;
+      rows: {
+        id: string;
+        label: string;
+        value: string;
+        safeValue?: string;
+        icon: string;
+        isRisky: boolean;
+        note: string;
+      }[];
+      introTitle: string;
+      introSubtitle?: string;
+      introIcon?: string;
+      hints?: { tier1: string; tier2: string };
+    }
+  | {
+      /**
+       * Button Hunt (Week 6+). A menu mock full of buttons; find and tap
+       * the target controls IN ORDER (e.g. Report then Block). Decoys
+       * teach what they really do. Re-themable per week (W6 report/block,
+       * W10 escape, W11 block, W14 mute, W18 log-out).
+       */
+      type: "buttonHunt";
+      menuTitle: string;
+      /** Situation line above the menu. */
+      scenario: string;
+      buttons: {
+        id: string;
+        label: string;
+        icon: string;
+        /** Position in the find-order (1-based). Omit = decoy. */
+        targetOrder?: number;
+        /** Decoys: what this button really does. Targets: celebration line. */
+        note: string;
+      }[];
+      introTitle: string;
+      introSubtitle?: string;
+      introIcon?: string;
       hints?: { tier1: string; tier2: string };
     }
   | {

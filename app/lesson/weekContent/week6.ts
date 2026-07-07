@@ -1,249 +1,726 @@
 import type { WeekContent } from "./types";
 
+/**
+ * Week 6 - Gaming Safety: Defend Your Game Zone.
+ *
+ * Built to the locked Cyber Heroes template (docs/cyberheroes/curriculum-buildsheet.md
+ * + docs/cyberheroes/content-plans/weeks-03-20-content-plan.md):
+ *
+ *   Opening video  -> alert -> mission brief
+ *   5 BEATS, each = Learn (info) -> Game -> Prove (quickCheck) -> recap:
+ *     1 CHAT     real info stays out of chat (W2)  | spamBlaster      | speed
+ *     2 LOBBY    friends-only + the settings       | settingsSwitch   | recall
+ *     3 MOVE     "chat somewhere else" flag (W3)   | chatSimulator    | lie
+ *     4 BUTTONS  report & block - where they live  | buttonHunt       | order
+ *     5 MODS     fake mods / free-download traps   | requestInspector | recall (quick-sort)
+ *   Consolidation (cyberScanner, Game Zone Scanner skin) -> boss
+ *   (placeholder quiz boss - the bespoke W6 GAUNTLET is designed with the
+ *   boss batch) -> closing video -> debrief -> stickers -> completion.
+ *
+ * Game freshness: settingsSwitch and buttonHunt DEBUT here; spamBlaster
+ * returns re-dressed as the Chat Goalie (2 weeks after W4's inbox);
+ * chatSimulator returns as a game-lobby chat (3 weeks after W3's phone);
+ * requestInspector returns re-dressed as the Download Checker (4 weeks
+ * after W2's sign-up forms, with the new badge/verdict props).
+ * Lane-clean: APPLIES W2's private-info rule and W3's move-the-chat flag
+ * in the gaming context; report/block BUTTONS live here, the full
+ * tell-a-grown-up protocol is W11's lane; money/V-Bucks tricks are W7's.
+ */
 export const WEEK_6: WeekContent = {
   weekNumber: 6,
-  title: "Gaming Safety: Play It Safe",
+  title: "Gaming Safety: Defend Your Game Zone",
   topic: "gaming-safety",
-  badgeName: "Safe Gamer",
+  badgeName: "Lobby Guardian",
   badgeIcon: "🎮",
 
   introCutscene: [
-    { text: "CYBER HEROES ACADEMY\nWEEK 6: GAMING SAFETY", bg: "normal", duration: 3000 },
-    { character: "both", characterMood: "excited", text: "Week 6, Cyber Hero! This one's about something we ALL love - gaming.", sound: "lessonStart", duration: 5000 },
-    { character: "raccoon", characterMood: "idle", text: "\"Hey kid, nice loadout! Share your account and I'll give you a LEGENDARY skin. It'll be our secret.\"", bg: "danger", textColour: "#fca5a5", sound: "bossRoar", duration: 5500 },
-    { character: "adam", characterMood: "worried", text: "The Hacker Raccoon is lurking in game lobbies now - pretending to be a teammate to trick kids.", bg: "danger", duration: 5500 },
-    { character: "layla", characterMood: "thinking", text: "Games are AMAZING. But the chat and lobby can be the sneakiest place for scams, bullies, and strangers.", duration: 5500 },
-    { character: "adam", characterMood: "thumbsup", text: "Gaming friends you've never met ARE still strangers. Your username, voice, and info still matter.", duration: 5500 },
-    { character: "layla", characterMood: "excited", text: "This week: play hard, have fun, AND stay safe. Let's become Safe Gamers!", sound: "select", duration: 5000 },
-    { text: "GG - GAME ON, SAFELY! 🎮", bg: "normal", sound: "confetti", duration: 2000 },
+    { text: "CYBER HEROES ACADEMY\nWEEK 6: DEFEND YOUR GAME ZONE", bg: "normal", duration: 2600 },
   ],
 
   screens: [
-    { type: "video", videoPlaceholder: "Week 6: Gaming Safety intro video" },
+    // 0 - OPENING VIDEO: the raccoon joins the lobby
+    { type: "video", videoPlaceholder: "Week 6: The Lobby Intruder", videoSrc: "/videos/module-06-intro.mp4" },
+
+    // 1 - ALERT: incident report
+    {
+      type: "alert",
+      photoSrc: "/cyberheroes/alerts/week-06.png",
+      title: "ALERT INCOMING",
+      badge: "Incident Report",
+      caption: "The Raccoon slipped into a game lobby with a friendly username, fished for real names and schools - then asked kids to 'chat somewhere else'. Your game zone needs DEFENDING!",
+      photoCaption: "Wk 6 - The Lobby Intruder",
+      ctaLabel: "Start the Mission →",
+    },
+
+    // 2 - Mission brief
     {
       type: "mission",
       objectives: [
-        "Stay safe in game chats and voice lobbies",
-        "Spot gaming scams and in-game manipulation",
-        "Know how to report toxic players and get help",
+        "Keep real-life info OUT of game chat",
+        "Lock your lobby down - friends only",
+        "Find the report & block buttons with your eyes closed",
       ],
     },
+
+    /* ─────────── BEAT 1 · REAL INFO STAYS OUT OF CHAT ─────────── */
+    // 3 - Learn
     {
       type: "info",
-      title: "Game Chats Aren't Always Friendly",
+      title: "Game Chat Is For Game Talk",
       content:
-        "Game chat is where most of the danger hides. Voice chat, text chat, party chat, DMs - all of these are places strangers try to get close to kids. Nice-sounding teammates can still be strangers.",
+        "Game chat is brilliant for game talk: tactics, rematches, 'nice shot!'. But your REAL-LIFE info - name, age, school, where you live - never goes in there. Remember: a lobby is full of people you've never met. Game talk in, real-life info OUT.",
       bullets: [
-        "Anyone you haven't met IRL is still a stranger, no matter how many games you've played together",
-        "Voice chat can't tell you someone's real age",
-        "Private party chats are harder for moderators to see",
-        "Links shared in chat can be scams",
-        "Your mic can reveal more about you than you'd think - background, location, family members",
+        "Game talk? Chat away!",
+        "Your real name - stays out",
+        "Your age and school - stay out",
+        "Where you live - stays out",
+        "A lobby is full of strangers, even friendly ones",
       ],
+      bulletIcons: ["🎮", "🏷️", "🏫", "🏠", "👀"],
+      emblem: "🎮",
+      narration: {
+        speaker: "adam",
+        lines: [
+          "[excited] Welcome back, Cyber Hero. Grab your controller!",
+          "Game chat is BRILLIANT for game talk.",
+          "Tactics! Rematches! Nice shot!",
+          "[whispers] But your real-life info never goes in there.",
+          "Your name. Your age. Your school. Where you live.",
+          "[excited] Game talk in - real-life info OUT. You're the goalie!",
+        ],
+      },
     },
-    {
-      type: "cyberScanner",
-      items: [
-        { text: "A teammate says 'Add me as a friend so we can play later'", isStrong: false, explanation: "Gaming friends you haven't met IRL are still strangers - ask a parent first" },
-        { text: "Your actual friend from school asking to team up", isStrong: true, explanation: "Someone you know in real life - safe to play with" },
-        { text: "A stranger offers free skins if you share your password", isStrong: false, explanation: "Free stuff for passwords = classic gaming scam" },
-        { text: "Your older sibling playing co-op with you", isStrong: true, explanation: "Family - safe" },
-        { text: "A random player asking what school you go to", isStrong: false, explanation: "Personal info in game chat = red flag" },
-        { text: "Using voice chat with your cousin", isStrong: true, explanation: "Known family member - safe" },
-        { text: "A 'Roblox mod' in DMs asking for your login", isStrong: false, explanation: "Real mods NEVER ask for login info" },
-        { text: "A team member saying 'good game, well played!'", isStrong: true, explanation: "Normal sportsmanship - safe" },
-        { text: "'Meet me in this private server, just us two'", isStrong: false, explanation: "Private/isolated chats with strangers are unsafe" },
-        { text: "Parents setting up parental controls on your console", isStrong: true, explanation: "Safety feature - very helpful" },
-      ],
-    },
-    {
-      type: "info",
-      title: "Gaming Scam Playbook",
-      content:
-        "Scammers targeting gamers use a few classic tricks. Once you know them, they're easy to spot:",
-      bullets: [
-        "'Free currency' (Robux, V-Bucks) in exchange for your login",
-        "Fake 'giveaway' websites asking for your account details",
-        "Item duplication or 'glitch' tricks that actually just steal your items",
-        "Fake 'mods' or 'staff' in DMs demanding your password",
-        "Links to 'cheats' or 'hacks' that install malware",
-      ],
-    },
+    // 4 - Game: ARCADE (spamBlaster re-dress - the Chat Goalie)
     {
       type: "spamBlaster",
+      introTitle: "Chat Goalie!",
+      introDescription: "Chat lines are flying! PUNCH away the ones that leak real-life info - let the game talk through!",
+      headline: "⚡ PUNCH AWAY THE OVERSHARES! ⚡",
+      missLabel: "LEAKS",
       emails: [
-        { sender: "RobloxOfficial_Free", subject: "🎁 FREE 10,000 ROBUX - CLAIM NOW", isPhishing: true, clue: "Fake Roblox account offering free currency = scam" },
-        { sender: "Best Friend Jamie", subject: "Wanna play Fortnite after homework?", isPhishing: false, clue: "" },
-        { sender: "FortniteGiveaway", subject: "You WON free V-Bucks! Login here!", isPhishing: true, clue: "Random V-Bucks giveaways for your login = scam" },
-        { sender: "Dad", subject: "Screen time's almost up - one more game!", isPhishing: false, clue: "" },
-        { sender: "MinecraftMod_007", subject: "I'm a real mod. Send your password to verify.", isPhishing: true, clue: "Real mods never ask for passwords - scam" },
-        { sender: "Older Cousin", subject: "Voice chat tonight? I have a new game for us", isPhishing: false, clue: "" },
-        { sender: "Legendary Skin Dealer", subject: "Share account - get rare skin free!", isPhishing: true, clue: "Account trading for items is banned - it's a scam" },
-        { sender: "School Gaming Club", subject: "Meeting Thursday lunch in the IT room", isPhishing: false, clue: "" },
-        { sender: "CheatCodes4Real", subject: "Download our aimbot - totally safe!", isPhishing: true, clue: "Cheats are usually malware + will ban your account" },
-        { sender: "Mum", subject: "Dinner in 15 mins - save the game!", isPhishing: false, clue: "" },
+        { sender: "BlazeRunner", subject: "gg! rematch tomorrow?", isPhishing: false, clue: "" },
+        { sender: "You (about to send)", subject: "I'm Alex Reed from Maple Hill School", isPhishing: true, clue: "Real name + school = a map to you" },
+        { sender: "PixelPanda42", subject: "top tactic: take the left bridge!", isPhishing: false, clue: "" },
+        { sender: "You (about to send)", subject: "I'm home alone till 6 if anyone wants to voice chat", isPhishing: true, clue: "NEVER say when you're home alone" },
+        { sender: "TurboFalcon", subject: "nice save last round!!", isPhishing: false, clue: "" },
+        { sender: "You (about to send)", subject: "my address is 42 Rainbow Road, come play!", isPhishing: true, clue: "Your address never goes in chat - ever" },
+        { sender: "You (about to send)", subject: "I'm 9, my birthday is June 12th!", isPhishing: true, clue: "Age + birthday are real-life clues" },
+        { sender: "NightHawk", subject: "who wants to squad up?", isPhishing: false, clue: "" },
+        { sender: "You (about to send)", subject: "my mum's phone number is 07700 900123", isPhishing: true, clue: "Family phone numbers stay private" },
+        { sender: "StarGazer", subject: "one more race then dinner!", isPhishing: false, clue: "" },
       ],
+      narration: {
+        speaker: "adam",
+        lines: [
+          "[excited] You're in goal, hero!",
+          "Chat lines are flying toward the send button.",
+          "Game talk? Let it fly through - it's safe.",
+          "[whispers] Real-life info? Name, school, address, home-alone times...",
+          "[excited] PUNCH those away before they leak!",
+        ],
+      },
     },
+    // 5 - Prove: SPEED
     {
-      type: "chooseYourPath",
-      scenarios: [
-        {
-          setup: "A teammate in a game says 'You play really well! DM me on Discord and I'll teach you pro tricks.' What do you do?",
-          choices: [
-            { text: "DM them - free coaching!", isSafe: false, consequence: "Moving from a moderated game to private DMs is how strangers isolate kids. You just stepped off the game's safety net." },
-            { text: "Say thanks but no thanks, and tell a parent", isSafe: true, consequence: "Smart move. Compliment-based invites to private chats are a classic tactic. You stayed safe." },
-          ],
-        },
-        {
-          setup: "Someone offers to give you a legendary skin in exchange for your Roblox password. They say 'it's safe, I'm a mod.' What do you do?",
-          choices: [
-            { text: "Share the password - legendary skin!", isSafe: false, consequence: "You just lost your account. Real mods NEVER ask for passwords. Everything you owned is gone." },
-            { text: "Refuse and report the player", isSafe: true, consequence: "Perfect. Real staff have their own tools - they never need your password. You saved your account." },
-          ],
-        },
-        {
-          setup: "A gaming 'friend' you've only met in games invites you to join a private Discord server for 'kids only - no adults allowed.' What do you do?",
-          choices: [
-            { text: "Join - sounds fun and exclusive", isSafe: false, consequence: "Unmoderated 'kids-only' servers are exactly where predators look for targets. You just walked into danger." },
-            { text: "Decline and tell a parent about the invitation", isSafe: true, consequence: "Excellent. Anyone who insists 'no adults' is hiding something. Parental moderation is protection, not a limitation." },
-          ],
-        },
-        {
-          setup: "A player starts insulting you in voice chat, saying really mean things. What's the best response?",
-          choices: [
-            { text: "Shout back louder - don't let them win", isSafe: false, consequence: "You got pulled into their toxic game. You ended up tired, upset, and the match ruined for everyone." },
-            { text: "Mute, report, leave the lobby - and tell a parent if it was nasty", isSafe: true, consequence: "Textbook response. Mute kills their power, report hurts their account, and leaving keeps YOUR day good." },
-          ],
-        },
+      type: "quickCheck",
+      mode: "speed",
+      prompt: "Quick - which one LEAKS?",
+      speedMs: 5000,
+      choices: [
+        { text: "'I'm home alone till 6!'", isCorrect: true },
+        { text: "'gg! rematch tomorrow?'", isCorrect: false },
+        { text: "'take the left bridge!'", isCorrect: false },
       ],
+      praise: "Saved! Home-alone times NEVER go in chat. ✓",
     },
+
+    // 6 - Recap · Concept 1 of 5
     {
-      type: "memoryMatch",
-      pairs: [
-        { term: "Toxic Player", match: "Someone being mean or abusive in chat", colour: "#ef4444" },
-        { term: "Mute", match: "Stops you hearing a player's voice", colour: "#60a5fa" },
-        { term: "Report", match: "Tells the game's team about bad behaviour", colour: "#fbbf24" },
-        { term: "PEGI Rating", match: "Tells you the minimum age for a game", colour: "#8b5cf6" },
-        { term: "In-Game Purchase", match: "Real money spent inside a game", colour: "#34d399" },
-        { term: "Parental Controls", match: "Settings adults use to keep gaming safe", colour: "#a78bfa" },
-      ],
+      type: "recap",
+      concept: 1,
+      total: 5,
+      learned: "Game talk goes in chat. Real-life info - name, school, address, home-alone times - stays out.",
+      next: "the lobby settings that lock your game zone",
+      emblem: "🎮",
+      narration: {
+        speaker: "layla",
+        lines: [
+          "[excited] What a goalie! Not one leak got past you.",
+          "Game talk flowed, real-life info bounced.",
+          "[warmly] But guarding every message is hard work...",
+          "[whispers] so next, we make the LOBBY do the guarding for you.",
+        ],
+      },
     },
+
+    /* ─────────── BEAT 2 · FRIENDS-ONLY + THE SETTINGS ─────────── */
+    // 7 - Learn
     {
       type: "info",
-      title: "Safe Gaming Habits",
+      title: "Lock Your Lobby",
       content:
-        "Five rules that keep gaming fun AND safe. Make them a habit and you can enjoy every game worry-free:",
+        "Here's a hero secret: your game has SETTINGS that guard you all by themselves. Friends-only means only people you actually know can join. A hero name hides your real one. A friends-only mic means strangers can't even hear you. Set them once - safe every game after.",
       bullets: [
-        "Keep your username generic - no real name, birth year, or location clues",
-        "Never share passwords or account info with ANYONE, even 'mods' or teammates",
-        "Use voice chat only with people you know IRL (or with a parent's OK)",
-        "Ask before any purchase - real money is involved, always check",
-        "Tell a trusted adult if anything in game chat makes you feel off",
+        "Games have settings that guard you",
+        "Friends-only = only people you KNOW join",
+        "Your hero name hides your real one",
+        "Friends-only mic = strangers can't hear you",
+        "Set once with a grown-up - safe forever",
       ],
+      bulletIcons: ["⚙️", "👪", "🎭", "🤫", "🛡️"],
+      emblem: "⚙️",
+      narration: {
+        speaker: "layla",
+        lines: [
+          "[whispers] Want to hear a hero secret?",
+          "Your game can guard you all by itself.",
+          "[excited] Friends-only means only people you KNOW can join.",
+          "A hero name keeps your real one hidden.",
+          "And a friends-only mic? Strangers can't even hear you.",
+          "[warmly] Set the settings once... and you're safe every game after. Let's flip them!",
+        ],
+      },
     },
+    // 8 - Game: SCENE (settingsSwitch debut - the Lobby Lockdown)
     {
-      type: "protectTheData",
+      type: "settingsSwitch",
+      panelTitle: "Mega Blasters — Settings",
+      introTitle: "The Lobby Lockdown",
+      introSubtitle: "Three settings are wide open. Find the risky ones and flip them safe!",
+      introIcon: "⚙️",
+      rows: [
+        { id: "who-joins", label: "Who can join my game", value: "Anyone in the world", safeValue: "Friends only", icon: "👪", isRisky: true, note: "Anyone-in-the-world means total strangers drop into YOUR lobby. Friends only!" },
+        { id: "name-shown", label: "Name shown to players", value: "Alex Reed (real name)", safeValue: "PixelPanda42", icon: "🎭", isRisky: true, note: "Your real name on screen for every stranger? Hero name, always." },
+        { id: "sounds", label: "Game music & sounds", value: "On", icon: "🔔", isRisky: false, note: "Music is just fun - it doesn't share anything about you. Already fine!" },
+        { id: "mic", label: "Who can hear my mic", value: "Everyone in the lobby", safeValue: "Friends only", icon: "🤫", isRisky: true, note: "An open mic lets strangers listen to your home. Friends-only shuts that door." },
+        { id: "controls", label: "Controller vibration", value: "On", icon: "🎮", isRisky: false, note: "Rumble away - vibration shares nothing. Already fine!" },
+      ],
+      hints: {
+        tier1: "Ask: does this setting let STRANGERS see, hear or reach me? Flip those.",
+        tier2: "The risky three: who can JOIN, what NAME they see, who HEARS your mic. Music and rumble are just fun.",
+      },
+      narration: {
+        speaker: "layla",
+        lines: [
+          "[excited] Here's the lobby settings panel!",
+          "Some rows are already safe and green.",
+          "[whispers] But three are wide open to strangers...",
+          "[excited] Find the risky ones and FLIP them safe!",
+        ],
+      },
+      coachLines: {
+        speaker: "layla",
+        lines: ["Red rows are leaking - tap one to flip it safe!"],
+      },
+    },
+    // 9 - Prove: RECALL
+    {
+      type: "quickCheck",
+      mode: "recall",
+      prompt: "Which setting keeps strangers OUT of your lobby?",
+      choices: [
+        { text: "Who can join: FRIENDS ONLY", isCorrect: true },
+        { text: "Controller vibration: ON", isCorrect: false },
+        { text: "Game music: LOUD", isCorrect: false },
+        { text: "Screen brightness: HIGH", isCorrect: false },
+      ],
+      praise: "That's the lock on your lobby door! ✓",
+    },
+
+    // 10 - Recap · Concept 2 of 5
+    {
+      type: "recap",
+      concept: 2,
+      total: 5,
+      learned: "Friends-only joining, a hero name, and a friends-only mic - set once, safe every game.",
+      next: "the sneakiest move in any lobby - 'let's chat somewhere else'",
+      emblem: "⚙️",
+      narration: {
+        speaker: "adam",
+        lines: [
+          "[excited] Lobby: LOCKED. Beautiful work.",
+          "Friends-only join, hero name, friends-only mic.",
+          "[whispers] But some tricksters still get in...",
+          "and they all try the same sneaky move. Listen closely.",
+        ],
+      },
+    },
+
+    /* ─────────── BEAT 3 · "CHAT SOMEWHERE ELSE" ─────────── */
+    // 11 - Learn
+    {
+      type: "info",
+      title: "The 'Somewhere Else' Trick",
+      content:
+        "Game chat has rules, moderators and report buttons - it's a guarded playground. So tricksters always try the same move: 'let's chat on a different app!' Why? Because OVER THERE, the guards can't see them. Remember your W3 training: moving the chat is a red flag, every time.",
+      bullets: [
+        "Game chat has guards: rules, mods, report buttons",
+        "'Chat on another app' = leaving the guards behind",
+        "That's exactly WHY tricksters ask",
+        "Real gaming friends are happy right here",
+        "Moving the chat = red flag, every time",
+      ],
+      bulletIcons: ["🛡️", "🚪", "🦝", "🎮", "🚫"],
+      emblem: "🚫",
+      narration: {
+        speaker: "adam",
+        lines: [
+          "[warmly] Game chat is a guarded playground.",
+          "Rules. Moderators. Report buttons. Guards everywhere!",
+          "[whispers] So tricksters always try the same move...",
+          "'Hey, let's chat on a different app instead!'",
+          "[nervous] Because over THERE... the guards can't see them.",
+          "[excited] You know this one from Week 3. Moving the chat? Red flag!",
+        ],
+      },
+    },
+    // 12 - Game: DECIDE (chatSimulator re-dress - the lobby chat)
+    {
+      type: "chatSimulator",
+      chatTitle: "GoldRush_Gary",
+      scenario: "Mid-match, a skilled player you've never met starts chatting to you in the game lobby...",
+      messages: [
+        { sender: "stranger", text: "Yo! You're actually good at this. Squad up next round?" },
+        { sender: "stranger", text: "We should talk tactics properly. What's your Discord? Game chat is so laggy lol" },
+        { sender: "stranger", text: "Come onnn, everyone chats off-game. I can't send you the secret map trick HERE." },
+        { sender: "narrator", text: "Why would a map trick need a different app? Your hero sense is tingling..." },
+      ],
+      choices: [
+        {
+          triggerAfterMessage: 0,
+          options: [
+            { text: "Sure - squad up in the game!", isSafe: true, feedback: "Playing together IN the game is what lobbies are for. Game on!" },
+            { text: "Yes! Let me give you my number so we can plan", isSafe: false, feedback: "Whoa - your number is real-life info. Squad up in the game, share nothing." },
+          ],
+        },
+        {
+          triggerAfterMessage: 1,
+          options: [
+            { text: "No thanks - I only chat in the game", isSafe: true, feedback: "Perfect. The game chat has guards - and real gaming friends are happy right here." },
+            { text: "OK, my Discord is PixelPanda#42", isSafe: false, feedback: "That's the 'somewhere else' trick working - off-game, the moderators can't protect you." },
+          ],
+        },
+        {
+          triggerAfterMessage: 3,
+          options: [
+            { text: "Nope. And I'm telling a grown-up you keep asking", isSafe: true, feedback: "HERO MOVE. A 'secret trick' that needs a secret app was never about the game." },
+            { text: "Fine... just for the map trick", isSafe: false, feedback: "There is no map trick - getting you alone off-game WAS the trick. Stay where the guards are." },
+          ],
+        },
+      ],
+      narration: {
+        speaker: "adam",
+        lines: [
+          "[warmly] Time to practise, right inside a lobby chat.",
+          "A player is about to get very friendly...",
+          "[whispers] and then try to move you somewhere else.",
+          "[excited] Watch the meter. Trust your training!",
+        ],
+      },
+    },
+    // 13 - Prove: LIE
+    {
+      type: "quickCheck",
+      mode: "lie",
+      prompt: "Is that true?",
+      raccoonLine: "real friends ALWAYS move to a different app - game chat is for noobs!",
+      choices: [
+        { text: "TRUE", isCorrect: false },
+        { text: "FALSE", isCorrect: true },
+      ],
+      praise: "Busted! Real gaming friends are happy where the guards are. ✓",
+      nudge: "Who benefits when the chat leaves the guarded playground?",
+    },
+
+    // 14 - Recap · Concept 3 of 5
+    {
+      type: "recap",
+      concept: 3,
+      total: 5,
+      learned: "'Let's chat on another app' means leaving the guards behind - red flag, every time.",
+      next: "the two buttons every hero can find blindfolded",
+      emblem: "🚫",
+      narration: {
+        speaker: "layla",
+        lines: [
+          "[excited] Three powers! The 'somewhere else' trick bounced right off you.",
+          "Game chat has guards, and you stayed with them.",
+          "[warmly] Speaking of guards...",
+          "[excited] it's time you met the two mightiest buttons in any game!",
+        ],
+      },
+    },
+
+    /* ─────────── BEAT 4 · REPORT & BLOCK ─────────── */
+    // 15 - Learn
+    {
+      type: "info",
+      title: "Report & Block: Your Power Buttons",
+      content:
+        "Every game has two hero buttons hiding in the player menu. REPORT tells the game's guards 'check this player!' - they can remove troublemakers for everyone. BLOCK makes that player vanish from YOUR game instantly - they can't message you, join you, or even see you. Report first, then block. Boom.",
+      bullets: [
+        "Every game has them - every single one",
+        "REPORT = calls the game's guards",
+        "BLOCK = that player vanishes from YOUR game",
+        "Report first, then block",
+        "Using them isn't mean - it's what they're FOR",
+      ],
+      bulletIcons: ["🎮", "🔔", "🚫", "🔢", "🛡️"],
+      emblem: "🔔",
+      narration: {
+        speaker: "layla",
+        lines: [
+          "[excited] Meet the two mightiest buttons in any game!",
+          "REPORT tells the game's guards: 'check this player!'",
+          "BLOCK makes them vanish from YOUR game. Poof!",
+          "No messages, no joining, they can't even see you.",
+          "[warmly] Report first, then block.",
+          "[excited] Using them isn't mean - it's exactly what they're for. Let's find them!",
+        ],
+      },
+    },
+    // 16 - Game: FIND (buttonHunt debut - the Button Hunt)
+    {
+      type: "buttonHunt",
+      menuTitle: "Mega Blasters — Player Menu",
+      scenario: "GoldRush_Gary won't stop with the creepy asks.",
+      introTitle: "The Button Hunt",
+      introSubtitle: "Somewhere in this menu live your two power buttons. Find REPORT first, then BLOCK!",
+      introIcon: "🔔",
+      buttons: [
+        { id: "add-friend", label: "Add Friend", icon: "👪", note: "Add Friend invites them CLOSER - the opposite of what this moment needs!" },
+        { id: "emotes", label: "Emotes", icon: "🎭", note: "Emotes are for celebrations - a dancing banana won't stop a creep." },
+        { id: "report", label: "Report Player", icon: "🔔", targetOrder: 1, note: "The guards are on their way!" },
+        { id: "shop", label: "Item Shop", icon: "🎁", note: "The shop sells hats, not help. Keep hunting!" },
+        { id: "block", label: "Block Player", icon: "🚫", targetOrder: 2, note: "Poof - gone from your game!" },
+        { id: "stats", label: "My Stats", icon: "🏆", note: "Nice stats! But they won't stop the messages. Keep hunting!" },
+      ],
+      hints: {
+        tier1: "You're looking for the button that calls the game's GUARDS first.",
+        tier2: "REPORT (the bell) first - it alerts the moderators. THEN block (the no-entry sign) to vanish them.",
+      },
+      narration: {
+        speaker: "layla",
+        lines: [
+          "[warmly] There's the player menu - six buttons.",
+          "Two of them are your power buttons.",
+          "[whispers] Report first... it calls the guards.",
+          "[excited] Then block. Find them both!",
+        ],
+      },
+      coachLines: {
+        speaker: "layla",
+        lines: ["Which button calls the game's guards? Tap it first!"],
+      },
+    },
+    // 17 - Prove: PUT-IN-ORDER
+    {
+      type: "quickCheck",
+      mode: "order",
+      prompt: "A player turns nasty. Tap the hero steps IN ORDER:",
+      choices: [
+        { text: "REPORT them", isCorrect: true },
+        { text: "BLOCK them", isCorrect: true },
+        { text: "Tell a grown-up", isCorrect: true },
+      ],
+      praise: "Report. Block. Tell. The lobby is safe again! ✓",
+      nudge: "Which button calls the game's guards FIRST?",
+    },
+
+    // 18 - Recap · Concept 4 of 5
+    {
+      type: "recap",
+      concept: 4,
+      total: 5,
+      learned: "Report calls the game's guards, block makes them vanish. Report, block, tell.",
+      next: "the last trap - 'free' downloads that aren't",
+      emblem: "🔔",
+      narration: {
+        speaker: "adam",
+        lines: [
+          "[excited] Four powers! You found both buttons in seconds.",
+          "Report. Block. Tell.",
+          "[laughs] GoldRush_Gary never knew what hit him.",
+          "[whispers] One last trap guards the game zone... the 'free' download.",
+        ],
+      },
+    },
+
+    /* ─────────── BEAT 5 · FAKE MODS & FREE DOWNLOADS ─────────── */
+    // 19 - Learn
+    {
+      type: "info",
+      title: "The 'Free Mod' Trap",
+      content:
+        "'FREE skins! Unlimited speed! Just download this mod!' Sounds amazing - but downloads from outside the real game can carry NASTY surprises: programs that steal accounts or break the computer. Real games sell their stuff INSIDE the game. Anything outside? Check with a grown-up first, every time.",
+      bullets: [
+        "'Free mods' can hide nasty surprises",
+        "Some steal accounts or break computers",
+        "Real games sell stuff INSIDE the game",
+        "Never type your login outside the real game",
+        "Downloads = check with a grown-up first",
+      ],
+      bulletIcons: ["🎁", "💀", "🎮", "🔐", "👪"],
+      emblem: "🪤",
+      narration: {
+        speaker: "adam",
+        lines: [
+          "[excited] Free skins! Unlimited speed! Just download this mod!",
+          "[warmly] Sounds amazing, right? Careful.",
+          "[whispers] Downloads from OUTSIDE the real game can hide nasty surprises.",
+          "Some steal accounts. Some break computers.",
+          "Real games sell their stuff inside the game.",
+          "[excited] Anything outside? Grown-up check first. Let's inspect some downloads!",
+        ],
+      },
+    },
+    // 20 - Game: INSPECT (requestInspector re-dress - the Download Checker)
+    {
+      type: "requestInspector",
+      badgeLabel: "DOWNLOAD PAGE",
+      introTitle: "The Download Checker",
+      introSubtitle: "Inspect every clue, then decide: safe download... or a trap?",
+      introIcon: "🔍",
+      fairLabel: "Looks safe — ask first!",
+      nosyLabel: "It's a trap — close it!",
+      requests: [
+        {
+          id: "turbo-mod",
+          appName: "MegaBlasters TURBO MOD",
+          appIcon: "⚡",
+          tagline: "UNLIMITED speed + FREE skins! Not available in the boring official game!",
+          asksFor: ["Your game login", "Turn OFF the virus checker"],
+          isNosy: true,
+          zones: [
+            { id: "who", label: "Who made it?", note: "Not the real game company - some random site nobody can check.", isRedFlag: true },
+            { id: "want", label: "What does it want?", note: "Your game LOGIN and the virus checker switched OFF. Both alarm bells.", isRedFlag: true },
+            { id: "need", label: "Would the real game do this?", note: "Real games sell their stuff INSIDE the game - never through secret downloads.", isRedFlag: true },
+            { id: "happens", label: "If you install it?", note: "Best case: nothing. Worst case: your account is stolen and the computer's sick.", isRedFlag: true },
+          ],
+          verdictNote: "A mod that wants your login AND the virus checker off is a burglar asking you to unlock the door. Trap!",
+        },
+        {
+          id: "official-pack",
+          appName: "Mega Blasters Season Pack",
+          appIcon: "🎮",
+          tagline: "New season content - from the in-game shop",
+          asksFor: ["A grown-up to approve the purchase"],
+          isNosy: false,
+          zones: [
+            { id: "who", label: "Who made it?", note: "The real game company, inside the real game's own shop.", isRedFlag: false },
+            { id: "want", label: "What does it want?", note: "Just a grown-up's OK - it never asks for your login somewhere weird.", isRedFlag: false },
+            { id: "need", label: "Would the real game do this?", note: "Yes - this IS the real game, selling its stuff the proper way.", isRedFlag: false },
+            { id: "happens", label: "If you get it?", note: "The content appears in your game. No surprises, no tricks.", isRedFlag: false },
+          ],
+          verdictNote: "Inside the real game + a grown-up's OK = the safe way to get new stuff.",
+        },
+        {
+          id: "skin-generator",
+          appName: "FREE Skin Generator 3000",
+          appIcon: "🎁",
+          tagline: "Generate ANY skin for FREE! 100% works! No virus we promise!!",
+          asksFor: ["Your username AND password", "Click 3 mystery links"],
+          isNosy: true,
+          zones: [
+            { id: "who", label: "Who made it?", note: "'No virus we promise!!' - real companies never have to promise that.", isRedFlag: true },
+            { id: "want", label: "What does it want?", note: "Your USERNAME and PASSWORD. That's the whole trick right there.", isRedFlag: true },
+            { id: "need", label: "Would the real game do this?", note: "Free-anything generators don't exist - skins cost the game company money.", isRedFlag: true },
+            { id: "happens", label: "If you use it?", note: "You type your password... and the account isn't yours anymore.", isRedFlag: true },
+          ],
+          verdictNote: "Generators NEVER work - they exist to harvest passwords. Close it and tell a grown-up.",
+        },
+      ],
+      hints: {
+        tier1: "Ask: is this from INSIDE the real game, or from a random site outside it?",
+        tier2: "Login asks, virus-checker-off asks and 'no virus we promise' = trap. Inside the game + grown-up OK = safe.",
+      },
+      narration: {
+        speaker: "adam",
+        lines: [
+          "[excited] Download pages incoming - inspect like a pro!",
+          "Check who made it, what it wants,",
+          "whether the REAL game would ever do this...",
+          "[warmly] then make the call: safe... or trap?",
+        ],
+      },
+      coachLines: {
+        speaker: "adam",
+        lines: ["Tap every magnifying glass before you decide!"],
+      },
+    },
+    // 21 - Prove: RECALL (quick-sort)
+    {
+      type: "quickCheck",
+      mode: "recall",
+      prompt: "Which download is SAFE?",
+      choices: [
+        { text: "Season pack from the in-game shop, grown-up approved", isCorrect: true },
+        { text: "'FREE skins - just type your password!'", isCorrect: false },
+        { text: "A mod that says 'turn off the virus checker'", isCorrect: false },
+      ],
+      praise: "Inside the game + grown-up OK = the safe way. ✓",
+    },
+
+    // 22 - Recap · Concept 5 of 5
+    {
+      type: "recap",
+      concept: 5,
+      total: 5,
+      learned: "Real games sell stuff inside the game. Outside downloads need a grown-up check - and password asks are always traps.",
+      next: "one final drill, then the Raccoon crashes your lobby",
+      emblem: "🪤",
+      narration: {
+        speaker: "layla",
+        lines: [
+          "[excited] That's all FIVE powers, Cyber Hero!",
+          "Chat guarded, lobby locked, 'somewhere else' refused,",
+          "power buttons found, download traps closed.",
+          "[whispers] Your game zone is a fortress now.",
+          "[excited] Final drill - then he's coming to test it!",
+        ],
+      },
+    },
+
+    // 23 - Consolidation: The Game Zone Scanner (W1 scanner engine, W6 content)
+    {
+      type: "cyberScanner",
+      labels: {
+        positive: "SAFE PLAY",
+        negative: "DANGER ZONE",
+        positiveHint: "Tap SAFE PLAY for guarded, locked-down moves",
+        negativeHint: "Tap DANGER ZONE for leaks, traps and sneaky moves",
+        tipWhenPositive: "Game talk, friends-only settings, report & block, in-game shops - safe play, all of it.",
+        tipWhenNegative: "Real-life info in chat, open lobbies, off-game chats and 'free' downloads - danger zone.",
+        hint1: "Ask: does this keep the guards around me... or send my info (or me) outside the game?",
+        hint2: "SAFE = game talk + locked settings + power buttons. DANGER = leaks, 'somewhere else', password downloads.",
+        hint2Example: "SAFE: 'gg, rematch?'   DANGER: 'chat on Discord instead'",
+        hint3: "Quick rule card: game talk only · friends-only everything · report then block · downloads = grown-up check.",
+        hint3Example: "In-game shop ✅    'FREE skin generator' ❌",
+      },
       items: [
-        { text: "Your password", isPrivate: true },
-        { text: "Your favourite game", isPrivate: false },
-        { text: "Your real first name", isPrivate: true },
-        { text: "Your favourite game character", isPrivate: false },
-        { text: "Your school name", isPrivate: true },
-        { text: "Your game skill level", isPrivate: false },
-        { text: "Your home address", isPrivate: true },
-        { text: "Your favourite map", isPrivate: false },
-        { text: "Your parent's credit card", isPrivate: true },
-        { text: "The hobbies you enjoy", isPrivate: false },
-        { text: "Your face (via camera)", isPrivate: true },
-        { text: "Your gamer level/rank", isPrivate: false },
+        { text: "'gg! Same time tomorrow?' in game chat", isStrong: true, explanation: "Pure game talk - exactly what chat is for." },
+        { text: "Telling the lobby your school and street", isStrong: false, explanation: "Real-life info in a room full of strangers - the biggest leak there is." },
+        { text: "Who can join: FRIENDS ONLY", isStrong: true, explanation: "The lobby lock - strangers stay out automatically." },
+        { text: "'Let's chat on Discord, game chat is lame'", isStrong: false, explanation: "The 'somewhere else' trick - leaving the guards behind." },
+        { text: "Report, then block the nasty player", isStrong: true, explanation: "The power buttons doing exactly their job." },
+        { text: "'FREE skins - just log in HERE!'", isStrong: false, explanation: "A password harvester in a party hat. Close it, tell a grown-up." },
       ],
+      narration: {
+        speaker: "layla",
+        lines: [
+          "[excited] Final drill! Game-zone moments are drifting past.",
+          "Tap SAFE PLAY for the guarded moves...",
+          "and DANGER ZONE for leaks and traps.",
+          "[warmly] Your fortress, your rules. Show me!",
+        ],
+      },
     },
-    {
-      type: "firewallBuilder",
-      goodBlocks: [
-        "Mute toxic players",
-        "Report abusive chat",
-        "Ask parent before purchases",
-        "Use generic usernames",
-        "Keep mic muted with strangers",
-        "Play age-appropriate games",
-        "Use parental controls",
-        "Tell adults about weird messages",
-      ],
-      badBlocks: [
-        "Share passwords for free skins",
-        "Join private stranger servers",
-        "Send voice clips to strangers",
-        "Click random 'cheat' links",
-      ],
-    },
-    {
-      type: "cyberMaze",
-      questions: [
-        { question: "A gaming friend you've never met in real life is...", answers: ["Still a stranger", "A best friend", "Safe", "Family"], correctIndex: 0 },
-        { question: "Real game moderators ask for your password when?", answers: ["NEVER", "On weekends", "If you win something", "During updates"], correctIndex: 0 },
-        { question: "What's the first thing to do about a toxic player?", answers: ["Mute and report them", "Yell back louder", "Give up", "Share their behaviour online"], correctIndex: 0 },
-        { question: "In-game purchases use what?", answers: ["Real money", "Imagination only", "Game tokens worth nothing", "Free coins"], correctIndex: 0 },
-        { question: "PEGI ratings tell you...", answers: ["The minimum age a game is suitable for", "The price", "How many players", "How long it takes"], correctIndex: 0 },
-      ],
-    },
+
+    // 24 - BOSS BATTLE (placeholder quiz boss - the bespoke W6 GAUNTLET comes with the boss batch)
     { type: "bossBattle" },
+
+    // 25 - CLOSING VIDEO: the intruder is reported & booted
+    { type: "video", videoPlaceholder: "Week 6: Booted From the Lobby", videoSrc: "/videos/module-06-outro.mp4" },
+
+    // 26 - Mission Debrief
+    {
+      type: "missionDebrief",
+      title: "Mission Complete!",
+      subtitle: "Here's everything you mastered this week.",
+      concepts: [
+        { id: "chat", label: "Chat Goalie", accent: "#7eff97", icon: "🎮", summary: "Game talk in, real-life info out - name, school, address, never." },
+        { id: "lobby", label: "Lobby Lock", accent: "#00e5ff", icon: "⚙️", summary: "Friends-only join, hero name, friends-only mic. Set once, safe always." },
+        { id: "move", label: "Stay With the Guards", accent: "#ff5fb3", icon: "🚫", summary: "'Chat somewhere else' means leaving the guards - red flag, refused." },
+        { id: "buttons", label: "Power Buttons", accent: "#ffd158", icon: "🔔", summary: "Report calls the guards, block makes them vanish. Report, block, tell." },
+        { id: "mods", label: "Trap Closer", accent: "#c084fc", icon: "🪤", summary: "Real games sell inside the game. Password-hungry downloads are traps." },
+      ],
+      narration: {
+        speaker: "layla",
+        lines: [
+          "[excited] Look at EVERYTHING you mastered this week!",
+          "You guard the chat, you lock the lobby,",
+          "you stay with the guards, you wield the power buttons...",
+          "[laughs] and no 'free skin' trap will EVER fool you.",
+          "[excited] The intruder got booted from the lobby. Sticker time!",
+        ],
+      },
+    },
+
+    // 27 - Sticker Unlock
+    {
+      type: "stickerUnlock",
+      title: "Stickers Unlocked!",
+      stickers: [
+        { id: "chat-goalie", name: "Chat Goalie", icon: "🎮", description: "Not one leak gets past." },
+        { id: "lobby-locksmith", name: "Lobby Locksmith", icon: "⚙️", description: "Friends-only everything." },
+        { id: "button-master", name: "Button Master", icon: "🔔", description: "Report. Block. Tell. Instantly." },
+      ],
+    },
+
+    // 28 - Completion
     { type: "completion" },
   ],
 
+  // Week-lane attack theatre: lobby tricks only (no money/V-Bucks - W7;
+  // no fake-profile anatomy - W3).
+  bossAttacks: [
+    { name: "INFO FISHING",   icon: "🎮", color: "#7eff97", glow: "rgba(126, 255, 151, 0.55)", tag: "Game talk only",             emblemColor: 0x7eff97 },
+    { name: "SNEAK-OUT CHAT", icon: "🚪", color: "#ff5fb3", glow: "rgba(255, 95, 179, 0.55)",  tag: "Stay with the guards",      emblemColor: 0xff5fb3 },
+    { name: "FREE-MOD TRAP",  icon: "🪤", color: "#ffb347", glow: "rgba(255, 179, 71, 0.55)",  tag: "Downloads = grown-up check", emblemColor: 0xffb347 },
+  ],
+
+  // Placeholder quiz boss (the bespoke W6 GAUNTLET - one match where he
+  // tries all 5 tricks - is designed separately with the boss batch).
   bossQuestions: {
     easy: [
-      { question: "Someone you meet in a game is...", answers: ["A stranger, even if they seem nice", "An automatic best friend", "Always safe", "Always toxic"], correctIndex: 0, explanation: "Gaming friends you haven't met in real life are still strangers" },
-      { question: "Should you share your password for free in-game items?", answers: ["Yes - it's a great deal", "Never - it's always a scam", "Only on birthdays", "Only for legendary items"], correctIndex: 1, explanation: "Real game companies never offer free items for your password" },
-      { question: "A toxic player is saying mean things. First action?", answers: ["Argue back", "Mute them", "Quit gaming forever", "Share their username everywhere"], correctIndex: 1, explanation: "Mute them first - it takes away their power to upset you" },
-      { question: "After muting a toxic player you should...", answers: ["Forget it happened", "Report them to the game team", "Friend them", "Copy their behaviour"], correctIndex: 1, explanation: "Reporting them helps protect other players too" },
-      { question: "Who sets parental controls?", answers: ["A trusted adult", "You, secretly", "The game company randomly", "Your teachers"], correctIndex: 0, explanation: "Parental controls are set up by a parent or carer to help you stay safe" },
-      { question: "PEGI 7 means a game is suitable for...", answers: ["Ages 7 and up", "7 minutes of gameplay only", "7 players max", "Only on Sundays"], correctIndex: 0, explanation: "PEGI ratings tell you the minimum age a game is designed for" },
-      { question: "Best username for gaming?", answers: ["YourName2016London", "Something generic that doesn't reveal your identity", "Your real full name", "Your home address"], correctIndex: 1, explanation: "Usernames can leak info - keep yours generic" },
-      { question: "In-game purchases use...", answers: ["Free magic", "Real money that parents have to pay", "Made-up currency only", "Nothing"], correctIndex: 1, explanation: "Even if it's called 'V-Bucks' or 'Robux', real money is involved - always ask a parent" },
-      { question: "A 'skin' is...", answers: ["A cosmetic look for your character", "A real skin", "A scam always", "A type of hacker"], correctIndex: 0, explanation: "Skins are visual customisations. Buying them uses real money" },
-      { question: "Voice chat with strangers should only happen when...", answers: ["Never", "After asking a parent", "You know them IRL or a parent says OK", "During a full moon"], correctIndex: 2, explanation: "Voice chat reveals a LOT - only use it with people you know or with parent approval" },
+      { question: "What belongs in game chat?", answers: ["Game talk - tactics and rematches", "Your school's name", "Your address", "When you're home alone"], correctIndex: 0, explanation: "Game talk in, real-life info out. Always." },
+      { question: "Which setting keeps strangers out of your lobby?", answers: ["Who can join: friends only", "Music: on", "Vibration: off", "Brightness: high"], correctIndex: 0, explanation: "Friends-only joining is the lock on your lobby door." },
+      { question: "A player says 'let's chat on a different app'. That's...", answers: ["A red flag - stay where the guards are", "A friendly offer", "Totally normal", "A secret level"], correctIndex: 0, explanation: "Off-game, the moderators can't protect you - that's exactly why they ask." },
     ],
     medium: [
-      { question: "A 'giveaway' account offers free skins if you follow a link. What's happening?", answers: ["Generous player", "Phishing scam - the link steals your login", "Official partnership", "Random kindness"], correctIndex: 1, explanation: "Fake giveaways are the #1 way gamers get their accounts stolen" },
-      { question: "Why is it risky to play on public unmoderated servers?", answers: ["The graphics are worse", "Strangers and toxic players aren't controlled, and there's no safety team", "They're always offline", "They need more money"], correctIndex: 1, explanation: "Without moderation, bad actors can harass or scam without consequences" },
-      { question: "A 'duping glitch' offering to duplicate your items usually...", answers: ["Works great", "Tricks you into giving items away to a scammer", "Costs money", "Is illegal in the UK"], correctIndex: 1, explanation: "Dupe glitches are scams - the 'glitch' just transfers your items to the scammer" },
-      { question: "Why might a stranger ask 'how old are you?' in a game?", answers: ["Friendly chat", "To target younger players specifically, or fake their own age", "For a survey", "Nothing - it's normal"], correctIndex: 1, explanation: "Age questions in game chat can be used to target kids specifically - avoid answering personal questions" },
-      { question: "What is 'swatting'?", answers: ["A baseball move", "Calling emergency services on a gamer's home as a prank - a dangerous crime", "A type of tournament", "A new multiplayer mode"], correctIndex: 1, explanation: "Swatting is a serious crime - it's why sharing your address is so dangerous even in game chat" },
-      { question: "A teammate insists you install their 'custom game mod' they sent. You should...", answers: ["Install it - teammates help each other", "Never install mods from strangers - they can be malware", "Install only on weekends", "Ask what it does and then install"], correctIndex: 1, explanation: "Random mods can contain viruses or account-stealers - only install from official sources" },
-      { question: "In-game chat can reveal your location if...", answers: ["Your mic picks up background noise like family, pets, or nearby sounds", "You say 'hi'", "You play too long", "Your character wears blue"], correctIndex: 0, explanation: "Your voice, background noises, and accent all give away clues to who and where you are" },
-      { question: "The safest way to add new gaming friends is...", answers: ["Accept every request", "Only add real-life friends or ask a parent before adding new people", "Only on weekends", "Never play with anyone"], correctIndex: 1, explanation: "Treat friends-list like your real friend group - only people you actually know or trusted-adult-approved" },
-      { question: "A game asks for your email AND password on a third-party website to 'verify' you. What should you do?", answers: ["Fill it in", "Never enter login info on any site that's not the official game's site", "Use fake info", "Share with a friend first"], correctIndex: 1, explanation: "Only enter credentials on the official game's real website or app" },
-      { question: "If parental controls feel 'annoying' the purpose is...", answers: ["To ruin your fun", "To protect you while you learn to spot risks yourself", "Random punishment", "No reason"], correctIndex: 1, explanation: "Parental controls are training wheels - they help keep you safe until you've got the skills down" },
+      { question: "A player is being nasty. What order do you act in?", answers: ["Report, then block, then tell a grown-up", "Block, argue, unblock", "Shout, quit, cry", "Add friend, then report"], correctIndex: 0, explanation: "Report calls the guards first, block vanishes them, telling finishes the job." },
+      { question: "What does BLOCK do?", answers: ["That player vanishes from your game", "Deletes your account", "Mutes your music", "Reports a bug"], correctIndex: 0, explanation: "No messages, no joining, they can't even see you. Poof." },
+      { question: "A mod says 'turn OFF your virus checker to install'. You...", answers: ["Close it - that's a trap sign", "Turn it off quickly", "Install twice", "Only turn it half off"], correctIndex: 0, explanation: "Asking to disable protection is a burglar asking you to unlock the door." },
     ],
     hard: [
-      { question: "'Toxic positivity' in gaming means...", answers: ["Being too nice", "Dismissing real issues with '😊 just ignore them' without actually helping", "A type of skin", "A purple poison"], correctIndex: 1, explanation: "Telling someone to 'just ignore' bullying doesn't help - real support means listening and getting adult help" },
-      { question: "Why is 'cross-platform play' a safety concern?", answers: ["It's slower", "Your friends list and chat can span multiple platforms - which means more points where strangers can contact you", "It doesn't work", "It's illegal"], correctIndex: 1, explanation: "Cross-play is great for fun but means safety settings need to be checked on EVERY platform you play on" },
-      { question: "An influencer announces a 'Robux giveaway' and asks for your username. What's likely happening?", answers: ["Real giveaway", "Impersonator account - legit creators rarely need your username for giveaways and never your password", "A charity drive", "Microsoft partnership"], correctIndex: 1, explanation: "Fake influencer accounts are rampant. If unsure, check the creator's verified official channel for details" },
-      { question: "A mod says they'll 'restore' your banned account if you give them access. What's really going on?", answers: ["Helpful mod", "Scammer posing as staff - they'll steal the account or extort you", "Normal recovery process", "A test from the game team"], correctIndex: 1, explanation: "Real account recovery goes through the official game's support portal, never through DMs" },
-      { question: "Which gaming behaviour is a warning sign of grooming?", answers: ["Someone gifting in-game items and slowly moving chat to private platforms", "Someone being polite in voice chat", "A teammate saying GG", "A player asking for your build"], correctIndex: 0, explanation: "Grooming online often starts with generosity and moves to isolation - gifts + private chat is a red flag pattern" },
-      { question: "You see a younger player being harassed in chat by a group. Your best response as an upstander?", answers: ["Say nothing - not your problem", "Report the group, tell the younger player to report too, and tell a trusted adult what happened", "Attack the group yourself", "Leave the game"], correctIndex: 1, explanation: "Upstander behaviour is powerful - reporting + supporting the target + telling an adult is the full response" },
-      { question: "A teammate asks you to 'boost' their rank by giving them control of your account for a few hours. What's the risk?", answers: ["Only a ban risk", "Your account could be stolen, password changed, purchases made, and you'd still be banned for account sharing", "No risk", "Just a small ban"], correctIndex: 1, explanation: "Account sharing is against terms of service AND puts everything you own at risk - never share logins" },
-      { question: "'Dark patterns' in games include...", answers: ["All characters wearing black", "Designs that trick you into buying things (fake urgency, confusing confirms, 'limited time!' timers)", "Nighttime game modes", "Stealth games only"], correctIndex: 1, explanation: "Games sometimes use manipulation tactics - the same ones scammers use. Always pause before a purchase" },
-      { question: "Why do some games let kids chat without moderation filters?", answers: ["To save server costs - which means YOU have to be the safety team yourself", "Because kids don't need protecting", "Accidentally", "It's a premium feature"], correctIndex: 0, explanation: "Not every game invests in moderation. On those games, your own judgement and parental controls do the work" },
-      { question: "The single best habit for lifetime gaming safety is...", answers: ["Never play online", "Treat every new online contact as a stranger until proven trusted IRL", "Only play single-player", "Never use a mic"], correctIndex: 1, explanation: "The core mental model: new online contact = stranger. Friendship is earned by real-life verification, not by hours played together" },
+      { question: "Why do tricksters want to leave game chat?", answers: ["Rules, mods and report buttons can't follow them", "Game chat is too slow", "They prefer typing", "Their app has better emojis"], correctIndex: 0, explanation: "Off-game there are no guards - that's the whole point of the move." },
+      { question: "'FREE skin generator - enter your password!' What happens if you do?", answers: ["The account isn't yours anymore", "You get free skins", "Nothing at all", "You get one skin"], correctIndex: 0, explanation: "Generators never work - they exist to harvest passwords." },
+      { question: "Where do real games sell their content?", answers: ["Inside the game's own shop", "On random download sites", "In chat messages", "Nowhere - it's all free"], correctIndex: 0, explanation: "Inside the game + a grown-up's OK = the only safe way." },
     ],
   },
 
+  // Keyed by SCREEN INDEX (0-28). Must stay in lock-step with `screens` above -
+  // if a screen is inserted/removed, shift these too (the trailing labels help).
+  // The 5 "recap" checkpoints (after each Prove beat) are indices 6/10/14/18/22.
   reactions: {
-    0: { adam: { mood: "excited", message: "Week 6 - gaming week!" }, layla: null },
-    1: { adam: null, layla: { mood: "curious", message: "Let's play safer, smarter, stronger." } },
-    2: { adam: { mood: "thinking", message: "Game chat can hide surprises. Stay sharp." }, layla: null },
-    3: { adam: null, layla: { mood: "excited", message: "Spot the stranger in the lobby!" } },
-    4: { adam: { mood: "worried", message: "Five classic gaming scams. Know them all." }, layla: null },
-    5: { adam: null, layla: { mood: "thumbsup", message: "Zap the scam emails targeting gamers!" } },
-    6: { adam: { mood: "thinking", message: "Which choice keeps you safe AND still having fun?" }, layla: null },
-    7: { adam: null, layla: { mood: "curious", message: "Match up the gaming safety terms!" } },
-    8: { adam: { mood: "thumbsup", message: "Five habits that keep every game safe." }, layla: null },
-    9: { adam: null, layla: { mood: "excited", message: "Private data stays private - even in the lobby." } },
-    10: { adam: { mood: "excited", message: "Build the gamer firewall!" }, layla: null },
-    11: { adam: null, layla: { mood: "thinking", message: "Navigate the maze - every gate is gaming safety." } },
-    12: { adam: { mood: "excited", message: "Final boss! You've got this, Safe Gamer!" }, layla: null },
-    13: { adam: null, layla: { mood: "thumbsup", message: "Safe Gamer unlocked. Now go have fun out there." } },
+    0: { adam: { mood: "excited", message: "Mission 6 - defend your game zone!" }, layla: null }, // intro video
+    1: { adam: { mood: "worried", message: "An intruder in the lobby..." }, layla: null }, // alert
+    2: { adam: null, layla: { mood: "curious", message: "Here's the plan for today." } }, // mission brief
+    3: { adam: { mood: "thinking", message: "Game talk in. Real-life info out." }, layla: null }, // learn: chat
+    4: { adam: { mood: "excited", message: "You're in goal - punch those leaks!" }, layla: null }, // game: spamBlaster
+    5: { adam: null, layla: { mood: "excited", message: "Quick - spot the leak!" } }, // prove: speed
+    6: { adam: null, layla: { mood: "excited", message: "One power down - four to go!" } }, // recap 1
+    7: { adam: null, layla: { mood: "curious", message: "Let the settings do the guarding." } }, // learn: lobby
+    8: { adam: { mood: "excited", message: "Flip the risky ones!" }, layla: null }, // game: settingsSwitch
+    9: { adam: null, layla: { mood: "thumbsup", message: "Which setting locks the door?" } }, // prove: recall
+    10: { adam: { mood: "thumbsup", message: "Lobby: LOCKED." }, layla: null }, // recap 2
+    11: { adam: { mood: "thinking", message: "Why leave the guarded playground?" }, layla: null }, // learn: move
+    12: { adam: { mood: "curious", message: "Watch the meter climb..." }, layla: null }, // game: chatSimulator
+    13: { adam: null, layla: { mood: "worried", message: "He's fibbing - catch him!" } }, // prove: lie
+    14: { adam: null, layla: { mood: "excited", message: "Stay with the guards. Always." } }, // recap 3
+    15: { adam: null, layla: { mood: "thinking", message: "Two buttons. Endless power." } }, // learn: buttons
+    16: { adam: { mood: "excited", message: "Find Report first!" }, layla: null }, // game: buttonHunt
+    17: { adam: null, layla: { mood: "excited", message: "Put the hero steps in order!" } }, // prove: order
+    18: { adam: { mood: "thumbsup", message: "Report. Block. Tell. Mastered." }, layla: null }, // recap 4
+    19: { adam: { mood: "thinking", message: "'Free' downloads always cost something." }, layla: null }, // learn: mods
+    20: { adam: { mood: "curious", message: "Inspect every clue, detective." }, layla: null }, // game: requestInspector
+    21: { adam: null, layla: { mood: "thumbsup", message: "Which download is safe?" } }, // prove: recall
+    22: { adam: null, layla: { mood: "excited", message: "All five powers - boss time soon!" } }, // recap 5
+    23: { adam: null, layla: { mood: "excited", message: "Safe play or danger zone - scan fast!" } }, // consolidation
+    24: { adam: { mood: "worried", message: "He's in YOUR lobby - boot him!" }, layla: null }, // boss
+    25: { adam: null, layla: { mood: "excited", message: "Watch him get booted!" } }, // outro video
+    26: { adam: { mood: "thumbsup", message: "Look at everything you mastered!" }, layla: null }, // debrief
+    27: { adam: null, layla: { mood: "excited", message: "Stickers earned - off to Cyber HQ!" } }, // stickers
+    28: { adam: { mood: "thumbsup", message: "Lobby Guardian badge earned!" }, layla: null }, // completion
   },
 };

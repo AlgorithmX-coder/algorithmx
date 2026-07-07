@@ -50,7 +50,7 @@ Every pattern use across all 20 weeks, each with its unique dressing. **Rule: be
 | W2.3 shipped | requestInspector — examine an info request |
 | W3.2 | **Profile Detective** *(BUILT — new profileInspector)* — friend-request card with stat chips; 4 inspect zones (joined / friends & photos / how it talks / what it asks) unlock the REAL-or-FAKE verdict |
 | W4.3 | **The Trick Inspector** *(BUILT — phishInspector's first week outing, re-dressed)* — 4 inspect zones per message with urgency/fear focus; ZAP-or-SAFE verdict unlocks after full inspection |
-| W6.5 | **Sniffer-bot** — a download page; drive a little robot dog over it, it growls at each dodgy clue you tap |
+| W6.5 | **The Download Checker** *(BUILT — requestInspector re-dress via new badgeLabel/intro/verdict props)* — mod download pages with 4 inspect zones; "Looks safe — ask first!" vs "It's a trap — close it!" |
 | W7.3 | **Banner X-ray slider** — drag an X-ray bar across a shop banner; pressure tricks glow through the paint |
 | W8.3 | **Detective corkboard** (film tie-in) — the photo pinned centre; drag string from clue (crest, sign, pin) to what it gives away |
 | W9.3 | **Permission gate** — a torch app asks; flip each permission tile to see IF the app truly needs it; leave greedy ones down |
@@ -67,7 +67,7 @@ Every pattern use across all 20 weeks, each with its unique dressing. **Rule: be
 | W3.5 | **The Uh-Oh Meter** *(BUILT — chatSimulator)* — phone-framed live chat; the meter climbs as it gets icky; three choice moments ending in stop-and-tell |
 | W4.5 | **Bite or Don't** *(BUILT — chooseYourPath classic-card re-dress)* — three rush-you scenarios (fake prize, stuck parcel, virus pop-up); NIBBLE vs STOP-CHECK-SHOW |
 | W5.3 | **Don't Feed the Fire** *(BUILT — chooseYourPath device skin)* — three hot moments in chat/lobby frames; fire-back vs stay-calm with fire/wood consequences |
-| W6.3 | **Lobby doors** — mid-game a player says "chat on Discord?"; choose STAY IN GAME / FOLLOW — following opens onto the raccoon's fort |
+| W6.3 | **The Somewhere-Else Trick** *(BUILT — chatSimulator re-dress: lobby chat, GoldRush_Gary escalates to "what's your Discord")* — three choice moments ending in refuse-and-tell |
 | W7.4 | **Till moment** — at a checkout with a coin meter; choose ASK FIRST / BUY NOW; asking summons the grown-up, buying drains the piggy bank |
 | W9.5 | **Install handshake** — a shiny app install; choose GET GROWN-UP / INSTALL ALONE; together-install shows the safe path |
 | W10.5 | **Clock mirror** — mid-binge you catch your reflection (jiggling leg, dry eyes); choose ONE MORE / SOMETHING ELSE with an activity picker |
@@ -101,7 +101,7 @@ Every pattern use across all 20 weeks, each with its unique dressing. **Rule: be
 | Use | Dressing |
 |---|---|
 | W4.2 | **Too-Good Blaster** *(BUILT — spamBlaster's first week outing, re-dressed via new headline/missLabel/intro props)* — zap the too-good offers flying in; real messages pass to the inbox |
-| W6.1 | **Chat goalie** — you're the keeper; oversharing lines fly at the goal, punch them away; friendly lines pass into the net |
+| W6.1 | **Chat Goalie** *(BUILT — spamBlaster re-dress: "PUNCH AWAY THE OVERSHARES!", LEAKS counter, chat-line cards; note: bottom monitor chrome still reads "AlgorithmX Mail" — candidate polish)* |
 | W7.5 | **Generator whack** — "FREE COINS" machines pop from the arcade floor; bop them before they gobble the account key (no lose state — they retreat) |
 | W10.4 | **Reply-frog catch** — comment-frogs leap at your screen; catch unsafe replies in a net before you'd send them |
 | W12.2 | **Snowball chase** — copies of a track roll away multiplying; chase with a broom — you can never sweep them all (the *point*: designed to be uncatchable, coach explains) |
@@ -123,7 +123,7 @@ Every pattern use across all 20 weeks, each with its unique dressing. **Rule: be
 ### FIND (locate the control) — 6 uses
 | Use | Dressing |
 |---|---|
-| W6.4 | **Game-menu hunt** — a realistic game UI; find and tap Report, then Block, confetti on each |
+| W6.4 | **The Button Hunt** *(BUILT — new buttonHunt engine; reuse W10 escape / W11 block / W14 mute / W18 log-out)* — player-menu mock, find Report then Block among 4 teaching decoys |
 | W10.3 | **Escape hatch** — a not-for-kids video starts; find the back/close control as the room dims — one calm tap out |
 | W11.3 | **Block under pressure** — a chat app mock; find the block button while the message pulses (gentle, no timer) |
 | W14.5 | **Mute safari** — three devices (speaker, TV, toy); find each one's mute/privacy switch — sleeping-ear icon confirms |
@@ -147,7 +147,7 @@ Every pattern use across all 20 weeks, each with its unique dressing. **Rule: be
 
 ### MATCH / SCENE (existing) — 4 uses
 | W1.1 shipped | memoryMatch keys→locks | W7.1 | **Coin-to-coins till** — match coin-pack cards to the real £ they cost (piggy-bank pans balance when right) |
-| W6.2 | **SCENE: lobby settings room** — cinematic game-lobby; hotspots to flip friends-only, hide real name, close open mic | W14.3 | **SCENE: camera hunt at dusk** — pan a 3D smart home; spot every camera dot glowing like tiny moons (film tie-in) |
+| W6.2 | **The Lobby Lockdown** *(BUILT — new settingsSwitch engine: find-and-flip risky toggles among safe rows; reuse W14/W17/W19)* | W14.3 | **SCENE: camera hunt at dusk** — pan a 3D smart home; spot every camera dot glowing like tiny moons (film tie-in) |
 
 ### Prove-format rotation (6 formats; 5 per week, none repeated within a week)
 `SPEED` (tap fast among 3) · `CATCH-THE-LIE` (villain claim: true/false) · `FINISH-THE-RULE` (complete the phrase, icon answers) · `QUICK-SORT` (3 cards, 2 bins) · `ONE-TAP-RECALL` (which one was it?) · `PUT-IN-ORDER` (3 tiles). Assignments per beat are in the week tables — carried unchanged from the build sheet.

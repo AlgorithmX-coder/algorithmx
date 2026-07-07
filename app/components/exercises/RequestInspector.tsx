@@ -47,6 +47,14 @@ export interface InspectRequest {
 export interface RequestInspectorProps {
   requests: InspectRequest[];
   hints?: { tier1: string; tier2: string };
+  /** Card chip + intro re-dress (default the W2 sign-up-form skin). */
+  badgeLabel?: string;
+  introTitle?: string;
+  introSubtitle?: string;
+  introIcon?: string;
+  /** Verdict button labels (defaults: "Looks fair — OK!" / "Too nosy — close it!"). */
+  fairLabel?: string;
+  nosyLabel?: string;
   introNarration?: { speaker?: "adam" | "layla"; lines: string[] };
   coachLines?: { speaker?: "adam" | "layla"; lines: string[] };
   onComplete: (score: number) => void;
@@ -64,6 +72,12 @@ export interface RequestInspectorProps {
 export default function RequestInspector({
   requests,
   hints,
+  badgeLabel,
+  introTitle,
+  introSubtitle,
+  introIcon,
+  fairLabel,
+  nosyLabel,
   introNarration,
   coachLines,
   onComplete,
@@ -163,9 +177,9 @@ export default function RequestInspector({
 
       {showIntro && (
         <ExerciseIntroBeat
-          title="The Nosy Form"
-          subtitle="Inspect every clue, then decide: fair ask... or too nosy?"
-          icon="❓"
+          title={introTitle ?? "The Nosy Form"}
+          subtitle={introSubtitle ?? "Inspect every clue, then decide: fair ask... or too nosy?"}
+          icon={introIcon ?? "❓"}
           narration={introNarration}
           character={introNarration?.speaker}
           onDismiss={() => setShowIntro(false)}
@@ -227,7 +241,7 @@ export default function RequestInspector({
                     border: "1px solid rgba(159,177,255,0.4)",
                   }}
                 >
-                  SIGN-UP FORM
+                  {badgeLabel ?? "SIGN-UP FORM"}
                 </span>
               </div>
               <div
@@ -340,7 +354,7 @@ export default function RequestInspector({
                 disabled={!allInspected || !!decided}
                 onClick={() => decide(false)}
               >
-                ✅ Looks fair — OK!
+                ✅ {fairLabel ?? "Looks fair — OK!"}
               </GameButton>
               <GameButton
                 variant="danger"
@@ -348,7 +362,7 @@ export default function RequestInspector({
                 disabled={!allInspected || !!decided}
                 onClick={() => decide(true)}
               >
-                ✋ Too nosy — close it!
+                ✋ {nosyLabel ?? "Too nosy — close it!"}
               </GameButton>
             </div>
             {!allInspected && (
