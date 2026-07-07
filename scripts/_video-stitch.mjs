@@ -499,6 +499,32 @@ const BUILDS = {
     ],
     endCard: { lines: ["FAMILY PROTECTED!", "YOU DID IT, CYBER HERO!"], hold: 2.5 },
   },
+  "week20-intro": {
+    out: "public/videos/module-20-intro.mp4",
+    shots: [
+      { clip: "intro-s1", vo: { file: "intro-s1", at: 2.5, duck: 0.35 } },
+      { clip: "intro-s2" },
+      { clip: "intro-s3" },
+      { clip: "intro-s4" },
+      { clip: "intro-s5" },
+      { clip: "intro-s6", vo: { file: "intro-s6", at: 2.0, duck: 0.35 } },
+      { clip: "intro-s7" },
+      { clip: "intro-s8" },
+      { clip: "intro-s9", vo: { file: "intro-s9", at: 0.5, duck: 0.35 } },
+    ],
+    endCard: { lines: ["WEEK 20", "THE FINAL MISSION"], hold: 2.5 },
+  },
+  "week20-outro": {
+    out: "public/videos/module-20-outro.mp4",
+    shots: [
+      { clip: "outro-s1" },
+      { clip: "outro-s2" },
+      { clip: "outro-s3", vo: { file: "outro-s3", at: 5.0, duck: 0.35 } },
+      { clip: "outro-s4" },
+      { clip: "outro-s5", vo: { file: "outro-s5", at: 3.0, duck: 0.35 } },
+    ],
+    endCard: { lines: ["COURSE COMPLETE!", "YOU ARE A CYBER HERO!"], hold: 3.0 },
+  },
 };
 
 const [assetsDir, buildName] = process.argv.slice(2);
