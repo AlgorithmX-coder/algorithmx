@@ -63,6 +63,9 @@ import QuickCheck from "@/app/components/exercises/QuickCheck";
 import RevealBoard from "@/app/components/exercises/RevealBoard";
 import ConveyorSort from "@/app/components/exercises/ConveyorSort";
 import RequestInspector from "@/app/components/exercises/RequestInspector";
+import ProfileInspector from "@/app/components/exercises/ProfileInspector";
+import ReplyCards from "@/app/components/exercises/ReplyCards";
+import ChatSimulator from "@/app/components/exercises/ChatSimulator";
 import UsernameBuilder from "@/app/components/exercises/UsernameBuilder";
 import PauseDecide from "@/app/components/exercises/PauseDecide";
 import VaultDrop from "@/app/components/exercises/VaultDrop";
@@ -149,6 +152,9 @@ const EXERCISE_SCREEN_TYPES = new Set<ScreenDef["type"]>([
   "reveal",
   "conveyorSort",
   "requestInspector",
+  "profileInspector",
+  "replyCards",
+  "chatSimulator",
   "usernameBuilder",
   "vaultDrop",
 ]);
@@ -1507,6 +1513,81 @@ function DynamicLessonInner({ qaEnabled }: { qaEnabled: boolean }) {
                 }
               }}
             />
+          </FullScene>
+        );
+
+      case "profileInspector":
+        return (
+          <FullScene bg="linear-gradient(180deg, #050a1a 0%, #0e1c3a 100%)">
+            <ProfileInspector
+              profiles={def.profiles}
+              hints={def.hints}
+              introNarration={def.narration}
+              coachLines={def.coachLines}
+              onComplete={() => navigate(screen + 1)}
+              onCorrect={() => awardXp(25)}
+              onWrong={() => addWrong(screen)}
+              onHintReached={(tier) => progress.reportHint(screen, tier)}
+              onAnswered={(o) => {
+                progress.saveQuestion({
+                  screenIndex: screen,
+                  questionKey: o.questionKey,
+                  selectedIndex: o.selectedIndex,
+                  correctIndex: o.correctIndex,
+                  wasCorrect: o.wasCorrect,
+                });
+                if (!o.wasCorrect) {
+                  progress.reportWrong(screen, o.questionKey);
+                }
+              }}
+            />
+          </FullScene>
+        );
+
+      case "replyCards":
+        return (
+          <FullScene bg="linear-gradient(180deg, #050a1a 0%, #131033 100%)">
+            <ReplyCards
+              rounds={def.rounds}
+              hints={def.hints}
+              introNarration={def.narration}
+              coachLines={def.coachLines}
+              onComplete={() => navigate(screen + 1)}
+              onCorrect={() => awardXp(25)}
+              onWrong={() => addWrong(screen)}
+              onHintReached={(tier) => progress.reportHint(screen, tier)}
+              onAnswered={(o) => {
+                progress.saveQuestion({
+                  screenIndex: screen,
+                  questionKey: o.questionKey,
+                  selectedIndex: o.selectedIndex,
+                  correctIndex: o.correctIndex,
+                  wasCorrect: o.wasCorrect,
+                });
+                if (!o.wasCorrect) {
+                  progress.reportWrong(screen, o.questionKey);
+                }
+              }}
+            />
+          </FullScene>
+        );
+
+      case "chatSimulator":
+        return (
+          <FullScene bg="linear-gradient(180deg, #05070f 0%, #101a3d 100%)">
+            <div style={{ padding: "18px 12px 28px", position: "relative" }}>
+              <ChatSimulator
+                chatTitle={def.chatTitle}
+                scenario={def.scenario}
+                messages={def.messages}
+                choices={def.choices}
+                introNarration={def.narration}
+                onComplete={(score, total) => {
+                  awardXp(Math.max(10, Math.round((score / Math.max(1, total)) * 25)));
+                  navigate(screen + 1);
+                }}
+              />
+            </div>
           </FullScene>
         );
 

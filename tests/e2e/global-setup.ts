@@ -37,7 +37,10 @@ export default async function globalSetup(config: FullConfig) {
   await api.dispose();
 
   // 2. Sign in via the login form so the session cookie is real.
-  const browser = await chromium.launch();
+  // PLAYWRIGHT_BROWSER_CHANNEL mirrors the escape hatch in playwright.config.ts.
+  const browser = await chromium.launch({
+    channel: process.env.PLAYWRIGHT_BROWSER_CHANNEL || undefined,
+  });
   const context = await browser.newContext({ baseURL });
   const page = await context.newPage();
 

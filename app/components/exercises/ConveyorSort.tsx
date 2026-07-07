@@ -33,7 +33,7 @@ export interface ConveyorCategory {
   id: string;
   label: string;
   icon: string;
-  tone: "safe" | "lock";
+  tone: "safe" | "lock" | "flag";
 }
 
 export interface ConveyorItem {
@@ -65,6 +65,7 @@ export interface ConveyorSortProps {
 const TONE = {
   safe: { accent: "#7eff97", tint: "rgba(52, 211, 153, 0.16)", border: "#34d399" },
   lock: { accent: "#7df0ff", tint: "rgba(0, 179, 255, 0.14)", border: "#38bdf8" },
+  flag: { accent: "#ff8f8f", tint: "rgba(239, 68, 68, 0.16)", border: "#ef4444" },
 } as const;
 
 // Seconds a card takes to cross the belt (before comfort scaling).

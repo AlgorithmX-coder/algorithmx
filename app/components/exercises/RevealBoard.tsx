@@ -120,7 +120,7 @@ export default function RevealBoard({
       // Let the stamp land, then slam the board shut before the win beat.
       setBoardLocked(true);
       window.setTimeout(() => {
-        fx.unlock({ text: "WISH LIST: DENIED!" });
+        fx.unlock({ text: `${title.toUpperCase()}: DENIED!` });
         setPhase("finished");
       }, reduce ? 400 : 1100);
     }
@@ -179,7 +179,7 @@ export default function RevealBoard({
               textTransform: "uppercase",
             }}
           >
-            The Raccoon&apos;s Wish List
+            {title}
           </div>
           <PixIcon emoji="📍" size={26} />
         </div>

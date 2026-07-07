@@ -32,7 +32,7 @@ Every pattern use across all 20 weeks, each with its unique dressing. **Rule: be
 |---|---|
 | W1.5 shipped | weakSorter — drop passwords into strong/weak testing rig |
 | W2.2 shipped | cyberScanner conveyor — cards ride a belt past a scanner |
-| W3.3 | **Postbox sort** — chat messages arrive as letters; post into a green FRIEND box or slam the red FLAG box lid |
+| W3.3 | **Message Sorting Machine** *(BUILT — conveyorSort's first-ever outing)* — chat messages ride the belt; green FRIENDLY chute vs red RED FLAG chute (new red "flag" tone) |
 | W4.1 | **Fishing lines** — messages dangle on hooks in water; reel in the real ones, cut the scam lines |
 | W5.1 | **Two megaphones** — lines float as speech bubbles; feed to the "joke both laugh at" megaphone or the "mean on purpose" muzzle |
 | W8.4 | **Theatre doors** — a photo walks toward three doors (Friends / School / Whole World); open the right door for each |
@@ -48,7 +48,7 @@ Every pattern use across all 20 weeks, each with its unique dressing. **Rule: be
 | Use | Dressing |
 |---|---|
 | W2.3 shipped | requestInspector — examine an info request |
-| W3.2 | **Magnifier over a profile card** — 4 hotspot zones (join date, friend count, photo, tone); find 3 tells to stamp FAKE |
+| W3.2 | **Profile Detective** *(BUILT — new profileInspector)* — friend-request card with stat chips; 4 inspect zones (joined / friends & photos / how it talks / what it asks) unlock the REAL-or-FAKE verdict |
 | W4.3 | **Alarm-wire tracing** — a scary message with pulsing words; tap the urgency words to snip their wires and the message powers down |
 | W6.5 | **Sniffer-bot** — a download page; drive a little robot dog over it, it growls at each dodgy clue you tap |
 | W7.3 | **Banner X-ray slider** — drag an X-ray bar across a shop banner; pressure tricks glow through the paint |
@@ -64,7 +64,7 @@ Every pattern use across all 20 weeks, each with its unique dressing. **Rule: be
 | Use | Dressing |
 |---|---|
 | W1.4 / W2.5 shipped | chooseYourPath scenario cards |
-| W3.5 | **Feelings meter** — a chat plays; a tummy-meter fills as it gets icky; the choice moment = stop-and-tell vs keep chatting |
+| W3.5 | **The Uh-Oh Meter** *(BUILT — chatSimulator)* — phone-framed live chat; the meter climbs as it gets icky; three choice moments ending in stop-and-tell |
 | W4.5 | **Bite or don't** — a glittering prize hook dangles; choose NIBBLE / STOP-CHECK-SHOW; the hook's shadow reveals the raccoon |
 | W5.3 | **Two reply pens** — a mean message; pick the fire pen (clap-back) or calm pen; fire pen makes flames spread, calm pen cools the thread |
 | W6.3 | **Lobby doors** — mid-game a player says "chat on Discord?"; choose STAY IN GAME / FOLLOW — following opens onto the raccoon's fort |
@@ -84,7 +84,7 @@ Every pattern use across all 20 weeks, each with its unique dressing. **Rule: be
 | Use | Dressing |
 |---|---|
 | W2.1 shipped | tap a detail → who could misuse it |
-| W3.1 | **Mask lift** — a friendly kid avatar; peel the mask like a sticker → the raccoon underneath |
+| W3.1 | **The Disguise Kit** *(BUILT — reveal board re-dress)* — four disguise pieces (photo/age/name/friendliness); flip each → the trick behind it |
 | W5.2 | **Balloon pop** — grey doubt-clouds ("it's my fault…"); pop each → a bright supportive truth balloon rises |
 | W7.2 | **Loot-box glass** — an exciting crate; tap to make it glass → see the 100-marble odds jar inside (1 gold, 99 grey) |
 | W8.1 | **Copy pigeons** (film tie-in) — delete a shared photo → it vanishes locally but paper pigeons stay on every rooftop |
@@ -109,7 +109,7 @@ Every pattern use across all 20 weeks, each with its unique dressing. **Rule: be
 ### SELECT (tap the right one) — 10 uses
 | Use | Dressing |
 |---|---|
-| W3.4 | **Reply cards fan** — three reply cards fan out for a meet-up ask; tap the safe one, it slots into the chat |
+| W3.4 | **Reply cards fan** *(BUILT — new replyCards)* — three tilted reply cards fan out per incoming message; the safe one slots into the chat with a green glow |
 | W4.4 | **Lookalike lineup** — four sender badges on podiums (one letter off, wrong colour…); tap the imposter, its moustache falls off |
 | W5.4 | **Four doors of kindness** — laugh-along, forward, ignore, support; tap the kind action, the hallway lights up |
 | W8.5 | **Share lever** — one photo, big brass SHARE/DON'T levers; sound-off decidable from the photo's clues |

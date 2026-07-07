@@ -326,15 +326,19 @@ export type ScreenDef = (
   | {
       /**
        * QuickCheck - the short "Prove it" beat that closes each concept
-       * loop. One question, no hints, an instant win. Four flavours via
+       * loop. One question, no hints, an instant win. Five flavours via
        * `mode` so five in a row never feel the same:
        *   finish - complete the rule ("Keep it ___")
        *   speed  - beat the urgency bar (never hard-fails)
        *   lie    - catch the Raccoon's claim (TRUE / FALSE)
        *   recall - one-tap "which?"
+       *   order  - PUT-IN-ORDER: tap the step tiles in sequence. In this
+       *            mode the AUTHORED array order of `choices` is the
+       *            correct sequence (isCorrect is ignored); the component
+       *            shuffles them for display.
        */
       type: "quickCheck";
-      mode: "finish" | "speed" | "lie" | "recall";
+      mode: "finish" | "speed" | "lie" | "recall" | "order";
       prompt: string;
       choices: { text: string; isCorrect: boolean }[];
       /** `lie` mode: the Raccoon's bogus claim shown in his speech bubble. */
@@ -713,7 +717,7 @@ export type ScreenDef = (
        */
       type: "conveyorSort";
       /** Exactly two categories. `tone` picks the chute styling. */
-      categories: { id: string; label: string; icon: string; tone: "safe" | "lock" }[];
+      categories: { id: string; label: string; icon: string; tone: "safe" | "lock" | "flag" }[];
       items: {
         id: string;
         text: string;
@@ -757,6 +761,85 @@ export type ScreenDef = (
         verdictNote: string;
       }[];
       hints?: { tier1: string; tier2: string };
+    }
+  | {
+      /**
+       * Profile Inspector (Week 3). The social-profile sibling of
+       * requestInspector: a friendly-looking profile card arrives and the
+       * child must tap every inspect zone (when it joined / friends &
+       * photos / how it talks / what it's asking) before the verdict
+       * buttons unlock: "Real friend" or "FAKE!". Teaches the four fake-
+       * profile tells: brand-new account, no real friends, copied photo,
+       * too-friendly-too-fast. Lane-clean: judging PEOPLE, not messages
+       * (W4) and not report/block protocol (W11).
+       */
+      type: "profileInspector";
+      profiles: {
+        id: string;
+        /** Display handle e.g. "SkaterKid_Max". */
+        handle: string;
+        /** Emoji rendered via PixIcon as the avatar. */
+        avatar: string;
+        /** The profile's friendly pitch/bio line. */
+        bio: string;
+        /** Small stat chips shown on the card (e.g. "Joined: YESTERDAY"). */
+        stats: { label: string; value: string }[];
+        /** True when the profile is fake and should be called out. */
+        isFake: boolean;
+        zones: {
+          id: string;
+          label: string;
+          note: string;
+          isRedFlag: boolean;
+        }[];
+        /** Explanation shown after the child's verdict. */
+        verdictNote: string;
+      }[];
+      hints?: { tier1: string; tier2: string };
+    }
+  | {
+      /**
+       * Reply Cards (Week 3). The SELECT drill: an incoming chat message
+       * appears and three reply cards fan out. Tap the safe reply and it
+       * slots into the chat with a green glow; tap a risky one and it
+       * bounces back with a teach panel. One round per message — practises
+       * the never-meet / never-send / tell-a-grown-up replies without a
+       * meter or branching (that's chatSimulator's job).
+       */
+      type: "replyCards";
+      rounds: {
+        id: string;
+        /** Who the message is from (display name shown on the bubble). */
+        from: string;
+        /** Emoji rendered via PixIcon as the sender's avatar. */
+        fromIcon: string;
+        /** The incoming message. */
+        message: string;
+        /** Exactly 3 reply cards; one has isSafe: true. */
+        replies: { text: string; isSafe: boolean; explanation: string }[];
+      }[];
+      hints?: { tier1: string; tier2: string };
+    }
+  | {
+      /**
+       * Chat Simulator (Week 3+). A phone-framed live chat with an
+       * escalating uh-oh meter: scripted messages arrive with a typing
+       * indicator, the meter climbs as things get icky, and at set points
+       * the child picks how to respond. The DECIDE mechanic for
+       * chats-that-turn-uncomfortable — trust the funny feeling, then
+       * stop and tell.
+       */
+      type: "chatSimulator";
+      /** Header title on the phone (e.g. "New Chat Request"). */
+      chatTitle?: string;
+      /** One-line scene-setter shown above the phone. */
+      scenario: string;
+      messages: { sender: "stranger" | "narrator"; text: string; delay?: number }[];
+      choices: {
+        /** 0-based message index this choice moment fires after. */
+        triggerAfterMessage: number;
+        options: { text: string; isSafe: boolean; feedback: string }[];
+      }[];
     }
   | {
       /**

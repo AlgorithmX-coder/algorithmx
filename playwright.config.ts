@@ -25,6 +25,11 @@ const devMode = process.env.PLAYWRIGHT_USE_DEV === "1";
 
 const STORAGE_STATE = path.join(__dirname, "tests/e2e/.auth/user.json");
 
+// Optional escape hatch for machines where the bundled-chromium download is
+// unavailable (e.g. CDN outage): PLAYWRIGHT_BROWSER_CHANNEL=msedge runs the
+// suite on the system browser instead. Unset (CI) = bundled chromium.
+const BROWSER_CHANNEL = process.env.PLAYWRIGHT_BROWSER_CHANNEL || undefined;
+
 export default defineConfig({
   testDir: "./tests/e2e",
   fullyParallel: true,
@@ -48,13 +53,14 @@ export default defineConfig({
     {
       name: "public",
       testMatch: /public-pages\.spec\.ts/,
-      use: { ...devices["Desktop Chrome"] },
+      use: { ...devices["Desktop Chrome"], channel: BROWSER_CHANNEL },
     },
     {
       name: "authed",
       testMatch: /authed\/.*\.spec\.ts/,
       use: {
         ...devices["Desktop Chrome"],
+        channel: BROWSER_CHANNEL,
         storageState: STORAGE_STATE,
       },
     },
