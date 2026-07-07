@@ -1,7 +1,7 @@
 import type { WeekContent } from "./types";
 
 /**
- * Week 4 - Scams & Tricks: Real or Fake?
+ * Week 4 - Scams and Tricks: Real or Fake?
  *
  * Built to the locked Cyber Heroes template (docs/cyberheroes/curriculum-buildsheet.md
  * + docs/cyberheroes/content-plans/weeks-03-20-content-plan.md):
@@ -26,7 +26,7 @@ import type { WeekContent } from "./types";
  */
 export const WEEK_4: WeekContent = {
   weekNumber: 4,
-  title: "Scams & Tricks: Real or Fake?",
+  title: "Scams and Tricks: Real or Fake?",
   topic: "scams",
   badgeName: "Trick Catcher",
   badgeIcon: "🪤",

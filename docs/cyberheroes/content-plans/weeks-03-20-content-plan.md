@@ -170,7 +170,7 @@ Format per beat: **Learn** (the one idea, narrated) · **Game** (ledger dressing
 - Beat 5 — *Icky feeling → tell.* Learn: trust the tummy, then tell. Game: DECIDE **feelings meter**. Prove: PUT-IN-ORDER feel → stop → tell.
 - **Consolidation:** "Unmask Parade" — 5 quick mixed questions styled as masks lifting one by one.
 
-### WEEK 4 — Scams & Tricks: Real or Fake? *(rebuild)*
+### WEEK 4 — Scams and Tricks: Real or Fake? *(rebuild)*
 - **Film/palette:** carnival prize-wheel glitter vs plain truth; gold + red. **Badge:** "Trick Catcher" (PixIcon fishing hook with X).
 - **Mission brief:** know what a scam is · smell "too good" · never bite.
 - Beat 1 — *What a scam is.* Learn: a trick for your info, money or clicks. Game: SORT **fishing lines**. Prove: FINISH-THE-RULE "A scam is a ___" (trick).
@@ -210,7 +210,7 @@ Format per beat: **Learn** (the one idea, narrated) · **Game** (ledger dressing
 - Beat 5 — *"Free" currency is a scam (all live here).* Learn: generators steal accounts. Game: ARCADE **generator whack**. Prove: QUICK-SORT real shop vs scam.
 - **Consolidation:** "Duck Count" — 5 mixed questions; each right answer sends one rubber duck back to the raccoon's fort.
 
-### WEEK 8 — Photos & Videos: The Picture Detective
+### WEEK 8 — Photos & Videos: Think Before You Share *(in-week flavour: the Picture Detective)*
 - **Film/palette:** detective corkboard + paper pigeons; sepia + red string. **Badge:** "Photo Detective" (PixIcon magnifier-over-photo).
 - **Mission brief:** shared means out forever · photos talk · ask before posting others.
 - Beat 1 — *Once shared, it's out.* Learn: screenshots exist; delete doesn't reach the copies. Game: REVEAL **copy pigeons**. Prove: FINISH-THE-RULE "Once it's shared, it's ___" (out).
@@ -220,7 +220,7 @@ Format per beat: **Learn** (the one idea, narrated) · **Game** (ledger dressing
 - Beat 5 — *Think before you share.* Learn: happy for EVERYONE to see it? Game: SELECT **share lever**. Prove: PUT-IN-ORDER look → think → ask.
 - **Consolidation:** "Case Closed" — 5 mixed questions pinned as corkboard cases; each answer stamps one SOLVED.
 
-### WEEK 9 — Apps & Downloads: The Copycat Shop
+### WEEK 9 — Apps & Downloads: Spot the Fakes *(in-week flavour: the Copycat Shop)*
 - **Film/palette:** bright official store vs alley stall; store-blue + counterfeit grey. **Badge:** "Copycat Catcher" (PixIcon crossed-eyed cat in a no-symbol ring).
 - **Mission brief:** official store only · count the whiskers · ask "why does it need that?"
 - Beat 1 — *Official stores only.* Learn: App Store / Google Play, never random sites. Game: SORT **shop shelves**. Prove: ONE-TAP-RECALL which shelf is safe?
@@ -240,7 +240,7 @@ Format per beat: **Learn** (the one idea, narrated) · **Game** (ledger dressing
 - Beat 5 — *"I've been watching a while" (teases W13).* Learn: notice the signs, choose to stop. Game: DECIDE **clock mirror**. Prove: SPEED tap the watching-too-long sign.
 - **Consolidation:** "Climb Out" — 5 mixed questions as ladder rungs up out of the rabbit hole.
 
-### WEEK 11 — Emergency Protocol: Who You Gonna Tell? *(sensitive — dummy-doll distance where villain acts; child side is warm and calm)*
+### WEEK 11 — Something Wrong? Emergency Protocol *(sensitive — dummy-doll distance where villain acts; child side is warm and calm)*
 - **Film/palette:** lecture-hall gloom flipping to team-poster warmth; navy → sunrise. **Badge:** "Team Captain" (PixIcon MY-TEAM poster).
 - **Mission brief:** never your fault · name your team · save, don't delete.
 - Beat 1 — *It's never your fault.* Learn: the permission that unblocks telling. Game: REVEAL **weight lift**. Prove: FINISH-THE-RULE "It's never ___ fault" (your).
@@ -260,7 +260,7 @@ Format per beat: **Learn** (the one idea, narrated) · **Game** (ledger dressing
 - Beat 5 — *Check your trail.* Learn: look at what's already out there. Game: INSPECT **trail telescope**. Prove: SPEED tap the oversharing track.
 - **Consolidation:** "Ranger Report" — 5 mixed questions as trail-marker flags planted along a golden path.
 
-### WEEK 13 — Screen Time: The Battery Thief
+### WEEK 13 — Screen Time: Balance Your Power *(in-week flavour: the Battery Thief)*
 - **Film/palette:** battery meter + bendy straw; green→amber→red + cosy night. **Badge:** "Battery Keeper" (PixIcon full green battery).
 - **Mission brief:** notice the signs · screens out of bedtime · power off like a pro.
 - Beat 1 — *Why balance.* Learn: screens are fun AND you need sleep, friends, outside. Game: SORT **day-wheel**. Prove: ONE-TAP-RECALL what refills your battery?
@@ -270,7 +270,7 @@ Format per beat: **Learn** (the one idea, narrated) · **Game** (ledger dressing
 - Beat 5 — *Power-off skills.* Learn: finish, say bye, off, park, pick what's next. Game: ORDER **power-off ritual strip**. Prove: PUT-IN-ORDER the ritual.
 - **Consolidation:** "Recharge Race" — 5 mixed questions; each answer fills one bar of a giant battery to full green.
 
-### WEEK 14 — Smart Devices: The House That Listens
+### WEEK 14 — Smart Devices: Who's Listening? *(in-week flavour: the House That Listens)*
 - **Film/palette:** cosy home + glowing ear/camera dots; warm home + cool device-blue. **Badge:** "Settings Scout" (PixIcon sleeping-ear switch).
 - **Mission brief:** know what's smart · no secrets out loud · check settings together.
 - Beat 1 — *What smart devices are (surprise hook).* Learn: speakers, TVs, watches, doorbells, even toys. Game: SORT **room sweep**. Prove: ONE-TAP-RECALL which one was listening?
@@ -280,7 +280,7 @@ Format per beat: **Learn** (the one idea, narrated) · **Game** (ledger dressing
 - Beat 5 — *Settings + a grown-up.* Learn: privacy switches exist — flip them together. Game: FIND **mute safari**. Prove: PUT-IN-ORDER find → ask → flip.
 - **Consolidation:** "Quiet House" — 5 mixed questions; each answer tucks one device to sleep (ear icon closes).
 
-### WEEK 15 — AI & Chatbots: The Know-It-All That Didn't
+### WEEK 15 — AI & Chatbots: Robot or Real? *(in-week flavour: the Know-It-All That Didn't)*
 - **Film/palette:** serene glowing orb vs real library book; cyan glow + paper warm. **Badge:** "Fact Checker" (PixIcon book-beats-orb).
 - **Mission brief:** a tool, not a friend · check a real source · keep secrets out.
 - Beat 1 — *What AI is.* Learn: a clever program — not a person, not your friend. Game: SORT **voice booth**. Prove: FINISH-THE-RULE "AI is a ___, not a friend" (tool).
@@ -290,7 +290,7 @@ Format per beat: **Learn** (the one idea, narrated) · **Game** (ledger dressing
 - Beat 5 — *Use it kindly.* Learn: a tool for good — with a grown-up, never to be mean. Game: REVEAL **two gardens**. Prove: QUICK-SORT kind use vs mean use.
 - **Consolidation:** "Stamp Parade" — 5 mixed questions; right answers stamp REAL or FAKE on parade floats.
 
-### WEEK 16 — QR Codes & Links: The Doorway Trick
+### WEEK 16 — QR Codes & Links: Don't Take the Bait *(in-week flavour: the Doorway Trick)*
 - **Film/palette:** floating doors with plaques; dreamscape violet + door-glow. **Badge:** "Door Checker" (PixIcon peephole plaque).
 - **Mission brief:** links are doorways · look before you walk through · unsure = don't.
 - Beat 1 — *What a link/QR really is.* Learn: a doorway — you can't always see where it leads. Game: REVEAL **door swing**. Prove: FINISH-THE-RULE "A link is a ___" (doorway).
@@ -300,7 +300,7 @@ Format per beat: **Learn** (the one idea, narrated) · **Game** (ledger dressing
 - Beat 5 — *Not sure? Don't click.* Learn: the barrier rule — ask. Game: DECIDE **no-plaque door**. Prove: PUT-IN-ORDER preview → unsure → ask.
 - **Consolidation:** "Corridor Check" — 5 mixed questions walked down a hall of doors; each answer swings one open safely.
 
-### WEEK 17 — Social Media: The Highlight Reel
+### WEEK 17 — Social Media: The Profile Shield *(in-week flavour: the Highlight Reel)*
 - **Film/palette:** neon mirror-hall vs frosted padlock calm; club neon + frost. **Badge:** "Shield Bearer" (PixIcon frosted-mirror padlock).
 - **Mission brief:** why 13+ exists · frosted beats clear · feeds aren't real life.
 - Beat 1 — *Age limits exist & why.* Learn: 13+ isn't a punishment — it's "what's coming, why you wait" (golden SOON ticket framing). Game: REVEAL **growth rings**. Prove: ONE-TAP-RECALL what number is on the sign?
@@ -310,7 +310,7 @@ Format per beat: **Learn** (the one idea, narrated) · **Game** (ledger dressing
 - Beat 5 — *Pressure & comparison (wellbeing).* Learn: perfect feeds are highlight reels — backstage is messy for everyone. Game: DECIDE **perfect-feed pause**. Prove: FINISH-THE-RULE "Feeds aren't ___ life" (real).
 - **Consolidation:** "Backstage Pass" — 5 mixed questions flip glossy posters to their funny backstage truths.
 
-### WEEK 18 — Sharing Devices: The Family Tablet
+### WEEK 18 — Sharing Devices: Lock Before You Leave *(in-week flavour: the Family Tablet)*
 - **Film/palette:** breakfast relay + toy-chest accounts; morning warm + chest-glow. **Badge:** "Lock Master" (PixIcon roller-blind padlock).
 - **Mission brief:** log out when done · lock it · respect other people's chests.
 - Beat 1 — *Lots of devices are shared.* Learn: family tablet, school computer, sibling's console. Game: SORT **family coat-rack**. Prove: ONE-TAP-RECALL which was shared?
@@ -320,7 +320,7 @@ Format per beat: **Learn** (the one idea, narrated) · **Game** (ledger dressing
 - Beat 5 — *No saved passwords on shared devices (W1 applied).* Learn: the balloon always asks; the answer here is no. Game: SELECT **balloon refuser**. Prove: QUICK-SORT save-here vs never-save.
 - **Consolidation:** "Morning Relay" — 5 mixed questions passed like the breakfast baton; each answer hands off cleanly.
 
-### WEEK 19 — Protecting Family: The Expert in the House
+### WEEK 19 — Protecting Family: Family Firewall *(in-week flavour: the Expert in the House)*
 - **Film/palette:** kitchen evening + rotary-phone villainy; hearth warm + expert badge gold. **Badge:** "Family Firewall" (PixIcon house-shield).
 - **Mission brief:** you're the expert now · help the grown-ups · speak up.
 - Beat 1 — *You're the expert now (role-flip).* Learn: 18 weeks of skills — now you teach. Game: DECIDE **expert call-out**. Prove: FINISH-THE-RULE "Now I'm the ___" (expert).
@@ -330,7 +330,7 @@ Format per beat: **Learn** (the one idea, narrated) · **Game** (ledger dressing
 - Beat 5 — *Speak up.* Learn: if someone's about to be tricked, say something — kindly, right then. Game: SELECT **freeze the moment**. Prove: PUT-IN-ORDER notice → speak up → fix together.
 - **Consolidation:** "Family Photo" — 5 mixed questions; each answer adds a protected family member into a group photo frame.
 
-### WEEK 20 — Graduation: The Final Mission *(capstone — NO new concepts; 5 recombination missions)*
+### WEEK 20 — Graduation Day: The Final Mission *(capstone — NO new concepts; 5 recombination missions)*
 - **Film/palette:** heist-night → dawn victory; storm purple → gold. **Badge:** the 20th badge + 🎓 Certified Cyber Hero certificate (PixIcon mortarboard shield).
 - **Mission brief:** everything he's got, all at once · you've done all of this before · finish it.
 - Each mission = one composite scene (bespoke dressings; mechanics REUSED knowingly — the child should *recognise* them, that's the graduation feeling — but every scene is new):
