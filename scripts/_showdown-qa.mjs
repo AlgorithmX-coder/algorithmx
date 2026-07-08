@@ -18,6 +18,10 @@ const args = Object.fromEntries(
 const week = Number(args.week || 3);
 const base = args.base || "http://localhost:3100";
 const out = args.out || `scripts/shot-out/w${week}-boss`;
+// Viewport (PILOT FEEDBACK: wide screens exposed cast/board overlap —
+// QA at both 1280x900 AND a wide viewport before every boss ships).
+const vw = Number(args.vw || 1280);
+const vh = Number(args.vh || 900);
 
 const TEST_EMAIL = "e2e@algorithmx.test";
 const TEST_PASSWORD = "e2e-test-pw";
@@ -30,6 +34,13 @@ const launchOpts = existsSync(CHROME)
 /** Per-week playthrough scripts. Boss screen is index 24 in the locked
  *  29-screen week; the fight auto-enters on landing. */
 const STEPS = {
+  // W1 VaultBoss overlap spot-check: one shot of the wall play board.
+  1: [
+    { wait: 5000 },
+    { clickLabel: "Play as ADAM" },
+    { wait: 3600 },
+    { shot: "01-wall-play" },
+  ],
   3: [
     { wait: 3000 }, { shot: "01-entrance" },            // nameplate reveal
     { wait: 2000 }, { shot: "02-select" },              // detective outfits!
@@ -97,7 +108,7 @@ if (!seedRes.ok()) {
 await api.dispose();
 
 const browser = await chromium.launch(launchOpts);
-const context = await browser.newContext({ baseURL: base, viewport: { width: 1280, height: 900 } });
+const context = await browser.newContext({ baseURL: base, viewport: { width: vw, height: vh } });
 await context.addCookies([
   { name: "site_auth", value: "true", domain: new URL(base).hostname, path: "/", httpOnly: true, secure: false, sameSite: "Lax" },
 ]);

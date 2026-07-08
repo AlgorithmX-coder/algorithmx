@@ -152,6 +152,12 @@ export default function ShowdownBoss({
   const accent = showdown.machine.accent;
 
   const inFinisher = stage === "finisherIntro" || stage === "finisher";
+  // PILOT FEEDBACK (global): characters must NEVER stand behind the
+  // gameplay boards. Boards are a centered fixed-width column while the
+  // cast is viewport-positioned, so on wide screens they collide. During
+  // board stages the cast tucks to the screen edges and shrinks
+  // (sideline spectators), then springs back for the theatre beats.
+  const boardStage = stage === "play" || stage === "weakPoint" || stage === "finisher";
   const machineImg =
     stage === "victory"
       ? showdown.machine.art.defeated
@@ -395,7 +401,7 @@ export default function ShowdownBoss({
             aria-hidden
             animate={reduce ? undefined : heroMood === "attack" ? { x: 24, scale: 1.06 } : { x: 0, scale: 1, y: [0, -5, 0] }}
             transition={heroMood === "attack" ? { duration: 0.2 } : { duration: 2.6, repeat: Infinity, ease: "easeInOut" }}
-            style={{ position: "absolute", left: "3%", bottom: "13%", height: "32%", zIndex: 2, filter: "drop-shadow(0 14px 18px rgba(10,14,34,0.55))" }}
+            style={{ position: "absolute", left: boardStage ? "1%" : "3%", bottom: "13%", height: boardStage ? "22%" : "32%", zIndex: 2, filter: "drop-shadow(0 14px 18px rgba(10,14,34,0.55))", transition: "height 600ms ease, left 600ms ease" }}
           />
           <div aria-hidden style={{ position: "absolute", left: "3%", bottom: "11%", width: "15%", height: 20, borderRadius: "50%", background: "radial-gradient(ellipse, rgba(10,14,34,0.3), transparent 70%)" }} />
         </>
@@ -414,7 +420,7 @@ export default function ShowdownBoss({
               : { scale: 1, opacity: 1, y: [0, -4, 0] }
         }
         transition={stage === "victory" ? { duration: 0.4 } : { duration: 2.2, repeat: Infinity, ease: "easeInOut" }}
-        style={{ position: "absolute", right: "3%", bottom: "10%", height: stage === "entrance" ? "46%" : "34%", zIndex: 2, filter: "drop-shadow(0 18px 22px rgba(10,14,34,0.6))", transition: "height 600ms ease" }}
+        style={{ position: "absolute", right: "3%", bottom: "10%", height: stage === "entrance" ? "46%" : boardStage ? "24%" : "34%", zIndex: 2, filter: "drop-shadow(0 18px 22px rgba(10,14,34,0.6))", transition: "height 600ms ease" }}
       />
       {/* Machine strain glow once it's damaged. */}
       {gears >= 2 && stage !== "victory" && !reduce && (
@@ -440,8 +446,10 @@ export default function ShowdownBoss({
                 : { scale: 1, opacity: 1, y: [0, -7, 0] }
         }
         transition={raccoonMood === "idle" || raccoonMood === "taunt" ? { duration: 3, repeat: Infinity, ease: "easeInOut" } : { duration: 0.28 }}
-        // PILOT FEEDBACK (global): the Raccoon stands as tall as the hero.
-        style={{ position: "absolute", right: "22%", bottom: "12%", height: "32%", zIndex: 3, filter: "drop-shadow(0 12px 16px rgba(10,14,34,0.6))" }}
+        // PILOT FEEDBACK (global): the Raccoon stands as tall as the hero —
+        // and during board stages he tucks beside his machine at the screen
+        // edge so he can never hide behind the gameplay cards.
+        style={{ position: "absolute", right: boardStage ? "9%" : "22%", bottom: "12%", height: boardStage ? "20%" : "32%", zIndex: 3, filter: "drop-shadow(0 12px 16px rgba(10,14,34,0.6))", transition: "height 600ms ease, right 600ms ease" }}
       />
 
       <AnimatePresence>

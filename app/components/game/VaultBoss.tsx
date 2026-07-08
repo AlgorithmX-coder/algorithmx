@@ -384,7 +384,10 @@ export default function VaultBoss({
                 : { scale: 1, opacity: 1, y: [0, -7, 0] }
         }
         transition={raccoonMood === "idle" || raccoonMood === "taunt" ? { duration: 3, repeat: Infinity, ease: "easeInOut" } : { duration: 0.28 }}
-        style={{ position: "absolute", right: "22%", bottom: "12%", height: "22%", zIndex: 3, filter: "drop-shadow(0 12px 16px rgba(20,30,60,0.5))" }}
+        // PILOT FEEDBACK (global): the cast never stands behind gameplay
+        // boards — during the play stage the Raccoon tucks beside his
+        // machine at the screen edge (wide screens put right:22% mid-board).
+        style={{ position: "absolute", right: stage === "play" ? "8%" : "22%", bottom: "12%", height: stage === "play" ? "18%" : "22%", zIndex: 3, filter: "drop-shadow(0 12px 16px rgba(20,30,60,0.5))", transition: "height 600ms ease, right 600ms ease" }}
       />
 
       <AnimatePresence>
