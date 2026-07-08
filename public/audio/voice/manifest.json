@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-08T12:59:11.429Z",
+  "generatedAt": "2026-07-08T13:16:50.320Z",
   "model": "eleven_v3",
   "voiceSettings": {
     "stability": 0.35,
@@ -3275,6 +3275,239 @@
         "[excited] The Raccoon's form came back BLANK. Time for stickers!"
       ],
       "file": "/audio/voice/982cc8ad224246e0.mp3"
+    },
+    {
+      "key": "045c068ed56f3a78",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[whispers] Graduation night. Mission one. An envelope, of course. 'URGENT! Reset your password!' [warmly] Feel that? You've stood right here before. Week four gave you the zones. Week one built the vault. Same trick. Same tells. Same you - nineteen weeks stronger. [excited] Inspect it and hold the vault. Go!",
+      "lines": [
+        "[whispers] Graduation night. Mission one.",
+        "An envelope, of course. 'URGENT! Reset your password!'",
+        "[warmly] Feel that? You've stood right here before.",
+        "Week four gave you the zones. Week one built the vault.",
+        "Same trick. Same tells. Same you - nineteen weeks stronger.",
+        "[excited] Inspect it and hold the vault. Go!"
+      ],
+      "file": "/audio/voice/045c068ed56f3a78.mp3"
+    },
+    {
+      "key": "4d86a32c7f7b83e6",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] The zones light up - just like Week four! Who sent it? Where's the door? What's the rush? What's the story? [whispers] Check all four... then make the call.",
+      "lines": [
+        "[excited] The zones light up - just like Week four!",
+        "Who sent it? Where's the door?",
+        "What's the rush? What's the story?",
+        "[whispers] Check all four... then make the call."
+      ],
+      "file": "/audio/voice/4d86a32c7f7b83e6.mp3"
+    },
+    {
+      "key": "60f00ca5df695524",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[excited] Mission one - COMPLETE! The vault held. Of course it held. [whispers] But someone friendly is typing in the lobby... too friendly. Mission two. Come on.",
+      "lines": [
+        "[excited] Mission one - COMPLETE!",
+        "The vault held. Of course it held.",
+        "[whispers] But someone friendly is typing in the lobby...",
+        "too friendly. Mission two. Come on."
+      ],
+      "file": "/audio/voice/60f00ca5df695524.mp3"
+    },
+    {
+      "key": "e0fd5c8f8366390b",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[curious] Mission two just messaged you. 'Heyyy bestie! You're SO good at this!' [whispers] A brand-new buddy... moving very fast. Week three gave you the magnifier for this. The Profile Detective rides again! [excited] Check every clue - then make the call!",
+      "lines": [
+        "[curious] Mission two just messaged you.",
+        "'Heyyy bestie! You're SO good at this!'",
+        "[whispers] A brand-new buddy... moving very fast.",
+        "Week three gave you the magnifier for this.",
+        "The Profile Detective rides again!",
+        "[excited] Check every clue - then make the call!"
+      ],
+      "file": "/audio/voice/e0fd5c8f8366390b.mp3"
+    },
+    {
+      "key": "ef3379c816e789f3",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[excited] Two profiles on the desk! Magnifier out - all four clue zones each. [whispers] One's a costume. One's just Maya. The Detective knows the difference. Go!",
+      "lines": [
+        "[excited] Two profiles on the desk!",
+        "Magnifier out - all four clue zones each.",
+        "[whispers] One's a costume. One's just Maya.",
+        "The Detective knows the difference. Go!"
+      ],
+      "file": "/audio/voice/ef3379c816e789f3.mp3"
+    },
+    {
+      "key": "56374c246b9b2802",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] Mission two - COMPLETE! Costume pierced, nothing shared. [whispers] Hear that? The arcade just lit up... everything's suddenly FREE. Mission three.",
+      "lines": [
+        "[excited] Mission two - COMPLETE!",
+        "Costume pierced, nothing shared.",
+        "[whispers] Hear that? The arcade just lit up...",
+        "everything's suddenly FREE. Mission three."
+      ],
+      "file": "/audio/voice/56374c246b9b2802.mp3"
+    },
+    {
+      "key": "38c35e08eef4c708",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[curious] Mission three is... loud. FREE V-BUCKS! FREE SKINS! SCAN ME! [whispers] You've smelled this arcade before. Week seven. Free-coin machines eat accounts for breakfast. [warmly] Real free asks for nothing back. Remember that. [excited] Find every X - feed them NOTHING!",
+      "lines": [
+        "[curious] Mission three is... loud.",
+        "FREE V-BUCKS! FREE SKINS! SCAN ME!",
+        "[whispers] You've smelled this arcade before. Week seven.",
+        "Free-coin machines eat accounts for breakfast.",
+        "[warmly] Real free asks for nothing back. Remember that.",
+        "[excited] Find every X - feed them NOTHING!"
+      ],
+      "file": "/audio/voice/38c35e08eef4c708.mp3"
+    },
+    {
+      "key": "1609fd4c4d86b946",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] The whole arcade at once! Every machine flashing FREE... [whispers] and every CLAIM button is a mouth. Find the X. Feed them nothing. GO!",
+      "lines": [
+        "[excited] The whole arcade at once!",
+        "Every machine flashing FREE...",
+        "[whispers] and every CLAIM button is a mouth.",
+        "Find the X. Feed them nothing. GO!"
+      ],
+      "file": "/audio/voice/1609fd4c4d86b946.mp3"
+    },
+    {
+      "key": "e32d4813c4d627c4",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[excited] Mission three - COMPLETE! The arcade starved. Not one tap. [whispers] So now he goes quiet... and starts reading tracks. Your tracks. Mission four - the leak hunt.",
+      "lines": [
+        "[excited] Mission three - COMPLETE!",
+        "The arcade starved. Not one tap.",
+        "[whispers] So now he goes quiet... and starts reading tracks.",
+        "Your tracks. Mission four - the leak hunt."
+      ],
+      "file": "/audio/voice/e32d4813c4d627c4.mp3"
+    },
+    {
+      "key": "d668f1393a6e0e19",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[whispers] Mission four has no flashing lights. He's gone quiet. Hunting for a leak. One clue. One pin. One open mirror. [warmly] You've swept this ground before - weeks eight, twelve, seventeen. And remember: proud tracks STAY. [excited] Walk your trail. Seal every leak!",
+      "lines": [
+        "[whispers] Mission four has no flashing lights.",
+        "He's gone quiet. Hunting for a leak.",
+        "One clue. One pin. One open mirror.",
+        "[warmly] You've swept this ground before - weeks eight, twelve, seventeen.",
+        "And remember: proud tracks STAY.",
+        "[excited] Walk your trail. Seal every leak!"
+      ],
+      "file": "/audio/voice/d668f1393a6e0e19.mp3"
+    },
+    {
+      "key": "abdca1e012aa3cac",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[excited] Five spots on tonight's trail! Stamp the sealing move at each one. [whispers] And remember the twist... one of these tracks deserves to SHINE. Go!",
+      "lines": [
+        "[excited] Five spots on tonight's trail!",
+        "Stamp the sealing move at each one.",
+        "[whispers] And remember the twist...",
+        "one of these tracks deserves to SHINE. Go!"
+      ],
+      "file": "/audio/voice/abdca1e012aa3cac.mp3"
+    },
+    {
+      "key": "5ef9f4d3ce2b8329",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] Mission four - COMPLETE! He hunted all night and found... nothing. [whispers] So here it comes. His very last move. And you already know the answer to it. Mission five.",
+      "lines": [
+        "[excited] Mission four - COMPLETE!",
+        "He hunted all night and found... nothing.",
+        "[whispers] So here it comes. His very last move.",
+        "And you already know the answer to it. Mission five."
+      ],
+      "file": "/audio/voice/5ef9f4d3ce2b8329.mp3"
+    },
+    {
+      "key": "6c01b0b11ffc4c4c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[whispers] His last move isn't clever. Just nasty. A message built to land wrong, at midnight. [warmly] But alone stopped being true in week eleven. Stop. Block. Screenshot. Tell. And tonight there's a fifth step - the graduate's step. [excited] Run the protocol one last time... then PASS IT ON!",
+      "lines": [
+        "[whispers] His last move isn't clever. Just nasty.",
+        "A message built to land wrong, at midnight.",
+        "[warmly] But alone stopped being true in week eleven.",
+        "Stop. Block. Screenshot. Tell.",
+        "And tonight there's a fifth step - the graduate's step.",
+        "[excited] Run the protocol one last time... then PASS IT ON!"
+      ],
+      "file": "/audio/voice/6c01b0b11ffc4c4c.mp3"
+    },
+    {
+      "key": "889a5e08fb07d740",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] The final launchpad! Four stages you know by heart... plus the fifth, for graduates only. [warmly] Stack them in order - and LAUNCH him out of the city!",
+      "lines": [
+        "[excited] The final launchpad!",
+        "Four stages you know by heart...",
+        "plus the fifth, for graduates only.",
+        "[warmly] Stack them in order - and LAUNCH him out of the city!"
+      ],
+      "file": "/audio/voice/889a5e08fb07d740.mp3"
+    },
+    {
+      "key": "5f571bfcf001403b",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[excited] ALL FIVE MISSIONS COMPLETE! The vault held, the costume fell, the arcade starved, the leak sealed... and the protocol launched. [warmly] The sky's getting lighter, Cyber Hero. [excited] One last reel before the dawn!",
+      "lines": [
+        "[excited] ALL FIVE MISSIONS COMPLETE!",
+        "The vault held, the costume fell, the arcade starved,",
+        "the leak sealed... and the protocol launched.",
+        "[warmly] The sky's getting lighter, Cyber Hero.",
+        "[excited] One last reel before the dawn!"
+      ],
+      "file": "/audio/voice/5f571bfcf001403b.mp3"
+    },
+    {
+      "key": "dbb14e712853109c",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[excited] The Highlight Reel - nineteen weeks in one walk! Every moment you're about to stamp, you LIVED. HERO MOVE for your powers... [warmly] OLD TRAP for his retired playbook. One last time - stamp them all!",
+      "lines": [
+        "[excited] The Highlight Reel - nineteen weeks in one walk!",
+        "Every moment you're about to stamp, you LIVED.",
+        "HERO MOVE for your powers...",
+        "[warmly] OLD TRAP for his retired playbook. One last time - stamp them all!"
+      ],
+      "file": "/audio/voice/dbb14e712853109c.mp3"
+    },
+    {
+      "key": "84c0177b75fa88c4",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] FIVE MISSIONS. TWENTY WEEKS. Look at you! The vault held, the costume fell, the arcade starved, the leak sealed, the protocol launched... [laughs] and the Raccoon left town at sunrise. [warmly] One thing left, graduate. The stickers - then the stage.",
+      "lines": [
+        "[excited] FIVE MISSIONS. TWENTY WEEKS. Look at you!",
+        "The vault held, the costume fell, the arcade starved,",
+        "the leak sealed, the protocol launched...",
+        "[laughs] and the Raccoon left town at sunrise.",
+        "[warmly] One thing left, graduate. The stickers - then the stage."
+      ],
+      "file": "/audio/voice/84c0177b75fa88c4.mp3"
     },
     {
       "key": "20ba4c4b67640f89",
