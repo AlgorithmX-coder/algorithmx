@@ -69,6 +69,7 @@ const GAME_TITLES: Record<string, string> = {
   trailStamper: "Trail Stamper",
   signBingo: "Sign Bingo",
   dayBalancer: "Day Balancer",
+  plaquePeek: "Plaque Peek",
   hookSort: "Hook Sort",
   senderLineup: "Sender Lineup",
   stepOrder: "Step Order",

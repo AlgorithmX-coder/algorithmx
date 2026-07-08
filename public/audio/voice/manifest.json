@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-08T11:14:59.841Z",
+  "generatedAt": "2026-07-08T11:42:07.039Z",
   "model": "eleven_v3",
   "voiceSettings": {
     "stability": 0.35,
@@ -1908,6 +1908,279 @@
         "[excited] Sticker time, Fact Checker!"
       ],
       "file": "/audio/voice/fe4c60c46b154769.mp3"
+    },
+    {
+      "key": "c5081ae6f3aa96c5",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] Week sixteen - the doorway week! Every link is a door to somewhere else. But the sign on the door? It can say ANYTHING. A QR code is just a door made of dots. [warmly] The builder picks where it goes - not the sign. [excited] Four doors ahead. Swing them open and SEE!",
+      "lines": [
+        "[excited] Week sixteen - the doorway week!",
+        "Every link is a door to somewhere else.",
+        "But the sign on the door? It can say ANYTHING.",
+        "A QR code is just a door made of dots.",
+        "[warmly] The builder picks where it goes - not the sign.",
+        "[excited] Four doors ahead. Swing them open and SEE!"
+      ],
+      "file": "/audio/voice/c5081ae6f3aa96c5.mp3"
+    },
+    {
+      "key": "4a7eb7bb1f9c3491",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] The Door Swing - four doors, four signs! Every sign makes a promise. [whispers] Swing each door open... and see if the promise was TRUE. Go!",
+      "lines": [
+        "[excited] The Door Swing - four doors, four signs!",
+        "Every sign makes a promise.",
+        "[whispers] Swing each door open...",
+        "and see if the promise was TRUE. Go!"
+      ],
+      "file": "/audio/voice/4a7eb7bb1f9c3491.mp3"
+    },
+    {
+      "key": "cab2abc78129504f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Tap any door to swing it open - where does it REALLY go?",
+      "lines": [
+        "Tap any door to swing it open - where does it REALLY go?"
+      ],
+      "file": "/audio/voice/cab2abc78129504f.mp3"
+    },
+    {
+      "key": "12531875b9aa9969",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[excited] Power one - you've seen behind the paint! Signs promise. Builders decide. [whispers] But every door hides a little plaque with the TRUTH on it... Time to learn the Door Checker's peek.",
+      "lines": [
+        "[excited] Power one - you've seen behind the paint!",
+        "Signs promise. Builders decide.",
+        "[whispers] But every door hides a little plaque with the TRUTH on it...",
+        "Time to learn the Door Checker's peek."
+      ],
+      "file": "/audio/voice/12531875b9aa9969.mp3"
+    },
+    {
+      "key": "8c55927e3eb11d69",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[whispers] Come close - the Door Checker's secret. Under every shiny sign hides a little plaque. The ADDRESS. The door's true name. Paint can lie. The plaque can't. [warmly] Sign and plaque should say the SAME thing. [excited] Five doors in the corridor - lift every plaque!",
+      "lines": [
+        "[whispers] Come close - the Door Checker's secret.",
+        "Under every shiny sign hides a little plaque.",
+        "The ADDRESS. The door's true name.",
+        "Paint can lie. The plaque can't.",
+        "[warmly] Sign and plaque should say the SAME thing.",
+        "[excited] Five doors in the corridor - lift every plaque!"
+      ],
+      "file": "/audio/voice/8c55927e3eb11d69.mp3"
+    },
+    {
+      "key": "b49a5d36a8051c00",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[excited] The corridor of doors is open! Every sign makes its promise... [whispers] but the truth hides under the plaque. Lift it. Read it. Make the call!",
+      "lines": [
+        "[excited] The corridor of doors is open!",
+        "Every sign makes its promise...",
+        "[whispers] but the truth hides under the plaque.",
+        "Lift it. Read it. Make the call!"
+      ],
+      "file": "/audio/voice/b49a5d36a8051c00.mp3"
+    },
+    {
+      "key": "0516a2c77c63b57e",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "Tap the glowing plaque first - the real address hides underneath!",
+      "lines": [
+        "Tap the glowing plaque first - the real address hides underneath!"
+      ],
+      "file": "/audio/voice/0516a2c77c63b57e.mp3"
+    },
+    {
+      "key": "d133a9b612b54398",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] Two powers - no plaque escapes that peek! Paint lies. Addresses don't. [whispers] But the Raccoon's newest trick lives in the REAL world... He's been busy with a sticker sheet. Come see.",
+      "lines": [
+        "[excited] Two powers - no plaque escapes that peek!",
+        "Paint lies. Addresses don't.",
+        "[whispers] But the Raccoon's newest trick lives in the REAL world...",
+        "He's been busy with a sticker sheet. Come see."
+      ],
+      "file": "/audio/voice/d133a9b612b54398.mp3"
+    },
+    {
+      "key": "256e9cc33a6edd8b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[whispers] The Raccoon bought a sticker sheet... He prints his OWN dot-doors, and pastes them over real ones. On menus. On posters. [warmly] So here's the peel test: look at the corner. Printed codes are flat. Stickers have edges. [excited] Eight codes coming - peel the fakes OFF!",
+      "lines": [
+        "[whispers] The Raccoon bought a sticker sheet...",
+        "He prints his OWN dot-doors,",
+        "and pastes them over real ones. On menus. On posters.",
+        "[warmly] So here's the peel test: look at the corner.",
+        "Printed codes are flat. Stickers have edges.",
+        "[excited] Eight codes coming - peel the fakes OFF!"
+      ],
+      "file": "/audio/voice/256e9cc33a6edd8b.mp3"
+    },
+    {
+      "key": "59c44a024ccf8d6f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] The Sticker Peel - posters incoming! One code at a time. Check the corner. Printed flat? It stays. [whispers] Sticker tells? PEEL it off. Go!",
+      "lines": [
+        "[excited] The Sticker Peel - posters incoming!",
+        "One code at a time. Check the corner.",
+        "Printed flat? It stays.",
+        "[whispers] Sticker tells? PEEL it off. Go!"
+      ],
+      "file": "/audio/voice/59c44a024ccf8d6f.mp3"
+    },
+    {
+      "key": "9a3186b536e64d82",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "First code is here - flat and printed, or crooked sticker? Make the call!",
+      "lines": [
+        "First code is here - flat and printed, or crooked sticker? Make the call!"
+      ],
+      "file": "/audio/voice/9a3186b536e64d82.mp3"
+    },
+    {
+      "key": "dd4e0422e9b9a9b5",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[excited] Three powers - his sticker sheet is USELESS now! Corners checked, fakes peeled. [whispers] But some doors are made of glass... and only SOME of them let you see through. Come look.",
+      "lines": [
+        "[excited] Three powers - his sticker sheet is USELESS now!",
+        "Corners checked, fakes peeled.",
+        "[whispers] But some doors are made of glass...",
+        "and only SOME of them let you see through. Come look."
+      ],
+      "file": "/audio/voice/dd4e0422e9b9a9b5.mp3"
+    },
+    {
+      "key": "2cc31c1084f2aa66",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[warmly] Two glass doors, side by side. One is CLEAR - you can read its whole address. One is FROSTED - bit-dot-ly-something-scrambled. Where does the frosted one go? Nobody can tell. [whispers] And Door Checkers never walk what they can't check. [excited] Three door pairs coming - pick the clear glass!",
+      "lines": [
+        "[warmly] Two glass doors, side by side.",
+        "One is CLEAR - you can read its whole address.",
+        "One is FROSTED - bit-dot-ly-something-scrambled.",
+        "Where does the frosted one go? Nobody can tell.",
+        "[whispers] And Door Checkers never walk what they can't check.",
+        "[excited] Three door pairs coming - pick the clear glass!"
+      ],
+      "file": "/audio/voice/2cc31c1084f2aa66.mp3"
+    },
+    {
+      "key": "76317f688dde92e6",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[excited] The glass corridor - three door pairs! Clear glass shows its whole address. Frosted glass hides everything. [whispers] Tap only what you can SEE through. Go!",
+      "lines": [
+        "[excited] The glass corridor - three door pairs!",
+        "Clear glass shows its whole address.",
+        "Frosted glass hides everything.",
+        "[whispers] Tap only what you can SEE through. Go!"
+      ],
+      "file": "/audio/voice/76317f688dde92e6.mp3"
+    },
+    {
+      "key": "c593a36386bee570",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "Read each door's address - tap the one you can read all the way to the end!",
+      "lines": [
+        "Read each door's address - tap the one you can read all the way to the end!"
+      ],
+      "file": "/audio/voice/c593a36386bee570.mp3"
+    },
+    {
+      "key": "32c687d144e12b3d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] Four powers - frosted glass can't fool you! See through it or don't walk through it. [warmly] One power left, and it's the one that keeps heroes safe forever: what to do when you simply CAN'T tell. Almost there.",
+      "lines": [
+        "[excited] Four powers - frosted glass can't fool you!",
+        "See through it or don't walk through it.",
+        "[warmly] One power left, and it's the one that keeps heroes safe forever:",
+        "what to do when you simply CAN'T tell. Almost there."
+      ],
+      "file": "/audio/voice/32c687d144e12b3d.mp3"
+    },
+    {
+      "key": "0628d6ee34d4bda4",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[warmly] Last power - and it's the kindest one. Some doors just can't be checked. No plaque. No clear glass. Just promises. [whispers] So wheel the barrier in front. Don't tap. Call your grown-up. Check it together. [excited] Three mystery doors coming - show me the barrier!",
+      "lines": [
+        "[warmly] Last power - and it's the kindest one.",
+        "Some doors just can't be checked.",
+        "No plaque. No clear glass. Just promises.",
+        "[whispers] So wheel the barrier in front. Don't tap.",
+        "Call your grown-up. Check it together.",
+        "[excited] Three mystery doors coming - show me the barrier!"
+      ],
+      "file": "/audio/voice/0628d6ee34d4bda4.mp3"
+    },
+    {
+      "key": "0f689698b811572c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[whispers] Three doors. No plaques. Big promises. Remember: unsure means DON'T. Wheel the barrier, call your grown-up - [excited] and show me Door Checker form! Go!",
+      "lines": [
+        "[whispers] Three doors. No plaques. Big promises.",
+        "Remember: unsure means DON'T.",
+        "Wheel the barrier, call your grown-up -",
+        "[excited] and show me Door Checker form! Go!"
+      ],
+      "file": "/audio/voice/0f689698b811572c.mp3"
+    },
+    {
+      "key": "86e365e0836ee044",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[excited] That's all FIVE powers, Door Checker! Doors seen through, plaques peeked, stickers peeled, clear glass picked... and the barrier rule locked in. [whispers] One last corridor walk... [excited] then we shut his paint shop for GOOD!",
+      "lines": [
+        "[excited] That's all FIVE powers, Door Checker!",
+        "Doors seen through, plaques peeked, stickers peeled,",
+        "clear glass picked... and the barrier rule locked in.",
+        "[whispers] One last corridor walk...",
+        "[excited] then we shut his paint shop for GOOD!"
+      ],
+      "file": "/audio/voice/86e365e0836ee044.mp3"
+    },
+    {
+      "key": "f32e493af6165e8b",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[excited] The Corridor Check - final walk! Doorway moments are drifting past. SAFE DOORWAY for Door Checker form... [warmly] TRICK DOORWAY for painted traps. Stamp them all!",
+      "lines": [
+        "[excited] The Corridor Check - final walk!",
+        "Doorway moments are drifting past.",
+        "SAFE DOORWAY for Door Checker form...",
+        "[warmly] TRICK DOORWAY for painted traps. Stamp them all!"
+      ],
+      "file": "/audio/voice/f32e493af6165e8b.mp3"
+    },
+    {
+      "key": "a38fed1ef8ca06f2",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] Look at EVERYTHING you mastered this week! Doors seen through, plaques peeked, stickers peeled, clear glass picked... and the barrier rule ready. [laughs] His paint shop just went out of business. [excited] Sticker time, Door Checker!",
+      "lines": [
+        "[excited] Look at EVERYTHING you mastered this week!",
+        "Doors seen through, plaques peeked,",
+        "stickers peeled, clear glass picked... and the barrier rule ready.",
+        "[laughs] His paint shop just went out of business.",
+        "[excited] Sticker time, Door Checker!"
+      ],
+      "file": "/audio/voice/a38fed1ef8ca06f2.mp3"
     },
     {
       "key": "24e69e302153f951",

@@ -1186,6 +1186,44 @@ export type ScreenDef = (
     }
   | {
       /**
+       * Plaque Peek (Week 16). The address-peephole INSPECT drill: one
+       * link-door at a time wears a shiny sign claiming a destination.
+       * The child lifts the plaque (mandatory, penalty-free) to reveal
+       * the real address underneath, then calls it: honest door or
+       * sneaky door. The forced lift-then-judge rhythm IS the lesson -
+       * you check the address, not the paint. Distinct from clueBoard
+       * (many clues, one verdict) and the zone inspectors.
+       */
+      type: "plaquePeek";
+      doors: {
+        id: string;
+        /** The shiny sign's claim, e.g. "FREE GAME COINS!" */
+        claim: string;
+        /** Emoji rendered via PixIcon on the sign. */
+        icon: string;
+        /** The real address revealed under the plaque. */
+        address: string;
+        /** True = the address matches the claim (an honest door). */
+        matches: boolean;
+        /** Teach copy shown on a wrong verdict for this door. */
+        note: string;
+      }[];
+      /** Copy overrides (defaults keep the W16 doorway skin). */
+      introTitle?: string;
+      introSubtitle?: string;
+      introIcon?: string;
+      peekPrompt?: string;
+      matchLabel?: string;
+      sneakyLabel?: string;
+      matchToast?: string;
+      sneakyToast?: string;
+      wrongTitle?: string;
+      completeTitle?: string;
+      completeLine?: string;
+      hints?: { tier1: string; tier2: string };
+    }
+  | {
+      /**
        * Step Order (Week 5+). The stepping-stones ORDER game: shuffled
        * step tiles below a river; tap them in the order you'd do them
        * and each hops onto the next stone. Gentle - a wrong tap wobbles
