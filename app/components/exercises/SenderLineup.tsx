@@ -253,7 +253,8 @@ export default function SenderLineup({
                         fontWeight: 700,
                         color: "#9fb1ff",
                         lineHeight: 1.3,
-                        wordBreak: "break-all",
+                        // wrap at spaces; only split inside a token (long addresses) when it can't fit a line
+                        overflowWrap: "anywhere",
                       }}
                     >
                       {s.detail}

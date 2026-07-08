@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-08T10:59:50.699Z",
+  "generatedAt": "2026-07-08T11:14:59.841Z",
   "model": "eleven_v3",
   "voiceSettings": {
     "stability": 0.35,
@@ -1635,6 +1635,279 @@
         "[excited] Sticker time, Settings Scout!"
       ],
       "file": "/audio/voice/4b7a19db70e5ae59.mp3"
+    },
+    {
+      "key": "c588ea817edc75f8",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[excited] Week fifteen - the robot week! Chatbots can joke and chat like a person. But an AI is a computer program. No feelings. No birthday. Never, ever tired. [warmly] That makes it a TOOL - a brilliant one. Not a friend. [excited] Voices incoming - who's robot, who's real? Let's sort!",
+      "lines": [
+        "[excited] Week fifteen - the robot week!",
+        "Chatbots can joke and chat like a person.",
+        "But an AI is a computer program.",
+        "No feelings. No birthday. Never, ever tired.",
+        "[warmly] That makes it a TOOL - a brilliant one. Not a friend.",
+        "[excited] Voices incoming - who's robot, who's real? Let's sort!"
+      ],
+      "file": "/audio/voice/c588ea817edc75f8.mp3"
+    },
+    {
+      "key": "ca9054f01789ce27",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[excited] The Voice Booth is warmed up! Bubbles on the belt - listen close. REAL PERSON for the bodies and feelings... [whispers] ROBOT for the instant-everything voices. Go!",
+      "lines": [
+        "[excited] The Voice Booth is warmed up!",
+        "Bubbles on the belt - listen close.",
+        "REAL PERSON for the bodies and feelings...",
+        "[whispers] ROBOT for the instant-everything voices. Go!"
+      ],
+      "file": "/audio/voice/ca9054f01789ce27.mp3"
+    },
+    {
+      "key": "9a5c7eed47931bac",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "First voice is here - does it have a body and take time to learn? Sort it!",
+      "lines": [
+        "First voice is here - does it have a body and take time to learn? Sort it!"
+      ],
+      "file": "/audio/voice/9a5c7eed47931bac.mp3"
+    },
+    {
+      "key": "c301736264101f6f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] Power one - you can hear the robot in the voice! Tools help. Friends are people. [whispers] But this tool has an embarrassing secret... Sometimes it's confidently, cheerfully WRONG. Come see.",
+      "lines": [
+        "[excited] Power one - you can hear the robot in the voice!",
+        "Tools help. Friends are people.",
+        "[whispers] But this tool has an embarrassing secret...",
+        "Sometimes it's confidently, cheerfully WRONG. Come see."
+      ],
+      "file": "/audio/voice/c301736264101f6f.mp3"
+    },
+    {
+      "key": "7a5c40715ee9f07e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[whispers] Ready for the Know-It-All's secret? Sometimes... it makes things up. Not fibbing on purpose - just guessing out loud, in the same big confident voice as its facts. [warmly] So the golden rule: sounding sure isn't being right. [excited] A bot answer just landed on the desk - check every line!",
+      "lines": [
+        "[whispers] Ready for the Know-It-All's secret?",
+        "Sometimes... it makes things up.",
+        "Not fibbing on purpose - just guessing out loud,",
+        "in the same big confident voice as its facts.",
+        "[warmly] So the golden rule: sounding sure isn't being right.",
+        "[excited] A bot answer just landed on the desk - check every line!"
+      ],
+      "file": "/audio/voice/7a5c40715ee9f07e.mp3"
+    },
+    {
+      "key": "2fa7edb72a70044d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] The bot's report is on the desk! It sounds brilliant. It sounds SURE. The real book sits right beside it... [whispers] Check every line. Then make the call!",
+      "lines": [
+        "[excited] The bot's report is on the desk!",
+        "It sounds brilliant. It sounds SURE.",
+        "The real book sits right beside it...",
+        "[whispers] Check every line. Then make the call!"
+      ],
+      "file": "/audio/voice/2fa7edb72a70044d.mp3"
+    },
+    {
+      "key": "050a2f5302b9b619",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Tap the first line and hold it up against the book!",
+      "lines": [
+        "Tap the first line and hold it up against the book!"
+      ],
+      "file": "/audio/voice/050a2f5302b9b619.mp3"
+    },
+    {
+      "key": "fd6eb5238aaa7886",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[excited] Two powers - the book beats the bot! Confident fibs can't fool a fact-checker. [whispers] But the Know-It-All has one more trick... It asks QUESTIONS back. Careful what you feed it.",
+      "lines": [
+        "[excited] Two powers - the book beats the bot!",
+        "Confident fibs can't fool a fact-checker.",
+        "[whispers] But the Know-It-All has one more trick...",
+        "It asks QUESTIONS back. Careful what you feed it."
+      ],
+      "file": "/audio/voice/fd6eb5238aaa7886.mp3"
+    },
+    {
+      "key": "51562c2ef07e8451",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[warmly] Chatbots feel SO friendly. They remember what you type. They chat back warmly. So here's the rule, hero: a bot is a stranger with perfect spelling. [whispers] Everything you type drops into a jar that never opens. [excited] Three bot chats coming - keep the jar EMPTY!",
+      "lines": [
+        "[warmly] Chatbots feel SO friendly.",
+        "They remember what you type. They chat back warmly.",
+        "So here's the rule, hero:",
+        "a bot is a stranger with perfect spelling.",
+        "[whispers] Everything you type drops into a jar that never opens.",
+        "[excited] Three bot chats coming - keep the jar EMPTY!"
+      ],
+      "file": "/audio/voice/51562c2ef07e8451.mp3"
+    },
+    {
+      "key": "005c7be3faeafc9f",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[whispers] Three chats. One friendly-sounding bot. Remember: a stranger with perfect spelling. Keep the jar empty - [excited] and show me the zip! Go!",
+      "lines": [
+        "[whispers] Three chats. One friendly-sounding bot.",
+        "Remember: a stranger with perfect spelling.",
+        "Keep the jar empty -",
+        "[excited] and show me the zip! Go!"
+      ],
+      "file": "/audio/voice/005c7be3faeafc9f.mp3"
+    },
+    {
+      "key": "513a204b54482696",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] Three powers - the jar stays empty! Questions in, secrets never. [whispers] Now for the trickiest trick of all... AI can make PICTURES of things that never happened.",
+      "lines": [
+        "[excited] Three powers - the jar stays empty!",
+        "Questions in, secrets never.",
+        "[whispers] Now for the trickiest trick of all...",
+        "AI can make PICTURES of things that never happened."
+      ],
+      "file": "/audio/voice/513a204b54482696.mp3"
+    },
+    {
+      "key": "3bab5c0f8aa8caef",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[whispers] AI can paint pictures of things that never happened. And they can look SO real. But fakes leave clues: wrong-way shadows. Extra fingers. Melty edges. Scrambled signs. [excited] Three photo line-ups coming - one fake hides in each. Look twice, count fingers - and catch them all!",
+      "lines": [
+        "[whispers] AI can paint pictures of things that never happened.",
+        "And they can look SO real.",
+        "But fakes leave clues:",
+        "wrong-way shadows. Extra fingers. Melty edges. Scrambled signs.",
+        "[excited] Three photo line-ups coming - one fake hides in each.",
+        "Look twice, count fingers - and catch them all!"
+      ],
+      "file": "/audio/voice/3bab5c0f8aa8caef.mp3"
+    },
+    {
+      "key": "4891c7ede994252a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] The class gallery - with intruders! One AI fake hides in every line-up. Check the shadows. Count the legs. Read the signs. [whispers] Look twice... then tap the fake!",
+      "lines": [
+        "[excited] The class gallery - with intruders!",
+        "One AI fake hides in every line-up.",
+        "Check the shadows. Count the legs. Read the signs.",
+        "[whispers] Look twice... then tap the fake!"
+      ],
+      "file": "/audio/voice/4891c7ede994252a.mp3"
+    },
+    {
+      "key": "3b9e4b4843ae8a62",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Read each photo's little detail line - one of them breaks the rules of the real world!",
+      "lines": [
+        "Read each photo's little detail line - one of them breaks the rules of the real world!"
+      ],
+      "file": "/audio/voice/3b9e4b4843ae8a62.mp3"
+    },
+    {
+      "key": "8dd36b60178bf1bf",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[excited] Four powers - no fake gets past those eyes! Shadows, fingers, letters - all checked. [warmly] One power left, and it's the biggest: the same tool can grow a garden... or grow thorns. You choose.",
+      "lines": [
+        "[excited] Four powers - no fake gets past those eyes!",
+        "Shadows, fingers, letters - all checked.",
+        "[warmly] One power left, and it's the biggest:",
+        "the same tool can grow a garden... or grow thorns. You choose."
+      ],
+      "file": "/audio/voice/8dd36b60178bf1bf.mp3"
+    },
+    {
+      "key": "d5fe527766103770",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[warmly] Last power - and it's the biggest one. AI is a seed. It grows whatever you plant. Story ideas, birthday poems - flowers. Teasing, faking, tricking - thorns. On someone REAL. [excited] Five moments, two stamps each. Plant the kind garden - let's grow!",
+      "lines": [
+        "[warmly] Last power - and it's the biggest one.",
+        "AI is a seed. It grows whatever you plant.",
+        "Story ideas, birthday poems - flowers.",
+        "Teasing, faking, tricking - thorns. On someone REAL.",
+        "[excited] Five moments, two stamps each.",
+        "Plant the kind garden - let's grow!"
+      ],
+      "file": "/audio/voice/d5fe527766103770.mp3"
+    },
+    {
+      "key": "77c0f4aec127e15f",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[excited] The AI Garden - five fresh plots! Two stamps at every one. [whispers] Plant only what grows kind... [excited] and light this garden UP!",
+      "lines": [
+        "[excited] The AI Garden - five fresh plots!",
+        "Two stamps at every one.",
+        "[whispers] Plant only what grows kind...",
+        "[excited] and light this garden UP!"
+      ],
+      "file": "/audio/voice/77c0f4aec127e15f.mp3"
+    },
+    {
+      "key": "c9b67e5a89c1eac0",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "Which stamp grows something kind for a REAL person? Plant that one!",
+      "lines": [
+        "Which stamp grows something kind for a REAL person? Plant that one!"
+      ],
+      "file": "/audio/voice/c9b67e5a89c1eac0.mp3"
+    },
+    {
+      "key": "556271a947934e7b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] That's all FIVE powers, Fact Checker! Robot heard, book checked, jar zipped, fakes caught... and a garden in full bloom. [whispers] One final stamp parade... [excited] then we close his Know-It-All booth for GOOD!",
+      "lines": [
+        "[excited] That's all FIVE powers, Fact Checker!",
+        "Robot heard, book checked, jar zipped,",
+        "fakes caught... and a garden in full bloom.",
+        "[whispers] One final stamp parade...",
+        "[excited] then we close his Know-It-All booth for GOOD!"
+      ],
+      "file": "/audio/voice/556271a947934e7b.mp3"
+    },
+    {
+      "key": "4f798f1733b4aded",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] The Stamp Parade - final check! AI moments are drifting past. WISE MOVE for fact-checker form... [warmly] BOT TRAP for the booth's tricks. Stamp them all!",
+      "lines": [
+        "[excited] The Stamp Parade - final check!",
+        "AI moments are drifting past.",
+        "WISE MOVE for fact-checker form...",
+        "[warmly] BOT TRAP for the booth's tricks. Stamp them all!"
+      ],
+      "file": "/audio/voice/4f798f1733b4aded.mp3"
+    },
+    {
+      "key": "fe4c60c46b154769",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[excited] Look at EVERYTHING you mastered this week! Robot voices heard, fibs fact-checked, the jar zipped, the fakes caught... and a kind garden grown. [laughs] His Know-It-All booth just went quiet. [excited] Sticker time, Fact Checker!",
+      "lines": [
+        "[excited] Look at EVERYTHING you mastered this week!",
+        "Robot voices heard, fibs fact-checked,",
+        "the jar zipped, the fakes caught... and a kind garden grown.",
+        "[laughs] His Know-It-All booth just went quiet.",
+        "[excited] Sticker time, Fact Checker!"
+      ],
+      "file": "/audio/voice/fe4c60c46b154769.mp3"
     },
     {
       "key": "24e69e302153f951",
