@@ -41,6 +41,7 @@ Every boss is a **contraption the Raccoon wheels in**, themed to the week (W1's 
   9. Every week's badge is a bespoke designed medal (`badgeArt`), not the generic shield.
   10. ALL music plays very very faint (bgmBoss 0.03, bgmHub 0.05, lesson beds 0.012) — atmosphere, never a listening subject.
   11. The narrator is Sarah EVERYWHERE (locked v13-sarah-child storyteller settings + eleven_v3 tags) — the villain is Callum. No other voices exist.
+  12. The cast NEVER stands behind gameplay boards: during board stages the hero/Raccoon/machine tuck to the screen edges and shrink, springing back for theatre beats. QA every boss at BOTH 1280×900 and a wide viewport (2560×1440) before it ships.
 - **Two verbs only: tap and hold.** No drag, no gestures.
 - **No lose state.** A missed counter dips the shield ring, coach gives one line (the authored attack `tag` — e.g. "Count the whiskers" — IS the coach hint, free content), retry immediately. Stars: 0 misses = 3★, ≤2 = 2★, else 1★.
 - **Comfort mode = all timers off.** Barrages become turn-based; holds have no deadline.
