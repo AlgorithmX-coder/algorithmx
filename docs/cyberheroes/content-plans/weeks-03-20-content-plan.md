@@ -70,7 +70,7 @@ Every pattern use across all 20 weeks, each with its unique dressing. **Rule: be
 | W6.3 | **The Somewhere-Else Trick** *(BUILT — chatSimulator re-dress: lobby chat, GoldRush_Gary escalates to "what's your Discord")* — three choice moments ending in refuse-and-tell |
 | W7.4 | **Till moment** *(BUILT — chooseYourPath classic cards; 3 buy-pressure scenarios: saved-card GOLDEN BLASTER prompt / 5-minute mega-deal / "everyone in the squad has it"; ask-first is always the hero path)* — at a checkout with a coin meter; choose ASK FIRST / BUY NOW; asking summons the grown-up, buying drains the piggy bank |
 | W9.5 | **Install handshake** *(BUILT as "Install Handshake" — chooseYourPath classic cards; 3 install moments: glowing INSTALL NOW button / "asking is for babies" whisper / fake update pop-up; get-a-grown-up is always the hero path, together-install framing in consequences)* — a shiny app install; choose GET GROWN-UP / INSTALL ALONE; together-install shows the safe path |
-| W10.5 | **Clock mirror** — mid-binge you catch your reflection (jiggling leg, dry eyes); choose ONE MORE / SOMETHING ELSE with an activity picker |
+| W10.5 | **Clock mirror** *(BUILT as the body-bell Clock Mirror — chooseYourPath classic cards; 3 moments: autoplay 'just one more' / dry-eyes-jiggly-leg reflection / dinner-vs-next-episode countdown; something-else is always the hero path, activity ideas live in the consequences)* — mid-binge you catch your reflection (jiggling leg, dry eyes); choose ONE MORE / SOMETHING ELSE with an activity picker |
 | W12.3 | **Future-self mirror** (film tie-in) — draft a post; older-you appears in the mirror and reacts; choose post/edit/skip |
 | W13.3 | **Bedtime garage** (film tie-in) — bedtime chime; choose PARK IT in the charging garage / SNEAK IT under the duvet — duvet path shows the groggy morning |
 | W14.4 | **Whisper check** — about to say a password aloud; the smart speaker's ear-light pulses; choose SAY IT / WRITE-IT-INSTEAD |
@@ -89,7 +89,7 @@ Every pattern use across all 20 weeks, each with its unique dressing. **Rule: be
 | W7.2 | **Loot-box glass** *(BUILT as "The Glass Loot Box" — RevealBoard re-dress, 🎁 boardIcon; 4 boxes: shiny crate → 1-gold-in-100-marbles odds, "SO close!" feeling → designed on purpose, "next one's THE one" → same odds every time, price tag → real money every open)* — an exciting crate; tap to make it glass → see the 100-marble odds jar inside (1 gold, 99 grey) |
 | W8.1 | **Copy pigeons** *(BUILT as "The Copy Pigeons" — RevealBoard re-dress, ✉️ board; 4 moments: DELETE only empties your nest / screenshot = unreachable copy / group chat = 8 pigeons / the app keeps one too)* (film tie-in) — delete a shared photo → it vanishes locally but paper pigeons stay on every rooftop |
 | W9.4 | **Price-tag flip** *(BUILT as "The Price-Tag Flip" — RevealBoard re-dress, 🏷️ board; 4 FREE tags flipped: Ad Machine pays-with-your-time / Coin Shop Inside real-money nudges / Info Collector pays-with-your-data / The Truly Free library app that asks for nothing)* — a FREE app; flip the tag → the real costs slide out (ads, purchases, your data icons) |
-| W10.1 | **Conveyor curtain** — press NEXT twice → curtain pulls back on the raccoon greasing the next-video conveyor |
+| W10.1 | **Conveyor curtain** *(BUILT as "The Curtain Pull" — RevealBoard re-dress, 🌀 board; 4 curtains: never-ending belt / countdown rush / hungry thumbnails / the Raccoon greasing the conveyor behind the curtain)* — press NEXT twice → curtain pulls back on the raccoon greasing the next-video conveyor |
 | W11.1 | **Weight lift** — a heavy "my fault" boulder on a kid figure; tap → it deflates into a balloon reading NOT-YOUR-FAULT (icon) and floats away |
 | W12.1 | **Footprint lamp** — do 3 innocent actions (like, search, post) → UV lamp sweeps → glowing tracks appear behind each |
 | W14.2 | **Speaker diary** — tap the smart speaker → its paper ribbon prints symbols of everything it heard today |
@@ -103,7 +103,7 @@ Every pattern use across all 20 weeks, each with its unique dressing. **Rule: be
 | W4.2 | **Too-Good Blaster** *(BUILT — spamBlaster's first week outing, re-dressed via new headline/missLabel/intro props)* — zap the too-good offers flying in; real messages pass to the inbox |
 | W6.1 | **Chat Goalie** *(BUILT — spamBlaster re-dress: "PUNCH AWAY THE OVERSHARES!", LEAKS counter, chat-line cards; note: bottom monitor chrome still reads "AlgorithmX Mail" — candidate polish)* |
 | W7.5 | **Generator whack** *(BUILT as "The Free-Coin Fakes" — popupPanic's first week outing via new introTitle/introSubtitle/introIcon/introNarration props: 4 free-coin fake pop-ups — FREE 10,000 V-BUCKS / lucky-player password ask / coin doubler / skin spinner; find the corner X, never the shiny CLAIM)* — "FREE COINS" machines pop from the arcade floor; bop them before they gobble the account key (no lose state — they retreat) |
-| W10.4 | **Reply-frog catch** — comment-frogs leap at your screen; catch unsafe replies in a net before you'd send them |
+| W10.4 | **Reply-frog catch** *(BUILT as "The Comment Pond" — spamBlaster's second outing, 4 weeks after W6: INCOMING stranger comments, net the fishing ones (school/age/name asks, free-stuff links, dares), friendly video chatter passes; new introIcon + hints props stop the W1 email hint copy leaking; NIBBLES miss counter; note: bottom monitor chrome still "AlgorithmX Mail"/"INBOX" — the standing polish candidate)* — comment-frogs leap at your screen; catch unsafe replies in a net before you'd send them |
 | W12.2 | **Snowball chase** — copies of a track roll away multiplying; chase with a broom — you can never sweep them all (the *point*: designed to be uncatchable, coach explains) |
 
 ### SELECT (tap the right one) — 10 uses
@@ -124,7 +124,7 @@ Every pattern use across all 20 weeks, each with its unique dressing. **Rule: be
 | Use | Dressing |
 |---|---|
 | W6.4 | **The Button Hunt** *(BUILT — new buttonHunt engine; reuse W10 escape / W11 block / W14 mute / W18 log-out)* — player-menu mock, find Report then Block among 4 teaching decoys |
-| W10.3 | **Escape hatch** — a not-for-kids video starts; find the back/close control as the room dims — one calm tap out |
+| W10.3 | **Escape hatch** *(BUILT as "The Escape Hatch" — buttonHunt's second outing, re-dressed as the TubeTown Player: find BACK then TELL A GROWN-UP among Next Video/Like/Comment/Share teaching decoys; warm never-your-fault framing, no room-dim needed)* — a not-for-kids video starts; find the back/close control as the room dims — one calm tap out |
 | W11.3 | **Block under pressure** — a chat app mock; find the block button while the message pulses (gentle, no timer) |
 | W14.5 | **Mute safari** — three devices (speaker, TV, toy); find each one's mute/privacy switch — sleeping-ear icon confirms |
 | W17.2 | **Settings burrow** — dig through a 2-level settings menu to flip Public → Private; padlock frosts the profile mirror |
@@ -234,7 +234,7 @@ Format per beat: **Learn** (the one idea, narrated) · **Game** (ledger dressing
 - **Film/palette:** thumbnail glow vs daylight; screen-blue vs sunset gold. **Badge:** "Pull Noticer" (PixIcon caught NEXT-card).
 - **Mission brief:** notice the pull · doubt wild claims · know how to leave.
 - Beat 1 — *The autoplay rabbit hole.* Learn: "next video" is built to keep you watching. Game: REVEAL **conveyor curtain**. Prove: FINISH-THE-RULE "Autoplay is built to keep me ___" (watching).
-- Beat 2 — *Not everything is true.* Learn: "a video said so" isn't proof — check a real source. Game: SORT (re-dress: **library scales** — claim cards weighed against fact books; true claims balance, wild ones fling off). Prove: CATCH-THE-LIE "The moon is made of cheese — a video proved it."
+- Beat 2 — *Not everything is true.* Learn: "a video said so" isn't proof — check a real source. Game: SORT (re-dress: **library scales** — claim cards weighed against fact books; true claims balance, wild ones fling off) *(BUILT as "The Fact Scales" — conveyorSort re-dress, 2 weeks after W8's doors: CHECKS OUT/WILD CLAIM pans via machineLabel/chuteWord="PAN"; 8 claims incl. true-but-wild lightning + octopus facts so kids weigh instead of vibe-guess)*. Prove: CATCH-THE-LIE "The moon is made of cheese — a video proved it."
 - Beat 3 — *Not everything is for you.* Learn: some content isn't for kids — leaving is strong, not scared. Game: FIND **escape hatch**. Prove: PUT-IN-ORDER notice → back out → tell if needed.
 - Beat 4 — *Comments are strangers (W3 applied).* Learn: don't reply or share info there. Game: ARCADE **reply-frog catch**. Prove: ONE-TAP-RECALL who lives in the comments?
 - Beat 5 — *"I've been watching a while" (teases W13).* Learn: notice the signs, choose to stop. Game: DECIDE **clock mirror**. Prove: SPEED tap the watching-too-long sign.

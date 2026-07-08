@@ -43,6 +43,10 @@ export interface SpamBlasterProps {
   headline?: string;
   /** HUD label for phishing emails that slipped through (default "VIRUSES"). */
   missLabel?: string;
+  /** Intro card icon (default "📧"; PixIcon key). */
+  introIcon?: string;
+  /** Tiered wrong-try hints (defaults keep the Week 1 email copy). */
+  hints?: { tier1: string; tier2: string; tier2Example?: string; tier3?: string };
   /** Spoken, paced intro. When present the rich narrated ExerciseIntroBeat
    *  replaces the legacy ExerciseIntro card. */
   introNarration?: { speaker?: "adam" | "layla"; lines: string[] };
@@ -151,6 +155,8 @@ export default function SpamBlaster({
   introDescription,
   headline,
   missLabel,
+  introIcon,
+  hints,
   introNarration,
   onComplete,
   onCorrect,
@@ -1316,7 +1322,7 @@ export default function SpamBlaster({
           <ExerciseIntroBeat
             title={introTitle ?? "Spam Blaster!"}
             subtitle={introDescription ?? "ZAP the tricks - let the real ones through!"}
-            icon="📧"
+            icon={introIcon ?? "📧"}
             narration={introNarration}
             character={introNarration.speaker}
             onDismiss={() => setShowIntro(false)}
@@ -1328,7 +1334,7 @@ export default function SpamBlaster({
               introDescription ??
               "Emails are flying toward your computer! ZAP the phishing emails but let the real ones through!"
             }
-            icon="📧"
+            icon={introIcon ?? "📧"}
             controls="Click on phishing emails to zap them"
             onStart={() => setShowIntro(false)}
           />
@@ -1341,22 +1347,22 @@ export default function SpamBlaster({
             <HintBubble
               tier={1}
               speaker="layla"
-              text="Slow down and read the SENDER first. Friends, teachers and family are real. 'Prize Central' or 'Account Security' usually means trouble."
+              text={hints?.tier1 ?? "Slow down and read the SENDER first. Friends, teachers and family are real. 'Prize Central' or 'Account Security' usually means trouble."}
             />
           )}
           {wrongCount === 2 && (
             <HintBubble
               tier={2}
               speaker="layla"
-              text="Phishing has three big signs: (1) free prize, (2) URGENT or scary message, (3) asks for your password."
-              example="'YOU WON A FREE iPHONE' / 'URGENT: enter your password' = bait"
+              text={hints?.tier2 ?? "Phishing has three big signs: (1) free prize, (2) URGENT or scary message, (3) asks for your password."}
+              example={hints ? hints.tier2Example : "'YOU WON A FREE iPHONE' / 'URGENT: enter your password' = bait"}
             />
           )}
           {wrongCount >= 3 && (
             <HintBubble
               tier={3}
               speaker="adam"
-              text="Quick rule: If a message rushes you, scares you, or offers free stuff for nothing - it's phishing. Zap it. Real messages are calm and from people you know."
+              text={hints?.tier3 ?? hints?.tier2 ?? "Quick rule: If a message rushes you, scares you, or offers free stuff for nothing - it's phishing. Zap it. Real messages are calm and from people you know."}
             />
           )}
         </div>

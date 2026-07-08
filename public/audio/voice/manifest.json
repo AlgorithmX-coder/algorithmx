@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-08T09:06:14.744Z",
+  "generatedAt": "2026-07-08T09:31:01.210Z",
   "model": "eleven_v3",
   "voiceSettings": {
     "stability": 0.35,
@@ -270,6 +270,269 @@
         "[laughs] You did it, Cyber Hero! [excited] Now, time to claim your stickers!"
       ],
       "file": "/audio/voice/d7deef07485d9b75.mp3"
+    },
+    {
+      "key": "e199acb449b56ecf",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] Welcome back, Cyber Hero! Week ten - the rabbit hole. Ever notice how the next video just... starts? You didn't pick it. Nobody picked it. [whispers] Something under the screen picked it FOR you. It's called autoplay - and it's a machine with one job: keep you watching. [excited] Come on - let's pull the curtain and see it!",
+      "lines": [
+        "[excited] Welcome back, Cyber Hero! Week ten - the rabbit hole.",
+        "Ever notice how the next video just... starts?",
+        "You didn't pick it. Nobody picked it.",
+        "[whispers] Something under the screen picked it FOR you.",
+        "It's called autoplay - and it's a machine with one job: keep you watching.",
+        "[excited] Come on - let's pull the curtain and see it!"
+      ],
+      "file": "/audio/voice/e199acb449b56ecf.mp3"
+    },
+    {
+      "key": "ffffc5629bbb6f14",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[whispers] Hear that hum? That's the watching machine. Four curtains hide its four tricks. [excited] Pull every one and see what's really pulling YOU. Machine-spotters can't be caught. Go!",
+      "lines": [
+        "[whispers] Hear that hum? That's the watching machine.",
+        "Four curtains hide its four tricks.",
+        "[excited] Pull every one and see what's really pulling YOU.",
+        "Machine-spotters can't be caught. Go!"
+      ],
+      "file": "/audio/voice/ffffc5629bbb6f14.mp3"
+    },
+    {
+      "key": "825778a7ef54f2d9",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Pull the first curtain - let's see what's doing the pulling!",
+      "lines": [
+        "Pull the first curtain - let's see what's doing the pulling!"
+      ],
+      "file": "/audio/voice/825778a7ef54f2d9.mp3"
+    },
+    {
+      "key": "d5ec1769d100aa8b",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[excited] Power one - the curtain is DOWN! Belt, countdown, hungry thumbnails... all spotted. [whispers] But the hole hides something else, hero... videos that say things that just aren't true.",
+      "lines": [
+        "[excited] Power one - the curtain is DOWN!",
+        "Belt, countdown, hungry thumbnails... all spotted.",
+        "[whispers] But the hole hides something else, hero...",
+        "videos that say things that just aren't true."
+      ],
+      "file": "/audio/voice/d5ec1769d100aa8b.mp3"
+    },
+    {
+      "key": "e3bf59f9fe175a74",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[excited] Next power: the truth scales! Videos can say anything at all. Anyone can film anything. [whispers] 'The moon is cheese!' 'Grow taller overnight!' Saying it loudly doesn't make it TRUE. [warmly] So we weigh it - against a real book, a teacher, a grown-up. [excited] The claims are rolling in - to the scales!",
+      "lines": [
+        "[excited] Next power: the truth scales!",
+        "Videos can say anything at all. Anyone can film anything.",
+        "[whispers] 'The moon is cheese!' 'Grow taller overnight!'",
+        "Saying it loudly doesn't make it TRUE.",
+        "[warmly] So we weigh it - against a real book, a teacher, a grown-up.",
+        "[excited] The claims are rolling in - to the scales!"
+      ],
+      "file": "/audio/voice/e3bf59f9fe175a74.mp3"
+    },
+    {
+      "key": "6e93d2f6ab5f91c2",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[excited] Claim cards on the belt! Weigh each one: does a real source agree? Facts settle gently into the CHECKS OUT pan... [laughs] and wild ones FLING right off. Go!",
+      "lines": [
+        "[excited] Claim cards on the belt!",
+        "Weigh each one: does a real source agree?",
+        "Facts settle gently into the CHECKS OUT pan...",
+        "[laughs] and wild ones FLING right off. Go!"
+      ],
+      "file": "/audio/voice/6e93d2f6ab5f91c2.mp3"
+    },
+    {
+      "key": "18a599f39ed6f231",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "Would a real book agree? That's the whole test!",
+      "lines": [
+        "Would a real book agree? That's the whole test!"
+      ],
+      "file": "/audio/voice/18a599f39ed6f231.mp3"
+    },
+    {
+      "key": "31954b9aa4af218d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] Two powers! The scales don't lie. Cheese-moons and forever-holidays - flung! [warmly] Now for a power every hero needs... the calm way OUT when a video isn't for you.",
+      "lines": [
+        "[excited] Two powers! The scales don't lie.",
+        "Cheese-moons and forever-holidays - flung!",
+        "[warmly] Now for a power every hero needs...",
+        "the calm way OUT when a video isn't for you."
+      ],
+      "file": "/audio/voice/31954b9aa4af218d.mp3"
+    },
+    {
+      "key": "0d5e72c078f1107a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[warmly] This one's important, hero, so I'll say it gently. Sometimes the belt rolls in a video that is NOT for kids. If that happens - it is never, ever your fault. And leaving? Leaving is STRONG, not scared. [whispers] Notice it... back out... tell a grown-up if it felt icky. [excited] Let's practise finding that exit - calm and quick!",
+      "lines": [
+        "[warmly] This one's important, hero, so I'll say it gently.",
+        "Sometimes the belt rolls in a video that is NOT for kids.",
+        "If that happens - it is never, ever your fault.",
+        "And leaving? Leaving is STRONG, not scared.",
+        "[whispers] Notice it... back out... tell a grown-up if it felt icky.",
+        "[excited] Let's practise finding that exit - calm and quick!"
+      ],
+      "file": "/audio/voice/0d5e72c078f1107a.mp3"
+    },
+    {
+      "key": "76fb0750afd2ccf6",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[warmly] Deep breath. You've got this. Six buttons - only two make the escape. BACK gets you out. TELL gets you backup. [excited] Calm and quick - find them in order!",
+      "lines": [
+        "[warmly] Deep breath. You've got this.",
+        "Six buttons - only two make the escape.",
+        "BACK gets you out. TELL gets you backup.",
+        "[excited] Calm and quick - find them in order!"
+      ],
+      "file": "/audio/voice/76fb0750afd2ccf6.mp3"
+    },
+    {
+      "key": "e6102f60fed30874",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Out first, backup second - find the BACK button!",
+      "lines": [
+        "Out first, backup second - find the BACK button!"
+      ],
+      "file": "/audio/voice/e6102f60fed30874.mp3"
+    },
+    {
+      "key": "5713613ccaf4b39f",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[warmly] Three powers - and that one makes me proud. Notice. Back out. Tell. [whispers] Now look UNDER the video... see all those comments? Time to meet who really lives down there.",
+      "lines": [
+        "[warmly] Three powers - and that one makes me proud.",
+        "Notice. Back out. Tell.",
+        "[whispers] Now look UNDER the video... see all those comments?",
+        "Time to meet who really lives down there."
+      ],
+      "file": "/audio/voice/5713613ccaf4b39f.mp3"
+    },
+    {
+      "key": "ab70f4c4fabe4d31",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[whispers] Look under the video... see the comment pond? Everyone down there is a STRANGER. Remember week three? Same rule, new place. [nervous] Some comments are fishing - for your name, your school, a reply. [warmly] You don't bite. You watch, you smile, you move on. [excited] Grab the net - the fishers are coming!",
+      "lines": [
+        "[whispers] Look under the video... see the comment pond?",
+        "Everyone down there is a STRANGER.",
+        "Remember week three? Same rule, new place.",
+        "[nervous] Some comments are fishing - for your name, your school, a reply.",
+        "[warmly] You don't bite. You watch, you smile, you move on.",
+        "[excited] Grab the net - the fishers are coming!"
+      ],
+      "file": "/audio/voice/ab70f4c4fabe4d31.mp3"
+    },
+    {
+      "key": "bb80676f31c4244a",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[excited] The pond is bubbling - comments incoming! Friendly chatter about the video? Let it swim past. [whispers] Fishing for YOU - your school, your name, a reply? [excited] NET IT! Ready... go!",
+      "lines": [
+        "[excited] The pond is bubbling - comments incoming!",
+        "Friendly chatter about the video? Let it swim past.",
+        "[whispers] Fishing for YOU - your school, your name, a reply?",
+        "[excited] NET IT! Ready... go!"
+      ],
+      "file": "/audio/voice/bb80676f31c4244a.mp3"
+    },
+    {
+      "key": "49beaf800795ad98",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] Four powers! The pond can't catch you. School questions, dare bait, free-stuff hooks... [laughs] all netted, none bitten. [warmly] Last power - and this one lives in your own body.",
+      "lines": [
+        "[excited] Four powers! The pond can't catch you.",
+        "School questions, dare bait, free-stuff hooks...",
+        "[laughs] all netted, none bitten.",
+        "[warmly] Last power - and this one lives in your own body."
+      ],
+      "file": "/audio/voice/49beaf800795ad98.mp3"
+    },
+    {
+      "key": "98b20c8209cea60b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[warmly] Last power, hero - and it's already inside you. When you've watched a while, your body rings a little bell. Dry blinky eyes. A jiggly leg. A stiff neck. [whispers] Outside, the sky changed colour... and you missed it. That bell isn't bad news - it's your signal. [excited] Notice it, pause the belt, and YOU pick what's next!",
+      "lines": [
+        "[warmly] Last power, hero - and it's already inside you.",
+        "When you've watched a while, your body rings a little bell.",
+        "Dry blinky eyes. A jiggly leg. A stiff neck.",
+        "[whispers] Outside, the sky changed colour... and you missed it.",
+        "That bell isn't bad news - it's your signal.",
+        "[excited] Notice it, pause the belt, and YOU pick what's next!"
+      ],
+      "file": "/audio/voice/98b20c8209cea60b.mp3"
+    },
+    {
+      "key": "8c143ac12e271d65",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[warmly] Three watching moments. Three little bells. The belt will whisper 'just one more'... [whispers] but you know whose choice it really is. [excited] Notice the bell - show me the hero move!",
+      "lines": [
+        "[warmly] Three watching moments. Three little bells.",
+        "The belt will whisper 'just one more'...",
+        "[whispers] but you know whose choice it really is.",
+        "[excited] Notice the bell - show me the hero move!"
+      ],
+      "file": "/audio/voice/8c143ac12e271d65.mp3"
+    },
+    {
+      "key": "113464a851407e79",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[excited] That's all FIVE rabbit-hole powers, Cyber Hero! Machine spotted, claims weighed, exit found, pond netted... and your own bell noticed. [whispers] Now - one last climb... [excited] then we unplug his conveyor for GOOD!",
+      "lines": [
+        "[excited] That's all FIVE rabbit-hole powers, Cyber Hero!",
+        "Machine spotted, claims weighed, exit found,",
+        "pond netted... and your own bell noticed.",
+        "[whispers] Now - one last climb...",
+        "[excited] then we unplug his conveyor for GOOD!"
+      ],
+      "file": "/audio/voice/113464a851407e79.mp3"
+    },
+    {
+      "key": "b3c7ae358f13aed8",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[excited] The ladder out of the hole - final climb! Watching moments are floating past. MY CHOICE for the hero moves... [warmly] THE PULL for the belt's tricks. Climb!",
+      "lines": [
+        "[excited] The ladder out of the hole - final climb!",
+        "Watching moments are floating past.",
+        "MY CHOICE for the hero moves...",
+        "[warmly] THE PULL for the belt's tricks. Climb!"
+      ],
+      "file": "/audio/voice/b3c7ae358f13aed8.mp3"
+    },
+    {
+      "key": "2ffaa84deb741ae0",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] Look at EVERYTHING you mastered this week! The machine spotted, wild claims flung, the exit found, the pond netted... and your bell heard. [laughs] His conveyor is unplugged and squeaking. [excited] Sticker time!",
+      "lines": [
+        "[excited] Look at EVERYTHING you mastered this week!",
+        "The machine spotted, wild claims flung,",
+        "the exit found, the pond netted... and your bell heard.",
+        "[laughs] His conveyor is unplugged and squeaking.",
+        "[excited] Sticker time!"
+      ],
+      "file": "/audio/voice/2ffaa84deb741ae0.mp3"
     },
     {
       "key": "24e69e302153f951",

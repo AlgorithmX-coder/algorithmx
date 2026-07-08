@@ -1103,6 +1103,10 @@ export type ScreenDef = (
       headline?: string;
       /** HUD label for tricks that slipped through (default "VIRUSES"). */
       missLabel?: string;
+      /** Intro card icon (PixIcon key; default "📧"). */
+      introIcon?: string;
+      /** Tiered wrong-try hints (defaults keep the Week 1 email copy). */
+      hints?: { tier1: string; tier2: string; tier2Example?: string; tier3?: string };
     }
   | {
       type: "cyberMaze";

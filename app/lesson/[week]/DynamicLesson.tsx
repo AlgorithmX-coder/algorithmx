@@ -1862,6 +1862,8 @@ function DynamicLessonInner({ qaEnabled }: { qaEnabled: boolean }) {
               introDescription={def.introDescription}
               headline={def.headline}
               missLabel={def.missLabel}
+              introIcon={def.introIcon}
+              hints={def.hints}
               introNarration={def.narration}
               onComplete={() => navigate(screen + 1)}
               onCorrect={() => awardXp(25)}

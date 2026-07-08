@@ -7,6 +7,7 @@ import { WEEK_6 } from "./week6";
 import { WEEK_7 } from "./week7";
 import { WEEK_8 } from "./week8";
 import { WEEK_9 } from "./week9";
+import { WEEK_10 } from "./week10";
 import type { WeekContent } from "./types";
 
 export type { WeekContent, BossQuestion, ScreenDef } from "./types";
@@ -21,6 +22,7 @@ export const WEEK_CONTENT: Record<number, WeekContent> = {
   7: WEEK_7,
   8: WEEK_8,
   9: WEEK_9,
+  10: WEEK_10,
 };
 
 export function getWeekContent(weekNumber: number): WeekContent | null {
