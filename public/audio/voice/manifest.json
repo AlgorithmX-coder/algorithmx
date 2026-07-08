@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-08T10:39:17.579Z",
+  "generatedAt": "2026-07-08T10:59:50.699Z",
   "model": "eleven_v3",
   "voiceSettings": {
     "stability": 0.35,
@@ -1362,6 +1362,279 @@
         "[excited] Sticker time, Battery Keeper!"
       ],
       "file": "/audio/voice/a64391893edefce7.mp3"
+    },
+    {
+      "key": "dd6cfde6efd6f6e9",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] Week fourteen - and this mission starts AT HOME. Some things in your house are smart. That means tiny ears... and sometimes tiny eyes. Speakers. Tellies. Watches. Doorbells. [whispers] And the surprise: even some toys. [excited] House things incoming - sort the ears from the sleepers!",
+      "lines": [
+        "[excited] Week fourteen - and this mission starts AT HOME.",
+        "Some things in your house are smart.",
+        "That means tiny ears... and sometimes tiny eyes.",
+        "Speakers. Tellies. Watches. Doorbells.",
+        "[whispers] And the surprise: even some toys.",
+        "[excited] House things incoming - sort the ears from the sleepers!"
+      ],
+      "file": "/audio/voice/dd6cfde6efd6f6e9.mp3"
+    },
+    {
+      "key": "cb0dfbd739febca6",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] The Ears Check - house things incoming! One at a time, make the call: EARS ON for the listeners... [whispers] FAST ASLEEP for the quiet ones. Watch for surprises!",
+      "lines": [
+        "[excited] The Ears Check - house things incoming!",
+        "One at a time, make the call:",
+        "EARS ON for the listeners...",
+        "[whispers] FAST ASLEEP for the quiet ones. Watch for surprises!"
+      ],
+      "file": "/audio/voice/cb0dfbd739febca6.mp3"
+    },
+    {
+      "key": "343a5b22a690bfad",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "First one's here - can you talk to it and it answers? Make the call!",
+      "lines": [
+        "First one's here - can you talk to it and it answers? Make the call!"
+      ],
+      "file": "/audio/voice/343a5b22a690bfad.mp3"
+    },
+    {
+      "key": "000522ad5293390c",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[excited] Power one - the house has no secrets from YOU now! Every ear in the place, spotted. [whispers] But what do those ears do with what they catch? One of them keeps a diary. Come and read it...",
+      "lines": [
+        "[excited] Power one - the house has no secrets from YOU now!",
+        "Every ear in the place, spotted.",
+        "[whispers] But what do those ears do with what they catch?",
+        "One of them keeps a diary. Come and read it..."
+      ],
+      "file": "/audio/voice/000522ad5293390c.mp3"
+    },
+    {
+      "key": "603e7f95610d37c9",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[warmly] So why do they listen? To HELP. Songs, questions, lights, Grandma calls. They wake when they hear their name... [whispers] but sometimes, they write down what they hear. That's the speaker's diary - and it lives in an app. [excited] Nova heard four things today. Let's read the diary!",
+      "lines": [
+        "[warmly] So why do they listen? To HELP.",
+        "Songs, questions, lights, Grandma calls.",
+        "They wake when they hear their name...",
+        "[whispers] but sometimes, they write down what they hear.",
+        "That's the speaker's diary - and it lives in an app.",
+        "[excited] Nova heard four things today. Let's read the diary!"
+      ],
+      "file": "/audio/voice/603e7f95610d37c9.mp3"
+    },
+    {
+      "key": "e2bbf37e91d29697",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[whispers] Four moments from one ordinary day. Nova heard every single one. [excited] Tap each moment - and see what the diary wrote down!",
+      "lines": [
+        "[whispers] Four moments from one ordinary day.",
+        "Nova heard every single one.",
+        "[excited] Tap each moment -",
+        "and see what the diary wrote down!"
+      ],
+      "file": "/audio/voice/e2bbf37e91d29697.mp3"
+    },
+    {
+      "key": "1c977e6240ec0b1e",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "Tap the first moment - let's see what Nova's diary says!",
+      "lines": [
+        "Tap the first moment - let's see what Nova's diary says!"
+      ],
+      "file": "/audio/voice/1c977e6240ec0b1e.mp3"
+    },
+    {
+      "key": "023a166267f3a341",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] Two powers - you've read the diary! Helpful ears, with a memory. [whispers] But some gadgets have more than ears... Some have little glass EYES. Lights down - let's hunt.",
+      "lines": [
+        "[excited] Two powers - you've read the diary!",
+        "Helpful ears, with a memory.",
+        "[whispers] But some gadgets have more than ears...",
+        "Some have little glass EYES. Lights down - let's hunt."
+      ],
+      "file": "/audio/voice/023a166267f3a341.mp3"
+    },
+    {
+      "key": "46a975d796b90624",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[whispers] Some gadgets don't just listen. They watch. The clue is a small, round, shiny lens - a little glass eye. Doorbells watch the front step. That's their job. But bedrooms? Lens-free zones. Always. [excited] The living room's gone dusky - and two glass eyes are hiding in it. Find them both, Scout!",
+      "lines": [
+        "[whispers] Some gadgets don't just listen. They watch.",
+        "The clue is a small, round, shiny lens - a little glass eye.",
+        "Doorbells watch the front step. That's their job.",
+        "But bedrooms? Lens-free zones. Always.",
+        "[excited] The living room's gone dusky - and two glass eyes are hiding in it.",
+        "Find them both, Scout!"
+      ],
+      "file": "/audio/voice/46a975d796b90624.mp3"
+    },
+    {
+      "key": "7fe14708181c1002",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[whispers] Dusk in the living room... Two little glass eyes are out there somewhere. Doorbell first, then the telly. [excited] Eyes sharp, Scout - go!",
+      "lines": [
+        "[whispers] Dusk in the living room...",
+        "Two little glass eyes are out there somewhere.",
+        "Doorbell first, then the telly.",
+        "[excited] Eyes sharp, Scout - go!"
+      ],
+      "file": "/audio/voice/7fe14708181c1002.mp3"
+    },
+    {
+      "key": "6a3dd6d47936e7ac",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Where would a lens watch the front step from? Tap it!",
+      "lines": [
+        "Where would a lens watch the front step from? Tap it!"
+      ],
+      "file": "/audio/voice/6a3dd6d47936e7ac.mp3"
+    },
+    {
+      "key": "23bfc1e0e65e3283",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[excited] Three powers - ears AND eyes, all spotted! The house can't surprise you anymore. [whispers] So now the big question: with all those ears about... where do SECRETS go?",
+      "lines": [
+        "[excited] Three powers - ears AND eyes, all spotted!",
+        "The house can't surprise you anymore.",
+        "[whispers] So now the big question:",
+        "with all those ears about... where do SECRETS go?"
+      ],
+      "file": "/audio/voice/23bfc1e0e65e3283.mp3"
+    },
+    {
+      "key": "800732ccacecb196",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[whispers] Now for the rule that ties it all together. Near smart ears, out loud is a MEGAPHONE. Passwords? Never out loud. Surprises? Take them to another room. [warmly] Write it. Whisper it away. Move it. [excited] Three secret moments coming - keep them off the air!",
+      "lines": [
+        "[whispers] Now for the rule that ties it all together.",
+        "Near smart ears, out loud is a MEGAPHONE.",
+        "Passwords? Never out loud.",
+        "Surprises? Take them to another room.",
+        "[warmly] Write it. Whisper it away. Move it.",
+        "[excited] Three secret moments coming - keep them off the air!"
+      ],
+      "file": "/audio/voice/800732ccacecb196.mp3"
+    },
+    {
+      "key": "a537d9b995ea725b",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[whispers] Three secret moments. Ears everywhere. Remember the megaphone rule: write it, whisper it away, or move rooms. [excited] Keep every secret off the air - go!",
+      "lines": [
+        "[whispers] Three secret moments. Ears everywhere.",
+        "Remember the megaphone rule:",
+        "write it, whisper it away, or move rooms.",
+        "[excited] Keep every secret off the air - go!"
+      ],
+      "file": "/audio/voice/a537d9b995ea725b.mp3"
+    },
+    {
+      "key": "c197960ef52e0fe3",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] Four powers - your secrets stay YOURS! Written, whispered, moved. Off the air. [warmly] And now the best news of the whole week: every one of those ears... has an OFF switch. Let's find them.",
+      "lines": [
+        "[excited] Four powers - your secrets stay YOURS!",
+        "Written, whispered, moved. Off the air.",
+        "[warmly] And now the best news of the whole week:",
+        "every one of those ears... has an OFF switch. Let's find them."
+      ],
+      "file": "/audio/voice/c197960ef52e0fe3.mp3"
+    },
+    {
+      "key": "dc7bb866092b0fe7",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[warmly] Ready for the best news all week? Every ear in the house has an OFF switch. Mute buttons. Push-to-talk. Camera covers. You find them, show a grown-up, flip them TOGETHER. [excited] Patrol, point, flip - the Settings Scout way. The house settings panel is open - safari time!",
+      "lines": [
+        "[warmly] Ready for the best news all week?",
+        "Every ear in the house has an OFF switch.",
+        "Mute buttons. Push-to-talk. Camera covers.",
+        "You find them, show a grown-up, flip them TOGETHER.",
+        "[excited] Patrol, point, flip - the Settings Scout way.",
+        "The house settings panel is open - safari time!"
+      ],
+      "file": "/audio/voice/dc7bb866092b0fe7.mp3"
+    },
+    {
+      "key": "78afec89005093aa",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] The Mute Safari - five settings on patrol! Hunt the always-on ears and flip them. [whispers] But careful - some settings are already doing their job right. Patrol, point, flip. Go, Scout!",
+      "lines": [
+        "[excited] The Mute Safari - five settings on patrol!",
+        "Hunt the always-on ears and flip them.",
+        "[whispers] But careful - some settings are already doing their job right.",
+        "Patrol, point, flip. Go, Scout!"
+      ],
+      "file": "/audio/voice/78afec89005093aa.mp3"
+    },
+    {
+      "key": "5caa9420ecc2ae93",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Which setting never stops listening? That one needs the flip!",
+      "lines": [
+        "Which setting never stops listening? That one needs the flip!"
+      ],
+      "file": "/audio/voice/5caa9420ecc2ae93.mp3"
+    },
+    {
+      "key": "4d13df0635ed05c4",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[excited] That's all FIVE Scout powers! Ears known, diary read, lenses spotted, secrets off the air... and switches flipped together. [whispers] One final patrol of the house... [excited] then we unplug his listening post for GOOD!",
+      "lines": [
+        "[excited] That's all FIVE Scout powers!",
+        "Ears known, diary read, lenses spotted,",
+        "secrets off the air... and switches flipped together.",
+        "[whispers] One final patrol of the house...",
+        "[excited] then we unplug his listening post for GOOD!"
+      ],
+      "file": "/audio/voice/4d13df0635ed05c4.mp3"
+    },
+    {
+      "key": "bd9d573d71ada171",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[excited] Final patrol - the Quiet House check! House moments drifting past the scanner. QUIET HOUSE for the Scout moves... [warmly] LEAKY HOUSE for his listening posts. Scan!",
+      "lines": [
+        "[excited] Final patrol - the Quiet House check!",
+        "House moments drifting past the scanner.",
+        "QUIET HOUSE for the Scout moves...",
+        "[warmly] LEAKY HOUSE for his listening posts. Scan!"
+      ],
+      "file": "/audio/voice/bd9d573d71ada171.mp3"
+    },
+    {
+      "key": "4b7a19db70e5ae59",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] Look at EVERYTHING you mastered this week! Ears spotted, diary read, lenses found, secrets kept off the air... and every switch flipped together. [laughs] His listening post just went silent. [excited] Sticker time, Settings Scout!",
+      "lines": [
+        "[excited] Look at EVERYTHING you mastered this week!",
+        "Ears spotted, diary read, lenses found,",
+        "secrets kept off the air... and every switch flipped together.",
+        "[laughs] His listening post just went silent.",
+        "[excited] Sticker time, Settings Scout!"
+      ],
+      "file": "/audio/voice/4b7a19db70e5ae59.mp3"
     },
     {
       "key": "24e69e302153f951",
