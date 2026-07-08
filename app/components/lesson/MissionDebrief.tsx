@@ -21,7 +21,7 @@
  * InfoNarration for the read-aloud track.
  */
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { motion } from "motion/react";
 import {
   useExerciseFeedback,
@@ -83,10 +83,14 @@ export default function MissionDebrief({
     return () => window.clearTimeout(id);
   }, [revealedCount, concepts.length, audio]);
 
-  // Fire one big celebration when all 4 cards are up.
+  // Fire one big celebration when all cards are up. Guarded by a ref:
+  // fx's identity changes when its own toast re-renders, so an unguarded
+  // [done, fx] effect re-fires unlock forever (max-update-depth loop).
+  const unlockFired = useRef(false);
   useEffect(() => {
-    if (!done) return;
-    fx.unlock({ xp: 50, text: "WEEK 1 COMPLETE!" });
+    if (!done || unlockFired.current) return;
+    unlockFired.current = true;
+    fx.unlock({ xp: 50, text: "MISSION COMPLETE!" });
   }, [done, fx]);
 
   const handleContinue = useCallback(() => {

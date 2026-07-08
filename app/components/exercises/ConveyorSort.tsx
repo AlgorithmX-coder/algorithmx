@@ -33,7 +33,7 @@ export interface ConveyorCategory {
   id: string;
   label: string;
   icon: string;
-  tone: "safe" | "lock";
+  tone: "safe" | "lock" | "flag";
 }
 
 export interface ConveyorItem {
@@ -47,6 +47,14 @@ export interface ConveyorItem {
 export interface ConveyorSortProps {
   categories: ConveyorCategory[];
   items: ConveyorItem[];
+  /** Copy overrides (re-theme per week; defaults keep the W3 machine skin). */
+  introTitle?: string;
+  introSubtitle?: string;
+  introIcon?: string;
+  machineLabel?: string;
+  chuteWord?: string;
+  completeTitle?: string;
+  completeLine?: string;
   hints?: { tier1: string; tier2: string };
   introNarration?: { speaker?: "adam" | "layla"; lines: string[] };
   coachLines?: { speaker?: "adam" | "layla"; lines: string[] };
@@ -65,6 +73,7 @@ export interface ConveyorSortProps {
 const TONE = {
   safe: { accent: "#7eff97", tint: "rgba(52, 211, 153, 0.16)", border: "#34d399" },
   lock: { accent: "#7df0ff", tint: "rgba(0, 179, 255, 0.14)", border: "#38bdf8" },
+  flag: { accent: "#ff8f8f", tint: "rgba(239, 68, 68, 0.16)", border: "#ef4444" },
 } as const;
 
 // Seconds a card takes to cross the belt (before comfort scaling).
@@ -78,6 +87,13 @@ function rideSecs(i: number) {
 export default function ConveyorSort({
   categories,
   items,
+  introTitle,
+  introSubtitle,
+  introIcon,
+  machineLabel,
+  chuteWord,
+  completeTitle,
+  completeLine,
   hints,
   introNarration,
   coachLines,
@@ -210,9 +226,9 @@ export default function ConveyorSort({
 
       {showIntro && (
         <ExerciseIntroBeat
-          title="The Sorting Machine"
-          subtitle="Send each card down the right chute before it reaches the scanner."
-          icon="🌍"
+          title={introTitle ?? "The Sorting Machine"}
+          subtitle={introSubtitle ?? "Send each card down the right chute before it reaches the scanner."}
+          icon={introIcon ?? "🌍"}
           narration={introNarration}
           character={introNarration?.speaker}
           onDismiss={() => setShowIntro(false)}
@@ -239,7 +255,7 @@ export default function ConveyorSort({
           }}
         >
           <span style={{ fontSize: 14, fontWeight: 900, letterSpacing: "0.06em", color: "#9fb1ff" }}>
-            THE SORTING MACHINE
+            {machineLabel ?? "THE SORTING MACHINE"}
           </span>
           <span style={{ fontSize: 12.5, fontWeight: 800, color: "#7d8cc9" }}>
             Card {Math.min(idx + 1, items.length)} of {items.length}
@@ -403,7 +419,7 @@ export default function ConveyorSort({
                   {cat.label}
                 </span>
                 <span aria-hidden style={{ fontSize: 10.5, fontWeight: 800, opacity: 0.75, letterSpacing: "0.1em" }}>
-                  ▼ CHUTE ▼
+                  ▼ {chuteWord ?? "CHUTE"} ▼
                 </span>
               </motion.button>
             );
@@ -432,11 +448,11 @@ export default function ConveyorSort({
 
       {finished && (
         <ExerciseCompleteBeat
-          title="Belt cleared!"
+          title={completeTitle ?? "Belt cleared!"}
           stars={stars}
           statLines={[
             `${correctCount}/${items.length} sorted first try`,
-            "The vault is locked and the share pile is safe.",
+            completeLine ?? "The vault is locked and the share pile is safe.",
           ]}
           onContinue={() => onComplete(correctCount)}
         />

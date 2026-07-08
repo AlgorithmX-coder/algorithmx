@@ -11,6 +11,8 @@
  *   speed  — beat the counter   (urgency bar, never hard-fails for kids)
  *   lie    — catch the Raccoon's claim (TRUE / FALSE)
  *   recall — one-tap "which?"
+ *   order  — PUT-IN-ORDER: tap the step tiles in sequence (authored
+ *            choices order = the correct sequence; display is shuffled)
  *
  * Premium by default (the "nothing flat" rule): cosmic backdrop with drifting
  * glow orbs, spring-in prompt, glowing tap chips, green flash + confetti +
@@ -29,7 +31,7 @@ import { correctAnswerBurst } from "@/app/lib/celebrations";
 import ExerciseFrame from "@/app/components/lesson/ExerciseFrame";
 import PixIcon from "@/app/components/lesson/PixIcon";
 
-export type QuickCheckMode = "finish" | "speed" | "lie" | "recall";
+export type QuickCheckMode = "finish" | "speed" | "lie" | "recall" | "order";
 
 export interface QuickCheckChoice {
   text: string;
@@ -59,6 +61,7 @@ const MODE_LABEL: Record<QuickCheckMode, string> = {
   speed: "Speed round",
   lie: "True or false?",
   recall: "Quick question",
+  order: "Put it in order",
 };
 
 const ACCENTS = ["#00e5ff", "#7c5cff", "#7eff97", "#ffd158"];
@@ -69,6 +72,7 @@ const MODE_ICON: Record<Exclude<QuickCheckMode, "lie">, string> = {
   finish: "🎯",
   speed: "⚡",
   recall: "🧠",
+  order: "🔢",
 };
 const MODE_HERALD: Record<
   Exclude<QuickCheckMode, "lie">,
@@ -77,6 +81,7 @@ const MODE_HERALD: Record<
   finish: { speaker: "layla", line: "Can you finish the rule?" },
   speed: { speaker: "adam", line: "Quick! Beat the clock!" },
   recall: { speaker: "layla", line: "Do you remember this one?" },
+  order: { speaker: "adam", line: "Tap the steps in the right order!" },
 };
 
 // Fisher-Yates. The authored choices often list the correct answer first,
@@ -111,6 +116,8 @@ export default function QuickCheck({
   const [wrongKey, setWrongKey] = useState(0); // bump to shake the picked wrong chip
   const [wrongIdx, setWrongIdx] = useState<number | null>(null);
   const [nudgeText, setNudgeText] = useState<string | null>(null);
+  // order mode: indices (into shuffledChoices) locked in so far, in tap order
+  const [placed, setPlaced] = useState<number[]>([]);
   // speed urgency: 1 → 0 over speedMs, cosmetic only
   const [urgency, setUrgency] = useState(1);
   const startedRef = useRef(false);
@@ -141,6 +148,30 @@ export default function QuickCheck({
 
   const handlePick = (i: number) => {
     if (solved) return;
+    if (mode === "order") {
+      if (placed.includes(i)) return;
+      // The authored `choices` order IS the correct sequence; compare the
+      // tapped tile against the next expected step by text identity.
+      const expected = choices[placed.length];
+      if (shuffledChoices[i].text === expected.text) {
+        const next = [...placed, i];
+        setPlaced(next);
+        setWrongIdx(null);
+        setNudgeText(null);
+        if (next.length === choices.length) {
+          onCorrectFire();
+        } else {
+          audio.tap();
+        }
+      } else {
+        audio.wrong();
+        setWrongIdx(i);
+        setWrongKey((k) => k + 1);
+        setNudgeText(nudge ?? defaultNudge(mode));
+        onWrong?.();
+      }
+      return;
+    }
     if (shuffledChoices[i].isCorrect) {
       onCorrectFire();
     } else {
@@ -415,22 +446,23 @@ export default function QuickCheck({
           position: "relative",
           zIndex: 2,
           display: "grid",
-          gridTemplateColumns:
-            choices.length <= 2 ? "repeat(2, 1fr)" : "repeat(2, 1fr)",
+          gridTemplateColumns: mode === "order" ? "1fr" : "repeat(2, 1fr)",
           gap: 14,
-          maxWidth: 640,
+          maxWidth: mode === "order" ? 480 : 640,
           margin: "0 auto",
         }}
       >
         {shuffledChoices.map((c, i) => {
           const accent = ACCENTS[i % ACCENTS.length];
           const isWrongPick = wrongIdx === i;
-          const isSolvedRight = solved && c.isCorrect;
+          const placedPos = mode === "order" ? placed.indexOf(i) : -1;
+          const isSolvedRight =
+            mode === "order" ? placedPos >= 0 : solved && c.isCorrect;
           return (
             <motion.button
               key={i}
               type="button"
-              disabled={solved}
+              disabled={solved || placedPos >= 0}
               onClick={() => handlePick(i)}
               onPointerEnter={() => !solved && audio.hover()}
               animate={
@@ -463,10 +495,35 @@ export default function QuickCheck({
                 boxShadow: isSolvedRight
                   ? `0 0 38px -2px #7eff97aa, inset 0 1px 0 rgba(255,255,255,0.30)`
                   : `0 12px 30px -16px ${accent}, inset 0 1px 0 rgba(255,255,255,0.16)`,
-                opacity: solved && !c.isCorrect ? 0.4 : 1,
+                opacity:
+                  mode === "order"
+                    ? 1
+                    : solved && !c.isCorrect
+                      ? 0.4
+                      : 1,
                 transition: "opacity 200ms ease, border-color 200ms ease",
               }}
             >
+              {placedPos >= 0 && (
+                <span
+                  aria-hidden
+                  style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    width: 26,
+                    height: 26,
+                    marginRight: 10,
+                    borderRadius: "50%",
+                    background: "#7eff97",
+                    color: "#06220f",
+                    fontSize: 15,
+                    fontWeight: 900,
+                  }}
+                >
+                  {placedPos + 1}
+                </span>
+              )}
               {isSolvedRight && !reduce && (
                 <motion.span
                   aria-hidden
@@ -482,7 +539,7 @@ export default function QuickCheck({
                   }}
                 />
               )}
-              {isSolvedRight && (
+              {isSolvedRight && mode !== "order" && (
                 <span style={{ marginRight: 8, color: "#7eff97" }}>✓</span>
               )}
               {c.text}
@@ -505,6 +562,8 @@ function defaultPraise(mode: QuickCheckMode): string {
       return "Nice! You spotted the trick! ✓";
     case "speed":
       return "Fast AND right! ✓";
+    case "order":
+      return "Every step in order! ✓";
     default:
       return "Got it! ✓";
   }
@@ -516,6 +575,8 @@ function defaultNudge(mode: QuickCheckMode): string {
       return "Look again, is that really true?";
     case "finish":
       return "Not quite, which word finishes the rule?";
+    case "order":
+      return "Hmm, what would you do FIRST?";
     default:
       return "Not quite, have another go!";
   }

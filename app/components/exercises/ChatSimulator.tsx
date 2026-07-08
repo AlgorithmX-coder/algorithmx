@@ -7,6 +7,7 @@ import {
   badgeEarnedCelebration,
 } from "@/app/lib/celebrations";
 import { playSound } from "@/app/lib/sounds";
+import ExerciseIntroBeat from "@/app/components/lesson/ExerciseBeats";
 
 type Sender = "stranger" | "narrator";
 
@@ -29,9 +30,13 @@ type ChoiceGroup = {
 
 type ChatSimulatorProps = {
   title?: string;
+  /** Header display name (defaults to "Unknown User"). */
+  chatTitle?: string;
   scenario: string;
   messages: ChatMessage[];
   choices: ChoiceGroup[];
+  /** Spoken, paced intro explaining the task before the chat starts. */
+  introNarration?: { speaker?: "adam" | "layla"; lines: string[] };
   onComplete: (score: number, total: number) => void;
 };
 
@@ -74,11 +79,14 @@ function dangerStops(level: number): { label: string; color: string; bg: string 
 
 export default function ChatSimulator({
   title,
+  chatTitle,
   scenario,
   messages,
   choices,
+  introNarration,
   onComplete,
 }: ChatSimulatorProps) {
+  const [showIntro, setShowIntro] = useState(true);
   const [shown, setShown] = useState<ShownMsg[]>([]);
   const [cursor, setCursor] = useState(0);
   const [typing, setTyping] = useState<null | { sender: Sender }>(null);
@@ -133,6 +141,7 @@ export default function ChatSimulator({
 
   // Drive the message queue
   useEffect(() => {
+    if (showIntro) return;
     if (phase !== "active") return;
     if (waitingChoice) return;
     if (typing) return;
@@ -227,11 +236,10 @@ export default function ChatSimulator({
     [waitingChoice, pushShown],
   );
 
-  // Fire onComplete when entering complete phase
+  // Celebrate a perfect run the moment the chat wraps; onComplete itself
+  // fires from the Summary's Continue button so the child reads their score.
   useEffect(() => {
-    if (phase !== "complete" || completeFiredRef.current) return;
-    completeFiredRef.current = true;
-    onComplete(score, totalChoices);
+    if (phase !== "complete") return;
     if (
       totalChoices > 0 &&
       score === totalChoices &&
@@ -241,7 +249,13 @@ export default function ChatSimulator({
       playSound("confetti");
       void badgeEarnedCelebration();
     }
-  }, [phase, score, totalChoices, onComplete]);
+  }, [phase, score, totalChoices]);
+
+  const handleContinue = useCallback(() => {
+    if (completeFiredRef.current) return;
+    completeFiredRef.current = true;
+    onComplete(score, totalChoices);
+  }, [onComplete, score, totalChoices]);
 
   // Cleanup on unmount
   useEffect(() => {
@@ -381,7 +395,7 @@ export default function ChatSimulator({
           ?
         </div>
         <div style={{ flex: 1, minWidth: 0 }}>
-          <div style={{ fontSize: 15, fontWeight: 700 }}>Unknown User</div>
+          <div style={{ fontSize: 15, fontWeight: 700 }}>{chatTitle ?? "Unknown User"}</div>
           {title && (
             <div style={{ fontSize: 11, color: "#64748b", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
               {title}
@@ -489,7 +503,20 @@ export default function ChatSimulator({
         </div>
       )}
 
-      {phase === "complete" && <Summary score={score} total={totalChoices} />}
+      {phase === "complete" && (
+        <Summary score={score} total={totalChoices} onContinue={handleContinue} />
+      )}
+
+      {showIntro && (
+        <ExerciseIntroBeat
+          title="The Uh-Oh Meter"
+          subtitle="A chat is coming in. Watch the meter - and trust that funny feeling."
+          icon="💬"
+          narration={introNarration}
+          character={introNarration?.speaker}
+          onDismiss={() => setShowIntro(false)}
+        />
+      )}
     </div>
   );
 }
@@ -708,7 +735,15 @@ function ChoiceCard({
   );
 }
 
-function Summary({ score, total }: { score: number; total: number }) {
+function Summary({
+  score,
+  total,
+  onContinue,
+}: {
+  score: number;
+  total: number;
+  onContinue: () => void;
+}) {
   const perfect = total > 0 && score === total;
   return (
     <div
@@ -742,9 +777,7 @@ function Summary({ score, total }: { score: number; total: number }) {
       </div>
       <button
         type="button"
-        onClick={() => {
-          /* consumer handles via onComplete */
-        }}
+        onClick={onContinue}
         style={{
           padding: "10px 24px",
           borderRadius: 999,

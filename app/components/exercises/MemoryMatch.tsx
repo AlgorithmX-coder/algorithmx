@@ -46,6 +46,10 @@ export interface MemoryPair {
 
 export interface MemoryMatchProps {
   pairs?: MemoryPair[];
+  /** Intro copy overrides (defaults keep the Week 1 skin). */
+  introTitle?: string;
+  introSubtitle?: string;
+  introWelcome?: string;
   introNarration?: { speaker?: "adam" | "layla"; lines: string[] };
   /** Spoken explanation for the phase-2 "Rebuild From Memory" mini-game. */
   coachLines?: { speaker?: "adam" | "layla"; lines: string[] };
@@ -149,6 +153,9 @@ interface Burst {
 
 export default function MemoryMatch({
   pairs,
+  introTitle,
+  introSubtitle,
+  introWelcome,
   introNarration,
   coachLines,
   onComplete,
@@ -816,10 +823,13 @@ export default function MemoryMatch({
 
       {showIntro && (
         <ExerciseIntroBeat
-          title="Memory Match"
+          title={introTitle ?? "Memory Match"}
           logo="/cyberheroes/logos/memory-match.png"
-          welcome="Your first challenge!"
-          subtitle="Flip the cards and match each term with its meaning! Fewer flips earn more stars."
+          welcome={introWelcome ?? "Your first challenge!"}
+          subtitle={
+            introSubtitle ??
+            "Flip the cards and match each term with its meaning! Fewer flips earn more stars."
+          }
           icon="🧠"
           narration={introNarration}
           character={introNarration?.speaker ?? "adam"}

@@ -44,6 +44,9 @@ export interface RevealBoardProps {
   subtitle?: string;
   items: RevealItem[];
   finale?: string;
+  /** Emoji (PixIcon key) fronting the board header. Default the Raccoon —
+   *  pass e.g. "💬" for beats that aren't about him (W5's support board). */
+  boardIcon?: string;
   introNarration?: { speaker?: "adam" | "layla"; lines: string[] };
   coachLines?: { speaker?: "adam" | "layla"; lines: string[] };
   onComplete: (score: number) => void;
@@ -63,6 +66,7 @@ export default function RevealBoard({
   subtitle,
   items,
   finale,
+  boardIcon = "🦝",
   introNarration,
   coachLines,
   onComplete,
@@ -120,7 +124,7 @@ export default function RevealBoard({
       // Let the stamp land, then slam the board shut before the win beat.
       setBoardLocked(true);
       window.setTimeout(() => {
-        fx.unlock({ text: "WISH LIST: DENIED!" });
+        fx.unlock({ text: `${title.toUpperCase()}: DENIED!` });
         setPhase("finished");
       }, reduce ? 400 : 1100);
     }
@@ -137,7 +141,7 @@ export default function RevealBoard({
         <ExerciseIntroBeat
           title={title}
           subtitle={subtitle ?? "Tap a card to see the Raccoon's sneaky plan for it."}
-          icon="🦝"
+          icon={boardIcon}
           narration={introNarration}
           character={introNarration?.speaker}
           onDismiss={() => setPhase("board")}
@@ -168,7 +172,7 @@ export default function RevealBoard({
         }}
       >
         <div style={{ display: "flex", alignItems: "center", gap: 10, justifyContent: "center" }}>
-          <PixIcon emoji="🦝" size={34} />
+          <PixIcon emoji={boardIcon} size={34} />
           <div
             style={{
               fontSize: 17,
@@ -179,7 +183,7 @@ export default function RevealBoard({
               textTransform: "uppercase",
             }}
           >
-            The Raccoon&apos;s Wish List
+            {title}
           </div>
           <PixIcon emoji="📍" size={26} />
         </div>

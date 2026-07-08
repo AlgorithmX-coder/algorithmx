@@ -63,6 +63,23 @@ import QuickCheck from "@/app/components/exercises/QuickCheck";
 import RevealBoard from "@/app/components/exercises/RevealBoard";
 import ConveyorSort from "@/app/components/exercises/ConveyorSort";
 import RequestInspector from "@/app/components/exercises/RequestInspector";
+import ProfileInspector from "@/app/components/exercises/ProfileInspector";
+import ReplyCards from "@/app/components/exercises/ReplyCards";
+import ClueBoard from "@/app/components/exercises/ClueBoard";
+import TeamPoster from "@/app/components/exercises/TeamPoster";
+import SnowballChase from "@/app/components/exercises/SnowballChase";
+import TrailStamper from "@/app/components/exercises/TrailStamper";
+import SignBingo from "@/app/components/exercises/SignBingo";
+import DayBalancer from "@/app/components/exercises/DayBalancer";
+import PlaquePeek from "@/app/components/exercises/PlaquePeek";
+import GrowthRings from "@/app/components/exercises/GrowthRings";
+import PasscodeForge from "@/app/components/exercises/PasscodeForge";
+import HookSort from "@/app/components/exercises/HookSort";
+import SenderLineup from "@/app/components/exercises/SenderLineup";
+import StepOrder from "@/app/components/exercises/StepOrder";
+import SettingsSwitch from "@/app/components/exercises/SettingsSwitch";
+import ButtonHunt from "@/app/components/exercises/ButtonHunt";
+import ChatSimulator from "@/app/components/exercises/ChatSimulator";
 import UsernameBuilder from "@/app/components/exercises/UsernameBuilder";
 import PauseDecide from "@/app/components/exercises/PauseDecide";
 import VaultDrop from "@/app/components/exercises/VaultDrop";
@@ -149,6 +166,23 @@ const EXERCISE_SCREEN_TYPES = new Set<ScreenDef["type"]>([
   "reveal",
   "conveyorSort",
   "requestInspector",
+  "profileInspector",
+  "replyCards",
+  "clueBoard",
+  "teamPoster",
+  "snowballChase",
+  "trailStamper",
+  "signBingo",
+  "dayBalancer",
+  "plaquePeek",
+  "growthRings",
+  "passcodeForge",
+  "chatSimulator",
+  "hookSort",
+  "senderLineup",
+  "stepOrder",
+  "settingsSwitch",
+  "buttonHunt",
   "usernameBuilder",
   "vaultDrop",
 ]);
@@ -1319,6 +1353,10 @@ function DynamicLessonInner({ qaEnabled }: { qaEnabled: boolean }) {
             <PopupPanic
               popups={def.popups}
               hints={def.hints}
+              introTitle={def.introTitle}
+              introSubtitle={def.introSubtitle}
+              introIcon={def.introIcon}
+              introNarration={def.narration}
               onComplete={() => navigate(screen + 1)}
               onCorrect={() => awardXp(25)}
               onWrong={() => addWrong(screen)}
@@ -1406,6 +1444,7 @@ function DynamicLessonInner({ qaEnabled }: { qaEnabled: boolean }) {
               subtitle={def.subtitle}
               items={def.items}
               finale={def.finale}
+              boardIcon={def.boardIcon}
               introNarration={def.narration}
               coachLines={def.coachLines}
               onComplete={() => navigate(screen + 1)}
@@ -1459,6 +1498,13 @@ function DynamicLessonInner({ qaEnabled }: { qaEnabled: boolean }) {
             <ConveyorSort
               categories={def.categories}
               items={def.items}
+              introTitle={def.introTitle}
+              introSubtitle={def.introSubtitle}
+              introIcon={def.introIcon}
+              machineLabel={def.machineLabel}
+              chuteWord={def.chuteWord}
+              completeTitle={def.completeTitle}
+              completeLine={def.completeLine}
               hints={def.hints}
               introNarration={def.narration}
               coachLines={def.coachLines}
@@ -1487,6 +1533,509 @@ function DynamicLessonInner({ qaEnabled }: { qaEnabled: boolean }) {
           <FullScene bg="linear-gradient(180deg, #050a1a 0%, #16102e 100%)">
             <RequestInspector
               requests={def.requests}
+              hints={def.hints}
+              badgeLabel={def.badgeLabel}
+              introTitle={def.introTitle}
+              introSubtitle={def.introSubtitle}
+              introIcon={def.introIcon}
+              fairLabel={def.fairLabel}
+              nosyLabel={def.nosyLabel}
+              introNarration={def.narration}
+              coachLines={def.coachLines}
+              onComplete={() => navigate(screen + 1)}
+              onCorrect={() => awardXp(25)}
+              onWrong={() => addWrong(screen)}
+              onHintReached={(tier) => progress.reportHint(screen, tier)}
+              onAnswered={(o) => {
+                progress.saveQuestion({
+                  screenIndex: screen,
+                  questionKey: o.questionKey,
+                  selectedIndex: o.selectedIndex,
+                  correctIndex: o.correctIndex,
+                  wasCorrect: o.wasCorrect,
+                });
+                if (!o.wasCorrect) {
+                  progress.reportWrong(screen, o.questionKey);
+                }
+              }}
+            />
+          </FullScene>
+        );
+
+      case "profileInspector":
+        return (
+          <FullScene bg="linear-gradient(180deg, #050a1a 0%, #0e1c3a 100%)">
+            <ProfileInspector
+              profiles={def.profiles}
+              hints={def.hints}
+              introNarration={def.narration}
+              coachLines={def.coachLines}
+              onComplete={() => navigate(screen + 1)}
+              onCorrect={() => awardXp(25)}
+              onWrong={() => addWrong(screen)}
+              onHintReached={(tier) => progress.reportHint(screen, tier)}
+              onAnswered={(o) => {
+                progress.saveQuestion({
+                  screenIndex: screen,
+                  questionKey: o.questionKey,
+                  selectedIndex: o.selectedIndex,
+                  correctIndex: o.correctIndex,
+                  wasCorrect: o.wasCorrect,
+                });
+                if (!o.wasCorrect) {
+                  progress.reportWrong(screen, o.questionKey);
+                }
+              }}
+            />
+          </FullScene>
+        );
+
+      case "replyCards":
+        return (
+          <FullScene bg="linear-gradient(180deg, #050a1a 0%, #131033 100%)">
+            <ReplyCards
+              rounds={def.rounds}
+              skin={def.skin}
+              introTitle={def.introTitle}
+              introSubtitle={def.introSubtitle}
+              introIcon={def.introIcon}
+              pickLabel={def.pickLabel}
+              roundNoun={def.roundNoun}
+              correctToast={def.correctToast}
+              wrongTitle={def.wrongTitle}
+              completeTitle={def.completeTitle}
+              completeLine={def.completeLine}
+              scoreNoun={def.scoreNoun}
+              hints={def.hints}
+              introNarration={def.narration}
+              coachLines={def.coachLines}
+              onComplete={() => navigate(screen + 1)}
+              onCorrect={() => awardXp(25)}
+              onWrong={() => addWrong(screen)}
+              onHintReached={(tier) => progress.reportHint(screen, tier)}
+              onAnswered={(o) => {
+                progress.saveQuestion({
+                  screenIndex: screen,
+                  questionKey: o.questionKey,
+                  selectedIndex: o.selectedIndex,
+                  correctIndex: o.correctIndex,
+                  wasCorrect: o.wasCorrect,
+                });
+                if (!o.wasCorrect) {
+                  progress.reportWrong(screen, o.questionKey);
+                }
+              }}
+            />
+          </FullScene>
+        );
+
+      case "clueBoard":
+        return (
+          <FullScene bg="linear-gradient(180deg, #0a0704 0%, #1d1408 100%)">
+            <ClueBoard
+              introTitle={def.introTitle}
+              introSubtitle={def.introSubtitle}
+              introIcon={def.introIcon}
+              photoTitle={def.photoTitle}
+              photoIcon={def.photoIcon}
+              clues={def.clues}
+              verdict={def.verdict}
+              stampText={def.stampText}
+              completeTitle={def.completeTitle}
+              completeLine={def.completeLine}
+              hints={def.hints}
+              introNarration={def.narration}
+              coachLines={def.coachLines}
+              onComplete={() => navigate(screen + 1)}
+              onCorrect={() => awardXp(25)}
+              onWrong={() => addWrong(screen)}
+              onHintReached={(tier) => progress.reportHint(screen, tier)}
+              onAnswered={(o) => {
+                progress.saveQuestion({
+                  screenIndex: screen,
+                  questionKey: o.questionKey,
+                  selectedIndex: o.selectedIndex,
+                  correctIndex: o.correctIndex,
+                  wasCorrect: o.wasCorrect,
+                });
+                if (!o.wasCorrect) {
+                  progress.reportWrong(screen, o.questionKey);
+                }
+              }}
+            />
+          </FullScene>
+        );
+
+      case "teamPoster":
+        return (
+          <FullScene bg="linear-gradient(180deg, #0a1030 0%, #2a1c40 100%)">
+            <TeamPoster
+              tiles={def.tiles}
+              introTitle={def.introTitle}
+              introSubtitle={def.introSubtitle}
+              introIcon={def.introIcon}
+              posterTitle={def.posterTitle}
+              trayPrompt={def.trayPrompt}
+              placedToast={def.placedToast}
+              wrongTitle={def.wrongTitle}
+              completeTitle={def.completeTitle}
+              completeLine={def.completeLine}
+              hints={def.hints}
+              introNarration={def.narration}
+              coachLines={def.coachLines}
+              onComplete={() => navigate(screen + 1)}
+              onCorrect={() => awardXp(25)}
+              onWrong={() => addWrong(screen)}
+              onHintReached={(tier) => progress.reportHint(screen, tier)}
+              onAnswered={(o) => {
+                progress.saveQuestion({
+                  screenIndex: screen,
+                  questionKey: o.questionKey,
+                  selectedIndex: o.selectedIndex,
+                  correctIndex: o.correctIndex,
+                  wasCorrect: o.wasCorrect,
+                });
+                if (!o.wasCorrect) {
+                  progress.reportWrong(screen, o.questionKey);
+                }
+              }}
+            />
+          </FullScene>
+        );
+
+      case "snowballChase":
+        return (
+          <FullScene bg="linear-gradient(180deg, #0a1030 0%, #1c2b52 100%)">
+            <SnowballChase
+              introTitle={def.introTitle}
+              introSubtitle={def.introSubtitle}
+              introIcon={def.introIcon}
+              ballIcon={def.ballIcon}
+              sweptLabel={def.sweptLabel}
+              rolledLabel={def.rolledLabel}
+              captions={def.captions}
+              completeTitle={def.completeTitle}
+              completeLine={def.completeLine}
+              introNarration={def.narration}
+              coachLines={def.coachLines}
+              onComplete={() => navigate(screen + 1)}
+              onCorrect={() => awardXp(5)}
+            />
+          </FullScene>
+        );
+
+      case "trailStamper":
+        return (
+          <FullScene bg="linear-gradient(180deg, #0a1030 0%, #1c2b52 100%)">
+            <TrailStamper
+              spots={def.spots}
+              introTitle={def.introTitle}
+              introSubtitle={def.introSubtitle}
+              introIcon={def.introIcon}
+              meterLabel={def.meterLabel}
+              stampToast={def.stampToast}
+              wrongTitle={def.wrongTitle}
+              completeTitle={def.completeTitle}
+              completeLine={def.completeLine}
+              hints={def.hints}
+              introNarration={def.narration}
+              coachLines={def.coachLines}
+              onComplete={() => navigate(screen + 1)}
+              onCorrect={() => awardXp(25)}
+              onWrong={() => addWrong(screen)}
+              onHintReached={(tier) => progress.reportHint(screen, tier)}
+              onAnswered={(o) => {
+                progress.saveQuestion({
+                  screenIndex: screen,
+                  questionKey: o.questionKey,
+                  selectedIndex: o.selectedIndex,
+                  correctIndex: o.correctIndex,
+                  wasCorrect: o.wasCorrect,
+                });
+                if (!o.wasCorrect) {
+                  progress.reportWrong(screen, o.questionKey);
+                }
+              }}
+            />
+          </FullScene>
+        );
+
+      case "signBingo":
+        return (
+          <FullScene bg="linear-gradient(180deg, #0a1030 0%, #16294e 100%)">
+            <SignBingo
+              signs={def.signs}
+              rounds={def.rounds}
+              introTitle={def.introTitle}
+              introSubtitle={def.introSubtitle}
+              introIcon={def.introIcon}
+              cardTitle={def.cardTitle}
+              stampToast={def.stampToast}
+              wrongTitle={def.wrongTitle}
+              completeTitle={def.completeTitle}
+              completeLine={def.completeLine}
+              hints={def.hints}
+              introNarration={def.narration}
+              coachLines={def.coachLines}
+              onComplete={() => navigate(screen + 1)}
+              onCorrect={() => awardXp(25)}
+              onWrong={() => addWrong(screen)}
+              onHintReached={(tier) => progress.reportHint(screen, tier)}
+              onAnswered={(o) => {
+                progress.saveQuestion({
+                  screenIndex: screen,
+                  questionKey: o.questionKey,
+                  selectedIndex: o.selectedIndex,
+                  correctIndex: o.correctIndex,
+                  wasCorrect: o.wasCorrect,
+                });
+                if (!o.wasCorrect) {
+                  progress.reportWrong(screen, o.questionKey);
+                }
+              }}
+            />
+          </FullScene>
+        );
+
+      case "dayBalancer":
+        return (
+          <FullScene bg="linear-gradient(180deg, #0a1030 0%, #1a2a1e 100%)">
+            <DayBalancer
+              keptBlocks={def.keptBlocks}
+              swaps={def.swaps}
+              introTitle={def.introTitle}
+              introSubtitle={def.introSubtitle}
+              introIcon={def.introIcon}
+              meterLabel={def.meterLabel}
+              leftLabel={def.leftLabel}
+              rightLabel={def.rightLabel}
+              swapToast={def.swapToast}
+              wrongTitle={def.wrongTitle}
+              cosignLine={def.cosignLine}
+              completeTitle={def.completeTitle}
+              completeLine={def.completeLine}
+              hints={def.hints}
+              introNarration={def.narration}
+              coachLines={def.coachLines}
+              onComplete={() => navigate(screen + 1)}
+              onCorrect={() => awardXp(25)}
+              onWrong={() => addWrong(screen)}
+              onHintReached={(tier) => progress.reportHint(screen, tier)}
+              onAnswered={(o) => {
+                progress.saveQuestion({
+                  screenIndex: screen,
+                  questionKey: o.questionKey,
+                  selectedIndex: o.selectedIndex,
+                  correctIndex: o.correctIndex,
+                  wasCorrect: o.wasCorrect,
+                });
+                if (!o.wasCorrect) {
+                  progress.reportWrong(screen, o.questionKey);
+                }
+              }}
+            />
+          </FullScene>
+        );
+
+      case "plaquePeek":
+        return (
+          <FullScene bg="linear-gradient(180deg, #0f0a2e 0%, #241547 100%)">
+            <PlaquePeek
+              doors={def.doors}
+              introTitle={def.introTitle}
+              introSubtitle={def.introSubtitle}
+              introIcon={def.introIcon}
+              peekPrompt={def.peekPrompt}
+              matchLabel={def.matchLabel}
+              sneakyLabel={def.sneakyLabel}
+              matchToast={def.matchToast}
+              sneakyToast={def.sneakyToast}
+              wrongTitle={def.wrongTitle}
+              completeTitle={def.completeTitle}
+              completeLine={def.completeLine}
+              hints={def.hints}
+              introNarration={def.narration}
+              coachLines={def.coachLines}
+              onComplete={() => navigate(screen + 1)}
+              onCorrect={() => awardXp(25)}
+              onWrong={() => addWrong(screen)}
+              onHintReached={(tier) => progress.reportHint(screen, tier)}
+              onAnswered={(o) => {
+                progress.saveQuestion({
+                  screenIndex: screen,
+                  questionKey: o.questionKey,
+                  selectedIndex: o.selectedIndex,
+                  correctIndex: o.correctIndex,
+                  wasCorrect: o.wasCorrect,
+                });
+                if (!o.wasCorrect) {
+                  progress.reportWrong(screen, o.questionKey);
+                }
+              }}
+            />
+          </FullScene>
+        );
+
+      case "growthRings":
+        return (
+          <FullScene bg="linear-gradient(180deg, #140b2e 0%, #1e1440 100%)">
+            <GrowthRings
+              rings={def.rings}
+              introTitle={def.introTitle}
+              introSubtitle={def.introSubtitle}
+              introIcon={def.introIcon}
+              centerLabel={def.centerLabel}
+              revealToast={def.revealToast}
+              finale={def.finale}
+              completeTitle={def.completeTitle}
+              completeLine={def.completeLine}
+              introNarration={def.narration}
+              coachLines={def.coachLines}
+              onComplete={() => navigate(screen + 1)}
+              onCorrect={() => awardXp(25)}
+              onAnswered={(o) => {
+                // questionKey is "ring-{ringId}" — records the grow order;
+                // a REVEAL has no wrong answers by design.
+                progress.saveQuestion({
+                  screenIndex: screen,
+                  questionKey: o.questionKey,
+                  selectedIndex: o.selectedIndex,
+                  correctIndex: o.correctIndex,
+                  wasCorrect: o.wasCorrect,
+                });
+              }}
+            />
+          </FullScene>
+        );
+
+      case "passcodeForge":
+        return (
+          <FullScene bg="linear-gradient(180deg, #1c0f06 0%, #33200d 100%)">
+            <PasscodeForge
+              rounds={def.rounds}
+              introTitle={def.introTitle}
+              introSubtitle={def.introSubtitle}
+              introIcon={def.introIcon}
+              meterLabel={def.meterLabel}
+              strikeToast={def.strikeToast}
+              wrongTitle={def.wrongTitle}
+              completeTitle={def.completeTitle}
+              completeLine={def.completeLine}
+              hints={def.hints}
+              introNarration={def.narration}
+              coachLines={def.coachLines}
+              onComplete={() => navigate(screen + 1)}
+              onCorrect={() => awardXp(25)}
+              onWrong={() => addWrong(screen)}
+              onHintReached={(tier) => progress.reportHint(screen, tier)}
+              onAnswered={(o) => {
+                progress.saveQuestion({
+                  screenIndex: screen,
+                  questionKey: o.questionKey,
+                  selectedIndex: o.selectedIndex,
+                  correctIndex: o.correctIndex,
+                  wasCorrect: o.wasCorrect,
+                });
+                if (!o.wasCorrect) {
+                  progress.reportWrong(screen, o.questionKey);
+                }
+              }}
+            />
+          </FullScene>
+        );
+
+      case "chatSimulator":
+        return (
+          <FullScene bg="linear-gradient(180deg, #05070f 0%, #101a3d 100%)">
+            <div style={{ padding: "18px 12px 28px", position: "relative" }}>
+              <ChatSimulator
+                chatTitle={def.chatTitle}
+                scenario={def.scenario}
+                messages={def.messages}
+                choices={def.choices}
+                introNarration={def.narration}
+                onComplete={(score, total) => {
+                  awardXp(Math.max(10, Math.round((score / Math.max(1, total)) * 25)));
+                  navigate(screen + 1);
+                }}
+              />
+            </div>
+          </FullScene>
+        );
+
+      case "settingsSwitch":
+        return (
+          <FullScene bg="linear-gradient(180deg, #050a1a 0%, #0e1c3a 100%)">
+            <SettingsSwitch
+              panelTitle={def.panelTitle}
+              rows={def.rows}
+              introTitle={def.introTitle}
+              introSubtitle={def.introSubtitle}
+              introIcon={def.introIcon}
+              hints={def.hints}
+              introNarration={def.narration}
+              coachLines={def.coachLines}
+              onComplete={() => navigate(screen + 1)}
+              onCorrect={() => awardXp(25)}
+              onWrong={() => addWrong(screen)}
+              onHintReached={(tier) => progress.reportHint(screen, tier)}
+              onAnswered={(o) => {
+                progress.saveQuestion({
+                  screenIndex: screen,
+                  questionKey: o.questionKey,
+                  selectedIndex: o.selectedIndex,
+                  correctIndex: o.correctIndex,
+                  wasCorrect: o.wasCorrect,
+                });
+                if (!o.wasCorrect) {
+                  progress.reportWrong(screen, o.questionKey);
+                }
+              }}
+            />
+          </FullScene>
+        );
+
+      case "buttonHunt":
+        return (
+          <FullScene bg="linear-gradient(180deg, #050a1a 0%, #10322a 100%)">
+            <ButtonHunt
+              menuTitle={def.menuTitle}
+              scenario={def.scenario}
+              buttons={def.buttons}
+              introTitle={def.introTitle}
+              introSubtitle={def.introSubtitle}
+              introIcon={def.introIcon}
+              hints={def.hints}
+              introNarration={def.narration}
+              coachLines={def.coachLines}
+              onComplete={() => navigate(screen + 1)}
+              onCorrect={() => awardXp(25)}
+              onWrong={() => addWrong(screen)}
+              onHintReached={(tier) => progress.reportHint(screen, tier)}
+              onAnswered={(o) => {
+                progress.saveQuestion({
+                  screenIndex: screen,
+                  questionKey: o.questionKey,
+                  selectedIndex: o.selectedIndex,
+                  correctIndex: o.correctIndex,
+                  wasCorrect: o.wasCorrect,
+                });
+                if (!o.wasCorrect) {
+                  progress.reportWrong(screen, o.questionKey);
+                }
+              }}
+            />
+          </FullScene>
+        );
+
+      case "stepOrder":
+        return (
+          <FullScene bg="linear-gradient(180deg, #050a1a 0%, #0a3a4d 100%)">
+            <StepOrder
+              steps={def.steps}
+              introTitle={def.introTitle}
+              introSubtitle={def.introSubtitle}
+              introIcon={def.introIcon}
               hints={def.hints}
               introNarration={def.narration}
               coachLines={def.coachLines}
@@ -1574,6 +2123,9 @@ function DynamicLessonInner({ qaEnabled }: { qaEnabled: boolean }) {
           <FullScene bg="linear-gradient(180deg, #0a0a2a 0%, #1a1033 100%)">
             <MemoryMatch
               pairs={def.pairs}
+              introTitle={def.introTitle}
+              introSubtitle={def.introSubtitle}
+              introWelcome={def.introWelcome}
               introNarration={def.narration}
               coachLines={def.coachLines}
               onComplete={() => navigate(screen + 1)}
@@ -1600,10 +2152,92 @@ function DynamicLessonInner({ qaEnabled }: { qaEnabled: boolean }) {
           <FullScene bg="linear-gradient(180deg, #050a1a 0%, #1a1033 100%)">
             <SpamBlaster
               emails={def.emails}
+              introTitle={def.introTitle}
+              introDescription={def.introDescription}
+              headline={def.headline}
+              missLabel={def.missLabel}
+              introIcon={def.introIcon}
+              hints={def.hints}
+              introNarration={def.narration}
               onComplete={() => navigate(screen + 1)}
               onCorrect={() => awardXp(25)}
               onWrong={() => addWrong(screen)}
               onHintReached={(tier) => progress.reportHint(screen, tier)}
+            />
+          </FullScene>
+        );
+
+      case "hookSort":
+        return (
+          <FullScene bg="linear-gradient(180deg, #050a1a 0%, #06355c 100%)">
+            <HookSort
+              items={def.items}
+              introTitle={def.introTitle}
+              introSubtitle={def.introSubtitle}
+              introIcon={def.introIcon}
+              reelLabel={def.reelLabel}
+              cutLabel={def.cutLabel}
+              reelToast={def.reelToast}
+              cutToast={def.cutToast}
+              wrongScamTitle={def.wrongScamTitle}
+              wrongRealTitle={def.wrongRealTitle}
+              completeTitle={def.completeTitle}
+              completeLine={def.completeLine}
+              hints={def.hints}
+              introNarration={def.narration}
+              coachLines={def.coachLines}
+              onComplete={() => navigate(screen + 1)}
+              onCorrect={() => awardXp(25)}
+              onWrong={() => addWrong(screen)}
+              onHintReached={(tier) => progress.reportHint(screen, tier)}
+              onAnswered={(o) => {
+                progress.saveQuestion({
+                  screenIndex: screen,
+                  questionKey: o.questionKey,
+                  selectedIndex: o.selectedIndex,
+                  correctIndex: o.correctIndex,
+                  wasCorrect: o.wasCorrect,
+                });
+                if (!o.wasCorrect) {
+                  progress.reportWrong(screen, o.questionKey);
+                }
+              }}
+            />
+          </FullScene>
+        );
+
+      case "senderLineup":
+        return (
+          <FullScene bg="linear-gradient(180deg, #050a1a 0%, #16103a 100%)">
+            <SenderLineup
+              rounds={def.rounds}
+              introTitle={def.introTitle}
+              introSubtitle={def.introSubtitle}
+              introIcon={def.introIcon}
+              correctToast={def.correctToast}
+              stampLabel={def.stampLabel}
+              wrongTitle={def.wrongTitle}
+              completeTitle={def.completeTitle}
+              completeLine={def.completeLine}
+              hints={def.hints}
+              introNarration={def.narration}
+              coachLines={def.coachLines}
+              onComplete={() => navigate(screen + 1)}
+              onCorrect={() => awardXp(25)}
+              onWrong={() => addWrong(screen)}
+              onHintReached={(tier) => progress.reportHint(screen, tier)}
+              onAnswered={(o) => {
+                progress.saveQuestion({
+                  screenIndex: screen,
+                  questionKey: o.questionKey,
+                  selectedIndex: o.selectedIndex,
+                  correctIndex: o.correctIndex,
+                  wasCorrect: o.wasCorrect,
+                });
+                if (!o.wasCorrect) {
+                  progress.reportWrong(screen, o.questionKey);
+                }
+              }}
             />
           </FullScene>
         );
@@ -1665,6 +2299,10 @@ function DynamicLessonInner({ qaEnabled }: { qaEnabled: boolean }) {
             <PhishInspector
               emails={def.emails}
               hints={def.hints}
+              introTitle={def.introTitle}
+              introSubtitle={def.introSubtitle}
+              introNarration={def.narration}
+              zoneLabels={def.zoneLabels}
               onComplete={() => navigate(screen + 1)}
               onCorrect={() => awardXp(30)}
               onWrong={() => addWrong(screen)}

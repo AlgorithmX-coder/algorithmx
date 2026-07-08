@@ -4,6 +4,20 @@ import { WEEK_3 } from "./week3";
 import { WEEK_4 } from "./week4";
 import { WEEK_5 } from "./week5";
 import { WEEK_6 } from "./week6";
+import { WEEK_7 } from "./week7";
+import { WEEK_8 } from "./week8";
+import { WEEK_9 } from "./week9";
+import { WEEK_10 } from "./week10";
+import { WEEK_11 } from "./week11";
+import { WEEK_12 } from "./week12";
+import { WEEK_13 } from "./week13";
+import { WEEK_14 } from "./week14";
+import { WEEK_15 } from "./week15";
+import { WEEK_16 } from "./week16";
+import { WEEK_17 } from "./week17";
+import { WEEK_18 } from "./week18";
+import { WEEK_19 } from "./week19";
+import { WEEK_20 } from "./week20";
 import type { WeekContent } from "./types";
 
 export type { WeekContent, BossQuestion, ScreenDef } from "./types";
@@ -15,6 +29,20 @@ export const WEEK_CONTENT: Record<number, WeekContent> = {
   4: WEEK_4,
   5: WEEK_5,
   6: WEEK_6,
+  7: WEEK_7,
+  8: WEEK_8,
+  9: WEEK_9,
+  10: WEEK_10,
+  11: WEEK_11,
+  12: WEEK_12,
+  13: WEEK_13,
+  14: WEEK_14,
+  15: WEEK_15,
+  16: WEEK_16,
+  17: WEEK_17,
+  18: WEEK_18,
+  19: WEEK_19,
+  20: WEEK_20,
 };
 
 export function getWeekContent(weekNumber: number): WeekContent | null {

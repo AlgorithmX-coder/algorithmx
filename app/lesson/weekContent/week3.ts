@@ -1,244 +1,792 @@
 import type { WeekContent } from "./types";
 
+/**
+ * Week 3 - Stranger Danger: Friend or Foe?
+ *
+ * Built to the locked Cyber Heroes template (docs/cyberheroes/curriculum-buildsheet.md
+ * + docs/cyberheroes/content-plans/weeks-03-20-content-plan.md):
+ *
+ *   Opening video  -> alert -> mission brief
+ *   5 BEATS, each = Learn (info) -> Game -> Prove (quickCheck) -> recap:
+ *     1 MASKS    friends aren't always who they say   | REVEAL           | lie
+ *     2 SPOT     spotting a fake profile              | profileInspector | speed
+ *     3 FLAGS    red-flag requests                    | conveyorSort     | recall
+ *     4 NEVERS   never meet, never send               | replyCards       | finish
+ *     5 TELL     icky feeling -> stop -> tell         | chatSimulator    | order
+ *   Consolidation (cyberScanner, Friend-or-Foe skin) -> boss (placeholder
+ *   quiz boss until the bespoke W3 GAUNTLET is designed) -> closing video
+ *   -> debrief -> stickers -> completion.
+ *
+ * ZERO game overlap with W1/W2: profileInspector, replyCards and
+ * chatSimulator debut here; conveyorSort gets its first-ever outing; the
+ * REVEAL board is re-dressed as the Disguise Kit (mask-lift). Lane-clean:
+ * dangerous PEOPLE only - no fake senders/scam messages (W4), no report/
+ * block protocol steps beyond "tell" (W11), no game-lobby specifics (W6).
+ */
 export const WEEK_3: WeekContent = {
   weekNumber: 3,
   title: "Stranger Danger: Friend or Foe?",
   topic: "stranger-danger",
-  badgeName: "Stranger Spotter",
-  badgeIcon: "🔍",
+  badgeName: "Mask Spotter",
+  badgeIcon: "🎭",
 
   introCutscene: [
-    { text: "CYBER HEROES ACADEMY\nWEEK 3: STRANGER DANGER", bg: "normal", duration: 3000 },
-    { character: "both", characterMood: "excited", text: "Welcome back, Cyber Hero! This week is REALLY important.", sound: "lessonStart", duration: 5000 },
-    { character: "layla", characterMood: "worried", text: "Hacker Raccoon has a new trick. He's pretending to be a kid online to trick REAL kids into sharing their secrets!", bg: "danger", sound: "bossRoar", duration: 5500 },
-    { character: "raccoon", characterMood: "idle", text: "\"Hey there! I'm totally a 10-year-old just like you! Want to be best friends? Just tell me where you live!\"", textColour: "#c084fc", duration: 5500 },
-    { character: "adam", characterMood: "thinking", text: "See? Online, you can NEVER be sure who you're really talking to. Someone might not be who they say they are.", duration: 5500 },
-    { character: "layla", characterMood: "excited", text: "But don't worry! Today we're going to learn how to spot fake friends and stay safe from online strangers!", duration: 5000 },
-    { character: "adam", characterMood: "thumbsup", text: "Remember - a REAL friend would never ask you to keep secrets from your parents. Let's go!", sound: "select", duration: 5000 },
-    { text: "LET'S GO! 🚀", bg: "normal", sound: "confetti", duration: 2000 },
+    { text: "CYBER HEROES ACADEMY\nWEEK 3: FRIEND OR FOE?", bg: "normal", duration: 2600 },
   ],
 
   screens: [
-    { type: "video", videoPlaceholder: "Week 3: Stranger Danger intro video" },
+    // 0 - OPENING VIDEO: the fake-kid profile trap
+    { type: "video", videoPlaceholder: "Week 3: The Fake Friend", videoSrc: "/videos/module-03-intro.mp4" },
+
+    // 1 - ALERT: incident report
+    {
+      type: "alert",
+      photoSrc: "/cyberheroes/alerts/week-03.png",
+      title: "ALERT INCOMING",
+      badge: "Incident Report",
+      caption: "The Raccoon built a FAKE kid profile - fake photo, fake age, fake name - and tricked a hero into telling him secrets. He's sending friend requests right now!",
+      photoCaption: "Wk 3 - The Fake Friend",
+      ctaLabel: "Start the Mission →",
+    },
+
+    // 2 - Mission brief
     {
       type: "mission",
       objectives: [
-        "Learn who is a stranger online",
-        "Spot tricks that online strangers use",
-        "Know what to do if a stranger contacts you",
+        "Learn how strangers can wear a KID disguise online",
+        "Spot fake profiles and red-flag messages",
+        "Master the two never-rules - and the power of TELL",
       ],
     },
+
+    /* ─────────── BEAT 1 · MASKS: WHO'S REALLY TYPING? ─────────── */
+    // 3 - Learn
     {
       type: "info",
-      title: "Who Is a Stranger Online?",
+      title: "Friends Aren't Always Who They Say",
       content:
-        "A stranger is ANYONE you haven't met in real life. Even if they seem nice, funny, or say they're your age - if you've never met them face to face, they're a stranger. Online, people can pretend to be ANYONE.",
+        "Online, you can't SEE who's typing. A photo can be copied. An age can be typed. A name can be made up. Most people are exactly who they say - but a trickster can wear a kid disguise, and you can't tell just by looking.",
       bullets: [
-        "They might use a fake name",
-        "They might use a fake photo",
-        "They might pretend to be a kid when they're an adult",
-        "They might say they know your friends when they don't",
+        "You can't see who's really typing",
+        "Photos can be copied from anywhere",
+        "Anyone can TYPE any age",
+        "Kid-sounding names prove nothing",
+        "So heroes follow the rules - no matter who's asking",
       ],
+      bulletIcons: ["👀", "🆔", "🎂", "🏷️", "🛡️"],
+      emblem: "🎭",
+      narration: {
+        speaker: "adam",
+        lines: [
+          "[warmly] Welcome back, Cyber Hero. Big mission today.",
+          "Online, you can't SEE who's typing.",
+          "[whispers] A grown-up can pretend to be a kid...",
+          "with a copied photo, a made-up name, and a typed age.",
+          "[excited] But don't worry. Tricksters leave clues!",
+          "And today, you learn to spot every single one.",
+        ],
+      },
     },
+    // 4 - Game: REVEAL (The Disguise Kit - lift each piece of the mask)
+    {
+      type: "reveal",
+      title: "The Disguise Kit",
+      subtitle: "Tap each piece of his disguise to see the trick behind it.",
+      items: [
+        {
+          id: "photo",
+          label: "The Photo",
+          icon: "🆔",
+          steps: [
+            { icon: "🦝", text: "That smiling kid in the profile photo? The Raccoon never took that picture..." },
+            { icon: "🔍", text: "...he COPIED it from somewhere else on the internet." },
+            { icon: "🎭", text: "Anyone can wear anyone's photo. It's just a mask." },
+          ],
+          counter: "A photo proves NOTHING about who's really typing.",
+        },
+        {
+          id: "age",
+          label: "The Age",
+          icon: "🎂",
+          steps: [
+            { icon: "💬", text: "'I'm 9 too!' says the profile..." },
+            { icon: "🦝", text: "...but look who's REALLY at the keyboard. Typing '9' takes one second." },
+          ],
+          counter: "Anyone can TYPE any age. Typing isn't proof!",
+        },
+        {
+          id: "name",
+          label: "The Name",
+          icon: "🏷️",
+          steps: [
+            { icon: "💬", text: "'KidGamer99' - sounds like a kid, right?" },
+            { icon: "🦝", text: "Names are PICKED, not proved. He picked that one on purpose." },
+          ],
+          counter: "A kid-sounding name doesn't make a kid.",
+        },
+        {
+          id: "friendly",
+          label: "The Instant Best Friend",
+          icon: "⭐",
+          steps: [
+            { icon: "💬", text: "'You're AMAZING! We should be BEST FRIENDS!'" },
+            { icon: "🪤", text: "Super nice, super fast - it's the oldest trick in his book." },
+            { icon: "🦝", text: "He's practised those exact lines on a hundred heroes." },
+          ],
+          counter: "Real friendship grows slowly. Insta-best-friend is a warning sign.",
+        },
+      ],
+      finale: "The whole disguise kit - useless! You see straight through it.",
+      narration: {
+        speaker: "adam",
+        lines: [
+          "[whispers] Look what we found... the Raccoon's disguise kit!",
+          "A photo, an age, a name, and a big friendly act.",
+          "[excited] Tap each piece to see the trick behind it.",
+          "Once you've seen a trick, it never works on you again!",
+        ],
+      },
+      coachLines: {
+        speaker: "adam",
+        lines: ["Go on - tap any piece of the disguise to expose it!"],
+      },
+    },
+    // 5 - Prove: LIE
+    {
+      type: "quickCheck",
+      mode: "lie",
+      prompt: "Is that true?",
+      raccoonLine: "everyone online is EXACTLY who they say they are - photos never lie!",
+      choices: [
+        { text: "TRUE", isCorrect: false },
+        { text: "FALSE", isCorrect: true },
+      ],
+      praise: "Right! Photos, names and ages can ALL be faked. ✓",
+      nudge: "Think about the disguise kit you just opened...",
+    },
+
+    // 6 - Recap · Concept 1 of 5
+    {
+      type: "recap",
+      concept: 1,
+      total: 5,
+      learned: "You can't see who's typing - photos, ages and names can all be faked.",
+      next: "the four clues that unmask a fake profile",
+      emblem: "🎭",
+      narration: {
+        speaker: "layla",
+        lines: [
+          "[warmly] Brilliant start, Cyber Hero!",
+          "You opened his disguise kit and saw every trick.",
+          "Copied photo, typed age, picked name, big friendly act.",
+          "[excited] Next up - let's turn YOU into a profile detective!",
+        ],
+      },
+    },
+
+    /* ─────────── BEAT 2 · SPOT THE FAKE PROFILE ─────────── */
+    // 7 - Learn
+    {
+      type: "info",
+      title: "Spotting a Fake Profile",
+      content:
+        "Fake profiles leave clues! A brand-new account. No friends you actually know. One suspiciously perfect photo. And the biggest tell of all: acting like your best friend after five minutes. Check the clues BEFORE you trust.",
+      bullets: [
+        "Brand new account - joined yesterday?",
+        "No friends you know in real life",
+        "One perfect photo (probably copied)",
+        "Too friendly, too fast",
+        "Real friends? You know them OFFLINE too",
+      ],
+      bulletIcons: ["🔍", "👪", "🆔", "⭐", "✅"],
+      emblem: "🔍",
+      narration: {
+        speaker: "layla",
+        lines: [
+          "[excited] Detective time! Fake profiles leave clues.",
+          "Clue one: the account is brand new.",
+          "Clue two: no friends you actually know.",
+          "Clue three: one perfect, copied photo.",
+          "[whispers] And the biggest clue of all...",
+          "[excited] best friends after five minutes? No chance!",
+        ],
+      },
+    },
+    // 8 - Game: INSPECT (The Profile Detective)
+    {
+      type: "profileInspector",
+      profiles: [
+        {
+          id: "skater-max",
+          handle: "SkaterKid_Max",
+          avatar: "🎮",
+          bio: "Hey!! You seem SO cool - best friends??",
+          stats: [
+            { label: "Joined", value: "YESTERDAY" },
+            { label: "Friends", value: "0 you know" },
+            { label: "Photos", value: "just 1" },
+          ],
+          isFake: true,
+          zones: [
+            { id: "joined", label: "When did it join?", note: "Yesterday! Brand-new accounts that rush at you are a classic fake tell.", isRedFlag: true },
+            { id: "friends", label: "Friends & photos", note: "Zero friends you know, and one photo - the kind you could copy from anywhere.", isRedFlag: true },
+            { id: "talk", label: "How does it talk?", note: "'Best friends' after one message? Real friendship is never that fast.", isRedFlag: true },
+            { id: "asking", label: "What's it asking?", note: "It wants to chat privately, away from the game. Sneaky move.", isRedFlag: true },
+          ],
+          verdictNote: "Brand new + no real friends + insta-best-friend + private chat ask = FAKE. Textbook Raccoon!",
+        },
+        {
+          id: "pixel-panda",
+          handle: "PixelPanda42",
+          avatar: "🎨",
+          bio: "Dragon drawings + Mega Blasters. Rematch Saturday?",
+          stats: [
+            { label: "Joined", value: "2 years ago" },
+            { label: "Friends", value: "your class" },
+            { label: "Photos", value: "12 drawings" },
+          ],
+          isFake: false,
+          zones: [
+            { id: "joined", label: "When did it join?", note: "Two years ago - a proper history, not a pop-up account.", isRedFlag: false },
+            { id: "friends", label: "Friends & photos", note: "Kids from your actual class, and a gallery of dragon drawings.", isRedFlag: false },
+            { id: "talk", label: "How does it talk?", note: "Normal friend stuff - game chat and a Saturday rematch.", isRedFlag: false },
+            { id: "asking", label: "What's it asking?", note: "Nothing weird. Just wants to play the game you both love.", isRedFlag: false },
+          ],
+          verdictNote: "This is your friend from school - you know them in REAL LIFE. Real friends online are great!",
+        },
+        {
+          id: "pony-ellie",
+          handle: "PonyFan_Ellie",
+          avatar: "⭐",
+          bio: "I'm 9 too!! What school do u go to? Tell me EVERYTHING!",
+          stats: [
+            { label: "Joined", value: "2 days ago" },
+            { label: "Friends", value: "0 you know" },
+            { label: "Photos", value: "just 1" },
+          ],
+          isFake: true,
+          zones: [
+            { id: "joined", label: "When did it join?", note: "Two days ago, and already asking you personal questions.", isRedFlag: true },
+            { id: "friends", label: "Friends & photos", note: "Not one friend you recognise. One perfect pony photo.", isRedFlag: true },
+            { id: "talk", label: "How does it talk?", note: "'I'm 9 too!!' - remember the disguise kit: anyone can TYPE an age.", isRedFlag: true },
+            { id: "asking", label: "What's it asking?", note: "Your SCHOOL. That's where-you-are info - a stranger never needs it.", isRedFlag: true },
+          ],
+          verdictNote: "Asking for your school is the giveaway - no new 'friend' needs to know where you are. FAKE!",
+        },
+      ],
+      hints: {
+        tier1: "Check ALL four clues: joined date, friends, how it talks, what it asks for.",
+        tier2: "New account + no real friends + too friendly + asking personal stuff = FAKE. Known-in-real-life = real.",
+      },
+      narration: {
+        speaker: "layla",
+        lines: [
+          "[excited] Three friend requests just landed!",
+          "Inspect all four clues on each profile...",
+          "when it joined, its friends, how it talks, and what it wants.",
+          "[warmly] Then make the call: real friend... or FAKE?",
+        ],
+      },
+      coachLines: {
+        speaker: "layla",
+        lines: ["Tap every magnifying glass before you decide!"],
+      },
+    },
+    // 9 - Prove: SPEED
+    {
+      type: "quickCheck",
+      mode: "speed",
+      prompt: "Quick - which one is FAKE?",
+      speedMs: 5000,
+      choices: [
+        { text: "Joined yesterday, already your 'best friend'", isCorrect: true },
+        { text: "Your cousin - you saw her at dinner", isCorrect: false },
+        { text: "A schoolmate you play with at break", isCorrect: false },
+      ],
+      praise: "Spotted in seconds - proper detective work! ✓",
+    },
+
+    // 10 - Recap · Concept 2 of 5
+    {
+      type: "recap",
+      concept: 2,
+      total: 5,
+      learned: "Fake profiles leave clues: brand new, no real friends, one copied photo, too friendly too fast.",
+      next: "the red-flag messages every hero must know",
+      emblem: "🔍",
+      narration: {
+        speaker: "adam",
+        lines: [
+          "[excited] Two powers down! You're a certified profile detective.",
+          "New account? No real friends? Insta-best-friend?",
+          "[laughs] Busted, busted, busted.",
+          "[warmly] Now for the messages themselves. Some words are pure red flag...",
+        ],
+      },
+    },
+
+    /* ─────────── BEAT 3 · RED-FLAG REQUESTS ─────────── */
+    // 11 - Learn
+    {
+      type: "info",
+      title: "Red-Flag Requests",
+      content:
+        "Some asks are ALWAYS red flags, no matter how nice the person seems: asking for secrets, asking for photos, offering gifts for info, and the biggest one - 'don't tell your parents.' A safe friend NEVER needs you to hide things from your grown-ups.",
+      bullets: [
+        "Asking you to keep secrets - RED FLAG",
+        "Asking for photos of you - RED FLAG",
+        "Gifts in exchange for info - RED FLAG",
+        "'Don't tell your parents' - BIGGEST flag of all",
+        "Game chat and friendly hellos - totally fine",
+      ],
+      bulletIcons: ["🤫", "🆔", "🎁", "🚫", "💬"],
+      emblem: "🚫",
+      narration: {
+        speaker: "adam",
+        lines: [
+          "[warmly] Here's a hero secret: some asks are ALWAYS red flags.",
+          "Asking for secrets. Asking for photos.",
+          "Offering gifts... if you just share a little info.",
+          "[whispers] And the biggest red flag in the whole world...",
+          "[nervous] 'Don't tell your parents.'",
+          "[excited] Safe friends NEVER need secrets from your grown-ups. Let's sort some messages!",
+        ],
+      },
+    },
+    // 12 - Game: SORT (conveyorSort's first outing - the Message Sorting Machine)
+    {
+      type: "conveyorSort",
+      categories: [
+        { id: "ok", label: "FRIENDLY", icon: "💬", tone: "safe" },
+        { id: "flag", label: "RED FLAG", icon: "🚫", tone: "flag" },
+      ],
+      items: [
+        { id: "fav-game", text: "What's your favourite game?", icon: "🎮", categoryId: "ok", explanation: "Game talk is normal friendly chat - no flag here." },
+        { id: "send-photo", text: "Send me a photo of yourself", icon: "🆔", categoryId: "flag", explanation: "Never send photos of yourself to online friends. Always a red flag." },
+        { id: "keep-secret", text: "Keep our chats secret from your parents", icon: "🤫", categoryId: "flag", explanation: "THE biggest red flag. Safe friends never need secrets from your grown-ups." },
+        { id: "play-tmrw", text: "Good game! Want to play again tomorrow?", icon: "⭐", categoryId: "ok", explanation: "A rematch invite is just friendly game chat." },
+        { id: "free-coins", text: "I'll send you FREE game coins - just tell me your address", icon: "🎁", categoryId: "flag", explanation: "Gifts-for-info is a classic trick. Nobody real pays coins for your address." },
+        { id: "nice-move", text: "Whoa, that was an amazing move!", icon: "💬", categoryId: "ok", explanation: "A compliment about the game - friendly and safe." },
+        { id: "meet-park", text: "Let's meet at the park - don't tell anyone", icon: "🪤", categoryId: "flag", explanation: "Meeting up + keeping it secret = double red flag. Never meet, always tell." },
+        { id: "which-school", text: "Which school do you go to?", icon: "🏫", categoryId: "flag", explanation: "Your school is where-you-are info. An online friend never needs it." },
+      ],
+      hints: {
+        tier1: "Ask: is it about the GAME, or about YOU? Secrets, photos, gifts and meet-ups are flags.",
+        tier2: "FRIENDLY = game talk and compliments. RED FLAG = secrets, photos, gifts-for-info, meeting up, school questions.",
+      },
+      narration: {
+        speaker: "adam",
+        lines: [
+          "[excited] The Message Sorting Machine is fired up!",
+          "Chat messages are riding the belt.",
+          "[warmly] Friendly game talk? Send it to the FRIENDLY chute.",
+          "[whispers] Secrets, photos, gifts, meet-ups...",
+          "[excited] slam those into the RED FLAG chute!",
+        ],
+      },
+      coachLines: {
+        speaker: "adam",
+        lines: ["Here comes the first message - pick its chute before it reaches the scanner!"],
+      },
+    },
+    // 13 - Prove: RECALL
+    {
+      type: "quickCheck",
+      mode: "recall",
+      prompt: "Which of these is a RED FLAG?",
+      choices: [
+        { text: "'Don't tell your parents about me'", isCorrect: true },
+        { text: "'Good game! Rematch?'", isCorrect: false },
+        { text: "'What's your favourite colour?'", isCorrect: false },
+        { text: "'Nice move back there!'", isCorrect: false },
+      ],
+      praise: "Yes - that's the BIGGEST red flag there is! ✓",
+    },
+
+    // 14 - Recap · Concept 3 of 5
+    {
+      type: "recap",
+      concept: 3,
+      total: 5,
+      learned: "Secrets, photos, gifts-for-info and 'don't tell your parents' are ALWAYS red flags.",
+      next: "the two never-rules that keep every hero safe",
+      emblem: "🚫",
+      narration: {
+        speaker: "layla",
+        lines: [
+          "[excited] Three powers! Your red-flag radar is ON.",
+          "Secrets, photos, gifts, meet-ups...",
+          "[laughs] the machine caught every single one.",
+          "[warmly] Now for two rules so important, they never, ever bend.",
+        ],
+      },
+    },
+
+    /* ─────────── BEAT 4 · NEVER MEET, NEVER SEND ─────────── */
+    // 15 - Learn
+    {
+      type: "info",
+      title: "Never Meet, Never Send",
+      content:
+        "Two hero rules with NO exceptions. Rule one: NEVER meet up with someone you only know online - no matter how nice they seem. Rule two: NEVER send photos of yourself to online friends. Not once, not 'just this time', not ever.",
+      bullets: [
+        "NEVER meet up with online-only friends",
+        "Not even somewhere busy or 'just quickly'",
+        "NEVER send photos of yourself",
+        "Not even if they send one first",
+        "These rules have ZERO exceptions",
+      ],
+      bulletIcons: ["🚫", "🪤", "🆔", "✋", "🛡️"],
+      emblem: "✋",
+      narration: {
+        speaker: "layla",
+        lines: [
+          "[warmly] These next two rules are hero armour.",
+          "Rule one. NEVER meet up with someone you only know online.",
+          "Not at the park. Not 'just quickly'. Never.",
+          "Rule two. NEVER send photos of yourself.",
+          "[whispers] Not even if they send one first.",
+          "[excited] No exceptions, no matter what. Let's practise your hero replies!",
+        ],
+      },
+    },
+    // 16 - Game: SELECT (Reply Cards - pick the hero reply)
+    {
+      type: "replyCards",
+      rounds: [
+        {
+          id: "meet-ask",
+          from: "NewFriend_Leo",
+          fromIcon: "🎮",
+          message: "You're the BEST teammate ever! Let's meet at the park after school and play for real!",
+          replies: [
+            { text: "No thanks - I never meet people from online.", isSafe: true, explanation: "" },
+            { text: "OK! Which park do you mean?", isSafe: false, explanation: "Never meet up with online-only friends - not even somewhere you know. That's rule one, no exceptions." },
+            { text: "Maybe... let me think about it.", isSafe: false, explanation: "'Maybe' leaves the door open. The hero reply is a clear NO - rule one never bends." },
+          ],
+        },
+        {
+          id: "photo-ask",
+          from: "StarGirl_Mia",
+          fromIcon: "⭐",
+          message: "Send me a photo of you! I just want to check you're a real kid and not a robot lol",
+          replies: [
+            { text: "Nice try - I never send photos.", isSafe: true, explanation: "" },
+            { text: "OK, just one little photo.", isSafe: false, explanation: "There's no such thing as 'just one'. Never send photos of yourself - rule two, no exceptions." },
+            { text: "Only if you send yours first!", isSafe: false, explanation: "Their photo proves nothing - remember the disguise kit! And your photo stays with YOU. Never send." },
+          ],
+        },
+        {
+          id: "gift-ask",
+          from: "CoolKid_Sam",
+          fromIcon: "🎨",
+          message: "I bought you a gift card!! Just tell me your address and I'll post it today!",
+          replies: [
+            { text: "No thanks - and I'm telling a grown-up about this.", isSafe: true, explanation: "" },
+            { text: "Wow, thanks! It's 42 Rainbow Road.", isSafe: false, explanation: "A stranger now knows where you live - and the gift card was never real. Gifts-for-info is always a trick." },
+            { text: "Send it to my school instead!", isSafe: false, explanation: "Your school is where-you-are info too! No gift is worth telling a stranger where to find you." },
+          ],
+        },
+      ],
+      hints: {
+        tier1: "The hero reply always says NO clearly - no maybes, no deals, no swaps.",
+        tier2: "Never meet. Never send. And when someone offers gifts for info - say no AND tell a grown-up.",
+      },
+      narration: {
+        speaker: "layla",
+        lines: [
+          "[excited] Practice time! Messages are coming in.",
+          "Three replies fan out for each one.",
+          "[warmly] Only ONE is the true hero reply.",
+          "Clear, strong, and rule-proof. Pick it!",
+        ],
+      },
+      coachLines: {
+        speaker: "layla",
+        lines: ["Read all three cards first - then tap the reply a hero would send!"],
+      },
+    },
+    // 17 - Prove: FINISH
+    {
+      type: "quickCheck",
+      mode: "finish",
+      prompt: "Never meet. Never ___.",
+      choices: [
+        { text: "send", isCorrect: true },
+        { text: "play", isCorrect: false },
+        { text: "smile", isCorrect: false },
+        { text: "win", isCorrect: false },
+      ],
+      praise: "Never meet, never SEND - armour on! ✓",
+      nudge: "Photos of you... what's the rule?",
+    },
+
+    // 18 - Recap · Concept 4 of 5
+    {
+      type: "recap",
+      concept: 4,
+      total: 5,
+      learned: "Never meet up with online-only friends. Never send photos of yourself. Zero exceptions.",
+      next: "your secret weapon - the uh-oh feeling",
+      emblem: "✋",
+      narration: {
+        speaker: "adam",
+        lines: [
+          "[excited] Four powers! The two never-rules are locked in.",
+          "Never meet. Never send.",
+          "[laughs] You said no like a total pro back there.",
+          "[warmly] One last power. And honestly? It's the strongest one of all.",
+        ],
+      },
+    },
+
+    /* ─────────── BEAT 5 · ICKY FEELING → TELL ─────────── */
+    // 19 - Learn
+    {
+      type: "info",
+      title: "The Uh-Oh Feeling",
+      content:
+        "Your tummy is smarter than you think! When a chat starts to feel weird, icky or uh-oh - that feeling is your hero sense working. You don't need to know WHY it feels wrong. Feel it, stop chatting, and tell a grown-up. That's the whole move.",
+      bullets: [
+        "A weird, icky, uh-oh feeling = your hero sense",
+        "You don't need to explain WHY",
+        "Step 1: notice the feeling",
+        "Step 2: stop chatting",
+        "Step 3: tell a grown-up - every time",
+      ],
+      bulletIcons: ["💡", "❓", "👀", "✋", "💬"],
+      emblem: "💬",
+      narration: {
+        speaker: "adam",
+        lines: [
+          "[warmly] Last power - and it lives in your tummy.",
+          "When a chat feels weird, or icky, or... uh-oh...",
+          "[whispers] that's your hero sense talking.",
+          "You don't need to know WHY it feels wrong.",
+          "[excited] Just feel it. Stop. And tell a grown-up.",
+          "Telling is never wrong, and it's NEVER too late.",
+        ],
+      },
+    },
+    // 20 - Game: DECIDE (the Uh-Oh Meter chat)
+    {
+      type: "chatSimulator",
+      chatTitle: "PuppyLover_Jess",
+      scenario: "You just won a race in your favourite game. A chat request pops up from a player you've never met...",
+      messages: [
+        { sender: "stranger", text: "Hi!! I saw you win that race - you're AMAZING at this game!" },
+        { sender: "stranger", text: "I'm Jess! I'm 9 too. We should totally be best friends!" },
+        { sender: "stranger", text: "Do you live near the big park? I go there aaaall the time!" },
+        { sender: "stranger", text: "You're so cool. This is our special secret chat, OK? Don't tell your parents about me!" },
+        { sender: "narrator", text: "Feel that? Your tummy just went UH-OH. That's your hero sense." },
+      ],
+      choices: [
+        {
+          triggerAfterMessage: 1,
+          options: [
+            { text: "Thanks! Good race - want a rematch?", isSafe: true, feedback: "Game talk is fine - you kept the chat about the GAME. Nicely played." },
+            { text: "Best friends! Ask me anything!", isSafe: false, feedback: "Whoa, slow down - you 'met' one message ago. Real friends never happen that fast." },
+          ],
+        },
+        {
+          triggerAfterMessage: 2,
+          options: [
+            { text: "I don't share where I live.", isSafe: true, feedback: "Perfect. WHERE you are is private - always, from everyone online." },
+            { text: "Yeah! The park by my school!", isSafe: false, feedback: "Careful - a stranger just learned where to find you. Places stay private." },
+          ],
+        },
+        {
+          triggerAfterMessage: 4,
+          options: [
+            { text: "STOP the chat and TELL a grown-up", isSafe: true, feedback: "HERO MOVE! 'Don't tell your parents' is the biggest red flag in the world. You felt it, you stopped, you told." },
+            { text: "OK... I can keep a secret", isSafe: false, feedback: "Never keep an online friend secret. Grown-ups keep you safe - telling them is always the hero move." },
+          ],
+        },
+      ],
+      narration: {
+        speaker: "adam",
+        lines: [
+          "[warmly] Time to practise with a real chat.",
+          "Watch the meter at the top of the phone.",
+          "[whispers] When the chat gets icky, you'll FEEL it climb.",
+          "[excited] Trust the feeling. You'll know exactly when to stop and tell!",
+        ],
+      },
+    },
+    // 21 - Prove: PUT-IN-ORDER
+    {
+      type: "quickCheck",
+      mode: "order",
+      prompt: "A chat feels icky. Tap the hero steps IN ORDER:",
+      choices: [
+        { text: "Feel the uh-oh", isCorrect: true },
+        { text: "Stop chatting", isCorrect: true },
+        { text: "Tell a grown-up", isCorrect: true },
+      ],
+      praise: "Feel it. Stop. Tell. Every single time! ✓",
+      nudge: "What comes FIRST - the feeling, the stopping, or the telling?",
+    },
+
+    // 22 - Recap · Concept 5 of 5
+    {
+      type: "recap",
+      concept: 5,
+      total: 5,
+      learned: "Icky feeling? That's your hero sense. Feel it, stop chatting, tell a grown-up.",
+      next: "one final drill, then the Raccoon's fake-friend showdown",
+      emblem: "💬",
+      narration: {
+        speaker: "layla",
+        lines: [
+          "[excited] That's all FIVE powers, Cyber Hero!",
+          "You see through disguises, spot fake profiles,",
+          "catch red flags, hold the two never-rules...",
+          "[whispers] and you trust your uh-oh feeling.",
+          "[excited] Quick final drill - then he's ALL yours!",
+        ],
+      },
+    },
+
+    // 23 - Consolidation: The Friend-or-Foe Scanner (W1 scanner engine, W3 content)
     {
       type: "cyberScanner",
+      labels: {
+        positive: "FRIEND",
+        negative: "FOE",
+        positiveHint: "Tap FRIEND for safe, normal chat",
+        negativeHint: "Tap FOE for tricks and red flags",
+        tipWhenPositive: "Game talk, compliments and people you know in real life - friendly and safe.",
+        tipWhenNegative: "Secrets, photos, meet-ups, gifts-for-info and insta-best-friends - foe moves, every one.",
+        hint1: "Ask the hero question: is it about the GAME, or is it about finding out about YOU?",
+        hint2: "FRIEND = normal chat + people you know offline. FOE = secrets, photos, meet-ups, gifts, too-friendly-too-fast.",
+        hint2Example: "FRIEND: 'Rematch tomorrow?'   FOE: 'Don't tell your parents'",
+        hint3: "Quick rule card: never meet · never send · secrets = flag · gifts-for-info = flag · icky feeling = stop and tell.",
+        hint3Example: "'Meet me at the park' ❌    'Good game!' ✅",
+      },
       items: [
-        { text: "A new person says 'I'm 10, just like you!'", isStrong: false, explanation: "You can't verify someone's age online - they could be anyone" },
-        { text: "Your teacher at school", isStrong: true, explanation: "Someone you know in real life and can trust" },
-        { text: "A person offering free V-Bucks if you chat", isStrong: false, explanation: "Strangers use gifts/bribes to gain trust - it's a trick" },
-        { text: "Your mum on FaceTime", isStrong: true, explanation: "Someone you know and can see face-to-face" },
-        { text: "A gaming friend you've never met", isStrong: false, explanation: "Even nice online friends are still strangers if you've never met them" },
-        { text: "Your cousin who lives far away", isStrong: true, explanation: "Family you know in real life - even if they're far away" },
-        { text: "Someone asking for your photo", isStrong: false, explanation: "A stranger asking for photos is a big red flag" },
-        { text: "A friend from school on WhatsApp", isStrong: true, explanation: "Someone you know and see in person" },
-        { text: "A person who says 'Don't tell your parents'", isStrong: false, explanation: "ANYONE who says this is dangerous - always tell a trusted adult" },
-        { text: "Your swimming instructor", isStrong: true, explanation: "A trusted adult you know in real life" },
+        { text: "'Good game! Rematch tomorrow?'", isStrong: true, explanation: "Friendly game chat - no flags anywhere." },
+        { text: "'Don't tell your parents about our chats'", isStrong: false, explanation: "The biggest red flag there is. Stop and tell a grown-up." },
+        { text: "'Best friends forever!' from someone you met 5 minutes ago", isStrong: false, explanation: "Too friendly, too fast - the oldest trick in the disguise kit." },
+        { text: "Your school friend asks to play Mega Blasters tonight", isStrong: true, explanation: "You know them in REAL LIFE - real friends online are great." },
+        { text: "'Send a photo so I know you're real!'", isStrong: false, explanation: "Never send photos of yourself. Rule two, zero exceptions." },
+        { text: "'FREE gift card - just tell me your address!'", isStrong: false, explanation: "Gifts-for-info is always a trick. Refuse AND tell a grown-up." },
       ],
+      narration: {
+        speaker: "layla",
+        lines: [
+          "[excited] Final drill! Messages are drifting past.",
+          "Tap FRIEND for safe, normal chat...",
+          "and FOE for tricks and red flags.",
+          "[warmly] Trust your training - you've got all five powers now!",
+        ],
+      },
     },
-    {
-      type: "info",
-      title: "Stranger Danger Tricks",
-      content: "Online strangers use sneaky tricks to gain your trust. Here are the most common ones:",
-      bullets: [
-        "Flattery: 'You're so smart/cool/talented!'",
-        "Gifts: 'I'll give you free game items!'",
-        "Secrets: 'Don't tell your parents about our chat'",
-        "Urgency: 'You have to reply RIGHT NOW!'",
-        "Fake identity: 'I go to your school too!'",
-      ],
-    },
-    {
-      type: "chooseYourPath",
-      scenarios: [
-        {
-          setup: "Someone you don't know sends you a friend request on a game. They say 'I heard you're really good - let's play together!'",
-          choices: [
-            { text: "Accept and start playing with them", isSafe: false, consequence: "This person is a stranger. They could be anyone pretending to be a kid. You've given them access to your profile." },
-            { text: "Ignore the request and tell a parent", isSafe: true, consequence: "Smart! You don't know this person. A real friend would talk to you in person first." },
-          ],
-        },
-        {
-          setup: "An online friend you've never met says 'Let's meet up at the park! Don't tell anyone - it'll be a surprise!'",
-          choices: [
-            { text: "Go meet them - they seem nice", isSafe: false, consequence: "NEVER meet an online stranger alone! Someone who says 'don't tell anyone' is a huge red flag." },
-            { text: "Say no and immediately tell a parent", isSafe: true, consequence: "Perfect! You should NEVER meet someone from the internet without a trusted adult, and ALWAYS tell your parents." },
-          ],
-        },
-        {
-          setup: "A person in a game chat asks 'What school do you go to? I bet I live near you!'",
-          choices: [
-            { text: "Tell them - maybe you can be real friends", isSafe: false, consequence: "Never share your school name online! A stranger could use it to find you in real life." },
-            { text: "Don't answer and change the subject", isSafe: true, consequence: "Great thinking! Your school is private information. Real friends don't need to know it from a game chat." },
-          ],
-        },
-        {
-          setup: "Someone online sends you a really cool game link and says 'You HAVE to try this - but don't show it to your parents, they'll say no'",
-          choices: [
-            { text: "Click the link - it looks fun", isSafe: false, consequence: "Links from strangers can contain viruses or lead to dangerous websites. And anyone who says 'don't tell your parents' is not trustworthy." },
-            { text: "Don't click it and tell a parent", isSafe: true, consequence: "Smart move! Never click links from strangers, and always tell a trusted adult when someone says to keep secrets from your parents." },
-          ],
-        },
-      ],
-    },
-    {
-      type: "memoryMatch",
-      pairs: [
-        { term: "Stranger", match: "Someone you've never met in real life", colour: "#ef4444" },
-        { term: "Red Flag", match: "'Don't tell your parents'", colour: "#f97316" },
-        { term: "Grooming", match: "When strangers slowly gain your trust", colour: "#8b5cf6" },
-        { term: "Trusted Adult", match: "Parent, teacher, or family member", colour: "#34d399" },
-        { term: "Catfishing", match: "Pretending to be someone you're not", colour: "#60a5fa" },
-        { term: "Safe Response", match: "Block, report, tell an adult", colour: "#fbbf24" },
-      ],
-    },
-    {
-      type: "info",
-      title: "The 3 Safety Rules",
-      content: "If a stranger contacts you online, remember these three rules:",
-      bullets: [
-        "BLOCK them straight away",
-        "REPORT them using the app's report button",
-        "TELL a trusted adult (parent, teacher, older sibling) immediately",
-      ],
-    },
-    {
-      type: "protectTheData",
-      items: [
-        { text: "Your home address", isPrivate: true },
-        { text: "Your favourite colour", isPrivate: false },
-        { text: "Your school name", isPrivate: true },
-        { text: "Your full name", isPrivate: true },
-        { text: "Your favourite game", isPrivate: false },
-        { text: "What time you walk home", isPrivate: true },
-        { text: "Your favourite food", isPrivate: false },
-        { text: "Your phone number", isPrivate: true },
-        { text: "Your favourite animal", isPrivate: false },
-        { text: "Photos of yourself", isPrivate: true },
-        { text: "Your age (I'm a kid)", isPrivate: false },
-        { text: "Your parents' names", isPrivate: true },
-      ],
-    },
-    {
-      type: "firewallBuilder",
-      goodBlocks: [
-        "Block strangers",
-        "Tell a trusted adult",
-        "Keep personal info private",
-        "Report suspicious people",
-        "Only chat with people you know IRL",
-        "Never meet online strangers alone",
-        "Check with parents first",
-        "Use privacy settings",
-      ],
-      badBlocks: [
-        "Share your address",
-        "Meet strangers alone",
-        "Keep secrets from parents",
-        "Send photos to strangers",
-      ],
-    },
-    {
-      type: "spamBlaster",
-      emails: [
-        { sender: "CoolKid2015", subject: "Hey! I'm 10 too! Want to be best friends?", isPhishing: true, clue: "Strangers claiming to be your age - you can't verify this" },
-        { sender: "Mum", subject: "Don't forget your packed lunch tomorrow!", isPhishing: false, clue: "" },
-        { sender: "GameMaster99", subject: "You won! Send me your address for your free prize!", isPhishing: true, clue: "Asking for your address is a huge red flag" },
-        { sender: "Mrs Patterson", subject: "Homework due Thursday - don't forget!", isPhishing: false, clue: "" },
-        { sender: "Mystery Friend", subject: "I know where you go to school. Want to meet up?", isPhishing: true, clue: "Someone claiming to know you who you don't recognise - very dangerous" },
-        { sender: "Dad", subject: "Football practice moved to 4pm Saturday", isPhishing: false, clue: "" },
-        { sender: "SecretAdmirer", subject: "You're so cool! Send me a selfie!", isPhishing: true, clue: "Never send photos to people you don't know" },
-        { sender: "Best Friend Sam", subject: "LOL did you see what happened at lunch?", isPhishing: false, clue: "" },
-        { sender: "GiftGiver2024", subject: "FREE Roblox gift card! Just tell me your username and password!", isPhishing: true, clue: "Asking for passwords is always a scam" },
-        { sender: "Grandma", subject: "Can't wait to see you this weekend!", isPhishing: false, clue: "" },
-      ],
-    },
-    {
-      type: "cyberMaze",
-      questions: [
-        { question: "What should you do if a stranger contacts you online?", answers: ["Block, report, and tell a trusted adult", "Chat with them to be polite", "Send them a photo", "Give them your number"], correctIndex: 0 },
-        { question: "Why might someone pretend to be a kid online?", answers: ["To trick real kids into trusting them", "Because they're bored", "To play games", "To help with homework"], correctIndex: 0 },
-        { question: "Which is a red flag from an online stranger?", answers: ["'Don't tell your parents about our chat'", "'What's your favourite game?'", "'Have a nice day!'", "'Good luck in your match!'"], correctIndex: 0 },
-        { question: "Is it safe to meet an online friend in person?", answers: ["Never without a trusted adult present", "Yes if they seem nice", "Only at a public place", "Yes if you've chatted for a long time"], correctIndex: 0 },
-        { question: "A stranger offers you free V-Bucks. What's really happening?", answers: ["They're trying to trick you into sharing information", "They're being generous", "They're a game developer", "They won a competition"], correctIndex: 0 },
-      ],
-    },
+
+    // 24 - BOSS BATTLE (placeholder quiz boss - bespoke W3 GAUNTLET comes with the boss batch)
     { type: "bossBattle" },
+
+    // 25 - CLOSING VIDEO: the mask falls off
+    { type: "video", videoPlaceholder: "Week 3: The Mask Falls", videoSrc: "/videos/module-03-outro.mp4" },
+
+    // 26 - Mission Debrief
+    {
+      type: "missionDebrief",
+      title: "Mission Complete!",
+      subtitle: "Here's everything you mastered this week.",
+      concepts: [
+        { id: "masks", label: "Disguise-Proof", accent: "#c084fc", icon: "🎭", summary: "Photos, ages and names can all be faked - typing is never proof." },
+        { id: "detective", label: "Profile Detective", accent: "#00e5ff", icon: "🔍", summary: "New account, no real friends, copied photo, too-friendly-too-fast: busted." },
+        { id: "flags", label: "Red-Flag Radar", accent: "#ff5fb3", icon: "🚫", summary: "Secrets, photos, gifts-for-info and 'don't tell your parents' - spotted instantly." },
+        { id: "nevers", label: "The Two Nevers", accent: "#ffd158", icon: "✋", summary: "Never meet up. Never send photos. Zero exceptions, forever." },
+        { id: "tell", label: "The Uh-Oh Power", accent: "#7eff97", icon: "💬", summary: "Icky feeling? Stop the chat and tell a grown-up. Every time." },
+      ],
+      narration: {
+        speaker: "layla",
+        lines: [
+          "[excited] Look at EVERYTHING you mastered this week!",
+          "You see through every disguise, check every profile,",
+          "catch every red flag, hold the two never-rules...",
+          "[laughs] and your uh-oh feeling is officially unbeatable!",
+          "[excited] The Raccoon's mask fell RIGHT off. Time for stickers!",
+        ],
+      },
+    },
+
+    // 27 - Sticker Unlock
+    {
+      type: "stickerUnlock",
+      title: "Stickers Unlocked!",
+      stickers: [
+        { id: "mask-lifter", name: "Mask Lifter", icon: "🎭", description: "Sees through every disguise." },
+        { id: "profile-detective", name: "Profile Detective", icon: "🔍", description: "Checks the clues before trusting." },
+        { id: "uh-oh-hero", name: "Uh-Oh Hero", icon: "💬", description: "Feels it, stops it, tells it." },
+      ],
+    },
+
+    // 28 - Completion
     { type: "completion" },
   ],
 
+  // Week-lane attack theatre: fake-friend tricks only (no scam-message
+  // vocabulary - that's W4's lane).
+  bossAttacks: [
+    { name: "FAKE PROFILE", icon: "🎭", color: "#c084fc", glow: "rgba(192, 132, 252, 0.55)", tag: "Check the clues first",       emblemColor: 0xc084fc },
+    { name: "SECRET ASK",   icon: "🤫", color: "#ff5fb3", glow: "rgba(255, 95, 179, 0.55)", tag: "Safe friends need no secrets", emblemColor: 0xff5fb3 },
+    { name: "MEET-UP TRAP", icon: "🪤", color: "#ffb347", glow: "rgba(255, 179, 71, 0.55)", tag: "Never meet, always tell",      emblemColor: 0xffb347 },
+  ],
+
+  // Placeholder quiz boss (the bespoke W3 GAUNTLET - one escalating
+  // fake-friend chat - is designed separately with the boss batch).
   bossQuestions: {
     easy: [
-      { question: "Who is a stranger online?", answers: ["Anyone you haven't met in real life", "Someone who is mean", "Someone from another country", "Someone without a photo"], correctIndex: 0, explanation: "A stranger is ANYONE you haven't met face-to-face, even if they seem friendly" },
-      { question: "Should you share your address with someone you met in a game?", answers: ["Yes if they're nice", "Never", "Only if they share theirs first", "Only in private chat"], correctIndex: 1, explanation: "Never share your address with anyone online - you don't know who they really are" },
-      { question: "Someone online says 'Don't tell your parents.' What should you do?", answers: ["Keep the secret", "Tell a parent immediately", "Tell a friend instead", "Ignore it"], correctIndex: 1, explanation: "ANYONE who says this is not trustworthy - always tell a trusted adult" },
-      { question: "What is catfishing?", answers: ["A fishing game", "Pretending to be someone you're not online", "Catching fish with a cat", "A type of virus"], correctIndex: 1, explanation: "Catfishing means creating a fake identity to trick people online" },
-      { question: "Which person is safe to trust?", answers: ["Online friend you've never met", "Your teacher at school", "Someone who gives you gifts online", "A popular gamer"], correctIndex: 1, explanation: "Only trust people you know in real life, like your teacher" },
-      { question: "A stranger says 'I'm 10 years old, just like you!' Is this definitely true?", answers: ["Yes, people don't lie about their age", "No, you can't verify someone's age online", "Yes if they have a kid's profile picture", "Yes if they play kid's games"], correctIndex: 1, explanation: "You can never be sure how old someone really is online" },
-      { question: "What are the 3 safety rules for stranger danger?", answers: ["Run, hide, fight", "Block, report, tell an adult", "Delete, ignore, forget", "Like, share, subscribe"], correctIndex: 1, explanation: "Block the person, report them, and tell a trusted adult" },
-      { question: "Is it OK to send a photo of yourself to someone you met online?", answers: ["Yes if they ask nicely", "Yes if they sent one first", "Never", "Only a funny one"], correctIndex: 2, explanation: "Never send photos to people you don't know in real life" },
-      { question: "A gaming friend wants to voice chat. What should you do?", answers: ["Join immediately", "Ask a parent first", "Give them your phone number", "Share your social media"], correctIndex: 1, explanation: "Always check with a parent before voice chatting with people online" },
-      { question: "Why do online strangers sometimes give gifts or compliments?", answers: ["They're just being nice", "To gain your trust so they can trick you", "They have too much money", "It's normal online behaviour"], correctIndex: 1, explanation: "Strangers use flattery and gifts to build trust - it's a trick called grooming" },
+      { question: "Someone online says they're 9. How do you KNOW it's true?", answers: ["You can't - anyone can type any age", "Their profile says so", "They sound really nice", "They have a kid photo"], correctIndex: 0, explanation: "Typing isn't proof - you can't see who's really at the keyboard." },
+      { question: "An online friend asks to MEET at the park. What's the rule?", answers: ["Never meet - and tell a grown-up", "Meet them with a friend", "Meet somewhere busy", "Only meet at weekends"], correctIndex: 0, explanation: "Rule one has zero exceptions: never meet online-only friends." },
+      { question: "Which of these is a RED FLAG?", answers: ["'Don't tell your parents about me'", "'Good game!'", "'Want a rematch?'", "'What's your favourite game?'"], correctIndex: 0, explanation: "Safe friends never need secrets from your grown-ups." },
     ],
     medium: [
-      { question: "What is 'grooming' in online safety?", answers: ["Brushing your hair", "When strangers slowly build trust to manipulate you", "Making your profile look nice", "Cleaning up your messages"], correctIndex: 1, explanation: "Grooming is when someone gradually gains your trust to exploit you later" },
-      { question: "Which scenario is the BIGGEST red flag?", answers: ["A friend sharing a meme", "A stranger saying 'Let's keep this between us'", "Your mum asking about your day", "A teacher sending homework"], correctIndex: 1, explanation: "Secrecy is the biggest danger sign - real friends don't ask you to keep secrets from parents" },
-      { question: "Someone you only know online asks 'What time does school finish?' Why is this dangerous?", answers: ["It's not dangerous, it's just a question", "They could use it to find out where you are and when", "They want to help with homework", "They're just curious"], correctIndex: 1, explanation: "Knowing your schedule helps a stranger predict where you'll be - very dangerous" },
-      { question: "How can you tell if an online profile is fake?", answers: ["You can always tell", "You can't always tell - that's why you should be careful with everyone", "Fake profiles always have no photos", "Fake profiles always have weird names"], correctIndex: 1, explanation: "Fake profiles can look completely real - that's why you should treat all online strangers with caution" },
-      { question: "What should you do if a stranger makes you feel uncomfortable online?", answers: ["Try to be polite and keep chatting", "Tell them to stop and hope they do", "Block them, save evidence, and tell a trusted adult", "Delete the app and forget about it"], correctIndex: 2, explanation: "Block them, screenshot the evidence, and tell a trusted adult immediately" },
-      { question: "A stranger says they go to a school near yours. Should you believe them?", answers: ["Yes, why would they lie?", "No, this could be a trick to seem trustworthy", "Ask them to prove it", "Only if they know your teacher's name"], correctIndex: 1, explanation: "Claiming to be local is a common trick to build false trust" },
-      { question: "Why shouldn't you share your location in social media posts?", answers: ["It uses too much battery", "Strangers could use it to find you in real life", "It makes your phone slow", "It's against the rules"], correctIndex: 1, explanation: "Sharing your location tells everyone - including strangers - exactly where you are" },
-      { question: "A person online says 'I work for Roblox. Give me your account to get free Robux.' What should you do?", answers: ["Give them your account - free Robux!", "Ask them to prove it", "Report them - real Roblox staff would never ask for this", "Tell your friends about the offer"], correctIndex: 2, explanation: "No real game company employee would ever ask for your account details in a chat" },
-      { question: "Is it safe to join a private chat room that a stranger invited you to?", answers: ["Yes if other kids are in it", "No - private chats are harder for adults to monitor and strangers may try to isolate you", "Only if it's on a popular app", "Yes if the stranger seems nice"], correctIndex: 1, explanation: "Strangers use private chats to isolate kids away from safety features and moderation" },
-      { question: "What information can a stranger get just from your username?", answers: ["Nothing at all", "Sometimes your real name, age, or interests if it contains them", "Only your email", "Your password"], correctIndex: 1, explanation: "A username like 'Emma2014London' reveals your name, birth year, and city - choose usernames carefully" },
+      { question: "A brand-new profile with zero friends wants to be your BEST friend. That's...", answers: ["Too friendly too fast - a fake-profile tell", "Totally normal", "Your lucky day", "Fine if they seem nice"], correctIndex: 0, explanation: "Real friendship grows slowly - insta-best-friend is a classic fake tell." },
+      { question: "An online friend wants your photo 'to prove you're real'. You...", answers: ["Never send it - and tell a grown-up", "Send one old photo", "Send it if they send theirs first", "Send a blurry one"], correctIndex: 0, explanation: "Rule two: never send photos of yourself. Their photo proves nothing either!" },
+      { question: "A chat gives you a weird, icky feeling. The hero move is...", answers: ["Stop chatting and tell a grown-up", "Keep chatting to be polite", "Ignore the feeling", "Ask them why it feels weird"], correctIndex: 0, explanation: "Feel it, stop, tell. You never need to explain WHY it feels wrong." },
     ],
     hard: [
-      { question: "Your online friend of 6 months asks to meet in person. They've always been kind. What should you do?", answers: ["Meet them - you've known them long enough", "Meet in a public place just to be safe", "Only agree if a trusted adult comes with you AND your parents approve", "Ask them to video call first, then meet"], correctIndex: 2, explanation: "Even after months of chatting, you don't truly know someone online. NEVER meet without a trusted adult present AND parental permission" },
-      { question: "A stranger sends you a screenshot of your school from Google Maps. What does this mean?", answers: ["They go to your school too", "They've been researching where you are - this is very dangerous", "It's just a coincidence", "They're showing off their Google skills"], correctIndex: 1, explanation: "A stranger who researches your location is dangerous - tell a trusted adult immediately" },
-      { question: "Why do some predators spend weeks being friendly before asking for anything?", answers: ["They're genuinely nice people", "They're building trust so you'll do what they ask later (grooming)", "They're just slow at typing", "They want to be real friends"], correctIndex: 1, explanation: "Grooming is a deliberate process of building trust over time to manipulate someone" },
-      { question: "A stranger offers to help you get better at a game. They want to TeamViewer into your computer. What's the risk?", answers: ["They might play better than you", "They'd have complete control of your computer - seeing passwords, files, and personal data", "There's no risk if you watch the screen", "They might change your game settings"], correctIndex: 1, explanation: "Remote access gives someone control over your entire computer - never allow this with someone you don't know" },
-      { question: "You see your younger sibling chatting with a stranger online who's asking personal questions. What should you do?", answers: ["Mind your own business", "Tell a parent or trusted adult immediately", "Tell the stranger to go away yourself", "Let your sibling handle it - they'll learn"], correctIndex: 1, explanation: "Always tell a trusted adult when you see someone younger being targeted - don't try to handle it alone" },
-      { question: "A popular influencer you follow DMs you privately asking to 'be friends' and chat. What should you think?", answers: ["Amazing! I'm so lucky!", "Real influencers rarely DM random followers - this could be a fake account", "They probably DM all their followers", "Accept and see what they want"], correctIndex: 1, explanation: "Fake accounts often impersonate influencers to gain trust - real celebrities don't randomly DM children" },
-      { question: "Someone in a game lobby shares a Discord server invite and says 'it's just for cool kids - no adults allowed.' What's the concern?", answers: ["It sounds fun and exclusive", "Unmoderated servers without adults are exactly where predators target children", "It's fine because it's just Discord", "Only go if your friends are there too"], correctIndex: 1, explanation: "Spaces with no adult moderation are unsafe - predators specifically seek out child-only spaces" },
-      { question: "What should you do if a stranger threatens to share embarrassing information about you unless you do what they say?", answers: ["Do what they say to avoid embarrassment", "Delete your account and hope they go away", "Tell a trusted adult IMMEDIATELY - this is blackmail and it's a crime", "Try to negotiate with them"], correctIndex: 2, explanation: "This is blackmail/extortion - a serious crime. Tell a trusted adult immediately, no matter what they threaten" },
-      { question: "A stranger finds your social media through a mutual friend's tagged photo. How did this happen?", answers: ["Your friend's privacy settings allowed it", "The stranger hacked your friend", "Social media is always private", "Photos can't be tagged"], correctIndex: 0, explanation: "Tagged photos can reveal your identity to strangers through your friends' profiles - check your tag settings" },
-      { question: "What makes 'online-only' friendships riskier than real-life ones?", answers: ["They're not riskier at all", "Online you can't verify identity, body language, or true intentions - people can be anyone", "Real-life friends are more boring", "There's no difference"], correctIndex: 1, explanation: "In person, you can see, hear, and verify who someone is. Online, everything can be faked" },
+      { question: "'FREE gift card - just tell me your address!' What's REALLY happening?", answers: ["A gift-for-info trick - refuse and tell", "You won a prize", "A generous new friend", "A delivery mix-up"], correctIndex: 0, explanation: "Nobody real trades gifts for your address. Refuse it AND tell a grown-up." },
+      { question: "Why does 'keep our chat secret' make a chat UNSAFE?", answers: ["Safe friends never need secrets from your grown-ups", "Secrets are fun", "It doesn't - secrets are normal", "Because chats should be loud"], correctIndex: 0, explanation: "Anyone who needs hiding from your parents is hiding something bad." },
+      { question: "A fake profile can copy a photo, type an age and pick a name. What CAN'T it beat?", answers: ["Your rules - never meet, never send, always tell", "A really good password", "A cool username", "A fast internet connection"], correctIndex: 0, explanation: "The disguise kit is useless against a hero who follows the rules no matter who's asking." },
     ],
   },
 
+  // Keyed by SCREEN INDEX (0-28). Must stay in lock-step with `screens` above -
+  // if a screen is inserted/removed, shift these too (the trailing labels help).
+  // The 5 "recap" checkpoints (after each Prove beat) are indices 6/10/14/18/22.
   reactions: {
-    0: { adam: { mood: "excited", message: "Welcome to Week 3! This one's really important." }, layla: null },
-    1: { adam: null, layla: { mood: "curious", message: "Let's learn about staying safe from strangers online." } },
-    2: { adam: { mood: "thinking", message: "Remember - online, people can pretend to be anyone." }, layla: null },
-    3: { adam: null, layla: { mood: "excited", message: "Can you tell the difference between strangers and safe people?" } },
-    4: { adam: { mood: "worried", message: "These tricks are sneaky! Watch out for them." }, layla: null },
-    5: { adam: null, layla: { mood: "thinking", message: "What would YOU do in these situations?" } },
-    6: { adam: { mood: "curious", message: "Match up the stranger danger terms!" }, layla: null },
-    7: { adam: null, layla: { mood: "thumbsup", message: "Block, Report, Tell - the 3 safety rules!" } },
-    8: { adam: { mood: "excited", message: "Protect your private data from strangers!" }, layla: null },
-    9: { adam: null, layla: { mood: "excited", message: "Build your firewall of safety!" } },
-    10: { adam: { mood: "worried", message: "Watch out for those fake messages!" }, layla: null },
-    11: { adam: null, layla: { mood: "excited", message: "Navigate the maze and answer the questions!" } },
-    12: { adam: { mood: "excited", message: "Boss battle time! You've got this!" }, layla: null },
-    13: { adam: null, layla: { mood: "thumbsup", message: "You're now a Stranger Spotter! Amazing!" } },
+    0: { adam: { mood: "excited", message: "Mission 3 - friend or foe?" }, layla: null }, // intro video
+    1: { adam: { mood: "worried", message: "A fake kid profile?! Check everything!" }, layla: null }, // alert
+    2: { adam: null, layla: { mood: "curious", message: "Here's the plan for today." } }, // mission brief
+    3: { adam: { mood: "thinking", message: "You can't see who's typing..." }, layla: null }, // learn: masks
+    4: { adam: null, layla: { mood: "worried", message: "Lift every piece of his disguise!" } }, // game: reveal
+    5: { adam: { mood: "thumbsup", message: "Catch his lie!" }, layla: null }, // prove: lie
+    6: { adam: null, layla: { mood: "excited", message: "One power down - four to go!" } }, // recap 1
+    7: { adam: null, layla: { mood: "curious", message: "Fake profiles leave clues." } }, // learn: spot
+    8: { adam: { mood: "curious", message: "Inspect all four clues, detective." }, layla: null }, // game: profileInspector
+    9: { adam: null, layla: { mood: "excited", message: "Quick - spot the fake!" } }, // prove: speed
+    10: { adam: { mood: "thumbsup", message: "Certified profile detective!" }, layla: null }, // recap 2
+    11: { adam: { mood: "thinking", message: "Some asks are ALWAYS red flags." }, layla: null }, // learn: flags
+    12: { adam: { mood: "excited", message: "Work those chutes!" }, layla: null }, // game: conveyorSort
+    13: { adam: null, layla: { mood: "worried", message: "Which one's the flag?" } }, // prove: recall
+    14: { adam: null, layla: { mood: "excited", message: "Red-flag radar: ON!" } }, // recap 3
+    15: { adam: null, layla: { mood: "thinking", message: "Two rules. Zero exceptions." } }, // learn: nevers
+    16: { adam: { mood: "excited", message: "Pick the hero reply!" }, layla: null }, // game: replyCards
+    17: { adam: null, layla: { mood: "thumbsup", message: "Finish the rule!" } }, // prove: finish
+    18: { adam: { mood: "thumbsup", message: "Never meet. Never send. Locked in." }, layla: null }, // recap 4
+    19: { adam: { mood: "thinking", message: "Your tummy is smarter than you think." }, layla: null }, // learn: tell
+    20: { adam: { mood: "curious", message: "Watch that meter climb..." }, layla: null }, // game: chatSimulator
+    21: { adam: null, layla: { mood: "excited", message: "Put the hero steps in order!" } }, // prove: order
+    22: { adam: null, layla: { mood: "excited", message: "All five powers - boss time soon!" } }, // recap 5
+    23: { adam: null, layla: { mood: "excited", message: "Friend or foe - sort them fast!" } }, // consolidation
+    24: { adam: { mood: "worried", message: "The fake-friend showdown - see through him!" }, layla: null }, // boss
+    25: { adam: null, layla: { mood: "excited", message: "Watch his mask fall off!" } }, // outro video
+    26: { adam: { mood: "thumbsup", message: "Look at everything you mastered!" }, layla: null }, // debrief
+    27: { adam: null, layla: { mood: "excited", message: "Stickers earned - off to Cyber HQ!" } }, // stickers
+    28: { adam: { mood: "thumbsup", message: "Mask Spotter badge earned!" }, layla: null }, // completion
   },
 };

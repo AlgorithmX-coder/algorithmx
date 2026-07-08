@@ -60,6 +60,13 @@ export interface PhishEmail {
 export interface PhishInspectorProps {
   emails: PhishEmail[];
   hints?: { tier1: string; tier2: string };
+  /** Intro copy overrides + spoken paced narration (week re-dress). */
+  introTitle?: string;
+  introSubtitle?: string;
+  introNarration?: { speaker?: "adam" | "layla"; lines: string[] };
+  /** Zone label overrides so a re-dress can rename the 4 inspect zones
+   *  (e.g. banner ads: "Who's selling?" / "What's the button?"). */
+  zoneLabels?: Partial<Record<"sender" | "link" | "urgency" | "claim", string>>;
   onComplete: (score: number) => void;
   onCorrect?: () => void;
   onWrong?: () => void;
@@ -85,6 +92,10 @@ const ZONE_META: Record<ZoneId, { label: string; question: string; icon: string 
 export default function PhishInspector({
   emails,
   hints,
+  introTitle,
+  introSubtitle,
+  introNarration,
+  zoneLabels,
   onComplete,
   onCorrect,
   onWrong,
@@ -337,7 +348,10 @@ export default function PhishInspector({
         }}
       >
         {(Object.keys(ZONE_META) as ZoneId[]).map((zone) => {
-          const meta = ZONE_META[zone];
+          const meta = {
+            ...ZONE_META[zone],
+            label: zoneLabels?.[zone] ?? ZONE_META[zone].label,
+          };
           const isOpen = inspected[zone];
           const isRedFlag =
             zone === "sender"
@@ -502,9 +516,14 @@ export default function PhishInspector({
 
       {phase === "intro" && (
         <ExerciseIntroBeat
-          title="Phish Inspector"
-          subtitle="Don't just react - INSPECT. Tap each of the 4 zones, then decide if it's safe or a trick."
+          title={introTitle ?? "Phish Inspector"}
+          subtitle={
+            introSubtitle ??
+            "Don't just react - INSPECT. Tap each of the 4 zones, then decide if it's safe or a trick."
+          }
           icon="🔍"
+          narration={introNarration}
+          character={introNarration?.speaker}
           onDismiss={() => setPhase("active")}
         />
       )}

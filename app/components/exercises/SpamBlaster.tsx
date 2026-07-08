@@ -8,6 +8,7 @@ import { playSound } from "@/app/lib/sounds";
 // intensity-gated below via intensityRef.
 import { correctAnswerBurst } from "@/app/lib/celebrations";
 import ExerciseIntro from "./ExerciseIntro";
+import ExerciseIntroBeat from "@/app/components/lesson/ExerciseBeats";
 import ExerciseFrame from "@/app/components/lesson/ExerciseFrame";
 import { PixarFinishOverlay } from "@/app/components/scene";
 // useComfortMode KEPT (not collapsed into useMotionIntensity). Reason:
@@ -35,6 +36,20 @@ export interface SpamEmail {
 
 export interface SpamBlasterProps {
   emails?: SpamEmail[];
+  /** Intro card copy overrides (defaults keep the Week 1-era Spam Blaster skin). */
+  introTitle?: string;
+  introDescription?: string;
+  /** In-canvas goal headline override (default "⚡ ZAP THE VIRUS EMAILS! ⚡"). */
+  headline?: string;
+  /** HUD label for phishing emails that slipped through (default "VIRUSES"). */
+  missLabel?: string;
+  /** Intro card icon (default "📧"; PixIcon key). */
+  introIcon?: string;
+  /** Tiered wrong-try hints (defaults keep the Week 1 email copy). */
+  hints?: { tier1: string; tier2: string; tier2Example?: string; tier3?: string };
+  /** Spoken, paced intro. When present the rich narrated ExerciseIntroBeat
+   *  replaces the legacy ExerciseIntro card. */
+  introNarration?: { speaker?: "adam" | "layla"; lines: string[] };
   onComplete: (score: number) => void;
   onCorrect?: () => void;
   onWrong?: () => void;
@@ -136,12 +151,21 @@ function maxParallel(i: number) {
 
 export default function SpamBlaster({
   emails,
+  introTitle,
+  introDescription,
+  headline,
+  missLabel,
+  introIcon,
+  hints,
+  introNarration,
   onComplete,
   onCorrect,
   onWrong,
   onHintReached,
 }: SpamBlasterProps) {
   const list = useMemo(() => emails ?? DEFAULT_EMAILS, [emails]);
+  const headlineText = headline ?? "⚡ ZAP THE VIRUS EMAILS! ⚡";
+  const missLabelText = missLabel ?? "VIRUSES";
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const rafRef = useRef<number | null>(null);
   const [showIntro, setShowIntro] = useState(true);
@@ -1025,7 +1049,7 @@ export default function SpamBlaster({
       ctx.fillText(`INBOX ${s.inbox}/${s.totalSafe}`, CANVAS_W - 14, 12);
       ctx.textAlign = "center";
       ctx.fillStyle = s.viruses > 0 ? "#ef4444" : "#4b5563";
-      ctx.fillText(`VIRUSES ${s.viruses}`, CANVAS_W / 2, 12);
+      ctx.fillText(`${missLabelText} ${s.viruses}`, CANVAS_W / 2, 12);
       if (s.streak >= 3) {
         ctx.fillStyle = "#fbbf24";
         ctx.fillText(`STREAK x${s.streak}`, CANVAS_W / 2, 30);
@@ -1101,16 +1125,16 @@ export default function SpamBlaster({
       ctx.fillStyle = "rgba(0, 229, 255, 0.6)";
       ctx.shadowColor = "#00e5ff";
       ctx.shadowBlur = 18 * promptPulse;
-      ctx.fillText("⚡ ZAP THE VIRUS EMAILS! ⚡", promptX - 1.5, promptY);
+      ctx.fillText(headlineText, promptX - 1.5, promptY);
       // Neon-pink ghost on the other side
       ctx.fillStyle = "rgba(255, 95, 179, 0.5)";
       ctx.shadowColor = "#ff5fb3";
       ctx.shadowBlur = 18 * promptPulse;
-      ctx.fillText("⚡ ZAP THE VIRUS EMAILS! ⚡", promptX + 1.5, promptY);
+      ctx.fillText(headlineText, promptX + 1.5, promptY);
       // Bright white core
       ctx.shadowBlur = 0;
       ctx.fillStyle = "#e8edff";
-      ctx.fillText("⚡ ZAP THE VIRUS EMAILS! ⚡", promptX, promptY);
+      ctx.fillText(headlineText, promptX, promptY);
       ctx.restore();
 
       // CYBER TURRET - sits below the prompt, points down at incoming
@@ -1293,15 +1317,28 @@ export default function SpamBlaster({
           }}
         />
       )}
-      {showIntro && (
-        <ExerciseIntro
-          title="Spam Blaster!"
-          description="Emails are flying toward your computer! ZAP the phishing emails but let the real ones through!"
-          icon="📧"
-          controls="Click on phishing emails to zap them"
-          onStart={() => setShowIntro(false)}
-        />
-      )}
+      {showIntro &&
+        (introNarration ? (
+          <ExerciseIntroBeat
+            title={introTitle ?? "Spam Blaster!"}
+            subtitle={introDescription ?? "ZAP the tricks - let the real ones through!"}
+            icon={introIcon ?? "📧"}
+            narration={introNarration}
+            character={introNarration.speaker}
+            onDismiss={() => setShowIntro(false)}
+          />
+        ) : (
+          <ExerciseIntro
+            title={introTitle ?? "Spam Blaster!"}
+            description={
+              introDescription ??
+              "Emails are flying toward your computer! ZAP the phishing emails but let the real ones through!"
+            }
+            icon={introIcon ?? "📧"}
+            controls="Click on phishing emails to zap them"
+            onStart={() => setShowIntro(false)}
+          />
+        ))}
 
       {/* Tiered hint - shown below the canvas after wrong tries */}
       {wrongCount > 0 && !feedback && !s.finished && (
@@ -1310,22 +1347,22 @@ export default function SpamBlaster({
             <HintBubble
               tier={1}
               speaker="layla"
-              text="Slow down and read the SENDER first. Friends, teachers and family are real. 'Prize Central' or 'Account Security' usually means trouble."
+              text={hints?.tier1 ?? "Slow down and read the SENDER first. Friends, teachers and family are real. 'Prize Central' or 'Account Security' usually means trouble."}
             />
           )}
           {wrongCount === 2 && (
             <HintBubble
               tier={2}
               speaker="layla"
-              text="Phishing has three big signs: (1) free prize, (2) URGENT or scary message, (3) asks for your password."
-              example="'YOU WON A FREE iPHONE' / 'URGENT: enter your password' = bait"
+              text={hints?.tier2 ?? "Phishing has three big signs: (1) free prize, (2) URGENT or scary message, (3) asks for your password."}
+              example={hints ? hints.tier2Example : "'YOU WON A FREE iPHONE' / 'URGENT: enter your password' = bait"}
             />
           )}
           {wrongCount >= 3 && (
             <HintBubble
               tier={3}
               speaker="adam"
-              text="Quick rule: If a message rushes you, scares you, or offers free stuff for nothing - it's phishing. Zap it. Real messages are calm and from people you know."
+              text={hints?.tier3 ?? hints?.tier2 ?? "Quick rule: If a message rushes you, scares you, or offers free stuff for nothing - it's phishing. Zap it. Real messages are calm and from people you know."}
             />
           )}
         </div>
