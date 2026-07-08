@@ -73,6 +73,7 @@ import SignBingo from "@/app/components/exercises/SignBingo";
 import DayBalancer from "@/app/components/exercises/DayBalancer";
 import PlaquePeek from "@/app/components/exercises/PlaquePeek";
 import GrowthRings from "@/app/components/exercises/GrowthRings";
+import PasscodeForge from "@/app/components/exercises/PasscodeForge";
 import HookSort from "@/app/components/exercises/HookSort";
 import SenderLineup from "@/app/components/exercises/SenderLineup";
 import StepOrder from "@/app/components/exercises/StepOrder";
@@ -175,6 +176,7 @@ const EXERCISE_SCREEN_TYPES = new Set<ScreenDef["type"]>([
   "dayBalancer",
   "plaquePeek",
   "growthRings",
+  "passcodeForge",
   "chatSimulator",
   "hookSort",
   "senderLineup",
@@ -1901,6 +1903,42 @@ function DynamicLessonInner({ qaEnabled }: { qaEnabled: boolean }) {
                   correctIndex: o.correctIndex,
                   wasCorrect: o.wasCorrect,
                 });
+              }}
+            />
+          </FullScene>
+        );
+
+      case "passcodeForge":
+        return (
+          <FullScene bg="linear-gradient(180deg, #1c0f06 0%, #33200d 100%)">
+            <PasscodeForge
+              rounds={def.rounds}
+              introTitle={def.introTitle}
+              introSubtitle={def.introSubtitle}
+              introIcon={def.introIcon}
+              meterLabel={def.meterLabel}
+              strikeToast={def.strikeToast}
+              wrongTitle={def.wrongTitle}
+              completeTitle={def.completeTitle}
+              completeLine={def.completeLine}
+              hints={def.hints}
+              introNarration={def.narration}
+              coachLines={def.coachLines}
+              onComplete={() => navigate(screen + 1)}
+              onCorrect={() => awardXp(25)}
+              onWrong={() => addWrong(screen)}
+              onHintReached={(tier) => progress.reportHint(screen, tier)}
+              onAnswered={(o) => {
+                progress.saveQuestion({
+                  screenIndex: screen,
+                  questionKey: o.questionKey,
+                  selectedIndex: o.selectedIndex,
+                  correctIndex: o.correctIndex,
+                  wasCorrect: o.wasCorrect,
+                });
+                if (!o.wasCorrect) {
+                  progress.reportWrong(screen, o.questionKey);
+                }
               }}
             />
           </FullScene>

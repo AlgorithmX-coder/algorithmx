@@ -71,6 +71,7 @@ const GAME_TITLES: Record<string, string> = {
   dayBalancer: "Day Balancer",
   plaquePeek: "Plaque Peek",
   growthRings: "Growth Rings",
+  passcodeForge: "Passcode Forge",
   hookSort: "Hook Sort",
   senderLineup: "Sender Lineup",
   stepOrder: "Step Order",

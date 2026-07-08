@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-08T12:05:38.553Z",
+  "generatedAt": "2026-07-08T12:36:55.244Z",
   "model": "eleven_v3",
   "voiceSettings": {
     "stability": 0.35,
@@ -2454,6 +2454,280 @@
         "[excited] Sticker time, Shield Bearer!"
       ],
       "file": "/audio/voice/0f3f52228e179b49.mp3"
+    },
+    {
+      "key": "803d52d4febf2401",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] Week eighteen - the family tablet week! Picture the hallway coat rack. Some hooks are yours. Most belong to EVERYBODY. [warmly] Devices are exactly the same. The kitchen tablet? Everyone's. Your sticker tablet? Yours. [curious] Can you tell which is which? Let's find out!",
+      "lines": [
+        "[excited] Week eighteen - the family tablet week!",
+        "Picture the hallway coat rack.",
+        "Some hooks are yours. Most belong to EVERYBODY.",
+        "[warmly] Devices are exactly the same.",
+        "The kitchen tablet? Everyone's. Your sticker tablet? Yours.",
+        "[curious] Can you tell which is which? Let's find out!"
+      ],
+      "file": "/audio/voice/803d52d4febf2401.mp3"
+    },
+    {
+      "key": "341dfef797f77c6d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] The coat rack - devices incoming! One question for each: how many different hands touch it? [warmly] Lots of hands, everyone's hook. Just yours? Your hook. Go!",
+      "lines": [
+        "[excited] The coat rack - devices incoming!",
+        "One question for each:",
+        "how many different hands touch it?",
+        "[warmly] Lots of hands, everyone's hook. Just yours? Your hook. Go!"
+      ],
+      "file": "/audio/voice/341dfef797f77c6d.mp3"
+    },
+    {
+      "key": "6fc746310d1cd7e8",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "First device is here - whose hands touch it? Hang it on the right hook!",
+      "lines": [
+        "First device is here - whose hands touch it? Hang it on the right hook!"
+      ],
+      "file": "/audio/voice/6fc746310d1cd7e8.mp3"
+    },
+    {
+      "key": "7eca754542ad84bf",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[excited] Power one - you can spot a shared device! Everyone's hook, extra care. [whispers] But what happens if you walk away still signed in...? The breakfast relay will show you. Come on.",
+      "lines": [
+        "[excited] Power one - you can spot a shared device!",
+        "Everyone's hook, extra care.",
+        "[whispers] But what happens if you walk away still signed in...?",
+        "The breakfast relay will show you. Come on."
+      ],
+      "file": "/audio/voice/7eca754542ad84bf.mp3"
+    },
+    {
+      "key": "c89c4bfe98fffbf2",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[curious] Ever seen a relay race? Run your bit, hand the baton over CLEAN. [whispers] Walk away signed in, and the next kid... wears your name. Your posts. Your coins. Your messages. [warmly] And no - tapping Home doesn't count. Screen-off doesn't count. [excited] Only LOG OUT counts. Three accounts are open - let's run the relay!",
+      "lines": [
+        "[curious] Ever seen a relay race?",
+        "Run your bit, hand the baton over CLEAN.",
+        "[whispers] Walk away signed in, and the next kid... wears your name.",
+        "Your posts. Your coins. Your messages.",
+        "[warmly] And no - tapping Home doesn't count. Screen-off doesn't count.",
+        "[excited] Only LOG OUT counts. Three accounts are open - let's run the relay!"
+      ],
+      "file": "/audio/voice/c89c4bfe98fffbf2.mp3"
+    },
+    {
+      "key": "86c40e9643ad1b52",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[excited] The relay is ON! Three apps, three batons to hand over. [whispers] Watch out - some buttons only PRETEND to finish the race. Find every LOG OUT. Go go go!",
+      "lines": [
+        "[excited] The relay is ON!",
+        "Three apps, three batons to hand over.",
+        "[whispers] Watch out - some buttons only PRETEND to finish the race.",
+        "Find every LOG OUT. Go go go!"
+      ],
+      "file": "/audio/voice/86c40e9643ad1b52.mp3"
+    },
+    {
+      "key": "96484c7014b26ca5",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "Scan the menu for the words LOG OUT - start with your racing game!",
+      "lines": [
+        "Scan the menu for the words LOG OUT - start with your racing game!"
+      ],
+      "file": "/audio/voice/96484c7014b26ca5.mp3"
+    },
+    {
+      "key": "49f463b87f88fd9c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] Power two - relay runner form! Every baton handed over clean. [whispers] But what about the device itself, just lying there... unlocked? Time to forge it a front door.",
+      "lines": [
+        "[excited] Power two - relay runner form!",
+        "Every baton handed over clean.",
+        "[whispers] But what about the device itself, just lying there...",
+        "unlocked? Time to forge it a front door."
+      ],
+      "file": "/audio/voice/49f463b87f88fd9c.mp3"
+    },
+    {
+      "key": "0f230e347efa8257",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[curious] Would you leave your house with no front door? Of course not! A lock screen IS the front door - every device needs one. [whispers] But careful: some codes tell guessers a story. One-two-three-four? First thing anyone tries. [excited] The forge is hot - let's hammer out a code with NO story!",
+      "lines": [
+        "[curious] Would you leave your house with no front door?",
+        "Of course not!",
+        "A lock screen IS the front door - every device needs one.",
+        "[whispers] But careful: some codes tell guessers a story.",
+        "One-two-three-four? First thing anyone tries.",
+        "[excited] The forge is hot - let's hammer out a code with NO story!"
+      ],
+      "file": "/audio/voice/0f230e347efa8257.mp3"
+    },
+    {
+      "key": "19fd28750cbcc045",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] The forge is ROARING! Three strikes, three pairs, one lock code. [whispers] Skip the metal with a story on it... counting, doubles, birthdays - guessers read those. [excited] Hammer the quiet metal. Strike one - go!",
+      "lines": [
+        "[excited] The forge is ROARING!",
+        "Three strikes, three pairs, one lock code.",
+        "[whispers] Skip the metal with a story on it...",
+        "counting, doubles, birthdays - guessers read those.",
+        "[excited] Hammer the quiet metal. Strike one - go!"
+      ],
+      "file": "/audio/voice/19fd28750cbcc045.mp3"
+    },
+    {
+      "key": "d7b95b8f5975d7e5",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Read all three blanks first - which one tells a guesser NOTHING?",
+      "lines": [
+        "Read all three blanks first - which one tells a guesser NOTHING?"
+      ],
+      "file": "/audio/voice/d7b95b8f5975d7e5.mp3"
+    },
+    {
+      "key": "ea8c6370c35f7888",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[excited] Power three - forged and locked! A front door with a quiet code. [warmly] Now for the gentle one... what about the things OTHER people leave open?",
+      "lines": [
+        "[excited] Power three - forged and locked!",
+        "A front door with a quiet code.",
+        "[warmly] Now for the gentle one...",
+        "what about the things OTHER people leave open?"
+      ],
+      "file": "/audio/voice/ea8c6370c35f7888.mp3"
+    },
+    {
+      "key": "83a986983b4dbcc2",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[warmly] This power is the gentle one. Sometimes it's YOU who finds something open. A diary app. A chat. Somebody's account. [whispers] Open by accident... is still not yours. Dust it, close it, tell them. [warmly] Because that's what you'd want for your chest. Three moments - show me.",
+      "lines": [
+        "[warmly] This power is the gentle one.",
+        "Sometimes it's YOU who finds something open.",
+        "A diary app. A chat. Somebody's account.",
+        "[whispers] Open by accident... is still not yours.",
+        "Dust it, close it, tell them.",
+        "[warmly] Because that's what you'd want for your chest. Three moments - show me."
+      ],
+      "file": "/audio/voice/83a986983b4dbcc2.mp3"
+    },
+    {
+      "key": "5820274894bf1b9b",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[warmly] Three open chests. Three chances. Remember: open by accident isn't an invitation. Dust it, close it, tell them - [excited] show me the Lock Master's gentle side!",
+      "lines": [
+        "[warmly] Three open chests. Three chances.",
+        "Remember: open by accident isn't an invitation.",
+        "Dust it, close it, tell them -",
+        "[excited] show me the Lock Master's gentle side!"
+      ],
+      "file": "/audio/voice/5820274894bf1b9b.mp3"
+    },
+    {
+      "key": "c5d9bfeab8412e95",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] Power four - and it's the kindest one! Closed chests stay closed, both ways. [whispers] One power left... hear that squeaky bobbing sound? The SAVE PASSWORD balloon. Pin ready.",
+      "lines": [
+        "[excited] Power four - and it's the kindest one!",
+        "Closed chests stay closed, both ways.",
+        "[whispers] One power left... hear that squeaky bobbing sound?",
+        "The SAVE PASSWORD balloon. Pin ready."
+      ],
+      "file": "/audio/voice/c5d9bfeab8412e95.mp3"
+    },
+    {
+      "key": "39eace813f79c703",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[curious] Hear that squeak? There it is again! SAVE PASSWORD? KEEP ME SIGNED IN? [whispers] Tap yes on a shared device... and whoever picks it up next walks straight into your account. [warmly] Shared or borrowed? NO THANKS - pop. Your own? Ask first. [excited] Four balloons are bobbing - pin at the ready!",
+      "lines": [
+        "[curious] Hear that squeak? There it is again!",
+        "SAVE PASSWORD? KEEP ME SIGNED IN?",
+        "[whispers] Tap yes on a shared device...",
+        "and whoever picks it up next walks straight into your account.",
+        "[warmly] Shared or borrowed? NO THANKS - pop. Your own? Ask first.",
+        "[excited] Four balloons are bobbing - pin at the ready!"
+      ],
+      "file": "/audio/voice/39eace813f79c703.mp3"
+    },
+    {
+      "key": "95ce2aa5257806a6",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] Four balloons, four devices! Before you pop anything, ask: whose device is this? [warmly] Shared says no. Your own asks first. Pin up!",
+      "lines": [
+        "[excited] Four balloons, four devices!",
+        "Before you pop anything, ask:",
+        "whose device is this?",
+        "[warmly] Shared says no. Your own asks first. Pin up!"
+      ],
+      "file": "/audio/voice/95ce2aa5257806a6.mp3"
+    },
+    {
+      "key": "4362293dec95d93f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Check the device name at the top first - then pop your answer!",
+      "lines": [
+        "Check the device name at the top first - then pop your answer!"
+      ],
+      "file": "/audio/voice/4362293dec95d93f.mp3"
+    },
+    {
+      "key": "79ce11bd6f69e446",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[excited] That's all FIVE powers, Lock Master! Hooks sorted, batons handed, the door forged, chests respected... and every balloon popped. [whispers] One last relay through the house... [excited] then we lock the Raccoon out for GOOD!",
+      "lines": [
+        "[excited] That's all FIVE powers, Lock Master!",
+        "Hooks sorted, batons handed, the door forged,",
+        "chests respected... and every balloon popped.",
+        "[whispers] One last relay through the house...",
+        "[excited] then we lock the Raccoon out for GOOD!"
+      ],
+      "file": "/audio/voice/79ce11bd6f69e446.mp3"
+    },
+    {
+      "key": "58c5ef172c8268a4",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[excited] The Morning Relay - final lap! House moments are coming past. CLEAN HANDOFF for Lock Master form... [warmly] LEFT OPEN for the Raccoon's favourite doors. Stamp them all!",
+      "lines": [
+        "[excited] The Morning Relay - final lap!",
+        "House moments are coming past.",
+        "CLEAN HANDOFF for Lock Master form...",
+        "[warmly] LEFT OPEN for the Raccoon's favourite doors. Stamp them all!"
+      ],
+      "file": "/audio/voice/58c5ef172c8268a4.mp3"
+    },
+    {
+      "key": "2850abe2273c9ad9",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] Look at EVERYTHING you mastered this week! Hooks sorted, batons handed over, the door forged, the chests closed... and the balloons popped. [laughs] Every door he was counting on just clicked shut. [excited] Sticker time, Lock Master!",
+      "lines": [
+        "[excited] Look at EVERYTHING you mastered this week!",
+        "Hooks sorted, batons handed over,",
+        "the door forged, the chests closed... and the balloons popped.",
+        "[laughs] Every door he was counting on just clicked shut.",
+        "[excited] Sticker time, Lock Master!"
+      ],
+      "file": "/audio/voice/2850abe2273c9ad9.mp3"
     },
     {
       "key": "24e69e302153f951",

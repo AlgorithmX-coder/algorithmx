@@ -40,8 +40,8 @@ export interface ReplyRound {
 
 export interface ReplyCardsProps {
   rounds: ReplyRound[];
-  /** Visual skin: fanned chat cards (default), tall kindness DOORS (W5) or brass LEVERS (W8). */
-  skin?: "cards" | "doors" | "levers";
+  /** Visual skin: fanned chat cards (default), tall kindness DOORS (W5), brass LEVERS (W8) or bobbing BALLOONS (W18). */
+  skin?: "cards" | "doors" | "levers" | "balloons";
   /** Intro copy overrides (re-theme per week). */
   introTitle?: string;
   introSubtitle?: string;
@@ -284,7 +284,30 @@ export default function ReplyCards({
                       whileHover={reduce ? undefined : { y: -6, rotate: 0, scale: 1.03 }}
                       whileTap={{ scale: 0.97 }}
                       style={
-                        skin === "levers"
+                        skin === "balloons"
+                          ? {
+                              position: "relative",
+                              minHeight: 148,
+                              padding: "22px 16px 30px",
+                              // balloon silhouette: round top, gathered base
+                              borderRadius: "50% 50% 46% 46% / 58% 58% 40% 40%",
+                              border: "2.5px solid rgba(255,138,171,0.6)",
+                              background:
+                                "radial-gradient(circle at 32% 26%, rgba(255,255,255,0.28), transparent 42%), linear-gradient(180deg, rgba(255,95,179,0.3) 0%, rgba(84,18,52,0.94) 100%)",
+                              color: "#ffe3f0",
+                              fontSize: 14.5,
+                              fontWeight: 900,
+                              lineHeight: 1.35,
+                              cursor: "pointer",
+                              fontFamily: "inherit",
+                              boxShadow: "0 16px 34px -18px rgba(255,95,179,0.85)",
+                              touchAction: "manipulation",
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center",
+                              textAlign: "center",
+                            }
+                          : skin === "levers"
                           ? {
                               position: "relative",
                               minHeight: 176,
@@ -358,6 +381,40 @@ export default function ReplyCards({
                             boxShadow: "0 0 8px rgba(255,209,88,0.9)",
                           }}
                         />
+                      )}
+                      {skin === "balloons" && (
+                        <span
+                          aria-hidden
+                          style={{
+                            position: "absolute",
+                            left: "50%",
+                            bottom: -22,
+                            width: 0,
+                            display: "flex",
+                            flexDirection: "column",
+                            alignItems: "center",
+                          }}
+                        >
+                          {/* knot + curling string — identical on every balloon */}
+                          <span
+                            style={{
+                              width: 10,
+                              height: 8,
+                              marginLeft: -5,
+                              borderRadius: "0 0 6px 6px",
+                              background: "rgba(255,138,171,0.85)",
+                            }}
+                          />
+                          <span
+                            style={{
+                              width: 2,
+                              height: 16,
+                              marginLeft: -1,
+                              borderRadius: 2,
+                              background: "rgba(255,227,240,0.55)",
+                            }}
+                          />
+                        </span>
                       )}
                       {skin === "levers" && (
                         <span

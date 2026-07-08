@@ -944,8 +944,8 @@ export type ScreenDef = (
        * meter or branching (that's chatSimulator's job).
        */
       type: "replyCards";
-      /** Visual skin: fanned chat cards (default), tall kindness DOORS (W5) or brass LEVERS (W8). */
-      skin?: "cards" | "doors" | "levers";
+      /** Visual skin: fanned chat cards (default), tall kindness DOORS (W5), brass LEVERS (W8) or bobbing BALLOONS (W18). */
+      skin?: "cards" | "doors" | "levers" | "balloons";
       /** Intro copy overrides (re-theme per week). */
       introTitle?: string;
       introSubtitle?: string;
@@ -1250,6 +1250,45 @@ export type ScreenDef = (
       sneakyLabel?: string;
       matchToast?: string;
       sneakyToast?: string;
+      wrongTitle?: string;
+      completeTitle?: string;
+      completeLine?: string;
+      hints?: { tier1: string; tier2: string };
+    }
+  | {
+      /**
+       * Passcode Forge (Week 18). The lock-forging BUILD drill: an anvil,
+       * a code bar with empty slots and a GUESS-O-METER. Each round offers
+       * three metal blanks - digit pairs wearing the story a guesser would
+       * read off them ("starts 1-2-3-4!", "your birth year"). Hammer the
+       * one with nothing to guess; the pair stamps into the code bar and
+       * the meter climbs until the padlock clicks shut. NOT a W1 password
+       * re-teach - the lesson is HAVING a lock, and keeping its code
+       * un-guessable. Distinct from usernameBuilder (category slots) and
+       * dayBalancer (swap-to-level).
+       */
+      type: "passcodeForge";
+      rounds: {
+        id: string;
+        /** Round prompt, e.g. "Forge the FIRST pair". */
+        prompt: string;
+        /** 3 metal blanks; exactly one isStrong. */
+        options: {
+          /** The digit pair on the blank, e.g. "58". */
+          digits: string;
+          /** Kid-readable tell under the digits. */
+          tell: string;
+          isStrong: boolean;
+          /** WrongAnswerPanel copy when a guessable blank is hammered. */
+          explanation: string;
+        }[];
+      }[];
+      introTitle?: string;
+      introSubtitle?: string;
+      introIcon?: string;
+      /** Label over the quality meter (default GUESS-O-METER). */
+      meterLabel?: string;
+      strikeToast?: string;
       wrongTitle?: string;
       completeTitle?: string;
       completeLine?: string;
