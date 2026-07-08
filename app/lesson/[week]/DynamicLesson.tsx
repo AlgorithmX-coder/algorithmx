@@ -735,6 +735,10 @@ function DynamicLessonInner({ qaEnabled }: { qaEnabled: boolean }) {
   const [showBoss, setShowBoss] = useState(false);
   const [bossDone, setBossDone] = useState(false);
   const [bossWon, setBossWon] = useState(false);
+  // PILOT FEEDBACK (global): the badge scene moved to AFTER the outro
+  // video (boss -> video -> badge). Set when the post-boss video
+  // finishes; renders BossVictoryScene as an overlay.
+  const [showBadgeScene, setShowBadgeScene] = useState(false);
   const [bossStats, setBossStats] = useState<{ combo: number; accuracy: number; xp: number } | null>(null);
   const [arena3DMood, setArena3DMood] = useState<"normal" | "correct" | "wrong" | "celebration">("normal");
   const [arena3DPulse, setArena3DPulse] = useState(0);
@@ -860,8 +864,10 @@ function DynamicLessonInner({ qaEnabled }: { qaEnabled: boolean }) {
     resumedRef.current = true;
   }, [progress]);
 
-  // Mirror `screen` into a ref so the unmount cleanup can read the
-  // latest value (the cleanup callback captures the initial closure).
+  // Mirror `screen` into a ref so the unmount cleanup and navigate()'s
+  // side effects can read the latest value without closing over state.
+  // navigate() also writes it synchronously so back-to-back calls in
+  // one tick see the right prev.
   const screenRef = useRef<number>(0);
   useEffect(() => {
     screenRef.current = screen;
@@ -977,44 +983,48 @@ function DynamicLessonInner({ qaEnabled }: { qaEnabled: boolean }) {
     (to: number) => {
       if (!content) return;
       playSFX("transition");
-      setScreen((prev) => {
-        navDirRef.current = to < prev ? "back" : "forward";
-        const next = Math.max(0, Math.min(totalScreens - 1, to));
+      // Side effects live OUTSIDE the state updater: React may replay
+      // updaters during render (and does at the boss-end state batch),
+      // and an impure updater fires server actions mid-render ("Cannot
+      // update Router while rendering"). screenRef mirrors `screen` so
+      // prev is readable without depending on the state value.
+      const prev = screenRef.current;
+      navDirRef.current = to < prev ? "back" : "forward";
+      const next = Math.max(0, Math.min(totalScreens - 1, to));
 
-        // Persistence: save the screen we're LEAVING (only when moving
-        // forward past the leaving screen and only when it's a real
-        // advance, not a back-navigation).
-        if (next > prev) {
-          const w = wrongCounts[prev] ?? 0;
-          const stars = w === 0 ? 3 : w <= 1 ? 2 : 1;
-          const xpEarned = Math.max(0, lessonXp - screenXpBaselineRef.current);
-          const leavingType = content.screens[prev]?.type ?? "unknown";
-          progress.saveScreen({
-            screenIndex: prev,
-            wrongCount: w,
-            xpEarned,
-            starsEarned: stars,
+      // Persistence: save the screen we're LEAVING (only when moving
+      // forward past the leaving screen and only when it's a real
+      // advance, not a back-navigation).
+      if (next > prev) {
+        const w = wrongCounts[prev] ?? 0;
+        const stars = w === 0 ? 3 : w <= 1 ? 2 : 1;
+        const xpEarned = Math.max(0, lessonXp - screenXpBaselineRef.current);
+        progress.saveScreen({
+          screenIndex: prev,
+          wrongCount: w,
+          xpEarned,
+          starsEarned: stars,
+        });
+        // Baseline + clock reset for the screen we're entering.
+        screenXpBaselineRef.current = lessonXp;
+        progress.markScreenStart(next);
+
+        // Lesson completion - when the child reaches the `completion`
+        // screen the lesson is effectively over (even if they stay
+        // on the screen). Mark complete + emit analytics here so
+        // the row gets a `completedAt` even if they close the tab
+        // before clicking the final CTA.
+        const arrivingType = content.screens[next]?.type;
+        if (arrivingType === "completion" && !lessonCompletedRef.current) {
+          lessonCompletedRef.current = true;
+          progress.complete({
+            totalXp: lessonXp,
+            finalScreenIndex: next,
           });
-          // Baseline + clock reset for the screen we're entering.
-          screenXpBaselineRef.current = lessonXp;
-          progress.markScreenStart(next);
-
-          // Lesson completion - when the child reaches the `completion`
-          // screen the lesson is effectively over (even if they stay
-          // on the screen). Mark complete + emit analytics here so
-          // the row gets a `completedAt` even if they close the tab
-          // before clicking the final CTA.
-          const arrivingType = content.screens[next]?.type;
-          if (arrivingType === "completion" && !lessonCompletedRef.current) {
-            lessonCompletedRef.current = true;
-            progress.complete({
-              totalXp: lessonXp,
-              finalScreenIndex: next,
-            });
-          }
         }
-        return next;
-      });
+      }
+      screenRef.current = next;
+      setScreen(next);
     },
     [content, totalScreens, wrongCounts, lessonXp, progress]
   );
@@ -1109,16 +1119,26 @@ function DynamicLessonInner({ qaEnabled }: { qaEnabled: boolean }) {
     if (!def) return null;
 
     switch (def.type) {
-      case "video":
+      case "video": {
         // When a real file is wired up (`videoSrc`), play it. Weeks whose
         // video isn't filmed yet fall back to the decorative play button
         // that simply advances to the next screen.
+        // PILOT FEEDBACK (global): the outro video (the one right after
+        // the boss) hands over to the BADGE SCENE, not straight to the
+        // debrief — boss -> video -> badge -> debrief.
+        const finishVideo = () => {
+          if (content.screens[screen - 1]?.type === "bossBattle" && bossWon) {
+            setShowBadgeScene(true);
+          } else {
+            navigate(screen + 1);
+          }
+        };
         if (def.videoSrc) {
           return (
             <VideoScreen
               caption={def.videoPlaceholder}
               videoSrc={def.videoSrc}
-              onSkip={() => navigate(screen + 1)}
+              onSkip={finishVideo}
             />
           );
         }
@@ -1142,7 +1162,7 @@ function DynamicLessonInner({ qaEnabled }: { qaEnabled: boolean }) {
                 >
                   <button
                     type="button"
-                    onClick={() => navigate(screen + 1)}
+                    onClick={finishVideo}
                     aria-label="Play"
                     style={{
                       width: 96,
@@ -1162,11 +1182,12 @@ function DynamicLessonInner({ qaEnabled }: { qaEnabled: boolean }) {
                 <p style={{ color: "#9ca3af", fontSize: 14, marginBottom: 18 }}>
                   {def.videoPlaceholder}
                 </p>
-                <OrangeButton onClick={() => navigate(screen + 1)}>Skip video →</OrangeButton>
+                <OrangeButton onClick={finishVideo}>Skip video →</OrangeButton>
               </div>
             </Card>
           </FullScene>
         );
+      }
 
       case "alert":
         return (
@@ -2361,6 +2382,7 @@ function DynamicLessonInner({ qaEnabled }: { qaEnabled: boolean }) {
               <BossVictoryScene
                 badgeIcon={content.badgeIcon}
                 badgeName={content.badgeName}
+                badgeArt={content.badgeArt}
                 weekNumber={content.weekNumber}
                 missionTitle={content.title}
                 stats={bossStats}
@@ -2818,6 +2840,11 @@ function DynamicLessonInner({ qaEnabled }: { qaEnabled: boolean }) {
                   awardXp(150);
                   void correctAnswerBurst();
                   void badgeEarnedCelebration();
+                  // PILOT FEEDBACK (global): straight into the outro video;
+                  // the badge scene follows the video. Deferred a beat so
+                  // the navigate updater (which persists the leaving
+                  // screen) runs outside this handler's state batch.
+                  window.setTimeout(() => navigate(screen + 1), 450);
                 }
               }}
             />
@@ -2877,6 +2904,11 @@ function DynamicLessonInner({ qaEnabled }: { qaEnabled: boolean }) {
                   awardXp(150);
                   void correctAnswerBurst();
                   void badgeEarnedCelebration();
+                  // PILOT FEEDBACK (global): straight into the outro video;
+                  // the badge scene follows the video. Deferred a beat so
+                  // the navigate updater (which persists the leaving
+                  // screen) runs outside this handler's state batch.
+                  window.setTimeout(() => navigate(screen + 1), 450);
                 }
               }}
             />
@@ -2936,6 +2968,11 @@ function DynamicLessonInner({ qaEnabled }: { qaEnabled: boolean }) {
                   awardXp(150);
                   void correctAnswerBurst();
                   void badgeEarnedCelebration();
+                  // PILOT FEEDBACK (global): straight into the outro video;
+                  // the badge scene follows the video. Deferred a beat so
+                  // the navigate updater (which persists the leaving
+                  // screen) runs outside this handler's state batch.
+                  window.setTimeout(() => navigate(screen + 1), 450);
                 }
               }}
             />
@@ -3037,10 +3074,46 @@ function DynamicLessonInner({ qaEnabled }: { qaEnabled: boolean }) {
                 awardXp(150);
                 void correctAnswerBurst();
                 void badgeEarnedCelebration();
+                // PILOT FEEDBACK (global): straight into the outro video;
+                // the badge scene follows the video. Deferred a beat so
+                // the navigate updater (which persists the leaving
+                // screen) runs outside this handler's state batch.
+                window.setTimeout(() => navigate(screen + 1), 450);
               }
             }}
           />
           )}
+        </div>
+      )}
+
+      {/* Badge scene — after the outro video (PILOT FEEDBACK: boss ->
+          video -> badge). Fullscreen overlay so it works regardless of
+          which screen sits underneath. */}
+      {showBadgeScene && content && (
+        <div
+          style={{
+            position: "fixed",
+            inset: 0,
+            zIndex: 80,
+            overflowY: "auto",
+            display: "grid",
+            placeItems: "center",
+            padding: "24px 0",
+            background: "radial-gradient(ellipse at 50% 30%, #2a0a14 0%, #160a2e 50%, #04050d 100%)",
+          }}
+        >
+          <BossVictoryScene
+            badgeIcon={content.badgeIcon}
+            badgeName={content.badgeName}
+            badgeArt={content.badgeArt}
+            weekNumber={content.weekNumber}
+            missionTitle={content.title}
+            stats={bossStats}
+            onClaim={() => {
+              setShowBadgeScene(false);
+              navigate(screen + 1);
+            }}
+          />
         </div>
       )}
 

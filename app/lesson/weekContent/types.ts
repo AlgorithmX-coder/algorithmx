@@ -6,6 +6,13 @@ export interface WeekContent {
   topic: string;
   badgeName: string;
   badgeIcon: string;
+  /**
+   * Bespoke badge artwork for the victory scene (PILOT FEEDBACK: badges
+   * designed creatively per week, not the generic gold shield). Path
+   * under public/, e.g. /cyberheroes/badges/week-03-mask-spotter.png.
+   * Omitted = the default shield mark.
+   */
+  badgeArt?: string;
 
   introCutscene: CutsceneSlide[];
 

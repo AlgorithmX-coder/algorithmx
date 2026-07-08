@@ -40,11 +40,11 @@ const STEPS = {
     { click: "Plays racing games" },                    // deliberate wrong → teach
     { wait: 700 }, { shot: "05-teach-panel" },
     { click: "Got it!" },
-    { click: "Joined: YESTERDAY" },                     // round 1 tell
+    { click: "Joined YESTERDAY" },                      // round 1 tell
     { wait: 1400 }, { shot: "06-taptell-round2" },
-    { click: "0 friends you actually know" },           // round 2 tell
+    { click: "0 friends you know" },                    // round 2 tell
     { wait: 1400 },
-    { click: "Photo copied from a poster" },            // round 3 tell → playDone
+    { click: "Photo stolen from a poster" },            // round 3 tell → playDone
     { wait: 1600 }, { shot: "07-weakpoint-1" },         // CORE EXPOSED
     { click: "Too friendly too fast - a fake-profile tell" },
     { wait: 1300 }, { shot: "08-gear-popped" },         // phaseClear
@@ -59,7 +59,7 @@ const STEPS = {
     { shot: "11-announce-trick3" },
     { wait: 2200 },
     { shot: "12-play-shieldhold" },                     // MEET-UP TRAP barrage
-    { hold: "HOLD THE NEVER-MEET SHIELD", ms: 6800 },   // burn it out
+    { hold: "HOLD THE SHIELD", ms: 6800 },              // burn it out
     { wait: 400 }, { shot: "13-burnout" },
     { wait: 1800 }, { shot: "14-weakpoint-3" },
     { click: "Never meet - and tell a grown-up" },
@@ -70,8 +70,13 @@ const STEPS = {
     { hold: "CHARGE THE SPOTLIGHT", ms: 5600, shotDuring: "16b-charging" },
     { wait: 800 }, { shot: "17-payoff" },
     { wait: 2200 }, { shot: "18-victory" },
+    // PILOT FEEDBACK flow: fight -> outro video -> badge scene -> debrief.
     { click: "Claim the win" },
-    { wait: 2500 }, { shot: "19-back-in-lesson" },
+    { wait: 2500 }, { shot: "19-outro-video" },
+    { click: "Skip video" },
+    { wait: 1800 }, { shot: "20-badge-scene" },
+    { click: "Claim Badge" },
+    { wait: 2200 }, { shot: "21-debrief" },
   ],
 };
 

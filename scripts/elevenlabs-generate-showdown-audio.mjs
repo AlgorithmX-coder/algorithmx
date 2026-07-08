@@ -63,11 +63,11 @@ const WEEKS = {
       "phase-3": "Just one little meet-up! I'll bring snacks!",
       escape: "Fine! I didn't want to be your friend ANYWAY!",
     },
+    // PILOT FEEDBACK (global): NO narrator voice during the fight — the
+    // ONE narrator moment is this excited well-done at the victory
+    // screen, naming exactly what the child just did.
     coach: {
-      "go-1": "Detective time! Tap the piece of his disguise that gives him away - check the clues, not the costume!",
-      "go-2": "He wants a secret. Pick the hero move - safe friends never need secrets from your grown-ups!",
-      "go-3": "He's pushing for a meet-up! Press and HOLD the never-meet shield until his pressure burns out!",
-      victory: "Case closed, detective! You checked the clues, kept the secrets out, and never took the bait. That's a real Cyber Hero!",
+      victory: "[excited] WELL DONE, DETECTIVE! You spotted the fake profile, you told a grown-up about the secret, and you NEVER took the meet-up bait! The Disguise-o-Matic is finished - you are a REAL Cyber Hero!",
     },
   },
 };

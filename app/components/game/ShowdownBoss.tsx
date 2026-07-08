@@ -233,12 +233,9 @@ export default function ShowdownBoss({
     return () => window.clearTimeout(id);
   }, [stage, phaseIdx, reduce, slug]);
 
-  /* Coach speaks the phase instruction as play begins. */
-  useEffect(() => {
-    if (stage !== "play") return;
-    if (slug) playCoach(`${slug}-go-${phaseIdx + 1}`);
-    return () => stopCoach();
-  }, [stage, phaseIdx, slug]);
+  /* PILOT FEEDBACK (global): NO narrator voice during the fight — the
+     coach banner is text-only. The one narrator moment is the excited
+     "well done" line on the victory screen. */
 
   const shake = useCallback(() => setShakeNonce((n) => n + 1), []);
   const addPopup = useCallback((text: string, colour: string, x: number, y: number) => {
@@ -443,7 +440,8 @@ export default function ShowdownBoss({
                 : { scale: 1, opacity: 1, y: [0, -7, 0] }
         }
         transition={raccoonMood === "idle" || raccoonMood === "taunt" ? { duration: 3, repeat: Infinity, ease: "easeInOut" } : { duration: 0.28 }}
-        style={{ position: "absolute", right: "22%", bottom: "12%", height: "22%", zIndex: 3, filter: "drop-shadow(0 12px 16px rgba(10,14,34,0.6))" }}
+        // PILOT FEEDBACK (global): the Raccoon stands as tall as the hero.
+        style={{ position: "absolute", right: "22%", bottom: "12%", height: "32%", zIndex: 3, filter: "drop-shadow(0 12px 16px rgba(10,14,34,0.6))" }}
       />
 
       <AnimatePresence>
@@ -606,21 +604,25 @@ export default function ShowdownBoss({
                       onClick={() => chooseHero(key)}
                       whileHover={reduce ? undefined : { y: -6, scale: 1.03 }}
                       whileTap={reduce ? undefined : { scale: 0.95 }}
+                      // PILOT FEEDBACK (global): the select cards blend into
+                      // the arena — glassy night panels, not flat white.
                       style={{
                         display: "flex", flexDirection: "column", alignItems: "center", gap: 8,
                         padding: "16px 12px 14px", borderRadius: 18, cursor: "pointer",
                         touchAction: "manipulation", fontFamily: "inherit",
-                        background: "rgba(255,255,255,0.94)",
-                        border: `3px solid ${h.theme.accent}`,
-                        boxShadow: "0 14px 30px -14px rgba(10,14,34,0.6)",
-                        color: "#1d2b4f",
+                        background: "rgba(13,18,44,0.52)",
+                        backdropFilter: "blur(7px)",
+                        WebkitBackdropFilter: "blur(7px)",
+                        border: `2.5px solid ${h.theme.accent}aa`,
+                        boxShadow: `0 14px 30px -14px rgba(4,6,16,0.8), 0 0 26px ${h.theme.glow} inset`,
+                        color: "#f6f9ff",
                       }}
                       aria-label={`Play as ${h.name}`}
                     >
                       {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src={h.sprites.idle} alt="" style={{ height: 132, objectFit: "contain", filter: "drop-shadow(0 10px 14px rgba(10,14,34,0.4))" }} />
-                      <span style={{ fontSize: 19, fontWeight: 900, letterSpacing: "0.08em", color: h.theme.accent }}>{h.name}</span>
-                      <span style={{ fontSize: 11.5, fontWeight: 700, color: "#64748b" }}>{h.tagline}</span>
+                      <img src={h.sprites.idle} alt="" style={{ height: 132, objectFit: "contain", filter: "drop-shadow(0 10px 14px rgba(4,6,16,0.6))" }} />
+                      <span style={{ fontSize: 19, fontWeight: 900, letterSpacing: "0.08em", color: h.theme.accent, textShadow: "0 1px 8px rgba(4,6,16,0.8)" }}>{h.name}</span>
+                      <span style={{ fontSize: 11.5, fontWeight: 700, color: "#cbd5ec" }}>{h.tagline}</span>
                       <span style={{ marginTop: 2, padding: "7px 26px", borderRadius: 999, background: h.theme.accent, color: "#fff", fontSize: 13, fontWeight: 900, letterSpacing: "0.1em" }}>
                         SELECT
                       </span>
@@ -828,7 +830,17 @@ function TapTellPhase({ data, pkey, judge, done, reduce, accent }: { data: Showd
   const [roundIdx, setRoundIdx] = useState(0);
   const [found, setFound] = useState(false);
   const finishedRef = useRef(false);
-  const round = data.rounds[Math.min(roundIdx, data.rounds.length - 1)];
+  const rawRound = data.rounds[Math.min(roundIdx, data.rounds.length - 1)];
+  // Shuffle option positions per round — the tell drifts, never fixed.
+  const round = useMemo(
+    () => ({
+      ...rawRound,
+      options: seededOrder(rawRound.options.length, 911 + rawRound.id.length * 31 + roundIdx * 97).map(
+        (i) => rawRound.options[i],
+      ),
+    }),
+    [rawRound, roundIdx],
+  );
 
   const tap = (opt: ShowdownTapTell["rounds"][number]["options"][number], i: number, e: React.MouseEvent) => {
     if (found || finishedRef.current) return;
@@ -1028,6 +1040,11 @@ function ShieldHoldPhase({ data, pkey, paused, judge, done, reduce, accent }: { 
 function CounterCardPhase({ data, pkey, judge, done, reduce, accent }: { data: ShowdownCounterCard; pkey: string; judge: JudgeFn; done: () => void; reduce: boolean; accent: string }) {
   const [picked, setPicked] = useState(false);
   const finishedRef = useRef(false);
+  // Shuffle card positions — the hero move is never predictably first.
+  const cards = useMemo(
+    () => seededOrder(data.cards.length, 4177 + data.situation.length * 7).map((i) => data.cards[i]),
+    [data],
+  );
 
   const tap = (card: ShowdownCounterCard["cards"][number], i: number, e: React.MouseEvent) => {
     if (picked || finishedRef.current) return;
@@ -1037,7 +1054,7 @@ function CounterCardPhase({ data, pkey, judge, done, reduce, accent }: { data: S
       finishedRef.current = true;
       window.setTimeout(done, 1200);
     } else {
-      const right = data.cards.findIndex((c) => c.isRight);
+      const right = cards.findIndex((c) => c.isRight);
       judge(`${pkey}-card`, false, i, right, { title: "Not that move!", explanation: card.note }, { x: e.clientX, y: e.clientY });
     }
   };
@@ -1052,7 +1069,7 @@ function CounterCardPhase({ data, pkey, judge, done, reduce, accent }: { data: S
       </div>
 
       <div style={{ display: "flex", flexWrap: "wrap", gap: 14, justifyContent: "center" }}>
-        {data.cards.map((card, i) => (
+        {cards.map((card, i) => (
           <motion.button
             key={card.id}
             onClick={(e) => tap(card, i, e)}
@@ -1289,15 +1306,24 @@ function WeakPointPanel({ question, pkey, judge, done, reduce, accent }: { quest
   const [answered, setAnswered] = useState(false);
   const finishedRef = useRef(false);
 
-  const tap = (i: number, e: React.MouseEvent) => {
+  // PILOT FEEDBACK (global): authored questions put the right answer
+  // first — shuffle display positions so the correct card is never
+  // predictably top-left. Deterministic (resume-safe).
+  const order = useMemo(
+    () => seededOrder(question.answers.length, 7331 + question.question.length * 13),
+    [question],
+  );
+  const correctDisplayIdx = order.indexOf(question.correctIndex);
+
+  const tap = (displayIdx: number, e: React.MouseEvent) => {
     if (answered || finishedRef.current) return;
-    if (i === question.correctIndex) {
-      judge(pkey, true, i, question.correctIndex, undefined, { x: e.clientX, y: e.clientY });
+    if (order[displayIdx] === question.correctIndex) {
+      judge(pkey, true, displayIdx, correctDisplayIdx, undefined, { x: e.clientX, y: e.clientY });
       setAnswered(true);
       finishedRef.current = true;
       window.setTimeout(done, 900);
     } else {
-      judge(pkey, false, i, question.correctIndex, { title: "The core holds…", explanation: question.explanation }, { x: e.clientX, y: e.clientY });
+      judge(pkey, false, displayIdx, correctDisplayIdx, { title: "The core holds…", explanation: question.explanation }, { x: e.clientX, y: e.clientY });
     }
   };
 
@@ -1323,21 +1349,21 @@ function WeakPointPanel({ question, pkey, judge, done, reduce, accent }: { quest
           {question.question}
         </div>
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
-          {question.answers.map((a, i) => (
+          {order.map((origIdx, i) => (
             <motion.button
-              key={i}
+              key={origIdx}
               onClick={(e) => tap(i, e)}
               disabled={answered}
               whileTap={reduce ? undefined : { scale: 0.95 }}
               style={{
                 padding: "13px 12px", borderRadius: 14, cursor: answered ? "default" : "pointer",
                 touchAction: "manipulation", fontFamily: "inherit", fontSize: 13.5, fontWeight: 800, lineHeight: 1.3,
-                background: answered && i === question.correctIndex ? "linear-gradient(180deg, #5eeaa5, #178a56)" : "#f4f7ff",
-                border: answered && i === question.correctIndex ? "2.5px solid #a4f5cd" : "2.5px solid #c7d4f0",
-                color: answered && i === question.correctIndex ? "#06281a" : "#1d2b4f",
+                background: answered && origIdx === question.correctIndex ? "linear-gradient(180deg, #5eeaa5, #178a56)" : "#f4f7ff",
+                border: answered && origIdx === question.correctIndex ? "2.5px solid #a4f5cd" : "2.5px solid #c7d4f0",
+                color: answered && origIdx === question.correctIndex ? "#06281a" : "#1d2b4f",
               }}
             >
-              {a}
+              {question.answers[origIdx]}
             </motion.button>
           ))}
         </div>

@@ -772,36 +772,36 @@ export const WEEK_3: WeekContent = {
       {
         kind: "tapTell",
         attack: 0,
-        coach: "Tap the piece of the disguise that gives him away!",
+        coach: "Which clue shows he's FAKE? Tap it!",
         rounds: [
           {
             id: "card",
-            prompt: "The machine slots in a profile card: 'BlazeKid_9 — I'm 9, just like you!'",
+            prompt: "His profile says: 'I'm 9, just like you!'",
             promptIcon: "🎭",
             options: [
-              { id: "joined", label: "Joined: YESTERDAY", icon: "🆔", isTell: true, note: "" },
-              { id: "games", label: "Plays racing games", icon: "🎮", isTell: false, note: "Lots of real kids play racing games - that's not the giveaway. Look for the thing a REAL nine-year-old's profile would already have." },
-              { id: "avatar", label: "Has a blue avatar", icon: "🎨", isTell: false, note: "Avatars come in every colour - that proves nothing either way. Check the profile's HISTORY instead." },
+              { id: "joined", label: "Joined YESTERDAY", icon: "🆔", isTell: true, note: "" },
+              { id: "games", label: "Plays racing games", icon: "🎮", isTell: false, note: "Real kids play racing games too. That doesn't make him fake." },
+              { id: "avatar", label: "Has a blue avatar", icon: "🎨", isTell: false, note: "Any colour avatar is fine. That doesn't make him fake." },
             ],
           },
           {
             id: "friends",
-            prompt: "It bolts on a friends list to look popular…",
+            prompt: "Now look at his friends…",
             promptIcon: "⚙️",
             options: [
-              { id: "sayings", label: "Says 'good game!'", icon: "💬", isTell: false, note: "Friendly game talk is normal - the machine copies it easily. Count the FRIENDS instead." },
-              { id: "zero", label: "0 friends you actually know", icon: "👀", isTell: true, note: "" },
-              { id: "pizza", label: "Likes pizza", icon: "🎉", isTell: false, note: "Everyone likes pizza! A detective checks who KNOWS this kid, not what they eat." },
+              { id: "sayings", label: "Says 'good game!'", icon: "💬", isTell: false, note: "Saying 'good game' is normal. Look at his FRIENDS instead." },
+              { id: "zero", label: "0 friends you know", icon: "👀", isTell: true, note: "" },
+              { id: "pizza", label: "Likes pizza", icon: "🎉", isTell: false, note: "Everyone likes pizza! Look at his FRIENDS instead." },
             ],
           },
           {
             id: "photo",
-            prompt: "It glues on a smiling kid photo to finish the costume…",
+            prompt: "Now look at his photo…",
             promptIcon: "🕵️",
             options: [
-              { id: "hoodie", label: "Wears a red hoodie", icon: "🎨", isTell: false, note: "Clothes can't tell you if a profile is real - the machine owns every hoodie colour." },
-              { id: "smiley", label: "Smiles a lot", icon: "🎉", isTell: false, note: "A smile is easy to borrow. Ask where the photo CAME from." },
-              { id: "copied", label: "Photo copied from a poster", icon: "🔍", isTell: true, note: "" },
+              { id: "hoodie", label: "Wears a red hoodie", icon: "🎨", isTell: false, note: "Clothes don't make him real or fake. Where did the photo COME from?" },
+              { id: "smiley", label: "Has a big smile", icon: "🎉", isTell: false, note: "A smile is easy to copy. Where did the photo COME from?" },
+              { id: "copied", label: "Photo stolen from a poster", icon: "🔍", isTell: true, note: "" },
             ],
           },
         ],
@@ -810,21 +810,21 @@ export const WEEK_3: WeekContent = {
       {
         kind: "counterCard",
         attack: 1,
-        coach: "Pick the hero move!",
-        situation: "'This is OUR secret club. Don't tell your mum about me, okay?'",
+        coach: "What does a hero do? Tap the right card!",
+        situation: "'It's OUR secret club. Don't tell your mum!'",
         situationIcon: "🤫",
         cards: [
           { id: "tell", label: "TELL A GROWN-UP", icon: "👪", isRight: true, note: "" },
-          { id: "keep", label: "Keep the secret", icon: "🤐", isRight: false, note: "Safe friends never need secrets from your grown-ups - the secret ask IS the trap." },
-          { id: "once", label: "Reply 'okay, just this once'", icon: "💬", isRight: false, note: "One little secret is how it starts. Safe friends don't ask for even one." },
+          { id: "keep", label: "Keep the secret", icon: "🤐", isRight: false, note: "Real friends never say 'keep me secret'. That's the trick!" },
+          { id: "once", label: "Say 'okay, just once'", icon: "💬", isRight: false, note: "Even one little secret is how the trick starts. Tell a grown-up!" },
         ],
       },
       // P3 · MEET-UP TRAP → SHIELD-HOLD: the pressure barrage.
       {
         kind: "shieldHold",
         attack: 2,
-        coach: "Press and HOLD the shield until his pressure burns out!",
-        holdLabel: "HOLD THE NEVER-MEET SHIELD",
+        coach: "Press the shield and DON'T let go!",
+        holdLabel: "HOLD THE SHIELD",
         holdIcon: "🛡️",
         holdSecs: 6,
         barrage: [
@@ -834,7 +834,7 @@ export const WEEK_3: WeekContent = {
           "Everyone meets up! It's NORMAL!",
           "Last chance! I'll be SO sad!",
         ],
-        burnoutLine: "Real friends don't push. The meet-up trap has no power over a hero who won't go.",
+        burnoutLine: "Real friends don't push. You NEVER meet online friends - and you always tell a grown-up.",
       },
     ],
     weakPoints: [
@@ -846,9 +846,9 @@ export const WEEK_3: WeekContent = {
       chargeLabel: "CHARGE THE SPOTLIGHT",
       chargeIcon: "🔍",
       chargeSecs: 5,
-      milestones: ["The spotlight is warming up…", "It's glowing! Keep holding!", "FULL BEAM! LET GO!"],
+      milestones: ["Warming up…", "It's glowing! Keep holding!", "FULL BEAM! LET GO!"],
       payoffTitle: "COSTUME BLASTED OFF!",
-      payoffLine: "The disguise is gone - checked clues beat any costume.",
+      payoffLine: "You checked the clues. No costume can trick you!",
     },
     villain: {
       arrival: "A new best friend, just for you! I'm nine! Honest!",
@@ -861,6 +861,7 @@ export const WEEK_3: WeekContent = {
     },
     voiceSlug: "w03",
   },
+  badgeArt: "/cyberheroes/badges/week-03-mask-spotter.png",
 
   // Quiz boss retired for W3 - the showdown above supersedes it. The
   // questions stay as the weak-point source + fallback if the showdown
