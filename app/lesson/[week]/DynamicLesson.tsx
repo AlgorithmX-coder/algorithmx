@@ -1876,6 +1876,17 @@ function DynamicLessonInner({ qaEnabled }: { qaEnabled: boolean }) {
           <FullScene bg="linear-gradient(180deg, #050a1a 0%, #06355c 100%)">
             <HookSort
               items={def.items}
+              introTitle={def.introTitle}
+              introSubtitle={def.introSubtitle}
+              introIcon={def.introIcon}
+              reelLabel={def.reelLabel}
+              cutLabel={def.cutLabel}
+              reelToast={def.reelToast}
+              cutToast={def.cutToast}
+              wrongScamTitle={def.wrongScamTitle}
+              wrongRealTitle={def.wrongRealTitle}
+              completeTitle={def.completeTitle}
+              completeLine={def.completeLine}
               hints={def.hints}
               introNarration={def.narration}
               coachLines={def.coachLines}
@@ -1904,6 +1915,11 @@ function DynamicLessonInner({ qaEnabled }: { qaEnabled: boolean }) {
           <FullScene bg="linear-gradient(180deg, #050a1a 0%, #16103a 100%)">
             <SenderLineup
               rounds={def.rounds}
+              introTitle={def.introTitle}
+              introSubtitle={def.introSubtitle}
+              introIcon={def.introIcon}
+              completeTitle={def.completeTitle}
+              completeLine={def.completeLine}
               hints={def.hints}
               introNarration={def.narration}
               coachLines={def.coachLines}

@@ -46,6 +46,12 @@ export interface LineupRound {
 
 export interface SenderLineupProps {
   rounds: LineupRound[];
+  /** Copy overrides (re-theme per week; defaults keep the W4 sender skin). */
+  introTitle?: string;
+  introSubtitle?: string;
+  introIcon?: string;
+  completeTitle?: string;
+  completeLine?: string;
   hints?: { tier1: string; tier2: string };
   introNarration?: { speaker?: "adam" | "layla"; lines: string[] };
   coachLines?: { speaker?: "adam" | "layla"; lines: string[] };
@@ -63,6 +69,11 @@ export interface SenderLineupProps {
 
 export default function SenderLineup({
   rounds,
+  introTitle,
+  introSubtitle,
+  introIcon,
+  completeTitle,
+  completeLine,
   hints,
   introNarration,
   coachLines,
@@ -139,9 +150,9 @@ export default function SenderLineup({
 
       {showIntro && (
         <ExerciseIntroBeat
-          title="The Lookalike Lineup"
-          subtitle="One of these senders is wearing a disguise. Read carefully - then bust the imposter!"
-          icon="🕵️"
+          title={introTitle ?? "The Lookalike Lineup"}
+          subtitle={introSubtitle ?? "One of these senders is wearing a disguise. Read carefully - then bust the imposter!"}
+          icon={introIcon ?? "🕵️"}
           narration={introNarration}
           character={introNarration?.speaker}
           onDismiss={() => setShowIntro(false)}
@@ -319,11 +330,11 @@ export default function SenderLineup({
 
       {finished && (
         <ExerciseCompleteBeat
-          title="Every imposter busted!"
+          title={completeTitle ?? "Every imposter busted!"}
           stars={stars}
           statLines={[
             `${correctCount}/${rounds.length} lineups solved first try`,
-            "Real senders cleared, lookalikes exposed.",
+            completeLine ?? "Real senders cleared, lookalikes exposed.",
           ]}
           onContinue={() => onComplete(correctCount)}
         />

@@ -843,6 +843,18 @@ export type ScreenDef = (
        * Calm binary sort - no belt, no timer, one catch in play.
        */
       type: "hookSort";
+      /** Copy overrides (re-theme per week; defaults keep the W4 dock skin). */
+      introTitle?: string;
+      introSubtitle?: string;
+      introIcon?: string;
+      reelLabel?: string;
+      cutLabel?: string;
+      reelToast?: string;
+      cutToast?: string;
+      wrongScamTitle?: string;
+      wrongRealTitle?: string;
+      completeTitle?: string;
+      completeLine?: string;
       items: {
         id: string;
         text: string;
@@ -862,6 +874,12 @@ export type ScreenDef = (
        * SENDERS only - link mechanics are Week 16's lane.
        */
       type: "senderLineup";
+      /** Copy overrides (re-theme per week; defaults keep the W4 sender skin). */
+      introTitle?: string;
+      introSubtitle?: string;
+      introIcon?: string;
+      completeTitle?: string;
+      completeLine?: string;
       rounds: {
         id: string;
         /** The situation, e.g. "Four messages say your game needs an update…" */

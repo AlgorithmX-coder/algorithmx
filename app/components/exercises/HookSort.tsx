@@ -38,6 +38,18 @@ export interface HookItem {
 
 export interface HookSortProps {
   items: HookItem[];
+  /** Copy overrides (re-theme per week; defaults keep the W4 dock skin). */
+  introTitle?: string;
+  introSubtitle?: string;
+  introIcon?: string;
+  reelLabel?: string;
+  cutLabel?: string;
+  reelToast?: string;
+  cutToast?: string;
+  wrongScamTitle?: string;
+  wrongRealTitle?: string;
+  completeTitle?: string;
+  completeLine?: string;
   hints?: { tier1: string; tier2: string };
   introNarration?: { speaker?: "adam" | "layla"; lines: string[] };
   coachLines?: { speaker?: "adam" | "layla"; lines: string[] };
@@ -55,6 +67,17 @@ export interface HookSortProps {
 
 export default function HookSort({
   items,
+  introTitle,
+  introSubtitle,
+  introIcon,
+  reelLabel,
+  cutLabel,
+  reelToast,
+  cutToast,
+  wrongScamTitle,
+  wrongRealTitle,
+  completeTitle,
+  completeLine,
   hints,
   introNarration,
   coachLines,
@@ -106,7 +129,7 @@ export default function HookSort({
     });
     if (wasCorrect) {
       audio.correct();
-      fx.correct({ xp: 25, text: cut ? "SCAM CUT LOOSE!" : "REAL - REELED IN!" });
+      fx.correct({ xp: 25, text: cut ? (cutToast ?? "SCAM CUT LOOSE!") : (reelToast ?? "REAL - REELED IN!") });
       onCorrect?.();
       setCorrectCount((n) => n + 1);
       setResolved(cut ? "cut" : "reeled");
@@ -116,7 +139,7 @@ export default function HookSort({
       onWrong?.();
       setWrongCount((n) => n + 1);
       setFeedback({
-        title: item.isScam ? "Careful - that one was a SCAM" : "Wait - that one was real!",
+        title: item.isScam ? (wrongScamTitle ?? "Careful - that one was a SCAM") : (wrongRealTitle ?? "Wait - that one was real!"),
         explanation: item.explanation,
         tip: hints?.tier1,
       });
@@ -149,9 +172,9 @@ export default function HookSort({
 
       {showIntro && (
         <ExerciseIntroBeat
-          title="The Fishing Dock"
-          subtitle="Messages are on the lines. Reel in the real ones - cut the scams loose!"
-          icon="🪤"
+          title={introTitle ?? "The Fishing Dock"}
+          subtitle={introSubtitle ?? "Messages are on the lines. Reel in the real ones - cut the scams loose!"}
+          icon={introIcon ?? "🪤"}
           narration={introNarration}
           character={introNarration?.speaker}
           onDismiss={() => setShowIntro(false)}
@@ -237,7 +260,7 @@ export default function HookSort({
               disabled={!!resolved || !!feedback}
               onClick={() => call(false)}
             >
-              🎣 REEL IN - it&apos;s real
+              {reelLabel ?? "🎣 REEL IN - it's real"}
             </GameButton>
             <GameButton
               variant="danger"
@@ -245,7 +268,7 @@ export default function HookSort({
               disabled={!!resolved || !!feedback}
               onClick={() => call(true)}
             >
-              ✂️ CUT THE LINE - scam!
+              {cutLabel ?? "✂️ CUT THE LINE - scam!"}
             </GameButton>
           </div>
 
@@ -285,11 +308,11 @@ export default function HookSort({
 
       {finished && (
         <ExerciseCompleteBeat
-          title="The dock is clear!"
+          title={completeTitle ?? "The dock is clear!"}
           stars={stars}
           statLines={[
             `${correctCount}/${items.length} calls right first try`,
-            "Real ones reeled in, scams cut loose.",
+            completeLine ?? "Real ones reeled in, scams cut loose.",
           ]}
           onContinue={() => onComplete(correctCount)}
         />

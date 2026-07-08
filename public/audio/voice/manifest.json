@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-08T08:29:23.690Z",
+  "generatedAt": "2026-07-08T09:06:14.744Z",
   "model": "eleven_v3",
   "voiceSettings": {
     "stability": 0.35,
@@ -2137,6 +2137,279 @@
         "[excited] His photo heist is CLOSED. Sticker time!"
       ],
       "file": "/audio/voice/05f3cb50d7195587.mp3"
+    },
+    {
+      "key": "8a8a71b0f768c037",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] Welcome back, Cyber Hero! New week, new mission: apps. Here's rule one, and it's a big one. New apps come from ONE real shop - the official app store. [warmly] That shop checks every app before it hits the shelf. [whispers] Random websites, pop-ups, comment links? Nobody checked those. [excited] Deliveries incoming - sort the real from the dodgy!",
+      "lines": [
+        "[excited] Welcome back, Cyber Hero! New week, new mission: apps.",
+        "Here's rule one, and it's a big one.",
+        "New apps come from ONE real shop - the official app store.",
+        "[warmly] That shop checks every app before it hits the shelf.",
+        "[whispers] Random websites, pop-ups, comment links? Nobody checked those.",
+        "[excited] Deliveries incoming - sort the real from the dodgy!"
+      ],
+      "file": "/audio/voice/8a8a71b0f768c037.mp3"
+    },
+    {
+      "key": "a1bbe9ae951dd965",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] The delivery lines are moving! Check where each app is coming FROM. The official shop? Reel it in. [whispers] Anywhere else... snip. Go!",
+      "lines": [
+        "[excited] The delivery lines are moving!",
+        "Check where each app is coming FROM.",
+        "The official shop? Reel it in.",
+        "[whispers] Anywhere else... snip. Go!"
+      ],
+      "file": "/audio/voice/a1bbe9ae951dd965.mp3"
+    },
+    {
+      "key": "5c3d1c05d6372574",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Check the source - real shop reels in, anything else gets cut!",
+      "lines": [
+        "Check the source - real shop reels in, anything else gets cut!"
+      ],
+      "file": "/audio/voice/5c3d1c05d6372574.mp3"
+    },
+    {
+      "key": "15c33a3b5a752086",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[excited] Power one - locked in! Real deliveries shelved, dodgy ones snipped. [whispers] But here's the twist, hero... some fakes sneak INTO the real shop. Wearing costumes.",
+      "lines": [
+        "[excited] Power one - locked in!",
+        "Real deliveries shelved, dodgy ones snipped.",
+        "[whispers] But here's the twist, hero...",
+        "some fakes sneak INTO the real shop. Wearing costumes."
+      ],
+      "file": "/audio/voice/15c33a3b5a752086.mp3"
+    },
+    {
+      "key": "2ed96da60a4c6466",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[whispers] Copycat apps wear costumes. Same icon. Almost the same name. But a copycat always misses a whisker! Check the name - letter by letter. Check the stars. Check the downloads. [warmly] Five million downloads... or twelve, since yesterday? [excited] The parade is starting - catch every copycat!",
+      "lines": [
+        "[whispers] Copycat apps wear costumes. Same icon. Almost the same name.",
+        "But a copycat always misses a whisker!",
+        "Check the name - letter by letter.",
+        "Check the stars. Check the downloads.",
+        "[warmly] Five million downloads... or twelve, since yesterday?",
+        "[excited] The parade is starting - catch every copycat!"
+      ],
+      "file": "/audio/voice/2ed96da60a4c6466.mp3"
+    },
+    {
+      "key": "978578d666d1506e",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[excited] Here comes the parade - same icons, four badges! One of them is a copycat in costume. Name. Stars. Downloads. Count the whiskers... [whispers] then tap the fake. Catch them all!",
+      "lines": [
+        "[excited] Here comes the parade - same icons, four badges!",
+        "One of them is a copycat in costume.",
+        "Name. Stars. Downloads. Count the whiskers...",
+        "[whispers] then tap the fake. Catch them all!"
+      ],
+      "file": "/audio/voice/978578d666d1506e.mp3"
+    },
+    {
+      "key": "32ceef3eec971bd5",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "Read the names LETTER BY LETTER - then tap the copycat!",
+      "lines": [
+        "Read the names LETTER BY LETTER - then tap the copycat!"
+      ],
+      "file": "/audio/voice/32ceef3eec971bd5.mp3"
+    },
+    {
+      "key": "ab54640c1b66d003",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] Two powers! Your copycat eyes are sharp. Wrong-ish names, sad stars, empty downloads... [laughs] no costume gets past you now. [whispers] But even REAL apps can get greedy. Listen...",
+      "lines": [
+        "[excited] Two powers! Your copycat eyes are sharp.",
+        "Wrong-ish names, sad stars, empty downloads...",
+        "[laughs] no costume gets past you now.",
+        "[whispers] But even REAL apps can get greedy. Listen..."
+      ],
+      "file": "/audio/voice/ab54640c1b66d003.mp3"
+    },
+    {
+      "key": "a24ec999632131fa",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[warmly] Apps ask for permissions - little keys to your device. Here's the only question that matters: does it need that key... for its JOB? A torch app needs the light. Obviously! [nervous] But your contacts? Your microphone? Your photos? [excited] A torch needs NONE of that. Guard the gate - let's go!",
+      "lines": [
+        "[warmly] Apps ask for permissions - little keys to your device.",
+        "Here's the only question that matters:",
+        "does it need that key... for its JOB?",
+        "A torch app needs the light. Obviously!",
+        "[nervous] But your contacts? Your microphone? Your photos?",
+        "[excited] A torch needs NONE of that. Guard the gate - let's go!"
+      ],
+      "file": "/audio/voice/a24ec999632131fa.mp3"
+    },
+    {
+      "key": "0669af29d3732452",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] Torchy's at the gate, asking for six keys! Its whole job... is making light. Leave the keys the job needs... [whispers] and flip every greedy grab to BLOCKED. Go!",
+      "lines": [
+        "[excited] Torchy's at the gate, asking for six keys!",
+        "Its whole job... is making light.",
+        "Leave the keys the job needs...",
+        "[whispers] and flip every greedy grab to BLOCKED. Go!"
+      ],
+      "file": "/audio/voice/0669af29d3732452.mp3"
+    },
+    {
+      "key": "784d6041b3b2bb11",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Its job is LIGHT - flip anything the job doesn't need!",
+      "lines": [
+        "Its job is LIGHT - flip anything the job doesn't need!"
+      ],
+      "file": "/audio/voice/784d6041b3b2bb11.mp3"
+    },
+    {
+      "key": "17bb3455dfcaed4b",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[excited] Three powers! The gate held. Torchy got its light and its button... [laughs] and not one greedy key more. [whispers] Now for the trickiest word in the whole shop: FREE.",
+      "lines": [
+        "[excited] Three powers! The gate held.",
+        "Torchy got its light and its button...",
+        "[laughs] and not one greedy key more.",
+        "[whispers] Now for the trickiest word in the whole shop: FREE."
+      ],
+      "file": "/audio/voice/17bb3455dfcaed4b.mp3"
+    },
+    {
+      "key": "5f21e9ca7a13eb16",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[excited] FREE! The shop's favourite sparkly word. [whispers] But apps cost money to make. Always. So 'free' apps get paid another way... Your time - with ads. Your pounds - with coin shops. [warmly] Or your info - collected and sold on. [excited] Four FREE tags on the board - flip every one!",
+      "lines": [
+        "[excited] FREE! The shop's favourite sparkly word.",
+        "[whispers] But apps cost money to make. Always.",
+        "So 'free' apps get paid another way...",
+        "Your time - with ads. Your pounds - with coin shops.",
+        "[warmly] Or your info - collected and sold on.",
+        "[excited] Four FREE tags on the board - flip every one!"
+      ],
+      "file": "/audio/voice/5f21e9ca7a13eb16.mp3"
+    },
+    {
+      "key": "a5155cb6a59347d5",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[whispers] Four apps. Four shiny FREE tags. But every tag has a back side... [excited] Flip each one and read the REAL price. Time, pounds, data... or truly free!",
+      "lines": [
+        "[whispers] Four apps. Four shiny FREE tags.",
+        "But every tag has a back side...",
+        "[excited] Flip each one and read the REAL price.",
+        "Time, pounds, data... or truly free!"
+      ],
+      "file": "/audio/voice/a5155cb6a59347d5.mp3"
+    },
+    {
+      "key": "28cfbb8467c4f0a7",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "Flip the first FREE tag - let's see what it really costs!",
+      "lines": [
+        "Flip the first FREE tag - let's see what it really costs!"
+      ],
+      "file": "/audio/voice/28cfbb8467c4f0a7.mp3"
+    },
+    {
+      "key": "48abd97da7838a8f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] Four powers! No FREE tag fools you now. Ads, coin shops, info collectors... [laughs] all flipped over and read out loud. [warmly] One power left - and it's the easiest one of all.",
+      "lines": [
+        "[excited] Four powers! No FREE tag fools you now.",
+        "Ads, coin shops, info collectors...",
+        "[laughs] all flipped over and read out loud.",
+        "[warmly] One power left - and it's the easiest one of all."
+      ],
+      "file": "/audio/voice/48abd97da7838a8f.mp3"
+    },
+    {
+      "key": "cef7f50d44b8fc16",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[warmly] Last power - and it catches everything else. Every new app gets installed TOGETHER with a grown-up. That's the install handshake. Four eyes catch what two miss - a whisker, a greedy key... [whispers] It's not babyish. It's what smart teams do. [excited] Three install moments coming - shake on it!",
+      "lines": [
+        "[warmly] Last power - and it catches everything else.",
+        "Every new app gets installed TOGETHER with a grown-up.",
+        "That's the install handshake.",
+        "Four eyes catch what two miss - a whisker, a greedy key...",
+        "[whispers] It's not babyish. It's what smart teams do.",
+        "[excited] Three install moments coming - shake on it!"
+      ],
+      "file": "/audio/voice/cef7f50d44b8fc16.mp3"
+    },
+    {
+      "key": "4036f3662444c1f6",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[warmly] Three install moments. Three glowing buttons. Each one will whisper 'just tap it - it's fine!' [whispers] That whisper is your handshake signal. [excited] Together, every time. Show me!",
+      "lines": [
+        "[warmly] Three install moments. Three glowing buttons.",
+        "Each one will whisper 'just tap it - it's fine!'",
+        "[whispers] That whisper is your handshake signal.",
+        "[excited] Together, every time. Show me!"
+      ],
+      "file": "/audio/voice/4036f3662444c1f6.mp3"
+    },
+    {
+      "key": "b97d9b6c2f508664",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[excited] That's all FIVE app powers, Cyber Hero! Real shop only, copycats caught, greedy keys blocked, FREE tags flipped... and every install is a handshake. [whispers] One last whisker count... [excited] then we shut his copycat shop DOWN!",
+      "lines": [
+        "[excited] That's all FIVE app powers, Cyber Hero!",
+        "Real shop only, copycats caught, greedy keys blocked,",
+        "FREE tags flipped... and every install is a handshake.",
+        "[whispers] One last whisker count...",
+        "[excited] then we shut his copycat shop DOWN!"
+      ],
+      "file": "/audio/voice/b97d9b6c2f508664.mp3"
+    },
+    {
+      "key": "6d8baf818bde7afb",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[excited] Final whisker count! App moments drifting past. Tap REAL DEAL for the checked and official... and COPYCAT TRICK for costumes and grabs. [warmly] Count every whisker - show me!",
+      "lines": [
+        "[excited] Final whisker count! App moments drifting past.",
+        "Tap REAL DEAL for the checked and official...",
+        "and COPYCAT TRICK for costumes and grabs.",
+        "[warmly] Count every whisker - show me!"
+      ],
+      "file": "/audio/voice/6d8baf818bde7afb.mp3"
+    },
+    {
+      "key": "848c14df9e5bbbac",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] Look at EVERYTHING you mastered this week! One real shop, whiskers counted, keys guarded, tags flipped... and every install a handshake. [laughs] His copycat shop just lost its last customer. [excited] Sticker time!",
+      "lines": [
+        "[excited] Look at EVERYTHING you mastered this week!",
+        "One real shop, whiskers counted, keys guarded,",
+        "tags flipped... and every install a handshake.",
+        "[laughs] His copycat shop just lost its last customer.",
+        "[excited] Sticker time!"
+      ],
+      "file": "/audio/voice/848c14df9e5bbbac.mp3"
     }
   ]
 }
