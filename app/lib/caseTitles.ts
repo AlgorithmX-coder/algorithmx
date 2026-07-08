@@ -70,6 +70,7 @@ const GAME_TITLES: Record<string, string> = {
   signBingo: "Sign Bingo",
   dayBalancer: "Day Balancer",
   plaquePeek: "Plaque Peek",
+  growthRings: "Growth Rings",
   hookSort: "Hook Sort",
   senderLineup: "Sender Lineup",
   stepOrder: "Step Order",

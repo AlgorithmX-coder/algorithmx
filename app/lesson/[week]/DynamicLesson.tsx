@@ -72,6 +72,7 @@ import TrailStamper from "@/app/components/exercises/TrailStamper";
 import SignBingo from "@/app/components/exercises/SignBingo";
 import DayBalancer from "@/app/components/exercises/DayBalancer";
 import PlaquePeek from "@/app/components/exercises/PlaquePeek";
+import GrowthRings from "@/app/components/exercises/GrowthRings";
 import HookSort from "@/app/components/exercises/HookSort";
 import SenderLineup from "@/app/components/exercises/SenderLineup";
 import StepOrder from "@/app/components/exercises/StepOrder";
@@ -173,6 +174,7 @@ const EXERCISE_SCREEN_TYPES = new Set<ScreenDef["type"]>([
   "signBingo",
   "dayBalancer",
   "plaquePeek",
+  "growthRings",
   "chatSimulator",
   "hookSort",
   "senderLineup",
@@ -1867,6 +1869,38 @@ function DynamicLessonInner({ qaEnabled }: { qaEnabled: boolean }) {
                 if (!o.wasCorrect) {
                   progress.reportWrong(screen, o.questionKey);
                 }
+              }}
+            />
+          </FullScene>
+        );
+
+      case "growthRings":
+        return (
+          <FullScene bg="linear-gradient(180deg, #140b2e 0%, #1e1440 100%)">
+            <GrowthRings
+              rings={def.rings}
+              introTitle={def.introTitle}
+              introSubtitle={def.introSubtitle}
+              introIcon={def.introIcon}
+              centerLabel={def.centerLabel}
+              revealToast={def.revealToast}
+              finale={def.finale}
+              completeTitle={def.completeTitle}
+              completeLine={def.completeLine}
+              introNarration={def.narration}
+              coachLines={def.coachLines}
+              onComplete={() => navigate(screen + 1)}
+              onCorrect={() => awardXp(25)}
+              onAnswered={(o) => {
+                // questionKey is "ring-{ringId}" — records the grow order;
+                // a REVEAL has no wrong answers by design.
+                progress.saveQuestion({
+                  screenIndex: screen,
+                  questionKey: o.questionKey,
+                  selectedIndex: o.selectedIndex,
+                  correctIndex: o.correctIndex,
+                  wasCorrect: o.wasCorrect,
+                });
               }}
             />
           </FullScene>

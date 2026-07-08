@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-08T11:42:07.039Z",
+  "generatedAt": "2026-07-08T12:05:38.553Z",
   "model": "eleven_v3",
   "voiceSettings": {
     "stability": 0.35,
@@ -2181,6 +2181,279 @@
         "[excited] Sticker time, Door Checker!"
       ],
       "file": "/audio/voice/a38fed1ef8ca06f2.mp3"
+    },
+    {
+      "key": "040f0d88eb38658b",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[excited] Week seventeen - the mirror-hall week! Social media's door has a sign: thirteen plus. [warmly] It's not a punishment. Promise. Those rooms are built grown-up-sized. And you? You're growing, ring by ring, like a tree. [excited] Come see what grows before you reach the sign!",
+      "lines": [
+        "[excited] Week seventeen - the mirror-hall week!",
+        "Social media's door has a sign: thirteen plus.",
+        "[warmly] It's not a punishment. Promise.",
+        "Those rooms are built grown-up-sized.",
+        "And you? You're growing, ring by ring, like a tree.",
+        "[excited] Come see what grows before you reach the sign!"
+      ],
+      "file": "/audio/voice/040f0d88eb38658b.mp3"
+    },
+    {
+      "key": "b44f8477bdd36471",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[excited] A tree slice of YOU! Every ring is a year of growing. Tap the glowing middle first... [warmly] and grow your way out to the sign!",
+      "lines": [
+        "[excited] A tree slice of YOU!",
+        "Every ring is a year of growing.",
+        "Tap the glowing middle first...",
+        "[warmly] and grow your way out to the sign!"
+      ],
+      "file": "/audio/voice/b44f8477bdd36471.mp3"
+    },
+    {
+      "key": "916b3c65c9f7258c",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "Start at the glowing centre ring - that one's you right now!",
+      "lines": [
+        "Start at the glowing centre ring - that one's you right now!"
+      ],
+      "file": "/audio/voice/916b3c65c9f7258c.mp3"
+    },
+    {
+      "key": "97fd3193c9a6fbb5",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] Power one - the sign makes sense now! Not a wall. A promise. [whispers] But some profiles are already out there, wide open... Time to learn the frost switch. Come on.",
+      "lines": [
+        "[excited] Power one - the sign makes sense now!",
+        "Not a wall. A promise.",
+        "[whispers] But some profiles are already out there, wide open...",
+        "Time to learn the frost switch. Come on."
+      ],
+      "file": "/audio/voice/97fd3193c9a6fbb5.mp3"
+    },
+    {
+      "key": "11b96101233c6852",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[whispers] Picture your profile as a mirror in a busy hall. Unlocked? Anyone can stare in. Your photos. Your name. Anyone. [warmly] So we frost it: PRIVATE, friends only. On his doors, frost hid tricks. On YOUR mirror, frost is armour. [excited] The settings burrow is open - flip those switches!",
+      "lines": [
+        "[whispers] Picture your profile as a mirror in a busy hall.",
+        "Unlocked? Anyone can stare in.",
+        "Your photos. Your name. Anyone.",
+        "[warmly] So we frost it: PRIVATE, friends only.",
+        "On his doors, frost hid tricks. On YOUR mirror, frost is armour.",
+        "[excited] The settings burrow is open - flip those switches!"
+      ],
+      "file": "/audio/voice/11b96101233c6852.mp3"
+    },
+    {
+      "key": "fc2b201a259c1e0b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] The settings burrow - dig in! Some switches are wide open to the hall. Find every one a stranger could stare through... [whispers] and frost it. Friends only. Go!",
+      "lines": [
+        "[excited] The settings burrow - dig in!",
+        "Some switches are wide open to the hall.",
+        "Find every one a stranger could stare through...",
+        "[whispers] and frost it. Friends only. Go!"
+      ],
+      "file": "/audio/voice/fc2b201a259c1e0b.mp3"
+    },
+    {
+      "key": "a37ff63b8bfa4f52",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Read each row - if strangers can see through it, tap it and flip it safe!",
+      "lines": [
+        "Read each row - if strangers can see through it, tap it and flip it safe!"
+      ],
+      "file": "/audio/voice/a37ff63b8bfa4f52.mp3"
+    },
+    {
+      "key": "9ccd57dbc892926e",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[excited] Two powers - the mirror is frosted! Strangers see armour. Friends see you. [whispers] But the hall has a counter that spins like a fruit machine... followers. Let's talk about that number.",
+      "lines": [
+        "[excited] Two powers - the mirror is frosted!",
+        "Strangers see armour. Friends see you.",
+        "[whispers] But the hall has a counter that spins like a fruit machine...",
+        "followers. Let's talk about that number."
+      ],
+      "file": "/audio/voice/9ccd57dbc892926e.mp3"
+    },
+    {
+      "key": "eba28f8bc06c08de",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[curious] See that counter spinning? Followers! Five hundred! Ten thousand! Ooooh! [warmly] Now the truth: a follower is a viewer. A friend knows your dog's name. Friends go in the heart frame. Everyone else - behind the rope. [excited] Follower cards incoming - sort the wall!",
+      "lines": [
+        "[curious] See that counter spinning? Followers!",
+        "Five hundred! Ten thousand! Ooooh!",
+        "[warmly] Now the truth: a follower is a viewer.",
+        "A friend knows your dog's name.",
+        "Friends go in the heart frame. Everyone else - behind the rope.",
+        "[excited] Follower cards incoming - sort the wall!"
+      ],
+      "file": "/audio/voice/eba28f8bc06c08de.mp3"
+    },
+    {
+      "key": "65634776771de6ce",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[excited] The photo wall - cards on the belt! One question for every card: do you KNOW them in real life? [warmly] Heart frame for yes. Rope for everyone else. Go!",
+      "lines": [
+        "[excited] The photo wall - cards on the belt!",
+        "One question for every card:",
+        "do you KNOW them in real life?",
+        "[warmly] Heart frame for yes. Rope for everyone else. Go!"
+      ],
+      "file": "/audio/voice/65634776771de6ce.mp3"
+    },
+    {
+      "key": "f4e72213477def24",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "First card's here - would they know your dog's name? Sort it!",
+      "lines": [
+        "First card's here - would they know your dog's name? Sort it!"
+      ],
+      "file": "/audio/voice/f4e72213477def24.mp3"
+    },
+    {
+      "key": "7137b156b71b16c8",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] Three powers - the counter can't dazzle you! Viewers watch. Friends KNOW. [whispers] Now, about the posts themselves... some drafts glow RED under the highlighter. Come see.",
+      "lines": [
+        "[excited] Three powers - the counter can't dazzle you!",
+        "Viewers watch. Friends KNOW.",
+        "[whispers] Now, about the posts themselves...",
+        "some drafts glow RED under the highlighter. Come see."
+      ],
+      "file": "/audio/voice/7137b156b71b16c8.mp3"
+    },
+    {
+      "key": "e862fdc7e31c7286",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[whispers] Every hero post starts as a draft... and every draft gets the highlighter. School names? RED. Times and places? RED. What you're wearing today? Red, red, red. [warmly] Happy news with no clues? Green and good to go. [excited] Pip's draft is on the desk - light it up!",
+      "lines": [
+        "[whispers] Every hero post starts as a draft...",
+        "and every draft gets the highlighter.",
+        "School names? RED. Times and places? RED.",
+        "What you're wearing today? Red, red, red.",
+        "[warmly] Happy news with no clues? Green and good to go.",
+        "[excited] Pip's draft is on the desk - light it up!"
+      ],
+      "file": "/audio/voice/e862fdc7e31c7286.mp3"
+    },
+    {
+      "key": "73b4e17db3fa3c7e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] The draft is on the desk! Run the highlighter over every line. Red for find-me clues... [whispers] green for safe-and-happy. Light it up!",
+      "lines": [
+        "[excited] The draft is on the desk!",
+        "Run the highlighter over every line.",
+        "Red for find-me clues...",
+        "[whispers] green for safe-and-happy. Light it up!"
+      ],
+      "file": "/audio/voice/73b4e17db3fa3c7e.mp3"
+    },
+    {
+      "key": "e697308900482eea",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Tap the first line and see what colour it glows!",
+      "lines": [
+        "Tap the first line and see what colour it glows!"
+      ],
+      "file": "/audio/voice/e697308900482eea.mp3"
+    },
+    {
+      "key": "1d6ea79400f79b37",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[excited] Four powers - no draft escapes the highlighter! Red scrubbed, green posted. [warmly] One power left, and it's the gentlest one... for the days the mirror hall makes you feel small.",
+      "lines": [
+        "[excited] Four powers - no draft escapes the highlighter!",
+        "Red scrubbed, green posted.",
+        "[warmly] One power left, and it's the gentlest one...",
+        "for the days the mirror hall makes you feel small."
+      ],
+      "file": "/audio/voice/1d6ea79400f79b37.mp3"
+    },
+    {
+      "key": "b6f7a1d1f944e104",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[warmly] Last power - and it's the gentlest. Every post in the hall sparkles. Perfect, perfect, perfect. [whispers] But feeds are highlight reels. Nobody posts the burnt toast or the soggy Tuesday. Comparing your backstage to their reel? Nobody wins that. [excited] Three sparkly moments coming - show me the pause!",
+      "lines": [
+        "[warmly] Last power - and it's the gentlest.",
+        "Every post in the hall sparkles. Perfect, perfect, perfect.",
+        "[whispers] But feeds are highlight reels.",
+        "Nobody posts the burnt toast or the soggy Tuesday.",
+        "Comparing your backstage to their reel? Nobody wins that.",
+        "[excited] Three sparkly moments coming - show me the pause!"
+      ],
+      "file": "/audio/voice/b6f7a1d1f944e104.mp3"
+    },
+    {
+      "key": "0d5f73dd89ed7b13",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[warmly] Three sparkly moments. Three chances to pause. Remember: reels show the shiny minute. Backstage is where real life lives - [excited] and yours is brilliant. Show me the pause!",
+      "lines": [
+        "[warmly] Three sparkly moments. Three chances to pause.",
+        "Remember: reels show the shiny minute.",
+        "Backstage is where real life lives -",
+        "[excited] and yours is brilliant. Show me the pause!"
+      ],
+      "file": "/audio/voice/0d5f73dd89ed7b13.mp3"
+    },
+    {
+      "key": "a10e42f25f1fbe1e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] That's all FIVE powers, Shield Bearer! The sign understood, the mirror frosted, the frame honest, the drafts scrubbed... and the reel seen through. [whispers] One last walk past the mirrors... [excited] then we close his hall for GOOD!",
+      "lines": [
+        "[excited] That's all FIVE powers, Shield Bearer!",
+        "The sign understood, the mirror frosted, the frame honest,",
+        "the drafts scrubbed... and the reel seen through.",
+        "[whispers] One last walk past the mirrors...",
+        "[excited] then we close his hall for GOOD!"
+      ],
+      "file": "/audio/voice/a10e42f25f1fbe1e.mp3"
+    },
+    {
+      "key": "f60b13318e2242f8",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] The Backstage Pass - final walk! Mirror-hall moments are drifting past. SHIELD MOVE for shield-bearer form... [warmly] MIRROR TRAP for the glittery tricks. Stamp them all!",
+      "lines": [
+        "[excited] The Backstage Pass - final walk!",
+        "Mirror-hall moments are drifting past.",
+        "SHIELD MOVE for shield-bearer form...",
+        "[warmly] MIRROR TRAP for the glittery tricks. Stamp them all!"
+      ],
+      "file": "/audio/voice/f60b13318e2242f8.mp3"
+    },
+    {
+      "key": "0f3f52228e179b49",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[excited] Look at EVERYTHING you mastered this week! The sign understood, the mirror frosted, the frame honest, the drafts scrubbed... and the reel seen through. [laughs] His hall of mirrors just went dark. [excited] Sticker time, Shield Bearer!",
+      "lines": [
+        "[excited] Look at EVERYTHING you mastered this week!",
+        "The sign understood, the mirror frosted,",
+        "the frame honest, the drafts scrubbed... and the reel seen through.",
+        "[laughs] His hall of mirrors just went dark.",
+        "[excited] Sticker time, Shield Bearer!"
+      ],
+      "file": "/audio/voice/0f3f52228e179b49.mp3"
     },
     {
       "key": "24e69e302153f951",

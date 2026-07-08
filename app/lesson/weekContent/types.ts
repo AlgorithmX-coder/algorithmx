@@ -1186,6 +1186,39 @@ export type ScreenDef = (
     }
   | {
       /**
+       * Growth Rings (Week 17). The tree-ring REVEAL drill: concentric
+       * rings light up ONE AT A TIME from the centre outward - tap the
+       * glowing ring and its story card slides in (what grows in that
+       * ring, and why the 13+ sign waits at the edge). Rings out of turn
+       * wobble; no wrong answers by design. The enforced centre-outward
+       * order separates it from RevealBoard's any-order flips.
+       */
+      type: "growthRings";
+      /** Rings in centre-outward order (4 recommended). */
+      rings: {
+        id: string;
+        /** Short ring label, e.g. "NOW · 6-9". */
+        label: string;
+        /** Emoji rendered via PixIcon on the story card. */
+        icon: string;
+        /** Story card headline. */
+        title: string;
+        /** Story card body - what grows in this ring. */
+        text: string;
+      }[];
+      /** Copy overrides (defaults keep the W17 tree skin). */
+      introTitle?: string;
+      introSubtitle?: string;
+      introIcon?: string;
+      centerLabel?: string;
+      revealToast?: string;
+      /** Line shown once every ring is lit. */
+      finale?: string;
+      completeTitle?: string;
+      completeLine?: string;
+    }
+  | {
+      /**
        * Plaque Peek (Week 16). The address-peephole INSPECT drill: one
        * link-door at a time wears a shiny sign claiming a destination.
        * The child lifts the plaque (mandatory, penalty-free) to reveal
