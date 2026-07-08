@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-08T10:12:06.852Z",
+  "generatedAt": "2026-07-08T10:39:17.579Z",
   "model": "eleven_v3",
   "voiceSettings": {
     "stability": 0.35,
@@ -1089,6 +1089,279 @@
         "[excited] Sticker time, Trail Ranger!"
       ],
       "file": "/audio/voice/2816dc69cd5a707c.mp3"
+    },
+    {
+      "key": "a78c1d42cd5c6bc1",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[excited] Week thirteen, hero - power week! Imagine a power bar floating over your head. Screen fun is brilliant... and it USES your charge. Sleep, snacks, running about, your people - those REFILL it. [warmly] Keepers don't pick one. They balance both. [excited] Day-moments are rolling in - let's sort them!",
+      "lines": [
+        "[excited] Week thirteen, hero - power week!",
+        "Imagine a power bar floating over your head.",
+        "Screen fun is brilliant... and it USES your charge.",
+        "Sleep, snacks, running about, your people - those REFILL it.",
+        "[warmly] Keepers don't pick one. They balance both.",
+        "[excited] Day-moments are rolling in - let's sort them!"
+      ],
+      "file": "/audio/voice/a78c1d42cd5c6bc1.mp3"
+    },
+    {
+      "key": "b94c7da9f8215426",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[excited] The Power Sorter is humming! Day-moments on the belt - sort every one. REFILLS to the left, USES CHARGE to the right. [warmly] Remember: using charge is fine. Heroes just keep it balanced!",
+      "lines": [
+        "[excited] The Power Sorter is humming!",
+        "Day-moments on the belt - sort every one.",
+        "REFILLS to the left, USES CHARGE to the right.",
+        "[warmly] Remember: using charge is fine. Heroes just keep it balanced!"
+      ],
+      "file": "/audio/voice/b94c7da9f8215426.mp3"
+    },
+    {
+      "key": "72a3bb9f48f11b34",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "Here comes the first moment - which slot does it belong in?",
+      "lines": [
+        "Here comes the first moment - which slot does it belong in?"
+      ],
+      "file": "/audio/voice/72a3bb9f48f11b34.mp3"
+    },
+    {
+      "key": "edd92a82abcf7571",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] Power one - you can READ a day now! Refills on one side, charge-users on the other. [whispers] But how do you know when the bar runs low? Your body rings little bells. Come listen...",
+      "lines": [
+        "[excited] Power one - you can READ a day now!",
+        "Refills on one side, charge-users on the other.",
+        "[whispers] But how do you know when the bar runs low?",
+        "Your body rings little bells. Come listen..."
+      ],
+      "file": "/audio/voice/edd92a82abcf7571.mp3"
+    },
+    {
+      "key": "7ca92163acde6748",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[warmly] Here's a secret: your body TALKS to you. When the battery runs low, it rings little bells. Scratchy eyes. Jiggly legs. A snappy voice. A forgotten tummy. [whispers] Only you can hear them... [excited] and hearing one means you caught the Thief EARLY. Four scenes coming up - spot the bell in each one!",
+      "lines": [
+        "[warmly] Here's a secret: your body TALKS to you.",
+        "When the battery runs low, it rings little bells.",
+        "Scratchy eyes. Jiggly legs. A snappy voice. A forgotten tummy.",
+        "[whispers] Only you can hear them...",
+        "[excited] and hearing one means you caught the Thief EARLY.",
+        "Four scenes coming up - spot the bell in each one!"
+      ],
+      "file": "/audio/voice/7ca92163acde6748.mp3"
+    },
+    {
+      "key": "eee7c8149f33ab43",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] Bingo card ready - four bells on it! A scene plays... somebody's body is ringing. Tap the sign you spot, [excited] and fill the whole card. Go!",
+      "lines": [
+        "[excited] Bingo card ready - four bells on it!",
+        "A scene plays... somebody's body is ringing.",
+        "Tap the sign you spot,",
+        "[excited] and fill the whole card. Go!"
+      ],
+      "file": "/audio/voice/eee7c8149f33ab43.mp3"
+    },
+    {
+      "key": "ff5682f1a5b04960",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Read Maya's scene - which body-bell is ringing? Tap it on the card!",
+      "lines": [
+        "Read Maya's scene - which body-bell is ringing? Tap it on the card!"
+      ],
+      "file": "/audio/voice/ff5682f1a5b04960.mp3"
+    },
+    {
+      "key": "814c7381aa4ab8f3",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[excited] Two powers - you can HEAR your battery now! Four bells, four early warnings. [whispers] But the Thief's biggest steal happens after dark... He's after the biggest recharge of all. Your sleep.",
+      "lines": [
+        "[excited] Two powers - you can HEAR your battery now!",
+        "Four bells, four early warnings.",
+        "[whispers] But the Thief's biggest steal happens after dark...",
+        "He's after the biggest recharge of all. Your sleep."
+      ],
+      "file": "/audio/voice/814c7381aa4ab8f3.mp3"
+    },
+    {
+      "key": "88cc908b48ffbcf8",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[warmly] Now for the biggest recharge of all: sleep. Screen light is like a tiny sun. Show it to your brain at bedtime and it shouts: [excited] 'It's DAYTIME! Stay awake!' [whispers] So the screen sleeps in the garage... and the moon does the rest. Three bedtime moments - make the Keeper's call!",
+      "lines": [
+        "[warmly] Now for the biggest recharge of all: sleep.",
+        "Screen light is like a tiny sun.",
+        "Show it to your brain at bedtime and it shouts:",
+        "[excited] 'It's DAYTIME! Stay awake!'",
+        "[whispers] So the screen sleeps in the garage... and the moon does the rest.",
+        "Three bedtime moments - make the Keeper's call!"
+      ],
+      "file": "/audio/voice/88cc908b48ffbcf8.mp3"
+    },
+    {
+      "key": "24e8bb0440ef3e69",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[warmly] Three bedtime moments. One golden rule. Screens sleep in the garage - [whispers] so the moon can do its work. [excited] Show me the Keeper's moves!",
+      "lines": [
+        "[warmly] Three bedtime moments. One golden rule.",
+        "Screens sleep in the garage -",
+        "[whispers] so the moon can do its work.",
+        "[excited] Show me the Keeper's moves!"
+      ],
+      "file": "/audio/voice/24e8bb0440ef3e69.mp3"
+    },
+    {
+      "key": "70cbbf96e041c564",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] Three powers - your sleep is GUARDED! Chime rings, tablet parks, moon works. [warmly] Now, who helps you plan the whole day? Not a boss. A teammate. Come and meet the see-saw...",
+      "lines": [
+        "[excited] Three powers - your sleep is GUARDED!",
+        "Chime rings, tablet parks, moon works.",
+        "[warmly] Now, who helps you plan the whole day?",
+        "Not a boss. A teammate. Come and meet the see-saw..."
+      ],
+      "file": "/audio/voice/70cbbf96e041c564.mp3"
+    },
+    {
+      "key": "687981d5a3dd3c2a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[warmly] Nobody likes rules dumped on them. So Keepers don't get rules. They BUILD plans. You and a grown-up, agreeing it together - screen time AND recharge time. Then you both sign. [excited] And the fun stays in! Balance means some, not none. One day is tipping over with screens - let's fix it together!",
+      "lines": [
+        "[warmly] Nobody likes rules dumped on them.",
+        "So Keepers don't get rules. They BUILD plans.",
+        "You and a grown-up, agreeing it together -",
+        "screen time AND recharge time. Then you both sign.",
+        "[excited] And the fun stays in! Balance means some, not none.",
+        "One day is tipping over with screens - let's fix it together!"
+      ],
+      "file": "/audio/voice/687981d5a3dd3c2a.mp3"
+    },
+    {
+      "key": "60720de3541026e1",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] Look at this day - the see-saw's tipping right over! One screen block at a time will light up. Swap it for a REAL recharge... [whispers] but watch out. Some swaps are screens in disguise!",
+      "lines": [
+        "[excited] Look at this day - the see-saw's tipping right over!",
+        "One screen block at a time will light up.",
+        "Swap it for a REAL recharge...",
+        "[whispers] but watch out. Some swaps are screens in disguise!"
+      ],
+      "file": "/audio/voice/60720de3541026e1.mp3"
+    },
+    {
+      "key": "c423e8fa52f81f43",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Read the glowing block's story - then pick the swap with NO screen hiding in it!",
+      "lines": [
+        "Read the glowing block's story - then pick the swap with NO screen hiding in it!"
+      ],
+      "file": "/audio/voice/c423e8fa52f81f43.mp3"
+    },
+    {
+      "key": "99667f85b4693ce6",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[excited] Four powers - and a co-signed plan! The see-saw sits level, fun still aboard. [warmly] One skill left, and it's the trickiest: actually STOPPING. Pros make it look easy. Let's learn how.",
+      "lines": [
+        "[excited] Four powers - and a co-signed plan!",
+        "The see-saw sits level, fun still aboard.",
+        "[warmly] One skill left, and it's the trickiest:",
+        "actually STOPPING. Pros make it look easy. Let's learn how."
+      ],
+      "file": "/audio/voice/99667f85b4693ce6.mp3"
+    },
+    {
+      "key": "b7f174d53d7e8014",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[warmly] Last power - and it's the one pros brag about. Anyone can be dragged off a screen, moaning. A pro powers OFF. Five smooth moves: finish, say bye, screen off, park it, pick what's next. [excited] Same five every time - till it's easy. The launchpad's ready. Show me the Power-Down Five!",
+      "lines": [
+        "[warmly] Last power - and it's the one pros brag about.",
+        "Anyone can be dragged off a screen, moaning.",
+        "A pro powers OFF. Five smooth moves:",
+        "finish, say bye, screen off, park it, pick what's next.",
+        "[excited] Same five every time - till it's easy.",
+        "The launchpad's ready. Show me the Power-Down Five!"
+      ],
+      "file": "/audio/voice/b7f174d53d7e8014.mp3"
+    },
+    {
+      "key": "73370a6746176e28",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[excited] The Power-Down Five, all shuffled up! Tap the moves in a pro's order. Where does a smooth ending START? [whispers] Think it through... then go!",
+      "lines": [
+        "[excited] The Power-Down Five, all shuffled up!",
+        "Tap the moves in a pro's order.",
+        "Where does a smooth ending START?",
+        "[whispers] Think it through... then go!"
+      ],
+      "file": "/audio/voice/73370a6746176e28.mp3"
+    },
+    {
+      "key": "ce50da37ed8cbe20",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "What's a pro's FIRST move when the chime rings? Tap it!",
+      "lines": [
+        "What's a pro's FIRST move when the chime rings? Tap it!"
+      ],
+      "file": "/audio/voice/ce50da37ed8cbe20.mp3"
+    },
+    {
+      "key": "be3a808d914cc658",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] That's all FIVE powers, Battery Keeper! Bar read, bells heard, sleep guarded, plan co-signed... and endings YOU choose. [whispers] One final battery check... [excited] then we take back every drop he stole!",
+      "lines": [
+        "[excited] That's all FIVE powers, Battery Keeper!",
+        "Bar read, bells heard, sleep guarded,",
+        "plan co-signed... and endings YOU choose.",
+        "[whispers] One final battery check...",
+        "[excited] then we take back every drop he stole!"
+      ],
+      "file": "/audio/voice/be3a808d914cc658.mp3"
+    },
+    {
+      "key": "cd933b753ed8958b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] Final check - the Recharge Race! Choices are drifting past the scanner. POWER UP for the green-bar moves... [warmly] POWER DRAIN for the Thief's tricks. Scan!",
+      "lines": [
+        "[excited] Final check - the Recharge Race!",
+        "Choices are drifting past the scanner.",
+        "POWER UP for the green-bar moves...",
+        "[warmly] POWER DRAIN for the Thief's tricks. Scan!"
+      ],
+      "file": "/audio/voice/cd933b753ed8958b.mp3"
+    },
+    {
+      "key": "a64391893edefce7",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[excited] Look at EVERYTHING you mastered this week! The bar, the bells, the garage, the co-signed plan... and the Power-Down Five. [laughs] The Battery Thief just went hungry. [excited] Sticker time, Battery Keeper!",
+      "lines": [
+        "[excited] Look at EVERYTHING you mastered this week!",
+        "The bar, the bells, the garage,",
+        "the co-signed plan... and the Power-Down Five.",
+        "[laughs] The Battery Thief just went hungry.",
+        "[excited] Sticker time, Battery Keeper!"
+      ],
+      "file": "/audio/voice/a64391893edefce7.mp3"
     },
     {
       "key": "24e69e302153f951",

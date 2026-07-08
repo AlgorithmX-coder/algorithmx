@@ -67,6 +67,8 @@ const GAME_TITLES: Record<string, string> = {
   teamPoster: "Team Poster",
   snowballChase: "Snowball Chase",
   trailStamper: "Trail Stamper",
+  signBingo: "Sign Bingo",
+  dayBalancer: "Day Balancer",
   hookSort: "Hook Sort",
   senderLineup: "Sender Lineup",
   stepOrder: "Step Order",

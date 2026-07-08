@@ -1104,6 +1104,88 @@ export type ScreenDef = (
     }
   | {
       /**
+       * Sign Bingo (Week 13). The bingo-card SELECT drill: a 2×2 card of
+       * body-signs, one scene at a time playing above it. Tap the sign
+       * the scene shows → the square stamps; wrong taps teach gently and
+       * replay the scene. All four stamped → BINGO. Distinct from
+       * buttonHunt (find controls) and quickCheck recall (one question).
+       */
+      type: "signBingo";
+      /** The card squares (4 recommended). */
+      signs: {
+        id: string;
+        label: string;
+        /** Emoji rendered via PixIcon on the square. */
+        icon: string;
+      }[];
+      rounds: {
+        id: string;
+        /** The mini scene played above the card. */
+        scene: string;
+        /** Emoji badge on the scene card. */
+        sceneIcon?: string;
+        /** Which sign this scene shows. */
+        signId: string;
+        /** Teach copy on a wrong tap for this scene. */
+        note: string;
+      }[];
+      /** Copy overrides (defaults keep the W13 body-bell skin). */
+      introTitle?: string;
+      introSubtitle?: string;
+      introIcon?: string;
+      cardTitle?: string;
+      stampToast?: string;
+      wrongTitle?: string;
+      completeTitle?: string;
+      completeLine?: string;
+      hints?: { tier1: string; tier2: string };
+    }
+  | {
+      /**
+       * Day Balancer (Week 13). The see-saw BUILD drill: a day plan
+       * tipping over with screen blocks. One block at a time lights up
+       * and the child swaps it for a replacement - the decoys are FAKE
+       * recharges (screens in disguise). Each true swap lifts the plank
+       * a step; it ends level with screen blocks still aboard (balance
+       * means SOME, not none) and a grown-up co-signs the plan.
+       */
+      type: "dayBalancer";
+      /** Screen blocks that STAY on the plank (balance keeps the fun). */
+      keptBlocks: { label: string; icon: string }[];
+      swaps: {
+        id: string;
+        /** The highlighted screen block's story. */
+        story: string;
+        /** Chip label/icon for the block on the screen side. */
+        blockLabel: string;
+        blockIcon: string;
+        /** Three options; exactly one isBalancing. */
+        options: {
+          label: string;
+          /** Emoji rendered via PixIcon on the card. */
+          icon: string;
+          isBalancing: boolean;
+          /** Teach copy when a fake-recharge decoy is picked. */
+          note: string;
+        }[];
+      }[];
+      /** Copy overrides (defaults keep the W13 day-plan skin). */
+      introTitle?: string;
+      introSubtitle?: string;
+      introIcon?: string;
+      meterLabel?: string;
+      leftLabel?: string;
+      rightLabel?: string;
+      swapToast?: string;
+      wrongTitle?: string;
+      /** The grown-up sign-off line on the complete beat. */
+      cosignLine?: string;
+      completeTitle?: string;
+      completeLine?: string;
+      hints?: { tier1: string; tier2: string };
+    }
+  | {
+      /**
        * Step Order (Week 5+). The stepping-stones ORDER game: shuffled
        * step tiles below a river; tap them in the order you'd do them
        * and each hops onto the next stone. Gentle - a wrong tap wobbles
