@@ -65,6 +65,7 @@ import ConveyorSort from "@/app/components/exercises/ConveyorSort";
 import RequestInspector from "@/app/components/exercises/RequestInspector";
 import ProfileInspector from "@/app/components/exercises/ProfileInspector";
 import ReplyCards from "@/app/components/exercises/ReplyCards";
+import ClueBoard from "@/app/components/exercises/ClueBoard";
 import HookSort from "@/app/components/exercises/HookSort";
 import SenderLineup from "@/app/components/exercises/SenderLineup";
 import StepOrder from "@/app/components/exercises/StepOrder";
@@ -159,6 +160,7 @@ const EXERCISE_SCREEN_TYPES = new Set<ScreenDef["type"]>([
   "requestInspector",
   "profileInspector",
   "replyCards",
+  "clueBoard",
   "chatSimulator",
   "hookSort",
   "senderLineup",
@@ -1480,6 +1482,13 @@ function DynamicLessonInner({ qaEnabled }: { qaEnabled: boolean }) {
             <ConveyorSort
               categories={def.categories}
               items={def.items}
+              introTitle={def.introTitle}
+              introSubtitle={def.introSubtitle}
+              introIcon={def.introIcon}
+              machineLabel={def.machineLabel}
+              chuteWord={def.chuteWord}
+              completeTitle={def.completeTitle}
+              completeLine={def.completeLine}
               hints={def.hints}
               introNarration={def.narration}
               coachLines={def.coachLines}
@@ -1574,6 +1583,50 @@ function DynamicLessonInner({ qaEnabled }: { qaEnabled: boolean }) {
               introTitle={def.introTitle}
               introSubtitle={def.introSubtitle}
               introIcon={def.introIcon}
+              pickLabel={def.pickLabel}
+              roundNoun={def.roundNoun}
+              correctToast={def.correctToast}
+              wrongTitle={def.wrongTitle}
+              completeTitle={def.completeTitle}
+              completeLine={def.completeLine}
+              scoreNoun={def.scoreNoun}
+              hints={def.hints}
+              introNarration={def.narration}
+              coachLines={def.coachLines}
+              onComplete={() => navigate(screen + 1)}
+              onCorrect={() => awardXp(25)}
+              onWrong={() => addWrong(screen)}
+              onHintReached={(tier) => progress.reportHint(screen, tier)}
+              onAnswered={(o) => {
+                progress.saveQuestion({
+                  screenIndex: screen,
+                  questionKey: o.questionKey,
+                  selectedIndex: o.selectedIndex,
+                  correctIndex: o.correctIndex,
+                  wasCorrect: o.wasCorrect,
+                });
+                if (!o.wasCorrect) {
+                  progress.reportWrong(screen, o.questionKey);
+                }
+              }}
+            />
+          </FullScene>
+        );
+
+      case "clueBoard":
+        return (
+          <FullScene bg="linear-gradient(180deg, #0a0704 0%, #1d1408 100%)">
+            <ClueBoard
+              introTitle={def.introTitle}
+              introSubtitle={def.introSubtitle}
+              introIcon={def.introIcon}
+              photoTitle={def.photoTitle}
+              photoIcon={def.photoIcon}
+              clues={def.clues}
+              verdict={def.verdict}
+              stampText={def.stampText}
+              completeTitle={def.completeTitle}
+              completeLine={def.completeLine}
               hints={def.hints}
               introNarration={def.narration}
               coachLines={def.coachLines}

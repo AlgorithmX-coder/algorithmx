@@ -58,6 +58,19 @@ const GAME_TITLES: Record<string, string> = {
   protectTheData: "Protect the Data",
   cyberMaze: "Cyber Maze",
   chatSimulator: "Chat Simulator",
+  reveal: "Reveal Board",
+  conveyorSort: "Sorting Machine",
+  requestInspector: "Request Inspector",
+  profileInspector: "Profile Detective",
+  replyCards: "Reply Cards",
+  clueBoard: "Clue Board",
+  hookSort: "Hook Sort",
+  senderLineup: "Sender Lineup",
+  stepOrder: "Step Order",
+  settingsSwitch: "Settings Sweep",
+  buttonHunt: "Button Hunt",
+  usernameBuilder: "Username Builder",
+  vaultDrop: "Vault Drop",
 };
 
 /**
@@ -67,7 +80,7 @@ const GAME_TITLES: Record<string, string> = {
  * in Week 1's 23-screen structure). Prefer this for any data-driven lesson.
  */
 export function deriveCaseMeta(
-  def: { type: string; title?: string } | null | undefined,
+  def: { type: string; title?: string; introTitle?: string } | null | undefined,
   index: number,
 ): CaseMeta | null {
   if (!def) return null;
@@ -97,6 +110,8 @@ export function deriveCaseMeta(
     case "completion":
       return { label: "VICTORY", title: "Week Complete" };
     default:
-      return { label: "DRILL", title: GAME_TITLES[def.type] ?? "Training Drill" };
+      // Prefer the week's own dressing ("The Banner X-Ray") over the
+      // generic engine name ("Phish Inspector").
+      return { label: "DRILL", title: def.introTitle ?? GAME_TITLES[def.type] ?? "Training Drill" };
   }
 }

@@ -35,7 +35,7 @@ Every pattern use across all 20 weeks, each with its unique dressing. **Rule: be
 | W3.3 | **Message Sorting Machine** *(BUILT — conveyorSort's first-ever outing)* — chat messages ride the belt; green FRIENDLY chute vs red RED FLAG chute (new red "flag" tone) |
 | W4.1 | **The Fishing Dock** *(BUILT — new hookSort)* — one message dangles per line; REEL IN (real) or CUT THE LINE (scam), no timer, one catch in play |
 | W5.1 | **Kind-or-Mean machine** *(BUILT — conveyorSort re-dress: BOTH LAUGHING safe chute vs MEAN ON PURPOSE flag chute; chat-moment cards, two weeks after its W3 outing in a different domain)* |
-| W8.4 | **Theatre doors** — a photo walks toward three doors (Friends / School / Whole World); open the right door for each |
+| W8.4 | **Theatre doors** *(BUILT as "The Theatre of Doors" — conveyorSort's first THREE-category outing via new introTitle/introSubtitle/introIcon/machineLabel/chuteWord/completeTitle/completeLine props; 8 photos sorted to FRIENDS/SCHOOL/WHOLE WORLD by the smallest-door rule)* — a photo walks toward three doors (Friends / School / Whole World); open the right door for each |
 | W9.1 | **Shop shelves** — app boxes slide in; shelve in the bright Official Store or the back-alley crate |
 | W13.1 | **Day-wheel** — drag activity tiles onto a big clock face; screen tiles glow blue, real-life tiles glow gold; balance the wheel |
 | W14.1 | **Room sweep** — a cosy 3D room; tap each object and swipe to EARS (it listens) or SLEEPS (it doesn't) trays |
@@ -52,7 +52,7 @@ Every pattern use across all 20 weeks, each with its unique dressing. **Rule: be
 | W4.3 | **The Trick Inspector** *(BUILT — phishInspector's first week outing, re-dressed)* — 4 inspect zones per message with urgency/fear focus; ZAP-or-SAFE verdict unlocks after full inspection |
 | W6.5 | **The Download Checker** *(BUILT — requestInspector re-dress via new badgeLabel/intro/verdict props)* — mod download pages with 4 inspect zones; "Looks safe — ask first!" vs "It's a trap — close it!" |
 | W7.3 | **Banner X-ray slider** *(BUILT as "The Banner X-Ray" — phishInspector re-dress via new zoneLabels prop: "Who's selling? / What's the button? / How does it rush you? / What's it promising?"; 3 shop banners, 2 tricks + 1 fair offer; note: small default zone subtexts "Check the sender" etc. not yet overridable — candidate polish)* — drag an X-ray bar across a shop banner; pressure tricks glow through the paint |
-| W8.3 | **Detective corkboard** (film tie-in) — the photo pinned centre; drag string from clue (crest, sign, pin) to what it gives away |
+| W8.3 | **Detective corkboard** *(BUILT as "The Picture Detective" — NEW clueBoard engine: photo pinned centre with 4 tappable clue chips (crest/sign/banner/name label), red-thread evidence cards pin beside it, share-or-scrub verdict + CASE CLOSED stamp; re-dressable via intro/photo/verdict/stamp props for W12 telescope / W16 peephole / W17 highlighter)* (film tie-in) — the photo pinned centre; drag string from clue (crest, sign, pin) to what it gives away |
 | W9.3 | **Permission gate** — a torch app asks; flip each permission tile to see IF the app truly needs it; leave greedy ones down |
 | W12.5 | **Trail telescope** — pan a telescope across your own trail in the snow; flag any oversharing track |
 | W15.2 | **Fact-checker's desk** — bot answer on one side, the real book on the other; tap the sentence that doesn't match the book |
@@ -87,7 +87,7 @@ Every pattern use across all 20 weeks, each with its unique dressing. **Rule: be
 | W3.1 | **The Disguise Kit** *(BUILT — reveal board re-dress)* — four disguise pieces (photo/age/name/friendliness); flip each → the trick behind it |
 | W5.2 | **Pop the Doubt Clouds** *(BUILT — RevealBoard with new boardIcon prop, 💬 not the Raccoon)* — four grey doubt-clouds ("it's my fault…"); each pops into the supportive truth |
 | W7.2 | **Loot-box glass** *(BUILT as "The Glass Loot Box" — RevealBoard re-dress, 🎁 boardIcon; 4 boxes: shiny crate → 1-gold-in-100-marbles odds, "SO close!" feeling → designed on purpose, "next one's THE one" → same odds every time, price tag → real money every open)* — an exciting crate; tap to make it glass → see the 100-marble odds jar inside (1 gold, 99 grey) |
-| W8.1 | **Copy pigeons** (film tie-in) — delete a shared photo → it vanishes locally but paper pigeons stay on every rooftop |
+| W8.1 | **Copy pigeons** *(BUILT as "The Copy Pigeons" — RevealBoard re-dress, ✉️ board; 4 moments: DELETE only empties your nest / screenshot = unreachable copy / group chat = 8 pigeons / the app keeps one too)* (film tie-in) — delete a shared photo → it vanishes locally but paper pigeons stay on every rooftop |
 | W9.4 | **Price-tag flip** — a FREE app; flip the tag → the real costs slide out (ads, purchases, your data icons) |
 | W10.1 | **Conveyor curtain** — press NEXT twice → curtain pulls back on the raccoon greasing the next-video conveyor |
 | W11.1 | **Weight lift** — a heavy "my fault" boulder on a kid figure; tap → it deflates into a balloon reading NOT-YOUR-FAULT (icon) and floats away |
@@ -112,7 +112,7 @@ Every pattern use across all 20 weeks, each with its unique dressing. **Rule: be
 | W3.4 | **Reply cards fan** *(BUILT — new replyCards)* — three tilted reply cards fan out per incoming message; the safe one slots into the chat with a green glow |
 | W4.4 | **The Lookalike Lineup** *(BUILT — new senderLineup)* — four sender badges on podiums, exactly one lookalike (swapped letters, weird address); tap it → IMPOSTER! stamp |
 | W5.4 | **The Four Doors** *(BUILT — replyCards new DOORS skin, 4 choices)* — arched golden doors per scenario; laugh-along/forward/ignore/support — only the kind door is the hero's |
-| W8.5 | **Share lever** — one photo, big brass SHARE/DON'T levers; sound-off decidable from the photo's clues |
+| W8.5 | **Share lever** *(BUILT as "The Share Lever" — replyCards' new LEVERS skin (identical brass levers, no answer giveaway) + new copy-override props (pickLabel/roundNoun/correctToast/wrongTitle/completeTitle/completeLine/scoreNoun); 5 photos judged by look-think-ask)* — one photo, big brass SHARE/DON'T levers; sound-off decidable from the photo's clues |
 | W9.2 | **Icon parade** — five near-identical cat app icons march past; tap the genuine one (rosette), the copycat's eyes cross |
 | W11.4 | **Camera vs bin** — a nasty message with two buttons; tap CAMERA (screenshot) not BIN — camera freezes it into an evidence frame |
 | W15.4 | **Odd shadow out** — four photos, one AI-faked (wrong-way shadow, six fingers); tap the fake, it wobbles apart |
@@ -214,7 +214,7 @@ Format per beat: **Learn** (the one idea, narrated) · **Game** (ledger dressing
 - **Film/palette:** detective corkboard + paper pigeons; sepia + red string. **Badge:** "Photo Detective" (PixIcon magnifier-over-photo).
 - **Mission brief:** shared means out forever · photos talk · ask before posting others.
 - Beat 1 — *Once shared, it's out.* Learn: screenshots exist; delete doesn't reach the copies. Game: REVEAL **copy pigeons**. Prove: FINISH-THE-RULE "Once it's shared, it's ___" (out).
-- Beat 2 — *Ask before posting someone else.* Learn: consent both ways. Game: DECIDE (chooseYourPath re-dress: **superhero-pose consent** — friend in your photo; ask first? she strikes the pose from the film). Prove: ONE-TAP-RECALL what do you do first?
+- Beat 2 — *Ask before posting someone else.* Learn: consent both ways. Game: DECIDE (chooseYourPath re-dress: **superhero-pose consent** — friend in your photo; ask first? she strikes the pose from the film) *(BUILT — 3 scenarios: mid-sneeze photo → show-her-first (she picks her superhero pose), little brother's faceplant video → ask him + grown-up, just-for-you selfie → never forward)*. Prove: ONE-TAP-RECALL what do you do first?
 - Beat 3 — *What a photo gives away (geotag home).* Learn: uniform=school, street sign=home, pin=location. Game: INSPECT **detective corkboard**. Prove: SPEED tap the giveaway in the photo.
 - Beat 4 — *Who can actually see it.* Learn: friends reshare; public = everyone, forever. Game: SORT **theatre doors**. Prove: CATCH-THE-LIE "Private means safe forever."
 - Beat 5 — *Think before you share.* Learn: happy for EVERYONE to see it? Game: SELECT **share lever**. Prove: PUT-IN-ORDER look → think → ask.

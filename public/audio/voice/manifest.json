@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-08T07:57:51.237Z",
+  "generatedAt": "2026-07-08T08:29:23.690Z",
   "model": "eleven_v3",
   "voiceSettings": {
     "stability": 0.35,
@@ -1864,6 +1864,279 @@
         "[excited] The trap shop is OUT of business. Sticker time!"
       ],
       "file": "/audio/voice/9d320e28348ce869.mp3"
+    },
+    {
+      "key": "249ce7f81443d7a6",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[excited] Welcome back, Cyber Hero! Big photo secret today. You share a picture... and it flies off like a paper pigeon. To your friend's phone. The group chat. The app's computers. [whispers] Then you press DELETE... but only YOUR copy disappears. The pigeons are already on every rooftop. [warmly] Let's watch it happen - tap and see!",
+      "lines": [
+        "[excited] Welcome back, Cyber Hero! Big photo secret today.",
+        "You share a picture... and it flies off like a paper pigeon.",
+        "To your friend's phone. The group chat. The app's computers.",
+        "[whispers] Then you press DELETE... but only YOUR copy disappears.",
+        "The pigeons are already on every rooftop.",
+        "[warmly] Let's watch it happen - tap and see!"
+      ],
+      "file": "/audio/voice/249ce7f81443d7a6.mp3"
+    },
+    {
+      "key": "6f7ba12aaeb4bbe5",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[whispers] Ready to see where photos REALLY go? Tap each moment on the board... and watch the copy pigeons take off. [excited] Once you see them, you'll never unsee them!",
+      "lines": [
+        "[whispers] Ready to see where photos REALLY go?",
+        "Tap each moment on the board...",
+        "and watch the copy pigeons take off.",
+        "[excited] Once you see them, you'll never unsee them!"
+      ],
+      "file": "/audio/voice/6f7ba12aaeb4bbe5.mp3"
+    },
+    {
+      "key": "558abc53f6145952",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "Tap the DELETE button first - watch what it really does!",
+      "lines": [
+        "Tap the DELETE button first - watch what it really does!"
+      ],
+      "file": "/audio/voice/558abc53f6145952.mp3"
+    },
+    {
+      "key": "19317427117287c5",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] Power one - unlocked! You watched the pigeons fly and DELETE grab at empty air. [warmly] Shared means out. Forever. [whispers] But what if the photo isn't just... yours?",
+      "lines": [
+        "[excited] Power one - unlocked!",
+        "You watched the pigeons fly and DELETE grab at empty air.",
+        "[warmly] Shared means out. Forever.",
+        "[whispers] But what if the photo isn't just... yours?"
+      ],
+      "file": "/audio/voice/19317427117287c5.mp3"
+    },
+    {
+      "key": "cd4a49374992a96a",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[warmly] Quick question, hero. Your friend's face in a photo... whose is it? Theirs! So posting it is THEIR call too. Before you post or forward anyone - you ask. [whispers] Even when it's hilarious. ESPECIALLY when it's hilarious. And if a photo of YOU goes up? You can ask for it down. [excited] Three tricky moments coming - show me the ask!",
+      "lines": [
+        "[warmly] Quick question, hero. Your friend's face in a photo...",
+        "whose is it? Theirs! So posting it is THEIR call too.",
+        "Before you post or forward anyone - you ask.",
+        "[whispers] Even when it's hilarious. ESPECIALLY when it's hilarious.",
+        "And if a photo of YOU goes up? You can ask for it down.",
+        "[excited] Three tricky moments coming - show me the ask!"
+      ],
+      "file": "/audio/voice/cd4a49374992a96a.mp3"
+    },
+    {
+      "key": "3391e3d2a6e5790c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[warmly] Three moments. Three faces that aren't yours. Each time, something will whisper 'just post it!' [whispers] That whisper is your signal to ask first. [excited] Their face, their call - show me!",
+      "lines": [
+        "[warmly] Three moments. Three faces that aren't yours.",
+        "Each time, something will whisper 'just post it!'",
+        "[whispers] That whisper is your signal to ask first.",
+        "[excited] Their face, their call - show me!"
+      ],
+      "file": "/audio/voice/3391e3d2a6e5790c.mp3"
+    },
+    {
+      "key": "fa6b2c894425832a",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[excited] Two powers! The ask-first rule is locked in. Sneezes, faceplants, just-for-you selfies... [laughs] not one pigeon escaped on your watch. [whispers] Now grab your magnifying glass, detective...",
+      "lines": [
+        "[excited] Two powers! The ask-first rule is locked in.",
+        "Sneezes, faceplants, just-for-you selfies...",
+        "[laughs] not one pigeon escaped on your watch.",
+        "[whispers] Now grab your magnifying glass, detective..."
+      ],
+      "file": "/audio/voice/fa6b2c894425832a.mp3"
+    },
+    {
+      "key": "591a140ee1b160b0",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[whispers] Lean in, detective. Photos... talk. A school crest whispers which school is yours. A street sign points right at your front door. [nervous] And strangers can read every word. [warmly] So we check the background BEFORE it flies. [excited] One photo. Four clues. Pin them all to the board!",
+      "lines": [
+        "[whispers] Lean in, detective. Photos... talk.",
+        "A school crest whispers which school is yours.",
+        "A street sign points right at your front door.",
+        "[nervous] And strangers can read every word.",
+        "[warmly] So we check the background BEFORE it flies.",
+        "[excited] One photo. Four clues. Pin them all to the board!"
+      ],
+      "file": "/audio/voice/591a140ee1b160b0.mp3"
+    },
+    {
+      "key": "f35d33b8557e9497",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] Your first case, Picture Detective! One happy birthday photo... four leaky clues. Tap each clue to pin its evidence to the board. [whispers] Then make the call: share it... or scrub it?",
+      "lines": [
+        "[excited] Your first case, Picture Detective!",
+        "One happy birthday photo... four leaky clues.",
+        "Tap each clue to pin its evidence to the board.",
+        "[whispers] Then make the call: share it... or scrub it?"
+      ],
+      "file": "/audio/voice/f35d33b8557e9497.mp3"
+    },
+    {
+      "key": "a33141f97095e355",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Start anywhere - tap a clue on the photo to pin it!",
+      "lines": [
+        "Start anywhere - tap a clue on the photo to pin it!"
+      ],
+      "file": "/audio/voice/a33141f97095e355.mp3"
+    },
+    {
+      "key": "838254a4240a108c",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[excited] Three powers, detective! Crest, sign, banner, name tag - all pinned and busted. [warmly] Backgrounds can't sneak past you now. [whispers] Next: even a CLEAN photo needs the right door...",
+      "lines": [
+        "[excited] Three powers, detective!",
+        "Crest, sign, banner, name tag - all pinned and busted.",
+        "[warmly] Backgrounds can't sneak past you now.",
+        "[whispers] Next: even a CLEAN photo needs the right door..."
+      ],
+      "file": "/audio/voice/838254a4240a108c.mp3"
+    },
+    {
+      "key": "6b52683dcda1bb24",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[warmly] Picture a theatre with three doors. A little door for friends. A middle door for school. And a HUGE door marked... whole world. [whispers] Whatever walks through a door can't walk back out. So heroes pick the smallest door that fits. [excited] The photos are lining up - be the door keeper!",
+      "lines": [
+        "[warmly] Picture a theatre with three doors.",
+        "A little door for friends. A middle door for school.",
+        "And a HUGE door marked... whole world.",
+        "[whispers] Whatever walks through a door can't walk back out.",
+        "So heroes pick the smallest door that fits.",
+        "[excited] The photos are lining up - be the door keeper!"
+      ],
+      "file": "/audio/voice/6b52683dcda1bb24.mp3"
+    },
+    {
+      "key": "3801f9b0a3c91e35",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[excited] Places, everyone - the photos are walking! Faces or private stuff? The little friends door. School things? The school door. [warmly] No clues at all? The world door's fine. Go!",
+      "lines": [
+        "[excited] Places, everyone - the photos are walking!",
+        "Faces or private stuff? The little friends door.",
+        "School things? The school door.",
+        "[warmly] No clues at all? The world door's fine. Go!"
+      ],
+      "file": "/audio/voice/3801f9b0a3c91e35.mp3"
+    },
+    {
+      "key": "c41dbce5a6776a83",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "Check it for faces and clues - then tap its smallest door!",
+      "lines": [
+        "Check it for faces and clues - then tap its smallest door!"
+      ],
+      "file": "/audio/voice/c41dbce5a6776a83.mp3"
+    },
+    {
+      "key": "2aea5a323c21ea58",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] Four powers! You kept every door, door keeper. Faces to friends, school stuff to school... [laughs] and the Raccoon's 'private is magic' fib? Busted. [whispers] One last power. The biggest one.",
+      "lines": [
+        "[excited] Four powers! You kept every door, door keeper.",
+        "Faces to friends, school stuff to school...",
+        "[laughs] and the Raccoon's 'private is magic' fib? Busted.",
+        "[whispers] One last power. The biggest one."
+      ],
+      "file": "/audio/voice/2aea5a323c21ea58.mp3"
+    },
+    {
+      "key": "dceb4fd6fb166495",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[warmly] Time for the ritual that makes you share-proof. LOOK - every corner, every background. THINK - happy for anyone to see it, forever? ASK - the people in it, and a grown-up if unsure. [whispers] Look. Think. Ask. Three seconds. [excited] Now take the lever room - one photo at a time!",
+      "lines": [
+        "[warmly] Time for the ritual that makes you share-proof.",
+        "LOOK - every corner, every background.",
+        "THINK - happy for anyone to see it, forever?",
+        "ASK - the people in it, and a grown-up if unsure.",
+        "[whispers] Look. Think. Ask. Three seconds.",
+        "[excited] Now take the lever room - one photo at a time!"
+      ],
+      "file": "/audio/voice/dceb4fd6fb166495.mp3"
+    },
+    {
+      "key": "c29047bbadcf72bf",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[excited] The lever room! Photos on the tray. Look at every corner. Think: anyone, forever? [whispers] Ask - if it's not just your face. [excited] Then pull the lever. Show me your calls!",
+      "lines": [
+        "[excited] The lever room! Photos on the tray.",
+        "Look at every corner. Think: anyone, forever?",
+        "[whispers] Ask - if it's not just your face.",
+        "[excited] Then pull the lever. Show me your calls!"
+      ],
+      "file": "/audio/voice/c29047bbadcf72bf.mp3"
+    },
+    {
+      "key": "fd8b119bf328edd5",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "Run look-think-ask on the first photo, then pull a lever!",
+      "lines": [
+        "Run look-think-ask on the first photo, then pull a lever!"
+      ],
+      "file": "/audio/voice/fd8b119bf328edd5.mp3"
+    },
+    {
+      "key": "2ad33bdfc8b500ff",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] That's all FIVE photo powers, detective! Pigeons watched, asks made, clues pinned, doors kept... and the ritual runs itself now. [whispers] One last case file to close... [excited] then we crash his photo heist for good!",
+      "lines": [
+        "[excited] That's all FIVE photo powers, detective!",
+        "Pigeons watched, asks made, clues pinned,",
+        "doors kept... and the ritual runs itself now.",
+        "[whispers] One last case file to close...",
+        "[excited] then we crash his photo heist for good!"
+      ],
+      "file": "/audio/voice/2ad33bdfc8b500ff.mp3"
+    },
+    {
+      "key": "be4ff60e3f1572b1",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] Final case file! Sharing moments are drifting past. Tap SHARE-SMART for the look-think-ask moves... and PHOTO LEAK for flying pigeons and leaky clues. [warmly] Close the case, detective - show me!",
+      "lines": [
+        "[excited] Final case file! Sharing moments are drifting past.",
+        "Tap SHARE-SMART for the look-think-ask moves...",
+        "and PHOTO LEAK for flying pigeons and leaky clues.",
+        "[warmly] Close the case, detective - show me!"
+      ],
+      "file": "/audio/voice/be4ff60e3f1572b1.mp3"
+    },
+    {
+      "key": "05f3cb50d7195587",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[excited] Look at EVERYTHING you mastered, detective! You see every pigeon before it flies, you ask before faces fly, you pin every clue, you keep the doors... and the ritual is automatic. [excited] His photo heist is CLOSED. Sticker time!",
+      "lines": [
+        "[excited] Look at EVERYTHING you mastered, detective!",
+        "You see every pigeon before it flies,",
+        "you ask before faces fly, you pin every clue,",
+        "you keep the doors... and the ritual is automatic.",
+        "[excited] His photo heist is CLOSED. Sticker time!"
+      ],
+      "file": "/audio/voice/05f3cb50d7195587.mp3"
     }
   ]
 }

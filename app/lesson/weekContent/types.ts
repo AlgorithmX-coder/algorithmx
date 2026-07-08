@@ -727,7 +727,7 @@ export type ScreenDef = (
        * binary categories as data.
        */
       type: "conveyorSort";
-      /** Exactly two categories. `tone` picks the chute styling. */
+      /** Two or three categories. `tone` picks the chute styling. */
       categories: { id: string; label: string; icon: string; tone: "safe" | "lock" | "flag" }[];
       items: {
         id: string;
@@ -738,6 +738,14 @@ export type ScreenDef = (
         /** Shown in the WrongAnswerPanel on a mis-sort. */
         explanation: string;
       }[];
+      /** Copy overrides (re-theme per week; defaults keep the W3 machine skin). */
+      introTitle?: string;
+      introSubtitle?: string;
+      introIcon?: string;
+      machineLabel?: string;
+      chuteWord?: string;
+      completeTitle?: string;
+      completeLine?: string;
       hints?: { tier1: string; tier2: string };
     }
   | {
@@ -918,12 +926,20 @@ export type ScreenDef = (
        * meter or branching (that's chatSimulator's job).
        */
       type: "replyCards";
-      /** Visual skin: fanned chat cards (default) or tall kindness DOORS (W5). */
-      skin?: "cards" | "doors";
+      /** Visual skin: fanned chat cards (default), tall kindness DOORS (W5) or brass LEVERS (W8). */
+      skin?: "cards" | "doors" | "levers";
       /** Intro copy overrides (re-theme per week). */
       introTitle?: string;
       introSubtitle?: string;
       introIcon?: string;
+      /** In-game copy overrides (defaults keep the W3 chat skin). */
+      pickLabel?: string;
+      roundNoun?: string;
+      correctToast?: string;
+      wrongTitle?: string;
+      completeTitle?: string;
+      completeLine?: string;
+      scoreNoun?: string;
       rounds: {
         id: string;
         /** Who the message is from (display name shown on the bubble). */
@@ -935,6 +951,45 @@ export type ScreenDef = (
         /** 3-4 reply cards; exactly one has isSafe: true. */
         replies: { text: string; isSafe: boolean; explanation: string }[];
       }[];
+      hints?: { tier1: string; tier2: string };
+    }
+  | {
+      /**
+       * Clue Board (Week 8 debut). The detective-corkboard INSPECT: one
+       * "photo" pinned centre with clue chips waiting on it. Tap a clue
+       * → a red-thread evidence card pins beside the photo revealing
+       * what that clue gives away; once every clue is strung, one
+       * verdict call closes the case. Distinct from profileInspector
+       * (profile card) and phishInspector (message anatomy): a spatial
+       * photo scene. Re-dressable for later inspect weeks.
+       */
+      type: "clueBoard";
+      /** Intro copy overrides. */
+      introTitle?: string;
+      introSubtitle?: string;
+      introIcon?: string;
+      /** Caption under the pinned photo. */
+      photoTitle: string;
+      /** Big central PixIcon standing in for the photo's subject. */
+      photoIcon?: string;
+      clues: {
+        id: string;
+        /** PixIcon key on the photo hotspot. */
+        icon: string;
+        /** Short chip label, e.g. "School crest". */
+        label: string;
+        /** What this clue gives away. */
+        evidence: string;
+      }[];
+      verdict: {
+        prompt: string;
+        /** Exactly one isCorrect; explanation teaches on a wrong call. */
+        options: { text: string; isCorrect: boolean; explanation: string }[];
+      };
+      /** Stamp + complete-beat copy overrides. */
+      stampText?: string;
+      completeTitle?: string;
+      completeLine?: string;
       hints?: { tier1: string; tier2: string };
     }
   | {

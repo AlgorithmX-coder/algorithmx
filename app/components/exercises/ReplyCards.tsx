@@ -40,12 +40,20 @@ export interface ReplyRound {
 
 export interface ReplyCardsProps {
   rounds: ReplyRound[];
-  /** Visual skin: fanned chat cards (default) or tall kindness DOORS (W5). */
-  skin?: "cards" | "doors";
+  /** Visual skin: fanned chat cards (default), tall kindness DOORS (W5) or brass LEVERS (W8). */
+  skin?: "cards" | "doors" | "levers";
   /** Intro copy overrides (re-theme per week). */
   introTitle?: string;
   introSubtitle?: string;
   introIcon?: string;
+  /** In-game copy overrides (defaults keep the W3 chat skin). */
+  pickLabel?: string;
+  roundNoun?: string;
+  correctToast?: string;
+  wrongTitle?: string;
+  completeTitle?: string;
+  completeLine?: string;
+  scoreNoun?: string;
   hints?: { tier1: string; tier2: string };
   introNarration?: { speaker?: "adam" | "layla"; lines: string[] };
   coachLines?: { speaker?: "adam" | "layla"; lines: string[] };
@@ -69,6 +77,13 @@ export default function ReplyCards({
   introTitle,
   introSubtitle,
   introIcon,
+  pickLabel,
+  roundNoun,
+  correctToast,
+  wrongTitle,
+  completeTitle,
+  completeLine,
+  scoreNoun,
   hints,
   introNarration,
   coachLines,
@@ -120,7 +135,7 @@ export default function ReplyCards({
     });
     if (reply.isSafe) {
       audio.correct();
-      fx.correct({ xp: 25, text: "SAFE REPLY!" });
+      fx.correct({ xp: 25, text: correctToast ?? "SAFE REPLY!" });
       onCorrect?.();
       setCorrectCount((n) => n + 1);
       setSent(i);
@@ -130,7 +145,7 @@ export default function ReplyCards({
       onWrong?.();
       setWrongCount((n) => n + 1);
       setFeedback({
-        title: "Hmm - that reply isn't safe",
+        title: wrongTitle ?? "Hmm - that reply isn't safe",
         explanation: reply.explanation,
         tip: hints?.tier1,
       });
@@ -243,7 +258,7 @@ export default function ReplyCards({
                     margin: "4px 0 10px",
                   }}
                 >
-                  ▼ Pick your reply · Message {Math.min(idx + 1, rounds.length)} of {rounds.length} ▼
+                  ▼ {pickLabel ?? "Pick your reply"} · {roundNoun ?? "Message"} {Math.min(idx + 1, rounds.length)} of {rounds.length} ▼
                 </div>
                 <div
                   style={{
@@ -263,13 +278,38 @@ export default function ReplyCards({
                       animate={{
                         y: 0,
                         opacity: 1,
-                        rotate: reduce || skin === "doors" ? 0 : CARD_TILT[i % CARD_TILT.length],
+                        rotate: reduce || skin !== "cards" ? 0 : CARD_TILT[i % CARD_TILT.length],
                       }}
                       transition={{ delay: reduce ? 0 : 0.08 * i, type: "spring", stiffness: 260, damping: 20 }}
                       whileHover={reduce ? undefined : { y: -6, rotate: 0, scale: 1.03 }}
                       whileTap={{ scale: 0.97 }}
                       style={
-                        skin === "doors"
+                        skin === "levers"
+                          ? {
+                              position: "relative",
+                              minHeight: 176,
+                              padding: "16px 14px 14px",
+                              borderRadius: 16,
+                              border: "2.5px solid rgba(255, 209, 88, 0.55)",
+                              background:
+                                "linear-gradient(180deg, rgba(64,48,16,0.94) 0%, rgba(32,23,8,0.96) 100%)",
+                              color: "#ffe9b3",
+                              fontSize: 15,
+                              fontWeight: 900,
+                              letterSpacing: "0.04em",
+                              lineHeight: 1.35,
+                              cursor: "pointer",
+                              fontFamily: "inherit",
+                              boxShadow: "0 16px 34px -18px rgba(255,209,88,0.75)",
+                              touchAction: "manipulation",
+                              display: "flex",
+                              flexDirection: "column",
+                              alignItems: "center",
+                              justifyContent: "flex-end",
+                              gap: 10,
+                              textAlign: "center",
+                            }
+                          : skin === "doors"
                           ? {
                               position: "relative",
                               minHeight: 168,
@@ -319,6 +359,45 @@ export default function ReplyCards({
                           }}
                         />
                       )}
+                      {skin === "levers" && (
+                        <span
+                          aria-hidden
+                          style={{
+                            display: "flex",
+                            flexDirection: "column",
+                            alignItems: "center",
+                            marginBottom: 2,
+                          }}
+                        >
+                          {/* brass knob, shaft and base plate — identical on both levers */}
+                          <span
+                            style={{
+                              width: 26,
+                              height: 26,
+                              borderRadius: "50%",
+                              background: "radial-gradient(circle at 35% 30%, #ffe9b3, #d99a1f 72%)",
+                              boxShadow: "0 0 12px rgba(255,209,88,0.65)",
+                            }}
+                          />
+                          <span
+                            style={{
+                              width: 7,
+                              height: 42,
+                              borderRadius: 4,
+                              background: "linear-gradient(180deg, #caa64a, #8a6a1f)",
+                            }}
+                          />
+                          <span
+                            style={{
+                              width: 58,
+                              height: 10,
+                              borderRadius: 4,
+                              background: "#6b521a",
+                              boxShadow: "inset 0 1px 0 rgba(255,255,255,0.25)",
+                            }}
+                          />
+                        </span>
+                      )}
                       {r.text}
                     </motion.button>
                   ))}
@@ -349,11 +428,11 @@ export default function ReplyCards({
 
       {finished && (
         <ExerciseCompleteBeat
-          title="Every reply a hero reply!"
+          title={completeTitle ?? "Every reply a hero reply!"}
           stars={stars}
           statLines={[
-            `${correctCount}/${rounds.length} safe replies first try`,
-            "Never meet. Never send. Tell a grown-up.",
+            `${correctCount}/${rounds.length} ${scoreNoun ?? "safe replies"} first try`,
+            completeLine ?? "Never meet. Never send. Tell a grown-up.",
           ]}
           onContinue={() => onComplete(correctCount)}
         />
