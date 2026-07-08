@@ -29,6 +29,16 @@ Every boss is a **contraption the Raccoon wheels in**, themed to the week (W1's 
 
 **Feel rules (locked):**
 - **EVERY WEEK IS VISIBLY DIFFERENT (user mandate).** New Adam & Layla outfits every week, new hero pictures (OpenArt), new game, new arena. A kid opening the boss screen must *instantly* see this week is not last week.
+- **PILOT FEEDBACK RULES (user playtest 2026-07-08 — GLOBAL, all 20 bosses):**
+  1. Select-hero cards blend into the arena (glassy night panels, never flat white).
+  2. NO narrator voice during the fight — coach banners are text-only.
+  3. The ONE narrator moment: an excited "WELL DONE — you did X, Y and Z!" on the victory screen, naming what the child just did (`{slug}-victory`).
+  4. The Raccoon stands as tall as the heroes.
+  5. Answers are SHUFFLED everywhere (weak points, counter cards, tap-tells) — the right answer must never live in a predictable position.
+  6. Wording written for 6-year-olds: short words, one idea per line.
+  7. Flow: boss → outro video → badge scene → debrief (badge comes AFTER the video).
+  8. All boss music is A CAPPELLA — human voices only (beatbox/choir), no instruments, themed.
+  9. Every week's badge is a bespoke designed medal (`badgeArt`), not the generic shield.
 - **Two verbs only: tap and hold.** No drag, no gestures.
 - **No lose state.** A missed counter dips the shield ring, coach gives one line (the authored attack `tag` — e.g. "Count the whiskers" — IS the coach hint, free content), retry immediately. Stars: 0 misses = 3★, ≤2 = 2★, else 1★.
 - **Comfort mode = all timers off.** Barrages become turn-based; holds have no deadline.
