@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-08T13:16:50.320Z",
+  "generatedAt": "2026-07-08T19:47:54.059Z",
   "model": "eleven_v3",
   "voiceSettings": {
     "stability": 0.35,
@@ -739,32 +739,32 @@
       "file": "/audio/voice/42a5af62ad8c8324.mp3"
     },
     {
-      "key": "c5fc6a7216482663",
+      "key": "feeecf288dadc865",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[excited] Time to stack the whole week into one launchpad! Stop - hands off the keyboard. Block - the door shuts. Screenshot - proof frozen. Tell - your team jumps in. [warmly] And if you ever need more: Childline. Oh-eight-hundred, eleven eleven. [excited] Five stages... stack them and LAUNCH!",
+      "text": "[excited] Time to stack the whole week into one launchpad! Stop - hands off the keyboard. Screenshot - freeze the proof FIRST. THEN block - the door shuts. Tell - your team jumps in. [warmly] And if you ever need more: Childline. Oh-eight-hundred, eleven eleven. [excited] Five stages... stack them and LAUNCH!",
       "lines": [
         "[excited] Time to stack the whole week into one launchpad!",
         "Stop - hands off the keyboard.",
-        "Block - the door shuts. Screenshot - proof frozen.",
-        "Tell - your team jumps in.",
+        "Screenshot - freeze the proof FIRST.",
+        "THEN block - the door shuts. Tell - your team jumps in.",
         "[warmly] And if you ever need more: Childline. Oh-eight-hundred, eleven eleven.",
         "[excited] Five stages... stack them and LAUNCH!"
       ],
-      "file": "/audio/voice/c5fc6a7216482663.mp3"
+      "file": "/audio/voice/feeecf288dadc865.mp3"
     },
     {
-      "key": "6fe7bd8fa58d1e15",
+      "key": "40bc9cec2a64187a",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[excited] Five stages on the launchpad - all shuffled! Tap them in the order you'd really do them. Fingers... door... camera... team... phone. [warmly] Stack it right and LAUNCH, captain!",
+      "text": "[excited] Five stages on the launchpad - all shuffled! Tap them in the order you'd really do them. Fingers... camera... door... team... phone. [warmly] Stack it right and LAUNCH, captain!",
       "lines": [
         "[excited] Five stages on the launchpad - all shuffled!",
         "Tap them in the order you'd really do them.",
-        "Fingers... door... camera... team... phone.",
+        "Fingers... camera... door... team... phone.",
         "[warmly] Stack it right and LAUNCH, captain!"
       ],
-      "file": "/audio/voice/6fe7bd8fa58d1e15.mp3"
+      "file": "/audio/voice/40bc9cec2a64187a.mp3"
     },
     {
       "key": "05b6f557183e8e44",
@@ -804,18 +804,18 @@
       "file": "/audio/voice/d960c1ad83c16582.mp3"
     },
     {
-      "key": "5e656f2543bcc034",
+      "key": "52b87eaccd41254c",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[excited] Look at EVERYTHING you mastered this week! The boulders lifted, the team named, the block found, the proof frozen... and the protocol launched. [warmly] Whatever lands on your screen - you know exactly what to do. [excited] Sticker time, Team Captain!",
+      "text": "[excited] Look at EVERYTHING you mastered this week! The boulders lifted, the team named, the proof frozen, the block found... and the protocol launched. [warmly] Whatever lands on your screen - you know exactly what to do. [excited] Sticker time, Team Captain!",
       "lines": [
         "[excited] Look at EVERYTHING you mastered this week!",
         "The boulders lifted, the team named,",
-        "the block found, the proof frozen... and the protocol launched.",
+        "the proof frozen, the block found... and the protocol launched.",
         "[warmly] Whatever lands on your screen - you know exactly what to do.",
         "[excited] Sticker time, Team Captain!"
       ],
-      "file": "/audio/voice/5e656f2543bcc034.mp3"
+      "file": "/audio/voice/52b87eaccd41254c.mp3"
     },
     {
       "key": "670d33b9b922ffa5",
@@ -3441,19 +3441,19 @@
       "file": "/audio/voice/5ef9f4d3ce2b8329.mp3"
     },
     {
-      "key": "6c01b0b11ffc4c4c",
+      "key": "20e08755a0fa1edc",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[whispers] His last move isn't clever. Just nasty. A message built to land wrong, at midnight. [warmly] But alone stopped being true in week eleven. Stop. Block. Screenshot. Tell. And tonight there's a fifth step - the graduate's step. [excited] Run the protocol one last time... then PASS IT ON!",
+      "text": "[whispers] His last move isn't clever. Just mean. A scary message, sent at midnight. [warmly] But alone stopped being true in week eleven. Stop. Screenshot. Block. Tell. And tonight there's a fifth step - the graduate's step. [excited] Run the protocol one last time... then PASS IT ON!",
       "lines": [
-        "[whispers] His last move isn't clever. Just nasty.",
-        "A message built to land wrong, at midnight.",
+        "[whispers] His last move isn't clever. Just mean.",
+        "A scary message, sent at midnight.",
         "[warmly] But alone stopped being true in week eleven.",
-        "Stop. Block. Screenshot. Tell.",
+        "Stop. Screenshot. Block. Tell.",
         "And tonight there's a fifth step - the graduate's step.",
         "[excited] Run the protocol one last time... then PASS IT ON!"
       ],
-      "file": "/audio/voice/6c01b0b11ffc4c4c.mp3"
+      "file": "/audio/voice/20e08755a0fa1edc.mp3"
     },
     {
       "key": "889a5e08fb07d740",
@@ -3483,17 +3483,17 @@
       "file": "/audio/voice/5f571bfcf001403b.mp3"
     },
     {
-      "key": "dbb14e712853109c",
+      "key": "4e783f01d8966000",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[excited] The Highlight Reel - nineteen weeks in one walk! Every moment you're about to stamp, you LIVED. HERO MOVE for your powers... [warmly] OLD TRAP for his retired playbook. One last time - stamp them all!",
+      "text": "[excited] The Highlight Reel - twenty weeks in one walk! His reels were fake. This one is REAL - you lived every moment. Every moment you're about to stamp, you LIVED. HERO MOVE for your powers... [warmly] OLD TRAP for his retired playbook. One last time - stamp them all!",
       "lines": [
-        "[excited] The Highlight Reel - nineteen weeks in one walk!",
+        "[excited] The Highlight Reel - twenty weeks in one walk! His reels were fake. This one is REAL - you lived every moment.",
         "Every moment you're about to stamp, you LIVED.",
         "HERO MOVE for your powers...",
         "[warmly] OLD TRAP for his retired playbook. One last time - stamp them all!"
       ],
-      "file": "/audio/voice/dbb14e712853109c.mp3"
+      "file": "/audio/voice/4e783f01d8966000.mp3"
     },
     {
       "key": "84c0177b75fa88c4",

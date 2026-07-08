@@ -132,7 +132,7 @@ export const WEEK_11: WeekContent = {
           steps: [
             { icon: "🤐", text: "'Maybe if I tell nobody... it just goes away?'" },
             { icon: "🧠", text: "Lift it: secrets like this get HEAVIER the longer you carry them alone." },
-            { icon: "✨", text: "Balloon! Telling someone makes it lighter in about one minute flat." },
+            { icon: "✨", text: "Balloon! Telling someone starts making it lighter straight away - you're not carrying it alone anymore." },
           ],
           counter: "Telling makes it lighter - every time.",
         },
@@ -238,7 +238,7 @@ export const WEEK_11: WeekContent = {
       completeLine: "Four spots, four helpers - you are never, ever alone.",
       tiles: [
         { id: "parent", label: "Mum, Dad or your carer", icon: "👪", isTeam: true, note: "The captain's first call - they'd want to know, every time." },
-        { id: "lobby", label: "A player from your game lobby", detail: "“we're basically best friends”", icon: "🎮", isTeam: false, note: "Game friends can be fun - but your TEAM is people you can see and talk to in real life." },
+        { id: "lobby", label: "A player from your game lobby", detail: "“we're basically best friends”", icon: "🎮", isTeam: false, note: "Game friends can be fun - but your TEAM is grown-ups you know in real life, plus one special phone line just for kids." },
         { id: "teacher", label: "Your teacher", icon: "🏫", isTeam: true, note: "School helpers deal with this stuff every week - they know exactly what to do." },
         { id: "secret", label: "Nobody - keep it secret", icon: "🤐", isTeam: false, note: "Secrets like this get heavier the longer you hold them. Your team makes them lighter." },
         { id: "grandparent", label: "Grandma or Grandpa", icon: "🏠", isTeam: true, note: "Endless time to listen, and always on your side - poster material for sure." },
@@ -302,7 +302,7 @@ export const WEEK_11: WeekContent = {
       type: "info",
       title: "Stop and Block",
       content:
-        "When mean messages come in, your fingers will itch to reply. Don't! A reply is exactly what the sender wants - it keeps the game going. Heroes starve it instead: STOP (hands off the keyboard), BLOCK the sender (the door shuts, they can't reach you), and CLOSE the app for a while. No speeches, no fighting back. Calm fingers, strong moves.",
+        "When mean messages come in, your fingers will itch to reply. Don't! A reply is exactly what the sender wants - it keeps the game going. Heroes starve it instead: STOP (hands off the keyboard), snap the proof FIRST if there's a message to keep, THEN BLOCK the sender (the door shuts, they can't reach you), and CLOSE the app for a while. No speeches, no fighting back. Calm fingers, strong moves.",
       bullets: [
         "Don't reply - a reply is what they want",
         "Firing back keeps the fight alive",
@@ -535,24 +535,28 @@ export const WEEK_11: WeekContent = {
     {
       type: "info",
       title: "The Emergency Protocol",
+      // SAFETY FIX (screen audit): SCREENSHOT comes BEFORE BLOCK — on
+      // some apps blocking hides or deletes the chat, losing the proof
+      // beat 4 taught the child to freeze. Order everywhere:
+      // STOP → SCREENSHOT → BLOCK → TELL → Childline.
       content:
-        "Time to put the whole week in order - the five calm steps every Cyber Hero knows by heart. STOP: hands off, don't reply. BLOCK: shut the door on the sender. SCREENSHOT: freeze the proof. TELL: show someone on your team. And if you ever need more - or your team feels far away - CHILDLINE, 0800 1111, free and always awake. That's the protocol. Calm, quick, powerful.",
+        "Time to put the whole week in order - the five calm steps every Cyber Hero knows by heart. STOP: hands off, don't reply. SCREENSHOT: freeze the proof FIRST - blocking can make the message vanish. BLOCK: now shut the door on the sender. TELL: show someone on your team. And if you ever need more - or your team feels far away - CHILDLINE, 0800 1111, free and always awake. That's the protocol. Calm, quick, powerful.",
       bullets: [
         "STOP - hands off, don't reply",
-        "BLOCK - shut the door",
-        "SCREENSHOT - freeze the proof",
+        "SCREENSHOT - freeze the proof first",
+        "BLOCK - now shut the door",
         "TELL - someone on your team",
         "CHILDLINE 0800 1111 - if you need more",
       ],
-      bulletIcons: ["✋", "🚫", "📋", "👪", "💬"],
+      bulletIcons: ["✋", "📋", "🚫", "👪", "💬"],
       emblem: "🚀",
       narration: {
         speaker: "adam",
         lines: [
           "[excited] Time to stack the whole week into one launchpad!",
           "Stop - hands off the keyboard.",
-          "Block - the door shuts. Screenshot - proof frozen.",
-          "Tell - your team jumps in.",
+          "Screenshot - freeze the proof FIRST.",
+          "THEN block - the door shuts. Tell - your team jumps in.",
           "[warmly] And if you ever need more: Childline. Oh-eight-hundred, eleven eleven.",
           "[excited] Five stages... stack them and LAUNCH!",
         ],
@@ -566,21 +570,21 @@ export const WEEK_11: WeekContent = {
       introIcon: "🚀",
       steps: [
         { id: "stop", text: "STOP - don't reply", icon: "✋", affirmation: "Hands off the keyboard - the sender gets nothing." },
+        { id: "shot", text: "SCREENSHOT the proof", icon: "📋", affirmation: "Evidence frozen BEFORE the door shuts - nothing can vanish now." },
         { id: "block", text: "BLOCK the sender", icon: "🚫", affirmation: "The door is shut - they can't reach you." },
-        { id: "shot", text: "SCREENSHOT the proof", icon: "📋", affirmation: "Evidence frozen, safe and ready to show." },
         { id: "tell", text: "TELL your team", icon: "👪", affirmation: "A grown-up is on it - you're not alone anymore." },
         { id: "childline", text: "Childline 0800 1111 if you need more", icon: "💬", affirmation: "Free, always awake, always kind - the golden number." },
       ],
       hints: {
-        tier1: "First calm your own fingers... then shut the door... THEN gather the proof.",
-        tier2: "STOP → BLOCK → SCREENSHOT → TELL → Childline. Fingers, door, camera, team, phone.",
+        tier1: "First calm your own fingers... then freeze the proof... THEN shut the door.",
+        tier2: "STOP → SCREENSHOT → BLOCK → TELL → Childline. Fingers, camera, door, team, phone.",
       },
       narration: {
         speaker: "adam",
         lines: [
           "[excited] Five stages on the launchpad - all shuffled!",
           "Tap them in the order you'd really do them.",
-          "Fingers... door... camera... team... phone.",
+          "Fingers... camera... door... team... phone.",
           "[warmly] Stack it right and LAUNCH, captain!",
         ],
       },
@@ -595,11 +599,11 @@ export const WEEK_11: WeekContent = {
       mode: "order",
       prompt: "Put the protocol in order:",
       choices: [
-        { text: "Stop and block the sender", isCorrect: true },
+        { text: "Stop - hands off, don't reply", isCorrect: true },
         { text: "Screenshot the proof", isCorrect: true },
-        { text: "Tell your team - Childline if you need more", isCorrect: true },
+        { text: "Block, then tell your team", isCorrect: true },
       ],
-      praise: "Stop-block, screenshot, tell - the protocol, launched in order. ✓",
+      praise: "Stop, screenshot, block, tell - the protocol, launched in order. ✓",
     },
 
     // 22 - Recap · Concept 5 of 5
@@ -607,7 +611,7 @@ export const WEEK_11: WeekContent = {
       type: "recap",
       concept: 5,
       total: 5,
-      learned: "The protocol: STOP, BLOCK, SCREENSHOT, TELL - and Childline 0800 1111 whenever you need more.",
+      learned: "The protocol: STOP, SCREENSHOT, BLOCK, TELL - and Childline 0800 1111 whenever you need more.",
       next: "one calm drill run, then the Raccoon's blame machine",
       emblem: "🚀",
       narration: {
@@ -633,7 +637,7 @@ export const WEEK_11: WeekContent = {
         tipWhenPositive: "Blocking, freezing proof, telling your team - calm steps that actually work.",
         tipWhenNegative: "Firing back, deleting, keeping secrets - panic moves that feed the problem.",
         hint1: "Ask: does this move make things LIGHTER... or heavier?",
-        hint2: "PROTOCOL = stop, block, screenshot, tell, Childline. PANIC = reply, fire back, delete, keep it secret.",
+        hint2: "PROTOCOL = stop, screenshot, block, tell, Childline. PANIC = reply, fire back, delete, keep it secret.",
         hint2Example: "PROTOCOL: 'I blocked them and told Mum'   PANIC: 'I deleted everything and told no one'",
         hint3: "Quick rule card: never your fault · name your team · block don't reply · camera not bin · Childline 0800 1111.",
         hint3Example: "Screenshot then tell ✅    Keep it secret ❌",
@@ -673,14 +677,14 @@ export const WEEK_11: WeekContent = {
         { id: "team", label: "My Team", accent: "#ffd158", icon: "👪", summary: "Named before you need them - plus Childline 0800 1111, always awake." },
         { id: "block", label: "Stop & Block", accent: "#c084fc", icon: "🚫", summary: "No replies, no firing back - block the sender and breathe." },
         { id: "camera", label: "Camera, Not Bin", accent: "#ff5fb3", icon: "📋", summary: "Screenshot first - frozen proof is how your team helps fast." },
-        { id: "protocol", label: "The Protocol", accent: "#7eff97", icon: "🚀", summary: "Stop, block, screenshot, tell - launched calmly, in order." },
+        { id: "protocol", label: "The Protocol", accent: "#7eff97", icon: "🚀", summary: "Stop, screenshot, block, tell - launched calmly, in order." },
       ],
       narration: {
         speaker: "adam",
         lines: [
           "[excited] Look at EVERYTHING you mastered this week!",
           "The boulders lifted, the team named,",
-          "the block found, the proof frozen... and the protocol launched.",
+          "the proof frozen, the block found... and the protocol launched.",
           "[warmly] Whatever lands on your screen - you know exactly what to do.",
           "[excited] Sticker time, Team Captain!",
         ],
@@ -724,8 +728,8 @@ export const WEEK_11: WeekContent = {
       { question: "When do you pick the grown-ups on your team?", answers: ["Now - before you ever need them", "Only after something goes wrong", "Never - handle it alone", "When you turn 13"], correctIndex: 0, explanation: "Captains pick their team early - then help is one tell away." },
     ],
     hard: [
-      { question: "Why does 'keep it secret' make everything heavier?", answers: ["Carrying it alone grows the worry - telling shares the weight", "Secrets are illegal", "Grown-ups always find out", "It doesn't"], correctIndex: 0, explanation: "Telling someone makes it lighter in about a minute - that's the whole trick." },
-      { question: "The full protocol, in order, is...", answers: ["Stop → Block → Screenshot → Tell → Childline if needed", "Reply → Delete → Forget", "Block → Reply → Delete", "Screenshot → Fire back → Tell"], correctIndex: 0, explanation: "Fingers, door, camera, team, phone - calm and in order." },
+      { question: "Why does 'keep it secret' make everything heavier?", answers: ["Carrying it alone grows the worry - telling shares the weight", "Secrets are illegal", "Grown-ups always find out", "It doesn't"], correctIndex: 0, explanation: "Telling someone starts making it lighter straight away - that's the whole trick." },
+      { question: "The full protocol, in order, is...", answers: ["Stop → Screenshot → Block → Tell → Childline if needed", "Reply → Delete → Forget", "Block → Reply → Delete", "Screenshot → Fire back → Tell"], correctIndex: 0, explanation: "Fingers, camera, door, team, phone - calm and in order." },
       { question: "Your friend says 'don't tell anyone what happened to me online.' What's the hero move?", answers: ["Tell a trusted grown-up anyway - some secrets need helpers", "Promise and keep the secret", "Post about it", "Ignore your friend"], correctIndex: 0, explanation: "Safety secrets are the kind you SHARE with a grown-up - that's real friendship." },
     ],
   },

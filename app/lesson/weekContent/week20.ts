@@ -168,7 +168,7 @@ export const WEEK_20: WeekContent = {
         { text: "FALSE", isCorrect: true },
       ],
       praise: "Busted for the final time - real resets never rush, and real doors have plaques. The vault holds. ✓",
-      nudge: "Who's ever ACTUALLY lost an account in ten minutes - and who profits if you panic?",
+      nudge: "Has anyone EVER really lost an account in ten minutes? And who WANTS you to panic?",
     },
 
     // 6 - Recap · Mission 1 of 5
@@ -298,7 +298,7 @@ export const WEEK_20: WeekContent = {
               isRedFlag: false,
             },
           ],
-          verdictNote: "Real - a checkable friend-of-family with her own history, asking nothing but a rematch. THIS is what genuine looks like.",
+          verdictNote: "Real - and here's the hero move: you can ask Zain in REAL LIFE, 'is Maya your cousin?' Real people check out. THIS is what genuine looks like.",
         },
       ],
       hints: {
@@ -358,7 +358,7 @@ export const WEEK_20: WeekContent = {
       bullets: [
         "The arcade flashes FREE, FREE, FREE",
         "Week 7: free-coin machines eat accounts",
-        "Week 4: the rush is the engine",
+        "Week 4: the countdown is the trick - rush = trap",
         "Week 16: a QR is a door - check it",
         "Real free asks for NOTHING back",
       ],
@@ -413,7 +413,7 @@ export const WEEK_20: WeekContent = {
         },
       ],
       hints: {
-        tier1: "The shiny button is never the way out - hunt the little X in the corner.",
+        tier1: "The shiny button is never the way out - hunt the little X in the corner. Can't find a real X? Close the whole app and tell a grown-up - that always works.",
         tier2: "Timers, prizes you never entered, password asks - every one is bait. X them all.",
         tier3: "Corner by corner: find the small grey X on each pop-up and tap ONLY that.",
       },
@@ -611,7 +611,7 @@ export const WEEK_20: WeekContent = {
       mode: "recall",
       prompt: "Which post was safe to share tonight?",
       choices: [
-        { text: "The dragon drawing - just art, no clues", isCorrect: true },
+        { text: "The dragon drawing", isCorrect: true },
         { text: "'Meet at the school gates at 3:15'", isCorrect: false },
         { text: "The park photo with its map pin ON", isCorrect: false },
         { text: "The comment naming your school", isCorrect: false },
@@ -643,13 +643,17 @@ export const WEEK_20: WeekContent = {
     {
       type: "info",
       title: "Mission 5: The Call for Backup",
+      // SAFETY FIX (screen audit): protocol order everywhere is
+      // STOP → SCREENSHOT → BLOCK → TELL — freeze the proof BEFORE
+      // blocking can make the message vanish. Also: name the threat
+      // plainly ("land wrong" was adult idiom).
       content:
-        "His last move isn't clever - it's just nasty: a message designed to land wrong, sent at midnight, hoping you'll panic alone. But 'alone' stopped being true in Week 11. You have the protocol: STOP - don't reply, don't tap. BLOCK the sender. SCREENSHOT the evidence, camera-not-bin. TELL someone on your team. And now, because of Week 19, there's a fifth step only a graduate can do: COACH - show a family member the whole protocol, so the firewall outlives tonight. Run it one last time. Then pass it on.",
+        "His last move isn't clever - it's just a MEAN, scary message, sent late at night, hoping you'll be frightened and all alone. But 'alone' stopped being true in Week 11. You have the protocol: STOP - don't reply, don't tap. SCREENSHOT the evidence FIRST, camera-not-bin. BLOCK the sender. TELL someone on your team. And now, because of Week 19, there's a fifth step only a graduate can do: COACH - show a family member the whole protocol, so the firewall outlives tonight. Run it one last time. Then pass it on.",
       bullets: [
-        "His last move: land wrong at midnight",
+        "His last move: a mean, scary message at midnight",
         "'Alone' stopped being true in Week 11",
-        "STOP - BLOCK - SCREENSHOT - TELL",
-        "Camera, not bin - keep the evidence",
+        "STOP - SCREENSHOT - BLOCK - TELL",
+        "Camera, not bin - freeze the proof FIRST",
         "Graduate's fifth step: COACH it onward",
       ],
       bulletIcons: ["✉️", "👪", "✋", "📋", "🥇"],
@@ -657,10 +661,10 @@ export const WEEK_20: WeekContent = {
       narration: {
         speaker: "adam",
         lines: [
-          "[whispers] His last move isn't clever. Just nasty.",
-          "A message built to land wrong, at midnight.",
+          "[whispers] His last move isn't clever. Just mean.",
+          "A scary message, sent at midnight.",
           "[warmly] But alone stopped being true in week eleven.",
-          "Stop. Block. Screenshot. Tell.",
+          "Stop. Screenshot. Block. Tell.",
           "And tonight there's a fifth step - the graduate's step.",
           "[excited] Run the protocol one last time... then PASS IT ON!",
         ],
@@ -680,16 +684,16 @@ export const WEEK_20: WeekContent = {
           affirmation: "Stage one locked - his message gets NOTHING back.",
         },
         {
-          id: "block",
-          text: "BLOCK the sender",
-          icon: "🚫",
-          affirmation: "Stage two locked - the door slams in his mask.",
-        },
-        {
           id: "screenshot",
           text: "SCREENSHOT the evidence",
           icon: "📋",
-          affirmation: "Stage three locked - camera, not bin. The proof is frozen.",
+          affirmation: "Stage two locked - camera, not bin. The proof is frozen BEFORE any door shuts.",
+        },
+        {
+          id: "block",
+          text: "BLOCK the sender",
+          icon: "🚫",
+          affirmation: "Stage three locked - the door slams in his mask.",
         },
         {
           id: "tell",
@@ -706,7 +710,7 @@ export const WEEK_20: WeekContent = {
       ],
       hints: {
         tier1: "Start the way every rescue starts: give the message NOTHING.",
-        tier2: "Stop → block → screenshot → tell → and the graduate's step: coach it onward.",
+        tier2: "Stop → screenshot → block → tell → and the graduate's step: coach it onward.",
       },
       narration: {
         speaker: "adam",
@@ -725,11 +729,12 @@ export const WEEK_20: WeekContent = {
       prompt: "The final Prove of the course: run the protocol!",
       choices: [
         { text: "STOP - give it nothing", isCorrect: true },
-        { text: "BLOCK the sender", isCorrect: true },
         { text: "SCREENSHOT the evidence", isCorrect: true },
+        { text: "BLOCK the sender", isCorrect: true },
         { text: "TELL your team", isCorrect: true },
+        { text: "COACH it onward - the graduate's step", isCorrect: true },
       ],
-      praise: "Stop, block, screenshot, tell - perfect order, twenty weeks strong. Course PROVED. ✓",
+      praise: "Stop, screenshot, block, tell - and coach it onward. Perfect order, twenty weeks strong. Course PROVED. ✓",
     },
 
     // 22 - Recap · Mission 5 of 5
@@ -803,7 +808,7 @@ export const WEEK_20: WeekContent = {
       narration: {
         speaker: "layla",
         lines: [
-          "[excited] The Highlight Reel - nineteen weeks in one walk!",
+          "[excited] The Highlight Reel - twenty weeks in one walk! His reels were fake. This one is REAL - you lived every moment.",
           "Every moment you're about to stamp, you LIVED.",
           "HERO MOVE for your powers...",
           "[warmly] OLD TRAP for his retired playbook. One last time - stamp them all!",
