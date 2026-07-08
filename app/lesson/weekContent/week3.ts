@@ -735,8 +735,136 @@ export const WEEK_3: WeekContent = {
     { name: "MEET-UP TRAP", icon: "🪤", color: "#ffb347", glow: "rgba(255, 179, 71, 0.55)", tag: "Never meet, always tell",      emblemColor: 0xffb347 },
   ],
 
-  // Placeholder quiz boss (the bespoke W3 GAUNTLET - one escalating
-  // fake-friend chat - is designed separately with the boss batch).
+  // ─────────── BESPOKE BOSS: The Disguise-o-Matic (showdown) ───────────
+  // A wardrobe-robot cycling costumes, running an escalating "new best
+  // friend" chat — the three authored attacks ARE the escalation
+  // (fake profile → secret ask → meet-up trap). Built to the locked
+  // showdown grammar; villain lines are unique to this week.
+  bossShowdown: {
+    machine: {
+      name: "THE DISGUISE-O-MATIC",
+      tagline: "A wardrobe-robot stuffed with fake best friends",
+      art: {
+        intact: "/game/bosses/w03-disguiseomatic-intact.png",
+        damaged: "/game/bosses/w03-disguiseomatic-damaged.png",
+        defeated: "/game/bosses/w03-disguiseomatic-defeated.png",
+      },
+      arena: "/game/backgrounds/w03-arena-playground.png",
+      accent: "#c084fc",
+      glow: "rgba(192,132,252,0.55)",
+    },
+    heroSprites: {
+      adam: {
+        idle: "/game/characters/w03/adam-detective-idle.png",
+        attack: "/game/characters/w03/adam-detective-attack.png",
+        celebrate: "/game/characters/w03/adam-detective-celebrate.png",
+      },
+      layla: {
+        idle: "/game/characters/w03/layla-detective-idle.png",
+        attack: "/game/characters/w03/layla-detective-attack.png",
+        celebrate: "/game/characters/w03/layla-detective-celebrate.png",
+      },
+    },
+    phases: [
+      // P1 · FAKE PROFILE → TAP-THE-TELL: the machine assembles a
+      // "9-year-old gamer" piece by piece; tap the tell before the
+      // mask clicks in.
+      {
+        kind: "tapTell",
+        attack: 0,
+        coach: "Tap the piece of the disguise that gives him away!",
+        rounds: [
+          {
+            id: "card",
+            prompt: "The machine slots in a profile card: 'BlazeKid_9 — I'm 9, just like you!'",
+            promptIcon: "🎭",
+            options: [
+              { id: "joined", label: "Joined: YESTERDAY", icon: "🆔", isTell: true, note: "" },
+              { id: "games", label: "Plays racing games", icon: "🎮", isTell: false, note: "Lots of real kids play racing games - that's not the giveaway. Look for the thing a REAL nine-year-old's profile would already have." },
+              { id: "avatar", label: "Has a blue avatar", icon: "🎨", isTell: false, note: "Avatars come in every colour - that proves nothing either way. Check the profile's HISTORY instead." },
+            ],
+          },
+          {
+            id: "friends",
+            prompt: "It bolts on a friends list to look popular…",
+            promptIcon: "⚙️",
+            options: [
+              { id: "sayings", label: "Says 'good game!'", icon: "💬", isTell: false, note: "Friendly game talk is normal - the machine copies it easily. Count the FRIENDS instead." },
+              { id: "zero", label: "0 friends you actually know", icon: "👀", isTell: true, note: "" },
+              { id: "pizza", label: "Likes pizza", icon: "🎉", isTell: false, note: "Everyone likes pizza! A detective checks who KNOWS this kid, not what they eat." },
+            ],
+          },
+          {
+            id: "photo",
+            prompt: "It glues on a smiling kid photo to finish the costume…",
+            promptIcon: "🕵️",
+            options: [
+              { id: "hoodie", label: "Wears a red hoodie", icon: "🎨", isTell: false, note: "Clothes can't tell you if a profile is real - the machine owns every hoodie colour." },
+              { id: "smiley", label: "Smiles a lot", icon: "🎉", isTell: false, note: "A smile is easy to borrow. Ask where the photo CAME from." },
+              { id: "copied", label: "Photo copied from a poster", icon: "🔍", isTell: true, note: "" },
+            ],
+          },
+        ],
+      },
+      // P2 · SECRET ASK → COUNTER-CARD: the chat escalates.
+      {
+        kind: "counterCard",
+        attack: 1,
+        coach: "Pick the hero move!",
+        situation: "'This is OUR secret club. Don't tell your mum about me, okay?'",
+        situationIcon: "🤫",
+        cards: [
+          { id: "tell", label: "TELL A GROWN-UP", icon: "👪", isRight: true, note: "" },
+          { id: "keep", label: "Keep the secret", icon: "🤐", isRight: false, note: "Safe friends never need secrets from your grown-ups - the secret ask IS the trap." },
+          { id: "once", label: "Reply 'okay, just this once'", icon: "💬", isRight: false, note: "One little secret is how it starts. Safe friends don't ask for even one." },
+        ],
+      },
+      // P3 · MEET-UP TRAP → SHIELD-HOLD: the pressure barrage.
+      {
+        kind: "shieldHold",
+        attack: 2,
+        coach: "Press and HOLD the shield until his pressure burns out!",
+        holdLabel: "HOLD THE NEVER-MEET SHIELD",
+        holdIcon: "🛡️",
+        holdSecs: 6,
+        barrage: [
+          "Park gate! 3:15! Be there!",
+          "I got you a PRESENT!",
+          "Come ALONE - it's more fun!",
+          "Everyone meets up! It's NORMAL!",
+          "Last chance! I'll be SO sad!",
+        ],
+        burnoutLine: "Real friends don't push. The meet-up trap has no power over a hero who won't go.",
+      },
+    ],
+    weakPoints: [
+      { question: "A brand-new profile with zero friends wants to be your BEST friend. That's...", answers: ["Too friendly too fast - a fake-profile tell", "Totally normal", "Your lucky day", "Fine if they seem nice"], correctIndex: 0, explanation: "Real friendship grows slowly - insta-best-friend is a classic fake tell." },
+      { question: "Why does 'keep our chat secret' make a chat UNSAFE?", answers: ["Safe friends never need secrets from your grown-ups", "Secrets are fun", "It doesn't - secrets are normal", "Because chats should be loud"], correctIndex: 0, explanation: "Anyone who needs hiding from your parents is hiding something bad." },
+      { question: "An online friend asks to MEET at the park. What's the rule?", answers: ["Never meet - and tell a grown-up", "Meet them with a friend", "Meet somewhere busy", "Only meet at weekends"], correctIndex: 0, explanation: "Rule one has zero exceptions: never meet online-only friends." },
+    ],
+    finisher: {
+      chargeLabel: "CHARGE THE SPOTLIGHT",
+      chargeIcon: "🔍",
+      chargeSecs: 5,
+      milestones: ["The spotlight is warming up…", "It's glowing! Keep holding!", "FULL BEAM! LET GO!"],
+      payoffTitle: "COSTUME BLASTED OFF!",
+      payoffLine: "The disguise is gone - checked clues beat any costume.",
+    },
+    villain: {
+      arrival: "A new best friend, just for you! I'm nine! Honest!",
+      phases: [
+        "This mask has NEVER failed. Well - once. Twice, tops.",
+        "Shhh! Secrets are what make friendship SPECIAL!",
+        "Just one little meet-up! I'll bring snacks!",
+      ],
+      escape: "Fine! I didn't want to be your friend ANYWAY!",
+    },
+    voiceSlug: "w03",
+  },
+
+  // Quiz boss retired for W3 - the showdown above supersedes it. The
+  // questions stay as the weak-point source + fallback if the showdown
+  // block is ever removed.
   bossQuestions: {
     easy: [
       { question: "Someone online says they're 9. How do you KNOW it's true?", answers: ["You can't - anyone can type any age", "Their profile says so", "They sound really nice", "They have a kid photo"], correctIndex: 0, explanation: "Typing isn't proof - you can't see who's really at the keyboard." },

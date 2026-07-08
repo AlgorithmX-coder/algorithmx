@@ -194,6 +194,23 @@ export interface WeekContent {
   };
 
   /**
+   * Bespoke SHOWDOWN boss (Weeks 3-20, the boss batch). When present the
+   * lesson mounts ShowdownBoss instead of the quiz-combat BossBattle.
+   *
+   * THE LOCKED GRAMMAR (docs/cyberheroes/content-plans/boss-battles-design.md):
+   * every boss is a machine the Raccoon wheels in. Arrival taunt → three
+   * phases (each one of the week's authored `bossAttacks`: telegraph →
+   * counter → gear pops) → one weak-point question per popped gear (the
+   * best of the week's authored bossQuestions) → CHARGE-RELEASE finisher →
+   * unique escape line. Two verbs only (tap + hold), no lose state, no
+   * hard timers; comfort mode is honoured by construction.
+   *
+   * Reported through the same BossEndStats/phaseResults contract as
+   * VaultBoss/ProfileForgeBoss so dashboards and analytics are unchanged.
+   */
+  bossShowdown?: ShowdownDef;
+
+  /**
    * Week-themed boss attack theatre (name/icon/tag per telegraphed
    * attack, cycled per question). Omitted = BossBattle's Week 1 set.
    * Keeps the fight's vocabulary inside the week's curriculum lane.
@@ -253,6 +270,143 @@ export interface BossQuestion {
   answers: string[];
   correctIndex: number;
   explanation: string;
+}
+
+/* ───────────────────── SHOWDOWN boss (Weeks 3-20) ─────────────────────
+   Shapes for the config-driven boss engine (ShowdownBoss.tsx). Five
+   counter primitives, dressed uniquely per week; every phase references
+   one of the week's authored bossAttacks by index for its telegraph. */
+
+/** TAP-THE-TELL — a trick object appears; tap the red flag on it.
+ *  Turn-based: wrong taps teach and retry, nothing moves. */
+export type ShowdownTapTell = {
+  kind: "tapTell";
+  attack: number;
+  coach: string;
+  rounds: {
+    id: string;
+    /** The trick object being inspected this round. */
+    prompt: string;
+    promptIcon: string;
+    options: { id: string; label: string; icon: string; isTell: boolean; note: string }[];
+  }[];
+};
+
+/** SHIELD-HOLD — a pressure barrage rages; press-and-hold the shield
+ *  until it burns out. Release just pauses the burn. No deadline. */
+export type ShowdownShieldHold = {
+  kind: "shieldHold";
+  attack: number;
+  coach: string;
+  holdLabel: string;
+  holdIcon: string;
+  /** Total seconds of held charge needed to burn the attack out. */
+  holdSecs: number;
+  /** Pressure lines cycling on the attack panel while it rages. */
+  barrage: string[];
+  /** Shown when the barrage burns out — the teach, made visible. */
+  burnoutLine: string;
+};
+
+/** COUNTER-CARD — the attack lands as a situation; pick the right
+ *  defence from three big cards. Wrong picks teach and retry. */
+export type ShowdownCounterCard = {
+  kind: "counterCard";
+  attack: number;
+  coach: string;
+  situation: string;
+  situationIcon: string;
+  cards: { id: string; label: string; icon: string; isRight: boolean; note: string }[];
+};
+
+/** ORDER-STRIKE — tap the counter-steps in the right sequence; each
+ *  correct step lands a hit. Authored array order = correct order
+ *  (display is shuffled deterministically). */
+export type ShowdownOrderStrike = {
+  kind: "orderStrike";
+  attack: number;
+  coach: string;
+  intro: string;
+  steps: { id: string; label: string; icon: string }[];
+};
+
+/** DEFLECT-SORT — his things slide in one at a time; hit the primary
+ *  verb on the right ones, wave the others through. Turn-based. */
+export type ShowdownDeflectSort = {
+  kind: "deflectSort";
+  attack: number;
+  coach: string;
+  /** Primary action label (ZAP IT! / CATCH IT!) + its icon. */
+  actLabel: string;
+  actIcon: string;
+  /** Secondary action label (LET IT PASS / WAVE IT ON). */
+  passLabel: string;
+  items: {
+    id: string;
+    label: string;
+    icon: string;
+    /** true = the primary action is the right response for this item. */
+    act: boolean;
+    note: string;
+  }[];
+};
+
+export type ShowdownPhaseDef =
+  | ShowdownTapTell
+  | ShowdownShieldHold
+  | ShowdownCounterCard
+  | ShowdownOrderStrike
+  | ShowdownDeflectSort;
+
+export interface ShowdownDef {
+  machine: {
+    /** Nameplate, e.g. "THE DISGUISE-O-MATIC". */
+    name: string;
+    /** One-line subtitle under the nameplate at arrival. */
+    tagline: string;
+    /** Damage-state art, following the crackomatic convention. */
+    art: { intact: string; damaged: string; defeated: string };
+    /** Arena backdrop plate (full-bleed, per week). */
+    arena: string;
+    /** Week palette for chrome accents. */
+    accent: string;
+    glow: string;
+  };
+  /** Per-week hero outfit sprites (OpenArt). Missing keys fall back to
+   *  the base wardrobe via makeHeroes. */
+  heroSprites?: Partial<
+    Record<
+      "adam" | "layla",
+      Partial<{ idle: string; attack: string; celebrate: string }>
+    >
+  >;
+  /** Exactly three phases, each keyed to a bossAttacks index. */
+  phases: ShowdownPhaseDef[];
+  /** One weak-point question per phase, asked when its gear pops. */
+  weakPoints: BossQuestion[];
+  finisher: {
+    chargeLabel: string;
+    chargeIcon: string;
+    /** Total seconds of held charge (release pauses, never resets). */
+    chargeSecs: number;
+    /** Counter text at 1/3, 2/3 and full charge. */
+    milestones: [string, string, string];
+    /** Big stamp when the release lands, e.g. "COSTUME BLASTED OFF!". */
+    payoffTitle: string;
+    /** The wrap-up teach line under the stamp. */
+    payoffLine: string;
+  };
+  villain: {
+    arrival: string;
+    /** One announce line per phase — never repeated across weeks. */
+    phases: string[];
+    /** Victory-screen bubble (W20: the defeat send-off). */
+    escape: string;
+  };
+  /** Slug for voiced lines: /audio/villain/{slug}-arrival.mp3,
+   *  {slug}-phase-1..3.mp3, {slug}-escape.mp3 and /audio/coach/
+   *  {slug}-go-1..3.mp3, {slug}-victory.mp3. Omit = text-only. */
+  voiceSlug?: string;
 }
 
 /**
