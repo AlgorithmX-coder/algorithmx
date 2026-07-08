@@ -1012,6 +1012,42 @@ export type ScreenDef = (
     }
   | {
       /**
+       * Team Poster (Week 11 debut). The poster-building BUILD drill: a
+       * warm poster with empty slots and a tray of candidate tiles. Tap
+       * a tile that belongs → it fills the next slot with a glow; tap
+       * one that doesn't → a gentle teach panel. Special tiles (the
+       * Childline number) get a golden frame. Re-dressable via the copy
+       * props (W19 family-rules quilt is the earmarked reuse).
+       */
+      type: "teamPoster";
+      tiles: {
+        id: string;
+        label: string;
+        /** Optional small line under the label. */
+        detail?: string;
+        /** Emoji rendered via PixIcon on the tile. */
+        icon: string;
+        /** True = belongs on the poster. */
+        isTeam: boolean;
+        /** Golden frame on the poster (e.g. the Childline tile). */
+        special?: boolean;
+        /** Teach copy: why it belongs / why it doesn't. */
+        note: string;
+      }[];
+      /** Copy overrides (defaults keep the W11 team skin). */
+      introTitle?: string;
+      introSubtitle?: string;
+      introIcon?: string;
+      posterTitle?: string;
+      trayPrompt?: string;
+      placedToast?: string;
+      wrongTitle?: string;
+      completeTitle?: string;
+      completeLine?: string;
+      hints?: { tier1: string; tier2: string };
+    }
+  | {
+      /**
        * Step Order (Week 5+). The stepping-stones ORDER game: shuffled
        * step tiles below a river; tap them in the order you'd do them
        * and each hops onto the next stone. Gentle - a wrong tap wobbles

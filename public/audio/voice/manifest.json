@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-08T09:31:01.210Z",
+  "generatedAt": "2026-07-08T09:50:44.529Z",
   "model": "eleven_v3",
   "voiceSettings": {
     "stability": 0.35,
@@ -533,6 +533,289 @@
         "[excited] Sticker time!"
       ],
       "file": "/audio/voice/2ffaa84deb741ae0.mp3"
+    },
+    {
+      "key": "5ae1b9e6625a0175",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[warmly] Hey, Cyber Hero. This week is a gentle one - and a mighty one. Sometimes something lands on your screen that feels horrid. And a heavy thought lands with it: 'this is my fault.' Here's the biggest truth in the whole academy: when someone is unkind, THEY made that choice. Not you. [excited] Four heavy boulders ahead - let's lift every one!",
+      "lines": [
+        "[warmly] Hey, Cyber Hero. This week is a gentle one - and a mighty one.",
+        "Sometimes something lands on your screen that feels horrid.",
+        "And a heavy thought lands with it: 'this is my fault.'",
+        "Here's the biggest truth in the whole academy:",
+        "when someone is unkind, THEY made that choice. Not you.",
+        "[excited] Four heavy boulders ahead - let's lift every one!"
+      ],
+      "file": "/audio/voice/5ae1b9e6625a0175.mp3"
+    },
+    {
+      "key": "8da0076a0a882243",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[warmly] See those four grey boulders? They're heavy thoughts. Every single one of them is lying to you. Lift each one and look underneath... [excited] and watch it float away like a balloon. Go!",
+      "lines": [
+        "[warmly] See those four grey boulders? They're heavy thoughts.",
+        "Every single one of them is lying to you.",
+        "Lift each one and look underneath...",
+        "[excited] and watch it float away like a balloon. Go!"
+      ],
+      "file": "/audio/voice/8da0076a0a882243.mp3"
+    },
+    {
+      "key": "7fa72021a59339c5",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Lift the first boulder - it's lighter than it looks!",
+      "lines": [
+        "Lift the first boulder - it's lighter than it looks!"
+      ],
+      "file": "/audio/voice/7fa72021a59339c5.mp3"
+    },
+    {
+      "key": "49c928168c78eb73",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[warmly] Power one - and it's the mightiest of all. Never your fault. Say it like you mean it! [excited] Now, every captain needs a team... and it's time to put YOURS on a poster.",
+      "lines": [
+        "[warmly] Power one - and it's the mightiest of all.",
+        "Never your fault. Say it like you mean it!",
+        "[excited] Now, every captain needs a team...",
+        "and it's time to put YOURS on a poster."
+      ],
+      "file": "/audio/voice/49c928168c78eb73.mp3"
+    },
+    {
+      "key": "b495fe73a59644a2",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[warmly] Every captain has a team - and here's the secret: you pick your team BEFORE you ever need it. A parent. A teacher. A grandparent. Someone you'd tell anything. Name them in your head... right now. Got them? [excited] And one goes on EVERY kid's poster: Childline! Oh-eight-hundred, eleven eleven. Free. Always awake. Let's build!",
+      "lines": [
+        "[warmly] Every captain has a team - and here's the secret:",
+        "you pick your team BEFORE you ever need it.",
+        "A parent. A teacher. A grandparent. Someone you'd tell anything.",
+        "Name them in your head... right now. Got them?",
+        "[excited] And one goes on EVERY kid's poster: Childline!",
+        "Oh-eight-hundred, eleven eleven. Free. Always awake. Let's build!"
+      ],
+      "file": "/audio/voice/b495fe73a59644a2.mp3"
+    },
+    {
+      "key": "4769838a3f15f992",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[excited] Here's your poster - four empty spots! Tap the people who truly belong on your team. [whispers] Careful - a couple of tiles don't belong at all. [warmly] Fill it up, captain. This poster is forever.",
+      "lines": [
+        "[excited] Here's your poster - four empty spots!",
+        "Tap the people who truly belong on your team.",
+        "[whispers] Careful - a couple of tiles don't belong at all.",
+        "[warmly] Fill it up, captain. This poster is forever."
+      ],
+      "file": "/audio/voice/4769838a3f15f992.mp3"
+    },
+    {
+      "key": "a9672771ab7e0efd",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "Real-life grown-ups you trust - tap them onto the poster!",
+      "lines": [
+        "Real-life grown-ups you trust - tap them onto the poster!"
+      ],
+      "file": "/audio/voice/a9672771ab7e0efd.mp3"
+    },
+    {
+      "key": "8003790bf2bd9390",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] Two powers! Your poster is GLOWING. Parent, teacher, grandparent... and the golden number. [warmly] Now let's learn what your fingers do... when the mean messages are still coming in.",
+      "lines": [
+        "[excited] Two powers! Your poster is GLOWING.",
+        "Parent, teacher, grandparent... and the golden number.",
+        "[warmly] Now let's learn what your fingers do...",
+        "when the mean messages are still coming in."
+      ],
+      "file": "/audio/voice/8003790bf2bd9390.mp3"
+    },
+    {
+      "key": "ae2fa669a33a9284",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[warmly] When mean messages land, your fingers itch to fire back. Don't feed it! A reply is exactly what the sender wants. Heroes starve it instead. Stop - hands off. Block - the door shuts. [whispers] Then close the app and breathe. [excited] The block button's waiting - let's find it fast!",
+      "lines": [
+        "[warmly] When mean messages land, your fingers itch to fire back.",
+        "Don't feed it! A reply is exactly what the sender wants.",
+        "Heroes starve it instead.",
+        "Stop - hands off. Block - the door shuts.",
+        "[whispers] Then close the app and breathe.",
+        "[excited] The block button's waiting - let's find it fast!"
+      ],
+      "file": "/audio/voice/ae2fa669a33a9284.mp3"
+    },
+    {
+      "key": "88d63c1651d01096",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[warmly] Deep breath. Calm fingers. Six buttons - only two are hero moves. Block shuts the door. Close App gives you air. [excited] Find them in order - go!",
+      "lines": [
+        "[warmly] Deep breath. Calm fingers.",
+        "Six buttons - only two are hero moves.",
+        "Block shuts the door. Close App gives you air.",
+        "[excited] Find them in order - go!"
+      ],
+      "file": "/audio/voice/88d63c1651d01096.mp3"
+    },
+    {
+      "key": "8e09332ed3fbda2e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Shut the door first - find BLOCK SENDER!",
+      "lines": [
+        "Shut the door first - find BLOCK SENDER!"
+      ],
+      "file": "/audio/voice/8e09332ed3fbda2e.mp3"
+    },
+    {
+      "key": "9be68efef6541f3d",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[excited] Three powers! Block found, door shut. And did you spot the trick button? [whispers] DELETE looked helpful... but it wasn't. Here's why the camera always beats the bin.",
+      "lines": [
+        "[excited] Three powers! Block found, door shut.",
+        "And did you spot the trick button?",
+        "[whispers] DELETE looked helpful... but it wasn't.",
+        "Here's why the camera always beats the bin."
+      ],
+      "file": "/audio/voice/9be68efef6541f3d.mp3"
+    },
+    {
+      "key": "2aa634ebd87de68b",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[warmly] When something horrid lands, your thumb hovers over delete. Poof - gone - pretend it never happened? [whispers] But if it's gone... what do you show your team? Heroes freeze it first. Screenshot. Click. Evidence saved - NOW a grown-up can see exactly what happened. [excited] Camera or bin - let's practise the call!",
+      "lines": [
+        "[warmly] When something horrid lands, your thumb hovers over delete.",
+        "Poof - gone - pretend it never happened?",
+        "[whispers] But if it's gone... what do you show your team?",
+        "Heroes freeze it first. Screenshot. Click.",
+        "Evidence saved - NOW a grown-up can see exactly what happened.",
+        "[excited] Camera or bin - let's practise the call!"
+      ],
+      "file": "/audio/voice/2aa634ebd87de68b.mp3"
+    },
+    {
+      "key": "75e7a2050dda19a4",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[warmly] Four horrid moments - all pretend, all practice. For each one: freeze it... or lose it? [whispers] Remember: your team helps best when they can SEE. [excited] Camera at the ready - go!",
+      "lines": [
+        "[warmly] Four horrid moments - all pretend, all practice.",
+        "For each one: freeze it... or lose it?",
+        "[whispers] Remember: your team helps best when they can SEE.",
+        "[excited] Camera at the ready - go!"
+      ],
+      "file": "/audio/voice/75e7a2050dda19a4.mp3"
+    },
+    {
+      "key": "8100df47e01d0919",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "Can your team still SEE the proof? Pick the camera!",
+      "lines": [
+        "Can your team still SEE the proof? Pick the camera!"
+      ],
+      "file": "/audio/voice/8100df47e01d0919.mp3"
+    },
+    {
+      "key": "42a5af62ad8c8324",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] Four powers! Camera beats bin, every time. Frozen proof means real help, fast. [warmly] Now let's stack everything you've learned... into one calm countdown you'll never forget.",
+      "lines": [
+        "[excited] Four powers! Camera beats bin, every time.",
+        "Frozen proof means real help, fast.",
+        "[warmly] Now let's stack everything you've learned...",
+        "into one calm countdown you'll never forget."
+      ],
+      "file": "/audio/voice/42a5af62ad8c8324.mp3"
+    },
+    {
+      "key": "c5fc6a7216482663",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] Time to stack the whole week into one launchpad! Stop - hands off the keyboard. Block - the door shuts. Screenshot - proof frozen. Tell - your team jumps in. [warmly] And if you ever need more: Childline. Oh-eight-hundred, eleven eleven. [excited] Five stages... stack them and LAUNCH!",
+      "lines": [
+        "[excited] Time to stack the whole week into one launchpad!",
+        "Stop - hands off the keyboard.",
+        "Block - the door shuts. Screenshot - proof frozen.",
+        "Tell - your team jumps in.",
+        "[warmly] And if you ever need more: Childline. Oh-eight-hundred, eleven eleven.",
+        "[excited] Five stages... stack them and LAUNCH!"
+      ],
+      "file": "/audio/voice/c5fc6a7216482663.mp3"
+    },
+    {
+      "key": "6fe7bd8fa58d1e15",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] Five stages on the launchpad - all shuffled! Tap them in the order you'd really do them. Fingers... door... camera... team... phone. [warmly] Stack it right and LAUNCH, captain!",
+      "lines": [
+        "[excited] Five stages on the launchpad - all shuffled!",
+        "Tap them in the order you'd really do them.",
+        "Fingers... door... camera... team... phone.",
+        "[warmly] Stack it right and LAUNCH, captain!"
+      ],
+      "file": "/audio/voice/6fe7bd8fa58d1e15.mp3"
+    },
+    {
+      "key": "05b6f557183e8e44",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "What comes FIRST? Calm your own fingers - find STOP!",
+      "lines": [
+        "What comes FIRST? Calm your own fingers - find STOP!"
+      ],
+      "file": "/audio/voice/05b6f557183e8e44.mp3"
+    },
+    {
+      "key": "aa465976fa172491",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[excited] That's all FIVE protocol powers, Team Captain! Never your fault, team named, block found, proof frozen... and the launchpad stacked. [warmly] One calm drill run... [excited] then we pop his blame balloon for GOOD!",
+      "lines": [
+        "[excited] That's all FIVE protocol powers, Team Captain!",
+        "Never your fault, team named, block found,",
+        "proof frozen... and the launchpad stacked.",
+        "[warmly] One calm drill run...",
+        "[excited] then we pop his blame balloon for GOOD!"
+      ],
+      "file": "/audio/voice/aa465976fa172491.mp3"
+    },
+    {
+      "key": "d960c1ad83c16582",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[excited] Drill run - nice and calm, captain! Moments are floating past. PROTOCOL for the hero steps... [warmly] PANIC MOVE for the ones that make it heavier. Go!",
+      "lines": [
+        "[excited] Drill run - nice and calm, captain!",
+        "Moments are floating past.",
+        "PROTOCOL for the hero steps...",
+        "[warmly] PANIC MOVE for the ones that make it heavier. Go!"
+      ],
+      "file": "/audio/voice/d960c1ad83c16582.mp3"
+    },
+    {
+      "key": "5e656f2543bcc034",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] Look at EVERYTHING you mastered this week! The boulders lifted, the team named, the block found, the proof frozen... and the protocol launched. [warmly] Whatever lands on your screen - you know exactly what to do. [excited] Sticker time, Team Captain!",
+      "lines": [
+        "[excited] Look at EVERYTHING you mastered this week!",
+        "The boulders lifted, the team named,",
+        "the block found, the proof frozen... and the protocol launched.",
+        "[warmly] Whatever lands on your screen - you know exactly what to do.",
+        "[excited] Sticker time, Team Captain!"
+      ],
+      "file": "/audio/voice/5e656f2543bcc034.mp3"
     },
     {
       "key": "24e69e302153f951",

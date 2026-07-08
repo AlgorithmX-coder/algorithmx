@@ -90,7 +90,7 @@ Every pattern use across all 20 weeks, each with its unique dressing. **Rule: be
 | W8.1 | **Copy pigeons** *(BUILT as "The Copy Pigeons" — RevealBoard re-dress, ✉️ board; 4 moments: DELETE only empties your nest / screenshot = unreachable copy / group chat = 8 pigeons / the app keeps one too)* (film tie-in) — delete a shared photo → it vanishes locally but paper pigeons stay on every rooftop |
 | W9.4 | **Price-tag flip** *(BUILT as "The Price-Tag Flip" — RevealBoard re-dress, 🏷️ board; 4 FREE tags flipped: Ad Machine pays-with-your-time / Coin Shop Inside real-money nudges / Info Collector pays-with-your-data / The Truly Free library app that asks for nothing)* — a FREE app; flip the tag → the real costs slide out (ads, purchases, your data icons) |
 | W10.1 | **Conveyor curtain** *(BUILT as "The Curtain Pull" — RevealBoard re-dress, 🌀 board; 4 curtains: never-ending belt / countdown rush / hungry thumbnails / the Raccoon greasing the conveyor behind the curtain)* — press NEXT twice → curtain pulls back on the raccoon greasing the next-video conveyor |
-| W11.1 | **Weight lift** — a heavy "my fault" boulder on a kid figure; tap → it deflates into a balloon reading NOT-YOUR-FAULT (icon) and floats away |
+| W11.1 | **Weight lift** *(BUILT as "The Weight Lift" — RevealBoard re-dress, warm 💪 board (villain kept OFF, W5 precedent); 4 boulder-thoughts lifted into balloons: it's-my-fault / I'll-be-in-trouble / keep-it-secret / no-one-can-help)* — a heavy "my fault" boulder on a kid figure; tap → it deflates into a balloon reading NOT-YOUR-FAULT (icon) and floats away |
 | W12.1 | **Footprint lamp** — do 3 innocent actions (like, search, post) → UV lamp sweeps → glowing tracks appear behind each |
 | W14.2 | **Speaker diary** — tap the smart speaker → its paper ribbon prints symbols of everything it heard today |
 | W15.5 | **Two gardens** — same AI seed used meanly vs kindly; tap each → thorns grow vs flowers grow |
@@ -114,7 +114,7 @@ Every pattern use across all 20 weeks, each with its unique dressing. **Rule: be
 | W5.4 | **The Four Doors** *(BUILT — replyCards new DOORS skin, 4 choices)* — arched golden doors per scenario; laugh-along/forward/ignore/support — only the kind door is the hero's |
 | W8.5 | **Share lever** *(BUILT as "The Share Lever" — replyCards' new LEVERS skin (identical brass levers, no answer giveaway) + new copy-override props (pickLabel/roundNoun/correctToast/wrongTitle/completeTitle/completeLine/scoreNoun); 5 photos judged by look-think-ask)* — one photo, big brass SHARE/DON'T levers; sound-off decidable from the photo's clues |
 | W9.2 | **Icon parade** *(BUILT as "The Icon Parade" — senderLineup's second outing via its new intro/complete copy props: 3 rounds of 4 same-icon app badges, tap the COPYCAT (inverted from W4's bust-the-imposter wording but same engine): "Blast Birdz" ★2.1/12 downloads, "Pixel Pets FREE" 12 permissions, "R0bo Racers" zero-for-o)* — five near-identical cat app icons march past; tap the genuine one (rosette), the copycat's eyes cross |
-| W11.4 | **Camera vs bin** — a nasty message with two buttons; tap CAMERA (screenshot) not BIN — camera freezes it into an evidence frame |
+| W11.4 | **Camera vs bin** *(BUILT as "Camera or Bin?" — replyCards back in its original CARDS skin 3 weeks after W8's levers: 4 horrid-moment rounds (mean text / game threat / coin-scare pop-up / group-chat pile-on), camera-first is always the safe card, copy-override props keep the evidence theme)* — a nasty message with two buttons; tap CAMERA (screenshot) not BIN — camera freezes it into an evidence frame |
 | W15.4 | **Odd shadow out** — four photos, one AI-faked (wrong-way shadow, six fingers); tap the fake, it wobbles apart |
 | W16.4 | **Clear-glass links** — link-doors: some clear glass (see destination), some frosted bit.ly; tap the one you can see through |
 | W18.5 | **Balloon refuser** — "SAVE PASSWORD?" balloon bobs up on a shared tablet; tap NO — it deflates with a squeak (film tie-in) |
@@ -125,7 +125,7 @@ Every pattern use across all 20 weeks, each with its unique dressing. **Rule: be
 |---|---|
 | W6.4 | **The Button Hunt** *(BUILT — new buttonHunt engine; reuse W10 escape / W11 block / W14 mute / W18 log-out)* — player-menu mock, find Report then Block among 4 teaching decoys |
 | W10.3 | **Escape hatch** *(BUILT as "The Escape Hatch" — buttonHunt's second outing, re-dressed as the TubeTown Player: find BACK then TELL A GROWN-UP among Next Video/Like/Comment/Share teaching decoys; warm never-your-fault framing, no room-dim needed)* — a not-for-kids video starts; find the back/close control as the room dims — one calm tap out |
-| W11.3 | **Block under pressure** — a chat app mock; find the block button while the message pulses (gentle, no timer) |
+| W11.3 | **Block under pressure** *(BUILT as "The Block Button" — buttonHunt on the ChatterBox chat mock (planned back-to-back with W10 per this ledger): BLOCK SENDER then CLOSE APP among Reply/Fire-One-Back/Read-It-Again/Delete decoys — the Delete decoy pre-teaches beat 4's camera-not-bin; gentle, no timer)* — a chat app mock; find the block button while the message pulses (gentle, no timer) |
 | W14.5 | **Mute safari** — three devices (speaker, TV, toy); find each one's mute/privacy switch — sleeping-ear icon confirms |
 | W17.2 | **Settings burrow** — dig through a 2-level settings menu to flip Public → Private; padlock frosts the profile mirror |
 | W18.2 | **Log-out relay** — the family tablet with 3 open accounts; find each log-out, chests click shut one by one (film tie-in) |
@@ -134,7 +134,7 @@ Every pattern use across all 20 weeks, each with its unique dressing. **Rule: be
 | Use | Dressing |
 |---|---|
 | W2.4 shipped | usernameBuilder |
-| W11.2 | **My Team poster** (film tie-in) — drag real trusted-adult figures onto a poster; name slots + the Childline phone tile (0800 1111) must be placed to finish |
+| W11.2 | **My Team poster** *(BUILT — NEW teamPoster engine: warm cream poster with 4 dashed slots + 7-tile tray; tap team tiles (parent/teacher/grandparent/golden Childline 0800 1111) onto the poster, gentle teach on the 3 decoys (game-lobby friend, keep-it-secret, trust-me stranger); tap-to-place not drag, per the kid-first two-verbs rule; re-dress props earmarked for W19 family-rules quilt)* (film tie-in) — drag real trusted-adult figures onto a poster; name slots + the Childline phone tile (0800 1111) must be placed to finish |
 | W12.4 | **Golden trail stamper** — stomp a path across snow choosing track stamps (helped-friend hands, rocket project, kind heart); trail-glow meter rises |
 | W13.4 | **Day balancer** — stack activity blocks onto a see-saw day plan (screen blocks vs sleep/outside/family); the see-saw must sit level; grown-up figure co-signs |
 | W18.3 | **Passcode forge** — forge a lock-screen code on an anvil; each digit hammered in; a "guessability" spark meter (no W1 re-teach — it's about HAVING a lock) |
@@ -142,7 +142,7 @@ Every pattern use across all 20 weeks, each with its unique dressing. **Rule: be
 
 ### ORDER (sequence steps; NEW small mechanic) — 3 uses
 | W5.5 | **The Calm Path** *(BUILT — new stepOrder engine, reusable for W11/W13)* — stepping stones across a river; tap shuffled step tiles in order: don't reply → keep it → tell |
-| W11.5 | **Protocol launchpad** — stack the rocket stages in order: stop → block → screenshot → tell → Childline; launch on correct order |
+| W11.5 | **Protocol launchpad** *(BUILT as "The Protocol Launchpad" — stepOrder's first return since W5, launchpad skin via intro props: 5 shuffled stages STOP → BLOCK → SCREENSHOT → TELL → Childline 0800 1111, affirmation per landing)* — stack the rocket stages in order: stop → block → screenshot → tell → Childline; launch on correct order |
 | W13.5 | **Power-off ritual strip** — arrange comic panels: finish level → say bye to pet → power off → park in garage → pick what's next |
 
 ### MATCH / SCENE (existing) — 4 uses

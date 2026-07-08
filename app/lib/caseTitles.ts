@@ -64,6 +64,7 @@ const GAME_TITLES: Record<string, string> = {
   profileInspector: "Profile Detective",
   replyCards: "Reply Cards",
   clueBoard: "Clue Board",
+  teamPoster: "Team Poster",
   hookSort: "Hook Sort",
   senderLineup: "Sender Lineup",
   stepOrder: "Step Order",
