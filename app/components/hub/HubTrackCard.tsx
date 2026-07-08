@@ -219,20 +219,37 @@ export default function HubTrackCard({
         {isLive ? "ACTIVE" : "COMING SOON"}
       </span>
 
-      {/* Emblem — a big 3D illustration (screen-blended so its near-black
-          backing vanishes onto the card) when supplied; otherwise the flat
-          CyberIcon glyph in a tile. */}
+      {/* Emblem — HUB FEEDBACK (user): no small pasted square in the
+          corner. The art is a full-width banner EMBEDDED into the card:
+          it bleeds to the card edges, glows in the track accent, and
+          melts into the card body through a gradient fade. */}
       {illustration ? (
-        <div style={{ position: "relative", zIndex: 1, width: 116, height: 116, marginBottom: 2, display: "flex", alignItems: "center", justifyContent: "center" }}>
-          <div aria-hidden style={{ position: "absolute", inset: "-8%", borderRadius: "50%", background: `radial-gradient(circle, ${accentHex}30 0%, transparent 68%)`, filter: "blur(9px)" }} />
+        <div
+          style={{
+            position: "relative",
+            zIndex: 1,
+            margin: "-24px -22px 0",
+            height: 172,
+            overflow: "hidden",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            background: `radial-gradient(ellipse at 50% 30%, ${accentHex}2e 0%, rgba(8,10,22,0.2) 70%)`,
+          }}
+        >
+          {/* accent aura behind the art — sized to swallow the art PNG's
+              dark backing square so no rectangle edge shows */}
+          <div aria-hidden style={{ position: "absolute", left: "50%", top: "46%", width: 260, height: 230, transform: "translate(-50%, -50%)", borderRadius: "50%", background: `radial-gradient(circle, ${accentHex}3e 0%, ${accentHex}18 45%, transparent 68%)`, filter: "blur(18px)" }} />
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={illustration}
             alt=""
-            width={116}
-            height={116}
-            style={{ position: "relative", width: 116, height: 116, objectFit: "contain", mixBlendMode: "screen", filter: `drop-shadow(0 8px 18px ${accentHex}55)` }}
+            width={160}
+            height={160}
+            style={{ position: "relative", width: 160, height: 160, objectFit: "contain", mixBlendMode: "screen", filter: `drop-shadow(0 10px 24px ${accentHex}66)` }}
           />
+          {/* melt into the card body */}
+          <div aria-hidden style={{ position: "absolute", left: 0, right: 0, bottom: 0, height: 56, background: "linear-gradient(180deg, transparent 0%, rgba(10,13,30,0.85) 100%)" }} />
         </div>
       ) : (
         <div
