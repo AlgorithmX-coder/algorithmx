@@ -42,6 +42,23 @@ export default function MissionBriefScene({
   missions,
   title = "YOUR MISSION",
 }: MissionBriefSceneProps) {
+  // SCREEN-AUDIT REBUILD (user mandate): the brief is interactive — the
+  // objective cards arrive face-down and the child TAPS each one to flip
+  // it open. Accept is never disabled (gate-button class): while cards
+  // remain face-down it reads "Tap your objectives!" and wobbles them.
+  // The real Hacker Raccoon and the heroes stand in the scene.
+  const [flipped, setFlipped] = useState<Set<number>>(new Set());
+  const [nudgeNonce, setNudgeNonce] = useState(0);
+  const allFlipped = flipped.size >= missions.length;
+  const flipCard = (i: number) => {
+    setFlipped((s) => {
+      if (s.has(i)) return s;
+      const next = new Set(s);
+      next.add(i);
+      return next;
+    });
+  };
+
   // Subtle mouse-parallax for storybook depth
   const [px, setPx] = useState({ x: 0, y: 0 });
   useEffect(() => {
@@ -79,14 +96,82 @@ export default function MissionBriefScene({
       <HoloPedestal />
       <BeamRays />
 
-      <MissionCardsRow missions={missions} phase={phase} />
+      <CastRow px={px} />
+      <MissionCardsRow
+        missions={missions}
+        phase={phase}
+        flipped={flipped}
+        onFlip={flipCard}
+        nudgeNonce={nudgeNonce}
+      />
 
       <TitlePlate title={title} />
       <ProgressDots phase={phase} />
-      <AcceptButton phase={phase} onAccept={onAccept} />
+      <AcceptButton
+        phase={phase}
+        allFlipped={allFlipped}
+        onAccept={() => {
+          if (allFlipped) onAccept();
+          else setNudgeNonce((n) => n + 1);
+        }}
+      />
 
       <Vignette />
       <KeyframeStyles />
+    </div>
+  );
+}
+
+/* ───────────────────────── CAST ─────────────────────────
+   The heroes and the REAL Hacker Raccoon stand in the scene — the
+   briefing is a stand-off, not a slideshow. Art from the shared
+   character set; parallax keeps them in the world. */
+
+function CastRow({ px }: { px: { x: number; y: number } }) {
+  return (
+    <div aria-hidden style={{ position: "absolute", inset: 0, zIndex: 5, pointerEvents: "none" }}>
+      {/* Heroes — bottom left, facing in (transparent sprites; the duo
+          PNG has a baked-in background so it can't sit in a scene) */}
+      <motion.img
+        src="/game/characters/adam-idle.png"
+        alt=""
+        initial={{ opacity: 0, x: -30 }}
+        animate={{ opacity: 1, x: 0, y: [0, -5, 0] }}
+        transition={{ opacity: { duration: 0.6, delay: 0.4 }, x: { duration: 0.6, delay: 0.4 }, y: { duration: 3, repeat: Infinity, ease: "easeInOut" } }}
+        style={{
+          position: "absolute", left: "3%", bottom: "4%", height: "27%",
+          transform: `translate(${px.x * 6}px, ${px.y * 3}px)`,
+          filter: "drop-shadow(0 14px 20px rgba(2,4,12,0.7))",
+        }}
+      />
+      <motion.img
+        src="/game/characters/layla-idle.png"
+        alt=""
+        initial={{ opacity: 0, x: -30 }}
+        animate={{ opacity: 1, x: 0, y: [0, -4, 0] }}
+        transition={{ opacity: { duration: 0.6, delay: 0.55 }, x: { duration: 0.6, delay: 0.55 }, y: { duration: 3.3, repeat: Infinity, ease: "easeInOut" } }}
+        style={{
+          position: "absolute", left: "10.5%", bottom: "4%", height: "24%",
+          transform: `translate(${px.x * 5}px, ${px.y * 3}px)`,
+          filter: "drop-shadow(0 14px 20px rgba(2,4,12,0.7))",
+        }}
+      />
+      <div style={{ position: "absolute", left: "3%", bottom: "3.5%", width: "16%", height: 16, borderRadius: "50%", background: "radial-gradient(ellipse, rgba(2,4,12,0.5), transparent 70%)" }} />
+
+      {/* The Hacker Raccoon — bottom right, plotting */}
+      <motion.img
+        src="/game/characters/raccoon-taunt.png"
+        alt=""
+        initial={{ opacity: 0, x: 30 }}
+        animate={{ opacity: 1, x: 0, y: [0, -7, 0] }}
+        transition={{ opacity: { duration: 0.6, delay: 0.7 }, x: { duration: 0.6, delay: 0.7 }, y: { duration: 3.4, repeat: Infinity, ease: "easeInOut" } }}
+        style={{
+          position: "absolute", right: "3%", bottom: "4%", height: "26%",
+          transform: `translate(${px.x * 8}px, ${px.y * 4}px)`,
+          filter: "drop-shadow(0 12px 18px rgba(2,4,12,0.7)) drop-shadow(0 0 24px rgba(124,92,255,0.25))",
+        }}
+      />
+      <div style={{ position: "absolute", right: "4%", bottom: "3.5%", width: "12%", height: 14, borderRadius: "50%", background: "radial-gradient(ellipse, rgba(2,4,12,0.5), transparent 70%)" }} />
     </div>
   );
 }
@@ -502,9 +587,15 @@ function BeamRays() {
 function MissionCardsRow({
   missions,
   phase,
+  flipped,
+  onFlip,
+  nudgeNonce,
 }: {
   missions: Mission[];
   phase: number;
+  flipped: Set<number>;
+  onFlip: (i: number) => void;
+  nudgeNonce: number;
 }) {
   return (
     <div
@@ -516,7 +607,6 @@ function MissionCardsRow({
         display: "flex",
         gap: 22,
         zIndex: 6,
-        pointerEvents: "none",
         perspective: "1200px",
       }}
     >
@@ -527,6 +617,9 @@ function MissionCardsRow({
           index={i}
           visible={phase > i}
           isMiddle={i === Math.floor((missions.length - 1) / 2)}
+          flipped={flipped.has(i)}
+          onFlip={() => onFlip(i)}
+          nudgeNonce={nudgeNonce}
         />
       ))}
     </div>
@@ -538,18 +631,30 @@ function MissionCard({
   index,
   visible,
   isMiddle,
+  flipped,
+  onFlip,
+  nudgeNonce,
 }: {
   mission: Mission;
   index: number;
   visible: boolean;
   isMiddle: boolean;
+  flipped: boolean;
+  onFlip: () => void;
+  nudgeNonce: number;
 }) {
   return (
-    <motion.div
+    <motion.button
+      type="button"
+      onClick={onFlip}
+      aria-pressed={flipped}
+      aria-label={flipped ? mission.text : `Objective ${index + 1} — tap to reveal`}
       initial={{ opacity: 0, y: 50, scale: 0.6, rotateX: 30 }}
       animate={
         visible
-          ? { opacity: 1, y: 0, scale: 1, rotateX: 0 }
+          ? flipped || nudgeNonce === 0
+            ? { opacity: 1, y: 0, scale: 1, rotateX: 0, x: 0 }
+            : { opacity: 1, y: 0, scale: 1, rotateX: 0, x: [0, -6, 6, -3, 0] }
           : { opacity: 0, y: 50, scale: 0.6, rotateX: 30 }
       }
       transition={{
@@ -558,102 +663,111 @@ function MissionCard({
         damping: 22,
         delay: visible ? index * 0.08 : 0,
       }}
+      // nudgeNonce keys the wobble so every Accept press replays it on
+      // the cards that are still face-down.
+      data-nudge={nudgeNonce}
       style={{
         position: "relative",
         width: 196,
         height: 154,
+        border: "none",
+        background: "transparent",
+        padding: 0,
+        cursor: flipped ? "default" : "pointer",
+        touchAction: "manipulation",
+        fontFamily: "inherit",
         transformStyle: "preserve-3d",
         transform: isMiddle ? "translateY(-18px) scale(1.08)" : undefined,
       }}
     >
       {/* Outer glow halo */}
       <div
+        aria-hidden
         style={{
           position: "absolute",
           inset: -16,
           borderRadius: 28,
           background: `radial-gradient(ellipse at 50% 50%, ${mission.glow} 0%, transparent 70%)`,
           filter: "blur(8px)",
-          opacity: 0.7,
+          opacity: flipped ? 0.7 : 0.45,
           animation: `cardGlow 3.${index}s ease-in-out infinite`,
+          transition: "opacity 400ms ease",
         }}
       />
-      {/* Card body */}
-      <div
+      {/* 3D flipper */}
+      {/* NOTE: no CSS `animation` here — a CSS transform animation
+          overrides framer's rotateY and the flip never renders. */}
+      <motion.div
+        aria-hidden
+        animate={{ rotateY: flipped ? 0 : 180 }}
+        initial={false}
+        transition={{ type: "spring", stiffness: 200, damping: 20 }}
         style={{
           position: "absolute",
           inset: 0,
-          borderRadius: 18,
-          background:
-            "linear-gradient(180deg, #fffaf0 0%, #fdf0db 100%)",
-          boxShadow:
-            `0 18px 40px -12px rgba(40, 18, 8, 0.55), ` +
-            `0 0 0 1px ${mission.colour}55 inset, ` +
-            `0 -3px 0 ${mission.colour}33 inset, ` +
-            `0 0 30px ${mission.glow}`,
-          overflow: "hidden",
-          animation: `cardBob 4.${index}s ease-in-out infinite`,
+          transformStyle: "preserve-3d",
         }}
       >
-        {/* Top accent stripe */}
+        {/* FRONT (revealed objective) — glassy night panel */}
         <div
           style={{
             position: "absolute",
-            top: 0,
-            left: 0,
-            right: 0,
-            height: 6,
-            background: `linear-gradient(90deg, ${mission.colour}aa, ${mission.colour}, ${mission.colour}aa)`,
-          }}
-        />
-        {/* Emoji icon */}
-        <div
-          style={{
-            position: "absolute",
-            top: 18,
-            left: "50%",
-            transform: "translateX(-50%)",
-            fontSize: 44,
-            lineHeight: 1,
-            filter: `drop-shadow(0 0 18px ${mission.glow})`,
+            inset: 0,
+            borderRadius: 18,
+            backfaceVisibility: "hidden",
+            background: "linear-gradient(180deg, rgba(22,28,62,0.92) 0%, rgba(12,16,40,0.95) 100%)",
+            boxShadow:
+              `0 18px 40px -12px rgba(2, 4, 12, 0.75), ` +
+              `0 0 0 1.5px ${mission.colour}88 inset, ` +
+              `0 -3px 0 ${mission.colour}44 inset, ` +
+              `0 0 30px ${mission.glow}`,
+            overflow: "hidden",
           }}
         >
-          <PixIcon emoji={mission.icon} size={52} />
+          <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 6, background: `linear-gradient(90deg, ${mission.colour}aa, ${mission.colour}, ${mission.colour}aa)` }} />
+          <div style={{ position: "absolute", top: 16, left: "50%", transform: "translateX(-50%)", fontSize: 44, lineHeight: 1, filter: `drop-shadow(0 0 18px ${mission.glow})` }}>
+            <PixIcon emoji={mission.icon} size={52} />
+          </div>
+          <div style={{ position: "absolute", top: 74, left: 0, right: 0, textAlign: "center", color: mission.colour, fontSize: 10, fontWeight: 800, letterSpacing: 2 }}>
+            OBJECTIVE 0{index + 1}
+          </div>
+          <div style={{ position: "absolute", top: 92, left: 12, right: 12, textAlign: "center", color: "#f2f6ff", fontSize: 13, fontWeight: 700, lineHeight: 1.25 }}>
+            {mission.text}
+          </div>
         </div>
-        {/* Objective label */}
+
+        {/* BACK (face-down) — sealed envelope, tap to open */}
         <div
           style={{
             position: "absolute",
-            top: 76,
-            left: 0,
-            right: 0,
-            textAlign: "center",
-            color: "#7a3a52",
-            fontSize: 10,
-            fontWeight: 800,
-            letterSpacing: 2,
+            inset: 0,
+            borderRadius: 18,
+            backfaceVisibility: "hidden",
+            transform: "rotateY(180deg)",
+            background: "linear-gradient(180deg, rgba(26,33,71,0.9) 0%, rgba(15,21,48,0.94) 100%)",
+            boxShadow:
+              `0 18px 40px -12px rgba(2, 4, 12, 0.75), ` +
+              `0 0 0 1.5px rgba(125,240,255,0.4) inset, ` +
+              `0 0 24px rgba(0,229,255,0.18)`,
+            overflow: "hidden",
+            display: "grid",
+            placeItems: "center",
           }}
         >
-          OBJECTIVE 0{index + 1}
+          <div style={{ textAlign: "center" }}>
+            <div style={{ fontSize: 40, lineHeight: 1, marginBottom: 8, filter: "drop-shadow(0 0 14px rgba(125,240,255,0.5))" }}>
+              <PixIcon emoji="✉️" size={48} />
+            </div>
+            <div style={{ color: "#7df0ff", fontSize: 10, fontWeight: 800, letterSpacing: 2 }}>
+              OBJECTIVE 0{index + 1}
+            </div>
+            <div style={{ color: "#f2f6ff", fontSize: 13, fontWeight: 800, marginTop: 4 }}>
+              TAP TO OPEN
+            </div>
+          </div>
         </div>
-        {/* Mission text */}
-        <div
-          style={{
-            position: "absolute",
-            top: 94,
-            left: 12,
-            right: 12,
-            textAlign: "center",
-            color: "#3b2615",
-            fontSize: 13,
-            fontWeight: 700,
-            lineHeight: 1.25,
-          }}
-        >
-          {mission.text}
-        </div>
-      </div>
-    </motion.div>
+      </motion.div>
+    </motion.button>
   );
 }
 
@@ -758,9 +872,11 @@ function ProgressDots({ phase }: { phase: number }) {
 
 function AcceptButton({
   phase,
+  allFlipped,
   onAccept,
 }: {
   phase: number;
+  allFlipped: boolean;
   onAccept: () => void;
 }) {
   const visible = phase >= 3;
@@ -791,19 +907,23 @@ function AcceptButton({
             padding: "16px 38px",
             fontSize: 18,
             fontWeight: 800,
-            color: "#080a16",
-            background: "linear-gradient(135deg, #00e5ff, #7c5cff)",
+            color: allFlipped ? "#080a16" : "#cfe0ff",
+            background: allFlipped
+              ? "linear-gradient(135deg, #00e5ff, #7c5cff)"
+              : "linear-gradient(135deg, rgba(40,50,100,0.85), rgba(30,36,80,0.85))",
             borderRadius: 999,
             fontFamily: "'Space Grotesk', system-ui, sans-serif",
             letterSpacing: 1,
             textTransform: "uppercase",
-            boxShadow:
-              "0 0 24px rgba(0, 229, 255, 0.55), " +
-              "0 8px 20px -6px rgba(0, 229, 255, 0.45), " +
-              "0 0 0 1px rgba(125, 240, 255, 0.6) inset",
+            boxShadow: allFlipped
+              ? "0 0 24px rgba(0, 229, 255, 0.55), " +
+                "0 8px 20px -6px rgba(0, 229, 255, 0.45), " +
+                "0 0 0 1px rgba(125, 240, 255, 0.6) inset"
+              : "0 8px 20px -8px rgba(2,4,12,0.7), 0 0 0 1px rgba(125, 240, 255, 0.35) inset",
+            transition: "background 300ms ease, color 300ms ease",
           }}
         >
-          Accept Mission →
+          {allFlipped ? "Accept Mission →" : "Tap your objectives!"}
         </motion.button>
       </motion.div>
     </div>

@@ -9,10 +9,20 @@
  * with a topic icon), and a big gold button. Rich + premium, but with NO
  * rapid motion/flashing so it stays comfortable for 6-9 yr olds. Honours
  * comfort mode. An illustrated background can drop in behind via `background`.
+ *
+ * SCREEN-AUDIT REBUILD (user mandate: "is it interactive?"): the Learn
+ * beat is no longer a read-only list. Each clue row starts dim and the
+ * child TAPS it to power it up (pop + glow + ✓). The advance button is
+ * NEVER disabled (gate-button regression class: a child must always
+ * have a way forward) — while clues remain unlit it reads "Tap all the
+ * clues!" and pressing it wobbles the unlit rows as a pointer instead
+ * of advancing. Same data, same 29-screen structure, every week.
  */
 
+import { useState } from "react";
 import { motion } from "motion/react";
 import { useMotionIntensity } from "@/app/lib/gameEngine";
+import { playSound } from "@/app/lib/sounds";
 import ExerciseFrame from "@/app/components/lesson/ExerciseFrame";
 import GameButton from "@/app/components/lesson/GameButton";
 import InfoNarration from "@/app/components/lesson/InfoNarration";
@@ -50,6 +60,34 @@ export default function InfoScene({
 }: InfoSceneProps) {
   const intensity = useMotionIntensity();
   const reduce = intensity < 1;
+
+  // Tap-to-power-up state: which clue rows the child has lit.
+  const [lit, setLit] = useState<Set<number>>(new Set());
+  const [nudgeNonce, setNudgeNonce] = useState(0);
+  const total = bullets?.length ?? 0;
+  const allLit = total === 0 || lit.size >= total;
+
+  const tapRow = (i: number) => {
+    if (lit.has(i)) return;
+    playSound("pop");
+    setLit((s) => {
+      const next = new Set(s);
+      next.add(i);
+      if (next.size >= total) playSound("streak3");
+      return next;
+    });
+  };
+
+  const advance = () => {
+    if (allLit) {
+      onNext();
+    } else {
+      // Never strand a child: the button always works — before the clues
+      // are lit it points at them instead of advancing.
+      playSound("hover");
+      setNudgeNonce((n) => n + 1);
+    }
+  };
 
   return (
     <ExerciseFrame
@@ -139,53 +177,105 @@ export default function InfoScene({
           </p>
         )}
 
-        {/* Glossy 3D colour rows with a check + topic-icon badge */}
+        {/* Tap-to-power-up clue rows: dim + pulsing until the child taps
+            each one; lighting all of them unlocks the advance. */}
         {bullets && (
-          <div style={{ display: "grid", gap: 11, maxWidth: 600, margin: "6px auto 22px" }}>
-            {bullets.map((b, i) => {
-              const accent = ROW_COLOURS[i % ROW_COLOURS.length];
-              const icon = bulletIcons?.[i];
-              return (
-                <motion.div
-                  key={i}
-                  initial={reduce ? false : { opacity: 0, x: -10 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: reduce ? 0 : 0.14 + i * 0.07, duration: 0.3, ease: "easeOut" }}
-                  style={{
-                    display: "flex", alignItems: "center", gap: 13,
-                    padding: "12px 14px 12px 13px", borderRadius: 999,
-                    background: `linear-gradient(180deg, ${accent}42 0%, ${accent}1c 55%, ${accent}12 100%)`,
-                    border: `1px solid ${accent}66`,
-                    boxShadow: `inset 0 1px 0 ${accent}88, inset 0 -7px 14px -8px rgba(0,0,0,0.55), 0 6px 16px -10px ${accent}aa`,
-                    color: "#f2f6ff", fontSize: 15, fontWeight: 650, lineHeight: 1.3,
-                  }}
-                >
-                  <span aria-hidden style={{
-                    flexShrink: 0, width: 30, height: 30, borderRadius: "50%",
-                    display: "inline-flex", alignItems: "center", justifyContent: "center",
-                    background: `radial-gradient(circle at 35% 30%, ${accent}, ${accent}cc)`,
-                    color: "#06080f", fontWeight: 900, fontSize: 15,
-                    boxShadow: `inset 0 1px 2px rgba(255,255,255,0.6), 0 0 12px -2px ${accent}`,
-                  }}>✓</span>
-                  <span style={{ flex: 1 }}>{b}</span>
-                  {icon && (
-                    <span aria-hidden style={{
-                      flexShrink: 0, width: 34, height: 34, borderRadius: 11,
-                      display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: 18,
-                      background: `linear-gradient(180deg, ${accent}3a, ${accent}14)`,
-                      border: `1px solid ${accent}66`,
-                      boxShadow: `inset 0 1px 0 ${accent}77, 0 0 10px -3px ${accent}`,
-                    }}><PixIcon emoji={icon} size={26} /></span>
-                  )}
-                </motion.div>
-              );
-            })}
-          </div>
+          <>
+            <div style={{ textAlign: "center", fontFamily: "'Space Grotesk', sans-serif", fontSize: 11.5, fontWeight: 800, letterSpacing: "0.18em", color: "#9fe9ff", margin: "2px 0 10px" }}>
+              👆 TAP EACH CLUE TO POWER IT UP · {Math.min(lit.size, total)} / {total}
+            </div>
+            <div style={{ display: "grid", gap: 11, maxWidth: 600, margin: "0 auto 22px" }}>
+              {bullets.map((b, i) => {
+                const accent = ROW_COLOURS[i % ROW_COLOURS.length];
+                const icon = bulletIcons?.[i];
+                const on = lit.has(i);
+                return (
+                  <motion.button
+                    key={i}
+                    type="button"
+                    onClick={() => tapRow(i)}
+                    aria-pressed={on}
+                    initial={reduce ? false : { opacity: 0, x: -10 }}
+                    animate={
+                      on || reduce
+                        ? { opacity: 1, x: 0, scale: 1 }
+                        : nudgeNonce > 0
+                          ? { opacity: 1, x: [0, -6, 6, -3, 0], scale: 1 }
+                          : { opacity: 1, x: 0, scale: [1, 1.015, 1] }
+                    }
+                    // Scope the infinite pulse to SCALE only — a repeat on
+                    // the whole transition loops the entry fade too and the
+                    // rows flicker in and out.
+                    transition={
+                      on || reduce
+                        ? { duration: 0.25 }
+                        : nudgeNonce > 0
+                          ? { duration: 0.5 }
+                          : {
+                              opacity: { delay: 0.14 + i * 0.07, duration: 0.3 },
+                              x: { delay: 0.14 + i * 0.07, duration: 0.3 },
+                              scale: { delay: 0.14 + i * 0.07, duration: 1.6, repeat: Infinity, ease: "easeInOut" },
+                            }
+                    }
+                    // Re-key the nudge wobble so every press replays it.
+                    data-nudge={nudgeNonce}
+                    style={{
+                      display: "flex", alignItems: "center", gap: 13, width: "100%",
+                      padding: "12px 14px 12px 13px", borderRadius: 999,
+                      cursor: on ? "default" : "pointer", touchAction: "manipulation",
+                      fontFamily: "inherit", textAlign: "left",
+                      background: on
+                        ? `linear-gradient(180deg, ${accent}42 0%, ${accent}1c 55%, ${accent}12 100%)`
+                        : "linear-gradient(180deg, rgba(80,92,140,0.16) 0%, rgba(40,48,90,0.12) 100%)",
+                      border: on ? `1px solid ${accent}66` : "1.5px dashed rgba(159,233,255,0.4)",
+                      boxShadow: on
+                        ? `inset 0 1px 0 ${accent}88, inset 0 -7px 14px -8px rgba(0,0,0,0.55), 0 6px 16px -10px ${accent}aa`
+                        : "inset 0 -6px 12px -8px rgba(0,0,0,0.4)",
+                      color: on ? "#f2f6ff" : "#aebadb",
+                      fontSize: 15, fontWeight: 650, lineHeight: 1.3,
+                      transition: "background 300ms ease, border 300ms ease, color 300ms ease",
+                    }}
+                  >
+                    <motion.span
+                      aria-hidden
+                      key={on ? "on" : "off"}
+                      initial={on && !reduce ? { scale: 1.6 } : false}
+                      animate={{ scale: 1 }}
+                      transition={{ type: "spring", stiffness: 300, damping: 16 }}
+                      style={{
+                        flexShrink: 0, width: 30, height: 30, borderRadius: "50%",
+                        display: "inline-flex", alignItems: "center", justifyContent: "center",
+                        background: on
+                          ? `radial-gradient(circle at 35% 30%, ${accent}, ${accent}cc)`
+                          : "rgba(90,102,150,0.35)",
+                        color: on ? "#06080f" : "#cfe0ff", fontWeight: 900, fontSize: 15,
+                        boxShadow: on ? `inset 0 1px 2px rgba(255,255,255,0.6), 0 0 12px -2px ${accent}` : "none",
+                      }}
+                    >
+                      {on ? "✓" : "👆"}
+                    </motion.span>
+                    <span style={{ flex: 1, filter: on ? "none" : "opacity(0.85)" }}>{b}</span>
+                    {icon && (
+                      <span aria-hidden style={{
+                        flexShrink: 0, width: 34, height: 34, borderRadius: 11,
+                        display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: 18,
+                        background: on ? `linear-gradient(180deg, ${accent}3a, ${accent}14)` : "rgba(60,70,110,0.3)",
+                        border: on ? `1px solid ${accent}66` : "1px solid rgba(159,233,255,0.25)",
+                        boxShadow: on ? `inset 0 1px 0 ${accent}77, 0 0 10px -3px ${accent}` : "none",
+                        filter: on ? "none" : "saturate(0.4) opacity(0.7)",
+                        transition: "filter 300ms ease",
+                      }}><PixIcon emoji={icon} size={26} /></span>
+                    )}
+                  </motion.button>
+                );
+              })}
+            </div>
+          </>
         )}
 
         <div style={{ textAlign: "center", marginTop: 4 }}>
-          <GameButton variant="primary" size="lg" onClick={onNext}>
-            Next →
+          <GameButton variant={allLit ? "primary" : "secondary"} size="lg" onClick={advance}>
+            {allLit ? "Next →" : "Tap all the clues!"}
           </GameButton>
         </div>
       </div>
