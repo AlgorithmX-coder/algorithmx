@@ -50,6 +50,12 @@ export interface SenderLineupProps {
   introTitle?: string;
   introSubtitle?: string;
   introIcon?: string;
+  /** Toast on catching the fake (default "IMPOSTER BUSTED!"). */
+  correctToast?: string;
+  /** Stamp slapped on the caught card, e.g. "FROZEN!" (default "IMPOSTER! 🎭"). */
+  stampLabel?: string;
+  /** WrongAnswerPanel title when a safe card is tapped; {name} is replaced. */
+  wrongTitle?: string;
   completeTitle?: string;
   completeLine?: string;
   hints?: { tier1: string; tier2: string };
@@ -72,6 +78,9 @@ export default function SenderLineup({
   introTitle,
   introSubtitle,
   introIcon,
+  correctToast,
+  stampLabel,
+  wrongTitle,
   completeTitle,
   completeLine,
   hints,
@@ -125,7 +134,7 @@ export default function SenderLineup({
     });
     if (sender.isFake) {
       audio.correct();
-      fx.correct({ xp: 25, text: "IMPOSTER BUSTED!" });
+      fx.correct({ xp: 25, text: correctToast ?? "IMPOSTER BUSTED!" });
       onCorrect?.();
       setCorrectCount((n) => n + 1);
       setBusted(sender.id);
@@ -135,7 +144,7 @@ export default function SenderLineup({
       onWrong?.();
       setWrongCount((n) => n + 1);
       setFeedback({
-        title: `${sender.name} is actually the real one`,
+        title: wrongTitle ? wrongTitle.replace("{name}", sender.name) : `${sender.name} is actually the real one`,
         explanation: sender.note,
         tip: hints?.tier1,
       });
@@ -287,7 +296,7 @@ export default function SenderLineup({
                           color: "#ff9bcb",
                         }}
                       >
-                        IMPOSTER! 🎭
+                        {stampLabel ?? "IMPOSTER! 🎭"}
                       </motion.span>
                     )}
                   </motion.button>

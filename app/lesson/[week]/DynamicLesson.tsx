@@ -2214,6 +2214,9 @@ function DynamicLessonInner({ qaEnabled }: { qaEnabled: boolean }) {
               introTitle={def.introTitle}
               introSubtitle={def.introSubtitle}
               introIcon={def.introIcon}
+              correctToast={def.correctToast}
+              stampLabel={def.stampLabel}
+              wrongTitle={def.wrongTitle}
               completeTitle={def.completeTitle}
               completeLine={def.completeLine}
               hints={def.hints}

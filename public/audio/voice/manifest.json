@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-08T12:36:55.244Z",
+  "generatedAt": "2026-07-08T12:59:11.429Z",
   "model": "eleven_v3",
   "voiceSettings": {
     "stability": 0.35,
@@ -2728,6 +2728,279 @@
         "[excited] Sticker time, Lock Master!"
       ],
       "file": "/audio/voice/2850abe2273c9ad9.mp3"
+    },
+    {
+      "key": "3ea2d28a438ea1a8",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[excited] Week nineteen - and everything changes! Count your powers: eighteen whole weeks of them. [warmly] You know things the grown-ups don't. So the roles flip. Now YOU teach. One rule: teach kindly. Never tease. [excited] Three family moments are coming - show me the expert!",
+      "lines": [
+        "[excited] Week nineteen - and everything changes!",
+        "Count your powers: eighteen whole weeks of them.",
+        "[warmly] You know things the grown-ups don't.",
+        "So the roles flip. Now YOU teach.",
+        "One rule: teach kindly. Never tease.",
+        "[excited] Three family moments are coming - show me the expert!"
+      ],
+      "file": "/audio/voice/3ea2d28a438ea1a8.mp3"
+    },
+    {
+      "key": "0a3eb4baeeda4e9c",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[warmly] Three family moments. Three chances to speak up. Remember the expert's rule: teach kindly - never tease. [excited] Show me the call-out!",
+      "lines": [
+        "[warmly] Three family moments. Three chances to speak up.",
+        "Remember the expert's rule:",
+        "teach kindly - never tease.",
+        "[excited] Show me the call-out!"
+      ],
+      "file": "/audio/voice/0a3eb4baeeda4e9c.mp3"
+    },
+    {
+      "key": "188b2a4c7a50142b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] Power one - the expert badge is yours! Teach kindly. Never tease. [whispers] And your first pupil is waiting in the kitchen... Gran's phone just buzzed. Come on.",
+      "lines": [
+        "[excited] Power one - the expert badge is yours!",
+        "Teach kindly. Never tease.",
+        "[whispers] And your first pupil is waiting in the kitchen...",
+        "Gran's phone just buzzed. Come on."
+      ],
+      "file": "/audio/voice/188b2a4c7a50142b.mp3"
+    },
+    {
+      "key": "f068518a87d9576d",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[whispers] Secret time: grown-ups get MORE scam texts than kids. Fake banks. Fake parcels. Fake prizes. The same tricks you beat in Week four - [warmly] just wearing bigger letters for Gran. And you still know every tell. [excited] Her phone's on the kitchen table - let's check it together!",
+      "lines": [
+        "[whispers] Secret time: grown-ups get MORE scam texts than kids.",
+        "Fake banks. Fake parcels. Fake prizes.",
+        "The same tricks you beat in Week four -",
+        "[warmly] just wearing bigger letters for Gran.",
+        "And you still know every tell.",
+        "[excited] Her phone's on the kitchen table - let's check it together!"
+      ],
+      "file": "/audio/voice/f068518a87d9576d.mp3"
+    },
+    {
+      "key": "9560d67a12ec46c8",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[whispers] There it is, on Gran's phone. Looks scary. Checks easy. Tap every line and gather the tells - [warmly] then we show Gran, one at a time.",
+      "lines": [
+        "[whispers] There it is, on Gran's phone.",
+        "Looks scary. Checks easy.",
+        "Tap every line and gather the tells -",
+        "[warmly] then we show Gran, one at a time."
+      ],
+      "file": "/audio/voice/9560d67a12ec46c8.mp3"
+    },
+    {
+      "key": "9ac6f3b9a0d736e4",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Start with WHO sent it - tap the sender line!",
+      "lines": [
+        "Start with WHO sent it - tap the sender line!"
+      ],
+      "file": "/audio/voice/9ac6f3b9a0d736e4.mp3"
+    },
+    {
+      "key": "6325e73b0cacd3ab",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[excited] Power two - Gran spots scams now! Taught, not told off. [warmly] But one lesson protects one person... a family RULE protects everyone. Fetch the quilt.",
+      "lines": [
+        "[excited] Power two - Gran spots scams now!",
+        "Taught, not told off.",
+        "[warmly] But one lesson protects one person...",
+        "a family RULE protects everyone. Fetch the quilt."
+      ],
+      "file": "/audio/voice/6325e73b0cacd3ab.mp3"
+    },
+    {
+      "key": "e5907f986a374e17",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[curious] What's warmer than a rule? A quilt of rules - sewn by EVERYONE. Everyone adds a patch. Everyone signs. [warmly] And it covers everyone. Yes, even Dad's phone. The golden patch holds it all: tell, don't hide. [excited] The patches are on the table - let's sew!",
+      "lines": [
+        "[curious] What's warmer than a rule?",
+        "A quilt of rules - sewn by EVERYONE.",
+        "Everyone adds a patch. Everyone signs.",
+        "[warmly] And it covers everyone. Yes, even Dad's phone.",
+        "The golden patch holds it all: tell, don't hide.",
+        "[excited] The patches are on the table - let's sew!"
+      ],
+      "file": "/audio/voice/e5907f986a374e17.mp3"
+    },
+    {
+      "key": "f1fe0c64e95d7c8a",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[excited] Patches on the table! One question for each: would EVERYONE sign it - Gran to little brother? [warmly] Sew the together rules. Leave the unravellers. Go!",
+      "lines": [
+        "[excited] Patches on the table!",
+        "One question for each:",
+        "would EVERYONE sign it - Gran to little brother?",
+        "[warmly] Sew the together rules. Leave the unravellers. Go!"
+      ],
+      "file": "/audio/voice/f1fe0c64e95d7c8a.mp3"
+    },
+    {
+      "key": "f98740d863056998",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "Read each patch - if the whole family would sign it, sew it on!",
+      "lines": [
+        "Read each patch - if the whole family would sign it, sew it on!"
+      ],
+      "file": "/audio/voice/f98740d863056998.mp3"
+    },
+    {
+      "key": "26be4b102d6adb89",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] Power three - the quilt is sewn! Every patch signed, even Dad's. [whispers] Now grab your torch, expert... it's time for the evening rounds.",
+      "lines": [
+        "[excited] Power three - the quilt is sewn!",
+        "Every patch signed, even Dad's.",
+        "[whispers] Now grab your torch, expert...",
+        "it's time for the evening rounds."
+      ],
+      "file": "/audio/voice/26be4b102d6adb89.mp3"
+    },
+    {
+      "key": "a902fecfb258399e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[curious] Every castle guard walks the walls at night. Checking window after window. That's your evening rounds, expert: one device per family member, one check each. [whispers] Some windows are already locked. Some... aren't. [excited] Torch on - let's do the rounds!",
+      "lines": [
+        "[curious] Every castle guard walks the walls at night.",
+        "Checking window after window.",
+        "That's your evening rounds, expert:",
+        "one device per family member, one check each.",
+        "[whispers] Some windows are already locked. Some... aren't.",
+        "[excited] Torch on - let's do the rounds!"
+      ],
+      "file": "/audio/voice/a902fecfb258399e.mp3"
+    },
+    {
+      "key": "87bf628ba101cc89",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[whispers] The rounds begin - five windows on the wall. Gran's, Dad's, your brother's, Mum's, the tablet's. Find the open ones... [excited] and flip them shut. Go, expert!",
+      "lines": [
+        "[whispers] The rounds begin - five windows on the wall.",
+        "Gran's, Dad's, your brother's, Mum's, the tablet's.",
+        "Find the open ones...",
+        "[excited] and flip them shut. Go, expert!"
+      ],
+      "file": "/audio/voice/87bf628ba101cc89.mp3"
+    },
+    {
+      "key": "48d277d185ef774c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Check each row - if a trickster could slip through it, tap it and set it right!",
+      "lines": [
+        "Check each row - if a trickster could slip through it, tap it and set it right!"
+      ],
+      "file": "/audio/voice/48d277d185ef774c.mp3"
+    },
+    {
+      "key": "5ffc914d3255d790",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[excited] Power four - the walls are checked! Every window, every family member. [warmly] One power left, and it's the bravest... catching the trap at the exact moment it opens.",
+      "lines": [
+        "[excited] Power four - the walls are checked!",
+        "Every window, every family member.",
+        "[warmly] One power left, and it's the bravest...",
+        "catching the trap at the exact moment it opens."
+      ],
+      "file": "/audio/voice/5ffc914d3255d790.mp3"
+    },
+    {
+      "key": "96eb018306e3d883",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[warmly] Last power - and it's the bravest. Some traps need a hero IN the room. A prize text. A parcel trick. A free-coin machine. [whispers] The power is noticing... at the exact right second. Wait - FREEZE! Then fix it together. [excited] Three family scenes - find each trap before it snaps!",
+      "lines": [
+        "[warmly] Last power - and it's the bravest.",
+        "Some traps need a hero IN the room.",
+        "A prize text. A parcel trick. A free-coin machine.",
+        "[whispers] The power is noticing... at the exact right second.",
+        "Wait - FREEZE! Then fix it together.",
+        "[excited] Three family scenes - find each trap before it snaps!"
+      ],
+      "file": "/audio/voice/96eb018306e3d883.mp3"
+    },
+    {
+      "key": "f3181144491d746a",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[excited] The scenes are rolling! Most of the family is fine... but ONE moment in each scene is a trap mid-snap. [warmly] Find it. Freeze it. Speak up!",
+      "lines": [
+        "[excited] The scenes are rolling!",
+        "Most of the family is fine...",
+        "but ONE moment in each scene is a trap mid-snap.",
+        "[warmly] Find it. Freeze it. Speak up!"
+      ],
+      "file": "/audio/voice/f3181144491d746a.mp3"
+    },
+    {
+      "key": "278e969cec21c1a0",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "Scan each moment - who's about to tap, pay or type something for a stranger?",
+      "lines": [
+        "Scan each moment - who's about to tap, pay or type something for a stranger?"
+      ],
+      "file": "/audio/voice/278e969cec21c1a0.mp3"
+    },
+    {
+      "key": "6b5f0b4a5f1bc910",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] That's all FIVE powers, Family Firewall! The expert crowned, Gran taught, the quilt sewn, the rounds walked... and the moments frozen. [whispers] One last walk through the house... [excited] then we send him packing for GOOD!",
+      "lines": [
+        "[excited] That's all FIVE powers, Family Firewall!",
+        "The expert crowned, Gran taught, the quilt sewn,",
+        "the rounds walked... and the moments frozen.",
+        "[whispers] One last walk through the house...",
+        "[excited] then we send him packing for GOOD!"
+      ],
+      "file": "/audio/voice/6b5f0b4a5f1bc910.mp3"
+    },
+    {
+      "key": "2ab0b8e9841e2d57",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] The Family Photo - final walk! House moments are drifting past. FIREWALL UP for expert moves... [warmly] OPEN WINDOW for the gaps. Stamp them all!",
+      "lines": [
+        "[excited] The Family Photo - final walk!",
+        "House moments are drifting past.",
+        "FIREWALL UP for expert moves...",
+        "[warmly] OPEN WINDOW for the gaps. Stamp them all!"
+      ],
+      "file": "/audio/voice/2ab0b8e9841e2d57.mp3"
+    },
+    {
+      "key": "438a6ea2c59fbfdd",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[excited] Look at EVERYTHING you mastered this week! The expert crowned, Gran taught, the quilt sewn, the rounds walked... and the moments frozen. [laughs] He came for your family and met a firewall. [excited] Sticker time, Family Firewall!",
+      "lines": [
+        "[excited] Look at EVERYTHING you mastered this week!",
+        "The expert crowned, Gran taught,",
+        "the quilt sewn, the rounds walked... and the moments frozen.",
+        "[laughs] He came for your family and met a firewall.",
+        "[excited] Sticker time, Family Firewall!"
+      ],
+      "file": "/audio/voice/438a6ea2c59fbfdd.mp3"
     },
     {
       "key": "24e69e302153f951",

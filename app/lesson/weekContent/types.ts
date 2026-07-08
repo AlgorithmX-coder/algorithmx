@@ -878,6 +878,12 @@ export type ScreenDef = (
       introTitle?: string;
       introSubtitle?: string;
       introIcon?: string;
+      /** Toast on catching the fake (default "IMPOSTER BUSTED!"). */
+      correctToast?: string;
+      /** Stamp on the caught card, e.g. "FROZEN!" (default "IMPOSTER! 🎭"). */
+      stampLabel?: string;
+      /** WrongAnswerPanel title on a safe-card tap; {name} is replaced. */
+      wrongTitle?: string;
       completeTitle?: string;
       completeLine?: string;
       rounds: {
