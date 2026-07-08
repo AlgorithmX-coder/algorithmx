@@ -21,21 +21,22 @@ if (!KEY) {
   process.exit(1);
 }
 
-// Same voice + model + settings as the narration generator. Single
-// product voice across narration AND interjections so it always
-// sounds like one consistent character.
-const VOICE = { id: "bIHbv24MWmeRgasZH58o", name: "Will" };
+// The ONE product narrator — Sarah, the same voice as all lesson
+// narration (narrator spec quality #1: one consistent character
+// everywhere; the earlier Will set split the mentor into two voices).
+// Settings = the LOCKED v13-sarah-child storyteller formula that won
+// the A/B; the lines carry eleven_v3 emotion tags as delivery.
+const VOICE = { id: "EXAVITQu4vr4xnSDxMaL", name: "Sarah" };
 const VOICE_SETTINGS = {
-  stability: 0.5,
-  similarity_boost: 0.85,
-  style: 0.0,
+  stability: 0.25,
+  similarity_boost: 0.7,
+  style: 0.55,
   use_speaker_boost: true,
-  speed: 0.95, // a touch faster than narration - interjections are
-  //             punchy moment-cues, not paced storytelling.
+  speed: 1.0,
 };
 const MODELS_IN_PRIORITY_ORDER = ["eleven_v3", "eleven_multilingual_v2"];
 const OUTPUT_FORMAT = "mp3_44100_128";
-const GENERATION_VERSION = "v1-interjections";
+const GENERATION_VERSION = "v2-sarah-child";
 
 const OUT_DIR = join("public", "audio", "voice", "interjections");
 const MANIFEST_PATH = join(OUT_DIR, "manifest.json");
@@ -53,7 +54,9 @@ if (!objMatch) {
 const body = objMatch[1];
 
 // Each trigger is `triggerName: [ "...", "..." ]` — pull each block.
-const triggerRe = /(\w+)\s*:\s*\[([^\]]*?)\]/g;
+// The block ends at a `],` on its own line; lines themselves may
+// contain `]` (eleven_v3 emotion tags like "[warmly] Nice work!").
+const triggerRe = /(\w+)\s*:\s*\[([\s\S]*?)\n\s*\],/g;
 const triggers = {};
 let tm;
 while ((tm = triggerRe.exec(body)) !== null) {

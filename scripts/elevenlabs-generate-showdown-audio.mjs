@@ -39,11 +39,15 @@ const VILLAIN_SETTINGS = {
   speed: 1.0,
 };
 
-const COACH_VOICE = { id: "bIHbv24MWmeRgasZH58o", name: "Will" };
+// The ONE product narrator — Sarah, same voice as all lesson narration
+// (narrator spec quality #1: one consistent character everywhere).
+// Settings are the LOCKED v13-sarah-child storyteller formula that won
+// the A/B: expressive, child-directed, driven by eleven_v3 tags.
+const COACH_VOICE = { id: "EXAVITQu4vr4xnSDxMaL", name: "Sarah" };
 const COACH_SETTINGS = {
-  stability: 0.5,
-  similarity_boost: 0.85,
-  style: 0.0,
+  stability: 0.25,
+  similarity_boost: 0.7,
+  style: 0.55,
   use_speaker_boost: true,
   speed: 1.0,
 };
@@ -65,9 +69,12 @@ const WEEKS = {
     },
     // PILOT FEEDBACK (global): NO narrator voice during the fight — the
     // ONE narrator moment is this excited well-done at the victory
-    // screen, naming exactly what the child just did.
+    // screen, naming exactly what the child just did. Written to the
+    // locked child-directed formula: varied rhythm, 1:1 address,
+    // eleven_v3 tags as delivery.
     coach: {
-      victory: "[excited] WELL DONE, DETECTIVE! You spotted the fake profile, you told a grown-up about the secret, and you NEVER took the meet-up bait! The Disguise-o-Matic is finished - you are a REAL Cyber Hero!",
+      victory:
+        "[excited] YES! Case closed, detective! [laughs] Did you SEE his face? You spotted the fake profile... you told a grown-up about the secret... and that meet-up trap? [whispers] You didn't even blink. [excited] The Disguise-o-Matic is DONE! [warmly] And you, Cyber Hero... you were brilliant.",
     },
   },
 };
