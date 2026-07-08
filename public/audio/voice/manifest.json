@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-08T09:50:44.529Z",
+  "generatedAt": "2026-07-08T10:12:06.852Z",
   "model": "eleven_v3",
   "voiceSettings": {
     "stability": 0.35,
@@ -816,6 +816,279 @@
         "[excited] Sticker time, Team Captain!"
       ],
       "file": "/audio/voice/5e656f2543bcc034.mp3"
+    },
+    {
+      "key": "670d33b9b922ffa5",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] Welcome back, Cyber Hero - week twelve! Picture the internet as a field of fresh, white snow. Every tap you make presses a footprint into it. A like. A search. A tiny comment. Press, press, press. [whispers] Most tracks look invisible... until you shine a lamp. [excited] So let's shine one. Four everyday moments - light them up!",
+      "lines": [
+        "[excited] Welcome back, Cyber Hero - week twelve!",
+        "Picture the internet as a field of fresh, white snow.",
+        "Every tap you make presses a footprint into it.",
+        "A like. A search. A tiny comment. Press, press, press.",
+        "[whispers] Most tracks look invisible... until you shine a lamp.",
+        "[excited] So let's shine one. Four everyday moments - light them up!"
+      ],
+      "file": "/audio/voice/670d33b9b922ffa5.mp3"
+    },
+    {
+      "key": "e1277d6ab8b5920b",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[whispers] Four tiny taps from an ordinary day. Each one looks like nothing at all... [excited] until the lamp comes on. Shine it on every moment - and watch the hidden tracks glow!",
+      "lines": [
+        "[whispers] Four tiny taps from an ordinary day.",
+        "Each one looks like nothing at all...",
+        "[excited] until the lamp comes on. Shine it on every moment -",
+        "and watch the hidden tracks glow!"
+      ],
+      "file": "/audio/voice/e1277d6ab8b5920b.mp3"
+    },
+    {
+      "key": "f00fa7143eb19fde",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Shine the lamp on the first moment - see what glows!",
+      "lines": [
+        "Shine the lamp on the first moment - see what glows!"
+      ],
+      "file": "/audio/voice/f00fa7143eb19fde.mp3"
+    },
+    {
+      "key": "f526bc76723fef80",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[excited] Power one - lamp lit! Likes, searches, comments... all glowing. [whispers] But some tracks don't just sit in the snow, hero. Some of them roll. And grow. Grab a broom...",
+      "lines": [
+        "[excited] Power one - lamp lit!",
+        "Likes, searches, comments... all glowing.",
+        "[whispers] But some tracks don't just sit in the snow, hero.",
+        "Some of them roll. And grow. Grab a broom..."
+      ],
+      "file": "/audio/voice/f526bc76723fef80.mp3"
+    },
+    {
+      "key": "38d844d10ccdbbfd",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[warmly] Ready for the tricky part? Online snow doesn't melt. Ever. And shared things turn into SNOWBALLS - copies rolling onto other screens, making copies of their own. [whispers] Your broom can't reach snow on someone else's hill. [excited] Don't believe me? Grab the broom and TRY. Go!",
+      "lines": [
+        "[warmly] Ready for the tricky part?",
+        "Online snow doesn't melt. Ever.",
+        "And shared things turn into SNOWBALLS -",
+        "copies rolling onto other screens, making copies of their own.",
+        "[whispers] Your broom can't reach snow on someone else's hill.",
+        "[excited] Don't believe me? Grab the broom and TRY. Go!"
+      ],
+      "file": "/audio/voice/38d844d10ccdbbfd.mp3"
+    },
+    {
+      "key": "80994406b3decb2d",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[excited] There they go - copies on the loose! Sweep them! Tap-tap-tap! [laughs] Faster! More are coming over the hill! Sweep like the wind, hero!",
+      "lines": [
+        "[excited] There they go - copies on the loose!",
+        "Sweep them! Tap-tap-tap!",
+        "[laughs] Faster! More are coming over the hill!",
+        "Sweep like the wind, hero!"
+      ],
+      "file": "/audio/voice/80994406b3decb2d.mp3"
+    },
+    {
+      "key": "26d99f2c83fb4130",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "Tap every snowball you can - quick, before they roll away!",
+      "lines": [
+        "Tap every snowball you can - quick, before they roll away!"
+      ],
+      "file": "/audio/voice/26d99f2c83fb4130.mp3"
+    },
+    {
+      "key": "19a38f52497e194e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[laughs] You swept like a CHAMPION - and it still wasn't enough. That was the whole point, hero. Copies can't be caught. Posts can only be chosen. [warmly] And guess who cares most about what you choose? Come meet them.",
+      "lines": [
+        "[laughs] You swept like a CHAMPION - and it still wasn't enough.",
+        "That was the whole point, hero.",
+        "Copies can't be caught. Posts can only be chosen.",
+        "[warmly] And guess who cares most about what you choose? Come meet them."
+      ],
+      "file": "/audio/voice/19a38f52497e194e.mp3"
+    },
+    {
+      "key": "15b29d3cfdeb8304",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[warmly] Want to meet someone amazing? Future you. Taller. Cooler. Starting big school. One day, future-you walks past the tracks you're pressing TODAY. Angry tracks can trip them right over... [excited] but proud tracks make them GRIN. Three posting moments coming - check the mirror before each one!",
+      "lines": [
+        "[warmly] Want to meet someone amazing?",
+        "Future you. Taller. Cooler. Starting big school.",
+        "One day, future-you walks past the tracks you're pressing TODAY.",
+        "Angry tracks can trip them right over...",
+        "[excited] but proud tracks make them GRIN.",
+        "Three posting moments coming - check the mirror before each one!"
+      ],
+      "file": "/audio/voice/15b29d3cfdeb8304.mp3"
+    },
+    {
+      "key": "24c05ef22ba355c4",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[warmly] Three posting moments. One mirror. Before each choice, take the look: [whispers] 'will future-me smile at this track?' [excited] Show me the ranger moves!",
+      "lines": [
+        "[warmly] Three posting moments. One mirror.",
+        "Before each choice, take the look:",
+        "[whispers] 'will future-me smile at this track?'",
+        "[excited] Show me the ranger moves!"
+      ],
+      "file": "/audio/voice/24c05ef22ba355c4.mp3"
+    },
+    {
+      "key": "8b16e8def635c2f9",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[excited] Three powers! Future-you is beaming already. Rage-post skipped, cringe-trend dodged... and the marble-run posted PROUDLY. [warmly] Which brings us to the happiest power of all...",
+      "lines": [
+        "[excited] Three powers! Future-you is beaming already.",
+        "Rage-post skipped, cringe-trend dodged...",
+        "and the marble-run posted PROUDLY.",
+        "[warmly] Which brings us to the happiest power of all..."
+      ],
+      "file": "/audio/voice/8b16e8def635c2f9.mp3"
+    },
+    {
+      "key": "6e960210b783dd81",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[excited] Now for my favourite power! The snow isn't scary - it's YOURS to decorate. Kind words. Brilliant builds. Standing up for a mate. Those tracks glow gold - and they last just as long. [warmly] So don't tiptoe through the internet, hero. [excited] Stomp a trail you're PROUD of. Five footprints - let's go!",
+      "lines": [
+        "[excited] Now for my favourite power!",
+        "The snow isn't scary - it's YOURS to decorate.",
+        "Kind words. Brilliant builds. Standing up for a mate.",
+        "Those tracks glow gold - and they last just as long.",
+        "[warmly] So don't tiptoe through the internet, hero.",
+        "[excited] Stomp a trail you're PROUD of. Five footprints - let's go!"
+      ],
+      "file": "/audio/voice/6e960210b783dd81.mp3"
+    },
+    {
+      "key": "1d5fa20a69762df9",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[excited] Five footprint spots on fresh snow! Two stamps at every spot - one gold, one stain. [whispers] Press only what future-you would grin at... [excited] and light this trail UP!",
+      "lines": [
+        "[excited] Five footprint spots on fresh snow!",
+        "Two stamps at every spot - one gold, one stain.",
+        "[whispers] Press only what future-you would grin at...",
+        "[excited] and light this trail UP!"
+      ],
+      "file": "/audio/voice/1d5fa20a69762df9.mp3"
+    },
+    {
+      "key": "d869a982f7ca228f",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "Which stamp would future-you grin at? Press that one!",
+      "lines": [
+        "Which stamp would future-you grin at? Press that one!"
+      ],
+      "file": "/audio/voice/d869a982f7ca228f.mp3"
+    },
+    {
+      "key": "e201f0a1b113442f",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] Four powers - and what a trail! Kind words, proud builds, a hero stand for Sam. [warmly] One skill left in the ranger kit: climbing the hill and reading your OWN tracks.",
+      "lines": [
+        "[excited] Four powers - and what a trail!",
+        "Kind words, proud builds, a hero stand for Sam.",
+        "[warmly] One skill left in the ranger kit:",
+        "climbing the hill and reading your OWN tracks."
+      ],
+      "file": "/audio/voice/e201f0a1b113442f.mp3"
+    },
+    {
+      "key": "e6d8d1fad4f056da",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[warmly] Last ranger skill - and it's a good one. Real rangers climb the hill and read their own tracks. Grab a grown-up and look at what's already out there. [whispers] Hunt for POINTY tracks - name, school, where-and-when. Tidy those together. Keep the golden ones gleaming. [excited] The telescope's on the hill - let's read a trail!",
+      "lines": [
+        "[warmly] Last ranger skill - and it's a good one.",
+        "Real rangers climb the hill and read their own tracks.",
+        "Grab a grown-up and look at what's already out there.",
+        "[whispers] Hunt for POINTY tracks - name, school, where-and-when.",
+        "Tidy those together. Keep the golden ones gleaming.",
+        "[excited] The telescope's on the hill - let's read a trail!"
+      ],
+      "file": "/audio/voice/e6d8d1fad4f056da.mp3"
+    },
+    {
+      "key": "c937517d51af4fd3",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] Up the hill, telescope out! A whole week of one hero's tracks below. Check every glowing print... [whispers] then make the ranger's call. Go!",
+      "lines": [
+        "[excited] Up the hill, telescope out!",
+        "A whole week of one hero's tracks below.",
+        "Check every glowing print...",
+        "[whispers] then make the ranger's call. Go!"
+      ],
+      "file": "/audio/voice/c937517d51af4fd3.mp3"
+    },
+    {
+      "key": "9a296d8c37492c67",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Check every print first - then make the call!",
+      "lines": [
+        "Check every print first - then make the call!"
+      ],
+      "file": "/audio/voice/9a296d8c37492c67.mp3"
+    },
+    {
+      "key": "2aab4928f80c1a69",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[excited] That's all FIVE ranger powers, Trail Ranger! Lamp lit, snowballs understood, mirror checked, gold stamped... and the telescope mastered. [whispers] One final ranger report... [excited] then we burn his trail map for GOOD!",
+      "lines": [
+        "[excited] That's all FIVE ranger powers, Trail Ranger!",
+        "Lamp lit, snowballs understood, mirror checked,",
+        "gold stamped... and the telescope mastered.",
+        "[whispers] One final ranger report...",
+        "[excited] then we burn his trail map for GOOD!"
+      ],
+      "file": "/audio/voice/2aab4928f80c1a69.mp3"
+    },
+    {
+      "key": "810b566358a35411",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[excited] Ranger report - final sweep of the field! Tracks are drifting past the telescope. GOLDEN TRACK for the keepers... [warmly] RISKY TRACK for the pointy ones. Scan!",
+      "lines": [
+        "[excited] Ranger report - final sweep of the field!",
+        "Tracks are drifting past the telescope.",
+        "GOLDEN TRACK for the keepers...",
+        "[warmly] RISKY TRACK for the pointy ones. Scan!"
+      ],
+      "file": "/audio/voice/810b566358a35411.mp3"
+    },
+    {
+      "key": "2816dc69cd5a707c",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] Look at EVERYTHING you mastered this week! Tracks seen, snowballs understood, the mirror checked, gold stamped... and your own trail read like a ranger. [laughs] His map room just became useless. [excited] Sticker time, Trail Ranger!",
+      "lines": [
+        "[excited] Look at EVERYTHING you mastered this week!",
+        "Tracks seen, snowballs understood, the mirror checked,",
+        "gold stamped... and your own trail read like a ranger.",
+        "[laughs] His map room just became useless.",
+        "[excited] Sticker time, Trail Ranger!"
+      ],
+      "file": "/audio/voice/2816dc69cd5a707c.mp3"
     },
     {
       "key": "24e69e302153f951",

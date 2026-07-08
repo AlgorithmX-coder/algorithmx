@@ -1048,6 +1048,62 @@ export type ScreenDef = (
     }
   | {
       /**
+       * Snowball Chase (Week 12). The deliberately-uncatchable ARCADE
+       * demo: copies roll onto a snowfield, the child sweeps them with
+       * taps while the ROLLED AWAY counter climbs faster than any broom.
+       * No lose state, always full stars - the futility IS the lesson
+       * and the complete beat names it out loud.
+       */
+      type: "snowballChase";
+      /** Copy overrides (defaults keep the W12 snowfield skin). */
+      introTitle?: string;
+      introSubtitle?: string;
+      introIcon?: string;
+      /** PixIcon key stamped on each rolling copy. */
+      ballIcon?: string;
+      sweptLabel?: string;
+      rolledLabel?: string;
+      /** Mid-game caption beats (shown in order as time passes). */
+      captions?: [string, string, string];
+      completeTitle?: string;
+      completeLine?: string;
+    }
+  | {
+      /**
+       * Trail Stamper (Week 12). The golden-trail BUILD drill: footprint
+       * spots along a snow path, two stamp choices per spot (proud vs
+       * regret). Proud stamps press golden footprints and raise the
+       * TRAIL GLOW meter; regret stamps teach gently. The agency beat -
+       * you CHOOSE the tracks you leave.
+       */
+      type: "trailStamper";
+      spots: {
+        id: string;
+        /** The moment, e.g. "Priya posted her new painting..." */
+        prompt: string;
+        /** Two options; exactly one isProud. */
+        options: {
+          label: string;
+          /** Emoji rendered via PixIcon on the stamp card. */
+          icon: string;
+          isProud: boolean;
+          /** Teach copy when the regret stamp is picked. */
+          note: string;
+        }[];
+      }[];
+      /** Copy overrides (defaults keep the W12 snow-trail skin). */
+      introTitle?: string;
+      introSubtitle?: string;
+      introIcon?: string;
+      meterLabel?: string;
+      stampToast?: string;
+      wrongTitle?: string;
+      completeTitle?: string;
+      completeLine?: string;
+      hints?: { tier1: string; tier2: string };
+    }
+  | {
+      /**
        * Step Order (Week 5+). The stepping-stones ORDER game: shuffled
        * step tiles below a river; tap them in the order you'd do them
        * and each hops onto the next stone. Gentle - a wrong tap wobbles

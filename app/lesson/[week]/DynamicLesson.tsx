@@ -67,6 +67,8 @@ import ProfileInspector from "@/app/components/exercises/ProfileInspector";
 import ReplyCards from "@/app/components/exercises/ReplyCards";
 import ClueBoard from "@/app/components/exercises/ClueBoard";
 import TeamPoster from "@/app/components/exercises/TeamPoster";
+import SnowballChase from "@/app/components/exercises/SnowballChase";
+import TrailStamper from "@/app/components/exercises/TrailStamper";
 import HookSort from "@/app/components/exercises/HookSort";
 import SenderLineup from "@/app/components/exercises/SenderLineup";
 import StepOrder from "@/app/components/exercises/StepOrder";
@@ -163,6 +165,8 @@ const EXERCISE_SCREEN_TYPES = new Set<ScreenDef["type"]>([
   "replyCards",
   "clueBoard",
   "teamPoster",
+  "snowballChase",
+  "trailStamper",
   "chatSimulator",
   "hookSort",
   "senderLineup",
@@ -1663,6 +1667,63 @@ function DynamicLessonInner({ qaEnabled }: { qaEnabled: boolean }) {
               posterTitle={def.posterTitle}
               trayPrompt={def.trayPrompt}
               placedToast={def.placedToast}
+              wrongTitle={def.wrongTitle}
+              completeTitle={def.completeTitle}
+              completeLine={def.completeLine}
+              hints={def.hints}
+              introNarration={def.narration}
+              coachLines={def.coachLines}
+              onComplete={() => navigate(screen + 1)}
+              onCorrect={() => awardXp(25)}
+              onWrong={() => addWrong(screen)}
+              onHintReached={(tier) => progress.reportHint(screen, tier)}
+              onAnswered={(o) => {
+                progress.saveQuestion({
+                  screenIndex: screen,
+                  questionKey: o.questionKey,
+                  selectedIndex: o.selectedIndex,
+                  correctIndex: o.correctIndex,
+                  wasCorrect: o.wasCorrect,
+                });
+                if (!o.wasCorrect) {
+                  progress.reportWrong(screen, o.questionKey);
+                }
+              }}
+            />
+          </FullScene>
+        );
+
+      case "snowballChase":
+        return (
+          <FullScene bg="linear-gradient(180deg, #0a1030 0%, #1c2b52 100%)">
+            <SnowballChase
+              introTitle={def.introTitle}
+              introSubtitle={def.introSubtitle}
+              introIcon={def.introIcon}
+              ballIcon={def.ballIcon}
+              sweptLabel={def.sweptLabel}
+              rolledLabel={def.rolledLabel}
+              captions={def.captions}
+              completeTitle={def.completeTitle}
+              completeLine={def.completeLine}
+              introNarration={def.narration}
+              coachLines={def.coachLines}
+              onComplete={() => navigate(screen + 1)}
+              onCorrect={() => awardXp(5)}
+            />
+          </FullScene>
+        );
+
+      case "trailStamper":
+        return (
+          <FullScene bg="linear-gradient(180deg, #0a1030 0%, #1c2b52 100%)">
+            <TrailStamper
+              spots={def.spots}
+              introTitle={def.introTitle}
+              introSubtitle={def.introSubtitle}
+              introIcon={def.introIcon}
+              meterLabel={def.meterLabel}
+              stampToast={def.stampToast}
               wrongTitle={def.wrongTitle}
               completeTitle={def.completeTitle}
               completeLine={def.completeLine}
