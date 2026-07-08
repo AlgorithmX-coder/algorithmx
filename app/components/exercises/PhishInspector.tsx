@@ -64,6 +64,9 @@ export interface PhishInspectorProps {
   introTitle?: string;
   introSubtitle?: string;
   introNarration?: { speaker?: "adam" | "layla"; lines: string[] };
+  /** Zone label overrides so a re-dress can rename the 4 inspect zones
+   *  (e.g. banner ads: "Who's selling?" / "What's the button?"). */
+  zoneLabels?: Partial<Record<"sender" | "link" | "urgency" | "claim", string>>;
   onComplete: (score: number) => void;
   onCorrect?: () => void;
   onWrong?: () => void;
@@ -92,6 +95,7 @@ export default function PhishInspector({
   introTitle,
   introSubtitle,
   introNarration,
+  zoneLabels,
   onComplete,
   onCorrect,
   onWrong,
@@ -344,7 +348,10 @@ export default function PhishInspector({
         }}
       >
         {(Object.keys(ZONE_META) as ZoneId[]).map((zone) => {
-          const meta = ZONE_META[zone];
+          const meta = {
+            ...ZONE_META[zone],
+            label: zoneLabels?.[zone] ?? ZONE_META[zone].label,
+          };
           const isOpen = inspected[zone];
           const isRedFlag =
             zone === "sender"

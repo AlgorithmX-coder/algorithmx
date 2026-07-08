@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-07T19:57:47.908Z",
+  "generatedAt": "2026-07-08T07:57:51.237Z",
   "model": "eleven_v3",
   "voiceSettings": {
     "stability": 0.35,
@@ -1611,6 +1611,259 @@
         "[excited] The intruder got booted from the lobby. Sticker time!"
       ],
       "file": "/audio/voice/175d491d20a08065.mp3"
+    },
+    {
+      "key": "ca591413b2f53119",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] Welcome back, Cyber Hero. Today we open the game shop... [whispers] and see what's REALLY inside. V-Bucks. Robux. Blast Coins. Fun names, bright colours! [warmly] But every single coin is bought with real pounds. Real money someone in your family worked for. [excited] Match the coins to the real money - and see the trick!",
+      "lines": [
+        "[excited] Welcome back, Cyber Hero. Today we open the game shop...",
+        "[whispers] and see what's REALLY inside.",
+        "V-Bucks. Robux. Blast Coins. Fun names, bright colours!",
+        "[warmly] But every single coin is bought with real pounds.",
+        "Real money someone in your family worked for.",
+        "[excited] Match the coins to the real money - and see the trick!"
+      ],
+      "file": "/audio/voice/ca591413b2f53119.mp3"
+    },
+    {
+      "key": "e2455a6a19c737ab",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] Welcome to the Coin Till! Every coin pack hides a real price. [warmly] Flip the cards and match each pack... to the real pounds it costs. Ring it up!",
+      "lines": [
+        "[excited] Welcome to the Coin Till!",
+        "Every coin pack hides a real price.",
+        "[warmly] Flip the cards and match each pack...",
+        "to the real pounds it costs. Ring it up!"
+      ],
+      "file": "/audio/voice/e2455a6a19c737ab.mp3"
+    },
+    {
+      "key": "00ec750e217839b8",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "Flip any card to start - then find its real price!",
+      "lines": [
+        "Flip any card to start - then find its real price!"
+      ],
+      "file": "/audio/voice/00ec750e217839b8.mp3"
+    },
+    {
+      "key": "d2571b14476c8023",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[warmly] Great start, Cyber Hero! You rang up every coin pack at its REAL price. Fun names, bright colours... real pounds underneath. [excited] Next - let's turn a loot box into glass!",
+      "lines": [
+        "[warmly] Great start, Cyber Hero!",
+        "You rang up every coin pack at its REAL price.",
+        "Fun names, bright colours... real pounds underneath.",
+        "[excited] Next - let's turn a loot box into glass!"
+      ],
+      "file": "/audio/voice/d2571b14476c8023.mp3"
+    },
+    {
+      "key": "91b19fb2284c6125",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[excited] Loot boxes! So shiny. So mysterious. [whispers] Here's what the shine is hiding. You pay real money... for a mystery. The super-rare prize? About one in a HUNDRED. [warmly] And that 'SO close!' feeling? Designed on purpose. [excited] Let's make some boxes turn to glass and SEE inside!",
+      "lines": [
+        "[excited] Loot boxes! So shiny. So mysterious.",
+        "[whispers] Here's what the shine is hiding.",
+        "You pay real money... for a mystery.",
+        "The super-rare prize? About one in a HUNDRED.",
+        "[warmly] And that 'SO close!' feeling? Designed on purpose.",
+        "[excited] Let's make some boxes turn to glass and SEE inside!"
+      ],
+      "file": "/audio/voice/91b19fb2284c6125.mp3"
+    },
+    {
+      "key": "63a71f767c23fe09",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[whispers] Here they are... the famous shiny boxes. [excited] But YOU have x-ray eyes today. Tap each box and it turns to glass. See the marbles. See the trick. See everything!",
+      "lines": [
+        "[whispers] Here they are... the famous shiny boxes.",
+        "[excited] But YOU have x-ray eyes today.",
+        "Tap each box and it turns to glass.",
+        "See the marbles. See the trick. See everything!"
+      ],
+      "file": "/audio/voice/63a71f767c23fe09.mp3"
+    },
+    {
+      "key": "cd4e6d5ebae3fb38",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "Tap any box - let's see what the sparkle is hiding!",
+      "lines": [
+        "Tap any box - let's see what the sparkle is hiding!"
+      ],
+      "file": "/audio/voice/cd4e6d5ebae3fb38.mp3"
+    },
+    {
+      "key": "9c1411d9fb9b2963",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] Two powers! You've got x-ray eyes now. One gold marble. Ninety-nine grey. [laughs] The sparkle will never fool you again. [whispers] But the shop has more tricks than boxes...",
+      "lines": [
+        "[excited] Two powers! You've got x-ray eyes now.",
+        "One gold marble. Ninety-nine grey.",
+        "[laughs] The sparkle will never fool you again.",
+        "[whispers] But the shop has more tricks than boxes..."
+      ],
+      "file": "/audio/voice/9c1411d9fb9b2963.mp3"
+    },
+    {
+      "key": "6dfa20fa0311ebad",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[nervous] LIMITED TIME! Only FOUR left! Everyone already has it! [warmly] Feel your heart speed up? The shop did that on purpose. Fast buyers don't stop to think. [whispers] But here's the truth: 'limited' skins almost always come back. And 'everyone has it'? Never true. [excited] X-ray time - let's see through some banners!",
+      "lines": [
+        "[nervous] LIMITED TIME! Only FOUR left! Everyone already has it!",
+        "[warmly] Feel your heart speed up? The shop did that on purpose.",
+        "Fast buyers don't stop to think.",
+        "[whispers] But here's the truth: 'limited' skins almost always come back.",
+        "And 'everyone has it'? Never true.",
+        "[excited] X-ray time - let's see through some banners!"
+      ],
+      "file": "/audio/voice/6dfa20fa0311ebad.mp3"
+    },
+    {
+      "key": "019ae89cbd59358e",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] Shop banners incoming - x-ray goggles ON! Check who's selling, what the button wants, how it rushes you, and what it promises. [warmly] Pressure trick... or fair offer? You decide!",
+      "lines": [
+        "[excited] Shop banners incoming - x-ray goggles ON!",
+        "Check who's selling, what the button wants,",
+        "how it rushes you, and what it promises.",
+        "[warmly] Pressure trick... or fair offer? You decide!"
+      ],
+      "file": "/audio/voice/019ae89cbd59358e.mp3"
+    },
+    {
+      "key": "3de0283ac382982c",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[excited] Three powers! Your x-ray eyes see every trick. Countdowns, 'gone forever', left-out panic... [laughs] all glowing through the paint. [warmly] Now for the rule that makes you unbeatable.",
+      "lines": [
+        "[excited] Three powers! Your x-ray eyes see every trick.",
+        "Countdowns, 'gone forever', left-out panic...",
+        "[laughs] all glowing through the paint.",
+        "[warmly] Now for the rule that makes you unbeatable."
+      ],
+      "file": "/audio/voice/3de0283ac382982c.mp3"
+    },
+    {
+      "key": "aa3215ae518829ec",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[warmly] Time for the golden wallet rule. It's not your money... so it's not your call alone. Before ANY buy - coins, skins, boxes - you ask the grown-up whose money it is. [whispers] Every time. Even the tiny ones. [excited] Asking first is what heroes do. Let's practise!",
+      "lines": [
+        "[warmly] Time for the golden wallet rule.",
+        "It's not your money... so it's not your call alone.",
+        "Before ANY buy - coins, skins, boxes -",
+        "you ask the grown-up whose money it is.",
+        "[whispers] Every time. Even the tiny ones.",
+        "[excited] Asking first is what heroes do. Let's practise!"
+      ],
+      "file": "/audio/voice/aa3215ae518829ec.mp3"
+    },
+    {
+      "key": "e199a6aed2e3cad6",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[warmly] Practice time - three till moments are coming. Each one will push you to buy fast or buy quiet. [whispers] Feel the push? That's your signal. [excited] Ask first, every time. Show me!",
+      "lines": [
+        "[warmly] Practice time - three till moments are coming.",
+        "Each one will push you to buy fast or buy quiet.",
+        "[whispers] Feel the push? That's your signal.",
+        "[excited] Ask first, every time. Show me!"
+      ],
+      "file": "/audio/voice/e199a6aed2e3cad6.mp3"
+    },
+    {
+      "key": "4ab3a1bb1d0c5e31",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] Four powers! The golden rule is locked in. Ask first. Every buy. Even the tiny ones. [laughs] Not even a pushy best friend could budge you. [whispers] One trap left. And it's the greediest one...",
+      "lines": [
+        "[excited] Four powers! The golden rule is locked in.",
+        "Ask first. Every buy. Even the tiny ones.",
+        "[laughs] Not even a pushy best friend could budge you.",
+        "[whispers] One trap left. And it's the greediest one..."
+      ],
+      "file": "/audio/voice/4ab3a1bb1d0c5e31.mp3"
+    },
+    {
+      "key": "769236823dba9a34",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] FREE V-Bucks! FREE Robux! Just log in here! [warmly] Listen carefully, hero. Free game money does not exist. Coins cost the game company real money. Nobody gives them away. [whispers] Every 'free coins' pop-up wants ONE thing... your account. [excited] Your best friend? The little X button. Close it. Don't touch the shiny button. Tell a grown-up. Let's drill it!",
+      "lines": [
+        "[excited] FREE V-Bucks! FREE Robux! Just log in here!",
+        "[warmly] Listen carefully, hero. Free game money does not exist.",
+        "Coins cost the game company real money. Nobody gives them away.",
+        "[whispers] Every 'free coins' pop-up wants ONE thing... your account.",
+        "[excited] Your best friend? The little X button.",
+        "Close it. Don't touch the shiny button. Tell a grown-up. Let's drill it!"
+      ],
+      "file": "/audio/voice/769236823dba9a34.mp3"
+    },
+    {
+      "key": "81ea7014b660bef4",
+      "speaker": "adam",
+      "voice": "Sarah",
+      "text": "[excited] Incoming! Fake free-coin pop-ups! Each one has a big shiny trap button... [whispers] and a little X hiding in a corner. [excited] Find the X. Close them all. Never touch CLAIM!",
+      "lines": [
+        "[excited] Incoming! Fake free-coin pop-ups!",
+        "Each one has a big shiny trap button...",
+        "[whispers] and a little X hiding in a corner.",
+        "[excited] Find the X. Close them all. Never touch CLAIM!"
+      ],
+      "file": "/audio/voice/81ea7014b660bef4.mp3"
+    },
+    {
+      "key": "0f38c5a6c8dc5e8d",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[excited] That's all FIVE wallet powers, Cyber Hero! You see real prices, x-ray loot boxes, shrug off pressure, ask before every buy... [whispers] and free-coin fakes get X'd instantly. [excited] Final drill - then let's close his whole trap shop!",
+      "lines": [
+        "[excited] That's all FIVE wallet powers, Cyber Hero!",
+        "You see real prices, x-ray loot boxes,",
+        "shrug off pressure, ask before every buy...",
+        "[whispers] and free-coin fakes get X'd instantly.",
+        "[excited] Final drill - then let's close his whole trap shop!"
+      ],
+      "file": "/audio/voice/0f38c5a6c8dc5e8d.mp3"
+    },
+    {
+      "key": "75f3783b4cb2ff02",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[excited] Final drill! Spending moments are drifting past. Tap SMART SPEND for the ask-first moves... and WALLET TRAP for pressure, gambles and bait. [warmly] Guard that wallet - show me!",
+      "lines": [
+        "[excited] Final drill! Spending moments are drifting past.",
+        "Tap SMART SPEND for the ask-first moves...",
+        "and WALLET TRAP for pressure, gambles and bait.",
+        "[warmly] Guard that wallet - show me!"
+      ],
+      "file": "/audio/voice/75f3783b4cb2ff02.mp3"
+    },
+    {
+      "key": "9d320e28348ce869",
+      "speaker": "layla",
+      "voice": "Sarah",
+      "text": "[excited] Look at EVERYTHING you mastered this week! You see real prices, you x-ray every loot box, no countdown can rush you, you ask before every buy... [laughs] and free-coin fakes get closed on sight! [excited] The trap shop is OUT of business. Sticker time!",
+      "lines": [
+        "[excited] Look at EVERYTHING you mastered this week!",
+        "You see real prices, you x-ray every loot box,",
+        "no countdown can rush you, you ask before every buy...",
+        "[laughs] and free-coin fakes get closed on sight!",
+        "[excited] The trap shop is OUT of business. Sticker time!"
+      ],
+      "file": "/audio/voice/9d320e28348ce869.mp3"
     }
   ]
 }

@@ -51,7 +51,7 @@ Every pattern use across all 20 weeks, each with its unique dressing. **Rule: be
 | W3.2 | **Profile Detective** *(BUILT — new profileInspector)* — friend-request card with stat chips; 4 inspect zones (joined / friends & photos / how it talks / what it asks) unlock the REAL-or-FAKE verdict |
 | W4.3 | **The Trick Inspector** *(BUILT — phishInspector's first week outing, re-dressed)* — 4 inspect zones per message with urgency/fear focus; ZAP-or-SAFE verdict unlocks after full inspection |
 | W6.5 | **The Download Checker** *(BUILT — requestInspector re-dress via new badgeLabel/intro/verdict props)* — mod download pages with 4 inspect zones; "Looks safe — ask first!" vs "It's a trap — close it!" |
-| W7.3 | **Banner X-ray slider** — drag an X-ray bar across a shop banner; pressure tricks glow through the paint |
+| W7.3 | **Banner X-ray slider** *(BUILT as "The Banner X-Ray" — phishInspector re-dress via new zoneLabels prop: "Who's selling? / What's the button? / How does it rush you? / What's it promising?"; 3 shop banners, 2 tricks + 1 fair offer; note: small default zone subtexts "Check the sender" etc. not yet overridable — candidate polish)* — drag an X-ray bar across a shop banner; pressure tricks glow through the paint |
 | W8.3 | **Detective corkboard** (film tie-in) — the photo pinned centre; drag string from clue (crest, sign, pin) to what it gives away |
 | W9.3 | **Permission gate** — a torch app asks; flip each permission tile to see IF the app truly needs it; leave greedy ones down |
 | W12.5 | **Trail telescope** — pan a telescope across your own trail in the snow; flag any oversharing track |
@@ -68,7 +68,7 @@ Every pattern use across all 20 weeks, each with its unique dressing. **Rule: be
 | W4.5 | **Bite or Don't** *(BUILT — chooseYourPath classic-card re-dress)* — three rush-you scenarios (fake prize, stuck parcel, virus pop-up); NIBBLE vs STOP-CHECK-SHOW |
 | W5.3 | **Don't Feed the Fire** *(BUILT — chooseYourPath device skin)* — three hot moments in chat/lobby frames; fire-back vs stay-calm with fire/wood consequences |
 | W6.3 | **The Somewhere-Else Trick** *(BUILT — chatSimulator re-dress: lobby chat, GoldRush_Gary escalates to "what's your Discord")* — three choice moments ending in refuse-and-tell |
-| W7.4 | **Till moment** — at a checkout with a coin meter; choose ASK FIRST / BUY NOW; asking summons the grown-up, buying drains the piggy bank |
+| W7.4 | **Till moment** *(BUILT — chooseYourPath classic cards; 3 buy-pressure scenarios: saved-card GOLDEN BLASTER prompt / 5-minute mega-deal / "everyone in the squad has it"; ask-first is always the hero path)* — at a checkout with a coin meter; choose ASK FIRST / BUY NOW; asking summons the grown-up, buying drains the piggy bank |
 | W9.5 | **Install handshake** — a shiny app install; choose GET GROWN-UP / INSTALL ALONE; together-install shows the safe path |
 | W10.5 | **Clock mirror** — mid-binge you catch your reflection (jiggling leg, dry eyes); choose ONE MORE / SOMETHING ELSE with an activity picker |
 | W12.3 | **Future-self mirror** (film tie-in) — draft a post; older-you appears in the mirror and reacts; choose post/edit/skip |
@@ -86,7 +86,7 @@ Every pattern use across all 20 weeks, each with its unique dressing. **Rule: be
 | W2.1 shipped | tap a detail → who could misuse it |
 | W3.1 | **The Disguise Kit** *(BUILT — reveal board re-dress)* — four disguise pieces (photo/age/name/friendliness); flip each → the trick behind it |
 | W5.2 | **Pop the Doubt Clouds** *(BUILT — RevealBoard with new boardIcon prop, 💬 not the Raccoon)* — four grey doubt-clouds ("it's my fault…"); each pops into the supportive truth |
-| W7.2 | **Loot-box glass** — an exciting crate; tap to make it glass → see the 100-marble odds jar inside (1 gold, 99 grey) |
+| W7.2 | **Loot-box glass** *(BUILT as "The Glass Loot Box" — RevealBoard re-dress, 🎁 boardIcon; 4 boxes: shiny crate → 1-gold-in-100-marbles odds, "SO close!" feeling → designed on purpose, "next one's THE one" → same odds every time, price tag → real money every open)* — an exciting crate; tap to make it glass → see the 100-marble odds jar inside (1 gold, 99 grey) |
 | W8.1 | **Copy pigeons** (film tie-in) — delete a shared photo → it vanishes locally but paper pigeons stay on every rooftop |
 | W9.4 | **Price-tag flip** — a FREE app; flip the tag → the real costs slide out (ads, purchases, your data icons) |
 | W10.1 | **Conveyor curtain** — press NEXT twice → curtain pulls back on the raccoon greasing the next-video conveyor |
@@ -102,7 +102,7 @@ Every pattern use across all 20 weeks, each with its unique dressing. **Rule: be
 |---|---|
 | W4.2 | **Too-Good Blaster** *(BUILT — spamBlaster's first week outing, re-dressed via new headline/missLabel/intro props)* — zap the too-good offers flying in; real messages pass to the inbox |
 | W6.1 | **Chat Goalie** *(BUILT — spamBlaster re-dress: "PUNCH AWAY THE OVERSHARES!", LEAKS counter, chat-line cards; note: bottom monitor chrome still reads "AlgorithmX Mail" — candidate polish)* |
-| W7.5 | **Generator whack** — "FREE COINS" machines pop from the arcade floor; bop them before they gobble the account key (no lose state — they retreat) |
+| W7.5 | **Generator whack** *(BUILT as "The Free-Coin Fakes" — popupPanic's first week outing via new introTitle/introSubtitle/introIcon/introNarration props: 4 free-coin fake pop-ups — FREE 10,000 V-BUCKS / lucky-player password ask / coin doubler / skin spinner; find the corner X, never the shiny CLAIM)* — "FREE COINS" machines pop from the arcade floor; bop them before they gobble the account key (no lose state — they retreat) |
 | W10.4 | **Reply-frog catch** — comment-frogs leap at your screen; catch unsafe replies in a net before you'd send them |
 | W12.2 | **Snowball chase** — copies of a track roll away multiplying; chase with a broom — you can never sweep them all (the *point*: designed to be uncatchable, coach explains) |
 
@@ -146,7 +146,7 @@ Every pattern use across all 20 weeks, each with its unique dressing. **Rule: be
 | W13.5 | **Power-off ritual strip** — arrange comic panels: finish level → say bye to pet → power off → park in garage → pick what's next |
 
 ### MATCH / SCENE (existing) — 4 uses
-| W1.1 shipped | memoryMatch keys→locks | W7.1 | **Coin-to-coins till** — match coin-pack cards to the real £ they cost (piggy-bank pans balance when right) |
+| W1.1 shipped | memoryMatch keys→locks | W7.1 | **Coin-to-coins till** *(BUILT as "The Coin Till" — memoryMatch's first return since W1, re-dressed via new introTitle/introSubtitle/introWelcome props; pairs coin packs to real £: 500 Blast Coins↔£4, 1,000 V-Bucks↔£7, loot crate↔£3 every time, "game money"↔real money in disguise; note: in-game header/how-to row still reads "Memory Match" — candidate polish)* — match coin-pack cards to the real £ they cost (piggy-bank pans balance when right) |
 | W6.2 | **The Lobby Lockdown** *(BUILT — new settingsSwitch engine: find-and-flip risky toggles among safe rows; reuse W14/W17/W19)* | W14.3 | **SCENE: camera hunt at dusk** — pan a 3D smart home; spot every camera dot glowing like tiny moons (film tie-in) |
 
 ### Prove-format rotation (6 formats; 5 per week, none repeated within a week)

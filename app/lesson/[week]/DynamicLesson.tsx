@@ -1335,6 +1335,10 @@ function DynamicLessonInner({ qaEnabled }: { qaEnabled: boolean }) {
             <PopupPanic
               popups={def.popups}
               hints={def.hints}
+              introTitle={def.introTitle}
+              introSubtitle={def.introSubtitle}
+              introIcon={def.introIcon}
+              introNarration={def.narration}
               onComplete={() => navigate(screen + 1)}
               onCorrect={() => awardXp(25)}
               onWrong={() => addWrong(screen)}
@@ -1772,6 +1776,9 @@ function DynamicLessonInner({ qaEnabled }: { qaEnabled: boolean }) {
           <FullScene bg="linear-gradient(180deg, #0a0a2a 0%, #1a1033 100%)">
             <MemoryMatch
               pairs={def.pairs}
+              introTitle={def.introTitle}
+              introSubtitle={def.introSubtitle}
+              introWelcome={def.introWelcome}
               introNarration={def.narration}
               coachLines={def.coachLines}
               onComplete={() => navigate(screen + 1)}
@@ -1927,6 +1934,7 @@ function DynamicLessonInner({ qaEnabled }: { qaEnabled: boolean }) {
               introTitle={def.introTitle}
               introSubtitle={def.introSubtitle}
               introNarration={def.narration}
+              zoneLabels={def.zoneLabels}
               onComplete={() => navigate(screen + 1)}
               onCorrect={() => awardXp(30)}
               onWrong={() => addWrong(screen)}

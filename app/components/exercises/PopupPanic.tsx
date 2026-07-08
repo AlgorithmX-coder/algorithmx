@@ -42,6 +42,11 @@ export interface PopupPanicPopup {
 export interface PopupPanicProps {
   popups: PopupPanicPopup[];
   hints?: { tier1: string; tier2: string; tier3: string };
+  /** Intro copy overrides + spoken paced narration (week re-dress). */
+  introTitle?: string;
+  introSubtitle?: string;
+  introIcon?: string;
+  introNarration?: { speaker?: "adam" | "layla"; lines: string[] };
   onComplete: (score: number) => void;
   onCorrect?: () => void;
   onWrong?: () => void;
@@ -59,6 +64,10 @@ type Phase = "intro" | "active" | "finished";
 export default function PopupPanic({
   popups,
   hints,
+  introTitle,
+  introSubtitle,
+  introIcon,
+  introNarration,
   onComplete,
   onCorrect,
   onWrong,
@@ -378,9 +387,14 @@ export default function PopupPanic({
       {/* Intro beat */}
       {phase === "intro" && (
         <ExerciseIntroBeat
-          title="Pop-up Panic"
-          subtitle="Close every fake pop-up by tapping its X. Don't tap OK - that's the trick."
-          icon="⚠️"
+          title={introTitle ?? "Pop-up Panic"}
+          subtitle={
+            introSubtitle ??
+            "Close every fake pop-up by tapping its X. Don't tap OK - that's the trick."
+          }
+          icon={introIcon ?? "⚠️"}
+          narration={introNarration}
+          character={introNarration?.speaker}
           onDismiss={() => setPhase("active")}
         />
       )}

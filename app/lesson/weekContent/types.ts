@@ -445,6 +445,8 @@ export type ScreenDef = (
       /** Intro copy overrides (re-theme per week). */
       introTitle?: string;
       introSubtitle?: string;
+      /** Zone label overrides (re-theme the 4 inspect zones). */
+      zoneLabels?: Partial<Record<"sender" | "link" | "urgency" | "claim", string>>;
       emails: {
         id: string;
         sender: string;
@@ -516,6 +518,10 @@ export type ScreenDef = (
        * scary countdown / unknown sender claim).
        */
       type: "popupPanic";
+      /** Intro copy overrides (re-theme per week). */
+      introTitle?: string;
+      introSubtitle?: string;
+      introIcon?: string;
       popups: {
         /** Stable id e.g. "pop-1". */
         id: string;
@@ -998,6 +1004,10 @@ export type ScreenDef = (
     }
   | {
       type: "memoryMatch";
+      /** Intro copy overrides (re-theme per week). */
+      introTitle?: string;
+      introSubtitle?: string;
+      introWelcome?: string;
       pairs: { term: string; match: string; colour: string }[];
     }
   | {
