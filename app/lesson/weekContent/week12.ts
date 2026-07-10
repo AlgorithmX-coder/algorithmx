@@ -101,7 +101,7 @@ export const WEEK_12: WeekContent = {
           icon: "👍",
           steps: [
             { icon: "👍", text: "You tap a heart on a funny puppy video. Half a second. Barely a touch." },
-            { icon: "💡", text: "Lamp ON: a glowing track! The app wrote it down - 'this kid loves puppies' - and told its advertiser friends." },
+            { icon: "💡", text: "Lamp ON: a glowing track! The app wrote it down - 'this kid loves puppies' - and told the companies that choose which ads you see." },
             { icon: "🔍", text: "Even the tiniest tap presses a print into the snow." },
           ],
           counter: "Likes are remembered.",
@@ -122,7 +122,7 @@ export const WEEK_12: WeekContent = {
           label: "One Shared Photo",
           icon: "✉️",
           steps: [
-            { icon: "✉️", text: "You send your mate ONE photo of your muddy trainers. Just one. Just him." },
+            { icon: "✉️", text: "You send your friend ONE photo of your muddy sneakers. Just one. Just him." },
             { icon: "💡", text: "Lamp ON: a track at your end, a track at his end... and the app kept a copy too. Week 8, remember?" },
             { icon: "👀", text: "Shared once means stored twice - at the very least." },
           ],
@@ -230,7 +230,7 @@ export const WEEK_12: WeekContent = {
         "They're MULTIPLYING!",
         "They just keep coming...!",
       ],
-      completeTitle: "The broom is out of puff!",
+      completeTitle: "The broom is out of steam!",
       completeLine: "Nobody can sweep every copy - not even a hero. Think BEFORE you roll.",
       narration: {
         speaker: "layla",
@@ -299,7 +299,7 @@ export const WEEK_12: WeekContent = {
         speaker: "adam",
         lines: [
           "[warmly] Want to meet someone amazing?",
-          "Future you. Taller. Cooler. Starting big school.",
+          "Future you. Taller. Cooler. Starting middle school.",
           "One day, future-you walks past the tracks you're pressing TODAY.",
           "Angry tracks can trip them right over...",
           "[excited] but proud tracks make them GRIN.",
@@ -314,8 +314,8 @@ export const WEEK_12: WeekContent = {
         {
           setup: "You lost the final and you're FUMING. Your thumbs are already typing a rage-post about the ref...",
           choices: [
-            { text: "Post the rage - you mean it right now", isSafe: false, consequence: "By breakfast you didn't mean it anymore... but the track stayed pressed in the snow. Future-you gets to explain it at every new team trial." },
-            { text: "Mirror check - future-me is watching", isSafe: true, consequence: "You put the phone down and booted a ball at the fence instead. The fume melted, no track was pressed, and future-you never has to explain a thing." },
+            { text: "Post the rage - you mean it right now", isSafe: false, consequence: "By breakfast you didn't mean it anymore... but the track stayed pressed in the snow. Future-you gets to explain it every time they join a new team." },
+            { text: "Mirror check - future-me is watching", isSafe: true, consequence: "You put the phone down and kicked a ball at the fence instead. The fume melted, no track was pressed, and future-you never has to explain a thing." },
           ],
         },
         {
@@ -350,9 +350,9 @@ export const WEEK_12: WeekContent = {
       prompt: "Old tracks can trip the ___ you.",
       choices: [
         { text: "future", isCorrect: true },
-        { text: "sleepy", isCorrect: false },
-        { text: "pretend", isCorrect: false },
-        { text: "tiny", isCorrect: false },
+        { text: "older", isCorrect: false },
+        { text: "school", isCorrect: false },
+        { text: "grown-up", isCorrect: false },
       ],
       praise: "FUTURE you - the person who inherits every track you press today. ✓",
     },
@@ -382,12 +382,12 @@ export const WEEK_12: WeekContent = {
       type: "info",
       title: "Stamp It Gold",
       content:
-        "Ranger truth: the snow isn't something to be scared of - it's something to DECORATE. Kind comments, brilliant builds, sticking up for a mate, cheering your team: those are golden tracks, and they stay in the snow just as long as the bad ones. So don't tiptoe through the internet. Stomp a trail you're proud of - on purpose, stamp by stamp.",
+        "Ranger truth: the snow isn't something to be scared of - it's something to DECORATE. Kind comments, brilliant builds, sticking up for a friend, cheering your team: those are golden tracks, and they stay in the snow just as long as the bad ones. So don't tiptoe through the internet. Stomp a trail you're proud of - on purpose, stamp by stamp.",
       bullets: [
         "The snow is yours to decorate",
         "Kind comments are golden tracks",
         "Proud builds and wins belong out there",
-        "Sticking up for mates glows for years",
+        "Sticking up for friends glows for years",
         "Stamp your trail ON PURPOSE",
       ],
       bulletIcons: ["🌍", "💬", "🏆", "💪", "⭐"],
@@ -395,9 +395,9 @@ export const WEEK_12: WeekContent = {
       narration: {
         speaker: "layla",
         lines: [
-          "[excited] Now for my favourite power!",
+          "[excited] Now for my favorite power!",
           "The snow isn't scary - it's YOURS to decorate.",
-          "Kind words. Brilliant builds. Standing up for a mate.",
+          "Kind words. Brilliant builds. Standing up for a friend.",
           "Those tracks glow gold - and they last just as long.",
           "[warmly] So don't tiptoe through the internet, hero.",
           "[excited] Stomp a trail you're PROUD of. Five footprints - let's go!",
@@ -420,7 +420,7 @@ export const WEEK_12: WeekContent = {
           id: "painting",
           prompt: "Priya posted the painting she worked on all week. Your stamp?",
           options: [
-            { label: "“This is BRILLIANT - the sky especially!”", icon: "💬", isProud: true, note: "" },
+            { label: "“This is BRILLIANT - the sky especially!”", icon: "💬", isProud: true, note: "Kind words in Priya's snow - gold that gleams for both of you." },
             { label: "A snarky joke about her wobbly clouds", icon: "⚡", isProud: false, note: "Snark feels shiny for one second and stains the snow for years - hers AND yours." },
           ],
         },
@@ -429,14 +429,14 @@ export const WEEK_12: WeekContent = {
           prompt: "Two videos on your camera roll. Which one goes out?",
           options: [
             { label: "Your brother mid-tantrum (SO funny)", icon: "👀", isProud: false, note: "His worst moment isn't your track to press - that's a trip-hazard in HIS snow." },
-            { label: "Your rocket-build hitting the ceiling", icon: "🚀", isProud: true, note: "" },
+            { label: "Your rocket-build hitting the ceiling", icon: "🚀", isProud: true, note: "Your proudest build, pressed on purpose - exactly the track future-you grins at." },
           ],
         },
         {
           id: "groupchat",
-          prompt: "A mean meme about Sam is going round the group chat...",
+          prompt: "A mean meme about Sam is going around the group chat...",
           options: [
-            { label: "“Not cool - Sam's our mate”", icon: "💪", isProud: true, note: "" },
+            { label: "“Not cool - Sam's our friend”", icon: "💪", isProud: true, note: "Standing up for a friend - the boldest, brightest gold there is." },
             { label: "Forward it - everyone else did", icon: "✉️", isProud: false, note: "Forwarding rolls the snowball onward - and stamps YOUR name on someone else's meanness." },
           ],
         },
@@ -444,15 +444,15 @@ export const WEEK_12: WeekContent = {
           id: "match",
           prompt: "Your team won on penalties! What goes in the snow?",
           options: [
-            { label: "“What a save, Jaya - champions!”", icon: "🏆", isProud: true, note: "" },
-            { label: "“Their keeper is absolutely rubbish”", icon: "🙈", isProud: false, note: "Winning loud and mean turns a golden day into a track you'd scrub later." },
+            { label: "“What a save, Jaya - champions!”", icon: "🏆", isProud: true, note: "Proud AND kind at the same time - that's how champions stamp a win." },
+            { label: "“Their goalie is absolutely terrible”", icon: "🙈", isProud: false, note: "Winning loud and mean turns a golden day into a track you'd scrub later." },
           ],
         },
         {
           id: "library",
           prompt: "Last footprint: the school blog asks for a comment about book week...",
           options: [
-            { label: "“Thank you Ms Okafor - best book week ever!”", icon: "⭐", isProud: true, note: "" },
+            { label: "“Thank you Ms Okafor - best book week ever!”", icon: "⭐", isProud: true, note: "A thank-you in public snow - a track that warms everyone who walks past it." },
             { label: "“The library smells like old socks”", icon: "🤐", isProud: false, note: "A moan in public snow - future-you would tiptoe past that one, not grin at it." },
           ],
         },
@@ -481,7 +481,7 @@ export const WEEK_12: WeekContent = {
       mode: "recall",
       prompt: "Which track belongs on a GOLDEN trail?",
       choices: [
-        { text: "Standing up for a mate in the chat", isCorrect: true },
+        { text: "Standing up for a friend in the chat", isCorrect: true },
         { text: "A midnight rage-post at the ref", isCorrect: false },
         { text: "Your brother's most embarrassing moment", isCorrect: false },
       ],
@@ -513,7 +513,7 @@ export const WEEK_12: WeekContent = {
       type: "info",
       title: "Read Your Own Trail",
       content:
-        "Real rangers climb the hill and look back at their tracks. You can too: with a grown-up, scroll what's already out there - your bio, your usernames, your captions. You're looking for POINTY tracks: ones that tell strangers your name, school, or where you'll be and when. Tidy those together. And the golden ones - the dragon drawings, the kind comments? Those stay, gleaming.",
+        "Real rangers climb the hill and look back at their tracks. You can too: with a grown-up, scroll what's already out there - your bio, your usernames, your captions. You're looking for POINTY tracks - tracks that point AT you like an arrow: your name, your school, or where you'll be and when. Tidy those together. And the golden ones - the dragon drawings, the kind comments? Those stay, gleaming.",
       bullets: [
         "Rangers look back at their own tracks",
         "Check bios, usernames and captions",
@@ -544,8 +544,8 @@ export const WEEK_12: WeekContent = {
       photoTitle: "One week of tracks, seen from the hill",
       photoIcon: "🌍",
       clues: [
-        { id: "bio", icon: "🆔", label: "The bio line", evidence: "'Age 8, Northside Primary, class 3B' - a name-age-school combo, glowing in one pointy track." },
-        { id: "caption", icon: "📍", label: "Friday's caption", evidence: "'Park kickabout, same time every Friday!' - a WHERE and a WHEN, pressed on repeat." },
+        { id: "bio", icon: "🆔", label: "The bio line", evidence: "'Age 8, Northside Elementary, class 3B' - a name-age-school combo, glowing in one pointy track." },
+        { id: "caption", icon: "📍", label: "Friday's caption", evidence: "'Park game of catch, same time every Friday!' - a WHERE and a WHEN, pressed on repeat." },
         { id: "username", icon: "🏷️", label: "The username", evidence: "'emma_bright_2018' - real name plus birth year, stamped onto every single track she leaves." },
         { id: "dragon", icon: "🎨", label: "The dragon drawing", evidence: "A magnificent dragon signed 'E' - shows her spark, tells strangers nothing. A GOLDEN track!" },
       ],
@@ -582,7 +582,7 @@ export const WEEK_12: WeekContent = {
     {
       type: "quickCheck",
       mode: "speed",
-      prompt: "Quick - tap the OVERSHARING track!",
+      prompt: "Quick - tap the POINTY track!",
       speedMs: 5000,
       choices: [
         { text: "School name and class in the bio", isCorrect: true },
@@ -621,7 +621,7 @@ export const WEEK_12: WeekContent = {
         positiveHint: "Tap GOLDEN TRACK for prints worth leaving",
         negativeHint: "Tap RISKY TRACK for pointy prints and snowball mistakes",
         tipWhenPositive: "Proud posts, kind comments, mirror checks - tracks that gleam for years.",
-        tipWhenNegative: "Rage-posts, pointy bios, delete-fixes-everything thinking - the Raccoon's favourite reading.",
+        tipWhenNegative: "Rage-posts, pointy bios, delete-fixes-everything thinking - the Raccoon's favorite reading.",
         hint1: "Ask: would future-you GRIN at this track... or explain it?",
         hint2: "GOLDEN = kind, proud, thought-about-first. RISKY = angry, pointy (name/school/when), or 'delete will fix it'.",
         hint2Example: "GOLDEN: 'posted my marble-run'   RISKY: 'school name in my bio'",
@@ -633,8 +633,8 @@ export const WEEK_12: WeekContent = {
         { text: "A bio listing your school and class", isStrong: false, explanation: "Pointy - it aims a stranger straight at you. Tidy it with a grown-up." },
         { text: "The mirror check before every post", isStrong: true, explanation: "One look at future-you catches rage-posts before they print." },
         { text: "'Delete it - it's gone from everywhere anyway'", isStrong: false, explanation: "Copies keep rolling past your broom - thinking first beats deleting after." },
-        { text: "Cheering your mate's painting in the comments", isStrong: true, explanation: "Kind words in someone else's snow - gold that gleams for both of you." },
-        { text: "Posting 'park kickabout, every Friday at 4!'", isStrong: false, explanation: "A where AND a when on repeat - that's a map, not a memory." },
+        { text: "Cheering your friend's painting in the comments", isStrong: true, explanation: "Kind words in someone else's snow - gold that gleams for both of you." },
+        { text: "Posting 'park game of catch, every Friday at 4!'", isStrong: false, explanation: "A where AND a when on repeat - that's a map, not a memory." },
       ],
       narration: {
         speaker: "layla",
@@ -709,12 +709,12 @@ export const WEEK_12: WeekContent = {
       { question: "What's the mirror question before posting?", answers: ["'Will future-me smile at this track?'", "'How many likes will this get?'", "'Is my username cool enough?'", "'Is it past bedtime?'"], correctIndex: 0, explanation: "One look at future-you catches the rage-posts and cringe-trends in time." },
     ],
     medium: [
-      { question: "Which of these is a POINTY track to tidy with a grown-up?", answers: ["A bio saying 'age 8, Northside Primary, class 3B'", "A drawing of a dragon signed 'E'", "A kind comment on a mate's goal", "A like on a puppy video"], correctIndex: 0, explanation: "Pointy tracks point AT you - name, age, school, where-and-when." },
-      { question: "Why did the snowball chase feel impossible?", answers: ["It was built that way - copies always outrun the broom", "You swept too slowly", "The broom was broken", "It wasn't impossible"], correctIndex: 0, explanation: "Nobody can catch every copy - the game's whole point, and the Raccoon's least favourite lesson." },
-      { question: "Your team won and you want to post about it. The golden version is...", answers: ["'What a save, Jaya - champions!'", "'Their keeper is rubbish'", "'Everyone who lost is a baby'", "Nothing - never post"], correctIndex: 0, explanation: "Proud and kind prints gold; loud and mean prints a stain - and the snow keeps both." },
+      { question: "Which of these is a POINTY track to tidy with a grown-up?", answers: ["A bio saying 'age 8, Northside Elementary, class 3B'", "A drawing of a dragon signed 'E'", "A kind comment on a friend's goal", "A like on a puppy video"], correctIndex: 0, explanation: "Pointy tracks point AT you - name, age, school, where-and-when." },
+      { question: "Why did the snowball chase feel impossible?", answers: ["It was built that way - copies always outrun the broom", "You swept too slowly", "The broom was broken", "It wasn't impossible"], correctIndex: 0, explanation: "Nobody can catch every copy - the game's whole point, and the Raccoon's least favorite lesson." },
+      { question: "Your team won and you want to post about it. The golden version is...", answers: ["'What a save, Jaya - champions!'", "'Their goalie is terrible'", "'Everyone who lost is a baby'", "Nothing - never post"], correctIndex: 0, explanation: "Proud and kind prints gold; loud and mean prints a stain - and the snow keeps both." },
     ],
     hard: [
-      { question: "Why is 'park kickabout, same time every Friday!' riskier than one park photo?", answers: ["It's a WHERE plus a WHEN, on repeat - that's a pattern a stranger can use", "Parks are secret places", "Fridays are unlucky", "It isn't riskier"], correctIndex: 0, explanation: "One photo is a moment; a repeated where-and-when is a map." },
+      { question: "Why is 'park game of catch, same time every Friday!' riskier than one park photo?", answers: ["It's a WHERE plus a WHEN, on repeat - that's a pattern a stranger can use", "Parks are secret places", "One photo is worse - it shows your face", "It isn't riskier"], correctIndex: 0, explanation: "One photo is a moment; a repeated where-and-when is a map." },
       { question: "'The internet forgets things eventually.' What does a Trail Ranger know?", answers: ["Online snow doesn't melt - tracks and copies can wait for years", "Everything deletes after a week", "Only photos are remembered", "Rangers don't think about it"], correctIndex: 0, explanation: "That's why the mirror check happens BEFORE the post, not after." },
       { question: "Why post the marble-run at all, if tracks last forever?", answers: ["Because lasting is GREAT for golden tracks - proud prints should stay", "You shouldn't post anything ever", "Because marble-runs delete themselves", "To get more followers than anyone"], correctIndex: 0, explanation: "The lesson isn't 'never post' - it's 'choose tracks future-you will grin at'." },
     ],

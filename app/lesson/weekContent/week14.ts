@@ -47,7 +47,7 @@ export const WEEK_14: WeekContent = {
       photoSrc: "/cyberheroes/alerts/week-14.png",
       title: "ALERT INCOMING",
       badge: "Incident Report",
-      caption: "The Raccoon's found a lazy new trick: he doesn't sneak into houses anymore - he listens through the gadgets already inside. Speakers, tellies, even talking toys. His favourite houses? The ones where nobody knows which things have ears. This week you become a Settings Scout: spot the ears, find the eyes, keep secrets off the air - and flip the switches together.",
+      caption: "The Raccoon's found a lazy new trick: he listens through the gadgets already inside your house. Speakers, TVs, even talking toys. This week you become a Settings Scout: spot the ears, find the eyes, keep secrets off the air - and flip the switches together.",
       photoCaption: "Wk 14 - The House That Listens",
       ctaLabel: "Start the Mission →",
     },
@@ -68,11 +68,11 @@ export const WEEK_14: WeekContent = {
       type: "info",
       title: "The House That Listens",
       content:
-        "Look around your house: some things in it are SMART - connected to the internet, with tiny ears called microphones and sometimes even eyes called cameras. Smart speakers, some tellies, watches, doorbells... and here's the surprise: even some TOYS. Smart isn't scary - they listen so they can do their jobs. But a Scout's first power is simply KNOWING which things have ears and which are fast asleep.",
+        "Look around your house: some things in it are SMART - connected to the internet, with tiny ears called microphones and sometimes even eyes called cameras. Smart speakers, some TVs, watches, doorbells... and here's the surprise: even some TOYS. Smart isn't scary - they listen so they can do their jobs. But a Scout's first power is simply KNOWING which things have ears and which are fast asleep.",
       bullets: [
         "Smart things connect to the internet",
         "Speakers listen for their name",
-        "Some tellies and watches listen too",
+        "Some TVs and watches listen too",
         "Doorbells can watch the front step",
         "Even some TOYS have ears",
       ],
@@ -84,7 +84,7 @@ export const WEEK_14: WeekContent = {
           "[excited] Week fourteen - and this mission starts AT HOME.",
           "Some things in your house are smart.",
           "That means tiny ears... and sometimes tiny eyes.",
-          "Speakers. Tellies. Watches. Doorbells.",
+          "Speakers. TVs. Watches. Doorbells.",
           "[whispers] And the surprise: even some toys.",
           "[excited] House things incoming - sort the ears from the sleepers!",
         ],
@@ -121,7 +121,7 @@ export const WEEK_14: WeekContent = {
         },
         {
           id: "tv",
-          text: "The telly with a voice remote",
+          text: "The TV with a voice remote",
           icon: "📱",
           isScam: true,
           explanation: "Say 'find dinosaur cartoons' and it obeys - that remote has a microphone inside.",
@@ -156,7 +156,7 @@ export const WEEK_14: WeekContent = {
         },
         {
           id: "lamp",
-          text: "The cosy reading lamp",
+          text: "The cozy reading lamp",
           icon: "💡",
           isScam: false,
           explanation: "Bright, warm and earless - light is its whole job.",
@@ -164,7 +164,7 @@ export const WEEK_14: WeekContent = {
       ],
       hints: {
         tier1: "Ask: can you TALK to it and it answers back? Then it's got ears.",
-        tier2: "EARS ON = speaker, voice-remote telly, talking toy, smart watch. ASLEEP = teddy, toaster, books, lamp.",
+        tier2: "EARS ON = speaker, voice-remote TV, talking toy, smart watch. ASLEEP = teddy, toaster, books, lamp.",
       },
       narration: {
         speaker: "adam",
@@ -199,7 +199,7 @@ export const WEEK_14: WeekContent = {
       type: "recap",
       concept: 1,
       total: 5,
-      learned: "Speakers, tellies, watches, doorbells - even toys - can have ears; a Scout knows which is which.",
+      learned: "Speakers, TVs, watches, doorbells - even toys - can have ears; a Scout knows which is which.",
       next: "what all those ears actually DO with what they hear",
       emblem: "🏠",
       narration: {
@@ -255,7 +255,7 @@ export const WEEK_14: WeekContent = {
           steps: [
             { icon: "💬", text: "You call its name from across the kitchen. 'Hey Nova!'" },
             { icon: "🔔", text: "Ding! The ear-light glows - Nova is now FULLY awake and listening." },
-            { icon: "📋", text: "Diary entry: 'Woke at 4.02pm.' The name is the ON switch." },
+            { icon: "📋", text: "Diary entry: 'Woke at 4:02pm.' The name is the ON switch." },
           ],
           counter: "The name switches the ears ON.",
         },
@@ -277,7 +277,7 @@ export const WEEK_14: WeekContent = {
           steps: [
             { icon: "🧠", text: "'Nova, how far away is the moon?' Homework rescue in one second flat." },
             { icon: "✅", text: "Helpful! That's exactly the job smart ears are for." },
-            { icon: "📋", text: "Diary entry: your question, kept - so the app 'learns what you like'." },
+            { icon: "📋", text: "Diary entry: your question, kept - so the app can learn what you like." },
           ],
           counter: "Questions get remembered.",
         },
@@ -286,7 +286,7 @@ export const WEEK_14: WeekContent = {
           label: "The present plan",
           icon: "🎁",
           steps: [
-            { icon: "🎁", text: "You and Mum plan Gran's surprise present, right next to the counter." },
+            { icon: "🎁", text: "You and Mom plan Grandma's surprise present, right next to the counter." },
             { icon: "🔔", text: "Mid-chat, someone says 'Nova, dim the lights' - the ears wake up..." },
             { icon: "📋", text: "Diary entry: a little slice of the secret plan, caught by accident." },
           ],
@@ -347,9 +347,9 @@ export const WEEK_14: WeekContent = {
       type: "info",
       title: "Little Glass Eyes",
       content:
-        "Some smart things have eyes as well as ears - a small, round, shiny lens, like a little glass eye. Doorbells use theirs to watch the front step: that's their job, and it keeps the house safe. Some tellies and toys have lenses tucked into their frames too. Scouts play spot-the-lens: find the little glass circle. And one rule above all: bedrooms are lens-free zones - a camera pointing where you sleep gets a grown-up asked about it, every time.",
+        "Some smart things have eyes as well as ears - a small, round, shiny lens, like a little glass eye. Doorbells use theirs to watch the front step: that's their job, and it keeps the house safe. Some TVs and toys have lenses tucked into their frames too. Scouts play spot-the-lens: find the little glass circle. And one rule above all: bedrooms are lens-free zones. A camera pointing at your bed? Tell a grown-up right away - every time.",
       bullets: [
-        "Cameras hide in doorbells, tellies, toys",
+        "Cameras hide in doorbells, TVs, toys",
         "Look for the small round lens",
         "Front-step watching = its job",
         "Bedrooms are lens-free zones",
@@ -373,9 +373,9 @@ export const WEEK_14: WeekContent = {
     {
       type: "buttonHunt",
       menuTitle: "THE LIVING ROOM AT DUSK",
-      scenario: "The lights are low. Somewhere in this cosy room, two little glass eyes are watching. Find them both!",
+      scenario: "The lights are low. Somewhere in this cozy room, two little glass eyes are watching. Find them both!",
       introTitle: "The Dusk Watch",
-      introSubtitle: "Two hidden lenses, four cosy decoys. Tap the doorbell's eye first, then the telly's - and learn why the rest can't see a thing.",
+      introSubtitle: "Two hidden lenses, four cozy decoys. Tap the doorbell's eye first, then the TV's - and learn why the rest can't see a thing.",
       introIcon: "👁️",
       buttons: [
         {
@@ -387,20 +387,20 @@ export const WEEK_14: WeekContent = {
         },
         {
           id: "tv",
-          label: "Telly's Top Edge",
+          label: "TV's Top Edge",
           icon: "👁️",
           targetOrder: 2,
           note: "Lens two - a tiny camera dot right on the frame. Spotted like a pro Scout.",
         },
         {
           id: "lamp",
-          label: "Cosy Lamp",
+          label: "Cozy Lamp",
           icon: "💡",
           note: "Warm and bright - but no lens in there. Light is its whole job.",
         },
         {
           id: "painting",
-          label: "Nan's Painting",
+          label: "Grandma's Painting",
           icon: "🎨",
           note: "Only painted eyes in there - they never blink and they never record.",
         },
@@ -419,14 +419,14 @@ export const WEEK_14: WeekContent = {
       ],
       hints: {
         tier1: "Hunt for the small round GLASS circle - shiny and dark, like a little eye.",
-        tier2: "One watches the front step. The other sits right on the telly's frame.",
+        tier2: "One watches the front step. The other sits right on the TV's frame.",
       },
       narration: {
         speaker: "adam",
         lines: [
           "[whispers] Dusk in the living room...",
           "Two little glass eyes are out there somewhere.",
-          "Doorbell first, then the telly.",
+          "Doorbell first, then the TV.",
           "[excited] Eyes sharp, Scout - go!",
         ],
       },
@@ -443,7 +443,7 @@ export const WEEK_14: WeekContent = {
       speedMs: 5000,
       choices: [
         { text: "The doorbell's little glass eye", isCorrect: true },
-        { text: "The cosy lamp", isCorrect: false },
+        { text: "The cozy lamp", isCorrect: false },
         { text: "The fruit bowl", isCorrect: false },
       ],
       praise: "Spotted at Scout speed - the glass eye can't hide from you! ✓",
@@ -474,7 +474,7 @@ export const WEEK_14: WeekContent = {
       type: "info",
       title: "The Megaphone Rule",
       content:
-        "Here's the rule that ties the whole week together: anything said OUT LOUD near smart ears might be heard, recorded, or repeated. So secrets never go out loud near a listening thing - not passwords, not surprises, not private stuff. Write it down and pass it over. Whisper it somewhere ear-free. Or just walk to another room. Because near smart ears, saying it out loud is saying it through a megaphone.",
+        "Here's the rule that ties the whole week together: anything said OUT LOUD near smart ears might be heard, recorded, or repeated. So heroes keep secrets OFF THE AIR - that just means never saying them out loud near a listening thing. Not passwords, not surprises, not private stuff. Write it down and pass it over. Whisper it somewhere ear-free. Or just walk to another room. Because near smart ears, saying it out loud is saying it through a megaphone.",
       bullets: [
         "Ears nearby? Assume they hear",
         "Passwords NEVER out loud",
@@ -516,22 +516,22 @@ export const WEEK_14: WeekContent = {
           ],
         },
         {
-          setup: "You and Mum are planning Gran's SURPRISE party in the kitchen. Robo-Pup sits on the counter, switched on and listening...",
+          setup: "You and Mom are planning Grandma's SURPRISE party in the kitchen. Robo-Pup sits on the counter, switched on and listening...",
           choices: [
             {
-              text: "Carry the plan out to the garden",
+              text: "Carry the plan out to the backyard",
               isSafe: true,
-              consequence: "Party plans stay surprises when the only ears around are the people you invited. Gran won't see it coming!",
+              consequence: "Party plans stay surprises when the only ears around are the people you invited. Grandma won't see it coming!",
             },
             {
               text: "Keep planning - it's just a toy",
               isSafe: false,
-              consequence: "'SURPRISE PARTY FOR GRAN!' Robo-Pup announces cheerfully at dinner... right in front of Gran. Toys with ears make terrible secret-keepers.",
+              consequence: "Robo-Pup's ears caught the whole plan - and saved it. Days later, the recording is sitting right there in the toy's app for anyone to play. Toys with ears make terrible secret-keepers.",
             },
           ],
         },
         {
-          setup: "Your mate wants the secret club password over video chat - and the smart telly's mic is on in the same room...",
+          setup: "Your friend wants the secret club password over video chat - and the smart TV's mic is on in the same room...",
           choices: [
             {
               text: "Write it in the club notebook tomorrow",
@@ -541,7 +541,7 @@ export const WEEK_14: WeekContent = {
             {
               text: "Shout it across the room",
               isSafe: false,
-              consequence: "Now the telly heard it, the chat heard it, and half the street probably heard it too. A shouted secret isn't a secret - it's news.",
+              consequence: "Now the TV heard it, the chat heard it, and half the street probably heard it too. A shouted secret isn't a secret - it's news.",
             },
           ],
         },
@@ -560,14 +560,14 @@ export const WEEK_14: WeekContent = {
     {
       type: "quickCheck",
       mode: "finish",
-      prompt: "Secrets said out loud are ___.",
+      prompt: "Near smart ears, saying a secret out loud is like using a ___.",
       choices: [
-        { text: "broadcasts", isCorrect: true },
-        { text: "whispers", isCorrect: false },
-        { text: "extra safe", isCorrect: false },
-        { text: "invisible", isCorrect: false },
+        { text: "megaphone", isCorrect: true },
+        { text: "whisper", isCorrect: false },
+        { text: "telephone", isCorrect: false },
+        { text: "secret code", isCorrect: false },
       ],
-      praise: "Broadcasts - said out loud once, they can travel anywhere. Keep secrets off the air. ✓",
+      praise: "A megaphone - said out loud once, it can be heard, recorded and repeated. Keep secrets off the air. ✓",
     },
 
     // 18 - Recap · Concept 4 of 5
@@ -691,7 +691,7 @@ export const WEEK_14: WeekContent = {
     {
       type: "quickCheck",
       mode: "order",
-      prompt: "The Scout moves, in order!",
+      prompt: "Put the Scout's three moves in order!",
       choices: [
         { text: "Find the switch", isCorrect: true },
         { text: "Show a grown-up", isCorrect: true },
@@ -729,7 +729,7 @@ export const WEEK_14: WeekContent = {
         positiveHint: "Tap QUIET HOUSE for Scout moves that keep the ears in check",
         negativeHint: "Tap LEAKY HOUSE for moments the Raccoon could listen in on",
         tipWhenPositive: "Secrets written, switches flipped together, lenses spotted - the house stays yours.",
-        tipWhenNegative: "Passwords on the air, always-on ears, mystery lenses - his favourite listening posts.",
+        tipWhenNegative: "Passwords on the air, always-on ears, mystery lenses - his favorite listening posts.",
         hint1: "Ask: could a hidden ear or eye catch this moment?",
         hint2: "QUIET = written secrets, push-to-talk, checked switches. LEAKY = out-loud passwords, always-on mics, unasked-about lenses.",
         hint2Example: "QUIET: 'wrote the password down'   LEAKY: 'shouted it near Nova'",
@@ -758,7 +758,7 @@ export const WEEK_14: WeekContent = {
           explanation: "Unknown lenses get a grown-up asked about them - that's Scout rule one.",
         },
         {
-          text: "Push-to-talk on the telly remote",
+          text: "Push-to-talk on the TV remote",
           isStrong: true,
           explanation: "The ear opens only while the button's held - you decide when it hears.",
         },
@@ -838,16 +838,16 @@ export const WEEK_14: WeekContent = {
     easy: [
       { question: "Which of these has EARS?", answers: ["The smart speaker", "The teddy bear", "The toaster", "The pile of books"], correctIndex: 0, explanation: "If you can talk to it and it answers, it's got ears." },
       { question: "What wakes a smart speaker up?", answers: ["Hearing its name", "Sunlight", "A secret handshake", "Nothing - it never sleeps"], correctIndex: 0, explanation: "The name is the ON switch - and once awake, it hears much more." },
-      { question: "Where do secrets go when smart ears are nearby?", answers: ["On paper, in a whisper away, or in another room", "Shouted, so they're clearer", "Straight to the speaker", "Nowhere - stop having secrets"], correctIndex: 0, explanation: "Out loud near smart ears is a megaphone - keep secrets off the air." },
+      { question: "Where do secrets go when smart ears are nearby?", answers: ["On paper, in a whisper away, or in another room", "Whispered right next to the speaker", "Straight to the speaker", "Nowhere - stop having secrets"], correctIndex: 0, explanation: "Out loud near smart ears is a megaphone - keep secrets off the air." },
     ],
     medium: [
-      { question: "What's in the speaker's 'diary'?", answers: ["Recordings and questions it kept - which grown-ups can check and delete", "Its favourite songs", "Nothing, ever", "Your homework answers"], correctIndex: 0, explanation: "Smart ears sometimes record - and the copies live in an app grown-ups can open." },
+      { question: "What's in the speaker's 'diary'?", answers: ["Recordings and questions it kept - which grown-ups can check and delete", "Its favorite songs", "Nothing, ever", "Your homework answers"], correctIndex: 0, explanation: "Smart ears sometimes record - and the copies live in an app grown-ups can open." },
       { question: "Which camera is doing its job RIGHT?", answers: ["The doorbell lens watching the front step", "A lens pointing at your bed", "A mystery camera nobody's asked about", "A toy filming the bathroom"], correctIndex: 0, explanation: "Front-step watching is the job; bedrooms are lens-free zones, and mystery lenses get asked about." },
-      { question: "Why is push-to-talk better than always-on?", answers: ["The ear only opens while YOU hold the button", "It makes the telly louder", "It isn't better", "It records more"], correctIndex: 0, explanation: "Push-to-talk hands the ON switch to you - the ear hears only when you choose." },
+      { question: "Why is push-to-talk better than always-on?", answers: ["The ear only opens while YOU hold the button", "It makes the TV louder", "It isn't better", "It records more"], correctIndex: 0, explanation: "Push-to-talk hands the ON switch to you - the ear hears only when you choose." },
     ],
     hard: [
       { question: "You said a password out loud near an awake speaker. What's the Scout move?", answers: ["Tell a grown-up and change the password", "Nothing - speakers forget instantly", "Whisper the same password next time", "Unplug every device forever"], correctIndex: 0, explanation: "A password in a recording isn't fully yours - change it, and keep the next one off the air." },
-      { question: "Why do Scouts flip switches WITH a grown-up instead of alone?", answers: ["Together you pick the right settings - and they stay picked", "Because switches are heavy", "So the grown-up takes the blame", "Scouts never flip anything"], correctIndex: 0, explanation: "Patrol, point, flip together - that's how settings get right AND stay right." },
+      { question: "Why do Scouts flip switches WITH a grown-up instead of alone?", answers: ["Together you pick the right settings - and they stay picked", "Alone is fine if you're really careful", "So the grown-up takes the blame", "Scouts never flip anything"], correctIndex: 0, explanation: "Patrol, point, flip together - that's how settings get right AND stay right." },
       { question: "Robo-Pup answers when you talk to it. What does a Scout know?", answers: ["It has ears - so it counts as a smart device, switches and all", "Toys can't listen", "It's magic", "Only phones can hear"], correctIndex: 0, explanation: "Answering back = ears. Even toys join the ears list - the Scout surprise of the week." },
     ],
   },

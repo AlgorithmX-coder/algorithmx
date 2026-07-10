@@ -67,13 +67,13 @@ export const WEEK_7: WeekContent = {
       type: "info",
       title: "Game Coins Are Real Money",
       content:
-        "V-Bucks, Robux, Blast Coins - games give their money fun names and bright colours so it FEELS like play money. But here's the secret: every coin pack is bought with real pounds. Real money someone in your family worked for. Once you see that, the shop looks very different.",
+        "V-Bucks, Robux, Blast Coins - games give their money fun names and bright colors so it FEELS like play money. But here's the secret: every coin pack is bought with real dollars. Real money someone in your family worked for. Once you see that, the shop looks very different.",
       bullets: [
-        "Game coins are bought with real pounds",
+        "Game coins are bought with real dollars",
         "Fun names make it FEEL like play money",
         "That's on purpose - easier to spend",
         "It's someone's real, worked-for money",
-        "See the pounds, and the shop changes",
+        "See the dollars, and the shop changes",
       ],
       bulletIcons: ["💎", "🎭", "🪤", "👪", "👀"],
       emblem: "💎",
@@ -82,10 +82,10 @@ export const WEEK_7: WeekContent = {
         lines: [
           "[excited] Welcome back, Cyber Hero. Today we open the game shop...",
           "[whispers] and see what's REALLY inside.",
-          "V-Bucks. Robux. Blast Coins. Fun names, bright colours!",
-          "[warmly] But every single coin is bought with real pounds.",
+          "V-Bucks. Robux. Blast Coins. Fun names, bright colors!",
+          "[warmly] But every single coin is bought with real dollars.",
           "Real money someone in your family worked for.",
-          "[excited] Match the coins to the real money - and see the trick!",
+          "[excited] Match each card to the money truth it's hiding - and see the trick!",
         ],
       },
     },
@@ -94,25 +94,25 @@ export const WEEK_7: WeekContent = {
       type: "memoryMatch",
       introTitle: "The Coin Till",
       introWelcome: "Ring it up!",
-      introSubtitle: "Flip the cards and match each coin pack to the REAL money it costs. Fewer flips earn more stars.",
+      introSubtitle: "Flip the cards and match each shop card to the money truth behind it. Fewer flips earn more stars.",
       pairs: [
-        { term: "500 Blast Coins", match: "£4 of real money", colour: "#00e5ff" },
-        { term: "1,000 V-Bucks", match: "£7 of real money", colour: "#7eff97" },
-        { term: "One loot crate", match: "£3, every single time", colour: "#ffd158" },
-        { term: "'Game money'", match: "Real money in disguise", colour: "#ff5fb3" },
+        { term: "500 Blast Coins", match: "A real-money price tag", colour: "#00e5ff" },
+        { term: "Who pays for coins?", match: "Someone in your family", colour: "#7eff97" },
+        { term: "One loot crate", match: "Real money for a mystery", colour: "#ffd158" },
+        { term: "'Just game money'", match: "Real money in disguise", colour: "#ff5fb3" },
       ],
       narration: {
         speaker: "adam",
         lines: [
           "[excited] Welcome to the Coin Till!",
-          "Every coin pack hides a real price.",
-          "[warmly] Flip the cards and match each pack...",
-          "to the real pounds it costs. Ring it up!",
+          "Every card hides a money truth.",
+          "[warmly] Flip the cards and match each one...",
+          "to the truth it's hiding. Ring it up!",
         ],
       },
       coachLines: {
         speaker: "adam",
-        lines: ["Flip any card to start - then find its real price!"],
+        lines: ["Flip any card to start - then find its matching truth!"],
       },
     },
     // 5 - Prove: FINISH
@@ -134,7 +134,7 @@ export const WEEK_7: WeekContent = {
       type: "recap",
       concept: 1,
       total: 5,
-      learned: "Game coins are real money in disguise - every pack costs real pounds.",
+      learned: "Game coins are real money in disguise - every pack costs real dollars.",
       next: "what's REALLY inside a loot box",
       emblem: "💎",
       narration: {
@@ -142,7 +142,7 @@ export const WEEK_7: WeekContent = {
         lines: [
           "[warmly] Great start, Cyber Hero!",
           "You rang up every coin pack at its REAL price.",
-          "Fun names, bright colours... real pounds underneath.",
+          "Fun names, bright colors... real dollars underneath.",
           "[excited] Next - let's turn a loot box into glass!",
         ],
       },
@@ -154,10 +154,10 @@ export const WEEK_7: WeekContent = {
       type: "info",
       title: "The Loot Box Gamble",
       content:
-        "A loot box is a mystery: you pay, but you don't know what you'll get. That's not bad luck - it's built that way ON PURPOSE. The super-rare skin is 1-in-a-hundred. The 'SO close!' feeling is designed. And box number ten has exactly the same tiny chance as box number one. Boxes have no memory.",
+        "A loot box is a mystery: you pay, but you don't know what you'll get. That's not bad luck - it's built that way ON PURPOSE. The super-rare skin? Usually about 1-in-100. The 'SO close!' feeling is designed. And box number ten has exactly the same tiny chance as box number one. Boxes have no memory.",
       bullets: [
         "You pay real money for a MYSTERY",
-        "The rare prize is about 1-in-100",
+        "The rare prize is usually about 1-in-100",
         "The 'SO close!' feeling is designed",
         "Each new box has the SAME tiny chance",
         "Boxes have no memory",
@@ -170,7 +170,7 @@ export const WEEK_7: WeekContent = {
           "[excited] Loot boxes! So shiny. So mysterious.",
           "[whispers] Here's what the shine is hiding.",
           "You pay real money... for a mystery.",
-          "The super-rare prize? About one in a HUNDRED.",
+          "The super-rare prize? Usually about one in a HUNDRED.",
           "[warmly] And that 'SO close!' feeling? Designed on purpose.",
           "[excited] Let's make some boxes turn to glass and SEE inside!",
         ],
@@ -189,7 +189,7 @@ export const WEEK_7: WeekContent = {
           icon: "🎁",
           steps: [
             { icon: "✨", text: "Ooooh, look at it sparkle! Now... tap. It turns to GLASS." },
-            { icon: "🎲", text: "Inside: a jar of 100 marbles. Ninety-nine grey. ONE gold." },
+            { icon: "🎲", text: "Inside: a jar of 100 marbles. Ninety-nine gray. ONE gold." },
             { icon: "👀", text: "That gold marble is the skin everyone wants. One. In. A hundred." },
           ],
           counter: "Shiny on the outside. 1-in-100 on the inside.",
@@ -212,7 +212,7 @@ export const WEEK_7: WeekContent = {
           steps: [
             { icon: "💬", text: "'I've opened nine - the tenth HAS to be the rare one!'" },
             { icon: "🧠", text: "But boxes have no memory. Box ten doesn't know about the other nine." },
-            { icon: "🎲", text: "Same jar. Same 99 grey marbles. Every single time." },
+            { icon: "🎲", text: "Same jar. Same 99 gray marbles. Every single time." },
           ],
           counter: "Boxes have no memory - the odds never change.",
         },
@@ -221,9 +221,9 @@ export const WEEK_7: WeekContent = {
           label: "The Real Price Tag",
           icon: "💎",
           steps: [
-            { icon: "💎", text: "£3 a box doesn't sound like much..." },
-            { icon: "🌀", text: "but 'just one more' ten times = £30 of real money." },
-            { icon: "👪", text: "That's a whole new game - spent on grey marbles." },
+            { icon: "💎", text: "$3 a box doesn't sound like much..." },
+            { icon: "🌀", text: "but 'just one more' ten times = $30 of real money." },
+            { icon: "👪", text: "That's a whole new game - spent on gray marbles." },
           ],
           counter: "Little boxes add up to big money.",
         },
@@ -248,13 +248,13 @@ export const WEEK_7: WeekContent = {
       type: "quickCheck",
       mode: "lie",
       prompt: "Is that true?",
-      raccoonLine: "you've opened NINE boxes - the tenth one is GUARANTEED to be super-rare!",
+      raccoonLine: "loot boxes are a surprise every time... and THAT'S why I love selling them!",
       choices: [
-        { text: "TRUE", isCorrect: false },
-        { text: "FALSE", isCorrect: true },
+        { text: "TRUE", isCorrect: true },
+        { text: "FALSE", isCorrect: false },
       ],
-      praise: "Busted! Boxes have no memory - same odds every time. ✓",
-      nudge: "Does box ten remember the other nine?",
+      praise: "Sharp ears - it IS true! A surprise means you pay real money for a mystery... and that's exactly how he gets rich. ✓",
+      nudge: "Careful - even the Raccoon says something true sometimes. Is a loot box a surprise?",
     },
 
     // 10 - Recap · Concept 2 of 5
@@ -262,14 +262,14 @@ export const WEEK_7: WeekContent = {
       type: "recap",
       concept: 2,
       total: 5,
-      learned: "Loot boxes are a designed gamble - 1-in-100 odds that never change, no matter how many you open.",
+      learned: "Loot boxes are a designed gamble - usually about 1-in-100 odds that never change, no matter how many you open.",
       next: "the shop tricks that make your heart race",
       emblem: "🎲",
       narration: {
         speaker: "adam",
         lines: [
           "[excited] Two powers! You've got x-ray eyes now.",
-          "One gold marble. Ninety-nine grey.",
+          "One gold marble. Ninety-nine gray.",
           "[laughs] The sparkle will never fool you again.",
           "[whispers] But the shop has more tricks than boxes...",
         ],
@@ -364,7 +364,7 @@ export const WEEK_7: WeekContent = {
             linkText: "DON'T MISS OUT button",
             linkNote: "The button sells a feeling - being left out - not a thing.",
             linkIsRedFlag: true,
-            urgencyNote: "'RIGHT NOW!' plus left-out panic - the FOMO trick, full volume.",
+            urgencyNote: "'RIGHT NOW!' plus left-out panic - the left-out trick, full volume.",
             urgencyIsRedFlag: true,
             claimNote: "'EVERYONE has it' - a shop can't know that, because it isn't true.",
             claimIsRedFlag: true,
@@ -442,7 +442,7 @@ export const WEEK_7: WeekContent = {
           "Before ANY buy - coins, skins, boxes -",
           "you ask the grown-up whose money it is.",
           "[whispers] Every time. Even the tiny ones.",
-          "[excited] Asking first is what heroes do. Let's practise!",
+          "[excited] Asking first is what heroes do. Let's practice!",
         ],
       },
     },
@@ -451,9 +451,9 @@ export const WEEK_7: WeekContent = {
       type: "chooseYourPath",
       scenarios: [
         {
-          setup: "Mid-game, a prompt pops up: 'Unlock the GOLDEN BLASTER - £7.99. Card already saved - just tap YES!'",
+          setup: "Mid-game, a prompt pops up: 'Unlock the GOLDEN BLASTER - $7.99. Card already saved - just tap YES!'",
           choices: [
-            { text: "Tap YES - the card's already saved anyway!", isSafe: false, consequence: "That 'saved card' is a real person's real £7.99 - and they didn't get a say. Saved doesn't mean allowed." },
+            { text: "Tap YES - the card's already saved anyway!", isSafe: false, consequence: "That 'saved card' is a real person's real $7.99 - and they didn't get a say. Saved doesn't mean allowed." },
             { text: "Pause the game and ASK first", isSafe: true, consequence: "Hero move! Maybe they say yes, maybe no - but it was THEIR call, and the shop stays fun." },
           ],
         },
@@ -467,7 +467,7 @@ export const WEEK_7: WeekContent = {
         {
           setup: "Your best friend says: 'Just buy the coins - my parents never notice small ones!'",
           choices: [
-            { text: "Do it - small ones don't count", isSafe: false, consequence: "Small ones count double - they add up in secret until someone gets a shock. Not noticing isn't the same as saying yes." },
+            { text: "Do it - small ones don't count", isSafe: false, consequence: "Small ones still count - they add up in secret until someone gets a shock. Not noticing isn't the same as saying yes." },
             { text: "Nope - I ask first, every time", isSafe: true, consequence: "Rule held, even with a friend pushing. THAT'S a Wallet Guard. Every buy gets an ask - tiny ones too." },
           ],
         },
@@ -547,7 +547,7 @@ export const WEEK_7: WeekContent = {
     {
       type: "popupPanic",
       introTitle: "The Free-Coin Fakes",
-      introSubtitle: "Fake 'free coins' pop-ups incoming! Find the X and close every one - never tap CLAIM.",
+      introSubtitle: "Fake 'free coins' pop-ups incoming! Find the X and close every one - never tap CLAIM. Can't find a real X? Close the whole app and tell a grown-up.",
       introIcon: "🪤",
       popups: [
         { id: "pop-vbucks", title: "FREE 10,000 V-BUCKS!", body: "You were chosen! Tap CLAIM before it expires!", icon: "💎", whyTrick: "Free V-Bucks don't exist - the CLAIM button is the trap. X it away!" },
@@ -557,8 +557,8 @@ export const WEEK_7: WeekContent = {
       ],
       hints: {
         tier1: "The X is usually small and in a corner - the big shiny button is ALWAYS the trap.",
-        tier2: "Never tap CLAIM, SPIN or INSTALL. Find the X, close the pop-up.",
-        tier3: "Rule card: free coins don't exist · big shiny button = trap · small X = safe · then tell a grown-up.",
+        tier2: "Never tap CLAIM, SPIN or INSTALL. Find the X, close the pop-up. Can't find a real X? Close the whole app and tell a grown-up.",
+        tier3: "Rule card: free coins don't exist · big shiny button = trap · small X = safe · no real X? close the WHOLE app · then tell a grown-up.",
       },
       narration: {
         speaker: "adam",
@@ -615,7 +615,7 @@ export const WEEK_7: WeekContent = {
         tipWhenNegative: "Countdowns, loot-box chasing, secret buys and free-coin bait - wallet traps, all of them.",
         hint1: "Ask: was there an ASK first... or a rush, a gamble, or a 'free' promise?",
         hint2: "SMART = in-game shop + grown-up OK + no rush. TRAP = countdown, 'one more box', 'free coins', secret buys.",
-        hint2Example: "SMART: 'Mum said yes to the season pack'   TRAP: 'FREE V-Bucks - log in here!'",
+        hint2Example: "SMART: 'Mom said yes to the season pack'   TRAP: 'FREE V-Bucks - log in here!'",
         hint3: "Quick rule card: coins = real money · boxes have no memory · deals can wait · ask every time · free coins don't exist.",
         hint3Example: "Ask first ✅    'Card's saved anyway' ❌",
       },
@@ -650,8 +650,8 @@ export const WEEK_7: WeekContent = {
       title: "Mission Complete!",
       subtitle: "Here's everything you mastered this week.",
       concepts: [
-        { id: "money", label: "Real-Money Eyes", accent: "#00e5ff", icon: "💎", summary: "Game coins are real pounds in disguise - you see the price now." },
-        { id: "loot", label: "Loot Box X-Ray", accent: "#c084fc", icon: "🎲", summary: "1 gold marble, 99 grey - and boxes have no memory. A designed gamble." },
+        { id: "money", label: "Real-Money Eyes", accent: "#00e5ff", icon: "💎", summary: "Game coins are real dollars in disguise - you see the price now." },
+        { id: "loot", label: "Loot Box X-Ray", accent: "#c084fc", icon: "🎲", summary: "1 gold marble, 99 gray - and boxes have no memory. A designed gamble." },
         { id: "pressure", label: "Pressure-Proof", accent: "#ffd158", icon: "⚡", summary: "Countdowns and 'everyone has it' bounce off. Fair offers can wait." },
         { id: "ask", label: "Ask-First Rule", accent: "#7eff97", icon: "👪", summary: "Not your money, not your call alone - every buy gets an ask." },
         { id: "free", label: "Free-Coin Radar", accent: "#ff5fb3", icon: "🪤", summary: "Free game money doesn't exist. X the pop-up, tell a grown-up." },
@@ -686,7 +686,7 @@ export const WEEK_7: WeekContent = {
   // Week-lane attack theatre: money tricks only (message scams = W4;
   // game-lobby people tricks = W6).
   bossAttacks: [
-    { name: "FOMO BUNDLE",    icon: "🎁", color: "#ffd158", glow: "rgba(255, 209, 88, 0.55)",  tag: "Fair offers can wait",      emblemColor: 0xffd158 },
+    { name: "LEFT-OUT BUNDLE", icon: "🎁", color: "#ffd158", glow: "rgba(255, 209, 88, 0.55)",  tag: "Fair offers can wait",      emblemColor: 0xffd158 },
     { name: "LOOT GAMBLE",    icon: "🎲", color: "#c084fc", glow: "rgba(192, 132, 252, 0.55)", tag: "Boxes have no memory",      emblemColor: 0xc084fc },
     { name: "FREE-COIN TRAP", icon: "🪤", color: "#ff5fb3", glow: "rgba(255, 95, 179, 0.55)",  tag: "Free coins don't exist",    emblemColor: 0xff5fb3 },
   ],
@@ -695,19 +695,19 @@ export const WEEK_7: WeekContent = {
   // onslaught - is designed separately with the boss batch).
   bossQuestions: {
     easy: [
-      { question: "What are V-Bucks and Robux REALLY?", answers: ["Real money in disguise", "Free points", "Just pretend", "Stickers"], correctIndex: 0, explanation: "Every coin pack is bought with real pounds someone worked for." },
-      { question: "What's inside a loot box?", answers: ["A mystery with tiny odds - about 1-in-100", "Always the rare skin", "Whatever you wish for", "Nothing"], correctIndex: 0, explanation: "One gold marble, ninety-nine grey - designed that way on purpose." },
+      { question: "What are V-Bucks and Robux REALLY?", answers: ["Real money in disguise", "Free points", "Just pretend", "Points you earn by playing"], correctIndex: 0, explanation: "Every coin pack is bought with real dollars someone worked for." },
+      { question: "What's inside a loot box?", answers: ["A mystery with tiny odds - about 1-in-100", "Always the rare skin", "A better prize every time you open one", "Nothing"], correctIndex: 0, explanation: "One gold marble, ninety-nine gray - designed that way on purpose." },
       { question: "Before ANY buy, you...", answers: ["Ask the grown-up whose money it is", "Tap yes quickly", "Ask a friend", "Buy small ones secretly"], correctIndex: 0, explanation: "Not your money, not your call alone - every buy gets an ask." },
     ],
     medium: [
       { question: "'Only 4 minutes left - BUY NOW!' What's really going on?", answers: ["The rush trick - fast buyers don't think", "A genuine emergency", "The shop is closing forever", "A helpful reminder"], correctIndex: 0, explanation: "Countdowns exist to stop your thinking. Real deals can wait." },
-      { question: "You opened 9 loot boxes. What are box 10's odds?", answers: ["Exactly the same as box 1", "Guaranteed rare now", "Double the chance", "Whatever you deserve"], correctIndex: 0, explanation: "Boxes have no memory - the jar resets every single time." },
-      { question: "'FREE V-Bucks - just enter your password!' What do they want?", answers: ["Your account", "To be generous", "Your high score", "Nothing"], correctIndex: 0, explanation: "Free game money doesn't exist - the password IS the prize they're after." },
+      { question: "You opened 9 loot boxes. What are box 10's odds?", answers: ["Exactly the same as box 1", "Guaranteed rare now", "Double the chance", "A little bit better than before"], correctIndex: 0, explanation: "Boxes have no memory - the jar resets every single time." },
+      { question: "'FREE V-Bucks - just enter your password!' What do they want?", answers: ["Your account", "To be generous", "Only your username, nothing important", "Nothing"], correctIndex: 0, explanation: "Free game money doesn't exist - the password IS the prize they're after." },
     ],
     hard: [
-      { question: "Why do games give money fun names like V-Bucks?", answers: ["So it feels like play money and spends easier", "To be creative", "Real names are taken", "For no reason"], correctIndex: 0, explanation: "Fun names hide the real pounds - seeing the price is your superpower." },
-      { question: "'My parents never notice small buys!' What's wrong with that?", answers: ["Small buys add up in secret until someone gets a shock", "Nothing - small ones are free", "Parents like surprises", "Small buys don't count"], correctIndex: 0, explanation: "Not noticing isn't the same as saying yes - tiny buys need asks too." },
-      { question: "What does the 'SO close!' feeling after a loot box mean?", answers: ["The box was designed to make you want one more", "You nearly won", "Try one more", "The game likes you"], correctIndex: 0, explanation: "'Almost' is part of the machine - it's how they sell the next box." },
+      { question: "Why do games give money fun names like V-Bucks?", answers: ["So it feels like play money and spends easier", "To be creative", "Because fun names are easier to remember", "For no reason"], correctIndex: 0, explanation: "Fun names hide the real dollars - seeing the price is your superpower." },
+      { question: "'My parents never notice small buys!' What's wrong with that?", answers: ["Small buys add up in secret until someone gets a shock", "Nothing - small ones are free", "It's fine if you pay them back later", "Small buys don't count"], correctIndex: 0, explanation: "Not noticing isn't the same as saying yes - tiny buys need asks too." },
+      { question: "What does the 'SO close!' feeling after a loot box mean?", answers: ["The box was designed to make you want one more", "You nearly won", "Try one more", "Your luck is building up"], correctIndex: 0, explanation: "'Almost' is part of the machine - it's how they sell the next box." },
     ],
   },
 
@@ -718,13 +718,13 @@ export const WEEK_7: WeekContent = {
     0: { adam: { mood: "excited", message: "Mission 7 - the V-Bucks trap!" }, layla: null }, // intro video
     1: { adam: { mood: "worried", message: "Real money, gone... let's learn why." }, layla: null }, // alert
     2: { adam: null, layla: { mood: "curious", message: "Here's the plan for today." } }, // mission brief
-    3: { adam: { mood: "thinking", message: "Fun names. Real pounds." }, layla: null }, // learn: money
+    3: { adam: { mood: "thinking", message: "Fun names. Real dollars." }, layla: null }, // learn: money
     4: { adam: { mood: "excited", message: "Ring up the REAL prices!" }, layla: null }, // game: memoryMatch
     5: { adam: null, layla: { mood: "thumbsup", message: "Finish the rule!" } }, // prove: finish
     6: { adam: null, layla: { mood: "excited", message: "One power down - four to go!" } }, // recap 1
     7: { adam: null, layla: { mood: "curious", message: "Let's see inside the shiny box..." } }, // learn: loot
     8: { adam: { mood: "curious", message: "Turn every box to glass!" }, layla: null }, // game: reveal
-    9: { adam: null, layla: { mood: "worried", message: "He's fibbing - catch him!" } }, // prove: lie
+    9: { adam: null, layla: { mood: "worried", message: "Is he fibbing this time? Listen close!" } }, // prove: lie
     10: { adam: { mood: "thumbsup", message: "X-ray eyes: unlocked." }, layla: null }, // recap 2
     11: { adam: { mood: "thinking", message: "A racing heart at the shop? Trick." }, layla: null }, // learn: pressure
     12: { adam: { mood: "curious", message: "X-ray every banner, detective." }, layla: null }, // game: phishInspector

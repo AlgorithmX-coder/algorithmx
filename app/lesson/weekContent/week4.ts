@@ -66,7 +66,7 @@ export const WEEK_4: WeekContent = {
       type: "info",
       title: "What Is a Scam?",
       content:
-        "A scam is a TRICK dressed up as something nice. It wants one of three things: your info, your family's money, or your click. Real messages just say normal things. Scams always want something back - that's how you spot them.",
+        "A scam is a TRICK dressed up as something nice. It wants one of three things: your info, your family's money, or your click - pressing its button is how the trick gets in. Real messages just say normal things. Scams always want something back - that's how you spot them.",
       bullets: [
         "A scam is a trick in a costume",
         "It wants your info, money or clicks",
@@ -82,7 +82,7 @@ export const WEEK_4: WeekContent = {
           "[warmly] Welcome back, Cyber Hero. New mission!",
           "This week we hunt SCAMS.",
           "A scam is a trick... wearing a costume.",
-          "[whispers] It wants your info, your family's money, or your click.",
+          "[whispers] It wants your info, your family's money, or your click - pressing is how the trick gets in.",
           "[excited] But here's the good news. Tricks follow patterns!",
           "Learn the patterns, and no scam can touch you.",
         ],
@@ -92,14 +92,14 @@ export const WEEK_4: WeekContent = {
     {
       type: "hookSort",
       items: [
-        { id: "mum-dinner", text: "Mum: Dinner in 10 minutes!", icon: "🏠", isScam: false, explanation: "A normal message from someone you know - reel it in!" },
-        { id: "prize-draw", text: "You WON a prize draw you never entered!", icon: "🎁", isScam: true, explanation: "You can't win a draw you never entered. Classic bait - cut it loose!" },
+        { id: "mum-dinner", text: "Mom: Dinner in 10 minutes!", icon: "🏠", isScam: false, explanation: "A normal message from someone you know - reel it in!" },
+        { id: "prize-draw", text: "You WON a giveaway you never entered!", icon: "🎁", isScam: true, explanation: "You can't win a giveaway you never entered. A baited hook - snip it before anyone bites!" },
         { id: "teammate", text: "Your teammate: Good game yesterday!", icon: "⭐", isScam: false, explanation: "Friendly game chat from a real teammate - keep it." },
         { id: "free-coins", text: "FREE game coins! Just type your password here", icon: "🪤", isScam: true, explanation: "NOTHING free ever needs your password. That's the whole trick." },
-        { id: "school-day", text: "School: Non-uniform day on Friday", icon: "🏫", isScam: false, explanation: "A normal school notice - real and useful." },
-        { id: "parcel", text: "Your parcel is stuck! Pay £1 to release it", icon: "✉️", isScam: true, explanation: "Real parcels don't get 'stuck' for £1. Tiny payments are how they grab card numbers." },
+        { id: "school-day", text: "School: Pajama day on Friday", icon: "🏫", isScam: false, explanation: "A normal school notice - real and useful." },
+        { id: "parcel", text: "Your package is stuck! Pay $1 to release it", icon: "✉️", isScam: true, explanation: "Real packages don't get 'stuck' for $1. Tiny payments are how they grab card numbers." },
         { id: "billionaire", text: "A billionaire is giving away money - reply FAST!", icon: "💎", isScam: true, explanation: "Billionaires don't message kids. 'Reply fast' is the rush trick." },
-        { id: "library", text: "Library: Your book is ready to collect", icon: "✅", isScam: false, explanation: "A normal library message - nothing asked for, nothing fishy." },
+        { id: "library", text: "Library: Your book is ready to pick up", icon: "✅", isScam: false, explanation: "A normal library message - nothing asked for, nothing fishy." },
       ],
       hints: {
         tier1: "Ask: does it WANT something from me - info, money, or a click?",
@@ -109,15 +109,15 @@ export const WEEK_4: WeekContent = {
         speaker: "adam",
         lines: [
           "[excited] Welcome to the Fishing Dock!",
-          "Messages are hanging on the lines.",
-          "[warmly] Real ones? Reel them in - they're keepers.",
-          "[whispers] Scams? Snip! Cut the line and let them sink.",
-          "[excited] Take your time. One catch at a time!",
+          "The Raccoon's dangling baited hooks in the water - scams dressed up as treats.",
+          "[warmly] Real messages float in like friendly mail. Reel those in safe.",
+          "[whispers] Spot a baited hook? SNIP! Cut the line before anyone bites.",
+          "[excited] Take your time. One line at a time!",
         ],
       },
       coachLines: {
         speaker: "adam",
-        lines: ["Read the first catch - then reel it in or cut it loose!"],
+        lines: ["Check the first line - real mail reels in, baited hooks get SNIPPED!"],
       },
     },
     // 5 - Prove: FINISH
@@ -139,7 +139,7 @@ export const WEEK_4: WeekContent = {
       type: "recap",
       concept: 1,
       total: 5,
-      learned: "A scam is a trick in a costume - it wants your info, money or clicks.",
+      learned: "A scam is a trick in a costume - it wants your info, money or your click. Pressing is how the trick gets in.",
       next: "the oldest bait in the book: too good to be true",
       emblem: "🪤",
       narration: {
@@ -189,15 +189,15 @@ export const WEEK_4: WeekContent = {
       headline: "⚡ ZAP THE TOO-GOOD OFFERS! ⚡",
       missLabel: "TRICKS",
       emails: [
-        { sender: "Prize Central", subject: "You WON a FREE iPhone!", isPhishing: true, clue: "You can't win a draw you never entered" },
-        { sender: "Sam", subject: "Funny cat video from break!", isPhishing: false, clue: "" },
+        { sender: "Prize Central", subject: "You WON a FREE iPhone!", isPhishing: true, clue: "You can't win a giveaway you never entered" },
+        { sender: "Sam", subject: "Funny cat video from recess!", isPhishing: false, clue: "" },
         { sender: "V-Bucks Giveaway", subject: "FREE 10,000 V-BUCKS - claim NOW!", isPhishing: true, clue: "Free game money is always bait" },
         { sender: "Coach Lee", subject: "Football moved to 4pm today", isPhishing: false, clue: "" },
         { sender: "Lucky Visitor", subject: "You're our 1,000,000th visitor! Collect your prize!", isPhishing: true, clue: "No website counts visitors like this" },
-        { sender: "Grandma", subject: "See you Sunday for roast!", isPhishing: false, clue: "" },
+        { sender: "Grandma", subject: "See you Sunday for dinner!", isPhishing: false, clue: "" },
         { sender: "Mega Deals", subject: "FREE tablet for the first 10 kids!", isPhishing: true, clue: "'Free for the first 10' is a rush trick" },
         { sender: "Library", subject: "Your dragon book is ready", isPhishing: false, clue: "" },
-        { sender: "Puppy Prizes", subject: "You won a PUPPY! Click to claim!", isPhishing: true, clue: "Nobody posts you a free puppy" },
+        { sender: "Puppy Prizes", subject: "You won a PUPPY! Click to claim!", isPhishing: true, clue: "Nobody mails you a free puppy" },
         { sender: "Golden Tickets", subject: "Golden ticket winner - that's YOU!", isPhishing: true, clue: "Too amazing = not real" },
       ],
       narration: {
@@ -217,9 +217,9 @@ export const WEEK_4: WeekContent = {
       prompt: "Quick - which one is BAIT?",
       speedMs: 5000,
       choices: [
-        { text: "FREE tablet - first 10 kids only!", isCorrect: true },
-        { text: "Football practice moved to 4pm", isCorrect: false },
-        { text: "Your library book is ready", isCorrect: false },
+        { text: "FREE tablet - 10 left!", isCorrect: true },
+        { text: "Practice moved to 4pm", isCorrect: false },
+        { text: "Library book ready", isCorrect: false },
       ],
       praise: "Zapped in record time! ✓",
     },
@@ -297,9 +297,9 @@ export const WEEK_4: WeekContent = {
         },
         {
           id: "school-books",
-          sender: "Mrs Patel (Maple Hill School)",
+          sender: "Mrs. Patel (Maple Hill School)",
           subject: "Library books due back Friday",
-          body: "Just a reminder that class 4B's library books are due back this Friday. Thanks! Mrs Patel",
+          body: "Just a reminder that class 4B's library books are due back this Friday. Thanks! Mrs. Patel",
           isPhishing: false,
           inspections: {
             senderNote: "Your actual teacher, from the school's own address. Checks out.",
@@ -356,7 +356,7 @@ export const WEEK_4: WeekContent = {
         { text: "TRUE", isCorrect: false },
         { text: "FALSE", isCorrect: true },
       ],
-      praise: "Busted! Real companies NEVER do countdowns. ✓",
+      praise: "Busted! Real companies never THREATEN you with a countdown. ✓",
       nudge: "Who actually talks like that - a real company, or a trickster?",
     },
 
@@ -415,8 +415,8 @@ export const WEEK_4: WeekContent = {
           id: "game-update",
           prompt: "Four messages say your game needs attention. One sender is wearing a disguise - bust it!",
           senders: [
-            { id: "mega-real", name: "Mega Blasters", detail: "message centre, inside the game", icon: "🎮", isFake: false, note: "Real games talk to you INSIDE the game - that's the safe channel." },
-            { id: "school", name: "Maple Hill School", detail: "office@maplehill.sch.uk", icon: "🏫", isFake: false, note: "Your actual school, from its own address. Checks out." },
+            { id: "mega-real", name: "Mega Blasters", detail: "message center, inside the game", icon: "🎮", isFake: false, note: "Real games talk to you INSIDE the game - that's the safe channel." },
+            { id: "school", name: "Maple Hill School", detail: "office@maplehill.edu", icon: "🏫", isFake: false, note: "Your actual school, from its own address. Checks out." },
             { id: "mega-fake", name: "Mega B1asters", detail: "prize@mega-blasterz.win", icon: "🎮", isFake: true, note: "Look close: a '1' where the 'l' should be, and a weird '.win' address. IMPOSTER." },
             { id: "grandma", name: "Grandma", detail: "saved in the family phone", icon: "👪", isFake: false, note: "A saved family contact - as real as it gets." },
           ],
@@ -425,9 +425,9 @@ export const WEEK_4: WeekContent = {
           id: "spelling-prize",
           prompt: "Someone says you won a spelling prize. Who's the imposter?",
           senders: [
-            { id: "teacher", name: "Mrs Patel", detail: "your teacher, school email", icon: "🏫", isFake: false, note: "Your real teacher would be the one to tell you - and she asks for nothing." },
+            { id: "teacher", name: "Mrs. Patel", detail: "your teacher, school email", icon: "🏫", isFake: false, note: "Your real teacher would be the one to tell you - and she asks for nothing." },
             { id: "dad", name: "Dad", detail: "saved family contact", icon: "👪", isFake: false, note: "A saved family contact. Real." },
-            { id: "office", name: "School Office", detail: "office@maplehill.sch.uk", icon: "✅", isFake: false, note: "The school's own address again - consistent and checkable." },
+            { id: "office", name: "School Office", detail: "office@maplehill.edu", icon: "✅", isFake: false, note: "The school's own address again - consistent and checkable." },
             { id: "prizes4u", name: "Spelling Prizes 4U", detail: "winner@freeprizes.biz", icon: "🎁", isFake: true, note: "A prize company you've never heard of, from 'freeprizes.biz'? IMPOSTER." },
           ],
         },
@@ -438,7 +438,7 @@ export const WEEK_4: WeekContent = {
             { id: "roblox-real", name: "Roblox", detail: "gift message, inside the app", icon: "🎮", isFake: false, note: "Inside the app = the real channel." },
             { id: "roblox-fake", name: "R0BLOX Rewards", detail: "gift@roblox-rewards.club", icon: "🎮", isFake: true, note: "A ZERO instead of an 'O', plus a '.club' address. Almost-right is all-wrong!" },
             { id: "cousin", name: "Your cousin", detail: "saved family contact", icon: "⭐", isFake: false, note: "A real saved contact sending a real gift. Lovely!" },
-            { id: "shop", name: "Game Shop receipt", detail: "after Mum bought the card", icon: "✅", isFake: false, note: "A receipt for something a grown-up actually bought. Real." },
+            { id: "shop", name: "Game Shop receipt", detail: "after Mom bought the card", icon: "✅", isFake: false, note: "A receipt for something a grown-up actually bought. Real." },
           ],
         },
       ],
@@ -534,10 +534,10 @@ export const WEEK_4: WeekContent = {
           ],
         },
         {
-          setup: "A text says: 'Your parcel is waiting! Enter a parent's card number to release it.'",
+          setup: "A text says: 'Your package is waiting! Enter a parent's card number to release it.'",
           choices: [
-            { text: "Type in the card number - I want my parcel!", isSafe: false, consequence: "There is no parcel - and now a stranger has the card number. Card numbers NEVER go into surprise messages." },
-            { text: "STOP - check - show a grown-up", isSafe: true, consequence: "Perfect! A grown-up checked: no parcel was ever coming. The 'stuck parcel' is one of the oldest tricks going." },
+            { text: "Type in the card number - I want my package!", isSafe: false, consequence: "There is no package - and now a stranger has the card number. Card numbers NEVER go into surprise messages." },
+            { text: "STOP - check - show a grown-up", isSafe: true, consequence: "Perfect! A grown-up checked: no package was ever coming. The 'stuck package' is one of the oldest tricks going." },
           ],
         },
         {
@@ -612,7 +612,7 @@ export const WEEK_4: WeekContent = {
         { text: "'Football practice moved to 4pm' - Coach Lee", isStrong: true, explanation: "Calm, useful, from a real known sender." },
         { text: "'FREE iPhone! Claim in 10 minutes!' - Prize Central", isStrong: false, explanation: "Bait AND a countdown - a double trick." },
         { text: "'Your account will be DELETED unless you click NOW'", isStrong: false, explanation: "Fear + rush = the scariest costume tricks wear." },
-        { text: "'See you Sunday for roast!' - Grandma", isStrong: true, explanation: "A real message from a saved family contact." },
+        { text: "'See you Sunday for dinner!' - Grandma", isStrong: true, explanation: "A real message from a saved family contact." },
         { text: "'Gift card inside!' - R0BLOX Rewards (.club)", isStrong: false, explanation: "A zero for an O and a weird address - lookalike imposter." },
         { text: "'Your dragon book is ready' - Library", isStrong: true, explanation: "Calm, wants nothing, easy to check. Real." },
       ],
@@ -639,7 +639,7 @@ export const WEEK_4: WeekContent = {
       title: "Mission Complete!",
       subtitle: "Here's everything you mastered this week.",
       concepts: [
-        { id: "what", label: "Trick Radar", accent: "#ffb347", icon: "🪤", summary: "A scam is a trick in a costume - it always wants your info, money or clicks." },
+        { id: "what", label: "Trick Radar", accent: "#ffb347", icon: "🪤", summary: "A scam is a trick in a costume - it wants your info, money or your click. Pressing is how the trick gets in." },
         { id: "toogood", label: "Bait Detector", accent: "#ffd158", icon: "🎁", summary: "Too good to be true = not true. Amazing prizes from strangers are bait." },
         { id: "hurry", label: "Panic-Proof", accent: "#ff5fb3", icon: "🔔", summary: "Countdowns and threats are the rush trick. Feeling rushed IS the red flag." },
         { id: "senders", label: "Imposter Buster", accent: "#00e5ff", icon: "🕵️", summary: "Lookalike senders swap letters and hide behind weird addresses. Busted." },
@@ -684,18 +684,18 @@ export const WEEK_4: WeekContent = {
   // is designed separately with the boss batch).
   bossQuestions: {
     easy: [
-      { question: "What does a scam always WANT?", answers: ["Your info, money or clicks", "To be your friend", "Nothing at all", "To play games"], correctIndex: 0, explanation: "Scams always want something back - that's how you spot them." },
+      { question: "What does a scam always WANT?", answers: ["Your info, money or clicks", "To be your friend", "Nothing at all", "To give you a real prize"], correctIndex: 0, explanation: "Scams always want something back - that's how you spot them." },
       { question: "'FREE iPhone - you WON!' But you never entered anything. That's...", answers: ["Bait - too good to be true", "Your lucky day", "A nice surprise", "Worth one little click"], correctIndex: 0, explanation: "You can't win a draw you never entered. Amazing prizes are bait." },
-      { question: "A message gives you a scary 10-minute countdown. Real companies...", answers: ["NEVER do that - it's the rush trick", "Do it all the time", "Only do it on Mondays", "Do it to be helpful"], correctIndex: 0, explanation: "Countdowns exist to stop you thinking. Feeling rushed IS the red flag." },
+      { question: "A message gives you a scary 10-minute countdown. Real companies...", answers: ["NEVER do that - it's the rush trick", "Do it all the time", "Only do it for big problems", "Do it to be helpful"], correctIndex: 0, explanation: "Countdowns exist to stop you thinking. Feeling rushed IS the red flag." },
     ],
     medium: [
       { question: "Which sender is the imposter?", answers: ["R0BLOX Rewards - gift@roblox-rewards.club", "Roblox - inside the app", "Grandma - saved contact", "School Office - school address"], correctIndex: 0, explanation: "A zero for an O and a weird address - almost-right is all-wrong." },
-      { question: "A pop-up screams 'You have 5 VIRUSES! Call NOW!' What is it?", answers: ["The trick itself - close it and show a grown-up", "A helpful warning", "A real virus checker", "A game"], correctIndex: 0, explanation: "Scary pop-ups are ads in monster costumes - the panic IS the trick." },
+      { question: "A pop-up screams 'You have 5 VIRUSES! Call NOW!' What is it?", answers: ["The trick itself - close it and show a grown-up", "A helpful warning", "A real virus checker", "A reason to call the number fast"], correctIndex: 0, explanation: "Scary pop-ups are ads in monster costumes - the panic IS the trick." },
       { question: "What are the three no-bite steps?", answers: ["Stop, check, show a grown-up", "Click, read, delete", "Run, hide, wait", "Reply, ask, click"], correctIndex: 0, explanation: "Stop. Check. Show. A scam only works if you bite." },
     ],
     hard: [
       { question: "Why do scams RUSH you on purpose?", answers: ["A racing heart doesn't stop to think", "They're in a hurry", "Their offers really expire", "They're just excited"], correctIndex: 0, explanation: "The rush is engineered - slow down and the whole trick falls apart." },
-      { question: "'Your parcel is stuck - pay £1 to release it.' What's really going on?", answers: ["A trick to grab the card number", "A real delivery problem", "A bargain", "A postage discount"], correctIndex: 0, explanation: "The £1 isn't the prize - the card number is. Cards never go into surprise messages." },
+      { question: "'Your package is stuck - pay $1 to release it.' What's really going on?", answers: ["A trick to grab the card number", "A real delivery problem", "A bargain", "A shipping discount"], correctIndex: 0, explanation: "The $1 isn't the prize - the card number is. Cards never go into surprise messages." },
       { question: "What beats EVERY scam ever made?", answers: ["Not biting - stop, check, show", "Clicking really fast", "A strong password", "Turning the screen off"], correctIndex: 0, explanation: "Every trick needs a bite to work. No bite, no trick." },
     ],
   },

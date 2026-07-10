@@ -57,8 +57,8 @@ export const WEEK_13: WeekContent = {
       type: "mission",
       objectives: [
         "Hear the body-bells that say 'battery low'",
-        "Park screens in the garage at bedtime",
-        "Power off like a pro - and co-sign the plan",
+        "Keep screens out of your bedroom at night",
+        "Power off like a pro - and make the plan WITH a grown-up",
       ],
     },
 
@@ -68,7 +68,7 @@ export const WEEK_13: WeekContent = {
       type: "info",
       title: "Your Power Bar",
       content:
-        "Game characters have a power bar over their heads - and guess what? So do you. It's invisible, but it's there. Fun things on screens are brilliant... and they USE your charge. Sleep, snacks, running about and time with your people REFILL it. A Battery Keeper doesn't pick one or the other - they use BOTH, every day. That's what balance means.",
+        "Game characters have a power bar over their heads - and guess what? So do you. It's invisible, but it's there. Fun things on screens are brilliant... and they USE your charge. Sleep, snacks, running around and time with your people REFILL it. A Battery Keeper doesn't pick one or the other - they use BOTH, every day. That's what balance means.",
       bullets: [
         "You carry an invisible power bar",
         "Screen fun USES your charge",
@@ -84,7 +84,7 @@ export const WEEK_13: WeekContent = {
           "[excited] Week thirteen, hero - power week!",
           "Imagine a power bar floating over your head.",
           "Screen fun is brilliant... and it USES your charge.",
-          "Sleep, snacks, running about, your people - those REFILL it.",
+          "Sleep, snacks, running around, your people - those REFILL it.",
           "[warmly] Keepers don't pick one. They balance both.",
           "[excited] Day-moments are rolling in - let's sort them!",
         ],
@@ -121,7 +121,7 @@ export const WEEK_13: WeekContent = {
         },
         {
           id: "park",
-          text: "A park kickabout with mates",
+          text: "A park game of catch with friends",
           icon: "💪",
           categoryId: "refill",
           explanation: "Running, laughing, fresh air - your battery drinks this stuff up.",
@@ -131,7 +131,7 @@ export const WEEK_13: WeekContent = {
           text: "One more episode... then three more",
           icon: "🌀",
           categoryId: "use",
-          explanation: "Every 'one more' sips a little more charge - four episodes is a proper glug.",
+          explanation: "Every 'one more' sips a little more charge - four episodes is a LOT.",
         },
         {
           id: "dinner",
@@ -159,11 +159,11 @@ export const WEEK_13: WeekContent = {
           text: "Scrolling under the covers at midnight",
           icon: "🤫",
           categoryId: "use",
-          explanation: "A double drain: it spends charge AND blocks the night's big refill. The Battery Thief's favourite.",
+          explanation: "A double drain: it spends charge AND blocks the night's big refill. The Battery Thief's favorite.",
         },
       ],
       hints: {
-        tier1: "Ask: after this, would you feel MORE full of beans... or less?",
+        tier1: "Ask: after this, would you feel MORE full of energy... or less?",
         tier2: "REFILLS = sleep, food, moving, people, making things. USES CHARGE = anything with a glowing screen.",
       },
       narration: {
@@ -326,7 +326,7 @@ export const WEEK_13: WeekContent = {
       concept: 2,
       total: 5,
       learned: "Dry eyes, jiggly legs, a grump voice, a forgotten tummy - four bells that mean 'break time'.",
-      next: "the Battery Thief's favourite trick: screens at bedtime",
+      next: "the Battery Thief's favorite trick: screens at bedtime",
       emblem: "🔔",
       narration: {
         speaker: "layla",
@@ -343,7 +343,7 @@ export const WEEK_13: WeekContent = {
     // 11 - Learn
     {
       type: "info",
-      title: "The Moon-Shooer",
+      title: "Screens Shoo Sleep Away",
       content:
         "Sleep is the biggest recharge there is - and screens can shoo it away. Here's why: screen light is bright, like a tiny sun. Show it to your brain at bedtime and your brain shouts 'It's DAYTIME! Stay awake!' - and your sleepiness runs off and hides. That's why devices sleep OUTSIDE the bedroom, in a charging garage. You park the screen, the moon does the rest.",
       bullets: [
@@ -351,7 +351,7 @@ export const WEEK_13: WeekContent = {
         "Screen light shouts 'it's daytime!'",
         "Your brain believes it - and sleep hides",
         "Devices sleep in the charging garage",
-        "Not under the duvet. Not by the pillow.",
+        "Not under the covers. Not by the pillow.",
       ],
       bulletIcons: ["🌠", "💡", "🧠", "🏠", "🚫"],
       emblem: "🌠",
@@ -380,7 +380,7 @@ export const WEEK_13: WeekContent = {
               consequence: "The episode waits all night without moving a single pixel - stories are patient like that. You sleep like a champion and catch the ending tomorrow.",
             },
             {
-              text: "Sneak it under the duvet for 'five more minutes'",
+              text: "Sneak it under the covers for 'five more minutes'",
               isSafe: false,
               consequence: "The little sun shouts 'DAYTIME!' at your brain till way past ten. Morning-you stumbles about like a grumpy zombie with sandpaper eyes.",
             },
@@ -402,7 +402,7 @@ export const WEEK_13: WeekContent = {
           ],
         },
         {
-          setup: "Your mate whispers: 'Keep your phone under your pillow tonight - we can chat at MIDNIGHT!'",
+          setup: "Your friend whispers: 'Keep your phone under your pillow tonight - we can chat at MIDNIGHT!'",
           choices: [
             {
               text: "Phones sleep in the garage - we chat tomorrow",
@@ -412,7 +412,7 @@ export const WEEK_13: WeekContent = {
             {
               text: "Sounds fun - secret midnight chats!",
               isSafe: false,
-              consequence: "Ping! Ping! Every buzz pokes a hole in your sleep. By Tuesday there are two drained, grumpy mates - the Battery Thief's favourite double steal.",
+              consequence: "Ping! Ping! Every buzz pokes a hole in your sleep. By Tuesday there are two drained, grumpy friends - the Battery Thief's favorite double steal.",
             },
           ],
         },
@@ -432,13 +432,13 @@ export const WEEK_13: WeekContent = {
       type: "quickCheck",
       mode: "lie",
       prompt: "Is that true?",
-      raccoonLine: "a lovely bright screen before bed helps kids fall asleep FASTER. All the sleep experts say so!",
+      raccoonLine: "bright screens at bedtime shout 'DAYTIME!' at kids' brains and shoo their sleep away... that's why I LOVE tucking tablets under pillows!",
       choices: [
-        { text: "TRUE", isCorrect: false },
-        { text: "FALSE", isCorrect: true },
+        { text: "TRUE", isCorrect: true },
+        { text: "FALSE", isCorrect: false },
       ],
-      praise: "Busted! Screen light tells your brain it's daytime - sleep runs and hides. The garage wins again. ✓",
-      nudge: "What does screen light shout at your brain?",
+      praise: "Sharp ears - that one's actually TRUE! Screen light really does shoo sleep away... which is exactly why screens sleep in the garage. ✓",
+      nudge: "Careful - check the FACT, not just who's saying it. What does screen light shout at your brain?",
     },
 
     // 14 - Recap · Concept 3 of 5
@@ -466,7 +466,7 @@ export const WEEK_13: WeekContent = {
       type: "info",
       title: "Plan It Together",
       content:
-        "Battery rules that get DONE to you feel like punishment - and nobody sticks to a punishment. But a plan you build WITH a grown-up? That one's YOURS. You agree the screen time and the recharge time together, then you both sign it like teammates. And here's the best bit: a good plan keeps screen fun IN. Balance means some every day - not none.",
+        "Rules dropped on you feel unfair - and unfair rules are hard to keep. But a plan you build WITH a grown-up? That one's YOURS. You agree the screen time and the recharge time together, then you both sign it like teammates. And here's the best bit: a good plan keeps screen fun IN. Balance means some every day - not none.",
       bullets: [
         "Rules done TO you feel unfair",
         "A plan made TOGETHER is yours",
@@ -530,22 +530,22 @@ export const WEEK_13: WeekContent = {
         },
         {
           id: "afterschool",
-          story: "3.30pm: straight off the bus, straight onto the console, straight through till dinner. Swap it for something that refills!",
+          story: "3:30pm: straight off the bus, straight onto the console, straight through till dinner. Swap it for something that refills!",
           blockLabel: "Bus-to-dinner gaming",
           blockIcon: "🎮",
           options: [
-            { label: "Park kickabout first, game after", icon: "💪", isBalancing: true, note: "" },
+            { label: "Park game of catch first, console after", icon: "💪", isBalancing: true, note: "" },
             {
               label: "Swap the console for videos",
               icon: "🌀",
               isBalancing: false,
-              note: "Console to videos is screen to screen - the plank didn't move a millimetre!",
+              note: "Console to videos is screen to screen - the plank didn't move an inch!",
             },
             {
               label: "Game with snacks so it counts as dinner",
               icon: "🍌",
               isBalancing: false,
-              note: "Crisps balanced on a controller isn't dinner - that's a screen block wearing a snack hat!",
+              note: "Chips balanced on a controller isn't dinner - that's a screen block wearing a snack hat!",
             },
           ],
         },
@@ -593,14 +593,14 @@ export const WEEK_13: WeekContent = {
     {
       type: "quickCheck",
       mode: "finish",
-      prompt: "Make the plan ___ a grown-up.",
+      prompt: "Who makes the screen plan work best?",
       choices: [
-        { text: "with", isCorrect: true },
-        { text: "against", isCorrect: false },
-        { text: "instead of", isCorrect: false },
-        { text: "hiding from", isCorrect: false },
+        { text: "You and a grown-up, together", isCorrect: true },
+        { text: "Just you, on your own", isCorrect: false },
+        { text: "Just the grown-up", isCorrect: false },
+        { text: "Nobody - plans aren't needed", isCorrect: false },
       ],
-      praise: "WITH - teammates build it and sign it together. A plan you own is a plan that works. ✓",
+      praise: "Together - you build it and sign it like teammates. A plan you own is a plan that works. ✓",
     },
 
     // 18 - Recap · Concept 4 of 5
@@ -628,11 +628,11 @@ export const WEEK_13: WeekContent = {
       type: "info",
       title: "Power Off Like a Pro",
       content:
-        "Anyone can get dragged off a screen, kicking and moaning. A pro POWERS OFF - and it's a real skill with five moves. Finish the level or episode. Say bye to your game mates. Screen off. Park it in the garage. Pick your next adventure. Same five moves every time, until they're easy. Because here's the truth: endings feel great when YOU'RE the one choosing them.",
+        "Anyone can get dragged off a screen, kicking and moaning. A pro POWERS OFF - and it's a real skill with five moves. Finish the level or episode. Say bye to your game friends. Screen off. Park it in the garage. Pick your next adventure. Same five moves every time, until they're easy. Because here's the truth: endings feel great when YOU'RE the one choosing them.",
       bullets: [
-        "Stopping is a SKILL - pros practise it",
+        "Stopping is a SKILL - pros practice it",
         "Finish the level or episode first",
-        "Say bye to your game mates",
+        "Say bye to your game friends",
         "Screen off, park it in the garage",
         "Pick your next adventure",
       ],
@@ -658,7 +658,7 @@ export const WEEK_13: WeekContent = {
       introIcon: "⏸️",
       steps: [
         { id: "finish", text: "Finish the level", icon: "✅", affirmation: "Ended on YOUR terms - like a pro!" },
-        { id: "bye", text: "Say bye to your mates", icon: "💬", affirmation: "No vanishing - heroes sign off!" },
+        { id: "bye", text: "Say bye to your friends", icon: "💬", affirmation: "No vanishing - heroes sign off!" },
         { id: "off", text: "Screen OFF", icon: "⏸️", affirmation: "Click. The glow goes quiet." },
         { id: "park", text: "Park it in the garage", icon: "🏠", affirmation: "Parked and charging - for the screen AND for you!" },
         { id: "next", text: "Pick your next adventure", icon: "🎨", affirmation: "Straight into the next fun thing - that's the pro trick!" },
@@ -685,15 +685,14 @@ export const WEEK_13: WeekContent = {
     {
       type: "quickCheck",
       mode: "order",
-      prompt: "Put the Power-Down Five in order!",
+      prompt: "The bedtime chime rings mid-level! Tap your pro moves in order:",
       choices: [
         { text: "Finish the level", isCorrect: true },
-        { text: "Say bye", isCorrect: true },
-        { text: "Screen OFF", isCorrect: true },
-        { text: "Park it", isCorrect: true },
-        { text: "Pick what's next", isCorrect: true },
+        { text: "Say bye to your game friends", isCorrect: true },
+        { text: "Screen OFF, park it in the garage", isCorrect: true },
+        { text: "Pick what's next - story, then sleep", isCorrect: true },
       ],
-      praise: "Finish, bye, off, park, next - the smoothest power-off in the Academy. ✓",
+      praise: "Chime rang, pro moves rolled - finish, bye, park, pick. YOU chose the ending. ✓",
     },
 
     // 22 - Recap · Concept 5 of 5
@@ -725,10 +724,10 @@ export const WEEK_13: WeekContent = {
         positiveHint: "Tap POWER UP for choices that keep your battery green",
         negativeHint: "Tap POWER DRAIN for the Battery Thief's sneaky steals",
         tipWhenPositive: "Bells heard, garages used, plans co-signed - green-bar moves, every one.",
-        tipWhenNegative: "Duvet screens, endless episodes, ignored bells - the Thief feeds on these.",
+        tipWhenNegative: "Under-the-covers screens, endless episodes, ignored bells - the Thief feeds on these.",
         hint1: "Ask: does this REFILL the battery... or quietly drain it?",
         hint2: "POWER UP = breaks, sleep, co-signed plans, real recharges. DRAIN = sneaky screens and ignored bells.",
-        hint2Example: "POWER UP: 'parked at the chime'   DRAIN: 'scrolling under the duvet'",
+        hint2Example: "POWER UP: 'parked at the chime'   DRAIN: 'scrolling under the covers'",
         hint3: "Keeper card: hear the bells · park at night · plan together · power off like a pro.",
         hint3Example: "Park it in the garage ✅    Under the pillow ❌",
       },
@@ -741,7 +740,7 @@ export const WEEK_13: WeekContent = {
         {
           text: "One more episode... for the fifth time tonight",
           isStrong: false,
-          explanation: "Autoplay maths: 'one more' five times is a whole missed recharge.",
+          explanation: "Autoplay math: 'one more' five times is a whole missed recharge.",
         },
         {
           text: "Taking a break the moment your legs go jiggly",
@@ -824,7 +823,7 @@ export const WEEK_13: WeekContent = {
   // W10's lane; in-game spending W7's; this is drain/sleep/stopping).
   bossAttacks: [
     { name: "ONE MORE EPISODE", icon: "🌀", color: "#c084fc", glow: "rgba(192, 132, 252, 0.55)", tag: "You choose the ending", emblemColor: 0xc084fc },
-    { name: "DUVET SCREEN", icon: "🤫", color: "#7df0ff", glow: "rgba(125, 240, 255, 0.55)", tag: "Screens sleep in the garage", emblemColor: 0x7df0ff },
+    { name: "UNDER-THE-COVERS SCREEN", icon: "🤫", color: "#7df0ff", glow: "rgba(125, 240, 255, 0.55)", tag: "Screens sleep in the garage", emblemColor: 0x7df0ff },
     { name: "BATTERY DRAIN", icon: "⚡", color: "#ffd158", glow: "rgba(255, 209, 88, 0.55)", tag: "Hear the body-bells", emblemColor: 0xffd158 },
   ],
 
@@ -833,13 +832,13 @@ export const WEEK_13: WeekContent = {
   bossQuestions: {
     easy: [
       { question: "Your eyes go dry and scratchy mid-game. What's your body saying?", answers: ["Battery low - break time!", "Play faster", "Turn the brightness up", "Nothing at all"], correctIndex: 0, explanation: "That's one of the four body-bells - hearing it early is a Keeper superpower." },
-      { question: "Where do devices sleep at night?", answers: ["In the charging garage, outside the bedroom", "Under the pillow", "Under the duvet", "On the bed, volume up"], correctIndex: 0, explanation: "Park the screen, and the moon handles the biggest recharge of all." },
+      { question: "Where do devices sleep at night?", answers: ["In the charging garage, outside the bedroom", "Under the pillow", "Under the covers", "On the bed, volume up"], correctIndex: 0, explanation: "Park the screen, and the moon handles the biggest recharge of all." },
       { question: "What refills your power bar?", answers: ["Sleep, snacks, moving and your people", "A brighter screen", "Louder volume", "Extra episodes"], correctIndex: 0, explanation: "Screens are fun and they USE charge - the refills come from everywhere else." },
     ],
     medium: [
       { question: "Why do games never feel 'finished'?", answers: ["They're built that way - so YOU choose the ending", "Because you're bad at them", "They finish after one more level, promise", "Games always finish by themselves"], correctIndex: 0, explanation: "Waiting for a game to feel finished is waiting forever - pros pick their own ending." },
       { question: "The screen plan works best when...", answers: ["You and a grown-up build it and sign it TOGETHER", "It's done TO you as a punishment", "You hide it from everyone", "There are no rules at all"], correctIndex: 0, explanation: "A plan you helped build is a plan you own - and plans you own actually work." },
-      { question: "Which is a REAL recharge - not a screen in disguise?", answers: ["A park kickabout with mates", "Cartoons with the sound off", "Watching on a smaller phone", "Scrolling with brightness down"], correctIndex: 0, explanation: "Quieter, smaller and dimmer are still screens - real recharges have no glow at all." },
+      { question: "Which is a REAL recharge - not a screen in disguise?", answers: ["A park game of catch with friends", "Cartoons with the sound off", "Watching on a smaller phone", "Scrolling with brightness down"], correctIndex: 0, explanation: "Quieter, smaller and dimmer are still screens - real recharges have no glow at all." },
     ],
     hard: [
       { question: "Why does a bright screen at bedtime steal your sleep?", answers: ["Its light shouts 'daytime!' so your brain hides the sleepiness", "Screens are too heavy for beds", "The moon gets jealous", "It doesn't - screens help sleep"], correctIndex: 0, explanation: "Screen light works like a tiny sun - and brains don't sleep in 'daytime'." },
@@ -865,11 +864,11 @@ export const WEEK_13: WeekContent = {
     10: { adam: null, layla: { mood: "excited", message: "Four bells - you hear them all!" } }, // recap 2
     11: { adam: null, layla: { mood: "thinking", message: "Screen light is a tiny sun..." } }, // learn: sleep
     12: { adam: null, layla: { mood: "curious", message: "Bedtime calls - Keeper's choice!" } }, // game: decide
-    13: { adam: { mood: "worried", message: "He's fibbing about sleep - catch him!" }, layla: null }, // prove: lie
+    13: { adam: { mood: "worried", message: "Careful - is he fibbing this time?" }, layla: null }, // prove: lie
     14: { adam: { mood: "excited", message: "Sleep guarded - the moon thanks you!" }, layla: null }, // recap 3
     15: { adam: { mood: "thinking", message: "Plans beat punishments every time." }, layla: null }, // learn: plan
     16: { adam: { mood: "curious", message: "Level that see-saw - carefully!" }, layla: null }, // game: dayBalancer
-    17: { adam: null, layla: { mood: "thumbsup", message: "Finish the Keeper rule!" } }, // prove: finish
+    17: { adam: null, layla: { mood: "thumbsup", message: "Who makes the plan work best?" } }, // prove: finish
     18: { adam: null, layla: { mood: "excited", message: "Co-signed and level - brilliant!" } }, // recap 4
     19: { adam: null, layla: { mood: "thinking", message: "Stopping is a skill. Truly!" } }, // learn: power-off
     20: { adam: null, layla: { mood: "curious", message: "Five moves - pro order!" } }, // game: stepOrder

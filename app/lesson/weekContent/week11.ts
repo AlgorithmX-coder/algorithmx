@@ -6,7 +6,7 @@ import type { WeekContent } from "./types";
  * SENSITIVE WEEK - built warmth-first like Week 5: the villain stays out
  * of the emotional beats (no raccoon on the reveal board), the child's
  * side is calm and empowering, and nothing here is frightening. The
- * lesson carries the Childline number (0800 1111) that the no-text films
+ * lesson carries the Childhelp number (1-800-422-4453) that the no-text films
  * couldn't.
  *
  * Built to the locked Cyber Heroes template:
@@ -64,7 +64,7 @@ export const WEEK_11: WeekContent = {
       objectives: [
         "Learn the biggest truth: it is never your fault",
         "Name your team - the grown-ups who've got you",
-        "Save the proof: camera, not bin",
+        "Save the proof: camera, not trash",
       ],
     },
 
@@ -119,7 +119,7 @@ export const WEEK_11: WeekContent = {
           label: "“I'll be in trouble”",
           icon: "🤚",
           steps: [
-            { icon: "🤚", text: "'If I show a grown-up... maybe I'M the one who gets told off?'" },
+            { icon: "🤚", text: "'If I show a grown-up... maybe I'M the one who gets in trouble?'" },
             { icon: "👪", text: "Lift it: grown-ups aren't there to blame you - helping with EXACTLY this is their job." },
             { icon: "✨", text: "Whoosh - a balloon: telling isn't trouble. Telling is the way OUT of trouble." },
           ],
@@ -132,7 +132,7 @@ export const WEEK_11: WeekContent = {
           steps: [
             { icon: "🤐", text: "'Maybe if I tell nobody... it just goes away?'" },
             { icon: "🧠", text: "Lift it: secrets like this get HEAVIER the longer you carry them alone." },
-            { icon: "✨", text: "Balloon! Telling someone starts making it lighter straight away - you're not carrying it alone anymore." },
+            { icon: "✨", text: "Balloon! Telling someone starts making it lighter right away - you're not carrying it alone anymore." },
           ],
           counter: "Telling makes it lighter - every time.",
         },
@@ -143,7 +143,7 @@ export const WEEK_11: WeekContent = {
           steps: [
             { icon: "❓", text: "'What could anyone even DO about it?'" },
             { icon: "👪", text: "Lift it: your team can block, report, fix settings - and just LISTEN, which helps most." },
-            { icon: "✨", text: "Up it floats: helpers exist everywhere - and one is always awake: Childline, 0800 1111." },
+            { icon: "✨", text: "Up it floats: helpers exist everywhere - and one is always awake: Childhelp, 1-800-422-4453." },
           ],
           counter: "Help always exists - always.",
         },
@@ -152,7 +152,7 @@ export const WEEK_11: WeekContent = {
       narration: {
         speaker: "adam",
         lines: [
-          "[warmly] See those four grey boulders? They're heavy thoughts.",
+          "[warmly] See those four gray boulders? They're heavy thoughts.",
           "Every single one of them is lying to you.",
           "Lift each one and look underneath...",
           "[excited] and watch it float away like a balloon. Go!",
@@ -202,13 +202,13 @@ export const WEEK_11: WeekContent = {
       type: "info",
       title: "Name Your Team",
       content:
-        "Here's a hero secret: the best time to pick your team is BEFORE you need it. Your team is the grown-ups you'd tell if something felt wrong - a parent or carer, a teacher, a grandparent, an auntie or uncle. Name them in your head right now! And one more goes on every kid's poster: Childline, 0800 1111 - a free phone line just for kids, always awake, always kind.",
+        "Here's a hero secret: the best time to pick your team is BEFORE you need it. Your team is the grown-ups you'd tell if something felt wrong - a parent or caregiver, a teacher, a grandparent, an aunt or uncle. Name them in your head right now! And one more goes on every kid's poster: Childhelp, 1-800-422-4453 - a free phone line just for kids, always awake, always kind.",
       bullets: [
         "Pick your team BEFORE you need it",
-        "A parent or carer you trust",
+        "A parent or caregiver you trust",
         "A teacher at school",
-        "Grandparents, aunties, uncles count too",
-        "Childline 0800 1111 - free, always awake",
+        "Grandparents, aunts, uncles count too",
+        "Childhelp 1-800-422-4453 - free, always awake",
       ],
       bulletIcons: ["⭐", "👪", "🏫", "🏠", "💬"],
       emblem: "👪",
@@ -219,8 +219,8 @@ export const WEEK_11: WeekContent = {
           "you pick your team BEFORE you ever need it.",
           "A parent. A teacher. A grandparent. Someone you'd tell anything.",
           "Name them in your head... right now. Got them?",
-          "[excited] And one goes on EVERY kid's poster: Childline!",
-          "Oh-eight-hundred, eleven eleven. Free. Always awake. Let's build!",
+          "[excited] And one goes on EVERY kid's poster: Childhelp!",
+          "One, eight hundred, four two two, four four five three. Free. Always awake. Let's build!",
         ],
       },
     },
@@ -237,17 +237,17 @@ export const WEEK_11: WeekContent = {
       completeTitle: "Your team is on the wall!",
       completeLine: "Four spots, four helpers - you are never, ever alone.",
       tiles: [
-        { id: "parent", label: "Mum, Dad or your carer", icon: "👪", isTeam: true, note: "The captain's first call - they'd want to know, every time." },
+        { id: "parent", label: "Mom, Dad or your caregiver", icon: "👪", isTeam: true, note: "The captain's first call - they'd want to know, every time." },
         { id: "lobby", label: "A player from your game lobby", detail: "“we're basically best friends”", icon: "🎮", isTeam: false, note: "Game friends can be fun - but your TEAM is grown-ups you know in real life, plus one special phone line just for kids." },
         { id: "teacher", label: "Your teacher", icon: "🏫", isTeam: true, note: "School helpers deal with this stuff every week - they know exactly what to do." },
         { id: "secret", label: "Nobody - keep it secret", icon: "🤐", isTeam: false, note: "Secrets like this get heavier the longer you hold them. Your team makes them lighter." },
         { id: "grandparent", label: "Grandma or Grandpa", icon: "🏠", isTeam: true, note: "Endless time to listen, and always on your side - poster material for sure." },
         { id: "trustme", label: "A stranger who says “trust me”", icon: "🎭", isTeam: false, note: "Saying 'trust me' doesn't earn a poster spot - BEING there for you does." },
-        { id: "childline", label: "Childline", detail: "0800 1111 · free · always awake", icon: "💬", isTeam: true, special: true, note: "The golden tile - a free phone line just for kids, any hour, any worry." },
+        { id: "childline", label: "Childhelp", detail: "1-800-422-4453 · free · always awake", icon: "💬", isTeam: true, special: true, note: "The golden tile - a free phone line just for kids, any hour, any worry." },
       ],
       hints: {
         tier1: "Team = grown-ups you know in REAL life... plus the one golden phone line for kids.",
-        tier2: "Parent or carer, teacher, grandparent, Childline 0800 1111 - those four belong. Strangers and secrets never do.",
+        tier2: "Parent or caregiver, teacher, grandparent, Childhelp 1-800-422-4453 - those four belong. Strangers and secrets never do.",
       },
       narration: {
         speaker: "layla",
@@ -269,7 +269,7 @@ export const WEEK_11: WeekContent = {
       mode: "recall",
       prompt: "Who belongs on your MY TEAM poster?",
       choices: [
-        { text: "Grown-ups I trust - plus Childline 0800 1111", isCorrect: true },
+        { text: "Grown-ups I trust - plus Childhelp 1-800-422-4453", isCorrect: true },
         { text: "Anyone online who's friendly", isCorrect: false },
         { text: "Nobody - I handle things alone", isCorrect: false },
         { text: "Only people from my game", isCorrect: false },
@@ -282,7 +282,7 @@ export const WEEK_11: WeekContent = {
       type: "recap",
       concept: 2,
       total: 5,
-      learned: "Your team is the trusted grown-ups you name BEFORE you need them - plus Childline 0800 1111, free and always awake.",
+      learned: "Your team is the trusted grown-ups you name BEFORE you need them - plus Childhelp 1-800-422-4453, free and always awake.",
       next: "the two buttons that shut a meanie down",
       emblem: "👪",
       narration: {
@@ -337,7 +337,7 @@ export const WEEK_11: WeekContent = {
         { id: "fireback", label: "Fire One Back", icon: "⚡", note: "Firing back keeps the fight alive - and turns you into a target. Heroes don't feed it." },
         { id: "block", label: "Block Sender", icon: "🚫", targetOrder: 1, note: "BLOCKED - the door is shut. They can't reach you anymore." },
         { id: "reread", label: "Read It Again", icon: "👀", note: "Reading it over and over just presses the bruise. You've read enough." },
-        { id: "delete", label: "Delete Message", icon: "🗑️", note: "Careful - we KEEP the message as proof for your team. Never bin the evidence." },
+        { id: "delete", label: "Delete Message", icon: "🗑️", note: "Careful - we KEEP the message as proof for your team. Never trash the evidence." },
         { id: "close", label: "Close App", icon: "🚪", targetOrder: 2, note: "App closed, breather taken - calm fingers win again." },
       ],
       hints: {
@@ -378,7 +378,7 @@ export const WEEK_11: WeekContent = {
       concept: 3,
       total: 5,
       learned: "Don't reply, don't fire back - BLOCK the sender and close the app. Starve it, don't feed it.",
-      next: "why the camera beats the bin every time",
+      next: "why the camera beats the trash every time",
       emblem: "🚫",
       narration: {
         speaker: "layla",
@@ -386,7 +386,7 @@ export const WEEK_11: WeekContent = {
           "[excited] Three powers! Block found, door shut.",
           "And did you spot the trick button?",
           "[whispers] DELETE looked helpful... but it wasn't.",
-          "Here's why the camera always beats the bin.",
+          "Here's why the camera always beats the trash.",
         ],
       },
     },
@@ -395,15 +395,15 @@ export const WEEK_11: WeekContent = {
     // 15 - Learn
     {
       type: "info",
-      title: "Camera, Not Bin",
+      title: "Camera, Not Trash",
       content:
-        "When something horrid lands, every part of you wants to delete it - poof, gone, pretend it never happened. But wait! If it's deleted, your team can't SEE what happened, and seeing it is how they help. So heroes do the opposite: SCREENSHOT first (freeze the evidence), then show a grown-up. The camera keeps the proof. The bin loses it forever.",
+        "When something horrid lands, every part of you wants to delete it - poof, gone, pretend it never happened. But wait! If it's deleted, your team can't SEE what happened, and seeing it is how they help. So heroes do the opposite: SCREENSHOT first (freeze the evidence), then show a grown-up. The camera keeps the proof. The trash loses it forever.",
       bullets: [
         "Deleting feels good - for one second",
         "Deleted = your team can't see the proof",
         "SCREENSHOT first - freeze the evidence",
         "Then show it to your grown-up",
-        "Camera keeps proof, bin loses it",
+        "Camera keeps proof, trash loses it",
       ],
       bulletIcons: ["🗑️", "🙈", "📋", "👪", "✅"],
       emblem: "📋",
@@ -415,7 +415,7 @@ export const WEEK_11: WeekContent = {
           "[whispers] But if it's gone... what do you show your team?",
           "Heroes freeze it first. Screenshot. Click.",
           "Evidence saved - NOW a grown-up can see exactly what happened.",
-          "[excited] Camera or bin - let's practise the call!",
+          "[excited] Camera or trash - let's practice the call!",
         ],
       },
     },
@@ -423,7 +423,7 @@ export const WEEK_11: WeekContent = {
     {
       type: "replyCards",
       skin: "cards",
-      introTitle: "Camera or Bin?",
+      introTitle: "Camera or Trash?",
       introSubtitle: "Four horrid moments. For each one, freeze the evidence - or lose it forever. Choose like a hero.",
       introIcon: "📋",
       pickLabel: "What do you do first?",
@@ -441,7 +441,7 @@ export const WEEK_11: WeekContent = {
           message: "A message so mean it makes your tummy flip.",
           replies: [
             { text: "Camera - screenshot the proof", isSafe: true, explanation: "Frozen! Now your team can SEE exactly what happened - that's how they help." },
-            { text: "Bin - delete it fast", isSafe: false, explanation: "Deleting feels good for one second - but the proof your team needed is gone forever." },
+            { text: "Trash it - delete it fast", isSafe: false, explanation: "Deleting feels good for one second - but the proof your team needed is gone forever." },
             { text: "Reply with something meaner", isSafe: false, explanation: "Firing back feeds it - and now there's a fight where evidence should be." },
           ],
         },
@@ -453,7 +453,7 @@ export const WEEK_11: WeekContent = {
           replies: [
             { text: "Beg them not to ban you", isSafe: false, explanation: "They can't really ban you - and begging tells them the trick is working." },
             { text: "Camera - freeze it, then tell", isSafe: true, explanation: "Snap! Threats are exactly the kind of proof grown-ups need to see." },
-            { text: "Bin it and hope they stop", isSafe: false, explanation: "Hope isn't a shield - and now there's nothing to show your team." },
+            { text: "Trash it and hope they stop", isSafe: false, explanation: "Hope isn't a shield - and now there's nothing to show your team." },
           ],
         },
         {
@@ -463,7 +463,7 @@ export const WEEK_11: WeekContent = {
           message: "“Pay 500 coins or your account gets deleted TONIGHT!”",
           replies: [
             { text: "Pay the coins quickly", isSafe: false, explanation: "That's a scare-trick after your coins - paying feeds the trickster." },
-            { text: "Bin it - it's obviously fake", isSafe: false, explanation: "Probably fake, yes - but freezing it first means a grown-up can make SURE." },
+            { text: "Trash it - it's obviously fake", isSafe: false, explanation: "Probably fake, yes - but freezing it first means a grown-up can make SURE." },
             { text: "Camera - snap it, show a grown-up", isSafe: true, explanation: "Frozen! Fake or not, now your team can check it and shut it down." },
           ],
         },
@@ -475,13 +475,13 @@ export const WEEK_11: WeekContent = {
           replies: [
             { text: "Laugh along so you fit in", isSafe: false, explanation: "Laughing along feeds the fire - and your friend deserves a hero." },
             { text: "Camera - freeze it and tell a grown-up", isSafe: true, explanation: "Hero move! Evidence frozen, help called - your friend has backup now." },
-            { text: "Bin the chat and stay quiet", isSafe: false, explanation: "Quiet keeps the meanness rolling - frozen proof and a grown-up stop it." },
+            { text: "Trash the chat and stay quiet", isSafe: false, explanation: "Quiet keeps the meanness rolling - frozen proof and a grown-up stop it." },
           ],
         },
       ],
       hints: {
         tier1: "Ask one question: if I do this, can my team still SEE what happened?",
-        tier2: "Camera first, every time - screenshot, then show a grown-up. Bin, beg, laugh and fire-back all lose the proof.",
+        tier2: "Camera first, every time - screenshot, then show a grown-up. Trash, beg, laugh and fire-back all lose the proof.",
       },
       narration: {
         speaker: "layla",
@@ -516,13 +516,13 @@ export const WEEK_11: WeekContent = {
       type: "recap",
       concept: 4,
       total: 5,
-      learned: "Screenshot first, then show a grown-up - the camera keeps the proof your team needs, the bin loses it.",
+      learned: "Screenshot first, then show a grown-up - the camera keeps the proof your team needs, the trash loses it.",
       next: "all five steps, stacked into one launchpad",
       emblem: "📋",
       narration: {
         speaker: "adam",
         lines: [
-          "[excited] Four powers! Camera beats bin, every time.",
+          "[excited] Four powers! Camera beats trash, every time.",
           "Frozen proof means real help, fast.",
           "[warmly] Now let's stack everything you've learned...",
           "into one calm countdown you'll never forget.",
@@ -538,15 +538,15 @@ export const WEEK_11: WeekContent = {
       // SAFETY FIX (screen audit): SCREENSHOT comes BEFORE BLOCK — on
       // some apps blocking hides or deletes the chat, losing the proof
       // beat 4 taught the child to freeze. Order everywhere:
-      // STOP → SCREENSHOT → BLOCK → TELL → Childline.
+      // STOP → SCREENSHOT → BLOCK → TELL → Childhelp.
       content:
-        "Time to put the whole week in order - the five calm steps every Cyber Hero knows by heart. STOP: hands off, don't reply. SCREENSHOT: freeze the proof FIRST - blocking can make the message vanish. BLOCK: now shut the door on the sender. TELL: show someone on your team. And if you ever need more - or your team feels far away - CHILDLINE, 0800 1111, free and always awake. That's the protocol. Calm, quick, powerful.",
+        "Time to put the whole week in order - the five calm steps every Cyber Hero knows by heart. STOP: hands off, don't reply. SCREENSHOT: freeze the proof FIRST - blocking can make the message vanish. BLOCK: now shut the door on the sender. TELL: show someone on your team. And if you ever need more - or your team feels far away - CHILDHELP, 1-800-422-4453, free and always awake. That's the protocol. Calm, quick, powerful.",
       bullets: [
         "STOP - hands off, don't reply",
         "SCREENSHOT - freeze the proof first",
         "BLOCK - now shut the door",
         "TELL - someone on your team",
-        "CHILDLINE 0800 1111 - if you need more",
+        "CHILDHELP 1-800-422-4453 - if you need more",
       ],
       bulletIcons: ["✋", "📋", "🚫", "👪", "💬"],
       emblem: "🚀",
@@ -557,7 +557,7 @@ export const WEEK_11: WeekContent = {
           "Stop - hands off the keyboard.",
           "Screenshot - freeze the proof FIRST.",
           "THEN block - the door shuts. Tell - your team jumps in.",
-          "[warmly] And if you ever need more: Childline. Oh-eight-hundred, eleven eleven.",
+          "[warmly] And if you ever need more: Childhelp. One, eight hundred, four two two, four four five three.",
           "[excited] Five stages... stack them and LAUNCH!",
         ],
       },
@@ -573,11 +573,11 @@ export const WEEK_11: WeekContent = {
         { id: "shot", text: "SCREENSHOT the proof", icon: "📋", affirmation: "Evidence frozen BEFORE the door shuts - nothing can vanish now." },
         { id: "block", text: "BLOCK the sender", icon: "🚫", affirmation: "The door is shut - they can't reach you." },
         { id: "tell", text: "TELL your team", icon: "👪", affirmation: "A grown-up is on it - you're not alone anymore." },
-        { id: "childline", text: "Childline 0800 1111 if you need more", icon: "💬", affirmation: "Free, always awake, always kind - the golden number." },
+        { id: "childline", text: "Childhelp 1-800-422-4453 if you need more", icon: "💬", affirmation: "Free, always awake, always kind - the golden number." },
       ],
       hints: {
         tier1: "First calm your own fingers... then freeze the proof... THEN shut the door.",
-        tier2: "STOP → SCREENSHOT → BLOCK → TELL → Childline. Fingers, camera, door, team, phone.",
+        tier2: "STOP → SCREENSHOT → BLOCK → TELL → Childhelp. Fingers, camera, door, team, phone.",
       },
       narration: {
         speaker: "adam",
@@ -611,7 +611,7 @@ export const WEEK_11: WeekContent = {
       type: "recap",
       concept: 5,
       total: 5,
-      learned: "The protocol: STOP, SCREENSHOT, BLOCK, TELL - and Childline 0800 1111 whenever you need more.",
+      learned: "The protocol: STOP, SCREENSHOT, BLOCK, TELL - and Childhelp 1-800-422-4453 whenever you need more.",
       next: "one calm drill run, then the Raccoon's blame machine",
       emblem: "🚀",
       narration: {
@@ -637,16 +637,16 @@ export const WEEK_11: WeekContent = {
         tipWhenPositive: "Blocking, freezing proof, telling your team - calm steps that actually work.",
         tipWhenNegative: "Firing back, deleting, keeping secrets - panic moves that feed the problem.",
         hint1: "Ask: does this move make things LIGHTER... or heavier?",
-        hint2: "PROTOCOL = stop, screenshot, block, tell, Childline. PANIC = reply, fire back, delete, keep it secret.",
-        hint2Example: "PROTOCOL: 'I blocked them and told Mum'   PANIC: 'I deleted everything and told no one'",
-        hint3: "Quick rule card: never your fault · name your team · block don't reply · camera not bin · Childline 0800 1111.",
+        hint2: "PROTOCOL = stop, screenshot, block, tell, Childhelp. PANIC = reply, fire back, delete, keep it secret.",
+        hint2Example: "PROTOCOL: 'I blocked them and told Mom'   PANIC: 'I deleted everything and told no one'",
+        hint3: "Quick rule card: never your fault · name your team · block don't reply · camera not trash · Childhelp 1-800-422-4453.",
         hint3Example: "Screenshot then tell ✅    Keep it secret ❌",
       },
       items: [
         { text: "Blocking the sender instead of replying", isStrong: true, explanation: "Starve it, don't feed it - the door shuts and you're free." },
         { text: "Firing back a meaner message", isStrong: false, explanation: "Feeding the fire - now the fight grows and the proof gets messy." },
-        { text: "Screenshotting before anything else", isStrong: true, explanation: "Camera, not bin - now your team can see exactly what happened." },
-        { text: "Deleting everything so it feels gone", isStrong: false, explanation: "The bin loses the proof your helpers needed - freeze first instead." },
+        { text: "Screenshotting before anything else", isStrong: true, explanation: "Camera, not trash - now your team can see exactly what happened." },
+        { text: "Deleting everything so it feels gone", isStrong: false, explanation: "The trash loses the proof your helpers needed - freeze first instead." },
         { text: "Telling your teacher the same day", isStrong: true, explanation: "Team power - telling makes it lighter and gets real help moving." },
         { text: "Keeping it secret so nobody worries", isStrong: false, explanation: "Secrets get heavier - your team WANTS to carry this with you." },
       ],
@@ -674,9 +674,9 @@ export const WEEK_11: WeekContent = {
       subtitle: "Here's everything you mastered this week.",
       concepts: [
         { id: "fault", label: "Never Your Fault", accent: "#7df0ff", icon: "💪", summary: "Someone unkind made THEIR choice - it's never, ever yours to carry." },
-        { id: "team", label: "My Team", accent: "#ffd158", icon: "👪", summary: "Named before you need them - plus Childline 0800 1111, always awake." },
+        { id: "team", label: "My Team", accent: "#ffd158", icon: "👪", summary: "Named before you need them - plus Childhelp 1-800-422-4453, always awake." },
         { id: "block", label: "Stop & Block", accent: "#c084fc", icon: "🚫", summary: "No replies, no firing back - block the sender and breathe." },
-        { id: "camera", label: "Camera, Not Bin", accent: "#ff5fb3", icon: "📋", summary: "Screenshot first - frozen proof is how your team helps fast." },
+        { id: "camera", label: "Camera, Not Trash", accent: "#ff5fb3", icon: "📋", summary: "Screenshot first - frozen proof is how your team helps fast." },
         { id: "protocol", label: "The Protocol", accent: "#7eff97", icon: "🚀", summary: "Stop, screenshot, block, tell - launched calmly, in order." },
       ],
       narration: {
@@ -698,7 +698,7 @@ export const WEEK_11: WeekContent = {
       stickers: [
         { id: "balloon-lifter", name: "Balloon Lifter", icon: "💪", description: "Lifts every 'my fault' boulder - and lets it float away." },
         { id: "team-namer", name: "Team Namer", icon: "👪", description: "Named their team before they needed it." },
-        { id: "evidence-freezer", name: "Evidence Freezer", icon: "📋", description: "Camera first, bin never - the proof stays safe." },
+        { id: "evidence-freezer", name: "Evidence Freezer", icon: "📋", description: "Camera first, trash never - the proof stays safe." },
       ],
     },
 
@@ -711,7 +711,7 @@ export const WEEK_11: WeekContent = {
   bossAttacks: [
     { name: "BLAME BOULDER", icon: "🙈", color: "#c084fc", glow: "rgba(192, 132, 252, 0.55)", tag: "Never your fault",        emblemColor: 0xc084fc },
     { name: "SECRET WEIGHT", icon: "🤐", color: "#ffd158", glow: "rgba(255, 209, 88, 0.55)",  tag: "Telling makes it lighter", emblemColor: 0xffd158 },
-    { name: "DELETE TRICK",  icon: "🗑️", color: "#ff5fb3", glow: "rgba(255, 95, 179, 0.55)",  tag: "Camera, not bin",          emblemColor: 0xff5fb3 },
+    { name: "DELETE TRICK",  icon: "🗑️", color: "#ff5fb3", glow: "rgba(255, 95, 179, 0.55)",  tag: "Camera, not trash",        emblemColor: 0xff5fb3 },
   ],
 
   // Placeholder quiz boss (the bespoke W11 COMBAT - pop the blame balloon
@@ -719,17 +719,17 @@ export const WEEK_11: WeekContent = {
   bossQuestions: {
     easy: [
       { question: "Someone sends you a horrid message. Whose fault is it?", answers: ["Theirs - they chose to send it", "Yours", "A little bit yours", "Nobody knows"], correctIndex: 0, explanation: "The sender made the choice - it is never your fault." },
-      { question: "What's the golden number on every kid's team poster?", answers: ["Childline 0800 1111", "999 for everything", "Your best friend's number", "There isn't one"], correctIndex: 0, explanation: "Childline - free, just for kids, always awake." },
-      { question: "A nasty message arrives. What happens to it FIRST?", answers: ["Screenshot - freeze the proof", "Delete it fast", "Reply to it", "Forward it to friends"], correctIndex: 0, explanation: "Camera, not bin - your team helps best when they can see." },
+      { question: "What's the golden number on every kid's team poster?", answers: ["Childhelp 1-800-422-4453", "911 for everything", "Your best friend's number", "There isn't one"], correctIndex: 0, explanation: "Childhelp - free, just for kids, always awake." },
+      { question: "A nasty message arrives. What happens to it FIRST?", answers: ["Screenshot - freeze the proof", "Delete it fast", "Reply to it", "Forward it to friends"], correctIndex: 0, explanation: "Camera, not trash - your team helps best when they can see." },
     ],
     medium: [
-      { question: "Why do heroes NOT reply to mean messages?", answers: ["A reply is exactly what the sender wants", "Replying costs money", "Typing is slow", "They do reply"], correctIndex: 0, explanation: "Starve it, don't feed it - block instead." },
-      { question: "Why does deleting the message make things harder?", answers: ["Your team can't see the proof anymore", "Deleting is against the rules", "It uses up storage", "It doesn't"], correctIndex: 0, explanation: "Seeing the evidence is how grown-ups help fast - freeze it first." },
+      { question: "Why do heroes NOT reply to mean messages?", answers: ["A reply is exactly what the sender wants", "Replying costs money", "Replying shows them you're not scared", "They do reply"], correctIndex: 0, explanation: "Starve it, don't feed it - block instead." },
+      { question: "Why does deleting the message make things harder?", answers: ["Your team can't see the proof anymore", "Deleting is against the rules", "The sender just sends it again", "It doesn't"], correctIndex: 0, explanation: "Seeing the evidence is how grown-ups help fast - freeze it first." },
       { question: "When do you pick the grown-ups on your team?", answers: ["Now - before you ever need them", "Only after something goes wrong", "Never - handle it alone", "When you turn 13"], correctIndex: 0, explanation: "Captains pick their team early - then help is one tell away." },
     ],
     hard: [
-      { question: "Why does 'keep it secret' make everything heavier?", answers: ["Carrying it alone grows the worry - telling shares the weight", "Secrets are illegal", "Grown-ups always find out", "It doesn't"], correctIndex: 0, explanation: "Telling someone starts making it lighter straight away - that's the whole trick." },
-      { question: "The full protocol, in order, is...", answers: ["Stop → Screenshot → Block → Tell → Childline if needed", "Reply → Delete → Forget", "Block → Reply → Delete", "Screenshot → Fire back → Tell"], correctIndex: 0, explanation: "Fingers, camera, door, team, phone - calm and in order." },
+      { question: "Why does 'keep it secret' make everything heavier?", answers: ["Carrying it alone grows the worry - telling shares the weight", "Secrets are illegal", "Grown-ups always find out", "It doesn't"], correctIndex: 0, explanation: "Telling someone starts making it lighter right away - that's the whole trick." },
+      { question: "The full protocol, in order, is...", answers: ["Stop → Screenshot → Block → Tell → Childhelp if needed", "Reply → Delete → Forget", "Stop → Block → Screenshot → Tell", "Screenshot → Fire back → Tell"], correctIndex: 0, explanation: "Fingers, camera, door, team, phone - freeze the proof BEFORE the door shuts." },
       { question: "Your friend says 'don't tell anyone what happened to me online.' What's the hero move?", answers: ["Tell a trusted grown-up anyway - some secrets need helpers", "Promise and keep the secret", "Post about it", "Ignore your friend"], correctIndex: 0, explanation: "Safety secrets are the kind you SHARE with a grown-up - that's real friendship." },
     ],
   },
@@ -753,7 +753,7 @@ export const WEEK_11: WeekContent = {
     12: { adam: { mood: "curious", message: "Calm fingers - find BLOCK!" }, layla: null }, // game: buttonHunt
     13: { adam: null, layla: { mood: "thumbsup", message: "Quick - shut the door!" } }, // prove: speed
     14: { adam: null, layla: { mood: "thumbsup", message: "Blocked and breathing. Nice." } }, // recap 3
-    15: { adam: null, layla: { mood: "thinking", message: "Camera keeps it. Bin loses it." } }, // learn: camera
+    15: { adam: null, layla: { mood: "thinking", message: "Camera keeps it. Trash loses it." } }, // learn: camera
     16: { adam: null, layla: { mood: "curious", message: "Freeze the proof!" } }, // game: replyCards
     17: { adam: { mood: "worried", message: "He's fibbing about delete - catch him!" }, layla: null }, // prove: lie
     18: { adam: { mood: "excited", message: "Evidence freezer: certified!" }, layla: null }, // recap 4

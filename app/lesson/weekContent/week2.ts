@@ -44,7 +44,7 @@ export const WEEK_2: WeekContent = {
       photoSrc: "/cyberheroes/alerts/week-02.png",
       title: "ALERT INCOMING",
       badge: "Incident Report",
-      caption: "The Raccoon tricked Adam and Layla into typing their address, school and phone number. Now he knows EVERYTHING - and he's coming for your secrets next!",
+      caption: "The Raccoon tricked Adam and Layla into typing their address, school and phone number. Now he knows EVERYTHING. Your secrets? He's not getting a single one - let's make sure.",
       photoCaption: "Wk 2 - The Free Game Trap",
       ctaLabel: "Start the Mission →",
     },
@@ -102,7 +102,7 @@ export const WEEK_2: WeekContent = {
             { icon: "💬", text: "...his messages start saying 'Hi, it's me! Your FRIEND!' - using YOUR name." },
             { icon: "🎭", text: "A stranger who knows your name FEELS like a friend. That's the whole trick!" },
           ],
-          counter: "Your name is YOURS. Online, you wear your hero name instead!",
+          counter: "Your real name stays with you. Strangers online never need it.",
         },
         {
           id: "address",
@@ -143,7 +143,7 @@ export const WEEK_2: WeekContent = {
           icon: "📍",
           steps: [
             { icon: "🦝", text: "If he can see where you are right now..." },
-            { icon: "📍", text: "He follows your little pin around the map. Park... shop... home..." },
+            { icon: "📍", text: "He follows your little pin around the map. Park... store... home..." },
             { icon: "🎭", text: "...and POP! There he is, wherever you go. No thanks!" },
           ],
           counter: "Where you are is nobody's business but yours.",
@@ -171,9 +171,9 @@ export const WEEK_2: WeekContent = {
       prompt: "Which of these is PRIVATE?",
       choices: [
         { text: "Your home address", isCorrect: true },
-        { text: "Your favourite pizza", isCorrect: false },
+        { text: "Your favorite pizza", isCorrect: false },
         { text: "A cartoon you like", isCorrect: false },
-        { text: "Your favourite colour", isCorrect: false },
+        { text: "Your favorite color", isCorrect: false },
       ],
       praise: "Exactly - WHERE you live stays private! ✓",
     },
@@ -203,9 +203,9 @@ export const WEEK_2: WeekContent = {
       type: "info",
       title: "Share or Keep Private?",
       content:
-        "Here's the hero trick: favourites are FINE to share. Your favourite game, colour or food doesn't tell anyone who or where you are. But if it points at YOU - your name, your school, your address - it goes in the vault.",
+        "Here's the hero trick: favorites are FINE to share. Your favorite game, color or food doesn't tell anyone who or where you are. But if it points at YOU - your name, your school, your address - it goes in the vault.",
       bullets: [
-        "Favourite game, colour, food - share away!",
+        "Favorite game, color, food - share away!",
         "Hobbies and things you love - fine too",
         "WHO you are (name, age, school) - keep private",
         "WHERE you are (address, location) - keep private",
@@ -217,8 +217,8 @@ export const WEEK_2: WeekContent = {
         speaker: "layla",
         lines: [
           "[excited] Good news! You don't have to keep EVERYTHING secret.",
-          "Love drawing? Say it! Favourite colour is blue? Shout it!",
-          "[laughs] Favourites don't tell anyone who you are.",
+          "Love drawing? Say it! Favorite color is blue? Shout it!",
+          "[laughs] Favorites don't tell anyone who you are.",
           "[whispers] But if it points at YOU, your name, your school, your street...",
           "[warmly] ...that goes straight in the vault. Ready to sort?",
         ],
@@ -228,20 +228,20 @@ export const WEEK_2: WeekContent = {
     {
       type: "vaultDrop",
       items: [
-        { id: "colour", text: "My favourite colour is blue", icon: "🎨", isPrivate: false, explanation: "A favourite colour doesn't tell anyone who or where you are - share away!" },
+        { id: "colour", text: "My favorite color is blue", icon: "🎨", isPrivate: false, explanation: "A favorite color doesn't tell anyone who or where you are - share away!" },
         { id: "addr", text: "I live at 42 Rainbow Road", icon: "🏠", isPrivate: true, explanation: "An address tells a stranger exactly WHERE you live. Vault it!" },
-        { id: "game", text: "My favourite game is Mega Blasters", icon: "🎮", isPrivate: false, explanation: "Favourite games are safe - they're about what you LIKE, not who you ARE." },
+        { id: "game", text: "My favorite game is Mega Blasters", icon: "🎮", isPrivate: false, explanation: "Favorite games are safe - they're about what you LIKE, not who you ARE." },
         { id: "school", text: "I go to Maple Hill School", icon: "🏫", isPrivate: true, explanation: "Your school tells a stranger where to find you every single day. Private!" },
         { id: "draw", text: "I love drawing dragons", icon: "🎨", isPrivate: false, explanation: "Hobbies are safe to share - no dragon ever leaked an address." },
-        { id: "phone", text: "My number is 07700 900123", icon: "📱", isPrivate: true, explanation: "A phone number lets strangers reach you any time. Vault it!" },
-        { id: "food", text: "Pizza is my favourite food", icon: "🎂", isPrivate: false, explanation: "Favourite foods give nothing away - unless the Raccoon wants pizza too." },
+        { id: "phone", text: "My number is 555-0123", icon: "📱", isPrivate: true, explanation: "A phone number lets strangers reach you any time. Vault it!" },
+        { id: "food", text: "Pizza is my favorite food", icon: "🎂", isPrivate: false, explanation: "Favorite foods give nothing away - unless the Raccoon wants pizza too." },
         { id: "fullname", text: "My full name is Alex Morgan Reed", icon: "🏷️", isPrivate: true, explanation: "Your full name is the first clue to finding YOU. Keep it private." },
-        { id: "film", text: "I've seen Space Racers 5 times", icon: "⭐", isPrivate: false, explanation: "Films you love are totally safe to talk about." },
+        { id: "film", text: "I've seen Space Racers 5 times", icon: "⭐", isPrivate: false, explanation: "Movies you love are totally safe to talk about." },
         { id: "loc", text: "I'm at the park right now", icon: "📍", isPrivate: true, explanation: "Saying where you are RIGHT NOW is like dropping a pin for strangers. Private!" },
       ],
       hints: {
         tier1: "Ask: does it say WHO I am or WHERE I am? If yes - into the vault.",
-        tier2: "Favourites (games, colours, food) = share board. Name, address, school, phone, location = the vault.",
+        tier2: "Favorites (games, colors, food) = share board. Name, address, school, phone, location = the vault.",
       },
       narration: {
         speaker: "layla",
@@ -249,7 +249,7 @@ export const WEEK_2: WeekContent = {
           "[excited] Welcome to the Treasure Table!",
           "Every card is a piece of info about you.",
           "[warmly] Grab each one and DRAG it where it belongs.",
-          "Favourites go up to the share board.",
+          "Favorites go up to the share board.",
           "[whispers] Who-you-are and where-you-are... straight into the vault.",
           "[excited] No rush. You're the guard here!",
         ],
@@ -266,8 +266,8 @@ export const WEEK_2: WeekContent = {
       prompt: "Which of these 3 stays PRIVATE?",
       choices: [
         { text: "My school's name", isCorrect: true },
-        { text: "My favourite game", isCorrect: false },
-        { text: "My favourite food", isCorrect: false },
+        { text: "My favorite game", isCorrect: false },
+        { text: "My favorite food", isCorrect: false },
       ],
       praise: "Yes - your school points right at YOU! ✓",
     },
@@ -277,16 +277,16 @@ export const WEEK_2: WeekContent = {
       type: "recap",
       concept: 2,
       total: 5,
-      learned: "Favourites are fine to share. Anything that says WHO you are or WHERE you are stays private.",
+      learned: "Favorites are fine to share. Anything that says WHO you are or WHERE you are stays private.",
       next: "the hero question - WHY are they asking?",
       emblem: "🌍",
       narration: {
         speaker: "adam",
         lines: [
-          "[excited] Look at you sort! The machine's never run better.",
-          "Favourites? Share away.",
+          "[excited] Look at you sort! That vault has never been safer!",
+          "Favorites? Share away.",
           "Who you are, where you are? Straight in the vault.",
-          "[warmly] Now for my favourite trick of all...",
+          "[warmly] Now for my favorite trick of all...",
         ],
       },
     },
@@ -342,16 +342,16 @@ export const WEEK_2: WeekContent = {
           id: "doodle-pad",
           appName: "Doodle Pad",
           appIcon: "🎨",
-          tagline: "Draw, colour and save your masterpieces!",
-          asksFor: ["A nickname", "Favourite colour"],
+          tagline: "Draw, color and save your masterpieces!",
+          asksFor: ["A nickname", "Favorite color"],
           isNosy: false,
           zones: [
             { id: "who", label: "Who's asking?", note: "A drawing app your grown-up already installed with you.", isRedFlag: false },
-            { id: "want", label: "What do they want?", note: "Just a nickname and your favourite colour.", isRedFlag: false },
+            { id: "want", label: "What do they want?", note: "Just a nickname and your favorite color.", isRedFlag: false },
             { id: "need", label: "Do they NEED it?", note: "The nickname labels your saved art. Makes sense!", isRedFlag: false },
             { id: "happens", label: "If I type it in?", note: "Nothing private leaves your device - a nickname isn't a secret.", isRedFlag: false },
           ],
-          verdictNote: "A nickname and a colour give nothing away. That's a fair ask!",
+          verdictNote: "A nickname and a color give nothing away. That's a fair ask!",
         },
         {
           id: "sticker-storm",
@@ -412,7 +412,7 @@ export const WEEK_2: WeekContent = {
       narration: {
         speaker: "layla",
         lines: [
-          "[excited] Three down! You're a proper form detective now.",
+          "[excited] Three down! You're a real form detective now.",
           "One little question beats the trick every time...",
           "[whispers] why are they asking?",
           "[excited] Next: the coolest part of being a hero. Your SECRET IDENTITY!",
@@ -444,7 +444,7 @@ export const WEEK_2: WeekContent = {
           "But careful. Put your real name or birthday in it...",
           "[nervous] and the mask has a hole in it.",
           "[laughs] emma2017? The Raccoon reads that like a name tag!",
-          "[excited] Come on - let's forge you a PROPER hero name.",
+          "[excited] Come on - let's forge you a TRUE hero name.",
         ],
       },
     },
@@ -531,11 +531,11 @@ export const WEEK_2: WeekContent = {
       type: "info",
       title: "Unsure? Ask a Grown-Up",
       content:
-        "Sometimes you just won't be sure - is this safe to type? Is this app okay? Heroes don't guess. Heroes hit PAUSE and call for backup: a parent, a carer, a teacher. Asking first isn't babyish - it's what the smartest heroes do.",
+        "Sometimes you just won't be sure - is this safe to type? Is this app okay? Heroes don't guess. Heroes hit PAUSE and call for backup: a parent, a caregiver, a teacher. Asking first isn't babyish - it's what the smartest heroes do.",
       bullets: [
         "Not sure? Don't guess",
         "Hit PAUSE before you type",
-        "Ask a parent, carer or teacher",
+        "Ask a parent, caregiver or teacher",
         "Grown-ups are your backup team",
         "Asking first is a HERO move",
       ],
@@ -548,7 +548,7 @@ export const WEEK_2: WeekContent = {
           "Sometimes you won't be sure. That's okay!",
           "[whispers] Heroes don't guess...",
           "[excited] they hit PAUSE and call for backup!",
-          "A parent. A carer. A teacher. Your backup team.",
+          "A parent. A caregiver. A teacher. Your backup team.",
           "[warmly] If you're not sure - ask first. Every single time.",
         ],
       },
@@ -568,7 +568,7 @@ export const WEEK_2: WeekContent = {
         },
         {
           frame: { appName: "Sticker Storm", icon: "🎁" },
-          setup: "A website flashes: 'FREE mega sticker pack! Just enter your home address and we'll post it today!'",
+          setup: "A website flashes: 'FREE mega sticker pack! Just enter your home address and we'll mail it today!'",
           choices: [
             { text: "Type my address - free stickers!", isSafe: false, consequence: "A stranger now knows exactly where you live... and the stickers never come. Classic Raccoon." },
             { text: "PAUSE - ask a grown-up first", isSafe: true, consequence: "Smart! A grown-up can spot a sticker trap from a mile away. Backup team activated!" },
@@ -586,7 +586,7 @@ export const WEEK_2: WeekContent = {
       narration: {
         speaker: "adam",
         lines: [
-          "[warmly] Time to practise the golden rule.",
+          "[warmly] Time to practice the golden rule.",
           "Tricky moments are about to pop up on screen.",
           "[whispers] Feel that 'hmm, not sure' feeling? That's your hero sense!",
           "[excited] When it tingles... hit PAUSE!",
@@ -635,18 +635,18 @@ export const WEEK_2: WeekContent = {
         negative: "RISKY",
         positiveHint: "Tap SAFE for share-away stuff",
         negativeHint: "Tap RISKY for private treasure",
-        tipWhenPositive: "Favourites and hobbies say nothing about who or where you are - safe to share.",
+        tipWhenPositive: "Favorites and hobbies say nothing about who or where you are - safe to share.",
         tipWhenNegative: "Names, addresses, schools, numbers and where-you-are belong in the vault.",
         hint1: "Ask the hero question: does this say WHO I am or WHERE I am? If yes - it's RISKY.",
-        hint2: "SAFE = favourites and hobbies. RISKY = name, address, school, phone, location.",
+        hint2: "SAFE = favorites and hobbies. RISKY = name, address, school, phone, location.",
         hint2Example: "SAFE: 'I love drawing'   RISKY: 'I go to Maple Hill'",
-        hint3: "Quick rule card: favourites = SAFE · who-you-are = RISKY · where-you-are = RISKY · leaky usernames = RISKY.",
+        hint3: "Quick rule card: favorites = SAFE · who-you-are = RISKY · where-you-are = RISKY · leaky usernames = RISKY.",
         hint3Example: "CometWizard77  ✅    emma2017  ❌",
       },
       items: [
-        { text: "My favourite colour is blue", isStrong: true, explanation: "A favourite colour gives nothing away - safe to share." },
+        { text: "My favorite color is blue", isStrong: true, explanation: "A favorite color gives nothing away - safe to share." },
         { text: "I live at 42 Rainbow Road", isStrong: false, explanation: "An address tells strangers WHERE you live - keep it private." },
-        { text: "CometWizard77", isStrong: true, explanation: "A proper hero name - no real name, age or school in it." },
+        { text: "CometWizard77", isStrong: true, explanation: "A true hero name - no real name, age or school in it." },
         { text: "emma2017", isStrong: false, explanation: "A real name plus a birth year - that mask has a hole in it." },
         { text: "I love drawing dragons", isStrong: true, explanation: "Hobbies are safe - share away." },
         { text: "I go to Maple Hill School", isStrong: false, explanation: "Your school says where you are every weekday - private!" },
@@ -675,7 +675,7 @@ export const WEEK_2: WeekContent = {
       subtitle: "Here's everything you mastered this week.",
       concepts: [
         { id: "private", label: "Private Radar", accent: "#00e5ff", icon: "🛡️", summary: "Name, address, school, phone, location - you know exactly what's private." },
-        { id: "sort", label: "Share Smarts", accent: "#7eff97", icon: "🌍", summary: "Favourites are fine to share; who-you-are and where-you-are stay locked." },
+        { id: "sort", label: "Share Smarts", accent: "#7eff97", icon: "🌍", summary: "Favorites are fine to share; who-you-are and where-you-are stay locked." },
         { id: "why", label: "The Why-Check", accent: "#ffd158", icon: "❓", summary: "Before you type: does this app really NEED it? Nosy forms get closed." },
         { id: "identity", label: "Secret Identity", accent: "#ff5fb3", icon: "🎭", summary: "Your username is a mask - no real name, age, birthday or school." },
         { id: "ask", label: "Ask First", accent: "#7c5cff", icon: "⏸️", summary: "Not sure? Pause and ask a grown-up. That's the hero move." },
@@ -724,10 +724,10 @@ export const WEEK_2: WeekContent = {
       stamp: "No private fields",
       entries: [
         { id: "addr", text: "42 Rainbow Road", icon: "🏠", isPrivate: true, explanation: "Your address on a profile? Anyone could find your door. WHACK material." },
-        { id: "colour", text: "Loves blue", icon: "🎨", isPrivate: false, explanation: "A favourite colour is totally safe on a profile - that one could stay!" },
+        { id: "colour", text: "Loves blue", icon: "🎨", isPrivate: false, explanation: "A favorite color is totally safe on a profile - that one could stay!" },
         { id: "school", text: "Maple Hill School", icon: "🏫", isPrivate: true, explanation: "Your school says where you are every weekday. Never on a profile." },
-        { id: "game", text: "Plays Mega Blasters", icon: "🎮", isPrivate: false, explanation: "Favourite games are safe - they say what you like, not who you are." },
-        { id: "phone", text: "07700 900123", icon: "📱", isPrivate: true, explanation: "A phone number lets any stranger ring you. Whack it into orbit!" },
+        { id: "game", text: "Plays Mega Blasters", icon: "🎮", isPrivate: false, explanation: "Favorite games are safe - they say what you like, not who you are." },
+        { id: "phone", text: "555-0123", icon: "📱", isPrivate: true, explanation: "A phone number lets any stranger call you. Whack it into orbit!" },
         { id: "fullname", text: "Alex Morgan Reed", icon: "🏷️", isPrivate: true, explanation: "A full REAL name is the first clue to the real you. Gone!" },
         { id: "draw", text: "Draws dragons", icon: "🎨", isPrivate: false, explanation: "Hobbies are safe to show off - dragons leak nothing." },
         { id: "loc", text: "At the park right now", icon: "📍", isPrivate: true, explanation: "Live location = a pin for strangers to follow. WHACK!" },
@@ -737,14 +737,14 @@ export const WEEK_2: WeekContent = {
       id: "phase-sort",
       label: "Share Smarts",
       intro: "Pick your About Me cards! I dealt you some... EXTRA juicy ones.",
-      stamp: "Favourites only",
+      stamp: "Favorites only",
       picks: 3,
       cards: [
-        { id: "pizza", text: "Pizza fan", icon: "🎂", isSafe: true, explanation: "Favourite foods are safe About-Me material." },
+        { id: "pizza", text: "Pizza fan", icon: "🎂", isSafe: true, explanation: "Favorite foods are safe About-Me material." },
         { id: "street", text: "Lives on Rainbow Road", icon: "🏠", isSafe: false, explanation: "That's WHERE you live - never About-Me material." },
         { id: "dragons", text: "Dragon artist", icon: "🎨", isSafe: true, explanation: "Hobbies are safe to show off." },
         { id: "age", text: "Age 9", icon: "🎂", isSafe: false, explanation: "Your age is a real clue about the real you - keep it out." },
-        { id: "racer", text: "Space Racers superfan", icon: "⭐", isSafe: true, explanation: "Favourite films are safe to share." },
+        { id: "racer", text: "Space Racers superfan", icon: "⭐", isSafe: true, explanation: "Favorite movies are safe to share." },
         { id: "tuesday", text: "Home alone Tuesdays", icon: "📍", isSafe: false, explanation: "WHEN you're home alone is exactly what he wants to know. Never." },
       ],
     },
@@ -756,7 +756,7 @@ export const WEEK_2: WeekContent = {
       demand: "Enter your PHONE NUMBER to secure your profile!",
       excuses: [
         "It's for... security! Very important security!",
-        "Fine - it's so the profile can... ring you? About stuff?",
+        "Fine - it's so the profile can... call you? About stuff?",
         "OKAY it's because my sack is empty and sad. PLEASE?",
       ],
       collapse: "SYSTEM ERROR. Bot is crying. Bot has left the chat.",
@@ -784,9 +784,9 @@ export const WEEK_2: WeekContent = {
       secs: 7,
       demands: [
         { id: "school", text: "Your school! Quick! For the tournament!", isPrivate: true, explanation: "No prize needs your school. NOPE it every time." },
-        { id: "colour", text: "Favourite colour. Just curious!", isPrivate: false, explanation: "A favourite colour is safe to share - not everything is a trap!" },
+        { id: "colour", text: "Favorite color. Just curious!", isPrivate: false, explanation: "A favorite color is safe to share - not everything is a trap!" },
         { id: "street", text: "Street name! Just the street! Half the street!", isPrivate: true, explanation: "Not the street, not half the street. Where you live is vaulted." },
-        { id: "game", text: "Best game ever - go!", isPrivate: false, explanation: "Favourite games are safe - share away." },
+        { id: "game", text: "Best game ever - go!", isPrivate: false, explanation: "Favorite games are safe - share away." },
         { id: "birthday", text: "Birthday! For a FREE birthday prize!", isPrivate: true, explanation: "Your birthday is a real clue about the real you - no prize is worth it." },
         { id: "number", text: "Phone number! Your grown-up said it's fine! Promise!", isPrivate: true, explanation: "If someone CLAIMS a grown-up said yes - go check with the grown-up. NOPE." },
       ],
@@ -808,11 +808,11 @@ export const WEEK_2: WeekContent = {
         foiled: "WHAT?! You skipped all the juicy fields!",
       },
       questions: [
-        { question: "The profile form asks for LOTS of things. Which one is PRIVATE?", answers: ["Home address", "Favourite game", "Favourite colour", "A nickname"], correctIndex: 0, explanation: "An address tells strangers WHERE you live - never on a profile.", key: "boss-private-1" },
-        { question: "Which of these is safe to put on your profile?", answers: ["Your favourite food", "Your school's name", "Your phone number", "Your full name"], correctIndex: 0, explanation: "Favourites are safe - the rest point straight at the real you.", key: "boss-private-2" },
-        { question: "The Raccoon's scanner hunts for private info. What lights it up?", answers: ["Where you are right now", "A drawing you made", "Your favourite film", "A joke you like"], correctIndex: 0, explanation: "Your location is private treasure - his scanner would LOVE it.", key: "boss-private-3" },
-        { question: "Which of these tells a stranger WHO you really are?", answers: ["Your full name", "Your favourite sport", "A cartoon you watch", "Your hero name"], correctIndex: 0, explanation: "Your full name is the first clue to the real you.", key: "boss-private-4" },
-        { question: "Why does the Raccoon want your school's name?", answers: ["It tells him where you are every weekday", "He wants to enrol", "He collects school names", "Schools are shiny"], correctIndex: 0, explanation: "A school name is a map to you, five days a week. Private!", key: "boss-private-5" },
+        { question: "The profile form asks for LOTS of things. Which one is PRIVATE?", answers: ["Home address", "Favorite game", "Favorite color", "A nickname"], correctIndex: 0, explanation: "An address tells strangers WHERE you live - never on a profile.", key: "boss-private-1" },
+        { question: "Which of these is safe to put on your profile?", answers: ["Your favorite food", "Your school's name", "Your phone number", "Your full name"], correctIndex: 0, explanation: "Favorites are safe - the rest point straight at the real you.", key: "boss-private-2" },
+        { question: "The Raccoon's scanner hunts for private info. What lights it up?", answers: ["Where you are right now", "A drawing you made", "Your favorite movie", "A joke you like"], correctIndex: 0, explanation: "Your location is private treasure - his scanner would LOVE it.", key: "boss-private-3" },
+        { question: "Which of these tells a stranger WHO you really are?", answers: ["Your full name", "Your favorite sport", "A cartoon you watch", "Your hero name"], correctIndex: 0, explanation: "Your full name is the first clue to the real you.", key: "boss-private-4" },
+        { question: "Why does the Raccoon want your school's name?", answers: ["It tells him where you are every weekday", "He wants to enroll", "He collects school names", "So he can send a prize there"], correctIndex: 0, explanation: "A school name is a map to you, five days a week. Private!", key: "boss-private-5" },
       ],
     },
     {
@@ -825,14 +825,14 @@ export const WEEK_2: WeekContent = {
         fieldLabel: "ABOUT ME",
         entry: "Pizza fan & dragon artist",
         probe: "Put your street in the About Me! Everyone does it!",
-        foiled: "Favourites?! I can't DO anything with favourites!",
+        foiled: "Favorites?! I can't DO anything with favorites!",
       },
       questions: [
-        { question: "Pick the card that's FINE to share on your profile:", answers: ["'I love drawing dragons'", "'I live at 42 Rainbow Road'", "'My number is 07700 900123'", "'I'm at the park right now'"], correctIndex: 0, explanation: "Hobbies give nothing away - the others say where you are or how to reach you.", key: "boss-sort-1" },
-        { question: "The Raccoon begs: 'just say which STREET you live on!' You...", answers: ["Keep it private - streets are location info", "Tell him - it's only a street", "Tell him half the street name", "Draw him a map"], correctIndex: 0, explanation: "A street name is where-you-are info. Vault. Locked. Done.", key: "boss-sort-2" },
-        { question: "Which 'about me' line is SAFE?", answers: ["'Pizza fan and dragon artist'", "'Age 9, Maple Hill School'", "'Call me on 07700 900123'", "'Home alone every Tuesday'"], correctIndex: 0, explanation: "Favourites are safe; ages, schools, numbers and schedules are private.", key: "boss-sort-3" },
-        { question: "Your favourite game just asked you to pick a profile card. Which is safe?", answers: ["Favourite colour: blue", "My address", "My real birthday", "My school photo"], correctIndex: 0, explanation: "A colour says nothing about who or where you are.", key: "boss-sort-4" },
-        { question: "What makes info PRIVATE?", answers: ["It says who you are or where you are", "It's fun", "It's about animals", "It's long"], correctIndex: 0, explanation: "That's the rule: WHO you are or WHERE you are = private.", key: "boss-sort-5" },
+        { question: "Pick the card that's FINE to share on your profile:", answers: ["'I love drawing dragons'", "'I live at 42 Rainbow Road'", "'My number is 555-0123'", "'I'm at the park right now'"], correctIndex: 0, explanation: "Hobbies give nothing away - the others say where you are or how to reach you.", key: "boss-sort-1" },
+        { question: "The Raccoon begs: 'just say which STREET you live on!' You...", answers: ["Keep it private - streets are location info", "Tell him - it's only a street", "Tell him half the street name", "Tell him just the town instead"], correctIndex: 0, explanation: "A street name is where-you-are info. Vault. Locked. Done.", key: "boss-sort-2" },
+        { question: "Which 'about me' line is SAFE?", answers: ["'Pizza fan and dragon artist'", "'Age 9, Maple Hill School'", "'Call me on 555-0123'", "'Home alone every Tuesday'"], correctIndex: 0, explanation: "Favorites are safe; ages, schools, numbers and schedules are private.", key: "boss-sort-3" },
+        { question: "Your favorite game just asked you to pick a profile card. Which is safe?", answers: ["Favorite color: blue", "My address", "My real birthday", "My school photo"], correctIndex: 0, explanation: "A color says nothing about who or where you are.", key: "boss-sort-4" },
+        { question: "What makes info PRIVATE?", answers: ["It says who you are or where you are", "It's fun", "It's something you typed online", "It's long"], correctIndex: 0, explanation: "That's the rule: WHO you are or WHERE you are = private.", key: "boss-sort-5" },
       ],
     },
     {
@@ -848,11 +848,11 @@ export const WEEK_2: WeekContent = {
         foiled: "You asked WHY! Nobody asks why! NO FAIR!",
       },
       questions: [
-        { question: "Mid-forge, a popup asks for your PHONE NUMBER 'to keep your profile safe'. What's the hero question?", answers: ["Why would a profile need my number?", "What colour is the popup?", "How fast can I type it?", "Is the font nice?"], correctIndex: 0, explanation: "Ask WHY first - a game profile works fine without your number.", key: "boss-why-1" },
-        { question: "A kitten quiz wants your home address. Does it NEED it?", answers: ["No - a quiz doesn't visit your house", "Yes - for kitten delivery", "Yes - quizzes need addresses", "Maybe half of it"], correctIndex: 0, explanation: "A quiz needs ZERO of that to work. Too nosy!", key: "boss-why-2" },
-        { question: "Which app is asking FAIRLY?", answers: ["Drawing app wants a nickname", "Quiz wants your address", "Sticker site wants your school", "Game wants your birth certificate"], correctIndex: 0, explanation: "A nickname to label your art makes sense - the rest over-ask.", key: "boss-why-3" },
-        { question: "An app asks for MORE than it needs. That's called...", answers: ["Too nosy - close it", "Generous", "Normal", "A bargain"], correctIndex: 0, explanation: "Over-asking = nosy. Close it and tell a grown-up.", key: "boss-why-4" },
-        { question: "The Raccoon groans: 'stop asking WHY!' Why does he hate that question?", answers: ["Because it beats his tricks every time", "Because it's boring", "Because he can't spell it", "Because he loves quizzes"], correctIndex: 0, explanation: "One little WHY unmasks almost every trick. Keep asking it!", key: "boss-why-5" },
+        { question: "Mid-forge, a popup asks for your PHONE NUMBER 'to keep your profile safe'. What's the hero question?", answers: ["Why would a profile need my number?", "What color is the popup?", "How fast can I type it?", "Do I trust this game?"], correctIndex: 0, explanation: "Ask WHY first - a game profile works fine without your number.", key: "boss-why-1" },
+        { question: "A kitten quiz wants your home address. Does it NEED it?", answers: ["No - a quiz doesn't visit your house", "Yes - to send your results", "Yes - quizzes need addresses", "Maybe half of it"], correctIndex: 0, explanation: "A quiz needs ZERO of that to work. Too nosy!", key: "boss-why-2" },
+        { question: "Which app is asking FAIRLY?", answers: ["Drawing app wants a nickname", "Quiz wants your address", "Sticker site wants your school", "Game wants your birthday for a gift"], correctIndex: 0, explanation: "A nickname to label your art makes sense - the rest over-ask.", key: "boss-why-3" },
+        { question: "An app asks for MORE than it needs. That's called...", answers: ["Too nosy - close it", "Generous", "Normal", "Fine if the app looks fun"], correctIndex: 0, explanation: "Over-asking = nosy. Close it and tell a grown-up.", key: "boss-why-4" },
+        { question: "The Raccoon groans: 'stop asking WHY!' Why does he hate that question?", answers: ["Because it beats his tricks every time", "Because it's boring", "Because he never knows the answer", "Because he loves quizzes"], correctIndex: 0, explanation: "One little WHY unmasks almost every trick. Keep asking it!", key: "boss-why-5" },
       ],
     },
     {
@@ -872,7 +872,7 @@ export const WEEK_2: WeekContent = {
         { question: "What's wrong with 'emma2017' as a username?", answers: ["A real name AND a birth year - two leaks", "Too short", "No capital letters", "Nothing"], correctIndex: 0, explanation: "It hands over a name and a birth year in one go.", key: "boss-id-2" },
         { question: "A safe username has...", answers: ["Nothing about the real you", "Your age in it", "Your school in it", "Your birthday in it"], correctIndex: 0, explanation: "A mask with no holes - that's the whole point.", key: "boss-id-3" },
         { question: "Which part would spring the LEAK alarm?", answers: ["Your birth year", "A hero word", "A silly animal", "A meaningless number"], correctIndex: 0, explanation: "Birth years are real clues - pick numbers that mean nothing.", key: "boss-id-4" },
-        { question: "Why does the Raccoon HATE 'PixelPanda42'?", answers: ["It tells him nothing about you", "Pandas scare him", "It's too long", "He prefers foxes"], correctIndex: 0, explanation: "Zero clues. He can stare all day and learn NOTHING.", key: "boss-id-5" },
+        { question: "Why does the Raccoon HATE 'PixelPanda42'?", answers: ["It tells him nothing about you", "It's impossible to remember", "It's too long", "He prefers foxes"], correctIndex: 0, explanation: "Zero clues. He can stare all day and learn NOTHING.", key: "boss-id-5" },
       ],
     },
     {
@@ -888,11 +888,11 @@ export const WEEK_2: WeekContent = {
         foiled: "A blank form?! NOOO! Foiled AGAIN!",
       },
       questions: [
-        { question: "Mask off! The Raccoon shouts: 'tell me your school and win 1000 COINS!' You...", answers: ["Refuse - and tell a grown-up", "Tell him - coins!", "Tell him a nearby school", "Ask for 2000 coins"], correctIndex: 0, explanation: "No prize is ever worth your private info - and a grown-up should hear about this.", key: "boss-final-1" },
-        { question: "He tries: 'your parents SAID you could tell me your address!' You...", answers: ["Pause and actually ask your grown-up", "Believe him", "Tell him half the address", "Tell him the postcode only"], correctIndex: 0, explanation: "If someone claims a grown-up said yes - go CHECK with the grown-up.", key: "boss-final-2" },
+        { question: "Mask off! The Raccoon shouts: 'tell me your school and win 1000 COINS!' You...", answers: ["Refuse - and tell a grown-up", "Tell him - coins!", "Tell him a nearby school", "Take the coins first, then decide"], correctIndex: 0, explanation: "No prize is ever worth your private info - and a grown-up should hear about this.", key: "boss-final-1" },
+        { question: "He tries: 'your parents SAID you could tell me your address!' You...", answers: ["Pause and actually ask your grown-up", "Believe him", "Tell him half the address", "Tell him the ZIP code only"], correctIndex: 0, explanation: "If someone claims a grown-up said yes - go CHECK with the grown-up.", key: "boss-final-2" },
         { question: "He whines: 'just ONE private thing? I'm collecting them!' The hero answer:", answers: ["Not one. Not ever.", "Just my school", "Just my street", "Just my birthday"], correctIndex: 0, explanation: "One 'little' leak is all he needs. He gets NOTHING.", key: "boss-final-3" },
-        { question: "You're not sure if a form is safe. What's the golden rule?", answers: ["Pause and ask a grown-up", "Fill it in fast", "Guess", "Ask the Raccoon"], correctIndex: 0, explanation: "Backup team, assemble - asking first is the hero move.", key: "boss-final-4" },
-        { question: "The forge is done! What does the Raccoon's scanner find on YOUR profile?", answers: ["Nothing he can use", "Your address", "Your school", "Your real name"], correctIndex: 0, explanation: "A hero name, some favourites... and NOTHING private. Victory!", key: "boss-final-5" },
+        { question: "You're not sure if a form is safe. What's the golden rule?", answers: ["Pause and ask a grown-up", "Fill it in fast", "Guess", "Fill in only the safe-looking parts"], correctIndex: 0, explanation: "Backup team, assemble - asking first is the hero move.", key: "boss-final-4" },
+        { question: "The forge is done! What does the Raccoon's scanner find on YOUR profile?", answers: ["Nothing he can use", "Your address", "Your school", "Your real name"], correctIndex: 0, explanation: "A hero name, some favorites... and NOTHING private. Victory!", key: "boss-final-5" },
       ],
     },
   ],
@@ -900,17 +900,17 @@ export const WEEK_2: WeekContent = {
   // Legacy flat fallback (used only if bossPhases is ever cleared).
   bossQuestions: {
     easy: [
-      { question: "Which of these is PRIVATE?", answers: ["Your home address", "Your favourite pizza", "A cartoon you like", "Your favourite colour"], correctIndex: 0, explanation: "An address tells strangers where you live." },
-      { question: "Which username is SAFE?", answers: ["CometWizard77", "emma2017", "Jake_Age9", "MapleHill_Star"], correctIndex: 0, explanation: "No real name, age or school - a proper mask." },
-      { question: "A quiz app asks for your address. Does it need it?", answers: ["No - quizzes don't visit houses", "Yes", "Only on Tuesdays", "Half of it"], correctIndex: 0, explanation: "A quiz needs none of that to work." },
+      { question: "Which of these is PRIVATE?", answers: ["Your home address", "Your favorite pizza", "A cartoon you like", "Your favorite color"], correctIndex: 0, explanation: "An address tells strangers where you live." },
+      { question: "Which username is SAFE?", answers: ["CometWizard77", "emma2017", "Jake_Age9", "MapleHill_Star"], correctIndex: 0, explanation: "No real name, age or school - a mask with no holes." },
+      { question: "A quiz app asks for your address. Does it need it?", answers: ["No - quizzes don't visit houses", "Yes", "Only to send your results", "Half of it"], correctIndex: 0, explanation: "A quiz needs none of that to work." },
     ],
     medium: [
-      { question: "Which is FINE to share?", answers: ["Your favourite game", "Your school's name", "Your phone number", "Where you are right now"], correctIndex: 0, explanation: "Favourites give nothing away." },
-      { question: "An app asks for MORE than it needs. You...", answers: ["Close it and tell a grown-up", "Fill it in", "Give it half", "Rate it 5 stars"], correctIndex: 0, explanation: "Over-asking = too nosy." },
-      { question: "You're not sure if something's safe to type. You...", answers: ["Pause and ask a grown-up", "Type it quickly", "Guess", "Flip a coin"], correctIndex: 0, explanation: "The golden rule: ask first." },
+      { question: "Which is FINE to share?", answers: ["Your favorite game", "Your school's name", "Your phone number", "Where you are right now"], correctIndex: 0, explanation: "Favorites give nothing away." },
+      { question: "An app asks for MORE than it needs. You...", answers: ["Close it and tell a grown-up", "Fill it in", "Give it half", "Skip the nosy parts and fill in the rest"], correctIndex: 0, explanation: "Over-asking = too nosy." },
+      { question: "You're not sure if something's safe to type. You...", answers: ["Pause and ask a grown-up", "Type it quickly", "Guess", "Ask a friend instead"], correctIndex: 0, explanation: "The golden rule: ask first." },
     ],
     hard: [
-      { question: "'Win 1000 coins - just tell me your school!' You...", answers: ["Refuse and tell a grown-up", "Take the deal", "Name a different school", "Haggle"], correctIndex: 0, explanation: "No prize is worth your private info." },
+      { question: "'Win 1000 coins - just tell me your school!' You...", answers: ["Refuse and tell a grown-up", "Take the deal", "Name a different school", "Ask for the coins first"], correctIndex: 0, explanation: "No prize is worth your private info." },
       { question: "What makes 'emma2017' risky?", answers: ["Real name + birth year", "Too many letters", "No symbols", "Nothing"], correctIndex: 0, explanation: "Two real clues about the real you." },
       { question: "The rule for private info is: it says...", answers: ["WHO you are or WHERE you are", "Anything fun", "Anything long", "Anything online"], correctIndex: 0, explanation: "That's the test - who you are, where you are." },
     ],
@@ -927,10 +927,10 @@ export const WEEK_2: WeekContent = {
     4: { adam: null, layla: { mood: "worried", message: "Peek at his plans - then slam them shut!" } }, // game: reveal
     5: { adam: { mood: "thumbsup", message: "Prove it - which one's private?" }, layla: null }, // prove: recall
     6: { adam: null, layla: { mood: "excited", message: "One power down - four to go!" } }, // recap 1
-    7: { adam: null, layla: { mood: "curious", message: "Favourites are fine. YOU-stuff is not." } }, // learn: sort
-    8: { adam: { mood: "excited", message: "Work those chutes!" }, layla: null }, // game: conveyor
+    7: { adam: null, layla: { mood: "curious", message: "Favorites are fine. YOU-stuff is not." } }, // learn: sort
+    8: { adam: { mood: "excited", message: "Drag every treasure home!" }, layla: null }, // game: conveyor
     9: { adam: null, layla: { mood: "excited", message: "Quick - which one stays locked?" } }, // prove: quick-sort
-    10: { adam: { mood: "thumbsup", message: "The machine loves you!" }, layla: null }, // recap 2
+    10: { adam: { mood: "thumbsup", message: "Best vault-guard I've ever met." }, layla: null }, // recap 2
     11: { adam: { mood: "thinking", message: "One question beats the trick: WHY?" }, layla: null }, // learn: why
     12: { adam: { mood: "curious", message: "Inspect every clue, detective." }, layla: null }, // game: inspector
     13: { adam: null, layla: { mood: "worried", message: "He's fibbing again - catch him!" } }, // prove: lie

@@ -265,7 +265,7 @@ export const WEEK_20: WeekContent = {
           id: "maya-draws",
           handle: "Maya_Draws",
           avatar: "🎨",
-          bio: "Dragon drawings and kart racing on weekends! Zain's cousin - we met at sports day. Rematch later? You totally won last time.",
+          bio: "Dragon drawings and kart racing on weekends! Zain's cousin - we met at field day. Rematch later? You totally won last time.",
           stats: [
             { label: "Joined", value: "2 YEARS AGO" },
             { label: "Friends", value: "Zain + 3 you know" },
@@ -415,7 +415,7 @@ export const WEEK_20: WeekContent = {
       hints: {
         tier1: "The shiny button is never the way out - hunt the little X in the corner. Can't find a real X? Close the whole app and tell a grown-up - that always works.",
         tier2: "Timers, prizes you never entered, password asks - every one is bait. X them all.",
-        tier3: "Corner by corner: find the small grey X on each pop-up and tap ONLY that.",
+        tier3: "Corner by corner: find the small gray X on each pop-up and tap ONLY that.",
       },
       narration: {
         speaker: "adam",
@@ -550,7 +550,7 @@ export const WEEK_20: WeekContent = {
               label: "Leave it open - more likes that way",
               icon: "👀",
               isProud: false,
-              note: "An open mirror is the leak hunter's favourite window - Week 17's frost is armour, and it costs one flip.",
+              note: "An open mirror is the leak hunter's favorite window - Week 17's frost is armor, and it costs one flip.",
             },
           ],
         },
@@ -797,7 +797,7 @@ export const WEEK_20: WeekContent = {
         {
           text: "Frosting the profile mirror - friends only",
           isStrong: true,
-          explanation: "Week 17's one-flip armour: strangers see frost, friends see you.",
+          explanation: "Week 17's one-flip armor: strangers see frost, friends see you.",
         },
         {
           text: "Keeping the scary message secret so nobody worries",
@@ -830,9 +830,9 @@ export const WEEK_20: WeekContent = {
       concepts: [
         { id: "vault", label: "Vault Holder", accent: "#ffd158", icon: "🔑", summary: "The reset trick inspected zone by zone, the fake door refused - the vault held." },
         { id: "friend", label: "Disguise Piercer", accent: "#7df0ff", icon: "🎭", summary: "Joined-yesterday, borrowed photo, 'chat somewhere else' - seen through in seconds." },
-        { id: "money", label: "Trap Snapper", accent: "#7eff97", icon: "🪤", summary: "Free coins, prize confetti, dodgy QRs - the whole arcade fed on nothing." },
+        { id: "money", label: "Trap Snapper", accent: "#7eff97", icon: "🪤", summary: "Free coins, prize confetti, sketchy QRs - the whole arcade fed on nothing." },
         { id: "leak", label: "Leak Sealer", accent: "#c084fc", icon: "🔍", summary: "Clues scrubbed, pins off, mirror frosted - and the dragon posted proudly." },
-        { id: "backup", label: "Protocol Captain", accent: "#ff5fb3", icon: "🥇", summary: "Stop, block, screenshot, tell - and now you coach it onward too." },
+        { id: "backup", label: "Protocol Captain", accent: "#ff5fb3", icon: "🥇", summary: "Stop, screenshot, block, tell - and now you coach it onward too." },
       ],
       narration: {
         speaker: "adam",
@@ -873,19 +873,19 @@ export const WEEK_20: WeekContent = {
   // is designed with the boss batch). Questions sweep the whole course.
   bossQuestions: {
     easy: [
-      { question: "An 'URGENT - reset your password in 10 minutes!' message is...", answers: ["A trick - real resets never rush you", "Very helpful", "From your best friend", "A prize"], correctIndex: 0, explanation: "The panic clock exists to stop you thinking - real games and banks wait patiently." },
-      { question: "A brand-new account says 'let's chat on a different app instead'. That's...", answers: ["The somewhere-else trick - refuse and tell", "A lovely idea", "Totally normal", "A reward"], correctIndex: 0, explanation: "Moving you somewhere quieter is Week 6's oldest flag - real friends are happy where you are." },
-      { question: "A machine offers FREE coins if you type your password. You...", answers: ["Never - it wants to BE you, not pay you", "Type it fast", "Type it slowly", "Share it with the lobby"], correctIndex: 0, explanation: "Any ask for your password IS the trap - real free asks for nothing back." },
+      { question: "An 'URGENT - reset your password in 10 minutes!' message is...", answers: ["A trick - don't tap it", "Real - better reset fast, just to be safe", "From your best friend", "A prize"], correctIndex: 0, explanation: "The panic clock exists to stop you thinking - real games and banks never rush a reset." },
+      { question: "A brand-new account says 'let's chat on a different app instead'. That's...", answers: ["The somewhere-else trick - refuse and tell", "Fine - as long as you know the other app", "Totally normal", "A reward"], correctIndex: 0, explanation: "Moving you somewhere quieter is Week 6's oldest flag - real friends are happy where you are." },
+      { question: "A machine offers FREE coins if you type your password. You...", answers: ["Never - walk away", "Only if the coins show up first", "Type it fast", "Share it with the lobby"], correctIndex: 0, explanation: "Any ask for your password IS the trap - it wants to BE you, and real free asks for nothing back." },
     ],
     medium: [
-      { question: "Which of tonight's posts was safe to share?", answers: ["The clue-free dragon drawing", "The school-gates meetup time", "The map-pinned park photo", "The school-name comment"], correctIndex: 0, explanation: "Posting isn't the danger, clues are - proud and clue-free tracks are the good kind." },
-      { question: "The full protocol, in order, is...", answers: ["Stop → block → screenshot → tell", "Reply → argue → delete → cry", "Tap → panic → hide → forget", "Share → like → follow → wave"], correctIndex: 0, explanation: "Give it nothing, slam the door, freeze the evidence, and never carry it alone." },
-      { question: "How do you check where a QR code or link-door really goes?", answers: ["Lift the plaque - check the real address before walking through", "Trust the pretty sign", "Scan it quickly", "Ask the Raccoon"], correctIndex: 0, explanation: "A link is a door - Week 16's rule holds forever: no plaque, no walk-through." },
+      { question: "Which of tonight's posts was safe to share?", answers: ["The dragon drawing", "The school-gates meetup time", "The map-pinned park photo", "The school-name comment"], correctIndex: 0, explanation: "Posting isn't the danger, clues are - proud and clue-free tracks are the good kind." },
+      { question: "The full protocol, in order, is...", answers: ["Stop → screenshot → block → tell", "Stop → block → screenshot → tell", "Tap → panic → hide → forget", "Share → like → follow → wave"], correctIndex: 0, explanation: "Give it nothing, freeze the evidence FIRST - blocking can make the message vanish - then slam the door and never carry it alone." },
+      { question: "How do you check where a QR code or link-door really goes?", answers: ["Lift the plaque - check the real address before walking through", "Read the words on the sign carefully", "Trust the pretty sign", "Scan it quickly"], correctIndex: 0, explanation: "A link is a door - Week 16's rule holds forever: words can be paint, so no plaque, no walk-through." },
     ],
     hard: [
-      { question: "The fake reset email had fastp1ay with a number 1 in the sender. Why does that matter?", answers: ["Lookalike senders wear a real name's costume - one swapped letter is the tell", "Numbers are lucky", "It loads faster", "It doesn't"], correctIndex: 0, explanation: "Week 4's lookalike lineup: the costume is one character deep, and checking the sender unmasks it." },
-      { question: "What makes COACH the graduate's fifth protocol step?", answers: ["Teaching your family makes the firewall outlive tonight", "It's louder than telling", "Graduates skip the other four", "It isn't a real step"], correctIndex: 0, explanation: "Week 19's role-flip folded into Week 11's protocol - powers shared are powers doubled." },
-      { question: "Why did Buddy_Blaze2000 fail the Profile Detective's check?", answers: ["Joined yesterday + borrowed photo + fishing-net follows + somewhere-else move", "Too good at racing", "Wrong favourite colour", "Online at night"], correctIndex: 0, explanation: "All four Week 3 tells at once - real profiles grow like tree rings, costumes appear overnight." },
+      { question: "The fake reset email had fastp1ay with a number 1 in the sender. Why does that matter?", answers: ["Lookalike senders wear a real name's costume - one swapped letter is the tell", "It only matters if the link looks strange too", "It loads faster", "It doesn't"], correctIndex: 0, explanation: "Week 4's lookalike lineup: the costume is one character deep, and checking the sender unmasks it." },
+      { question: "What makes COACH the graduate's fifth protocol step?", answers: ["Teaching your family makes the firewall outlive tonight", "It replaces TELL once you've graduated", "Graduates skip the other four", "It isn't a real step"], correctIndex: 0, explanation: "Week 19's role-flip folded into Week 11's protocol - powers shared are powers doubled." },
+      { question: "Why did Buddy_Blaze2000 fail the Profile Detective's check?", answers: ["Joined yesterday + borrowed photo + fishing-net follows + somewhere-else move", "He asked for a rematch too fast", "Too good at racing", "Online at night"], correctIndex: 0, explanation: "All four Week 3 tells at once - real profiles grow like tree rings, costumes appear overnight. (A rematch in a game you both play is what REAL looks like - Maya asked for one!)" },
     ],
   },
 

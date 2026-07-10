@@ -51,7 +51,7 @@ export const WEEK_17: WeekContent = {
       photoSrc: "/cyberheroes/alerts/week-17.png",
       title: "ALERT INCOMING",
       badge: "Incident Report",
-      caption: "The Raccoon has opened a Hall of Mirrors: endless perfect posts, follower counters spinning like fruit machines, and a big velvet rope where anyone - ANYONE - can walk up to an unlocked profile. He wants kids dazzled, comparing, and wide open. This week you forge the Profile Shield: learn why the 13+ sign stands at the door, frost your mirror, sort followers from friends, scrub your drafts - and see through the highlight reel.",
+      caption: "The Raccoon has opened a Hall of Mirrors: endless perfect posts, follower numbers spinning round and round, and unlocked profiles anyone - ANYONE - can stare into. He wants kids dazzled, comparing, and wide open. This week you forge the Profile Shield: learn why the 13+ sign stands at the door, make your profile private, sort followers from friends, scrub your drafts - and see through the highlight reel.",
       photoCaption: "Wk 17 - The Highlight Reel",
       ctaLabel: "Start the Mission →",
     },
@@ -61,7 +61,7 @@ export const WEEK_17: WeekContent = {
       type: "mission",
       objectives: [
         "Know why the 13+ sign exists",
-        "Frost the mirror - friends only",
+        "Make your profile PRIVATE - friends only",
         "Remember: feeds aren't real life",
       ],
     },
@@ -72,13 +72,13 @@ export const WEEK_17: WeekContent = {
       type: "info",
       title: "The 13+ Sign",
       content:
-        "Social media apps have a sign on the door: 13+. Here's the secret - that sign isn't a punishment, and it isn't because you're not clever enough. Those rooms are built grown-up-sized: strangers, pressure, tricks that take a teen-sized trick-radar to dodge. You're growing that radar RIGHT NOW, ring by ring, like a tree. The sign is really a golden SOON ticket: what's coming, and why you'll walk in stronger by waiting.",
+        "Social media apps have a sign on the door: 13+. Not a punishment - it means NOT YET. Those rooms are built for teenagers and grown-ups: strangers, pressure, and tricks that take practice to dodge. You're not missing out - you're still growing your trick-spotting powers, year by year, like a tree grows rings. When you reach the sign, you'll walk in strong - because you waited AND you trained.",
       bullets: [
         "Social media's door sign says 13+",
-        "Not a punishment - a fit-check",
+        "Not a punishment - it means NOT YET",
         "The rooms are grown-up-sized",
-        "Your trick-radar grows every year",
-        "13+ is a golden SOON ticket",
+        "Your trick-spotting powers grow every year",
+        "13+ means SOON - and you'll be ready",
       ],
       bulletIcons: ["🔰", "❓", "🚪", "🧠", "🌟"],
       emblem: "🔰",
@@ -146,7 +146,7 @@ export const WEEK_17: WeekContent = {
       },
       coachLines: {
         speaker: "layla",
-        lines: ["Start at the glowing centre ring - that one's you right now!"],
+        lines: ["Start at the glowing center ring - that one's you right now!"],
       },
     },
     // 5 - Prove: RECALL
@@ -168,7 +168,7 @@ export const WEEK_17: WeekContent = {
       type: "recap",
       concept: 1,
       total: 5,
-      learned: "The 13+ sign is a fit-check, not a punishment - a golden SOON ticket you grow towards, ring by ring.",
+      learned: "The 13+ sign isn't a punishment - it means NOT YET: a promise you grow toward, ring by ring.",
       next: "the frost switch that hides YOUR mirror from strangers",
       emblem: "🔰",
       narration: {
@@ -188,12 +188,12 @@ export const WEEK_17: WeekContent = {
       type: "info",
       title: "Frost the Mirror",
       content:
-        "A profile is like a mirror hanging in a public hall - unlocked, ANYONE walking past can stare into it: your photos, your posts, your name. The fix is one hero move: flip it to PRIVATE, so only people you actually know can see in. Remember the Raccoon's frosted doors last week? Frost on HIS doors hid tricks. Frost on YOUR mirror is armour - it hides YOU from strangers. Photos friends-only, messages friends-only, and the padlock ON.",
+        "A profile is like a mirror hanging in a public hall - unlocked, ANYONE walking past can stare into it: your photos, your posts, your name. The fix is one hero move: flip it to PRIVATE, so only people you actually know can see in. Remember the Raccoon's frosted doors last week? Frost on HIS doors hid tricks. Frost on YOUR mirror is armor - it hides YOU from strangers. Photos friends-only, messages friends-only, and the padlock ON.",
       bullets: [
         "A public profile = a mirror in a hall",
         "Anyone passing can stare in",
         "Flip it PRIVATE - friends only",
-        "Frost on YOUR mirror is armour",
+        "Frost on YOUR mirror is armor",
         "Photos, messages, padlock - all locked",
       ],
       bulletIcons: ["🚪", "👀", "🔒", "🛡️", "✅"],
@@ -205,7 +205,7 @@ export const WEEK_17: WeekContent = {
           "Unlocked? Anyone can stare in.",
           "Your photos. Your name. Anyone.",
           "[warmly] So we frost it: PRIVATE, friends only.",
-          "On his doors, frost hid tricks. On YOUR mirror, frost is armour.",
+          "On his doors, frost hid tricks. On YOUR mirror, frost is armor.",
           "[excited] The settings burrow is open - flip those switches!",
         ],
       },
@@ -288,7 +288,7 @@ export const WEEK_17: WeekContent = {
       speedMs: 5000,
       choices: [
         { text: "Account: PRIVATE 🔒", isCorrect: true },
-        { text: "Wallpaper: SPARKLES", isCorrect: false },
+        { text: "Messages: FRIENDS ONLY", isCorrect: false },
         { text: "Sound: EXTRA LOUD", isCorrect: false },
       ],
       praise: "Padlock found at shield speed - one flip, whole mirror frosted! ✓",
@@ -306,8 +306,8 @@ export const WEEK_17: WeekContent = {
         speaker: "layla",
         lines: [
           "[excited] Two powers - the mirror is frosted!",
-          "Strangers see armour. Friends see you.",
-          "[whispers] But the hall has a counter that spins like a fruit machine...",
+          "Strangers see armor. Friends see you.",
+          "[whispers] But the hall has a counter that never stops spinning...",
           "followers. Let's talk about that number.",
         ],
       },
@@ -372,7 +372,7 @@ export const WEEK_17: WeekContent = {
         },
         {
           id: "zain",
-          text: "Cousin Zain - beach holiday together every summer",
+          text: "Cousin Zain - beach vacation together every summer",
           icon: "🎉",
           categoryId: "heart",
           explanation: "Family you actually see and know - heart frame, always.",
@@ -382,14 +382,14 @@ export const WEEK_17: WeekContent = {
           text: "'Talent scout' who messaged: 'you could be FAMOUS!'",
           icon: "🌟",
           categoryId: "rope",
-          explanation: "Too-friendly-too-fast plus a big shiny promise - that's W3's stranger playbook in a new coat.",
+          explanation: "Too-friendly-too-fast plus a big shiny promise - that's the Week 3 stranger trick in a new coat.",
         },
         {
           id: "leo",
-          text: "Leo next door - garden football every weekend",
+          text: "Leo next door - backyard soccer every weekend",
           icon: "💪",
           categoryId: "heart",
-          explanation: "Real garden, real football, real friend - in the frame.",
+          explanation: "Real backyard, real soccer, real friend - in the frame.",
         },
         {
           id: "instaliker",
@@ -400,22 +400,22 @@ export const WEEK_17: WeekContent = {
         },
         {
           id: "gran",
-          text: "Gran - biggest fan of every drawing you post",
+          text: "Grandma - biggest fan of every drawing you post",
           icon: "🎁",
           categoryId: "heart",
-          explanation: "Gran knows you, loves you, and claps for every scribble - heart frame royalty.",
+          explanation: "Grandma knows you, loves you, and claps for every scribble - heart frame royalty.",
         },
         {
           id: "coinclub",
           text: "FreeCoinsClub - a 'friend' that only posts prize links",
           icon: "🪤",
           categoryId: "rope",
-          explanation: "That's not a person, it's a shop wearing a face - and its doors are W16's painted ones.",
+          explanation: "That's not a person, it's a store wearing a face - and its doors are painted doors from Week 16.",
         },
       ],
       hints: {
         tier1: "Ask the friend question: do you KNOW them in real life?",
-        tier2: "HEART = lunch table, family, next door, Gran. ROPE = never-met, too-flattering, always-watching, prize links.",
+        tier2: "HEART = lunch table, family, next door, Grandma. ROPE = never-met, too-flattering, always-watching, prize links.",
       },
       narration: {
         speaker: "layla",
@@ -436,13 +436,13 @@ export const WEEK_17: WeekContent = {
       type: "quickCheck",
       mode: "lie",
       prompt: "Is that true?",
-      raccoonLine: "10,000 followers means 10,000 friends! The bigger the number, the more loved you are - everybody knows that!",
+      raccoonLine: "followers are just viewers watching through the glass - they'd never even notice if you were sad. That's why I LOVE a big spinning counter... viewers ask no questions!",
       choices: [
-        { text: "TRUE", isCorrect: false },
-        { text: "FALSE", isCorrect: true },
+        { text: "TRUE", isCorrect: true },
+        { text: "FALSE", isCorrect: false },
       ],
-      praise: "Busted - followers are viewers; friends know your dog's name. The counter isn't love. ✓",
-      nudge: "Would 10,000 strangers notice if you were sad? Who would?",
+      praise: "Sharp ears - this time he told the TRUTH and twisted it. Followers ARE just viewers... which is exactly why friends beat counters. ✓",
+      nudge: "Careful - read it again. Is the first bit of what he said actually TRUE this time?",
     },
 
     // 14 - Recap · Concept 3 of 5
@@ -470,10 +470,10 @@ export const WEEK_17: WeekContent = {
       type: "info",
       title: "The Highlighter Check",
       content:
-        "Before any post goes anywhere, heroes run the highlighter over it. Risky bits fluoresce RED: your school's name, times and places you'll be, what you're wearing today - together they make a find-me map for strangers. Happy news with no clues glows GREEN: new trainers, a drawing you're proud of, a match your team won. The rule from Week 8 still rules: scrub the red, keep the green, THEN post.",
+        "Before any post goes anywhere, heroes run the highlighter over it. Risky bits glow RED: your school's name, times and places you'll be, what you're wearing today - together they make a find-me map for strangers. Happy news with no clues glows GREEN: new sneakers, a drawing you're proud of, a game your team won. The rule from Week 8 still rules: scrub the red, keep the green, THEN post.",
       bullets: [
         "Run the highlighter before posting",
-        "School names fluoresce RED",
+        "School names glow RED",
         "Times + places = a find-me map",
         "What-you're-wearing glows red too",
         "Scrub the red, keep the green, post",
@@ -498,7 +498,7 @@ export const WEEK_17: WeekContent = {
       introTitle: "The Draft-Post Highlighter",
       introSubtitle: "Pip's first-day-back post is ready to send. Run the highlighter over every line - see what glows red before it goes anywhere!",
       introIcon: "🔍",
-      photoTitle: "Pip's draft: 'First day back! Meet me at Sunnyside School gates at 3:15 - I'm the one in the red scarf! #NewTrainers'",
+      photoTitle: "Pip's draft: 'First day back! Meet me at Sunnyside School gates at 3:15 - I'm the one in the red scarf! #NewSneakers'",
       photoIcon: "💬",
       clues: [
         {
@@ -522,7 +522,7 @@ export const WEEK_17: WeekContent = {
         {
           id: "trainers",
           icon: "🎉",
-          label: "'#NewTrainers'",
+          label: "'#NewSneakers'",
           evidence: "GREEN GLOW: happy news, zero clues - no school, no time, no way to find anyone. This bit is post-safe!",
         },
       ],
@@ -542,7 +542,7 @@ export const WEEK_17: WeekContent = {
           {
             text: "Never post anything again, ever",
             isCorrect: false,
-            explanation: "Too far! The trainers line glowed green - posting isn't the danger, the DETAILS are.",
+            explanation: "Too far! The sneakers line glowed green - posting isn't the danger, the DETAILS are.",
           },
         ],
       },
@@ -551,7 +551,7 @@ export const WEEK_17: WeekContent = {
       completeLine: "Three red glows scrubbed, one green kept - the post is safe AND still fun.",
       hints: {
         tier1: "Highlight every line - which ones help a stranger FIND Pip?",
-        tier2: "School name, time, what-Pip's-wearing = red. Trainers with no clues = green.",
+        tier2: "School name, time, what-Pip's-wearing = red. Sneakers with no clues = green.",
       },
       narration: {
         speaker: "adam",
@@ -564,7 +564,7 @@ export const WEEK_17: WeekContent = {
       },
       coachLines: {
         speaker: "adam",
-        lines: ["Tap the first line and see what colour it glows!"],
+        lines: ["Tap the first line and see what color it glows!"],
       },
     },
     // 17 - Prove: RECALL (quick-sort)
@@ -573,7 +573,7 @@ export const WEEK_17: WeekContent = {
       mode: "recall",
       prompt: "Which line was safe to post?",
       choices: [
-        { text: "#NewTrainers - happy news, no clues", isCorrect: true },
+        { text: "#NewSneakers", isCorrect: true },
         { text: "'Sunnyside School gates'", isCorrect: false },
         { text: "'at 3:15'", isCorrect: false },
         { text: "'the one in the red scarf'", isCorrect: false },
@@ -606,7 +606,7 @@ export const WEEK_17: WeekContent = {
       type: "info",
       title: "The Backstage Truth",
       content:
-        "Walk the mirror hall and every post sparkles: perfect holidays, perfect goals, perfect hair. Here's the backstage truth: feeds are HIGHLIGHT REELS. People post their one shiny minute, never the boring Tuesday, the burnt toast, the fifteen soggy takes before the good photo. Comparing your real, messy, brilliant backstage to everyone else's highlight reel is a game nobody wins. When the sparkle makes you feel small: pause, flip to backstage, and remember - yours is real, and real is better.",
+        "Walk the mirror hall and every post sparkles: perfect vacations, perfect goals, perfect hair. Here's the backstage truth: feeds are HIGHLIGHT REELS. People post their one shiny minute, never the boring Tuesday, the burnt toast, the fifteen blurry photos it took to get the good one. Comparing your real, messy, brilliant life to everyone else's highlight reel is a game nobody wins. When the sparkle makes you feel small: put the screen down, remember the un-posted bits of YOUR day, and tell someone how you feel - yours is real, and real is better.",
       bullets: [
         "Feeds are highlight reels",
         "One shiny minute, posted",
@@ -653,7 +653,7 @@ export const WEEK_17: WeekContent = {
             {
               text: "Close the app and tell someone how it felt",
               isSafe: true,
-              consequence: "Mum reminds you: Gran printed your drawing and stuck it on her fridge. Six real people who love it beats ninety-four taps from viewers - and saying the feeling out loud shrinks it.",
+              consequence: "Mom reminds you: Grandma printed your drawing and stuck it on her fridge. Six real people who love it beats ninety-four taps from viewers - and saying the feeling out loud shrinks it.",
             },
             {
               text: "Post something you don't even like, to chase likes",
@@ -742,7 +742,7 @@ export const WEEK_17: WeekContent = {
         {
           text: "Flipping the account to PRIVATE, friends only",
           isStrong: true,
-          explanation: "One flip and the mirror frosts - strangers see armour, friends see you.",
+          explanation: "One flip and the mirror frosts - strangers see armor, friends see you.",
         },
         {
           text: "Accepting every follow to make the counter spin",
@@ -767,7 +767,7 @@ export const WEEK_17: WeekContent = {
         {
           text: "Believing a follower counter measures how loved you are",
           isStrong: false,
-          explanation: "Counters count taps. Love is Gran's fridge with your drawing on it.",
+          explanation: "Counters count taps. Love is Grandma's fridge with your drawing on it.",
         },
       ],
       narration: {
@@ -793,7 +793,7 @@ export const WEEK_17: WeekContent = {
       title: "Mission Complete!",
       subtitle: "Here's everything you mastered this week.",
       concepts: [
-        { id: "soon", label: "Soon Ticket", accent: "#ffd158", icon: "🔰", summary: "13+ isn't a wall - it's a promise you grow towards, ring by ring." },
+        { id: "soon", label: "Soon Ticket", accent: "#ffd158", icon: "🔰", summary: "13+ isn't a wall - it's a promise you grow toward, ring by ring." },
         { id: "frost", label: "Mirror Froster", accent: "#7df0ff", icon: "🔒", summary: "Private account, friends-only photos - you flip every switch strangers stare through." },
         { id: "heart", label: "Heart Framer", accent: "#7eff97", icon: "👪", summary: "Followers are viewers; friends know your dog's name. The frame stays honest." },
         { id: "scrub", label: "Draft Scrubber", accent: "#c084fc", icon: "🔍", summary: "School, times and what-you're-wearing glow red - you scrub before you post." },
@@ -838,13 +838,13 @@ export const WEEK_17: WeekContent = {
   // mirrors - is designed separately with the boss batch).
   bossQuestions: {
     easy: [
-      { question: "What does the 13+ sign on social media really mean?", answers: ["The rooms are grown-up-sized - you grow towards it", "You're not clever enough", "It's a punishment", "Nothing - ignore it"], correctIndex: 0, explanation: "A fit-check and a promise - every ring you grow makes you readier." },
-      { question: "The one flip that frosts your whole profile mirror is...", answers: ["Account: PRIVATE - friends only", "Wallpaper: sparkles", "Sound: loud", "Name: bigger letters"], correctIndex: 0, explanation: "Private means strangers see armour and friends see you." },
+      { question: "What does the 13+ sign on social media really mean?", answers: ["The rooms are grown-up-sized - you grow toward it", "You're not clever enough", "It's a punishment", "Nothing - ignore it"], correctIndex: 0, explanation: "Not a punishment - it means NOT YET, and every ring you grow makes you readier." },
+      { question: "The one flip that frosts your whole profile mirror is...", answers: ["Account: PRIVATE - friends only", "Messages: friends only", "Sound: loud", "Name: bigger letters"], correctIndex: 0, explanation: "Private means strangers see armor and friends see you." },
       { question: "A follower is...", answers: ["A viewer watching through the glass", "Automatically a friend", "Someone who loves you", "Family"], correctIndex: 0, explanation: "Friends know your dog's name - viewers just watch." },
     ],
     medium: [
-      { question: "Which draft line glows RED under the highlighter?", answers: ["'Meet me at the school gates at 3:15'", "'#NewTrainers'", "'I love drawing dragons'", "'We won our match!'"], correctIndex: 0, explanation: "Where-plus-when is a find-me map - it gets scrubbed before anything posts." },
-      { question: "10,000 followers means...", answers: ["10,000 viewers - the counter doesn't measure friendship", "10,000 friends", "You're 10,000 times more loved", "You win social media"], correctIndex: 0, explanation: "Counters count taps; love is Gran printing your drawing for her fridge." },
+      { question: "Which draft line glows RED under the highlighter?", answers: ["'Meet me at the school gates at 3:15'", "'#NewSneakers'", "'I love drawing dragons'", "'We won our game!'"], correctIndex: 0, explanation: "Where-plus-when is a find-me map - it gets scrubbed before anything posts." },
+      { question: "10,000 followers means...", answers: ["10,000 viewers - the counter doesn't measure friendship", "10,000 friends", "You're 10,000 times more loved", "You win social media"], correctIndex: 0, explanation: "Counters count taps; love is Grandma printing your drawing for her fridge." },
       { question: "Everyone's feed looks perfect and yours feels small. The truth is...", answers: ["Feeds are highlight reels - nobody posts the soggy Tuesday", "Everyone's life really is perfect", "You should post more", "Your life is boring"], correctIndex: 0, explanation: "One shiny minute gets posted; the burnt toast never does. Backstage is where real life lives." },
     ],
     hard: [
@@ -871,7 +871,7 @@ export const WEEK_17: WeekContent = {
     10: { adam: null, layla: { mood: "excited", message: "The mirror is FROSTED!" } }, // recap 2
     11: { adam: null, layla: { mood: "thinking", message: "That counter just spins..." } }, // learn: heart
     12: { adam: null, layla: { mood: "curious", message: "Heart frame or rope - sort them!" } }, // game: conveyorSort
-    13: { adam: { mood: "worried", message: "He's fibbing about followers - catch him!" }, layla: null }, // prove: lie
+    13: { adam: { mood: "worried", message: "Careful - is he ALWAYS fibbing? Listen close!" }, layla: null }, // prove: lie
     14: { adam: { mood: "excited", message: "The frame stays honest!" }, layla: null }, // recap 3
     15: { adam: { mood: "thinking", message: "Some lines glow red..." }, layla: null }, // learn: scrub
     16: { adam: { mood: "curious", message: "Run the highlighter - every line!" }, layla: null }, // game: clueBoard
