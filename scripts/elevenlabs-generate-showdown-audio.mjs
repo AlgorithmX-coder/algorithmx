@@ -121,6 +121,20 @@ const WEEKS = {
         "[excited] GG, Cyber Hero - the REAL kind! You kept the chat to game talk... you stayed right where the guards could see you... [laughs] and that free-mod trap? You read the label like a pro. [whispers] The phantom's gone. Poof. [excited] Your lobby, your rules! [warmly] Now THAT'S how a champion plays.",
     },
   },
+  7: {
+    slug: "w07",
+    villain: {
+      arrival: "[excited] Welcome to my arcade! Everything's FREE! Terms and raccoons apply!",
+      "phase-1": "Buy NOW! Think LATER! Preferably never!",
+      "phase-2": "[laughs] Every box a winner! Mostly the gray kind!",
+      "phase-3": "Type your password into the nice slot machine!",
+      escape: "[gasps] My coins! MY coins! I earned those! ...borrowed those!",
+    },
+    coach: {
+      victory:
+        "[excited] Ka-CHING, Cyber Hero! Hear that? Every single coin raining right back home! [laughs] You held the wallet shut through ALL that screaming... you found the tiny odds tag on every glittery box... [whispers] and nobody - nobody - got your password. [excited] The vacuum's running backwards! [warmly] Your family's money is safe, because you ask first and you never, ever rush.",
+    },
+  },
 };
 
 // ── Legacy Week-1 villain lines (public/audio/villain) - the no-repeat

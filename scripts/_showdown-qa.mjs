@@ -265,6 +265,66 @@ const STEPS = {
     { click: "Claim Badge" },
     { wait: 2200 }, { shot: "21-debrief" },
   ],
+  7: [
+    { wait: 3000 }, { shot: "01-entrance" },            // COIN VACUUM nameplate
+    { wait: 2000 }, { shot: "02-select" },              // vault-guard uniforms!
+    { clickLabel: "Play as ADAM" },
+    { wait: 900 }, { shot: "03-announce-trick1" },      // LEFT-OUT BUNDLE telegraph
+    { wait: 2400 },
+    { shot: "04-play-shieldhold" },                     // FOMO siren rages
+    { hold: "HOLD THE WALLET SHUT", ms: 6800 },
+    { wait: 400 }, { shot: "05-burnout" },              // ...and it RELISTS
+    { wait: 1800 }, { shot: "06-weakpoint-1" },
+    { click: "The rush trick - fast buyers don't think" },
+    { wait: 1300 }, { shot: "07-gear-popped" },
+    { wait: 3000 },
+    { shot: "08-announce-trick2" },                     // LOOT GAMBLE
+    { wait: 2200 },
+    { shot: "09-play-taptell" },
+    { click: "It sparkles like crazy" },                // deliberate wrong → teach
+    { wait: 700 }, { shot: "10-teach-lootbox" },
+    { click: "Got it!" },
+    { click: "Tiny tag: '1-in-100 chance'" },           // round 1 tell
+    { wait: 1400 },
+    { click: "Boxes have NO memory" },                  // round 2 tell
+    { wait: 1400 },
+    { click: "'Almost' is DESIGNED to sell more" },     // round 3 tell → playDone
+    { wait: 1600 }, { shot: "11-weakpoint-2" },
+    { click: "Exactly the same as box 1" },
+    { wait: 4300 },
+    { shot: "12-announce-trick3" },                     // FREE-COIN TRAP
+    { wait: 2200 },
+    { shot: "13-play-deflect" },
+    { click: "SPRING THE TRAP!" },                      // generator ✓
+    { wait: 1400 },
+    { click: "SPRING THE TRAP!" },                      // deliberate wrong on demo
+    { wait: 700 }, { shot: "14-teach-free" },
+    { click: "Got it!" },
+    { click: "TRULY FREE - OK" },                       // demo ✓
+    { wait: 1400 },
+    { click: "SPRING THE TRAP!" },                      // card ask ✓
+    { wait: 1400 },
+    { click: "TRULY FREE - OK" },                       // free weekend ✓
+    { wait: 1400 },
+    { click: "SPRING THE TRAP!" },                      // password ask ✓
+    { wait: 1400 },
+    { click: "TRULY FREE - OK" },                       // login star ✓ → playDone
+    { wait: 1600 }, { shot: "15-weakpoint-3" },
+    { click: "Your account" },
+    { wait: 3900 },
+    { shot: "16-wobbling" },
+    { wait: 1700 },
+    { shot: "17-finisher-ring" },
+    { hold: "CHARGE THE PIGGY-BANK LOCK", ms: 5600, shotDuring: "17b-charging" },
+    { wait: 800 }, { shot: "18-payoff" },               // COINS RAINED BACK!
+    { wait: 2200 }, { shot: "19-victory" },
+    { click: "Claim the win" },
+    { wait: 2500 }, { shot: "20-outro-video" },
+    { click: "Skip video" },
+    { wait: 1800 }, { shot: "21-badge-scene" },
+    { click: "Claim Badge" },
+    { wait: 2200 }, { shot: "22-debrief" },
+  ],
 };
 
 const steps = STEPS[week];

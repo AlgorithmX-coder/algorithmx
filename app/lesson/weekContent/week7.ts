@@ -683,6 +683,139 @@ export const WEEK_7: WeekContent = {
     { type: "completion" },
   ],
 
+  // W7 SHOWDOWN — THE COIN VACUUM (design doc §W7: block the trap
+  // onslaught in the arcade vault). P1 shieldHold FOMO siren that
+  // relists after "expiring" · P2 tapTell loot-box glamour-popping ·
+  // P3 deflectSort coin generators vs truly-free · finisher = the
+  // Piggy-Bank Lock (vacuum runs in reverse).
+  bossShowdown: {
+    machine: {
+      name: "THE COIN VACUUM",
+      tagline: "A greedy vacuum that slurps up pocket money",
+      art: {
+        intact: "/game/bosses/w07-coinvacuum-intact.png",
+        damaged: "/game/bosses/w07-coinvacuum-damaged.png",
+        defeated: "/game/bosses/w07-coinvacuum-defeated.png",
+      },
+      arena: "/game/backgrounds/w07-arena-vault.png",
+      accent: "#e3b341",
+      glow: "rgba(227,179,65,0.55)",
+    },
+    heroSprites: {
+      adam: {
+        idle: "/game/characters/w07/adam-guard-idle.png",
+        attack: "/game/characters/w07/adam-guard-attack.png",
+        celebrate: "/game/characters/w07/adam-guard-celebrate.png",
+      },
+      layla: {
+        idle: "/game/characters/w07/layla-guard-idle.png",
+        attack: "/game/characters/w07/layla-guard-attack.png",
+        celebrate: "/game/characters/w07/layla-guard-celebrate.png",
+      },
+    },
+    phases: [
+      // P1 · LEFT-OUT BUNDLE → SHIELD-HOLD: the FOMO siren burns out...
+      // and the "gone forever" offer instantly relists. The teach, visible.
+      {
+        kind: "shieldHold",
+        attack: 0,
+        // Coach copy must NOT contain the holdLabel phrase - the QA
+        // driver's text-match would grab the banner instead of the button.
+        coach: "Don't let the siren rush you. Press and KEEP pressing!",
+        holdLabel: "HOLD THE WALLET SHUT",
+        holdIcon: "🔒",
+        holdSecs: 6,
+        barrage: [
+          "LAST CHANCE!! 99% OFF!!",
+          "ENDS IN 10... 9... 8...!",
+          "Everyone ELSE already bought it!",
+          "GONE FOREVER at zero!!",
+          "Don't think! Just tap BUY!",
+        ],
+        burnoutLine: "Zero! And look - the 'gone forever' deal is already BACK. Fair offers wait. Rushed offers are the trick.",
+      },
+      // P2 · LOOT GAMBLE → TAP-THE-TELL: pop the glamour on 3 boxes.
+      {
+        kind: "tapTell",
+        attack: 1,
+        coach: "Pop the box's glamour - tap the truth!",
+        rounds: [
+          {
+            id: "odds",
+            prompt: "A golden loot box: 'RARE SKIN INSIDE?!'",
+            promptIcon: "🎁",
+            options: [
+              { id: "sparkle", label: "It sparkles like crazy", icon: "✨", isTell: false, note: "Sparkle is free paint. Hunt for the hidden ODDS tag." },
+              { id: "odds", label: "Tiny tag: '1-in-100 chance'", icon: "🔍", isTell: true, note: "" },
+              { id: "gold", label: "It's painted gold", icon: "🎨", isTell: false, note: "Gold paint costs them nothing. Hunt for the hidden ODDS tag." },
+            ],
+          },
+          {
+            id: "memory",
+            prompt: "The next box whispers: 'You're DUE a win!'",
+            promptIcon: "🎲",
+            options: [
+              { id: "memory", label: "Boxes have NO memory", icon: "🧠", isTell: true, note: "" },
+              { id: "due", label: "You HAVE opened nine already", icon: "🔢", isTell: false, note: "Nine opens don't change box ten. What do boxes remember? Nothing!" },
+              { id: "nice", label: "It talks very nicely", icon: "💬", isTell: false, note: "Nice whispers are part of the machine. What do boxes remember? Nothing!" },
+            ],
+          },
+          {
+            id: "almost",
+            prompt: "One more box: 'ALMOST! SO close! One more?'",
+            promptIcon: "🌀",
+            options: [
+              { id: "luck", label: "Your luck is warming up", icon: "⭐", isTell: false, note: "Luck doesn't warm up - that feeling IS the trick. Look again." },
+              { id: "cheap", label: "It's only a few coins", icon: "💎", isTell: false, note: "Small coins are still real money. Find the 'almost' trick." },
+              { id: "designed", label: "'Almost' is DESIGNED to sell more", icon: "👀", isTell: true, note: "" },
+            ],
+          },
+        ],
+      },
+      // P3 · FREE-COIN TRAP → DEFLECT-SORT: generators vs truly free.
+      {
+        kind: "deflectSort",
+        attack: 2,
+        coach: "Traps ASK for stuff. Real free asks for nothing!",
+        actLabel: "SPRING THE TRAP!",
+        actIcon: "🪤",
+        passLabel: "TRULY FREE - OK",
+        items: [
+          { id: "gen", label: "'FREE 10,000 V-Bucks generator!'", icon: "🪤", act: true, note: "Free game money doesn't exist - it wants your password. Spring it!" },
+          { id: "demo", label: "Free demo from the real game shop", icon: "🎮", act: false, note: "Real demos ask for NOTHING. Genuinely free - enjoy!" },
+          { id: "card", label: "'Free coins - just add a card number!'", icon: "🔢", act: true, note: "'Free' plus a card number is never free. Spring it!" },
+          { id: "weekend", label: "Free-play weekend from the maker", icon: "🎉", act: false, note: "Makers run free weekends all the time - no catch, no asks." },
+          { id: "pw", label: "'Enter your password for coins!'", icon: "🔑", act: true, note: "The password IS the prize they're after. Spring it!" },
+          { id: "star", label: "Daily login star - no asks at all", icon: "⭐", act: false, note: "Asks for nothing, gives a little - that's genuinely free." },
+        ],
+      },
+    ],
+    weakPoints: [
+      { question: "'Only 4 minutes left - BUY NOW!' What's really going on?", answers: ["The rush trick - fast buyers don't think", "A genuine emergency", "The shop is closing forever", "A helpful reminder"], correctIndex: 0, explanation: "Countdowns exist to stop your thinking. Real deals can wait." },
+      { question: "You opened 9 loot boxes. What are box 10's odds?", answers: ["Exactly the same as box 1", "Guaranteed rare now", "Double the chance", "A little bit better than before"], correctIndex: 0, explanation: "Boxes have no memory - the jar resets every single time." },
+      { question: "'FREE V-Bucks - just enter your password!' What do they want?", answers: ["Your account", "To be generous", "Only your username, nothing important", "Nothing"], correctIndex: 0, explanation: "Free game money doesn't exist - the password IS the prize they're after." },
+    ],
+    finisher: {
+      chargeLabel: "CHARGE THE PIGGY-BANK LOCK",
+      chargeIcon: "🔒",
+      chargeSecs: 5,
+      milestones: ["Clicking shut…", "Halfway locked! Keep holding!", "LOCKED TIGHT! LET GO!"],
+      payoffTitle: "COINS RAINED BACK!",
+      payoffLine: "The vacuum ran in reverse! Real money stays with your family - and every buy starts with an ask.",
+    },
+    villain: {
+      arrival: "Welcome to my arcade! Everything's FREE! Terms and raccoons apply!",
+      phases: [
+        "Buy NOW! Think LATER! Preferably never!",
+        "Every box a winner! Mostly the gray kind!",
+        "Type your password into the nice slot machine!",
+      ],
+      escape: "My coins! MY coins! I earned those! ...borrowed those!",
+    },
+    voiceSlug: "w07",
+  },
+  badgeArt: "/cyberheroes/badges/week-07-wallet-guard.png",
+
   // Week-lane attack theatre: money tricks only (message scams = W4;
   // game-lobby people tricks = W6).
   bossAttacks: [
