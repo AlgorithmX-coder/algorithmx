@@ -819,6 +819,137 @@ export const WEEK_13: WeekContent = {
     { type: "completion" },
   ],
 
+  // Bespoke W13 showdown: drain the Battery Leech's stolen hoard in the
+  // garage-lair. Heroes fight in pajamas - it's a power-down week.
+  bossShowdown: {
+    machine: {
+      name: "THE BATTERY LEECH",
+      tagline: "A greedy hose that slurps kid-charge straight into his hoard",
+      art: {
+        intact: "/game/bosses/w13-batteryleech-intact.png",
+        damaged: "/game/bosses/w13-batteryleech-damaged.png",
+        defeated: "/game/bosses/w13-batteryleech-defeated.png",
+      },
+      arena: "/game/backgrounds/w13-arena-garage.png",
+      accent: "#7eff97",
+      glow: "rgba(126,255,151,0.55)",
+    },
+    heroSprites: {
+      adam: {
+        idle: "/game/characters/w13/adam-pj-idle.png",
+        attack: "/game/characters/w13/adam-pj-attack.png",
+        celebrate: "/game/characters/w13/adam-pj-celebrate.png",
+      },
+      layla: {
+        idle: "/game/characters/w13/layla-pj-idle.png",
+        attack: "/game/characters/w13/layla-pj-attack.png",
+        celebrate: "/game/characters/w13/layla-pj-celebrate.png",
+      },
+    },
+    phases: [
+      // P1 · ONE MORE EPISODE → SHIELD-HOLD: hold your own ending until the
+      // auto-next spiral winds down and the credits roll. (Coach copy must
+      // not contain the holdLabel phrase - QA text-match rule.)
+      {
+        kind: "shieldHold",
+        attack: 0,
+        coach: "Endings belong to the hero. Press and keep pressing till the credits roll!",
+        holdLabel: "YOU CHOOSE THE ENDING",
+        holdIcon: "✋",
+        holdSecs: 6,
+        barrage: [
+          "One more! Just ONE more!",
+          "The next one's already loading!",
+          "You can stop after this one! Or the next!",
+          "Credits are BORING! Skip! Skip!",
+          "The spiral never ends, kid!",
+        ],
+        burnoutLine: "The spiral winds down... click. Credits roll - YOUR ending, picked on purpose.",
+      },
+      // P2 · UNDER-THE-COVERS SCREEN → TAP-THE-TELL: the dark bedroom,
+      // one sneaky glow per round marching itself to the charging garage.
+      {
+        kind: "tapTell",
+        attack: 1,
+        coach: "A dark bedroom should be DARK. Tap the sneaky glow!",
+        rounds: [
+          {
+            id: "duvet",
+            prompt: "Lights out... but something's glowing under the duvet.",
+            promptIcon: "🤫",
+            options: [
+              { id: "tablet", label: "A tablet hiding under the duvet", icon: "🤫", isTell: true, note: "" },
+              { id: "flashlight", label: "A flashlight that's switched off", icon: "💡", isTell: false, note: "Off means off - it's just waiting quietly. Find the thing that's GLOWING." },
+              { id: "teddy", label: "A teddy bear on the pillow", icon: "🎁", isTell: false, note: "Teddies don't glow - they're night-time professionals. Find the sneaky light!" },
+            ],
+          },
+          {
+            id: "pillow",
+            prompt: "One glow down! But the pillow's edges look... bright.",
+            promptIcon: "🤫",
+            options: [
+              { id: "sock", label: "A rolled-up cozy sock ball", icon: "🎁", isTell: false, note: "Socks are many things, but glowy isn't one. Keep hunting!" },
+              { id: "gamescreen", label: "A game screen tucked under the pillow", icon: "🎮", isTell: true, note: "" },
+              { id: "book", label: "A bedtime book, bookmark in", icon: "📋", isTell: false, note: "Paper doesn't glow - books recharge you the quiet way. Find the light!" },
+            ],
+          },
+          {
+            id: "curtain",
+            prompt: "So close! One last glow behind the curtain...",
+            promptIcon: "🤫",
+            options: [
+              { id: "moon", label: "The moon doing its job", icon: "💡", isTell: false, note: "That glow is ALLOWED - moonlight runs the night's biggest recharge. Look lower!" },
+              { id: "snowglobe", label: "A snow globe on the windowsill", icon: "🎁", isTell: false, note: "Sparkly, but not switched on. One sneaky screen left!" },
+              { id: "stream", label: "A screen still streaming behind the curtain", icon: "🌀", isTell: true, note: "" },
+            ],
+          },
+        ],
+      },
+      // P3 · BATTERY DRAIN → DEFLECT-SORT (inverted): CATCH the refills
+      // into your battery, let the drains bounce off.
+      {
+        kind: "deflectSort",
+        attack: 2,
+        coach: "Refills go IN the battery. Everything else bounces!",
+        actLabel: "CATCH THE REFILL!",
+        actIcon: "⚡",
+        passLabel: "DRAIN - LET IT BOUNCE",
+        items: [
+          { id: "sleep", label: "A big night's sleep", icon: "⏸️", act: true, note: "Sleep is the night's mega-refill - the battery fills fastest with your eyes closed. Catch it!" },
+          { id: "episode", label: "One more episode... again", icon: "🌀", act: false, note: "Fun? Sure. But episodes USE charge - let it bounce off the battery." },
+          { id: "catch", label: "A game of catch outside", icon: "✋", act: true, note: "Moving your body pours charge straight back in. Catch it!" },
+          { id: "cartoons", label: "Cartoons with the sound off", icon: "🙈", act: false, note: "Sound off is still a screen ON - a disguise, not a refill. Bounce it!" },
+          { id: "people", label: "Board games with your people", icon: "👪", act: true, note: "Your people are the warmest refill there is. Catch it!" },
+          { id: "scroll", label: "A midnight scrolling marathon", icon: "💬", act: false, note: "Scrolling glows, and glow means USING charge - and at midnight it steals sleep too. Bounce it!" },
+        ],
+      },
+    ],
+    weakPoints: [
+      { question: "Why do games never feel 'finished'?", answers: ["They're built that way - so YOU choose the ending", "Because you're bad at them", "They finish after one more level, promise", "Games always finish by themselves"], correctIndex: 0, explanation: "Waiting for a game to feel finished is waiting forever - pros pick their own ending." },
+      { question: "Where do devices sleep at night?", answers: ["In the charging garage, outside the bedroom", "Under the pillow", "Under the covers", "On the bed, volume up"], correctIndex: 0, explanation: "Park the screen, and the moon handles the biggest recharge of all." },
+      { question: "What refills your power bar?", answers: ["Sleep, snacks, moving and your people", "A brighter screen", "Louder volume", "Extra episodes"], correctIndex: 0, explanation: "Screens are fun and they USE charge - the refills come from everywhere else." },
+    ],
+    finisher: {
+      chargeLabel: "CHARGE THE POWER-DOWN",
+      chargeIcon: "⏸️",
+      chargeSecs: 5,
+      milestones: ["Finish... bye... off…", "The batteries are flying home…", "NIGHT-LIGHT ON! LET GO!"],
+      payoffTitle: "POWERED DOWN!",
+      payoffLine: "Every stolen battery zips home to its kid, glowing full. The leech's hose flops flat, and the whole lair dims to one cozy night-light. Fun had, charge kept - the ending was YOURS.",
+    },
+    villain: {
+      arrival: "Shhh! Welcome to my battery collection! All donated! Involuntarily!",
+      phases: [
+        "The next episode picked ITSELF! Democracy!",
+        "A little glow under the duvet never hurt anyone! Much!",
+        "Your charge tastes like WEEKENDS!",
+      ],
+      escape: "Give those BACK! Do you know how long I leeched for those?!",
+    },
+    voiceSlug: "w13",
+  },
+  badgeArt: "/cyberheroes/badges/week-13-battery-keeper.png",
+
   // Week-lane attack theatre: battery tricks only (autoplay's PULL was
   // W10's lane; in-game spending W7's; this is drain/sleep/stopping).
   bossAttacks: [

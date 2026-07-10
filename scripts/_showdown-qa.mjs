@@ -598,6 +598,66 @@ const STEPS = {
     { click: "Claim Badge" },
     { wait: 2200 }, { shot: "22-debrief" },
   ],
+  13: [
+    { wait: 3000 }, { shot: "01-entrance" },            // BATTERY LEECH nameplate
+    { wait: 2000 }, { shot: "02-select" },              // pajama heroes!
+    { clickLabel: "Play as ADAM" },
+    { wait: 900 }, { shot: "03-announce-trick1" },      // ONE MORE EPISODE telegraph
+    { wait: 2400 },
+    { shot: "04-play-shieldhold" },                     // the auto-next spiral
+    { hold: "YOU CHOOSE THE ENDING", ms: 6800, shotDuring: "04b-holding" },
+    { wait: 400 }, { shot: "05-burnout" },              // credits roll
+    { wait: 1800 }, { shot: "06-weakpoint-1" },
+    { click: "They're built that way - so YOU choose the ending" },
+    { wait: 1300 }, { shot: "07-gear-popped" },
+    { wait: 3000 },
+    { shot: "08-announce-trick2" },                     // UNDER-THE-COVERS SCREEN
+    { wait: 2200 },
+    { shot: "09-play-taptell" },                        // the dark bedroom
+    { click: "A teddy bear on the pillow" },            // deliberate wrong → teach
+    { wait: 700 }, { shot: "10-teach-glow" },
+    { click: "Got it!" },
+    { click: "A tablet hiding under the duvet" },
+    { wait: 1400 },
+    { click: "A game screen tucked under the pillow" },
+    { wait: 1400 },
+    { click: "A screen still streaming behind the curtain" }, // → playDone
+    { wait: 1600 }, { shot: "11-weakpoint-2" },
+    { click: "In the charging garage, outside the bedroom" },
+    { wait: 4300 },
+    { shot: "12-announce-trick3" },                     // BATTERY DRAIN
+    { wait: 2200 },
+    { shot: "13-play-deflect" },                        // refills vs drains
+    { click: "DRAIN - LET IT BOUNCE" },                 // deliberate wrong on sleep
+    { wait: 700 }, { shot: "14-teach-refill" },
+    { click: "Got it!" },
+    { click: "CATCH THE REFILL!" },                     // sleep ✓
+    { wait: 1400 },
+    { click: "DRAIN - LET IT BOUNCE" },                 // one more episode ✓
+    { wait: 1400 },
+    { click: "CATCH THE REFILL!" },                     // catch outside ✓
+    { wait: 1400 },
+    { click: "DRAIN - LET IT BOUNCE" },                 // muted cartoons ✓
+    { wait: 1400 },
+    { click: "CATCH THE REFILL!" },                     // board games ✓
+    { wait: 1400 },
+    { click: "DRAIN - LET IT BOUNCE" },                 // midnight scroll ✓ → playDone
+    { wait: 1600 }, { shot: "15-weakpoint-3" },
+    { click: "Sleep, snacks, moving and your people" },
+    { wait: 3900 },
+    { shot: "16-wobbling" },
+    { wait: 1700 },
+    { shot: "17-finisher-ring" },
+    { hold: "CHARGE THE POWER-DOWN", ms: 5600, shotDuring: "17b-charging" },
+    { wait: 800 }, { shot: "18-payoff" },               // POWERED DOWN!
+    { wait: 2200 }, { shot: "19-victory" },
+    { click: "Claim the win" },
+    { wait: 2500 }, { shot: "20-outro-video" },
+    { click: "Skip video" },
+    { wait: 1800 }, { shot: "21-badge-scene" },
+    { click: "Claim Badge" },
+    { wait: 2200 }, { shot: "22-debrief" },
+  ],
 };
 
 const steps = STEPS[week];

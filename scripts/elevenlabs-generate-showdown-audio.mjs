@@ -207,6 +207,20 @@ const WEEKS = {
         "[excited] MAP SHREDDED, Cyber Hero! You held that mirror till the rage went cold... [laughs] thought before the snowball rolled... and swept every pointy track off the ridge - the dragon drawing stays, of course. [gasps] And the hound? A total puppy now. [warmly] The snow is yours to decorate, Trail Ranger. Future-you is already smiling at your tracks.",
     },
   },
+  13: {
+    slug: "w13",
+    villain: {
+      arrival: "[whispers] Shhh! Welcome to my battery collection! [excited] All donated! [laughs] Involuntarily!",
+      "phase-1": "[excited] The next episode picked ITSELF! Democracy!",
+      "phase-2": "[whispers] A little glow under the duvet never hurt anyone! [laughs] Much!",
+      "phase-3": "[excited] Your charge tastes like WEEKENDS!",
+      escape: "[gasps] Give those BACK! Do you know how long I leeched for those?!",
+    },
+    coach: {
+      victory:
+        "[excited] POWERED DOWN, Cyber Hero! You picked your OWN ending and let the credits roll... [laughs] caught every sneaky glow - duvet, pillow, curtain... and filled your battery with the real stuff: sleep, snacks, moving, your people. [gasps] And the stolen batteries? ALL flew home. [warmly] Fun had, charge kept, screens in the garage. That's a Battery Keeper's night.",
+    },
+  },
 };
 
 // ── Legacy Week-1 villain lines (public/audio/villain) - the no-repeat
