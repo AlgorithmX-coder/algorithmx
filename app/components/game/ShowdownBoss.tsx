@@ -39,6 +39,7 @@ import type {
   ShowdownCounterCard,
   ShowdownOrderStrike,
   ShowdownDeflectSort,
+  ShowdownRush,
 } from "@/app/lesson/weekContent/types";
 import type { BossEndStats, BossPhaseResult } from "@/app/components/game/BossBattle";
 import {
@@ -144,6 +145,8 @@ export default function ShowdownBoss({
   }, [reduce, shakeControls]);
   const [popups, setPopups] = useState<{ id: number; text: string; colour: string; x: number; y: number }[]>([]);
   const [payoffStamp, setPayoffStamp] = useState(false);
+  // W20 finale: the Graduate's Protocol gates the charge (finisher.protocol).
+  const [protocolDone, setProtocolDone] = useState(false);
 
   const arenaRef = useRef<HTMLDivElement>(null);
   const particlesRef = useRef<ParticleAPI | null>(null);
@@ -684,6 +687,7 @@ export default function ShowdownBoss({
               {phase.kind === "counterCard" && <CounterCardPhase data={phase} pkey={`p${phaseIdx}`} judge={judge} done={playDone} reduce={reduce} accent={attack.color} />}
               {phase.kind === "orderStrike" && <OrderStrikePhase data={phase} pkey={`p${phaseIdx}`} judge={judge} done={playDone} reduce={reduce} accent={attack.color} />}
               {phase.kind === "deflectSort" && <DeflectSortPhase data={phase} pkey={`p${phaseIdx}`} judge={judge} done={playDone} reduce={reduce} accent={attack.color} />}
+              {phase.kind === "rush" && <RushPhase data={phase} pkey={`p${phaseIdx}`} paused={!!teach} judge={judge} done={playDone} reduce={reduce} accent={attack.color} />}
             </motion.div>
           )}
 
@@ -746,7 +750,29 @@ export default function ShowdownBoss({
             </motion.div>
           )}
 
-          {stage === "finisher" && (
+          {stage === "finisher" && showdown.finisher.protocol && !protocolDone && (
+            <motion.div
+              key="finisher-protocol"
+              initial={reduce ? false : { opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0 }}
+              style={{ flex: 1, display: "flex", flexDirection: "column", zIndex: 15, minHeight: 0 }}
+            >
+              <CoachBanner text={showdown.finisher.protocol.coach} accent={accent} reduce={reduce} />
+              <OrderStrikePhase
+                data={{ kind: "orderStrike", attack: 0, coach: "", intro: showdown.finisher.protocol.intro, steps: showdown.finisher.protocol.steps }}
+                pkey="finisher-protocol"
+                judge={judge}
+                done={() => {
+                  playSound("phaseChange");
+                  setProtocolDone(true);
+                }}
+                reduce={reduce}
+                accent={accent}
+              />
+            </motion.div>
+          )}
+          {stage === "finisher" && (!showdown.finisher.protocol || protocolDone) && (
             <FinisherStage
               key="finisher"
               data={showdown.finisher}
@@ -1315,6 +1341,190 @@ function DeflectSortPhase({ data, pkey, judge, done, reduce, accent }: { data: S
       <div style={{ textAlign: "center", fontFamily: MONO, fontSize: 11, fontWeight: 800, color: "#f6f9ff", textShadow: "0 1px 6px rgba(13,24,58,0.8)" }}>
         {idx + (verdict ? 1 : 0)} / {data.items.length} SORTED
       </div>
+    </div>
+  );
+}
+
+/* ─────────────────────── THE RUSH (W20 finale) ───────────────────────
+   Rapid single-beat callbacks from across the course — one era per
+   beat, its week named on screen as it lands. "Rapid" is theatre, not
+   a timer: tap beats teach and retry, hold beats are short and
+   deadline-free, so the finale keeps the kid-first contract. */
+
+function RushPhase({ data, pkey, paused, judge, done, reduce, accent }: { data: ShowdownRush; pkey: string; paused: boolean; judge: JudgeFn; done: () => void; reduce: boolean; accent: string }) {
+  const [beatIdx, setBeatIdx] = useState(0);
+  const [landed, setLanded] = useState(false);
+  const finishedRef = useRef(false);
+  const beat = data.beats[Math.min(beatIdx, data.beats.length - 1)];
+  // Shuffle tap options per beat — the counter never sits in a fixed slot.
+  const options = useMemo(() => {
+    const opts = beat.options ?? [];
+    return seededOrder(opts.length, 2741 + beat.id.length * 53 + beatIdx * 89).map((i) => opts[i]);
+  }, [beat, beatIdx]);
+
+  const advance = useCallback(() => {
+    setLanded(true);
+    playSound("lock");
+    window.setTimeout(() => {
+      if (beatIdx + 1 >= data.beats.length) {
+        finishedRef.current = true;
+        done();
+      } else {
+        setLanded(false);
+        setBeatIdx((i) => i + 1);
+      }
+    }, 1500);
+  }, [beatIdx, data.beats.length, done]);
+
+  const tap = (opt: NonNullable<ShowdownRush["beats"][number]["options"]>[number], i: number, e: React.MouseEvent) => {
+    if (landed || finishedRef.current) return;
+    if (opt.isRight) {
+      judge(`${pkey}-${beat.id}`, true, i, i, undefined, { x: e.clientX, y: e.clientY });
+      advance();
+    } else {
+      const right = options.findIndex((o) => o.isRight);
+      judge(`${pkey}-${beat.id}`, false, i, right, { title: "Not that one!", explanation: opt.note }, { x: e.clientX, y: e.clientY });
+    }
+  };
+
+  return (
+    <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: 14, minHeight: 0, justifyContent: "center" }}>
+      {/* The incoming beat */}
+      <motion.div
+        key={beat.id}
+        initial={reduce ? false : { opacity: 0, x: 90 }}
+        animate={{ opacity: 1, x: 0 }}
+        style={{ margin: "0 auto", width: "100%", maxWidth: 560, textAlign: "center", padding: "14px 18px", borderRadius: 16, background: "rgba(255,255,255,0.95)", border: `3px solid ${accent}`, boxShadow: "0 12px 30px -14px rgba(10,14,34,0.55)" }}
+      >
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 10 }}>
+          <PixIcon emoji={beat.promptIcon} size={34} />
+          <span style={{ fontSize: 17, fontWeight: 900, color: "#1d2b4f", lineHeight: 1.3 }}>{beat.prompt}</span>
+        </div>
+      </motion.div>
+
+      {landed ? (
+        /* The callback names the era as the beat lands. */
+        <motion.div
+          key={`landed-${beat.id}`}
+          initial={reduce ? false : { scale: 1.6, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ type: "spring", stiffness: 240, damping: 15 }}
+          style={{ margin: "0 auto", textAlign: "center" }}
+        >
+          <div style={{ display: "inline-block", padding: "12px 28px", borderRadius: 16, background: "linear-gradient(180deg, #5eeaa5, #178a56)", border: "3px solid #a4f5cd", boxShadow: "0 16px 38px -14px rgba(23,138,86,0.8)" }}>
+            <div style={{ fontFamily: MONO, fontSize: 12, fontWeight: 900, letterSpacing: "0.18em", color: "#dcfce9" }}>⚡ {beat.callback} ⚡</div>
+            <div style={{ fontSize: 19, fontWeight: 900, color: "#06281a", marginTop: 3 }}>{beat.landedLine}</div>
+          </div>
+        </motion.div>
+      ) : beat.mode === "tap" ? (
+        <div style={{ display: "flex", flexWrap: "wrap", gap: 14, justifyContent: "center" }}>
+          {options.map((opt, i) => (
+            <motion.button
+              key={opt.id}
+              onClick={(e) => tap(opt, i, e)}
+              animate={reduce ? { scale: 1 } : { scale: [1, 1.05, 1] }}
+              transition={reduce ? undefined : { duration: 1.4, repeat: Infinity, ease: "easeInOut", delay: i * 0.22 }}
+              whileTap={reduce ? undefined : { scale: 0.92 }}
+              style={{
+                display: "flex", flexDirection: "column", alignItems: "center", gap: 6,
+                width: 168, padding: "16px 12px", borderRadius: 16,
+                cursor: "pointer", touchAction: "manipulation", fontFamily: "inherit",
+                background: "rgba(255,255,255,0.94)",
+                border: `3px solid ${accent}55`,
+                color: "#1d2b4f",
+                boxShadow: "0 14px 30px -14px rgba(10,14,34,0.55)",
+                fontSize: 13.5, fontWeight: 800, lineHeight: 1.25,
+              }}
+            >
+              <PixIcon emoji={opt.icon} size={34} />
+              {opt.label}
+            </motion.button>
+          ))}
+        </div>
+      ) : (
+        <RushHoldBeat key={`hold-${beat.id}`} beat={beat} pkey={pkey} paused={paused} judge={judge} advance={advance} reduce={reduce} accent={accent} />
+      )}
+
+      <div style={{ textAlign: "center", fontFamily: MONO, fontSize: 11, fontWeight: 800, color: "#f6f9ff", textShadow: "0 1px 6px rgba(13,24,58,0.8)" }}>
+        BEAT {Math.min(beatIdx + 1, data.beats.length)} / {data.beats.length}
+      </div>
+    </div>
+  );
+}
+
+/** One short hold inside the RUSH — keyed by beat so its charge state
+ *  resets per beat. Release pauses, never resets. No deadline. */
+function RushHoldBeat({ beat, pkey, paused, judge, advance, reduce, accent }: { beat: ShowdownRush["beats"][number]; pkey: string; paused: boolean; judge: JudgeFn; advance: () => void; reduce: boolean; accent: string }) {
+  const [heldMs, setHeldMs] = useState(0);
+  const [holding, setHolding] = useState(false);
+  const holdingRef = useRef(false);
+  const pausedRef = useRef(paused);
+  const firedRef = useRef(false);
+  const needMs = (beat.holdSecs ?? 2) * 1000;
+
+  useEffect(() => {
+    holdingRef.current = holding;
+    pausedRef.current = paused;
+  }, [holding, paused]);
+
+  useEffect(() => {
+    const tick = 100;
+    const id = window.setInterval(() => {
+      if (!holdingRef.current || pausedRef.current || firedRef.current) return;
+      setHeldMs((ms) => {
+        const next = ms + tick;
+        if (next >= needMs && !firedRef.current) {
+          firedRef.current = true;
+          window.setTimeout(() => {
+            judge(`${pkey}-${beat.id}`, true, 0, 0);
+            advance();
+          }, 0);
+        }
+        return next;
+      });
+    }, tick);
+    return () => window.clearInterval(id);
+  }, [needMs, judge, advance, pkey, beat.id]);
+
+  const pct = Math.min(100, Math.round((heldMs / needMs) * 100));
+
+  return (
+    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 10 }}>
+      <div style={{ position: "relative", width: 96, height: 96, display: "flex", alignItems: "center", justifyContent: "center" }}>
+        <svg width="96" height="96" viewBox="0 0 96 96" style={{ position: "absolute", inset: 0, transform: "rotate(-90deg)" }}>
+          <circle cx="48" cy="48" r="41" fill="rgba(255,255,255,0.85)" stroke="rgba(13,24,58,0.2)" strokeWidth="8" />
+          <circle
+            cx="48" cy="48" r="41" fill="none" stroke={accent} strokeWidth="8" strokeLinecap="round"
+            strokeDasharray={2 * Math.PI * 41}
+            strokeDashoffset={(1 - pct / 100) * 2 * Math.PI * 41}
+            style={{ transition: "stroke-dashoffset 120ms linear" }}
+          />
+        </svg>
+        <div style={{ zIndex: 1, textAlign: "center" }}>
+          <PixIcon emoji={beat.holdIcon ?? "🛡️"} size={30} />
+          <div style={{ fontFamily: MONO, fontSize: 12, fontWeight: 900, color: "#1d2b4f" }}>{pct}%</div>
+        </div>
+      </div>
+
+      <motion.button
+        onPointerDown={() => { setHolding(true); playSound("click"); }}
+        onPointerUp={() => setHolding(false)}
+        onPointerLeave={() => setHolding(false)}
+        animate={!holding && !reduce ? { scale: [1, 1.06, 1] } : { scale: 1 }}
+        transition={{ duration: 0.8, repeat: Infinity }}
+        whileTap={reduce ? undefined : { scale: 0.94 }}
+        style={{
+          padding: "20px 44px", borderRadius: 999, cursor: "pointer", touchAction: "none",
+          fontFamily: "inherit", fontSize: 19, fontWeight: 900, letterSpacing: "0.05em",
+          background: holding ? "linear-gradient(180deg, #5eeaa5, #178a56)" : "linear-gradient(180deg, #ffd158, #f59e0b)",
+          border: holding ? "5px solid #a4f5cd" : "5px solid #fff",
+          boxShadow: holding ? "0 0 34px rgba(94,234,165,0.7)" : "0 16px 38px -10px rgba(245,158,11,0.8)",
+          color: holding ? "#06281a" : "#4a3208",
+          userSelect: "none", WebkitUserSelect: "none",
+        }}
+      >
+        {beat.holdIcon ?? "🛡️"} {holding ? "HOLDING…" : beat.holdLabel ?? "HOLD!"}
+      </motion.button>
     </div>
   );
 }

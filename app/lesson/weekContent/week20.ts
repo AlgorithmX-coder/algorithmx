@@ -861,6 +861,182 @@ export const WEEK_20: WeekContent = {
     { type: "completion" },
   ],
 
+  // Bespoke boss - THE FINALE. Rooftop at the end of night, every beaten
+  // machine welded into one rig, and no new tricks: the dawn showdown is
+  // REMEMBERING. He escapes every week until tonight - tonight he loses.
+  bossShowdown: {
+    machine: {
+      name: "THE EVERY-MACHINE",
+      tagline: "Every beaten machine welded into one last rig - everything he's got",
+      art: {
+        intact: "/game/bosses/w20-everymachine-intact.png",
+        damaged: "/game/bosses/w20-everymachine-damaged.png",
+        defeated: "/game/bosses/w20-everymachine-defeated.png",
+      },
+      arena: "/game/backgrounds/w20-arena-dawnrooftop.png",
+      accent: "#ffbe3d",
+      glow: "rgba(255,190,61,0.55)",
+    },
+    heroSprites: {
+      adam: {
+        idle: "/game/characters/w20/adam-gradsuit-idle.png",
+        attack: "/game/characters/w20/adam-gradsuit-attack.png",
+        celebrate: "/game/characters/w20/adam-gradsuit-celebrate.png",
+      },
+      layla: {
+        idle: "/game/characters/w20/layla-gradsuit-idle.png",
+        attack: "/game/characters/w20/layla-gradsuit-attack.png",
+        celebrate: "/game/characters/w20/layla-gradsuit-celebrate.png",
+      },
+    },
+    phases: [
+      // P1 · THE FULL HEIST → THE RUSH: four single-beat callbacks, one
+      // per era, each week named on screen as it lands.
+      {
+        kind: "rush",
+        attack: 0,
+        coach: "Four old tricks, back to back - you've beaten every single one before!",
+        beats: [
+          {
+            id: "w4",
+            callback: "WEEK 4'S POWER",
+            prompt: "'FREE 50,000 COINS! Reset your password at fastp1ay.com - RIGHT NOW!'",
+            promptIcon: "✉️",
+            mode: "tap",
+            options: [
+              { id: "sender", label: "That address - fastp1ay hides a sneaky number 1", icon: "🔍", isRight: true, note: "" },
+              { id: "coins", label: "The coins - games never give coins", icon: "🎁", isRight: false, note: "Games DO hand out coins sometimes - the real tell is the costume letter hiding in the address." },
+              { id: "email", label: "It came by email - emails are all fake", icon: "📬", isRight: false, note: "Plenty of emails are real - the swapped letter in the sender is what unmasks this one." },
+            ],
+            landedLine: "The costume letter - spotted in a heartbeat!",
+          },
+          {
+            id: "w9",
+            callback: "WEEK 9'S POWER",
+            prompt: "A copycat app skids across the rooftop: 'MineKraft PRO - FREE - by TotallyRealDev99'!",
+            promptIcon: "🎭",
+            mode: "tap",
+            options: [
+              { id: "zap", label: "ZAP IT - a copycat in the real game's costume", icon: "⚡", isRight: true, note: "" },
+              { id: "install", label: "INSTALL IT - free is free", icon: "📥", isRight: false, note: "Free copycats cost the most - they carry sneaky passengers. The real game lives on its official page." },
+              { id: "spell", label: "ASK IT TO SPELL ITS NAME RIGHT", icon: "💬", isRight: false, note: "Copycats can spell fine when they want to - the made-up seller name is the giveaway. Zap it!" },
+            ],
+            landedLine: "Copycat zapped clean off the roof!",
+          },
+          {
+            id: "w10",
+            callback: "WEEK 10'S POWER",
+            prompt: "'SPIN THE PRIZE WHEEL! SPEND! QUICK, IT'S LEAVING!'",
+            promptIcon: "🎡",
+            mode: "hold",
+            holdLabel: "HOLD THE PAUSE",
+            holdIcon: "✋",
+            holdSecs: 2.5,
+            landedLine: "The wheel wound down to nothing - paused and beaten!",
+          },
+          {
+            id: "w17",
+            callback: "WEEK 17'S POWER",
+            prompt: "The old profile mirror swings wide open - strangers can see EVERYTHING!",
+            promptIcon: "🪞",
+            mode: "hold",
+            holdLabel: "FROST THE MIRROR",
+            holdIcon: "❄️",
+            holdSecs: 2.5,
+            landedLine: "Frosted! Friends see you - strangers see armor.",
+          },
+        ],
+      },
+      // P2 · PANIC CLOCK → SHIELD-HOLD: the thesis attack of the whole
+      // course, beaten by the thesis skill. The biggest clock, cracked calm.
+      {
+        kind: "shieldHold",
+        attack: 1,
+        coach: "His loudest clock ever - breathe, keep it steady, let it crack itself!",
+        holdLabel: "HOLD THE CALM SHIELD",
+        holdIcon: "🛡️",
+        holdSecs: 6,
+        barrage: [
+          "TEN! NINE! EIGHT! NO TIME LEFT!",
+          "THE OFFER EXPLODES IN FIVE SECONDS!",
+          "EVERYONE ELSE ALREADY TAPPED IT!",
+          "HURRY! HURRY! HURRYYYY!",
+        ],
+        burnoutLine: "The biggest clock of the course cracked clean in half - real life never rushes you, and now the whole sky knows it.",
+      },
+      // P3 · THE LAST DOOR → peek-then-choose (a two-beat rush): hold to
+      // peek the plaque... it's blank. Then the graduate makes the call.
+      {
+        kind: "rush",
+        attack: 2,
+        coach: "One more door, graduate - peek before ANY promise!",
+        beats: [
+          {
+            id: "peek",
+            callback: "WEEK 16'S POWER",
+            prompt: "One last, beautiful door: 'EVERYTHING YOU EVER WANTED - just walk through.'",
+            promptIcon: "🚪",
+            mode: "hold",
+            holdLabel: "HOLD TO PEEK THE PLAQUE",
+            holdIcon: "🔍",
+            holdSecs: 2.5,
+            landedLine: "You peeked... the plaque is BLANK.",
+          },
+          {
+            id: "choice",
+            callback: "THE GRADUATE'S CALL",
+            prompt: "No real address behind the paint. Twenty weeks say...",
+            promptIcon: "🧭",
+            mode: "tap",
+            options: [
+              { id: "refuse", label: "NO PLAQUE, NO WALK-THROUGH", icon: "🚫", isRight: true, note: "" },
+              { id: "risk", label: "IT'S THE LAST ONE - RISK IT", icon: "🎲", isRight: false, note: "The prettiest doors hide the emptiest plaques - last-one fever is his oldest trap of all." },
+              { id: "knock", label: "KNOCK POLITELY FIRST", icon: "✊", isRight: false, note: "Kind knuckles can't fix a blank plaque - a door with no real address never gets walked through." },
+            ],
+            landedLine: "The prettiest door of all - refused.",
+          },
+        ],
+      },
+    ],
+    weakPoints: [
+      { question: "Four old tricks in a row - and you beat every one without blinking. What made THE FULL HEIST fizzle?", answers: ["Twenty weeks of powers - you know every costume by heart", "Pure luck, four times running", "The tricks came out slower tonight", "The rooftop wind blew them away"], correctIndex: 0, explanation: "Not one trick was new - that's the graduate's secret. Once you know a costume, it never fools you again." },
+      { question: "The biggest panic clock ever built just cracked in half. What breaks EVERY panic clock?", answers: ["A calm held minute - real life never rushes you", "Shouting louder than it ticks", "Tapping fast before it reaches zero", "Hiding until it stops"], correctIndex: 0, explanation: "Panic is his engine and calm is the counter - the one skill every single week was secretly training." },
+      { question: "The last door promised EVERYTHING YOU EVER WANTED - and its plaque was blank. The rule that never bends is...", answers: ["No real address, no walk-through - however pretty the paint", "Pretty doors are usually the safe ones", "Rules relax for the very last door", "Walk through first, check after"], correctIndex: 0, explanation: "Words can be paint and promises can be posters - the plaque is the only part of a door that can't lie." },
+    ],
+    finisher: {
+      chargeLabel: "CHARGE THE HERO SEAL",
+      chargeIcon: "🏆",
+      chargeSecs: 5,
+      milestones: ["The seal is waking - twenty weeks begin to shine…", "Every badge you ever earned pours into the ring…", "THE SEAL BLAZES LIKE SUNRISE! LET GO!"],
+      payoffTitle: "CERTIFIED CYBER HERO!",
+      payoffLine: "KRA-KOOM! The seal slams down and the whole rig goes dark at once - drill, caster arm, mirror panel, every welded trick powering off together. Dawn rolls over the rooftops... and a tiny parachute pops open. Twenty weeks, every power earned, every trick refused - the city just got its newest Certified Cyber Hero.",
+      protocol: {
+        coach: "The Graduate's Protocol - run it one last time, then take the seal!",
+        intro: "Five steps, sharp as day one - stack them in order!",
+        steps: [
+          { id: "stop", label: "STOP", icon: "✋" },
+          { id: "screenshot", label: "SCREENSHOT", icon: "📸" },
+          { id: "block", label: "BLOCK", icon: "🚫" },
+          { id: "tell", label: "TELL", icon: "📣" },
+          { id: "coach", label: "COACH", icon: "🎓" },
+        ],
+      },
+    },
+    villain: {
+      arrival: "One last job, kid. Everything I've got. Bring everything YOU'VE got.",
+      phases: [
+        "Remember these?! I've been PRACTICING!",
+        "TEN! NINE! EIGHT! Panic! PANIC ON SCHEDULE!",
+        "The last door's the prettiest. I saved it for you.",
+      ],
+      // The finale's send-off: not an escape - a real defeat, tipped hood,
+      // parachute into the sunrise.
+      escape: "...twenty weeks, and you never fell for it once. Not once. ...good game, Cyber Hero.",
+    },
+    voiceSlug: "w20",
+  },
+  badgeArt: "/cyberheroes/badges/week-20-certified-cyber-hero.png",
+
   // The finale's attack theatre: his whole playbook at once - every name
   // deliberately echoes a week the child has beaten.
   bossAttacks: [

@@ -305,6 +305,21 @@ const WEEKS = {
         "[excited] SHIELDED, Cyber Hero! You sat with Grandma and caught every tell - the stranger's number in a bank costume, the panic clock, even 'acount' spelled wrong... [laughs] latched her tablet to real faces only, so Rosa rings straight through and voice-changer raccoons bounce off... [warmly] and when a bossy rulebook hit the front door, you sewed a together-rule that covers everyone. [gasps] Then the dome rose - one warm golden Family Firewall over the whole house - and the Rattler bounced clean into the hedge. [warmly] That's the greatest power of all, Family Firewall - keeping the people you love safe, kindly.",
     },
   },
+  20: {
+    slug: "w20",
+    villain: {
+      arrival: "[whispers] One last job, kid. Everything I've got. [excited] Bring everything YOU'VE got.",
+      "phase-1": "[excited] Remember these?! [laughs] I've been PRACTICING!",
+      "phase-2": "[excited] TEN! NINE! EIGHT! Panic! [laughs] PANIC ON SCHEDULE!",
+      "phase-3": "[whispers] The last door's the prettiest. [sighs] I saved it for you.",
+      // The finale's send-off - a real defeat, not an escape.
+      escape: "[sighs] ...twenty weeks, and you never fell for it once. Not once. [warmly] ...good game, Cyber Hero.",
+    },
+    coach: {
+      victory:
+        "[excited] CERTIFIED, Cyber Hero! The full heist came at you four tricks deep and you never blinked - tell spotted, copycat zapped, pause held, mirror frosted... [laughs] the loudest panic clock ever built cracked against your calm... [warmly] and the prettiest door of all had a blank plaque, so you never walked through. [gasps] Then five steps, one seal - and the whole rig went dark as the sun came up. [warmly] Twenty weeks. Every power. This city has a brand-new Certified Cyber Hero... and it's YOU.",
+    },
+  },
 };
 
 // ── Legacy Week-1 villain lines (public/audio/villain) - the no-repeat

@@ -1012,6 +1012,68 @@ const STEPS = {
     { click: "Claim Badge" },
     { wait: 2200 }, { shot: "21-debrief" },
   ],
+  // WEEK 20 — THE EVERY-MACHINE (THE DAWN SHOWDOWN, the finale). LAYLA week.
+  // P1 THE RUSH (4 era callbacks) → P2 PANIC CLOCK shield → P3 LAST DOOR
+  // peek-then-choose → Graduate's Protocol ORDER-STRIKE → seal charge.
+  20: [
+    { wait: 3000 }, { shot: "01-entrance" },
+    { wait: 2000 }, { shot: "02-select" },
+    { clickLabel: "Play as LAYLA" },
+    { wait: 900 }, { shot: "03-announce-trick1" },      // THE FULL HEIST telegraph
+    { wait: 2400 },
+    { shot: "04-rush-beat1" },                          // W4 phishing callback
+    { click: "The coins - games never give coins" },    // deliberate wrong → teach
+    { wait: 700 }, { shot: "05-teach-coins" },
+    { click: "Got it!" },
+    { click: "That address - fastp1ay hides a sneaky number 1" }, // ✓ beat 1
+    { wait: 600 }, { shot: "05b-rush-callback" },       // WEEK 4'S POWER banner
+    { wait: 1300 },
+    { click: "ZAP IT - a copycat in the real game's costume" },   // ✓ beat 2 (W9)
+    { wait: 1900 },
+    { hold: "HOLD THE PAUSE", ms: 2900, shotDuring: "06-rush-hold-pause" }, // ✓ beat 3 (W10)
+    { wait: 1700 },
+    { hold: "FROST THE MIRROR", ms: 2900 },             // ✓ beat 4 (W17) → playDone
+    { wait: 2700 }, { shot: "07-weakpoint-1" },
+    { click: "Twenty weeks of powers - you know every costume by heart" },
+    { wait: 1300 }, { shot: "08-gear-popped" },
+    { wait: 3000 },
+    { shot: "09-announce-trick2" },                     // PANIC CLOCK
+    { wait: 2200 },
+    { shot: "10-play-panicclock" },                     // the barrage rages
+    { hold: "HOLD THE CALM SHIELD", ms: 6600, shotDuring: "10b-shield-charging" },
+    { wait: 400 }, { shot: "11-clock-cracked" },        // burnout panel
+    { wait: 2600 }, { shot: "12-weakpoint-2" },
+    { click: "A calm held minute - real life never rushes you" },
+    { wait: 4300 },
+    { shot: "13-announce-trick3" },                     // THE LAST DOOR
+    { wait: 2200 },
+    { shot: "14-lastdoor-peek" },                       // the beautiful door + peek hold
+    { hold: "HOLD TO PEEK THE PLAQUE", ms: 2900 },      // ✓ peek beat
+    { wait: 600 }, { shot: "15-plaque-blank" },         // the BLANK plaque callback
+    { wait: 1400 }, { shot: "16-graduate-call" },       // the three-way choice
+    { click: "NO PLAQUE, NO WALK-THROUGH" },            // ✓ → playDone
+    { wait: 2700 }, { shot: "17-weakpoint-3" },
+    { click: "No real address, no walk-through - however pretty the paint" },
+    { wait: 3900 },
+    { shot: "18-wobbling" },
+    { wait: 2300 },
+    { shot: "19-protocol" },                            // the Graduate's Protocol
+    { click: "STOP" },
+    { click: "SCREENSHOT" },
+    { click: "BLOCK" },
+    { click: "TELL" },
+    { click: "COACH" },                                 // → protocol done
+    { wait: 1400 }, { shot: "20-finisher-ring" },
+    { hold: "CHARGE THE HERO SEAL", ms: 5600, shotDuring: "20b-seal-charging" },
+    { wait: 800 }, { shot: "21-payoff" },               // CERTIFIED CYBER HERO!
+    { wait: 2200 }, { shot: "22-victory" },             // the defeat send-off
+    { click: "Claim the win" },
+    { wait: 2500 }, { shot: "23-outro-video" },
+    { click: "Skip video" },
+    { wait: 1800 }, { shot: "24-badge-scene" },
+    { click: "Claim Badge" },
+    { wait: 2200 }, { shot: "25-debrief" },
+  ],
 };
 
 const steps = STEPS[week];

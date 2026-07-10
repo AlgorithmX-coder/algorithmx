@@ -358,12 +358,42 @@ export type ShowdownDeflectSort = {
   }[];
 };
 
+/** THE RUSH — W20 finale only: rapid single-beat callbacks from across
+ *  the course, one per era, each named on screen as it lands. "Rapid"
+ *  is theatre, not a timer — every beat is turn-based (a tap with
+ *  teach-and-retry, or a short deadline-free hold), so the kid-first
+ *  contract holds even in the finale. */
+export type ShowdownRush = {
+  kind: "rush";
+  attack: number;
+  coach: string;
+  beats: {
+    id: string;
+    /** Callback nameplate as the beat lands, e.g. "WEEK 4'S POWER". */
+    callback: string;
+    /** The incoming trick line for this beat. */
+    prompt: string;
+    promptIcon: string;
+    /** tap = pick the counter from options; hold = press-and-hold. */
+    mode: "tap" | "hold";
+    /** tap mode: 2-3 options, exactly one right. */
+    options?: { id: string; label: string; icon: string; isRight: boolean; note: string }[];
+    /** hold mode: the button + short charge (release pauses, never resets). */
+    holdLabel?: string;
+    holdIcon?: string;
+    holdSecs?: number;
+    /** Green flash when the beat lands, e.g. "TELL SPOTTED - STILL SHARP!". */
+    landedLine: string;
+  }[];
+};
+
 export type ShowdownPhaseDef =
   | ShowdownTapTell
   | ShowdownShieldHold
   | ShowdownCounterCard
   | ShowdownOrderStrike
-  | ShowdownDeflectSort;
+  | ShowdownDeflectSort
+  | ShowdownRush;
 
 export interface ShowdownDef {
   machine: {
@@ -402,6 +432,13 @@ export interface ShowdownDef {
     payoffTitle: string;
     /** The wrap-up teach line under the stamp. */
     payoffLine: string;
+    /** W20 finale only: the Graduate's Protocol — an ORDER-STRIKE run
+     *  once more before the charge unlocks. Omit everywhere else. */
+    protocol?: {
+      coach: string;
+      intro: string;
+      steps: { id: string; label: string; icon: string }[];
+    };
   };
   villain: {
     arrival: string;
