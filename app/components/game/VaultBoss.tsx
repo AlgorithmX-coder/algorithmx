@@ -83,7 +83,21 @@ const MACHINE = {
   defeated: "/game/bosses/crackomatic-defeated.png",
 } as const;
 
-const HEROES = makeHeroes();
+/** W1 rewrap: the heroes dress for the job — locksmith gear (every
+ *  boss week wears a different outfit; this was the last base-wardrobe
+ *  fight). */
+const HEROES = makeHeroes({
+  adam: {
+    idle: "/game/characters/w01/adam-locksmith-idle.png",
+    attack: "/game/characters/w01/adam-locksmith-attack.png",
+    celebrate: "/game/characters/w01/adam-locksmith-celebrate.png",
+  },
+  layla: {
+    idle: "/game/characters/w01/layla-locksmith-idle.png",
+    attack: "/game/characters/w01/layla-locksmith-attack.png",
+    celebrate: "/game/characters/w01/layla-locksmith-celebrate.png",
+  },
+});
 
 const PHASE_ORDER = ["wall", "scrambler", "cover", "feed", "final"] as const;
 type PhaseKey = (typeof PHASE_ORDER)[number];
@@ -194,12 +208,9 @@ export default function VaultBoss({
     return () => window.clearTimeout(id);
   }, [stage, phaseIdx, reduce]);
 
-  /* Coach speaks the phase's one-line instruction as play begins. */
-  useEffect(() => {
-    if (stage !== "play") return;
-    playCoach(`vault-go-${phaseKey}`);
-    return () => stopCoach();
-  }, [stage, phaseKey]);
+  /* PILOT FEEDBACK (global, W1 rewrap): NO narrator voice during the
+     fight — the coach banner is text-only. The one narrator moment is
+     the excited victory line (vault-victory, Sarah). */
 
   const shake = useCallback(() => setShakeNonce((n) => n + 1), []);
   const addPopup = useCallback((text: string, colour: string, x: number, y: number) => {
@@ -988,9 +999,16 @@ function CoverPhase({ data, paused, judge, done, reduce, accent }: { data: Vault
 
       {/* The one big control */}
       <motion.button
-        onPointerDown={() => { setCovering(true); playSound("click"); }}
+        onPointerDown={(e) => {
+          // Pointer capture: a mid-hold wobble off the button edge (kid
+          // finger, layout nudge) must never silently drop the shield —
+          // covering ends only on physical release.
+          e.currentTarget.setPointerCapture(e.pointerId);
+          setCovering(true);
+          playSound("click");
+        }}
         onPointerUp={() => setCovering(false)}
-        onPointerLeave={() => setCovering(false)}
+        onPointerCancel={() => setCovering(false)}
         animate={!covering && eyeState !== "closed" && !reduce ? { scale: [1, 1.07, 1] } : { scale: 1 }}
         transition={{ duration: 0.7, repeat: Infinity }}
         whileTap={reduce ? undefined : { scale: 0.94 }}
@@ -1061,7 +1079,9 @@ function FeedPhase({ data, judge, done, reduce, accent, signature }: { data: Vau
       >
         <PixIcon emoji="🤖" size={86} />
         <div style={{ fontFamily: MONO, fontSize: 10, fontWeight: 900, letterSpacing: "0.1em", color: "#f6f9ff", textShadow: "0 1px 6px rgba(13,24,58,0.8)" }}>
-          THE GUESS-O-TRON {full ? "· 💥 FULL!" : "· feed me obvious passwords!"}
+          {/* "guesses", not "passwords" — the junk card literally says
+              "password" and click-target labels must be unique on screen. */}
+          THE GUESS-O-TRON {full ? "· 💥 FULL!" : "· feed me obvious guesses!"}
         </div>
         {/* Belly meter */}
         <div style={{ width: 180, height: 14, margin: "6px auto 0", borderRadius: 999, background: "rgba(255,255,255,0.85)", border: "2px solid #8b5cf6", overflow: "hidden" }}>
@@ -1246,13 +1266,14 @@ function FinalPhase({ data, paused, judge, done, reduce, accent, signature }: { 
       {beat === "forge" && (
         <>
           <motion.button
-            onPointerDown={() => {
+            onPointerDown={(e) => {
+              e.currentTarget.setPointerCapture(e.pointerId); // hold survives edge wobble
               setHolding(true);
               playSound("click");
               signature("vault-forge-charge");
             }}
             onPointerUp={() => setHolding(false)}
-            onPointerLeave={() => setHolding(false)}
+            onPointerCancel={() => setHolding(false)}
             animate={!holding && !reduce ? { scale: [1, 1.08, 1] } : { scale: holding ? 1.05 : 1 }}
             transition={!holding ? { duration: 1.1, repeat: Infinity, ease: "easeInOut" } : { duration: 0.2 }}
             style={{

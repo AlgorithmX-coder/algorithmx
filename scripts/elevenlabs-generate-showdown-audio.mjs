@@ -58,6 +58,24 @@ const COACH_SETTINGS = {
  * expand on the on-screen banner) + victory.
  */
 const WEEKS = {
+  // W1/W2 rewrap: villain lines stay the shipped legacy Callum set —
+  // these entries only regenerate the ONE narrator moment (Sarah).
+  1: {
+    slug: "vault",
+    villain: {},
+    coach: {
+      victory:
+        "[excited] LOCKED TIGHT, Cyber Hero! You built it LONG - dragon, taco, comet, slammed into one mighty wall... [laughs] mixed it UP until his poor decoder exploded - big letters, a number, a symbol... [whispers] covered the keypad every single time his sneaky spy eye popped up... [excited] and when he begged ever so politely for one little whisper, you told him NEVER - it's secret! [warmly] Eighty-seven years to crack and not one letter seen. That's a true Password Protector.",
+    },
+  },
+  2: {
+    slug: "forge",
+    villain: {},
+    coach: {
+      victory:
+        "[excited] FORGED, Cyber Hero! Every private clue got the hammer - your address, your school, your phone number, your real name, whacked clean off the profile... [laughs] the 'security bot' begged three whole times for a number and got NOTHING until it cried... [whispers] you built CometWizard77 out of zero real bits... [gasps] and when the rapid probe fired, you NOPE'd every trick and shared only the safe stuff. [warmly] The profile shows the shiny hero you - and the real you stays yours forever, Privacy Guardian.",
+    },
+  },
   3: {
     slug: "w03",
     villain: {

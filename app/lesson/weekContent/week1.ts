@@ -681,7 +681,7 @@ export const WEEK_1: WeekContent = {
       snoops: 3,
       openSecs: 3.2,
       explanation: "When his eye is open, cover your typing! In real life, shield the keypad with your hand - a password someone SAW isn't a secret anymore.",
-      coach: "Spy eye? Press and HOLD to cover!",
+      coach: "Spy eye popping up? Press and HOLD - hide the keypad!",
     },
     feed: {
       id: "phase-obvious",
@@ -710,6 +710,7 @@ export const WEEK_1: WeekContent = {
       coach: "HOLD the golden button - shield your secret!",
     },
   },
+  badgeArt: "/cyberheroes/badges/week-01-password-protector.png",
 
   /* ─── Legacy 5-phase MCQ data (fallback if bossVault is ever cleared) ─── */
   bossPhases: [

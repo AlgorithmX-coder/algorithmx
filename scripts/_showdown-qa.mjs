@@ -34,12 +34,137 @@ const launchOpts = existsSync(CHROME)
 /** Per-week playthrough scripts. Boss screen is index 24 in the locked
  *  29-screen week; the fight auto-enters on landing. */
 const STEPS = {
-  // W1 VaultBoss overlap spot-check: one shot of the wall play board.
+  // W1 VaultBoss full playthrough (rewrap QA): locksmith outfits, no
+  // mid-fight narrator, Sarah vault-victory, Password Protector badge.
   1: [
-    { wait: 5000 },
+    { wait: 3000 }, { shot: "01-entrance" },
+    { wait: 2000 }, { shot: "02-select" },              // locksmith outfits!
     { clickLabel: "Play as ADAM" },
-    { wait: 3600 },
-    { shot: "01-wall-play" },
+    { wait: 900 }, { shot: "03-announce-wall" },
+    { wait: 2400 }, { shot: "04-play-wall" },
+    { click: "dragon" },
+    { wait: 900 },
+    { click: "taco" },
+    { wait: 900 },
+    { click: "comet" },                                 // wall built → phaseClear
+    { wait: 1800 }, { shot: "05-phase-clear" },
+    { wait: 2400 }, { shot: "06-announce-scrambler" },
+    { wait: 2000 }, { shot: "07-play-scrambler" },
+    { click: "BIG letters" },
+    { wait: 900 },
+    { click: "A number" },
+    { wait: 900 },
+    { click: "A symbol" },                              // decoder kaboom
+    { wait: 800 }, { shot: "08-decoder-kaboom" },
+    { wait: 3600 }, { shot: "09-announce-cover" },
+    // No pre-hold play shot: at 2560x1440 a screenshot costs ~2s, and the
+    // ones between phase mount and the press pushed mouse.down past spy-eye
+    // 1's open window — "He peeked!" fired at an untouched button and the
+    // teach modal dead-ended the run. Press the moment the button mounts
+    // (the hold locator waits for it); the mid-hold shot documents the
+    // phase. 24.5s spans all 3 snoops (last closes ≈22.8s after mount) and
+    // releases inside the phase-clear window.
+    { hold: "HOLD TO COVER", ms: 24500, shotDuring: "10-covering", engagedWhenGone: true },
+    { wait: 600 }, { shot: "11-phase-clear-cover" },
+    { wait: 2400 }, { shot: "12-announce-feed" },
+    { wait: 2200 }, { shot: "13-play-feed" },
+    { click: "123456" },
+    { wait: 1000 },
+    { clickExact: "password" },                         // header says "Passwords:"
+    { wait: 1000 },
+    { click: "qwerty" },                                // Guess-o-Tron overload
+    { wait: 800 }, { shot: "14-guessotron-full" },
+    { wait: 3600 }, { shot: "15-announce-final" },
+    { wait: 2400 }, { shot: "16-play-final" },
+    { hold: "HOLD TO FORGE", ms: 4800, shotDuring: "16b-forging", engagedWhenGone: true },
+    { wait: 1300 }, { shot: "17-sweet-talk" },
+    { click: "Never! It's secret!" },
+    { wait: 2400 }, { shot: "18-victory" },
+    { click: "Claim the win" },
+    { wait: 2500 }, { shot: "19-outro-video" },
+    { click: "Skip video" },
+    { wait: 1800 }, { shot: "20-badge-scene" },         // Password Protector medal
+    { click: "Claim Badge" },
+    { wait: 2200 }, { shot: "21-debrief" },
+  ],
+  // W2 ProfileForgeBoss full playthrough (rewrap QA): blacksmith forge
+  // aprons, Sarah forge-victory, Privacy Guardian badge. LAYLA week.
+  2: [
+    { wait: 3000 }, { shot: "01-entrance" },            // THE PROFILE FORGE slam
+    { wait: 2000 }, { shot: "02-select" },              // forge-apron outfits!
+    { clickLabel: "Play as LAYLA" },
+    { wait: 900 }, { shot: "03-announce-whack" },
+    { wait: 2400 }, { shot: "04-play-whack" },          // wave 1 launching
+    { click: "42 Rainbow Road" },                       // private → WHACK
+    { wait: 2600 },
+    { click: "Maple Hill School" },                     // private → WHACK
+    { wait: 2000 }, { shot: "05-whack-wave1" },         // "Loves blue" flying to dock
+    { wait: 10500 },
+    { click: "555-0123" },                              // wave 2: private
+    // Shot mid-wave-2, NOT at the wave-3 transition: a 2560x1440 screenshot
+    // costs ~2.5s, and capturing while the FINAL WAVE timers are being
+    // scheduled froze the wave (banner stuck, flyers never launched).
+    { wait: 600 }, { shot: "06-whack-wave2" },
+    { click: "Alex Morgan Reed" },                      // wave 2: private
+    { wait: 8000 },
+    { click: "At the park right now" },                 // final wave: private
+    { wait: 4500 }, { shot: "07-whack-endgame" },       // "Draws dragons" docking
+    { wait: 3000 }, { shot: "08-phase-clear-whack" },
+    { wait: 2600 }, { shot: "09-announce-hand" },
+    { wait: 2400 }, { shot: "10-play-hand" },           // six dealt cards
+    { click: "Pizza fan" },
+    { wait: 900 },
+    { click: "Dragon artist" },
+    { wait: 900 },
+    { click: "Space Racers superfan" },                 // 3/3 safe picked
+    { wait: 1400 }, { shot: "11-phase-clear-hand" },
+    { wait: 2600 }, { shot: "12-announce-grill" },
+    { wait: 2400 }, { shot: "13-play-grill" },          // "security bot" demand
+    { click: "WHY?" },
+    { wait: 1100 },
+    { click: "WHY?" },
+    { wait: 1100 },
+    { click: "WHY?" },                                  // bot collapses
+    { wait: 800 }, { shot: "14-bot-collapse" },
+    { wait: 1600 }, { shot: "15-phase-clear-grill" },
+    { wait: 2600 }, { shot: "16-announce-assemble" },
+    { wait: 2400 }, { shot: "17-play-assemble" },       // tile pile w/ trap tiles
+    { click: "Comet" },
+    { wait: 900 },
+    { click: "Wizard" },
+    { wait: 900 },
+    // exact — the score readout can contain "77" (e.g. SCORE 2775)
+    { clickExact: "77" },
+    { wait: 900 }, { shot: "18-name-sealed" },          // CometWizard77 — SEALED!
+    { wait: 1700 }, { shot: "19-phase-clear-assemble" },
+    { wait: 2600 }, { shot: "20-announce-rapid" },
+    // Click demand 1 straight off the announce shot: the 7s rapid timer
+    // starts at play-mount, and two wide screenshots (~2.5s each) before
+    // the first click guarantee a "Too slow!" timeout. Shots ride BETWEEN
+    // clicks instead — each demand's timer restarts on advance.
+    // exact — the phase hint contains "NOPE the private ones, SHARE the
+    // safe ones", so substring clicks would hit the hint text first.
+    { clickExact: "✋ NOPE!" },                          // school → NOPE
+    { wait: 600 }, { shot: "21-play-rapid" },
+    { wait: 600 },
+    { clickExact: "💬 SHARE" },                         // favorite color → safe
+    { wait: 600 }, { shot: "22-rapid-fire" },
+    { wait: 600 },
+    { clickExact: "✋ NOPE!" },                          // street → NOPE
+    { wait: 1200 },
+    { clickExact: "💬 SHARE" },                         // best game → safe
+    { wait: 1200 },
+    { clickExact: "✋ NOPE!" },                          // birthday → NOPE
+    { wait: 1200 },
+    { clickExact: "✋ NOPE!" },                          // "grown-up said yes" → NOPE
+    { wait: 1600 }, { shot: "23-phase-clear-rapid" },
+    { wait: 2800 }, { shot: "24-victory" },             // blank intel report + Sarah
+    { click: "Claim the win" },
+    { wait: 2500 }, { shot: "25-outro-video" },
+    { click: "Skip video" },
+    { wait: 1800 }, { shot: "26-badge-scene" },         // Privacy Guardian medal
+    { click: "Claim Badge" },
+    { wait: 2200 }, { shot: "27-debrief" },
   ],
   3: [
     { wait: 3000 }, { shot: "01-entrance" },            // nameplate reveal
@@ -1140,12 +1265,36 @@ for (const step of steps) {
       await page.getByLabel(step.clickLabel).first().click({ timeout: 8000, force: true });
       console.log(`click [${step.clickLabel}]`);
     }
+    // Exact whole-text match — for click targets whose label is a
+    // substring of page chrome (W1: the junk card "password" vs the
+    // lesson header "Week 1: Passwords: The Secret Code").
+    if (step.clickExact) {
+      await page.getByText(step.clickExact, { exact: true }).first().click({ timeout: 8000, force: true });
+      console.log(`click exact "${step.clickExact}"`);
+    }
     if (step.hold) {
       const el = page.getByText(step.hold, { exact: false }).first();
-      const box = await el.boundingBox();
-      if (!box) throw new Error(`no box for "${step.hold}"`);
-      await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
-      await page.mouse.down();
+      const press = async () => {
+        const box = await el.boundingBox();
+        if (!box) throw new Error(`no box for "${step.hold}"`);
+        await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
+        await page.mouse.down();
+      };
+      await press();
+      // Opt-in engage check: some hold buttons swap their label while held
+      // (HOLD TO COVER → COVERING…), so the resting label still being
+      // visible means the press landed mid stage-transition and didn't
+      // stick (chronic at 2560x1440) — lift and re-press until it does.
+      if (step.engagedWhenGone) {
+        for (let i = 0; i < 8; i++) {
+          await page.waitForTimeout(250);
+          if (!(await el.isVisible().catch(() => true))) break;
+          await page.mouse.up();
+          await page.waitForTimeout(400);
+          console.log(`re-press "${step.hold}" (${i + 1})`);
+          await press();
+        }
+      }
       if (step.shotDuring) {
         await page.waitForTimeout(Math.round(step.ms / 2));
         await page.screenshot({ path: `${out}/${step.shotDuring}.png` });
