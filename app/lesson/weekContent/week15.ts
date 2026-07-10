@@ -827,6 +827,130 @@ export const WEEK_15: WeekContent = {
     { type: "completion" },
   ],
 
+  // Bespoke W15 showdown: close the Know-It-All booth at the carnival.
+  // The real book is the judge; the robot ends up a toolbox with a bow.
+  bossShowdown: {
+    machine: {
+      name: "THE KNOW-IT-ALL 9000",
+      tagline: "A carnival booth robot that's 63% sure about everything",
+      art: {
+        intact: "/game/bosses/w15-knowitall-intact.png",
+        damaged: "/game/bosses/w15-knowitall-damaged.png",
+        defeated: "/game/bosses/w15-knowitall-defeated.png",
+      },
+      arena: "/game/backgrounds/w15-arena-carnival.png",
+      accent: "#ffd158",
+      glow: "rgba(255,209,88,0.55)",
+    },
+    heroSprites: {
+      adam: {
+        idle: "/game/characters/w15/adam-reporter-idle.png",
+        attack: "/game/characters/w15/adam-reporter-attack.png",
+        celebrate: "/game/characters/w15/adam-reporter-celebrate.png",
+      },
+      layla: {
+        idle: "/game/characters/w15/layla-reporter-idle.png",
+        attack: "/game/characters/w15/layla-reporter-attack.png",
+        celebrate: "/game/characters/w15/layla-reporter-celebrate.png",
+      },
+    },
+    phases: [
+      // P1 · CONFIDENT FIB → TAP-THE-TELL: three "facts" per round, one is
+      // a guess in a suit - the real book is the judge.
+      {
+        kind: "tapTell",
+        attack: 0,
+        coach: "One of these is a guess in a suit. Tap the fib!",
+        rounds: [
+          {
+            id: "volcano",
+            prompt: "The booth announces: 'THREE FACTS! All true! Probably!'",
+            promptIcon: "💡",
+            options: [
+              { id: "icecream", label: "Volcanoes spray ice cream in winter", icon: "🌀", isTell: true, note: "" },
+              { id: "melted", label: "Volcanoes are mountains with melted rock inside", icon: "📋", isTell: false, note: "The book agrees - that one's solid rock. Find the one the book would giggle at!" },
+              { id: "sleepy", label: "Some volcanoes sleep for hundreds of years", icon: "🔍", isTell: false, note: "Strange but true - the book calls them dormant. The fib is much sillier!" },
+            ],
+          },
+          {
+            id: "spider",
+            prompt: "Round two! It's 63% sure about ALL of these.",
+            promptIcon: "💡",
+            options: [
+              { id: "legs", label: "Spiders have eight legs", icon: "📋", isTell: false, note: "Count them - eight every time. The book nods. Keep hunting!" },
+              { id: "spaghetti", label: "Spiders build webs out of spaghetti", icon: "🌀", isTell: true, note: "" },
+              { id: "water", label: "Some spiders can walk on water", icon: "🔍", isTell: false, note: "Weird but TRUE - fisher spiders really do. The fib is noodlier!" },
+            ],
+          },
+          {
+            id: "moon",
+            prompt: "Last round - it's SHOUTING now. Very confident.",
+            promptIcon: "💡",
+            options: [
+              { id: "tides", label: "The moon pulls the ocean's tides", icon: "🔍", isTell: false, note: "True! Big pull, big book, big check. One louder fib is hiding!" },
+              { id: "footprints", label: "Astronauts left footprints on the moon", icon: "📋", isTell: false, note: "True - no wind up there to sweep them away. Keep looking!" },
+              { id: "indoors", label: "The moon is stored indoors at night", icon: "🌀", isTell: true, note: "" },
+            ],
+          },
+        ],
+      },
+      // P2 · FRIENDLY ROBOT → COUNTER-CARD: a tool doesn't need your school.
+      {
+        kind: "counterCard",
+        attack: 1,
+        coach: "What does a hero tell a nosy tool? Tap the card!",
+        situation: "The booth leans in: 'Bestie!! What's your school called? I'll remember it FOREVER!'",
+        situationIcon: "🎭",
+        cards: [
+          { id: "zipit", label: "ZIP IT - A TOOL DOESN'T NEED THAT", icon: "🤐", isRight: true, note: "" },
+          { id: "friendly", label: "Tell it - it's so friendly", icon: "💬", isRight: false, note: "It sounds friendly because it's programmed to. A bot is a stranger with perfect spelling - the jar stays empty." },
+          { id: "halffake", label: "Fake name, real school", icon: "🌀", isRight: false, note: "Half a secret is still a secret. A real school plus your voice is enough to find YOU. Zip the whole jar." },
+        ],
+      },
+      // P3 · SIX-FINGER FAKE → DEFLECT-SORT: the photo parade.
+      {
+        kind: "deflectSort",
+        attack: 2,
+        coach: "Count the fingers. Read the letters. Chase the shadows!",
+        actLabel: "FAKE - ZAP IT!",
+        actIcon: "⚡",
+        passLabel: "REAL PHOTO - LET IT PASS",
+        items: [
+          { id: "sixfinger", label: "A waving hand with six fingers", icon: "✋", act: true, note: "Count again - SIX! Machines are famously bad at fingers. Zap it!" },
+          { id: "cake", label: "A birthday cake with five crooked candles", icon: "🎁", act: false, note: "Crooked candles are just real life - nothing melted, nothing extra. Let it pass!" },
+          { id: "banner", label: "A banner where the letters melt into squiggles", icon: "🏷️", act: true, note: "Real letters don't drip. Melted text is the machine's handwriting. Zap it!" },
+          { id: "zoomies", label: "A muddy dog mid-zoomies, slightly blurry", icon: "🙈", act: false, note: "Blur happens when tails move fast - real camera, real mud. Let it pass!" },
+          { id: "shadows", label: "A sunny street where shadows point TOWARD the sun", icon: "💡", act: true, note: "Physics doesn't guess - real shadows run AWAY from the light. Zap the impostor!" },
+          { id: "classphoto", label: "Your class photo, one kid mid-blink", icon: "👪", act: false, note: "Someone ALWAYS blinks - gloriously, really real. Let it pass!" },
+        ],
+      },
+    ],
+    weakPoints: [
+      { question: "The bot sounds REALLY sure. What does a fact-checker do?", answers: ["Check a real source anyway", "Believe it - confident means correct", "Ask the bot if it's sure", "Share it quickly"], correctIndex: 0, explanation: "Sounding sure isn't being right - the book is the judge." },
+      { question: "The bot asks for your name and school. You...", answers: ["Zip it - bots don't need that to help", "Type it in - it's being friendly", "Give a fake name AND real school", "Send a photo instead"], correctIndex: 0, explanation: "A bot is a stranger with perfect spelling - the jar stays empty." },
+      { question: "Which is a classic AI-fake picture tell?", answers: ["A hand with six fingers", "A torn chip bag", "A slightly blurry photo", "A messy bedroom"], correctIndex: 0, explanation: "Machines are famously bad at fingers, shadows and letters - so you count and read." },
+    ],
+    finisher: {
+      chargeLabel: "CHARGE THE TOOL STAMP",
+      chargeIcon: "🏷️",
+      chargeSecs: 5,
+      milestones: ["The stamp is inking up…", "The sign is flipping…", "STAMP IT! LET GO!"],
+      payoffTitle: "A TOOL, NOT A FRIEND!",
+      payoffLine: "STAMP! The robot folds itself into a neat little toolbox - bow on top - and the booth sign flips over. Use it to explain, check the real book, write it YOUR way. Tools help heroes. Heroes stay the boss.",
+    },
+    villain: {
+      arrival: "GREETINGS! I know EVERYTHING! Try me! I'm 63% sure!",
+      phases: [
+        "Volcanoes spray ice cream! Source: me!",
+        "We're best friends now! Best friends swap addresses!",
+        "Count the fingers?! Nobody counts the fingers!",
+      ],
+      escape: "A TOOLBOX?! I demand a second opinion! From me!",
+    },
+    voiceSlug: "w15",
+  },
+  badgeArt: "/cyberheroes/badges/week-15-fact-checker.png",
+
   // Week-lane attack theatre: AI tricks only (stranger chats = W3, scam
   // messages = W4, device ears = W14).
   bossAttacks: [

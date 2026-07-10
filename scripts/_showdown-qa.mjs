@@ -717,6 +717,65 @@ const STEPS = {
     { click: "Claim Badge" },
     { wait: 2200 }, { shot: "21-debrief" },
   ],
+  15: [
+    { wait: 3000 }, { shot: "01-entrance" },            // KNOW-IT-ALL 9000 nameplate
+    { wait: 2000 }, { shot: "02-select" },              // reporter caps!
+    { clickLabel: "Play as ADAM" },
+    { wait: 900 }, { shot: "03-announce-trick1" },      // CONFIDENT FIB telegraph
+    { wait: 2400 },
+    { shot: "04-play-taptell" },                        // three "facts", one fib
+    { click: "Volcanoes are mountains with melted rock inside" }, // deliberate wrong → teach
+    { wait: 700 }, { shot: "05-teach-book" },
+    { click: "Got it!" },
+    { click: "Volcanoes spray ice cream in winter" },
+    { wait: 1400 },
+    { click: "Spiders build webs out of spaghetti" },
+    { wait: 1400 },
+    { click: "The moon is stored indoors at night" },   // → playDone
+    { wait: 1600 }, { shot: "06-weakpoint-1" },
+    { click: "Check a real source anyway" },
+    { wait: 1300 }, { shot: "07-gear-popped" },
+    { wait: 3000 },
+    { shot: "08-announce-trick2" },                     // FRIENDLY ROBOT
+    { wait: 2200 },
+    { shot: "09-play-countercard" },                    // "Bestie!! What's your school?"
+    { click: "ZIP IT - A TOOL DOESN'T NEED THAT" },
+    { wait: 1700 }, { shot: "10-weakpoint-2" },
+    { click: "Zip it - bots don't need that to help" },
+    { wait: 4300 },
+    { shot: "11-announce-trick3" },                     // SIX-FINGER FAKE
+    { wait: 2200 },
+    { shot: "12-play-deflect" },                        // the photo parade
+    { click: "REAL PHOTO - LET IT PASS" },              // deliberate wrong on six fingers
+    { wait: 700 }, { shot: "13-teach-fingers" },
+    { click: "Got it!" },
+    { click: "FAKE - ZAP IT!" },                        // six-finger hand ✓
+    { wait: 1400 },
+    { click: "REAL PHOTO - LET IT PASS" },              // crooked candles ✓
+    { wait: 1400 },
+    { click: "FAKE - ZAP IT!" },                        // melted banner ✓
+    { wait: 1400 },
+    { click: "REAL PHOTO - LET IT PASS" },              // blurry zoomies ✓
+    { wait: 1400 },
+    { click: "FAKE - ZAP IT!" },                        // backwards shadows ✓
+    { wait: 1400 },
+    { click: "REAL PHOTO - LET IT PASS" },              // class photo ✓ → playDone
+    { wait: 1600 }, { shot: "14-weakpoint-3" },
+    { click: "A hand with six fingers" },
+    { wait: 3900 },
+    { shot: "15-wobbling" },
+    { wait: 1700 },
+    { shot: "16-finisher-ring" },
+    { hold: "CHARGE THE TOOL STAMP", ms: 5600, shotDuring: "16b-charging" },
+    { wait: 800 }, { shot: "17-payoff" },               // A TOOL, NOT A FRIEND!
+    { wait: 2200 }, { shot: "18-victory" },
+    { click: "Claim the win" },
+    { wait: 2500 }, { shot: "19-outro-video" },
+    { click: "Skip video" },
+    { wait: 1800 }, { shot: "20-badge-scene" },
+    { click: "Claim Badge" },
+    { wait: 2200 }, { shot: "21-debrief" },
+  ],
 };
 
 const steps = STEPS[week];

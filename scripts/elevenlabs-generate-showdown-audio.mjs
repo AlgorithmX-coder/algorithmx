@@ -235,6 +235,20 @@ const WEEKS = {
         "[excited] UNPLUGGED, Cyber Hero! You spotted every awake ear - even sneaky Robo-Pup... [laughs] found the true lenses and let the fairy lights twinkle... [whispers] and moved that secret to another room, right off the air. [gasps] The dishes wilted like flowers! [warmly] Your house is quiet and your words are YOURS, Settings Scout. That's exactly how home should sound.",
     },
   },
+  15: {
+    slug: "w15",
+    villain: {
+      arrival: "[excited] GREETINGS! I know EVERYTHING! Try me! [laughs] I'm 63% sure!",
+      "phase-1": "[excited] Volcanoes spray ice cream! [whispers] Source: me!",
+      "phase-2": "[excited] We're best friends now! Best friends swap addresses!",
+      "phase-3": "[gasps] Count the fingers?! Nobody counts the fingers!",
+      escape: "[gasps] A TOOLBOX?! I demand a second opinion! [whispers] From me!",
+    },
+    coach: {
+      victory:
+        "[excited] STAMPED, Cyber Hero! You caught every confident fib - the real book was the judge... [laughs] zipped the jar when that booth got nosy... and counted the fingers NOBODY counts - six! [gasps] Now it's a tidy little toolbox with a bow. [warmly] Use it to explain, check the book, write it YOUR way. Tools help heroes, Fact Checker - and heroes stay the boss.",
+    },
+  },
 };
 
 // ── Legacy Week-1 villain lines (public/audio/villain) - the no-repeat
