@@ -921,6 +921,107 @@ export const WEEK_18: WeekContent = {
     { type: "completion" },
   ],
 
+  // Bespoke boss: slam every door in the sleeping house before the goblin
+  // strolls in. P1 is the Log-Out Relay AS a boss phase - the recognition
+  // is deliberate (the lesson's relay game, replayed under pressure).
+  bossShowdown: {
+    machine: {
+      name: "THE TAB GOBLIN",
+      tagline: "A wind-up sneak that scuttles into every screen left glowing",
+      art: {
+        intact: "/game/bosses/w18-tabgoblin-intact.png",
+        damaged: "/game/bosses/w18-tabgoblin-damaged.png",
+        defeated: "/game/bosses/w18-tabgoblin-defeated.png",
+      },
+      arena: "/game/backgrounds/w18-arena-dawnhouse.png",
+      accent: "#c084fc",
+      glow: "rgba(192,132,252,0.55)",
+    },
+    heroSprites: {
+      adam: {
+        idle: "/game/characters/w18/adam-pajama-idle.png",
+        attack: "/game/characters/w18/adam-pajama-attack.png",
+        celebrate: "/game/characters/w18/adam-pajama-celebrate.png",
+      },
+      layla: {
+        idle: "/game/characters/w18/layla-pajama-idle.png",
+        attack: "/game/characters/w18/layla-pajama-attack.png",
+        celebrate: "/game/characters/w18/layla-pajama-celebrate.png",
+      },
+    },
+    phases: [
+      // P1 · LEFT-OPEN TAB → ORDER-STRIKE: the Log-Out Relay as a boss
+      // phase - game, then art, then chat, before the goblin reaches them.
+      {
+        kind: "orderStrike",
+        attack: 0,
+        coach: "Run the Log-Out Relay - beat the goblin to every screen!",
+        intro: "Three screens glow in the sleeping house - the game, the art app, the chat. Slam every door in relay order!",
+        steps: [
+          { id: "game", label: "LOG OUT of the game", icon: "🎮" },
+          { id: "art", label: "LOG OUT of the art app", icon: "🎨" },
+          { id: "chat", label: "LOG OUT of the chat", icon: "💬" },
+        ],
+      },
+      // P2 · SNEAKY PEEK → COUNTER-CARD: sister's diary app glows on the
+      // shared screen - closed chests stay closed.
+      {
+        kind: "counterCard",
+        attack: 1,
+        coach: "Somebody else's chest - you know this one!",
+        situation: "Your sister's diary app glows on the shared screen - left wide open by accident.",
+        situationIcon: "👀",
+        cards: [
+          { id: "close", label: "DUST-AND-CLOSE - CLOSED CHESTS STAY CLOSED", icon: "🔒", isRight: true, note: "Close it gently without reading a word, then tell her - Lock Master style." },
+          { id: "peek", label: "ONE TINY PEEK - IT WAS OPEN ANYWAY", icon: "🙈", isRight: false, note: "Open by accident is not an invitation - a peek is still sneaking." },
+          { id: "secret", label: "READ IT ALL - JUST NEVER TELL", icon: "🤫", isRight: false, note: "Secret reading is snooping twice - close it and let her know instead." },
+        ],
+      },
+      // P3 · STICKY BALLOON → DEFLECT-SORT: SAVE PASSWORD balloons pop up
+      // across the house - pop NO on shared screens, ask first on your own.
+      {
+        kind: "deflectSort",
+        attack: 2,
+        coach: "Shared screens never keep your keys. Your own tablet? That's a grown-up question!",
+        actLabel: "POP IT - NO!",
+        actIcon: "✋",
+        passLabel: "ASK MOM FIRST",
+        items: [
+          { id: "kitchen", label: "SAVE PASSWORD? - the family kitchen tablet", icon: "👪", act: true, note: "Everyone's hands touch the kitchen tablet - pop it, every single time." },
+          { id: "dino", label: "SAVE PASSWORD? - your dinosaur-sticker tablet", icon: "🌟", act: false, note: "That one's YOURS - so it's an ask-first question, not a pop." },
+          { id: "library", label: "SAVE PASSWORD? - the library computer", icon: "🔍", act: true, note: "A library computer belongs to the whole town - keys stay out." },
+          { id: "drawpad", label: "SAVE PASSWORD? - your birthday drawing pad", icon: "🎁", act: false, note: "Yours again - your grown-up helps pick where keys live." },
+          { id: "cousin", label: "SAVE PASSWORD? - your cousin's phone", icon: "💬", act: true, note: "When their phone goes home, your password goes with it - pop it." },
+          { id: "player", label: "SAVE PASSWORD? - your own game player", icon: "🎮", act: false, note: "Your own device plus a grown-up's yes - that's the only maybe." },
+        ],
+      },
+    ],
+    weakPoints: [
+      { question: "You're done playing on the shared tablet. What really shuts the door behind you?", answers: ["Logging out - Home just hides the apps", "Tapping the Home button", "Turning the screen dark", "Putting it back on the shelf"], correctIndex: 0, explanation: "Home hides, dark sleeps - only LOG OUT hands the tablet back clean." },
+      { question: "Your sister's diary app was left glowing on the shared screen. A Lock Master...", answers: ["Closes it without reading - and tells her", "Has one tiny peek first", "Reads it but keeps it secret", "Saves it to look at later"], correctIndex: 0, explanation: "Open by accident is not an invitation - close the chest gently and let her know." },
+      { question: "The SAVE PASSWORD balloon pops up on the library computer. You...", answers: ["Pop it with a NO - shared screens never keep your keys", "Tap YES - it's faster tomorrow", "Tap YES but whisper your password", "Let the librarian decide"], correctIndex: 0, explanation: "On shared screens the answer is always NO - your keys live with you, not in the machine." },
+    ],
+    finisher: {
+      chargeLabel: "CHARGE THE FORGE HAMMER",
+      chargeIcon: "🔨",
+      chargeSecs: 5,
+      milestones: ["The hammer is glowing on the anvil…", "The family code is sparking - 58-93-41…", "EVERY LOCK IS READY! LET GO!"],
+      payoffTitle: "EVERY DOOR CLICKED SHUT!",
+      payoffLine: "CLANG! The forge hammer falls and the family code - 58-93-41 - races through the sleeping house. The game, the art app, the chat... click, click, CLICK! Every lock shuts at once and the goblin winds down mid-scuttle, key spinning slower... slower... stopped. A locked house sleeps easy - and so does everyone in it.",
+    },
+    villain: {
+      arrival: "Every door in this house is open! It's basically an invitation!",
+      phases: [
+        "Still signed in! You shouldn't have! Really!",
+        "One tiny diary! For research purposes!",
+        "Save the password! Save ALL the passwords! For me!",
+      ],
+      escape: "Locked?! Even the TABLET?! Who taught this family THINGS?!",
+    },
+    voiceSlug: "w18",
+  },
+  badgeArt: "/cyberheroes/badges/week-18-lock-master.png",
+
   // Week-lane attack theatre: left-open-device tricks only (password
   // cracking = W1, app fakes = W9, device ears = W14).
   bossAttacks: [

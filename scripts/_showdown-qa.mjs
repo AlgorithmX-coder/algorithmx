@@ -894,6 +894,65 @@ const STEPS = {
     { click: "Claim Badge" },
     { wait: 2200 }, { shot: "21-debrief" },
   ],
+  18: [
+    { wait: 3000 }, { shot: "01-entrance" },            // TAB GOBLIN nameplate
+    { wait: 2000 }, { shot: "02-select" },              // pajama-hero locksmiths!
+    { clickLabel: "Play as LAYLA" },
+    { wait: 900 }, { shot: "03-announce-trick1" },      // LEFT-OPEN TAB telegraph
+    { wait: 2400 },
+    { shot: "04-play-orderstrike" },                    // the Log-Out Relay, as a boss
+    { click: "LOG OUT of the art app" },                // deliberate wrong (game comes first) → teach
+    { wait: 700 }, { shot: "05-teach-relay" },
+    { click: "Got it!" },
+    { click: "LOG OUT of the game" },                   // ✓ relay leg 1
+    { wait: 900 },
+    { click: "LOG OUT of the art app" },                // ✓ relay leg 2
+    { wait: 900 },
+    { click: "LOG OUT of the chat" },                   // ✓ relay leg 3 → playDone
+    { wait: 2000 }, { shot: "06-weakpoint-1" },
+    { click: "Logging out - Home just hides the apps" },
+    { wait: 1300 }, { shot: "07-gear-popped" },
+    { wait: 3000 },
+    { shot: "08-announce-trick2" },                     // SNEAKY PEEK
+    { wait: 2200 },
+    { shot: "09-play-countercard" },                    // sister's diary glows
+    { click: "ONE TINY PEEK - IT WAS OPEN ANYWAY" },    // deliberate wrong → teach
+    { wait: 700 }, { shot: "10-teach-peek" },
+    { click: "Got it!" },
+    { click: "DUST-AND-CLOSE - CLOSED CHESTS STAY CLOSED" }, // ✓
+    { wait: 1700 }, { shot: "11-weakpoint-2" },
+    { click: "Closes it without reading - and tells her" },
+    { wait: 4300 },
+    { shot: "12-announce-trick3" },                     // STICKY BALLOON
+    { wait: 2200 },
+    { shot: "13-play-deflect" },                        // balloons across the house
+    { click: "POP IT - NO!" },                          // kitchen tablet ✓
+    { wait: 1400 },
+    { click: "ASK MOM FIRST" },                         // dinosaur-sticker tablet ✓
+    { wait: 1400 },
+    { click: "POP IT - NO!" },                          // library computer ✓
+    { wait: 1400 },
+    { click: "ASK MOM FIRST" },                         // birthday drawing pad ✓
+    { wait: 1400 },
+    { click: "POP IT - NO!" },                          // cousin's phone ✓
+    { wait: 1400 },
+    { click: "ASK MOM FIRST" },                         // own game player ✓ → playDone
+    { wait: 1600 }, { shot: "14-weakpoint-3" },
+    { click: "Pop it with a NO - shared screens never keep your keys" },
+    { wait: 3900 },
+    { shot: "15-wobbling" },
+    { wait: 1700 },
+    { shot: "16-finisher-ring" },
+    { hold: "CHARGE THE FORGE HAMMER", ms: 5600, shotDuring: "16b-charging" },
+    { wait: 800 }, { shot: "17-payoff" },               // EVERY DOOR CLICKED SHUT!
+    { wait: 2200 }, { shot: "18-victory" },
+    { click: "Claim the win" },
+    { wait: 2500 }, { shot: "19-outro-video" },
+    { click: "Skip video" },
+    { wait: 1800 }, { shot: "20-badge-scene" },
+    { click: "Claim Badge" },
+    { wait: 2200 }, { shot: "21-debrief" },
+  ],
 };
 
 const steps = STEPS[week];

@@ -277,6 +277,20 @@ const WEEKS = {
         "[excited] DIMMED, Cyber Hero! You flipped every glossy poster to its backstage truth - rain, take 94, cold toast and all... [laughs] roped out the talent scout AND that forty-account fan club... and frosted the big mirror till strangers saw nothing but shine. [gasps] Every mirror in the funhouse just went dark. [warmly] Real friends, real days, real you, Shield Bearer - that's the only reflection worth keeping.",
     },
   },
+  18: {
+    slug: "w18",
+    villain: {
+      arrival: "[excited] Every door in this house is open! [laughs] It's basically an invitation!",
+      "phase-1": "[gasps] Still signed in! You shouldn't have! [laughs] Really!",
+      "phase-2": "One tiny diary! [whispers] For research purposes!",
+      "phase-3": "[excited] Save the password! Save ALL the passwords! [whispers] For me!",
+      escape: "[gasps] Locked?! Even the TABLET?! [sighs] Who taught this family THINGS?!",
+    },
+    coach: {
+      victory:
+        "[excited] LOCKED, Cyber Hero! You ran the Log-Out Relay - game, art, chat - and slammed every door before the goblin's little wind-up legs got there... [warmly] dusted your sister's diary closed without reading a single word... [laughs] and popped every sticky SAVE-PASSWORD balloon on every shared screen in the house. [gasps] Then one hammer-strike - fifty-eight, ninety-three, forty-one - and every lock clicked shut at once. [warmly] The whole house sleeps easy tonight, Lock Master - because you hold the keys.",
+    },
+  },
 };
 
 // ── Legacy Week-1 villain lines (public/audio/villain) - the no-repeat
