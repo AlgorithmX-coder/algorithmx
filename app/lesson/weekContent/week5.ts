@@ -683,6 +683,106 @@ export const WEEK_5: WeekContent = {
   // Week-lane attack theatre: pile-on dynamics only (no scam vocabulary -
   // W4; no stranger-danger vocabulary - W3). The Raccoon STIRS meanness;
   // kids beat him with kindness.
+  // W5 SHOWDOWN — THE ECHO MACHINE (design doc §W5, the WARMTH week:
+  // untimed phases only, muted villain, win by kindness - never force).
+  // P1 counterCard pile-on · P2 gentle deflectSort mute-the-echoes ·
+  // P3 orderStrike lift-the-cloud · finisher = the Color Wave.
+  bossShowdown: {
+    machine: {
+      name: "THE ECHO MACHINE",
+      tagline: "A speaker-robot that repeats mean words louder and louder",
+      art: {
+        intact: "/game/bosses/w05-echomachine-intact.png",
+        damaged: "/game/bosses/w05-echomachine-damaged.png",
+        defeated: "/game/bosses/w05-echomachine-defeated.png",
+      },
+      arena: "/game/backgrounds/w05-arena-courtyard.png",
+      accent: "#b39df5",
+      glow: "rgba(179,157,245,0.55)",
+    },
+    heroSprites: {
+      adam: {
+        idle: "/game/characters/w05/adam-artist-idle.png",
+        attack: "/game/characters/w05/adam-artist-attack.png",
+        celebrate: "/game/characters/w05/adam-artist-celebrate.png",
+      },
+      layla: {
+        idle: "/game/characters/w05/layla-artist-idle.png",
+        attack: "/game/characters/w05/layla-artist-attack.png",
+        celebrate: "/game/characters/w05/layla-artist-celebrate.png",
+      },
+    },
+    phases: [
+      // P1 · PILE-ON → COUNTER-CARD: the thread grows on the wall.
+      {
+        kind: "counterCard",
+        attack: 0,
+        coach: "What does an upstander do? Tap the card!",
+        situation: "The wall thread grows: everyone's adding one mean joke about the new kid.",
+        situationIcon: "🌀",
+        cards: [
+          { id: "stand", label: "STAND BY THE KID", icon: "💪", isRight: true, note: "" },
+          { id: "joke", label: "Add one little joke", icon: "💬", isRight: false, note: "Even one tiny joke tells the pile-on 'more please' - and the hurt kid sees it." },
+          { id: "watch", label: "Just watch quietly", icon: "👀", isRight: false, note: "Watching feels safe, but the kid still stands alone. Stand BY them instead." },
+        ],
+      },
+      // P2 · MEAN ECHO → DEFLECT-SORT (gentle): mute echoes to mist,
+      // never touch the tempting reply buttons.
+      {
+        kind: "deflectSort",
+        attack: 1,
+        coach: "Mute the mean echoes. Never feed them!",
+        actLabel: "MUTE IT",
+        actIcon: "🤫",
+        passLabel: "LET IT DRIFT",
+        items: [
+          { id: "echo-build", label: "Echo: 'You're the WORST at building!'", icon: "💬", act: true, note: "That's a mean echo - mute it to mist. Never answer it." },
+          { id: "reply-caps", label: "'Type it back in ALL CAPS!'", icon: "🔠", act: false, note: "That's the fire asking for wood. Let it drift - no reply." },
+          { id: "echo-team", label: "Echo: 'Nobody wants you on the team!'", icon: "💬", act: true, note: "Mean echo - mute it. It says nothing true about you." },
+          { id: "reply-comeback", label: "'Just one little comeback...'", icon: "🌀", act: false, note: "Comebacks feed echoes. Drift on past - calm wins." },
+          { id: "echo-quit", label: "Echo: 'Just QUIT already!'", icon: "💬", act: true, note: "One more echo - mute it to mist and breathe." },
+          { id: "reply-meaner", label: "'Say something meaner back!'", icon: "⚡", act: false, note: "Meaner back = bigger fire. Heroes let it drift." },
+        ],
+      },
+      // P3 · LONELY CLOUD → ORDER-STRIKE: lift it one calm step at a time.
+      {
+        kind: "orderStrike",
+        attack: 2,
+        coach: "Lift the cloud - tap the steps in order!",
+        intro: "The lonely cloud wraps around the new kid. Lift it one calm step at a time.",
+        steps: [
+          { id: "noreply", label: "DON'T REPLY", icon: "✋" },
+          { id: "keep", label: "KEEP the mean message", icon: "📋" },
+          { id: "tell", label: "TELL a grown-up", icon: "👪" },
+        ],
+      },
+    ],
+    weakPoints: [
+      { question: "What does a pile-on need to keep growing?", answers: ["More people joining in - so don't", "Nothing at all", "One really mean kid", "A faster phone"], correctIndex: 0, explanation: "Pile-ons starve when nobody joins. Your NO is powerful." },
+      { question: "Why shouldn't you fire back a meaner reply?", answers: ["It feeds the fire and makes it all worse", "Because you might lose", "It takes too long", "You might get in trouble too"], correctIndex: 0, explanation: "Angry replies are wood - the fire grows. Calm stops it growing." },
+      { question: "Is telling a trusted adult 'snitching'?", answers: ["No - telling is how the hurting stops", "Yes, always", "Only if you could fix it yourself", "Only if it's about you"], correctIndex: 0, explanation: "Snitching gets someone IN trouble. Telling gets someone OUT of it." },
+    ],
+    finisher: {
+      chargeLabel: "CHARGE THE COLOR WAVE",
+      chargeIcon: "🎨",
+      chargeSecs: 5,
+      milestones: ["Gathering kindness…", "It's glowing warm! Keep holding!", "FULL BLOOM! LET GO!"],
+      payoffTitle: "THE WALL BLOOMS!",
+      payoffLine: "Kindness is louder than any echo. You stood by the kid - and the color came back.",
+    },
+    villain: {
+      arrival: "Echo echo echo! Words are SO much louder in here!",
+      phases: [
+        "One more voice in the pile! What's the harm?",
+        "Feed the echo! It's hungry!",
+        "That cloud looks heavy. Shame nobody helps carry those.",
+      ],
+      escape: "...it's no fun when nobody joins in. I'm leaving.",
+    },
+    voiceSlug: "w05",
+  },
+  badgeArt: "/cyberheroes/badges/week-05-kind-defender.png",
+
   bossAttacks: [
     { name: "PILE-ON",     icon: "🌀", color: "#7c5cff", glow: "rgba(124, 92, 255, 0.55)", tag: "Don't join in",              emblemColor: 0x7c5cff },
     { name: "MEAN ECHO",   icon: "💬", color: "#ff5fb3", glow: "rgba(255, 95, 179, 0.55)", tag: "No wood for the fire",       emblemColor: 0xff5fb3 },

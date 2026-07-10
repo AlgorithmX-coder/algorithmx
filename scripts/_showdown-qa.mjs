@@ -147,6 +147,65 @@ const STEPS = {
     { click: "Claim Badge" },
     { wait: 2200 }, { shot: "23-debrief" },
   ],
+  5: [
+    { wait: 3000 }, { shot: "01-entrance" },            // ECHO MACHINE nameplate
+    { wait: 2000 }, { shot: "02-select" },              // artist overalls!
+    { clickLabel: "Play as ADAM" },
+    { wait: 900 }, { shot: "03-announce-trick1" },      // PILE-ON telegraph
+    { wait: 2400 },
+    { shot: "04-play-countercard" },
+    { click: "Just watch quietly" },                    // deliberate wrong → teach
+    { wait: 700 }, { shot: "05-teach-panel" },
+    { click: "Got it!" },
+    { click: "STAND BY THE KID" },                      // upstander card
+    { wait: 1700 }, { shot: "06-weakpoint-1" },
+    { click: "More people joining in - so don't" },
+    { wait: 1300 }, { shot: "07-gear-popped" },
+    { wait: 3000 },
+    { shot: "08-announce-trick2" },                     // MEAN ECHO
+    { wait: 2200 },
+    { shot: "09-play-deflect" },                        // first echo bubble
+    { click: "MUTE IT" },                               // echo-build ✓
+    { wait: 1400 },
+    { click: "MUTE IT" },                               // deliberate wrong on reply-caps
+    { wait: 700 }, { shot: "10-teach-echo" },
+    { click: "Got it!" },
+    { click: "LET IT DRIFT" },                          // reply-caps ✓
+    { wait: 1400 },
+    { click: "MUTE IT" },                               // echo-team ✓
+    { wait: 1400 },
+    { click: "LET IT DRIFT" },                          // reply-comeback ✓
+    { wait: 1400 },
+    { click: "MUTE IT" },                               // echo-quit ✓
+    { wait: 1400 },
+    { click: "LET IT DRIFT" },                          // reply-meaner ✓ → playDone
+    { wait: 1600 }, { shot: "11-weakpoint-2" },
+    { click: "It feeds the fire and makes it all worse" },
+    { wait: 4300 },
+    { shot: "12-announce-trick3" },                     // LONELY CLOUD
+    { wait: 2200 },
+    { shot: "13-play-orderstrike" },
+    { click: "DON'T REPLY" },
+    { wait: 900 },
+    { click: "KEEP the mean message" },
+    { wait: 900 },
+    { click: "TELL a grown-up" },                       // → playDone
+    { wait: 1600 }, { shot: "14-weakpoint-3" },
+    { click: "No - telling is how the hurting stops" },
+    { wait: 3900 },
+    { shot: "15-wobbling" },
+    { wait: 1700 },
+    { shot: "16-finisher-ring" },
+    { hold: "CHARGE THE COLOR WAVE", ms: 5600, shotDuring: "16b-charging" },
+    { wait: 800 }, { shot: "17-payoff" },               // THE WALL BLOOMS!
+    { wait: 2200 }, { shot: "18-victory" },
+    { click: "Claim the win" },
+    { wait: 2500 }, { shot: "19-outro-video" },
+    { click: "Skip video" },
+    { wait: 1800 }, { shot: "20-badge-scene" },
+    { click: "Claim Badge" },
+    { wait: 2200 }, { shot: "21-debrief" },
+  ],
 };
 
 const steps = STEPS[week];

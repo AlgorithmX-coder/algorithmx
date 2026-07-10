@@ -91,6 +91,22 @@ const WEEKS = {
         "[excited] YES! Inbox cleared, Cyber Hero! [laughs] Did you see those glittery hooks fizzle? You cut every bait loose... you held the calm while that silly clock screamed all the way to zero... [whispers] and you caught the sneaky ZERO hiding in Nintend-zero. [excited] The Bait Caster is STAMPED! [warmly] Nothing on that dock could make you bite.",
     },
   },
+  // WARMTH WEEK: villain delivery stays playful-tired, never scary;
+  // the escape is a deflated mumble, not a threat.
+  5: {
+    slug: "w05",
+    villain: {
+      arrival: "Echo echo echo! Words are SO much louder in here!",
+      "phase-1": "One more voice in the pile! What's the harm?",
+      "phase-2": "Feed the echo! It's hungry!",
+      "phase-3": "That cloud looks heavy. Shame nobody helps carry those.",
+      escape: "[sighs] ...it's no fun when nobody joins in. I'm leaving.",
+    },
+    coach: {
+      victory:
+        "[warmly] Oh, that was beautiful, Cyber Hero. [excited] You stood by the new kid... you let every mean echo fade to mist... and you lifted that heavy cloud, one calm step at a time. [whispers] Look - the wall is blooming again. [excited] Kindness won. It always does... [warmly] and today, YOU led it.",
+    },
+  },
 };
 
 // ── Legacy Week-1 villain lines (public/audio/villain) - the no-repeat
