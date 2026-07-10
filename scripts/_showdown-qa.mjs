@@ -325,6 +325,56 @@ const STEPS = {
     { click: "Claim Badge" },
     { wait: 2200 }, { shot: "22-debrief" },
   ],
+  8: [
+    { wait: 3000 }, { shot: "01-entrance" },            // SNAPSHOT CLAW nameplate
+    { wait: 2000 }, { shot: "02-select" },              // photographer vests!
+    { clickLabel: "Play as LAYLA" },
+    { wait: 900 }, { shot: "03-announce-trick1" },      // COPY PIGEONS telegraph
+    { wait: 2400 },
+    { shot: "04-play-shieldhold" },                     // SHARE gale rages
+    { hold: "HOLD THE CAGE DOOR", ms: 6800 },
+    { wait: 400 }, { shot: "05-burnout" },
+    { wait: 1800 }, { shot: "06-weakpoint-1" },
+    { click: "Only YOUR copy disappears" },
+    { wait: 1300 }, { shot: "07-gear-popped" },
+    { wait: 3000 },
+    { shot: "08-announce-trick2" },                     // CLUE LEAK
+    { wait: 2200 },
+    { shot: "09-play-taptell" },
+    { click: "Your big smile" },                        // deliberate wrong → teach
+    { wait: 700 }, { shot: "10-teach-clue" },
+    { click: "Got it!" },
+    { click: "The school CREST on the shirt" },         // round 1 tell
+    { wait: 1400 },
+    { click: "The STREET SIGN behind you" },            // round 2 tell
+    { wait: 1400 },
+    { click: "The banner with your NAME and AGE" },     // round 3 tell → playDone
+    { wait: 1600 }, { shot: "11-weakpoint-2" },
+    { click: "Together they're a stranger's map to you" },
+    { wait: 4300 },
+    { shot: "12-announce-trick3" },                     // SNEAKY SNAP
+    { wait: 2200 },
+    { shot: "13-play-countercard" },
+    { click: "Snap it and post it" },                   // deliberate wrong → teach
+    { wait: 700 }, { shot: "14-teach-snap" },
+    { click: "Got it!" },
+    { click: "ASK THEM FIRST" },
+    { wait: 1700 }, { shot: "15-weakpoint-3" },
+    { click: "Keep it - just-for-me means just-for-me" },
+    { wait: 3900 },
+    { shot: "16-wobbling" },
+    { wait: 1700 },
+    { shot: "17-finisher-ring" },
+    { hold: "CHARGE THE GOLDEN FRAME", ms: 5600, shotDuring: "17b-charging" },
+    { wait: 800 }, { shot: "18-payoff" },               // NOTHING TO STEAL!
+    { wait: 2200 }, { shot: "19-victory" },
+    { click: "Claim the win" },
+    { wait: 2500 }, { shot: "20-outro-video" },
+    { click: "Skip video" },
+    { wait: 1800 }, { shot: "21-badge-scene" },
+    { click: "Claim Badge" },
+    { wait: 2200 }, { shot: "22-debrief" },
+  ],
 };
 
 const steps = STEPS[week];

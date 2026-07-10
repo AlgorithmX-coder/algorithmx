@@ -135,6 +135,20 @@ const WEEKS = {
         "[excited] Ka-CHING, Cyber Hero! Hear that? Every single coin raining right back home! [laughs] You held the wallet shut through ALL that screaming... you found the tiny odds tag on every glittery box... [whispers] and nobody - nobody - got your password. [excited] The vacuum's running backwards! [warmly] Your family's money is safe, because you ask first and you never, ever rush.",
     },
   },
+  8: {
+    slug: "w08",
+    villain: {
+      arrival: "[excited] One little photo tells me EVERYTHING. Say cheese!",
+      "phase-1": "Let the pigeons out! They only bite a little!",
+      "phase-2": "[laughs] Lovely crest! Lovely street sign! Lovely front door!",
+      "phase-3": "Snap first, ask never! That's the raccoon way!",
+      escape: "[gasps] A clean photo?! What am I supposed to do with MEMORIES?!",
+    },
+    coach: {
+      victory:
+        "[excited] Picture PERFECT, Cyber Hero! Every pigeon stayed home in its cage... you spotted the crest, the street sign, AND that birthday banner... [whispers] and when your camera was ready, you asked first. [laughs] The claw grabbed a photo full of... nothing! [excited] Look. Think. Ask. You've got the whole ritual now. [warmly] Your moments belong to YOU.",
+    },
+  },
 };
 
 // ── Legacy Week-1 villain lines (public/audio/villain) - the no-repeat

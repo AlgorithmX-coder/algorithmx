@@ -751,6 +751,131 @@ export const WEEK_8: WeekContent = {
 
   // Week-lane attack theatre: photo/share tricks only (people-judging =
   // W3; message scams = W4; the full footprint trail = W12).
+  // W8 SHOWDOWN — THE SNAPSHOT CLAW (design doc §W8: crash the photo
+  // heist on the rooftop gallery). P1 shieldHold the pigeon cage ·
+  // P2 tapTell the talking clue in 3 photos · P3 counterCard the sneaky
+  // snap · finisher = the Golden Frame (claw grabs, finds nothing).
+  bossShowdown: {
+    machine: {
+      name: "THE SNAPSHOT CLAW",
+      tagline: "A grabby crane that snatches photos full of clues",
+      art: {
+        intact: "/game/bosses/w08-snapshotclaw-intact.png",
+        damaged: "/game/bosses/w08-snapshotclaw-damaged.png",
+        defeated: "/game/bosses/w08-snapshotclaw-defeated.png",
+      },
+      arena: "/game/backgrounds/w08-arena-rooftop.png",
+      accent: "#7df0ff",
+      glow: "rgba(125,240,255,0.55)",
+    },
+    heroSprites: {
+      adam: {
+        idle: "/game/characters/w08/adam-photographer-idle.png",
+        attack: "/game/characters/w08/adam-photographer-attack.png",
+        celebrate: "/game/characters/w08/adam-photographer-celebrate.png",
+      },
+      layla: {
+        idle: "/game/characters/w08/layla-photographer-idle.png",
+        attack: "/game/characters/w08/layla-photographer-attack.png",
+        celebrate: "/game/characters/w08/layla-photographer-celebrate.png",
+      },
+    },
+    phases: [
+      // P1 · COPY PIGEONS → SHIELD-HOLD: the SHARE gale batters the cage.
+      {
+        kind: "shieldHold",
+        attack: 0,
+        coach: "The pigeons stay IN. Press and don't stop!",
+        holdLabel: "HOLD THE CAGE DOOR",
+        holdIcon: "🔒",
+        holdSecs: 6,
+        barrage: [
+          "SHARE IT! SHARE IT! SHARE IT!",
+          "Just ONE little post!",
+          "Everyone will LOVE it!",
+          "The group chat is WAITING!",
+          "Let one pigeon out! Just one!",
+        ],
+        burnoutLine: "The gale died - and every pigeon is still home. Once a photo flies, no delete can catch it. Yours stayed YOURS.",
+      },
+      // P2 · CLUE LEAK → TAP-THE-TELL: three photos, tap the talking clue.
+      {
+        kind: "tapTell",
+        attack: 1,
+        coach: "Photos TALK. Tap the clue before the claw grabs it!",
+        rounds: [
+          {
+            id: "crest",
+            prompt: "Photo one: you smiling in your school uniform.",
+            promptIcon: "🕵️",
+            options: [
+              { id: "smile", label: "Your big smile", icon: "🎉", isTell: false, note: "Smiles are safe to share! Look for what NAMES a place." },
+              { id: "crest", label: "The school CREST on the shirt", icon: "🏫", isTell: true, note: "" },
+              { id: "pose", label: "The thumbs-up pose", icon: "👍", isTell: false, note: "Poses tell nothing. Look for what NAMES a place." },
+            ],
+          },
+          {
+            id: "sign",
+            prompt: "Photo two: you on your bike outside home.",
+            promptIcon: "🔍",
+            options: [
+              { id: "sign", label: "The STREET SIGN behind you", icon: "📍", isTell: true, note: "" },
+              { id: "bike", label: "Your cool bike", icon: "🚀", isTell: false, note: "Bikes don't give you away. Find what shows WHERE you live." },
+              { id: "helmet", label: "Your helmet", icon: "🛡️", isTell: false, note: "Helmets are just smart. Find what shows WHERE you live." },
+            ],
+          },
+          {
+            id: "banner",
+            prompt: "Photo three: the birthday party table.",
+            promptIcon: "🎂",
+            options: [
+              { id: "cake", label: "The chocolate cake", icon: "🎂", isTell: false, note: "Cake is just delicious. Find what tells your name and age." },
+              { id: "balloons", label: "The balloons", icon: "🎉", isTell: false, note: "Balloons say 'party', nothing else. Find what tells your name and age." },
+              { id: "banner", label: "The banner with your NAME and AGE", icon: "👀", isTell: true, note: "" },
+            ],
+          },
+        ],
+      },
+      // P3 · SNEAKY SNAP → COUNTER-CARD.
+      {
+        kind: "counterCard",
+        attack: 2,
+        coach: "Whose face? Whose call? Tap the card!",
+        situation: "Your friend wipes out on the trampoline - SO funny. Your camera is ready...",
+        situationIcon: "👀",
+        cards: [
+          { id: "ask", label: "ASK THEM FIRST", icon: "💬", isRight: true, note: "" },
+          { id: "post", label: "Snap it and post it", icon: "⚡", isRight: false, note: "Their face, their call. Posting without asking trades their trust for a laugh." },
+          { id: "keep", label: "Snap it and keep it 'just in case'", icon: "🤫", isRight: false, note: "A secret snap is still THEIR moment, not yours. Ask first - always." },
+        ],
+      },
+    ],
+    weakPoints: [
+      { question: "You DELETE a photo you shared. What happens?", answers: ["Only YOUR copy disappears", "Every copy everywhere vanishes", "The internet forgets it", "Screenshots delete too"], correctIndex: 0, explanation: "Delete empties your nest - the copy pigeons are already flying." },
+      { question: "One photo shows your name, age, school AND street. Why is that a big deal?", answers: ["Together they're a stranger's map to you", "It just looks untidy", "It's only a problem if you're famous", "Names aren't private"], correctIndex: 0, explanation: "Each clue is small - together they tell a stranger everything they need." },
+      { question: "A friend sends a just-for-you selfie. The group chat would love it. You...", answers: ["Keep it - just-for-me means just-for-me", "Forward it - she sent it to me!", "Post it but say sorry after", "Crop her face and send it"], correctIndex: 0, explanation: "Sent TO you isn't yours to send ON - that's her trust in your hands." },
+    ],
+    finisher: {
+      chargeLabel: "CHARGE THE GOLDEN FRAME",
+      chargeIcon: "⭐",
+      chargeSecs: 5,
+      milestones: ["Polishing the frame…", "It's gleaming! Keep holding!", "FRAME READY! LET GO!"],
+      payoffTitle: "NOTHING TO STEAL!",
+      payoffLine: "The claw grabbed the safe photo and found zero clues inside. Look, think, ask - every share, every time.",
+    },
+    villain: {
+      arrival: "One little photo tells me EVERYTHING. Say cheese!",
+      phases: [
+        "Let the pigeons out! They only bite a little!",
+        "Lovely crest! Lovely street sign! Lovely front door!",
+        "Snap first, ask never! That's the raccoon way!",
+      ],
+      escape: "A clean photo?! What am I supposed to do with MEMORIES?!",
+    },
+    voiceSlug: "w08",
+  },
+  badgeArt: "/cyberheroes/badges/week-08-photo-detective.png",
+
   bossAttacks: [
     { name: "COPY PIGEONS", icon: "✉️", color: "#7df0ff", glow: "rgba(125, 240, 255, 0.55)", tag: "Delete can't catch them", emblemColor: 0x7df0ff },
     { name: "CLUE LEAK",    icon: "📍", color: "#ffd158", glow: "rgba(255, 209, 88, 0.55)",  tag: "Photos talk",             emblemColor: 0xffd158 },
