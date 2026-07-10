@@ -636,7 +636,7 @@ export const WEEK_14: WeekContent = {
         },
         {
           id: "tv",
-          label: "Telly - voice remote",
+          label: "TV - voice remote",
           value: "Mic always on",
           safeValue: "Push to talk",
           icon: "📱",

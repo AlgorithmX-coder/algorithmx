@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-10T08:09:11.233Z",
+  "generatedAt": "2026-07-10T09:52:27.014Z",
   "model": "eleven_v3",
   "voiceSettings": {
     "stability": 0.35,
@@ -60,17 +60,17 @@
       "file": "/audio/voice/8b4da7d3609c9b5f.mp3"
     },
     {
-      "key": "2488ebd04ff5e906",
+      "key": "e653cae598147d29",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[warmly] Brilliant work, Cyber Hero! You just learned what a password really is. It's a secret code that proves it's really you. [excited] Next, let's make it super strong!",
+      "text": "[warmly] Amazing work, Cyber Hero! You just learned what a password really is. It's a secret code that proves it's really you. [excited] Next, let's make it super strong!",
       "lines": [
-        "[warmly] Brilliant work, Cyber Hero!",
+        "[warmly] Amazing work, Cyber Hero!",
         "You just learned what a password really is.",
         "It's a secret code that proves it's really you.",
         "[excited] Next, let's make it super strong!"
       ],
-      "file": "/audio/voice/2488ebd04ff5e906.mp3"
+      "file": "/audio/voice/e653cae598147d29.mp3"
     },
     {
       "key": "3a6df4e4a90af6b1",
@@ -135,17 +135,17 @@
       "file": "/audio/voice/4afc63aff8357505.mp3"
     },
     {
-      "key": "c4fa40fa9fd0d601",
+      "key": "850ec9c50dbb7da3",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[excited] Uh oh! These passwords are sick! You're the cyber-doctor. First, work out what's WRONG with each one. Then use your tools to make it strong, watch the meter climb! [warmly] No rush, Doctor. Take your time.",
+      "text": "[excited] Uh oh! These passwords are sick! You're the cyber-doctor. First, figure out what's WRONG with each one. Then use your tools to make it strong, watch the meter climb! [warmly] No rush, Doctor. Take your time.",
       "lines": [
         "[excited] Uh oh! These passwords are sick! You're the cyber-doctor.",
-        "First, work out what's WRONG with each one.",
+        "First, figure out what's WRONG with each one.",
         "Then use your tools to make it strong, watch the meter climb!",
         "[warmly] No rush, Doctor. Take your time."
       ],
-      "file": "/audio/voice/c4fa40fa9fd0d601.mp3"
+      "file": "/audio/voice/850ec9c50dbb7da3.mp3"
     },
     {
       "key": "21cfe14959d2e00a",
@@ -222,16 +222,16 @@
       "file": "/audio/voice/125177e180d8467d.mp3"
     },
     {
-      "key": "a67ecfe0c2e2c1bc",
+      "key": "c74c7c0b92f2f0cb",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[excited] Detective time, Cyber Hero! Each password here is weak. Look closely and work out WHY it's weak. [warmly] Too short? A real word? About you? Take your time.",
+      "text": "[excited] Detective time, Cyber Hero! Each password here is weak. Look closely and figure out WHY it's weak. [warmly] Too short? A real word? About you? Take your time.",
       "lines": [
         "[excited] Detective time, Cyber Hero! Each password here is weak.",
-        "Look closely and work out WHY it's weak.",
+        "Look closely and figure out WHY it's weak.",
         "[warmly] Too short? A real word? About you? Take your time."
       ],
-      "file": "/audio/voice/a67ecfe0c2e2c1bc.mp3"
+      "file": "/audio/voice/c74c7c0b92f2f0cb.mp3"
     },
     {
       "key": "49b660cf14a53f4d",
@@ -637,55 +637,55 @@
       "file": "/audio/voice/8003790bf2bd9390.mp3"
     },
     {
-      "key": "ae2fa669a33a9284",
+      "key": "dd2e4f183f37d5e9",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[warmly] When mean messages land, your fingers itch to fire back. Don't feed it! A reply is exactly what the sender wants. Heroes starve it instead. Stop - hands off. Block - the door shuts. [whispers] Then close the app and breathe. [excited] The block button's waiting - let's find it fast!",
+      "text": "[warmly] When mean messages land, your fingers itch to fire back. Don't feed it! A reply is exactly what the sender wants. Heroes starve it instead. Stop - hands off. Snap the proof. THEN block - the door shuts. [whispers] Then close the app and breathe. [excited] Camera, then block - let's find the buttons fast!",
       "lines": [
         "[warmly] When mean messages land, your fingers itch to fire back.",
         "Don't feed it! A reply is exactly what the sender wants.",
         "Heroes starve it instead.",
-        "Stop - hands off. Block - the door shuts.",
+        "Stop - hands off. Snap the proof. THEN block - the door shuts.",
         "[whispers] Then close the app and breathe.",
-        "[excited] The block button's waiting - let's find it fast!"
+        "[excited] Camera, then block - let's find the buttons fast!"
       ],
-      "file": "/audio/voice/ae2fa669a33a9284.mp3"
+      "file": "/audio/voice/dd2e4f183f37d5e9.mp3"
     },
     {
-      "key": "88d63c1651d01096",
+      "key": "0f1f17f8ec62d61e",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[warmly] Deep breath. Calm fingers. Six buttons - only two are hero moves. Block shuts the door. Close App gives you air. [excited] Find them in order - go!",
+      "text": "[warmly] Deep breath. Calm fingers. Six buttons - only three are hero moves. Camera freezes the proof. Block shuts the door. Close App gives you air. [excited] Find them in order - go!",
       "lines": [
         "[warmly] Deep breath. Calm fingers.",
-        "Six buttons - only two are hero moves.",
-        "Block shuts the door. Close App gives you air.",
+        "Six buttons - only three are hero moves.",
+        "Camera freezes the proof. Block shuts the door. Close App gives you air.",
         "[excited] Find them in order - go!"
       ],
-      "file": "/audio/voice/88d63c1651d01096.mp3"
+      "file": "/audio/voice/0f1f17f8ec62d61e.mp3"
     },
     {
-      "key": "8e09332ed3fbda2e",
+      "key": "192ec8b33ac028e5",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Shut the door first - find BLOCK SENDER!",
+      "text": "Freeze the proof first - find SCREENSHOT!",
       "lines": [
-        "Shut the door first - find BLOCK SENDER!"
+        "Freeze the proof first - find SCREENSHOT!"
       ],
-      "file": "/audio/voice/8e09332ed3fbda2e.mp3"
+      "file": "/audio/voice/192ec8b33ac028e5.mp3"
     },
     {
-      "key": "9618a49b4983982d",
+      "key": "cd39b2b5e5098adf",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[excited] Three powers! Block found, door shut. And did you spot the trick button? [whispers] DELETE looked helpful... but it wasn't. Here's why the camera always beats the trash.",
+      "text": "[excited] Three powers! Proof snapped, block found, door shut. And did you spot the trick button? [whispers] DELETE looked helpful... but it wasn't. Here's why the camera always beats the trash.",
       "lines": [
-        "[excited] Three powers! Block found, door shut.",
+        "[excited] Three powers! Proof snapped, block found, door shut.",
         "And did you spot the trick button?",
         "[whispers] DELETE looked helpful... but it wasn't.",
         "Here's why the camera always beats the trash."
       ],
-      "file": "/audio/voice/9618a49b4983982d.mp3"
+      "file": "/audio/voice/cd39b2b5e5098adf.mp3"
     },
     {
       "key": "9db814355ac0f2bb",
@@ -961,19 +961,19 @@
       "file": "/audio/voice/8b16e8def635c2f9.mp3"
     },
     {
-      "key": "588611a9c433fbe4",
+      "key": "15b50ca5cd19d6aa",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[excited] Now for my favorite power! The snow isn't scary - it's YOURS to decorate. Kind words. Brilliant builds. Standing up for a friend. Those tracks glow gold - and they last just as long. [warmly] So don't tiptoe through the internet, hero. [excited] Stomp a trail you're PROUD of. Five footprints - let's go!",
+      "text": "[excited] Now for my favorite power! The snow isn't scary - it's YOURS to decorate. Kind words. Amazing builds. Standing up for a friend. Those tracks glow gold - and they last just as long. [warmly] So don't tiptoe through the internet, hero. [excited] Stomp a trail you're PROUD of. Five footprints - let's go!",
       "lines": [
         "[excited] Now for my favorite power!",
         "The snow isn't scary - it's YOURS to decorate.",
-        "Kind words. Brilliant builds. Standing up for a friend.",
+        "Kind words. Amazing builds. Standing up for a friend.",
         "Those tracks glow gold - and they last just as long.",
         "[warmly] So don't tiptoe through the internet, hero.",
         "[excited] Stomp a trail you're PROUD of. Five footprints - let's go!"
       ],
-      "file": "/audio/voice/588611a9c433fbe4.mp3"
+      "file": "/audio/voice/15b50ca5cd19d6aa.mp3"
     },
     {
       "key": "1d5fa20a69762df9",
@@ -1091,19 +1091,19 @@
       "file": "/audio/voice/2816dc69cd5a707c.mp3"
     },
     {
-      "key": "00ff8e186c426480",
+      "key": "dad3c802eefac579",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[excited] Week thirteen, hero - power week! Imagine a power bar floating over your head. Screen fun is brilliant... and it USES your charge. Sleep, snacks, running around, your people - those REFILL it. [warmly] Keepers don't pick one. They balance both. [excited] Day-moments are rolling in - let's sort them!",
+      "text": "[excited] Week thirteen, hero - power week! Imagine a power bar floating over your head. Screen fun is awesome... and it USES your charge. Sleep, snacks, running around, your people - those REFILL it. [warmly] Keepers don't pick one. They balance both. [excited] Day-moments are rolling in - let's sort them!",
       "lines": [
         "[excited] Week thirteen, hero - power week!",
         "Imagine a power bar floating over your head.",
-        "Screen fun is brilliant... and it USES your charge.",
+        "Screen fun is awesome... and it USES your charge.",
         "Sleep, snacks, running around, your people - those REFILL it.",
         "[warmly] Keepers don't pick one. They balance both.",
         "[excited] Day-moments are rolling in - let's sort them!"
       ],
-      "file": "/audio/voice/00ff8e186c426480.mp3"
+      "file": "/audio/voice/dad3c802eefac579.mp3"
     },
     {
       "key": "b94c7da9f8215426",
@@ -1637,19 +1637,19 @@
       "file": "/audio/voice/4b7a19db70e5ae59.mp3"
     },
     {
-      "key": "c588ea817edc75f8",
+      "key": "75fe9706901e6261",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[excited] Week fifteen - the robot week! Chatbots can joke and chat like a person. But an AI is a computer program. No feelings. No birthday. Never, ever tired. [warmly] That makes it a TOOL - a brilliant one. Not a friend. [excited] Voices incoming - who's robot, who's real? Let's sort!",
+      "text": "[excited] Week fifteen - the robot week! Chatbots can joke and chat like a person. But an AI is a computer program. No feelings. No birthday. Never, ever tired. [warmly] That makes it a TOOL - a powerful one. Not a friend. [excited] Voices incoming - who's robot, who's real? Let's sort!",
       "lines": [
         "[excited] Week fifteen - the robot week!",
         "Chatbots can joke and chat like a person.",
         "But an AI is a computer program.",
         "No feelings. No birthday. Never, ever tired.",
-        "[warmly] That makes it a TOOL - a brilliant one. Not a friend.",
+        "[warmly] That makes it a TOOL - a powerful one. Not a friend.",
         "[excited] Voices incoming - who's robot, who's real? Let's sort!"
       ],
-      "file": "/audio/voice/c588ea817edc75f8.mp3"
+      "file": "/audio/voice/75fe9706901e6261.mp3"
     },
     {
       "key": "ca9054f01789ce27",
@@ -1703,17 +1703,17 @@
       "file": "/audio/voice/7a5c40715ee9f07e.mp3"
     },
     {
-      "key": "2fa7edb72a70044d",
+      "key": "a6ad6c4c08394436",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[excited] The bot's report is on the desk! It sounds brilliant. It sounds SURE. The real book sits right beside it... [whispers] Check every line. Then make the call!",
+      "text": "[excited] The bot's report is on the desk! It sounds perfect. It sounds SURE. The real book sits right beside it... [whispers] Check every line. Then make the call!",
       "lines": [
         "[excited] The bot's report is on the desk!",
-        "It sounds brilliant. It sounds SURE.",
+        "It sounds perfect. It sounds SURE.",
         "The real book sits right beside it...",
         "[whispers] Check every line. Then make the call!"
       ],
-      "file": "/audio/voice/2fa7edb72a70044d.mp3"
+      "file": "/audio/voice/a6ad6c4c08394436.mp3"
     },
     {
       "key": "050a2f5302b9b619",
@@ -2402,17 +2402,17 @@
       "file": "/audio/voice/b6f7a1d1f944e104.mp3"
     },
     {
-      "key": "0d5f73dd89ed7b13",
+      "key": "0b42e5dd0eb3301f",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[warmly] Three sparkly moments. Three chances to pause. Remember: reels show the shiny minute. Backstage is where real life lives - [excited] and yours is brilliant. Show me the pause!",
+      "text": "[warmly] Three sparkly moments. Three chances to pause. Remember: reels show the shiny minute. Backstage is where real life lives - [excited] and yours is wonderful. Show me the pause!",
       "lines": [
         "[warmly] Three sparkly moments. Three chances to pause.",
         "Remember: reels show the shiny minute.",
         "Backstage is where real life lives -",
-        "[excited] and yours is brilliant. Show me the pause!"
+        "[excited] and yours is wonderful. Show me the pause!"
       ],
-      "file": "/audio/voice/0d5f73dd89ed7b13.mp3"
+      "file": "/audio/voice/0b42e5dd0eb3301f.mp3"
     },
     {
       "key": "a10e42f25f1fbe1e",
@@ -3041,17 +3041,17 @@
       "file": "/audio/voice/4402b17dcaf52595.mp3"
     },
     {
-      "key": "c8b2f2d55f9836b1",
+      "key": "0f55f631f30eb6ce",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[warmly] Brilliant start, Cyber Hero! You found all five treasures the Raccoon hunts for. Your name, address, school, phone, and where you are... all PRIVATE. [excited] Next up, let's get sorting!",
+      "text": "[warmly] Awesome start, Cyber Hero! You found all five treasures the Raccoon hunts for. Your name, address, school, phone, and where you are... all PRIVATE. [excited] Next up, let's get sorting!",
       "lines": [
-        "[warmly] Brilliant start, Cyber Hero!",
+        "[warmly] Awesome start, Cyber Hero!",
         "You found all five treasures the Raccoon hunts for.",
         "Your name, address, school, phone, and where you are... all PRIVATE.",
         "[excited] Next up, let's get sorting!"
       ],
-      "file": "/audio/voice/c8b2f2d55f9836b1.mp3"
+      "file": "/audio/voice/0f55f631f30eb6ce.mp3"
     },
     {
       "key": "46c9c4ca5d1b193a",
@@ -3548,17 +3548,17 @@
       "file": "/audio/voice/df87a8dbf3ec9904.mp3"
     },
     {
-      "key": "b35b62b7d9c50fa7",
+      "key": "7bb9db8c647491a5",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[warmly] Brilliant start, Cyber Hero! You opened his disguise kit and saw every trick. Copied photo, typed age, picked name, big friendly act. [excited] Next up - let's turn YOU into a profile detective!",
+      "text": "[warmly] Awesome start, Cyber Hero! You opened his disguise kit and saw every trick. Copied photo, typed age, picked name, big friendly act. [excited] Next up - let's turn YOU into a profile detective!",
       "lines": [
-        "[warmly] Brilliant start, Cyber Hero!",
+        "[warmly] Awesome start, Cyber Hero!",
         "You opened his disguise kit and saw every trick.",
         "Copied photo, typed age, picked name, big friendly act.",
         "[excited] Next up - let's turn YOU into a profile detective!"
       ],
-      "file": "/audio/voice/b35b62b7d9c50fa7.mp3"
+      "file": "/audio/voice/7bb9db8c647491a5.mp3"
     },
     {
       "key": "fa6e84882d9ac6a1",
@@ -3664,19 +3664,19 @@
       "file": "/audio/voice/511b883b8dec137a.mp3"
     },
     {
-      "key": "2571ee614c40dc77",
+      "key": "46ceb12b79cdd1a9",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[warmly] These next two rules are hero armour. Rule one. NEVER meet up with someone you only know online. Not at the park. Not 'just quickly'. Never. Rule two. NEVER send photos of yourself. [whispers] Not even if they send one first. [excited] No exceptions, no matter what. Let's practice your hero replies!",
+      "text": "[warmly] These next two rules are hero armor. Rule one. NEVER meet up with someone you only know online. Not at the park. Not 'just quickly'. Never. Rule two. NEVER send photos of yourself. [whispers] Not even if they send one first. [excited] No exceptions, no matter what. Let's practice your hero replies!",
       "lines": [
-        "[warmly] These next two rules are hero armour.",
+        "[warmly] These next two rules are hero armor.",
         "Rule one. NEVER meet up with someone you only know online.",
         "Not at the park. Not 'just quickly'. Never.",
         "Rule two. NEVER send photos of yourself.",
         "[whispers] Not even if they send one first.",
         "[excited] No exceptions, no matter what. Let's practice your hero replies!"
       ],
-      "file": "/audio/voice/2571ee614c40dc77.mp3"
+      "file": "/audio/voice/46ceb12b79cdd1a9.mp3"
     },
     {
       "key": "68b394e22585a1fc",
@@ -4106,40 +4106,40 @@
       "file": "/audio/voice/53b6798b2f1d84ff.mp3"
     },
     {
-      "key": "f8044edac9ded523",
+      "key": "6f813be889136486",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "[warmly] When mean words land, grey little doubt clouds show up. 'Maybe it's my fault.' 'Maybe something's wrong with me.' [whispers] Every single one of those clouds is WRONG. [excited] Tap each cloud and pop it with the truth!",
+      "text": "[warmly] When mean words land, gray little doubt clouds show up. 'Maybe it's my fault.' 'Maybe something's wrong with me.' [whispers] Every single one of those clouds is WRONG. [excited] Tap each cloud and pop it with the truth!",
       "lines": [
-        "[warmly] When mean words land, grey little doubt clouds show up.",
+        "[warmly] When mean words land, gray little doubt clouds show up.",
         "'Maybe it's my fault.' 'Maybe something's wrong with me.'",
         "[whispers] Every single one of those clouds is WRONG.",
         "[excited] Tap each cloud and pop it with the truth!"
       ],
-      "file": "/audio/voice/f8044edac9ded523.mp3"
+      "file": "/audio/voice/6f813be889136486.mp3"
     },
     {
-      "key": "ead351496e0b474f",
+      "key": "7a942c4c19f6a630",
       "speaker": "adam",
       "voice": "Sarah",
-      "text": "Tap any grey cloud - the truth is waiting inside!",
+      "text": "Tap any gray cloud - the truth is waiting inside!",
       "lines": [
-        "Tap any grey cloud - the truth is waiting inside!"
+        "Tap any gray cloud - the truth is waiting inside!"
       ],
-      "file": "/audio/voice/ead351496e0b474f.mp3"
+      "file": "/audio/voice/7a942c4c19f6a630.mp3"
     },
     {
-      "key": "37cca6eb4d3fbe58",
+      "key": "360bf34adec47d86",
       "speaker": "layla",
       "voice": "Sarah",
-      "text": "[warmly] That truth is your armour now. Not your fault. Not ever. [whispers] Keep it somewhere safe - you might need it one day. [excited] Next: the clever move when mean words actually land.",
+      "text": "[warmly] That truth is your armor now. Not your fault. Not ever. [whispers] Keep it somewhere safe - you might need it one day. [excited] Next: the clever move when mean words actually land.",
       "lines": [
-        "[warmly] That truth is your armour now.",
+        "[warmly] That truth is your armor now.",
         "Not your fault. Not ever.",
         "[whispers] Keep it somewhere safe - you might need it one day.",
         "[excited] Next: the clever move when mean words actually land."
       ],
-      "file": "/audio/voice/37cca6eb4d3fbe58.mp3"
+      "file": "/audio/voice/360bf34adec47d86.mp3"
     },
     {
       "key": "ae668d3985c0ae72",

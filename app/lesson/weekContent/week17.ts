@@ -606,7 +606,7 @@ export const WEEK_17: WeekContent = {
       type: "info",
       title: "The Backstage Truth",
       content:
-        "Walk the mirror hall and every post sparkles: perfect vacations, perfect goals, perfect hair. Here's the backstage truth: feeds are HIGHLIGHT REELS. People post their one shiny minute, never the boring Tuesday, the burnt toast, the fifteen blurry photos it took to get the good one. Comparing your real, messy, brilliant life to everyone else's highlight reel is a game nobody wins. When the sparkle makes you feel small: put the screen down, remember the un-posted bits of YOUR day, and tell someone how you feel - yours is real, and real is better.",
+        "Walk the mirror hall and every post sparkles: perfect vacations, perfect goals, perfect hair. Here's the backstage truth: feeds are HIGHLIGHT REELS. People post their one shiny minute, never the boring Tuesday, the burnt toast, the fifteen blurry photos it took to get the good one. Comparing your real, messy, wonderful life to everyone else's highlight reel is a game nobody wins. When the sparkle makes you feel small: put the screen down, remember the un-posted bits of YOUR day, and tell someone how you feel - yours is real, and real is better.",
       bullets: [
         "Feeds are highlight reels",
         "One shiny minute, posted",
@@ -684,7 +684,7 @@ export const WEEK_17: WeekContent = {
           "[warmly] Three sparkly moments. Three chances to pause.",
           "Remember: reels show the shiny minute.",
           "Backstage is where real life lives -",
-          "[excited] and yours is brilliant. Show me the pause!",
+          "[excited] and yours is wonderful. Show me the pause!",
         ],
       },
     },
@@ -707,7 +707,7 @@ export const WEEK_17: WeekContent = {
       type: "recap",
       concept: 5,
       total: 5,
-      learned: "Feeds are highlight reels - pause, flip to backstage, and remember your real, messy, brilliant life wins.",
+      learned: "Feeds are highlight reels - pause, flip to backstage, and remember your real, messy, wonderful life wins.",
       next: "one last walk past the mirrors, then the Raccoon's hall itself",
       emblem: "🌟",
       narration: {
@@ -818,7 +818,7 @@ export const WEEK_17: WeekContent = {
       stickers: [
         { id: "ring-grower", name: "Ring Grower", icon: "🔰", description: "Knows the 13+ sign is a promise, not a punishment." },
         { id: "mirror-froster", name: "Mirror Froster", icon: "🔒", description: "Flips every switch a stranger could stare through." },
-        { id: "backstage-passer", name: "Backstage Passer", icon: "🌟", description: "Sees the messy, brilliant real life behind every reel." },
+        { id: "backstage-passer", name: "Backstage Passer", icon: "🌟", description: "Sees the messy, wonderful real life behind every reel." },
       ],
     },
 

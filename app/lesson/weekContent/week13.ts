@@ -68,7 +68,7 @@ export const WEEK_13: WeekContent = {
       type: "info",
       title: "Your Power Bar",
       content:
-        "Game characters have a power bar over their heads - and guess what? So do you. It's invisible, but it's there. Fun things on screens are brilliant... and they USE your charge. Sleep, snacks, running around and time with your people REFILL it. A Battery Keeper doesn't pick one or the other - they use BOTH, every day. That's what balance means.",
+        "Game characters have a power bar over their heads - and guess what? So do you. It's invisible, but it's there. Fun things on screens are awesome... and they USE your charge. Sleep, snacks, running around and time with your people REFILL it. A Battery Keeper doesn't pick one or the other - they use BOTH, every day. That's what balance means.",
       bullets: [
         "You carry an invisible power bar",
         "Screen fun USES your charge",
@@ -83,7 +83,7 @@ export const WEEK_13: WeekContent = {
         lines: [
           "[excited] Week thirteen, hero - power week!",
           "Imagine a power bar floating over your head.",
-          "Screen fun is brilliant... and it USES your charge.",
+          "Screen fun is awesome... and it USES your charge.",
           "Sleep, snacks, running around, your people - those REFILL it.",
           "[warmly] Keepers don't pick one. They balance both.",
           "[excited] Day-moments are rolling in - let's sort them!",
@@ -869,7 +869,7 @@ export const WEEK_13: WeekContent = {
     15: { adam: { mood: "thinking", message: "Plans beat punishments every time." }, layla: null }, // learn: plan
     16: { adam: { mood: "curious", message: "Level that see-saw - carefully!" }, layla: null }, // game: dayBalancer
     17: { adam: null, layla: { mood: "thumbsup", message: "Who makes the plan work best?" } }, // prove: finish
-    18: { adam: null, layla: { mood: "excited", message: "Co-signed and level - brilliant!" } }, // recap 4
+    18: { adam: null, layla: { mood: "excited", message: "Co-signed and level - amazing!" } }, // recap 4
     19: { adam: null, layla: { mood: "thinking", message: "Stopping is a skill. Truly!" } }, // learn: power-off
     20: { adam: null, layla: { mood: "curious", message: "Five moves - pro order!" } }, // game: stepOrder
     21: { adam: { mood: "thumbsup", message: "One more time - in order!" }, layla: null }, // prove: order

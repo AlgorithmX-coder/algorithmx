@@ -176,7 +176,7 @@ export const WEEK_3: WeekContent = {
       narration: {
         speaker: "layla",
         lines: [
-          "[warmly] Brilliant start, Cyber Hero!",
+          "[warmly] Awesome start, Cyber Hero!",
           "You opened his disguise kit and saw every trick.",
           "Copied photo, typed age, picked name, big friendly act.",
           "[excited] Next up - let's turn YOU into a profile detective!",
@@ -441,7 +441,7 @@ export const WEEK_3: WeekContent = {
       narration: {
         speaker: "layla",
         lines: [
-          "[warmly] These next two rules are hero armour.",
+          "[warmly] These next two rules are hero armor.",
           "Rule one. NEVER meet up with someone you only know online.",
           "Not at the park. Not 'just quickly'. Never.",
           "Rule two. NEVER send photos of yourself.",
@@ -517,7 +517,7 @@ export const WEEK_3: WeekContent = {
         { text: "smile", isCorrect: false },
         { text: "win", isCorrect: false },
       ],
-      praise: "Never meet, never SEND - armour on! ✓",
+      praise: "Never meet, never SEND - armor on! ✓",
       nudge: "Photos of you... what's the rule?",
     },
 

@@ -136,7 +136,7 @@ export const WEEK_1: WeekContent = {
       narration: {
         speaker: "layla",
         lines: [
-          "[warmly] Brilliant work, Cyber Hero!",
+          "[warmly] Amazing work, Cyber Hero!",
           "You just learned what a password really is.",
           "It's a secret code that proves it's really you.",
           "[excited] Next, let's make it super strong!",
@@ -357,7 +357,7 @@ export const WEEK_1: WeekContent = {
         speaker: "adam",
         lines: [
           "[excited] Uh oh! These passwords are sick! You're the cyber-doctor.",
-          "First, work out what's WRONG with each one.",
+          "First, figure out what's WRONG with each one.",
           "Then use your tools to make it strong, watch the meter climb!",
           "[warmly] No rush, Doctor. Take your time.",
         ],
@@ -412,7 +412,7 @@ export const WEEK_1: WeekContent = {
         "Never tell anyone - not even a best friend",
         "Don't write it where others can see",
         "Only a parent / trusted grown-up helps",
-        "A shared secret isn't a secret any more",
+        "A shared secret isn't a secret anymore",
       ],
       bulletIcons: ["🤐", "🙈", "👪", "🔓"],
       emblem: "🤫",
@@ -540,7 +540,7 @@ export const WEEK_1: WeekContent = {
         speaker: "adam",
         lines: [
           "[excited] Detective time, Cyber Hero! Each password here is weak.",
-          "Look closely and work out WHY it's weak.",
+          "Look closely and figure out WHY it's weak.",
           "[warmly] Too short? A real word? About you? Take your time.",
         ],
       },
@@ -680,7 +680,7 @@ export const WEEK_1: WeekContent = {
       crackTime: "STILL 87 YEARS - AND SECRET",
       snoops: 3,
       openSecs: 3.2,
-      explanation: "When his eye is open, cover your typing! In real life, shield the keypad with your hand - a password someone SAW isn't a secret any more.",
+      explanation: "When his eye is open, cover your typing! In real life, shield the keypad with your hand - a password someone SAW isn't a secret anymore.",
       coach: "Spy eye? Press and HOLD to cover!",
     },
     feed: {

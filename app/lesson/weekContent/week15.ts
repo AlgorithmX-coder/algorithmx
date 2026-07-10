@@ -74,7 +74,7 @@ export const WEEK_15: WeekContent = {
       bullets: [
         "AI talks like a person - but isn't one",
         "No feelings, no birthday, no tired",
-        "It's a TOOL - a brilliant one",
+        "It's a TOOL - a powerful one",
         "Tools help. Friends are people.",
         "Knowing the difference is the power",
       ],
@@ -87,7 +87,7 @@ export const WEEK_15: WeekContent = {
           "Chatbots can joke and chat like a person.",
           "But an AI is a computer program.",
           "No feelings. No birthday. Never, ever tired.",
-          "[warmly] That makes it a TOOL - a brilliant one. Not a friend.",
+          "[warmly] That makes it a TOOL - a powerful one. Not a friend.",
           "[excited] Voices incoming - who's robot, who's real? Let's sort!",
         ],
       },
@@ -193,7 +193,7 @@ export const WEEK_15: WeekContent = {
         { text: "person", isCorrect: false },
         { text: "pet", isCorrect: false },
       ],
-      praise: "A TOOL - brilliant for helping, never a replacement for real people. ✓",
+      praise: "A TOOL - great for helping, never a replacement for real people. ✓",
     },
 
     // 6 - Recap · Concept 1 of 5
@@ -201,7 +201,7 @@ export const WEEK_15: WeekContent = {
       type: "recap",
       concept: 1,
       total: 5,
-      learned: "AI talks like a person but it's a program - a brilliant TOOL; friends are real people.",
+      learned: "AI talks like a person but it's a program - a powerful TOOL; friends are real people.",
       next: "the Know-It-All's embarrassing secret: it makes things up",
       emblem: "🧠",
       narration: {
@@ -247,7 +247,7 @@ export const WEEK_15: WeekContent = {
     {
       type: "clueBoard",
       introTitle: "The Fact-Checker's Desk",
-      introSubtitle: "The bot wrote a volcano report for homework - it SOUNDS brilliant. The real volcano book sits beside it. Check every line against the book!",
+      introSubtitle: "The bot wrote a volcano report for homework - it SOUNDS perfect. The real volcano book sits beside it. Check every line against the book!",
       introIcon: "🔍",
       photoTitle: "The bot's volcano report - checked against the REAL book",
       photoIcon: "🧠",
@@ -308,7 +308,7 @@ export const WEEK_15: WeekContent = {
         speaker: "adam",
         lines: [
           "[excited] The bot's report is on the desk!",
-          "It sounds brilliant. It sounds SURE.",
+          "It sounds perfect. It sounds SURE.",
           "The real book sits right beside it...",
           "[whispers] Check every line. Then make the call!",
         ],
@@ -597,7 +597,7 @@ export const WEEK_15: WeekContent = {
       type: "info",
       title: "Plant It Kind",
       content:
-        "Here's the final fact-checker truth: AI is like a garden - it grows whatever seeds YOU plant. Used WITH a grown-up, it's brilliant - story ideas, birthday poems, explaining tricky math. Used to tease, fake or trick people, the same tool grows thorns that hurt someone real. So before you ask AI for anything, take the gardener's look: 'Will this grow something kind?' Plant kind seeds, and be proud of your garden.",
+        "Here's the final fact-checker truth: AI is like a garden - it grows whatever seeds YOU plant. Used WITH a grown-up, it's amazing - story ideas, birthday poems, explaining tricky math. Used to tease, fake or trick people, the same tool grows thorns that hurt someone real. So before you ask AI for anything, take the gardener's look: 'Will this grow something kind?' Plant kind seeds, and be proud of your garden.",
       bullets: [
         "AI grows whatever you plant",
         "Ideas, poems, learning = flowers",
@@ -839,7 +839,7 @@ export const WEEK_15: WeekContent = {
   // booth - is designed separately with the boss batch).
   bossQuestions: {
     easy: [
-      { question: "What IS an AI chatbot?", answers: ["A clever computer program - a tool", "A real person typing fast", "A magic creature", "Your new best friend"], correctIndex: 0, explanation: "It talks like a person, but it's a program - a brilliant tool." },
+      { question: "What IS an AI chatbot?", answers: ["A clever computer program - a tool", "A real person typing fast", "A magic creature", "Your new best friend"], correctIndex: 0, explanation: "It talks like a person, but it's a program - a powerful tool." },
       { question: "The bot sounds REALLY sure. What does a fact-checker do?", answers: ["Check a real source anyway", "Believe it - confident means correct", "Ask the bot if it's sure", "Share it quickly"], correctIndex: 0, explanation: "Sounding sure isn't being right - the book is the judge." },
       { question: "The bot asks for your name and school. You...", answers: ["Zip it - bots don't need that to help", "Type it in - it's being friendly", "Give a fake name AND real school", "Send a photo instead"], correctIndex: 0, explanation: "A bot is a stranger with perfect spelling - the jar stays empty." },
     ],

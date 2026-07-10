@@ -526,8 +526,10 @@ export default function VaultBoss({
               <h2 style={{ margin: "0 0 2px", fontSize: 30, fontWeight: 900, color: "#1d2b4f", textShadow: "0 2px 0 rgba(255,255,255,0.7)" }}>
                 CHOOSE YOUR HERO
               </h2>
-              <p style={{ margin: "0 0 16px", fontSize: 13.5, fontWeight: 700, fontStyle: "italic", color: "#f6f9ff", textShadow: "0 1px 6px rgba(13,24,58,0.8)" }}>
-                🦝 “My machine cracks ANY password. Guard yours if you dare!”
+              {/* Dark chip behind the quote — white-on-pastel was unreadable
+                  on this bright stage (screen-audit W1 s24). */}
+              <p style={{ display: "inline-block", margin: "0 0 16px", padding: "7px 16px", borderRadius: 999, fontSize: 13.5, fontWeight: 700, fontStyle: "italic", color: "#f6f9ff", background: "rgba(20,16,44,0.78)", boxShadow: "0 6px 16px -8px rgba(20,16,44,0.6)" }}>
+                <PixIcon emoji="🦝" size={17} style={{ verticalAlign: "-3px", marginRight: 5 }} />“My machine cracks ANY password. Guard yours if you dare!”
               </p>
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }}>
                 {(Object.keys(HEROES) as HeroKey[]).map((key) => {
@@ -578,8 +580,8 @@ export default function VaultBoss({
               <div style={{ display: "inline-block", padding: "10px 26px", borderRadius: 18, background: "rgba(255,255,255,0.94)", border: `3px solid ${tone.accent}`, boxShadow: "0 14px 34px -14px rgba(20,30,60,0.5)", fontSize: 36, fontWeight: 900, marginBottom: 10, color: "#1d2b4f" }}>
                 {currentPhase.label}
               </div>
-              <div style={{ fontSize: 15.5, fontWeight: 700, color: "#f6f9ff", fontStyle: "italic", textShadow: "0 1px 8px rgba(13,24,58,0.9)" }}>
-                🦝 “{currentPhase.intro}”
+              <div style={{ display: "inline-block", padding: "6px 15px", borderRadius: 999, fontSize: 15.5, fontWeight: 700, color: "#f6f9ff", fontStyle: "italic", background: "rgba(20,16,44,0.78)", boxShadow: "0 6px 16px -8px rgba(20,16,44,0.6)" }}>
+                <PixIcon emoji="🦝" size={18} style={{ verticalAlign: "-3px", marginRight: 5 }} />“{currentPhase.intro}”
               </div>
             </motion.div>
           )}
@@ -1285,7 +1287,7 @@ function FinalPhase({ data, paused, judge, done, reduce, accent, signature }: { 
               boxShadow: "0 14px 34px -14px rgba(20,30,60,0.5)",
             }}
           >
-            🦝 “{data.sweetTalk}”
+            <PixIcon emoji="🦝" size={18} style={{ verticalAlign: "-3px", marginRight: 5 }} />“{data.sweetTalk}”
           </div>
           <div style={{ display: "flex", gap: 12, justifyContent: "center" }}>
             <motion.button

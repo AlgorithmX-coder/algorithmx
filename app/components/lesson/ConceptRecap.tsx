@@ -219,13 +219,13 @@ export default function ConceptRecap({
               boxShadow: "0 8px 18px -6px rgba(245,158,11,0.7)",
             }}
           >
-            ⭐ STAMPED!
+            <PixIcon emoji="⭐" size={13} style={{ verticalAlign: "-2px", marginRight: 3 }} />STAMPED!
           </motion.span>
         )}
       </motion.button>
       {!stamped && (
         <div style={{ fontSize: 12, fontWeight: 800, letterSpacing: "0.14em", color: GREEN, marginBottom: 10, opacity: 0.85 }}>
-          👆 TAP IT TO STAMP IT INTO YOUR LOGBOOK
+          <PixIcon emoji="👆" size={16} style={{ verticalAlign: "-3px", marginRight: 4 }} />TAP IT TO STAMP IT INTO YOUR LOGBOOK
         </div>
       )}
 

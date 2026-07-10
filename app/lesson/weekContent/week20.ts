@@ -556,7 +556,7 @@ export const WEEK_20: WeekContent = {
         },
         {
           id: "dragon",
-          prompt: "Your new dragon drawing is BRILLIANT - no school, no places, no names. Post it?",
+          prompt: "Your new dragon drawing is AMAZING - no school, no places, no names. Post it?",
           options: [
             {
               label: "Post it proudly!",
@@ -616,7 +616,7 @@ export const WEEK_20: WeekContent = {
         { text: "The park photo with its map pin ON", isCorrect: false },
         { text: "The comment naming your school", isCorrect: false },
       ],
-      praise: "The dragon - proud, brilliant and clue-free. Posting isn't the danger; clues are. ✓",
+      praise: "The dragon - proud, amazing and clue-free. Posting isn't the danger; clues are. ✓",
     },
 
     // 18 - Recap · Mission 4 of 5

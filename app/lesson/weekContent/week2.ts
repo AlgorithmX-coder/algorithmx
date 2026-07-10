@@ -189,7 +189,7 @@ export const WEEK_2: WeekContent = {
       narration: {
         speaker: "layla",
         lines: [
-          "[warmly] Brilliant start, Cyber Hero!",
+          "[warmly] Awesome start, Cyber Hero!",
           "You found all five treasures the Raccoon hunts for.",
           "Your name, address, school, phone, and where you are... all PRIVATE.",
           "[excited] Next up, let's get sorting!",

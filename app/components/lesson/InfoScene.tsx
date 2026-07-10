@@ -182,7 +182,7 @@ export default function InfoScene({
         {bullets && (
           <>
             <div style={{ textAlign: "center", fontFamily: "'Space Grotesk', sans-serif", fontSize: 11.5, fontWeight: 800, letterSpacing: "0.18em", color: "#9fe9ff", margin: "2px 0 10px" }}>
-              👆 TAP EACH CLUE TO POWER IT UP · {Math.min(lit.size, total)} / {total}
+              <PixIcon emoji="👆" size={15} style={{ verticalAlign: "-3px", marginRight: 4 }} />TAP EACH CLUE TO POWER IT UP · {Math.min(lit.size, total)} / {total}
             </div>
             <div style={{ display: "grid", gap: 11, maxWidth: 600, margin: "0 auto 22px" }}>
               {bullets.map((b, i) => {
@@ -252,7 +252,7 @@ export default function InfoScene({
                         boxShadow: on ? `inset 0 1px 2px rgba(255,255,255,0.6), 0 0 12px -2px ${accent}` : "none",
                       }}
                     >
-                      {on ? "✓" : "👆"}
+                      {on ? "✓" : <PixIcon emoji="👆" size={17} />}
                     </motion.span>
                     <span style={{ flex: 1, filter: on ? "none" : "opacity(0.85)" }}>{b}</span>
                     {icon && (

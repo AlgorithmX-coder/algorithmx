@@ -512,7 +512,7 @@ export default function ShowdownBoss({
       {/* Trick rail: his three tricks, foiled one by one. */}
       {inBattle && (
         <div className="sd-trick-rail" style={{ position: "absolute", top: 76, right: 12, zIndex: 20, width: 196, borderRadius: 14, padding: "8px 12px 10px", background: "rgba(255,255,255,0.92)", border: `2px solid ${accent}`, boxShadow: "0 10px 26px -12px rgba(10,14,34,0.5)", fontFamily: MONO }}>
-          <div style={{ fontSize: 9, fontWeight: 800, letterSpacing: "0.16em", color: "#0ea5c6", marginBottom: 6, textAlign: "center" }}>🦝 HIS TRICKS</div>
+          <div style={{ fontSize: 9, fontWeight: 800, letterSpacing: "0.16em", color: "#0ea5c6", marginBottom: 6, textAlign: "center" }}><PixIcon emoji="🦝" size={12} style={{ verticalAlign: "-2px", marginRight: 3 }} />HIS TRICKS</div>
           {phases.map((p, i) => {
             const meta = attackSet[Math.min(p.attack, attackSet.length - 1)] ?? FALLBACK_ATTACK;
             const done = gears > i;
@@ -520,7 +520,7 @@ export default function ShowdownBoss({
             return (
               <div key={i} style={{ marginBottom: 4, opacity: done ? 1 : isCurrent ? 0.95 : 0.45 }}>
                 <div style={{ fontSize: 8, fontWeight: 800, letterSpacing: "0.08em", color: done ? "#15803d" : isCurrent ? "#d98a06" : "#64748b" }}>
-                  {meta.icon} {meta.name}
+                  <PixIcon emoji={meta.icon} size={10} style={{ verticalAlign: "-1px", marginRight: 2 }} />{meta.name}
                 </div>
                 <div style={{ fontSize: 10, fontWeight: 800, color: done ? "#1d2b4f" : "#94a3b8" }}>
                   {done ? "✓ FOILED!" : isCurrent ? "…countering…" : "· · ·"}
@@ -601,7 +601,7 @@ export default function ShowdownBoss({
                 CHOOSE YOUR HERO
               </h2>
               <p style={{ margin: "0 0 16px", fontSize: 13.5, fontWeight: 700, fontStyle: "italic", color: "#f6f9ff", textShadow: "0 1px 6px rgba(13,24,58,0.8)" }}>
-                🦝 “{showdown.villain.arrival}”
+                <PixIcon emoji="🦝" size={18} style={{ verticalAlign: "-3px", marginRight: 5 }} />“{showdown.villain.arrival}”
               </p>
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }}>
                 {(Object.keys(heroes) as HeroKey[]).map((key) => {
@@ -658,7 +658,7 @@ export default function ShowdownBoss({
                 {attack.name}
               </div>
               <div style={{ fontSize: 15.5, fontWeight: 700, color: "#f6f9ff", fontStyle: "italic", textShadow: "0 1px 8px rgba(13,24,58,0.9)" }}>
-                🦝 “{showdown.villain.phases[phaseIdx] ?? "Try THIS one!"}”
+                <PixIcon emoji="🦝" size={18} style={{ verticalAlign: "-3px", marginRight: 5 }} />“{showdown.villain.phases[phaseIdx] ?? "Try THIS one!"}”
               </div>
             </motion.div>
           )}
@@ -768,7 +768,7 @@ export default function ShowdownBoss({
                 </div>
               </motion.div>
               <div style={{ margin: "0 auto 10px", maxWidth: 340, padding: "10px 14px", borderRadius: 14, borderBottomLeftRadius: 3, background: "#fff", border: "2.5px solid #8b5cf6", color: "#4c1d95", fontSize: 14, fontWeight: 800, fontStyle: "italic", lineHeight: 1.35, boxShadow: "0 12px 30px -10px rgba(10,14,34,0.55)" }}>
-                🦝 “{showdown.villain.escape}”
+                <PixIcon emoji="🦝" size={16} style={{ verticalAlign: "-3px", marginRight: 5 }} />“{showdown.villain.escape}”
               </div>
               <h2 style={{ margin: "0 0 6px", fontSize: 28, fontWeight: 900, color: "#f6f9ff", textShadow: "0 2px 10px rgba(13,24,58,0.9)" }}>
                 {showdown.finisher.payoffLine}

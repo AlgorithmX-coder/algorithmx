@@ -191,7 +191,7 @@ export const WEEK_5: WeekContent = {
     {
       type: "reveal",
       title: "Pop the Doubt Clouds",
-      subtitle: "Tap each grey cloud to pop it with the truth.",
+      subtitle: "Tap each gray cloud to pop it with the truth.",
       boardIcon: "💬",
       items: [
         {
@@ -199,7 +199,7 @@ export const WEEK_5: WeekContent = {
           label: "'It's my fault...'",
           icon: "🌀",
           steps: [
-            { icon: "💬", text: "That grey little thought loves to sneak in. But look at it closely..." },
+            { icon: "💬", text: "That gray little thought loves to sneak in. But look at it closely..." },
             { icon: "💡", text: "Someone CHOSE to be mean. That was their choice - not yours." },
           ],
           counter: "POP! Their choice, their fault. Never yours.",
@@ -220,7 +220,7 @@ export const WEEK_5: WeekContent = {
           icon: "🌀",
           steps: [
             { icon: "💬", text: "The heaviest cloud of all. Let's shine a light on it." },
-            { icon: "⭐", text: "Millions of brilliant kids get picked on - the BEST kids, the kindest kids." },
+            { icon: "⭐", text: "Millions of amazing kids get picked on - the BEST kids, the kindest kids." },
             { icon: "💡", text: "Being picked on says ZERO about you, and everything about them." },
           ],
           counter: "POP! There is nothing wrong with you. Nothing.",
@@ -240,7 +240,7 @@ export const WEEK_5: WeekContent = {
       narration: {
         speaker: "adam",
         lines: [
-          "[warmly] When mean words land, grey little doubt clouds show up.",
+          "[warmly] When mean words land, gray little doubt clouds show up.",
           "'Maybe it's my fault.' 'Maybe something's wrong with me.'",
           "[whispers] Every single one of those clouds is WRONG.",
           "[excited] Tap each cloud and pop it with the truth!",
@@ -248,7 +248,7 @@ export const WEEK_5: WeekContent = {
       },
       coachLines: {
         speaker: "adam",
-        lines: ["Tap any grey cloud - the truth is waiting inside!"],
+        lines: ["Tap any gray cloud - the truth is waiting inside!"],
       },
     },
     // 9 - Prove: FINISH
@@ -277,7 +277,7 @@ export const WEEK_5: WeekContent = {
       narration: {
         speaker: "layla",
         lines: [
-          "[warmly] That truth is your armour now.",
+          "[warmly] That truth is your armor now.",
           "Not your fault. Not ever.",
           "[whispers] Keep it somewhere safe - you might need it one day.",
           "[excited] Next: the clever move when mean words actually land.",
@@ -723,7 +723,7 @@ export const WEEK_5: WeekContent = {
     7: { adam: { mood: "thinking", message: "Lean in. This one matters most." }, layla: null }, // learn: fault
     8: { adam: { mood: "curious", message: "Pop every doubt cloud!" }, layla: null }, // game: reveal
     9: { adam: null, layla: { mood: "thumbsup", message: "Finish the truest rule!" } }, // prove: finish
-    10: { adam: { mood: "thumbsup", message: "That truth is your armour." }, layla: null }, // recap 2
+    10: { adam: { mood: "thumbsup", message: "That truth is your armor." }, layla: null }, // recap 2
     11: { adam: null, layla: { mood: "thinking", message: "Don't feed the fire." } }, // learn: calm
     12: { adam: { mood: "curious", message: "Feel the heat? Stay calm." }, layla: null }, // game: decide
     13: { adam: null, layla: { mood: "worried", message: "He's fibbing - catch him!" } }, // prove: lie

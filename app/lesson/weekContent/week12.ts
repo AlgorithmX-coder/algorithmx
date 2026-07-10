@@ -382,7 +382,7 @@ export const WEEK_12: WeekContent = {
       type: "info",
       title: "Stamp It Gold",
       content:
-        "Ranger truth: the snow isn't something to be scared of - it's something to DECORATE. Kind comments, brilliant builds, sticking up for a friend, cheering your team: those are golden tracks, and they stay in the snow just as long as the bad ones. So don't tiptoe through the internet. Stomp a trail you're proud of - on purpose, stamp by stamp.",
+        "Ranger truth: the snow isn't something to be scared of - it's something to DECORATE. Kind comments, amazing builds, sticking up for a friend, cheering your team: those are golden tracks, and they stay in the snow just as long as the bad ones. So don't tiptoe through the internet. Stomp a trail you're proud of - on purpose, stamp by stamp.",
       bullets: [
         "The snow is yours to decorate",
         "Kind comments are golden tracks",
@@ -397,7 +397,7 @@ export const WEEK_12: WeekContent = {
         lines: [
           "[excited] Now for my favorite power!",
           "The snow isn't scary - it's YOURS to decorate.",
-          "Kind words. Brilliant builds. Standing up for a friend.",
+          "Kind words. Amazing builds. Standing up for a friend.",
           "Those tracks glow gold - and they last just as long.",
           "[warmly] So don't tiptoe through the internet, hero.",
           "[excited] Stomp a trail you're PROUD of. Five footprints - let's go!",
@@ -420,7 +420,7 @@ export const WEEK_12: WeekContent = {
           id: "painting",
           prompt: "Priya posted the painting she worked on all week. Your stamp?",
           options: [
-            { label: "“This is BRILLIANT - the sky especially!”", icon: "💬", isProud: true, note: "Kind words in Priya's snow - gold that gleams for both of you." },
+            { label: "“This is AMAZING - the sky especially!”", icon: "💬", isProud: true, note: "Kind words in Priya's snow - gold that gleams for both of you." },
             { label: "A snarky joke about her wobbly clouds", icon: "⚡", isProud: false, note: "Snark feels shiny for one second and stains the snow for years - hers AND yours." },
           ],
         },
