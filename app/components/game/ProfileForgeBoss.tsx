@@ -40,6 +40,7 @@ import {
   makeHeroes,
   playVillain,
   playCoach,
+  whenVillainQuiet,
   ParticleLayer,
   type ParticleAPI,
   DataRain,
@@ -255,12 +256,20 @@ export default function ProfileForgeBoss({
     return () => window.clearTimeout(id);
   }, [stage, phaseIdx, reduce]);
 
-  // ONE narrator moment (global pilot rule): excited Sarah names the win
-  // once the defeat sting lands — text-only coaching everywhere else.
+  // ONE narrator moment (global pilot rule), strictly sequenced: the
+  // Raccoon's defeat line finishes, the "Cyber Heroes" victory sting
+  // (~2s) plays, THEN Sarah celebrates. Nothing crosses her.
   useEffect(() => {
     if (stage !== "victory") return;
-    const id = window.setTimeout(() => playCoach("forge-victory"), 1500);
-    return () => window.clearTimeout(id);
+    const timers: number[] = [];
+    const cancel = whenVillainQuiet(() => {
+      playSound("victory");
+      timers.push(window.setTimeout(() => playCoach("forge-victory"), 2200));
+    });
+    return () => {
+      cancel();
+      timers.forEach((t) => window.clearTimeout(t));
+    };
   }, [stage]);
 
   const phaseDone = useCallback(() => {
@@ -286,7 +295,8 @@ export default function ProfileForgeBoss({
         playVillain("defeat");
         setRaccoonMood("defeated");
         setStage("victory");
-        window.setTimeout(() => playSound("victory"), 600);
+        // Victory sting moved into the victory effect — it now waits for
+        // the defeat line to finish instead of landing on top of it.
         setHeroMood("celebrate");
       } else {
         playSound("phaseChange");
@@ -398,7 +408,9 @@ export default function ProfileForgeBoss({
                 : { scale: 1, opacity: 1, y: [0, -8, 0] }
         }
         transition={raccoonMood === "idle" || raccoonMood === "taunt" ? { duration: 3, repeat: Infinity, ease: "easeInOut" } : { duration: 0.28 }}
-        style={{ position: "absolute", right: "4%", bottom: "12%", height: stage === "entrance" ? "52%" : "42%", zIndex: 2, filter: `drop-shadow(0 20px 26px rgba(0,0,0,0.75)) drop-shadow(0 0 30px ${tone.glow})`, transition: "height 600ms ease" }}
+        // PILOT FEEDBACK (global): the Raccoon stands EXACTLY as tall as
+        // the hero (34%) — only the entrance roar shows him big.
+        style={{ position: "absolute", right: "4%", bottom: "12%", height: stage === "entrance" ? "52%" : "34%", zIndex: 2, filter: `drop-shadow(0 20px 26px rgba(0,0,0,0.75)) drop-shadow(0 0 30px ${tone.glow})`, transition: "height 600ms ease" }}
       />
       <div aria-hidden style={{ position: "absolute", right: "3%", bottom: "10%", width: "22%", height: 26, borderRadius: "50%", background: "radial-gradient(ellipse, rgba(255,95,179,0.45), transparent 70%)" }} />
 

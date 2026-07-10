@@ -94,7 +94,9 @@ export default function StickerUnlock({
       padding={28}
       background="linear-gradient(180deg, #050a1a 0%, #1f1240 70%, #1a1f4d 100%)"
     >
-      <div style={{ textAlign: "center", marginBottom: 20 }}>
+      {/* Above the beams: the light shafts poke ~60px up out of the grid
+          and must never wash over the heading/subtitle copy. */}
+      <div style={{ position: "relative", zIndex: 2, textAlign: "center", marginBottom: 20 }}>
         <span
           style={{
             display: "inline-block",
@@ -158,7 +160,9 @@ export default function StickerUnlock({
                 alignItems: "stretch",
               }}
             >
-              {/* Light beam from above - fades in once the sticker lands */}
+              {/* Light beam from above - fades in once the sticker lands.
+                  zIndex 0 keeps it under the sticker cards AND under the
+                  header copy it pokes up towards. */}
               <span
                 aria-hidden
                 style={{
@@ -167,6 +171,7 @@ export default function StickerUnlock({
                   left: "50%",
                   width: 130,
                   height: 100,
+                  zIndex: 0,
                   transform: "translateX(-50%)",
                   clipPath: "polygon(34% 0%, 66% 0%, 88% 100%, 12% 100%)",
                   background:

@@ -16,14 +16,6 @@ import {
 import LessonHUD from "@/app/components/LessonHUD";
 import { deriveCaseMeta } from "@/app/lib/caseTitles";
 import { isAudioMuted, setAudioMuted, subscribeAudioMute } from "@/app/lib/audioMute";
-// CharacterGuide swap: the legacy PNG-only component is replaced with
-// RiveCharacterGuide, which has the same prop API but adds a Rive
-// runtime branch (currently dormant - PNG fallback active until a
-// .riv asset is committed). Strict reduced-motion users always get
-// the PNG fallback.
-import RiveCharacterGuide, {
-  type CharacterMood,
-} from "@/app/components/lesson/RiveCharacterGuide";
 import StoryCutscene from "@/app/components/StoryCutscene";
 import ScreenTransition, {
   type TransitionType,
@@ -94,18 +86,6 @@ import {
   type ScreenDef,
   type WeekContent,
 } from "@/app/lesson/weekContent";
-
-const VALID_MOODS: ReadonlySet<CharacterMood> = new Set([
-  "idle",
-  "curious",
-  "excited",
-  "worried",
-  "thinking",
-  "thumbsup",
-]);
-function toMood(raw: string | undefined): CharacterMood {
-  return raw && VALID_MOODS.has(raw as CharacterMood) ? (raw as CharacterMood) : "idle";
-}
 
 const LessonArena3D = dynamic(
   () => import("@/app/components/game/LessonArena3D"),
@@ -1096,7 +1076,6 @@ function DynamicLessonInner({ qaEnabled }: { qaEnabled: boolean }) {
   }
 
   const def = content.screens[screen];
-  const reaction = content.reactions[screen] ?? { adam: null, layla: null };
   const stars = (wrongCounts[screen] ?? 0) === 0 ? 3 : (wrongCounts[screen] ?? 0) <= 1 ? 2 : 1;
 
   // A11y: when the child advances, move focus to the new screen region so
@@ -2717,24 +2696,10 @@ function DynamicLessonInner({ qaEnabled }: { qaEnabled: boolean }) {
         onMuteToggle={handleMuteToggle}
       />
 
-      {/* Character guides flank the Hacker Raccoon FIGHT only (showBoss).
-          The boss INTRO + every other lesson surface stays character-free. */}
-      {def?.type === "bossBattle" && showBoss && (
-        <>
-          <RiveCharacterGuide
-            character="adam"
-            position="left"
-            mood={toMood(reaction.adam?.mood)}
-            message={reaction.adam?.message ?? ""}
-          />
-          <RiveCharacterGuide
-            character="layla"
-            position="right"
-            mood={toMood(reaction.layla?.mood)}
-            message={reaction.layla?.message ?? ""}
-          />
-        </>
-      )}
+      {/* No character guides anywhere near the boss: the bespoke fights
+          own the whole screen, so the flanking Adam/Layla cards were only
+          ever visible as a brief duo flash while the boss chunk loaded
+          (feedback: remove them). */}
 
       <main
         style={{

@@ -79,7 +79,10 @@ const STEPS = {
     { hold: "HOLD TO FORGE", ms: 4800, shotDuring: "16b-forging", engagedWhenGone: true },
     { wait: 1300 }, { shot: "17-sweet-talk" },
     { click: "Never! It's secret!" },
-    { wait: 2400 }, { shot: "18-victory" },
+    // 2400 raced the phaseClear→victory hop (2600ms) and shot the tail of
+    // PHASE CLEAR at both viewports; 4800 clears the hop AND the victory
+    // column's 0.5s-delayed entrance.
+    { wait: 4800 }, { shot: "18-victory" },
     { click: "Claim the win" },
     { wait: 2500 }, { shot: "19-outro-video" },
     { click: "Skip video" },

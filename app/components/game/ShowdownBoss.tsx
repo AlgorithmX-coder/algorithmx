@@ -52,6 +52,8 @@ import {
   playVillain,
   playCoach,
   stopCoach,
+  whenVillainQuiet,
+  CaptionChip,
   ParticleLayer,
   type ParticleAPI,
 } from "@/app/components/game/bossArena";
@@ -166,13 +168,13 @@ export default function ShowdownBoss({
 
   const inFinisher = stage === "finisherIntro" || stage === "finisher";
   // PILOT FEEDBACK (global): characters must NEVER stand behind the
-  // gameplay boards. Boards are a centered fixed-width column while the
-  // cast is viewport-positioned, so on wide screens they collide. During
-  // board stages the cast tucks to the screen edges and shrinks
-  // (sideline spectators), then springs back for the theatre beats.
-  // "select" counts too: the hero cards are an interactive board, and on
-  // bright arenas the full-size raccoon overlapped LAYLA's SELECT button
-  // (rule 12: cast never stands behind gameplay boards; caught in W4 QA).
+  // gameplay boards, and (feedback pass) they must never SLIDE around
+  // between beats either — the old tuck-and-spring-back read as the
+  // heroes "drifting to the left" all fight. The cast now holds ONE
+  // sideline spot at the screen edges, equal hero/raccoon height, from
+  // hero-select through victory. It clears the centered boards AND the
+  // centered victory text column at any viewport. boardStage now only
+  // sizes the machine (which grows in place, never slides).
   const boardStage = stage === "play" || stage === "weakPoint" || stage === "finisher" || stage === "select";
   const machineImg =
     stage === "victory"
@@ -360,17 +362,24 @@ export default function ShowdownBoss({
     window.setTimeout(() => setStage("victory"), reduce ? 1100 : 2000);
   }, [reduce, shake, slug]);
 
-  /* Victory: bed out, coach celebration. */
+  /* Victory: bed out, then the strict no-overlap sequence — the
+     Raccoon's escape line finishes, the "Cyber Heroes" victory sting
+     (~2s) plays, THEN Sarah celebrates. Nothing crosses her. */
   useEffect(() => {
     if (stage !== "victory") return;
     stopBGM(900);
-    const t1 = window.setTimeout(() => playSound("victory"), 500);
-    const t2 = window.setTimeout(() => {
-      if (slug) playCoach(`${slug}-victory`);
-    }, 1400);
+    const timers: number[] = [];
+    const cancel = whenVillainQuiet(() => {
+      playSound("victory");
+      timers.push(
+        window.setTimeout(() => {
+          if (slug) playCoach(`${slug}-victory`);
+        }, 2200),
+      );
+    });
     return () => {
-      window.clearTimeout(t1);
-      window.clearTimeout(t2);
+      cancel();
+      timers.forEach((t) => window.clearTimeout(t));
     };
   }, [stage, slug]);
 
@@ -417,9 +426,9 @@ export default function ShowdownBoss({
             aria-hidden
             animate={reduce ? undefined : heroMood === "attack" ? { x: 24, scale: 1.06 } : { x: 0, scale: 1, y: [0, -5, 0] }}
             transition={heroMood === "attack" ? { duration: 0.2 } : { duration: 2.6, repeat: Infinity, ease: "easeInOut" }}
-            style={{ position: "absolute", left: boardStage ? "1%" : "3%", bottom: "13%", height: boardStage ? "22%" : "32%", zIndex: 2, filter: "drop-shadow(0 14px 18px rgba(10,14,34,0.55))", transition: "height 600ms ease, left 600ms ease" }}
+            style={{ position: "absolute", left: "2%", bottom: "13%", height: "24%", zIndex: 2, filter: "drop-shadow(0 14px 18px rgba(10,14,34,0.55))" }}
           />
-          <div aria-hidden style={{ position: "absolute", left: "3%", bottom: "11%", width: "15%", height: 20, borderRadius: "50%", background: "radial-gradient(ellipse, rgba(10,14,34,0.3), transparent 70%)" }} />
+          <div aria-hidden style={{ position: "absolute", left: "2%", bottom: "11%", width: "12%", height: 20, borderRadius: "50%", background: "radial-gradient(ellipse, rgba(10,14,34,0.3), transparent 70%)" }} />
         </>
       )}
 
@@ -462,10 +471,12 @@ export default function ShowdownBoss({
                 : { scale: 1, opacity: 1, y: [0, -7, 0] }
         }
         transition={raccoonMood === "idle" || raccoonMood === "taunt" ? { duration: 3, repeat: Infinity, ease: "easeInOut" } : { duration: 0.28 }}
-        // PILOT FEEDBACK (global): the Raccoon stands as tall as the hero —
-        // and during board stages he tucks beside his machine at the screen
-        // edge so he can never hide behind the gameplay cards.
-        style={{ position: "absolute", right: boardStage ? "9%" : "22%", bottom: "12%", height: boardStage ? "20%" : "32%", zIndex: 3, filter: "drop-shadow(0 12px 16px rgba(10,14,34,0.6))", transition: "height 600ms ease, right 600ms ease" }}
+        // PILOT FEEDBACK (global): the Raccoon stands EXACTLY as tall as
+        // the hero, parked beside his machine at the screen edge for the
+        // whole fight — visible through hero select, never behind the
+        // gameplay cards or the victory text, never sliding between
+        // beats. Only the entrance roar shows him big.
+        style={{ position: "absolute", right: stage === "entrance" ? "22%" : "9%", bottom: "12%", height: stage === "entrance" ? "32%" : "24%", zIndex: 3, filter: "drop-shadow(0 12px 16px rgba(10,14,34,0.6))", transition: "height 600ms ease, right 600ms ease" }}
       />
 
       <AnimatePresence>
@@ -583,9 +594,11 @@ export default function ShowdownBoss({
                   initial={reduce ? false : { scale: 2.4, opacity: 0 }}
                   animate={{ scale: 1, opacity: 1 }}
                   transition={{ type: "spring", stiffness: 210, damping: 15 }}
-                  style={{ fontFamily: MONO, fontSize: 13, fontWeight: 900, letterSpacing: "0.3em", color: "#ffb4c8", textShadow: "0 1px 8px rgba(13,24,58,0.9)", marginBottom: 10 }}
+                  style={{ marginBottom: 10 }}
                 >
-                  ⚠ HIS NEW MACHINE ROLLS IN ⚠
+                  <CaptionChip style={{ fontSize: 13, fontWeight: 900, letterSpacing: "0.3em", color: "#ffb4c8" }}>
+                    ⚠ HIS NEW MACHINE ROLLS IN ⚠
+                  </CaptionChip>
                 </motion.div>
               )}
               {entranceBeat >= 2 && (
@@ -602,9 +615,11 @@ export default function ShowdownBoss({
                     initial={reduce ? false : { opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: reduce ? 0 : 0.3 }}
-                    style={{ marginTop: 8, fontSize: 15, fontWeight: 800, color: "#f6f9ff", textShadow: "0 1px 8px rgba(13,24,58,0.9)" }}
+                    style={{ marginTop: 8 }}
                   >
-                    {showdown.machine.tagline}
+                    <CaptionChip style={{ fontFamily: "inherit", fontSize: 15, maxWidth: 520 }}>
+                      {showdown.machine.tagline}
+                    </CaptionChip>
                   </motion.div>
                 </>
               )}
@@ -616,7 +631,9 @@ export default function ShowdownBoss({
               <h2 style={{ margin: "0 0 2px", fontSize: 30, fontWeight: 900, color: "#fff", textShadow: "0 2px 10px rgba(13,24,58,0.9)" }}>
                 CHOOSE YOUR HERO
               </h2>
-              <p style={{ margin: "0 0 16px", fontSize: 13.5, fontWeight: 700, fontStyle: "italic", color: "#f6f9ff", textShadow: "0 1px 6px rgba(13,24,58,0.8)" }}>
+              {/* Dark chip behind the quote — bare white-on-arena was
+                  unreadable on bright weeks (same fix as the W1 select). */}
+              <p style={{ display: "inline-block", margin: "0 0 16px", padding: "7px 16px", borderRadius: 999, fontSize: 13.5, fontWeight: 700, fontStyle: "italic", color: "#f6f9ff", background: "rgba(20,16,44,0.78)", boxShadow: "0 6px 16px -8px rgba(20,16,44,0.6)" }}>
                 <PixIcon emoji="🦝" size={18} style={{ verticalAlign: "-3px", marginRight: 5 }} />“{showdown.villain.arrival}”
               </p>
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }}>
@@ -666,14 +683,16 @@ export default function ShowdownBoss({
               transition={{ type: "spring", stiffness: 220, damping: 18 }}
               style={{ margin: "auto", textAlign: "center", maxWidth: 540, zIndex: 15 }}
             >
-              <div style={{ fontFamily: MONO, fontSize: 13, fontWeight: 900, letterSpacing: "0.28em", color: "#f6f9ff", textShadow: "0 1px 8px rgba(13,24,58,0.9)", marginBottom: 8 }}>
-                — TRICK {phaseIdx + 1} OF {phases.length} —
+              <div style={{ marginBottom: 8 }}>
+                <CaptionChip style={{ fontSize: 13, fontWeight: 900, letterSpacing: "0.28em" }}>
+                  — TRICK {phaseIdx + 1} OF {phases.length} —
+                </CaptionChip>
               </div>
               <div style={{ display: "inline-flex", alignItems: "center", gap: 12, padding: "10px 26px", borderRadius: 18, background: "rgba(255,255,255,0.94)", border: `3px solid ${attack.color}`, boxShadow: `0 14px 34px -14px ${attack.glow}`, fontSize: 32, fontWeight: 900, marginBottom: 10, color: "#1d2b4f" }}>
                 <PixIcon emoji={attack.icon} size={40} />
                 {attack.name}
               </div>
-              <div style={{ fontSize: 15.5, fontWeight: 700, color: "#f6f9ff", fontStyle: "italic", textShadow: "0 1px 8px rgba(13,24,58,0.9)" }}>
+              <div style={{ display: "inline-block", padding: "6px 15px", borderRadius: 999, fontSize: 15.5, fontWeight: 700, color: "#f6f9ff", fontStyle: "italic", background: "rgba(20,16,44,0.78)", boxShadow: "0 6px 16px -8px rgba(20,16,44,0.6)" }}>
                 <PixIcon emoji="🦝" size={18} style={{ verticalAlign: "-3px", marginRight: 5 }} />“{showdown.villain.phases[phaseIdx] ?? "Try THIS one!"}”
               </div>
             </motion.div>
@@ -741,8 +760,10 @@ export default function ShowdownBoss({
               transition={{ type: "spring", stiffness: 220, damping: 18 }}
               style={{ margin: "auto", textAlign: "center", zIndex: 15 }}
             >
-              <div style={{ fontFamily: MONO, fontSize: 13, fontWeight: 900, letterSpacing: "0.28em", color: "#ffd158", textShadow: "0 1px 8px rgba(13,24,58,0.9)", marginBottom: 8 }}>
-                — EVERY GEAR POPPED —
+              <div style={{ marginBottom: 8 }}>
+                <CaptionChip style={{ fontSize: 13, fontWeight: 900, letterSpacing: "0.28em", color: "#ffd158" }}>
+                  — EVERY GEAR POPPED —
+                </CaptionChip>
               </div>
               <div style={{ fontSize: 36, fontWeight: 900, color: "#fff", textShadow: "0 2px 10px rgba(13,24,58,0.9)" }}>
                 THE MACHINE IS WOBBLING!
@@ -953,9 +974,9 @@ function TapTellPhase({ data, pkey, judge, done, reduce, accent }: { data: Showd
           </motion.button>
         ))}
       </div>
-      <div style={{ textAlign: "center", fontFamily: MONO, fontSize: 11, fontWeight: 800, color: "#f6f9ff", textShadow: "0 1px 6px rgba(13,24,58,0.8)" }}>
+      <CaptionChip>
         CLUE {Math.min(roundIdx + 1, data.rounds.length)} / {data.rounds.length}
-      </div>
+      </CaptionChip>
     </div>
   );
 }
@@ -1183,8 +1204,8 @@ function OrderStrikePhase({ data, pkey, judge, done, reduce, accent }: { data: S
 
   return (
     <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: 14, minHeight: 0, justifyContent: "center" }}>
-      <div style={{ margin: "0 auto", textAlign: "center", maxWidth: 540, fontSize: 15.5, fontWeight: 800, color: "#f6f9ff", textShadow: "0 1px 8px rgba(13,24,58,0.9)" }}>
-        {data.intro}
+      <div style={{ margin: "0 auto", maxWidth: 540 }}>
+        <CaptionChip style={{ fontFamily: "inherit", fontSize: 15, fontWeight: 800 }}>{data.intro}</CaptionChip>
       </div>
 
       {/* Slot row */}
@@ -1245,9 +1266,9 @@ function OrderStrikePhase({ data, pkey, judge, done, reduce, accent }: { data: S
           );
         })}
       </div>
-      <div style={{ textAlign: "center", fontFamily: MONO, fontSize: 11, fontWeight: 800, color: "#f6f9ff", textShadow: "0 1px 6px rgba(13,24,58,0.8)" }}>
+      <CaptionChip>
         {placedCount} / {data.steps.length} STEPS LANDED
-      </div>
+      </CaptionChip>
     </div>
   );
 }
@@ -1338,9 +1359,9 @@ function DeflectSortPhase({ data, pkey, judge, done, reduce, accent }: { data: S
           <PixIcon emoji="👍" size={26} /> {data.passLabel}
         </motion.button>
       </div>
-      <div style={{ textAlign: "center", fontFamily: MONO, fontSize: 11, fontWeight: 800, color: "#f6f9ff", textShadow: "0 1px 6px rgba(13,24,58,0.8)" }}>
+      <CaptionChip>
         {idx + (verdict ? 1 : 0)} / {data.items.length} SORTED
-      </div>
+      </CaptionChip>
     </div>
   );
 }
@@ -1445,9 +1466,9 @@ function RushPhase({ data, pkey, paused, judge, done, reduce, accent }: { data: 
         <RushHoldBeat key={`hold-${beat.id}`} beat={beat} pkey={pkey} paused={paused} judge={judge} advance={advance} reduce={reduce} accent={accent} />
       )}
 
-      <div style={{ textAlign: "center", fontFamily: MONO, fontSize: 11, fontWeight: 800, color: "#f6f9ff", textShadow: "0 1px 6px rgba(13,24,58,0.8)" }}>
+      <CaptionChip>
         BEAT {Math.min(beatIdx + 1, data.beats.length)} / {data.beats.length}
-      </div>
+      </CaptionChip>
     </div>
   );
 }
@@ -1570,7 +1591,7 @@ function WeakPointPanel({ question, pkey, judge, done, reduce, accent }: { quest
         <motion.div
           animate={reduce ? undefined : { scale: [1, 1.12, 1] }}
           transition={{ duration: 0.9, repeat: Infinity, ease: "easeInOut" }}
-          style={{ display: "inline-block", fontFamily: MONO, fontSize: 13, fontWeight: 900, letterSpacing: "0.24em", color: "#ffd158", textShadow: "0 1px 8px rgba(13,24,58,0.95)" }}
+          style={{ display: "inline-block", padding: "6px 14px", borderRadius: 999, background: "rgba(20,16,44,0.78)", boxShadow: "0 6px 16px -8px rgba(20,16,44,0.6)", fontFamily: MONO, fontSize: 13, fontWeight: 900, letterSpacing: "0.24em", color: "#ffd158" }}
         >
           ⚡ CORE EXPOSED — STRIKE! ⚡
         </motion.div>
@@ -1665,9 +1686,9 @@ function FinisherStage({ data, paused, judge, done, reduce, accent, stamp }: { d
         </motion.div>
       ) : (
         <>
-          <div style={{ fontFamily: MONO, fontSize: 12, fontWeight: 900, letterSpacing: "0.2em", color: "#ffd158", textShadow: "0 1px 8px rgba(13,24,58,0.95)" }}>
+          <CaptionChip style={{ fontSize: 12, fontWeight: 900, letterSpacing: "0.2em", color: "#ffd158" }}>
             {full ? "FULL POWER — LET GO!" : "CHARGE YOUR BADGE POWER"}
-          </div>
+          </CaptionChip>
 
           {/* Charge ring */}
           <div style={{ position: "relative", width: 150, height: 150, display: "flex", alignItems: "center", justifyContent: "center" }}>
@@ -1690,7 +1711,9 @@ function FinisherStage({ data, paused, judge, done, reduce, accent, stamp }: { d
             </motion.div>
           </div>
 
-          <div style={{ minHeight: 22, fontSize: 15, fontWeight: 800, color: "#f6f9ff", textShadow: "0 1px 8px rgba(13,24,58,0.9)" }}>{milestone}</div>
+          <div style={{ minHeight: 30 }}>
+            <CaptionChip style={{ fontFamily: "inherit", fontSize: 15, fontWeight: 800 }}>{milestone}</CaptionChip>
+          </div>
 
           <motion.button
             onPointerDown={() => { setHolding(true); playSound("click"); }}

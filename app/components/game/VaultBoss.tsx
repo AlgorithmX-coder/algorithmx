@@ -55,6 +55,8 @@ import {
   playVillain,
   playCoach,
   stopCoach,
+  whenVillainQuiet,
+  CaptionChip,
   ParticleLayer,
   type ParticleAPI,
 } from "@/app/components/game/bossArena";
@@ -303,16 +305,21 @@ export default function VaultBoss({
     }, reduce ? 1400 : 2600);
   }, [phaseIdx, phaseMeta, reduce, shake]);
 
-  /* Victory theatrics: detonation, bed out, coach celebration. */
+  /* Victory theatrics: detonation, bed out — then the strict no-overlap
+     sequence: the Raccoon's defeat line finishes, the "Cyber Heroes"
+     victory sting (~2s) plays, THEN Sarah celebrates. Nothing crosses. */
   useEffect(() => {
     if (stage !== "victory") return;
     audio.signature("vault-detonate");
     stopBGM(900);
-    const t1 = window.setTimeout(() => playSound("victory"), 600);
-    const t2 = window.setTimeout(() => playCoach("vault-victory"), 1500);
+    const timers: number[] = [];
+    const cancel = whenVillainQuiet(() => {
+      playSound("victory");
+      timers.push(window.setTimeout(() => playCoach("vault-victory"), 2200));
+    });
     return () => {
-      window.clearTimeout(t1);
-      window.clearTimeout(t2);
+      cancel();
+      timers.forEach((t) => window.clearTimeout(t));
     };
   }, [stage, audio]);
 
@@ -356,9 +363,9 @@ export default function VaultBoss({
             aria-hidden
             animate={reduce ? undefined : heroMood === "attack" ? { x: 24, scale: 1.06 } : { x: 0, scale: 1, y: [0, -5, 0] }}
             transition={heroMood === "attack" ? { duration: 0.2 } : { duration: 2.6, repeat: Infinity, ease: "easeInOut" }}
-            style={{ position: "absolute", left: "3%", bottom: "13%", height: "32%", zIndex: 2, filter: "drop-shadow(0 14px 18px rgba(20,30,60,0.45))" }}
+            style={{ position: "absolute", left: "3%", bottom: "13%", height: "24%", zIndex: 2, filter: "drop-shadow(0 14px 18px rgba(20,30,60,0.45))" }}
           />
-          <div aria-hidden style={{ position: "absolute", left: "3%", bottom: "11%", width: "15%", height: 20, borderRadius: "50%", background: "radial-gradient(ellipse, rgba(20,30,60,0.25), transparent 70%)" }} />
+          <div aria-hidden style={{ position: "absolute", left: "3%", bottom: "11%", width: "12%", height: 20, borderRadius: "50%", background: "radial-gradient(ellipse, rgba(20,30,60,0.25), transparent 70%)" }} />
         </>
       )}
 
@@ -395,10 +402,12 @@ export default function VaultBoss({
                 : { scale: 1, opacity: 1, y: [0, -7, 0] }
         }
         transition={raccoonMood === "idle" || raccoonMood === "taunt" ? { duration: 3, repeat: Infinity, ease: "easeInOut" } : { duration: 0.28 }}
-        // PILOT FEEDBACK (global): the cast never stands behind gameplay
-        // boards — during the play stage the Raccoon tucks beside his
-        // machine at the screen edge (wide screens put right:22% mid-board).
-        style={{ position: "absolute", right: stage === "play" ? "8%" : "22%", bottom: "12%", height: stage === "play" ? "18%" : "22%", zIndex: 3, filter: "drop-shadow(0 12px 16px rgba(20,30,60,0.5))", transition: "height 600ms ease, right 600ms ease" }}
+        // PILOT FEEDBACK (global): the Raccoon stands EXACTLY as tall as
+        // the hero, parked beside his machine at the screen edge for the
+        // whole fight — visible through hero select, never behind the
+        // select cards / gameplay boards / victory text, never sliding
+        // between beats. Only the entrance roar shows him big.
+        style={{ position: "absolute", right: stage === "entrance" ? "22%" : "7%", bottom: "12%", height: stage === "entrance" ? "26%" : "24%", zIndex: 3, filter: "drop-shadow(0 12px 16px rgba(20,30,60,0.5))", transition: "height 600ms ease, right 600ms ease" }}
       />
 
       <AnimatePresence>
@@ -585,8 +594,10 @@ export default function VaultBoss({
               transition={{ type: "spring", stiffness: 220, damping: 18 }}
               style={{ margin: "auto", textAlign: "center", maxWidth: 520, zIndex: 15 }}
             >
-              <div style={{ fontFamily: MONO, fontSize: 13, fontWeight: 900, letterSpacing: "0.28em", color: "#f6f9ff", textShadow: "0 1px 8px rgba(13,24,58,0.9)", marginBottom: 8 }}>
-                — PHASE {phaseIdx + 1} OF 5 —
+              <div style={{ marginBottom: 8 }}>
+                <CaptionChip style={{ fontSize: 13, fontWeight: 900, letterSpacing: "0.28em" }}>
+                  — PHASE {phaseIdx + 1} OF 5 —
+                </CaptionChip>
               </div>
               <div style={{ display: "inline-block", padding: "10px 26px", borderRadius: 18, background: "rgba(255,255,255,0.94)", border: `3px solid ${tone.accent}`, boxShadow: "0 14px 34px -14px rgba(20,30,60,0.5)", fontSize: 36, fontWeight: 900, marginBottom: 10, color: "#1d2b4f" }}>
                 {currentPhase.label}
@@ -646,7 +657,8 @@ export default function VaultBoss({
                 </div>
                 <div style={{ marginTop: 7, fontSize: 11, fontWeight: 900, color: "#b91c1c", letterSpacing: "0.06em" }}>STATUS: KABOOM</div>
               </motion.div>
-              <h2 style={{ margin: "0 0 6px", fontSize: 30, fontWeight: 900, color: "#f6f9ff", textShadow: "0 2px 10px rgba(13,24,58,0.9)" }}>
+              {/* Navy on the bright stage (white-on-pastel washed out). */}
+              <h2 style={{ margin: "0 0 6px", fontSize: 30, fontWeight: 900, color: "#1d2b4f", textShadow: "0 2px 0 rgba(255,255,255,0.7)" }}>
                 The vault held. The machine didn&apos;t.
               </h2>
               <div style={{ display: "inline-block", padding: "6px 18px", borderRadius: 999, background: "rgba(255,255,255,0.95)", border: "2.5px solid #d98a06", fontFamily: MONO, fontSize: 13, fontWeight: 900, color: "#b45309", marginBottom: 14, boxShadow: "0 8px 20px -10px rgba(20,30,60,0.5)" }}>
@@ -735,8 +747,10 @@ function WallPhase({ data, judge, done, reduce, accent, signature }: { data: Vau
     <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: 16, minHeight: 0, justifyContent: "center" }}>
       {/* The vault door password */}
       <div style={{ margin: "0 auto", width: "100%", maxWidth: 560, textAlign: "center" }}>
-        <div style={{ fontFamily: MONO, fontSize: 11, fontWeight: 800, letterSpacing: "0.1em", color: "#f6f9ff", textShadow: "0 1px 6px rgba(13,24,58,0.8)", marginBottom: 5 }}>
-          YOUR PASSWORD ({password.length} letters long)
+        <div style={{ marginBottom: 5 }}>
+          <CaptionChip style={{ letterSpacing: "0.1em" }}>
+            YOUR PASSWORD ({password.length} letters long)
+          </CaptionChip>
         </div>
         <motion.div
           key={password}
@@ -782,9 +796,9 @@ function WallPhase({ data, judge, done, reduce, accent, signature }: { data: Vau
           );
         })}
       </div>
-      <div style={{ textAlign: "center", fontFamily: MONO, fontSize: 11, fontWeight: 800, color: "#f6f9ff", textShadow: "0 1px 6px rgba(13,24,58,0.8)" }}>
+      <CaptionChip>
         {placed.length} / {data.blocks.length} WORDS — LONGER IS STRONGER
-      </div>
+      </CaptionChip>
     </div>
   );
 }
@@ -886,9 +900,9 @@ function ScramblerPhase({ data, judge, done, reduce, accent, signature }: { data
           );
         })}
       </div>
-      <div style={{ textAlign: "center", fontFamily: MONO, fontSize: 11, fontWeight: 800, color: "#f6f9ff", textShadow: "0 1px 6px rgba(13,24,58,0.8)" }}>
+      <CaptionChip>
         {applied.length} / {data.mixers.length} MIXERS IN
-      </div>
+      </CaptionChip>
     </div>
   );
 }
@@ -991,9 +1005,9 @@ function CoverPhase({ data, paused, judge, done, reduce, accent }: { data: Vault
           style={{ textAlign: "center", opacity: eyeState === "closed" ? 0.4 : 1, transition: "opacity 250ms ease" }}
         >
           <PixIcon emoji={eyeState === "open" ? "👀" : "🦝"} size={58} />
-          <div style={{ fontFamily: MONO, fontSize: 10, fontWeight: 900, letterSpacing: "0.1em", color: eyeState === "open" ? "#e0447d" : eyeState === "opening" ? "#d98a06" : "#94a3b8", textShadow: "0 1px 0 #fff" }}>
+          <CaptionChip style={{ fontSize: 10, fontWeight: 900, letterSpacing: "0.1em", padding: "4px 10px", color: eyeState === "open" ? "#ff9bcb" : eyeState === "opening" ? "#ffd158" : "#cbd5e1" }}>
             {eyeState === "open" ? "PEEKING!" : eyeState === "opening" ? "EYE COMING UP…" : "…lurking…"}
-          </div>
+          </CaptionChip>
         </motion.div>
       </div>
 
@@ -1026,9 +1040,9 @@ function CoverPhase({ data, paused, judge, done, reduce, accent }: { data: Vault
         🖐 {covering ? "COVERING…" : "HOLD TO COVER"}
       </motion.button>
 
-      <div style={{ textAlign: "center", fontFamily: MONO, fontSize: 11, fontWeight: 800, color: "#f6f9ff", textShadow: "0 1px 6px rgba(13,24,58,0.8)" }}>
+      <CaptionChip>
         SPY EYE {Math.min(snoopIdx + 1, data.snoops)} / {data.snoops} · {survived} BLOCKED
-      </div>
+      </CaptionChip>
     </div>
   );
 }
@@ -1078,11 +1092,11 @@ function FeedPhase({ data, judge, done, reduce, accent, signature }: { data: Vau
         style={{ textAlign: "center" }}
       >
         <PixIcon emoji="🤖" size={86} />
-        <div style={{ fontFamily: MONO, fontSize: 10, fontWeight: 900, letterSpacing: "0.1em", color: "#f6f9ff", textShadow: "0 1px 6px rgba(13,24,58,0.8)" }}>
-          {/* "guesses", not "passwords" — the junk card literally says
-              "password" and click-target labels must be unique on screen. */}
+        {/* "guesses", not "passwords" — the junk card literally says
+            "password" and click-target labels must be unique on screen. */}
+        <CaptionChip style={{ fontSize: 10, fontWeight: 900, letterSpacing: "0.1em", padding: "4px 10px" }}>
           THE GUESS-O-TRON {full ? "· 💥 FULL!" : "· feed me obvious guesses!"}
-        </div>
+        </CaptionChip>
         {/* Belly meter */}
         <div style={{ width: 180, height: 14, margin: "6px auto 0", borderRadius: 999, background: "rgba(255,255,255,0.85)", border: "2px solid #8b5cf6", overflow: "hidden" }}>
           <motion.div
@@ -1162,9 +1176,9 @@ function FeedPhase({ data, judge, done, reduce, accent, signature }: { data: Vau
         </motion.button>
       </div>
 
-      <div style={{ textAlign: "center", fontFamily: MONO, fontSize: 11, fontWeight: 800, color: "#f6f9ff", textShadow: "0 1px 6px rgba(13,24,58,0.8)" }}>
+      <CaptionChip>
         {fed.length} / {data.junk.length} OBVIOUS ONES FED · HE CAN&apos;T GUESS YOURS
-      </div>
+      </CaptionChip>
     </div>
   );
 }
@@ -1292,9 +1306,9 @@ function FinalPhase({ data, paused, judge, done, reduce, accent, signature }: { 
             <PixIcon emoji="🔨" size={40} />
             {holding ? "FORGING…" : "HOLD TO FORGE"}
           </motion.button>
-          <div style={{ textAlign: "center", fontFamily: MONO, fontSize: 11, fontWeight: 800, color: "#f6f9ff", textShadow: "0 1px 6px rgba(13,24,58,0.8)" }}>
+          <CaptionChip>
             KEEP HOLDING — CHARGE IT TO 400 YEARS!
-          </div>
+          </CaptionChip>
         </>
       )}
 
