@@ -918,6 +918,132 @@ export const WEEK_19: WeekContent = {
     { type: "completion" },
   ],
 
+  // Bespoke boss: defend the whole house at once - kindly. The machine
+  // targets one family member at a time; the kid teaches the counter.
+  bossShowdown: {
+    machine: {
+      name: "THE HOUSE RATTLER",
+      tagline: "A knock-knock engine that shakes the windows wearing a hundred voices",
+      art: {
+        intact: "/game/bosses/w19-houserattler-intact.png",
+        damaged: "/game/bosses/w19-houserattler-damaged.png",
+        defeated: "/game/bosses/w19-houserattler-defeated.png",
+      },
+      arena: "/game/backgrounds/w19-arena-eveninghouse.png",
+      accent: "#ff9d5c",
+      glow: "rgba(255,157,92,0.55)",
+    },
+    heroSprites: {
+      adam: {
+        idle: "/game/characters/w19/adam-cardigan-idle.png",
+        attack: "/game/characters/w19/adam-cardigan-attack.png",
+        celebrate: "/game/characters/w19/adam-cardigan-celebrate.png",
+      },
+      layla: {
+        idle: "/game/characters/w19/layla-cardigan-idle.png",
+        attack: "/game/characters/w19/layla-cardigan-attack.png",
+        celebrate: "/game/characters/w19/layla-cardigan-celebrate.png",
+      },
+    },
+    phases: [
+      // P1 · GRANDMA-TRAP TEXT → TAP-THE-TELL: the Week-4 tricks in a
+      // cardigan - sit with Grandma and tap the tells, kindly.
+      {
+        kind: "tapTell",
+        attack: 0,
+        coach: "Sit with Grandma and tap the tells - kindly, one at a time!",
+        rounds: [
+          {
+            id: "sender",
+            prompt: "Grandma's phone buzzes: 'FASTBANK ALERT!! Your acount is BLOCKED.' Who sent it, really?",
+            promptIcon: "✉️",
+            options: [
+              { id: "stranger", label: "A stranger: +44 7999 000111 in a bank costume", icon: "🎭", isTell: true, note: "" },
+              { id: "helpline", label: "FastBank's own helpline", icon: "📋", isTell: false, note: "Real banks text from short official numbers Grandma already knows - not a stranger's +44." },
+              { id: "bookclub", label: "Grandma's book club", icon: "🎁", isTell: false, note: "Book clubs send meeting times - not BLOCKED alerts in capital letters." },
+            ],
+          },
+          {
+            id: "clock",
+            prompt: "'Tap the link in 10 MINUTES or lose EVERYTHING!' Which trick is ticking?",
+            promptIcon: "🌀",
+            options: [
+              { id: "panic", label: "The panic clock - real banks never race you", icon: "🚀", isTell: true, note: "" },
+              { id: "hello", label: "The polite hello at the top", icon: "💬", isTell: false, note: "A greeting isn't a trick - the RUSH is. Real banks give you all the time you need." },
+              { id: "capitals", label: "The bank's name in big letters", icon: "🏷️", isTell: false, note: "Big letters are just loud - the racing clock is the real trap." },
+            ],
+          },
+          {
+            id: "thread",
+            prompt: "Look closer at 'Your acount is BLOCKED'. Which loose thread unravels the whole costume?",
+            promptIcon: "🔍",
+            options: [
+              { id: "spelling", label: "'Acount' - real banks check their spelling", icon: "🔍", isTell: true, note: "" },
+              { id: "shouty", label: "BLOCKED in scary capitals", icon: "🗑️", isTell: false, note: "Capitals shout, but shouting isn't proof - the misspelling is the thread that snaps." },
+              { id: "bankword", label: "The word 'bank'", icon: "💡", isTell: false, note: "Banks are real - but a real one spells 'account' with two Cs." },
+            ],
+          },
+        ],
+      },
+      // P2 · ROTARY RINGER → DEFLECT-SORT: video calls rain on Grandma's
+      // tablet at supper time - real faces through, masks declined.
+      {
+        kind: "deflectSort",
+        attack: 1,
+        coach: "Evening calls on Grandma's tablet - family rings through, strangers get the latch!",
+        actLabel: "DECLINE THE MASK",
+        actIcon: "✋",
+        passLabel: "ANSWER - REAL FACE",
+        items: [
+          { id: "mom", label: "Mom calling from the kitchen", icon: "👪", act: false, note: "Mom's real face is in the contacts list - she always rings through." },
+          { id: "prize", label: "'PRIZE DEPARTMENT' - unknown number", icon: "🎁", act: true, note: "Prizes from strangers are Week-4 bait with a ringtone - decline." },
+          { id: "rosa", label: "Rosa from Grandma's garden club", icon: "💬", act: false, note: "Rosa is a saved contact and a real face - through she comes." },
+          { id: "inspector", label: "'Gas inspector' - a number Grandma doesn't know", icon: "🎭", act: true, note: "Real inspectors book visits with the grown-ups - masks get declined." },
+          { id: "cousin", label: "Your cousin calling to say goodnight", icon: "🌟", act: false, note: "Family face, saved contact - answer away." },
+          { id: "bankdesk", label: "'FastBank video desk' - blocked number", icon: "🔒", act: true, note: "Banks don't video-call at bedtime - that's the Rattler's voice changer." },
+        ],
+      },
+      // P3 · BOSSY RULEBOOK → COUNTER-CARD: a fake rulebook on the door;
+      // together-rules beat bossy-rules, kindly.
+      {
+        kind: "counterCard",
+        attack: 2,
+        coach: "A rule nobody sewed together isn't a rule - answer it kindly!",
+        situation: "A rulebook gets nailed to the front door: 'KIDS BANNED FROM EVERYTHING. Signed, Someone Important.'",
+        situationIcon: "👑",
+        cards: [
+          { id: "sew", label: "SEW A TOGETHER-RULE - RULES COVER EVERYONE", icon: "👪", isRight: true, note: "Rules the whole family sews together cover everyone kindly - even Dad." },
+          { id: "obey", label: "OBEY THE BOOK - IT LOOKS OFFICIAL", icon: "📋", isRight: false, note: "Official-looking isn't official - nobody in this family signed that page." },
+          { id: "shout", label: "SHOUT A LOUDER RULE BACK", icon: "🚀", isRight: false, note: "Shouting sews nothing - together-rules beat bossy-rules every time." },
+        ],
+      },
+    ],
+    weakPoints: [
+      { question: "The fake bank text shows a +44 stranger, a panic clock AND 'acount'. What do real banks never do?", answers: ["Race you - a calm minute unmasks every trick", "Send text messages", "Use the word account", "Talk to grown-ups"], correctIndex: 0, explanation: "Real banks give you time and check their spelling - the rush is the costume's zipper." },
+      { question: "The contacts-only latch on Grandma's tablet means...", answers: ["Only real faces she knows can ring through", "Nobody can ever call her again", "Only banks can call", "Calls just get louder"], correctIndex: 0, explanation: "Contacts-only shuts the window on voice-changer masks - family still rings straight through." },
+      { question: "A bossy rulebook says 'KIDS BANNED FROM EVERYTHING'. A Family Firewall answers with...", answers: ["A together-rule the whole family sews and signs", "Obeying it quietly", "A louder, bossier rule", "Hiding the front door"], correctIndex: 0, explanation: "Rules cover everyone when everyone sews them - that's what makes the quilt warm AND strong." },
+    ],
+    finisher: {
+      chargeLabel: "CHARGE THE FAMILY DOME",
+      chargeIcon: "🛡️",
+      chargeSecs: 5,
+      milestones: ["The dome is rising over the roof…", "Every family silhouette joins hands…", "THE WHOLE HOUSE GLOWS! LET GO!"],
+      payoffTitle: "THE FAMILY FIREWALL IS UP!",
+      payoffLine: "FWOOOM! A warm golden dome settles over the whole house - Grandma's phone, the kitchen tablet, every window and every door. The Rattler charges... BOING! Straight off the dome and into the hedge. Eighteen weeks of powers, taught kindly around one kitchen table - that's what a Family Firewall is made of.",
+    },
+    villain: {
+      arrival: "Knock knock! It's me - the gas inspector! And the bank! And Grandma's best friend!",
+      phases: [
+        "Bigger font, bigger trap! Grandmas love a big font!",
+        "Answer it, Grandma! It's DEFINITELY not a raccoon with a voice changer!",
+        "New house rules! Rule one: no rules for raccoons!",
+      ],
+      escape: "A DOME?! Since when do FAMILIES have firewalls?!",
+    },
+    voiceSlug: "w19",
+  },
+  badgeArt: "/cyberheroes/badges/week-19-family-firewall.png",
+
   // Week-lane attack theatre: tricks aimed at the FAMILY only (kid-aimed
   // scams = W4, doors = W16, save-balloons = W18).
   bossAttacks: [

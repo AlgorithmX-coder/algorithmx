@@ -953,6 +953,65 @@ const STEPS = {
     { click: "Claim Badge" },
     { wait: 2200 }, { shot: "21-debrief" },
   ],
+  19: [
+    { wait: 3000 }, { shot: "01-entrance" },            // HOUSE RATTLER nameplate
+    { wait: 2000 }, { shot: "02-select" },              // family-crest cardigans!
+    { clickLabel: "Play as ADAM" },
+    { wait: 900 }, { shot: "03-announce-trick1" },      // GRANDMA-TRAP TEXT telegraph
+    { wait: 2400 },
+    { shot: "04-play-taptell" },                        // sit with Grandma, tap the tells
+    { click: "FastBank's own helpline" },               // deliberate wrong → teach
+    { wait: 700 }, { shot: "05-teach-tell" },
+    { click: "Got it!" },
+    { click: "A stranger: +44 7999 000111 in a bank costume" }, // ✓ round 1
+    { wait: 1400 },
+    { click: "The panic clock - real banks never race you" },  // ✓ round 2
+    { wait: 1400 },
+    { click: "'Acount' - real banks check their spelling" },   // ✓ round 3 → playDone
+    { wait: 1600 }, { shot: "06-weakpoint-1" },
+    { click: "Race you - a calm minute unmasks every trick" },
+    { wait: 1300 }, { shot: "07-gear-popped" },
+    { wait: 3000 },
+    { shot: "08-announce-trick2" },                     // ROTARY RINGER
+    { wait: 2200 },
+    { shot: "09-play-deflect" },                        // supper-time calls on the tablet
+    { click: "DECLINE THE MASK" },                      // deliberate wrong on Mom → teach
+    { wait: 700 }, { shot: "10-teach-mom" },
+    { click: "Got it!" },
+    { click: "ANSWER - REAL FACE" },                    // mom ✓
+    { wait: 1400 },
+    { click: "DECLINE THE MASK" },                      // prize department ✓
+    { wait: 1400 },
+    { click: "ANSWER - REAL FACE" },                    // rosa ✓
+    { wait: 1400 },
+    { click: "DECLINE THE MASK" },                      // gas inspector ✓
+    { wait: 1400 },
+    { click: "ANSWER - REAL FACE" },                    // cousin ✓
+    { wait: 1400 },
+    { click: "DECLINE THE MASK" },                      // bank video desk ✓ → playDone
+    { wait: 1600 }, { shot: "11-weakpoint-2" },
+    { click: "Only real faces she knows can ring through" },
+    { wait: 4300 },
+    { shot: "12-announce-trick3" },                     // BOSSY RULEBOOK
+    { wait: 2200 },
+    { shot: "13-play-countercard" },                    // the nailed-on rulebook
+    { click: "SEW A TOGETHER-RULE - RULES COVER EVERYONE" }, // ✓ straight
+    { wait: 1700 }, { shot: "14-weakpoint-3" },
+    { click: "A together-rule the whole family sews and signs" },
+    { wait: 3900 },
+    { shot: "15-wobbling" },
+    { wait: 1700 },
+    { shot: "16-finisher-ring" },
+    { hold: "CHARGE THE FAMILY DOME", ms: 5600, shotDuring: "16b-charging" },
+    { wait: 800 }, { shot: "17-payoff" },               // THE FAMILY FIREWALL IS UP!
+    { wait: 2200 }, { shot: "18-victory" },
+    { click: "Claim the win" },
+    { wait: 2500 }, { shot: "19-outro-video" },
+    { click: "Skip video" },
+    { wait: 1800 }, { shot: "20-badge-scene" },
+    { click: "Claim Badge" },
+    { wait: 2200 }, { shot: "21-debrief" },
+  ],
 };
 
 const steps = STEPS[week];

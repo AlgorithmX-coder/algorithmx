@@ -291,6 +291,20 @@ const WEEKS = {
         "[excited] LOCKED, Cyber Hero! You ran the Log-Out Relay - game, art, chat - and slammed every door before the goblin's little wind-up legs got there... [warmly] dusted your sister's diary closed without reading a single word... [laughs] and popped every sticky SAVE-PASSWORD balloon on every shared screen in the house. [gasps] Then one hammer-strike - fifty-eight, ninety-three, forty-one - and every lock clicked shut at once. [warmly] The whole house sleeps easy tonight, Lock Master - because you hold the keys.",
     },
   },
+  19: {
+    slug: "w19",
+    villain: {
+      arrival: "[excited] Knock knock! It's me - the gas inspector! [laughs] And the bank! And Grandma's best friend!",
+      "phase-1": "[excited] Bigger font, bigger trap! [laughs] Grandmas love a big font!",
+      "phase-2": "[excited] Answer it, Grandma! [whispers] It's DEFINITELY not a raccoon with a voice changer!",
+      "phase-3": "[excited] New house rules! [laughs] Rule one: no rules for raccoons!",
+      escape: "[gasps] A DOME?! [sighs] Since when do FAMILIES have firewalls?!",
+    },
+    coach: {
+      victory:
+        "[excited] SHIELDED, Cyber Hero! You sat with Grandma and caught every tell - the stranger's number in a bank costume, the panic clock, even 'acount' spelled wrong... [laughs] latched her tablet to real faces only, so Rosa rings straight through and voice-changer raccoons bounce off... [warmly] and when a bossy rulebook hit the front door, you sewed a together-rule that covers everyone. [gasps] Then the dome rose - one warm golden Family Firewall over the whole house - and the Rattler bounced clean into the hedge. [warmly] That's the greatest power of all, Family Firewall - keeping the people you love safe, kindly.",
+    },
+  },
 };
 
 // ── Legacy Week-1 villain lines (public/audio/villain) - the no-repeat
