@@ -24,7 +24,7 @@
  */
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { motion, AnimatePresence } from "motion/react";
+import { motion, AnimatePresence, useAnimationControls } from "motion/react";
 import { playSound, playBGM, stopBGM } from "@/app/lib/sounds";
 import { useMotionIntensity } from "@/app/lib/gameEngine/useMotionIntensity";
 import WrongAnswerPanel from "@/app/components/lesson/WrongAnswerPanel";
@@ -131,7 +131,17 @@ export default function ShowdownBoss({
   const [raccoonLine, setRaccoonLine] = useState<string | null>(null);
   const [teach, setTeach] = useState<null | { title: string; explanation: string }>(null);
   const [score, setScore] = useState(0);
-  const [shakeNonce, setShakeNonce] = useState(0);
+  const shakeControls = useAnimationControls();
+  // Declared up here (not with the other handlers) because the entrance
+  // effect below lists it as a dependency.
+  const shake = useCallback(() => {
+    if (reduce) return;
+    void shakeControls.start({
+      x: [0, -7, 6, -4, 2, 0],
+      y: [0, 3, -2, 1, 0, 0],
+      transition: { duration: 0.35 },
+    });
+  }, [reduce, shakeControls]);
   const [popups, setPopups] = useState<{ id: number; text: string; colour: string; x: number; y: number }[]>([]);
   const [payoffStamp, setPayoffStamp] = useState(false);
 
@@ -157,7 +167,10 @@ export default function ShowdownBoss({
   // cast is viewport-positioned, so on wide screens they collide. During
   // board stages the cast tucks to the screen edges and shrinks
   // (sideline spectators), then springs back for the theatre beats.
-  const boardStage = stage === "play" || stage === "weakPoint" || stage === "finisher";
+  // "select" counts too: the hero cards are an interactive board, and on
+  // bright arenas the full-size raccoon overlapped LAYLA's SELECT button
+  // (rule 12: cast never stands behind gameplay boards; caught in W4 QA).
+  const boardStage = stage === "play" || stage === "weakPoint" || stage === "finisher" || stage === "select";
   const machineImg =
     stage === "victory"
       ? showdown.machine.art.defeated
@@ -209,7 +222,7 @@ export default function ShowdownBoss({
         setEntranceBeat(1);
         playSound("bossRoar");
         if (slug) playVillain(`${slug}-arrival`);
-        setShakeNonce((n) => n + 1);
+        shake();
       }, beats[0]),
       window.setTimeout(() => {
         setEntranceBeat(2);
@@ -218,7 +231,7 @@ export default function ShowdownBoss({
       window.setTimeout(() => setStage("select"), beats[2]),
     ];
     return () => timers.forEach((t) => window.clearTimeout(t));
-  }, [stage, reduce, slug]);
+  }, [stage, reduce, slug, shake]);
 
   const chooseHero = (key: HeroKey) => {
     playSound("select");
@@ -242,8 +255,6 @@ export default function ShowdownBoss({
   /* PILOT FEEDBACK (global): NO narrator voice during the fight — the
      coach banner is text-only. The one narrator moment is the excited
      "well done" line on the victory screen. */
-
-  const shake = useCallback(() => setShakeNonce((n) => n + 1), []);
   const addPopup = useCallback((text: string, colour: string, x: number, y: number) => {
     const id = ++popupSeq.current;
     setPopups((p) => [...p.slice(-5), { id, text, colour, x, y }]);
@@ -383,9 +394,11 @@ export default function ShowdownBoss({
 
   return (
     <motion.div
-      key={shakeNonce > 0 ? `shake-${shakeNonce}` : "still"}
-      animate={reduce || shakeNonce === 0 ? undefined : { x: [0, -7, 6, -4, 2, 0], y: [0, 3, -2, 1, 0, 0] }}
-      transition={{ duration: 0.35 }}
+      // Shake via animation CONTROLS, never via a key change — re-keying
+      // this wrapper remounts the whole subtree and silently resets the
+      // active phase's progress (a wrong answer on item 4 restarted the
+      // sort at item 1; caught in W4 QA, latent since the W3 pilot).
+      animate={shakeControls}
       style={{ position: "relative", width: "100%", height: "100%", overflow: "hidden", background: "#101430", color: "#1d2b4f", fontFamily: ROUNDED }}
     >
       {/* Week arena plate — one soft dim layer keeps cards readable. */}

@@ -89,6 +89,64 @@ const STEPS = {
     { click: "Claim Badge" },
     { wait: 2200 }, { shot: "21-debrief" },
   ],
+  4: [
+    { wait: 3000 }, { shot: "01-entrance" },            // BAIT CASTER nameplate
+    { wait: 2000 }, { shot: "02-select" },              // fisher raincoats!
+    { clickLabel: "Play as LAYLA" },
+    { wait: 900 }, { shot: "03-announce-trick1" },      // FAKE PRIZE telegraph
+    { wait: 2400 },
+    { shot: "04-play-deflect" },                        // first item: V-BUCKS bait
+    { click: "CUT IT LOOSE!" },                         // correct: act on bait
+    { wait: 1400 },                                     // → Grandma's postcard
+    { click: "CUT IT LOOSE!" },                         // deliberate wrong → teach
+    { wait: 700 }, { shot: "05-teach-panel" },
+    { click: "Got it!" },
+    { click: "REEL IT IN" },                            // correct: pass Grandma
+    { wait: 1400 },
+    { click: "CUT IT LOOSE!" },                         // FREE iPhone bait
+    { wait: 1400 },
+    { click: "REEL IT IN" },                            // school letter
+    { wait: 1400 },
+    { click: "CUT IT LOOSE!" },                         // visitor 1,000,000
+    { wait: 1400 },
+    { click: "REEL IT IN" },                            // in-app update → playDone
+    { wait: 1600 }, { shot: "06-weakpoint-1" },
+    { click: "Bait - too good to be true" },
+    { wait: 1300 }, { shot: "07-gear-popped" },
+    { wait: 3000 },
+    { shot: "08-announce-trick2" },                     // COUNTDOWN SCARE
+    { wait: 2200 },
+    { shot: "09-play-shieldhold" },
+    { hold: "HOLD THE CALM", ms: 6800 },
+    { wait: 400 }, { shot: "10-burnout" },              // clock hits zero, nothing
+    { wait: 1800 }, { shot: "11-weakpoint-2" },
+    { click: "A racing heart doesn't stop to think" },
+    { wait: 4300 },
+    { shot: "12-announce-trick3" },                     // LOOKALIKE
+    { wait: 2200 },
+    { shot: "13-play-taptell" },
+    { click: "Has the red logo" },                      // deliberate wrong → teach
+    { wait: 700 }, { shot: "14-teach-lookalike" },
+    { click: "Got it!" },
+    { click: "That O is a ZERO" },                      // round 1 tell
+    { wait: 1400 }, { shot: "15-taptell-round2" },
+    { click: "Sent from prizes-4u.biz" },               // round 2 tell → playDone
+    { wait: 1600 }, { shot: "16-weakpoint-3" },
+    { click: "R0BLOX Rewards - gift@roblox-rewards.club" },
+    { wait: 3900 },
+    { shot: "17-wobbling" },
+    { wait: 1700 },
+    { shot: "18-finisher-ring" },
+    { hold: "CHARGE THE SCAM STAMP", ms: 5600, shotDuring: "18b-charging" },
+    { wait: 800 }, { shot: "19-payoff" },               // STAMPED: SCAM!
+    { wait: 2200 }, { shot: "20-victory" },
+    { click: "Claim the win" },
+    { wait: 2500 }, { shot: "21-outro-video" },
+    { click: "Skip video" },
+    { wait: 1800 }, { shot: "22-badge-scene" },
+    { click: "Claim Badge" },
+    { wait: 2200 }, { shot: "23-debrief" },
+  ],
 };
 
 const steps = STEPS[week];

@@ -77,6 +77,20 @@ const WEEKS = {
         "[excited] YES! Case closed, detective! [laughs] Did you SEE his face? You spotted the fake profile... you told a grown-up about the secret... and that meet-up trap? [whispers] You didn't even blink. [excited] The Disguise-o-Matic is DONE! [warmly] And you, Cyber Hero... you were brilliant.",
     },
   },
+  4: {
+    slug: "w04",
+    villain: {
+      arrival: "[excited] Congratulations!!! You've WON a once-in-a-lifetime BOSS BATTLE!",
+      "phase-1": "Every hook hand-glittered by yours truly!",
+      "phase-2": "Tick tock tick tock! No thinking allowed!",
+      "phase-3": "[laughs] Spot the difference? There ISN'T one! Probably!",
+      escape: "Keep your stamp! I've got other inboxes to visit!",
+    },
+    coach: {
+      victory:
+        "[excited] YES! Inbox cleared, Cyber Hero! [laughs] Did you see those glittery hooks fizzle? You cut every bait loose... you held the calm while that silly clock screamed all the way to zero... [whispers] and you caught the sneaky ZERO hiding in Nintend-zero. [excited] The Bait Caster is STAMPED! [warmly] Nothing on that dock could make you bite.",
+    },
+  },
 };
 
 // ── Legacy Week-1 villain lines (public/audio/villain) - the no-repeat

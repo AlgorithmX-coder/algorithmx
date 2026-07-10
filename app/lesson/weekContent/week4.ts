@@ -672,6 +672,124 @@ export const WEEK_4: WeekContent = {
     { type: "completion" },
   ],
 
+  // W4 SHOWDOWN — THE BAIT CASTER (design doc §W4: the Inbox of Tricks).
+  // P1 deflectSort bait vs real mail · P2 shieldHold countdown burnout ·
+  // P3 tapTell lookalike parcels · finisher = the SCAM stamp.
+  bossShowdown: {
+    machine: {
+      name: "THE BAIT CASTER",
+      tagline: "A hook machine that makes tricks look like treats",
+      art: {
+        intact: "/game/bosses/w04-baitcaster-intact.png",
+        damaged: "/game/bosses/w04-baitcaster-damaged.png",
+        defeated: "/game/bosses/w04-baitcaster-defeated.png",
+      },
+      arena: "/game/backgrounds/w04-arena-dock.png",
+      accent: "#ffd158",
+      glow: "rgba(255,209,88,0.55)",
+    },
+    heroSprites: {
+      adam: {
+        idle: "/game/characters/w04/adam-fisher-idle.png",
+        attack: "/game/characters/w04/adam-fisher-attack.png",
+        celebrate: "/game/characters/w04/adam-fisher-celebrate.png",
+      },
+      layla: {
+        idle: "/game/characters/w04/layla-fisher-idle.png",
+        attack: "/game/characters/w04/layla-fisher-attack.png",
+        celebrate: "/game/characters/w04/layla-fisher-celebrate.png",
+      },
+    },
+    phases: [
+      // P1 · FAKE PRIZE → DEFLECT-SORT: prize-hooks rain among real mail.
+      {
+        kind: "deflectSort",
+        attack: 0,
+        coach: "Bait gets CUT. Real mail reels in!",
+        actLabel: "CUT IT LOOSE!",
+        actIcon: "🚫",
+        passLabel: "REEL IT IN",
+        items: [
+          { id: "vbucks", label: "'You WON 10,000 V-BUCKS!'", icon: "🎁", act: true, note: "You can't win a draw you never entered - that glitter is bait." },
+          { id: "gran", label: "A postcard from Grandma", icon: "✉️", act: false, note: "A saved contact saying hi - that's real mail. Reel it in!" },
+          { id: "iphone", label: "'FREE iPhone - just click!'", icon: "🎁", act: true, note: "Amazing prizes from strangers are bait. Too good = not true." },
+          { id: "school", label: "The school trip letter", icon: "🏫", act: false, note: "From the school's real address - reel it in." },
+          { id: "visitor", label: "'You're visitor 1,000,000!!!'", icon: "🪤", act: true, note: "EVERY visitor sees that banner. Classic glitter-bait - cut it!" },
+          { id: "game", label: "Game update from inside the app", icon: "🎮", act: false, note: "Updates from inside the real app are safe - reel it in." },
+        ],
+      },
+      // P2 · COUNTDOWN SCARE → SHIELD-HOLD: the clock blares and burns out.
+      {
+        kind: "shieldHold",
+        attack: 1,
+        coach: "Press the CALM shield and DON'T let go!",
+        holdLabel: "HOLD THE CALM",
+        holdIcon: "🛡️",
+        holdSecs: 6,
+        barrage: [
+          "10 MINUTES LEFT!!",
+          "9 minutes! TICK TOCK!",
+          "Offer DISAPPEARS at zero!!",
+          "No thinking! Just CLICK!",
+          "FINAL warning! (For real this time!)",
+        ],
+        burnoutLine: "The clock hit zero... and NOTHING happened. Countdowns are just noise - real companies never rush you.",
+      },
+      // P3 · LOOKALIKE → TAP-THE-TELL: two parcels 'from Nintendo'.
+      {
+        kind: "tapTell",
+        attack: 2,
+        coach: "Read it LETTER BY LETTER - tap the tell!",
+        rounds: [
+          {
+            id: "zero",
+            prompt: "A parcel says it's from 'Nintend0'...",
+            promptIcon: "🎭",
+            options: [
+              { id: "spelling", label: "That O is a ZERO", icon: "🔍", isTell: true, note: "" },
+              { id: "logo", label: "Has the red logo", icon: "🎨", isTell: false, note: "Copycats copy logos perfectly. Read the NAME letter by letter." },
+              { id: "mario", label: "Talks about Mario", icon: "🎮", isTell: false, note: "Anyone can type 'Mario'. Read the NAME letter by letter." },
+            ],
+          },
+          {
+            id: "addr",
+            prompt: "The second parcel looks perfect. Check the sender...",
+            promptIcon: "🕵️",
+            options: [
+              { id: "polite", label: "Says 'Dear Friend'", icon: "💬", isTell: false, note: "Politeness is free. Check the ADDRESS it came from." },
+              { id: "website", label: "Sent from prizes-4u.biz", icon: "👀", isTell: true, note: "" },
+              { id: "stamp", label: "Has a shiny gold stamp", icon: "⭐", isTell: false, note: "Stamps don't prove anything. Check the ADDRESS it came from." },
+            ],
+          },
+        ],
+      },
+    ],
+    weakPoints: [
+      { question: "'FREE iPhone - you WON!' But you never entered anything. That's...", answers: ["Bait - too good to be true", "Your lucky day", "A nice surprise", "Worth one little click"], correctIndex: 0, explanation: "You can't win a draw you never entered. Amazing prizes are bait." },
+      { question: "Why do scams RUSH you on purpose?", answers: ["A racing heart doesn't stop to think", "They're in a hurry", "Their offers really expire", "They're just excited"], correctIndex: 0, explanation: "The rush is engineered - slow down and the whole trick falls apart." },
+      { question: "Which sender is the imposter?", answers: ["R0BLOX Rewards - gift@roblox-rewards.club", "Roblox - inside the app", "Grandma - saved contact", "School Office - school address"], correctIndex: 0, explanation: "A zero for an O and a weird address - almost-right is all-wrong." },
+    ],
+    finisher: {
+      chargeLabel: "CHARGE THE SCAM STAMP",
+      chargeIcon: "🔨",
+      chargeSecs: 5,
+      milestones: ["Inking up…", "Halfway! Keep pressing!", "FULLY INKED! SLAM IT!"],
+      payoffTitle: "STAMPED: SCAM!",
+      payoffLine: "You stopped, you checked, you never bit. Every trick goes back to sender!",
+    },
+    villain: {
+      arrival: "Congratulations!!! You've WON a once-in-a-lifetime BOSS BATTLE!",
+      phases: [
+        "Every hook hand-glittered by yours truly!",
+        "Tick tock tick tock! No thinking allowed!",
+        "Spot the difference? There ISN'T one! Probably!",
+      ],
+      escape: "Keep your stamp! I've got other inboxes to visit!",
+    },
+    voiceSlug: "w04",
+  },
+  badgeArt: "/cyberheroes/badges/week-04-trick-catcher.png",
+
   // Week-lane attack theatre: scam-message tricks only (no fake-people
   // vocabulary - that's W3's lane; no link/QR mechanics - W16).
   bossAttacks: [
