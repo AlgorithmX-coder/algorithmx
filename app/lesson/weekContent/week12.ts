@@ -692,6 +692,111 @@ export const WEEK_12: WeekContent = {
     { type: "completion" },
   ],
 
+  // Bespoke W12 showdown: shred the Track Hound's trail map on the snowy
+  // ridge. Doc's "flavour" localized to "flavor" (US kid spelling).
+  bossShowdown: {
+    machine: {
+      name: "THE TRACK HOUND",
+      tagline: "A sniffing machine that maps every print you ever pressed",
+      art: {
+        intact: "/game/bosses/w12-trackhound-intact.png",
+        damaged: "/game/bosses/w12-trackhound-damaged.png",
+        defeated: "/game/bosses/w12-trackhound-defeated.png",
+      },
+      arena: "/game/backgrounds/w12-arena-snowridge.png",
+      accent: "#7df0ff",
+      glow: "rgba(125,240,255,0.55)",
+    },
+    heroSprites: {
+      adam: {
+        idle: "/game/characters/w12/adam-ranger-idle.png",
+        attack: "/game/characters/w12/adam-ranger-attack.png",
+        celebrate: "/game/characters/w12/adam-ranger-celebrate.png",
+      },
+      layla: {
+        idle: "/game/characters/w12/layla-ranger-idle.png",
+        attack: "/game/characters/w12/layla-ranger-attack.png",
+        celebrate: "/game/characters/w12/layla-ranger-celebrate.png",
+      },
+    },
+    phases: [
+      // P1 · RAGE BAIT → SHIELD-HOLD: future-you looks back from the glass
+      // until the rage-post fizzles cold. (Coach copy must not contain the
+      // holdLabel phrase - QA text-match rule.)
+      {
+        kind: "shieldHold",
+        attack: 0,
+        coach: "Rage cools when future-you looks back. Press and DON'T let go!",
+        holdLabel: "HOLD THE MIRROR-SHIELD",
+        holdIcon: "🛡️",
+        holdSecs: 6,
+        barrage: [
+          "SAY IT!! POST IT NOW!!",
+          "Type it ANGRY! Angry is honest!",
+          "Everyone needs to see this TODAY!",
+          "Don't think! Thinking ruins it!",
+          "POST! POST! POST!",
+        ],
+        burnoutLine: "The rage fizzles... cold. And in the glass, future-you smiles back - still proud of every track you left.",
+      },
+      // P2 · COPY SNOWBALL → COUNTER-CARD: one nudge from rolling forever.
+      {
+        kind: "counterCard",
+        attack: 1,
+        coach: "One nudge and it rolls forever. Tap the wise card!",
+        situation: "Your post sits at the hilltop like a snowball - one tiny nudge from rolling.",
+        situationIcon: "🌀",
+        cards: [
+          { id: "think", label: "THINK BEFORE YOU ROLL - COPIES NEVER COME BACK", icon: "✋", isRight: true, note: "" },
+          { id: "tiny", label: "Push it - it's only a tiny snowball", icon: "🌀", isRight: false, note: "Tiny never stays tiny. One roll downhill and it's copy-copy-copy, past every broom you own." },
+          { id: "later", label: "Push it - you can catch it later", icon: "🚀", isRight: false, note: "Remember the snowball chase? Copies outrun every sweeper ever built. The thinking happens BEFORE the roll." },
+        ],
+      },
+      // P3 · TRAIL TRAP → DEFLECT-SORT: sweep the pointy tracks off the
+      // ridge before the hound sniffs them; the golden ones stay.
+      {
+        kind: "deflectSort",
+        attack: 2,
+        coach: "Pointy ones point AT you. Golden ones get to stay!",
+        actLabel: "SWEEP THE POINTY TRACK!",
+        actIcon: "🗑️",
+        passLabel: "GOLDEN TRACK - LET IT SHINE",
+        items: [
+          { id: "bio", label: "A bio: 'age 8, Northside Elementary, class 3B'", icon: "🏷️", act: true, note: "Name, age, school, class - that track points straight at YOU. Sweep it, then tidy the real one with a grown-up." },
+          { id: "dragon", label: "The dragon drawing, signed just 'E'", icon: "🎭", act: false, note: "No school, no last name - just brilliant art. That one's golden. It stays!" },
+          { id: "friday", label: "'Park game of catch - same time every Friday!'", icon: "📍", act: true, note: "A WHERE plus a WHEN, on repeat - that's a map a stranger can follow. Sweep it!" },
+          { id: "goal", label: "'What a save, Jaya - champions!'", icon: "💬", act: false, note: "Kind and proud prints gold - future-you will grin at this one. It stays!" },
+          { id: "door", label: "A photo of your front door, house number and all", icon: "🔍", act: true, note: "A house number tells the whole internet where you sleep. Sweep it off the ridge!" },
+          { id: "marble", label: "Your epic marble-run video", icon: "⚙️", act: false, note: "Proud, awesome, and nothing pointy in the frame - exactly what the snow is for!" },
+        ],
+      },
+    ],
+    weakPoints: [
+      { question: "What's the mirror question before posting?", answers: ["'Will future-me smile at this track?'", "'How many likes will this get?'", "'Is my username cool enough?'", "'Is it past bedtime?'"], correctIndex: 0, explanation: "One look at future-you catches the rage-posts and cringe-trends in time." },
+      { question: "You delete an embarrassing post. What about the copies?", answers: ["They keep rolling - delete only cleans YOUR snow", "They vanish everywhere", "They turn into likes", "There are never copies"], correctIndex: 0, explanation: "That's the snowball problem - which is why heroes think before they roll." },
+      { question: "Why is 'park catch, same time every Friday' riskier than one park photo?", answers: ["It's a WHERE plus a WHEN, on repeat - a pattern a stranger can use", "Parks are secret places", "One photo is worse - it shows your face", "It isn't riskier"], correctIndex: 0, explanation: "One photo is a moment; a repeated where-and-when is a map." },
+    ],
+    finisher: {
+      chargeLabel: "CHARGE THE SHREDDER",
+      chargeIcon: "⚙️",
+      chargeSecs: 5,
+      milestones: ["The shredder blades are spinning…", "The map is feeding in…", "FULL SHRED! LET GO!"],
+      payoffTitle: "MAP SHREDDED!",
+      payoffLine: "The trail map bursts into paper snow and flutters off the ridge. The hound's dial eyes go soft, its tail wags - just a puppy now, trotting away. Every track from here on is one YOU chose - and future-you is already grinning at them.",
+    },
+    villain: {
+      arrival: "Sniff sniff! Fresh tracks! I could follow yours for MILES!",
+      phases: [
+        "Go on, post it angry! Angry tracks are the deepest!",
+        "Roll it! Tiny snowballs stay tiny! Famously!",
+        "Pointy tracks! My favorite flavor!",
+      ],
+      escape: "My map! My beautiful map! ...why is the hound LICKING me?!",
+    },
+    voiceSlug: "w12",
+  },
+  badgeArt: "/cyberheroes/badges/week-12-trail-ranger.png",
+
   // Week-lane attack theatre: footprint tricks only (photo consent = W8;
   // private-info guarding = W2; mean-words feelings = W5).
   bossAttacks: [

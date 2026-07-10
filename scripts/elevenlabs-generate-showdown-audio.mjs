@@ -193,6 +193,20 @@ const WEEKS = {
         "[warmly] Oh, Cyber Hero... look at you. [excited] You popped that blame boulder - NEVER your fault, not once... you named every secret weight and felt the bag get lighter... [whispers] and you froze the proof BEFORE the door shut. Camera, then block, then tell. [warmly] Your team beacon is shining, and that golden number never sleeps. [excited] Team Captain... that's you now.",
     },
   },
+  12: {
+    slug: "w12",
+    villain: {
+      arrival: "[gasps] Sniff sniff! Fresh tracks! [excited] I could follow yours for MILES!",
+      "phase-1": "Go on, post it angry! [laughs] Angry tracks are the deepest!",
+      "phase-2": "[excited] Roll it! Tiny snowballs stay tiny! [laughs] Famously!",
+      "phase-3": "[gasps] Pointy tracks! [excited] My favorite flavor!",
+      escape: "My map! My beautiful map! [gasps] ...why is the hound LICKING me?!",
+    },
+    coach: {
+      victory:
+        "[excited] MAP SHREDDED, Cyber Hero! You held that mirror till the rage went cold... [laughs] thought before the snowball rolled... and swept every pointy track off the ridge - the dragon drawing stays, of course. [gasps] And the hound? A total puppy now. [warmly] The snow is yours to decorate, Trail Ranger. Future-you is already smiling at your tracks.",
+    },
+  },
 };
 
 // ── Legacy Week-1 villain lines (public/audio/villain) - the no-repeat

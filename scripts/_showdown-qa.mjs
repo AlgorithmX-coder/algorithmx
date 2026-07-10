@@ -542,6 +542,62 @@ const STEPS = {
     { click: "Claim Badge" },
     { wait: 2200 }, { shot: "21-debrief" },
   ],
+  12: [
+    { wait: 3000 }, { shot: "01-entrance" },            // TRACK HOUND nameplate
+    { wait: 2000 }, { shot: "02-select" },              // winter ranger parkas!
+    { clickLabel: "Play as LAYLA" },
+    { wait: 900 }, { shot: "03-announce-trick1" },      // RAGE BAIT telegraph
+    { wait: 2400 },
+    { shot: "04-play-shieldhold" },                     // the rage-post burns
+    { hold: "HOLD THE MIRROR-SHIELD", ms: 6800, shotDuring: "04b-holding" },
+    { wait: 400 }, { shot: "05-burnout" },              // the rage fizzles cold
+    { wait: 1800 }, { shot: "06-weakpoint-1" },
+    { click: "Will future-me smile at this track?" },
+    { wait: 1300 }, { shot: "07-gear-popped" },
+    { wait: 3000 },
+    { shot: "08-announce-trick2" },                     // COPY SNOWBALL
+    { wait: 2200 },
+    { shot: "09-play-countercard" },                    // the teetering snowball
+    { click: "Push it - it's only a tiny snowball" },   // deliberate wrong → teach
+    { wait: 700 }, { shot: "10-teach-snowball" },
+    { click: "Got it!" },
+    { click: "THINK BEFORE YOU ROLL - COPIES NEVER COME BACK" },
+    { wait: 1700 }, { shot: "11-weakpoint-2" },
+    { click: "They keep rolling - delete only cleans YOUR snow" },
+    { wait: 4300 },
+    { shot: "12-announce-trick3" },                     // TRAIL TRAP
+    { wait: 2200 },
+    { shot: "13-play-deflect" },                        // tracks light the ridge
+    { click: "SWEEP THE POINTY TRACK!" },               // bio ✓
+    { wait: 1400 },
+    { click: "SWEEP THE POINTY TRACK!" },               // deliberate wrong on the dragon
+    { wait: 700 }, { shot: "14-teach-golden" },
+    { click: "Got it!" },
+    { click: "GOLDEN TRACK - LET IT SHINE" },           // dragon ✓ (it stays!)
+    { wait: 1400 },
+    { click: "SWEEP THE POINTY TRACK!" },               // Friday pattern ✓
+    { wait: 1400 },
+    { click: "GOLDEN TRACK - LET IT SHINE" },           // kind goal comment ✓
+    { wait: 1400 },
+    { click: "SWEEP THE POINTY TRACK!" },               // front-door photo ✓
+    { wait: 1400 },
+    { click: "GOLDEN TRACK - LET IT SHINE" },           // marble-run ✓ → playDone
+    { wait: 1600 }, { shot: "15-weakpoint-3" },
+    { click: "a pattern a stranger can use" },
+    { wait: 3900 },
+    { shot: "16-wobbling" },
+    { wait: 1700 },
+    { shot: "17-finisher-ring" },
+    { hold: "CHARGE THE SHREDDER", ms: 5600, shotDuring: "17b-charging" },
+    { wait: 800 }, { shot: "18-payoff" },               // MAP SHREDDED!
+    { wait: 2200 }, { shot: "19-victory" },
+    { click: "Claim the win" },
+    { wait: 2500 }, { shot: "20-outro-video" },
+    { click: "Skip video" },
+    { wait: 1800 }, { shot: "21-badge-scene" },
+    { click: "Claim Badge" },
+    { wait: 2200 }, { shot: "22-debrief" },
+  ],
 };
 
 const steps = STEPS[week];
