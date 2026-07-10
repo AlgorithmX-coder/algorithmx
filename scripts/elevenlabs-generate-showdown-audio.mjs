@@ -177,6 +177,22 @@ const WEEKS = {
         "[excited] UP AND OUT, Cyber Hero! You held that PAUSE till the belt burned out... weighed the wild claims and zapped every shouty fake... [whispers] and left that fishy comment hanging with zero replies. [laughs] The whirlpool room is CLOSED! [excited] From now on, YOU pick what plays next. [warmly] That's what a Pull Noticer does.",
     },
   },
+  // W11 is the second warmth week - villain stays distant and quiet
+  // (whispers/sighs, no cackling), coach warm over excited.
+  11: {
+    slug: "w11",
+    villain: {
+      arrival: "[whispers] Heavy stuff, kid. Good thing you're carrying it ALL ALONE.",
+      "phase-1": "That boulder's got your name on it! I checked!",
+      "phase-2": "[whispers] Keep it secret! Secrets weigh NOTHING! Trust me!",
+      "phase-3": "Bin it! Gone! Nothing ever happened!",
+      escape: "[gasps] A whole TEAM?! That's cheating! One kid was supposed to be alone!",
+    },
+    coach: {
+      victory:
+        "[warmly] Oh, Cyber Hero... look at you. [excited] You popped that blame boulder - NEVER your fault, not once... you named every secret weight and felt the bag get lighter... [whispers] and you froze the proof BEFORE the door shut. Camera, then block, then tell. [warmly] Your team beacon is shining, and that golden number never sleeps. [excited] Team Captain... that's you now.",
+    },
+  },
 };
 
 // ── Legacy Week-1 villain lines (public/audio/villain) - the no-repeat

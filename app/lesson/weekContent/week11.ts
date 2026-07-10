@@ -706,6 +706,128 @@ export const WEEK_11: WeekContent = {
     { type: "completion" },
   ],
 
+  // Warmth week #2: untimed primitives only (counterCard / tapTell /
+  // orderStrike - no shieldHold barrage), villain kept distant and muted.
+  // ⚠️ Protocol order is STOP → SCREENSHOT → BLOCK → TELL (camera BEFORE
+  // the door shuts) - the 34cbc05 safety fix; older docs say BLOCK first.
+  bossShowdown: {
+    machine: {
+      name: "THE BOULDER PRESS",
+      tagline: "A press that stamps 'YOUR FAULT' on boulders that were never yours",
+      art: {
+        intact: "/game/bosses/w11-boulderpress-intact.png",
+        damaged: "/game/bosses/w11-boulderpress-damaged.png",
+        defeated: "/game/bosses/w11-boulderpress-defeated.png",
+      },
+      arena: "/game/backgrounds/w11-arena-hillside.png",
+      accent: "#ffb86b",
+      glow: "rgba(255,184,107,0.55)",
+    },
+    heroSprites: {
+      adam: {
+        idle: "/game/characters/w11/adam-captain-idle.png",
+        attack: "/game/characters/w11/adam-captain-attack.png",
+        celebrate: "/game/characters/w11/adam-captain-celebrate.png",
+      },
+      layla: {
+        idle: "/game/characters/w11/layla-captain-idle.png",
+        attack: "/game/characters/w11/layla-captain-attack.png",
+        celebrate: "/game/characters/w11/layla-captain-celebrate.png",
+      },
+    },
+    phases: [
+      // P1 · BLAME BOULDER → COUNTER-CARD: pop the boulder into a balloon.
+      {
+        kind: "counterCard",
+        attack: 0,
+        coach: "Whose choice was it? Tap the card!",
+        situation: "A boulder rolls in with your name chalked on it: 'This one's YOURS.'",
+        situationIcon: "🙈",
+        cards: [
+          { id: "sender", label: "THE SENDER CHOSE TO SEND IT - NEVER MY FAULT", icon: "🛡️", isRight: true, note: "" },
+          { id: "abit", label: "Maybe a little bit my fault", icon: "🌀", isRight: false, note: "Not even a little. The sender made the choice - reading a message doesn't make it yours." },
+          { id: "online", label: "My fault for being online", icon: "💬", isRight: false, note: "Being online is like being at the park. If someone throws mud, the mud-thrower did it - not you for standing there." },
+        ],
+      },
+      // P2 · SECRET WEIGHT → TAP-THE-TELL: name the hidden heavy thing;
+      // naming it out loud IS the tell, and the bag gets lighter.
+      {
+        kind: "tapTell",
+        attack: 1,
+        coach: "Secrets get lighter when you NAME them. Tap the heavy one!",
+        rounds: [
+          {
+            id: "bag1",
+            prompt: "The backpack sags. What's the heavy thing hiding inside?",
+            promptIcon: "🤐",
+            options: [
+              { id: "meanmsg", label: "A mean message I never told anyone about", icon: "💬", isTell: true, note: "" },
+              { id: "homework", label: "My spelling homework", icon: "📋", isTell: false, note: "Homework's heavy, but it's no secret. Find the one you'd whisper." },
+              { id: "book", label: "A library book to return", icon: "🎁", isTell: false, note: "That's just Tuesday stuff. Find the thing that's been hiding." },
+            ],
+          },
+          {
+            id: "bag2",
+            prompt: "Lighter already! But the bag still sags...",
+            promptIcon: "🤐",
+            options: [
+              { id: "cleats", label: "My muddy soccer cleats", icon: "⚙️", isTell: false, note: "Muddy, sure - secret, no. Find the one that makes your tummy flip." },
+              { id: "weirdchat", label: "A game chat that made me feel weird", icon: "🎮", isTell: true, note: "" },
+              { id: "sweater", label: "My rainy-day sweater", icon: "🎁", isTell: false, note: "Cozy, not heavy. Find the hiding one." },
+            ],
+          },
+          {
+            id: "bag3",
+            prompt: "One last lump at the very bottom...",
+            promptIcon: "🤐",
+            options: [
+              { id: "snack", label: "A squashed granola bar", icon: "🎁", isTell: false, note: "Squashy, not secret. One more heavy thing to name!" },
+              { id: "marker", label: "A dried-out marker", icon: "📋", isTell: false, note: "That's just clutter. Find the one someone told you to HIDE." },
+              { id: "secretpic", label: "A picture someone said to keep secret", icon: "🤫", isTell: true, note: "" },
+            ],
+          },
+        ],
+      },
+      // P3 · DELETE TRICK → ORDER-STRIKE: the protocol, camera before door.
+      {
+        kind: "orderStrike",
+        attack: 2,
+        coach: "Camera BEFORE the door! Tap the steps in order!",
+        intro: "'Bin it! Pretend it never happened!' Counter him with the hero protocol.",
+        steps: [
+          { id: "stop", label: "STOP - don't reply", icon: "✋" },
+          { id: "shot", label: "SCREENSHOT - freeze the proof", icon: "📋" },
+          { id: "block", label: "BLOCK the sender", icon: "🔒" },
+          { id: "tell", label: "TELL your team", icon: "👪" },
+        ],
+      },
+    ],
+    weakPoints: [
+      { question: "Someone sends you a horrid message. Whose fault is it?", answers: ["Theirs - they chose to send it", "Yours", "A little bit yours", "Nobody knows"], correctIndex: 0, explanation: "The sender made the choice - it is never your fault." },
+      { question: "Why does 'keep it secret' make everything heavier?", answers: ["Carrying it alone grows the worry - telling shares the weight", "Secrets are illegal", "Grown-ups always find out", "It doesn't"], correctIndex: 0, explanation: "Telling someone starts making it lighter right away - that's the whole trick." },
+      { question: "A nasty message arrives. What happens to it FIRST?", answers: ["Screenshot - freeze the proof", "Delete it fast", "Reply to it", "Forward it to friends"], correctIndex: 0, explanation: "Camera, not trash - your team helps best when they can see." },
+    ],
+    finisher: {
+      chargeLabel: "CHARGE THE TEAM BEACON",
+      chargeIcon: "💡",
+      chargeSecs: 5,
+      milestones: ["Your team is gathering…", "The poster is glowing…", "BEACON BRIGHT! LET GO!"],
+      payoffTitle: "TEAM LIT!",
+      payoffLine: "Your whole team lights up - and the golden Childhelp tile shines brightest: 1-800-422-4453, free, just for kids, always awake. The press wheezes flat. You were never carrying this alone.",
+    },
+    villain: {
+      arrival: "Heavy stuff, kid. Good thing you're carrying it ALL ALONE.",
+      phases: [
+        "That boulder's got your name on it! I checked!",
+        "Keep it secret! Secrets weigh NOTHING! Trust me!",
+        "Bin it! Gone! Nothing ever happened!",
+      ],
+      escape: "A whole TEAM?! That's cheating! One kid was supposed to be alone!",
+    },
+    voiceSlug: "w11",
+  },
+  badgeArt: "/cyberheroes/badges/week-11-team-captain.png",
+
   // Week-lane attack theatre: the blame-and-silence tricks only (mean-words
   // feelings = W5; stranger red flags = W3; this week is the response drill).
   bossAttacks: [

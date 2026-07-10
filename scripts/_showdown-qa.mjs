@@ -487,6 +487,61 @@ const STEPS = {
     { click: "Claim Badge" },
     { wait: 2200 }, { shot: "21-debrief" },
   ],
+  11: [
+    { wait: 3000 }, { shot: "01-entrance" },            // BOULDER PRESS nameplate
+    { wait: 2000 }, { shot: "02-select" },              // team-captain hoodies!
+    { clickLabel: "Play as ADAM" },
+    { wait: 900 }, { shot: "03-announce-trick1" },      // BLAME BOULDER telegraph
+    { wait: 2400 },
+    { shot: "04-play-countercard" },
+    { click: "Maybe a little bit my fault" },           // deliberate wrong → gentle teach
+    { wait: 700 }, { shot: "05-teach-panel" },
+    { click: "Got it!" },
+    { click: "THE SENDER CHOSE TO SEND IT - NEVER MY FAULT" },
+    { wait: 1700 }, { shot: "06-weakpoint-1" },
+    { click: "Theirs - they chose to send it" },
+    { wait: 1300 }, { shot: "07-gear-popped" },
+    { wait: 3000 },
+    { shot: "08-announce-trick2" },                     // SECRET WEIGHT
+    { wait: 2200 },
+    { shot: "09-play-taptell" },                        // the sagging backpack
+    { click: "My spelling homework" },                  // deliberate wrong → teach
+    { wait: 700 }, { shot: "10-teach-weights" },
+    { click: "Got it!" },
+    { click: "A mean message I never told anyone about" },
+    { wait: 1400 },
+    { click: "A game chat that made me feel weird" },
+    { wait: 1400 },
+    { click: "A picture someone said to keep secret" }, // → playDone
+    { wait: 1600 }, { shot: "11-weakpoint-2" },
+    { click: "Carrying it alone grows the worry - telling shares the weight" },
+    { wait: 4300 },
+    { shot: "12-announce-trick3" },                     // DELETE TRICK
+    { wait: 2200 },
+    { shot: "13-play-orderstrike" },                    // camera BEFORE door
+    { click: "STOP - don't reply" },
+    { wait: 900 },
+    { click: "SCREENSHOT - freeze the proof" },
+    { wait: 900 },
+    { click: "BLOCK the sender" },
+    { wait: 900 },
+    { click: "TELL your team" },                        // → playDone
+    { wait: 1600 }, { shot: "14-weakpoint-3" },
+    { click: "Screenshot - freeze the proof" },
+    { wait: 3900 },
+    { shot: "15-wobbling" },
+    { wait: 1700 },
+    { shot: "16-finisher-ring" },
+    { hold: "CHARGE THE TEAM BEACON", ms: 5600, shotDuring: "16b-charging" },
+    { wait: 800 }, { shot: "17-payoff" },               // TEAM LIT!
+    { wait: 2200 }, { shot: "18-victory" },
+    { click: "Claim the win" },
+    { wait: 2500 }, { shot: "19-outro-video" },
+    { click: "Skip video" },
+    { wait: 1800 }, { shot: "20-badge-scene" },
+    { click: "Claim Badge" },
+    { wait: 2200 }, { shot: "21-debrief" },
+  ],
 };
 
 const steps = STEPS[week];
