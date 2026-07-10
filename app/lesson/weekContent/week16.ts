@@ -866,6 +866,131 @@ export const WEEK_16: WeekContent = {
     { type: "completion" },
   ],
 
+  // Bespoke W16 showdown: close the back-alley paint shop. Paint lies,
+  // plaques don't - and the big shutter rolls down for good.
+  bossShowdown: {
+    machine: {
+      name: "THE PAINT SHOP",
+      tagline: "A back-alley factory that paints pretty lies on tricky doors",
+      art: {
+        intact: "/game/bosses/w16-paintshop-intact.png",
+        damaged: "/game/bosses/w16-paintshop-damaged.png",
+        defeated: "/game/bosses/w16-paintshop-defeated.png",
+      },
+      arena: "/game/backgrounds/w16-arena-alley.png",
+      accent: "#ff6b6b",
+      glow: "rgba(255,107,107,0.55)",
+    },
+    heroSprites: {
+      adam: {
+        idle: "/game/characters/w16/adam-inspector-idle.png",
+        attack: "/game/characters/w16/adam-inspector-attack.png",
+        celebrate: "/game/characters/w16/adam-inspector-celebrate.png",
+      },
+      layla: {
+        idle: "/game/characters/w16/layla-inspector-idle.png",
+        attack: "/game/characters/w16/layla-inspector-attack.png",
+        celebrate: "/game/characters/w16/layla-inspector-celebrate.png",
+      },
+    },
+    phases: [
+      // P1 · PAINTED DOOR → TAP-THE-TELL: lift the plaque under every
+      // painted sign - tap the door whose paint and plaque disagree.
+      {
+        kind: "tapTell",
+        attack: 0,
+        coach: "Signs are paint. Plaques are truth. Tap every lying sign!",
+        rounds: [
+          {
+            id: "puppies",
+            prompt: "Three fresh doors roll past. Lift the plaques - which sign is lying?",
+            promptIcon: "💡",
+            options: [
+              { id: "honest-puppies", label: "Sign: CUTE PUPPIES - plaque reads cute-puppies.com", icon: "📋", isTell: false, note: "Paint and plaque MATCH - that door's honest. Hunt the one where they disagree!" },
+              { id: "lying-puppies", label: "Sign: CUTE PUPPIES - plaque reads prize-grab.win", icon: "🌀", isTell: true, note: "" },
+              { id: "honest-cartoons", label: "Sign: CARTOON CLUB - plaque reads cartoon-club.tv", icon: "🎮", isTell: false, note: "Cartoon paint, cartoon plaque - they agree. A sneakier door is lying!" },
+            ],
+          },
+          {
+            id: "photos",
+            prompt: "Second batch - one of these doors is fibbing about where it goes.",
+            promptIcon: "💡",
+            options: [
+              { id: "honest-photos", label: "Sign: CLASS PHOTOS - plaque reads school.org/photos", icon: "👪", isTell: false, note: "School sign, school plaque - an honest door. Keep lifting!" },
+              { id: "lying-photos", label: "Sign: CLASS PHOTOS - plaque reads foto-prize.biz", icon: "🌀", isTell: true, note: "" },
+              { id: "honest-library", label: "Sign: STORY TIME - plaque reads library.org/stories", icon: "📋", isTell: false, note: "Story paint, library plaque - that one keeps its promise. One door doesn't!" },
+            ],
+          },
+          {
+            id: "games",
+            prompt: "Last alley - this one's SNEAKY. Read every single letter.",
+            promptIcon: "🔍",
+            options: [
+              { id: "honest-games", label: "Sign: KID GAMES - plaque reads kidgames.com", icon: "🎮", isTell: false, note: "Read it slow - every letter honest. The liar is one letter sneakier!" },
+              { id: "lying-games", label: "Sign: KID GAMES - plaque reads k1dgames.com", icon: "🌀", isTell: true, note: "" },
+              { id: "honest-pets", label: "Sign: PET VIDEOS - plaque reads pet-videos.tv", icon: "🙈", isTell: false, note: "Pets on the paint, pets on the plaque - true door. Squint harder!" },
+            ],
+          },
+        ],
+      },
+      // P2 · STICKY SWAP → DEFLECT-SORT: peel-test the QR codes - corner,
+      // bubble, shine. Pasted stickers peel; printed codes stay.
+      {
+        kind: "deflectSort",
+        attack: 1,
+        coach: "Corner, bubble, shine - peel-test every code!",
+        actLabel: "OVER-STICKER - PEEL IT!",
+        actIcon: "🏷️",
+        passLabel: "PRINTED ON - LET IT STAY",
+        items: [
+          { id: "corner", label: "A code whose corner is lifting off the poster", icon: "✋", act: true, note: "Printed codes don't peel - a lifted corner means someone pasted a new door on top. Peel it!" },
+          { id: "movie", label: "A code printed flat into the movie poster", icon: "🎭", act: false, note: "Flat, matching, born with the poster - that's the real code. Let it stay!" },
+          { id: "bubble", label: "A code with a fat air bubble trapped under it", icon: "🌀", act: true, note: "Bubbles hide under STICKERS, never under print. That code got pasted. Peel it!" },
+          { id: "menu", label: "A code on the pizza menu in the menu's own ink", icon: "📋", act: false, note: "Same ink, same fade, same page - the printer made them together. Let it stay!" },
+          { id: "shiny", label: "A shiny new code on a faded, sun-bleached poster", icon: "💡", act: true, note: "The poster faded for months - the code didn't? That shine is a fresh sticker. Peel it!" },
+          { id: "zoo", label: "A code on the zoo map printed with the tiger stripes", icon: "🙈", act: false, note: "Printed right into the stripes - that code lives there. Let it stay!" },
+        ],
+      },
+      // P3 · FROSTED LINK → COUNTER-CARD: the bit.ly mystery door.
+      {
+        kind: "counterCard",
+        attack: 2,
+        coach: "You can't see through this one. What's the Door Checker move?",
+        situation: "The last door is FROSTED glass. The plaque only says: 'bit.ly/mystery-prize'",
+        situationIcon: "🌀",
+        cards: [
+          { id: "askfirst", label: "CAN'T SEE THROUGH? ASK A GROWN-UP", icon: "👪", isRight: true, note: "" },
+          { id: "rush", label: "Walk through fast - quick counts as safe", icon: "🚀", isRight: false, note: "Speed doesn't melt frost. You STILL can't see where it goes - and now you're inside. Unsure means don't." },
+          { id: "knock", label: "Knock first, then walk on through", icon: "✋", isRight: false, note: "Knocking is sweet - but the address stays hidden. Polite plus mystery is still mystery. A grown-up checks it first." },
+        ],
+      },
+    ],
+    weakPoints: [
+      { question: "A door's paint says PUPPIES. Its plaque says prize-grab.win. Trust...", answers: ["The plaque - paint can say anything at all", "The paint - puppies sound friendly", "Both - they're the same door", "Whichever looks prettier"], correctIndex: 0, explanation: "The builder chooses where a door goes - the plaque is its true name, the paint is just decoration." },
+      { question: "Which code got pasted OVER the real one?", answers: ["The one with a lifted corner and an air bubble", "The one printed in the menu's own ink", "The flattest one", "The most colorful one"], correctIndex: 0, explanation: "Corners, bubbles and mismatched shine - stickers brag, print stays quiet." },
+      { question: "A short link hides its whole address. The rule is...", answers: ["Can't check it? A grown-up opens it, not you", "Tap it quickly before it expires", "Knock twice, then tap", "Short means safe"], correctIndex: 0, explanation: "Frosted isn't always evil - but uncheckable means it's a grown-up's job first." },
+    ],
+    finisher: {
+      chargeLabel: "CHARGE THE BIG SHUTTER",
+      chargeIcon: "🔒",
+      chargeSecs: 5,
+      milestones: ["The shutter is rattling loose…", "It's rolling down the alley…", "SLAM IT! LET GO!"],
+      payoffTitle: "SHOP CLOSED!",
+      payoffLine: "CLANG! The great shutter rolls down over the whole alley - painted doors, sticky codes, frosted glass, all shut behind it. Forty trick doors and not ONE got a single tap. The Door Checker read the plaques - and plaques never lie.",
+    },
+    villain: {
+      arrival: "Doors! Get your doors! Every sign hand-painted by an honest raccoon!",
+      phases: [
+        "The sign says PUPPIES! Would a sign lie?!",
+        "Fresh stickers! Mind the bubbles!",
+        "Frosted glass is a STYLE choice!",
+      ],
+      escape: "Closed?! I've got forty unsold doors and a lease!",
+    },
+    voiceSlug: "w16",
+  },
+  badgeArt: "/cyberheroes/badges/week-16-door-checker.png",
+
   // Week-lane attack theatre: doorway tricks only (fake senders = W4,
   // copycat apps = W9, pop-up X-hunts = W7).
   bossAttacks: [

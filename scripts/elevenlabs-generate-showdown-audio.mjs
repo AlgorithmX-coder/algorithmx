@@ -249,6 +249,20 @@ const WEEKS = {
         "[excited] STAMPED, Cyber Hero! You caught every confident fib - the real book was the judge... [laughs] zipped the jar when that booth got nosy... and counted the fingers NOBODY counts - six! [gasps] Now it's a tidy little toolbox with a bow. [warmly] Use it to explain, check the book, write it YOUR way. Tools help heroes, Fact Checker - and heroes stay the boss.",
     },
   },
+  16: {
+    slug: "w16",
+    villain: {
+      arrival: "[excited] Doors! Get your doors! [laughs] Every sign hand-painted by an honest raccoon!",
+      "phase-1": "[excited] The sign says PUPPIES! [gasps] Would a sign lie?!",
+      "phase-2": "[excited] Fresh stickers! [whispers] Mind the bubbles!",
+      "phase-3": "Frosted glass is a STYLE choice!",
+      escape: "[gasps] Closed?! [sighs] I've got forty unsold doors and a lease!",
+    },
+    coach: {
+      victory:
+        "[excited] SHUTTERED, Cyber Hero! You lifted every plaque and caught the lying signs... [laughs] peel-tested the codes - corner, bubble, shine... and that frosted mystery door went straight to a grown-up, unopened. [gasps] The whole paint shop just rolled down its shutter for good. [warmly] Paint is just paint, Door Checker - plaques tell the truth, and so do you.",
+    },
+  },
 };
 
 // ── Legacy Week-1 villain lines (public/audio/villain) - the no-repeat

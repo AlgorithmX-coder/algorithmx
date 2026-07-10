@@ -776,6 +776,65 @@ const STEPS = {
     { click: "Claim Badge" },
     { wait: 2200 }, { shot: "21-debrief" },
   ],
+  16: [
+    { wait: 3000 }, { shot: "01-entrance" },            // PAINT SHOP nameplate
+    { wait: 2000 }, { shot: "02-select" },              // inspector vests!
+    { clickLabel: "Play as LAYLA" },
+    { wait: 900 }, { shot: "03-announce-trick1" },      // PAINTED DOOR telegraph
+    { wait: 2400 },
+    { shot: "04-play-taptell" },                        // three doors, one lying sign
+    { click: "Sign: CUTE PUPPIES - plaque reads cute-puppies.com" }, // deliberate wrong → teach
+    { wait: 700 }, { shot: "05-teach-match" },
+    { click: "Got it!" },
+    { click: "Sign: CUTE PUPPIES - plaque reads prize-grab.win" },   // lying sign ✓
+    { wait: 1400 },
+    { click: "Sign: CLASS PHOTOS - plaque reads foto-prize.biz" },   // ✓
+    { wait: 1400 },
+    { click: "Sign: KID GAMES - plaque reads k1dgames.com" },        // ✓ → playDone
+    { wait: 1600 }, { shot: "06-weakpoint-1" },
+    { click: "The plaque - paint can say anything at all" },
+    { wait: 1300 }, { shot: "07-gear-popped" },
+    { wait: 3000 },
+    { shot: "08-announce-trick2" },                     // STICKY SWAP
+    { wait: 2200 },
+    { shot: "09-play-deflect" },                        // the QR peel-test
+    { click: "PRINTED ON - LET IT STAY" },              // deliberate wrong on lifted corner
+    { wait: 700 }, { shot: "10-teach-corner" },
+    { click: "Got it!" },
+    { click: "OVER-STICKER - PEEL IT!" },               // lifted corner ✓
+    { wait: 1400 },
+    { click: "PRINTED ON - LET IT STAY" },              // movie poster ✓
+    { wait: 1400 },
+    { click: "OVER-STICKER - PEEL IT!" },               // air bubble ✓
+    { wait: 1400 },
+    { click: "PRINTED ON - LET IT STAY" },              // pizza menu ✓
+    { wait: 1400 },
+    { click: "OVER-STICKER - PEEL IT!" },               // shiny-on-faded ✓
+    { wait: 1400 },
+    { click: "PRINTED ON - LET IT STAY" },              // zoo map ✓ → playDone
+    { wait: 1600 }, { shot: "11-weakpoint-2" },
+    { click: "The one with a lifted corner and an air bubble" },
+    { wait: 4300 },
+    { shot: "12-announce-trick3" },                     // FROSTED LINK
+    { wait: 2200 },
+    { shot: "13-play-countercard" },                    // bit.ly/mystery-prize
+    { click: "CAN'T SEE THROUGH? ASK A GROWN-UP" },
+    { wait: 1700 }, { shot: "14-weakpoint-3" },
+    { click: "Can't check it? A grown-up opens it, not you" },
+    { wait: 3900 },
+    { shot: "15-wobbling" },
+    { wait: 1700 },
+    { shot: "16-finisher-ring" },
+    { hold: "CHARGE THE BIG SHUTTER", ms: 5600, shotDuring: "16b-charging" },
+    { wait: 800 }, { shot: "17-payoff" },               // SHOP CLOSED!
+    { wait: 2200 }, { shot: "18-victory" },
+    { click: "Claim the win" },
+    { wait: 2500 }, { shot: "19-outro-video" },
+    { click: "Skip video" },
+    { wait: 1800 }, { shot: "20-badge-scene" },
+    { click: "Claim Badge" },
+    { wait: 2200 }, { shot: "21-debrief" },
+  ],
 };
 
 const steps = STEPS[week];
