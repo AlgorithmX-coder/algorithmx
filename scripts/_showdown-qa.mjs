@@ -375,6 +375,65 @@ const STEPS = {
     { click: "Claim Badge" },
     { wait: 2200 }, { shot: "22-debrief" },
   ],
+  9: [
+    { wait: 3000 }, { shot: "01-entrance" },            // COPYCAT CANNON nameplate
+    { wait: 2000 }, { shot: "02-select" },              // inspector aprons!
+    { clickLabel: "Play as ADAM" },
+    { wait: 900 }, { shot: "03-announce-trick1" },      // COPYCAT APP telegraph
+    { wait: 2400 },
+    { shot: "04-play-deflect" },                        // Blast Birdz incoming
+    { click: "ZAP THE COPYCAT!" },                      // birdz ✓
+    { wait: 1400 },
+    { click: "ZAP THE COPYCAT!" },                      // deliberate wrong on real Birds
+    { wait: 700 }, { shot: "05-teach-panel" },
+    { click: "Got it!" },
+    { click: "REAL - SHELVE IT" },                      // birds ✓
+    { wait: 1400 },
+    { click: "ZAP THE COPYCAT!" },                      // Pixel Pets FREE ✓
+    { wait: 1400 },
+    { click: "REAL - SHELVE IT" },                      // Pixel Pets ✓
+    { wait: 1400 },
+    { click: "ZAP THE COPYCAT!" },                      // R0bo ✓
+    { wait: 1400 },
+    { click: "REAL - SHELVE IT" },                      // Robo ✓ → playDone
+    { wait: 1600 }, { shot: "06-weakpoint-1" },
+    { click: "A copycat in a costume" },
+    { wait: 1300 }, { shot: "07-gear-popped" },
+    { wait: 3000 },
+    { shot: "08-announce-trick2" },                     // PERMISSION GRAB
+    { wait: 2200 },
+    { shot: "09-play-taptell" },
+    { click: "Turn the light ON and OFF" },             // deliberate wrong → teach
+    { wait: 700 }, { shot: "10-teach-keys" },
+    { click: "Got it!" },
+    { click: "See YOUR CONTACTS" },                     // row 1 greedy
+    { wait: 1400 },
+    { click: "Track YOUR LOCATION" },                   // row 2 greedy
+    { wait: 1400 },
+    { click: "Listen with YOUR MICROPHONE" },           // row 3 greedy → playDone
+    { wait: 1600 }, { shot: "11-weakpoint-2" },
+    { click: "Block them - its job only needs the light" },
+    { wait: 4300 },
+    { shot: "12-announce-trick3" },                     // FAKE FREE
+    { wait: 2200 },
+    { shot: "13-play-countercard" },
+    { click: "FLIP THE TAG - check what it costs inside" },
+    { wait: 1700 }, { shot: "14-weakpoint-3" },
+    { click: "Your time and attention" },
+    { wait: 3900 },
+    { shot: "15-wobbling" },
+    { wait: 1700 },
+    { shot: "16-finisher-ring" },
+    { hold: "CHARGE THE HIGH-FIVE", ms: 5600, shotDuring: "16b-charging" },
+    { wait: 800 }, { shot: "17-payoff" },               // SHUTTERS DOWN!
+    { wait: 2200 }, { shot: "18-victory" },
+    { click: "Claim the win" },
+    { wait: 2500 }, { shot: "19-outro-video" },
+    { click: "Skip video" },
+    { wait: 1800 }, { shot: "20-badge-scene" },
+    { click: "Claim Badge" },
+    { wait: 2200 }, { shot: "21-debrief" },
+  ],
 };
 
 const steps = STEPS[week];

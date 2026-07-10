@@ -149,6 +149,20 @@ const WEEKS = {
         "[excited] Picture PERFECT, Cyber Hero! Every pigeon stayed home in its cage... you spotted the crest, the street sign, AND that birthday banner... [whispers] and when your camera was ready, you asked first. [laughs] The claw grabbed a photo full of... nothing! [excited] Look. Think. Ask. You've got the whole ritual now. [warmly] Your moments belong to YOU.",
     },
   },
+  9: {
+    slug: "w09",
+    villain: {
+      arrival: "[excited] Step into my shop! Every app one hundred percent genuine-ish!",
+      "phase-1": "Two little stars means it's HUMBLE!",
+      "phase-2": "It's a torch! It just needs your contacts to... glow better!",
+      "phase-3": "[laughs] Free today! Expensive forever!",
+      escape: "[gasps] Shutters?! In MY shop?! I'll open a stall somewhere else!",
+    },
+    coach: {
+      victory:
+        "[excited] Shop's CLOSED, Cyber Hero! You read every name letter by letter... zapped every copycat off the shelf... locked up all the greedy keys... [whispers] and flipped that sneaky FREE tag right over. [laughs] Did you HEAR those shutters slam? [excited] Real shop, real names, and a grown-up high-five - that's your app armor. [warmly] No costume gets past you now.",
+    },
+  },
 };
 
 // ── Legacy Week-1 villain lines (public/audio/villain) - the no-repeat

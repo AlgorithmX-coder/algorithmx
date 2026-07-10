@@ -682,6 +682,131 @@ export const WEEK_9: WeekContent = {
     { type: "completion" },
   ],
 
+  // W9 SHOWDOWN — THE COPYCAT CANNON (design doc §W9: clear out the
+  // copycat shop). P1 deflectSort copycat apps vs real · P2 tapTell the
+  // greedy permission in each row · P3 counterCard the FREE!* tag ·
+  // finisher = the Install Handshake (shutters slam on the cannon).
+  bossShowdown: {
+    machine: {
+      name: "THE COPYCAT CANNON",
+      tagline: "A cannon that fires fake apps onto real shelves",
+      art: {
+        intact: "/game/bosses/w09-copycatcannon-intact.png",
+        damaged: "/game/bosses/w09-copycatcannon-damaged.png",
+        defeated: "/game/bosses/w09-copycatcannon-defeated.png",
+      },
+      arena: "/game/backgrounds/w09-arena-appstore.png",
+      accent: "#c9a0ff",
+      glow: "rgba(201,160,255,0.55)",
+    },
+    heroSprites: {
+      adam: {
+        idle: "/game/characters/w09/adam-inspector-idle.png",
+        attack: "/game/characters/w09/adam-inspector-attack.png",
+        celebrate: "/game/characters/w09/adam-inspector-celebrate.png",
+      },
+      layla: {
+        idle: "/game/characters/w09/layla-inspector-idle.png",
+        attack: "/game/characters/w09/layla-inspector-attack.png",
+        celebrate: "/game/characters/w09/layla-inspector-celebrate.png",
+      },
+    },
+    phases: [
+      // P1 · COPYCAT APP → DEFLECT-SORT: apps fly at the shelf.
+      {
+        kind: "deflectSort",
+        attack: 0,
+        coach: "Read the names LETTER BY LETTER!",
+        actLabel: "ZAP THE COPYCAT!",
+        actIcon: "⚡",
+        passLabel: "REAL - SHELVE IT",
+        items: [
+          { id: "birdz", label: "Blast Birdz - 2 stars, 12 downloads", icon: "🎭", act: true, note: "That sneaky Z, sad stars, no history - a copycat in costume. Zap it!" },
+          { id: "birds", label: "Blast Birds - 5 stars, millions play it", icon: "🎮", act: false, note: "Big stars, huge history, name spelled right - the real deal. Shelve it!" },
+          { id: "petsfree", label: "Pixel Pets FREE - brand new, 9 downloads", icon: "🏷️", act: true, note: "FREE bolted onto a real name + no history = copycat bait. Zap it!" },
+          { id: "pets", label: "Pixel Pets - 5 stars, 8 million downloads", icon: "🎁", act: false, note: "The real pet - millions of happy players. Shelve it!" },
+          { id: "r0bo", label: "R0bo Racers - that first o is a ZERO", icon: "🔍", act: true, note: "R-zero-bo! One sneaky letter is all a copycat needs. Zap it!" },
+          { id: "robo", label: "Robo Racers - 5 stars, 12 million racers", icon: "🚀", act: false, note: "The champion itself - real name, real history. Shelve it!" },
+        ],
+      },
+      // P2 · PERMISSION GRAB → TAP-THE-TELL: tap the greedy key in each row.
+      {
+        kind: "tapTell",
+        attack: 1,
+        coach: "Job-keys are fine. Tap the GREEDY key!",
+        rounds: [
+          {
+            id: "row1",
+            prompt: "Torchy the flashlight app unrolls its asks...",
+            promptIcon: "✋",
+            options: [
+              { id: "light", label: "Turn the light ON and OFF", icon: "💡", isTell: false, note: "That's literally its job. Find the ask that has NOTHING to do with light." },
+              { id: "contacts", label: "See YOUR CONTACTS", icon: "👪", isTell: true, note: "" },
+              { id: "bright", label: "Change screen brightness", icon: "⚙️", isTell: false, note: "Brightness is light-work - fair ask. Find the greedy one." },
+            ],
+          },
+          {
+            id: "row2",
+            prompt: "It unrolls even more asks...",
+            promptIcon: "🔍",
+            options: [
+              { id: "location", label: "Track YOUR LOCATION", icon: "📍", isTell: true, note: "" },
+              { id: "blink", label: "Make the light blink", icon: "⚡", isTell: false, note: "Blinking is a light trick - fair ask. Find the greedy one." },
+              { id: "battery", label: "Use battery saver", icon: "⏸️", isTell: false, note: "Saving battery is polite. Find the greedy one." },
+            ],
+          },
+          {
+            id: "row3",
+            prompt: "One last row of asks...",
+            promptIcon: "🕵️",
+            options: [
+              { id: "flashcam", label: "Use the camera's flash", icon: "💡", isTell: false, note: "The flash IS the flashlight. Find the greedy one." },
+              { id: "mic", label: "Listen with YOUR MICROPHONE", icon: "💬", isTell: true, note: "" },
+              { id: "timer", label: "Set a light timer", icon: "⚙️", isTell: false, note: "Timers are handy light-work. Find the greedy one." },
+            ],
+          },
+        ],
+      },
+      // P3 · FAKE FREE → COUNTER-CARD.
+      {
+        kind: "counterCard",
+        attack: 2,
+        coach: "What's the smart move? Tap the card!",
+        situation: "A shiny box gleams: 'FREE!*' ...with a tiny little star after it.",
+        situationIcon: "🏷️",
+        cards: [
+          { id: "flip", label: "FLIP THE TAG - check what it costs inside", icon: "🔍", isRight: true, note: "" },
+          { id: "install", label: "Install it - free is free!", icon: "⚡", isRight: false, note: "That tiny star hides the real price: ads, coin shops, your attention. Flip first!" },
+          { id: "later", label: "Install now, delete later", icon: "🗑️", isRight: false, note: "The tricks start the second it installs. Flip the tag BEFORE, not after." },
+        ],
+      },
+    ],
+    weakPoints: [
+      { question: "'Blast Birdz' - ★2.1, 12 downloads, new yesterday. What is it?", answers: ["A copycat in a costume", "The real game", "A special edition", "A free upgrade"], correctIndex: 0, explanation: "Wrong-ish name, sad stars, no history - the whiskers don't add up." },
+      { question: "A flashlight app wants your contacts and location. What do you do?", answers: ["Block them - its job only needs the light", "Allow everything - it asked nicely", "Allow just the contacts", "Allow them - big apps always need extras"], correctIndex: 0, explanation: "Job-keys yes, greedy-keys no - a light never needs your friends." },
+      { question: "A 'FREE' game shows ads every minute. What's the real price?", answers: ["Your time and attention", "Nothing - it's free", "A tiny fee later on", "Your high score"], correctIndex: 0, explanation: "Free apps get paid another way - ads sell your attention." },
+    ],
+    finisher: {
+      chargeLabel: "CHARGE THE HIGH-FIVE",
+      chargeIcon: "✋",
+      chargeSecs: 5,
+      milestones: ["Grown-up incoming…", "Hands up! Keep holding!", "HIGH-FIVE READY! LET GO!"],
+      payoffTitle: "SHUTTERS DOWN!",
+      payoffLine: "You and your grown-up checked together - and the shop slammed shut on every copycat. Four eyes beat two.",
+    },
+    villain: {
+      arrival: "Step into my shop! Every app one hundred percent genuine-ish!",
+      phases: [
+        "Two little stars means it's HUMBLE!",
+        "It's a torch! It just needs your contacts to... glow better!",
+        "Free today! Expensive forever!",
+      ],
+      escape: "Shutters?! In MY shop?! I'll open a stall somewhere else!",
+    },
+    voiceSlug: "w09",
+  },
+  badgeArt: "/cyberheroes/badges/week-09-copycat-catcher.png",
+
   // Week-lane attack theatre: fake-app tricks only (message scams = W4;
   // coin traps = W7; link/QR anatomy = W16).
   bossAttacks: [
