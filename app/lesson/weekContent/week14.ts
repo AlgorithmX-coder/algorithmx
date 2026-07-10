@@ -824,6 +824,132 @@ export const WEEK_14: WeekContent = {
     { type: "completion" },
   ],
 
+  // Bespoke W14 showdown: unplug the Listening Post on the dusk rooftop.
+  // No shieldHold this week - ears/eyes are a noticing week, so it's
+  // tapTell + deflectSort + counterCard (the finisher still charges).
+  bossShowdown: {
+    machine: {
+      name: "THE LISTENING POST",
+      tagline: "A rooftop of giant brass ears aimed at one cozy house",
+      art: {
+        intact: "/game/bosses/w14-listeningpost-intact.png",
+        damaged: "/game/bosses/w14-listeningpost-damaged.png",
+        defeated: "/game/bosses/w14-listeningpost-defeated.png",
+      },
+      arena: "/game/backgrounds/w14-arena-rooftop.png",
+      accent: "#ff8ad4",
+      glow: "rgba(255,138,212,0.55)",
+    },
+    heroSprites: {
+      adam: {
+        idle: "/game/characters/w14/adam-scout-idle.png",
+        attack: "/game/characters/w14/adam-scout-attack.png",
+        celebrate: "/game/characters/w14/adam-scout-celebrate.png",
+      },
+      layla: {
+        idle: "/game/characters/w14/layla-scout-idle.png",
+        attack: "/game/characters/w14/layla-scout-attack.png",
+        celebrate: "/game/characters/w14/layla-scout-celebrate.png",
+      },
+    },
+    phases: [
+      // P1 · THE LONG EAR → TAP-THE-TELL: rooms slide past; tap the device
+      // whose ears are awake before a dish locks onto it.
+      {
+        kind: "tapTell",
+        attack: 0,
+        coach: "Ears awake? Tap it before the dish locks on!",
+        rounds: [
+          {
+            id: "living",
+            prompt: "The living room at dusk... one thing in here is listening.",
+            promptIcon: "🤫",
+            options: [
+              { id: "speaker", label: "The smart speaker - its ring is glowing", icon: "💬", isTell: true, note: "" },
+              { id: "teddy", label: "A teddy bear flopped on the sofa", icon: "🎁", isTell: false, note: "No ears, just fluff. Regular teddies are the quietest friends there are." },
+              { id: "books", label: "A stack of picture books", icon: "📋", isTell: false, note: "Paper never listens. Find the thing with a glowing ring!" },
+            ],
+          },
+          {
+            id: "kitchen",
+            prompt: "The kitchen slides by... something here wakes when you say its name.",
+            promptIcon: "🤫",
+            options: [
+              { id: "toaster", label: "The toaster", icon: "⚙️", isTell: false, note: "Crumbs, not ears - a toaster minds its own bread. Keep looking!" },
+              { id: "display", label: "The smart display on the counter", icon: "💡", isTell: true, note: "" },
+              { id: "fruit", label: "The fruit bowl", icon: "🎁", isTell: false, note: "Bananas are famously terrible listeners. Find the screen that answers back!" },
+            ],
+          },
+          {
+            id: "bedroom",
+            prompt: "Last room - your bedroom. The sneaky one hides HERE.",
+            promptIcon: "🤫",
+            options: [
+              { id: "sneakers", label: "Your sneakers by the door", icon: "🎁", isTell: false, note: "Smelly? Maybe. Listening? Never. One thing in here answers when you call it..." },
+              { id: "diary", label: "A paper diary with a little lock", icon: "🔒", isTell: false, note: "Paper keeps secrets best of all - that lock needs no settings. Keep hunting!" },
+              { id: "robopup", label: "Robo-Pup - he answers when you call him", icon: "🎮", isTell: true, note: "" },
+            ],
+          },
+        ],
+      },
+      // P2 · GLASS EYE → DEFLECT-SORT: tiny glints in the dark - spot the
+      // true lenses, let the harmless twinkles glow on.
+      {
+        kind: "deflectSort",
+        attack: 1,
+        coach: "A lens is round and deep. Twinkles just sparkle!",
+        actLabel: "THAT'S A LENS - SPOT IT!",
+        actIcon: "🔍",
+        passLabel: "JUST A TWINKLE - LET IT GLOW",
+        items: [
+          { id: "doorbell", label: "The doorbell's little round eye", icon: "🔍", act: true, note: "That's a real lens - watching the front step is its job, and now you KNOW it's there. Spotted!" },
+          { id: "fairy", label: "A string of fairy lights", icon: "💡", act: false, note: "Fairy lights sparkle, but there's no deep round glass - just cozy glow. Let it twinkle!" },
+          { id: "toybot", label: "A tiny lens peeking from a toy robot", icon: "🎮", act: true, note: "Toys can have eyes too - a Scout spots them and asks a grown-up about it. Spotted!" },
+          { id: "fireflies", label: "Fireflies blinking outside the window", icon: "⚡", act: false, note: "Nature's night-lights - zero settings, zero lenses. Let them glow!" },
+          { id: "mystery", label: "A mystery camera on the bookshelf nobody asked about", icon: "🙈", act: true, note: "Mystery lenses ALWAYS get asked about - that's Scout rule one. Spotted!" },
+          { id: "sticker", label: "A glitter sticker on a lunchbox", icon: "🏷️", act: false, note: "Flat, sparkly, and completely blind - stickers can't see a thing. Let it shine!" },
+        ],
+      },
+      // P3 · MEGAPHONE MOUTH → COUNTER-CARD: where do secrets stay safe?
+      {
+        kind: "counterCard",
+        attack: 2,
+        coach: "Where do secrets stay safe? Tap the card!",
+        situation: "You've got a secret for your cousin - and the smart speaker's ring just lit up.",
+        situationIcon: "🤫",
+        cards: [
+          { id: "whisper", label: "WHISPER IT IN ANOTHER ROOM", icon: "🤫", isRight: true, note: "" },
+          { id: "louder", label: "Say it louder - clearer is safer", icon: "💬", isRight: false, note: "Louder just feeds the microphone. Out loud near smart ears is a megaphone - move the secret, not the volume." },
+          { id: "tellit", label: "Tell the speaker - it keeps secrets", icon: "🌀", isRight: false, note: "Speakers keep a diary, not secrets - recordings live in an app grown-ups can open. Secrets stay off the air." },
+        ],
+      },
+    ],
+    weakPoints: [
+      { question: "What wakes a smart speaker up?", answers: ["Hearing its name", "Sunlight", "A secret handshake", "Nothing - it never sleeps"], correctIndex: 0, explanation: "The name is the ON switch - and once awake, it hears much more." },
+      { question: "Which camera is doing its job RIGHT?", answers: ["The doorbell lens watching the front step", "A lens pointing at your bed", "A mystery camera nobody's asked about", "A toy filming the bathroom"], correctIndex: 0, explanation: "Front-step watching is the job; bedrooms are lens-free zones, and mystery lenses get asked about." },
+      { question: "Where do secrets go when smart ears are nearby?", answers: ["On paper, in a whisper away, or in another room", "Whispered right next to the speaker", "Straight to the speaker", "Nowhere - stop having secrets"], correctIndex: 0, explanation: "Out loud near smart ears is a megaphone - keep secrets off the air." },
+    ],
+    finisher: {
+      chargeLabel: "CHARGE THE MASTER SWITCH",
+      chargeIcon: "⚡",
+      chargeSecs: 5,
+      milestones: ["The plugs are wiggling loose…", "The dishes are drooping…", "FULL POWER! LET GO!"],
+      payoffTitle: "UNPLUGGED!",
+      payoffLine: "Every dish wilts like a sleepy flower and the rooftop goes dark. Down in the little house, the lights glow warm and quiet - your words are YOURS again, and the only ears left are the ones you invited.",
+    },
+    villain: {
+      arrival: "Speak up, kid! Enunciate! My dishes are VERY interested!",
+      phases: [
+        "That's no teddy! That's my best reporter!",
+        "Blink and you'll miss my little glass friends!",
+        "Say the secret LOUDER! For the people at the back! Which is me!",
+      ],
+      escape: "Unplugged?! I was SO close to learning your snack schedule!",
+    },
+    voiceSlug: "w14",
+  },
+  badgeArt: "/cyberheroes/badges/week-14-settings-scout.png",
+
   // Week-lane attack theatre: device ears/eyes tricks only (passwords =
   // W1; private info = W2; screen-time = W13).
   bossAttacks: [

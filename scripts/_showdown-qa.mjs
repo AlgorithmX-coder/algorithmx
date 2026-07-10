@@ -658,6 +658,65 @@ const STEPS = {
     { click: "Claim Badge" },
     { wait: 2200 }, { shot: "22-debrief" },
   ],
+  14: [
+    { wait: 3000 }, { shot: "01-entrance" },            // LISTENING POST nameplate
+    { wait: 2000 }, { shot: "02-select" },              // settings-scout vests!
+    { clickLabel: "Play as LAYLA" },
+    { wait: 900 }, { shot: "03-announce-trick1" },      // THE LONG EAR telegraph
+    { wait: 2400 },
+    { shot: "04-play-taptell" },                        // rooms slide past
+    { click: "A teddy bear flopped on the sofa" },      // deliberate wrong → teach
+    { wait: 700 }, { shot: "05-teach-ears" },
+    { click: "Got it!" },
+    { click: "The smart speaker - its ring is glowing" },
+    { wait: 1400 },
+    { click: "The smart display on the counter" },
+    { wait: 1400 },
+    { click: "Robo-Pup - he answers when you call him" }, // → playDone
+    { wait: 1600 }, { shot: "06-weakpoint-1" },
+    { click: "Hearing its name" },
+    { wait: 1300 }, { shot: "07-gear-popped" },
+    { wait: 3000 },
+    { shot: "08-announce-trick2" },                     // GLASS EYE
+    { wait: 2200 },
+    { shot: "09-play-deflect" },                        // glints in the dark
+    { click: "THAT'S A LENS - SPOT IT!" },              // doorbell ✓
+    { wait: 1400 },
+    { click: "THAT'S A LENS - SPOT IT!" },              // deliberate wrong on fairy lights
+    { wait: 700 }, { shot: "10-teach-twinkle" },
+    { click: "Got it!" },
+    { click: "JUST A TWINKLE - LET IT GLOW" },          // fairy lights ✓
+    { wait: 1400 },
+    { click: "THAT'S A LENS - SPOT IT!" },              // toy robot lens ✓
+    { wait: 1400 },
+    { click: "JUST A TWINKLE - LET IT GLOW" },          // fireflies ✓
+    { wait: 1400 },
+    { click: "THAT'S A LENS - SPOT IT!" },              // mystery camera ✓
+    { wait: 1400 },
+    { click: "JUST A TWINKLE - LET IT GLOW" },          // glitter sticker ✓ → playDone
+    { wait: 1600 }, { shot: "11-weakpoint-2" },
+    { click: "The doorbell lens watching the front step" },
+    { wait: 4300 },
+    { shot: "12-announce-trick3" },                     // MEGAPHONE MOUTH
+    { wait: 2200 },
+    { shot: "13-play-countercard" },                    // the lit speaker ring
+    { click: "WHISPER IT IN ANOTHER ROOM" },
+    { wait: 1700 }, { shot: "14-weakpoint-3" },
+    { click: "On paper, in a whisper away, or in another room" },
+    { wait: 3900 },
+    { shot: "15-wobbling" },
+    { wait: 1700 },
+    { shot: "16-finisher-ring" },
+    { hold: "CHARGE THE MASTER SWITCH", ms: 5600, shotDuring: "16b-charging" },
+    { wait: 800 }, { shot: "17-payoff" },               // UNPLUGGED!
+    { wait: 2200 }, { shot: "18-victory" },
+    { click: "Claim the win" },
+    { wait: 2500 }, { shot: "19-outro-video" },
+    { click: "Skip video" },
+    { wait: 1800 }, { shot: "20-badge-scene" },
+    { click: "Claim Badge" },
+    { wait: 2200 }, { shot: "21-debrief" },
+  ],
 };
 
 const steps = STEPS[week];

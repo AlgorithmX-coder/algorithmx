@@ -221,6 +221,20 @@ const WEEKS = {
         "[excited] POWERED DOWN, Cyber Hero! You picked your OWN ending and let the credits roll... [laughs] caught every sneaky glow - duvet, pillow, curtain... and filled your battery with the real stuff: sleep, snacks, moving, your people. [gasps] And the stolen batteries? ALL flew home. [warmly] Fun had, charge kept, screens in the garage. That's a Battery Keeper's night.",
     },
   },
+  14: {
+    slug: "w14",
+    villain: {
+      arrival: "[excited] Speak up, kid! Enunciate! [laughs] My dishes are VERY interested!",
+      "phase-1": "[gasps] That's no teddy! [excited] That's my best reporter!",
+      "phase-2": "[whispers] Blink and you'll miss my little glass friends!",
+      "phase-3": "[excited] Say the secret LOUDER! For the people at the back! [laughs] Which is me!",
+      escape: "[gasps] Unplugged?! I was SO close to learning your snack schedule!",
+    },
+    coach: {
+      victory:
+        "[excited] UNPLUGGED, Cyber Hero! You spotted every awake ear - even sneaky Robo-Pup... [laughs] found the true lenses and let the fairy lights twinkle... [whispers] and moved that secret to another room, right off the air. [gasps] The dishes wilted like flowers! [warmly] Your house is quiet and your words are YOURS, Settings Scout. That's exactly how home should sound.",
+    },
+  },
 };
 
 // ── Legacy Week-1 villain lines (public/audio/villain) - the no-repeat
