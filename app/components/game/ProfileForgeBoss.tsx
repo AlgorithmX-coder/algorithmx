@@ -39,6 +39,7 @@ import {
   type HeroKey,
   makeHeroes,
   playVillain,
+  playCoach,
   ParticleLayer,
   type ParticleAPI,
   DataRain,
@@ -63,11 +64,19 @@ export interface ProfileForgeBossProps {
 
 type Stage = "entrance" | "select" | "announce" | "play" | "phaseClear" | "victory";
 
-/** Playable heroes with the forge-specific idle pose: each is WRITING
- *  their profile behind their shield while under siege. */
+/** Playable heroes dressed for the job (W2 rewrap): blacksmith forge
+ *  aprons — they hammer the leaks off their own profile. */
 const HEROES = makeHeroes({
-  adam: { idle: "/game/characters/adam-writing.png" },
-  layla: { idle: "/game/characters/layla-writing.png" },
+  adam: {
+    idle: "/game/characters/w02/adam-forgeapron-idle.png",
+    attack: "/game/characters/w02/adam-forgeapron-attack.png",
+    celebrate: "/game/characters/w02/adam-forgeapron-celebrate.png",
+  },
+  layla: {
+    idle: "/game/characters/w02/layla-forgeapron-idle.png",
+    attack: "/game/characters/w02/layla-forgeapron-attack.png",
+    celebrate: "/game/characters/w02/layla-forgeapron-celebrate.png",
+  },
 });
 
 const PHASE_ORDER = ["whack", "hand", "grill", "assemble", "rapid"] as const;
@@ -245,6 +254,14 @@ export default function ProfileForgeBoss({
     const id = window.setTimeout(() => setStage("play"), reduce ? 1200 : 2500);
     return () => window.clearTimeout(id);
   }, [stage, phaseIdx, reduce]);
+
+  // ONE narrator moment (global pilot rule): excited Sarah names the win
+  // once the defeat sting lands — text-only coaching everywhere else.
+  useEffect(() => {
+    if (stage !== "victory") return;
+    const id = window.setTimeout(() => playCoach("forge-victory"), 1500);
+    return () => window.clearTimeout(id);
+  }, [stage]);
 
   const phaseDone = useCallback(() => {
     const key = PHASE_ORDER[phaseIdx];

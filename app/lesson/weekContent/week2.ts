@@ -793,6 +793,9 @@ export const WEEK_2: WeekContent = {
     },
   },
 
+  /* Bespoke medal art for the victory scene (W2 rewrap). */
+  badgeArt: "/cyberheroes/badges/week-02-privacy-guardian.png",
+
   /* ─── Legacy 5-phase MCQ data (fallback if bossForge is ever cleared) ─── */
   bossPhases: [
     {
