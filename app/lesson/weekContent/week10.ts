@@ -662,6 +662,108 @@ export const WEEK_10: WeekContent = {
     { type: "completion" },
   ],
 
+  bossShowdown: {
+    machine: {
+      name: "THE WHIRLPOOL ROOM",
+      tagline: "A conveyor of next-next-next that never lets you choose",
+      art: {
+        intact: "/game/bosses/w10-whirlpool-intact.png",
+        damaged: "/game/bosses/w10-whirlpool-damaged.png",
+        defeated: "/game/bosses/w10-whirlpool-defeated.png",
+      },
+      arena: "/game/backgrounds/w10-arena-conveyor.png",
+      accent: "#4fd8c4",
+      glow: "rgba(79,216,196,0.55)",
+    },
+    heroSprites: {
+      adam: {
+        idle: "/game/characters/w10/adam-rescue-idle.png",
+        attack: "/game/characters/w10/adam-rescue-attack.png",
+        celebrate: "/game/characters/w10/adam-rescue-celebrate.png",
+      },
+      layla: {
+        idle: "/game/characters/w10/layla-rescue-idle.png",
+        attack: "/game/characters/w10/layla-rescue-attack.png",
+        celebrate: "/game/characters/w10/layla-rescue-celebrate.png",
+      },
+    },
+    phases: [
+      // P1 · AUTOPLAY BELT → SHIELD-HOLD: hold the giant PAUSE against the pull.
+      {
+        kind: "shieldHold",
+        attack: 0,
+        // Coach copy must NOT contain the holdLabel phrase - the QA
+        // driver's text-match would grab the banner instead of the button.
+        coach: "The belt never asks. Press and KEEP pressing!",
+        holdLabel: "HOLD THE PAUSE",
+        holdIcon: "⏸️",
+        holdSecs: 6,
+        barrage: [
+          "Next one's starting! Too late!",
+          "Don't choose! Choosing is WORK!",
+          "One more! You're SO close to the bottom!",
+          "The belt knows you better than YOU do!",
+          "Down is the only direction!",
+        ],
+        burnoutLine: "The belt strains... sparks... STOPS. Hear that? Silence. Now YOU pick what plays next - or nothing at all.",
+      },
+      // P2 · WILD CLAIM → DEFLECT-SORT: zap the shouty fakes, pass the checkable.
+      {
+        kind: "deflectSort",
+        attack: 1,
+        coach: "Would a book or a grown-up agree? Weigh it!",
+        actLabel: "ZAP THE WILD CLAIM!",
+        actIcon: "⚡",
+        passLabel: "CHECKABLE - LET IT PASS",
+        items: [
+          { id: "cheese", label: "MOON IS SECRETLY CHEESE - PROOF INSIDE!", icon: "🌀", act: true, note: "Shouty surprise, zero real sources - a wild claim fishing for clicks. Zap it!" },
+          { id: "volcano", label: "How volcanoes work - with a real scientist", icon: "🔍", act: false, note: "A teacher could check every word of this one. Let it roll on." },
+          { id: "dogs", label: "DOGS CAN'T SEE STAIRS - VETS HATE THIS!", icon: "⚡", act: true, note: "'Somebody HATES this!' is clickbait's favorite costume. Zap it!" },
+          { id: "bread", label: "Baking bread, step by step", icon: "🎁", act: false, note: "You could test this in your own kitchen - checkable. Let it pass." },
+          { id: "fridays", label: "SCHOOLS BANNED FRIDAYS?! SHARE BEFORE IT'S DELETED!", icon: "💬", act: true, note: "'Share before it's deleted!' is a panic trick, not proof. Zap it!" },
+          { id: "museum", label: "Our class trip to the science museum", icon: "🎮", act: false, note: "Real place, real trip, nothing shouty - let it pass." },
+        ],
+      },
+      // P3 · COMMENT HOOK → COUNTER-CARD.
+      {
+        kind: "counterCard",
+        attack: 2,
+        coach: "What's the hero move? Tap the card!",
+        situation: "A comment pops up under the video: 'you seem cool!! what school do u go to?'",
+        situationIcon: "💬",
+        cards: [
+          { id: "watch", label: "JUST WATCH - NEVER REPLY TO STRANGERS", icon: "🛡️", isRight: true, note: "" },
+          { id: "reply", label: "Reply - they seem friendly", icon: "🌀", isRight: false, note: "Friendly-sounding is exactly how fishing feels. Comments are full of strangers - no replies, no info." },
+          { id: "askback", label: "Ask them a question back", icon: "🔍", isRight: false, note: "Any reply tells a stranger you're listening. Leave the hook hanging and scroll on." },
+        ],
+      },
+    ],
+    weakPoints: [
+      { question: "When a video ends and the next one starts by itself, who picked it?", answers: ["The autoplay machine", "You did", "Your best friend", "The video maker picked it"], correctIndex: 0, explanation: "That's the belt - a machine built to keep you watching." },
+      { question: "A video says the moon is made of cheese. What do you do?", answers: ["Weigh it against a real source", "Believe it - videos are proof", "Share it with 5 friends", "Watch it twice to be sure"], correctIndex: 0, explanation: "'A video said so' isn't proof - books, teachers and grown-ups can check." },
+      { question: "A comment says 'What school do you go to? Just curious!' What is it?", answers: ["A fishing comment - never answer", "A friendly question", "A school survey", "Fine to answer if they seem nice"], correctIndex: 0, explanation: "Questions about YOU are fishing - your school stays yours." },
+    ],
+    finisher: {
+      chargeLabel: "CHARGE THE BACK BUTTON",
+      chargeIcon: "🚀",
+      chargeSecs: 5,
+      milestones: ["The rocket hums…", "The whirlpool is slowing…", "HATCH OPEN! LET GO!"],
+      payoffTitle: "UP AND OUT!",
+      payoffLine: "The BACK button fires you through the hatch into daylight. The belt only wins if you forget you can leave - and you never will.",
+    },
+    villain: {
+      arrival: "Next up! Next up! NEXT UP! You never have to choose again!",
+      phases: [
+        "The belt goes one way, kid! Down!",
+        "It's TRUE! A video said so, and videos never fib!",
+        "The comments are lovely this time of night!",
+      ],
+      escape: "NOBODY finds the hatch! Who showed you the hatch?!",
+    },
+    voiceSlug: "w10",
+  },
+  badgeArt: "/cyberheroes/badges/week-10-pull-noticer.png",
+
   // Week-lane attack theatre: the video-hole tricks only (screen-time
   // balance = W13; stranger chat = W3; app fakes = W9).
   bossAttacks: [

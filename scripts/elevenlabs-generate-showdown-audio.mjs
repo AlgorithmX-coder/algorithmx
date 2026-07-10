@@ -163,6 +163,20 @@ const WEEKS = {
         "[excited] Shop's CLOSED, Cyber Hero! You read every name letter by letter... zapped every copycat off the shelf... locked up all the greedy keys... [whispers] and flipped that sneaky FREE tag right over. [laughs] Did you HEAR those shutters slam? [excited] Real shop, real names, and a grown-up high-five - that's your app armor. [warmly] No costume gets past you now.",
     },
   },
+  10: {
+    slug: "w10",
+    villain: {
+      arrival: "[excited] Next up! Next up! NEXT UP! [laughs] You never have to choose again!",
+      "phase-1": "The belt goes one way, kid! Down!",
+      "phase-2": "It's TRUE! A video said so, and videos never fib!",
+      "phase-3": "[whispers] The comments are lovely this time of night!",
+      escape: "[gasps] NOBODY finds the hatch! Who showed you the hatch?!",
+    },
+    coach: {
+      victory:
+        "[excited] UP AND OUT, Cyber Hero! You held that PAUSE till the belt burned out... weighed the wild claims and zapped every shouty fake... [whispers] and left that fishy comment hanging with zero replies. [laughs] The whirlpool room is CLOSED! [excited] From now on, YOU pick what plays next. [warmly] That's what a Pull Noticer does.",
+    },
+  },
 };
 
 // ── Legacy Week-1 villain lines (public/audio/villain) - the no-repeat

@@ -434,6 +434,59 @@ const STEPS = {
     { click: "Claim Badge" },
     { wait: 2200 }, { shot: "21-debrief" },
   ],
+  10: [
+    { wait: 3000 }, { shot: "01-entrance" },            // WHIRLPOOL ROOM nameplate
+    { wait: 2000 }, { shot: "02-select" },              // life-vest rescue gear!
+    { clickLabel: "Play as LAYLA" },
+    { wait: 900 }, { shot: "03-announce-trick1" },      // AUTOPLAY BELT telegraph
+    { wait: 2400 },
+    { shot: "04-play-shieldhold" },                     // the belt pulls
+    { hold: "HOLD THE PAUSE", ms: 6800, shotDuring: "04b-holding" },
+    { wait: 400 }, { shot: "05-burnout" },              // the belt sparks out
+    { wait: 1800 }, { shot: "06-weakpoint-1" },
+    { click: "The autoplay machine" },
+    { wait: 1300 }, { shot: "07-gear-popped" },
+    { wait: 3000 },
+    { shot: "08-announce-trick2" },                     // WILD CLAIM
+    { wait: 2200 },
+    { shot: "09-play-deflect" },                        // moon-cheese incoming
+    { click: "ZAP THE WILD CLAIM!" },                   // cheese ✓
+    { wait: 1400 },
+    { click: "ZAP THE WILD CLAIM!" },                   // deliberate wrong on volcano doc
+    { wait: 700 }, { shot: "10-teach-panel" },
+    { click: "Got it!" },
+    { click: "CHECKABLE - LET IT PASS" },               // volcano ✓
+    { wait: 1400 },
+    { click: "ZAP THE WILD CLAIM!" },                   // dogs-stairs ✓
+    { wait: 1400 },
+    { click: "CHECKABLE - LET IT PASS" },               // bread ✓
+    { wait: 1400 },
+    { click: "ZAP THE WILD CLAIM!" },                   // banned Fridays ✓
+    { wait: 1400 },
+    { click: "CHECKABLE - LET IT PASS" },               // museum ✓ → playDone
+    { wait: 1600 }, { shot: "11-weakpoint-2" },
+    { click: "Weigh it against a real source" },
+    { wait: 4300 },
+    { shot: "12-announce-trick3" },                     // COMMENT HOOK
+    { wait: 2200 },
+    { shot: "13-play-countercard" },
+    { click: "JUST WATCH - NEVER REPLY TO STRANGERS" },
+    { wait: 1700 }, { shot: "14-weakpoint-3" },
+    { click: "A fishing comment - never answer" },
+    { wait: 3900 },
+    { shot: "15-wobbling" },
+    { wait: 1700 },
+    { shot: "16-finisher-ring" },
+    { hold: "CHARGE THE BACK BUTTON", ms: 5600, shotDuring: "16b-charging" },
+    { wait: 800 }, { shot: "17-payoff" },               // UP AND OUT!
+    { wait: 2200 }, { shot: "18-victory" },
+    { click: "Claim the win" },
+    { wait: 2500 }, { shot: "19-outro-video" },
+    { click: "Skip video" },
+    { wait: 1800 }, { shot: "20-badge-scene" },
+    { click: "Claim Badge" },
+    { wait: 2200 }, { shot: "21-debrief" },
+  ],
 };
 
 const steps = STEPS[week];
