@@ -206,6 +206,65 @@ const STEPS = {
     { click: "Claim Badge" },
     { wait: 2200 }, { shot: "21-debrief" },
   ],
+  6: [
+    { wait: 3000 }, { shot: "01-entrance" },            // LOBBY PHANTOM nameplate
+    { wait: 2000 }, { shot: "02-select" },              // esports jerseys!
+    { clickLabel: "Play as LAYLA" },
+    { wait: 900 }, { shot: "03-announce-trick1" },      // INFO FISHING telegraph
+    { wait: 2400 },
+    { shot: "04-play-deflect" },                        // chat item 1: school ask
+    { click: "SHUT IT DOWN!" },                         // school ✓
+    { wait: 1400 },
+    { click: "SHUT IT DOWN!" },                         // deliberate wrong on 'GG!'
+    { wait: 700 }, { shot: "05-teach-panel" },
+    { click: "Got it!" },
+    { click: "GAME TALK - OK" },                        // gg ✓
+    { wait: 1400 },
+    { click: "SHUT IT DOWN!" },                         // home alone ✓
+    { wait: 1400 },
+    { click: "GAME TALK - OK" },                        // rematch ✓
+    { wait: 1400 },
+    { click: "SHUT IT DOWN!" },                         // real name ✓
+    { wait: 1400 },
+    { click: "GAME TALK - OK" },                        // tactic ✓ → playDone
+    { wait: 1600 }, { shot: "06-weakpoint-1" },
+    { click: "Game talk - tactics and rematches" },
+    { wait: 1300 }, { shot: "07-gear-popped" },
+    { wait: 3000 },
+    { shot: "08-announce-trick2" },                     // SNEAK-OUT CHAT
+    { wait: 2200 },
+    { shot: "09-play-countercard" },
+    { click: "STAY WHERE THE GUARDS ARE" },
+    { wait: 1700 }, { shot: "10-weakpoint-2" },
+    { click: "Rules, mods and report buttons can't follow them" },
+    { wait: 4300 },
+    { shot: "11-announce-trick3" },                     // FREE-MOD TRAP
+    { wait: 2200 },
+    { shot: "12-play-taptell" },
+    { click: "It glows really bright" },                // deliberate wrong → teach
+    { wait: 700 }, { shot: "13-teach-parcel" },
+    { click: "Got it!" },
+    { click: "NOT from the game's shop" },              // round 1 tell
+    { wait: 1400 },
+    { click: "Asks for your PASSWORD" },                // round 2 tell
+    { wait: 1400 },
+    { click: "'UNLIMITED everything, forever!'" },      // round 3 tell → playDone
+    { wait: 1600 }, { shot: "14-weakpoint-3" },
+    { click: "The account isn't yours anymore" },
+    { wait: 3900 },
+    { shot: "15-wobbling" },
+    { wait: 1700 },
+    { shot: "16-finisher-ring" },
+    { hold: "CHARGE THE REPORT BUTTON", ms: 5600, shotDuring: "16b-charging" },
+    { wait: 800 }, { shot: "17-payoff" },               // PHANTOM REPORTED!
+    { wait: 2200 }, { shot: "18-victory" },
+    { click: "Claim the win" },
+    { wait: 2500 }, { shot: "19-outro-video" },
+    { click: "Skip video" },
+    { wait: 1800 }, { shot: "20-badge-scene" },
+    { click: "Claim Badge" },
+    { wait: 2200 }, { shot: "21-debrief" },
+  ],
 };
 
 const steps = STEPS[week];

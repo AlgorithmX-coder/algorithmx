@@ -663,6 +663,132 @@ export const WEEK_6: WeekContent = {
 
   // Week-lane attack theatre: lobby tricks only (no money/V-Bucks - W7;
   // no fake-profile anatomy - W3).
+  // W6 SHOWDOWN — THE LOBBY PHANTOM (design doc §W6: one ranked match
+  // where he tries all the tricks). P1 deflectSort info-fishing chat ·
+  // P2 counterCard sneak-out chat · P3 tapTell free-mod parcel ·
+  // finisher = the REPORT slam.
+  bossShowdown: {
+    machine: {
+      name: "THE LOBBY PHANTOM",
+      tagline: "A ghost-player machine that pretends to be your friend",
+      art: {
+        intact: "/game/bosses/w06-lobbyphantom-intact.png",
+        damaged: "/game/bosses/w06-lobbyphantom-damaged.png",
+        defeated: "/game/bosses/w06-lobbyphantom-defeated.png",
+      },
+      arena: "/game/backgrounds/w06-arena-lobby.png",
+      accent: "#7eff97",
+      glow: "rgba(126,255,151,0.55)",
+    },
+    heroSprites: {
+      adam: {
+        idle: "/game/characters/w06/adam-esports-idle.png",
+        attack: "/game/characters/w06/adam-esports-attack.png",
+        celebrate: "/game/characters/w06/adam-esports-celebrate.png",
+      },
+      layla: {
+        idle: "/game/characters/w06/layla-esports-idle.png",
+        attack: "/game/characters/w06/layla-esports-attack.png",
+        celebrate: "/game/characters/w06/layla-esports-celebrate.png",
+      },
+    },
+    phases: [
+      // P1 · INFO FISHING → DEFLECT-SORT: chat scrolls past - shut down
+      // the info-asks, wave the real game talk through.
+      {
+        kind: "deflectSort",
+        attack: 0,
+        coach: "Game talk passes. Info-asks get SHUT DOWN!",
+        actLabel: "SHUT IT DOWN!",
+        actIcon: "🚫",
+        passLabel: "GAME TALK - OK",
+        items: [
+          { id: "school", label: "'What school do you go to?'", icon: "🏫", act: true, note: "School names find you in real life. Game talk only - shut it down!" },
+          { id: "gg", label: "'GG! Good game!'", icon: "🎮", act: false, note: "Just game talk - that's what chat is for. Let it pass." },
+          { id: "alone", label: "'Are you home alone right now?'", icon: "🚪", act: true, note: "Nobody in a game needs to know that. Big red flag - shut it down!" },
+          { id: "rematch", label: "'Rematch? Best of three!'", icon: "🎯", act: false, note: "Game talk - totally fine. Play on!" },
+          { id: "name", label: "'What's your REAL name?'", icon: "🆔", act: true, note: "Your hero name is enough. Real names stay offline - shut it down!" },
+          { id: "tactic", label: "'Try the ice tower next round!'", icon: "⚡", act: false, note: "Tactics talk - the good stuff. Let it pass." },
+        ],
+      },
+      // P2 · SNEAK-OUT CHAT → COUNTER-CARD.
+      {
+        kind: "counterCard",
+        attack: 1,
+        coach: "Where do heroes chat? Tap the card!",
+        situation: "'Let's chat on ZapChat instead - the mods can't hear us there!'",
+        situationIcon: "🚪",
+        cards: [
+          { id: "stay", label: "STAY WHERE THE GUARDS ARE", icon: "🛡️", isRight: true, note: "" },
+          { id: "go", label: "Go - it sounds cozier", icon: "💬", isRight: false, note: "Off-game there are no mods and no report button - that's exactly why he asks." },
+          { id: "once", label: "Go, but just this once", icon: "🌀", isRight: false, note: "'Just once' is how every trap starts. Guards on = safe chat." },
+        ],
+      },
+      // P3 · FREE-MOD TRAP → TAP-THE-TELL: the glowing parcel, 3 rounds.
+      {
+        kind: "tapTell",
+        attack: 2,
+        coach: "Find the trap sign on the parcel - tap it!",
+        rounds: [
+          {
+            id: "source",
+            prompt: "A glowing parcel: 'FREE MEGA MOD!'",
+            promptIcon: "🪤",
+            options: [
+              { id: "glow", label: "It glows really bright", icon: "✨", isTell: false, note: "Shiny doesn't mean safe OR unsafe. Check where it CAME from." },
+              { id: "store", label: "NOT from the game's shop", icon: "🔍", isTell: true, note: "" },
+              { id: "mega", label: "Says 'MEGA'", icon: "💬", isTell: false, note: "Big words are just paint. Check where it CAME from." },
+            ],
+          },
+          {
+            id: "form",
+            prompt: "The parcel has a little form to fill in...",
+            promptIcon: "⚙️",
+            options: [
+              { id: "password", label: "Asks for your PASSWORD", icon: "🔑", isTell: true, note: "" },
+              { id: "color", label: "Asks your favorite color", icon: "🎨", isTell: false, note: "A color can't unlock anything. Find what it's really after." },
+              { id: "hero", label: "Asks your hero name", icon: "🦸", isTell: false, note: "Hero names are public anyway. Find what it's really after." },
+            ],
+          },
+          {
+            id: "promise",
+            prompt: "Read the promise on the label...",
+            promptIcon: "🕵️",
+            options: [
+              { id: "install", label: "'Easy to install!'", icon: "⚙️", isTell: false, note: "Lots of real things install easily. Find the impossible promise." },
+              { id: "fast", label: "'Runs super fast!'", icon: "🚀", isTell: false, note: "Speed brags are normal ads. Find the impossible promise." },
+              { id: "unlimited", label: "'UNLIMITED everything, forever!'", icon: "👀", isTell: true, note: "" },
+            ],
+          },
+        ],
+      },
+    ],
+    weakPoints: [
+      { question: "What belongs in game chat?", answers: ["Game talk - tactics and rematches", "Your school's name", "Your address", "When you're home alone"], correctIndex: 0, explanation: "Game talk in, real-life info out. Always." },
+      { question: "Why do tricksters want to leave game chat?", answers: ["Rules, mods and report buttons can't follow them", "Game chat is too slow", "They prefer typing", "So they can send you secret map tricks"], correctIndex: 0, explanation: "Off-game there are no guards - that's the whole point of the move." },
+      { question: "'FREE skin generator - enter your password!' What happens if you do?", answers: ["The account isn't yours anymore", "You get free skins", "Nothing at all", "You get the skins, but with lots of ads"], correctIndex: 0, explanation: "Generators never work - they exist to steal passwords." },
+    ],
+    finisher: {
+      chargeLabel: "CHARGE THE REPORT BUTTON",
+      chargeIcon: "🔔",
+      chargeSecs: 5,
+      milestones: ["Calling the guards…", "Signal's strong! Keep holding!", "GUARDS READY! LET GO!"],
+      payoffTitle: "PHANTOM REPORTED!",
+      payoffLine: "The guards handled it - that's their job. Game talk in, real info out, and the report button is always yours.",
+    },
+    villain: {
+      arrival: "GG kid! Wanna know a SHORTCUT to pro? Step into my lobby!",
+      phases: [
+        "Just filling in your player card! Name? School? Front-door key?",
+        "The guards are SO nosy. My place is cozier!",
+        "Free mods! Unlimited everything! Slight raccoon flavor!",
+      ],
+      escape: "REPORTED?! I'm the VICTIM here!",
+    },
+    voiceSlug: "w06",
+  },
+  badgeArt: "/cyberheroes/badges/week-06-lobby-guardian.png",
+
   bossAttacks: [
     { name: "INFO FISHING",   icon: "🎮", color: "#7eff97", glow: "rgba(126, 255, 151, 0.55)", tag: "Game talk only",             emblemColor: 0x7eff97 },
     { name: "SNEAK-OUT CHAT", icon: "🚪", color: "#ff5fb3", glow: "rgba(255, 95, 179, 0.55)",  tag: "Stay with the guards",      emblemColor: 0xff5fb3 },

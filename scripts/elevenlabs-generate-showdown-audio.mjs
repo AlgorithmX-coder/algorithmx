@@ -107,6 +107,20 @@ const WEEKS = {
         "[warmly] Oh, that was beautiful, Cyber Hero. [excited] You stood by the new kid... you let every mean echo fade to mist... and you lifted that heavy cloud, one calm step at a time. [whispers] Look - the wall is blooming again. [excited] Kindness won. It always does... [warmly] and today, YOU led it.",
     },
   },
+  6: {
+    slug: "w06",
+    villain: {
+      arrival: "[excited] GG kid! Wanna know a SHORTCUT to pro? Step into my lobby!",
+      "phase-1": "Just filling in your player card! Name? School? Front-door key?",
+      "phase-2": "The guards are SO nosy. My place is cozier!",
+      "phase-3": "[laughs] Free mods! Unlimited everything! Slight raccoon flavor!",
+      escape: "[gasps] REPORTED?! I'm the VICTIM here!",
+    },
+    coach: {
+      victory:
+        "[excited] GG, Cyber Hero - the REAL kind! You kept the chat to game talk... you stayed right where the guards could see you... [laughs] and that free-mod trap? You read the label like a pro. [whispers] The phantom's gone. Poof. [excited] Your lobby, your rules! [warmly] Now THAT'S how a champion plays.",
+    },
+  },
 };
 
 // ── Legacy Week-1 villain lines (public/audio/villain) - the no-repeat
