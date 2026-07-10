@@ -826,6 +826,136 @@ export const WEEK_17: WeekContent = {
     { type: "completion" },
   ],
 
+  // Bespoke W17 showdown: darken the hall of mirrors. Backstage is real
+  // life, the heart-rope is for real friends, and frost beats the stare.
+  bossShowdown: {
+    machine: {
+      name: "THE HALL OF MIRRORS",
+      tagline: "A funhouse engine that loops everyone's shiniest minute forever",
+      art: {
+        intact: "/game/bosses/w17-mirrorhall-intact.png",
+        damaged: "/game/bosses/w17-mirrorhall-damaged.png",
+        defeated: "/game/bosses/w17-mirrorhall-defeated.png",
+      },
+      arena: "/game/backgrounds/w17-arena-funhouse.png",
+      accent: "#b8c6ff",
+      glow: "rgba(184,198,255,0.55)",
+    },
+    heroSprites: {
+      adam: {
+        idle: "/game/characters/w17/adam-knight-idle.png",
+        attack: "/game/characters/w17/adam-knight-attack.png",
+        celebrate: "/game/characters/w17/adam-knight-celebrate.png",
+      },
+      layla: {
+        idle: "/game/characters/w17/layla-knight-idle.png",
+        attack: "/game/characters/w17/layla-knight-attack.png",
+        celebrate: "/game/characters/w17/layla-knight-celebrate.png",
+      },
+    },
+    phases: [
+      // P1 · HIGHLIGHT REEL → TAP-THE-TELL: flip each glossy poster to
+      // its backstage truth.
+      {
+        kind: "tapTell",
+        attack: 0,
+        coach: "Every shiny poster has a backstage. Tap the TRUTH behind it!",
+        rounds: [
+          {
+            id: "camping",
+            prompt: "The poster: 'PERFECT SUNNY CAMPING TRIP!' - all smiles, golden light.",
+            promptIcon: "🌟",
+            options: [
+              { id: "rained", label: "Backstage: it rained all weekend - this was the ONE sunny minute", icon: "🌀", isTell: true, note: "" },
+              { id: "allsunny", label: "Backstage: it really was sunny every single second", icon: "💬", isTell: false, note: "Nobody's weekend is all golden light. Feeds keep the one shiny minute - find the truth card!" },
+              { id: "nobackstage", label: "Backstage: there is no backstage - posters show whole lives", icon: "🙈", isTell: false, note: "Every post HAS a backstage. That's the whole trick of the highlight reel!" },
+            ],
+          },
+          {
+            id: "trickshot",
+            prompt: "The poster: 'CASUAL TRICK SHOT - FIRST TRY! SO EASY!'",
+            promptIcon: "🌟",
+            options: [
+              { id: "take94", label: "Backstage: take 94 of 94 - the floor is covered in misses", icon: "🌀", isTell: true, note: "" },
+              { id: "firsttry", label: "Backstage: first try, like it says - some kids are just lucky", icon: "🎮", isTell: false, note: "94 takes. The reel shows take 94 and deletes the other 93. Tap the truth!" },
+              { id: "skillpoints", label: "Backstage: the camera adds skill points", icon: "💡", isTell: false, note: "Cameras don't add skill - editing just hides the practice. Find the backstage card!" },
+            ],
+          },
+          {
+            id: "morning",
+            prompt: "The poster: 'WOKE UP LIKE THIS - PERFECT HAIR, BIG BREAKFAST!'",
+            promptIcon: "🌟",
+            options: [
+              { id: "alarm", label: "Backstage: a 6am alarm, an hour of fixing, and cold toast", icon: "🌀", isTell: true, note: "" },
+              { id: "sparkle", label: "Backstage: some mornings really do sparkle like that", icon: "🎁", isTell: false, note: "Mornings have bed-hair and rush - that sparkle was built, not woken into. Keep hunting!" },
+              { id: "realtoast", label: "Backstage: breakfast photos are never staged", icon: "📋", isTell: false, note: "The toast went cold while the photo got perfect. Tap the backstage truth!" },
+            ],
+          },
+        ],
+      },
+      // P2 · FOLLOWER FLOOD → DEFLECT-SORT: the velvet heart-rope. Real
+      // friends come under; stranger-viewers get the rope closed.
+      {
+        kind: "deflectSort",
+        attack: 1,
+        coach: "Faces you know in real life come under. Strangers stay out!",
+        actLabel: "CLOSE THE ROPE!",
+        actIcon: "✋",
+        passLabel: "REAL FRIEND - COME UNDER",
+        items: [
+          { id: "cousin", label: "Your cousin who beat you at checkers on Sunday", icon: "👪", act: false, note: "Real face, real Sunday, real checkers - that's a friend. Under the rope!" },
+          { id: "scout", label: "'Talent scout' who says you're famous - just send your address", icon: "🎭", act: true, note: "Real scouts don't collect kids' addresses. The rope stays CLOSED." },
+          { id: "schoolfriend", label: "Your school friend who sits next to you in class", icon: "💬", act: false, note: "You know her laugh in real life - under the rope she goes!" },
+          { id: "coolgamer", label: "CoolGamer_9000 - total stranger, wants your friend code", icon: "🎮", act: true, note: "A username isn't a face. Stranger-viewers stay OUTSIDE the rope." },
+          { id: "grandma", label: "Grandma, who wants to see your new painting", icon: "🎁", act: false, note: "Grandma's been your fan since forever - under the rope!" },
+          { id: "fanclub", label: "'Your #1 fan club' - forty accounts, all made yesterday", icon: "🌀", act: true, note: "Forty brand-new accounts isn't a fan club - it's a flood. Rope CLOSED." },
+        ],
+      },
+      // P3 · OPEN MIRROR → SHIELD-HOLD: frost-breath until the profile
+      // mirror frosts over - friends see you, strangers see armour.
+      {
+        kind: "shieldHold",
+        attack: 2,
+        coach: "Breathe your frost-breath and DON'T stop till strangers can't see in!",
+        holdLabel: "FROST THE MIRROR",
+        holdIcon: "🛡️",
+        holdSecs: 6,
+        barrage: [
+          "Keep it shiny! Keep it WIDE open!",
+          "One more stranger won't hurt! Or a thousand!",
+          "The whole town is watching! They LOVE you!",
+          "Don't you want ten thousand friends?!",
+          "Stop frosting! I can barely SEE you!",
+        ],
+        burnoutLine: "The mirror frosts corner to corner - strangers see nothing but armour shine.",
+      },
+    ],
+    weakPoints: [
+      { question: "A feed shows everyone's PERFECT day. What's it really showing?", answers: ["The one shiny minute - with the backstage cut out", "Their whole real life", "Proof everyone's happier than you", "Live camera, no edits"], correctIndex: 0, explanation: "Feeds are highlight reels - take 94 stays, takes 1 through 93 vanish." },
+      { question: "A stranger-viewer says 'I'm basically your friend!' Are they?", answers: ["No - a friend is someone you know in real life", "Yes - if they watch everything you post", "Yes - if they're nice in comments", "Yes - if they have a cool username"], correctIndex: 0, explanation: "Watching isn't knowing. The heart-rope is for faces you know offline." },
+      { question: "Who should be able to see into your profile mirror?", answers: ["Friends and family you know - strangers get frosted glass", "Anyone who asks nicely", "All ten thousand viewers", "Talent scouts only"], correctIndex: 0, explanation: "Private means YOU pick who sees - everyone else gets the frost." },
+    ],
+    finisher: {
+      chargeLabel: "CHARGE THE SHIELD RING",
+      chargeIcon: "🛡️",
+      chargeSecs: 5,
+      milestones: ["The ring is glowing at your feet…", "The ripple is racing down the hall…", "SHIELDS UP! LET GO!"],
+      payoffTitle: "EVERY MIRROR DIMMED!",
+      payoffLine: "WHOOSH! A shield-ring ripples down the whole funhouse - mirror after mirror dims to plain old glass. No loops, no strangers, no 'perfect'. Just your own reflection... smiling back. That's the only feed that matters.",
+    },
+    villain: {
+      arrival: "Mirror mirror on the FEED! Everyone's life is better! Look closer!",
+      phases: [
+        "That campsite was DEFINITELY sunny! I edited it myself!",
+        "Ten thousand friends! I counted! Roughly!",
+        "Leave the mirror open! I like the view of your homework!",
+      ],
+      escape: "Frost?! On MY mirrors?! This funhouse is a FLOP!",
+    },
+    voiceSlug: "w17",
+  },
+  badgeArt: "/cyberheroes/badges/week-17-shield-bearer.png",
+
   // Week-lane attack theatre: mirror-hall tricks only (fake profiles = W3,
   // footprint trails = W12, painted doors = W16).
   bossAttacks: [

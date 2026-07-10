@@ -263,6 +263,20 @@ const WEEKS = {
         "[excited] SHUTTERED, Cyber Hero! You lifted every plaque and caught the lying signs... [laughs] peel-tested the codes - corner, bubble, shine... and that frosted mystery door went straight to a grown-up, unopened. [gasps] The whole paint shop just rolled down its shutter for good. [warmly] Paint is just paint, Door Checker - plaques tell the truth, and so do you.",
     },
   },
+  17: {
+    slug: "w17",
+    villain: {
+      arrival: "[excited] Mirror mirror on the FEED! Everyone's life is better! [whispers] Look closer!",
+      "phase-1": "That campsite was DEFINITELY sunny! [laughs] I edited it myself!",
+      "phase-2": "[excited] Ten thousand friends! I counted! [whispers] Roughly!",
+      "phase-3": "Leave the mirror open! [laughs] I like the view of your homework!",
+      escape: "[gasps] Frost?! On MY mirrors?! [sighs] This funhouse is a FLOP!",
+    },
+    coach: {
+      victory:
+        "[excited] DIMMED, Cyber Hero! You flipped every glossy poster to its backstage truth - rain, take 94, cold toast and all... [laughs] roped out the talent scout AND that forty-account fan club... and frosted the big mirror till strangers saw nothing but shine. [gasps] Every mirror in the funhouse just went dark. [warmly] Real friends, real days, real you, Shield Bearer - that's the only reflection worth keeping.",
+    },
+  },
 };
 
 // ── Legacy Week-1 villain lines (public/audio/villain) - the no-repeat

@@ -835,6 +835,65 @@ const STEPS = {
     { click: "Claim Badge" },
     { wait: 2200 }, { shot: "21-debrief" },
   ],
+  17: [
+    { wait: 3000 }, { shot: "01-entrance" },            // HALL OF MIRRORS nameplate
+    { wait: 2000 }, { shot: "02-select" },              // knight armour!
+    { clickLabel: "Play as ADAM" },
+    { wait: 900 }, { shot: "03-announce-trick1" },      // HIGHLIGHT REEL telegraph
+    { wait: 2400 },
+    { shot: "04-play-taptell" },                        // glossy posters, backstage truths
+    { click: "Backstage: it really was sunny every single second" }, // deliberate wrong → teach
+    { wait: 700 }, { shot: "05-teach-reel" },
+    { click: "Got it!" },
+    { click: "Backstage: it rained all weekend - this was the ONE sunny minute" }, // ✓
+    { wait: 1400 },
+    { click: "Backstage: take 94 of 94 - the floor is covered in misses" },        // ✓
+    { wait: 1400 },
+    { click: "Backstage: a 6am alarm, an hour of fixing, and cold toast" },        // ✓ → playDone
+    { wait: 1600 }, { shot: "06-weakpoint-1" },
+    { click: "The one shiny minute - with the backstage cut out" },
+    { wait: 1300 }, { shot: "07-gear-popped" },
+    { wait: 3000 },
+    { shot: "08-announce-trick2" },                     // FOLLOWER FLOOD
+    { wait: 2200 },
+    { shot: "09-play-deflect" },                        // the velvet heart-rope
+    { click: "CLOSE THE ROPE!" },                       // deliberate wrong on cousin
+    { wait: 700 }, { shot: "10-teach-cousin" },
+    { click: "Got it!" },
+    { click: "REAL FRIEND - COME UNDER" },              // cousin ✓
+    { wait: 1400 },
+    { click: "CLOSE THE ROPE!" },                       // talent scout ✓
+    { wait: 1400 },
+    { click: "REAL FRIEND - COME UNDER" },              // school friend ✓
+    { wait: 1400 },
+    { click: "CLOSE THE ROPE!" },                       // CoolGamer_9000 ✓
+    { wait: 1400 },
+    { click: "REAL FRIEND - COME UNDER" },              // grandma ✓
+    { wait: 1400 },
+    { click: "CLOSE THE ROPE!" },                       // fan club flood ✓ → playDone
+    { wait: 1600 }, { shot: "11-weakpoint-2" },
+    { click: "No - a friend is someone you know in real life" },
+    { wait: 4300 },
+    { shot: "12-announce-trick3" },                     // OPEN MIRROR
+    { wait: 2200 },
+    { shot: "13-play-shieldhold" },                     // the frost-breath stand
+    { hold: "FROST THE MIRROR", ms: 6800, shotDuring: "13b-frosting" },
+    { wait: 1600 }, { shot: "14-weakpoint-3" },
+    { click: "Friends and family you know - strangers get frosted glass" },
+    { wait: 3900 },
+    { shot: "15-wobbling" },
+    { wait: 1700 },
+    { shot: "16-finisher-ring" },
+    { hold: "CHARGE THE SHIELD RING", ms: 5600, shotDuring: "16b-charging" },
+    { wait: 800 }, { shot: "17-payoff" },               // EVERY MIRROR DIMMED!
+    { wait: 2200 }, { shot: "18-victory" },
+    { click: "Claim the win" },
+    { wait: 2500 }, { shot: "19-outro-video" },
+    { click: "Skip video" },
+    { wait: 1800 }, { shot: "20-badge-scene" },
+    { click: "Claim Badge" },
+    { wait: 2200 }, { shot: "21-debrief" },
+  ],
 };
 
 const steps = STEPS[week];
