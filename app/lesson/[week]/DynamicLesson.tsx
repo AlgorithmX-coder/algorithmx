@@ -2353,20 +2353,15 @@ function DynamicLessonInner({ qaEnabled }: { qaEnabled: boolean }) {
 
       case "bossBattle":
         if (bossDone && bossWon) {
+          // Straight to the outro video (feedback): this used to render
+          // the full badge scene for the 450ms navigate gap after the
+          // win — a one-second "mission complete" flash (with a double
+          // victory sting) before the video. Hold the same quiet frame
+          // as the pre-boss beat instead; the badge scene arrives once,
+          // AFTER the video, via the showBadgeScene overlay.
           return (
-            <FullScene
-              bg="radial-gradient(ellipse at 50% 30%, #2a0a14 0%, #160a2e 50%, #04050d 100%)"
-              glow="radial-gradient(circle, rgba(245,158,11,0.35), transparent)"
-            >
-              <BossVictoryScene
-                badgeIcon={content.badgeIcon}
-                badgeName={content.badgeName}
-                badgeArt={content.badgeArt}
-                weekNumber={content.weekNumber}
-                missionTitle={content.title}
-                stats={bossStats}
-                onClaim={() => navigate(screen + 1)}
-              />
+            <FullScene bg="#05060f" glow="radial-gradient(circle, transparent, transparent)">
+              <span aria-hidden />
             </FullScene>
           );
         }
