@@ -16,14 +16,6 @@ import {
 import LessonHUD from "@/app/components/LessonHUD";
 import { deriveCaseMeta } from "@/app/lib/caseTitles";
 import { isAudioMuted, setAudioMuted, subscribeAudioMute } from "@/app/lib/audioMute";
-// CharacterGuide swap: the legacy PNG-only component is replaced with
-// RiveCharacterGuide, which has the same prop API but adds a Rive
-// runtime branch (currently dormant - PNG fallback active until a
-// .riv asset is committed). Strict reduced-motion users always get
-// the PNG fallback.
-import RiveCharacterGuide, {
-  type CharacterMood,
-} from "@/app/components/lesson/RiveCharacterGuide";
 import StoryCutscene from "@/app/components/StoryCutscene";
 import ScreenTransition, {
   type TransitionType,
@@ -95,18 +87,6 @@ import {
   type WeekContent,
 } from "@/app/lesson/weekContent";
 
-const VALID_MOODS: ReadonlySet<CharacterMood> = new Set([
-  "idle",
-  "curious",
-  "excited",
-  "worried",
-  "thinking",
-  "thumbsup",
-]);
-function toMood(raw: string | undefined): CharacterMood {
-  return raw && VALID_MOODS.has(raw as CharacterMood) ? (raw as CharacterMood) : "idle";
-}
-
 const LessonArena3D = dynamic(
   () => import("@/app/components/game/LessonArena3D"),
   { ssr: false }
@@ -121,6 +101,10 @@ const ProfileForgeBoss = dynamic(
 );
 const VaultBoss = dynamic(
   () => import("@/app/components/game/VaultBoss"),
+  { ssr: false }
+);
+const ShowdownBoss = dynamic(
+  () => import("@/app/components/game/ShowdownBoss"),
   { ssr: false }
 );
 const WelcomeScene = dynamic(
@@ -731,6 +715,10 @@ function DynamicLessonInner({ qaEnabled }: { qaEnabled: boolean }) {
   const [showBoss, setShowBoss] = useState(false);
   const [bossDone, setBossDone] = useState(false);
   const [bossWon, setBossWon] = useState(false);
+  // PILOT FEEDBACK (global): the badge scene moved to AFTER the outro
+  // video (boss -> video -> badge). Set when the post-boss video
+  // finishes; renders BossVictoryScene as an overlay.
+  const [showBadgeScene, setShowBadgeScene] = useState(false);
   const [bossStats, setBossStats] = useState<{ combo: number; accuracy: number; xp: number } | null>(null);
   const [arena3DMood, setArena3DMood] = useState<"normal" | "correct" | "wrong" | "celebration">("normal");
   const [arena3DPulse, setArena3DPulse] = useState(0);
@@ -856,8 +844,10 @@ function DynamicLessonInner({ qaEnabled }: { qaEnabled: boolean }) {
     resumedRef.current = true;
   }, [progress]);
 
-  // Mirror `screen` into a ref so the unmount cleanup can read the
-  // latest value (the cleanup callback captures the initial closure).
+  // Mirror `screen` into a ref so the unmount cleanup and navigate()'s
+  // side effects can read the latest value without closing over state.
+  // navigate() also writes it synchronously so back-to-back calls in
+  // one tick see the right prev.
   const screenRef = useRef<number>(0);
   useEffect(() => {
     screenRef.current = screen;
@@ -973,44 +963,48 @@ function DynamicLessonInner({ qaEnabled }: { qaEnabled: boolean }) {
     (to: number) => {
       if (!content) return;
       playSFX("transition");
-      setScreen((prev) => {
-        navDirRef.current = to < prev ? "back" : "forward";
-        const next = Math.max(0, Math.min(totalScreens - 1, to));
+      // Side effects live OUTSIDE the state updater: React may replay
+      // updaters during render (and does at the boss-end state batch),
+      // and an impure updater fires server actions mid-render ("Cannot
+      // update Router while rendering"). screenRef mirrors `screen` so
+      // prev is readable without depending on the state value.
+      const prev = screenRef.current;
+      navDirRef.current = to < prev ? "back" : "forward";
+      const next = Math.max(0, Math.min(totalScreens - 1, to));
 
-        // Persistence: save the screen we're LEAVING (only when moving
-        // forward past the leaving screen and only when it's a real
-        // advance, not a back-navigation).
-        if (next > prev) {
-          const w = wrongCounts[prev] ?? 0;
-          const stars = w === 0 ? 3 : w <= 1 ? 2 : 1;
-          const xpEarned = Math.max(0, lessonXp - screenXpBaselineRef.current);
-          const leavingType = content.screens[prev]?.type ?? "unknown";
-          progress.saveScreen({
-            screenIndex: prev,
-            wrongCount: w,
-            xpEarned,
-            starsEarned: stars,
+      // Persistence: save the screen we're LEAVING (only when moving
+      // forward past the leaving screen and only when it's a real
+      // advance, not a back-navigation).
+      if (next > prev) {
+        const w = wrongCounts[prev] ?? 0;
+        const stars = w === 0 ? 3 : w <= 1 ? 2 : 1;
+        const xpEarned = Math.max(0, lessonXp - screenXpBaselineRef.current);
+        progress.saveScreen({
+          screenIndex: prev,
+          wrongCount: w,
+          xpEarned,
+          starsEarned: stars,
+        });
+        // Baseline + clock reset for the screen we're entering.
+        screenXpBaselineRef.current = lessonXp;
+        progress.markScreenStart(next);
+
+        // Lesson completion - when the child reaches the `completion`
+        // screen the lesson is effectively over (even if they stay
+        // on the screen). Mark complete + emit analytics here so
+        // the row gets a `completedAt` even if they close the tab
+        // before clicking the final CTA.
+        const arrivingType = content.screens[next]?.type;
+        if (arrivingType === "completion" && !lessonCompletedRef.current) {
+          lessonCompletedRef.current = true;
+          progress.complete({
+            totalXp: lessonXp,
+            finalScreenIndex: next,
           });
-          // Baseline + clock reset for the screen we're entering.
-          screenXpBaselineRef.current = lessonXp;
-          progress.markScreenStart(next);
-
-          // Lesson completion - when the child reaches the `completion`
-          // screen the lesson is effectively over (even if they stay
-          // on the screen). Mark complete + emit analytics here so
-          // the row gets a `completedAt` even if they close the tab
-          // before clicking the final CTA.
-          const arrivingType = content.screens[next]?.type;
-          if (arrivingType === "completion" && !lessonCompletedRef.current) {
-            lessonCompletedRef.current = true;
-            progress.complete({
-              totalXp: lessonXp,
-              finalScreenIndex: next,
-            });
-          }
         }
-        return next;
-      });
+      }
+      screenRef.current = next;
+      setScreen(next);
     },
     [content, totalScreens, wrongCounts, lessonXp, progress]
   );
@@ -1082,7 +1076,6 @@ function DynamicLessonInner({ qaEnabled }: { qaEnabled: boolean }) {
   }
 
   const def = content.screens[screen];
-  const reaction = content.reactions[screen] ?? { adam: null, layla: null };
   const stars = (wrongCounts[screen] ?? 0) === 0 ? 3 : (wrongCounts[screen] ?? 0) <= 1 ? 2 : 1;
 
   // A11y: when the child advances, move focus to the new screen region so
@@ -1105,16 +1098,26 @@ function DynamicLessonInner({ qaEnabled }: { qaEnabled: boolean }) {
     if (!def) return null;
 
     switch (def.type) {
-      case "video":
+      case "video": {
         // When a real file is wired up (`videoSrc`), play it. Weeks whose
         // video isn't filmed yet fall back to the decorative play button
         // that simply advances to the next screen.
+        // PILOT FEEDBACK (global): the outro video (the one right after
+        // the boss) hands over to the BADGE SCENE, not straight to the
+        // debrief — boss -> video -> badge -> debrief.
+        const finishVideo = () => {
+          if (content.screens[screen - 1]?.type === "bossBattle" && bossWon) {
+            setShowBadgeScene(true);
+          } else {
+            navigate(screen + 1);
+          }
+        };
         if (def.videoSrc) {
           return (
             <VideoScreen
               caption={def.videoPlaceholder}
               videoSrc={def.videoSrc}
-              onSkip={() => navigate(screen + 1)}
+              onSkip={finishVideo}
             />
           );
         }
@@ -1138,7 +1141,7 @@ function DynamicLessonInner({ qaEnabled }: { qaEnabled: boolean }) {
                 >
                   <button
                     type="button"
-                    onClick={() => navigate(screen + 1)}
+                    onClick={finishVideo}
                     aria-label="Play"
                     style={{
                       width: 96,
@@ -1158,11 +1161,12 @@ function DynamicLessonInner({ qaEnabled }: { qaEnabled: boolean }) {
                 <p style={{ color: "#9ca3af", fontSize: 14, marginBottom: 18 }}>
                   {def.videoPlaceholder}
                 </p>
-                <OrangeButton onClick={() => navigate(screen + 1)}>Skip video →</OrangeButton>
+                <OrangeButton onClick={finishVideo}>Skip video →</OrangeButton>
               </div>
             </Card>
           </FullScene>
         );
+      }
 
       case "alert":
         return (
@@ -2349,19 +2353,15 @@ function DynamicLessonInner({ qaEnabled }: { qaEnabled: boolean }) {
 
       case "bossBattle":
         if (bossDone && bossWon) {
+          // Straight to the outro video (feedback): this used to render
+          // the full badge scene for the 450ms navigate gap after the
+          // win — a one-second "mission complete" flash (with a double
+          // victory sting) before the video. Hold the same quiet frame
+          // as the pre-boss beat instead; the badge scene arrives once,
+          // AFTER the video, via the showBadgeScene overlay.
           return (
-            <FullScene
-              bg="radial-gradient(ellipse at 50% 30%, #2a0a14 0%, #160a2e 50%, #04050d 100%)"
-              glow="radial-gradient(circle, rgba(245,158,11,0.35), transparent)"
-            >
-              <BossVictoryScene
-                badgeIcon={content.badgeIcon}
-                badgeName={content.badgeName}
-                weekNumber={content.weekNumber}
-                missionTitle={content.title}
-                stats={bossStats}
-                onClaim={() => navigate(screen + 1)}
-              />
+            <FullScene bg="#05060f" glow="radial-gradient(circle, transparent, transparent)">
+              <span aria-hidden />
             </FullScene>
           );
         }
@@ -2691,24 +2691,10 @@ function DynamicLessonInner({ qaEnabled }: { qaEnabled: boolean }) {
         onMuteToggle={handleMuteToggle}
       />
 
-      {/* Character guides flank the Hacker Raccoon FIGHT only (showBoss).
-          The boss INTRO + every other lesson surface stays character-free. */}
-      {def?.type === "bossBattle" && showBoss && (
-        <>
-          <RiveCharacterGuide
-            character="adam"
-            position="left"
-            mood={toMood(reaction.adam?.mood)}
-            message={reaction.adam?.message ?? ""}
-          />
-          <RiveCharacterGuide
-            character="layla"
-            position="right"
-            mood={toMood(reaction.layla?.mood)}
-            message={reaction.layla?.message ?? ""}
-          />
-        </>
-      )}
+      {/* No character guides anywhere near the boss: the bespoke fights
+          own the whole screen, so the flanking Adam/Layla cards were only
+          ever visible as a brief duo flash while the boss chunk loaded
+          (feedback: remove them). */}
 
       <main
         style={{
@@ -2755,7 +2741,74 @@ function DynamicLessonInner({ qaEnabled }: { qaEnabled: boolean }) {
       {/* Boss battle fullscreen overlay */}
       {showBoss && (
         <div style={{ position: "fixed", inset: 0, zIndex: 80 }}>
-          {content.bossVault ? (
+          {content.bossShowdown ? (
+            /* Bespoke SHOWDOWN boss (Weeks 3-20, the boss batch). The
+               config-driven machine-fight engine — same outcome/stats
+               shapes as BossBattle, so persistence, analytics and the
+               victory flow below are shared verbatim. Weeks without a
+               bossShowdown block keep the placeholder quiz boss. */
+            <ShowdownBoss
+              showdown={content.bossShowdown}
+              attacks={content.bossAttacks}
+              bossName="HACKER RACCOON"
+              onQuestionAnswered={(o) => {
+                const keyWithPhase = o.phaseId ? `${o.key}@${o.phaseId}` : o.key;
+                progress.saveQuestion({
+                  screenIndex: screen,
+                  questionKey: keyWithPhase,
+                  selectedIndex: o.selectedIndex,
+                  correctIndex: o.correctIndex,
+                  wasCorrect: o.wasCorrect,
+                });
+                if (!o.wasCorrect) {
+                  progress.reportWrong(screen, keyWithPhase);
+                }
+              }}
+              onEnd={(won, stats) => {
+                setShowBoss(false);
+                setBossDone(true);
+                setBossWon(won);
+                setBossStats({
+                  combo: stats.combo ?? 0,
+                  accuracy: stats.accuracy ?? 0,
+                  xp: stats.xp ?? 0,
+                });
+                progress.saveBoss({
+                  won,
+                  accuracy: stats.accuracy ?? 0,
+                  totalQuestions: stats.totalQuestions ?? 0,
+                  correctCount: stats.correctCount ?? 0,
+                  wrongCount: stats.wrongCount ?? 0,
+                  bestCombo: stats.combo ?? 0,
+                  durationMs: stats.durationMs ?? 0,
+                  badgeEarned: won,
+                  badgeId: won ? `week-${content.weekNumber}` : undefined,
+                });
+                for (const pr of stats.phaseResults ?? []) {
+                  analytics.bossCompleted({
+                    weekNumber: content.weekNumber,
+                    won: pr.wrongCount === 0,
+                    accuracy:
+                      pr.totalQuestions > 0
+                        ? Math.round((pr.correctCount / pr.totalQuestions) * 100)
+                        : 0,
+                    bestCombo: 0,
+                    durationMs: 0,
+                  });
+                }
+                if (won) {
+                  awardXp(150);
+                  void correctAnswerBurst();
+                  void badgeEarnedCelebration();
+                  // PILOT FEEDBACK (global): straight into the outro video;
+                  // the badge scene follows the video. Deferred a beat so
+                  // the navigate updater (which persists the leaving
+                  // screen) runs outside this handler's state batch.
+                  window.setTimeout(() => navigate(screen + 1), 450);
+                }
+              }}
+            />
+          ) : content.bossVault ? (
             /* Bespoke COMBAT boss (Week 1's Cracking Machine). Same
                outcome/stats shapes as BossBattle; same phase ids as the
                shipped quiz boss, so dashboards stay continuous. */
@@ -2811,6 +2864,11 @@ function DynamicLessonInner({ qaEnabled }: { qaEnabled: boolean }) {
                   awardXp(150);
                   void correctAnswerBurst();
                   void badgeEarnedCelebration();
+                  // PILOT FEEDBACK (global): straight into the outro video;
+                  // the badge scene follows the video. Deferred a beat so
+                  // the navigate updater (which persists the leaving
+                  // screen) runs outside this handler's state batch.
+                  window.setTimeout(() => navigate(screen + 1), 450);
                 }
               }}
             />
@@ -2870,6 +2928,11 @@ function DynamicLessonInner({ qaEnabled }: { qaEnabled: boolean }) {
                   awardXp(150);
                   void correctAnswerBurst();
                   void badgeEarnedCelebration();
+                  // PILOT FEEDBACK (global): straight into the outro video;
+                  // the badge scene follows the video. Deferred a beat so
+                  // the navigate updater (which persists the leaving
+                  // screen) runs outside this handler's state batch.
+                  window.setTimeout(() => navigate(screen + 1), 450);
                 }
               }}
             />
@@ -2971,10 +3034,46 @@ function DynamicLessonInner({ qaEnabled }: { qaEnabled: boolean }) {
                 awardXp(150);
                 void correctAnswerBurst();
                 void badgeEarnedCelebration();
+                // PILOT FEEDBACK (global): straight into the outro video;
+                // the badge scene follows the video. Deferred a beat so
+                // the navigate updater (which persists the leaving
+                // screen) runs outside this handler's state batch.
+                window.setTimeout(() => navigate(screen + 1), 450);
               }
             }}
           />
           )}
+        </div>
+      )}
+
+      {/* Badge scene — after the outro video (PILOT FEEDBACK: boss ->
+          video -> badge). Fullscreen overlay so it works regardless of
+          which screen sits underneath. */}
+      {showBadgeScene && content && (
+        <div
+          style={{
+            position: "fixed",
+            inset: 0,
+            zIndex: 80,
+            overflowY: "auto",
+            display: "grid",
+            placeItems: "center",
+            padding: "24px 0",
+            background: "radial-gradient(ellipse at 50% 30%, #2a0a14 0%, #160a2e 50%, #04050d 100%)",
+          }}
+        >
+          <BossVictoryScene
+            badgeIcon={content.badgeIcon}
+            badgeName={content.badgeName}
+            badgeArt={content.badgeArt}
+            weekNumber={content.weekNumber}
+            missionTitle={content.title}
+            stats={bossStats}
+            onClaim={() => {
+              setShowBadgeScene(false);
+              navigate(screen + 1);
+            }}
+          />
         </div>
       )}
 

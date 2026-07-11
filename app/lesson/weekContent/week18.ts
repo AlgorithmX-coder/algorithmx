@@ -114,7 +114,7 @@ export const WEEK_18: WeekContent = {
           text: "The family tablet on the kitchen shelf",
           icon: "📱",
           isScam: true,
-          explanation: "Mum's recipes, Dad's news, your games, your sister's drawings - that tablet belongs to EVERYBODY, so it hangs on everyone's hook.",
+          explanation: "Mom's recipes, Dad's news, your games, your sister's drawings - that tablet belongs to EVERYBODY, so it hangs on everyone's hook.",
         },
         {
           id: "sticker-tablet",
@@ -125,7 +125,7 @@ export const WEEK_18: WeekContent = {
         },
         {
           id: "school-computer",
-          text: "The school computer in the ICT room",
+          text: "The school computer in the computer lab",
           icon: "🏫",
           isScam: true,
           explanation: "A different kid sits at that keyboard every single lesson - school computers are as shared as devices get.",
@@ -191,7 +191,7 @@ export const WEEK_18: WeekContent = {
       prompt: "Which of these is a SHARED device?",
       choices: [
         { text: "The family tablet on the kitchen shelf", isCorrect: true },
-        { text: "Your dinosaur-sticker tablet", isCorrect: false },
+        { text: "The dinosaur-sticker tablet in your backpack", isCorrect: false },
         { text: "Your drawing pad", isCorrect: false },
         { text: "Your birthday camera", isCorrect: false },
       ],
@@ -284,7 +284,7 @@ export const WEEK_18: WeekContent = {
           id: "stay-signed-in",
           label: "Keep me signed in",
           icon: "✅",
-          note: "The balloon's favourite trick! On a shared tablet this props every door open - never this one.",
+          note: "The keep-me-signed-in trap! On a shared tablet this props every door open - never this one.",
         },
         {
           id: "logout-chat",
@@ -369,12 +369,12 @@ export const WEEK_18: WeekContent = {
       type: "info",
       title: "The Front Door",
       content:
-        "Your house has a front door, and it locks. A device needs one too - that's what the lock screen is. No lock code means anyone who picks it up walks straight in: the kid who finds it on the bus, the cousin who 'just wants a look'. And one more Lock Master secret: the code itself mustn't be a story a guesser can read. 1-2-3-4 is the first thing anyone tries, 0-0-0-0 is the second, and your birth year? The whole family knows it. Pick digits with NOTHING to guess.",
+        "Your house has a front door, and it locks. A device needs one too - that's what the lock screen is. No lock code means anyone who picks it up walks straight in: the kid who finds it on the bus, the cousin who 'just wants a look'. And one more Lock Master secret: the code itself mustn't be a story a guesser can read. 1-2-3-4 is the first thing anyone tries, 0-0-0-0 is the second, and your birthday? The whole family knows it. Pick digits with NOTHING to guess.",
       bullets: [
         "A lock screen is a front door",
         "No code = anyone walks in",
         "1-2-3-4 is every guesser's first try",
-        "Birth years are family-famous",
+        "Birthdays are family-famous",
         "Forge digits with nothing to guess",
       ],
       bulletIcons: ["🚪", "🔓", "🔢", "🎂", "🔨"],
@@ -438,10 +438,10 @@ export const WEEK_18: WeekContent = {
               explanation: "Put 34 after anything and the counting story continues - guessers LOVE a pattern that finishes itself.",
             },
             {
-              digits: "18",
-              tell: "your birth year",
+              digits: "07",
+              tell: "your birthday month",
               isStrong: false,
-              explanation: "Your birth year is family-famous - Gran knows it, your cousin knows it, and guessers try birthdays third.",
+              explanation: "Your birthday month is family-famous - Grandma knows it, your cousin knows it, and guessers try birthdays third.",
             },
             {
               digits: "93",
@@ -478,7 +478,7 @@ export const WEEK_18: WeekContent = {
       ],
       hints: {
         tier1: "Read each blank's little story - if a guesser could READ it, don't hammer it.",
-        tier2: "Counting runs (12, 34, 56), doubles (00, 77) and birth years all tell stories. Pick the quiet metal that means nothing.",
+        tier2: "Counting runs (12, 34, 56), doubles (00, 77) and birthdays all tell stories. Pick the quiet metal that means nothing.",
       },
       narration: {
         speaker: "adam",
@@ -551,7 +551,7 @@ export const WEEK_18: WeekContent = {
           "Sometimes it's YOU who finds something open.",
           "A diary app. A chat. Somebody's account.",
           "[whispers] Open by accident... is still not yours.",
-          "Dust it, close it, tell them.",
+          "Don't read it, close it gently, tell them.",
           "[warmly] Because that's what you'd want for your chest. Three moments - show me.",
         ],
       },
@@ -579,7 +579,7 @@ export const WEEK_18: WeekContent = {
           setup: "Your brother sprinted to football and left his chat open on the shared computer. The top message says 'don't tell anyone but...'",
           choices: [
             {
-              text: "Look away, close the window, tell him at teatime",
+              text: "Look away, close the window, tell him at dinner",
               isSafe: true,
               consequence: "He skids back in a panic an hour later - and finds it closed. 'YOU closed it? Legend.' Next week he spots YOUR game left open... and closes it, no peeking. It comes back around.",
             },
@@ -611,7 +611,7 @@ export const WEEK_18: WeekContent = {
         lines: [
           "[warmly] Three open chests. Three chances.",
           "Remember: open by accident isn't an invitation.",
-          "Dust it, close it, tell them -",
+          "Don't read it, close it gently, tell them -",
           "[excited] show me the Lock Master's gentle side!",
         ],
       },
@@ -635,7 +635,7 @@ export const WEEK_18: WeekContent = {
       type: "recap",
       concept: 4,
       total: 5,
-      learned: "Other people's stuff isn't yours to read, even left open - don't read, close it gently, tell them.",
+      learned: "Other people's stuff isn't yours to read, even left open - don't read it, close it gently, tell them.",
       next: "the sticky balloon that bobs up at every login - and how to pop it",
       emblem: "🤫",
       narration: {
@@ -719,7 +719,7 @@ export const WEEK_18: WeekContent = {
             {
               text: "YES - I use it every day",
               isSafe: false,
-              explanation: "Everyone's hands, remember? Signed-in-forever means your little cousin is posting as you by teatime. Relay rule: log out, every time.",
+              explanation: "Everyone's hands, remember? Signed-in-forever means your little cousin is posting as you by dinnertime. Relay rule: log out, every time.",
             },
             {
               text: "NO - sign me out when I'm done",
@@ -748,7 +748,7 @@ export const WEEK_18: WeekContent = {
         },
         {
           id: "own-tablet",
-          from: "YOUR OWN TABLET (Mum's right beside you)",
+          from: "YOUR OWN TABLET (Mom's right beside you)",
           fromIcon: "🏷️",
           message: "🎈 SAVE PASSWORD on this device?",
           replies: [
@@ -758,7 +758,7 @@ export const WEEK_18: WeekContent = {
               explanation: "On your OWN tablet saving can be fine - but ask-first still rules. Your grown-up knows things you don't, like who else borrows it on car trips.",
             },
             {
-              text: "ASK MUM FIRST - on MY tablet it can be OK",
+              text: "ASK MOM FIRST - on MY tablet it can be OK",
               isSafe: true,
               explanation: "",
             },
@@ -857,7 +857,7 @@ export const WEEK_18: WeekContent = {
         {
           text: "Closing your brother's chat without reading, then telling him",
           isStrong: true,
-          explanation: "Dust it, close it, tell them - the gentle power in action.",
+          explanation: "Don't read it, close it gently, tell them - the gentle power in action.",
         },
         {
           text: "Tapping YES on SAVE PASSWORD at the library",
@@ -871,7 +871,7 @@ export const WEEK_18: WeekContent = {
           "[excited] The Morning Relay - final lap!",
           "House moments are coming past.",
           "CLEAN HANDOFF for Lock Master form...",
-          "[warmly] LEFT OPEN for the Raccoon's favourite doors. Stamp them all!",
+          "[warmly] LEFT OPEN for the Raccoon's favorite doors. Stamp them all!",
         ],
       },
     },
@@ -891,7 +891,7 @@ export const WEEK_18: WeekContent = {
         { id: "rack", label: "Coat-Rack Sorter", accent: "#ffd158", icon: "📱", summary: "Family tablet, school computer, living-room console - you know exactly which devices are everyone's." },
         { id: "relay", label: "Log-Out Legend", accent: "#7df0ff", icon: "🎭", summary: "You hand shared devices back clean - nobody wears your name after you leave." },
         { id: "forge", label: "Passcode Smith", accent: "#7eff97", icon: "🔨", summary: "Every device gets a front door - with a code that tells guessers nothing." },
-        { id: "chest", label: "Chest Closer", accent: "#c084fc", icon: "🤫", summary: "Open or closed, other people's stuff isn't yours to read - dust it, close it, tell them." },
+        { id: "chest", label: "Chest Closer", accent: "#c084fc", icon: "🤫", summary: "Open or closed, other people's stuff isn't yours to read - don't read it, close it gently, tell them." },
         { id: "balloon", label: "Balloon Popper", accent: "#ff5fb3", icon: "✋", summary: "SAVE PASSWORD on a shared device? NO THANKS - pop, every single time." },
       ],
       narration: {
@@ -921,6 +921,107 @@ export const WEEK_18: WeekContent = {
     { type: "completion" },
   ],
 
+  // Bespoke boss: slam every door in the sleeping house before the goblin
+  // strolls in. P1 is the Log-Out Relay AS a boss phase - the recognition
+  // is deliberate (the lesson's relay game, replayed under pressure).
+  bossShowdown: {
+    machine: {
+      name: "THE TAB GOBLIN",
+      tagline: "A wind-up sneak that scuttles into every screen left glowing",
+      art: {
+        intact: "/game/bosses/w18-tabgoblin-intact.png",
+        damaged: "/game/bosses/w18-tabgoblin-damaged.png",
+        defeated: "/game/bosses/w18-tabgoblin-defeated.png",
+      },
+      arena: "/game/backgrounds/w18-arena-dawnhouse.png",
+      accent: "#c084fc",
+      glow: "rgba(192,132,252,0.55)",
+    },
+    heroSprites: {
+      adam: {
+        idle: "/game/characters/w18/adam-pajama-idle.png",
+        attack: "/game/characters/w18/adam-pajama-attack.png",
+        celebrate: "/game/characters/w18/adam-pajama-celebrate.png",
+      },
+      layla: {
+        idle: "/game/characters/w18/layla-pajama-idle.png",
+        attack: "/game/characters/w18/layla-pajama-attack.png",
+        celebrate: "/game/characters/w18/layla-pajama-celebrate.png",
+      },
+    },
+    phases: [
+      // P1 · LEFT-OPEN TAB → ORDER-STRIKE: the Log-Out Relay as a boss
+      // phase - game, then art, then chat, before the goblin reaches them.
+      {
+        kind: "orderStrike",
+        attack: 0,
+        coach: "Run the Log-Out Relay - beat the goblin to every screen!",
+        intro: "Three screens glow in the sleeping house - the game, the art app, the chat. Slam every door in relay order!",
+        steps: [
+          { id: "game", label: "LOG OUT of the game", icon: "🎮" },
+          { id: "art", label: "LOG OUT of the art app", icon: "🎨" },
+          { id: "chat", label: "LOG OUT of the chat", icon: "💬" },
+        ],
+      },
+      // P2 · SNEAKY PEEK → COUNTER-CARD: sister's diary app glows on the
+      // shared screen - closed chests stay closed.
+      {
+        kind: "counterCard",
+        attack: 1,
+        coach: "Somebody else's chest - you know this one!",
+        situation: "Your sister's diary app glows on the shared screen - left wide open by accident.",
+        situationIcon: "👀",
+        cards: [
+          { id: "close", label: "DUST-AND-CLOSE - CLOSED CHESTS STAY CLOSED", icon: "🔒", isRight: true, note: "Close it gently without reading a word, then tell her - Lock Master style." },
+          { id: "peek", label: "ONE TINY PEEK - IT WAS OPEN ANYWAY", icon: "🙈", isRight: false, note: "Open by accident is not an invitation - a peek is still sneaking." },
+          { id: "secret", label: "READ IT ALL - JUST NEVER TELL", icon: "🤫", isRight: false, note: "Secret reading is snooping twice - close it and let her know instead." },
+        ],
+      },
+      // P3 · STICKY BALLOON → DEFLECT-SORT: SAVE PASSWORD balloons pop up
+      // across the house - pop NO on shared screens, ask first on your own.
+      {
+        kind: "deflectSort",
+        attack: 2,
+        coach: "Shared screens never keep your keys. Your own tablet? That's a grown-up question!",
+        actLabel: "POP IT - NO!",
+        actIcon: "✋",
+        passLabel: "ASK MOM FIRST",
+        items: [
+          { id: "kitchen", label: "SAVE PASSWORD? - the family kitchen tablet", icon: "👪", act: true, note: "Everyone's hands touch the kitchen tablet - pop it, every single time." },
+          { id: "dino", label: "SAVE PASSWORD? - your dinosaur-sticker tablet", icon: "🌟", act: false, note: "That one's YOURS - so it's an ask-first question, not a pop." },
+          { id: "library", label: "SAVE PASSWORD? - the library computer", icon: "🔍", act: true, note: "A library computer belongs to the whole town - keys stay out." },
+          { id: "drawpad", label: "SAVE PASSWORD? - your birthday drawing pad", icon: "🎁", act: false, note: "Yours again - your grown-up helps pick where keys live." },
+          { id: "cousin", label: "SAVE PASSWORD? - your cousin's phone", icon: "💬", act: true, note: "When their phone goes home, your password goes with it - pop it." },
+          { id: "player", label: "SAVE PASSWORD? - your own game player", icon: "🎮", act: false, note: "Your own device plus a grown-up's yes - that's the only maybe." },
+        ],
+      },
+    ],
+    weakPoints: [
+      { question: "You're done playing on the shared tablet. What really shuts the door behind you?", answers: ["Logging out - Home just hides the apps", "Tapping the Home button", "Turning the screen dark", "Putting it back on the shelf"], correctIndex: 0, explanation: "Home hides, dark sleeps - only LOG OUT hands the tablet back clean." },
+      { question: "Your sister's diary app was left glowing on the shared screen. A Lock Master...", answers: ["Closes it without reading - and tells her", "Has one tiny peek first", "Reads it but keeps it secret", "Saves it to look at later"], correctIndex: 0, explanation: "Open by accident is not an invitation - close the chest gently and let her know." },
+      { question: "The SAVE PASSWORD balloon pops up on the library computer. You...", answers: ["Pop it with a NO - shared screens never keep your keys", "Tap YES - it's faster tomorrow", "Tap YES but whisper your password", "Let the librarian decide"], correctIndex: 0, explanation: "On shared screens the answer is always NO - your keys live with you, not in the machine." },
+    ],
+    finisher: {
+      chargeLabel: "CHARGE THE FORGE HAMMER",
+      chargeIcon: "🔨",
+      chargeSecs: 5,
+      milestones: ["The hammer is glowing on the anvil…", "The family code is sparking - 58-93-41…", "EVERY LOCK IS READY! LET GO!"],
+      payoffTitle: "EVERY DOOR CLICKED SHUT!",
+      payoffLine: "CLANG! The forge hammer falls and the family code - 58-93-41 - races through the sleeping house. The game, the art app, the chat... click, click, CLICK! Every lock shuts at once and the goblin winds down mid-scuttle, key spinning slower... slower... stopped. A locked house sleeps easy - and so does everyone in it.",
+    },
+    villain: {
+      arrival: "Every door in this house is open! It's basically an invitation!",
+      phases: [
+        "Still signed in! You shouldn't have! Really!",
+        "One tiny diary! For research purposes!",
+        "Save the password! Save ALL the passwords! For me!",
+      ],
+      escape: "Locked?! Even the TABLET?! Who taught this family THINGS?!",
+    },
+    voiceSlug: "w18",
+  },
+  badgeArt: "/cyberheroes/badges/week-18-lock-master.png",
+
   // Week-lane attack theatre: left-open-device tricks only (password
   // cracking = W1, app fakes = W9, device ears = W14).
   bossAttacks: [
@@ -933,14 +1034,14 @@ export const WEEK_18: WeekContent = {
   // house before the Raccoon strolls in - is designed with the boss batch).
   bossQuestions: {
     easy: [
-      { question: "Which of these is a SHARED device?", answers: ["The family tablet on the kitchen shelf", "Your dinosaur-sticker tablet", "Your birthday camera", "Your drawing pad"], correctIndex: 0, explanation: "Everyone's hands touch it - so it hangs on everyone's hook and gets extra care." },
+      { question: "Which of these is a SHARED device?", answers: ["The family tablet on the kitchen shelf", "The dinosaur-sticker tablet in your backpack", "Your birthday camera", "Your drawing pad"], correctIndex: 0, explanation: "Everyone's hands touch it - so it hangs on everyone's hook and gets extra care." },
       { question: "You're done on a shared device. Before you leave, you...", answers: ["Log out of your accounts", "Just tap the Home button", "Turn the screen off", "Walk away - it's fine"], correctIndex: 0, explanation: "Home hides apps and screen-off just goes dark - only LOG OUT hands the baton over clean." },
-      { question: "A lock screen is like...", answers: ["A front door for your device", "A punishment", "A decoration", "A game"], correctIndex: 0, explanation: "No lock means anyone who picks it up walks straight in - every device needs its front door." },
+      { question: "A lock screen is like...", answers: ["A front door for your device", "A password for your apps", "A decoration", "A game"], correctIndex: 0, explanation: "No lock means anyone who picks it up walks straight in - every device needs its front door." },
     ],
     medium: [
-      { question: "Why is staying signed in on a shared device risky?", answers: ["The next person is wearing YOUR name - posts, coins, messages", "It wastes battery", "It makes apps slower", "It isn't - sharing is caring"], correctIndex: 0, explanation: "They could post and spend as you without even meaning to - log out, every time." },
-      { question: "Which lock code tells guessers NOTHING?", answers: ["58-93-41", "1-2-3-4", "0-0-0-0", "Your birth year"], correctIndex: 0, explanation: "Counting runs, doubles and birthdays are stories guessers read - quiet digits beat them all." },
-      { question: "Your sister's diary app was left open. A Lock Master...", answers: ["Closes it without reading and tells her", "Has one little peek", "Reads it all - it was open!", "Screenshots it for later"], correctIndex: 0, explanation: "Open by accident is not an invitation - dust it, close it, tell them." },
+      { question: "Why is staying signed in on a shared device risky?", answers: ["The next person is wearing YOUR name - posts, coins, messages", "It's only risky if a stranger uses it next", "It wastes battery", "It isn't - sharing is caring"], correctIndex: 0, explanation: "They could post and spend as you without even meaning to - log out, every time." },
+      { question: "Which lock code tells guessers NOTHING?", answers: ["58-93-41", "1-2-3-4", "0-0-0-0", "Your birthday"], correctIndex: 0, explanation: "Counting runs, doubles and birthdays are stories guessers read - quiet digits beat them all." },
+      { question: "Your sister's diary app was left open. A Lock Master...", answers: ["Closes it without reading and tells her", "Has one little peek", "Reads it all - it was open!", "Screenshots it for later"], correctIndex: 0, explanation: "Open by accident is not an invitation - don't read it, close it gently, tell them." },
     ],
     hard: [
       { question: "Tapping Home instead of logging out means...", answers: ["Your accounts are still open behind it", "You're safely logged out", "The tablet locks itself", "Your apps are deleted"], correctIndex: 0, explanation: "Home just HIDES the apps - the sneakiest non-log-out there is. Only LOG OUT closes the door." },
@@ -969,7 +1070,7 @@ export const WEEK_18: WeekContent = {
     13: { adam: null, layla: { mood: "thumbsup", message: "Finish the Lock Master rule!" } }, // prove: finish
     14: { adam: null, layla: { mood: "excited", message: "The door is forged!" } }, // recap 3
     15: { adam: null, layla: { mood: "thinking", message: "Open by accident isn't an invitation." } }, // learn: chest
-    16: { adam: null, layla: { mood: "curious", message: "Dust it, close it, tell them." } }, // game: decide
+    16: { adam: null, layla: { mood: "curious", message: "Don't read it, close it gently, tell them." } }, // game: decide
     17: { adam: { mood: "worried", message: "He's fibbing about open chests - catch him!" }, layla: null }, // prove: lie
     18: { adam: { mood: "excited", message: "The kindest power - earned!" }, layla: null }, // recap 4
     19: { adam: { mood: "thinking", message: "Hear that squeaky balloon?" }, layla: null }, // learn: balloon

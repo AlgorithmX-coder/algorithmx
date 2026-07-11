@@ -78,20 +78,23 @@ export default function WelcomeScene({
 
       <SceneTitle title={title} badge={badge} />
 
-      {/* Centerpiece: polaroid + caption.
-          Lifted from top:52% to top:44% so the caption + the bottom
-          CTA button don't collide on shorter viewports. */}
+      {/* Centerpiece: polaroid + caption. Flex column spanning the scene
+          with the title zone (150px) and CTA zone (110px) reserved as
+          padding, so the polaroid centers in the REMAINING space and can
+          never rise into the absolute SceneTitle above it (the old
+          top:44% centering overlapped the headline on 900px viewports). */}
       <div
         style={{
           position: "absolute",
-          left: "50%",
-          top: "44%",
-          transform: "translate(-50%, -50%)",
+          inset: 0,
           zIndex: 6,
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
+          justifyContent: "center",
           gap: 18,
+          padding: "150px 20px 110px",
+          pointerEvents: "none",
         }}
       >
         <Polaroid src={photoSrc} caption={photoCaption} />
@@ -178,7 +181,10 @@ function Polaroid({ src, caption }: { src: string; caption: string }) {
     >
       <div
         style={{
-          width: "min(50vw, 380px)",
+          // Slightly smaller than the old min(50vw,380px) so the whole
+          // polaroid+plaque column clears the reserved title/CTA zones
+          // on a 900px-tall viewport.
+          width: "min(46vw, 340px)",
           aspectRatio: "4 / 3",
           backgroundImage: `url(${src})`,
           backgroundSize: "cover",

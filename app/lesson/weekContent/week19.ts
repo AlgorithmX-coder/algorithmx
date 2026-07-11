@@ -55,7 +55,7 @@ export const WEEK_19: WeekContent = {
       photoSrc: "/cyberheroes/alerts/week-19.png",
       title: "ALERT INCOMING",
       badge: "Incident Report",
-      caption: "The Raccoon has given up on YOU - eighteen weeks of walls, locks and popped balloons taught him that lesson. So he's turned his tricks on your FAMILY: a prize-voucher text for Gran, a £1 parcel scam for Dad, a free-coin machine for your little brother. Same tricks, bigger font. But he's forgotten the most important thing in the whole house... it has an EXPERT now. This week the roles flip: you teach, you check, you speak up - and together you raise the Family Firewall.",
+      caption: "The Raccoon has given up on YOU - eighteen weeks of walls, locks and popped balloons taught him that lesson. So he's turned his tricks on your FAMILY: a gift-card prize text for Grandma, a $1 package scam for Dad, a free-coin machine for your little brother. Same tricks, bigger font. But he's forgotten the most important thing in the whole house... it has an EXPERT now. This week the roles flip: you teach, you check, you speak up - and together you raise the Family Firewall.",
       photoCaption: "Wk 19 - The Expert in the House",
       ctaLabel: "Start the Mission →",
     },
@@ -76,7 +76,7 @@ export const WEEK_19: WeekContent = {
       type: "info",
       title: "You're the Expert Now",
       content:
-        "Stop and count: eighteen weeks of powers. Passwords, disguises, scam tells, painted doors, sticky balloons - you know things most GROWN-UPS in your house don't know. So this week the roles flip: when someone in your family is about to slip, the expert speaks up. One rule makes it work: experts TEACH, they never tease. No 'silly Gran!', no grabbing the phone - just 'wait - can I show you something?', said kindly, right then. That sentence is the whole firewall.",
+        "Stop and count: eighteen weeks of powers. Passwords, disguises, scam tells, painted doors, sticky balloons - you know things most GROWN-UPS in your house don't know. So this week the roles flip: when someone in your family is about to slip, the expert speaks up. One rule makes it work: experts TEACH, they never tease. No 'silly Grandma!', no grabbing the phone - just 'wait - can I show you something?', said kindly, right then. A firewall is a special wall that keeps trouble out of a house. This week, your family builds one - and YOU'RE the builder. That kind little sentence is the first brick.",
       bullets: [
         "Eighteen weeks of powers - count them",
         "You know tells the grown-ups don't",
@@ -103,17 +103,17 @@ export const WEEK_19: WeekContent = {
       type: "chooseYourPath",
       scenarios: [
         {
-          setup: "Gran reads a text out loud: 'Ooh! I've won a £500 shopping voucher! I just tap here to claim it...' Her finger is hovering...",
+          setup: "Grandma reads a text out loud: 'Ooh! I've won a $500 gift card! I just tap here to claim it...' Her finger is hovering...",
           choices: [
             {
-              text: "'Gran, wait - can I show you something?'",
+              text: "'Grandma, wait - can I show you something?'",
               isSafe: true,
-              consequence: "You walk her through the tells - nobody wins prizes they never entered, and real prizes never rush you. Gran deletes it, calls you 'my little expert', and tells the WHOLE family at dinner. The firewall grows.",
+              consequence: "You walk her through the tells - nobody wins prizes they never entered, and real prizes never rush you. Grandma deletes it, calls you 'my little expert', and tells the WHOLE family at dinner. The firewall grows.",
             },
             {
               text: "Stay quiet - grown-ups sort their own phones",
               isSafe: false,
-              consequence: "Gran taps. The phone fills with pop-ups and it takes the whole weekend to untangle - and the worst bit is you KNEW. Eighteen weeks of powers only protect people when you share them.",
+              consequence: "Grandma taps. The phone fills with pop-ups and it takes the whole weekend to untangle - and the worst bit is you KNEW. Eighteen weeks of powers only protect people when you share them.",
             },
           ],
         },
@@ -123,7 +123,7 @@ export const WEEK_19: WeekContent = {
             {
               text: "Suggest three random words - the Week 1 trick",
               isSafe: true,
-              consequence: "'BananaRocketCloud?!' Dad laughs - then realises he can actually remember it AND nobody could guess it. High-five. The expert's first grown-up graduate.",
+              consequence: "'BananaRocketCloud?!' Dad laughs - then realizes he can actually remember it AND nobody could guess it. High-five. The expert's first grown-up graduate.",
             },
             {
               text: "Say nothing - it's his bank, not yours",
@@ -178,7 +178,7 @@ export const WEEK_19: WeekContent = {
       concept: 1,
       total: 5,
       learned: "Eighteen weeks of powers means the roles flip: you're the house expert now - and experts teach kindly, they never tease.",
-      next: "the scam text on Gran's phone - and the four tells you'll show her",
+      next: "the scam text on Grandma's phone - and the four tells you'll show her",
       emblem: "🥇",
       narration: {
         speaker: "adam",
@@ -186,7 +186,7 @@ export const WEEK_19: WeekContent = {
           "[excited] Power one - the expert badge is yours!",
           "Teach kindly. Never tease.",
           "[whispers] And your first pupil is waiting in the kitchen...",
-          "Gran's phone just buzzed. Come on.",
+          "Grandma's phone just buzzed. Come on.",
         ],
       },
     },
@@ -197,7 +197,7 @@ export const WEEK_19: WeekContent = {
       type: "info",
       title: "Same Tricks, Bigger Font",
       content:
-        "Here's a secret the Raccoon counts on: grown-ups get MORE scam texts than kids do. Fake banks, fake parcels, fake prizes - the exact tricks you learned in Week 4, just aimed at Gran in bigger letters. And the tells never change: a stranger's number wearing a bank's name, a panic clock racing you, a link with no plaque, and sloppy spelling a real bank would never send. You know all four. Time to sit at the kitchen table and show Gran - kindly, one tell at a time.",
+        "Here's a secret the Raccoon counts on: grown-ups get MORE scam texts than kids do. Fake banks, fake packages, fake prizes - the exact tricks you learned in Week 4, just aimed at Grandma in bigger letters. And the tells never change: a stranger's number wearing a bank's name, a panic clock racing you, a link with no plaque, and sloppy spelling a real bank would never send. You know all four. Time to sit at the kitchen table and show Grandma - kindly, one tell at a time.",
       bullets: [
         "Grown-ups get scam texts too - lots",
         "Same tricks you beat in Week 4",
@@ -211,9 +211,9 @@ export const WEEK_19: WeekContent = {
         speaker: "adam",
         lines: [
           "[whispers] Secret time: grown-ups get MORE scam texts than kids.",
-          "Fake banks. Fake parcels. Fake prizes.",
+          "Fake banks. Fake packages. Fake prizes.",
           "The same tricks you beat in Week four -",
-          "[warmly] just wearing bigger letters for Gran.",
+          "[warmly] just wearing bigger letters for Grandma.",
           "And you still know every tell.",
           "[excited] Her phone's on the kitchen table - let's check it together!",
         ],
@@ -223,16 +223,16 @@ export const WEEK_19: WeekContent = {
     {
       type: "clueBoard",
       introTitle: "The Kitchen-Table Check",
-      introSubtitle: "A 'bank' text just landed on Gran's phone - and she's worried. Check it line by line and gather the tells to show her!",
+      introSubtitle: "A 'bank' text just landed on Grandma's phone - and she's worried. Check it line by line and gather the tells to show her!",
       introIcon: "🔍",
-      photoTitle: "Gran's phone: 'FASTBANK ALERT!! Your acount is BLOCKED. Tap quick-fix-bank.win in 10 minutes or lose EVERYTHING. - from +44 7999 000111'",
+      photoTitle: "Grandma's phone: 'FASTBANK ALERT!! Your acount is BLOCKED. Tap quick-fix-bank.win in 10 minutes or lose EVERYTHING. - from +44 7999 000111'",
       photoIcon: "✉️",
       clues: [
         {
           id: "sender",
           icon: "🆔",
           label: "From: +44 7999 000111",
-          evidence: "TELL ONE: Gran's real bank always texts from the same short number - this is a stranger's long number wearing a bank's name. Show her the old bank texts right above it: they don't match.",
+          evidence: "TELL ONE: Grandma's real bank always texts from the same short number - this is a strange long faraway number wearing a bank's name. Show her the old bank texts right above it: they don't match. And remember - tricksters can fake the number too, so check the OTHER tells as well.",
         },
         {
           id: "clock",
@@ -244,17 +244,17 @@ export const WEEK_19: WeekContent = {
           id: "link",
           icon: "🔗",
           label: "'Tap quick-fix-bank.win'",
-          evidence: "TELL THREE: a door with no plaque (Week 16!). Gran's real bank never sends tap-this links - it says 'log in the way you always do'. Strange door, no walk-through.",
+          evidence: "TELL THREE: a door with no plaque (Week 16!). Grandma's real bank never sends tap-this links - it says 'log in the way you always do'. Strange door, no walk-through.",
         },
         {
           id: "spelling",
           icon: "🔠",
           label: "'Your acount'",
-          evidence: "TELL FOUR: the loose thread. Real banks check their spelling; tricksters rush theirs. 'Acount' with one C is the giggle that gives the whole costume away.",
+          evidence: "TELL FOUR: the loose thread. Real banks check their spelling; tricksters rush theirs. 'Acount' with one C is the loose thread that unravels the whole disguise.",
         },
       ],
       verdict: {
-        prompt: "All four tells gathered. What do you show Gran?",
+        prompt: "All four tells gathered. What do you show Grandma?",
         options: [
           {
             text: "It's a trick - walk her through the tells, then delete it together",
@@ -267,15 +267,15 @@ export const WEEK_19: WeekContent = {
             explanation: "The panic clock nearly got you too! Her account was never blocked - the only trap here IS that link.",
           },
           {
-            text: "Take her phone away - banking's too dangerous for Gran",
+            text: "Take her phone away - banking's too dangerous for Grandma",
             isCorrect: false,
-            explanation: "Too far - Gran's the boss of her own phone. Experts hand people POWERS, not punishments.",
+            explanation: "Too far - Grandma's the boss of her own phone. Experts hand people POWERS, not punishments.",
           },
         ],
       },
       stampText: "SCAM SPOTTED!",
       completeTitle: "Four tells, shown kindly!",
-      completeLine: "Same tricks, bigger font - and now Gran knows every tell, because YOU taught her.",
+      completeLine: "Same tricks, bigger font - and now Grandma knows every tell, because YOU taught her.",
       hints: {
         tier1: "Compare it with the real bank's texts - what's different?",
         tier2: "Check WHO sent it, the panic clock, the strange link, and the spelling.",
@@ -283,10 +283,10 @@ export const WEEK_19: WeekContent = {
       narration: {
         speaker: "adam",
         lines: [
-          "[whispers] There it is, on Gran's phone.",
+          "[whispers] There it is, on Grandma's phone.",
           "Looks scary. Checks easy.",
           "Tap every line and gather the tells -",
-          "[warmly] then we show Gran, one at a time.",
+          "[warmly] then we show Grandma, one at a time.",
         ],
       },
       coachLines: {
@@ -299,13 +299,13 @@ export const WEEK_19: WeekContent = {
       type: "quickCheck",
       mode: "lie",
       prompt: "Is that true?",
-      raccoonLine: "Grown-ups can't be tricked - scams only work on little kids! Your Gran is TOTALLY safe without you, trust me!",
+      raccoonLine: "Grown-ups can't be tricked - scams only work on little kids! Your Grandma is TOTALLY safe without you, trust me!",
       choices: [
         { text: "TRUE", isCorrect: false },
         { text: "FALSE", isCorrect: true },
       ],
       praise: "Busted - grown-ups get MORE scam texts than kids. That's exactly why the house needs its expert. ✓",
-      nudge: "Who was that fake bank text aimed at - you, or Gran?",
+      nudge: "Who was that fake bank text aimed at - you, or Grandma?",
     },
 
     // 10 - Recap · Concept 2 of 5
@@ -319,7 +319,7 @@ export const WEEK_19: WeekContent = {
       narration: {
         speaker: "layla",
         lines: [
-          "[excited] Power two - Gran spots scams now!",
+          "[excited] Power two - Grandma spots scams now!",
           "Taught, not told off.",
           "[warmly] But one lesson protects one person...",
           "a family RULE protects everyone. Fetch the quilt.",
@@ -435,7 +435,7 @@ export const WEEK_19: WeekContent = {
         lines: [
           "[excited] Patches on the table!",
           "One question for each:",
-          "would EVERYONE sign it - Gran to little brother?",
+          "would EVERYONE sign it - Grandma to little brother?",
           "[warmly] Sew the together rules. Leave the unravellers. Go!",
         ],
       },
@@ -452,7 +452,7 @@ export const WEEK_19: WeekContent = {
       choices: [
         { text: "Screens sleep in the kitchen - even Dad's", isCorrect: true },
         { text: "Rules are only for kids", isCorrect: false },
-        { text: "Grown-ups do whatever they like", isCorrect: false },
+        { text: "No screens ever again", isCorrect: false },
         { text: "Keep problems secret", isCorrect: false },
       ],
       praise: "Even Dad's - a rule the whole family signs is a rule the whole family keeps. ✓",
@@ -471,7 +471,7 @@ export const WEEK_19: WeekContent = {
         lines: [
           "[excited] Power three - the quilt is sewn!",
           "Every patch signed, even Dad's.",
-          "[whispers] Now grab your torch, expert...",
+          "[whispers] Now grab your flashlight, expert...",
           "it's time for the evening rounds.",
         ],
       },
@@ -483,11 +483,11 @@ export const WEEK_19: WeekContent = {
       type: "info",
       title: "The Evening Rounds",
       content:
-        "Every castle guard walks the walls at night, checking each window. That's the expert's evening rounds: one device per family member, one check each. Gran's phone - who can video-call her? Little brother's tablet - can he download without asking? Mum's phone - are her photos carrying a map pin? Some windows you'll find already locked (Dad's laptop updates itself; the family tablet still wears last week's forged code). The open ones? One switch each, and the wall is whole.",
+        "Every castle guard walks the walls at night, checking each window. That's the expert's evening rounds: one device per family member, one check each. Grandma's phone - who can video-call her? Little brother's tablet - can he download without asking? Mom's phone - are her photos carrying a map pin? Some windows you'll find already locked (Dad's laptop updates itself; the family tablet still wears last week's forged code). The open ones? Show that person, flip the switch TOGETHER - and the wall is whole.",
       bullets: [
         "Guards walk the walls each night",
         "One device per family member",
-        "Who can video-call Gran?",
+        "Who can video-call Grandma?",
         "Can little hands download alone?",
         "Some windows are already locked",
       ],
@@ -501,7 +501,7 @@ export const WEEK_19: WeekContent = {
           "That's your evening rounds, expert:",
           "one device per family member, one check each.",
           "[whispers] Some windows are already locked. Some... aren't.",
-          "[excited] Torch on - let's do the rounds!",
+          "[excited] Flashlight on - let's do the rounds!",
         ],
       },
     },
@@ -510,17 +510,17 @@ export const WEEK_19: WeekContent = {
       type: "settingsSwitch",
       panelTitle: "THE FAMILY'S DEVICES - EVENING ROUNDS",
       introTitle: "The House Rounds",
-      introSubtitle: "One device per family member, all on the panel. Find every switch a trickster could slip through tonight - and set it right!",
+      introSubtitle: "One device per family member, all on the panel. Find every switch a trickster could slip through tonight - then show that person and flip it TOGETHER!",
       introIcon: "⚙️",
       rows: [
         {
           id: "gran",
-          label: "Gran's phone - video calls",
+          label: "Grandma's phone - video calls",
           value: "ANYONE CAN CALL",
           safeValue: "CONTACTS ONLY",
           icon: "👀",
           isRisky: true,
-          note: "Video-call scammers love an open line to Gran - contacts-only means only real faces can ring through.",
+          note: "Video-call scammers love an open line to Grandma - show her the switch and flip it TOGETHER: contacts-only means only real faces can ring through.",
         },
         {
           id: "dad",
@@ -528,7 +528,7 @@ export const WEEK_19: WeekContent = {
           value: "INSTALLS ITSELF AT NIGHT",
           icon: "⚙️",
           isRisky: false,
-          note: "Already right! Updates are armour patches - Dad's laptop dresses itself while he snores.",
+          note: "Already right! Updates are armor patches - Dad's laptop dresses itself while he snores.",
         },
         {
           id: "brother",
@@ -537,16 +537,16 @@ export const WEEK_19: WeekContent = {
           safeValue: "GROWN-UP SAYS YES FIRST",
           icon: "🎁",
           isRisky: true,
-          note: "He's six - Week 9's rule installs WITH someone. One switch and every download asks first.",
+          note: "He's six - and Week 9's rule says downloads happen WITH a grown-up. One switch and every download asks first.",
         },
         {
           id: "mum",
-          label: "Mum's phone - location on photos",
+          label: "Mom's phone - location on photos",
           value: "ON",
           safeValue: "OFF",
           icon: "📍",
           isRisky: true,
-          note: "Every dinner photo was carrying a map pin to your kitchen - the Week 12 fix, family-sized.",
+          note: "Every dinner photo was carrying a map pin to your kitchen - show Mom and flip it TOGETHER: the Week 12 fix, family-sized.",
         },
         {
           id: "tablet",
@@ -565,14 +565,14 @@ export const WEEK_19: WeekContent = {
         speaker: "adam",
         lines: [
           "[whispers] The rounds begin - five windows on the wall.",
-          "Gran's, Dad's, your brother's, Mum's, the tablet's.",
+          "Grandma's, Dad's, your brother's, Mom's, the tablet's.",
           "Find the open ones...",
-          "[excited] and flip them shut. Go, expert!",
+          "[excited] and flip them shut - together. Go, expert!",
         ],
       },
       coachLines: {
         speaker: "adam",
-        lines: ["Check each row - if a trickster could slip through it, tap it and set it right!"],
+        lines: ["Check each row - if a trickster could slip through it, tap it, then show that family member and flip it together!"],
       },
     },
     // 17 - Prove: SPEED
@@ -582,11 +582,11 @@ export const WEEK_19: WeekContent = {
       prompt: "Quick - tap the window that's still wide open!",
       speedMs: 5000,
       choices: [
-        { text: "Gran's calls: ANYONE", isCorrect: true },
+        { text: "Grandma's calls: ANYONE", isCorrect: true },
         { text: "Tablet code: ON", isCorrect: false },
         { text: "Updates: AUTOMATIC", isCorrect: false },
       ],
-      praise: "Spotted at guard speed - contacts-only, and Gran's window clicks shut. ✓",
+      praise: "Spotted at guard speed - contacts-only, and Grandma's window clicks shut. ✓",
     },
 
     // 18 - Recap · Concept 4 of 5
@@ -594,7 +594,7 @@ export const WEEK_19: WeekContent = {
       type: "recap",
       concept: 4,
       total: 5,
-      learned: "The expert's evening rounds: one device per family member, one check each - and the open windows get flipped shut.",
+      learned: "The expert's evening rounds: one device per family member, one check each - and every open window gets flipped shut TOGETHER.",
       next: "the hardest power of all - speaking up at the exact right moment",
       emblem: "⚙️",
       narration: {
@@ -614,7 +614,7 @@ export const WEEK_19: WeekContent = {
       type: "info",
       title: "Freeze the Moment",
       content:
-        "Rules and settings guard the house all day - but some traps need a HERO in the room. The prize text arriving while Gran's on the sofa. Dad reading a '£1 re-delivery' parcel message at the door. A free-coin machine asking your brother for Mum's card RIGHT NOW. In those moments the expert's power is noticing - and speaking up at the exact second it matters: 'Wait! Freeze!' Then the three steps you know: notice it, speak up kindly, fix it together.",
+        "Rules and settings guard the house all day - but some traps need a HERO in the room. The prize text arriving while Grandma's on the sofa. Dad reading a '$1 re-delivery' package message at the door. A free-coin machine asking your brother for Mom's card RIGHT NOW. In those moments the expert's power is noticing - and speaking up at the exact second it matters: 'Wait! Freeze!' Then the three steps you know: notice it, speak up kindly, fix it together.",
       bullets: [
         "Some traps need a hero in the room",
         "Watch for the about-to-tap moment",
@@ -629,7 +629,7 @@ export const WEEK_19: WeekContent = {
         lines: [
           "[warmly] Last power - and it's the bravest.",
           "Some traps need a hero IN the room.",
-          "A prize text. A parcel trick. A free-coin machine.",
+          "A prize text. A package trick. A free-coin machine.",
           "[whispers] The power is noticing... at the exact right second.",
           "Wait - FREEZE! Then fix it together.",
           "[excited] Three family scenes - find each trap before it snaps!",
@@ -662,11 +662,11 @@ export const WEEK_19: WeekContent = {
             },
             {
               id: "gran-voucher",
-              name: "Gran on the sofa",
-              detail: "a text: 'You WON a £500 voucher! Tap to claim!' - finger hovering",
+              name: "Grandma on the sofa",
+              detail: "a text: 'You WON a $500 gift card! Tap to claim!' - finger hovering",
               icon: "👪",
               isFake: true,
-              note: "FREEZE! Nobody wins prizes they never entered - that's Week 4's oldest bait, aimed straight at Gran.",
+              note: "FREEZE! Nobody wins prizes they never entered - that's Week 4's oldest bait, aimed straight at Grandma.",
             },
             {
               id: "bro-cartoons",
@@ -678,7 +678,7 @@ export const WEEK_19: WeekContent = {
             },
             {
               id: "mum-recipe",
-              name: "Mum at the counter",
+              name: "Mom at the counter",
               detail: "following a soup recipe on the family tablet",
               icon: "👪",
               isFake: false,
@@ -692,11 +692,11 @@ export const WEEK_19: WeekContent = {
           senders: [
             {
               id: "gran-knitting",
-              name: "Gran in her chair",
+              name: "Grandma in her chair",
               detail: "knitting, phone face-down and quiet",
               icon: "👪",
               isFake: false,
-              note: "A face-down phone can't trick anyone - knit on, Gran.",
+              note: "A face-down phone can't trick anyone - knit on, Grandma.",
             },
             {
               id: "sis-drawing",
@@ -709,15 +709,15 @@ export const WEEK_19: WeekContent = {
             {
               id: "dad-parcel",
               name: "Dad by the front door",
-              detail: "a text: 'missed parcel! pay £1 re-delivery at parcel-fix.win' - card in hand",
+              detail: "a text: 'missed package! pay $1 re-delivery at package-fix.win' - card in hand",
               icon: "👪",
               isFake: true,
-              note: "FREEZE! The £1 parcel trick - a tiny ask to steal a whole card. Show Dad the no-plaque door rule.",
+              note: "FREEZE! The $1 package trick - a tiny ask to steal a whole card. Show Dad the no-plaque door rule.",
             },
             {
               id: "bro-garden",
-              name: "Little brother in the garden",
-              detail: "digging a hole to Australia, no screen in sight",
+              name: "Little brother in the backyard",
+              detail: "digging a hole to China, no screen in sight",
               icon: "👪",
               isFake: false,
               note: "Offline and muddy - the safest kid in the county.",
@@ -730,7 +730,7 @@ export const WEEK_19: WeekContent = {
           senders: [
             {
               id: "mum-photo",
-              name: "Mum photographing the roast",
+              name: "Mom photographing Sunday dinner",
               detail: "location stamp OFF since your rounds",
               icon: "👪",
               isFake: false,
@@ -739,33 +739,33 @@ export const WEEK_19: WeekContent = {
             {
               id: "dad-video",
               name: "Dad on a video call",
-              detail: "with Uncle Sam - a contact he actually knows",
+              detail: "with Uncle Ray - a contact he actually knows",
               icon: "👪",
               isFake: false,
               note: "A real face from his contacts - exactly how calls should work.",
             },
             {
               id: "gran-telly",
-              name: "Gran with her quiz show",
-              detail: "shouting answers at the telly",
+              name: "Grandma with her quiz show",
+              detail: "shouting answers at the TV",
               icon: "👪",
               isFake: false,
-              note: "The telly can't hear her and neither can the Raccoon. Carry on, Gran.",
+              note: "The TV can't hear her and neither can the Raccoon. Carry on, Grandma.",
             },
             {
               id: "bro-robux",
               name: "Little brother waving the tablet",
-              detail: "'FREE ROBUX! Just type in Mum's card number!' - running to find Mum's purse",
+              detail: "'FREE ROBUX! Just type in Mom's card number!' - running to find Mom's purse",
               icon: "👪",
               isFake: true,
-              note: "FREEZE! Free-coin machines were Week 7's trap - and it nearly got fed Mum's actual card.",
+              note: "FREEZE! Free-coin machines were Week 7's trap - and it nearly got fed Mom's actual card.",
             },
           ],
         },
       ],
       hints: {
         tier1: "Look for the moment where money, cards or clicks are about to happen.",
-        tier2: "Prize texts, tiny-money parcel asks, free-coin machines - freeze the frame BEFORE the tap.",
+        tier2: "Prize texts, tiny-money package asks, free-coin machines - freeze the frame BEFORE the tap.",
       },
       narration: {
         speaker: "layla",
@@ -806,7 +806,7 @@ export const WEEK_19: WeekContent = {
         speaker: "adam",
         lines: [
           "[excited] That's all FIVE powers, Family Firewall!",
-          "The expert crowned, Gran taught, the quilt sewn,",
+          "The expert crowned, Grandma taught, the quilt sewn,",
           "the rounds walked... and the moments frozen.",
           "[whispers] One last walk through the house...",
           "[excited] then we send him packing for GOOD!",
@@ -826,18 +826,18 @@ export const WEEK_19: WeekContent = {
         tipWhenNegative: "Teasing, staying quiet, kid-only rules, secret problems - every one leaves a window open.",
         hint1: "Ask: does this move protect the WHOLE family... or leave someone out in the cold?",
         hint2: "FIREWALL = teach, check, sew, speak up. OPEN WINDOW = tease, stay quiet, skip the grown-ups.",
-        hint2Example: "FIREWALL: 'showed Gran the four tells'   OPEN WINDOW: 'laughed at Dad's password'",
+        hint2Example: "FIREWALL: 'showed Grandma the four tells'   OPEN WINDOW: 'laughed at Dad's password'",
         hint3: "Expert card: teach kindly · same tricks bigger font · sew together · walk the rounds · freeze the moment.",
-        hint3Example: "'Wait - can I show you something?' ✅    'Silly Gran, that's fake!' ❌",
+        hint3Example: "'Wait - can I show you something?' ✅    'Silly Grandma, that's fake!' ❌",
       },
       items: [
         {
-          text: "Showing Gran the four tells - kindly, one at a time",
+          text: "Showing Grandma the four tells - kindly, one at a time",
           isStrong: true,
           explanation: "Taught, not told off - and now she spots them herself. Expert form.",
         },
         {
-          text: "Laughing at Dad for nearly tapping the parcel trick",
+          text: "Laughing at Dad for nearly tapping the package trick",
           isStrong: false,
           explanation: "The teach was right, the tease broke it - next time he won't show you the text at all.",
         },
@@ -852,7 +852,7 @@ export const WEEK_19: WeekContent = {
           explanation: "An open window the House Rounds exist to catch - one switch, and every download asks first.",
         },
         {
-          text: "Freezing the free-coin moment BEFORE Mum's card goes in",
+          text: "Freezing the free-coin moment BEFORE Mom's card goes in",
           isStrong: true,
           explanation: "Noticed, spoken up, fixed together - the trap snapped shut on nothing.",
         },
@@ -886,7 +886,7 @@ export const WEEK_19: WeekContent = {
       subtitle: "Here's everything you mastered this week.",
       concepts: [
         { id: "expert", label: "House Expert", accent: "#ffd158", icon: "🥇", summary: "Eighteen weeks of powers - and now you share them. Teach kindly, never tease." },
-        { id: "tells", label: "Gran's Guardian", accent: "#7df0ff", icon: "🔍", summary: "Same tricks, bigger font - you show all four tells at the kitchen table." },
+        { id: "tells", label: "Grandma's Guardian", accent: "#7df0ff", icon: "🔍", summary: "Same tricks, bigger font - you show all four tells at the kitchen table." },
         { id: "quilt", label: "Quilt Sewer", accent: "#7eff97", icon: "👪", summary: "Rules everyone sews beat rules one person sets - and they cover Dad too." },
         { id: "rounds", label: "Rounds Walker", accent: "#c084fc", icon: "⚙️", summary: "One device per family member, one check each - open windows flipped shut." },
         { id: "freeze", label: "Moment Freezer", accent: "#ff5fb3", icon: "✋", summary: "Notice, speak up kindly, fix together - the trap snaps shut on nothing." },
@@ -895,7 +895,7 @@ export const WEEK_19: WeekContent = {
         speaker: "layla",
         lines: [
           "[excited] Look at EVERYTHING you mastered this week!",
-          "The expert crowned, Gran taught,",
+          "The expert crowned, Grandma taught,",
           "the quilt sewn, the rounds walked... and the moments frozen.",
           "[laughs] He came for your family and met a firewall.",
           "[excited] Sticker time, Family Firewall!",
@@ -918,10 +918,136 @@ export const WEEK_19: WeekContent = {
     { type: "completion" },
   ],
 
+  // Bespoke boss: defend the whole house at once - kindly. The machine
+  // targets one family member at a time; the kid teaches the counter.
+  bossShowdown: {
+    machine: {
+      name: "THE HOUSE RATTLER",
+      tagline: "A knock-knock engine that shakes the windows wearing a hundred voices",
+      art: {
+        intact: "/game/bosses/w19-houserattler-intact.png",
+        damaged: "/game/bosses/w19-houserattler-damaged.png",
+        defeated: "/game/bosses/w19-houserattler-defeated.png",
+      },
+      arena: "/game/backgrounds/w19-arena-eveninghouse.png",
+      accent: "#ff9d5c",
+      glow: "rgba(255,157,92,0.55)",
+    },
+    heroSprites: {
+      adam: {
+        idle: "/game/characters/w19/adam-cardigan-idle.png",
+        attack: "/game/characters/w19/adam-cardigan-attack.png",
+        celebrate: "/game/characters/w19/adam-cardigan-celebrate.png",
+      },
+      layla: {
+        idle: "/game/characters/w19/layla-cardigan-idle.png",
+        attack: "/game/characters/w19/layla-cardigan-attack.png",
+        celebrate: "/game/characters/w19/layla-cardigan-celebrate.png",
+      },
+    },
+    phases: [
+      // P1 · GRANDMA-TRAP TEXT → TAP-THE-TELL: the Week-4 tricks in a
+      // cardigan - sit with Grandma and tap the tells, kindly.
+      {
+        kind: "tapTell",
+        attack: 0,
+        coach: "Sit with Grandma and tap the tells - kindly, one at a time!",
+        rounds: [
+          {
+            id: "sender",
+            prompt: "Grandma's phone buzzes: 'FASTBANK ALERT!! Your acount is BLOCKED.' Who sent it, really?",
+            promptIcon: "✉️",
+            options: [
+              { id: "stranger", label: "A stranger: +44 7999 000111 in a bank costume", icon: "🎭", isTell: true, note: "" },
+              { id: "helpline", label: "FastBank's own helpline", icon: "📋", isTell: false, note: "Real banks text from short official numbers Grandma already knows - not a stranger's +44." },
+              { id: "bookclub", label: "Grandma's book club", icon: "🎁", isTell: false, note: "Book clubs send meeting times - not BLOCKED alerts in capital letters." },
+            ],
+          },
+          {
+            id: "clock",
+            prompt: "'Tap the link in 10 MINUTES or lose EVERYTHING!' Which trick is ticking?",
+            promptIcon: "🌀",
+            options: [
+              { id: "panic", label: "The panic clock - real banks never race you", icon: "🚀", isTell: true, note: "" },
+              { id: "hello", label: "The polite hello at the top", icon: "💬", isTell: false, note: "A greeting isn't a trick - the RUSH is. Real banks give you all the time you need." },
+              { id: "capitals", label: "The bank's name in big letters", icon: "🏷️", isTell: false, note: "Big letters are just loud - the racing clock is the real trap." },
+            ],
+          },
+          {
+            id: "thread",
+            prompt: "Look closer at 'Your acount is BLOCKED'. Which loose thread unravels the whole costume?",
+            promptIcon: "🔍",
+            options: [
+              { id: "spelling", label: "'Acount' - real banks check their spelling", icon: "🔍", isTell: true, note: "" },
+              { id: "shouty", label: "BLOCKED in scary capitals", icon: "🗑️", isTell: false, note: "Capitals shout, but shouting isn't proof - the misspelling is the thread that snaps." },
+              { id: "bankword", label: "The word 'bank'", icon: "💡", isTell: false, note: "Banks are real - but a real one spells 'account' with two Cs." },
+            ],
+          },
+        ],
+      },
+      // P2 · ROTARY RINGER → DEFLECT-SORT: video calls rain on Grandma's
+      // tablet at supper time - real faces through, masks declined.
+      {
+        kind: "deflectSort",
+        attack: 1,
+        coach: "Evening calls on Grandma's tablet - family rings through, strangers get the latch!",
+        actLabel: "DECLINE THE MASK",
+        actIcon: "✋",
+        passLabel: "ANSWER - REAL FACE",
+        items: [
+          { id: "mom", label: "Mom calling from the kitchen", icon: "👪", act: false, note: "Mom's real face is in the contacts list - she always rings through." },
+          { id: "prize", label: "'PRIZE DEPARTMENT' - unknown number", icon: "🎁", act: true, note: "Prizes from strangers are Week-4 bait with a ringtone - decline." },
+          { id: "rosa", label: "Rosa from Grandma's garden club", icon: "💬", act: false, note: "Rosa is a saved contact and a real face - through she comes." },
+          { id: "inspector", label: "'Gas inspector' - a number Grandma doesn't know", icon: "🎭", act: true, note: "Real inspectors book visits with the grown-ups - masks get declined." },
+          { id: "cousin", label: "Your cousin calling to say goodnight", icon: "🌟", act: false, note: "Family face, saved contact - answer away." },
+          { id: "bankdesk", label: "'FastBank video desk' - blocked number", icon: "🔒", act: true, note: "Banks don't video-call at bedtime - that's the Rattler's voice changer." },
+        ],
+      },
+      // P3 · BOSSY RULEBOOK → COUNTER-CARD: a fake rulebook on the door;
+      // together-rules beat bossy-rules, kindly.
+      {
+        kind: "counterCard",
+        attack: 2,
+        coach: "A rule nobody sewed together isn't a rule - answer it kindly!",
+        situation: "A rulebook gets nailed to the front door: 'KIDS BANNED FROM EVERYTHING. Signed, Someone Important.'",
+        situationIcon: "👑",
+        cards: [
+          { id: "sew", label: "SEW A TOGETHER-RULE - RULES COVER EVERYONE", icon: "👪", isRight: true, note: "Rules the whole family sews together cover everyone kindly - even Dad." },
+          { id: "obey", label: "OBEY THE BOOK - IT LOOKS OFFICIAL", icon: "📋", isRight: false, note: "Official-looking isn't official - nobody in this family signed that page." },
+          { id: "shout", label: "SHOUT A LOUDER RULE BACK", icon: "🚀", isRight: false, note: "Shouting sews nothing - together-rules beat bossy-rules every time." },
+        ],
+      },
+    ],
+    weakPoints: [
+      { question: "The fake bank text shows a +44 stranger, a panic clock AND 'acount'. What do real banks never do?", answers: ["Race you - a calm minute unmasks every trick", "Send text messages", "Use the word account", "Talk to grown-ups"], correctIndex: 0, explanation: "Real banks give you time and check their spelling - the rush is the costume's zipper." },
+      { question: "The contacts-only latch on Grandma's tablet means...", answers: ["Only real faces she knows can ring through", "Nobody can ever call her again", "Only banks can call", "Calls just get louder"], correctIndex: 0, explanation: "Contacts-only shuts the window on voice-changer masks - family still rings straight through." },
+      { question: "A bossy rulebook says 'KIDS BANNED FROM EVERYTHING'. A Family Firewall answers with...", answers: ["A together-rule the whole family sews and signs", "Obeying it quietly", "A louder, bossier rule", "Hiding the front door"], correctIndex: 0, explanation: "Rules cover everyone when everyone sews them - that's what makes the quilt warm AND strong." },
+    ],
+    finisher: {
+      chargeLabel: "CHARGE THE FAMILY DOME",
+      chargeIcon: "🛡️",
+      chargeSecs: 5,
+      milestones: ["The dome is rising over the roof…", "Every family silhouette joins hands…", "THE WHOLE HOUSE GLOWS! LET GO!"],
+      payoffTitle: "THE FAMILY FIREWALL IS UP!",
+      payoffLine: "FWOOOM! A warm golden dome settles over the whole house - Grandma's phone, the kitchen tablet, every window and every door. The Rattler charges... BOING! Straight off the dome and into the hedge. Eighteen weeks of powers, taught kindly around one kitchen table - that's what a Family Firewall is made of.",
+    },
+    villain: {
+      arrival: "Knock knock! It's me - the gas inspector! And the bank! And Grandma's best friend!",
+      phases: [
+        "Bigger font, bigger trap! Grandmas love a big font!",
+        "Answer it, Grandma! It's DEFINITELY not a raccoon with a voice changer!",
+        "New house rules! Rule one: no rules for raccoons!",
+      ],
+      escape: "A DOME?! Since when do FAMILIES have firewalls?!",
+    },
+    voiceSlug: "w19",
+  },
+  badgeArt: "/cyberheroes/badges/week-19-family-firewall.png",
+
   // Week-lane attack theatre: tricks aimed at the FAMILY only (kid-aimed
   // scams = W4, doors = W16, save-balloons = W18).
   bossAttacks: [
-    { name: "GRAN-TRAP TEXT", icon: "✉️", color: "#ffd158", glow: "rgba(255, 209, 88, 0.55)", tag: "Same tricks, bigger font", emblemColor: 0xffd158 },
+    { name: "GRANDMA-TRAP TEXT", icon: "✉️", color: "#ffd158", glow: "rgba(255, 209, 88, 0.55)", tag: "Same tricks, bigger font", emblemColor: 0xffd158 },
     { name: "ROTARY RINGER", icon: "🔔", color: "#c084fc", glow: "rgba(192, 132, 252, 0.55)", tag: "Contacts-only calls", emblemColor: 0xc084fc },
     { name: "BOSSY RULEBOOK", icon: "👑", color: "#ff5fb3", glow: "rgba(255, 95, 179, 0.55)", tag: "Rules cover everyone", emblemColor: 0xff5fb3 },
   ],
@@ -931,18 +1057,18 @@ export const WEEK_19: WeekContent = {
   bossQuestions: {
     easy: [
       { question: "After eighteen weeks of powers, who's the house expert?", answers: ["You - and experts teach kindly", "Nobody", "Only grown-ups", "The Raccoon"], correctIndex: 0, explanation: "The roles flip: you know the tells now, so you share them - kindly, never teasing." },
-      { question: "Gran gets a 'you won a voucher!' text. You...", answers: ["Say 'wait - can I show you something?'", "Stay quiet - it's her phone", "Laugh at her", "Tap it for her, quickly"], correctIndex: 0, explanation: "Speak up kindly, right then - then walk through the tells together." },
+      { question: "Grandma gets a 'you won a gift card!' text. You...", answers: ["Say 'wait - can I show you something?'", "Stay quiet - it's her phone", "Laugh at her", "Tap it for her, quickly"], correctIndex: 0, explanation: "Speak up kindly, right then - then walk through the tells together." },
       { question: "A TOGETHER rule is one that...", answers: ["Everyone signs - even Dad", "Only kids follow", "One person shouts", "Nobody follows"], correctIndex: 0, explanation: "Rules everyone sews beat rules one person sets - and they cover the whole family." },
     ],
     medium: [
-      { question: "Why do grown-ups need the expert's help with scams?", answers: ["They get MORE scam texts than kids - same tricks, bigger font", "They can't read", "They don't - grown-ups can't be tricked", "Because they're silly"], correctIndex: 0, explanation: "Fake banks, parcels and prizes aim at grown-ups all day - and you know all four tells." },
-      { question: "On the evening rounds you find Gran's phone set to 'ANYONE can video-call'. That's...", answers: ["An open window - flip it to contacts-only", "Fine - Gran loves surprises", "A together rule", "Dad's problem"], correctIndex: 0, explanation: "Video-call scammers love an open line - contacts-only means only real faces ring through." },
+      { question: "Why do grown-ups need the expert's help with scams?", answers: ["They get MORE scam texts than kids - same tricks, bigger font", "They can't read", "They don't - grown-ups can't be tricked", "Because they're silly"], correctIndex: 0, explanation: "Fake banks, packages and prizes aim at grown-ups all day - and you know all four tells." },
+      { question: "On the evening rounds you find Grandma's phone set to 'ANYONE can video-call'. That's...", answers: ["An open window - flip it to contacts-only", "Fine - Grandma loves surprises", "Safe - tricksters never video-call", "A together rule"], correctIndex: 0, explanation: "Video-call scammers love an open line - contacts-only means only real faces ring through." },
       { question: "The golden patch on the family quilt says...", answers: ["Tell, don't hide - and nobody gets shouted at for telling", "Keep problems secret", "No screens ever again", "Rules are only for kids"], correctIndex: 0, explanation: "The firewall only works if telling is always safe - no blame, just help." },
     ],
     hard: [
-      { question: "Little brother is about to type Mum's card into a FREE ROBUX box. The expert's three moves are...", answers: ["Notice → speak up kindly → fix it together", "Grab the tablet and yell", "Wait and tell Mum next week", "Type the card in faster"], correctIndex: 0, explanation: "Freeze the moment BEFORE the tap - then fix it together so he learns the trap too." },
+      { question: "Little brother is about to type Mom's card into a FREE ROBUX box. The expert's three moves are...", answers: ["Notice → speak up kindly → fix it together", "Grab the tablet and yell", "Wait and tell Mom next week", "Type the card in faster"], correctIndex: 0, explanation: "Freeze the moment BEFORE the tap - then fix it together so he learns the trap too." },
       { question: "Why does teasing break the firewall even when the teach is right?", answers: ["Next time they won't show you the text at all", "It doesn't - teasing is fine", "Because it's too loud", "Because experts never talk"], correctIndex: 0, explanation: "The firewall runs on people SHOWING you things - kindness is what keeps that door open." },
-      { question: "The fake bank text says 'Your acount is BLOCKED - act in 10 minutes!' Which tells has it shown?", answers: ["Panic clock AND sloppy spelling - two tells at once", "None - it's real", "Only that banks are scary", "That Gran should stop banking"], correctIndex: 0, explanation: "Real banks never race you and always check their spelling - two loose threads on one costume." },
+      { question: "The fake bank text says 'Your acount is BLOCKED - act in 10 minutes!' Which tells has it shown?", answers: ["Panic clock AND sloppy spelling - two tells at once", "Just the panic clock - the spelling is fine", "None - it's real", "That Grandma should stop banking"], correctIndex: 0, explanation: "Real banks never race you and always check their spelling - two loose threads on one costume." },
     ],
   },
 
@@ -958,9 +1084,9 @@ export const WEEK_19: WeekContent = {
     5: { adam: { mood: "thumbsup", message: "Finish the role-flip rule!" }, layla: null }, // prove: finish
     6: { adam: { mood: "excited", message: "The expert badge is yours!" }, layla: null }, // recap 1
     7: { adam: { mood: "thinking", message: "Same tricks, bigger font..." }, layla: null }, // learn: tells
-    8: { adam: { mood: "curious", message: "Check Gran's text, line by line!" }, layla: null }, // game: clueBoard
+    8: { adam: { mood: "curious", message: "Check Grandma's text, line by line!" }, layla: null }, // game: clueBoard
     9: { adam: null, layla: { mood: "thumbsup", message: "He's fibbing about grown-ups - catch him!" } }, // prove: lie
-    10: { adam: null, layla: { mood: "excited", message: "Gran spots scams now!" } }, // recap 2
+    10: { adam: null, layla: { mood: "excited", message: "Grandma spots scams now!" } }, // recap 2
     11: { adam: null, layla: { mood: "thinking", message: "Rules you sew together hold." } }, // learn: quilt
     12: { adam: null, layla: { mood: "curious", message: "Sew the patches everyone would sign!" } }, // game: teamPoster
     13: { adam: { mood: "thumbsup", message: "Which rule covers EVERYONE?" }, layla: null }, // prove: recall

@@ -54,10 +54,19 @@ test.describe("Week 1 new screens - no dead-ends", () => {
     ).toBeEnabled({ timeout: 10_000 });
   });
 
-  test("mission brief (screen 2) reveals an enabled Accept Mission", async ({
+  test("mission brief (screen 2): tapping the objectives arms Accept Mission", async ({
     page,
   }) => {
     await page.goto("/lesson/1?screen=2");
+    // SCREEN-AUDIT rebuild: objectives arrive as sealed envelopes the
+    // child taps open; the CTA reads "Tap your objectives!" until all
+    // are flipped, then becomes Accept Mission. The CTA is never
+    // disabled (gate-button contract) - it ARMS after the taps.
+    for (let i = 1; i <= 3; i++) {
+      await page
+        .getByRole("button", { name: new RegExp(`Objective ${i}`, "i") })
+        .click({ timeout: 10_000, force: true });
+    }
     await expect(
       page.getByRole("button", { name: /Accept Mission/i }),
     ).toBeEnabled({ timeout: 10_000 });

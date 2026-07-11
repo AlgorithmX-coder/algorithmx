@@ -36,61 +36,63 @@ export type InterjectionTrigger =
  */
 export const VOICE_INTERJECTIONS: Record<InterjectionTrigger, string[]> = {
   // Most-fired trigger - 8 variants to cover a typical 25-30
-  // correct-answer session without obvious repetition.
+  // correct-answer session without obvious repetition. Leading
+  // eleven_v3 tags ([warmly]/[excited]/...) render as DELIVERY, not
+  // words - these lines are audio-only, so nothing needs stripping.
   correct: [
-    "Nice work!",
-    "Brilliant!",
-    "You got it!",
-    "Yes!",
-    "That's right!",
-    "Spot on!",
-    "Great job!",
-    "Awesome!",
+    "[warmly] Nice work!",
+    "[excited] Brilliant!",
+    "[warmly] You got it!",
+    "[excited] Yes!",
+    "[warmly] That's right!",
+    "[excited] Spot on!",
+    "[warmly] Great job!",
+    "[excited] Awesome!",
   ],
   // Soft tone - we never want to make a kid feel bad for trying.
   // No "wrong" or "incorrect" - always encouraging the retry.
   wrong: [
-    "Try again!",
-    "Not quite!",
-    "Have another go!",
-    "Hmm, look again!",
-    "Nearly!",
-    "Almost!",
+    "[warmly] Try again!",
+    "[warmly] Not quite!",
+    "[warmly] Have another go!",
+    "[curious] Hmm, look again!",
+    "[warmly] Nearly!",
+    "[warmly] Almost!",
   ],
   // Streaks escalate in excitement as the run grows.
   streak3: [
-    "Three in a row!",
-    "Nice streak!",
-    "Keep going!",
+    "[excited] Three in a row!",
+    "[excited] Nice streak!",
+    "[excited] Keep going!",
   ],
   streak5: [
-    "Five in a row!",
-    "On fire!",
-    "You're crushing it!",
+    "[excited] Five in a row!",
+    "[excited] On fire!",
+    "[excited] You're crushing it!",
   ],
   streak7: [
-    "Seven straight!",
-    "Unstoppable!",
-    "Cyber Hero!",
+    "[excited] Seven straight!",
+    "[excited] Unstoppable!",
+    "[excited] Cyber Hero!",
   ],
   // Unlock = big moment (sticker, lock activate, vault open).
   unlock: [
-    "Yes!",
-    "Unlocked!",
-    "Awesome!",
-    "Wow!",
+    "[excited] Yes!",
+    "[excited] Unlocked!",
+    "[excited] Awesome!",
+    "[excited] Wow!",
   ],
   // Victory = end-of-boss / mission complete. Bigger energy.
   victory: [
-    "You did it!",
-    "Cyber Hero!",
-    "Amazing!",
-    "Mission complete!",
+    "[excited] You did it!",
+    "[excited] Cyber Hero!",
+    "[excited] Amazing!",
+    "[excited] Mission complete!",
   ],
   // Plays on lesson-start / week-start. Smaller pool because it
   // only fires once per session.
   lessonStart: [
-    "Let's go!",
-    "Ready? Here we go!",
+    "[excited] Let's go!",
+    "[warmly] Ready? [excited] Here we go!",
   ],
 };

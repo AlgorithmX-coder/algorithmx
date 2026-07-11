@@ -99,6 +99,9 @@ const MAP: Record<string, string> = {
   "⏸": "pause-button",
   "✋": "stop-hand",
   "🤚": "stop-hand",
+  "👆": "tap-finger",
+  "☝️": "tap-finger",
+  "☝": "tap-finger",
   "💬": "speech-bubble",
   // energy / boss / misc
   "⚡": "lightning",

@@ -46,7 +46,7 @@ export const WEEK_8: WeekContent = {
       photoSrc: "/cyberheroes/alerts/week-08.png",
       title: "ALERT INCOMING",
       badge: "Incident Report",
-      caption: "A kid shared one photo with one friend. The Raccoon grabbed it and passed it on - and the school crest and street sign in the background told strangers exactly where to find her. This week you become a Picture Detective.",
+      caption: "A kid shared one photo with one friend. The Raccoon grabbed it and passed it on - and the school crest and street sign in the background showed strangers her school and her street, way more than she ever meant to share. This week you become a Picture Detective.",
       photoCaption: "Wk 8 - Think Before You Share",
       ctaLabel: "Start the Mission →",
     },
@@ -163,9 +163,9 @@ export const WEEK_8: WeekContent = {
       prompt: "Once a photo is shared, it's ___.",
       choices: [
         { text: "out", isCorrect: true },
-        { text: "gone", isCorrect: false },
-        { text: "only mine", isCorrect: false },
-        { text: "deleted", isCorrect: false },
+        { text: "secret", isCorrect: false },
+        { text: "only yours", isCorrect: false },
+        { text: "easy to delete", isCorrect: false },
       ],
       praise: "Out - like pigeons off the rooftop. You've got it! ✓",
     },
@@ -326,7 +326,7 @@ export const WEEK_8: WeekContent = {
         {
           id: "crest",
           icon: "🏫",
-          label: "The jumper crest",
+          label: "The sweater crest",
           evidence: "That school crest tells any stranger exactly WHICH school to wait outside.",
         },
         {
@@ -391,7 +391,7 @@ export const WEEK_8: WeekContent = {
       speedMs: 5000,
       choices: [
         { text: "The street sign behind you", isCorrect: true },
-        { text: "Your big grin", isCorrect: false },
+        { text: "The birthday banner", isCorrect: false },
         { text: "The sunny sky", isCorrect: false },
       ],
       praise: "Spotted in a flash - the street sign talks loudest! ✓",
@@ -422,24 +422,24 @@ export const WEEK_8: WeekContent = {
       type: "info",
       title: "Pick the Smallest Door",
       content:
-        "Before a photo goes anywhere, ask: who ACTUALLY gets to see this? 'Whole World' means everyone, forever - including strangers. 'Friends' sounds safe... but friends can screenshot and reshare. So heroes pick the SMALLEST door that fits the photo. And some photos - the private ones - don't go through any door at all.",
+        "Before a photo goes anywhere, ask: who ACTUALLY gets to see this? 'Whole World' means everyone, forever - including strangers. 'Friends' sounds safe... but friends can screenshot and reshare. So heroes pick the SMALLEST door that fits the photo. And some photos are PRIVATE - ones that show your body, your secrets, or anything you'd hate strangers to see. Private photos are JUST FOR ME: they go through no door at all.",
       bullets: [
         "'Whole World' = everyone, forever",
         "Friends can reshare - doors leak",
         "Pick the SMALLEST door that fits",
         "No clues in it? Bigger door is OK",
-        "Some photos stay with YOU",
+        "Private photos = JUST FOR ME, no door",
       ],
       bulletIcons: ["🌍", "🚪", "🔒", "✅", "🤫"],
       emblem: "🚪",
       narration: {
         speaker: "layla",
         lines: [
-          "[warmly] Picture a theatre with three doors.",
+          "[warmly] Picture a theater with three doors.",
           "A little door for friends. A middle door for school.",
           "And a HUGE door marked... whole world.",
           "[whispers] Whatever walks through a door can't walk back out.",
-          "So heroes pick the smallest door that fits.",
+          "Heroes pick the smallest door - and private photos get NO door at all.",
           "[excited] The photos are lining up - be the door keeper!",
         ],
       },
@@ -447,39 +447,42 @@ export const WEEK_8: WeekContent = {
     // 16 - Game: SORT (conveyorSort's first 3-door outing - the Theatre of Doors)
     {
       type: "conveyorSort",
-      introTitle: "The Theatre of Doors",
-      introSubtitle: "Each photo walks toward the doors. Send it through the SMALLEST door that fits before it reaches the spotlight!",
+      introTitle: "The Theater of Doors",
+      introSubtitle: "Each photo walks toward the doors. Send it through the SMALLEST door that fits - and remember, JUST FOR ME photos get no door at all!",
       introIcon: "🚪",
-      machineLabel: "THE THEATRE OF DOORS",
+      machineLabel: "THE THEATER OF DOORS",
       chuteWord: "DOOR",
       completeTitle: "Every photo through the right door!",
-      completeLine: "Smallest door that fits - the door keeper's rule.",
+      completeLine: "Smallest door that fits - and some photos get no door at all.",
       categories: [
         { id: "friends", label: "FRIENDS ONLY", icon: "👪", tone: "safe" },
         { id: "school", label: "SCHOOL ONLY", icon: "🏫", tone: "lock" },
         { id: "world", label: "WHOLE WORLD", icon: "🌍", tone: "flag" },
+        { id: "justforme", label: "JUST FOR ME - no door", icon: "🤫", tone: "lock" },
       ],
       items: [
         { id: "dragon", text: "Your dragon drawing - no names, no faces", icon: "🎨", categoryId: "world", explanation: "No faces, no clues - pure art can meet the whole world!" },
         { id: "party", text: "Party photo - three friends' faces in it", icon: "🎂", categoryId: "friends", explanation: "Their faces = their call. Friends-only, and only after they said yes." },
         { id: "classproject", text: "Class volcano project - everyone in uniform", icon: "🏫", categoryId: "school", explanation: "Uniforms name your school - keep school photos inside school walls." },
-        { id: "pyjamas", text: "You in pyjamas doing a victory dance", icon: "🎭", categoryId: "friends", explanation: "Silly stays with friends - the whole world doesn't need your pyjamas." },
+        { id: "pyjamas", text: "You in pajamas doing a victory dance", icon: "🎭", categoryId: "friends", explanation: "Silly stays with friends - the whole world doesn't need your pajamas." },
         { id: "trophy", text: "Your football trophy on a plain shelf", icon: "🏆", categoryId: "world", explanation: "Just a shiny trophy - no clues, no faces. Shine on, champion!" },
         { id: "planner", text: "Homework snap - your school planner's name showing", icon: "📋", categoryId: "school", explanation: "The planner names your school - that clue stays in school." },
-        { id: "sunset", text: "A sunset over the park - nobody in it", icon: "⭐", categoryId: "world", explanation: "Clouds and colours belong to everyone - share away!" },
+        { id: "sunset", text: "A sunset over the park - nobody in it", icon: "⭐", categoryId: "world", explanation: "Clouds and colors belong to everyone - share away!" },
         { id: "bedroom", text: "Silly selfie in your bedroom", icon: "🤫", categoryId: "friends", explanation: "Your bedroom is your private castle - friends-only at the very most." },
+        { id: "bathtime", text: "A bath-time photo from when you were tiny", icon: "🤫", categoryId: "justforme", explanation: "Photos that show your body are private - they get NO door at all. Just for you." },
+        { id: "diary", text: "A snap of your secret diary page", icon: "📋", categoryId: "justforme", explanation: "Secrets aren't for ANY door - some photos stay just for you." },
       ],
       hints: {
         tier1: "Check the photo for faces and clues first - THEN pick the smallest door that fits.",
-        tier2: "Faces or private places = FRIENDS. School stuff = SCHOOL. Zero clues and zero faces = the world can see.",
+        tier2: "Faces or private places = FRIENDS. School stuff = SCHOOL. Zero clues and zero faces = the world can see. Body photos and secrets = JUST FOR ME, no door.",
       },
       narration: {
         speaker: "layla",
         lines: [
           "[excited] Places, everyone - the photos are walking!",
-          "Faces or private stuff? The little friends door.",
-          "School things? The school door.",
-          "[warmly] No clues at all? The world door's fine. Go!",
+          "Faces go friends-only. School things, school door.",
+          "No clues at all? The world door's fine.",
+          "[warmly] And private photos? NO door - just for you. Go!",
         ],
       },
       coachLines: {
@@ -492,7 +495,7 @@ export const WEEK_8: WeekContent = {
       type: "quickCheck",
       mode: "lie",
       prompt: "Is that true?",
-      raccoonLine: "your account is PRIVATE, so your photos can NEVER escape. Screenshots aren't even real!",
+      raccoonLine: "your account is PRIVATE, so your photos can NEVER escape!",
       choices: [
         { text: "TRUE", isCorrect: false },
         { text: "FALSE", isCorrect: true },
@@ -569,7 +572,7 @@ export const WEEK_8: WeekContent = {
           fromIcon: "👀",
           message: "A golden sunset over the park. No people, no signs - just sky.",
           replies: [
-            { text: "SHARE IT", isSafe: true, explanation: "" },
+            { text: "SHARE IT", isSafe: true, explanation: "Good call! No faces, no places, no clues - this pigeon is safe to fly." },
             { text: "HOLD IT", isSafe: false, explanation: "Look again - no faces, no places, no clues. A pure sky photo is exactly the kind that CAN fly!" },
           ],
         },
@@ -580,7 +583,7 @@ export const WEEK_8: WeekContent = {
           message: "Your friend mid-sneeze - hilarious! She hasn't seen it yet.",
           replies: [
             { text: "SHARE IT", isSafe: false, explanation: "The ritual says ASK - and she hasn't even SEEN it. Her face, her call: hold it until she says yes." },
-            { text: "HOLD IT", isSafe: true, explanation: "" },
+            { text: "HOLD IT", isSafe: true, explanation: "Held! Her face, her call - nothing flies until she says yes." },
           ],
         },
         {
@@ -590,7 +593,7 @@ export const WEEK_8: WeekContent = {
           message: "The new family bike - parked by your front door, house number 42 in view.",
           replies: [
             { text: "SHARE IT", isSafe: false, explanation: "LOOK caught it: house number 42 points every stranger straight home. Crop the door out first - then maybe." },
-            { text: "HOLD IT", isSafe: true, explanation: "" },
+            { text: "HOLD IT", isSafe: true, explanation: "Held! That house number points straight home - crop it out before this one ever flies." },
           ],
         },
         {
@@ -599,7 +602,7 @@ export const WEEK_8: WeekContent = {
           fromIcon: "👀",
           message: "Your finished LEGO castle on the kitchen table - just bricks and glory.",
           replies: [
-            { text: "SHARE IT", isSafe: true, explanation: "" },
+            { text: "SHARE IT", isSafe: true, explanation: "Good call! Bricks, table, zero clues, zero faces - this one was built to be shown off." },
             { text: "HOLD IT", isSafe: false, explanation: "Think it through - bricks, table, zero clues, zero faces. This one's built to be shown off!" },
           ],
         },
@@ -610,7 +613,7 @@ export const WEEK_8: WeekContent = {
           message: "First-day-of-school pic - big smile, full uniform, school sign behind you.",
           replies: [
             { text: "SHARE IT", isSafe: false, explanation: "Uniform + school sign = your school, handed to strangers. That one's for family eyes, not the open internet." },
-            { text: "HOLD IT", isSafe: true, explanation: "" },
+            { text: "HOLD IT", isSafe: true, explanation: "Held! Uniform and school sign name your school - family eyes only, not the open internet." },
           ],
         },
       ],
@@ -748,6 +751,131 @@ export const WEEK_8: WeekContent = {
 
   // Week-lane attack theatre: photo/share tricks only (people-judging =
   // W3; message scams = W4; the full footprint trail = W12).
+  // W8 SHOWDOWN — THE SNAPSHOT CLAW (design doc §W8: crash the photo
+  // heist on the rooftop gallery). P1 shieldHold the pigeon cage ·
+  // P2 tapTell the talking clue in 3 photos · P3 counterCard the sneaky
+  // snap · finisher = the Golden Frame (claw grabs, finds nothing).
+  bossShowdown: {
+    machine: {
+      name: "THE SNAPSHOT CLAW",
+      tagline: "A grabby crane that snatches photos full of clues",
+      art: {
+        intact: "/game/bosses/w08-snapshotclaw-intact.png",
+        damaged: "/game/bosses/w08-snapshotclaw-damaged.png",
+        defeated: "/game/bosses/w08-snapshotclaw-defeated.png",
+      },
+      arena: "/game/backgrounds/w08-arena-rooftop.png",
+      accent: "#7df0ff",
+      glow: "rgba(125,240,255,0.55)",
+    },
+    heroSprites: {
+      adam: {
+        idle: "/game/characters/w08/adam-photographer-idle.png",
+        attack: "/game/characters/w08/adam-photographer-attack.png",
+        celebrate: "/game/characters/w08/adam-photographer-celebrate.png",
+      },
+      layla: {
+        idle: "/game/characters/w08/layla-photographer-idle.png",
+        attack: "/game/characters/w08/layla-photographer-attack.png",
+        celebrate: "/game/characters/w08/layla-photographer-celebrate.png",
+      },
+    },
+    phases: [
+      // P1 · COPY PIGEONS → SHIELD-HOLD: the SHARE gale batters the cage.
+      {
+        kind: "shieldHold",
+        attack: 0,
+        coach: "The pigeons stay IN. Press and don't stop!",
+        holdLabel: "HOLD THE CAGE DOOR",
+        holdIcon: "🔒",
+        holdSecs: 6,
+        barrage: [
+          "SHARE IT! SHARE IT! SHARE IT!",
+          "Just ONE little post!",
+          "Everyone will LOVE it!",
+          "The group chat is WAITING!",
+          "Let one pigeon out! Just one!",
+        ],
+        burnoutLine: "The gale died - and every pigeon is still home. Once a photo flies, no delete can catch it. Yours stayed YOURS.",
+      },
+      // P2 · CLUE LEAK → TAP-THE-TELL: three photos, tap the talking clue.
+      {
+        kind: "tapTell",
+        attack: 1,
+        coach: "Photos TALK. Tap the clue before the claw grabs it!",
+        rounds: [
+          {
+            id: "crest",
+            prompt: "Photo one: you smiling in your school uniform.",
+            promptIcon: "🕵️",
+            options: [
+              { id: "smile", label: "Your big smile", icon: "🎉", isTell: false, note: "Smiles are safe to share! Look for what NAMES a place." },
+              { id: "crest", label: "The school CREST on the shirt", icon: "🏫", isTell: true, note: "" },
+              { id: "pose", label: "The thumbs-up pose", icon: "👍", isTell: false, note: "Poses tell nothing. Look for what NAMES a place." },
+            ],
+          },
+          {
+            id: "sign",
+            prompt: "Photo two: you on your bike outside home.",
+            promptIcon: "🔍",
+            options: [
+              { id: "sign", label: "The STREET SIGN behind you", icon: "📍", isTell: true, note: "" },
+              { id: "bike", label: "Your cool bike", icon: "🚀", isTell: false, note: "Bikes don't give you away. Find what shows WHERE you live." },
+              { id: "helmet", label: "Your helmet", icon: "🛡️", isTell: false, note: "Helmets are just smart. Find what shows WHERE you live." },
+            ],
+          },
+          {
+            id: "banner",
+            prompt: "Photo three: the birthday party table.",
+            promptIcon: "🎂",
+            options: [
+              { id: "cake", label: "The chocolate cake", icon: "🎂", isTell: false, note: "Cake is just delicious. Find what tells your name and age." },
+              { id: "balloons", label: "The balloons", icon: "🎉", isTell: false, note: "Balloons say 'party', nothing else. Find what tells your name and age." },
+              { id: "banner", label: "The banner with your NAME and AGE", icon: "👀", isTell: true, note: "" },
+            ],
+          },
+        ],
+      },
+      // P3 · SNEAKY SNAP → COUNTER-CARD.
+      {
+        kind: "counterCard",
+        attack: 2,
+        coach: "Whose face? Whose call? Tap the card!",
+        situation: "Your friend wipes out on the trampoline - SO funny. Your camera is ready...",
+        situationIcon: "👀",
+        cards: [
+          { id: "ask", label: "ASK THEM FIRST", icon: "💬", isRight: true, note: "" },
+          { id: "post", label: "Snap it and post it", icon: "⚡", isRight: false, note: "Their face, their call. Posting without asking trades their trust for a laugh." },
+          { id: "keep", label: "Snap it and keep it 'just in case'", icon: "🤫", isRight: false, note: "A secret snap is still THEIR moment, not yours. Ask first - always." },
+        ],
+      },
+    ],
+    weakPoints: [
+      { question: "You DELETE a photo you shared. What happens?", answers: ["Only YOUR copy disappears", "Every copy everywhere vanishes", "The internet forgets it", "Screenshots delete too"], correctIndex: 0, explanation: "Delete empties your nest - the copy pigeons are already flying." },
+      { question: "One photo shows your name, age, school AND street. Why is that a big deal?", answers: ["Together they're a stranger's map to you", "It just looks untidy", "It's only a problem if you're famous", "Names aren't private"], correctIndex: 0, explanation: "Each clue is small - together they tell a stranger everything they need." },
+      { question: "A friend sends a just-for-you selfie. The group chat would love it. You...", answers: ["Keep it - just-for-me means just-for-me", "Forward it - she sent it to me!", "Post it but say sorry after", "Crop her face and send it"], correctIndex: 0, explanation: "Sent TO you isn't yours to send ON - that's her trust in your hands." },
+    ],
+    finisher: {
+      chargeLabel: "CHARGE THE GOLDEN FRAME",
+      chargeIcon: "⭐",
+      chargeSecs: 5,
+      milestones: ["Polishing the frame…", "It's gleaming! Keep holding!", "FRAME READY! LET GO!"],
+      payoffTitle: "NOTHING TO STEAL!",
+      payoffLine: "The claw grabbed the safe photo and found zero clues inside. Look, think, ask - every share, every time.",
+    },
+    villain: {
+      arrival: "One little photo tells me EVERYTHING. Say cheese!",
+      phases: [
+        "Let the pigeons out! They only bite a little!",
+        "Lovely crest! Lovely street sign! Lovely front door!",
+        "Snap first, ask never! That's the raccoon way!",
+      ],
+      escape: "A clean photo?! What am I supposed to do with MEMORIES?!",
+    },
+    voiceSlug: "w08",
+  },
+  badgeArt: "/cyberheroes/badges/week-08-photo-detective.png",
+
   bossAttacks: [
     { name: "COPY PIGEONS", icon: "✉️", color: "#7df0ff", glow: "rgba(125, 240, 255, 0.55)", tag: "Delete can't catch them", emblemColor: 0x7df0ff },
     { name: "CLUE LEAK",    icon: "📍", color: "#ffd158", glow: "rgba(255, 209, 88, 0.55)",  tag: "Photos talk",             emblemColor: 0xffd158 },
@@ -760,7 +888,7 @@ export const WEEK_8: WeekContent = {
     easy: [
       { question: "You DELETE a photo you shared. What happens?", answers: ["Only YOUR copy disappears", "Every copy everywhere vanishes", "The internet forgets it", "Screenshots delete too"], correctIndex: 0, explanation: "Delete empties your nest - the copy pigeons are already flying." },
       { question: "Before posting a photo of your friend, you...", answers: ["Ask them first", "Add a funny caption", "Tag everyone fast", "Post it - friends don't mind"], correctIndex: 0, explanation: "Their face, their call - every single time." },
-      { question: "What can a school crest in your photo tell a stranger?", answers: ["Which school you go to", "Your favourite colour", "Nothing at all", "Your high score"], correctIndex: 0, explanation: "Crests, signs and banners talk - check the background before sharing." },
+      { question: "What can a school crest in your photo tell a stranger?", answers: ["Which school you go to", "Your favorite color", "Nothing at all", "Just that you go to SOME school"], correctIndex: 0, explanation: "Crests, signs and banners talk - check the background before sharing." },
     ],
     medium: [
       { question: "A friend screenshots your 'disappearing' photo. Now what?", answers: ["A copy exists that you can't reach", "It still disappears on time", "Screenshots don't work on photos", "The app deletes her copy"], correctIndex: 0, explanation: "A screenshot is a brand-new pigeon - the timer can't call it back." },
@@ -768,9 +896,9 @@ export const WEEK_8: WeekContent = {
       { question: "A friend sends a just-for-you selfie. The group chat would love it. You...", answers: ["Keep it - just-for-me means just-for-me", "Forward it - she sent it to me!", "Post it but say sorry after", "Crop her face and send it"], correctIndex: 0, explanation: "Sent TO you isn't yours to send ON - that's her trust in your hands." },
     ],
     hard: [
-      { question: "Why isn't a PRIVATE account total protection for photos?", answers: ["People inside can still screenshot and reshare", "Private accounts break often", "Strangers can see private posts anyway", "It is total protection"], correctIndex: 0, explanation: "Private shrinks the door - it doesn't stop the pigeons inside it." },
+      { question: "Why isn't a PRIVATE account total protection for photos?", answers: ["People inside can still screenshot and reshare", "Private only works on photos, not videos", "Strangers can see private posts anyway", "It is total protection"], correctIndex: 0, explanation: "Private shrinks the door - it doesn't stop the pigeons inside it." },
       { question: "What's the full hero ritual before any share?", answers: ["Look, think, ask", "Post, check, delete", "Crop, filter, tag", "Ask, post, forget"], correctIndex: 0, explanation: "Look at every corner, think 'anyone, forever?', ask the people in it." },
-      { question: "One photo shows your name, age, school AND street. Why is that a big deal?", answers: ["Together they're a stranger's map to you", "It just looks untidy", "It uses too much internet", "Names aren't private"], correctIndex: 0, explanation: "Each clue is small - together they tell a stranger everything they need." },
+      { question: "One photo shows your name, age, school AND street. Why is that a big deal?", answers: ["Together they're a stranger's map to you", "It just looks untidy", "It's only a problem if you're famous", "Names aren't private"], correctIndex: 0, explanation: "Each clue is small - together they tell a stranger everything they need." },
     ],
   },
 

@@ -15,8 +15,10 @@
  * as a reward checkpoint rather than another teaching page.
  */
 
+import { useState } from "react";
 import { motion } from "motion/react";
 import { useMotionIntensity } from "@/app/lib/gameEngine";
+import { playSound } from "@/app/lib/sounds";
 import InfoNarration from "@/app/components/lesson/InfoNarration";
 import GameButton from "@/app/components/lesson/GameButton";
 import PixIcon from "@/app/components/lesson/PixIcon";
@@ -46,6 +48,15 @@ export default function ConceptRecap({
   const isFinale = concept >= total;
   // Strict reduced-motion: skip the entrance springs (render at rest).
   const reduce = useMotionIntensity() === 0;
+  // SCREEN-AUDIT: the takeaway is tappable — the child STAMPS what they
+  // learned into their logbook (reward interaction; advancing is never
+  // gated on it, per the recap e2e contract).
+  const [stamped, setStamped] = useState(false);
+  const stamp = () => {
+    if (stamped) return;
+    playSound("starEarned");
+    setStamped(true);
+  };
   return (
     <div
       style={{
@@ -143,20 +154,32 @@ export default function ConceptRecap({
         )}
       </motion.h2>
 
-      {/* the takeaway — the hero of the screen */}
-      <motion.div
+      {/* the takeaway — the hero of the screen, tappable to STAMP */}
+      <motion.button
+        type="button"
+        onClick={stamp}
+        aria-pressed={stamped}
         initial={reduce ? false : { scale: 0.95, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         transition={{ type: "spring", stiffness: 260, damping: 22, delay: 0.22 }}
         style={{
           position: "relative",
-          margin: "0 auto 16px",
+          display: "block",
+          width: "100%",
+          margin: "0 auto 8px",
           maxWidth: 560,
           padding: "16px 20px",
           borderRadius: 18,
-          background: "rgba(126,255,151,0.10)",
+          cursor: stamped ? "default" : "pointer",
+          touchAction: "manipulation",
+          fontFamily: "inherit",
+          textAlign: "center",
+          background: stamped ? "rgba(126,255,151,0.16)" : "rgba(126,255,151,0.10)",
           border: `1px solid rgba(126,255,151,0.45)`,
-          boxShadow: "inset 0 1px 0 rgba(255,255,255,0.12)",
+          boxShadow: stamped
+            ? "inset 0 1px 0 rgba(255,255,255,0.12), 0 0 22px rgba(126,255,151,0.28)"
+            : "inset 0 1px 0 rgba(255,255,255,0.12)",
+          transition: "background 300ms ease, box-shadow 300ms ease",
         }}
       >
         <div
@@ -174,7 +197,37 @@ export default function ConceptRecap({
         <div style={{ fontSize: 19, fontWeight: 800, lineHeight: 1.35, color: "#fff" }}>
           {learned}
         </div>
-      </motion.div>
+        {stamped && (
+          <motion.span
+            aria-hidden
+            initial={reduce ? false : { scale: 2.4, rotate: 14, opacity: 0 }}
+            animate={{ scale: 1, rotate: -10, opacity: 1 }}
+            transition={{ type: "spring", stiffness: 300, damping: 15 }}
+            style={{
+              position: "absolute",
+              top: -12,
+              right: -8,
+              padding: "6px 12px",
+              borderRadius: 10,
+              background: "linear-gradient(135deg, #ffe37d, #f59e0b)",
+              border: "2px solid #fff2c4",
+              color: "#4a3208",
+              fontFamily: "'JetBrains Mono', monospace",
+              fontSize: 12,
+              fontWeight: 900,
+              letterSpacing: "0.08em",
+              boxShadow: "0 8px 18px -6px rgba(245,158,11,0.7)",
+            }}
+          >
+            <PixIcon emoji="⭐" size={13} style={{ verticalAlign: "-2px", marginRight: 3 }} />STAMPED!
+          </motion.span>
+        )}
+      </motion.button>
+      {!stamped && (
+        <div style={{ fontSize: 12, fontWeight: 800, letterSpacing: "0.14em", color: GREEN, marginBottom: 10, opacity: 0.85 }}>
+          <PixIcon emoji="👆" size={16} style={{ verticalAlign: "-3px", marginRight: 4 }} />TAP IT TO STAMP IT INTO YOUR LOGBOOK
+        </div>
+      )}
 
       {/* what's next */}
       {next && (

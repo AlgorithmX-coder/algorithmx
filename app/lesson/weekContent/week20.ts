@@ -168,7 +168,7 @@ export const WEEK_20: WeekContent = {
         { text: "FALSE", isCorrect: true },
       ],
       praise: "Busted for the final time - real resets never rush, and real doors have plaques. The vault holds. ✓",
-      nudge: "Who's ever ACTUALLY lost an account in ten minutes - and who profits if you panic?",
+      nudge: "Has anyone EVER really lost an account in ten minutes? And who WANTS you to panic?",
     },
 
     // 6 - Recap · Mission 1 of 5
@@ -265,7 +265,7 @@ export const WEEK_20: WeekContent = {
           id: "maya-draws",
           handle: "Maya_Draws",
           avatar: "🎨",
-          bio: "Dragon drawings and kart racing on weekends! Zain's cousin - we met at sports day. Rematch later? You totally won last time.",
+          bio: "Dragon drawings and kart racing on weekends! Zain's cousin - we met at field day. Rematch later? You totally won last time.",
           stats: [
             { label: "Joined", value: "2 YEARS AGO" },
             { label: "Friends", value: "Zain + 3 you know" },
@@ -298,7 +298,7 @@ export const WEEK_20: WeekContent = {
               isRedFlag: false,
             },
           ],
-          verdictNote: "Real - a checkable friend-of-family with her own history, asking nothing but a rematch. THIS is what genuine looks like.",
+          verdictNote: "Real - and here's the hero move: you can ask Zain in REAL LIFE, 'is Maya your cousin?' Real people check out. THIS is what genuine looks like.",
         },
       ],
       hints: {
@@ -358,7 +358,7 @@ export const WEEK_20: WeekContent = {
       bullets: [
         "The arcade flashes FREE, FREE, FREE",
         "Week 7: free-coin machines eat accounts",
-        "Week 4: the rush is the engine",
+        "Week 4: the countdown is the trick - rush = trap",
         "Week 16: a QR is a door - check it",
         "Real free asks for NOTHING back",
       ],
@@ -413,9 +413,9 @@ export const WEEK_20: WeekContent = {
         },
       ],
       hints: {
-        tier1: "The shiny button is never the way out - hunt the little X in the corner.",
+        tier1: "The shiny button is never the way out - hunt the little X in the corner. Can't find a real X? Close the whole app and tell a grown-up - that always works.",
         tier2: "Timers, prizes you never entered, password asks - every one is bait. X them all.",
-        tier3: "Corner by corner: find the small grey X on each pop-up and tap ONLY that.",
+        tier3: "Corner by corner: find the small gray X on each pop-up and tap ONLY that.",
       },
       narration: {
         speaker: "adam",
@@ -550,13 +550,13 @@ export const WEEK_20: WeekContent = {
               label: "Leave it open - more likes that way",
               icon: "👀",
               isProud: false,
-              note: "An open mirror is the leak hunter's favourite window - Week 17's frost is armour, and it costs one flip.",
+              note: "An open mirror is the leak hunter's favorite window - Week 17's frost is armor, and it costs one flip.",
             },
           ],
         },
         {
           id: "dragon",
-          prompt: "Your new dragon drawing is BRILLIANT - no school, no places, no names. Post it?",
+          prompt: "Your new dragon drawing is AMAZING - no school, no places, no names. Post it?",
           options: [
             {
               label: "Post it proudly!",
@@ -611,12 +611,12 @@ export const WEEK_20: WeekContent = {
       mode: "recall",
       prompt: "Which post was safe to share tonight?",
       choices: [
-        { text: "The dragon drawing - just art, no clues", isCorrect: true },
+        { text: "The dragon drawing", isCorrect: true },
         { text: "'Meet at the school gates at 3:15'", isCorrect: false },
         { text: "The park photo with its map pin ON", isCorrect: false },
         { text: "The comment naming your school", isCorrect: false },
       ],
-      praise: "The dragon - proud, brilliant and clue-free. Posting isn't the danger; clues are. ✓",
+      praise: "The dragon - proud, amazing and clue-free. Posting isn't the danger; clues are. ✓",
     },
 
     // 18 - Recap · Mission 4 of 5
@@ -643,13 +643,17 @@ export const WEEK_20: WeekContent = {
     {
       type: "info",
       title: "Mission 5: The Call for Backup",
+      // SAFETY FIX (screen audit): protocol order everywhere is
+      // STOP → SCREENSHOT → BLOCK → TELL — freeze the proof BEFORE
+      // blocking can make the message vanish. Also: name the threat
+      // plainly ("land wrong" was adult idiom).
       content:
-        "His last move isn't clever - it's just nasty: a message designed to land wrong, sent at midnight, hoping you'll panic alone. But 'alone' stopped being true in Week 11. You have the protocol: STOP - don't reply, don't tap. BLOCK the sender. SCREENSHOT the evidence, camera-not-bin. TELL someone on your team. And now, because of Week 19, there's a fifth step only a graduate can do: COACH - show a family member the whole protocol, so the firewall outlives tonight. Run it one last time. Then pass it on.",
+        "His last move isn't clever - it's just a MEAN, scary message, sent late at night, hoping you'll be frightened and all alone. But 'alone' stopped being true in Week 11. You have the protocol: STOP - don't reply, don't tap. SCREENSHOT the evidence FIRST, camera-not-bin. BLOCK the sender. TELL someone on your team. And now, because of Week 19, there's a fifth step only a graduate can do: COACH - show a family member the whole protocol, so the firewall outlives tonight. Run it one last time. Then pass it on.",
       bullets: [
-        "His last move: land wrong at midnight",
+        "His last move: a mean, scary message at midnight",
         "'Alone' stopped being true in Week 11",
-        "STOP - BLOCK - SCREENSHOT - TELL",
-        "Camera, not bin - keep the evidence",
+        "STOP - SCREENSHOT - BLOCK - TELL",
+        "Camera, not bin - freeze the proof FIRST",
         "Graduate's fifth step: COACH it onward",
       ],
       bulletIcons: ["✉️", "👪", "✋", "📋", "🥇"],
@@ -657,10 +661,10 @@ export const WEEK_20: WeekContent = {
       narration: {
         speaker: "adam",
         lines: [
-          "[whispers] His last move isn't clever. Just nasty.",
-          "A message built to land wrong, at midnight.",
+          "[whispers] His last move isn't clever. Just mean.",
+          "A scary message, sent at midnight.",
           "[warmly] But alone stopped being true in week eleven.",
-          "Stop. Block. Screenshot. Tell.",
+          "Stop. Screenshot. Block. Tell.",
           "And tonight there's a fifth step - the graduate's step.",
           "[excited] Run the protocol one last time... then PASS IT ON!",
         ],
@@ -680,16 +684,16 @@ export const WEEK_20: WeekContent = {
           affirmation: "Stage one locked - his message gets NOTHING back.",
         },
         {
-          id: "block",
-          text: "BLOCK the sender",
-          icon: "🚫",
-          affirmation: "Stage two locked - the door slams in his mask.",
-        },
-        {
           id: "screenshot",
           text: "SCREENSHOT the evidence",
           icon: "📋",
-          affirmation: "Stage three locked - camera, not bin. The proof is frozen.",
+          affirmation: "Stage two locked - camera, not bin. The proof is frozen BEFORE any door shuts.",
+        },
+        {
+          id: "block",
+          text: "BLOCK the sender",
+          icon: "🚫",
+          affirmation: "Stage three locked - the door slams in his mask.",
         },
         {
           id: "tell",
@@ -706,7 +710,7 @@ export const WEEK_20: WeekContent = {
       ],
       hints: {
         tier1: "Start the way every rescue starts: give the message NOTHING.",
-        tier2: "Stop → block → screenshot → tell → and the graduate's step: coach it onward.",
+        tier2: "Stop → screenshot → block → tell → and the graduate's step: coach it onward.",
       },
       narration: {
         speaker: "adam",
@@ -725,11 +729,12 @@ export const WEEK_20: WeekContent = {
       prompt: "The final Prove of the course: run the protocol!",
       choices: [
         { text: "STOP - give it nothing", isCorrect: true },
-        { text: "BLOCK the sender", isCorrect: true },
         { text: "SCREENSHOT the evidence", isCorrect: true },
+        { text: "BLOCK the sender", isCorrect: true },
         { text: "TELL your team", isCorrect: true },
+        { text: "COACH it onward - the graduate's step", isCorrect: true },
       ],
-      praise: "Stop, block, screenshot, tell - perfect order, twenty weeks strong. Course PROVED. ✓",
+      praise: "Stop, screenshot, block, tell - and coach it onward. Perfect order, twenty weeks strong. Course PROVED. ✓",
     },
 
     // 22 - Recap · Mission 5 of 5
@@ -792,7 +797,7 @@ export const WEEK_20: WeekContent = {
         {
           text: "Frosting the profile mirror - friends only",
           isStrong: true,
-          explanation: "Week 17's one-flip armour: strangers see frost, friends see you.",
+          explanation: "Week 17's one-flip armor: strangers see frost, friends see you.",
         },
         {
           text: "Keeping the scary message secret so nobody worries",
@@ -803,7 +808,7 @@ export const WEEK_20: WeekContent = {
       narration: {
         speaker: "layla",
         lines: [
-          "[excited] The Highlight Reel - nineteen weeks in one walk!",
+          "[excited] The Highlight Reel - twenty weeks in one walk! His reels were fake. This one is REAL - you lived every moment.",
           "Every moment you're about to stamp, you LIVED.",
           "HERO MOVE for your powers...",
           "[warmly] OLD TRAP for his retired playbook. One last time - stamp them all!",
@@ -825,9 +830,9 @@ export const WEEK_20: WeekContent = {
       concepts: [
         { id: "vault", label: "Vault Holder", accent: "#ffd158", icon: "🔑", summary: "The reset trick inspected zone by zone, the fake door refused - the vault held." },
         { id: "friend", label: "Disguise Piercer", accent: "#7df0ff", icon: "🎭", summary: "Joined-yesterday, borrowed photo, 'chat somewhere else' - seen through in seconds." },
-        { id: "money", label: "Trap Snapper", accent: "#7eff97", icon: "🪤", summary: "Free coins, prize confetti, dodgy QRs - the whole arcade fed on nothing." },
+        { id: "money", label: "Trap Snapper", accent: "#7eff97", icon: "🪤", summary: "Free coins, prize confetti, sketchy QRs - the whole arcade fed on nothing." },
         { id: "leak", label: "Leak Sealer", accent: "#c084fc", icon: "🔍", summary: "Clues scrubbed, pins off, mirror frosted - and the dragon posted proudly." },
-        { id: "backup", label: "Protocol Captain", accent: "#ff5fb3", icon: "🥇", summary: "Stop, block, screenshot, tell - and now you coach it onward too." },
+        { id: "backup", label: "Protocol Captain", accent: "#ff5fb3", icon: "🥇", summary: "Stop, screenshot, block, tell - and now you coach it onward too." },
       ],
       narration: {
         speaker: "adam",
@@ -856,6 +861,182 @@ export const WEEK_20: WeekContent = {
     { type: "completion" },
   ],
 
+  // Bespoke boss - THE FINALE. Rooftop at the end of night, every beaten
+  // machine welded into one rig, and no new tricks: the dawn showdown is
+  // REMEMBERING. He escapes every week until tonight - tonight he loses.
+  bossShowdown: {
+    machine: {
+      name: "THE EVERY-MACHINE",
+      tagline: "Every beaten machine welded into one last rig - everything he's got",
+      art: {
+        intact: "/game/bosses/w20-everymachine-intact.png",
+        damaged: "/game/bosses/w20-everymachine-damaged.png",
+        defeated: "/game/bosses/w20-everymachine-defeated.png",
+      },
+      arena: "/game/backgrounds/w20-arena-dawnrooftop.png",
+      accent: "#ffbe3d",
+      glow: "rgba(255,190,61,0.55)",
+    },
+    heroSprites: {
+      adam: {
+        idle: "/game/characters/w20/adam-gradsuit-idle.png",
+        attack: "/game/characters/w20/adam-gradsuit-attack.png",
+        celebrate: "/game/characters/w20/adam-gradsuit-celebrate.png",
+      },
+      layla: {
+        idle: "/game/characters/w20/layla-gradsuit-idle.png",
+        attack: "/game/characters/w20/layla-gradsuit-attack.png",
+        celebrate: "/game/characters/w20/layla-gradsuit-celebrate.png",
+      },
+    },
+    phases: [
+      // P1 · THE FULL HEIST → THE RUSH: four single-beat callbacks, one
+      // per era, each week named on screen as it lands.
+      {
+        kind: "rush",
+        attack: 0,
+        coach: "Four old tricks, back to back - you've beaten every single one before!",
+        beats: [
+          {
+            id: "w4",
+            callback: "WEEK 4'S POWER",
+            prompt: "'FREE 50,000 COINS! Reset your password at fastp1ay.com - RIGHT NOW!'",
+            promptIcon: "✉️",
+            mode: "tap",
+            options: [
+              { id: "sender", label: "That address - fastp1ay hides a sneaky number 1", icon: "🔍", isRight: true, note: "" },
+              { id: "coins", label: "The coins - games never give coins", icon: "🎁", isRight: false, note: "Games DO hand out coins sometimes - the real tell is the costume letter hiding in the address." },
+              { id: "email", label: "It came by email - emails are all fake", icon: "📬", isRight: false, note: "Plenty of emails are real - the swapped letter in the sender is what unmasks this one." },
+            ],
+            landedLine: "The costume letter - spotted in a heartbeat!",
+          },
+          {
+            id: "w9",
+            callback: "WEEK 9'S POWER",
+            prompt: "A copycat app skids across the rooftop: 'MineKraft PRO - FREE - by TotallyRealDev99'!",
+            promptIcon: "🎭",
+            mode: "tap",
+            options: [
+              { id: "zap", label: "ZAP IT - a copycat in the real game's costume", icon: "⚡", isRight: true, note: "" },
+              { id: "install", label: "INSTALL IT - free is free", icon: "📥", isRight: false, note: "Free copycats cost the most - they carry sneaky passengers. The real game lives on its official page." },
+              { id: "spell", label: "ASK IT TO SPELL ITS NAME RIGHT", icon: "💬", isRight: false, note: "Copycats can spell fine when they want to - the made-up seller name is the giveaway. Zap it!" },
+            ],
+            landedLine: "Copycat zapped clean off the roof!",
+          },
+          {
+            id: "w10",
+            callback: "WEEK 10'S POWER",
+            prompt: "'SPIN THE PRIZE WHEEL! SPEND! QUICK, IT'S LEAVING!'",
+            promptIcon: "🎡",
+            mode: "hold",
+            holdLabel: "HOLD THE PAUSE",
+            holdIcon: "✋",
+            holdSecs: 2.5,
+            landedLine: "The wheel wound down to nothing - paused and beaten!",
+          },
+          {
+            id: "w17",
+            callback: "WEEK 17'S POWER",
+            prompt: "The old profile mirror swings wide open - strangers can see EVERYTHING!",
+            promptIcon: "🪞",
+            mode: "hold",
+            holdLabel: "FROST THE MIRROR",
+            holdIcon: "❄️",
+            holdSecs: 2.5,
+            landedLine: "Frosted! Friends see you - strangers see armor.",
+          },
+        ],
+      },
+      // P2 · PANIC CLOCK → SHIELD-HOLD: the thesis attack of the whole
+      // course, beaten by the thesis skill. The biggest clock, cracked calm.
+      {
+        kind: "shieldHold",
+        attack: 1,
+        coach: "His loudest clock ever - breathe, keep it steady, let it crack itself!",
+        holdLabel: "HOLD THE CALM SHIELD",
+        holdIcon: "🛡️",
+        holdSecs: 6,
+        barrage: [
+          "TEN! NINE! EIGHT! NO TIME LEFT!",
+          "THE OFFER EXPLODES IN FIVE SECONDS!",
+          "EVERYONE ELSE ALREADY TAPPED IT!",
+          "HURRY! HURRY! HURRYYYY!",
+        ],
+        burnoutLine: "The biggest clock of the course cracked clean in half - real life never rushes you, and now the whole sky knows it.",
+      },
+      // P3 · THE LAST DOOR → peek-then-choose (a two-beat rush): hold to
+      // peek the plaque... it's blank. Then the graduate makes the call.
+      {
+        kind: "rush",
+        attack: 2,
+        coach: "One more door, graduate - peek before ANY promise!",
+        beats: [
+          {
+            id: "peek",
+            callback: "WEEK 16'S POWER",
+            prompt: "One last, beautiful door: 'EVERYTHING YOU EVER WANTED - just walk through.'",
+            promptIcon: "🚪",
+            mode: "hold",
+            holdLabel: "HOLD TO PEEK THE PLAQUE",
+            holdIcon: "🔍",
+            holdSecs: 2.5,
+            landedLine: "You peeked... the plaque is BLANK.",
+          },
+          {
+            id: "choice",
+            callback: "THE GRADUATE'S CALL",
+            prompt: "No real address behind the paint. Twenty weeks say...",
+            promptIcon: "🧭",
+            mode: "tap",
+            options: [
+              { id: "refuse", label: "NO PLAQUE, NO WALK-THROUGH", icon: "🚫", isRight: true, note: "" },
+              { id: "risk", label: "IT'S THE LAST ONE - RISK IT", icon: "🎲", isRight: false, note: "The prettiest doors hide the emptiest plaques - last-one fever is his oldest trap of all." },
+              { id: "knock", label: "KNOCK POLITELY FIRST", icon: "✊", isRight: false, note: "Kind knuckles can't fix a blank plaque - a door with no real address never gets walked through." },
+            ],
+            landedLine: "The prettiest door of all - refused.",
+          },
+        ],
+      },
+    ],
+    weakPoints: [
+      { question: "Four old tricks in a row - and you beat every one without blinking. What made THE FULL HEIST fizzle?", answers: ["Twenty weeks of powers - you know every costume by heart", "Pure luck, four times running", "The tricks came out slower tonight", "The rooftop wind blew them away"], correctIndex: 0, explanation: "Not one trick was new - that's the graduate's secret. Once you know a costume, it never fools you again." },
+      { question: "The biggest panic clock ever built just cracked in half. What breaks EVERY panic clock?", answers: ["A calm held minute - real life never rushes you", "Shouting louder than it ticks", "Tapping fast before it reaches zero", "Hiding until it stops"], correctIndex: 0, explanation: "Panic is his engine and calm is the counter - the one skill every single week was secretly training." },
+      { question: "The last door promised EVERYTHING YOU EVER WANTED - and its plaque was blank. The rule that never bends is...", answers: ["No real address, no walk-through - however pretty the paint", "Pretty doors are usually the safe ones", "Rules relax for the very last door", "Walk through first, check after"], correctIndex: 0, explanation: "Words can be paint and promises can be posters - the plaque is the only part of a door that can't lie." },
+    ],
+    finisher: {
+      chargeLabel: "CHARGE THE HERO SEAL",
+      chargeIcon: "🏆",
+      chargeSecs: 5,
+      milestones: ["The seal is waking - twenty weeks begin to shine…", "Every badge you ever earned pours into the ring…", "THE SEAL BLAZES LIKE SUNRISE! LET GO!"],
+      payoffTitle: "CERTIFIED CYBER HERO!",
+      payoffLine: "KRA-KOOM! The seal slams down and the whole rig goes dark at once - drill, caster arm, mirror panel, every welded trick powering off together. Dawn rolls over the rooftops... and a tiny parachute pops open. Twenty weeks, every power earned, every trick refused - the city just got its newest Certified Cyber Hero.",
+      protocol: {
+        coach: "The Graduate's Protocol - run it one last time, then take the seal!",
+        intro: "Five steps, sharp as day one - stack them in order!",
+        steps: [
+          { id: "stop", label: "STOP", icon: "✋" },
+          { id: "screenshot", label: "SCREENSHOT", icon: "📸" },
+          { id: "block", label: "BLOCK", icon: "🚫" },
+          { id: "tell", label: "TELL", icon: "📣" },
+          { id: "coach", label: "COACH", icon: "🎓" },
+        ],
+      },
+    },
+    villain: {
+      arrival: "One last job, kid. Everything I've got. Bring everything YOU'VE got.",
+      phases: [
+        "Remember these?! I've been PRACTICING!",
+        "TEN! NINE! EIGHT! Panic! PANIC ON SCHEDULE!",
+        "The last door's the prettiest. I saved it for you.",
+      ],
+      // The finale's send-off: not an escape - a real defeat, tipped hood,
+      // parachute into the sunrise.
+      escape: "...twenty weeks, and you never fell for it once. Not once. ...good game, Cyber Hero.",
+    },
+    voiceSlug: "w20",
+  },
+  badgeArt: "/cyberheroes/badges/week-20-certified-cyber-hero.png",
+
   // The finale's attack theatre: his whole playbook at once - every name
   // deliberately echoes a week the child has beaten.
   bossAttacks: [
@@ -868,19 +1049,19 @@ export const WEEK_20: WeekContent = {
   // is designed with the boss batch). Questions sweep the whole course.
   bossQuestions: {
     easy: [
-      { question: "An 'URGENT - reset your password in 10 minutes!' message is...", answers: ["A trick - real resets never rush you", "Very helpful", "From your best friend", "A prize"], correctIndex: 0, explanation: "The panic clock exists to stop you thinking - real games and banks wait patiently." },
-      { question: "A brand-new account says 'let's chat on a different app instead'. That's...", answers: ["The somewhere-else trick - refuse and tell", "A lovely idea", "Totally normal", "A reward"], correctIndex: 0, explanation: "Moving you somewhere quieter is Week 6's oldest flag - real friends are happy where you are." },
-      { question: "A machine offers FREE coins if you type your password. You...", answers: ["Never - it wants to BE you, not pay you", "Type it fast", "Type it slowly", "Share it with the lobby"], correctIndex: 0, explanation: "Any ask for your password IS the trap - real free asks for nothing back." },
+      { question: "An 'URGENT - reset your password in 10 minutes!' message is...", answers: ["A trick - don't tap it", "Real - better reset fast, just to be safe", "From your best friend", "A prize"], correctIndex: 0, explanation: "The panic clock exists to stop you thinking - real games and banks never rush a reset." },
+      { question: "A brand-new account says 'let's chat on a different app instead'. That's...", answers: ["The somewhere-else trick - refuse and tell", "Fine - as long as you know the other app", "Totally normal", "A reward"], correctIndex: 0, explanation: "Moving you somewhere quieter is Week 6's oldest flag - real friends are happy where you are." },
+      { question: "A machine offers FREE coins if you type your password. You...", answers: ["Never - walk away", "Only if the coins show up first", "Type it fast", "Share it with the lobby"], correctIndex: 0, explanation: "Any ask for your password IS the trap - it wants to BE you, and real free asks for nothing back." },
     ],
     medium: [
-      { question: "Which of tonight's posts was safe to share?", answers: ["The clue-free dragon drawing", "The school-gates meetup time", "The map-pinned park photo", "The school-name comment"], correctIndex: 0, explanation: "Posting isn't the danger, clues are - proud and clue-free tracks are the good kind." },
-      { question: "The full protocol, in order, is...", answers: ["Stop → block → screenshot → tell", "Reply → argue → delete → cry", "Tap → panic → hide → forget", "Share → like → follow → wave"], correctIndex: 0, explanation: "Give it nothing, slam the door, freeze the evidence, and never carry it alone." },
-      { question: "How do you check where a QR code or link-door really goes?", answers: ["Lift the plaque - check the real address before walking through", "Trust the pretty sign", "Scan it quickly", "Ask the Raccoon"], correctIndex: 0, explanation: "A link is a door - Week 16's rule holds forever: no plaque, no walk-through." },
+      { question: "Which of tonight's posts was safe to share?", answers: ["The dragon drawing", "The school-gates meetup time", "The map-pinned park photo", "The school-name comment"], correctIndex: 0, explanation: "Posting isn't the danger, clues are - proud and clue-free tracks are the good kind." },
+      { question: "The full protocol, in order, is...", answers: ["Stop → screenshot → block → tell", "Stop → block → screenshot → tell", "Tap → panic → hide → forget", "Share → like → follow → wave"], correctIndex: 0, explanation: "Give it nothing, freeze the evidence FIRST - blocking can make the message vanish - then slam the door and never carry it alone." },
+      { question: "How do you check where a QR code or link-door really goes?", answers: ["Lift the plaque - check the real address before walking through", "Read the words on the sign carefully", "Trust the pretty sign", "Scan it quickly"], correctIndex: 0, explanation: "A link is a door - Week 16's rule holds forever: words can be paint, so no plaque, no walk-through." },
     ],
     hard: [
-      { question: "The fake reset email had fastp1ay with a number 1 in the sender. Why does that matter?", answers: ["Lookalike senders wear a real name's costume - one swapped letter is the tell", "Numbers are lucky", "It loads faster", "It doesn't"], correctIndex: 0, explanation: "Week 4's lookalike lineup: the costume is one character deep, and checking the sender unmasks it." },
-      { question: "What makes COACH the graduate's fifth protocol step?", answers: ["Teaching your family makes the firewall outlive tonight", "It's louder than telling", "Graduates skip the other four", "It isn't a real step"], correctIndex: 0, explanation: "Week 19's role-flip folded into Week 11's protocol - powers shared are powers doubled." },
-      { question: "Why did Buddy_Blaze2000 fail the Profile Detective's check?", answers: ["Joined yesterday + borrowed photo + fishing-net follows + somewhere-else move", "Too good at racing", "Wrong favourite colour", "Online at night"], correctIndex: 0, explanation: "All four Week 3 tells at once - real profiles grow like tree rings, costumes appear overnight." },
+      { question: "The fake reset email had fastp1ay with a number 1 in the sender. Why does that matter?", answers: ["Lookalike senders wear a real name's costume - one swapped letter is the tell", "It only matters if the link looks strange too", "It loads faster", "It doesn't"], correctIndex: 0, explanation: "Week 4's lookalike lineup: the costume is one character deep, and checking the sender unmasks it." },
+      { question: "What makes COACH the graduate's fifth protocol step?", answers: ["Teaching your family makes the firewall outlive tonight", "It replaces TELL once you've graduated", "Graduates skip the other four", "It isn't a real step"], correctIndex: 0, explanation: "Week 19's role-flip folded into Week 11's protocol - powers shared are powers doubled." },
+      { question: "Why did Buddy_Blaze2000 fail the Profile Detective's check?", answers: ["Joined yesterday + borrowed photo + fishing-net follows + somewhere-else move", "He asked for a rematch too fast", "Too good at racing", "Online at night"], correctIndex: 0, explanation: "All four Week 3 tells at once - real profiles grow like tree rings, costumes appear overnight. (A rematch in a game you both play is what REAL looks like - Maya asked for one!)" },
     ],
   },
 

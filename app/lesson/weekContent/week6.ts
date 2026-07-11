@@ -58,7 +58,7 @@ export const WEEK_6: WeekContent = {
       objectives: [
         "Keep real-life info OUT of game chat",
         "Lock your lobby down - friends only",
-        "Find the report & block buttons with your eyes closed",
+        "Find the report & block buttons super-fast",
       ],
     },
 
@@ -68,7 +68,7 @@ export const WEEK_6: WeekContent = {
       type: "info",
       title: "Game Chat Is For Game Talk",
       content:
-        "Game chat is brilliant for game talk: tactics, rematches, 'nice shot!'. But your REAL-LIFE info - name, age, school, where you live - never goes in there. Remember: a lobby is full of people you've never met. Game talk in, real-life info OUT.",
+        "Game chat is awesome for game talk: tactics, rematches, 'nice shot!'. But your REAL-LIFE info - name, age, school, where you live - never goes in there. Remember: a lobby is full of people you've never met. Game talk in, real-life info OUT.",
       bullets: [
         "Game talk? Chat away!",
         "Your real name - stays out",
@@ -82,7 +82,7 @@ export const WEEK_6: WeekContent = {
         speaker: "adam",
         lines: [
           "[excited] Welcome back, Cyber Hero. Grab your controller!",
-          "Game chat is BRILLIANT for game talk.",
+          "Game chat is AWESOME for game talk.",
           "Tactics! Rematches! Nice shot!",
           "[whispers] But your real-life info never goes in there.",
           "Your name. Your age. Your school. Where you live.",
@@ -94,8 +94,8 @@ export const WEEK_6: WeekContent = {
     {
       type: "spamBlaster",
       introTitle: "Chat Goalie!",
-      introDescription: "Chat lines are flying! PUNCH away the ones that leak real-life info - let the game talk through!",
-      headline: "⚡ PUNCH AWAY THE OVERSHARES! ⚡",
+      introDescription: "You're the goalie guarding the SEND button! PUNCH away the chat lines that spill real-life secrets - let the game talk through!",
+      headline: "⚡ PUNCH AWAY THE SECRET-SPILLERS! ⚡",
       missLabel: "LEAKS",
       emails: [
         { sender: "BlazeRunner", subject: "gg! rematch tomorrow?", isPhishing: false, clue: "" },
@@ -106,7 +106,7 @@ export const WEEK_6: WeekContent = {
         { sender: "You (about to send)", subject: "my address is 42 Rainbow Road, come play!", isPhishing: true, clue: "Your address never goes in chat - ever" },
         { sender: "You (about to send)", subject: "I'm 9, my birthday is June 12th!", isPhishing: true, clue: "Age + birthday are real-life clues" },
         { sender: "NightHawk", subject: "who wants to squad up?", isPhishing: false, clue: "" },
-        { sender: "You (about to send)", subject: "my mum's phone number is 07700 900123", isPhishing: true, clue: "Family phone numbers stay private" },
+        { sender: "You (about to send)", subject: "my mom's phone number is 555-0123", isPhishing: true, clue: "Family phone numbers stay private" },
         { sender: "StarGazer", subject: "one more race then dinner!", isPhishing: false, clue: "" },
       ],
       narration: {
@@ -165,7 +165,7 @@ export const WEEK_6: WeekContent = {
         "Friends-only = only people you KNOW join",
         "Your hero name hides your real one",
         "Friends-only mic = strangers can't hear you",
-        "Set once with a grown-up - safe forever",
+        "Set once with a grown-up - they guard every game",
       ],
       bulletIcons: ["⚙️", "👪", "🎭", "🤫", "🛡️"],
       emblem: "⚙️",
@@ -220,9 +220,9 @@ export const WEEK_6: WeekContent = {
       prompt: "Which setting keeps strangers OUT of your lobby?",
       choices: [
         { text: "Who can join: FRIENDS ONLY", isCorrect: true },
-        { text: "Controller vibration: ON", isCorrect: false },
-        { text: "Game music: LOUD", isCorrect: false },
-        { text: "Screen brightness: HIGH", isCorrect: false },
+        { text: "Name shown: YOUR REAL NAME", isCorrect: false },
+        { text: "Mic: EVERYONE CAN HEAR", isCorrect: false },
+        { text: "Invites: ANYONE CAN SEND", isCorrect: false },
       ],
       praise: "That's the lock on your lobby door! ✓",
     },
@@ -252,7 +252,7 @@ export const WEEK_6: WeekContent = {
       type: "info",
       title: "The 'Somewhere Else' Trick",
       content:
-        "Game chat has rules, moderators and report buttons - it's a guarded playground. So tricksters always try the same move: 'let's chat on a different app!' Why? Because OVER THERE, the guards can't see them. Remember your W3 training: moving the chat is a red flag, every time.",
+        "Game chat has rules, moderators and report buttons - it's a guarded playground. So tricksters always try the same move: 'let's chat on a different app!' Why? Because OVER THERE, the guards can't see them. Remember your Week 3 training: moving the chat is a red flag, every time.",
       bullets: [
         "Game chat has guards: rules, mods, report buttons",
         "'Chat on another app' = leaving the guards behind",
@@ -311,7 +311,7 @@ export const WEEK_6: WeekContent = {
       narration: {
         speaker: "adam",
         lines: [
-          "[warmly] Time to practise, right inside a lobby chat.",
+          "[warmly] Time to practice, right inside a lobby chat.",
           "A player is about to get very friendly...",
           "[whispers] and then try to move you somewhere else.",
           "[excited] Watch the meter. Trust your training!",
@@ -527,7 +527,7 @@ export const WEEK_6: WeekContent = {
             { id: "need", label: "Would the real game do this?", note: "Free-anything generators don't exist - skins cost the game company money.", isRedFlag: true },
             { id: "happens", label: "If you use it?", note: "You type your password... and the account isn't yours anymore.", isRedFlag: true },
           ],
-          verdictNote: "Generators NEVER work - they exist to harvest passwords. Close it and tell a grown-up.",
+          verdictNote: "Generators NEVER work - they exist to STEAL passwords. Close it and tell a grown-up.",
         },
       ],
       hints: {
@@ -603,7 +603,7 @@ export const WEEK_6: WeekContent = {
         { text: "Who can join: FRIENDS ONLY", isStrong: true, explanation: "The lobby lock - strangers stay out automatically." },
         { text: "'Let's chat on Discord, game chat is lame'", isStrong: false, explanation: "The 'somewhere else' trick - leaving the guards behind." },
         { text: "Report, then block the nasty player", isStrong: true, explanation: "The power buttons doing exactly their job." },
-        { text: "'FREE skins - just log in HERE!'", isStrong: false, explanation: "A password harvester in a party hat. Close it, tell a grown-up." },
+        { text: "'FREE skins - just log in HERE!'", isStrong: false, explanation: "A password thief in a party hat. Close it, tell a grown-up." },
       ],
       narration: {
         speaker: "layla",
@@ -663,6 +663,132 @@ export const WEEK_6: WeekContent = {
 
   // Week-lane attack theatre: lobby tricks only (no money/V-Bucks - W7;
   // no fake-profile anatomy - W3).
+  // W6 SHOWDOWN — THE LOBBY PHANTOM (design doc §W6: one ranked match
+  // where he tries all the tricks). P1 deflectSort info-fishing chat ·
+  // P2 counterCard sneak-out chat · P3 tapTell free-mod parcel ·
+  // finisher = the REPORT slam.
+  bossShowdown: {
+    machine: {
+      name: "THE LOBBY PHANTOM",
+      tagline: "A ghost-player machine that pretends to be your friend",
+      art: {
+        intact: "/game/bosses/w06-lobbyphantom-intact.png",
+        damaged: "/game/bosses/w06-lobbyphantom-damaged.png",
+        defeated: "/game/bosses/w06-lobbyphantom-defeated.png",
+      },
+      arena: "/game/backgrounds/w06-arena-lobby.png",
+      accent: "#7eff97",
+      glow: "rgba(126,255,151,0.55)",
+    },
+    heroSprites: {
+      adam: {
+        idle: "/game/characters/w06/adam-esports-idle.png",
+        attack: "/game/characters/w06/adam-esports-attack.png",
+        celebrate: "/game/characters/w06/adam-esports-celebrate.png",
+      },
+      layla: {
+        idle: "/game/characters/w06/layla-esports-idle.png",
+        attack: "/game/characters/w06/layla-esports-attack.png",
+        celebrate: "/game/characters/w06/layla-esports-celebrate.png",
+      },
+    },
+    phases: [
+      // P1 · INFO FISHING → DEFLECT-SORT: chat scrolls past - shut down
+      // the info-asks, wave the real game talk through.
+      {
+        kind: "deflectSort",
+        attack: 0,
+        coach: "Game talk passes. Info-asks get SHUT DOWN!",
+        actLabel: "SHUT IT DOWN!",
+        actIcon: "🚫",
+        passLabel: "GAME TALK - OK",
+        items: [
+          { id: "school", label: "'What school do you go to?'", icon: "🏫", act: true, note: "School names find you in real life. Game talk only - shut it down!" },
+          { id: "gg", label: "'GG! Good game!'", icon: "🎮", act: false, note: "Just game talk - that's what chat is for. Let it pass." },
+          { id: "alone", label: "'Are you home alone right now?'", icon: "🚪", act: true, note: "Nobody in a game needs to know that. Big red flag - shut it down!" },
+          { id: "rematch", label: "'Rematch? Best of three!'", icon: "🎯", act: false, note: "Game talk - totally fine. Play on!" },
+          { id: "name", label: "'What's your REAL name?'", icon: "🆔", act: true, note: "Your hero name is enough. Real names stay offline - shut it down!" },
+          { id: "tactic", label: "'Try the ice tower next round!'", icon: "⚡", act: false, note: "Tactics talk - the good stuff. Let it pass." },
+        ],
+      },
+      // P2 · SNEAK-OUT CHAT → COUNTER-CARD.
+      {
+        kind: "counterCard",
+        attack: 1,
+        coach: "Where do heroes chat? Tap the card!",
+        situation: "'Let's chat on ZapChat instead - the mods can't hear us there!'",
+        situationIcon: "🚪",
+        cards: [
+          { id: "stay", label: "STAY WHERE THE GUARDS ARE", icon: "🛡️", isRight: true, note: "" },
+          { id: "go", label: "Go - it sounds cozier", icon: "💬", isRight: false, note: "Off-game there are no mods and no report button - that's exactly why he asks." },
+          { id: "once", label: "Go, but just this once", icon: "🌀", isRight: false, note: "'Just once' is how every trap starts. Guards on = safe chat." },
+        ],
+      },
+      // P3 · FREE-MOD TRAP → TAP-THE-TELL: the glowing parcel, 3 rounds.
+      {
+        kind: "tapTell",
+        attack: 2,
+        coach: "Find the trap sign on the parcel - tap it!",
+        rounds: [
+          {
+            id: "source",
+            prompt: "A glowing parcel: 'FREE MEGA MOD!'",
+            promptIcon: "🪤",
+            options: [
+              { id: "glow", label: "It glows really bright", icon: "✨", isTell: false, note: "Shiny doesn't mean safe OR unsafe. Check where it CAME from." },
+              { id: "store", label: "NOT from the game's shop", icon: "🔍", isTell: true, note: "" },
+              { id: "mega", label: "Says 'MEGA'", icon: "💬", isTell: false, note: "Big words are just paint. Check where it CAME from." },
+            ],
+          },
+          {
+            id: "form",
+            prompt: "The parcel has a little form to fill in...",
+            promptIcon: "⚙️",
+            options: [
+              { id: "password", label: "Asks for your PASSWORD", icon: "🔑", isTell: true, note: "" },
+              { id: "color", label: "Asks your favorite color", icon: "🎨", isTell: false, note: "A color can't unlock anything. Find what it's really after." },
+              { id: "hero", label: "Asks your hero name", icon: "🦸", isTell: false, note: "Hero names are public anyway. Find what it's really after." },
+            ],
+          },
+          {
+            id: "promise",
+            prompt: "Read the promise on the label...",
+            promptIcon: "🕵️",
+            options: [
+              { id: "install", label: "'Easy to install!'", icon: "⚙️", isTell: false, note: "Lots of real things install easily. Find the impossible promise." },
+              { id: "fast", label: "'Runs super fast!'", icon: "🚀", isTell: false, note: "Speed brags are normal ads. Find the impossible promise." },
+              { id: "unlimited", label: "'UNLIMITED everything, forever!'", icon: "👀", isTell: true, note: "" },
+            ],
+          },
+        ],
+      },
+    ],
+    weakPoints: [
+      { question: "What belongs in game chat?", answers: ["Game talk - tactics and rematches", "Your school's name", "Your address", "When you're home alone"], correctIndex: 0, explanation: "Game talk in, real-life info out. Always." },
+      { question: "Why do tricksters want to leave game chat?", answers: ["Rules, mods and report buttons can't follow them", "Game chat is too slow", "They prefer typing", "So they can send you secret map tricks"], correctIndex: 0, explanation: "Off-game there are no guards - that's the whole point of the move." },
+      { question: "'FREE skin generator - enter your password!' What happens if you do?", answers: ["The account isn't yours anymore", "You get free skins", "Nothing at all", "You get the skins, but with lots of ads"], correctIndex: 0, explanation: "Generators never work - they exist to steal passwords." },
+    ],
+    finisher: {
+      chargeLabel: "CHARGE THE REPORT BUTTON",
+      chargeIcon: "🔔",
+      chargeSecs: 5,
+      milestones: ["Calling the guards…", "Signal's strong! Keep holding!", "GUARDS READY! LET GO!"],
+      payoffTitle: "PHANTOM REPORTED!",
+      payoffLine: "The guards handled it - that's their job. Game talk in, real info out, and the report button is always yours.",
+    },
+    villain: {
+      arrival: "GG kid! Wanna know a SHORTCUT to pro? Step into my lobby!",
+      phases: [
+        "Just filling in your player card! Name? School? Front-door key?",
+        "The guards are SO nosy. My place is cozier!",
+        "Free mods! Unlimited everything! Slight raccoon flavor!",
+      ],
+      escape: "REPORTED?! I'm the VICTIM here!",
+    },
+    voiceSlug: "w06",
+  },
+  badgeArt: "/cyberheroes/badges/week-06-lobby-guardian.png",
+
   bossAttacks: [
     { name: "INFO FISHING",   icon: "🎮", color: "#7eff97", glow: "rgba(126, 255, 151, 0.55)", tag: "Game talk only",             emblemColor: 0x7eff97 },
     { name: "SNEAK-OUT CHAT", icon: "🚪", color: "#ff5fb3", glow: "rgba(255, 95, 179, 0.55)",  tag: "Stay with the guards",      emblemColor: 0xff5fb3 },
@@ -674,18 +800,18 @@ export const WEEK_6: WeekContent = {
   bossQuestions: {
     easy: [
       { question: "What belongs in game chat?", answers: ["Game talk - tactics and rematches", "Your school's name", "Your address", "When you're home alone"], correctIndex: 0, explanation: "Game talk in, real-life info out. Always." },
-      { question: "Which setting keeps strangers out of your lobby?", answers: ["Who can join: friends only", "Music: on", "Vibration: off", "Brightness: high"], correctIndex: 0, explanation: "Friends-only joining is the lock on your lobby door." },
-      { question: "A player says 'let's chat on a different app'. That's...", answers: ["A red flag - stay where the guards are", "A friendly offer", "Totally normal", "A secret level"], correctIndex: 0, explanation: "Off-game, the moderators can't protect you - that's exactly why they ask." },
+      { question: "Which setting keeps strangers out of your lobby?", answers: ["Who can join: friends only", "Name shown: hero name", "Vibration: off", "Brightness: high"], correctIndex: 0, explanation: "Friends-only joining is the lock on your lobby door." },
+      { question: "A player says 'let's chat on a different app'. That's...", answers: ["A red flag - stay where the guards are", "A friendly offer", "Totally normal", "OK if you've played lots of games together"], correctIndex: 0, explanation: "Off-game, the moderators can't protect you - that's exactly why they ask." },
     ],
     medium: [
-      { question: "A player is being nasty. What order do you act in?", answers: ["Report, then block, then tell a grown-up", "Block, argue, unblock", "Shout, quit, cry", "Add friend, then report"], correctIndex: 0, explanation: "Report calls the guards first, block vanishes them, telling finishes the job." },
-      { question: "What does BLOCK do?", answers: ["That player vanishes from your game", "Deletes your account", "Mutes your music", "Reports a bug"], correctIndex: 0, explanation: "No messages, no joining, they can't even see you. Poof." },
-      { question: "A mod says 'turn OFF your virus checker to install'. You...", answers: ["Close it - that's a trap sign", "Turn it off quickly", "Install twice", "Only turn it half off"], correctIndex: 0, explanation: "Asking to disable protection is a burglar asking you to unlock the door." },
+      { question: "A player is being nasty. What order do you act in?", answers: ["Report, then block, then tell a grown-up", "Block first, then report", "Shout, quit, cry", "Add friend, then report"], correctIndex: 0, explanation: "Report calls the guards first, block vanishes them, telling finishes the job." },
+      { question: "What does BLOCK do?", answers: ["That player vanishes from your game", "Deletes your account", "Kicks them out of the game for everyone", "Reports a bug"], correctIndex: 0, explanation: "No messages, no joining, they can't even see you. Poof." },
+      { question: "A mod says 'turn OFF your virus checker to install'. You...", answers: ["Close it - that's a trap sign", "Turn it off quickly", "Turn it off just this once", "Only turn it half off"], correctIndex: 0, explanation: "Asking to disable protection is a burglar asking you to unlock the door." },
     ],
     hard: [
-      { question: "Why do tricksters want to leave game chat?", answers: ["Rules, mods and report buttons can't follow them", "Game chat is too slow", "They prefer typing", "Their app has better emojis"], correctIndex: 0, explanation: "Off-game there are no guards - that's the whole point of the move." },
-      { question: "'FREE skin generator - enter your password!' What happens if you do?", answers: ["The account isn't yours anymore", "You get free skins", "Nothing at all", "You get one skin"], correctIndex: 0, explanation: "Generators never work - they exist to harvest passwords." },
-      { question: "Where do real games sell their content?", answers: ["Inside the game's own shop", "On random download sites", "In chat messages", "Nowhere - it's all free"], correctIndex: 0, explanation: "Inside the game + a grown-up's OK = the only safe way." },
+      { question: "Why do tricksters want to leave game chat?", answers: ["Rules, mods and report buttons can't follow them", "Game chat is too slow", "They prefer typing", "So they can send you secret map tricks"], correctIndex: 0, explanation: "Off-game there are no guards - that's the whole point of the move." },
+      { question: "'FREE skin generator - enter your password!' What happens if you do?", answers: ["The account isn't yours anymore", "You get free skins", "Nothing at all", "You get the skins, but with lots of ads"], correctIndex: 0, explanation: "Generators never work - they exist to steal passwords." },
+      { question: "Where do real games sell their content?", answers: ["Inside the game's own shop", "On random download sites", "In chat messages", "On their fan forums"], correctIndex: 0, explanation: "Inside the game + a grown-up's OK = the only safe way." },
     ],
   },
 

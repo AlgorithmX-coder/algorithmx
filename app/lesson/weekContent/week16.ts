@@ -48,7 +48,7 @@ export const WEEK_16: WeekContent = {
       photoSrc: "/cyberheroes/alerts/week-16.png",
       title: "ALERT INCOMING",
       badge: "Incident Report",
-      caption: "The Raccoon's Doorway Trick is everywhere: pretty painted doors - links and QR codes - whose signs promise parties and prizes... while the doors really open onto his slide. He's even pasting his own sticker-codes OVER real ones on posters and menus. This week you become a Door Checker: peek at every address, peel test the stickers, pick the see-through doors - and when you can't tell, wheel out the barrier and ask.",
+      caption: "The Raccoon's Doorway Trick is everywhere. Links and QR codes are doors. He paints their signs with parties and prizes - but the doors open onto his slide. He's even pasting his own sticker-codes OVER real ones on posters and menus. This week you become a Door Checker. Peek at every address. Peel test the stickers. Pick the see-through doors. And when you can't tell? Wheel out the barrier and ask.",
       photoCaption: "Wk 16 - The Doorway Trick",
       ctaLabel: "Start the Mission →",
     },
@@ -74,7 +74,7 @@ export const WEEK_16: WeekContent = {
         "A link is a doorway to another place",
         "The door's sign can say ANYTHING",
         "A QR code is a door made of dots",
-        "Pretty door ≠ safe place",
+        "A pretty door is NOT a safe place",
         "Heroes check before they walk",
       ],
       bulletIcons: ["🚪", "🏷️", "🔣", "🎭", "👀"],
@@ -197,7 +197,7 @@ export const WEEK_16: WeekContent = {
       type: "info",
       title: "Peek Before You Walk",
       content:
-        "Here's the Door Checker's secret: under every shiny sign hides a little plaque - the ADDRESS. That's the door's true name, and it can't lie like the paint can. Lift the plaque and READ it: does it say the same thing as the sign? 'sunnyside-school.uk/sports-day' matches a sports-day door. 'prize-grab.win' under a 'school photos' sign? The sign and the plaque disagree - and when they disagree, believe the PLAQUE.",
+        "Here's the Door Checker's secret: under every shiny sign hides a little plaque - the ADDRESS. That's the door's true name, and it can't lie like the paint can. On a tablet or phone, press and HOLD a link - the real address pops up. That's the plaque. Lift it and READ it: does it say the same thing as the sign? 'sunnyside-school.edu/field-day' matches a field-day door. 'prize-grab.win' under a 'school photos' sign? The sign and the plaque disagree - and when they disagree, believe the PLAQUE.",
       bullets: [
         "Under every sign hides the ADDRESS",
         "The address is the door's true name",
@@ -236,9 +236,9 @@ export const WEEK_16: WeekContent = {
       doors: [
         {
           id: "sports",
-          claim: "School Sports Day Photos",
+          claim: "School Field Day Photos",
           icon: "🏫",
-          address: "sunnyside-school.uk/sports-day",
+          address: "sunnyside-school.edu/field-day",
           matches: true,
           note: "Look again - the school's own name, saying exactly what the sign said. When sign and address agree, the door is honest.",
         },
@@ -254,17 +254,17 @@ export const WEEK_16: WeekContent = {
           id: "museum",
           claim: "Dino Museum Tickets",
           icon: "🌍",
-          address: "dino-museum.uk/tickets",
+          address: "dino-museum.org/tickets",
           matches: true,
           note: "Museum name, ticket page - the plaque agrees with the sign. That's what an honest door looks like.",
         },
         {
           id: "parcel",
-          claim: "Your Parcel Is Waiting!",
+          claim: "Your Package Is Waiting!",
           icon: "✉️",
-          address: "not-the-post.deliveree-prizes.biz",
+          address: "package-track.deliveree-prizes.biz",
           matches: false,
-          note: "A parcel door whose address says PRIZES and isn't the post office at all? Sign and plaque disagree - sneaky door.",
+          note: "A package door whose address says PRIZES and isn't a delivery company at all? Sign and plaque disagree - sneaky door.",
         },
         {
           id: "cartoons",
@@ -272,7 +272,7 @@ export const WEEK_16: WeekContent = {
           icon: "📱",
           address: "cart00ns-4-free.tv",
           matches: false,
-          note: "Peek closer: cart-zero-zero-ns. Zeros dressed up as letters - the copy-door trick from the lookalike weeks. Sneaky!",
+          note: "Peek closer: cart-zero-zero-ns. Zeros dressed up as letters - the classic copycat trick. Sneaky!",
         },
       ],
       hints: {
@@ -297,14 +297,14 @@ export const WEEK_16: WeekContent = {
     {
       type: "quickCheck",
       mode: "speed",
-      prompt: "Quick - which address matches 'School Sports Day Photos'?",
-      speedMs: 5000,
+      prompt: "Quick - which address matches 'School Field Day Photos'?",
+      speedMs: 9000,
       choices: [
-        { text: "sunnyside-school.uk/sports-day", isCorrect: true },
-        { text: "prize-grab.win/sports", isCorrect: false },
-        { text: "sp0rts-day-free.biz", isCorrect: false },
+        { text: "sunnyside-school.edu/field-day", isCorrect: true },
+        { text: "prize-grab.win/field-day", isCorrect: false },
+        { text: "f1eld-day-free.biz", isCorrect: false },
       ],
-      praise: "Peeked at Door Checker speed - school name, sports page, perfect match! ✓",
+      praise: "Peeked at Door Checker speed - school name, field-day page, perfect match! ✓",
     },
 
     // 10 - Recap · Concept 2 of 5
@@ -371,7 +371,7 @@ export const WEEK_16: WeekContent = {
       items: [
         {
           id: "museum-sign",
-          text: "Museum sign: the code is printed flat, same colours as the whole poster",
+          text: "Museum sign: the code is printed flat, same colors as the whole poster",
           icon: "🌍",
           isScam: false,
           explanation: "Part of the printed design, no edges anywhere - a real door, printed with the sign.",
@@ -406,7 +406,7 @@ export const WEEK_16: WeekContent = {
         },
         {
           id: "game-shop",
-          text: "Game-shop window: a shiny new sticker-code slapped across the faded poster",
+          text: "Game-store window: a shiny new sticker-code slapped across the faded poster",
           icon: "🎮",
           isScam: true,
           explanation: "Brand-new shiny sticker, faded old poster - those two didn't arrive together. Swapped!",
@@ -454,7 +454,7 @@ export const WEEK_16: WeekContent = {
         { text: "TRUE", isCorrect: false },
         { text: "FALSE", isCorrect: true },
       ],
-      praise: "Busted - pasting fake doors over real ones is YOUR favourite trick, Raccoon! ✓",
+      praise: "Busted - pasting fake doors over real ones is YOUR favorite trick, Raccoon! ✓",
       nudge: "Who did we just catch pasting sticker-codes over the real ones?",
     },
 
@@ -483,7 +483,7 @@ export const WEEK_16: WeekContent = {
       type: "info",
       title: "Clear Glass, Frosted Glass",
       content:
-        "Some links show you their WHOLE address - like a clear glass door: 'sunnyside-school.uk/sports-day-album'. You can read exactly where it leads before you touch it. But shortened links - bit.ly, tinyurl - are frosted glass: tiny scrambled letters hiding the whole destination. Frosted isn't always evil... but you CAN'T check it, and Door Checkers don't walk through doors they can't check. Pick the clear door, or hand the frosted one to a grown-up.",
+        "Some links show you their WHOLE address - like a clear glass door: 'sunnyside-school.edu/field-day-album'. You can read exactly where it leads before you touch it. But shortened links - bit.ly, tinyurl - are frosted glass: tiny scrambled letters hiding the whole destination. Frosted isn't always evil... but you CAN'T check it, and Door Checkers don't walk through doors they can't check. Pick the clear door, or hand the frosted one to a grown-up. And remember: words in a message can be paint too - press and HOLD to see the plaque.",
       bullets: [
         "Clear links show their whole address",
         "You can READ where they lead",
@@ -517,17 +517,17 @@ export const WEEK_16: WeekContent = {
       correctToast: "CLEAR GLASS - YOU CAN SEE RIGHT THROUGH!",
       wrongTitle: "Frosted glass!",
       completeTitle: "Three clear doors walked!",
-      completeLine: "Whole addresses you could read, every time - frosted mysteries left for grown-ups to check.",
+      completeLine: "Addresses you could read AND check, every time - frosted mysteries left for grown-ups.",
       scoreNoun: "clear picks",
       rounds: [
         {
           id: "album",
-          from: "Auntie Meg",
+          from: "Aunt Meg",
           fromIcon: "💬",
-          message: "Sports-day album is up! Someone sent me three links - which one can we actually CHECK?",
+          message: "Field-day album is up! Someone sent me three links - which one can we actually CHECK?",
           replies: [
             {
-              text: "sunnyside-school.uk/sports-day-album",
+              text: "sunnyside-school.edu/field-day-album",
               isSafe: true,
               explanation: "Clear glass - the school's name and the album, readable end to end. This one you can check yourself.",
             },
@@ -583,7 +583,7 @@ export const WEEK_16: WeekContent = {
               explanation: "Frosted - a shortened dot-door. Four-U or not, the destination is hidden.",
             },
             {
-              text: "cardshop.uk/birthday-dragon-card",
+              text: "cardshop.com/birthday-dragon-card",
               isSafe: true,
               explanation: "Clear glass - the card shop, the dragon card, spelled out whole. THAT one you can check.",
             },
@@ -592,7 +592,7 @@ export const WEEK_16: WeekContent = {
       ],
       hints: {
         tier1: "Can you READ the whole address on the door? That's the clear glass.",
-        tier2: "bit.ly, tinyurl, short.link, qrco.de = frosted. A full name like school.uk/page = clear.",
+        tier2: "bit.ly, tinyurl, short.link, qrco.de = frosted. A full name like school.edu/page = clear.",
       },
       narration: {
         speaker: "layla",
@@ -704,7 +704,7 @@ export const WEEK_16: WeekContent = {
           ],
         },
         {
-          setup: "Your friend forwards a frosted link - 'openthis.lol/surprise' - with 'OPEN IT OPEN IT!' underneath...",
+          setup: "Your friend forwards a frosted short-link - 's.lol/xk2' - with 'OPEN IT OPEN IT!' underneath...",
           choices: [
             {
               text: "Ask 'what is it?' - and check with a grown-up first",
@@ -714,7 +714,7 @@ export const WEEK_16: WeekContent = {
             {
               text: "Open it - a friend sent it, so it must be safe",
               isSafe: false,
-              consequence: "Friends forward doors they never checked - kind hands can still pass on a trick. The sender being lovely doesn't tell you where the door goes; only the address can.",
+              consequence: "Friends forward doors they never checked - kind hands can still pass on a trick. The sender being nice doesn't tell you where the door goes; only the address can.",
             },
           ],
         },
@@ -775,7 +775,7 @@ export const WEEK_16: WeekContent = {
         hint1: "Ask: was this door CHECKED... or just trusted because of its paint?",
         hint2: "SAFE = read the address, peel test, ask when unsure. TRICK = tap fast, trust the sign, scan the sticker.",
         hint2Example: "SAFE: 'read the whole address first'   TRICK: 'the sign said FREE, so I tapped'",
-        hint3: "Door Checker card: sign ≠ destination · lift the plaque · peel test · clear glass only · unsure = don't.",
+        hint3: "Door Checker card: the sign is NOT the destination · lift the plaque · peel test · clear glass only · unsure = don't.",
         hint3Example: "Show a grown-up the frosted link ✅    Scan the crooked sticker ❌",
       },
       items: [
@@ -866,6 +866,131 @@ export const WEEK_16: WeekContent = {
     { type: "completion" },
   ],
 
+  // Bespoke W16 showdown: close the back-alley paint shop. Paint lies,
+  // plaques don't - and the big shutter rolls down for good.
+  bossShowdown: {
+    machine: {
+      name: "THE PAINT SHOP",
+      tagline: "A back-alley factory that paints pretty lies on tricky doors",
+      art: {
+        intact: "/game/bosses/w16-paintshop-intact.png",
+        damaged: "/game/bosses/w16-paintshop-damaged.png",
+        defeated: "/game/bosses/w16-paintshop-defeated.png",
+      },
+      arena: "/game/backgrounds/w16-arena-alley.png",
+      accent: "#ff6b6b",
+      glow: "rgba(255,107,107,0.55)",
+    },
+    heroSprites: {
+      adam: {
+        idle: "/game/characters/w16/adam-inspector-idle.png",
+        attack: "/game/characters/w16/adam-inspector-attack.png",
+        celebrate: "/game/characters/w16/adam-inspector-celebrate.png",
+      },
+      layla: {
+        idle: "/game/characters/w16/layla-inspector-idle.png",
+        attack: "/game/characters/w16/layla-inspector-attack.png",
+        celebrate: "/game/characters/w16/layla-inspector-celebrate.png",
+      },
+    },
+    phases: [
+      // P1 · PAINTED DOOR → TAP-THE-TELL: lift the plaque under every
+      // painted sign - tap the door whose paint and plaque disagree.
+      {
+        kind: "tapTell",
+        attack: 0,
+        coach: "Signs are paint. Plaques are truth. Tap every lying sign!",
+        rounds: [
+          {
+            id: "puppies",
+            prompt: "Three fresh doors roll past. Lift the plaques - which sign is lying?",
+            promptIcon: "💡",
+            options: [
+              { id: "honest-puppies", label: "Sign: CUTE PUPPIES - plaque reads cute-puppies.com", icon: "📋", isTell: false, note: "Paint and plaque MATCH - that door's honest. Hunt the one where they disagree!" },
+              { id: "lying-puppies", label: "Sign: CUTE PUPPIES - plaque reads prize-grab.win", icon: "🌀", isTell: true, note: "" },
+              { id: "honest-cartoons", label: "Sign: CARTOON CLUB - plaque reads cartoon-club.tv", icon: "🎮", isTell: false, note: "Cartoon paint, cartoon plaque - they agree. A sneakier door is lying!" },
+            ],
+          },
+          {
+            id: "photos",
+            prompt: "Second batch - one of these doors is fibbing about where it goes.",
+            promptIcon: "💡",
+            options: [
+              { id: "honest-photos", label: "Sign: CLASS PHOTOS - plaque reads school.org/photos", icon: "👪", isTell: false, note: "School sign, school plaque - an honest door. Keep lifting!" },
+              { id: "lying-photos", label: "Sign: CLASS PHOTOS - plaque reads foto-prize.biz", icon: "🌀", isTell: true, note: "" },
+              { id: "honest-library", label: "Sign: STORY TIME - plaque reads library.org/stories", icon: "📋", isTell: false, note: "Story paint, library plaque - that one keeps its promise. One door doesn't!" },
+            ],
+          },
+          {
+            id: "games",
+            prompt: "Last alley - this one's SNEAKY. Read every single letter.",
+            promptIcon: "🔍",
+            options: [
+              { id: "honest-games", label: "Sign: KID GAMES - plaque reads kidgames.com", icon: "🎮", isTell: false, note: "Read it slow - every letter honest. The liar is one letter sneakier!" },
+              { id: "lying-games", label: "Sign: KID GAMES - plaque reads k1dgames.com", icon: "🌀", isTell: true, note: "" },
+              { id: "honest-pets", label: "Sign: PET VIDEOS - plaque reads pet-videos.tv", icon: "🙈", isTell: false, note: "Pets on the paint, pets on the plaque - true door. Squint harder!" },
+            ],
+          },
+        ],
+      },
+      // P2 · STICKY SWAP → DEFLECT-SORT: peel-test the QR codes - corner,
+      // bubble, shine. Pasted stickers peel; printed codes stay.
+      {
+        kind: "deflectSort",
+        attack: 1,
+        coach: "Corner, bubble, shine - peel-test every code!",
+        actLabel: "OVER-STICKER - PEEL IT!",
+        actIcon: "🏷️",
+        passLabel: "PRINTED ON - LET IT STAY",
+        items: [
+          { id: "corner", label: "A code whose corner is lifting off the poster", icon: "✋", act: true, note: "Printed codes don't peel - a lifted corner means someone pasted a new door on top. Peel it!" },
+          { id: "movie", label: "A code printed flat into the movie poster", icon: "🎭", act: false, note: "Flat, matching, born with the poster - that's the real code. Let it stay!" },
+          { id: "bubble", label: "A code with a fat air bubble trapped under it", icon: "🌀", act: true, note: "Bubbles hide under STICKERS, never under print. That code got pasted. Peel it!" },
+          { id: "menu", label: "A code on the pizza menu in the menu's own ink", icon: "📋", act: false, note: "Same ink, same fade, same page - the printer made them together. Let it stay!" },
+          { id: "shiny", label: "A shiny new code on a faded, sun-bleached poster", icon: "💡", act: true, note: "The poster faded for months - the code didn't? That shine is a fresh sticker. Peel it!" },
+          { id: "zoo", label: "A code on the zoo map printed with the tiger stripes", icon: "🙈", act: false, note: "Printed right into the stripes - that code lives there. Let it stay!" },
+        ],
+      },
+      // P3 · FROSTED LINK → COUNTER-CARD: the bit.ly mystery door.
+      {
+        kind: "counterCard",
+        attack: 2,
+        coach: "You can't see through this one. What's the Door Checker move?",
+        situation: "The last door is FROSTED glass. The plaque only says: 'bit.ly/mystery-prize'",
+        situationIcon: "🌀",
+        cards: [
+          { id: "askfirst", label: "CAN'T SEE THROUGH? ASK A GROWN-UP", icon: "👪", isRight: true, note: "" },
+          { id: "rush", label: "Walk through fast - quick counts as safe", icon: "🚀", isRight: false, note: "Speed doesn't melt frost. You STILL can't see where it goes - and now you're inside. Unsure means don't." },
+          { id: "knock", label: "Knock first, then walk on through", icon: "✋", isRight: false, note: "Knocking is sweet - but the address stays hidden. Polite plus mystery is still mystery. A grown-up checks it first." },
+        ],
+      },
+    ],
+    weakPoints: [
+      { question: "A door's paint says PUPPIES. Its plaque says prize-grab.win. Trust...", answers: ["The plaque - paint can say anything at all", "The paint - puppies sound friendly", "Both - they're the same door", "Whichever looks prettier"], correctIndex: 0, explanation: "The builder chooses where a door goes - the plaque is its true name, the paint is just decoration." },
+      { question: "Which code got pasted OVER the real one?", answers: ["The one with a lifted corner and an air bubble", "The one printed in the menu's own ink", "The flattest one", "The most colorful one"], correctIndex: 0, explanation: "Corners, bubbles and mismatched shine - stickers brag, print stays quiet." },
+      { question: "A short link hides its whole address. The rule is...", answers: ["Can't check it? A grown-up opens it, not you", "Tap it quickly before it expires", "Knock twice, then tap", "Short means safe"], correctIndex: 0, explanation: "Frosted isn't always evil - but uncheckable means it's a grown-up's job first." },
+    ],
+    finisher: {
+      chargeLabel: "CHARGE THE BIG SHUTTER",
+      chargeIcon: "🔒",
+      chargeSecs: 5,
+      milestones: ["The shutter is rattling loose…", "It's rolling down the alley…", "SLAM IT! LET GO!"],
+      payoffTitle: "SHOP CLOSED!",
+      payoffLine: "CLANG! The great shutter rolls down over the whole alley - painted doors, sticky codes, frosted glass, all shut behind it. Forty trick doors and not ONE got a single tap. The Door Checker read the plaques - and plaques never lie.",
+    },
+    villain: {
+      arrival: "Doors! Get your doors! Every sign hand-painted by an honest raccoon!",
+      phases: [
+        "The sign says PUPPIES! Would a sign lie?!",
+        "Fresh stickers! Mind the bubbles!",
+        "Frosted glass is a STYLE choice!",
+      ],
+      escape: "Closed?! I've got forty unsold doors and a lease!",
+    },
+    voiceSlug: "w16",
+  },
+  badgeArt: "/cyberheroes/badges/week-16-door-checker.png",
+
   // Week-lane attack theatre: doorway tricks only (fake senders = W4,
   // copycat apps = W9, pop-up X-hunts = W7).
   bossAttacks: [
@@ -878,19 +1003,19 @@ export const WEEK_16: WeekContent = {
   // is designed separately with the boss batch).
   bossQuestions: {
     easy: [
-      { question: "What IS a link?", answers: ["A doorway to another place online", "A promise", "A prize", "A game"], correctIndex: 0, explanation: "A doorway - and the sign on it can say anything at all." },
+      { question: "What IS a link?", answers: ["A doorway to another place online", "A sign that tells you where you'll end up", "A prize", "A game"], correctIndex: 0, explanation: "A doorway - and the sign on it can say anything at all." },
       { question: "Who decides where a link-door really goes?", answers: ["The person who BUILT it", "The sign on the door", "Whoever taps it", "Nobody"], correctIndex: 0, explanation: "The builder picks the destination - the sign is just paint." },
-      { question: "A QR code is best described as...", answers: ["A door made of dots only scanners can read", "A secret picture", "Always safe", "A game piece"], correctIndex: 0, explanation: "You can't read the dots - which is why it gets checked before it gets scanned." },
+      { question: "A QR code is best described as...", answers: ["A door made of dots only scanners can read", "A picture you can read if you look closely", "Always safe", "A game piece"], correctIndex: 0, explanation: "You can't read the dots - which is why it gets checked before it gets scanned." },
     ],
     medium: [
-      { question: "The sign says 'School Photos' but the address says 'prize-grab.win'. Believe...", answers: ["The address - signs can lie, plaques can't", "The sign - it's bigger", "Both", "Neither - flip a coin"], correctIndex: 0, explanation: "When sign and address disagree, the address is the door's true name." },
-      { question: "A QR sticker sits crooked on top of another code. That means...", answers: ["The door was swapped - peel it, don't scan it", "Extra safe - two codes!", "The poster is fancy", "Scan both"], correctIndex: 0, explanation: "Real codes are printed flat - a code over a code is the sticker trick." },
-      { question: "Why is a bit.ly link 'frosted glass'?", answers: ["It hides the whole destination so you can't check it", "It's cold", "It's always a virus", "It's shiny"], correctIndex: 0, explanation: "Frosted isn't always evil - but uncheckable means a grown-up checks it, not you." },
+      { question: "The sign says 'School Photos' but the address says 'prize-grab.win'. Believe...", answers: ["The address - signs can lie, plaques can't", "The sign - it mentions your school", "Both", "Neither - flip a coin"], correctIndex: 0, explanation: "When sign and address disagree, the address is the door's true name." },
+      { question: "A QR sticker sits crooked on top of another code. That means...", answers: ["The door was swapped - peel it, don't scan it", "The store just updated its old code", "Extra safe - two codes!", "Scan both"], correctIndex: 0, explanation: "Real codes are printed flat - a code over a code is the sticker trick." },
+      { question: "Why is a bit.ly link 'frosted glass'?", answers: ["It hides the whole destination so you can't check it", "It's shorter, so it's safer", "It's always a virus", "It's shiny"], correctIndex: 0, explanation: "Frosted isn't always evil - but uncheckable means a grown-up checks it, not you." },
     ],
     hard: [
       { question: "A friend forwards a mystery link saying 'OPEN IT!'. The Door Checker move is...", answers: ["Ask what it is and check with a grown-up - friends forward unchecked doors too", "Open it - friends are always safe", "Forward it to more friends", "Open it quickly then close it"], correctIndex: 0, explanation: "A kind sender doesn't tell you where a door goes - only the address does." },
-      { question: "The 'barrier rule' means...", answers: ["Unsure = don't tap, don't scan - stop and ask", "Build a wall around the computer", "Never use links at all", "Only tap on weekends"], correctIndex: 0, explanation: "You never decide alone - the barrier plus a grown-up beats every mystery door." },
-      { question: "An address reads 'cart00ns-4-free.tv'. The tell is...", answers: ["Zeros dressed as letters - a copy-door", "Cartoons are illegal", "The dot-tv part", "Nothing - looks fine"], correctIndex: 0, explanation: "Swapped letters and zeros are the lookalike trick painted onto an address." },
+      { question: "The 'barrier rule' means...", answers: ["Unsure = don't tap, don't scan - stop and ask", "Ask a grown-up AFTER you tap, just in case", "Never use links at all", "Build a wall around the computer"], correctIndex: 0, explanation: "You never decide alone - the barrier plus a grown-up beats every mystery door." },
+      { question: "An address reads 'cart00ns-4-free.tv'. The tell is...", answers: ["Zeros dressed as letters - a copy-door", "The word FREE - free always means fake", "The dot-tv part", "Nothing - looks fine"], correctIndex: 0, explanation: "Swapped letters and zeros are the copycat trick painted onto an address." },
     ],
   },
 

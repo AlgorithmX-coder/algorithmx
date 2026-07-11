@@ -324,13 +324,20 @@ export default function QuickCheck({
             zIndex: 2,
           }}
         >
-          <div
+          {/* SCREEN-AUDIT: the REAL Hacker Raccoon makes his claim —
+              character art, not an emoji chip. */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/game/characters/raccoon-taunt.png"
+            alt=""
+            aria-hidden
             style={{
-              filter: "drop-shadow(0 6px 14px rgba(192,132,252,0.5))",
+              height: 96,
+              flexShrink: 0,
+              objectFit: "contain",
+              filter: "drop-shadow(0 8px 16px rgba(192,132,252,0.5))",
             }}
-          >
-            <PixIcon emoji="🦝" size={54} />
-          </div>
+          />
           <div
             style={{
               position: "relative",

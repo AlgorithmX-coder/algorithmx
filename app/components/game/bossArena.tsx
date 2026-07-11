@@ -99,12 +99,43 @@ export function makeHeroes(
 }
 
 /** Raccoon voice clips (Callum) — capped + mute-gated raw Audio, per the
- *  audio contract. Never full volume. */
+ *  audio contract. Never full volume. Tracked so the victory sequence
+ *  can wait for the current bark to finish (see whenVillainQuiet). */
+let villainEl: HTMLAudioElement | null = null;
 export function playVillain(file: string) {
   if (typeof window === "undefined" || isAudioMuted()) return;
   const el = new Audio(`/audio/villain/${file}.mp3`);
   el.volume = 0.45;
+  villainEl = el;
   void el.play().catch(() => {});
+}
+
+/** PILOT FEEDBACK (global): victory audio must never overlap — the
+ *  Raccoon's defeat line finishes, THEN the victory sting, THEN Sarah.
+ *  Runs cb once the current villain clip has ended (+padMs of air);
+ *  fires straight away (still padded) when nothing is playing. A
+ *  backstop timeout keeps a stalled clip from wedging the sequence.
+ *  Returns a cancel function for effect cleanup. */
+export function whenVillainQuiet(cb: () => void, padMs = 300): () => void {
+  const el = villainEl;
+  const timers: number[] = [];
+  let done = false;
+  const fire = () => {
+    if (done) return;
+    done = true;
+    timers.push(window.setTimeout(cb, padMs));
+  };
+  if (!el || el.ended || el.paused) {
+    fire();
+  } else {
+    el.addEventListener("ended", fire, { once: true });
+    timers.push(window.setTimeout(fire, 9000));
+  }
+  return () => {
+    done = true;
+    if (el) el.removeEventListener("ended", fire);
+    timers.forEach((t) => window.clearTimeout(t));
+  };
 }
 
 /** Coach voice clips (Will — the single product mentor voice). Same
@@ -260,6 +291,27 @@ export function DataRain({ disabled }: { disabled: boolean }) {
 }
 
 /* ─────────────────────────── shared chrome ─────────────────────────── */
+
+/** PILOT FEEDBACK (global): floating instruction/progress text used to
+ *  sit bare on the arena art and vanished on bright weeks. Every caption
+ *  that isn't already on a white card rides this dark chip (same recipe
+ *  as the W1 select-quote chip). */
+export function CaptionChip({ children, style }: { children: React.ReactNode; style?: React.CSSProperties }) {
+  return (
+    <div style={{ textAlign: "center" }}>
+      <span
+        style={{
+          display: "inline-block", padding: "6px 14px", borderRadius: 999,
+          background: "rgba(20,16,44,0.78)", boxShadow: "0 6px 16px -8px rgba(20,16,44,0.6)",
+          fontFamily: MONO, fontSize: 11, fontWeight: 800, color: "#f6f9ff", lineHeight: 1.35,
+          ...style,
+        }}
+      >
+        {children}
+      </span>
+    </div>
+  );
+}
 
 export function PhaseHint({ text, accent }: { text: string; accent: string }) {
   return (

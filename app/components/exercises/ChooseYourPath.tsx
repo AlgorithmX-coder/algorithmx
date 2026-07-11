@@ -717,7 +717,9 @@ export default function ChooseYourPath({
         <ExerciseIntroBeat
           title="Choose Your Path"
           logo="/cyberheroes/logos/choose-path.png"
-          welcome="Your fourth challenge!"
+          // Ordinal-free: this drill runs at different concept slots in
+          // different weeks (1st in W19, 3rd in W12, 4th in W17/W18).
+          welcome="Welcome, Cyber Hero!"
           subtitle="You'll face real online situations. Pick a door to see what happens - choose wisely!"
           icon="🚪"
           narration={introNarration}

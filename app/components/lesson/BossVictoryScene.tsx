@@ -28,6 +28,8 @@ export interface BossVictorySceneProps {
   weekNumber: number;
   /** Mission name for the subtitle, e.g. "Passwords: The Secret Code". */
   missionTitle?: string;
+  /** Bespoke per-week badge artwork; omitted = the default shield mark. */
+  badgeArt?: string;
   stats: BossVictoryStats | null;
   onClaim: () => void;
 }
@@ -36,6 +38,7 @@ export default function BossVictoryScene({
   badgeName,
   weekNumber,
   missionTitle,
+  badgeArt,
   stats,
   onClaim,
 }: BossVictorySceneProps) {
@@ -147,7 +150,18 @@ export default function BossVictoryScene({
           <span aria-hidden className="mcc-ring mcc-ring-1" style={anim ? undefined : { animation: "none" }} />
           <span aria-hidden className="mcc-ring mcc-ring-2" style={anim ? undefined : { animation: "none" }} />
           <span aria-hidden className="mcc-ring mcc-ring-3" style={anim ? undefined : { animation: "none" }} />
-          <ShieldMark anim={anim} />
+          {badgeArt ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={badgeArt}
+              alt=""
+              aria-hidden
+              className={anim ? "mcc-shield" : undefined}
+              style={{ position: "relative", zIndex: 2, height: 186, objectFit: "contain", filter: "drop-shadow(0 10px 26px rgba(251,191,36,0.35))" }}
+            />
+          ) : (
+            <ShieldMark anim={anim} />
+          )}
           <div className="mcc-ribbon">
             <span aria-hidden>★</span> MISSION COMPLETE! <span aria-hidden>★</span>
           </div>

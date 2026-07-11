@@ -131,9 +131,9 @@ export const WEEK_3: WeekContent = {
           steps: [
             { icon: "💬", text: "'You're AMAZING! We should be BEST FRIENDS!'" },
             { icon: "🪤", text: "Super nice, super fast - it's the oldest trick in his book." },
-            { icon: "🦝", text: "He's practised those exact lines on a hundred heroes." },
+            { icon: "🦝", text: "He's practiced those exact lines on a hundred heroes." },
           ],
-          counter: "Real friendship grows slowly. Insta-best-friend is a warning sign.",
+          counter: "Real friendship grows slowly. Best friends in five minutes? Warning sign.",
         },
       ],
       finale: "The whole disguise kit - useless! You see straight through it.",
@@ -176,7 +176,7 @@ export const WEEK_3: WeekContent = {
       narration: {
         speaker: "layla",
         lines: [
-          "[warmly] Brilliant start, Cyber Hero!",
+          "[warmly] Awesome start, Cyber Hero!",
           "You opened his disguise kit and saw every trick.",
           "Copied photo, typed age, picked name, big friendly act.",
           "[excited] Next up - let's turn YOU into a profile detective!",
@@ -233,11 +233,11 @@ export const WEEK_3: WeekContent = {
             { id: "talk", label: "How does it talk?", note: "'Best friends' after one message? Real friendship is never that fast.", isRedFlag: true },
             { id: "asking", label: "What's it asking?", note: "It wants to chat privately, away from the game. Sneaky move.", isRedFlag: true },
           ],
-          verdictNote: "Brand new + no real friends + insta-best-friend + private chat ask = FAKE. Textbook Raccoon!",
+          verdictNote: "Brand new + no real friends + best friends in five minutes + private chat ask = FAKE. Textbook Raccoon!",
         },
         {
           id: "pixel-panda",
-          handle: "PixelPanda42",
+          handle: "DoodleDragon_Sam",
           avatar: "🎨",
           bio: "Dragon drawings + Mega Blasters. Rematch Saturday?",
           stats: [
@@ -247,7 +247,7 @@ export const WEEK_3: WeekContent = {
           ],
           isFake: false,
           zones: [
-            { id: "joined", label: "When did it join?", note: "Two years ago - a proper history, not a pop-up account.", isRedFlag: false },
+            { id: "joined", label: "When did it join?", note: "Two years ago - a real history, not a pop-up account.", isRedFlag: false },
             { id: "friends", label: "Friends & photos", note: "Kids from your actual class, and a gallery of dragon drawings.", isRedFlag: false },
             { id: "talk", label: "How does it talk?", note: "Normal friend stuff - game chat and a Saturday rematch.", isRedFlag: false },
             { id: "asking", label: "What's it asking?", note: "Nothing weird. Just wants to play the game you both love.", isRedFlag: false },
@@ -267,7 +267,7 @@ export const WEEK_3: WeekContent = {
           isFake: true,
           zones: [
             { id: "joined", label: "When did it join?", note: "Two days ago, and already asking you personal questions.", isRedFlag: true },
-            { id: "friends", label: "Friends & photos", note: "Not one friend you recognise. One perfect pony photo.", isRedFlag: true },
+            { id: "friends", label: "Friends & photos", note: "Not one friend you recognize. One perfect pony photo.", isRedFlag: true },
             { id: "talk", label: "How does it talk?", note: "'I'm 9 too!!' - remember the disguise kit: anyone can TYPE an age.", isRedFlag: true },
             { id: "asking", label: "What's it asking?", note: "Your SCHOOL. That's where-you-are info - a stranger never needs it.", isRedFlag: true },
           ],
@@ -299,11 +299,11 @@ export const WEEK_3: WeekContent = {
       prompt: "Quick - which one is FAKE?",
       speedMs: 5000,
       choices: [
-        { text: "Joined yesterday, already your 'best friend'", isCorrect: true },
-        { text: "Your cousin - you saw her at dinner", isCorrect: false },
-        { text: "A schoolmate you play with at break", isCorrect: false },
+        { text: "Best friend after 1 day", isCorrect: true },
+        { text: "Your cousin", isCorrect: false },
+        { text: "Your schoolmate", isCorrect: false },
       ],
-      praise: "Spotted in seconds - proper detective work! ✓",
+      praise: "Spotted in seconds - real detective work! ✓",
     },
 
     // 10 - Recap · Concept 2 of 5
@@ -361,7 +361,7 @@ export const WEEK_3: WeekContent = {
         { id: "flag", label: "RED FLAG", icon: "🚫", tone: "flag" },
       ],
       items: [
-        { id: "fav-game", text: "What's your favourite game?", icon: "🎮", categoryId: "ok", explanation: "Game talk is normal friendly chat - no flag here." },
+        { id: "fav-game", text: "What's your favorite game?", icon: "🎮", categoryId: "ok", explanation: "Game talk is normal friendly chat - no flag here." },
         { id: "send-photo", text: "Send me a photo of yourself", icon: "🆔", categoryId: "flag", explanation: "Never send photos of yourself to online friends. Always a red flag." },
         { id: "keep-secret", text: "Keep our chats secret from your parents", icon: "🤫", categoryId: "flag", explanation: "THE biggest red flag. Safe friends never need secrets from your grown-ups." },
         { id: "play-tmrw", text: "Good game! Want to play again tomorrow?", icon: "⭐", categoryId: "ok", explanation: "A rematch invite is just friendly game chat." },
@@ -397,7 +397,7 @@ export const WEEK_3: WeekContent = {
       choices: [
         { text: "'Don't tell your parents about me'", isCorrect: true },
         { text: "'Good game! Rematch?'", isCorrect: false },
-        { text: "'What's your favourite colour?'", isCorrect: false },
+        { text: "'What's your favorite color?'", isCorrect: false },
         { text: "'Nice move back there!'", isCorrect: false },
       ],
       praise: "Yes - that's the BIGGEST red flag there is! ✓",
@@ -441,12 +441,12 @@ export const WEEK_3: WeekContent = {
       narration: {
         speaker: "layla",
         lines: [
-          "[warmly] These next two rules are hero armour.",
+          "[warmly] These next two rules are hero armor.",
           "Rule one. NEVER meet up with someone you only know online.",
           "Not at the park. Not 'just quickly'. Never.",
           "Rule two. NEVER send photos of yourself.",
           "[whispers] Not even if they send one first.",
-          "[excited] No exceptions, no matter what. Let's practise your hero replies!",
+          "[excited] No exceptions, no matter what. Let's practice your hero replies!",
         ],
       },
     },
@@ -480,7 +480,7 @@ export const WEEK_3: WeekContent = {
           id: "gift-ask",
           from: "CoolKid_Sam",
           fromIcon: "🎨",
-          message: "I bought you a gift card!! Just tell me your address and I'll post it today!",
+          message: "I bought you a gift card!! Just tell me your address and I'll mail it today!",
           replies: [
             { text: "No thanks - and I'm telling a grown-up about this.", isSafe: true, explanation: "" },
             { text: "Wow, thanks! It's 42 Rainbow Road.", isSafe: false, explanation: "A stranger now knows where you live - and the gift card was never real. Gifts-for-info is always a trick." },
@@ -517,7 +517,7 @@ export const WEEK_3: WeekContent = {
         { text: "smile", isCorrect: false },
         { text: "win", isCorrect: false },
       ],
-      praise: "Never meet, never SEND - armour on! ✓",
+      praise: "Never meet, never SEND - armor on! ✓",
       nudge: "Photos of you... what's the rule?",
     },
 
@@ -572,7 +572,7 @@ export const WEEK_3: WeekContent = {
     {
       type: "chatSimulator",
       chatTitle: "PuppyLover_Jess",
-      scenario: "You just won a race in your favourite game. A chat request pops up from a player you've never met...",
+      scenario: "You just won a race in your favorite game. A chat request pops up from a player you've never met...",
       messages: [
         { sender: "stranger", text: "Hi!! I saw you win that race - you're AMAZING at this game!" },
         { sender: "stranger", text: "I'm Jess! I'm 9 too. We should totally be best friends!" },
@@ -584,7 +584,7 @@ export const WEEK_3: WeekContent = {
         {
           triggerAfterMessage: 1,
           options: [
-            { text: "Thanks! Good race - want a rematch?", isSafe: true, feedback: "Game talk is fine - you kept the chat about the GAME. Nicely played." },
+            { text: "Thanks! Good race - want a rematch?", isSafe: true, feedback: "Game talk is fine - but this is still a stranger. Keep it about the game, radar ON." },
             { text: "Best friends! Ask me anything!", isSafe: false, feedback: "Whoa, slow down - you 'met' one message ago. Real friends never happen that fast." },
           ],
         },
@@ -606,7 +606,7 @@ export const WEEK_3: WeekContent = {
       narration: {
         speaker: "adam",
         lines: [
-          "[warmly] Time to practise with a real chat.",
+          "[warmly] Time to practice with a real chat.",
           "Watch the meter at the top of the phone.",
           "[whispers] When the chat gets icky, you'll FEEL it climb.",
           "[excited] Trust the feeling. You'll know exactly when to stop and tell!",
@@ -656,7 +656,7 @@ export const WEEK_3: WeekContent = {
         positiveHint: "Tap FRIEND for safe, normal chat",
         negativeHint: "Tap FOE for tricks and red flags",
         tipWhenPositive: "Game talk, compliments and people you know in real life - friendly and safe.",
-        tipWhenNegative: "Secrets, photos, meet-ups, gifts-for-info and insta-best-friends - foe moves, every one.",
+        tipWhenNegative: "Secrets, photos, meet-ups, gifts-for-info and five-minute best friends - foe moves, every one.",
         hint1: "Ask the hero question: is it about the GAME, or is it about finding out about YOU?",
         hint2: "FRIEND = normal chat + people you know offline. FOE = secrets, photos, meet-ups, gifts, too-friendly-too-fast.",
         hint2Example: "FRIEND: 'Rematch tomorrow?'   FOE: 'Don't tell your parents'",
@@ -735,23 +735,152 @@ export const WEEK_3: WeekContent = {
     { name: "MEET-UP TRAP", icon: "🪤", color: "#ffb347", glow: "rgba(255, 179, 71, 0.55)", tag: "Never meet, always tell",      emblemColor: 0xffb347 },
   ],
 
-  // Placeholder quiz boss (the bespoke W3 GAUNTLET - one escalating
-  // fake-friend chat - is designed separately with the boss batch).
+  // ─────────── BESPOKE BOSS: The Disguise-o-Matic (showdown) ───────────
+  // A wardrobe-robot cycling costumes, running an escalating "new best
+  // friend" chat — the three authored attacks ARE the escalation
+  // (fake profile → secret ask → meet-up trap). Built to the locked
+  // showdown grammar; villain lines are unique to this week.
+  bossShowdown: {
+    machine: {
+      name: "THE DISGUISE-O-MATIC",
+      tagline: "A wardrobe-robot stuffed with fake best friends",
+      art: {
+        intact: "/game/bosses/w03-disguiseomatic-intact.png",
+        damaged: "/game/bosses/w03-disguiseomatic-damaged.png",
+        defeated: "/game/bosses/w03-disguiseomatic-defeated.png",
+      },
+      arena: "/game/backgrounds/w03-arena-playground.png",
+      accent: "#c084fc",
+      glow: "rgba(192,132,252,0.55)",
+    },
+    heroSprites: {
+      adam: {
+        idle: "/game/characters/w03/adam-detective-idle.png",
+        attack: "/game/characters/w03/adam-detective-attack.png",
+        celebrate: "/game/characters/w03/adam-detective-celebrate.png",
+      },
+      layla: {
+        idle: "/game/characters/w03/layla-detective-idle.png",
+        attack: "/game/characters/w03/layla-detective-attack.png",
+        celebrate: "/game/characters/w03/layla-detective-celebrate.png",
+      },
+    },
+    phases: [
+      // P1 · FAKE PROFILE → TAP-THE-TELL: the machine assembles a
+      // "9-year-old gamer" piece by piece; tap the tell before the
+      // mask clicks in.
+      {
+        kind: "tapTell",
+        attack: 0,
+        coach: "Which clue shows he's FAKE? Tap it!",
+        rounds: [
+          {
+            id: "card",
+            prompt: "His profile says: 'I'm 9, just like you!'",
+            promptIcon: "🎭",
+            options: [
+              { id: "joined", label: "Joined YESTERDAY", icon: "🆔", isTell: true, note: "" },
+              { id: "games", label: "Plays racing games", icon: "🎮", isTell: false, note: "Real kids play racing games too. That doesn't make him fake." },
+              { id: "avatar", label: "Has a blue avatar", icon: "🎨", isTell: false, note: "Any color avatar is fine. That doesn't make him fake." },
+            ],
+          },
+          {
+            id: "friends",
+            prompt: "Now look at his friends…",
+            promptIcon: "⚙️",
+            options: [
+              { id: "sayings", label: "Says 'good game!'", icon: "💬", isTell: false, note: "Saying 'good game' is normal. Look at his FRIENDS instead." },
+              { id: "zero", label: "0 friends you know", icon: "👀", isTell: true, note: "" },
+              { id: "pizza", label: "Likes pizza", icon: "🎉", isTell: false, note: "Everyone likes pizza! Look at his FRIENDS instead." },
+            ],
+          },
+          {
+            id: "photo",
+            prompt: "Now look at his photo…",
+            promptIcon: "🕵️",
+            options: [
+              { id: "hoodie", label: "Wears a red hoodie", icon: "🎨", isTell: false, note: "Clothes don't make him real or fake. Where did the photo COME from?" },
+              { id: "smiley", label: "Has a big smile", icon: "🎉", isTell: false, note: "A smile is easy to copy. Where did the photo COME from?" },
+              { id: "copied", label: "Photo stolen from a poster", icon: "🔍", isTell: true, note: "" },
+            ],
+          },
+        ],
+      },
+      // P2 · SECRET ASK → COUNTER-CARD: the chat escalates.
+      {
+        kind: "counterCard",
+        attack: 1,
+        coach: "What does a hero do? Tap the right card!",
+        situation: "'It's OUR secret club. Don't tell your mom!'",
+        situationIcon: "🤫",
+        cards: [
+          { id: "tell", label: "TELL A GROWN-UP", icon: "👪", isRight: true, note: "" },
+          { id: "keep", label: "Keep the secret", icon: "🤐", isRight: false, note: "Real friends never say 'keep me secret'. That's the trick!" },
+          { id: "once", label: "Say 'okay, just once'", icon: "💬", isRight: false, note: "Even one little secret is how the trick starts. Tell a grown-up!" },
+        ],
+      },
+      // P3 · MEET-UP TRAP → SHIELD-HOLD: the pressure barrage.
+      {
+        kind: "shieldHold",
+        attack: 2,
+        coach: "Press the shield and DON'T let go!",
+        holdLabel: "HOLD THE SHIELD",
+        holdIcon: "🛡️",
+        holdSecs: 6,
+        barrage: [
+          "Park gate! 3:15! Be there!",
+          "I got you a PRESENT!",
+          "Come ALONE - it's more fun!",
+          "Everyone meets up! It's NORMAL!",
+          "Last chance! I'll be SO sad!",
+        ],
+        burnoutLine: "Real friends don't push. You NEVER meet online friends - and you always tell a grown-up.",
+      },
+    ],
+    weakPoints: [
+      { question: "A brand-new profile with zero friends wants to be your BEST friend. That's...", answers: ["Too friendly too fast - a fake-profile tell", "Totally normal", "OK if you both love the same game", "Fine if they seem nice"], correctIndex: 0, explanation: "Real friendship grows slowly - 'best friends in five minutes' is a classic fake tell." },
+      { question: "Why does 'keep our chat secret' make a chat UNSAFE?", answers: ["Safe friends never need secrets from your grown-ups", "Secrets are fun", "It doesn't - secrets are normal", "Only if they ask for photos too"], correctIndex: 0, explanation: "Anyone who needs hiding from your parents is hiding something bad." },
+      { question: "An online friend asks to MEET at the park. What's the rule?", answers: ["Never meet - and tell a grown-up", "Meet them with a friend", "Meet somewhere busy", "Only meet on weekends"], correctIndex: 0, explanation: "Rule one has zero exceptions: never meet online-only friends." },
+    ],
+    finisher: {
+      chargeLabel: "CHARGE THE SPOTLIGHT",
+      chargeIcon: "🔍",
+      chargeSecs: 5,
+      milestones: ["Warming up…", "It's glowing! Keep holding!", "FULL BEAM! LET GO!"],
+      payoffTitle: "COSTUME BLASTED OFF!",
+      payoffLine: "You checked the clues. No costume can trick you!",
+    },
+    villain: {
+      arrival: "A new best friend, just for you! I'm nine! Honest!",
+      phases: [
+        "This mask has NEVER failed. Well - once. Twice, tops.",
+        "Shhh! Secrets are what make friendship SPECIAL!",
+        "Just one little meet-up! I'll bring snacks!",
+      ],
+      escape: "Fine! I didn't want to be your friend ANYWAY!",
+    },
+    voiceSlug: "w03",
+  },
+  badgeArt: "/cyberheroes/badges/week-03-mask-spotter.png",
+
+  // Quiz boss retired for W3 - the showdown above supersedes it. The
+  // questions stay as the weak-point source + fallback if the showdown
+  // block is ever removed.
   bossQuestions: {
     easy: [
       { question: "Someone online says they're 9. How do you KNOW it's true?", answers: ["You can't - anyone can type any age", "Their profile says so", "They sound really nice", "They have a kid photo"], correctIndex: 0, explanation: "Typing isn't proof - you can't see who's really at the keyboard." },
-      { question: "An online friend asks to MEET at the park. What's the rule?", answers: ["Never meet - and tell a grown-up", "Meet them with a friend", "Meet somewhere busy", "Only meet at weekends"], correctIndex: 0, explanation: "Rule one has zero exceptions: never meet online-only friends." },
-      { question: "Which of these is a RED FLAG?", answers: ["'Don't tell your parents about me'", "'Good game!'", "'Want a rematch?'", "'What's your favourite game?'"], correctIndex: 0, explanation: "Safe friends never need secrets from your grown-ups." },
+      { question: "An online friend asks to MEET at the park. What's the rule?", answers: ["Never meet - and tell a grown-up", "Meet them with a friend", "Meet somewhere busy", "Only meet on weekends"], correctIndex: 0, explanation: "Rule one has zero exceptions: never meet online-only friends." },
+      { question: "Which of these is a RED FLAG?", answers: ["'Don't tell your parents about me'", "'Good game!'", "'Want a rematch?'", "'What's your favorite game?'"], correctIndex: 0, explanation: "Safe friends never need secrets from your grown-ups." },
     ],
     medium: [
-      { question: "A brand-new profile with zero friends wants to be your BEST friend. That's...", answers: ["Too friendly too fast - a fake-profile tell", "Totally normal", "Your lucky day", "Fine if they seem nice"], correctIndex: 0, explanation: "Real friendship grows slowly - insta-best-friend is a classic fake tell." },
+      { question: "A brand-new profile with zero friends wants to be your BEST friend. That's...", answers: ["Too friendly too fast - a fake-profile tell", "Totally normal", "OK if you both love the same game", "Fine if they seem nice"], correctIndex: 0, explanation: "Real friendship grows slowly - 'best friends in five minutes' is a classic fake tell." },
       { question: "An online friend wants your photo 'to prove you're real'. You...", answers: ["Never send it - and tell a grown-up", "Send one old photo", "Send it if they send theirs first", "Send a blurry one"], correctIndex: 0, explanation: "Rule two: never send photos of yourself. Their photo proves nothing either!" },
       { question: "A chat gives you a weird, icky feeling. The hero move is...", answers: ["Stop chatting and tell a grown-up", "Keep chatting to be polite", "Ignore the feeling", "Ask them why it feels weird"], correctIndex: 0, explanation: "Feel it, stop, tell. You never need to explain WHY it feels wrong." },
     ],
     hard: [
       { question: "'FREE gift card - just tell me your address!' What's REALLY happening?", answers: ["A gift-for-info trick - refuse and tell", "You won a prize", "A generous new friend", "A delivery mix-up"], correctIndex: 0, explanation: "Nobody real trades gifts for your address. Refuse it AND tell a grown-up." },
-      { question: "Why does 'keep our chat secret' make a chat UNSAFE?", answers: ["Safe friends never need secrets from your grown-ups", "Secrets are fun", "It doesn't - secrets are normal", "Because chats should be loud"], correctIndex: 0, explanation: "Anyone who needs hiding from your parents is hiding something bad." },
-      { question: "A fake profile can copy a photo, type an age and pick a name. What CAN'T it beat?", answers: ["Your rules - never meet, never send, always tell", "A really good password", "A cool username", "A fast internet connection"], correctIndex: 0, explanation: "The disguise kit is useless against a hero who follows the rules no matter who's asking." },
+      { question: "Why does 'keep our chat secret' make a chat UNSAFE?", answers: ["Safe friends never need secrets from your grown-ups", "Secrets are fun", "It doesn't - secrets are normal", "Only if they ask for photos too"], correctIndex: 0, explanation: "Anyone who needs hiding from your parents is hiding something bad." },
+      { question: "A fake profile can copy a photo, type an age and pick a name. What CAN'T it beat?", answers: ["Your rules - never meet, never send, always tell", "A really good password", "A cool username", "A private account"], correctIndex: 0, explanation: "The disguise kit is useless against a hero who follows the rules no matter who's asking." },
     ],
   },
 

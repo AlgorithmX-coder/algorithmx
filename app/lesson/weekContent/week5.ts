@@ -47,7 +47,7 @@ export const WEEK_5: WeekContent = {
       photoSrc: "/cyberheroes/alerts/week-05.png",
       title: "ALERT INCOMING",
       badge: "Incident Report",
-      caption: "The Raccoon stirred up a group chat and got kids piling on ONE kid with mean messages. Words can hurt like anything - but this week, YOUR words become a superpower.",
+      caption: "The Raccoon stirred up a group chat and got kids piling on ONE kid with mean messages. Words can really, really hurt - but this week, YOUR words become a superpower.",
       photoCaption: "Wk 5 - The Pile-On",
       ctaLabel: "Start the Mission →",
     },
@@ -72,7 +72,7 @@ export const WEEK_5: WeekContent = {
       bullets: [
         "A joke = BOTH of you are laughing",
         "Bullying = mean ON PURPOSE",
-        "...and it happens again and again",
+        "Bullying happens again and again",
         "Only one side is laughing",
         "The test: is someone hurting?",
       ],
@@ -86,7 +86,7 @@ export const WEEK_5: WeekContent = {
           "[whispers] But bullying is different.",
           "It's mean on purpose. And it happens again and again.",
           "Here's the test: is everyone laughing... or is someone hurting?",
-          "[excited] Let's practise telling them apart!",
+          "[excited] Let's practice telling them apart!",
         ],
       },
     },
@@ -102,7 +102,7 @@ export const WEEK_5: WeekContent = {
         { id: "everyone-lol", text: "'Everyone laugh at Sam's drawing' - posted to the whole class", icon: "🚫", categoryId: "mean", explanation: "Getting a whole group to laugh AT someone is mean on purpose." },
         { id: "nickname", text: "A silly team nickname you picked for YOURSELF", icon: "⭐", categoryId: "joke", explanation: "You chose it, you love it - that's fun, not bullying." },
         { id: "daily-mean", text: "The same kid gets called 'loser' every single day", icon: "🚫", categoryId: "mean", explanation: "Mean + again and again = bullying. That's the pattern to spot." },
-        { id: "banter", text: "'My turn to beat YOU this time!' before a rematch", icon: "🎮", categoryId: "joke", explanation: "Game banter where everyone's smiling - totally fine." },
+        { id: "banter", text: "'My turn to beat YOU this time!' before a rematch", icon: "🎮", categoryId: "joke", explanation: "Game talk where everyone's smiling - totally fine." },
         { id: "left-out", text: "'Don't let Maya join - nobody likes her'", icon: "🚫", categoryId: "mean", explanation: "Shutting someone out on purpose hurts - that's a bullying move." },
         { id: "typo-tease", text: "A friend giggles at your typo, you giggle too", icon: "💬", categoryId: "joke", explanation: "Both giggling = a shared joke, not a jab." },
         { id: "photo-laugh", text: "Sharing an embarrassing photo of someone to make kids laugh", icon: "🚫", categoryId: "mean", explanation: "Laughing AT someone with their embarrassing photo is mean on purpose." },
@@ -135,7 +135,7 @@ export const WEEK_5: WeekContent = {
         { text: "The same kid gets teased every single day", isCorrect: true },
         { text: "You and a friend laugh at the same meme", isCorrect: false },
         { text: "A silly nickname you gave yourself", isCorrect: false },
-        { text: "Friendly 'I'll beat you next race!' banter", isCorrect: false },
+        { text: "'I'll beat you next race!' before a rematch", isCorrect: false },
       ],
       praise: "Exactly - mean, on purpose, again and again. ✓",
     },
@@ -191,7 +191,7 @@ export const WEEK_5: WeekContent = {
     {
       type: "reveal",
       title: "Pop the Doubt Clouds",
-      subtitle: "Tap each grey cloud to pop it with the truth.",
+      subtitle: "Tap each gray cloud to pop it with the truth.",
       boardIcon: "💬",
       items: [
         {
@@ -199,7 +199,7 @@ export const WEEK_5: WeekContent = {
           label: "'It's my fault...'",
           icon: "🌀",
           steps: [
-            { icon: "💬", text: "That grey little thought loves to sneak in. But look at it closely..." },
+            { icon: "💬", text: "That gray little thought loves to sneak in. But look at it closely..." },
             { icon: "💡", text: "Someone CHOSE to be mean. That was their choice - not yours." },
           ],
           counter: "POP! Their choice, their fault. Never yours.",
@@ -220,7 +220,7 @@ export const WEEK_5: WeekContent = {
           icon: "🌀",
           steps: [
             { icon: "💬", text: "The heaviest cloud of all. Let's shine a light on it." },
-            { icon: "⭐", text: "Millions of brilliant kids get picked on - the BEST kids, the kindest kids." },
+            { icon: "⭐", text: "Millions of amazing kids get picked on - the BEST kids, the kindest kids." },
             { icon: "💡", text: "Being picked on says ZERO about you, and everything about them." },
           ],
           counter: "POP! There is nothing wrong with you. Nothing.",
@@ -231,7 +231,7 @@ export const WEEK_5: WeekContent = {
           icon: "🌀",
           steps: [
             { icon: "💬", text: "It can feel like you're all alone with it. You're not." },
-            { icon: "👪", text: "Grown-ups you trust have felt it too - and they know exactly how to help." },
+            { icon: "👪", text: "Grown-ups you trust have felt it too - and they can help you carry it." },
           ],
           counter: "POP! You are never, ever alone with this.",
         },
@@ -240,7 +240,7 @@ export const WEEK_5: WeekContent = {
       narration: {
         speaker: "adam",
         lines: [
-          "[warmly] When mean words land, grey little doubt clouds show up.",
+          "[warmly] When mean words land, gray little doubt clouds show up.",
           "'Maybe it's my fault.' 'Maybe something's wrong with me.'",
           "[whispers] Every single one of those clouds is WRONG.",
           "[excited] Tap each cloud and pop it with the truth!",
@@ -248,7 +248,7 @@ export const WEEK_5: WeekContent = {
       },
       coachLines: {
         speaker: "adam",
-        lines: ["Tap any grey cloud - the truth is waiting inside!"],
+        lines: ["Tap any gray cloud - the truth is waiting inside!"],
       },
     },
     // 9 - Prove: FINISH
@@ -277,7 +277,7 @@ export const WEEK_5: WeekContent = {
       narration: {
         speaker: "layla",
         lines: [
-          "[warmly] That truth is your armour now.",
+          "[warmly] That truth is your armor now.",
           "Not your fault. Not ever.",
           "[whispers] Keep it somewhere safe - you might need it one day.",
           "[excited] Next: the clever move when mean words actually land.",
@@ -291,13 +291,13 @@ export const WEEK_5: WeekContent = {
       type: "info",
       title: "Don't Feed the Fire",
       content:
-        "When someone's mean, everything in you wants to fire back something MEANER. But here's the secret: mean messages are a fire, and angry replies are wood. Fight back and the fire grows. Stay calm, don't reply, and the fire runs out of things to burn.",
+        "When someone's mean, everything in you wants to fire back something MEANER. But here's the secret: mean messages are a fire, and angry replies are wood. Fight back and the fire grows. Stay calm and don't reply - that stops the fire GROWING. Then TELLING a grown-up is what puts it out.",
       bullets: [
         "Mean messages are a FIRE",
         "Angry replies are WOOD for that fire",
         "Fight back = the fire grows",
-        "Don't reply = the fire goes out",
-        "Calm isn't weak - it's hero-strong",
+        "Don't reply = the fire stops growing",
+        "TELLING a grown-up puts it out",
       ],
       bulletIcons: ["⚡", "🌀", "🚫", "✋", "💪"],
       emblem: "✋",
@@ -308,7 +308,7 @@ export const WEEK_5: WeekContent = {
           "Everything in you wants to fire back something MEANER.",
           "[whispers] But mean messages are a fire...",
           "and angry replies? They're wood.",
-          "[excited] Don't feed the fire, and it runs out of things to burn.",
+          "[excited] Don't feed the fire, and it can't grow. Then TELLING a grown-up puts it out for good.",
           "Staying calm isn't weak. It's the strongest move there is.",
         ],
       },
@@ -363,7 +363,7 @@ export const WEEK_5: WeekContent = {
         { text: "TRUE", isCorrect: false },
         { text: "FALSE", isCorrect: true },
       ],
-      praise: "Busted! Fighting back feeds the fire - calm starves it. ✓",
+      praise: "Busted! Fighting back feeds the fire. Staying calm stops it growing - and TELLING puts it out. ✓",
       nudge: "What happens to a fire when you add wood?",
     },
 
@@ -372,7 +372,7 @@ export const WEEK_5: WeekContent = {
       type: "recap",
       concept: 3,
       total: 5,
-      learned: "Mean messages are a fire and angry replies are wood. Stay calm and the fire goes out.",
+      learned: "Mean messages are a fire and angry replies are wood. Stay calm so it can't grow - telling a grown-up puts it out.",
       next: "the move that makes you the hero of any group chat",
       emblem: "✋",
       narration: {
@@ -380,7 +380,7 @@ export const WEEK_5: WeekContent = {
         lines: [
           "[excited] Three powers! You kept your cool in the hottest moments.",
           "No wood for the fire. Not one stick.",
-          "[warmly] Now for my favourite part of this whole week...",
+          "[warmly] Now for my favorite part of this whole week...",
           "the moment YOU get to be the hero of the story.",
         ],
       },
@@ -430,8 +430,8 @@ export const WEEK_5: WeekContent = {
           replies: [
             { text: "Add my own 😂", isSafe: false, explanation: "Even one emoji joins the pile-on - it tells everyone 'this is fine'. It isn't." },
             { text: "Forward it to another chat", isSafe: false, explanation: "Forwarding spreads the hurt to MORE people. That's joining in, big time." },
-            { text: "Message Sam: 'Ignore them - want to play later?'", isSafe: true, explanation: "" },
-            { text: "Say nothing and scroll past", isSafe: false, explanation: "Scrolling past is better than joining in - but the HERO door is checking on Sam. One kind message changes everything." },
+            { text: "Message Sam: 'Ignore them - want to play later?'", isSafe: true, explanation: "One kind message, straight to Sam - that's the hero's door." },
+            { text: "Say nothing and scroll past", isSafe: false, explanation: "Good instinct - you didn't join in! But the HERO door is checking on Sam. One kind message changes everything." },
           ],
         },
         {
@@ -440,22 +440,22 @@ export const WEEK_5: WeekContent = {
           fromIcon: "🎮",
           message: "A player shares a clip making fun of the newest kid's first game. Everyone's watching. What do you do?",
           replies: [
-            { text: "'Everyone starts somewhere - nice try, newbie!'", isSafe: true, explanation: "" },
+            { text: "'Everyone starts somewhere - good first game!'", isSafe: true, explanation: "One kind line, said out loud - the new kid knows they're not alone." },
             { text: "Watch it again and laugh", isSafe: false, explanation: "Laughing along feeds it - the new kid sees who laughed." },
             { text: "Share it with your team", isSafe: false, explanation: "Sharing spreads the sting further. That's the pass-it-on trap." },
-            { text: "Quietly leave the lobby", isSafe: false, explanation: "Leaving keeps YOUR hands clean - but one kind line in the chat is what actually helps the new kid." },
+            { text: "Quietly leave the lobby", isSafe: false, explanation: "Good move - you didn't laugh along! But the HERO move is one kind line in the chat. That's what helps the new kid." },
           ],
         },
         {
           id: "rumour",
           from: "In a group message",
           fromIcon: "💬",
-          message: "'Pass it on: Maya still sleeps with a teddy lol' - it's been forwarded 4 times already. What do you do?",
+          message: "'Pass it on: Maya still sleeps with a teddy bear lol' - it's been forwarded 4 times already. What do you do?",
           replies: [
             { text: "Pass it on - everyone else did", isSafe: false, explanation: "Every forward makes it worse. 'Everyone else did' is how pile-ons grow." },
             { text: "Add 'haha so true'", isSafe: false, explanation: "That's joining the pile-on with extra sting for Maya." },
             { text: "Reply 'lol' just to fit in", isSafe: false, explanation: "Even a tiny 'lol' joins in. Fitting in with meanness is still meanness." },
-            { text: "Don't forward it - and check Maya's OK", isSafe: true, explanation: "" },
+            { text: "Don't forward it - and check Maya's OK", isSafe: true, explanation: "The chain stops with YOU - and Maya gets a friend checking in." },
           ],
         },
       ],
@@ -515,7 +515,7 @@ export const WEEK_5: WeekContent = {
       type: "info",
       title: "You Don't Carry It Alone",
       content:
-        "Mean words are heavy - way too heavy to carry by yourself. So heroes don't. If bullying happens, there's a calm path across it: don't reply to the message, keep it (don't delete - a grown-up needs to see), then tell someone you trust. Telling isn't snitching. It's how the hurting STOPS.",
+        "Mean words are heavy - way too heavy to carry by yourself. So heroes don't. If bullying happens, there's a calm path: don't reply to the message, keep it (don't delete - a grown-up needs to see), then tell someone you trust. Telling isn't snitching. It's how the hurting STOPS.",
       bullets: [
         "Mean words are too heavy to carry alone",
         "Step 1: don't reply",
@@ -649,7 +649,7 @@ export const WEEK_5: WeekContent = {
       concepts: [
         { id: "what", label: "The Laugh Test", accent: "#00e5ff", icon: "💬", summary: "A joke = both laughing. Bullying = mean on purpose, again and again." },
         { id: "fault", label: "Never Your Fault", accent: "#7c5cff", icon: "🛡️", summary: "Mean words describe the typer, not you. Not your fault - not ever." },
-        { id: "calm", label: "Fire Starver", accent: "#ffd158", icon: "✋", summary: "Angry replies are wood for the fire. Stay calm and it goes out." },
+        { id: "calm", label: "Fire Starver", accent: "#ffd158", icon: "✋", summary: "Angry replies are wood for the fire. Stay calm so it can't grow - telling puts it out." },
         { id: "kind", label: "The Kind Door", accent: "#ff5fb3", icon: "⭐", summary: "No forwarding, no laughing along - one kind message flips a chat." },
         { id: "tell", label: "Never Alone", accent: "#7eff97", icon: "👪", summary: "Don't reply, keep the message, tell someone you trust." },
       ],
@@ -683,6 +683,106 @@ export const WEEK_5: WeekContent = {
   // Week-lane attack theatre: pile-on dynamics only (no scam vocabulary -
   // W4; no stranger-danger vocabulary - W3). The Raccoon STIRS meanness;
   // kids beat him with kindness.
+  // W5 SHOWDOWN — THE ECHO MACHINE (design doc §W5, the WARMTH week:
+  // untimed phases only, muted villain, win by kindness - never force).
+  // P1 counterCard pile-on · P2 gentle deflectSort mute-the-echoes ·
+  // P3 orderStrike lift-the-cloud · finisher = the Color Wave.
+  bossShowdown: {
+    machine: {
+      name: "THE ECHO MACHINE",
+      tagline: "A speaker-robot that repeats mean words louder and louder",
+      art: {
+        intact: "/game/bosses/w05-echomachine-intact.png",
+        damaged: "/game/bosses/w05-echomachine-damaged.png",
+        defeated: "/game/bosses/w05-echomachine-defeated.png",
+      },
+      arena: "/game/backgrounds/w05-arena-courtyard.png",
+      accent: "#b39df5",
+      glow: "rgba(179,157,245,0.55)",
+    },
+    heroSprites: {
+      adam: {
+        idle: "/game/characters/w05/adam-artist-idle.png",
+        attack: "/game/characters/w05/adam-artist-attack.png",
+        celebrate: "/game/characters/w05/adam-artist-celebrate.png",
+      },
+      layla: {
+        idle: "/game/characters/w05/layla-artist-idle.png",
+        attack: "/game/characters/w05/layla-artist-attack.png",
+        celebrate: "/game/characters/w05/layla-artist-celebrate.png",
+      },
+    },
+    phases: [
+      // P1 · PILE-ON → COUNTER-CARD: the thread grows on the wall.
+      {
+        kind: "counterCard",
+        attack: 0,
+        coach: "What does an upstander do? Tap the card!",
+        situation: "The wall thread grows: everyone's adding one mean joke about the new kid.",
+        situationIcon: "🌀",
+        cards: [
+          { id: "stand", label: "STAND BY THE KID", icon: "💪", isRight: true, note: "" },
+          { id: "joke", label: "Add one little joke", icon: "💬", isRight: false, note: "Even one tiny joke tells the pile-on 'more please' - and the hurt kid sees it." },
+          { id: "watch", label: "Just watch quietly", icon: "👀", isRight: false, note: "Watching feels safe, but the kid still stands alone. Stand BY them instead." },
+        ],
+      },
+      // P2 · MEAN ECHO → DEFLECT-SORT (gentle): mute echoes to mist,
+      // never touch the tempting reply buttons.
+      {
+        kind: "deflectSort",
+        attack: 1,
+        coach: "Mute the mean echoes. Never feed them!",
+        actLabel: "MUTE IT",
+        actIcon: "🤫",
+        passLabel: "LET IT DRIFT",
+        items: [
+          { id: "echo-build", label: "Echo: 'You're the WORST at building!'", icon: "💬", act: true, note: "That's a mean echo - mute it to mist. Never answer it." },
+          { id: "reply-caps", label: "'Type it back in ALL CAPS!'", icon: "🔠", act: false, note: "That's the fire asking for wood. Let it drift - no reply." },
+          { id: "echo-team", label: "Echo: 'Nobody wants you on the team!'", icon: "💬", act: true, note: "Mean echo - mute it. It says nothing true about you." },
+          { id: "reply-comeback", label: "'Just one little comeback...'", icon: "🌀", act: false, note: "Comebacks feed echoes. Drift on past - calm wins." },
+          { id: "echo-quit", label: "Echo: 'Just QUIT already!'", icon: "💬", act: true, note: "One more echo - mute it to mist and breathe." },
+          { id: "reply-meaner", label: "'Say something meaner back!'", icon: "⚡", act: false, note: "Meaner back = bigger fire. Heroes let it drift." },
+        ],
+      },
+      // P3 · LONELY CLOUD → ORDER-STRIKE: lift it one calm step at a time.
+      {
+        kind: "orderStrike",
+        attack: 2,
+        coach: "Lift the cloud - tap the steps in order!",
+        intro: "The lonely cloud wraps around the new kid. Lift it one calm step at a time.",
+        steps: [
+          { id: "noreply", label: "DON'T REPLY", icon: "✋" },
+          { id: "keep", label: "KEEP the mean message", icon: "📋" },
+          { id: "tell", label: "TELL a grown-up", icon: "👪" },
+        ],
+      },
+    ],
+    weakPoints: [
+      { question: "What does a pile-on need to keep growing?", answers: ["More people joining in - so don't", "Nothing at all", "One really mean kid", "A faster phone"], correctIndex: 0, explanation: "Pile-ons starve when nobody joins. Your NO is powerful." },
+      { question: "Why shouldn't you fire back a meaner reply?", answers: ["It feeds the fire and makes it all worse", "Because you might lose", "It takes too long", "You might get in trouble too"], correctIndex: 0, explanation: "Angry replies are wood - the fire grows. Calm stops it growing." },
+      { question: "Is telling a trusted adult 'snitching'?", answers: ["No - telling is how the hurting stops", "Yes, always", "Only if you could fix it yourself", "Only if it's about you"], correctIndex: 0, explanation: "Snitching gets someone IN trouble. Telling gets someone OUT of it." },
+    ],
+    finisher: {
+      chargeLabel: "CHARGE THE COLOR WAVE",
+      chargeIcon: "🎨",
+      chargeSecs: 5,
+      milestones: ["Gathering kindness…", "It's glowing warm! Keep holding!", "FULL BLOOM! LET GO!"],
+      payoffTitle: "THE WALL BLOOMS!",
+      payoffLine: "Kindness is louder than any echo. You stood by the kid - and the color came back.",
+    },
+    villain: {
+      arrival: "Echo echo echo! Words are SO much louder in here!",
+      phases: [
+        "One more voice in the pile! What's the harm?",
+        "Feed the echo! It's hungry!",
+        "That cloud looks heavy. Shame nobody helps carry those.",
+      ],
+      escape: "...it's no fun when nobody joins in. I'm leaving.",
+    },
+    voiceSlug: "w05",
+  },
+  badgeArt: "/cyberheroes/badges/week-05-kind-defender.png",
+
   bossAttacks: [
     { name: "PILE-ON",     icon: "🌀", color: "#7c5cff", glow: "rgba(124, 92, 255, 0.55)", tag: "Don't join in",              emblemColor: 0x7c5cff },
     { name: "MEAN ECHO",   icon: "💬", color: "#ff5fb3", glow: "rgba(255, 95, 179, 0.55)", tag: "No wood for the fire",       emblemColor: 0xff5fb3 },
@@ -698,14 +798,14 @@ export const WEEK_5: WeekContent = {
       { question: "A mean message lands. What do you do FIRST?", answers: ["Don't reply", "Reply in capitals", "Delete everything", "Forward it for advice"], correctIndex: 0, explanation: "No wood for the fire - don't reply, keep it, then tell." },
     ],
     medium: [
-      { question: "Why shouldn't you fire back a meaner reply?", answers: ["It feeds the fire and makes it all worse", "Because you might lose", "It takes too long", "Spelling is hard when angry"], correctIndex: 0, explanation: "Angry replies are wood - the fire grows. Calm starves it." },
+      { question: "Why shouldn't you fire back a meaner reply?", answers: ["It feeds the fire and makes it all worse", "Because you might lose", "It takes too long", "You might get in trouble too"], correctIndex: 0, explanation: "Angry replies are wood - the fire grows. Calm stops it growing." },
       { question: "Adding one 😂 to a pile-on is...", answers: ["Joining in", "Totally harmless", "Being friendly", "Staying neutral"], correctIndex: 0, explanation: "Even one emoji tells the bully 'more please' - and the hurt kid sees it." },
-      { question: "Why KEEP a mean message instead of deleting it?", answers: ["So a grown-up can see it and help properly", "To read it again", "To forward it later", "Phones can't delete"], correctIndex: 0, explanation: "Proof helps grown-ups stop it - keep it, don't delete it." },
+      { question: "Why KEEP a mean message instead of deleting it?", answers: ["So a grown-up can see it and help properly", "To read it again", "To forward it later", "To reply when you're calmer"], correctIndex: 0, explanation: "Proof helps grown-ups stop it - keep it, don't delete it." },
     ],
     hard: [
       { question: "Your friend is being piled on in the chat. The STRONGEST move is...", answers: ["One kind message + tell a grown-up", "A meaner message at the bullies", "Leaving the chat quietly", "Waiting for it to blow over"], correctIndex: 0, explanation: "Kindness out loud + real help on the way - that's the upstander move." },
-      { question: "Is telling a trusted adult 'snitching'?", answers: ["No - telling is how the hurting stops", "Yes, always", "Only on weekends", "Only if it's about you"], correctIndex: 0, explanation: "Snitching gets someone IN trouble. Telling gets someone OUT of it." },
-      { question: "What does a pile-on need to keep growing?", answers: ["More people joining in - so don't", "Nothing at all", "Good weather", "A faster phone"], correctIndex: 0, explanation: "Pile-ons starve when nobody joins. Your NO is powerful." },
+      { question: "Is telling a trusted adult 'snitching'?", answers: ["No - telling is how the hurting stops", "Yes, always", "Only if you could fix it yourself", "Only if it's about you"], correctIndex: 0, explanation: "Snitching gets someone IN trouble. Telling gets someone OUT of it." },
+      { question: "What does a pile-on need to keep growing?", answers: ["More people joining in - so don't", "Nothing at all", "One really mean kid", "A faster phone"], correctIndex: 0, explanation: "Pile-ons starve when nobody joins. Your NO is powerful." },
     ],
   },
 
@@ -723,7 +823,7 @@ export const WEEK_5: WeekContent = {
     7: { adam: { mood: "thinking", message: "Lean in. This one matters most." }, layla: null }, // learn: fault
     8: { adam: { mood: "curious", message: "Pop every doubt cloud!" }, layla: null }, // game: reveal
     9: { adam: null, layla: { mood: "thumbsup", message: "Finish the truest rule!" } }, // prove: finish
-    10: { adam: { mood: "thumbsup", message: "That truth is your armour." }, layla: null }, // recap 2
+    10: { adam: { mood: "thumbsup", message: "That truth is your armor." }, layla: null }, // recap 2
     11: { adam: null, layla: { mood: "thinking", message: "Don't feed the fire." } }, // learn: calm
     12: { adam: { mood: "curious", message: "Feel the heat? Stay calm." }, layla: null }, // game: decide
     13: { adam: null, layla: { mood: "worried", message: "He's fibbing - catch him!" } }, // prove: lie

@@ -149,6 +149,13 @@ export default function ExerciseIntroBeat({
           width: "100%",
           maxWidth: paced ? 470 : 420,
           margin: "auto 0",
+          // Never taller than the exercise frame: the card flexes and the
+          // narration list scrolls INSIDE it, so the "I'm ready" button is
+          // always on screen (it used to clip off short frames, e.g. W4 s04).
+          display: "flex",
+          flexDirection: "column",
+          maxHeight: "100%",
+          minHeight: 0,
           textAlign: "center",
           color: "#fff7e6",
           background: paced
@@ -183,6 +190,7 @@ export default function ExerciseIntroBeat({
           <div
             style={{
               display: "inline-block",
+              alignSelf: "center",
               margin: "0 0 10px",
               padding: "5px 16px",
               borderRadius: 999,
@@ -213,7 +221,7 @@ export default function ExerciseIntroBeat({
         </h2>
 
         {paced ? (
-          <div style={{ margin: "10px 0 16px", textAlign: "left" }}>
+          <div style={{ margin: "10px 0 16px", textAlign: "left", overflowY: "auto", minHeight: 0, flex: "0 1 auto" }}>
             <InfoNarration lines={narration!.lines} speaker={speaker} />
           </div>
         ) : (
@@ -232,9 +240,11 @@ export default function ExerciseIntroBeat({
         )}
 
         {canStart ? (
-          <GameButton variant="primary" size="lg" onClick={onDismiss}>
-            {paced ? "I'm ready →" : "Let's go →"}
-          </GameButton>
+          <div style={{ flexShrink: 0, textAlign: "center" }}>
+            <GameButton variant="primary" size="lg" onClick={onDismiss}>
+              {paced ? "I'm ready →" : "Let's go →"}
+            </GameButton>
+          </div>
         ) : (
           <div
             style={{

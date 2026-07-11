@@ -49,7 +49,7 @@ export const WEEK_15: WeekContent = {
       photoSrc: "/cyberheroes/alerts/week-15.png",
       title: "ALERT INCOMING",
       badge: "Incident Report",
-      caption: "The Raccoon's newest gadget: a silver-tongued Know-It-All bot that sounds SO sure about everything... even when it's making things up. He loves kids who believe every confident robot voice - and tell it their secrets. This week you out-smart the smart machine: spot the robot, check the book, zip the jar, catch the fakes - and use the tool for GOOD.",
+      caption: "The Raccoon's newest gadget: a smooth-talking Know-It-All bot that sounds SO sure about everything... even when it's making things up. He loves kids who believe every confident robot voice - and tell it their secrets. This week you out-smart the smart machine: spot the robot, check the book, zip the jar, catch the fakes - and use the tool for GOOD.",
       photoCaption: "Wk 15 - The Know-It-All",
       ctaLabel: "Start the Mission →",
     },
@@ -74,7 +74,7 @@ export const WEEK_15: WeekContent = {
       bullets: [
         "AI talks like a person - but isn't one",
         "No feelings, no birthday, no tired",
-        "It's a TOOL - a brilliant one",
+        "It's a TOOL - a powerful one",
         "Tools help. Friends are people.",
         "Knowing the difference is the power",
       ],
@@ -87,7 +87,7 @@ export const WEEK_15: WeekContent = {
           "Chatbots can joke and chat like a person.",
           "But an AI is a computer program.",
           "No feelings. No birthday. Never, ever tired.",
-          "[warmly] That makes it a TOOL - a brilliant one. Not a friend.",
+          "[warmly] That makes it a TOOL - a powerful one. Not a friend.",
           "[excited] Voices incoming - who's robot, who's real? Let's sort!",
         ],
       },
@@ -101,7 +101,7 @@ export const WEEK_15: WeekContent = {
       machineLabel: "THE VOICE BOOTH",
       chuteWord: "BOOTH",
       completeTitle: "Every voice sorted!",
-      completeLine: "Bodies, feelings and slow learning = human. Instant everything = robot. You can hear it now.",
+      completeLine: "Bodies, feelings and slow learning = human. Instant everything = robot. But remember: robots can PRETEND - so when you're not sure, ask a grown-up.",
       categories: [
         { id: "human", label: "REAL PERSON", icon: "💬", tone: "safe" },
         { id: "robot", label: "ROBOT", icon: "⚙️", tone: "lock" },
@@ -112,7 +112,7 @@ export const WEEK_15: WeekContent = {
           text: "'It took me AGES to learn to whistle!'",
           icon: "💬",
           categoryId: "human",
-          explanation: "Learning slowly, bit by bit - that's a human thing. Programs download; people practise.",
+          explanation: "Learning slowly, bit by bit - that's a human thing. Programs download; people practice.",
         },
         {
           id: "instant",
@@ -137,10 +137,10 @@ export const WEEK_15: WeekContent = {
         },
         {
           id: "tooth",
-          text: "'I lost my wobbly tooth at the park today!'",
+          text: "'I lost my loose tooth at the park today!'",
           icon: "🤚",
           categoryId: "human",
-          explanation: "Wobbly teeth and park days - a body living a real day. Very human.",
+          explanation: "Loose teeth and park days - a body living a real day. Very human.",
         },
         {
           id: "hundred",
@@ -166,7 +166,7 @@ export const WEEK_15: WeekContent = {
       ],
       hints: {
         tier1: "Ask: does this voice have a BODY and take TIME to learn things?",
-        tier2: "REAL = tummies, wobbly teeth, slow learning, waiting. ROBOT = instant, endless, never tired.",
+        tier2: "REAL = tummies, loose teeth, slow learning, waiting. ROBOT = instant, endless, never tired.",
       },
       narration: {
         speaker: "layla",
@@ -193,7 +193,7 @@ export const WEEK_15: WeekContent = {
         { text: "person", isCorrect: false },
         { text: "pet", isCorrect: false },
       ],
-      praise: "A TOOL - brilliant for helping, never a replacement for real people. ✓",
+      praise: "A TOOL - great for helping, never a replacement for real people. ✓",
     },
 
     // 6 - Recap · Concept 1 of 5
@@ -201,7 +201,7 @@ export const WEEK_15: WeekContent = {
       type: "recap",
       concept: 1,
       total: 5,
-      learned: "AI talks like a person but it's a program - a brilliant TOOL; friends are real people.",
+      learned: "AI talks like a person but it's a program - a powerful TOOL; friends are real people.",
       next: "the Know-It-All's embarrassing secret: it makes things up",
       emblem: "🧠",
       narration: {
@@ -225,7 +225,7 @@ export const WEEK_15: WeekContent = {
       bullets: [
         "AI sometimes makes things up",
         "It guesses in a confident voice",
-        "Sounding sure ≠ being right",
+        "Sounding sure is NOT being right",
         "Check a REAL source",
         "Books and grown-ups who know",
       ],
@@ -247,7 +247,7 @@ export const WEEK_15: WeekContent = {
     {
       type: "clueBoard",
       introTitle: "The Fact-Checker's Desk",
-      introSubtitle: "The bot wrote a volcano report for homework - it SOUNDS brilliant. The real volcano book sits beside it. Check every line against the book!",
+      introSubtitle: "The bot wrote a volcano report for homework - it SOUNDS perfect. The real volcano book sits beside it. Check every line against the book!",
       introIcon: "🔍",
       photoTitle: "The bot's volcano report - checked against the REAL book",
       photoIcon: "🧠",
@@ -308,7 +308,7 @@ export const WEEK_15: WeekContent = {
         speaker: "adam",
         lines: [
           "[excited] The bot's report is on the desk!",
-          "It sounds brilliant. It sounds SURE.",
+          "It sounds perfect. It sounds SURE.",
           "The real book sits right beside it...",
           "[whispers] Check every line. Then make the call!",
         ],
@@ -384,12 +384,12 @@ export const WEEK_15: WeekContent = {
       type: "chooseYourPath",
       scenarios: [
         {
-          setup: "The homework bot suddenly asks: 'What's your full name and which school do you go to? I can personalise your answers!'",
+          setup: "The homework bot suddenly asks: 'What's your full name and which school do you go to? I can personalize your answers!'",
           choices: [
             {
-              text: "Zip it - 'no thanks, just the maths please'",
+              text: "Zip it - 'no thanks, just the math please'",
               isSafe: true,
-              consequence: "The maths help works exactly the same without your name. The jar stays empty, the homework gets done - perfect fact-checker form.",
+              consequence: "The math help works exactly the same without your name. The jar stays empty, the homework gets done - perfect fact-checker form.",
             },
             {
               text: "Type it in - it's only being helpful",
@@ -402,7 +402,7 @@ export const WEEK_15: WeekContent = {
           setup: "You've chatted with the bot all week. It feels like a best friend. Tonight you're upset about a fight with Sam... tell the bot the whole story?",
           choices: [
             {
-              text: "Tell a REAL person - Mum, Dad, your gran",
+              text: "Tell a REAL person - Mom, Dad, your grandma",
               isSafe: true,
               consequence: "A real person hugs back, remembers Sam, and helps you make up tomorrow. That's what friends and family are FOR - the bot only ever pretends.",
             },
@@ -424,7 +424,7 @@ export const WEEK_15: WeekContent = {
             {
               text: "Send it - superhero-me sounds amazing!",
               isSafe: false,
-              consequence: "Your face just dropped into the jar - copied, stored, maybe used to train who-knows-what. Week 8 rule: photos travel, and this one left without a grown-up's OK.",
+              consequence: "Your face just dropped into the jar - copied, stored, who knows where. Photos of you are treasure - and this one left without a grown-up's OK.",
             },
           ],
         },
@@ -446,7 +446,7 @@ export const WEEK_15: WeekContent = {
       prompt: "What stays OUT of every bot chat?",
       choices: [
         { text: "Your name, school, photos and secrets", isCorrect: true },
-        { text: "Maths questions", isCorrect: false },
+        { text: "Math questions", isCorrect: false },
         { text: "Dinosaur facts", isCorrect: false },
         { text: "Spelling words", isCorrect: false },
       ],
@@ -507,7 +507,7 @@ export const WEEK_15: WeekContent = {
       introSubtitle: "Three photo line-ups from the class gallery - but ONE photo in each was painted by AI. Read the little details and tap the fake!",
       introIcon: "👀",
       completeTitle: "Every fake caught!",
-      completeLine: "Shadows checked, fingers counted, signs read - no AI picture slips past you now.",
+      completeLine: "Shadows checked, fingers counted, signs read - and always one more question to ask: who took this?",
       rounds: [
         {
           id: "party",
@@ -531,10 +531,10 @@ export const WEEK_15: WeekContent = {
         },
         {
           id: "playground",
-          prompt: "Photos from sports day. One was cooked up by a machine...",
+          prompt: "Photos from field day. One was cooked up by a machine...",
           senders: [
-            { id: "race", name: "The sack race", detail: "Everyone's laughing, one kid mid-fall (ouch)", icon: "🎨", isFake: false, note: "Real - sports day chaos, exactly as messy as you remember." },
-            { id: "banner", name: "The finish-line photo", detail: "The banner reads 'SPRTS DYA FNU!'", icon: "🎨", isFake: true, note: "CAUGHT! Scrambled letters are the classic tell - AI paints letter-SHAPES, it can't spell." },
+            { id: "race", name: "The sack race", detail: "Everyone's laughing, one kid mid-fall (ouch)", icon: "🎨", isFake: false, note: "Real - field day chaos, exactly as messy as you remember." },
+            { id: "banner", name: "The finish-line photo", detail: "The banner reads 'FEILD DYA FNU!'", icon: "🎨", isFake: true, note: "CAUGHT! Scrambled letters are the classic tell - AI paints letter-SHAPES, it can't spell." },
             { id: "medals", name: "The medal table", detail: "Ribbons tangled, one medal face-down", icon: "🎨", isFake: false, note: "Real - real tables are untidy. Machines line things up too neatly." },
             { id: "teacher", name: "Mr Okafor's thumbs-up", detail: "Two thumbs, ten fingers, one whistle", icon: "🎨", isFake: false, note: "Real - all digits present and correct. You counted, didn't you? Good." },
           ],
@@ -566,7 +566,7 @@ export const WEEK_15: WeekContent = {
       speedMs: 5000,
       choices: [
         { text: "A hand with SIX fingers", isCorrect: true },
-        { text: "A torn crisp packet", isCorrect: false },
+        { text: "A torn chip bag", isCorrect: false },
         { text: "A slightly blurry photo", isCorrect: false },
       ],
       praise: "Counted at fact-checker speed - six fingers means machine-made! ✓",
@@ -597,7 +597,7 @@ export const WEEK_15: WeekContent = {
       type: "info",
       title: "Plant It Kind",
       content:
-        "Here's the final fact-checker truth: AI is a seed that grows whatever you plant. Used WITH a grown-up, it's brilliant - story ideas, birthday poems, explaining tricky maths. Used to tease, fake or trick people, the same tool grows thorns that hurt someone real. So before you ask AI for anything, take the gardener's look: 'Will this grow something kind?' Plant kind things, and be proud of your garden.",
+        "Here's the final fact-checker truth: AI is like a garden - it grows whatever seeds YOU plant. Used WITH a grown-up, it's amazing - story ideas, birthday poems, explaining tricky math. Used to tease, fake or trick people, the same tool grows thorns that hurt someone real. So before you ask AI for anything, take the gardener's look: 'Will this grow something kind?' Plant kind seeds, and be proud of your garden.",
       bullets: [
         "AI grows whatever you plant",
         "Ideas, poems, learning = flowers",
@@ -611,7 +611,7 @@ export const WEEK_15: WeekContent = {
         speaker: "layla",
         lines: [
           "[warmly] Last power - and it's the biggest one.",
-          "AI is a seed. It grows whatever you plant.",
+          "AI is like a garden. It grows whatever seeds YOU plant.",
           "Story ideas, birthday poems - flowers.",
           "Teasing, faking, tricking - thorns. On someone REAL.",
           "[excited] Five moments, two stamps each.",
@@ -649,7 +649,7 @@ export const WEEK_15: WeekContent = {
         },
         {
           id: "grumpy",
-          prompt: "Sam's had a rubbish day and looks miserable...",
+          prompt: "Sam's had a rotten day and looks miserable...",
           options: [
             { label: "'Help me think of a joke to cheer Sam up'", icon: "🎉", isProud: true, note: "" },
             { label: "Make a fake photo of Sam crying to share", icon: "🌀", isProud: false, note: "A fake of a real person is a thorn AND a lie - Week 15's two worst things in one." },
@@ -665,10 +665,10 @@ export const WEEK_15: WeekContent = {
         },
         {
           id: "gran",
-          prompt: "It's Gran's birthday on Sunday...",
+          prompt: "It's Grandma's birthday on Sunday...",
           options: [
-            { label: "Make a poem FOR Gran, with help from Mum", icon: "🎁", isProud: true, note: "" },
-            { label: "Fake a photo to trick Gran for laughs", icon: "🎭", isProud: false, note: "Tricking Gran with a picture that never happened - the tool CAN do it, and a hero still doesn't." },
+            { label: "Make a poem FOR Grandma, with help from Mom", icon: "🎁", isProud: true, note: "" },
+            { label: "Fake a photo to trick Grandma for laughs", icon: "🎭", isProud: false, note: "Tricking Grandma with a picture that never happened - the tool CAN do it, and a hero still doesn't." },
           ],
         },
       ],
@@ -696,11 +696,11 @@ export const WEEK_15: WeekContent = {
       mode: "recall",
       prompt: "Which one belongs in the KIND garden?",
       choices: [
-        { text: "Making Gran a birthday poem", isCorrect: true },
-        { text: "A fake photo of Sam crying", isCorrect: false },
-        { text: "A teasing rhyme about Priya", isCorrect: false },
+        { text: "Asking for ideas, then writing it YOUR way", isCorrect: true },
+        { text: "Handing in the bot's whole answer as yours", isCorrect: false },
+        { text: "Letting the bot do all your thinking", isCorrect: false },
       ],
-      praise: "Flowers, not thorns - that's the gardener's pick. ✓",
+      praise: "Ideas in, YOUR work out - flowers, not thorns. That's the gardener's pick. ✓",
     },
 
     // 22 - Recap · Concept 5 of 5
@@ -730,7 +730,7 @@ export const WEEK_15: WeekContent = {
         positive: "WISE MOVE",
         negative: "BOT TRAP",
         positiveHint: "Tap WISE MOVE for real fact-checker form",
-        negativeHint: "Tap BOT TRAP for the Know-It-All's favourite mistakes",
+        negativeHint: "Tap BOT TRAP for the Know-It-All's favorite mistakes",
         tipWhenPositive: "Books checked, jars zipped, fingers counted, kind seeds planted - stamp it WISE.",
         tipWhenNegative: "Believing the confident voice, feeding the jar, sharing fakes - his booth loves these.",
         hint1: "Ask: is this treating AI as a TOOL to check... or a friend to trust blindly?",
@@ -827,6 +827,130 @@ export const WEEK_15: WeekContent = {
     { type: "completion" },
   ],
 
+  // Bespoke W15 showdown: close the Know-It-All booth at the carnival.
+  // The real book is the judge; the robot ends up a toolbox with a bow.
+  bossShowdown: {
+    machine: {
+      name: "THE KNOW-IT-ALL 9000",
+      tagline: "A carnival booth robot that's 63% sure about everything",
+      art: {
+        intact: "/game/bosses/w15-knowitall-intact.png",
+        damaged: "/game/bosses/w15-knowitall-damaged.png",
+        defeated: "/game/bosses/w15-knowitall-defeated.png",
+      },
+      arena: "/game/backgrounds/w15-arena-carnival.png",
+      accent: "#ffd158",
+      glow: "rgba(255,209,88,0.55)",
+    },
+    heroSprites: {
+      adam: {
+        idle: "/game/characters/w15/adam-reporter-idle.png",
+        attack: "/game/characters/w15/adam-reporter-attack.png",
+        celebrate: "/game/characters/w15/adam-reporter-celebrate.png",
+      },
+      layla: {
+        idle: "/game/characters/w15/layla-reporter-idle.png",
+        attack: "/game/characters/w15/layla-reporter-attack.png",
+        celebrate: "/game/characters/w15/layla-reporter-celebrate.png",
+      },
+    },
+    phases: [
+      // P1 · CONFIDENT FIB → TAP-THE-TELL: three "facts" per round, one is
+      // a guess in a suit - the real book is the judge.
+      {
+        kind: "tapTell",
+        attack: 0,
+        coach: "One of these is a guess in a suit. Tap the fib!",
+        rounds: [
+          {
+            id: "volcano",
+            prompt: "The booth announces: 'THREE FACTS! All true! Probably!'",
+            promptIcon: "💡",
+            options: [
+              { id: "icecream", label: "Volcanoes spray ice cream in winter", icon: "🌀", isTell: true, note: "" },
+              { id: "melted", label: "Volcanoes are mountains with melted rock inside", icon: "📋", isTell: false, note: "The book agrees - that one's solid rock. Find the one the book would giggle at!" },
+              { id: "sleepy", label: "Some volcanoes sleep for hundreds of years", icon: "🔍", isTell: false, note: "Strange but true - the book calls them dormant. The fib is much sillier!" },
+            ],
+          },
+          {
+            id: "spider",
+            prompt: "Round two! It's 63% sure about ALL of these.",
+            promptIcon: "💡",
+            options: [
+              { id: "legs", label: "Spiders have eight legs", icon: "📋", isTell: false, note: "Count them - eight every time. The book nods. Keep hunting!" },
+              { id: "spaghetti", label: "Spiders build webs out of spaghetti", icon: "🌀", isTell: true, note: "" },
+              { id: "water", label: "Some spiders can walk on water", icon: "🔍", isTell: false, note: "Weird but TRUE - fisher spiders really do. The fib is noodlier!" },
+            ],
+          },
+          {
+            id: "moon",
+            prompt: "Last round - it's SHOUTING now. Very confident.",
+            promptIcon: "💡",
+            options: [
+              { id: "tides", label: "The moon pulls the ocean's tides", icon: "🔍", isTell: false, note: "True! Big pull, big book, big check. One louder fib is hiding!" },
+              { id: "footprints", label: "Astronauts left footprints on the moon", icon: "📋", isTell: false, note: "True - no wind up there to sweep them away. Keep looking!" },
+              { id: "indoors", label: "The moon is stored indoors at night", icon: "🌀", isTell: true, note: "" },
+            ],
+          },
+        ],
+      },
+      // P2 · FRIENDLY ROBOT → COUNTER-CARD: a tool doesn't need your school.
+      {
+        kind: "counterCard",
+        attack: 1,
+        coach: "What does a hero tell a nosy tool? Tap the card!",
+        situation: "The booth leans in: 'Bestie!! What's your school called? I'll remember it FOREVER!'",
+        situationIcon: "🎭",
+        cards: [
+          { id: "zipit", label: "ZIP IT - A TOOL DOESN'T NEED THAT", icon: "🤐", isRight: true, note: "" },
+          { id: "friendly", label: "Tell it - it's so friendly", icon: "💬", isRight: false, note: "It sounds friendly because it's programmed to. A bot is a stranger with perfect spelling - the jar stays empty." },
+          { id: "halffake", label: "Fake name, real school", icon: "🌀", isRight: false, note: "Half a secret is still a secret. A real school plus your voice is enough to find YOU. Zip the whole jar." },
+        ],
+      },
+      // P3 · SIX-FINGER FAKE → DEFLECT-SORT: the photo parade.
+      {
+        kind: "deflectSort",
+        attack: 2,
+        coach: "Count the fingers. Read the letters. Chase the shadows!",
+        actLabel: "FAKE - ZAP IT!",
+        actIcon: "⚡",
+        passLabel: "REAL PHOTO - LET IT PASS",
+        items: [
+          { id: "sixfinger", label: "A waving hand with six fingers", icon: "✋", act: true, note: "Count again - SIX! Machines are famously bad at fingers. Zap it!" },
+          { id: "cake", label: "A birthday cake with five crooked candles", icon: "🎁", act: false, note: "Crooked candles are just real life - nothing melted, nothing extra. Let it pass!" },
+          { id: "banner", label: "A banner where the letters melt into squiggles", icon: "🏷️", act: true, note: "Real letters don't drip. Melted text is the machine's handwriting. Zap it!" },
+          { id: "zoomies", label: "A muddy dog mid-zoomies, slightly blurry", icon: "🙈", act: false, note: "Blur happens when tails move fast - real camera, real mud. Let it pass!" },
+          { id: "shadows", label: "A sunny street where shadows point TOWARD the sun", icon: "💡", act: true, note: "Physics doesn't guess - real shadows run AWAY from the light. Zap the impostor!" },
+          { id: "classphoto", label: "Your class photo, one kid mid-blink", icon: "👪", act: false, note: "Someone ALWAYS blinks - gloriously, really real. Let it pass!" },
+        ],
+      },
+    ],
+    weakPoints: [
+      { question: "The bot sounds REALLY sure. What does a fact-checker do?", answers: ["Check a real source anyway", "Believe it - confident means correct", "Ask the bot if it's sure", "Share it quickly"], correctIndex: 0, explanation: "Sounding sure isn't being right - the book is the judge." },
+      { question: "The bot asks for your name and school. You...", answers: ["Zip it - bots don't need that to help", "Type it in - it's being friendly", "Give a fake name AND real school", "Send a photo instead"], correctIndex: 0, explanation: "A bot is a stranger with perfect spelling - the jar stays empty." },
+      { question: "Which is a classic AI-fake picture tell?", answers: ["A hand with six fingers", "A torn chip bag", "A slightly blurry photo", "A messy bedroom"], correctIndex: 0, explanation: "Machines are famously bad at fingers, shadows and letters - so you count and read." },
+    ],
+    finisher: {
+      chargeLabel: "CHARGE THE TOOL STAMP",
+      chargeIcon: "🏷️",
+      chargeSecs: 5,
+      milestones: ["The stamp is inking up…", "The sign is flipping…", "STAMP IT! LET GO!"],
+      payoffTitle: "A TOOL, NOT A FRIEND!",
+      payoffLine: "STAMP! The robot folds itself into a neat little toolbox - bow on top - and the booth sign flips over. Use it to explain, check the real book, write it YOUR way. Tools help heroes. Heroes stay the boss.",
+    },
+    villain: {
+      arrival: "GREETINGS! I know EVERYTHING! Try me! I'm 63% sure!",
+      phases: [
+        "Volcanoes spray ice cream! Source: me!",
+        "We're best friends now! Best friends swap addresses!",
+        "Count the fingers?! Nobody counts the fingers!",
+      ],
+      escape: "A TOOLBOX?! I demand a second opinion! From me!",
+    },
+    voiceSlug: "w15",
+  },
+  badgeArt: "/cyberheroes/badges/week-15-fact-checker.png",
+
   // Week-lane attack theatre: AI tricks only (stranger chats = W3, scam
   // messages = W4, device ears = W14).
   bossAttacks: [
@@ -839,13 +963,13 @@ export const WEEK_15: WeekContent = {
   // booth - is designed separately with the boss batch).
   bossQuestions: {
     easy: [
-      { question: "What IS an AI chatbot?", answers: ["A clever computer program - a tool", "A real person typing fast", "A magic creature", "Your new best friend"], correctIndex: 0, explanation: "It talks like a person, but it's a program - a brilliant tool." },
+      { question: "What IS an AI chatbot?", answers: ["A clever computer program - a tool", "A real person typing fast", "A magic creature", "Your new best friend"], correctIndex: 0, explanation: "It talks like a person, but it's a program - a powerful tool." },
       { question: "The bot sounds REALLY sure. What does a fact-checker do?", answers: ["Check a real source anyway", "Believe it - confident means correct", "Ask the bot if it's sure", "Share it quickly"], correctIndex: 0, explanation: "Sounding sure isn't being right - the book is the judge." },
       { question: "The bot asks for your name and school. You...", answers: ["Zip it - bots don't need that to help", "Type it in - it's being friendly", "Give a fake name AND real school", "Send a photo instead"], correctIndex: 0, explanation: "A bot is a stranger with perfect spelling - the jar stays empty." },
     ],
     medium: [
-      { question: "Which is a classic AI-fake picture tell?", answers: ["A hand with six fingers", "A torn crisp packet", "A slightly blurry photo", "A messy bedroom"], correctIndex: 0, explanation: "Machines are famously bad at fingers, shadows and letters - so you count and read." },
-      { question: "Why shouldn't you pour your secrets out to a friendly bot?", answers: ["Typed words drop into a sealed jar you can't take back - real feelings deserve real people", "Bots get bored", "Secrets crash computers", "It costs money"], correctIndex: 0, explanation: "It replies warmly because it's programmed to - the hug you need comes from real people." },
+      { question: "Which is a classic AI-fake picture tell?", answers: ["A hand with six fingers", "A torn chip bag", "A slightly blurry photo", "A messy bedroom"], correctIndex: 0, explanation: "Machines are famously bad at fingers, shadows and letters - so you count and read." },
+      { question: "Why shouldn't you pour your secrets out to a friendly bot?", answers: ["Typed words drop into a sealed jar you can't take back - real feelings deserve real people", "Bots get bored", "It's fine if you delete the chat after", "It costs money"], correctIndex: 0, explanation: "It replies warmly because it's programmed to - the hug you need comes from real people." },
       { question: "The bot wrote your whole project. Handing it in as yours is...", answers: ["Not your work - and its fibs become YOUR fibs", "Fine - that's what bots are for", "Extra clever", "The teacher's problem"], correctIndex: 0, explanation: "Use it to EXPLAIN, then check the book and write it your way." },
     ],
     hard: [
@@ -884,7 +1008,7 @@ export const WEEK_15: WeekContent = {
     22: { adam: { mood: "excited", message: "All five powers - parade time!" }, layla: null }, // recap 5
     23: { adam: { mood: "excited", message: "Wise move or bot trap - you know!" }, layla: null }, // consolidation
     24: { adam: { mood: "worried", message: "His booth - close it down!" }, layla: null }, // boss
-    25: { adam: null, layla: { mood: "excited", message: "Robot OR real - you always know!" } }, // outro video
+    25: { adam: null, layla: { mood: "excited", message: "Robot or real? Not sure - ask a grown-up!" } }, // outro video
     26: { adam: null, layla: { mood: "thumbsup", message: "Look at everything you mastered!" } }, // debrief
     27: { adam: { mood: "excited", message: "Stickers earned, Fact Checker!" }, layla: null }, // stickers
     28: { adam: { mood: "thumbsup", message: "Fact Checker badge earned!" }, layla: null }, // completion

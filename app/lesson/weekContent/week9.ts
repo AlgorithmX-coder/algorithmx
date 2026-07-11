@@ -56,8 +56,8 @@ export const WEEK_9: WeekContent = {
       type: "mission",
       objectives: [
         "Shop at the official app store - and ONLY there",
-        "Spot copycat apps by their whiskers: names, stars, downloads",
-        "Flip every FREE tag and ask: why does it need that?",
+        "Catch copycat apps: check the name, the stars, the downloads",
+        "Ask 'why does it need that?' before any app gets a key",
       ],
     },
 
@@ -85,7 +85,7 @@ export const WEEK_9: WeekContent = {
           "New apps come from ONE real shop - the official app store.",
           "[warmly] That shop checks every app before it hits the shelf.",
           "[whispers] Random websites, pop-ups, comment links? Nobody checked those.",
-          "[excited] Deliveries incoming - sort the real from the dodgy!",
+          "[excited] Deliveries incoming - sort the real from the sketchy!",
         ],
       },
     },
@@ -93,22 +93,22 @@ export const WEEK_9: WeekContent = {
     {
       type: "hookSort",
       introTitle: "The Delivery Dock",
-      introSubtitle: "App deliveries are coming in on the lines. Reel in the official-shop ones - cut the dodgy downloads loose!",
+      introSubtitle: "App deliveries are coming in on the lines. Reel in the official-shop ones - cut the sketchy downloads loose!",
       introIcon: "📱",
       reelLabel: "🎣 REEL IN - real shop!",
-      cutLabel: "✂️ CUT - dodgy source!",
+      cutLabel: "✂️ CUT - sketchy source!",
       reelToast: "REAL SHOP - SHELVED!",
-      cutToast: "DODGY - CUT LOOSE!",
-      wrongScamTitle: "Careful - that source was DODGY",
+      cutToast: "SKETCHY - CUT LOOSE!",
+      wrongScamTitle: "Careful - that source was SKETCHY",
       wrongRealTitle: "Wait - that one came from the real shop!",
       completeTitle: "The dock takes only real deliveries!",
-      completeLine: "Official shop in, dodgy downloads cut loose.",
+      completeLine: "Official shop in, sketchy downloads cut loose.",
       items: [
         { id: "store-blast", text: "Blast Birds - on the official App Store", icon: "📱", isScam: false, explanation: "The official store checked it before the shelf - reel it in." },
         { id: "web-free", text: "'FREE Blast Birds!' from freegames-4u.biz", icon: "🪤", isScam: true, explanation: "Random websites don't check anything - that 'free' game is bait." },
         { id: "store-pets", text: "Pixel Pets - Google Play, 5 million downloads", icon: "📱", isScam: false, explanation: "Real shop, millions of happy players - a safe delivery." },
         { id: "popup-fast", text: "Pop-up: 'Download the game HERE - it's faster!'", icon: "⚡", isScam: true, explanation: "Pop-up download buttons are traps - the real shop never pops up." },
-        { id: "school-app", text: "The reading app from your school's letter", icon: "🏫", isScam: false, explanation: "School checked it AND it lives in the official store - double safe." },
+        { id: "school-app", text: "School's letter says: 'get our reading app on the App Store'", icon: "🏫", isScam: false, explanation: "School checked it AND it lives in the official store - double safe." },
         { id: "forum-early", text: "'Get it EARLY - not in shops yet!' from a forum", icon: "🤫", isScam: true, explanation: "'Not in shops yet' means 'nobody checked it yet'. Cut it loose." },
         { id: "store-update", text: "An update inside the official app store", icon: "✅", isScam: false, explanation: "Real updates come from inside the real shop - reel it in." },
         { id: "comment-link", text: "A download link in a video's comments", icon: "💬", isScam: true, explanation: "Comments aren't shops - a link down there is a stranger's package." },
@@ -139,7 +139,7 @@ export const WEEK_9: WeekContent = {
       choices: [
         { text: "The official app store", isCorrect: true },
         { text: "A pop-up that says FREE", isCorrect: false },
-        { text: "A random website", isCorrect: false },
+        { text: "A website's download button", isCorrect: false },
         { text: "A link in the comments", isCorrect: false },
       ],
       praise: "The real shop, every time - checked before the shelf. ✓",
@@ -157,7 +157,7 @@ export const WEEK_9: WeekContent = {
         speaker: "layla",
         lines: [
           "[excited] Power one - locked in!",
-          "Real deliveries shelved, dodgy ones snipped.",
+          "Real deliveries shelved, sketchy ones snipped.",
           "[whispers] But here's the twist, hero...",
           "some fakes sneak INTO the real shop. Wearing costumes.",
         ],
@@ -216,7 +216,7 @@ export const WEEK_9: WeekContent = {
           prompt: "Now 'Pixel Pets'. The costume is better this time - count the whiskers!",
           senders: [
             { id: "junior", name: "Pixel Pets Junior", detail: "★ 4.5 · by the same maker", icon: "🎁", isFake: false, note: "The official little-kids version - same maker, good history." },
-            { id: "fake", name: "Pixel Pets FREE", detail: "★ 1.9 · asks for 12 permissions", icon: "🎁", isFake: true, note: "The real one IS free - a 'FREE' copy wanting 12 permissions is a grabber in a costume." },
+            { id: "fake", name: "Pixel Pets FREE", detail: "★ 1.9 · 9 downloads · new today", icon: "🎁", isFake: true, note: "The real one IS free - and this 'FREE' copy is brand new with nine downloads. A costume with FREE painted on it!" },
             { id: "real", name: "Pixel Pets", detail: "★ 4.7 · 8 million downloads", icon: "🎁", isFake: false, note: "Millions of downloads, big stars, clean name - the real pet." },
             { id: "guide", name: "Pixel Pets Guide", detail: "★ 4.2 · official tips book", icon: "🎁", isFake: false, note: "The maker's own tips app - all whiskers accounted for." },
           ],
@@ -289,12 +289,12 @@ export const WEEK_9: WeekContent = {
       type: "info",
       title: "Why Does It Need That?",
       content:
-        "When an app installs, it ASKS for permissions - little keys to parts of your device. Here's the detective question: does it need that key FOR ITS JOB? A torch app needs the light - that's its job. But your contacts? Your microphone? Your photos? A torch doesn't need ANY of that. Job-keys yes, greedy-keys no.",
+        "When an app installs, it ASKS for permissions - little keys to parts of your device. Here's the detective question: does it need that key FOR ITS JOB? A flashlight app needs the light - that's its job. But your contacts? Your microphone? Your photos? A flashlight doesn't need ANY of that. Job-keys yes, greedy-keys no.",
       bullets: [
         "Permissions are keys to your device",
         "Ask: does its JOB need that key?",
-        "A torch needs the light - fine",
-        "A torch does NOT need your contacts",
+        "A flashlight needs the light - fine",
+        "A flashlight does NOT need your contacts",
         "Job-keys yes, greedy-keys no",
       ],
       bulletIcons: ["🔑", "🧠", "💡", "🚫", "✋"],
@@ -305,26 +305,26 @@ export const WEEK_9: WeekContent = {
           "[warmly] Apps ask for permissions - little keys to your device.",
           "Here's the only question that matters:",
           "does it need that key... for its JOB?",
-          "A torch app needs the light. Obviously!",
+          "A flashlight app needs the light. Obviously!",
           "[nervous] But your contacts? Your microphone? Your photos?",
-          "[excited] A torch needs NONE of that. Guard the gate - let's go!",
+          "[excited] A flashlight needs NONE of that. Guard the gate - let's go!",
         ],
       },
     },
     // 12 - Game: INSPECT (settingsSwitch re-dress - the Permission Gate)
     {
       type: "settingsSwitch",
-      panelTitle: "Torchy the Torch App - asking for:",
+      panelTitle: "Torchy the Flashlight App - asking for:",
       introTitle: "The Permission Gate",
       introSubtitle: "Torchy wants SIX keys - but its job is making light. Leave the job-keys ON, flip the greedy ones OFF!",
       introIcon: "✋",
       rows: [
-        { id: "light", label: "Use the torch light", value: "Allowed", icon: "💡", isRisky: false, note: "Making light IS a torch's job - that key stays." },
-        { id: "contacts", label: "See your contacts", value: "Allowed", safeValue: "Blocked", icon: "👪", isRisky: true, note: "A torch doesn't need your friends' numbers - that's a grab. Blocked!" },
+        { id: "light", label: "Use the flashlight", value: "Allowed", icon: "💡", isRisky: false, note: "Making light IS a flashlight's job - that key stays." },
+        { id: "contacts", label: "See your contacts", value: "Allowed", safeValue: "Blocked", icon: "👪", isRisky: true, note: "A flashlight doesn't need your friends' numbers - that's a grab. Blocked!" },
         { id: "mic", label: "Use your microphone", value: "Allowed", safeValue: "Blocked", icon: "🤫", isRisky: true, note: "Why would a light LISTEN to you? No job reason - blocked." },
         { id: "location", label: "Know your location", value: "Allowed", safeValue: "Blocked", icon: "📍", isRisky: true, note: "The light shines the same everywhere - it never needs to know where you are." },
-        { id: "button", label: "Turn on with the button", value: "Allowed", icon: "⚡", isRisky: false, note: "An on-button is how a torch works - job-key, stays on." },
-        { id: "photos", label: "Look at your photos", value: "Allowed", safeValue: "Blocked", icon: "👀", isRisky: true, note: "Your photos are none of a torch's business - blocked." },
+        { id: "button", label: "Turn on with the button", value: "Allowed", icon: "⚡", isRisky: false, note: "An on-button is how a flashlight works - job-key, stays on." },
+        { id: "photos", label: "Look at your photos", value: "Allowed", safeValue: "Blocked", icon: "👀", isRisky: true, note: "Your photos are none of a flashlight's business - blocked." },
       ],
       hints: {
         tier1: "Say the app's job out loud: 'it makes light.' Now check each key against the job.",
@@ -383,12 +383,12 @@ export const WEEK_9: WeekContent = {
       type: "info",
       title: "Flip the FREE Tag",
       content:
-        "FREE is the shop's favourite word - but apps cost money to make, so 'free' apps get paid ANOTHER way. Some show you ads every minute (paying with your time). Some have coin shops inside (Week 7 flashback!). Some collect your info to sell (paying with your data). And some - like library and school apps - really ARE free. Flip the tag and see which one you're holding.",
+        "FREE is the shop's favorite word - but apps cost money to make, so 'free' apps get paid ANOTHER way. Some show you ads every minute (paying with your time). Some have coin shops inside (Week 7 flashback!). Some collect your info to sell (paying with your INFO). And some - like library and school apps - really ARE free. Flip the tag and see which one you're holding.",
       bullets: [
         "Apps cost money to make - always",
         "Ads = paying with your TIME",
         "Coin shops = free to start, not to play",
-        "Info collectors = paying with your DATA",
+        "Info collectors = paying with your INFO",
         "Some free IS free - flip the tag to see",
       ],
       bulletIcons: ["💡", "🔔", "💎", "🆔", "🏷️"],
@@ -396,10 +396,10 @@ export const WEEK_9: WeekContent = {
       narration: {
         speaker: "layla",
         lines: [
-          "[excited] FREE! The shop's favourite sparkly word.",
+          "[excited] FREE! The shop's favorite sparkly word.",
           "[whispers] But apps cost money to make. Always.",
           "So 'free' apps get paid another way...",
-          "Your time - with ads. Your pounds - with coin shops.",
+          "Your time - with ads. Your dollars - with coin shops.",
           "[warmly] Or your info - collected and sold on.",
           "[excited] Four FREE tags on the board - flip every one!",
         ],
@@ -429,7 +429,7 @@ export const WEEK_9: WeekContent = {
           icon: "💎",
           steps: [
             { icon: "🎮", text: "Free to download! And the first level is genuinely fun..." },
-            { icon: "💎", text: "then level two wants coins. And coins want pounds. Week 7, remember?" },
+            { icon: "💎", text: "then level two wants coins. And coins want dollars. Week 7, remember?" },
             { icon: "🏷️", text: "Flip the tag: free to START isn't free to PLAY." },
           ],
           counter: "The real shop is hiding inside the game.",
@@ -439,11 +439,11 @@ export const WEEK_9: WeekContent = {
           label: "The Info Collector",
           icon: "🆔",
           steps: [
-            { icon: "💬", text: "Before you play: 'What's your name? Age? School? Favourite things?'" },
+            { icon: "💬", text: "Before you play: 'What's your name? Age? School? Favorite things?'" },
             { icon: "🆔", text: "It bundles up your answers... and sells them to ad companies." },
             { icon: "🏷️", text: "Flip the tag: your INFO was the price all along." },
           ],
-          counter: "If it's free, your data may be the payment.",
+          counter: "If it's free, your info may be the payment.",
         },
         {
           id: "trulyfree",
@@ -464,7 +464,7 @@ export const WEEK_9: WeekContent = {
           "[whispers] Four apps. Four shiny FREE tags.",
           "But every tag has a back side...",
           "[excited] Flip each one and read the REAL price.",
-          "Time, pounds, data... or truly free!",
+          "Time, dollars, info... or truly free!",
         ],
       },
       coachLines: {
@@ -478,7 +478,7 @@ export const WEEK_9: WeekContent = {
       mode: "recall",
       prompt: "Which one is TRULY free?",
       choices: [
-        { text: "The library's reading app - no ads, no coin shop", isCorrect: true },
+        { text: "The library's reading app", isCorrect: true },
         { text: "FREE game with a coin shop inside", isCorrect: false },
         { text: "FREE app that wants your name, age and photos", isCorrect: false },
       ],
@@ -490,7 +490,7 @@ export const WEEK_9: WeekContent = {
       type: "recap",
       concept: 4,
       total: 5,
-      learned: "FREE apps get paid another way - your time, your pounds or your data. Flip the tag to see the real price.",
+      learned: "FREE apps get paid another way - your time, your dollars or your info. Flip the tag to see the real price.",
       next: "the handshake that makes every install safe",
       emblem: "🏷️",
       narration: {
@@ -546,7 +546,7 @@ export const WEEK_9: WeekContent = {
         {
           setup: "Your friend scoffs: 'You ASK before installing? Just do it yourself - asking is for babies!'",
           choices: [
-            { text: "He's right - install it alone", isSafe: false, consequence: "The app looked fine... and hid a coin shop that emptied his balance last month. Asking isn't babyish - it's how you DON'T become that story." },
+            { text: "He's right - install it alone", isSafe: false, consequence: "You installed it alone - and missed the coin shop hiding inside. A week later your coins were gone. Asking isn't babyish - it's how you keep your stuff." },
             { text: "Ask anyway - checkers are smart, not babyish", isSafe: true, consequence: "Exactly. Even grown-ups double-check with each other. Four eyes beat two - every single time." },
           ],
         },
@@ -614,7 +614,7 @@ export const WEEK_9: WeekContent = {
         tipWhenNegative: "Website downloads, greedy permissions, empty copycats - the Raccoon's whole shop.",
         hint1: "Ask: was it checked - the shop, the whiskers, the grown-up? Or did it just LOOK shiny?",
         hint2: "REAL = official store + real history + installed together. TRICK = random source, wrong-ish name, greedy keys, fake FREE.",
-        hint2Example: "REAL: 'Mum and I checked it - 5 million downloads'   TRICK: 'FREE from a pop-up!'",
+        hint2Example: "REAL: 'Mom and I checked it - 5 million downloads'   TRICK: 'FREE from a pop-up!'",
         hint3: "Quick rule card: one real shop · count the whiskers · job-keys only · flip the FREE tag · install together.",
         hint3Example: "Install together ✅    'Blast Birdz, new today' ❌",
       },
@@ -622,7 +622,7 @@ export const WEEK_9: WeekContent = {
         { text: "Getting every app from the official store", isStrong: true, explanation: "The one real shop - checked before the shelf." },
         { text: "'FREE game! Download from our website!'", isStrong: false, explanation: "Websites aren't shops - nobody checked that download." },
         { text: "Checking the stars and downloads before installing", isStrong: true, explanation: "Counting whiskers - real apps have history." },
-        { text: "A torch app asking for your contacts", isStrong: false, explanation: "A greedy key the job never needs - that's a grab." },
+        { text: "A flashlight app asking for your contacts", isStrong: false, explanation: "A greedy key the job never needs - that's a grab." },
         { text: "Installing a new game together with Dad", isStrong: true, explanation: "The install handshake - four eyes catch what two miss." },
         { text: "'Blast Birdz' - ★2.1, twelve downloads, new today", isStrong: false, explanation: "Wrong name, sad stars, no history - copycat, caught." },
       ],
@@ -652,7 +652,7 @@ export const WEEK_9: WeekContent = {
         { id: "store", label: "One Real Shop", accent: "#7df0ff", icon: "📱", summary: "Apps come from the official store only - checked before the shelf." },
         { id: "copycat", label: "Copycat Eyes", accent: "#c084fc", icon: "🎭", summary: "Name, stars, downloads - you count the whiskers on every app." },
         { id: "keys", label: "Permission Sense", accent: "#ffd158", icon: "✋", summary: "Job-keys yes, greedy-keys no - 'why does it need that?'" },
-        { id: "free", label: "Tag Flipper", accent: "#ff5fb3", icon: "🏷️", summary: "FREE flips over to show ads, coin shops or your data." },
+        { id: "free", label: "Tag Flipper", accent: "#ff5fb3", icon: "🏷️", summary: "FREE flips over to show ads, coin shops or your info." },
         { id: "handshake", label: "Install Handshake", accent: "#7eff97", icon: "👪", summary: "Every install happens together - four eyes beat two." },
       ],
       narration: {
@@ -682,6 +682,131 @@ export const WEEK_9: WeekContent = {
     { type: "completion" },
   ],
 
+  // W9 SHOWDOWN — THE COPYCAT CANNON (design doc §W9: clear out the
+  // copycat shop). P1 deflectSort copycat apps vs real · P2 tapTell the
+  // greedy permission in each row · P3 counterCard the FREE!* tag ·
+  // finisher = the Install Handshake (shutters slam on the cannon).
+  bossShowdown: {
+    machine: {
+      name: "THE COPYCAT CANNON",
+      tagline: "A cannon that fires fake apps onto real shelves",
+      art: {
+        intact: "/game/bosses/w09-copycatcannon-intact.png",
+        damaged: "/game/bosses/w09-copycatcannon-damaged.png",
+        defeated: "/game/bosses/w09-copycatcannon-defeated.png",
+      },
+      arena: "/game/backgrounds/w09-arena-appstore.png",
+      accent: "#c9a0ff",
+      glow: "rgba(201,160,255,0.55)",
+    },
+    heroSprites: {
+      adam: {
+        idle: "/game/characters/w09/adam-inspector-idle.png",
+        attack: "/game/characters/w09/adam-inspector-attack.png",
+        celebrate: "/game/characters/w09/adam-inspector-celebrate.png",
+      },
+      layla: {
+        idle: "/game/characters/w09/layla-inspector-idle.png",
+        attack: "/game/characters/w09/layla-inspector-attack.png",
+        celebrate: "/game/characters/w09/layla-inspector-celebrate.png",
+      },
+    },
+    phases: [
+      // P1 · COPYCAT APP → DEFLECT-SORT: apps fly at the shelf.
+      {
+        kind: "deflectSort",
+        attack: 0,
+        coach: "Read the names LETTER BY LETTER!",
+        actLabel: "ZAP THE COPYCAT!",
+        actIcon: "⚡",
+        passLabel: "REAL - SHELVE IT",
+        items: [
+          { id: "birdz", label: "Blast Birdz - 2 stars, 12 downloads", icon: "🎭", act: true, note: "That sneaky Z, sad stars, no history - a copycat in costume. Zap it!" },
+          { id: "birds", label: "Blast Birds - 5 stars, millions play it", icon: "🎮", act: false, note: "Big stars, huge history, name spelled right - the real deal. Shelve it!" },
+          { id: "petsfree", label: "Pixel Pets FREE - brand new, 9 downloads", icon: "🏷️", act: true, note: "FREE bolted onto a real name + no history = copycat bait. Zap it!" },
+          { id: "pets", label: "Pixel Pets - 5 stars, 8 million downloads", icon: "🎁", act: false, note: "The real pet - millions of happy players. Shelve it!" },
+          { id: "r0bo", label: "R0bo Racers - that first o is a ZERO", icon: "🔍", act: true, note: "R-zero-bo! One sneaky letter is all a copycat needs. Zap it!" },
+          { id: "robo", label: "Robo Racers - 5 stars, 12 million racers", icon: "🚀", act: false, note: "The champion itself - real name, real history. Shelve it!" },
+        ],
+      },
+      // P2 · PERMISSION GRAB → TAP-THE-TELL: tap the greedy key in each row.
+      {
+        kind: "tapTell",
+        attack: 1,
+        coach: "Job-keys are fine. Tap the GREEDY key!",
+        rounds: [
+          {
+            id: "row1",
+            prompt: "Torchy the flashlight app unrolls its asks...",
+            promptIcon: "✋",
+            options: [
+              { id: "light", label: "Turn the light ON and OFF", icon: "💡", isTell: false, note: "That's literally its job. Find the ask that has NOTHING to do with light." },
+              { id: "contacts", label: "See YOUR CONTACTS", icon: "👪", isTell: true, note: "" },
+              { id: "bright", label: "Change screen brightness", icon: "⚙️", isTell: false, note: "Brightness is light-work - fair ask. Find the greedy one." },
+            ],
+          },
+          {
+            id: "row2",
+            prompt: "It unrolls even more asks...",
+            promptIcon: "🔍",
+            options: [
+              { id: "location", label: "Track YOUR LOCATION", icon: "📍", isTell: true, note: "" },
+              { id: "blink", label: "Make the light blink", icon: "⚡", isTell: false, note: "Blinking is a light trick - fair ask. Find the greedy one." },
+              { id: "battery", label: "Use battery saver", icon: "⏸️", isTell: false, note: "Saving battery is polite. Find the greedy one." },
+            ],
+          },
+          {
+            id: "row3",
+            prompt: "One last row of asks...",
+            promptIcon: "🕵️",
+            options: [
+              { id: "flashcam", label: "Use the camera's flash", icon: "💡", isTell: false, note: "The flash IS the flashlight. Find the greedy one." },
+              { id: "mic", label: "Listen with YOUR MICROPHONE", icon: "💬", isTell: true, note: "" },
+              { id: "timer", label: "Set a light timer", icon: "⚙️", isTell: false, note: "Timers are handy light-work. Find the greedy one." },
+            ],
+          },
+        ],
+      },
+      // P3 · FAKE FREE → COUNTER-CARD.
+      {
+        kind: "counterCard",
+        attack: 2,
+        coach: "What's the smart move? Tap the card!",
+        situation: "A shiny box gleams: 'FREE!*' ...with a tiny little star after it.",
+        situationIcon: "🏷️",
+        cards: [
+          { id: "flip", label: "FLIP THE TAG - check what it costs inside", icon: "🔍", isRight: true, note: "" },
+          { id: "install", label: "Install it - free is free!", icon: "⚡", isRight: false, note: "That tiny star hides the real price: ads, coin shops, your attention. Flip first!" },
+          { id: "later", label: "Install now, delete later", icon: "🗑️", isRight: false, note: "The tricks start the second it installs. Flip the tag BEFORE, not after." },
+        ],
+      },
+    ],
+    weakPoints: [
+      { question: "'Blast Birdz' - ★2.1, 12 downloads, new yesterday. What is it?", answers: ["A copycat in a costume", "The real game", "A special edition", "A free upgrade"], correctIndex: 0, explanation: "Wrong-ish name, sad stars, no history - the whiskers don't add up." },
+      { question: "A flashlight app wants your contacts and location. What do you do?", answers: ["Block them - its job only needs the light", "Allow everything - it asked nicely", "Allow just the contacts", "Allow them - big apps always need extras"], correctIndex: 0, explanation: "Job-keys yes, greedy-keys no - a light never needs your friends." },
+      { question: "A 'FREE' game shows ads every minute. What's the real price?", answers: ["Your time and attention", "Nothing - it's free", "A tiny fee later on", "Your high score"], correctIndex: 0, explanation: "Free apps get paid another way - ads sell your attention." },
+    ],
+    finisher: {
+      chargeLabel: "CHARGE THE HIGH-FIVE",
+      chargeIcon: "✋",
+      chargeSecs: 5,
+      milestones: ["Grown-up incoming…", "Hands up! Keep holding!", "HIGH-FIVE READY! LET GO!"],
+      payoffTitle: "SHUTTERS DOWN!",
+      payoffLine: "You and your grown-up checked together - and the shop slammed shut on every copycat. Four eyes beat two.",
+    },
+    villain: {
+      arrival: "Step into my shop! Every app one hundred percent genuine-ish!",
+      phases: [
+        "Two little stars means it's HUMBLE!",
+        "It's a torch! It just needs your contacts to... glow better!",
+        "Free today! Expensive forever!",
+      ],
+      escape: "Shutters?! In MY shop?! I'll open a stall somewhere else!",
+    },
+    voiceSlug: "w09",
+  },
+  badgeArt: "/cyberheroes/badges/week-09-copycat-catcher.png",
+
   // Week-lane attack theatre: fake-app tricks only (message scams = W4;
   // coin traps = W7; link/QR anatomy = W16).
   bossAttacks: [
@@ -699,14 +824,14 @@ export const WEEK_9: WeekContent = {
       { question: "Before installing a new app, you...", answers: ["Get a grown-up and install together", "Tap install fast", "Ask a friend", "Install it secretly"], correctIndex: 0, explanation: "The install handshake - four eyes catch what two miss." },
     ],
     medium: [
-      { question: "A torch app wants your contacts and location. What do you do?", answers: ["Block them - its job only needs the light", "Allow everything - it asked nicely", "Allow just the contacts", "Delete your contacts"], correctIndex: 0, explanation: "Job-keys yes, greedy-keys no - a light never needs your friends." },
-      { question: "A 'FREE' game shows ads every minute. What's the real price?", answers: ["Your time and attention", "Nothing - it's free", "One pound", "Your high score"], correctIndex: 0, explanation: "Free apps get paid another way - ads sell your attention." },
-      { question: "A pop-up says 'UPDATE your game HERE now!'. Real or fake?", answers: ["Fake - real updates live inside the real store", "Real - updates are always urgent", "Real if it's colourful", "Fake only on Tuesdays"], correctIndex: 0, explanation: "Updates come from the app store itself, never from shouty pop-ups." },
+      { question: "A flashlight app wants your contacts and location. What do you do?", answers: ["Block them - its job only needs the light", "Allow everything - it asked nicely", "Allow just the contacts", "Allow them - big apps always need extras"], correctIndex: 0, explanation: "Job-keys yes, greedy-keys no - a light never needs your friends." },
+      { question: "A 'FREE' game shows ads every minute. What's the real price?", answers: ["Your time and attention", "Nothing - it's free", "A tiny fee later on", "Your high score"], correctIndex: 0, explanation: "Free apps get paid another way - ads sell your attention." },
+      { question: "A pop-up says 'UPDATE your game HERE now!'. Real or fake?", answers: ["Fake - real updates live inside the real store", "Real - updates are always urgent", "Real if it's colorful", "Real - games do need updates"], correctIndex: 0, explanation: "Updates come from the app store itself, never from shouty pop-ups." },
     ],
     hard: [
-      { question: "Why do copycat apps use the SAME icon as the real one?", answers: ["So you'll trust the costume and skip the whisker check", "Icons are expensive", "They're made by the same company", "It's the law"], correctIndex: 0, explanation: "The icon IS the disguise - that's why you check name, stars and downloads." },
-      { question: "The real app is free. Why is 'Pixel Pets FREE' still suspicious?", answers: ["Adding FREE to the name is copycat bait - and it wanted 12 permissions", "Free things are always bad", "Pets shouldn't be free", "It isn't suspicious"], correctIndex: 0, explanation: "Copycats bolt FREE onto real names to look extra tempting - then grab permissions." },
-      { question: "Why does the install handshake catch what your other powers miss?", answers: ["Four eyes spot whiskers, greedy keys and coin shops that two might not", "Grown-ups install faster", "It skips the checks", "It doesn't"], correctIndex: 0, explanation: "Every check is stronger with a second checker - that's the whole trick." },
+      { question: "Why do copycat apps use the SAME icon as the real one?", answers: ["So you'll trust the costume and skip the whisker check", "Icons are expensive", "They're made by the same company", "Because the store gave them permission"], correctIndex: 0, explanation: "The icon IS the disguise - that's why you check name, stars and downloads." },
+      { question: "The real app is free. Why is 'Pixel Pets FREE' still suspicious?", answers: ["Adding FREE to the name is copycat bait - and it was brand new with barely any downloads", "Free things are always bad", "Because the real one costs money", "It isn't suspicious"], correctIndex: 0, explanation: "Copycats bolt FREE onto real names to look extra tempting - the missing history gives them away." },
+      { question: "Why does the install handshake catch what your other powers miss?", answers: ["Four eyes spot whiskers, greedy keys and coin shops that two might not", "Grown-ups can spot every fake instantly", "It skips the checks", "It doesn't"], correctIndex: 0, explanation: "Every check is stronger with a second checker - that's the whole trick." },
     ],
   },
 
