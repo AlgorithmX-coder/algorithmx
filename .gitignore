@@ -62,3 +62,8 @@ art-review/
 
 # Playwright MCP session artifacts (snapshots/logs from browser-driven verification)
 .playwright-mcp/
+
+# Track Claude Code skills, keep the rest of .claude local
+!.claude/
+.claude/*
+!.claude/skills/
