@@ -45,8 +45,8 @@ Never build, and reject in review:
 
 ## Age-tier safety notes
 
-- **6–10**: everything above at full strength, plus: no free-text social features inside reward surfaces; celebration audio/visuals exciting but not overstimulating (respect reduced-motion settings; cap flash rates well under photosensitivity thresholds); reading age ~7.
-- **11–18**: opt-in social features must be pseudonymous by default with real names never required; leagues follow the top-slice + weekly-reset policy in `economy.md`; any daily practice streak carries the same shield/no-shame mechanics — adolescents are *more* susceptible to social-comparison stress, not less, so visible-failure surfaces stay banned.
+- **6–9, Cyber Heroes** (tier re-cut 2026-07-12, see design-canon.md): everything above at full strength, plus: no free-text social features inside reward surfaces; celebration audio/visuals exciting but not overstimulating (respect reduced-motion settings; cap flash rates well under photosensitivity thresholds); reading age ~7.
+- **10–13, Cyber Explorers (and any future 14–18 tier)**: opt-in social features must be pseudonymous by default with real names never required; leagues follow the top-slice + weekly-reset policy in `economy.md`; any daily practice streak carries the same shield/no-shame mechanics — adolescents are *more* susceptible to social-comparison stress, not less, so visible-failure surfaces stay banned.
 - **Age assurance**: tier assignment comes from the account's age band (parent-entered at signup). Never nudge a child toward selecting an older age band, and never pre-select one (explicit Children's Code point).
 
 ---

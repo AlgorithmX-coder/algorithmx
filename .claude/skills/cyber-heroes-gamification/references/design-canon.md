@@ -23,8 +23,11 @@ Everything in this file is **LOCKED** unless marked otherwise. It was decided in
 
 ## Age tiers
 
-- **Cyber Cubs, ages 6–10** — the tier the current curriculum design targets. Simple mechanics, immediate feedback, frequent small rewards, no social comparison, reading age ~7.
-- **Cyber Operatives, ages 11–18** — future/parallel tier. Tolerates and benefits from complexity: stats, goals, opt-in social features, progressive difficulty.
+> Re-cut 2026-07-12 per the Cyber Explorers art-direction lock (`docs/explorers/algorithmx-explorers-art-direction.md` §1.6), superseding the earlier 6–10 / 11–18 split. Where other references in this skill still say "6–10" or "11–18", read them as the tiers below.
+
+- **Cyber Heroes (Cyber Cubs), ages 6–9** — the shipped 20-week curriculum. Simple mechanics, immediate feedback, frequent small rewards, no social comparison, reading age ~7.
+- **Cyber Explorers, ages 10–13** — the field-ops tier ("Signal Room" direction, ARC vs STATIC, handler WREN, address term "Operative"). More complexity, stats and goals, dynamic difficulty, reading age ~10–11. Explorers v1 deliberately keeps the stricter no-social-comparison rules: leagues off, personal bests and cooperative framing only.
+- **Ages 14–18** — future tier, not yet designed. Opt-in social policies written for the old "11–18" tier apply here when it exists.
 - Tier is a first-class property of every gamification decision. `economy.md` has the tier-by-tier table.
 
 ## The badge ladder (the progression spine)
