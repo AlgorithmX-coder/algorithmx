@@ -284,20 +284,43 @@ function OpsFloor({ reduced }: { reduced: boolean }) {
         ].join(","),
       }}
     >
-      {/* dot field — two depth layers */}
+      {/* depth 1 — drifting color gas (the room's atmosphere) */}
+      <div className="cxof-blob" style={{ top: "-22vmax", right: "-14vmax", width: "60vmax", height: "60vmax", background: `radial-gradient(circle, ${T.arcCyan}24, transparent 62%)`, animationName: reduced ? "none" : "cxofDriftA" }} />
+      <div className="cxof-blob" style={{ bottom: "-26vmax", left: "-16vmax", width: "68vmax", height: "68vmax", background: "radial-gradient(circle, rgba(42,91,143,0.30), transparent 62%)", animationName: reduced ? "none" : "cxofDriftB" }} />
+      <div className="cxof-blob" style={{ top: "34%", left: "58%", width: "44vmax", height: "44vmax", background: `radial-gradient(circle, ${T.actionAmber}0E, transparent 60%)`, animationName: reduced ? "none" : "cxofDriftC" }} />
+
+      {/* depth 2 — diagonal signal band (the data milky way) */}
+      <div className="cxof-band" />
+
+      {/* depth 3 — dot dust, two layers */}
       <div className="cxof-dots cxof-dots-far" />
       <div className="cxof-dots cxof-dots-near" />
 
-      {/* radar — top right corner */}
-      <div className="cxof-radar" style={{ top: "-14vmax", right: "-14vmax" }}>
+      {/* depth 4 — constellation network, edges of the map */}
+      <svg className="cxof-net" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice">
+        <g stroke={T.arcCyan} strokeOpacity="0.14" strokeWidth="1" fill="none">
+          <path d="M120 180 L235 120 L360 210 L235 320 Z M235 120 L235 320 M360 210 L470 160" />
+          <path d="M1180 620 L1290 560 L1380 660 L1300 760 L1170 730 Z M1290 560 L1300 760" />
+          <path d="M1230 140 L1330 90 L1400 190 M1330 90 L1360 220" />
+          <path d="M90 640 L190 700 L150 810 M190 700 L300 670" />
+        </g>
+        <g fill={T.arcCyan}>
+          {[[120,180],[235,120],[360,210],[235,320],[470,160],[1180,620],[1290,560],[1380,660],[1300,760],[1170,730],[1230,140],[1330,90],[1400,190],[1360,220],[90,640],[190,700],[150,810],[300,670]].map(([x,y],i)=>(
+            <circle key={i} cx={x} cy={y} r={i % 3 === 0 ? 2.6 : 1.8} className={!reduced && i % 2 === 0 ? "cxof-nodepulse" : undefined} style={{ animationDelay: `${i * 0.9}s` }} opacity={0.55} />
+          ))}
+        </g>
+      </svg>
+
+      {/* depth 5 — the radar instrument, sharp, top right */}
+      <div className="cxof-radar" style={{ top: "4vh", right: "-8vmax" }}>
         <div className="cxof-radar-rings" />
+        <div className="cxof-radar-cross" />
         {!reduced && <div className="cxof-radar-sweep" />}
+        <span className="cxof-radar-core" />
       </div>
-      {/* radar echo — bottom left, smaller and fainter */}
-      <div className="cxof-radar" style={{ bottom: "-18vmax", left: "-18vmax", opacity: 0.5 }}>
-        <div className="cxof-radar-rings" />
-        {!reduced && <div className="cxof-radar-sweep" style={{ animationDuration: "23s", animationDirection: "reverse" }} />}
-      </div>
+
+      {/* perspective floor — the room has a ground plane */}
+      <div className="cxof-floor" />
 
       {/* data streams — thin vertical traffic at the margins */}
       {!reduced &&
@@ -345,12 +368,12 @@ function OpsFloor({ reduced }: { reduced: boolean }) {
         <span className="cxof-cursor">▌</span>
       </div>
 
-      {/* center-column dark pool for legibility */}
+      {/* center-column dark pool for legibility — soft, not a void */}
       <div
         style={{
           position: "absolute",
           inset: 0,
-          background: `radial-gradient(ellipse 62% 58% at 50% 42%, ${T.inkBlack}B8 0%, transparent 78%)`,
+          background: `radial-gradient(ellipse 48% 50% at 42% 40%, ${T.inkBlack}8C 0%, transparent 75%)`,
         }}
       />
     </div>
@@ -1276,9 +1299,38 @@ export default function CyberExplorersLanding() {
         }
 
         /* ── operations floor ── */
+        .cxof-blob { position: absolute; border-radius: 50%; filter: blur(72px); mix-blend-mode: screen; will-change: transform; opacity: 0.7; animation-duration: 80s; animation-timing-function: ease-in-out; animation-iteration-count: infinite; animation-direction: alternate; }
+        @keyframes cxofDriftA { from { transform: translate3d(0,0,0) scale(1); } to { transform: translate3d(-6vw, 5vh, 0) scale(1.15); } }
+        @keyframes cxofDriftB { from { transform: translate3d(0,0,0) scale(1.06); } to { transform: translate3d(7vw, -4vh, 0) scale(1); } }
+        @keyframes cxofDriftC { from { transform: translate3d(0,0,0) scale(1); } to { transform: translate3d(-5vw, -6vh, 0) scale(1.18); } }
+        .cxof-band {
+          position: absolute; inset: -25%;
+          background: radial-gradient(ellipse 64% 16% at 50% 50%, ${T.arcCyan}17 0%, rgba(42,91,143,0.10) 40%, transparent 72%);
+          transform: rotate(-24deg); filter: blur(30px); mix-blend-mode: screen;
+        }
+        .cxof-net { position: absolute; inset: 0; width: 100%; height: 100%; }
+        .cxof-nodepulse { animation: cxofNode 6s ease-in-out infinite; }
+        @keyframes cxofNode { 0%, 78%, 100% { opacity: 0.35; } 86%, 92% { opacity: 1; } }
+        .cxof-radar-cross {
+          position: absolute; inset: 0;
+          background: linear-gradient(0deg, transparent calc(50% - 0.5px), ${T.arcCyan}26 50%, transparent calc(50% + 0.5px)),
+                      linear-gradient(90deg, transparent calc(50% - 0.5px), ${T.arcCyan}26 50%, transparent calc(50% + 0.5px));
+        }
+        .cxof-radar-core { position: absolute; top: 50%; left: 50%; width: 6px; height: 6px; margin: -3px; border-radius: 50%; background: ${T.arcCyan}; box-shadow: 0 0 14px ${T.arcCyan}AA; }
+        .cxof-floor {
+          position: absolute; left: -20%; right: -20%; bottom: -6vh; height: 34vh;
+          background:
+            repeating-linear-gradient(90deg, ${T.arcCyan}14 0 1px, transparent 1px 90px),
+            repeating-linear-gradient(0deg, ${T.arcCyan}10 0 1px, transparent 1px 46px);
+          transform: perspective(640px) rotateX(58deg);
+          transform-origin: 50% 100%;
+          mask-image: linear-gradient(180deg, transparent 0%, black 55%);
+          -webkit-mask-image: linear-gradient(180deg, transparent 0%, black 55%);
+          opacity: 0.5;
+        }
         .cxof-dots { position: absolute; inset: 0; background-repeat: repeat; }
         .cxof-dots-far {
-          opacity: 0.5; background-size: 220px 220px;
+          opacity: 0.7; background-size: 220px 220px;
           background-image:
             radial-gradient(1px 1px at 30px 40px, ${T.arcCyan}40, transparent),
             radial-gradient(1px 1px at 140px 90px, ${T.textSecondary}33, transparent),
@@ -1292,7 +1344,7 @@ export default function CyberExplorersLanding() {
             radial-gradient(1.4px 1.4px at 240px 200px, ${T.textSecondary}40, transparent),
             radial-gradient(1.5px 1.5px at 160px 300px, ${T.arcCyan}40, transparent);
         }
-        .cxof-radar { position: absolute; width: 46vmax; height: 46vmax; }
+        .cxof-radar { position: absolute; width: 34vmax; height: 34vmax; }
         .cxof-radar-rings {
           position: absolute; inset: 0; border-radius: 50%;
           background: repeating-radial-gradient(circle at center, transparent 0 calc(20% - 1px), ${T.arcCyan}24 calc(20% - 1px) 20%);
