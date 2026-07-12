@@ -158,12 +158,12 @@ const FAQS = [
     a: "Most kids can recite 'don't click suspicious links.' Very few can tell you WHY gamehub.support-verify.net isn't GameHub, or what a pressure deadline is doing to their brain. Explorers teaches the mechanism, not the slogan — and kids who 'already know' tend to be the ones who love it most, because it finally treats them as capable.",
   },
   {
-    q: "When does it launch?",
-    a: "Mission 01 is in field testing now. Founding families on the waitlist get first access and lock the launch price — we'll email you the moment enrollment opens.",
+    q: "How much does it cost?",
+    a: "£99, once. That's all 20 missions, lifetime access, and every future update — no subscription, no in-app purchases, nothing sold to your child, ever.",
   },
   {
     q: "What if my child loses interest?",
-    a: "Every mission is a complete case with a real ending, built for 45–60 minutes — no cliffhanger traps, no daily-streak guilt. And at launch, enrollment comes with a simple money-back guarantee: if it doesn't land with your kid, you get your money back.",
+    a: "Every mission is a complete case with a real ending, built for 45–60 minutes — no cliffhanger traps, no daily-streak guilt. And enrollment comes with a simple money-back guarantee: if it doesn't land with your kid, you get your money back.",
   },
 ];
 
@@ -678,122 +678,6 @@ function DossierCard({ actor, reduced }: { actor: (typeof ACTORS)[number]; reduc
   );
 }
 
-/* =================================================== waitlist form */
-
-function SignalWaitlist({ source }: { source: string }) {
-  const [email, setEmail] = useState("");
-  const [state, setState] = useState<"idle" | "loading" | "success" | "error">("idle");
-  const [errorMsg, setErrorMsg] = useState("");
-
-  const submit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (state === "loading" || state === "success") return;
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      setState("error");
-      setErrorMsg("That address doesn't parse. Check it and try again.");
-      return;
-    }
-    setState("loading");
-    setErrorMsg("");
-    try {
-      const res = await fetch("/api/waitlist", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, courseSlug: "cyberexplorers", source }),
-      });
-      if (!res.ok) {
-        const data = await res.json().catch(() => ({}));
-        throw new Error((data as { error?: string })?.error || "Server error");
-      }
-      setState("success");
-    } catch (err: unknown) {
-      setState("error");
-      setErrorMsg(err instanceof Error ? err.message : "Something went wrong. Try again?");
-    }
-  };
-
-  if (state === "success") {
-    return (
-      <div
-        role="status"
-        style={{
-          display: "inline-block",
-          fontFamily: MONO,
-          fontSize: 13,
-          letterSpacing: "0.04em",
-          color: T.confirmedGreen,
-          background: `${T.confirmedGreen}14`,
-          border: `1px solid ${T.confirmedGreen}`,
-          borderRadius: 3,
-          padding: "14px 20px",
-          boxShadow: `0 0 24px ${T.confirmedGreen}22`,
-        }}
-      >
-        You&rsquo;re in. We&rsquo;ll email you when enrollment opens — founding-family price locked.
-      </div>
-    );
-  }
-
-  return (
-    <form onSubmit={submit} style={{ display: "flex", flexWrap: "wrap", gap: 10, maxWidth: 470 }}>
-      <input
-        type="email"
-        required
-        value={email}
-        onChange={(e) => {
-          setEmail(e.target.value);
-          if (state === "error") setState("idle");
-        }}
-        placeholder="parent@email.com"
-        aria-label="Email address for the waitlist"
-        style={{
-          flex: "1 1 220px",
-          height: 50,
-          fontFamily: MONO,
-          fontSize: 13,
-          color: T.textPrimary,
-          background: `${T.panel}E6`,
-          border: `1px solid ${T.hairline}`,
-          borderRadius: 3,
-          padding: "0 14px",
-          outline: "none",
-        }}
-        onFocus={(e) => {
-          e.currentTarget.style.borderColor = T.arcCyan;
-          e.currentTarget.style.boxShadow = `0 0 18px ${T.arcCyan}33`;
-        }}
-        onBlur={(e) => {
-          e.currentTarget.style.borderColor = T.hairline;
-          e.currentTarget.style.boxShadow = "none";
-        }}
-      />
-      <button
-        type="submit"
-        disabled={state === "loading"}
-        className="cx-cta"
-        style={{
-          height: 50,
-          fontFamily: MONO,
-          fontSize: 13,
-          fontWeight: 600,
-          letterSpacing: "0.06em",
-          color: T.inkBlack,
-          background: T.actionAmber,
-          border: "none",
-          borderRadius: 3,
-          padding: "0 24px",
-          cursor: state === "loading" ? "wait" : "pointer",
-          opacity: state === "loading" ? 0.7 : 1,
-          boxShadow: `0 0 26px ${T.actionAmber}40, 0 4px 14px rgba(0,0,0,0.4)`,
-        }}
-      >
-        {state === "loading" ? "SAVING…" : "GET EARLY ACCESS"}
-      </button>
-      {state === "error" && <p style={{ width: "100%", margin: 0, fontSize: 13, color: T.threatRed }}>{errorMsg}</p>}
-    </form>
-  );
-}
-
 /* ============================================================== page */
 
 export default function CyberExplorersLanding() {
@@ -826,8 +710,11 @@ export default function CyberExplorersLanding() {
           <a href="#mission" className="cx-navlink">THE MISSION</a>
           <a href="#curriculum" className="cx-navlink">CURRICULUM</a>
           <a href="#parents" className="cx-navlink">PARENTS</a>
-          <a
-            href="#waitlist"
+          <Link href="/login?course=cyberexplorers" className="cx-navlink" style={{ border: `1px solid ${T.hairline}`, borderRadius: 3, padding: "8px 13px" }}>
+            LOG IN
+          </Link>
+          <Link
+            href="/signup?course=cyberexplorers"
             className="cx-cta"
             style={{
               fontFamily: MONO,
@@ -842,8 +729,8 @@ export default function CyberExplorersLanding() {
               boxShadow: `0 0 18px ${T.actionAmber}44`,
             }}
           >
-            WAITLIST
-          </a>
+            ENROLL · £99
+          </Link>
         </div>
       </nav>
 
@@ -867,12 +754,33 @@ export default function CyberExplorersLanding() {
             <p style={{ fontFamily: MONO, fontSize: 13.5, color: T.actionAmber, margin: "0 0 24px" }}>
               <span className="cx-typeline">&gt; 20 missions. 6 threat actors. 1 operative._</span>
             </p>
-            <div id="waitlist">
-              <SignalWaitlist source="hero" />
-              <p style={{ fontSize: 12.5, color: T.textSecondary, margin: "10px 0 0", maxWidth: 440 }}>
-                Founding families get first access to Mission 01 and lock the launch price. No card, no commitment.
-              </p>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: 12, alignItems: "center" }}>
+              <Link
+                href="/signup?course=cyberexplorers"
+                className="cx-cta"
+                style={{
+                  fontFamily: MONO,
+                  fontSize: 14,
+                  fontWeight: 600,
+                  letterSpacing: "0.06em",
+                  color: T.inkBlack,
+                  background: T.actionAmber,
+                  border: "none",
+                  borderRadius: 3,
+                  padding: "15px 26px",
+                  textDecoration: "none",
+                  boxShadow: `0 0 26px ${T.actionAmber}40, 0 4px 14px rgba(0,0,0,0.4)`,
+                }}
+              >
+                ENROLL NOW · £99
+              </Link>
+              <a href="#curriculum" className="cx-navlink" style={{ fontSize: 12, border: `1px solid ${T.hairline}`, borderRadius: 3, padding: "14px 18px", display: "inline-block" }}>
+                SEE THE CURRICULUM ↓
+              </a>
             </div>
+            <p style={{ fontSize: 12.5, color: T.textSecondary, margin: "12px 0 0", maxWidth: 440 }}>
+              One payment. Lifetime access. Money-back guarantee — if it doesn&rsquo;t land with your kid, you get it back.
+            </p>
             <div style={{ display: "flex", flexWrap: "wrap", gap: "6px 16px", margin: "18px 0 0", fontFamily: MONO, fontSize: 10.5, letterSpacing: "0.05em", color: T.textSecondary }}>
               <span><span style={{ color: T.confirmedGreen }}>✓</span> ICO CHILDREN&rsquo;S CODE–ALIGNED</span>
               <span><span style={{ color: T.confirmedGreen }}>✓</span> NO ADS, NO LOOT BOXES</span>
@@ -1323,20 +1231,48 @@ export default function CyberExplorersLanding() {
         <section style={{ padding: "56px 0 76px", textAlign: "center", position: "relative" }}>
           <Wash color={T.arcCyan} at="50% 40%" />
           <div data-scroll style={{ maxWidth: 640, margin: "0 auto", background: `${T.panel}CC`, border: `1px solid ${T.arcCyan}33`, borderRadius: 4, padding: "40px 32px", boxShadow: `0 0 60px ${T.arcCyan}0F` }}>
-            <Eyebrow text="Founding families" color={T.clearanceBrass} />
-            <h2 style={{ fontFamily: MONO, fontSize: "clamp(26px, 4.5vw, 38px)", fontWeight: 600, margin: "14px 0 12px" }}>
-              Be first in the door.
+            <Eyebrow text="Simple pricing" color={T.clearanceBrass} />
+            <h2 style={{ fontFamily: MONO, fontSize: "clamp(26px, 4.5vw, 38px)", fontWeight: 600, margin: "14px 0 6px" }}>
+              One price. Lifetime access.
             </h2>
-            <div style={{ display: "grid", gap: 8, maxWidth: 420, margin: "0 auto 24px", textAlign: "left" }}>
-              {["First access to Mission 01 when enrollment opens", "Launch price locked — founding families pay the day-one rate, always", "Money-back guarantee at launch. No card today, no commitment"].map((b) => (
+            <div style={{ fontFamily: MONO, fontWeight: 600, fontSize: "clamp(44px, 6vw, 64px)", color: T.clearanceBrass, textShadow: `0 0 30px ${T.clearanceBrass}44`, margin: "6px 0 18px" }}>
+              £99
+            </div>
+            <div style={{ display: "grid", gap: 8, maxWidth: 440, margin: "0 auto 26px", textAlign: "left" }}>
+              {[
+                "All 20 missions, every incident, the full dossier archive",
+                "Lifetime access — including every future update to the course",
+                "One payment. No subscription, no in-app purchases, ever",
+                "Money-back guarantee if it doesn't land with your kid",
+              ].map((b) => (
                 <div key={b} style={{ fontSize: 14.5, lineHeight: 1.6, color: T.textSecondary, display: "flex", gap: 10 }}>
                   <span style={{ color: T.confirmedGreen, fontFamily: MONO }}>✓</span>
                   {b}
                 </div>
               ))}
             </div>
-            <div style={{ display: "flex", justifyContent: "center" }}>
-              <SignalWaitlist source="footer" />
+            <div style={{ display: "flex", justifyContent: "center", gap: 14, flexWrap: "wrap" }}>
+              <Link
+                href="/signup?course=cyberexplorers"
+                className="cx-cta"
+                style={{
+                  fontFamily: MONO,
+                  fontSize: 14,
+                  fontWeight: 600,
+                  letterSpacing: "0.06em",
+                  color: T.inkBlack,
+                  background: T.actionAmber,
+                  borderRadius: 3,
+                  padding: "16px 30px",
+                  textDecoration: "none",
+                  boxShadow: `0 0 26px ${T.actionAmber}40, 0 4px 14px rgba(0,0,0,0.4)`,
+                }}
+              >
+                ENROLL NOW · £99
+              </Link>
+              <Link href="/login?course=cyberexplorers" className="cx-navlink" style={{ fontSize: 12, border: `1px solid ${T.hairline}`, borderRadius: 3, padding: "15px 20px", display: "inline-block" }}>
+                ALREADY ENROLLED? LOG IN
+              </Link>
             </div>
           </div>
         </section>
