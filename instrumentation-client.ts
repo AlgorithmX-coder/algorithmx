@@ -1,15 +1,16 @@
 /*
  * Sentry - client-side bootstrap.
  *
- * Loaded by the @sentry/nextjs SDK in every browser bundle.  Only
- * actually initialises when SENTRY_DSN is set, so dev runs without a
- * key cost nothing and ship nothing.
+ * Next.js 15.3+/Turbopack loads this root-level file in every browser
+ * bundle (the old sentry.client.config.ts convention is webpack-only
+ * and silently ignored by Turbopack builds).  Production builds always
+ * initialise (see sentry.dsn.ts for the fallback); dev only initialises
+ * when a DSN env var is set, so dev runs without a key cost nothing
+ * and ship nothing.
  */
 
 import * as Sentry from "@sentry/nextjs";
-
-const dsn =
-  process.env.NEXT_PUBLIC_SENTRY_DSN ?? process.env.SENTRY_DSN ?? "";
+import { SENTRY_DSN as dsn } from "./sentry.dsn";
 
 if (dsn) {
   Sentry.init({
@@ -30,3 +31,6 @@ if (dsn) {
     // Keep the bundle small - no integrations beyond the defaults.
   });
 }
+
+// Lets the SDK record app-router navigations as spans.
+export const onRouterTransitionStart = Sentry.captureRouterTransitionStart;
