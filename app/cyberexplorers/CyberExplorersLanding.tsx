@@ -184,6 +184,9 @@ function useScrollReveal(reduced: boolean) {
     );
     els.forEach((el) => {
       const delay = el.getAttribute("data-scroll-delay") || "0";
+      // Never hide content already at/near the viewport (robust for slow
+      // JS, prerender snapshots, and full-page captures).
+      if (el.getBoundingClientRect().top < window.innerHeight * 1.2) return;
       el.style.opacity = "0";
       el.style.transform = "translateY(26px)";
       el.style.transition = `opacity 0.7s cubic-bezier(0.16,1,0.3,1) ${delay}s, transform 0.7s cubic-bezier(0.16,1,0.3,1) ${delay}s`;
@@ -424,8 +427,19 @@ function MissionDemo({ reduced }: { reduced: boolean }) {
           </span>
         </div>
 
+        {/* screen sheen — cinematic monitor glass */}
+        <div
+          aria-hidden
+          style={{
+            position: "absolute",
+            inset: 0,
+            zIndex: 2,
+            pointerEvents: "none",
+            background: "linear-gradient(115deg, rgba(255,255,255,0.05) 0%, transparent 24%), repeating-linear-gradient(0deg, transparent 0 3px, rgba(0,0,0,0.06) 3px 4px)",
+          }}
+        />
         {/* stage — fixed height so scenes swap without jumping */}
-        <div style={{ position: "relative", height: 330, padding: "18px 20px" }}>
+        <div style={{ position: "relative", height: 368, padding: "20px 22px" }}>
           {scene === "tx" && (
             <div>
               <Eyebrow text="ARC secure net — incoming transmission" color={T.arcCyan} />
@@ -788,10 +802,10 @@ export default function CyberExplorersLanding() {
         <section style={{ display: "grid", gridTemplateColumns: "minmax(0, 1.05fr) minmax(0, 1fr)", gap: 52, alignItems: "center", padding: "76px 0 30px" }} className="cx-two-col">
           <div className="cx-hero-in">
             <Eyebrow text="AlgorithmX Cybersecurity · Ages 10–13" color={T.arcCyan} />
-            <h1 style={{ fontFamily: MONO, fontSize: "clamp(34px, 5.2vw, 58px)", fontWeight: 600, lineHeight: 1.1, margin: "18px 0 18px" }}>
+            <h1 style={{ fontFamily: MONO, fontSize: "clamp(36px, 6vw, 74px)", fontWeight: 600, lineHeight: 1.04, letterSpacing: "-0.02em", margin: "18px 0 20px" }}>
               <Resolve text="Train the kid" reduced={reduced} />
               <br />
-              <span style={{ color: T.arcCyan }}>
+              <span className="cx-grad">
                 <Resolve text="who spots the scam." reduced={reduced} delay={400} />
               </span>
             </h1>
@@ -836,7 +850,8 @@ export default function CyberExplorersLanding() {
                 overflow: "hidden",
               }}
             >
-              <div style={{ fontFamily: MONO, fontSize: 30, fontWeight: 600, color: T.arcCyan, lineHeight: 1 }}>
+              <span aria-hidden style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, background: `linear-gradient(90deg, transparent, ${T.arcCyan}AA, transparent)` }} />
+              <div style={{ fontFamily: MONO, fontSize: 40, fontWeight: 600, color: T.arcCyan, lineHeight: 1, textShadow: `0 0 22px ${T.arcCyan}55` }}>
                 <CountUp to={s.to} suffix={s.suffix} reduced={reduced} />
               </div>
               <div style={{ fontFamily: MONO, fontSize: 9.5, letterSpacing: "0.12em", color: T.textSecondary, marginTop: 8 }}>
@@ -962,6 +977,29 @@ export default function CyberExplorersLanding() {
           </div>
         </section>
 
+        {/* ── INCIDENT DIVIDER — full-bleed set piece ────────────── */}
+        <div
+          aria-hidden
+          style={{
+            width: "100vw",
+            marginLeft: "calc(50% - 50vw)",
+            margin: "26px 0 26px calc(50% - 50vw)",
+            borderTop: `1px solid ${T.threatRed}44`,
+            borderBottom: `1px solid ${T.threatRed}44`,
+            background: `linear-gradient(90deg, transparent, ${T.threatRed}14 20%, ${T.threatRed}1F 50%, ${T.threatRed}14 80%, transparent)`,
+            padding: "14px 0",
+            overflow: "hidden",
+          }}
+        >
+          <div style={{ display: "flex", gap: 56, whiteSpace: "nowrap", fontFamily: MONO, fontSize: 11, letterSpacing: "0.22em", color: T.threatRed, justifyContent: "center", opacity: 0.9 }}>
+            <span>■ LIVE INCIDENT</span>
+            <span>SECOND WAVE DETECTED</span>
+            <span>4 MESSAGES · 2 THREATS</span>
+            <span>CONTAINMENT: YOUR CALL</span>
+            <span>■ LIVE INCIDENT</span>
+          </div>
+        </div>
+
         {/* ── CURRICULUM ─────────────────────────────────────────── */}
         <section id="curriculum" style={{ padding: "48px 0" }}>
           <SectionHead
@@ -1054,6 +1092,51 @@ export default function CyberExplorersLanding() {
               </div>
             ))}
           </div>
+
+          {/* the ARC ID card — the tier's signature object, at scale */}
+          <div data-scroll style={{ marginTop: 34, display: "flex", justifyContent: "center" }}>
+            <div
+              className="cx-idcard"
+              style={{
+                position: "relative",
+                width: "min(460px, 100%)",
+                borderRadius: 6,
+                overflow: "hidden",
+                background: `linear-gradient(150deg, ${T.panelRaised}, ${T.panel})`,
+                border: `1px solid ${T.clearanceBrass}55`,
+                boxShadow: `0 30px 70px -24px rgba(0,0,0,0.9), 0 0 46px ${T.clearanceBrass}1F`,
+                padding: "0 0 18px",
+              }}
+            >
+              <div style={{ background: BAND_BY_CLASSIFICATION.CONFIDENTIAL, color: T.inkBlack, fontFamily: MONO, fontWeight: 600, fontSize: 10, letterSpacing: "0.26em", textAlign: "center", padding: "5px 0" }}>
+                ARC FIELD CREDENTIAL — CONFIDENTIAL
+              </div>
+              <div style={{ display: "flex", gap: 18, padding: "18px 20px 6px", alignItems: "center" }}>
+                <div style={{ width: 72, height: 88, background: T.inkBlack, border: `1px solid ${T.hairline}`, borderRadius: 3, display: "grid", placeItems: "center" }}>
+                  <div style={{ fontFamily: MONO, fontSize: 8, letterSpacing: "0.08em", color: T.textDisabled, textAlign: "center", lineHeight: 1.6 }}>
+                    PHOTO<br />REDACTED
+                  </div>
+                </div>
+                <div style={{ flex: 1 }}>
+                  <div style={{ fontFamily: MONO, fontSize: 10, letterSpacing: "0.12em", color: T.textSecondary }}>CALLSIGN</div>
+                  <div style={{ fontFamily: MONO, fontSize: 26, fontWeight: 600, color: T.textPrimary, margin: "2px 0 8px" }}>NIGHT-HERON</div>
+                  <div style={{ display: "flex", gap: 22, fontFamily: MONO, fontSize: 10.5, color: T.textSecondary, letterSpacing: "0.06em" }}>
+                    <span>FIELD RATING <span style={{ color: T.arcCyan }}>07</span></span>
+                    <span>CASES <span style={{ color: T.clearanceBrass }}>05/20</span></span>
+                  </div>
+                </div>
+              </div>
+              <div style={{ margin: "12px 20px 0", borderTop: `1px solid ${T.hairline}`, paddingTop: 10, display: "flex", justifyContent: "space-between", fontFamily: MONO, fontSize: 9.5, letterSpacing: "0.14em", color: T.textDisabled }}>
+                <span>ANOMALY RESPONSE COMMAND</span>
+                <span style={{ color: T.clearanceBrass }}>▲▲▲</span>
+              </div>
+              {/* card sheen */}
+              {!reduced && <span aria-hidden className="cx-sheen" />}
+            </div>
+          </div>
+          <p style={{ fontFamily: MONO, fontSize: 11, letterSpacing: "0.05em", color: T.textDisabled, textAlign: "center", margin: "14px 0 0" }}>
+            YOUR CHILD&rsquo;S CREDENTIAL EVOLVES WITH EVERY CLOSED CASE — CLEARANCE CEREMONIES REPRINT THE CARD.
+          </p>
         </section>
 
         {/* ── PARENTS ────────────────────────────────────────────── */}
@@ -1212,12 +1295,12 @@ export default function CyberExplorersLanding() {
         .cxof-radar { position: absolute; width: 46vmax; height: 46vmax; }
         .cxof-radar-rings {
           position: absolute; inset: 0; border-radius: 50%;
-          background: repeating-radial-gradient(circle at center, transparent 0 calc(20% - 1px), ${T.arcCyan}14 calc(20% - 1px) 20%);
-          border: 1px solid ${T.arcCyan}1A;
+          background: repeating-radial-gradient(circle at center, transparent 0 calc(20% - 1px), ${T.arcCyan}24 calc(20% - 1px) 20%);
+          border: 1px solid ${T.arcCyan}30;
         }
         .cxof-radar-sweep {
           position: absolute; inset: 0; border-radius: 50%;
-          background: conic-gradient(from 0deg, ${T.arcCyan}1F 0deg, ${T.arcCyan}08 42deg, transparent 70deg);
+          background: conic-gradient(from 0deg, ${T.arcCyan}38 0deg, ${T.arcCyan}10 42deg, transparent 70deg);
           animation: cxofSpin 16s linear infinite;
         }
         @keyframes cxofSpin { to { transform: rotate(360deg); } }
@@ -1239,6 +1322,22 @@ export default function CyberExplorersLanding() {
         .cxof-readout { position: absolute; font-family: ${MONO}; font-size: 10px; letter-spacing: 0.1em; color: ${T.textDisabled}; }
         .cxof-cursor { animation: cxBlinkSoft 1.1s step-end infinite; }
         @keyframes cxBlinkSoft { 0%,100% { opacity: 1; } 50% { opacity: 0; } }
+
+        /* gradient accent for display lines */
+        .cx-grad {
+          background: linear-gradient(100deg, ${T.arcCyan} 0%, #7FD4E8 45%, ${T.clearanceBrass} 100%);
+          -webkit-background-clip: text; background-clip: text; color: transparent;
+          text-shadow: none;
+        }
+
+        /* ID card sheen — slow diagonal light pass */
+        .cx-idcard { isolation: isolate; }
+        .cx-sheen {
+          position: absolute; inset: -40%; z-index: 1; pointer-events: none;
+          background: linear-gradient(115deg, transparent 42%, rgba(255,255,255,0.07) 50%, transparent 58%);
+          animation: cxSheen 6.5s cubic-bezier(0.2,0,0,1) infinite;
+        }
+        @keyframes cxSheen { 0%, 55% { transform: translateX(-60%); } 90%, 100% { transform: translateX(60%); } }
 
         .cx-faq summary::-webkit-details-marker { display: none; }
         .cx-faq summary::before { content: "▸ "; color: ${T.arcCyan}; }
