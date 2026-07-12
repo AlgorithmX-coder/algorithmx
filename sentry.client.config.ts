@@ -1,15 +1,14 @@
 /*
  * Sentry - client-side bootstrap.
  *
- * Loaded by the @sentry/nextjs SDK in every browser bundle.  Only
- * actually initialises when SENTRY_DSN is set, so dev runs without a
+ * Loaded by the @sentry/nextjs SDK in every browser bundle.  Production
+ * builds always initialise (see sentry.dsn.ts for the fallback); dev
+ * only initialises when a DSN env var is set, so dev runs without a
  * key cost nothing and ship nothing.
  */
 
 import * as Sentry from "@sentry/nextjs";
-
-const dsn =
-  process.env.NEXT_PUBLIC_SENTRY_DSN ?? process.env.SENTRY_DSN ?? "";
+import { SENTRY_DSN as dsn } from "./sentry.dsn";
 
 if (dsn) {
   Sentry.init({
