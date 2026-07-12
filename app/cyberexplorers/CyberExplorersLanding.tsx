@@ -261,6 +261,21 @@ function SectionHead({ eyebrow, title, sub }: { eyebrow: string; title: string; 
   );
 }
 
+/** Per-section ambient wash — each section owns a color (criterion 7). */
+function Wash({ color, at = "50% 20%" }: { color: string; at?: string }) {
+  return (
+    <div
+      aria-hidden
+      style={{
+        position: "absolute",
+        inset: "-60px -18vw",
+        background: `radial-gradient(ellipse 55% 60% at ${at}, ${color}16 0%, transparent 70%)`,
+        pointerEvents: "none",
+      }}
+    />
+  );
+}
+
 /* ================================================== operations floor */
 /* The living backdrop: radar sweep, data streams, node clusters, dot
    field, a drifting STATIC ripple. Activity lives at the edges; the
@@ -462,7 +477,7 @@ function MissionDemo({ reduced }: { reduced: boolean }) {
           }}
         />
         {/* stage — fixed height so scenes swap without jumping */}
-        <div style={{ position: "relative", height: 368, padding: "20px 22px" }}>
+        <div style={{ position: "relative", height: 368, padding: "20px 22px", display: "grid", alignContent: "center" }}>
           {scene === "tx" && (
             <div>
               <Eyebrow text="ARC secure net — incoming transmission" color={T.arcCyan} />
@@ -885,7 +900,8 @@ export default function CyberExplorersLanding() {
         </section>
 
         {/* ── PREMISE ────────────────────────────────────────────── */}
-        <section id="mission" style={{ padding: "48px 0" }}>
+        <section id="mission" style={{ padding: "56px 0", position: "relative" }}>
+          <Wash color={T.arcCyan} at="30% 10%" />
           <SectionHead
             eyebrow="The premise"
             title="Your child is the operative."
@@ -902,10 +918,16 @@ export default function CyberExplorersLanding() {
                 data-scroll
                 data-scroll-delay={String(i * 0.12)}
                 className="cx-card"
-                style={{ background: `${T.panel}D9`, border: `1px solid ${T.hairline}`, borderRadius: 3, padding: "20px 22px", "--ac": T.arcCyan } as React.CSSProperties}
+                style={{ position: "relative", overflow: "hidden", background: `${T.panelRaised}D9`, border: `1px solid ${T.hairline}`, borderRadius: 3, padding: "22px 22px", "--ac": T.arcCyan } as React.CSSProperties}
               >
-                <Eyebrow text={c.t} color={T.arcCyan} />
-                <div style={{ fontFamily: MONO, fontSize: 16, fontWeight: 600, margin: "10px 0 8px" }}>{c.h}</div>
+                <span aria-hidden style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, background: `linear-gradient(90deg, ${T.arcCyan}CC, transparent 70%)` }} />
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                  <Eyebrow text={c.t} color={T.arcCyan} />
+                  <span aria-hidden style={{ fontFamily: MONO, fontSize: 14, color: `${T.arcCyan}88`, letterSpacing: "0.1em" }}>
+                    {["▲▲", "▚▚", "⊕"][i]}
+                  </span>
+                </div>
+                <div style={{ fontFamily: MONO, fontSize: 17, fontWeight: 600, margin: "12px 0 8px" }}>{c.h}</div>
                 <p style={{ fontSize: 14, lineHeight: 1.65, color: T.textSecondary, margin: 0 }}>{c.d}</p>
               </div>
             ))}
@@ -949,7 +971,10 @@ export default function CyberExplorersLanding() {
               padding: "26px 30px",
             }}
           >
-            <h3 style={{ fontFamily: MONO, fontSize: 19, fontWeight: 600, margin: "0 0 10px", color: T.textPrimary }}>
+            <div style={{ display: "inline-block", fontFamily: MONO, fontSize: 10, letterSpacing: "0.18em", color: T.threatRed, border: `1px solid ${T.threatRed}55`, borderRadius: 2, padding: "4px 10px", marginBottom: 14 }}>
+              THREAT BRIEFING — FOR PARENTS
+            </div>
+            <h3 style={{ fontFamily: MONO, fontSize: "clamp(22px, 3vw, 28px)", fontWeight: 600, margin: "0 0 12px", color: T.textPrimary }}>
               Who is STATIC, really?
             </h3>
             <p style={{ fontSize: 15, lineHeight: 1.75, color: T.textSecondary, margin: 0 }}>
@@ -1024,7 +1049,8 @@ export default function CyberExplorersLanding() {
         </div>
 
         {/* ── CURRICULUM ─────────────────────────────────────────── */}
-        <section id="curriculum" style={{ padding: "48px 0" }}>
+        <section id="curriculum" style={{ padding: "56px 0", position: "relative" }}>
+          <Wash color="#4A78B5" at="70% 15%" />
           <SectionHead
             eyebrow="The curriculum"
             title="20 missions. 4 clearance blocks."
@@ -1043,7 +1069,8 @@ export default function CyberExplorersLanding() {
                 <div style={{ background: BAND_BY_CLASSIFICATION[b.clearance], color: T.inkBlack, fontFamily: MONO, fontWeight: 600, fontSize: 10.5, letterSpacing: "0.2em", textAlign: "center", padding: "5px 0" }}>
                   BLOCK {b.n} → CLEARANCE: {b.clearance}
                 </div>
-                <div style={{ background: `${T.panel}E6`, padding: "18px 20px" }}>
+                <div style={{ background: `${T.panel}E6`, padding: "18px 20px", position: "relative", overflow: "hidden" }}>
+                  <div aria-hidden style={{ position: "absolute", top: -40, right: -40, width: 220, height: 180, background: `radial-gradient(ellipse at center, ${BAND_BY_CLASSIFICATION[b.clearance]}22 0%, transparent 70%)`, pointerEvents: "none" }} />
                   <div style={{ fontFamily: MONO, fontSize: 18, fontWeight: 600, marginBottom: 12 }}>
                     {b.name}
                     <span style={{ color: T.textDisabled, fontSize: 12, marginLeft: 10 }}>MISSIONS {(b.n - 1) * 5 + 1}–{b.n * 5}</span>
@@ -1085,7 +1112,8 @@ export default function CyberExplorersLanding() {
         </section>
 
         {/* ── PROGRESSION ────────────────────────────────────────── */}
-        <section style={{ padding: "48px 0" }}>
+        <section style={{ padding: "56px 0", position: "relative" }}>
+          <Wash color={T.clearanceBrass} at="50% 55%" />
           <SectionHead
             eyebrow="Progression"
             title="From Trainee to ULTRA."
@@ -1163,7 +1191,8 @@ export default function CyberExplorersLanding() {
         </section>
 
         {/* ── PARENTS ────────────────────────────────────────────── */}
-        <section id="parents" style={{ padding: "48px 0" }}>
+        <section id="parents" style={{ padding: "56px 0", position: "relative" }}>
+          <Wash color={T.confirmedGreen} at="25% 20%" />
           <SectionHead
             eyebrow="For parents"
             title="Engagement without the tricks."
@@ -1208,7 +1237,8 @@ export default function CyberExplorersLanding() {
         </section>
 
         {/* ── FINAL CTA ──────────────────────────────────────────── */}
-        <section style={{ padding: "56px 0 76px", textAlign: "center" }}>
+        <section style={{ padding: "56px 0 76px", textAlign: "center", position: "relative" }}>
+          <Wash color={T.arcCyan} at="50% 40%" />
           <div data-scroll style={{ maxWidth: 640, margin: "0 auto", background: `${T.panel}CC`, border: `1px solid ${T.arcCyan}33`, borderRadius: 4, padding: "40px 32px", boxShadow: `0 0 60px ${T.arcCyan}0F` }}>
             <Eyebrow text="Status: Mission 01 in field testing" color={T.confirmedGreen} />
             <h2 style={{ fontFamily: MONO, fontSize: "clamp(26px, 4.5vw, 38px)", fontWeight: 600, margin: "14px 0 12px" }}>
