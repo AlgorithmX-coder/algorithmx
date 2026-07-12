@@ -80,6 +80,6 @@ These come from the design canon (`references/design-canon.md`) and the child-sa
 
 ## Known open items (surface these when relevant, don't resolve silently)
 
-- **DECIDE — curriculum length**: design sessions locked a 20-week, four-phase structure for the 6–10 tier; platform marketing copy says "24 weeks of curriculum". The BUILT product is 20 weeks (all 20 live in prod since 2026-07-11, PR #61) — so the remaining decision is purely whether marketing copy moves to 20 or four bonus weeks get planned. This skill's economy math uses 20 weeks and parameterises the rest.
+- **RESOLVED (user, 2026-07-11) — curriculum length is 20 weeks.** All 20 live in prod since PR #61. The "24 weeks of curriculum" positioning line this skill originally cited does not exist anywhere in the shipped site or marketing copy (repo-verified) — it was stale source material. Economy math uses 20 weeks.
 - **DECIDE — XP display name**: "XP" works for 11–18; the 6–10 tier may want a themed name (e.g., "Hero Points"). One recommendation is in `economy.md`; confirm with the user before it appears in UI copy.
 - **DECIDE — cohort/classroom mode**: cooperative cohort goals assume a notion of cohort (school block bookings vs. individual family accounts). Confirm the account model before building cohort mechanics.

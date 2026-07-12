@@ -6,7 +6,7 @@ Everything in this file is **LOCKED** unless marked otherwise. It was decided in
 
 - **AlgorithmX** is the parent brand: technology education for every stage of life, ages 6 to adult. Main site speaks as AlgorithmX.
 - **Cyber Heroes** is one course/service within it — the flagship children's cybersecurity course, with its own product page at `/cyberheroes`.
-- Positioning metrics used in marketing: 24 weeks of curriculum, 20+ interactive cases per week, ages 6 to adult, 100% game-based learning. (See the DECIDE note on curriculum length in SKILL.md — the 6–10 tier design sessions locked a 20-week structure.)
+- Positioning metrics used in marketing: **20 weeks of curriculum** (RESOLVED — user confirmed 2026-07-11; an earlier "24 weeks" line in this skill's source material never existed in the shipped site), 20+ interactive cases per week, ages 6 to adult, 100% game-based learning.
 - Trust strip references: BCS, AQA, COPPA, GDPR, Microsoft, Cambridge. Gamification decisions must never undermine these claims — COPPA/GDPR on the trust strip means the reward system's data practices are marketing claims, not just legal fine print.
 
 ## Visual identity (for reward/celebration UI)
