@@ -153,6 +153,18 @@ const FAQS = [
     q: "What does it run on?",
     a: "Any modern browser — laptop, desktop, or tablet. Nothing to install.",
   },
+  {
+    q: "My kid says they already know about scams.",
+    a: "Most kids can recite 'don't click suspicious links.' Very few can tell you WHY gamehub.support-verify.net isn't GameHub, or what a pressure deadline is doing to their brain. Explorers teaches the mechanism, not the slogan — and kids who 'already know' tend to be the ones who love it most, because it finally treats them as capable.",
+  },
+  {
+    q: "When does it launch?",
+    a: "Mission 01 is in field testing now. Founding families on the waitlist get first access and lock the launch price — we'll email you the moment enrollment opens.",
+  },
+  {
+    q: "What if my child loses interest?",
+    a: "Every mission is a complete case with a real ending, built for 45–60 minutes — no cliffhanger traps, no daily-streak guilt. And at launch, enrollment comes with a simple money-back guarantee: if it doesn't land with your kid, you get your money back.",
+  },
 ];
 
 const STATS = [
@@ -717,7 +729,7 @@ function SignalWaitlist({ source }: { source: string }) {
           boxShadow: `0 0 24px ${T.confirmedGreen}22`,
         }}
       >
-        ON THE LIST — we&rsquo;ll signal you at launch.
+        You&rsquo;re in. We&rsquo;ll email you when enrollment opens — founding-family price locked.
       </div>
     );
   }
@@ -775,7 +787,7 @@ function SignalWaitlist({ source }: { source: string }) {
           boxShadow: `0 0 26px ${T.actionAmber}40, 0 4px 14px rgba(0,0,0,0.4)`,
         }}
       >
-        {state === "loading" ? "TRANSMITTING…" : "JOIN THE WAITLIST"}
+        {state === "loading" ? "SAVING…" : "GET EARLY ACCESS"}
       </button>
       {state === "error" && <p style={{ width: "100%", margin: 0, fontSize: 13, color: T.threatRed }}>{errorMsg}</p>}
     </form>
@@ -841,22 +853,25 @@ export default function CyberExplorersLanding() {
           <div className="cx-hero-in">
             <Eyebrow text="AlgorithmX Cybersecurity · Ages 10–13" color={T.arcCyan} />
             <h1 style={{ fontFamily: MONO, fontSize: "clamp(36px, 6vw, 74px)", fontWeight: 600, lineHeight: 1.04, letterSpacing: "-0.02em", margin: "18px 0 20px" }}>
-              <Resolve text="Train the kid" reduced={reduced} />
+              <Resolve text="Raise the kid" reduced={reduced} />
               <br />
               <span className="cx-grad">
-                <Resolve text="who spots the scam." reduced={reduced} delay={400} />
+                <Resolve text="scammers skip." reduced={reduced} delay={400} />
               </span>
             </h1>
             <p className="cx-sub" style={{ fontSize: 17, lineHeight: 1.65, color: T.textSecondary, maxWidth: 520, margin: "0 0 10px" }}>
-              Your child joins <span style={{ color: T.textPrimary }}>ARC</span> — an anomaly-response unit hunting a
-              network called <span style={{ color: T.textPrimary }}>STATIC</span> — and learns to read the internet the
-              way an analyst does. Real skills. Real judgment. Zero jump scares.
+              Cyber Explorers is a cybersecurity course for ages 10–13 — taught as a spy thriller your child will
+              actually want to play. Twenty weekly missions that turn &ldquo;don&rsquo;t click that&rdquo; into a skill
+              they own for life. <span style={{ color: T.textPrimary }}>From the team behind Cyber Heroes.</span>
             </p>
             <p style={{ fontFamily: MONO, fontSize: 13.5, color: T.actionAmber, margin: "0 0 24px" }}>
               <span className="cx-typeline">&gt; 20 missions. 6 threat actors. 1 operative._</span>
             </p>
             <div id="waitlist">
               <SignalWaitlist source="hero" />
+              <p style={{ fontSize: 12.5, color: T.textSecondary, margin: "10px 0 0", maxWidth: 440 }}>
+                Founding families get first access to Mission 01 and lock the launch price. No card, no commitment.
+              </p>
             </div>
             <div style={{ display: "flex", flexWrap: "wrap", gap: "6px 16px", margin: "18px 0 0", fontFamily: MONO, fontSize: 10.5, letterSpacing: "0.05em", color: T.textSecondary }}>
               <span><span style={{ color: T.confirmedGreen }}>✓</span> ICO CHILDREN&rsquo;S CODE–ALIGNED</span>
@@ -899,13 +914,61 @@ export default function CyberExplorersLanding() {
           ))}
         </section>
 
+        {/* ── THE PROBLEM (parent-first) ─────────────────────────── */}
+        <section style={{ padding: "56px 0", position: "relative" }}>
+          <Wash color={T.threatRed} at="70% 20%" />
+          <SectionHead
+            eyebrow="Why now"
+            title="The internet doesn't wait until they're ready."
+            sub="Age 10 to 13 is when it all arrives at once — the phone, the accounts, the group chats. And the scams arrive with them."
+          />
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16 }} className="cx-three-col">
+            {[
+              { big: "56% → 83%", small: "Smartphone ownership jumps between ages 10 and 11 — the single biggest change in a child's digital life. (Ofcom)" },
+              { big: "3 in 4", small: "11–17s have already seen harmful content online. Most never tell anyone. (Ofcom)" },
+              { big: "One voice note", small: "is all AI needs to fake a voice your child trusts. The tricks are getting better. Your child can too." },
+            ].map((s, i) => (
+              <div key={i} data-scroll data-scroll-delay={String(i * 0.1)} style={{ background: `${T.panel}D9`, border: `1px solid ${T.threatRed}33`, borderRadius: 3, padding: "20px 22px" }}>
+                <div style={{ fontFamily: MONO, fontSize: 26, fontWeight: 600, color: T.textPrimary, marginBottom: 8 }}>{s.big}</div>
+                <p style={{ fontSize: 13.5, lineHeight: 1.6, color: T.textSecondary, margin: 0 }}>{s.small}</p>
+              </div>
+            ))}
+          </div>
+          <p data-scroll style={{ fontSize: 16, lineHeight: 1.7, color: T.textPrimary, margin: "24px 0 0", maxWidth: 620 }}>
+            You can&rsquo;t read over their shoulder anymore. The next best thing is a kid who doesn&rsquo;t need you to.
+          </p>
+        </section>
+
+        {/* ── THE TRANSFORMATION ─────────────────────────────────── */}
+        <section style={{ padding: "40px 0 56px", position: "relative" }}>
+          <SectionHead eyebrow="What changes" title="Same kid. Different reflexes." />
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }} className="cx-two-col">
+            <div data-scroll style={{ background: `${T.panel}D9`, border: `1px solid ${T.hairline}`, borderRadius: 3, padding: "22px 24px" }}>
+              <Eyebrow text="Before" color={T.textDisabled} />
+              <p style={{ fontSize: 16, lineHeight: 1.7, color: T.textSecondary, margin: "12px 0 0", fontStyle: "italic" }}>
+                &ldquo;It said my account would be deleted in 24 hours&hellip; so I clicked it and typed my password.&rdquo;
+              </p>
+            </div>
+            <div data-scroll data-scroll-delay="0.12" style={{ background: `${T.confirmedGreen}0D`, border: `1px solid ${T.confirmedGreen}55`, borderRadius: 3, padding: "22px 24px" }}>
+              <Eyebrow text="After 20 missions" color={T.confirmedGreen} />
+              <p style={{ fontSize: 16, lineHeight: 1.7, color: T.textPrimary, margin: "12px 0 0", fontStyle: "italic" }}>
+                &ldquo;Real companies don&rsquo;t rush you. And that&rsquo;s not even their domain. Screenshotted, reported, blocked.&rdquo;
+              </p>
+            </div>
+          </div>
+          <p data-scroll style={{ fontSize: 14.5, lineHeight: 1.65, color: T.textSecondary, margin: "18px 0 0", maxWidth: 620 }}>
+            That reflex is the product. The spy fiction below is just how we get a 12-year-old to practice it every week
+            — voluntarily.
+          </p>
+        </section>
+
         {/* ── PREMISE ────────────────────────────────────────────── */}
         <section id="mission" style={{ padding: "56px 0", position: "relative" }}>
           <Wash color={T.arcCyan} at="30% 10%" />
           <SectionHead
-            eyebrow="The premise"
-            title="Your child is the operative."
-            sub="No cartoon sidekicks, no classroom. A calm handler on the radio, real-looking evidence on the desk, and a network of threat actors running the exact tricks the real internet runs."
+            eyebrow="This part is for your kid — hand them the phone"
+            title="You're the operative."
+            sub="No cartoon sidekicks, no classroom. A calm handler on the radio, real evidence on your desk, and a network of threat actors running the exact tricks the real internet runs. Welcome to ARC."
           />
           <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16 }} className="cx-three-col">
             {[
@@ -1191,6 +1254,26 @@ export default function CyberExplorersLanding() {
         </section>
 
         {/* ── PARENTS ────────────────────────────────────────────── */}
+        {/* ── PROOF ──────────────────────────────────────────────── */}
+        <section style={{ padding: "56px 0", position: "relative" }}>
+          <Wash color={T.arcCyan} at="50% 30%" />
+          <div data-scroll style={{ maxWidth: 820, margin: "0 auto", textAlign: "center" }}>
+            <Eyebrow text="Why trust us" color={T.arcCyan} />
+            <h2 style={{ fontFamily: MONO, fontSize: "clamp(24px, 4vw, 36px)", fontWeight: 600, margin: "12px 0 14px" }}>
+              We already built this for the little ones.
+            </h2>
+            <p className="cx-sub" style={{ fontSize: 16, lineHeight: 1.7, color: T.textSecondary, margin: "0 auto 22px", maxWidth: 640 }}>
+              Cyber Explorers comes from the team behind <span style={{ color: T.textPrimary }}>Cyber Heroes</span> —
+              our cybersecurity course for ages 6–9, live today with all 20 weeks and 20 bespoke boss battles shipped.
+              Same platform, same safety rules, built up for the next age. CyberFirst and ASDAN aligned; GDPR and ICO
+              Children&rsquo;s Code by design.
+            </p>
+            <Link href="/cyberheroes" className="cx-navlink" style={{ fontSize: 12, border: `1px solid ${T.hairline}`, borderRadius: 3, padding: "10px 16px", display: "inline-block" }}>
+              SEE CYBER HEROES (AGES 6–9) →
+            </Link>
+          </div>
+        </section>
+
         <section id="parents" style={{ padding: "56px 0", position: "relative" }}>
           <Wash color={T.confirmedGreen} at="25% 20%" />
           <SectionHead
@@ -1223,7 +1306,7 @@ export default function CyberExplorersLanding() {
 
         {/* ── FAQ ────────────────────────────────────────────────── */}
         <section style={{ padding: "48px 0" }}>
-          <SectionHead eyebrow="Questions" title="Cleared for release." />
+          <SectionHead eyebrow="Questions" title="Questions, answered." />
           <div style={{ display: "grid", gap: 10, maxWidth: 780 }}>
             {FAQS.map((f, i) => (
               <details key={f.q} data-scroll data-scroll-delay={String(i * 0.06)} className="cx-faq" style={{ background: `${T.panel}D9`, border: `1px solid ${T.hairline}`, borderRadius: 3 }}>
@@ -1240,13 +1323,18 @@ export default function CyberExplorersLanding() {
         <section style={{ padding: "56px 0 76px", textAlign: "center", position: "relative" }}>
           <Wash color={T.arcCyan} at="50% 40%" />
           <div data-scroll style={{ maxWidth: 640, margin: "0 auto", background: `${T.panel}CC`, border: `1px solid ${T.arcCyan}33`, borderRadius: 4, padding: "40px 32px", boxShadow: `0 0 60px ${T.arcCyan}0F` }}>
-            <Eyebrow text="Status: Mission 01 in field testing" color={T.confirmedGreen} />
+            <Eyebrow text="Founding families" color={T.clearanceBrass} />
             <h2 style={{ fontFamily: MONO, fontSize: "clamp(26px, 4.5vw, 38px)", fontWeight: 600, margin: "14px 0 12px" }}>
-              The room is almost ready.
+              Be first in the door.
             </h2>
-            <p className="cx-sub" style={{ fontSize: 16, lineHeight: 1.65, color: T.textSecondary, margin: "0 0 26px" }}>
-              Join the waitlist and we&rsquo;ll signal you the moment ARC starts taking recruits.
-            </p>
+            <div style={{ display: "grid", gap: 8, maxWidth: 420, margin: "0 auto 24px", textAlign: "left" }}>
+              {["First access to Mission 01 when enrollment opens", "Launch price locked — founding families pay the day-one rate, always", "Money-back guarantee at launch. No card today, no commitment"].map((b) => (
+                <div key={b} style={{ fontSize: 14.5, lineHeight: 1.6, color: T.textSecondary, display: "flex", gap: 10 }}>
+                  <span style={{ color: T.confirmedGreen, fontFamily: MONO }}>✓</span>
+                  {b}
+                </div>
+              ))}
+            </div>
             <div style={{ display: "flex", justifyContent: "center" }}>
               <SignalWaitlist source="footer" />
             </div>
