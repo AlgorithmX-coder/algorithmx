@@ -108,7 +108,7 @@ A weekly parent digest (email) closes the motivational circuit outside the app:
 
 ## Tier-by-tier summary
 
-| Dimension | Cyber Cubs (6–10) | Cyber Operatives (11–18) |
+| Dimension | Cyber Heroes (6–9) | Cyber Explorers (10–13) |
 |---|---|---|
 | Reward cadence | Frequent, small, immediate | Chunkier, goal-oriented |
 | Mechanics complexity | Simple, one idea per mechanic | Multi-step, stats, quests |
