@@ -296,6 +296,12 @@ export const mission01: MissionManifest = {
     wrenLine: "Four lures, zero clicks in your lane. Read the report, sign out.",
   },
 
+  voice: {
+    transmission: "/audio/wren/m01-transmission.mp3",
+    briefing: "/audio/wren/m01-briefing.mp3",
+    debrief: "/audio/wren/m01-debrief.mp3",
+  },
+
   dossier: {
     mo: "Sends fake “urgent” messages dressed up as companies you trust. Wants you to click before you think.",
     defeatedBy: "Anyone who slows down, reads the address, and checks in the official app instead.",

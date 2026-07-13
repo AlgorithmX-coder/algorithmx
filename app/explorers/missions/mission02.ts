@@ -340,6 +340,12 @@ export const mission02: MissionManifest = {
     wrenLine: "Free bait costs the most. Clean sweep — sign out.",
   },
 
+  voice: {
+    transmission: "/audio/wren/m02-transmission.mp3",
+    briefing: "/audio/wren/m02-briefing.mp3",
+    debrief: "/audio/wren/m02-debrief.mp3",
+  },
+
   dossier: {
     mo: "Gives to get. Prizes, flattery, and a ticking clock — bait first, ask later. Builds factories, not one-off tricks.",
     defeatedBy: "Anyone who asks what the free thing costs — and checks the official page instead of the link that came to them.",

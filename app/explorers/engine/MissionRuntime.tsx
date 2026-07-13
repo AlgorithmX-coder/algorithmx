@@ -15,7 +15,7 @@
  */
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { useSignalAudio } from "./audio";
+import { playWren, stopWren, useSignalAudio } from "./audio";
 import {
   AmberButton,
   Bubble,
@@ -179,6 +179,39 @@ export default function MissionRuntime({ manifest }: { manifest: MissionManifest
     setResumeOffer(null);
   };
 
+  /* ---- WREN voice: plays on story beats, mute-gated, cuts previous ---- */
+  const [voiceOn, setVoiceOn] = useState(true);
+  useEffect(() => {
+    try {
+      const v = localStorage.getItem("explorers:voice");
+      if (v !== null) setVoiceOn(v === "1");
+    } catch {}
+  }, []);
+  const toggleVoice = () => {
+    setVoiceOn((v) => {
+      const n = !v;
+      try {
+        localStorage.setItem("explorers:voice", n ? "1" : "0");
+      } catch {}
+      if (!n) stopWren();
+      return n;
+    });
+  };
+  useEffect(() => {
+    if (resumeOffer) return;
+    const clip =
+      pos.beat === "transmission"
+        ? manifest.voice?.transmission
+        : pos.beat === "briefing"
+          ? manifest.voice?.briefing
+          : pos.beat === "debrief"
+            ? manifest.voice?.debrief
+            : undefined;
+    if (clip) playWren(clip, voiceOn);
+    else stopWren();
+  }, [pos.beat, resumeOffer, voiceOn, manifest.voice]);
+  useEffect(() => () => stopWren(), []);
+
   const tone = toneFor(pos);
   const prog = progressFor(pos);
 
@@ -190,9 +223,26 @@ export default function MissionRuntime({ manifest }: { manifest: MissionManifest
       {/* mission HUD — ARC chrome, never corrupted */}
       <div style={{ position: "relative", zIndex: 2, borderBottom: `1px solid ${T.hairline}`, background: `${T.panel}D9`, backdropFilter: "blur(8px)" }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "13px 18px" }}>
-          <span style={{ fontFamily: MONO, fontSize: 11.5, letterSpacing: "0.08em", color: T.textSecondary }}>
+          <span style={{ display: "inline-flex", alignItems: "center", gap: 12, fontFamily: MONO, fontSize: 11.5, letterSpacing: "0.08em", color: T.textSecondary }}>
             {manifest.caseNumber} <span style={{ color: T.textDisabled }}>//</span>{" "}
             <span style={{ color: T.textPrimary }}>{manifest.title.toUpperCase()}</span>
+            <button
+              onClick={toggleVoice}
+              aria-label={voiceOn ? "Turn WREN's voice off" : "Turn WREN's voice on"}
+              style={{
+                fontFamily: MONO,
+                fontSize: 9.5,
+                letterSpacing: "0.1em",
+                color: voiceOn ? T.arcCyan : T.textDisabled,
+                background: "transparent",
+                border: `1px solid ${voiceOn ? `${T.arcCyan}66` : T.hairline}`,
+                borderRadius: 2,
+                padding: "4px 8px",
+                cursor: "pointer",
+              }}
+            >
+              VOICE {voiceOn ? "ON" : "OFF"}
+            </button>
           </span>
           <span style={{ fontFamily: MONO, fontSize: 12, letterSpacing: "0.08em", color: T.textSecondary, position: "relative" }}>
             <span style={{ color: tone, transition: "color 500ms" }}>{describePos(pos, manifest)}</span>

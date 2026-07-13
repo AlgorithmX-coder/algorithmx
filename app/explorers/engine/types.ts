@@ -211,6 +211,8 @@ export interface MissionManifest {
   };
   debrief: { report: string[]; realWorldMove: string; wrenLine: string };
   dossier: { mo: string; defeatedBy: string; breadcrumb?: string };
+  /** WREN VO clips per beat (public/ paths). Played mute-gated at 0.55. */
+  voice?: { transmission?: string; briefing?: string; debrief?: string };
 }
 
 /* ------------------------------------------------------- save/resume */
