@@ -54,14 +54,12 @@ Resolved in the 2026-07-12 design session:
 8. **Curriculum shape - LOCKED.** Sixteen weeks, domain rotation building to a
    multi-part capstone engagement. Modular and reorderable, but it still climaxes.
    Full map in section 8.
-9. **Name - "Redoubt" (working brand, confirming clearance running).** Three "Cyber
-   ___" candidates failed clearance in sequence (CyberStart, Cyber Operators, Cyber
-   Vanguard - all crowded sector + prime domains gone). Decision on 2026-07-12: adopt
-   the distinctive, already-cleared fiction name "Redoubt" as the tier's actual
-   brand, unifying product and story. A confirming clearance for customer-facing use
-   is in flight. Do not bake the name into art or VO until it locks. All design in
-   this doc is name-independent by construction (Redoubt carries the chrome either
-   way). See section 9.
+9. **Name - "Cyber Ops" (USER DECISION 2026-07-13, overriding an AVOID clearance).**
+   Clearance recommended "Cyber Redoubt" (clean, all domains free); the user chose
+   "Cyber Ops" instead, accepting the known trademark risk (Cisco "CyberOps" cert in
+   our exact category + live UK "Cyber Ops Global Ltd" + taken domains). Risk on
+   record; needs an attorney clearance before spend. Ties to the "operator" fantasy.
+   See section 9.
 
 ---
 
@@ -425,15 +423,58 @@ Caveats and required actions before/at launch:
 education platform for 11-14s (DSIT/NCSC, 50k+ registered since 2022). Same age
 band and sector, currently shipping. Needs its own investigation.
 
+**FINAL DECISION (2026-07-13): the brand is "Cyber Redoubt".** User required the
+name keep the "Cyber ___" family pattern (siblings Cyber Heroes / Cyber Explorers).
+Reframe: the earlier "Cyber ___" failures were about pairing "Cyber" with a *common,
+crowded* word (Start / Operators / Vanguard), not about "Cyber" itself. Pairing
+"Cyber" with the *distinctive* word that already cleared ("Redoubt") gives the best
+of both. Clearance pass (2026-07-13) on Rampart / Cyber Rampart / Cyber Redoubt:
+- **Bare "Rampart" - AVOID**: crowded security trademarks (N2 Security, MetaGeek in
+  classes 9/42), UK games publisher owns rampart.games, and Apex Legends' "Rampart"
+  character dominates the teen search space; all good domains taken.
+- **"Cyber Rampart" - USABLE but weak**: clears company collisions, but "cyber + a
+  word for a wall" is descriptive => a weak, hard-to-enforce mark, and the Apex
+  Legends search noise persists. cyberrampart.com is parked; .co.uk/.io/get- free.
+- **"Cyber Redoubt" - CLEAR, strongest name tested**: no company/product collision,
+  quiet search space, and cyberredoubt.com + .co.uk + .io are ALL FREE (a clean
+  sweep). This fixes bare-Redoubt's only weakness (no available domains). Keeps the
+  star-fort art (a redoubt is a star-fort) and the fiction (course = "Cyber Redoubt";
+  the in-story firm that recruits you = "Redoubt", the short form).
+
+Full brand: **Cyber Redoubt** (catalog: "Cyber Redoubt by AlgorithmX"). Domains to
+register together now: cyberredoubt.com + cyberredoubt.co.uk + cyberredoubt.io. Still
+`DECIDE`: a proper attorney register search (UK IPO + EUIPO + USPTO, classes 9/41/42)
+before any filing/spend. Only real tradeoff: "redoubt" is an unfamiliar word, softened
+by the "Cyber" prefix + a quiet SERP.
+
+**SUPERSEDED - USER DECISION (2026-07-13): the brand is "Cyber Ops".** The user chose
+"Cyber Ops" after being explicitly re-shown the clearance risk. This is a deliberate
+override of the AVOID verdict; the trademark exposure is accepted and on record:
+- **Cisco owns "CyberOps"** (the "CyberOps Associate" certification) in our exact
+  category (cyber education/training) and actively enforces its marks - the primary,
+  serious risk. Expect a weak-to-unusable trademark position and likely opposition if
+  filed.
+- **"Cyber Ops Global Limited"** is a live UK company with an education SIC code,
+  trading under the exact name in-jurisdiction.
+- cyberops.com / cyberops.co.uk are taken; a "Cyber Ops" Steam game exists; the term
+  is heavily diluted and effectively unrankable in search.
+Required before ANY spend: a proper attorney trademark clearance (classes 9/41/42) and
+a hard conversation about the Cisco collision - the user should go in eyes-open. Ties
+neatly to the "operator" fantasy and the operator's-console design. `DEFAULT`: the
+in-fiction firm may stay "Redoubt" as flavour (preserves the star-fort tie), or fold
+into "Cyber Ops" for a single name; landing mockup currently uses single-name Cyber Ops.
+
 ---
 
 ## 10. Open decisions (the DECIDE backlog)
 
 Ordered roughly by how soon they block work:
 
-1. **Name - RESOLVED to "Redoubt" (clearance: usable-with-caveats).** Remaining
-   actions before launch, not blocking design: buy playredoubt.com (+ defensives),
-   file UK/EU trademark classes 9/41/42, attorney clearance, brand-with-qualifier.
+1. **Name - "Cyber Ops" (user decision 2026-07-13, over an AVOID clearance).**
+   Accepted trademark risk (Cisco CyberOps cert in-category; UK "Cyber Ops Global
+   Ltd"; domains taken). BEFORE ANY SPEND: attorney trademark clearance (classes
+   9/41/42) + an eyes-open decision on the Cisco collision. Not blocking design.
+   See section 9.
    Section 9.
 2. **Build/repo approach** - does Operators get its own worktree/repo on a
    dedicated dev port (the pattern Explorers used: algorithmx-explorers, port
