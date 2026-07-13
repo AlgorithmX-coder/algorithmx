@@ -3587,6 +3587,22 @@ function Laptop({
     [PLATE_TEX_VERSION],
   );
   const depthHazeTex = useMemo(() => makeDepthHazeTexture(), []);
+  /* PHOTOREAL GALAXY FLOOR — real astrophotography-style face-on spiral
+   * galaxy (OpenArt-generated, edges pre-masked to pure black by
+   * scripts, see public/hero-fx/galaxy-floor.webp) laid between the
+   * substrate and the instrument plate. Additive: black IS transparent,
+   * so the square plane can never print an edge — the galaxy just glows
+   * out of the dark floor. Revealed on the same curve as the plates and
+   * spun glacially about its core for life. */
+  const galaxyFloorTex = useMemo(() => {
+    if (typeof window === "undefined") return null;
+    const tex = new THREE.TextureLoader().load("/hero-fx/galaxy-floor.webp");
+    tex.colorSpace = THREE.SRGBColorSpace;
+    tex.anisotropy = 8;
+    return tex;
+  }, []);
+  const galaxyFloorMatRef = useRef<THREE.MeshBasicMaterial>(null);
+  const galaxyFloorMeshRef = useRef<THREE.Mesh>(null);
   /* Tier-3 far megastructure silhouette + the inward signal-packet sprite. */
   const megaStructureTex = useMemo(() => makeMegastructureTexture(), []);
   const signalPacketTex = useMemo(() => makeSignalPacketTexture(), []);
@@ -3998,11 +4014,23 @@ function Laptop({
      * layer is gated on this curve with NO baseline — they are exactly 0
      * until the laptop starts opening, then ramp to full. */
     const floorReveal = smoothstep(0.32, 0.6, p);
+    /* GALAXY FLOOR carries the ground now; the engineered substrate and
+     * instrument rings are pulled back to a supporting whisper so the
+     * floor reads as a real galaxy with faint reactor language over it,
+     * not a tech plate with a picture on it. */
     if (plateSubstrateMatRef.current) {
-      plateSubstrateMatRef.current.opacity = floorReveal * 0.95;
+      plateSubstrateMatRef.current.opacity = floorReveal * 0.5;
     }
     if (plateSurfaceMatRef.current) {
-      plateSurfaceMatRef.current.opacity = floorReveal * 0.87 * pulse;
+      plateSurfaceMatRef.current.opacity = floorReveal * 0.28 * pulse;
+    }
+    if (galaxyFloorMatRef.current) {
+      galaxyFloorMatRef.current.opacity = floorReveal * 0.95;
+    }
+    if (galaxyFloorMeshRef.current) {
+      /* One revolution every ~23 minutes — imperceptible as motion,
+       * but the starfield never reads as a frozen photograph. */
+      galaxyFloorMeshRef.current.rotation.z = reducedMotion ? 0 : t * 0.0045;
     }
     if (plateMidMatRef.current) {
       const midPulse = reducedMotion ? 1 : 0.9 + Math.sin(t * 0.66 + 1.3) * 0.1;
@@ -4022,7 +4050,10 @@ function Laptop({
     /* Sub-surface machine well — faint depth glow beneath the floor. */
     if (machineWellMatRef.current) {
       const wellPulse = reducedMotion ? 1 : 0.85 + Math.sin(t * 0.5 + 0.6) * 0.15;
-      machineWellMatRef.current.opacity = floorReveal * 0.34 * wellPulse;
+      /* Ducked (0.34 → 0.08) for the galaxy floor: the well glow was
+       * designed to shine through the old plate's void gaps; over real
+       * starlight it printed as a milky fog patch under the chassis. */
+      machineWellMatRef.current.opacity = floorReveal * 0.08 * wellPulse;
     }
 
     /* BLAST WAVEFRONT — the shader ring expanding chassis→edge as the
@@ -4148,8 +4179,12 @@ function Laptop({
      * a model floating on a dark plate. Baseline holds throughout the
      * cinematic; an additional pop layers in when the screen ignites. */
     if (contactGlowMatRef.current) {
-      const baseline = 0.07;
-      const ignite = smoothstep(0.5, 0.7, p) * 0.12;
+      /* Over the dark closed-state floor the pool grounds the product;
+       * over the revealed GALAXY it read as a milky fog patch, so the
+       * baseline ducks as the floor reveals and the ignite pop is
+       * halved — the starlight does the grounding now. */
+      const baseline = 0.07 * (1 - floorReveal * 0.6);
+      const ignite = smoothstep(0.5, 0.7, p) * 0.055;
       const breathe = 0.9 + Math.sin(t * 1.2) * 0.1;
       contactGlowMatRef.current.opacity = (baseline + ignite) * breathe;
     }
@@ -4305,6 +4340,31 @@ function Laptop({
           <meshBasicMaterial
             ref={plateSurfaceMatRef}
             map={plateSurfaceTex}
+            transparent
+            opacity={0}
+            blending={THREE.AdditiveBlending}
+            depthWrite={false}
+            toneMapped={false}
+          />
+        </mesh>
+      )}
+
+      {/* PHOTOREAL GALAXY FLOOR — the ground IS a real face-on spiral
+       *  galaxy (astrophotography-grade, OpenArt-generated, edges
+       *  pre-masked to black). Sits between the substrate and the
+       *  instrument plate; additive so the plane boundary can never
+       *  print. Opacity rides floorReveal; the mesh spins glacially
+       *  about the galactic core (useFrame). */}
+      {galaxyFloorTex && (
+        <mesh
+          ref={galaxyFloorMeshRef}
+          position={[RIG_X, -BASE_H / 2 - 0.036, 0]}
+          rotation={[-Math.PI / 2, 0, 0]}
+        >
+          <planeGeometry args={[34, 34]} />
+          <meshBasicMaterial
+            ref={galaxyFloorMatRef}
+            map={galaxyFloorTex}
             transparent
             opacity={0}
             blending={THREE.AdditiveBlending}
