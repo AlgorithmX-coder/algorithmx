@@ -12,8 +12,15 @@ import {
   N8AO,
   BrightnessContrast,
   HueSaturation,
+  ToneMapping,
+  ChromaticAberration,
 } from "@react-three/postprocessing";
-import { BlendFunction, SMAAPreset } from "postprocessing";
+import { BlendFunction, SMAAPreset, ToneMappingMode } from "postprocessing";
+import type {
+  BloomEffect,
+  ChromaticAberrationEffect,
+  NoiseEffect,
+} from "postprocessing";
 import * as THREE from "three";
 import type { MotionValue } from "framer-motion";
 import TechChamber from "./TechChamber";
@@ -57,6 +64,41 @@ const LID_H = 0.05;
 const LID_D = 2.42;
 const LID_CLOSED_ANGLE = 0; // fully closed at scroll 0
 const LID_OPEN_ANGLE = -2.0; // ~115° back when open
+
+/* ===== EXPLOSION FOOTAGE (real pre-rendered volumetric burst) =====
+ * The activation "explosion" is REAL footage: an offline-rendered
+ * volumetric plasma detonation (locked-off camera, pure black plate,
+ * full detonate -> expand -> dissipate arc) baked into an 8x8 flipbook
+ * atlas and scrubbed by scroll in a shader. Black background + additive
+ * blending = no alpha channel needed (black IS transparent), so the
+ * footage composites straight over the live laptop like a film element.
+ * Frame 0 and frame 63 are both black, so the quad is invisible at rest
+ * and after the burst by construction. Built by
+ * scripts/build-explosion-atlas.mjs from the source clip. */
+const FX_ATLAS_URL = "/hero-fx/explosion-atlas.webp";
+const FX_COLS = 8;
+const FX_ROWS = 8;
+const FX_FRAMES = FX_COLS * FX_ROWS;
+/* DOCUMENTARY BEAT — the footage's scroll window. Wider than the floor
+ * activation (0.30→0.55) on purpose: a real supernova remnant does not
+ * clear in a beat. Detonation lands as the lid finishes opening, the
+ * expansion decelerates across the screen-ignition chapter, and the
+ * cooling remnant is still faintly hanging over the revealed nebula
+ * floor two chapters later. Shared by the scrub (useFrame) and the
+ * <DetonationPulse> composer driver so lens response and footage stay
+ * frame-locked. */
+const FX_BEAT_START = 0.32;
+const FX_BEAT_END = 0.72;
+/* Ease-out exponent for the scrub: detonation frames rush in fast, the
+ * dissipation tail stretches long (documentary pacing — fast bang, slow
+ * majestic aftermath). Tuned at 1.5: high enough that the bang lands
+ * just as the lid opens, low enough that the STRUCTURED remnant frames
+ * (rows 5-7 of the atlas) are still on screen at p≈0.6 instead of
+ * racing to the clip's near-black tail. */
+const FX_EASE_POW = 1.5;
+/* Scratch vector for the per-frame camera-forward offset (avoids a
+ * per-frame allocation in useFrame). */
+const FX_FORWARD = new THREE.Vector3();
 
 /* Canvas-painted glowing brand logo for the lid. Rendered at 2x
  * resolution then sampled down so the wordmark stays razor-sharp on
@@ -1784,66 +1826,75 @@ function makeInstrumentPlateTexture(
   return tex;
 }
 
-/* SHOCKWAVE — a textured energy wavefront (replaces the flat ring): a hot
- * white-cyan leading edge with a soft trailing glow, fine radial filaments and
- * sparkle along the front. Mapped onto an expanding plane so the whole
- * structure scales as one cinematic blast ring. Additive. */
-function makeShockwaveTexture(): THREE.Texture | null {
-  if (typeof document === "undefined") return null;
-  const S = 512;
-  const c = document.createElement("canvas");
-  c.width = c.height = S;
-  const ctx = c.getContext("2d");
-  if (!ctx) return null;
-  ctx.clearRect(0, 0, S, S);
-  const cx = S / 2;
-  const cy = S / 2;
-  const R = S / 2;
-  const hash = (n: number) => {
-    const s = Math.sin(n * 127.1) * 43758.5453;
-    return s - Math.floor(s);
-  };
-  const g = ctx.createRadialGradient(cx, cy, 0, cx, cy, R);
-  g.addColorStop(0, "rgba(40,170,255,0)");
-  g.addColorStop(0.5, "rgba(70,200,255,0.04)");
-  g.addColorStop(0.74, "rgba(120,225,255,0.22)");
-  g.addColorStop(0.87, "rgba(150,235,255,0.55)");
-  g.addColorStop(0.93, "rgba(232,250,255,0.95)");
-  g.addColorStop(0.97, "rgba(120,215,255,0.3)");
-  g.addColorStop(1, "rgba(120,215,255,0)");
-  ctx.fillStyle = g;
-  ctx.beginPath();
-  ctx.arc(cx, cy, R, 0, Math.PI * 2);
-  ctx.fill();
-  ctx.globalCompositeOperation = "lighter";
-  ctx.lineCap = "round";
-  const spokes = 130;
-  for (let i = 0; i < spokes; i++) {
-    const a = (i / spokes) * Math.PI * 2 + hash(i) * 0.05;
-    const len = (0.04 + hash(i * 3.1) * 0.12) * R;
-    const r1 = R * (0.86 + hash(i * 5.3) * 0.08);
-    const r0 = r1 - len;
-    ctx.strokeStyle = `rgba(196,242,255,${0.05 + hash(i * 7.7) * 0.18})`;
-    ctx.lineWidth = 1 + hash(i * 2.2) * 1.5;
-    ctx.beginPath();
-    ctx.moveTo(cx + Math.cos(a) * r0, cy + Math.sin(a) * r0);
-    ctx.lineTo(cx + Math.cos(a) * r1, cy + Math.sin(a) * r1);
-    ctx.stroke();
-  }
-  for (let i = 0; i < 70; i++) {
-    const a = hash(i * 1.7) * Math.PI * 2;
-    const r = R * (0.88 + hash(i * 4.4) * 0.06);
-    ctx.fillStyle = `rgba(238,251,255,${0.4 + hash(i * 9) * 0.5})`;
-    ctx.beginPath();
-    ctx.arc(cx + Math.cos(a) * r, cy + Math.sin(a) * r, 0.8 + hash(i * 6) * 1.4, 0, Math.PI * 2);
-    ctx.fill();
-  }
-  ctx.globalCompositeOperation = "source-over";
-  const tex = new THREE.CanvasTexture(c);
-  tex.colorSpace = THREE.SRGBColorSpace;
-  tuneGroundTexture(tex);
-  tex.needsUpdate = true;
-  return tex;
+/* SHOCK WAVE — the blast wavefront racing across the reactor floor.
+ * Was a 512px canvas sprite on a plane scaled up ~15x, which stretched
+ * its texels to mush and printed drawn "spokes". Now the ring lives in
+ * a fragment shader on a STATIC plane (WAVE_PLANE world units): the
+ * expansion is the uT uniform, not mesh scale, so the crest stays
+ * pixel-crisp at every radius. Anatomy per fragment: a tight hot
+ * white-cyan crest (gaussian around the wavefront), a deep-azure glow
+ * bleeding inward behind it, a faint pressure skirt racing ahead, and
+ * an angular wobble so the front is an organic blast line rather than
+ * a compass circle. Additive; alpha carries max(rgb) so the alpha-baked
+ * scrub frames gain honest coverage (same contract as the footage
+ * quad). Driven per-frame in useFrame; zeroed under reduced motion. */
+const WAVE_PLANE = 38; // plane width/depth in world units (half = 19)
+const WAVE_R0 = 0.4; //   ring start radius, world units
+const WAVE_R1 = 15.4; //  ring end radius, world units
+function makeShockWaveMaterial(seed: number): THREE.ShaderMaterial {
+  return new THREE.ShaderMaterial({
+    uniforms: {
+      uT: { value: 0 },
+      uOpacity: { value: 0 },
+      uSeed: { value: seed },
+    },
+    vertexShader: `
+      varying vec2 vUv;
+      void main() {
+        vUv = uv;
+        gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+      }
+    `,
+    fragmentShader: `
+      uniform float uT;
+      uniform float uOpacity;
+      uniform float uSeed;
+      varying vec2 vUv;
+      const float HALF = ${(WAVE_PLANE / 2).toFixed(1)};
+
+      void main() {
+        vec2 c = (vUv - 0.5) * 2.0;
+        float r = length(c);
+        float ang = atan(c.y, c.x);
+        /* Angular wobble: three incommensurate sines break the perfect
+         * circle into an organic front; amplitude grows with expansion
+         * (a young wave is tight, an old one is ragged). */
+        float wob = sin(ang * 6.0 + uSeed) * 0.45
+                  + sin(ang * 11.0 - uSeed * 1.7) * 0.33
+                  + sin(ang * 19.0 + uSeed * 2.9) * 0.22;
+        float R = (${WAVE_R0.toFixed(2)} + ${(WAVE_R1 - WAVE_R0).toFixed(2)} * uT) / HALF;
+        R *= 1.0 + wob * 0.035 * (0.35 + uT);
+        float d = r - R;
+        /* Hot crest: tightens as the wave expands (energy front thins). */
+        float crest = exp(-pow(abs(d) * (34.0 + 46.0 * uT), 1.35));
+        /* Trailing glow bleeding inward + pressure skirt ahead. */
+        float tail = d < 0.0 ? exp(d * (7.0 + 5.0 * uT)) : 0.0;
+        float skirt = d > 0.0 ? exp(-d * 42.0) * 0.35 : 0.0;
+        /* Energy conservation: dim with circumference. */
+        float falloff = 1.0 / (0.45 + r * 1.6);
+        vec3 crestCol = vec3(0.82, 0.96, 1.0);
+        vec3 tailCol = vec3(0.16, 0.45, 1.0);
+        vec3 outc =
+          (crestCol * crest * 1.6 + tailCol * (tail * 0.8 + skirt)) *
+          falloff * uOpacity;
+        gl_FragColor = vec4(outc, max(outc.r, max(outc.g, outc.b)));
+      }
+    `,
+    transparent: true,
+    blending: THREE.AdditiveBlending,
+    depthWrite: false,
+    depthTest: true,
+  });
 }
 
 /* FLASH BURST — the central "bang": a hot core bloom with long diffraction
@@ -2701,6 +2752,19 @@ export default function LaptopScene({ progress, reducedMotion = false, capture =
   const dprRange: [number, number] = lowPower ? [1.25, 2] : [1.5, 2.5];
   const msaa = lowPower ? 2 : 6;
 
+  /* DOCUMENTARY DETONATION PULSE — effect handles driven per-frame by
+   * <DetonationPulse> against scroll progress (never React state; that
+   * would re-render the composer every frame). At the instant the
+   * footage burst detonates: bloom kicks up (sensor over-exposure), a
+   * brief chromatic-aberration pulse (lens stressed by the flash) and a
+   * grain lift (film stock pushed). All three decay to their base
+   * values before the expansion phase so the lingering nebula reads
+   * clean. Deterministic on progress only — capture-safe. */
+  const bloomFxRef = useRef<BloomEffect>(null);
+  const caFxRef = useRef<ChromaticAberrationEffect>(null);
+  const noiseFxRef = useRef<NoiseEffect>(null);
+  const caOffset = useMemo(() => new THREE.Vector2(0, 0), []);
+
   /* Pause the live render loop when the hero is scrolled out of view, so
    * the heavy scene doesn't keep burning GPU while the user reads the
    * sections below. (Integrated GPUs use the pre-rendered scrub instead and
@@ -2868,6 +2932,7 @@ export default function LaptopScene({ progress, reducedMotion = false, capture =
           color="#03060c"
         />
         <Bloom
+          ref={bloomFxRef}
           intensity={lowPower ? 0.45 : 0.6}
           luminanceThreshold={0.62}
           luminanceSmoothing={0.28}
@@ -2875,8 +2940,28 @@ export default function LaptopScene({ progress, reducedMotion = false, capture =
           mipmapBlur
         />
         <SMAA preset={SMAAPreset.HIGH} />
+        {/* ACES FILMIC — the missing tone-map stage. The Canvas asks for
+         *  ACESFilmicToneMapping, but react-postprocessing disables the
+         *  renderer's tone mapping while a composer is mounted, so the
+         *  buffer reaching the grade was raw HDR. BrightnessContrast ends
+         *  with a hard per-channel min(color, 1.0) — every sub-pixel HDR
+         *  specular glint on the chassis edge radius clipped to PURE
+         *  WHITE, printing a dashed white outline along the silhouette.
+         *  Tone-mapping first compresses those glints filmically (soft
+         *  sheen, no dots) and restores the curve the scene was lit for. */}
+        <ToneMapping mode={ToneMappingMode.ACES_FILMIC} />
         <BrightnessContrast brightness={-0.015} contrast={0.07} />
         <HueSaturation hue={0} saturation={0.08} />
+        {/* DETONATION LENS PULSE — offset rests at (0,0) (a no-op) and is
+         *  kicked for a beat by <DetonationPulse> exactly when the footage
+         *  burst detonates. Documentary cue: a real lens/sensor stressed by
+         *  a sudden blinding source fringes for a moment, then recovers. */}
+        <ChromaticAberration
+          ref={caFxRef}
+          offset={caOffset}
+          radialModulation={false}
+          modulationOffset={0}
+        />
         {/* Vignette darkness softened so the lower edge blends into the page
          *  mist instead of stamping a hard dark band at the section boundary. */}
         <Vignette
@@ -2885,11 +2970,78 @@ export default function LaptopScene({ progress, reducedMotion = false, capture =
           darkness={0.5}
           blendFunction={BlendFunction.NORMAL}
         />
-        <Noise opacity={0.006} blendFunction={BlendFunction.OVERLAY} />
+        {/* Grain dither zeroed during frame capture: it writes noise
+         *  across TRANSPARENT pixels too, which reads as speckle once the
+         *  alpha frames are composited over the page backdrop. (Kept
+         *  mounted — conditional children break EffectComposer's types;
+         *  opacity 0 is a no-op.) Live render keeps it. */}
+        <Noise
+          ref={noiseFxRef}
+          opacity={capture ? 0 : 0.006}
+          blendFunction={BlendFunction.OVERLAY}
+        />
       </EffectComposer>
+      <DetonationPulse
+        progress={progress}
+        reducedMotion={reducedMotion}
+        capture={capture}
+        lowPower={lowPower}
+        bloomRef={bloomFxRef}
+        caRef={caFxRef}
+        noiseRef={noiseFxRef}
+      />
     </Canvas>
     </div>
   );
+}
+
+/* DETONATION PULSE — drives the composer's bloom / chromatic-aberration /
+ * grain against scroll progress, per-frame, without React re-renders.
+ * The envelope peaks while the footage's detonation frames (first ~fifth
+ * of the clip) are on screen and fully decays before the expansion
+ * phase, so the lingering nebula remnant reads clean. Deterministic on
+ * progress only (no clock) — the herocap frame bakes stay reproducible.
+ * Zeroed under reduced motion; grain additionally zeroed in capture
+ * (same rationale as the base Noise pass). */
+function DetonationPulse({
+  progress,
+  reducedMotion,
+  capture,
+  lowPower,
+  bloomRef,
+  caRef,
+  noiseRef,
+}: {
+  progress: MotionValue<number>;
+  reducedMotion: boolean;
+  capture: boolean;
+  lowPower: boolean;
+  bloomRef: { current: BloomEffect | null };
+  caRef: { current: ChromaticAberrationEffect | null };
+  noiseRef: { current: NoiseEffect | null };
+}) {
+  useFrame(() => {
+    const p = progress.get();
+    const fxT = smoothstep(FX_BEAT_START, FX_BEAT_END, p);
+    const det = reducedMotion
+      ? 0
+      : Math.pow(Math.sin(Math.PI * Math.min(fxT * 5, 1)), 3);
+    if (bloomRef.current) {
+      bloomRef.current.intensity = (lowPower ? 0.45 : 0.6) + det * 0.55;
+    }
+    if (caRef.current) {
+      /* Peak ~0.0007: at 0.0014 the fringing printed as visible RGB
+       * separation on the chassis edges and keycaps — a lens artefact
+       * should be felt, not read. */
+      caRef.current.offset.set(det * 0.0007, det * 0.0004);
+    }
+    if (noiseRef.current) {
+      noiseRef.current.blendMode.opacity.value = capture
+        ? 0
+        : 0.006 + det * 0.022;
+    }
+  });
+  return null;
 }
 
 /* SCREEN SLABS — three holographic panels that emerge straight forward
@@ -3259,8 +3411,93 @@ function Laptop({
   /* Tier-3 far megastructure silhouette + the inward signal-packet sprite. */
   const megaStructureTex = useMemo(() => makeMegastructureTexture(), []);
   const signalPacketTex = useMemo(() => makeSignalPacketTexture(), []);
-  const shockwaveTex = useMemo(() => makeShockwaveTexture(), []);
+  /* Blast wavefront materials: [0] = main wave, [1..2] = echoes. Each
+   * gets its own seed so the fronts don't share a wobble pattern. */
+  const waveMats = useMemo(
+    () => [0, 1, 2].map((i) => makeShockWaveMaterial(1.3 + i * 2.39)),
+    [],
+  );
   const flashBurstTex = useMemo(() => makeFlashBurstTexture(), []);
+  /* EXPLOSION FOOTAGE — flipbook atlas of the real pre-rendered burst.
+   * Mips are off so adjacent atlas tiles never bleed into each other at
+   * minification; the quad is near-screen-sized so magnification is the
+   * common case anyway. */
+  const fxAtlasTex = useMemo(() => {
+    if (typeof window === "undefined") return null;
+    const tex = new THREE.TextureLoader().load(FX_ATLAS_URL);
+    tex.colorSpace = THREE.SRGBColorSpace;
+    tex.minFilter = THREE.LinearFilter;
+    tex.magFilter = THREE.LinearFilter;
+    tex.generateMipmaps = false;
+    tex.wrapS = THREE.ClampToEdgeWrapping;
+    tex.wrapT = THREE.ClampToEdgeWrapping;
+    return tex;
+  }, []);
+  /* Flipbook scrub shader: samples frame floor(uFrame) and the next one
+   * and cross-blends by the fraction, so the scroll-scrubbed playback is
+   * smooth even though only 64 frames are stored. BLACK_LIFT subtracts
+   * the footage's video-black pedestal (~2.5-3%) so the quad contributes
+   * exactly nothing outside the burst (additive: black == invisible). */
+  const fxMaterial = useMemo(() => {
+    if (!fxAtlasTex) return null;
+    return new THREE.ShaderMaterial({
+      uniforms: {
+        uAtlas: { value: fxAtlasTex },
+        uFrame: { value: 0 },
+        uOpacity: { value: 0 },
+      },
+      vertexShader: `
+        varying vec2 vUv;
+        void main() {
+          vUv = uv;
+          gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+        }
+      `,
+      fragmentShader: `
+        uniform sampler2D uAtlas;
+        uniform float uFrame;
+        uniform float uOpacity;
+        varying vec2 vUv;
+        const vec2 GRID = vec2(${FX_COLS}.0, ${FX_ROWS}.0);
+        const float BLACK_LIFT = 0.03;
+
+        vec3 frameColor(float idx) {
+          float i = clamp(idx, 0.0, GRID.x * GRID.y - 1.0);
+          vec2 cell = vec2(mod(i, GRID.x), GRID.y - 1.0 - floor(i / GRID.x));
+          vec2 uv = (vUv + cell) / GRID;
+          return texture2D(uAtlas, uv).rgb;
+        }
+
+        void main() {
+          float f = floor(uFrame);
+          vec3 c = mix(frameColor(f), frameColor(f + 1.0), uFrame - f);
+          c = max(c - BLACK_LIFT, 0.0) / (1.0 - BLACK_LIFT);
+          /* ELLIPTICAL falloff mask (was a rectangular edge fade). The
+           * documentary footage fills its frame edge-to-edge during the
+           * detonation flash, and a rectangle-shaped fade still prints
+           * as a soft-edged CARD against the floor. An ellipse can't:
+           * whatever the footage does, its visible boundary is always a
+           * radial glow falloff — it reads as a spherical volume of
+           * light, never as video geometry. */
+          vec2 rc = (vUv - 0.5) * 2.0;
+          float rr = length(rc * vec2(1.0, 1.15));
+          float edge = 1.0 - smoothstep(0.68, 1.0, rr);
+          vec3 outc = c * edge * uOpacity;
+          /* Alpha = the amount of light added, not 1.0. Additive RGB is
+           * unaffected (ONE,ONE), but the DESTINATION alpha accumulates
+           * honestly — so the transparent-canvas composite (live page
+           * and herocap frame bakes) gains coverage only where the burst
+           * actually glows, instead of stamping the whole quad opaque. */
+          gl_FragColor = vec4(outc, max(outc.r, max(outc.g, outc.b)));
+        }
+      `,
+      transparent: true,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false,
+      depthTest: true,
+    });
+  }, [fxAtlasTex]);
+  const fxMeshRef = useRef<THREE.Mesh>(null);
   /* Sub-surface machine-well layer (depth beneath the burst). */
   const machineWellTex = useMemo(() => makeMachineWellTexture(), []);
   const machineWellMatRef = useRef<THREE.MeshBasicMaterial>(null);
@@ -3271,19 +3508,14 @@ function Laptop({
   const plateDeepMeshRef = useRef<THREE.Mesh>(null);
   const depthHazeMatRef = useRef<THREE.MeshBasicMaterial>(null);
   const megaStructureMatRef = useRef<THREE.MeshBasicMaterial>(null);
-  /* Outward ignition wavefront (a thin additive ring that sweeps out as the
-   * lid opens) + the pool of inward-travelling signal packets. */
-  const sweepMatRef = useRef<THREE.MeshBasicMaterial>(null);
-  const sweepMeshRef = useRef<THREE.Mesh>(null);
+  /* Central flash + the pool of inward-travelling signal packets. The
+   * blast wavefront + echoes are the waveMats shader materials above
+   * (static planes — driven by uniforms, no mesh refs needed). */
   const flashMatRef = useRef<THREE.MeshBasicMaterial>(null);
   const flashMeshRef = useRef<THREE.Mesh>(null);
   const packetRefs = useRef<Array<THREE.Mesh | null>>([]);
-  /* SECONDARY ACTIVATION — two follow-up "echo" ring ripples that fire after
-   * the main sweep (staggered), and a ring of connection nodes that light up
-   * in SEQUENCE as the burst energises (the platform powering up zone by
-   * zone). All support the main sweep; none is louder than it. */
-  const echoMeshRefs = useRef<Array<THREE.Mesh | null>>([]);
-  const echoMatRefs = useRef<Array<THREE.MeshBasicMaterial | null>>([]);
+  /* Ring of connection nodes that light up in SEQUENCE as the burst
+   * energises (the platform powering up zone by zone). */
   const nodeMatRefs = useRef<Array<THREE.MeshBasicMaterial | null>>([]);
   /* Six activation nodes on a ring around the laptop, at deterministic
    * angles, each with a sequence slot 0..1 for the power-up order. */
@@ -3614,39 +3846,68 @@ function Laptop({
       machineWellMatRef.current.opacity = floorReveal * 0.34 * wellPulse;
     }
 
-    /* OUTWARD IGNITION SWEEP — a thin ring expanding chassis→edge as the lid
-     * opens, brightest mid-sweep then gone (so steady + reduced-motion show
-     * the static lit plate, not a parked ring). THE MAIN EXPLOSION — logic
-     * unchanged from the approved version. */
-    if (sweepMeshRef.current && sweepMatRef.current) {
-      const sweepR = 0.4 + activationT * 15; // base ring radius is 1u
-      sweepMeshRef.current.scale.set(sweepR, sweepR, 1);
-      const sweepFade = Math.sin(Math.PI * activationT); // 0→1→0 across the open
-      sweepMatRef.current.opacity = reducedMotion ? 0 : sweepFade * 0.62;
+    /* BLAST WAVEFRONT — the shader ring expanding chassis→edge as the
+     * lid opens (see makeShockWaveMaterial). Expansion is eased out so
+     * the wave decelerates like a real pressure front, and the whole
+     * thing is transient: gone at rest and under reduced motion. */
+    if (waveMats[0]) {
+      const wT = 1 - Math.pow(1 - activationT, 1.7);
+      waveMats[0].uniforms.uT.value = wT;
+      waveMats[0].uniforms.uOpacity.value = reducedMotion
+        ? 0
+        : Math.sin(Math.PI * activationT) * 0.9;
     }
 
     /* CENTRAL FLASH — a sharp bright bloom at the open moment (the "bang"):
-     * quick scale-up + fast fade so it punches then clears. */
+     * quick scale-up + fast fade so it punches then clears. Toned down
+     * (0.55 -> 0.2) now the footage burst carries the white-hot core —
+     * this survives as a floor-level light kick under the detonation. */
     if (flashMeshRef.current && flashMatRef.current) {
       const flash = Math.pow(Math.sin(Math.PI * activationT), 3);
       const fs = 3.4 + activationT * 8;
       flashMeshRef.current.scale.set(fs, fs, 1);
-      flashMatRef.current.opacity = reducedMotion ? 0 : flash * 0.55;
+      flashMatRef.current.opacity = reducedMotion ? 0 : flash * 0.2;
     }
 
-    /* SECONDARY ECHO RIPPLES — two follow-up rings, each lagging the main
-     * sweep by a staggered amount, expanding a bit further and fainter. They
-     * read as energy echoes radiating from the burst. Transient: zero at rest
-     * and under reduced motion (the static end-state is the lit plate). */
-    for (let i = 0; i < echoMeshRefs.current.length; i++) {
-      const em = echoMeshRefs.current[i];
-      const emat = echoMatRefs.current[i];
-      if (!em || !emat) continue;
-      const lag = 0.05 + i * 0.06;
+    /* EXPLOSION FOOTAGE — scrub the real pre-rendered volumetric burst
+     * with DOCUMENTARY pacing. The beat spans its own window
+     * (FX_BEAT_START→END, wider than the floor activation) and the scrub
+     * is eased hard out: the detonation frames rush in as the lid
+     * finishes opening, then the expansion decelerates and the cooling
+     * remnant lingers over the revealed nebula floor for two more
+     * chapters. Outside the beat the sampled frame is black and
+     * additive-black is invisible; the late fade is a safety net so the
+     * remnant exits gracefully even if the clip's tail isn't perfectly
+     * black. The quad billboards to the camera and sits just BEHIND the
+     * laptop along the view direction, so the chassis silhouettes
+     * against the blast and the burst reads as erupting around the
+     * machine. */
+    if (fxMeshRef.current && fxMaterial) {
+      fxMeshRef.current.quaternion.copy(state.camera.quaternion);
+      state.camera.getWorldDirection(FX_FORWARD);
+      fxMeshRef.current.position
+        .set(RIG_X, 0.5, 0)
+        .addScaledVector(FX_FORWARD, 1.25);
+      const fxT = smoothstep(FX_BEAT_START, FX_BEAT_END, p);
+      const fxEase = 1 - Math.pow(1 - fxT, FX_EASE_POW);
+      fxMaterial.uniforms.uFrame.value = fxEase * (FX_FRAMES - 1);
+      const fxFade = 1 - smoothstep(0.74, 0.88, p);
+      fxMaterial.uniforms.uOpacity.value = reducedMotion ? 0 : fxFade;
+    }
+
+    /* SECONDARY ECHO WAVES — two follow-up wavefronts, each lagging the
+     * main wave by a staggered beat, fainter and with their own wobble
+     * seed. They read as pressure echoes radiating from the burst.
+     * Transient: zero at rest and under reduced motion. */
+    for (let i = 1; i < waveMats.length; i++) {
+      const mat = waveMats[i];
+      if (!mat) continue;
+      const lag = 0.05 + (i - 1) * 0.06;
       const echoT = smoothstep(0.3 + lag, 0.58 + lag, p);
-      const er = 0.4 + echoT * (16 + i * 2.5);
-      em.scale.set(er, er, 1);
-      emat.opacity = reducedMotion ? 0 : Math.sin(Math.PI * echoT) * (0.34 - i * 0.09);
+      mat.uniforms.uT.value = 1 - Math.pow(1 - echoT, 1.7);
+      mat.uniforms.uOpacity.value = reducedMotion
+        ? 0
+        : Math.sin(Math.PI * echoT) * (0.5 - (i - 1) * 0.16);
     }
 
     /* SEQUENTIAL ACTIVATION NODES — light up in order as the burst energises
@@ -3896,29 +4157,18 @@ function Laptop({
         </mesh>
       )}
 
-      {/* OUTWARD IGNITION SWEEP — a thin additive ring wavefront that expands
-       *  from the chassis to the plate edge as the lid opens, reading as the
-       *  rings "igniting outward". A transient: it fades to nothing once the
-       *  lid is open, so the steady / reduced-motion state is the static
-       *  lit plate (driven entirely in useFrame; frozen under reduced
-       *  motion). THE MAIN EXPLOSION — preserved exactly. */}
+      {/* BLAST WAVEFRONT — the shader-drawn pressure ring that races from
+       *  the chassis to the plate edge as the lid opens. The plane is
+       *  STATIC (WAVE_PLANE wide); the ring expands inside the shader
+       *  via uT, so the crest stays pixel-crisp at every radius instead
+       *  of stretching a sprite. Transient: fades to nothing once the
+       *  lid is open (driven in useFrame; zero under reduced motion). */}
       <mesh
-        ref={sweepMeshRef}
         position={[RIG_X, -BASE_H / 2 - 0.034, 0]}
         rotation={[-Math.PI / 2, 0, 0]}
-        scale={1}
       >
-        <planeGeometry args={[2, 2]} />
-        <meshBasicMaterial
-          ref={sweepMatRef}
-          map={shockwaveTex}
-          color="#ffffff"
-          transparent
-          opacity={0}
-          blending={THREE.AdditiveBlending}
-          depthWrite={false}
-          toneMapped={false}
-        />
+        <planeGeometry args={[WAVE_PLANE, WAVE_PLANE]} />
+        <primitive object={waveMats[0]} attach="material" />
       </mesh>
 
       {/* CENTRAL FLASH — the "bang": a bright central bloom that pops as the
@@ -3944,32 +4194,40 @@ function Laptop({
         </mesh>
       )}
 
-      {/* SECONDARY ECHO RIPPLES — two thinner follow-up rings that fire just
-       *  after the main sweep (staggered), reading as energy echoes radiating
-       *  from the burst. Fainter than the hero sweep; transient (gone at rest
-       *  and under reduced motion). */}
-      {[0, 1].map((i) => (
+      {/* EXPLOSION FOOTAGE — the real pre-rendered volumetric burst,
+       *  composited over the live scene like a film element. A camera-
+       *  facing 16:9 quad scrubbing an 8x8 flipbook of offline-rendered
+       *  plasma footage (see FX_ATLAS_URL block comment). Additive over
+       *  a black plate = no alpha needed; frames 0/63 are black so it is
+       *  invisible at rest. Position + billboard + frame index are all
+       *  driven in useFrame off activationT. */}
+      {fxMaterial && (
+        <mesh
+          ref={fxMeshRef}
+          position={[RIG_X, 0.5, -1.25]}
+          frustumCulled={false}
+        >
+          {/* 11.5x6.5 world units: at the camera's distance the burst's
+           *  spherical shell wraps the chassis with void still visible
+           *  around it — an eruption FROM the laptop, not a backdrop
+           *  swap. (16x9 read as a full-screen environment takeover.) */}
+          <planeGeometry args={[11.5, 6.5]} />
+          <primitive object={fxMaterial} attach="material" />
+        </mesh>
+      )}
+
+      {/* SECONDARY ECHO WAVES — two follow-up wavefronts on the same
+       *  shader (own wobble seeds), firing just after the main wave.
+       *  Fainter than the hero front; transient (gone at rest and under
+       *  reduced motion). */}
+      {[1, 2].map((i) => (
         <mesh
           key={`echo-${i}`}
-          ref={(el) => {
-            echoMeshRefs.current[i] = el;
-          }}
-          position={[RIG_X, -BASE_H / 2 - 0.0345, 0]}
+          position={[RIG_X, -BASE_H / 2 - 0.0345 - (i - 1) * 0.0005, 0]}
           rotation={[-Math.PI / 2, 0, 0]}
         >
-          <planeGeometry args={[2, 2]} />
-          <meshBasicMaterial
-            ref={(el) => {
-              echoMatRefs.current[i] = el;
-            }}
-            map={shockwaveTex}
-            color="#ffffff"
-            transparent
-            opacity={0}
-            blending={THREE.AdditiveBlending}
-            depthWrite={false}
-            toneMapped={false}
-          />
+          <planeGeometry args={[WAVE_PLANE, WAVE_PLANE]} />
+          <primitive object={waveMats[i]} attach="material" />
         </mesh>
       ))}
 
