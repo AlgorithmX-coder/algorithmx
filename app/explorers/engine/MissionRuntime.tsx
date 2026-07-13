@@ -18,14 +18,17 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useSignalAudio } from "./audio";
 import {
   AmberButton,
+  Bubble,
   ClassificationBand,
   EngineStyles,
   Eyebrow,
+  Face,
   GhostButton,
   HandlerChip,
   Resolve,
   RoomBackdrop,
   StampMark,
+  TypingDots,
   useReducedMotion,
 } from "./primitives";
 import { BODY, MONO, T } from "./tokens";
@@ -311,23 +314,40 @@ function ResumeScene({ cp, manifest, onResume, onRestart }: { cp: MissionCheckpo
 }
 
 function TransmissionScene({ manifest, reduced, onNext }: { manifest: MissionManifest; reduced: boolean; onNext: () => void }) {
+  const total = manifest.transmission.lines.length;
+  const [shown, setShown] = useState(reduced ? total : 0);
+  useEffect(() => {
+    if (reduced || shown >= total) return;
+    const line = manifest.transmission.lines[shown];
+    const t = window.setTimeout(() => setShown((s) => s + 1), 900 + Math.min(1600, line.length * 14));
+    return () => window.clearTimeout(t);
+  }, [shown, reduced, total, manifest.transmission.lines]);
+
   return (
-    <section style={{ paddingTop: 76 }}>
+    <section style={{ paddingTop: 56, maxWidth: 640 }}>
       <Eyebrow text="ARC secure net — incoming transmission" color={T.arcCyan} />
-      <h1 style={{ fontFamily: MONO, fontSize: "clamp(34px, 6.5vw, 62px)", fontWeight: 600, margin: "18px 0 26px", minHeight: "1.2em", textShadow: `0 0 40px ${T.arcCyan}33` }}>
+      <h1 style={{ fontFamily: MONO, fontSize: "clamp(34px, 6.5vw, 62px)", fontWeight: 600, margin: "18px 0 30px", minHeight: "1.2em", textShadow: `0 0 40px ${T.arcCyan}33` }}>
         <Resolve text={manifest.transmission.headline} reduced={reduced} />
       </h1>
-      <div style={{ maxWidth: 580, borderLeft: `3px solid ${T.arcCyan}66`, paddingLeft: 20 }}>
-        {manifest.transmission.lines.map((line, i) => (
-          <p key={i} style={{ fontSize: 17.5, lineHeight: 1.65, color: i === 0 ? T.textPrimary : T.textSecondary, margin: i === 0 ? 0 : "14px 0 0" }}>
+      <div style={{ display: "grid", gap: 14 }}>
+        {manifest.transmission.lines.slice(0, shown).map((line, i) => (
+          <Bubble key={i} who="wren">
             {line}
-          </p>
+          </Bubble>
         ))}
+        {shown < total && (
+          <div className="sr-msg" style={{ display: "flex", gap: 12, alignItems: "flex-end" }}>
+            <Face who="wren" />
+            <TypingDots />
+          </div>
+        )}
       </div>
-      <div style={{ marginTop: 36, display: "flex", alignItems: "center", gap: 18 }}>
-        <AmberButton label="OPEN BRIEFING" onClick={onNext} />
-        <span style={{ fontFamily: MONO, fontSize: 11, color: T.textDisabled, letterSpacing: "0.06em" }}>{manifest.caseNumber}</span>
-      </div>
+      {shown >= total && (
+        <div className="sr-msg" style={{ marginTop: 30, display: "flex", alignItems: "center", gap: 18 }}>
+          <AmberButton label="OPEN BRIEFING" onClick={onNext} />
+          <span style={{ fontFamily: MONO, fontSize: 11, color: T.textDisabled, letterSpacing: "0.06em" }}>{manifest.caseNumber}</span>
+        </div>
+      )}
     </section>
   );
 }
@@ -401,7 +421,7 @@ function CycleScene({
       </div>
 
       {stage === "intel" && (
-        <IntelStage cycle={cycle} cycleIndex={cycleIndex} audio={audio} emit={emit} onNext={onNext} />
+        <IntelStage cycle={cycle} cycleIndex={cycleIndex} reduced={reduced} audio={audio} emit={emit} onNext={onNext} />
       )}
       {stage === "fieldwork" && (
         <FieldworkStage cycle={cycle} cycleIndex={cycleIndex} reduced={reduced} audio={audio} emit={emit} onNext={onNext} />
@@ -413,72 +433,101 @@ function CycleScene({
   );
 }
 
-function IntelStage({ cycle, cycleIndex, audio, emit, onNext }: { cycle: CycleDef; cycleIndex: number; audio: ReturnType<typeof useSignalAudio>; emit: (e: AwardEvent) => void; onNext: () => void }) {
-  const [picked, setPicked] = useState<number | null>(null);
-  const [settled, setSettled] = useState(false);
+function IntelStage({ cycle, cycleIndex, reduced, audio, emit, onNext }: { cycle: CycleDef; cycleIndex: number; reduced: boolean; audio: ReturnType<typeof useSignalAudio>; emit: (e: AwardEvent) => void; onNext: () => void }) {
   const p = cycle.intel.prediction;
+  const beats = cycle.intel.beats;
+  const [shown, setShown] = useState(reduced ? beats.length : 0);
+  const [replies, setReplies] = useState<{ text: string; ok: boolean; response: string }[]>([]);
+  const settled = replies.some((r) => r.ok);
+  const beatsDone = shown >= beats.length;
+
+  /* WREN talks — reading-speed pacing, a soft tick per message */
+  useEffect(() => {
+    if (reduced || beatsDone) return;
+    const t = window.setTimeout(() => {
+      setShown((s) => s + 1);
+      audio.click();
+    }, 850 + Math.min(2200, beats[shown].length * 16));
+    return () => window.clearTimeout(t);
+  }, [shown, reduced, beatsDone, beats, audio]);
 
   const choose = (i: number) => {
-    if (settled) return;
-    setPicked(i);
-    if (i === p.answer) {
-      setSettled(true);
-      audio.latch();
-    } else {
-      audio.thud();
-    }
+    if (settled || replies.some((r) => r.text === p.options[i])) return;
+    const ok = i === p.answer;
+    setReplies((r) => [...r, { text: p.options[i], ok, response: ok ? p.right : p.wrong }]);
+    if (ok) audio.latch();
+    else audio.thud();
   };
 
   return (
-    <div style={{ maxWidth: 620 }}>
-      <div style={{ display: "flex", gap: 14, alignItems: "flex-start", background: `${T.panel}E6`, border: `1px solid ${T.hairline}`, borderLeft: `3px solid ${T.arcCyan}88`, borderRadius: 3, padding: "22px 24px" }}>
-        <div style={{ flex: 1 }}>
-          {cycle.intel.beats.map((b, i) => (
-            <p key={i} style={{ fontSize: 17, lineHeight: 1.7, color: T.textPrimary, margin: i === 0 ? 0 : "16px 0 0" }}>
-              {b}
-            </p>
-          ))}
-        </div>
-      </div>
+    <div style={{ maxWidth: 640 }}>
+      <div style={{ display: "grid", gap: 14 }}>
+        {beats.slice(0, shown).map((b, i) => (
+          <Bubble key={i} who="wren">
+            {b}
+          </Bubble>
+        ))}
+        {!beatsDone && (
+          <div className="sr-msg" style={{ display: "flex", gap: 12, alignItems: "flex-end" }}>
+            <Face who="wren" />
+            <TypingDots />
+          </div>
+        )}
 
-      <div style={{ marginTop: 16, background: `${T.panelRaised}E6`, border: `1px solid ${T.actionAmber}44`, borderRadius: 3, padding: "20px 22px", boxShadow: `0 0 30px ${T.actionAmber}0F` }}>
-        <Eyebrow text="Prediction — call it before you see it" color={T.actionAmber} />
-        <p style={{ fontSize: 16.5, lineHeight: 1.6, margin: "12px 0 14px", fontWeight: 500 }}>{p.question}</p>
-        <div style={{ display: "grid", gap: 8 }}>
-          {p.options.map((o, i) => {
-            const isPicked = picked === i;
-            const state = isPicked ? (i === p.answer ? T.confirmedGreen : T.threatRed) : null;
-            return (
-              <button
-                key={o}
-                onClick={() => choose(i)}
-                className="sr-btn sr-choice"
-                style={{
-                  textAlign: "left",
-                  fontSize: 15,
-                  lineHeight: 1.55,
-                  color: state ?? T.textPrimary,
-                  background: state ? `${state}14` : T.panel,
-                  border: `1px solid ${state ?? T.hairline}`,
-                  borderRadius: 4,
-                  padding: "15px 17px",
-                  cursor: settled ? "default" : "pointer",
-                }}
-              >
-                {o}
-              </button>
-            );
-          })}
-        </div>
-        {picked !== null && (
-          <p role="status" style={{ margin: "12px 0 0", fontSize: 13.5, lineHeight: 1.6, color: settled ? T.confirmedGreen : T.textSecondary }}>
-            {settled ? p.right : p.wrong}
-          </p>
+        {beatsDone && (
+          <Bubble who="wren" tone={T.actionAmber}>
+            <span style={{ display: "block", fontFamily: MONO, fontSize: 10.5, letterSpacing: "0.12em", color: T.actionAmber, marginBottom: 6 }}>
+              CALL IT, OPERATIVE
+            </span>
+            {p.question}
+          </Bubble>
+        )}
+
+        {replies.map((r, i) => (
+          <div key={i} style={{ display: "grid", gap: 14 }}>
+            <div className="sr-msg" style={{ display: "flex", gap: 12, flexDirection: "row-reverse", alignItems: "flex-end" }}>
+              <Face who="you" />
+              <div style={{ maxWidth: "78%", background: r.ok ? `${T.confirmedGreen}12` : `${T.threatRed}10`, border: `1px solid ${r.ok ? T.confirmedGreen : T.threatRed}88`, borderRadius: "14px 14px 3px 14px", padding: "12px 16px", fontSize: 16, lineHeight: 1.6, color: T.textPrimary }}>
+                {r.text}
+              </div>
+            </div>
+            <Bubble who="wren" tone={r.ok ? T.confirmedGreen : undefined}>
+              {r.response}
+            </Bubble>
+          </div>
+        ))}
+
+        {beatsDone && !settled && (
+          <div className="sr-msg" style={{ display: "grid", gap: 10, justifyItems: "end" }}>
+            {p.options.map((o, i) =>
+              replies.some((r) => r.text === o) ? null : (
+                <button
+                  key={o}
+                  onClick={() => choose(i)}
+                  className="sr-btn sr-choice"
+                  style={{
+                    textAlign: "right",
+                    fontSize: 15.5,
+                    lineHeight: 1.55,
+                    color: T.actionAmber,
+                    background: `${T.actionAmber}0A`,
+                    border: `1px solid ${T.actionAmber}55`,
+                    borderRadius: "14px 14px 3px 14px",
+                    padding: "13px 17px",
+                    cursor: "pointer",
+                    maxWidth: "82%",
+                  }}
+                >
+                  {o}
+                </button>
+              ),
+            )}
+          </div>
         )}
       </div>
 
       {settled && (
-        <div style={{ marginTop: 18 }}>
+        <div className="sr-msg" style={{ marginTop: 22 }}>
           <AmberButton
             label="BEGIN FIELDWORK"
             onClick={() => {
@@ -491,6 +540,7 @@ function IntelStage({ cycle, cycleIndex, audio, emit, onNext }: { cycle: CycleDe
     </div>
   );
 }
+
 
 function FieldworkStage({ cycle, cycleIndex, reduced, audio, emit, onNext }: { cycle: CycleDef; cycleIndex: number; reduced: boolean; audio: ReturnType<typeof useSignalAudio>; emit: (e: AwardEvent) => void; onNext: () => void }) {
   const fw = cycle.fieldwork;
@@ -608,9 +658,12 @@ function IncidentScene({ manifest, reduced, audio, emit, onNext }: { manifest: M
   const [complete, setComplete] = useState(false);
   return (
     <section>
+      {!complete && !reduced && <div className="sr-alert-edge" aria-hidden />}
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 18, flexWrap: "wrap", gap: 8 }}>
         <Eyebrow text={`Incident — ${manifest.incident.title}`} color={T.threatRed} />
-        <span style={{ fontFamily: MONO, fontSize: 11, color: T.textDisabled, letterSpacing: "0.06em" }}>LIVE CASE</span>
+        <span style={{ fontFamily: MONO, fontSize: 11, color: T.threatRed, letterSpacing: "0.1em" }}>
+          <span className="cxof-cursor" style={{ marginRight: 6 }}>●</span>LIVE CASE
+        </span>
       </div>
       {!complete ? (
         <Incident

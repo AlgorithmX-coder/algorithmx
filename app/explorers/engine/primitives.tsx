@@ -58,6 +58,92 @@ export function RoomBackdrop({ reduced, tone }: { reduced: boolean; tone: string
   );
 }
 
+/* ------------------------------------------------------------- faces */
+/* Character presence without portrait art (yet): signature chips. */
+
+export function Face({ who }: { who: "wren" | "you" | "villain" | string }) {
+  if (who === "wren") {
+    return (
+      <span style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 2, width: 36, height: 36, minWidth: 36, borderRadius: "50%", background: `${T.arcCyan}14`, border: `1.5px solid ${T.arcCyan}88` }}>
+        {[7, 12, 8].map((h, i) => (
+          <span key={i} className="sr-wavebar" style={{ width: 2.5, height: h, background: T.arcCyan, animationDelay: `${i * 0.14}s` }} />
+        ))}
+      </span>
+    );
+  }
+  if (who === "villain") {
+    return (
+      <span className="sr-takeover" style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", width: 36, height: 36, minWidth: 36, borderRadius: "50%", background: `${T.threatRed}14`, border: `1.5px solid ${T.threatRed}88`, fontFamily: MONO, fontSize: 15, color: T.threatRed }}>
+        ▚
+      </span>
+    );
+  }
+  if (who === "you") {
+    return (
+      <span style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", width: 36, height: 36, minWidth: 36, borderRadius: "50%", background: `${T.actionAmber}14`, border: `1.5px solid ${T.actionAmber}88`, fontFamily: MONO, fontSize: 13, fontWeight: 600, color: T.actionAmber }}>
+        YOU
+      </span>
+    );
+  }
+  return (
+    <span style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", width: 36, height: 36, minWidth: 36, borderRadius: "50%", background: "#7C5CFF22", border: "1.5px solid #7C5CFF88", fontFamily: MONO, fontSize: 14, fontWeight: 600, color: "#A78BFA" }}>
+      {who.slice(0, 1).toUpperCase()}
+    </span>
+  );
+}
+
+/** The "someone is typing" dots — story tension, three pixels at a time. */
+export function TypingDots() {
+  return (
+    <span style={{ display: "inline-flex", gap: 4, padding: "10px 14px", background: T.panelRaised, border: `1px solid ${T.hairline}`, borderRadius: 12 }}>
+      {[0, 1, 2].map((i) => (
+        <span key={i} className="sr-typedot" style={{ width: 6, height: 6, borderRadius: "50%", background: T.textSecondary, animationDelay: `${i * 0.18}s` }} />
+      ))}
+    </span>
+  );
+}
+
+/** A radio/chat message in the story stream. */
+export function Bubble({ who, children, tone }: { who: "wren" | "you" | "villain" | string; children: React.ReactNode; tone?: string }) {
+  const mine = who === "you";
+  return (
+    <div className="sr-msg" style={{ display: "flex", gap: 12, flexDirection: mine ? "row-reverse" : "row", alignItems: "flex-end" }}>
+      <Face who={who} />
+      <div
+        style={{
+          maxWidth: "78%",
+          background: mine ? `${T.actionAmber}14` : who === "villain" ? `${T.threatRed}10` : T.panelRaised,
+          border: `1px solid ${mine ? `${T.actionAmber}66` : who === "villain" ? `${T.threatRed}66` : tone ? `${tone}44` : T.hairline}`,
+          borderRadius: mine ? "14px 14px 3px 14px" : "14px 14px 14px 3px",
+          padding: "12px 16px",
+          fontSize: 16,
+          lineHeight: 1.6,
+          color: T.textPrimary,
+        }}
+      >
+        {children}
+      </div>
+    </div>
+  );
+}
+
+/** Captured-screen evidence frame — the kid inspects a real-looking phone. */
+export function DeviceFrame({ app, owner, children }: { app: string; owner: string; children: React.ReactNode }) {
+  return (
+    <div style={{ maxWidth: 480, borderRadius: 18, background: "#05070A", border: `1px solid ${T.hairline}`, boxShadow: "0 24px 60px -20px rgba(0,0,0,0.85), 0 0 0 4px #10151C", overflow: "hidden" }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "7px 14px", fontFamily: MONO, fontSize: 9, letterSpacing: "0.08em", color: T.textDisabled, borderBottom: `1px solid ${T.hairline}` }}>
+        <span>ARC EVIDENCE VIEWER</span>
+        <span>CAPTURED SCREEN ▪▪▪</span>
+      </div>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "9px 14px", background: T.panel, borderBottom: `1px solid ${T.hairline}` }}>
+        <span style={{ fontFamily: MONO, fontSize: 11, letterSpacing: "0.06em", color: T.textPrimary }}>{app}</span>
+        <span style={{ fontFamily: MONO, fontSize: 10, color: T.textSecondary }}>{owner}</span>
+      </div>
+      {children}
+    </div>
+  );
+}
+
 /* ------------------------------------------------------------ eyebrow */
 
 export function Eyebrow({ text, color = T.textSecondary }: { text: string; color?: string }) {
@@ -344,6 +430,15 @@ export function EngineStyles() {
       .sr-scene { animation: srSceneIn 0.5s cubic-bezier(0.16,1,0.3,1) both; }
       @keyframes srSceneIn { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: none; } }
 
+      /* story stream: messages land, dots think, alerts breathe */
+      .sr-msg { animation: srMsgIn 0.32s cubic-bezier(0.16,1,0.3,1) both; }
+      @keyframes srMsgIn { from { opacity: 0; transform: translateY(10px) scale(0.98); } to { opacity: 1; transform: none; } }
+      .sr-typedot { animation: srTypeDot 1s ease-in-out infinite; }
+      @keyframes srTypeDot { 0%,60%,100% { opacity: 0.25; transform: none; } 30% { opacity: 1; transform: translateY(-3px); } }
+      .sr-alert-edge { position: fixed; inset: 0; pointer-events: none; z-index: 1;
+        box-shadow: inset 0 0 130px ${T.threatRed}30; animation: srAlert 2.6s ease-in-out infinite; }
+      @keyframes srAlert { 0%,100% { opacity: 0.5; } 50% { opacity: 1; } }
+
       /* XP pop — the reward flies */
       .sr-xppop {
         position: absolute; right: 0; top: 100%;
@@ -406,7 +501,8 @@ export function EngineStyles() {
       }
       @media (prefers-reduced-motion: reduce) {
         .sr-wavebar, .sr-whisper::before, .sr-stamp-in, .sr-takeover, .sr-scene,
-        .sr-xppop, .sr-xpnum, .sr-seg-live, .srof-blob, .srof-radar-sweep { animation: none !important; }
+        .sr-xppop, .sr-xpnum, .sr-seg-live, .srof-blob, .srof-radar-sweep,
+        .sr-msg, .sr-typedot, .sr-alert-edge { animation: none !important; }
         .sr-scene { opacity: 1; transform: none; }
       }
     `}</style>

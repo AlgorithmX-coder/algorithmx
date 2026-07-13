@@ -8,7 +8,7 @@
  */
 
 import { useState } from "react";
-import { Eyebrow, AmberButton } from "../engine/primitives";
+import { Eyebrow, AmberButton, DeviceFrame } from "../engine/primitives";
 import { MONO, T } from "../engine/tokens";
 import type { EvidenceSegment, InspectPayload, MechanicProps } from "../engine/types";
 
@@ -51,15 +51,14 @@ export default function Inspect({ payload, reduced, audio, onEvent }: MechanicPr
     <section className="sr-two-col" style={{ display: "grid", gridTemplateColumns: "minmax(0, 1fr) 280px", gap: 20, alignItems: "start" }}>
       <div style={{ position: "relative" }}>
         <Eyebrow text={payload.intro} color={T.actionAmber} />
+        <div style={{ marginTop: 12 }}>
+        <DeviceFrame app={payload.device?.app ?? "MESSAGES"} owner={payload.device?.owner ?? "CAPTURED DEVICE"}>
         <div
           className={reduced ? undefined : "sr-whisper"}
           style={{
-            marginTop: 12,
             background: T.paper,
             color: T.fileInk,
-            borderRadius: 2,
-            padding: "26px 28px",
-            boxShadow: "0 2px 0 rgba(0,0,0,0.55)",
+            padding: "22px 24px",
             fontSize: 14.5,
             lineHeight: 1.65,
             position: "relative",
@@ -79,6 +78,8 @@ export default function Inspect({ payload, reduced, audio, onEvent }: MechanicPr
               {para.map((seg) => renderSeg(seg))}
             </p>
           ))}
+        </div>
+        </DeviceFrame>
         </div>
       </div>
 

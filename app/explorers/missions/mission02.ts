@@ -69,6 +69,7 @@ export const mission02: MissionManifest = {
         verb: "INSPECT",
         payload: {
           intro: "Evidence 01 — the giveaway post · tap anything that smells like bait",
+          device: { app: "CLASS GROUP CHAT", owner: "CAPTURED POST" },
           header: [
             { label: "WHERE:", seg: { id: "where", text: "School group chat · posted by a number nobody knows" } },
             {

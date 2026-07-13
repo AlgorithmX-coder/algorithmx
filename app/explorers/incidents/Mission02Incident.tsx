@@ -12,7 +12,7 @@
  */
 
 import { useState } from "react";
-import { AmberButton, Eyebrow, GhostButton } from "../engine/primitives";
+import { AmberButton, Bubble, Eyebrow, GhostButton } from "../engine/primitives";
 import { MONO, T } from "../engine/tokens";
 import type { IncidentProps } from "../engine/types";
 
@@ -124,6 +124,16 @@ export default function Mission02Incident({ reduced, audio, onPhaseCleared, onCo
 
   return (
     <div>
+      {phase === 1 && (
+        <div style={{ marginBottom: 18, maxWidth: 560 }}>
+          <div style={{ fontFamily: MONO, fontSize: 10, letterSpacing: "0.14em", color: T.threatRed, marginBottom: 8 }}>
+            INTERCEPTED — SIREN, ON THE WIRE
+          </div>
+          <Bubble who="villain">
+            <em>&ldquo;Everybody wants a prize, sweetheart. I just help them want mine. Try to keep up — the factory never sleeps.&rdquo;</em>
+          </Bubble>
+        </div>
+      )}
       <div style={{ display: "flex", gap: 8, marginBottom: 16 }}>
         {[1, 2, 3].map((p) => (
           <span key={p} style={{ fontFamily: MONO, fontSize: 10, letterSpacing: "0.08em", padding: "3px 8px", borderRadius: 2, border: `1px solid ${p === phase ? T.threatRed : T.hairline}`, color: p === phase ? T.threatRed : p < phase ? T.confirmedGreen : T.textDisabled }}>

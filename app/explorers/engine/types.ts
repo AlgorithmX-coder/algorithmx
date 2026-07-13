@@ -90,6 +90,8 @@ export interface InspectTell {
 
 export interface InspectPayload {
   intro: string;
+  /** Captured-screen framing: which app, whose device. */
+  device?: { app: string; owner: string };
   header: { label: string; seg: EvidenceSegment }[];
   body: EvidenceSegment[][];
   tells: InspectTell[];

@@ -69,6 +69,7 @@ export const mission01: MissionManifest = {
         verb: "INSPECT",
         payload: {
           intro: "Evidence 01 — intercepted email · tap anything that doesn't belong",
+          device: { app: "MAIL", owner: "MAYA'S PHONE" },
           header: [
             {
               label: "FROM:",
