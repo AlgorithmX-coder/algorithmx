@@ -174,6 +174,10 @@ export interface CycleDef {
   id: string;
   title: string;
   concept: string;
+  /** Plain one-line promise shown on the map ("You'll learn why 'free' online usually isn't."). Falls back to concept. */
+  promise?: string;
+  /** Verb-first instruction for the PLAY strip (≤10 words). Falls back to fieldwork payload intro. */
+  instruction?: string;
   intel: { beats: string[]; prediction: PredictionQ };
   fieldwork: FieldworkDef;
   checkpoint: { questions: CheckpointQ[] };
@@ -204,9 +208,13 @@ export interface MissionManifest {
     wrenLine: string;
   };
   cycles: [CycleDef, CycleDef, CycleDef];
+  /** One-line hook WREN speaks on the Mission Start map (≤20 words). Falls back to transmission.lines[0]. */
+  hook?: string;
   incident: {
     title: string;
     phases: number;
+    /** Kid-worded phase names for the boss pips ("Find the hub"). Falls back to PHASE 1..N. */
+    phaseNames?: string[];
     component: ComponentType<IncidentProps>;
   };
   debrief: { report: string[]; realWorldMove: string; wrenLine: string };

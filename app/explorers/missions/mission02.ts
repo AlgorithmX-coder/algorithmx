@@ -24,6 +24,8 @@ export const mission02: MissionManifest = {
     portrait: "/explorers/actors/siren.png",
   },
 
+  hook: "Half your school is about to get scammed. Ready to stop it?",
+
   transmission: {
     headline: "BAIT IN THE WATER",
     lines: [
@@ -49,10 +51,15 @@ export const mission02: MissionManifest = {
       id: "bait",
       title: "Read the bait",
       concept: "Free is a price",
+      promise: "You'll learn why 'free' online usually isn't.",
+      instruction: "Find 3 clues. Tap anything that looks like bait.",
       intel: {
         beats: [
-          "Think about fishing. The worm is free — to the fish. The fisher isn't being generous; the worm is equipment. It costs less than the fish is worth.",
-          "Online prizes work the same way. A stranger 'giving away' skins is fishing. The prize is the worm. The question that breaks the spell is: what do THEY get back?",
+          "Think about fishing for a second.",
+          "The worm is free — to the fish.",
+          "The fisher isn't being generous. The worm is equipment.",
+          "Online prizes work the same way. The prize is the worm.",
+          "One question breaks the spell: what do THEY get back?",
         ],
         prediction: {
           question: "Why would a stranger give 500 skins away for nothing?",
@@ -62,8 +69,8 @@ export const mission02: MissionManifest = {
             "Game companies make them do it",
           ],
           answer: 1,
-          right: "That's the whole trick. Your password, your account, your phone number — worth more than skins that were never real anyway.",
-          wrong: "Kind strangers exist — but they don't need your password. Ask what comes BACK to the giver.",
+          right: "Exactly. Your password is worth more than fake skins.",
+          wrong: "Kind strangers exist — but they don't need your password. What comes back to the giver?",
         },
       },
       fieldwork: {
@@ -144,10 +151,15 @@ export const mission02: MissionManifest = {
       id: "trail",
       title: "Follow the trail",
       concept: "One campaign, many costumes",
+      promise: "You'll learn to prove two messages come from one scammer.",
+      instruction: "Pin the 4 matching clues. Then order the trail.",
       intel: {
         beats: [
-          "Here's what most people never see: the chat post, the DM, and the website aren't three different things. They're one machine, photographed from three angles.",
-          "Analysts prove it with fingerprints — the details a scammer forgets to change: the same weird domain, the same prize name, the same clock. Match the fingerprints and the costumes stop working.",
+          "Here's a secret most people never spot.",
+          "The chat post, the DM, the website — not three things.",
+          "One machine, wearing three costumes.",
+          "Scammers forget to change small details. We call those fingerprints.",
+          "Match the fingerprints, and the costumes stop working.",
         ],
         prediction: {
           question: "The same prize turns up in the group chat, a DM, and a website. What's the smartest read?",
@@ -157,8 +169,8 @@ export const mission02: MissionManifest = {
             "Three different scammers had the same idea",
           ],
           answer: 1,
-          right: "Exactly. Showing up everywhere at once isn't popularity — it's a campaign. Real things get shared messily; campaigns arrive everywhere, polished, at the same time.",
-          wrong: "Being everywhere at once is what CAMPAIGNS do. Real news spreads messily. This arrived everywhere, polished, simultaneously.",
+          right: "Exactly. Real news spreads messily. Campaigns arrive everywhere at once, polished.",
+          wrong: "Being everywhere at once is what campaigns do. Real news spreads messily.",
         },
       },
       fieldwork: {
@@ -253,10 +265,15 @@ export const mission02: MissionManifest = {
       id: "net",
       title: "Study the net",
       concept: "The form is the whole point",
+      promise: "You'll learn which form boxes are never okay to fill.",
+      instruction: "Help Leo. Pick your best move.",
       intel: {
         beats: [
-          "Everything so far — the post, the DM, the countdown — existed to get you to one place: the claim form. The form IS the scam. Everything else is decoration.",
-          "Read a form like a price tag. Every box is something you pay. Username: who you are. Phone: how to reach you forever. Password: the keys to the whole account. No prize on earth costs your password — because accounts are worth more than prizes.",
+          "The post, the DM, the countdown — all had ONE goal.",
+          "Get you to the claim form.",
+          "The form IS the scam. Everything else is decoration.",
+          "Read a form like a price tag. Every box costs you something.",
+          "And no prize on earth costs a password.",
         ],
         prediction: {
           question: "The form says it needs your password 'to deliver the skins.' What's it really for?",
@@ -326,6 +343,7 @@ export const mission02: MissionManifest = {
   incident: {
     title: "The Prize Factory",
     phases: 3,
+    phaseNames: ["Find the hub — where every trail ends", "Cut it — one move shuts the factory", "Warn everyone — the right way"],
     component: Mission02Incident,
   },
 
