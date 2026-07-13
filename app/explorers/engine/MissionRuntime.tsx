@@ -99,6 +99,9 @@ export default function MissionRuntime({ manifest }: { manifest: MissionManifest
   const storageKey = checkpointStorageKey(manifest.id);
 
   const [pos, setPos] = useState<BeatPos>({ beat: "transmission" });
+  /* Orientation-first: a child is TOLD what today is before the story
+     grabs them. Shows on fresh starts; resume skips it. */
+  const [intro, setIntro] = useState(true);
   const [events, setEvents] = useState<AwardEvent[]>([]);
   const [resumeOffer, setResumeOffer] = useState<MissionCheckpoint | null>(null);
   const [ledgerOpen, setLedgerOpen] = useState(false);
@@ -169,6 +172,7 @@ export default function MissionRuntime({ manifest }: { manifest: MissionManifest
     setEvents([]);
     setPos({ beat: "transmission" });
     setResumeOffer(null);
+    setIntro(true);
   };
 
   const resume = () => {
@@ -177,6 +181,7 @@ export default function MissionRuntime({ manifest }: { manifest: MissionManifest
     setEvents(resumeOffer.events);
     setPos(resumeOffer.pos);
     setResumeOffer(null);
+    setIntro(false);
   };
 
   /* ---- WREN voice: plays on story beats, mute-gated, cuts previous ---- */
@@ -198,7 +203,10 @@ export default function MissionRuntime({ manifest }: { manifest: MissionManifest
     });
   };
   useEffect(() => {
-    if (resumeOffer) return;
+    if (resumeOffer || (intro && pos.beat === "transmission")) {
+      stopWren();
+      return;
+    }
     const clip =
       pos.beat === "transmission"
         ? manifest.voice?.transmission
@@ -209,7 +217,7 @@ export default function MissionRuntime({ manifest }: { manifest: MissionManifest
             : undefined;
     if (clip) playWren(clip, voiceOn);
     else stopWren();
-  }, [pos.beat, resumeOffer, voiceOn, manifest.voice]);
+  }, [pos.beat, resumeOffer, voiceOn, manifest.voice, intro]);
   useEffect(() => () => stopWren(), []);
 
   const tone = toneFor(pos);
@@ -285,7 +293,10 @@ export default function MissionRuntime({ manifest }: { manifest: MissionManifest
           <ResumeScene cp={resumeOffer} manifest={manifest} onResume={resume} onRestart={restart} />
         ) : (
           <div key={JSON.stringify(pos)} className="sr-scene">
-            {pos.beat === "transmission" && <TransmissionScene manifest={manifest} reduced={reduced} onNext={advance} />}
+            {pos.beat === "transmission" && intro && (
+              <OrientationScene manifest={manifest} reduced={reduced} onBegin={() => { audio.click(); setIntro(false); }} />
+            )}
+            {pos.beat === "transmission" && !intro && <TransmissionScene manifest={manifest} reduced={reduced} onNext={advance} />}
             {pos.beat === "briefing" && <BriefingScene manifest={manifest} reduced={reduced} onNext={advance} />}
             {pos.beat === "cycle" && (
               <CycleScene
@@ -358,6 +369,73 @@ function ResumeScene({ cp, manifest, onResume, onRestart }: { cp: MissionCheckpo
         {cp.pos.beat !== "closed" && <AmberButton label="RESUME CASE" onClick={onResume} />}
         <GhostButton label={cp.pos.beat === "closed" ? "REOPEN — FRESH RUN" : "RESTART FROM THE TOP"} onClick={onRestart} />
         {cp.pos.beat === "closed" && <AmberButton label="VIEW THE CLOSED CASE" onClick={onResume} />}
+      </div>
+    </section>
+  );
+}
+
+function OrientationScene({ manifest, reduced, onBegin }: { manifest: MissionManifest; reduced: boolean; onBegin: () => void }) {
+  const missionNo = parseInt(manifest.caseNumber.replace(/\D/g, ""), 10) || 1;
+  return (
+    <section style={{ maxWidth: 680, margin: "0 auto", paddingTop: 26 }}>
+      <div className="sr-panel sr-brackets sr-scanin" style={{ background: `${T.panelRaised}E6`, border: `1px solid ${T.arcCyan}44`, padding: "26px 30px 30px", boxShadow: `0 0 50px ${T.arcCyan}12` }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", flexWrap: "wrap", gap: 8 }}>
+          <Eyebrow text={`Mission ${missionNo} — training brief`} color={T.arcCyan} />
+          <span style={{ fontFamily: MONO, fontSize: 10.5, letterSpacing: "0.1em", color: T.textDisabled }}>
+            45–60 MIN · SAVE ANYTIME
+          </span>
+        </div>
+        <h1 style={{ fontFamily: MONO, fontSize: "clamp(26px, 4.6vw, 40px)", fontWeight: 600, margin: "12px 0 6px" }}>{manifest.title}</h1>
+        <p style={{ fontSize: 16, lineHeight: 1.65, color: T.textSecondary, margin: "0 0 22px" }}>
+          Welcome back to the Signal Room, Operative. Here&rsquo;s today before we go in:
+        </p>
+
+        <div style={{ fontFamily: MONO, fontSize: 11, letterSpacing: "0.12em", color: T.textSecondary, marginBottom: 10 }}>
+          TODAY YOU&rsquo;LL LEARN 3 SKILLS
+        </div>
+        <div style={{ display: "grid", gap: 10 }}>
+          {manifest.cycles.map((c, i) => (
+            <div key={c.id} style={{ display: "flex", gap: 14, alignItems: "center", background: T.panel, border: `1px solid ${T.hairline}`, borderRadius: 3, padding: "13px 16px" }}>
+              <span style={{ display: "grid", placeItems: "center", minWidth: 34, height: 34, borderRadius: 3, background: `${T.arcCyan}14`, border: `1px solid ${T.arcCyan}66`, color: T.arcCyan, fontFamily: MONO, fontSize: 14, fontWeight: 600 }}>
+                {i + 1}
+              </span>
+              <div>
+                <div style={{ fontFamily: MONO, fontSize: 14.5, fontWeight: 600 }}>{c.title}</div>
+                <div style={{ fontSize: 13.5, color: T.textSecondary, marginTop: 2 }}>{c.concept}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div style={{ fontFamily: MONO, fontSize: 11, letterSpacing: "0.12em", color: T.textSecondary, margin: "22px 0 10px" }}>
+          HOW EVERY SKILL WORKS
+        </div>
+        <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
+          {[
+            { k: "LEARN", d: "WREN walks you through it" },
+            { k: "PLAY", d: "you do the real thing" },
+            { k: "PROVE", d: "two quick questions" },
+          ].map((s, i) => (
+            <div key={s.k} style={{ display: "flex", alignItems: "center", gap: 10 }}>
+              <div style={{ background: T.panel, border: `1px solid ${T.hairline}`, borderRadius: 3, padding: "9px 13px" }}>
+                <span style={{ fontFamily: MONO, fontSize: 12.5, fontWeight: 600, color: T.arcCyan }}>{s.k}</span>
+                <span style={{ fontSize: 12.5, color: T.textSecondary }}> — {s.d}</span>
+              </div>
+              {i < 2 && <span style={{ fontFamily: MONO, color: T.textDisabled }}>▸</span>}
+            </div>
+          ))}
+        </div>
+        <p style={{ fontSize: 14.5, lineHeight: 1.6, color: T.textSecondary, margin: "14px 0 0" }}>
+          Do that three times, and the case goes <span style={{ color: T.threatRed }}>live</span> — a real incident to
+          contain with everything you just learned. Wrong answers never end the mission; they teach and let you retry.
+        </p>
+
+        <div style={{ marginTop: 26, display: "flex", alignItems: "center", gap: 16, flexWrap: "wrap" }}>
+          <AmberButton label="I'M READY — START THE STORY" onClick={onBegin} />
+          <span style={{ fontFamily: MONO, fontSize: 10.5, letterSpacing: "0.08em", color: T.textDisabled }}>
+            SUSPECTED ACTOR: <span style={{ color: T.threatRed }}>{manifest.actor.codename}</span>
+          </span>
+        </div>
       </div>
     </section>
   );
@@ -456,18 +534,52 @@ function CycleScene({
   emit: (e: AwardEvent) => void;
   onNext: () => void;
 }) {
+  const stageIndex = stage === "intel" ? 0 : stage === "fieldwork" ? 1 : 2;
+  const stageTones = [T.arcCyan, T.actionAmber, T.confirmedGreen];
   return (
     <section>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 18, flexWrap: "wrap", gap: 8 }}>
-        <Eyebrow text={`Cycle ${cycleIndex + 1} of 3 — ${cycle.title}`} color={T.arcCyan} />
-        <span style={{ fontFamily: MONO, fontSize: 11, color: T.textDisabled, letterSpacing: "0.06em" }}>
-          {["INTEL", "FIELDWORK", "CHECKPOINT"].map((s, i) => (
-            <span key={s} style={{ color: s.toLowerCase() === stage ? T.arcCyan : T.textDisabled }}>
-              {i > 0 ? " ▸ " : ""}
-              {s}
-            </span>
-          ))}
-        </span>
+      {/* skill banner — the child always knows where they are */}
+      <div className="sr-panel sr-brackets" style={{ background: `${T.panelRaised}D9`, border: `1px solid ${stageTones[stageIndex]}44`, padding: "16px 20px", marginBottom: 20 }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 12 }}>
+          <div>
+            <div style={{ fontFamily: MONO, fontSize: 10.5, letterSpacing: "0.14em", color: stageTones[stageIndex] }}>
+              SKILL {cycleIndex + 1} OF 3
+            </div>
+            <div style={{ fontFamily: MONO, fontSize: "clamp(17px, 2.6vw, 22px)", fontWeight: 600, margin: "4px 0 2px" }}>
+              {cycle.title}
+            </div>
+            <div style={{ fontSize: 13, color: T.textSecondary }}>{cycle.concept}</div>
+          </div>
+          <div style={{ display: "flex", gap: 8 }}>
+            {[
+              { k: "LEARN", sub: "INTEL" },
+              { k: "PLAY", sub: "FIELDWORK" },
+              { k: "PROVE", sub: "CHECKPOINT" },
+            ].map((s, i) => {
+              const active = i === stageIndex;
+              const done = i < stageIndex;
+              return (
+                <div
+                  key={s.k}
+                  style={{
+                    textAlign: "center",
+                    fontFamily: MONO,
+                    borderRadius: 3,
+                    padding: "7px 12px",
+                    border: `1px solid ${active ? stageTones[i] : done ? `${T.confirmedGreen}66` : T.hairline}`,
+                    background: active ? `${stageTones[i]}14` : "transparent",
+                  }}
+                >
+                  <div style={{ fontSize: 12, fontWeight: 600, color: active ? stageTones[i] : done ? T.confirmedGreen : T.textDisabled }}>
+                    {done ? "■ " : ""}
+                    {s.k}
+                  </div>
+                  <div style={{ fontSize: 8, letterSpacing: "0.1em", color: T.textDisabled, marginTop: 2 }}>{s.sub}</div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
       </div>
 
       {stage === "intel" && (

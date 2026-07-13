@@ -463,6 +463,30 @@ export function EngineStyles() {
         .sr-choice:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 10px 26px -12px rgba(0,0,0,0.8), 0 0 18px -6px ${T.arcCyan}44; border-color: ${T.arcCyan}88 !important; }
       }
 
+      /* ── techy chrome kit ── */
+      /* chamfered HUD-notch panel (the art doc's 45° cut, finally used) */
+      .sr-panel {
+        position: relative;
+        clip-path: polygon(0 0, calc(100% - 18px) 0, 100% 18px, 100% 100%, 18px 100%, 0 calc(100% - 18px));
+      }
+      /* corner viewfinder brackets */
+      .sr-brackets::before, .sr-brackets::after {
+        content: ""; position: absolute; width: 16px; height: 16px; pointer-events: none;
+      }
+      .sr-brackets::before { top: 6px; left: 6px; border-top: 2px solid ${T.arcCyan}AA; border-left: 2px solid ${T.arcCyan}AA; }
+      .sr-brackets::after { bottom: 6px; right: 6px; border-bottom: 2px solid ${T.arcCyan}AA; border-right: 2px solid ${T.arcCyan}AA; }
+      /* panel mount: a light sweep passes once */
+      .sr-scanin { position: relative; overflow: hidden; }
+      .sr-scanin::after {
+        content: ""; position: absolute; top: 0; bottom: 0; width: 34%;
+        background: linear-gradient(100deg, transparent, ${T.arcCyan}14, transparent);
+        animation: srScanIn 0.9s cubic-bezier(0.2,0,0,1) 1 both;
+        pointer-events: none;
+      }
+      @keyframes srScanIn { from { left: -40%; } to { left: 110%; } }
+      .sr-blink { animation: srBlinkStep 1.1s step-end infinite; }
+      @keyframes srBlinkStep { 0%,100% { opacity: 1; } 50% { opacity: 0.25; } }
+
       /* progress bar segments */
       .sr-seg { transition: background 400ms cubic-bezier(0.2,0,0,1), box-shadow 400ms; }
       .sr-seg-live { animation: srSegPulse 1.6s ease-in-out infinite; }
@@ -502,7 +526,8 @@ export function EngineStyles() {
       @media (prefers-reduced-motion: reduce) {
         .sr-wavebar, .sr-whisper::before, .sr-stamp-in, .sr-takeover, .sr-scene,
         .sr-xppop, .sr-xpnum, .sr-seg-live, .srof-blob, .srof-radar-sweep,
-        .sr-msg, .sr-typedot, .sr-alert-edge { animation: none !important; }
+        .sr-msg, .sr-typedot, .sr-alert-edge, .sr-blink { animation: none !important; }
+        .sr-scanin::after { display: none; }
         .sr-scene { opacity: 1; transform: none; }
       }
     `}</style>
