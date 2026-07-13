@@ -416,27 +416,61 @@ function MissionStartScene({ manifest, reduced, onBegin }: { manifest: MissionMa
   const hook = manifest.hook ?? manifest.transmission.lines[0];
   const missionNo = parseInt(manifest.caseNumber.replace(/\D/g, ""), 10) || 1;
   return (
-    <section style={{ maxWidth: 660, margin: "0 auto" }}>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", flexWrap: "wrap", gap: 8 }}>
-        <Eyebrow text={`Mission ${missionNo}`} color={T.arcCyan} />
-        <span style={{ fontFamily: MONO, fontSize: 10.5, letterSpacing: "0.1em", color: T.textDisabled }}>ABOUT 1 HOUR · SAVES AS YOU GO</span>
-      </div>
-      <h1 style={{ fontFamily: MONO, fontSize: "clamp(30px, 5.4vw, 46px)", fontWeight: 600, margin: "12px 0 16px", textShadow: `0 0 40px ${T.arcCyan}33` }}>
-        <Resolve text={manifest.title} reduced={reduced} />
-      </h1>
+    <section style={{ maxWidth: 880, margin: "0 auto" }}>
+      {/* the cold open — cinema first, then the plan */}
+      {manifest.scene && (
+        <div className="sr-scanin" style={{ position: "relative", borderRadius: 6, overflow: "hidden", border: `1px solid ${T.hairline}`, marginBottom: 18, boxShadow: "0 24px 60px -24px rgba(0,0,0,0.9)" }}>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={manifest.scene} alt="" style={{ width: "100%", aspectRatio: "21/8", objectFit: "cover", display: "block" }} />
+          <div aria-hidden style={{ position: "absolute", inset: 0, background: `linear-gradient(180deg, transparent 30%, ${T.inkBlack}E6 92%), linear-gradient(90deg, ${T.inkBlack}66, transparent 30%)` }} />
+          <div style={{ position: "absolute", left: 22, right: 22, bottom: 14, display: "flex", justifyContent: "space-between", alignItems: "flex-end", gap: 12, flexWrap: "wrap" }}>
+            <div>
+              <Eyebrow text={`Mission ${missionNo}`} color={T.arcCyan} />
+              <h1 style={{ fontFamily: MONO, fontSize: "clamp(28px, 5vw, 44px)", fontWeight: 600, margin: "6px 0 0", textShadow: "0 2px 20px rgba(0,0,0,0.9)" }}>
+                <Resolve text={manifest.title} reduced={reduced} />
+              </h1>
+            </div>
+            <span style={{ fontFamily: MONO, fontSize: 10.5, letterSpacing: "0.1em", color: T.textSecondary, textShadow: "0 1px 6px rgba(0,0,0,0.9)" }}>
+              ABOUT 1 HOUR · SAVES AS YOU GO
+            </span>
+          </div>
+        </div>
+      )}
+      {!manifest.scene && (
+        <h1 style={{ fontFamily: MONO, fontSize: "clamp(30px, 5.4vw, 46px)", fontWeight: 600, margin: "0 0 16px", textShadow: `0 0 40px ${T.arcCyan}33` }}>
+          <Resolve text={manifest.title} reduced={reduced} />
+        </h1>
+      )}
 
       <div style={{ margin: "0 0 18px" }}>
         <Bubble who="wren">{hook}</Bubble>
       </div>
 
-      <div className="sr-panel sr-brackets" style={{ background: `${T.panelRaised}D9`, border: `1px solid ${T.arcCyan}44`, padding: "18px 20px 20px" }}>
-        <div style={{ fontFamily: MONO, fontSize: 11, letterSpacing: "0.12em", color: T.textSecondary, marginBottom: 12 }}>
-          TODAY&rsquo;S MISSION MAP
+      {/* map + the WANTED card side by side */}
+      <div className="sr-two-col" style={{ display: "grid", gridTemplateColumns: "minmax(0, 1fr) 250px", gap: 16, alignItems: "start" }}>
+        <div className="sr-panel sr-brackets" style={{ border: `1px solid ${T.arcCyan}44`, padding: "18px 20px 20px" }}>
+          <div style={{ fontFamily: MONO, fontSize: 11, letterSpacing: "0.12em", color: T.textSecondary, marginBottom: 12 }}>
+            TODAY&rsquo;S MISSION MAP
+          </div>
+          <MissionMap manifest={manifest} pos={{ beat: "transmission" }} />
         </div>
-        <MissionMap manifest={manifest} pos={{ beat: "transmission" }} />
+
+        {manifest.actor.portrait && (
+          <div style={{ border: `1px solid ${T.threatRed}55`, borderRadius: 4, overflow: "hidden", background: T.panel, boxShadow: `0 0 34px ${T.threatRed}14, 0 14px 30px -16px rgba(0,0,0,0.8)` }}>
+            <div className="sr-hazard" style={{ fontFamily: MONO, fontSize: 10, fontWeight: 600, letterSpacing: "0.22em", color: T.threatRed, textAlign: "center", padding: "6px 0", borderBottom: `1px solid ${T.threatRed}44` }}>
+              SUSPECT
+            </div>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={manifest.actor.portrait} alt={`Surveillance photo of ${manifest.actor.codename}`} style={{ width: "100%", aspectRatio: "3/4", objectFit: "cover", display: "block", filter: "saturate(0.85)" }} />
+            <div style={{ padding: "10px 12px 12px" }}>
+              <div style={{ fontFamily: MONO, fontSize: 15, fontWeight: 600, color: T.threatRed }}>{manifest.actor.codename}</div>
+              <div style={{ fontSize: 12, lineHeight: 1.5, color: T.textSecondary, marginTop: 4 }}>{manifest.actor.mo}</div>
+            </div>
+          </div>
+        )}
       </div>
 
-      <div style={{ marginTop: 24 }}>
+      <div style={{ marginTop: 22 }}>
         <AmberButton label="START SKILL 1 →" onClick={onBegin} />
       </div>
     </section>
@@ -737,16 +771,19 @@ function BossScene({ manifest, reduced, audio, emit, onNext }: { manifest: Missi
           <Resolve text={manifest.incident.title} reduced={reduced} />
         </h1>
         <div className="sr-panel sr-brackets" style={{ background: `${T.panelRaised}D9`, border: `1px solid ${T.threatRed}44`, padding: "18px 20px 20px" }}>
-          <div style={{ display: "flex", gap: 16, alignItems: "center", marginBottom: 14 }}>
+          <div style={{ display: "flex", gap: 18, alignItems: "center", marginBottom: 16 }}>
             {manifest.actor.portrait && (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img src={manifest.actor.portrait} alt={manifest.actor.codename} style={{ width: 64, height: 80, objectFit: "cover", borderRadius: 3, border: `1px solid ${T.threatRed}66` }} />
+              <div className={reduced ? undefined : "sr-takeover"} style={{ position: "relative", flexShrink: 0 }}>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={manifest.actor.portrait} alt={manifest.actor.codename} style={{ width: 118, height: 148, objectFit: "cover", borderRadius: 4, border: `2px solid ${T.threatRed}88`, boxShadow: `0 0 30px ${T.threatRed}44` }} />
+                <span aria-hidden className="sr-blink" style={{ position: "absolute", top: 6, right: 6, width: 8, height: 8, borderRadius: "50%", background: T.threatRed, boxShadow: `0 0 10px ${T.threatRed}` }} />
+              </div>
             )}
             <div>
-              <div style={{ fontFamily: MONO, fontSize: 11, letterSpacing: "0.1em", color: T.threatRed }}>
+              <div style={{ fontFamily: MONO, fontSize: 12, letterSpacing: "0.12em", color: T.threatRed }}>
                 {manifest.actor.codename} IS LIVE
               </div>
-              <div style={{ fontSize: 14.5, lineHeight: 1.55, color: T.textSecondary, marginTop: 4 }}>
+              <div style={{ fontSize: 15, lineHeight: 1.6, color: T.textSecondary, marginTop: 6 }}>
                 Use your 3 skills. Beat the phases. No timer — think, then act.
               </div>
             </div>

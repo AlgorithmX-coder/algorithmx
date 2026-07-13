@@ -210,6 +210,8 @@ export interface MissionManifest {
   cycles: [CycleDef, CycleDef, CycleDef];
   /** One-line hook WREN speaks on the Mission Start map (≤20 words). Falls back to transmission.lines[0]. */
   hook?: string;
+  /** Cinematic 21:9 cold-open scene image (public/ path) — the mission's establishing shot. */
+  scene?: string;
   incident: {
     title: string;
     phases: number;

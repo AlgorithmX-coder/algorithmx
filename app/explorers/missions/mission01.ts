@@ -24,6 +24,9 @@ export const mission01: MissionManifest = {
     portrait: "/explorers/actors/phantom-hook.png",
   },
 
+  hook: "A fake email almost got Maya's account. Find out how it works.",
+  scene: "/explorers/scenes/m01-cold-open.jpg",
+
   transmission: {
     headline: "SIGNAL DETECTED",
     lines: [

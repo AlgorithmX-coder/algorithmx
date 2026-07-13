@@ -25,6 +25,7 @@ export const mission02: MissionManifest = {
   },
 
   hook: "Half your school is about to get scammed. Ready to stop it?",
+  scene: "/explorers/scenes/m02-cold-open.jpg",
 
   transmission: {
     headline: "BAIT IN THE WATER",

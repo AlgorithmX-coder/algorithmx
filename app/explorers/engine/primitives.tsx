@@ -37,7 +37,7 @@ export function RoomBackdrop({ reduced, tone }: { reduced: boolean; tone: string
         style={{
           position: "absolute",
           inset: 0,
-          background: `radial-gradient(ellipse 80% 55% at 50% 0%, ${tone}1C 0%, transparent 65%)`,
+          background: `radial-gradient(ellipse 80% 55% at 50% 0%, ${tone}30 0%, transparent 65%), radial-gradient(ellipse 60% 40% at 100% 100%, ${tone}14 0%, transparent 60%)`,
           transition: "background 700ms cubic-bezier(0.2,0,0,1)",
         }}
       />
