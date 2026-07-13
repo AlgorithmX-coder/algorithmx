@@ -1897,6 +1897,180 @@ function makeShockWaveMaterial(seed: number): THREE.ShaderMaterial {
   });
 }
 
+/* TRACKPAD OVERLAY — the physical cues that make a trackpad read as an
+ * inset glass plate instead of a painted rectangle: a soft inner shadow
+ * around the perimeter (the recess), a thin machined chamfer glint
+ * (brighter along the top edge where the key light grazes it), and a
+ * whisper of diagonal sheen across the glass. Painted RGBA, normal
+ * blending, layered just above the glass plane. */
+function makeTrackpadOverlayTexture(): THREE.Texture | null {
+  if (typeof document === "undefined") return null;
+  const W = 512;
+  const H = 328;
+  const c = document.createElement("canvas");
+  c.width = W;
+  c.height = H;
+  const ctx = c.getContext("2d");
+  if (!ctx) return null;
+  ctx.clearRect(0, 0, W, H);
+  /* Inner recess shadow — four edge gradients bleeding inward. */
+  const SHADOW = 26;
+  const edges: Array<[number, number, number, number, number, number]> = [
+    [0, 0, W, SHADOW, 0, 1], // top: gradient down
+    [0, H - SHADOW, W, SHADOW, 0, -1], // bottom: gradient up
+    [0, 0, SHADOW, H, 1, 0], // left: gradient right
+    [W - SHADOW, 0, SHADOW, H, -1, 0], // right: gradient left
+  ];
+  for (const [x, y, w, h, dx, dy] of edges) {
+    const g =
+      dx !== 0
+        ? ctx.createLinearGradient(dx > 0 ? x : x + w, 0, dx > 0 ? x + w : x, 0)
+        : ctx.createLinearGradient(0, dy > 0 ? y : y + h, 0, dy > 0 ? y + h : y);
+    g.addColorStop(0, "rgba(0,0,0,0.42)");
+    g.addColorStop(1, "rgba(0,0,0,0)");
+    ctx.fillStyle = g;
+    ctx.fillRect(x, y, w, h);
+  }
+  /* Machined chamfer glint — 2px frame, key-lit: brightest on the top
+   * edge, dimmer on the sides, faintest on the bottom. */
+  ctx.lineWidth = 2;
+  ctx.strokeStyle = "rgba(196,214,238,0.55)";
+  ctx.beginPath();
+  ctx.moveTo(3, 3);
+  ctx.lineTo(W - 3, 3);
+  ctx.stroke();
+  ctx.strokeStyle = "rgba(170,190,215,0.28)";
+  ctx.beginPath();
+  ctx.moveTo(3, 3);
+  ctx.lineTo(3, H - 3);
+  ctx.moveTo(W - 3, 3);
+  ctx.lineTo(W - 3, H - 3);
+  ctx.stroke();
+  ctx.strokeStyle = "rgba(150,170,195,0.16)";
+  ctx.beginPath();
+  ctx.moveTo(3, H - 3);
+  ctx.lineTo(W - 3, H - 3);
+  ctx.stroke();
+  /* Diagonal glass sheen — one soft low-alpha band. */
+  const sheen = ctx.createLinearGradient(0, 0, W, H);
+  sheen.addColorStop(0.32, "rgba(255,255,255,0)");
+  sheen.addColorStop(0.46, "rgba(255,255,255,0.05)");
+  sheen.addColorStop(0.6, "rgba(255,255,255,0)");
+  ctx.fillStyle = sheen;
+  ctx.fillRect(0, 0, W, H);
+  const tex = new THREE.CanvasTexture(c);
+  tex.colorSpace = THREE.SRGBColorSpace;
+  tex.anisotropy = 8;
+  tex.needsUpdate = true;
+  return tex;
+}
+
+/* KEYBOARD WELL INSET — a translucent inner-shadow frame laid over the
+ * well plane so the key area reads as a machined recess in the deck,
+ * not a dark decal. Transparent centre (the keys own that region); the
+ * depth cue lives in the visible margins around the key block, with a
+ * faint light catch along the inner front wall. */
+function makeWellInsetTexture(): THREE.Texture | null {
+  if (typeof document === "undefined") return null;
+  const W = 1024;
+  const H = 384;
+  const c = document.createElement("canvas");
+  c.width = W;
+  c.height = H;
+  const ctx = c.getContext("2d");
+  if (!ctx) return null;
+  ctx.clearRect(0, 0, W, H);
+  const SH = 30;
+  const edges: Array<[number, number, number, number, number, number]> = [
+    [0, 0, W, SH, 0, 1],
+    [0, H - SH, W, SH, 0, -1],
+    [0, 0, SH, H, 1, 0],
+    [W - SH, 0, SH, H, -1, 0],
+  ];
+  for (const [x, y, w, h, dx, dy] of edges) {
+    const g =
+      dx !== 0
+        ? ctx.createLinearGradient(dx > 0 ? x : x + w, 0, dx > 0 ? x + w : x, 0)
+        : ctx.createLinearGradient(0, dy > 0 ? y : y + h, 0, dy > 0 ? y + h : y);
+    g.addColorStop(0, "rgba(0,0,0,0.5)");
+    g.addColorStop(1, "rgba(0,0,0,0)");
+    ctx.fillStyle = g;
+    ctx.fillRect(x, y, w, h);
+  }
+  /* Light catching the inner front wall of the recess (bottom edge of
+   * the texture = front of the well). */
+  ctx.lineWidth = 2;
+  ctx.strokeStyle = "rgba(148,168,196,0.22)";
+  ctx.beginPath();
+  ctx.moveTo(4, H - 4);
+  ctx.lineTo(W - 4, H - 4);
+  ctx.stroke();
+  const tex = new THREE.CanvasTexture(c);
+  tex.colorSpace = THREE.SRGBColorSpace;
+  tex.anisotropy = 8;
+  tex.needsUpdate = true;
+  return tex;
+}
+
+/* SIDE PORTS — two USB-C slots + a headphone jack on the right chassis
+ * face. Tiny, but ports are one of the strongest "this is a real
+ * machine" cues: dark cavities with a thin machined rim catching light
+ * on the upper lip. Painted RGBA on a transparent strip. */
+function makeSidePortsTexture(): THREE.Texture | null {
+  if (typeof document === "undefined") return null;
+  const W = 512;
+  const H = 96;
+  const c = document.createElement("canvas");
+  c.width = W;
+  c.height = H;
+  const ctx = c.getContext("2d");
+  if (!ctx) return null;
+  ctx.clearRect(0, 0, W, H);
+  const slot = (cx: number, w: number, h: number) => {
+    const x = cx - w / 2;
+    const y = H / 2 - h / 2;
+    /* Cavity */
+    ctx.fillStyle = "rgba(2,3,6,0.96)";
+    roundRect(ctx, x, y, w, h, h / 2);
+    ctx.fill();
+    /* Machined rim — light on the upper lip, shadow under the lower. */
+    ctx.lineWidth = 2;
+    ctx.strokeStyle = "rgba(188,204,226,0.5)";
+    ctx.beginPath();
+    ctx.moveTo(x + h / 2, y - 1);
+    ctx.lineTo(x + w - h / 2, y - 1);
+    ctx.stroke();
+    ctx.strokeStyle = "rgba(0,0,0,0.5)";
+    ctx.beginPath();
+    ctx.moveTo(x + h / 2, y + h + 1);
+    ctx.lineTo(x + w - h / 2, y + h + 1);
+    ctx.stroke();
+    /* Inner tongue of a USB-C connector */
+    if (w > 60) {
+      ctx.fillStyle = "rgba(70,80,96,0.85)";
+      roundRect(ctx, x + 8, y + h / 2 - 2, w - 16, 4, 2);
+      ctx.fill();
+    }
+  };
+  slot(120, 92, 26); // USB-C
+  slot(260, 92, 26); // USB-C
+  /* Headphone jack — round cavity with rim glint. */
+  ctx.fillStyle = "rgba(2,3,6,0.96)";
+  ctx.beginPath();
+  ctx.arc(390, H / 2, 15, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.lineWidth = 2;
+  ctx.strokeStyle = "rgba(188,204,226,0.4)";
+  ctx.beginPath();
+  ctx.arc(390, H / 2, 15, Math.PI * 1.05, Math.PI * 1.95);
+  ctx.stroke();
+  const tex = new THREE.CanvasTexture(c);
+  tex.colorSpace = THREE.SRGBColorSpace;
+  tex.anisotropy = 8;
+  tex.needsUpdate = true;
+  return tex;
+}
+
 /* FLASH BURST — the central "bang": a hot core bloom with long diffraction
  * rays + a halo ring (replaces the plain round glow). Additive. */
 function makeFlashBurstTexture(): THREE.Texture | null {
@@ -3356,6 +3530,11 @@ function Laptop({
   const lidBrandTex = useLidBrandTexture();
   const lidBloomTex = useLidBloomTexture();
   const deckBadge = useMemo(() => makeDeckBadgeTextures(), []);
+  /* Base-realism detail textures: inset trackpad, recessed key well,
+   * side ports (all static; painted once). */
+  const trackpadOverlayTex = useMemo(() => makeTrackpadOverlayTexture(), []);
+  const wellInsetTex = useMemo(() => makeWellInsetTexture(), []);
+  const sidePortsTex = useMemo(() => makeSidePortsTexture(), []);
   /* Refs for the closed-laptop premium-polish layers: the wordmark
    *  pulses on a slow breath, the wider bloom behind it pulses on an
    *  out-of-phase slower wave so the glow never feels mechanical,
@@ -4504,6 +4683,22 @@ function Laptop({
           <planeGeometry args={[BASE_W * 0.86, BASE_D * 0.44]} />
           <meshStandardMaterial color={COLORS.keyboard} roughness={0.7} />
         </mesh>
+        {/* Well recess frame — inner-shadow overlay so the key area
+         *  reads as machined INTO the deck (the depth cue lives in the
+         *  visible margins around the key block; centre is transparent). */}
+        {wellInsetTex && (
+          <mesh
+            position={[0, BASE_H / 2 + 0.0056, -0.29]}
+            rotation={[-Math.PI / 2, 0, 0]}
+          >
+            <planeGeometry args={[BASE_W * 0.86, BASE_D * 0.44]} />
+            <meshBasicMaterial
+              map={wellInsetTex}
+              transparent
+              depthWrite={false}
+            />
+          </mesh>
+        )}
 
         {/* Speaker grilles removed - they read as black blobs flanking
          *  the keyboard at this camera angle, not as ultrabook speakers. */}
@@ -4805,19 +5000,40 @@ function Laptop({
           });
         })()}
 
-        {/* TRACKPAD positioned below the keyboard */}
-
-        {/* Trackpad - bumped vertical offset from +0.001 to +0.008 above
-         *  the chassis top. The previous 0.001 gap was small enough that
-         *  perspective depth precision z-fought with the chassis top
-         *  surface, causing a visible flicker on the trackpad. */}
+        {/* TRACKPAD — glass plate set into the palm rest. Two layers:
+         *  the glass itself (physical material, low roughness + high
+         *  clearcoat so it pulls a sheen off the studio env that the
+         *  brushed deck around it doesn't — the material CONTRAST is
+         *  what reads as "glass in aluminium"), and an overlay with the
+         *  recess shadow + machined chamfer glint + diagonal sheen.
+         *  Kept at +0.008 above the chassis top (z-fight headroom). */}
         <mesh
           position={[0, BASE_H / 2 + 0.008, 0.78]}
           rotation={[-Math.PI / 2, 0, 0]}
         >
           <planeGeometry args={[1.1, 0.7]} />
-          <meshStandardMaterial color={COLORS.trackpad} roughness={0.35} />
+          <meshPhysicalMaterial
+            color={COLORS.trackpad}
+            metalness={0.1}
+            roughness={0.16}
+            clearcoat={0.85}
+            clearcoatRoughness={0.18}
+            envMapIntensity={0.9}
+          />
         </mesh>
+        {trackpadOverlayTex && (
+          <mesh
+            position={[0, BASE_H / 2 + 0.0092, 0.78]}
+            rotation={[-Math.PI / 2, 0, 0]}
+          >
+            <planeGeometry args={[1.1, 0.7]} />
+            <meshBasicMaterial
+              map={trackpadOverlayTex}
+              transparent
+              depthWrite={false}
+            />
+          </mesh>
+        )}
 
         {/* DECK BADGE — ThinkPad-X1-style: brushed-silver "Algorithm"
          *  with a glowing red i-dot + an oversized glowing red "X", set
@@ -4853,6 +5069,82 @@ function Laptop({
               opacity={1}
               depthWrite={false}
               toneMapped={false}
+            />
+          </mesh>
+        )}
+
+        {/* DIAMOND-CUT EDGES — thin bright machined strips along the
+         *  deck's top perimeter (front + both sides). Real ultrabooks
+         *  carry a polished chamfer where the CNC pass cut the deck
+         *  edge; it catches the key light as a continuous bright line
+         *  and is one of the strongest "premium aluminium" cues. Bright
+         *  steel, near-mirror roughness, so the env map does the work. */}
+        {[
+          { pos: [0, BASE_H / 2, BASE_D / 2 - 0.012] as const, args: [BASE_W * 0.985, 0.005, 0.011] as const },
+          { pos: [-(BASE_W / 2 - 0.012), BASE_H / 2, 0] as const, args: [0.011, 0.005, BASE_D * 0.985] as const },
+          { pos: [BASE_W / 2 - 0.012, BASE_H / 2, 0] as const, args: [0.011, 0.005, BASE_D * 0.985] as const },
+        ].map((s, i) => (
+          <mesh key={`chamfer-${i}`} position={[s.pos[0], s.pos[1], s.pos[2]]}>
+            <boxGeometry args={[s.args[0], s.args[1], s.args[2]]} />
+            <meshStandardMaterial
+              color="#9aa5bb"
+              metalness={0.95}
+              roughness={0.26}
+              envMapIntensity={1.25}
+            />
+          </mesh>
+        ))}
+
+        {/* HINGE BARRELS — two dark machined cylinders at the back of
+         *  the deck where the lid pivots. Pure mechanical credibility:
+         *  a lid that opens with no visible hinge reads as a magic
+         *  flap. Slightly brighter knurled end caps face inward. */}
+        {[-1.05, 1.05].map((hx) => (
+          <group
+            key={`hinge-${hx}`}
+            position={[hx, BASE_H / 2 + 0.012, -BASE_D / 2 + 0.075]}
+          >
+            <mesh rotation={[0, 0, Math.PI / 2]}>
+              <cylinderGeometry args={[0.038, 0.038, 0.4, 24]} />
+              <meshStandardMaterial
+                color="#171a23"
+                metalness={0.85}
+                roughness={0.38}
+                envMapIntensity={0.9}
+              />
+            </mesh>
+            {/* End caps — catch a glint at the barrel ends */}
+            {[-0.2, 0.2].map((cx) => (
+              <mesh
+                key={`cap-${cx}`}
+                position={[cx, 0, 0]}
+                rotation={[0, 0, Math.PI / 2]}
+              >
+                <cylinderGeometry args={[0.04, 0.04, 0.012, 24]} />
+                <meshStandardMaterial
+                  color="#3a4152"
+                  metalness={0.95}
+                  roughness={0.3}
+                  envMapIntensity={1.1}
+                />
+              </mesh>
+            ))}
+          </group>
+        ))}
+
+        {/* SIDE PORTS — two USB-C + headphone jack on the right chassis
+         *  face (the side the camera sees). Dark cavities with a lit
+         *  machined rim; sits just off the face to avoid z-fighting. */}
+        {sidePortsTex && (
+          <mesh
+            position={[BASE_W / 2 + 0.002, 0.004, 0.35]}
+            rotation={[0, Math.PI / 2, 0]}
+          >
+            <planeGeometry args={[0.66, 0.055]} />
+            <meshBasicMaterial
+              map={sidePortsTex}
+              transparent
+              depthWrite={false}
             />
           </mesh>
         )}
