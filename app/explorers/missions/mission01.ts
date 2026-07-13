@@ -21,6 +21,7 @@ export const mission01: MissionManifest = {
   actor: {
     codename: "PHANTOM HOOK",
     mo: "Urgent fakes dressed as companies you trust.",
+    portrait: "/explorers/actors/phantom-hook.png",
   },
 
   transmission: {

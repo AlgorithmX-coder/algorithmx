@@ -768,18 +768,28 @@ function ClosedScene({ manifest, reduced, audio, emit, xp }: { manifest: Mission
       <Eyebrow text={`Case file — ${manifest.caseNumber}`} color={T.clearanceBrass} />
       <div style={{ marginTop: 14, background: T.manila, color: T.fileInk, borderRadius: 2, padding: "26px 28px 30px", boxShadow: "0 2px 0 rgba(0,0,0,0.55)", position: "relative" }}>
         <div style={{ display: "flex", gap: 20, alignItems: "flex-start", flexWrap: "wrap" }}>
-          <div style={{ width: 108, height: 128, background: T.fileInk, borderRadius: 2, display: "grid", placeItems: "center", padding: 10 }}>
-            <div style={{ display: "grid", gap: 6, width: "100%" }}>
-              {[80, 100, 60, 90].map((w, i) => (
-                <div key={i} style={{ height: 8, width: `${w}%`, background: "#3A4654" }} />
-              ))}
-              <div style={{ fontFamily: MONO, fontSize: 8.5, color: T.textDisabled, marginTop: 6, letterSpacing: "0.06em" }}>
-                PORTRAIT PENDING
-                <br />
-                DECLASSIFICATION
+          {manifest.actor.portrait ? (
+            <div className="sr-scene" style={{ width: 128, height: 160, borderRadius: 3, overflow: "hidden", boxShadow: "0 8px 22px rgba(0,0,0,0.5)", border: `1px solid ${T.fileInk}33`, position: "relative" }}>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={manifest.actor.portrait} alt={`Declassified surveillance photo of ${manifest.actor.codename}`} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+              <span aria-hidden style={{ position: "absolute", bottom: 0, left: 0, right: 0, fontFamily: MONO, fontSize: 7.5, letterSpacing: "0.1em", color: "#E8E2D0", background: "rgba(20,24,29,0.75)", padding: "3px 6px" }}>
+                DECLASSIFIED
+              </span>
+            </div>
+          ) : (
+            <div style={{ width: 108, height: 128, background: T.fileInk, borderRadius: 2, display: "grid", placeItems: "center", padding: 10 }}>
+              <div style={{ display: "grid", gap: 6, width: "100%" }}>
+                {[80, 100, 60, 90].map((w, i) => (
+                  <div key={i} style={{ height: 8, width: `${w}%`, background: "#3A4654" }} />
+                ))}
+                <div style={{ fontFamily: MONO, fontSize: 8.5, color: T.textDisabled, marginTop: 6, letterSpacing: "0.06em" }}>
+                  PORTRAIT PENDING
+                  <br />
+                  DECLASSIFICATION
+                </div>
               </div>
             </div>
-          </div>
+          )}
           <div style={{ flex: 1, minWidth: 240 }}>
             <div style={{ fontFamily: MONO, fontSize: 11, letterSpacing: "0.08em", opacity: 0.6 }}>THREAT ACTOR DOSSIER</div>
             <div style={{ fontFamily: MONO, fontSize: 24, fontWeight: 600, margin: "6px 0 10px" }}>{manifest.actor.codename}</div>

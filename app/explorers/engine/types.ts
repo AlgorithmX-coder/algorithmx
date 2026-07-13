@@ -196,7 +196,7 @@ export interface MissionManifest {
   title: string;
   block: 1 | 2 | 3 | 4;
   classification: Classification;
-  actor: { codename: string; mo: string };
+  actor: { codename: string; mo: string; portrait?: string };
   transmission: { headline: string; lines: string[] };
   briefing: {
     summary: string;

@@ -21,6 +21,7 @@ export const mission02: MissionManifest = {
   actor: {
     codename: "SIREN",
     mo: "Gives to get. Bait first, ask later.",
+    portrait: "/explorers/actors/siren.png",
   },
 
   transmission: {
