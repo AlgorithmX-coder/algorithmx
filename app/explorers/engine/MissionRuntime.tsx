@@ -24,6 +24,7 @@ import {
   GhostButton,
   HandlerChip,
   Resolve,
+  RoomBackdrop,
   StampMark,
   useReducedMotion,
 } from "./primitives";
@@ -64,6 +65,31 @@ function describePos(pos: BeatPos, manifest: MissionManifest): string {
   return pos.beat.toUpperCase();
 }
 
+/** The color journey: each beat type tints the room. */
+function toneFor(pos: BeatPos): string {
+  if (pos.beat === "incident") return T.threatRed;
+  if (pos.beat === "debrief") return T.confirmedGreen;
+  if (pos.beat === "closed") return T.clearanceBrass;
+  if (pos.beat === "cycle") {
+    if (pos.stage === "fieldwork") return T.actionAmber;
+    if (pos.stage === "checkpoint") return T.confirmedGreen;
+  }
+  return T.arcCyan;
+}
+
+/** Mission journey as 8 segments: tx, briefing, 3 cycles, incident, debrief, closed. */
+function progressFor(pos: BeatPos): { done: number; frac: number } {
+  if (pos.beat === "transmission") return { done: 0, frac: 0.3 };
+  if (pos.beat === "briefing") return { done: 1, frac: 0.3 };
+  if (pos.beat === "cycle") {
+    const stageFrac = pos.stage === "intel" ? 0.15 : pos.stage === "fieldwork" ? 0.5 : 0.85;
+    return { done: 2 + pos.cycleIndex, frac: stageFrac };
+  }
+  if (pos.beat === "incident") return { done: 5, frac: 0.5 };
+  if (pos.beat === "debrief") return { done: 6, frac: 0.5 };
+  return { done: 8, frac: 0 };
+}
+
 export default function MissionRuntime({ manifest }: { manifest: MissionManifest }) {
   const reduced = useReducedMotion();
   const audio = useSignalAudio();
@@ -74,9 +100,22 @@ export default function MissionRuntime({ manifest }: { manifest: MissionManifest
   const [resumeOffer, setResumeOffer] = useState<MissionCheckpoint | null>(null);
   const [ledgerOpen, setLedgerOpen] = useState(false);
   const [hydrated, setHydrated] = useState(false);
+  const [xpPop, setXpPop] = useState<{ amount: number; key: number } | null>(null);
   const seen = useRef<Set<string>>(new Set());
+  const prevXp = useRef(0);
 
   const xp = useMemo(() => events.reduce((sum, e) => sum + xpForEvent(e), 0), [events]);
+
+  /* reward feedback: every award flies a +N off the XP counter */
+  useEffect(() => {
+    const diff = xp - prevXp.current;
+    if (diff > 0 && prevXp.current > 0) {
+      setXpPop({ amount: diff, key: Date.now() });
+    } else if (diff > 0 && hydrated && !resumeOffer) {
+      setXpPop({ amount: diff, key: Date.now() });
+    }
+    prevXp.current = xp;
+  }, [xp, hydrated, resumeOffer]);
 
   /* ---- resume: offer a found checkpoint, never auto-jump ---- */
   useEffect(() => {
@@ -137,38 +176,62 @@ export default function MissionRuntime({ manifest }: { manifest: MissionManifest
     setResumeOffer(null);
   };
 
+  const tone = toneFor(pos);
+  const prog = progressFor(pos);
+
   return (
     <main style={{ minHeight: "100vh", background: T.inkBlack, color: T.textPrimary, fontFamily: BODY, position: "relative", overflow: "hidden" }}>
       <EngineStyles />
-      {/* the room */}
-      <div
-        aria-hidden
-        style={{
-          position: "absolute",
-          inset: 0,
-          backgroundImage: `linear-gradient(${T.hairline}22 1px, transparent 1px), linear-gradient(90deg, ${T.hairline}22 1px, transparent 1px)`,
-          backgroundSize: "32px 32px",
-          pointerEvents: "none",
-        }}
-      />
+      <RoomBackdrop reduced={reduced} tone={tone} />
 
       {/* mission HUD — ARC chrome, never corrupted */}
-      <div style={{ position: "relative", zIndex: 2, display: "flex", justifyContent: "space-between", alignItems: "center", padding: "14px 18px", borderBottom: `1px solid ${T.hairline}`, background: `${T.panel}CC` }}>
-        <span style={{ fontFamily: MONO, fontSize: 11, letterSpacing: "0.08em", color: T.textSecondary }}>
-          {manifest.caseNumber} // {manifest.title.toUpperCase()}
-        </span>
-        <span style={{ fontFamily: MONO, fontSize: 11, letterSpacing: "0.08em", color: T.textSecondary }}>
-          XP <span style={{ color: T.textPrimary }}>{xp}</span>
-          <span aria-hidden style={{ color: T.textDisabled }}> · </span>
-          <span style={{ color: T.arcCyan }}>{describePos(pos, manifest)}</span>
-        </span>
+      <div style={{ position: "relative", zIndex: 2, borderBottom: `1px solid ${T.hairline}`, background: `${T.panel}D9`, backdropFilter: "blur(8px)" }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "13px 18px" }}>
+          <span style={{ fontFamily: MONO, fontSize: 11.5, letterSpacing: "0.08em", color: T.textSecondary }}>
+            {manifest.caseNumber} <span style={{ color: T.textDisabled }}>//</span>{" "}
+            <span style={{ color: T.textPrimary }}>{manifest.title.toUpperCase()}</span>
+          </span>
+          <span style={{ fontFamily: MONO, fontSize: 12, letterSpacing: "0.08em", color: T.textSecondary, position: "relative" }}>
+            <span style={{ color: tone, transition: "color 500ms" }}>{describePos(pos, manifest)}</span>
+            <span aria-hidden style={{ color: T.textDisabled }}> · </span>
+            XP{" "}
+            <span key={xp} className="sr-xpnum" style={{ color: T.textPrimary, fontSize: 15, fontWeight: 600 }}>
+              {xp}
+            </span>
+            {xpPop && (
+              <span key={`pop-${xpPop.key}`} className="sr-xppop">
+                +{xpPop.amount} XP
+              </span>
+            )}
+          </span>
+        </div>
+        {/* mission journey bar */}
+        <div style={{ display: "flex", gap: 4, padding: "0 18px 10px" }}>
+          {["TX", "BRIEF", "C1", "C2", "C3", "INCIDENT", "DEBRIEF", "CLOSED"].map((seg, i) => {
+            const fill = i < prog.done ? 1 : i === prog.done ? prog.frac : 0;
+            const live = i === prog.done && pos.beat !== "closed";
+            return (
+              <div key={seg} style={{ flex: seg === "INCIDENT" ? 1.4 : 1, height: 4, background: T.hairline, borderRadius: 2, overflow: "hidden" }}>
+                <div
+                  className={live ? "sr-seg sr-seg-live" : "sr-seg"}
+                  style={{
+                    width: `${fill * 100}%`,
+                    height: "100%",
+                    background: i >= 7 ? T.clearanceBrass : tone,
+                    boxShadow: fill > 0 ? `0 0 8px ${tone}66` : "none",
+                  }}
+                />
+              </div>
+            );
+          })}
+        </div>
       </div>
 
-      <div style={{ position: "relative", maxWidth: 880, margin: "0 auto", padding: "44px 24px 90px" }}>
+      <div style={{ position: "relative", zIndex: 1, maxWidth: 880, margin: "0 auto", padding: "40px 24px 90px" }}>
         {resumeOffer ? (
           <ResumeScene cp={resumeOffer} manifest={manifest} onResume={resume} onRestart={restart} />
         ) : (
-          <>
+          <div key={JSON.stringify(pos)} className="sr-scene">
             {pos.beat === "transmission" && <TransmissionScene manifest={manifest} reduced={reduced} onNext={advance} />}
             {pos.beat === "briefing" && <BriefingScene manifest={manifest} reduced={reduced} onNext={advance} />}
             {pos.beat === "cycle" && (
@@ -187,8 +250,8 @@ export default function MissionRuntime({ manifest }: { manifest: MissionManifest
               <IncidentScene manifest={manifest} reduced={reduced} audio={audio} emit={emit} onNext={advance} />
             )}
             {pos.beat === "debrief" && <DebriefScene manifest={manifest} reduced={reduced} onNext={advance} />}
-            {pos.beat === "closed" && <ClosedScene manifest={manifest} reduced={reduced} audio={audio} emit={emit} />}
-          </>
+            {pos.beat === "closed" && <ClosedScene manifest={manifest} reduced={reduced} audio={audio} emit={emit} xp={xp} />}
+          </div>
         )}
       </div>
 
@@ -251,12 +314,12 @@ function TransmissionScene({ manifest, reduced, onNext }: { manifest: MissionMan
   return (
     <section style={{ paddingTop: 76 }}>
       <Eyebrow text="ARC secure net — incoming transmission" color={T.arcCyan} />
-      <h1 style={{ fontFamily: MONO, fontSize: "clamp(30px, 6vw, 52px)", fontWeight: 600, margin: "18px 0 26px", minHeight: "1.2em" }}>
+      <h1 style={{ fontFamily: MONO, fontSize: "clamp(34px, 6.5vw, 62px)", fontWeight: 600, margin: "18px 0 26px", minHeight: "1.2em", textShadow: `0 0 40px ${T.arcCyan}33` }}>
         <Resolve text={manifest.transmission.headline} reduced={reduced} />
       </h1>
-      <div style={{ maxWidth: 560, borderLeft: `2px solid ${T.hairline}`, paddingLeft: 18 }}>
+      <div style={{ maxWidth: 580, borderLeft: `3px solid ${T.arcCyan}66`, paddingLeft: 20 }}>
         {manifest.transmission.lines.map((line, i) => (
-          <p key={i} style={{ fontSize: 16, lineHeight: 1.6, color: i === 0 ? T.textPrimary : T.textSecondary, margin: i === 0 ? 0 : "12px 0 0" }}>
+          <p key={i} style={{ fontSize: 17.5, lineHeight: 1.65, color: i === 0 ? T.textPrimary : T.textSecondary, margin: i === 0 ? 0 : "14px 0 0" }}>
             {line}
           </p>
         ))}
@@ -279,19 +342,21 @@ function BriefingScene({ manifest, reduced, onNext }: { manifest: MissionManifes
             <Eyebrow text={`${manifest.caseNumber} // suspected actor: ${manifest.actor.codename}`} />
             <span style={{ fontFamily: MONO, fontSize: 11, color: T.textDisabled }}>ARC // SIGNAL ROOM</span>
           </div>
-          <h2 style={{ fontFamily: MONO, fontSize: 26, fontWeight: 600, margin: "14px 0 4px" }}>{manifest.title}</h2>
-          <p style={{ color: T.textSecondary, fontSize: 15, lineHeight: 1.6, margin: "10px 0 22px", maxWidth: 560 }}>{manifest.briefing.summary}</p>
-          <ol style={{ listStyle: "none", margin: 0, padding: 0, display: "grid", gap: 8, maxWidth: 480 }}>
+          <h2 style={{ fontFamily: MONO, fontSize: "clamp(26px, 4.5vw, 38px)", fontWeight: 600, margin: "14px 0 4px" }}>{manifest.title}</h2>
+          <p style={{ color: T.textSecondary, fontSize: 16.5, lineHeight: 1.65, margin: "10px 0 24px", maxWidth: 580 }}>{manifest.briefing.summary}</p>
+          <ol style={{ listStyle: "none", margin: 0, padding: 0, display: "grid", gap: 10, maxWidth: 520 }}>
             {manifest.briefing.objectives.map((o, i) => (
-              <li key={o} style={{ fontFamily: MONO, fontSize: 13, color: T.textPrimary, background: T.panelRaised, border: `1px solid ${T.hairline}`, borderRadius: 2, padding: "10px 14px", display: "flex", gap: 12 }}>
-                <span style={{ color: T.arcCyan }}>{String(i + 1).padStart(2, "0")}</span>
+              <li key={o} className="sr-choice" style={{ fontFamily: MONO, fontSize: 14.5, color: T.textPrimary, background: T.panelRaised, border: `1px solid ${T.hairline}`, borderRadius: 3, padding: "14px 16px", display: "flex", gap: 14, alignItems: "center" }}>
+                <span style={{ display: "grid", placeItems: "center", minWidth: 28, height: 28, borderRadius: 3, background: `${T.arcCyan}1A`, border: `1px solid ${T.arcCyan}55`, color: T.arcCyan, fontSize: 12.5, fontWeight: 600 }}>
+                  {i + 1}
+                </span>
                 {o}
               </li>
             ))}
           </ol>
-          <div style={{ marginTop: 24, display: "flex", flexWrap: "wrap", alignItems: "center", gap: 16 }}>
+          <div style={{ marginTop: 26, display: "flex", flexWrap: "wrap", alignItems: "center", gap: 16 }}>
             <HandlerChip reduced={reduced} />
-            <p style={{ margin: 0, fontSize: 14, color: T.textSecondary, fontStyle: "italic" }}>&ldquo;{manifest.briefing.wrenLine}&rdquo;</p>
+            <p style={{ margin: 0, fontSize: 15.5, color: T.textPrimary, fontStyle: "italic", flex: 1, minWidth: 240 }}>&ldquo;{manifest.briefing.wrenLine}&rdquo;</p>
           </div>
         </div>
       </div>
@@ -366,17 +431,19 @@ function IntelStage({ cycle, cycleIndex, audio, emit, onNext }: { cycle: CycleDe
 
   return (
     <div style={{ maxWidth: 620 }}>
-      <div style={{ background: T.panel, border: `1px solid ${T.hairline}`, borderRadius: 3, padding: "20px 22px" }}>
-        {cycle.intel.beats.map((b, i) => (
-          <p key={i} style={{ fontSize: 15, lineHeight: 1.65, color: T.textPrimary, margin: i === 0 ? 0 : "14px 0 0" }}>
-            {b}
-          </p>
-        ))}
+      <div style={{ display: "flex", gap: 14, alignItems: "flex-start", background: `${T.panel}E6`, border: `1px solid ${T.hairline}`, borderLeft: `3px solid ${T.arcCyan}88`, borderRadius: 3, padding: "22px 24px" }}>
+        <div style={{ flex: 1 }}>
+          {cycle.intel.beats.map((b, i) => (
+            <p key={i} style={{ fontSize: 17, lineHeight: 1.7, color: T.textPrimary, margin: i === 0 ? 0 : "16px 0 0" }}>
+              {b}
+            </p>
+          ))}
+        </div>
       </div>
 
-      <div style={{ marginTop: 16, background: T.panelRaised, border: `1px solid ${T.hairline}`, borderRadius: 3, padding: "18px 20px" }}>
+      <div style={{ marginTop: 16, background: `${T.panelRaised}E6`, border: `1px solid ${T.actionAmber}44`, borderRadius: 3, padding: "20px 22px", boxShadow: `0 0 30px ${T.actionAmber}0F` }}>
         <Eyebrow text="Prediction — call it before you see it" color={T.actionAmber} />
-        <p style={{ fontSize: 15, lineHeight: 1.6, margin: "10px 0 12px" }}>{p.question}</p>
+        <p style={{ fontSize: 16.5, lineHeight: 1.6, margin: "12px 0 14px", fontWeight: 500 }}>{p.question}</p>
         <div style={{ display: "grid", gap: 8 }}>
           {p.options.map((o, i) => {
             const isPicked = picked === i;
@@ -385,17 +452,16 @@ function IntelStage({ cycle, cycleIndex, audio, emit, onNext }: { cycle: CycleDe
               <button
                 key={o}
                 onClick={() => choose(i)}
-                className="sr-btn"
+                className="sr-btn sr-choice"
                 style={{
                   textAlign: "left",
-                  fontFamily: MONO,
-                  fontSize: 13,
-                  lineHeight: 1.5,
+                  fontSize: 15,
+                  lineHeight: 1.55,
                   color: state ?? T.textPrimary,
                   background: state ? `${state}14` : T.panel,
                   border: `1px solid ${state ?? T.hairline}`,
-                  borderRadius: 3,
-                  padding: "11px 13px",
+                  borderRadius: 4,
+                  padding: "15px 17px",
                   cursor: settled ? "default" : "pointer",
                 }}
               >
@@ -485,8 +551,8 @@ function CheckpointStage({ cycle, cycleIndex, reduced, audio, emit, onNext }: { 
             {Math.min(qIndex + 1, questions.length)}/{questions.length}
           </span>
         </div>
-        <p style={{ fontSize: 15, lineHeight: 1.6, margin: "12px 0 12px" }}>{q.question}</p>
-        <div style={{ display: "grid", gap: 8 }}>
+        <p style={{ fontSize: 16.5, lineHeight: 1.6, margin: "14px 0 14px", fontWeight: 500 }}>{q.question}</p>
+        <div style={{ display: "grid", gap: 10 }}>
           {q.options.map((o, i) => {
             const isPicked = picked === i;
             const state = isPicked ? (i === q.answer ? T.confirmedGreen : T.threatRed) : null;
@@ -494,17 +560,16 @@ function CheckpointStage({ cycle, cycleIndex, reduced, audio, emit, onNext }: { 
               <button
                 key={o}
                 onClick={() => choose(i)}
-                className="sr-btn"
+                className="sr-btn sr-choice"
                 style={{
                   textAlign: "left",
-                  fontFamily: MONO,
-                  fontSize: 13,
-                  lineHeight: 1.5,
+                  fontSize: 15,
+                  lineHeight: 1.55,
                   color: state ?? T.textPrimary,
                   background: state ? `${state}14` : T.panelRaised,
                   border: `1px solid ${state ?? T.hairline}`,
-                  borderRadius: 3,
-                  padding: "11px 13px",
+                  borderRadius: 4,
+                  padding: "15px 17px",
                   cursor: passed ? "default" : "pointer",
                 }}
               >
@@ -600,7 +665,7 @@ function DebriefScene({ manifest, reduced, onNext }: { manifest: MissionManifest
 
 /* -------------------------------------------------------- case closed */
 
-function ClosedScene({ manifest, reduced, audio, emit }: { manifest: MissionManifest; reduced: boolean; audio: ReturnType<typeof useSignalAudio>; emit: (e: AwardEvent) => void }) {
+function ClosedScene({ manifest, reduced, audio, emit, xp }: { manifest: MissionManifest; reduced: boolean; audio: ReturnType<typeof useSignalAudio>; emit: (e: AwardEvent) => void; xp: number }) {
   const [stamped, setStamped] = useState(false);
 
   useEffect(() => {
@@ -661,9 +726,15 @@ function ClosedScene({ manifest, reduced, audio, emit }: { manifest: MissionMani
       </div>
 
       {stamped && (
-        <p style={{ textAlign: "center", marginTop: 44, fontFamily: MONO, fontSize: 13, color: T.textSecondary, letterSpacing: "0.06em" }}>
-          That&rsquo;s the mission, Operative. ARC out.
-        </p>
+        <div className="sr-scene" style={{ textAlign: "center", marginTop: 34 }}>
+          <div style={{ fontFamily: MONO, fontSize: 12, letterSpacing: "0.14em", color: T.textSecondary }}>MISSION XP</div>
+          <div className="sr-xpnum" style={{ fontFamily: MONO, fontSize: 52, fontWeight: 600, color: T.clearanceBrass, textShadow: `0 0 34px ${T.clearanceBrass}55`, lineHeight: 1.1 }}>
+            {xp}
+          </div>
+          <p style={{ marginTop: 22, fontFamily: MONO, fontSize: 13.5, color: T.textSecondary, letterSpacing: "0.06em" }}>
+            That&rsquo;s the mission, Operative. ARC out.
+          </p>
+        </div>
       )}
     </section>
   );

@@ -24,6 +24,40 @@ export function useReducedMotion(): boolean {
   return reduced;
 }
 
+/* ------------------------------------------------------- room backdrop */
+/* The operations floor, lesson edition: the room is alive — drifting
+   signal gas, dot dust, radar rings, a ground plane — and each beat
+   tints it with its own color (tone). Cheap: transforms/opacity only. */
+
+export function RoomBackdrop({ reduced, tone }: { reduced: boolean; tone: string }) {
+  return (
+    <div aria-hidden style={{ position: "fixed", inset: 0, zIndex: 0, pointerEvents: "none", overflow: "hidden" }}>
+      {/* beat tone wash — the color journey between beats */}
+      <div
+        style={{
+          position: "absolute",
+          inset: 0,
+          background: `radial-gradient(ellipse 80% 55% at 50% 0%, ${tone}1C 0%, transparent 65%)`,
+          transition: "background 700ms cubic-bezier(0.2,0,0,1)",
+        }}
+      />
+      {/* drifting signal gas */}
+      <div className="srof-blob" style={{ top: "-20vmax", right: "-14vmax", width: "56vmax", height: "56vmax", background: `radial-gradient(circle, ${tone}1F, transparent 62%)`, animationName: reduced ? "none" : "srofDriftA" }} />
+      <div className="srof-blob" style={{ bottom: "-24vmax", left: "-16vmax", width: "62vmax", height: "62vmax", background: "radial-gradient(circle, rgba(42,91,143,0.24), transparent 62%)", animationName: reduced ? "none" : "srofDriftB" }} />
+      {/* dot dust */}
+      <div className="srof-dots srof-dots-far" />
+      <div className="srof-dots srof-dots-near" />
+      {/* radar rings, corner */}
+      <div className="srof-radar">
+        <div className="srof-radar-rings" />
+        {!reduced && <div className="srof-radar-sweep" />}
+      </div>
+      {/* ground plane */}
+      <div className="srof-floor" />
+    </div>
+  );
+}
+
 /* ------------------------------------------------------------ eyebrow */
 
 export function Eyebrow({ text, color = T.textSecondary }: { text: string; color?: string }) {
@@ -48,17 +82,19 @@ export function AmberButton({ label, onClick }: { label: string; onClick: () => 
   return (
     <button
       onClick={onClick}
-      className="sr-btn"
+      className="sr-btn sr-cta"
       style={{
         fontFamily: MONO,
-        fontSize: 13,
+        fontSize: 14.5,
+        fontWeight: 600,
         letterSpacing: "0.06em",
         color: T.inkBlack,
         background: T.actionAmber,
         border: "none",
-        borderRadius: 3,
-        padding: "12px 22px",
+        borderRadius: 4,
+        padding: "16px 28px",
         cursor: "pointer",
+        boxShadow: `0 0 24px ${T.actionAmber}40, 0 4px 14px rgba(0,0,0,0.45)`,
       }}
     >
       {label}
@@ -299,11 +335,79 @@ export function EngineStyles() {
         transition: width 120ms linear;
       }
 
+      /* CTAs get lift + press */
+      .sr-cta { transition: filter 140ms cubic-bezier(0.2,0,0,1), transform 140ms cubic-bezier(0.2,0,0,1); }
+      .sr-cta:hover { filter: brightness(1.12); transform: translateY(-1px); }
+      .sr-cta:active { transform: translateY(1px); }
+
+      /* scene entrance — every beat rises in */
+      .sr-scene { animation: srSceneIn 0.5s cubic-bezier(0.16,1,0.3,1) both; }
+      @keyframes srSceneIn { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: none; } }
+
+      /* XP pop — the reward flies */
+      .sr-xppop {
+        position: absolute; right: 0; top: 100%;
+        font-family: ${MONO}; font-size: 15px; font-weight: 600;
+        color: ${T.confirmedGreen}; text-shadow: 0 0 14px ${T.confirmedGreen}66;
+        animation: srXpPop 1.1s cubic-bezier(0.16,1,0.3,1) both;
+        pointer-events: none; white-space: nowrap;
+      }
+      @keyframes srXpPop {
+        0% { opacity: 0; transform: translateY(6px) scale(0.9); }
+        18% { opacity: 1; transform: translateY(0) scale(1.12); }
+        30% { transform: translateY(0) scale(1); }
+        80% { opacity: 1; }
+        100% { opacity: 0; transform: translateY(-14px); }
+      }
+      .sr-xpnum { display: inline-block; animation: srXpNum 0.5s cubic-bezier(0.2,0,0,1); }
+      @keyframes srXpNum { 0% { transform: scale(1.35); color: ${T.confirmedGreen}; } 100% { transform: scale(1); } }
+
+      /* choice buttons — bigger, alive */
+      .sr-choice { transition: transform 180ms cubic-bezier(0.16,1,0.3,1), box-shadow 180ms, border-color 180ms; }
+      @media (hover:hover) {
+        .sr-choice:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 10px 26px -12px rgba(0,0,0,0.8), 0 0 18px -6px ${T.arcCyan}44; border-color: ${T.arcCyan}88 !important; }
+      }
+
+      /* progress bar segments */
+      .sr-seg { transition: background 400ms cubic-bezier(0.2,0,0,1), box-shadow 400ms; }
+      .sr-seg-live { animation: srSegPulse 1.6s ease-in-out infinite; }
+      @keyframes srSegPulse { 0%,100% { opacity: 0.65; } 50% { opacity: 1; } }
+
+      /* ── the lesson room ── */
+      .srof-blob { position: absolute; border-radius: 50%; filter: blur(70px); mix-blend-mode: screen; opacity: 0.65; will-change: transform; animation-duration: 85s; animation-timing-function: ease-in-out; animation-iteration-count: infinite; animation-direction: alternate; }
+      @keyframes srofDriftA { from { transform: translate3d(0,0,0) scale(1); } to { transform: translate3d(-6vw, 5vh, 0) scale(1.14); } }
+      @keyframes srofDriftB { from { transform: translate3d(0,0,0) scale(1.05); } to { transform: translate3d(6vw, -4vh, 0) scale(1); } }
+      .srof-dots { position: absolute; inset: 0; background-repeat: repeat; }
+      .srof-dots-far { opacity: 0.55; background-size: 230px 230px; background-image:
+        radial-gradient(1px 1px at 30px 40px, ${T.arcCyan}40, transparent),
+        radial-gradient(1px 1px at 140px 90px, ${T.textSecondary}30, transparent),
+        radial-gradient(1px 1px at 80px 170px, ${T.arcCyan}2C, transparent); }
+      .srof-dots-near { opacity: 0.4; background-size: 350px 350px; background-image:
+        radial-gradient(1.5px 1.5px at 60px 100px, ${T.arcCyan}55, transparent),
+        radial-gradient(1.4px 1.4px at 240px 210px, ${T.textSecondary}3C, transparent); }
+      .srof-radar { position: absolute; top: -10vmax; right: -10vmax; width: 32vmax; height: 32vmax; }
+      .srof-radar-rings { position: absolute; inset: 0; border-radius: 50%;
+        background: repeating-radial-gradient(circle at center, transparent 0 calc(20% - 1px), ${T.arcCyan}20 calc(20% - 1px) 20%);
+        border: 1px solid ${T.arcCyan}2A; }
+      .srof-radar-sweep { position: absolute; inset: 0; border-radius: 50%;
+        background: conic-gradient(from 0deg, ${T.arcCyan}30 0deg, ${T.arcCyan}0C 42deg, transparent 70deg);
+        animation: srofSpin 17s linear infinite; }
+      @keyframes srofSpin { to { transform: rotate(360deg); } }
+      .srof-floor { position: absolute; left: -20%; right: -20%; bottom: -6vh; height: 30vh;
+        background: repeating-linear-gradient(90deg, ${T.arcCyan}12 0 1px, transparent 1px 90px),
+                    repeating-linear-gradient(0deg, ${T.arcCyan}0E 0 1px, transparent 1px 46px);
+        transform: perspective(640px) rotateX(58deg); transform-origin: 50% 100%;
+        mask-image: linear-gradient(180deg, transparent 0%, black 55%);
+        -webkit-mask-image: linear-gradient(180deg, transparent 0%, black 55%);
+        opacity: 0.45; }
+
       @media (max-width: 760px) {
         .sr-two-col { grid-template-columns: 1fr !important; }
       }
       @media (prefers-reduced-motion: reduce) {
-        .sr-wavebar, .sr-whisper::before, .sr-stamp-in, .sr-takeover { animation: none !important; }
+        .sr-wavebar, .sr-whisper::before, .sr-stamp-in, .sr-takeover, .sr-scene,
+        .sr-xppop, .sr-xpnum, .sr-seg-live, .srof-blob, .srof-radar-sweep { animation: none !important; }
+        .sr-scene { opacity: 1; transform: none; }
       }
     `}</style>
   );
