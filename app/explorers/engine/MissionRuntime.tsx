@@ -115,16 +115,18 @@ function MissionMap({ manifest, pos, stampNew }: { manifest: MissionManifest; po
         return (
           <div
             key={r.label}
-            className={justStamped ? "sr-scene" : undefined}
+            className={`sr-card${boss ? " sr-hazard" : ""}${justStamped ? " sr-scene" : ""}`}
             style={{
               display: "flex",
               gap: 14,
               alignItems: "center",
               background: isCurrent ? `${accent}0F` : `${T.panel}D9`,
               border: `1px solid ${isDone ? `${T.confirmedGreen}66` : isCurrent ? `${accent}88` : T.hairline}`,
+              borderLeft: `3px solid ${isDone ? T.confirmedGreen : isCurrent ? accent : T.hairline}`,
               borderRadius: 4,
               padding: "14px 16px",
               position: "relative",
+              boxShadow: isCurrent ? `0 0 24px -6px ${accent}44, 0 6px 16px -10px rgba(0,0,0,0.7)` : "0 4px 12px -8px rgba(0,0,0,0.5)",
             }}
           >
             <span

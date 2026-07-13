@@ -47,6 +47,23 @@ export function RoomBackdrop({ reduced, tone }: { reduced: boolean; tone: string
       {/* dot dust */}
       <div className="srof-dots srof-dots-far" />
       <div className="srof-dots srof-dots-near" />
+      {/* analyst console chatter — the coding background, edges only */}
+      {[
+        { text: "> scan --deep inbound.msg ... 3 flags", top: "16%", left: "2%", delay: "0s", peak: 0.15 },
+        { text: "> trace route → skinstorm-event.net → HUB", top: "34%", left: "1.5%", delay: "4.5s", peak: 0.12 },
+        { text: "> match fingerprint: domain ✓ clock ✓", top: "58%", left: "3%", delay: "9s", peak: 0.14 },
+        { text: "uplink 98.2% · signal locked", top: "12%", right: "3%", delay: "2.5s", peak: 0.12 },
+        { text: "> verify sender ... FAILED", top: "72%", right: "2%", delay: "7s", peak: 0.15 },
+        { text: "> block(bait) && report(hub)", top: "86%", left: "2%", delay: "11.5s", peak: 0.12 },
+      ].map((c, i) => (
+        <span
+          key={i}
+          className="srof-code"
+          style={{ top: c.top, left: c.left, right: c.right, animationDelay: c.delay, "--peak": c.peak } as React.CSSProperties}
+        >
+          {c.text}
+        </span>
+      ))}
       {/* radar rings, corner */}
       <div className="srof-radar">
         <div className="srof-radar-rings" />
@@ -113,12 +130,14 @@ export function Bubble({ who, children, tone }: { who: "wren" | "you" | "villain
         style={{
           maxWidth: "78%",
           background: mine ? `${T.actionAmber}14` : who === "villain" ? `${T.threatRed}10` : T.panelRaised,
+          backgroundImage: "linear-gradient(180deg, rgba(255,255,255,0.045) 0%, transparent 45%)",
           border: `1px solid ${mine ? `${T.actionAmber}66` : who === "villain" ? `${T.threatRed}66` : tone ? `${tone}44` : T.hairline}`,
           borderRadius: mine ? "14px 14px 3px 14px" : "14px 14px 14px 3px",
           padding: "12px 16px",
           fontSize: 16,
           lineHeight: 1.6,
           color: T.textPrimary,
+          boxShadow: "0 4px 14px -8px rgba(0,0,0,0.6)",
         }}
       >
         {children}
@@ -175,12 +194,12 @@ export function AmberButton({ label, onClick }: { label: string; onClick: () => 
         fontWeight: 600,
         letterSpacing: "0.06em",
         color: T.inkBlack,
-        background: T.actionAmber,
+        background: `linear-gradient(180deg, #F5C169 0%, ${T.actionAmber} 55%, #D68F2C 100%)`,
         border: "none",
         borderRadius: 4,
         padding: "16px 28px",
         cursor: "pointer",
-        boxShadow: `0 0 24px ${T.actionAmber}40, 0 4px 14px rgba(0,0,0,0.45)`,
+        boxShadow: `0 0 24px ${T.actionAmber}40, 0 4px 14px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.45)`,
       }}
     >
       {label}
@@ -464,10 +483,30 @@ export function EngineStyles() {
       }
 
       /* ── techy chrome kit ── */
-      /* chamfered HUD-notch panel (the art doc's 45° cut, finally used) */
+      /* chamfered HUD-notch panel (the art doc's 45° cut) — now with a
+         filled surface: blueprint micro-grid + top light + corner glow */
       .sr-panel {
         position: relative;
         clip-path: polygon(0 0, calc(100% - 18px) 0, 100% 18px, 100% 100%, 18px 100%, 0 calc(100% - 18px));
+        background-image:
+          linear-gradient(180deg, rgba(255,255,255,0.04) 0%, transparent 22%),
+          radial-gradient(ellipse 60% 40% at 85% 0%, ${T.arcCyan}0D 0%, transparent 60%),
+          linear-gradient(${T.hairline}30 1px, transparent 1px),
+          linear-gradient(90deg, ${T.hairline}30 1px, transparent 1px) !important;
+        background-size: auto, auto, 22px 22px, 22px 22px;
+        background-color: ${T.panelRaised}E6;
+      }
+      /* filled card rows (map rows, skill checklists) */
+      .sr-card {
+        background-image:
+          linear-gradient(180deg, rgba(255,255,255,0.035) 0%, transparent 30%),
+          repeating-linear-gradient(45deg, rgba(255,255,255,0.012) 0 1px, transparent 1px 7px);
+      }
+      /* hazard corner for boss surfaces */
+      .sr-hazard {
+        background-image:
+          linear-gradient(180deg, rgba(255,255,255,0.03) 0%, transparent 25%),
+          repeating-linear-gradient(135deg, ${T.threatRed}14 0 10px, transparent 10px 22px) !important;
       }
       /* corner viewfinder brackets */
       .sr-brackets::before, .sr-brackets::after {
@@ -504,6 +543,18 @@ export function EngineStyles() {
       .srof-dots-near { opacity: 0.4; background-size: 350px 350px; background-image:
         radial-gradient(1.5px 1.5px at 60px 100px, ${T.arcCyan}55, transparent),
         radial-gradient(1.4px 1.4px at 240px 210px, ${T.textSecondary}3C, transparent); }
+      /* drifting analyst-console lines — the coding background.
+         Edge-anchored, faint, never behind the text column. */
+      .srof-code {
+        position: absolute; font-family: ${MONO}; font-size: 11px;
+        letter-spacing: 0.06em; color: ${T.arcCyan}; white-space: nowrap;
+        opacity: 0; animation: srofCode 14s ease-in-out infinite;
+      }
+      @keyframes srofCode {
+        0%, 100% { opacity: 0; transform: translateY(6px); }
+        12%, 78% { opacity: var(--peak, 0.14); transform: translateY(0); }
+        90% { opacity: 0; }
+      }
       .srof-radar { position: absolute; top: -10vmax; right: -10vmax; width: 32vmax; height: 32vmax; }
       .srof-radar-rings { position: absolute; inset: 0; border-radius: 50%;
         background: repeating-radial-gradient(circle at center, transparent 0 calc(20% - 1px), ${T.arcCyan}20 calc(20% - 1px) 20%);
@@ -528,6 +579,7 @@ export function EngineStyles() {
         .sr-xppop, .sr-xpnum, .sr-seg-live, .srof-blob, .srof-radar-sweep,
         .sr-msg, .sr-typedot, .sr-alert-edge, .sr-blink { animation: none !important; }
         .sr-scanin::after { display: none; }
+        .srof-code { animation: none !important; opacity: 0.08; }
         .sr-scene { opacity: 1; transform: none; }
       }
     `}</style>
