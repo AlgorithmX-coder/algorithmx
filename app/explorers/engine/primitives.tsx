@@ -24,6 +24,145 @@ export function useReducedMotion(): boolean {
   return reduced;
 }
 
+/* ------------------------------------------------------- room backdrop */
+/* The operations floor, lesson edition: the room is alive — drifting
+   signal gas, dot dust, radar rings, a ground plane — and each beat
+   tints it with its own color (tone). Cheap: transforms/opacity only. */
+
+export function RoomBackdrop({ reduced, tone }: { reduced: boolean; tone: string }) {
+  return (
+    <div aria-hidden style={{ position: "fixed", inset: 0, zIndex: 0, pointerEvents: "none", overflow: "hidden" }}>
+      {/* beat tone wash — the color journey between beats */}
+      <div
+        style={{
+          position: "absolute",
+          inset: 0,
+          background: `radial-gradient(ellipse 80% 55% at 50% 0%, ${tone}30 0%, transparent 65%), radial-gradient(ellipse 60% 40% at 100% 100%, ${tone}14 0%, transparent 60%)`,
+          transition: "background 700ms cubic-bezier(0.2,0,0,1)",
+        }}
+      />
+      {/* drifting signal gas */}
+      <div className="srof-blob" style={{ top: "-20vmax", right: "-14vmax", width: "56vmax", height: "56vmax", background: `radial-gradient(circle, ${tone}1F, transparent 62%)`, animationName: reduced ? "none" : "srofDriftA" }} />
+      <div className="srof-blob" style={{ bottom: "-24vmax", left: "-16vmax", width: "62vmax", height: "62vmax", background: "radial-gradient(circle, rgba(42,91,143,0.24), transparent 62%)", animationName: reduced ? "none" : "srofDriftB" }} />
+      {/* dot dust */}
+      <div className="srof-dots srof-dots-far" />
+      <div className="srof-dots srof-dots-near" />
+      {/* analyst console chatter — the coding background, edges only */}
+      {[
+        { text: "> scan --deep inbound.msg ... 3 flags", top: "16%", left: "2%", delay: "0s", peak: 0.15 },
+        { text: "> trace route → skinstorm-event.net → HUB", top: "34%", left: "1.5%", delay: "4.5s", peak: 0.12 },
+        { text: "> match fingerprint: domain ✓ clock ✓", top: "58%", left: "3%", delay: "9s", peak: 0.14 },
+        { text: "uplink 98.2% · signal locked", top: "12%", right: "3%", delay: "2.5s", peak: 0.12 },
+        { text: "> verify sender ... FAILED", top: "72%", right: "2%", delay: "7s", peak: 0.15 },
+        { text: "> block(bait) && report(hub)", top: "86%", left: "2%", delay: "11.5s", peak: 0.12 },
+      ].map((c, i) => (
+        <span
+          key={i}
+          className="srof-code"
+          style={{ top: c.top, left: c.left, right: c.right, animationDelay: c.delay, "--peak": c.peak } as React.CSSProperties}
+        >
+          {c.text}
+        </span>
+      ))}
+      {/* radar rings, corner */}
+      <div className="srof-radar">
+        <div className="srof-radar-rings" />
+        {!reduced && <div className="srof-radar-sweep" />}
+      </div>
+      {/* ground plane */}
+      <div className="srof-floor" />
+    </div>
+  );
+}
+
+/* ------------------------------------------------------------- faces */
+/* Character presence without portrait art (yet): signature chips. */
+
+export function Face({ who }: { who: "wren" | "you" | "villain" | string }) {
+  if (who === "wren") {
+    return (
+      <span style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 2, width: 36, height: 36, minWidth: 36, borderRadius: "50%", background: `${T.arcCyan}14`, border: `1.5px solid ${T.arcCyan}88` }}>
+        {[7, 12, 8].map((h, i) => (
+          <span key={i} className="sr-wavebar" style={{ width: 2.5, height: h, background: T.arcCyan, animationDelay: `${i * 0.14}s` }} />
+        ))}
+      </span>
+    );
+  }
+  if (who === "villain") {
+    return (
+      <span className="sr-takeover" style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", width: 36, height: 36, minWidth: 36, borderRadius: "50%", background: `${T.threatRed}14`, border: `1.5px solid ${T.threatRed}88`, fontFamily: MONO, fontSize: 15, color: T.threatRed }}>
+        ▚
+      </span>
+    );
+  }
+  if (who === "you") {
+    return (
+      <span style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", width: 36, height: 36, minWidth: 36, borderRadius: "50%", background: `${T.actionAmber}14`, border: `1.5px solid ${T.actionAmber}88`, fontFamily: MONO, fontSize: 13, fontWeight: 600, color: T.actionAmber }}>
+        YOU
+      </span>
+    );
+  }
+  return (
+    <span style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", width: 36, height: 36, minWidth: 36, borderRadius: "50%", background: "#7C5CFF22", border: "1.5px solid #7C5CFF88", fontFamily: MONO, fontSize: 14, fontWeight: 600, color: "#A78BFA" }}>
+      {who.slice(0, 1).toUpperCase()}
+    </span>
+  );
+}
+
+/** The "someone is typing" dots — story tension, three pixels at a time. */
+export function TypingDots() {
+  return (
+    <span style={{ display: "inline-flex", gap: 4, padding: "10px 14px", background: T.panelRaised, border: `1px solid ${T.hairline}`, borderRadius: 12 }}>
+      {[0, 1, 2].map((i) => (
+        <span key={i} className="sr-typedot" style={{ width: 6, height: 6, borderRadius: "50%", background: T.textSecondary, animationDelay: `${i * 0.18}s` }} />
+      ))}
+    </span>
+  );
+}
+
+/** A radio/chat message in the story stream. */
+export function Bubble({ who, children, tone }: { who: "wren" | "you" | "villain" | string; children: React.ReactNode; tone?: string }) {
+  const mine = who === "you";
+  return (
+    <div className="sr-msg" style={{ display: "flex", gap: 12, flexDirection: mine ? "row-reverse" : "row", alignItems: "flex-end" }}>
+      <Face who={who} />
+      <div
+        style={{
+          maxWidth: "78%",
+          background: mine ? `${T.actionAmber}14` : who === "villain" ? `${T.threatRed}10` : T.panelRaised,
+          backgroundImage: "linear-gradient(180deg, rgba(255,255,255,0.045) 0%, transparent 45%)",
+          border: `1px solid ${mine ? `${T.actionAmber}66` : who === "villain" ? `${T.threatRed}66` : tone ? `${tone}44` : T.hairline}`,
+          borderRadius: mine ? "14px 14px 3px 14px" : "14px 14px 14px 3px",
+          padding: "12px 16px",
+          fontSize: 16,
+          lineHeight: 1.6,
+          color: T.textPrimary,
+          boxShadow: "0 4px 14px -8px rgba(0,0,0,0.6)",
+        }}
+      >
+        {children}
+      </div>
+    </div>
+  );
+}
+
+/** Captured-screen evidence frame — the kid inspects a real-looking phone. */
+export function DeviceFrame({ app, owner, children }: { app: string; owner: string; children: React.ReactNode }) {
+  return (
+    <div style={{ maxWidth: 480, borderRadius: 18, background: "#05070A", border: `1px solid ${T.hairline}`, boxShadow: "0 24px 60px -20px rgba(0,0,0,0.85), 0 0 0 4px #10151C", overflow: "hidden" }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "7px 14px", fontFamily: MONO, fontSize: 9, letterSpacing: "0.08em", color: T.textDisabled, borderBottom: `1px solid ${T.hairline}` }}>
+        <span>ARC EVIDENCE VIEWER</span>
+        <span>CAPTURED SCREEN ▪▪▪</span>
+      </div>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "9px 14px", background: T.panel, borderBottom: `1px solid ${T.hairline}` }}>
+        <span style={{ fontFamily: MONO, fontSize: 11, letterSpacing: "0.06em", color: T.textPrimary }}>{app}</span>
+        <span style={{ fontFamily: MONO, fontSize: 10, color: T.textSecondary }}>{owner}</span>
+      </div>
+      {children}
+    </div>
+  );
+}
+
 /* ------------------------------------------------------------ eyebrow */
 
 export function Eyebrow({ text, color = T.textSecondary }: { text: string; color?: string }) {
@@ -48,17 +187,19 @@ export function AmberButton({ label, onClick }: { label: string; onClick: () => 
   return (
     <button
       onClick={onClick}
-      className="sr-btn"
+      className="sr-btn sr-cta"
       style={{
         fontFamily: MONO,
-        fontSize: 13,
+        fontSize: 14.5,
+        fontWeight: 600,
         letterSpacing: "0.06em",
         color: T.inkBlack,
-        background: T.actionAmber,
+        background: `linear-gradient(180deg, #F5C169 0%, ${T.actionAmber} 55%, #D68F2C 100%)`,
         border: "none",
-        borderRadius: 3,
-        padding: "12px 22px",
+        borderRadius: 4,
+        padding: "16px 28px",
         cursor: "pointer",
+        boxShadow: `0 0 24px ${T.actionAmber}40, 0 4px 14px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.45)`,
       }}
     >
       {label}
@@ -299,11 +440,147 @@ export function EngineStyles() {
         transition: width 120ms linear;
       }
 
+      /* CTAs get lift + press */
+      .sr-cta { transition: filter 140ms cubic-bezier(0.2,0,0,1), transform 140ms cubic-bezier(0.2,0,0,1); }
+      .sr-cta:hover { filter: brightness(1.12); transform: translateY(-1px); }
+      .sr-cta:active { transform: translateY(1px); }
+
+      /* scene entrance — every beat rises in */
+      .sr-scene { animation: srSceneIn 0.5s cubic-bezier(0.16,1,0.3,1) both; }
+      @keyframes srSceneIn { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: none; } }
+
+      /* story stream: messages land, dots think, alerts breathe */
+      .sr-msg { animation: srMsgIn 0.32s cubic-bezier(0.16,1,0.3,1) both; }
+      @keyframes srMsgIn { from { opacity: 0; transform: translateY(10px) scale(0.98); } to { opacity: 1; transform: none; } }
+      .sr-typedot { animation: srTypeDot 1s ease-in-out infinite; }
+      @keyframes srTypeDot { 0%,60%,100% { opacity: 0.25; transform: none; } 30% { opacity: 1; transform: translateY(-3px); } }
+      .sr-alert-edge { position: fixed; inset: 0; pointer-events: none; z-index: 1;
+        box-shadow: inset 0 0 130px ${T.threatRed}30; animation: srAlert 2.6s ease-in-out infinite; }
+      @keyframes srAlert { 0%,100% { opacity: 0.5; } 50% { opacity: 1; } }
+
+      /* XP pop — the reward flies */
+      .sr-xppop {
+        position: absolute; right: 0; top: 100%;
+        font-family: ${MONO}; font-size: 15px; font-weight: 600;
+        color: ${T.confirmedGreen}; text-shadow: 0 0 14px ${T.confirmedGreen}66;
+        animation: srXpPop 1.1s cubic-bezier(0.16,1,0.3,1) both;
+        pointer-events: none; white-space: nowrap;
+      }
+      @keyframes srXpPop {
+        0% { opacity: 0; transform: translateY(6px) scale(0.9); }
+        18% { opacity: 1; transform: translateY(0) scale(1.12); }
+        30% { transform: translateY(0) scale(1); }
+        80% { opacity: 1; }
+        100% { opacity: 0; transform: translateY(-14px); }
+      }
+      .sr-xpnum { display: inline-block; animation: srXpNum 0.5s cubic-bezier(0.2,0,0,1); }
+      @keyframes srXpNum { 0% { transform: scale(1.35); color: ${T.confirmedGreen}; } 100% { transform: scale(1); } }
+
+      /* choice buttons — bigger, alive */
+      .sr-choice { transition: transform 180ms cubic-bezier(0.16,1,0.3,1), box-shadow 180ms, border-color 180ms; }
+      @media (hover:hover) {
+        .sr-choice:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 10px 26px -12px rgba(0,0,0,0.8), 0 0 18px -6px ${T.arcCyan}44; border-color: ${T.arcCyan}88 !important; }
+      }
+
+      /* ── techy chrome kit ── */
+      /* chamfered HUD-notch panel (the art doc's 45° cut) — now with a
+         filled surface: blueprint micro-grid + top light + corner glow */
+      .sr-panel {
+        position: relative;
+        clip-path: polygon(0 0, calc(100% - 18px) 0, 100% 18px, 100% 100%, 18px 100%, 0 calc(100% - 18px));
+        background-image:
+          linear-gradient(180deg, rgba(255,255,255,0.04) 0%, transparent 22%),
+          radial-gradient(ellipse 60% 40% at 85% 0%, ${T.arcCyan}0D 0%, transparent 60%),
+          linear-gradient(${T.hairline}30 1px, transparent 1px),
+          linear-gradient(90deg, ${T.hairline}30 1px, transparent 1px) !important;
+        background-size: auto, auto, 22px 22px, 22px 22px;
+        background-color: ${T.panelRaised}E6;
+      }
+      /* filled card rows (map rows, skill checklists) */
+      .sr-card {
+        background-image:
+          linear-gradient(180deg, rgba(255,255,255,0.035) 0%, transparent 30%),
+          repeating-linear-gradient(45deg, rgba(255,255,255,0.012) 0 1px, transparent 1px 7px);
+      }
+      /* hazard corner for boss surfaces */
+      .sr-hazard {
+        background-image:
+          linear-gradient(180deg, rgba(255,255,255,0.03) 0%, transparent 25%),
+          repeating-linear-gradient(135deg, ${T.threatRed}14 0 10px, transparent 10px 22px) !important;
+      }
+      /* corner viewfinder brackets */
+      .sr-brackets::before, .sr-brackets::after {
+        content: ""; position: absolute; width: 16px; height: 16px; pointer-events: none;
+      }
+      .sr-brackets::before { top: 6px; left: 6px; border-top: 2px solid ${T.arcCyan}AA; border-left: 2px solid ${T.arcCyan}AA; }
+      .sr-brackets::after { bottom: 6px; right: 6px; border-bottom: 2px solid ${T.arcCyan}AA; border-right: 2px solid ${T.arcCyan}AA; }
+      /* panel mount: a light sweep passes once */
+      .sr-scanin { position: relative; overflow: hidden; }
+      .sr-scanin::after {
+        content: ""; position: absolute; top: 0; bottom: 0; width: 34%;
+        background: linear-gradient(100deg, transparent, ${T.arcCyan}14, transparent);
+        animation: srScanIn 0.9s cubic-bezier(0.2,0,0,1) 1 both;
+        pointer-events: none;
+      }
+      @keyframes srScanIn { from { left: -40%; } to { left: 110%; } }
+      .sr-blink { animation: srBlinkStep 1.1s step-end infinite; }
+      @keyframes srBlinkStep { 0%,100% { opacity: 1; } 50% { opacity: 0.25; } }
+
+      /* progress bar segments */
+      .sr-seg { transition: background 400ms cubic-bezier(0.2,0,0,1), box-shadow 400ms; }
+      .sr-seg-live { animation: srSegPulse 1.6s ease-in-out infinite; }
+      @keyframes srSegPulse { 0%,100% { opacity: 0.65; } 50% { opacity: 1; } }
+
+      /* ── the lesson room ── */
+      .srof-blob { position: absolute; border-radius: 50%; filter: blur(70px); mix-blend-mode: screen; opacity: 0.65; will-change: transform; animation-duration: 85s; animation-timing-function: ease-in-out; animation-iteration-count: infinite; animation-direction: alternate; }
+      @keyframes srofDriftA { from { transform: translate3d(0,0,0) scale(1); } to { transform: translate3d(-6vw, 5vh, 0) scale(1.14); } }
+      @keyframes srofDriftB { from { transform: translate3d(0,0,0) scale(1.05); } to { transform: translate3d(6vw, -4vh, 0) scale(1); } }
+      .srof-dots { position: absolute; inset: 0; background-repeat: repeat; }
+      .srof-dots-far { opacity: 0.55; background-size: 230px 230px; background-image:
+        radial-gradient(1px 1px at 30px 40px, ${T.arcCyan}40, transparent),
+        radial-gradient(1px 1px at 140px 90px, ${T.textSecondary}30, transparent),
+        radial-gradient(1px 1px at 80px 170px, ${T.arcCyan}2C, transparent); }
+      .srof-dots-near { opacity: 0.4; background-size: 350px 350px; background-image:
+        radial-gradient(1.5px 1.5px at 60px 100px, ${T.arcCyan}55, transparent),
+        radial-gradient(1.4px 1.4px at 240px 210px, ${T.textSecondary}3C, transparent); }
+      /* drifting analyst-console lines — the coding background.
+         Edge-anchored, faint, never behind the text column. */
+      .srof-code {
+        position: absolute; font-family: ${MONO}; font-size: 11px;
+        letter-spacing: 0.06em; color: ${T.arcCyan}; white-space: nowrap;
+        opacity: 0; animation: srofCode 14s ease-in-out infinite;
+      }
+      @keyframes srofCode {
+        0%, 100% { opacity: 0; transform: translateY(6px); }
+        12%, 78% { opacity: var(--peak, 0.14); transform: translateY(0); }
+        90% { opacity: 0; }
+      }
+      .srof-radar { position: absolute; top: -10vmax; right: -10vmax; width: 32vmax; height: 32vmax; }
+      .srof-radar-rings { position: absolute; inset: 0; border-radius: 50%;
+        background: repeating-radial-gradient(circle at center, transparent 0 calc(20% - 1px), ${T.arcCyan}20 calc(20% - 1px) 20%);
+        border: 1px solid ${T.arcCyan}2A; }
+      .srof-radar-sweep { position: absolute; inset: 0; border-radius: 50%;
+        background: conic-gradient(from 0deg, ${T.arcCyan}30 0deg, ${T.arcCyan}0C 42deg, transparent 70deg);
+        animation: srofSpin 17s linear infinite; }
+      @keyframes srofSpin { to { transform: rotate(360deg); } }
+      .srof-floor { position: absolute; left: -20%; right: -20%; bottom: -6vh; height: 30vh;
+        background: repeating-linear-gradient(90deg, ${T.arcCyan}12 0 1px, transparent 1px 90px),
+                    repeating-linear-gradient(0deg, ${T.arcCyan}0E 0 1px, transparent 1px 46px);
+        transform: perspective(640px) rotateX(58deg); transform-origin: 50% 100%;
+        mask-image: linear-gradient(180deg, transparent 0%, black 55%);
+        -webkit-mask-image: linear-gradient(180deg, transparent 0%, black 55%);
+        opacity: 0.45; }
+
       @media (max-width: 760px) {
         .sr-two-col { grid-template-columns: 1fr !important; }
       }
       @media (prefers-reduced-motion: reduce) {
-        .sr-wavebar, .sr-whisper::before, .sr-stamp-in, .sr-takeover { animation: none !important; }
+        .sr-wavebar, .sr-whisper::before, .sr-stamp-in, .sr-takeover, .sr-scene,
+        .sr-xppop, .sr-xpnum, .sr-seg-live, .srof-blob, .srof-radar-sweep,
+        .sr-msg, .sr-typedot, .sr-alert-edge, .sr-blink { animation: none !important; }
+        .sr-scanin::after { display: none; }
+        .srof-code { animation: none !important; opacity: 0.08; }
+        .sr-scene { opacity: 1; transform: none; }
       }
     `}</style>
   );

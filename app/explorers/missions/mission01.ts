@@ -21,7 +21,11 @@ export const mission01: MissionManifest = {
   actor: {
     codename: "PHANTOM HOOK",
     mo: "Urgent fakes dressed as companies you trust.",
+    portrait: "/explorers/actors/phantom-hook.png",
   },
+
+  hook: "A fake email almost got Maya's account. Find out how it works.",
+  scene: "/explorers/scenes/m01-cold-open.jpg",
 
   transmission: {
     headline: "SIGNAL DETECTED",
@@ -69,6 +73,7 @@ export const mission01: MissionManifest = {
         verb: "INSPECT",
         payload: {
           intro: "Evidence 01 — intercepted email · tap anything that doesn't belong",
+          device: { app: "MAIL", owner: "MAYA'S PHONE" },
           header: [
             {
               label: "FROM:",
@@ -292,6 +297,12 @@ export const mission01: MissionManifest = {
     realWorldMove:
       "This week, when any message rushes you — a deadline, a prize, a threat — don't touch its links. Open the real app yourself and check there. If it still feels wrong, report it in the app and loop in an adult you trust.",
     wrenLine: "Four lures, zero clicks in your lane. Read the report, sign out.",
+  },
+
+  voice: {
+    transmission: "/audio/wren/m01-transmission.mp3",
+    briefing: "/audio/wren/m01-briefing.mp3",
+    debrief: "/audio/wren/m01-debrief.mp3",
   },
 
   dossier: {

@@ -90,6 +90,8 @@ export interface InspectTell {
 
 export interface InspectPayload {
   intro: string;
+  /** Captured-screen framing: which app, whose device. */
+  device?: { app: string; owner: string };
   header: { label: string; seg: EvidenceSegment }[];
   body: EvidenceSegment[][];
   tells: InspectTell[];
@@ -124,10 +126,32 @@ export interface ProfilePayload {
   doneLine: string;
 }
 
+export interface TraceCard {
+  id: string;
+  surface: string;
+  from: string;
+  text: string;
+  /** True = part of the campaign; false = decoy noise. */
+  inCampaign: boolean;
+  /** The fingerprint highlighted once pinned (campaign cards only). */
+  clue?: string;
+  /** Funnel position, 1-based (campaign cards only). */
+  order?: number;
+}
+
+export interface TracePayload {
+  intro: string;
+  fingerprintHint: string;
+  cards: TraceCard[];
+  stage2Prompt: string;
+  doneLine: string;
+}
+
 export type FieldworkDef =
   | { verb: "INSPECT"; payload: InspectPayload }
   | { verb: "DECIDE"; payload: DecidePayload }
-  | { verb: "PROFILE"; payload: ProfilePayload };
+  | { verb: "PROFILE"; payload: ProfilePayload }
+  | { verb: "TRACE"; payload: TracePayload };
 
 /* ------------------------------------------------------------ cycles */
 
@@ -150,6 +174,10 @@ export interface CycleDef {
   id: string;
   title: string;
   concept: string;
+  /** Plain one-line promise shown on the map ("You'll learn why 'free' online usually isn't."). Falls back to concept. */
+  promise?: string;
+  /** Verb-first instruction for the PLAY strip (≤10 words). Falls back to fieldwork payload intro. */
+  instruction?: string;
   intel: { beats: string[]; prediction: PredictionQ };
   fieldwork: FieldworkDef;
   checkpoint: { questions: CheckpointQ[] };
@@ -172,7 +200,7 @@ export interface MissionManifest {
   title: string;
   block: 1 | 2 | 3 | 4;
   classification: Classification;
-  actor: { codename: string; mo: string };
+  actor: { codename: string; mo: string; portrait?: string };
   transmission: { headline: string; lines: string[] };
   briefing: {
     summary: string;
@@ -180,13 +208,21 @@ export interface MissionManifest {
     wrenLine: string;
   };
   cycles: [CycleDef, CycleDef, CycleDef];
+  /** One-line hook WREN speaks on the Mission Start map (≤20 words). Falls back to transmission.lines[0]. */
+  hook?: string;
+  /** Cinematic 21:9 cold-open scene image (public/ path) — the mission's establishing shot. */
+  scene?: string;
   incident: {
     title: string;
     phases: number;
+    /** Kid-worded phase names for the boss pips ("Find the hub"). Falls back to PHASE 1..N. */
+    phaseNames?: string[];
     component: ComponentType<IncidentProps>;
   };
   debrief: { report: string[]; realWorldMove: string; wrenLine: string };
   dossier: { mo: string; defeatedBy: string; breadcrumb?: string };
+  /** WREN VO clips per beat (public/ paths). Played mute-gated at 0.55. */
+  voice?: { transmission?: string; briefing?: string; debrief?: string };
 }
 
 /* ------------------------------------------------------- save/resume */

@@ -16,7 +16,7 @@
  */
 
 import { useRef, useState } from "react";
-import { AmberButton, Eyebrow, GhostButton } from "../engine/primitives";
+import { AmberButton, Bubble, Eyebrow, GhostButton } from "../engine/primitives";
 import { MONO, T } from "../engine/tokens";
 import type { IncidentProps } from "../engine/types";
 
@@ -90,6 +90,16 @@ export default function Mission01Incident({ reduced, audio, onPhaseCleared, onCo
 
   return (
     <div>
+      {phase === 1 && (
+        <div style={{ marginBottom: 18, maxWidth: 560 }}>
+          <div style={{ fontFamily: MONO, fontSize: 10, letterSpacing: "0.14em", color: T.threatRed, marginBottom: 8 }}>
+            INTERCEPTED — PHANTOM HOOK, ON THE WIRE
+          </div>
+          <Bubble who="villain">
+            <em>&ldquo;One email down, little analyst? Cute. I sent four more while you were reading it.&rdquo;</em>
+          </Bubble>
+        </div>
+      )}
       <div style={{ display: "flex", gap: 8, marginBottom: 16 }}>
         {[1, 2, 3].map((p) => (
           <span
