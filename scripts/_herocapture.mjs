@@ -56,8 +56,20 @@ for (let i = 0; i < FRAMES; i++) {
   // Lid angle + screen stages use damped follows — give them a beat to
   // settle so each baked frame is the converged pose for its progress.
   await page.waitForTimeout(500);
-  const dataUrl = await page.evaluate(() =>
-    document.querySelector("canvas").toDataURL("image/png"),
+  // Read back on a rAF boundary (double rAF = the previous frame has
+  // fully presented). toDataURL on a preserveDrawingBuffer canvas can
+  // otherwise race a mid-redraw buffer and bake partial frames — seen
+  // as bands of uninitialized-VRAM garbage in the empty backdrop region
+  // of some frames (present in the pre-branch prod bake too).
+  const dataUrl = await page.evaluate(
+    () =>
+      new Promise((resolve) =>
+        requestAnimationFrame(() =>
+          requestAnimationFrame(() =>
+            resolve(document.querySelector("canvas").toDataURL("image/png")),
+          ),
+        ),
+      ),
   );
   const png = Buffer.from(dataUrl.slice(dataUrl.indexOf(",") + 1), "base64");
   const webp = await sharp(png)

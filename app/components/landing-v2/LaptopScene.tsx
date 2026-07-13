@@ -13,8 +13,14 @@ import {
   BrightnessContrast,
   HueSaturation,
   ToneMapping,
+  ChromaticAberration,
 } from "@react-three/postprocessing";
 import { BlendFunction, SMAAPreset, ToneMappingMode } from "postprocessing";
+import type {
+  BloomEffect,
+  ChromaticAberrationEffect,
+  NoiseEffect,
+} from "postprocessing";
 import * as THREE from "three";
 import type { MotionValue } from "framer-motion";
 import TechChamber from "./TechChamber";
@@ -73,6 +79,23 @@ const FX_ATLAS_URL = "/hero-fx/explosion-atlas.webp";
 const FX_COLS = 8;
 const FX_ROWS = 8;
 const FX_FRAMES = FX_COLS * FX_ROWS;
+/* DOCUMENTARY BEAT — the footage's scroll window. Wider than the floor
+ * activation (0.30→0.55) on purpose: a real supernova remnant does not
+ * clear in a beat. Detonation lands as the lid finishes opening, the
+ * expansion decelerates across the screen-ignition chapter, and the
+ * cooling remnant is still faintly hanging over the revealed nebula
+ * floor two chapters later. Shared by the scrub (useFrame) and the
+ * <DetonationPulse> composer driver so lens response and footage stay
+ * frame-locked. */
+const FX_BEAT_START = 0.32;
+const FX_BEAT_END = 0.72;
+/* Ease-out exponent for the scrub: detonation frames rush in fast, the
+ * dissipation tail stretches long (documentary pacing — fast bang, slow
+ * majestic aftermath). Tuned at 1.5: high enough that the bang lands
+ * just as the lid opens, low enough that the STRUCTURED remnant frames
+ * (rows 5-7 of the atlas) are still on screen at p≈0.6 instead of
+ * racing to the clip's near-black tail. */
+const FX_EASE_POW = 1.5;
 /* Scratch vector for the per-frame camera-forward offset (avoids a
  * per-frame allocation in useFrame). */
 const FX_FORWARD = new THREE.Vector3();
@@ -2720,6 +2743,19 @@ export default function LaptopScene({ progress, reducedMotion = false, capture =
   const dprRange: [number, number] = lowPower ? [1.25, 2] : [1.5, 2.5];
   const msaa = lowPower ? 2 : 6;
 
+  /* DOCUMENTARY DETONATION PULSE — effect handles driven per-frame by
+   * <DetonationPulse> against scroll progress (never React state; that
+   * would re-render the composer every frame). At the instant the
+   * footage burst detonates: bloom kicks up (sensor over-exposure), a
+   * brief chromatic-aberration pulse (lens stressed by the flash) and a
+   * grain lift (film stock pushed). All three decay to their base
+   * values before the expansion phase so the lingering nebula reads
+   * clean. Deterministic on progress only — capture-safe. */
+  const bloomFxRef = useRef<BloomEffect>(null);
+  const caFxRef = useRef<ChromaticAberrationEffect>(null);
+  const noiseFxRef = useRef<NoiseEffect>(null);
+  const caOffset = useMemo(() => new THREE.Vector2(0, 0), []);
+
   /* Pause the live render loop when the hero is scrolled out of view, so
    * the heavy scene doesn't keep burning GPU while the user reads the
    * sections below. (Integrated GPUs use the pre-rendered scrub instead and
@@ -2887,6 +2923,7 @@ export default function LaptopScene({ progress, reducedMotion = false, capture =
           color="#03060c"
         />
         <Bloom
+          ref={bloomFxRef}
           intensity={lowPower ? 0.45 : 0.6}
           luminanceThreshold={0.62}
           luminanceSmoothing={0.28}
@@ -2906,6 +2943,16 @@ export default function LaptopScene({ progress, reducedMotion = false, capture =
         <ToneMapping mode={ToneMappingMode.ACES_FILMIC} />
         <BrightnessContrast brightness={-0.015} contrast={0.07} />
         <HueSaturation hue={0} saturation={0.08} />
+        {/* DETONATION LENS PULSE — offset rests at (0,0) (a no-op) and is
+         *  kicked for a beat by <DetonationPulse> exactly when the footage
+         *  burst detonates. Documentary cue: a real lens/sensor stressed by
+         *  a sudden blinding source fringes for a moment, then recovers. */}
+        <ChromaticAberration
+          ref={caFxRef}
+          offset={caOffset}
+          radialModulation={false}
+          modulationOffset={0}
+        />
         {/* Vignette darkness softened so the lower edge blends into the page
          *  mist instead of stamping a hard dark band at the section boundary. */}
         <Vignette
@@ -2920,13 +2967,72 @@ export default function LaptopScene({ progress, reducedMotion = false, capture =
          *  mounted — conditional children break EffectComposer's types;
          *  opacity 0 is a no-op.) Live render keeps it. */}
         <Noise
+          ref={noiseFxRef}
           opacity={capture ? 0 : 0.006}
           blendFunction={BlendFunction.OVERLAY}
         />
       </EffectComposer>
+      <DetonationPulse
+        progress={progress}
+        reducedMotion={reducedMotion}
+        capture={capture}
+        lowPower={lowPower}
+        bloomRef={bloomFxRef}
+        caRef={caFxRef}
+        noiseRef={noiseFxRef}
+      />
     </Canvas>
     </div>
   );
+}
+
+/* DETONATION PULSE — drives the composer's bloom / chromatic-aberration /
+ * grain against scroll progress, per-frame, without React re-renders.
+ * The envelope peaks while the footage's detonation frames (first ~fifth
+ * of the clip) are on screen and fully decays before the expansion
+ * phase, so the lingering nebula remnant reads clean. Deterministic on
+ * progress only (no clock) — the herocap frame bakes stay reproducible.
+ * Zeroed under reduced motion; grain additionally zeroed in capture
+ * (same rationale as the base Noise pass). */
+function DetonationPulse({
+  progress,
+  reducedMotion,
+  capture,
+  lowPower,
+  bloomRef,
+  caRef,
+  noiseRef,
+}: {
+  progress: MotionValue<number>;
+  reducedMotion: boolean;
+  capture: boolean;
+  lowPower: boolean;
+  bloomRef: { current: BloomEffect | null };
+  caRef: { current: ChromaticAberrationEffect | null };
+  noiseRef: { current: NoiseEffect | null };
+}) {
+  useFrame(() => {
+    const p = progress.get();
+    const fxT = smoothstep(FX_BEAT_START, FX_BEAT_END, p);
+    const det = reducedMotion
+      ? 0
+      : Math.pow(Math.sin(Math.PI * Math.min(fxT * 5, 1)), 3);
+    if (bloomRef.current) {
+      bloomRef.current.intensity = (lowPower ? 0.45 : 0.6) + det * 0.55;
+    }
+    if (caRef.current) {
+      /* Peak ~0.0007: at 0.0014 the fringing printed as visible RGB
+       * separation on the chassis edges and keycaps — a lens artefact
+       * should be felt, not read. */
+      caRef.current.offset.set(det * 0.0007, det * 0.0004);
+    }
+    if (noiseRef.current) {
+      noiseRef.current.blendMode.opacity.value = capture
+        ? 0
+        : 0.006 + det * 0.022;
+    }
+  });
+  return null;
 }
 
 /* SCREEN SLABS — three holographic panels that emerge straight forward
@@ -3352,13 +3458,16 @@ function Laptop({
           float f = floor(uFrame);
           vec3 c = mix(frameColor(f), frameColor(f + 1.0), uFrame - f);
           c = max(c - BLACK_LIFT, 0.0) / (1.0 - BLACK_LIFT);
-          /* Soft edge fade so the quad boundary can never print as a
-           * hard line when the mid-clip cloud reaches the footage's
-           * frame edges (a rectangle-shaped cut reads instantly as
-           * "video on a card"; this keeps it reading as a volume). */
-          float edge =
-            smoothstep(0.0, 0.10, vUv.x) * smoothstep(0.0, 0.10, 1.0 - vUv.x) *
-            smoothstep(0.0, 0.14, vUv.y) * smoothstep(0.0, 0.14, 1.0 - vUv.y);
+          /* ELLIPTICAL falloff mask (was a rectangular edge fade). The
+           * documentary footage fills its frame edge-to-edge during the
+           * detonation flash, and a rectangle-shaped fade still prints
+           * as a soft-edged CARD against the floor. An ellipse can't:
+           * whatever the footage does, its visible boundary is always a
+           * radial glow falloff — it reads as a spherical volume of
+           * light, never as video geometry. */
+          vec2 rc = (vUv - 0.5) * 2.0;
+          float rr = length(rc * vec2(1.0, 1.15));
+          float edge = 1.0 - smoothstep(0.68, 1.0, rr);
           vec3 outc = c * edge * uOpacity;
           /* Alpha = the amount of light added, not 1.0. Additive RGB is
            * unaffected (ONE,ONE), but the DESTINATION alpha accumulates
@@ -3730,13 +3839,15 @@ function Laptop({
 
     /* OUTWARD IGNITION SWEEP — a thin ring expanding chassis→edge as the lid
      * opens, brightest mid-sweep then gone (so steady + reduced-motion show
-     * the static lit plate, not a parked ring). THE MAIN EXPLOSION — logic
-     * unchanged from the approved version. */
+     * the static lit plate, not a parked ring). Toned down (0.62 → 0.34)
+     * for the documentary pass: the graphic ring is floor-reactor
+     * language SUPPORTING the footage burst — at full strength its
+     * drawn spokes/sparkles read as game VFX against real footage. */
     if (sweepMeshRef.current && sweepMatRef.current) {
       const sweepR = 0.4 + activationT * 15; // base ring radius is 1u
       sweepMeshRef.current.scale.set(sweepR, sweepR, 1);
       const sweepFade = Math.sin(Math.PI * activationT); // 0→1→0 across the open
-      sweepMatRef.current.opacity = reducedMotion ? 0 : sweepFade * 0.62;
+      sweepMatRef.current.opacity = reducedMotion ? 0 : sweepFade * 0.34;
     }
 
     /* CENTRAL FLASH — a sharp bright bloom at the open moment (the "bang"):
@@ -3750,22 +3861,30 @@ function Laptop({
       flashMatRef.current.opacity = reducedMotion ? 0 : flash * 0.2;
     }
 
-    /* EXPLOSION FOOTAGE — scrub the real pre-rendered volumetric burst.
-     * activationT maps the scroll beat directly onto the footage's own
-     * lifecycle (frame 0 black -> detonate -> expand -> dissipate ->
-     * frame 63 black), so no opacity gating is needed: outside the beat
-     * the sampled frame is black and additive-black is invisible. The
-     * quad billboards to the camera and sits just BEHIND the laptop
-     * along the view direction, so the chassis silhouettes against the
-     * blast and the burst reads as erupting around the machine. */
+    /* EXPLOSION FOOTAGE — scrub the real pre-rendered volumetric burst
+     * with DOCUMENTARY pacing. The beat spans its own window
+     * (FX_BEAT_START→END, wider than the floor activation) and the scrub
+     * is eased hard out: the detonation frames rush in as the lid
+     * finishes opening, then the expansion decelerates and the cooling
+     * remnant lingers over the revealed nebula floor for two more
+     * chapters. Outside the beat the sampled frame is black and
+     * additive-black is invisible; the late fade is a safety net so the
+     * remnant exits gracefully even if the clip's tail isn't perfectly
+     * black. The quad billboards to the camera and sits just BEHIND the
+     * laptop along the view direction, so the chassis silhouettes
+     * against the blast and the burst reads as erupting around the
+     * machine. */
     if (fxMeshRef.current && fxMaterial) {
       fxMeshRef.current.quaternion.copy(state.camera.quaternion);
       state.camera.getWorldDirection(FX_FORWARD);
       fxMeshRef.current.position
         .set(RIG_X, 0.5, 0)
         .addScaledVector(FX_FORWARD, 1.25);
-      fxMaterial.uniforms.uFrame.value = activationT * (FX_FRAMES - 1);
-      fxMaterial.uniforms.uOpacity.value = reducedMotion ? 0 : 1;
+      const fxT = smoothstep(FX_BEAT_START, FX_BEAT_END, p);
+      const fxEase = 1 - Math.pow(1 - fxT, FX_EASE_POW);
+      fxMaterial.uniforms.uFrame.value = fxEase * (FX_FRAMES - 1);
+      const fxFade = 1 - smoothstep(0.74, 0.88, p);
+      fxMaterial.uniforms.uOpacity.value = reducedMotion ? 0 : fxFade;
     }
 
     /* SECONDARY ECHO RIPPLES — two follow-up rings, each lagging the main
@@ -3780,7 +3899,8 @@ function Laptop({
       const echoT = smoothstep(0.3 + lag, 0.58 + lag, p);
       const er = 0.4 + echoT * (16 + i * 2.5);
       em.scale.set(er, er, 1);
-      emat.opacity = reducedMotion ? 0 : Math.sin(Math.PI * echoT) * (0.34 - i * 0.09);
+      /* Echoes follow the sweep's documentary tone-down (0.34 → 0.2). */
+      emat.opacity = reducedMotion ? 0 : Math.sin(Math.PI * echoT) * (0.2 - i * 0.05);
     }
 
     /* SEQUENTIAL ACTIVATION NODES — light up in order as the burst energises

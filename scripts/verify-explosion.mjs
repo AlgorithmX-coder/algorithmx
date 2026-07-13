@@ -15,9 +15,9 @@ await mkdir(OUT_DIR, { recursive: true });
 // System Edge fallback — same rationale as verify-hero.mjs.
 const EDGE = "C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe";
 
-// The beat: activationT = smoothstep(0.30, 0.55, p). Sample rest,
-// early detonation, peak, dissipation, and after-clear.
-const POINTS = [0.2, 0.34, 0.38, 0.425, 0.47, 0.52, 0.6];
+// The documentary beat: fxT = smoothstep(0.32, 0.72, p), late fade to
+// 0.88. Sample rest, detonation, expansion, remnant, tail, after-clear.
+const POINTS = [0.2, 0.34, 0.38, 0.425, 0.47, 0.55, 0.62, 0.7, 0.82];
 
 const browser = await chromium.launch({ executablePath: EDGE });
 const ctx = await browser.newContext({

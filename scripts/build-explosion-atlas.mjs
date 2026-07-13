@@ -6,15 +6,20 @@
  * a shader — black background + additive blending means no alpha channel
  * is needed (black == transparent).
  *
- * Source: AI-generated volumetric explosion (OpenArt / Seedance 2.0,
- * text2video, 10s 1080p, locked-off camera, pure black background,
- * detonate -> expand -> dissipate arc). Generated 2026-07-04.
+ * Source: AI-generated supernova/nebula documentary footage (OpenArt /
+ * Seedance 2.0, text2video, 10s 1080p, locked-off camera, black plate,
+ * point-of-light -> detonate -> expand -> cooling-remnant arc, JWST
+ * astrophotography look). Generated 2026-07-13. The raw clip starts
+ * mid-flash, so pre-process with a short fade-in from black before
+ * building (atlas frame 0 MUST be black — the shader relies on it):
+ *   ffmpeg -i raw.mp4 -vf "fade=t=in:st=0:d=0.45" -an input.mp4
  *
  * Usage:
  *   node scripts/build-explosion-atlas.mjs <input.mp4> [output.webp]
  *
  * Uses the repo's ffmpeg-static binary; override with FFMPEG=/path/to/ffmpeg.
- * Defaults: 64 frames (8x8), 640x360/frame -> 5120x2880 atlas, webp q88.
+ * Defaults: 64 frames (8x8), 800x450/frame -> 6400x3600 atlas, webp q86
+ * (stays under the 8192px GPU texture ceiling of the live-scene tier).
  */
 import { execFileSync, spawnSync } from "node:child_process";
 import { existsSync } from "node:fs";
@@ -23,9 +28,9 @@ import path from "node:path";
 
 const COLS = 8;
 const ROWS = 8;
-const FRAME_W = 640;
-const FRAME_H = 360;
-const QUALITY = 88;
+const FRAME_W = 800;
+const FRAME_H = 450;
+const QUALITY = 86;
 
 const input = process.argv[2];
 const output =
