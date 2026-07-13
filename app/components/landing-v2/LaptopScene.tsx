@@ -1826,66 +1826,75 @@ function makeInstrumentPlateTexture(
   return tex;
 }
 
-/* SHOCKWAVE — a textured energy wavefront (replaces the flat ring): a hot
- * white-cyan leading edge with a soft trailing glow, fine radial filaments and
- * sparkle along the front. Mapped onto an expanding plane so the whole
- * structure scales as one cinematic blast ring. Additive. */
-function makeShockwaveTexture(): THREE.Texture | null {
-  if (typeof document === "undefined") return null;
-  const S = 512;
-  const c = document.createElement("canvas");
-  c.width = c.height = S;
-  const ctx = c.getContext("2d");
-  if (!ctx) return null;
-  ctx.clearRect(0, 0, S, S);
-  const cx = S / 2;
-  const cy = S / 2;
-  const R = S / 2;
-  const hash = (n: number) => {
-    const s = Math.sin(n * 127.1) * 43758.5453;
-    return s - Math.floor(s);
-  };
-  const g = ctx.createRadialGradient(cx, cy, 0, cx, cy, R);
-  g.addColorStop(0, "rgba(40,170,255,0)");
-  g.addColorStop(0.5, "rgba(70,200,255,0.04)");
-  g.addColorStop(0.74, "rgba(120,225,255,0.22)");
-  g.addColorStop(0.87, "rgba(150,235,255,0.55)");
-  g.addColorStop(0.93, "rgba(232,250,255,0.95)");
-  g.addColorStop(0.97, "rgba(120,215,255,0.3)");
-  g.addColorStop(1, "rgba(120,215,255,0)");
-  ctx.fillStyle = g;
-  ctx.beginPath();
-  ctx.arc(cx, cy, R, 0, Math.PI * 2);
-  ctx.fill();
-  ctx.globalCompositeOperation = "lighter";
-  ctx.lineCap = "round";
-  const spokes = 130;
-  for (let i = 0; i < spokes; i++) {
-    const a = (i / spokes) * Math.PI * 2 + hash(i) * 0.05;
-    const len = (0.04 + hash(i * 3.1) * 0.12) * R;
-    const r1 = R * (0.86 + hash(i * 5.3) * 0.08);
-    const r0 = r1 - len;
-    ctx.strokeStyle = `rgba(196,242,255,${0.05 + hash(i * 7.7) * 0.18})`;
-    ctx.lineWidth = 1 + hash(i * 2.2) * 1.5;
-    ctx.beginPath();
-    ctx.moveTo(cx + Math.cos(a) * r0, cy + Math.sin(a) * r0);
-    ctx.lineTo(cx + Math.cos(a) * r1, cy + Math.sin(a) * r1);
-    ctx.stroke();
-  }
-  for (let i = 0; i < 70; i++) {
-    const a = hash(i * 1.7) * Math.PI * 2;
-    const r = R * (0.88 + hash(i * 4.4) * 0.06);
-    ctx.fillStyle = `rgba(238,251,255,${0.4 + hash(i * 9) * 0.5})`;
-    ctx.beginPath();
-    ctx.arc(cx + Math.cos(a) * r, cy + Math.sin(a) * r, 0.8 + hash(i * 6) * 1.4, 0, Math.PI * 2);
-    ctx.fill();
-  }
-  ctx.globalCompositeOperation = "source-over";
-  const tex = new THREE.CanvasTexture(c);
-  tex.colorSpace = THREE.SRGBColorSpace;
-  tuneGroundTexture(tex);
-  tex.needsUpdate = true;
-  return tex;
+/* SHOCK WAVE — the blast wavefront racing across the reactor floor.
+ * Was a 512px canvas sprite on a plane scaled up ~15x, which stretched
+ * its texels to mush and printed drawn "spokes". Now the ring lives in
+ * a fragment shader on a STATIC plane (WAVE_PLANE world units): the
+ * expansion is the uT uniform, not mesh scale, so the crest stays
+ * pixel-crisp at every radius. Anatomy per fragment: a tight hot
+ * white-cyan crest (gaussian around the wavefront), a deep-azure glow
+ * bleeding inward behind it, a faint pressure skirt racing ahead, and
+ * an angular wobble so the front is an organic blast line rather than
+ * a compass circle. Additive; alpha carries max(rgb) so the alpha-baked
+ * scrub frames gain honest coverage (same contract as the footage
+ * quad). Driven per-frame in useFrame; zeroed under reduced motion. */
+const WAVE_PLANE = 38; // plane width/depth in world units (half = 19)
+const WAVE_R0 = 0.4; //   ring start radius, world units
+const WAVE_R1 = 15.4; //  ring end radius, world units
+function makeShockWaveMaterial(seed: number): THREE.ShaderMaterial {
+  return new THREE.ShaderMaterial({
+    uniforms: {
+      uT: { value: 0 },
+      uOpacity: { value: 0 },
+      uSeed: { value: seed },
+    },
+    vertexShader: `
+      varying vec2 vUv;
+      void main() {
+        vUv = uv;
+        gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+      }
+    `,
+    fragmentShader: `
+      uniform float uT;
+      uniform float uOpacity;
+      uniform float uSeed;
+      varying vec2 vUv;
+      const float HALF = ${(WAVE_PLANE / 2).toFixed(1)};
+
+      void main() {
+        vec2 c = (vUv - 0.5) * 2.0;
+        float r = length(c);
+        float ang = atan(c.y, c.x);
+        /* Angular wobble: three incommensurate sines break the perfect
+         * circle into an organic front; amplitude grows with expansion
+         * (a young wave is tight, an old one is ragged). */
+        float wob = sin(ang * 6.0 + uSeed) * 0.45
+                  + sin(ang * 11.0 - uSeed * 1.7) * 0.33
+                  + sin(ang * 19.0 + uSeed * 2.9) * 0.22;
+        float R = (${WAVE_R0.toFixed(2)} + ${(WAVE_R1 - WAVE_R0).toFixed(2)} * uT) / HALF;
+        R *= 1.0 + wob * 0.035 * (0.35 + uT);
+        float d = r - R;
+        /* Hot crest: tightens as the wave expands (energy front thins). */
+        float crest = exp(-pow(abs(d) * (34.0 + 46.0 * uT), 1.35));
+        /* Trailing glow bleeding inward + pressure skirt ahead. */
+        float tail = d < 0.0 ? exp(d * (7.0 + 5.0 * uT)) : 0.0;
+        float skirt = d > 0.0 ? exp(-d * 42.0) * 0.35 : 0.0;
+        /* Energy conservation: dim with circumference. */
+        float falloff = 1.0 / (0.45 + r * 1.6);
+        vec3 crestCol = vec3(0.82, 0.96, 1.0);
+        vec3 tailCol = vec3(0.16, 0.45, 1.0);
+        vec3 outc =
+          (crestCol * crest * 1.6 + tailCol * (tail * 0.8 + skirt)) *
+          falloff * uOpacity;
+        gl_FragColor = vec4(outc, max(outc.r, max(outc.g, outc.b)));
+      }
+    `,
+    transparent: true,
+    blending: THREE.AdditiveBlending,
+    depthWrite: false,
+    depthTest: true,
+  });
 }
 
 /* FLASH BURST — the central "bang": a hot core bloom with long diffraction
@@ -3402,7 +3411,12 @@ function Laptop({
   /* Tier-3 far megastructure silhouette + the inward signal-packet sprite. */
   const megaStructureTex = useMemo(() => makeMegastructureTexture(), []);
   const signalPacketTex = useMemo(() => makeSignalPacketTexture(), []);
-  const shockwaveTex = useMemo(() => makeShockwaveTexture(), []);
+  /* Blast wavefront materials: [0] = main wave, [1..2] = echoes. Each
+   * gets its own seed so the fronts don't share a wobble pattern. */
+  const waveMats = useMemo(
+    () => [0, 1, 2].map((i) => makeShockWaveMaterial(1.3 + i * 2.39)),
+    [],
+  );
   const flashBurstTex = useMemo(() => makeFlashBurstTexture(), []);
   /* EXPLOSION FOOTAGE — flipbook atlas of the real pre-rendered burst.
    * Mips are off so adjacent atlas tiles never bleed into each other at
@@ -3494,19 +3508,14 @@ function Laptop({
   const plateDeepMeshRef = useRef<THREE.Mesh>(null);
   const depthHazeMatRef = useRef<THREE.MeshBasicMaterial>(null);
   const megaStructureMatRef = useRef<THREE.MeshBasicMaterial>(null);
-  /* Outward ignition wavefront (a thin additive ring that sweeps out as the
-   * lid opens) + the pool of inward-travelling signal packets. */
-  const sweepMatRef = useRef<THREE.MeshBasicMaterial>(null);
-  const sweepMeshRef = useRef<THREE.Mesh>(null);
+  /* Central flash + the pool of inward-travelling signal packets. The
+   * blast wavefront + echoes are the waveMats shader materials above
+   * (static planes — driven by uniforms, no mesh refs needed). */
   const flashMatRef = useRef<THREE.MeshBasicMaterial>(null);
   const flashMeshRef = useRef<THREE.Mesh>(null);
   const packetRefs = useRef<Array<THREE.Mesh | null>>([]);
-  /* SECONDARY ACTIVATION — two follow-up "echo" ring ripples that fire after
-   * the main sweep (staggered), and a ring of connection nodes that light up
-   * in SEQUENCE as the burst energises (the platform powering up zone by
-   * zone). All support the main sweep; none is louder than it. */
-  const echoMeshRefs = useRef<Array<THREE.Mesh | null>>([]);
-  const echoMatRefs = useRef<Array<THREE.MeshBasicMaterial | null>>([]);
+  /* Ring of connection nodes that light up in SEQUENCE as the burst
+   * energises (the platform powering up zone by zone). */
   const nodeMatRefs = useRef<Array<THREE.MeshBasicMaterial | null>>([]);
   /* Six activation nodes on a ring around the laptop, at deterministic
    * angles, each with a sequence slot 0..1 for the power-up order. */
@@ -3837,17 +3846,16 @@ function Laptop({
       machineWellMatRef.current.opacity = floorReveal * 0.34 * wellPulse;
     }
 
-    /* OUTWARD IGNITION SWEEP — a thin ring expanding chassis→edge as the lid
-     * opens, brightest mid-sweep then gone (so steady + reduced-motion show
-     * the static lit plate, not a parked ring). Toned down (0.62 → 0.34)
-     * for the documentary pass: the graphic ring is floor-reactor
-     * language SUPPORTING the footage burst — at full strength its
-     * drawn spokes/sparkles read as game VFX against real footage. */
-    if (sweepMeshRef.current && sweepMatRef.current) {
-      const sweepR = 0.4 + activationT * 15; // base ring radius is 1u
-      sweepMeshRef.current.scale.set(sweepR, sweepR, 1);
-      const sweepFade = Math.sin(Math.PI * activationT); // 0→1→0 across the open
-      sweepMatRef.current.opacity = reducedMotion ? 0 : sweepFade * 0.34;
+    /* BLAST WAVEFRONT — the shader ring expanding chassis→edge as the
+     * lid opens (see makeShockWaveMaterial). Expansion is eased out so
+     * the wave decelerates like a real pressure front, and the whole
+     * thing is transient: gone at rest and under reduced motion. */
+    if (waveMats[0]) {
+      const wT = 1 - Math.pow(1 - activationT, 1.7);
+      waveMats[0].uniforms.uT.value = wT;
+      waveMats[0].uniforms.uOpacity.value = reducedMotion
+        ? 0
+        : Math.sin(Math.PI * activationT) * 0.9;
     }
 
     /* CENTRAL FLASH — a sharp bright bloom at the open moment (the "bang"):
@@ -3887,20 +3895,19 @@ function Laptop({
       fxMaterial.uniforms.uOpacity.value = reducedMotion ? 0 : fxFade;
     }
 
-    /* SECONDARY ECHO RIPPLES — two follow-up rings, each lagging the main
-     * sweep by a staggered amount, expanding a bit further and fainter. They
-     * read as energy echoes radiating from the burst. Transient: zero at rest
-     * and under reduced motion (the static end-state is the lit plate). */
-    for (let i = 0; i < echoMeshRefs.current.length; i++) {
-      const em = echoMeshRefs.current[i];
-      const emat = echoMatRefs.current[i];
-      if (!em || !emat) continue;
-      const lag = 0.05 + i * 0.06;
+    /* SECONDARY ECHO WAVES — two follow-up wavefronts, each lagging the
+     * main wave by a staggered beat, fainter and with their own wobble
+     * seed. They read as pressure echoes radiating from the burst.
+     * Transient: zero at rest and under reduced motion. */
+    for (let i = 1; i < waveMats.length; i++) {
+      const mat = waveMats[i];
+      if (!mat) continue;
+      const lag = 0.05 + (i - 1) * 0.06;
       const echoT = smoothstep(0.3 + lag, 0.58 + lag, p);
-      const er = 0.4 + echoT * (16 + i * 2.5);
-      em.scale.set(er, er, 1);
-      /* Echoes follow the sweep's documentary tone-down (0.34 → 0.2). */
-      emat.opacity = reducedMotion ? 0 : Math.sin(Math.PI * echoT) * (0.2 - i * 0.05);
+      mat.uniforms.uT.value = 1 - Math.pow(1 - echoT, 1.7);
+      mat.uniforms.uOpacity.value = reducedMotion
+        ? 0
+        : Math.sin(Math.PI * echoT) * (0.5 - (i - 1) * 0.16);
     }
 
     /* SEQUENTIAL ACTIVATION NODES — light up in order as the burst energises
@@ -4150,29 +4157,18 @@ function Laptop({
         </mesh>
       )}
 
-      {/* OUTWARD IGNITION SWEEP — a thin additive ring wavefront that expands
-       *  from the chassis to the plate edge as the lid opens, reading as the
-       *  rings "igniting outward". A transient: it fades to nothing once the
-       *  lid is open, so the steady / reduced-motion state is the static
-       *  lit plate (driven entirely in useFrame; frozen under reduced
-       *  motion). THE MAIN EXPLOSION — preserved exactly. */}
+      {/* BLAST WAVEFRONT — the shader-drawn pressure ring that races from
+       *  the chassis to the plate edge as the lid opens. The plane is
+       *  STATIC (WAVE_PLANE wide); the ring expands inside the shader
+       *  via uT, so the crest stays pixel-crisp at every radius instead
+       *  of stretching a sprite. Transient: fades to nothing once the
+       *  lid is open (driven in useFrame; zero under reduced motion). */}
       <mesh
-        ref={sweepMeshRef}
         position={[RIG_X, -BASE_H / 2 - 0.034, 0]}
         rotation={[-Math.PI / 2, 0, 0]}
-        scale={1}
       >
-        <planeGeometry args={[2, 2]} />
-        <meshBasicMaterial
-          ref={sweepMatRef}
-          map={shockwaveTex}
-          color="#ffffff"
-          transparent
-          opacity={0}
-          blending={THREE.AdditiveBlending}
-          depthWrite={false}
-          toneMapped={false}
-        />
+        <planeGeometry args={[WAVE_PLANE, WAVE_PLANE]} />
+        <primitive object={waveMats[0]} attach="material" />
       </mesh>
 
       {/* CENTRAL FLASH — the "bang": a bright central bloom that pops as the
@@ -4220,32 +4216,18 @@ function Laptop({
         </mesh>
       )}
 
-      {/* SECONDARY ECHO RIPPLES — two thinner follow-up rings that fire just
-       *  after the main sweep (staggered), reading as energy echoes radiating
-       *  from the burst. Fainter than the hero sweep; transient (gone at rest
-       *  and under reduced motion). */}
-      {[0, 1].map((i) => (
+      {/* SECONDARY ECHO WAVES — two follow-up wavefronts on the same
+       *  shader (own wobble seeds), firing just after the main wave.
+       *  Fainter than the hero front; transient (gone at rest and under
+       *  reduced motion). */}
+      {[1, 2].map((i) => (
         <mesh
           key={`echo-${i}`}
-          ref={(el) => {
-            echoMeshRefs.current[i] = el;
-          }}
-          position={[RIG_X, -BASE_H / 2 - 0.0345, 0]}
+          position={[RIG_X, -BASE_H / 2 - 0.0345 - (i - 1) * 0.0005, 0]}
           rotation={[-Math.PI / 2, 0, 0]}
         >
-          <planeGeometry args={[2, 2]} />
-          <meshBasicMaterial
-            ref={(el) => {
-              echoMatRefs.current[i] = el;
-            }}
-            map={shockwaveTex}
-            color="#ffffff"
-            transparent
-            opacity={0}
-            blending={THREE.AdditiveBlending}
-            depthWrite={false}
-            toneMapped={false}
-          />
+          <planeGeometry args={[WAVE_PLANE, WAVE_PLANE]} />
+          <primitive object={waveMats[i]} attach="material" />
         </mesh>
       ))}
 

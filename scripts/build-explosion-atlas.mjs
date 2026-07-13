@@ -18,7 +18,7 @@
  *   node scripts/build-explosion-atlas.mjs <input.mp4> [output.webp]
  *
  * Uses the repo's ffmpeg-static binary; override with FFMPEG=/path/to/ffmpeg.
- * Defaults: 64 frames (8x8), 800x450/frame -> 6400x3600 atlas, webp q86
+ * Defaults: 64 frames (8x8), 960x540/frame -> 7680x4320 atlas, webp q90
  * (stays under the 8192px GPU texture ceiling of the live-scene tier).
  */
 import { execFileSync, spawnSync } from "node:child_process";
@@ -28,9 +28,9 @@ import path from "node:path";
 
 const COLS = 8;
 const ROWS = 8;
-const FRAME_W = 800;
-const FRAME_H = 450;
-const QUALITY = 86;
+const FRAME_W = 960;
+const FRAME_H = 540;
+const QUALITY = 90;
 
 const input = process.argv[2];
 const output =
