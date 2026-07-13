@@ -558,98 +558,131 @@ function FieldworkStage({ cycle, cycleIndex, reduced, audio, emit, onNext }: { c
 }
 
 function CheckpointStage({ cycle, cycleIndex, reduced, audio, emit, onNext }: { cycle: CycleDef; cycleIndex: number; reduced: boolean; audio: ReturnType<typeof useSignalAudio>; emit: (e: AwardEvent) => void; onNext: () => void }) {
+  const questions = cycle.checkpoint.questions;
   const [qIndex, setQIndex] = useState(0);
-  const [picked, setPicked] = useState<number | null>(null);
   const [attempts, setAttempts] = useState(1);
   const [evidence, setEvidence] = useState<CheckpointEvidence[]>([]);
   const [passed, setPassed] = useState(false);
-  const questions = cycle.checkpoint.questions;
+  const [thread, setThread] = useState<{ who: "wren" | "you"; text: string; ok?: boolean }[]>([
+    { who: "wren", text: "Checkpoint, Operative. Prove it — no notes, just you." },
+  ]);
   const q = questions[Math.min(qIndex, questions.length - 1)];
 
+  const WRONG_LINES = [
+    "Not that one. Think about what the case file already showed you.",
+    "Closer than you think. Read the question like evidence.",
+  ];
+
   const choose = (i: number) => {
-    if (passed || picked === i) return;
-    setPicked(i);
+    if (passed) return;
+    const text = q.options[i];
     if (i === q.answer) {
       audio.latch();
       const record: CheckpointEvidence = { questionId: q.id, answerIndex: i, attempts };
       const nextEvidence = [...evidence, record];
-      if (qIndex + 1 < questions.length) {
-        window.setTimeout(() => {
-          setEvidence(nextEvidence);
-          setQIndex(qIndex + 1);
-          setPicked(null);
-          setAttempts(1);
-        }, 650);
-      } else {
+      const isLast = qIndex + 1 >= questions.length;
+      setThread((t) => [
+        ...t,
+        { who: "you", text, ok: true },
+        { who: "wren", text: isLast ? "That's both. Checkpoint stamped — evidence filed." : "Correct. Next one." },
+      ]);
+      if (isLast) {
         setEvidence(nextEvidence);
         setPassed(true);
         audio.stamp();
         emit({ type: "CHECKPOINT_PASSED", sourceKey: `cycle-${cycleIndex}`, evidence: nextEvidence });
+      } else {
+        setEvidence(nextEvidence);
+        setQIndex(qIndex + 1);
+        setAttempts(1);
       }
     } else {
       audio.thud();
       setAttempts((a) => a + 1);
+      setThread((t) => [
+        ...t,
+        { who: "you", text, ok: false },
+        { who: "wren", text: WRONG_LINES[(attempts - 1) % WRONG_LINES.length] },
+      ]);
     }
   };
 
+  const answered = new Set(thread.filter((m) => m.who === "you").map((m) => m.text));
+
   return (
-    <div style={{ maxWidth: 620, position: "relative" }}>
-      <div style={{ background: T.panel, border: `1px solid ${T.hairline}`, borderRadius: 3, padding: "20px 22px" }}>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
-          <Eyebrow text={`Checkpoint — prove it`} />
-          <span style={{ fontFamily: MONO, fontSize: 12, color: T.textSecondary }}>
-            {Math.min(qIndex + 1, questions.length)}/{questions.length}
-          </span>
-        </div>
-        <p style={{ fontSize: 16.5, lineHeight: 1.6, margin: "14px 0 14px", fontWeight: 500 }}>{q.question}</p>
-        <div style={{ display: "grid", gap: 10 }}>
-          {q.options.map((o, i) => {
-            const isPicked = picked === i;
-            const state = isPicked ? (i === q.answer ? T.confirmedGreen : T.threatRed) : null;
-            return (
-              <button
-                key={o}
-                onClick={() => choose(i)}
-                className="sr-btn sr-choice"
-                style={{
-                  textAlign: "left",
-                  fontSize: 15,
-                  lineHeight: 1.55,
-                  color: state ?? T.textPrimary,
-                  background: state ? `${state}14` : T.panelRaised,
-                  border: `1px solid ${state ?? T.hairline}`,
-                  borderRadius: 4,
-                  padding: "15px 17px",
-                  cursor: passed ? "default" : "pointer",
-                }}
-              >
-                {o}
-              </button>
-            );
-          })}
-        </div>
-        {picked !== null && picked !== q.answer && (
-          <p role="status" style={{ margin: "12px 0 0", fontSize: 13, color: T.textSecondary }}>
-            Not that one. Read it again — the case file already showed you the answer.
-          </p>
+    <div style={{ maxWidth: 640, position: "relative" }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 14 }}>
+        <Eyebrow text="Checkpoint — prove it" color={T.confirmedGreen} />
+        <span style={{ fontFamily: MONO, fontSize: 12, color: passed ? T.confirmedGreen : T.textSecondary }}>
+          {Math.min(qIndex + (passed ? 1 : 0), questions.length)}/{questions.length}
+        </span>
+      </div>
+
+      <div style={{ display: "grid", gap: 14 }}>
+        {thread.map((m, i) =>
+          m.who === "wren" ? (
+            <Bubble key={i} who="wren" tone={i === 0 ? T.confirmedGreen : undefined}>
+              {m.text}
+            </Bubble>
+          ) : (
+            <div key={i} className="sr-msg" style={{ display: "flex", gap: 12, flexDirection: "row-reverse", alignItems: "flex-end" }}>
+              <Face who="you" />
+              <div style={{ maxWidth: "78%", background: m.ok ? `${T.confirmedGreen}12` : `${T.threatRed}10`, border: `1px solid ${m.ok ? T.confirmedGreen : T.threatRed}88`, borderRadius: "14px 14px 3px 14px", padding: "12px 16px", fontSize: 16, lineHeight: 1.6, color: T.textPrimary }}>
+                {m.text}
+              </div>
+            </div>
+          ),
         )}
-        {passed && (
-          <p role="status" style={{ margin: "12px 0 0", fontFamily: MONO, fontSize: 12, letterSpacing: "0.06em", color: T.confirmedGreen }}>
-            CHECKPOINT PASSED — evidence filed.
-          </p>
+
+        {!passed && (
+          <Bubble who="wren" tone={T.confirmedGreen}>
+            <span style={{ display: "block", fontFamily: MONO, fontSize: 10.5, letterSpacing: "0.12em", color: T.confirmedGreen, marginBottom: 6 }}>
+              QUESTION {qIndex + 1} OF {questions.length}
+            </span>
+            {q.question}
+          </Bubble>
+        )}
+
+        {!passed && (
+          <div className="sr-msg" style={{ display: "grid", gap: 10, justifyItems: "end" }}>
+            {q.options.map((o, i) =>
+              answered.has(o) ? null : (
+                <button
+                  key={o}
+                  onClick={() => choose(i)}
+                  className="sr-btn sr-choice"
+                  style={{
+                    textAlign: "right",
+                    fontSize: 15.5,
+                    lineHeight: 1.55,
+                    color: T.confirmedGreen,
+                    background: `${T.confirmedGreen}0A`,
+                    border: `1px solid ${T.confirmedGreen}55`,
+                    borderRadius: "14px 14px 3px 14px",
+                    padding: "13px 17px",
+                    cursor: "pointer",
+                    maxWidth: "82%",
+                  }}
+                >
+                  {o}
+                </button>
+              ),
+            )}
+          </div>
         )}
       </div>
 
-      <StampMark text="PASSED" visible={passed} reduced={reduced} style={{ position: "absolute", top: -12, right: 14 }} />
+      <StampMark text="PASSED" visible={passed} reduced={reduced} style={{ position: "absolute", top: -10, right: 8 }} />
 
       {passed && (
-        <div style={{ marginTop: 18 }}>
+        <div className="sr-msg" style={{ marginTop: 22 }}>
           <AmberButton label={cycleIndex < 2 ? `START CYCLE ${cycleIndex + 2}` : "GO TO THE INCIDENT"} onClick={onNext} />
         </div>
       )}
     </div>
   );
 }
+
 
 /* ----------------------------------------------------------- incident */
 
