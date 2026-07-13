@@ -32,13 +32,24 @@ export function useReducedMotion(): boolean {
 export function RoomBackdrop({ reduced, tone }: { reduced: boolean; tone: string }) {
   return (
     <div aria-hidden style={{ position: "fixed", inset: 0, zIndex: 0, pointerEvents: "none", overflow: "hidden" }}>
-      {/* beat tone wash — the color journey between beats */}
+      {/* beat tone wash — the color journey between beats, at neon amplitude */}
       <div
         style={{
           position: "absolute",
           inset: 0,
-          background: `radial-gradient(ellipse 80% 55% at 50% 0%, ${tone}30 0%, transparent 65%), radial-gradient(ellipse 60% 40% at 100% 100%, ${tone}14 0%, transparent 60%)`,
+          background: `radial-gradient(ellipse 80% 55% at 50% 0%, ${tone}44 0%, transparent 65%), radial-gradient(ellipse 60% 40% at 100% 100%, ${tone}22 0%, transparent 60%), radial-gradient(ellipse 40% 30% at 0% 60%, ${T.glowCyan}14 0%, transparent 60%)`,
           transition: "background 700ms cubic-bezier(0.2,0,0,1)",
+        }}
+      />
+      {/* CRT scanlines — the whole deck reads as a display */}
+      <div
+        aria-hidden
+        style={{
+          position: "absolute",
+          inset: 0,
+          background: "repeating-linear-gradient(0deg, rgba(0,0,0,0.16) 0 1px, transparent 1px 4px)",
+          opacity: 0.5,
+          pointerEvents: "none",
         }}
       />
       {/* drifting signal gas */}
@@ -131,13 +142,13 @@ export function Bubble({ who, children, tone }: { who: "wren" | "you" | "villain
           maxWidth: "78%",
           background: mine ? `${T.actionAmber}14` : who === "villain" ? `${T.threatRed}10` : T.panelRaised,
           backgroundImage: "linear-gradient(180deg, rgba(255,255,255,0.045) 0%, transparent 45%)",
-          border: `1px solid ${mine ? `${T.actionAmber}66` : who === "villain" ? `${T.threatRed}66` : tone ? `${tone}44` : T.hairline}`,
+          border: `1px solid ${mine ? `${T.actionAmber}88` : who === "villain" ? `${T.threatRed}88` : tone ? `${tone}77` : `${T.glowCyan}55`}`,
           borderRadius: mine ? "14px 14px 3px 14px" : "14px 14px 14px 3px",
           padding: "12px 16px",
           fontSize: 16,
           lineHeight: 1.6,
           color: T.textPrimary,
-          boxShadow: "0 4px 14px -8px rgba(0,0,0,0.6)",
+          boxShadow: `0 4px 14px -8px rgba(0,0,0,0.6), 0 0 16px ${mine ? T.actionAmber : who === "villain" ? T.threatRed : T.glowCyan}1A`,
         }}
       >
         {children}
@@ -489,12 +500,19 @@ export function EngineStyles() {
         position: relative;
         clip-path: polygon(0 0, calc(100% - 18px) 0, 100% 18px, 100% 100%, 18px 100%, 0 calc(100% - 18px));
         background-image:
-          linear-gradient(180deg, rgba(255,255,255,0.04) 0%, transparent 22%),
-          radial-gradient(ellipse 60% 40% at 85% 0%, ${T.arcCyan}0D 0%, transparent 60%),
-          linear-gradient(${T.hairline}30 1px, transparent 1px),
-          linear-gradient(90deg, ${T.hairline}30 1px, transparent 1px) !important;
+          linear-gradient(180deg, rgba(255,255,255,0.05) 0%, transparent 22%),
+          radial-gradient(ellipse 60% 40% at 85% 0%, ${T.glowCyan}14 0%, transparent 60%),
+          linear-gradient(${T.hairline}38 1px, transparent 1px),
+          linear-gradient(90deg, ${T.hairline}38 1px, transparent 1px) !important;
         background-size: auto, auto, 22px 22px, 22px 22px;
         background-color: ${T.panelRaised}E6;
+        box-shadow: 0 0 26px ${T.glowCyan}1F, inset 0 0 32px ${T.glowCyan}0A, 0 14px 34px -18px rgba(0,0,0,0.9);
+      }
+      /* neon edge-light on every card and choice — the HUD look */
+      .sr-card { box-shadow: 0 0 16px ${T.glowCyan}14, 0 6px 16px -10px rgba(0,0,0,0.7) !important; }
+      .sr-choice { box-shadow: 0 0 12px ${T.glowCyan}12; }
+      @media (hover:hover) {
+        .sr-choice:hover:not(:disabled) { box-shadow: 0 10px 26px -12px rgba(0,0,0,0.8), 0 0 26px -2px ${T.glowCyan}66 !important; }
       }
       /* filled card rows (map rows, skill checklists) */
       .sr-card {
@@ -532,7 +550,7 @@ export function EngineStyles() {
       @keyframes srSegPulse { 0%,100% { opacity: 0.65; } 50% { opacity: 1; } }
 
       /* ── the lesson room ── */
-      .srof-blob { position: absolute; border-radius: 50%; filter: blur(70px); mix-blend-mode: screen; opacity: 0.65; will-change: transform; animation-duration: 85s; animation-timing-function: ease-in-out; animation-iteration-count: infinite; animation-direction: alternate; }
+      .srof-blob { position: absolute; border-radius: 50%; filter: blur(70px); mix-blend-mode: screen; opacity: 0.9; will-change: transform; animation-duration: 85s; animation-timing-function: ease-in-out; animation-iteration-count: infinite; animation-direction: alternate; }
       @keyframes srofDriftA { from { transform: translate3d(0,0,0) scale(1); } to { transform: translate3d(-6vw, 5vh, 0) scale(1.14); } }
       @keyframes srofDriftB { from { transform: translate3d(0,0,0) scale(1.05); } to { transform: translate3d(6vw, -4vh, 0) scale(1); } }
       .srof-dots { position: absolute; inset: 0; background-repeat: repeat; }
@@ -547,7 +565,8 @@ export function EngineStyles() {
          Edge-anchored, faint, never behind the text column. */
       .srof-code {
         position: absolute; font-family: ${MONO}; font-size: 11px;
-        letter-spacing: 0.06em; color: ${T.arcCyan}; white-space: nowrap;
+        letter-spacing: 0.06em; color: ${T.glowCyan}; white-space: nowrap;
+        text-shadow: 0 0 8px ${T.glowCyan}66;
         opacity: 0; animation: srofCode 14s ease-in-out infinite;
       }
       @keyframes srofCode {
@@ -557,10 +576,10 @@ export function EngineStyles() {
       }
       .srof-radar { position: absolute; top: -10vmax; right: -10vmax; width: 32vmax; height: 32vmax; }
       .srof-radar-rings { position: absolute; inset: 0; border-radius: 50%;
-        background: repeating-radial-gradient(circle at center, transparent 0 calc(20% - 1px), ${T.arcCyan}20 calc(20% - 1px) 20%);
-        border: 1px solid ${T.arcCyan}2A; }
+        background: repeating-radial-gradient(circle at center, transparent 0 calc(20% - 1px), ${T.glowCyan}30 calc(20% - 1px) 20%);
+        border: 1px solid ${T.glowCyan}44; box-shadow: 0 0 60px ${T.glowCyan}1F inset; }
       .srof-radar-sweep { position: absolute; inset: 0; border-radius: 50%;
-        background: conic-gradient(from 0deg, ${T.arcCyan}30 0deg, ${T.arcCyan}0C 42deg, transparent 70deg);
+        background: conic-gradient(from 0deg, ${T.glowCyan}4D 0deg, ${T.glowCyan}14 42deg, transparent 70deg);
         animation: srofSpin 17s linear infinite; }
       @keyframes srofSpin { to { transform: rotate(360deg); } }
       .srof-floor { position: absolute; left: -20%; right: -20%; bottom: -6vh; height: 30vh;

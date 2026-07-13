@@ -9,7 +9,11 @@ export const T = {
   inkBlack: "#0B0F14",
   panel: "#121820",
   panelRaised: "#1A222E",
-  hairline: "#2A3644",
+  /* Glow-pass 2026-07-13 (owner override of the doc's restraint):
+     hairline brightened to read as lit circuitry, and full brand-neon
+     cyan added for borders/glow accents engine-wide. */
+  hairline: "#33506B",
+  glowCyan: "#00E5FF",
   textPrimary: "#E6EDF3",
   textSecondary: "#8FA0B2",
   textDisabled: "#5A6B80",
