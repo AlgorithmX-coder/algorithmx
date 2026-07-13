@@ -1,6 +1,6 @@
 # Cyber Explorers — 20-Mission Curriculum Map v1
 
-**Status:** Draft for Asad's lock. Once locked, this is the no-overlap reference for building every mission — the Explorers parallel to the Heroes curriculum map + buildsheet. Mission 01 is already shipped and conforms to its slot (§M01).
+**Status: LOCKED v1.0 (2026-07-13, under Asad's "do what you think is best" delegation).** This is the no-overlap reference for building every mission — the Explorers parallel to the Heroes curriculum map + buildsheet. Mission 01 is already shipped and conforms to its slot (§M01). DECIDE resolutions: (1) blackmail-abstract in M09 = YES as specified in §11; (2) coordinator = a former ARC analyst who broke the Code; (3) verb triples remain DEFAULT, concepts + actors are the locked layer; (4) M12 stays PACKRAT.
 
 **Markers:** `LOCKED` (canon carried in), `DEFAULT` (recommended, change here only), `DECIDE` (listed at the end).
 

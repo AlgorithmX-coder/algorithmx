@@ -40,6 +40,7 @@ import { checkpointStorageKey, xpForEvent } from "./types";
 import Inspect from "../mechanics/Inspect";
 import Decide from "../mechanics/Decide";
 import Profile from "../mechanics/Profile";
+import Trace from "../mechanics/Trace";
 
 const eventKey = (e: AwardEvent) => `${e.type}:${e.sourceKey}`;
 
@@ -436,6 +437,7 @@ function FieldworkStage({ cycle, cycleIndex, reduced, audio, emit, onNext }: { c
   const props = { reduced, audio, onEvent: handle } as const;
   if (fw.verb === "INSPECT") return <Inspect payload={fw.payload} {...props} />;
   if (fw.verb === "DECIDE") return <Decide payload={fw.payload} {...props} />;
+  if (fw.verb === "TRACE") return <Trace payload={fw.payload} {...props} />;
   return <Profile payload={fw.payload} {...props} />;
 }
 

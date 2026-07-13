@@ -124,10 +124,32 @@ export interface ProfilePayload {
   doneLine: string;
 }
 
+export interface TraceCard {
+  id: string;
+  surface: string;
+  from: string;
+  text: string;
+  /** True = part of the campaign; false = decoy noise. */
+  inCampaign: boolean;
+  /** The fingerprint highlighted once pinned (campaign cards only). */
+  clue?: string;
+  /** Funnel position, 1-based (campaign cards only). */
+  order?: number;
+}
+
+export interface TracePayload {
+  intro: string;
+  fingerprintHint: string;
+  cards: TraceCard[];
+  stage2Prompt: string;
+  doneLine: string;
+}
+
 export type FieldworkDef =
   | { verb: "INSPECT"; payload: InspectPayload }
   | { verb: "DECIDE"; payload: DecidePayload }
-  | { verb: "PROFILE"; payload: ProfilePayload };
+  | { verb: "PROFILE"; payload: ProfilePayload }
+  | { verb: "TRACE"; payload: TracePayload };
 
 /* ------------------------------------------------------------ cycles */
 
