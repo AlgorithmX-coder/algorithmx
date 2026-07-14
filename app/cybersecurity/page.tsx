@@ -84,7 +84,9 @@ const TRACK_DISPLAY_OVERRIDES: Record<
  * omit this and keep their abstract emoji identifier. */
 const TRACK_CHARACTER_IMAGES: Record<string, string> = {
   "cyber-heroes": "/characters/adam-layla-happy.png",
-  cyberexplorers: "/explorers/scenes/m02-cold-open.jpg",
+  /* Card variant, brightness-lifted for the card's 0.48-opacity layer +
+   * dark scrim — the raw cinematic scene is too dark to survive them. */
+  cyberexplorers: "/explorers/scenes/m02-card.jpg",
 };
 
 /* Feature tag shown with the art (TrackCard defaults to the Heroes
@@ -324,6 +326,8 @@ export default async function CybersecurityPage() {
                   index={i}
                   characterImage={characterImage}
                   kicker={TRACK_KICKERS[p.slug]}
+                  imageFilter={p.slug === "cyberexplorers" ? "brightness(1.7) saturate(1.25)" : undefined}
+                  imageOpacity={p.slug === "cyberexplorers" ? 0.62 : undefined}
                 />
               );
             })}
