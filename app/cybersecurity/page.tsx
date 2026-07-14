@@ -55,7 +55,7 @@ const TRACK_BLURBS: Record<string, string> = {
   "cyber-heroes":
     "A confident, safe start in technology. Through animated missions with Adam and Layla, children learn strong passwords, scam-spotting and smart online habits they can use every day.",
   cyberexplorers:
-    "Turn curiosity into practical cyber skill. Guided labs cover phishing, social engineering, and online safety, building the digital confidence that lasts.",
+    "A spy thriller they play for real. As an agent of ARC, your child cracks 20 story missions with a voice-acted handler — learning to spot phishing, fake voices and data tricks for life.",
   cyberstart:
     "Build portfolio-ready cyber skills through network defence, capture-the-flag challenges, and incident response projects designed for serious learners.",
   "cyberstart-pro":
@@ -84,6 +84,26 @@ const TRACK_DISPLAY_OVERRIDES: Record<
  * omit this and keep their abstract emoji identifier. */
 const TRACK_CHARACTER_IMAGES: Record<string, string> = {
   "cyber-heroes": "/characters/adam-layla-happy.png",
+  cyberexplorers: "/explorers/scenes/m02-cold-open.jpg",
+};
+
+/* Feature tag shown with the art (TrackCard defaults to the Heroes
+ * cast line when omitted). */
+const TRACK_KICKERS: Record<string, string> = {
+  "cyber-heroes": "Animation-led · Adam & Layla",
+  cyberexplorers: "Story-driven · Agent WREN vs SIREN",
+};
+
+/* Display-layer status + weeks overrides, same rationale as
+ * TRACK_DISPLAY_OVERRIDES: Cyber Explorers is LIVE in the product
+ * (missions ship at /explorers) but the DB catalogue row still says
+ * COMING_SOON pending the checkout flip — the browse card shouldn't
+ * under-sell a live course. */
+const TRACK_STATUS_OVERRIDES: Record<string, "ACTIVE" | "COMING_SOON"> = {
+  cyberexplorers: "ACTIVE",
+};
+const TRACK_WEEKS_OVERRIDES: Record<string, number> = {
+  cyberexplorers: 20,
 };
 
 /* Per-track accent — borrowed from the homepage SubjectShowcase
@@ -295,14 +315,15 @@ export default async function CybersecurityPage() {
                   ageRange={displayOverride?.ageRange ?? p.ageRange}
                   duration={p.duration}
                   priceLabel={formatPrice(p.priceGBP)}
-                  weeksCount={p.weeksCount}
-                  status={p.status as "ACTIVE" | "COMING_SOON"}
+                  weeksCount={TRACK_WEEKS_OVERRIDES[p.slug] ?? p.weeksCount}
+                  status={TRACK_STATUS_OVERRIDES[p.slug] ?? (p.status as "ACTIVE" | "COMING_SOON")}
                   blurb={blurb}
                   landingHref={landingHref}
                   fitForChildren={childFits[p.slug] ?? []}
                   accent={accent}
                   index={i}
                   characterImage={characterImage}
+                  kicker={TRACK_KICKERS[p.slug]}
                 />
               );
             })}
