@@ -29,12 +29,13 @@ const ACTORS = [
     code: "PHANTOM HOOK",
     tease: "Urgent fakes dressed as companies you trust. Wants the click before the thought.",
     declassified: true,
+    portrait: "/explorers/actors/phantom-hook.png",
   },
-  { code: "MIMIC", tease: "Voices you trust. Faces you know. Neither is real." },
-  { code: "SKELETON KEY", tease: "Ten thousand guesses a second — and one weak password." },
-  { code: "SIREN", tease: "Prizes, flattery, urgency. Whatever gets a yes." },
-  { code: "GHOSTWRITER", tease: "Machine-written lures, fluent in your favorite games." },
-  { code: "PACKRAT", tease: "Hoards every detail you overshare. Spends it later." },
+  { code: "MIMIC", tease: "Voices you trust. Faces you know. Neither is real.", portrait: "/explorers/actors/mimic.png" },
+  { code: "SKELETON KEY", tease: "Ten thousand guesses a second — and one weak password.", portrait: "/explorers/actors/skeleton-key.png" },
+  { code: "SIREN", tease: "Prizes, flattery, urgency. Whatever gets a yes.", portrait: "/explorers/actors/siren.png" },
+  { code: "GHOSTWRITER", tease: "Machine-written lures, fluent in your favorite games.", portrait: "/explorers/actors/ghostwriter.png" },
+  { code: "PACKRAT", tease: "Hoards every detail you overshare. Spends it later.", portrait: "/explorers/actors/packrat.png" },
 ];
 
 const BEATS = [
@@ -630,14 +631,27 @@ function DossierCard({ actor, reduced }: { actor: (typeof ACTORS)[number]; reduc
           color: actor.declassified ? T.fileInk : T.textSecondary,
           border: `1px solid ${actor.declassified ? T.manila : T.hairline}`,
           borderRadius: 3,
-          padding: "13px 13px 15px",
+          padding: 0,
           minHeight: 128,
           position: "relative",
           cursor: "default",
+          overflow: "hidden",
           "--ac": actor.declassified ? T.clearanceBrass : T.arcCyan,
         } as React.CSSProperties
       }
     >
+      {actor.portrait && (
+        <div style={{ position: "relative" }}>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={actor.portrait}
+            alt={`Surveillance photo of ${actor.code}`}
+            style={{ width: "100%", aspectRatio: "4/3", objectFit: "cover", objectPosition: "center 20%", display: "block", filter: actor.declassified ? "none" : "grayscale(0.6) brightness(0.85)" }}
+          />
+          <div aria-hidden style={{ position: "absolute", inset: 0, background: `linear-gradient(180deg, transparent 45%, ${actor.declassified ? T.manila : T.panel} 100%)` }} />
+        </div>
+      )}
+      <div style={{ padding: "10px 13px 15px" }}>
       {/* corner viewfinder tick */}
       <span
         aria-hidden
@@ -674,6 +688,7 @@ function DossierCard({ actor, reduced }: { actor: (typeof ACTORS)[number]; reduc
           FULL DOSSIER: CLOSE THE CASE
         </div>
       )}
+      </div>
     </div>
   );
 }
@@ -735,8 +750,14 @@ export default function CyberExplorersLanding() {
       </nav>
 
       <div style={{ position: "relative", maxWidth: 1120, margin: "0 auto", padding: "0 24px" }}>
-        {/* ── HERO ───────────────────────────────────────────────── */}
-        <section style={{ display: "grid", gridTemplateColumns: "minmax(0, 1.05fr) minmax(0, 1fr)", gap: 52, alignItems: "center", padding: "76px 0 30px" }} className="cx-two-col">
+        {/* ── HERO — the cinematic cold open IS the background ────── */}
+        <section style={{ position: "relative", display: "grid", gridTemplateColumns: "minmax(0, 1.05fr) minmax(0, 1fr)", gap: 52, alignItems: "center", padding: "86px 0 54px" }} className="cx-two-col">
+          <div aria-hidden style={{ position: "absolute", top: -40, bottom: 0, left: "-50vw", right: "-50vw", zIndex: -1, overflow: "hidden" }}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/explorers/scenes/m02-cold-open.jpg" alt="" style={{ width: "100%", height: "115%", objectFit: "cover", objectPosition: "center 30%", display: "block", filter: "saturate(1.15)" }} />
+            <div style={{ position: "absolute", inset: 0, background: `linear-gradient(180deg, ${T.inkBlack}A6 0%, ${T.inkBlack}D9 60%, ${T.inkBlack} 97%), radial-gradient(ellipse 55% 85% at 18% 45%, ${T.inkBlack}F2 0%, transparent 72%)` }} />
+            <div style={{ position: "absolute", inset: 0, background: "repeating-linear-gradient(0deg, rgba(0,0,0,0.16) 0 1px, transparent 1px 4px)", opacity: 0.45 }} />
+          </div>
           <div className="cx-hero-in">
             <Eyebrow text="AlgorithmX Cybersecurity · Ages 10–13" color={T.arcCyan} />
             <h1 style={{ fontFamily: MONO, fontSize: "clamp(36px, 6vw, 74px)", fontWeight: 600, lineHeight: 1.04, letterSpacing: "-0.02em", margin: "18px 0 20px" }}>
@@ -826,7 +847,7 @@ export default function CyberExplorersLanding() {
         <section style={{ padding: "56px 0", position: "relative" }}>
           <Wash color={T.threatRed} at="70% 20%" />
           <SectionHead
-            eyebrow="Why now"
+            eyebrow="01 · Why this matters now"
             title="The internet doesn't wait until they're ready."
             sub="Age 10 to 13 is when it all arrives at once — the phone, the accounts, the group chats. And the scams arrive with them."
           />
@@ -849,7 +870,7 @@ export default function CyberExplorersLanding() {
 
         {/* ── THE TRANSFORMATION ─────────────────────────────────── */}
         <section style={{ padding: "40px 0 56px", position: "relative" }}>
-          <SectionHead eyebrow="What changes" title="Same kid. Different reflexes." />
+          <SectionHead eyebrow="02 · The change you'll see" title="Same kid. Different reflexes." />
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }} className="cx-two-col">
             <div data-scroll style={{ background: `${T.panel}D9`, border: `1px solid ${T.hairline}`, borderRadius: 3, padding: "22px 24px" }}>
               <Eyebrow text="Before" color={T.textDisabled} />
@@ -870,11 +891,37 @@ export default function CyberExplorersLanding() {
           </p>
         </section>
 
+        {/* ── WHAT YOUR CHILD GETS — the deliverables, concretely ── */}
+        <section style={{ padding: "56px 0", position: "relative" }}>
+          <Wash color={T.arcCyan} at="50% 10%" />
+          <SectionHead
+            eyebrow="03 · What your child gets"
+            title="Everything included. Nothing vague."
+            sub="This is the product, in plain terms — what arrives the day you enroll."
+          />
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 14 }} className="cx-three-col">
+            {[
+              { n: "20", t: "Story missions", d: "One complete case a week, 45–60 minutes, fully self-guided with save-and-resume." },
+              { n: "7", t: "Real analyst skills", d: "Spotting scams, reading web addresses, verifying identities, building real defenses — taught by doing." },
+              { n: "1", t: "Voice-acted mentor", d: "WREN, their handler, talks them through every mission like a colleague — never a lecture." },
+              { n: "6", t: "Villains to unmask", d: "Each one is a real internet threat in a story costume — phishing, fake voices, data theft." },
+              { n: "∞", t: "Progress you can check", d: "XP, clearance ranks, and quiz records — evidence of learning, visible any time." },
+              { n: "£99", t: "Once. Lifetime access", d: "Every mission, every future update, no subscription, and a money-back guarantee." },
+            ].map((g, i) => (
+              <div key={g.t} data-scroll data-scroll-delay={String((i % 3) * 0.08)} className="cx-card" style={{ background: `${T.panel}E6`, border: `1px solid ${T.hairline}`, borderTop: `2px solid ${T.arcCyan}88`, borderRadius: 4, padding: "18px 20px", "--ac": T.arcCyan } as React.CSSProperties}>
+                <div style={{ fontFamily: MONO, fontSize: 34, fontWeight: 600, color: T.arcCyan, textShadow: `0 0 22px ${T.arcCyan}55`, lineHeight: 1 }}>{g.n}</div>
+                <div style={{ fontFamily: MONO, fontSize: 14.5, fontWeight: 600, margin: "10px 0 6px" }}>{g.t}</div>
+                <p style={{ fontSize: 13.5, lineHeight: 1.6, color: T.textSecondary, margin: 0 }}>{g.d}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
         {/* ── PREMISE ────────────────────────────────────────────── */}
         <section id="mission" style={{ padding: "56px 0", position: "relative" }}>
           <Wash color={T.arcCyan} at="30% 10%" />
           <SectionHead
-            eyebrow="This part is for your kid — hand them the phone"
+            eyebrow="04 · Their world — hand them the phone"
             title="You're the operative."
             sub="No cartoon sidekicks, no classroom. A calm handler on the radio, real evidence on your desk, and a network of threat actors running the exact tricks the real internet runs. Welcome to ARC."
           />
@@ -961,7 +1008,7 @@ export default function CyberExplorersLanding() {
         {/* ── MISSION BEATS ──────────────────────────────────────── */}
         <section style={{ padding: "48px 0" }}>
           <SectionHead
-            eyebrow="How a mission works"
+            eyebrow="05 · How each week works"
             title="Six beats. One hour. Every week."
             sub="Each mission is a complete case with a beginning, a middle, and a deliberate end — 45–60 minutes, save-and-resume anywhere."
           />
@@ -1023,7 +1070,7 @@ export default function CyberExplorersLanding() {
         <section id="curriculum" style={{ padding: "56px 0", position: "relative" }}>
           <Wash color="#4A78B5" at="70% 15%" />
           <SectionHead
-            eyebrow="The curriculum"
+            eyebrow="05 · What they'll learn, week by week"
             title="20 missions. 4 clearance blocks."
             sub="Every five closed cases raise your child's clearance — earned by demonstrated skill, never bought with points. The season builds to unmasking STATIC's coordinator in Mission 20."
           />
@@ -1185,9 +1232,9 @@ export default function CyberExplorersLanding() {
         <section id="parents" style={{ padding: "56px 0", position: "relative" }}>
           <Wash color={T.confirmedGreen} at="25% 20%" />
           <SectionHead
-            eyebrow="For parents"
-            title="Engagement without the tricks."
-            sub="A cybersecurity course shouldn't use the manipulation patterns it warns kids about. Ours can't — the same rules that shaped Cyber Heroes are wired into this tier's design."
+            eyebrow="06 · What you get as a parent"
+            title="Visibility, safety, and a kid who talks about it."
+            sub="Six commitments, built into the product's design — not promises on a page."
           />
           <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 14 }} className="cx-two-col">
             {PARENT_POINTS.map((p, i) => (
