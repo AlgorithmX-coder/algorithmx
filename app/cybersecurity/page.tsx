@@ -84,9 +84,10 @@ const TRACK_DISPLAY_OVERRIDES: Record<
  * omit this and keep their abstract emoji identifier. */
 const TRACK_CHARACTER_IMAGES: Record<string, string> = {
   "cyber-heroes": "/characters/adam-layla-happy.png",
-  /* v2 card art: bright ARC command-room scene (young agent at a
-   * glowing holo-desk) — generated bright so it needs no rescue lift. */
-  cyberexplorers: "/explorers/scenes/explorers-card-v2.jpg",
+  /* v3 card art: sunny, kid-friendly ARC command room (kid in a hoodie
+   * at a holo-desk, daylight + colorful screens) — v2's dark-silhouette
+   * scene read too scary for 10–13 per owner review. */
+  cyberexplorers: "/explorers/scenes/explorers-card-v3.jpg",
 };
 
 /* Feature tag shown with the art (TrackCard defaults to the Heroes
