@@ -44,6 +44,8 @@ export interface TrackCardProps {
    *  led format. Passed as a public-folder path (e.g. "/characters/...").
    *  Other tracks omit this and keep the emoji as their identifier. */
   characterImage?: string;
+  /** Feature tag rendered with the character art (defaults to the Heroes cast line). */
+  kicker?: string;
 }
 
 export default function TrackCard({
@@ -60,6 +62,7 @@ export default function TrackCard({
   accent,
   index,
   characterImage,
+  kicker,
 }: TrackCardProps) {
   const reduced = useReducedMotion();
   const [hover, setHover] = useState(false);
@@ -248,7 +251,7 @@ export default function TrackCard({
             textShadow: "0 1px 4px rgba(4,5,13,0.6)",
           }}
         >
-          Animation-led · Adam &amp; Layla
+          {kicker ?? <>Animation-led · Adam &amp; Layla</>}
         </p>
       )}
 
