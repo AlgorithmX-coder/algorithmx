@@ -46,6 +46,10 @@ export interface TrackCardProps {
   characterImage?: string;
   /** Feature tag rendered with the character art (defaults to the Heroes cast line). */
   kicker?: string;
+  /** Per-track CSS filter for the art layer (dark cinematic sources need a lift). */
+  imageFilter?: string;
+  /** Per-track opacity override for the art layer. */
+  imageOpacity?: number;
 }
 
 export default function TrackCard({
@@ -63,6 +67,8 @@ export default function TrackCard({
   index,
   characterImage,
   kicker,
+  imageFilter,
+  imageOpacity,
 }: TrackCardProps) {
   const reduced = useReducedMotion();
   const [hover, setHover] = useState(false);
@@ -139,7 +145,8 @@ export default function TrackCard({
               /* Bumped 0.32 → 0.48 so the characters are recognisable
                *  without becoming the dominant visual; the scrim below
                *  picks up the readability slack. */
-              opacity: 0.48,
+              opacity: imageOpacity ?? 0.48,
+              filter: imageFilter,
               zIndex: 0,
               pointerEvents: "none",
             }}
