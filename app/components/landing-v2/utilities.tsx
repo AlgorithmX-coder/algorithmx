@@ -53,10 +53,11 @@ export function isWeakGpu(): boolean {
 }
 
 /* useCinematicReleaseProgress - 0..1 fade value for any UI that should
- * appear AFTER the LaptopScene cinematic releases its sticky pin. The
- * rail height is 280vh on desktop / 180vh on phones, so the actual
- * release scroll position depends on viewport. Single source of truth
- * so Nav (Get Started CTA) and Algo (corner widget) stay in sync. */
+ * appear AFTER the hero cinematic releases its sticky pin. The rail
+ * height is 220vh on desktop / 170vh on phones (mirrors
+ * HeroCinematicV3), so the actual release scroll position depends on
+ * viewport. Single source of truth so Nav (Get Started CTA) and Algo
+ * (corner widget) stay in sync. */
 export function useCinematicReleaseProgress(): number {
   const [value, setValue] = useState(0);
   useEffect(() => {
@@ -65,8 +66,8 @@ export function useCinematicReleaseProgress(): number {
     const compute = () => {
       const vh = window.innerHeight;
       const isCompact = window.matchMedia("(max-width: 768px)").matches;
-      /* Cinematic rail height in vh (mirrors HeroCinematic.tsx) */
-      const railVh = isCompact ? 1.8 : 2.8;
+      /* Cinematic rail height in vh (mirrors HeroCinematicV3.tsx) */
+      const railVh = isCompact ? 1.7 : 2.2;
       /* Sticky releases at scrollY = (railVh - 1) * vh. Fade the value
        * in over the next 0.3 vh of scroll so consumers can ease in. */
       const releaseAt = (railVh - 1) * vh;
