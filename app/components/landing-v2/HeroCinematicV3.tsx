@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 import {
@@ -56,6 +56,16 @@ const STREAMS = [
   { name: "ENTREPRENEURSHIP", age: "13+", status: "2027", color: "#ffc94a", href: "#subjects" },
   { name: "ROBOTICS", age: "10+", status: "2027", color: "#ff3ad6", href: "#subjects" },
 ] as const;
+
+/* Deterministic per-row activity sparklines (viewBox 0 0 30 10). */
+const SPARKS = [
+  "0,7 5,6 9,7.5 13,4 17,5.5 21,3 25,4.5 30,2.5",
+  "0,6 5,7 9,5 13,6.5 17,4 21,5 25,3.5 30,4.5",
+  "0,7.5 5,5.5 9,6.5 13,5 17,6 21,4 25,5 30,3",
+  "0,6.5 5,7.5 9,6 13,7 17,5 21,6 25,4.5 30,5.5",
+  "0,7 5,6.5 9,7.5 13,6 17,7 21,5 25,6 30,4",
+  "0,6 5,5 9,6.5 13,4.5 17,6 21,3.5 25,5 30,3.5",
+];
 
 /* Per-column key glow hues — the curated luxe palette from the brand
  * keyboard (not a raw rainbow). */
@@ -164,6 +174,18 @@ export default function HeroCinematicV3() {
   const floorGlow = useTransform(progress, (p) => 0.25 + 0.75 * smoothstep(0.38, 0.6, p));
   /* Standby LED fades out as the machine wakes. */
   const ledOpacity = useTransform(progress, (p) => 1 - smoothstep(0.35, 0.5, p));
+  /* LID LIGHT SWEEP — a specular band travelling across the aluminum
+   * while the lid is in motion (scroll-driven; invisible at rest). Its
+   * own compositor layer inside the lid — adds nothing to the lid's
+   * animation cost. */
+  const sweepX = useTransform(
+    progress,
+    (p) => `${-160 + 330 * smoothstep(0.08, 0.44, p)}%`,
+  );
+  const sweepOpacity = useTransform(progress, (p) => {
+    const t = smoothstep(0.08, 0.44, p);
+    return Math.sin(Math.PI * t) * 0.5;
+  });
   /* IGNITION FLASH — a light kick that peaks as the screen lights and is
    * fully gone by 0.58. Scroll-keyed sine envelope: it physically cannot
    * linger (the failure mode of the old hero's detonation pool). */
@@ -248,7 +270,10 @@ export default function HeroCinematicV3() {
               transformStyle: "preserve-3d",
             }}
           >
-            {/* energy floor + contact shadow (in-plane, under the deck) */}
+            {/* GALAXY FLOOR POOL — layered nebula + faint spiral swirl
+             *  under the deck (all static gradients; the single opacity
+             *  is the only animated value). Echoes the old hero's galaxy
+             *  floor at zero per-frame cost. */}
             <motion.div
               style={{
                 position: "absolute",
@@ -259,10 +284,30 @@ export default function HeroCinematicV3() {
                 transform: "translate(-50%, -46%)",
                 borderRadius: "50%",
                 opacity: floorGlow,
-                background:
-                  "radial-gradient(circle at 50% 50%, rgba(0,229,255,0.16) 0%, rgba(60,120,255,0.08) 30%, rgba(0,229,255,0.03) 52%, transparent 70%)",
               }}
-            />
+            >
+              <div
+                style={{
+                  position: "absolute",
+                  inset: 0,
+                  borderRadius: "50%",
+                  background:
+                    "radial-gradient(circle at 50% 50%, rgba(0,229,255,0.15) 0%, rgba(60,120,255,0.08) 28%, rgba(0,229,255,0.03) 52%, transparent 70%), " +
+                    "radial-gradient(ellipse 55% 38% at 38% 58%, rgba(120,80,220,0.10) 0%, transparent 65%), " +
+                    "radial-gradient(ellipse 48% 30% at 66% 40%, rgba(40,160,235,0.10) 0%, transparent 65%)",
+                }}
+              />
+              <div
+                style={{
+                  position: "absolute",
+                  inset: "12%",
+                  borderRadius: "50%",
+                  background:
+                    "conic-gradient(from 210deg at 50% 50%, transparent 0deg, rgba(90,180,255,0.05) 40deg, transparent 90deg, rgba(140,120,255,0.05) 150deg, transparent 210deg, rgba(0,229,255,0.06) 280deg, transparent 340deg)",
+                  filter: "blur(6px)",
+                }}
+              />
+            </motion.div>
             <div
               style={{
                 position: "absolute",
@@ -466,6 +511,37 @@ export default function HeroCinematicV3() {
                   </span>
                 </div>
 
+                {/* antenna isolation lines near the hinge corners */}
+                {[26, undefined].map((left, i) => (
+                  <div
+                    key={i}
+                    style={{
+                      position: "absolute",
+                      ...(left !== undefined ? { left } : { right: 26 }),
+                      top: 3,
+                      width: 1,
+                      height: 22,
+                      background: "rgba(150,172,208,0.2)",
+                    }}
+                  />
+                ))}
+
+                {/* etched regulatory micro-text */}
+                <div
+                  style={{
+                    position: "absolute",
+                    right: 58,
+                    bottom: 38,
+                    fontFamily: "var(--lv2-font-mono)",
+                    fontSize: 5.5,
+                    letterSpacing: "0.12em",
+                    color: "rgba(232,237,255,0.14)",
+                    userSelect: "none",
+                  }}
+                >
+                  MODEL AX-26 · DESIGNED BY ALGORITHMX LABS
+                </div>
+
                 {/* standby LED on the front lip */}
                 <motion.div
                   style={{
@@ -483,7 +559,7 @@ export default function HeroCinematicV3() {
                 />
               </div>
 
-              {/* base thickness — front edge */}
+              {/* base thickness — front edge, with machined port cutouts */}
               <div
                 style={{
                   position: "absolute",
@@ -497,7 +573,39 @@ export default function HeroCinematicV3() {
                   background: "linear-gradient(180deg, #232836, #12151e)",
                   boxShadow: "inset 0 1px 0 rgba(150,170,205,0.14)",
                 }}
-              />
+              >
+                {/* USB-C ×2 */}
+                {[128, 166].map((x) => (
+                  <div
+                    key={x}
+                    style={{
+                      position: "absolute",
+                      left: x,
+                      top: 4.5,
+                      width: 24,
+                      height: 4.5,
+                      borderRadius: 3,
+                      background: "#04060b",
+                      boxShadow:
+                        "inset 0 1px 2px rgba(0,0,0,0.95), 0 1px 0 rgba(160,182,215,0.1)",
+                    }}
+                  />
+                ))}
+                {/* headphone jack */}
+                <div
+                  style={{
+                    position: "absolute",
+                    left: 204,
+                    top: 3.5,
+                    width: 6.5,
+                    height: 6.5,
+                    borderRadius: 99,
+                    background: "#04060b",
+                    boxShadow:
+                      "inset 0 1px 2px rgba(0,0,0,0.95), 0 1px 0 rgba(160,182,215,0.1)",
+                  }}
+                />
+              </div>
 
               {/* ── LID (hinged at the back edge) ── */}
               <motion.div
@@ -526,6 +634,7 @@ export default function HeroCinematicV3() {
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
+                    overflow: "hidden",
                   }}
                 >
                   <div
@@ -542,6 +651,22 @@ export default function HeroCinematicV3() {
                   >
                     ALGORITHMX
                   </div>
+                  {/* specular sweep while the lid moves */}
+                  <motion.div
+                    aria-hidden
+                    style={{
+                      position: "absolute",
+                      top: "-25%",
+                      bottom: "-25%",
+                      left: 0,
+                      width: "48%",
+                      x: sweepX,
+                      opacity: sweepOpacity,
+                      background:
+                        "linear-gradient(105deg, transparent 0%, rgba(185,220,255,0.14) 32%, rgba(225,242,255,0.3) 50%, rgba(185,220,255,0.14) 68%, transparent 100%)",
+                      pointerEvents: "none",
+                    }}
+                  />
                 </div>
 
                 {/* inner face: bezel + REAL HTML screen (visible open) */}
@@ -604,13 +729,18 @@ export default function HeroCinematicV3() {
                     ].map((ring, ri) => (
                       <div
                         key={ri}
+                        className="hv3-ring"
                         style={{
                           position: "absolute",
                           left: "52%",
                           top: "44%",
                           width: ring.w,
                           height: ring.h,
-                          transform: "translate(-50%, -50%) rotate(-14deg)",
+                          /* rotate as a SEPARATE property so the drift
+                           * keyframe composes with the translate */
+                          transform: "translate(-50%, -50%)",
+                          rotate: "-14deg",
+                          animationDelay: `${ri * -7}s`,
                           borderRadius: "50%",
                           border: `${ring.bw}px solid rgba(140,220,255,${ring.o})`,
                           boxShadow: `0 0 10px rgba(46,166,232,${ring.o * 0.5})`,
@@ -733,11 +863,15 @@ export default function HeroCinematicV3() {
         @keyframes hv3DriftB { from { transform: translate3d(0,0,0); } to { transform: translate3d(-2.5vw,-2vh,0); } }
         .hv3-ledBreathe { animation: hv3Led 2.6s ease-in-out infinite; }
         @keyframes hv3Led { 0%,100% { filter: brightness(0.7); } 50% { filter: brightness(1.3); } }
+        .hv3-blink { animation: hv3Blink 1.1s steps(2, start) infinite; }
+        @keyframes hv3Blink { to { visibility: hidden; } }
+        .hv3-ring { animation: hv3RingDrift 26s ease-in-out infinite alternate; }
+        @keyframes hv3RingDrift { from { rotate: -14deg; } to { rotate: -6deg; } }
         .hv3-row { transition: background-color 0.18s ease, box-shadow 0.18s ease; cursor: pointer; }
         .hv3-row:hover { background-color: rgba(63,208,255,0.1); }
         .hv3-row:focus-visible { outline: 1.5px solid var(--lv2-cyan); outline-offset: 1px; }
         @media (prefers-reduced-motion: reduce) {
-          .hv3-nebulaA, .hv3-nebulaB, .hv3-ledBreathe { animation: none; }
+          .hv3-nebulaA, .hv3-nebulaB, .hv3-ledBreathe, .hv3-blink, .hv3-ring { animation: none; }
         }
       `}</style>
     </section>
@@ -800,8 +934,32 @@ function ScreenDashboard({ progress }: { progress: MotionValue<number> }) {
             </span>
           ))}
         </span>
-        <span style={{ color: DIM, fontSize: 7.5, letterSpacing: "0.16em", flexShrink: 0 }}>
-          SYS-07 · <span style={{ color: "#5fffa3" }}>ONLINE</span>
+        <span
+          style={{
+            color: DIM,
+            fontSize: 7.5,
+            letterSpacing: "0.16em",
+            flexShrink: 0,
+            display: "flex",
+            alignItems: "center",
+            gap: 7,
+          }}
+        >
+          <svg viewBox="0 0 12 9" style={{ width: 10, height: 8 }} aria-hidden>
+            <path
+              d="M1.2 3.8a7 7 0 0 1 9.6 0M3.2 5.8a4.2 4.2 0 0 1 5.6 0"
+              stroke="#9ff5ff"
+              strokeWidth="1.1"
+              strokeLinecap="round"
+              fill="none"
+              opacity="0.75"
+            />
+            <circle cx="6" cy="7.6" r="0.9" fill="#9ff5ff" opacity="0.9" />
+          </svg>
+          <span>23:47</span>
+          <span>
+            SYS-07 · <span style={{ color: "#5fffa3" }}>ONLINE</span>
+          </span>
         </span>
       </div>
 
@@ -1011,6 +1169,11 @@ function ScreenDashboard({ progress }: { progress: MotionValue<number> }) {
                 </div>
               </div>
             ))}
+            {/* live terminal prompt — blinking caret (CSS steps keyframe,
+             *  its own tiny layer; killed under reduced motion) */}
+            <div style={{ marginTop: 5, fontSize: 6.5, color: "#3fd0ff", letterSpacing: "0.1em" }}>
+              &gt; <span className="hv3-blink">▍</span>
+            </div>
           </div>
         </div>
       </div>
@@ -1102,6 +1265,20 @@ function StreamRow({
         AGES {stream.age}
       </span>
       <span style={{ flex: 1 }} />
+      {/* activity sparkline (static, deterministic per row) */}
+      <svg
+        viewBox="0 0 30 10"
+        style={{ width: 26, height: 9, flexShrink: 0, opacity: 0.5 }}
+        aria-hidden
+      >
+        <polyline
+          points={SPARKS[idx % SPARKS.length]}
+          fill="none"
+          stroke={stream.color}
+          strokeWidth="1.2"
+          strokeLinecap="round"
+        />
+      </svg>
       <span
         style={{
           fontSize: 7,
