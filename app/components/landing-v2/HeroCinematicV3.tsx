@@ -60,8 +60,15 @@ const STREAMS = [
  * keyboard (not a raw rainbow). */
 const KEY_COLS = ["#00e5ff", "#7df0ff", "#cba8ff", "#ff3ad6", "#ff7a9f", "#ffd07a", "#5fffa3"];
 
-/* Keyboard rows (visual only — lengths tuned to read as a real board). */
-const KEY_ROWS = [14, 14, 13, 12, 9];
+/* Keyboard rows — real legends (static DOM text; rasterized once, free
+ * during the lid animation). Wide==true stretches modifier keys. */
+const KEY_LEGENDS: ReadonlyArray<ReadonlyArray<string>> = [
+  ["esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "=", "del"],
+  ["tab", "Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P", "[", "]", "\\"],
+  ["caps", "A", "S", "D", "F", "G", "H", "J", "K", "L", ";", "'", "enter"],
+  ["shift", "Z", "X", "C", "V", "B", "N", "M", ",", ".", "/", "shift"],
+  ["fn", "ctrl", "alt", "⌘", "", "⌘", "alt", "←", "↑", "→"],
+];
 
 const CHAPTERS_V3 = [
   { id: "01", title: "System dormant", range: [0.0, 0.1] as const },
@@ -141,7 +148,11 @@ export default function HeroCinematicV3() {
    * responds. */
   const lidAngle = useTransform(progress, (p) => 102 * smoothstep(0.06, 0.48, p));
   /* "Camera" = the whole scene group tilting/settling as you scroll. */
-  const sceneRotX = useTransform(progress, (p) => 66 - 9 * smoothstep(0, 0.5, p));
+  /* Camera: open with a higher top-down establishing angle, settle into
+   * a lower, more frontal product angle (screen closer to face-on) as
+   * the lid comes up. Yaw is mild — a premium product shot, not an
+   * isometric diagram. */
+  const sceneRotX = useTransform(progress, (p) => 64 - 12 * smoothstep(0, 0.55, p));
   /* Sized so the OPEN laptop owns the right half of the frame and never
    * collides with the headline column or the nav. */
   const sceneScale = useTransform(progress, (p) => 0.8 + 0.06 * smoothstep(0, 0.6, p));
@@ -191,15 +202,15 @@ export default function HeroCinematicV3() {
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            perspective: 1500,
-            perspectiveOrigin: "55% 30%",
+            perspective: 1900,
+            perspectiveOrigin: "55% 34%",
           }}
         >
           <motion.div
             className="hv3-sceneScale"
             style={{
               rotateX: sceneRotX,
-              rotateZ: -24,
+              rotateZ: -17,
               scale: sceneScale,
               y: sceneY,
               x: isCompact ? 0 : "14vw",
@@ -258,6 +269,42 @@ export default function HeroCinematicV3() {
                     "inset 0 1px 0 rgba(190,205,235,0.28), inset 0 -1px 0 rgba(0,0,0,0.5), inset 1px 0 0 rgba(140,155,185,0.12)",
                 }}
               >
+                {/* hinge barrels along the back edge */}
+                {[86, 402].map((x) => (
+                  <div
+                    key={x}
+                    style={{
+                      position: "absolute",
+                      left: x,
+                      top: -3,
+                      width: 132,
+                      height: 9,
+                      borderRadius: 5,
+                      background:
+                        "linear-gradient(180deg, #0c0e15 0%, #2e3442 40%, #171b26 100%)",
+                      boxShadow:
+                        "inset 0 1px 1px rgba(180,200,235,0.22), 0 1px 3px rgba(0,0,0,0.7)",
+                    }}
+                  />
+                ))}
+
+                {/* speaker grille strip between hinge and keyboard well */}
+                <div
+                  style={{
+                    position: "absolute",
+                    left: 60,
+                    right: 60,
+                    top: 16,
+                    height: 10,
+                    borderRadius: 5,
+                    backgroundImage:
+                      "radial-gradient(circle at 2px 50%, rgba(0,0,0,0.85) 1.1px, transparent 1.4px)",
+                    backgroundSize: "6px 10px",
+                    boxShadow: "inset 0 1px 2px rgba(0,0,0,0.5)",
+                    opacity: 0.85,
+                  }}
+                />
+
                 {/* keyboard well */}
                 <div
                   style={{
@@ -288,32 +335,42 @@ export default function HeroCinematicV3() {
                       filter: "blur(10px)",
                     }}
                   />
-                  {KEY_ROWS.map((count, r) => (
+                  {KEY_LEGENDS.map((row, r) => (
                     <div
                       key={r}
                       style={{
                         display: "flex",
                         gap: 6,
                         position: "relative",
-                        flex: r === KEY_ROWS.length - 1 ? "0 0 40px" : 1,
+                        flex: 1,
                       }}
                     >
-                      {Array.from({ length: count }, (_, k) => {
+                      {row.map((legend, k) => {
                         const wide =
-                          (r === KEY_ROWS.length - 1 && k === Math.floor(count / 2)) ||
-                          (r > 0 && (k === 0 || k === count - 1));
-                        const hue = KEY_COLS[Math.floor((k / count) * KEY_COLS.length)];
+                          legend.length > 1 && legend !== "⌘" ? 1.7 : legend === "" ? 4.4 : 1;
+                        const hue = KEY_COLS[Math.floor((k / row.length) * KEY_COLS.length)];
                         return (
                           <div
                             key={k}
                             style={{
-                              flex: wide ? 2.2 : 1,
+                              flex: wide,
                               borderRadius: 5,
                               background:
                                 "linear-gradient(180deg, #171b25 0%, #0d1019 100%)",
                               boxShadow: `inset 0 1px 0 rgba(170,190,225,0.13), 0 1px 2px rgba(0,0,0,0.6), 0 0 6px ${hue}14`,
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center",
+                              fontFamily: "var(--lv2-font-mono)",
+                              fontSize: legend.length > 1 ? 6.5 : 8.5,
+                              fontWeight: 600,
+                              color: "rgba(215,232,255,0.6)",
+                              textShadow: `0 0 5px ${hue}66`,
+                              userSelect: "none",
                             }}
-                          />
+                          >
+                            {legend}
+                          </div>
                         );
                       })}
                     </div>
@@ -470,6 +527,24 @@ export default function HeroCinematicV3() {
                     padding: 12,
                   }}
                 >
+                  {/* webcam — bezel top-centre (top of the bezel is the
+                   *  container's bottom edge pre-flip, but this face is
+                   *  rotX(180)-flipped, so bottom:3 lands at the visual
+                   *  top of the open screen) */}
+                  <div
+                    style={{
+                      position: "absolute",
+                      left: "50%",
+                      bottom: 3.5,
+                      width: 5,
+                      height: 5,
+                      marginLeft: -2.5,
+                      borderRadius: 99,
+                      background:
+                        "radial-gradient(circle at 40% 35%, #33465e 0%, #0a0f18 70%)",
+                      boxShadow: "0 0 0 1.5px rgba(90,110,145,0.35)",
+                    }}
+                  />
                   <div
                     style={{
                       position: "relative",
@@ -480,7 +555,9 @@ export default function HeroCinematicV3() {
                       background: "#02030a",
                     }}
                   >
-                    {/* dormant wallpaper (always present, dim) */}
+                    {/* dormant wallpaper — cosmic core + tilted orbit
+                     *  rings (all static gradients/borders: rasterized
+                     *  once, free during the lid animation) */}
                     <div
                       style={{
                         position: "absolute",
@@ -490,6 +567,27 @@ export default function HeroCinematicV3() {
                         opacity: 0.55,
                       }}
                     />
+                    {[
+                      { w: "58%", h: "34%", o: 0.5, bw: 1.4 },
+                      { w: "78%", h: "48%", o: 0.32, bw: 1.2 },
+                      { w: "96%", h: "62%", o: 0.18, bw: 1 },
+                    ].map((ring, ri) => (
+                      <div
+                        key={ri}
+                        style={{
+                          position: "absolute",
+                          left: "52%",
+                          top: "44%",
+                          width: ring.w,
+                          height: ring.h,
+                          transform: "translate(-50%, -50%) rotate(-14deg)",
+                          borderRadius: "50%",
+                          border: `${ring.bw}px solid rgba(140,220,255,${ring.o})`,
+                          boxShadow: `0 0 10px rgba(46,166,232,${ring.o * 0.5})`,
+                          opacity: 0.6,
+                        }}
+                      />
+                    ))}
                     {/* screen glass sheen */}
                     <div
                       style={{
