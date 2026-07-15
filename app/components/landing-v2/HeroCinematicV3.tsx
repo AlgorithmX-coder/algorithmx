@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type CSSProperties } from "react";
 import {
   motion,
   useMotionValue,
@@ -154,7 +154,7 @@ export default function HeroCinematicV3() {
   );
   const sceneY = useTransform(
     [progress, shortness] as const,
-    ([p, s]: number[]) => 63 + 22 * smoothstep(0, 0.6, p) + 110 * s,
+    ([p, s]: number[]) => 79 + 22 * smoothstep(0, 0.6, p) + 110 * s,
   );
   /* Screen ignition + keyboard underglow + energy floor. */
   const screenT = useTransform(progress, (p) => smoothstep(0.4, 0.56, p));
@@ -687,60 +687,302 @@ export default function HeroCinematicV3() {
   );
 }
 
-/* Screen dashboard — real HTML. Rows cascade in with scroll (no clock). */
+/* Screen dashboard — real HTML mission-control layout (echoes the old
+ * live hero's ORBITAL OVERVIEW screen): OS bar with tabs, left system
+ * sidebar, central streams panel, right health/feed column, bottom
+ * parameter strip. Everything is static except the scroll-cascading
+ * stream rows — rasterized once, free during the lid animation. */
+const PANEL: CSSProperties = {
+  background: "rgba(9,15,28,0.66)",
+  border: "1px solid rgba(90,150,220,0.2)",
+  borderRadius: 7,
+};
+const DIM = "rgba(205,218,242,0.52)";
+
 function ScreenDashboard({ progress }: { progress: MotionValue<number> }) {
   return (
     <>
-      {/* OS bar */}
+      {/* ── OS bar ── */}
       <div
         style={{
           display: "flex",
           alignItems: "center",
-          justifyContent: "space-between",
-          paddingBottom: 8,
+          gap: 14,
+          paddingBottom: 6,
           borderBottom: "1px solid rgba(63,208,255,0.22)",
         }}
       >
-        <span style={{ display: "flex", alignItems: "center", gap: 8 }}>
+        <span style={{ display: "flex", alignItems: "center", gap: 7, flexShrink: 0 }}>
           <span
             style={{
-              width: 7,
-              height: 7,
+              width: 6,
+              height: 6,
               borderRadius: 99,
               background: "#00e5ff",
               boxShadow: "0 0 8px rgba(0,229,255,0.9)",
             }}
           />
-          <span style={{ color: "#9ff5ff", fontWeight: 700, fontSize: 13, letterSpacing: "0.1em" }}>
+          <span style={{ color: "#9ff5ff", fontWeight: 700, fontSize: 10.5, letterSpacing: "0.1em" }}>
             ALGORITHMX_OS
           </span>
         </span>
-        <span style={{ color: "rgba(232,237,255,0.5)", fontSize: 10, letterSpacing: "0.18em" }}>
-          6 STREAMS · AGES 6 → ADULT
+        <span style={{ flex: 1, display: "flex", gap: 13, justifyContent: "center" }}>
+          {["OVERVIEW", "STREAMS", "MISSIONS", "ANALYTICS"].map((tab, i) => (
+            <span
+              key={tab}
+              style={{
+                fontSize: 7.5,
+                letterSpacing: "0.14em",
+                fontWeight: 600,
+                color: i === 1 ? "#e9f0ff" : DIM,
+                borderBottom: i === 1 ? "1.5px solid #3fd0ff" : "1.5px solid transparent",
+                paddingBottom: 2,
+              }}
+            >
+              {tab}
+            </span>
+          ))}
+        </span>
+        <span style={{ color: DIM, fontSize: 7.5, letterSpacing: "0.16em", flexShrink: 0 }}>
+          SYS-07 · <span style={{ color: "#5fffa3" }}>ONLINE</span>
         </span>
       </div>
 
-      {/* stream rows */}
-      <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "space-evenly" }}>
-        {STREAMS.map((s, i) => (
-          <StreamRow key={s.name} stream={s} idx={i} progress={progress} />
-        ))}
+      {/* ── main grid ── */}
+      <div style={{ flex: 1, display: "flex", gap: 7, padding: "7px 0", minHeight: 0 }}>
+        {/* left sidebar */}
+        <div
+          style={{
+            ...PANEL,
+            width: "23%",
+            padding: "8px 9px",
+            display: "flex",
+            flexDirection: "column",
+            gap: 5,
+          }}
+        >
+          <span style={{ fontSize: 6.5, letterSpacing: "0.16em", color: DIM }}>SYSTEM STATUS</span>
+          <span
+            style={{
+              fontFamily: "var(--font-geist-sans, ui-sans-serif), system-ui, sans-serif",
+              fontSize: 21,
+              fontWeight: 750,
+              color: "#3fd0ff",
+              lineHeight: 1,
+            }}
+          >
+            100%
+          </span>
+          <span style={{ fontSize: 6.5, letterSpacing: "0.16em", color: DIM }}>OPERATIONAL</span>
+          {/* waveform */}
+          <svg viewBox="0 0 100 16" style={{ width: "100%", height: 14, marginTop: 2 }} aria-hidden>
+            <polyline
+              points="0,9 8,9 12,4 16,13 22,9 34,9 38,6 42,12 48,9 60,9 64,3 68,14 74,9 86,9 90,6 94,11 100,9"
+              fill="none"
+              stroke="#3fd0ff"
+              strokeWidth="1.1"
+              opacity="0.8"
+            />
+          </svg>
+          <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: 3, marginTop: 3 }}>
+            {["DASHBOARD", "STREAMS", "MISSIONS", "REPORTS"].map((n, i) => (
+              <span
+                key={n}
+                style={{
+                  fontSize: 7,
+                  letterSpacing: "0.13em",
+                  fontWeight: 600,
+                  color: i === 1 ? "#e9f0ff" : DIM,
+                  background: i === 1 ? "rgba(63,208,255,0.12)" : "transparent",
+                  borderLeft: i === 1 ? "2px solid #3fd0ff" : "2px solid transparent",
+                  borderRadius: 3,
+                  padding: "3px 5px",
+                }}
+              >
+                {n}
+              </span>
+            ))}
+          </div>
+          <span style={{ fontSize: 6.5, letterSpacing: "0.14em", color: DIM }}>
+            UPTIME <span style={{ color: "#9ff5ff" }}>23:47:12</span>
+          </span>
+        </div>
+
+        {/* centre — streams over the orbital visual */}
+        <div
+          style={{
+            ...PANEL,
+            flex: 1,
+            padding: "7px 9px",
+            display: "flex",
+            flexDirection: "column",
+            background: "rgba(7,12,24,0.45)",
+            minWidth: 0,
+          }}
+        >
+          <div
+            style={{
+              display: "flex",
+              alignItems: "baseline",
+              justifyContent: "space-between",
+              paddingBottom: 4,
+            }}
+          >
+            <span
+              style={{
+                fontFamily: "var(--font-geist-sans, ui-sans-serif), system-ui, sans-serif",
+                fontSize: 11,
+                fontWeight: 750,
+                color: "#e9f0ff",
+                letterSpacing: "0.02em",
+              }}
+            >
+              LEARNING STREAMS
+            </span>
+            <span style={{ fontSize: 6.5, letterSpacing: "0.15em", color: "#3fd0ff" }}>
+              ● REAL-TIME VIEW
+            </span>
+          </div>
+          <div
+            style={{
+              flex: 1,
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "space-evenly",
+              minHeight: 0,
+            }}
+          >
+            {STREAMS.map((s, i) => (
+              <StreamRow key={s.name} stream={s} idx={i} progress={progress} />
+            ))}
+          </div>
+        </div>
+
+        {/* right column — health, feed */}
+        <div
+          style={{
+            width: "27%",
+            display: "flex",
+            flexDirection: "column",
+            gap: 7,
+          }}
+        >
+          <div style={{ ...PANEL, padding: "7px 9px", display: "flex", gap: 8, alignItems: "center" }}>
+            {/* conic gauge */}
+            <div
+              style={{
+                width: 34,
+                height: 34,
+                borderRadius: 99,
+                flexShrink: 0,
+                background:
+                  "conic-gradient(#3fd0ff 0deg 356deg, rgba(90,150,220,0.25) 356deg 360deg)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <div
+                style={{
+                  width: 26,
+                  height: 26,
+                  borderRadius: 99,
+                  background: "#0a1020",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  fontSize: 7.5,
+                  fontWeight: 700,
+                  color: "#e9f0ff",
+                }}
+              >
+                100%
+              </div>
+            </div>
+            <div style={{ display: "flex", flexDirection: "column", gap: 2, minWidth: 0 }}>
+              <span style={{ fontSize: 6.5, letterSpacing: "0.14em", color: DIM }}>
+                SYSTEM HEALTH
+              </span>
+              {["POWER", "SHIELDS", "COMMS"].map((m) => (
+                <span
+                  key={m}
+                  style={{
+                    fontSize: 6.5,
+                    letterSpacing: "0.1em",
+                    color: DIM,
+                    display: "flex",
+                    justifyContent: "space-between",
+                    gap: 6,
+                  }}
+                >
+                  {m} <span style={{ color: "#5fffa3" }}>100%</span>
+                </span>
+              ))}
+            </div>
+          </div>
+          <div style={{ ...PANEL, flex: 1, padding: "7px 9px", minHeight: 0, overflow: "hidden" }}>
+            <span style={{ fontSize: 6.5, letterSpacing: "0.14em", color: DIM }}>MISSION FEED</span>
+            {[
+              ["23:46:58", "System check complete"],
+              ["23:46:31", "All nodes operational"],
+              ["23:46:02", "Data sync complete"],
+            ].map(([time, msg]) => (
+              <div key={time} style={{ display: "flex", gap: 5, alignItems: "baseline", marginTop: 4 }}>
+                <span
+                  style={{
+                    width: 4,
+                    height: 4,
+                    borderRadius: 99,
+                    background: "#5fffa3",
+                    flexShrink: 0,
+                    transform: "translateY(-1px)",
+                  }}
+                />
+                <div style={{ minWidth: 0 }}>
+                  <div style={{ fontSize: 6, color: "#3fd0ff", letterSpacing: "0.1em" }}>{time}</div>
+                  <div
+                    style={{
+                      fontSize: 7,
+                      color: "rgba(225,233,250,0.8)",
+                      whiteSpace: "nowrap",
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                    }}
+                  >
+                    {msg}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
 
-      {/* footer */}
+      {/* ── bottom parameter strip ── */}
       <div
         style={{
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
-          paddingTop: 8,
+          paddingTop: 5,
           borderTop: "1px solid rgba(63,208,255,0.16)",
-          fontSize: 10,
-          letterSpacing: "0.2em",
         }}
       >
-        <span style={{ color: "#5fffa3", fontWeight: 700 }}>● READY</span>
-        <span style={{ color: "rgba(232,237,255,0.45)" }}>CHOOSE A STREAM TO BEGIN</span>
+        <span style={{ fontSize: 7.5, letterSpacing: "0.18em", color: "#5fffa3", fontWeight: 700 }}>
+          ● READY
+        </span>
+        {[
+          ["AGES", "6 → ADULT"],
+          ["STREAMS", "6"],
+          ["FORMAT", "PROJECT-BASED"],
+        ].map(([k, v]) => (
+          <span key={k} style={{ fontSize: 6.5, letterSpacing: "0.14em", color: DIM }}>
+            {k} <span style={{ color: "#e9f0ff", fontWeight: 700 }}>{v}</span>
+          </span>
+        ))}
+        <span style={{ fontSize: 6.5, letterSpacing: "0.14em", color: DIM }}>
+          CHOOSE A STREAM TO BEGIN
+        </span>
       </div>
     </>
   );
@@ -775,8 +1017,8 @@ function StreamRow({
     >
       <span
         style={{
-          width: 6,
-          height: 6,
+          width: 5,
+          height: 5,
           borderRadius: 99,
           background: stream.color,
           boxShadow: `0 0 6px ${stream.color}aa`,
@@ -785,29 +1027,30 @@ function StreamRow({
       />
       <span
         style={{
-          color: `${stream.color}d9`,
+          color: `${stream.color}e6`,
           fontWeight: 700,
-          fontSize: 12.5,
-          letterSpacing: "0.06em",
+          fontSize: 9,
+          letterSpacing: "0.07em",
           whiteSpace: "nowrap",
         }}
       >
         {stream.name}
       </span>
-      <span style={{ color: "rgba(232,237,255,0.4)", fontSize: 10.5, whiteSpace: "nowrap" }}>
+      <span style={{ color: "rgba(232,237,255,0.42)", fontSize: 7, whiteSpace: "nowrap" }}>
         AGES {stream.age}
       </span>
       <span style={{ flex: 1 }} />
       <span
         style={{
-          fontSize: 10,
+          fontSize: 7,
           fontWeight: 700,
           letterSpacing: "0.1em",
           color: stream.color,
           border: `1px solid ${stream.color}66`,
           background: `${stream.color}14`,
-          borderRadius: 5,
-          padding: "1px 8px",
+          borderRadius: 4,
+          padding: "1px 6px",
+          flexShrink: 0,
         }}
       >
         {stream.status}
