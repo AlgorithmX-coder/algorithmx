@@ -896,7 +896,7 @@ export default function CyberHeroes3DScene() {
   const q = useAdaptiveQuality();
   const pointer = usePointer(reduced);
 
-  const dprMax = Math.min(q.dprCap, 1.35);
+  const dprMax = Math.min(q.dprCap, 1.1);
   const starCount = Math.max(60, Math.round(300 * q.particleMultiplier));
   // Keep animating the whole page; once below the hero, render GENTLY (slower
   // ambient motion + the heaviest effects dropped) rather than freezing. Stop
@@ -913,7 +913,7 @@ export default function CyberHeroes3DScene() {
       frameloop={frameloop}
       dpr={[1, dprMax]}
       camera={{ position: [0, 0, 12], fov: 55 }}
-      gl={{ antialias: false, alpha: true, powerPreference: "low-power" }}
+      gl={{ antialias: false, alpha: true, powerPreference: "high-performance" }}
       style={{ width: "100%", height: "100%", background: "transparent", pointerEvents: "none" }}
     >
       {/* Cap the loop to TARGET_FPS (skip when reduced-motion = static frame). */}
