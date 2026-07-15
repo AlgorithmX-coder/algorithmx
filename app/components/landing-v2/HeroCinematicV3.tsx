@@ -49,12 +49,12 @@ import HeroOverlay from "./HeroOverlay";
 /* Stream rows shown on the screen dashboard — mirrors the platform
  * catalogue (same data the old canvas dashboard painted). */
 const STREAMS = [
-  { name: "CYBERSECURITY", age: "9-16", status: "LIVE", color: "#5fffa3" },
-  { name: "GAME DEVELOPMENT", age: "8-16", status: "2026", color: "#9ff5ff" },
-  { name: "AI & MACHINE LEARNING", age: "11+", status: "2026", color: "#cba8ff" },
-  { name: "APP DEVELOPMENT", age: "12+", status: "2027", color: "#ffd07a" },
-  { name: "ENTREPRENEURSHIP", age: "13+", status: "2027", color: "#ffc94a" },
-  { name: "ROBOTICS", age: "10+", status: "2027", color: "#ff3ad6" },
+  { name: "CYBERSECURITY", age: "9-16", status: "LIVE", color: "#5fffa3", href: "/cyberheroes" },
+  { name: "GAME DEVELOPMENT", age: "8-16", status: "2026", color: "#9ff5ff", href: "#subjects" },
+  { name: "AI & MACHINE LEARNING", age: "11+", status: "2026", color: "#cba8ff", href: "#subjects" },
+  { name: "APP DEVELOPMENT", age: "12+", status: "2027", color: "#ffd07a", href: "#subjects" },
+  { name: "ENTREPRENEURSHIP", age: "13+", status: "2027", color: "#ffc94a", href: "#subjects" },
+  { name: "ROBOTICS", age: "10+", status: "2027", color: "#ff3ad6", href: "#subjects" },
 ] as const;
 
 /* Per-column key glow hues — the curated luxe palette from the brand
@@ -154,7 +154,8 @@ export default function HeroCinematicV3() {
   );
   const sceneY = useTransform(
     [progress, shortness] as const,
-    ([p, s]: number[]) => 79 + 22 * smoothstep(0, 0.6, p) + 110 * s,
+    ([p, s]: number[]) =>
+      79 + 22 * smoothstep(0, 0.6, p) + 110 * s + (isCompact ? 130 : 0),
   );
   /* Screen ignition + keyboard underglow + energy floor. */
   const screenT = useTransform(progress, (p) => smoothstep(0.4, 0.56, p));
@@ -163,6 +164,36 @@ export default function HeroCinematicV3() {
   const floorGlow = useTransform(progress, (p) => 0.25 + 0.75 * smoothstep(0.38, 0.6, p));
   /* Standby LED fades out as the machine wakes. */
   const ledOpacity = useTransform(progress, (p) => 1 - smoothstep(0.35, 0.5, p));
+  /* IGNITION FLASH — a light kick that peaks as the screen lights and is
+   * fully gone by 0.58. Scroll-keyed sine envelope: it physically cannot
+   * linger (the failure mode of the old hero's detonation pool). */
+  const ignitionFlash = useTransform(progress, (p) => {
+    const t = smoothstep(0.4, 0.58, p);
+    return Math.sin(Math.PI * t) * 0.75;
+  });
+
+  /* MOUSE PARALLAX — the whole rig tilts subtly toward the cursor
+   * (single spring-smoothed transform, like the shipped live hero).
+   * Not attached under reduced motion; inert on touch devices. */
+  const pointerX = useMotionValue(0);
+  const pointerY = useMotionValue(0);
+  useEffect(() => {
+    if (reducedMotion) return;
+    const onMove = (e: PointerEvent) => {
+      pointerX.set((e.clientX / window.innerWidth) * 2 - 1);
+      pointerY.set((e.clientY / window.innerHeight) * 2 - 1);
+    };
+    window.addEventListener("pointermove", onMove, { passive: true });
+    return () => window.removeEventListener("pointermove", onMove);
+  }, [reducedMotion, pointerX, pointerY]);
+  const parRotY = useSpring(
+    useTransform(pointerX, (v) => v * 3),
+    { stiffness: 46, damping: 16 },
+  );
+  const parRotX = useSpring(
+    useTransform(pointerY, (v) => v * -2.2),
+    { stiffness: 46, damping: 16 },
+  );
 
   return (
     <section
@@ -186,9 +217,8 @@ export default function HeroCinematicV3() {
         <div aria-hidden className="hv3-nebulaA" />
         <div aria-hidden className="hv3-nebulaB" />
 
-        {/* ── 3D stage ── */}
+        {/* ── 3D stage (contains real links — not aria-hidden) ── */}
         <div
-          aria-hidden
           style={{
             position: "absolute",
             inset: 0,
@@ -206,9 +236,16 @@ export default function HeroCinematicV3() {
               rotateZ: -17,
               scale: sceneScale,
               y: sceneY,
-              x: isCompact ? 0 : "14vw",
+              x: isCompact ? "5vw" : "14vw",
               transformStyle: "preserve-3d",
               willChange: "transform",
+            }}
+          >
+          <motion.div
+            style={{
+              rotateX: parRotX,
+              rotateY: parRotY,
+              transformStyle: "preserve-3d",
             }}
           >
             {/* energy floor + contact shadow (in-plane, under the deck) */}
@@ -627,7 +664,25 @@ export default function HeroCinematicV3() {
 
             </div>
           </motion.div>
+          </motion.div>
         </div>
+
+        {/* ignition flash — light kick as the screen lights (scroll-keyed
+         *  sine envelope: peaks mid-ignition, fully gone by p=0.58) */}
+        <motion.div
+          aria-hidden
+          style={{
+            position: "absolute",
+            left: "28%",
+            top: "4%",
+            width: "60%",
+            height: "78%",
+            opacity: ignitionFlash,
+            background:
+              "radial-gradient(circle at 56% 38%, rgba(150,225,255,0.42) 0%, rgba(40,140,255,0.16) 38%, transparent 68%)",
+            pointerEvents: "none",
+          }}
+        />
 
         {/* screen light spill onto the page (2D, subtle) */}
         <motion.div
@@ -678,7 +733,9 @@ export default function HeroCinematicV3() {
         @keyframes hv3DriftB { from { transform: translate3d(0,0,0); } to { transform: translate3d(-2.5vw,-2vh,0); } }
         .hv3-ledBreathe { animation: hv3Led 2.6s ease-in-out infinite; }
         @keyframes hv3Led { 0%,100% { filter: brightness(0.7); } 50% { filter: brightness(1.3); } }
-        .hv3-row { transition: background-color 0.18s ease; }
+        .hv3-row { transition: background-color 0.18s ease, box-shadow 0.18s ease; cursor: pointer; }
+        .hv3-row:hover { background-color: rgba(63,208,255,0.1); }
+        .hv3-row:focus-visible { outline: 1.5px solid var(--lv2-cyan); outline-offset: 1px; }
         @media (prefers-reduced-motion: reduce) {
           .hv3-nebulaA, .hv3-nebulaB, .hv3-ledBreathe { animation: none; }
         }
@@ -1003,16 +1060,21 @@ function StreamRow({
   const opacity = useTransform(progress, (p) => smoothstep(t0, t0 + 0.05, p));
   const x = useTransform(progress, (p) => 10 * (1 - smoothstep(t0, t0 + 0.05, p)));
   return (
-    <motion.div
+    /* A real link — the on-screen OS is interactive (something a baked
+     * frame sequence could never do). */
+    <motion.a
       className="hv3-row"
+      href={stream.href}
+      aria-label={`${stream.name} — ages ${stream.age}, ${stream.status === "LIVE" ? "live now" : `coming ${stream.status}`}`}
       style={{
         opacity,
         x,
         display: "flex",
         alignItems: "center",
-        gap: 10,
+        gap: 8,
         padding: "3px 12px 3px 6px",
         borderRadius: 6,
+        textDecoration: "none",
       }}
     >
       <span
@@ -1055,7 +1117,7 @@ function StreamRow({
       >
         {stream.status}
       </span>
-    </motion.div>
+    </motion.a>
   );
 }
 

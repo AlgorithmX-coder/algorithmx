@@ -26,7 +26,12 @@ page.on("pageerror", (err) => console.error("[pageerror]", err.message));
 await page.goto(`${BASE}/`, { waitUntil: "networkidle", timeout: 120000 });
 await page.waitForTimeout(3000);
 
-const railPx = await page.evaluate(() => window.innerHeight * 1.2); // 220vh rail => 120vh scrub
+// Measure the actual pinned-scrub range from the DOM (rail height varies
+// by breakpoint: 220vh desktop / 170vh compact).
+const railPx = await page.evaluate(() => {
+  const sec = document.querySelector("main section");
+  return sec.getBoundingClientRect().height - window.innerHeight;
+});
 for (const s of [0, 0.12, 0.25, 0.38, 0.5, 0.62, 0.75, 0.9, 1.0]) {
   await page.evaluate((y) => window.scrollTo(0, y), Math.round(railPx * s));
   await page.waitForTimeout(1300);
