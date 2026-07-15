@@ -78,30 +78,6 @@ const CHAPTERS_V3 = [
   { id: "04", title: "Start your journey", range: [0.62, 1.0] as const },
 ];
 
-const COURSE_CARDS = [
-  {
-    title: "Cyber Heroes",
-    meta: "AGES 6–9 · LIVE",
-    color: "#5fffa3",
-    blurb: "Defend against cyber attacks",
-    href: "/cyberheroes",
-  },
-  {
-    title: "Cyber Explorers",
-    meta: "AGES 9–13 · LIVE",
-    color: "#9ff5ff",
-    blurb: "Real missions, real skills",
-    href: "/cyberexplorers",
-  },
-  {
-    title: "AI & Machine Learning",
-    meta: "AGES 11+ · 2026",
-    color: "#cba8ff",
-    blurb: "Build intelligent machines",
-    href: "#subjects",
-  },
-];
-
 function smoothstep(a: number, b: number, x: number): number {
   const t = Math.min(1, Math.max(0, (x - a) / (b - a)));
   return t * t * (3 - 2 * t);
@@ -161,32 +137,27 @@ export default function HeroCinematicV3() {
    * edge toward the viewer — the physical opening direction after the
    * scene tilt). Starts at p=0.06 so the very first wheel tick
    * responds. */
-  const lidAngle = useTransform(progress, (p) => 102 * smoothstep(0.06, 0.48, p));
+  const lidAngle = useTransform(progress, (p) => 110 * smoothstep(0.06, 0.48, p));
   /* "Camera" = the whole scene group tilting/settling as you scroll. */
   /* Camera: open with a higher top-down establishing angle, settle into
    * a lower, more frontal product angle (screen closer to face-on) as
    * the lid comes up. Yaw is mild — a premium product shot, not an
    * isometric diagram. */
-  const sceneRotX = useTransform(progress, (p) => 64 - 12 * smoothstep(0, 0.55, p));
-  /* Sized so the OPEN laptop owns the right half of the frame and never
-   * collides with the headline column or the nav (shortness pushes it
-   * down + trims it on low viewports). */
+  const sceneRotX = useTransform(progress, (p) => 62 - 14 * smoothstep(0, 0.55, p));
+  /* Framing matched to the shipped live hero: the laptop is a big,
+   * imposing close-up — ~55% of frame width, vertically centred just
+   * below the middle (screen top ≈ 20% of viewport, deck front ≈ 85%).
+   * Shortness trims scale on low viewports so the lid clears the nav. */
   const sceneScale = useTransform(
     [progress, shortness] as const,
-    ([p, s]: number[]) => (0.8 + 0.06 * smoothstep(0, 0.6, p)) * (1 - 0.12 * s),
+    ([p, s]: number[]) => (0.87 + 0.12 * smoothstep(0, 0.6, p)) * (1 - 0.14 * s),
   );
   const sceneY = useTransform(
     [progress, shortness] as const,
-    ([p, s]: number[]) => 85 - 30 * smoothstep(0, 0.6, p) + 120 * s,
+    ([p, s]: number[]) => 63 + 22 * smoothstep(0, 0.6, p) + 110 * s,
   );
   /* Screen ignition + keyboard underglow + energy floor. */
-  /* Dashboard fades up at ignition, then quietens slightly as the
-   * course cards arrive — a focus handoff, so the two layers never
-   * fight for attention. */
-  const screenT = useTransform(
-    progress,
-    (p) => smoothstep(0.4, 0.56, p) * (1 - 0.38 * smoothstep(0.6, 0.76, p)),
-  );
+  const screenT = useTransform(progress, (p) => smoothstep(0.4, 0.56, p));
   const screenGlow = useTransform(screenT, (v) => 0.55 * v);
   const kbGlow = useTransform(progress, (p) => smoothstep(0.5, 0.64, p));
   const floorGlow = useTransform(progress, (p) => 0.25 + 0.75 * smoothstep(0.38, 0.6, p));
@@ -654,10 +625,6 @@ export default function HeroCinematicV3() {
                 </div>
               </motion.div>
 
-              {/* ── COURSE CARDS rising from the screen plane ── */}
-              {COURSE_CARDS.map((card, i) => (
-                <EmergeCard key={card.title} card={card} idx={i} progress={progress} />
-              ))}
             </div>
           </motion.div>
         </div>
@@ -711,9 +678,6 @@ export default function HeroCinematicV3() {
         @keyframes hv3DriftB { from { transform: translate3d(0,0,0); } to { transform: translate3d(-2.5vw,-2vh,0); } }
         .hv3-ledBreathe { animation: hv3Led 2.6s ease-in-out infinite; }
         @keyframes hv3Led { 0%,100% { filter: brightness(0.7); } 50% { filter: brightness(1.3); } }
-        .hv3-card { transition: box-shadow 0.22s ease, border-color 0.22s ease, filter 0.22s ease; cursor: pointer; }
-        .hv3-card:hover { filter: brightness(1.12); }
-        .hv3-card:focus-visible { outline: 2px solid var(--lv2-cyan); outline-offset: 3px; }
         .hv3-row { transition: background-color 0.18s ease; }
         @media (prefers-reduced-motion: reduce) {
           .hv3-nebulaA, .hv3-nebulaB, .hv3-ledBreathe { animation: none; }
@@ -849,74 +813,6 @@ function StreamRow({
         {stream.status}
       </span>
     </motion.div>
-  );
-}
-
-/* Course card that rises out of the screen plane. DOM + CSS 3D — hover
- * pop is a filter/shadow change (no layout shift). */
-function EmergeCard({
-  card,
-  idx,
-  progress,
-}: {
-  card: (typeof COURSE_CARDS)[number];
-  idx: number;
-  progress: MotionValue<number>;
-}) {
-  const t0 = 0.6 + idx * 0.05;
-  const emerge = useTransform(progress, (p) => smoothstep(t0, t0 + 0.16, p));
-  const opacity = emerge;
-  /* Hover over the KEYBOARD zone of the deck, well forward of the lid
-   * plane (the open lid leans back from the hinge — over the deck's
-   * front half, z≈340 is unambiguously in front of it). */
-  const y = useTransform(emerge, (v) => 60 - 90 * v);
-  const z = useTransform(emerge, (v) => 160 + 180 * v);
-  const rotX = useTransform(emerge, (v) => -10 * (1 - v));
-  return (
-    <motion.a
-      className="hv3-card"
-      href={card.href}
-      aria-label={`${card.title} — ${card.blurb}`}
-      style={{
-        position: "absolute",
-        left: 60 + idx * 175,
-        top: "64%",
-        width: 150,
-        minHeight: 92,
-        opacity,
-        y,
-        z,
-        rotateX: rotX,
-        display: "block",
-        padding: "12px 14px",
-        borderRadius: 12,
-        textDecoration: "none",
-        background: "linear-gradient(165deg, rgba(20,26,42,0.94), rgba(10,13,24,0.96))",
-        border: `1px solid ${card.color}55`,
-        boxShadow: `0 18px 44px rgba(0,0,0,0.5), 0 0 18px ${card.color}22, inset 0 1px 0 rgba(200,220,255,0.09)`,
-        fontFamily: "var(--lv2-font-mono)",
-      }}
-    >
-      <div style={{ fontSize: 9, letterSpacing: "0.16em", color: card.color, fontWeight: 700 }}>
-        {card.meta}
-      </div>
-      <div
-        style={{
-          marginTop: 5,
-          fontFamily:
-            "var(--font-geist-sans, ui-sans-serif), system-ui, sans-serif",
-          fontWeight: 700,
-          fontSize: 15,
-          color: "#eef2ff",
-          lineHeight: 1.2,
-        }}
-      >
-        {card.title}
-      </div>
-      <div style={{ marginTop: 5, fontSize: 9.5, lineHeight: 1.45, color: "rgba(232,237,255,0.6)" }}>
-        {card.blurb}
-      </div>
-    </motion.a>
   );
 }
 
