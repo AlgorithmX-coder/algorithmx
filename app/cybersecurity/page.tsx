@@ -327,8 +327,10 @@ export default async function CybersecurityPage() {
                   index={i}
                   characterImage={characterImage}
                   kicker={TRACK_KICKERS[p.slug]}
-                  imageFilter={p.slug === "cyberexplorers" ? "saturate(1.1)" : undefined}
-                  imageOpacity={p.slug === "cyberexplorers" ? 0.6 : undefined}
+                  imageFilter={p.slug === "cyberexplorers" ? "saturate(1.12) brightness(1.05)" : undefined}
+                  imageOpacity={p.slug === "cyberexplorers" ? 0.95 : undefined}
+                  imagePosition={p.slug === "cyberexplorers" ? "62% 38%" : undefined}
+                  scrim={p.slug === "cyberexplorers" ? "light" : undefined}
                 />
               );
             })}

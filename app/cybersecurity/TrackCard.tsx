@@ -50,6 +50,14 @@ export interface TrackCardProps {
   imageFilter?: string;
   /** Per-track opacity override for the art layer. */
   imageOpacity?: number;
+  /** Per-track background-position for the art layer. The default crop
+   *  ("right 75%") was tuned for the Heroes art; bright scenes with a
+   *  centred subject want their own focal point. */
+  imagePosition?: string;
+  /** "light" swaps the heavy diagonal scrim for a gentler one so bright,
+   *  colourful sources stay visibly bright; text protection moves to the
+   *  radial pool behind the copy. Default keeps the original treatment. */
+  scrim?: "default" | "light";
 }
 
 export default function TrackCard({
@@ -69,6 +77,8 @@ export default function TrackCard({
   kicker,
   imageFilter,
   imageOpacity,
+  imagePosition,
+  scrim,
 }: TrackCardProps) {
   const reduced = useReducedMotion();
   const [hover, setHover] = useState(false);
@@ -141,7 +151,7 @@ export default function TrackCard({
                *  of the source so Adam and Layla settle into the
                *  centre-right of the card, well away from the headline
                *  and blurb stack on the left. */
-              backgroundPosition: "right 75%",
+              backgroundPosition: imagePosition ?? "right 75%",
               /* Bumped 0.32 → 0.48 so the characters are recognisable
                *  without becoming the dominant visual; the scrim below
                *  picks up the readability slack. */
@@ -169,20 +179,39 @@ export default function TrackCard({
                *    and Layla settle. Text reads at any image bright-
                *    ness; characters stay softly visible. */
               background:
-                "radial-gradient(ellipse 62% 44% at 30% 54%, " +
-                "rgba(13,15,24,0.42) 0%, " +
-                "rgba(13,15,24,0.20) 60%, " +
-                "rgba(13,15,24,0) 100%), " +
-                "linear-gradient(110deg, " +
-                "rgba(13,15,24,0.97) 0%, " +
-                "rgba(13,15,24,0.90) 28%, " +
-                "rgba(13,15,24,0.58) 56%, " +
-                "rgba(13,15,24,0.22) 88%, " +
-                "rgba(13,15,24,0.14) 100%), " +
-                "linear-gradient(180deg, " +
-                "rgba(13,15,24,0) 0%, " +
-                "rgba(13,15,24,0) 55%, " +
-                "rgba(13,15,24,0.32) 100%)",
+                scrim === "light"
+                  ? /* Light treatment for bright sources: the diagonal
+                     *  falls off much faster (clear from ~60% across),
+                     *  and the radial pool behind the copy carries the
+                     *  text-contrast load instead. */
+                    "radial-gradient(ellipse 66% 50% at 30% 54%, " +
+                    "rgba(13,15,24,0.60) 0%, " +
+                    "rgba(13,15,24,0.32) 60%, " +
+                    "rgba(13,15,24,0) 100%), " +
+                    "linear-gradient(110deg, " +
+                    "rgba(13,15,24,0.93) 0%, " +
+                    "rgba(13,15,24,0.80) 26%, " +
+                    "rgba(13,15,24,0.38) 54%, " +
+                    "rgba(13,15,24,0.06) 82%, " +
+                    "rgba(13,15,24,0) 100%), " +
+                    "linear-gradient(180deg, " +
+                    "rgba(13,15,24,0) 0%, " +
+                    "rgba(13,15,24,0) 60%, " +
+                    "rgba(13,15,24,0.28) 100%)"
+                  : "radial-gradient(ellipse 62% 44% at 30% 54%, " +
+                    "rgba(13,15,24,0.42) 0%, " +
+                    "rgba(13,15,24,0.20) 60%, " +
+                    "rgba(13,15,24,0) 100%), " +
+                    "linear-gradient(110deg, " +
+                    "rgba(13,15,24,0.97) 0%, " +
+                    "rgba(13,15,24,0.90) 28%, " +
+                    "rgba(13,15,24,0.58) 56%, " +
+                    "rgba(13,15,24,0.22) 88%, " +
+                    "rgba(13,15,24,0.14) 100%), " +
+                    "linear-gradient(180deg, " +
+                    "rgba(13,15,24,0) 0%, " +
+                    "rgba(13,15,24,0) 55%, " +
+                    "rgba(13,15,24,0.32) 100%)",
               zIndex: 0,
               pointerEvents: "none",
             }}
@@ -329,7 +358,10 @@ export default function TrackCard({
           fontFamily: "var(--lv2-font-display)",
           fontSize: 14.5,
           lineHeight: 1.55,
-          color: "rgba(232,237,255,0.78)",
+          color: characterImage ? "rgba(238,242,255,0.92)" : "rgba(232,237,255,0.78)",
+          /* Copy floats over scene art on characterImage cards — a soft
+           *  dark halo keeps it legible where the art runs bright. */
+          textShadow: characterImage ? "0 1px 8px rgba(4,5,13,0.85), 0 0 2px rgba(4,5,13,0.6)" : undefined,
           margin: 0,
           flex: 1,
         }}
