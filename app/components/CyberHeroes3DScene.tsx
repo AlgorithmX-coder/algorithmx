@@ -864,19 +864,48 @@ function ElegantRings({ reduced, slow }: { reduced: boolean; slow: boolean }) {
   );
 }
 
+/* Throttles the render loop to a target FPS. R3F "always" renders at the
+ * monitor's refresh rate (60/120/144Hz) — a fullscreen bloom scene at 144Hz
+ * is brutal. In "demand" mode we invalidate() at a fixed cadence instead, so
+ * the whole scene (and its useFrame animations, which scale by dt) runs at
+ * TARGET_FPS regardless of refresh rate. */
+function RenderThrottle({ fps }: { fps: number }) {
+  const invalidate = useThree((s) => s.invalidate);
+  useEffect(() => {
+    let raf = 0;
+    let last = 0;
+    const interval = 1000 / fps;
+    const loop = (t: number) => {
+      raf = requestAnimationFrame(loop);
+      if (t - last >= interval) {
+        last = t;
+        invalidate();
+      }
+    };
+    raf = requestAnimationFrame(loop);
+    return () => cancelAnimationFrame(raf);
+  }, [fps, invalidate]);
+  return null;
+}
+
+const TARGET_FPS = 30;
+
 export default function CyberHeroes3DScene() {
   const reduced = usePrefersReducedMotion();
   const { belowHero, hidden } = usePageActivity();
   const q = useAdaptiveQuality();
   const pointer = usePointer(reduced);
 
-  const dprMax = Math.min(q.dprCap, 1.7);
+  const dprMax = Math.min(q.dprCap, 1.35);
   const starCount = Math.max(60, Math.round(300 * q.particleMultiplier));
   // Keep animating the whole page; once below the hero, render GENTLY (slower
   // ambient motion + the heaviest effects dropped) rather than freezing. Stop
   // entirely only when the tab is hidden.
   const gentle = belowHero && !reduced;
-  const frameloop = reduced ? "demand" : hidden ? "never" : "always";
+  // Render on "demand" and drive it at TARGET_FPS via <RenderThrottle> (below),
+  // instead of "always" (= uncapped monitor refresh). Reduced-motion also uses
+  // demand but with no throttle → a single static frame. Hidden = never.
+  const frameloop = hidden ? "never" : "demand";
   const heavyFx = q.blurAllowed && !gentle; // bloom + nebula clouds (costliest)
 
   return (
@@ -887,6 +916,8 @@ export default function CyberHeroes3DScene() {
       gl={{ antialias: false, alpha: true, powerPreference: "low-power" }}
       style={{ width: "100%", height: "100%", background: "transparent", pointerEvents: "none" }}
     >
+      {/* Cap the loop to TARGET_FPS (skip when reduced-motion = static frame). */}
+      {!reduced && !hidden && <RenderThrottle fps={TARGET_FPS} />}
       <CameraParallax pointer={pointer} reduced={reduced} />
 
       {/* Far, stable depth layers (camera pan only, no diorama tilt). */}
@@ -905,7 +936,7 @@ export default function CyberHeroes3DScene() {
       {/* Bloom only where the GPU can afford it (medium/high), and only near
           the hero — dropped below the fold to keep the gentle pass cheap. */}
       {heavyFx && (
-        <EffectComposer multisampling={2}>
+        <EffectComposer multisampling={0}>
           <Bloom
             mipmapBlur
             intensity={0.9}
