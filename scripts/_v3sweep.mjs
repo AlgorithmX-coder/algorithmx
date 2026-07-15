@@ -11,7 +11,10 @@ await mkdir(OUT_DIR, { recursive: true });
 const EDGE = "C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe";
 const browser = await chromium.launch({ executablePath: EDGE });
 const ctx = await browser.newContext({
-  viewport: { width: 1600, height: 1000 },
+  viewport: {
+    width: Number(process.env.V3_W || 1600),
+    height: Number(process.env.V3_H || 1000),
+  },
   deviceScaleFactor: 1,
 });
 const url = new URL(BASE);

@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import {
   motion,
+  useMotionValue,
   useScroll,
   useSpring,
   useTransform,
@@ -127,6 +128,20 @@ export default function HeroCinematicV3() {
     return () => mq.removeEventListener("change", apply);
   }, []);
 
+  /* Viewport-height fit: on short viewports (e.g. 1440×770 laptop
+   * displays) the standing lid otherwise pushes up behind the nav —
+   * shift the scene down and trim scale proportionally. 0 at ≥900px
+   * tall, 1 at ≤650px. A MotionValue (not state) so a resize updates
+   * the scene immediately, even with scroll idle. */
+  const shortness = useMotionValue(0);
+  useEffect(() => {
+    const apply = () =>
+      shortness.set(Math.max(0, Math.min(1, (900 - window.innerHeight) / 250)));
+    apply();
+    window.addEventListener("resize", apply);
+    return () => window.removeEventListener("resize", apply);
+  }, [shortness]);
+
   const { scrollYProgress } = useScroll({
     target: railRef,
     offset: ["start start", "end end"],
@@ -154,9 +169,16 @@ export default function HeroCinematicV3() {
    * isometric diagram. */
   const sceneRotX = useTransform(progress, (p) => 64 - 12 * smoothstep(0, 0.55, p));
   /* Sized so the OPEN laptop owns the right half of the frame and never
-   * collides with the headline column or the nav. */
-  const sceneScale = useTransform(progress, (p) => 0.8 + 0.06 * smoothstep(0, 0.6, p));
-  const sceneY = useTransform(progress, (p) => 70 - 30 * smoothstep(0, 0.6, p));
+   * collides with the headline column or the nav (shortness pushes it
+   * down + trims it on low viewports). */
+  const sceneScale = useTransform(
+    [progress, shortness] as const,
+    ([p, s]: number[]) => (0.8 + 0.06 * smoothstep(0, 0.6, p)) * (1 - 0.12 * s),
+  );
+  const sceneY = useTransform(
+    [progress, shortness] as const,
+    ([p, s]: number[]) => 85 - 30 * smoothstep(0, 0.6, p) + 120 * s,
+  );
   /* Screen ignition + keyboard underglow + energy floor. */
   /* Dashboard fades up at ignition, then quietens slightly as the
    * course cards arrive — a focus handoff, so the two layers never
