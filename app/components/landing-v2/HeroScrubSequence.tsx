@@ -55,6 +55,7 @@ export default function HeroScrubSequence({
   progress: MotionValue<number>;
 }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const underlayRef = useRef<HTMLImageElement>(null);
   const imagesRef = useRef<HTMLImageElement[]>([]);
   const loadedRef = useRef<boolean[]>([]);
   const lastDrawn = useRef(-1);
@@ -95,6 +96,17 @@ export default function HeroScrubSequence({
     }
     drawCover(ctx, img, canvas.width, canvas.height);
     lastDrawn.current = idx;
+    /* FRAME-OVERLAP FIX: the closed-laptop underlay <img> exists only to
+     * cover the first-paint gap before any frame has decoded. The baked
+     * frames have TRANSPARENT backgrounds, so if the underlay stays
+     * visible it bleeds through every transparent pixel of the canvas —
+     * once the lid swings open, the region it vacated is transparent in
+     * the current frame and the underlay's CLOSED laptop shows through:
+     * a second, closed lid overlapping the open one. Hide it forever on
+     * the first successful canvas draw. */
+    if (underlayRef.current && underlayRef.current.style.visibility !== "hidden") {
+      underlayRef.current.style.visibility = "hidden";
+    }
   };
 
   const update = (p: number) => {
@@ -148,9 +160,13 @@ export default function HeroScrubSequence({
     <div style={{ position: "relative", width: "100%", height: "100%" }}>
       {/* Instant closed-laptop still behind the canvas so the laptop is
        *  visible the moment the page paints — no blank gap while the frame
-       *  sequence streams in. The canvas draws the scrubbed frame on top
-       *  once frames are decoded. */}
+       *  sequence streams in. HIDDEN by draw() as soon as the canvas has
+       *  painted a real frame: the frames carry alpha, so leaving this
+       *  visible bleeds a ghost of the CLOSED laptop through every
+       *  transparent region of later frames (the "overlapping frames"
+       *  artifact — a closed lid hovering over the open laptop). */}
       <img
+        ref={underlayRef}
         src="/hero-seq/frame-000.webp"
         alt=""
         aria-hidden
