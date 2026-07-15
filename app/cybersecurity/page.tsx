@@ -57,7 +57,7 @@ const TRACK_BLURBS: Record<string, string> = {
   cyberexplorers:
     "A spy thriller they play for real. As an agent of ARC, your child cracks 20 story missions with a voice-acted handler — learning to spot phishing, fake voices and data tricks for life.",
   cyberstart:
-    "Build portfolio-ready cyber skills through network defence, capture-the-flag challenges, and incident response projects designed for serious learners.",
+    "Real, hands-on security done safely. Recruited as a junior operator, your teen runs weekly engagements in a sealed range (break in, defend, respond) and finishes with a portfolio, not just a certificate.",
   "cyberstart-pro":
     "Develop career-grade cyber capability through pen-testing, threat modelling, and security projects built for university, work, and professional growth.",
 };
@@ -74,7 +74,7 @@ const TRACK_DISPLAY_OVERRIDES: Record<
 > = {
   "cyber-heroes": { name: "Cyber Heroes", ageRange: "6–9" },
   cyberexplorers: { name: "Cyber Explorers", ageRange: "10–13" },
-  cyberstart: { name: "Cyber Academy", ageRange: "14–17" },
+  cyberstart: { name: "Cyber Ops", ageRange: "14–17" },
   "cyberstart-pro": { name: "Cyber Pro", ageRange: "18+" },
 };
 
@@ -108,6 +108,13 @@ const TRACK_STATUS_OVERRIDES: Record<string, "ACTIVE" | "COMING_SOON"> = {
 const TRACK_WEEKS_OVERRIDES: Record<string, number> = {
   cyberexplorers: 20,
 };
+/* Display-layer duration override. The DB row for cyberstart still says
+ * "60 min/week", but the shipped Cyber Ops landing and the homepage
+ * catalog card both market it as 90 min/week — override here so the
+ * browse card matches rather than under-stating the commitment. */
+const TRACK_DURATION_OVERRIDES: Record<string, string> = {
+  cyberstart: "90 min/week",
+};
 
 /* Per-track accent — borrowed from the homepage SubjectShowcase
  * cybersecurity stream's green so the subject reads consistently
@@ -117,8 +124,15 @@ const TRACK_WEEKS_OVERRIDES: Record<string, number> = {
 const TRACK_ACCENTS: Record<string, string> = {
   "cyber-heroes": "#5fffa3",
   cyberexplorers: "#7df0ff",
-  cyberstart: "#a667ff",
+  cyberstart: "#8b7bff",
   "cyberstart-pro": "#ff7a3d",
+};
+
+/* Per-track emoji override (the DB emoji is the fallback). Cyber Ops
+ * swaps the generic rocket for a shield so the card reads as
+ * security/defence, not a startup launch. */
+const TRACK_EMOJI_OVERRIDES: Record<string, string> = {
+  cyberstart: "🛡️",
 };
 
 export const metadata: Metadata = {
@@ -313,10 +327,10 @@ export default async function CybersecurityPage() {
                 <TrackCard
                   key={p.slug}
                   slug={p.slug}
-                  emoji={p.emoji}
+                  emoji={TRACK_EMOJI_OVERRIDES[p.slug] ?? p.emoji}
                   name={displayOverride?.name ?? p.name}
                   ageRange={displayOverride?.ageRange ?? p.ageRange}
-                  duration={p.duration}
+                  duration={TRACK_DURATION_OVERRIDES[p.slug] ?? p.duration}
                   priceLabel={formatPrice(p.priceGBP)}
                   weeksCount={TRACK_WEEKS_OVERRIDES[p.slug] ?? p.weeksCount}
                   status={TRACK_STATUS_OVERRIDES[p.slug] ?? (p.status as "ACTIVE" | "COMING_SOON")}
