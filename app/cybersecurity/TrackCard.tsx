@@ -56,8 +56,15 @@ export interface TrackCardProps {
   imagePosition?: string;
   /** "light" swaps the heavy diagonal scrim for a gentler one so bright,
    *  colourful sources stay visibly bright; text protection moves to the
-   *  radial pool behind the copy. Default keeps the original treatment. */
-  scrim?: "default" | "light";
+   *  radial pool behind the copy. "split" is for art that already bakes a
+   *  dark left half + bright right half (the Cyber Ops console): a fast
+   *  left-to-clear diagonal that protects the text column and leaves the
+   *  bright right untouched. Default keeps the original treatment. */
+  scrim?: "default" | "light" | "split";
+  /** Caps the width of the copy stack (kicker, ages, title, blurb) so it
+   *  stays in a left column clear of scene art that lives on the right
+   *  (e.g. the Cyber Ops split scene). Omit to let copy run full width. */
+  contentMaxWidth?: number;
 }
 
 export default function TrackCard({
@@ -79,6 +86,7 @@ export default function TrackCard({
   imageOpacity,
   imagePosition,
   scrim,
+  contentMaxWidth,
 }: TrackCardProps) {
   const reduced = useReducedMotion();
   const [hover, setHover] = useState(false);
@@ -179,7 +187,21 @@ export default function TrackCard({
                *    and Layla settle. Text reads at any image bright-
                *    ness; characters stay softly visible. */
               background:
-                scrim === "light"
+                scrim === "split"
+                  ? /* Split treatment: the art already carries a dark left
+                     *  half (text) and a bright right half (the console),
+                     *  so the scrim only needs a quick left-to-clear pass
+                     *  to firm up the copy — it must NOT reach across and
+                     *  dim the bright right, so it clears fully by ~66%. */
+                    "linear-gradient(97deg, " +
+                    "rgba(13,15,24,0.80) 0%, " +
+                    "rgba(13,15,24,0.62) 34%, " +
+                    "rgba(13,15,24,0.24) 50%, " +
+                    "rgba(13,15,24,0) 66%), " +
+                    "linear-gradient(180deg, " +
+                    "rgba(13,15,24,0) 60%, " +
+                    "rgba(13,15,24,0.34) 100%)"
+                  : scrim === "light"
                   ? /* Light treatment for bright sources: the diagonal
                      *  falls off much faster (clear from ~60% across),
                      *  and the radial pool behind the copy carries the
@@ -252,11 +274,24 @@ export default function TrackCard({
             letterSpacing: "0.22em",
             textTransform: "uppercase",
             color: isLive ? "var(--lv2-ink)" : accent,
-            background: isLive ? accent : "transparent",
+            /* On scene cards the "Coming soon" pill floats over bright art
+             *  (the Cyber Ops console glow), so a transparent pill would
+             *  wash out — give it a dark translucent chip + shadow there.
+             *  Plain cards keep the original transparent outline. */
+            background: isLive
+              ? accent
+              : characterImage
+              ? "rgba(13,15,26,0.62)"
+              : "transparent",
             border: isLive ? "none" : `1px solid ${accent}66`,
-            padding: isLive ? "3px 10px" : "2px 9px",
+            padding: isLive ? "3px 10px" : characterImage ? "4px 11px" : "2px 9px",
             borderRadius: 999,
             marginLeft: "auto",
+            textShadow:
+              !isLive && characterImage ? "0 1px 3px rgba(0,0,0,0.55)" : undefined,
+            backdropFilter: !isLive && characterImage ? "blur(3px)" : undefined,
+            WebkitBackdropFilter:
+              !isLive && characterImage ? "blur(3px)" : undefined,
           }}
         >
           {isLive ? "Live now" : "Coming soon"}
@@ -285,6 +320,7 @@ export default function TrackCard({
             textTransform: "uppercase",
             color: accent,
             textShadow: "0 1px 4px rgba(4,5,13,0.6)",
+            maxWidth: contentMaxWidth,
           }}
         >
           {kicker ?? <>Animation-led · Adam &amp; Layla</>}
@@ -292,7 +328,7 @@ export default function TrackCard({
       )}
 
       {/* AGES (display prominence) + duration */}
-      <div style={{ position: "relative", zIndex: 1 }}>
+      <div style={{ position: "relative", zIndex: 1, maxWidth: contentMaxWidth }}>
         <div
           style={{
             fontFamily: "var(--lv2-font-mono)",
@@ -346,6 +382,7 @@ export default function TrackCard({
           margin: 0,
           letterSpacing: "-0.018em",
           lineHeight: 1.15,
+          maxWidth: contentMaxWidth,
         }}
       >
         {name}
@@ -364,6 +401,7 @@ export default function TrackCard({
           textShadow: characterImage ? "0 1px 8px rgba(4,5,13,0.85), 0 0 2px rgba(4,5,13,0.6)" : undefined,
           margin: 0,
           flex: 1,
+          maxWidth: contentMaxWidth,
         }}
       >
         {blurb}

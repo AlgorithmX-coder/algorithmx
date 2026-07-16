@@ -140,6 +140,38 @@ const TRACK_EMOJI_OVERRIDES: Record<string, string> = {
   cyberstart: "🛡️",
 };
 
+/* Per-track art-layer tuning for the two cards that carry a scene.
+ *
+ * Cyber Explorers is a bright daylight photo: a light scrim keeps it
+ * bright, a focal crop settles the subject centre-right, ~full opacity.
+ *
+ * Cyber Ops is the operator-console art, composed as a deliberate split
+ * — a dark left half (the copy sits here) and a bright, code-dense right
+ * half (terminal + HTTP + a fix diff). Shown near-full and centred so
+ * the split maps across the card; the "split" scrim only firms up the
+ * left column (it clears by ~66% so the bright right stays bright); and
+ * the copy is capped to a left column (contentMaxWidth) so it never runs
+ * over the code. This is what keeps it bright AND readable at once. */
+const TRACK_IMAGE_FILTER: Record<string, string> = {
+  cyberexplorers: "saturate(1.12) brightness(1.05)",
+  cyberstart: "saturate(1.06) brightness(1.03)",
+};
+const TRACK_IMAGE_OPACITY: Record<string, number> = {
+  cyberexplorers: 0.95,
+  cyberstart: 1,
+};
+const TRACK_IMAGE_POSITION: Record<string, string> = {
+  cyberexplorers: "62% 38%",
+  cyberstart: "center",
+};
+const TRACK_SCRIM: Record<string, "default" | "light" | "split"> = {
+  cyberexplorers: "light",
+  cyberstart: "split",
+};
+const TRACK_CONTENT_MAX_WIDTH: Record<string, number> = {
+  cyberstart: 265,
+};
+
 export const metadata: Metadata = {
   title: "Cybersecurity. Tracks for Every Age, 6 to 18+ | AlgorithmX",
   description:
@@ -346,10 +378,11 @@ export default async function CybersecurityPage() {
                   index={i}
                   characterImage={characterImage}
                   kicker={TRACK_KICKERS[p.slug]}
-                  imageFilter={p.slug === "cyberexplorers" ? "saturate(1.12) brightness(1.05)" : undefined}
-                  imageOpacity={p.slug === "cyberexplorers" ? 0.95 : undefined}
-                  imagePosition={p.slug === "cyberexplorers" ? "62% 38%" : undefined}
-                  scrim={p.slug === "cyberexplorers" ? "light" : undefined}
+                  imageFilter={TRACK_IMAGE_FILTER[p.slug]}
+                  imageOpacity={TRACK_IMAGE_OPACITY[p.slug]}
+                  imagePosition={TRACK_IMAGE_POSITION[p.slug]}
+                  scrim={TRACK_SCRIM[p.slug]}
+                  contentMaxWidth={TRACK_CONTENT_MAX_WIDTH[p.slug]}
                 />
               );
             })}
