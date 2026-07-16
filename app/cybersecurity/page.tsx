@@ -88,6 +88,10 @@ const TRACK_CHARACTER_IMAGES: Record<string, string> = {
    * at a holo-desk, daylight + colorful screens) — v2's dark-silhouette
    * scene read too scary for 10–13 per owner review. */
   cyberexplorers: "/explorers/scenes/explorers-card-v3.jpg",
+  /* Operator's-console scene: terminals mid-engagement + the star-fort
+   * (Cyber Ops' motif), composed for the card scrim (focal upper-right,
+   * dark left for the text). Signals the hands-on, real-tooling format. */
+  cyberstart: "/operators/cyberops-card.jpg",
 };
 
 /* Feature tag shown with the art (TrackCard defaults to the Heroes
@@ -95,6 +99,7 @@ const TRACK_CHARACTER_IMAGES: Record<string, string> = {
 const TRACK_KICKERS: Record<string, string> = {
   "cyber-heroes": "Animation-led · Adam & Layla",
   cyberexplorers: "Story-driven · Agent WREN vs SIREN",
+  cyberstart: "Hands-on · a live cyber range",
 };
 
 /* Display-layer status + weeks overrides, same rationale as
