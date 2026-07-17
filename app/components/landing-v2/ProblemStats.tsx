@@ -129,12 +129,20 @@ export default function ProblemStats() {
       <style jsx>{`
         .lv2-stats-row {
           display: grid;
-          grid-template-columns: repeat(3, 1fr);
+          /* minmax(0, 1fr): grid items default to min-width auto, so the
+           * cards' unshrinkable content (72px number, nowrap badges) was
+           * blowing the row past the viewport on iPad portrait (~938px
+           * in an 819px viewport = sideways wobble). */
+          grid-template-columns: repeat(3, minmax(0, 1fr));
           gap: 22px;
         }
-        @media (max-width: 760px) {
+        /* Was 760px — at 761–1000px three cards can't fit honestly, so
+         * stack them (single centred column) from 1000px down. */
+        @media (max-width: 1000px) {
           .lv2-stats-row {
-            grid-template-columns: 1fr;
+            grid-template-columns: minmax(0, 1fr);
+            max-width: 620px;
+            margin: 0 auto;
           }
         }
       `}</style>

@@ -119,6 +119,19 @@ export default function HeroCinematicV3() {
     return () => mq.removeEventListener("change", apply);
   }, []);
 
+  /* Mid band (769–1000px, i.e. iPad portrait): desktop framing put the
+   * laptop on top of the headline at these widths — push the scene
+   * further right and down (plus the 0.68 zoom in the CSS below) so
+   * the text column keeps clean space. */
+  const [isMid, setIsMid] = useState(false);
+  useEffect(() => {
+    const mq = window.matchMedia("(min-width: 769px) and (max-width: 1000px)");
+    const apply = () => setIsMid(mq.matches);
+    apply();
+    mq.addEventListener("change", apply);
+    return () => mq.removeEventListener("change", apply);
+  }, []);
+
   /* Viewport-height fit: on short viewports (e.g. 1440×770 laptop
    * displays) the standing lid otherwise pushes up behind the nav —
    * shift the scene down and trim scale proportionally. 0 at ≥900px
@@ -170,7 +183,7 @@ export default function HeroCinematicV3() {
   const sceneY = useTransform(
     [progress, shortness] as const,
     ([p, s]: number[]) =>
-      79 + 22 * smoothstep(0, 0.6, p) + 110 * s + (isCompact ? 130 : 0),
+      79 + 22 * smoothstep(0, 0.6, p) + 110 * s + (isCompact ? 130 : isMid ? 80 : 0),
   );
   /* Screen ignition + keyboard underglow + energy floor. */
   const screenT = useTransform(progress, (p) => smoothstep(0.4, 0.56, p));
@@ -207,6 +220,9 @@ export default function HeroCinematicV3() {
   useEffect(() => {
     if (reducedMotion) return;
     const onMove = (e: PointerEvent) => {
+      /* Mouse only — touch pointers fire pointermove at drag start,
+       * which made the rig twitch toward the last touch on iPads. */
+      if (e.pointerType !== "mouse") return;
       pointerX.set((e.clientX / window.innerWidth) * 2 - 1);
       pointerY.set((e.clientY / window.innerHeight) * 2 - 1);
     };
@@ -272,7 +288,7 @@ export default function HeroCinematicV3() {
               rotateZ: -17,
               scale: sceneScale,
               y: sceneY,
-              x: isCompact ? "5vw" : "14vw",
+              x: isCompact ? "5vw" : isMid ? "22vw" : "14vw",
               transformStyle: "preserve-3d",
               willChange: "transform",
             }}
@@ -858,6 +874,7 @@ export default function HeroCinematicV3() {
       <style>{`
         .hv3-sceneScale { transform-style: preserve-3d; }
         @media (max-width: 1100px) { .hv3-sceneScale { zoom: 0.82; } }
+        @media (max-width: 1000px) { .hv3-sceneScale { zoom: 0.64; } }
         @media (max-width: 768px)  { .hv3-sceneScale { zoom: 0.56; } }
         /* BOTTOM BLEND — feathers the hero's visual layers (nebula wash,
          * laptop scene, floor glow) to transparent over the last ~18% of
