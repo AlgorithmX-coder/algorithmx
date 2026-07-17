@@ -26,6 +26,7 @@ import { mission10 } from "./missions/mission10";
 import { mission11 } from "./missions/mission11";
 import { mission12 } from "./missions/mission12";
 import { mission13 } from "./missions/mission13";
+import { mission14 } from "./missions/mission14";
 
 const CASES: { m: MissionManifest; tease: string; minutes: string }[] = [
   { m: mission01, tease: "A student's game account gets a 24-hour death threat. Something about it reads wrong.", minutes: "45–60 MIN" },
@@ -41,6 +42,7 @@ const CASES: { m: MissionManifest; tease: string; minutes: string }[] = [
   { m: mission11, tease: "Forty accounts, one brain. SKELETON KEY is counting on that math. Build the machine that breaks it.", minutes: "45–60 MIN" },
   { m: mission12, tease: "Someone at the café is reading every message in the room. Learn to make yours unreadable.", minutes: "45–60 MIN" },
   { m: mission13, tease: "Your lock is unbreakable now — so the locksmith stopped picking it. He found a side door.", minutes: "45–60 MIN" },
+  { m: mission14, tease: "Five downloads wait on a tablet. Four are gifts. One is a horse full of soldiers.", minutes: "45–60 MIN" },
 ];
 
 export default function ExplorersPage() {
@@ -135,10 +137,10 @@ export default function ExplorersPage() {
             <div style={{ background: `${T.panel}99`, border: `1px dashed ${T.hairline}`, borderRadius: 4, padding: "18px 22px", display: "flex", justifyContent: "space-between", alignItems: "center", gap: 12, flexWrap: "wrap" }}>
               <div>
                 <span style={{ fontFamily: MONO, fontSize: 11.5, letterSpacing: "0.08em", color: T.textDisabled }}>
-                  CASE 014 // DOSSIER SEALED
+                  CASE 015 // DOSSIER SEALED
                 </span>
                 <div style={{ fontFamily: MONO, fontSize: 17, fontWeight: 600, color: T.textSecondary, marginTop: 6 }}>
-                  The Update Trap
+                  The Real Site
                 </div>
               </div>
               <span style={{ fontFamily: MONO, fontSize: 10.5, letterSpacing: "0.1em", color: T.textDisabled, border: `1px solid ${T.hairline}`, borderRadius: 2, padding: "6px 10px" }}>
