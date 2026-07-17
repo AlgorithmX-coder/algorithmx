@@ -235,12 +235,21 @@ export default function HeroCinematicV3() {
           overflow: "hidden",
         }}
       >
-        {/* ambient cosmic wash — pure CSS, sits over GlobalBackdrop */}
-        <div aria-hidden className="hv3-nebulaA" />
-        <div aria-hidden className="hv3-nebulaB" />
+        {/* ambient cosmic wash — pure CSS, sits over GlobalBackdrop.
+         *  Wrapped so the bottom-fade mask feathers the wash into the
+         *  backdrop instead of cutting on the section edge. */}
+        <div
+          aria-hidden
+          className="hv3-bottomFade"
+          style={{ position: "absolute", inset: 0, pointerEvents: "none" }}
+        >
+          <div className="hv3-nebulaA" />
+          <div className="hv3-nebulaB" />
+        </div>
 
         {/* ── 3D stage (contains real links — not aria-hidden) ── */}
         <div
+          className="hv3-bottomFade"
           style={{
             position: "absolute",
             inset: 0,
@@ -845,6 +854,18 @@ export default function HeroCinematicV3() {
         .hv3-sceneScale { transform-style: preserve-3d; }
         @media (max-width: 1100px) { .hv3-sceneScale { zoom: 0.82; } }
         @media (max-width: 768px)  { .hv3-sceneScale { zoom: 0.56; } }
+        /* BOTTOM BLEND — feathers the hero's visual layers (nebula wash,
+         * laptop scene, floor glow) to transparent over the last ~18% of
+         * the frame, so the section hands off into the shared global
+         * backdrop instead of ending on a hard horizontal cut. Static
+         * mask = zero per-frame cost; HUD text layers sit outside it and
+         * stay crisp. */
+        .hv3-bottomFade {
+          -webkit-mask-image: linear-gradient(to bottom,
+            #000 0%, #000 82%, rgba(0,0,0,0.72) 88%, rgba(0,0,0,0.38) 94%, transparent 100%);
+          mask-image: linear-gradient(to bottom,
+            #000 0%, #000 82%, rgba(0,0,0,0.72) 88%, rgba(0,0,0,0.38) 94%, transparent 100%);
+        }
         .hv3-nebulaA, .hv3-nebulaB {
           position: absolute; border-radius: 50%; pointer-events: none;
           filter: blur(70px);
