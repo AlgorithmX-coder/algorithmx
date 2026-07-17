@@ -1,4 +1,34 @@
 import type { Metadata } from "next";
+import { Nunito, Fredoka, JetBrains_Mono } from "next/font/google";
+
+/**
+ * Route-scoped display fonts for the Cyber Heroes landing page.
+ *
+ * Imported here (not in the root layout) so next/font self-hosts them and
+ * preloads them ONLY on /cyberheroes — replacing the render-blocking Google
+ * Fonts `@import` the page used to inline. Space Grotesk is already loaded
+ * app-wide by the root layout as `--font-space-grotesk`. The CSS variables
+ * are applied via a `display: contents` wrapper below, so they cascade into
+ * the "use client" page without introducing a layout box.
+ */
+const nunito = Nunito({
+  variable: "--font-nunito",
+  weight: ["400", "600", "700", "800", "900"],
+  subsets: ["latin"],
+  display: "swap",
+});
+const fredoka = Fredoka({
+  variable: "--font-fredoka",
+  weight: ["500", "600", "700"],
+  subsets: ["latin"],
+  display: "swap",
+});
+const jetbrainsMono = JetBrains_Mono({
+  variable: "--font-jetbrains-mono",
+  weight: ["400", "500", "700"],
+  subsets: ["latin"],
+  display: "swap",
+});
 
 /**
  * Cyber Heroes - landing-page metadata.
@@ -92,7 +122,10 @@ export default function CyberHeroesLayout({
   children: React.ReactNode;
 }) {
   return (
-    <>
+    <div
+      className={`${nunito.variable} ${fredoka.variable} ${jetbrainsMono.variable}`}
+      style={{ display: "contents" }}
+    >
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
@@ -100,6 +133,6 @@ export default function CyberHeroesLayout({
         }}
       />
       {children}
-    </>
+    </div>
   );
 }

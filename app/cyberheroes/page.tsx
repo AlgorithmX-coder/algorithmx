@@ -185,10 +185,10 @@ function CredentialsMarquee() {
             </span>
             {/* Title + classification sub. */}
             <span style={{ display: "flex", flexDirection: "column", gap: 3, alignItems: "flex-start", position: "relative", zIndex: 1 }}>
-              <span style={{ fontFamily: "'Space Grotesk', system-ui, sans-serif", fontSize: 13.5, fontWeight: 800, letterSpacing: "-0.005em", lineHeight: 1.1, whiteSpace: "nowrap", color: c.titleColor }}>
+              <span style={{ fontFamily: "var(--font-space-grotesk), system-ui, sans-serif", fontSize: 13.5, fontWeight: 800, letterSpacing: "-0.005em", lineHeight: 1.1, whiteSpace: "nowrap", color: c.titleColor }}>
                 {c.title}
               </span>
-              <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 9.5, fontWeight: 600, letterSpacing: "0.16em", textTransform: "uppercase", color: "rgba(209,217,230,0.62)", whiteSpace: "nowrap" }}>
+              <span style={{ fontFamily: "var(--font-jetbrains-mono), monospace", fontSize: 9.5, fontWeight: 600, letterSpacing: "0.16em", textTransform: "uppercase", color: "rgba(209,217,230,0.62)", whiteSpace: "nowrap" }}>
                 {c.sub}
               </span>
             </span>
@@ -548,9 +548,9 @@ function CyberHeroesNav() {
         section[id] { scroll-margin-top: 92px; }
         .chnav-grid { width: 100%; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 12px; position: relative; z-index: 1; }
         .chnav-logo { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; justify-self: start; }
-        .chnav-cube { display: inline-flex; align-items: center; justify-content: center; border-radius: 11px; background: linear-gradient(135deg,#7c5cff,#00e5ff); color:#fff; font-family:'Space Grotesk',system-ui,sans-serif; font-weight:900; font-size:12px; letter-spacing:0.02em; border:1px solid rgba(255,255,255,0.14); box-shadow: inset 0 1px 0 rgba(255,255,255,0.30), 0 0 18px rgba(124,92,255,0.45); transition: transform 200ms cubic-bezier(0.16,1,0.3,1), box-shadow 200ms, width 320ms, height 320ms; }
+        .chnav-cube { display: inline-flex; align-items: center; justify-content: center; border-radius: 11px; background: linear-gradient(135deg,#7c5cff,#00e5ff); color:#fff; font-family:var(--font-space-grotesk),system-ui,sans-serif; font-weight:900; font-size:12px; letter-spacing:0.02em; border:1px solid rgba(255,255,255,0.14); box-shadow: inset 0 1px 0 rgba(255,255,255,0.30), 0 0 18px rgba(124,92,255,0.45); transition: transform 200ms cubic-bezier(0.16,1,0.3,1), box-shadow 200ms, width 320ms, height 320ms; }
         .chnav-logo:hover .chnav-cube { transform: scale(1.04); box-shadow: inset 0 1px 0 rgba(255,255,255,0.3), 0 0 24px rgba(0,229,255,0.5); }
-        .chnav-word { font-family:'Space Grotesk',system-ui,sans-serif; font-weight:800; font-size:18px; letter-spacing:-0.02em; color:#eaf6ff; }
+        .chnav-word { font-family:var(--font-space-grotesk),system-ui,sans-serif; font-weight:800; font-size:18px; letter-spacing:-0.02em; color:#eaf6ff; }
         .chnav-x { background: linear-gradient(135deg,#a78bff,#00e5ff); -webkit-background-clip:text; background-clip:text; color:transparent; text-shadow: 0 0 12px rgba(0,229,255,0.45); }
         .chnav-links { display:flex; align-items:center; justify-content:center; gap:24px; justify-self:center; }
         .chnav-link { position:relative; font-weight:700; font-size:14px; letter-spacing:0.01em; color:rgba(234,246,255,0.72); padding:8px 4px; text-decoration:none; transition: color 180ms; }
@@ -560,7 +560,7 @@ function CyberHeroesNav() {
         .chnav-cta { display:inline-flex; align-items:center; gap:16px; justify-self:end; }
         .chnav-login { font-weight:700; font-size:14px; color:rgba(234,246,255,0.70); text-decoration:none; transition:color 160ms; }
         .chnav-login:hover { color:#eaf6ff; text-decoration:underline; text-underline-offset:4px; text-decoration-color:rgba(0,229,255,0.5); }
-        .chnav-enrol { display:inline-flex; align-items:center; border-radius:14px; border:1px solid rgba(255,255,255,0.18); color:#1a0e14; font-family:'Space Grotesk',system-ui,sans-serif; font-weight:800; font-size:14px; text-decoration:none; white-space:nowrap; }
+        .chnav-enrol { display:inline-flex; align-items:center; border-radius:14px; border:1px solid rgba(255,255,255,0.18); color:#1a0e14; font-family:var(--font-space-grotesk),system-ui,sans-serif; font-weight:800; font-size:14px; text-decoration:none; white-space:nowrap; }
         .chnav-frame { position:absolute; inset:0; border-radius:18px; padding:1px; pointer-events:none; z-index:0; background:linear-gradient(135deg, rgba(124,92,255,0.9), rgba(0,229,255,0.9)); -webkit-mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite:xor; mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); mask-composite:exclude; transition:opacity 320ms; }
         .chnav-frame.breathe { animation: chnavBreathe 6s ease-in-out infinite; }
         @keyframes chnavBreathe { 0%,100% { opacity:0.6; } 50% { opacity:0.74; } }
@@ -582,7 +582,7 @@ function CyberHeroesNav() {
         .chnav-sheet-link { display:block; padding:14px 8px; font-weight:700; font-size:15px; color:rgba(234,246,255,0.8); text-decoration:none; border-bottom:1px solid rgba(148,163,184,0.12); }
         .chnav-sheet-link.is-active { color:#eaf6ff; border-left:2px solid #00e5ff; padding-left:12px; }
         .chnav-sheet-login { display:block; text-align:center; padding:12px; margin-top:12px; border-radius:12px; border:1px solid rgba(0,229,255,0.3); color:#7df0ff; font-weight:700; text-decoration:none; }
-        .chnav-sheet-enrol { display:block; text-align:center; padding:13px; margin-top:10px; border-radius:14px; color:#1a0e14; font-weight:800; font-family:'Space Grotesk',system-ui,sans-serif; text-decoration:none; }
+        .chnav-sheet-enrol { display:block; text-align:center; padding:13px; margin-top:10px; border-radius:14px; color:#1a0e14; font-weight:800; font-family:var(--font-space-grotesk),system-ui,sans-serif; text-decoration:none; }
         @media (max-width: 1023px) {
           .chnav-grid { grid-template-columns: 1fr auto; }
           .chnav-links { display:none; }
@@ -715,10 +715,10 @@ export default function HomePage() {
   return (
     <div style={{ background: "transparent", minHeight: "100vh" }}>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Nunito:wght@400;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap');
-        * { font-family: 'Nunito', sans-serif; }
-        h1, h2, h3, h4, .display-font { font-family: 'Space Grotesk', system-ui, sans-serif; letter-spacing: -0.015em; }
-        .mono { font-family: 'JetBrains Mono', monospace; }
+        /* Fonts self-hosted + preloaded via next/font in app/cyberheroes/layout.tsx (was a render-blocking Google Fonts @import). */
+        * { font-family: var(--font-nunito), sans-serif; }
+        h1, h2, h3, h4, .display-font { font-family: var(--font-space-grotesk), system-ui, sans-serif; letter-spacing: -0.015em; }
+        .mono { font-family: var(--font-jetbrains-mono), monospace; }
         html { scroll-behavior: smooth; }
         /* Legibility: a soft dark halo on all content text so it separates
            from the bright animated backdrop. Inherited; elements with their
@@ -1119,17 +1119,17 @@ export default function HomePage() {
                   <span aria-hidden className="story-tick" style={{ position: "absolute", top: 12, right: 12, width: 15, height: 15, zIndex: 3, borderTop: `2px solid ${s.accent}`, borderRight: `2px solid ${s.accent}`, borderRadius: "0 5px 0 0", boxShadow: `0 0 8px ${s.accent}88`, opacity: 0.55, transition: "opacity 380ms" }} />
                   {/* Chapter plate. */}
                   <div style={{ position: "absolute", top: 12, left: 12, zIndex: 4, display: "inline-flex", alignItems: "center", gap: 8, padding: "6px 11px 6px 7px", borderRadius: 11, background: "linear-gradient(150deg, rgba(10,13,30,0.82), rgba(8,10,22,0.7))", backdropFilter: "blur(8px)", WebkitBackdropFilter: "blur(8px)", border: `1px solid ${s.accent}55`, boxShadow: `0 6px 16px -8px rgba(0,0,0,0.7), 0 0 14px -6px ${s.accent}88` }}>
-                    <span style={{ width: 22, height: 22, borderRadius: 8, display: "flex", alignItems: "center", justifyContent: "center", background: s.numGrad, color: "#fff", fontFamily: "'Space Grotesk',system-ui,sans-serif", fontSize: 12, fontWeight: 900, boxShadow: "inset 0 1px 0 rgba(255,255,255,0.3)" }}>{i + 1}</span>
+                    <span style={{ width: 22, height: 22, borderRadius: 8, display: "flex", alignItems: "center", justifyContent: "center", background: s.numGrad, color: "#fff", fontFamily: "var(--font-space-grotesk),system-ui,sans-serif", fontSize: 12, fontWeight: 900, boxShadow: "inset 0 1px 0 rgba(255,255,255,0.3)" }}>{i + 1}</span>
                     <span style={{ display: "flex", flexDirection: "column", lineHeight: 1 }}>
-                      <span style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 7.5, fontWeight: 700, letterSpacing: "0.22em", textTransform: "uppercase", color: s.accent, opacity: 0.85 }}>Chapter</span>
-                      <span style={{ fontFamily: "'Space Grotesk',system-ui,sans-serif", fontSize: 12, fontWeight: 800, color: "#eaf6ff", marginTop: 2 }}>{`0${i + 1}`}</span>
+                      <span style={{ fontFamily: "var(--font-jetbrains-mono),monospace", fontSize: 7.5, fontWeight: 700, letterSpacing: "0.22em", textTransform: "uppercase", color: s.accent, opacity: 0.85 }}>Chapter</span>
+                      <span style={{ fontFamily: "var(--font-space-grotesk),system-ui,sans-serif", fontSize: 12, fontWeight: 800, color: "#eaf6ff", marginTop: 2 }}>{`0${i + 1}`}</span>
                     </span>
                   </div>
                   {/* Text overlay. */}
                   <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, zIndex: 3, padding: "52px 18px 18px", background: "linear-gradient(to top, rgba(4,6,16,0.92) 0%, rgba(4,6,16,0.72) 42%, rgba(4,6,16,0) 100%)", boxShadow: "inset 0 1px 0 rgba(255,255,255,0.06)" }}>
-                    <p style={{ fontFamily: "'Space Grotesk',system-ui,sans-serif", fontSize: 18.5, fontWeight: 800, letterSpacing: "-0.01em", color: "#fff", marginBottom: 5, textShadow: `0 1px 3px rgba(0,0,0,0.8), 0 0 18px ${s.accent}40` }}>{s.caption}</p>
+                    <p style={{ fontFamily: "var(--font-space-grotesk),system-ui,sans-serif", fontSize: 18.5, fontWeight: 800, letterSpacing: "-0.01em", color: "#fff", marginBottom: 5, textShadow: `0 1px 3px rgba(0,0,0,0.8), 0 0 18px ${s.accent}40` }}>{s.caption}</p>
                     <span aria-hidden className="story-rule" style={{ display: "block", height: 2, background: s.accent, boxShadow: `0 0 8px ${s.accent}`, borderRadius: 1, marginBottom: 8 }} />
-                    <p className="story-sub" style={{ fontFamily: "'Nunito',sans-serif", fontSize: 13.5, fontWeight: 600, lineHeight: 1.5, color: "rgba(234,246,255,0.86)" }}>{s.sub}</p>
+                    <p className="story-sub" style={{ fontFamily: "var(--font-nunito),sans-serif", fontSize: 13.5, fontWeight: 600, lineHeight: 1.5, color: "rgba(234,246,255,0.86)" }}>{s.sub}</p>
                   </div>
                 </div>
               </div>
@@ -1212,7 +1212,7 @@ export default function HomePage() {
                 <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 16, flexWrap: "wrap" }}>
                   <span style={{
                     display: "inline-flex", alignItems: "center", gap: 8,
-                    fontFamily: "'JetBrains Mono', monospace", fontSize: 11, fontWeight: 700,
+                    fontFamily: "var(--font-jetbrains-mono), monospace", fontSize: 11, fontWeight: 700,
                     letterSpacing: "0.16em", textTransform: "uppercase",
                     color: phase.accent, background: `${phase.accent}1a`,
                     border: `1px solid ${phase.accent}55`, borderRadius: 999, padding: "6px 14px",
@@ -1243,7 +1243,7 @@ export default function HomePage() {
                           flexShrink: 0, width: 44, height: 44, borderRadius: "50%",
                           background: phase.accent,
                           display: "flex", alignItems: "center", justifyContent: "center",
-                          fontFamily: "'Fredoka', sans-serif", fontSize: 22, fontWeight: 800, color: "#08101f",
+                          fontFamily: "var(--font-fredoka), sans-serif", fontSize: 22, fontWeight: 800, color: "#08101f",
                           border: "2px solid rgba(255,255,255,0.24)",
                           boxShadow: `0 2px 10px ${phase.accent}40, inset 0 1px 1px rgba(255,255,255,0.4)`,
                         }}>
@@ -1255,10 +1255,10 @@ export default function HomePage() {
                               {wk.title}
                             </h3>
                             {isStart && (
-                              <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 9.5, fontWeight: 700, letterSpacing: "0.12em", color: "#0a0f1c", background: "#7eff97", borderRadius: 8, padding: "2px 8px", whiteSpace: "nowrap" }}>START HERE</span>
+                              <span style={{ fontFamily: "var(--font-jetbrains-mono), monospace", fontSize: 9.5, fontWeight: 700, letterSpacing: "0.12em", color: "#0a0f1c", background: "#7eff97", borderRadius: 8, padding: "2px 8px", whiteSpace: "nowrap" }}>START HERE</span>
                             )}
                             {isFinal && (
-                              <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 9.5, fontWeight: 700, letterSpacing: "0.12em", color: "#0a0f1c", background: "#ffd158", borderRadius: 8, padding: "2px 8px", whiteSpace: "nowrap" }}>FINAL MISSION</span>
+                              <span style={{ fontFamily: "var(--font-jetbrains-mono), monospace", fontSize: 9.5, fontWeight: 700, letterSpacing: "0.12em", color: "#0a0f1c", background: "#ffd158", borderRadius: 8, padding: "2px 8px", whiteSpace: "nowrap" }}>FINAL MISSION</span>
                             )}
                           </div>
                           <p style={{ color: "#c5cdf0", fontSize: 13.5, lineHeight: 1.5 }}>{wk.sub}</p>
@@ -1428,7 +1428,7 @@ export default function HomePage() {
               display: "inline-flex", alignItems: "center", gap: 8,
               background: "rgba(0,229,255,0.12)", border: "1px solid rgba(0,229,255,0.35)",
               color: "#7df0ff", borderRadius: 999, padding: "5px 14px",
-              fontFamily: "'JetBrains Mono', monospace", fontSize: 11,
+              fontFamily: "var(--font-jetbrains-mono), monospace", fontSize: 11,
               fontWeight: 800, letterSpacing: "0.2em", textTransform: "uppercase",
               marginBottom: 16,
             }}>
@@ -1496,7 +1496,7 @@ export default function HomePage() {
                   <div style={{ position: "absolute", inset: 0, background: "linear-gradient(180deg, transparent 50%, rgba(8,10,22,0.7) 100%)" }} />
                   <div style={{
                     position: "absolute", bottom: 14, left: "50%", transform: "translateX(-50%)",
-                    fontFamily: "'JetBrains Mono', monospace",
+                    fontFamily: "var(--font-jetbrains-mono), monospace",
                     fontSize: 7, letterSpacing: "0.18em", color: "#ffd158",
                     background: "rgba(8,10,22,0.85)",
                     border: "1px solid rgba(255,209,88,0.45)",
@@ -1550,7 +1550,7 @@ export default function HomePage() {
                   {/* Caption pill */}
                   <div style={{
                     position: "absolute", bottom: 10, left: "50%", transform: "translateX(-50%)",
-                    fontFamily: "'JetBrains Mono', monospace",
+                    fontFamily: "var(--font-jetbrains-mono), monospace",
                     fontSize: 9, letterSpacing: "0.2em", color: "#7df0ff",
                     background: "rgba(8,10,22,0.78)",
                     border: "1px solid rgba(125,240,255,0.4)",
@@ -1605,7 +1605,7 @@ export default function HomePage() {
                   <div style={{ position: "absolute", inset: 0, background: "linear-gradient(180deg, transparent 60%, rgba(8,10,22,0.6) 100%)" }} />
                   <div style={{
                     position: "absolute", bottom: 10, left: "50%", transform: "translateX(-50%)",
-                    fontFamily: "'JetBrains Mono', monospace",
+                    fontFamily: "var(--font-jetbrains-mono), monospace",
                     fontSize: 8, letterSpacing: "0.18em", color: "#ff9bcb",
                     background: "rgba(8,10,22,0.78)",
                     border: "1px solid rgba(255,95,179,0.4)",
@@ -1634,7 +1634,7 @@ export default function HomePage() {
               display: "inline-flex", alignItems: "center", gap: 8,
               background: "rgba(255,209,88,0.10)", border: "1px solid rgba(255,209,88,0.32)",
               color: "#ffd158", borderRadius: 999, padding: "5px 14px",
-              fontFamily: "'JetBrains Mono', monospace", fontSize: 11,
+              fontFamily: "var(--font-jetbrains-mono), monospace", fontSize: 11,
               fontWeight: 800, letterSpacing: "0.2em", textTransform: "uppercase",
               marginBottom: 14,
             }}>
