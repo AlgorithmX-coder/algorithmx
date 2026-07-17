@@ -548,10 +548,12 @@ function CyberHeroesNav() {
         section[id] { scroll-margin-top: 92px; }
         .chnav-grid { width: 100%; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 12px; position: relative; z-index: 1; }
         .chnav-logo { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; justify-self: start; }
-        .chnav-cube { display: inline-flex; align-items: center; justify-content: center; border-radius: 11px; background: linear-gradient(135deg,#7c5cff,#00e5ff); color:#fff; font-family:var(--font-space-grotesk),system-ui,sans-serif; font-weight:900; font-size:12px; letter-spacing:0.02em; border:1px solid rgba(255,255,255,0.14); box-shadow: inset 0 1px 0 rgba(255,255,255,0.30), 0 0 18px rgba(124,92,255,0.45); transition: transform 200ms cubic-bezier(0.16,1,0.3,1), box-shadow 200ms, width 320ms, height 320ms; }
-        .chnav-logo:hover .chnav-cube { transform: scale(1.04); box-shadow: inset 0 1px 0 rgba(255,255,255,0.3), 0 0 24px rgba(0,229,255,0.5); }
-        .chnav-word { font-family:var(--font-space-grotesk),system-ui,sans-serif; font-weight:800; font-size:18px; letter-spacing:-0.02em; color:#eaf6ff; }
-        .chnav-x { background: linear-gradient(135deg,#a78bff,#00e5ff); -webkit-background-clip:text; background-clip:text; color:transparent; text-shadow: 0 0 12px rgba(0,229,255,0.45); }
+        .chnav-shield { display:inline-flex; transform:rotate(-7deg); filter:drop-shadow(0 0 10px rgba(255,179,71,0.4)); transition: transform 200ms cubic-bezier(0.16,1,0.3,1); }
+        .chnav-logo:hover .chnav-shield { transform:rotate(-7deg) scale(1.1); }
+        .chnav-word { font-family:var(--font-fredoka),system-ui,sans-serif; font-weight:700; font-size:19px; letter-spacing:0.02em; color:#eaf6ff; white-space:nowrap; }
+        .chnav-word em { font-style:normal; color:#ffb347; }
+        .chnav-by { font-family:var(--font-nunito),sans-serif; font-weight:800; font-size:9px; letter-spacing:0.18em; text-transform:uppercase; color:rgba(234,246,255,0.45); margin-left:6px; white-space:nowrap; }
+        @media (max-width: 639px) { .chnav-by { display:none; } }
         .chnav-links { display:flex; align-items:center; justify-content:center; gap:24px; justify-self:center; }
         .chnav-link { position:relative; font-weight:700; font-size:14px; letter-spacing:0.01em; color:rgba(234,246,255,0.72); padding:8px 4px; text-decoration:none; transition: color 180ms; }
         .chnav-link:hover, .chnav-link.is-active { color:#eaf6ff; }
@@ -565,7 +567,7 @@ function CyberHeroesNav() {
         .chnav-frame.breathe { animation: chnavBreathe 6s ease-in-out infinite; }
         @keyframes chnavBreathe { 0%,100% { opacity:0.6; } 50% { opacity:0.74; } }
         .chnav-link:focus-visible, .chnav-login:focus-visible { outline:2px solid #7df0ff; outline-offset:3px; border-radius:8px; }
-        .chnav-logo:focus-visible .chnav-cube { outline:2px solid #7df0ff; outline-offset:3px; }
+        .chnav-logo:focus-visible .chnav-shield { outline:2px solid #7df0ff; outline-offset:3px; border-radius:6px; }
         .chnav-enrol:focus-visible { outline:2px solid #fff; outline-offset:4px; box-shadow:0 0 0 4px rgba(124,92,255,0.35); }
         .chnav-burger { display:none; }
         .chnav-burger-icon { position:relative; width:18px; height:14px; display:inline-block; }
@@ -599,9 +601,15 @@ function CyberHeroesNav() {
           <span aria-hidden className={`chnav-frame${scrolled ? " breathe" : ""}`} style={{ opacity: scrolled ? 0.72 : 0.38 }} />
 
           <div className="chnav-grid">
-            <Link href="/" className="chnav-logo" aria-label="AlgorithmX home">
-              <span className="chnav-cube" style={{ width: scrolled ? 32 : 36, height: scrolled ? 32 : 36 }}>AX</span>
-              <span className="chnav-word">Algorithm<span className="chnav-x">X</span></span>
+            <Link href="/" className="chnav-logo" aria-label="Cyber Heroes by AlgorithmX — home">
+              <span className="chnav-shield" aria-hidden>
+                <svg width="22" height="22" viewBox="0 0 24 24">
+                  <path d="M12 2 L20 5 V12 C20 17 16.5 20.5 12 22 C7.5 20.5 4 17 4 12 V5 Z" fill="#ffb347" />
+                  <path d="M13.2 6 L8.6 13 H11.4 L10.6 18 L15.6 11 H12.6 Z" fill="#08101f" />
+                </svg>
+              </span>
+              <span className="chnav-word">CYBER <em>HEROES</em></span>
+              <span className="chnav-by">by AlgorithmX</span>
             </Link>
 
             <div className="chnav-links">
