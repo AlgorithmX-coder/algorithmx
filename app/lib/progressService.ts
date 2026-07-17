@@ -1,4 +1,5 @@
 import { prisma } from "@/app/lib/prisma";
+import { Prisma } from "@prisma/client";
 import type { Progress } from "@prisma/client";
 
 /**
@@ -32,6 +33,14 @@ export type UpsertProgressInput = {
    * are coerced to 0.
    */
   xp?: number;
+  /**
+   * Mid-week resume pointer (Cyber Explorers missions). Unlike the
+   * scores above this is NOT merged — the newest checkpoint always
+   * wins, because it points at where the child currently is. Omit to
+   * leave the stored pointer untouched; it is cleared automatically
+   * when the week completes.
+   */
+  checkpoint?: unknown;
   completed?: boolean;
   /** Set true ONLY by callers that already verified ownership. */
   skipOwnershipCheck?: boolean;
@@ -59,6 +68,7 @@ export async function upsertProgress(
     screen,
     stars,
     xp,
+    checkpoint,
     completed,
     skipOwnershipCheck,
   } = input;
@@ -109,11 +119,23 @@ export async function upsertProgress(
   const nextScreen = existing ? Math.max(existing.screen, screen) : screen;
   const nextStars = existing ? Math.max(existing.stars, stars) : stars;
   const nextXp = Math.max(existing?.xp ?? 0, incomingXp);
+  const isComplete = Boolean(existing?.completedAt) || completed === true;
   const nextCompletedAt = existing?.completedAt
     ? existing.completedAt
     : completed === true
       ? new Date()
       : null;
+
+  // Last-write-wins pointer: a finished week needs no resume pointer,
+  // so completion clears it; otherwise an omitted checkpoint leaves
+  // the stored one alone.
+  const nextCheckpoint = isComplete
+    ? Prisma.DbNull
+    : checkpoint === undefined
+      ? undefined
+      : checkpoint === null
+        ? Prisma.DbNull
+        : (checkpoint as Prisma.InputJsonValue);
 
   const row = await prisma.progress.upsert({
     where: {
@@ -131,12 +153,17 @@ export async function upsertProgress(
       screen: nextScreen,
       stars: nextStars,
       xp: nextXp,
+      checkpoint:
+        isComplete || checkpoint === undefined || checkpoint === null
+          ? Prisma.DbNull
+          : (checkpoint as Prisma.InputJsonValue),
       completedAt: nextCompletedAt,
     },
     update: {
       screen: nextScreen,
       stars: nextStars,
       xp: nextXp,
+      ...(nextCheckpoint !== undefined ? { checkpoint: nextCheckpoint } : {}),
       completedAt: nextCompletedAt,
     },
   });

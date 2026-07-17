@@ -42,6 +42,34 @@ const cyberHeroesWeeks = [
   { week: 20, title: "Graduation Day: The Final Mission",      description: "The ultimate challenge! Test everything you've learned and earn your Cyber Hero certificate." },
 ];
 
+/* Cyber Explorers (10–13) — titles + parent-facing one-liners from the
+ * locked curriculum map (docs/explorers/curriculum-map-v1.md). Missions
+ * are authored as in-repo manifests (app/explorers/missions), not DB
+ * content — these rows exist so Progress writes have a CourseContent FK
+ * and the parent dashboard can name each week. */
+const cyberExplorersMissions = [
+  { week: 1,  title: "The 24-Hour Threat",    description: "Why urgent messages rush you - and how to read a sender's address like an analyst." },
+  { week: 2,  title: "Too Good To Be True",   description: "Free is a price. Trace a prize scam from chat to fake site and cut its hub." },
+  { week: 3,  title: "The Guessing Game",     description: "How password guessing really works - and passphrases that survive it." },
+  { week: 4,  title: "The Puzzle You Posted", description: "How strangers combine small clues you post - and how to scrub the trail." },
+  { week: 5,  title: "Signal Storm",          description: "The same trick across texts, QR codes and DMs - triage the flood, spot the spear." },
+  { week: 6,  title: "Levers",                description: "The six pressure levers scammers pull - naming the lever kills it." },
+  { week: 7,  title: "Borrowed Faces",        description: "When a real friend's account is stolen - verify on a different channel." },
+  { week: 8,  title: "The Perfect Message",   description: "AI writes flawless scams now - verify by source, never by style." },
+  { week: 9,  title: "The Long Game",         description: "Trust-farming and the sunk-cost trap - and how to exit a con without shame." },
+  { week: 10, title: "The Voice",             description: "Voice cloning and deepfakes - set a family code word that beats them." },
+  { week: 11, title: "The Master Key",        description: "Password managers and 2FA - build defenses and watch attacks bounce." },
+  { week: 12, title: "Unreadable",            description: "Make and break ciphers, then meet real encryption - the padlock in your day." },
+  { week: 13, title: "Backdoors",             description: "Account recovery is a back door - make security answers unguessable." },
+  { week: 14, title: "The Update Trap",       description: "Apps are sets of powers - permissions, patches, and fake installers." },
+  { week: 15, title: "The Real Site",         description: "Pixel-perfect fake login pages - the address bar and your tools see through them." },
+  { week: 16, title: "The File On You",       description: "The data economy keeps a file on you - audit it, shrink it, own it." },
+  { week: 17, title: "Ghost Stories",         description: "Synthetic images and fake screenshots - lateral reading before believing or sharing." },
+  { week: 18, title: "The Recruiter",         description: "How cybercrime recruits kids with small favors - recognise the pitch, report it." },
+  { week: 19, title: "Static Rising",         description: "A full campaign - recon to harvest - and defense in depth that holds the line." },
+  { week: 20, title: "Signal Zero",           description: "The capstone: every skill, one final flood, and the coordinator unmasked." },
+];
+
 const products = [
   {
     slug: "cyber-heroes",
@@ -57,23 +85,26 @@ const products = [
     weeksCount: cyberHeroesWeeks.length,
     content: cyberHeroesWeeks,
   },
-  // Marketing-only tracks the waitlist form currently advertises. They
-  // exist as catalogue rows so /api/waitlist FK lookups succeed; no
-  // CourseContent until they actually launch.
+  // Cyber Explorers is LIVE as a product (missions ship from the repo
+  // at /explorers) but stays COMING_SOON in the catalogue until the
+  // checkout flip — content rows exist so Progress writes work now.
   {
     slug: "cyberexplorers",
     name: "Cyber Explorers",
     ageMin: 10,
     ageMax: 13,
     priceGBP: 9900,
-    weeks: 0,
+    weeks: cyberExplorersMissions.length,
     status: ProductStatus.COMING_SOON,
     emoji: "🧭",
     ageRange: "10–13",
     duration: "60 min/week",
-    weeksCount: 0,
-    content: [],
+    weeksCount: cyberExplorersMissions.length,
+    content: cyberExplorersMissions,
   },
+  // Marketing-only tracks the waitlist form currently advertises. They
+  // exist as catalogue rows so /api/waitlist FK lookups succeed; no
+  // CourseContent until they actually launch.
   {
     slug: "cyberstart",
     name: "CyberStart",

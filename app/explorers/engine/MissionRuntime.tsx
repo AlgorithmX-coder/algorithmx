@@ -38,6 +38,12 @@ import type {
   MissionManifest,
 } from "./types";
 import { checkpointStorageKey, xpForEvent } from "./types";
+import {
+  fetchActiveChildId,
+  missionWeek,
+  pullMissionProgress,
+  pushMissionProgress,
+} from "./serverSync";
 import Inspect from "../mechanics/Inspect";
 import Decide from "../mechanics/Decide";
 import Profile from "../mechanics/Profile";
@@ -185,6 +191,12 @@ export default function MissionRuntime({ manifest }: { manifest: MissionManifest
   const [xpPop, setXpPop] = useState<{ amount: number; key: number } | null>(null);
   const seen = useRef<Set<string>>(new Set());
   const prevXp = useRef(0);
+  /** Server sync (fail-soft): child id resolves async after mount;
+   *  pushes are skipped until it lands and localStorage stays the
+   *  source of truth for signed-out play. */
+  const childId = useRef<string | null>(null);
+  const started = useRef(false);
+  const pushTimer = useRef<number | null>(null);
 
   const xp = useMemo(() => events.reduce((sum, e) => sum + xpForEvent(e), 0), [events]);
 
@@ -205,12 +217,65 @@ export default function MissionRuntime({ manifest }: { manifest: MissionManifest
     setHydrated(true);
   }, [storageKey, manifest.id]);
 
+  /* Server resume: once local hydration settles, look for a server-side
+   * checkpoint (another device / cleared storage). It only upgrades the
+   * resume offer — never interrupts a mission the child already started
+   * this visit, and the deeper checkpoint (more banked events) wins. */
+  useEffect(() => {
+    if (!hydrated) return;
+    let cancelled = false;
+    (async () => {
+      const id = await fetchActiveChildId();
+      if (cancelled || !id) return;
+      childId.current = id;
+      const week = missionWeek(manifest.id);
+      if (!week) return;
+      const row = await pullMissionProgress(id, week);
+      if (cancelled || started.current) return;
+      const cp = row?.checkpoint;
+      if (!cp || cp.missionId !== manifest.id || !cp.pos || cp.pos.beat === "transmission") return;
+      setResumeOffer((prev) => {
+        if (started.current) return prev;
+        return (cp.events?.length ?? 0) > (prev?.events.length ?? -1) ? cp : prev;
+      });
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [hydrated, manifest.id]);
+
   useEffect(() => {
     if (!hydrated || resumeOffer) return;
+    const cp: MissionCheckpoint = { missionId: manifest.id, pos, events };
     try {
-      localStorage.setItem(storageKey, JSON.stringify({ missionId: manifest.id, pos, events } satisfies MissionCheckpoint));
+      localStorage.setItem(storageKey, JSON.stringify(cp));
     } catch {}
-  }, [pos, events, hydrated, resumeOffer, storageKey, manifest.id]);
+    /* Mirror to the server, debounced so taps through a scene coalesce
+     * into one write. Completion ("closed") flushes immediately and
+     * clears the server checkpoint; XP/screen are max-merged there, so
+     * a replay can never lower a banked score. */
+    const id = childId.current;
+    const week = missionWeek(manifest.id);
+    if (!id || !week) return;
+    const completed = pos.beat === "closed";
+    if (pushTimer.current !== null) window.clearTimeout(pushTimer.current);
+    pushTimer.current = window.setTimeout(() => {
+      pushTimer.current = null;
+      pushMissionProgress(id, {
+        week,
+        screen: stepsDone(pos),
+        xp,
+        checkpoint: completed ? null : cp,
+        completed,
+      });
+    }, completed ? 0 : 2000);
+    return () => {
+      if (pushTimer.current !== null) {
+        window.clearTimeout(pushTimer.current);
+        pushTimer.current = null;
+      }
+    };
+  }, [pos, events, hydrated, resumeOffer, storageKey, manifest.id, xp]);
 
   const emit = useCallback((e: AwardEvent) => {
     const key = eventKey(e);
@@ -232,6 +297,7 @@ export default function MissionRuntime({ manifest }: { manifest: MissionManifest
   }, [audio]);
 
   const startMission = () => {
+    started.current = true;
     audio.click();
     setIntro(false);
     setPos({ beat: "cycle", cycleIndex: 0, stage: "intel" });
@@ -239,6 +305,7 @@ export default function MissionRuntime({ manifest }: { manifest: MissionManifest
   };
 
   const restart = () => {
+    started.current = true;
     try {
       localStorage.removeItem(storageKey);
     } catch {}
@@ -252,6 +319,7 @@ export default function MissionRuntime({ manifest }: { manifest: MissionManifest
 
   const resume = () => {
     if (!resumeOffer) return;
+    started.current = true;
     seen.current = new Set(resumeOffer.events.map(eventKey));
     setEvents(resumeOffer.events);
     setPos(resumeOffer.pos);
