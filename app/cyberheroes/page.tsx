@@ -273,9 +273,9 @@ function AnimCounter({ to, suffix = "", label }: { to: number; suffix?: string; 
 
 /* ─── COURSE CARD DATA ─── */
 const COURSES = [
-  { emoji: "🛡️", title: "Cyber Heroes Academy", ages: "6–10", weeks: 20, time: "45 min/week", accent: "#00e5ff", desc: "Fun animated adventures teaching password safety, online awareness, and digital citizenship.", featured: true },
-  { emoji: "🔍", title: "Cyber Explorers", ages: "11–14", weeks: 14, time: "1 hr/week", accent: "#8b5cf6", desc: "Deeper dives into encryption, social engineering, safe browsing, and data privacy.", featured: false },
-  { emoji: "💻", title: "CyberStart", ages: "15–17", weeks: 16, time: "1.5 hrs/week", accent: "#22c55e", desc: "Hands-on challenges covering networking, ethical hacking basics, and secure coding.", featured: false },
+  { emoji: "🛡️", title: "Cyber Heroes Academy", ages: "6–9", weeks: 20, time: "45 min/week", accent: "#00e5ff", desc: "Fun animated adventures teaching password safety, online awareness, and digital citizenship.", featured: true },
+  { emoji: "🔍", title: "Cyber Explorers", ages: "10–13", weeks: 20, time: "1 hr/week", accent: "#8b5cf6", desc: "A story-driven spy thriller: 20 voice-acted missions on phishing, fake voices, and data tricks.", featured: false },
+  { emoji: "💻", title: "Cyber Ops", ages: "14–17", weeks: 16, time: "1.5 hrs/week", accent: "#22c55e", desc: "Hands-on challenges covering networking, ethical hacking basics, and secure coding.", featured: false },
   { emoji: "🚀", title: "CyberStart Pro", ages: "18+", weeks: 20, time: "2 hrs/week", accent: "#ffd158", desc: "Industry-aligned curriculum preparing for certifications and real-world security roles.", featured: false },
 ];
 

@@ -57,7 +57,7 @@ export const SUBJECTS: Subject[] = [
     courses: [
       {
         title: "Cyber Heroes Academy",
-        ageRange: "Ages 6-10",
+        ageRange: "Ages 6-9",
         ageGroup: "6-10",
         desc: "Join Adam, Layla, and Robo on animated adventures to learn online safety. Story-driven missions make cybersecurity feel like a game.",
         duration: "20 weeks · 45 min/week",
@@ -68,13 +68,12 @@ export const SUBJECTS: Subject[] = [
       },
       {
         title: "Cyber Explorers",
-        ageRange: "Ages 11-14",
+        ageRange: "Ages 10-13",
         ageGroup: "11-14",
-        desc: "Go beyond the basics. Phishing simulations, network fundamentals, and your first ethical hacking challenges.",
-        duration: "12 weeks · 1 hr/week",
+        desc: "A spy thriller they play for real. 20 voice-acted story missions against the STATIC network — phishing, fake voices, and data tricks.",
+        duration: "20 missions · 60 min/week",
         price: "£99 · Lifetime Access",
-        live: false,
-        coming: "COMING 2026",
+        live: true,
         image: "/images/courses/cyber-explorers.png",
         href: "/cyberexplorers",
       },
