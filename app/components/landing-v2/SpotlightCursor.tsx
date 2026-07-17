@@ -42,6 +42,7 @@ export default function SpotlightCursor() {
     lens.style.opacity = "0";
 
     let raf = 0;
+    let running = false;
     let targetX = -9999;
     let targetY = -9999;
     let haloX = -9999;
@@ -67,7 +68,30 @@ export default function SpotlightCursor() {
       lens.style.transform = `translate3d(${lensX - LENS_SIZE / 2}px, ${lensY - LENS_SIZE / 2}px, 0)`;
       halo.style.opacity = String(curOpacity);
       lens.style.opacity = String(curOpacity);
+      /* IDLE-OUT (2026-07-17 perf pass): this loop used to run at 60fps
+       * from mount, forever — even before any pointer movement and long
+       * after the halo settled under a stationary cursor. Stop once
+       * position and opacity have converged; onMove restarts it. */
+      const settled =
+        Math.abs(targetX - haloX) < 0.1 &&
+        Math.abs(targetY - haloY) < 0.1 &&
+        Math.abs(targetX - lensX) < 0.1 &&
+        Math.abs(targetOpacity - curOpacity) < 0.002;
+      if (settled) {
+        curOpacity = targetOpacity;
+        halo.style.opacity = String(curOpacity);
+        lens.style.opacity = String(curOpacity);
+        running = false;
+        return;
+      }
       raf = requestAnimationFrame(tick);
+    };
+
+    const wake = () => {
+      if (!running) {
+        running = true;
+        raf = requestAnimationFrame(tick);
+      }
     };
 
     const onMove = (e: PointerEvent) => {
@@ -82,18 +106,20 @@ export default function SpotlightCursor() {
         visible = true;
       }
       targetOpacity = 1;
+      wake();
     };
     const onLeave = () => {
       targetOpacity = 0;
+      wake();
     };
     const onEnter = () => {
       targetOpacity = 1;
+      wake();
     };
 
     window.addEventListener("pointermove", onMove, { passive: true });
     document.addEventListener("pointerleave", onLeave);
     document.addEventListener("pointerenter", onEnter);
-    raf = requestAnimationFrame(tick);
     return () => {
       cancelAnimationFrame(raf);
       window.removeEventListener("pointermove", onMove);

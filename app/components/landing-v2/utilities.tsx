@@ -196,13 +196,30 @@ export function useTilt3D(
     let curRX = 0;
     let curRY = 0;
     let curSc = 1;
+    let running = false;
     const tick = () => {
       /* Soft lerp toward targets so movement feels physical */
       curRX += (targetRX - curRX) * 0.18;
       curRY += (targetRY - curRY) * 0.18;
       curSc += (targetSc - curSc) * 0.18;
       el.style.transform = `perspective(900px) rotateY(${curRY}deg) rotateX(${curRX}deg) scale(${curSc})`;
+      /* PERF (2026-07-17): idle out once settled instead of running a
+       * per-frame style writer for the element's whole lifetime. */
+      if (
+        Math.abs(targetRX - curRX) < 0.01 &&
+        Math.abs(targetRY - curRY) < 0.01 &&
+        Math.abs(targetSc - curSc) < 0.001
+      ) {
+        running = false;
+        return;
+      }
       raf = requestAnimationFrame(tick);
+    };
+    const wake = () => {
+      if (!running) {
+        running = true;
+        raf = requestAnimationFrame(tick);
+      }
     };
     const onMove = (e: MouseEvent) => {
       const r = el.getBoundingClientRect();
@@ -211,15 +228,16 @@ export function useTilt3D(
       targetRY = nx * max * 2;
       targetRX = -ny * max * 2;
       targetSc = scale;
+      wake();
     };
     const onLeave = () => {
       targetRX = 0;
       targetRY = 0;
       targetSc = 1;
+      wake();
     };
     el.addEventListener("mousemove", onMove);
     el.addEventListener("mouseleave", onLeave);
-    raf = requestAnimationFrame(tick);
     return () => {
       cancelAnimationFrame(raf);
       el.removeEventListener("mousemove", onMove);
@@ -245,11 +263,25 @@ export function useMagnetic(
     let targetY = 0;
     let curX = 0;
     let curY = 0;
+    let running = false;
     const tick = () => {
       curX += (targetX - curX) * 0.2;
       curY += (targetY - curY) * 0.2;
       el.style.transform = `translate3d(${curX}px, ${curY}px, 0)`;
+      /* PERF (2026-07-17): idle out once snapped back / settled — this
+       * loop used to run at 60fps for the element's whole lifetime
+       * (the Nav CTA binds one for the entire page session). */
+      if (Math.abs(targetX - curX) < 0.01 && Math.abs(targetY - curY) < 0.01) {
+        running = false;
+        return;
+      }
       raf = requestAnimationFrame(tick);
+    };
+    const wake = () => {
+      if (!running) {
+        running = true;
+        raf = requestAnimationFrame(tick);
+      }
     };
     const onMove = (e: MouseEvent) => {
       const r = el.getBoundingClientRect();
@@ -262,13 +294,14 @@ export function useMagnetic(
         const falloff = 1 - dist / radius;
         targetX = dx * strength * falloff;
         targetY = dy * strength * falloff;
-      } else {
+        wake();
+      } else if (targetX !== 0 || targetY !== 0 || curX !== 0 || curY !== 0) {
         targetX = 0;
         targetY = 0;
+        wake();
       }
     };
     window.addEventListener("mousemove", onMove);
-    raf = requestAnimationFrame(tick);
     return () => {
       cancelAnimationFrame(raf);
       window.removeEventListener("mousemove", onMove);

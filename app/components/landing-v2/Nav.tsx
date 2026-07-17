@@ -22,9 +22,14 @@ import { Ico, useMagnetic, useMediaQuery } from "./utilities";
  * gated out by the hero cinematic. Magnetic CTA → /signup, "Log In" → /login.
  */
 export default function Nav() {
-  const [scrollY, setScrollY] = useState(0);
+  /* PERF (2026-07-17): store the >24px BOOLEAN, not the raw scrollY.
+   * Under Lenis, scroll events fire every rAF — storing the pixel value
+   * re-rendered the entire Nav subtree at 60fps for the whole page.
+   * React bails out on identical state, so this now re-renders only on
+   * threshold crossings. */
+  const [scrolled, setScrolled] = useState(false);
   useEffect(() => {
-    const onScroll = () => setScrollY(window.scrollY);
+    const onScroll = () => setScrolled(window.scrollY > 24);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
@@ -34,7 +39,6 @@ export default function Nav() {
    * dark throughout. The only state change is "barely-there at the top
    * vs. a lifted glass panel once scrolled" — to mark the page is alive. */
   const isLight = false;
-  const scrolled = scrollY > 24;
 
   /* Layered gradient glass (gives the bar internal depth vs. a flat fill). */
   const bg = scrolled
@@ -595,6 +599,16 @@ function BrandCube() {
       cy += (ty - cy) * 0.12;
       scene.style.setProperty("--lv2-cube-rx", `${cy.toFixed(2)}deg`);
       scene.style.setProperty("--lv2-cube-ry", `${cx.toFixed(2)}deg`);
+      /* PERF (2026-07-17): after mouseleave the loop used to run forever
+       * (and each re-enter started ANOTHER loop, orphaning the old rAF
+       * id — every hover cycle permanently added a per-frame style
+       * writer). Once inactive and settled, snap to rest and stop;
+       * onEnter starts a fresh loop. */
+      if (!active && Math.abs(cx) < 0.01 && Math.abs(cy) < 0.01) {
+        scene.style.setProperty("--lv2-cube-rx", "0deg");
+        scene.style.setProperty("--lv2-cube-ry", "0deg");
+        return;
+      }
       raf = requestAnimationFrame(tick);
     };
     const onMove = (e: MouseEvent) => {
@@ -608,6 +622,9 @@ function BrandCube() {
       if (active) return;
       active = true;
       wrap.addEventListener("mousemove", onMove);
+      /* Cancel any still-running wind-down loop before starting a new
+       * one — otherwise a quick re-enter runs two loops at once. */
+      cancelAnimationFrame(raf);
       raf = requestAnimationFrame(tick);
     };
     const onLeave = () => {

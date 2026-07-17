@@ -126,25 +126,46 @@ export default function CosmicNetworkBackground({
       formP.set(1);
       return;
     }
-    const update = () => {
+    /* PERF (2026-07-17): the old handler read scrollHeight (a layout
+     * read) on EVERY scroll event — under Lenis that's every frame.
+     * The range is now measured on resize only and scroll events are
+     * rAF-coalesced. */
+    let range = 1;
+    const measure = () => {
       const scrollable = Math.max(
         1,
         document.documentElement.scrollHeight - window.innerHeight,
       );
       /* spread the assembly across the page (floor of a few viewports for
        * short pages) so you watch the stars align into the galaxy */
-      const range = Math.max(
+      range = Math.max(
         window.innerHeight * formationViewports,
         scrollable * FORM_FRACTION,
       );
+    };
+    const update = () => {
       formP.set(clamp01(window.scrollY / range));
     };
+    let ticking = false;
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        update();
+        ticking = false;
+      });
+    };
+    const onResizeRange = () => {
+      measure();
+      update();
+    };
+    measure();
     update();
-    window.addEventListener("scroll", update, { passive: true });
-    window.addEventListener("resize", update);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onResizeRange);
     return () => {
-      window.removeEventListener("scroll", update);
-      window.removeEventListener("resize", update);
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onResizeRange);
     };
   }, [caps.ready, caps.reducedMotion, formP, formationViewports]);
 
@@ -642,7 +663,7 @@ function FormationField({
       }));
     };
     build();
-    let rt: ReturnType<typeof setTimeout>;
+    let rt: ReturnType<typeof setTimeout> | undefined;
     const onResize = () => {
       clearTimeout(rt);
       rt = setTimeout(build, 180);
@@ -751,6 +772,12 @@ function FormationField({
 
     /* reduced motion / SSR-safe: render the fully-formed scene once */
     if (reducedMotion) {
+      /* The debounced build-only resize handler above would wipe the
+       * canvas 180ms after a resize with nothing repainting it (there is
+       * no rAF loop in this branch) — detach it; onResizeStatic below
+       * does build + repaint itself. */
+      window.removeEventListener("resize", onResize);
+      clearTimeout(rt);
       renderParticles(1, 0, 0);
       const onResizeStatic = () => {
         build();
@@ -774,9 +801,31 @@ function FormationField({
     let running = true;
     let last = performance.now();
     let elapsed = 0;
+    let lastDraw = 0;
+    let lastP = -1;
 
     const frame = (now: number) => {
       if (!running) return;
+      /* ADAPTIVE RATE (2026-07-17 perf pass): this loop used to repaint
+       * the full canvas (up to ~640 path fills) at 60fps for the life of
+       * the page, even with everything at rest. Full rate is kept only
+       * while something actually moves — the scroll-driven formation,
+       * the pointer-parallax easing, or a live shooting star. Otherwise
+       * the ambient twinkle redraws at ~30fps, halving the page's
+       * largest steady-state paint cost with no visible change to the
+       * slow drift. */
+      const pNow = formP.get();
+      const activeMotion =
+        Math.abs(pNow - lastP) > 0.0005 ||
+        Math.abs(target.x - eased.x) > 0.003 ||
+        Math.abs(target.y - eased.y) > 0.003 ||
+        shoot !== null;
+      if (!activeMotion && now - lastDraw < 30) {
+        raf = requestAnimationFrame(frame);
+        return;
+      }
+      lastDraw = now;
+      lastP = pNow;
       const dt = Math.min(64, now - last);
       last = now;
       elapsed += dt;
