@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import { FadeUp } from "./utilities";
 
 /**
@@ -12,6 +13,13 @@ import { FadeUp } from "./utilities";
  * streams drop to a compact, de-emphasized ROADMAP strip below — corner
  * brackets and accent kept, but muted so the live card owns the eye. The
  * layout now mirrors the subhead: one live today, five on the roadmap.
+ *
+ * ENCRYPTED ROADMAP (2026-07-17): the five upcoming streams are hidden
+ * until launch. Each roadmap card renders as a classified/encrypted
+ * teaser — a lock badge, permanently-scrambling ciphertext where the
+ * name and flagship project used to be, and an "UNLOCKS IN N MONTHS"
+ * countdown line. The scramble never resolves to the real strings; the
+ * card data stays here so flipping a stream live restores the old card.
  */
 
 interface Stream {
@@ -27,6 +35,8 @@ interface Stream {
   icon: string;
   href: string | null;
   cta: string;
+  /** Countdown label for encrypted roadmap cards, e.g. "3 months". */
+  unlockIn?: string;
 }
 
 const STREAMS: Stream[] = [
@@ -57,6 +67,7 @@ const STREAMS: Stream[] = [
     icon: "M7 8h10a4 4 0 014 4 4 4 0 01-4 4H7a4 4 0 01-4-4 4 4 0 014-4z M8 12h3 M9.5 10.5v3 M15.5 11.5h.01 M17.5 13h.01",
     href: null,
     cta: "Coming 2026",
+    unlockIn: "3 months",
   },
   {
     id: "ai-ml",
@@ -71,6 +82,7 @@ const STREAMS: Stream[] = [
     icon: "M8 8h8v8H8z M5 10V8h2 M5 14v2h2 M17 8h2v2 M17 16h2v-2 M10 5V3h2 M14 5V3h-2 M10 21v-2 M14 19v2",
     href: null,
     cta: "Coming 2026",
+    unlockIn: "6 months",
   },
   {
     id: "app-dev",
@@ -85,6 +97,7 @@ const STREAMS: Stream[] = [
     icon: "M7 2h10a1 1 0 011 1v18a1 1 0 01-1 1H7a1 1 0 01-1-1V3a1 1 0 011-1z M11 18h2",
     href: null,
     cta: "Coming 2027",
+    unlockIn: "12 months",
   },
   {
     id: "entrepreneurship",
@@ -99,6 +112,7 @@ const STREAMS: Stream[] = [
     icon: "M13 2L3 14h7l-1 8 10-12h-7l1-8z",
     href: null,
     cta: "Coming 2027",
+    unlockIn: "15 months",
   },
   {
     id: "robotics",
@@ -113,6 +127,7 @@ const STREAMS: Stream[] = [
     icon: "M12 2v3 M5 8h14a1 1 0 011 1v9a1 1 0 01-1 1H5a1 1 0 01-1-1V9a1 1 0 011-1z M9 13h.01 M15 13h.01 M2 12v3 M22 12v3",
     href: null,
     cta: "Coming 2027",
+    unlockIn: "18 months",
   },
 ];
 
@@ -217,7 +232,7 @@ export default function SubjectShowcase() {
           <div className="lv2-roadmap-grid">
             {upcoming.map((s, i) => (
               <FadeUp key={s.id} delay={0.06 * i + 0.26}>
-                <RoadmapCard stream={s} />
+                <RoadmapCard stream={s} idx={i} />
               </FadeUp>
             ))}
           </div>
@@ -246,9 +261,138 @@ export default function SubjectShowcase() {
           }
         }
       `}</style>
+      {/* Encrypted-card ambience (global: rendered by child components).
+       *  The decrypt sweep is a gradient highlight travelling through the
+       *  ciphertext via background-clip; the scanline is a faint accent
+       *  beam crossing the card. Both are pure CSS — the only JS cost is
+       *  the 5 low-rate scramble intervals in CipherText. */}
+      <style jsx global>{`
+        .lv2-cipher {
+          display: block;
+          font-family: var(--lv2-font-mono);
+          letter-spacing: 0.1em;
+          white-space: nowrap;
+          overflow: hidden;
+          background-image: linear-gradient(
+            100deg,
+            rgba(232, 237, 255, 0.34) 40%,
+            var(--accent) 50%,
+            rgba(232, 237, 255, 0.34) 60%
+          );
+          background-size: 240% 100%;
+          -webkit-background-clip: text;
+          background-clip: text;
+          color: transparent;
+          animation: lv2CipherSweep 3.2s linear infinite;
+        }
+        @keyframes lv2CipherSweep {
+          from {
+            background-position: 130% 0;
+          }
+          to {
+            background-position: -130% 0;
+          }
+        }
+        .lv2-scanline {
+          position: absolute;
+          left: 0;
+          right: 0;
+          top: 0;
+          height: 38%;
+          background: linear-gradient(180deg, transparent, var(--accent), transparent);
+          opacity: 0.055;
+          pointer-events: none;
+          animation: lv2ScanDrop 4.4s linear infinite;
+        }
+        @keyframes lv2ScanDrop {
+          from {
+            transform: translateY(-110%);
+          }
+          to {
+            transform: translateY(290%);
+          }
+        }
+        .lv2-cipher-caret {
+          animation: lv2CipherCaret 1.1s steps(2, jump-none) infinite;
+        }
+        @keyframes lv2CipherCaret {
+          from {
+            opacity: 1;
+          }
+          to {
+            opacity: 0;
+          }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .lv2-cipher,
+          .lv2-scanline,
+          .lv2-cipher-caret {
+            animation: none;
+          }
+          .lv2-scanline {
+            display: none;
+          }
+        }
+      `}</style>
     </section>
   );
 }
+
+/* ─── Encrypted-card machinery ───────────────────────────────────── */
+
+/* Charset the encrypted cards cycle through — hex + cipher punctuation. */
+const CIPHER_GLYPHS = "ABCDEF0123456789#$%&@+=<>/";
+
+/* Deterministic seed so the server render and the client's first paint
+ * match — randomness only starts after mount. */
+function cipherSeed(length: number, phase: number): string {
+  let out = "";
+  for (let i = 0; i < length; i++) {
+    out += CIPHER_GLYPHS[(i * 13 + phase * 7 + 5) % CIPHER_GLYPHS.length];
+  }
+  return out;
+}
+
+/* Permanently-scrambling ciphertext. Never derived from the real course
+ * strings — there is nothing to "decode". ~25% of the glyphs re-roll
+ * per tick; the decrypt-sweep highlight is CSS (.lv2-cipher). Idle
+ * under prefers-reduced-motion (static seed text stays). */
+function CipherText({
+  length,
+  phase,
+  style,
+}: {
+  length: number;
+  phase: number;
+  style?: React.CSSProperties;
+}) {
+  const [text, setText] = useState(() => cipherSeed(length, phase));
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const id = window.setInterval(() => {
+      setText((prev) => {
+        const arr = prev.split("");
+        const churn = Math.max(2, arr.length >> 2);
+        for (let n = 0; n < churn; n++) {
+          const i = Math.floor(Math.random() * arr.length);
+          arr[i] = CIPHER_GLYPHS[Math.floor(Math.random() * CIPHER_GLYPHS.length)];
+        }
+        return arr.join("");
+      });
+    }, 90);
+    return () => window.clearInterval(id);
+  }, []);
+  return (
+    <span aria-hidden className="lv2-cipher" style={style}>
+      {text}
+    </span>
+  );
+}
+
+/* Padlock drawn in the hex badge — replaces the stream icons (which
+ * would hint at the hidden subject). */
+const LOCK_ICON =
+  "M6 11h12a1 1 0 011 1v8a1 1 0 01-1 1H6a1 1 0 01-1-1v-8a1 1 0 011-1z M8 11V7a4 4 0 018 0v4 M12 15v2.5";
 
 /* L-shaped corner bracket */
 function Bracket({
@@ -544,12 +688,19 @@ function FeaturedStreamCard({ stream }: { stream: Stream }) {
   );
 }
 
-/* ROADMAP — compact, de-emphasized card for an upcoming stream. */
-function RoadmapCard({ stream }: { stream: Stream }) {
+/* ROADMAP — encrypted teaser for an upcoming stream. The course name,
+ * ages, and flagship project are NOT rendered; in their place runs
+ * permanently-scrambling ciphertext under a decrypt-sweep highlight and
+ * a scanline beam. The only readable facts are the lock badge, the
+ * ENCRYPTED pill, and the unlock countdown. */
+function RoadmapCard({ stream, idx }: { stream: Stream; idx: number }) {
   const a = stream.accent;
+  /* Stagger the CSS loops so the five cards never pulse in sync. */
+  const desync = (k: number) => ({ animationDelay: `${(-1.3 * (idx + 1) * k).toFixed(2)}s` });
   return (
     <article
       className="lv2-roadmap-card"
+      aria-label={`Classified upcoming course — unlocks in ${stream.unlockIn ?? "the future"}`}
       style={
         {
           "--accent": a,
@@ -564,6 +715,7 @@ function RoadmapCard({ stream }: { stream: Stream }) {
           gap: 12,
           height: "100%",
           opacity: 0.9,
+          overflow: "hidden",
           transition:
             "transform .3s cubic-bezier(0.16,1,0.3,1), box-shadow .3s cubic-bezier(0.16,1,0.3,1), border-color .3s, opacity .3s",
         } as React.CSSProperties
@@ -583,39 +735,37 @@ function RoadmapCard({ stream }: { stream: Stream }) {
         el.style.boxShadow = "none";
       }}
     >
+      <span aria-hidden className="lv2-scanline" style={desync(1)} />
       <Bracket accent={`${a}88`} corner="tl" size={12} off={8} />
       <Bracket accent={`${a}88`} corner="br" size={12} off={8} />
 
       <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 10 }}>
-        <HexIcon accent={a} icon={stream.icon} size={38} />
-        <StatusPill accent={a} status={stream.status} live={false} />
+        <HexIcon accent={a} icon={LOCK_ICON} size={38} />
+        <StatusPill accent={a} status="ENCRYPTED" live={false} />
       </div>
 
-      <h3
-        style={{
-          fontFamily: "var(--lv2-font-display)",
-          fontSize: "1.05rem",
-          fontWeight: 500,
-          color: "var(--lv2-paper)",
-          margin: "2px 0 0",
-          letterSpacing: "-0.012em",
-          lineHeight: 1.18,
-        }}
-      >
-        {stream.name}
-      </h3>
+      {/* Ciphertext where the course name used to be. */}
+      <CipherText
+        length={14 + (idx % 3) * 2}
+        phase={idx}
+        style={{ fontSize: 14, fontWeight: 600, marginTop: 2, ...desync(0.53) }}
+      />
 
+      {/* The one readable line: the unlock countdown. */}
       <div
         style={{
           fontFamily: "var(--lv2-font-mono)",
           fontSize: 10,
-          fontWeight: 600,
-          letterSpacing: "0.14em",
+          fontWeight: 700,
+          letterSpacing: "0.16em",
           textTransform: "uppercase",
-          color: "rgba(232,237,255,0.42)",
+          color: a,
         }}
       >
-        {stream.ages}
+        &gt; Unlocks in {stream.unlockIn ?? stream.status}
+        <span aria-hidden className="lv2-cipher-caret" style={desync(0.31)}>
+          _
+        </span>
       </div>
 
       <div
@@ -638,18 +788,13 @@ function RoadmapCard({ stream }: { stream: Stream }) {
             color: `${a}cc`,
           }}
         >
-          // FLAGSHIP
+          {"// CLASSIFIED"}
         </span>
-        <span
-          style={{
-            fontFamily: "var(--lv2-font-display)",
-            fontSize: 12.5,
-            color: "rgba(232,237,255,0.72)",
-            lineHeight: 1.4,
-          }}
-        >
-          {stream.project}
-        </span>
+        <CipherText
+          length={19 + ((idx + 1) % 3) * 2}
+          phase={idx + 3}
+          style={{ fontSize: 11.5, opacity: 0.75, ...desync(0.71) }}
+        />
       </div>
 
       <style jsx>{`
