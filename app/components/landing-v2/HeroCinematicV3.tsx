@@ -46,15 +46,20 @@ import HeroOverlay from "./HeroOverlay";
  * prefers-reduced-motion. Reduced motion pins progress to 1.
  */
 
-/* Stream rows shown on the screen dashboard — mirrors the platform
- * catalogue (same data the old canvas dashboard painted). */
+/* Stream rows shown on the screen dashboard. Upcoming streams are
+ * CLASSIFIED until launch (matches the encrypted roadmap cards below):
+ * static cipher names — deterministic strings, NOT animated; the hero's
+ * perf contract stays scroll-pure — plus a T-minus countdown in the
+ * status pill (same 3/6/12/15/18-month ladder as the roadmap). Real
+ * names live in SubjectShowcase's STREAMS and return when a stream
+ * flips live. */
 const STREAMS = [
-  { name: "CYBERSECURITY", age: "9-16", status: "LIVE", color: "#5fffa3", href: "/cyberheroes" },
-  { name: "GAME DEVELOPMENT", age: "8-16", status: "2026", color: "#9ff5ff", href: "#subjects" },
-  { name: "AI & MACHINE LEARNING", age: "11+", status: "2026", color: "#cba8ff", href: "#subjects" },
-  { name: "APP DEVELOPMENT", age: "12+", status: "2027", color: "#ffd07a", href: "#subjects" },
-  { name: "ENTREPRENEURSHIP", age: "13+", status: "2027", color: "#ffc94a", href: "#subjects" },
-  { name: "ROBOTICS", age: "10+", status: "2027", color: "#ff3ad6", href: "#subjects" },
+  { name: "CYBERSECURITY", age: "9-16", status: "LIVE", color: "#5fffa3", href: "/cyberheroes", live: true },
+  { name: "7F#02$AE49BD1C8", age: "", status: "T-3 MO", color: "#9ff5ff", href: "#subjects", live: false },
+  { name: "C4&9E0#B7$2A6F1D3", age: "", status: "T-6 MO", color: "#cba8ff", href: "#subjects", live: false },
+  { name: "0B$8D3F#A5E92C", age: "", status: "T-12 MO", color: "#ffd07a", href: "#subjects", live: false },
+  { name: "E2%7C1&F8B#04A9D", age: "", status: "T-15 MO", color: "#ffc94a", href: "#subjects", live: false },
+  { name: "5A#D6$1E3C&B0", age: "", status: "T-18 MO", color: "#ff3ad6", href: "#subjects", live: false },
 ] as const;
 
 /* Deterministic per-row activity sparklines (viewBox 0 0 30 10). */
@@ -1249,7 +1254,11 @@ function StreamRow({
     <motion.a
       className="hv3-row"
       href={stream.href}
-      aria-label={`${stream.name} — ages ${stream.age}, ${stream.status === "LIVE" ? "live now" : `coming ${stream.status}`}`}
+      aria-label={
+        stream.live
+          ? `${stream.name} — ages ${stream.age}, live now`
+          : `Classified stream — unlocks in ${stream.status.replace("T-", "").replace(" MO", " months")}`
+      }
       style={{
         opacity,
         x,
@@ -1283,7 +1292,7 @@ function StreamRow({
         {stream.name}
       </span>
       <span style={{ color: "rgba(232,237,255,0.42)", fontSize: 7, whiteSpace: "nowrap" }}>
-        AGES {stream.age}
+        {stream.live ? `AGES ${stream.age}` : "ENCRYPTED"}
       </span>
       <span style={{ flex: 1 }} />
       {/* activity sparkline (static, deterministic per row) */}

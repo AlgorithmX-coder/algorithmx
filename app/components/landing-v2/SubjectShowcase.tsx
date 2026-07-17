@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useInView } from "framer-motion";
 import { FadeUp } from "./utilities";
 
 /**
@@ -296,10 +297,14 @@ export default function SubjectShowcase() {
         }
       `}</style>
       {/* Encrypted-card ambience (global: rendered by child components).
-       *  The decrypt sweep is a gradient highlight travelling through the
-       *  ciphertext via background-clip; the scanline is a faint accent
-       *  beam crossing the card. Both are pure CSS — the only JS cost is
-       *  the 5 low-rate scramble intervals in CipherText. */}
+       *  PERF CONTRACT (2026-07-17): nothing here may paint per frame.
+       *  The original decrypt sweep animated background-position on
+       *  background-clip:text — 10 text elements repainting at 60fps for
+       *  the life of the page, which showed up as scroll jank. The
+       *  moving decrypt head is now plain colored spans advanced by the
+       *  same ~11fps scramble tick (which was already repainting the
+       *  text), and the scanline/caret are transform/opacity-only CSS
+       *  animations, paused while the card is offscreen. */}
       <style jsx global>{`
         .lv2-cipher {
           display: block;
@@ -307,25 +312,11 @@ export default function SubjectShowcase() {
           letter-spacing: 0.1em;
           white-space: nowrap;
           overflow: hidden;
-          background-image: linear-gradient(
-            100deg,
-            rgba(232, 237, 255, 0.34) 40%,
-            var(--accent) 50%,
-            rgba(232, 237, 255, 0.34) 60%
-          );
-          background-size: 240% 100%;
-          -webkit-background-clip: text;
-          background-clip: text;
-          color: transparent;
-          animation: lv2CipherSweep 3.2s linear infinite;
+          color: rgba(232, 237, 255, 0.34);
         }
-        @keyframes lv2CipherSweep {
-          from {
-            background-position: 130% 0;
-          }
-          to {
-            background-position: -130% 0;
-          }
+        .lv2-cipher-hot {
+          color: var(--accent);
+          text-shadow: 0 0 9px var(--accent);
         }
         .lv2-scanline {
           position: absolute;
@@ -358,7 +349,6 @@ export default function SubjectShowcase() {
           }
         }
         @media (prefers-reduced-motion: reduce) {
-          .lv2-cipher,
           .lv2-scanline,
           .lv2-cipher-caret {
             animation: none;
@@ -389,19 +379,25 @@ function cipherSeed(length: number, phase: number): string {
 
 /* Permanently-scrambling ciphertext. Never derived from the real course
  * strings — there is nothing to "decode". ~25% of the glyphs re-roll
- * per tick; the decrypt-sweep highlight is CSS (.lv2-cipher). Idle
- * under prefers-reduced-motion (static seed text stays). */
+ * per tick, and a 3-glyph "decrypt head" walks the string on the same
+ * tick (colored spans — no per-frame CSS painting). `active` gates the
+ * interval so offscreen cards cost nothing; idle under
+ * prefers-reduced-motion (static seed text stays). */
 function CipherText({
   length,
   phase,
+  active,
   style,
 }: {
   length: number;
   phase: number;
+  active: boolean;
   style?: React.CSSProperties;
 }) {
   const [text, setText] = useState(() => cipherSeed(length, phase));
+  const [head, setHead] = useState(() => (phase * 5) % length);
   useEffect(() => {
+    if (!active) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const id = window.setInterval(() => {
       setText((prev) => {
@@ -413,12 +409,17 @@ function CipherText({
         }
         return arr.join("");
       });
+      /* walk a few steps past the end so the highlight breathes off
+       * between passes */
+      setHead((h) => (h + 1) % (length + 8));
     }, 90);
     return () => window.clearInterval(id);
-  }, []);
+  }, [active, length]);
   return (
     <span aria-hidden className="lv2-cipher" style={style}>
-      {text}
+      {text.slice(0, head)}
+      <span className="lv2-cipher-hot">{text.slice(head, head + 3)}</span>
+      {text.slice(head + 3)}
     </span>
   );
 }
@@ -729,10 +730,18 @@ function FeaturedStreamCard({ stream }: { stream: Stream }) {
  * ENCRYPTED pill, and the unlock countdown. */
 function RoadmapCard({ stream, idx }: { stream: Stream; idx: number }) {
   const a = stream.accent;
+  /* Run the encryption ambience only while the card is (near) visible —
+   * offscreen cards pause their scramble intervals AND their CSS loops. */
+  const cardRef = useRef<HTMLElement>(null);
+  const onScreen = useInView(cardRef, { margin: "240px 0px 240px 0px" });
   /* Stagger the CSS loops so the five cards never pulse in sync. */
-  const desync = (k: number) => ({ animationDelay: `${(-1.3 * (idx + 1) * k).toFixed(2)}s` });
+  const desync = (k: number): React.CSSProperties => ({
+    animationDelay: `${(-1.3 * (idx + 1) * k).toFixed(2)}s`,
+    animationPlayState: onScreen ? "running" : "paused",
+  });
   return (
     <article
+      ref={cardRef}
       className="lv2-roadmap-card"
       aria-label={`Classified upcoming course — unlocks in ${stream.unlockIn ?? "the future"}`}
       style={
@@ -784,7 +793,8 @@ function RoadmapCard({ stream, idx }: { stream: Stream; idx: number }) {
       <CipherText
         length={14 + (idx % 3) * 2}
         phase={idx}
-        style={{ fontSize: 14, fontWeight: 600, marginTop: 2, ...desync(0.53) }}
+        active={onScreen}
+        style={{ fontSize: 14, fontWeight: 600, marginTop: 2 }}
       />
 
       {/* The one readable line: the unlock countdown. */}
@@ -829,7 +839,8 @@ function RoadmapCard({ stream, idx }: { stream: Stream; idx: number }) {
         <CipherText
           length={19 + ((idx + 1) % 3) * 2}
           phase={idx + 3}
-          style={{ fontSize: 11.5, opacity: 0.75, ...desync(0.71) }}
+          active={onScreen}
+          style={{ fontSize: 11.5, opacity: 0.75 }}
         />
       </div>
 

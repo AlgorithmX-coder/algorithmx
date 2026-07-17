@@ -85,12 +85,8 @@ export default function Footer() {
             links={[
               { name: "Cybersecurity", href: "/cyberheroes" },
               { name: "Cyber Explorers", href: "/cyberexplorers" },
-              { name: "Game Dev", href: "#" },
-              { name: "AI / ML", href: "#" },
-              { name: "App Dev", href: "#" },
-              { name: "Entrepreneurship", href: "#" },
-              { name: "Robotic Engineering", href: "#" },
             ]}
+            note="+ 5 more streams — encrypted until launch"
           />
           <FooterColumn
             label="Company"
@@ -180,9 +176,12 @@ export default function Footer() {
 function FooterColumn({
   label,
   links,
+  note,
 }: {
   label: string;
   links: Array<{ name: string; href: string }>;
+  /** Muted, non-interactive line after the links (e.g. encrypted-streams hint). */
+  note?: string;
 }) {
   return (
     <div>
@@ -213,6 +212,19 @@ function FooterColumn({
             {l.name}
           </Link>
         ),
+      )}
+      {note && (
+        <p
+          style={{
+            fontFamily: "var(--lv2-font-mono)",
+            fontSize: 11.5,
+            letterSpacing: "0.04em",
+            color: "rgba(232,237,255,0.42)",
+            marginTop: 4,
+          }}
+        >
+          {note}
+        </p>
       )}
     </div>
   );

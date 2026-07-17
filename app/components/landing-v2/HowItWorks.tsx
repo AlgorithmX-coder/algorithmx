@@ -32,7 +32,7 @@ const STEPS: Step[] = [
   { n: "02", label: "STEP 02", title: "Pick Your Level", desc: "Find the right starting point based on age, confidence and experience.", pill: "Beginner to advanced", color: "#3ef07a", icon: "bars", pillIcon: "bars", offset: 6 },
   { n: "03", label: "STEP 03", title: "Join the Academy", desc: "Create your profile, choose your course and receive instant access.", pill: "Simple one-time enrolment", color: "#ff7a3d", icon: "idcard", pillIcon: "ticket", offset: 46 },
   { n: "04", label: "STEP 04", title: "Learn & Build", desc: "Complete interactive lessons and create real technology projects.", pill: "Project-based learning", color: "#ffc24a", icon: "code", pillIcon: "cube", offset: 12 },
-  { n: "05", label: "STEP 05", title: "Earn Recognition", desc: "Build your portfolio and work towards recognised qualifications.", pill: "CyberFirst & ASDAN pathways", color: "#a96bff", icon: "shieldStar", pillIcon: "medal", destination: true, offset: 0 },
+  { n: "05", label: "STEP 05", title: "Earn Recognition", desc: "Build your portfolio and work towards recognised qualifications.", pill: "ASDAN & portfolio pathways", color: "#a96bff", icon: "shieldStar", pillIcon: "medal", destination: true, offset: 0 },
 ];
 
 /* ── inline thin-stroke icons ─────────────────────────────────────── */
