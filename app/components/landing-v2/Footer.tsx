@@ -27,7 +27,11 @@ export default function Footer() {
           "rgba(2,3,8,0.88) 26%, " +
           "rgba(2,3,8,0.97) 100%)",
         color: "rgba(232,237,255,0.7)",
-        padding: "calc(var(--lv2-rail) * 2.4) var(--lv2-rail) calc(var(--lv2-rail) * 1)",
+        /* Extra bottom clearance (+72px) so the fixed Algo chip
+         * (bottom-right of the viewport) floats over empty space at
+         * page end instead of covering the copyright line. */
+        padding:
+          "calc(var(--lv2-rail) * 2.4) var(--lv2-rail) calc(var(--lv2-rail) * 1 + 72px)",
       }}
     >
       <div style={{ maxWidth: 1200, margin: "0 auto" }}>

@@ -184,12 +184,14 @@ export default function HowItWorks() {
                 </div>
               </div>
 
-              {/* text */}
+              {/* text — dark halos + an opaque pill underlay so the copy
+               *  stays crisp over the global typed-code backdrop (which
+               *  occupies exactly the step-01/02 columns) */}
               <div>
-                <div style={{ fontFamily: "var(--lv2-font-mono)", fontSize: 11, fontWeight: 700, letterSpacing: "0.24em", color: s.color, marginBottom: 8 }}>{s.label}</div>
-                <h3 style={{ fontFamily: "var(--lv2-font-display)", fontSize: 20, fontWeight: 700, letterSpacing: "-0.01em", margin: 0 }}>{s.title}</h3>
-                <p style={{ color: "rgba(232,237,255,0.6)", fontSize: 14, lineHeight: 1.55, margin: "10px auto 0", maxWidth: 210 }}>{s.desc}</p>
-                <span style={{ display: "inline-flex", alignItems: "center", gap: 7, marginTop: 16, padding: "7px 13px", borderRadius: 999, border: `1px solid ${s.color}3d`, background: `${s.color}14`, fontSize: 12.5, fontWeight: 600, color: s.color, whiteSpace: "nowrap" }}>
+                <div style={{ fontFamily: "var(--lv2-font-mono)", fontSize: 11, fontWeight: 700, letterSpacing: "0.24em", color: s.color, marginBottom: 8, textShadow: "0 1px 10px rgba(4,5,13,0.95)" }}>{s.label}</div>
+                <h3 style={{ fontFamily: "var(--lv2-font-display)", fontSize: 20, fontWeight: 700, letterSpacing: "-0.01em", margin: 0, textShadow: "0 2px 14px rgba(4,5,13,0.95), 0 0 5px rgba(4,5,13,0.8)" }}>{s.title}</h3>
+                <p style={{ color: "rgba(232,237,255,0.6)", fontSize: 14, lineHeight: 1.55, margin: "10px auto 0", maxWidth: 210, textShadow: "0 2px 12px rgba(4,5,13,0.95), 0 0 4px rgba(4,5,13,0.85)" }}>{s.desc}</p>
+                <span style={{ display: "inline-flex", alignItems: "center", gap: 7, marginTop: 16, padding: "7px 13px", borderRadius: 999, border: `1px solid ${s.color}3d`, background: `linear-gradient(0deg, ${s.color}14, ${s.color}14), rgba(8,10,18,0.85)`, fontSize: 12.5, fontWeight: 600, color: s.color, whiteSpace: "nowrap" }}>
                   <Icon name={s.pillIcon} size={14} color={s.color} sw={1.9} />
                   {s.pill}
                 </span>
