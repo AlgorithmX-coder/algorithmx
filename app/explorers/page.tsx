@@ -16,11 +16,13 @@ import { checkpointStorageKey } from "./engine/types";
 import { mission01 } from "./missions/mission01";
 import { mission02 } from "./missions/mission02";
 import { mission03 } from "./missions/mission03";
+import { mission04 } from "./missions/mission04";
 
 const CASES: { m: MissionManifest; tease: string; minutes: string }[] = [
   { m: mission01, tease: "A student's game account gets a 24-hour death threat. Something about it reads wrong.", minutes: "45–60 MIN" },
   { m: mission02, tease: "Five hundred free skins, today only, everywhere at once. Nobody gives away five hundred of anything.", minutes: "45–60 MIN" },
   { m: mission03, tease: "Three hundred password guesses a second, aimed at your school. No tricks — just math. Beat it.", minutes: "45–60 MIN" },
+  { m: mission04, tease: "Somebody built a file on a student — out of her own posts. It's for sale tonight.", minutes: "45–60 MIN" },
 ];
 
 export default function ExplorersPage() {
@@ -115,10 +117,10 @@ export default function ExplorersPage() {
             <div style={{ background: `${T.panel}99`, border: `1px dashed ${T.hairline}`, borderRadius: 4, padding: "18px 22px", display: "flex", justifyContent: "space-between", alignItems: "center", gap: 12, flexWrap: "wrap" }}>
               <div>
                 <span style={{ fontFamily: MONO, fontSize: 11.5, letterSpacing: "0.08em", color: T.textDisabled }}>
-                  CASE 004 // DOSSIER SEALED
+                  CASE 005 // DOSSIER SEALED
                 </span>
                 <div style={{ fontFamily: MONO, fontSize: 17, fontWeight: 600, color: T.textSecondary, marginTop: 6 }}>
-                  The Puzzle You Posted
+                  Signal Storm
                 </div>
               </div>
               <span style={{ fontFamily: MONO, fontSize: 10.5, letterSpacing: "0.1em", color: T.textDisabled, border: `1px solid ${T.hairline}`, borderRadius: 2, padding: "6px 10px" }}>
