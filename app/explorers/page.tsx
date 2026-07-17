@@ -32,6 +32,7 @@ import { mission16 } from "./missions/mission16";
 import { mission17 } from "./missions/mission17";
 import { mission18 } from "./missions/mission18";
 import { mission19 } from "./missions/mission19";
+import { mission20 } from "./missions/mission20";
 
 const CASES: { m: MissionManifest; tease: string; minutes: string }[] = [
   { m: mission01, tease: "A student's game account gets a 24-hour death threat. Something about it reads wrong.", minutes: "45–60 MIN" },
@@ -53,6 +54,7 @@ const CASES: { m: MissionManifest; tease: string; minutes: string }[] = [
   { m: mission17, tease: "A screenshot nobody took is tearing through the school chats. Trace it, break it, still it.", minutes: "45–60 MIN" },
   { m: mission18, tease: "You're good now. Too good. Someone from the other side just sent you an offer. Choose.", minutes: "45–60 MIN" },
   { m: mission19, tease: "Every actor, every channel, all at once, aimed at your whole school. Hold the line.", minutes: "45–60 MIN" },
+  { m: mission20, tease: "Five breadcrumbs. One coordinator. Everything you've learned, one final time. Finish it.", minutes: "45–60 MIN" },
 ];
 
 export default function ExplorersPage() {
@@ -143,18 +145,18 @@ export default function ExplorersPage() {
               </button>
             ))}
 
-            {/* the next sealed case — the pull, without pressure */}
-            <div style={{ background: `${T.panel}99`, border: `1px dashed ${T.hairline}`, borderRadius: 4, padding: "18px 22px", display: "flex", justifyContent: "space-between", alignItems: "center", gap: 12, flexWrap: "wrap" }}>
+            {/* season complete — all 20 cases are live */}
+            <div style={{ background: `${T.clearanceBrass}0F`, border: `1px solid ${T.clearanceBrass}55`, borderRadius: 4, padding: "18px 22px", display: "flex", justifyContent: "space-between", alignItems: "center", gap: 12, flexWrap: "wrap" }}>
               <div>
-                <span style={{ fontFamily: MONO, fontSize: 11.5, letterSpacing: "0.08em", color: T.textDisabled }}>
-                  CASE 020 // DOSSIER SEALED
+                <span style={{ fontFamily: MONO, fontSize: 11.5, letterSpacing: "0.08em", color: T.clearanceBrass }}>
+                  SEASON ONE // 20 CASES OPEN
                 </span>
-                <div style={{ fontFamily: MONO, fontSize: 17, fontWeight: 600, color: T.textSecondary, marginTop: 6 }}>
-                  Signal Zero
+                <div style={{ fontFamily: MONO, fontSize: 17, fontWeight: 600, color: T.textPrimary, marginTop: 6 }}>
+                  Close every case to reach ULTRA clearance
                 </div>
               </div>
-              <span style={{ fontFamily: MONO, fontSize: 10.5, letterSpacing: "0.1em", color: T.textDisabled, border: `1px solid ${T.hairline}`, borderRadius: 2, padding: "6px 10px" }}>
-                DECLASSIFIES SOON
+              <span style={{ fontFamily: MONO, fontSize: 10.5, letterSpacing: "0.1em", color: T.clearanceBrass, border: `1px solid ${T.clearanceBrass}66`, borderRadius: 2, padding: "6px 10px" }}>
+                FULL DOSSIER
               </span>
             </div>
           </div>
