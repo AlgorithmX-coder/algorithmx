@@ -21,6 +21,7 @@ import { mission05 } from "./missions/mission05";
 import { mission06 } from "./missions/mission06";
 import { mission07 } from "./missions/mission07";
 import { mission08 } from "./missions/mission08";
+import { mission09 } from "./missions/mission09";
 
 const CASES: { m: MissionManifest; tease: string; minutes: string }[] = [
   { m: mission01, tease: "A student's game account gets a 24-hour death threat. Something about it reads wrong.", minutes: "45–60 MIN" },
@@ -31,6 +32,7 @@ const CASES: { m: MissionManifest; tease: string; minutes: string }[] = [
   { m: mission06, tease: "Six levers move every scam on earth. SIREN knows them all. Now you will too.", minutes: "45–60 MIN" },
   { m: mission07, tease: "Your best friend's account asks for a favor. The account is real. The friend might not be.", minutes: "45–60 MIN" },
   { m: mission08, tease: "A new online friend is funny, kind, and perfect. Nobody wrote a single word of it.", minutes: "45–60 MIN" },
+  { m: mission09, tease: "An account has been giving away gifts for weeks and asking for nothing. Until today.", minutes: "45–60 MIN" },
 ];
 
 export default function ExplorersPage() {
@@ -125,10 +127,10 @@ export default function ExplorersPage() {
             <div style={{ background: `${T.panel}99`, border: `1px dashed ${T.hairline}`, borderRadius: 4, padding: "18px 22px", display: "flex", justifyContent: "space-between", alignItems: "center", gap: 12, flexWrap: "wrap" }}>
               <div>
                 <span style={{ fontFamily: MONO, fontSize: 11.5, letterSpacing: "0.08em", color: T.textDisabled }}>
-                  CASE 009 // DOSSIER SEALED
+                  CASE 010 // DOSSIER SEALED
                 </span>
                 <div style={{ fontFamily: MONO, fontSize: 17, fontWeight: 600, color: T.textSecondary, marginTop: 6 }}>
-                  The Long Game
+                  The Voice
                 </div>
               </div>
               <span style={{ fontFamily: MONO, fontSize: 10.5, letterSpacing: "0.1em", color: T.textDisabled, border: `1px solid ${T.hairline}`, borderRadius: 2, padding: "6px 10px" }}>
