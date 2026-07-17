@@ -177,11 +177,12 @@ export default function Testimonials() {
               padding: "0 30px",
             }}
           >
-            {/* Every logo is a transparent-bg SVG; brightness(0) invert(1)
-             *  flattens it to one white tone (already-white marks stay
-             *  white) so the whole row reads as a single cohesive
-             *  "trusted by" wall on the dark backdrop. Resting at 60%
-             *  opacity, lifting to full on hover. */}
+            {/* Each SVG carries its official brand color baked into the
+             *  file (Microsoft = its four real square colors; Apple,
+             *  Unity, NCSC and King's Trust stay white — that IS their
+             *  correct dark-background treatment). Resting slightly
+             *  dimmed so the row doesn't outshine the content, full
+             *  color on hover. */}
             <img
               src={l.src}
               alt={l.name}
@@ -191,15 +192,14 @@ export default function Testimonials() {
                 width: "auto",
                 maxWidth: 150,
                 objectFit: "contain",
-                opacity: 0.6,
-                filter: "brightness(0) invert(1)",
+                opacity: 0.85,
                 transition: "opacity .3s ease",
               }}
               onMouseOver={(e) => {
                 (e.currentTarget as HTMLImageElement).style.opacity = "1";
               }}
               onMouseOut={(e) => {
-                (e.currentTarget as HTMLImageElement).style.opacity = "0.6";
+                (e.currentTarget as HTMLImageElement).style.opacity = "0.85";
               }}
             />
           </div>

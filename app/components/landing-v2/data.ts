@@ -383,7 +383,8 @@ export const TESTIMONIALS: Testimonial[] = [
  * All sources are transparent-background SVGs so they render uniformly as
  * white silhouettes via `filter: brightness(0) invert(1)` (see
  * Testimonials.tsx). The big-tech / tooling marks come from the Simple
- * Icons set (public/logos/brands/*.svg — single-path, monochrome); the
+ * Icons set (public/logos/brands/*.svg — official brand colors baked
+ * into each file 2026-07-17; Microsoft split into its four squares); the
  * UK accreditations (NCSC, King's Trust) are flat-white SVGs already
  * designed for dark backgrounds. Keeping every logo a single white tone
  * gives the cohesive "trusted by" wall the dark cosmic theme wants,
