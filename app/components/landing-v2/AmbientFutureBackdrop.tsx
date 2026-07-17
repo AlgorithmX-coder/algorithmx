@@ -322,9 +322,14 @@ function generateClusteredStarData(
       y = chosen.y + sy;
       z = chosen.z + sz;
       /* Clamp z to the requested range so cluster stars don't end
-       * up in front of foreground content */
-      if (z < zRange[0]) z = zRange[0];
-      if (z > zRange[1]) z = zRange[1];
+       * up in front of foreground content. Callers pass zRange as
+       * [near, far] DESCENDING — clamp against min/max, not raw
+       * order (the raw comparison snapped every cluster star to the
+       * far plane, flattening the intended depth spread). */
+      const zMin = Math.min(zRange[0], zRange[1]);
+      const zMax = Math.max(zRange[0], zRange[1]);
+      if (z < zMin) z = zMin;
+      if (z > zMax) z = zMax;
     }
 
     positions[i * 3] = x;
@@ -546,23 +551,28 @@ function Scene1AnalyticalGalaxy({
     if (nebulaCyanMat.current) nebulaCyanMat.current.opacity = env * 0.22;
     if (nebulaVioletMat.current) nebulaVioletMat.current.opacity = env * 0.14;
 
-    if (discRef.current) discRef.current.rotation.y += delta * 0.045;
-    if (starsRef.current) starsRef.current.rotation.y += 0.00010;
-    /* Far stars drift at a different (slower) rate than the near
-     * starfield — when the cursor parallax tilts the scene, the two
-     * layers shift at different visual speeds, giving real parallax
-     * depth between them. */
-    if (farStarsRef.current) farStarsRef.current.rotation.y += 0.00004;
+    /* PERF (2026-07-17): animation + buffer work only while the scene
+     * is actually visible — an env of 0 used to still pay the rotation
+     * writes AND a full data-particle buffer re-upload every frame. */
+    if (env > 0.004) {
+      if (discRef.current) discRef.current.rotation.y += delta * 0.045;
+      if (starsRef.current) starsRef.current.rotation.y += 0.00010;
+      /* Far stars drift at a different (slower) rate than the near
+       * starfield — when the cursor parallax tilts the scene, the two
+       * layers shift at different visual speeds, giving real parallax
+       * depth between them. */
+      if (farStarsRef.current) farStarsRef.current.rotation.y += 0.00004;
 
-    /* Drift data particles slowly upward, wrap when off-top */
-    if (dataRef.current) {
-      const attr = dataRef.current.geometry.attributes.position as THREE.BufferAttribute;
-      const arr = attr.array as Float32Array;
-      for (let i = 0; i < DATA_COUNT; i++) {
-        arr[i * 3 + 1] += 0.0028;
-        if (arr[i * 3 + 1] > 4) arr[i * 3 + 1] = -4;
+      /* Drift data particles slowly upward, wrap when off-top */
+      if (dataRef.current) {
+        const attr = dataRef.current.geometry.attributes.position as THREE.BufferAttribute;
+        const arr = attr.array as Float32Array;
+        for (let i = 0; i < DATA_COUNT; i++) {
+          arr[i * 3 + 1] += 0.0028;
+          if (arr[i * 3 + 1] > 4) arr[i * 3 + 1] = -4;
+        }
+        attr.needsUpdate = true;
       }
-      attr.needsUpdate = true;
     }
   });
 
@@ -810,8 +820,9 @@ function Scene2ConstellationSelector({
       if (lm) lm.opacity = env * 0.28;
       /* Each constellation rotates around its own local axis at a
        * different micro-rate. Combined effect: subtle "constellation
-       * field is alive" without anything visibly spinning. */
-      if (g) g.rotation.z += delta * (0.04 + i * 0.008);
+       * field is alive" without anything visibly spinning. (Skipped
+       * while the scene is enveloped out — perf pass 2026-07-17.) */
+      if (g && env > 0.004) g.rotation.z += delta * (0.04 + i * 0.008);
     }
   });
 
@@ -949,8 +960,9 @@ function Scene3OrbitalJourney({
       const t = travelerRefs.current[i];
       if (lm) lm.opacity = env * 0.32;
       if (tm) tm.opacity = env * 0.95;
-      /* Advance traveler phase, position on ellipse */
-      if (t) {
+      /* Advance traveler phase, position on ellipse (skipped while the
+       * scene is enveloped out — perf pass 2026-07-17) */
+      if (t && env > 0.004) {
         const def = ORBIT_DEFS[i];
         travelerPhases.current[i] += delta * def.travelerSpeed;
         const a = travelerPhases.current[i];
@@ -1076,7 +1088,7 @@ function Scene4ProtectiveAurora({
         const breathe = 0.65 + Math.sin(t * 0.25 + bands[i].basePhase) * 0.35;
         mat.opacity = env * bands[i].opacity * breathe;
       }
-      if (m) {
+      if (m && env > 0.004) {
         /* Drift the bands horizontally on long cycles — feels like
          * wind moving the aurora. */
         m.position.x =
@@ -1204,8 +1216,11 @@ function Scene5LaunchSequence({
 
     /* Convergence — every particle drifts toward the local origin
      * (centre of this scene's group); on arrival it respawns out
-     * at the spherical shell. */
-    if (particlesRef.current) {
+     * at the spherical shell. PERF (2026-07-17): this is the layer's
+     * most expensive per-frame job (full buffer rewrite + GPU upload)
+     * and it used to run even with the scene enveloped to zero — now
+     * gated on visibility. */
+    if (particlesRef.current && env > 0.004) {
       const attr = particlesRef.current.geometry.attributes.position as THREE.BufferAttribute;
       const arr = attr.array as Float32Array;
       const speed = 0.45 * delta;
@@ -1413,6 +1428,22 @@ export default function AmbientFutureBackdrop() {
     [0, 1, 1, 0],
   );
 
+  /* PERF (2026-07-17): with the default frameloop="always" the GL loop
+   * kept clearing + drawing all five scenes at 60fps even while this
+   * wrapper sat at opacity 0 — which is the ENTIRE hero cinematic (the
+   * page's tightest frame budget) plus the very bottom of the page.
+   * Track the wrapper's visibility and switch the frameloop off while
+   * it's invisible. Boolean state: React bails out on identical values,
+   * so the per-scroll-frame callback only re-renders on the 0↔visible
+   * boundary crossings. */
+  const [glActive, setGlActive] = useState(true);
+  useEffect(() => {
+    const apply = (v: number) => setGlActive(v > 0.003);
+    apply(outerOpacity.get());
+    const unsubscribe = outerOpacity.on("change", apply);
+    return unsubscribe;
+  }, [outerOpacity]);
+
   if (!enabled) return null;
 
   return (
@@ -1464,6 +1495,7 @@ export default function AmbientFutureBackdrop() {
       />
 
       <Canvas
+        frameloop={glActive ? "always" : "never"}
         dpr={[1, 1.5]}
         camera={{ position: [0, 0, 6], fov: 55 }}
         gl={{
