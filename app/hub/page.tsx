@@ -40,47 +40,72 @@ const FONT_DISPLAY = "var(--font-space-grotesk), 'Space Grotesk', system-ui, san
 const FONT_BODY = "var(--font-dm-sans), 'DM Sans', system-ui, sans-serif";
 const FONT_MONO = "ui-monospace, 'JetBrains Mono', Menlo, monospace";
 
-/* Per-track presentation — punchy tagline + emblem glyph + accent. Keyed
- * by slug so it lands without a migration. Display names + age ranges
- * still come straight from the DB. */
-const TRACK_CONFIG: Record<
-  string,
-  { tagline: string; icon: CyberIconName; accent: CyberIconAccent; accentHex: string; illustration?: string }
-> = {
+/* Per-track presentation. Keyed by slug so it lands without a migration.
+ *
+ * Display `name` + `ageRange` are OVERRIDDEN here to match the
+ * /cybersecurity browse page (the DB still carries the seeded
+ * "CyberStart" names + original bands), and `illustration` is the SAME
+ * scene art the /cybersecurity card uses — brought onto the hub as a
+ * banner so the two surfaces read as one family. `scenePosition` is the
+ * per-track focal crop for that banner. */
+type TrackCfg = {
+  name?: string;
+  ageRange?: string;
+  tagline: string;
+  icon: CyberIconName;
+  accent: CyberIconAccent;
+  accentHex: string;
+  illustration?: string;
+  scenePosition?: string;
+};
+
+const TRACK_CONFIG: Record<string, TrackCfg> = {
   "cyber-heroes": {
+    name: "Cyber Heroes",
+    ageRange: "6–9",
     tagline: "Become a hero of the digital world. Learn. Defend. Lead.",
     icon: "shield",
     accent: "cyan",
     accentHex: C.cyan,
-    illustration: "/hub/track-cyber-heroes.png",
+    illustration: "/characters/adam-layla-happy.png",
+    scenePosition: "center 28%",
   },
   cyberexplorers: {
+    name: "Cyber Explorers",
+    ageRange: "10–13",
     tagline: "Explore. Discover. Understand the digital universe.",
     icon: "compass",
     accent: "electric",
     accentHex: C.electric,
-    illustration: "/hub/track-cyberexplorers.png",
+    illustration: "/explorers/scenes/explorers-card-v3.jpg",
+    scenePosition: "62% 38%",
   },
   cyberstart: {
-    tagline: "Build skills. Create projects. Launch your future.",
+    name: "Cyber Ops",
+    ageRange: "14–17",
+    tagline: "Hands-on security in a live cyber range. Break in, defend, respond.",
     icon: "rocket",
     accent: "neon",
     accentHex: C.neon,
-    illustration: "/hub/track-cyberstart.png",
+    illustration: "/operators/cyberops-card.jpg",
+    scenePosition: "center",
   },
   "cyberstart-pro": {
-    tagline: "Advanced paths for future innovators and leaders.",
+    name: "Cyber Pro",
+    ageRange: "18+",
+    tagline: "Career-grade cyber: pen-testing, threat modelling, security projects.",
     icon: "graduation",
     accent: "cosmic",
     accentHex: C.cosmic,
-    illustration: "/hub/track-cyberstart-pro.png",
+    illustration: "/operators/cyberpro-card.jpg",
+    scenePosition: "center",
   },
 };
 
-const FALLBACK_CONFIG = {
+const FALLBACK_CONFIG: TrackCfg = {
   tagline: "Hands-on cyber skills at the right level.",
-  icon: "shield" as CyberIconName,
-  accent: "cyan" as CyberIconAccent,
+  icon: "shield",
+  accent: "cyan",
   accentHex: C.cyan,
 };
 
@@ -436,13 +461,14 @@ export default async function HubPage() {
                 <HubTrackCard
                   key={product.id}
                   slug={product.slug}
-                  name={product.name}
+                  name={cfg.name ?? product.name}
                   tagline={cfg.tagline}
                   iconName={cfg.icon}
                   accent={cfg.accent}
                   accentHex={cfg.accentHex}
                   illustration={cfg.illustration}
-                  ageRange={product.ageRange}
+                  scenePosition={cfg.scenePosition}
+                  ageRange={cfg.ageRange ?? product.ageRange}
                   duration={product.duration}
                   weeksCount={product.weeksCount}
                   status={product.status as "ACTIVE" | "COMING_SOON"}

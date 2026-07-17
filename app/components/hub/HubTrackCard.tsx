@@ -48,8 +48,11 @@ export interface HubTrackCardProps {
   iconName: CyberIconName;
   accent: CyberIconAccent;
   accentHex: string;
-  /** Optional 3D illustration path; replaces the flat CyberIcon emblem when set. */
+  /** Scene-art banner path (the SAME source as the /cybersecurity track
+   *  card); replaces the flat CyberIcon emblem when set. */
   illustration?: string;
+  /** Per-track focal crop for the scene banner (background-position). */
+  scenePosition?: string;
   ageRange: string;
   duration: string;
   weeksCount: number;
@@ -96,6 +99,7 @@ export default function HubTrackCard({
   accent,
   accentHex,
   illustration,
+  scenePosition,
   ageRange,
   duration,
   weeksCount,
@@ -126,7 +130,12 @@ export default function HubTrackCard({
     return () => clearTimeout(t);
   }, [showProgress, progressPct, reduced, index]);
 
-  const surface = isComing
+  // Scene-banner cards use a solid navy so the banner's vertical fade
+  // melts seamlessly into the card body — a translucent gradient would
+  // show a seam under the opaque scene art.
+  const surface = illustration
+    ? "#111a3e"
+    : isComing
     ? "linear-gradient(180deg, rgba(30, 36, 70, 0.5) 0%, rgba(12, 16, 36, 0.66) 100%)"
     : CYBER_GRAD.card;
 
@@ -219,37 +228,44 @@ export default function HubTrackCard({
         {isLive ? "ACTIVE" : "COMING SOON"}
       </span>
 
-      {/* Emblem — HUB FEEDBACK (user): no small pasted square in the
-          corner. The art is a full-width banner EMBEDDED into the card:
-          it bleeds to the card edges, glows in the track accent, and
-          melts into the card body through a gradient fade. */}
+      {/* Scene-art banner — the SAME art as the /cybersecurity track card,
+          brought onto the hub so the two surfaces read as one family. It
+          bleeds to the card edges as a cover image, cropped to a per-track
+          focal point, and melts into the solid card navy through a
+          vertical fade (the status badge sits over its top-right). */}
       {illustration ? (
         <div
           style={{
             position: "relative",
             zIndex: 1,
             margin: "-24px -22px 0",
-            height: 172,
+            height: 152,
             overflow: "hidden",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            background: `radial-gradient(ellipse at 50% 30%, ${accentHex}2e 0%, rgba(8,10,22,0.2) 70%)`,
           }}
         >
-          {/* accent aura behind the art — sized to swallow the art PNG's
-              dark backing square so no rectangle edge shows */}
-          <div aria-hidden style={{ position: "absolute", left: "50%", top: "46%", width: 260, height: 230, transform: "translate(-50%, -50%)", borderRadius: "50%", background: `radial-gradient(circle, ${accentHex}3e 0%, ${accentHex}18 45%, transparent 68%)`, filter: "blur(18px)" }} />
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={illustration}
-            alt=""
-            width={160}
-            height={160}
-            style={{ position: "relative", width: 160, height: 160, objectFit: "contain", mixBlendMode: "screen", filter: `drop-shadow(0 10px 24px ${accentHex}66)` }}
+          <div
+            aria-hidden
+            style={{
+              position: "absolute",
+              inset: 0,
+              backgroundImage: `url(${illustration})`,
+              backgroundSize: "cover",
+              backgroundPosition: scenePosition ?? "center",
+              filter: "saturate(1.06)",
+            }}
           />
-          {/* melt into the card body */}
-          <div aria-hidden style={{ position: "absolute", left: 0, right: 0, bottom: 0, height: 56, background: "linear-gradient(180deg, transparent 0%, rgba(10,13,30,0.85) 100%)" }} />
+          {/* soft vignette + fade to the solid card navy (#111a3e) so the
+              banner has no hard bottom edge and the seam disappears */}
+          <div
+            aria-hidden
+            style={{
+              position: "absolute",
+              inset: 0,
+              background:
+                "radial-gradient(130% 100% at 34% 16%, transparent 50%, rgba(8,10,22,0.42) 100%), " +
+                "linear-gradient(180deg, rgba(17,26,62,0) 40%, rgba(17,26,62,0.62) 74%, #111a3e 100%)",
+            }}
+          />
         </div>
       ) : (
         <div
