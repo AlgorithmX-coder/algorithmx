@@ -9,11 +9,22 @@ import { FadeUp, useHoverCount } from "./utilities";
  * animated backdrop, dark glass cards with vivid neon stat colors.
  *
  * Layout (top → bottom):
- *   1. Three headline stat cards (icon chip · sparkline · delta badge)
+ *   1. Three headline stat cards (icon chip · sparkline · badge · source)
  *   2. Bridge tagline
  *
  * (The context-panel row — Why this matters · Learning pathways ·
  * Outcomes — and the CTA row were removed 2026-07-17 per design pass.)
+ *
+ * FIGURES VERIFIED 2026-07-17 — every number traces to a named source;
+ * do not change a value without re-sourcing it:
+ *   72%  Internet Matters Pulse (Apr–May 2026 wave, 1,000 UK children
+ *        aged 9–17): "72% of children have experienced at least one
+ *        online harm."          internetmatters.org/pulse
+ *   82%  DCMS × Burning Glass, "No Longer Optional: Employer Demand
+ *        for Digital Skills" (9M+ UK job ads analysed): 82% of
+ *        advertised openings require digital skills.   gov.uk
+ *   £60K ITJobsWatch, median advertised UK Cyber Security salary,
+ *        6 months to 17 Jul 2026 (+6.19% YoY).  itjobswatch.co.uk
  */
 
 const STATS = [
@@ -22,29 +33,35 @@ const STATS = [
     suffix: "%",
     color: "#ff3ad6",
     icon: "shield" as const,
-    label: "of children encounter online threats before age 10",
-    delta: "+12%",
+    label: "of UK children have experienced harm online",
+    badgeTop: "9–17s",
+    badgeSub: "UK · 2026",
+    source: "Internet Matters · Pulse 2026",
     /* Parents — safety angle */
     spark: [30, 28, 32, 24, 27, 21, 25, 16, 19, 9, 5],
   },
   {
-    value: 85,
+    value: 82,
     suffix: "%",
     color: "#00f5ff",
     icon: "brain" as const,
-    label: "of jobs in 2030 will require digital + AI skills",
-    delta: "+23%",
+    label: "of UK job openings require digital skills",
+    badgeTop: "9M+",
+    badgeSub: "ads analysed",
+    source: "DCMS · No Longer Optional",
     /* Universal — future tech literacy across all ages */
     spark: [33, 30, 31, 25, 26, 18, 22, 14, 12, 8, 4],
   },
   {
-    value: 65,
+    value: 60,
     prefix: "£",
     suffix: "K",
     color: "#ffc94a",
     icon: "trend" as const,
-    label: "average UK tech-sector salary in 2026",
-    delta: "+8%",
+    label: "median advertised UK cyber security salary",
+    badgeTop: "↑ +6%",
+    badgeSub: "year on year",
+    source: "ITJobsWatch · Jul 2026",
     /* Adult / career angle */
     spark: [31, 29, 30, 26, 24, 22, 20, 17, 15, 10, 6],
   },
@@ -251,7 +268,7 @@ function StatCard({ stat }: { stat: (typeof STATS)[number] }) {
         {stat.label}
       </p>
 
-      {/* Bottom row: sparkline + delta badge */}
+      {/* Bottom row: sparkline + fact badge */}
       <div
         style={{
           display: "flex",
@@ -280,21 +297,38 @@ function StatCard({ stat }: { stat: (typeof STATS)[number] }) {
               color: stat.color,
               display: "block",
               lineHeight: 1.2,
+              whiteSpace: "nowrap",
             }}
           >
-            ↑ {stat.delta}
+            {stat.badgeTop}
           </span>
           <span
             style={{
               fontFamily: "var(--lv2-font-mono)",
               fontSize: 10,
               color: "rgba(232,237,255,0.5)",
+              whiteSpace: "nowrap",
             }}
           >
-            vs 2022
+            {stat.badgeSub}
           </span>
         </div>
       </div>
+
+      {/* Source line — every figure on this row is verifiable */}
+      <p
+        style={{
+          fontFamily: "var(--lv2-font-mono)",
+          fontSize: 9,
+          fontWeight: 600,
+          letterSpacing: "0.14em",
+          textTransform: "uppercase",
+          color: "rgba(232,237,255,0.38)",
+          margin: "14px 0 0",
+        }}
+      >
+        Source: {stat.source}
+      </p>
     </div>
   );
 }
