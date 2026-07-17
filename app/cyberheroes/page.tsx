@@ -790,13 +790,18 @@ export default function HomePage() {
         @keyframes chParticleA { 0%,100% { transform: translate(0,0); } 25% { transform: translate(40px,-60px); } 50% { transform: translate(-30px,-90px); } 75% { transform: translate(-50px,20px); } }
         @keyframes chParticleB { 0%,100% { transform: translate(0,0); } 30% { transform: translate(-50px,50px); } 60% { transform: translate(60px,-40px); } }
         @keyframes chParticleC { 0%,100% { transform: translate(0,0); } 33% { transform: translate(30px,70px); } 66% { transform: translate(-40px,30px); } }
+        /* Mobile: let the typewriter tagline wrap normally instead of
+           nowrap-overflowing the viewport (was a source of horizontal scroll). */
+        @media (max-width: 640px) {
+          .ch-typewriter { white-space: normal; border-right: none; width: auto !important; animation: none; }
+        }
       `}</style>
 
       {/* New playful-but-techy cosmic backdrop (replaces the old R3F
           TechBackground), zoomed in to fill the screen like production. */}
       <CyberHeroesPlayfulBackdrop />
 
-      <div className="min-h-screen relative ch-legible" style={{ zIndex: 1 }}>
+      <div className="min-h-screen relative ch-legible" style={{ zIndex: 1, overflowX: "clip" }}>
 
         {/* ── NAV ──────────────────────────────────────────────────────────── */}
         <CyberHeroesNav />

@@ -86,18 +86,7 @@ export default function CyberHeroesPlayfulBackdrop() {
         ))}
       </svg>
 
-      {/* 5 · Focal ringed "cyber world" (top-right) — frames the hero video. */}
-      <div className="chb-world">
-        <div className="chb-ring" />
-        <div className="chb-ring chb-ring-2" />
-        <div className="chb-atmo" />
-        <div className="chb-orb" />
-        <div className="chb-moonpath">
-          <span className="chb-moon" />
-        </div>
-      </div>
-
-      {/* 6 · A distant, dim second world (lower-left) for depth + scale. */}
+      {/* A distant, dim world (lower-left) for depth + scale. */}
       <div className="chb-farworld" />
 
       {/* 7 · Twinkling accent stars (opacity only). */}
@@ -210,46 +199,8 @@ const KEYFRAMES = `
   }
   @keyframes chbAurora { from { transform: translate3d(0,0,0) rotate(0deg) scale(1); } to { transform: translate3d(-3vw,2vh,0) rotate(8deg) scale(1.08); } }
 
-  /* Focal ringed world (top-right). rotateX tilts the rings + moon orbit into
-     a graceful ellipse. */
-  .chb-world { position: absolute; top: -12vmax; right: -7vmax; width: 42vmax; height: 42vmax; }
-  .chb-orb {
-    position: absolute; inset: 35%; border-radius: 50%;
-    background: radial-gradient(circle at 36% 30%, #cfeeff 0%, #5aa8ff 30%, #3a63d6 52%, #1c2f86 74%, #0b1450 92%);
-    box-shadow:
-      inset -2.4vmax -2.4vmax 5vmax rgba(3,6,34,0.85),
-      inset 1.2vmax 1.2vmax 3vmax rgba(190,235,255,0.28),
-      0 0 9vmax 1vmax rgba(70,160,255,0.20);
-    will-change: transform, opacity;
-    animation: chbOrb 9s ease-in-out infinite alternate;
-  }
+  /* Distant dim world (lower-left) for scale. Shares the gentle chbOrb pulse. */
   @keyframes chbOrb { from { transform: scale(1); opacity: 0.94; } to { transform: scale(1.035); opacity: 1; } }
-  /* Atmosphere rim glow. */
-  .chb-atmo {
-    position: absolute; inset: 33.2%; border-radius: 50%;
-    box-shadow: 0 0 0 0.2vmax rgba(150,220,255,0.22), 0 0 4vmax rgba(120,200,255,0.32);
-  }
-  .chb-ring {
-    position: absolute; inset: 12%; border-radius: 50%;
-    border: 0.28vmax solid rgba(125,240,255,0.30);
-    transform: rotateX(72deg);
-    box-shadow: 0 0 2vmax rgba(0,229,255,0.14);
-  }
-  .chb-ring-2 { inset: 22%; border-color: rgba(160,140,255,0.24); border-width: 0.2vmax; }
-  .chb-moonpath {
-    position: absolute; inset: 6%; border-radius: 50%;
-    transform: rotateX(72deg);
-    will-change: transform;
-    animation: chbMoon 46s linear infinite;
-  }
-  @keyframes chbMoon { from { transform: rotateX(72deg) rotateZ(0deg); } to { transform: rotateX(72deg) rotateZ(360deg); } }
-  .chb-moon {
-    position: absolute; top: -0.6vmax; left: 50%; width: 1.1vmax; height: 1.1vmax;
-    margin-left: -0.55vmax; border-radius: 50%;
-    background: #eaf6ff; box-shadow: 0 0 1.6vmax #7df0ff;
-  }
-
-  /* Distant dim world (lower-left) for scale. */
   .chb-farworld {
     position: absolute; left: 8vmax; bottom: 6vmax; width: 7vmax; height: 7vmax;
     border-radius: 50%;
