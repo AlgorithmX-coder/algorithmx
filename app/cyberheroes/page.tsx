@@ -847,10 +847,10 @@ export default function HomePage() {
                   <span style={{ color: "#7df0ff" }}>✓</span> GDPR compliant
                 </span>
               </div>
-              {/* Social proof line - placeholder until real reviews land */}
+              {/* Honest trust line - no star-rating claim until real reviews exist */}
               <div className="mb-8 flex flex-wrap items-center gap-2 justify-center lg:justify-start"
                 style={{ fontSize: 13, color: "#e8edff", fontWeight: 600 }}>
-                <span style={{ color: "#ffd158", letterSpacing: 1, fontSize: 15 }}>★★★★★</span>
+                <span style={{ color: "#7eff97", fontWeight: 800, fontSize: 15 }}>✓</span>
                 <span>Built by parents, for parents. UK-based.</span>
               </div>
               <div className="flex gap-4 flex-wrap justify-center lg:justify-start">
@@ -879,7 +879,7 @@ export default function HomePage() {
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-10 max-w-2xl mx-auto lg:mx-0">
                 {[
                   { to: 20, suffix: "", label: "Weeks", color: "#00e5ff" },
-                  { to: 40, suffix: "+", label: "Activities", color: "#7eff97" },
+                  { to: 40, suffix: "+", label: "Missions", color: "#7eff97" },
                   { to: 4, suffix: "", label: "Certificates", color: "#ff7a59" },
                   { to: 100, suffix: "%", label: "Hands-On", color: "#ffd158" },
                 ].map((s, i) => (
@@ -1294,11 +1294,12 @@ export default function HomePage() {
                         backdropFilter: "blur(8px)",
                       }}>
                         <div style={{
-                          flexShrink: 0, width: 40, height: 40, borderRadius: "50%",
-                          background: `linear-gradient(135deg, ${phase.accent}, ${phase.accent}aa)`,
+                          flexShrink: 0, width: 44, height: 44, borderRadius: "50%",
+                          background: phase.accent,
                           display: "flex", alignItems: "center", justifyContent: "center",
-                          fontFamily: "'Fredoka', sans-serif", fontSize: 16, fontWeight: 700, color: "#0a0f1c",
-                          boxShadow: `0 0 14px ${phase.accent}66`,
+                          fontFamily: "'Fredoka', sans-serif", fontSize: 22, fontWeight: 800, color: "#08101f",
+                          border: "2px solid rgba(255,255,255,0.24)",
+                          boxShadow: `0 2px 10px ${phase.accent}40, inset 0 1px 1px rgba(255,255,255,0.4)`,
                         }}>
                           {wk.w}
                         </div>
@@ -1710,70 +1711,7 @@ export default function HomePage() {
           <CredentialsMarquee />
         </section>
 
-        {/* ── TESTIMONIALS ────────────────────────────────────────────────── */}
-        <section className="max-w-[1200px] mx-auto px-6 md:px-10 py-16 sm:py-24">
-          <div className="text-center mb-12" data-scroll>
-            <span style={{
-              display: "inline-flex", alignItems: "center", gap: 8,
-              padding: "6px 16px", borderRadius: 100,
-              fontSize: 11, fontWeight: 800, letterSpacing: "0.15em",
-              color: "#ffd158", background: "rgba(255, 209, 88,0.1)",
-              border: "1px solid rgba(255, 209, 88,0.25)",
-              marginBottom: 20,
-            }}>
-              ★ TRUSTED BY PARENTS
-            </span>
-            <h2 className="text-3xl sm:text-4xl font-black text-white mb-4">
-              Families are seeing <span style={ACCENT_TEXT}>real results</span>
-            </h2>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
-            {[
-              { name: "Sarah M.", role: "Mum of 8-year-old", text: "My daughter now teaches ME about password safety. She genuinely looks forward to each lesson.", color: "#00e5ff" },
-              { name: "James T.", role: "Dad of twins, age 7", text: "Finally, cybersecurity for kids that isn't boring. The boss battles are an absolute hit in our house.", color: "#34d399" },
-              { name: "Priya K.", role: "Mum of 9-year-old", text: "Worth every penny. My son spotted a real phishing email last week and knew exactly what to do.", color: "#ffd158" },
-            ].map((r, i) => (
-              <div key={i} data-scroll data-scroll-delay={String(i * 0.12)}>
-                <motion.div
-                  whileHover={{ y: -4, borderColor: r.color }}
-                  style={{
-                    position: "relative", overflow: "hidden",
-                    background: "rgba(10,13,30,0.62)",
-                    border: "1px solid rgba(124,92,255,0.15)",
-                    borderRadius: 20, padding: 28,
-                    backdropFilter: "blur(12px)",
-                  }}
-                >
-                  <span className="display-font" aria-hidden style={{
-                    position: "absolute", top: 8, right: 20,
-                    fontSize: 48, lineHeight: 1,
-                    color: "rgba(0,229,255,0.08)", fontWeight: 700,
-                  }}>
-                    &ldquo;
-                  </span>
-                  <div style={{ color: "#ffd158", fontSize: 16, letterSpacing: 3, marginBottom: 14 }}>★★★★★</div>
-                  <p style={{ color: "#d1d5db", fontSize: 15, lineHeight: 1.7, marginBottom: 20, fontStyle: "italic" }}>
-                    &ldquo;{r.text}&rdquo;
-                  </p>
-                  <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-                    <div style={{
-                      width: 40, height: 40, borderRadius: "50%",
-                      background: `linear-gradient(135deg, ${r.color}, #34d399)`,
-                      display: "flex", alignItems: "center", justifyContent: "center",
-                      color: "#fff", fontWeight: 800, fontSize: 16,
-                    }}>
-                      {r.name[0]}
-                    </div>
-                    <div>
-                      <div style={{ color: "#fff", fontWeight: 800, fontSize: 14 }}>{r.name}</div>
-                      <div style={{ color: "#64748b", fontSize: 12 }}>{r.role}</div>
-                    </div>
-                  </div>
-                </motion.div>
-              </div>
-            ))}
-          </div>
-        </section>
+        {/* Testimonials will return with real, attributable parent reviews. */}
 
         {/* ── PRICING ─────────────────────────────────────────────────────── */}
         <section id="pricing" className="max-w-[800px] mx-auto px-6 md:px-10 pt-6 pb-16 sm:pt-8 sm:pb-20">
