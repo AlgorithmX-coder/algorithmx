@@ -42,7 +42,7 @@ const DEFAULT_SUGGESTION: Suggestion = {
   stream: "CYBER HEROES ACADEMY",
   accent: "#5fffa3",
   status: "LIVE NOW",
-  project: "Build a Password Defender. The only stream live today.",
+  project: "Build a Password Defender in Cyber Heroes — live now.",
   href: "/cyberheroes",
   cta: "Start Cyber Heroes",
 };
@@ -52,7 +52,7 @@ const AUDIENCE_SUGGESTIONS: Record<Exclude<AudienceId, null>, Suggestion> = {
     stream: "CYBER HEROES ACADEMY",
     accent: "#5fffa3",
     status: "LIVE NOW",
-    project: "Story-led safety lessons for ages 6-14. Hands-on, not videos.",
+    project: "Story-led safety lessons for ages 6-9. Hands-on, not videos.",
     href: "/cyberheroes",
     cta: "Start Cyber Heroes",
   },
@@ -60,7 +60,7 @@ const AUDIENCE_SUGGESTIONS: Record<Exclude<AudienceId, null>, Suggestion> = {
     stream: "CYBER HEROES ACADEMY",
     accent: "#9ff5ff",
     status: "LIVE NOW",
-    project: "8 cyber missions to beat. Game Dev + AI streams arriving 2026.",
+    project: "20 cyber missions to beat. More streams unlocking soon.",
     href: "/cyberheroes",
     cta: "Start Cyber Heroes",
   },
@@ -68,7 +68,7 @@ const AUDIENCE_SUGGESTIONS: Record<Exclude<AudienceId, null>, Suggestion> = {
     stream: "CYBERSECURITY",
     accent: "#cba8ff",
     status: "LIVE NOW",
-    project: "Build a portfolio. UK tech avg £65K. Start here.",
+    project: "Build a portfolio. UK cyber median £60K. Start here.",
     href: "/cyberheroes",
     cta: "Start Cybersecurity",
   },
@@ -338,7 +338,7 @@ export default function Algo() {
               >
                 {audience
                   ? `Path tuned for ${AUDIENCE_LABEL_SHORT[audience].toLowerCase()}. Here's your starting point:`
-                  : "Pick an audience above or jump straight into the only stream live today."}
+                  : "Jump straight into Cyber Security — live now for ages 6-13."}
               </p>
 
               {/* Recommendation card */}

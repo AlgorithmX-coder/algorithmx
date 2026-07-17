@@ -1,13 +1,19 @@
 "use client";
 
-import { TESTIMONIALS, TRUST_LOGOS } from "./data";
-import { FadeUp, Marquee, Ico } from "./utilities";
+import { TRUST_LOGOS } from "./data";
+import { FadeUp, Marquee } from "./utilities";
 
 /**
- * Credibility section - testimonials marquee + trust logos.
+ * Credibility section — the industry-technology strip.
  *
- * Bright theme. Cards are white with accent-coloured left rails.
- * Marquee accelerates 45% on hover instead of pausing - reactive.
+ * HONESTY PASS (2026-07-17): the testimonial marquee was removed. The
+ * quotes were placeholder personas, and publishing invented consumer
+ * reviews is a banned practice under the UK DMCC Act 2024 — restore a
+ * testimonial wall ONLY with genuinely collected, consented, dated
+ * quotes. The logo strip stays but is reframed from "Trusted & aligned
+ * with" (implied endorsement) to the factual claim: these are the
+ * technologies the curriculum teaches with. Institutional marks that
+ * read as endorsements (NCSC, King's Trust, CompTIA) were removed.
  */
 export default function Testimonials() {
   return (
@@ -51,7 +57,7 @@ export default function Testimonials() {
               marginBottom: 12,
             }}
           >
-            // FIELD REPORTS
+            {"// THE REAL TOOLKIT"}
           </p>
         </FadeUp>
         <FadeUp delay={0.05}>
@@ -65,83 +71,9 @@ export default function Testimonials() {
               margin: 0,
             }}
           >
-            Trusted by parents, teachers &amp; learners.
+            Learn the technology the industry runs on.
           </h2>
         </FadeUp>
-      </div>
-
-      <div style={{ marginBottom: 72 }}>
-        <Marquee
-          items={TESTIMONIALS}
-          speed={70}
-          itemKey={(t) => t.name}
-          renderItem={(t) => (
-            <div
-              style={{
-                width: 360,
-                background: "rgba(13,15,24,0.72)",
-                backdropFilter: "blur(14px) saturate(1.4)",
-                WebkitBackdropFilter: "blur(14px) saturate(1.4)",
-                border: "1px solid rgba(232,237,255,0.08)",
-                borderLeft: `4px solid ${t.accent}`,
-                borderRadius: 16,
-                padding: 26,
-                position: "relative",
-                overflow: "hidden",
-                height: 240,
-                display: "flex",
-                flexDirection: "column",
-                boxShadow:
-                  "0 1px 3px rgba(0,0,0,0.4), 0 14px 36px rgba(0,0,0,0.25)",
-              }}
-            >
-              <div
-                aria-hidden
-                style={{
-                  position: "absolute",
-                  top: 12,
-                  left: 18,
-                  opacity: 0.14,
-                }}
-              >
-                <Ico name="quote" size={42} color={t.accent} sw={1.4} />
-              </div>
-              <p
-                style={{
-                  color: "rgba(232,237,255,0.84)",
-                  fontSize: 14.5,
-                  lineHeight: 1.7,
-                  marginBottom: 14,
-                  position: "relative",
-                  flex: 1,
-                }}
-              >
-                &ldquo;{t.quote}&rdquo;
-              </p>
-              <p
-                style={{
-                  color: "var(--lv2-paper)",
-                  fontSize: 14,
-                  fontWeight: 700,
-                  fontFamily: "var(--lv2-font-display)",
-                }}
-              >
-                {t.name}
-              </p>
-              <p
-                style={{
-                  color: "rgba(232,237,255,0.52)",
-                  fontSize: 12,
-                  fontFamily: "var(--lv2-font-mono)",
-                  letterSpacing: "0.06em",
-                  marginTop: 2,
-                }}
-              >
-                {t.title}
-              </p>
-            </div>
-          )}
-        />
       </div>
 
       <div style={{ textAlign: "center", padding: "0 var(--lv2-rail)" }}>
@@ -159,7 +91,7 @@ export default function Testimonials() {
             marginBottom: 28,
           }}
         >
-          Trusted &amp; aligned with
+          Curriculum built around tools from
         </p>
       </div>
       <Marquee
@@ -178,9 +110,9 @@ export default function Testimonials() {
             }}
           >
             {/* Each SVG carries its official brand color baked into the
-             *  file (Microsoft = its four real square colors; Apple,
-             *  Unity, NCSC and King's Trust stay white — that IS their
-             *  correct dark-background treatment). Resting slightly
+             *  file (Microsoft = its four real square colors; Apple and
+             *  Unity stay white — that IS their correct dark-background
+             *  treatment). Resting slightly
              *  dimmed so the row doesn't outshine the content, full
              *  color on hover. */}
             <img

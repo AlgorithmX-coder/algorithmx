@@ -22,12 +22,12 @@ const FAQS: QA[] = [
   {
     icon: "ages",
     q: "What ages is AlgorithmX for?",
-    a: "Everyone from age 6 to adult. AlgorithmX is a multi-track platform built for the whole journey — young children start with foundational courses like Cyber Heroes Academy, while older learners and adults can work toward professional, accredited qualifications. Whatever the age or stage, there's a track designed for it.",
+    a: "Everyone from age 6 to adult. AlgorithmX is a multi-track platform built for the whole journey — young children start with foundational courses like Cyber Heroes Academy, while older learners and adults work toward recognised qualification pathways. Whatever the age or stage, there's a track designed for it.",
   },
   {
     icon: "tag",
     q: "How much does it cost?",
-    a: "Courses range from £99 to £159 as a one-time payment — no subscriptions and no hidden fees. Pricing depends on the course and its depth, with the most advanced, professionally accredited tracks at the top of that range. Pay once, keep access.",
+    a: "£99 as a one-time payment per course — no subscriptions and no hidden fees. Pay once, keep lifetime access. School licensing is priced separately.",
   },
   {
     icon: "code",

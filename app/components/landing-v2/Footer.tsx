@@ -83,28 +83,23 @@ export default function Footer() {
           <FooterColumn
             label="Subjects"
             links={[
-              { name: "Cybersecurity", href: "/cyberheroes" },
+              { name: "Cybersecurity", href: "/cybersecurity" },
+              { name: "Cyber Heroes", href: "/cyberheroes" },
               { name: "Cyber Explorers", href: "/cyberexplorers" },
             ]}
             note="+ 5 more streams — encrypted until launch"
           />
+          {/* HONESTY PASS (2026-07-17): dead `href="#"` links removed —
+           * About / For Parents / For Teens / Pricing and the entire
+           * Legal column (Privacy / Terms / Cookies / Safeguarding) all
+           * pointed nowhere. A dead Safeguarding link is the worst
+           * possible signal for this audience, and Privacy/Cookies pages
+           * are legally required for a UK company processing children's
+           * data — SHIP THE REAL PAGES, then restore the links here. */}
           <FooterColumn
             label="Company"
             links={[
-              { name: "About", href: "#" },
-              { name: "For Parents", href: "#" },
-              { name: "For Teens", href: "#" },
-              { name: "Pricing", href: "#" },
               { name: "Contact", href: "mailto:support@algorithmx.co.uk" },
-            ]}
-          />
-          <FooterColumn
-            label="Legal"
-            links={[
-              { name: "Privacy", href: "#" },
-              { name: "Terms", href: "#" },
-              { name: "Cookies", href: "#" },
-              { name: "Safeguarding", href: "#" },
             ]}
           />
         </div>
@@ -149,7 +144,7 @@ export default function Footer() {
       <style jsx>{`
         .lv2-footer-grid {
           display: grid;
-          grid-template-columns: 2fr 1fr 1fr 1fr;
+          grid-template-columns: 2fr 1fr 1fr;
           gap: 48px;
         }
         .lv2-footer-bottom {
