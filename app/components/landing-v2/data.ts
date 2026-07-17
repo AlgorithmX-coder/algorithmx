@@ -31,13 +31,11 @@ export interface Subject {
   courses: Course[];
 }
 
-export const TRUST_STRIP = [
-  "CyberFirst Aligned",
-  "ASDAN Accredited",
-  "6 Subjects",
-  "Ages 6 to Adult",
-  "UK Designed",
-];
+/* TRUST_STRIP deleted 2026-07-17: it was dead code containing
+ * accreditation overclaims ("CyberFirst Aligned", "ASDAN Accredited")
+ * that directly contradicted the honest "working toward" framing in
+ * STEPS below — a loaded gun for any future import. Recreate only with
+ * claims that are true at the time. */
 
 /* Subject palette - mapped to landing-v2 brand tokens so they harmonise
  * with the cinematic above. */
@@ -340,55 +338,18 @@ export const STEPS = [
   { n: 5, title: "Earn a Qualification", desc: "Working toward CyberFirst & ASDAN recognition", accent: SUBJ_VIOLET },
 ];
 
-export interface Testimonial {
-  quote: string;
-  name: string;
-  title: string;
-  accent: string;
-}
+/* TESTIMONIALS removed 2026-07-17 (honesty pass): the entries were
+ * placeholder personas, not collected reviews — publishing invented
+ * consumer reviews is a banned practice under the UK DMCC Act 2024.
+ * When real, consented, dated testimonials exist, reintroduce the
+ * interface + array and restore the marquee in Testimonials.tsx. */
 
-export const TESTIMONIALS: Testimonial[] = [
-  {
-    quote:
-      "My daughter absolutely loves it. She talks about Adam and Layla like they're her best friends, and she's already teaching ME about password safety.",
-    name: "Sarah T.",
-    title: "Parent, London",
-    accent: SUBJ_CYAN,
-  },
-  {
-    quote:
-      "Finally, a course that actually engages kids. The interactive missions are brilliant - my son doesn't even realise he's learning.",
-    name: "James P.",
-    title: "Parent, Manchester",
-    accent: SUBJ_LIME,
-  },
-  {
-    quote:
-      "As a teacher, I recommend this to every parent. It covers everything the curriculum misses about online safety.",
-    name: "Mrs. K. Williams",
-    title: "Year 4 Teacher",
-    accent: SUBJ_AMBER,
-  },
-  {
-    quote:
-      "I built my first penetration test environment at 15. The CTF challenges are genuinely hard - and I love it. My school doesn't teach anything like this.",
-    name: "Aisha R.",
-    title: "Age 16, Birmingham",
-    accent: SUBJ_VIOLET,
-  },
-];
-
-/* Trust / partner logos for the homepage marquee.
- *
- * All sources are transparent-background SVGs so they render uniformly as
- * white silhouettes via `filter: brightness(0) invert(1)` (see
- * Testimonials.tsx). The big-tech / tooling marks come from the Simple
- * Icons set (public/logos/brands/*.svg — official brand colors baked
- * into each file 2026-07-17; Microsoft split into its four squares); the
- * UK accreditations (NCSC, King's Trust) are flat-white SVGs already
- * designed for dark backgrounds. Keeping every logo a single white tone
- * gives the cohesive "trusted by" wall the dark cosmic theme wants,
- * instead of a clash of baked white/black/coloured logo backgrounds. */
+/* Technology logos for the homepage marquee — the tools the curriculum
+ * teaches with (framed factually in Testimonials.tsx, NOT as
+ * endorsements; institutional marks like NCSC / King's Trust / CompTIA
+ * were removed for exactly that reason). Simple Icons SVGs with the
+ * official brand colors baked into each file (Microsoft split into its
+ * four squares). */
 export const TRUST_LOGOS = [
   { name: "Microsoft", src: "/logos/brands/microsoft.svg" },
   { name: "Google", src: "/logos/brands/google.svg" },
@@ -402,9 +363,6 @@ export const TRUST_LOGOS = [
   { name: "Meta", src: "/logos/brands/meta.svg" },
   { name: "Unity", src: "/logos/brands/unity.svg" },
   { name: "Raspberry Pi", src: "/logos/brands/raspberrypi.svg" },
-  { name: "CompTIA", src: "/logos/brands/comptia.svg" },
-  { name: "NCSC", src: "/logos/ncsc.svg" },
-  { name: "King's Trust", src: "/logos/kingstrust.svg" },
 ];
 
 /* SVG icon paths (subset shared with the homepage). */

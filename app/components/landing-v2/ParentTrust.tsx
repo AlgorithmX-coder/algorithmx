@@ -29,7 +29,7 @@ const PILLARS: Pillar[] = [
   {
     title: "Age-appropriate, always",
     copy:
-      "Content is staged for ages 6-8, 9-12, 13-16. We meet your child where they are. Never push, never patronise.",
+      "Content is staged for ages 6-9, 10-13, 14-17 and adult. We meet your child where they are. Never push, never patronise.",
     accent: "#9ff5ff",
     icon: "person",
   },

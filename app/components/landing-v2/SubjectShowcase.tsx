@@ -44,11 +44,11 @@ const STREAMS: Stream[] = [
   {
     id: "cybersecurity",
     name: "Cybersecurity",
-    ages: "Ages 6 → Adult · 4 tracks",
+    ages: "Ages 6 → Adult · 2 of 4 tracks live",
     status: "LIVE NOW",
     isLive: true,
     blurb:
-      "From spotting scams at age 6 to delivering a full penetration-test report on a live web app as an adult. Online safety is the gateway skill.",
+      "From spotting scams at age 6 to real security skills that grow all the way to adult level. Online safety is the gateway skill.",
     project: "Pen-test a live web app & ship the security report",
     accent: "#3ee88f",
     icon: "M12 2l8 3v6c0 5-3.5 8-8 11-4.5-3-8-6-8-11V5l8-3z",
@@ -259,8 +259,7 @@ export default function SubjectShowcase() {
                 }}
               >
                 Every card below is a real course, locked and encrypted until
-                launch day. The countdowns are live — the first stream decrypts
-                in 3 months.
+                launch day — the first stream decrypts in around 3 months.
               </p>
             </div>
           </FadeUp>
