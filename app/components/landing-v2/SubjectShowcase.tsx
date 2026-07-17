@@ -241,6 +241,7 @@ export default function SubjectShowcase() {
                   lineHeight: 1.15,
                   color: "var(--lv2-paper)",
                   margin: "12px 0 0",
+                  textShadow: "0 2px 18px rgba(4,5,13,0.95), 0 0 6px rgba(4,5,13,0.8)",
                 }}
               >
                 Five new courses. Releasing soon.
@@ -253,6 +254,7 @@ export default function SubjectShowcase() {
                   color: "rgba(232,237,255,0.62)",
                   maxWidth: 620,
                   margin: "10px 0 0",
+                  textShadow: "0 2px 14px rgba(4,5,13,0.95), 0 0 5px rgba(4,5,13,0.8)",
                 }}
               >
                 Every card below is a real course, locked and encrypted until
@@ -737,8 +739,10 @@ function RoadmapCard({ stream, idx }: { stream: Stream; idx: number }) {
         {
           "--accent": a,
           position: "relative",
+          /* Near-opaque (was 0.6/0.72): the global typed-code backdrop
+           * showed through the glass and cut across the ciphertext. */
           background:
-            "linear-gradient(180deg, rgba(11,15,26,0.6), rgba(4,7,14,0.72))",
+            "linear-gradient(180deg, rgba(11,15,26,0.88), rgba(4,7,14,0.94))",
           border: `1px solid ${a}2e`,
           borderRadius: 14,
           padding: "22px 20px",
