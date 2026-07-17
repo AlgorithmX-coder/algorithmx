@@ -2,7 +2,6 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { motion } from "framer-motion";
 import { CSSProperties, useEffect, useRef, useState } from "react";
 import { CyberIconOrEmoji } from "@/app/components/CyberIcon";
 import CyberHeroesPlayfulBackdrop from "@/app/components/CyberHeroesPlayfulBackdrop";
@@ -622,15 +621,13 @@ function CyberHeroesNav() {
 
             <div className="chnav-cta">
               <a href="/login" className="chnav-login">Log In</a>
-              <motion.a
+              <a
                 href="/signup?course=cyber-heroes"
-                whileHover={{ scale: 1.04, y: -1, boxShadow: BTN_GLOW_HOVER }}
-                whileTap={{ scale: 0.97 }}
-                className="chnav-enrol"
+                className="chnav-enrol ch-lift"
                 style={{ background: BTN_GRAD, boxShadow: `${BTN_GLOW}, inset 0 1px 0 rgba(255,255,255,0.3)`, padding: scrolled ? "10px 18px" : "11px 20px" }}
               >
                 Enrol · £99
-              </motion.a>
+              </a>
               <button
                 type="button"
                 className="chnav-burger"
@@ -755,6 +752,13 @@ export default function HomePage() {
         @media (max-width: 640px) {
           .ch-typewriter { white-space: normal; border-right: none; width: auto !important; animation: none; }
         }
+        .ch-lift { transition: transform 0.22s cubic-bezier(0.16,1,0.3,1), box-shadow 0.22s cubic-bezier(0.16,1,0.3,1); will-change: transform; }
+        .ch-lift:hover { transform: translateY(-2px) scale(1.04); }
+        .ch-lift:active { transform: scale(0.97); }
+        @keyframes chSparkleFM { 0%,100% { opacity: 0.3; transform: scale(0.8); } 50% { opacity: 1; transform: scale(1.2); } }
+        .ch-sparkle { animation: chSparkleFM 2.5s ease-in-out infinite; }
+        @keyframes chRaccoonGlow { 0%,100% { box-shadow: 0 0 30px rgba(239,68,68,0.3); } 50% { box-shadow: 0 0 60px rgba(239,68,68,0.6); } }
+        .ch-raccoon-glow { animation: chRaccoonGlow 3s ease-in-out infinite; }
       `}</style>
 
       {/* New playful-but-techy cosmic backdrop (replaces the old R3F
@@ -772,10 +776,7 @@ export default function HomePage() {
         <section className="max-w-[1200px] mx-auto px-6 md:px-10 pt-28 sm:pt-36 pb-16 sm:pb-24">
           <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-16">
             {/* Text */}
-            <motion.div className="flex-1 text-center lg:text-left"
-              initial={{ opacity: 0, y: 32 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ type: "spring", stiffness: 150, damping: 20 }}>
+            <div className="flex-1 text-center lg:text-left">
               <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-black mb-6"
                 style={{ background: "rgba(124,92,255,0.15)", border: "1px solid rgba(124,92,255,0.3)", color: "#7c5cff", boxShadow: "0 0 12px rgba(124,92,255,0.2)" }}>
                 <CyberIconOrEmoji emoji="🛡️" size={16} accent="cyan" glow={false} />
@@ -816,17 +817,13 @@ export default function HomePage() {
                 <span>Built by parents, for parents. UK-based.</span>
               </div>
               <div className="flex gap-4 flex-wrap justify-center lg:justify-start">
-                <motion.a href="/signup?course=cyber-heroes"
-                  whileHover={{ scale: 1.05, y: -2, boxShadow: BTN_GLOW_HOVER }}
-                  whileTap={{ scale: 0.95 }}
-                  className="px-7 py-4 font-bold text-[#1a0e14] text-base"
+                <a href="/signup?course=cyber-heroes"
+                  className="px-7 py-4 font-bold text-[#1a0e14] text-base ch-lift"
                   style={{ background: BTN_GRAD, boxShadow: BTN_GLOW, borderRadius: 14 }}>
                   Enrol Now · £99
-                </motion.a>
-                <motion.a href="#how"
-                  whileHover={{ scale: 1.05, y: -2 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="px-7 py-4 font-bold text-base inline-flex items-center gap-2"
+                </a>
+                <a href="#how"
+                  className="px-7 py-4 font-bold text-base inline-flex items-center gap-2 ch-lift"
                   style={{
                     color: "#00e5ff",
                     background: "rgba(0,229,255,0.06)",
@@ -835,7 +832,7 @@ export default function HomePage() {
                     textDecoration: "none",
                   }}>
                   See How It Works
-                </motion.a>
+                </a>
               </div>
               {/* Hero counters row - staggered fade-in-up reveal */}
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-10 max-w-2xl mx-auto lg:mx-0">
@@ -845,11 +842,8 @@ export default function HomePage() {
                   { to: 4, suffix: "", label: "Certificates", color: "#ff7a59" },
                   { to: 100, suffix: "%", label: "Hands-On", color: "#ffd158" },
                 ].map((s, i) => (
-                  <motion.div
+                  <div
                     key={i}
-                    initial={{ opacity: 0, y: 16 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, delay: 0.4 + i * 0.12, ease: [0.16, 1, 0.3, 1] }}
                     style={{
                       background: "rgba(10,13,30,0.6)", border: "1px solid rgba(148,163,184,0.16)",
                       borderRadius: 14, padding: "14px 12px", textAlign: "center",
@@ -861,16 +855,13 @@ export default function HomePage() {
                     <div style={{ fontSize: 11, fontWeight: 700, color: "#d1d5db", letterSpacing: "0.08em", marginTop: 6, textTransform: "uppercase" }}>
                       {s.label}
                     </div>
-                  </motion.div>
+                  </div>
                 ))}
               </div>
-            </motion.div>
+            </div>
 
             {/* Hero Image */}
-            <motion.div className="flex-1 flex justify-center lg:justify-end"
-              initial={{ opacity: 0, scale: 0.85 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ type: "spring", stiffness: 150, damping: 20, delay: 0.2 }}>
+            <div className="flex-1 flex justify-center lg:justify-end">
               <div className="relative">
                 <div className="relative">
                   {/* Ambient cosmic glow - STATIC, sits behind the video.
@@ -970,13 +961,11 @@ export default function HomePage() {
                   { bottom: "12px", left: "-10px", size: 10 },
                   { top: "40%", right: "-14px", size: 8 },
                 ].map((s, i) => (
-                  <motion.div key={i} className="absolute text-yellow-300"
-                    animate={{ opacity: [0.3, 1, 0.3], scale: [0.8, 1.2, 0.8] }}
-                    transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut", delay: i * 0.8 }}
-                    style={{ ...s, fontSize: s.size }}>✦</motion.div>
+                  <div key={i} className="absolute text-yellow-300 ch-sparkle"
+                    style={{ ...s, fontSize: s.size, animationDelay: `${i * 0.8}s` }}>✦</div>
                 ))}
               </div>
-            </motion.div>
+            </div>
           </div>
         </section>
 
@@ -992,8 +981,7 @@ export default function HomePage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 max-w-3xl mx-auto mb-10">
             {/* Adam */}
             <div data-scroll data-scroll-delay="0">
-              <motion.div className="rounded-3xl char-blob char-blob-adam"
-                whileHover={{ y: -8, scale: 1.03, filter: "drop-shadow(0 0 50px rgba(124,92,255,0.6))" }}
+              <div className="rounded-3xl char-blob char-blob-adam"
                 style={{
                   // No card background - Adam emerges directly from the
                   // cosmic atmosphere with a violet ambient glow.
@@ -1020,13 +1008,12 @@ export default function HomePage() {
                     Curious, brave, and always ready to learn. Adam enjoys gaming and wants to keep his digital world safe.
                   </p>
                 </div>
-              </motion.div>
+              </div>
             </div>
 
             {/* Layla */}
             <div data-scroll data-scroll-delay="0.15">
-              <motion.div className="rounded-3xl char-blob char-blob-layla"
-                whileHover={{ y: -8, scale: 1.03, filter: "drop-shadow(0 0 50px rgba(255,95,179,0.6))" }}
+              <div className="rounded-3xl char-blob char-blob-layla"
                 style={{
                   background: "transparent",
                   filter: "drop-shadow(0 0 40px rgba(255,95,179,0.45)) drop-shadow(0 0 90px rgba(255,95,179,0.18))",
@@ -1047,7 +1034,7 @@ export default function HomePage() {
                     Smart, creative, and fearless. Layla knows that staying safe online is a superpower everyone needs.
                   </p>
                 </div>
-              </motion.div>
+              </div>
             </div>
           </div>
 
@@ -1055,13 +1042,11 @@ export default function HomePage() {
             <p className="ch-sub text-base sm:text-lg max-w-2xl mx-auto leading-relaxed mb-8">
               Join Adam and Layla on their adventure to become cybersecurity experts. Help them stay safe from the Hacker Raccoon and learn how to protect yourself too!
             </p>
-            <motion.a href="/signup?course=cyber-heroes"
-              whileHover={{ scale: 1.05, y: -2, boxShadow: BTN_GLOW_HOVER }}
-              whileTap={{ scale: 0.95 }}
-              className="inline-block px-7 py-4 font-bold text-[#1a0e14] text-base"
+            <a href="/signup?course=cyber-heroes"
+              className="inline-block px-7 py-4 font-bold text-[#1a0e14] text-base ch-lift"
               style={{ background: BTN_GRAD, boxShadow: BTN_GLOW, borderRadius: 14 }}>
               Enrol Your Child - £99
-            </motion.a>
+            </a>
           </div>
         </section>
 
@@ -1157,13 +1142,12 @@ export default function HomePage() {
           <div className="relative max-w-xs">
             <div className="absolute inset-0 rounded-3xl"
               style={{ background: "rgba(239,68,68,0.3)", filter: "blur(50px)", transform: "scale(0.9)" }} />
-            <motion.div
-              animate={{ boxShadow: ["0 0 30px rgba(239,68,68,0.3)", "0 0 60px rgba(239,68,68,0.6)", "0 0 30px rgba(239,68,68,0.3)"] }}
-              transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+            <div
+              className="ch-raccoon-glow"
               style={{ borderRadius: 20, display: "inline-block", border: "2px solid rgba(239,68,68,0.3)" }}>
               <Image src="/characters/raccoon.png" alt="The Hacker Raccoon villain"
                 width={280} height={280} className="relative block" style={{ borderRadius: 18 }} />
-            </motion.div>
+            </div>
             <div className="text-center mt-4" style={{ padding: "12px 18px", borderRadius: 18, background: "radial-gradient(ellipse 100% 100% at 50% 45%, rgba(7,10,24,0.85) 0%, rgba(7,10,24,0.42) 62%, transparent 88%)" }}>
               <p className="text-blue-300 text-sm font-black">The Hacker Raccoon</p>
               <p style={{ color: "#ff6b6b", fontWeight: 700, fontSize: 18, marginTop: 4 }}>The villain your kids will learn to outsmart!</p>
@@ -1309,11 +1293,11 @@ export default function HomePage() {
             <p className="ch-sub" style={{ fontSize: 16, marginBottom: 20, maxWidth: 480, margin: "0 auto 20px" }}>
               Twenty weeks, four certificates, one Cyber Hero. One payment - lifetime access to the full journey.
             </p>
-            <motion.a href="/signup?course=cyber-heroes"
-              whileHover={{ scale: 1.05, y: -2, boxShadow: BTN_GLOW_HOVER }} whileTap={{ scale: 0.95 }}
+            <a href="/signup?course=cyber-heroes"
+              className="ch-lift"
               style={{ display: "inline-block", background: BTN_GRAD, color: "#1a0e14", fontSize: 18, fontWeight: 700, padding: "14px 36px", borderRadius: 14, textDecoration: "none", boxShadow: BTN_GLOW }}>
               Enrol Now - £99
-            </motion.a>
+            </a>
           </div>
         </section>
 
@@ -1345,8 +1329,7 @@ export default function HomePage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto">
             {FEATURES.map((f, i) => (
               <div key={i} data-scroll data-scroll-delay={String(i * 0.12)}>
-                <motion.div className="rounded-3xl p-6 h-full"
-                  whileHover={{ y: -8, scale: 1.03, boxShadow: "0 0 25px rgba(124,92,255,0.15)" }}
+                <div className="rounded-3xl p-6 h-full ch-lift"
                   style={{
                     background: "rgba(10,13,30,0.62)",
                     border: "1px solid rgba(124,92,255,0.2)",
@@ -1357,7 +1340,7 @@ export default function HomePage() {
                   </div>
                   <h3 className="font-black text-white text-lg mb-2">{f.title}</h3>
                   <p className="text-gray-400 text-sm leading-relaxed">{f.desc}</p>
-                </motion.div>
+                </div>
               </div>
             ))}
           </div>
@@ -1470,11 +1453,8 @@ export default function HomePage() {
             }} />
 
             {/* ── PHONE - left ── */}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.42, ease: [0.16, 1, 0.3, 1] }}
-              viewport={{ once: true }}
+            <div
+              data-scroll
               style={{
                 position: "relative",
                 width: "clamp(120px, 16vw, 160px)",
@@ -1528,14 +1508,11 @@ export default function HomePage() {
                   </div>
                 </div>
               </div>
-            </motion.div>
+            </div>
 
             {/* ── LAPTOP - center, biggest ── */}
-            <motion.div
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-              viewport={{ once: true }}
+            <div
+              data-scroll
               style={{
                 position: "relative",
                 width: "clamp(360px, 50vw, 540px)",
@@ -1591,14 +1568,11 @@ export default function HomePage() {
                 background: "linear-gradient(180deg, #1a1f3a, #04050d)",
                 boxShadow: "0 6px 14px -2px rgba(0,0,0,0.6)",
               }} />
-            </motion.div>
+            </div>
 
             {/* ── TABLET - right ── */}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.28, ease: [0.16, 1, 0.3, 1] }}
-              viewport={{ once: true }}
+            <div
+              data-scroll
               style={{
                 position: "relative",
                 width: "clamp(170px, 22vw, 220px)",
@@ -1642,7 +1616,7 @@ export default function HomePage() {
                   </div>
                 </div>
               </div>
-            </motion.div>
+            </div>
           </div>
 
           {/* Sub-line under the cluster */}
@@ -1744,8 +1718,8 @@ export default function HomePage() {
                   </li>
                 ))}
               </ul>
-              <motion.a href="/signup?course=cyber-heroes"
-                whileHover={{ scale: 1.05, y: -2, boxShadow: BTN_GLOW_HOVER }} whileTap={{ scale: 0.95 }}
+              <a href="/signup?course=cyber-heroes"
+                className="ch-lift"
                 style={{
                   display: "inline-block", width: "100%",
                   background: BTN_GRAD, color: "#1a0e14",
@@ -1756,7 +1730,7 @@ export default function HomePage() {
                 }}
               >
                 Enrol Your Child Now
-              </motion.a>
+              </a>
               <p style={{ fontSize: 13, color: "#64748b", marginTop: 14 }}>
                 One-time payment · Lifetime access
               </p>
@@ -1813,13 +1787,11 @@ export default function HomePage() {
                 <p className="text-base sm:text-lg max-w-lg mx-auto mb-8" style={{ color: "#eef4ff", fontWeight: 500 }}>
                   Join families across the UK giving their children the online safety skills they&apos;ll carry for life.
                 </p>
-                <motion.a href="/signup?course=cyber-heroes"
-                  whileHover={{ scale: 1.05, y: -2, boxShadow: BTN_GLOW_HOVER }}
-                  whileTap={{ scale: 0.95 }}
-                  className="inline-block px-10 py-5 font-bold text-[#1a0e14] text-lg"
+                <a href="/signup?course=cyber-heroes"
+                  className="inline-block px-10 py-5 font-bold text-[#1a0e14] text-lg ch-lift"
                   style={{ background: BTN_GRAD, boxShadow: BTN_GLOW, borderRadius: 14 }}>
                   Enrol Now · £99
-                </motion.a>
+                </a>
                 <p className="mt-4" style={{ fontSize: 13, color: "#dbe7ff", fontWeight: 500 }}>
                   One-time payment · Instant access · Lifetime updates
                 </p>
