@@ -402,30 +402,44 @@ function FAQAccordion() {
             key={i}
             data-scroll
             data-scroll-delay={String(i * 0.05)}
-            onClick={() => setOpen(isOpen ? null : i)}
-            style={{
-              borderBottom: "1px solid rgba(148,163,184,0.12)",
-              cursor: "pointer",
-            }}
+            style={{ borderBottom: "1px solid rgba(148,163,184,0.12)" }}
           >
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "22px 4px", fontSize: 16, fontWeight: 700, color: "#fff" }}>
-              <span>{item.q}</span>
-              <span style={{
-                width: 30, height: 30, borderRadius: "50%",
-                display: "flex", alignItems: "center", justifyContent: "center",
-                background: isOpen ? "#00e5ff" : "rgba(0,229,255,0.1)",
-                color: isOpen ? "#fff" : "#00e5ff",
-                fontSize: 20, flexShrink: 0,
-                transition: "all 0.3s",
-              }}>
-                {isOpen ? "−" : "+"}
-              </span>
-            </div>
-            <div style={{
-              maxHeight: isOpen ? 360 : 0,
-              overflow: "hidden",
-              transition: "max-height 0.45s cubic-bezier(0.16,1,0.3,1)",
-            }}>
+            <h3 style={{ margin: 0 }}>
+              <button
+                type="button"
+                id={`faq-q-${i}`}
+                aria-expanded={isOpen}
+                aria-controls={`faq-a-${i}`}
+                onClick={() => setOpen(isOpen ? null : i)}
+                style={{
+                  width: "100%", display: "flex", justifyContent: "space-between", alignItems: "center", gap: 12,
+                  padding: "22px 4px", fontSize: 16, fontWeight: 700, color: "#fff",
+                  background: "transparent", border: "none", cursor: "pointer", textAlign: "left", fontFamily: "inherit",
+                }}
+              >
+                <span>{item.q}</span>
+                <span aria-hidden style={{
+                  width: 30, height: 30, borderRadius: "50%",
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                  background: isOpen ? "#00e5ff" : "rgba(0,229,255,0.1)",
+                  color: isOpen ? "#04121a" : "#00e5ff",
+                  fontSize: 20, flexShrink: 0,
+                  transition: "all 0.3s",
+                }}>
+                  {isOpen ? "−" : "+"}
+                </span>
+              </button>
+            </h3>
+            <div
+              id={`faq-a-${i}`}
+              role="region"
+              aria-labelledby={`faq-q-${i}`}
+              style={{
+                maxHeight: isOpen ? 700 : 0,
+                overflow: "hidden",
+                transition: "max-height 0.45s cubic-bezier(0.16,1,0.3,1)",
+              }}
+            >
               <p style={{ padding: "0 4px 22px", color: "#d1d5db", fontSize: 15, lineHeight: 1.75 }}>
                 {item.a}
               </p>
@@ -547,7 +561,7 @@ function CyberHeroesNav() {
         .chnav-cta { display:inline-flex; align-items:center; gap:16px; justify-self:end; }
         .chnav-login { font-weight:700; font-size:14px; color:rgba(234,246,255,0.70); text-decoration:none; transition:color 160ms; }
         .chnav-login:hover { color:#eaf6ff; text-decoration:underline; text-underline-offset:4px; text-decoration-color:rgba(0,229,255,0.5); }
-        .chnav-enrol { display:inline-flex; align-items:center; border-radius:14px; border:1px solid rgba(255,255,255,0.18); color:#fff; font-family:'Space Grotesk',system-ui,sans-serif; font-weight:800; font-size:14px; text-decoration:none; white-space:nowrap; }
+        .chnav-enrol { display:inline-flex; align-items:center; border-radius:14px; border:1px solid rgba(255,255,255,0.18); color:#1a0e14; font-family:'Space Grotesk',system-ui,sans-serif; font-weight:800; font-size:14px; text-decoration:none; white-space:nowrap; }
         .chnav-frame { position:absolute; inset:0; border-radius:18px; padding:1px; pointer-events:none; z-index:0; background:linear-gradient(135deg, rgba(124,92,255,0.9), rgba(0,229,255,0.9)); -webkit-mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite:xor; mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); mask-composite:exclude; transition:opacity 320ms; }
         .chnav-frame.breathe { animation: chnavBreathe 6s ease-in-out infinite; }
         @keyframes chnavBreathe { 0%,100% { opacity:0.6; } 50% { opacity:0.74; } }
@@ -569,7 +583,7 @@ function CyberHeroesNav() {
         .chnav-sheet-link { display:block; padding:14px 8px; font-weight:700; font-size:15px; color:rgba(234,246,255,0.8); text-decoration:none; border-bottom:1px solid rgba(148,163,184,0.12); }
         .chnav-sheet-link.is-active { color:#eaf6ff; border-left:2px solid #00e5ff; padding-left:12px; }
         .chnav-sheet-login { display:block; text-align:center; padding:12px; margin-top:12px; border-radius:12px; border:1px solid rgba(0,229,255,0.3); color:#7df0ff; font-weight:700; text-decoration:none; }
-        .chnav-sheet-enrol { display:block; text-align:center; padding:13px; margin-top:10px; border-radius:14px; color:#fff; font-weight:800; font-family:'Space Grotesk',system-ui,sans-serif; text-decoration:none; }
+        .chnav-sheet-enrol { display:block; text-align:center; padding:13px; margin-top:10px; border-radius:14px; color:#1a0e14; font-weight:800; font-family:'Space Grotesk',system-ui,sans-serif; text-decoration:none; }
         @media (max-width: 1023px) {
           .chnav-grid { grid-template-columns: 1fr auto; }
           .chnav-links { display:none; }
@@ -664,69 +678,15 @@ export default function HomePage() {
   const [heroMuted, setHeroMuted] = useState(true);
   const heroVideoRef = useRef<HTMLVideoElement | null>(null);
 
-  // Hero video - sound-by-default strategy:
-  //
-  // 1. Attempt to play UNMUTED on mount. Most browsers block this on
-  //    a fresh visit, but allow it on return visits or when the site
-  //    has Media autoplay permission. When it works, we get sound
-  //    immediately with no user action.
-  //
-  // 2. If that's blocked, fall back to muted autoplay + a global
-  //    listener that unmutes on the first scroll / click / key /
-  //    touch anywhere on the page.
-  //
-  // Once unmuted, the manual mute toggle takes over for the session.
+  // Hero video: muted autoplay only. Sound is opt-in via the explicit
+  // speaker button below — we never auto-unmute on scroll/interaction
+  // (that fires an unexpected audio blast and breaks autoplay-with-sound
+  // norms; hostile for screen-reader / low-vision users).
   useEffect(() => {
     const v = heroVideoRef.current;
     if (!v) return;
-
-    let unmuted = false;
-    const finishUnmute = () => {
-      if (unmuted) return;
-      unmuted = true;
-      setHeroMuted(false);
-      window.removeEventListener("pointerdown", onInteraction);
-      window.removeEventListener("keydown", onInteraction);
-      window.removeEventListener("scroll", onInteraction);
-      window.removeEventListener("touchstart", onInteraction);
-    };
-
-    const onInteraction = () => {
-      const vv = heroVideoRef.current;
-      if (vv) {
-        vv.muted = false;
-        if (vv.paused) vv.play().catch(() => {});
-      }
-      finishUnmute();
-    };
-
-    // 1) aggressive immediate-unmute attempt
-    v.muted = false;
-    const p = v.play();
-    if (p) {
-      p.then(() => {
-        finishUnmute();
-      }).catch(() => {
-        // Blocked - restore muted autoplay and rely on interaction.
-        if (v) {
-          v.muted = true;
-          v.play().catch(() => {});
-        }
-      });
-    }
-
-    // 2) interaction fallback listeners (no-op once finishUnmute fires)
-    window.addEventListener("pointerdown", onInteraction, { passive: true });
-    window.addEventListener("keydown", onInteraction);
-    window.addEventListener("scroll", onInteraction, { passive: true });
-    window.addEventListener("touchstart", onInteraction, { passive: true });
-
-    return () => {
-      window.removeEventListener("pointerdown", onInteraction);
-      window.removeEventListener("keydown", onInteraction);
-      window.removeEventListener("scroll", onInteraction);
-      window.removeEventListener("touchstart", onInteraction);
-    };
+    v.muted = true;
+    v.play().catch(() => {});
   }, []);
 
   useEffect(() => {
@@ -806,6 +766,8 @@ export default function HomePage() {
         {/* ── NAV ──────────────────────────────────────────────────────────── */}
         <CyberHeroesNav />
 
+        <main>
+
         {/* ── HERO ─────────────────────────────────────────────────────────── */}
         <section className="max-w-[1200px] mx-auto px-6 md:px-10 pt-28 sm:pt-36 pb-16 sm:pb-24">
           <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-16">
@@ -857,7 +819,7 @@ export default function HomePage() {
                 <motion.a href="/signup?course=cyber-heroes"
                   whileHover={{ scale: 1.05, y: -2, boxShadow: BTN_GLOW_HOVER }}
                   whileTap={{ scale: 0.95 }}
-                  className="px-7 py-4 font-bold text-white text-base"
+                  className="px-7 py-4 font-bold text-[#1a0e14] text-base"
                   style={{ background: BTN_GRAD, boxShadow: BTN_GLOW, borderRadius: 14 }}>
                   Enrol Now · £99
                 </motion.a>
@@ -1096,7 +1058,7 @@ export default function HomePage() {
             <motion.a href="/signup?course=cyber-heroes"
               whileHover={{ scale: 1.05, y: -2, boxShadow: BTN_GLOW_HOVER }}
               whileTap={{ scale: 0.95 }}
-              className="inline-block px-7 py-4 font-bold text-white text-base"
+              className="inline-block px-7 py-4 font-bold text-[#1a0e14] text-base"
               style={{ background: BTN_GRAD, boxShadow: BTN_GLOW, borderRadius: 14 }}>
               Enrol Your Child - £99
             </motion.a>
@@ -1219,9 +1181,9 @@ export default function HomePage() {
             boxShadow: "0 0 30px rgba(239,68,68,0.08)",
             borderRadius: 20, padding: 32,
           }}>
-            <h3 className="display-font" style={{ color: "#fff", fontSize: 22, fontWeight: 800, marginBottom: 12 }}>
+            <h2 className="display-font" style={{ color: "#fff", fontSize: 22, fontWeight: 800, marginBottom: 12 }}>
               Who is the Hacker Raccoon?
-            </h3>
+            </h2>
             <p style={{ color: "#e2e8f0", fontSize: 15, lineHeight: 1.75, fontWeight: 500 }}>
               The Hacker Raccoon isn&apos;t just a cartoon villain. He represents the real cyber threats targeting your children every day.
               From sophisticated phishing emails disguised as game rewards, to social engineering in chat rooms, fake app downloads, and password-cracking attacks.
@@ -1241,7 +1203,7 @@ export default function HomePage() {
             <p className="ch-sub text-sm max-w-lg mx-auto mb-6">
               Cyber Heroes Academy is designed for ages 6-10. For older children and adults, check out our other cybersecurity courses.
             </p>
-            <Link href="/" className="inline-block px-6 py-3 text-sm font-bold text-white transition-all"
+            <Link href="/" className="inline-block px-6 py-3 text-sm font-bold text-[#1a0e14] transition-all"
               style={{ background: BTN_GRAD, boxShadow: BTN_GLOW, borderRadius: 14 }}>
               Explore All Courses →
             </Link>
@@ -1305,9 +1267,9 @@ export default function HomePage() {
                         </div>
                         <div style={{ flex: 1, minWidth: 0 }}>
                           <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap", marginBottom: 3 }}>
-                            <h4 className="display-font" style={{ color: "#fff", fontSize: 16.5, fontWeight: 700, lineHeight: 1.25 }}>
+                            <h3 className="display-font" style={{ color: "#fff", fontSize: 16.5, fontWeight: 700, lineHeight: 1.25 }}>
                               {wk.title}
-                            </h4>
+                            </h3>
                             {isStart && (
                               <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 9.5, fontWeight: 700, letterSpacing: "0.12em", color: "#0a0f1c", background: "#7eff97", borderRadius: 8, padding: "2px 8px", whiteSpace: "nowrap" }}>START HERE</span>
                             )}
@@ -1349,7 +1311,7 @@ export default function HomePage() {
             </p>
             <motion.a href="/signup?course=cyber-heroes"
               whileHover={{ scale: 1.05, y: -2, boxShadow: BTN_GLOW_HOVER }} whileTap={{ scale: 0.95 }}
-              style={{ display: "inline-block", background: BTN_GRAD, color: "#fff", fontSize: 18, fontWeight: 700, padding: "14px 36px", borderRadius: 14, textDecoration: "none", boxShadow: BTN_GLOW }}>
+              style={{ display: "inline-block", background: BTN_GRAD, color: "#1a0e14", fontSize: 18, fontWeight: 700, padding: "14px 36px", borderRadius: 14, textDecoration: "none", boxShadow: BTN_GLOW }}>
               Enrol Now - £99
             </motion.a>
           </div>
@@ -1786,7 +1748,7 @@ export default function HomePage() {
                 whileHover={{ scale: 1.05, y: -2, boxShadow: BTN_GLOW_HOVER }} whileTap={{ scale: 0.95 }}
                 style={{
                   display: "inline-block", width: "100%",
-                  background: BTN_GRAD, color: "#fff",
+                  background: BTN_GRAD, color: "#1a0e14",
                   fontSize: 16, fontWeight: 800,
                   padding: "16px 28px", borderRadius: 14,
                   textDecoration: "none", textAlign: "center",
@@ -1854,7 +1816,7 @@ export default function HomePage() {
                 <motion.a href="/signup?course=cyber-heroes"
                   whileHover={{ scale: 1.05, y: -2, boxShadow: BTN_GLOW_HOVER }}
                   whileTap={{ scale: 0.95 }}
-                  className="inline-block px-10 py-5 font-bold text-white text-lg"
+                  className="inline-block px-10 py-5 font-bold text-[#1a0e14] text-lg"
                   style={{ background: BTN_GRAD, boxShadow: BTN_GLOW, borderRadius: 14 }}>
                   Enrol Now · £99
                 </motion.a>
@@ -1867,6 +1829,8 @@ export default function HomePage() {
         </section>
 
         {/* ── FOOTER ───────────────────────────────────────────────────────── */}
+        </main>
+
         <footer className="border-t py-8 px-6 md:px-10" style={{ borderColor: "rgba(255,255,255,0.06)" }}>
           <div className="max-w-[1200px] mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
             <div className="flex items-center gap-2">
