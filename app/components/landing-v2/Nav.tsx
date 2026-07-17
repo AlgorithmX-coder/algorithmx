@@ -130,7 +130,7 @@ export default function Nav() {
             How It Works
           </a>
           <Link
-            className="lv2-nav-secondary"
+            className="lv2-nav-secondary lv2-nav-login"
             href="/login"
             style={{ ...navLink, color: textColorMuted }}
           >
@@ -479,11 +479,16 @@ export default function Nav() {
           border-radius: 2px;
         }
 
-        /* Tablet: hide secondary links so the bar never overflows.
-           CTA pill stays visible. */
+        /* Tablet: hide the anchor links so the bar never overflows —
+           but Log In stays (existing customers on iPad portrait must
+           always have a sign-in path; there is no hamburger). CTA pill
+           stays visible too. */
         @media (max-width: 900px) {
           :global(.lv2-nav-secondary) {
             display: none !important;
+          }
+          :global(.lv2-nav-login) {
+            display: inline-block !important;
           }
         }
         /* Phone: shrink the CTA pill so it doesn't wrap or push the
