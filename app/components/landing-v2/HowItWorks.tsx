@@ -112,15 +112,15 @@ export default function HowItWorks() {
             <span style={{ background: "linear-gradient(90deg,#36d6ff,#a98bff)", WebkitBackgroundClip: "text", backgroundClip: "text", color: "transparent" }}>real achievement</span>
           </h2>
         </FadeUp>
-        <FadeUp delay={0.1}>
-          <p style={{ color: "rgba(232,237,255,0.6)", fontSize: 17, lineHeight: 1.6, margin: "16px auto 0", maxWidth: 520 }}>
-            Choose your path, build practical skills and progress towards recognised outcomes.
-          </p>
-        </FadeUp>
+        {/* (Sub-line removed 2026-07-17 — it restated what the five step
+         *  descriptions already say, and together with the path weaving
+         *  up behind it the header read as cluttered. The headline alone
+         *  anchors the section; extra top margin below keeps the
+         *  constellation clear of it.) */}
       </div>
 
       {/* Journey stage */}
-      <div ref={ref} className="jrn-stage" style={{ position: "relative", maxWidth: 1240, margin: "44px auto 0" }}>
+      <div ref={ref} className="jrn-stage" style={{ position: "relative", maxWidth: 1240, margin: "72px auto 0" }}>
         {/* central AX watermark + guide rings */}
         <div aria-hidden style={{ position: "absolute", left: "50%", top: 8, transform: "translateX(-50%)", width: 300, height: 300, pointerEvents: "none", zIndex: 0 }}>
           <div style={{ position: "absolute", inset: 0, borderRadius: "50%", border: "1px solid rgba(124,140,255,0.10)" }} />
