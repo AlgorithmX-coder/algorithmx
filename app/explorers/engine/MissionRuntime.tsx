@@ -44,6 +44,7 @@ import Profile from "../mechanics/Profile";
 import Trace from "../mechanics/Trace";
 import Simulate from "../mechanics/Simulate";
 import Build from "../mechanics/Build";
+import Cipher from "../mechanics/Cipher";
 
 const eventKey = (e: AwardEvent) => `${e.type}:${e.sourceKey}`;
 
@@ -660,6 +661,7 @@ function PlayStage({ cycle, cycleIndex, reduced, audio, emit, onNext }: { cycle:
       {fw.verb === "PROFILE" && <Profile payload={fw.payload} {...props} />}
       {fw.verb === "SIMULATE" && <Simulate payload={fw.payload} {...props} />}
       {fw.verb === "BUILD" && <Build payload={fw.payload} {...props} />}
+      {fw.verb === "CIPHER" && <Cipher payload={fw.payload} {...props} />}
     </div>
   );
 }

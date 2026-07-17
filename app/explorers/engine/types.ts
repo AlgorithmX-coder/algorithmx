@@ -200,13 +200,38 @@ export interface BuildPayload {
   doneLine: string;
 }
 
+export interface CipherRound {
+  id: string;
+  /** Kid-framed task line for this round. */
+  prompt: string;
+  /** Plaintext (UPPERCASE A–Z + spaces); the mechanic derives the ciphertext. */
+  plaintext: string;
+  /** Caesar shift used to seal it (1–9). */
+  shift: number;
+  /** Shown once cracked. */
+  why: string;
+}
+
+/**
+ * CIPHER — make and break codes (debuts M12). The child cracks a
+ * Caesar-sealed message by spinning a shift dial until it reads —
+ * hands-on proof that simple ciphers always fall, setting up why
+ * real encryption is different.
+ */
+export interface CipherPayload {
+  intro: string;
+  rounds: CipherRound[];
+  doneLine: string;
+}
+
 export type FieldworkDef =
   | { verb: "INSPECT"; payload: InspectPayload }
   | { verb: "DECIDE"; payload: DecidePayload }
   | { verb: "PROFILE"; payload: ProfilePayload }
   | { verb: "TRACE"; payload: TracePayload }
   | { verb: "SIMULATE"; payload: SimulatePayload }
-  | { verb: "BUILD"; payload: BuildPayload };
+  | { verb: "BUILD"; payload: BuildPayload }
+  | { verb: "CIPHER"; payload: CipherPayload };
 
 /* ------------------------------------------------------------ cycles */
 
