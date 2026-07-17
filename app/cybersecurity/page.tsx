@@ -92,6 +92,11 @@ const TRACK_CHARACTER_IMAGES: Record<string, string> = {
    * (Cyber Ops' motif), composed for the card scrim (focal upper-right,
    * dark left for the text). Signals the hands-on, real-tooling format. */
   cyberstart: "/operators/cyberops-card.jpg",
+  /* Cyber Pro (18+): the same split-scene treatment as Cyber Ops but in
+   * a warm/amber key (matches its orange accent) with career-grade
+   * content - a live pen-test to root, a CVSS/STRIDE threat model, and a
+   * signed-off remediation report. Signals the professional tier. */
+  "cyberstart-pro": "/operators/cyberpro-card.jpg",
 };
 
 /* Feature tag shown with the art (TrackCard defaults to the Heroes
@@ -100,6 +105,7 @@ const TRACK_KICKERS: Record<string, string> = {
   "cyber-heroes": "Animation-led · Adam & Layla",
   cyberexplorers: "Story-driven · Agent WREN vs SIREN",
   cyberstart: "Hands-on · a live cyber range",
+  "cyberstart-pro": "Career-grade · pen-testing",
 };
 
 /* Display-layer status + weeks overrides, same rationale as
@@ -140,10 +146,16 @@ const TRACK_EMOJI_OVERRIDES: Record<string, string> = {
   cyberstart: "🛡️",
 };
 
-/* Per-track art-layer tuning for the two cards that carry a scene.
+/* Per-track art-layer tuning for the three cards that carry a scene.
  *
  * Cyber Explorers is a bright daylight photo: a light scrim keeps it
  * bright, a focal crop settles the subject centre-right, ~full opacity.
+ *
+ * Cyber Ops (14-17) and Cyber Pro (18+) share the same split-scene
+ * treatment - Pro is the warm/amber sibling (matching its orange accent)
+ * with career-grade content (a live pen-test to root, a CVSS/STRIDE
+ * threat model, a remediation report). Both use opacity 1 / centre /
+ * split scrim / a capped left text column, described below for Ops.
  *
  * Cyber Ops is the operator-console art, composed as a deliberate split
  * — a dark left half (the copy sits here) and a bright, code-dense right
@@ -155,21 +167,26 @@ const TRACK_EMOJI_OVERRIDES: Record<string, string> = {
 const TRACK_IMAGE_FILTER: Record<string, string> = {
   cyberexplorers: "saturate(1.12) brightness(1.05)",
   cyberstart: "saturate(1.06) brightness(1.03)",
+  "cyberstart-pro": "saturate(1.08) brightness(1.03)",
 };
 const TRACK_IMAGE_OPACITY: Record<string, number> = {
   cyberexplorers: 0.95,
   cyberstart: 1,
+  "cyberstart-pro": 1,
 };
 const TRACK_IMAGE_POSITION: Record<string, string> = {
   cyberexplorers: "62% 38%",
   cyberstart: "center",
+  "cyberstart-pro": "center",
 };
 const TRACK_SCRIM: Record<string, "default" | "light" | "split"> = {
   cyberexplorers: "light",
   cyberstart: "split",
+  "cyberstart-pro": "split",
 };
 const TRACK_CONTENT_MAX_WIDTH: Record<string, number> = {
   cyberstart: 265,
+  "cyberstart-pro": 265,
 };
 
 export const metadata: Metadata = {
