@@ -29,6 +29,7 @@ import { mission13 } from "./missions/mission13";
 import { mission14 } from "./missions/mission14";
 import { mission15 } from "./missions/mission15";
 import { mission16 } from "./missions/mission16";
+import { mission17 } from "./missions/mission17";
 
 const CASES: { m: MissionManifest; tease: string; minutes: string }[] = [
   { m: mission01, tease: "A student's game account gets a 24-hour death threat. Something about it reads wrong.", minutes: "45–60 MIN" },
@@ -47,6 +48,7 @@ const CASES: { m: MissionManifest; tease: string; minutes: string }[] = [
   { m: mission14, tease: "Five downloads wait on a tablet. Four are gifts. One is a horse full of soldiers.", minutes: "45–60 MIN" },
   { m: mission15, tease: "Five login pages, pixel-identical. Four are mirrors. Your eyes are useless — your tools aren't.", minutes: "45–60 MIN" },
   { m: mission16, tease: "There's a file about you, and it's for sale. You can't steal it back — you can make it worthless.", minutes: "45–60 MIN" },
+  { m: mission17, tease: "A screenshot nobody took is tearing through the school chats. Trace it, break it, still it.", minutes: "45–60 MIN" },
 ];
 
 export default function ExplorersPage() {
@@ -141,10 +143,10 @@ export default function ExplorersPage() {
             <div style={{ background: `${T.panel}99`, border: `1px dashed ${T.hairline}`, borderRadius: 4, padding: "18px 22px", display: "flex", justifyContent: "space-between", alignItems: "center", gap: 12, flexWrap: "wrap" }}>
               <div>
                 <span style={{ fontFamily: MONO, fontSize: 11.5, letterSpacing: "0.08em", color: T.textDisabled }}>
-                  CASE 017 // DOSSIER SEALED
+                  CASE 018 // DOSSIER SEALED
                 </span>
                 <div style={{ fontFamily: MONO, fontSize: 17, fontWeight: 600, color: T.textSecondary, marginTop: 6 }}>
-                  Ghost Stories
+                  The Recruiter
                 </div>
               </div>
               <span style={{ fontFamily: MONO, fontSize: 10.5, letterSpacing: "0.1em", color: T.textDisabled, border: `1px solid ${T.hairline}`, borderRadius: 2, padding: "6px 10px" }}>
