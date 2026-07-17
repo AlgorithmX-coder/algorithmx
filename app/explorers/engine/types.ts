@@ -147,11 +147,35 @@ export interface TracePayload {
   doneLine: string;
 }
 
+export interface SimulateStep {
+  /** What just happened in the con — shown as the attacker's move. */
+  scene: string;
+  /** The anticipation ask: what will they do NEXT? */
+  question: string;
+  options: [string, string, string];
+  answer: 0 | 1 | 2;
+  /** The con's actual next move, shown after the prediction. */
+  reveal: string;
+}
+
+/**
+ * SIMULATE — anticipation as defense (debuts M06). The child predicts
+ * the attacker's next move and watches the reveal play out. Safety
+ * line (art doc): the child PREDICTS attacks, never authors one — the
+ * con plays itself; the child only reads it one move ahead.
+ */
+export interface SimulatePayload {
+  intro: string;
+  steps: SimulateStep[];
+  doneLine: string;
+}
+
 export type FieldworkDef =
   | { verb: "INSPECT"; payload: InspectPayload }
   | { verb: "DECIDE"; payload: DecidePayload }
   | { verb: "PROFILE"; payload: ProfilePayload }
-  | { verb: "TRACE"; payload: TracePayload };
+  | { verb: "TRACE"; payload: TracePayload }
+  | { verb: "SIMULATE"; payload: SimulatePayload };
 
 /* ------------------------------------------------------------ cycles */
 

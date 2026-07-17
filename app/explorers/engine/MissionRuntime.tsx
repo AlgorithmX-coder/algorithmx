@@ -42,6 +42,7 @@ import Inspect from "../mechanics/Inspect";
 import Decide from "../mechanics/Decide";
 import Profile from "../mechanics/Profile";
 import Trace from "../mechanics/Trace";
+import Simulate from "../mechanics/Simulate";
 
 const eventKey = (e: AwardEvent) => `${e.type}:${e.sourceKey}`;
 
@@ -656,6 +657,7 @@ function PlayStage({ cycle, cycleIndex, reduced, audio, emit, onNext }: { cycle:
       {fw.verb === "DECIDE" && <Decide payload={fw.payload} {...props} />}
       {fw.verb === "TRACE" && <Trace payload={fw.payload} {...props} />}
       {fw.verb === "PROFILE" && <Profile payload={fw.payload} {...props} />}
+      {fw.verb === "SIMULATE" && <Simulate payload={fw.payload} {...props} />}
     </div>
   );
 }
