@@ -170,12 +170,43 @@ export interface SimulatePayload {
   doneLine: string;
 }
 
+export interface BuildSlotOption {
+  id: string;
+  label: string;
+  good: boolean;
+  why: string;
+}
+
+export interface BuildSlot {
+  id: string;
+  /** What this slot is for, kid-worded ("The master key"). */
+  label: string;
+  options: BuildSlotOption[];
+}
+
+/**
+ * BUILD — constructive defense (debuts M11). The child assembles a
+ * real defense from parts, slot by slot; a bad part explains itself
+ * and can be swapped. When every slot holds a good part, the build
+ * gets stress-tested and the attack bounces on screen.
+ */
+export interface BuildPayload {
+  intro: string;
+  /** What's being built ("Jake's password vault"). */
+  target: string;
+  slots: BuildSlot[];
+  /** The stress-test result once the build is complete. */
+  testLine: string;
+  doneLine: string;
+}
+
 export type FieldworkDef =
   | { verb: "INSPECT"; payload: InspectPayload }
   | { verb: "DECIDE"; payload: DecidePayload }
   | { verb: "PROFILE"; payload: ProfilePayload }
   | { verb: "TRACE"; payload: TracePayload }
-  | { verb: "SIMULATE"; payload: SimulatePayload };
+  | { verb: "SIMULATE"; payload: SimulatePayload }
+  | { verb: "BUILD"; payload: BuildPayload };
 
 /* ------------------------------------------------------------ cycles */
 
