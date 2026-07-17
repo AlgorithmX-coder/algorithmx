@@ -202,8 +202,8 @@ export default function SubjectShowcase() {
                 margin: "18px auto 0",
               }}
             >
-              Cyber Security is live today. The other five are on the 2026 – 2027
-              roadmap, each built around real projects to kickstart your career
+              Cyber Security is live today. Five more courses are releasing
+              soon — each built around real projects to kickstart your career
               in IT!
             </p>
           </FadeUp>
@@ -214,20 +214,52 @@ export default function SubjectShowcase() {
         </FadeUp>
 
         <div style={{ marginTop: 40 }}>
+          {/* Announcement header — says plainly what the encrypted cards
+           *  are: new courses, releasing soon, decrypting on launch day. */}
           <FadeUp delay={0.22}>
-            <p
-              style={{
-                fontFamily: "var(--lv2-font-mono)",
-                fontSize: 11,
-                fontWeight: 600,
-                letterSpacing: "0.26em",
-                textTransform: "uppercase",
-                color: "rgba(232,237,255,0.45)",
-                margin: "0 0 20px",
-              }}
-            >
-              // ON THE ROADMAP
-            </p>
+            <div style={{ margin: "0 0 26px" }}>
+              <p
+                style={{
+                  fontFamily: "var(--lv2-font-mono)",
+                  fontSize: 11,
+                  fontWeight: 700,
+                  letterSpacing: "0.26em",
+                  textTransform: "uppercase",
+                  color: "var(--lv2-cyan)",
+                  margin: 0,
+                  textShadow: "0 0 18px rgba(0,229,255,0.35)",
+                }}
+              >
+                {"// INCOMING — NEW STREAMS DETECTED"}
+              </p>
+              <h3
+                style={{
+                  fontFamily: "var(--lv2-font-display)",
+                  fontSize: "clamp(1.35rem, 2.2vw, 1.8rem)",
+                  fontWeight: 500,
+                  letterSpacing: "-0.018em",
+                  lineHeight: 1.15,
+                  color: "var(--lv2-paper)",
+                  margin: "12px 0 0",
+                }}
+              >
+                Five new courses. Releasing soon.
+              </h3>
+              <p
+                style={{
+                  fontFamily: "var(--lv2-font-display)",
+                  fontSize: "clamp(0.9rem, 1.05vw, 1rem)",
+                  lineHeight: 1.55,
+                  color: "rgba(232,237,255,0.62)",
+                  maxWidth: 620,
+                  margin: "10px 0 0",
+                }}
+              >
+                Every card below is a real course, locked and encrypted until
+                launch day. The countdowns are live — the first stream decrypts
+                in 3 months.
+              </p>
+            </div>
           </FadeUp>
           <div className="lv2-roadmap-grid">
             {upcoming.map((s, i) => (
