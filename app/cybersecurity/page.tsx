@@ -127,13 +127,13 @@ const TRACK_DURATION_OVERRIDES: Record<string, string> = {
   cyberstart: "90 min/week",
 };
 
-/* Per-track accent — borrowed from the homepage SubjectShowcase
- * cybersecurity stream's green so the subject reads consistently
- * across the site, then walks up the spectrum to violet for the
- * eldest track. The age-range itself does the heavy lifting; accent
- * is the supporting cue. */
+/* Per-track accent. Heroes runs the hub palette's warm amber-orange
+ * (kid-energy, matches the hub card's accent) — kept lighter than
+ * Cyber Pro's deep orange so the two never read as the same track.
+ * The age-range itself does the heavy lifting; accent is the
+ * supporting cue. */
 const TRACK_ACCENTS: Record<string, string> = {
-  "cyber-heroes": "#5fffa3",
+  "cyber-heroes": "#ffb347",
   cyberexplorers: "#7df0ff",
   cyberstart: "#8b7bff",
   "cyberstart-pro": "#ff7a3d",
