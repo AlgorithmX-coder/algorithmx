@@ -7,7 +7,7 @@
  */
 
 import { useState } from "react";
-import { AmberButton, Eyebrow, GhostButton } from "../engine/primitives";
+import { AmberButton, GhostButton } from "../engine/primitives";
 import { MONO, T } from "../engine/tokens";
 import type { DecidePayload, MechanicProps } from "../engine/types";
 
@@ -32,9 +32,10 @@ export default function Decide({ payload, audio, onEvent }: MechanicProps<Decide
   };
 
   return (
-    <section style={{ maxWidth: 640 }}>
-      <Eyebrow text={payload.intro} color={T.actionAmber} />
-      <div style={{ marginTop: 12, background: T.panel, border: `1px solid ${T.hairline}`, borderRadius: 3, padding: "20px 22px" }}>
+    <section style={{ maxWidth: 700, margin: "0 auto" }}>
+      {/* No instruction heading here — the amber instruction strip above
+          (rendered by PlayStage) is the single, canonical instruction. */}
+      <div style={{ background: T.panel, border: `1px solid ${T.hairline}`, borderRadius: 3, padding: "20px 22px" }}>
         <p style={{ margin: 0, fontSize: 15, lineHeight: 1.6, color: T.textPrimary }}>{payload.situation}</p>
         <p style={{ margin: "12px 0 0", fontFamily: MONO, fontSize: 13, letterSpacing: "0.04em", color: T.textSecondary }}>
           {payload.prompt}

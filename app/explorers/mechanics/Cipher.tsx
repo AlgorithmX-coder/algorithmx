@@ -65,7 +65,7 @@ export default function Cipher({ payload, reduced, audio, onEvent }: MechanicPro
   };
 
   return (
-    <section style={{ maxWidth: 640 }}>
+    <section style={{ maxWidth: 700, margin: "0 auto" }}>
       <Eyebrow text={payload.intro} color={T.actionAmber} />
 
       <div style={{ display: "flex", gap: 8, margin: "12px 0 14px" }}>

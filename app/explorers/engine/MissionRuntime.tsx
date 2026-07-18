@@ -572,7 +572,7 @@ function LearnStage({ cycle, cycleIndex, reduced, audio, emit, onNext }: { cycle
   };
 
   return (
-    <div style={{ maxWidth: 640 }}>
+    <div style={{ maxWidth: 700, margin: "0 auto" }}>
       <div style={{ display: "grid", gap: 14 }}>
         {beats.slice(0, shown).map((b, i) => (
           <Bubble key={i} who="wren">
@@ -708,7 +708,7 @@ function QuizStage({ cycle, cycleIndex, reduced, audio, emit, onNext }: { cycle:
   const answered = new Set(thread.filter((m) => m.who === "you").map((m) => m.text));
 
   return (
-    <div style={{ maxWidth: 640, position: "relative" }}>
+    <div style={{ maxWidth: 700, margin: "0 auto", position: "relative" }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 14 }}>
         <Eyebrow text="Quick quiz" color={T.confirmedGreen} />
         <span style={{ fontFamily: MONO, fontSize: 12, color: passed ? T.confirmedGreen : T.textSecondary }}>
@@ -750,7 +750,7 @@ function QuizStage({ cycle, cycleIndex, reduced, audio, emit, onNext }: { cycle:
           </div>
         )}
       </div>
-      <StampMark text="PASSED" visible={passed} reduced={reduced} style={{ position: "absolute", top: -10, right: 8 }} />
+      <StampMark text="PASSED" visible={passed} reduced={reduced} color={T.confirmedGreen} style={{ position: "absolute", top: -10, right: 8 }} />
       {passed && (
         <div className="sr-msg" style={{ marginTop: 22 }}>
           <AmberButton label="BACK TO THE MAP →" onClick={onNext} />

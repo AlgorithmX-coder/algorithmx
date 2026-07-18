@@ -7,7 +7,7 @@
  */
 
 import { useState } from "react";
-import { AmberButton, Eyebrow } from "../engine/primitives";
+import { AmberButton } from "../engine/primitives";
 import { MONO, T } from "../engine/tokens";
 import type { MechanicProps, ProfilePayload } from "../engine/types";
 
@@ -39,10 +39,10 @@ export default function Profile({ payload, audio, onEvent }: MechanicProps<Profi
   };
 
   return (
-    <section style={{ maxWidth: 680 }}>
-      <Eyebrow text={payload.intro} color={T.actionAmber} />
-
-      <div style={{ marginTop: 12, background: T.paper, color: T.fileInk, borderRadius: 2, padding: "16px 20px", boxShadow: "0 2px 0 rgba(0,0,0,0.55)" }}>
+    <section style={{ maxWidth: 720, margin: "0 auto" }}>
+      {/* No instruction heading here — the amber instruction strip above
+          (rendered by PlayStage) is the single, canonical instruction. */}
+      <div style={{ background: T.paper, color: T.fileInk, borderRadius: 2, padding: "16px 20px", boxShadow: "0 2px 0 rgba(0,0,0,0.55)" }}>
         <div style={{ fontFamily: MONO, fontSize: 11, letterSpacing: "0.08em", opacity: 0.6, marginBottom: 8 }}>
           CASE EVIDENCE ON FILE
         </div>

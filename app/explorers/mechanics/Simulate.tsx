@@ -55,7 +55,7 @@ export default function Simulate({ payload, reduced, audio, onEvent }: MechanicP
   };
 
   return (
-    <section style={{ maxWidth: 640 }}>
+    <section style={{ maxWidth: 700, margin: "0 auto" }}>
       <Eyebrow text={payload.intro} color={T.actionAmber} />
 
       {/* live-con progress */}

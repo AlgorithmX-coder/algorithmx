@@ -53,7 +53,7 @@ export default function Build({ payload, reduced, audio, onEvent }: MechanicProp
   };
 
   return (
-    <section style={{ maxWidth: 640 }}>
+    <section style={{ maxWidth: 700, margin: "0 auto" }}>
       <Eyebrow text={payload.intro} color={T.actionAmber} />
       <p style={{ margin: "10px 0 14px", fontFamily: MONO, fontSize: 12.5, letterSpacing: "0.08em", color: T.arcCyan }}>
         BUILDING: {payload.target}

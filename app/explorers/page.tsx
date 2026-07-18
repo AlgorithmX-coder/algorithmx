@@ -94,7 +94,7 @@ export default function ExplorersPage() {
             </span>
           </h1>
           <p style={{ fontSize: 16.5, lineHeight: 1.65, color: T.textSecondary, margin: "0 0 34px", maxWidth: 540 }}>
-            Two cases cleared at your level. Progress saves on every step — walk away any time, resume where you stood.
+            {CASES.length} cases are waiting. Progress saves on every step — walk away any time, resume where you stood.
           </p>
 
           <div style={{ display: "grid", gap: 18 }}>
