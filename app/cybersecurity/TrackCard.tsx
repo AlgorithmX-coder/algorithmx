@@ -9,8 +9,8 @@
  * pill and the same View-course link — families can still read the
  * track page even before launch.
  *
- * Client component because the entrance animation, hover lift, and
- * optional "great fit for {name}" highlight need motion + state.
+ * Client component because the entrance animation and hover lift
+ * need motion + state.
  */
 
 import Link from "next/link";
@@ -32,9 +32,6 @@ export interface TrackCardProps {
   /** /cyberheroes etc. — guaranteed non-null on this page (every cyber
    *  track has a landing). */
   landingHref: string;
-  /** Names of any signed-in user's children whose age fits this band.
-   *  Empty array when none. */
-  fitForChildren: string[];
   /** Accent colour the card leans into (status pill + top rule). */
   accent: string;
   /** Entrance stagger index. */
@@ -83,7 +80,6 @@ export default function TrackCard({
   status,
   blurb,
   landingHref,
-  fitForChildren,
   accent,
   index,
   characterImage,
@@ -257,56 +253,73 @@ export default function TrackCard({
           position: "relative",
           zIndex: 1,
           display: "flex",
-          alignItems: "center",
+          alignItems: "flex-start",
           gap: 12,
           flexWrap: "wrap",
         }}
       >
-        {!characterImage && !lockup && (
-          <span
-            aria-hidden
+        {/* Nameplate + age chip live together in a group capped to the
+         *  card's protected text column (contentMaxWidth) — on cards
+         *  with scene art on the right (Ops / Pro terminals) the chip
+         *  wraps under the nameplate instead of riding into the
+         *  artwork. rowGap keeps the wrapped line breathing. */}
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 12,
+            rowGap: 9,
+            flexWrap: "wrap",
+            maxWidth: contentMaxWidth,
+            minWidth: 0,
+          }}
+        >
+          {!characterImage && !lockup && (
+            <span
+              aria-hidden
+              style={{
+                fontSize: 36,
+                lineHeight: 1,
+                filter: `drop-shadow(0 0 12px ${accent}77)`,
+              }}
+            >
+              {emoji}
+            </span>
+          )}
+          <h3
             style={{
-              fontSize: 36,
-              lineHeight: 1,
-              filter: `drop-shadow(0 0 12px ${accent}77)`,
+              fontFamily: "var(--lv2-font-display)",
+              fontSize: "1.45rem",
+              fontWeight: 500,
+              color: "var(--lv2-paper)",
+              margin: 0,
+              letterSpacing: "-0.018em",
+              lineHeight: 1.15,
             }}
           >
-            {emoji}
+            {lockup ?? name}
+          </h3>
+          {/* Age chip — solid accent fill so the band is the card's
+           *  loudest cue after the nameplate itself (parents scan for
+           *  their child's age first). */}
+          <span
+            style={{
+              fontFamily: "var(--lv2-font-mono)",
+              fontSize: 12.5,
+              fontWeight: 800,
+              letterSpacing: "0.14em",
+              textTransform: "uppercase",
+              color: "var(--lv2-ink)",
+              background: accent,
+              padding: "5px 13px",
+              borderRadius: 999,
+              whiteSpace: "nowrap",
+              boxShadow: `0 0 18px ${accent}59, inset 0 1px 0 rgba(255,255,255,0.28)`,
+            }}
+          >
+            Ages {ageRange}
           </span>
-        )}
-        <h3
-          style={{
-            fontFamily: "var(--lv2-font-display)",
-            fontSize: "1.45rem",
-            fontWeight: 500,
-            color: "var(--lv2-paper)",
-            margin: 0,
-            letterSpacing: "-0.018em",
-            lineHeight: 1.15,
-          }}
-        >
-          {lockup ?? name}
-        </h3>
-        {/* Age chip — solid accent fill so the band is the card's
-         *  loudest cue after the nameplate itself (parents scan for
-         *  their child's age first). */}
-        <span
-          style={{
-            fontFamily: "var(--lv2-font-mono)",
-            fontSize: 12.5,
-            fontWeight: 800,
-            letterSpacing: "0.14em",
-            textTransform: "uppercase",
-            color: "var(--lv2-ink)",
-            background: accent,
-            padding: "5px 13px",
-            borderRadius: 999,
-            whiteSpace: "nowrap",
-            boxShadow: `0 0 18px ${accent}59, inset 0 1px 0 rgba(255,255,255,0.28)`,
-          }}
-        >
-          Ages {ageRange}
-        </span>
+        </div>
         <span
           style={{
             fontFamily: "var(--lv2-font-mono)",
@@ -407,38 +420,6 @@ export default function TrackCard({
       >
         {blurb}
       </p>
-
-      {/* Optional "great fit for {name}" highlight — soft, friendly,
-       *  never blocks layout. Only renders when the signed-in parent
-       *  has a ChildProfile whose age falls in this track's range. */}
-      {fitForChildren.length > 0 && (
-        <div
-          style={{
-            position: "relative",
-            zIndex: 1,
-            display: "flex",
-            alignItems: "center",
-            gap: 8,
-            padding: "8px 12px",
-            background: `${accent}15`,
-            border: `1px solid ${accent}55`,
-            borderRadius: 10,
-            fontFamily: "var(--lv2-font-mono)",
-            fontSize: 11,
-            fontWeight: 600,
-            letterSpacing: "0.06em",
-            color: accent,
-          }}
-        >
-          <span aria-hidden>★</span>
-          <span>
-            Great fit for{" "}
-            {fitForChildren
-              .map((n) => n.split(/\s+/)[0])
-              .join(", ")}
-          </span>
-        </div>
-      )}
 
       {/* Price + CTA row */}
       <div
