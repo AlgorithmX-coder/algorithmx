@@ -258,68 +258,31 @@ export default function TrackCard({
           flexWrap: "wrap",
         }}
       >
-        {/* Nameplate + age chip live together in a group capped to the
-         *  card's protected text column (contentMaxWidth) — on cards
-         *  with scene art on the right (Ops / Pro terminals) the chip
-         *  wraps under the nameplate instead of riding into the
-         *  artwork. rowGap keeps the wrapped line breathing. */}
-        <div
+        {!characterImage && !lockup && (
+          <span
+            aria-hidden
+            style={{
+              fontSize: 36,
+              lineHeight: 1,
+              filter: `drop-shadow(0 0 12px ${accent}77)`,
+            }}
+          >
+            {emoji}
+          </span>
+        )}
+        <h3
           style={{
-            display: "flex",
-            alignItems: "center",
-            gap: 12,
-            rowGap: 9,
-            flexWrap: "wrap",
-            maxWidth: contentMaxWidth,
-            minWidth: 0,
+            fontFamily: "var(--lv2-font-display)",
+            fontSize: "1.45rem",
+            fontWeight: 500,
+            color: "var(--lv2-paper)",
+            margin: 0,
+            letterSpacing: "-0.018em",
+            lineHeight: 1.15,
           }}
         >
-          {!characterImage && !lockup && (
-            <span
-              aria-hidden
-              style={{
-                fontSize: 36,
-                lineHeight: 1,
-                filter: `drop-shadow(0 0 12px ${accent}77)`,
-              }}
-            >
-              {emoji}
-            </span>
-          )}
-          <h3
-            style={{
-              fontFamily: "var(--lv2-font-display)",
-              fontSize: "1.45rem",
-              fontWeight: 500,
-              color: "var(--lv2-paper)",
-              margin: 0,
-              letterSpacing: "-0.018em",
-              lineHeight: 1.15,
-            }}
-          >
-            {lockup ?? name}
-          </h3>
-          {/* Age chip — solid accent fill so the band is the card's
-           *  loudest cue after the nameplate itself (parents scan for
-           *  their child's age first). */}
-          <span
-            style={{
-              fontFamily: "var(--lv2-font-mono)",
-              fontSize: 12.5,
-              fontWeight: 800,
-              letterSpacing: "0.14em",
-              textTransform: "uppercase",
-              color: "var(--lv2-ink)",
-              background: accent,
-              padding: "5px 13px",
-              borderRadius: 999,
-              whiteSpace: "nowrap",
-              boxShadow: `0 0 18px ${accent}59, inset 0 1px 0 rgba(255,255,255,0.28)`,
-            }}
-          >
-            Ages {ageRange}
-          </span>
-        </div>
+          {lockup ?? name}
+        </h3>
         <span
           style={{
             fontFamily: "var(--lv2-font-mono)",
@@ -351,6 +314,34 @@ export default function TrackCard({
           {isLive ? "Live now" : "Coming soon"}
         </span>
       </div>
+
+      {/* Age chip — solid accent fill so the band is the card's loudest
+       *  cue after the nameplate itself (parents scan for their child's
+       *  age first). Sits on its OWN line directly under the nameplate
+       *  on every card — identical position across all four, and always
+       *  inside the scrim-protected text column so it can never collide
+       *  with the scene art at any card width. */}
+      <span
+        style={{
+          position: "relative",
+          zIndex: 1,
+          alignSelf: "flex-start",
+          marginTop: -6,
+          fontFamily: "var(--lv2-font-mono)",
+          fontSize: 12.5,
+          fontWeight: 800,
+          letterSpacing: "0.14em",
+          textTransform: "uppercase",
+          color: "var(--lv2-ink)",
+          background: accent,
+          padding: "5px 13px",
+          borderRadius: 999,
+          whiteSpace: "nowrap",
+          boxShadow: `0 0 18px ${accent}59, inset 0 1px 0 rgba(255,255,255,0.28)`,
+        }}
+      >
+        Ages {ageRange}
+      </span>
 
       {/* Animation-led feature tag — only renders for tracks that have
        *  character art behind them. Reads as a premium feature label,
