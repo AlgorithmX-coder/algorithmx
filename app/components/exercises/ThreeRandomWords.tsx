@@ -15,7 +15,7 @@
  * whether the variety bonus fired. NOT the assembled password text.
  */
 
-import { useCallback, useMemo, useState } from "react";
+import { Fragment, useCallback, useMemo, useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import {
   useExerciseFeedback,
@@ -248,8 +248,15 @@ export default function ThreeRandomWords({
     <ExerciseFrame
       maxWidth={1100}
       padding={24}
-      background="linear-gradient(180deg, #0f1530 0%, #1a1f4d 100%)"
+      decor={false}
+      background="radial-gradient(ellipse 130% 85% at 50% -12%, rgba(124,92,255,0.42), transparent 56%), radial-gradient(ellipse 105% 70% at 50% 116%, rgba(0,229,255,0.22), transparent 55%), radial-gradient(circle at 84% 16%, rgba(255,160,80,0.12), transparent 42%), linear-gradient(180deg, #1b2050 0%, #0f1436 52%, #080a20 100%)"
+      style={{
+        boxShadow:
+          "0 40px 90px -28px rgba(6,8,20,0.85), 0 0 0 1.5px rgba(124,92,255,0.5) inset, 0 0 78px rgba(124,92,255,0.20) inset",
+      }}
     >
+      <style>{FORGE_KEYFRAMES}</style>
+      <ForgeBackdrop reduce={intensity === 0} />
       {/* Header */}
       <div
         style={{
@@ -267,18 +274,25 @@ export default function ThreeRandomWords({
             color: "#7df0ff",
             textTransform: "uppercase",
             fontWeight: 800,
+            display: "inline-flex",
+            alignItems: "center",
+            gap: 7,
+            padding: "5px 11px",
+            borderRadius: 999,
+            background: "rgba(0,229,255,0.10)",
+            border: "1px solid rgba(0,229,255,0.28)",
           }}
         >
-          ✦ Three Random Words
+          ⚒ Passphrase Forge
         </span>
         <span
           style={{
             fontSize: 11,
             fontFamily: "'JetBrains Mono', monospace",
-            color: "#cbd5e1",
+            color: "#aeb8d6",
           }}
         >
-          Tap {slotCount} words to build a passphrase
+          Tap {slotCount} words to forge a passphrase
         </span>
       </div>
 
@@ -312,72 +326,152 @@ export default function ThreeRandomWords({
         </p>
       </div>
 
-      {/* Slots */}
+      {/* Forge chambers — tap-to-fill slots that fuse into the passphrase */}
       <div
         style={{
-          display: "grid",
-          gridTemplateColumns: `repeat(${slotCount}, 1fr)`,
-          gap: 10,
-          marginBottom: 12,
+          display: "flex",
+          alignItems: "stretch",
+          justifyContent: "center",
+          gap: 9,
+          marginBottom: 2,
         }}
       >
         {picked.map((id, idx) => {
           const word = id ? words.find((w) => w.id === id) : null;
           const colour = word ? CATEGORY_COLOUR[word.category] : "#475569";
           return (
-            <button
-              key={idx}
-              type="button"
-              onClick={() => handleSlotTap(idx)}
-              disabled={!word || phase !== "active"}
-              style={{
-                position: "relative",
-                minHeight: 64,
-                padding: "12px 10px",
-                borderRadius: 14,
-                border: `2px dashed ${word ? colour : "rgba(148, 163, 184, 0.35)"}`,
-                background: word
-                  ? `linear-gradient(180deg, ${colour}25, ${colour}10)`
-                  : "rgba(15, 21, 48, 0.55)",
-                color: word ? colour : "rgba(148, 163, 184, 0.65)",
-                fontFamily: "'JetBrains Mono', monospace",
-                fontSize: 18,
-                fontWeight: 800,
-                letterSpacing: "0.04em",
-                cursor: word && phase === "active" ? "pointer" : "default",
-                transition:
-                  "background 220ms ease-out, border-color 220ms ease-out, color 220ms ease-out",
-                touchAction: "manipulation",
-              }}
-            >
-              {word ? word.text : `slot ${idx + 1}`}
-              {word && phase === "active" && (
-                <span
+            <Fragment key={idx}>
+              {idx > 0 && (
+                <div
                   aria-hidden
                   style={{
-                    position: "absolute",
-                    top: 4,
-                    right: 6,
-                    fontSize: 11,
-                    color: "rgba(148, 163, 184, 0.85)",
-                    fontFamily: "system-ui",
+                    display: "flex",
+                    alignItems: "center",
+                    fontSize: 26,
+                    fontWeight: 900,
+                    color: "rgba(125,240,255,0.55)",
+                    textShadow: "0 0 12px rgba(0,229,255,0.5)",
                   }}
                 >
-                  ×
-                </span>
+                  +
+                </div>
               )}
-            </button>
+              <button
+                type="button"
+                onClick={() => handleSlotTap(idx)}
+                disabled={!word || phase !== "active"}
+                style={{
+                  flex: 1,
+                  position: "relative",
+                  minHeight: 82,
+                  padding: "12px 10px",
+                  borderRadius: 18,
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: 3,
+                  border: word
+                    ? `2px solid ${colour}`
+                    : "2px dashed rgba(148,163,184,0.4)",
+                  background: word
+                    ? `linear-gradient(180deg, ${colour}42, ${colour}14)`
+                    : "rgba(10,14,34,0.5)",
+                  boxShadow: word
+                    ? `0 0 22px ${colour}66, inset 0 0 14px ${colour}2e`
+                    : "none",
+                  color: word ? colour : "rgba(148,163,184,0.65)",
+                  fontFamily: "'JetBrains Mono', monospace",
+                  cursor: word && phase === "active" ? "pointer" : "default",
+                  transition:
+                    "background 220ms ease-out, border-color 220ms ease-out, box-shadow 220ms ease-out, color 220ms ease-out",
+                  animation:
+                    !word && intensity !== 0
+                      ? "trwWell 2.4s ease-in-out infinite"
+                      : undefined,
+                  touchAction: "manipulation",
+                }}
+              >
+                {word ? (
+                  <>
+                    <span
+                      style={{
+                        fontSize: 19,
+                        fontWeight: 800,
+                        letterSpacing: "0.02em",
+                      }}
+                    >
+                      {word.text}
+                    </span>
+                    <span
+                      style={{
+                        fontSize: 9,
+                        letterSpacing: "0.14em",
+                        textTransform: "uppercase",
+                        opacity: 0.75,
+                      }}
+                    >
+                      {word.category}
+                    </span>
+                  </>
+                ) : (
+                  <>
+                    <span style={{ fontSize: 24, opacity: 0.5, lineHeight: 1 }}>
+                      +
+                    </span>
+                    <span
+                      style={{
+                        fontSize: 10,
+                        letterSpacing: "0.12em",
+                        textTransform: "uppercase",
+                      }}
+                    >
+                      slot {idx + 1}
+                    </span>
+                  </>
+                )}
+                {word && phase === "active" && (
+                  <span
+                    aria-hidden
+                    style={{
+                      position: "absolute",
+                      top: 6,
+                      right: 9,
+                      fontSize: 12,
+                      color: "rgba(226,232,240,0.7)",
+                      fontFamily: "system-ui",
+                    }}
+                  >
+                    ×
+                  </span>
+                )}
+              </button>
+            </Fragment>
           );
         })}
       </div>
+      {/* fuse arrow → the passphrase forms below */}
+      <div
+        aria-hidden
+        style={{
+          textAlign: "center",
+          fontSize: 20,
+          color: "rgba(125,240,255,0.7)",
+          margin: "2px 0 8px",
+        }}
+      >
+        ▼
+      </div>
 
-      {/* Live passphrase preview + strength meter */}
+      {/* Live passphrase preview + strength core */}
       <div
         style={{
-          padding: "14px 16px",
-          background: "rgba(8, 10, 22, 0.6)",
-          border: "1px solid rgba(125, 240, 255, 0.18)",
-          borderRadius: 14,
+          padding: "16px 18px",
+          background:
+            "radial-gradient(ellipse 80% 120% at 50% 120%, rgba(0,229,255,0.14), transparent 60%), rgba(6, 9, 22, 0.72)",
+          border: "1px solid rgba(125, 240, 255, 0.28)",
+          boxShadow: "inset 0 0 26px rgba(0,229,255,0.10)",
+          borderRadius: 18,
           marginBottom: 14,
           textAlign: "center",
         }}
@@ -397,11 +491,15 @@ export default function ThreeRandomWords({
         <div
           style={{
             fontFamily: "'JetBrains Mono', monospace",
-            fontSize: 22,
+            fontSize: 25,
             color: strength.colour,
             fontWeight: 700,
             minHeight: 30,
             wordBreak: "break-all",
+            textShadow:
+              pickedWords.length === 0
+                ? "none"
+                : `0 0 18px ${strength.colour}66`,
           }}
         >
           {pickedWords.length === 0
@@ -413,12 +511,12 @@ export default function ThreeRandomWords({
         <div
           style={{
             position: "relative",
-            height: 10,
-            background: "rgba(15, 23, 42, 0.85)",
+            height: 12,
+            background: "rgba(15, 23, 42, 0.9)",
             border: "1px solid rgba(148, 163, 184, 0.2)",
-            borderRadius: 5,
+            borderRadius: 6,
             overflow: "hidden",
-            marginTop: 10,
+            marginTop: 12,
           }}
         >
           <div
@@ -470,13 +568,57 @@ export default function ThreeRandomWords({
         )}
       </div>
 
+      {/* Word bank legend — colour key for the four word types */}
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          flexWrap: "wrap",
+          gap: 8,
+          margin: "2px 2px 8px",
+          fontFamily: "'JetBrains Mono', monospace",
+          fontSize: 10,
+          letterSpacing: "0.14em",
+          textTransform: "uppercase",
+          color: "#8ea0c8",
+        }}
+      >
+        <span>Word Bank</span>
+        <span style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
+          {(
+            [
+              ["animal", CATEGORY_COLOUR.animal],
+              ["object", CATEGORY_COLOUR.object],
+              ["place", CATEGORY_COLOUR.place],
+              ["food", CATEGORY_COLOUR.food],
+            ] as const
+          ).map(([label, c]) => (
+            <span
+              key={label}
+              style={{ display: "inline-flex", alignItems: "center", gap: 5 }}
+            >
+              <span
+                style={{
+                  width: 8,
+                  height: 8,
+                  borderRadius: "50%",
+                  background: c,
+                }}
+              />
+              {label}
+            </span>
+          ))}
+        </span>
+      </div>
+
       {/* Word wall */}
       <div
         role="group"
         aria-label="Word bank"
         style={{
           display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(110px, 1fr))",
+          gridTemplateColumns: "repeat(auto-fit, minmax(104px, 1fr))",
           gap: 8,
           marginBottom: 16,
         }}
@@ -491,19 +633,22 @@ export default function ThreeRandomWords({
               onClick={() => handleWordTap(w.id)}
               disabled={phase !== "active"}
               style={{
-                padding: "10px 8px",
+                padding: "10px 8px 10px 12px",
                 minHeight: 44,
                 background: isPicked
-                  ? `linear-gradient(135deg, ${colour}30, ${colour}15)`
-                  : "rgba(15, 21, 48, 0.6)",
-                border: `1.5px solid ${isPicked ? colour : "rgba(148, 163, 184, 0.25)"}`,
+                  ? `linear-gradient(135deg, ${colour}34, ${colour}14)`
+                  : "rgba(13, 18, 42, 0.72)",
+                border: `1.5px solid ${isPicked ? colour : "rgba(148, 163, 184, 0.22)"}`,
+                borderLeft: `4px solid ${colour}`,
                 borderRadius: 10,
                 color: isPicked ? colour : "#e2e8f0",
                 fontWeight: isPicked ? 800 : 600,
                 fontSize: 14,
                 fontFamily: "'JetBrains Mono', monospace",
+                boxShadow: isPicked ? `0 0 16px ${colour}59` : "none",
                 cursor: phase === "active" ? "pointer" : "default",
-                transition: "transform 120ms ease-out, background 160ms ease-out",
+                transition:
+                  "transform 120ms ease-out, background 160ms ease-out, box-shadow 160ms ease-out",
                 touchAction: "manipulation",
               }}
             >
@@ -585,5 +730,87 @@ export default function ThreeRandomWords({
 
       {fx.layer()}
     </ExerciseFrame>
+  );
+}
+
+/* ───────────────────────── FORGE BACKDROP ─────────────────────────
+ * Floating word-fragment "sparks" that drift up, plus soft colour orbs,
+ * giving the Passphrase Forge depth so it reads as its own lit stage
+ * instead of blending into the dark lesson shell. Sits behind all
+ * content (z-index:-1) and the sparks are skipped for reduced motion. */
+const FORGE_KEYFRAMES = `
+@keyframes trwRise {
+  0%   { transform: translateY(30px) scale(0.8); opacity: 0; }
+  15%  { opacity: 0.22; }
+  85%  { opacity: 0.22; }
+  100% { transform: translateY(-220px) scale(1.1); opacity: 0; }
+}
+@keyframes trwWell {
+  0%,100% { border-color: rgba(148,163,184,0.34); }
+  50%     { border-color: rgba(125,240,255,0.5); }
+}
+`;
+
+const FORGE_GLYPHS = ["a", "#", "7", "x", "$", "w", "9", "@", "r", "k", "2", "!"];
+const FORGE_TINTS = ["#7df0ff", "#c9b8ff", "#ff9bcb"];
+
+function ForgeBackdrop({ reduce }: { reduce: boolean }) {
+  return (
+    <div
+      aria-hidden
+      style={{
+        position: "absolute",
+        inset: 0,
+        zIndex: -1,
+        pointerEvents: "none",
+        overflow: "hidden",
+        borderRadius: "inherit",
+      }}
+    >
+      <div
+        style={{
+          position: "absolute",
+          top: -40,
+          left: -30,
+          width: 200,
+          height: 200,
+          borderRadius: "50%",
+          background:
+            "radial-gradient(circle, rgba(124,92,255,0.5), transparent 70%)",
+          filter: "blur(30px)",
+        }}
+      />
+      <div
+        style={{
+          position: "absolute",
+          bottom: -60,
+          right: -40,
+          width: 240,
+          height: 240,
+          borderRadius: "50%",
+          background:
+            "radial-gradient(circle, rgba(0,229,255,0.4), transparent 70%)",
+          filter: "blur(30px)",
+        }}
+      />
+      {!reduce &&
+        Array.from({ length: 16 }, (_, i) => (
+          <span
+            key={i}
+            style={{
+              position: "absolute",
+              left: `${(i * 53 + 7) % 100}%`,
+              top: `${60 + ((i * 17) % 38)}%`,
+              fontFamily: "'JetBrains Mono', monospace",
+              fontWeight: 700,
+              fontSize: 10 + (i % 4) * 4,
+              color: FORGE_TINTS[i % FORGE_TINTS.length],
+              animation: `trwRise ${7 + (i % 6)}s linear ${i * 0.5}s infinite`,
+            }}
+          >
+            {FORGE_GLYPHS[i % FORGE_GLYPHS.length]}
+          </span>
+        ))}
+    </div>
   );
 }
