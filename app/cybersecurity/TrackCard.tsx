@@ -287,20 +287,22 @@ export default function TrackCard({
         >
           {lockup ?? name}
         </h3>
+        {/* Age chip — solid accent fill so the band is the card's
+         *  loudest cue after the nameplate itself (parents scan for
+         *  their child's age first). */}
         <span
           style={{
             fontFamily: "var(--lv2-font-mono)",
-            fontSize: 11,
-            fontWeight: 700,
-            letterSpacing: "0.18em",
+            fontSize: 12.5,
+            fontWeight: 800,
+            letterSpacing: "0.14em",
             textTransform: "uppercase",
-            color: accent,
-            border: `1px solid ${accent}66`,
-            background: characterImage ? "rgba(13,15,26,0.55)" : "transparent",
-            padding: "3px 10px",
+            color: "var(--lv2-ink)",
+            background: accent,
+            padding: "5px 13px",
             borderRadius: 999,
             whiteSpace: "nowrap",
-            textShadow: characterImage ? "0 1px 3px rgba(0,0,0,0.5)" : undefined,
+            boxShadow: `0 0 18px ${accent}59, inset 0 1px 0 rgba(255,255,255,0.28)`,
           }}
         >
           Ages {ageRange}
