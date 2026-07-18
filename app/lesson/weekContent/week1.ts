@@ -86,11 +86,15 @@ export const WEEK_1: WeekContent = {
     // 4 - Game: MATCH (Cyber Words)
     {
       type: "memoryMatch",
+      // Each meaning maps to exactly ONE term, mirroring the four bullets
+      // from the "What Is a Password?" beat above. (The old set used "Key"
+      // and "Mine" as terms and gave three meanings that all just described
+      // "the password", so nothing matched uniquely.)
       pairs: [
-        { term: "Password", match: "My secret code", colour: "#00e5ff" },
-        { term: "Key", match: "Proves it's ME", colour: "#7eff97" },
-        { term: "Hacker", match: "Tries to guess it", colour: "#ff5fb3" },
-        { term: "Mine", match: "Only I know it", colour: "#ffd158" },
+        { term: "Password", match: "Proves it's YOU", colour: "#00e5ff" },
+        { term: "Strong Password", match: "Keeps hackers out", colour: "#7eff97" },
+        { term: "Hacker", match: "Wants to break in", colour: "#ff5fb3" },
+        { term: "Keep it Secret", match: "Only YOU know it", colour: "#ffd158" },
       ],
       narration: {
         speaker: "adam",

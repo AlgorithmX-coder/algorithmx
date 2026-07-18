@@ -1365,29 +1365,10 @@ function CardFront({
       >
         {text}
       </div>
-      {/* Matched green check */}
-      {matched && (
-        <div
-          style={{
-            position: "absolute",
-            top: 8,
-            right: 8,
-            width: 22,
-            height: 22,
-            borderRadius: "50%",
-            background: "#4a9a6a",
-            color: "#fff",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            fontSize: 12,
-            fontWeight: 900,
-            boxShadow: "0 0 12px rgba(74, 154, 106, 0.6)",
-          }}
-        >
-          ✓
-        </div>
-      )}
+      {/* No matched-check badge: it sat in the corner over the card text
+          and hid the word during the 10s memorise phase, defeating the
+          recall test. Matched cards are already marked by the green border
+          + glow set on this element above. */}
     </div>
   );
 }
