@@ -146,6 +146,140 @@ const TRACK_EMOJI_OVERRIDES: Record<string, string> = {
   cyberstart: "🛡️",
 };
 
+/* ── Branded course-name lockups ─────────────────────────────────────
+ * The logo system from the track landings' navs (glyph + wordmark in
+ * the course's own display font — PR #103), rendered inside each
+ * card's title <h3> in place of the plain name. Glyphs are the same
+ * marks the landings use, scaled to card size. The "by AlgorithmX"
+ * byline is deliberately omitted: these cards already sit under the
+ * AlgorithmX site nav, so the byline would be redundant. Fredoka /
+ * Chakra Petch are provided by this route's layout.tsx; Explorers'
+ * mono is the app-wide Geist Mono. Pro's terminal cursor is static
+ * here (the landing blinks) — the browse page stays animation-quiet.
+ */
+const LOCKUP_ROW: React.CSSProperties = {
+  display: "inline-flex",
+  alignItems: "center",
+  gap: 9,
+  whiteSpace: "nowrap",
+};
+
+const TRACK_LOCKUPS: Record<string, React.ReactNode> = {
+  "cyber-heroes": (
+    <span style={LOCKUP_ROW}>
+      <svg
+        width="21"
+        height="21"
+        viewBox="0 0 24 24"
+        aria-hidden
+        style={{
+          transform: "rotate(-7deg)",
+          filter: "drop-shadow(0 0 10px rgba(255,179,71,0.4))",
+          flexShrink: 0,
+        }}
+      >
+        <path d="M12 2 L20 5 V12 C20 17 16.5 20.5 12 22 C7.5 20.5 4 17 4 12 V5 Z" fill="#ffb347" />
+        <path d="M13.2 6 L8.6 13 H11.4 L10.6 18 L15.6 11 H12.6 Z" fill="#08101f" />
+      </svg>
+      <span
+        style={{
+          fontFamily: "var(--font-fredoka), system-ui, sans-serif",
+          fontWeight: 700,
+          fontSize: "1.3rem",
+          letterSpacing: "0.02em",
+          color: "#eaf6ff",
+        }}
+      >
+        CYBER <span style={{ color: "#ffb347" }}>HEROES</span>
+      </span>
+    </span>
+  ),
+  cyberexplorers: (
+    <span style={LOCKUP_ROW}>
+      <svg
+        width="18"
+        height="18"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="#22D3EE"
+        strokeWidth="1.8"
+        aria-hidden
+        style={{ filter: "drop-shadow(0 0 8px rgba(34,211,238,0.35))", flexShrink: 0 }}
+      >
+        <circle cx="12" cy="12" r="6.4" />
+        <path d="M12 2.6 V6 M12 18 V21.4 M2.6 12 H6 M18 12 H21.4" />
+        <circle cx="12" cy="12" r="1.6" fill="#22D3EE" stroke="none" />
+      </svg>
+      <span
+        style={{
+          fontFamily: "var(--font-geist-mono), ui-monospace, monospace",
+          fontWeight: 600,
+          fontSize: "1.1rem",
+          letterSpacing: "0.12em",
+          color: "#eaf6ff",
+        }}
+      >
+        CYBER EXPLORERS
+      </span>
+    </span>
+  ),
+  cyberstart: (
+    <span style={LOCKUP_ROW}>
+      <span
+        aria-hidden
+        style={{
+          width: 12,
+          height: 12,
+          borderRadius: 3,
+          background: "#8B7BFF",
+          boxShadow: "0 0 14px rgba(139,123,255,0.35)",
+          flexShrink: 0,
+        }}
+      />
+      <span
+        style={{
+          fontFamily: "var(--font-chakra), ui-sans-serif, system-ui, sans-serif",
+          fontWeight: 700,
+          fontSize: "1.2rem",
+          letterSpacing: "0.16em",
+          color: "#eaf6ff",
+        }}
+      >
+        CYBER OPS
+      </span>
+    </span>
+  ),
+  "cyberstart-pro": (
+    <span style={LOCKUP_ROW}>
+      <svg
+        width="20"
+        height="20"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="#ff7a3d"
+        strokeWidth="2"
+        aria-hidden
+        style={{ filter: "drop-shadow(0 0 9px rgba(255,122,61,0.35))", flexShrink: 0 }}
+      >
+        <path d="M4 4 H14.5 L20 9.5 V20 H4 Z" strokeLinejoin="round" />
+        <path d="M8 9.5 L11.2 12.5 L8 15.5" strokeLinecap="round" strokeLinejoin="round" />
+        <path d="M13 15.5 H16.2" strokeLinecap="round" />
+      </svg>
+      <span
+        style={{
+          fontFamily: "var(--font-chakra), ui-sans-serif, system-ui, sans-serif",
+          fontWeight: 700,
+          fontSize: "1.2rem",
+          letterSpacing: "0.07em",
+          color: "#eaf6ff",
+        }}
+      >
+        CYBER PRO
+      </span>
+    </span>
+  ),
+};
+
 /* Per-track art-layer tuning for the three cards that carry a scene.
  *
  * Cyber Explorers is a bright daylight photo: a light scrim keeps it
@@ -395,6 +529,7 @@ export default async function CybersecurityPage() {
                   index={i}
                   characterImage={characterImage}
                   kicker={TRACK_KICKERS[p.slug]}
+                  lockup={TRACK_LOCKUPS[p.slug]}
                   imageFilter={TRACK_IMAGE_FILTER[p.slug]}
                   imageOpacity={TRACK_IMAGE_OPACITY[p.slug]}
                   imagePosition={TRACK_IMAGE_POSITION[p.slug]}
