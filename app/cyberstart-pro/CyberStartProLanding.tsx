@@ -1,6 +1,7 @@
 "use client";
 
 import { motion, useInView } from "framer-motion";
+import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import type { Product } from "@prisma/client";
 import { DataLabScene } from "@/app/components/CyberFutureScenes";
@@ -52,8 +53,11 @@ export default function CyberStartProLanding({ product }: { product: Product }) 
   return (
     <>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@700&family=Nunito:wght@400;600;700;800;900&display=swap');
         * { font-family: 'Nunito', sans-serif; }
+        .cypro-cursor { animation: cyproBlink 1.3s steps(1) infinite; }
+        @keyframes cyproBlink { 50% { opacity: 0; } }
+        @media (prefers-reduced-motion: reduce) { .cypro-cursor { animation: none; } }
       `}</style>
 
       <DataLabScene />
@@ -67,15 +71,20 @@ export default function CyberStartProLanding({ product }: { product: Product }) 
             borderBottom: scrolled ? "1px solid rgba(255,255,255,0.06)" : "1px solid transparent",
           }}>
           <div className="max-w-[1200px] mx-auto px-6 md:px-10 py-4 flex items-center justify-between">
-            <a href="/" className="flex items-center gap-2">
-              <div className="w-9 h-9 rounded-lg flex items-center justify-center shadow-lg"
-                style={{ background: GRAD, boxShadow: `0 0 20px ${PRIMARY}60` }}>
-                <span className="text-xs font-black text-white">AX</span>
-              </div>
-              <span className="text-lg font-black text-white tracking-tight">
-                Algorithm<span className="text-transparent bg-clip-text" style={{ backgroundImage: GRAD, WebkitBackgroundClip: "text" }}>X</span>
+            <Link href="/" className="flex items-center gap-2.5" aria-label="Cyber Pro by AlgorithmX — home">
+              <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#ff7a3d" strokeWidth="2" aria-hidden
+                style={{ filter: "drop-shadow(0 0 9px rgba(255,122,61,0.35))", flexShrink: 0 }}>
+                <path d="M4 4 H14.5 L20 9.5 V20 H4 Z" strokeLinejoin="round" />
+                <path d="M8 9.5 L11.2 12.5 L8 15.5" strokeLinecap="round" strokeLinejoin="round" />
+                <path className="cypro-cursor" d="M13 15.5 H16.2" strokeLinecap="round" />
+              </svg>
+              <span style={{ fontFamily: "'Chakra Petch', sans-serif", fontWeight: 700, fontSize: 18, letterSpacing: "0.07em", color: "#fff", whiteSpace: "nowrap" }}>
+                CYBER PRO
               </span>
-            </a>
+              <span className="hidden sm:inline" style={{ fontFamily: "var(--font-geist-mono), ui-monospace, monospace", fontSize: 9, letterSpacing: "0.16em", color: "rgba(255,255,255,0.4)", textTransform: "uppercase", whiteSpace: "nowrap" }}>
+                by AlgorithmX
+              </span>
+            </Link>
             <div className="flex items-center gap-4">
               <a href="/login" className="text-sm font-bold text-gray-300 hover:text-white transition-colors hidden sm:block">Log In</a>
               <motion.a href="/signup?course=cyberstart-pro"

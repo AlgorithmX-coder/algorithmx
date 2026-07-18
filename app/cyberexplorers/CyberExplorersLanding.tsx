@@ -718,8 +718,29 @@ export default function CyberExplorersLanding() {
           borderBottom: `1px solid ${T.hairline}`,
         }}
       >
-        <Link href="/" style={{ fontFamily: MONO, fontSize: 12, letterSpacing: "0.08em", color: T.textPrimary, textDecoration: "none" }}>
-          ALGORITHMX <span style={{ color: T.textDisabled }}>//</span> <span style={{ color: T.arcCyan }}>CYBER EXPLORERS</span>
+        <Link
+          href="/"
+          aria-label="Cyber Explorers by AlgorithmX — home"
+          style={{ display: "inline-flex", alignItems: "center", gap: 9, fontFamily: MONO, fontWeight: 600, fontSize: 13, letterSpacing: "0.12em", color: T.textPrimary, textDecoration: "none", whiteSpace: "nowrap" }}
+        >
+          <svg
+            width="17"
+            height="17"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke={T.arcCyan}
+            strokeWidth="1.8"
+            aria-hidden
+            style={{ filter: `drop-shadow(0 0 8px ${T.arcCyan}59)`, flexShrink: 0 }}
+          >
+            <circle cx="12" cy="12" r="6.4" />
+            <path d="M12 2.6 V6 M12 18 V21.4 M2.6 12 H6 M18 12 H21.4" />
+            <circle cx="12" cy="12" r="1.6" fill={T.arcCyan} stroke="none" />
+          </svg>
+          CYBER EXPLORERS
+          <span className="cx-brand-by" style={{ fontSize: 9, fontWeight: 400, letterSpacing: "0.16em", color: T.textDisabled, marginLeft: 5 }}>
+            BY ALGORITHMX
+          </span>
         </Link>
         <div style={{ display: "flex", alignItems: "center", gap: 18 }}>
           <a href="#mission" className="cx-navlink">THE MISSION</a>
@@ -1497,6 +1518,7 @@ export default function CyberExplorersLanding() {
         .cx-faq[open] summary::before { content: "▾ "; }
 
         @media (max-width: 940px) {
+          .cx-brand-by { display: none; }
           .cx-two-col { grid-template-columns: 1fr !important; }
           .cx-three-col { grid-template-columns: 1fr !important; }
           .cx-four-col { grid-template-columns: repeat(2, 1fr) !important; }
