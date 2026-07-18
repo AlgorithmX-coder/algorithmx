@@ -248,20 +248,21 @@ export default function TrackCard({
         </>
       )}
 
-      {/* Header row — emoji + status pill (emoji is the visual
-       *  identifier on cards without characterImage; the background
-       *  scene is the identifier on cards that have one). */}
+      {/* Header row — the course nameplate leads the card (lockup as
+       *  the <h3>), with its age group chip right beside it and the
+       *  status pill on the far right. Emoji stays as the fallback
+       *  identifier for cards without scene art or a lockup. */}
       <div
         style={{
           position: "relative",
           zIndex: 1,
           display: "flex",
           alignItems: "center",
-          gap: 14,
+          gap: 12,
           flexWrap: "wrap",
         }}
       >
-        {!characterImage && (
+        {!characterImage && !lockup && (
           <span
             aria-hidden
             style={{
@@ -273,6 +274,37 @@ export default function TrackCard({
             {emoji}
           </span>
         )}
+        <h3
+          style={{
+            fontFamily: "var(--lv2-font-display)",
+            fontSize: "1.45rem",
+            fontWeight: 500,
+            color: "var(--lv2-paper)",
+            margin: 0,
+            letterSpacing: "-0.018em",
+            lineHeight: 1.15,
+          }}
+        >
+          {lockup ?? name}
+        </h3>
+        <span
+          style={{
+            fontFamily: "var(--lv2-font-mono)",
+            fontSize: 11,
+            fontWeight: 700,
+            letterSpacing: "0.18em",
+            textTransform: "uppercase",
+            color: accent,
+            border: `1px solid ${accent}66`,
+            background: characterImage ? "rgba(13,15,26,0.55)" : "transparent",
+            padding: "3px 10px",
+            borderRadius: 999,
+            whiteSpace: "nowrap",
+            textShadow: characterImage ? "0 1px 3px rgba(0,0,0,0.5)" : undefined,
+          }}
+        >
+          Ages {ageRange}
+        </span>
         <span
           style={{
             fontFamily: "var(--lv2-font-mono)",
@@ -334,66 +366,26 @@ export default function TrackCard({
         </p>
       )}
 
-      {/* AGES (display prominence) + duration */}
-      <div style={{ position: "relative", zIndex: 1, maxWidth: contentMaxWidth }}>
-        <div
-          style={{
-            fontFamily: "var(--lv2-font-mono)",
-            fontSize: 11,
-            fontWeight: 600,
-            letterSpacing: "0.28em",
-            textTransform: "uppercase",
-            color: "rgba(232,237,255,0.5)",
-            marginBottom: 4,
-          }}
-        >
-          // Ages
-        </div>
-        <div
-          style={{
-            fontFamily: "var(--lv2-font-display)",
-            fontSize: "2rem",
-            fontWeight: 500,
-            letterSpacing: "-0.02em",
-            color: accent,
-            lineHeight: 1.05,
-          }}
-        >
-          {ageRange}
-        </div>
-        <div
-          style={{
-            fontFamily: "var(--lv2-font-mono)",
-            fontSize: 11,
-            fontWeight: 600,
-            letterSpacing: "0.2em",
-            textTransform: "uppercase",
-            color: "rgba(232,237,255,0.5)",
-            marginTop: 6,
-          }}
-        >
-          {duration}
-          {weeksCount > 0 ? `  ·  ${weeksCount} weeks` : ""}
-        </div>
-      </div>
-
-      {/* Track name */}
-      <h3
+      {/* Duration meta line (the age group moved up beside the
+       *  nameplate; keeping the big numeral here too would say the
+       *  same thing twice). */}
+      <div
         style={{
           position: "relative",
           zIndex: 1,
-          fontFamily: "var(--lv2-font-display)",
-          fontSize: "1.45rem",
-          fontWeight: 500,
-          color: "var(--lv2-paper)",
-          margin: 0,
-          letterSpacing: "-0.018em",
-          lineHeight: 1.15,
           maxWidth: contentMaxWidth,
+          fontFamily: "var(--lv2-font-mono)",
+          fontSize: 11,
+          fontWeight: 600,
+          letterSpacing: "0.2em",
+          textTransform: "uppercase",
+          color: "rgba(232,237,255,0.5)",
+          textShadow: characterImage ? "0 1px 4px rgba(4,5,13,0.6)" : undefined,
         }}
       >
-        {lockup ?? name}
-      </h3>
+        {duration}
+        {weeksCount > 0 ? `  ·  ${weeksCount} weeks` : ""}
+      </div>
 
       <p
         style={{
