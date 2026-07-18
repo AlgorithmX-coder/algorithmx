@@ -65,6 +65,12 @@ export interface TrackCardProps {
    *  stays in a left column clear of scene art that lives on the right
    *  (e.g. the Cyber Ops split scene). Omit to let copy run full width. */
   contentMaxWidth?: number;
+  /** Branded course-name lockup (glyph + wordmark in the course's own
+   *  display font — the logo system from the track landings' navs).
+   *  Rendered inside the title <h3> in place of the plain `name`; the
+   *  lockup carries the course name as real text so semantics and
+   *  screen-reader output are unchanged. Omit to render `name`. */
+  lockup?: React.ReactNode;
 }
 
 export default function TrackCard({
@@ -87,6 +93,7 @@ export default function TrackCard({
   imagePosition,
   scrim,
   contentMaxWidth,
+  lockup,
 }: TrackCardProps) {
   const reduced = useReducedMotion();
   const [hover, setHover] = useState(false);
@@ -385,7 +392,7 @@ export default function TrackCard({
           maxWidth: contentMaxWidth,
         }}
       >
-        {name}
+        {lockup ?? name}
       </h3>
 
       <p
