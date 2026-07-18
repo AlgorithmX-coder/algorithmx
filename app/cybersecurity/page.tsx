@@ -1,9 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
-import { auth } from "@/app/lib/auth";
 import { prisma } from "@/app/lib/prisma";
-import { getAge } from "@/app/lib/entitlements";
 import { landingRouteFor } from "@/app/lib/courseLandings";
 
 import Nav from "@/app/components/landing-v2/Nav";
@@ -359,32 +357,10 @@ export default async function CybersecurityPage() {
     orderBy: { ageMin: "asc" },
   });
 
-  /* Optional "great fit for {child}" highlight. Public page — auth can
-   * be null and the page still works. When signed in, find every
-   * (child, track) pair whose age falls in the track band and pass the
-   * matching child names down to the card. We pick the FIRST track a
-   * child fits (lower band on overlap) so a child whose age sits at
-   * the boundary (e.g. 16 → both cyberstart and cyberstart-pro) is
-   * suggested the track they're already in the middle of rather than
-   * the one they're at the bottom of. */
-  const session = await auth();
-  const childFits: Record<string, string[]> = {};
-  if (session?.user?.id) {
-    const children = await prisma.childProfile.findMany({
-      where: { userId: session.user.id },
-      select: { name: true, dateOfBirth: true },
-    });
-    for (const child of children) {
-      const age = getAge(child.dateOfBirth);
-      for (const p of products) {
-        if (age >= p.ageMin && age <= p.ageMax) {
-          if (!childFits[p.slug]) childFits[p.slug] = [];
-          childFits[p.slug].push(child.name);
-          break;
-        }
-      }
-    }
-  }
+  /* The "great fit for {child}" personalisation was REMOVED 2026-07-18
+   * at the owner's request — no child names are shown on the cards for
+   * anyone. (The bright accent age chips carry the "which track is for
+   * my child" job now.) */
 
   return (
     <>
@@ -524,7 +500,6 @@ export default async function CybersecurityPage() {
                   status={TRACK_STATUS_OVERRIDES[p.slug] ?? (p.status as "ACTIVE" | "COMING_SOON")}
                   blurb={blurb}
                   landingHref={landingHref}
-                  fitForChildren={childFits[p.slug] ?? []}
                   accent={accent}
                   index={i}
                   characterImage={characterImage}
