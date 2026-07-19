@@ -678,21 +678,48 @@ function CyberHeroesNav() {
 }
 
 export default function HomePage() {
-  // Hero video starts muted (browser autoplay policy requires it).
-  // Tap the speaker icon overlay to unmute.
-  const [heroMuted, setHeroMuted] = useState(true);
+  // Hero video: muted autoplay that plays through TWICE, then stops on its
+  // first frame and reveals a Play button so a child can re-watch it. No
+  // persistent mute toggle (removed) — it stays muted throughout.
+  const [heroEnded, setHeroEnded] = useState(false);
   const heroVideoRef = useRef<HTMLVideoElement | null>(null);
+  const heroPlaysRef = useRef(0);
 
-  // Hero video: muted autoplay only. Sound is opt-in via the explicit
-  // speaker button below — we never auto-unmute on scroll/interaction
-  // (that fires an unexpected audio blast and breaks autoplay-with-sound
-  // norms; hostile for screen-reader / low-vision users).
+  // Kick off muted autoplay on mount. The twice-through count + the Play
+  // button are driven by handleHeroEnded / replayHero below.
   useEffect(() => {
     const v = heroVideoRef.current;
     if (!v) return;
     v.muted = true;
     v.play().catch(() => {});
   }, []);
+
+  // After each play ends: the first time, start a second pass; the second
+  // time (or after a manual re-watch), stop and show the Play button.
+  const handleHeroEnded = () => {
+    const v = heroVideoRef.current;
+    heroPlaysRef.current += 1;
+    if (heroPlaysRef.current === 1) {
+      if (v) {
+        v.currentTime = 0;
+        v.play().catch(() => {});
+      }
+    } else {
+      if (v) {
+        v.pause();
+        v.currentTime = 0;
+      }
+      setHeroEnded(true);
+    }
+  };
+
+  const replayHero = () => {
+    const v = heroVideoRef.current;
+    if (!v) return;
+    v.currentTime = 0;
+    setHeroEnded(false);
+    v.play().catch(() => {});
+  };
 
   useEffect(() => {
     const elements = document.querySelectorAll("[data-scroll]");
@@ -767,6 +794,8 @@ export default function HomePage() {
         .ch-sparkle { animation: chSparkleFM 2.5s ease-in-out infinite; }
         @keyframes chRaccoonGlow { 0%,100% { box-shadow: 0 0 30px rgba(239,68,68,0.3); } 50% { box-shadow: 0 0 60px rgba(239,68,68,0.6); } }
         .ch-raccoon-glow { animation: chRaccoonGlow 3s ease-in-out infinite; }
+        .ch-playbtn { transition: transform 0.18s ease; }
+        .ch-playbtn:hover { transform: scale(1.08); }
       `}</style>
 
       {/* New playful-but-techy cosmic backdrop (replaces the old R3F
@@ -897,18 +926,13 @@ export default function HomePage() {
                       ref={heroVideoRef}
                       src="/videos/cyberheroes-hero.mp4"
                       autoPlay
-                      muted={heroMuted}
-                      loop
+                      muted
                       playsInline
                       preload="auto"
                       poster="/characters/heroic.png"
+                      onEnded={handleHeroEnded}
                       className="block w-full max-w-[500px]"
-                      style={{ display: "block", background: "#04050d", cursor: "pointer" }}
-                      onClick={() => {
-                        setHeroMuted((m) => !m);
-                        const v = heroVideoRef.current;
-                        if (v && v.paused) v.play().catch(() => {});
-                      }}
+                      style={{ display: "block", background: "#04050d" }}
                     />
                     {/* Vignette OVERLAY - fades the edges of the video
                         into the cosmic backdrop without applying a
@@ -924,44 +948,41 @@ export default function HomePage() {
                       background:
                         "radial-gradient(ellipse 100% 100% at center, transparent 55%, rgba(8,10,22,0.55) 80%, rgba(8,10,22,0.95) 100%)",
                     }} />
+                    {/* Play button — appears after the clip has played twice
+                        so a child can re-watch it. */}
+                    {heroEnded && (
+                      <button
+                        type="button"
+                        onClick={replayHero}
+                        aria-label="Play video again"
+                        className="ch-playbtn"
+                        style={{
+                          position: "absolute",
+                          inset: 0,
+                          margin: "auto",
+                          width: 74,
+                          height: 74,
+                          borderRadius: "50%",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          background: "rgba(8, 10, 22, 0.72)",
+                          border: "1.5px solid rgba(125, 240, 255, 0.6)",
+                          color: "#7df0ff",
+                          cursor: "pointer",
+                          backdropFilter: "blur(8px)",
+                          WebkitBackdropFilter: "blur(8px)",
+                          boxShadow:
+                            "0 6px 20px rgba(0, 0, 0, 0.5), 0 0 24px rgba(0, 229, 255, 0.45)",
+                          zIndex: 3,
+                        }}
+                      >
+                        <span style={{ fontSize: 30, marginLeft: 5, lineHeight: 1 }}>
+                          ▶
+                        </span>
+                      </button>
+                    )}
                   </div>
-                  {/* Sound toggle - sits OUTSIDE the masked container so
-                      it stays sharp and fully visible at the corner. */}
-                  <button
-                    type="button"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setHeroMuted((m) => !m);
-                      const v = heroVideoRef.current;
-                      if (v && v.paused) v.play().catch(() => {});
-                    }}
-                    aria-label={heroMuted ? "Unmute video" : "Mute video"}
-                    style={{
-                      position: "absolute",
-                      bottom: 14,
-                      right: 14,
-                      display: "inline-flex",
-                      alignItems: "center",
-                      gap: 8,
-                      padding: heroMuted ? "8px 14px" : "8px 12px",
-                      borderRadius: 999,
-                      background: "rgba(8, 10, 22, 0.78)",
-                      border: "1px solid rgba(125, 240, 255, 0.5)",
-                      color: "#7df0ff",
-                      fontSize: 13,
-                      fontWeight: 800,
-                      letterSpacing: 1,
-                      cursor: "pointer",
-                      backdropFilter: "blur(8px)",
-                      WebkitBackdropFilter: "blur(8px)",
-                      boxShadow: "0 4px 12px rgba(0, 0, 0, 0.4), 0 0 14px rgba(0, 229, 255, 0.35)",
-                      transition: "all 0.2s ease",
-                      zIndex: 2,
-                    }}
-                  >
-                    <span style={{ fontSize: 16 }}>{heroMuted ? "🔇" : "🔊"}</span>
-                    {heroMuted && <span>Tap for sound</span>}
-                  </button>
                 </div>
                 {/* Sparkles */}
                 {[
