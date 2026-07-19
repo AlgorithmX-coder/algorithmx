@@ -496,22 +496,41 @@ export default function Nav() {
           }
         }
         /* Phone: shrink the CTA pill so it doesn't wrap or push the
-           wordmark off-screen. */
+           wordmark off-screen. Shrinking the pill alone isn't enough —
+           the 28px shell padding and 32px link gap are desktop-sized and
+           nothing in the bar is allowed to flex-shrink, so at 390px the
+           CTA still ended 46px past the right edge. Tighten the shell
+           and gaps too; !important is needed where the base value is an
+           inline style. */
         @media (max-width: 540px) {
+          :global(.lv2-nav-inner) {
+            padding: 0 16px !important;
+            gap: 14px !important;
+          }
+          .lv2-nav-links {
+            gap: 12px;
+          }
           :global(.lv2-nav-cta) {
-            padding: 9px 14px !important;
+            padding: 9px 12px !important;
             font-size: 11px !important;
-            letter-spacing: 0.14em !important;
+            letter-spacing: 0.1em !important;
             gap: 6px !important;
           }
           .lv2-wordmark {
             font-size: 14px;
-            letter-spacing: 0.24em;
+            letter-spacing: 0.18em;
           }
         }
         @media (max-width: 380px) {
+          .lv2-nav-links {
+            gap: 10px;
+          }
           :global(.lv2-nav-cta) {
-            padding: 9px 12px !important;
+            padding: 9px 10px !important;
+            letter-spacing: 0.08em !important;
+          }
+          .lv2-wordmark {
+            font-size: 13px;
           }
         }
 
