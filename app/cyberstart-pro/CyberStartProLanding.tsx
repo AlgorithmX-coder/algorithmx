@@ -237,7 +237,7 @@ export default function CyberStartProLanding({ product }: { product: Product }) 
               <a href="/cyberheroes" className="text-xs font-bold text-gray-500 hover:text-gray-300 transition-colors">Cyber Heroes</a>
               <a href="/cyberexplorers" className="text-xs font-bold text-gray-500 hover:text-gray-300 transition-colors">Cyber Explorers</a>
               <a href="/cyberstart" className="text-xs font-bold text-gray-500 hover:text-gray-300 transition-colors">CyberStart</a>
-              <a href="/cyberstart-pro" className="text-xs font-bold transition-colors" style={{ color: PRIMARY }}>CyberStart Pro</a>
+              <a href="/cyberstart-pro" className="text-xs font-bold transition-colors" style={{ color: PRIMARY }}>Cyber Pro</a>
             </div>
           </div>
         </footer>
