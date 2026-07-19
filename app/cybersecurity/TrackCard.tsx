@@ -22,10 +22,6 @@ export interface TrackCardProps {
   emoji: string;
   name: string;
   ageRange: string;
-  duration: string;
-  /** Pence; formatted by the parent as £xx. */
-  priceLabel: string;
-  weeksCount: number;
   status: "ACTIVE" | "COMING_SOON";
   /** One-line "what it covers" — not in DB, parent passes the right copy. */
   blurb: string;
@@ -74,9 +70,6 @@ export default function TrackCard({
   emoji,
   name,
   ageRange,
-  duration,
-  priceLabel,
-  weeksCount,
   status,
   blurb,
   landingHref,
@@ -372,27 +365,6 @@ export default function TrackCard({
         </p>
       )}
 
-      {/* Duration meta line (the age group moved up beside the
-       *  nameplate; keeping the big numeral here too would say the
-       *  same thing twice). */}
-      <div
-        style={{
-          position: "relative",
-          zIndex: 1,
-          maxWidth: contentMaxWidth,
-          fontFamily: "var(--lv2-font-mono)",
-          fontSize: 11,
-          fontWeight: 600,
-          letterSpacing: "0.2em",
-          textTransform: "uppercase",
-          color: "rgba(232,237,255,0.5)",
-          textShadow: characterImage ? "0 1px 4px rgba(4,5,13,0.6)" : undefined,
-        }}
-      >
-        {duration}
-        {weeksCount > 0 ? `  ·  ${weeksCount} weeks` : ""}
-      </div>
-
       <p
         style={{
           position: "relative",
@@ -412,7 +384,7 @@ export default function TrackCard({
         {blurb}
       </p>
 
-      {/* Price + CTA row */}
+      {/* CTA row — no price/spec here: the browse page is pure marketing; pricing and course details live on each landing page. */}
       <div
         style={{
           position: "relative",
@@ -421,37 +393,11 @@ export default function TrackCard({
           paddingTop: 16,
           display: "flex",
           alignItems: "center",
-          justifyContent: "space-between",
+          justifyContent: "flex-end",
           gap: 12,
           flexWrap: "wrap",
         }}
       >
-        <div>
-          <div
-            style={{
-              fontFamily: "var(--lv2-font-mono)",
-              fontSize: 10,
-              fontWeight: 600,
-              letterSpacing: "0.22em",
-              textTransform: "uppercase",
-              color: "rgba(232,237,255,0.45)",
-            }}
-          >
-            // From
-          </div>
-          <div
-            style={{
-              fontFamily: "var(--lv2-font-display)",
-              fontSize: "1.35rem",
-              fontWeight: 500,
-              color: "var(--lv2-paper)",
-              letterSpacing: "-0.01em",
-            }}
-          >
-            {priceLabel}
-          </div>
-        </div>
-
         <Link
           href={landingHref}
           style={{

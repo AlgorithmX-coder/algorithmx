@@ -114,17 +114,6 @@ const TRACK_KICKERS: Record<string, string> = {
 const TRACK_STATUS_OVERRIDES: Record<string, "ACTIVE" | "COMING_SOON"> = {
   cyberexplorers: "ACTIVE",
 };
-const TRACK_WEEKS_OVERRIDES: Record<string, number> = {
-  cyberexplorers: 20,
-};
-/* Display-layer duration override. The DB row for cyberstart still says
- * "60 min/week", but the shipped Cyber Ops landing and the homepage
- * catalog card both market it as 90 min/week — override here so the
- * browse card matches rather than under-stating the commitment. */
-const TRACK_DURATION_OVERRIDES: Record<string, string> = {
-  cyberstart: "90 min/week",
-};
-
 /* Per-track accent. Heroes runs the hub palette's warm amber-orange
  * (kid-energy, matches the hub card's accent) — kept lighter than
  * Cyber Pro's deep orange so the two never read as the same track.
@@ -336,16 +325,6 @@ export const metadata: Metadata = {
   },
 };
 
-/* Pence → "£99" / "£189.50". Strips the trailing ".00" for the
- * common round-pound case. Mirrors hub/page.tsx's helper so the price
- * formatting reads identically across the family browse surfaces. */
-function formatPrice(pence: number): string {
-  const pounds = pence / 100;
-  return pounds % 1 === 0
-    ? `£${pounds.toFixed(0)}`
-    : `£${pounds.toFixed(2)}`;
-}
-
 export default async function CybersecurityPage() {
   /* Real DB fetch — emoji, ageRange, duration, priceGBP, weeksCount,
    * status all come from the catalogue. The seed order
@@ -437,29 +416,6 @@ export default async function CybersecurityPage() {
             </p>
           </FadeUp>
 
-          <FadeUp delay={0.2}>
-            <div
-              style={{
-                marginTop: 28,
-                display: "inline-flex",
-                gap: 18,
-                flexWrap: "wrap",
-                justifyContent: "center",
-                fontFamily: "var(--lv2-font-mono)",
-                fontSize: 11,
-                fontWeight: 600,
-                letterSpacing: "0.18em",
-                textTransform: "uppercase",
-                color: "rgba(232,237,255,0.55)",
-              }}
-            >
-              <span>Ages 6 → 18+</span>
-              <span aria-hidden style={{ opacity: 0.4 }}>·</span>
-              <span>4 tracks</span>
-              <span aria-hidden style={{ opacity: 0.4 }}>·</span>
-              <span>one continuous journey</span>
-            </div>
-          </FadeUp>
         </section>
 
         {/* TRACK GRID ──────────────────────────────────────── */}
@@ -494,9 +450,6 @@ export default async function CybersecurityPage() {
                   emoji={TRACK_EMOJI_OVERRIDES[p.slug] ?? p.emoji}
                   name={displayOverride?.name ?? p.name}
                   ageRange={displayOverride?.ageRange ?? p.ageRange}
-                  duration={TRACK_DURATION_OVERRIDES[p.slug] ?? p.duration}
-                  priceLabel={formatPrice(p.priceGBP)}
-                  weeksCount={TRACK_WEEKS_OVERRIDES[p.slug] ?? p.weeksCount}
                   status={TRACK_STATUS_OVERRIDES[p.slug] ?? (p.status as "ACTIVE" | "COMING_SOON")}
                   blurb={blurb}
                   landingHref={landingHref}
@@ -530,8 +483,7 @@ export default async function CybersecurityPage() {
                 marginRight: "auto",
               }}
             >
-              One-time payment per track, lifetime access. No subscriptions.{" "}
-              <Link
+                            <Link
                 href="/hub"
                 style={{
                   color: "var(--lv2-cyan-soft)",
