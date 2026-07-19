@@ -33,8 +33,16 @@ const FEATURES = [
   { emoji: "🎯", title: "Career Pathways", desc: "Map your route into cybersecurity with industry-recognised skills. From SOC analyst to penetration tester." },
 ];
 
+/* Finalized branding (owner call, 2026-07): this track sells as
+ * "Cyber Pro" for ages 18+. The DB Product row still carries the legacy
+ * seeded values ("CyberStart Pro" / "16-18+") and feeds other surfaces,
+ * so the landing overrides display copy only — update the row and these
+ * can go back to reading the product. */
+const DISPLAY_NAME = "Cyber Pro";
+const DISPLAY_AGE_RANGE = "18+";
+
 function metaLineFromProduct(p: Product): string {
-  const parts = [`Ages ${p.ageRange}`];
+  const parts = [`Ages ${DISPLAY_AGE_RANGE}`];
   if (p.weeksCount > 0) parts.push(`${p.weeksCount} Weeks`);
   parts.push(p.duration);
   return parts.join(" · ");
@@ -115,7 +123,7 @@ export default function CyberStartProLanding({ product }: { product: Product }) 
 
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-white leading-tight mb-4">
               <span className="text-transparent bg-clip-text" style={{ backgroundImage: GRAD, WebkitBackgroundClip: "text" }}>
-                {product.name}
+                {DISPLAY_NAME}
               </span>
             </h1>
 
@@ -200,7 +208,7 @@ export default function CyberStartProLanding({ product }: { product: Product }) 
                 <span className="text-transparent bg-clip-text" style={{ backgroundImage: GRAD, WebkitBackgroundClip: "text" }}>Pro</span>?
               </h2>
               <p className="text-gray-400 text-base sm:text-lg max-w-lg mx-auto mb-8">
-                Launch your cybersecurity career. Be the first to access {product.name} when it goes live.
+                Launch your cybersecurity career. Be the first to access {DISPLAY_NAME} when it goes live.
               </p>
               <div className="flex justify-center">
                 <WaitlistForm
