@@ -694,6 +694,29 @@ export default function HomePage() {
     if (!v) return;
     v.muted = true;
     v.play().catch(() => {});
+
+    // Unmuted autoplay is blocked by every browser, so we start muted and
+    // unmute on the visitor's FIRST interaction ANYWHERE on the page — the
+    // earliest moment audio is allowed (unmuting without a gesture just
+    // makes the browser pause the clip). A pointer/key press counts;
+    // scroll/hover do not. The natural second auto-pass then plays with
+    // sound from the start. Fires once, then removes itself.
+    const unmuteOnFirstGesture = () => {
+      const vid = heroVideoRef.current;
+      if (vid && !heroManualRef.current) {
+        vid.muted = false;
+        if (vid.paused) vid.play().catch(() => {});
+      }
+      window.removeEventListener("pointerdown", unmuteOnFirstGesture);
+      window.removeEventListener("keydown", unmuteOnFirstGesture);
+    };
+    window.addEventListener("pointerdown", unmuteOnFirstGesture);
+    window.addEventListener("keydown", unmuteOnFirstGesture);
+
+    return () => {
+      window.removeEventListener("pointerdown", unmuteOnFirstGesture);
+      window.removeEventListener("keydown", unmuteOnFirstGesture);
+    };
   }, []);
 
   // After a play ends: on the first (muted) autoplay, start a second pass;
