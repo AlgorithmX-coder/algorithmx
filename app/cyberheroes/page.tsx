@@ -678,15 +678,17 @@ function CyberHeroesNav() {
 }
 
 export default function HomePage() {
-  // Hero video: muted autoplay that plays through TWICE, then stops on its
-  // first frame and reveals a Play button so a child can re-watch it. No
-  // persistent mute toggle (removed) — it stays muted throughout.
+  // Hero video: it AUTOPLAYS MUTED through twice (browsers only allow
+  // autoplay when muted), then stops on its first frame and shows a Play
+  // button. Tapping the video OR the Play button is a user gesture, so we
+  // can then replay it WITH sound.
   const [heroEnded, setHeroEnded] = useState(false);
   const heroVideoRef = useRef<HTMLVideoElement | null>(null);
   const heroPlaysRef = useRef(0);
+  const heroManualRef = useRef(false);
 
   // Kick off muted autoplay on mount. The twice-through count + the Play
-  // button are driven by handleHeroEnded / replayHero below.
+  // button are driven by handleHeroEnded / playHeroWithSound below.
   useEffect(() => {
     const v = heroVideoRef.current;
     if (!v) return;
@@ -694,12 +696,13 @@ export default function HomePage() {
     v.play().catch(() => {});
   }, []);
 
-  // After each play ends: the first time, start a second pass; the second
-  // time (or after a manual re-watch), stop and show the Play button.
+  // After a play ends: on the first (muted) autoplay, start a second pass;
+  // after the second pass — or after any manual, sound-on re-watch — stop
+  // on the first frame and reveal the Play button.
   const handleHeroEnded = () => {
     const v = heroVideoRef.current;
-    heroPlaysRef.current += 1;
-    if (heroPlaysRef.current === 1) {
+    if (!heroManualRef.current && heroPlaysRef.current === 0) {
+      heroPlaysRef.current = 1;
       if (v) {
         v.currentTime = 0;
         v.play().catch(() => {});
@@ -713,9 +716,13 @@ export default function HomePage() {
     }
   };
 
-  const replayHero = () => {
+  // User gesture → allowed to play with sound. Used by the Play button and
+  // by tapping the video itself.
+  const playHeroWithSound = () => {
     const v = heroVideoRef.current;
     if (!v) return;
+    heroManualRef.current = true;
+    v.muted = false;
     v.currentTime = 0;
     setHeroEnded(false);
     v.play().catch(() => {});
@@ -931,8 +938,9 @@ export default function HomePage() {
                       preload="auto"
                       poster="/characters/heroic.png"
                       onEnded={handleHeroEnded}
+                      onClick={playHeroWithSound}
                       className="block w-full max-w-[500px]"
-                      style={{ display: "block", background: "#04050d" }}
+                      style={{ display: "block", background: "#04050d", cursor: "pointer" }}
                     />
                     {/* Vignette OVERLAY - fades the edges of the video
                         into the cosmic backdrop without applying a
@@ -953,8 +961,8 @@ export default function HomePage() {
                     {heroEnded && (
                       <button
                         type="button"
-                        onClick={replayHero}
-                        aria-label="Play video again"
+                        onClick={playHeroWithSound}
+                        aria-label="Play video with sound"
                         className="ch-playbtn"
                         style={{
                           position: "absolute",
