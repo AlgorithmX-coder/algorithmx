@@ -119,16 +119,21 @@ export default function Nav() {
         <LiveTelemetry isLight={isLight} />
 
         <div className="lv2-nav-links">
+          {/* Root-relative anchors: this Nav also renders on /cybersecurity,
+              where bare "#subjects"/"#how" have no target and clicks die.
+              On the homepage "/#subjects" is the same document, so the
+              browser still just scrolls; elsewhere it navigates home to
+              the section. */}
           <a
             className="lv2-nav-secondary"
-            href="#subjects"
+            href="/#subjects"
             style={{ ...navLink, color: textColorMuted }}
           >
             Courses
           </a>
           <a
             className="lv2-nav-secondary"
-            href="#how"
+            href="/#how"
             style={{ ...navLink, color: textColorMuted }}
           >
             How It Works
