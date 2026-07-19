@@ -313,7 +313,7 @@ const TRACK_CONTENT_MAX_WIDTH: Record<string, number> = {
 export const metadata: Metadata = {
   title: "Cybersecurity. Tracks for Every Age, 6 to 18+ | AlgorithmX",
   description:
-    "Four cybersecurity tracks covering ages 6 to 18+. From spotting scams as a child to portfolio-grade pen-testing as a college applicant. Pick by your child's age.",
+    "Four cybersecurity tracks covering ages 6 to 18+. From spotting scams as a child to portfolio-grade pen-testing as an adult. For your child's journey — or your own.",
   alternates: { canonical: "https://www.algorithmx.co.uk/cybersecurity" },
   openGraph: {
     title: "Cybersecurity for every age | AlgorithmX",
@@ -410,9 +410,9 @@ export default async function CybersecurityPage() {
                 marginRight: "auto",
               }}
             >
-              From spotting scams at age 6 to portfolio-grade pen-testing as a
-              college applicant. Four tracks, one subject, one continuous arc.
-              Pick the one that fits your child today.
+              From spotting scams at age 6 to portfolio-grade pen-testing at
+              18+. Four tracks, one subject, one continuous arc — whether
+              you&rsquo;re starting your child&rsquo;s journey or your own.
             </p>
           </FadeUp>
 
