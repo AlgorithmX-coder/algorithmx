@@ -4,7 +4,7 @@ Short version for posting on Toptal / Upwork / Working Not Working / contractor 
 
 ## Project
 
-**AlgorithmX - Cyber Heroes Academy** is a UK-based premium cybersecurity learning platform for kids aged 6–10. Parents pay £99 once for lifetime access to a 20-week course. Core characters: Adam (a curious 8-year-old), Layla (his cousin), and the Hacker Raccoon (the antagonist). Visual reference: Pixar / Disney climactic moments - warm, painterly, cinematic but never scary. The current build is at https://www.algorithmx.co.uk/cyberheroes (landing) and we have working PixiJS + R3F surfaces; what we need now is the interactive lesson layer.
+**AlgorithmX - Cyber Heroes Academy** is a UK-based premium cybersecurity learning platform for kids aged 6–10. Parents pay £99 once for lifetime access to a 20-week course. Core characters: Adam (a curious 8-year-old), Layla (his cousin), and the Hacker Raccoon (the antagonist). Visual reference: Pixar / Disney climactic moments - warm, painterly, cinematic but never scary. The current build is at https://algorithmx.io/cyberheroes (landing) and we have working PixiJS + R3F surfaces; what we need now is the interactive lesson layer.
 
 ## What I'm hiring for
 

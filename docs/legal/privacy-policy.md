@@ -9,7 +9,7 @@
 ## 1. Who we are
 
 AlgorithmX Ltd ("AlgorithmX", "we", "us", "our") operates the cybersecurity-education
-platform at algorithmx.co.uk, including the "Cyber Heroes Academy" course. We are the
+platform at algorithmx.io, including the "Cyber Heroes Academy" course. We are the
 **data controller** for the personal data described in this policy.
 
 - **Registered company:** AlgorithmX Ltd, registered in England and Wales, company

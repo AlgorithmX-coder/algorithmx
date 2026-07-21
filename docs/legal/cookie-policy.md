@@ -3,13 +3,13 @@
 > Plausible analytics). Cookie names/lifetimes below are taken from the current code and
 > should be re-verified before publishing. Do not publish until reviewed.
 
-# Cookie Policy — AlgorithmX Ltd / algorithmx.co.uk
+# Cookie Policy — AlgorithmX Ltd / algorithmx.io
 
 **Last updated:** [INSERT: date] · **Version:** Draft 0.1
 
 ## 1. What this policy covers
 
-This policy explains the cookies and similar technologies we use on algorithmx.co.uk. It
+This policy explains the cookies and similar technologies we use on algorithmx.io. It
 sits alongside our Privacy Policy.
 
 ## 2. Our cookie position (current)

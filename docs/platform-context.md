@@ -13,7 +13,8 @@ games, boss battles, milestone certificates. Solo developer (Asad
 Jalal, asadjalal96@outlook.com) targeting end-of-August 2026 launch.
 £99 one-time lifetime-access payment per child, billed via Stripe.
 
-Domain: `www.algorithmx.co.uk`. Hosted on Vercel. Database is Neon
+Domain: `algorithmx.io` (canonical; `www.algorithmx.co.uk` 301-redirects
+to it). Hosted on Vercel. Database is Neon
 Postgres (Azure Frankfurt). Support email
 `support@algorithmx.co.uk`.
 

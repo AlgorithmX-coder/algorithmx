@@ -1,7 +1,7 @@
 # AlgorithmX - Production deploy checklist
 
 Everything that needs to be true before you flip the switch on
-`https://www.algorithmx.co.uk`. Tick each box once it's done in the
+`https://algorithmx.io`. Tick each box once it's done in the
 prod environment (Vercel + the live DB + the third-party dashboards).
 
 The code is ready. Most of these are dashboard signups + env-var
@@ -54,7 +54,10 @@ NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_live_…
 ### 2b. Create the production webhook endpoint
 
 - Stripe Dashboard → Developers → Webhooks → "Add endpoint"
-- Endpoint URL: `https://www.algorithmx.co.uk/api/stripe/webhook`
+- Endpoint URL: `https://algorithmx.io/api/stripe/webhook`
+  (⚠ if migrating from `algorithmx.co.uk`: Stripe does NOT follow
+  redirects — update the existing webhook endpoint to the new domain
+  or payment fulfillment silently breaks)
 - Subscribe to events:
   - `checkout.session.completed`
   - `checkout.session.async_payment_succeeded`
@@ -161,12 +164,12 @@ are actually happening.
 ### 5a. Sign up + add site
 
 - https://plausible.io → 30-day free trial, $9/mo after
-- Add site → enter `algorithmx.co.uk`
+- Add site → enter `algorithmx.io`
 
 ### 5b. Set Vercel env
 
 ```
-NEXT_PUBLIC_PLAUSIBLE_DOMAIN=algorithmx.co.uk
+NEXT_PUBLIC_PLAUSIBLE_DOMAIN=algorithmx.io
 ```
 
 That's it. No banner needed (no cookies, no PII = COPPA-compliant
@@ -188,7 +191,7 @@ Once all the above env vars are set, redeploy from Vercel:
 
 Run this checklist on production after the first deploy:
 
-- [ ] Visit `https://www.algorithmx.co.uk` - landing page loads, no
+- [ ] Visit `https://algorithmx.io` - landing page loads, no
       errors in browser console
 - [ ] Visit `/cyberheroes` - landing loads, video plays, "Enrol Now"
       button is visible
