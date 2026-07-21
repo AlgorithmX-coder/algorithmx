@@ -44,16 +44,28 @@ const dmSans = DM_Sans({
 });
 
 export const metadata: Metadata = {
+  /* Absolute-URL base for all resolved metadata (canonical, OG image).
+   * Prod canonical host is www — the apex 307-redirects to it. */
+  metadataBase: new URL("https://www.algorithmx.co.uk"),
   title: "AlgorithmX - Technology Education for Every Age",
   description: "Six subjects, four age tracks each. Interactive cybersecurity, game development, AI, app development, entrepreneurship, and robotics courses for ages 6 to adult. UK-based, accreditation aligned, lifetime access.",
   icons: {
     icon: "/favicon.svg",
   },
+  alternates: {
+    canonical: "/",
+  },
   openGraph: {
     title: "AlgorithmX - Technology Education for Every Age",
     description: "Six subjects, four age tracks each. Interactive cybersecurity, game development, AI, app development, entrepreneurship, and robotics courses for ages 6 to adult. UK-based, accreditation aligned, lifetime access.",
     type: "website",
-    url: "https://algorithmx.co.uk",
+    url: "https://www.algorithmx.co.uk",
+    siteName: "AlgorithmX",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "AlgorithmX - Technology Education for Every Age",
+    description: "Six technology streams for ages 6 to adult. Cyber Security live today. UK-based, lifetime access.",
   },
 };
 
