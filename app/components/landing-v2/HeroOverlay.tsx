@@ -1,7 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { motion, type MotionValue, useTransform } from "framer-motion";
+import { useState } from "react";
+import {
+  motion,
+  type MotionValue,
+  useMotionValueEvent,
+  useTransform,
+} from "framer-motion";
 
 /**
  * HeroOverlay. The static brand UI that fades in over the cinematic.
@@ -36,6 +42,17 @@ export default function HeroOverlay({ progress }: HeroOverlayProps) {
   const blur = useTransform(progress, [0.68, 0.78], [8, 0]);
   const filter = useTransform(blur, (v) => `blur(${v}px)`);
   const scrimOpacity = useTransform(progress, [0.66, 0.78], [0, 1]);
+
+  /* The CTA must not be a ghost target: before the overlay fades in
+   * (progress < 0.68) the link was invisible yet still clickable and
+   * tabbable — a dead click in the middle of the cinematic and an
+   * invisible keyboard stop. Gate interactivity on the same threshold
+   * the fade uses. Boolean state, so it re-renders only on threshold
+   * crossings (same pattern as Nav's `scrolled`). */
+  const [interactive, setInteractive] = useState(false);
+  useMotionValueEvent(progress, "change", (v) => {
+    setInteractive(v > 0.68);
+  });
 
   /* The persistent ALGORITHMX wordmark previously rendered here was
    * removed: the global Nav (Nav.tsx) carries the brand from scroll 0,
@@ -155,13 +172,15 @@ export default function HeroOverlay({ progress }: HeroOverlayProps) {
             gap: 12,
             marginTop: "calc(var(--lv2-rail) * 0.6)",
             flexWrap: "wrap",
-            pointerEvents: "auto",
+            pointerEvents: interactive ? "auto" : "none",
           }}
         >
           <Link
             href="#subjects"
             data-plausible="landing-v2-hero-primary"
             className="lv2-hero-cta lv2-hero-cta-primary"
+            tabIndex={interactive ? undefined : -1}
+            aria-hidden={interactive ? undefined : true}
           >
             Explore courses
             <span aria-hidden style={{ marginLeft: 8 }}>→</span>
