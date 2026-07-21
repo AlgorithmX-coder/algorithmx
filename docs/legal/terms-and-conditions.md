@@ -11,7 +11,7 @@
 These terms form a contract between you (the parent or guardian opening the account —
 "you") and **AlgorithmX Ltd**, company number [INSERT], registered office [INSERT]
 ("AlgorithmX", "we", "us"). They govern your purchase and use of our online courses,
-currently **Cyber Heroes Academy**, at algorithmx.co.uk.
+currently **Cyber Heroes Academy**, at algorithmx.io.
 
 By creating an account or buying a course, you agree to these terms. You must be **18 or
 over** and have authority to enter this contract on behalf of your family.

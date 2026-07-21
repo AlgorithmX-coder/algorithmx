@@ -44,7 +44,7 @@ const PAGE_TITLE =
   "Cyber Heroes Academy - Cybersecurity for Kids Ages 6–10 | AlgorithmX";
 const PAGE_DESC =
   "Turn your child into a Cyber Hero. 20 weeks of interactive cybersecurity missions for kids 6–10 - animated lessons, boss battles, printable certificates. £99 one-time, lifetime access, no subscriptions.";
-const PAGE_URL = "https://www.algorithmx.co.uk/cyberheroes";
+const PAGE_URL = "https://algorithmx.io/cyberheroes";
 const OG_IMAGE = "/characters/heroic.png";
 
 export const metadata: Metadata = {
@@ -84,7 +84,7 @@ const COURSE_JSON_LD = {
   provider: {
     "@type": "Organization",
     name: "AlgorithmX",
-    sameAs: "https://www.algorithmx.co.uk",
+    sameAs: "https://algorithmx.io",
   },
   educationalLevel: "Primary education / Key Stage 1–2",
   audience: {

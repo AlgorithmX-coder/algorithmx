@@ -155,7 +155,7 @@ export function passwordResetTemplate(args: {
             <tr>
               <td style="padding:18px 32px;background:rgba(8,10,22,0.6);border-top:1px solid rgba(125,240,255,0.12);">
                 <p style="margin:0;font-size:12px;color:rgba(197,205,240,0.55);">
-                  AlgorithmX &middot; Cyber Heroes Academy &middot; <a href="https://www.algorithmx.co.uk" style="color:#7df0ff;text-decoration:none;">algorithmx.co.uk</a>
+                  AlgorithmX &middot; Cyber Heroes Academy &middot; <a href="https://algorithmx.io" style="color:#7df0ff;text-decoration:none;">algorithmx.io</a>
                 </p>
               </td>
             </tr>

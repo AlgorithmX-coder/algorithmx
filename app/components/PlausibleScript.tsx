@@ -10,7 +10,7 @@ import Script from "next/script";
  * staging by leaving the env unset on Vercel preview deploys.
  *
  * Set NEXT_PUBLIC_PLAUSIBLE_DOMAIN to the domain you registered in
- * Plausible (e.g. "algorithmx.co.uk").
+ * Plausible (e.g. "algorithmx.io").
  */
 export default function PlausibleScript() {
   const domain = process.env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN;

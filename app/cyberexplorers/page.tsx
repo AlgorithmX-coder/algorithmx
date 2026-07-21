@@ -18,7 +18,7 @@ export const metadata: Metadata = {
     description:
       "20 missions. 4 clearance blocks. Your child becomes the operative who finds the signal in the noise.",
     type: "website",
-    url: "https://algorithmx.co.uk/cyberexplorers",
+    url: "https://algorithmx.io/cyberexplorers",
   },
 };
 

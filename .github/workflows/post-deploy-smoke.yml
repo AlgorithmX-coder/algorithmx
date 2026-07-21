@@ -31,7 +31,7 @@ jobs:
         env:
           # Defaults to the prod domain. Override via repo secrets/vars
           # if your prod URL is different.
-          PROD_URL: ${{ vars.PROD_URL || 'https://www.algorithmx.co.uk' }}
+          PROD_URL: ${{ vars.PROD_URL || 'https://algorithmx.io' }}
         run: |
           set -e
           STAMP=$(date +%s)

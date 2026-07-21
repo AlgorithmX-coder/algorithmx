@@ -314,12 +314,12 @@ export const metadata: Metadata = {
   title: "Cybersecurity. Tracks for Every Age, 6 to 18+ | AlgorithmX",
   description:
     "Four cybersecurity tracks covering ages 6 to 18+. From spotting scams as a child to portfolio-grade pen-testing as an adult. For your child's journey — or your own.",
-  alternates: { canonical: "https://www.algorithmx.co.uk/cybersecurity" },
+  alternates: { canonical: "https://algorithmx.io/cybersecurity" },
   openGraph: {
     title: "Cybersecurity for every age | AlgorithmX",
     description:
       "Four cybersecurity tracks. Ages 6 to 18+. One subject, every stage.",
-    url: "https://www.algorithmx.co.uk/cybersecurity",
+    url: "https://algorithmx.io/cybersecurity",
     siteName: "AlgorithmX",
     type: "website",
   },
