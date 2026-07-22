@@ -1788,26 +1788,7 @@ export default function HomePage() {
                   ...s.pos, animationDelay: `${s.d}s`,
                 }}>✦</span>
               ))}
-              {/* Adam & Layla brought forward (hidden on mobile to avoid overlap) */}
-              <div aria-hidden className="hidden md:block" style={{
-                position: "absolute", bottom: 0, right: 20, width: 210, zIndex: 2,
-                filter: "drop-shadow(0 0 30px rgba(0,229,255,0.35))",
-                WebkitMaskImage: "linear-gradient(#000 78%, transparent)",
-                maskImage: "linear-gradient(#000 78%, transparent)",
-              }}>
-                <Image src="/characters/adam-layla-happy.png" alt="" width={420} height={300}
-                  style={{ width: "100%", height: "auto", display: "block" }} />
-              </div>
-
               <div className="relative z-10">
-                {/* glowing emblem */}
-                <div style={{
-                  width: 64, height: 64, borderRadius: 20, margin: "0 auto 20px",
-                  display: "flex", alignItems: "center", justifyContent: "center", fontSize: 30,
-                  background: "radial-gradient(circle at 50% 35%, #1a2450, #0c1030)",
-                  border: "1.5px solid rgba(125,240,255,0.6)",
-                  boxShadow: "0 0 26px rgba(0,229,255,0.5), inset 0 0 14px rgba(0,229,255,0.25)",
-                }}>🛡️</div>
                 <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white mb-4 leading-tight"
                   style={{ textShadow: "0 2px 20px rgba(0,0,0,0.35)" }}>
                   Ready to Become a{" "}
