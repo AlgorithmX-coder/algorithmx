@@ -562,7 +562,7 @@ function CyberHeroesNav() {
         .chnav-cta { display:inline-flex; align-items:center; gap:16px; justify-self:end; }
         .chnav-login { font-weight:700; font-size:14px; color:rgba(234,246,255,0.70); text-decoration:none; transition:color 160ms; }
         .chnav-login:hover { color:#eaf6ff; text-decoration:underline; text-underline-offset:4px; text-decoration-color:rgba(0,229,255,0.5); }
-        .chnav-enrol { display:inline-flex; align-items:center; border-radius:14px; border:1px solid rgba(255,255,255,0.18); color:#1a0e14; font-family:var(--font-space-grotesk),system-ui,sans-serif; font-weight:800; font-size:14px; text-decoration:none; white-space:nowrap; }
+        .chnav-enrol { display:inline-flex; align-items:center; border-radius:14px; border:1px solid rgba(255,255,255,0.18); color:#fff; text-shadow:0 1px 2px rgba(0,0,0,0.38); font-family:var(--font-space-grotesk),system-ui,sans-serif; font-weight:800; font-size:14px; text-decoration:none; white-space:nowrap; }
         .chnav-frame { position:absolute; inset:0; border-radius:18px; padding:1px; pointer-events:none; z-index:0; background:linear-gradient(135deg, rgba(124,92,255,0.9), rgba(0,229,255,0.9)); -webkit-mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite:xor; mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); mask-composite:exclude; transition:opacity 320ms; }
         .chnav-frame.breathe { animation: chnavBreathe 6s ease-in-out infinite; }
         @keyframes chnavBreathe { 0%,100% { opacity:0.6; } 50% { opacity:0.74; } }
@@ -584,7 +584,7 @@ function CyberHeroesNav() {
         .chnav-sheet-link { display:block; padding:14px 8px; font-weight:700; font-size:15px; color:rgba(234,246,255,0.8); text-decoration:none; border-bottom:1px solid rgba(148,163,184,0.12); }
         .chnav-sheet-link.is-active { color:#eaf6ff; border-left:2px solid #00e5ff; padding-left:12px; }
         .chnav-sheet-login { display:block; text-align:center; padding:12px; margin-top:12px; border-radius:12px; border:1px solid rgba(0,229,255,0.3); color:#7df0ff; font-weight:700; text-decoration:none; }
-        .chnav-sheet-enrol { display:block; text-align:center; padding:13px; margin-top:10px; border-radius:14px; color:#1a0e14; font-weight:800; font-family:var(--font-space-grotesk),system-ui,sans-serif; text-decoration:none; }
+        .chnav-sheet-enrol { display:block; text-align:center; padding:13px; margin-top:10px; border-radius:14px; color:#fff; text-shadow:0 1px 2px rgba(0,0,0,0.38); font-weight:800; font-family:var(--font-space-grotesk),system-ui,sans-serif; text-decoration:none; }
         @media (max-width: 1023px) {
           .chnav-grid { grid-template-columns: 1fr auto; }
           .chnav-links { display:none; }
@@ -826,6 +826,10 @@ export default function HomePage() {
         .ch-raccoon-glow { animation: chRaccoonGlow 3s ease-in-out infinite; }
         .ch-playbtn { transition: transform 0.18s ease; }
         .ch-playbtn:hover { transform: scale(1.08); }
+        /* CTA label on the warm gradient: white pops off the orange/pink far
+           better than the old near-black; the soft shadow keeps it crisp over
+           the light gold end of the gradient. */
+        .ch-cta-text { color: #fff; text-shadow: 0 1px 2px rgba(0,0,0,0.38); }
       `}</style>
 
       {/* New playful-but-techy cosmic backdrop (replaces the old R3F
@@ -885,7 +889,7 @@ export default function HomePage() {
               </div>
               <div className="flex gap-4 flex-wrap justify-center lg:justify-start">
                 <a href="/signup?course=cyber-heroes"
-                  className="px-7 py-4 font-bold text-[#1a0e14] text-base ch-lift"
+                  className="px-7 py-4 font-bold ch-cta-text text-base ch-lift"
                   style={{ background: BTN_GRAD, boxShadow: BTN_GLOW, borderRadius: 14 }}>
                   Enrol Now · £99
                 </a>
@@ -1103,7 +1107,7 @@ export default function HomePage() {
               Join Adam and Layla on their adventure to become cybersecurity experts. Help them stay safe from the Hacker Raccoon and learn how to protect yourself too!
             </p>
             <a href="/signup?course=cyber-heroes"
-              className="inline-block px-7 py-4 font-bold text-[#1a0e14] text-base ch-lift"
+              className="inline-block px-7 py-4 font-bold ch-cta-text text-base ch-lift"
               style={{ background: BTN_GRAD, boxShadow: BTN_GLOW, borderRadius: 14 }}>
               Enrol Your Child - £99
             </a>
@@ -1247,7 +1251,7 @@ export default function HomePage() {
             <p className="ch-sub text-sm max-w-lg mx-auto mb-6">
               Cyber Heroes Academy is designed for ages 6-10. For older children and adults, check out our other cybersecurity courses.
             </p>
-            <Link href="/" className="inline-block px-6 py-3 text-sm font-bold text-[#1a0e14] transition-all"
+            <Link href="/" className="inline-block px-6 py-3 text-sm font-bold ch-cta-text transition-all"
               style={{ background: BTN_GRAD, boxShadow: BTN_GLOW, borderRadius: 14 }}>
               Explore All Courses →
             </Link>
@@ -1355,7 +1359,7 @@ export default function HomePage() {
             </p>
             <a href="/signup?course=cyber-heroes"
               className="ch-lift"
-              style={{ display: "inline-block", background: BTN_GRAD, color: "#1a0e14", fontSize: 18, fontWeight: 700, padding: "14px 36px", borderRadius: 14, textDecoration: "none", boxShadow: BTN_GLOW }}>
+              style={{ display: "inline-block", background: BTN_GRAD, color: "#fff", textShadow: "0 1px 2px rgba(0,0,0,0.38)", fontSize: 18, fontWeight: 700, padding: "14px 36px", borderRadius: 14, textDecoration: "none", boxShadow: BTN_GLOW }}>
               Enrol Now - £99
             </a>
           </div>
@@ -1782,7 +1786,7 @@ export default function HomePage() {
                 className="ch-lift"
                 style={{
                   display: "inline-block", width: "100%",
-                  background: BTN_GRAD, color: "#1a0e14",
+                  background: BTN_GRAD, color: "#fff", textShadow: "0 1px 2px rgba(0,0,0,0.38)",
                   fontSize: 16, fontWeight: 800,
                   padding: "16px 28px", borderRadius: 14,
                   textDecoration: "none", textAlign: "center",
@@ -1848,7 +1852,7 @@ export default function HomePage() {
                   Join families across the UK giving their children the online safety skills they&apos;ll carry for life.
                 </p>
                 <a href="/signup?course=cyber-heroes"
-                  className="inline-block px-10 py-5 font-bold text-[#1a0e14] text-lg ch-lift"
+                  className="inline-block px-10 py-5 font-bold ch-cta-text text-lg ch-lift"
                   style={{ background: BTN_GRAD, boxShadow: BTN_GLOW, borderRadius: 14 }}>
                   Enrol Now · £99
                 </a>
