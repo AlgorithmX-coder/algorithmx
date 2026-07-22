@@ -916,11 +916,13 @@ export default function HomePage() {
                   <div
                     key={i}
                     style={{
-                      background: "rgba(10,13,30,0.6)", border: "1px solid rgba(148,163,184,0.16)",
+                      background: `linear-gradient(180deg, ${s.color}14, rgba(10,13,30,0.62))`,
+                      border: `1px solid ${s.color}40`,
+                      boxShadow: `0 0 18px ${s.color}22, inset 0 0 14px ${s.color}10`,
                       borderRadius: 14, padding: "14px 12px", textAlign: "center",
                     }}
                   >
-                    <div className="display-font" style={{ color: s.color, fontSize: 28, fontWeight: 700, lineHeight: 1 }}>
+                    <div className="display-font" style={{ color: s.color, fontSize: 28, fontWeight: 700, lineHeight: 1, textShadow: `0 0 14px ${s.color}80` }}>
                       <CountUp to={s.to} suffix={s.suffix} />
                     </div>
                     <div style={{ fontSize: 11, fontWeight: 700, color: "#d1d5db", letterSpacing: "0.08em", marginTop: 6, textTransform: "uppercase" }}>
@@ -1243,7 +1245,12 @@ export default function HomePage() {
 
         {/* ── OTHER AGES ──────────────────────────────────────────────────── */}
         <section className="max-w-[1200px] mx-auto px-6 md:px-10 py-12 sm:py-16">
-          <div className="text-center" data-scroll>
+          <div className="text-center mx-auto" data-scroll style={{
+            maxWidth: 640, padding: "32px 28px", borderRadius: 24,
+            background: "linear-gradient(180deg, rgba(124,92,255,0.08), rgba(7,10,24,0.5))",
+            border: "1px solid rgba(124,92,255,0.25)",
+            boxShadow: "0 0 30px rgba(124,92,255,0.12), inset 0 1px 0 rgba(255,255,255,0.05)",
+          }}>
             <h3 className="text-xl sm:text-2xl font-bold text-gray-400 mb-3">
               Looking for{" "}
               <span style={ACCENT_TEXT}>other ages</span>?
