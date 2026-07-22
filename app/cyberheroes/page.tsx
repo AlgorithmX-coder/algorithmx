@@ -1305,11 +1305,13 @@ export default function HomePage() {
                       }}>
                         <div style={{
                           flexShrink: 0, width: 44, height: 44, borderRadius: "50%",
-                          background: phase.accent,
+                          background: "radial-gradient(circle at 50% 36%, #141d38, #0a0e1f)",
                           display: "flex", alignItems: "center", justifyContent: "center",
-                          fontFamily: "var(--font-fredoka), sans-serif", fontSize: 22, fontWeight: 800, color: "#08101f",
-                          border: "2px solid rgba(255,255,255,0.24)",
-                          boxShadow: `0 2px 10px ${phase.accent}40, inset 0 1px 1px rgba(255,255,255,0.4)`,
+                          fontFamily: "var(--font-fredoka), sans-serif", fontSize: 22, fontWeight: 800,
+                          color: phase.accent,
+                          textShadow: `0 0 10px ${phase.accent}cc`,
+                          border: `2px solid ${phase.accent}`,
+                          boxShadow: `0 0 16px ${phase.accent}6e, inset 0 0 11px ${phase.accent}33`,
                         }}>
                           {wk.w}
                         </div>
@@ -1319,10 +1321,10 @@ export default function HomePage() {
                               {wk.title}
                             </h3>
                             {isStart && (
-                              <span style={{ fontFamily: "var(--font-jetbrains-mono), monospace", fontSize: 9.5, fontWeight: 700, letterSpacing: "0.12em", color: "#0a0f1c", background: "#7eff97", borderRadius: 8, padding: "2px 8px", whiteSpace: "nowrap" }}>START HERE</span>
+                              <span style={{ fontFamily: "var(--font-jetbrains-mono), monospace", fontSize: 9.5, fontWeight: 700, letterSpacing: "0.12em", color: "#9bf5ad", background: "rgba(10,14,30,0.65)", border: "1px solid #7eff9766", borderRadius: 8, padding: "2px 8px", whiteSpace: "nowrap" }}>START HERE</span>
                             )}
                             {isFinal && (
-                              <span style={{ fontFamily: "var(--font-jetbrains-mono), monospace", fontSize: 9.5, fontWeight: 700, letterSpacing: "0.12em", color: "#0a0f1c", background: "#ffd158", borderRadius: 8, padding: "2px 8px", whiteSpace: "nowrap" }}>FINAL MISSION</span>
+                              <span style={{ fontFamily: "var(--font-jetbrains-mono), monospace", fontSize: 9.5, fontWeight: 700, letterSpacing: "0.12em", color: "#ffdc7a", background: "rgba(10,14,30,0.65)", border: "1px solid #ffd15866", borderRadius: 8, padding: "2px 8px", whiteSpace: "nowrap" }}>FINAL MISSION</span>
                             )}
                           </div>
                           <p style={{ color: "#c5cdf0", fontSize: 13.5, lineHeight: 1.5 }}>{wk.sub}</p>
