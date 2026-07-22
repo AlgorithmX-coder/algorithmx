@@ -382,13 +382,13 @@ const IconFamily = ({ size = 32, color = "#ec4899" }: { size?: number; color?: s
 function FAQAccordion() {
   const [open, setOpen] = useState<number | null>(0);
   const items = [
-    { q: "What age is this for?", a: "Cyber Heroes Academy is designed for children aged 6–10. Every lesson, character, and activity is crafted to be age-appropriate and engaging for this specific age group." },
+    /* removed per request: "What age is this for?" */
     { q: "How long does it take?", a: "20 weeks, one 45-minute session per week. Children can go at their own pace. There's no pressure to keep to a schedule." },
-    { q: "Is it safe? Can strangers contact my child?", a: "Yes, completely safe. Lessons are sandboxed (no chat, no public profile, no social feed). Your child plays through the missions on their own; nobody else can contact them through the course. We don't sell or share data, and we don't run third-party advertising trackers." },
-    { q: "Can I see what my child is learning?", a: "Yes. The parent dashboard shows you which lessons they've completed, badges earned, time spent, and a snapshot of how they're progressing each week. You'll also receive a printable milestone certificate at the end of each module." },
+    /* removed per request: "Is it safe? Can strangers contact my child?" */
+    { q: "Can I see what my child is learning?", a: "Yes. The parent dashboard shows you which lessons they've completed, badges earned, time spent, and a snapshot of how they're progressing each week. You'll also receive a milestone certificate at the end of each module." },
     { q: "Is it accredited?", a: "Yes. Designed in alignment with CyberFirst and ASDAN accreditation frameworks from day one." },
-    { q: "What devices does it work on?", a: "Modern browsers on desktop or laptop (Chrome, Safari, Firefox, Edge: last two major versions) and on tablets / phones (iOS 14+, Android 9+, iPad 6th gen+). For the boss-battle visuals we recommend a screen of at least 10 inches. Headphones are optional but help kids focus." },
-    { q: "What if something breaks during a lesson?", a: "Email support@algorithmx.co.uk with a quick description of what happened. We usually respond within one working day and push fixes within the week. If you're stuck mid-lesson, refresh the page; progress is saved automatically every few seconds." },
+    { q: "What devices does it work on?", a: "Modern browsers on desktop or laptop (Chrome, Safari, Firefox, Edge: last two major versions) and on tablets (iPad 6th gen+, Android 9+). For the boss-battle visuals we recommend a screen of at least 10 inches. Headphones are optional but help kids focus." },
+    /* removed per request: "What if something breaks during a lesson?" */
     { q: "Do we get lifetime access?", a: "Yes. Your one-time purchase of £99 gives you lifetime access with continuous updates. As new threats emerge, we update the content so your child's knowledge stays current." },
     { q: "I have more than one child. Do I need to pay £99 each time?", a: "Yes, enrolment is per child at £99. There's no sibling discount. Each child gets their own dedicated account, progress tracking, badges, and milestone certificates, so they can each move at their own pace. It's a one-time payment per child with lifetime access; no subscriptions, no renewals." },
   ];
@@ -552,7 +552,7 @@ function CyberHeroesNav() {
         .chnav-logo:hover .chnav-shield { transform:rotate(-7deg) scale(1.1); }
         .chnav-word { font-family:var(--font-fredoka),system-ui,sans-serif; font-weight:700; font-size:19px; letter-spacing:0.02em; color:#eaf6ff; white-space:nowrap; }
         .chnav-word em { font-style:normal; color:#ffb347; }
-        .chnav-by { font-family:var(--font-nunito),sans-serif; font-weight:800; font-size:9px; letter-spacing:0.18em; text-transform:uppercase; color:rgba(234,246,255,0.45); margin-left:6px; white-space:nowrap; }
+        .chnav-by { font-family:var(--font-nunito),sans-serif; font-weight:800; font-size:9px; letter-spacing:0.18em; text-transform:uppercase; color:#7df0ff; margin-left:6px; white-space:nowrap; text-shadow:0 0 8px rgba(0,229,255,0.4); }
         @media (max-width: 639px) { .chnav-by { display:none; } }
         .chnav-links { display:flex; align-items:center; justify-content:center; gap:24px; justify-self:center; }
         .chnav-link { position:relative; font-weight:700; font-size:14px; letter-spacing:0.01em; color:rgba(234,246,255,0.72); padding:8px 4px; text-decoration:none; transition: color 180ms; }
@@ -1251,7 +1251,7 @@ export default function HomePage() {
             <p className="ch-sub text-sm max-w-lg mx-auto mb-6">
               Cyber Heroes Academy is designed for ages 6-10. For older children and adults, check out our other cybersecurity courses.
             </p>
-            <Link href="/" className="inline-block px-6 py-3 text-sm font-bold ch-cta-text transition-all"
+            <Link href="/cybersecurity" className="inline-block px-6 py-3 text-sm font-bold ch-cta-text transition-all"
               style={{ background: BTN_GRAD, boxShadow: BTN_GLOW, borderRadius: 14 }}>
               Explore All Courses →
             </Link>
@@ -1350,21 +1350,7 @@ export default function HomePage() {
               </div>
             ))}
           </div>
-          {/* End-of-curriculum CTA */}
-          <div data-scroll style={{ background: "rgba(124,92,255,0.1)", border: "1px solid rgba(124,92,255,0.3)", boxShadow: "0 0 20px rgba(124,92,255,0.2)", borderRadius: 20, padding: 32, textAlign: "center", maxWidth: 600, margin: "40px auto 0" }}>
-            <div style={{ marginBottom: 12, display: "flex", justifyContent: "center" }}>
-              <CyberIconOrEmoji emoji="🚀" size={40} accent="cyan" glow />
-            </div>
-            <h3 style={{ color: "#fff", fontSize: 22, fontWeight: 900, marginBottom: 8 }}>Ready to start the adventure?</h3>
-            <p className="ch-sub" style={{ fontSize: 16, marginBottom: 20, maxWidth: 480, margin: "0 auto 20px" }}>
-              Twenty weeks, four certificates, one Cyber Hero. One payment - lifetime access to the full journey.
-            </p>
-            <a href="/signup?course=cyber-heroes"
-              className="ch-lift"
-              style={{ display: "inline-block", background: BTN_GRAD, color: "#fff", textShadow: "0 1px 2px rgba(0,0,0,0.38)", fontSize: 18, fontWeight: 700, padding: "14px 36px", borderRadius: 14, textDecoration: "none", boxShadow: BTN_GLOW }}>
-              Enrol Now - £99
-            </a>
-          </div>
+          {/* (removed per request: end-of-curriculum "Ready to start the adventure?" CTA) */}
         </section>
 
         {/* ── FEATURES ─────────────────────────────────────────────────────── */}
@@ -1392,24 +1378,7 @@ export default function HomePage() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto">
-            {FEATURES.map((f, i) => (
-              <div key={i} data-scroll data-scroll-delay={String(i * 0.12)}>
-                <div className="rounded-3xl p-6 h-full ch-lift"
-                  style={{
-                    background: "rgba(10,13,30,0.62)",
-                    border: "1px solid rgba(124,92,255,0.2)",
-                    backdropFilter: "blur(12px)",
-                  }}>
-                  <div style={{ width: 56, height: 56, borderRadius: 16, background: "rgba(124,92,255,0.1)", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 16 }}>
-                    {i === 0 ? <IconController /> : <IconAward />}
-                  </div>
-                  <h3 className="font-black text-white text-lg mb-2">{f.title}</h3>
-                  <p className="text-gray-400 text-sm leading-relaxed">{f.desc}</p>
-                </div>
-              </div>
-            ))}
-          </div>
+          {/* (removed per request: "Interactive Adventures" + "Accreditation Aligned" feature cards) */}
 
           {/* Raccoon moved to after story section */}
         </section>
@@ -1456,9 +1425,8 @@ export default function HomePage() {
                 }}>
                   <span className="display-font" style={{
                     fontSize: 40, fontWeight: 700,
-                    background: `linear-gradient(135deg, ${s.color}, ${s.color}aa)`,
-                    WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent",
-                    backgroundClip: "text",
+                    color: s.color,
+                    textShadow: `0 0 12px ${s.color}cc`,
                     lineHeight: 1,
                   }}>
                     {s.num}
@@ -1501,10 +1469,10 @@ export default function HomePage() {
               <span style={{ fontSize: 14 }}>📱</span> Anywhere · Anytime
             </span>
             <h2 className="text-3xl sm:text-4xl font-black text-white mb-4">
-              On <span style={ACCENT_TEXT}>Every Device</span> They Use
+              Works on <span style={ACCENT_TEXT}>Laptop &amp; Tablet</span>
             </h2>
             <p className="ch-sub text-base sm:text-lg max-w-2xl mx-auto">
-              Laptop. Tablet. Phone. Same lesson, same progress, picked up anywhere - kids start in the morning on a tablet and finish on a laptop after school.
+              Laptop and tablet. Same lesson, same progress, picked up anywhere - kids start in the morning on a tablet and finish on a laptop after school.
             </p>
           </div>
 
@@ -1518,63 +1486,7 @@ export default function HomePage() {
               zIndex: 0,
             }} />
 
-            {/* ── PHONE - left ── */}
-            <div
-              data-scroll
-              style={{
-                position: "relative",
-                width: "clamp(120px, 16vw, 160px)",
-                aspectRatio: "10 / 19",
-                marginBottom: 18,
-                filter: "drop-shadow(0 22px 44px rgba(0,229,255,0.45)) drop-shadow(0 0 70px rgba(124,92,255,0.22))",
-              }}
-            >
-              <div style={{
-                width: "100%", height: "100%",
-                borderRadius: 28,
-                background: "linear-gradient(135deg, #1a1f3a, #0a0e22)",
-                border: "2px solid rgba(0,229,255,0.5)",
-                padding: 6,
-                boxShadow: "inset 0 0 0 1px rgba(255,255,255,0.05)",
-                position: "relative",
-              }}>
-                {/* Notch */}
-                <div style={{
-                  position: "absolute", top: 10, left: "50%", transform: "translateX(-50%)",
-                  width: "32%", height: 8,
-                  borderRadius: 999,
-                  background: "#04050d",
-                  zIndex: 2,
-                }} />
-                <div style={{
-                  position: "relative",
-                  width: "100%", height: "100%",
-                  borderRadius: 22, overflow: "hidden",
-                  background: "radial-gradient(ellipse at 50% 60%, #2a0d2e 0%, #1a1f4d 35%, #0f1530 70%, #04050d 100%)",
-                }}>
-                  <Image
-                    src="/characters/celebrating.png"
-                    alt="Cyber Heroes lesson on a phone"
-                    width={175} height={332}
-                    style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 30%" }}
-                    sizes="(max-width: 768px) 30vw, 160px"
-                  />
-                  <div style={{ position: "absolute", inset: 0, background: "linear-gradient(180deg, transparent 50%, rgba(8,10,22,0.7) 100%)" }} />
-                  <div style={{
-                    position: "absolute", bottom: 14, left: "50%", transform: "translateX(-50%)",
-                    fontFamily: "var(--font-jetbrains-mono), monospace",
-                    fontSize: 7, letterSpacing: "0.18em", color: "#ffd158",
-                    background: "rgba(8,10,22,0.85)",
-                    border: "1px solid rgba(255,209,88,0.45)",
-                    borderRadius: 999, padding: "2px 6px",
-                    textTransform: "uppercase",
-                    whiteSpace: "nowrap",
-                  }}>
-                    ★ Victory!
-                  </div>
-                </div>
-              </div>
-            </div>
+            {/* (removed per request: phone mockup — product is laptop + tablet only) */}
 
             {/* ── LAPTOP - center, biggest ── */}
             <div
@@ -1764,12 +1676,12 @@ export default function HomePage() {
                 {[
                   "Full 20-week Cyber Heroes Academy",
                   "All interactive missions & boss battles",
-                  "4 milestone certificates (printable PDFs)",
+                  "4 milestone certificates",
                   "Parent progress dashboard",
                   "One-time £99 per child. No subscriptions, no renewals",
                   "CyberFirst & ASDAN aligned content",
                   "Continuous content updates as new threats emerge",
-                  "GDPR-compliant · No data sold · No third-party ads",
+                  "GDPR-compliant",
                   "Lifetime access with continuous updates",
                 ].map((f, i, arr) => (
                   <li key={i} style={{
