@@ -830,6 +830,11 @@ export default function HomePage() {
            better than the old near-black; the soft shadow keeps it crisp over
            the light gold end of the gradient. */
         .ch-cta-text { color: #fff; text-shadow: 0 1px 2px rgba(0,0,0,0.38); }
+        /* Final CTA card: animated glow border + aurora + twinkle. */
+        @keyframes chCtaFlow { to { background-position: 300% 0; } }
+        .ch-cta-border { position: absolute; inset: 0; border-radius: 24px; padding: 2px; pointer-events: none; z-index: 5; background: linear-gradient(120deg, rgba(0,229,255,0.9), rgba(124,92,255,0.9), rgba(255,95,179,0.8), rgba(0,229,255,0.9)); background-size: 300% 300%; -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask-composite: exclude; opacity: 0.7; animation: chCtaFlow 8s linear infinite; }
+        @keyframes chCtaAurora { to { transform: translate(-3%,2%) rotate(8deg) scale(1.08); } }
+        @keyframes chCtaTwinkle { 0%,100% { opacity: 0.25; } 50% { opacity: 0.9; } }
       `}</style>
 
       {/* New playful-but-techy cosmic backdrop (replaces the old R3F
@@ -1749,27 +1754,68 @@ export default function HomePage() {
           <div data-scroll>
             <div className="relative rounded-3xl overflow-hidden p-8 sm:p-14 text-center"
               style={{
-                background: "linear-gradient(135deg, #7c5cff, #1d4ed8, #00e5ff)",
-                border: "1px solid rgba(124,92,255,0.3)",
-                backdropFilter: "blur(16px)",
-                boxShadow: "0 0 30px rgba(124,92,255,0.3)",
+                background:
+                  "radial-gradient(ellipse 90% 120% at 50% -10%, rgba(124,92,255,0.5), transparent 60%), radial-gradient(ellipse 80% 120% at 50% 115%, rgba(0,229,255,0.36), transparent 60%), radial-gradient(circle at 84% 28%, rgba(255,95,179,0.26), transparent 45%), linear-gradient(160deg, #241a5c 0%, #141a44 45%, #0c1030 100%)",
+                boxShadow: "0 40px 90px -30px rgba(6,8,20,0.9), inset 0 0 90px rgba(124,92,255,0.18)",
               }}>
-              {/* Blurred background image */}
-              <div className="absolute inset-0 z-0">
-                <Image src="/characters/adam-layla-happy.png" alt="" fill
-                  className="object-cover opacity-10" style={{ filter: "blur(30px)" }} />
+              {/* animated glow border */}
+              <div aria-hidden className="ch-cta-border" />
+              {/* aurora shimmer */}
+              <div aria-hidden style={{
+                position: "absolute", inset: "-20% -10%", zIndex: 0, pointerEvents: "none",
+                background: "conic-gradient(from 200deg at 60% 40%, transparent 0deg, rgba(0,229,255,0.16) 60deg, rgba(124,92,255,0.2) 150deg, transparent 250deg)",
+                filter: "blur(50px)", mixBlendMode: "screen", animation: "chCtaAurora 14s ease-in-out infinite alternate",
+              }} />
+              {/* starfield */}
+              <div aria-hidden style={{ position: "absolute", inset: 0, zIndex: 0, pointerEvents: "none" }}>
+                {Array.from({ length: 34 }).map((_, i) => (
+                  <span key={i} style={{
+                    position: "absolute", borderRadius: "50%", background: "#fff",
+                    width: 1 + (i % 3), height: 1 + (i % 3),
+                    left: `${(i * 37 + 5) % 100}%`, top: `${(i * 53 + 7) % 100}%`,
+                    animation: `chCtaTwinkle 3.5s ease-in-out ${(i % 7) * 0.4}s infinite`,
+                  }} />
+                ))}
               </div>
-              {/* Contrast scrim — darkens the centre so white text pops on the
-                  vibrant gradient card while the edges stay bright. */}
-              <div aria-hidden className="absolute inset-0" style={{ zIndex: 1, background: "radial-gradient(ellipse 82% 92% at 50% 50%, rgba(5,7,22,0.46) 0%, rgba(5,7,22,0.16) 56%, transparent 82%)" }} />
+              {/* floating sparkles */}
+              {[
+                { pos: { top: "16%", left: "12%" }, d: 0 },
+                { pos: { top: "24%", right: "15%" }, d: 0.8 },
+                { pos: { bottom: "24%", left: "18%" }, d: 1.4 },
+              ].map((s, i) => (
+                <span key={i} aria-hidden className="ch-sparkle" style={{
+                  position: "absolute", zIndex: 1, color: "#fffbe6", fontSize: 15,
+                  ...s.pos, animationDelay: `${s.d}s`,
+                }}>✦</span>
+              ))}
+              {/* Adam & Layla brought forward (hidden on mobile to avoid overlap) */}
+              <div aria-hidden className="hidden md:block" style={{
+                position: "absolute", bottom: 0, right: 20, width: 210, zIndex: 2,
+                filter: "drop-shadow(0 0 30px rgba(0,229,255,0.35))",
+                WebkitMaskImage: "linear-gradient(#000 78%, transparent)",
+                maskImage: "linear-gradient(#000 78%, transparent)",
+              }}>
+                <Image src="/characters/adam-layla-happy.png" alt="" width={420} height={300}
+                  style={{ width: "100%", height: "auto", display: "block" }} />
+              </div>
+
               <div className="relative z-10">
-                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white mb-4 leading-tight">
+                {/* glowing emblem */}
+                <div style={{
+                  width: 64, height: 64, borderRadius: 20, margin: "0 auto 20px",
+                  display: "flex", alignItems: "center", justifyContent: "center", fontSize: 30,
+                  background: "radial-gradient(circle at 50% 35%, #1a2450, #0c1030)",
+                  border: "1.5px solid rgba(125,240,255,0.6)",
+                  boxShadow: "0 0 26px rgba(0,229,255,0.5), inset 0 0 14px rgba(0,229,255,0.25)",
+                }}>🛡️</div>
+                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white mb-4 leading-tight"
+                  style={{ textShadow: "0 2px 20px rgba(0,0,0,0.35)" }}>
                   Ready to Become a{" "}
                   <span style={ACCENT_TEXT}>
                     Cyber Hero
                   </span>?
                 </h2>
-                <p className="text-base sm:text-lg max-w-lg mx-auto mb-8" style={{ color: "#eef4ff", fontWeight: 500 }}>
+                <p className="text-base sm:text-lg max-w-lg mx-auto mb-8" style={{ color: "#dbe4ff", fontWeight: 500 }}>
                   Join families across the UK giving their children the online safety skills they&apos;ll carry for life.
                 </p>
                 <a href="/signup?course=cyber-heroes"
@@ -1777,7 +1823,7 @@ export default function HomePage() {
                   style={{ background: BTN_GRAD, boxShadow: BTN_GLOW, borderRadius: 14 }}>
                   Enrol Now · £99
                 </a>
-                <p className="mt-4" style={{ fontSize: 13, color: "#dbe7ff", fontWeight: 500 }}>
+                <p className="mt-4" style={{ fontSize: 13, color: "#aeb8d6", fontWeight: 500 }}>
                   One-time payment · Instant access · Lifetime updates
                 </p>
               </div>
