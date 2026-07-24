@@ -48,7 +48,7 @@ const STREAMS: Stream[] = [
     status: "LIVE NOW",
     isLive: true,
     blurb:
-      "From spotting scams at age 6 to real security skills that grow all the way to adult level. Online safety is the gateway skill.",
+      "From spotting scams at age 6 to real security skills that keep growing into adulthood. Online safety is the gateway skill.",
     project: "Pen-test a live web app & ship the security report",
     accent: "#3ee88f",
     icon: "M12 2l8 3v6c0 5-3.5 8-8 11-4.5-3-8-6-8-11V5l8-3z",
@@ -204,7 +204,7 @@ export default function SubjectShowcase() {
               }}
             >
               Cyber Security is live today. Five more courses are releasing
-              soon — each built around real projects to kickstart your career
+              soon, each built around real projects to kickstart your career
               in IT!
             </p>
           </FadeUp>
@@ -231,7 +231,7 @@ export default function SubjectShowcase() {
                   textShadow: "0 0 18px rgba(0,229,255,0.35)",
                 }}
               >
-                {"// INCOMING — NEW STREAMS DETECTED"}
+                {"// INCOMING · NEW STREAMS DETECTED"}
               </p>
               <h3
                 style={{
@@ -259,7 +259,7 @@ export default function SubjectShowcase() {
                 }}
               >
                 Every card below is a real course, locked and encrypted until
-                launch day — the first stream decrypts in around 3 months.
+                launch day. The first stream decrypts in 3 months.
               </p>
             </div>
           </FadeUp>
@@ -742,7 +742,7 @@ function RoadmapCard({ stream, idx }: { stream: Stream; idx: number }) {
     <article
       ref={cardRef}
       className="lv2-roadmap-card"
-      aria-label={`Classified upcoming course — unlocks in ${stream.unlockIn ?? "the future"}`}
+      aria-label={`Classified upcoming course, unlocks in ${stream.unlockIn ?? "the future"}`}
       style={
         {
           "--accent": a,

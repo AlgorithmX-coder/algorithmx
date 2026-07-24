@@ -22,17 +22,17 @@ const FAQS: QA[] = [
   {
     icon: "ages",
     q: "What ages is AlgorithmX for?",
-    a: "Everyone from age 6 to adult. AlgorithmX is a multi-track platform built for the whole journey — young children start with foundational courses like Cyber Heroes Academy, while older learners and adults work toward recognised qualification pathways. Whatever the age or stage, there's a track designed for it.",
+    a: "Everyone from age 6 all the way through to adulthood. AlgorithmX is a multi-track platform built for the whole journey: young children start with foundational courses like Cyber Heroes Academy, while older learners and adults work toward recognised qualification pathways. Whatever the age or stage, there's a track designed for it.",
   },
   {
     icon: "tag",
     q: "How much does it cost?",
-    a: "£99 as a one-time payment per course — no subscriptions and no hidden fees. Pay once, keep lifetime access. School licensing is priced separately.",
+    a: "£99 as a one-time payment per course, with no subscriptions and no hidden fees. Pay once, keep lifetime access. School licensing is priced separately.",
   },
   {
     icon: "code",
     q: "What if I (or my child) have never coded before?",
-    a: "That's exactly who we build for. Every track starts from the very beginning and assumes zero prior experience. Lessons build step by step, so complete beginners — whether a 6-year-old or an adult — can start with confidence and grow real skills as they go.",
+    a: "That's exactly who we build for. Every track starts from the very beginning and assumes zero prior experience. Lessons build step by step, so complete beginners, whether a 6-year-old or an adult, can start with confidence and grow real skills as they go.",
   },
   {
     icon: "clock",
@@ -41,8 +41,8 @@ const FAQS: QA[] = [
   },
   {
     icon: "shield",
-    q: "Is it safe? Are there ads?",
-    a: "Completely safe and 100% ad-free. AlgorithmX is a closed, distraction-free learning environment — no advertising, no external links, no strangers. For our youngest learners especially, everything is designed in-house and made purely for learning.",
+    q: "Is it safe and ad-free?",
+    a: "Completely safe and 100% ad-free. AlgorithmX is a closed, distraction-free learning environment with no advertising, no external links, and no strangers. For our youngest learners especially, everything is designed in-house and made purely for learning.",
   },
   {
     icon: "bank",

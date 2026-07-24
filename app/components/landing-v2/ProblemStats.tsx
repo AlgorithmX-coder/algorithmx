@@ -48,7 +48,9 @@ const STATS = [
     label: "of UK job openings require digital skills",
     badgeTop: "9M+",
     badgeSub: "ads analysed",
-    source: "DCMS · No Longer Optional",
+    /* "No Longer Optional" is the DCMS report's title — spell that out
+     * so the label doesn't read as a claim of its own. */
+    source: "DCMS report 'No Longer Optional'",
     /* Universal — future tech literacy across all ages */
     spark: [33, 30, 31, 25, 26, 18, 22, 14, 12, 8, 4],
   },

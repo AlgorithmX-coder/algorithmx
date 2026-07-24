@@ -87,7 +87,7 @@ export default function Footer() {
               { name: "Cyber Heroes", href: "/cyberheroes" },
               { name: "Cyber Explorers", href: "/cyberexplorers" },
             ]}
-            note="+ 5 more streams — encrypted until launch"
+            note="+ 5 more streams, encrypted until launch"
           />
           {/* HONESTY PASS (2026-07-17): dead `href="#"` links removed —
            * About / For Parents / For Teens / Pricing and the entire
