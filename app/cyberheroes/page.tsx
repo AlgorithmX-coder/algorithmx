@@ -42,12 +42,9 @@ const CREDENTIALS: Array<{
 }> = [
   { kind: "shield-check", title: "CyberFirst", sub: "UK Framework · aligned", accent: "#7df0ff", titleColor: "#9cf2ff", logo: "/logos/cyberfirst.webp" },
   { kind: "rosette",      title: "ASDAN",      sub: "Accreditation · aligned", accent: "#a78bff", titleColor: "#b9a4ff", logo: "/logos/asdan.jpg", logoWhite: true },
-  { kind: "lock",         title: "GDPR Compliant",     sub: "EU · UK Privacy",    accent: "#7eff97", titleColor: "#9bf5ad" },
-  { kind: "family",       title: "Built by Parents",   sub: "For Parents",        accent: "#ffd158", titleColor: "#ffdc7a" },
-  { kind: "infinity",     title: "Lifetime Access",    sub: "Updates for life",   accent: "#ff5fb3", titleColor: "#ff8fc7" },
-  { kind: "pin",          title: "Made in the UK",     sub: "British Curriculum", accent: "#7df0ff", titleColor: "#9cf2ff" },
-  { kind: "db-blocked",   title: "No Data Sold",       sub: "No 3rd-Party Ads",   accent: "#a78bff", titleColor: "#b9a4ff" },
-  { kind: "target",       title: "Ages 6-9",           sub: "Crafted Curriculum", accent: "#ffd158", titleColor: "#ffdc7a" },
+  // Only real standards with real logos live here. Feature items (Built by
+  // Parents, Lifetime Access, Made in the UK, No Data Sold, Ages 6-9) and
+  // GDPR (no official logo) were removed — they aren't logo-bearing standards.
 ];
 
 /* Clean line-art glyphs for the credential chips (replaces emoji, which
@@ -89,20 +86,11 @@ function CredIcon({ kind, accent }: { kind: string; accent: string }) {
 function CredentialsMarquee() {
   // Duplicate the array so the loop is seamless - when the first set
   // scrolls off the left, the duplicate is exactly at the start.
-  const items = [...CREDENTIALS, ...CREDENTIALS];
+  // Only two real, logo-bearing standards now, so this is a static centred
+  // row rather than a scrolling marquee.
+  const items = CREDENTIALS;
   return (
-    <div
-      style={{
-        position: "relative",
-        overflow: "hidden",
-        // Soft fade-out edges so badges enter / exit gracefully
-        // instead of snapping at the viewport edges.
-        maskImage:
-          "linear-gradient(90deg, transparent 0%, black 8%, black 92%, transparent 100%)",
-        WebkitMaskImage:
-          "linear-gradient(90deg, transparent 0%, black 8%, black 92%, transparent 100%)",
-      }}
-    >
+    <div style={{ position: "relative" }}>
       <style>{`
         @keyframes credSlide {
           from { transform: translateX(0); }
@@ -123,8 +111,8 @@ function CredentialsMarquee() {
         style={{
           display: "flex",
           gap: 18,
-          width: "max-content",
-          animation: "credSlide 38s linear infinite",
+          justifyContent: "center",
+          flexWrap: "wrap",
           padding: "10px 0",
         }}
       >
