@@ -1,21 +1,19 @@
 "use client";
 
 import Link from "next/link";
-import { motion, type MotionValue, useTransform } from "framer-motion";
 
 /**
- * HeroOverlay. The static brand UI that fades in over the cinematic.
- * Eyebrow + headline + sub-line + dual CTAs.
+ * HeroOverlay. The static brand UI over the cinematic: eyebrow +
+ * headline + sub-line + CTA.
  *
- * Driven by the same `progress` MotionValue as VaultScene. Stays
- * invisible until scroll-progress passes ~0.7 (the moment the AX
- * glyph starts forming), then fades up with a slight lift to land
- * on top of the vault interior.
+ * Visible from scroll 0 (2026-07-24 reviewer pass): the old version
+ * gated everything behind scroll-progress 0.68, which left first-time
+ * visitors staring at a near-black frame with no message. The message
+ * now owns the left half of the frame from the moment the page loads
+ * (the same composition the cinematic used to END on), and the laptop
+ * choreography plays out beside it. Entrance is a one-shot CSS
+ * animation, so the component needs no scroll plumbing at all.
  */
-
-interface HeroOverlayProps {
-  progress: MotionValue<number>;
-}
 
 /* Eyebrow rewritten - "AGES 6 TO ADULT" framing read as a parents-
  * brochure spec sheet (and was redundant with the headline's "every
@@ -26,28 +24,16 @@ const HEADLINE = "Technology education for every stage of life.";
 const SUBLINE =
   "Six technology streams, from age 6 all the way through to adulthood. Cyber Security is live today. The other five are classified until launch, unlocking over the coming months.";
 
-export default function HeroOverlay({ progress }: HeroOverlayProps) {
-  /* Headline reveals AFTER the keyboard has lit up - so the sequence
-   * reads "lid opens -> screen boots -> keys glow -> headline appears".
-   * Pushed back from 0.42 -> 0.55 to 0.68 -> 0.78 so each beat gets
-   * its own moment instead of stacking in the middle. */
-  const opacity = useTransform(progress, [0.68, 0.78], [0, 1]);
-  const y = useTransform(progress, [0.68, 0.78], [22, 0]);
-  const blur = useTransform(progress, [0.68, 0.78], [8, 0]);
-  const filter = useTransform(blur, (v) => `blur(${v}px)`);
-  const scrimOpacity = useTransform(progress, [0.66, 0.78], [0, 1]);
-
+export default function HeroOverlay() {
   /* The persistent ALGORITHMX wordmark previously rendered here was
    * removed: the global Nav (Nav.tsx) carries the brand from scroll 0,
    * and the duplicate created visual noise in the top-left corner. */
 
   return (
     <>
-      <motion.div
+      <div
+        className="lv2-hero-enter"
         style={{
-          opacity,
-          y,
-          filter,
           position: "absolute",
           inset: 0,
           zIndex: 3,
@@ -64,11 +50,11 @@ export default function HeroOverlay({ progress }: HeroOverlayProps) {
       {/* Radial scrim - stronger core (0.78 -> 0.88) so the headline
        *  reads with maximum contrast against the dark backdrop, plus a
        *  faster falloff on the right (60% -> 52%) so the laptop sits
-       *  in completely clean dark space - no scrim penumbra at all. */}
-      <motion.div
+       *  in completely clean dark space - no scrim penumbra at all.
+       *  Static now that the text is present from scroll 0. */}
+      <div
         aria-hidden
         style={{
-          opacity: scrimOpacity,
           position: "absolute",
           inset: 0,
           background:
@@ -168,7 +154,7 @@ export default function HeroOverlay({ progress }: HeroOverlayProps) {
           </Link>
         </div>
       </div>
-    </motion.div>
+    </div>
 
     {/* Scoped CSS for the hero CTAs — needed for :hover/:focus states,
      *  which inline style objects can't express. Both CTAs share a
@@ -177,6 +163,26 @@ export default function HeroOverlay({ progress }: HeroOverlayProps) {
      *  glow that intensifies on hover so it reads as premium rather
      *  than ghosted. */}
     <style jsx global>{`
+      .lv2-hero-enter {
+        animation: lv2HeroEnter 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.15s both;
+      }
+      @keyframes lv2HeroEnter {
+        from {
+          opacity: 0;
+          transform: translateY(18px);
+          filter: blur(6px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+          filter: blur(0);
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .lv2-hero-enter {
+          animation: none;
+        }
+      }
       .lv2-hero-cta {
         font-family: var(--lv2-font-mono);
         font-size: 12px;
