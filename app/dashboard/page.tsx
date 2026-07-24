@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { hasEntitlement, getAge } from "@/app/lib/entitlements";
 import { resolveActiveChildProfileId } from "@/app/lib/progressService";
 import DashboardView, { type WeekItem, type WeekState } from "./DashboardView";
+import PlayDashboardAmbientOnMount from "@/app/components/PlayDashboardAmbientOnMount";
 
 const PRODUCT_SLUG = "cyber-heroes";
 
@@ -95,7 +96,10 @@ export default async function DashboardPage() {
   }
 
   return (
-    <DashboardView
+    <>
+      {/* Faint Week-1 ambient bed (honors the global audio mute). */}
+      <PlayDashboardAmbientOnMount />
+      <DashboardView
       userName={userName}
       childAge={childAge}
       completedCount={completedCount}
@@ -107,6 +111,7 @@ export default async function DashboardPage() {
       weeks={weeks}
       heroCtaHref={`/lesson/${nextWeek ?? 1}`}
       onLogout={handleLogout}
-    />
+      />
+    </>
   );
 }

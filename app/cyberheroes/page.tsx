@@ -1156,6 +1156,27 @@ export default function HomePage() {
           </div>
         </section>
 
+        {/* ── WHO IS THE HACKER RACCOON? (villain spotlight, directly under Meet the Characters) ── */}
+        <div className="flex justify-center px-6 pb-16 -mt-6 sm:-mt-10" data-scroll data-scroll-delay="0.1">
+          <div style={{
+            maxWidth: 800, width: "100%",
+            background: "#111827",
+            border: "1px solid rgba(239,68,68,0.2)",
+            boxShadow: "0 0 30px rgba(239,68,68,0.08)",
+            borderRadius: 20, padding: 32,
+          }}>
+            <h2 className="display-font" style={{ color: "#fff", fontSize: 22, fontWeight: 800, marginBottom: 12 }}>
+              Who is the Hacker Raccoon?
+            </h2>
+            <p style={{ color: "#e2e8f0", fontSize: 15, lineHeight: 1.75, fontWeight: 500 }}>
+              The Hacker Raccoon isn&apos;t just a cartoon villain. He represents the real cyber threats targeting your children every day.
+              From sophisticated phishing emails disguised as game rewards, to social engineering in chat rooms, fake app downloads, and password-cracking attacks.
+              Each week, the Raccoon deploys a new tactic pulled straight from today&apos;s threat landscape.
+              Your child learns to recognise, outsmart, and block every single one.
+            </p>
+          </div>
+        </div>
+
         {/* ── STORY ────────────────────────────────────────────────────────── */}
         <section className="max-w-[1200px] mx-auto px-6 md:px-10 py-16 sm:py-24">
           <div className="text-center mb-12" data-scroll>
@@ -1243,28 +1264,7 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* (Standalone raccoon card removed: the Hacker Raccoon is now introduced in "Meet Your Cyber Heroes" alongside Adam & Layla.) */}
-
-        {/* ── VILLAIN SPOTLIGHT ─────────────────────────────────────────── */}
-        <div className="flex justify-center px-6 pb-16" data-scroll data-scroll-delay="0.1">
-          <div style={{
-            maxWidth: 800, width: "100%",
-            background: "#111827",
-            border: "1px solid rgba(239,68,68,0.2)",
-            boxShadow: "0 0 30px rgba(239,68,68,0.08)",
-            borderRadius: 20, padding: 32,
-          }}>
-            <h2 className="display-font" style={{ color: "#fff", fontSize: 22, fontWeight: 800, marginBottom: 12 }}>
-              Who is the Hacker Raccoon?
-            </h2>
-            <p style={{ color: "#e2e8f0", fontSize: 15, lineHeight: 1.75, fontWeight: 500 }}>
-              The Hacker Raccoon isn&apos;t just a cartoon villain. He represents the real cyber threats targeting your children every day.
-              From sophisticated phishing emails disguised as game rewards, to social engineering in chat rooms, fake app downloads, and password-cracking attacks.
-              Each week, the Raccoon deploys a new tactic pulled straight from today&apos;s threat landscape.
-              Your child learns to recognise, outsmart, and block every single one.
-            </p>
-          </div>
-        </div>
+        {/* (Standalone raccoon card removed: the Hacker Raccoon is introduced in "Meet the Characters"; the "Who is the Hacker Raccoon?" spotlight now sits directly under that section.) */}
 
         {/* ── OTHER AGES ──────────────────────────────────────────────────── */}
         <section className="max-w-[1200px] mx-auto px-6 md:px-10 py-12 sm:py-16">

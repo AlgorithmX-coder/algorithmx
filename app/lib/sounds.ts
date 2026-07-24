@@ -122,6 +122,14 @@ const BGM_REGISTRY: Record<string, SoundEntry> = {
   // Boss bed (a cappella - voices only, ElevenLabs Music). Same rule:
   // very very faint under the villain/narrator voices + SFX. Was 0.09.
   bgmBoss: { path: "/audio/sfx/bgm-boss.mp3", volume: 0.03 },
+  // Dashboard ambient bed: the Week-1 lesson track (bgm-lesson.mp3) brought
+  // back as faint atmosphere on /dashboard, where no narration competes for
+  // the mix. Deliberately a SEPARATE key from bgmLesson - the lesson bed was
+  // dropped from the allowlist so it stays silent under the narration voice,
+  // and this must not re-enable it. 0.04 matches the pilot-tuned hub bed's
+  // perceived loudness: bgm-lesson measures ~2.4 dB louder than bgm-hq, so
+  // 0.05 x 10^(-2.4/20) ~= 0.04.
+  bgmDashboard: { path: "/audio/sfx/bgm-lesson.mp3", volume: 0.04 },
 };
 
 const SFX_KEYS = Object.keys(SFX_REGISTRY);
@@ -489,7 +497,7 @@ export function playSound(key: string): void {
  * hardened (per-track volume cap + NaN-safe), so re-enabling another
  * surface later is just adding its key here.
  */
-const BGM_ALLOWLIST = new Set<string>(["bgmHub", "bgmBoss"]);
+const BGM_ALLOWLIST = new Set<string>(["bgmHub", "bgmBoss", "bgmDashboard"]);
 
 export function playBGM(trackOrKey: string): void {
   if (!BGM_ALLOWLIST.has(trackOrKey)) {
