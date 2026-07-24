@@ -38,7 +38,8 @@ import HeroOverlay from "./HeroOverlay";
  *   0.40–0.56  screen ignites, dashboard rows cascade in
  *   0.50–0.64  keyboard underglow ramps
  *   0.60–0.84  three course cards rise out of the screen plane
- *   0.66–0.80  headline + CTAs reveal (HeroOverlay's own gates)
+ *   (headline + CTAs are visible from p=0 since the 2026-07-24
+ *   reviewer pass — HeroOverlay no longer takes scroll progress)
  *
  * Deterministic by construction: every animated value derives from
  * scroll progress only — no clocks, no one-shot triggers. Ambient life
@@ -189,7 +190,10 @@ export default function HeroCinematicV3() {
   const screenT = useTransform(progress, (p) => smoothstep(0.4, 0.56, p));
   const screenGlow = useTransform(screenT, (v) => 0.55 * v);
   const kbGlow = useTransform(progress, (p) => smoothstep(0.5, 0.64, p));
-  const floorGlow = useTransform(progress, (p) => 0.25 + 0.75 * smoothstep(0.38, 0.6, p));
+  /* Dormant base raised 0.25 -> 0.45 (reviewer pass): the galaxy pool
+   * is now clearly visible under the closed laptop, so the opening
+   * frame reads as a product shot in a cosmos rather than a void. */
+  const floorGlow = useTransform(progress, (p) => 0.45 + 0.55 * smoothstep(0.38, 0.6, p));
   /* Standby LED fades out as the machine wakes. */
   const ledOpacity = useTransform(progress, (p) => 1 - smoothstep(0.35, 0.5, p));
   /* LID LIGHT SWEEP — a specular band travelling across the aluminum
@@ -860,8 +864,10 @@ export default function HeroCinematicV3() {
           }}
         />
 
-        {/* headline / CTA column — same overlay as the shipped hero */}
-        <HeroOverlay progress={progress} />
+        {/* headline / CTA column — visible from scroll 0 (2026-07-24
+         *  reviewer pass: the dormant first frame read as empty/dark
+         *  with no message until p=0.68) */}
+        <HeroOverlay />
 
         {/* chapter label rail */}
         <ChapterRailV3 progress={progress} />
@@ -892,14 +898,17 @@ export default function HeroCinematicV3() {
           position: absolute; border-radius: 50%; pointer-events: none;
           filter: blur(70px);
         }
+        /* Nebula opacities raised (0.5 -> 0.7 / 0.4 -> 0.55) so the
+         * opening frame has visible cosmic atmosphere before the first
+         * scroll (reviewer pass: frame read as near-black). */
         .hv3-nebulaA {
-          width: 55vw; height: 42vw; left: 8vw; top: 12vh; opacity: 0.5;
-          background: radial-gradient(ellipse, rgba(40,90,190,0.20), rgba(0,229,255,0.05) 55%, transparent 75%);
+          width: 55vw; height: 42vw; left: 8vw; top: 12vh; opacity: 0.7;
+          background: radial-gradient(ellipse, rgba(40,90,190,0.26), rgba(0,229,255,0.06) 55%, transparent 75%);
           animation: hv3DriftA 26s ease-in-out infinite alternate;
         }
         .hv3-nebulaB {
-          width: 48vw; height: 40vw; right: 2vw; bottom: 4vh; opacity: 0.4;
-          background: radial-gradient(ellipse, rgba(90,60,200,0.16), rgba(63,208,255,0.05) 55%, transparent 75%);
+          width: 48vw; height: 40vw; right: 2vw; bottom: 4vh; opacity: 0.55;
+          background: radial-gradient(ellipse, rgba(90,60,200,0.21), rgba(63,208,255,0.06) 55%, transparent 75%);
           animation: hv3DriftB 32s ease-in-out infinite alternate;
         }
         @keyframes hv3DriftA { from { transform: translate3d(0,0,0); } to { transform: translate3d(3vw,2vh,0); } }
