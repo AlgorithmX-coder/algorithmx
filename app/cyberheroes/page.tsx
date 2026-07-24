@@ -812,7 +812,7 @@ export default function HomePage() {
         .ch-typewriter {
           display: inline-block; overflow: hidden; white-space: nowrap;
           border-right: 2px solid #ff7a59;
-          animation: chTyping 3s steps(35) 1s forwards, chBlink 0.8s step-end infinite;
+          animation: chTyping 3s steps(58) 1s forwards, chBlink 0.8s step-end infinite;
           width: 0;
         }
         @keyframes chFadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: none; } }
@@ -883,7 +883,7 @@ export default function HomePage() {
                 Join Adam and Layla on an interactive journey to become a Cyber Hero. Fun animated lessons, games, and challenges for ages 6-9.
               </p>
               <p className="mb-4 mono" style={{ fontSize: 14, color: "#ff7a59", fontWeight: 500 }}>
-                <span className="ch-typewriter">20 weeks. 40+ missions. 1 Cyber Hero.</span>
+                <span className="ch-typewriter">20 weeks. 40+ missions. Lifetime access, no subscriptions.</span>
               </p>
               {/* Trust line - surfaces accreditation + privacy from the
                   FAQ so it's visible above the fold. */}
