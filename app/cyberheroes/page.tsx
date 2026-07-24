@@ -1059,8 +1059,8 @@ export default function HomePage() {
         <section id="heroes" className="max-w-[1200px] mx-auto px-6 md:px-10 py-16 sm:py-24">
           <div className="text-center mb-12" data-scroll>
             <h2 className="text-3xl sm:text-4xl font-black text-white mb-4">
-              Meet Your{" "}
-              <span style={ACCENT_TEXT}>Cyber Heroes</span>
+              Meet the{" "}
+              <span style={ACCENT_TEXT}>Characters</span>
             </h2>
           </div>
 
