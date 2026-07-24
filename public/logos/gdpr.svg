@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100" role="img" aria-label="GDPR compliant">
+  <defs>
+    <radialGradient id="g" cx="38%" cy="30%" r="80%">
+      <stop offset="0%" stop-color="#1f5be0"/>
+      <stop offset="100%" stop-color="#0a2f8f"/>
+    </radialGradient>
+    <path id="st" d="M0,-5 L1.18,-1.62 L4.76,-1.55 L1.9,0.62 L2.94,4.05 L0,1.95 L-2.94,4.05 L-1.9,0.62 L-4.76,-1.55 L-1.18,-1.62 Z" fill="#FFCC00"/>
+  </defs>
+  <circle cx="50" cy="50" r="48" fill="url(#g)" stroke="#FFCC00" stroke-width="2.5"/>
+  <g>
+    <use href="#st" transform="translate(50,16)"/>
+    <use href="#st" transform="translate(67,20.6)"/>
+    <use href="#st" transform="translate(79.4,33)"/>
+    <use href="#st" transform="translate(84,50)"/>
+    <use href="#st" transform="translate(79.4,67)"/>
+    <use href="#st" transform="translate(67,79.4)"/>
+    <use href="#st" transform="translate(50,84)"/>
+    <use href="#st" transform="translate(33,79.4)"/>
+    <use href="#st" transform="translate(20.6,67)"/>
+    <use href="#st" transform="translate(16,50)"/>
+    <use href="#st" transform="translate(20.6,33)"/>
+    <use href="#st" transform="translate(33,20.6)"/>
+  </g>
+  <g fill="#FFCC00">
+    <path d="M43,51 V45.5 a7,7 0 0 1 14,0 V51" fill="none" stroke="#FFCC00" stroke-width="4.6"/>
+    <rect x="38" y="50" width="24" height="20" rx="3.2"/>
+  </g>
+  <g fill="#0a2f8f">
+    <circle cx="50" cy="58" r="3"/>
+    <rect x="48.7" y="58" width="2.6" height="7" rx="1.1"/>
+  </g>
+</svg>

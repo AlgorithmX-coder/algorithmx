@@ -39,12 +39,16 @@ const CREDENTIALS: Array<{
   titleColor: string;
   logo?: string;
   logoWhite?: boolean;
+  logoWide?: boolean;
 }> = [
   { kind: "shield-check", title: "CyberFirst", sub: "UK Framework · aligned", accent: "#7df0ff", titleColor: "#9cf2ff", logo: "/logos/cyberfirst.webp" },
   { kind: "rosette",      title: "ASDAN",      sub: "Accreditation · aligned", accent: "#a78bff", titleColor: "#b9a4ff", logo: "/logos/asdan.jpg", logoWhite: true },
-  // Only real standards with real logos live here. Feature items (Built by
-  // Parents, Lifetime Access, Made in the UK, No Data Sold, Ages 6-9) and
-  // GDPR (no official logo) were removed — they aren't logo-bearing standards.
+  { kind: "lock",         title: "GDPR",           sub: "EU · UK Data Privacy", accent: "#7eff97", titleColor: "#9bf5ad", logo: "/logos/gdpr.svg" },
+  { kind: "pin",          title: "Made in the UK", sub: "British Curriculum",   accent: "#7db4ff", titleColor: "#a9d0ff", logo: "/logos/uk-flag.svg", logoWide: true },
+  // Every item here is a genuine standard/credential shown with a REAL mark:
+  // CyberFirst + ASDAN (accreditor logos), GDPR (EU data-protection badge),
+  // Made in the UK (Union Jack). Pure features (Built by Parents, Lifetime
+  // Access, No Data Sold, Ages 6-9) stay OUT - not standards, no real logo.
 ];
 
 /* Clean line-art glyphs for the credential chips (replaces emoji, which
@@ -159,7 +163,7 @@ function CredentialsMarquee() {
             {/* Mark — a real accreditor logo where we have one, else a medallion icon. */}
             <span
               style={{
-                width: c.logoWhite ? 66 : 46,
+                width: c.logoWhite ? 66 : c.logoWide ? 72 : 46,
                 height: 46,
                 borderRadius: 14,
                 flexShrink: 0,
