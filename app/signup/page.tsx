@@ -245,8 +245,10 @@ function SignupPageInner() {
         {/* LEFT — secure terminal slab */}
         <div className="flex flex-col justify-center py-14">
           <div className="w-full max-w-md">
-            {/* Brand mark */}
-            <div className="mb-9">
+            {/* Brand mark + escape hatch: the lockup always linked home,
+             *  but nothing on the page READ as navigation - an explicit
+             *  "Back to home" link makes the way out obvious. */}
+            <div className="mb-9 flex items-center justify-between gap-4">
               <Link href="/" className="inline-flex items-center gap-2.5">
                 <div
                   className="flex items-center justify-center"
@@ -266,6 +268,13 @@ function SignupPageInner() {
                   Algorithm
                   <span style={{ background: ACCESS_GRAD.brand, WebkitBackgroundClip: "text", backgroundClip: "text", color: "transparent" }}>X</span>
                 </span>
+              </Link>
+              <Link
+                href="/"
+                className="inline-flex items-center gap-1.5 transition hover:opacity-80"
+                style={{ color: ACCESS.cyanSoft, fontFamily: ACCESS_FONT.mono, fontSize: 11.5, fontWeight: 700, letterSpacing: 1.2, whiteSpace: "nowrap" }}
+              >
+                <span aria-hidden>←</span> BACK TO HOME
               </Link>
             </div>
 
