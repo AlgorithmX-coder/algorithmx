@@ -39,9 +39,14 @@ export default function HeroOverlay() {
           zIndex: 3,
           display: "flex",
           flexDirection: "column",
-          justifyContent: "center",
+          /* No justifyContent:center here - the content div safe-centres
+           * itself with margin:auto. Plain centering bleeds the overflow
+           * BOTH ways when the column is taller than the viewport, which
+           * shoved the eyebrow under the fixed Nav on short windows;
+           * auto margins collapse to 0 instead, so the padding below is
+           * a hard floor. */
           padding:
-            "calc(var(--lv2-rail) * 1.2) var(--lv2-rail) " +
+            "max(calc(var(--lv2-rail) * 1.2), 96px) var(--lv2-rail) " +
             "calc(var(--lv2-rail) * 1.6)",
           color: "var(--lv2-paper)",
           pointerEvents: "none",
@@ -73,7 +78,10 @@ export default function HeroOverlay() {
       <div
         style={{
           maxWidth: 1180,
-          margin: "0 auto",
+          /* auto top/bottom = safe vertical centering (see container
+           * comment); auto left/right = the same horizontal centering
+           * as before. */
+          margin: "auto",
           width: "100%",
           display: "flex",
           flexDirection: "column",
