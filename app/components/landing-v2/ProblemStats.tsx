@@ -48,9 +48,11 @@ const STATS = [
     label: "of UK job openings require digital skills",
     badgeTop: "9M+",
     badgeSub: "ads analysed",
-    /* "No Longer Optional" is the DCMS report's title — spell that out
-     * so the label doesn't read as a claim of its own. */
-    source: "DCMS report 'No Longer Optional'",
+    /* The citation is DCMS × Burning Glass, "No Longer Optional: Employer
+     * Demand for Digital Skills" (see header comment). The on-page label
+     * deliberately avoids the report's title: skimmed in caps it reads as
+     * a claim ("no longer optional?") rather than a name. */
+    source: "DCMS digital skills report",
     /* Universal — future tech literacy across all ages */
     spark: [33, 30, 31, 25, 26, 18, 22, 14, 12, 8, 4],
   },
