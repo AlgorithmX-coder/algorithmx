@@ -47,7 +47,7 @@ const CREDENTIALS: Array<{
   { kind: "infinity",     title: "Lifetime Access",    sub: "Updates for life",   accent: "#ff5fb3", titleColor: "#ff8fc7" },
   { kind: "pin",          title: "Made in the UK",     sub: "British Curriculum", accent: "#7df0ff", titleColor: "#9cf2ff" },
   { kind: "db-blocked",   title: "No Data Sold",       sub: "No 3rd-Party Ads",   accent: "#a78bff", titleColor: "#b9a4ff" },
-  { kind: "target",       title: "Ages 6–10",          sub: "Crafted Curriculum", accent: "#ffd158", titleColor: "#ffdc7a" },
+  { kind: "target",       title: "Ages 6-9",           sub: "Crafted Curriculum", accent: "#ffd158", titleColor: "#ffdc7a" },
 ];
 
 /* Clean line-art glyphs for the credential chips (replaces emoji, which
@@ -880,7 +880,7 @@ export default function HomePage() {
                 </span>
               </h1>
               <p className="ch-sub text-base sm:text-lg leading-relaxed max-w-lg mx-auto lg:mx-0 mb-4">
-                Join Adam and Layla on an interactive journey to become a Cyber Hero. Fun animated lessons, games, and challenges for ages 6–10.
+                Join Adam and Layla on an interactive journey to become a Cyber Hero. Fun animated lessons, games, and challenges for ages 6-9.
               </p>
               <p className="mb-4 mono" style={{ fontSize: 14, color: "#ff7a59", fontWeight: 500 }}>
                 <span className="ch-typewriter">20 weeks. 40+ missions. 1 Cyber Hero.</span>
@@ -1064,7 +1064,7 @@ export default function HomePage() {
             </h2>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 max-w-3xl mx-auto mb-10">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-5xl mx-auto mb-10">
             {/* Adam */}
             <div data-scroll data-scroll-delay="0">
               <div className="rounded-3xl char-blob char-blob-adam"
@@ -1118,6 +1118,32 @@ export default function HomePage() {
                   <h3 className="font-black text-white text-2xl mb-2">Layla</h3>
                   <p className="text-sm leading-relaxed" style={{ color: "#cbd5e1" }}>
                     Smart, creative, and fearless. Layla knows that staying safe online is a superpower everyone needs.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* The Hacker Raccoon (villain), introduced alongside the heroes */}
+            <div data-scroll data-scroll-delay="0.3">
+              <div className="rounded-3xl char-blob char-blob-raccoon"
+                style={{
+                  background: "transparent",
+                  filter: "drop-shadow(0 0 40px rgba(239,68,68,0.45)) drop-shadow(0 0 90px rgba(239,68,68,0.18))",
+                }}>
+                <div
+                  style={{
+                    height: 420,
+                    overflow: "hidden",
+                    maskImage: "radial-gradient(ellipse 78% 92% at 50% 45%, black 35%, rgba(0,0,0,0.85) 62%, rgba(0,0,0,0.35) 86%, transparent 100%)",
+                    WebkitMaskImage: "radial-gradient(ellipse 78% 92% at 50% 45%, black 35%, rgba(0,0,0,0.85) 62%, rgba(0,0,0,0.35) 86%, transparent 100%)",
+                  }}
+                >
+                  <Image src="/characters/raccoon.png" alt="The Hacker Raccoon, the villain" width={400} height={500} className="char-float" style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 20%", display: "block" }} />
+                </div>
+                <div className="px-6 py-5 text-center" style={{ background: "radial-gradient(ellipse 94% 100% at 50% 30%, rgba(7,10,24,0.78) 0%, rgba(7,10,24,0.4) 58%, transparent 84%)", borderRadius: 20 }}>
+                  <h3 className="font-black text-2xl mb-2" style={{ color: "#ff6b6b" }}>The Hacker Raccoon</h3>
+                  <p className="text-sm leading-relaxed" style={{ color: "#cbd5e1" }}>
+                    The sneaky villain who preys on weak passwords and risky clicks. The one your child will learn to outsmart.
                   </p>
                 </div>
               </div>
@@ -1223,24 +1249,7 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* ── RACCOON ──────────────────────────────────────────────────────── */}
-        <div className="flex justify-center py-12" data-scroll data-scroll-delay="0.2">
-          <div className="relative max-w-xs">
-            <div className="absolute inset-0 rounded-3xl"
-              style={{ background: "rgba(239,68,68,0.3)", filter: "blur(50px)", transform: "scale(0.9)" }} />
-            <div
-              className="ch-raccoon-glow"
-              style={{ borderRadius: 20, display: "inline-block", border: "2px solid rgba(239,68,68,0.3)" }}>
-              <Image src="/characters/raccoon.png" alt="The Hacker Raccoon villain"
-                width={280} height={280} className="relative block" style={{ borderRadius: 18 }} />
-            </div>
-            <div className="text-center mt-4" style={{ padding: "12px 18px", borderRadius: 18, background: "radial-gradient(ellipse 100% 100% at 50% 45%, rgba(7,10,24,0.85) 0%, rgba(7,10,24,0.42) 62%, transparent 88%)" }}>
-              <p className="text-blue-300 text-sm font-black">The Hacker Raccoon</p>
-              <p style={{ color: "#ff6b6b", fontWeight: 700, fontSize: 18, marginTop: 4 }}>The villain your kids will learn to outsmart!</p>
-              <p style={{ color: "#cbd5e1", fontSize: 14, fontStyle: "italic", marginTop: 4 }}>Can Adam &amp; Layla defeat him? Your child decides!</p>
-            </div>
-          </div>
-        </div>
+        {/* (Standalone raccoon card removed: the Hacker Raccoon is now introduced in "Meet Your Cyber Heroes" alongside Adam & Layla.) */}
 
         {/* ── VILLAIN SPOTLIGHT ─────────────────────────────────────────── */}
         <div className="flex justify-center px-6 pb-16" data-scroll data-scroll-delay="0.1">
@@ -1276,7 +1285,7 @@ export default function HomePage() {
               <span style={ACCENT_TEXT}>other ages</span>?
             </h3>
             <p className="ch-sub text-sm max-w-lg mx-auto mb-6">
-              Cyber Heroes Academy is designed for ages 6-10. For older children and adults, check out our other cybersecurity courses.
+              Cyber Heroes Academy is designed for ages 6-9. For older children and adults, check out our other cybersecurity courses.
             </p>
             <Link href="/cybersecurity" className="inline-block px-6 py-3 text-sm font-bold ch-cta-text transition-all"
               style={{ background: BTN_GRAD, boxShadow: BTN_GLOW, borderRadius: 14 }}>
@@ -1440,10 +1449,10 @@ export default function HomePage() {
               width: 2, background: "rgba(0,229,255,0.1)",
             }} aria-hidden />
             {[
-              { num: "1", title: "Enrol & Create Account", desc: "One-time payment of £99. Set up your child's profile and customise their avatar in under 2 minutes.", color: "#00e5ff" },
+              { num: "1", title: "Enrol & Create Account", desc: "One-time payment of £99. Set up your child's profile and customise their avatar.", color: "#00e5ff" },
               { num: "2", title: "Watch the Story", desc: "Each week opens with an animated chapter where Adam, Layla, and Robo discover a new cyber threat.", color: "#34d399" },
-              { num: "3", title: "Complete the Mission", desc: "Interactive simulations, drag-and-drop puzzles, and a boss battle finale against the Hacker Raccoon.", color: "#ff7a59" },
-              { num: "4", title: "Earn Badges & Level Up", desc: "Collect digital badges, unlock milestone certificates, and watch the Raccoon's power drain week by week.", color: "#ffd158" },
+              { num: "3", title: "Earn Badges & Level Up", desc: "Collect digital badges, unlock milestone certificates, and watch the Raccoon's power drain week by week.", color: "#ff7a59" },
+              { num: "4", title: "Complete the Mission", desc: "Interactive simulations, drag-and-drop puzzles, and a boss battle finale against the Hacker Raccoon.", color: "#ffd158" },
             ].map((s, i) => (
               <div key={i} data-scroll data-scroll-delay={String(0.08 + i * 0.1)} style={{ display: "flex", gap: 28, alignItems: "flex-start", marginBottom: 30, position: "relative" }}>
                 <div style={{
