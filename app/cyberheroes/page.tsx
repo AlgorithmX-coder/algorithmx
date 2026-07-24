@@ -294,7 +294,7 @@ const FEATURES = [
 /* ─── STORY CARDS DATA ─── */
 const STORY = [
   { src: "/characters/adam-layla-happy.png", alt: "Adam and Layla sitting happily", caption: "Meet Adam & Layla", sub: "Two enthusiastic gamers who love exploring the digital world. But danger lurks online...", accent: "#00e5ff", numGrad: "linear-gradient(135deg,#7c5cff,#00e5ff)" },
-  { src: "/characters/adam-layla-raccoon.png", alt: "The Hacker Raccoon appears", caption: "The Hacker Raccoon Strikes", sub: "A sneaky villain who preys on their vulnerabilities: weak passwords, risky clicks, and shared secrets.", accent: "#ff5fb3", numGrad: "linear-gradient(135deg,#ff7a59,#ff5fb3)" },
+  { src: "/characters/adam-layla-raccoon.png", alt: "The Hacker Raccoon appears", caption: "The Hacker Raccoon Strikes", sub: "He strikes with the real threats kids face online, from phishing traps to fake apps and sneaky links.", accent: "#ff5fb3", numGrad: "linear-gradient(135deg,#ff7a59,#ff5fb3)" },
   { src: "/characters/adam-layla-hacked.png", alt: "Adam and Layla with hacked tablet", caption: "Can They Become Cyber Heroes?", sub: "20 weeks of missions to outsmart the Raccoon and earn their Cyber Hero certificate!", accent: "#ffd158", numGrad: "linear-gradient(135deg,#ffd158,#ff7a59)" },
 ];
 
@@ -1141,7 +1141,7 @@ export default function HomePage() {
                 <div className="px-6 py-5 text-center" style={{ background: "radial-gradient(ellipse 94% 100% at 50% 30%, rgba(7,10,24,0.78) 0%, rgba(7,10,24,0.4) 58%, transparent 84%)", borderRadius: 20 }}>
                   <h3 className="font-black text-2xl mb-2" style={{ color: "#ff6b6b" }}>The Hacker Raccoon</h3>
                   <p className="text-sm leading-relaxed" style={{ color: "#cbd5e1" }}>
-                    The sneaky villain who preys on weak passwords and risky clicks. The one your child will learn to outsmart.
+                    He represents the real cyber attacks kids face today: phishing scams, fake apps, and risky links. The one your child will learn to outsmart.
                   </p>
                 </div>
               </div>
