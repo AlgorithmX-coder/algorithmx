@@ -37,9 +37,11 @@ const CREDENTIALS: Array<{
   sub: string;
   accent: string;
   titleColor: string;
+  logo?: string;
+  logoWhite?: boolean;
 }> = [
-  { kind: "shield-check", title: "CyberFirst Aligned", sub: "UK Framework",       accent: "#7df0ff", titleColor: "#9cf2ff" },
-  { kind: "rosette",      title: "ASDAN Aligned",      sub: "Accreditation",      accent: "#a78bff", titleColor: "#b9a4ff" },
+  { kind: "shield-check", title: "CyberFirst", sub: "UK Framework · aligned", accent: "#7df0ff", titleColor: "#9cf2ff", logo: "/logos/cyberfirst.webp" },
+  { kind: "rosette",      title: "ASDAN",      sub: "Accreditation · aligned", accent: "#a78bff", titleColor: "#b9a4ff", logo: "/logos/asdan.jpg", logoWhite: true },
   { kind: "lock",         title: "GDPR Compliant",     sub: "EU · UK Privacy",    accent: "#7eff97", titleColor: "#9bf5ad" },
   { kind: "family",       title: "Built by Parents",   sub: "For Parents",        accent: "#ffd158", titleColor: "#ffdc7a" },
   { kind: "infinity",     title: "Lifetime Access",    sub: "Updates for life",   accent: "#ff5fb3", titleColor: "#ff8fc7" },
@@ -166,22 +168,35 @@ function CredentialsMarquee() {
                 maskComposite: "exclude",
               }}
             />
-            {/* Icon well — a small medallion inside the chip. */}
+            {/* Mark — a real accreditor logo where we have one, else a medallion icon. */}
             <span
               style={{
-                width: 46,
+                width: c.logoWhite ? 66 : 46,
                 height: 46,
                 borderRadius: 14,
                 flexShrink: 0,
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                background: `radial-gradient(120% 120% at 32% 24%, ${c.accent}26, rgba(8,10,22,0.86) 72%)`,
+                padding: c.logo ? (c.logoWhite ? "5px 8px" : 5) : 0,
+                background: c.logoWhite
+                  ? "#fff"
+                  : `radial-gradient(120% 120% at 32% 24%, ${c.accent}26, rgba(8,10,22,0.86) 72%)`,
                 border: `1px solid ${c.accent}3d`,
                 boxShadow: `inset 0 1px 0 rgba(255,255,255,0.10), 0 0 14px -4px ${c.accent}66`,
               }}
             >
-              <CredIcon kind={c.kind} accent={c.accent} />
+              {c.logo ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={c.logo}
+                  alt={c.title}
+                  loading="lazy"
+                  style={{ maxWidth: "100%", maxHeight: "100%", width: "auto", height: "auto", objectFit: "contain" }}
+                />
+              ) : (
+                <CredIcon kind={c.kind} accent={c.accent} />
+              )}
             </span>
             {/* Title + classification sub. */}
             <span style={{ display: "flex", flexDirection: "column", gap: 3, alignItems: "flex-start", position: "relative", zIndex: 1 }}>
@@ -1355,7 +1370,13 @@ export default function HomePage() {
                     fontSize: 13, fontWeight: 800, color: phase.accent,
                     boxShadow: `0 0 16px ${phase.accent}33`,
                   }}>
-                    <span style={{ fontSize: 16 }}>{phase.certEmoji}</span>
+                    <svg width="22" height="22" viewBox="0 0 32 32" fill="none" aria-hidden style={{ flexShrink: 0 }}>
+                      <path d="M11 18 L8 30 L13 27 L16 30 L14 20" fill={phase.accent} opacity="0.3" />
+                      <path d="M21 18 L24 30 L19 27 L16 30 L18 20" fill={phase.accent} opacity="0.3" />
+                      <circle cx="16" cy="12" r="9" fill="rgba(8,10,22,0.5)" stroke={phase.accent} strokeWidth="1.5" />
+                      <circle cx="16" cy="12" r="6.2" fill="none" stroke={phase.accent} strokeWidth="0.7" opacity="0.5" />
+                      <path d="M16 8.2l1.15 2.33 2.57.37-1.86 1.8.44 2.56L16 14.53l-2.3 1.2.44-2.56-1.86-1.8 2.57-.37z" fill={phase.accent} />
+                    </svg>
                     Earn the {phase.cert} certificate
                   </span>
                 </div>
@@ -1478,7 +1499,7 @@ export default function HomePage() {
               fontWeight: 800, letterSpacing: "0.2em", textTransform: "uppercase",
               marginBottom: 16,
             }}>
-              <span style={{ fontSize: 14 }}>📱</span> Anywhere · Anytime
+              Anywhere · Anytime
             </span>
             <h2 className="text-3xl sm:text-4xl font-black text-white mb-4">
               Works on <span style={ACCENT_TEXT}>Laptop &amp; Tablet</span>
@@ -1628,7 +1649,7 @@ export default function HomePage() {
               fontWeight: 800, letterSpacing: "0.2em", textTransform: "uppercase",
               marginBottom: 14,
             }}>
-              <span style={{ fontSize: 14 }}>★</span> Trusted Credentials
+              Trusted Credentials
             </span>
             <h2 className="text-2xl sm:text-3xl font-black text-white">
               Built on <span style={ACCENT_TEXT}>Real Standards</span>
