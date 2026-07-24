@@ -795,12 +795,18 @@ export default function HomePage() {
         /* Section subtitles that float directly over the bright field: brighter
            ink + a tighter dark halo so they read cleanly over orbs/lines. */
         .ch-legible .ch-sub { color: #dbe4f3; text-shadow: 0 0 2px rgba(0,0,0,0.72), 0 1px 4px rgba(0,0,0,0.85), 0 0 16px rgba(2,4,14,0.72); }
-        @keyframes chTyping { from { width: 0; } to { width: 100%; } }
+        /* Types to the text's exact width (58 mono chars), not 100% of the
+           parent - otherwise the caret keeps travelling past the text and
+           parks mid-page. The blink runs 5 x 0.8s = the 1s delay + 3s typing,
+           then holds its final (transparent) keyframe so the caret vanishes
+           once the line is written. Keep ch width + steps in sync with the
+           tagline's character count if the copy changes. */
+        @keyframes chTyping { from { width: 0; } to { width: 58ch; } }
         @keyframes chBlink { 0%,100% { border-color: transparent; } 50% { border-color: #ff7a59; } }
         .ch-typewriter {
           display: inline-block; overflow: hidden; white-space: nowrap;
           border-right: 2px solid #ff7a59;
-          animation: chTyping 3s steps(58) 1s forwards, chBlink 0.8s step-end infinite;
+          animation: chTyping 3s steps(58) 1s forwards, chBlink 0.8s step-end 5 forwards;
           width: 0;
         }
         @keyframes chFadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: none; } }

@@ -29,7 +29,7 @@ const PILLARS: Pillar[] = [
   {
     title: "Age-appropriate, always",
     copy:
-      "Content is staged for ages 6-9, 10-13, 14-17 and adult. We meet your child where they are. Never push, never patronise.",
+      "Content is staged for ages 6-9, 10-13, 14-17 and adults. We meet your child where they are. Never push, never patronise.",
     accent: "#9ff5ff",
     icon: "person",
   },
@@ -41,16 +41,16 @@ const PILLARS: Pillar[] = [
     icon: "gradcap",
   },
   {
-    title: "Hands-on, not videos",
+    title: "No passive watching",
     copy:
-      "Your child builds things. Real tools, real code, real artefacts they can show off. No passive watching.",
+      "Your child builds things. Real tools, real code, real artefacts they can show off.",
     accent: "#ffd07a",
     icon: "code",
   },
   {
-    title: "One transparent price",
+    title: "Transparent pricing",
     copy:
-      "£99 lifetime access to Cyber Heroes Academy. One-time payment, no subscription, no surprise upgrades.",
+      "One clear price per course, shown up front. Pay once, keep lifetime access. No subscriptions, no surprise upgrades.",
     accent: "#ffc94a",
     icon: "tag",
   },
@@ -122,8 +122,8 @@ export default function ParentTrust() {
               fontFamily: "var(--lv2-font-display)",
               fontSize: "clamp(2.2rem, 4.6vw, 3.6rem)",
               lineHeight: 1.04,
-              letterSpacing: "-0.025em",
-              fontWeight: 400,
+              letterSpacing: "-0.03em",
+              fontWeight: 800,
               margin: "0 auto 16px",
               maxWidth: 880,
               color: "var(--lv2-paper)",
@@ -146,8 +146,8 @@ export default function ParentTrust() {
               textAlign: "center",
             }}
           >
-            Six promises we make to every parent who hands their child the
-            keyboard.
+            Six promises we make to every parent who puts a screen in their
+            child&apos;s hands.
           </p>
         </FadeUp>
 

@@ -54,7 +54,7 @@ import HeroOverlay from "./HeroOverlay";
  * names live in SubjectShowcase's STREAMS and return when a stream
  * flips live. */
 const STREAMS = [
-  { name: "CYBERSECURITY", age: "9-16", status: "LIVE", color: "#5fffa3", href: "/cyberheroes", live: true },
+  { name: "CYBERSECURITY", age: "6-18+", status: "LIVE", color: "#5fffa3", href: "/cyberheroes", live: true },
   { name: "7F#02$AE49BD1C8", age: "", status: "T-3 MO", color: "#9ff5ff", href: "#subjects", live: false },
   { name: "C4&9E0#B7$2A6F1D3", age: "", status: "T-6 MO", color: "#cba8ff", href: "#subjects", live: false },
   { name: "0B$8D3F#A5E92C", age: "", status: "T-12 MO", color: "#ffd07a", href: "#subjects", live: false },
@@ -1273,8 +1273,8 @@ function StreamRow({
       href={stream.href}
       aria-label={
         stream.live
-          ? `${stream.name} — ages ${stream.age}, live now`
-          : `Classified stream — unlocks in ${stream.status.replace("T-", "").replace(" MO", " months")}`
+          ? `${stream.name}, ages ${stream.age}, live now`
+          : `Classified stream, unlocks in ${stream.status.replace("T-", "").replace(" MO", " months")}`
       }
       style={{
         opacity,

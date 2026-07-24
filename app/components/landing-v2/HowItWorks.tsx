@@ -108,8 +108,8 @@ export default function HowItWorks() {
         </FadeUp>
         <FadeUp delay={0.05}>
           <h2 style={{ fontFamily: "var(--lv2-font-display)", fontSize: "clamp(30px, 4.4vw, 56px)", fontWeight: 800, letterSpacing: "-0.03em", lineHeight: 1.05, margin: "18px 0 0" }}>
-            From first click to{" "}
-            <span style={{ background: "linear-gradient(90deg,#36d6ff,#a98bff)", WebkitBackgroundClip: "text", backgroundClip: "text", color: "transparent" }}>real achievement</span>
+            How it{" "}
+            <span style={{ background: "linear-gradient(90deg,#36d6ff,#a98bff)", WebkitBackgroundClip: "text", backgroundClip: "text", color: "transparent" }}>works.</span>
           </h2>
         </FadeUp>
         {/* (Sub-line removed 2026-07-17 — it restated what the five step

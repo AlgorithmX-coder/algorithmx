@@ -42,7 +42,7 @@ const DEFAULT_SUGGESTION: Suggestion = {
   stream: "CYBER HEROES ACADEMY",
   accent: "#5fffa3",
   status: "LIVE NOW",
-  project: "Build a Password Defender in Cyber Heroes — live now.",
+  project: "First mission: build passwords hackers can't crack. Live now.",
   href: "/cyberheroes",
   cta: "Start Cyber Heroes",
 };
@@ -52,7 +52,7 @@ const AUDIENCE_SUGGESTIONS: Record<Exclude<AudienceId, null>, Suggestion> = {
     stream: "CYBER HEROES ACADEMY",
     accent: "#5fffa3",
     status: "LIVE NOW",
-    project: "Story-led safety lessons for ages 6-9. Hands-on, not videos.",
+    project: "Story-led safety lessons for ages 6-9. No passive watching.",
     href: "/cyberheroes",
     cta: "Start Cyber Heroes",
   },
@@ -338,7 +338,7 @@ export default function Algo() {
               >
                 {audience
                   ? `Path tuned for ${AUDIENCE_LABEL_SHORT[audience].toLowerCase()}. Here's your starting point:`
-                  : "Jump straight into Cyber Security — live now for ages 6-13."}
+                  : "Jump straight into Cyber Security, live now for ages 6-13."}
               </p>
 
               {/* Recommendation card */}
