@@ -96,7 +96,6 @@ const AUDIENCE_LABEL_SHORT: Record<Exclude<AudienceId, null>, string> = {
 const SECTION_PHRASES: ReadonlyArray<{ id: string; phrase: string }> = [
   { id: "the-state-of-play", phrase: "Reading stats." },
   { id: "subjects", phrase: "Six streams detected." },
-  { id: "how", phrase: "Parsing programme structure." },
   { id: "parent-trust", phrase: "Validating safety policy." },
   { id: "testimonials", phrase: "Reading family signal." },
   { id: "faq", phrase: "Resolving objections." },
