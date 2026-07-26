@@ -46,11 +46,13 @@ export const ACCESS = {
   lineSoft: "rgba(150, 168, 224, 0.08)",
   lineActive: "rgba(54, 219, 255, 0.55)",
 
-  /* ── Text ── */
+  /* ── Text — the whole ramp sits a step brighter than the classic
+   *    60/45/30% greys: the busy code-rain backdrop eats low-contrast
+   *    text, so even "muted" must clearly beat it. ── */
   textBright: "#eef2ff",
-  text: "#c4cbe8",
-  textSoft: "#8e98bf",
-  textMuted: "#59628a",
+  text: "#ced5f0",
+  textSoft: "#aab4dc",
+  textMuted: "#8690bd",
 
   /* ── Semantic (used sparingly, only when it means something) ── */
   warn: "#f4b878",        // calm amber for errors — never harsh red
