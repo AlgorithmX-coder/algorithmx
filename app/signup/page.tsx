@@ -15,7 +15,6 @@ import { safeCourseSlug, hubTargetFor } from "@/app/lib/courseIntent";
 import { ACCESS, ACCESS_FONT, ACCESS_GRAD, rgba } from "@/app/components/auth/accessTokens";
 import {
   IconIdentity,
-  IconContact,
   IconCredentials,
   IconVault,
   IconCheck,
@@ -231,6 +230,40 @@ function SignupPageInner() {
         </div>
       )}
 
+      {/* Top line — brand far left, "Back to home" far right. Page chrome,
+       *  pinned above the vertically-centered access layer. */}
+      <div className="absolute left-0 right-0 top-0" style={{ zIndex: 3 }}>
+        <div className="mx-auto flex w-full items-center justify-between gap-4 px-6 pt-7" style={{ maxWidth: 1440 }}>
+          <Link href="/" className="inline-flex items-center gap-2.5">
+            <div
+              className="flex items-center justify-center"
+              style={{
+                width: 38,
+                height: 38,
+                borderRadius: 10,
+                background: ACCESS_GRAD.brand,
+                boxShadow: `0 0 18px ${rgba(ACCESS.cyan, 0.3)}`,
+              }}
+            >
+              <span style={{ color: "#06080f", fontFamily: ACCESS_FONT.display, fontWeight: 800, fontSize: 14 }}>
+                AX
+              </span>
+            </div>
+            <span style={{ color: ACCESS.textBright, fontFamily: ACCESS_FONT.display, fontWeight: 800, fontSize: 19, letterSpacing: "-0.01em" }}>
+              Algorithm
+              <span style={{ background: ACCESS_GRAD.brand, WebkitBackgroundClip: "text", backgroundClip: "text", color: "transparent" }}>X</span>
+            </span>
+          </Link>
+          <Link
+            href="/"
+            className="inline-flex items-center gap-1.5 transition hover:opacity-80"
+            style={{ color: ACCESS.cyanSoft, fontFamily: ACCESS_FONT.mono, fontSize: 11.5, fontWeight: 700, letterSpacing: 1.2, whiteSpace: "nowrap" }}
+          >
+            <span aria-hidden>←</span> BACK TO HOME
+          </Link>
+        </div>
+      </div>
+
       {/* ─── ACCESS LAYER: form + Learning Core ─── */}
       <div
         className="relative mx-auto min-h-screen w-full items-center gap-8 px-6"
@@ -242,42 +275,9 @@ function SignupPageInner() {
           gridTemplateRows: isDesktop ? "minmax(100vh, auto)" : undefined,
         }}
       >
-        {/* LEFT — secure terminal slab */}
-        <div className="flex flex-col justify-center py-14">
+        {/* LEFT — secure terminal slab (pt clears the fixed top line) */}
+        <div className="flex flex-col justify-center pt-28 pb-14">
           <div className="w-full max-w-md">
-            {/* Brand mark + escape hatch: the lockup always linked home,
-             *  but nothing on the page READ as navigation - an explicit
-             *  "Back to home" link makes the way out obvious. */}
-            <div className="mb-9 flex items-center justify-between gap-4">
-              <Link href="/" className="inline-flex items-center gap-2.5">
-                <div
-                  className="flex items-center justify-center"
-                  style={{
-                    width: 38,
-                    height: 38,
-                    borderRadius: 10,
-                    background: ACCESS_GRAD.brand,
-                    boxShadow: `0 0 18px ${rgba(ACCESS.cyan, 0.3)}`,
-                  }}
-                >
-                  <span style={{ color: "#06080f", fontFamily: ACCESS_FONT.display, fontWeight: 800, fontSize: 14 }}>
-                    AX
-                  </span>
-                </div>
-                <span style={{ color: ACCESS.textBright, fontFamily: ACCESS_FONT.display, fontWeight: 800, fontSize: 19, letterSpacing: "-0.01em" }}>
-                  Algorithm
-                  <span style={{ background: ACCESS_GRAD.brand, WebkitBackgroundClip: "text", backgroundClip: "text", color: "transparent" }}>X</span>
-                </span>
-              </Link>
-              <Link
-                href="/"
-                className="inline-flex items-center gap-1.5 transition hover:opacity-80"
-                style={{ color: ACCESS.cyanSoft, fontFamily: ACCESS_FONT.mono, fontSize: 11.5, fontWeight: 700, letterSpacing: 1.2, whiteSpace: "nowrap" }}
-              >
-                <span aria-hidden>←</span> BACK TO HOME
-              </Link>
-            </div>
-
             <AuthTerminalPanel>
               <h1
                 className="mb-2"
@@ -336,7 +336,6 @@ function SignupPageInner() {
                   }}
                   state={touched.name && !nameOk ? "invalid" : nameOk ? "valid" : "idle"}
                   error={touched.name && !nameOk ? "We'll need your name." : null}
-                  icon={<IconIdentity size={18} />}
                   autoComplete="name"
                   placeholder="Your full name"
                   required
@@ -355,7 +354,6 @@ function SignupPageInner() {
                   }}
                   state={touched.email && email.length > 0 && !emailOk ? "invalid" : emailOk ? "valid" : "idle"}
                   error={touched.email && email.length > 0 && !emailOk ? "That email doesn't look right." : null}
-                  icon={<IconContact size={18} />}
                   autoComplete="email"
                   inputMode="email"
                   placeholder="you@example.com"
@@ -376,7 +374,6 @@ function SignupPageInner() {
                     }}
                     state={touched.password && password.length > 0 && !passwordOk ? "invalid" : passwordOk ? "valid" : "idle"}
                     error={null}
-                    icon={<IconCredentials size={18} />}
                     autoComplete="new-password"
                     placeholder="Create a strong password"
                     rightSlot={passwordToggle}
@@ -402,7 +399,6 @@ function SignupPageInner() {
                   }}
                   state={touched.confirm && confirmPassword.length > 0 && !confirmOk ? "invalid" : confirmOk ? "valid" : "idle"}
                   error={touched.confirm && confirmPassword.length > 0 && !confirmOk ? "Those passwords don't match yet." : null}
-                  icon={<IconVault size={18} />}
                   autoComplete="new-password"
                   placeholder="Type your password again"
                   rightSlot={confirmToggle}
@@ -429,7 +425,7 @@ function SignupPageInner() {
             </AuthTerminalPanel>
 
             {/* Dormant identity line (replaces the old "Secure terminal" chrome) */}
-            <p className="text-center mt-8" style={{ fontFamily: ACCESS_FONT.mono, fontSize: 11, letterSpacing: 2, color: ACCESS.textMuted }}>
+            <p className="text-center mt-8" style={{ fontFamily: ACCESS_FONT.mono, fontSize: 11.5, letterSpacing: 2.2, color: ACCESS.textSoft }}>
               Six streams. One key.
             </p>
 
@@ -443,9 +439,9 @@ function SignupPageInner() {
                 <span
                   key={i}
                   className="inline-flex items-center gap-1.5"
-                  style={{ color: ACCESS.textMuted, fontSize: 10.5, fontWeight: 700, fontFamily: ACCESS_FONT.mono, letterSpacing: 1.4 }}
+                  style={{ color: ACCESS.textSoft, fontSize: 11, fontWeight: 700, fontFamily: ACCESS_FONT.mono, letterSpacing: 1.4 }}
                 >
-                  {b.icon} {b.label}
+                  <span aria-hidden className="inline-flex" style={{ color: rgba(ACCESS.cyan, 0.75) }}>{b.icon}</span> {b.label}
                 </span>
               ))}
             </div>

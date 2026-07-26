@@ -187,12 +187,13 @@ function Core({ stage, energy, reducedMotion, coreOverride, burst }: { stage: Au
         <icosahedronGeometry args={[0.32, 1]} />
         <meshStandardMaterial ref={crystalMat} color={REACTOR.violet} emissive={REACTOR.violet} emissiveIntensity={0.3} roughness={0.25} metalness={0.1} toneMapped={false} />
       </mesh>
-      {/* Emitter sits forward at the panel-aperture depth (z≈0.2), not at the
-          group origin: with the rig tilt/sway the aperture layer parallax-shifts
-          on screen, so a deep-set emitter reads off-centre in the opening. */}
-      <mesh ref={emitter} position={[0, 0, 0.2]}>
+      {/* Emitter LED — pinned at the rig pivot (the dial's visual centre is
+          invariant under tilt/sway there; any z-offset parallax-shifts it) and
+          drawn above the armour (transparent pass + renderOrder + no depth
+          test) so opening panels can never cross in front of the light. */}
+      <mesh ref={emitter} renderOrder={20}>
         <sphereGeometry args={[0.14, 32, 32]} />
-        <meshBasicMaterial color={REACTOR.white} toneMapped={false} />
+        <meshBasicMaterial color={REACTOR.white} toneMapped={false} transparent depthTest={false} depthWrite={false} />
       </mesh>
     </group>
   );
