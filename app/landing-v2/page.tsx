@@ -2,7 +2,6 @@ import HeroCinematic from "@/app/components/landing-v2/HeroCinematicV3";
 import Nav from "@/app/components/landing-v2/Nav";
 import ProblemStats from "@/app/components/landing-v2/ProblemStats";
 import SubjectShowcase from "@/app/components/landing-v2/SubjectShowcase";
-import HowItWorks from "@/app/components/landing-v2/HowItWorks";
 import ParentTrust from "@/app/components/landing-v2/ParentTrust";
 import Testimonials from "@/app/components/landing-v2/Testimonials";
 import FAQ from "@/app/components/landing-v2/FAQ";
@@ -24,15 +23,15 @@ import AmbientFutureBackdrop from "@/app/components/landing-v2/AmbientFutureBack
  *   2. HeroCinematic - scroll-pinned 3D laptop scene + headline
  *   3. ProblemStats - 3 stat cards
  *   4. SubjectShowcase - 6 subject tabs + course cards
- *   5. HowItWorks - 5-step process line (incl. qualification step)
- *   6. ParentTrust - safety + safeguarding messaging
- *   7. Testimonials + trust logos marquee
- *   8. FAQ
- *   9. FinalCTA - rotating-gradient ring around primary CTA
- *  10. Footer - 4-col dark
+ *   5. ParentTrust - safety + safeguarding messaging
+ *   6. Testimonials + trust logos marquee
+ *   7. FAQ
+ *   8. FinalCTA - rotating-gradient ring around primary CTA
+ *   9. Footer - 4-col dark
  *
- * Previous batch removed three sections: "Who is this for?", "One
- * platform, four stages of growth", and "What you'll actually build".
+ * Previous batches removed four sections: "Who is this for?", "One
+ * platform, four stages of growth", "What you'll actually build", and
+ * "HowItWorks" (owner call 2026-07-26; component kept on disk).
  *
  * Wrapped in SmoothScroll (Lenis) so wheel events advance scroll smoothly
  * and the 3D scroll-tied animations glide.
@@ -50,7 +49,6 @@ export default function LandingV2() {
         <HeroCinematic />
         <ProblemStats />
         <SubjectShowcase />
-        <HowItWorks />
         <ParentTrust />
         <Testimonials />
         <FAQ />

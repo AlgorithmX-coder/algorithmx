@@ -126,13 +126,6 @@ export default function Nav() {
           >
             Courses
           </a>
-          <a
-            className="lv2-nav-secondary"
-            href="#how"
-            style={{ ...navLink, color: textColorMuted }}
-          >
-            How It Works
-          </a>
           <Link
             className="lv2-nav-secondary lv2-nav-login"
             href="/login"
