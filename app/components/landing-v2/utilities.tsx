@@ -353,26 +353,26 @@ export function useHoverCount(
 
 /* Marquee scroller for testimonial / trust-logo strips.
  *
- * Default behaviour: accelerates by `hoverBoost` when the cursor enters
- * (instead of the cliched "pause on hover"). Feels more responsive -
- * like the content reacts to your attention. */
+ * Pauses on hover (owner request 2026-07-26). The previous behaviour
+ * accelerated on hover by mutating animation-duration mid-flight - CSS
+ * re-derives progress from elapsed/duration, so the track teleported
+ * to a new position on every enter/leave (the "glitch" reviewers saw).
+ * animation-play-state freezes and resumes in place, no recompute. */
 export function Marquee<T>({
   items,
   speed = 60,
-  hoverBoost = 0.55,
   itemKey,
   renderItem,
 }: {
   items: T[];
   speed?: number;
-  /* Multiplier on duration when hovered. < 1 = faster. */
-  hoverBoost?: number;
   itemKey: (t: T) => string;
   renderItem: (t: T) => React.ReactNode;
 }) {
   const seq = [...items, ...items];
   return (
     <div
+      className="lv2-marquee"
       style={{
         overflow: "hidden",
         position: "relative",
@@ -381,28 +381,21 @@ export function Marquee<T>({
         maskImage:
           "linear-gradient(to right, transparent, #000 10%, #000 90%, transparent)",
       }}
-      onMouseEnter={(e) => {
-        const track = e.currentTarget.querySelector(
-          "[data-marquee-track]",
-        ) as HTMLDivElement | null;
-        if (track) track.style.animationDuration = `${speed * hoverBoost}s`;
-      }}
-      onMouseLeave={(e) => {
-        const track = e.currentTarget.querySelector(
-          "[data-marquee-track]",
-        ) as HTMLDivElement | null;
-        if (track) track.style.animationDuration = `${speed}s`;
-      }}
     >
       <div
-        data-marquee-track
-        style={{
-          display: "flex",
-          gap: 24,
-          width: "max-content",
-          animation: `lv2Marquee ${speed}s linear infinite`,
-          transition: "animation-duration .35s ease",
-        }}
+        className="lv2-marquee-track"
+        style={
+          {
+            display: "flex",
+            gap: 24,
+            width: "max-content",
+            /* Speed rides in as a CSS var; the animation itself lives in
+             * the class below. An inline `animation:` shorthand would
+             * implicitly pin animation-play-state:running at inline
+             * priority and defeat the :hover pause. */
+            "--lv2-marquee-speed": `${speed}s`,
+          } as React.CSSProperties
+        }
       >
         {seq.map((item, i) => (
           <div key={`${itemKey(item)}-${i}`} style={{ flexShrink: 0 }}>
@@ -417,6 +410,17 @@ export function Marquee<T>({
           }
           to {
             transform: translateX(-50%);
+          }
+        }
+        .lv2-marquee-track {
+          animation: lv2Marquee var(--lv2-marquee-speed, 60s) linear infinite;
+        }
+        .lv2-marquee:hover .lv2-marquee-track {
+          animation-play-state: paused;
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .lv2-marquee-track {
+            animation: none;
           }
         }
       `}</style>
