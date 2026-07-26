@@ -99,22 +99,14 @@ export default function Testimonials() {
         speed={48}
         itemKey={(l) => l.name}
         renderItem={(l) => (
-          <div
-            title={l.name}
-            style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              minHeight: 56,
-              padding: "0 30px",
-            }}
-          >
+          <div className="lv2-logo-cell">
             {/* Each SVG carries its official brand color baked into the
              *  file (Microsoft = its four real square colors; Apple and
              *  Unity stay white — that IS their correct dark-background
              *  treatment). Resting slightly
              *  dimmed so the row doesn't outshine the content, full
-             *  color on hover. */}
+             *  color on hover. The name tag fades in on hover (owner
+             *  request; replaces the laggy native title tooltip). */}
             <img
               src={l.src}
               alt={l.name}
@@ -124,19 +116,63 @@ export default function Testimonials() {
                 width: "auto",
                 maxWidth: 150,
                 objectFit: "contain",
-                opacity: 0.85,
-                transition: "opacity .3s ease",
-              }}
-              onMouseOver={(e) => {
-                (e.currentTarget as HTMLImageElement).style.opacity = "1";
-              }}
-              onMouseOut={(e) => {
-                (e.currentTarget as HTMLImageElement).style.opacity = "0.85";
               }}
             />
+            <span className="lv2-logo-tag" aria-hidden>
+              {l.name}
+            </span>
           </div>
         )}
       />
+
+      {/* Global scope on purpose: these elements render inside the
+       *  Marquee's DOM (see Nav.tsx precedent for cross-component
+       *  marquee styling). */}
+      <style jsx global>{`
+        .lv2-logo-cell {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          gap: 9px;
+          min-height: 84px;
+          padding: 0 30px;
+        }
+        .lv2-logo-cell img {
+          opacity: 0.85;
+          transition: opacity 0.3s ease;
+        }
+        .lv2-logo-cell:hover img {
+          opacity: 1;
+        }
+        .lv2-logo-tag {
+          font-family: var(--lv2-font-mono);
+          font-size: 10px;
+          font-weight: 700;
+          letter-spacing: 0.14em;
+          text-transform: uppercase;
+          white-space: nowrap;
+          color: #7df0ff;
+          background: rgba(4, 5, 13, 0.85);
+          border: 1px solid rgba(0, 229, 255, 0.3);
+          border-radius: 999px;
+          padding: 4px 11px;
+          opacity: 0;
+          transform: translateY(4px);
+          transition: opacity 0.22s ease, transform 0.22s ease;
+          pointer-events: none;
+        }
+        .lv2-logo-cell:hover .lv2-logo-tag {
+          opacity: 1;
+          transform: translateY(0);
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .lv2-logo-tag {
+            transition: none;
+            transform: none;
+          }
+        }
+      `}</style>
     </section>
   );
 }
