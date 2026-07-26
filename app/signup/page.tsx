@@ -15,7 +15,6 @@ import { safeCourseSlug, hubTargetFor } from "@/app/lib/courseIntent";
 import { ACCESS, ACCESS_FONT, ACCESS_GRAD, rgba } from "@/app/components/auth/accessTokens";
 import {
   IconIdentity,
-  IconContact,
   IconCredentials,
   IconVault,
   IconCheck,
@@ -337,7 +336,6 @@ function SignupPageInner() {
                   }}
                   state={touched.name && !nameOk ? "invalid" : nameOk ? "valid" : "idle"}
                   error={touched.name && !nameOk ? "We'll need your name." : null}
-                  icon={<IconIdentity size={18} />}
                   autoComplete="name"
                   placeholder="Your full name"
                   required
@@ -356,7 +354,6 @@ function SignupPageInner() {
                   }}
                   state={touched.email && email.length > 0 && !emailOk ? "invalid" : emailOk ? "valid" : "idle"}
                   error={touched.email && email.length > 0 && !emailOk ? "That email doesn't look right." : null}
-                  icon={<IconContact size={18} />}
                   autoComplete="email"
                   inputMode="email"
                   placeholder="you@example.com"
@@ -377,7 +374,6 @@ function SignupPageInner() {
                     }}
                     state={touched.password && password.length > 0 && !passwordOk ? "invalid" : passwordOk ? "valid" : "idle"}
                     error={null}
-                    icon={<IconCredentials size={18} />}
                     autoComplete="new-password"
                     placeholder="Create a strong password"
                     rightSlot={passwordToggle}
@@ -403,7 +399,6 @@ function SignupPageInner() {
                   }}
                   state={touched.confirm && confirmPassword.length > 0 && !confirmOk ? "invalid" : confirmOk ? "valid" : "idle"}
                   error={touched.confirm && confirmPassword.length > 0 && !confirmOk ? "Those passwords don't match yet." : null}
-                  icon={<IconVault size={18} />}
                   autoComplete="new-password"
                   placeholder="Type your password again"
                   rightSlot={confirmToggle}

@@ -11,7 +11,7 @@ import AuthButton, { type AuthButtonState } from "@/app/components/auth/AuthButt
 import AuthTerminalPanel from "@/app/components/auth/AuthTerminalPanel";
 import { useIsDesktop } from "@/app/components/auth/useIsDesktop";
 import { ACCESS, ACCESS_FONT, ACCESS_GRAD, rgba } from "@/app/components/auth/accessTokens";
-import { IconCredentials, IconVault, IconCheck, IconKey, IconEye, IconEyeOff } from "@/app/components/auth/icons";
+import { IconCredentials, IconCheck, IconKey, IconEye, IconEyeOff } from "@/app/components/auth/icons";
 
 /* Password-rule chip — matches the signup form so the rules stay consistent. */
 function RuleChip({ pass, label }: { pass: boolean; label: string }) {
@@ -249,7 +249,6 @@ function ResetPasswordInner() {
                         }}
                         state={touched.password && password.length > 0 && !passwordOk ? "invalid" : passwordOk ? "valid" : "idle"}
                         error={null}
-                        icon={<IconCredentials size={18} />}
                         autoComplete="new-password"
                         placeholder="Create a strong password"
                         rightSlot={eyeBtn(showPassword, () => setShowPassword((v) => !v), showPassword ? "Hide password" : "Show password")}
@@ -275,7 +274,6 @@ function ResetPasswordInner() {
                       }}
                       state={touched.confirm && confirm.length > 0 && !confirmOk ? "invalid" : confirmOk ? "valid" : "idle"}
                       error={touched.confirm && confirm.length > 0 && !confirmOk ? "Those passwords don't match yet." : null}
-                      icon={<IconVault size={18} />}
                       autoComplete="new-password"
                       placeholder="Type your password again"
                       rightSlot={eyeBtn(showConfirm, () => setShowConfirm((v) => !v), showConfirm ? "Hide confirmation password" : "Show confirmation password")}

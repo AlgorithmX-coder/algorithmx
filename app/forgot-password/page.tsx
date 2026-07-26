@@ -10,7 +10,7 @@ import AuthButton, { type AuthButtonState } from "@/app/components/auth/AuthButt
 import AuthTerminalPanel from "@/app/components/auth/AuthTerminalPanel";
 import { useIsDesktop } from "@/app/components/auth/useIsDesktop";
 import { ACCESS, ACCESS_FONT, ACCESS_GRAD, rgba } from "@/app/components/auth/accessTokens";
-import { IconContact, IconCredentials, IconCheck, IconKey } from "@/app/components/auth/icons";
+import { IconCredentials, IconCheck, IconKey } from "@/app/components/auth/icons";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -166,7 +166,6 @@ export default function ForgotPasswordPage() {
                       }}
                       state={emailInvalid ? "invalid" : emailValid ? "valid" : "idle"}
                       error={emailInvalid ? "That email doesn't look right." : null}
-                      icon={<IconContact size={18} />}
                       autoComplete="email"
                       inputMode="email"
                       placeholder="parent@example.com"

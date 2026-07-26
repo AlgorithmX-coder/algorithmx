@@ -14,7 +14,7 @@ import AccessGrantedOverlay from "@/app/components/auth/AccessGrantedOverlay";
 import { useIsDesktop } from "@/app/components/auth/useIsDesktop";
 import { safeCourseSlug, hubTargetFor } from "@/app/lib/courseIntent";
 import { ACCESS, ACCESS_FONT, ACCESS_GRAD, rgba } from "@/app/components/auth/accessTokens";
-import { IconContact, IconCredentials, IconKey, IconHub, IconEye, IconEyeOff } from "@/app/components/auth/icons";
+import { IconCredentials, IconKey, IconHub, IconEye, IconEyeOff } from "@/app/components/auth/icons";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -263,7 +263,6 @@ function LoginPageInner() {
                   }}
                   state={emailInvalid ? "invalid" : emailValid ? "valid" : "idle"}
                   error={emailInvalid ? "That email doesn't look right." : null}
-                  icon={<IconContact size={18} />}
                   autoComplete="email"
                   inputMode="email"
                   placeholder="parent@example.com"
@@ -284,7 +283,6 @@ function LoginPageInner() {
                     }}
                     state={touched.password && !passwordPresent ? "invalid" : passwordPresent ? "valid" : "idle"}
                     error={touched.password && !passwordPresent ? "Add your password." : null}
-                    icon={<IconCredentials size={18} />}
                     autoComplete="current-password"
                     placeholder="Enter your password"
                     rightSlot={passwordToggle}

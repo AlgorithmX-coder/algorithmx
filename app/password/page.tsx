@@ -167,7 +167,6 @@ export default function PasswordGatePage() {
                   onBlur={() => setFocusField(null)}
                   state={present ? "valid" : "idle"}
                   error={null}
-                  icon={<IconCredentials size={18} />}
                   autoComplete="current-password"
                   placeholder="Enter the password"
                   rightSlot={passwordToggle}
