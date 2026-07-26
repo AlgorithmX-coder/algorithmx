@@ -155,9 +155,9 @@ export default function WelcomeScene({
           to { opacity: 1; transform: rotate(-3deg) scale(1) translateY(0); }
         }
         @keyframes stampSlam {
-          0% { opacity: 0; transform: translate(-50%, -50%) rotate(-30deg) scale(2.4); }
-          70% { opacity: 1; transform: translate(-50%, -50%) rotate(-12deg) scale(0.95); }
-          100% { opacity: 0.92; transform: translate(-50%, -50%) rotate(-12deg) scale(1); }
+          0% { opacity: 0; transform: rotate(-30deg) scale(2.4); }
+          70% { opacity: 1; transform: rotate(-8deg) scale(0.95); }
+          100% { opacity: 0.95; transform: rotate(-8deg) scale(1); }
         }
       `}</style>
     </SceneFrame>
@@ -194,25 +194,30 @@ function Polaroid({ src, caption }: { src: string; caption: string }) {
           filter: "saturate(0.9) contrast(1.05)",
         }}
       />
-      {/* Red TRANSMISSION INTERCEPTED stamp */}
+      {/* Red "Hacked" tag — pinned to the photo's TOP-LEFT corner (over the
+          sky/background) so it stays readable and never overlaps the
+          characters or the raccoon, which sit centre / right in every
+          week's alert image. Solid light backing so the text reads on any
+          scene. */}
       <div
         style={{
           position: "absolute",
-          left: "50%",
-          top: "44%",
-          transform: "translate(-50%, -50%) rotate(-12deg)",
-          padding: "8px 22px",
+          left: 18,
+          top: 18,
+          transform: "rotate(-8deg)",
+          transformOrigin: "top left",
+          padding: "5px 15px",
           borderStyle: "solid",
-          borderWidth: 4,
-          borderColor: "rgba(220, 40, 40, 0.85)",
-          color: "rgba(220, 40, 40, 0.85)",
+          borderWidth: 3,
+          borderColor: "rgba(210, 34, 34, 0.92)",
+          color: "rgba(198, 28, 28, 0.96)",
           fontFamily: "ui-monospace, 'JetBrains Mono', Menlo, monospace",
           fontWeight: 900,
-          fontSize: 18,
-          letterSpacing: 4,
+          fontSize: 15,
+          letterSpacing: 3,
           textTransform: "uppercase",
-          background: "rgba(255, 230, 220, 0.08)",
-          textShadow: "0 0 8px rgba(220, 40, 40, 0.4)",
+          background: "rgba(255, 236, 228, 0.85)",
+          boxShadow: "0 2px 10px rgba(0, 0, 0, 0.28)",
           opacity: 0,
           animation: "stampSlam 0.6s 1.2s cubic-bezier(.4, 1.6, .4, 1) forwards",
           pointerEvents: "none",
