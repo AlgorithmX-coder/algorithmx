@@ -363,6 +363,34 @@ export default async function CybersecurityPage() {
             textAlign: "center",
           }}
         >
+          {/* Escape hatch back to the homepage (owner request): the
+           *  shared Nav's brand mark links home but doesn't read as
+           *  navigation, so visitors landing here directly had no
+           *  obvious way out. Same treatment as the auth pages. */}
+          <FadeUp>
+            <div style={{ textAlign: "left", marginBottom: 30 }}>
+              <Link
+                href="/"
+                className="transition hover:opacity-80"
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: 6,
+                  fontFamily: "var(--lv2-font-mono)",
+                  fontSize: 11.5,
+                  fontWeight: 700,
+                  letterSpacing: "0.18em",
+                  textTransform: "uppercase",
+                  color: "var(--lv2-cyan-soft)",
+                  textDecoration: "none",
+                  whiteSpace: "nowrap",
+                }}
+              >
+                <span aria-hidden>←</span> Back to home
+              </Link>
+            </div>
+          </FadeUp>
+
           <FadeUp>
             <p
               style={{
