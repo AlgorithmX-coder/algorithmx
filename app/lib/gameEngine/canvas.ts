@@ -53,8 +53,26 @@ export function setupHiDpiCanvas(
     maxDpr
   );
 
-  canvas.width = Math.round(logicalWidth * dpr);
-  canvas.height = Math.round(logicalHeight * dpr);
+  // Render at the canvas's DISPLAYED size, not just its logical size. A game
+  // authored in e.g. a 720-wide coordinate space is shown in a slot up to
+  // ~1400px wide (see ExerciseFrame), so sizing the buffer to logicalWidth*dpr
+  // made the browser upscale a 720px bitmap — the "not HD" blur. Instead we
+  // size the buffer to the on-screen CSS width * dpr and fold the
+  // display/logical ratio into the context scale, so every existing draw call
+  // (and the CANVAS_W / rect.width pointer math) keeps working in logical
+  // units while the buffer has real pixels to stay crisp.
+  const rect = canvas.getBoundingClientRect();
+  const cssWidth = rect.width > 0 ? rect.width : logicalWidth;
+  // Cap the buffer so ultra-wide / high-dpi combos can't create huge buffers;
+  // 2600px keeps a ~1400px slot crisp even at 2x. The Math.max floor means we
+  // never render BELOW the old logicalWidth*dpr resolution, so this can only
+  // sharpen, never soften, whatever the display.
+  const MAX_BUFFER_WIDTH = 2600;
+  const targetBufferWidth = Math.min(cssWidth * dpr, MAX_BUFFER_WIDTH);
+  const scale = Math.max(dpr, targetBufferWidth / logicalWidth);
+
+  canvas.width = Math.round(logicalWidth * scale);
+  canvas.height = Math.round(logicalHeight * scale);
   if (setCssSize) {
     canvas.style.width = `${logicalWidth}px`;
     canvas.style.height = `${logicalHeight}px`;
@@ -64,7 +82,7 @@ export function setupHiDpiCanvas(
   // implicitly resets the transform, but we call this explicitly so the
   // helper can be called more than once on the same canvas.
   ctx.setTransform(1, 0, 0, 1, 0, 0);
-  ctx.scale(dpr, dpr);
+  ctx.scale(scale, scale);
 
   // Common defaults that make typography and shapes crisp.
   ctx.imageSmoothingEnabled = true;

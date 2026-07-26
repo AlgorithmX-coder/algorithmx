@@ -8,6 +8,7 @@ import {
 } from "@/app/lib/celebrations";
 import ExerciseIntro from "./ExerciseIntro";
 import { PixarFinishOverlay } from "@/app/components/scene";
+import { setupHiDpiCanvas } from "@/app/lib/gameEngine/canvas";
 
 export interface FirewallBuilderProps {
   onComplete: (score: number) => void;
@@ -448,10 +449,16 @@ export default function FirewallBuilder({
     if (showIntro) return;
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-    canvas.width = CANVAS_W;
-    canvas.height = CANVAS_H;
+    // Hi-DPI: render at the canvas's displayed size so the game stays crisp
+    // when shown much wider than its CANVAS_W logical space (was blurry at a
+    // fixed CANVAS_W buffer). Draw + pointer code still use CANVAS_W units.
+    const setup = setupHiDpiCanvas(canvas, {
+      logicalWidth: CANVAS_W,
+      logicalHeight: CANVAS_H,
+      maxDpr: 2,
+    });
+    if (!setup) return;
+    const ctx = setup.ctx;
 
     let running = true;
     let lastTime = performance.now();
