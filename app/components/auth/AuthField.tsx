@@ -158,7 +158,7 @@ export default function AuthField({
           autoComplete={autoComplete}
           aria-invalid={isInvalid || undefined}
           aria-describedby={describedBy}
-          className="w-full focus:outline-none"
+          className="af-input w-full focus:outline-none"
           style={{
             height: 52,
             borderRadius: 12,
@@ -282,6 +282,30 @@ export default function AuthField({
       <style>{`
         @keyframes afSpin {
           to { transform: rotate(360deg); }
+        }
+        .af-input::placeholder {
+          color: ${ACCESS.textSoft};
+          opacity: 1;
+        }
+        /* Chromium forces a white background + black text on autofilled
+         * fields; that styling can't be overridden by background rules.
+         * The canonical escape is an opaque inset shadow painted over it
+         * (!important beats the component's inline focus-glow shadow while
+         * the field is autofilled). */
+        .af-input:-webkit-autofill,
+        .af-input:-webkit-autofill:hover,
+        .af-input:-webkit-autofill:focus,
+        .af-input:-webkit-autofill:active {
+          -webkit-box-shadow: 0 0 0 1000px ${ACCESS.slabSolid} inset !important;
+          box-shadow: 0 0 0 1000px ${ACCESS.slabSolid} inset !important;
+          -webkit-text-fill-color: ${ACCESS.textBright} !important;
+          caret-color: ${ACCESS.textBright};
+          transition: background-color 9999999s ease-out 0s;
+        }
+        .af-input:autofill {
+          box-shadow: 0 0 0 1000px ${ACCESS.slabSolid} inset !important;
+          -webkit-text-fill-color: ${ACCESS.textBright} !important;
+          caret-color: ${ACCESS.textBright};
         }
       `}</style>
     </div>
