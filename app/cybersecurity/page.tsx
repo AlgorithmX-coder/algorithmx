@@ -53,7 +53,7 @@ const TRACK_BLURBS: Record<string, string> = {
   "cyber-heroes":
     "A confident, safe start in technology. Through animated missions with Adam and Layla, children learn strong passwords, scam-spotting and smart online habits they can use every day.",
   cyberexplorers:
-    "A spy thriller they play for real. As an agent of ARC, your child cracks 20 story missions with a voice-acted handler — learning to spot phishing, fake voices and data tricks for life.",
+    "A spy thriller they play for real. As an agent of ARC, your child cracks 20 story missions with a voice-acted handler, learning to spot phishing, fake voices and data tricks for life.",
   cyberstart:
     "Real, hands-on security done safely. Recruited as a junior operator, your teen runs weekly engagements in a sealed range (break in, defend, respond) and finishes with a portfolio, not just a certificate.",
   "cyberstart-pro":
@@ -313,7 +313,7 @@ const TRACK_CONTENT_MAX_WIDTH: Record<string, number> = {
 export const metadata: Metadata = {
   title: "Cybersecurity. Tracks for Every Age, 6 to 18+ | AlgorithmX",
   description:
-    "Four cybersecurity tracks covering ages 6 to 18+. From spotting scams as a child to portfolio-grade pen-testing as an adult. For your child's journey — or your own.",
+    "Four cybersecurity tracks covering ages 6 to 18+. From spotting scams as a child to portfolio-grade pen-testing as an adult. For your child's journey, or your own.",
   alternates: { canonical: "https://algorithmx.io/cybersecurity" },
   openGraph: {
     title: "Cybersecurity for every age | AlgorithmX",
@@ -439,8 +439,8 @@ export default async function CybersecurityPage() {
               }}
             >
               From spotting scams at age 6 to portfolio-grade pen-testing at
-              18+. Four tracks, one subject, one continuous arc — whether
-              you&rsquo;re starting your child&rsquo;s journey or your own.
+              18+. Four tracks, one subject, one continuous arc. Start your
+              child&rsquo;s journey, or your own.
             </p>
           </FadeUp>
 
