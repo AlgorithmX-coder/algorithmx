@@ -90,7 +90,7 @@ export const SUBJECTS: Subject[] = [
         href: "/cyberstart",
       },
       {
-        title: "CyberStart Pro",
+        title: "Cyber Pro",
         ageRange: "Ages 18+",
         ageGroup: "18+",
         desc: "Industry-standard security operations, compliance frameworks, and career preparation. Get certified and get hired.",
