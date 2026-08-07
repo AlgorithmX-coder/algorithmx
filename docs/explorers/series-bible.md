@@ -67,7 +67,7 @@ first film, same recipe.)*
 - **SIREN** "the Voice" — social engineering (Block 2). LOCKED: `characters/siren_sheet.png`
 - **PACKRAT** "the Collector" — OSINT / data theft (Block 2)
 - **SKELETON KEY** "the Locksmith" — passwords / access (Block 3)
-- **MIMIC** "the Faceless" — impersonation / deepfakes (Block 3)
+- **MIMIC** "the Faceless" — impersonation / deepfakes (Block 3). LOCKED: `characters/mimic_sheet.png`
 - **GHOSTWRITER** "the Liar" — misinformation (Block 4)
 - **ZERO** "the One in the Dark" — mastermind. Ex-ARC, WREN's former
   mentor, went dark to "protect everyone by controlling everything."
@@ -174,6 +174,7 @@ exposition). The season still escalates block to block toward ZERO.
       (old montage retired). Screening page: `public/explorers/screening.html`
 - [x] Block 2 intro "The Voice" + outro "Called Out" (SIREN locked) —
       `block2-intro_the-voice.mp4`, `block2-outro_called-out.mp4`
-- [ ] Blocks 3–4: problem-intro + success-outro each (lock SKELETON KEY /
-      MIMIC, then GHOSTWRITER + ZERO)
+- [x] Block 3 intro "Not Me" + outro "Face Off" (MIMIC locked) —
+      `block3-intro_not-me.mp4`, `block3-outro_face-off.mp4`
+- [ ] Block 4: problem-intro + finale-outro (lock GHOSTWRITER + reveal ZERO)
 - [ ] Wire block intro/outro players into the mission flow
