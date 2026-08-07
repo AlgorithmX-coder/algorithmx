@@ -51,11 +51,15 @@ history with ZERO (the finale fuse). Reference: `characters/wren_portrait.png`, 
 **BIT** — ARC's pocket AI companion the crew carries. Comic relief +
 in-world explainer (a natural way to teach a concept). *(Design TBD.)*
 
-**The crew** (assemble across Block 1): **Priya "TRACE"** (OSINT /
+**MAYA** — the hero's best friend and his personal stakes (first person
+STATIC targets). Warm, bubbly, a bit impulsive; light-medium brown skin,
+box braids with colourful beads, mustard hoodie + denim jacket. LOCKED:
+`characters/maya_sheet.png`.
+
+**The crew** (assemble across the season): **Priya "TRACE"** (OSINT /
 people), **Leo "CIPHER"** (crypto / logic), **Jake "BOLT"** (systems /
-builds), **Zaid "GHOST"** (privacy / conscience). **Maya** is the hero's
-best friend and the first person STATIC targets (his personal stakes).
-*(Designs TBD; lock each before its first film, same recipe.)*
+builds), **Zaid "GHOST"** (privacy / conscience). *(Lock each before its
+first film, same recipe.)*
 
 ### Villains — STATIC
 
@@ -102,18 +106,36 @@ need no lock. Never mix render styles.
 
 ---
 
-## 4. The season arc — 8 films (4 blocks × intro + outro)
+## 4. Video architecture (owner-locked 2026-08-07) — STORY, not trailer
 
-Each film ~30–45s, story-first, one WREN/story voice moment max. The
-arc must build; keep it creative, no repeated beats.
+Structure the videos as a **problem → lesson → success** story so each
+one has real setup and payoff. NOT montage / trailer grammar.
+
+- **OPENER (once):** the **Recruitment** film ("The Save") plays before
+  the learner starts Block 1. Origin story. DONE, approved.
+- **Per block, two films that bracket the lesson:**
+  - **INTRO = a problem erupts.** A real, personal threat happens and is
+    left UNRESOLVED (a cliffhanger question: "how do we stop this?"). It
+    motivates the lesson. No solution shown yet.
+  - **[ learner does the block's lesson ]**
+  - **OUTRO = success.** The hero wins *because* that skill was learned:
+    the exact problem from the intro is resolved. Triumph = the payoff for
+    completing the lesson. (A tiny season-arc thread, e.g. the STATIC mark,
+    can tag the very end, but the beat is the WIN.)
+
+Each film ~30–45s, story-first, sparse motivated voice (no talking-head
+exposition). The season still escalates block to block toward ZERO.
 
 **BLOCK 1 — SIGNALS (phishing / spotting deception)**
-- **1A Intro "The Save" (DONE, approved).** He spots a scam spreading at
-  school, stops a friend from tapping it, and ARC scouts him. → recruited.
-- **1B Outro "The Mark."** Now trained, the crew (forming) shuts down
-  PHANTOM HOOK's whole lure network. But on the takedown they find a
-  symbol burned into every attack: the STATIC sigil. It was never random.
-  WREN goes quiet. Hook to Block 2.
+- **1-Intro "The Wave" (problem).** PHANTOM HOOK's phishing wave sweeps
+  the school; best friend Maya taps a lure and her account is stolen,
+  panic spreads. The hero's instinct isn't enough against a coordinated
+  net. WREN: "Now you learn to read the signals." → into the lesson.
+  UNRESOLVED. *(building)*
+- **1-Outro "Reeled In" (success).** Having learned to read the signals,
+  the hero + ARC trace and shut down HOOK's whole wave, free the stolen
+  accounts, save Maya. HOOK caught-out. Tiny STATIC-mark tag hooks Block 2.
+  *(replaces the old montage "The Mark"; rebuild to this)*
 
 **BLOCK 2 — HUMAN FACTOR (social engineering / data)**
 - **2A Intro "Puppet Strings."** It gets personal: SIREN's voice and
@@ -145,8 +167,11 @@ arc must build; keep it creative, no repeated beats.
 
 - [x] Look + characters locked (THE EYE, WREN)
 - [x] Pipeline proven (WREN lip-sync test; "The Save" scene)
-- [x] Film 1A (Block 1 intro "The Save") — `public/explorers/scene-save-the-day.mp4`
-- [x] Film 1B (Block 1 outro "The Mark") — `public/explorers/film-1b_the-mark.mp4`
-- [ ] Films 2A, 2B, 3A, 3B, 4A, 4B — in production, block by block
-- [ ] Lock crew + villain designs before each film that needs them
+- [x] Recruitment opener "The Save" — `public/explorers/scene-save-the-day.mp4`
+- [x] Locked characters: THE EYE, WREN, PHANTOM HOOK, MAYA
+- [ ] Block 1 intro "The Wave" (problem) — building
+- [~] Block 1 outro — old montage `film-1b_the-mark.mp4` exists; REBUILD as
+      "Reeled In" (success, resolves The Wave)
+- [ ] Blocks 2–4: problem-intro + success-outro each (lock SIREN, PACKRAT,
+      SKELETON KEY, MIMIC, GHOSTWRITER, ZERO + crew as they appear)
 - [ ] Wire block intro/outro players into the mission flow
