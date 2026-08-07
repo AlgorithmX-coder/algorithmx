@@ -120,6 +120,13 @@
   .replay.on{opacity:1}
   .note{position:absolute;left:14px;bottom:12px;z-index:15;font:600 9px/1.4 var(--mono);
         letter-spacing:.1em;color:var(--faint);max-width:40%}
+
+  /* portrait / phone: don't force 16:9 (it would clip everything) */
+  @media (max-aspect-ratio:1/1){
+    .stage{width:100vw;height:100vh;aspect-ratio:auto}
+    .phone{width:78%;min-width:0}
+    .wren{bottom:10%}
+  }
 </style>
 </head>
 <body>
@@ -225,14 +232,16 @@ function run(){
   at(14200,()=>{show($("wren"),"on");
     typeLine($("wline"),"Don't tap that.");});
   at(17200,()=>typeLine($("wline"),"I've been watching. You spotted it, kid.\nMost people don't."));
-  // BEAT 4 — boot into ARC, land on the case title
-  at(23000,()=>{hide($("wren"),"on");hide($("device"),"on");});
-  at(24000,()=>show($("arc"),"on"));
-  at(30500,()=>show($("replay"),"on"));
+  // BEAT 4 — boot into ARC, land on the case title (crossfade, no black gap)
+  at(22600,()=>hide($("wren"),"on"));
+  at(23200,()=>{show($("arc"),"on");hide($("device"),"on");});
+  at(30000,()=>show($("replay"),"on"));
 }
 
 $("play").onclick=run;
 $("replay").onclick=run;
+$("ov").onclick=run;              // tap the title to start now
+setTimeout(run,1600);            // silent, so autoplay: hold the title, then play on its own
 </script>
 </body>
 </html>
