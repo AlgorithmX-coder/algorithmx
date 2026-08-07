@@ -64,7 +64,7 @@ first film, same recipe.)*
 ### Villains — STATIC
 
 - **PHANTOM HOOK** "the Angler" — phishing (Block 1). LOCKED: `characters/phantom-hook_sheet.png` (hooded rogue, domino mask, coat of glowing green lures, casts a hook-of-light)
-- **SIREN** "the Voice" — social engineering (Block 2)
+- **SIREN** "the Voice" — social engineering (Block 2). LOCKED: `characters/siren_sheet.png`
 - **PACKRAT** "the Collector" — OSINT / data theft (Block 2)
 - **SKELETON KEY** "the Locksmith" — passwords / access (Block 3)
 - **MIMIC** "the Faceless" — impersonation / deepfakes (Block 3)
@@ -172,6 +172,8 @@ exposition). The season still escalates block to block toward ZERO.
 - [x] Block 1 intro "The Wave" (problem) — `public/explorers/block1-intro_the-wave.mp4`
 - [x] Block 1 outro "Reeled In" (success) — `public/explorers/block1-outro_reeled-in.mp4`
       (old montage retired). Screening page: `public/explorers/screening.html`
-- [ ] Blocks 2–4: problem-intro + success-outro each (lock SIREN, PACKRAT,
-      SKELETON KEY, MIMIC, GHOSTWRITER, ZERO + crew as they appear)
+- [x] Block 2 intro "The Voice" + outro "Called Out" (SIREN locked) —
+      `block2-intro_the-voice.mp4`, `block2-outro_called-out.mp4`
+- [ ] Blocks 3–4: problem-intro + success-outro each (lock SKELETON KEY /
+      MIMIC, then GHOSTWRITER + ZERO)
 - [ ] Wire block intro/outro players into the mission flow
