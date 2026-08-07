@@ -169,9 +169,9 @@ exposition). The season still escalates block to block toward ZERO.
 - [x] Pipeline proven (WREN lip-sync test; "The Save" scene)
 - [x] Recruitment opener "The Save" — `public/explorers/scene-save-the-day.mp4`
 - [x] Locked characters: THE EYE, WREN, PHANTOM HOOK, MAYA
-- [ ] Block 1 intro "The Wave" (problem) — building
-- [~] Block 1 outro — old montage `film-1b_the-mark.mp4` exists; REBUILD as
-      "Reeled In" (success, resolves The Wave)
+- [x] Block 1 intro "The Wave" (problem) — `public/explorers/block1-intro_the-wave.mp4`
+- [x] Block 1 outro "Reeled In" (success) — `public/explorers/block1-outro_reeled-in.mp4`
+      (old montage retired). Screening page: `public/explorers/screening.html`
 - [ ] Blocks 2–4: problem-intro + success-outro each (lock SIREN, PACKRAT,
       SKELETON KEY, MIMIC, GHOSTWRITER, ZERO + crew as they appear)
 - [ ] Wire block intro/outro players into the mission flow
