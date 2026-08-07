@@ -59,7 +59,7 @@ best friend and the first person STATIC targets (his personal stakes).
 
 ### Villains — STATIC
 
-- **PHANTOM HOOK** "the Angler" — phishing (Block 1)
+- **PHANTOM HOOK** "the Angler" — phishing (Block 1). LOCKED: `characters/phantom-hook_sheet.png` (hooded rogue, domino mask, coat of glowing green lures, casts a hook-of-light)
 - **SIREN** "the Voice" — social engineering (Block 2)
 - **PACKRAT** "the Collector" — OSINT / data theft (Block 2)
 - **SKELETON KEY** "the Locksmith" — passwords / access (Block 3)
