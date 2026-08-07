@@ -145,7 +145,8 @@ arc must build; keep it creative, no repeated beats.
 
 - [x] Look + characters locked (THE EYE, WREN)
 - [x] Pipeline proven (WREN lip-sync test; "The Save" scene)
-- [x] Film 1A (Block 1 intro) — `public/explorers/scene-save-the-day.mp4`
-- [ ] Films 1B, 2A, 2B, 3A, 3B, 4A, 4B — in production, block by block
+- [x] Film 1A (Block 1 intro "The Save") — `public/explorers/scene-save-the-day.mp4`
+- [x] Film 1B (Block 1 outro "The Mark") — `public/explorers/film-1b_the-mark.mp4`
+- [ ] Films 2A, 2B, 3A, 3B, 4A, 4B — in production, block by block
 - [ ] Lock crew + villain designs before each film that needs them
 - [ ] Wire block intro/outro players into the mission flow
