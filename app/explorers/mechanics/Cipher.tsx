@@ -43,7 +43,6 @@ export default function Cipher({ payload, reduced, audio, onEvent }: MechanicPro
 
   const spin = (n: number) => {
     if (solved) return;
-    audio.click();
     setDial(n);
     if (n === round.shift) {
       setSolvedIdx(roundIdx);
@@ -90,34 +89,30 @@ export default function Cipher({ payload, reduced, audio, onEvent }: MechanicPro
         </p>
       </div>
 
-      {/* the dial */}
+      {/* the dial: one slide across all 25 possible Caesar shifts */}
       <div style={{ marginTop: 14, background: T.panel, border: `1px solid ${solved ? `${T.confirmedGreen}66` : T.hairline}`, borderRadius: 3, padding: "14px 16px" }}>
-        <div style={{ fontFamily: MONO, fontSize: 11, letterSpacing: "0.1em", color: T.textSecondary, marginBottom: 10 }}>
-          SHIFT DIAL: spin until it reads
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 10 }}>
+          <span style={{ fontFamily: MONO, fontSize: 11, letterSpacing: "0.1em", color: T.textSecondary }}>
+            SHIFT DIAL: slide until it reads
+          </span>
+          <span style={{ fontFamily: MONO, fontSize: 13, fontWeight: 600, color: solved ? T.confirmedGreen : T.arcCyan }}>
+            SHIFT {dial} / 25
+          </span>
         </div>
-        <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-          {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((n) => (
-            <button
-              key={n}
-              onClick={() => spin(n)}
-              className="sr-btn"
-              disabled={solved}
-              style={{
-                fontFamily: MONO,
-                fontSize: 14,
-                fontWeight: 600,
-                minWidth: 44,
-                height: 44,
-                color: dial === n ? (solved ? T.confirmedGreen : T.arcCyan) : T.textPrimary,
-                background: dial === n ? `${solved ? T.confirmedGreen : T.arcCyan}14` : T.panelRaised,
-                border: `1px solid ${dial === n ? (solved ? T.confirmedGreen : T.arcCyan) : T.hairline}`,
-                borderRadius: 3,
-                cursor: solved ? "default" : "pointer",
-              }}
-            >
-              {n}
-            </button>
-          ))}
+        <input
+          type="range"
+          min={0}
+          max={25}
+          step={1}
+          value={dial}
+          disabled={solved}
+          aria-label="Shift dial: slide from 0 to 25 until the note reads"
+          onChange={(e) => spin(Number(e.target.value))}
+          style={{ width: "100%", accentColor: solved ? T.confirmedGreen : T.arcCyan, cursor: solved ? "default" : "pointer" }}
+        />
+        <div style={{ display: "flex", justifyContent: "space-between", fontFamily: MONO, fontSize: 9.5, letterSpacing: "0.06em", color: T.textDisabled, marginTop: 2 }}>
+          <span>0</span>
+          <span>25 possible shifts, that&rsquo;s all</span>
         </div>
         <p style={{ margin: "12px 0 0", fontFamily: MONO, fontSize: 15, letterSpacing: "0.12em", lineHeight: 1.7, color: solved ? T.confirmedGreen : T.textPrimary }}>
           → {preview}
