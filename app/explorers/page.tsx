@@ -50,6 +50,30 @@ const BLOCKS = [
   { n: 4, name: "THE LONG GAME", classification: "ULTRA", color: T.bandUltra, blurb: "The big picture, and the mastermind." },
 ] as const;
 
+/** The real cybersecurity topic each case teaches, shown on its card. */
+const TOPICS: Record<string, string> = {
+  "explorers-m01": "PHISHING",
+  "explorers-m02": "PRIZE SCAMS",
+  "explorers-m03": "PASSWORD CRACKING",
+  "explorers-m04": "DIGITAL FOOTPRINT",
+  "explorers-m05": "SPEAR PHISHING",
+  "explorers-m06": "SOCIAL ENGINEERING",
+  "explorers-m07": "ACCOUNT TAKEOVER",
+  "explorers-m08": "AI IMPERSONATION",
+  "explorers-m09": "ONLINE MANIPULATION",
+  "explorers-m10": "DEEPFAKE VOICE",
+  "explorers-m11": "PASSWORDS & 2FA",
+  "explorers-m12": "ENCRYPTION",
+  "explorers-m13": "SESSION HIJACKING",
+  "explorers-m14": "MALWARE",
+  "explorers-m15": "SPOOFED SITES",
+  "explorers-m16": "DATA BROKERS",
+  "explorers-m17": "DISINFORMATION",
+  "explorers-m18": "CYBERCRIME & ETHICS",
+  "explorers-m19": "THE ATTACK CHAIN",
+  "explorers-m20": "INCIDENT RESPONSE",
+};
+
 export default function ExplorersPage() {
   const reduced = useReducedMotion();
   const [active, setActive] = useState<MissionManifest | null>(null);
@@ -306,7 +330,10 @@ export default function ExplorersPage() {
                           />
                         </div>
 
-                        {/* title + villain */}
+                        {/* topic + title + villain */}
+                        <div style={{ fontFamily: MONO, fontSize: 9, fontWeight: 600, letterSpacing: "0.12em", color: b.color, marginBottom: 3 }}>
+                          {TOPICS[m.id] ?? ""}
+                        </div>
                         <div style={{ fontFamily: MONO, fontSize: 14.5, fontWeight: 600, lineHeight: 1.25, color: T.textPrimary }}>{m.title}</div>
                         <div style={{ marginTop: "auto", paddingTop: 8, fontFamily: MONO, fontSize: 10, letterSpacing: "0.06em", color: T.threatRed }}>
                           vs {m.actor.codename}
