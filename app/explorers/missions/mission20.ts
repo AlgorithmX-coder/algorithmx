@@ -1,6 +1,6 @@
 /**
  * Mission 20 — "Signal Zero" (Block 4 — CAPSTONE, ULTRA ceremony).
- * Actor: K-STATIC/COORD. Map slot: curriculum-map-v1 §M20.
+ * Actor: ZERO (the coordinator). Map slot: curriculum-map-v1 §M20.
  *
  * No new concepts (Heroes W20 precedent). Pure recombination:
  * (1) the identity puzzle — all five breadcrumbs on one TRACE
@@ -21,7 +21,7 @@ export const mission20: MissionManifest = {
   block: 4,
   classification: "ULTRA",
   actor: {
-    codename: "K-STATIC",
+    codename: "ZERO",
     mo: "The one behind all of them. Unmasked tonight.",
     portrait: "/explorers/actors/coordinator.png",
   },
@@ -89,7 +89,7 @@ export const mission20: MissionManifest = {
               id: "t1",
               surface: "CASE 001",
               from: "breadcrumb ①",
-              text: "the K-STATIC/COORD routing tag — first sighting",
+              text: "the ZERO routing tag, first sighting",
               inCampaign: true,
               clue: "the name, before it meant anything",
               order: 1,

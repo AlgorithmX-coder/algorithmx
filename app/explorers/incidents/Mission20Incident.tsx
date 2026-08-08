@@ -166,7 +166,7 @@ export default function Mission20Incident({ reduced, audio, onPhaseCleared, onCo
       {phase === 1 && (
         <div style={{ marginBottom: 18, maxWidth: 560 }}>
           <div style={{ fontFamily: MONO, fontSize: 10, letterSpacing: "0.14em", color: T.threatRed, marginBottom: 8 }}>
-            INTERCEPTED — K-STATIC, THE COORDINATOR
+            INTERCEPTED: ZERO, THE COORDINATOR
           </div>
           <Bubble who="villain">
             <em>&ldquo;You're the best they ever trained, Operative. I know — I was, once. Come now. One last favor, and all of this stops.&rdquo;</em>

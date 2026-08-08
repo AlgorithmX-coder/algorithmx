@@ -1,6 +1,6 @@
 /**
  * Mission 18 — "The Recruiter" (Block 4: The Long Game, ULTRA track).
- * Actor: K-STATIC/COORD (veiled). Map slot: curriculum-map-v1 §M18.
+ * Actor: ZERO (veiled). Map slot: curriculum-map-v1 §M18.
  *
  * Teaching register (ages 10–13): dual-use — your skills could run
  * cons now; the ARC Code is the line between analyst and actor (why
@@ -23,7 +23,7 @@ export const mission18: MissionManifest = {
   block: 4,
   classification: "ULTRA",
   actor: {
-    codename: "K-STATIC",
+    codename: "ZERO",
     mo: "Doesn't attack you. Recruits you.",
     portrait: "/explorers/actors/coordinator.png",
   },
