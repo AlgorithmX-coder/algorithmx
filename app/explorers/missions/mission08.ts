@@ -24,7 +24,7 @@ export const mission08: MissionManifest = {
   classification: "SECRET",
   actor: {
     codename: "GHOSTWRITER",
-    mo: "Writes flawless fakes. The writer never existed.",
+    mo: "Writes perfect fakes. The writer never existed.",
     portrait: "/explorers/actors/ghostwriter.png",
   },
 
@@ -43,11 +43,11 @@ export const mission08: MissionManifest = {
 
   briefing: {
     summary:
-      "GHOSTWRITER's scams have perfect grammar and perfect warmth. Style can't clear anyone anymore.",
+      "GHOSTWRITER's scams have perfect spelling and perfect warmth. Style can't prove anyone safe now.",
     objectives: [
-      "Retire the old tells",
+      "Forget the old typo clues",
       "Read the machine's clues",
-      "Verify by source, not style",
+      "Check the writer, not the writing",
     ],
     wrenLine: "If it sounds too right, check who's writing, Operative.",
   },
@@ -56,29 +56,29 @@ export const mission08: MissionManifest = {
     /* ------------------------------------------ cycle 1: old tells are dead */
     {
       id: "polish",
-      title: "Polish proves nothing",
-      concept: "Machines write flawless fakes now",
+      title: "Perfect writing proves nothing",
+      concept: "Machines write perfect fakes now",
       promise: "You'll learn why perfect writing means nothing.",
       instruction: "Tap the 3 whispers under the perfect writing.",
       intel: {
         beats: [
-          "You were maybe taught: scams have typos.",
-          "That era is over.",
-          "Machines write the scams now. Flawlessly. For free.",
+          "Maybe someone taught you: scams have typos.",
+          "That time is over.",
+          "Machines write the scams now. Perfectly. For free.",
           "Perfect spelling proves exactly nothing.",
-          "But listen closer — patterns still whisper.",
+          "But listen closer. Patterns still whisper.",
           "Three whispers, coming up.",
         ],
         prediction: {
-          question: "Why don't typos expose scams anymore?",
+          question: "Why don't typos give scams away now?",
           options: [
             "Scammers started studying harder",
-            "Machines write the scams now — flawlessly",
+            "Machines write the scams now, perfectly",
             "Typos never mattered anyway",
           ],
           answer: 1,
           right: "Right. A machine writes ten thousand perfect messages before breakfast.",
-          wrong: "No study needed — the scammer types a prompt, the machine writes perfection.",
+          wrong: "No study needed. The scammer types, and the machine writes it perfectly.",
         },
       },
       fieldwork: {
@@ -87,10 +87,10 @@ export const mission08: MissionManifest = {
           intro: "Tap the 3 whispers under the perfect writing.",
           device: { app: "DM", owner: "FIRST CONTACT · CAPTURED" },
           header: [
-            { label: "FROM:", seg: { id: "from", text: "sunny_sketches_09 — 0 mutual friends" } },
+            { label: "FROM:", seg: { id: "from", text: "sunny_sketches_09 · 0 mutual friends" } },
           ],
           body: [
-            [{ id: "w1", text: "hiii! saw your comment on the Star Chasers forum — you're SO funny and talented", tellId: "flattery" }],
+            [{ id: "w1", text: "hiii! saw your comment on the Star Chasers forum. you're SO funny and talented!", tellId: "flattery" }],
             [{ id: "w2", text: "I go to Hillcrest, right near your school! basically neighbors 😄", tellId: "specificity" }],
             [{ id: "w3", text: "I feel like we're already best friends. you can tell me anything, honestly", tellId: "warmth" }],
             [{ id: "w4", text: "my favorite episode is the moon one, obviously" }],
@@ -103,16 +103,16 @@ export const mission08: MissionManifest = {
             },
             {
               id: "specificity",
-              label: "Facts without relationship",
+              label: "Knows facts, not you",
               why: "Knows your school, shares zero history. Facts minus friendship equals research.",
             },
             {
               id: "warmth",
-              label: "Warmth without history",
-              why: "“Already best friends” on day one. Warmth needs time; costumes don't.",
+              label: "Best friends too fast",
+              why: "“Already best friends” on day one. Real warmth takes time.",
             },
           ],
-          doneLine: "Perfect spelling, three whispers. The writing is flawless — the writer is the question.",
+          doneLine: "Perfect spelling, three whispers. The writing is perfect. The writer is the question.",
         },
       },
       checkpoint: {
@@ -122,7 +122,7 @@ export const mission08: MissionManifest = {
             question: "A message is beautifully written. That proves:",
             options: [
               "It's safe to trust",
-              "Nothing — machines write beautifully for free",
+              "Nothing, machines write beautifully for free",
               "The sender is clever",
             ],
             answer: 1,
@@ -132,7 +132,7 @@ export const mission08: MissionManifest = {
             question: "“I know your school” from someone you've never met is:",
             options: [
               "Neighborly",
-              "Research pretending to be relationship",
+              "Research dressed up as friendship",
               "A lucky guess",
             ],
             answer: 1,
@@ -145,12 +145,12 @@ export const mission08: MissionManifest = {
     {
       id: "mirror",
       title: "The perfect mirror",
-      concept: "Clues help today; they decay tomorrow",
-      promise: "You'll watch a fake friendship get manufactured.",
+      concept: "Clues help today, not forever",
+      promise: "You'll watch a fake friendship get built.",
       instruction: "Predict the pen pal's next move. Three rounds.",
       intel: {
         beats: [
-          "Into the simulator — a captured pen-pal con, replayed.",
+          "Into the simulator. We replay a real pen-pal scam.",
           "Watch what the machine does brilliantly: mirroring.",
           "It loves everything you love. Instantly.",
           "And watch what it can't do: take time.",
@@ -160,19 +160,19 @@ export const mission08: MissionManifest = {
         prediction: {
           question: "Can these clues ALWAYS catch a machine fake?",
           options: [
-            "Yes — clues are forever",
-            "No — clues decay as machines improve",
+            "Yes, clues are forever",
+            "No, clues fade as machines improve",
             "Only in long messages",
           ],
           answer: 1,
-          right: "Right. Treat clues as whispers, not alarms. The real defense comes next skill.",
+          right: "Right. Treat clues as whispers, not alarms. The real defense is next.",
           wrong: "Machines improve monthly. Today's clue is tomorrow's fixed bug. Whispers, not alarms.",
         },
       },
       fieldwork: {
         verb: "SIMULATE",
         payload: {
-          intro: "Range playback — the pen-pal con, move by move",
+          intro: "Range playback: the pen-pal scam, move by move",
           steps: [
             {
               scene:
@@ -180,12 +180,12 @@ export const mission08: MissionManifest = {
               question: "what's the next move?",
               options: [
                 "Ask for money right now",
-                "Mirror more of your interests — build the twin feeling",
+                "Mirror more of your interests, build the twin feeling",
                 "Say goodbye forever",
               ],
               answer: 1,
               reveal:
-                "Every reply mirrors you back — your shows, your jokes, your opinions. Machines are perfect mirrors. The twin feeling IS the product.",
+                "Every reply mirrors you back: your shows, your jokes, your opinions. Machines are perfect mirrors. The twin feeling IS the product.",
             },
             {
               scene:
@@ -198,20 +198,20 @@ export const mission08: MissionManifest = {
               ],
               answer: 1,
               reveal:
-                "“My data's running out and mum won't top up… could you send a gift card code? a tiny one 🙏” The crisis exists to manufacture the favor.",
+                "“My data's running out and mum won't top up… could you send a gift card code? a tiny one 🙏” That crisis is bait. It sets up the ask.",
             },
             {
               scene:
                 "You say you're not sure. The reply lands in under five seconds: “wow. ok. after EVERYTHING I've shared with you??”",
               question: "what just happened?",
               options: [
-                "Instant guilt — the payback lever, scripted",
+                "Instant guilt: the payback lever, scripted",
                 "A genuine, thought-through reaction",
                 "A typing accident",
               ],
               answer: 0,
               reveal:
-                "Real hurt takes time. Scripts answer in seconds. And notice the lever — payback, straight off the M06 board. The levers never change. Only the writer did.",
+                "Real hurt takes time. Scripts answer in seconds. And notice the lever: payback, straight off the M06 board. The levers never change. Only the writer did.",
             },
           ],
           doneLine: "MIRROR, CRISIS, GUILT. THE FRIENDSHIP WAS A SCRIPT WITH YOUR NAME PASTED IN.",
@@ -234,7 +234,7 @@ export const mission08: MissionManifest = {
             question: "A hurt, guilt-heavy reply arrives in five seconds. That speed means:",
             options: [
               "They're very emotional",
-              "A script — real feelings take longer",
+              "A script, real feelings take longer",
               "Good wifi",
             ],
             answer: 1,
@@ -247,13 +247,13 @@ export const mission08: MissionManifest = {
     {
       id: "source",
       title: "Check the writer",
-      concept: "Verify by source, never by style",
+      concept: "Check the source, not the style",
       promise: "You'll learn the check no machine can fake.",
       instruction: "Pick the move that unmasks the writer.",
       intel: {
         beats: [
-          "So if style proves nothing — what does?",
-          "Existence.",
+          "So if style proves nothing, what does?",
+          "Whether they're real.",
           "A machine can write a person. It can't BE one.",
           "No real school. No real mutuals. No real anywhere.",
           "Style can be generated in forty seconds.",
@@ -263,12 +263,12 @@ export const mission08: MissionManifest = {
           question: "What beats a perfect fake every time?",
           options: [
             "Reading it even more carefully",
-            "Checking the source — does this person exist anywhere real?",
+            "Checking the source: does this person exist anywhere real?",
             "Asking “are you a bot?”",
           ],
           answer: 1,
-          right: "Exactly. Style is generated. Existence isn't.",
-          wrong: "You can't out-read a machine — and bots say no. Check whether the person EXISTS.",
+          right: "Exactly. Anyone can fake writing. Nobody can fake a whole life.",
+          wrong: "You can't beat a machine at reading. Bots just lie. Check if the person is REAL.",
         },
       },
       fieldwork: {
@@ -276,27 +276,27 @@ export const mission08: MissionManifest = {
         payload: {
           intro: "Pick the move that unmasks the writer.",
           situation:
-            "The pen pal wants to move to a private app — “just us 💛” — and asks again about that gift card. Softly. Kindly.",
+            "The pen pal wants to move to a private app: “just us 💛”. They ask again about that gift card. Softly. Kindly.",
           prompt: "YOUR CALL, OPERATIVE:",
           options: [
             {
               id: "kind",
-              label: "Keep chatting — they're clearly going through a lot",
+              label: "Keep chatting, they're clearly going through a lot",
               outcome:
-                "The crisis is the script's engine. Every kind reply powers the next ask. Kindness deserves a real person.",
+                "The crisis is the fuel the script runs on. Every kind reply powers the next ask. Kindness deserves a real person.",
             },
             {
               id: "quiz",
               label: "Test them with tricky questions about Hillcrest",
               outcome:
-                "Machines answer anything, smoothly, instantly. A style test grades fiction. You need the real world.",
+                "Machines answer anything, smoothly and instantly. A quiz just tests their made-up story. You need the real world.",
             },
             {
               id: "source",
-              label: "Stop and verify by source — real-world checks, plus an adult",
+              label: "Stop and check the source: real-world proof, plus an adult",
               correct: true,
               outcome:
-                "No Hillcrest student matches. Zero real-world links anywhere. An adult helps you report it — the whole warm, funny friend was forty seconds of text generation.",
+                "No Hillcrest student matches. No real-world links anywhere. An adult helps you report it. The whole friend was forty seconds of machine writing.",
             },
           ],
         },
@@ -308,7 +308,7 @@ export const mission08: MissionManifest = {
             question: "“Verify by source” means:",
             options: [
               "Read the message twice",
-              "Check the sender exists on channels you trust",
+              "Check the sender is real, on places you trust",
               "Ask them very politely",
             ],
             answer: 1,
@@ -318,7 +318,7 @@ export const mission08: MissionManifest = {
             question: "“Let's move to a private app, just us” is usually:",
             options: [
               "Cozy and flattering",
-              "Isolation — fewer witnesses, fewer alarms",
+              "Getting you alone, fewer people watching",
               "More convenient",
             ],
             answer: 1,
@@ -337,12 +337,12 @@ export const mission08: MissionManifest = {
 
   debrief: {
     report: [
-      "The old tells retired: polish proves nothing when machines write for free.",
-      "The manufacture watched live: mirror, crisis, guilt — a script with a name pasted in.",
-      "Source check run, adult looped in, persona unmasked and reported.",
+      "Old clues dropped: perfect writing proves nothing when machines write for free.",
+      "Saw it built live: mirror, crisis, then guilt. A script with your name pasted in.",
+      "Source checked, adult brought in, fake friend unmasked and reported.",
     ],
     realWorldMove:
-      "This week: pick one message that sounds perfect and check its source — does the sender exist on a channel you trust? Style proves nothing. Existence does.",
+      "This week: pick one message that sounds too perfect. Check its source. Does the sender really exist somewhere you trust? Writing proves nothing. A real life does.",
     wrenLine: "The pen pal never existed. Your checks do. Sign out.",
   },
 
@@ -353,7 +353,7 @@ export const mission08: MissionManifest = {
   },
 
   dossier: {
-    mo: "Writes flawless fakes — warm, funny, perfectly spelled. The writer never existed.",
-    defeatedBy: "Anyone who verifies by source instead of style. Machines write words, not lives.",
+    mo: "Writes perfect fakes: warm, funny, perfectly spelled. The writer never existed.",
+    defeatedBy: "Anyone who checks the source, not the style. Machines write words, not lives.",
   },
 };

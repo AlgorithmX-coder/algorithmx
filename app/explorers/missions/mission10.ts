@@ -73,7 +73,7 @@ export const mission10: MissionManifest = {
           question: "Where would a cloner get seconds of a parent's voice?",
           options: [
             "Breaking into the phone company",
-            "Public videos — birthdays, sports day, group chats",
+            "Public videos: birthdays, sports day, group chats",
             "You can't get voices online",
           ],
           answer: 1,
@@ -84,7 +84,7 @@ export const mission10: MissionManifest = {
       fieldwork: {
         verb: "SIMULATE",
         payload: {
-          intro: "Range playback — a cloned call, move by move",
+          intro: "Range playback: a cloned call, move by move",
           steps: [
             {
               scene:
@@ -92,19 +92,19 @@ export const mission10: MissionManifest = {
               question: "what's the next move?",
               options: [
                 "A calm chat about your day",
-                "Build urgency — a crisis with a clock on it",
+                "Build urgency: a crisis with a clock on it",
                 "Hang up on you",
               ],
               answer: 1,
               reveal:
-                "“I need you to do something RIGHT NOW — there's no time to explain.” Urgency first, always. Thinking is the clone's enemy.",
+                "“I need you to do something RIGHT NOW. There's no time to explain.” Urgency first, always. Thinking is the clone's enemy.",
             },
             {
               scene:
                 "“The bank needs the code that just went to your phone. Read it to me quick, before it expires. Please, love.”",
               question: "what is the clone really after?",
               options: [
-                "The 6-digit code — a key to an account",
+                "The 6-digit code: a key to an account",
                 "A nice long chat",
                 "Your homework answers",
               ],
@@ -117,7 +117,7 @@ export const mission10: MissionManifest = {
                 "You hesitate. The voice goes soft and hurt: “Darling… it's ME. Don't you recognize me?”",
               question: "what's really happening?",
               options: [
-                "The recognition trap — ears can't verify anymore",
+                "The recognition trap: ears can't verify anymore",
                 "It's definitely her now",
                 "The call is ending",
               ],
@@ -136,7 +136,7 @@ export const mission10: MissionManifest = {
             question: "How much audio does a voice clone need?",
             options: [
               "Hours of clean speeches",
-              "Seconds — one birthday video is plenty",
+              "Seconds: one birthday video is plenty",
               "It isn't possible yet",
             ],
             answer: 1,
@@ -146,7 +146,7 @@ export const mission10: MissionManifest = {
             question: "“Don't you recognize me?” works because:",
             options: [
               "Not recognizing family is rude",
-              "Ears used to be proof — machines broke that",
+              "Ears used to be proof, machines broke that",
               "It's a trick question",
             ],
             answer: 1,
@@ -174,13 +174,13 @@ export const mission10: MissionManifest = {
         prediction: {
           question: "Why can't we just learn to spot deepfakes forever?",
           options: [
-            "We can — eyes always win",
+            "We can, eyes always win",
             "The tells decay as the fakes improve",
             "Deepfakes are already illegal",
           ],
           answer: 1,
           right: "Right. Today's glitch is next month's patch. Build on what doesn't decay.",
-          wrong: "Eyes lose this race — the fakes improve monthly. The ASK is the tell that stays.",
+          wrong: "Eyes lose this race. The fakes improve monthly. The ASK is the tell that stays.",
         },
       },
       fieldwork: {
@@ -189,7 +189,7 @@ export const mission10: MissionManifest = {
           intro: "Tap the 3 tells in this video call.",
           device: { app: "VIDEO CALL", owner: "CAPTURED FRAME · ARC ANALYSIS" },
           header: [
-            { label: "CALLER:", seg: { id: "caller", text: "“Auntie Rosa” — unscheduled call, urgent tone" } },
+            { label: "CALLER:", seg: { id: "caller", text: "“Auntie Rosa” · surprise call, urgent tone" } },
           ],
           body: [
             [{ id: "t1", text: "Her mouth lands a beat behind the words", tellId: "sync" }],
@@ -200,18 +200,18 @@ export const mission10: MissionManifest = {
           tells: [
             {
               id: "sync",
-              label: "Sync drift",
+              label: "Mouth lag",
               why: "Today's tell. Next year's models will fix it. A clue, not proof.",
             },
             {
               id: "artifact",
-              label: "Render flicker",
-              why: "Seams decay too — every update cleans them up.",
+              label: "Flicker glitch",
+              why: "Glitches fade too. Every update cleans them up.",
             },
             {
               id: "ask",
               label: "The ask",
-              why: "The forever-tell. Codes, money, secrets — no update removes the ask.",
+              why: "The forever-tell. Codes, money, secrets: no update removes the ask.",
             },
           ],
           doneLine: "Two fading tells, one forever-tell. Bank on the forever one.",
@@ -234,7 +234,7 @@ export const mission10: MissionManifest = {
             question: "The tell that NEVER decays:",
             options: [
               "Bad lighting",
-              "The ask — codes, money, secrets",
+              "The ask: codes, money, secrets",
               "Weird blinking",
             ],
             answer: 1,
@@ -263,7 +263,7 @@ export const mission10: MissionManifest = {
           question: "Why does a code word beat a perfect voice clone?",
           options: [
             "Clones can't speak twice",
-            "The clone copied a voice — not a secret that never went online",
+            "The clone copied a voice, not a secret that never went online",
             "It doesn't, really",
           ],
           answer: 1,
@@ -276,27 +276,27 @@ export const mission10: MissionManifest = {
         payload: {
           intro: "Pick the code-word system that holds.",
           situation:
-            "Family meeting. You're the analyst now, and you're setting the emergency check for everyone.",
+            "Family meeting. You're the analyst now. You set the family's emergency check.",
           prompt: "YOUR CALL, OPERATIVE:",
           options: [
             {
               id: "pet",
-              label: "Use the dog's name — everyone remembers it",
+              label: "Use the dog's name, everyone remembers it",
               outcome:
-                "Biscuit is in forty of your family's posts. A word that has EVER been online isn't a code word — it's training data.",
+                "Biscuit is in forty of your family's posts. A word that ever went online isn't a code word. It's training data.",
             },
             {
               id: "silly",
               label: "A silly private phrase, never typed anywhere, rehearsed once",
               correct: true,
               outcome:
-                "Perfect. Never posted, easy to remember, impossible to scrape. One practice run at dinner, and every clone on earth is locked out of your family.",
+                "Perfect. Never posted, easy to remember, impossible to scrape. One practice run at dinner. Every clone on earth is locked out of your family.",
             },
             {
               id: "bio",
               label: "Write it in everyone's bio so nobody forgets it",
               outcome:
-                "Public defeats the point — PACKRAT reads bios for a living. The word lives in heads, nowhere else.",
+                "Public defeats the point. PACKRAT reads bios for a living. The word lives in heads, nowhere else.",
             },
           ],
         },
@@ -318,7 +318,7 @@ export const mission10: MissionManifest = {
             question: "A REAL family member hears the code-word question and:",
             options: [
               "Gets angry and hangs up",
-              "Answers easily — or laughs at you",
+              "Answers easily, or laughs at you",
               "Asks what a code word is",
             ],
             answer: 1,
@@ -338,7 +338,7 @@ export const mission10: MissionManifest = {
   debrief: {
     report: [
       "One cloned call survived: urgency named, ask refused, recognition trap seen through.",
-      "The fading tells filed as clues; the forever-tell — the ask — banked as proof.",
+      "The fading tells filed as clues. The forever-tell, the ask, banked as proof.",
       "Family code word designed and rehearsed. Block Two closed: SECRET clearance confirmed.",
     ],
     realWorldMove:
@@ -354,7 +354,7 @@ export const mission10: MissionManifest = {
 
   dossier: {
     mo: "Clones voices from seconds of audio and faces from photos. Sounds exactly like love.",
-    defeatedBy: "The family code word — and calling the real number back.",
+    defeatedBy: "The family code word, and calling the real number back.",
     breadcrumb:
       "TRACE: the clone trained on audio PACKRAT scraped, reading lines GHOSTWRITER wrote. Three actors, one supply chain. Filed.",
   },

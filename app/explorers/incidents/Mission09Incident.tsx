@@ -18,25 +18,25 @@ import type { IncidentProps } from "../engine/types";
 
 /* Phase 1 — the server's DMs. One card is the proof of scripting. */
 const FARM = [
-  { id: "f1", label: "TO JAY — “free skin! you're too good at this game not to have it 😊”", proof: false },
-  { id: "f2", label: "SIDE-BY-SIDE — “you're literally the only one I trust 💛” sent to Jay AND Priya, 4 minutes apart", proof: true },
-  { id: "f3", label: "TO PRIYA — “held a tournament spot for you, no big deal”", proof: false },
-  { id: "f4", label: "TO ZAID — “your build videos deserve way more views tbh”", proof: false },
-  { id: "f5", label: "TO SAM — “here's 100 coins, pay me back never lol”", proof: false },
+  { id: "f1", label: "TO JAY: “free skin! you're too good at this game not to have it 😊”", proof: false },
+  { id: "f2", label: "SIDE-BY-SIDE: “you're literally the only one I trust 💛” sent to Jay AND Priya, 4 minutes apart", proof: true },
+  { id: "f3", label: "TO PRIYA: “held a tournament spot for you, no big deal”", proof: false },
+  { id: "f4", label: "TO ZAID: “your build videos deserve way more views tbh”", proof: false },
+  { id: "f5", label: "TO SAM: “here's 100 coins, pay me back never lol”", proof: false },
 ];
 
 /* Phase 2 — Zaid's chat timeline. Tap where giving turned to taking. */
 const TIMELINE = [
-  { id: "z1", label: "WEEK 1 — “that clutch was insane, take this skin, you earned it”", turn: false },
-  { id: "z2", label: "WEEK 2 — “rough day? talk to me. I've always got you”", turn: false },
-  { id: "z3", label: "WEEK 3 — “hold these coins for me… actually keep them 😄”", turn: false },
-  { id: "z4", label: "WEEK 4 — “remember that skin? tiny favor back — lend me your login, one day only”", turn: true },
+  { id: "z1", label: "WEEK 1: “that clutch was insane, take this skin, you earned it”", turn: false },
+  { id: "z2", label: "WEEK 2: “rough day? talk to me. I've always got you”", turn: false },
+  { id: "z3", label: "WEEK 3: “hold these coins for me… actually keep them 😄”", turn: false },
+  { id: "z4", label: "WEEK 4: “remember that skin? tiny favor back: lend me your login, one day only”", turn: true },
 ];
 
 const EXITS = [
   {
     id: "sunk",
-    label: "“Do it, Zaid — you've taken his stuff for a month, you kind of owe him”",
+    label: "“Do it, Zaid. You've taken his stuff for a month, you kind of owe him”",
     correct: false,
     outcome:
       "That's the debt feeling doing the collector's work for him. Bait isn't a loan. Zaid signed nothing.",
@@ -46,14 +46,14 @@ const EXITS = [
     label: "“Stop replying, keep the chats as evidence, and tell an adult today. This was never your fault.”",
     correct: true,
     outcome:
-      "The clean exit, coached word for word. No shame, no payment, evidence kept — and the report reaches the platform before the collector cashes out anyone else.",
+      "The clean exit, coached word for word. No shame, no payment, evidence kept. The report reaches the platform before the collector cons anyone else.",
   },
   {
     id: "expose",
     label: "“Post his whole chat log on the server: EXPOSED!!”",
     correct: false,
     outcome:
-      "The collector deletes, renames, and returns by Friday — and Zaid's private chats are now public forever. Exits are quiet. Reports are loud.",
+      "The collector deletes, renames, and returns by Friday. And Zaid's private chats are now public forever. Exits are quiet. Reports are loud.",
   },
 ];
 
@@ -107,7 +107,7 @@ export default function Mission09Incident({ reduced, audio, onPhaseCleared, onCo
       {phase === 1 && (
         <div style={{ marginBottom: 18, maxWidth: 560 }}>
           <div style={{ fontFamily: MONO, fontSize: 10, letterSpacing: "0.14em", color: T.threatRed, marginBottom: 8 }}>
-            INTERCEPTED — SIREN, ON THE WIRE
+            INTERCEPTED: SIREN, ON THE WIRE
           </div>
           <Bubble who="villain">
             <em>&ldquo;Special? Oh, sweetheart. You're Tuesday. There's a whole calendar of you.&rdquo;</em>
@@ -125,7 +125,7 @@ export default function Mission09Incident({ reduced, audio, onPhaseCleared, onCo
       {/* ---------------- phase 1: spot the farm ---------------- */}
       {phase === 1 && (
         <div style={{ maxWidth: 640 }}>
-          <Eyebrow text="Phase 1 — Five very generous messages. One card PROVES it's a script. Tap it." color={T.actionAmber} />
+          <Eyebrow text="Phase 1: Five very generous messages. One card PROVES it's a script. Tap it." color={T.actionAmber} />
           <div style={{ display: "grid", gap: 10, marginTop: 14 }}>
             {FARM.map((f) => (
               <button
@@ -154,14 +154,14 @@ export default function Mission09Incident({ reduced, audio, onPhaseCleared, onCo
           </div>
           <p role="status" style={{ margin: "12px 0 0", fontSize: 13, color: proofFound ? T.confirmedGreen : T.textSecondary }}>
             {proofFound
-              ? "SCRIPT CONFIRMED — “only one I trust,” twice, four minutes apart. Only-ones don't come in pairs."
+              ? "SCRIPT CONFIRMED: “only one I trust,” twice, four minutes apart. Only-ones don't come in pairs."
               : wrongFarm
-                ? "Generous, sure — but generosity alone proves nothing. One card here proves it's a SCRIPT."
+                ? "Generous, sure. But generosity alone proves nothing. One card here proves it's a SCRIPT."
                 : "Kindness can be real. Find the card kindness can't explain."}
           </p>
           {proofFound && (
             <div style={{ marginTop: 14 }}>
-              <AmberButton label="FARM CONFIRMED — CHECK ON ZAID" onClick={() => { audio.click(); setPhase(2); }} />
+              <AmberButton label="FARM CONFIRMED: CHECK ON ZAID" onClick={() => { audio.click(); setPhase(2); }} />
             </div>
           )}
         </div>
@@ -170,7 +170,7 @@ export default function Mission09Incident({ reduced, audio, onPhaseCleared, onCo
       {/* ---------------- phase 2: find the turn ---------------- */}
       {phase === 2 && (
         <div style={{ maxWidth: 640 }}>
-          <Eyebrow text="Phase 2 — Zaid's month with the collector. Tap the message where giving became TAKING." color={T.actionAmber} />
+          <Eyebrow text="Phase 2: Zaid's month with the collector. Tap the message where giving became TAKING." color={T.actionAmber} />
           <div style={{ display: "grid", gap: 10, marginTop: 14 }}>
             {TIMELINE.map((z) => (
               <button
@@ -196,14 +196,14 @@ export default function Mission09Incident({ reduced, audio, onPhaseCleared, onCo
           </div>
           <p role="status" style={{ margin: "12px 0 0", fontSize: 13, color: turnFound ? T.confirmedGreen : T.textSecondary }}>
             {turnFound
-              ? "THE TURN — “remember that skin?” The gift comes back as a debt. Payback lever, fully stretched."
+              ? "THE TURN: “remember that skin?” The gift comes back as a debt. The payback, fully stretched."
               : wrongTurn
-                ? "Still depositing — warmth going in, nothing asked. Find where the account gets COLLECTED."
+                ? "Still depositing: warmth going in, nothing asked. Find where the account gets COLLECTED."
                 : "For weeks the collector only gives. Find the collection."}
           </p>
           {turnFound && (
             <div style={{ marginTop: 14 }}>
-              <AmberButton label="TURN FOUND — COACH THE EXIT" onClick={() => { audio.click(); setPhase(3); }} />
+              <AmberButton label="TURN FOUND: COACH THE EXIT" onClick={() => { audio.click(); setPhase(3); }} />
             </div>
           )}
         </div>
@@ -212,7 +212,7 @@ export default function Mission09Incident({ reduced, audio, onPhaseCleared, onCo
       {/* ---------------- phase 3: coach the exit ---------------- */}
       {phase === 3 && (
         <div style={{ maxWidth: 640 }}>
-          <Eyebrow text="Phase 3 — Zaid asks you what to do. Your coaching decides how this ends." color={T.actionAmber} />
+          <Eyebrow text="Phase 3: Zaid asks you what to do. Your coaching decides how this ends." color={T.actionAmber} />
           <div style={{ display: "grid", gap: 10, marginTop: 14 }}>
             {EXITS.map((e) => {
               const isChosen = exit === e.id;
@@ -242,7 +242,7 @@ export default function Mission09Incident({ reduced, audio, onPhaseCleared, onCo
                     />
                   ) : (
                     <p style={{ fontFamily: MONO, fontSize: 12, letterSpacing: "0.06em", color: T.confirmedGreen, margin: 0 }}>
-                      EXIT CLEAN — DEBT CANCELLED. IT WAS NEVER REAL.
+                      EXIT CLEAN: DEBT CANCELLED. IT WAS NEVER REAL.
                     </p>
                   )
                 ) : (

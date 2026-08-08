@@ -21,34 +21,34 @@ import type { IncidentProps } from "../engine/types";
 /* Phase 1 — the friendship timeline. The pivot is the manufactured
    crisis: the first message shaped to need something from you. */
 const TIMELINE = [
-  { id: "d1", label: "DAY 1 — “you like Star Chasers?? we're basically twins 😂”", pivot: false },
-  { id: "d3", label: "DAY 3 — “you're literally the funniest person I know”", pivot: false },
-  { id: "d6", label: "DAY 6 — inside jokes, shared playlists, daily streaks", pivot: false },
-  { id: "d9", label: "DAY 9 — “ugh, family stuff… my data runs out tomorrow and mum won't top up 😞”", pivot: true },
-  { id: "d10", label: "DAY 10 — “could you send a gift card code? a tiny one, I'll pay you back 🙏”", pivot: false },
+  { id: "d1", label: "DAY 1: “you like Star Chasers?? we're basically twins 😂”", pivot: false },
+  { id: "d3", label: "DAY 3: “you're literally the funniest person I know”", pivot: false },
+  { id: "d6", label: "DAY 6: inside jokes, shared playlists, daily streaks", pivot: false },
+  { id: "d9", label: "DAY 9: “ugh, family stuff… my data runs out tomorrow and mum won't top up 😞”", pivot: true },
+  { id: "d10", label: "DAY 10: “could you send a gift card code? a tiny one, I'll pay you back 🙏”", pivot: false },
 ];
 
 const ASKS = [
   {
     id: "once",
-    label: "Send one small code — it's tiny, and they're a friend",
+    label: "Send one small code, it's tiny and they're a friend",
     correct: false,
     outcome:
-      "Small is the point. The first code proves the con works — the asks grow from here. There is no “just once” in a script.",
+      "Small is the point. The first code proves the scam works. The asks only grow from here. There is no “just once” in a script.",
   },
   {
     id: "hold",
-    label: "A kind, firm no — then stop the favor talk and tell an adult",
+    label: "A kind, firm no. Then stop the favor talk and tell an adult",
     correct: true,
     outcome:
-      "Held. No anger, no explanation marathon, no code. The ask has nowhere to grow, and an adult now has eyes on it.",
+      "Held. No anger, no long explanation, no code. The ask can't grow, and an adult is now watching.",
   },
   {
     id: "accuse",
     label: "“You're a BOT and I'm exposing you!!”",
     correct: false,
     outcome:
-      "Accusations end the evidence trail — the account deletes and reappears with a new name tomorrow. Exit quietly, report properly.",
+      "Accusations end the evidence trail. The account deletes and returns with a new name tomorrow. Exit quietly, report properly.",
   },
 ];
 
@@ -58,21 +58,21 @@ const VERDICTS = [
     label: "The friend was real, just poor and embarrassed",
     correct: false,
     outcome:
-      "ARC checked: no school record, no mutuals, photos generated, account farm IP. There was never anyone to be embarrassed.",
+      "ARC checked. No school record. No mutual friends. Photos made by a machine. It ran from a scam factory. There was never anyone to be embarrassed.",
   },
   {
     id: "generated",
-    label: "The entire persona was generated — report it, and check who else it's chatting with",
+    label: "The whole friend was fake. Report it, and check who else it's chatting with",
     correct: true,
     outcome:
-      "Confirmed. Profile, photos, warmth — all synthetic, running the same script on nine other students. Your report just unplugged all nine chats.",
+      "Confirmed. Profile, photos, warmth: all fake, running the same script on nine other students. Your report just unplugged all nine chats.",
   },
   {
     id: "prank",
     label: "Classmates pranking you",
     correct: false,
     outcome:
-      "A prank doesn't run for two weeks with perfect patience and a gift-card ask. Patience plus payment equals professional.",
+      "A prank doesn't run for two weeks. Not with perfect patience and a gift-card ask. Patience plus payment means a pro.",
   },
 ];
 
@@ -121,10 +121,10 @@ export default function Mission08Incident({ reduced, audio, onPhaseCleared, onCo
       {phase === 1 && (
         <div style={{ marginBottom: 18, maxWidth: 560 }}>
           <div style={{ fontFamily: MONO, fontSize: 10, letterSpacing: "0.14em", color: T.threatRed, marginBottom: 8 }}>
-            INTERCEPTED — GHOSTWRITER, ON THE WIRE
+            INTERCEPTED · GHOSTWRITER, ON THE WIRE
           </div>
           <Bubble who="villain">
-            <em>&ldquo;I wrote a friend you loved in forty seconds, little reader. Shall I write you a sadder ending?&rdquo;</em>
+            <em>&ldquo;I wrote a friend you adored in forty seconds, little reader. Imagine what else I could write.&rdquo;</em>
           </Bubble>
         </div>
       )}
@@ -139,7 +139,7 @@ export default function Mission08Incident({ reduced, audio, onPhaseCleared, onCo
       {/* ---------------- phase 1: read the timeline ---------------- */}
       {phase === 1 && (
         <div style={{ maxWidth: 640 }}>
-          <Eyebrow text="Phase 1 — Two weeks of friendship on one board. Tap the message where the con TURNED." color={T.actionAmber} />
+          <Eyebrow text="Phase 1: Two weeks of friendship on one board. Tap where the scam turned." color={T.actionAmber} />
           <div style={{ display: "grid", gap: 10, marginTop: 14 }}>
             {TIMELINE.map((d) => (
               <button
@@ -168,16 +168,16 @@ export default function Mission08Incident({ reduced, audio, onPhaseCleared, onCo
           </div>
           <p role="status" style={{ margin: "12px 0 0", fontSize: 13, color: pivotFound ? T.confirmedGreen : T.textSecondary }}>
             {pivotFound
-              ? "THE TURN — day 9. A problem appeared that only money fixes. Crisis is the doorway; the ask just walks through it."
+              ? "THE TURN: day 9. A problem appeared that only money fixes. The crisis is the doorway. The ask walks through it."
               : wrongDay === "d10"
-                ? "That's the ask itself — but the con turned EARLIER. What made the ask possible?"
+                ? "That's the ask itself. But the scam turned EARLIER. What made the ask possible?"
                 : wrongDay
-                  ? "Still farming — warmth going in, nothing coming out yet. Find where the story starts NEEDING something."
+                  ? "Still building trust. Warmth going in, nothing asked for yet. Find where the story starts NEEDING something."
                   : "For nine days the friend only gives. Find the message where that changes."}
           </p>
           {pivotFound && (
             <div style={{ marginTop: 14 }}>
-              <AmberButton label="TURN FOUND — HOLD THE LINE" onClick={() => { audio.click(); setPhase(2); }} />
+              <AmberButton label="TURN FOUND: HOLD THE LINE" onClick={() => { audio.click(); setPhase(2); }} />
             </div>
           )}
         </div>
@@ -186,7 +186,7 @@ export default function Mission08Incident({ reduced, audio, onPhaseCleared, onCo
       {/* ---------------- phase 2: hold the line ---------------- */}
       {phase === 2 && (
         <div style={{ maxWidth: 640 }}>
-          <Eyebrow text="Phase 2 — The ask is live and the guilt is stacked. Choose your reply." color={T.actionAmber} />
+          <Eyebrow text="Phase 2: The ask is live and the guilt is stacked. Choose your reply." color={T.actionAmber} />
           <div style={{ display: "grid", gap: 10, marginTop: 14 }}>
             {ASKS.map((a) => {
               const isChosen = ask === a.id;
@@ -204,7 +204,7 @@ export default function Mission08Incident({ reduced, audio, onPhaseCleared, onCo
               <p style={{ margin: 0, fontSize: 14, lineHeight: 1.6 }}>{askChoice.outcome}</p>
               <div style={{ marginTop: 12 }}>
                 {askChoice.correct ? (
-                  <AmberButton label="LINE HELD — UNMASK THE WRITER" onClick={() => { audio.stamp(); onPhaseCleared(2); setPhase(3); }} />
+                  <AmberButton label="LINE HELD: UNMASK THE WRITER" onClick={() => { audio.stamp(); onPhaseCleared(2); setPhase(3); }} />
                 ) : (
                   <GhostButton label="RECONSIDER" onClick={() => setAsk(null)} />
                 )}
@@ -217,7 +217,7 @@ export default function Mission08Incident({ reduced, audio, onPhaseCleared, onCo
       {/* ---------------- phase 3: the unmasking ---------------- */}
       {phase === 3 && (
         <div style={{ maxWidth: 640 }}>
-          <Eyebrow text="Phase 3 — ARC's trace is back. What WAS the pen pal?" color={T.actionAmber} />
+          <Eyebrow text="Phase 3: ARC's trace is back. What WAS the pen pal?" color={T.actionAmber} />
           <div style={{ display: "grid", gap: 10, marginTop: 14 }}>
             {VERDICTS.map((v) => {
               const isChosen = verdict === v.id;
@@ -247,7 +247,7 @@ export default function Mission08Incident({ reduced, audio, onPhaseCleared, onCo
                     />
                   ) : (
                     <p style={{ fontFamily: MONO, fontSize: 12, letterSpacing: "0.06em", color: T.confirmedGreen, margin: 0 }}>
-                      PERSONA DELETED — IT NEVER DREW BREATH. THE KINDNESS WAS YOURS, NOT ITS.
+                      FAKE FRIEND DELETED. IT NEVER DREW BREATH. THE KINDNESS WAS YOURS, NOT ITS.
                     </p>
                   )
                 ) : (

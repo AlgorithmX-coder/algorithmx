@@ -37,7 +37,7 @@ const PHASE_ROUNDS: Round[][] = [
     },
     {
       id: "r2",
-      con: "“Admin here. Your account is flagged — send your login for review or it's banned.”",
+      con: "“Admin here. Your account is flagged. Send your login for review or it's banned.”",
       options: ["SCARCITY", "AUTHORITY", "LIKING"],
       answer: 1,
       why: "A title plus a threat of punishment. Authority doing the lifting.",
@@ -54,28 +54,28 @@ const PHASE_ROUNDS: Round[][] = [
     },
     {
       id: "r4",
-      con: "“Last 2 tournament slots — and if your team misses out, everyone will know it was YOUR fault.”",
+      con: "“Last 2 tournament slots. And if your team misses out, everyone will know it was YOUR fault.”",
       options: ["SCARCITY is the muscle", "FEAR is the muscle", "PAYBACK is the muscle"],
       answer: 1,
-      why: "The “2 slots” opens the door, but “everyone will blame YOU” is what pushes people through it.",
+      why: "The “2 slots” opens the door. But “everyone will blame YOU” pushes people through it.",
     },
   ],
   /* phase 3 — the closer, aimed at the operative */
   [
     {
       id: "r5",
-      con: "“I've watched you clear every case, Operative. You're the best ARC has. Prove it — solve MY puzzle: just log in here.”",
-      options: ["AUTHORITY plus fear", "LIKING plus a dare — flattery aimed at YOU", "SCARCITY plus payback"],
+      con: "“I've watched you clear every case, Operative. You're the best ARC has. Prove it: solve MY puzzle. Just log in here.”",
+      options: ["AUTHORITY plus fear", "LIKING plus a dare: flattery aimed at YOU", "SCARCITY plus payback"],
       answer: 1,
-      why: "Flattery plus a challenge — the lever tuned for people who are good at things. Being good at this game IS your button. Now you know it.",
+      why: "Flattery plus a challenge. This lever works on people who are proud of being good. Being good at this game IS your button. Now you know it.",
     },
   ],
 ];
 
 const PHASE_INTROS = [
-  "Phase 1 — Warm-up booths: two quick cons. Call the lever before the reveal.",
-  "Phase 2 — Stacked levers: two levers per con. Call the one doing the REAL work.",
-  "Phase 3 — The closer: this one's aimed at you, Operative.",
+  "Phase 1. Warm-up booths: two quick cons. Call the lever before the reveal.",
+  "Phase 2. Stacked levers: two levers per con. Call the one doing the REAL work.",
+  "Phase 3. The closer: this one's aimed at you, Operative.",
 ];
 
 export default function Mission06Incident({ reduced, audio, onPhaseCleared, onComplete }: IncidentProps) {
@@ -121,7 +121,7 @@ export default function Mission06Incident({ reduced, audio, onPhaseCleared, onCo
       {phase === 1 && roundIdx === 0 && !revealed && (
         <div style={{ marginBottom: 18, maxWidth: 560 }}>
           <div style={{ fontFamily: MONO, fontSize: 10, letterSpacing: "0.14em", color: T.threatRed, marginBottom: 8 }}>
-            INTERCEPTED — SIREN, ON THE WIRE
+            INTERCEPTED: SIREN, ON THE WIRE
           </div>
           <Bubble who="villain">
             <em>&ldquo;Welcome to my carnival, clever thing. Every booth has a prize. Every prize has a string.&rdquo;</em>
@@ -188,7 +188,7 @@ export default function Mission06Incident({ reduced, audio, onPhaseCleared, onCo
             <div style={{ marginTop: 12 }}>
               {cleared ? (
                 <p style={{ fontFamily: MONO, fontSize: 12, letterSpacing: "0.06em", color: T.confirmedGreen, margin: 0 }}>
-                  CARNIVAL CLOSED — EVERY LEVER NAMED. NO PRIZES FOR SIREN TONIGHT.
+                  CARNIVAL CLOSED. EVERY LEVER NAMED. NO PRIZES FOR SIREN TONIGHT.
                 </p>
               ) : (
                 <AmberButton

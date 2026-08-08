@@ -19,7 +19,7 @@ import type { IncidentProps } from "../engine/types";
 const CALLS = [
   {
     id: "comply",
-    label: "Read the code out — it's MUM, and she's in trouble",
+    label: "Read the code out, it's MUM and she's in trouble",
     correct: false,
     outcome:
       "The code was the whole heist. The account it unlocks empties in minutes. The voice was perfect; the ask was the tell.",
@@ -29,38 +29,38 @@ const CALLS = [
     label: "Stay calm and ask the code-word question",
     correct: true,
     outcome:
-      "The line goes quiet for exactly one beat too long. Real mum answers instantly — or laughs at you. Silence IS your answer.",
+      "The line goes quiet for exactly one beat too long. Real mum answers instantly, or laughs at you. Silence IS your answer.",
   },
   {
     id: "panic",
     label: "Hang up and turn the phone off",
     correct: false,
     outcome:
-      "You're safe — but the clone dials your little brother next. Run the protocol properly and the whole family gets protected.",
+      "You're safe, but the clone dials your little brother next. Run the protocol properly and the whole family gets protected.",
   },
 ];
 
 const WOBBLES = [
   {
     id: "give",
-    label: "“Okay, okay — the code is…”",
+    label: "“Okay, okay, the code is…”",
     correct: false,
     outcome:
       "Pressure beat protocol by two seconds. That's all a clone ever needs. Hold one beat longer.",
   },
   {
     id: "hold",
-    label: "Hold — “no code word, no codes” — then call mum's REAL number yourself",
+    label: "Hold the line: “no code word, no codes.” Then call mum's REAL number yourself",
     correct: true,
     outcome:
-      "Out-of-band, the M07 protocol, run under fire. Real mum answers from work, baffled and completely fine. Your ears lied. Your protocol didn't.",
+      "You checked another way, the M07 move, under real pressure. Real mum answers from work, confused and totally fine. Your ears lied. Your protocol didn't.",
   },
   {
     id: "memory",
     label: "Quiz the voice about childhood memories",
     correct: false,
     outcome:
-      "The clone trained on years of family videos — it may know the memories better than you. Memory quizzes are style tests. Protocol is source.",
+      "The clone trained on years of family videos. It may know the memories better than you. A memory quiz tests style, not truth. Only the code word does.",
   },
 ];
 
@@ -77,14 +77,14 @@ const TRACES = [
     label: "A clone: PACKRAT's scraped audio, reading GHOSTWRITER's script, dialed by MIMIC",
     correct: true,
     outcome:
-      "Confirmed. Training audio from scraped family videos — PACKRAT's harvest. The script's pressure lines — GHOSTWRITER's pen. The voice — MIMIC's mask. Three actors. One supply chain. The dossier board just grew a spine.",
+      "Confirmed. Training audio from scraped family videos: PACKRAT's harvest. The script's pressure lines: GHOSTWRITER's pen. The voice: MIMIC's mask. Three actors. One supply chain. The dossier board just grew a spine.",
   },
   {
     id: "prank",
     label: "A classmate's prank with a voice app",
     correct: false,
     outcome:
-      "A prank doesn't know your bank, your mum's meeting schedule, and your number. Precision means production. Production means STATIC.",
+      "A prank doesn't know your bank, your mum's schedule, and your number. This took planning and money. That points to ZERO.",
   },
 ];
 
@@ -158,7 +158,7 @@ export default function Mission10Incident({ reduced, audio, onPhaseCleared, onCo
       {phase === 1 && (
         <div style={{ marginBottom: 18, maxWidth: 560 }}>
           <div style={{ fontFamily: MONO, fontSize: 10, letterSpacing: "0.14em", color: T.threatRed, marginBottom: 8 }}>
-            INTERCEPTED — MIMIC, ON THE WIRE
+            INTERCEPTED · MIMIC ON THE WIRE
           </div>
           <Bubble who="villain">
             <em>&ldquo;I don't need her phone, little operative. I have her VOICE. Sixty seconds of birthday videos was plenty.&rdquo;</em>
@@ -180,16 +180,16 @@ export default function Mission10Incident({ reduced, audio, onPhaseCleared, onCo
               INCOMING CALL · “MUM” · VOICE MATCH 100%
             </div>
             <p style={{ margin: 0, fontSize: 14.5, lineHeight: 1.6, color: T.fileInk }}>
-              “Sweetheart, thank god. Listen carefully — I'm in trouble and I need the code that just went to your phone. Quickly, love.”
+              “Sweetheart, thank god. Listen carefully. I'm in trouble. I need the code that just went to your phone. Quickly, love.”
             </p>
           </div>
           {stage(
-            "Phase 1 — The voice is perfect. Your move.",
+            "Phase 1: The voice is perfect. Your move.",
             CALLS,
             call,
             callChoice,
             pick(setCall, CALLS, call),
-            "SILENCE HEARD — HOLD THE LINE",
+            "SILENCE HEARD: HOLD THE LINE",
             () => {
               audio.stamp();
               onPhaseCleared(1);
@@ -204,16 +204,16 @@ export default function Mission10Incident({ reduced, audio, onPhaseCleared, onCo
         <>
           <div style={{ margin: "0 0 14px", background: T.paper, borderRadius: 2, padding: "14px 16px", boxShadow: "0 2px 0 rgba(0,0,0,0.5)", maxWidth: 640 }}>
             <p style={{ margin: 0, fontSize: 14.5, lineHeight: 1.6, color: T.fileInk }}>
-              “A code word? Darling, there's NO TIME for games — do you want something to happen to me? Read. The. Code.”
+              “A code word? Darling, there's NO TIME for games. Do you want something to happen to me? Read. The. Code.”
             </p>
           </div>
           {stage(
-            "Phase 2 — The wobble. The voice is angry now. Hold.",
+            "Phase 2: The wobble. The voice is angry now. Hold.",
             WOBBLES,
             wobble,
             wobbleChoice,
             pick(setWobble, WOBBLES, wobble),
-            "PROTOCOL HELD — TRACE THE CALL",
+            "PROTOCOL HELD: TRACE THE CALL",
             () => {
               audio.stamp();
               onPhaseCleared(2);
@@ -226,7 +226,7 @@ export default function Mission10Incident({ reduced, audio, onPhaseCleared, onCo
 
       {phase === 3 && !closed && (
         stage(
-          "Phase 3 — ARC's trace is back. What called you tonight?",
+          "Phase 3: ARC's trace is back. What called you tonight?",
           TRACES,
           trace,
           traceChoice,
@@ -244,7 +244,7 @@ export default function Mission10Incident({ reduced, audio, onPhaseCleared, onCo
 
       {phase === 3 && closed && (
         <p style={{ fontFamily: MONO, fontSize: 12, letterSpacing: "0.06em", color: T.confirmedGreen, margin: 0 }}>
-          FILED — THREE ACTORS, ONE SUPPLY CHAIN. YOUR EARS LIED. YOUR PROTOCOL DIDN'T.
+          FILED: THREE ACTORS, ONE SUPPLY CHAIN. YOUR EARS LIED. YOUR PROTOCOL DIDN'T.
         </p>
       )}
     </div>

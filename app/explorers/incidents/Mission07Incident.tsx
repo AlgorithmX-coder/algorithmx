@@ -19,24 +19,24 @@ import type { IncidentProps } from "../engine/types";
 const READS = [
   {
     id: "left",
-    label: "CHAT A is really Leo — it sounds exactly like him",
+    label: "CHAT A is really Leo, it sounds exactly like him",
     correct: false,
     outcome:
-      "It DOES sound like him. MIMIC read two years of Leo's messages before typing one. Sounding right is the product.",
+      "It DOES sound like him. MIMIC read two years of Leo's messages before typing one. Sounding right is the whole trick.",
   },
   {
     id: "right",
-    label: "CHAT B is really Leo — the emoji use matches",
+    label: "CHAT B is really Leo, the emoji use matches",
     correct: false,
     outcome:
-      "MIMIC copies emoji habits first — they're the easiest tell to fake. Style is a costume. You can't read your way out of this.",
+      "MIMIC copies emoji habits first. They're the easiest thing to fake. Style is a costume. You can't read your way out of this.",
   },
   {
     id: "neither",
-    label: "Reading can't settle this — we need a different channel",
+    label: "Reading can't settle this, we need a different channel",
     correct: true,
     outcome:
-      "Correct call. Both chats pass the smell test — that's exactly what a good mimic guarantees. Time for protocol, not instinct.",
+      "Correct call. Both chats look right. That's exactly what a good mimic does. Time for protocol, not a hunch.",
   },
 ];
 
@@ -46,21 +46,21 @@ const PROTOCOLS = [
     label: "Ask both chats a secret question only Leo knows",
     correct: false,
     outcome:
-      "MIMIC holds Leo's full chat history — two years of secrets to mine. You'd be quizzing someone with the answer sheet open.",
+      "MIMIC holds Leo's full chat history. Two years of secrets to look up. You'd be quizzing someone with the answer sheet open.",
   },
   {
     id: "call",
-    label: "Video-call Leo's real number — a channel neither chat holds",
+    label: "Video-call Leo's real number: a channel neither chat holds",
     correct: true,
     outcome:
-      "Out-of-band. Leo answers from the bus, face and voice, baffled: his main account logged him out an hour ago. CHAT A is MIMIC. Confirmed in twenty seconds.",
+      "Out-of-band. Leo answers from the bus, face and voice. He's confused: his main account logged him out an hour ago. CHAT A is MIMIC. Confirmed in twenty seconds.",
   },
   {
     id: "wait",
     label: "Wait and see which chat gives up first",
     correct: false,
     outcome:
-      "While you wait, MIMIC is running the same con on five classmates. Slow isn't safe here — out-of-band is fast AND sure.",
+      "While you wait, MIMIC is running the same trick on five classmates. Slow isn't safe here. Out-of-band is fast AND sure.",
   },
 ];
 
@@ -70,21 +70,21 @@ const RESCUES = [
     label: "Screenshot the fake chat and blast it to every group: “LEO IS HACKED!!”",
     correct: false,
     outcome:
-      "Your screenshot carries MIMIC's live link into every group chat in school. Broadcasting the bait spreads the bait.",
+      "Your screenshot carries MIMIC's live link into every group chat in school. Sharing the bait just spreads the bait.",
   },
   {
     id: "clean",
-    label: "Tell Leo out-of-band; he reports the theft; you warn friends — plain text, no links",
+    label: "Tell Leo out-of-band; he reports the theft; you warn friends with plain text, no links",
     correct: true,
     outcome:
-      "Textbook. Leo triggers account recovery, the platform gets the report, and the warning that goes out has no live bait in it. Face returned to owner.",
+      "Textbook. Leo starts account recovery. The app gets the report. The warning that goes out has no live bait in it. Face returned to owner.",
   },
   {
     id: "duel",
     label: "Message MIMIC: “I know it's you. Give the account back.”",
     correct: false,
     outcome:
-      "Now MIMIC knows he's spotted — he'll cash out fast, hitting everyone in Leo's list within the hour. Never tip off a thief mid-theft.",
+      "Now MIMIC knows he's spotted. He'll move fast, hitting everyone in Leo's list within the hour. Never tip off a thief mid-theft.",
   },
 ];
 
@@ -164,7 +164,7 @@ export default function Mission07Incident({ reduced, audio, onPhaseCleared, onCo
       {phase === 1 && (
         <div style={{ marginBottom: 18, maxWidth: 560 }}>
           <div style={{ fontFamily: MONO, fontSize: 10, letterSpacing: "0.14em", color: T.threatRed, marginBottom: 8 }}>
-            INTERCEPTED — MIMIC, ON THE WIRE
+            INTERCEPTED: MIMIC, ON THE WIRE
           </div>
           <Bubble who="villain">
             <em>&ldquo;Which of us is your friend, darling? Even his mother couldn't tell. I've worn better faces than his.&rdquo;</em>
@@ -182,8 +182,8 @@ export default function Mission07Incident({ reduced, audio, onPhaseCleared, onCo
       {/* the twin chats, visible through every phase */}
       <div className="sr-two-col" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 16, maxWidth: 640 }}>
         {[
-          { tag: "CHAT A — “Leo ⚡”", lines: ["yo it's me, phone died so I'm on my old account", "listen I need a quick favor 🙏", "there's a code coming to your phone, send it over?"] },
-          { tag: "CHAT B — “Leo ⚡”", lines: ["hey it's my backup account, main one's being weird", "wait did someone else message you as me??", "DON'T send anyone anything, I'm at school, find me"] },
+          { tag: "CHAT A: “Leo ⚡”", lines: ["yo it's me, phone died so I'm on my old account", "listen I need a quick favor 🙏", "there's a code coming to your phone, send it over?"] },
+          { tag: "CHAT B: “Leo ⚡”", lines: ["hey it's my backup account, main one's being weird", "wait did someone else message you as me??", "DON'T send anyone anything, I'm at school, find me"] },
         ].map((c) => (
           <div key={c.tag} style={{ background: T.paper, borderRadius: 2, padding: "12px 14px", boxShadow: "0 2px 0 rgba(0,0,0,0.5)" }}>
             <div style={{ fontFamily: MONO, fontSize: 10, letterSpacing: "0.1em", color: "#A66A00", marginBottom: 8 }}>{c.tag}</div>
@@ -196,12 +196,12 @@ export default function Mission07Incident({ reduced, audio, onPhaseCleared, onCo
 
       {phase === 1 &&
         stageBlock(
-          "Phase 1 — Two Leos. Same face, same style. Which is real?",
+          "Phase 1: Two Leos. Same face, same style. Which is real?",
           READS,
           read,
           readChoice,
           pick(setRead, READS, read),
-          "READING WON'T CUT IT — RUN PROTOCOL",
+          "READING WON'T CUT IT: RUN PROTOCOL",
           () => {
             audio.stamp();
             onPhaseCleared(1);
@@ -211,12 +211,12 @@ export default function Mission07Incident({ reduced, audio, onPhaseCleared, onCo
 
       {phase === 2 &&
         stageBlock(
-          "Phase 2 — Pick the check that neither chat can fake.",
+          "Phase 2: Pick the check that neither chat can fake.",
           PROTOCOLS,
           proto,
           protoChoice,
           pick(setProto, PROTOCOLS, proto),
-          "HIJACK CONFIRMED — RESCUE LEO",
+          "HIJACK CONFIRMED: RESCUE LEO",
           () => {
             audio.stamp();
             onPhaseCleared(2);
@@ -226,7 +226,7 @@ export default function Mission07Incident({ reduced, audio, onPhaseCleared, onCo
 
       {phase === 3 && !done &&
         stageBlock(
-          "Phase 3 — CHAT A is MIMIC, mid-con on half the class. Finish this cleanly.",
+          "Phase 3: CHAT A is MIMIC, mid-trick on half the class. Finish this cleanly.",
           RESCUES,
           rescue,
           rescueChoice,
@@ -242,7 +242,7 @@ export default function Mission07Incident({ reduced, audio, onPhaseCleared, onCo
 
       {phase === 3 && done && (
         <p style={{ fontFamily: MONO, fontSize: 12, letterSpacing: "0.06em", color: T.confirmedGreen, margin: 0 }}>
-          FACE RETURNED — ACCOUNT RECOVERED. MIMIC EXITS WEARING NOBODY.
+          FACE RETURNED: ACCOUNT RECOVERED. MIMIC EXITS WEARING NOBODY.
         </p>
       )}
     </div>
