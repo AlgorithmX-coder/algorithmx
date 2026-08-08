@@ -1,18 +1,20 @@
 "use client";
 
 /**
- * /explorers — Cyber Explorers entry: the case files.
- * Mission-select with the energy of a game menu, in Signal Room
- * grammar: the living ops floor, big case dossiers, actor teases.
+ * /explorers — Cyber Explorers entry: the MISSION MAP.
+ * A spy-themed journey down through the 4 clearance blocks. Each case is
+ * a node on the path, fronted by its villain and cold-open art; a guided
+ * "next" marker and a clearance HUD show the kid exactly where they are
+ * and what to play next. Every case stays open to play in any order.
  * The original static PoC lives on at /explorers/poc.
  */
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import MissionRuntime from "./engine/MissionRuntime";
 import { EngineStyles, Eyebrow, Resolve, RoomBackdrop, useReducedMotion } from "./engine/primitives";
-import { BODY, MONO, T, BAND_BY_CLASSIFICATION } from "./engine/tokens";
-import type { MissionManifest } from "./engine/types";
-import { checkpointStorageKey } from "./engine/types";
+import { BODY, MONO, T } from "./engine/tokens";
+import type { AwardEvent, MissionManifest } from "./engine/types";
+import { checkpointStorageKey, xpForEvent } from "./engine/types";
 import { mission01 } from "./missions/mission01";
 import { mission02 } from "./missions/mission02";
 import { mission03 } from "./missions/mission03";
@@ -34,47 +36,42 @@ import { mission18 } from "./missions/mission18";
 import { mission19 } from "./missions/mission19";
 import { mission20 } from "./missions/mission20";
 
-const CASES: { m: MissionManifest; tease: string; minutes: string }[] = [
-  { m: mission01, tease: "A student's game account gets a 24-hour death threat. Something about it reads wrong.", minutes: "45–60 MIN" },
-  { m: mission02, tease: "Five hundred free skins, today only, everywhere at once. Nobody gives away five hundred of anything.", minutes: "45–60 MIN" },
-  { m: mission03, tease: "Three hundred password guesses a second, aimed at your school. No tricks, just math. Beat it.", minutes: "45–60 MIN" },
-  { m: mission04, tease: "Somebody built a file on a student, out of her own posts. It's for sale tonight.", minutes: "45–60 MIN" },
-  { m: mission05, tease: "Every channel floods at once, and one message in the storm knows your name.", minutes: "45–60 MIN" },
-  { m: mission06, tease: "Six levers move every scam on earth. SIREN knows them all. Now you will too.", minutes: "45–60 MIN" },
-  { m: mission07, tease: "Your best friend's account asks for a favor. The account is real. The friend might not be.", minutes: "45–60 MIN" },
-  { m: mission08, tease: "A new online friend is funny, kind, and perfect. Nobody wrote a single word of it.", minutes: "45–60 MIN" },
-  { m: mission09, tease: "An account has been giving away gifts for weeks and asking for nothing. Until today.", minutes: "45–60 MIN" },
-  { m: mission10, tease: "The phone rings in your mum's exact voice. She needs a code, fast. She isn't your mum.", minutes: "45–60 MIN" },
-  { m: mission11, tease: "Forty accounts, one brain. SKELETON KEY is counting on that math. Build the machine that breaks it.", minutes: "45–60 MIN" },
-  { m: mission12, tease: "Someone at the café is reading every message in the room. Learn to make yours unreadable.", minutes: "45–60 MIN" },
-  { m: mission13, tease: "Your lock is unbreakable now, so the locksmith stopped picking it. He found a side door.", minutes: "45–60 MIN" },
-  { m: mission14, tease: "Five downloads wait on a tablet. Four are gifts. One is a horse full of soldiers.", minutes: "45–60 MIN" },
-  { m: mission15, tease: "Five login pages, pixel-identical. Four are mirrors. Your eyes are useless. Your tools aren't.", minutes: "45–60 MIN" },
-  { m: mission16, tease: "There's a file about you, and it's for sale. You can't steal it back. You can make it worthless.", minutes: "45–60 MIN" },
-  { m: mission17, tease: "A screenshot nobody took is tearing through the school chats. Trace it, break it, still it.", minutes: "45–60 MIN" },
-  { m: mission18, tease: "You're good now. Too good. Someone from the other side just sent you an offer. Choose.", minutes: "45–60 MIN" },
-  { m: mission19, tease: "Every actor, every channel, all at once, aimed at your whole school. Hold the line.", minutes: "45–60 MIN" },
-  { m: mission20, tease: "Five breadcrumbs. One coordinator. Everything you've learned, one final time. Finish it.", minutes: "45–60 MIN" },
+const CASES: MissionManifest[] = [
+  mission01, mission02, mission03, mission04, mission05,
+  mission06, mission07, mission08, mission09, mission10,
+  mission11, mission12, mission13, mission14, mission15,
+  mission16, mission17, mission18, mission19, mission20,
 ];
+
+const BLOCKS = [
+  { n: 1, name: "SIGNALS", classification: "CONFIDENTIAL", color: T.bandConfidential, blurb: "Learn to spot the scam." },
+  { n: 2, name: "THE HUMAN FACTOR", classification: "SECRET", color: T.bandSecret, blurb: "The tricks aimed at people." },
+  { n: 3, name: "SYSTEMS", classification: "TOP SECRET", color: T.bandTopSecret, blurb: "How the tech really works." },
+  { n: 4, name: "THE LONG GAME", classification: "ULTRA", color: T.bandUltra, blurb: "The big picture, and the mastermind." },
+] as const;
 
 export default function ExplorersPage() {
   const reduced = useReducedMotion();
   const [active, setActive] = useState<MissionManifest | null>(null);
   const [status, setStatus] = useState<Record<string, string>>({});
+  const [totalXp, setTotalXp] = useState(0);
   const [devBoss, setDevBoss] = useState(false);
 
   useEffect(() => {
     const s: Record<string, string> = {};
-    for (const { m } of CASES) {
+    let xp = 0;
+    for (const m of CASES) {
       try {
         const raw = localStorage.getItem(checkpointStorageKey(m.id));
         if (raw) {
-          const cp = JSON.parse(raw) as { pos?: { beat?: string } };
+          const cp = JSON.parse(raw) as { pos?: { beat?: string }; events?: AwardEvent[] };
           s[m.id] = cp.pos?.beat === "closed" ? "CLOSED" : "IN PROGRESS";
+          for (const e of cp.events ?? []) xp += xpForEvent(e);
         }
       } catch {}
     }
     setStatus(s);
+    setTotalXp(xp);
   }, []);
 
   // Dev-only deep link: /explorers?case=16 opens that case; add &at=boss to jump
@@ -85,95 +82,248 @@ export default function ExplorersPage() {
     const c = p.get("case");
     if (!c) return;
     const id = `explorers-m${c.padStart(2, "0")}`;
-    const found = CASES.find(({ m }) => m.id === id);
+    const found = CASES.find((m) => m.id === id);
     if (found) {
-      setActive(found.m);
+      setActive(found);
       setDevBoss(p.get("at") === "boss");
     }
   }, []);
 
+  const closedCount = useMemo(() => CASES.filter((m) => status[m.id] === "CLOSED").length, [status]);
+  const nextCase = useMemo(() => CASES.find((m) => status[m.id] !== "CLOSED") ?? null, [status]);
+
+  const blockStats = BLOCKS.map((b) => {
+    const cases = CASES.filter((m) => m.block === b.n);
+    const closed = cases.filter((m) => status[m.id] === "CLOSED").length;
+    return { ...b, cases, closed, total: cases.length, done: closed > 0 && closed === cases.length };
+  });
+  const currentBlock = nextCase?.block ?? 4;
+
   if (active) return <MissionRuntime manifest={active} devStartBeat={devBoss ? "incident" : undefined} />;
+
+  const continueLabel = !nextCase
+    ? "ALL CASES CLOSED"
+    : status[nextCase.id] === "IN PROGRESS"
+      ? `CONTINUE: ${nextCase.caseNumber}`
+      : closedCount === 0
+        ? `START: ${nextCase.caseNumber}`
+        : `NEXT: ${nextCase.caseNumber}`;
 
   return (
     <main style={{ minHeight: "100vh", background: T.inkBlack, color: T.textPrimary, fontFamily: BODY, position: "relative", overflow: "hidden" }}>
       <EngineStyles />
       <RoomBackdrop reduced={reduced} tone={T.arcCyan} />
 
-      <div style={{ position: "relative", zIndex: 1, maxWidth: 860, margin: "0 auto", padding: "68px 24px 80px" }}>
+      <div style={{ position: "relative", zIndex: 1, maxWidth: 980, margin: "0 auto", padding: "56px 20px 90px" }}>
+        {/* ---------------------------------------------------------- HERO / HUD */}
         <div className="sr-scene">
-          <Eyebrow text="ARC secure net: active case files" color={T.arcCyan} />
-          <h1 style={{ fontFamily: MONO, fontSize: "clamp(32px, 6vw, 54px)", fontWeight: 600, margin: "16px 0 10px", textShadow: `0 0 40px ${T.arcCyan}33` }}>
+          <Eyebrow text="ARC secure net: mission map" color={T.arcCyan} />
+          <h1 style={{ fontFamily: MONO, fontSize: "clamp(30px, 6vw, 52px)", fontWeight: 600, margin: "14px 0 6px", textShadow: `0 0 40px ${T.arcCyan}33`, lineHeight: 1.05 }}>
             <Resolve text="Pick your case," reduced={reduced} />
             <br />
             <span style={{ color: T.arcCyan }}>
               <Resolve text="Operative." reduced={reduced} delay={350} />
             </span>
           </h1>
-          <p style={{ fontSize: 16.5, lineHeight: 1.65, color: T.textSecondary, margin: "0 0 34px", maxWidth: 540 }}>
-            {CASES.length} cases are waiting. Progress saves on every step. Walk away any time, resume where you stood.
-          </p>
 
-          <div style={{ display: "grid", gap: 18 }}>
-            {CASES.map(({ m, tease, minutes }, idx) => (
-              <button
-                key={m.id}
-                onClick={() => setActive(m)}
-                className="sr-btn sr-choice"
+          {/* clearance ladder + stats */}
+          <div style={{ display: "flex", flexWrap: "wrap", gap: 16, alignItems: "center", margin: "18px 0 10px" }}>
+            <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
+              {BLOCKS.map((b, i) => {
+                const bs = blockStats[i];
+                const isCurrent = b.n === currentBlock;
+                return (
+                  <span
+                    key={b.n}
+                    title={`Block ${b.n}: ${b.name}`}
+                    style={{
+                      fontFamily: MONO,
+                      fontSize: 10,
+                      letterSpacing: "0.08em",
+                      padding: "5px 9px",
+                      borderRadius: 3,
+                      border: `1px solid ${isCurrent ? b.color : bs.done ? `${b.color}88` : T.hairline}`,
+                      color: bs.done ? b.color : isCurrent ? b.color : T.textDisabled,
+                      background: isCurrent ? `${b.color}1A` : "transparent",
+                      boxShadow: isCurrent ? `0 0 14px ${b.color}44` : "none",
+                    }}
+                  >
+                    {bs.done ? "■" : "□"} {b.classification}
+                  </span>
+                );
+              })}
+            </div>
+          </div>
+
+          <div style={{ display: "flex", flexWrap: "wrap", gap: 20, alignItems: "center", marginTop: 6 }}>
+            <button
+              onClick={() => nextCase && setActive(nextCase)}
+              disabled={!nextCase}
+              className="sr-btn"
+              style={{
+                fontFamily: MONO,
+                fontSize: 14,
+                fontWeight: 600,
+                letterSpacing: "0.06em",
+                color: T.inkBlack,
+                background: T.actionAmber,
+                border: "none",
+                borderRadius: 4,
+                padding: "13px 22px",
+                cursor: nextCase ? "pointer" : "default",
+                boxShadow: `0 0 22px ${T.actionAmber}55`,
+                opacity: nextCase ? 1 : 0.6,
+              }}
+            >
+              {nextCase ? "▶ " : "✓ "}
+              {continueLabel}
+            </button>
+            <div style={{ display: "flex", gap: 22, fontFamily: MONO, fontSize: 12, color: T.textSecondary }}>
+              <span>
+                CASES&nbsp;<span style={{ color: T.confirmedGreen, fontSize: 17, fontWeight: 600 }}>{closedCount}</span>
+                <span style={{ color: T.textDisabled }}> / {CASES.length}</span>
+              </span>
+              <span>
+                XP&nbsp;<span style={{ color: T.clearanceBrass, fontSize: 17, fontWeight: 600 }}>{totalXp}</span>
+              </span>
+            </div>
+          </div>
+        </div>
+
+        {/* ---------------------------------------------------------- THE MAP */}
+        <div style={{ position: "relative", marginTop: 46 }}>
+          {/* the journey spine */}
+          <div
+            aria-hidden
+            style={{
+              position: "absolute",
+              left: 21,
+              top: 24,
+              bottom: 60,
+              width: 2,
+              background: `linear-gradient(${T.bandConfidential}, ${T.bandSecret}, ${T.bandTopSecret}, ${T.bandUltra})`,
+              opacity: 0.45,
+            }}
+          />
+
+          {blockStats.map((b) => (
+            <section key={b.n} className="sr-scene" style={{ position: "relative", paddingLeft: 56, marginBottom: 40 }}>
+              {/* station marker on the spine */}
+              <div
                 style={{
-                  textAlign: "left",
-                  background: `${T.panel}E6`,
-                  border: `1px solid ${T.hairline}`,
-                  borderRadius: 4,
-                  padding: 0,
-                  overflow: "hidden",
-                  cursor: "pointer",
-                  position: "relative",
+                  position: "absolute",
+                  left: 0,
+                  top: 0,
+                  width: 44,
+                  height: 44,
+                  borderRadius: "50%",
+                  border: `2px solid ${b.color}`,
+                  background: T.inkBlack,
+                  display: "grid",
+                  placeItems: "center",
+                  boxShadow: `0 0 16px ${b.color}66`,
+                  fontFamily: MONO,
+                  fontSize: 18,
+                  fontWeight: 600,
+                  color: b.color,
+                  zIndex: 1,
                 }}
               >
-                {/* giant case number watermark */}
-                <span aria-hidden style={{ position: "absolute", right: 14, bottom: -26, fontFamily: MONO, fontSize: 120, fontWeight: 600, color: `${T.arcCyan}0D`, pointerEvents: "none" }}>
-                  {String(idx + 1).padStart(2, "0")}
-                </span>
-                <div style={{ background: BAND_BY_CLASSIFICATION[m.classification], color: T.inkBlack, fontFamily: MONO, fontWeight: 600, fontSize: 10.5, letterSpacing: "0.24em", padding: "5px 16px", display: "flex", justifyContent: "space-between" }}>
-                  <span>{m.classification}</span>
-                  <span>{minutes}</span>
-                </div>
-                <div style={{ padding: "20px 22px 22px", position: "relative" }}>
-                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", flexWrap: "wrap", gap: 8 }}>
-                    <span style={{ fontFamily: MONO, fontSize: 11.5, letterSpacing: "0.08em", color: T.textSecondary }}>
-                      {m.caseNumber} <span style={{ color: T.textDisabled }}>//</span> SUSPECTED ACTOR:{" "}
-                      <span style={{ color: T.threatRed }}>{m.actor.codename}</span>
-                    </span>
-                    {status[m.id] && (
-                      <span style={{ fontFamily: MONO, fontSize: 10, letterSpacing: "0.1em", color: status[m.id] === "CLOSED" ? T.clearanceBrass : T.confirmedGreen, border: `1px solid ${status[m.id] === "CLOSED" ? T.clearanceBrass : T.confirmedGreen}66`, borderRadius: 2, padding: "3px 8px" }}>
-                        {status[m.id]}
-                      </span>
-                    )}
-                  </div>
-                  <div style={{ fontFamily: MONO, fontSize: "clamp(21px, 3.4vw, 28px)", fontWeight: 600, margin: "10px 0 8px" }}>
-                    {m.title}
-                  </div>
-                  <p style={{ fontSize: 15, lineHeight: 1.6, color: T.textSecondary, margin: "0 0 16px", maxWidth: 560 }}>{tease}</p>
-                  <span style={{ display: "inline-block", fontFamily: MONO, fontSize: 13, fontWeight: 600, letterSpacing: "0.06em", color: T.inkBlack, background: T.actionAmber, borderRadius: 3, padding: "10px 18px", boxShadow: `0 0 18px ${T.actionAmber}40` }}>
-                    {status[m.id] === "IN PROGRESS" ? "RESUME CASE →" : status[m.id] === "CLOSED" ? "REOPEN CASE →" : "OPEN CASE →"}
-                  </span>
-                </div>
-              </button>
-            ))}
-
-            {/* season complete — all 20 cases are live */}
-            <div style={{ background: `${T.clearanceBrass}0F`, border: `1px solid ${T.clearanceBrass}55`, borderRadius: 4, padding: "18px 22px", display: "flex", justifyContent: "space-between", alignItems: "center", gap: 12, flexWrap: "wrap" }}>
-              <div>
-                <span style={{ fontFamily: MONO, fontSize: 11.5, letterSpacing: "0.08em", color: T.clearanceBrass }}>
-                  SEASON ONE // 20 CASES OPEN
-                </span>
-                <div style={{ fontFamily: MONO, fontSize: 17, fontWeight: 600, color: T.textPrimary, marginTop: 6 }}>
-                  Close every case to reach ULTRA clearance
-                </div>
+                {b.n}
               </div>
-              <span style={{ fontFamily: MONO, fontSize: 10.5, letterSpacing: "0.1em", color: T.clearanceBrass, border: `1px solid ${T.clearanceBrass}66`, borderRadius: 2, padding: "6px 10px" }}>
-                FULL DOSSIER
-              </span>
+
+              {/* block header */}
+              <div style={{ display: "flex", flexWrap: "wrap", alignItems: "baseline", gap: "4px 12px", minHeight: 44 }}>
+                <span style={{ fontFamily: MONO, fontSize: "clamp(17px, 3vw, 22px)", fontWeight: 600, color: T.textPrimary }}>
+                  BLOCK {b.n}: {b.name}
+                </span>
+                <span style={{ fontFamily: MONO, fontSize: 10, letterSpacing: "0.16em", color: T.inkBlack, background: b.color, borderRadius: 3, padding: "3px 8px" }}>
+                  {b.classification}
+                </span>
+                <span style={{ fontFamily: MONO, fontSize: 11, color: b.done ? T.confirmedGreen : T.textSecondary, marginLeft: "auto" }}>
+                  {b.closed}/{b.total} CLOSED
+                </span>
+              </div>
+              <p style={{ margin: "4px 0 0", fontSize: 13.5, color: T.textSecondary }}>{b.blurb}</p>
+
+              {/* case nodes */}
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(158px, 1fr))", gap: 12, marginTop: 14 }}>
+                {b.cases.map((m) => {
+                  const st = status[m.id];
+                  const isClosed = st === "CLOSED";
+                  const isNext = nextCase?.id === m.id;
+                  const ring = isNext ? T.actionAmber : isClosed ? T.clearanceBrass : b.color;
+                  return (
+                    <button
+                      key={m.id}
+                      onClick={() => setActive(m)}
+                      className="sr-btn"
+                      aria-label={`${m.caseNumber}: ${m.title}. Villain ${m.actor.codename}.${isClosed ? " Closed." : isNext ? " Play next." : ""}`}
+                      style={{
+                        position: "relative",
+                        textAlign: "left",
+                        border: `1.5px solid ${isNext ? T.actionAmber : `${b.color}66`}`,
+                        borderRadius: 8,
+                        overflow: "hidden",
+                        padding: 0,
+                        cursor: "pointer",
+                        background: T.inkBlack,
+                        minHeight: 168,
+                        boxShadow: isNext ? `0 0 24px ${T.actionAmber}55` : "none",
+                      }}
+                    >
+                      {/* cold-open art */}
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={m.scene}
+                        alt=""
+                        loading="lazy"
+                        style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", opacity: isClosed ? 0.16 : 0.3 }}
+                      />
+                      <div aria-hidden style={{ position: "absolute", inset: 0, background: `linear-gradient(180deg, ${T.inkBlack}55 0%, ${T.inkBlack}dd 62%, ${T.inkBlack} 100%)` }} />
+
+                      <div style={{ position: "relative", padding: "11px 12px 13px", height: "100%", display: "flex", flexDirection: "column" }}>
+                        {/* top row: case number + status */}
+                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+                          <span style={{ fontFamily: MONO, fontSize: 11, letterSpacing: "0.08em", color: T.textSecondary }}>{m.caseNumber}</span>
+                          {isClosed ? (
+                            <span style={{ fontFamily: MONO, fontSize: 9.5, letterSpacing: "0.08em", color: T.clearanceBrass, border: `1px solid ${T.clearanceBrass}77`, borderRadius: 2, padding: "2px 6px" }}>■ CLOSED</span>
+                          ) : isNext ? (
+                            <span className="sr-blink" style={{ fontFamily: MONO, fontSize: 9.5, letterSpacing: "0.08em", color: T.inkBlack, background: T.actionAmber, borderRadius: 2, padding: "2px 6px", fontWeight: 600 }}>▶ {status[m.id] === "IN PROGRESS" ? "RESUME" : "PLAY"}</span>
+                          ) : st === "IN PROGRESS" ? (
+                            <span style={{ fontFamily: MONO, fontSize: 9.5, letterSpacing: "0.08em", color: T.confirmedGreen, border: `1px solid ${T.confirmedGreen}77`, borderRadius: 2, padding: "2px 6px" }}>◐ STARTED</span>
+                          ) : null}
+                        </div>
+
+                        {/* villain avatar */}
+                        <div style={{ margin: "10px 0 8px" }}>
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img
+                            src={m.actor.portrait}
+                            alt={m.actor.codename}
+                            loading="lazy"
+                            style={{ width: 52, height: 52, borderRadius: "50%", objectFit: "cover", border: `2px solid ${ring}`, boxShadow: `0 0 12px ${ring}66`, background: T.panel }}
+                          />
+                        </div>
+
+                        {/* title + villain */}
+                        <div style={{ fontFamily: MONO, fontSize: 14.5, fontWeight: 600, lineHeight: 1.25, color: T.textPrimary }}>{m.title}</div>
+                        <div style={{ marginTop: "auto", paddingTop: 8, fontFamily: MONO, fontSize: 10, letterSpacing: "0.06em", color: T.threatRed }}>
+                          vs {m.actor.codename}
+                        </div>
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
+            </section>
+          ))}
+
+          {/* end-of-journey marker */}
+          <div style={{ position: "relative", paddingLeft: 56 }}>
+            <div style={{ position: "absolute", left: 8, top: 2, width: 28, height: 28, borderRadius: "50%", border: `2px solid ${T.clearanceBrass}`, background: T.inkBlack, display: "grid", placeItems: "center", color: T.clearanceBrass, fontSize: 13, boxShadow: `0 0 16px ${T.clearanceBrass}66` }}>★</div>
+            <div style={{ fontFamily: MONO, fontSize: 12.5, letterSpacing: "0.08em", color: T.clearanceBrass, paddingTop: 4 }}>
+              CLOSE EVERY CASE TO REACH ULTRA CLEARANCE
             </div>
           </div>
         </div>
