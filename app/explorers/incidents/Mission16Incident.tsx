@@ -12,9 +12,10 @@
  */
 
 import { useState } from "react";
-import { AmberButton, Bubble, Eyebrow, GhostButton } from "../engine/primitives";
+import { AmberButton, Eyebrow, GhostButton } from "../engine/primitives";
 import { MONO, T } from "../engine/tokens";
 import type { IncidentProps } from "../engine/types";
+import { BossIntro, PhasePips } from "./BossChrome";
 
 /* Phase 1: tap the one thing buyers actually pay for. */
 const LOT = [
@@ -97,23 +98,13 @@ export default function Mission16Incident({ reduced, audio, onPhaseCleared, onCo
   return (
     <div>
       {phase === 1 && (
-        <div style={{ marginBottom: 18, maxWidth: 560 }}>
-          <div style={{ fontFamily: MONO, fontSize: 10, letterSpacing: "0.14em", color: T.threatRed, marginBottom: 8 }}>
-            INTERCEPTED: PACKRAT, ON THE WIRE
-          </div>
-          <Bubble who="villain">
-            <em>&ldquo;My masterpiece file, little archivist. Years in the collecting. Bid generously. Oh. Why is it… crumbling?&rdquo;</em>
-          </Bubble>
-        </div>
+        <BossIntro
+          codename="PACKRAT"
+          taunt="My masterpiece file, little archivist. Years in the collecting. Bid generously. Oh. Why is it… crumbling?"
+        />
       )}
 
-      <div style={{ display: "flex", gap: 8, marginBottom: 16 }}>
-        {[1, 2, 3].map((p) => (
-          <span key={p} style={{ fontFamily: MONO, fontSize: 10, letterSpacing: "0.08em", padding: "3px 8px", borderRadius: 2, border: `1px solid ${p === phase ? T.threatRed : T.hairline}`, color: p === phase ? T.threatRed : p < phase ? T.confirmedGreen : T.textDisabled }}>
-            {p < phase ? "■" : "□"} PHASE {p}
-          </span>
-        ))}
-      </div>
+      <PhasePips phase={phase} labels={["READ THE LOT", "SEVER THE LINKS", "THE GAVEL"]} />
 
       {/* ---------------------------------------------- PHASE 1: read the lot */}
       {phase === 1 && (
