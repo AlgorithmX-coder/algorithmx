@@ -9,8 +9,16 @@ type PostBody = {
   week?: number;
   screen?: number;
   stars?: number;
+  /** Best total XP for the week (max-merged server-side). */
+  xp?: number;
+  /** Mid-week resume pointer (Explorers missions); last write wins. */
+  checkpoint?: unknown;
   completed?: boolean;
 };
+
+/** Resume pointers are small position payloads — reject anything that
+ *  could bloat a Progress row (the M02 worst case serialises ~4KB). */
+const CHECKPOINT_MAX_BYTES = 32_000;
 
 const ERROR_STATUS: Record<string, number> = {
   child_not_found: 403,
@@ -41,7 +49,8 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Invalid JSON body" }, { status: 400 });
   }
 
-  const { childProfileId, productSlug, week, screen, stars, completed } = body;
+  const { childProfileId, productSlug, week, screen, stars, xp, checkpoint, completed } =
+    body;
 
   if (
     typeof childProfileId !== "string" ||
@@ -59,6 +68,37 @@ export async function POST(request: Request) {
     );
   }
 
+  if (xp !== undefined && (typeof xp !== "number" || !Number.isFinite(xp))) {
+    return NextResponse.json(
+      { error: "xp must be a finite number" },
+      { status: 400 },
+    );
+  }
+
+  if (checkpoint !== undefined && checkpoint !== null) {
+    if (typeof checkpoint !== "object" || Array.isArray(checkpoint)) {
+      return NextResponse.json(
+        { error: "checkpoint must be an object" },
+        { status: 400 },
+      );
+    }
+    let serialised: string;
+    try {
+      serialised = JSON.stringify(checkpoint);
+    } catch {
+      return NextResponse.json(
+        { error: "checkpoint must be JSON-serialisable" },
+        { status: 400 },
+      );
+    }
+    if (serialised.length > CHECKPOINT_MAX_BYTES) {
+      return NextResponse.json(
+        { error: "checkpoint too large" },
+        { status: 400 },
+      );
+    }
+  }
+
   const result = await upsertProgress({
     userId: session.user.id,
     childProfileId,
@@ -66,6 +106,8 @@ export async function POST(request: Request) {
     week,
     screen,
     stars,
+    xp,
+    checkpoint,
     completed,
   });
 

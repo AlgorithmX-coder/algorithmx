@@ -253,6 +253,12 @@ model Progress {
   /// stay derived from `completedAt`; XP is a quantity, so it is the
   /// one reward that must be stored rather than derived.
   xp              Int       @default(0)
+  /// Mid-week resume pointer for beat-based courses (Cyber Explorers
+  /// missions): the engine's MissionCheckpoint payload (position +
+  /// award-event ledger). Unlike screen/stars/xp it is a pointer, not
+  /// a score — last write wins, and it is cleared when the week
+  /// completes. Null for courses that don't checkpoint (Heroes).
+  checkpoint      Json?
   completedAt     DateTime?
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt
