@@ -173,13 +173,13 @@ function MissionMap({ manifest, pos, stampNew }: { manifest: MissionManifest; po
 
 /* ============================================================== runtime */
 
-export default function MissionRuntime({ manifest }: { manifest: MissionManifest }) {
+export default function MissionRuntime({ manifest, devStartBeat }: { manifest: MissionManifest; devStartBeat?: BeatPos["beat"] }) {
   const reduced = useReducedMotion();
   const audio = useSignalAudio();
   const storageKey = checkpointStorageKey(manifest.id);
 
-  const [pos, setPos] = useState<BeatPos>({ beat: "transmission" });
-  const [intro, setIntro] = useState(true);
+  const [pos, setPos] = useState<BeatPos>(devStartBeat === "incident" ? { beat: "incident", incidentPhase: 1 } : { beat: "transmission" });
+  const [intro, setIntro] = useState(!devStartBeat);
   /** Map moment between steps: which row was just stamped. */
   const [mapGate, setMapGate] = useState<number | null>(null);
   const [events, setEvents] = useState<AwardEvent[]>([]);
@@ -200,6 +200,10 @@ export default function MissionRuntime({ manifest }: { manifest: MissionManifest
   }, [xp, hydrated, resumeOffer]);
 
   useEffect(() => {
+    if (devStartBeat) {
+      setHydrated(true); // dev boss-jump: skip the resume offer, don't touch saved progress
+      return;
+    }
     try {
       const raw = localStorage.getItem(storageKey);
       if (raw) {
@@ -208,14 +212,14 @@ export default function MissionRuntime({ manifest }: { manifest: MissionManifest
       }
     } catch {}
     setHydrated(true);
-  }, [storageKey, manifest.id]);
+  }, [storageKey, manifest.id, devStartBeat]);
 
   useEffect(() => {
-    if (!hydrated || resumeOffer) return;
+    if (!hydrated || resumeOffer || devStartBeat) return;
     try {
       localStorage.setItem(storageKey, JSON.stringify({ missionId: manifest.id, pos, events } satisfies MissionCheckpoint));
     } catch {}
-  }, [pos, events, hydrated, resumeOffer, storageKey, manifest.id]);
+  }, [pos, events, hydrated, resumeOffer, storageKey, manifest.id, devStartBeat]);
 
   const emit = useCallback((e: AwardEvent) => {
     const key = eventKey(e);

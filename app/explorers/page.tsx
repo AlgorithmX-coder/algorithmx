@@ -61,6 +61,7 @@ export default function ExplorersPage() {
   const reduced = useReducedMotion();
   const [active, setActive] = useState<MissionManifest | null>(null);
   const [status, setStatus] = useState<Record<string, string>>({});
+  const [devBoss, setDevBoss] = useState(false);
 
   useEffect(() => {
     const s: Record<string, string> = {};
@@ -76,7 +77,22 @@ export default function ExplorersPage() {
     setStatus(s);
   }, []);
 
-  if (active) return <MissionRuntime manifest={active} />;
+  // Dev-only deep link: /explorers?case=16 opens that case; add &at=boss to jump
+  // straight to the boss for review. Disabled in production builds.
+  useEffect(() => {
+    if (process.env.NODE_ENV === "production") return;
+    const p = new URLSearchParams(window.location.search);
+    const c = p.get("case");
+    if (!c) return;
+    const id = `explorers-m${c.padStart(2, "0")}`;
+    const found = CASES.find(({ m }) => m.id === id);
+    if (found) {
+      setActive(found.m);
+      setDevBoss(p.get("at") === "boss");
+    }
+  }, []);
+
+  if (active) return <MissionRuntime manifest={active} devStartBeat={devBoss ? "incident" : undefined} />;
 
   return (
     <main style={{ minHeight: "100vh", background: T.inkBlack, color: T.textPrimary, fontFamily: BODY, position: "relative", overflow: "hidden" }}>
