@@ -38,6 +38,7 @@ import type {
   MissionManifest,
 } from "./types";
 import { checkpointStorageKey, xpForEvent } from "./types";
+import { BLOCK_FILMS, BlockFilm, filmId, filmSeen, markFilmSeen } from "./BlockFilm";
 import Inspect from "../mechanics/Inspect";
 import Decide from "../mechanics/Decide";
 import Profile from "../mechanics/Profile";
@@ -186,6 +187,7 @@ export default function MissionRuntime({ manifest }: { manifest: MissionManifest
   const [ledgerOpen, setLedgerOpen] = useState(false);
   const [hydrated, setHydrated] = useState(false);
   const [xpPop, setXpPop] = useState<{ amount: number; key: number } | null>(null);
+  const [filmToPlay, setFilmToPlay] = useState<{ kind: "intro" | "outro"; id: string } | null>(null);
   const seen = useRef<Set<string>>(new Set());
   const prevXp = useRef(0);
 
@@ -221,6 +223,38 @@ export default function MissionRuntime({ manifest }: { manifest: MissionManifest
     seen.current.add(key);
     setEvents((prev) => [...prev, e]);
   }, []);
+
+  const finishFilm = useCallback(() => {
+    setFilmToPlay((f) => {
+      if (f) markFilmSeen(f.id);
+      return null;
+    });
+  }, []);
+
+  /* Block INTRO film: the first time a kid opens a block's opening case. */
+  useEffect(() => {
+    if (!hydrated || resumeOffer || filmToPlay) return;
+    if (pos.beat !== "transmission") return; // fresh start only, never mid-mission
+    const cfg = BLOCK_FILMS[manifest.block];
+    if (!cfg || cfg.openerId !== manifest.id || !cfg.intro) return;
+    const id = filmId(manifest.block, "intro");
+    if (filmSeen(id)) return;
+    stopWren();
+    setFilmToPlay({ kind: "intro", id });
+    // pos.beat read for the fresh-start guard; effect keys off hydration/resume
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [hydrated, resumeOffer, manifest.block, manifest.id]);
+
+  /* Block OUTRO film: when a kid closes the block's final case. */
+  useEffect(() => {
+    if (pos.beat !== "closed" || resumeOffer || filmToPlay) return;
+    const cfg = BLOCK_FILMS[manifest.block];
+    if (!cfg || cfg.closerId !== manifest.id || !cfg.outro) return;
+    const id = filmId(manifest.block, "outro");
+    if (filmSeen(id)) return;
+    stopWren();
+    setFilmToPlay({ kind: "outro", id });
+  }, [pos.beat, resumeOffer, filmToPlay, manifest.block, manifest.id]);
 
   /** Advance; crossing a step boundary opens a MAP MOMENT. */
   const advance = useCallback(() => {
@@ -282,14 +316,14 @@ export default function MissionRuntime({ manifest }: { manifest: MissionManifest
   };
   const atStart = intro && (pos.beat === "transmission" || pos.beat === "briefing");
   useEffect(() => {
-    if (resumeOffer) {
+    if (resumeOffer || filmToPlay) {
       stopWren();
       return;
     }
     const clip = atStart ? manifest.voice?.transmission : pos.beat === "debrief" ? manifest.voice?.debrief : undefined;
     if (clip) playWren(clip, voiceOn);
     else stopWren();
-  }, [atStart, pos.beat, resumeOffer, voiceOn, manifest.voice]);
+  }, [atStart, pos.beat, resumeOffer, filmToPlay, voiceOn, manifest.voice]);
   useEffect(() => () => stopWren(), []);
 
   const tone = mapGate !== null ? T.confirmedGreen : toneFor(pos);
@@ -299,6 +333,23 @@ export default function MissionRuntime({ manifest }: { manifest: MissionManifest
     <main style={{ minHeight: "100vh", background: T.inkBlack, color: T.textPrimary, fontFamily: BODY, position: "relative", overflow: "hidden" }}>
       <EngineStyles />
       <RoomBackdrop reduced={reduced} tone={tone} />
+
+      {filmToPlay &&
+        (() => {
+          const cfg = BLOCK_FILMS[manifest.block];
+          const film = filmToPlay.kind === "intro" ? cfg?.intro : cfg?.outro;
+          if (!film) return null;
+          return (
+            <BlockFilm
+              film={film}
+              label={cfg.label}
+              kind={filmToPlay.kind}
+              block={manifest.block}
+              reduced={reduced}
+              onDone={finishFilm}
+            />
+          );
+        })()}
 
       {/* HUD — ARC chrome */}
       <div style={{ position: "relative", zIndex: 2, borderBottom: `1px solid ${T.hairline}`, background: `${T.panel}D9`, backdropFilter: "blur(8px)" }}>
