@@ -27,13 +27,13 @@ interface Node {
 /* Three funnels (school chat / stream chat / DMs), all draining into
    one collection site. The hub sits visually at the end of every lane. */
 const NODES: Node[] = [
-  { id: "a1", label: "School group chat: “SKINSTORM 500 — free skins drop!”", lane: 0, step: 0 },
+  { id: "a1", label: "School group chat: “SKINSTORM 500: free skins drop!”", lane: 0, step: 0 },
   { id: "a2", label: "DM follow-up: “you're on the winner list!”", lane: 0, step: 1 },
   { id: "b1", label: "Stream chat spam: “SKINSTORM giveaway LIVE”", lane: 1, step: 0 },
   { id: "b2", label: "“Mod” DM: “claim before midnight”", lane: 1, step: 1 },
   { id: "c1", label: "Group text: “my cousin won already lol”", lane: 2, step: 0 },
   { id: "c2", label: "Reminder DM: “spots almost gone”", lane: 2, step: 1 },
-  { id: "hub", label: "skinstorm-event.net — “CLAIM FORM” (asks username, password, phone)", lane: 1, step: 2, isHub: true },
+  { id: "hub", label: "skinstorm-event.net: “CLAIM FORM” (asks username, password, phone)", lane: 1, step: 2, isHub: true },
 ];
 
 const CUTS = [
@@ -42,21 +42,21 @@ const CUTS = [
     label: "Report the school-chat post and move on",
     correct: false,
     outcome:
-      "One funnel down, two still running — and SIREN posts a new one in an hour. You're playing whack-a-mole with a machine that makes moles.",
+      "One funnel down, two still running, and SIREN posts a new one in an hour. You're playing whack-a-mole with a machine that makes moles.",
   },
   {
     id: "hub",
-    label: "Report the claim site itself — to the platform AND the game company",
+    label: "Report the claim site itself, to the platform AND the game company",
     correct: true,
     outcome:
-      "That's the cut. Every funnel drains into that one form. Kill the collection point and all three funnels die at once — root cause, not symptoms.",
+      "That's the cut. Every funnel drains into that one form. Kill the collection point and all three funnels die at once: root cause, not symptoms.",
   },
   {
     id: "dm",
     label: "Block the DM senders one by one",
     correct: false,
     outcome:
-      "They're burner accounts — SIREN grows new ones faster than you can block. The accounts are disposable. The FORM is the factory.",
+      "They're burner accounts. SIREN grows new ones faster than you can block. The accounts are disposable. The FORM is the factory.",
   },
 ];
 
@@ -65,18 +65,18 @@ const WARNINGS = [
     id: "forward",
     label: "Forward the giveaway link to the group with “DON'T CLICK THIS!”",
     correct: false,
-    outcome: "You just put the live hook back in front of forty kids — some will click it BECAUSE it says don't. Never re-send the bait.",
+    outcome: "You just put the live hook back in front of forty kids. Some will click it BECAUSE it says don't. Never re-send the bait.",
   },
   {
     id: "shame",
     label: "“Anyone who fell for that is so dumb lol”",
     correct: false,
     outcome:
-      "Now nobody who clicked will admit it — which means nobody changes their password. Shame protects the scam. Analysts protect people.",
+      "Now nobody who clicked will admit it, which means nobody changes their password. Shame protects the scam. Analysts protect people.",
   },
   {
     id: "plain",
-    label: "Plain text, no link: “That skins giveaway is fake. If you typed anything, change your password now and tell an adult. Not your fault — it's built to fool people.”",
+    label: "Plain text, no link: “That skins giveaway is fake. If you typed anything, change your password now and tell an adult. Not your fault. It's built to fool people.”",
     correct: true,
     outcome: "Clean. No live link, no shame, clear next step. That message just saved passwords you'll never hear about.",
   },
@@ -127,10 +127,10 @@ export default function Mission02Incident({ reduced, audio, onPhaseCleared, onCo
       {phase === 1 && (
         <div style={{ marginBottom: 18, maxWidth: 560 }}>
           <div style={{ fontFamily: MONO, fontSize: 10, letterSpacing: "0.14em", color: T.threatRed, marginBottom: 8 }}>
-            INTERCEPTED — SIREN, ON THE WIRE
+            INTERCEPTED: SIREN, ON THE WIRE
           </div>
           <Bubble who="villain">
-            <em>&ldquo;Everybody wants a prize, sweetheart. I just help them want mine. Try to keep up — the factory never sleeps.&rdquo;</em>
+            <em>&ldquo;Everybody wants a prize, sweetheart. I just help them want mine. Try to keep up. The factory never sleeps.&rdquo;</em>
           </Bubble>
         </div>
       )}
@@ -145,7 +145,7 @@ export default function Mission02Incident({ reduced, audio, onPhaseCleared, onCo
       {/* ---------------- phase 1: find the hub ---------------- */}
       {phase === 1 && (
         <div>
-          <Eyebrow text="Phase 1 — The factory floor: three funnels are running. Every funnel drains somewhere. Tap the collection point." color={T.actionAmber} />
+          <Eyebrow text="Phase 1. The factory floor: three funnels are running. Every funnel drains somewhere. Tap the collection point." color={T.actionAmber} />
           <div style={{ marginTop: 14, display: "grid", gap: 10 }}>
             {[0, 1, 2].map((lane) => (
               <div key={lane} style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 10, alignItems: "stretch" }} className="sr-two-col">
@@ -180,14 +180,14 @@ export default function Mission02Incident({ reduced, audio, onPhaseCleared, onCo
           </div>
           <p role="status" style={{ margin: "12px 0 0", fontSize: 13, color: hubFound ? T.confirmedGreen : T.textSecondary }}>
             {hubFound
-              ? "HUB IDENTIFIED — three funnels, one form. Every trail you pinned ends at the same door."
+              ? "HUB IDENTIFIED: three funnels, one form. Every trail you pinned ends at the same door."
               : wrongNode
-                ? "That's a funnel piece — bait or a nudge. Follow the arrows: where does everything END UP?"
+                ? "That's a funnel piece: bait or a nudge. Follow the arrows: where does everything END UP?"
                 : "Follow the arrows. The factory has one cash register."}
           </p>
           {hubFound && (
             <div style={{ marginTop: 14 }}>
-              <AmberButton label="HUB LOCKED — CUT IT" onClick={() => { audio.click(); setPhase(2); }} />
+              <AmberButton label="HUB LOCKED · CUT IT" onClick={() => { audio.click(); setPhase(2); }} />
             </div>
           )}
         </div>
@@ -196,7 +196,7 @@ export default function Mission02Incident({ reduced, audio, onPhaseCleared, onCo
       {/* ---------------- phase 2: cut the hub ---------------- */}
       {phase === 2 && (
         <div style={{ maxWidth: 640 }}>
-          <Eyebrow text="Phase 2 — Cut the hub: one move shuts the whole factory. Which?" color={T.actionAmber} />
+          <Eyebrow text="Phase 2. Cut the hub: one move shuts the whole factory. Which?" color={T.actionAmber} />
           <div style={{ display: "grid", gap: 10, marginTop: 14 }}>
             {CUTS.map((o) => {
               const isChosen = cut === o.id;
@@ -214,7 +214,7 @@ export default function Mission02Incident({ reduced, audio, onPhaseCleared, onCo
               <p style={{ margin: 0, fontSize: 14, lineHeight: 1.6 }}>{cutChoice.outcome}</p>
               <div style={{ marginTop: 12 }}>
                 {cutChoice.correct ? (
-                  <AmberButton label="FACTORY DOWN — NEXT" onClick={() => { onPhaseCleared(2); setPhase(3); }} />
+                  <AmberButton label="FACTORY DOWN · NEXT" onClick={() => { onPhaseCleared(2); setPhase(3); }} />
                 ) : (
                   <GhostButton label="RECONSIDER" onClick={() => setCut(null)} />
                 )}
@@ -227,7 +227,7 @@ export default function Mission02Incident({ reduced, audio, onPhaseCleared, onCo
       {/* ---------------- phase 3: drain the net ---------------- */}
       {phase === 3 && (
         <div style={{ maxWidth: 640 }}>
-          <Eyebrow text="Phase 3 — Drain the net: some kids already typed things. Pick the message that actually helps them." color={T.actionAmber} />
+          <Eyebrow text="Phase 3. Drain the net: some kids already typed things. Pick the message that actually helps them." color={T.actionAmber} />
           <div style={{ display: "grid", gap: 10, marginTop: 14 }}>
             {WARNINGS.map((o) => {
               const isChosen = warn === o.id;
@@ -256,7 +256,7 @@ export default function Mission02Incident({ reduced, audio, onPhaseCleared, onCo
                       }}
                     />
                   ) : (
-                    <p style={{ fontFamily: MONO, fontSize: 12, letterSpacing: "0.06em", color: T.confirmedGreen, margin: 0 }}>SENT — NET DRAINED.</p>
+                    <p style={{ fontFamily: MONO, fontSize: 12, letterSpacing: "0.06em", color: T.confirmedGreen, margin: 0 }}>SENT. NET DRAINED.</p>
                   )
                 ) : (
                   <GhostButton label="RECONSIDER" onClick={() => setWarn(null)} />

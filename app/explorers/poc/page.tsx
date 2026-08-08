@@ -187,7 +187,7 @@ function HandlerChip({ reduced, speaking }: { reduced: boolean; speaking: boolea
         ))}
       </span>
       <span style={{ fontFamily: MONO, fontSize: 11, letterSpacing: "0.08em", color: T.textSecondary }}>
-        WREN — HANDLER
+        WREN: HANDLER
       </span>
       <span
         style={{
@@ -227,7 +227,7 @@ const TELLS: Tell[] = [
   {
     id: "link",
     label: "Link target",
-    why: "The button says GameHub, but the link goes to gamehub.support-verify.net — a different site wearing a costume.",
+    why: "The button says GameHub, but the link goes to gamehub.support-verify.net, a different site wearing a costume.",
   },
 ];
 
@@ -258,7 +258,7 @@ export default function ExplorersPoC() {
     if (found.includes(tell.id)) return;
     const next = [...found, tell.id];
     setFound(next);
-    setFeedback({ kind: "hit", text: `FLAGGED — ${tell.label}. ${tell.why}` });
+    setFeedback({ kind: "hit", text: `FLAGGED: ${tell.label}. ${tell.why}` });
     audio.latch();
   };
 
@@ -339,14 +339,14 @@ export default function ExplorersPoC() {
           zIndex: 2,
         }}
       >
-        SIGNAL ROOM — PROOF OF CONCEPT
+        SIGNAL ROOM: PROOF OF CONCEPT
       </div>
 
       <div style={{ position: "relative", maxWidth: 880, margin: "0 auto", padding: "56px 24px 80px" }}>
         {/* ============================== 1 · TRANSMISSION ============================== */}
         {scene === "transmission" && (
           <section style={{ paddingTop: 90, textAlign: "left" }}>
-            {eyebrow("ARC SECURE NET — INCOMING TRANSMISSION", T.arcCyan)}
+            {eyebrow("ARC SECURE NET: INCOMING TRANSMISSION", T.arcCyan)}
             <h1
               style={{
                 fontFamily: MONO,
@@ -361,7 +361,7 @@ export default function ExplorersPoC() {
             </h1>
             <div style={{ maxWidth: 560, borderLeft: `2px solid ${T.hairline}`, paddingLeft: 18 }}>
               <p style={{ fontSize: 16, lineHeight: 1.6, color: T.textPrimary, margin: 0 }}>
-                Operative. A message just hit a student&rsquo;s inbox — it says her game account gets
+                Operative. A message just hit a student&rsquo;s inbox. It says her game account gets
                 deleted in 24 hours. She almost clicked. Something about it reads wrong.
               </p>
               <p style={{ fontSize: 16, lineHeight: 1.6, color: T.textSecondary, margin: "12px 0 0" }}>
@@ -451,7 +451,7 @@ export default function ExplorersPoC() {
           <section style={{ display: "grid", gridTemplateColumns: "minmax(0, 1fr) 280px", gap: 20, alignItems: "start" }} className="sr-inspect-grid">
             {/* the evidence — paper, and the ONLY surface interference touches */}
             <div style={{ position: "relative" }}>
-              {eyebrow("EVIDENCE 01 — INTERCEPTED EMAIL · TAP ANYTHING THAT DOESN'T BELONG", T.actionAmber)}
+              {eyebrow("EVIDENCE 01 · INTERCEPTED EMAIL · TAP ANYTHING THAT DOESN'T BELONG", T.actionAmber)}
               <div
                 className={reduced ? undefined : "sr-whisper"}
                 style={{
@@ -500,7 +500,7 @@ export default function ExplorersPoC() {
                   </button>
                 </p>
                 <p style={{ margin: 0, opacity: 0.75 }}>
-                  <button className="sr-decoy" onClick={miss}>— The GameHub Team</button>
+                  <button className="sr-decoy" onClick={miss}>The GameHub Team</button>
                 </p>
               </div>
             </div>
@@ -565,7 +565,7 @@ export default function ExplorersPoC() {
         {/* =============================== 4 · CASE CLOSED =============================== */}
         {scene === "closed" && (
           <section style={{ maxWidth: 620, margin: "0 auto", paddingTop: 30 }}>
-            {eyebrow("AFTER-ACTION REPORT — CASE 001", T.clearanceBrass)}
+            {eyebrow("AFTER-ACTION REPORT: CASE 001", T.clearanceBrass)}
 
             {/* dossier on paper */}
             <div
@@ -623,7 +623,7 @@ export default function ExplorersPoC() {
                 </div>
                 <p style={{ fontSize: 14, lineHeight: 1.65, margin: 0 }}>
                   Real companies don&rsquo;t give you 24 hours to save your account. When a message rushes
-                  you — slow down and check the sender&rsquo;s address. Still feels wrong? Report it in the
+                  you, slow down and check the sender&rsquo;s address. Still feels wrong? Report it in the
                   app, and loop in an adult you trust.
                 </p>
               </div>
@@ -668,7 +668,7 @@ export default function ExplorersPoC() {
               }}
             >
               <span style={{ fontFamily: MONO, fontSize: 12, letterSpacing: "0.08em", color: T.clearanceBrass }}>
-                CLEARANCE — TRAINEE ▸ CONFIDENTIAL
+                CLEARANCE: TRAINEE ▸ CONFIDENTIAL
               </span>
               <span style={{ fontFamily: MONO, fontSize: 12, color: T.textSecondary }}>
                 CASES CLOSED&nbsp;

@@ -20,26 +20,26 @@ import type { IncidentProps } from "../engine/types";
 /* Phase 1 — five doors, one soft lock. The rig goes pattern-first, so
    name+year falls before anything else on the wall. */
 const DOORS = [
-  { id: "staff", label: "STAFF PORTAL — 18-character random passphrase", weak: false },
-  { id: "email", label: "JAKE'S EMAIL — Jake2014!", weak: true },
-  { id: "blog", label: "CLASS BLOG — biscuit-orbit-window-9", weak: false },
-  { id: "wiki", label: "SCIENCE WIKI — kV7#mQz9&xw", weak: false },
-  { id: "library", label: "LIBRARY — six random words, unique", weak: false },
+  { id: "staff", label: "STAFF PORTAL: 18-character random passphrase", weak: false },
+  { id: "email", label: "JAKE'S EMAIL: Jake2014!", weak: true },
+  { id: "blog", label: "CLASS BLOG: biscuit-orbit-window-9", weak: false },
+  { id: "wiki", label: "SCIENCE WIKI: kV7#mQz9&xw", weak: false },
+  { id: "library", label: "LIBRARY: six random words, unique", weak: false },
 ];
 
 /* Phase 2 — reinforce in triage order. Email is the master door; the
    reused pair shares the leaked key; the game account rounds it out.
    The staff portal is a distractor that's already strong. */
 const CHAIN: { id: string; label: string; order?: number; strong?: boolean }[] = [
-  { id: "email", label: "JAKE'S EMAIL — resets every other account", order: 1 },
-  { id: "school", label: "SCHOOL ACCOUNT — same key as the leaked forum", order: 2 },
-  { id: "game", label: "GAMEHUB — same key as the leaked forum", order: 3 },
-  { id: "staff", label: "STAFF PORTAL — already strong", strong: true },
+  { id: "email", label: "JAKE'S EMAIL: resets every other account", order: 1 },
+  { id: "school", label: "SCHOOL ACCOUNT: same key as the leaked forum", order: 2 },
+  { id: "game", label: "GAMEHUB: same key as the leaked forum", order: 3 },
+  { id: "staff", label: "STAFF PORTAL: already strong", strong: true },
 ];
 
 const CHAIN_HINTS: Record<number, string> = {
   1: "Master door first. Which account can reset all the others?",
-  2: "Now the leaked key. Two doors still share it — take the school one next.",
+  2: "Now the leaked key. Two doors still share it. Take the school one next.",
   3: "One door still uses the stolen key. Close the chain.",
 };
 
@@ -59,10 +59,10 @@ const KEYS = [
   },
   {
     id: "phrase",
-    label: "thunder-biscuit-ladder-52 — wait, no biscuit. thunder-marble-ladder-52",
+    label: "thunder-biscuit-ladder-52, wait, no biscuit. thunder-marble-ladder-52",
     correct: true,
     outcome:
-      "Good catch on the dog's name — nothing about you in it. Long, random, brand new. Seal it.",
+      "Good catch on the dog's name: nothing about you in it. Long, random, brand new. Seal it.",
   },
   {
     id: "qwerty",
@@ -128,7 +128,7 @@ export default function Mission03Incident({ reduced, audio, onPhaseCleared, onCo
       {phase === 1 && (
         <div style={{ marginBottom: 18, maxWidth: 560 }}>
           <div style={{ fontFamily: MONO, fontSize: 10, letterSpacing: "0.14em", color: T.threatRed, marginBottom: 8 }}>
-            INTERCEPTED — SKELETON KEY, ON THE WIRE
+            INTERCEPTED: SKELETON KEY, ON THE WIRE
           </div>
           <Bubble who="villain">
             <em>&ldquo;Ten thousand doors, little warden. I only need one lazy lock. The rig has all night.&rdquo;</em>
@@ -146,7 +146,7 @@ export default function Mission03Incident({ reduced, audio, onPhaseCleared, onCo
       {/* ---------------- phase 1: spot the weak door ---------------- */}
       {phase === 1 && (
         <div style={{ maxWidth: 640 }}>
-          <Eyebrow text="Phase 1 — The wall: five doors, five locks. Think like the rig. Tap the door that falls FIRST." color={T.actionAmber} />
+          <Eyebrow text="Phase 1. The wall: five doors, five locks. Think like the rig. Tap the door that falls FIRST." color={T.actionAmber} />
           <div style={{ display: "grid", gap: 10, marginTop: 14 }}>
             {DOORS.map((d) => (
               <button
@@ -175,14 +175,14 @@ export default function Mission03Incident({ reduced, audio, onPhaseCleared, onCo
           </div>
           <p role="status" style={{ margin: "12px 0 0", fontSize: 13, color: weakFound ? T.confirmedGreen : T.textSecondary }}>
             {weakFound
-              ? "WEAK DOOR FLAGGED — name plus year. The rig's very first guess family."
+              ? "WEAK DOOR FLAGGED: name plus year. The rig's very first guess family."
               : wrongDoor
                 ? "That lock holds for now. The rig goes pattern-first: names, years, pets."
                 : "The rig tries the most common patterns first. Which lock is a pattern?"}
           </p>
           {weakFound && (
             <div style={{ marginTop: 14 }}>
-              <AmberButton label="DOOR FLAGGED — REINFORCE" onClick={() => { audio.click(); setPhase(2); }} />
+              <AmberButton label="DOOR FLAGGED: REINFORCE" onClick={() => { audio.click(); setPhase(2); }} />
             </div>
           )}
         </div>
@@ -191,7 +191,7 @@ export default function Mission03Incident({ reduced, audio, onPhaseCleared, onCo
       {/* ---------------- phase 2: break the chain ---------------- */}
       {phase === 2 && (
         <div style={{ maxWidth: 640 }}>
-          <Eyebrow text="Phase 2 — Triage: the forum key is loose and the rig is moving. Reinforce doors in the RIGHT ORDER." color={T.actionAmber} />
+          <Eyebrow text="Phase 2. Triage: the forum key is loose and the rig is moving. Reinforce doors in the RIGHT ORDER." color={T.actionAmber} />
           <div style={{ display: "grid", gap: 10, marginTop: 14 }}>
             {CHAIN.map((c) => {
               const done = reinforced.includes(c.id);
@@ -223,7 +223,7 @@ export default function Mission03Incident({ reduced, audio, onPhaseCleared, onCo
           </div>
           <p role="status" style={{ margin: "12px 0 0", fontSize: 13, color: reinforced.length === 3 ? T.confirmedGreen : T.textSecondary }}>
             {reinforced.length === 3
-              ? "CHAIN BROKEN — master door, then the leaked pair. Textbook triage."
+              ? "CHAIN BROKEN: master door, then the leaked pair. Textbook triage."
               : chainMiss === "staff"
                 ? "Already holds. Spend your minutes on the soft locks."
                 : chainMiss
@@ -232,7 +232,7 @@ export default function Mission03Incident({ reduced, audio, onPhaseCleared, onCo
           </p>
           {reinforced.length === 3 && (
             <div style={{ marginTop: 14 }}>
-              <AmberButton label="CHAIN BROKEN — BUILD THE WALL" onClick={() => { audio.click(); setPhase(3); }} />
+              <AmberButton label="CHAIN BROKEN: BUILD THE WALL" onClick={() => { audio.click(); setPhase(3); }} />
             </div>
           )}
         </div>
@@ -241,7 +241,7 @@ export default function Mission03Incident({ reduced, audio, onPhaseCleared, onCo
       {/* ---------------- phase 3: hold the wall ---------------- */}
       {phase === 3 && (
         <div style={{ maxWidth: 640 }}>
-          <Eyebrow text="Phase 3 — The new key: Jake needs a replacement the rig can't touch. Choose it." color={T.actionAmber} />
+          <Eyebrow text="Phase 3. The new key: Jake needs a replacement the rig can't touch. Choose it." color={T.actionAmber} />
           <div style={{ display: "grid", gap: 10, marginTop: 14 }}>
             {KEYS.map((k) => {
               const isChosen = key === k.id;
@@ -276,7 +276,7 @@ export default function Mission03Incident({ reduced, audio, onPhaseCleared, onCo
                     />
                   ) : (
                     <p style={{ fontFamily: MONO, fontSize: 12, letterSpacing: "0.06em", color: T.confirmedGreen, margin: 0 }}>
-                      SEALED — RIG STALLED. PROJECTED CRACK TIME: 400 YEARS.
+                      SEALED. RIG STALLED. PROJECTED CRACK TIME: 400 YEARS.
                     </p>
                   )
                 ) : (

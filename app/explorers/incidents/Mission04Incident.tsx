@@ -19,24 +19,24 @@ import type { IncidentProps } from "../engine/types";
 
 /* Phase 1 — the auction listing's claims, each traced to a crumb. */
 const CLAIMS = [
-  { id: "team", label: "“Plays goalie for a Riverdale team” — from the handle and bio", danger: false },
-  { id: "school", label: "“Attends Riverdale Academy” — from the crest in the match photo", danger: false },
-  { id: "when", label: "“At the pitch every Tuesday until 6pm” — from a public comment", danger: true },
+  { id: "team", label: "“Plays goalie for a Riverdale team”, from the handle and bio", danger: false },
+  { id: "school", label: "“Attends Riverdale Academy”, from the crest in the match photo", danger: false },
+  { id: "when", label: "“At the pitch every Tuesday until 6pm”, from a public comment", danger: true },
   { id: "bday", label: "“Birth year, via the lucky-number joke post”", danger: false },
 ];
 
 /* Phase 2 — scrub order: the where-and-when, then the located photo,
    then the birthday math. The homework post is a distractor. */
 const SOURCES: { id: string; label: string; order?: number; harmless?: boolean }[] = [
-  { id: "sched", label: "THE SCHEDULE COMMENT — “practice every Tuesday til 6”", order: 1 },
-  { id: "photo", label: "THE MATCH PHOTO — crest, street sign, location tag", order: 2 },
-  { id: "quiz", label: "THE LUCKY-NUMBER POST — birthday math", order: 3 },
-  { id: "hw", label: "THE HOMEWORK QUESTION — “how do you solve q4”", harmless: true },
+  { id: "sched", label: "THE SCHEDULE COMMENT: “practice every Tuesday til 6”", order: 1 },
+  { id: "photo", label: "THE MATCH PHOTO: crest, street sign, location tag", order: 2 },
+  { id: "quiz", label: "THE LUCKY-NUMBER POST: birthday math", order: 3 },
+  { id: "hw", label: "THE HOMEWORK QUESTION: “how do you solve q4”", harmless: true },
 ];
 
 const SOURCE_HINTS: Record<number, string> = {
   1: "Priority one: the crumb that says WHERE she'll be and WHEN.",
-  2: "Next: the photo — it pins her school to a map.",
+  2: "Next: the photo, it pins her school to a map.",
   3: "Last source still live: the birthday joke. Close it out.",
 };
 
@@ -44,24 +44,24 @@ const SOURCE_HINTS: Record<number, string> = {
 const MOVES = [
   {
     id: "callout",
-    label: "Post everywhere: “PACKRAT IS SELLING OUR INFO — SHARE THIS!!”",
+    label: "Post everywhere: “PACKRAT IS SELLING OUR INFO. SHARE THIS!!”",
     correct: false,
     outcome:
       "You just advertised the auction to every buyer who hadn't heard of it. Outrage is amplification. Analysts move quietly.",
   },
   {
     id: "stale",
-    label: "Change what the file relies on — new handle, private account, report the auction",
+    label: "Change what the file relies on: new handle, private account, report the auction",
     correct: true,
     outcome:
-      "That's the move. The file said WHERE, WHEN, and WHAT NAME. All three just stopped being true — and the report is filed. Stale data sells for nothing.",
+      "That's the move. The file said WHERE, WHEN, and WHAT NAME. All three just stopped being true, and the report is filed. Stale data sells for nothing.",
   },
   {
     id: "dm",
     label: "DM PACKRAT and demand he deletes it",
     correct: false,
     outcome:
-      "He just learned the file matters enough to chase — and that this account is live and scared. You fed the nest. Never negotiate with a collector.",
+      "He just learned the file matters enough to chase, and that this account is live and scared. You fed the nest. Never negotiate with a collector.",
   },
 ];
 
@@ -121,7 +121,7 @@ export default function Mission04Incident({ reduced, audio, onPhaseCleared, onCo
       {phase === 1 && (
         <div style={{ marginBottom: 18, maxWidth: 560 }}>
           <div style={{ fontFamily: MONO, fontSize: 10, letterSpacing: "0.14em", color: T.threatRed, marginBottom: 8 }}>
-            INTERCEPTED — PACKRAT, ON THE WIRE
+            INTERCEPTED: PACKRAT, ON THE WIRE
           </div>
           <Bubble who="villain">
             <em>&ldquo;Nothing is ever really deleted, little archivist. You drop crumbs. I keep them. Everything ends up in my nest.&rdquo;</em>
@@ -139,7 +139,7 @@ export default function Mission04Incident({ reduced, audio, onPhaseCleared, onCo
       {/* ---------------- phase 1: read the file ---------------- */}
       {phase === 1 && (
         <div style={{ maxWidth: 640 }}>
-          <Eyebrow text="Phase 1 — The listing: four claims, each built from a crumb. Tap the claim that puts Priya in real-world danger." color={T.actionAmber} />
+          <Eyebrow text="Phase 1. The listing: four claims, each built from a crumb. Tap the claim that puts Priya in real-world danger." color={T.actionAmber} />
           <div style={{ display: "grid", gap: 10, marginTop: 14 }}>
             {CLAIMS.map((c) => (
               <button
@@ -168,14 +168,14 @@ export default function Mission04Incident({ reduced, audio, onPhaseCleared, onCo
           </div>
           <p role="status" style={{ margin: "12px 0 0", fontSize: 13, color: dangerFound ? T.confirmedGreen : T.textSecondary }}>
             {dangerFound
-              ? "FLAGGED — where plus when, in person. Every other claim is background noise next to this."
+              ? "FLAGGED: where plus when, in person. Every other claim is background noise next to this."
               : wrongClaim
                 ? "Bad, but not the worst. Which claim tells a stranger where to STAND, and at what time?"
                 : "All four are leaks. One of them is a place and a time."}
           </p>
           {dangerFound && (
             <div style={{ marginTop: 14 }}>
-              <AmberButton label="CLAIM FLAGGED — SCRUB THE SOURCES" onClick={() => { audio.click(); setPhase(2); }} />
+              <AmberButton label="CLAIM FLAGGED: SCRUB THE SOURCES" onClick={() => { audio.click(); setPhase(2); }} />
             </div>
           )}
         </div>
@@ -184,7 +184,7 @@ export default function Mission04Incident({ reduced, audio, onPhaseCleared, onCo
       {/* ---------------- phase 2: scrub the sources ---------------- */}
       {phase === 2 && (
         <div style={{ maxWidth: 640 }}>
-          <Eyebrow text="Phase 2 — The auction closes in minutes. Scrub the live sources in the RIGHT ORDER." color={T.actionAmber} />
+          <Eyebrow text="Phase 2. The auction closes in minutes. Scrub the live sources in the RIGHT ORDER." color={T.actionAmber} />
           <div style={{ display: "grid", gap: 10, marginTop: 14 }}>
             {SOURCES.map((s) => {
               const done = scrubbed.includes(s.id);
@@ -216,14 +216,14 @@ export default function Mission04Incident({ reduced, audio, onPhaseCleared, onCo
           </div>
           <p role="status" style={{ margin: "12px 0 0", fontSize: 13, color: scrubbed.length === 3 ? T.confirmedGreen : T.textSecondary }}>
             {scrubbed.length === 3
-              ? "SOURCES DOWN — where-and-when first, then the map pin, then the birthday. Textbook."
+              ? "SOURCES DOWN: where-and-when first, then the map pin, then the birthday. Textbook."
               : scrubMiss === "hw"
                 ? "Harmless. A maths question feeds nothing. Spend your minutes on real crumbs."
                 : SOURCE_HINTS[nextScrub]}
           </p>
           {scrubbed.length === 3 && (
             <div style={{ marginTop: 14 }}>
-              <AmberButton label="SOURCES DOWN — POISON THE AUCTION" onClick={() => { audio.click(); setPhase(3); }} />
+              <AmberButton label="SOURCES DOWN: POISON THE AUCTION" onClick={() => { audio.click(); setPhase(3); }} />
             </div>
           )}
         </div>
@@ -232,7 +232,7 @@ export default function Mission04Incident({ reduced, audio, onPhaseCleared, onCo
       {/* ---------------- phase 3: poison the auction ---------------- */}
       {phase === 3 && (
         <div style={{ maxWidth: 640 }}>
-          <Eyebrow text="Phase 3 — The file still exists in the nest. Make it WORTHLESS. Pick the finishing move." color={T.actionAmber} />
+          <Eyebrow text="Phase 3. The file still exists in the nest. Make it WORTHLESS. Pick the finishing move." color={T.actionAmber} />
           <div style={{ display: "grid", gap: 10, marginTop: 14 }}>
             {MOVES.map((m) => {
               const isChosen = move === m.id;
@@ -267,7 +267,7 @@ export default function Mission04Incident({ reduced, audio, onPhaseCleared, onCo
                     />
                   ) : (
                     <p style={{ fontFamily: MONO, fontSize: 12, letterSpacing: "0.06em", color: T.confirmedGreen, margin: 0 }}>
-                      AUCTION DEAD — FILE STALE. NOBODY BUYS OLD NEWS.
+                      AUCTION DEAD. FILE STALE. NOBODY BUYS OLD NEWS.
                     </p>
                   )
                 ) : (

@@ -292,7 +292,7 @@ export function HandlerChip({ reduced, speaking = true }: { reduced: boolean; sp
         ))}
       </span>
       <span style={{ fontFamily: MONO, fontSize: 11, letterSpacing: "0.08em", color: T.textSecondary }}>
-        WREN — HANDLER
+        WREN: HANDLER
       </span>
       <span
         style={{

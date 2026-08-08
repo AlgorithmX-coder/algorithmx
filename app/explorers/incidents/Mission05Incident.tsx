@@ -22,7 +22,7 @@ import type { IncidentProps } from "../engine/types";
    (countdown / verify-domain / login ask); two are genuinely fine. */
 const WALL = [
   { id: "w1", label: "[SMS] LIBRARY ALERT: locked! fix within 12 hrs → lib-renew-check.net", storm: true },
-  { id: "w2", label: "[SCHOOL APP] Reminder: mufti day Friday — bring £1 for charity", storm: false },
+  { id: "w2", label: "[SCHOOL APP] Reminder: mufti day Friday, bring £1 for charity", storm: false },
   { id: "w3", label: "[DM] game account flagged!! verify quick → account-fix-verify.net", storm: true },
   { id: "w4", label: "[EMAIL] “Canteen Office”: balance expiring in 6 hrs → pay-canteen-verify.net", storm: true },
   { id: "w5", label: "[DM] Leo: bro did you see the match last night", storm: false },
@@ -31,27 +31,27 @@ const WALL = [
 
 /* Phase 2 — the four storm messages again; one is a spear. */
 const STORM = [
-  { id: "s1", label: "LIBRARY ALERT — locked, 12 hrs, generic “dear student”", spear: false },
-  { id: "s2", label: "GAME FLAG — verify quick, no name, blasted to hundreds", spear: false },
-  { id: "s3", label: "“Hi! Your 8G form room moved — Mr. Ortega asked me to send you the new login link”", spear: true },
-  { id: "s4", label: "PARCEL FEE — 24 hrs, sent to every number in the area", spear: false },
+  { id: "s1", label: "LIBRARY ALERT: locked, 12 hrs, generic “dear student”", spear: false },
+  { id: "s2", label: "GAME FLAG: verify quick, no name, blasted to hundreds", spear: false },
+  { id: "s3", label: "“Hi! Your 8G form room moved. Mr. Ortega asked me to send you the new login link”", spear: true },
+  { id: "s4", label: "PARCEL FEE: 24 hrs, sent to every number in the area", spear: false },
 ];
 
 /* Phase 3 — where did the spear's details come from? */
 const TRACES = [
   {
     id: "lucky",
-    label: "Lucky guess — form rooms aren't secret",
+    label: "Lucky guess: form rooms aren't secret",
     correct: false,
     outcome:
       "A guess doesn't name your form AND your teacher AND time it to room changes. That's not luck. That's data.",
   },
   {
     id: "bought",
-    label: "Bought — the details match a collector's file",
+    label: "Bought: the details match a collector's file",
     correct: true,
     outcome:
-      "Confirmed. Form, teacher, timing — all in the file PACKRAT auctioned last case. PHANTOM HOOK was the buyer. The actors are CONNECTED. Filed.",
+      "Confirmed. Form, teacher, timing: all in the file PACKRAT auctioned last case. PHANTOM HOOK was the buyer. The actors are CONNECTED. Filed.",
   },
   {
     id: "newsletter",
@@ -118,7 +118,7 @@ export default function Mission05Incident({ reduced, audio, onPhaseCleared, onCo
       {phase === 1 && (
         <div style={{ marginBottom: 18, maxWidth: 560 }}>
           <div style={{ fontFamily: MONO, fontSize: 10, letterSpacing: "0.14em", color: T.threatRed, marginBottom: 8 }}>
-            INTERCEPTED — PHANTOM HOOK, ON THE WIRE
+            INTERCEPTED: PHANTOM HOOK, ON THE WIRE
           </div>
           <Bubble who="villain">
             <em>&ldquo;You cut one line, minnow. Tonight I cast a thousand. Somebody always bites.&rdquo;</em>
@@ -136,7 +136,7 @@ export default function Mission05Incident({ reduced, audio, onPhaseCleared, onCo
       {/* ---------------- phase 1: hold the queue ---------------- */}
       {phase === 1 && (
         <div style={{ maxWidth: 640 }}>
-          <Eyebrow text="Phase 1 — The wall: six messages just landed. Tap every one that belongs to the storm. Don't flag the real ones." color={T.actionAmber} />
+          <Eyebrow text="Phase 1: The wall. Six messages just landed. Tap every one that belongs to the storm. Don't flag the real ones." color={T.actionAmber} />
           <div style={{ display: "grid", gap: 10, marginTop: 14 }}>
             {WALL.map((w) => {
               const done = held.includes(w.id);
@@ -171,14 +171,14 @@ export default function Mission05Incident({ reduced, audio, onPhaseCleared, onCo
           </div>
           <p role="status" style={{ margin: "12px 0 0", fontSize: 13, color: held.length === stormCount ? T.confirmedGreen : T.textSecondary }}>
             {held.length === stormCount
-              ? "QUEUE HELD — four flagged, two cleared. False positives waste analyst time; you flagged clean."
+              ? "QUEUE HELD: four flagged, two cleared. False positives waste analyst time; you flagged clean."
               : wallMiss
                 ? "That one's real. Check the fingerprints: countdown, verify-domain, login ask."
                 : `${held.length}/${stormCount} flagged. Fingerprints: the clock, the domain family, the ask.`}
           </p>
           {held.length === stormCount && (
             <div style={{ marginTop: 14 }}>
-              <AmberButton label="QUEUE HELD — SCAN FOR THE SPEAR" onClick={() => { audio.click(); setPhase(2); }} />
+              <AmberButton label="QUEUE HELD: SCAN FOR THE SPEAR" onClick={() => { audio.click(); setPhase(2); }} />
             </div>
           )}
         </div>
@@ -187,7 +187,7 @@ export default function Mission05Incident({ reduced, audio, onPhaseCleared, onCo
       {/* ---------------- phase 2: find the spear ---------------- */}
       {phase === 2 && (
         <div style={{ maxWidth: 640 }}>
-          <Eyebrow text="Phase 2 — Four storm messages. Three are spray. One did its homework. Tap the spear." color={T.actionAmber} />
+          <Eyebrow text="Phase 2: Four storm messages. Three are spray. One did its homework. Tap the spear." color={T.actionAmber} />
           <div style={{ display: "grid", gap: 10, marginTop: 14 }}>
             {STORM.map((s) => (
               <button
@@ -213,14 +213,14 @@ export default function Mission05Incident({ reduced, audio, onPhaseCleared, onCo
           </div>
           <p role="status" style={{ margin: "12px 0 0", fontSize: 13, color: spearFound ? T.confirmedGreen : T.textSecondary }}>
             {spearFound
-              ? "SPEAR ISOLATED — it knows your form, your teacher, your timing. That's research, not luck."
+              ? "SPEAR ISOLATED: it knows your form, your teacher, your timing. That's research, not luck."
               : wrongSpear
-                ? "That's spray — loud, generic, sent to hundreds. Which message knows things about YOU?"
+                ? "That's spray: loud, generic, sent to hundreds. Which message knows things about YOU?"
                 : "Spray guesses. Spears know. Find the one that knows."}
           </p>
           {spearFound && (
             <div style={{ marginTop: 14 }}>
-              <AmberButton label="SPEAR ISOLATED — TRACE IT" onClick={() => { audio.click(); setPhase(3); }} />
+              <AmberButton label="SPEAR ISOLATED: TRACE IT" onClick={() => { audio.click(); setPhase(3); }} />
             </div>
           )}
         </div>
@@ -229,7 +229,7 @@ export default function Mission05Incident({ reduced, audio, onPhaseCleared, onCo
       {/* ---------------- phase 3: trace the data ---------------- */}
       {phase === 3 && (
         <div style={{ maxWidth: 640 }}>
-          <Eyebrow text="Phase 3 — The spear knew your form and your teacher. Where did that data COME from?" color={T.actionAmber} />
+          <Eyebrow text="Phase 3: The spear knew your form and your teacher. Where did that data COME from?" color={T.actionAmber} />
           <div style={{ display: "grid", gap: 10, marginTop: 14 }}>
             {TRACES.map((t) => {
               const isChosen = trace === t.id;
@@ -264,7 +264,7 @@ export default function Mission05Incident({ reduced, audio, onPhaseCleared, onCo
                     />
                   ) : (
                     <p style={{ fontFamily: MONO, fontSize: 12, letterSpacing: "0.06em", color: T.confirmedGreen, margin: 0 }}>
-                      FILED — TWO ACTORS, ONE SUPPLY CHAIN. STORM OVER.
+                      FILED: TWO ACTORS, ONE SUPPLY CHAIN. STORM OVER.
                     </p>
                   )
                 ) : (

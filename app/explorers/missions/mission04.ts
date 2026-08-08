@@ -36,7 +36,7 @@ export const mission04: MissionManifest = {
       "There's an auction running on a hidden channel.",
       "The item for sale: a file about a student.",
       "School. Schedule. Birthday. All of it.",
-      "She never told anyone. She posted it — in pieces.",
+      "She never told anyone. She posted it, in pieces.",
     ],
   },
 
@@ -62,11 +62,11 @@ export const mission04: MissionManifest = {
       intel: {
         beats: [
           "No single post gives PACKRAT anything.",
-          "That's the trap — each crumb feels harmless.",
+          "That's the trap: each crumb feels harmless.",
           "A handle here. A photo there. A joke about birthdays.",
           "Alone: nothing. Together: a file.",
           "ARC calls it the assembly attack.",
-          "Today we run one — on a volunteer's test account, with her OK.",
+          "Today we run one, on a volunteer's test account, with her OK.",
         ],
         prediction: {
           question: "Priya's posts each share one tiny thing. What's the real danger?",
@@ -83,7 +83,7 @@ export const mission04: MissionManifest = {
       fieldwork: {
         verb: "TRACE",
         payload: {
-          intro: "Audit board — pin every crumb that feeds the file",
+          intro: "Audit board: pin every crumb that feeds the file",
           fingerprintHint: "anything that says who, where, or when",
           cards: [
             {
@@ -106,7 +106,7 @@ export const mission04: MissionManifest = {
               id: "t2",
               surface: "PHOTO POST",
               from: "@priya_riverdale09",
-              text: "match day!! 📸 — team photo, school gates behind them",
+              text: "match day!! 📸 Team photo, school gates behind them",
               inCampaign: true,
               clue: "the gates say WHICH school",
               order: 2,
@@ -115,7 +115,7 @@ export const mission04: MissionManifest = {
               id: "t3",
               surface: "COMMENT",
               from: "@priya_riverdale09",
-              text: "we practice every Tuesday til 6 — come watch!",
+              text: "we practice every Tuesday til 6, come watch!",
               inCampaign: true,
               clue: "a schedule, posted in public",
               order: 3,
@@ -137,7 +137,7 @@ export const mission04: MissionManifest = {
               order: 4,
             },
           ],
-          stage2Prompt: "Now chain it like PACKRAT does — order the crumbs into a file",
+          stage2Prompt: "Now chain it like PACKRAT does: order the crumbs into a file",
           doneLine: "Who → where → when → birthday. Four posts, one file. That's assembly.",
         },
       },
@@ -147,7 +147,7 @@ export const mission04: MissionManifest = {
             id: "c1q1",
             question: "Which post is the SAFEST on its own?",
             options: [
-              "None are dangerous alone — that's the point",
+              "None are dangerous alone, that's the point",
               "The photo, because photos are private",
               "The bio, because everyone has one",
             ],
@@ -201,12 +201,12 @@ export const mission04: MissionManifest = {
           device: { app: "PHOTOS", owner: "TEST ACCOUNT (Priya's audit)" },
           header: [
             { label: "POST:", seg: { id: "cap", text: "match day!! ⚽🔥" } },
-            { label: "SCAN:", seg: { id: "scan", text: "ARC photo audit — what's in frame?" } },
+            { label: "SCAN:", seg: { id: "scan", text: "ARC photo audit: what's in frame?" } },
           ],
           body: [
             [{ id: "p1", text: "In frame: the team, wearing Riverdale Academy crests", tellId: "crest" }],
             [{ id: "p2", text: "In frame: Priya mid-save (great save, honestly)" }],
-            [{ id: "p3", text: "In frame: street sign by the gates — Mill Lane", tellId: "street" }],
+            [{ id: "p3", text: "In frame: street sign by the gates, Mill Lane", tellId: "street" }],
             [{ id: "p4", text: "Under the photo: 📍 location tag, added by the phone", tellId: "geo", mono: true }],
           ],
           tells: [
@@ -236,7 +236,7 @@ export const mission04: MissionManifest = {
             question: "Before posting a photo, the analyst's check is:",
             options: [
               "Is my smile good?",
-              "What's in the background — and is location on?",
+              "What's in the background, and is location on?",
               "Which filter looks best?",
             ],
             answer: 1,
@@ -260,7 +260,7 @@ export const mission04: MissionManifest = {
       id: "scrub",
       title: "Scrub what matters",
       concept: "Take down the crumb that hurts most first",
-      promise: "You'll learn what to delete first — and why.",
+      promise: "You'll learn what to delete first, and why.",
       instruction: "Pick what Priya scrubs first.",
       intel: {
         beats: [
@@ -278,7 +278,7 @@ export const mission04: MissionManifest = {
             "Handles don't matter",
           ],
           answer: 1,
-          right: "Exactly. One name, one thread — tug it and the whole file follows.",
+          right: "Exactly. One name, one thread: tug it and the whole file follows.",
           wrong: "The handle is the thread. Same name everywhere links every crumb.",
         },
       },
@@ -287,7 +287,7 @@ export const mission04: MissionManifest = {
         payload: {
           intro: "Pick what Priya scrubs first.",
           situation:
-            "The audit found three loud crumbs. Priya has five minutes before practice — she can fix ONE thing right now.",
+            "The audit found three loud crumbs. Priya has five minutes before practice. She can fix ONE thing right now.",
           prompt: "YOUR CALL, OPERATIVE:",
           options: [
             {
@@ -301,13 +301,13 @@ export const mission04: MissionManifest = {
               id: "handle",
               label: "Rename her handle everywhere",
               outcome:
-                "Worth doing — it cuts the thread for FUTURE crumbs. But the schedule is a real-world where-and-when. That goes first.",
+                "Worth doing: it cuts the thread for FUTURE crumbs. But the schedule is a real-world where-and-when. That goes first.",
             },
             {
               id: "nuke",
               label: "Delete the whole account",
               outcome:
-                "That's panic, not analysis. She loses everything, learns nothing — and the file already collected stays collected. Scrub smart instead.",
+                "That's panic, not analysis. She loses everything, learns nothing, and the file already collected stays collected. Scrub smart instead.",
             },
           ],
         },
@@ -349,7 +349,7 @@ export const mission04: MissionManifest = {
   debrief: {
     report: [
       "One assembly attack run and understood: four crumbs, one file.",
-      "Photo audit done — crests, signs, and silent location tags flagged.",
+      "Photo audit done: crests, signs, and silent location tags flagged.",
       "Sources scrubbed by priority; the auctioned file went stale and worthless.",
     ],
     realWorldMove:

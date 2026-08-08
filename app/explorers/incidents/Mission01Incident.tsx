@@ -36,7 +36,7 @@ const WAVE: WaveMessage[] = [
     from: "news@gamehub.com",
     text: "New sign-in to your account from your usual device. If this was you, no action is needed.",
     truth: "SAFE",
-    why: "Real domain, no link, no pressure — it even says 'no action needed.' Informational, not a lure.",
+    why: "Real domain, no link, no pressure. It even says 'no action needed.' Informational, not a lure.",
   },
   {
     id: "photo-lock",
@@ -48,7 +48,7 @@ const WAVE: WaveMessage[] = [
   {
     id: "teacher",
     from: "j.ortega@lincolnms.edu",
-    text: "Reminder — permission slips for the museum trip are due Friday. Paper copies in the bin by my desk.",
+    text: "Reminder: permission slips for the museum trip are due Friday. Paper copies in the bin by my desk.",
     truth: "SAFE",
     why: "Known sender, real domain, nothing requested but a paper form. Boring is usually safe.",
   },
@@ -67,14 +67,14 @@ const CONTAINMENT = [
     label: "Forward the fake email to the whole group with a warning",
     correct: false,
     outcome:
-      "You just re-delivered the weapon — the live link is now in forty more inboxes, wearing your name as the sender. Warn people, never re-send the bait.",
+      "You just re-delivered the weapon. The live link is now in forty more inboxes, wearing your name as the sender. Warn people, never re-send the bait.",
   },
   {
     id: "report",
     label: "Report the sender, block it, and post a plain-text warning with no link",
     correct: true,
     outcome:
-      "Clean containment. The platform takes the sender down, the block protects this inbox, and the warning protects everyone else's — without spreading the hook.",
+      "Clean containment. The platform takes the sender down, the block protects this inbox, and the warning protects everyone else's, without spreading the hook.",
   },
   {
     id: "delete",
@@ -93,7 +93,7 @@ export default function Mission01Incident({ reduced, audio, onPhaseCleared, onCo
       {phase === 1 && (
         <div style={{ marginBottom: 18, maxWidth: 560 }}>
           <div style={{ fontFamily: MONO, fontSize: 10, letterSpacing: "0.14em", color: T.threatRed, marginBottom: 8 }}>
-            INTERCEPTED — PHANTOM HOOK, ON THE WIRE
+            INTERCEPTED: PHANTOM HOOK, ON THE WIRE
           </div>
           <Bubble who="villain">
             <em>&ldquo;One email down, little analyst? Cute. I sent four more while you were reading it.&rdquo;</em>
@@ -174,7 +174,7 @@ function TriagePhase({ reduced, audio, onDone }: { reduced: boolean; audio: Inci
 
   return (
     <div>
-      <Eyebrow text="Phase 1 — Triage: four messages just hit the class group. Call each one." color={T.actionAmber} />
+      <Eyebrow text="Phase 1 · Triage: four messages just hit the class group. Call each one." color={T.actionAmber} />
       <div style={{ display: "grid", gap: 12, marginTop: 14 }}>
         {WAVE.map((m) => {
           const v = verdicts[m.id];
@@ -234,7 +234,7 @@ function TriagePhase({ reduced, audio, onDone }: { reduced: boolean; audio: Inci
         <span style={{ fontFamily: MONO, fontSize: 12, color: allCorrect ? T.confirmedGreen : T.textSecondary }}>
           {correctCount}/{WAVE.length} CALLED CORRECTLY
         </span>
-        {allCorrect && <AmberButton label="WAVE SORTED — NEXT" onClick={onDone} />}
+        {allCorrect && <AmberButton label="WAVE SORTED · NEXT" onClick={onDone} />}
       </div>
     </div>
   );
@@ -257,7 +257,7 @@ function ContainmentPhase({ audio, onDone }: { audio: IncidentProps["audio"]; on
 
   return (
     <div style={{ maxWidth: 640 }}>
-      <Eyebrow text="Phase 2 — Cut the hook: the group is still getting hit. Your containment call." color={T.actionAmber} />
+      <Eyebrow text="Phase 2 · Cut the hook: the group is still getting hit. Your containment call." color={T.actionAmber} />
       <div style={{ display: "grid", gap: 10, marginTop: 14 }}>
         {CONTAINMENT.map((o) => {
           const isChosen = chosen === o.id;
@@ -291,7 +291,7 @@ function ContainmentPhase({ audio, onDone }: { audio: IncidentProps["audio"]; on
           <p style={{ margin: 0, fontSize: 14, lineHeight: 1.6 }}>{option.outcome}</p>
           <div style={{ marginTop: 12 }}>
             {option.correct ? (
-              <AmberButton label="CONTAINMENT SET — NEXT" onClick={onDone} />
+              <AmberButton label="CONTAINMENT SET · NEXT" onClick={onDone} />
             ) : (
               <GhostButton label="RECONSIDER" onClick={() => setChosen(null)} />
             )}
@@ -341,9 +341,9 @@ function TransmitPhase({ reduced, audio, onDone }: { reduced: boolean; audio: In
 
   return (
     <div style={{ maxWidth: 560 }}>
-      <Eyebrow text="Phase 3 — File it: your report takes the campaign off the board." color={T.actionAmber} />
+      <Eyebrow text="Phase 3 · File it: your report takes the campaign off the board." color={T.actionAmber} />
       <p style={{ fontSize: 15, lineHeight: 1.6, color: T.textSecondary, margin: "12px 0 18px" }}>
-        Triage logged. Containment set. One thing left — put it on the record so the platform, the school,
+        Triage logged. Containment set. One thing left: put it on the record so the platform, the school,
         and the next class see this coming.
       </p>
       {!sent ? (
@@ -368,12 +368,12 @@ function TransmitPhase({ reduced, audio, onDone }: { reduced: boolean; audio: In
             }}
           >
             <span className="sr-scanfill-bar" style={{ width: `${progress}%` }} />
-            <span style={{ position: "relative" }}>HOLD TO TRANSMIT — {progress}%</span>
+            <span style={{ position: "relative" }}>HOLD TO TRANSMIT · {progress}%</span>
           </button>
         )
       ) : (
         <p role="status" style={{ fontFamily: MONO, fontSize: 13, letterSpacing: "0.06em", color: T.confirmedGreen, margin: 0 }}>
-          REPORT FILED — SIGNAL CLEAR.
+          REPORT FILED. SIGNAL CLEAR.
         </p>
       )}
     </div>

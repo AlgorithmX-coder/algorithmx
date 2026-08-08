@@ -35,13 +35,13 @@ export default function Trace({ payload, reduced, audio, onEvent }: MechanicProp
     if (stage !== 1 || pinned.includes(card.id)) return;
     if (card.inCampaign) {
       setPinned((p) => [...p, card.id]);
-      setNote(`PINNED — ${card.clue ?? "same fingerprint."}`);
+      setNote(`PINNED: ${card.clue ?? "same fingerprint."}`);
       audio.latch();
       onEvent({ kind: "HIT" });
     } else {
       setRejected((r) => (r.includes(card.id) ? r : [...r, card.id]));
       setMissed(true);
-      setNote("Different fingerprint — that one's ordinary noise. Keep to the trail.");
+      setNote("Different fingerprint. That one's ordinary noise. Keep to the trail.");
       audio.thud();
       onEvent({ kind: "MISS" });
     }
@@ -142,7 +142,7 @@ export default function Trace({ payload, reduced, audio, onEvent }: MechanicProp
       {stage === 1 && allPinned && (
         <div style={{ marginTop: 16 }}>
           <AmberButton
-            label="ALL PINNED — MAP THE FUNNEL"
+            label="ALL PINNED: MAP THE FUNNEL"
             onClick={() => {
               audio.click();
               setStage(2);

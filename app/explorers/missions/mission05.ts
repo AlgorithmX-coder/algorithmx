@@ -33,7 +33,7 @@ export const mission05: MissionManifest = {
   transmission: {
     headline: "STORM WARNING",
     lines: [
-      "PHANTOM HOOK is back — and done being subtle.",
+      "PHANTOM HOOK is back, and done being subtle.",
       "Texts. QR posters. DMs. All at once.",
       "Volume is the weapon. Panic is the goal.",
       "Analysts don't panic. They work the queue.",
@@ -89,10 +89,10 @@ export const mission05: MissionManifest = {
             { label: "FEED:", seg: { id: "feed", text: "three channels, one storm" } },
           ],
           body: [
-            [{ id: "sms", text: "[SMS] LIBRARY ALERT: account locked — fix it within 12 hours", tellId: "clock" }],
+            [{ id: "sms", text: "[SMS] LIBRARY ALERT: account locked, fix it within 12 hours", tellId: "clock" }],
             [{ id: "qr", text: "[QR POSTER] scan to keep your canteen balance → pay-canteen-verify.net", tellId: "domain", mono: true }],
             [{ id: "dm", text: "[DM] your game account is flagged!! log in here quick to keep it", tellId: "ask" }],
-            [{ id: "ok", text: "[SCHOOL APP] football trials moved to Friday — Mr. Ortega" }],
+            [{ id: "ok", text: "[SCHOOL APP] football trials moved to Friday · Mr. Ortega" }],
           ],
           tells: [
             {
@@ -122,7 +122,7 @@ export const mission05: MissionManifest = {
             options: [
               "Two problems, two scammers",
               "One campaign wearing two costumes",
-              "Coincidence — ignore both",
+              "Coincidence, ignore both",
             ],
             answer: 1,
           },
@@ -160,7 +160,7 @@ export const mission05: MissionManifest = {
           question: "A message says it's from your head teacher. What proves it?",
           options: [
             "The name looks official",
-            "Nothing yet — check the address underneath",
+            "Nothing yet, check the address underneath",
             "It uses the school colors",
           ],
           answer: 1,
@@ -173,9 +173,9 @@ export const mission05: MissionManifest = {
         payload: {
           intro: "Pick the 3 sender moves in this actor's M.O.",
           evidence: [
-            "“GameHub Support” — actually sent from renew-alerts.net",
-            "“Library Desk” — actually sent from lib-renew-check.net",
-            "“Mrs. Cole (Head)” — actually sent from head-office-mail.net",
+            "“GameHub Support”: actually sent from renew-alerts.net",
+            "“Library Desk”: actually sent from lib-renew-check.net",
+            "“Mrs. Cole (Head)”: actually sent from head-office-mail.net",
           ],
           behaviors: [
             { id: "borrow", label: "Borrows a trusted display name", matches: true },
@@ -201,7 +201,7 @@ export const mission05: MissionManifest = {
             id: "c2q2",
             question: "“Mrs. Cole” emails from head-office-mail.net. Your move?",
             options: [
-              "Reply — it's the head teacher",
+              "Reply, it's the head teacher",
               "Treat it as a costume; verify at school",
               "Forward it to friends",
             ],
@@ -223,7 +223,7 @@ export const mission05: MissionManifest = {
           "In a storm, everything screams for attention.",
           "Analysts don't answer screams. They rank them.",
           "Loud isn't the same as dangerous.",
-          "A message sent to everyone is spray — it's guessing.",
+          "A message sent to everyone is spray. It's guessing.",
           "A message that knows YOU did research.",
           "Targeted beats loud. Every time.",
         ],
@@ -236,7 +236,7 @@ export const mission05: MissionManifest = {
           ],
           answer: 1,
           right: "Right. Personal details mean somebody did homework on you.",
-          wrong: "Loud is cheap. The one that KNOWS things did research — that's the threat.",
+          wrong: "Loud is cheap. The one that KNOWS things did research. That's the threat.",
         },
       },
       fieldwork: {
@@ -251,20 +251,20 @@ export const mission05: MissionManifest = {
               id: "spray",
               label: "The blast sent to every inbox in school",
               outcome:
-                "Dangerous but shallow — that's spray. It guesses. The one that KNOWS things outranks it.",
+                "Dangerous but shallow, that's spray. It guesses. The one that KNOWS things outranks it.",
             },
             {
               id: "spear",
               label: "The one that names your form class and your teacher",
               correct: true,
               outcome:
-                "Correct. Personal details mean research — that's a spear, not spray. It goes to the top of the queue.",
+                "Correct. Personal details mean research. That's a spear, not spray. It goes to the top of the queue.",
             },
             {
               id: "typos",
               label: "The one full of typos promising a free jetpack",
               outcome:
-                "Almost funny. Log it, move on. Severity first — the queue doesn't care what's entertaining.",
+                "Almost funny. Log it, move on. Severity first: the queue doesn't care what's entertaining.",
             },
           ],
         },
@@ -306,11 +306,11 @@ export const mission05: MissionManifest = {
   debrief: {
     report: [
       "One storm reduced to one case: shared clock, shared domains, shared ask.",
-      "Senders read at header level — names treated as costumes, addresses as fingerprints.",
+      "Senders read at header level: names treated as costumes, addresses as fingerprints.",
       "The spear found, traced, and filed. Block One closed: CONFIDENTIAL clearance confirmed.",
     ],
     realWorldMove:
-      "This week: when an urgent message lands, check one thing first — does the address match the name? Then check the real app. Two checks, ten seconds.",
+      "This week: when an urgent message lands, check one thing first: does the address match the name? Then check the real app. Two checks, ten seconds.",
     wrenLine: "Block One closed. CONFIDENTIAL clearance, confirmed. Wear it well, Operative.",
   },
 
@@ -321,7 +321,7 @@ export const mission05: MissionManifest = {
   },
 
   dossier: {
-    mo: "One trick, every channel, all at once — and a spear hidden in the spray.",
+    mo: "One trick, every channel, all at once, and a spear hidden in the spray.",
     defeatedBy: "Anyone who matches fingerprints across channels and triages instead of panicking.",
     breadcrumb:
       "CROSS-REF: the spear's personal lines match the file PACKRAT auctioned in CASE 004. Two actors, one supply chain. Filed.",

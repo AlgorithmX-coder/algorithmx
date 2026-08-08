@@ -54,7 +54,7 @@ export default function Profile({ payload, audio, onEvent }: MechanicProps<Profi
       </div>
 
       <p style={{ margin: "16px 0 10px", fontFamily: MONO, fontSize: 13, color: T.textSecondary, letterSpacing: "0.04em" }}>
-        SELECT THE {payload.picks} BEHAVIORS THAT MATCH THE EVIDENCE — {picked.length}/{payload.picks} SELECTED
+        SELECT THE {payload.picks} BEHAVIORS THAT MATCH THE EVIDENCE: {picked.length}/{payload.picks} SELECTED
       </p>
 
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }} className="sr-two-col">
@@ -89,7 +89,7 @@ export default function Profile({ payload, audio, onEvent }: MechanicProps<Profi
 
       {wrongIds.length > 0 && (
         <p role="status" style={{ margin: "12px 0 0", fontSize: 13, color: T.textSecondary }}>
-          Not all of those match this actor&rsquo;s file. The marked ones belong to someone else&rsquo;s M.O. — look again.
+          Not all of those match this actor&rsquo;s file. The marked ones belong to someone else&rsquo;s M.O. Look again.
         </p>
       )}
 
@@ -100,7 +100,7 @@ export default function Profile({ payload, audio, onEvent }: MechanicProps<Profi
         {done && (
           <div style={{ display: "grid", gap: 10 }}>
             <p role="status" style={{ margin: 0, fontSize: 13, color: T.confirmedGreen }}>
-              PROFILE CONFIRMED — pattern on file.
+              PROFILE CONFIRMED: pattern on file.
             </p>
             <p style={{ margin: 0, fontSize: 13, color: T.textSecondary, fontStyle: "italic" }}>
               &ldquo;{payload.doneLine}&rdquo;

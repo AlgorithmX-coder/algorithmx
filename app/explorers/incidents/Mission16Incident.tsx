@@ -19,14 +19,14 @@ import type { IncidentProps } from "../engine/types";
 const LOTS = [
   {
     id: "scores",
-    label: "The high scores and playlists — years of them",
+    label: "The high scores and playlists, years of them",
     correct: false,
     outcome:
       "Trivia. Nobody bids on your space-shooter record. Look for what buyers can USE.",
   },
   {
     id: "linked",
-    label: "The LINKS — one handle tying school, habits, photos, and answers into one person",
+    label: "The LINKS: one handle tying school, habits, photos, and answers into one person",
     correct: true,
     outcome:
       "That's the merchandise. Separate crumbs are worth pennies. LINKED crumbs are a person, packaged. The links are the lot.",
@@ -43,7 +43,7 @@ const LOTS = [
 const CUTS = [
   {
     id: "onephoto",
-    label: "Delete the park photo — it has the location tag",
+    label: "Delete the park photo, it has the location tag",
     correct: false,
     outcome:
       "One page out of a linked book. The handle still ties everything else together. Think bigger than one crumb.",
@@ -60,31 +60,31 @@ const CUTS = [
     label: "Bid on the file yourself and destroy it",
     correct: false,
     outcome:
-      "Paying a collector funds the next collection — and he keeps copies. Never buy back what you can devalue.",
+      "Paying a collector funds the next collection, and he keeps copies. Never buy back what you can devalue.",
   },
 ];
 
 const GAVELS = [
   {
     id: "full",
-    label: "The full file — the sale went through anyway",
+    label: "The full file, the sale went through anyway",
     correct: false,
     outcome:
-      "The sale went through, yes — check what the file CONTAINED by then. Follow the links you cut.",
+      "The sale went through, yes. Check what the file CONTAINED by then. Follow the links you cut.",
   },
   {
     id: "scraps",
-    label: "Unlinked scraps that could be anyone — the buyers got a pile, not a person",
+    label: "Unlinked scraps that could be anyone: the buyers got a pile, not a person",
     correct: true,
     outcome:
       "Exactly. The gavel fell on waste paper. And every complaint from a cheated buyer chips PACKRAT's reputation in the market. Devalue beats destroy.",
   },
   {
     id: "nothing",
-    label: "Nothing — the auction was cancelled",
+    label: "Nothing, the auction was cancelled",
     correct: false,
     outcome:
-      "Collectors never cancel. The auction ran — the honest ledger asks what the lot was WORTH by gavel time.",
+      "Collectors never cancel. The auction ran. The honest ledger asks what the lot was WORTH by gavel time.",
   },
 ];
 
@@ -164,10 +164,10 @@ export default function Mission16Incident({ reduced, audio, onPhaseCleared, onCo
       {phase === 1 && (
         <div style={{ marginBottom: 18, maxWidth: 560 }}>
           <div style={{ fontFamily: MONO, fontSize: 10, letterSpacing: "0.14em", color: T.threatRed, marginBottom: 8 }}>
-            INTERCEPTED — PACKRAT, ON THE WIRE
+            INTERCEPTED: PACKRAT, ON THE WIRE
           </div>
           <Bubble who="villain">
-            <em>&ldquo;My masterpiece file, little archivist. Years in the collecting. Bid generously — oh. Why is it… crumbling?&rdquo;</em>
+            <em>&ldquo;My masterpiece file, little archivist. Years in the collecting. Bid generously. Oh. Why is it… crumbling?&rdquo;</em>
           </Bubble>
         </div>
       )}
@@ -181,13 +181,13 @@ export default function Mission16Incident({ reduced, audio, onPhaseCleared, onCo
 
       {phase === 1 &&
         stage(
-          "Phase 1 — The lot listing is up. What actually makes this file worth bidding on?",
+          "Phase 1. The lot listing is up. What actually makes this file worth bidding on?",
           "LOT 47: one student, fully mapped. Handle-linked across 6 apps. School, habits, schedule, security answers. Opening bid: high.",
           LOTS,
           lot,
           lotChoice,
           pick(setLot, LOTS, lot),
-          "VALUE FOUND — CUT IT",
+          "VALUE FOUND: CUT IT",
           () => {
             audio.stamp();
             onPhaseCleared(1);
@@ -198,13 +198,13 @@ export default function Mission16Incident({ reduced, audio, onPhaseCleared, onCo
 
       {phase === 2 &&
         stage(
-          "Phase 2 — The gavel is in one hour. One move crashes the price. Which?",
+          "Phase 2. The gavel is in one hour. One move crashes the price. Which?",
           "AUCTION STATUS: 12 bidders registered · lot value: HIGH · linkage integrity: 100%",
           CUTS,
           cut,
           cutChoice,
           pick(setCut, CUTS, cut),
-          "LINKS CUT — TO THE GAVEL",
+          "LINKS CUT: TO THE GAVEL",
           () => {
             audio.stamp();
             onPhaseCleared(2);
@@ -215,7 +215,7 @@ export default function Mission16Incident({ reduced, audio, onPhaseCleared, onCo
 
       {phase === 3 && !closed &&
         stage(
-          "Phase 3 — The gavel falls. The honest ledger: what did the buyers actually get?",
+          "Phase 3. The gavel falls. The honest ledger: what did the buyers actually get?",
           "AUCTION CLOSED: lot sold · linkage integrity at gavel: 11% · buyer complaints: filing…",
           GAVELS,
           gavel,
@@ -233,7 +233,7 @@ export default function Mission16Incident({ reduced, audio, onPhaseCleared, onCo
 
       {phase === 3 && closed && (
         <p style={{ fontFamily: MONO, fontSize: 12, letterSpacing: "0.06em", color: T.confirmedGreen, margin: 0 }}>
-          LEDGER CLOSED — THE MASTERPIECE SOLD AS SCRAP. COLLECTIONS END WHEN LINKS DO.
+          LEDGER CLOSED: THE MASTERPIECE SOLD AS SCRAP. COLLECTIONS END WHEN LINKS DO.
         </p>
       )}
     </div>

@@ -63,7 +63,7 @@ export const mission01: MissionManifest = {
           "The feeling is hurry.",
           "A deadline flips your brain from thinking to reacting.",
           "Attackers know that.",
-          "Pressure in a message isn't drama. It's a tool — aimed at you.",
+          "Pressure in a message isn't drama. It's a tool, aimed at you.",
         ],
         prediction: {
           question: "Why put a 24-hour deadline in a message?",
@@ -74,7 +74,7 @@ export const mission01: MissionManifest = {
           ],
           answer: 1,
           right: "Right. The deadline is pressure, not information.",
-          wrong: "No — the deadline targets your reflexes, not your calendar.",
+          wrong: "No. The deadline targets your reflexes, not your calendar.",
         },
       },
       fieldwork: {
@@ -107,7 +107,7 @@ export const mission01: MissionManifest = {
                 mono: true,
               },
             ],
-            [{ id: "sig", text: "— The GameHub Team" }],
+            [{ id: "sig", text: "The GameHub Team" }],
           ],
           tells: [
             {
@@ -137,7 +137,7 @@ export const mission01: MissionManifest = {
               "A message says: “Photos deleted TONIGHT unless you log in now.” Your first move?",
             options: [
               "Log in fast, to be safe",
-              "Slow down — pressure is a red flag",
+              "Slow down. Pressure is a red flag",
               "Forward it to friends to vote",
             ],
             answer: 1,
@@ -148,7 +148,7 @@ export const mission01: MissionManifest = {
               "Your friend starts typing his password for a “24 hours” email. You say:",
             options: [
               "Type faster, beat the clock",
-              "Stop — check in the official app",
+              "Stop. Check in the official app",
               "Reply and ask if it's real",
             ],
             answer: 1,
@@ -167,7 +167,7 @@ export const mission01: MissionManifest = {
       intel: {
         beats: [
           "Web addresses read right to left.",
-          "The words just before the first slash — that's who you're visiting.",
+          "The words just before the first slash: that's who you're visiting.",
           "Everything in front is decoration.",
           "So gamehub.support-verify.net isn't GameHub.",
           "It's support-verify.net, wearing a GameHub costume.",
@@ -205,7 +205,7 @@ export const mission01: MissionManifest = {
               label: "Check in the official app, then report",
               correct: true,
               outcome:
-                "Clean. The real app is ground truth — and the report protects the next kid.",
+                "Clean. The real app is ground truth, and the report protects the next kid.",
             },
           ],
         },
@@ -243,7 +243,7 @@ export const mission01: MissionManifest = {
         beats: [
           "Attackers repeat themselves.",
           "The costume changes. The moves don't.",
-          "Spot the pattern once — you'll recognize every disguise.",
+          "Spot the pattern once. You'll recognize every disguise.",
           "ARC files each actor's moves as an M.O.",
           "One closed case protects a thousand inboxes.",
         ],
@@ -281,7 +281,7 @@ export const mission01: MissionManifest = {
           {
             id: "c3q1",
             question:
-              "A text: “FINAL WARNING from your bank — verify at bank-safety-check.net in 2 hours.” Whose M.O.?",
+              "A text: “FINAL WARNING from your bank. Verify at bank-safety-check.net in 2 hours.” Whose M.O.?",
             options: ["PHANTOM HOOK", "Someone guessing passwords", "A friend pranking you"],
             answer: 0,
           },
@@ -290,7 +290,7 @@ export const mission01: MissionManifest = {
             question: "Why does ARC keep files on closed cases?",
             options: [
               "Trophies look good",
-              "Patterns repeat — old tricks expose new ones",
+              "Patterns repeat: old tricks expose new ones",
               "To fill the archive",
             ],
             answer: 1,

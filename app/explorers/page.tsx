@@ -37,9 +37,9 @@ import { mission20 } from "./missions/mission20";
 const CASES: { m: MissionManifest; tease: string; minutes: string }[] = [
   { m: mission01, tease: "A student's game account gets a 24-hour death threat. Something about it reads wrong.", minutes: "45–60 MIN" },
   { m: mission02, tease: "Five hundred free skins, today only, everywhere at once. Nobody gives away five hundred of anything.", minutes: "45–60 MIN" },
-  { m: mission03, tease: "Three hundred password guesses a second, aimed at your school. No tricks — just math. Beat it.", minutes: "45–60 MIN" },
-  { m: mission04, tease: "Somebody built a file on a student — out of her own posts. It's for sale tonight.", minutes: "45–60 MIN" },
-  { m: mission05, tease: "Every channel floods at once — and one message in the storm knows your name.", minutes: "45–60 MIN" },
+  { m: mission03, tease: "Three hundred password guesses a second, aimed at your school. No tricks, just math. Beat it.", minutes: "45–60 MIN" },
+  { m: mission04, tease: "Somebody built a file on a student, out of her own posts. It's for sale tonight.", minutes: "45–60 MIN" },
+  { m: mission05, tease: "Every channel floods at once, and one message in the storm knows your name.", minutes: "45–60 MIN" },
   { m: mission06, tease: "Six levers move every scam on earth. SIREN knows them all. Now you will too.", minutes: "45–60 MIN" },
   { m: mission07, tease: "Your best friend's account asks for a favor. The account is real. The friend might not be.", minutes: "45–60 MIN" },
   { m: mission08, tease: "A new online friend is funny, kind, and perfect. Nobody wrote a single word of it.", minutes: "45–60 MIN" },
@@ -47,10 +47,10 @@ const CASES: { m: MissionManifest; tease: string; minutes: string }[] = [
   { m: mission10, tease: "The phone rings in your mum's exact voice. She needs a code, fast. She isn't your mum.", minutes: "45–60 MIN" },
   { m: mission11, tease: "Forty accounts, one brain. SKELETON KEY is counting on that math. Build the machine that breaks it.", minutes: "45–60 MIN" },
   { m: mission12, tease: "Someone at the café is reading every message in the room. Learn to make yours unreadable.", minutes: "45–60 MIN" },
-  { m: mission13, tease: "Your lock is unbreakable now — so the locksmith stopped picking it. He found a side door.", minutes: "45–60 MIN" },
+  { m: mission13, tease: "Your lock is unbreakable now, so the locksmith stopped picking it. He found a side door.", minutes: "45–60 MIN" },
   { m: mission14, tease: "Five downloads wait on a tablet. Four are gifts. One is a horse full of soldiers.", minutes: "45–60 MIN" },
-  { m: mission15, tease: "Five login pages, pixel-identical. Four are mirrors. Your eyes are useless — your tools aren't.", minutes: "45–60 MIN" },
-  { m: mission16, tease: "There's a file about you, and it's for sale. You can't steal it back — you can make it worthless.", minutes: "45–60 MIN" },
+  { m: mission15, tease: "Five login pages, pixel-identical. Four are mirrors. Your eyes are useless. Your tools aren't.", minutes: "45–60 MIN" },
+  { m: mission16, tease: "There's a file about you, and it's for sale. You can't steal it back. You can make it worthless.", minutes: "45–60 MIN" },
   { m: mission17, tease: "A screenshot nobody took is tearing through the school chats. Trace it, break it, still it.", minutes: "45–60 MIN" },
   { m: mission18, tease: "You're good now. Too good. Someone from the other side just sent you an offer. Choose.", minutes: "45–60 MIN" },
   { m: mission19, tease: "Every actor, every channel, all at once, aimed at your whole school. Hold the line.", minutes: "45–60 MIN" },
@@ -85,7 +85,7 @@ export default function ExplorersPage() {
 
       <div style={{ position: "relative", zIndex: 1, maxWidth: 860, margin: "0 auto", padding: "68px 24px 80px" }}>
         <div className="sr-scene">
-          <Eyebrow text="ARC secure net — active case files" color={T.arcCyan} />
+          <Eyebrow text="ARC secure net: active case files" color={T.arcCyan} />
           <h1 style={{ fontFamily: MONO, fontSize: "clamp(32px, 6vw, 54px)", fontWeight: 600, margin: "16px 0 10px", textShadow: `0 0 40px ${T.arcCyan}33` }}>
             <Resolve text="Pick your case," reduced={reduced} />
             <br />
@@ -94,7 +94,7 @@ export default function ExplorersPage() {
             </span>
           </h1>
           <p style={{ fontSize: 16.5, lineHeight: 1.65, color: T.textSecondary, margin: "0 0 34px", maxWidth: 540 }}>
-            {CASES.length} cases are waiting. Progress saves on every step — walk away any time, resume where you stood.
+            {CASES.length} cases are waiting. Progress saves on every step. Walk away any time, resume where you stood.
           </p>
 
           <div style={{ display: "grid", gap: 18 }}>

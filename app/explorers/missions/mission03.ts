@@ -36,7 +36,7 @@ export const mission03: MissionManifest = {
       "A password-guessing rig just lit up on ARC's board.",
       "It's pointed at student accounts.",
       "Three hundred guesses a second. No tricks, no bait.",
-      "Just math. Let's learn how it thinks — then beat it.",
+      "Just math. Let's learn how it thinks, then beat it.",
     ],
   },
 
@@ -76,7 +76,7 @@ export const mission03: MissionManifest = {
             "The ! gives it away",
           ],
           answer: 1,
-          right: "Exactly. It's not magic — it's a list. Common patterns go first.",
+          right: "Exactly. It's not magic. It's a list. Common patterns go first.",
           wrong: "The rig never met her. It just tries the most common patterns first.",
         },
       },
@@ -84,16 +84,16 @@ export const mission03: MissionManifest = {
         verb: "INSPECT",
         payload: {
           intro: "Tap the 3 passwords the rig eats first.",
-          device: { app: "NOTES", owner: "JAKE'S PHONE (audit — he said yes)" },
+          device: { app: "NOTES", owner: "JAKE'S PHONE (audit: he said yes)" },
           header: [
             { label: "NOTE:", seg: { id: "title", text: "my passwords (don't tell anyone lol)" } },
             { label: "AUDIT:", seg: { id: "audit", text: "authorized by Jake · ARC volunteer check" } },
           ],
           body: [
-            [{ id: "e1", text: "GameHub — Jake2014!", tellId: "pattern", mono: true }],
-            [{ id: "e2", text: "School email — Jake2014! (same as game, easy!)", tellId: "reuse", mono: true }],
-            [{ id: "e3", text: "Streaming — biscuit1 (my dog lol)", tellId: "pet", mono: true }],
-            [{ id: "e4", text: "Library — kite-mango-thunder-52", mono: true }],
+            [{ id: "e1", text: "GameHub: Jake2014!", tellId: "pattern", mono: true }],
+            [{ id: "e2", text: "School email: Jake2014! (same as game, easy!)", tellId: "reuse", mono: true }],
+            [{ id: "e3", text: "Streaming: biscuit1 (my dog lol)", tellId: "pet", mono: true }],
+            [{ id: "e4", text: "Library: kite-mango-thunder-52", mono: true }],
           ],
           tells: [
             {
@@ -112,7 +112,7 @@ export const mission03: MissionManifest = {
               why: "Biscuit is in Jake's posts. Rigs read posts.",
             },
           ],
-          doneLine: "Three soft locks. The rig eats these for breakfast — the library one outlives it.",
+          doneLine: "Three soft locks. The rig eats these for breakfast. The library one outlives it.",
         },
       },
       checkpoint: {
@@ -128,7 +128,7 @@ export const mission03: MissionManifest = {
             question: "Your password is your cat plus your birth year. Why is that weak?",
             options: [
               "Cats are too common",
-              "Both facts are in your posts — and on the list",
+              "Both facts are in your posts, and on the list",
               "It's too short to remember",
             ],
             answer: 1,
@@ -157,12 +157,12 @@ export const mission03: MissionManifest = {
           question: "A forum leaks your password. Which door does SK try first?",
           options: [
             "The same forum again",
-            "Your email — it can reset everything else",
-            "None — one site is one site",
+            "Your email: it can reset everything else",
+            "None: one site is one site",
           ],
           answer: 1,
           right: "Right. Email is the master door. Reset any lock from inside it.",
-          wrong: "The forum is already done. Email is the master door — it resets everything.",
+          wrong: "The forum is already done. Email is the master door. It resets everything.",
         },
       },
       fieldwork: {
@@ -175,22 +175,22 @@ export const mission03: MissionManifest = {
           options: [
             {
               id: "game",
-              label: "The game account — the leak came from there",
+              label: "The game account: the leak came from there",
               outcome:
-                "The leak started there, but the damage moved on. His email is the master door — and SK is already at it.",
+                "The leak started there, but the damage moved on. His email is the master door, and SK is already at it.",
             },
             {
               id: "email",
-              label: "The email — it resets everything else",
+              label: "The email: it resets everything else",
               correct: true,
               outcome:
                 "Clean. Lock the master door first, then work down the list. That's triage.",
             },
             {
               id: "social",
-              label: "The socials — losing those would be so embarrassing",
+              label: "The socials: losing those would be so embarrassing",
               outcome:
-                "Embarrassing, sure. But email can take everything — including the socials. Master door first.",
+                "Embarrassing, sure. But email can take everything, including the socials. Master door first.",
             },
           ],
         },
@@ -232,7 +232,7 @@ export const mission03: MissionManifest = {
         beats: [
           "So what actually survives the rig?",
           "Not cleverness. Length.",
-          "P@ssw0rd! looks tough. Falls in minutes — swaps are on the list.",
+          "P@ssw0rd! looks tough. Falls in minutes. Swaps are on the list.",
           "Three random words beat one clever word.",
           "banana-rocket-lampshade-9 gives the rig centuries of work.",
           "Long. Random. Never reused. That's the whole spell.",
@@ -251,13 +251,13 @@ export const mission03: MissionManifest = {
           intro: "Pick the 3 rules that stop the rig.",
           evidence: [
             "Jake2014! fell in under a second",
-            "P@ssw0rd! fell in minutes — swaps are on the list",
+            "P@ssw0rd! fell in minutes: swaps are on the list",
             "kite-mango-thunder-52 outlived the whole test",
           ],
           behaviors: [
-            { id: "long", label: "Long — three or four random words", matches: true },
-            { id: "random", label: "Random — nothing about you in it", matches: true },
-            { id: "unique", label: "Unique — a different key for every door", matches: true },
+            { id: "long", label: "Long: three or four random words", matches: true },
+            { id: "random", label: "Random: nothing about you in it", matches: true },
+            { id: "unique", label: "Unique: a different key for every door", matches: true },
             { id: "swap", label: "Swap letters for symbols (a → @)", matches: false },
             { id: "exclaim", label: "Add a ! at the end", matches: false },
             { id: "capital", label: "Capitalize the first letter", matches: false },
@@ -283,7 +283,7 @@ export const mission03: MissionManifest = {
             question: "You use plum-glacier-radio-77 for EVERY account. The weak spot?",
             options: [
               "Too silly to be safe",
-              "Reused — one leak opens every door",
+              "Reused: one leak opens every door",
               "Too long to type",
             ],
             answer: 1,
@@ -303,11 +303,11 @@ export const mission03: MissionManifest = {
   debrief: {
     report: [
       "One guessing rig dissected: lists first, patterns first, no magic anywhere.",
-      "Reuse chain broken — master door locked first, then down the list.",
+      "Reuse chain broken: master door locked first, then down the list.",
       "New wall built: long, random, unique. The rig bounced.",
     ],
     realWorldMove:
-      "This week: find your one most-reused password and change it — three random words, different everywhere. If the account is shared with family, do it together with a parent.",
+      "This week: find your one most-reused password and change it. Three random words, different everywhere. If the account is shared with family, do it together with a parent.",
     wrenLine: "Ten thousand doors held. Your locks, your rules. Sign out.",
   },
 
@@ -318,7 +318,7 @@ export const mission03: MissionManifest = {
   },
 
   dossier: {
-    mo: "Doesn't trick you — guesses you. Names, pets, birthdays, then every stolen key on every door.",
+    mo: "Doesn't trick you. Guesses you. Names, pets, birthdays, then every stolen key on every door.",
     defeatedBy: "Long random passphrases, never reused. His rig does the math and gives up.",
   },
 };

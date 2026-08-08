@@ -81,7 +81,7 @@ export default function Simulate({ payload, reduced, audio, onEvent }: MechanicP
       {/* the attacker's move so far */}
       <div style={{ marginBottom: 14 }}>
         <div style={{ fontFamily: MONO, fontSize: 10, letterSpacing: "0.14em", color: T.threatRed, marginBottom: 8 }}>
-          LIVE CON — RANGE PLAYBACK
+          LIVE CON: RANGE PLAYBACK
         </div>
         <Bubble who="villain">
           <em>{step.scene}</em>
@@ -91,7 +91,7 @@ export default function Simulate({ payload, reduced, audio, onEvent }: MechanicP
       {/* the prediction */}
       <div style={{ background: T.panel, border: `1px solid ${T.hairline}`, borderRadius: 3, padding: "16px 18px" }}>
         <p style={{ margin: 0, fontFamily: MONO, fontSize: 12.5, letterSpacing: "0.06em", color: T.actionAmber }}>
-          PREDICT THE NEXT MOVE — {step.question}
+          PREDICT THE NEXT MOVE: {step.question}
         </p>
         <div style={{ display: "grid", gap: 10, marginTop: 12 }}>
           {step.options.map((o, i) => {

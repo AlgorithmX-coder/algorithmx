@@ -100,11 +100,11 @@ function MissionMap({ manifest, pos, stampNew }: { manifest: MissionManifest; po
   const done = stepsDone(pos);
   const rows: { label: string; sub: string; idx: number }[] = [
     ...manifest.cycles.map((c, i) => ({
-      label: `SKILL ${i + 1} — ${c.title}`,
+      label: `SKILL ${i + 1}: ${c.title}`,
       sub: c.promise ?? c.concept,
       idx: i,
     })),
-    { label: `BOSS — ${manifest.incident.title}`, sub: `Use all 3 skills against ${manifest.actor.codename}`, idx: 3 },
+    { label: `BOSS: ${manifest.incident.title}`, sub: `Use all 3 skills against ${manifest.actor.codename}`, idx: 3 },
     { label: "MISSION REPORT", sub: "What you learned + your move in real life", idx: 4 },
   ];
   return (
@@ -374,7 +374,7 @@ export default function MissionRuntime({ manifest }: { manifest: MissionManifest
       {/* dev ledger */}
       <div style={{ position: "fixed", bottom: 14, left: 16, zIndex: 3 }}>
         <button onClick={() => setLedgerOpen((o) => !o)} style={{ fontFamily: MONO, fontSize: 10, letterSpacing: "0.06em", color: T.textDisabled, background: "transparent", border: `1px solid ${T.hairline}`, borderRadius: 2, padding: "4px 8px", cursor: "pointer" }}>
-          EVENT LEDGER (DEV) — {events.length}
+          EVENT LEDGER (DEV): {events.length}
         </button>
         {ledgerOpen && (
           <div style={{ marginTop: 6, maxHeight: 180, overflowY: "auto", background: T.panel, border: `1px solid ${T.hairline}`, borderRadius: 3, padding: "8px 10px", minWidth: 300 }}>
@@ -484,7 +484,7 @@ function MissionStartScene({ manifest, reduced, onBegin }: { manifest: MissionMa
 function MapMomentScene({ manifest, pos, stamped, xp, audio, onContinue }: { manifest: MissionManifest; pos: BeatPos; stamped: number; xp: number; audio: ReturnType<typeof useSignalAudio>; onContinue: () => void }) {
   const done = stepsDone(pos);
   const nextLabel =
-    done < 3 ? `NEXT: SKILL ${done + 1} — ${manifest.cycles[done].title}` : done === 3 ? `NEXT: BOSS — ${manifest.incident.title}` : "NEXT: MISSION REPORT";
+    done < 3 ? `NEXT: SKILL ${done + 1} · ${manifest.cycles[done].title}` : done === 3 ? `NEXT: BOSS · ${manifest.incident.title}` : "NEXT: MISSION REPORT";
   useEffect(() => {
     audio.stamp();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -674,7 +674,7 @@ function QuizStage({ cycle, cycleIndex, reduced, audio, emit, onNext }: { cycle:
   const [evidence, setEvidence] = useState<CheckpointEvidence[]>([]);
   const [passed, setPassed] = useState(false);
   const [thread, setThread] = useState<{ who: "wren" | "you"; text: string; ok?: boolean }[]>([
-    { who: "wren", text: "Quick quiz. Two questions — show me you've got it." },
+    { who: "wren", text: "Quick quiz. Two questions. Show me you've got it." },
   ]);
   const q = questions[Math.min(qIndex, questions.length - 1)];
   const WRONG_LINES = ["Not that one. Think about what you just saw.", "Close. Read the question one more time."];
@@ -772,7 +772,7 @@ function BossScene({ manifest, reduced, audio, emit, onNext }: { manifest: Missi
     return (
       <section style={{ maxWidth: 640, margin: "0 auto" }}>
         {!reduced && <div className="sr-alert-edge" aria-hidden />}
-        <Eyebrow text="Boss — live case" color={T.threatRed} />
+        <Eyebrow text="Boss: live case" color={T.threatRed} />
         <h1 style={{ fontFamily: MONO, fontSize: "clamp(28px, 5vw, 44px)", fontWeight: 600, margin: "12px 0 16px", textShadow: `0 0 40px ${T.threatRed}33` }}>
           <Resolve text={manifest.incident.title} reduced={reduced} />
         </h1>
@@ -790,7 +790,7 @@ function BossScene({ manifest, reduced, audio, emit, onNext }: { manifest: Missi
                 {manifest.actor.codename} IS LIVE
               </div>
               <div style={{ fontSize: 15, lineHeight: 1.6, color: T.textSecondary, marginTop: 6 }}>
-                Use your 3 skills. Beat the phases. No timer — think, then act.
+                Use your 3 skills. Beat the phases. No timer. Think, then act.
               </div>
             </div>
           </div>
@@ -816,7 +816,7 @@ function BossScene({ manifest, reduced, audio, emit, onNext }: { manifest: Missi
     <section>
       {!complete && !reduced && <div className="sr-alert-edge" aria-hidden />}
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 18, flexWrap: "wrap", gap: 8 }}>
-        <Eyebrow text={`Boss — ${manifest.incident.title}`} color={T.threatRed} />
+        <Eyebrow text={`Boss: ${manifest.incident.title}`} color={T.threatRed} />
         <span style={{ fontFamily: MONO, fontSize: 11, color: T.threatRed, letterSpacing: "0.1em" }}>
           <span className="sr-blink" style={{ marginRight: 6 }}>●</span>LIVE
         </span>
@@ -831,7 +831,7 @@ function BossScene({ manifest, reduced, audio, emit, onNext }: { manifest: Missi
       ) : (
         <div style={{ maxWidth: 560 }}>
           <p style={{ fontFamily: MONO, fontSize: 14, letterSpacing: "0.06em", color: T.confirmedGreen, margin: 0 }}>
-            BOSS DOWN — {manifest.actor.codename} just lost this one.
+            BOSS DOWN. {manifest.actor.codename} just lost this one.
           </p>
           <div style={{ marginTop: 18 }}>
             <AmberButton label="BACK TO THE MAP →" onClick={onNext} />
@@ -891,7 +891,7 @@ function RewardsScene({ manifest, reduced, audio, emit, xp }: { manifest: Missio
 
   return (
     <section style={{ maxWidth: 620, margin: "0 auto", paddingTop: 6 }}>
-      <Eyebrow text="Rewards — case closed" color={T.clearanceBrass} />
+      <Eyebrow text="Rewards: case closed" color={T.clearanceBrass} />
       <div style={{ marginTop: 14, background: T.manila, color: T.fileInk, borderRadius: 2, padding: "26px 28px 30px", boxShadow: "0 2px 0 rgba(0,0,0,0.55)", position: "relative" }}>
         <div style={{ display: "flex", gap: 20, alignItems: "flex-start", flexWrap: "wrap" }}>
           {manifest.actor.portrait ? (
@@ -927,7 +927,7 @@ function RewardsScene({ manifest, reduced, audio, emit, xp }: { manifest: Missio
       </div>
 
       <div style={{ marginTop: 18, background: T.panel, border: `1px solid ${T.hairline}`, borderRadius: 3, padding: "14px 18px", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 10 }}>
-        <span style={{ fontFamily: MONO, fontSize: 12, letterSpacing: "0.08em", color: T.clearanceBrass }}>CLEARANCE — TRAINEE ▸ CONFIDENTIAL</span>
+        <span style={{ fontFamily: MONO, fontSize: 12, letterSpacing: "0.08em", color: T.clearanceBrass }}>CLEARANCE: TRAINEE ▸ CONFIDENTIAL</span>
         <span style={{ fontFamily: MONO, fontSize: 12, color: T.textSecondary }}>
           CASES CLOSED&nbsp;<span style={{ color: T.clearanceBrass }}>{stamped ? "1" : "0"}</span> / 5
         </span>

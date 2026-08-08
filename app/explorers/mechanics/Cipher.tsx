@@ -93,7 +93,7 @@ export default function Cipher({ payload, reduced, audio, onEvent }: MechanicPro
       {/* the dial */}
       <div style={{ marginTop: 14, background: T.panel, border: `1px solid ${solved ? `${T.confirmedGreen}66` : T.hairline}`, borderRadius: 3, padding: "14px 16px" }}>
         <div style={{ fontFamily: MONO, fontSize: 11, letterSpacing: "0.1em", color: T.textSecondary, marginBottom: 10 }}>
-          SHIFT DIAL — spin until it reads
+          SHIFT DIAL: spin until it reads
         </div>
         <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
           {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((n) => (
