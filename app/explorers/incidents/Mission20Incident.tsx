@@ -1,46 +1,57 @@
 "use client";
 
 /**
- * Mission 20 incident — "Signal Zero" (the capstone finale).
+ * Mission 20 incident - "Signal Zero" (the capstone finale).
  *
- * The coordinator runs the full discipline at the operative, solo.
- * Phases:
- *   1. THE LAST FLOOD — every actor's trick at once; pick the one
- *      response that covers them all (defense-in-depth as reflex)
- *   2. THE UNMASKING — the coordinator revealed: an ex-ARC analyst
- *   3. THE HANDOFF — end it clean, by the rules; ULTRA earned
+ * ZERO runs the whole season at the operative, solo. The finale is
+ * synthesis, so the three phases are three DISTINCT interactions, each
+ * reusing a pattern the season already taught (no new engine):
+ *   1. MATCH  - build the wall. Six of the season's greatest-hits tricks,
+ *      each paired to the ONE defense that stops it. Defense-in-depth,
+ *      built by hand, all standing at once.
+ *   2. UNMASK - one decisive verdict: the coordinator is an ex-ARC analyst.
+ *   3. HAND OFF - one decisive verdict: seal it, hand it to the adults.
  *
  * ARC chrome never corrupts, even here (locked). No new mechanics.
  */
 
 import { useState } from "react";
-import { AmberButton, Bubble, Eyebrow, GhostButton } from "../engine/primitives";
+import { AmberButton, Eyebrow, GhostButton } from "../engine/primitives";
 import { MONO, T } from "../engine/tokens";
 import type { IncidentProps } from "../engine/types";
+import { BossIntro, PhasePips } from "./BossChrome";
 
-const FLOODS = [
-  {
-    id: "onebyone",
-    label: "Answer each trick one at a time as it arrives",
-    correct: false,
-    outcome:
-      "Six tricks at once will outrun one-at-a-time forever. You can't out-click a coordinator. You stand behind layers you already built.",
-  },
-  {
-    id: "layers",
-    label: "Trust the system you built: trained eyes, the vault, 2FA, a second way to check, the code word. All already on",
-    correct: true,
-    outcome:
-      "The whole course, standing as one wall. The lure hits trained eyes. The mirror hits the vault. The clone hits the code word. Nothing lands. You built this over twenty cases. Tonight it just holds.",
-  },
-  {
-    id: "offline",
-    label: "Panic and pull the plug on everything",
-    correct: false,
-    outcome:
-      "Going dark is surrender, and it teaches nothing. Your defenses were designed for exactly this night. Let them work.",
-  },
+/* Phase 1: the season's six tricks, each stopped by exactly one defense.
+   Match all six and the wall stands. This proves defense-in-depth by
+   construction: the kid builds the whole wall. */
+const TRICKS = [
+  { id: "lure", label: "The lure: “You won! Tap to claim your prize.”", defense: "eyes" },
+  { id: "mirror", label: "The mirror site: a login page that looks just right", defense: "type" },
+  { id: "clone", label: "The cloned call: a voice that sounds like family", defense: "code" },
+  { id: "face", label: "The borrowed-face DM: a friend's photo, a stranger's ask", defense: "second" },
+  { id: "installer", label: "The fake installer: a “free” game with something hidden inside", defense: "source" },
+  { id: "favor", label: "The “tiny favor”: “just send me that one little code”", defense: "sayno" },
 ];
+
+/* Defenses live in a scrambled order so the match means something. */
+const DEFENSES = [
+  { id: "second", label: "Check on a second channel first" },
+  { id: "source", label: "Install from the official source only" },
+  { id: "eyes", label: "Slow down. Trained eyes, no rush" },
+  { id: "sayno", label: "Remember the Code. Say no" },
+  { id: "type", label: "Type the address yourself. Open the vault" },
+  { id: "code", label: "Ask for the family code word" },
+];
+
+/* The one-line proof shown when a correct pair latches. */
+const PAIR_NOTE: Record<string, string> = {
+  lure: "Trained eyes catch the lure. Nobody wins a prize they never entered.",
+  mirror: "You type the real address and open the vault. The mirror catches nothing.",
+  clone: "The code word stops the clone. Only real family knows it.",
+  face: "A second channel unmasks the borrowed face in seconds.",
+  installer: "Official source only. The hidden payload never gets to run.",
+  favor: "You remember the Code and say no. One “tiny favor” is how it always starts.",
+};
 
 const UNMASKS = [
   {
@@ -92,10 +103,44 @@ const HANDOFFS = [
 
 export default function Mission20Incident({ reduced, audio, onPhaseCleared, onComplete }: IncidentProps) {
   const [phase, setPhase] = useState(1);
-  const [flood, setFlood] = useState<string | null>(null);
+
+  // phase 1: match the wall
+  const [selected, setSelected] = useState<string | null>(null);
+  const [paired, setPaired] = useState<string[]>([]);
+  const [matchNote, setMatchNote] = useState<{ text: string; ok: boolean } | null>(null);
+
+  // phases 2 & 3: single decisive verdicts
   const [unmask, setUnmask] = useState<string | null>(null);
   const [handoff, setHandoff] = useState<string | null>(null);
   const [done, setDone] = useState(false);
+
+  const pairedDefenses = paired.map((tid) => TRICKS.find((t) => t.id === tid)!.defense);
+  const wallHolds = paired.length === TRICKS.length;
+
+  const tapTrick = (id: string) => {
+    if (wallHolds || paired.includes(id)) return;
+    setSelected((cur) => (cur === id ? null : id));
+    audio.click();
+  };
+
+  const tapDefense = (id: string) => {
+    if (wallHolds || pairedDefenses.includes(id)) return;
+    if (!selected) {
+      setMatchNote({ text: "Pick an incoming trick first, then tap the wall that stops it.", ok: false });
+      return;
+    }
+    const trick = TRICKS.find((t) => t.id === selected)!;
+    if (trick.defense === id) {
+      setPaired((p) => [...p, trick.id]);
+      setSelected(null);
+      setMatchNote({ text: PAIR_NOTE[trick.id], ok: true });
+      audio.latch();
+    } else {
+      setSelected(null);
+      setMatchNote({ text: "Close, but that wall won't stop this trick. Pick the one built for it.", ok: false });
+      audio.thud();
+    }
+  };
 
   const pick =
     (set: (v: string | null) => void, list: { id: string; correct: boolean }[], cur: string | null) =>
@@ -107,11 +152,11 @@ export default function Mission20Incident({ reduced, audio, onPhaseCleared, onCo
       else audio.thud();
     };
 
-  const floodChoice = FLOODS.find((o) => o.id === flood) ?? null;
   const unmaskChoice = UNMASKS.find((o) => o.id === unmask) ?? null;
   const handoffChoice = HANDOFFS.find((o) => o.id === handoff) ?? null;
 
-  const stage = (
+  /* Single decisive verdict (phases 2 and 3). */
+  const verdict = (
     intro: string,
     scene: string | null,
     list: { id: string; label: string; correct: boolean; outcome: string }[],
@@ -164,42 +209,122 @@ export default function Mission20Incident({ reduced, audio, onPhaseCleared, onCo
   return (
     <div>
       {phase === 1 && (
-        <div style={{ marginBottom: 18, maxWidth: 560 }}>
-          <div style={{ fontFamily: MONO, fontSize: 10, letterSpacing: "0.14em", color: T.threatRed, marginBottom: 8 }}>
-            INTERCEPTED: ZERO, THE COORDINATOR
+        <BossIntro
+          codename="ZERO, THE COORDINATOR"
+          taunt="You're the best they ever trained, Operative. I know. I was, once. Come now. One last favor, and all of this stops."
+        />
+      )}
+
+      <PhasePips phase={phase} labels={["MATCH THE WALL", "UNMASK", "HAND OFF"]} />
+
+      {/* ------------------------------------------ PHASE 1: match the wall */}
+      {phase === 1 && (
+        <div style={{ maxWidth: 680 }}>
+          <Eyebrow text="Phase 1. Every trick you have faced, all at once, aimed at you alone." color={T.actionAmber} />
+          <p style={{ margin: "10px 0 0", fontSize: 14, lineHeight: 1.6, color: T.textSecondary }}>
+            You do not answer them one at a time. You build one wall. Tap a trick, then tap the defense that stops it.
+          </p>
+
+          {/* the wall, filling as you pair */}
+          <div style={{ margin: "14px 0" }}>
+            <div style={{ display: "flex", justifyContent: "space-between", fontFamily: MONO, fontSize: 11, letterSpacing: "0.08em", color: T.textSecondary, marginBottom: 6 }}>
+              <span>WALL BUILT</span>
+              <span style={{ color: wallHolds ? T.confirmedGreen : T.actionAmber, fontWeight: 600 }}>
+                {paired.length} / {TRICKS.length}
+              </span>
+            </div>
+            <div style={{ display: "flex", gap: 6 }}>
+              {TRICKS.map((_, i) => (
+                <span
+                  key={i}
+                  style={{ flex: 1, height: 8, borderRadius: 2, background: i < paired.length ? T.confirmedGreen : T.panelRaised, border: `1px solid ${i < paired.length ? T.confirmedGreen : T.hairline}`, transition: reduced ? "none" : "background 300ms ease" }}
+                />
+              ))}
+            </div>
           </div>
-          <Bubble who="villain">
-            <em>&ldquo;You're the best they ever trained, Operative. I know. I was, once. Come now. One last favor, and all of this stops.&rdquo;</em>
-          </Bubble>
+
+          <div className="sr-two-col" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+            {/* incoming tricks */}
+            <div>
+              <div style={{ fontFamily: MONO, fontSize: 10, letterSpacing: "0.1em", color: T.threatRed, marginBottom: 8 }}>INCOMING TRICK</div>
+              <div style={{ display: "grid", gap: 10 }}>
+                {TRICKS.map((t) => {
+                  const locked = paired.includes(t.id);
+                  const isSel = selected === t.id;
+                  const color = locked ? T.confirmedGreen : isSel ? T.actionAmber : T.textPrimary;
+                  const bg = locked ? `${T.confirmedGreen}14` : isSel ? `${T.actionAmber}14` : T.panelRaised;
+                  const bd = locked ? T.confirmedGreen : isSel ? T.actionAmber : T.hairline;
+                  return (
+                    <button
+                      key={t.id}
+                      onClick={() => tapTrick(t.id)}
+                      className="sr-btn"
+                      disabled={locked || wallHolds}
+                      style={{ textAlign: "left", fontSize: 13, lineHeight: 1.5, color, background: bg, border: `1px solid ${bd}`, borderRadius: 3, padding: "12px 14px", cursor: locked || wallHolds ? "default" : "pointer" }}
+                    >
+                      {locked ? "✓ " : ""}
+                      {t.label}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* your wall */}
+            <div>
+              <div style={{ fontFamily: MONO, fontSize: 10, letterSpacing: "0.1em", color: T.confirmedGreen, marginBottom: 8 }}>YOUR WALL</div>
+              <div style={{ display: "grid", gap: 10 }}>
+                {DEFENSES.map((d) => {
+                  const used = pairedDefenses.includes(d.id);
+                  const color = used ? T.confirmedGreen : T.textPrimary;
+                  const bg = used ? `${T.confirmedGreen}14` : T.panelRaised;
+                  const bd = used ? T.confirmedGreen : T.hairline;
+                  return (
+                    <button
+                      key={d.id}
+                      onClick={() => tapDefense(d.id)}
+                      className="sr-btn"
+                      disabled={used || wallHolds}
+                      style={{ textAlign: "left", fontSize: 13, lineHeight: 1.5, color, background: bg, border: `1px solid ${bd}`, borderRadius: 3, padding: "12px 14px", cursor: used || wallHolds ? "default" : "pointer" }}
+                    >
+                      {used ? "✓ " : ""}
+                      {d.label}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+
+          {matchNote && !wallHolds && (
+            <p role="status" style={{ margin: "12px 0 0", fontSize: 14, lineHeight: 1.6, color: matchNote.ok ? T.confirmedGreen : T.textSecondary }}>
+              {matchNote.text}
+            </p>
+          )}
+
+          {wallHolds && (
+            <div role="status" style={{ marginTop: 14, borderLeft: `2px solid ${T.confirmedGreen}`, paddingLeft: 14 }}>
+              <p style={{ margin: 0, fontSize: 14, lineHeight: 1.6 }}>
+                Six tricks, six walls, all standing at once. This is the whole course in one picture. You did not dodge them one by one. You built a wall that holds them all.
+              </p>
+              <div style={{ marginTop: 12 }}>
+                <AmberButton
+                  label="LINE HELD: TRACE THE SOURCE"
+                  onClick={() => {
+                    audio.stamp();
+                    onPhaseCleared(1);
+                    setPhase(2);
+                  }}
+                />
+              </div>
+            </div>
+          )}
         </div>
       )}
-      <div style={{ display: "flex", gap: 8, marginBottom: 16 }}>
-        {[1, 2, 3].map((p) => (
-          <span key={p} style={{ fontFamily: MONO, fontSize: 10, letterSpacing: "0.08em", padding: "3px 8px", borderRadius: 2, border: `1px solid ${p === phase ? T.threatRed : T.hairline}`, color: p === phase ? T.threatRed : p < phase ? T.confirmedGreen : T.textDisabled }}>
-            {p < phase ? "■" : "□"} PHASE {p}
-          </span>
-        ))}
-      </div>
 
-      {phase === 1 &&
-        stage(
-          "Phase 1: every trick you've faced, all at once, aimed at you alone. How do you hold?",
-          "INCOMING (all at once): lure · mirror site · cloned call · borrowed-face DM · fake installer · a “tiny favor”.",
-          FLOODS,
-          flood,
-          floodChoice,
-          pick(setFlood, FLOODS, flood),
-          "LINE HELD: TRACE THE SOURCE",
-          () => {
-            audio.stamp();
-            onPhaseCleared(1);
-            setPhase(2);
-          },
-          () => setFlood(null),
-        )}
-
+      {/* ---------------------------------------------- PHASE 2: the unmask */}
       {phase === 2 &&
-        stage(
+        verdict(
           "Phase 2: the trace comes back. The board lights up one final name. Who is the coordinator?",
           "IDENTITY FOUND: former ARC clearance ✓ · knew the inside routes ✓ · trained on the same methods as you ✓ · status: went dark 4 years ago.",
           UNMASKS,
@@ -215,8 +340,9 @@ export default function Mission20Incident({ reduced, audio, onPhaseCleared, onCo
           () => setUnmask(null),
         )}
 
+      {/* --------------------------------------------- PHASE 3: the handoff */}
       {phase === 3 && !done &&
-        stage(
+        verdict(
           "Phase 3: everything is proven. WREN: “Your call, Operative. How does this end?”",
           null,
           HANDOFFS,

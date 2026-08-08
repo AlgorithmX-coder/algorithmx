@@ -5,20 +5,44 @@
  *
  * The coordinator's first, veiled contact. The child hears the pitch,
  * walks away clean, and files the report that becomes the thread to
- * the coordinator. Phases:
- *   1. HEAR THE OFFER — the escalating pitch; when do you exit?
- *   2. WALK AWAY CLEAN — the exit that leaves no leverage
- *   3. FILE THE THREAD — breadcrumb ⑤: the signature is the
- *      coordinator; the report becomes the lead
+ * the coordinator. Three DISTINCT beats, not three menus:
+ *   1. STOP THE TAPE — the pitch reveals one line at a time (flattery,
+ *      money, then the "tiny favor" that is the whole crime). Walk away;
+ *      the sooner you go, the less the recruiter's hook can set.
+ *   2. RIGHT RESPONSE — one decisive verdict: what do you owe the offer?
+ *   3. TELL AN ADULT — the responsible close: report it and let ARC
+ *      trace it. Filing reveals the signature: this was the COORDINATOR,
+ *      first contact (breadcrumb ⑤), and your report becomes the lead.
  */
 
 import { useState } from "react";
 import { AmberButton, Bubble, Eyebrow, GhostButton } from "../engine/primitives";
 import { MONO, T } from "../engine/tokens";
 import type { IncidentProps } from "../engine/types";
+import { BossIntro, PhasePips } from "./BossChrome";
 
-/* Phase 1 — the pitch escalates over three lines; the RIGHT answer is
-   to exit at the very first ask, before any hook is set. */
+/* Phase 1 — the recruiter's pitch, escalating one line at a time.
+   Flattery, then money, then the "tiny favor" that is the whole crime. */
+const PITCH = [
+  "“You're wasted at ARC. All that talent, spent playing defense for other people.”",
+  "“Come to the other side. Real work, real money, and nobody grading your homework.”",
+  "“Tiny first job, just to prove you're in: lend me your account for one quick transfer.”",
+];
+
+/** The recruiter's hook, by lines read (index = linesRead - 1). Higher = worse. */
+const HOOK = [15, 50, 85];
+
+/** What walking away now means, by how many lines you read first. */
+const WALK_NOTES = [
+  // walked after line 1 (the flattery)
+  "Gone before the first favor. You read one line, felt the pitch, and left. The recruiter got a wave into empty air. That is the whole skill.",
+  // walked after line 2 (the money)
+  "Clean exit, and you handed over nothing. Still, notice: the flattery in line one was already the hook. The smart move is to leave the second it turns into a pitch.",
+  // walked after line 3 (the favor that is the crime)
+  "You still walked, and that is what counts. But you read all the way to the ask. A pitch never gets safer the longer you listen. Next time, leave at the flattery.",
+];
+
+/* Phase 2 — one decisive verdict: the right response to the offer. */
 const OFFER = [
   {
     id: "hear",
@@ -43,13 +67,15 @@ const OFFER = [
   },
 ];
 
+/* Phase 3 — one decisive verdict: the responsible close. Tell a trusted
+   adult and file it; the report is what ARC traces to the coordinator. */
 const WALKS = [
   {
     id: "block",
     label: "Block, screenshot the message for evidence, tell a trusted adult tonight",
     correct: true,
     outcome:
-      "The clean walk: no reply, evidence saved, an adult told the same day. Nothing for them to build on, everything for ARC to trace.",
+      "The clean close: no reply, evidence saved, a trusted adult told the same day. Then ARC runs the sender's signature and the board lights up: PHANTOM HOOK, SIREN, PACKRAT, MIMIC, and GHOSTWRITER, plus the CASE 015 architect. Six actors, one hand. Tonight the COORDINATOR reached out to YOU, and your quiet report just became the thread that finds them.",
   },
   {
     id: "delete",
@@ -67,36 +93,32 @@ const WALKS = [
   },
 ];
 
-const THREADS = [
-  {
-    id: "nobody",
-    label: "Some random scammer, nothing special, forget it",
-    correct: false,
-    outcome:
-      "Run the signature before you shrug. That fingerprint has appeared before… four times. Check the board.",
-  },
-  {
-    id: "coord",
-    label: "The signature matches every actor AND the architect. This is the COORDINATOR, first contact",
-    correct: true,
-    outcome:
-      "There it is. The recruiter's fingerprint matches PHANTOM HOOK, SIREN, PACKRAT, MIMIC, and GHOSTWRITER, plus the CASE 015 architect. Six actors, one hand. Tonight it reached out to YOU. Your refusal became a sample of their signature. The report IS the thread that finds them.",
-  },
-  {
-    id: "arc",
-    label: "A test by ARC to check your loyalty",
-    correct: false,
-    outcome:
-      "ARC signs its messages and never dangles crime as bait. This came from the dark, and the signature proves it. Trust the trace, not the flattering doubt.",
-  },
-];
-
 export default function Mission18Incident({ reduced, audio, onPhaseCleared, onComplete }: IncidentProps) {
   const [phase, setPhase] = useState(1);
+
+  // phase 1: stop the tape
+  const [linesRead, setLinesRead] = useState(1);
+  const [walked, setWalked] = useState(false);
+
+  // phase 2 + 3: verdicts
   const [offer, setOffer] = useState<string | null>(null);
   const [walk, setWalk] = useState<string | null>(null);
-  const [thread, setThread] = useState<string | null>(null);
   const [filed, setFiled] = useState(false);
+
+  const hook = HOOK[Math.min(linesRead, 3) - 1];
+  const hookColor = hook >= 60 ? T.threatRed : hook >= 30 ? T.actionAmber : T.confirmedGreen;
+
+  const readNext = () => {
+    if (linesRead >= 3 || walked) return;
+    setLinesRead((n) => n + 1);
+    audio.thud(); // each extra line lets the hook set — a dull click of it catching
+  };
+
+  const walkAway = () => {
+    if (walked) return;
+    setWalked(true);
+    audio.latch();
+  };
 
   const pick =
     (set: (v: string | null) => void, list: { id: string; correct: boolean }[], cur: string | null) =>
@@ -110,11 +132,11 @@ export default function Mission18Incident({ reduced, audio, onPhaseCleared, onCo
 
   const offerChoice = OFFER.find((o) => o.id === offer) ?? null;
   const walkChoice = WALKS.find((o) => o.id === walk) ?? null;
-  const threadChoice = THREADS.find((o) => o.id === thread) ?? null;
 
-  const stage = (
+  /* A single decisive verdict: pick one, read the outcome, advance on correct. */
+  const verdict = (
     intro: string,
-    scene: string | null,
+    sceneMono: string | null,
     list: { id: string; label: string; correct: boolean; outcome: string }[],
     chosen: string | null,
     choiceObj: { correct: boolean; outcome: string } | null,
@@ -125,12 +147,12 @@ export default function Mission18Incident({ reduced, audio, onPhaseCleared, onCo
   ) => (
     <div style={{ maxWidth: 640 }}>
       <Eyebrow text={intro} color={T.actionAmber} />
-      {scene && (
+      {sceneMono && (
         <div style={{ margin: "14px 0", background: T.paper, borderRadius: 2, padding: "14px 16px", boxShadow: "0 2px 0 rgba(0,0,0,0.5)" }}>
-          <p style={{ margin: 0, fontSize: 13.5, lineHeight: 1.65, color: T.fileInk }}>{scene}</p>
+          <p style={{ margin: 0, fontFamily: MONO, fontSize: 13, lineHeight: 1.6, color: T.fileInk }}>{sceneMono}</p>
         </div>
       )}
-      <div style={{ display: "grid", gap: 10, marginTop: scene ? 0 : 14 }}>
+      <div style={{ display: "grid", gap: 10, marginTop: sceneMono ? 0 : 14 }}>
         {list.map((o) => {
           const isChosen = chosen === o.id;
           const stateColor = o.correct ? T.confirmedGreen : T.threatRed;
@@ -165,73 +187,102 @@ export default function Mission18Incident({ reduced, audio, onPhaseCleared, onCo
   return (
     <div>
       {phase === 1 && (
-        <div style={{ marginBottom: 18, maxWidth: 560 }}>
-          <div style={{ fontFamily: MONO, fontSize: 10, letterSpacing: "0.14em", color: T.threatRed, marginBottom: 8 }}>
-            INTERCEPTED: [SIGNATURE UNRESOLVED], ON THE WIRE
+        <BossIntro
+          codename="ZERO"
+          taunt="They taught you so much, didn't they. Such a shame to waste it defending. I could make you something. Just one small favor to start…"
+        />
+      )}
+
+      <PhasePips phase={phase} labels={["HEAR AND WALK", "RIGHT RESPONSE", "TELL AN ADULT"]} />
+
+      {/* ------------------------------------------------ PHASE 1: stop the tape */}
+      {phase === 1 && (
+        <div style={{ maxWidth: 640 }}>
+          <Eyebrow text="Phase 1. The pitch lands one line at a time. Read on, or walk. The sooner you walk, the less he gets." color={T.actionAmber} />
+
+          {/* the recruiter's hook, rising with every line you let land */}
+          <div style={{ margin: "14px 0" }}>
+            <div style={{ display: "flex", justifyContent: "space-between", fontFamily: MONO, fontSize: 11, letterSpacing: "0.08em", color: T.textSecondary, marginBottom: 6 }}>
+              <span>RECRUITER'S HOOK</span>
+              <span style={{ color: hookColor, fontWeight: 600 }}>{hook}%</span>
+            </div>
+            <div style={{ height: 10, background: T.panelRaised, borderRadius: 5, overflow: "hidden", border: `1px solid ${T.hairline}` }}>
+              <div style={{ width: `${hook}%`, height: "100%", background: hookColor, transition: reduced ? "none" : "width 500ms ease, background 500ms ease" }} />
+            </div>
+            <div style={{ fontFamily: MONO, fontSize: 10, letterSpacing: "0.06em", color: T.textDisabled, marginTop: 4 }}>
+              {hook >= 60 ? "YOU'VE READ THE WHOLE PITCH: TIME TO GO" : hook >= 30 ? "THE PITCH IS DIGGING IN" : "HE HAS ALMOST NOTHING ON YOU"}
+            </div>
           </div>
-          <Bubble who="villain">
-            <em>&ldquo;They taught you so much, didn't they. Such a shame to waste it defending. I could make you something. Just one small favor to start…&rdquo;</em>
-          </Bubble>
+
+          {/* the DM thread, revealed line by line */}
+          <div style={{ display: "grid", gap: 12, margin: "6px 0 4px" }}>
+            {PITCH.slice(0, linesRead).map((line, i) => (
+              <Bubble key={i} who="villain">
+                <em>{line}</em>
+              </Bubble>
+            ))}
+          </div>
+
+          {!walked && (
+            <div style={{ display: "flex", gap: 10, marginTop: 16, flexWrap: "wrap", alignItems: "center" }}>
+              <AmberButton label="WALK AWAY" onClick={walkAway} />
+              {linesRead < 3 && <GhostButton label="READ NEXT LINE" onClick={readNext} />}
+            </div>
+          )}
+
+          {walked && (
+            <div role="status" style={{ marginTop: 16, borderLeft: `2px solid ${T.confirmedGreen}`, paddingLeft: 14 }}>
+              <p style={{ margin: 0, fontSize: 14, lineHeight: 1.6 }}>{WALK_NOTES[Math.min(linesRead, 3) - 1]}</p>
+              <div style={{ marginTop: 12 }}>
+                <AmberButton
+                  label="WALKED CLEAN: WHAT NEXT"
+                  onClick={() => {
+                    audio.stamp();
+                    onPhaseCleared(1);
+                    setPhase(2);
+                  }}
+                />
+              </div>
+            </div>
+          )}
         </div>
       )}
-      <div style={{ display: "flex", gap: 8, marginBottom: 16 }}>
-        {[1, 2, 3].map((p) => (
-          <span key={p} style={{ fontFamily: MONO, fontSize: 10, letterSpacing: "0.08em", padding: "3px 8px", borderRadius: 2, border: `1px solid ${p === phase ? T.threatRed : T.hairline}`, color: p === phase ? T.threatRed : p < phase ? T.confirmedGreen : T.textDisabled }}>
-            {p < phase ? "■" : "□"} PHASE {p}
-          </span>
-        ))}
-      </div>
 
-      {phase === 1 &&
-        stage(
-          "Phase 1: The offer is on your screen. When do you exit?",
-          "“You're wasted at ARC.” … “Real work, real money.” … “Tiny first job. Just lend me your account for one transfer.”",
+      {/* --------------------------------------------- PHASE 2: the right response */}
+      {phase === 2 &&
+        verdict(
+          "Phase 2. He keeps pinging your screen. Name it: what do you owe that offer?",
+          null,
           OFFER,
           offer,
           offerChoice,
           pick(setOffer, OFFER, offer),
-          "EXITED CLEAN: NOW WALK",
-          () => {
-            audio.stamp();
-            onPhaseCleared(1);
-            setPhase(2);
-          },
-          () => setOffer(null),
-        )}
-
-      {phase === 2 &&
-        stage(
-          "Phase 2: You've stopped replying. Now leave it so they have nothing to use.",
-          null,
-          WALKS,
-          walk,
-          walkChoice,
-          pick(setWalk, WALKS, walk),
-          "WALKED CLEAN: FILE IT",
+          "RESPONSE LOCKED: NOW CLOSE IT",
           () => {
             audio.stamp();
             onPhaseCleared(2);
             setPhase(3);
           },
-          () => setWalk(null),
+          () => setOffer(null),
         )}
 
+      {/* ------------------------------------------------- PHASE 3: tell an adult */}
       {phase === 3 && !filed &&
-        stage(
-          "Phase 3: ARC runs the sender's signature against the whole dossier board. Who was that?",
-          "SIGNATURE TRACE: matching against known actors… PHANTOM HOOK ✓ SIREN ✓ PACKRAT ✓ MIMIC ✓ GHOSTWRITER ✓ … architect (CASE 015) ✓ … resolving identity…",
-          THREADS,
-          thread,
-          threadChoice,
-          pick(setThread, THREADS, thread),
-          "FILE THE THREAD",
+        verdict(
+          "Phase 3. The offer is dead to you. Now the responsible close: what do you do with it?",
+          "INBOX: 1 message · unknown sender · signature: UNRESOLVED · your call decides what ARC gets",
+          WALKS,
+          walk,
+          walkChoice,
+          pick(setWalk, WALKS, walk),
+          "FILE THE REPORT",
           () => {
             setFiled(true);
             audio.stamp();
             onPhaseCleared(3);
             window.setTimeout(onComplete, reduced ? 250 : 700);
           },
-          () => setThread(null),
+          () => setWalk(null),
         )}
 
       {phase === 3 && filed && (
