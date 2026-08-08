@@ -371,6 +371,6 @@ export const mission20: MissionManifest = {
     mo: "The coordinator behind all six actors. An ex-ARC analyst who chose the other path.",
     defeatedBy: "An operative who assembled every clue. Beat the perfect lure with the basics. Handed it over clean.",
     breadcrumb:
-      "CASE CLOSED. Dossier wall complete: six actors, one coordinator, all connected, all filed. The trainee who started at CASE 001 signs off as ULTRA. The card reprints with a new name on it: yours.",
+      "CASE CLOSED. Dossier wall complete: six actors, one coordinator, five breadcrumbs (① to ⑤), all connected, all filed. The trainee who started at CASE 001 signs off as ULTRA. The card reprints with a new name on it: yours.",
   },
 };

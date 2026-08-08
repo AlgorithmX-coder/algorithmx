@@ -356,6 +356,6 @@ export const mission10: MissionManifest = {
     mo: "Clones voices from seconds of audio and faces from photos. Sounds exactly like love.",
     defeatedBy: "The family code word, and calling the real number back.",
     breadcrumb:
-      "TRACE: the clone trained on audio PACKRAT scraped, reading lines GHOSTWRITER wrote. Three actors, one supply chain. Filed.",
+      "TRACE: the clone trained on audio PACKRAT scraped, reading lines GHOSTWRITER wrote. Three actors, one supply chain, all routing through ZERO. Filed as breadcrumb ③.",
   },
 };

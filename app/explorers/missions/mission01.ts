@@ -328,6 +328,6 @@ export const mission01: MissionManifest = {
     mo: "Fake “urgent” messages dressed as companies you trust. Wants the click before the think.",
     defeatedBy: "Anyone who slows down, reads the address, and checks the official app.",
     breadcrumb:
-      "ROUTING NOTE: this campaign relayed through a node tagged ZERO. First time that tag has surfaced. Filed.",
+      "ROUTING NOTE: this campaign relayed through a node tagged ZERO. First time that tag has surfaced. Filed as breadcrumb ①.",
   },
 };

@@ -329,6 +329,6 @@ export const mission18: MissionManifest = {
     mo: "Doesn't attack, recruits. Flattery, money, and a 'tiny favor' that's the whole crime.",
     defeatedBy: "Anyone who names the levers, walks away clean, and files the report instead.",
     breadcrumb:
-      "SIGNATURE MATCH: the recruiter's fingerprint matches every actor ① to ④ AND the architect from CASE 015. This wasn't an actor. This was the COORDINATOR. First contact. Filed. The report becomes the thread that finds them.",
+      "SIGNATURE MATCH: the recruiter's fingerprint matches breadcrumbs ① to ④ AND the architect from CASE 015. This wasn't an actor. This was the COORDINATOR, ZERO. First contact. Filed as breadcrumb ⑤. The report becomes the thread that finds them.",
   },
 };

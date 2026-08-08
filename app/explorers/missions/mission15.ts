@@ -346,6 +346,6 @@ export const mission15: MissionManifest = {
     mo: "Copies whole websites pixel for pixel and mails out the mirrors.",
     defeatedBy: "The address bar, typed arrivals, and a vault that refuses to talk to strangers.",
     breadcrumb:
-      "REGISTRY TRACE: one hidden owner registered all four mirror sites. Same signature behind every actor. Six actors, one architect. Filed.",
+      "REGISTRY TRACE: one hidden owner registered all four mirror sites. Same signature behind every actor. Six actors, one architect, and the architect's tag reads ZERO. Filed as breadcrumb ④.",
   },
 };

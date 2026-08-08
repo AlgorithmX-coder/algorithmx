@@ -324,6 +324,6 @@ export const mission05: MissionManifest = {
     mo: "One trick, every channel, all at once, and a spear hidden in the spray.",
     defeatedBy: "Anyone who matches fingerprints across channels and triages instead of panicking.",
     breadcrumb:
-      "CROSS-REF: the spear's personal lines match the file PACKRAT auctioned in CASE 004. Two actors, one supply chain. Filed.",
+      "CROSS-REF: the spear's personal lines match the file PACKRAT auctioned in CASE 004. Two actors, one supply chain, relaying through that same ZERO tag. Filed as breadcrumb ②.",
   },
 };
