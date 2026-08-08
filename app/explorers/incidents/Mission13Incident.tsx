@@ -18,24 +18,24 @@ import type { IncidentProps } from "../engine/types";
 const DOORS = [
   {
     id: "front",
-    label: "THE FRONT DOOR — the 20-character monster passphrase",
+    label: "THE FRONT DOOR: the 20-character monster passphrase",
     correct: false,
     outcome:
-      "He's not even looking at it. The rig retired in CASE 011 — attackers don't fight strength, they route around it.",
+      "He's not even looking at it. The rig retired in CASE 011. Attackers don't fight strength, they go around it.",
   },
   {
     id: "side",
-    label: "THE SIDE DOOR — “Forgot password?” and three little questions",
+    label: "THE SIDE DOOR: “Forgot password?” and three little questions",
     correct: true,
     outcome:
-      "That's his route. The recovery robot asks about pets and schools — and Jake's old answers are all TRUE. The crumb file is already open on SK's screen.",
+      "That's his route. The recovery robot asks about pets and schools. Jake's old answers are all TRUE. The crumb file is already open on SK's screen.",
   },
   {
     id: "window",
-    label: "THE WINDOW — the 2FA code on Jake's phone",
+    label: "THE WINDOW: the 2FA code on Jake's phone",
     correct: false,
     outcome:
-      "Double-locked since CASE 011 — he'd need the phone in his hand. Cold. Where does a locksmith go when the locks all hold?",
+      "Double-locked since CASE 011. He'd need the phone in his hand. Cold. Where does a locksmith go when the locks all hold?",
   },
 ];
 
@@ -45,38 +45,38 @@ const SLAMS = [
     label: "Make the master passphrase even longer",
     correct: false,
     outcome:
-      "He isn't AT that door. Reinforcing the front while the side stands open is polishing the drawbridge during a tunnel dig.",
+      "He isn't AT that door. Guarding the front while the side hangs open helps no one.",
   },
   {
     id: "harden",
-    label: "Replace the true answers with vault-stored nonsense + point recovery at the 2FA-locked email",
+    label: "Swap the true answers for vault-stored nonsense, and send recovery to the 2FA-locked email",
     correct: true,
     outcome:
-      "Slammed. The questions now expect “purple-staircase-42”, and the reset email lands behind two locks. The crumb file just became waste paper.",
+      "Slammed. The questions now expect “purple-staircase-42”. The reset email lands behind two locks. The crumb file just became waste paper.",
   },
   {
     id: "delete",
     label: "Delete the recovery options completely",
     correct: false,
     outcome:
-      "Now one forgotten password locks Jake out of his own life forever. Recovery isn't the enemy — GUESSABLE recovery is.",
+      "Now one forgotten password locks Jake out of his own life forever. Recovery isn't the enemy. GUESSABLE recovery is.",
   },
 ];
 
 const SWEEPS = [
   {
     id: "ignore",
-    label: "It's probably an old school computer — leave it",
+    label: "It's probably an old school computer, leave it",
     correct: false,
     outcome:
-      "“Probably” is not an audit. An unknown session is an open door with someone possibly inside. Check, don't hope.",
+      "“Probably” is not a check. An unknown session is an open door, maybe with someone inside. Check, don't hope.",
   },
   {
     id: "all",
-    label: "Sign out ALL devices, rotate the master passphrase, report the strange session",
+    label: "Sign out ALL devices, change the master passphrase, report the strange session",
     correct: true,
     outcome:
-      "Full sweep. Every session dies — including the one SK planted from the library computer weeks ago, before the vault existed. The report gives the platform his fingerprint.",
+      "Full sweep. Every session dies. That includes the one SK planted from the library computer weeks ago. The report gives the platform his fingerprint.",
   },
   {
     id: "one",
@@ -163,7 +163,7 @@ export default function Mission13Incident({ reduced, audio, onPhaseCleared, onCo
       {phase === 1 && (
         <div style={{ marginBottom: 18, maxWidth: 560 }}>
           <div style={{ fontFamily: MONO, fontSize: 10, letterSpacing: "0.14em", color: T.threatRed, marginBottom: 8 }}>
-            INTERCEPTED — SKELETON KEY, ON THE WIRE
+            INTERCEPTED: SKELETON KEY, ON THE WIRE
           </div>
           <Bubble who="villain">
             <em>&ldquo;Beautiful lock, little warden. Truly. I'll just ask the nice recovery robot to let me in instead.&rdquo;</em>
@@ -180,13 +180,13 @@ export default function Mission13Incident({ reduced, audio, onPhaseCleared, onCo
 
       {phase === 1 &&
         stage(
-          "Phase 1 — SK is moving on Jake's account. Which door is he heading for?",
+          "Phase 1: SK is moving on Jake's account. Which door is he heading for?",
           "ATTACK LOG: password attack … SKIPPED. 2FA bypass … SKIPPED. next move: loading…",
           DOORS,
           door,
           doorChoice,
           pick(setDoor, DOORS, door),
-          "ROUTE READ — SLAM IT",
+          "ROUTE READ: SLAM IT",
           () => {
             audio.stamp();
             onPhaseCleared(1);
@@ -197,13 +197,13 @@ export default function Mission13Incident({ reduced, audio, onPhaseCleared, onCo
 
       {phase === 2 &&
         stage(
-          "Phase 2 — He's at the recovery questions NOW. Pick the slam.",
+          "Phase 2: He's at the recovery questions NOW. Pick the slam.",
           "RECOVERY ROBOT: “First pet's name?” … SK types: b-i-s-c-u-i-t…",
           SLAMS,
           slam,
           slamChoice,
           pick(setSlam, SLAMS, slam),
-          "DOOR SLAMMED — RUN THE SWEEP",
+          "DOOR SLAMMED: RUN THE SWEEP",
           () => {
             audio.stamp();
             onPhaseCleared(2);
@@ -214,8 +214,8 @@ export default function Mission13Incident({ reduced, audio, onPhaseCleared, onCo
 
       {phase === 3 && !swept &&
         stage(
-          "Phase 3 — Final check: the logged-in devices list. One entry is wrong.",
-          "DEVICES: Jake's phone (now) · home laptop (today) · UNKNOWN DESKTOP — 'library-pc-04', 3 weeks ago",
+          "Phase 3: Final check on the logged-in devices list. One entry is wrong.",
+          "DEVICES: Jake's phone (now) · home laptop (today) · UNKNOWN DESKTOP · 'library-pc-04', 3 weeks ago",
           SWEEPS,
           sweep,
           sweepChoice,
@@ -232,7 +232,7 @@ export default function Mission13Incident({ reduced, audio, onPhaseCleared, onCo
 
       {phase === 3 && swept && (
         <p style={{ fontFamily: MONO, fontSize: 12, letterSpacing: "0.06em", color: T.confirmedGreen, margin: 0 }}>
-          EVERY DOOR CLOSED — FRONT, SIDE, AND THE ONE NOBODY REMEMBERED. BUILDING SECURE.
+          EVERY DOOR CLOSED: FRONT, SIDE, AND THE ONE NOBODY REMEMBERED. BUILDING SECURE.
         </p>
       )}
     </div>

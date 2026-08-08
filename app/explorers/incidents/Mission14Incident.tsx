@@ -17,11 +17,11 @@ import { MONO, T } from "../engine/tokens";
 import type { IncidentProps } from "../engine/types";
 
 const DELIVERIES = [
-  { id: "d1", label: "PIXEL QUEST — from the official store, permissions: storage only", bad: false },
-  { id: "d2", label: "GameHub_FREE_PREMIUM_installer.zip — from a forum link", bad: true },
-  { id: "d3", label: "School app update — from the official store", bad: false },
-  { id: "d4", label: "TORCH+ FLASHLIGHT — store app, wants contacts, mic, location", bad: true },
-  { id: "d5", label: "Browser security patch — from the system updater", bad: false },
+  { id: "d1", label: "PIXEL QUEST · official store, needs storage only", bad: false },
+  { id: "d2", label: "GameHub_FREE_PREMIUM_installer.zip · from a forum link", bad: true },
+  { id: "d3", label: "School app update · from the official store", bad: false },
+  { id: "d4", label: "TORCH+ FLASHLIGHT · store app, wants contacts, mic, location", bad: true },
+  { id: "d5", label: "Browser security patch · from the system updater", bad: false },
 ];
 
 const HANDLES = [
@@ -30,45 +30,45 @@ const HANDLES = [
     label: "Run it in a corner “just to see what it does”",
     correct: false,
     outcome:
-      "Running it IS the attack. There's no safe peek on your own tablet — that's why ARC has a sealed range and you don't.",
+      "Running it IS the attack. There's no safe peek on your own tablet. That's why ARC has a sealed range and you don't.",
   },
   {
     id: "delete",
     label: "Delete the zip, report the forum post, warn without forwarding the link",
     correct: true,
     outcome:
-      "Textbook. The horse never enters, the stable that shipped it gets reported, and the warning carries no live bait.",
+      "Textbook. The horse never gets in. The forum post gets reported. Your warning carries no live link.",
   },
   {
     id: "keep",
-    label: "Keep it zipped — unopened means harmless, right?",
+    label: "Keep it zipped, unopened means harmless, right?",
     correct: false,
     outcome:
-      "Unopened means harmless TODAY. Future-you, bored on a Saturday, is exactly who GHOSTWRITER wrapped it for. Loaded traps don't get shelf space.",
+      "Unopened means harmless TODAY. Bored future-you opens it one rainy Saturday. That's exactly who GHOSTWRITER wrapped it for. Don't keep a loaded trap.",
   },
 ];
 
 const ARMORS = [
   {
     id: "updates",
-    label: "Run the two real updates now, deny the torch's over-asks, keep store-only installs",
+    label: "Run the two real updates now, deny the torch's extra powers, install from the store only",
     correct: true,
     outcome:
-      "Armor up: patches plugged, powers trimmed, shelves clean. The tablet just became the hardest target on the network.",
+      "Armor up: holes plugged, powers trimmed, downloads clean. This tablet just became the toughest target around.",
   },
   {
     id: "wipe",
     label: "Factory-reset the whole tablet to be safe",
     correct: false,
     outcome:
-      "Nothing bad ever ran — a full wipe torches homework and photos to fix a problem you already caught. Proportion is a skill.",
+      "Nothing bad ever ran. A full wipe deletes your homework and photos too. That's too big a fix for a problem you already caught.",
   },
   {
     id: "noapps",
     label: "Ban all new apps forever",
     correct: false,
     outcome:
-      "Avoidance isn't defense. The skill is reading powers and sources — you just proved you have it. Use it, don't hide from it.",
+      "Hiding isn't defending. The real skill is reading powers and sources. You just proved you have it. Use it, don't hide.",
   },
 ];
 
@@ -117,7 +117,7 @@ export default function Mission14Incident({ reduced, audio, onPhaseCleared, onCo
       {phase === 1 && (
         <div style={{ marginBottom: 18, maxWidth: 560 }}>
           <div style={{ fontFamily: MONO, fontSize: 10, letterSpacing: "0.14em", color: T.threatRed, marginBottom: 8 }}>
-            INTERCEPTED — GHOSTWRITER, ON THE WIRE
+            INTERCEPTED · GHOSTWRITER, ON THE WIRE
           </div>
           <Bubble who="villain">
             <em>&ldquo;I don't break into houses, little reader. I write gifts so lovely you carry them in yourselves.&rdquo;</em>
@@ -135,7 +135,7 @@ export default function Mission14Incident({ reduced, audio, onPhaseCleared, onCo
       {/* ---------------- phase 1: sort the deliveries ---------------- */}
       {phase === 1 && (
         <div style={{ maxWidth: 640 }}>
-          <Eyebrow text="Phase 1 — Five pending installs. Flag the TWO that don't get through the gate." color={T.actionAmber} />
+          <Eyebrow text="Phase 1: Five installs waiting. Flag the TWO that don't pass the gate." color={T.actionAmber} />
           <div style={{ display: "grid", gap: 10, marginTop: 14 }}>
             {DELIVERIES.map((d) => {
               const done = flagged.includes(d.id);
@@ -170,14 +170,14 @@ export default function Mission14Incident({ reduced, audio, onPhaseCleared, onCo
           </div>
           <p role="status" style={{ margin: "12px 0 0", fontSize: 13, color: flagged.length === badCount ? T.confirmedGreen : T.textSecondary }}>
             {flagged.length === badCount
-              ? "GATE SORTED — the forum zip and the greedy torch stay outside. Store + matching powers = through."
+              ? "GATE SORTED. The forum zip and the greedy torch stay out. Trusted source and matching powers get through."
               : miss
                 ? "That one's clean: official source, powers that match the job. Check sources AND powers."
-                : `${flagged.length}/${badCount} flagged. Bad source OR bad powers — either one fails the gate.`}
+                : `${flagged.length}/${badCount} flagged. A bad source OR bad powers fails the gate.`}
           </p>
           {flagged.length === badCount && (
             <div style={{ marginTop: 14 }}>
-              <AmberButton label="GATE SORTED — HANDLE THE HORSE" onClick={() => { audio.click(); setPhase(2); }} />
+              <AmberButton label="GATE SORTED: HANDLE THE HORSE" onClick={() => { audio.click(); setPhase(2); }} />
             </div>
           )}
         </div>
@@ -186,7 +186,7 @@ export default function Mission14Incident({ reduced, audio, onPhaseCleared, onCo
       {/* ---------------- phase 2: handle the horse ---------------- */}
       {phase === 2 && (
         <div style={{ maxWidth: 640 }}>
-          <Eyebrow text="Phase 2 — The zip is sitting in downloads. What happens to a caught trojan?" color={T.actionAmber} />
+          <Eyebrow text="Phase 2: The zip is sitting in downloads. What happens to a caught trojan?" color={T.actionAmber} />
           <div style={{ display: "grid", gap: 10, marginTop: 14 }}>
             {HANDLES.map((h) => {
               const isChosen = handle === h.id;
@@ -204,7 +204,7 @@ export default function Mission14Incident({ reduced, audio, onPhaseCleared, onCo
               <p style={{ margin: 0, fontSize: 14, lineHeight: 1.6 }}>{handleChoice.outcome}</p>
               <div style={{ marginTop: 12 }}>
                 {handleChoice.correct ? (
-                  <AmberButton label="HORSE HANDLED — RAISE THE ARMOR" onClick={() => { audio.stamp(); onPhaseCleared(2); setPhase(3); }} />
+                  <AmberButton label="HORSE HANDLED: RAISE THE ARMOR" onClick={() => { audio.stamp(); onPhaseCleared(2); setPhase(3); }} />
                 ) : (
                   <GhostButton label="RECONSIDER" onClick={() => setHandle(null)} />
                 )}
@@ -217,7 +217,7 @@ export default function Mission14Incident({ reduced, audio, onPhaseCleared, onCo
       {/* ---------------- phase 3: raise the armor ---------------- */}
       {phase === 3 && (
         <div style={{ maxWidth: 640 }}>
-          <Eyebrow text="Phase 3 — The finishing sweep. Leave this tablet harder than you found it." color={T.actionAmber} />
+          <Eyebrow text="Phase 3: The finishing sweep. Leave this tablet harder than you found it." color={T.actionAmber} />
           <div style={{ display: "grid", gap: 10, marginTop: 14 }}>
             {ARMORS.map((a) => {
               const isChosen = armor === a.id;
@@ -247,7 +247,7 @@ export default function Mission14Incident({ reduced, audio, onPhaseCleared, onCo
                     />
                   ) : (
                     <p style={{ fontFamily: MONO, fontSize: 12, letterSpacing: "0.06em", color: T.confirmedGreen, margin: 0 }}>
-                      ARMORED — PATCHED, TRIMMED, AND STORE-ONLY. THE HORSE NEVER GOT IN.
+                      ARMORED: PATCHED, TRIMMED, AND STORE-ONLY. THE HORSE NEVER GOT IN.
                     </p>
                   )
                 ) : (

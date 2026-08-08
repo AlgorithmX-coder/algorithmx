@@ -18,10 +18,10 @@ import type { IncidentProps } from "../engine/types";
 
 /* Phase 1 — candidates for the origin. */
 const SOURCES = [
-  { id: "s1", label: "LEO — he forwarded it to your group first", origin: false },
-  { id: "s2", label: "THE YEAR 8 CHAT — it was there an hour earlier", origin: false },
-  { id: "s3", label: "@riverdale_confessions — 3-day-old account, posted it with “LEAKED 👀”, follows nobody", origin: true },
-  { id: "s4", label: "MAYA — she reacted with 😱 seventeen times", origin: false },
+  { id: "s1", label: "LEO: forwarded it to your group first", origin: false },
+  { id: "s2", label: "THE YEAR 8 CHAT: it was there an hour earlier", origin: false },
+  { id: "s3", label: "@riverdale_confessions: 3-day-old account, posted “LEAKED”, follows nobody", origin: true },
+  { id: "s4", label: "MAYA: she reacted with shock seventeen times", origin: false },
 ];
 
 const BREAKS = [
@@ -30,21 +30,21 @@ const BREAKS = [
     label: "Zoom way in on the screenshot to find pixel flaws",
     correct: false,
     outcome:
-      "Maybe you find a seam. Next month's fake won't have one. Pixel-hunting is a race you lose — break the CLAIM, not the image.",
+      "Maybe you find a seam. Next month's fake won't have one. Pixel-hunting is a race you lose. Break the CLAIM, not the image.",
   },
   {
     id: "lateral",
     label: "Lateral read: check the school's real channels and ask Mr. Ortega's actual class",
     correct: true,
     outcome:
-      "Second tab, real world: no announcement, no context, and his class was on a trip when the “post” was made. The claim dies outside its own echo.",
+      "Second tab, real world. No announcement, no proof. His class was on a trip when the “post” went up. The claim dies outside its own echo.",
   },
   {
     id: "poll",
     label: "Run a poll in the chat: “real or fake?”",
     correct: false,
     outcome:
-      "Truth isn't a vote — and the poll re-shows the fake to 40 more kids. Popularity measures spread, not fact.",
+      "Truth isn't a vote. The poll also re-shows the fake to 40 more kids. Popularity measures spread, not fact.",
   },
 ];
 
@@ -54,21 +54,21 @@ const STILLS = [
     label: "“Everyone who forwarded this is part of the problem. Shame on you.”",
     correct: false,
     outcome:
-      "Forwarders weren't villains — they were the mill's delivery service, same as anyone. Shame makes people defend the fake. Kind wins.",
+      "Forwarders weren't villains. They were the mill's delivery service, same as anyone. Shame makes people defend the fake. Kind wins.",
   },
   {
     id: "attach",
-    label: "Post the debunk WITH the screenshot attached, so everyone sees what's fake",
+    label: "Post the correction WITH the screenshot attached, so everyone sees the fake",
     correct: false,
     outcome:
-      "You just delivered the fake to everyone who hadn't seen it — with a caption. Debunks never carry the cargo.",
+      "You just showed the fake to everyone who hadn't seen it, with a caption on top. A correction should never carry the fake with it.",
   },
   {
     id: "kind",
-    label: "Plain text, no image: “That screenshot is fake — checked with the school. Please stop forwarding; not your fault if you did.” Plus a quiet word to a teacher.",
+    label: "Plain text, no image: “That screenshot is fake, I checked with the school. Please stop forwarding. Not your fault if you already did.” Plus a quiet word to a teacher.",
     correct: true,
     outcome:
-      "The mill needs pushes; you just removed forty hands. No cargo, no shame, an adult in the loop — and Mr. Ortega hears it from the school, not the chat.",
+      "The mill needs pushes. You just removed forty hands. No fake attached, no shame, an adult in the loop. And Mr. Ortega hears it from the school, not the chat.",
   },
 ];
 
@@ -111,10 +111,10 @@ export default function Mission17Incident({ reduced, audio, onPhaseCleared, onCo
       {phase === 1 && (
         <div style={{ marginBottom: 18, maxWidth: 560 }}>
           <div style={{ fontFamily: MONO, fontSize: 10, letterSpacing: "0.14em", color: T.threatRed, marginBottom: 8 }}>
-            INTERCEPTED — GHOSTWRITER, ON THE WIRE
+            INTERCEPTED: GHOSTWRITER ON THE WIRE
           </div>
           <Bubble who="villain">
-            <em>&ldquo;I wrote tomorrow's gossip yesterday, little reader. The mill only needs one push — your friends do the rest.&rdquo;</em>
+            <em>&ldquo;I wrote tomorrow's gossip yesterday, little reader. The mill only needs one push. Your friends do the rest.&rdquo;</em>
           </Bubble>
         </div>
       )}
@@ -129,7 +129,7 @@ export default function Mission17Incident({ reduced, audio, onPhaseCleared, onCo
       {/* ---------------- phase 1: find the source ---------------- */}
       {phase === 1 && (
         <div style={{ maxWidth: 640 }}>
-          <Eyebrow text="Phase 1 — A fake screenshot of Mr. Ortega is everywhere. Forwarders aren't sources. Find the SOURCE." color={T.actionAmber} />
+          <Eyebrow text="Phase 1: a fake screenshot of Mr. Ortega is everywhere. Forwarders aren't sources. Find the SOURCE." color={T.actionAmber} />
           <div style={{ display: "grid", gap: 10, marginTop: 14 }}>
             {SOURCES.map((s) => (
               <button
@@ -158,14 +158,14 @@ export default function Mission17Incident({ reduced, audio, onPhaseCleared, onCo
           </div>
           <p role="status" style={{ margin: "12px 0 0", fontSize: 13, color: sourceFound ? T.confirmedGreen : T.textSecondary }}>
             {sourceFound
-              ? "SOURCE FOUND — a three-day-old account with one job. Everyone else was the mill's delivery service."
+              ? "SOURCE FOUND. A three-day-old account with one job. Everyone else was just the mill's delivery service."
               : wrongSource
-                ? "That's a FORWARDER — a hand on the wheel, not the builder of it. Trace upstream."
+                ? "That's a FORWARDER, a hand on the wheel, not the builder. Trace upstream."
                 : "Follow the timestamps upstream. Who posted it FIRST?"}
           </p>
           {sourceFound && (
             <div style={{ marginTop: 14 }}>
-              <AmberButton label="SOURCE PINNED — BREAK THE CLAIM" onClick={() => { audio.click(); setPhase(2); }} />
+              <AmberButton label="SOURCE PINNED: BREAK THE CLAIM" onClick={() => { audio.click(); setPhase(2); }} />
             </div>
           )}
         </div>
@@ -174,7 +174,7 @@ export default function Mission17Incident({ reduced, audio, onPhaseCleared, onCo
       {/* ---------------- phase 2: break the claim ---------------- */}
       {phase === 2 && (
         <div style={{ maxWidth: 640 }}>
-          <Eyebrow text="Phase 2 — The screenshot looks perfect. Break the CLAIM, not the pixels." color={T.actionAmber} />
+          <Eyebrow text="Phase 2: the screenshot looks perfect. Break the CLAIM, not the pixels." color={T.actionAmber} />
           <div style={{ display: "grid", gap: 10, marginTop: 14 }}>
             {BREAKS.map((b) => {
               const isChosen = brk === b.id;
@@ -192,7 +192,7 @@ export default function Mission17Incident({ reduced, audio, onPhaseCleared, onCo
               <p style={{ margin: 0, fontSize: 14, lineHeight: 1.6 }}>{brkChoice.outcome}</p>
               <div style={{ marginTop: 12 }}>
                 {brkChoice.correct ? (
-                  <AmberButton label="CLAIM BROKEN — STILL THE MILL" onClick={() => { audio.stamp(); onPhaseCleared(2); setPhase(3); }} />
+                  <AmberButton label="CLAIM BROKEN: STILL THE MILL" onClick={() => { audio.stamp(); onPhaseCleared(2); setPhase(3); }} />
                 ) : (
                   <GhostButton label="RECONSIDER" onClick={() => setBrk(null)} />
                 )}
@@ -205,7 +205,7 @@ export default function Mission17Incident({ reduced, audio, onPhaseCleared, onCo
       {/* ---------------- phase 3: still the mill ---------------- */}
       {phase === 3 && (
         <div style={{ maxWidth: 640 }}>
-          <Eyebrow text="Phase 3 — Forty kids are mid-forward. One message stops the mill. Choose it." color={T.actionAmber} />
+          <Eyebrow text="Phase 3: forty kids are mid-forward. One message stops the mill. Choose it." color={T.actionAmber} />
           <div style={{ display: "grid", gap: 10, marginTop: 14 }}>
             {STILLS.map((s) => {
               const isChosen = still === s.id;
@@ -235,7 +235,7 @@ export default function Mission17Incident({ reduced, audio, onPhaseCleared, onCo
                     />
                   ) : (
                     <p style={{ fontFamily: MONO, fontSize: 12, letterSpacing: "0.06em", color: T.confirmedGreen, margin: 0 }}>
-                      SENT — THE WHEEL SLOWS, THE STREAM CLEARS. MILLS DIE WITHOUT HANDS.
+                      SENT. THE WHEEL SLOWS, THE STREAM CLEARS. MILLS DIE WITHOUT HANDS.
                     </p>
                   )
                 ) : (

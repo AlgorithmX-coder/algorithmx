@@ -21,7 +21,7 @@ import type { IncidentProps } from "../engine/types";
    design here is "flag the ones aimed at UN-prepared people"). To
    keep it a clean detection, flag the 3 live threats vs 2 harmless. */
 const WAVE = [
-  { id: "w1", label: "PHANTOM HOOK: “verify your school account NOW” — mass DM", threat: true },
+  { id: "w1", label: "PHANTOM HOOK: a mass DM, “verify your school account NOW”", threat: true },
   { id: "w2", label: "The real PE teacher: “bring trainers Thursday”", threat: false },
   { id: "w3", label: "SIREN: “free tournament entry, first 50 only!”", threat: true },
   { id: "w4", label: "MIMIC: a QR poster in the corridor → gamehub.verify-now.net", threat: true },
@@ -31,24 +31,24 @@ const WAVE = [
 const CONTAINS = [
   {
     id: "ignore",
-    label: "Ignore it — only a handful of accounts got taken",
+    label: "Ignore it, only a handful of accounts got taken",
     correct: false,
     outcome:
-      "A handful becomes the whole school by home time — each stolen account messages its friends. Contain small, or clean up huge.",
+      "A handful becomes the whole school by home time. Each stolen account messages its friends. Contain it small, or clean up huge.",
   },
   {
     id: "contain",
-    label: "Blast the code-word reminder school-wide, trigger recovery on the taken accounts, out-of-band checks on",
+    label: "Blast the code-word reminder to everyone, start recovery, check odd DMs another way",
     correct: true,
     outcome:
-      "The spread hits a wall. Every kid you trained runs the out-of-band check on the “lend me your login” messages. Borrowed faces get nothing. The wave stalls.",
+      "The spread hits a wall. Every kid you trained checks the “lend me your login” messages another way. Borrowed faces get nothing. The wave stalls.",
   },
   {
     id: "shame",
     label: "Post the names of everyone who got caught so people are careful",
     correct: false,
     outcome:
-      "Shame silences victims — now nobody reports, and the spread runs in the dark. Contain the attack, protect the people.",
+      "Shame silences people. Now nobody reports, and the spread runs in the dark. Contain the attack, protect the people.",
   },
 ];
 
@@ -58,21 +58,21 @@ const CADENCES = [
     label: "Reply to the coordinator: “nice try, you lost”",
     correct: false,
     outcome:
-      "A reply is a gift — it confirms you, and it throws away the one thing worth having: their silence to measure. Analysts don't taunt. They trace.",
+      "A reply is a gift. It proves you're real and it breaks their silence. That silence is the thing you measure. Analysts don't taunt. They trace.",
   },
   {
     id: "read",
-    label: "Log every actor's timing and map the wave's rhythm — the cadence points to the source",
+    label: "Log every actor's timing and map the wave's rhythm. The cadence points to the source",
     correct: true,
     outcome:
-      "There it is. Recon at 2, lures at 3, access at 3:02, spread at 3:20 — a schedule that precise runs from one clock. The cadence triangulates the coordinator's transmit point. One case left.",
+      "There it is. Recon at 2, lures at 3, access at 3:02, spread at 3:20. A schedule that exact runs from one clock. The rhythm points straight to the coordinator. One case left.",
   },
   {
     id: "wall",
     label: "Just keep blocking every message as it comes",
     correct: false,
     outcome:
-      "Blocking survives the wave but learns nothing. The win condition isn't outlasting it — it's reading it. The rhythm is the map.",
+      "Blocking survives the wave but learns nothing. You don't win by outlasting it. You win by reading it. The rhythm is the map.",
   },
 ];
 
@@ -121,7 +121,7 @@ export default function Mission19Incident({ reduced, audio, onPhaseCleared, onCo
       {phase === 1 && (
         <div style={{ marginBottom: 18, maxWidth: 560 }}>
           <div style={{ fontFamily: MONO, fontSize: 10, letterSpacing: "0.14em", color: T.threatRed, marginBottom: 8 }}>
-            INTERCEPTED — ALL ACTORS, ON EVERY FREQUENCY
+            INTERCEPTED: ALL ACTORS, ON EVERY FREQUENCY
           </div>
           <Bubble who="villain">
             <em>&ldquo;All of us, all at once, little operative. One school can't hold against the whole network. Let's watch you try.&rdquo;</em>
@@ -139,7 +139,7 @@ export default function Mission19Incident({ reduced, audio, onPhaseCleared, onCo
       {/* ---------------- phase 1: hold the lures ---------------- */}
       {phase === 1 && (
         <div style={{ maxWidth: 640 }}>
-          <Eyebrow text="Phase 1 — Five signals hit at once. Flag the THREE that are the wave. Leave the real ones." color={T.actionAmber} />
+          <Eyebrow text="Phase 1: Five signals hit at once. Flag the THREE that are the wave. Leave the real ones." color={T.actionAmber} />
           <div style={{ display: "grid", gap: 10, marginTop: 14 }}>
             {WAVE.map((w) => {
               const done = flagged.includes(w.id);
@@ -174,14 +174,14 @@ export default function Mission19Incident({ reduced, audio, onPhaseCleared, onCo
           </div>
           <p role="status" style={{ margin: "12px 0 0", fontSize: 13, color: flagged.length === threatCount ? T.confirmedGreen : T.textSecondary }}>
             {flagged.length === threatCount
-              ? "LURES HELD — three actors flagged, two real messages left alone. Even in a flood, you don't panic-flag the innocent."
+              ? "LURES HELD: three actors flagged, two real messages left alone. Even in a flood, you don't panic-flag the innocent."
               : miss
-                ? "That's a real message — pressure, prizes, and costume-links are the wave. Normal school notices aren't."
+                ? "That's a real message. Pressure, prizes, and costume-links are the wave. Normal school notices aren't."
                 : `${flagged.length}/${threatCount} flagged. Read each one: is it pressure/prize/costume, or just school?`}
           </p>
           {flagged.length === threatCount && (
             <div style={{ marginTop: 14 }}>
-              <AmberButton label="LURES HELD — CONTAIN THE SPREAD" onClick={() => { audio.click(); setPhase(2); }} />
+              <AmberButton label="LURES HELD: CONTAIN THE SPREAD" onClick={() => { audio.click(); setPhase(2); }} />
             </div>
           )}
         </div>
@@ -190,7 +190,7 @@ export default function Mission19Incident({ reduced, audio, onPhaseCleared, onCo
       {/* ---------------- phase 2: contain the spread ---------------- */}
       {phase === 2 && (
         <div style={{ maxWidth: 640 }}>
-          <Eyebrow text="Phase 2 — A few accounts fell, and now they're messaging friends. Stop the spread." color={T.actionAmber} />
+          <Eyebrow text="Phase 2: A few accounts fell, and now they're messaging friends. Stop the spread." color={T.actionAmber} />
           <div style={{ display: "grid", gap: 10, marginTop: 14 }}>
             {CONTAINS.map((c) => {
               const isChosen = contain === c.id;
@@ -208,7 +208,7 @@ export default function Mission19Incident({ reduced, audio, onPhaseCleared, onCo
               <p style={{ margin: 0, fontSize: 14, lineHeight: 1.6 }}>{containChoice.outcome}</p>
               <div style={{ marginTop: 12 }}>
                 {containChoice.correct ? (
-                  <AmberButton label="SPREAD CONTAINED — READ THE CADENCE" onClick={() => { audio.stamp(); onPhaseCleared(2); setPhase(3); }} />
+                  <AmberButton label="SPREAD CONTAINED: READ THE CADENCE" onClick={() => { audio.stamp(); onPhaseCleared(2); setPhase(3); }} />
                 ) : (
                   <GhostButton label="RECONSIDER" onClick={() => setContain(null)} />
                 )}
@@ -223,10 +223,10 @@ export default function Mission19Incident({ reduced, audio, onPhaseCleared, onCo
         <div style={{ maxWidth: 640 }}>
           <div style={{ margin: "0 0 14px", background: T.paper, borderRadius: 2, padding: "14px 16px", boxShadow: "0 2px 0 rgba(0,0,0,0.5)" }}>
             <p style={{ margin: 0, fontFamily: MONO, fontSize: 12.5, lineHeight: 1.7, color: T.fileInk }}>
-              WAVE TIMELINE — recon 14:00 · lures 15:00 · access 15:02 · spread 15:20 · probe 15:45. Interval precision: machine-exact.
+              WAVE TIMELINE: recon 14:00 · lures 15:00 · access 15:02 · spread 15:20 · probe 15:45. Timed to the second, like a machine.
             </p>
           </div>
-          <Eyebrow text="Phase 3 — The wave is failing. Its timing is showing. What does the analyst do?" color={T.actionAmber} />
+          <Eyebrow text="Phase 3: The wave is failing. Its timing is showing. What does the analyst do?" color={T.actionAmber} />
           <div style={{ display: "grid", gap: 10, marginTop: 14 }}>
             {CADENCES.map((c) => {
               const isChosen = cadence === c.id;
@@ -246,7 +246,7 @@ export default function Mission19Incident({ reduced, audio, onPhaseCleared, onCo
                 {cadenceChoice.correct ? (
                   !read ? (
                     <AmberButton
-                      label="TRIANGULATE THE SOURCE"
+                      label="TRACE THE SOURCE"
                       onClick={() => {
                         setRead(true);
                         audio.stamp();
@@ -256,7 +256,7 @@ export default function Mission19Incident({ reduced, audio, onPhaseCleared, onCo
                     />
                   ) : (
                     <p style={{ fontFamily: MONO, fontSize: 12, letterSpacing: "0.06em", color: T.confirmedGreen, margin: 0 }}>
-                      SOURCE TRIANGULATED — THE LINE HELD, AND THE WAVE DREW US A MAP HOME. ONE CASE LEFT.
+                      SOURCE FOUND: THE LINE HELD, AND THE WAVE DREW US A MAP HOME. ONE CASE LEFT.
                     </p>
                   )
                 ) : (

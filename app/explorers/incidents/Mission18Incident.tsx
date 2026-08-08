@@ -22,14 +22,14 @@ import type { IncidentProps } from "../engine/types";
 const OFFER = [
   {
     id: "hear",
-    label: "“Sure, tell me more” — it's just talk, no harm listening",
+    label: "“Sure, tell me more.” It's just talk, no harm listening",
     correct: false,
     outcome:
       "Every extra line is a lever tightening. “Just listening” is how the yes gets built. The exit is now, before the hook.",
   },
   {
     id: "exit",
-    label: "Stop reading, don't reply, don't engage — the offer is the attack",
+    label: "Stop reading, don't reply, don't engage. The offer is the attack",
     correct: true,
     outcome:
       "Correct. You don't debate a recruiter any more than you argue with a phishing email. Silence gives them nothing to work with.",
@@ -39,7 +39,7 @@ const OFFER = [
     label: "Reply “I know exactly what you are, loser” to shut them down",
     correct: false,
     outcome:
-      "A reply confirms a real, reachable kid who's rattled — exactly the profile they refine. Cleverness isn't the goal. Silence is.",
+      "A reply proves you're a real, reachable kid who's rattled. That's exactly what they want. Cleverness isn't the goal. Silence is.",
   },
 ];
 
@@ -49,45 +49,45 @@ const WALKS = [
     label: "Block, screenshot the message for evidence, tell a trusted adult tonight",
     correct: true,
     outcome:
-      "The clean walk: no engagement, evidence preserved, an adult in the loop the same day. Nothing for them to escalate, everything for ARC to trace.",
+      "The clean walk: no reply, evidence saved, an adult told the same day. Nothing for them to build on, everything for ARC to trace.",
   },
   {
     id: "delete",
     label: "Just delete it and never mention it to anyone",
     correct: false,
     outcome:
-      "Deleting alone erases the evidence AND the warning. Recruiters work whole schools — your quiet report protects kids you'll never meet.",
+      "Deleting alone erases the evidence AND the warning. Recruiters work whole schools. Your quiet report protects kids you'll never meet.",
   },
   {
     id: "string",
     label: "Play along to gather more intel on them yourself",
     correct: false,
     outcome:
-      "That's an actor's move, not an analyst's — you're not equipped to run a source, and engaging is the risk. Report; let ARC and adults trace.",
+      "That's an actor's move, not an analyst's. You're not trained to play spy, and talking to them is the risk. Report it. Let ARC and adults trace.",
   },
 ];
 
 const THREADS = [
   {
     id: "nobody",
-    label: "Some random scammer — nothing special, forget it",
+    label: "Some random scammer, nothing special, forget it",
     correct: false,
     outcome:
-      "Run the signature before you shrug. That channel fingerprint has appeared before… four times. Check the board.",
+      "Run the signature before you shrug. That fingerprint has appeared before… four times. Check the board.",
   },
   {
     id: "coord",
-    label: "The signature matches every actor AND the architect — this is the COORDINATOR, first contact",
+    label: "The signature matches every actor AND the architect. This is the COORDINATOR, first contact",
     correct: true,
     outcome:
-      "There it is. The recruiter's fingerprint matches PHANTOM HOOK, SIREN, PACKRAT, MIMIC, GHOSTWRITER — and the M15 architect. Six actors, one hand, and tonight it reached out to YOU. Your refusal became a sample of their signature. The report IS the thread that finds them.",
+      "There it is. The recruiter's fingerprint matches PHANTOM HOOK, SIREN, PACKRAT, MIMIC, and GHOSTWRITER, plus the CASE 015 architect. Six actors, one hand. Tonight it reached out to YOU. Your refusal became a sample of their signature. The report IS the thread that finds them.",
   },
   {
     id: "arc",
     label: "A test by ARC to check your loyalty",
     correct: false,
     outcome:
-      "ARC signs its messages and never dangles crime as bait. This came from the dark — and the signature proves where. Trust the trace, not the flattery-shaped doubt.",
+      "ARC signs its messages and never dangles crime as bait. This came from the dark, and the signature proves it. Trust the trace, not the flattering doubt.",
   },
 ];
 
@@ -167,7 +167,7 @@ export default function Mission18Incident({ reduced, audio, onPhaseCleared, onCo
       {phase === 1 && (
         <div style={{ marginBottom: 18, maxWidth: 560 }}>
           <div style={{ fontFamily: MONO, fontSize: 10, letterSpacing: "0.14em", color: T.threatRed, marginBottom: 8 }}>
-            INTERCEPTED — [SIGNATURE UNRESOLVED], ON THE WIRE
+            INTERCEPTED: [SIGNATURE UNRESOLVED], ON THE WIRE
           </div>
           <Bubble who="villain">
             <em>&ldquo;They taught you so much, didn't they. Such a shame to waste it defending. I could make you something. Just one small favor to start…&rdquo;</em>
@@ -184,13 +184,13 @@ export default function Mission18Incident({ reduced, audio, onPhaseCleared, onCo
 
       {phase === 1 &&
         stage(
-          "Phase 1 — The offer is on your screen. When do you exit?",
-          "“You're wasted at ARC.” … “Real work, real money.” … “Tiny first job — just lend me your account for one transfer.”",
+          "Phase 1: The offer is on your screen. When do you exit?",
+          "“You're wasted at ARC.” … “Real work, real money.” … “Tiny first job. Just lend me your account for one transfer.”",
           OFFER,
           offer,
           offerChoice,
           pick(setOffer, OFFER, offer),
-          "EXITED CLEAN — NOW WALK",
+          "EXITED CLEAN: NOW WALK",
           () => {
             audio.stamp();
             onPhaseCleared(1);
@@ -201,13 +201,13 @@ export default function Mission18Incident({ reduced, audio, onPhaseCleared, onCo
 
       {phase === 2 &&
         stage(
-          "Phase 2 — You've stopped engaging. Now leave it so they have zero leverage.",
+          "Phase 2: You've stopped replying. Now leave it so they have nothing to use.",
           null,
           WALKS,
           walk,
           walkChoice,
           pick(setWalk, WALKS, walk),
-          "WALKED CLEAN — FILE IT",
+          "WALKED CLEAN: FILE IT",
           () => {
             audio.stamp();
             onPhaseCleared(2);
@@ -218,7 +218,7 @@ export default function Mission18Incident({ reduced, audio, onPhaseCleared, onCo
 
       {phase === 3 && !filed &&
         stage(
-          "Phase 3 — ARC runs the sender's signature against the whole dossier board. Who was that?",
+          "Phase 3: ARC runs the sender's signature against the whole dossier board. Who was that?",
           "SIGNATURE TRACE: matching against known actors… PHANTOM HOOK ✓ SIREN ✓ PACKRAT ✓ MIMIC ✓ GHOSTWRITER ✓ … architect (CASE 015) ✓ … resolving identity…",
           THREADS,
           thread,
@@ -236,7 +236,7 @@ export default function Mission18Incident({ reduced, audio, onPhaseCleared, onCo
 
       {phase === 3 && filed && (
         <p style={{ fontFamily: MONO, fontSize: 12, letterSpacing: "0.06em", color: T.confirmedGreen, margin: 0 }}>
-          FILED — THE COORDINATOR REACHED OUT, AND YOU HANDED ARC THE THREAD. THE CODE, RE-SIGNED.
+          FILED: THE COORDINATOR REACHED OUT, AND YOU HANDED ARC THE THREAD. THE CODE, RE-SIGNED.
         </p>
       )}
     </div>

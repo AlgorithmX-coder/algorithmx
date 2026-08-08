@@ -22,30 +22,30 @@ const EYES = [
     label: "Pick the one with the crispest logo",
     correct: false,
     outcome:
-      "All five logos are the SAME FILE — four are stolen copies of the fifth. Crispness is free.",
+      "All five logos are the SAME FILE. Four are stolen copies of the fifth. Crispness is free.",
   },
   {
     id: "speed",
     label: "Pick the one that loads fastest",
     correct: false,
     outcome:
-      "Mirror sites are tiny — they often load FASTER than the real thing. Speed measures nothing.",
+      "Mirror sites are tiny. They often load FASTER than the real thing. Speed measures nothing.",
   },
   {
     id: "none",
-    label: "None — looking can't settle this. Read the addresses.",
+    label: "None. Looking can't settle this. Read the addresses.",
     correct: true,
     outcome:
-      "Correct call. Five identical faces means zero visual information. The addresses are the only witnesses left.",
+      "Correct call. Five identical faces tell you nothing. The addresses are the only witnesses left.",
   },
 ];
 
 const ADDRESSES = [
-  { id: "a1", label: "gamehub-login.net/signin", real: false, hint: "Right to left: gamehub-login.net is its own site — a costume with a hyphen." },
+  { id: "a1", label: "gamehub-login.net/signin", real: false, hint: "Right to left: gamehub-login.net is its own site. A costume with a hyphen." },
   { id: "a2", label: "gamehub.com/login", real: true, hint: "" },
   { id: "a3", label: "account-gamehub.com/signin", real: false, hint: "account-gamehub.com is NOT gamehub.com. The words before the slash must match exactly." },
   { id: "a4", label: "gamehub.security-check.net/login", real: false, hint: "Read right to left: security-check.net. The gamehub in front is decoration." },
-  { id: "a5", label: "gamehub.com.account-verify.net/login", real: false, hint: "The nastiest trap: it STARTS with gamehub.com — but keep reading. It ends at account-verify.net. The END is the owner." },
+  { id: "a5", label: "gamehub.com.account-verify.net/login", real: false, hint: "The nastiest trap: it STARTS with gamehub.com. But keep reading. It ends at account-verify.net. The END is the owner." },
 ];
 
 const TRACES = [
@@ -54,21 +54,21 @@ const TRACES = [
     label: "Four random scammers copied the same site by coincidence",
     correct: false,
     outcome:
-      "Registered the same week, same hidden registrar, same name-pattern? Four strangers don't share handwriting.",
+      "Same week, same hidden owner, same name pattern? Four strangers don't share handwriting.",
   },
   {
     id: "architect",
-    label: "One entity registered ALL four mirrors — the same signature behind every actor's infrastructure",
+    label: "One hidden owner set up ALL four mirrors, the same signature behind every actor",
     correct: true,
     outcome:
-      "Confirmed. The registry signature matches PHANTOM HOOK's lure domains, SIREN's prize factory, the clone-call routing — everything. Six actors. One architect. The board just became one case.",
+      "Confirmed. The same signature is behind PHANTOM HOOK's fake emails, SIREN's prize factory, the clone calls. Everything. Six actors. One architect. The board is now one case.",
   },
   {
     id: "gamehub",
     label: "GameHub built them to test its users",
     correct: false,
     outcome:
-      "Companies don't phish their own players — and the registrations trace AWAY from GameHub, into the dark. Follow the records, not the guesses.",
+      "Companies don't attack their own players. And the records trace AWAY from GameHub, into the dark. Follow the records, not the guesses.",
   },
 ];
 
@@ -103,7 +103,7 @@ export default function Mission15Incident({ reduced, audio, onPhaseCleared, onCo
       {phase === 1 && (
         <div style={{ marginBottom: 18, maxWidth: 560 }}>
           <div style={{ fontFamily: MONO, fontSize: 10, letterSpacing: "0.14em", color: T.threatRed, marginBottom: 8 }}>
-            INTERCEPTED — MIMIC, ON THE WIRE
+            INTERCEPTED: MIMIC, ON THE WIRE
           </div>
           <Bubble who="villain">
             <em>&ldquo;Four of my mirrors, one of your originals, darling. Even the pixels can't tell themselves apart.&rdquo;</em>
@@ -121,7 +121,7 @@ export default function Mission15Incident({ reduced, audio, onPhaseCleared, onCo
       {/* ---------------- phase 1: the eyes test ---------------- */}
       {phase === 1 && (
         <div style={{ maxWidth: 640 }}>
-          <Eyebrow text="Phase 1 — Five identical login pages fill the wall. Find the real one… by looking?" color={T.actionAmber} />
+          <Eyebrow text="Phase 1: Five identical login pages fill the wall. Find the real one… by looking?" color={T.actionAmber} />
           <div style={{ display: "grid", gap: 10, marginTop: 14 }}>
             {EYES.map((o) => {
               const isChosen = eyes === o.id;
@@ -139,7 +139,7 @@ export default function Mission15Incident({ reduced, audio, onPhaseCleared, onCo
               <p style={{ margin: 0, fontSize: 14, lineHeight: 1.6 }}>{eyesChoice.outcome}</p>
               <div style={{ marginTop: 12 }}>
                 {eyesChoice.correct ? (
-                  <AmberButton label="EYES DOWN — ADDRESSES UP" onClick={() => { audio.stamp(); onPhaseCleared(1); setPhase(2); }} />
+                  <AmberButton label="EYES DOWN, ADDRESSES UP" onClick={() => { audio.stamp(); onPhaseCleared(1); setPhase(2); }} />
                 ) : (
                   <GhostButton label="RECONSIDER" onClick={() => setEyes(null)} />
                 )}
@@ -152,7 +152,7 @@ export default function Mission15Incident({ reduced, audio, onPhaseCleared, onCo
       {/* ---------------- phase 2: read the addresses ---------------- */}
       {phase === 2 && (
         <div style={{ maxWidth: 640 }}>
-          <Eyebrow text="Phase 2 — The five address bars, side by side. Tap the ONLY real one." color={T.actionAmber} />
+          <Eyebrow text="Phase 2: The five address bars, side by side. Tap the ONLY real one." color={T.actionAmber} />
           <div style={{ display: "grid", gap: 10, marginTop: 14 }}>
             {ADDRESSES.map((a) => (
               <button
@@ -182,14 +182,14 @@ export default function Mission15Incident({ reduced, audio, onPhaseCleared, onCo
           </div>
           <p role="status" style={{ margin: "12px 0 0", fontSize: 13, color: realFound ? T.confirmedGreen : T.textSecondary }}>
             {realFound
-              ? "REAL SITE CONFIRMED — gamehub.com, read right to left, ending exactly where it should."
+              ? "REAL SITE CONFIRMED: gamehub.com, read right to left, ending exactly where it should."
               : wrongAddrObj
                 ? wrongAddrObj.hint
                 : "Right to left. The words just before the first slash are the owner."}
           </p>
           {realFound && (
             <div style={{ marginTop: 14 }}>
-              <AmberButton label="ONE REAL — RUN THE DETECTOR" onClick={() => { audio.click(); setPhase(3); }} />
+              <AmberButton label="ONE REAL. RUN THE DETECTOR" onClick={() => { audio.click(); setPhase(3); }} />
             </div>
           )}
         </div>
@@ -202,10 +202,10 @@ export default function Mission15Incident({ reduced, audio, onPhaseCleared, onCo
             <p style={{ margin: 0, fontFamily: MONO, fontSize: 13, lineHeight: 1.7, color: T.fileInk }}>
               VAULT AUTOFILL SWEEP: mirror 1 … silent. mirror 2 … silent. mirror 3 … silent. mirror 4 … silent. gamehub.com … FILLED.
               <br />
-              REGISTRY TRACE on the four silent domains: one registrant. Hidden. Same signature as… loading…
+              REGISTRY TRACE on the four silent sites: one owner. Hidden. Same signature as… loading…
             </p>
           </div>
-          <Eyebrow text="Phase 3 — The vault spoke once and went quiet four times. Now read the registry trace: who built the mirrors?" color={T.actionAmber} />
+          <Eyebrow text="Phase 3: The vault spoke once and went quiet four times. Now read the trace: who built the mirrors?" color={T.actionAmber} />
           <div style={{ display: "grid", gap: 10, marginTop: 14 }}>
             {TRACES.map((o) => {
               const isChosen = trace === o.id;
@@ -235,7 +235,7 @@ export default function Mission15Incident({ reduced, audio, onPhaseCleared, onCo
                     />
                   ) : (
                     <p style={{ fontFamily: MONO, fontSize: 12, letterSpacing: "0.06em", color: T.confirmedGreen, margin: 0 }}>
-                      FILED — SIX ACTORS, ONE ARCHITECT. THE BOARD IS ONE CASE NOW.
+                      FILED: SIX ACTORS, ONE ARCHITECT. THE BOARD IS ONE CASE NOW.
                     </p>
                   )
                 ) : (

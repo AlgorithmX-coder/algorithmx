@@ -23,7 +23,7 @@ export const mission17: MissionManifest = {
   classification: "ULTRA",
   actor: {
     codename: "GHOSTWRITER",
-    mo: "Manufactures believable things. Friends deliver them.",
+    mo: "Makes believable fakes. Friends deliver them.",
     portrait: "/explorers/actors/ghostwriter.png",
   },
 
@@ -36,17 +36,17 @@ export const mission17: MissionManifest = {
       "A screenshot is tearing through the school group chats.",
       "It looks completely real. Screenshots always do.",
       "This one was typed, not taken.",
-      "Trace it. Break it. Still the mill — kindly.",
+      "Trace it. Break it. Still the mill, kindly.",
     ],
   },
 
   briefing: {
     summary:
-      "Anything can be made to order now. The question is never “does it look real” — it's “who benefits”.",
+      "Anything can be made to order now. The question isn't “does it look real”. It's “who benefits”.",
     objectives: [
       "Ask who benefits",
-      "Read laterally",
-      "Contain without amplifying",
+      "Read sideways",
+      "Stop it without spreading it",
     ],
     wrenLine: "Check in a second tab, Operative. The first one belongs to the storyteller.",
   },
@@ -56,15 +56,15 @@ export const mission17: MissionManifest = {
     {
       id: "synthetic",
       title: "Made to order",
-      concept: "Images, screenshots, reviews — all manufacturable",
+      concept: "Images, screenshots, reviews: all can be faked",
       promise: "You'll learn the question that beats every fake.",
-      instruction: "Tap the 3 manufactured items in the evidence set.",
+      instruction: "Tap the 3 fake items in the set.",
       intel: {
         beats: [
           "Photos used to be proof. Screenshots used to be proof.",
           "Now they're PRODUCTS. Made to order, in seconds.",
           "So looking harder is a dead end.",
-          "Ask the provenance question instead:",
+          "Ask the better question instead:",
           "WHO BENEFITS if I believe this?",
           "Fakes always have a customer. Find the customer.",
         ],
@@ -77,22 +77,22 @@ export const mission17: MissionManifest = {
           ],
           answer: 1,
           right: "Right. A screenshot is pixels arranged like a post. Ten seconds' work.",
-          wrong: "Screenshots are typed in any editor. Resolution measures effort, not truth.",
+          wrong: "Screenshots can be typed in any app. High resolution means effort, not truth.",
         },
       },
       fieldwork: {
         verb: "INSPECT",
         payload: {
-          intro: "Tap the 3 manufactured items in the evidence set.",
+          intro: "Tap the 3 fake items in the set.",
           device: { app: "EVIDENCE SET", owner: "ARC RANGE · TODAY'S CATCH" },
           header: [
             { label: "SET:", seg: { id: "set", text: "four items pulled from the school's feeds today" } },
           ],
           body: [
             [{ id: "s1", text: "“Screenshot”: a footballer announcing he hates his own club", tellId: "shot" }],
-            [{ id: "s2", text: "A gadget with 400 five-star reviews — all posted on launch day", tellId: "reviews" }],
+            [{ id: "s2", text: "A gadget with 400 five-star reviews, all posted on launch day", tellId: "reviews" }],
             [{ id: "s3", text: "The school's newsletter PDF about the bake sale" }],
-            [{ id: "s4", text: "A “leaked photo” of next year's console — six fingers on the hand holding it", tellId: "image" }],
+            [{ id: "s4", text: "A “leaked photo” of next year's console: six fingers on the hand", tellId: "image" }],
           ],
           tells: [
             {
@@ -103,12 +103,12 @@ export const mission17: MissionManifest = {
             {
               id: "reviews",
               label: "The review flood",
-              why: "400 delighted strangers in one day — reviews are bought by the bucket.",
+              why: "400 happy strangers in one day? Reviews are bought by the bucket.",
             },
             {
               id: "image",
               label: "The impossible photo",
-              why: "Six fingers today; flawless next month. Artifacts decay — provenance doesn't.",
+              why: "Six fingers today, flawless tomorrow. Pixel clues fade, but who benefits never does.",
             },
           ],
           doneLine: "Three products, one real document. The tell that lasts: who benefits.",
@@ -144,14 +144,14 @@ export const mission17: MissionManifest = {
     {
       id: "lateral",
       title: "The second tab",
-      concept: "Verify claims outside the page that makes them",
+      concept: "Check a claim outside the page that made it",
       promise: "You'll trace a viral claim back to its empty source.",
-      instruction: "Pin the 4 links of the claim's chain. Then order.",
+      instruction: "Pin the 4 chain links. Then put them in order.",
       intel: {
         beats: [
           "Here's how fact-checkers actually read.",
           "Not deeper into the page. SIDEWAYS, out of it.",
-          "The page vouching for itself proves nothing.",
+          "A page bragging about itself proves nothing.",
           "Open a second tab. Search the claim.",
           "Does anyone REAL report it? That's the whole test.",
           "Lateral reading: ten seconds, kills most fakes.",
@@ -171,14 +171,14 @@ export const mission17: MissionManifest = {
       fieldwork: {
         verb: "TRACE",
         payload: {
-          intro: "Claim chain — pin how the rumor really traveled",
+          intro: "Claim chain: pin how the rumor really traveled",
           fingerprintHint: "each link points at where the claim CAME from",
           cards: [
             {
               id: "t1",
               surface: "GROUP CHAT",
               from: "everywhere",
-              text: "the viral post: “GameHub SHUTS DOWN TOMORROW — save your skins NOW!”",
+              text: "the viral post: “GameHub SHUTS DOWN TOMORROW. Save your skins NOW!”",
               inCampaign: true,
               clue: "the claim, at full speed",
               order: 1,
@@ -194,18 +194,18 @@ export const mission17: MissionManifest = {
               id: "t2",
               surface: "FIRST POST",
               from: "@gaming_truth_daily",
-              text: "the account that posted it first — created two days ago",
+              text: "the account that posted it first, created two days ago",
               inCampaign: true,
               clue: "a newborn account with one viral hit",
               order: 2,
             },
             {
               id: "t3",
-              surface: "CITED SOURCE",
+              surface: "LINKED SITE",
               from: "the post's link",
-              text: "“gamer-news-central.net” — registered last week, no other articles",
+              text: "“gamer-news-central.net”: registered last week, no other articles",
               inCampaign: true,
-              clue: "a source built to be cited once",
+              clue: "a fake site made to be linked once",
               order: 3,
             },
             {
@@ -219,13 +219,13 @@ export const mission17: MissionManifest = {
               id: "t4",
               surface: "SECOND TAB",
               from: "lateral search",
-              text: "no real outlet, no official post, nothing — the claim exists only in its own echo",
+              text: "no real news, no official post, nothing. The claim lives only in its own echo",
               inCampaign: true,
               clue: "the lateral read: silence where news should be",
               order: 4,
             },
           ],
-          stage2Prompt: "Order the chain — from viral roar back to empty source",
+          stage2Prompt: "Order the chain: from viral roar back to empty source",
           doneLine: "Claim → newborn account → cardboard source → silence. Ten seconds of sideways reading.",
         },
       },
@@ -246,7 +246,7 @@ export const mission17: MissionManifest = {
             question: "A real, big story will always have:",
             options: [
               "The best headline",
-              "More than one real outlet reporting it",
+              "More than one real news site reporting it",
               "A countdown",
             ],
             answer: 1,
@@ -259,8 +259,8 @@ export const mission17: MissionManifest = {
     {
       id: "aicorner",
       title: "The confident liar",
-      concept: "AI helps you check — and confidently lies",
-      promise: "You'll predict the mill's next move — and AI's limits.",
+      concept: "AI helps you check, but it also lies",
+      promise: "You'll predict the mill's next move, and AI's limits.",
       instruction: "Predict the next move. Three rounds.",
       intel: {
         beats: [
@@ -268,14 +268,14 @@ export const mission17: MissionManifest = {
           "Great for leads. Fast for summaries.",
           "And it lies with PERFECT confidence.",
           "Same warm tone when it's right and when it's wrong.",
-          "Rule: AI gives you threads to pull, never verdicts.",
-          "Verdicts come from sources. Always.",
+          "Rule: AI hands you clues to check, never final answers.",
+          "Final answers come from real sources. Always.",
         ],
         prediction: {
           question: "An AI chatbot says a rumor is “definitely true.” That confidence is:",
           options: [
             "Proof it checked",
-            "Style, not evidence — it sounds identical when wrong",
+            "Style, not proof. It sounds the same when wrong",
             "A legal guarantee",
           ],
           answer: 1,
@@ -286,7 +286,7 @@ export const mission17: MissionManifest = {
       fieldwork: {
         verb: "SIMULATE",
         payload: {
-          intro: "Range playback — predict the mill's next targets",
+          intro: "Range playback: predict the mill's next targets",
           steps: [
             {
               scene:
@@ -294,41 +294,41 @@ export const mission17: MissionManifest = {
               question: "what's the next fake?",
               options: [
                 "A correction apologizing for the rumor",
-                "Something juicier — a fake screenshot of a TEACHER saying something awful",
+                "Something juicier: a fake screenshot of a TEACHER saying something awful",
                 "A maths worksheet",
               ],
               answer: 1,
               reveal:
-                "Drama is fuel. The mill escalates from games to PEOPLE — a teacher, a classmate. Bigger feelings, faster shares.",
+                "Drama is fuel. The mill moves from games to PEOPLE: a teacher, a classmate. Bigger feelings, faster shares.",
             },
             {
               scene:
-                "Two candidate fakes on GHOSTWRITER's bench: “school adds five minutes to lunch” vs “year 8 student cheated in the tournament”.",
+                "Two fakes wait on GHOSTWRITER's bench: “school adds five minutes to lunch” vs “year 8 student cheated in the tournament”.",
               question: "which one does he print?",
               options: [
-                "The lunch one — everyone loves lunch",
-                "The cheating one — outrage travels, boring doesn't",
+                "The lunch one, everyone loves lunch",
+                "The cheating one: outrage travels, boring doesn't",
                 "Both equally",
               ],
               answer: 1,
               reveal:
-                "Fakes are chosen for FEELINGS-per-share. Outrage and betrayal outrun mild good news every time. That's the targeting rule.",
+                "Fakes are picked for FEELINGS-per-share. Outrage and betrayal beat mild good news every time. That's the rule.",
             },
             {
               scene:
                 "You ask an AI chatbot: “Is the cheating story real?” It answers instantly, warmly, certainly.",
               question: "what's the right use of that answer?",
               options: [
-                "Trust it — it sounded very sure",
-                "Take its leads, then verify by source in a second tab",
+                "Trust it, it sounded very sure",
+                "Take its leads, then check the source in a second tab",
                 "Ask it again until it changes its mind",
               ],
               answer: 1,
               reveal:
-                "It named two threads worth pulling — and invented a third that doesn't exist. Leads, never verdicts. The second tab decides.",
+                "It named two real leads, then made up a third that doesn't exist. Leads, never final answers. The second tab decides.",
             },
           ],
-          doneLine: "TARGETS PREDICTED, LIMITS KNOWN. THE MILL CAN'T SURPRISE YOU — AND NEITHER CAN THE CHATBOT.",
+          doneLine: "TARGETS PREDICTED, LIMITS KNOWN. THE MILL CAN'T SURPRISE YOU. NEITHER CAN THE CHATBOT.",
         },
       },
       checkpoint: {
@@ -338,7 +338,7 @@ export const mission17: MissionManifest = {
             question: "The mill picks its fakes by:",
             options: [
               "Alphabetical order",
-              "Feelings-per-share — outrage travels",
+              "Feelings-per-share: outrage travels",
               "Whatever's true",
             ],
             answer: 1,
@@ -348,7 +348,7 @@ export const mission17: MissionManifest = {
             question: "AI's right job in fact-checking:",
             options: [
               "Final judge",
-              "Lead generator — the second tab decides",
+              "Finding leads: the second tab decides",
               "No job at all",
             ],
             answer: 1,
@@ -367,12 +367,12 @@ export const mission17: MissionManifest = {
 
   debrief: {
     report: [
-      "Three manufactured items caught by one question: who benefits.",
+      "Three fake items caught by one question: who benefits.",
       "The viral claim traced sideways to a newborn account and a cardboard source.",
-      "The mill stilled kindly — no shame, no amplification, truth intact.",
+      "The mill stilled kindly: no shame, no spreading, truth intact.",
     ],
     realWorldMove:
-      "This week: lateral-read one viral thing before sharing it — new tab, search the claim, see if anyone real reports it. Ten seconds. Every skipped share counts.",
+      "This week: lateral-read one viral thing before you share it. New tab, search the claim, see if anyone real reports it. Ten seconds. Every skipped share counts.",
     wrenLine: "Mill stilled, nobody shamed, truth intact. That's analyst work. Sign out.",
   },
 
@@ -383,7 +383,7 @@ export const mission17: MissionManifest = {
   },
 
   dossier: {
-    mo: "Manufactures believable things — screenshots, reviews, rumors. Your friends do the delivery.",
+    mo: "Makes believable fakes: screenshots, reviews, rumors. Your friends do the delivery.",
     defeatedBy: "Lateral readers who ask who benefits, and contain kindly instead of forwarding.",
   },
 };

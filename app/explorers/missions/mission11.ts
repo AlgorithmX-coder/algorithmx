@@ -24,14 +24,14 @@ export const mission11: MissionManifest = {
     portrait: "/explorers/actors/skeleton-key.png",
   },
 
-  hook: "Forty accounts, forty strong locks — no brain can do it. Tonight you build the machine that can.",
+  hook: "Forty accounts, forty strong locks. No brain can do that. Tonight you build the machine that can.",
   scene: "/explorers/scenes/m11-cold-open.jpg",
 
   transmission: {
     headline: "THE RIG RETURNS",
     lines: [
       "SKELETON KEY is back. New lists, faster rig.",
-      "In M03 you beat him with one good passphrase.",
+      "In Case 3 you beat him with one good passphrase.",
       "But you own forty accounts, not one.",
       "Brains can't hold forty strong locks. Tools can.",
     ],
@@ -39,9 +39,9 @@ export const mission11: MissionManifest = {
 
   briefing: {
     summary:
-      "Unique, strong, times forty. That's not a memory job — it's an engineering job.",
+      "Unique, strong, times forty. That's not a memory job. It's an engineering job.",
     objectives: [
-      "Admit the brain's limit",
+      "See the brain's limit",
       "Build the vault",
       "Add the second lock",
     ],
@@ -53,56 +53,56 @@ export const mission11: MissionManifest = {
     {
       id: "limit",
       title: "The forty-lock problem",
-      concept: "Strong × unique × forty is a tool's job",
-      promise: "You'll learn why nobody can memorize real security.",
-      instruction: "Pick the strategy that actually scales.",
+      concept: "Strong and unique, times forty: a tool's job",
+      promise: "You'll learn why no one can memorize forty strong locks.",
+      instruction: "Pick the plan that actually works.",
       intel: {
         beats: [
           "Quick math, Operative.",
           "Every account needs a STRONG password.",
-          "Every account needs a DIFFERENT one — M03's lesson.",
+          "Every account needs a DIFFERENT one. That was Case 3.",
           "You have about forty accounts.",
           "Forty strong, unique passwords, memorized? Nobody can.",
-          "So people cheat — and reuse. The rig loves cheaters.",
+          "So people cheat and reuse. The rig loves cheaters.",
         ],
         prediction: {
           question: "Why do most people end up reusing passwords?",
           options: [
             "They're lazy and careless",
-            "The memory job is genuinely impossible — so they cope",
+            "The job is impossible, so they cut corners",
             "Reusing is actually fine",
           ],
           answer: 1,
-          right: "Right. It's not a character flaw. It's an impossible job — needing a tool.",
-          wrong: "It's not laziness — the job really is impossible for brains. That's why tools exist.",
+          right: "Right. It's not laziness. An impossible job needs a tool.",
+          wrong: "It's not laziness. The job really is impossible for brains. That's why tools exist.",
         },
       },
       fieldwork: {
         verb: "DECIDE",
         payload: {
-          intro: "Pick the strategy that actually scales.",
+          intro: "Pick the plan that actually works.",
           situation:
-            "Jake's back. After M03 he fixed three passwords — but he has forty accounts and one brain.",
+            "Jake's back. After Case 3 he fixed three passwords. But he has forty accounts and one brain.",
           prompt: "YOUR CALL, OPERATIVE:",
           options: [
             {
               id: "memorize",
-              label: "Train harder — memorize forty random passphrases",
+              label: "Train harder: memorize forty random passphrases",
               outcome:
-                "Nobody sustains that. Week two, he'll reuse — and one breach opens forty doors again. Impossible plans fail into bad habits.",
+                "Nobody keeps that up. By week two he'll reuse. Then one leak opens forty doors again. Impossible plans turn into bad habits.",
             },
             {
               id: "onegreat",
               label: "One AMAZING passphrase, used everywhere",
               outcome:
-                "One great key on forty doors is a master key — for whoever leaks it. The strength isn't the problem; the reuse is.",
+                "One great key on forty doors is a master key. It works for whoever leaks it. The strength isn't the problem. The reuse is.",
             },
             {
               id: "manager",
               label: "A password manager: it remembers forty, he remembers one",
               correct: true,
               outcome:
-                "That's the tool. The manager generates and stores forty random monsters; Jake memorizes ONE master passphrase. Brains do one thing well. Let them.",
+                "That's the tool. The manager makes and stores forty random monsters. Jake memorizes ONE master passphrase. Brains do one thing well. Let them.",
             },
           ],
         },
@@ -114,7 +114,7 @@ export const mission11: MissionManifest = {
             question: "A password manager's deal is:",
             options: [
               "It emails you your passwords",
-              "It remembers forty; you remember one",
+              "It remembers forty, you remember one",
               "It removes passwords entirely",
             ],
             answer: 1,
@@ -124,7 +124,7 @@ export const mission11: MissionManifest = {
             question: "Why does “memorize everything” always fail?",
             options: [
               "People are careless",
-              "The job is impossible, so people fall back to reusing",
+              "The job is impossible, so people reuse instead",
               "Memory apps are expensive",
             ],
             answer: 1,
@@ -138,58 +138,58 @@ export const mission11: MissionManifest = {
       id: "vault",
       title: "Build the vault",
       concept: "Generate, store, one master passphrase",
-      promise: "You'll assemble a real password vault, part by part.",
+      promise: "You'll build a real password vault, part by part.",
       instruction: "Fill each slot with the part that holds.",
       intel: {
         beats: [
           "New tool unlocked: the WORKBENCH.",
           "Three slots make a vault.",
-          "The master passphrase — the one key you'll actually remember.",
-          "The generator — where the forty monsters come from.",
-          "The storage — where they live, sealed.",
+          "The master passphrase: the one key you'll actually remember.",
+          "The generator: where the forty monsters come from.",
+          "The storage: where they live, sealed.",
           "Choose well. The rig gets a test run after.",
         ],
         prediction: {
           question: "The master passphrase is the one password you memorize. It should be:",
           options: [
             "Short, so it's quick to type",
-            "Long random words — it guards everything else",
+            "Long random words, it guards everything else",
             "Your name plus the year",
           ],
           answer: 1,
-          right: "Right. It's the door to every door. M03 rules, at maximum strength.",
-          wrong: "It guards ALL the others — it gets your strongest M03-style passphrase, nothing less.",
+          right: "Right. It's the door to every door. Case 3 rules, at full strength.",
+          wrong: "It guards ALL the others. So it gets your strongest Case 3 passphrase, nothing less.",
         },
       },
       fieldwork: {
         verb: "BUILD",
         payload: {
-          intro: "Workbench live — assemble the vault",
+          intro: "Workbench live: build the vault",
           target: "JAKE'S PASSWORD VAULT",
           slots: [
             {
               id: "master",
-              label: "SLOT 1 — THE MASTER KEY (the one he memorizes)",
+              label: "SLOT 1: THE MASTER KEY (the one he memorizes)",
               options: [
-                { id: "m1", label: "Jake2015!", good: false, why: "The rig's first guess family — M03 taught us this falls in a second." },
+                { id: "m1", label: "Jake2015!", good: false, why: "The rig guesses these first. Case 3 showed this falls in a second." },
                 { id: "m2", label: "crater-violin-mustard-9-lantern", good: true, why: "Five random words. Centuries of rig-work. And it's the ONLY thing Jake memorizes." },
-                { id: "m3", label: "biscuit1 (the dog, for luck)", good: false, why: "Biscuit is in forty posts — PACKRAT sells that list. Nothing about you, ever." },
+                { id: "m3", label: "biscuit1 (the dog, for luck)", good: false, why: "Biscuit is in forty posts. PACKRAT sells that list. Nothing about you, ever." },
               ],
             },
             {
               id: "generator",
-              label: "SLOT 2 — WHERE THE OTHER 40 COME FROM",
+              label: "SLOT 2: WHERE THE OTHER 40 COME FROM",
               options: [
-                { id: "g1", label: "Reuse the master everywhere — it's strong enough", good: false, why: "One key on forty doors is SKELETON KEY's dream. The master opens the vault, nothing else." },
+                { id: "g1", label: "Reuse the master everywhere, it's strong enough", good: false, why: "One key on forty doors is SKELETON KEY's dream. The master opens the vault, nothing else." },
                 { id: "g2", label: "Let the manager generate random 20-character monsters", good: true, why: "Forty unique monsters nobody ever has to remember or type. The rig retires." },
-                { id: "g3", label: "Keep his old passwords — they're familiar", good: false, why: "The old ones are the breached ones. Familiar means already on a list somewhere." },
+                { id: "g3", label: "Keep his old passwords, they're familiar", good: false, why: "The old ones are the leaked ones. Familiar means already on a list somewhere." },
               ],
             },
             {
               id: "storage",
-              label: "SLOT 3 — WHERE THEY LIVE",
+              label: "SLOT 3: WHERE THEY LIVE",
               options: [
-                { id: "s1", label: "A note on his phone called “passwords”", good: false, why: "M03's audit found exactly this note. Unsealed storage is a gift basket." },
+                { id: "s1", label: "A note on his phone called “passwords”", good: false, why: "Case 3's check found exactly this note. Unlocked storage is a gift basket." },
                 { id: "s2", label: "The manager's encrypted vault, locked by the master key", good: true, why: "Sealed with real encryption. Even stolen, it's unreadable without the master passphrase." },
                 { id: "s3", label: "A sticky note under the keyboard", good: false, why: "Anyone in the room owns every account. Storage has to survive visitors." },
               ],
@@ -204,7 +204,7 @@ export const mission11: MissionManifest = {
           {
             id: "c2q1",
             question: "How many passwords does Jake memorize now?",
-            options: ["Forty", "One — the master passphrase", "Zero"],
+            options: ["Forty", "One: the master passphrase", "Zero"],
             answer: 1,
           },
           {
@@ -212,7 +212,7 @@ export const mission11: MissionManifest = {
             question: "Where must generated passwords NEVER live?",
             options: [
               "The encrypted vault",
-              "An unsealed note or sticky note",
+              "An unlocked note or sticky note",
               "The manager's autofill",
             ],
             answer: 1,
@@ -232,36 +232,36 @@ export const mission11: MissionManifest = {
         beats: [
           "One more layer and this fortress is done.",
           "Two-factor authentication. 2FA.",
-          "Lock one: something you KNOW — the password.",
-          "Lock two: something you HAVE — your phone's code.",
+          "Lock one: something you KNOW, the password.",
+          "Lock two: something you HAVE, your phone's code.",
           "A thief needs both. Stealing one gets nothing.",
-          "And remember M07: codes are keys. Nobody gets asked for keys.",
+          "And remember Case 7: codes are keys. Nobody gets asked for keys.",
         ],
         prediction: {
           question: "A thief has your password. 2FA is on. What happens?",
           options: [
             "They're in anyway",
-            "They're stopped — they don't have your phone",
+            "They're stopped, they don't have your phone",
             "The account deletes itself",
           ],
           answer: 1,
           right: "Right. One stolen lock, zero doors. That's the whole point of two.",
-          wrong: "They hit the second lock — the code on YOUR phone. One stolen key opens nothing.",
+          wrong: "They hit the second lock: the code on YOUR phone. One stolen key opens nothing.",
         },
       },
       fieldwork: {
         verb: "INSPECT",
         payload: {
           intro: "Tap the 3 accounts missing their second lock.",
-          device: { app: "SECURITY CENTER", owner: "JAKE'S ACCOUNTS · AUDIT VIEW" },
+          device: { app: "SECURITY CENTER", owner: "JAKE'S ACCOUNTS · CHECK VIEW" },
           header: [
             { label: "SCAN:", seg: { id: "scan", text: "which doors still have ONE lock?" } },
           ],
           body: [
-            [{ id: "a1", text: "EMAIL — the master door · 2FA: OFF", tellId: "email" }],
-            [{ id: "a2", text: "GAMEHUB — saved card attached · 2FA: OFF", tellId: "game" }],
-            [{ id: "a3", text: "SCHOOL PORTAL — 2FA: ON via app code" }],
-            [{ id: "a4", text: "CLOUD PHOTOS — every family picture · 2FA: OFF", tellId: "photos" }],
+            [{ id: "a1", text: "EMAIL · the master door · 2FA: OFF", tellId: "email" }],
+            [{ id: "a2", text: "GAMEHUB · saved card attached · 2FA: OFF", tellId: "game" }],
+            [{ id: "a3", text: "SCHOOL PORTAL · 2FA: ON via app code" }],
+            [{ id: "a4", text: "CLOUD PHOTOS · every family picture · 2FA: OFF", tellId: "photos" }],
           ],
           tells: [
             {
@@ -277,7 +277,7 @@ export const mission11: MissionManifest = {
             {
               id: "photos",
               label: "Memories, one lock",
-              why: "Irreplaceable things get the second lock. Photos are irreplaceable.",
+              why: "These photos can't be replaced. Things you can't replace get the second lock.",
             },
           ],
           doneLine: "Three doors upgraded to two locks. Now even a leaked password opens nothing.",
@@ -297,7 +297,7 @@ export const mission11: MissionManifest = {
           },
           {
             id: "c3q2",
-            question: "Anyone — ANYONE — asks you to read out a 2FA code. That's:",
+            question: "Anyone at all asks you to read out a 2FA code. That's:",
             options: [
               "Normal support stuff",
               "A key-ask. Nobody legit ever asks for keys",
@@ -324,7 +324,7 @@ export const mission11: MissionManifest = {
       "Second locks installed on email, wallet, and memories. The rig retired mid-song.",
     ],
     realWorldMove:
-      "This week, with a parent: turn on 2FA for your most important account — email first. Ten minutes, one QR code, and a leaked password becomes worthless.",
+      "This week, with a parent: turn on 2FA for your most important account. Email first. Ten minutes, one QR code. A leaked password becomes worthless.",
     wrenLine: "Forty doors, eighty locks, zero worries. The locksmith's having a bad night. Sign out.",
   },
 
@@ -335,7 +335,7 @@ export const mission11: MissionManifest = {
   },
 
   dossier: {
-    mo: "Industrial guessing: bigger lists, faster rigs, and every stolen key tried everywhere.",
+    mo: "Nonstop guessing: bigger lists, faster rigs, and every stolen key tried everywhere.",
     defeatedBy: "A vault he can't guess and a second lock he can't hold. Engineering beats memory.",
   },
 };

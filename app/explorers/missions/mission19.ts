@@ -20,7 +20,7 @@ export const mission19: MissionManifest = {
   block: 4,
   classification: "ULTRA",
   actor: {
-    codename: "STATIC",
+    codename: "ZERO",
     mo: "Every actor at once, in one coordinated wave.",
     portrait: "/explorers/actors/coordinator.png",
   },
@@ -31,7 +31,7 @@ export const mission19: MissionManifest = {
   transmission: {
     headline: "ALL FREQUENCIES",
     lines: [
-      "This is it. Not one actor — all of them.",
+      "This is it. Not one actor. All of them.",
       "The coordinator lit the whole network at once.",
       "Your entire school is the target tonight.",
       "Everything you've learned. All of it. Right now.",
@@ -40,7 +40,7 @@ export const mission19: MissionManifest = {
 
   briefing: {
     summary:
-      "A real campaign runs in phases. Beat it with layers — every defense catching what the last one missed.",
+      "A real campaign runs in phases. Beat it with layers. Every layer catches what the last one missed.",
     objectives: [
       "Map the campaign phases",
       "See defense in depth",
@@ -70,25 +70,25 @@ export const mission19: MissionManifest = {
           question: "What comes FIRST in a big campaign?",
           options: [
             "Stealing the data",
-            "Recon — quietly collecting who's who",
+            "Recon: quietly collecting who's who",
             "The final ransom",
           ],
           answer: 1,
           right: "Right. They study before they strike. Recon is phase one.",
-          wrong: "Harvest is the END. First they learn you — recon always leads.",
+          wrong: "Harvest is the END. First they learn you. Recon always leads.",
         },
       },
       fieldwork: {
         verb: "TRACE",
         payload: {
-          intro: "Campaign board — order the wave, phase by phase",
+          intro: "Campaign board: order the wave, phase by phase",
           fingerprintHint: "each actor owns one phase of the attack",
           cards: [
             {
               id: "t1",
               surface: "PHASE",
               from: "PACKRAT",
-              text: "RECON — quietly builds the file: who, where, what they like",
+              text: "RECON: quietly builds the file, who you are and what you like",
               inCampaign: true,
               clue: "study first",
               order: 1,
@@ -104,7 +104,7 @@ export const mission19: MissionManifest = {
               id: "t2",
               surface: "PHASE",
               from: "PHANTOM HOOK + SIREN",
-              text: "LURE — the recon makes the bait personal and irresistible",
+              text: "LURE: the recon makes the bait feel personal and hard to resist",
               inCampaign: true,
               clue: "the click",
               order: 2,
@@ -113,7 +113,7 @@ export const mission19: MissionManifest = {
               id: "t3",
               surface: "PHASE",
               from: "SKELETON KEY + MIMIC",
-              text: "ACCESS — clicked links and borrowed faces open the doors",
+              text: "ACCESS: clicked links and borrowed faces open the doors",
               inCampaign: true,
               clue: "the way in",
               order: 3,
@@ -129,14 +129,14 @@ export const mission19: MissionManifest = {
               id: "t4",
               surface: "PHASE",
               from: "GHOSTWRITER + the market",
-              text: "HARVEST — accounts, data, and money taken and sold on",
+              text: "HARVEST: accounts, data, and money taken and sold on",
               inCampaign: true,
               clue: "the payday",
               order: 4,
             },
           ],
-          stage2Prompt: "Order the campaign — recon to harvest",
-          doneLine: "Recon → lure → access → harvest. The whole course, revised by building the attack backwards.",
+          stage2Prompt: "Order the campaign: recon to harvest",
+          doneLine: "Recon → lure → access → harvest. You just mapped a whole attack, end to end.",
         },
       },
       checkpoint: {
@@ -152,7 +152,7 @@ export const mission19: MissionManifest = {
             question: "Why map a campaign into phases?",
             options: [
               "It looks organized",
-              "Each phase has its own defense — you can break any link",
+              "Each phase has its own defense, so you can break any link",
               "Attackers require it",
             ],
             answer: 1,
@@ -180,46 +180,46 @@ export const mission19: MissionManifest = {
         prediction: {
           question: "Why build many defenses instead of one perfect one?",
           options: [
-            "One perfect defense is impossible — layers cover each other's gaps",
+            "One perfect defense is impossible, so layers cover each other's gaps",
             "More is always better, no reason",
             "To confuse yourself",
           ],
           answer: 0,
-          right: "Right. Perfection doesn't exist; depth does. Each layer saves you when another fails.",
+          right: "Right. No wall is perfect. Each layer saves you when another fails.",
           wrong: "There's no perfect wall. Layers work BECAUSE each covers where the last one leaks.",
         },
       },
       fieldwork: {
         verb: "BUILD",
         payload: {
-          intro: "Workbench live — stack the school's defense in depth",
+          intro: "Workbench live. Stack the school's defenses, layer by layer.",
           target: "THE LAYERED DEFENSE",
           slots: [
             {
               id: "layer1",
-              label: "LAYER 1 — WHEN THE LURE ARRIVES",
+              label: "LAYER 1: WHEN THE LURE ARRIVES",
               options: [
-                { id: "a1", label: "Hope nobody clicks", good: false, why: "Hope isn't a layer. In a whole school, SOMEONE clicks — plan for it." },
-                { id: "a2", label: "Trained eyes: read the address, check the source", good: true, why: "The first filter — catches most lures before they land. Most, not all. That's why there's a layer 2." },
-                { id: "a3", label: "Ban the internet", good: false, why: "Not a defense, an amputation. Layers protect a life online, they don't end it." },
+                { id: "a1", label: "Hope nobody clicks", good: false, why: "Hope isn't a layer. In a whole school, SOMEONE clicks. Plan for it." },
+                { id: "a2", label: "Trained eyes: read the address, check the source", good: true, why: "The first check catches most lures before they land. Most, not all. That's why there's a layer 2." },
+                { id: "a3", label: "Ban the internet", good: false, why: "Not a defense, just a shutdown. Layers protect your life online, they don't end it." },
               ],
             },
             {
               id: "layer2",
-              label: "LAYER 2 — WHEN A LINK GETS CLICKED ANYWAY",
+              label: "LAYER 2: WHEN A LINK GETS CLICKED ANYWAY",
               options: [
-                { id: "b1", label: "Nothing — the click already lost", good: false, why: "That's single-layer thinking. The click is where layer 2 EARNS its place." },
-                { id: "b2", label: "The vault won't autofill the fake domain; nothing gets typed", good: true, why: "Layer 1 leaked; layer 2 caught it. The mirror gets no password. Depth in action." },
-                { id: "b3", label: "Turn off the wifi for everyone", good: false, why: "Collective punishment isn't a control. The vault quietly holds the specific gap." },
+                { id: "b1", label: "Nothing, the click already lost", good: false, why: "That's one-layer thinking. The click is where layer 2 EARNS its place." },
+                { id: "b2", label: "The vault sees the fake site and refuses to fill your password", good: true, why: "Layer 1 leaked, layer 2 caught it. The fake site gets no password. That's depth." },
+                { id: "b3", label: "Turn off the wifi for everyone", good: false, why: "Punishing everyone isn't a fix. The vault quietly covers this one gap." },
               ],
             },
             {
               id: "layer3",
-              label: "LAYER 3 — WHEN A PASSWORD LEAKS SOMEWHERE",
+              label: "LAYER 3: WHEN A PASSWORD LEAKS SOMEWHERE",
               options: [
-                { id: "c1", label: "Panic and reset everything by hand", good: false, why: "Panic is not a layer. The system should already hold without a fire drill." },
-                { id: "c2", label: "2FA: the leaked password alone opens nothing", good: true, why: "Layers 1 and 2 both failed — and the account STILL holds. That's defense in depth working." },
-                { id: "c3", label: "Hope the leak was fake", good: false, why: "Assume every password leaks eventually. 2FA is the layer that makes that survivable." },
+                { id: "c1", label: "Panic and reset everything by hand", good: false, why: "Panic is not a layer. Your setup should already hold, no scramble needed." },
+                { id: "c2", label: "2FA: the leaked password alone opens nothing", good: true, why: "Layers 1 and 2 both failed, and the account STILL holds. That's defense in depth working." },
+                { id: "c3", label: "Hope the leak was fake", good: false, why: "Assume every password leaks one day. 2FA is the layer that keeps you safe." },
               ],
             },
           ],
@@ -244,7 +244,7 @@ export const mission19: MissionManifest = {
             question: "A password leaks but 2FA is on. Depth means:",
             options: [
               "You're doomed",
-              "The next layer holds — the account survives",
+              "The next layer holds, the account survives",
               "Delete the account",
             ],
             answer: 1,
@@ -267,66 +267,66 @@ export const mission19: MissionManifest = {
           "TRIAGE: what's worst, first.",
           "CONTAIN: stop the spread before the cleanup.",
           "REPORT and COMMUNICATE: adults, platform, everyone at risk.",
-          "And predict the next phase — because you know the anatomy now.",
+          "And predict the next phase, because you know the pattern now.",
         ],
         prediction: {
           question: "First move when a whole-school attack hits?",
           options: [
             "Fix your own account, then relax",
-            "Triage — find and handle the worst-hit first",
+            "Triage: find and handle the worst-hit first",
             "Post about it dramatically",
           ],
           answer: 1,
           right: "Right. Worst-first, calmly. Incident command starts with triage.",
-          wrong: "Not you-first, not drama. Triage: rank by severity, handle the worst, stay calm.",
+          wrong: "Not you first, not drama. Triage means handle the worst-hit first, stay calm.",
         },
       },
       fieldwork: {
         verb: "SIMULATE",
         payload: {
-          intro: "Range playback — call the wave's next phase before it fires",
+          intro: "Range playback: call the wave's next phase before it fires",
           steps: [
             {
               scene:
-                "3:02pm — a flood of DMs hits the whole school: “URGENT: verify your school account or lose your grades!”",
-              question: "you've seen this before — what phase is NEXT?",
+                "3:02pm. A flood of DMs hits the whole school: “URGENT: verify your school account or lose your grades!”",
+              question: "You've seen this before. What phase is NEXT?",
               options: [
                 "They give up and go home",
-                "ACCESS — the panic clicks become stolen logins",
+                "ACCESS: the panic clicks become stolen logins",
                 "A polite apology",
               ],
               answer: 1,
               reveal:
-                "Right on schedule: the clicked links harvest passwords. But you called it — so 2FA is already on and the vaults already refuse the fakes. Prediction bought the defense.",
+                "Right on schedule: the clicked links grab passwords. But you called it. 2FA is already on. The vaults refuse the fakes. Reading ahead bought the defense.",
             },
             {
               scene:
-                "3:20pm — a few accounts DID get taken. From them, messages start going to friends: “hey lend me your login real quick”.",
+                "3:20pm. A few accounts DID get taken. Now they message friends: “hey lend me your login real quick”.",
               question: "what's this phase, and the move?",
               options: [
-                "MIMIC's spread — contain: warn friends out-of-band, trigger recovery",
+                "MIMIC's spread. Contain it: warn friends another way, start recovery",
                 "Ignore it, only a few accounts",
                 "Shame the kids who got caught",
               ],
               answer: 0,
               reveal:
-                "Borrowed faces, spreading. Containment: the code-word and out-of-band checks you taught the whole school stop it cold. The wave hits a wall of prepared kids.",
+                "Borrowed faces, spreading. Contain it: the code-words and check-another-way habit you taught everyone stop it cold. The wave hits a wall of ready kids.",
             },
             {
               scene:
-                "3:45pm — the attack is failing. The coordinator's channel goes quiet, then sends one probing message to YOU alone.",
+                "3:45pm. The attack is failing. The coordinator goes quiet, then sends one testing message to YOU alone.",
               question: "what does the analyst do with that?",
               options: [
                 "Reply and taunt them for losing",
-                "Log it, trace the signature, report — it's a lead, not a conversation",
-                "Panic — they're coming for you",
+                "Log it, trace the signature, report. It's a lead, not a chat",
+                "Panic, they're coming for you",
               ],
               answer: 1,
               reveal:
-                "The cadence of the whole wave just revealed where the coordinator transmits from. You didn't win by fighting harder — you won by reading the pattern. One case left.",
+                "The rhythm of the whole wave just showed where the coordinator hides. You didn't win by fighting harder. You won by reading the pattern. One case left.",
             },
           ],
-          doneLine: "TRIAGE, CONTAIN, REPORT — AND THE WAVE'S OWN RHYTHM POINTED HOME. ONE CASE LEFT.",
+          doneLine: "TRIAGE, CONTAIN, REPORT. THE WAVE'S OWN RHYTHM POINTED HOME. ONE CASE LEFT.",
         },
       },
       checkpoint: {
@@ -365,12 +365,12 @@ export const mission19: MissionManifest = {
 
   debrief: {
     report: [
-      "The campaign mapped end to end: recon, lure, access, harvest — each actor named.",
+      "The campaign mapped end to end: recon, lure, access, harvest. Each actor named.",
       "Defense in depth held: lure caught, vault refused, 2FA saved the rest.",
-      "Incident command run clean — and the wave's own rhythm revealed the coordinator's location.",
+      "Incident command run clean. The wave's own rhythm revealed the coordinator's location.",
     ],
     realWorldMove:
-      "This week: pick your three layers and check them — trained eyes, a password manager, 2FA on your top account. One layer can fail. Three is a wall.",
+      "This week: pick your three layers and check them. Trained eyes, a password manager, 2FA on your top account. One layer can fail. Three is a wall.",
     wrenLine: "The whole network threw everything at us and the line held. One case left, Operative. Sign out.",
   },
 
@@ -381,7 +381,7 @@ export const mission19: MissionManifest = {
   },
 
   dossier: {
-    mo: "The whole network at once: recon, lure, access, harvest — six actors, one coordinated wave.",
+    mo: "The whole network at once: recon, lure, access, harvest. Six actors, one coordinated wave.",
     defeatedBy: "Defense in depth and a whole community that saw it coming. Layers beat waves.",
   },
 };

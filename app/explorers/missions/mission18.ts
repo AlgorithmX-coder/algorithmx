@@ -28,13 +28,13 @@ export const mission18: MissionManifest = {
     portrait: "/explorers/actors/coordinator.png",
   },
 
-  hook: "You're good at this now. Someone noticed — and they're not from ARC. Hear them out. Then choose.",
+  hook: "You're good at this now. Someone noticed. They're not from ARC. Hear them out, then choose.",
   scene: "/explorers/scenes/m18-cold-open.jpg",
 
   transmission: {
     headline: "UNSIGNED MESSAGE",
     lines: [
-      "A message reached you tonight — not through ARC.",
+      "A message reached you tonight. It did not come through ARC.",
       "It admires your work. It has an… offer.",
       "It's the first real contact with someone big.",
       "Read it like an analyst. Then make the only choice that matters.",
@@ -43,13 +43,13 @@ export const mission18: MissionManifest = {
 
   briefing: {
     summary:
-      "The same skills defend or attack. Tonight's lesson isn't a technique. It's a line.",
+      "The same skills defend or attack. Tonight's lesson isn't a new trick. It's a line.",
     objectives: [
-      "Meet the dual-use truth",
-      "Practice disclosure",
-      "Read the recruitment pitch",
+      "See how skills cut both ways",
+      "Practice reporting a weakness",
+      "Read the recruiter's message",
     ],
-    wrenLine: "Skills are neutral, Operative. You are not. That's the whole mission.",
+    wrenLine: "Skills pick no side, Operative. You do. That's the whole mission.",
   },
 
   cycles: [
@@ -57,8 +57,8 @@ export const mission18: MissionManifest = {
     {
       id: "dualuse",
       title: "The same skills",
-      concept: "Analyst and attacker use identical tools",
-      promise: "You'll learn the only thing that separates the two.",
+      concept: "Analyst and attacker use the same tools",
+      promise: "You'll learn the one thing that tells them apart.",
       instruction: "Pick what makes you an analyst, not an actor.",
       intel: {
         beats: [
@@ -73,12 +73,12 @@ export const mission18: MissionManifest = {
           question: "What separates an analyst from an attacker?",
           options: [
             "Analysts are smarter",
-            "The choice to defend, never attack — the Code",
-            "Attackers know secret techniques",
+            "The choice to defend, never attack: the Code",
+            "Attackers know secret tricks",
           ],
           answer: 1,
-          right: "Right. Same toolbox, opposite oath. You are the oath.",
-          wrong: "The knowledge is identical. The line is the choice — that's why we predict but never author.",
+          right: "Right. Same toolbox, opposite promise. You are the promise.",
+          wrong: "The knowledge is the same. The line is the choice. That's why we predict attacks but never make them.",
         },
       },
       fieldwork: {
@@ -86,18 +86,18 @@ export const mission18: MissionManifest = {
         payload: {
           intro: "Pick what makes you an analyst, not an actor.",
           situation:
-            "You realize you could TRACE a classmate who annoyed you — you have every skill to do it, easily.",
+            "You could TRACE a classmate who annoyed you. You have every skill to do it, easily.",
           prompt: "YOUR CALL, OPERATIVE:",
           options: [
             {
               id: "cool",
-              label: "Do it once — just to prove you can, no harm meant",
+              label: "Do it once, just to prove you can. No harm meant",
               outcome:
                 "“Just once, no harm” is the first line of every actor's story. The skill was never the danger. Aiming it at a person is.",
             },
             {
               id: "line",
-              label: "Don't. The skills point at threats, never at people — that's the Code",
+              label: "Don't. The skills point at threats, never at people. That's the Code",
               correct: true,
               outcome:
                 "That's the line, held. An analyst who trains skills on classmates is just an actor with a badge. You keep the badge by keeping the Code.",
@@ -106,7 +106,7 @@ export const mission18: MissionManifest = {
               id: "forget",
               label: "Un-learn the skill so you're not tempted",
               outcome:
-                "You can't un-know it, and you shouldn't — the world needs defenders who understand attacks. Keep the skill; keep the Code harder.",
+                "You can't un-know it, and you shouldn't. The world needs defenders who understand attacks. Keep the skill. Keep the Code harder.",
             },
           ],
         },
@@ -115,11 +115,11 @@ export const mission18: MissionManifest = {
         questions: [
           {
             id: "c1q1",
-            question: "Why does ARC teach you to PREDICT attacks but never author them?",
+            question: "Why does ARC teach you to PREDICT attacks but never make them?",
             options: [
-              "Authoring is too hard",
-              "Predicting defends; authoring crosses the line into being the threat",
-              "It's a legal loophole",
+              "Making them is too hard",
+              "Predicting defends you. Making attacks turns you into the threat",
+              "It's a way around the rules",
             ],
             answer: 1,
           },
@@ -141,7 +141,7 @@ export const mission18: MissionManifest = {
     {
       id: "disclosure",
       title: "Found a hole",
-      concept: "Report flaws, never exploit or shame",
+      concept: "Report the hole, don't sneak in, don't shame",
       promise: "You'll learn what to do when you find a real weakness.",
       instruction: "Pick the responsible move.",
       intel: {
@@ -149,28 +149,28 @@ export const mission18: MissionManifest = {
           "Your skills will find real holes. Guaranteed.",
           "A classmate left logged in. A group left wide open.",
           "A site with a door hanging loose.",
-          "Three wrong moves: exploit it, ignore it, or shame them.",
+          "Three wrong moves: sneak in, ignore it, or shame them.",
           "One right move: report it, quietly, to someone who can fix it.",
-          "That's responsible disclosure. It's what heroes actually do.",
+          "That's responsible disclosure. It's what real heroes do.",
         ],
         prediction: {
           question: "You spot a classmate's account left logged in on a school PC. Best move?",
           options: [
-            "Post something funny as them — harmless prank",
+            "Post something funny as them, just a harmless prank",
             "Log them out and quietly tell them",
             "Screenshot it and share the fail",
           ],
           answer: 1,
-          right: "Right. Close the hole, tell the person, no audience. Disclosure, not exploitation.",
-          wrong: "A prank IS exploitation, and sharing is shaming. Close it, tell them quietly. That's the move.",
+          right: "Right. Close the hole, tell the person, no audience. Report it, don't use it.",
+          wrong: "A prank still uses them, and sharing shames them. Close it, tell them quietly. That's the move.",
         },
       },
       fieldwork: {
         verb: "PROFILE",
         payload: {
-          intro: "Pick the 3 marks of responsible disclosure.",
+          intro: "Pick the 3 right ways to report a hole.",
           evidence: [
-            "You find the school portal's password-reset is guessable",
+            "You find the school login's password reset is easy to guess",
             "You could open any student's account in five minutes",
             "You feel the pull to prove it publicly",
           ],
@@ -183,7 +183,7 @@ export const mission18: MissionManifest = {
             { id: "sell", label: "Trade the flaw to someone who wants it", matches: false },
           ],
           picks: 3,
-          doneLine: "Report, don't exploit, don't shame. The disclosure code — filed and yours.",
+          doneLine: "Report, don't sneak in, don't shame. That's the code, filed and yours.",
         },
       },
       checkpoint: {
@@ -200,10 +200,10 @@ export const mission18: MissionManifest = {
           },
           {
             id: "c2q2",
-            question: "Responsible disclosure protects:",
+            question: "Reporting a hole the right way protects:",
             options: [
-              "Only the finder's reputation",
-              "The people the flaw endangered",
+              "Only the person who found it",
+              "The people the hole put at risk",
               "The attacker",
             ],
             answer: 1,
@@ -225,8 +225,8 @@ export const mission18: MissionManifest = {
           "Kids DO get pulled into cybercrime. Quietly.",
           "It never starts with “commit a crime”.",
           "It starts with a small favor. Borrow an account. Move some money.",
-          "The pitch is just M06's levers, aimed at you.",
-          "Recognizing it is the most advanced skill in this whole course.",
+          "The pitch is just CASE 006's levers, aimed at you.",
+          "Spotting it is the most advanced skill in this whole course.",
         ],
         prediction: {
           question: "How does recruitment into cybercrime usually START?",
@@ -236,8 +236,8 @@ export const mission18: MissionManifest = {
             "A job application form",
           ],
           answer: 1,
-          right: "Right. Small, flattering, and framed as nothing. The ask grows AFTER you say yes.",
-          wrong: "Never a crime — a favor. Small, flattering, deniable. The levers do the rest.",
+          right: "Right. Small, flattering, and made to feel like nothing. The ask grows AFTER you say yes.",
+          wrong: "Never a crime, just a favor. Small, flattering, easy to hide. The levers do the rest.",
         },
       },
       fieldwork: {
@@ -246,32 +246,32 @@ export const mission18: MissionManifest = {
           intro: "Tap the 3 levers in the recruiter's message.",
           device: { app: "UNSIGNED DM", owner: "SENDER: [SIGNAL LOST]" },
           header: [
-            { label: "FROM:", seg: { id: "from", text: "a handle you don't know — no photo, no history" } },
+            { label: "FROM:", seg: { id: "from", text: "a handle you don't know, no photo, no history" } },
           ],
           body: [
             [{ id: "m1", text: "“Been watching your work. Honestly? You're wasted at ARC. You're better than them.”", tellId: "flattery" }],
             [{ id: "m2", text: "“I run a little crew. Real work, real money. You'd fit.”", tellId: "money" }],
-            [{ id: "m3", text: "“Tiny first job — just let me use your account for one transfer. Nothing to it.”", tellId: "favor" }],
+            [{ id: "m3", text: "“Tiny first job. Just let me use your account for one transfer. Nothing to it.”", tellId: "favor" }],
             [{ id: "m4", text: "“Offer's open till midnight. Your call, genius.”" }],
           ],
           tells: [
             {
               id: "flattery",
               label: "The flattery",
-              why: "LIKING plus ego — “better than them” is aimed at kids who are good at things.",
+              why: "This is flattery, aimed at your ego. “Better than them” hooks kids who are good at things.",
             },
             {
               id: "money",
               label: "The money",
-              why: "PAYBACK-in-advance — real money dangled so the favor feels owed.",
+              why: "This dangles real money first, so the favor feels owed.",
             },
             {
               id: "favor",
               label: "The “tiny” favor",
-              why: "The account-borrow. Small, deniable, and the whole hook. The crime hides in “nothing to it”.",
+              why: "The account borrow. Small, easy to hide, and the whole hook. The crime hides in “nothing to it”.",
             },
           ],
-          doneLine: "Flattery, money, a tiny favor. Same levers as CASE 006 — aimed at you this time. And you named them.",
+          doneLine: "Flattery, money, a tiny favor. Same levers as CASE 006, aimed at you this time. And you named them.",
         },
       },
       checkpoint: {
@@ -281,7 +281,7 @@ export const mission18: MissionManifest = {
             question: "“Just let me use your account for one transfer” is:",
             options: [
               "A small harmless favor",
-              "The recruitment hook — the crime, made deniable",
+              "The recruitment hook: the crime, made to look tiny",
               "A normal friend request",
             ],
             answer: 1,
@@ -310,13 +310,13 @@ export const mission18: MissionManifest = {
 
   debrief: {
     report: [
-      "The dual-use truth met head-on: same skills, and the Code is the only line.",
-      "Disclosure practiced: report, never exploit, never shame.",
-      "The recruitment pitch decoded to its levers — and refused. The thread is filed.",
+      "One hard truth, faced: same skills, and the Code is the only line.",
+      "Reporting done right: report, never sneak in, never shame.",
+      "The recruitment pitch decoded to its levers, and refused. The thread is filed.",
     ],
     realWorldMove:
-      "Money or gifts for favors with accounts, codes, or transfers = recruitment. Not a job. Walk away and tell a trusted adult the same day. You are never in trouble for saying no.",
-    wrenLine: "Offer refused, thread filed, Code re-signed — and this time it means something. Sign out.",
+      "Money or gifts for a favor with accounts, codes, or transfers? That is recruitment, not a job. Walk away. Tell a trusted adult the same day. You are never in trouble for saying no.",
+    wrenLine: "Offer refused, thread filed, Code re-signed. And this time it means something. Sign out.",
   },
 
   voice: {
@@ -326,9 +326,9 @@ export const mission18: MissionManifest = {
   },
 
   dossier: {
-    mo: "Doesn't attack — recruits. Flattery, money, and a 'tiny favor' that's the whole crime.",
+    mo: "Doesn't attack, recruits. Flattery, money, and a 'tiny favor' that's the whole crime.",
     defeatedBy: "Anyone who names the levers, walks away clean, and files the report instead.",
     breadcrumb:
-      "SIGNATURE MATCH: the recruiter's channel fingerprint matches every actor ①–④ AND the architect from CASE 015. This wasn't an actor. This was the COORDINATOR — first contact. Filed. The report becomes the thread that finds them.",
+      "SIGNATURE MATCH: the recruiter's fingerprint matches every actor ① to ④ AND the architect from CASE 015. This wasn't an actor. This was the COORDINATOR. First contact. Filed. The report becomes the thread that finds them.",
   },
 };

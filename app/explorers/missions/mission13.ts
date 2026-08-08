@@ -75,20 +75,20 @@ export const mission13: MissionManifest = {
           ],
           answer: 1,
           right: "Right. Questions about your life, answered by your feed.",
-          wrong: "Pet names, schools, birthdays — your feed answers them all. That's his door.",
+          wrong: "Pet names, schools, birthdays: your feed answers them all. That's his door.",
         },
       },
       fieldwork: {
         verb: "TRACE",
         payload: {
-          intro: "Break-in board — pin every step of the side-door entry",
+          intro: "Break-in board: pin every step of the side-door entry",
           fingerprintHint: "public crumbs answering private questions",
           cards: [
             {
               id: "t1",
               surface: "LOGIN PAGE",
               from: "SKELETON KEY",
-              text: "clicks “Forgot password?” — the security questions appear",
+              text: "clicks “Forgot password?” and the security questions appear",
               inCampaign: true,
               clue: "the side door, found",
               order: 1,
@@ -129,13 +129,13 @@ export const mission13: MissionManifest = {
               id: "t4",
               surface: "LOGIN PAGE",
               from: "SKELETON KEY",
-              text: "answers accepted — “set your new password now”",
+              text: "answers accepted: “set your new password now”",
               inCampaign: true,
               clue: "the door opens; the lock was never touched",
               order: 4,
             },
           ],
-          stage2Prompt: "Order the break-in — no password was ever guessed",
+          stage2Prompt: "Order the break-in. No password was ever guessed.",
           doneLine: "Question → crumb → answer → open door. The monster passphrase never even got a visit.",
         },
       },
@@ -174,51 +174,51 @@ export const mission13: MissionManifest = {
           "Security answers don't have to be TRUE.",
           "They have to be UNGUESSABLE.",
           "First pet? “purple-staircase-42.” The robot doesn't care.",
-          "Store the nonsense in your vault — M11's machine.",
+          "Store the nonsense in your vault, M11's machine.",
           "And keep recovery email and phone CURRENT. Stale ones get stolen.",
         ],
         prediction: {
           question: "Best answer to “What's your first pet's name?”",
           options: [
-            "The truth — it's easy to remember",
+            "The truth, it's easy to remember",
             "Made-up nonsense, stored in the password manager",
             "Leave it blank",
           ],
           answer: 1,
           right: "Right. True is findable. Nonsense in the vault is invisible.",
-          wrong: "The truth is in your posts. Lie to the robot; let the vault remember the lie.",
+          wrong: "The truth is in your posts. Lie to the robot. Let the vault remember the lie.",
         },
       },
       fieldwork: {
         verb: "BUILD",
         payload: {
-          intro: "Workbench live — harden Priya's recovery path",
+          intro: "Workbench live: harden Priya's recovery path",
           target: "PRIYA'S SIDE DOOR",
           slots: [
             {
               id: "answers",
-              label: "SLOT 1 — THE SECURITY ANSWERS",
+              label: "SLOT 1: THE SECURITY ANSWERS",
               options: [
-                { id: "a1", label: "True answers — pet, school, birthday", good: false, why: "All three are in her posts. True answers are the open door we just traced." },
-                { id: "a2", label: "Made-up nonsense answers, saved in the vault", good: true, why: "“First pet: purple-staircase-42.” Unfindable, unforgettable — the vault remembers." },
+                { id: "a1", label: "True answers: pet, school, birthday", good: false, why: "All three are in her posts. True answers are the open door we just traced." },
+                { id: "a2", label: "Made-up nonsense answers, saved in the vault", good: true, why: "“First pet: purple-staircase-42.” Unfindable, unforgettable. The vault remembers." },
                 { id: "a3", label: "The same made-up word for every question", good: false, why: "One leak and every question falls together. Nonsense, but DIFFERENT nonsense." },
               ],
             },
             {
               id: "email",
-              label: "SLOT 2 — THE RECOVERY EMAIL",
+              label: "SLOT 2: THE RECOVERY EMAIL",
               options: [
-                { id: "e1", label: "The old address she can't log into anymore", good: false, why: "Abandoned addresses get re-registered by collectors. A stale door is an open door." },
-                { id: "e2", label: "Her current, 2FA-locked email", good: true, why: "Fresh, watched, and double-locked — recovery flows through the strongest room." },
-                { id: "e3", label: "Her best friend's email — she trusts her", good: false, why: "Trust isn't the issue; her friend's account security now guards Priya's. Own doors only." },
+                { id: "e1", label: "The old address she can't log into anymore", good: false, why: "Dead addresses get claimed by collectors. A stale door is an open door." },
+                { id: "e2", label: "Her current, 2FA-locked email", good: true, why: "Fresh, watched, and double-locked. Recovery flows through the strongest room." },
+                { id: "e3", label: "Her best friend's email, she trusts her", good: false, why: "Trust isn't the issue. Her friend's login now guards Priya's account. Own doors only." },
               ],
             },
             {
               id: "phone",
-              label: "SLOT 3 — THE RECOVERY PHONE",
+              label: "SLOT 3: THE RECOVERY PHONE",
               options: [
-                { id: "p1", label: "The old number from two SIM cards ago", good: false, why: "Old numbers get reassigned to strangers. That stranger can now reset her account." },
-                { id: "p2", label: "Her current number, checked yearly", good: true, why: "Current and re-checked. Recovery contacts rot silently — calendar the check." },
+                { id: "p1", label: "The old number from two SIM cards ago", good: false, why: "Old numbers get handed to strangers. That stranger can reset her account." },
+                { id: "p2", label: "Her current number, checked yearly", good: true, why: "Current and re-checked. Old contacts go stale quietly. Put the check on a calendar." },
                 { id: "p3", label: "Skip the phone entirely", good: false, why: "An empty slot means one lost email locks her out forever. Backups need backups." },
               ],
             },
@@ -278,7 +278,7 @@ export const mission13: MissionManifest = {
           ],
           answer: 1,
           right: "Right. Walking away doesn't log you out. Only logging out does.",
-          wrong: "Sessions outlive your visit. The next kid in that chair might be YOU, as far as the account knows.",
+          wrong: "Sessions outlive your visit. To the account, the next kid in that chair is YOU.",
         },
       },
       fieldwork: {
@@ -286,27 +286,27 @@ export const mission13: MissionManifest = {
         payload: {
           intro: "Pick the move that closes every door.",
           situation:
-            "The bell rings mid-homework. You're logged into your email on a library computer, and everyone's packing up.",
+            "The bell rings mid-homework. You're logged into email on a library computer. Everyone's packing up.",
           prompt: "YOUR CALL, OPERATIVE:",
           options: [
             {
               id: "walk",
-              label: "Grab your bag and go — the computer sleeps anyway",
+              label: "Grab your bag and go, the computer sleeps anyway",
               outcome:
-                "Sleep isn't logout. The next kid taps the keyboard and IS you — inbox, resets, everything. Heroes' lock-before-you-leave rule, at account scale.",
+                "Sleep isn't logout. The next kid taps a key and IS you: inbox, resets, everything. Same rule as Heroes: lock it before you leave.",
             },
             {
               id: "logout",
               label: "Log out now, and tonight check the “logged-in devices” list at home",
               correct: true,
               outcome:
-                "Both halves of the skill: close THIS door, then audit the list for doors you forgot. Old sessions die tonight.",
+                "Both halves of the skill: close THIS door now. Then check the list for doors you forgot. Old sessions die tonight.",
             },
             {
               id: "close",
-              label: "Just close the browser window — same thing, faster",
+              label: "Just close the browser window, same thing but faster",
               outcome:
-                "Closing a window hides the room; it doesn't lock it. Reopen the browser and the session's often still warm. Log OUT.",
+                "Closing a window hides the room. It doesn't lock it. Reopen the browser and the session's often still warm. Log OUT.",
             },
           ],
         },
@@ -347,12 +347,12 @@ export const mission13: MissionManifest = {
 
   debrief: {
     report: [
-      "One side-door break-in traced: question, crumb, answer, open door — lock untouched.",
+      "One side-door break-in traced: question, crumb, answer, open door. Lock untouched.",
       "Recovery path hardened: nonsense answers in the vault, fresh contacts, no stale doors.",
       "Session sweep run: every forgotten login found and closed.",
     ],
     realWorldMove:
-      "This week: open one account's security questions and replace the true answers with made-up ones saved in your password manager. True is guessable. Nonsense is safe.",
+      "This week: open one account's security questions. Swap the true answers for made-up nonsense. Save that nonsense in your password manager. True is guessable. Nonsense is safe.",
     wrenLine: "Side door slammed, sessions swept. The building is finally all yours. Sign out.",
   },
 
@@ -363,7 +363,7 @@ export const mission13: MissionManifest = {
   },
 
   dossier: {
-    mo: "Skips strong locks and rings the recovery bell — security questions answered from public posts.",
+    mo: "Skips strong locks and rings the recovery bell. Security questions answered from public posts.",
     defeatedBy: "Made-up answers in the vault, fresh recovery contacts, and a clean device list.",
   },
 };

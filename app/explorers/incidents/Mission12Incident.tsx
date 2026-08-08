@@ -18,58 +18,58 @@ import type { IncidentProps } from "../engine/types";
 
 /* Phase 1 — the sniffer's view. Readable = unsealed lines. */
 const TRAFFIC = [
-  { id: "t1", label: "Maya's quiz answers → quiz site — NO padlock", readable: true },
-  { id: "t2", label: "Jake's banking app — end-to-end sealed", readable: false },
-  { id: "t3", label: "Group chat login → old forum — NO padlock", readable: true },
-  { id: "t4", label: "School portal homework — padlock showing", readable: false },
-  { id: "t5", label: "Leo's photo upload → sketchy sticker site — NO padlock", readable: true },
+  { id: "t1", label: "Maya's quiz answers → quiz site, NO padlock", readable: true },
+  { id: "t2", label: "Jake's banking app, end-to-end sealed", readable: false },
+  { id: "t3", label: "Group chat login → old forum, NO padlock", readable: true },
+  { id: "t4", label: "School portal homework, padlock showing", readable: false },
+  { id: "t5", label: "Leo's photo upload → sketchy sticker site, NO padlock", readable: true },
 ];
 
 const SEALS = [
   {
     id: "warn",
-    label: "Warn everyone off the unsealed sites — switch those logins to sealed pages or phone data",
+    label: "Warn everyone off the unsealed sites. Switch those logins to sealed pages or phone data",
     correct: true,
     outcome:
-      "Sealed. The three postcards leave the room as envelopes: padlocked pages for the quiz and forum, phone data for the upload. PACKRAT's feed goes quiet mid-sentence.",
+      "Sealed. The three postcards leave the room as envelopes. Padlocked pages for the quiz and forum. Phone data for the upload. PACKRAT's feed goes quiet mid-sentence.",
   },
   {
     id: "router",
     label: "Unplug the café's router",
     correct: false,
     outcome:
-      "The whole café loses Wi-Fi, PACKRAT reconnects when it returns, and now everyone's staring at you. Seal the traffic, not the room.",
+      "The whole café loses Wi-Fi. PACKRAT reconnects when it returns. Now everyone's staring at you. Seal the traffic, not the room.",
   },
   {
     id: "confront",
     label: "Walk over to the suspicious laptop and confront whoever's sniffing",
     correct: false,
     outcome:
-      "Sniffers are invisible — that laptop's probably just someone's homework. The fix is technical, not theatrical: seal the journeys.",
+      "Sniffers are invisible. That laptop is probably just someone's homework. The fix is quiet, not dramatic: seal the journeys.",
   },
 ];
 
 const PRIZES = [
   {
     id: "everything",
-    label: "Everything — he was on the network the whole time",
+    label: "Everything, he was on the network the whole time",
     correct: false,
     outcome:
       "Being on the road isn't the same as reading the mail. Check what each message looked like as it passed him.",
   },
   {
     id: "gibberish",
-    label: "Three postcards from before the fix — and pure gibberish after",
+    label: "Three postcards from before the fix, and pure gibberish after",
     correct: true,
     outcome:
-      "Exactly. The unsealed minutes cost three postcards — real lesson, real cost. But every sealed message crossed his claws as noise. Math beat the nest.",
+      "Exactly. The unsealed minutes cost three postcards: real lesson, real cost. But every sealed message crossed his claws as noise. Math beat the nest.",
   },
   {
     id: "nothing",
-    label: "Nothing at all — sniffing never works",
+    label: "Nothing at all, sniffing never works",
     correct: false,
     outcome:
-      "He got the early postcards — that's why the fix mattered. Honest ledger: sealing protects from NOW on. It can't unsend the past.",
+      "He got the early postcards. That's why the fix mattered. Honest ledger: sealing protects from NOW on. It can't unsend the past.",
   },
 ];
 
@@ -124,10 +124,10 @@ export default function Mission12Incident({ reduced, audio, onPhaseCleared, onCo
       {phase === 1 && (
         <div style={{ marginBottom: 18, maxWidth: 560 }}>
           <div style={{ fontFamily: MONO, fontSize: 10, letterSpacing: "0.14em", color: T.threatRed, marginBottom: 8 }}>
-            INTERCEPTED — PACKRAT, ON THE WIRE
+            INTERCEPTED · PACKRAT, ON THE WIRE
           </div>
           <Bubble who="villain">
-            <em>&ldquo;A whole café of postcards, little archivist. Read me your secrets — oh. You already are.&rdquo;</em>
+            <em>&ldquo;A whole café of postcards, little collector. Read me your secrets. Oh, you already are.&rdquo;</em>
           </Bubble>
         </div>
       )}
@@ -142,7 +142,7 @@ export default function Mission12Incident({ reduced, audio, onPhaseCleared, onCo
       {/* ---------------- phase 1: the sniffer ---------------- */}
       {phase === 1 && (
         <div style={{ maxWidth: 640 }}>
-          <Eyebrow text="Phase 1 — PACKRAT's view of the café. Tap every line he can actually READ." color={T.actionAmber} />
+          <Eyebrow text="Phase 1: PACKRAT's view of the café. Tap every line he can actually READ." color={T.actionAmber} />
           <div style={{ display: "grid", gap: 10, marginTop: 14 }}>
             {TRAFFIC.map((t) => {
               const done = found.includes(t.id);
@@ -177,14 +177,14 @@ export default function Mission12Incident({ reduced, audio, onPhaseCleared, onCo
           </div>
           <p role="status" style={{ margin: "12px 0 0", fontSize: 13, color: found.length === readableCount ? T.confirmedGreen : T.textSecondary }}>
             {found.length === readableCount
-              ? "SNIFFER MAPPED — three postcards in the air. The sealed two cross his claws as gibberish."
+              ? "SNIFFER MAPPED: three postcards in the air. The sealed two cross his claws as gibberish."
               : miss
-                ? "That one's sealed — padlock or end-to-end. He sees noise. Find the POSTCARDS."
+                ? "That one's sealed: padlock or end-to-end. He sees noise. Find the POSTCARDS."
                 : `${found.length}/${readableCount} readable lines flagged. No padlock = postcard.`}
           </p>
           {found.length === readableCount && (
             <div style={{ marginTop: 14 }}>
-              <AmberButton label="POSTCARDS FOUND — SEAL THE CHANNEL" onClick={() => { audio.click(); setPhase(2); }} />
+              <AmberButton label="POSTCARDS FOUND · SEAL THE CHANNEL" onClick={() => { audio.click(); setPhase(2); }} />
             </div>
           )}
         </div>
@@ -193,7 +193,7 @@ export default function Mission12Incident({ reduced, audio, onPhaseCleared, onCo
       {/* ---------------- phase 2: seal the channel ---------------- */}
       {phase === 2 && (
         <div style={{ maxWidth: 640 }}>
-          <Eyebrow text="Phase 2 — Three postcards are still flowing. Pick the fix that seals them." color={T.actionAmber} />
+          <Eyebrow text="Phase 2: Three postcards are still flowing. Pick the fix that seals them." color={T.actionAmber} />
           <div style={{ display: "grid", gap: 10, marginTop: 14 }}>
             {SEALS.map((s) => {
               const isChosen = seal === s.id;
@@ -211,7 +211,7 @@ export default function Mission12Incident({ reduced, audio, onPhaseCleared, onCo
               <p style={{ margin: 0, fontSize: 14, lineHeight: 1.6 }}>{sealChoice.outcome}</p>
               <div style={{ marginTop: 12 }}>
                 {sealChoice.correct ? (
-                  <AmberButton label="CHANNELS SEALED — CHECK THE NEST" onClick={() => { audio.stamp(); onPhaseCleared(2); setPhase(3); }} />
+                  <AmberButton label="CHANNELS SEALED · CHECK THE NEST" onClick={() => { audio.stamp(); onPhaseCleared(2); setPhase(3); }} />
                 ) : (
                   <GhostButton label="RECONSIDER" onClick={() => setSeal(null)} />
                 )}
@@ -224,7 +224,7 @@ export default function Mission12Incident({ reduced, audio, onPhaseCleared, onCo
       {/* ---------------- phase 3: the gibberish prize ---------------- */}
       {phase === 3 && (
         <div style={{ maxWidth: 640 }}>
-          <Eyebrow text="Phase 3 — The honest ledger: what did PACKRAT's nest actually collect tonight?" color={T.actionAmber} />
+          <Eyebrow text="Phase 3: the honest ledger. What did PACKRAT's nest actually collect tonight?" color={T.actionAmber} />
           <div style={{ display: "grid", gap: 10, marginTop: 14 }}>
             {PRIZES.map((p) => {
               const isChosen = prize === p.id;
@@ -254,7 +254,7 @@ export default function Mission12Incident({ reduced, audio, onPhaseCleared, onCo
                     />
                   ) : (
                     <p style={{ fontFamily: MONO, fontSize: 12, letterSpacing: "0.06em", color: T.confirmedGreen, margin: 0 }}>
-                      NEST AUDITED — GIBBERISH FROM HERE ON. MATH BEATS PATIENCE.
+                      NEST AUDITED · GIBBERISH FROM HERE ON. MATH BEATS PATIENCE.
                     </p>
                   )
                 ) : (

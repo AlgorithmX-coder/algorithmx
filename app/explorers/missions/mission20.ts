@@ -34,20 +34,20 @@ export const mission20: MissionManifest = {
     lines: [
       "This is the last one, Operative. No new tricks.",
       "Only everything you already know, at once.",
-      "The coordinator is cornered — and desperate.",
+      "The coordinator is cornered, and desperate.",
       "Finish the board. Read the final lure. Hand it over clean.",
     ],
   },
 
   briefing: {
     summary:
-      "No new lessons tonight. Just proof — of everything you've become.",
+      "No new lessons tonight. Just proof of everything you've become.",
     objectives: [
       "Assemble the identity",
       "Beat the perfect lure",
       "Make the handoff",
     ],
-    wrenLine: "Everything you know, Operative. That's the whole test — and you know a lot.",
+    wrenLine: "Everything you know, Operative. That's the whole test. And you know a lot.",
   },
 
   cycles: [
@@ -61,8 +61,8 @@ export const mission20: MissionManifest = {
       intel: {
         beats: [
           "Every case left a breadcrumb. Remember them.",
-          "The routing tag. The connected actors. The supply chain.",
-          "The one architect. The recruiter's signature.",
+          "The routing tag. The linked actors. One supplier for all.",
+          "The one architect. The recruiter's fingerprint.",
           "Alone, each was a whisper.",
           "Tonight they all point at one desk. One person.",
           "Assemble the board. Name the coordinator.",
@@ -71,19 +71,19 @@ export const mission20: MissionManifest = {
           question: "How do five small clues catch one big villain?",
           options: [
             "One clue is always enough",
-            "Combined, they point where none could alone — assembly, on your side",
+            "Combined, they point where one alone can't. That's assembly, on your side",
             "Luck",
           ],
           answer: 1,
-          right: "Right. The assembly attack, turned around. Their own crumbs convict them.",
-          wrong: "No single breadcrumb names anyone. TOGETHER they triangulate — your method, aimed at them.",
+          right: "Right. The assembly attack, turned around. Their own crumbs give them away.",
+          wrong: "One breadcrumb names nobody. TOGETHER they point to one name. Your method, aimed at them.",
         },
       },
       fieldwork: {
         verb: "TRACE",
         payload: {
-          intro: "The mega-board — pin the breadcrumbs that unmask the coordinator",
-          fingerprintHint: "each breadcrumb from a block finale points at the same signature",
+          intro: "The mega-board: pin the breadcrumbs that unmask the coordinator",
+          fingerprintHint: "each block's final breadcrumb points at the same person",
           cards: [
             {
               id: "t1",
@@ -105,7 +105,7 @@ export const mission20: MissionManifest = {
               id: "t2",
               surface: "CASE 005 + 010",
               from: "breadcrumbs ② + ③",
-              text: "the actors are connected — one supply chain feeds them all",
+              text: "the actors are connected: one supplier feeds them all",
               inCampaign: true,
               clue: "they were never separate",
               order: 2,
@@ -114,29 +114,29 @@ export const mission20: MissionManifest = {
               id: "t3",
               surface: "CASE 015",
               from: "breadcrumb ④",
-              text: "every mirror registered by ONE hidden architect",
+              text: "every mirror site made by ONE hidden architect",
               inCampaign: true,
-              clue: "one hand builds the infrastructure",
+              clue: "one hand builds all of it",
               order: 3,
             },
             {
               id: "d2",
               surface: "NOISE",
               from: "the archive",
-              text: "a random data breach in another country",
+              text: "a random data leak in another country",
               inCampaign: false,
             },
             {
               id: "t4",
               surface: "CASE 018",
               from: "breadcrumb ⑤",
-              text: "the recruiter's signature = every actor + the architect",
+              text: "the recruiter's mark is on every actor and the architect",
               inCampaign: true,
-              clue: "the coordinator, reaching out — and caught doing it",
+              clue: "the coordinator, reaching out, and caught doing it",
               order: 4,
             },
           ],
-          stage2Prompt: "Order the breadcrumbs — first sighting to full identity",
+          stage2Prompt: "Order the breadcrumbs: first sighting to full identity",
           doneLine: "Tag → connection → architect → recruiter. Five whispers, one name. The board is complete.",
         },
       },
@@ -156,7 +156,7 @@ export const mission20: MissionManifest = {
             id: "c1q2",
             question: "Catching the coordinator used the same method as:",
             options: [
-              "PACKRAT's assembly attack — turned around",
+              "PACKRAT's assembly attack, turned around",
               "Guessing passwords",
               "A lucky screenshot",
             ],
@@ -177,8 +177,8 @@ export const mission20: MissionManifest = {
         beats: [
           "The coordinator has one move left. Aimed at YOU.",
           "Not a sloppy scam. The perfect one.",
-          "Built from every crumb the course fiction ever leaked about you.",
-          "Your callsign. Your cases. Your habits. Your handler's name.",
+          "Built from every crumb you ever left in these cases.",
+          "Your callsign. Your cases. Your habits. Even WREN's name.",
           "It will feel completely real. That's the point.",
           "But you know the tells live where the pixels aren't.",
         ],
@@ -191,7 +191,7 @@ export const mission20: MissionManifest = {
           ],
           answer: 1,
           right: "Right. Real details lower your guard. That's exactly when tools, not feelings, decide.",
-          wrong: "Truth is the weapon here — it makes the ask feel safe. Verify by tool anyway.",
+          wrong: "Truth is the weapon here. It makes the ask feel safe. Check with a tool.",
         },
       },
       fieldwork: {
@@ -204,32 +204,32 @@ export const mission20: MissionManifest = {
               label: "FROM:",
               seg: { id: "from", text: "“ARC Command <ops@arc-command-secure.net>”", tellId: "domain" },
             },
-            { label: "SUBJ:", seg: { id: "subj", text: "Operative — final clearance code required" } },
+            { label: "SUBJ:", seg: { id: "subj", text: "Operative: final clearance code required" } },
           ],
           body: [
             [{ id: "b1", text: "“Your ULTRA promotion is approved. WREN is proud.”" }],
             [{ id: "b2", text: "“One step left: confirm your identity with your account code.”", tellId: "ask" }],
             [{ id: "b3", text: "“Reply within 10 minutes or clearance resets.”", tellId: "urgency" }],
-            [{ id: "b4", text: "“You've earned this, Operative. — ARC”" }],
+            [{ id: "b4", text: "“You've earned this, Operative. Signed, ARC.”" }],
           ],
           tells: [
             {
               id: "domain",
               label: "The address",
-              why: "arc-command-secure.net isn't ARC. Right to left, always — even at the finish line.",
+              why: "arc-command-secure.net isn't ARC. Read right to left, always. Even at the finish line.",
             },
             {
               id: "ask",
               label: "The code ask",
-              why: "ARC never asks for your code. Nobody legit ever does. Truest tell in the tier.",
+              why: "ARC never asks for your code. Nobody real ever does. The biggest tell of all.",
             },
             {
               id: "urgency",
               label: "The countdown",
-              why: "Ten minutes — CASE 001's oldest lever, dressed as your graduation.",
+              why: "Ten minutes: CASE 001's oldest trick, dressed as your graduation.",
             },
           ],
-          doneLine: "It knew everything about you — and still couldn't fake a real domain or a legitimate ask. The perfect lure fails to the basics.",
+          doneLine: "It knew everything about you. Still it couldn't fake a real address or a real ask. The perfect lure fails to the basics.",
         },
       },
       checkpoint: {
@@ -238,8 +238,8 @@ export const mission20: MissionManifest = {
             id: "c2q1",
             question: "A message knows all your true details AND asks for a code. It's:",
             options: [
-              "Definitely real — it knows so much",
-              "The most dangerous lure — real facts, fake ask",
+              "Definitely real, it knows so much",
+              "The most dangerous lure: real facts, fake ask",
               "A nice surprise",
             ],
             answer: 1,
@@ -248,8 +248,8 @@ export const mission20: MissionManifest = {
             id: "c2q2",
             question: "Even from “ARC”, a request for your account code means:",
             options: [
-              "Obey — it's your own team",
-              "Fake — real ARC never asks for keys",
+              "Obey, it's your own team",
+              "Fake: real ARC never asks for keys",
               "Reply and check",
             ],
             answer: 1,
@@ -262,7 +262,7 @@ export const mission20: MissionManifest = {
     {
       id: "handoff",
       title: "The handoff",
-      concept: "Document and escalate — you don't punish",
+      concept: "Write it up and hand it over. You don't punish",
       promise: "You'll learn what a real analyst does at the end.",
       instruction: "Pick how the analyst closes it.",
       intel: {
@@ -275,15 +275,15 @@ export const mission20: MissionManifest = {
           "That's not weakness. That's exactly how the pros end it.",
         ],
         prediction: {
-          question: "You've identified a real criminal. The right final move?",
+          question: "You've found a real criminal. The right final move?",
           options: [
-            "Hack them back — they deserve it",
+            "Hack them back, they deserve it",
             "Document everything and hand it to adults and the platform",
-            "Expose them publicly yourself",
+            "Expose them online yourself",
           ],
           answer: 1,
-          right: "Right. See clearly, document carefully, escalate to those who act. Mastery, not revenge.",
-          wrong: "Hacking back makes you an actor; exposing yourself endangers you. Document and hand off.",
+          right: "Right. See clearly, write it up, pass it to those who act. Mastery, not revenge.",
+          wrong: "Hacking back makes you an actor. Exposing yourself puts you in danger. Write it up and hand off.",
         },
       },
       fieldwork: {
@@ -304,14 +304,14 @@ export const mission20: MissionManifest = {
               id: "expose",
               label: "Post their identity everywhere so everyone knows",
               outcome:
-                "Vigilante exposure tips them off, risks the wrong person, and puts a target on you. Analysts don't perform justice. They enable it.",
+                "Posting it tips them off, risks the wrong person, and paints a target on you. Analysts don't hand out justice. They help the right people do it.",
             },
             {
               id: "handoff",
               label: "Package the evidence, hand it to ARC's adults and the platform, let them act",
               correct: true,
               outcome:
-                "That's mastery. Clean dossier, proper channels, people whose job this is. The coordinator — an ex-ARC analyst who chose the other path — is handed over by the rules they abandoned. You end it as an analyst, not an avenger.",
+                "That's mastery. A clean file, the proper channels, people whose job this is. The coordinator was an ex-ARC analyst who chose the other path. Now they're handed over by the rules they threw away. You end it as an analyst, not an avenger.",
             },
           ],
         },
@@ -333,7 +333,7 @@ export const mission20: MissionManifest = {
             question: "Why NOT hack the criminal back, even when you can?",
             options: [
               "It's too hard",
-              "Attacking makes you an actor — the Code is the whole point",
+              "Attacking makes you an actor. The Code is the whole point",
               "You might get a bad grade",
             ],
             answer: 1,
@@ -353,12 +353,12 @@ export const mission20: MissionManifest = {
   debrief: {
     report: [
       "The mega-board completed: five breadcrumbs, one coordinator, fully named.",
-      "The perfect lure beaten by the basics — real details, but a fake domain and a key-ask.",
-      "The handoff made clean: documented, escalated, ended by the rules. ULTRA clearance earned.",
+      "The perfect lure beaten by the basics: true details, fake address, code-ask.",
+      "The handoff made clean: written up, passed up, ended by the rules. ULTRA clearance earned.",
     ],
     realWorldMove:
       "You're the family's analyst now. Run a family security night: code word, password manager, 2FA, a privacy audit. Teach one person one thing you learned. That's how a whole community gets safer.",
-    wrenLine: "Signal Zero, silenced. You started as a trainee, Operative. You finish as ULTRA — and the best analyst I've worked with. Case closed.",
+    wrenLine: "Signal Zero, silenced. You started as a trainee, Operative. You finish as ULTRA, the best analyst I've worked with. Case closed.",
   },
 
   voice: {
@@ -368,9 +368,9 @@ export const mission20: MissionManifest = {
   },
 
   dossier: {
-    mo: "The coordinator behind all six actors — an ex-ARC analyst who chose the other path.",
-    defeatedBy: "An operative who assembled every clue, beat the perfect lure with the basics, and handed it over clean.",
+    mo: "The coordinator behind all six actors. An ex-ARC analyst who chose the other path.",
+    defeatedBy: "An operative who assembled every clue. Beat the perfect lure with the basics. Handed it over clean.",
     breadcrumb:
-      "CASE CLOSED. Dossier wall complete: six actors, one coordinator, all connected, all filed. The trainee who started at CASE 001 signs off as ULTRA. The card reprints with a new name on it — yours.",
+      "CASE CLOSED. Dossier wall complete: six actors, one coordinator, all connected, all filed. The trainee who started at CASE 001 signs off as ULTRA. The card reprints with a new name on it: yours.",
   },
 };

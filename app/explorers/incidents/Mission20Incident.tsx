@@ -24,14 +24,14 @@ const FLOODS = [
     label: "Answer each trick one at a time as it arrives",
     correct: false,
     outcome:
-      "Six tricks at once will outrun one-at-a-time forever. You don't out-click a coordinator — you stand behind layers that were already up.",
+      "Six tricks at once will outrun one-at-a-time forever. You can't out-click a coordinator. You stand behind layers you already built.",
   },
   {
     id: "layers",
-    label: "Trust the system you built: trained eyes, the vault, 2FA, out-of-band, the code word — all already on",
+    label: "Trust the system you built: trained eyes, the vault, 2FA, a second way to check, the code word. All already on",
     correct: true,
     outcome:
-      "The whole course, standing as one wall. The lure hits trained eyes. The mirror hits the vault. The clone hits the code word. Nothing lands. You built this over twenty cases — tonight it just holds.",
+      "The whole course, standing as one wall. The lure hits trained eyes. The mirror hits the vault. The clone hits the code word. Nothing lands. You built this over twenty cases. Tonight it just holds.",
   },
   {
     id: "offline",
@@ -48,21 +48,21 @@ const UNMASKS = [
     label: "A criminal mastermind from nowhere",
     correct: false,
     outcome:
-      "Look at the badge in the file. This isn't a stranger — the access, the ARC methods, the insider routing. Who knew all this?",
+      "Look at the badge in the file. This isn't a stranger. The access, the ARC methods, the inside knowledge. Who knew all this?",
   },
   {
     id: "exarc",
-    label: "An ex-ARC analyst — someone who had this exact training and chose the other path",
+    label: "An ex-ARC analyst: someone with your exact training who chose the other path",
     correct: true,
     outcome:
-      "There it is. The coordinator was an operative once, cleared like you, taught like you — and chose to aim it all at people. Every skill you have, they had. The only difference was the choice. That's why the Code was the whole course.",
+      "There it is. The coordinator was an operative once, cleared like you, taught like you. Then they chose to aim it all at people. Every skill you have, they had. The only difference was the choice. That's why the Code was the whole course.",
   },
   {
     id: "robot",
     label: "Just an AI running by itself",
     correct: false,
     outcome:
-      "The recruitment message had a person's ego in it — “better than them”, “you'd fit”. Machines don't get jealous of ARC. A person did this.",
+      "The recruiting message had a person's pride in it: “better than them”, “you'd fit”. Machines don't get jealous of ARC. A person did this.",
   },
 ];
 
@@ -76,17 +76,17 @@ const HANDOFFS = [
   },
   {
     id: "clean",
-    label: "Seal the dossier, hand it to ARC's adults and the platform, and let the proper channels act",
+    label: "Seal the file, hand it to ARC's adults and the platform, let them act",
     correct: true,
     outcome:
-      "Mastery. Every receipt, filed. The people whose job this is take it from here — and the coordinator is ended by the rules they threw away. You never became them. That is the whole victory.",
+      "Mastery. Every receipt, filed. The people whose job this is take it from here. The coordinator is ended by the rules they threw away. You never became them. That is the whole victory.",
   },
   {
     id: "keep",
     label: "Keep hunting them yourself, forever",
     correct: false,
     outcome:
-      "A good analyst knows where their job ends. You see, you document, you hand off. Carrying it alone forever is how analysts burn out — and how they drift.",
+      "A good analyst knows where their job ends. You see, you document, you hand off. Carrying it alone forever is how analysts burn out. It's also how they drift.",
   },
 ];
 
@@ -169,7 +169,7 @@ export default function Mission20Incident({ reduced, audio, onPhaseCleared, onCo
             INTERCEPTED: ZERO, THE COORDINATOR
           </div>
           <Bubble who="villain">
-            <em>&ldquo;You're the best they ever trained, Operative. I know — I was, once. Come now. One last favor, and all of this stops.&rdquo;</em>
+            <em>&ldquo;You're the best they ever trained, Operative. I know. I was, once. Come now. One last favor, and all of this stops.&rdquo;</em>
           </Bubble>
         </div>
       )}
@@ -183,13 +183,13 @@ export default function Mission20Incident({ reduced, audio, onPhaseCleared, onCo
 
       {phase === 1 &&
         stage(
-          "Phase 1 — Every trick in the tier, all at once, aimed at you alone. How do you hold?",
-          "INCOMING (simultaneous): lure · mirror site · cloned call · borrowed-face DM · fake installer · a “tiny favor”.",
+          "Phase 1: every trick you've faced, all at once, aimed at you alone. How do you hold?",
+          "INCOMING (all at once): lure · mirror site · cloned call · borrowed-face DM · fake installer · a “tiny favor”.",
           FLOODS,
           flood,
           floodChoice,
           pick(setFlood, FLOODS, flood),
-          "LINE HELD — TRACE THE SOURCE",
+          "LINE HELD: TRACE THE SOURCE",
           () => {
             audio.stamp();
             onPhaseCleared(1);
@@ -200,13 +200,13 @@ export default function Mission20Incident({ reduced, audio, onPhaseCleared, onCo
 
       {phase === 2 &&
         stage(
-          "Phase 2 — The trace resolves. The dossier board lights up one final node. Who is the coordinator?",
-          "IDENTITY RESOLVED: former ARC clearance ✓ · insider routing knowledge ✓ · trained on the same methods you were ✓ · status: went dark 4 years ago.",
+          "Phase 2: the trace comes back. The board lights up one final name. Who is the coordinator?",
+          "IDENTITY FOUND: former ARC clearance ✓ · knew the inside routes ✓ · trained on the same methods as you ✓ · status: went dark 4 years ago.",
           UNMASKS,
           unmask,
           unmaskChoice,
           pick(setUnmask, UNMASKS, unmask),
-          "UNMASKED — MAKE THE HANDOFF",
+          "UNMASKED: MAKE THE HANDOFF",
           () => {
             audio.stamp();
             onPhaseCleared(2);
@@ -217,13 +217,13 @@ export default function Mission20Incident({ reduced, audio, onPhaseCleared, onCo
 
       {phase === 3 && !done &&
         stage(
-          "Phase 3 — Everything is proven. WREN: “Your call, Operative. How does this end?”",
+          "Phase 3: everything is proven. WREN: “Your call, Operative. How does this end?”",
           null,
           HANDOFFS,
           handoff,
           handoffChoice,
           pick(setHandoff, HANDOFFS, handoff),
-          "CASE CLOSED — SIGN OFF",
+          "CASE CLOSED: SIGN OFF",
           () => {
             setDone(true);
             audio.stamp();
@@ -236,10 +236,10 @@ export default function Mission20Incident({ reduced, audio, onPhaseCleared, onCo
       {phase === 3 && done && (
         <div role="status" style={{ borderLeft: `2px solid ${T.confirmedGreen}`, paddingLeft: 14 }}>
           <p style={{ fontFamily: MONO, fontSize: 12, letterSpacing: "0.06em", color: T.confirmedGreen, margin: 0 }}>
-            SIGNAL ZERO SILENCED — SIX ACTORS AND ONE COORDINATOR, HANDED OVER CLEAN.
+            SIGNAL ZERO SILENCED: SIX ACTORS AND ONE COORDINATOR, HANDED OVER CLEAN.
           </p>
           <p style={{ fontSize: 14, lineHeight: 1.6, color: T.textPrimary, margin: "10px 0 0" }}>
-            You started at CASE 001 as a trainee. You finish as ULTRA — the analyst who beat the whole network without ever becoming it. The dossier wall is complete. The card reprints with a new name on it: <strong>yours</strong>.
+            You started at CASE 001 as a trainee. You finish as ULTRA: the analyst who beat the whole network without ever becoming it. The dossier wall is complete. The card reprints with a new name on it: <strong>yours</strong>.
           </p>
         </div>
       )}

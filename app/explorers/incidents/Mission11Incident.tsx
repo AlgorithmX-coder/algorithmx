@@ -43,14 +43,14 @@ const RIG = [
 const BREACH = [
   {
     id: "why",
-    label: "The stolen key opens nothing — every door has a DIFFERENT key now",
+    label: "The stolen key opens nothing. Every door has a DIFFERENT key now",
     correct: true,
     outcome:
-      "Exactly. The forum key fits the forum, and nothing else on earth. SK's favorite move — one leak, forty doors — died on slot two of your build.",
+      "Exactly. The forum key fits the forum, nothing else on earth. SKELETON KEY's favorite move: one leak, forty doors. It died on slot two of your build.",
   },
   {
     id: "lucky",
-    label: "Jake got lucky — the leaked site didn't matter much",
+    label: "Jake got lucky, the leaked site didn't matter much",
     correct: false,
     outcome:
       "Luck had nothing to do with it. Look at the build: the generator made every key unique. That CHOICE is what's holding.",
@@ -60,31 +60,31 @@ const BREACH = [
     label: "The rig was too slow this time",
     correct: false,
     outcome:
-      "The rig didn't even need to guess — it HAD a real stolen key. It failed because the key only fits one door now. Uniqueness, not speed.",
+      "The rig didn't even need to guess. It HAD a real stolen key. It failed because the key fits only one door now. Different keys, not speed.",
   },
 ];
 
 const PHISH = [
   {
     id: "enter",
-    label: "Enter the master passphrase — the vault says it needs re-verifying",
+    label: "Enter the master passphrase, the vault says it needs re-checking",
     correct: false,
     outcome:
-      "That page is PHANTOM HOOK's oldest lure wearing vault clothing. The master passphrase typed there hands SK all forty doors at once.",
+      "That page is PHANTOM HOOK's oldest lure wearing vault clothing. The master passphrase typed there hands SKELETON KEY all forty doors at once.",
   },
   {
     id: "refuse",
-    label: "Refuse: real vaults never email for the master key — open the app yourself",
+    label: "Refuse: real vaults never email for the master key. Open the app yourself",
     correct: true,
     outcome:
-      "M01's rule, protecting M11's treasure: never enter anything on a page a message sent you. The real app shows no alert. And notice — the manager itself refused to autofill on that fake domain. Your tools vouch for each other.",
+      "Case 1's rule protects Case 11's treasure. Never type anything on a page a message sent you. The real app shows no alert. And notice: the manager refused to autofill on that fake site. Your tools back each other up.",
   },
   {
     id: "half",
     label: "Type just the first half of it, to test if the page is real",
     correct: false,
     outcome:
-      "Half a master key is half a disaster — and the page records every keystroke. Fakes don't get halves. They get nothing.",
+      "Half a master key is half a disaster. The page records every key you press. Fakes don't get halves. They get nothing.",
   },
 ];
 
@@ -164,7 +164,7 @@ export default function Mission11Incident({ reduced, audio, onPhaseCleared, onCo
       {phase === 1 && (
         <div style={{ marginBottom: 18, maxWidth: 560 }}>
           <div style={{ fontFamily: MONO, fontSize: 10, letterSpacing: "0.14em", color: T.threatRed, marginBottom: 8 }}>
-            INTERCEPTED — SKELETON KEY, ON THE WIRE
+            INTERCEPTED · SKELETON KEY, ON THE WIRE
           </div>
           <Bubble who="villain">
             <em>&ldquo;New locks, little warden? I kept my rig. Let's hear it sing.&rdquo;</em>
@@ -181,13 +181,13 @@ export default function Mission11Incident({ reduced, audio, onPhaseCleared, onCo
 
       {phase === 1 &&
         stage(
-          "Phase 1 — The rig opens on Jake's game account. Your move, chief engineer.",
+          "Phase 1: The rig opens on Jake's game account. Your move, chief engineer.",
           "RIG OUTPUT: guesses/sec: 300 · target: GAMEHUB · password: [20-char generated] · progress: 0 doors",
           RIG,
           rig,
           rigChoice,
           pick(setRig, RIG, rig),
-          "IT HELD — HERE COMES THE OLD TRICK",
+          "IT HELD. HERE COMES THE OLD TRICK",
           () => {
             audio.stamp();
             onPhaseCleared(1);
@@ -198,13 +198,13 @@ export default function Mission11Incident({ reduced, audio, onPhaseCleared, onCo
 
       {phase === 2 &&
         stage(
-          "Phase 2 — SK plays his classic: a REAL stolen key from a forum breach. Why does it fail?",
-          "BREACH LIST LOADED: forum key [stolen, real] → trying EMAIL … DENIED. GAMEHUB … DENIED. CLOUD … DENIED.",
+          "Phase 2: SKELETON KEY plays his classic. A REAL stolen key from a forum leak. Why does it fail?",
+          "STOLEN LIST LOADED: forum key [stolen, real] → trying EMAIL … DENIED. GAMEHUB … DENIED. CLOUD … DENIED.",
           BREACH,
           breach,
           breachChoice,
           pick(setBreach, BREACH, breach),
-          "CHAIN DEAD — ONE MOVE LEFT",
+          "CHAIN DEAD. ONE MOVE LEFT",
           () => {
             audio.stamp();
             onPhaseCleared(2);
@@ -215,13 +215,13 @@ export default function Mission11Incident({ reduced, audio, onPhaseCleared, onCo
 
       {phase === 3 && !held &&
         stage(
-          "Phase 3 — The last resort: SK stops guessing and starts ASKING. An email arrives.",
-          "“URGENT: your password vault needs re-verification. Enter your master passphrase here within 24 hours or your vault will be locked.” → vault-verify-center.net",
+          "Phase 3: The last resort. SKELETON KEY stops guessing and starts ASKING. An email arrives.",
+          "“URGENT: your password vault needs re-checking. Enter your master passphrase here within 24 hours or your vault will be locked.” → vault-verify-center.net",
           PHISH,
           phish,
           phishChoice,
           pick(setPhish, PHISH, phish),
-          "VAULT SEALED — RETIRE THE RIG",
+          "VAULT SEALED. RETIRE THE RIG",
           () => {
             setHeld(true);
             audio.stamp();
@@ -233,7 +233,7 @@ export default function Mission11Incident({ reduced, audio, onPhaseCleared, onCo
 
       {phase === 3 && held && (
         <p style={{ fontFamily: MONO, fontSize: 12, letterSpacing: "0.06em", color: T.confirmedGreen, margin: 0 }}>
-          RIG RETIRED — FORTY DOORS, ZERO OPENED. THE NIGHTMARE WAS HIS.
+          RIG RETIRED. FORTY DOORS, ZERO OPENED. THE NIGHTMARE WAS HIS.
         </p>
       )}
     </div>
