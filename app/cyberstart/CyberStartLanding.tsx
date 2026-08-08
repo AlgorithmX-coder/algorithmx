@@ -62,6 +62,16 @@ const CSS = `
 .cyops-root .cta.ghost{background:transparent;color:var(--text);border-color:var(--hairline);box-shadow:none}
 .cyops-root .cta.ghost:hover{border-color:var(--ind);color:var(--ind-soft)}
 @media(max-width:760px){.cyops-root .navlinks{display:none}}
+/* Phone: at 390px the full lockup (18px brand + byline) plus the waitlist
+   pill totals ~460px, so the brand wrapped to two lines and the pill ran
+   past the right edge. Byline hides (matching Heroes <640 / Explorers <940),
+   brand and pill tighten; nav-only — the hero .cta buttons keep their size. */
+@media(max-width:560px){
+  .cyops-root .navrow{justify-content:space-between;gap:12px}
+  .cyops-root .brand{font-size:15px;letter-spacing:.12em;gap:8px;white-space:nowrap;flex-shrink:0}
+  .cyops-root .brand small{display:none}
+  .cyops-root .navrow .cta{font-size:11px;letter-spacing:.05em;padding:9px 12px}
+}
 
 .cyops-root .hero{padding-top:clamp(48px,7vw,90px);padding-bottom:clamp(48px,7vw,96px)}
 .cyops-root .hgrid{display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:center}
