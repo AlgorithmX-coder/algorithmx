@@ -32,18 +32,18 @@ const ACTORS = [
     portrait: "/explorers/actors/phantom-hook.png",
   },
   { code: "MIMIC", tease: "Voices you trust. Faces you know. Neither is real.", portrait: "/explorers/actors/mimic.png" },
-  { code: "SKELETON KEY", tease: "Ten thousand guesses a second — and one weak password.", portrait: "/explorers/actors/skeleton-key.png" },
+  { code: "SKELETON KEY", tease: "Ten thousand guesses a second. And one weak password.", portrait: "/explorers/actors/skeleton-key.png" },
   { code: "SIREN", tease: "Prizes, flattery, urgency. Whatever gets a yes.", portrait: "/explorers/actors/siren.png" },
   { code: "GHOSTWRITER", tease: "Machine-written lures, fluent in your favorite games.", portrait: "/explorers/actors/ghostwriter.png" },
   { code: "PACKRAT", tease: "Hoards every detail you overshare. Spends it later.", portrait: "/explorers/actors/packrat.png" },
 ];
 
 const BEATS = [
-  { name: "Incoming transmission", desc: "A 40-second cold open. Something on the network is wrong — and it just became your case." },
+  { name: "Incoming transmission", desc: "A 40-second cold open. Something on the network is wrong, and it just became your case." },
   { name: "Briefing", desc: "WREN, your handler, pins the objectives to the mission-control surface. Three. Never more." },
-  { name: "Three investigation cycles", desc: "Learn the concept, run the fieldwork, prove it at a checkpoint — on real-looking evidence: emails, URLs, chat logs." },
+  { name: "Three investigation cycles", desc: "Learn the concept, run the fieldwork, prove it at a checkpoint, on real-looking evidence: emails, URLs, chat logs." },
   { name: "The incident", desc: "The case goes live. Triage the wave, make the containment call, put it on the record." },
-  { name: "Debrief", desc: "The after-action report — ending with your move in the real world, this week." },
+  { name: "Debrief", desc: "The after-action report, ending with your move in the real world, this week." },
   { name: "Case closed", desc: "The dossier declassifies into your archive, the stamp comes down, and the session ends. On purpose." },
 ];
 
@@ -66,7 +66,7 @@ const BLOCKS = [
     skills: [
       "How social engineering actually works",
       "Impersonation, fake voices, borrowed trust",
-      "Why scams are a business — and how that helps you",
+      "Why scams are a business, and how that helps you",
       "Predict the attacker's next move",
     ],
   },
@@ -78,7 +78,7 @@ const BLOCKS = [
       "How accounts, logins, and recovery really work",
       "Two-factor authentication and password managers",
       "Ciphers, keys, and the basics of encryption",
-      "Build defenses — then watch them hold",
+      "Build defenses, then watch them hold",
     ],
   },
   {
@@ -88,7 +88,7 @@ const BLOCKS = [
     skills: [
       "Your digital footprint, and who can read it",
       "AI-era threats: cloned voices, machine-written lures",
-      "The ethics of skill — living the ARC Code",
+      "The ethics of skill: living the ARC Code",
       "The season finale: unmask STATIC's coordinator",
     ],
   },
@@ -109,19 +109,19 @@ const LADDER = ["TRAINEE", "CONFIDENTIAL", "SECRET", "TOP SECRET", "ULTRA"] as c
 const PARENT_POINTS = [
   {
     t: "Rewards certify learning, not screen time",
-    d: "Every point maps to something demonstrated. No XP for logging in, watching, or grinding — and nothing is ever taken away.",
+    d: "Every point maps to something demonstrated. No XP for logging in, watching, or grinding. And nothing is ever taken away.",
   },
   {
     t: "Sessions end on purpose",
-    d: "Each mission closes with a full stop — no autoplay, no \"one more,\" no countdown pressure. Designed to the ICO Children's Code, not around it.",
+    d: "Each mission closes with a full stop: no autoplay, no \"one more,\" no countdown pressure. Designed to the ICO Children's Code, not around it.",
   },
   {
     t: "No leaderboards, no comparison",
-    d: "Progress is measured against the case, never against other kids. Personal bests and closed cases — that's the scoreboard.",
+    d: "Progress is measured against the case, never against other kids. Personal bests and closed cases: that's the scoreboard.",
   },
   {
     t: "Defense-first, by design",
-    d: "Explorers anticipate and counter attacks. They never write or send one — not even as an exercise. Mission 01 opens with signing the ARC Code.",
+    d: "Explorers anticipate and counter attacks. They never write or send one, not even as an exercise. Mission 01 opens with signing the ARC Code.",
   },
   {
     t: "Every mission lands in real life",
@@ -129,22 +129,22 @@ const PARENT_POINTS = [
   },
   {
     t: "Evidence you can see",
-    d: "Checkpoints produce real records of what your child can do — calls made correctly, not minutes watched.",
+    d: "Checkpoints produce real records of what your child can do: calls made correctly, not minutes watched.",
   },
 ];
 
 const FAQS = [
   {
     q: "Is Cyber Explorers right for my child's age?",
-    a: "It's built for ages 10–13 — the years kids get their first phone, first accounts, and first group chats. The tone is a professional field unit that takes them seriously: no cartoons, no baby-talk, no horror.",
+    a: "It's built for ages 10–13, the years kids get their first phone, first accounts, and first group chats. The tone is a professional field unit that takes them seriously: no cartoons, no baby-talk, no horror.",
   },
   {
     q: "Do they need to finish Cyber Heroes first?",
-    a: "No. Explorers is fully standalone. If your child did Cyber Heroes (ages 6–9), Explorers is the natural graduation — same platform, entirely new world, deeper skills.",
+    a: "No. Explorers is fully standalone. If your child did Cyber Heroes (ages 6–9), Explorers is the natural graduation: same platform, entirely new world, deeper skills.",
   },
   {
     q: "Is this teaching my kid to hack?",
-    a: "It's teaching your kid to think like the person who stops the hack. Explorers analyze, anticipate, and counter attacks; they never create them. That line is hard-coded into the curriculum and the fiction — it's the first thing an operative signs.",
+    a: "It's teaching your kid to think like the person who stops the hack. Explorers analyze, anticipate, and counter attacks; they never create them. That line is hard-coded into the curriculum and the fiction: it's the first thing an operative signs.",
   },
   {
     q: "How much time does it take?",
@@ -152,19 +152,19 @@ const FAQS = [
   },
   {
     q: "What does it run on?",
-    a: "Any modern browser — laptop, desktop, or tablet. Nothing to install.",
+    a: "Any modern browser: laptop, desktop, or tablet. Nothing to install.",
   },
   {
     q: "My kid says they already know about scams.",
-    a: "Most kids can recite 'don't click suspicious links.' Very few can tell you WHY gamehub.support-verify.net isn't GameHub, or what a pressure deadline is doing to their brain. Explorers teaches the mechanism, not the slogan — and kids who 'already know' tend to be the ones who love it most, because it finally treats them as capable.",
+    a: "Most kids can recite 'don't click suspicious links.' Very few can tell you WHY gamehub.support-verify.net isn't GameHub, or what a pressure deadline is doing to their brain. Explorers teaches the mechanism, not the slogan. And kids who 'already know' tend to be the ones who love it most, because it finally treats them as capable.",
   },
   {
     q: "How much does it cost?",
-    a: "£99, once. That's all 20 missions, lifetime access, and every future update — no subscription, no in-app purchases, nothing sold to your child, ever.",
+    a: "£99, once. That's all 20 missions, lifetime access, and every future update. No subscription, no in-app purchases, nothing sold to your child, ever.",
   },
   {
     q: "What if my child loses interest?",
-    a: "Every mission is a complete case with a real ending, built for 45–60 minutes — no cliffhanger traps, no daily-streak guilt. And enrollment comes with a simple money-back guarantee: if it doesn't land with your kid, you get your money back.",
+    a: "Every mission is a complete case with a real ending, built for 45–60 minutes: no cliffhanger traps, no daily-streak guilt. And enrollment comes with a simple money-back guarantee: if it doesn't land with your kid, you get your money back.",
   },
 ];
 
@@ -493,12 +493,12 @@ function MissionDemo({ reduced }: { reduced: boolean }) {
         <div style={{ position: "relative", height: 368, padding: "20px 22px", display: "grid", alignContent: "center" }}>
           {scene === "tx" && (
             <div>
-              <Eyebrow text="ARC secure net — incoming transmission" color={T.arcCyan} />
+              <Eyebrow text="ARC secure net · incoming transmission" color={T.arcCyan} />
               <div style={{ fontFamily: MONO, fontSize: 30, fontWeight: 600, color: T.textPrimary, margin: "16px 0 14px", minHeight: "1.2em" }}>
                 <Resolve text="SIGNAL DETECTED" reduced={reduced} />
               </div>
               <p style={{ fontSize: 13.5, lineHeight: 1.6, color: T.textSecondary, maxWidth: 380, borderLeft: `2px solid ${T.hairline}`, paddingLeft: 12 }}>
-                A message just hit a student&rsquo;s inbox — it says her game account gets deleted in 24
+                A message just hit a student&rsquo;s inbox. It says her game account gets deleted in 24
                 hours. She almost clicked. Find out what reads wrong.
               </p>
             </div>
@@ -582,7 +582,7 @@ function MissionDemo({ reduced }: { reduced: boolean }) {
                 CASE CLOSED
               </div>
               <div style={{ marginTop: 14, borderTop: `1px solid ${T.fileInk}26`, paddingTop: 10, display: "flex", justifyContent: "space-between", fontFamily: MONO, fontSize: 9.5, letterSpacing: "0.1em" }}>
-                <span style={{ color: "#7A6428" }}>CLEARANCE — TRAINEE ▸ CONFIDENTIAL</span>
+                <span style={{ color: "#7A6428" }}>CLEARANCE: TRAINEE ▸ CONFIDENTIAL</span>
                 <span>+290 XP</span>
               </div>
             </div>
@@ -605,7 +605,7 @@ function MissionDemo({ reduced }: { reduced: boolean }) {
         </div>
       </div>
       <p style={{ fontFamily: MONO, fontSize: 10, letterSpacing: "0.06em", color: T.textDisabled, textAlign: "center", margin: "12px 0 0" }}>
-        SELF-RUNNING DEMO — ACTUAL MISSION 01 INTERFACE
+        SELF-RUNNING DEMO · ACTUAL MISSION 01 INTERFACE
       </p>
     </div>
   );
@@ -667,7 +667,7 @@ function DossierCard({ actor, reduced }: { actor: (typeof ACTORS)[number]; reduc
         }}
       />
       <div style={{ fontFamily: MONO, fontSize: 8.5, letterSpacing: "0.08em", opacity: 0.65 }}>
-        {actor.declassified ? "DOSSIER — DECLASSIFIED" : revealed ? "DOSSIER — INTERCEPTED FRAGMENT" : "DOSSIER — SEALED"}
+        {actor.declassified ? "DOSSIER: DECLASSIFIED" : revealed ? "DOSSIER: INTERCEPTED FRAGMENT" : "DOSSIER: SEALED"}
       </div>
       <div style={{ fontFamily: MONO, fontSize: 13, fontWeight: 600, margin: "7px 0 0", color: actor.declassified ? T.fileInk : T.textPrimary }}>
         {actor.code}
@@ -720,7 +720,7 @@ export default function CyberExplorersLanding() {
       >
         <Link
           href="/"
-          aria-label="Cyber Explorers by AlgorithmX — home"
+          aria-label="Cyber Explorers by AlgorithmX, home"
           style={{ display: "inline-flex", alignItems: "center", gap: 9, fontFamily: MONO, fontWeight: 600, fontSize: 13, letterSpacing: "0.12em", color: T.textPrimary, textDecoration: "none", whiteSpace: "nowrap" }}
         >
           <svg
@@ -782,14 +782,14 @@ export default function CyberExplorersLanding() {
           <div className="cx-hero-in">
             <Eyebrow text="AlgorithmX Cybersecurity · Ages 10–13" color={T.arcCyan} />
             <h1 style={{ fontFamily: MONO, fontSize: "clamp(36px, 6vw, 74px)", fontWeight: 600, lineHeight: 1.04, letterSpacing: "-0.02em", margin: "18px 0 20px" }}>
-              <Resolve text="Raise the kid" reduced={reduced} />
+              <Resolve text="Raise a kid" reduced={reduced} />
               <br />
               <span className="cx-grad">
-                <Resolve text="scammers skip." reduced={reduced} delay={400} />
+                <Resolve text="scammers can't fool." reduced={reduced} delay={400} />
               </span>
             </h1>
             <p className="cx-sub" style={{ fontSize: 17, lineHeight: 1.65, color: T.textSecondary, maxWidth: 520, margin: "0 0 10px" }}>
-              Cyber Explorers is a cybersecurity course for ages 10–13 — taught as a spy thriller your child will
+              Cyber Explorers is a cybersecurity course for ages 10–13, taught as a spy thriller your child will
               actually want to play. Twenty weekly missions that turn &ldquo;don&rsquo;t click that&rdquo; into a skill
               they own for life. <span style={{ color: T.textPrimary }}>From the team behind Cyber Heroes.</span>
             </p>
@@ -821,7 +821,7 @@ export default function CyberExplorersLanding() {
               </a>
             </div>
             <p style={{ fontSize: 12.5, color: T.textSecondary, margin: "12px 0 0", maxWidth: 440 }}>
-              One payment. Lifetime access. Money-back guarantee — if it doesn&rsquo;t land with your kid, you get it back.
+              One payment. Lifetime access. Money-back guarantee: if it doesn&rsquo;t land with your kid, you get it back.
             </p>
             <div style={{ display: "flex", flexWrap: "wrap", gap: "6px 16px", margin: "18px 0 0", fontFamily: MONO, fontSize: 10.5, letterSpacing: "0.05em", color: T.textSecondary }}>
               <span><span style={{ color: T.confirmedGreen }}>✓</span> ICO CHILDREN&rsquo;S CODE–ALIGNED</span>
@@ -870,11 +870,11 @@ export default function CyberExplorersLanding() {
           <SectionHead
             eyebrow="01 · Why this matters now"
             title="The internet doesn't wait until they're ready."
-            sub="Age 10 to 13 is when it all arrives at once — the phone, the accounts, the group chats. And the scams arrive with them."
+            sub="Age 10 to 13 is when it all arrives at once: the phone, the accounts, the group chats. And the scams arrive with them."
           />
           <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16 }} className="cx-three-col">
             {[
-              { big: "56% → 83%", small: "Smartphone ownership jumps between ages 10 and 11 — the single biggest change in a child's digital life. (Ofcom)" },
+              { big: "56% → 83%", small: "Smartphone ownership jumps between ages 10 and 11, the single biggest change in a child's digital life. (Ofcom)" },
               { big: "3 in 4", small: "11–17s have already seen harmful content online. Most never tell anyone. (Ofcom)" },
               { big: "One voice note", small: "is all AI needs to fake a voice your child trusts. The tricks are getting better. Your child can too." },
             ].map((s, i) => (
@@ -907,8 +907,8 @@ export default function CyberExplorersLanding() {
             </div>
           </div>
           <p data-scroll style={{ fontSize: 14.5, lineHeight: 1.65, color: T.textSecondary, margin: "18px 0 0", maxWidth: 620 }}>
-            That reflex is the product. The spy fiction below is just how we get a 12-year-old to practice it every week
-            — voluntarily.
+            That reflex is the product. The spy fiction below is just how we get a 12-year-old to practice it every week.
+            Voluntarily.
           </p>
         </section>
 
@@ -918,15 +918,15 @@ export default function CyberExplorersLanding() {
           <SectionHead
             eyebrow="03 · What your child gets"
             title="Everything included. Nothing vague."
-            sub="This is the product, in plain terms — what arrives the day you enroll."
+            sub="This is the product, in plain terms: what arrives the day you enroll."
           />
           <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 14 }} className="cx-three-col">
             {[
               { n: "20", t: "Story missions", d: "One complete case a week, 45–60 minutes, fully self-guided with save-and-resume." },
-              { n: "7", t: "Real analyst skills", d: "Spotting scams, reading web addresses, verifying identities, building real defenses — taught by doing." },
-              { n: "1", t: "Voice-acted mentor", d: "WREN, their handler, talks them through every mission like a colleague — never a lecture." },
-              { n: "6", t: "Villains to unmask", d: "Each one is a real internet threat in a story costume — phishing, fake voices, data theft." },
-              { n: "∞", t: "Progress you can check", d: "XP, clearance ranks, and quiz records — evidence of learning, visible any time." },
+              { n: "7", t: "Real analyst skills", d: "Spotting scams, reading web addresses, verifying identities, building real defenses, taught by doing." },
+              { n: "1", t: "Voice-acted mentor", d: "WREN, their handler, talks them through every mission like a colleague, never a lecture." },
+              { n: "6", t: "Villains to unmask", d: "Each one is a real internet threat in a story costume: phishing, fake voices, data theft." },
+              { n: "∞", t: "Progress you can check", d: "XP, clearance ranks, and quiz records: evidence of learning, visible any time." },
               { n: "£99", t: "Once. Lifetime access", d: "Every mission, every future update, no subscription, and a money-back guarantee." },
             ].map((g, i) => (
               <div key={g.t} data-scroll data-scroll-delay={String((i % 3) * 0.08)} className="cx-card" style={{ background: `${T.panel}E6`, border: `1px solid ${T.hairline}`, borderTop: `2px solid ${T.arcCyan}88`, borderRadius: 4, padding: "18px 20px", "--ac": T.arcCyan } as React.CSSProperties}>
@@ -942,15 +942,15 @@ export default function CyberExplorersLanding() {
         <section id="mission" style={{ padding: "56px 0", position: "relative" }}>
           <Wash color={T.arcCyan} at="30% 10%" />
           <SectionHead
-            eyebrow="04 · Their world — hand them the phone"
+            eyebrow="04 · Their world: hand them the phone"
             title="You're the operative."
             sub="No cartoon sidekicks, no classroom. A calm handler on the radio, real evidence on your desk, and a network of threat actors running the exact tricks the real internet runs. Welcome to ARC."
           />
           <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16 }} className="cx-three-col">
             {[
-              { t: "THE UNIT", h: "ARC — Anomaly Response Command", d: "The people who find the signal in the noise. Your child joins as a Trainee, earns a callsign, and works real cases from a mission-control desk." },
-              { t: "THE ENEMY", h: "STATIC", d: "Not one villain — a network. Each mission's threat actor runs a real internet trick: the urgent fake, the copied voice, the look-alike login page." },
-              { t: "THE OPERATIVE", h: "That's your kid", d: "The one in the room who notices what everyone else missed. The fantasy here isn't power — it's competence. Ten-to-thirteens can tell the difference." },
+              { t: "THE UNIT", h: "ARC: Anomaly Response Command", d: "The people who find the signal in the noise. Your child joins as a Trainee, earns a callsign, and works real cases from a mission-control desk." },
+              { t: "THE ENEMY", h: "STATIC", d: "Not one villain: a network. Each mission's threat actor runs a real internet trick: the urgent fake, the copied voice, the look-alike login page." },
+              { t: "THE OPERATIVE", h: "That's your kid", d: "The one in the room who notices what everyone else missed. The fantasy here isn't power. It's competence. Ten-to-thirteens can tell the difference." },
             ].map((c, i) => (
               <div
                 key={c.t}
@@ -979,9 +979,9 @@ export default function CyberExplorersLanding() {
                 <span key={i} className={reduced ? undefined : "cx-wave"} style={{ width: 2, height: [7, 12, 9, 15, 6, 11, 8][i], background: T.arcCyan, animationDelay: `${i * 0.11}s` }} />
               ))}
             </span>
-            <span style={{ fontFamily: MONO, fontSize: 11, letterSpacing: "0.08em", color: T.textSecondary }}>WREN — HANDLER, ARC SECURE NET</span>
+            <span style={{ fontFamily: MONO, fontSize: 11, letterSpacing: "0.08em", color: T.textSecondary }}>WREN: HANDLER, ARC SECURE NET</span>
             <p style={{ margin: 0, fontSize: 14.5, color: T.textPrimary, fontStyle: "italic", flex: 1, minWidth: 240 }}>
-              &ldquo;Slow is smooth, Operative. The address always tells the truth — read it before the message reads you.&rdquo;
+              &ldquo;Slow is smooth, Operative. The address always tells the truth. Read it before the message reads you.&rdquo;
             </p>
           </div>
 
@@ -992,7 +992,7 @@ export default function CyberExplorersLanding() {
             ))}
           </div>
           <p style={{ fontFamily: MONO, fontSize: 11, letterSpacing: "0.05em", color: T.textDisabled, margin: "12px 0 0" }}>
-            HOVER A SEALED DOSSIER FOR THE INTERCEPTED FRAGMENT. FULL FILES DECLASSIFY IN THE COURSE — THE ARCHIVE IS THE REVISION.
+            HOVER A SEALED DOSSIER FOR THE INTERCEPTED FRAGMENT. FULL FILES DECLASSIFY IN THE COURSE. THE ARCHIVE IS THE REVISION.
           </p>
         </section>
 
@@ -1011,16 +1011,16 @@ export default function CyberExplorersLanding() {
             }}
           >
             <div style={{ display: "inline-block", fontFamily: MONO, fontSize: 10, letterSpacing: "0.18em", color: T.threatRed, border: `1px solid ${T.threatRed}55`, borderRadius: 2, padding: "4px 10px", marginBottom: 14 }}>
-              THREAT BRIEFING — FOR PARENTS
+              THREAT BRIEFING · FOR PARENTS
             </div>
             <h3 style={{ fontFamily: MONO, fontSize: "clamp(22px, 3vw, 28px)", fontWeight: 600, margin: "0 0 12px", color: T.textPrimary }}>
               Who is STATIC, really?
             </h3>
             <p style={{ fontSize: 15, lineHeight: 1.75, color: T.textSecondary, margin: 0 }}>
-              STATIC isn&rsquo;t a cartoon — it&rsquo;s the real threat landscape wearing a codename. Phishing campaigns
+              STATIC isn&rsquo;t a cartoon. It&rsquo;s the real threat landscape wearing a codename. Phishing campaigns
               dressed as game rewards. Voice clones that sound like a friend. Credential attacks on reused passwords.
               Engineered urgency, fake prizes, data harvesting. Every actor your child profiles is a category of attack
-              they will actually face — probably this year. Explorers don&rsquo;t memorize rules about it. They learn to
+              they will actually face, probably this year. Explorers don&rsquo;t memorize rules about it. They learn to
               recognize it, out-think it, and report it.
             </p>
           </div>
@@ -1031,7 +1031,7 @@ export default function CyberExplorersLanding() {
           <SectionHead
             eyebrow="05 · How each week works"
             title="Six beats. One hour. Every week."
-            sub="Each mission is a complete case with a beginning, a middle, and a deliberate end — 45–60 minutes, save-and-resume anywhere."
+            sub="Each mission is a complete case with a beginning, a middle, and a deliberate end: 45–60 minutes, save-and-resume anywhere."
           />
           <div style={{ position: "relative", maxWidth: 760 }}>
             {/* connecting line */}
@@ -1093,7 +1093,7 @@ export default function CyberExplorersLanding() {
           <SectionHead
             eyebrow="05 · What they'll learn, week by week"
             title="20 missions. 4 clearance blocks."
-            sub="Every five closed cases raise your child's clearance — earned by demonstrated skill, never bought with points. The season builds to unmasking STATIC's coordinator in Mission 20."
+            sub="Every five closed cases raise your child's clearance, earned by demonstrated skill, never bought with points. The season builds to unmasking STATIC's coordinator in Mission 20."
           />
           <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 16 }} className="cx-two-col">
             {BLOCKS.map((b, i) => (
@@ -1133,7 +1133,7 @@ export default function CyberExplorersLanding() {
           <SectionHead
             eyebrow="The mechanics"
             title="Seven verbs an analyst actually uses."
-            sub="No worksheets wearing a game costume. Fieldwork runs on mechanics built for how 10–13s think — inference, consequence, anticipation."
+            sub="No worksheets wearing a game costume. Fieldwork runs on mechanics built for how 10–13s think: inference, consequence, anticipation."
           />
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(230px, 1fr))", gap: 12 }} data-scroll>
             {VERBS.map((m) => (
@@ -1145,7 +1145,7 @@ export default function CyberExplorersLanding() {
           </div>
           <p data-scroll style={{ fontSize: 13.5, lineHeight: 1.6, color: T.textSecondary, margin: "16px 0 0", maxWidth: 660 }}>
             <span style={{ fontFamily: MONO, color: T.textPrimary }}>A note on SIMULATE:</span> professional defenders
-            train by anticipating the attacker&rsquo;s next move. Your child predicts and counters attacks —{" "}
+            train by anticipating the attacker&rsquo;s next move. Your child predicts and counters attacks:{" "}
             <span style={{ color: T.textPrimary }}>they never write or send one.</span> That line is hard-coded.
           </p>
         </section>
@@ -1199,7 +1199,7 @@ export default function CyberExplorersLanding() {
               }}
             >
               <div style={{ background: BAND_BY_CLASSIFICATION.CONFIDENTIAL, color: T.inkBlack, fontFamily: MONO, fontWeight: 600, fontSize: 10, letterSpacing: "0.26em", textAlign: "center", padding: "5px 0" }}>
-                ARC FIELD CREDENTIAL — CONFIDENTIAL
+                ARC FIELD CREDENTIAL · CONFIDENTIAL
               </div>
               <div style={{ display: "flex", gap: 18, padding: "18px 20px 6px", alignItems: "center" }}>
                 <div style={{ width: 72, height: 88, background: T.inkBlack, border: `1px solid ${T.hairline}`, borderRadius: 3, display: "grid", placeItems: "center" }}>
@@ -1225,7 +1225,7 @@ export default function CyberExplorersLanding() {
             </div>
           </div>
           <p style={{ fontFamily: MONO, fontSize: 11, letterSpacing: "0.05em", color: T.textDisabled, textAlign: "center", margin: "14px 0 0" }}>
-            YOUR CHILD&rsquo;S CREDENTIAL EVOLVES WITH EVERY CLOSED CASE — CLEARANCE CEREMONIES REPRINT THE CARD.
+            YOUR CHILD&rsquo;S CREDENTIAL EVOLVES WITH EVERY CLOSED CASE. CLEARANCE CEREMONIES REPRINT THE CARD.
           </p>
         </section>
 
@@ -1239,7 +1239,7 @@ export default function CyberExplorersLanding() {
               We already built this for the little ones.
             </h2>
             <p className="cx-sub" style={{ fontSize: 16, lineHeight: 1.7, color: T.textSecondary, margin: "0 auto 22px", maxWidth: 640 }}>
-              Cyber Explorers comes from the team behind <span style={{ color: T.textPrimary }}>Cyber Heroes</span> —
+              Cyber Explorers comes from the team behind <span style={{ color: T.textPrimary }}>Cyber Heroes</span>,
               our cybersecurity course for ages 6–9, live today with all 20 weeks and 20 bespoke boss battles shipped.
               Same platform, same safety rules, built up for the next age. CyberFirst and ASDAN aligned; GDPR and ICO
               Children&rsquo;s Code by design.
@@ -1255,7 +1255,7 @@ export default function CyberExplorersLanding() {
           <SectionHead
             eyebrow="06 · What you get as a parent"
             title="Visibility, safety, and a kid who talks about it."
-            sub="Six commitments, built into the product's design — not promises on a page."
+            sub="Six commitments, built into the product's design, not promises on a page."
           />
           <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 14 }} className="cx-two-col">
             {PARENT_POINTS.map((p, i) => (
@@ -1271,7 +1271,7 @@ export default function CyberExplorersLanding() {
               <div style={{ fontFamily: MONO, fontSize: 14, fontWeight: 600, marginBottom: 4 }}>Coming from Cyber Heroes?</div>
               <p style={{ fontSize: 13.5, lineHeight: 1.6, color: T.textSecondary, margin: 0, maxWidth: 520 }}>
                 Explorers is the graduation tier: ages 6–9 train alongside the heroes; ages 10–13 become the operative.
-                Same platform, new world — and Heroes is never required.
+                Same platform, new world, and Heroes is never required.
               </p>
             </div>
             <Link href="/cyberheroes" className="cx-navlink" style={{ fontSize: 12, border: `1px solid ${T.hairline}`, borderRadius: 3, padding: "10px 16px", display: "inline-block" }}>
@@ -1309,7 +1309,7 @@ export default function CyberExplorersLanding() {
             <div style={{ display: "grid", gap: 8, maxWidth: 440, margin: "0 auto 26px", textAlign: "left" }}>
               {[
                 "All 20 missions, every incident, the full dossier archive",
-                "Lifetime access — including every future update to the course",
+                "Lifetime access, including every future update to the course",
                 "One payment. No subscription, no in-app purchases, ever",
                 "Money-back guarantee if it doesn't land with your kid",
               ].map((b) => (
