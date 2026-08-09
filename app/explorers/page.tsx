@@ -1,17 +1,18 @@
 "use client";
 
 /**
- * /explorers — Cyber Explorers entry: the MISSION MAP, rendered as a
- * hacker terminal. Full-screen matrix rain, CRT scanlines, green-on-black
- * terminal chrome; each case is a terminal "case file" window. The 4
- * clearance blocks and a guided next-case still drive it. Every case is
- * playable in any order. The static PoC lives on at /explorers/poc.
+ * /explorers — Cyber Explorers entry: the MISSION MAP as a neon cyber
+ * terminal. Multi-colour matrix rain + CRT chrome; each of the 4 clearance
+ * blocks owns a neon colour (cyan / pink / amber / violet) so the page has
+ * real colour variety for a young-teen audience while staying a cool hacker
+ * terminal. Every case is playable in any order. PoC lives at /explorers/poc.
  */
 
 import { useEffect, useMemo, useState } from "react";
+import type { CSSProperties } from "react";
 import MissionRuntime from "./engine/MissionRuntime";
 import { useReducedMotion } from "./engine/primitives";
-import { MONO, T } from "./engine/tokens";
+import { MONO } from "./engine/tokens";
 import type { AwardEvent, MissionManifest } from "./engine/types";
 import { checkpointStorageKey, xpForEvent } from "./engine/types";
 import { CaseGlyph } from "./CaseGlyphs";
@@ -44,11 +45,12 @@ const CASES: MissionManifest[] = [
   mission16, mission17, mission18, mission19, mission20,
 ];
 
+// neon colour per clearance block (young-teen colour variety)
 const BLOCKS = [
-  { n: 1, name: "SIGNALS", slug: "signals", classification: "CONFIDENTIAL", color: T.bandConfidential, blurb: "learn to spot the scam", sev: 2 },
-  { n: 2, name: "THE HUMAN FACTOR", slug: "human_factor", classification: "SECRET", color: T.bandSecret, blurb: "the tricks aimed at people", sev: 3 },
-  { n: 3, name: "SYSTEMS", slug: "systems", classification: "TOP SECRET", color: T.bandTopSecret, blurb: "how the tech really works", sev: 4 },
-  { n: 4, name: "THE LONG GAME", slug: "long_game", classification: "ULTRA", color: T.bandUltra, blurb: "the big picture, and the mastermind", sev: 5 },
+  { n: 1, name: "SIGNALS", slug: "signals", classification: "CONFIDENTIAL", color: "#34E1FF", blurb: "learn to spot the scam", sev: 2 },
+  { n: 2, name: "THE HUMAN FACTOR", slug: "human_factor", classification: "SECRET", color: "#FF5CA8", blurb: "the tricks aimed at people", sev: 3 },
+  { n: 3, name: "SYSTEMS", slug: "systems", classification: "TOP SECRET", color: "#FFB23E", blurb: "how the tech really works", sev: 4 },
+  { n: 4, name: "THE LONG GAME", slug: "long_game", classification: "ULTRA", color: "#B98BFF", blurb: "the big picture, and the mastermind", sev: 5 },
 ] as const;
 
 /** Plain-English gloss under each case's technique title. */
@@ -75,12 +77,14 @@ const TOPICS: Record<string, string> = {
   "explorers-m20": "unmask the coordinator",
 };
 
-// terminal palette (scoped to this page; does not touch the token system)
-const G = "#3BF57E";
-const G_TXT = "#9EF7BE";
-const G_DIM = "#2E8F55";
-const AMBER = "#FFC24B";
-const BG = "#040804";
+const RAIN_COLORS = ["#34E1FF", "#FF5CA8", "#FFB23E", "#B98BFF", "#3BF57E"];
+
+// terminal palette (scoped to this page)
+const SYS = "#34E1FF"; // system / chrome
+const TXT = "#D3E6F7"; // readable body
+const DIM = "#5E7699"; // muted
+const AMBER = "#FFC24B"; // the next case
+const BG = "#060810";
 
 export default function ExplorersPage() {
   const reduced = useReducedMotion();
@@ -140,30 +144,31 @@ export default function ExplorersPage() {
         : `NEXT // ${nextCase.caseNumber.replace(" ", "_")}`;
 
   return (
-    <main style={{ minHeight: "100vh", background: BG, color: G_TXT, fontFamily: MONO, position: "relative", overflow: "hidden" }}>
+    <main style={{ minHeight: "100vh", background: BG, color: TXT, fontFamily: MONO, position: "relative", overflow: "hidden" }}>
       <style>{`
         .tc-cur{animation:tcBlink 1s steps(1) infinite}
         .tc-blink{animation:tcBlink 1.1s steps(1) infinite}
         @keyframes tcBlink{50%{opacity:0}}
-        .tc-scan{position:fixed;inset:0;z-index:1;pointer-events:none;background:repeating-linear-gradient(0deg, rgba(0,0,0,0.26) 0 1px, transparent 1px 3px);opacity:.55}
-        .tc-vig{position:fixed;inset:0;z-index:1;pointer-events:none;background:radial-gradient(ellipse 75% 65% at 50% 38%, transparent 42%, rgba(2,6,3,0.82) 100%)}
-        .tc-h1{font-size:clamp(30px,6vw,56px);font-weight:700;letter-spacing:.04em;margin:8px 0 2px;color:${G_TXT};text-shadow:0 0 22px ${G}55}
-        .tc-cta{font-family:inherit;font-size:14px;font-weight:700;letter-spacing:.06em;color:#04160a;background:${G};border:none;border-radius:3px;padding:12px 22px;cursor:pointer;box-shadow:0 0 22px ${G}66;transition:box-shadow .15s, transform .15s}
-        .tc-cta:hover{box-shadow:0 0 32px ${G}99;transform:translateY(-1px)}
-        .tc-bar{display:flex;align-items:center;gap:7px;font-size:11px;padding:8px 12px;border:1px solid ${G}33;border-bottom:none;border-radius:7px 7px 0 0;background:rgba(6,18,10,0.72)}
-        .tc-win{border:1px solid ${G}33;border-radius:0 0 7px 7px;background:rgba(4,12,7,0.5);padding:24px 22px 26px}
+        .tc-scan{position:fixed;inset:0;z-index:1;pointer-events:none;background:repeating-linear-gradient(0deg, rgba(0,0,0,0.24) 0 1px, transparent 1px 3px);opacity:.5}
+        .tc-vig{position:fixed;inset:0;z-index:1;pointer-events:none;background:radial-gradient(ellipse 80% 70% at 50% 36%, transparent 44%, rgba(3,5,12,0.82) 100%)}
+        .tc-h1{font-size:clamp(30px,6vw,56px);font-weight:700;letter-spacing:.04em;margin:8px 0 2px;color:${TXT};text-shadow:0 0 22px ${SYS}66}
+        .tc-cta{font-family:inherit;font-size:14px;font-weight:700;letter-spacing:.06em;color:#101006;background:${AMBER};border:none;border-radius:3px;padding:12px 22px;cursor:pointer;box-shadow:0 0 22px ${AMBER}66;transition:box-shadow .15s, transform .15s}
+        .tc-cta:hover{box-shadow:0 0 34px ${AMBER}AA;transform:translateY(-1px)}
+        .tc-bar{display:flex;align-items:center;gap:7px;font-size:11px;padding:8px 12px;border:1px solid ${SYS}33;border-bottom:none;border-radius:7px 7px 0 0;background:rgba(8,14,26,0.72)}
+        .tc-win{border:1px solid ${SYS}2E;border-radius:0 0 7px 7px;background:rgba(6,10,20,0.5);padding:24px 22px 26px}
         .tc-dot{width:9px;height:9px;border-radius:50%;display:inline-block}
         .tc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(184px,1fr));gap:12px;margin-top:14px}
-        .tc-card{position:relative;text-align:left;border:1px solid ${G}3A;border-radius:4px;background:rgba(6,18,10,0.72);cursor:pointer;overflow:hidden;padding:0;transition:box-shadow .18s,border-color .18s,transform .18s}
-        .tc-card:hover{border-color:${G};box-shadow:0 0 26px ${G}55;transform:translateY(-2px)}
-        .tc-cardbar{display:flex;justify-content:space-between;align-items:center;font-size:10.5px;letter-spacing:.06em;padding:6px 10px;border-bottom:1px solid ${G}22;background:rgba(2,9,5,0.55)}
-        .tc-glyph{display:inline-flex;align-items:center;justify-content:center;width:46px;height:46px;border-radius:6px;border:1px solid;background:rgba(59,245,126,0.06)}
+        .tc-card{position:relative;text-align:left;border:1px solid color-mix(in srgb, var(--accent) 34%, transparent);border-radius:4px;background:rgba(8,13,24,0.74);cursor:pointer;overflow:hidden;padding:0;transition:box-shadow .18s,border-color .18s,transform .18s}
+        .tc-card:hover{border-color:var(--accent);box-shadow:0 0 26px color-mix(in srgb, var(--accent) 45%, transparent);transform:translateY(-2px)}
+        .tc-next{border-color:var(--accent);box-shadow:0 0 24px color-mix(in srgb, var(--accent) 46%, transparent)}
+        .tc-cardbar{display:flex;justify-content:space-between;align-items:center;font-size:10.5px;letter-spacing:.06em;padding:6px 10px;border-bottom:1px solid color-mix(in srgb, var(--accent) 22%, transparent);background:rgba(3,6,14,0.55)}
+        .tc-glyph{display:inline-flex;align-items:center;justify-content:center;width:46px;height:46px;border-radius:6px;border:1px solid;background:rgba(255,255,255,0.03)}
         .tc-title{font-size:17px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;line-height:1.15;margin-top:12px}
         .tc-chip{font-size:9.5px;letter-spacing:.14em;border:1px solid;border-radius:2px;padding:2px 7px}
         @media (prefers-reduced-motion: reduce){.tc-cur,.tc-blink{animation:none}.tc-card:hover,.tc-cta:hover{transform:none}}
       `}</style>
 
-      <MatrixRain reduced={reduced} opacity={0.5} color="#26E063" />
+      <MatrixRain reduced={reduced} opacity={0.45} colors={RAIN_COLORS} />
       <div className="tc-scan" aria-hidden />
       <div className="tc-vig" aria-hidden />
 
@@ -173,23 +178,23 @@ export default function ExplorersPage() {
           <span className="tc-dot" style={{ background: "#ff5f56" }} />
           <span className="tc-dot" style={{ background: "#ffbd2e" }} />
           <span className="tc-dot" style={{ background: "#27c93f" }} />
-          <span style={{ marginLeft: 10, color: G_DIM }}>arc@secure-net: ~/missions</span>
-          <span style={{ marginLeft: "auto", color: G_DIM }}>SECURE SHELL // ENCRYPTED</span>
+          <span style={{ marginLeft: 10, color: DIM }}>arc@secure-net: ~/missions</span>
+          <span style={{ marginLeft: "auto", color: DIM }}>SECURE SHELL // ENCRYPTED</span>
         </div>
 
         <div className="tc-win">
           {/* hero */}
-          <div style={{ color: G, fontSize: 12.5, letterSpacing: "0.06em" }}>
-            arc@secure-net:~$ ./mission-map --list<span className="tc-cur" style={{ color: G }}>▊</span>
+          <div style={{ color: SYS, fontSize: 12.5, letterSpacing: "0.06em" }}>
+            arc@secure-net:~$ ./mission-map --list<span className="tc-cur" style={{ color: SYS }}>▊</span>
           </div>
           <h1 className="tc-h1">
-            PICK YOUR CASE, <span style={{ color: G }}>OPERATIVE</span>
+            PICK YOUR CASE, <span style={{ color: SYS }}>OPERATIVE</span>
           </h1>
-          <div style={{ color: G_TXT, opacity: 0.85, fontSize: 13, marginTop: 8 }}>
-            <span style={{ color: G_DIM }}>{"//"}</span> operative: <span style={{ color: G }}>TRAINEE</span> &nbsp;·&nbsp; cases_closed:{" "}
-            <span style={{ color: G }}>{closedCount}</span>
-            <span style={{ color: G_DIM }}>/20</span> &nbsp;·&nbsp; xp: <span style={{ color: AMBER }}>{totalXp}</span> &nbsp;·&nbsp; clearance:{" "}
-            <span style={{ color: G, letterSpacing: "0.18em" }}>{ladder}</span>
+          <div style={{ color: TXT, opacity: 0.9, fontSize: 13, marginTop: 8 }}>
+            <span style={{ color: DIM }}>{"//"}</span> operative: <span style={{ color: SYS }}>TRAINEE</span> &nbsp;·&nbsp; cases_closed:{" "}
+            <span style={{ color: "#3BF57E" }}>{closedCount}</span>
+            <span style={{ color: DIM }}>/20</span> &nbsp;·&nbsp; xp: <span style={{ color: AMBER }}>{totalXp}</span> &nbsp;·&nbsp; clearance:{" "}
+            <span style={{ color: SYS, letterSpacing: "0.18em" }}>{ladder}</span>
           </div>
 
           <div style={{ marginTop: 18 }}>
@@ -202,68 +207,69 @@ export default function ExplorersPage() {
           {/* blocks */}
           {blockStats.map((b) => (
             <section key={b.n} style={{ marginTop: 40 }}>
-              <div style={{ fontSize: 12, color: G_DIM }}>
-                arc@secure-net:~$ ls ./block_{b.n}_{b.slug} <span style={{ color: `${G_DIM}` }}>--classified</span>
+              <div style={{ fontSize: 12, color: DIM }}>
+                arc@secure-net:~$ ls ./block_{b.n}_{b.slug} --classified
               </div>
               <div style={{ display: "flex", alignItems: "baseline", gap: 12, flexWrap: "wrap", marginTop: 8 }}>
-                <span style={{ fontSize: 18, fontWeight: 700, color: G }}>[{String(b.n).padStart(2, "0")}]</span>
-                <span style={{ fontSize: "clamp(18px,3vw,24px)", fontWeight: 700, letterSpacing: "0.04em", color: G_TXT, textShadow: `0 0 14px ${G}44` }}>
+                <span style={{ fontSize: 18, fontWeight: 700, color: b.color }}>[{String(b.n).padStart(2, "0")}]</span>
+                <span style={{ fontSize: "clamp(18px,3vw,24px)", fontWeight: 700, letterSpacing: "0.04em", color: TXT, textShadow: `0 0 14px ${b.color}66` }}>
                   {b.name}
                 </span>
                 <span className="tc-chip" style={{ color: b.color, borderColor: `${b.color}88` }}>
                   {b.classification}
                 </span>
-                <span style={{ marginLeft: "auto", fontSize: 12, color: b.done ? G : G_DIM }}>
+                <span style={{ marginLeft: "auto", fontSize: 12, color: b.done ? b.color : DIM }}>
                   [{b.closed}/{b.total} CLOSED]
                 </span>
               </div>
-              <div style={{ fontSize: 12.5, color: G_DIM, marginTop: 4 }}>{"// "}{b.blurb}</div>
+              <div style={{ fontSize: 12.5, color: DIM, marginTop: 4 }}>{"// "}{b.blurb}</div>
 
               <div className="tc-grid">
                 {b.cases.map((m) => {
                   const st = status[m.id];
                   const isClosed = st === "CLOSED";
                   const isNext = nextCase?.id === m.id;
-                  const ring = isNext ? AMBER : isClosed ? G_DIM : G;
-                  const titleColor = isClosed ? G_DIM : G;
+                  const accent = isNext ? AMBER : b.color;
+                  const ring = isClosed ? DIM : accent;
+                  const titleColor = isClosed ? DIM : b.color;
                   const sevFilled = "■".repeat(b.sev) + "□".repeat(5 - b.sev);
                   return (
                     <button
                       key={m.id}
-                      className="tc-card"
+                      className={`tc-card${isNext ? " tc-next" : ""}`}
                       onClick={() => setActive(m)}
                       aria-label={`${m.caseNumber}: ${m.title}.${isClosed ? " Closed." : isNext ? " Play next." : ""}`}
-                      style={{ borderColor: isNext ? AMBER : `${G}3A`, boxShadow: isNext ? `0 0 24px ${AMBER}55` : "none" }}
+                      style={{ ["--accent"]: accent } as CSSProperties}
                     >
-                      <div className="tc-cardbar" style={{ borderColor: isNext ? `${AMBER}44` : `${G}22` }}>
-                        <span style={{ color: isNext ? AMBER : G }}>{m.caseNumber.replace(" ", "_")}</span>
+                      <div className="tc-cardbar">
+                        <span style={{ color: isNext ? AMBER : b.color }}>{m.caseNumber.replace(" ", "_")}</span>
                         {isClosed ? (
-                          <span style={{ color: G_DIM }}>{"✓"} CLOSED</span>
+                          <span style={{ color: DIM }}>{"✓"} CLOSED</span>
                         ) : isNext ? (
                           <span className="tc-blink" style={{ color: AMBER }}>{"●"} {st === "IN PROGRESS" ? "RESUME" : "RUN"}</span>
                         ) : st === "IN PROGRESS" ? (
-                          <span style={{ color: G }}>{"◐"} STARTED</span>
+                          <span style={{ color: b.color }}>{"◐"} STARTED</span>
                         ) : (
-                          <span style={{ color: G_DIM }}>{"○"} OPEN</span>
+                          <span style={{ color: DIM }}>{"○"} OPEN</span>
                         )}
                       </div>
 
                       <div style={{ padding: "12px 13px 14px" }}>
                         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
-                          <span className="tc-glyph" style={{ borderColor: ring, color: ring, boxShadow: `0 0 14px ${ring}44` }}>
+                          <span className="tc-glyph" style={{ borderColor: ring, color: ring, boxShadow: `0 0 14px ${ring}55` }}>
                             <CaseGlyph id={m.id} size={26} color={ring} />
                           </span>
-                          <span style={{ textAlign: "right", fontSize: 8.5, letterSpacing: "0.12em", color: G_DIM, lineHeight: 1.5 }}>
+                          <span style={{ textAlign: "right", fontSize: 8.5, letterSpacing: "0.12em", color: DIM, lineHeight: 1.5 }}>
                             THREAT
                             <br />
                             <span style={{ color: ring, letterSpacing: "0.08em", fontSize: 9.5 }}>{sevFilled}</span>
                           </span>
                         </div>
 
-                        <div className="tc-title" style={{ color: titleColor, textShadow: `0 0 12px ${titleColor}55` }}>
+                        <div className="tc-title" style={{ color: titleColor, textShadow: `0 0 12px ${titleColor}66` }}>
                           {m.title}
                         </div>
-                        <div style={{ fontSize: 11, color: G_TXT, opacity: 0.75, marginTop: 4 }}>{"// "}{TOPICS[m.id] ?? ""}</div>
+                        <div style={{ fontSize: 11, color: TXT, opacity: 0.7, marginTop: 4 }}>{"// "}{TOPICS[m.id] ?? ""}</div>
                         <div style={{ fontSize: 10.5, color: AMBER, opacity: 0.85, marginTop: 9 }}>
                           {"> target: "}
                           {m.actor.codename.replace(/ /g, "_")}
@@ -276,9 +282,9 @@ export default function ExplorersPage() {
             </section>
           ))}
 
-          <div style={{ marginTop: 40, fontSize: 12.5, color: G_DIM }}>
-            arc@secure-net:~$ <span style={{ color: G }}>close all 20 cases to reach ULTRA clearance</span>
-            <span className="tc-cur" style={{ color: G }}>▊</span>
+          <div style={{ marginTop: 40, fontSize: 12.5, color: DIM }}>
+            arc@secure-net:~$ <span style={{ color: SYS }}>close all 20 cases to reach ULTRA clearance</span>
+            <span className="tc-cur" style={{ color: SYS }}>▊</span>
           </div>
         </div>
       </div>
