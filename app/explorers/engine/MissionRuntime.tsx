@@ -23,7 +23,6 @@ import {
   Face,
   GhostButton,
   Resolve,
-  RoomBackdrop,
   StampMark,
   TypingDots,
   useReducedMotion,
@@ -39,6 +38,7 @@ import type {
 } from "./types";
 import { checkpointStorageKey, xpForEvent } from "./types";
 import { BLOCK_FILMS, BlockFilm, filmId, filmSeen, markFilmSeen } from "./BlockFilm";
+import { MatrixRain } from "../MatrixRain";
 import Inspect from "../mechanics/Inspect";
 import Decide from "../mechanics/Decide";
 import Profile from "../mechanics/Profile";
@@ -336,7 +336,10 @@ export default function MissionRuntime({ manifest, devStartBeat }: { manifest: M
   return (
     <main style={{ minHeight: "100vh", background: T.inkBlack, color: T.textPrimary, fontFamily: BODY, position: "relative", overflow: "hidden" }}>
       <EngineStyles />
-      <RoomBackdrop reduced={reduced} tone={tone} />
+      {/* matrix-terminal backdrop, consistent with the /explorers map */}
+      <MatrixRain reduced={reduced} opacity={0.32} />
+      <div aria-hidden style={{ position: "fixed", inset: 0, zIndex: 0, pointerEvents: "none", background: "repeating-linear-gradient(0deg, rgba(0,0,0,0.24) 0 1px, transparent 1px 3px)", opacity: 0.5 }} />
+      <div aria-hidden style={{ position: "fixed", inset: 0, zIndex: 0, pointerEvents: "none", background: `radial-gradient(ellipse 82% 72% at 50% 34%, transparent 44%, ${tone}12 74%, rgba(3,5,12,0.9) 100%)`, transition: "background 700ms" }} />
 
       {filmToPlay &&
         (() => {
@@ -355,12 +358,17 @@ export default function MissionRuntime({ manifest, devStartBeat }: { manifest: M
           );
         })()}
 
-      {/* HUD — ARC chrome */}
-      <div style={{ position: "relative", zIndex: 2, borderBottom: `1px solid ${T.hairline}`, background: `${T.panel}D9`, backdropFilter: "blur(8px)" }}>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "13px 18px" }}>
-          <span style={{ display: "inline-flex", alignItems: "center", gap: 12, fontFamily: MONO, fontSize: 11.5, letterSpacing: "0.08em", color: T.textSecondary }}>
-            {manifest.caseNumber} <span style={{ color: T.textDisabled }}>//</span>{" "}
-            <span style={{ color: T.textPrimary }}>{manifest.title.toUpperCase()}</span>
+      {/* HUD — terminal chrome */}
+      <div style={{ position: "relative", zIndex: 2, borderBottom: `1px solid ${T.arcCyan}2E`, background: "rgba(8,14,26,0.82)", backdropFilter: "blur(8px)" }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 10, padding: "11px 18px", flexWrap: "wrap" }}>
+          <span style={{ display: "inline-flex", alignItems: "center", gap: 9, fontFamily: MONO, fontSize: 11.5, letterSpacing: "0.05em", color: T.textSecondary }}>
+            <span aria-hidden style={{ display: "inline-flex", gap: 5 }}>
+              <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#ff5f56" }} />
+              <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#ffbd2e" }} />
+              <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#27c93f" }} />
+            </span>
+            <span style={{ color: T.textDisabled }}>arc@secure-net:~/{manifest.caseNumber.replace(" ", "_").toLowerCase()} $</span>{" "}
+            <span style={{ color: T.arcCyan, fontWeight: 600 }}>{manifest.title.toLowerCase().replace(/ /g, "-")}</span>
             <button
               onClick={toggleVoice}
               aria-label={voiceOn ? "Turn WREN's voice off" : "Turn WREN's voice on"}
@@ -369,11 +377,11 @@ export default function MissionRuntime({ manifest, devStartBeat }: { manifest: M
               VOICE {voiceOn ? "ON" : "OFF"}
             </button>
           </span>
-          <span style={{ fontFamily: MONO, fontSize: 12, letterSpacing: "0.08em", color: T.textSecondary, position: "relative" }}>
-            <span style={{ color: tone, transition: "color 500ms" }}>{mapGate !== null ? "MISSION MAP" : describePos(pos)}</span>
+          <span style={{ fontFamily: MONO, fontSize: 12, letterSpacing: "0.06em", color: T.textSecondary, position: "relative" }}>
+            [ <span style={{ color: tone, transition: "color 500ms" }}>{mapGate !== null ? "MISSION MAP" : describePos(pos)}</span> ]
             <span aria-hidden style={{ color: T.textDisabled }}> · </span>
             XP{" "}
-            <span key={xp} className="sr-xpnum" style={{ color: T.textPrimary, fontSize: 15, fontWeight: 600 }}>
+            <span key={xp} className="sr-xpnum" style={{ color: T.confirmedGreen, fontSize: 15, fontWeight: 600 }}>
               {xp}
             </span>
             {xpPop && (

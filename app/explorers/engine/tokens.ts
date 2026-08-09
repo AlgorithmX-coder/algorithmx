@@ -5,10 +5,10 @@
  */
 
 export const T = {
-  // base neutrals — the room
-  inkBlack: "#0B0F14",
-  panel: "#121820",
-  panelRaised: "#1A222E",
+  // base neutrals — the room (matrix-terminal base, matches /explorers map)
+  inkBlack: "#060810",
+  panel: "#0C1422",
+  panelRaised: "#122036",
   /* Glow-pass 2026-07-13 (owner override of the doc's restraint):
      hairline brightened to read as lit circuitry, and full brand-neon
      cyan added for borders/glow accents engine-wide. */
@@ -18,7 +18,7 @@ export const T = {
   textSecondary: "#8FA0B2",
   textDisabled: "#5A6B80",
   // semantic accents — roles, not decorations
-  arcCyan: "#22D3EE", // identity / live data
+  arcCyan: "#34E1FF", // identity / live data (matrix-terminal cyan)
   confirmedGreen: "#3ECF8E", // success / verified
   actionAmber: "#E8A33D", // "your move"
   clearanceBrass: "#C9A961", // reward moments ONLY
