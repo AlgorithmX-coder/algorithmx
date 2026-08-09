@@ -1,21 +1,21 @@
 "use client";
 
 /**
- * /explorers — Cyber Explorers entry: the MISSION MAP.
- * A spy-themed journey down through the 4 clearance blocks. Each case is
- * a node on the path, fronted by its villain and cold-open art; a guided
- * "next" marker and a clearance HUD show the kid exactly where they are
- * and what to play next. Every case stays open to play in any order.
- * The original static PoC lives on at /explorers/poc.
+ * /explorers — Cyber Explorers entry: the MISSION MAP, rendered as a
+ * hacker terminal. Full-screen matrix rain, CRT scanlines, green-on-black
+ * terminal chrome; each case is a terminal "case file" window. The 4
+ * clearance blocks and a guided next-case still drive it. Every case is
+ * playable in any order. The static PoC lives on at /explorers/poc.
  */
 
 import { useEffect, useMemo, useState } from "react";
 import MissionRuntime from "./engine/MissionRuntime";
-import { EngineStyles, Eyebrow, Resolve, RoomBackdrop, useReducedMotion } from "./engine/primitives";
-import { BODY, MONO, T } from "./engine/tokens";
+import { useReducedMotion } from "./engine/primitives";
+import { MONO, T } from "./engine/tokens";
 import type { AwardEvent, MissionManifest } from "./engine/types";
 import { checkpointStorageKey, xpForEvent } from "./engine/types";
 import { CaseGlyph } from "./CaseGlyphs";
+import { MatrixRain } from "./MatrixRain";
 import { mission01 } from "./missions/mission01";
 import { mission02 } from "./missions/mission02";
 import { mission03 } from "./missions/mission03";
@@ -45,13 +45,13 @@ const CASES: MissionManifest[] = [
 ];
 
 const BLOCKS = [
-  { n: 1, name: "SIGNALS", classification: "CONFIDENTIAL", color: T.bandConfidential, blurb: "Learn to spot the scam." },
-  { n: 2, name: "THE HUMAN FACTOR", classification: "SECRET", color: T.bandSecret, blurb: "The tricks aimed at people." },
-  { n: 3, name: "SYSTEMS", classification: "TOP SECRET", color: T.bandTopSecret, blurb: "How the tech really works." },
-  { n: 4, name: "THE LONG GAME", classification: "ULTRA", color: T.bandUltra, blurb: "The big picture, and the mastermind." },
+  { n: 1, name: "SIGNALS", slug: "signals", classification: "CONFIDENTIAL", color: T.bandConfidential, blurb: "learn to spot the scam", sev: 2 },
+  { n: 2, name: "THE HUMAN FACTOR", slug: "human_factor", classification: "SECRET", color: T.bandSecret, blurb: "the tricks aimed at people", sev: 3 },
+  { n: 3, name: "SYSTEMS", slug: "systems", classification: "TOP SECRET", color: T.bandTopSecret, blurb: "how the tech really works", sev: 4 },
+  { n: 4, name: "THE LONG GAME", slug: "long_game", classification: "ULTRA", color: T.bandUltra, blurb: "the big picture, and the mastermind", sev: 5 },
 ] as const;
 
-/** Plain-English gloss under each case's technique title (the "translation"). */
+/** Plain-English gloss under each case's technique title. */
 const TOPICS: Record<string, string> = {
   "explorers-m01": "spot the fake message",
   "explorers-m02": "too-good-to-be-true scams",
@@ -75,22 +75,12 @@ const TOPICS: Record<string, string> = {
   "explorers-m20": "unmask the coordinator",
 };
 
-/** Falling-binary columns for the live "matrix" look on each case card.
- *  Doubled strings so the translateY(-50%) loop is seamless. */
-const MX_BITS = [
-  "0100110100011101001011010001110100101101",
-  "1101001010110010011101001011001001110100",
-  "0010110111010010101100100111010010110010",
-  "1011010001110100101101000111010010110100",
-  "0111010010110010001110100101101000111010",
-];
-const MX_COLS = [
-  { left: "7%", dur: "5.5s" },
-  { left: "27%", dur: "7s" },
-  { left: "47%", dur: "4.6s" },
-  { left: "67%", dur: "6.3s" },
-  { left: "87%", dur: "5.1s" },
-];
+// terminal palette (scoped to this page; does not touch the token system)
+const G = "#3BF57E";
+const G_TXT = "#9EF7BE";
+const G_DIM = "#2E8F55";
+const AMBER = "#FFC24B";
+const BG = "#040804";
 
 export default function ExplorersPage() {
   const reduced = useReducedMotion();
@@ -116,15 +106,13 @@ export default function ExplorersPage() {
     setTotalXp(xp);
   }, []);
 
-  // Dev-only deep link: /explorers?case=16 opens that case; add &at=boss to jump
-  // straight to the boss for review. Disabled in production builds.
+  // Dev-only deep link: /explorers?case=16 opens that case; &at=boss jumps to the boss.
   useEffect(() => {
     if (process.env.NODE_ENV === "production") return;
     const p = new URLSearchParams(window.location.search);
     const c = p.get("case");
     if (!c) return;
-    const id = `explorers-m${c.padStart(2, "0")}`;
-    const found = CASES.find((m) => m.id === id);
+    const found = CASES.find((m) => m.id === `explorers-m${c.padStart(2, "0")}`);
     if (found) {
       setActive(found);
       setDevBoss(p.get("at") === "boss");
@@ -139,263 +127,146 @@ export default function ExplorersPage() {
     const closed = cases.filter((m) => status[m.id] === "CLOSED").length;
     return { ...b, cases, closed, total: cases.length, done: closed > 0 && closed === cases.length };
   });
-  const currentBlock = nextCase?.block ?? 4;
+  const ladder = blockStats.map((b) => (b.done ? "■" : "□")).join(" ");
 
   if (active) return <MissionRuntime manifest={active} devStartBeat={devBoss ? "incident" : undefined} />;
 
   const continueLabel = !nextCase
     ? "ALL CASES CLOSED"
     : status[nextCase.id] === "IN PROGRESS"
-      ? `CONTINUE: ${nextCase.caseNumber}`
+      ? `CONTINUE // ${nextCase.caseNumber.replace(" ", "_")}`
       : closedCount === 0
-        ? `START: ${nextCase.caseNumber}`
-        : `NEXT: ${nextCase.caseNumber}`;
+        ? `START // ${nextCase.caseNumber.replace(" ", "_")}`
+        : `NEXT // ${nextCase.caseNumber.replace(" ", "_")}`;
 
   return (
-    <main style={{ minHeight: "100vh", background: T.inkBlack, color: T.textPrimary, fontFamily: BODY, position: "relative", overflow: "hidden" }}>
-      <EngineStyles />
-      <RoomBackdrop reduced={reduced} tone={T.arcCyan} />
-
-      {/* futuristic overlay: a perspective grid floor + horizon glow + scan sweep */}
+    <main style={{ minHeight: "100vh", background: BG, color: G_TXT, fontFamily: MONO, position: "relative", overflow: "hidden" }}>
       <style>{`
-        .xpg-fx{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
-        .xpg-grid{position:absolute;left:-50%;right:-50%;bottom:-8%;height:68%;
-          background-image:linear-gradient(${T.glowCyan}2E 1px,transparent 1px),linear-gradient(90deg,${T.glowCyan}2E 1px,transparent 1px);
-          background-size:46px 46px;
-          transform:perspective(420px) rotateX(63deg);transform-origin:bottom center;
-          -webkit-mask-image:linear-gradient(to top,#000 8%,transparent 82%);
-                  mask-image:linear-gradient(to top,#000 8%,transparent 82%);
-          animation:xpgGrid 6s linear infinite}
-        @keyframes xpgGrid{to{background-position:0 46px}}
-        .xpg-glow{position:absolute;left:0;right:0;bottom:0;height:48%;
-          background:radial-gradient(ellipse 55% 100% at 50% 100%, ${T.glowCyan}26, transparent 72%)}
-        .xpg-scan{position:absolute;left:0;right:0;height:2px;top:0;
-          background:linear-gradient(90deg,transparent,${T.arcCyan}AA,transparent);opacity:.45;
-          animation:xpgScan 8s linear infinite}
-        @keyframes xpgScan{0%{top:-2%}100%{top:102%}}
-        .xpg-mx{position:absolute;inset:0;overflow:hidden;opacity:.42;pointer-events:none}
-        .xpg-col{position:absolute;top:0;width:1ch;font-size:10px;line-height:1.25;letter-spacing:.06em;word-break:break-all;white-space:normal;will-change:transform;animation:xpgFall linear infinite;
-          -webkit-mask-image:linear-gradient(to bottom,transparent,#000 22%,#000 78%,transparent);mask-image:linear-gradient(to bottom,transparent,#000 22%,#000 78%,transparent)}
-        @keyframes xpgFall{from{transform:translateY(-50%)}to{transform:translateY(0)}}
-        @media (prefers-reduced-motion: reduce){.xpg-grid,.xpg-scan,.xpg-col{animation:none}}
+        .tc-cur{animation:tcBlink 1s steps(1) infinite}
+        .tc-blink{animation:tcBlink 1.1s steps(1) infinite}
+        @keyframes tcBlink{50%{opacity:0}}
+        .tc-scan{position:fixed;inset:0;z-index:1;pointer-events:none;background:repeating-linear-gradient(0deg, rgba(0,0,0,0.26) 0 1px, transparent 1px 3px);opacity:.55}
+        .tc-vig{position:fixed;inset:0;z-index:1;pointer-events:none;background:radial-gradient(ellipse 75% 65% at 50% 38%, transparent 42%, rgba(2,6,3,0.82) 100%)}
+        .tc-h1{font-size:clamp(30px,6vw,56px);font-weight:700;letter-spacing:.04em;margin:8px 0 2px;color:${G_TXT};text-shadow:0 0 22px ${G}55}
+        .tc-cta{font-family:inherit;font-size:14px;font-weight:700;letter-spacing:.06em;color:#04160a;background:${G};border:none;border-radius:3px;padding:12px 22px;cursor:pointer;box-shadow:0 0 22px ${G}66;transition:box-shadow .15s, transform .15s}
+        .tc-cta:hover{box-shadow:0 0 32px ${G}99;transform:translateY(-1px)}
+        .tc-bar{display:flex;align-items:center;gap:7px;font-size:11px;padding:8px 12px;border:1px solid ${G}33;border-bottom:none;border-radius:7px 7px 0 0;background:rgba(6,18,10,0.72)}
+        .tc-win{border:1px solid ${G}33;border-radius:0 0 7px 7px;background:rgba(4,12,7,0.5);padding:24px 22px 26px}
+        .tc-dot{width:9px;height:9px;border-radius:50%;display:inline-block}
+        .tc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(184px,1fr));gap:12px;margin-top:14px}
+        .tc-card{position:relative;text-align:left;border:1px solid ${G}3A;border-radius:4px;background:rgba(6,18,10,0.72);cursor:pointer;overflow:hidden;padding:0;transition:box-shadow .18s,border-color .18s,transform .18s}
+        .tc-card:hover{border-color:${G};box-shadow:0 0 26px ${G}55;transform:translateY(-2px)}
+        .tc-cardbar{display:flex;justify-content:space-between;align-items:center;font-size:10.5px;letter-spacing:.06em;padding:6px 10px;border-bottom:1px solid ${G}22;background:rgba(2,9,5,0.55)}
+        .tc-glyph{display:inline-flex;align-items:center;justify-content:center;width:46px;height:46px;border-radius:6px;border:1px solid;background:rgba(59,245,126,0.06)}
+        .tc-title{font-size:17px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;line-height:1.15;margin-top:12px}
+        .tc-chip{font-size:9.5px;letter-spacing:.14em;border:1px solid;border-radius:2px;padding:2px 7px}
+        @media (prefers-reduced-motion: reduce){.tc-cur,.tc-blink{animation:none}.tc-card:hover,.tc-cta:hover{transform:none}}
       `}</style>
-      <div className="xpg-fx" aria-hidden>
-        <div className="xpg-grid" />
-        <div className="xpg-glow" />
-        {!reduced && <div className="xpg-scan" />}
-      </div>
 
-      <div style={{ position: "relative", zIndex: 1, maxWidth: 980, margin: "0 auto", padding: "56px 20px 90px" }}>
-        {/* ---------------------------------------------------------- HERO / HUD */}
-        <div className="sr-scene">
-          <Eyebrow text="ARC secure net: mission map" color={T.arcCyan} />
-          <h1 style={{ fontFamily: MONO, fontSize: "clamp(30px, 6vw, 52px)", fontWeight: 600, margin: "14px 0 6px", textShadow: `0 0 40px ${T.arcCyan}33`, lineHeight: 1.05 }}>
-            <Resolve text="Pick your case," reduced={reduced} />
-            <br />
-            <span style={{ color: T.arcCyan }}>
-              <Resolve text="Operative." reduced={reduced} delay={350} />
-            </span>
+      <MatrixRain reduced={reduced} opacity={0.5} color="#26E063" />
+      <div className="tc-scan" aria-hidden />
+      <div className="tc-vig" aria-hidden />
+
+      <div style={{ position: "relative", zIndex: 2, maxWidth: 1080, margin: "0 auto", padding: "36px 22px 90px" }}>
+        {/* terminal window */}
+        <div className="tc-bar">
+          <span className="tc-dot" style={{ background: "#ff5f56" }} />
+          <span className="tc-dot" style={{ background: "#ffbd2e" }} />
+          <span className="tc-dot" style={{ background: "#27c93f" }} />
+          <span style={{ marginLeft: 10, color: G_DIM }}>arc@secure-net: ~/missions</span>
+          <span style={{ marginLeft: "auto", color: G_DIM }}>SECURE SHELL // ENCRYPTED</span>
+        </div>
+
+        <div className="tc-win">
+          {/* hero */}
+          <div style={{ color: G, fontSize: 12.5, letterSpacing: "0.06em" }}>
+            arc@secure-net:~$ ./mission-map --list<span className="tc-cur" style={{ color: G }}>▊</span>
+          </div>
+          <h1 className="tc-h1">
+            PICK YOUR CASE, <span style={{ color: G }}>OPERATIVE</span>
           </h1>
-
-          {/* clearance ladder + stats */}
-          <div style={{ display: "flex", flexWrap: "wrap", gap: 16, alignItems: "center", margin: "18px 0 10px" }}>
-            <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
-              {BLOCKS.map((b, i) => {
-                const bs = blockStats[i];
-                const isCurrent = b.n === currentBlock;
-                return (
-                  <span
-                    key={b.n}
-                    title={`Block ${b.n}: ${b.name}`}
-                    style={{
-                      fontFamily: MONO,
-                      fontSize: 10,
-                      letterSpacing: "0.08em",
-                      padding: "5px 9px",
-                      borderRadius: 3,
-                      border: `1px solid ${isCurrent ? b.color : bs.done ? `${b.color}88` : T.hairline}`,
-                      color: bs.done ? b.color : isCurrent ? b.color : T.textDisabled,
-                      background: isCurrent ? `${b.color}1A` : "transparent",
-                      boxShadow: isCurrent ? `0 0 14px ${b.color}44` : "none",
-                    }}
-                  >
-                    {bs.done ? "■" : "□"} {b.classification}
-                  </span>
-                );
-              })}
-            </div>
+          <div style={{ color: G_TXT, opacity: 0.85, fontSize: 13, marginTop: 8 }}>
+            <span style={{ color: G_DIM }}>{"//"}</span> operative: <span style={{ color: G }}>TRAINEE</span> &nbsp;·&nbsp; cases_closed:{" "}
+            <span style={{ color: G }}>{closedCount}</span>
+            <span style={{ color: G_DIM }}>/20</span> &nbsp;·&nbsp; xp: <span style={{ color: AMBER }}>{totalXp}</span> &nbsp;·&nbsp; clearance:{" "}
+            <span style={{ color: G, letterSpacing: "0.18em" }}>{ladder}</span>
           </div>
 
-          <div style={{ display: "flex", flexWrap: "wrap", gap: 20, alignItems: "center", marginTop: 6 }}>
-            <button
-              onClick={() => nextCase && setActive(nextCase)}
-              disabled={!nextCase}
-              className="sr-btn"
-              style={{
-                fontFamily: MONO,
-                fontSize: 14,
-                fontWeight: 600,
-                letterSpacing: "0.06em",
-                color: T.inkBlack,
-                background: T.actionAmber,
-                border: "none",
-                borderRadius: 4,
-                padding: "13px 22px",
-                cursor: nextCase ? "pointer" : "default",
-                boxShadow: `0 0 22px ${T.actionAmber}55`,
-                opacity: nextCase ? 1 : 0.6,
-              }}
-            >
+          <div style={{ marginTop: 18 }}>
+            <button className="tc-cta" onClick={() => nextCase && setActive(nextCase)} disabled={!nextCase}>
               {nextCase ? "▶ " : "✓ "}
               {continueLabel}
             </button>
-            <div style={{ display: "flex", gap: 22, fontFamily: MONO, fontSize: 12, color: T.textSecondary }}>
-              <span>
-                CASES&nbsp;<span style={{ color: T.confirmedGreen, fontSize: 17, fontWeight: 600 }}>{closedCount}</span>
-                <span style={{ color: T.textDisabled }}> / {CASES.length}</span>
-              </span>
-              <span>
-                XP&nbsp;<span style={{ color: T.clearanceBrass, fontSize: 17, fontWeight: 600 }}>{totalXp}</span>
-              </span>
-            </div>
           </div>
-        </div>
 
-        {/* ---------------------------------------------------------- THE MAP */}
-        <div style={{ position: "relative", marginTop: 46 }}>
-          {/* the journey spine */}
-          <div
-            aria-hidden
-            style={{
-              position: "absolute",
-              left: 21,
-              top: 24,
-              bottom: 60,
-              width: 2,
-              background: `linear-gradient(${T.bandConfidential}, ${T.bandSecret}, ${T.bandTopSecret}, ${T.bandUltra})`,
-              opacity: 0.45,
-            }}
-          />
-
+          {/* blocks */}
           {blockStats.map((b) => (
-            <section key={b.n} className="sr-scene" style={{ position: "relative", paddingLeft: 56, marginBottom: 40 }}>
-              {/* station marker on the spine */}
-              <div
-                style={{
-                  position: "absolute",
-                  left: 0,
-                  top: 0,
-                  width: 44,
-                  height: 44,
-                  borderRadius: "50%",
-                  border: `2px solid ${b.color}`,
-                  background: T.inkBlack,
-                  display: "grid",
-                  placeItems: "center",
-                  boxShadow: `0 0 16px ${b.color}66`,
-                  fontFamily: MONO,
-                  fontSize: 18,
-                  fontWeight: 600,
-                  color: b.color,
-                  zIndex: 1,
-                }}
-              >
-                {b.n}
+            <section key={b.n} style={{ marginTop: 40 }}>
+              <div style={{ fontSize: 12, color: G_DIM }}>
+                arc@secure-net:~$ ls ./block_{b.n}_{b.slug} <span style={{ color: `${G_DIM}` }}>--classified</span>
               </div>
-
-              {/* block header */}
-              <div style={{ display: "flex", flexWrap: "wrap", alignItems: "baseline", gap: "4px 12px", minHeight: 44 }}>
-                <span style={{ fontFamily: MONO, fontSize: "clamp(17px, 3vw, 22px)", fontWeight: 600, color: T.textPrimary }}>
-                  BLOCK {b.n}: {b.name}
+              <div style={{ display: "flex", alignItems: "baseline", gap: 12, flexWrap: "wrap", marginTop: 8 }}>
+                <span style={{ fontSize: 18, fontWeight: 700, color: G }}>[{String(b.n).padStart(2, "0")}]</span>
+                <span style={{ fontSize: "clamp(18px,3vw,24px)", fontWeight: 700, letterSpacing: "0.04em", color: G_TXT, textShadow: `0 0 14px ${G}44` }}>
+                  {b.name}
                 </span>
-                <span style={{ fontFamily: MONO, fontSize: 10, letterSpacing: "0.16em", color: T.inkBlack, background: b.color, borderRadius: 3, padding: "3px 8px" }}>
+                <span className="tc-chip" style={{ color: b.color, borderColor: `${b.color}88` }}>
                   {b.classification}
                 </span>
-                <span style={{ fontFamily: MONO, fontSize: 11, color: b.done ? T.confirmedGreen : T.textSecondary, marginLeft: "auto" }}>
-                  {b.closed}/{b.total} CLOSED
+                <span style={{ marginLeft: "auto", fontSize: 12, color: b.done ? G : G_DIM }}>
+                  [{b.closed}/{b.total} CLOSED]
                 </span>
               </div>
-              <p style={{ margin: "4px 0 0", fontSize: 13.5, color: T.textSecondary }}>{b.blurb}</p>
+              <div style={{ fontSize: 12.5, color: G_DIM, marginTop: 4 }}>{"// "}{b.blurb}</div>
 
-              {/* case nodes */}
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(158px, 1fr))", gap: 12, marginTop: 14 }}>
-                {b.cases.map((m, ci) => {
+              <div className="tc-grid">
+                {b.cases.map((m) => {
                   const st = status[m.id];
                   const isClosed = st === "CLOSED";
                   const isNext = nextCase?.id === m.id;
-                  const ring = isNext ? T.actionAmber : isClosed ? T.clearanceBrass : b.color;
+                  const ring = isNext ? AMBER : isClosed ? G_DIM : G;
+                  const titleColor = isClosed ? G_DIM : G;
+                  const sevFilled = "■".repeat(b.sev) + "□".repeat(5 - b.sev);
                   return (
                     <button
                       key={m.id}
+                      className="tc-card"
                       onClick={() => setActive(m)}
-                      className="sr-btn"
-                      aria-label={`${m.caseNumber}: ${m.title}. Villain ${m.actor.codename}.${isClosed ? " Closed." : isNext ? " Play next." : ""}`}
-                      style={{
-                        position: "relative",
-                        textAlign: "left",
-                        border: `1.5px solid ${isNext ? T.actionAmber : `${b.color}66`}`,
-                        borderRadius: 8,
-                        overflow: "hidden",
-                        padding: 0,
-                        cursor: "pointer",
-                        background: T.inkBlack,
-                        minHeight: 168,
-                        boxShadow: isNext ? `0 0 24px ${T.actionAmber}55` : "none",
-                      }}
+                      aria-label={`${m.caseNumber}: ${m.title}.${isClosed ? " Closed." : isNext ? " Play next." : ""}`}
+                      style={{ borderColor: isNext ? AMBER : `${G}3A`, boxShadow: isNext ? `0 0 24px ${AMBER}55` : "none" }}
                     >
-                      {/* techy case-file panel: faint circuit grid + corner glow */}
-                      <div aria-hidden style={{ position: "absolute", inset: 0, backgroundImage: `linear-gradient(${b.color}12 1px, transparent 1px), linear-gradient(90deg, ${b.color}12 1px, transparent 1px)`, backgroundSize: "17px 17px", opacity: isClosed ? 0.4 : 0.7 }} />
-                      <div aria-hidden style={{ position: "absolute", inset: 0, background: `radial-gradient(ellipse 130% 90% at 100% 0%, ${b.color}1F, transparent 58%)` }} />
+                      <div className="tc-cardbar" style={{ borderColor: isNext ? `${AMBER}44` : `${G}22` }}>
+                        <span style={{ color: isNext ? AMBER : G }}>{m.caseNumber.replace(" ", "_")}</span>
+                        {isClosed ? (
+                          <span style={{ color: G_DIM }}>{"✓"} CLOSED</span>
+                        ) : isNext ? (
+                          <span className="tc-blink" style={{ color: AMBER }}>{"●"} {st === "IN PROGRESS" ? "RESUME" : "RUN"}</span>
+                        ) : st === "IN PROGRESS" ? (
+                          <span style={{ color: G }}>{"◐"} STARTED</span>
+                        ) : (
+                          <span style={{ color: G_DIM }}>{"○"} OPEN</span>
+                        )}
+                      </div>
 
-                      {/* live binary matrix rain */}
-                      {!reduced && (
-                        <div className="xpg-mx" aria-hidden style={{ color: b.color }}>
-                          {MX_COLS.map((c, i) => (
-                            <div
-                              key={i}
-                              className="xpg-col"
-                              style={{ left: c.left, fontFamily: MONO, animationDuration: c.dur, animationDelay: `-${(ci * 1.3 + i * 0.7).toFixed(1)}s` }}
-                            >
-                              {MX_BITS[i] + MX_BITS[i]}
-                            </div>
-                          ))}
-                        </div>
-                      )}
-                      {/* legibility scrim over the text */}
-                      <div aria-hidden style={{ position: "absolute", inset: 0, background: `linear-gradient(to top, ${T.inkBlack} 12%, ${T.inkBlack}99 46%, transparent 74%)` }} />
-
-                      <div style={{ position: "relative", padding: "11px 12px 13px", height: "100%", display: "flex", flexDirection: "column" }}>
-                        {/* top row: case number + status */}
+                      <div style={{ padding: "12px 13px 14px" }}>
                         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
-                          <span style={{ fontFamily: MONO, fontSize: 11, letterSpacing: "0.08em", color: T.textSecondary }}>{m.caseNumber}</span>
-                          {isClosed ? (
-                            <span style={{ fontFamily: MONO, fontSize: 9.5, letterSpacing: "0.08em", color: T.clearanceBrass, border: `1px solid ${T.clearanceBrass}77`, borderRadius: 2, padding: "2px 6px" }}>■ CLOSED</span>
-                          ) : isNext ? (
-                            <span className="sr-blink" style={{ fontFamily: MONO, fontSize: 9.5, letterSpacing: "0.08em", color: T.inkBlack, background: T.actionAmber, borderRadius: 2, padding: "2px 6px", fontWeight: 600 }}>▶ {status[m.id] === "IN PROGRESS" ? "RESUME" : "PLAY"}</span>
-                          ) : st === "IN PROGRESS" ? (
-                            <span style={{ fontFamily: MONO, fontSize: 9.5, letterSpacing: "0.08em", color: T.confirmedGreen, border: `1px solid ${T.confirmedGreen}77`, borderRadius: 2, padding: "2px 6px" }}>◐ STARTED</span>
-                          ) : null}
-                        </div>
-
-                        {/* attack glyph tile (techy, not a face) */}
-                        <div style={{ margin: "12px 0 10px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                          <span
-                            style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", width: 50, height: 50, borderRadius: 10, background: `${ring}12`, border: `1.5px solid ${ring}`, boxShadow: `0 0 16px ${ring}44`, color: ring }}
-                          >
-                            <CaseGlyph id={m.id} size={28} color={ring} />
+                          <span className="tc-glyph" style={{ borderColor: ring, color: ring, boxShadow: `0 0 14px ${ring}44` }}>
+                            <CaseGlyph id={m.id} size={26} color={ring} />
                           </span>
-                          <span style={{ fontFamily: MONO, fontSize: 8.5, letterSpacing: "0.16em", color: T.textDisabled }}>CASE FILE</span>
+                          <span style={{ textAlign: "right", fontSize: 8.5, letterSpacing: "0.12em", color: G_DIM, lineHeight: 1.5 }}>
+                            THREAT
+                            <br />
+                            <span style={{ color: ring, letterSpacing: "0.08em", fontSize: 9.5 }}>{sevFilled}</span>
+                          </span>
                         </div>
 
-                        {/* technique title (techy) + plain gloss + villain */}
-                        <div style={{ fontFamily: MONO, fontSize: 9.5, fontWeight: 500, letterSpacing: "0.02em", color: b.color, marginBottom: 4 }}>
-                          {TOPICS[m.id] ?? ""}
-                        </div>
-                        <div style={{ fontFamily: MONO, fontSize: 15, fontWeight: 600, lineHeight: 1.2, letterSpacing: "0.03em", textTransform: "uppercase", color: T.textPrimary }}>
+                        <div className="tc-title" style={{ color: titleColor, textShadow: `0 0 12px ${titleColor}55` }}>
                           {m.title}
                         </div>
-                        <div style={{ marginTop: "auto", paddingTop: 8, fontFamily: MONO, fontSize: 10, letterSpacing: "0.06em", color: T.threatRed }}>
-                          vs {m.actor.codename}
+                        <div style={{ fontSize: 11, color: G_TXT, opacity: 0.75, marginTop: 4 }}>{"// "}{TOPICS[m.id] ?? ""}</div>
+                        <div style={{ fontSize: 10.5, color: AMBER, opacity: 0.85, marginTop: 9 }}>
+                          {"> target: "}
+                          {m.actor.codename.replace(/ /g, "_")}
                         </div>
                       </div>
                     </button>
@@ -405,12 +276,9 @@ export default function ExplorersPage() {
             </section>
           ))}
 
-          {/* end-of-journey marker */}
-          <div style={{ position: "relative", paddingLeft: 56 }}>
-            <div style={{ position: "absolute", left: 8, top: 2, width: 28, height: 28, borderRadius: "50%", border: `2px solid ${T.clearanceBrass}`, background: T.inkBlack, display: "grid", placeItems: "center", color: T.clearanceBrass, fontSize: 13, boxShadow: `0 0 16px ${T.clearanceBrass}66` }}>★</div>
-            <div style={{ fontFamily: MONO, fontSize: 12.5, letterSpacing: "0.08em", color: T.clearanceBrass, paddingTop: 4 }}>
-              CLOSE EVERY CASE TO REACH ULTRA CLEARANCE
-            </div>
+          <div style={{ marginTop: 40, fontSize: 12.5, color: G_DIM }}>
+            arc@secure-net:~$ <span style={{ color: G }}>close all 20 cases to reach ULTRA clearance</span>
+            <span className="tc-cur" style={{ color: G }}>▊</span>
           </div>
         </div>
       </div>
