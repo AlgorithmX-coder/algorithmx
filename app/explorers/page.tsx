@@ -15,6 +15,7 @@ import { EngineStyles, Eyebrow, Resolve, RoomBackdrop, useReducedMotion } from "
 import { BODY, MONO, T } from "./engine/tokens";
 import type { AwardEvent, MissionManifest } from "./engine/types";
 import { checkpointStorageKey, xpForEvent } from "./engine/types";
+import { CaseGlyph } from "./CaseGlyphs";
 import { mission01 } from "./missions/mission01";
 import { mission02 } from "./missions/mission02";
 import { mission03 } from "./missions/mission03";
@@ -137,6 +138,31 @@ export default function ExplorersPage() {
     <main style={{ minHeight: "100vh", background: T.inkBlack, color: T.textPrimary, fontFamily: BODY, position: "relative", overflow: "hidden" }}>
       <EngineStyles />
       <RoomBackdrop reduced={reduced} tone={T.arcCyan} />
+
+      {/* futuristic overlay: a perspective grid floor + horizon glow + scan sweep */}
+      <style>{`
+        .xpg-fx{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+        .xpg-grid{position:absolute;left:-50%;right:-50%;bottom:-8%;height:68%;
+          background-image:linear-gradient(${T.glowCyan}2E 1px,transparent 1px),linear-gradient(90deg,${T.glowCyan}2E 1px,transparent 1px);
+          background-size:46px 46px;
+          transform:perspective(420px) rotateX(63deg);transform-origin:bottom center;
+          -webkit-mask-image:linear-gradient(to top,#000 8%,transparent 82%);
+                  mask-image:linear-gradient(to top,#000 8%,transparent 82%);
+          animation:xpgGrid 6s linear infinite}
+        @keyframes xpgGrid{to{background-position:0 46px}}
+        .xpg-glow{position:absolute;left:0;right:0;bottom:0;height:48%;
+          background:radial-gradient(ellipse 55% 100% at 50% 100%, ${T.glowCyan}26, transparent 72%)}
+        .xpg-scan{position:absolute;left:0;right:0;height:2px;top:0;
+          background:linear-gradient(90deg,transparent,${T.arcCyan}AA,transparent);opacity:.45;
+          animation:xpgScan 8s linear infinite}
+        @keyframes xpgScan{0%{top:-2%}100%{top:102%}}
+        @media (prefers-reduced-motion: reduce){.xpg-grid,.xpg-scan{animation:none}}
+      `}</style>
+      <div className="xpg-fx" aria-hidden>
+        <div className="xpg-grid" />
+        <div className="xpg-glow" />
+        {!reduced && <div className="xpg-scan" />}
+      </div>
 
       <div style={{ position: "relative", zIndex: 1, maxWidth: 980, margin: "0 auto", padding: "56px 20px 90px" }}>
         {/* ---------------------------------------------------------- HERO / HUD */}
@@ -296,15 +322,9 @@ export default function ExplorersPage() {
                         boxShadow: isNext ? `0 0 24px ${T.actionAmber}55` : "none",
                       }}
                     >
-                      {/* cold-open art */}
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img
-                        src={m.scene}
-                        alt=""
-                        loading="lazy"
-                        style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", opacity: isClosed ? 0.16 : 0.3 }}
-                      />
-                      <div aria-hidden style={{ position: "absolute", inset: 0, background: `linear-gradient(180deg, ${T.inkBlack}55 0%, ${T.inkBlack}dd 62%, ${T.inkBlack} 100%)` }} />
+                      {/* techy case-file panel: faint circuit grid + corner glow */}
+                      <div aria-hidden style={{ position: "absolute", inset: 0, backgroundImage: `linear-gradient(${b.color}12 1px, transparent 1px), linear-gradient(90deg, ${b.color}12 1px, transparent 1px)`, backgroundSize: "17px 17px", opacity: isClosed ? 0.4 : 0.7 }} />
+                      <div aria-hidden style={{ position: "absolute", inset: 0, background: `radial-gradient(ellipse 130% 90% at 100% 0%, ${b.color}1F, transparent 58%)` }} />
 
                       <div style={{ position: "relative", padding: "11px 12px 13px", height: "100%", display: "flex", flexDirection: "column" }}>
                         {/* top row: case number + status */}
@@ -319,15 +339,14 @@ export default function ExplorersPage() {
                           ) : null}
                         </div>
 
-                        {/* villain avatar */}
-                        <div style={{ margin: "10px 0 8px" }}>
-                          {/* eslint-disable-next-line @next/next/no-img-element */}
-                          <img
-                            src={m.actor.portrait}
-                            alt={m.actor.codename}
-                            loading="lazy"
-                            style={{ width: 52, height: 52, borderRadius: "50%", objectFit: "cover", border: `2px solid ${ring}`, boxShadow: `0 0 12px ${ring}66`, background: T.panel }}
-                          />
+                        {/* attack glyph tile (techy, not a face) */}
+                        <div style={{ margin: "12px 0 10px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                          <span
+                            style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", width: 50, height: 50, borderRadius: 10, background: `${ring}12`, border: `1.5px solid ${ring}`, boxShadow: `0 0 16px ${ring}44`, color: ring }}
+                          >
+                            <CaseGlyph id={m.id} size={28} color={ring} />
+                          </span>
+                          <span style={{ fontFamily: MONO, fontSize: 8.5, letterSpacing: "0.16em", color: T.textDisabled }}>CASE FILE</span>
                         </div>
 
                         {/* technique title (techy) + plain gloss + villain */}
