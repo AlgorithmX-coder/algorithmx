@@ -19,7 +19,7 @@ import type { MissionManifest } from "../engine/types";
 export const mission18: MissionManifest = {
   id: "explorers-m18",
   caseNumber: "CASE 018",
-  title: "The Recruiter",
+  title: "Black Hat",
   block: 4,
   classification: "ULTRA",
   actor: {
