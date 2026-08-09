@@ -75,6 +75,23 @@ const TOPICS: Record<string, string> = {
   "explorers-m20": "unmask the coordinator",
 };
 
+/** Falling-binary columns for the live "matrix" look on each case card.
+ *  Doubled strings so the translateY(-50%) loop is seamless. */
+const MX_BITS = [
+  "0100110100011101001011010001110100101101",
+  "1101001010110010011101001011001001110100",
+  "0010110111010010101100100111010010110010",
+  "1011010001110100101101000111010010110100",
+  "0111010010110010001110100101101000111010",
+];
+const MX_COLS = [
+  { left: "7%", dur: "5.5s" },
+  { left: "27%", dur: "7s" },
+  { left: "47%", dur: "4.6s" },
+  { left: "67%", dur: "6.3s" },
+  { left: "87%", dur: "5.1s" },
+];
+
 export default function ExplorersPage() {
   const reduced = useReducedMotion();
   const [active, setActive] = useState<MissionManifest | null>(null);
@@ -156,7 +173,11 @@ export default function ExplorersPage() {
           background:linear-gradient(90deg,transparent,${T.arcCyan}AA,transparent);opacity:.45;
           animation:xpgScan 8s linear infinite}
         @keyframes xpgScan{0%{top:-2%}100%{top:102%}}
-        @media (prefers-reduced-motion: reduce){.xpg-grid,.xpg-scan{animation:none}}
+        .xpg-mx{position:absolute;inset:0;overflow:hidden;opacity:.42;pointer-events:none}
+        .xpg-col{position:absolute;top:0;width:1ch;font-size:10px;line-height:1.25;letter-spacing:.06em;word-break:break-all;white-space:normal;will-change:transform;animation:xpgFall linear infinite;
+          -webkit-mask-image:linear-gradient(to bottom,transparent,#000 22%,#000 78%,transparent);mask-image:linear-gradient(to bottom,transparent,#000 22%,#000 78%,transparent)}
+        @keyframes xpgFall{from{transform:translateY(-50%)}to{transform:translateY(0)}}
+        @media (prefers-reduced-motion: reduce){.xpg-grid,.xpg-scan,.xpg-col{animation:none}}
       `}</style>
       <div className="xpg-fx" aria-hidden>
         <div className="xpg-grid" />
@@ -298,7 +319,7 @@ export default function ExplorersPage() {
 
               {/* case nodes */}
               <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(158px, 1fr))", gap: 12, marginTop: 14 }}>
-                {b.cases.map((m) => {
+                {b.cases.map((m, ci) => {
                   const st = status[m.id];
                   const isClosed = st === "CLOSED";
                   const isNext = nextCase?.id === m.id;
@@ -325,6 +346,23 @@ export default function ExplorersPage() {
                       {/* techy case-file panel: faint circuit grid + corner glow */}
                       <div aria-hidden style={{ position: "absolute", inset: 0, backgroundImage: `linear-gradient(${b.color}12 1px, transparent 1px), linear-gradient(90deg, ${b.color}12 1px, transparent 1px)`, backgroundSize: "17px 17px", opacity: isClosed ? 0.4 : 0.7 }} />
                       <div aria-hidden style={{ position: "absolute", inset: 0, background: `radial-gradient(ellipse 130% 90% at 100% 0%, ${b.color}1F, transparent 58%)` }} />
+
+                      {/* live binary matrix rain */}
+                      {!reduced && (
+                        <div className="xpg-mx" aria-hidden style={{ color: b.color }}>
+                          {MX_COLS.map((c, i) => (
+                            <div
+                              key={i}
+                              className="xpg-col"
+                              style={{ left: c.left, fontFamily: MONO, animationDuration: c.dur, animationDelay: `-${(ci * 1.3 + i * 0.7).toFixed(1)}s` }}
+                            >
+                              {MX_BITS[i] + MX_BITS[i]}
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                      {/* legibility scrim over the text */}
+                      <div aria-hidden style={{ position: "absolute", inset: 0, background: `linear-gradient(to top, ${T.inkBlack} 12%, ${T.inkBlack}99 46%, transparent 74%)` }} />
 
                       <div style={{ position: "relative", padding: "11px 12px 13px", height: "100%", display: "flex", flexDirection: "column" }}>
                         {/* top row: case number + status */}
