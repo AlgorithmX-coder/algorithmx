@@ -89,7 +89,9 @@ export async function bootNorthwind(): Promise<NorthwindSession> {
     return r.arrayBuffer();
   });
   const SQL = await initSqlJs({ wasmBinary });
-  const db: SqlDb = new SQL.Database();
+  // sql.js's Database type surfaces the full SqlValue union (incl. Uint8Array |
+  // null); our tables only hold text/ints, so we narrow to the local SqlDb shape.
+  const db = new SQL.Database() as unknown as SqlDb;
 
   db.run(
     `CREATE TABLE users (id INTEGER PRIMARY KEY, email TEXT, pass TEXT, role TEXT);`

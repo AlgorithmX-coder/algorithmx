@@ -49,9 +49,12 @@ export const C = {
   ink: "#e8edff", soft: "#a6b2d6", mute: "#6a7396",
   indigo: "#8b7bff", indigo2: "#b3a8ff", green: "#4ade80", red: "#ff5b62", amber: "#e8a33d", cyan: "#5fe6ff",
 };
-export const DISP = "'Chakra Petch','Segoe UI',system-ui,sans-serif";
-export const MONO = "'IBM Plex Mono',ui-monospace,'JetBrains Mono',Menlo,Consolas,monospace";
-export const SANS = "'IBM Plex Sans',system-ui,-apple-system,'Segoe UI',sans-serif";
+// Fonts flow from the --font-* CSS variables the /operators layout sets via
+// next/font (Chakra Petch + IBM Plex); the literal names + system stack are the
+// fallback for the /dev harness routes, which don't set the variables.
+export const DISP = "var(--font-chakra),'Chakra Petch','Segoe UI',system-ui,sans-serif";
+export const MONO = "var(--font-plex-mono),'IBM Plex Mono',ui-monospace,'JetBrains Mono',Menlo,Consolas,monospace";
+export const SANS = "var(--font-plex-sans),'IBM Plex Sans',system-ui,-apple-system,'Segoe UI',sans-serif";
 
 type Phase = "brief" | "lesson" | "authorize" | "act" | "defend" | "report";
 const BEATS: { id: Phase; label: string }[] = [

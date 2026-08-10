@@ -36,9 +36,9 @@ const C = {
   amber: "#e8a33d",
   cyan: "#5fe6ff",
 };
-const DISP = "'Chakra Petch','Segoe UI',system-ui,sans-serif";
-const MONO = "'IBM Plex Mono',ui-monospace,'JetBrains Mono',Menlo,Consolas,monospace";
-const SANS = "'IBM Plex Sans',system-ui,-apple-system,'Segoe UI',sans-serif";
+const DISP = "var(--font-chakra),'Chakra Petch','Segoe UI',system-ui,sans-serif";
+const MONO = "var(--font-plex-mono),'IBM Plex Mono',ui-monospace,'JetBrains Mono',Menlo,Consolas,monospace";
+const SANS = "var(--font-plex-sans),'IBM Plex Sans',system-ui,-apple-system,'Segoe UI',sans-serif";
 
 export default function FirstCapture() {
   const [phase, setPhase] = useState<Phase>("boot");
