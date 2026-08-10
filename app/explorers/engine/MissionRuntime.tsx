@@ -23,7 +23,6 @@ import {
   Face,
   GhostButton,
   Resolve,
-  RoomBackdrop,
   StampMark,
   TypingDots,
   useReducedMotion,
@@ -38,10 +37,15 @@ import type {
   MissionManifest,
 } from "./types";
 import { checkpointStorageKey, xpForEvent } from "./types";
+import { BLOCK_FILMS, BlockFilm, filmId, filmSeen, markFilmSeen } from "./BlockFilm";
+import { MatrixRain } from "../MatrixRain";
 import Inspect from "../mechanics/Inspect";
 import Decide from "../mechanics/Decide";
 import Profile from "../mechanics/Profile";
 import Trace from "../mechanics/Trace";
+import Simulate from "../mechanics/Simulate";
+import Build from "../mechanics/Build";
+import Cipher from "../mechanics/Cipher";
 
 const eventKey = (e: AwardEvent) => `${e.type}:${e.sourceKey}`;
 
@@ -97,11 +101,11 @@ function MissionMap({ manifest, pos, stampNew }: { manifest: MissionManifest; po
   const done = stepsDone(pos);
   const rows: { label: string; sub: string; idx: number }[] = [
     ...manifest.cycles.map((c, i) => ({
-      label: `SKILL ${i + 1} — ${c.title}`,
+      label: `SKILL ${i + 1}: ${c.title}`,
       sub: c.promise ?? c.concept,
       idx: i,
     })),
-    { label: `BOSS — ${manifest.incident.title}`, sub: `Use all 3 skills against ${manifest.actor.codename}`, idx: 3 },
+    { label: `BOSS: ${manifest.incident.title}`, sub: `Use all 3 skills against ${manifest.actor.codename}`, idx: 3 },
     { label: "MISSION REPORT", sub: "What you learned + your move in real life", idx: 4 },
   ];
   return (
@@ -169,13 +173,13 @@ function MissionMap({ manifest, pos, stampNew }: { manifest: MissionManifest; po
 
 /* ============================================================== runtime */
 
-export default function MissionRuntime({ manifest }: { manifest: MissionManifest }) {
+export default function MissionRuntime({ manifest, devStartBeat }: { manifest: MissionManifest; devStartBeat?: BeatPos["beat"] }) {
   const reduced = useReducedMotion();
   const audio = useSignalAudio();
   const storageKey = checkpointStorageKey(manifest.id);
 
-  const [pos, setPos] = useState<BeatPos>({ beat: "transmission" });
-  const [intro, setIntro] = useState(true);
+  const [pos, setPos] = useState<BeatPos>(devStartBeat === "incident" ? { beat: "incident", incidentPhase: 1 } : { beat: "transmission" });
+  const [intro, setIntro] = useState(!devStartBeat);
   /** Map moment between steps: which row was just stamped. */
   const [mapGate, setMapGate] = useState<number | null>(null);
   const [events, setEvents] = useState<AwardEvent[]>([]);
@@ -183,6 +187,7 @@ export default function MissionRuntime({ manifest }: { manifest: MissionManifest
   const [ledgerOpen, setLedgerOpen] = useState(false);
   const [hydrated, setHydrated] = useState(false);
   const [xpPop, setXpPop] = useState<{ amount: number; key: number } | null>(null);
+  const [filmToPlay, setFilmToPlay] = useState<{ kind: "intro" | "outro"; id: string } | null>(null);
   const seen = useRef<Set<string>>(new Set());
   const prevXp = useRef(0);
 
@@ -195,6 +200,10 @@ export default function MissionRuntime({ manifest }: { manifest: MissionManifest
   }, [xp, hydrated, resumeOffer]);
 
   useEffect(() => {
+    if (devStartBeat) {
+      setHydrated(true); // dev boss-jump: skip the resume offer, don't touch saved progress
+      return;
+    }
     try {
       const raw = localStorage.getItem(storageKey);
       if (raw) {
@@ -203,14 +212,14 @@ export default function MissionRuntime({ manifest }: { manifest: MissionManifest
       }
     } catch {}
     setHydrated(true);
-  }, [storageKey, manifest.id]);
+  }, [storageKey, manifest.id, devStartBeat]);
 
   useEffect(() => {
-    if (!hydrated || resumeOffer) return;
+    if (!hydrated || resumeOffer || devStartBeat) return;
     try {
       localStorage.setItem(storageKey, JSON.stringify({ missionId: manifest.id, pos, events } satisfies MissionCheckpoint));
     } catch {}
-  }, [pos, events, hydrated, resumeOffer, storageKey, manifest.id]);
+  }, [pos, events, hydrated, resumeOffer, storageKey, manifest.id, devStartBeat]);
 
   const emit = useCallback((e: AwardEvent) => {
     const key = eventKey(e);
@@ -218,6 +227,38 @@ export default function MissionRuntime({ manifest }: { manifest: MissionManifest
     seen.current.add(key);
     setEvents((prev) => [...prev, e]);
   }, []);
+
+  const finishFilm = useCallback(() => {
+    setFilmToPlay((f) => {
+      if (f) markFilmSeen(f.id);
+      return null;
+    });
+  }, []);
+
+  /* Block INTRO film: the first time a kid opens a block's opening case. */
+  useEffect(() => {
+    if (!hydrated || resumeOffer || filmToPlay) return;
+    if (pos.beat !== "transmission") return; // fresh start only, never mid-mission
+    const cfg = BLOCK_FILMS[manifest.block];
+    if (!cfg || cfg.openerId !== manifest.id || !cfg.intro) return;
+    const id = filmId(manifest.block, "intro");
+    if (filmSeen(id)) return;
+    stopWren();
+    setFilmToPlay({ kind: "intro", id });
+    // pos.beat read for the fresh-start guard; effect keys off hydration/resume
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [hydrated, resumeOffer, manifest.block, manifest.id]);
+
+  /* Block OUTRO film: when a kid closes the block's final case. */
+  useEffect(() => {
+    if (pos.beat !== "closed" || resumeOffer || filmToPlay) return;
+    const cfg = BLOCK_FILMS[manifest.block];
+    if (!cfg || cfg.closerId !== manifest.id || !cfg.outro) return;
+    const id = filmId(manifest.block, "outro");
+    if (filmSeen(id)) return;
+    stopWren();
+    setFilmToPlay({ kind: "outro", id });
+  }, [pos.beat, resumeOffer, filmToPlay, manifest.block, manifest.id]);
 
   /** Advance; crossing a step boundary opens a MAP MOMENT. */
   const advance = useCallback(() => {
@@ -279,14 +320,14 @@ export default function MissionRuntime({ manifest }: { manifest: MissionManifest
   };
   const atStart = intro && (pos.beat === "transmission" || pos.beat === "briefing");
   useEffect(() => {
-    if (resumeOffer) {
+    if (resumeOffer || filmToPlay) {
       stopWren();
       return;
     }
     const clip = atStart ? manifest.voice?.transmission : pos.beat === "debrief" ? manifest.voice?.debrief : undefined;
     if (clip) playWren(clip, voiceOn);
     else stopWren();
-  }, [atStart, pos.beat, resumeOffer, voiceOn, manifest.voice]);
+  }, [atStart, pos.beat, resumeOffer, filmToPlay, voiceOn, manifest.voice]);
   useEffect(() => () => stopWren(), []);
 
   const tone = mapGate !== null ? T.confirmedGreen : toneFor(pos);
@@ -295,14 +336,39 @@ export default function MissionRuntime({ manifest }: { manifest: MissionManifest
   return (
     <main style={{ minHeight: "100vh", background: T.inkBlack, color: T.textPrimary, fontFamily: BODY, position: "relative", overflow: "hidden" }}>
       <EngineStyles />
-      <RoomBackdrop reduced={reduced} tone={tone} />
+      {/* matrix-terminal backdrop, consistent with the /explorers map */}
+      <MatrixRain reduced={reduced} opacity={0.32} />
+      <div aria-hidden style={{ position: "fixed", inset: 0, zIndex: 0, pointerEvents: "none", background: "repeating-linear-gradient(0deg, rgba(0,0,0,0.24) 0 1px, transparent 1px 3px)", opacity: 0.5 }} />
+      <div aria-hidden style={{ position: "fixed", inset: 0, zIndex: 0, pointerEvents: "none", background: `radial-gradient(ellipse 82% 72% at 50% 34%, transparent 44%, ${tone}12 74%, rgba(3,5,12,0.9) 100%)`, transition: "background 700ms" }} />
 
-      {/* HUD — ARC chrome */}
-      <div style={{ position: "relative", zIndex: 2, borderBottom: `1px solid ${T.hairline}`, background: `${T.panel}D9`, backdropFilter: "blur(8px)" }}>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "13px 18px" }}>
-          <span style={{ display: "inline-flex", alignItems: "center", gap: 12, fontFamily: MONO, fontSize: 11.5, letterSpacing: "0.08em", color: T.textSecondary }}>
-            {manifest.caseNumber} <span style={{ color: T.textDisabled }}>//</span>{" "}
-            <span style={{ color: T.textPrimary }}>{manifest.title.toUpperCase()}</span>
+      {filmToPlay &&
+        (() => {
+          const cfg = BLOCK_FILMS[manifest.block];
+          const film = filmToPlay.kind === "intro" ? cfg?.intro : cfg?.outro;
+          if (!film) return null;
+          return (
+            <BlockFilm
+              film={film}
+              label={cfg.label}
+              kind={filmToPlay.kind}
+              block={manifest.block}
+              reduced={reduced}
+              onDone={finishFilm}
+            />
+          );
+        })()}
+
+      {/* HUD — terminal chrome */}
+      <div style={{ position: "relative", zIndex: 2, borderBottom: `1px solid ${T.arcCyan}2E`, background: "rgba(8,14,26,0.82)", backdropFilter: "blur(8px)" }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 10, padding: "11px 18px", flexWrap: "wrap" }}>
+          <span style={{ display: "inline-flex", alignItems: "center", gap: 9, fontFamily: MONO, fontSize: 11.5, letterSpacing: "0.05em", color: T.textSecondary }}>
+            <span aria-hidden style={{ display: "inline-flex", gap: 5 }}>
+              <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#ff5f56" }} />
+              <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#ffbd2e" }} />
+              <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#27c93f" }} />
+            </span>
+            <span style={{ color: T.textDisabled }}>arc@secure-net:~/{manifest.caseNumber.replace(" ", "_").toLowerCase()} $</span>{" "}
+            <span style={{ color: T.arcCyan, fontWeight: 600 }}>{manifest.title.toLowerCase().replace(/ /g, "-")}</span>
             <button
               onClick={toggleVoice}
               aria-label={voiceOn ? "Turn WREN's voice off" : "Turn WREN's voice on"}
@@ -311,11 +377,11 @@ export default function MissionRuntime({ manifest }: { manifest: MissionManifest
               VOICE {voiceOn ? "ON" : "OFF"}
             </button>
           </span>
-          <span style={{ fontFamily: MONO, fontSize: 12, letterSpacing: "0.08em", color: T.textSecondary, position: "relative" }}>
-            <span style={{ color: tone, transition: "color 500ms" }}>{mapGate !== null ? "MISSION MAP" : describePos(pos)}</span>
+          <span style={{ fontFamily: MONO, fontSize: 12, letterSpacing: "0.06em", color: T.textSecondary, position: "relative" }}>
+            [ <span style={{ color: tone, transition: "color 500ms" }}>{mapGate !== null ? "MISSION MAP" : describePos(pos)}</span> ]
             <span aria-hidden style={{ color: T.textDisabled }}> · </span>
             XP{" "}
-            <span key={xp} className="sr-xpnum" style={{ color: T.textPrimary, fontSize: 15, fontWeight: 600 }}>
+            <span key={xp} className="sr-xpnum" style={{ color: T.confirmedGreen, fontSize: 15, fontWeight: 600 }}>
               {xp}
             </span>
             {xpPop && (
@@ -371,7 +437,7 @@ export default function MissionRuntime({ manifest }: { manifest: MissionManifest
       {/* dev ledger */}
       <div style={{ position: "fixed", bottom: 14, left: 16, zIndex: 3 }}>
         <button onClick={() => setLedgerOpen((o) => !o)} style={{ fontFamily: MONO, fontSize: 10, letterSpacing: "0.06em", color: T.textDisabled, background: "transparent", border: `1px solid ${T.hairline}`, borderRadius: 2, padding: "4px 8px", cursor: "pointer" }}>
-          EVENT LEDGER (DEV) — {events.length}
+          EVENT LEDGER (DEV): {events.length}
         </button>
         {ledgerOpen && (
           <div style={{ marginTop: 6, maxHeight: 180, overflowY: "auto", background: T.panel, border: `1px solid ${T.hairline}`, borderRadius: 3, padding: "8px 10px", minWidth: 300 }}>
@@ -481,7 +547,7 @@ function MissionStartScene({ manifest, reduced, onBegin }: { manifest: MissionMa
 function MapMomentScene({ manifest, pos, stamped, xp, audio, onContinue }: { manifest: MissionManifest; pos: BeatPos; stamped: number; xp: number; audio: ReturnType<typeof useSignalAudio>; onContinue: () => void }) {
   const done = stepsDone(pos);
   const nextLabel =
-    done < 3 ? `NEXT: SKILL ${done + 1} — ${manifest.cycles[done].title}` : done === 3 ? `NEXT: BOSS — ${manifest.incident.title}` : "NEXT: MISSION REPORT";
+    done < 3 ? `NEXT: SKILL ${done + 1} · ${manifest.cycles[done].title}` : done === 3 ? `NEXT: BOSS · ${manifest.incident.title}` : "NEXT: MISSION REPORT";
   useEffect(() => {
     audio.stamp();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -569,7 +635,7 @@ function LearnStage({ cycle, cycleIndex, reduced, audio, emit, onNext }: { cycle
   };
 
   return (
-    <div style={{ maxWidth: 640 }}>
+    <div style={{ maxWidth: 700, margin: "0 auto" }}>
       <div style={{ display: "grid", gap: 14 }}>
         {beats.slice(0, shown).map((b, i) => (
           <Bubble key={i} who="wren">
@@ -656,6 +722,9 @@ function PlayStage({ cycle, cycleIndex, reduced, audio, emit, onNext }: { cycle:
       {fw.verb === "DECIDE" && <Decide payload={fw.payload} {...props} />}
       {fw.verb === "TRACE" && <Trace payload={fw.payload} {...props} />}
       {fw.verb === "PROFILE" && <Profile payload={fw.payload} {...props} />}
+      {fw.verb === "SIMULATE" && <Simulate payload={fw.payload} {...props} />}
+      {fw.verb === "BUILD" && <Build payload={fw.payload} {...props} />}
+      {fw.verb === "CIPHER" && <Cipher payload={fw.payload} {...props} />}
     </div>
   );
 }
@@ -668,7 +737,7 @@ function QuizStage({ cycle, cycleIndex, reduced, audio, emit, onNext }: { cycle:
   const [evidence, setEvidence] = useState<CheckpointEvidence[]>([]);
   const [passed, setPassed] = useState(false);
   const [thread, setThread] = useState<{ who: "wren" | "you"; text: string; ok?: boolean }[]>([
-    { who: "wren", text: "Quick quiz. Two questions — show me you've got it." },
+    { who: "wren", text: "Quick quiz. Two questions. Show me you've got it." },
   ]);
   const q = questions[Math.min(qIndex, questions.length - 1)];
   const WRONG_LINES = ["Not that one. Think about what you just saw.", "Close. Read the question one more time."];
@@ -702,7 +771,7 @@ function QuizStage({ cycle, cycleIndex, reduced, audio, emit, onNext }: { cycle:
   const answered = new Set(thread.filter((m) => m.who === "you").map((m) => m.text));
 
   return (
-    <div style={{ maxWidth: 640, position: "relative" }}>
+    <div style={{ maxWidth: 700, margin: "0 auto", position: "relative" }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 14 }}>
         <Eyebrow text="Quick quiz" color={T.confirmedGreen} />
         <span style={{ fontFamily: MONO, fontSize: 12, color: passed ? T.confirmedGreen : T.textSecondary }}>
@@ -744,7 +813,7 @@ function QuizStage({ cycle, cycleIndex, reduced, audio, emit, onNext }: { cycle:
           </div>
         )}
       </div>
-      <StampMark text="PASSED" visible={passed} reduced={reduced} style={{ position: "absolute", top: -10, right: 8 }} />
+      <StampMark text="PASSED" visible={passed} reduced={reduced} color={T.confirmedGreen} style={{ position: "absolute", top: -10, right: 8 }} />
       {passed && (
         <div className="sr-msg" style={{ marginTop: 22 }}>
           <AmberButton label="BACK TO THE MAP →" onClick={onNext} />
@@ -766,7 +835,7 @@ function BossScene({ manifest, reduced, audio, emit, onNext }: { manifest: Missi
     return (
       <section style={{ maxWidth: 640, margin: "0 auto" }}>
         {!reduced && <div className="sr-alert-edge" aria-hidden />}
-        <Eyebrow text="Boss — live case" color={T.threatRed} />
+        <Eyebrow text="Boss: live case" color={T.threatRed} />
         <h1 style={{ fontFamily: MONO, fontSize: "clamp(28px, 5vw, 44px)", fontWeight: 600, margin: "12px 0 16px", textShadow: `0 0 40px ${T.threatRed}33` }}>
           <Resolve text={manifest.incident.title} reduced={reduced} />
         </h1>
@@ -784,7 +853,7 @@ function BossScene({ manifest, reduced, audio, emit, onNext }: { manifest: Missi
                 {manifest.actor.codename} IS LIVE
               </div>
               <div style={{ fontSize: 15, lineHeight: 1.6, color: T.textSecondary, marginTop: 6 }}>
-                Use your 3 skills. Beat the phases. No timer — think, then act.
+                Use your 3 skills. Beat the phases. No timer. Think, then act.
               </div>
             </div>
           </div>
@@ -810,7 +879,7 @@ function BossScene({ manifest, reduced, audio, emit, onNext }: { manifest: Missi
     <section>
       {!complete && !reduced && <div className="sr-alert-edge" aria-hidden />}
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 18, flexWrap: "wrap", gap: 8 }}>
-        <Eyebrow text={`Boss — ${manifest.incident.title}`} color={T.threatRed} />
+        <Eyebrow text={`Boss: ${manifest.incident.title}`} color={T.threatRed} />
         <span style={{ fontFamily: MONO, fontSize: 11, color: T.threatRed, letterSpacing: "0.1em" }}>
           <span className="sr-blink" style={{ marginRight: 6 }}>●</span>LIVE
         </span>
@@ -825,7 +894,7 @@ function BossScene({ manifest, reduced, audio, emit, onNext }: { manifest: Missi
       ) : (
         <div style={{ maxWidth: 560 }}>
           <p style={{ fontFamily: MONO, fontSize: 14, letterSpacing: "0.06em", color: T.confirmedGreen, margin: 0 }}>
-            BOSS DOWN — {manifest.actor.codename} just lost this one.
+            BOSS DOWN. {manifest.actor.codename} just lost this one.
           </p>
           <div style={{ marginTop: 18 }}>
             <AmberButton label="BACK TO THE MAP →" onClick={onNext} />
@@ -885,7 +954,7 @@ function RewardsScene({ manifest, reduced, audio, emit, xp }: { manifest: Missio
 
   return (
     <section style={{ maxWidth: 620, margin: "0 auto", paddingTop: 6 }}>
-      <Eyebrow text="Rewards — case closed" color={T.clearanceBrass} />
+      <Eyebrow text="Rewards: case closed" color={T.clearanceBrass} />
       <div style={{ marginTop: 14, background: T.manila, color: T.fileInk, borderRadius: 2, padding: "26px 28px 30px", boxShadow: "0 2px 0 rgba(0,0,0,0.55)", position: "relative" }}>
         <div style={{ display: "flex", gap: 20, alignItems: "flex-start", flexWrap: "wrap" }}>
           {manifest.actor.portrait ? (
@@ -921,7 +990,7 @@ function RewardsScene({ manifest, reduced, audio, emit, xp }: { manifest: Missio
       </div>
 
       <div style={{ marginTop: 18, background: T.panel, border: `1px solid ${T.hairline}`, borderRadius: 3, padding: "14px 18px", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 10 }}>
-        <span style={{ fontFamily: MONO, fontSize: 12, letterSpacing: "0.08em", color: T.clearanceBrass }}>CLEARANCE — TRAINEE ▸ CONFIDENTIAL</span>
+        <span style={{ fontFamily: MONO, fontSize: 12, letterSpacing: "0.08em", color: T.clearanceBrass }}>CLEARANCE: TRAINEE ▸ CONFIDENTIAL</span>
         <span style={{ fontFamily: MONO, fontSize: 12, color: T.textSecondary }}>
           CASES CLOSED&nbsp;<span style={{ color: T.clearanceBrass }}>{stamped ? "1" : "0"}</span> / 5
         </span>

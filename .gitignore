@@ -67,3 +67,6 @@ art-review/
 !.claude/
 .claude/*
 !.claude/skills/
+
+# local Claude settings (contains secrets — never commit)
+.claude/settings.local.json

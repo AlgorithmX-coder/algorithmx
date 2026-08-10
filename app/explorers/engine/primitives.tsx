@@ -160,7 +160,7 @@ export function Bubble({ who, children, tone }: { who: "wren" | "you" | "villain
 /** Captured-screen evidence frame — the kid inspects a real-looking phone. */
 export function DeviceFrame({ app, owner, children }: { app: string; owner: string; children: React.ReactNode }) {
   return (
-    <div style={{ maxWidth: 480, borderRadius: 18, background: "#05070A", border: `1px solid ${T.hairline}`, boxShadow: "0 24px 60px -20px rgba(0,0,0,0.85), 0 0 0 4px #10151C", overflow: "hidden" }}>
+    <div style={{ maxWidth: 540, margin: "0 auto", borderRadius: 18, background: "#05070A", border: `1px solid ${T.hairline}`, boxShadow: "0 24px 60px -20px rgba(0,0,0,0.85), 0 0 0 4px #10151C", overflow: "hidden" }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "7px 14px", fontFamily: MONO, fontSize: 9, letterSpacing: "0.08em", color: T.textDisabled, borderBottom: `1px solid ${T.hairline}` }}>
         <span>ARC EVIDENCE VIEWER</span>
         <span>CAPTURED SCREEN ▪▪▪</span>
@@ -292,7 +292,7 @@ export function HandlerChip({ reduced, speaking = true }: { reduced: boolean; sp
         ))}
       </span>
       <span style={{ fontFamily: MONO, fontSize: 11, letterSpacing: "0.08em", color: T.textSecondary }}>
-        WREN — HANDLER
+        WREN: HANDLER
       </span>
       <span
         style={{
@@ -312,7 +312,9 @@ export function HandlerChip({ reduced, speaking = true }: { reduced: boolean; sp
 
 /* ------------------------------------------------- resolve (the verb) */
 
-const NOISE = "▓▒░/\\|<>+=#%@$&";
+/* Decode scramble uses letters + digits (not symbols) so a mid-animation
+   frame reads as "decoding text", never as broken gibberish. */
+const NOISE = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
 export function Resolve({ text, reduced, delay = 0 }: { text: string; reduced: boolean; delay?: number }) {
   const [display, setDisplay] = useState(reduced ? text : "");
@@ -354,11 +356,15 @@ export function StampMark({
   visible,
   reduced,
   style,
+  color = T.stampInk,
 }: {
   text: string;
   visible: boolean;
   reduced: boolean;
   style?: React.CSSProperties;
+  /** Ink colour. Defaults to the red wax-seal ink; pass green for a
+   *  success stamp (a kid reads green = win). */
+  color?: string;
 }) {
   return (
     <div
@@ -366,8 +372,8 @@ export function StampMark({
       className={visible && !reduced ? "sr-stamp-in" : undefined}
       style={{
         transform: "rotate(-3deg)",
-        border: `3px solid ${visible ? T.stampInk : "transparent"}`,
-        color: T.stampInk,
+        border: `3px solid ${visible ? color : "transparent"}`,
+        color,
         fontFamily: MONO,
         fontWeight: 600,
         fontSize: 15,

@@ -147,11 +147,91 @@ export interface TracePayload {
   doneLine: string;
 }
 
+export interface SimulateStep {
+  /** What just happened in the con — shown as the attacker's move. */
+  scene: string;
+  /** The anticipation ask: what will they do NEXT? */
+  question: string;
+  options: [string, string, string];
+  answer: 0 | 1 | 2;
+  /** The con's actual next move, shown after the prediction. */
+  reveal: string;
+}
+
+/**
+ * SIMULATE — anticipation as defense (debuts M06). The child predicts
+ * the attacker's next move and watches the reveal play out. Safety
+ * line (art doc): the child PREDICTS attacks, never authors one — the
+ * con plays itself; the child only reads it one move ahead.
+ */
+export interface SimulatePayload {
+  intro: string;
+  steps: SimulateStep[];
+  doneLine: string;
+}
+
+export interface BuildSlotOption {
+  id: string;
+  label: string;
+  good: boolean;
+  why: string;
+}
+
+export interface BuildSlot {
+  id: string;
+  /** What this slot is for, kid-worded ("The master key"). */
+  label: string;
+  options: BuildSlotOption[];
+}
+
+/**
+ * BUILD — constructive defense (debuts M11). The child assembles a
+ * real defense from parts, slot by slot; a bad part explains itself
+ * and can be swapped. When every slot holds a good part, the build
+ * gets stress-tested and the attack bounces on screen.
+ */
+export interface BuildPayload {
+  intro: string;
+  /** What's being built ("Jake's password vault"). */
+  target: string;
+  slots: BuildSlot[];
+  /** The stress-test result once the build is complete. */
+  testLine: string;
+  doneLine: string;
+}
+
+export interface CipherRound {
+  id: string;
+  /** Kid-framed task line for this round. */
+  prompt: string;
+  /** Plaintext (UPPERCASE A–Z + spaces); the mechanic derives the ciphertext. */
+  plaintext: string;
+  /** Caesar shift used to seal it (1–9). */
+  shift: number;
+  /** Shown once cracked. */
+  why: string;
+}
+
+/**
+ * CIPHER — make and break codes (debuts M12). The child cracks a
+ * Caesar-sealed message by spinning a shift dial until it reads —
+ * hands-on proof that simple ciphers always fall, setting up why
+ * real encryption is different.
+ */
+export interface CipherPayload {
+  intro: string;
+  rounds: CipherRound[];
+  doneLine: string;
+}
+
 export type FieldworkDef =
   | { verb: "INSPECT"; payload: InspectPayload }
   | { verb: "DECIDE"; payload: DecidePayload }
   | { verb: "PROFILE"; payload: ProfilePayload }
-  | { verb: "TRACE"; payload: TracePayload };
+  | { verb: "TRACE"; payload: TracePayload }
+  | { verb: "SIMULATE"; payload: SimulatePayload }
+  | { verb: "BUILD"; payload: BuildPayload }
+  | { verb: "CIPHER"; payload: CipherPayload };
 
 /* ------------------------------------------------------------ cycles */
 

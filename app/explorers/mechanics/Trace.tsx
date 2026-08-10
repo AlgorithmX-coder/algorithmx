@@ -35,13 +35,13 @@ export default function Trace({ payload, reduced, audio, onEvent }: MechanicProp
     if (stage !== 1 || pinned.includes(card.id)) return;
     if (card.inCampaign) {
       setPinned((p) => [...p, card.id]);
-      setNote(`PINNED — ${card.clue ?? "same fingerprint."}`);
+      setNote(`PINNED: ${card.clue ?? "same fingerprint."}`);
       audio.latch();
       onEvent({ kind: "HIT" });
     } else {
       setRejected((r) => (r.includes(card.id) ? r : [...r, card.id]));
       setMissed(true);
-      setNote("Different fingerprint — that one's ordinary noise. Keep to the trail.");
+      setNote("Different fingerprint. That one's ordinary noise. Keep to the trail.");
       audio.thud();
       onEvent({ kind: "MISS" });
     }
@@ -120,6 +120,34 @@ export default function Trace({ payload, reduced, audio, onEvent }: MechanicProp
   return (
     <section>
       <Eyebrow text={stage === 1 ? payload.intro : payload.stage2Prompt} color={T.actionAmber} />
+
+      {/* two-step signpost: detection first, then ordering */}
+      <div style={{ display: "flex", gap: 8, margin: "10px 0 4px", flexWrap: "wrap" }}>
+        {[
+          { n: 1 as const, label: "FIND THE TRAIL" },
+          { n: 2 as const, label: "PUT IT IN ORDER" },
+        ].map((s) => {
+          const activeStep = stage === s.n;
+          const doneStep = stage > s.n;
+          return (
+            <span
+              key={s.n}
+              style={{
+                fontFamily: MONO,
+                fontSize: 10,
+                letterSpacing: "0.08em",
+                padding: "3px 8px",
+                borderRadius: 2,
+                border: `1px solid ${activeStep ? T.actionAmber : T.hairline}`,
+                color: doneStep ? T.confirmedGreen : activeStep ? T.actionAmber : T.textDisabled,
+              }}
+            >
+              {doneStep ? "■" : "□"} STEP {s.n}: {s.label}
+            </span>
+          );
+        })}
+      </div>
+
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", margin: "10px 0 12px", flexWrap: "wrap", gap: 8 }}>
         <span style={{ fontFamily: MONO, fontSize: 11.5, color: T.textSecondary, letterSpacing: "0.05em" }}>
           {stage === 1 ? `HINT: ${payload.fingerprintHint}` : "TAP THE EVIDENCE IN THE ORDER THE TRICK RUNS."}
@@ -142,7 +170,7 @@ export default function Trace({ payload, reduced, audio, onEvent }: MechanicProp
       {stage === 1 && allPinned && (
         <div style={{ marginTop: 16 }}>
           <AmberButton
-            label="ALL PINNED — MAP THE FUNNEL"
+            label="ALL PINNED: MAP THE FUNNEL"
             onClick={() => {
               audio.click();
               setStage(2);

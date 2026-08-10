@@ -7,7 +7,7 @@
  */
 
 import { useState } from "react";
-import { AmberButton, Eyebrow } from "../engine/primitives";
+import { AmberButton } from "../engine/primitives";
 import { MONO, T } from "../engine/tokens";
 import type { MechanicProps, ProfilePayload } from "../engine/types";
 
@@ -39,10 +39,10 @@ export default function Profile({ payload, audio, onEvent }: MechanicProps<Profi
   };
 
   return (
-    <section style={{ maxWidth: 680 }}>
-      <Eyebrow text={payload.intro} color={T.actionAmber} />
-
-      <div style={{ marginTop: 12, background: T.paper, color: T.fileInk, borderRadius: 2, padding: "16px 20px", boxShadow: "0 2px 0 rgba(0,0,0,0.55)" }}>
+    <section style={{ maxWidth: 720, margin: "0 auto" }}>
+      {/* No instruction heading here — the amber instruction strip above
+          (rendered by PlayStage) is the single, canonical instruction. */}
+      <div style={{ background: T.paper, color: T.fileInk, borderRadius: 2, padding: "16px 20px", boxShadow: "0 2px 0 rgba(0,0,0,0.55)" }}>
         <div style={{ fontFamily: MONO, fontSize: 11, letterSpacing: "0.08em", opacity: 0.6, marginBottom: 8 }}>
           CASE EVIDENCE ON FILE
         </div>
@@ -54,7 +54,7 @@ export default function Profile({ payload, audio, onEvent }: MechanicProps<Profi
       </div>
 
       <p style={{ margin: "16px 0 10px", fontFamily: MONO, fontSize: 13, color: T.textSecondary, letterSpacing: "0.04em" }}>
-        SELECT THE {payload.picks} BEHAVIORS THAT MATCH THE EVIDENCE — {picked.length}/{payload.picks} SELECTED
+        SELECT THE {payload.picks} BEHAVIORS THAT MATCH THE EVIDENCE: {picked.length}/{payload.picks} SELECTED
       </p>
 
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }} className="sr-two-col">
@@ -89,7 +89,7 @@ export default function Profile({ payload, audio, onEvent }: MechanicProps<Profi
 
       {wrongIds.length > 0 && (
         <p role="status" style={{ margin: "12px 0 0", fontSize: 13, color: T.textSecondary }}>
-          Not all of those match this actor&rsquo;s file. The marked ones belong to someone else&rsquo;s M.O. — look again.
+          Not all of those match this actor&rsquo;s file. The marked ones belong to someone else&rsquo;s M.O. Look again.
         </p>
       )}
 
@@ -100,7 +100,7 @@ export default function Profile({ payload, audio, onEvent }: MechanicProps<Profi
         {done && (
           <div style={{ display: "grid", gap: 10 }}>
             <p role="status" style={{ margin: 0, fontSize: 13, color: T.confirmedGreen }}>
-              PROFILE CONFIRMED — pattern on file.
+              PROFILE CONFIRMED: pattern on file.
             </p>
             <p style={{ margin: 0, fontSize: 13, color: T.textSecondary, fontStyle: "italic" }}>
               &ldquo;{payload.doneLine}&rdquo;

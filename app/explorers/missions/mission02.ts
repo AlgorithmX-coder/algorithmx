@@ -15,7 +15,7 @@ import type { MissionManifest } from "../engine/types";
 export const mission02: MissionManifest = {
   id: "explorers-m02",
   caseNumber: "CASE 002",
-  title: "Too Good To Be True",
+  title: "Bait & Switch",
   block: 1,
   classification: "CONFIDENTIAL",
   actor: {
@@ -30,14 +30,14 @@ export const mission02: MissionManifest = {
   transmission: {
     headline: "BAIT IN THE WATER",
     lines: [
-      "Operative. Half the school is talking about a giveaway — five hundred free skins, today only. The links are everywhere: group chats, stream chats, DMs.",
+      "Operative. Half the school is talking about a giveaway: five hundred free skins, today only. The links are everywhere: group chats, stream chats, DMs.",
       "Nobody gives away five hundred of anything. Find out what it costs.",
     ],
   },
 
   briefing: {
     summary:
-      "A prize that finds YOU, in three different places at once, with a clock on it. That's not luck — that's equipment. Someone built this.",
+      "A prize that finds YOU, in three different places at once, with a clock on it. That's not luck. That's equipment. Someone built this.",
     objectives: [
       "Work out what 'free' is really charging",
       "Follow the trail and prove it's one operation",
@@ -57,7 +57,7 @@ export const mission02: MissionManifest = {
       intel: {
         beats: [
           "Think about fishing for a second.",
-          "The worm is free — to the fish.",
+          "The worm is free, to the fish.",
           "The fisher isn't being generous. The worm is equipment.",
           "Online prizes work the same way. The prize is the worm.",
           "One question breaks the spell: what do THEY get back?",
@@ -71,24 +71,24 @@ export const mission02: MissionManifest = {
           ],
           answer: 1,
           right: "Exactly. Your password is worth more than fake skins.",
-          wrong: "Kind strangers exist — but they don't need your password. What comes back to the giver?",
+          wrong: "Kind strangers exist, but they don't need your password. What comes back to the giver?",
         },
       },
       fieldwork: {
         verb: "INSPECT",
         payload: {
-          intro: "Evidence 01 — the giveaway post · tap anything that smells like bait",
+          intro: "Evidence 01: the giveaway post · tap anything that smells like bait",
           device: { app: "CLASS GROUP CHAT", owner: "CAPTURED POST" },
           header: [
             { label: "WHERE:", seg: { id: "where", text: "School group chat · posted by a number nobody knows" } },
             {
               label: "POST:",
-              seg: { id: "title", text: "SKINSTORM 500 — FREE SKINS EVENT (TODAY ONLY!)", tellId: "clock" },
+              seg: { id: "title", text: "SKINSTORM 500: FREE SKINS EVENT (TODAY ONLY!)", tellId: "clock" },
             },
           ],
           body: [
             [
-              { id: "b1", text: "EVERYONE WINS — first 500 claims get the drop. " },
+              { id: "b1", text: "EVERYONE WINS: first 500 claims get the drop. " },
               { id: "b2", text: "No catch, no cost, 100% real.", tellId: "nocatch" },
             ],
             [
@@ -105,7 +105,7 @@ export const mission02: MissionManifest = {
             {
               id: "clock",
               label: "The clock",
-              why: "“Today only” is the hurry lever — the same pressure PHANTOM HOOK used, wearing a party hat. Real events don't evaporate.",
+              why: "“Today only” is the hurry lever: the same pressure PHANTOM HOOK used, wearing a party hat. Real events don't evaporate.",
             },
             {
               id: "nocatch",
@@ -115,7 +115,7 @@ export const mission02: MissionManifest = {
             {
               id: "domain",
               label: "The claim link",
-              why: "skinstorm-event.net isn't the game's site. Real drops live on the game's own domain — this is a stranger's net.",
+              why: "skinstorm-event.net isn't the game's site. Real drops live on the game's own domain. This is a stranger's net.",
             },
           ],
           doneLine: "Three hooks in one post. Somebody's fishing your school.",
@@ -157,7 +157,7 @@ export const mission02: MissionManifest = {
       intel: {
         beats: [
           "Here's a secret most people never spot.",
-          "The chat post, the DM, the website — not three things.",
+          "The chat post, the DM, the website: not three things.",
           "One machine, wearing three costumes.",
           "Scammers forget to change small details. We call those fingerprints.",
           "Match the fingerprints, and the costumes stop working.",
@@ -177,14 +177,14 @@ export const mission02: MissionManifest = {
       fieldwork: {
         verb: "TRACE",
         payload: {
-          intro: "Evidence board — pin every piece that belongs to the SKINSTORM operation",
+          intro: "Evidence board: pin every piece that belongs to the SKINSTORM operation",
           fingerprintHint: "same domain, same prize name, same countdown",
           cards: [
             {
               id: "t1",
               surface: "SCHOOL CHAT",
               from: "unknown number",
-              text: "SKINSTORM 500 free skins event, today only — skinstorm-event.net",
+              text: "SKINSTORM 500 free skins event, today only: skinstorm-event.net",
               inCampaign: true,
               clue: "the domain + the clock",
               order: 1,
@@ -209,9 +209,9 @@ export const mission02: MissionManifest = {
               id: "t3",
               surface: "WEB",
               from: "skinstorm-event.net",
-              text: "CLAIM FORM — username, password, phone number. 'So we can deliver your skins!'",
+              text: "CLAIM FORM: username, password, phone number. 'So we can deliver your skins!'",
               inCampaign: true,
-              clue: "the net itself — where every trail ends",
+              clue: "the net itself, where every trail ends",
               order: 3,
             },
             {
@@ -227,11 +227,11 @@ export const mission02: MissionManifest = {
               from: "unknown number",
               text: "last hours for SKINSTORM!! almost 500 claimed, don't miss out",
               inCampaign: true,
-              clue: "the clock again — squeeze harder as the net fills",
+              clue: "the clock again, squeeze harder as the net fills",
               order: 4,
             },
           ],
-          stage2Prompt: "Now run it like SIREN does — put the trail in firing order",
+          stage2Prompt: "Now run it like SIREN does: put the trail in firing order",
           doneLine: "Bait → costume change → the net → the squeeze. You just drew SIREN's assembly line.",
         },
       },
@@ -270,7 +270,7 @@ export const mission02: MissionManifest = {
       instruction: "Help Leo. Pick your best move.",
       intel: {
         beats: [
-          "The post, the DM, the countdown — all had ONE goal.",
+          "The post, the DM, the countdown: all had ONE goal.",
           "Get you to the claim form.",
           "The form IS the scam. Everything else is decoration.",
           "Read a form like a price tag. Every box costs you something.",
@@ -280,18 +280,18 @@ export const mission02: MissionManifest = {
           question: "The form says it needs your password 'to deliver the skins.' What's it really for?",
           options: [
             "Skins get delivered through your login",
-            "The password IS the prize — theirs, not yours",
+            "The password IS the prize: theirs, not yours",
             "It's to verify your age",
           ],
           answer: 1,
           right: "That's the catch, caught. The whole factory was built to collect that one box.",
-          wrong: "No real delivery needs your password — the game already knows who you are when YOU log in. The password box is the entire point of the operation.",
+          wrong: "No real delivery needs your password. The game already knows who you are when YOU log in. The password box is the entire point of the operation.",
         },
       },
       fieldwork: {
         verb: "DECIDE",
         payload: {
-          intro: "Field decision — Leo is on the claim page RIGHT NOW",
+          intro: "Field decision: Leo is on the claim page RIGHT NOW",
           situation:
             "Your friend Leo has the SKINSTORM form open. He's typed his username and he's about to type his password. He says: “It's only skins, what's the worst that happens?”",
           prompt: "YOUR CALL, OPERATIVE:",
@@ -300,7 +300,7 @@ export const mission02: MissionManifest = {
               id: "half",
               label: "Tell him to fill it in but use a fake password",
               outcome:
-                "Closer — but he's still handing over his username and phone, and he's still on their winner list for the NEXT trick. Half-caught is still caught.",
+                "Closer, but he's still handing over his username and phone, and he's still on their winner list for the NEXT trick. Half-caught is still caught.",
             },
             {
               id: "worst",
@@ -313,7 +313,7 @@ export const mission02: MissionManifest = {
               id: "grab",
               label: "Grab the phone and close the tab for him",
               outcome:
-                "Tab's closed — but Leo learned nothing, and the next giveaway catches him when you're not there. Protect the person, not just the moment.",
+                "Tab's closed, but Leo learned nothing, and the next giveaway catches him when you're not there. Protect the person, not just the moment.",
             },
           ],
         },
@@ -330,8 +330,8 @@ export const mission02: MissionManifest = {
             id: "c3q2",
             question: "You typed your username and phone number before closing the form. Best next move?",
             options: [
-              "Nothing — you closed it in time",
-              "Tell an adult, and expect scam texts — ignore them when they come",
+              "Nothing, you closed it in time",
+              "Tell an adult, and expect scam texts. Ignore them when they come",
               "Delete the game to be safe",
             ],
             answer: 1,
@@ -344,19 +344,19 @@ export const mission02: MissionManifest = {
   incident: {
     title: "The Prize Factory",
     phases: 3,
-    phaseNames: ["Find the hub — where every trail ends", "Cut it — one move shuts the factory", "Warn everyone — the right way"],
+    phaseNames: ["Find the hub: where every trail ends", "Cut it: one move shuts the factory", "Warn everyone: the right way"],
     component: Mission02Incident,
   },
 
   debrief: {
     report: [
       "One giveaway, dissected: bait post, costume-change DM, harvest form, countdown squeeze.",
-      "The trail proved it: three surfaces, one operation — fingerprints don't lie.",
+      "The trail proved it: three surfaces, one operation. Fingerprints don't lie.",
       "Factory shut at the hub, and the warning that went out had no link and no shame in it.",
     ],
     realWorldMove:
-      "This week: when any giveaway finds you, don't touch it — go find IT. Open the game or brand's official site or app yourself and look for the event there. If it's not on their page, it was never real. And no prize, ever, costs a password.",
-    wrenLine: "Free bait costs the most. Clean sweep — sign out.",
+      "This week: when any giveaway finds you, don't touch it. Go find IT. Open the game or brand's official site or app yourself and look for the event there. If it's not on their page, it was never real. And no prize, ever, costs a password.",
+    wrenLine: "Free bait costs the most. Clean sweep. Sign out.",
   },
 
   voice: {
@@ -366,7 +366,7 @@ export const mission02: MissionManifest = {
   },
 
   dossier: {
-    mo: "Gives to get. Prizes, flattery, and a ticking clock — bait first, ask later. Builds factories, not one-off tricks.",
-    defeatedBy: "Anyone who asks what the free thing costs — and checks the official page instead of the link that came to them.",
+    mo: "Gives to get. Prizes, flattery, and a ticking clock: bait first, ask later. Builds factories, not one-off tricks.",
+    defeatedBy: "Anyone who asks what the free thing costs, and checks the official page instead of the link that came to them.",
   },
 };

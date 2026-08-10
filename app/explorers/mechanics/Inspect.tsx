@@ -48,10 +48,10 @@ export default function Inspect({ payload, reduced, audio, onEvent }: MechanicPr
   );
 
   return (
-    <section style={{ maxWidth: 560 }}>
+    <section style={{ maxWidth: 560, margin: "0 auto" }}>
       {/* big found-counter rides the evidence, not a side panel */}
       <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: 8 }}>
-        <span style={{ fontFamily: MONO, fontSize: 16, fontWeight: 600, color: allFound ? T.confirmedGreen : T.actionAmber }}>
+        <span style={{ fontFamily: MONO, fontSize: 17, fontWeight: 600, color: allFound ? T.confirmedGreen : T.actionAmber }}>
           FOUND {found.length} / {payload.tells.length}
         </span>
       </div>
@@ -59,7 +59,7 @@ export default function Inspect({ payload, reduced, audio, onEvent }: MechanicPr
       <DeviceFrame app={payload.device?.app ?? "MESSAGES"} owner={payload.device?.owner ?? "CAPTURED DEVICE"}>
         <div
           className={reduced ? undefined : "sr-whisper"}
-          style={{ background: T.paper, color: T.fileInk, padding: "22px 24px", fontSize: 14.5, lineHeight: 1.65, position: "relative", overflow: "hidden" }}
+          style={{ background: T.paper, color: T.fileInk, padding: "22px 24px", fontSize: 15.5, lineHeight: 1.7, position: "relative", overflow: "hidden" }}
         >
           <div style={{ fontFamily: MONO, fontSize: 12.5, borderBottom: `1px solid ${T.fileInk}22`, paddingBottom: 12, marginBottom: 14 }}>
             {payload.header.map((h) => (
