@@ -702,10 +702,10 @@ export default function CyberExplorersLanding() {
 
   return (
     <main className="cx-legible" style={{ background: T.inkBlack, color: T.textPrimary, fontFamily: BODY, position: "relative", overflowX: "hidden" }}>
-      {/* matrix-terminal backdrop, consistent with /explorers */}
-      <MatrixRain reduced={reduced} opacity={0.4} />
-      <div aria-hidden style={{ position: "fixed", inset: 0, zIndex: 0, pointerEvents: "none", background: "repeating-linear-gradient(0deg, rgba(0,0,0,0.24) 0 1px, transparent 1px 3px)", opacity: 0.5 }} />
-      <div aria-hidden style={{ position: "fixed", inset: 0, zIndex: 0, pointerEvents: "none", background: "radial-gradient(ellipse 82% 72% at 50% 28%, transparent 44%, rgba(3,5,12,0.86) 100%)" }} />
+      {/* matrix-terminal backdrop, consistent with /explorers (faded back so copy leads) */}
+      <MatrixRain reduced={reduced} opacity={0.24} />
+      <div aria-hidden style={{ position: "fixed", inset: 0, zIndex: 0, pointerEvents: "none", background: "repeating-linear-gradient(0deg, rgba(0,0,0,0.24) 0 1px, transparent 1px 3px)", opacity: 0.45 }} />
+      <div aria-hidden style={{ position: "fixed", inset: 0, zIndex: 0, pointerEvents: "none", background: "radial-gradient(ellipse 100% 92% at 50% 32%, rgba(4,7,14,0.5) 0%, rgba(4,7,14,0.74) 58%, rgba(3,5,12,0.95) 100%)" }} />
 
       {/* ── NAV ─────────────────────────────────────────────────── */}
       <nav
@@ -786,7 +786,7 @@ export default function CyberExplorersLanding() {
                 <Resolve text="scammers can't fool." reduced={reduced} delay={400} />
               </span>
             </h1>
-            <p className="cx-sub" style={{ fontSize: 17, lineHeight: 1.65, color: T.textSecondary, maxWidth: 520, margin: "0 0 10px" }}>
+            <p className="cx-sub" style={{ fontSize: 17, lineHeight: 1.65, color: "#D6E3F1", maxWidth: 520, margin: "0 0 10px" }}>
               Cyber Explorers is a cybersecurity course for ages 10–13, taught as a spy thriller your child will
               actually want to play. Twenty weekly missions that turn &ldquo;don&rsquo;t click that&rdquo; into a skill
               they own for life. <span style={{ color: T.textPrimary }}>From the team behind Cyber Heroes.</span>
