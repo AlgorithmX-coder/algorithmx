@@ -508,5 +508,46 @@ Ordered roughly by how soon they block work:
 
 ---
 
+---
+
+## 11. Build status & resolved decisions
+
+**Build kickoff 2026-07-17.** Approach agreed with the owner: build the range
+ENGINE first (it is the product; content sits on top), proving the hardest risk
+before authoring 16 weeks. Sequencing: prove the dependency -> walking skeleton
+(kernel + one real target + scope gate + findings stub) -> Week 1 as the locked
+template -> scale to 16.
+
+Decisions resolved this session (previously `DECIDE` in sections 4 / 10):
+
+- **Console interaction model - LOCKED: guided -> free (progressive).** Early
+  weeks use a guided command builder (endpoint/param palette + autocomplete,
+  scoped to the range's verbs) with the learner free-typing the *payload values*
+  (so the technique is real); free-form command entry unlocks as reputation
+  grows. Gentlest for age 14, keeps actions in-scope, still authentic.
+- **Range technical model - LOCKED: the hybrid from section 4.** Emulated targets
+  (real client-side engines) for offensive weeks; authored data for analysis
+  weeks. Range-kernel module interface (target = endpoints/state/vulns/expected
+  findings) that the console mounts.
+- **Dependency (wasm engines) - LOCKED: accept sql.js.** The deliberate exception
+  from section 4. **PROVEN 2026-07-17**: a real learner-typed `' OR 1=1--` payload
+  executes against genuine in-browser SQLite and bypasses auth as admin, entirely
+  client-side, zero network egress. GOTCHA: under Next 16 / Turbopack, sql.js's own
+  wasm fetch (`locateFile`) 404s (the bundler rewrites its internal path). Fix:
+  fetch the wasm yourself and pass `initSqlJs({ wasmBinary })`. Serve the wasm at
+  `/public/operators/sql-wasm.wasm` (ungated - middleware excludes `.*\..*`). Load
+  sql.js only inside Ops (dynamic `import("sql.js")`).
+- **Repo approach - DEFAULT: build in the main app** under a self-contained
+  `app/operators/` module (shared auth/reward plumbing, isolated range code); a
+  dev worktree only if parallel-session isolation is wanted. Not a separate app.
+- **Language - LOCKED: US-English** (matches Heroes/Explorers). UK law still cited
+  where relevant (authorization ceremony), per section 6.
+
+Still `DECIDE` (do not block the engine): handler casting, callsign word lists,
+reputation ladder names/thresholds/scoring, the full visual/motion art-direction
+doc.
+
+---
+
 End of spine. This document is canon for Cyber Operators. Update it here when a
 DECIDE resolves; do not let decisions live only in chat.
