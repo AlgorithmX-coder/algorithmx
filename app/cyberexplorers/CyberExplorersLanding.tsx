@@ -21,6 +21,8 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { MONO, BODY, T, BAND_BY_CLASSIFICATION } from "@/app/explorers/engine/tokens";
 import { Resolve, useReducedMotion } from "@/app/explorers/engine/primitives";
+import { MatrixRain } from "@/app/explorers/MatrixRain";
+import { IntroVideo } from "./IntroVideo";
 
 /* ================================================================ data */
 
@@ -252,7 +254,8 @@ function CountUp({ to, suffix = "", reduced }: { to: number; suffix?: string; re
 
 function Eyebrow({ text, color = T.textSecondary }: { text: string; color?: string }) {
   return (
-    <div style={{ fontFamily: MONO, fontSize: 11, letterSpacing: "0.08em", color, textTransform: "uppercase" }}>
+    <div style={{ fontFamily: MONO, fontSize: 11, letterSpacing: "0.08em", color, textTransform: "uppercase", display: "inline-flex", alignItems: "baseline", gap: 7 }}>
+      <span aria-hidden style={{ color: "#3BF57E" }}>$</span>
       {text}
     </div>
   );
@@ -700,8 +703,11 @@ export default function CyberExplorersLanding() {
   useScrollReveal(reduced);
 
   return (
-    <main className="cx-legible" style={{ background: "transparent", color: T.textPrimary, fontFamily: BODY, position: "relative", overflowX: "hidden" }}>
-      <OpsFloor reduced={reduced} />
+    <main className="cx-legible" style={{ background: T.inkBlack, color: T.textPrimary, fontFamily: BODY, position: "relative", overflowX: "hidden" }}>
+      {/* matrix-terminal backdrop, consistent with /explorers (faded back so copy leads) */}
+      <MatrixRain reduced={reduced} opacity={0.24} />
+      <div aria-hidden style={{ position: "fixed", inset: 0, zIndex: 0, pointerEvents: "none", background: "repeating-linear-gradient(0deg, rgba(0,0,0,0.24) 0 1px, transparent 1px 3px)", opacity: 0.45 }} />
+      <div aria-hidden style={{ position: "fixed", inset: 0, zIndex: 0, pointerEvents: "none", background: "radial-gradient(ellipse 100% 92% at 50% 32%, rgba(4,7,14,0.5) 0%, rgba(4,7,14,0.74) 58%, rgba(3,5,12,0.95) 100%)" }} />
 
       {/* ── NAV ─────────────────────────────────────────────────── */}
       <nav
@@ -770,15 +776,9 @@ export default function CyberExplorersLanding() {
         </div>
       </nav>
 
-      <div style={{ position: "relative", maxWidth: 1120, margin: "0 auto", padding: "0 24px" }}>
-        {/* ── HERO — the cinematic cold open IS the background ────── */}
+      <div style={{ position: "relative", zIndex: 1, maxWidth: 1120, margin: "0 auto", padding: "0 24px" }}>
+        {/* ── HERO — matrix-terminal cold open ─────────────────────── */}
         <section style={{ position: "relative", display: "grid", gridTemplateColumns: "minmax(0, 1.05fr) minmax(0, 1fr)", gap: 52, alignItems: "center", padding: "86px 0 54px" }} className="cx-two-col">
-          <div aria-hidden style={{ position: "absolute", top: -40, bottom: 0, left: "-50vw", right: "-50vw", zIndex: -1, overflow: "hidden" }}>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/explorers/scenes/m02-cold-open.jpg" alt="" style={{ width: "100%", height: "115%", objectFit: "cover", objectPosition: "center 30%", display: "block", filter: "saturate(1.15)" }} />
-            <div style={{ position: "absolute", inset: 0, background: `linear-gradient(180deg, ${T.inkBlack}A6 0%, ${T.inkBlack}D9 60%, ${T.inkBlack} 97%), radial-gradient(ellipse 55% 85% at 18% 45%, ${T.inkBlack}F2 0%, transparent 72%)` }} />
-            <div style={{ position: "absolute", inset: 0, background: "repeating-linear-gradient(0deg, rgba(0,0,0,0.16) 0 1px, transparent 1px 4px)", opacity: 0.45 }} />
-          </div>
           <div className="cx-hero-in">
             <Eyebrow text="AlgorithmX Cybersecurity · Ages 10–13" color={T.arcCyan} />
             <h1 style={{ fontFamily: MONO, fontSize: "clamp(36px, 6vw, 74px)", fontWeight: 600, lineHeight: 1.04, letterSpacing: "-0.02em", margin: "18px 0 20px" }}>
@@ -788,7 +788,7 @@ export default function CyberExplorersLanding() {
                 <Resolve text="scammers can't fool." reduced={reduced} delay={400} />
               </span>
             </h1>
-            <p className="cx-sub" style={{ fontSize: 17, lineHeight: 1.65, color: T.textSecondary, maxWidth: 520, margin: "0 0 10px" }}>
+            <p className="cx-sub" style={{ fontSize: 17, lineHeight: 1.65, color: "#D6E3F1", maxWidth: 520, margin: "0 0 10px" }}>
               Cyber Explorers is a cybersecurity course for ages 10–13, taught as a spy thriller your child will
               actually want to play. Twenty weekly missions that turn &ldquo;don&rsquo;t click that&rdquo; into a skill
               they own for life. <span style={{ color: T.textPrimary }}>From the team behind Cyber Heroes.</span>
@@ -831,7 +831,7 @@ export default function CyberExplorersLanding() {
           </div>
 
           <div className="cx-hero-in" style={{ animationDelay: "0.15s" }}>
-            <MissionDemo reduced={reduced} />
+            <IntroVideo reduced={reduced} />
           </div>
         </section>
 
