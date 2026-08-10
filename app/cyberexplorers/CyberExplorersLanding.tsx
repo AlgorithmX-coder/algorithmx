@@ -22,6 +22,7 @@ import Link from "next/link";
 import { MONO, BODY, T, BAND_BY_CLASSIFICATION } from "@/app/explorers/engine/tokens";
 import { Resolve, useReducedMotion } from "@/app/explorers/engine/primitives";
 import { MatrixRain } from "@/app/explorers/MatrixRain";
+import { IntroVideo } from "./IntroVideo";
 
 /* ================================================================ data */
 
@@ -830,7 +831,7 @@ export default function CyberExplorersLanding() {
           </div>
 
           <div className="cx-hero-in" style={{ animationDelay: "0.15s" }}>
-            <MissionDemo reduced={reduced} />
+            <IntroVideo reduced={reduced} />
           </div>
         </section>
 
