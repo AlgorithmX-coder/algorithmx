@@ -253,7 +253,8 @@ function CountUp({ to, suffix = "", reduced }: { to: number; suffix?: string; re
 
 function Eyebrow({ text, color = T.textSecondary }: { text: string; color?: string }) {
   return (
-    <div style={{ fontFamily: MONO, fontSize: 11, letterSpacing: "0.08em", color, textTransform: "uppercase" }}>
+    <div style={{ fontFamily: MONO, fontSize: 11, letterSpacing: "0.08em", color, textTransform: "uppercase", display: "inline-flex", alignItems: "baseline", gap: 7 }}>
+      <span aria-hidden style={{ color: "#3BF57E" }}>$</span>
       {text}
     </div>
   );
