@@ -21,7 +21,6 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { MONO, BODY, T, BAND_BY_CLASSIFICATION } from "@/app/explorers/engine/tokens";
 import { Resolve, useReducedMotion } from "@/app/explorers/engine/primitives";
-import { MatrixRain } from "@/app/explorers/MatrixRain";
 import { IntroVideo } from "./IntroVideo";
 
 /* ================================================================ data */
@@ -254,8 +253,8 @@ function CountUp({ to, suffix = "", reduced }: { to: number; suffix?: string; re
 
 function Eyebrow({ text, color = T.textSecondary }: { text: string; color?: string }) {
   return (
-    <div style={{ fontFamily: MONO, fontSize: 11, letterSpacing: "0.08em", color, textTransform: "uppercase", display: "inline-flex", alignItems: "baseline", gap: 7 }}>
-      <span aria-hidden style={{ color: "#3BF57E" }}>$</span>
+    <div style={{ fontFamily: MONO, fontSize: 11, letterSpacing: "0.16em", color, textTransform: "uppercase", display: "inline-flex", alignItems: "center", gap: 10 }}>
+      <span aria-hidden style={{ width: 18, height: 2, borderRadius: 1, background: color, opacity: 0.75, display: "inline-block" }} />
       {text}
     </div>
   );
@@ -265,7 +264,7 @@ function SectionHead({ eyebrow, title, sub }: { eyebrow: string; title: string; 
   return (
     <div style={{ marginBottom: 30 }} data-scroll>
       <Eyebrow text={eyebrow} color={T.arcCyan} />
-      <h2 style={{ fontFamily: MONO, fontSize: "clamp(24px, 4vw, 36px)", fontWeight: 600, margin: "12px 0 0", color: T.textPrimary }}>
+      <h2 style={{ fontFamily: BODY, fontSize: "clamp(26px, 4vw, 40px)", fontWeight: 800, letterSpacing: "-0.015em", margin: "14px 0 0", color: T.textPrimary }}>
         {title}
       </h2>
       {sub && (
@@ -704,10 +703,9 @@ export default function CyberExplorersLanding() {
 
   return (
     <main className="cx-legible" style={{ background: T.inkBlack, color: T.textPrimary, fontFamily: BODY, position: "relative", overflowX: "hidden" }}>
-      {/* matrix-terminal backdrop, consistent with /explorers (faded back so copy leads) */}
-      <MatrixRain reduced={reduced} opacity={0.24} />
-      <div aria-hidden style={{ position: "fixed", inset: 0, zIndex: 0, pointerEvents: "none", background: "repeating-linear-gradient(0deg, rgba(0,0,0,0.24) 0 1px, transparent 1px 3px)", opacity: 0.45 }} />
-      <div aria-hidden style={{ position: "fixed", inset: 0, zIndex: 0, pointerEvents: "none", background: "radial-gradient(ellipse 100% 92% at 50% 32%, rgba(4,7,14,0.5) 0%, rgba(4,7,14,0.74) 58%, rgba(3,5,12,0.95) 100%)" }} />
+      {/* soft aurora backdrop — calm & premium (no matrix/scanlines), copy leads */}
+      <div aria-hidden className="cx-aurora" />
+      <div aria-hidden style={{ position: "fixed", inset: 0, zIndex: 0, pointerEvents: "none", background: "radial-gradient(ellipse 100% 92% at 50% 26%, rgba(6,8,18,0.20) 0%, rgba(6,8,16,0.48) 58%, rgba(3,5,12,0.85) 100%)" }} />
 
       {/* ── NAV ─────────────────────────────────────────────────── */}
       <nav
@@ -780,37 +778,39 @@ export default function CyberExplorersLanding() {
         <section style={{ position: "relative", display: "grid", gridTemplateColumns: "minmax(0, 1.05fr) minmax(0, 1fr)", gap: 52, alignItems: "center", padding: "86px 0 54px" }} className="cx-two-col">
           <div className="cx-hero-in">
             <Eyebrow text="AlgorithmX Cybersecurity · Ages 10–13" color={T.arcCyan} />
-            <h1 style={{ fontFamily: MONO, fontSize: "clamp(36px, 6vw, 74px)", fontWeight: 600, lineHeight: 1.04, letterSpacing: "-0.02em", margin: "18px 0 20px" }}>
-              <Resolve text="Raise a kid" reduced={reduced} />
+            <h1 style={{ fontFamily: BODY, fontSize: "clamp(44px, 6.2vw, 74px)", fontWeight: 800, lineHeight: 1.02, letterSpacing: "-0.03em", margin: "16px 0 18px" }}>
+              <Resolve text="Raise a" reduced={reduced} />
               <br />
               <span className="cx-grad">
-                <Resolve text="scammers can't fool." reduced={reduced} delay={400} />
+                <Resolve text="cyber-smart kid." reduced={reduced} delay={300} />
               </span>
             </h1>
-            <p className="cx-sub" style={{ fontSize: 17, lineHeight: 1.65, color: "#D6E3F1", maxWidth: 520, margin: "0 0 10px" }}>
-              Cyber Explorers is a cybersecurity course for ages 10–13, taught as a spy thriller your child will
-              actually want to play. Twenty weekly missions that turn &ldquo;don&rsquo;t click that&rdquo; into a skill
-              they own for life. <span style={{ color: T.textPrimary }}>From the team behind Cyber Heroes.</span>
+            <p className="cx-sub" style={{ fontSize: 18.5, lineHeight: 1.5, color: "#D6E3F1", maxWidth: 500, margin: "0 0 14px" }}>
+              Cyber Explorers teaches 10&ndash;13s to outsmart scams, deepfakes and hackers.
             </p>
-            <p style={{ fontFamily: MONO, fontSize: 13.5, color: T.actionAmber, margin: "0 0 24px" }}>
-              <span className="cx-typeline">&gt; 20 missions. 6 threat actors. 1 operative._</span>
+            <p style={{ fontFamily: BODY, fontSize: 14, fontWeight: 600, color: T.actionAmber, margin: "0 0 16px", letterSpacing: "0.02em" }}>
+              <span style={{ color: T.textSecondary, fontWeight: 500 }}>Covers</span>&nbsp;&nbsp;Scams · Deepfakes · Passwords · Privacy · Social engineering
             </p>
+            <div style={{ display: "inline-flex", alignItems: "center", gap: 13, margin: "0 0 20px", padding: "10px 18px", borderRadius: 11, background: "rgba(255,255,255,0.05)", border: `1px solid ${T.arcCyan}3A`, boxShadow: `0 0 26px -14px ${T.arcCyan}` }}>
+              <span style={{ fontFamily: MONO, fontSize: 9.5, letterSpacing: "0.2em", color: T.textSecondary, textTransform: "uppercase", whiteSpace: "nowrap" }}>Aligned with</span>
+              <span aria-hidden style={{ width: 1, height: 24, background: T.hairline }} />
+              <img src="/logos/ncsc.svg" alt="National Cyber Security Centre" style={{ height: 36, width: "auto" }} />
+            </div>
             <div style={{ display: "flex", flexWrap: "wrap", gap: 12, alignItems: "center" }}>
               <Link
                 href="/signup?course=cyberexplorers"
-                className="cx-cta"
+                className="cx-cta cx-cta-primary"
                 style={{
                   fontFamily: MONO,
-                  fontSize: 14,
-                  fontWeight: 600,
+                  fontSize: 14.5,
+                  fontWeight: 700,
                   letterSpacing: "0.06em",
                   color: T.inkBlack,
                   background: T.actionAmber,
                   border: "none",
-                  borderRadius: 3,
-                  padding: "15px 26px",
+                  borderRadius: 9,
+                  padding: "16px 30px",
                   textDecoration: "none",
-                  boxShadow: `0 0 26px ${T.actionAmber}40, 0 4px 14px rgba(0,0,0,0.4)`,
                 }}
               >
                 ENROLL NOW · £99
@@ -853,7 +853,7 @@ export default function CyberExplorersLanding() {
               }}
             >
               <span aria-hidden style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, background: `linear-gradient(90deg, transparent, ${T.arcCyan}AA, transparent)` }} />
-              <div style={{ fontFamily: MONO, fontSize: 40, fontWeight: 600, color: T.arcCyan, lineHeight: 1, textShadow: `0 0 22px ${T.arcCyan}55` }}>
+              <div className="cx-num" style={{ fontFamily: MONO, fontSize: 44, fontWeight: 700, lineHeight: 1 }}>
                 <CountUp to={s.to} suffix={s.suffix} reduced={reduced} />
               </div>
               <div style={{ fontFamily: MONO, fontSize: 9.5, letterSpacing: "0.12em", color: T.textSecondary, marginTop: 8 }}>
@@ -864,7 +864,7 @@ export default function CyberExplorersLanding() {
         </section>
 
         {/* ── THE PROBLEM (parent-first) ─────────────────────────── */}
-        <section style={{ padding: "56px 0", position: "relative" }}>
+        <section style={{ padding: "46px 0", position: "relative" }}>
           <Wash color={T.threatRed} at="70% 20%" />
           <SectionHead
             eyebrow="01 · Why this matters now"
@@ -877,8 +877,8 @@ export default function CyberExplorersLanding() {
               { big: "3 in 4", small: "11–17s have already seen harmful content online. Most never tell anyone. (Ofcom)" },
               { big: "One voice note", small: "is all AI needs to fake a voice your child trusts. The tricks are getting better. Your child can too." },
             ].map((s, i) => (
-              <div key={i} data-scroll data-scroll-delay={String(i * 0.1)} style={{ background: `${T.panel}D9`, border: `1px solid ${T.threatRed}33`, borderRadius: 3, padding: "20px 22px" }}>
-                <div style={{ fontFamily: MONO, fontSize: 26, fontWeight: 600, color: T.textPrimary, marginBottom: 8 }}>{s.big}</div>
+              <div key={i} data-scroll data-scroll-delay={String(i * 0.1)} className="cx-card" style={{ background: `${T.panel}D9`, border: `1px solid ${T.threatRed}44`, borderRadius: 8, padding: "22px 24px", "--ac": T.threatRed } as React.CSSProperties}>
+                <div className="cx-num" style={{ fontFamily: MONO, fontSize: 30, fontWeight: 700, marginBottom: 8 }}>{s.big}</div>
                 <p style={{ fontSize: 13.5, lineHeight: 1.6, color: T.textSecondary, margin: 0 }}>{s.small}</p>
               </div>
             ))}
@@ -912,7 +912,7 @@ export default function CyberExplorersLanding() {
         </section>
 
         {/* ── WHAT YOUR CHILD GETS — the deliverables, concretely ── */}
-        <section id="course" style={{ padding: "56px 0", position: "relative" }}>
+        <section id="course" style={{ padding: "46px 0", position: "relative" }}>
           <Wash color={T.arcCyan} at="50% 10%" />
           <SectionHead
             eyebrow="03 · What your child gets"
@@ -928,8 +928,8 @@ export default function CyberExplorersLanding() {
               { n: "∞", t: "Progress you can check", d: "XP, clearance ranks, and quiz records: evidence of learning, visible any time." },
               { n: "£99", t: "Once. Lifetime access", d: "Every mission, every future update, no subscription, and a money-back guarantee." },
             ].map((g, i) => (
-              <div key={g.t} data-scroll data-scroll-delay={String((i % 3) * 0.08)} className="cx-card" style={{ background: `${T.panel}E6`, border: `1px solid ${T.hairline}`, borderTop: `2px solid ${T.arcCyan}88`, borderRadius: 4, padding: "18px 20px", "--ac": T.arcCyan } as React.CSSProperties}>
-                <div style={{ fontFamily: MONO, fontSize: 34, fontWeight: 600, color: T.arcCyan, textShadow: `0 0 22px ${T.arcCyan}55`, lineHeight: 1 }}>{g.n}</div>
+              <div key={g.t} data-scroll data-scroll-delay={String((i % 3) * 0.08)} className="cx-card" style={{ background: `${T.panel}E6`, border: `1px solid ${T.hairline}`, borderRadius: 9, padding: "20px 22px", "--ac": T.arcCyan } as React.CSSProperties}>
+                <div className="cx-num" style={{ fontFamily: MONO, fontSize: 38, fontWeight: 700, lineHeight: 1 }}>{g.n}</div>
                 <div style={{ fontFamily: MONO, fontSize: 14.5, fontWeight: 600, margin: "10px 0 6px" }}>{g.t}</div>
                 <p style={{ fontSize: 13.5, lineHeight: 1.6, color: T.textSecondary, margin: 0 }}>{g.d}</p>
               </div>
@@ -939,11 +939,11 @@ export default function CyberExplorersLanding() {
 
         {/* ── PARENTS ────────────────────────────────────────────── */}
         {/* ── PROOF ──────────────────────────────────────────────── */}
-        <section style={{ padding: "56px 0", position: "relative" }}>
+        <section style={{ padding: "46px 0", position: "relative" }}>
           <Wash color={T.arcCyan} at="50% 30%" />
           <div data-scroll style={{ maxWidth: 820, margin: "0 auto", textAlign: "center" }}>
             <Eyebrow text="Why trust us" color={T.arcCyan} />
-            <h2 style={{ fontFamily: MONO, fontSize: "clamp(24px, 4vw, 36px)", fontWeight: 600, margin: "12px 0 14px" }}>
+            <h2 style={{ fontFamily: BODY, fontSize: "clamp(26px, 4vw, 40px)", fontWeight: 800, letterSpacing: "-0.015em", margin: "12px 0 14px" }}>
               We already built this for the little ones.
             </h2>
             <p className="cx-sub" style={{ fontSize: 16, lineHeight: 1.7, color: T.textSecondary, margin: "0 auto 22px", maxWidth: 640 }}>
@@ -958,7 +958,7 @@ export default function CyberExplorersLanding() {
           </div>
         </section>
 
-        <section id="parents" style={{ padding: "56px 0", position: "relative" }}>
+        <section id="parents" style={{ padding: "46px 0", position: "relative" }}>
           <Wash color={T.confirmedGreen} at="25% 20%" />
           <SectionHead
             eyebrow="04 · What you get as a parent"
@@ -993,12 +993,12 @@ export default function CyberExplorersLanding() {
         {/* ── FINAL CTA ──────────────────────────────────────────── */}
         <section style={{ padding: "56px 0 76px", textAlign: "center", position: "relative" }}>
           <Wash color={T.arcCyan} at="50% 40%" />
-          <div data-scroll style={{ maxWidth: 640, margin: "0 auto", background: `${T.panel}CC`, border: `1px solid ${T.arcCyan}33`, borderRadius: 4, padding: "40px 32px", boxShadow: `0 0 60px ${T.arcCyan}0F` }}>
+          <div data-scroll className="cx-card" style={{ maxWidth: 640, margin: "0 auto", background: `${T.panel}D9`, border: `1px solid ${T.arcCyan}44`, borderRadius: 14, padding: "44px 34px", "--ac": T.arcCyan } as React.CSSProperties}>
             <Eyebrow text="Simple pricing" color={T.clearanceBrass} />
-            <h2 style={{ fontFamily: MONO, fontSize: "clamp(26px, 4.5vw, 38px)", fontWeight: 600, margin: "14px 0 6px" }}>
+            <h2 style={{ fontFamily: BODY, fontSize: "clamp(28px, 4.5vw, 42px)", fontWeight: 800, letterSpacing: "-0.015em", margin: "14px 0 6px" }}>
               One price. Lifetime access.
             </h2>
-            <div style={{ fontFamily: MONO, fontWeight: 600, fontSize: "clamp(44px, 6vw, 64px)", color: T.clearanceBrass, textShadow: `0 0 30px ${T.clearanceBrass}44`, margin: "6px 0 18px" }}>
+            <div style={{ fontFamily: MONO, fontWeight: 800, fontSize: "clamp(50px, 6.5vw, 74px)", lineHeight: 1, background: "linear-gradient(118deg, #FFE7A6, #E8A33D)", WebkitBackgroundClip: "text", backgroundClip: "text", WebkitTextFillColor: "transparent", filter: `drop-shadow(0 0 24px ${T.clearanceBrass}66)`, margin: "8px 0 20px" }}>
               £99
             </div>
             <div style={{ display: "grid", gap: 8, maxWidth: 440, margin: "0 auto 26px", textAlign: "left" }}>
@@ -1017,18 +1017,17 @@ export default function CyberExplorersLanding() {
             <div style={{ display: "flex", justifyContent: "center", gap: 14, flexWrap: "wrap" }}>
               <Link
                 href="/signup?course=cyberexplorers"
-                className="cx-cta"
+                className="cx-cta cx-cta-primary"
                 style={{
                   fontFamily: MONO,
-                  fontSize: 14,
-                  fontWeight: 600,
+                  fontSize: 14.5,
+                  fontWeight: 700,
                   letterSpacing: "0.06em",
                   color: T.inkBlack,
                   background: T.actionAmber,
-                  borderRadius: 3,
-                  padding: "16px 30px",
+                  borderRadius: 9,
+                  padding: "17px 32px",
                   textDecoration: "none",
-                  boxShadow: `0 0 26px ${T.actionAmber}40, 0 4px 14px rgba(0,0,0,0.4)`,
                 }}
               >
                 ENROLL NOW · £99
@@ -1069,17 +1068,50 @@ export default function CyberExplorersLanding() {
         .cx-cta:hover { filter: brightness(1.12); transform: translateY(-1px); }
         .cx-cta:active { transform: translateY(1px); }
 
-        /* hover theater — lift + accent ring via --ac */
-        .cx-card { transition: transform 260ms cubic-bezier(0.16,1,0.3,1), box-shadow 260ms cubic-bezier(0.16,1,0.3,1), border-color 260ms; }
+        /* glass-glow cards — lit gradient border + resting glow, dramatic hover */
+        .cx-card { position: relative; transition: transform 280ms cubic-bezier(0.16,1,0.3,1), box-shadow 280ms, border-color 280ms;
+          box-shadow: 0 12px 34px -20px rgba(0,0,0,0.85), 0 0 32px -24px var(--ac, ${T.arcCyan}); }
+        .cx-card::before { content:""; position:absolute; inset:0; border-radius:inherit; padding:1px; pointer-events:none;
+          background: linear-gradient(140deg, var(--ac, ${T.arcCyan})88, transparent 42%, transparent 66%, var(--ac, ${T.arcCyan})33);
+          -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor;
+          mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); mask-composite: exclude;
+          opacity: .8; transition: opacity 280ms; }
+        .cx-card::after { content:""; position:absolute; inset:0; border-radius:inherit; pointer-events:none;
+          background: radial-gradient(120% 82% at 14% 0%, rgba(255,255,255,.055), transparent 48%); }
         @media (hover:hover) {
           .cx-card:hover, .cx-card:focus-within {
-            transform: translateY(-5px);
-            box-shadow: 0 18px 40px -18px rgba(0,0,0,0.85), 0 0 24px -6px var(--ac, ${T.arcCyan})55;
+            transform: translateY(-6px);
+            box-shadow: 0 26px 54px -22px rgba(0,0,0,0.92), 0 0 46px -8px var(--ac, ${T.arcCyan})66;
             border-color: var(--ac, ${T.arcCyan})AA;
           }
+          .cx-card:hover::before, .cx-card:focus-within::before { opacity: 1; }
         }
         .cx-tick { opacity: 0.45; transition: opacity 260ms; }
         .cx-card:hover .cx-tick, .cx-card:focus-within .cx-tick { opacity: 1; }
+
+        /* aurora backdrop */
+        .cx-aurora { position: fixed; inset: -20%; z-index: 0; pointer-events: none;
+          background:
+            radial-gradient(38% 42% at 16% 16%, rgba(52,225,255,.20), transparent 70%),
+            radial-gradient(42% 46% at 84% 10%, rgba(185,139,255,.18), transparent 72%),
+            radial-gradient(52% 52% at 50% 112%, rgba(255,92,168,.13), transparent 70%),
+            radial-gradient(40% 40% at 90% 82%, rgba(52,225,255,.12), transparent 72%);
+          animation: cxAurora 26s ease-in-out infinite alternate; }
+        @keyframes cxAurora { 0% { transform: translate3d(0,0,0) scale(1); } 50% { transform: translate3d(2%,-1.6%,0) scale(1.06); } 100% { transform: translate3d(-2%,1.6%,0) scale(1.03); } }
+
+        /* gradient-glow display numbers */
+        .cx-num { background: linear-gradient(118deg, #7EEBFF 0%, ${T.arcCyan} 42%, #B98BFF 100%);
+          -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; color: transparent;
+          filter: drop-shadow(0 0 16px rgba(52,225,255,.35)); }
+
+        /* primary CTA — gradient fill + pulse glow */
+        .cx-cta-primary { background-image: linear-gradient(118deg, #FFCB5C, ${T.actionAmber}) !important;
+          box-shadow: 0 0 0 1px rgba(255,203,92,.45), 0 10px 28px -8px rgba(232,163,61,.6), 0 0 40px -10px rgba(255,203,92,.55);
+          animation: cxPulse 2.8s ease-in-out infinite; }
+        @keyframes cxPulse {
+          0%,100% { box-shadow: 0 0 0 1px rgba(255,203,92,.4), 0 10px 26px -10px rgba(232,163,61,.5), 0 0 34px -12px rgba(255,203,92,.4); }
+          50% { box-shadow: 0 0 0 1px rgba(255,203,92,.6), 0 12px 32px -8px rgba(232,163,61,.7), 0 0 56px -8px rgba(255,203,92,.7); } }
+        @media (prefers-reduced-motion: reduce) { .cx-aurora, .cx-cta-primary { animation: none; } }
 
         /* hero entrance */
         .cx-hero-in { animation: cxRise 0.7s cubic-bezier(0.16,1,0.3,1) both; }
