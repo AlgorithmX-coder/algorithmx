@@ -646,6 +646,41 @@ function FeaturedStreamCard({ stream }: { stream: Stream }) {
               <span aria-hidden style={{ marginLeft: 2 }}>→</span>
             </Link>
           )}
+
+          {/* Aligned with the NCSC — scoped to the cybersecurity card only,
+              framed as alignment (the NCSC runs no endorsement scheme). */}
+          {stream.id === "cybersecurity" && (
+            <div style={{ marginTop: 22 }}>
+              <span
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: 12,
+                  padding: "9px 16px",
+                  borderRadius: 999,
+                  background: "rgba(255,255,255,0.03)",
+                  border: `1px solid ${a}44`,
+                  boxShadow: `0 0 22px -14px ${a}`,
+                }}
+              >
+                <span
+                  style={{
+                    fontFamily: "var(--lv2-font-mono)",
+                    fontSize: 10,
+                    fontWeight: 700,
+                    letterSpacing: "0.22em",
+                    textTransform: "uppercase",
+                    color: a,
+                  }}
+                >
+                  Aligned with
+                </span>
+                <span aria-hidden style={{ width: 1, height: 20, background: "rgba(232,237,255,0.18)" }} />
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src="/logos/ncsc.svg" alt="National Cyber Security Centre" loading="lazy" style={{ height: 26, width: "auto" }} />
+              </span>
+            </div>
+          )}
         </div>
 
         {/* Right: flagship-project showcase */}
