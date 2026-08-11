@@ -15,14 +15,14 @@ import Link from "next/link";
  * animation, so the component needs no scroll plumbing at all.
  */
 
-/* Sales rewrite (2026-08-11): the hero now leads with the concrete,
- * buyable product (Cyber Security) and the career payoff, not the
- * platform-vision category line. Buyer = the parent; the arc "spotting
- * scams at 6 -> a real career" ties the young end to the money end. */
-const EYEBROW = "// CYBER SECURITY  ·  START TO CAREER";
-const HEADLINE = "From spotting scams at 6 to a £60K career.";
+/* Eyebrow rewritten - "AGES 6 TO ADULT" framing read as a parents-
+ * brochure spec sheet (and was redundant with the headline's "every
+ * stage of life"). Replaced with a mission-grade line that signals
+ * the platform's ambition before the headline lands. */
+const EYEBROW = "// SIX FIELDS  ·  BUILT FOR THE FUTURE";
+const HEADLINE = "Technology education for every stage of life.";
 const SUBLINE =
-  "Real cyber security, built as a path from age 6 to adult. Your child learns by doing real projects, at their own pace. Live today. One payment, lifetime access.";
+  "Six technology streams, from age 6 all the way through to adulthood. Cyber Security is live today. The other five are classified until launch, unlocking over the coming months.";
 
 export default function HeroOverlay() {
   /* The persistent ALGORITHMX wordmark previously rendered here was
@@ -157,7 +157,7 @@ export default function HeroOverlay() {
             data-plausible="landing-v2-hero-primary"
             className="lv2-hero-cta lv2-hero-cta-primary"
           >
-            Start the path
+            Explore courses
             <span aria-hidden style={{ marginLeft: 8 }}>→</span>
           </Link>
         </div>
