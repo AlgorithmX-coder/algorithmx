@@ -128,6 +128,28 @@ export default function CyberStartProLanding({ product }: { product: Product }) 
               Professional workplace cybersecurity. Compliance frameworks, threat analysis, and career pathways. Designed for older teens and adults entering or advancing in the cybersecurity industry.
             </p>
 
+            {/* Aligned with the NCSC (alignment, not endorsement). */}
+            <div className="flex justify-center mb-10">
+              <span style={{
+                display: "inline-flex", alignItems: "center", gap: 13,
+                padding: "9px 18px", borderRadius: 10,
+                background: "rgba(255,255,255,0.04)",
+                border: `1px solid ${PRIMARY}45`,
+                boxShadow: `0 0 24px -14px ${PRIMARY}`,
+              }}>
+                <span style={{
+                  fontFamily: "ui-monospace, monospace",
+                  fontSize: 10, fontWeight: 700, letterSpacing: "0.22em",
+                  textTransform: "uppercase", color: "#b9a4ff",
+                }}>
+                  Aligned with
+                </span>
+                <span aria-hidden style={{ width: 1, height: 22, background: "rgba(255,255,255,0.16)" }} />
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src="/logos/ncsc.svg" alt="National Cyber Security Centre" loading="lazy" style={{ height: 28, width: "auto" }} />
+              </span>
+            </div>
+
             <motion.div className="relative mx-auto w-48 h-48 mb-10"
               initial={{ opacity: 0, scale: 0.85 }}
               animate={{ opacity: 1, scale: 1 }}

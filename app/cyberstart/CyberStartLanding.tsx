@@ -369,6 +369,25 @@ export default function CyberStartLanding() {
                 <a href="#curriculum" className="cta ghost">See the 16 weeks &rarr;</a>
               </div>
               <p className="hnote">The top tier of AlgorithmX - after Cyber Heroes and Cyber Explorers.</p>
+              {/* Aligned with the NCSC (alignment, not endorsement). */}
+              <div style={{
+                display: "inline-flex", alignItems: "center", gap: 13,
+                marginTop: 18, padding: "9px 18px", borderRadius: 10,
+                background: "rgba(255,255,255,0.04)",
+                border: "1px solid rgba(139,123,255,0.34)",
+                boxShadow: "0 0 24px -14px rgba(139,123,255,1)",
+              }}>
+                <span style={{
+                  fontFamily: "var(--font-plex-mono), ui-monospace, monospace",
+                  fontSize: 10, fontWeight: 700, letterSpacing: "0.22em",
+                  textTransform: "uppercase", color: "#b9aaff",
+                }}>
+                  Aligned with
+                </span>
+                <span aria-hidden style={{ width: 1, height: 22, background: "rgba(255,255,255,0.16)" }} />
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src="/logos/ncsc.svg" alt="National Cyber Security Centre" loading="lazy" style={{ height: 28, width: "auto" }} />
+              </div>
             </div>
 
             <div className="miniwrap">

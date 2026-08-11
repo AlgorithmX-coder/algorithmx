@@ -1662,6 +1662,28 @@ export default function HomePage() {
               Built on <span style={ACCENT_TEXT}>Real Standards</span>
             </h2>
           </div>
+          {/* Aligned with the NCSC (alignment, not endorsement — the NCSC
+              runs no endorsement scheme). Placed above the credential row. */}
+          <div style={{ display: "flex", justifyContent: "center", marginBottom: 26 }}>
+            <span style={{
+              display: "inline-flex", alignItems: "center", gap: 14,
+              padding: "10px 20px", borderRadius: 999,
+              background: "rgba(255,255,255,0.04)",
+              border: "1px solid rgba(255,209,88,0.30)",
+              boxShadow: "0 0 26px -14px rgba(255,209,88,0.9)",
+            }}>
+              <span style={{
+                fontFamily: "var(--font-jetbrains-mono), monospace",
+                fontSize: 10.5, fontWeight: 800, letterSpacing: "0.22em",
+                textTransform: "uppercase", color: "#ffd158",
+              }}>
+                Aligned with
+              </span>
+              <span aria-hidden style={{ width: 1, height: 22, background: "rgba(255,255,255,0.18)" }} />
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/logos/ncsc.svg" alt="National Cyber Security Centre" loading="lazy" style={{ height: 30, width: "auto" }} />
+            </span>
+          </div>
           <CredentialsMarquee />
         </section>
 
