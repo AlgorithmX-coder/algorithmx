@@ -11,6 +11,7 @@ const mono = "var(--font-plex-mono),ui-monospace,Menlo,monospace";
 const sans = "var(--font-plex-sans),system-ui,sans-serif";
 
 const items = [
+  { href: "/operators/hero", code: "FILM", title: "Marketing hero · Get There First", desc: "The ~29s page-one hero, with sound: cinematic stakes → the field is short defenders → a head start. Press Play with sound." },
   { href: "/operators/week1", code: "E-01", title: "Week 1 · Rules of Engagement", desc: "The onboarding engagement, taught as a full lesson: learn → check → capture → defend → report." },
   { href: "/operators/first-capture", code: "E-05", title: "First Capture · SQL injection", desc: "The flagship capture — a real payload runs against in-browser SQLite and bypasses auth." },
 ];
