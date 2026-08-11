@@ -27,7 +27,9 @@ export function IntroVideo({ reduced }: { reduced: boolean }) {
       return;
     }
     v.muted = true;
-    v.play().catch(() => {});
+    // If the browser blocks even muted autoplay, surface a play button
+    // (otherwise there is no affordance to start it).
+    v.play().catch(() => setEnded(true));
     const events = ["pointerdown", "pointermove", "keydown", "wheel", "touchstart", "scroll"];
     const unmute = () => {
       const vid = ref.current;
@@ -93,7 +95,7 @@ export function IntroVideo({ reduced }: { reduced: boolean }) {
         {ended && (
           <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 10, background: "rgba(4,8,6,0.55)" }}>
             <span style={{ width: 64, height: 64, borderRadius: "50%", border: `2px solid ${G}`, background: "rgba(0,0,0,0.5)", color: G, fontSize: 24, display: "flex", alignItems: "center", justifyContent: "center", boxShadow: `0 0 18px ${G}66` }}>▶</span>
-            <span style={{ fontFamily: MONO, fontSize: 11, letterSpacing: "0.1em", color: G }}>REPLAY</span>
+            <span style={{ fontFamily: MONO, fontSize: 11, letterSpacing: "0.1em", color: G }}>PLAY</span>
           </div>
         )}
       </div>

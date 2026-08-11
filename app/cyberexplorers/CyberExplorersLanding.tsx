@@ -749,9 +749,8 @@ export default function CyberExplorersLanding() {
           </span>
         </Link>
         <div style={{ display: "flex", alignItems: "center", gap: 18 }}>
-          <a href="#mission" className="cx-navlink">THE MISSION</a>
-          <a href="#curriculum" className="cx-navlink">CURRICULUM</a>
-          <a href="#parents" className="cx-navlink">PARENTS</a>
+          <a href="#course" className="cx-navlink">THE COURSE</a>
+          <a href="#parents" className="cx-navlink">FOR PARENTS</a>
           <Link href="/login?course=cyberexplorers" className="cx-navlink" style={{ border: `1px solid ${T.hairline}`, borderRadius: 3, padding: "8px 13px" }}>
             LOG IN
           </Link>
@@ -816,8 +815,8 @@ export default function CyberExplorersLanding() {
               >
                 ENROLL NOW · £99
               </Link>
-              <a href="#curriculum" className="cx-navlink" style={{ fontSize: 12, border: `1px solid ${T.hairline}`, borderRadius: 3, padding: "14px 18px", display: "inline-block" }}>
-                SEE THE CURRICULUM ↓
+              <a href="#course" className="cx-navlink" style={{ fontSize: 12, border: `1px solid ${T.hairline}`, borderRadius: 3, padding: "14px 18px", display: "inline-block" }}>
+                SEE WHAT&rsquo;S INCLUDED ↓
               </a>
             </div>
             <p style={{ fontSize: 12.5, color: T.textSecondary, margin: "12px 0 0", maxWidth: 440 }}>
@@ -913,12 +912,12 @@ export default function CyberExplorersLanding() {
         </section>
 
         {/* ── WHAT YOUR CHILD GETS — the deliverables, concretely ── */}
-        <section style={{ padding: "56px 0", position: "relative" }}>
+        <section id="course" style={{ padding: "56px 0", position: "relative" }}>
           <Wash color={T.arcCyan} at="50% 10%" />
           <SectionHead
             eyebrow="03 · What your child gets"
             title="Everything included. Nothing vague."
-            sub="This is the product, in plain terms: what arrives the day you enroll."
+            sub="A spy thriller they choose to play, not a worksheet in a game costume: a calm handler on the radio, real cases on the desk, and the exact tricks the real internet runs. Here is what arrives the day you enroll."
           />
           <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 14 }} className="cx-three-col">
             {[
@@ -936,297 +935,6 @@ export default function CyberExplorersLanding() {
               </div>
             ))}
           </div>
-        </section>
-
-        {/* ── PREMISE ────────────────────────────────────────────── */}
-        <section id="mission" style={{ padding: "56px 0", position: "relative" }}>
-          <Wash color={T.arcCyan} at="30% 10%" />
-          <SectionHead
-            eyebrow="04 · Their world: hand them the phone"
-            title="You're the operative."
-            sub="No cartoon sidekicks, no classroom. A calm handler on the radio, real evidence on your desk, and a network of threat actors running the exact tricks the real internet runs. Welcome to ARC."
-          />
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16 }} className="cx-three-col">
-            {[
-              { t: "THE UNIT", h: "ARC: Anomaly Response Command", d: "The people who find the signal in the noise. Your child joins as a Trainee, earns a callsign, and works real cases from a mission-control desk." },
-              { t: "THE ENEMY", h: "STATIC", d: "Not one villain: a network. Each mission's threat actor runs a real internet trick: the urgent fake, the copied voice, the look-alike login page." },
-              { t: "THE OPERATIVE", h: "That's your kid", d: "The one in the room who notices what everyone else missed. The fantasy here isn't power. It's competence. Ten-to-thirteens can tell the difference." },
-            ].map((c, i) => (
-              <div
-                key={c.t}
-                data-scroll
-                data-scroll-delay={String(i * 0.12)}
-                className="cx-card"
-                style={{ position: "relative", overflow: "hidden", background: `${T.panelRaised}D9`, border: `1px solid ${T.hairline}`, borderRadius: 3, padding: "22px 22px", "--ac": T.arcCyan } as React.CSSProperties}
-              >
-                <span aria-hidden style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, background: `linear-gradient(90deg, ${T.arcCyan}CC, transparent 70%)` }} />
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                  <Eyebrow text={c.t} color={T.arcCyan} />
-                  <span aria-hidden style={{ fontFamily: MONO, fontSize: 14, color: `${T.arcCyan}88`, letterSpacing: "0.1em" }}>
-                    {["▲▲", "▚▚", "⊕"][i]}
-                  </span>
-                </div>
-                <div style={{ fontFamily: MONO, fontSize: 17, fontWeight: 600, margin: "12px 0 8px" }}>{c.h}</div>
-                <p style={{ fontSize: 14, lineHeight: 1.65, color: T.textSecondary, margin: 0 }}>{c.d}</p>
-              </div>
-            ))}
-          </div>
-
-          {/* WREN presence */}
-          <div data-scroll style={{ marginTop: 18, display: "flex", flexWrap: "wrap", alignItems: "center", gap: 16, background: `${T.panelRaised}D9`, border: `1px solid ${T.hairline}`, borderRadius: 3, padding: "14px 18px" }}>
-            <span style={{ display: "inline-flex", alignItems: "center", gap: 2, height: 18 }}>
-              {[0, 1, 2, 3, 4, 5, 6].map((i) => (
-                <span key={i} className={reduced ? undefined : "cx-wave"} style={{ width: 2, height: [7, 12, 9, 15, 6, 11, 8][i], background: T.arcCyan, animationDelay: `${i * 0.11}s` }} />
-              ))}
-            </span>
-            <span style={{ fontFamily: MONO, fontSize: 11, letterSpacing: "0.08em", color: T.textSecondary }}>WREN: HANDLER, ARC SECURE NET</span>
-            <p style={{ margin: 0, fontSize: 14.5, color: T.textPrimary, fontStyle: "italic", flex: 1, minWidth: 240 }}>
-              &ldquo;Slow is smooth, Operative. The address always tells the truth. Read it before the message reads you.&rdquo;
-            </p>
-          </div>
-
-          {/* dossier wall — hover to declassify */}
-          <div style={{ marginTop: 20, display: "grid", gridTemplateColumns: "repeat(6, 1fr)", gap: 12 }} className="cx-dossier-grid" data-scroll>
-            {ACTORS.map((a) => (
-              <DossierCard key={a.code} actor={a} reduced={reduced} />
-            ))}
-          </div>
-          <p style={{ fontFamily: MONO, fontSize: 11, letterSpacing: "0.05em", color: T.textDisabled, margin: "12px 0 0" }}>
-            HOVER A SEALED DOSSIER FOR THE INTERCEPTED FRAGMENT. FULL FILES DECLASSIFY IN THE COURSE. THE ARCHIVE IS THE REVISION.
-          </p>
-        </section>
-
-        {/* ── WHO IS STATIC (parent reframe) ─────────────────────── */}
-        <section style={{ padding: "40px 0" }}>
-          <div
-            data-scroll
-            style={{
-              maxWidth: 820,
-              margin: "0 auto",
-              background: `${T.panel}E6`,
-              border: `1px solid ${T.threatRed}33`,
-              boxShadow: `0 0 40px ${T.threatRed}0D`,
-              borderRadius: 3,
-              padding: "26px 30px",
-            }}
-          >
-            <div style={{ display: "inline-block", fontFamily: MONO, fontSize: 10, letterSpacing: "0.18em", color: T.threatRed, border: `1px solid ${T.threatRed}55`, borderRadius: 2, padding: "4px 10px", marginBottom: 14 }}>
-              THREAT BRIEFING · FOR PARENTS
-            </div>
-            <h3 style={{ fontFamily: MONO, fontSize: "clamp(22px, 3vw, 28px)", fontWeight: 600, margin: "0 0 12px", color: T.textPrimary }}>
-              Who is STATIC, really?
-            </h3>
-            <p style={{ fontSize: 15, lineHeight: 1.75, color: T.textSecondary, margin: 0 }}>
-              STATIC isn&rsquo;t a cartoon. It&rsquo;s the real threat landscape wearing a codename. Phishing campaigns
-              dressed as game rewards. Voice clones that sound like a friend. Credential attacks on reused passwords.
-              Engineered urgency, fake prizes, data harvesting. Every actor your child profiles is a category of attack
-              they will actually face, probably this year. Explorers don&rsquo;t memorize rules about it. They learn to
-              recognize it, out-think it, and report it.
-            </p>
-          </div>
-        </section>
-
-        {/* ── MISSION BEATS ──────────────────────────────────────── */}
-        <section style={{ padding: "48px 0" }}>
-          <SectionHead
-            eyebrow="05 · How each week works"
-            title="Six beats. One hour. Every week."
-            sub="Each mission is a complete case with a beginning, a middle, and a deliberate end: 45–60 minutes, save-and-resume anywhere."
-          />
-          <div style={{ position: "relative", maxWidth: 760 }}>
-            {/* connecting line */}
-            <span aria-hidden style={{ position: "absolute", left: 15, top: 8, bottom: 8, width: 1, background: `linear-gradient(180deg, ${T.arcCyan}66, ${T.hairline})` }} />
-            {BEATS.map((b, i) => (
-              <div key={b.name} data-scroll data-scroll-delay={String(i * 0.08)} style={{ display: "grid", gridTemplateColumns: "32px 1fr", gap: 18, padding: "14px 0", position: "relative" }}>
-                <div
-                  style={{
-                    width: 32,
-                    height: 32,
-                    borderRadius: 3,
-                    background: T.panel,
-                    border: `1px solid ${i === 5 ? T.clearanceBrass : T.arcCyan}55`,
-                    display: "grid",
-                    placeItems: "center",
-                    fontFamily: MONO,
-                    fontSize: 12,
-                    color: i === 5 ? T.clearanceBrass : T.arcCyan,
-                    zIndex: 1,
-                  }}
-                >
-                  {String(i + 1).padStart(2, "0")}
-                </div>
-                <div>
-                  <div style={{ fontFamily: MONO, fontSize: 15, fontWeight: 600, marginBottom: 4, paddingTop: 5 }}>{b.name}</div>
-                  <p style={{ fontSize: 14, lineHeight: 1.6, color: T.textSecondary, margin: 0 }}>{b.desc}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* ── INCIDENT DIVIDER — full-bleed set piece ────────────── */}
-        <div
-          aria-hidden
-          style={{
-            width: "100vw",
-            marginLeft: "calc(50% - 50vw)",
-            margin: "26px 0 26px calc(50% - 50vw)",
-            borderTop: `1px solid ${T.threatRed}44`,
-            borderBottom: `1px solid ${T.threatRed}44`,
-            background: `linear-gradient(90deg, transparent, ${T.threatRed}14 20%, ${T.threatRed}1F 50%, ${T.threatRed}14 80%, transparent)`,
-            padding: "14px 0",
-            overflow: "hidden",
-          }}
-        >
-          <div style={{ display: "flex", gap: 56, whiteSpace: "nowrap", fontFamily: MONO, fontSize: 11, letterSpacing: "0.22em", color: T.threatRed, justifyContent: "center", opacity: 0.9 }}>
-            <span>■ LIVE INCIDENT</span>
-            <span>SECOND WAVE DETECTED</span>
-            <span>4 MESSAGES · 2 THREATS</span>
-            <span>CONTAINMENT: YOUR CALL</span>
-            <span>■ LIVE INCIDENT</span>
-          </div>
-        </div>
-
-        {/* ── CURRICULUM ─────────────────────────────────────────── */}
-        <section id="curriculum" style={{ padding: "56px 0", position: "relative" }}>
-          <Wash color="#4A78B5" at="70% 15%" />
-          <SectionHead
-            eyebrow="05 · What they'll learn, week by week"
-            title="20 missions. 4 clearance blocks."
-            sub="Every five closed cases raise your child's clearance, earned by demonstrated skill, never bought with points. The season builds to unmasking STATIC's coordinator in Mission 20."
-          />
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 16 }} className="cx-two-col">
-            {BLOCKS.map((b, i) => (
-              <div
-                key={b.n}
-                data-scroll
-                data-scroll-delay={String((i % 2) * 0.12)}
-                className="cx-card"
-                style={{ border: `1px solid ${T.hairline}`, borderRadius: 3, overflow: "hidden", "--ac": BAND_BY_CLASSIFICATION[b.clearance] } as React.CSSProperties
-                }
-              >
-                <div style={{ background: BAND_BY_CLASSIFICATION[b.clearance], color: T.inkBlack, fontFamily: MONO, fontWeight: 600, fontSize: 10.5, letterSpacing: "0.2em", textAlign: "center", padding: "5px 0" }}>
-                  BLOCK {b.n} → CLEARANCE: {b.clearance}
-                </div>
-                <div style={{ background: `${T.panel}E6`, padding: "18px 20px", position: "relative", overflow: "hidden" }}>
-                  <div aria-hidden style={{ position: "absolute", top: -40, right: -40, width: 220, height: 180, background: `radial-gradient(ellipse at center, ${BAND_BY_CLASSIFICATION[b.clearance]}22 0%, transparent 70%)`, pointerEvents: "none" }} />
-                  <div style={{ fontFamily: MONO, fontSize: 18, fontWeight: 600, marginBottom: 12 }}>
-                    {b.name}
-                    <span style={{ color: T.textDisabled, fontSize: 12, marginLeft: 10 }}>MISSIONS {(b.n - 1) * 5 + 1}–{b.n * 5}</span>
-                  </div>
-                  <div style={{ display: "grid", gap: 7 }}>
-                    {b.skills.map((s) => (
-                      <div key={s} style={{ fontSize: 13.5, lineHeight: 1.55, color: T.textSecondary, display: "flex", gap: 10 }}>
-                        <span style={{ color: T.confirmedGreen, fontFamily: MONO }}>■</span>
-                        {s}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* ── THE VERBS ──────────────────────────────────────────── */}
-        <section style={{ padding: "48px 0" }}>
-          <SectionHead
-            eyebrow="The mechanics"
-            title="Seven verbs an analyst actually uses."
-            sub="No worksheets wearing a game costume. Fieldwork runs on mechanics built for how 10–13s think: inference, consequence, anticipation."
-          />
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(230px, 1fr))", gap: 12 }} data-scroll>
-            {VERBS.map((m) => (
-              <div key={m.v} className="cx-card" style={{ background: `${T.panel}D9`, border: `1px solid ${T.hairline}`, borderRadius: 3, padding: "14px 16px", "--ac": T.arcCyan } as React.CSSProperties}>
-                <span style={{ fontFamily: MONO, fontSize: 13, fontWeight: 600, color: T.arcCyan }}>{m.v}</span>
-                <p style={{ fontSize: 13, lineHeight: 1.55, color: T.textSecondary, margin: "6px 0 0" }}>{m.d}</p>
-              </div>
-            ))}
-          </div>
-          <p data-scroll style={{ fontSize: 13.5, lineHeight: 1.6, color: T.textSecondary, margin: "16px 0 0", maxWidth: 660 }}>
-            <span style={{ fontFamily: MONO, color: T.textPrimary }}>A note on SIMULATE:</span> professional defenders
-            train by anticipating the attacker&rsquo;s next move. Your child predicts and counters attacks:{" "}
-            <span style={{ color: T.textPrimary }}>they never write or send one.</span> That line is hard-coded.
-          </p>
-        </section>
-
-        {/* ── PROGRESSION ────────────────────────────────────────── */}
-        <section style={{ padding: "56px 0", position: "relative" }}>
-          <Wash color={T.clearanceBrass} at="50% 55%" />
-          <SectionHead
-            eyebrow="Progression"
-            title="From Trainee to ULTRA."
-            sub="XP tracks pace. Clearances certify skill. Dossiers make revision something kids do on purpose. Nothing is randomized, nothing expires, nothing is for sale."
-          />
-          <div data-scroll style={{ display: "flex", flexWrap: "wrap", gap: 10, alignItems: "center" }}>
-            {LADDER.map((l, i) => (
-              <div key={l} style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                <span
-                  className="cx-band"
-                  style={{
-                    fontFamily: MONO,
-                    fontSize: 12,
-                    fontWeight: 600,
-                    letterSpacing: "0.1em",
-                    padding: "10px 17px",
-                    borderRadius: 3,
-                    color: i === 0 ? T.textSecondary : T.inkBlack,
-                    background: i === 0 ? "transparent" : BAND_BY_CLASSIFICATION[l as keyof typeof BAND_BY_CLASSIFICATION],
-                    border: i === 0 ? `1px solid ${T.hairline}` : "none",
-                    animationDelay: `${i * 0.4}s`,
-                  }}
-                >
-                  {l}
-                </span>
-                {i < LADDER.length - 1 && <span style={{ fontFamily: MONO, color: T.textDisabled }}>▸</span>}
-              </div>
-            ))}
-          </div>
-
-          {/* the ARC ID card — the tier's signature object, at scale */}
-          <div data-scroll style={{ marginTop: 34, display: "flex", justifyContent: "center" }}>
-            <div
-              className="cx-idcard"
-              style={{
-                position: "relative",
-                width: "min(460px, 100%)",
-                borderRadius: 6,
-                overflow: "hidden",
-                background: `linear-gradient(150deg, ${T.panelRaised}, ${T.panel})`,
-                border: `1px solid ${T.clearanceBrass}55`,
-                boxShadow: `0 30px 70px -24px rgba(0,0,0,0.9), 0 0 46px ${T.clearanceBrass}1F`,
-                padding: "0 0 18px",
-              }}
-            >
-              <div style={{ background: BAND_BY_CLASSIFICATION.CONFIDENTIAL, color: T.inkBlack, fontFamily: MONO, fontWeight: 600, fontSize: 10, letterSpacing: "0.26em", textAlign: "center", padding: "5px 0" }}>
-                ARC FIELD CREDENTIAL · CONFIDENTIAL
-              </div>
-              <div style={{ display: "flex", gap: 18, padding: "18px 20px 6px", alignItems: "center" }}>
-                <div style={{ width: 72, height: 88, background: T.inkBlack, border: `1px solid ${T.hairline}`, borderRadius: 3, display: "grid", placeItems: "center" }}>
-                  <div style={{ fontFamily: MONO, fontSize: 8, letterSpacing: "0.08em", color: T.textDisabled, textAlign: "center", lineHeight: 1.6 }}>
-                    PHOTO<br />REDACTED
-                  </div>
-                </div>
-                <div style={{ flex: 1 }}>
-                  <div style={{ fontFamily: MONO, fontSize: 10, letterSpacing: "0.12em", color: T.textSecondary }}>CALLSIGN</div>
-                  <div style={{ fontFamily: MONO, fontSize: 26, fontWeight: 600, color: T.textPrimary, margin: "2px 0 8px" }}>NIGHT-HERON</div>
-                  <div style={{ display: "flex", gap: 22, fontFamily: MONO, fontSize: 10.5, color: T.textSecondary, letterSpacing: "0.06em" }}>
-                    <span>FIELD RATING <span style={{ color: T.arcCyan }}>07</span></span>
-                    <span>CASES <span style={{ color: T.clearanceBrass }}>05/20</span></span>
-                  </div>
-                </div>
-              </div>
-              <div style={{ margin: "12px 20px 0", borderTop: `1px solid ${T.hairline}`, paddingTop: 10, display: "flex", justifyContent: "space-between", fontFamily: MONO, fontSize: 9.5, letterSpacing: "0.14em", color: T.textDisabled }}>
-                <span>ANOMALY RESPONSE COMMAND</span>
-                <span style={{ color: T.clearanceBrass }}>▲▲▲</span>
-              </div>
-              {/* card sheen */}
-              {!reduced && <span aria-hidden className="cx-sheen" />}
-            </div>
-          </div>
-          <p style={{ fontFamily: MONO, fontSize: 11, letterSpacing: "0.05em", color: T.textDisabled, textAlign: "center", margin: "14px 0 0" }}>
-            YOUR CHILD&rsquo;S CREDENTIAL EVOLVES WITH EVERY CLOSED CASE. CLEARANCE CEREMONIES REPRINT THE CARD.
-          </p>
         </section>
 
         {/* ── PARENTS ────────────────────────────────────────────── */}
@@ -1253,7 +961,7 @@ export default function CyberExplorersLanding() {
         <section id="parents" style={{ padding: "56px 0", position: "relative" }}>
           <Wash color={T.confirmedGreen} at="25% 20%" />
           <SectionHead
-            eyebrow="06 · What you get as a parent"
+            eyebrow="04 · What you get as a parent"
             title="Visibility, safety, and a kid who talks about it."
             sub="Six commitments, built into the product's design, not promises on a page."
           />
@@ -1264,19 +972,6 @@ export default function CyberExplorersLanding() {
                 <p style={{ fontSize: 13.5, lineHeight: 1.6, color: T.textSecondary, margin: 0 }}>{p.d}</p>
               </div>
             ))}
-          </div>
-
-          <div data-scroll style={{ marginTop: 20, background: `${T.panelRaised}E6`, border: `1px solid ${T.hairline}`, borderRadius: 3, padding: "18px 20px", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 14 }}>
-            <div>
-              <div style={{ fontFamily: MONO, fontSize: 14, fontWeight: 600, marginBottom: 4 }}>Coming from Cyber Heroes?</div>
-              <p style={{ fontSize: 13.5, lineHeight: 1.6, color: T.textSecondary, margin: 0, maxWidth: 520 }}>
-                Explorers is the graduation tier: ages 6–9 train alongside the heroes; ages 10–13 become the operative.
-                Same platform, new world, and Heroes is never required.
-              </p>
-            </div>
-            <Link href="/cyberheroes" className="cx-navlink" style={{ fontSize: 12, border: `1px solid ${T.hairline}`, borderRadius: 3, padding: "10px 16px", display: "inline-block" }}>
-              CYBER HEROES (AGES 6–9) →
-            </Link>
           </div>
         </section>
 
