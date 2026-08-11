@@ -444,6 +444,34 @@ export default async function CybersecurityPage() {
             </p>
           </FadeUp>
 
+          {/* Aligned with the NCSC (alignment, not endorsement — the NCSC
+              runs no endorsement scheme). One trust mark across all four
+              cybersecurity tracks. */}
+          <FadeUp delay={0.18}>
+            <div style={{ display: "flex", justifyContent: "center", marginTop: 32 }}>
+              <span style={{
+                display: "inline-flex", alignItems: "center", gap: 14,
+                padding: "10px 20px", borderRadius: 999,
+                background: "rgba(13,15,24,0.55)",
+                border: "1px solid rgba(159,245,255,0.28)",
+                boxShadow: "0 0 30px -16px rgba(159,245,255,0.9)",
+                backdropFilter: "blur(8px)",
+                WebkitBackdropFilter: "blur(8px)",
+              }}>
+                <span style={{
+                  fontFamily: "var(--lv2-font-mono)",
+                  fontSize: 10.5, fontWeight: 700, letterSpacing: "0.24em",
+                  textTransform: "uppercase", color: "var(--lv2-cyan-soft)",
+                }}>
+                  Aligned with
+                </span>
+                <span aria-hidden style={{ width: 1, height: 22, background: "rgba(232,237,255,0.18)" }} />
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src="/logos/ncsc.svg" alt="National Cyber Security Centre" loading="lazy" style={{ height: 30, width: "auto" }} />
+              </span>
+            </div>
+          </FadeUp>
+
         </section>
 
         {/* TRACK GRID ──────────────────────────────────────── */}
