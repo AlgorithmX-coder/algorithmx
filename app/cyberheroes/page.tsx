@@ -899,6 +899,28 @@ export default function HomePage() {
                   <span style={{ color: "#7df0ff" }}>✓</span> GDPR compliant
                 </span>
               </div>
+              {/* NCSC alignment mark, up in the hero so it's visible above the
+                  fold like the other cyber pages (alignment, not endorsement). */}
+              <div className="mb-6 flex justify-center lg:justify-start">
+                <span style={{
+                  display: "inline-flex", alignItems: "center", gap: 13,
+                  padding: "9px 16px", borderRadius: 999,
+                  background: "rgba(255,255,255,0.04)",
+                  border: "1px solid rgba(255,209,88,0.30)",
+                  boxShadow: "0 0 24px -14px rgba(255,209,88,0.9)",
+                }}>
+                  <span style={{
+                    fontFamily: "var(--font-jetbrains-mono), monospace",
+                    fontSize: 10, fontWeight: 800, letterSpacing: "0.2em",
+                    textTransform: "uppercase", color: "#ffd158",
+                  }}>
+                    Aligned with
+                  </span>
+                  <span aria-hidden style={{ width: 1, height: 20, background: "rgba(255,255,255,0.18)" }} />
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src="/logos/ncsc.svg" alt="National Cyber Security Centre" loading="lazy" style={{ height: 26, width: "auto" }} />
+                </span>
+              </div>
               {/* Honest trust line - no star-rating claim until real reviews exist */}
               <div className="mb-8 flex flex-wrap items-center gap-2 justify-center lg:justify-start"
                 style={{ fontSize: 13, color: "#e8edff", fontWeight: 600 }}>
@@ -1661,28 +1683,6 @@ export default function HomePage() {
             <h2 className="text-2xl sm:text-3xl font-black text-white">
               Built on <span style={ACCENT_TEXT}>Real Standards</span>
             </h2>
-          </div>
-          {/* Aligned with the NCSC (alignment, not endorsement — the NCSC
-              runs no endorsement scheme). Placed above the credential row. */}
-          <div style={{ display: "flex", justifyContent: "center", marginBottom: 26 }}>
-            <span style={{
-              display: "inline-flex", alignItems: "center", gap: 14,
-              padding: "10px 20px", borderRadius: 999,
-              background: "rgba(255,255,255,0.04)",
-              border: "1px solid rgba(255,209,88,0.30)",
-              boxShadow: "0 0 26px -14px rgba(255,209,88,0.9)",
-            }}>
-              <span style={{
-                fontFamily: "var(--font-jetbrains-mono), monospace",
-                fontSize: 10.5, fontWeight: 800, letterSpacing: "0.22em",
-                textTransform: "uppercase", color: "#ffd158",
-              }}>
-                Aligned with
-              </span>
-              <span aria-hidden style={{ width: 1, height: 22, background: "rgba(255,255,255,0.18)" }} />
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/logos/ncsc.svg" alt="National Cyber Security Centre" loading="lazy" style={{ height: 30, width: "auto" }} />
-            </span>
           </div>
           <CredentialsMarquee />
         </section>
