@@ -91,6 +91,7 @@ const CSS = `
 .cyops-root .mln{white-space:pre-wrap;display:block}
 .cyops-root .mln .pr{color:var(--ind)} .cyops-root .mln .cm{color:#49526e} .cyops-root .mln .ok{color:var(--added)} .cyops-root .mln .er{color:var(--threat)} .cyops-root .mln .hi{color:var(--ind-soft)}
 .cyops-root .cur{display:inline-block;width:8px;height:15px;vertical-align:-2px;background:var(--ind);box-shadow:0 0 8px var(--ind-glow);animation:cyopsblink 1.05s steps(1) infinite}
+.cyops-root .reelframe{display:block;width:100%;aspect-ratio:16/9;border:0;background:#0a0b0f}
 
 .cyops-root .band{background:linear-gradient(180deg,rgba(15,17,25,.55),rgba(15,17,25,.15));border-top:1px solid var(--hairline-soft);border-bottom:1px solid var(--hairline-soft)}
 .cyops-root .two{display:grid;grid-template-columns:.9fr 1.1fr;gap:44px;align-items:start}
@@ -371,13 +372,19 @@ export default function CyberStartLanding() {
             </div>
 
             <div className="miniwrap">
-              <div className="mini">
+              <div className="mini reel">
                 <div className="mbar">
                   <span className="dots"><i /><i /><i /></span>
-                  <span className="t"><b>opr</b>@range . engagement e-05</span>
-                  <span className="live">Live</span>
+                  <span className="t"><b>opr</b>@range . the reel</span>
+                  <span className="live">Film . 0:29</span>
                 </div>
-                <div className="mbody" id="term" ref={termRef} aria-hidden="true" />
+                <iframe
+                  className="reelframe"
+                  src="/operators/hero?embed=1"
+                  title="Cyber Ops - Get There First"
+                  loading="lazy"
+                  allow="autoplay; fullscreen"
+                />
               </div>
             </div>
           </div>
