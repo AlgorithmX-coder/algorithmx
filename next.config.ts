@@ -2,7 +2,12 @@ import type { NextConfig } from "next";
 import { withSentryConfig } from "@sentry/nextjs";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  // The Cyber Ops landing moved from /cyberstart to /ops. Keep old links
+  // and bookmarks working (temporary redirect - the working name is still
+  // subject to change). The internal course slug stays "cyberstart".
+  async redirects() {
+    return [{ source: "/cyberstart", destination: "/ops", permanent: false }];
+  },
 };
 
 // Wrap with Sentry - applies build-time source-map upload + runtime

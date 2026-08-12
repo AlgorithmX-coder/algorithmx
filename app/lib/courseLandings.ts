@@ -14,7 +14,7 @@
 export const COURSE_LANDING_ROUTES: Readonly<Record<string, string>> = {
   "cyber-heroes": "/cyberheroes",
   "cyberexplorers": "/cyberexplorers",
-  "cyberstart": "/cyberstart",
+  "cyberstart": "/ops",
   "cyberstart-pro": "/cyberstart-pro",
 };
 

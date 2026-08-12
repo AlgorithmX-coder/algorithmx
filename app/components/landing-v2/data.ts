@@ -87,7 +87,7 @@ export const SUBJECTS: Subject[] = [
         live: false,
         coming: "COMING 2026",
         image: "/images/courses/cyberstart.png",
-        href: "/cyberstart",
+        href: "/ops",
       },
       {
         title: "CyberStart Pro",
