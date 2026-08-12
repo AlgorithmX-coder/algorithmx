@@ -22,6 +22,7 @@ import Link from "next/link";
 import { MONO, BODY, T, BAND_BY_CLASSIFICATION } from "@/app/explorers/engine/tokens";
 import { Resolve, useReducedMotion } from "@/app/explorers/engine/primitives";
 import { IntroVideo } from "./IntroVideo";
+import LiveBackground from "./LiveBackground";
 
 /* ================================================================ data */
 
@@ -703,9 +704,11 @@ export default function CyberExplorersLanding() {
 
   return (
     <main className="cx-legible" style={{ background: T.inkBlack, color: T.textPrimary, fontFamily: BODY, position: "relative", overflowX: "hidden" }}>
-      {/* soft aurora backdrop — calm & premium (no matrix/scanlines), copy leads */}
+      {/* live backdrop: colour aurora base + an animated neon particle network
+          (canvas), then a vignette on top for legibility (no matrix/code — parents) */}
       <div aria-hidden className="cx-aurora" />
-      <div aria-hidden style={{ position: "fixed", inset: 0, zIndex: 0, pointerEvents: "none", background: "radial-gradient(ellipse 100% 92% at 50% 26%, rgba(6,8,18,0.20) 0%, rgba(6,8,16,0.48) 58%, rgba(3,5,12,0.85) 100%)" }} />
+      <LiveBackground reduced={reduced} />
+      <div aria-hidden style={{ position: "fixed", inset: 0, zIndex: 0, pointerEvents: "none", background: "radial-gradient(ellipse 120% 100% at 50% 20%, rgba(6,8,18,0.04) 0%, rgba(6,8,16,0.22) 55%, rgba(3,5,12,0.42) 100%)" }} />
 
       {/* ── NAV ─────────────────────────────────────────────────── */}
       <nav
@@ -1092,10 +1095,10 @@ export default function CyberExplorersLanding() {
         /* aurora backdrop */
         .cx-aurora { position: fixed; inset: -20%; z-index: 0; pointer-events: none;
           background:
-            radial-gradient(38% 42% at 16% 16%, rgba(52,225,255,.20), transparent 70%),
-            radial-gradient(42% 46% at 84% 10%, rgba(185,139,255,.18), transparent 72%),
-            radial-gradient(52% 52% at 50% 112%, rgba(255,92,168,.13), transparent 70%),
-            radial-gradient(40% 40% at 90% 82%, rgba(52,225,255,.12), transparent 72%);
+            radial-gradient(40% 44% at 15% 14%, rgba(52,225,255,.34), transparent 70%),
+            radial-gradient(44% 48% at 85% 8%, rgba(185,139,255,.30), transparent 72%),
+            radial-gradient(54% 54% at 50% 112%, rgba(255,92,168,.22), transparent 70%),
+            radial-gradient(42% 42% at 90% 82%, rgba(52,225,255,.22), transparent 72%);
           animation: cxAurora 26s ease-in-out infinite alternate; }
         @keyframes cxAurora { 0% { transform: translate3d(0,0,0) scale(1); } 50% { transform: translate3d(2%,-1.6%,0) scale(1.06); } 100% { transform: translate3d(-2%,1.6%,0) scale(1.03); } }
 
