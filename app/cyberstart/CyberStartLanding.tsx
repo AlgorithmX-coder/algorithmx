@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import CodeRainBackground from "@/app/components/CodeRainBackground";
 import WaitlistForm from "@/app/components/WaitlistForm";
 
 /**
@@ -33,7 +34,7 @@ const CSS = `
 }
 .cyops-root, .cyops-root *{box-sizing:border-box}
 .cyops-root #bg{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
-.cyops-root .veil{position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(120% 90% at 72% 8%,transparent 40%,rgba(6,7,12,.5) 80%,rgba(6,7,12,.85) 100%)}
+.cyops-root .veil{position:fixed;inset:0;z-index:0;pointer-events:none;background:linear-gradient(180deg,rgba(10,11,15,.52),rgba(10,11,15,.4) 34%,rgba(10,11,15,.58)),radial-gradient(120% 90% at 72% 8%,transparent 48%,rgba(6,7,12,.5) 88%)}
 .cyops-root main, .cyops-root nav, .cyops-root footer{position:relative;z-index:1}
 .cyops-root .wrap{max-width:1180px;margin:0 auto;padding:0 24px}
 .cyops-root a{color:inherit;text-decoration:none}
@@ -335,6 +336,7 @@ export default function CyberStartLanding() {
   return (
     <div className="cyops-root">
       <style>{CSS}</style>
+      <CodeRainBackground bg="#0A0B0F" head="rgba(190,180,255,0.6)" accentA="rgba(74,222,128,0.5)" accentB="rgba(120,224,255,0.46)" />
       <canvas id="bg" ref={bgRef} aria-hidden="true" />
       <div className="veil" aria-hidden="true" />
 

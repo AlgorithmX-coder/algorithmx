@@ -2,6 +2,15 @@
 
 import { useEffect, useRef } from "react";
 
+type Props = {
+  /** Solid base colour (hex) the trails fade back into. */
+  bg?: string;
+  /** Leading-glyph colours for the default / accent-1 / accent-2 streams. */
+  head?: string;
+  accentA?: string;
+  accentB?: string;
+};
+
 /**
  * Futuristic "live coding" backdrop — a fixed, full-viewport canvas of
  * streaming code glyphs with depth and the occasional accent stream. Kept
@@ -11,7 +20,12 @@ import { useEffect, useRef } from "react";
  * pauses when the tab is hidden, and renders one static frame under
  * prefers-reduced-motion instead of animating.
  */
-export default function CodeRainBackground() {
+export default function CodeRainBackground({
+  bg = "#05070d",
+  head = "rgba(120,224,255,0.92)",
+  accentA = "rgba(150,135,255,0.9)",
+  accentB = "rgba(74,222,128,0.85)",
+}: Props) {
   const ref = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
@@ -21,7 +35,12 @@ export default function CodeRainBackground() {
     if (!ctx) return;
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-    // code-flavoured glyphs (reads as source, not katakana)
+    // base colour -> "r,g,b" so the per-frame fade matches the ground exactly
+    const hex = bg.replace("#", "");
+    const rgb = hex.length === 6
+      ? `${parseInt(hex.slice(0, 2), 16)},${parseInt(hex.slice(2, 4), 16)},${parseInt(hex.slice(4, 6), 16)}`
+      : "5,7,13";
+
     const GLYPHS = "01{}()[]<>/=;:+-*&|!?.$#%01ABCDEFabcdef=>const<//>";
     const pick = () => GLYPHS[(Math.random() * GLYPHS.length) | 0];
 
@@ -32,7 +51,7 @@ export default function CodeRainBackground() {
     const newCol = (): Col => ({
       y: Math.random() * -40,
       speed: 0.18 + Math.random() * 0.55,
-      accent: Math.random() < 0.1 ? 1 : Math.random() < 0.06 ? 2 : 0, // 1=indigo 2=green
+      accent: Math.random() < 0.1 ? 1 : Math.random() < 0.06 ? 2 : 0,
     });
 
     function resize() {
@@ -44,18 +63,15 @@ export default function CodeRainBackground() {
       cell = Math.max(15, Math.round(W / 95));
       cols = Math.ceil(W / cell) + 1;
       drops = Array.from({ length: cols }, newCol);
-      ctx!.fillStyle = "#05070d";
+      ctx!.fillStyle = bg;
       ctx!.fillRect(0, 0, W, H);
       ctx!.textBaseline = "top";
     }
 
-    const headColor = (a: Col) =>
-      a.accent === 1 ? "rgba(150,135,255,0.9)"
-      : a.accent === 2 ? "rgba(74,222,128,0.85)"
-      : "rgba(120,224,255,0.92)";
+    const headColor = (a: Col) => (a.accent === 1 ? accentA : a.accent === 2 ? accentB : head);
 
     function step() {
-      ctx!.fillStyle = "rgba(5,7,13,0.085)"; // fade the trails
+      ctx!.fillStyle = `rgba(${rgb},0.085)`; // fade the trails
       ctx!.fillRect(0, 0, W, H);
       ctx!.font = `600 ${cell}px 'IBM Plex Mono', ui-monospace, Menlo, Consolas, monospace`;
       for (let i = 0; i < cols; i++) {
@@ -74,22 +90,18 @@ export default function CodeRainBackground() {
     function staticFrame() {
       ctx!.font = `600 ${cell}px 'IBM Plex Mono', ui-monospace, monospace`;
       for (let i = 0; i < cols; i++) {
-        const d = drops[i];
         const rows = Math.floor(H / cell);
         for (let r = 0; r < rows; r++) {
           if (Math.random() > 0.14) continue;
-          ctx!.fillStyle = "rgba(120,224,255,0.10)";
+          ctx!.fillStyle = head.replace(/0?\.\d+\)$/, "0.10)");
           ctx!.fillText(pick(), i * cell, r * cell);
         }
       }
     }
 
     resize();
-    if (reduce) {
-      staticFrame();
-    } else {
-      raf = requestAnimationFrame(step);
-    }
+    if (reduce) staticFrame();
+    else raf = requestAnimationFrame(step);
 
     const onResize = () => { resize(); if (reduce) staticFrame(); };
     const onVis = () => {
@@ -104,7 +116,7 @@ export default function CodeRainBackground() {
       window.removeEventListener("resize", onResize);
       document.removeEventListener("visibilitychange", onVis);
     };
-  }, []);
+  }, [bg, head, accentA, accentB]);
 
   return (
     <canvas

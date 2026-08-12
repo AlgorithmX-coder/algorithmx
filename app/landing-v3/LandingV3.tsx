@@ -1,6 +1,6 @@
 "use client";
 
-import CodeRainBackground from "@/app/components/landing-v3/CodeRainBackground";
+import CodeRainBackground from "@/app/components/CodeRainBackground";
 
 /**
  * landing-v3 - the rebuilt homepage (sales-first).
