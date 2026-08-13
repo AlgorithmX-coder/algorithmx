@@ -55,6 +55,8 @@ const week01: LessonManifest = {
     },
   ],
 
+  seeHeading: "Two companies that got this wrong",
+
   cases: [
     {
       org: "RockYou",
@@ -80,6 +82,7 @@ const week01: LessonManifest = {
 
   lab: {
     title: "The Password Lab",
+    intro: "This is a real hash function running in your own browser. Nothing you type is sent anywhere.",
     prompts: [
       "Type a weak password like 'password123' and read the crack-time estimate.",
       "Now try a long passphrase like 'purple-tractor-window-jazz'. Watch the estimate jump.",
@@ -131,6 +134,7 @@ const week01: LessonManifest = {
   },
 
   wrap: {
+    headline: "You understand how passwords really work, and you have the fingerprints to prove it.",
     takeaways: [
       "Good sites store a one-way hash of your password, never the password itself.",
       "Hashing done badly (no salt, fast algorithm) is barely better than not hashing at all, as LinkedIn found out.",

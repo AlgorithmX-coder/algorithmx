@@ -46,6 +46,9 @@ export type Lab = ComponentType<LabProps>;
 
 export interface LabDef {
   title: string;
+  /* One line shown above the lab (e.g. the zero-egress reassurance),
+   * per-lesson so the engine stays content-agnostic. */
+  intro?: string;
   /* Short nudges shown beside the lab to guide exploration. */
   prompts: string[];
   component: Lab;
@@ -89,11 +92,15 @@ export interface LessonManifest {
   /* One-line promise shown on the intro card. */
   promise: string;
   learn: LearnCard[];
+  /* Heading for the See phase (defaults to a generic line). */
+  seeHeading?: string;
   cases: CaseCard[];
   lab: LabDef;
   check: { explain: ExplainBack; quiz: QuizQuestion[] };
   /* Wrap-up: the real project this lesson kicks off, plus takeaways. */
   wrap: {
+    /* The "lesson complete" headline (defaults to a generic line). */
+    headline?: string;
     takeaways: string[];
     project: { name: string; blurb: string };
     ethicsNote?: string; // CMA 1990 / responsible-use reminder where relevant

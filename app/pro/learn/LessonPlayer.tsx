@@ -200,7 +200,7 @@ export default function LessonPlayer({ lesson }: { lesson: LessonManifest }) {
         {phase === "see" && (
           <main style={{ marginTop: 26 }}>
             <div style={{ fontFamily: T.mono, fontSize: 11, letterSpacing: "0.2em", textTransform: "uppercase", color: T.cyan, marginBottom: 8 }}>Real cases, real record</div>
-            <h2 style={{ fontFamily: T.display, fontSize: 25, fontWeight: 700, margin: "0 0 8px", color: T.ink }}>Two companies that got this wrong</h2>
+            <h2 style={{ fontFamily: T.display, fontSize: 25, fontWeight: 700, margin: "0 0 8px", color: T.ink }}>{lesson.seeHeading ?? "The real record"}</h2>
             <p style={{ fontSize: 15, color: T.muted, maxWidth: "60ch", marginBottom: 22 }}>Everything below is the documented public record. As you read, ask the question we will ask of every breach in this course: which basic measure would have stopped it?</p>
             <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
               {lesson.cases.map((c, i) => (
@@ -235,7 +235,7 @@ export default function LessonPlayer({ lesson }: { lesson: LessonManifest }) {
           <main style={{ marginTop: 26 }}>
             <div style={{ fontFamily: T.mono, fontSize: 11, letterSpacing: "0.2em", textTransform: "uppercase", color: T.green, marginBottom: 8 }}>Your turn, hands on</div>
             <h2 style={{ fontFamily: T.display, fontSize: 25, fontWeight: 700, margin: "0 0 8px", color: T.ink }}>{lesson.lab.title}</h2>
-            <p style={{ fontSize: 15, color: T.muted, maxWidth: "60ch", marginBottom: 18 }}>This is a real hash function running in your own browser. Nothing you type is sent anywhere.</p>
+            <p style={{ fontSize: 15, color: T.muted, maxWidth: "60ch", marginBottom: 18 }}>{lesson.lab.intro ?? "This runs entirely in your own browser. Nothing you do here is sent anywhere."}</p>
             <div style={{ display: "grid", gridTemplateColumns: "1fr", gap: 18 }}>
               <div style={{ background: T.bgRaise, border: `1px solid ${T.edge}`, borderRadius: 12, padding: "20px 22px" }}>
                 <Lab onDidTry={onDidTry} />
@@ -317,7 +317,7 @@ export default function LessonPlayer({ lesson }: { lesson: LessonManifest }) {
           <main style={{ marginTop: 34 }}>
             <div style={{ background: T.greenSoft, border: `1px solid ${T.green}66`, borderRadius: 12, padding: "16px 20px", marginBottom: 22 }}>
               <span style={{ fontFamily: T.mono, fontSize: 11, letterSpacing: "0.18em", color: T.green, fontWeight: 600 }}>LESSON COMPLETE</span>
-              <div style={{ fontFamily: T.display, fontSize: 22, fontWeight: 700, color: T.ink, marginTop: 6 }}>You understand how passwords really work, and you have the fingerprints to prove it.</div>
+              <div style={{ fontFamily: T.display, fontSize: 22, fontWeight: 700, color: T.ink, marginTop: 6 }}>{lesson.wrap.headline ?? "Lesson complete. Well done."}</div>
             </div>
 
             <h3 style={{ fontFamily: T.display, fontSize: 18, fontWeight: 700, margin: "0 0 12px", color: T.ink }}>What you learned</h3>
