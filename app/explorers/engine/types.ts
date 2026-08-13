@@ -258,8 +258,15 @@ export interface CycleDef {
   promise?: string;
   /** Verb-first instruction for the PLAY strip (≤10 words). Falls back to fieldwork payload intro. */
   instruction?: string;
-  intel: { beats: string[]; prediction: PredictionQ };
+  intel: {
+    beats: string[];
+    /** Narrator-led lessons: WREN VO per beat (public/ paths), 1:1 with `beats`. When present the LEARN beats auto-advance as each clip ends; a tap always overrides. */
+    beatAudio?: string[];
+    prediction: PredictionQ;
+  };
   fieldwork: FieldworkDef;
+  /** WREN VO that explains the PLAY exercise set-up (public/ path); played once when PLAY opens. */
+  playAudio?: string;
   checkpoint: { questions: CheckpointQ[] };
 }
 

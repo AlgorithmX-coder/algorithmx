@@ -326,7 +326,9 @@ export default function MissionRuntime({ manifest, devStartBeat, onExit, onNextC
     }
     const clip = atStart ? manifest.voice?.transmission : pos.beat === "debrief" ? manifest.voice?.debrief : undefined;
     if (clip) playWren(clip, voiceOn);
-    else stopWren();
+    // During a cycle the LEARN/PLAY stages own WREN (narrator-led lessons +
+    // exercise set-ups); stopping here would race and cut them off on entry.
+    else if (pos.beat !== "cycle") stopWren();
   }, [atStart, pos.beat, resumeOffer, filmToPlay, voiceOn, manifest.voice]);
   useEffect(() => () => stopWren(), []);
 
@@ -428,6 +430,7 @@ export default function MissionRuntime({ manifest, devStartBeat, onExit, onNextC
                 audio={audio}
                 emit={emit}
                 onNext={advance}
+                voiceOn={voiceOn}
               />
             )}
             {pos.beat === "incident" && (
@@ -583,7 +586,7 @@ function MapMomentScene({ manifest, pos, stamped, xp, audio, onContinue }: { man
 
 /* ------------------------------------------------------------- cycles */
 
-function CycleScene({ cycle, cycleIndex, stage, reduced, audio, emit, onNext }: { cycle: CycleDef; cycleIndex: number; stage: "intel" | "fieldwork" | "checkpoint"; reduced: boolean; audio: ReturnType<typeof useSignalAudio>; emit: (e: AwardEvent) => void; onNext: () => void }) {
+function CycleScene({ cycle, cycleIndex, stage, reduced, audio, emit, onNext, voiceOn }: { cycle: CycleDef; cycleIndex: number; stage: "intel" | "fieldwork" | "checkpoint"; reduced: boolean; audio: ReturnType<typeof useSignalAudio>; emit: (e: AwardEvent) => void; onNext: () => void; voiceOn: boolean }) {
   const stageIndex = stage === "intel" ? 0 : stage === "fieldwork" ? 1 : 2;
   const stageTones = [T.arcCyan, T.actionAmber, T.confirmedGreen];
   return (
@@ -612,21 +615,49 @@ function CycleScene({ cycle, cycleIndex, stage, reduced, audio, emit, onNext }: 
         </div>
       </div>
 
-      {stage === "intel" && <LearnStage cycle={cycle} cycleIndex={cycleIndex} reduced={reduced} audio={audio} emit={emit} onNext={onNext} />}
-      {stage === "fieldwork" && <PlayStage cycle={cycle} cycleIndex={cycleIndex} reduced={reduced} audio={audio} emit={emit} onNext={onNext} />}
+      {stage === "intel" && <LearnStage cycle={cycle} cycleIndex={cycleIndex} reduced={reduced} audio={audio} emit={emit} onNext={onNext} voiceOn={voiceOn} />}
+      {stage === "fieldwork" && <PlayStage cycle={cycle} cycleIndex={cycleIndex} reduced={reduced} audio={audio} emit={emit} onNext={onNext} voiceOn={voiceOn} />}
       {stage === "checkpoint" && <QuizStage cycle={cycle} cycleIndex={cycleIndex} reduced={reduced} audio={audio} emit={emit} onNext={onNext} />}
     </section>
   );
 }
 
 /* LEARN — tap-to-continue dialogue (law 8: the kid sets the pace) */
-function LearnStage({ cycle, cycleIndex, reduced, audio, emit, onNext }: { cycle: CycleDef; cycleIndex: number; reduced: boolean; audio: ReturnType<typeof useSignalAudio>; emit: (e: AwardEvent) => void; onNext: () => void }) {
+function LearnStage({ cycle, cycleIndex, reduced, audio, emit, onNext, voiceOn }: { cycle: CycleDef; cycleIndex: number; reduced: boolean; audio: ReturnType<typeof useSignalAudio>; emit: (e: AwardEvent) => void; onNext: () => void; voiceOn: boolean }) {
   const p = cycle.intel.prediction;
   const beats = cycle.intel.beats;
+  const beatAudio = cycle.intel.beatAudio;
+  // Narrator-led: WREN reads each beat and the lesson auto-advances as the clip
+  // ends. Falls back to silent tap-through when there's no VO, voice is off, or
+  // reduced-motion is on (a tap always advances too).
+  const narrated = !!beatAudio && voiceOn && !reduced;
   const [shown, setShown] = useState(reduced ? beats.length : 1);
   const [replies, setReplies] = useState<{ text: string; ok: boolean; response: string }[]>([]);
   const settled = replies.some((r) => r.ok);
   const beatsDone = shown >= beats.length;
+
+  // Play the current beat's clip; when it finishes, reveal the next one.
+  useEffect(() => {
+    if (!narrated) {
+      stopWren(); // cut any bookend VO bleeding in from the transmission
+      return;
+    }
+    const clip = beatAudio?.[shown - 1];
+    if (!clip) {
+      stopWren();
+      return;
+    }
+    let cancelled = false;
+    playWren(clip, true, () => {
+      if (!cancelled) setShown((s) => Math.min(beats.length, s + 1));
+    });
+    return () => {
+      cancelled = true;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [shown, narrated]);
+  // Silence WREN when leaving LEARN (e.g. into PLAY).
+  useEffect(() => () => stopWren(), []);
 
   const more = () => {
     audio.click();
@@ -708,9 +739,16 @@ function LearnStage({ cycle, cycleIndex, reduced, audio, emit, onNext }: { cycle
 }
 
 /* PLAY — instruction strip + one focal zone (mechanics render below) */
-function PlayStage({ cycle, cycleIndex, reduced, audio, emit, onNext }: { cycle: CycleDef; cycleIndex: number; reduced: boolean; audio: ReturnType<typeof useSignalAudio>; emit: (e: AwardEvent) => void; onNext: () => void }) {
+function PlayStage({ cycle, cycleIndex, reduced, audio, emit, onNext, voiceOn }: { cycle: CycleDef; cycleIndex: number; reduced: boolean; audio: ReturnType<typeof useSignalAudio>; emit: (e: AwardEvent) => void; onNext: () => void; voiceOn: boolean }) {
   const fw = cycle.fieldwork;
   const instruction = cycle.instruction ?? fw.payload.intro;
+  // WREN explains the challenge once when PLAY opens (#4), then hands over.
+  useEffect(() => {
+    if (cycle.playAudio && voiceOn) playWren(cycle.playAudio, true);
+    else stopWren();
+    return () => stopWren();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   const handle = (e: { kind: string; mastery?: boolean }) => {
     if (e.kind === "COMPLETED") {
       emit({ type: "FIELDWORK_COMPLETED", sourceKey: `cycle-${cycleIndex}`, mastery: !!e.mastery });
