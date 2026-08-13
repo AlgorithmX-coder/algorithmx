@@ -52,7 +52,7 @@ export const mission04: MissionManifest = {
       "Read what photos leak",
       "Scrub what matters first",
     ],
-    wrenLine: "Crumbs first, Operative. The nest is patient.",
+    wrenLine: "Crumbs first, Agent. The nest is patient.",
   },
 
   cycles: [
@@ -292,7 +292,7 @@ export const mission04: MissionManifest = {
           intro: "Pick what Priya scrubs first.",
           situation:
             "The audit found three loud crumbs. Priya has five minutes before practice. She can fix ONE thing right now.",
-          prompt: "YOUR CALL, OPERATIVE:",
+          prompt: "YOUR CALL, AGENT:",
           options: [
             {
               id: "schedule",
@@ -358,7 +358,7 @@ export const mission04: MissionManifest = {
     ],
     realWorldMove:
       "This week: audit your own top three posts. Check the background, the tags, and the handle. Scrub anything that says where you'll be and when.",
-    wrenLine: "File closed, nest empty. Watch what you drop, Operative. Sign out.",
+    wrenLine: "File closed, nest empty. Watch what you drop, Agent. Sign out.",
   },
 
   voice: {

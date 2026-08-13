@@ -189,7 +189,7 @@ export const mission01: MissionManifest = {
           intro: "Pick the safest move for Maya.",
           situation:
             "Maya's locked out and nervous: what if the problem is actually real?",
-          prompt: "YOUR CALL, OPERATIVE:",
+          prompt: "YOUR CALL, AGENT:",
           options: [
             {
               id: "click",

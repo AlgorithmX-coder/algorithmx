@@ -44,7 +44,7 @@ const CSS = `
 .cyops-root p{margin:0}
 .cyops-root .lead{color:var(--text-dim);font-size:1.06rem;line-height:1.62;max-width:60ch}
 .cyops-root .mono{font-family:var(--mono)}
-.cyops-root section{padding:clamp(64px,9vw,120px) 0;position:relative}
+.cyops-root section{padding:clamp(40px,5vw,70px) 0;position:relative}
 .cyops-root .ey{display:flex;align-items:center;gap:11px;margin-bottom:18px}
 .cyops-root .ey::before{content:"";width:26px;height:1px;background:var(--ind);opacity:.7}
 
@@ -64,7 +64,7 @@ const CSS = `
 .cyops-root .cta.ghost:hover{border-color:var(--ind);color:var(--ind-soft)}
 @media(max-width:760px){.cyops-root .navlinks{display:none}}
 
-.cyops-root .hero{padding-top:clamp(48px,7vw,90px);padding-bottom:clamp(48px,7vw,96px)}
+.cyops-root .hero{padding-top:clamp(30px,4vw,56px);padding-bottom:clamp(38px,5vw,64px)}
 .cyops-root .hgrid{display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:center}
 @media(max-width:940px){.cyops-root .hgrid{grid-template-columns:1fr;gap:36px}}
 .cyops-root .chiprow{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:22px}
@@ -333,6 +333,23 @@ export default function CyberStartLanding() {
     };
   }, []);
 
+  // Forward the page's first interaction into the embedded film, so a click or
+  // tap ANYWHERE on the page turns its sound on (browsers still require that one
+  // gesture - this just means it doesn't have to land on the film itself).
+  useEffect(() => {
+    let done = false;
+    const evs = ["pointerdown", "keydown", "touchstart"] as const;
+    const tryUnmute = () => {
+      if (done) return;
+      const f = document.querySelector<HTMLIFrameElement>("iframe.reelframe");
+      const fn = f?.contentWindow && (f.contentWindow as unknown as { __unmute?: () => void }).__unmute;
+      if (typeof fn === "function") { fn(); done = true; cleanup(); }
+    };
+    const cleanup = () => evs.forEach((e) => window.removeEventListener(e, tryUnmute));
+    evs.forEach((e) => window.addEventListener(e, tryUnmute, { passive: true }));
+    return cleanup;
+  }, []);
+
   return (
     <div className="cyops-root">
       <style>{CSS}</style>
@@ -406,36 +423,6 @@ export default function CyberStartLanding() {
                   loading="lazy"
                   allow="autoplay; fullscreen"
                 />
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* LADDER */}
-        <section className="band" id="ladder">
-          <div className="wrap">
-            <div className="ey"><span className="k">The progression</span></div>
-            <h2>Three tiers. One climb.</h2>
-            <p className="lead" style={{ marginTop: 14 }}>AlgorithmX grows with the learner. Cyber Ops is the top rung - where it stops being a game <em>about</em> security and becomes the real thing, done for real.</p>
-            <div className="tiers">
-              <div className="tier">
-                <div className="vb">Play</div>
-                <h3>Cyber Heroes</h3>
-                <div className="ages">Ages 6-9</div>
-                <p>Animated missions and boss battles teach the first habits of staying safe online.</p>
-              </div>
-              <div className="tier">
-                <div className="vb">Notice</div>
-                <h3>Cyber Explorers</h3>
-                <div className="ages">Ages 10-13</div>
-                <p>Step into the analyst&rsquo;s room. Learn to spot the attack and reason like a defender.</p>
-              </div>
-              <div className="tier on">
-                <span className="now">You are here</span>
-                <div className="vb">Do</div>
-                <h3>Cyber Ops</h3>
-                <div className="ages">Ages 14-17</div>
-                <p>Join a security firm and run real engagements. Attack, defend, and disclose - for real, inside the range.</p>
               </div>
             </div>
           </div>
@@ -583,7 +570,6 @@ export default function CyberStartLanding() {
               <details open><summary>Is this teaching my child to hack?<span className="pl">+</span></summary><p>Yes - and that&rsquo;s the point. You cannot defend what you don&rsquo;t understand. Cyber Ops teaches real offensive technique against fake targets in a sealed range, then turns your child around to defend and disclose. They finish as someone who protects systems, with the professional ethics to match.</p></details>
               <details><summary>Is it actually safe and legal?<span className="pl">+</span></summary><p>Completely. Every target is simulated inside the browser with no route to any real system, and every engagement starts by signing an authorization scope - the exact habit that keeps real professionals on the right side of the law. We frame the relevant UK law (the Computer Misuse Act) throughout.</p></details>
               <details><summary>What ages is it for? Do they need to be technical?<span className="pl">+</span></summary><p>Ages 14-17. No prior experience needed - the first weeks build the ground up, and early engagements guide the commands so nobody&rsquo;s staring at a blank terminal. It gets genuinely challenging by design as they rank up.</p></details>
-              <details><summary>What do they come away with?<span className="pl">+</span></summary><p>A portfolio of real security findings, written the way a professional writes them, plus a reputation rank at Cyber Ops. It&rsquo;s something they can show a teacher, put in a UCAS statement, or bring to a first conversation about a career in security.</p></details>
               <details><summary>When can we start, and how much?<span className="pl">+</span></summary><p>Cyber Ops is in development now. Join the waitlist and you&rsquo;ll be first to know when the range opens, with early-access pricing. AlgorithmX courses are a one-time payment for lifetime access.</p></details>
             </div>
           </div>

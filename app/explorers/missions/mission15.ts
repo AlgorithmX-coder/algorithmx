@@ -53,7 +53,7 @@ export const mission15: MissionManifest = {
       "Read the browser's frame",
       "Let the vault detect lies",
     ],
-    wrenLine: "The prettiest mirror is still a mirror, Operative.",
+    wrenLine: "The prettiest mirror is still a mirror, Agent.",
   },
 
   cycles: [
@@ -179,7 +179,7 @@ export const mission15: MissionManifest = {
           intro: "Pick the part of the screen you can trust.",
           situation:
             "A login page flashes a huge green padlock badge and “100% SECURE” across its banner. The address bar above it reads: gamehub-secure-login.net.",
-          prompt: "YOUR CALL, OPERATIVE:",
+          prompt: "YOUR CALL, AGENT:",
           options: [
             {
               id: "badge",
@@ -337,7 +337,7 @@ export const mission15: MissionManifest = {
     ],
     realWorldMove:
       "This week: reach one login the analyst way. Type the address, or use your bookmark. Never a message link. If autofill ever goes quiet, stop and read the address.",
-    wrenLine: "Block Three closed. TOP SECRET clearance, confirmed. The board is starting to talk, Operative.",
+    wrenLine: "Block Three closed. TOP SECRET clearance, confirmed. The board is starting to talk, Agent.",
   },
 
   voice: {

@@ -54,7 +54,7 @@ export const mission18: MissionManifest = {
       "Practice reporting a weakness",
       "Read the recruiter's message",
     ],
-    wrenLine: "Skills pick no side, Operative. You do. That is the whole mission tonight.",
+    wrenLine: "Skills pick no side, Agent. You do. That is the whole mission tonight.",
   },
 
   cycles: [
@@ -92,7 +92,7 @@ export const mission18: MissionManifest = {
           intro: "Pick what makes you an analyst, not an actor.",
           situation:
             "You could TRACE a classmate who annoyed you. You have every skill to do it, easily.",
-          prompt: "YOUR CALL, OPERATIVE:",
+          prompt: "YOUR CALL, AGENT:",
           options: [
             {
               id: "cool",

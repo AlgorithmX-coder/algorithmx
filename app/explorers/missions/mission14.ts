@@ -49,7 +49,7 @@ export const mission14: MissionManifest = {
       "Learn what a patch plugs",
       "Spot the wrapped horse",
     ],
-    wrenLine: "Read the powers before you hand them over, Operative. A pretty label proves nothing.",
+    wrenLine: "Read the powers before you hand them over, Agent. A pretty label proves nothing.",
   },
 
   cycles: [
@@ -175,7 +175,7 @@ export const mission14: MissionManifest = {
           intro: "Pick when the update happens.",
           situation:
             "Bedtime. The tablet pops up: “System update ready. Includes a security fix.” You're mid-game. The button says LATER.",
-          prompt: "YOUR CALL, OPERATIVE:",
+          prompt: "YOUR CALL, AGENT:",
           options: [
             {
               id: "later",

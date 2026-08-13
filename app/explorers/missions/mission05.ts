@@ -248,8 +248,8 @@ export const mission05: MissionManifest = {
         payload: {
           intro: "Pick which flagged message you handle first.",
           situation:
-            "Three flagged messages, one of you. The storm is live, and the queue is yours, Operative.",
-          prompt: "YOUR CALL, OPERATIVE:",
+            "Three flagged messages, one of you. The storm is live, and the queue is yours, Agent.",
+          prompt: "YOUR CALL, AGENT:",
           options: [
             {
               id: "spray",
@@ -315,7 +315,7 @@ export const mission05: MissionManifest = {
     ],
     realWorldMove:
       "This week: when an urgent message lands, check one thing first. Does the address match the name? Then open the real app yourself and check there. Two checks, ten seconds. Still feels off? Tell an adult you trust.",
-    wrenLine: "Block One closed. Phantom Hook's storm is one filed case. CONFIDENTIAL clearance, confirmed. Wear it well, Operative.",
+    wrenLine: "Block One closed. Phantom Hook's storm is one filed case. CONFIDENTIAL clearance, confirmed. Wear it well, Agent.",
   },
 
   voice: {

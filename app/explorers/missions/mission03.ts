@@ -51,7 +51,7 @@ export const mission03: MissionManifest = {
       "Break the reuse chain",
       "Build a passphrase that holds",
     ],
-    wrenLine: "Locks first, Operative. The rig doesn't sleep, and neither does his ego.",
+    wrenLine: "Locks first, Agent. The rig doesn't sleep, and neither does his ego.",
   },
 
   cycles: [
@@ -174,7 +174,7 @@ export const mission03: MissionManifest = {
           intro: "Pick which account Jake fixes first.",
           situation:
             "Jake's forum password just leaked. He reuses it in three places. He has time to fix ONE account right now.",
-          prompt: "YOUR CALL, OPERATIVE:",
+          prompt: "YOUR CALL, AGENT:",
           options: [
             {
               id: "game",

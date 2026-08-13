@@ -48,7 +48,7 @@ export const mission11: MissionManifest = {
       "Build the vault",
       "Add the second lock",
     ],
-    wrenLine: "Analysts don't memorize harder, Operative. They build better.",
+    wrenLine: "Analysts don't memorize harder, Agent. They build better.",
   },
 
   cycles: [
@@ -61,7 +61,7 @@ export const mission11: MissionManifest = {
       instruction: "Pick the plan that actually works.",
       intel: {
         beats: [
-          "Quick math, Operative.",
+          "Quick math, Agent.",
           "Every account needs a STRONG password.",
           "Every account needs a DIFFERENT one. That was Case 3.",
           "You've got about forty accounts.",
@@ -86,7 +86,7 @@ export const mission11: MissionManifest = {
           intro: "Pick the plan that actually works.",
           situation:
             "Jake's back. After Case 3 he fixed three passwords, feeling pretty pleased. But he has forty accounts and one brain.",
-          prompt: "YOUR CALL, OPERATIVE:",
+          prompt: "YOUR CALL, AGENT:",
           options: [
             {
               id: "memorize",

@@ -49,7 +49,7 @@ export const mission12: MissionManifest = {
       "Find the padlock",
       "Survive public Wi-Fi",
     ],
-    wrenLine: "Make it unreadable, Operative. Then nobody's nest matters.",
+    wrenLine: "Make it unreadable, Agent. Then nobody's nest matters.",
   },
 
   cycles: [
@@ -252,7 +252,7 @@ export const mission12: MissionManifest = {
           intro: "Pick the safe move at the café.",
           situation:
             "You're at a café on “FREE_COFFEE_WIFI”. You need to check your email. The login page shows NO padlock.",
-          prompt: "YOUR CALL, OPERATIVE:",
+          prompt: "YOUR CALL, AGENT:",
           options: [
             {
               id: "login",
