@@ -133,10 +133,14 @@ function Rings({ stage, energy, reducedMotion, segments }: { stage: AuthReactorS
       if (m) m.opacity = lerp(m.opacity, 0.12 + energy * 0.7, Math.min(1, dt * 3));
     });
   });
+  /* Inner rings ride the same face plane as the core (stacked just behind
+     it) - at their old z of -0.02/-0.04 they parallax-drifted off-centre
+     around the orb under tilt/sway, the same bug the core had when pinned
+     at the pivot. The outer ring hugs the frame lip at 0.2. */
   return (
     <>
       {radii.map((r, i) => (
-        <group key={i} ref={(el) => { if (el) groups.current[i] = el; }} position={[0, 0, i === 0 ? 0.2 : -0.02 * i]}>
+        <group key={i} ref={(el) => { if (el) groups.current[i] = el; }} position={[0, 0, i === 0 ? 0.2 : RIG.coreZ - 0.02 * i]}>
           <mesh>
             <torusGeometry args={[r, 0.012, 16, segments]} />
             <meshBasicMaterial ref={(el) => { if (el) mats.current[i] = el as THREE.MeshBasicMaterial; }} color={colors[i]} transparent opacity={0.12} toneMapped={false} />
