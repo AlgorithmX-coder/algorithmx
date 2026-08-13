@@ -91,9 +91,9 @@ function Panel({
           core's face plane (RIG.coreZ): at z=0 (the pivot plane) the six
           spokes converged at a point that projected AWAY from the orb
           under tilt/sway - the crosshair read misaligned. */}
-      <mesh position={[rim / 2, 0, RIG.coreZ]}>
+      <mesh position={[rim / 2, 0, RIG.coreZ]} renderOrder={15}>
         <boxGeometry args={[rim - 0.2, 0.03, 0.015]} />
-        <meshBasicMaterial ref={pathMat} color={REACTOR.dormant} transparent opacity={0.05} toneMapped={false} blending={THREE.AdditiveBlending} depthWrite={false} />
+        <meshBasicMaterial ref={pathMat} color={REACTOR.dormant} transparent opacity={0.05} toneMapped={false} blending={THREE.AdditiveBlending} depthWrite={false} depthTest={false} />
       </mesh>
       {/* Status light pip near the frame */}
       <mesh position={[rim + 0.2, 0, 0.18]}>
@@ -145,9 +145,14 @@ function Rings({ stage, energy, reducedMotion, segments }: { stage: AuthReactorS
     <>
       {radii.map((r, i) => (
         <group key={i} ref={(el) => { if (el) groups.current[i] = el; }} position={[0, 0, i === 0 ? 0.2 : RIG.coreZ]}>
-          <mesh>
+          {/* Inner rings draw ABOVE the armour (renderOrder + no depth
+              test, like the orb): depth-tested they get top-clipped by
+              the tilted panels while the bottom arc stays visible, and
+              asymmetric arcs READ as off-centre even though the ring is
+              geometrically concentric with the orb. */}
+          <mesh renderOrder={i === 0 ? 0 : 16}>
             <torusGeometry args={[r, 0.012, 16, segments]} />
-            <meshBasicMaterial ref={(el) => { if (el) mats.current[i] = el as THREE.MeshBasicMaterial; }} color={colors[i]} transparent opacity={0.12} toneMapped={false} />
+            <meshBasicMaterial ref={(el) => { if (el) mats.current[i] = el as THREE.MeshBasicMaterial; }} color={colors[i]} transparent opacity={0.12} toneMapped={false} depthTest={i === 0} depthWrite={false} />
           </mesh>
         </group>
       ))}
