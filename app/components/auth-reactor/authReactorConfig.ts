@@ -93,4 +93,10 @@ export const RIG = {
   ringSubmitBoost: 3.2, // brief acceleration on submit
   tilt: [0.16, 0.12, 0] as [number, number, number],
   scale: 0.85,
+  /** Z of the core assembly: the dial's FACE plane (panel mid-plane ≈0.1,
+   *  front rings 0.16–0.2). The core used to sit at the pivot (z=0), which
+   *  under the static tilt projects to a different screen point than the
+   *  face — the orb read off-centre inside the panel aperture. On the face
+   *  plane, core and aperture tilt/sway together and stay aligned. */
+  coreZ: 0.14,
 } as const;

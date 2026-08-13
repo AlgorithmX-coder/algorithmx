@@ -177,20 +177,22 @@ function Core({ stage, energy, reducedMotion, coreOverride, burst }: { stage: Au
     if (glassMat.current) glassMat.current.opacity = lerp(glassMat.current.opacity, 0.22 - e * 0.08, k);
   });
 
+  /* The whole assembly rides the dial's FACE plane (RIG.coreZ) so it stays
+     centred inside the panel aperture under the static tilt and idle sway
+     (at the old pivot z=0 it parallax-drifted out of the aperture). The
+     shell is sized to nest INSIDE the closed-panel aperture (~0.30), and
+     every layer draws above the armour (renderOrder + no depth test, same
+     trick the LED already used) so flaps can never clip the orb. */
   return (
-    <group>
-      <mesh>
-        <sphereGeometry args={[0.46, 48, 48]} />
-        <meshPhysicalMaterial ref={glassMat} color="#0d1430" roughness={0.08} metalness={0} ior={1.45} clearcoat={1} transparent opacity={0.22} envMapIntensity={1.8} depthWrite={false} />
+    <group position={[0, 0, RIG.coreZ]}>
+      <mesh ref={crystal} renderOrder={18}>
+        <icosahedronGeometry args={[0.22, 1]} />
+        <meshStandardMaterial ref={crystalMat} color={REACTOR.violet} emissive={REACTOR.violet} emissiveIntensity={0.3} roughness={0.25} metalness={0.1} toneMapped={false} transparent depthTest={false} depthWrite={false} />
       </mesh>
-      <mesh ref={crystal}>
-        <icosahedronGeometry args={[0.32, 1]} />
-        <meshStandardMaterial ref={crystalMat} color={REACTOR.violet} emissive={REACTOR.violet} emissiveIntensity={0.3} roughness={0.25} metalness={0.1} toneMapped={false} />
+      <mesh renderOrder={19}>
+        <sphereGeometry args={[0.3, 48, 48]} />
+        <meshPhysicalMaterial ref={glassMat} color="#0d1430" roughness={0.08} metalness={0} ior={1.45} clearcoat={1} transparent opacity={0.22} envMapIntensity={1.8} depthTest={false} depthWrite={false} />
       </mesh>
-      {/* Emitter LED — pinned at the rig pivot (the dial's visual centre is
-          invariant under tilt/sway there; any z-offset parallax-shifts it) and
-          drawn above the armour (transparent pass + renderOrder + no depth
-          test) so opening panels can never cross in front of the light. */}
       <mesh ref={emitter} renderOrder={20}>
         <sphereGeometry args={[0.14, 32, 32]} />
         <meshBasicMaterial color={REACTOR.white} toneMapped={false} transparent depthTest={false} depthWrite={false} />
