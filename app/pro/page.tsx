@@ -1,20 +1,30 @@
 import type { Metadata } from "next";
-import LessonPlayer from "./learn/LessonPlayer";
-import week01 from "./lessons/week01";
+import { auth } from "@/app/lib/auth";
+import { prisma } from "@/app/lib/prisma";
+import { hasEntitlement } from "@/app/lib/entitlements";
+import CourseHub from "./CourseHub";
 
 /**
- * /pro - Cyber Pro lesson prototype (Week 1).
+ * /pro - the Cyber Pro course home (the shell).
  *
- * Behind the site password gate via middleware like everything else;
- * noindex until the tier launches. NOT yet entitlement-gated: the
- * auth() + hasEntitlement(userId, "cyberstart-pro") pair goes in when
- * the surface ships to buyers (see docs/pro/cyber-pro-design.md).
+ * Viewable behind the site gate so a curious learner can see the whole
+ * course map. Act 1 is free; Acts 2 to 4 unlock with the £99 purchase,
+ * checked here via the existing Entitlement model (slug cyberstart-pro).
+ * Progress is client-side (localStorage) for now.
  */
 export const metadata: Metadata = {
-  title: "Week 1 | Cyber Pro",
+  title: "Your course | Cyber Pro",
   robots: { index: false, follow: false },
 };
 
-export default function ProLessonPage() {
-  return <LessonPlayer lesson={week01} />;
+export const dynamic = "force-dynamic";
+
+export default async function ProHubPage() {
+  const session = await auth();
+  const userId = session?.user?.id;
+  const [product, hasPro] = await Promise.all([
+    prisma.product.findUnique({ where: { slug: "cyberstart-pro" }, select: { priceGBP: true } }),
+    userId ? hasEntitlement(userId, "cyberstart-pro") : Promise.resolve(false),
+  ]);
+  return <CourseHub priceGBP={product?.priceGBP ?? 9900} hasPro={hasPro} loggedIn={Boolean(userId)} />;
 }
