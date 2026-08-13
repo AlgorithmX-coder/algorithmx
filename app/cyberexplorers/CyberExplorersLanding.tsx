@@ -776,9 +776,9 @@ export default function CyberExplorersLanding() {
         </div>
       </nav>
 
-      <div style={{ position: "relative", zIndex: 1, maxWidth: 1120, margin: "0 auto", padding: "0 24px" }}>
+      <div style={{ position: "relative", zIndex: 1, maxWidth: 1200, margin: "0 auto", padding: "0 24px" }}>
         {/* ── HERO — matrix-terminal cold open ─────────────────────── */}
-        <section style={{ position: "relative", display: "grid", gridTemplateColumns: "minmax(0, 1.05fr) minmax(0, 1fr)", gap: 52, alignItems: "center", padding: "86px 0 54px" }} className="cx-two-col">
+        <section style={{ position: "relative", display: "grid", gridTemplateColumns: "minmax(0, 0.88fr) minmax(0, 1.22fr)", gap: 44, alignItems: "center", padding: "86px 0 54px" }} className="cx-two-col">
           <div className="cx-hero-in">
             <Eyebrow text="AlgorithmX Cybersecurity · Ages 10–13" color={T.arcCyan} />
             <h1 style={{ fontFamily: BODY, fontSize: "clamp(44px, 6.2vw, 74px)", fontWeight: 800, lineHeight: 1.02, letterSpacing: "-0.03em", margin: "16px 0 18px" }}>
