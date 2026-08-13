@@ -89,16 +89,19 @@ const products = [
     content: [],
   },
   {
+    // Adult tier. Display name is "Cyber Pro"; the slug keeps the legacy
+    // value because renaming it is a routing/Stripe decision of its own.
+    // Canon: docs/pro/cyber-pro-design.md (18+, £99 owner-locked 2026-08).
     slug: "cyberstart-pro",
-    name: "CyberStart Pro",
-    ageMin: 16,
-    ageMax: 18,
-    priceGBP: 14900,
+    name: "Cyber Pro",
+    ageMin: 18,
+    ageMax: 99,
+    priceGBP: 9900,
     weeks: 0,
     status: ProductStatus.COMING_SOON,
     emoji: "🎓",
-    ageRange: "16–18+",
-    duration: "75 min/week",
+    ageRange: "18+",
+    duration: "2 hrs/week",
     weeksCount: 0,
     content: [],
   },

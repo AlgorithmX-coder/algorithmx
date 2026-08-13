@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 import CyberStartProLanding from "./CyberStartProLanding";
 
 /**
- * /cyberstart-pro — public marketing landing for the CyberStart Pro track.
+ * /cyberstart-pro — public marketing landing for the Cyber Pro track.
  *
  * Public: NOT entitlement-gated. Anyone can browse before buying.
  * The entitlement gate lives on the lesson/dashboard surfaces only.
