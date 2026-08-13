@@ -173,7 +173,7 @@ function MissionMap({ manifest, pos, stampNew }: { manifest: MissionManifest; po
 
 /* ============================================================== runtime */
 
-export default function MissionRuntime({ manifest, devStartBeat }: { manifest: MissionManifest; devStartBeat?: BeatPos["beat"] }) {
+export default function MissionRuntime({ manifest, devStartBeat, onExit, onNextCase }: { manifest: MissionManifest; devStartBeat?: BeatPos["beat"]; onExit?: () => void; onNextCase?: () => void }) {
   const reduced = useReducedMotion();
   const audio = useSignalAudio();
   const storageKey = checkpointStorageKey(manifest.id);
@@ -362,6 +362,11 @@ export default function MissionRuntime({ manifest, devStartBeat }: { manifest: M
       <div style={{ position: "relative", zIndex: 2, borderBottom: `1px solid ${T.arcCyan}2E`, background: "rgba(8,14,26,0.82)", backdropFilter: "blur(8px)" }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 10, padding: "11px 18px", flexWrap: "wrap" }}>
           <span style={{ display: "inline-flex", alignItems: "center", gap: 9, fontFamily: MONO, fontSize: 11.5, letterSpacing: "0.05em", color: T.textSecondary }}>
+            {onExit && (
+              <button onClick={onExit} aria-label="Back to the mission map" style={{ fontFamily: MONO, fontSize: 10.5, letterSpacing: "0.06em", color: T.textSecondary, background: "transparent", border: `1px solid ${T.hairline}`, borderRadius: 3, padding: "4px 9px", cursor: "pointer" }}>
+                ← MISSIONS
+              </button>
+            )}
             <span aria-hidden style={{ display: "inline-flex", gap: 5 }}>
               <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#ff5f56" }} />
               <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#ffbd2e" }} />
@@ -429,7 +434,7 @@ export default function MissionRuntime({ manifest, devStartBeat }: { manifest: M
               <BossScene manifest={manifest} reduced={reduced} audio={audio} emit={emit} onNext={advance} />
             )}
             {pos.beat === "debrief" && <ReportScene manifest={manifest} reduced={reduced} onNext={advance} />}
-            {pos.beat === "closed" && <RewardsScene manifest={manifest} reduced={reduced} audio={audio} emit={emit} xp={xp} />}
+            {pos.beat === "closed" && <RewardsScene manifest={manifest} reduced={reduced} audio={audio} emit={emit} xp={xp} onExit={onExit} onNextCase={onNextCase} />}
           </div>
         )}
       </div>
@@ -943,7 +948,7 @@ function ReportScene({ manifest, reduced, onNext }: { manifest: MissionManifest;
 
 /* ------------------------------------------------------------- rewards */
 
-function RewardsScene({ manifest, reduced, audio, emit, xp }: { manifest: MissionManifest; reduced: boolean; audio: ReturnType<typeof useSignalAudio>; emit: (e: AwardEvent) => void; xp: number }) {
+function RewardsScene({ manifest, reduced, audio, emit, xp, onExit, onNextCase }: { manifest: MissionManifest; reduced: boolean; audio: ReturnType<typeof useSignalAudio>; emit: (e: AwardEvent) => void; xp: number; onExit?: () => void; onNextCase?: () => void }) {
   const [stamped, setStamped] = useState(false);
   useEffect(() => {
     emit({ type: "CASE_CLOSED", sourceKey: manifest.id });
@@ -953,6 +958,34 @@ function RewardsScene({ manifest, reduced, audio, emit, xp }: { manifest: Missio
     }, reduced ? 150 : 900);
     return () => window.clearTimeout(t);
   }, [emit, manifest.id, reduced, audio]);
+
+  // Real program progress: count every case whose saved checkpoint is closed
+  // (plus this one, which just closed), so the clearance line reflects reality
+  // instead of a hardcoded 1 / 5.
+  const PROGRAM_TOTAL = 20;
+  const closedTotal = useMemo(() => {
+    const ids = new Set<string>();
+    if (typeof window !== "undefined") {
+      for (let i = 0; i < localStorage.length; i++) {
+        const k = localStorage.key(i);
+        if (!k || !k.startsWith("explorers:checkpoint:")) continue;
+        try {
+          const cp = JSON.parse(localStorage.getItem(k) || "{}");
+          if (cp?.pos?.beat === "closed" && typeof cp?.missionId === "string") ids.add(cp.missionId);
+        } catch {}
+      }
+    }
+    ids.add(manifest.id);
+    return ids.size;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [stamped, manifest.id]);
+  const { rank, tier } = useMemo(() => {
+    if (closedTotal >= PROGRAM_TOTAL) return { rank: "ULTRA", tier: "ULTRA" };
+    if (closedTotal >= 15) return { rank: "SPECIALIST", tier: "ULTRA" };
+    if (closedTotal >= 10) return { rank: "SENIOR AGENT", tier: "TOP SECRET" };
+    if (closedTotal >= 5) return { rank: "AGENT", tier: "SECRET" };
+    return { rank: "TRAINEE", tier: "CONFIDENTIAL" };
+  }, [closedTotal]);
 
   return (
     <section style={{ maxWidth: 620, margin: "0 auto", paddingTop: 6 }}>
@@ -992,9 +1025,9 @@ function RewardsScene({ manifest, reduced, audio, emit, xp }: { manifest: Missio
       </div>
 
       <div style={{ marginTop: 18, background: T.panel, border: `1px solid ${T.hairline}`, borderRadius: 3, padding: "14px 18px", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 10 }}>
-        <span style={{ fontFamily: MONO, fontSize: 12, letterSpacing: "0.08em", color: T.clearanceBrass }}>CLEARANCE: TRAINEE ▸ CONFIDENTIAL</span>
+        <span style={{ fontFamily: MONO, fontSize: 12, letterSpacing: "0.08em", color: T.clearanceBrass }}>CLEARANCE: {rank} ▸ {tier}</span>
         <span style={{ fontFamily: MONO, fontSize: 12, color: T.textSecondary }}>
-          CASES CLOSED&nbsp;<span style={{ color: T.clearanceBrass }}>{stamped ? "1" : "0"}</span> / 5
+          CASES CLOSED&nbsp;<span style={{ color: T.clearanceBrass }}>{stamped ? closedTotal : Math.max(0, closedTotal - 1)}</span> / {PROGRAM_TOTAL}
         </span>
       </div>
 
@@ -1007,6 +1040,18 @@ function RewardsScene({ manifest, reduced, audio, emit, xp }: { manifest: Missio
           <p style={{ marginTop: 20, fontFamily: MONO, fontSize: 13.5, color: T.textSecondary, letterSpacing: "0.06em" }}>
             That&rsquo;s the mission, Agent. ARC out.
           </p>
+          <div style={{ marginTop: 26, display: "flex", justifyContent: "center", gap: 12, flexWrap: "wrap" }}>
+            {onNextCase && (
+              <button onClick={onNextCase} style={{ fontFamily: MONO, fontSize: 13, fontWeight: 700, letterSpacing: "0.06em", color: T.inkBlack, background: T.actionAmber, border: "none", borderRadius: 4, padding: "12px 24px", cursor: "pointer", boxShadow: `0 0 24px ${T.actionAmber}55` }}>
+                NEXT CASE →
+              </button>
+            )}
+            {onExit && (
+              <button onClick={onExit} style={{ fontFamily: MONO, fontSize: 13, fontWeight: 700, letterSpacing: "0.06em", color: T.arcCyan, background: "transparent", border: `1px solid ${T.arcCyan}88`, borderRadius: 4, padding: "12px 24px", cursor: "pointer" }}>
+                ← BACK TO MISSIONS
+              </button>
+            )}
+          </div>
         </div>
       )}
     </section>
