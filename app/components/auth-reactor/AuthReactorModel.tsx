@@ -87,8 +87,11 @@ function Panel({
 
   return (
     <group rotation={[0, 0, a]}>
-      {/* Energy path (rim → core) revealed as the panel opens */}
-      <mesh position={[rim / 2, 0, 0]}>
+      {/* Energy path (rim → core) revealed as the panel opens. On the
+          core's face plane (RIG.coreZ): at z=0 (the pivot plane) the six
+          spokes converged at a point that projected AWAY from the orb
+          under tilt/sway - the crosshair read misaligned. */}
+      <mesh position={[rim / 2, 0, RIG.coreZ]}>
         <boxGeometry args={[rim - 0.2, 0.03, 0.015]} />
         <meshBasicMaterial ref={pathMat} color={REACTOR.dormant} transparent opacity={0.05} toneMapped={false} blending={THREE.AdditiveBlending} depthWrite={false} />
       </mesh>
@@ -133,14 +136,15 @@ function Rings({ stage, energy, reducedMotion, segments }: { stage: AuthReactorS
       if (m) m.opacity = lerp(m.opacity, 0.12 + energy * 0.7, Math.min(1, dt * 3));
     });
   });
-  /* Inner rings ride the same face plane as the core (stacked just behind
-     it) - at their old z of -0.02/-0.04 they parallax-drifted off-centre
-     around the orb under tilt/sway, the same bug the core had when pinned
-     at the pivot. The outer ring hugs the frame lip at 0.2. */
+  /* Inner rings sit EXACTLY on the core's face plane - any z stagger at
+     all reads as the ring circling the orb off-centre under tilt/sway
+     (owner flagged it twice at high zoom). Coplanar is safe: additive
+     blending + depthWrite:false means no z-fighting, and the orb draws
+     above everything regardless. The outer ring hugs the frame lip. */
   return (
     <>
       {radii.map((r, i) => (
-        <group key={i} ref={(el) => { if (el) groups.current[i] = el; }} position={[0, 0, i === 0 ? 0.2 : RIG.coreZ - 0.02 * i]}>
+        <group key={i} ref={(el) => { if (el) groups.current[i] = el; }} position={[0, 0, i === 0 ? 0.2 : RIG.coreZ]}>
           <mesh>
             <torusGeometry args={[r, 0.012, 16, segments]} />
             <meshBasicMaterial ref={(el) => { if (el) mats.current[i] = el as THREE.MeshBasicMaterial; }} color={colors[i]} transparent opacity={0.12} toneMapped={false} />
