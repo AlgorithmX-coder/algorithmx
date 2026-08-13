@@ -10,6 +10,10 @@
  * Safety canon: the assembly runs as an AUTHORIZED ARC AUDIT of a
  * volunteer's test account (built from her old posts, with her help).
  * Defensive framing throughout — never "how to stalk".
+ *
+ * VOICE PASS v1: WREN wry-mentor voice; PACKRAT is a comic data-hoarding
+ * magpie who never breaks in ("you left it out, I picked it up"). Teaching,
+ * ids, answers all unchanged.
  */
 
 import Mission04Incident from "../incidents/Mission04Incident";
@@ -23,26 +27,26 @@ export const mission04: MissionManifest = {
   classification: "CONFIDENTIAL",
   actor: {
     codename: "PACKRAT",
-    mo: "Collects crumbs you drop. Assembles the file.",
+    mo: "Never breaks in. Grabs the crumbs you drop and files them away.",
     portrait: "/explorers/actors/packrat.png",
   },
 
-  hook: "Four harmless posts just became a file about a student. Let's take it apart.",
+  hook: "Four harmless posts, and PACKRAT just built a file on a student out of the scraps. Let's take it apart.",
   scene: "/explorers/scenes/m04-cold-open.jpg",
 
   transmission: {
     headline: "AUCTION DETECTED",
     lines: [
       "There's an auction running on a hidden channel.",
-      "The item for sale: a file about a student.",
+      "The lot for sale: a file about a student.",
       "School. Schedule. Birthday. All of it.",
-      "She never told anyone. She posted it, in pieces.",
+      "She never told anyone. She posted it in pieces, and PACKRAT pocketed every crumb.",
     ],
   },
 
   briefing: {
     summary:
-      "PACKRAT never breaks in. He collects what's already outside.",
+      "PACKRAT never breaks in. Why would he? He just pockets what you left lying outside.",
     objectives: [
       "See the assembly attack",
       "Read what photos leak",
@@ -61,12 +65,12 @@ export const mission04: MissionManifest = {
       instruction: "Pin the 4 crumbs. Then chain them.",
       intel: {
         beats: [
-          "No single post gives PACKRAT anything.",
-          "That's the trap: each crumb feels harmless.",
+          "One post on its own? PACKRAT can't do a thing with it.",
+          "That's the trap: every crumb feels harmless.",
           "A handle here. A photo there. A joke about birthdays.",
-          "Alone: nothing. Together: a file.",
+          "Alone, they're nothing. Stacked in his nest, they're a file.",
           "ARC calls it the assembly attack.",
-          "Today we run one, on a volunteer's test account, with her OK.",
+          "Tonight we run one ourselves, on a volunteer's test account, with her OK.",
         ],
         prediction: {
           question: "Priya's posts each share one tiny thing. What's the real danger?",
@@ -76,8 +80,8 @@ export const mission04: MissionManifest = {
             "Posting too often looks uncool",
           ],
           answer: 1,
-          right: "Exactly. Crumbs combine. The file is bigger than any post.",
-          wrong: "No single post is the problem. Together, they build a file.",
+          right: "Exactly. Crumbs combine. The file is bigger than any single post.",
+          wrong: "No single post is the problem. Stacked together, they build a file.",
         },
       },
       fieldwork: {
@@ -138,7 +142,7 @@ export const mission04: MissionManifest = {
             },
           ],
           stage2Prompt: "Now chain it like PACKRAT does: order the crumbs into a file",
-          doneLine: "Who → where → when → birthday. Four posts, one file. That's assembly.",
+          doneLine: "Who → where → when → birthday. Four posts, one file. That's assembly, and PACKRAT never lifted a claw.",
         },
       },
       checkpoint: {
@@ -172,15 +176,15 @@ export const mission04: MissionManifest = {
       id: "photo",
       title: "Read the photo",
       concept: "A photo leaks more than its subject",
-      promise: "You'll learn to see everything a photo gives away.",
+      promise: "You'll learn to see everything a photo quietly gives away.",
       instruction: "Tap the 3 leaks hiding in this photo.",
       intel: {
         beats: [
           "A photo shows what you pointed it at.",
           "It also shows everything BEHIND what you pointed it at.",
           "Uniform crests. Street signs. Reflections in windows.",
-          "And underneath: the location tag your phone added quietly.",
-          "You checked the smile. PACKRAT checks the background.",
+          "And underneath, the location tag your phone stapled on without asking.",
+          "You checked the smile. PACKRAT checked the background.",
         ],
         prediction: {
           question: "What does PACKRAT look at first in a photo?",
@@ -190,7 +194,7 @@ export const mission04: MissionManifest = {
             "How many likes it got",
           ],
           answer: 1,
-          right: "Right. The subject is for friends. The background is for collectors.",
+          right: "Right. The subject is for your friends. The background is for the collector.",
           wrong: "Likes don't feed a file. Backgrounds and tags do.",
         },
       },
@@ -226,7 +230,7 @@ export const mission04: MissionManifest = {
               why: "The phone tagged the spot automatically. Nobody typed it.",
             },
           ],
-          doneLine: "Three leaks, zero of them in the caption. That's why PACKRAT loves photos.",
+          doneLine: "Three leaks, and not one of them in the caption. That's why PACKRAT loves a photo.",
         },
       },
       checkpoint: {
@@ -264,10 +268,10 @@ export const mission04: MissionManifest = {
       instruction: "Pick what Priya scrubs first.",
       intel: {
         beats: [
-          "One more thing makes assembly easy: the same handle everywhere.",
+          "One thing makes assembly even easier: the same handle everywhere.",
           "@priya_riverdale09 on games, photos, forums.",
-          "Same name = one thread connecting every crumb.",
-          "You can't delete the internet. You don't need to.",
+          "Same name = one thread tying every crumb together.",
+          "You can't delete the internet. Good news: you don't need to.",
           "Analysts scrub by priority: the crumb that hurts most goes first.",
         ],
         prediction: {
@@ -307,7 +311,7 @@ export const mission04: MissionManifest = {
               id: "nuke",
               label: "Delete the whole account",
               outcome:
-                "That's panic, not analysis. She loses everything, learns nothing, and the file already collected stays collected. Scrub smart instead.",
+                "That's panic, not analysis. She loses everything, learns nothing, and the file PACKRAT already built stays built. Scrub smart instead.",
             },
           ],
         },
@@ -364,7 +368,7 @@ export const mission04: MissionManifest = {
   },
 
   dossier: {
-    mo: "Collects the crumbs you drop and assembles them into a file. Then sells it.",
-    defeatedBy: "Anyone who checks the background, kills the tags, and scrubs the where-and-when first.",
+    mo: "Never breaks in. He pockets the crumbs you drop, stacks them into a file, and sells it. His whole motto: you left it out, he picked it up.",
+    defeatedBy: "Anyone who checks the background, kills the location tags, and scrubs the where-and-when before anything else.",
   },
 };

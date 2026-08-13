@@ -8,6 +8,10 @@
  * layered defenses as one system; every layer catches what the last
  * one missed). Incident command — triage, contain, report, for a
  * whole-school scenario.
+ *
+ * VOICE PASS v1: the coordinator (ZERO) moves in cold silence, not
+ * taunts; the wave stays tense and clever; WREN a touch graver.
+ * Strings only; teaching, ids, answers, order, and flags unchanged.
  */
 
 import Mission19Incident from "../incidents/Mission19Incident";
@@ -25,14 +29,14 @@ export const mission19: MissionManifest = {
     portrait: "/explorers/actors/coordinator.png",
   },
 
-  hook: "The coordinator sends everyone at once. Six actors, one wave, your whole school. Hold the line.",
+  hook: "The coordinator moves at last. Every actor at once, one wave, your whole school. No warning, no noise. Hold the line.",
   scene: "/explorers/scenes/m19-cold-open.jpg",
 
   transmission: {
     headline: "ALL FREQUENCIES",
     lines: [
       "This is it. Not one actor. All of them.",
-      "The coordinator lit the whole network at once.",
+      "The coordinator lit the whole network at once, quietly, all in one breath.",
       "Your entire school is the target tonight.",
       "Everything you've learned. All of it. Right now.",
     ],
@@ -314,7 +318,7 @@ export const mission19: MissionManifest = {
             },
             {
               scene:
-                "3:45pm. The attack is failing. The coordinator goes quiet, then sends one testing message to YOU alone.",
+                "3:45pm. The attack is failing. The coordinator goes still, then sends one quiet, testing message to YOU alone.",
               question: "what does the analyst do with that?",
               options: [
                 "Reply and taunt them for losing",

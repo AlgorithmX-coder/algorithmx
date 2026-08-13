@@ -10,6 +10,9 @@
  * Safety canon (Redoubt boundary): the child WATCHES and ANALYZES the
  * rig — in the fiction it runs inside ARC's sealed range. The child
  * never operates it, and audits are volunteer-authorized.
+ *
+ * VOICE PASS v1: kid-voice + humour; SKELETON KEY is a cocky lock-picker
+ * who brags he can crack anything. Teaching, ids, answers all unchanged.
  */
 
 import Mission03Incident from "../incidents/Mission03Incident";
@@ -23,32 +26,32 @@ export const mission03: MissionManifest = {
   classification: "CONFIDENTIAL",
   actor: {
     codename: "SKELETON KEY",
-    mo: "Doesn't trick you. Guesses you.",
+    mo: "Doesn't trick you. He guesses you. Swears every lock talks eventually.",
     portrait: "/explorers/actors/skeleton-key.png",
   },
 
-  hook: "Someone is guessing student passwords. Three hundred tries a second. Let's beat it.",
+  hook: "Someone's guessing student passwords. Three hundred tries a second, no coffee breaks. Let's beat him at his own game.",
   scene: "/explorers/scenes/m03-cold-open.jpg",
 
   transmission: {
     headline: "RIG DETECTED",
     lines: [
-      "A password-guessing rig just lit up on ARC's board.",
-      "It's pointed at student accounts.",
-      "Three hundred guesses a second. No tricks, no bait.",
-      "Just math. Let's learn how it thinks, then beat it.",
+      "A password-guessing rig just lit up ARC's board.",
+      "It's aimed straight at student accounts.",
+      "Three hundred guesses a second. No tricks, no bait, just cold math.",
+      "The owner calls himself SKELETON KEY. Says every lock talks. Let's shut him up.",
     ],
   },
 
   briefing: {
     summary:
-      "SKELETON KEY doesn't fool people. He guesses them. Tonight we learn his math.",
+      "SKELETON KEY doesn't fool people. He guesses them. Tonight we learn his math and jam it.",
     objectives: [
       "See how the rig guesses",
       "Break the reuse chain",
       "Build a passphrase that holds",
     ],
-    wrenLine: "Locks first, Operative. The rig doesn't sleep.",
+    wrenLine: "Locks first, Operative. The rig doesn't sleep, and neither does his ego.",
   },
 
   cycles: [
@@ -61,12 +64,12 @@ export const mission03: MissionManifest = {
       instruction: "Tap the 3 passwords the rig eats first.",
       intel: {
         beats: [
-          "The rig is running in ARC's sealed range right now.",
-          "Watch it. It isn't guessing randomly.",
+          "The rig's running in ARC's sealed range right now. Behind glass. Relax.",
+          "Watch it work. It isn't guessing at random.",
           "It runs lists: names, pets, birthdays, keyboard rows.",
-          "Millions of common patterns, most likely first.",
-          "Millie2013! looks personal. It's on the list.",
-          "The rig never met Millie. It didn't need to.",
+          "Millions of common patterns, most likely ones first.",
+          "Millie2013! looks personal, right? It's already on the list.",
+          "SKELETON KEY never met Millie. Didn't need to. That's the con.",
         ],
         prediction: {
           question: "Why does Millie2013! fall in seconds?",
@@ -76,8 +79,8 @@ export const mission03: MissionManifest = {
             "The ! gives it away",
           ],
           answer: 1,
-          right: "Exactly. It's not magic. It's a list. Common patterns go first.",
-          wrong: "The rig never met her. It just tries the most common patterns first.",
+          right: "Exactly. No magic, just a list. The common stuff goes first.",
+          wrong: "The rig never met her. It just tries the most common patterns first, and hers is one.",
         },
       },
       fieldwork: {
@@ -99,20 +102,20 @@ export const mission03: MissionManifest = {
             {
               id: "pattern",
               label: "Name + year",
-              why: "Name-plus-year is the rig's first guess family. Falls in under a second.",
+              why: "Name-plus-year is the rig's favorite opener. Down in under a second.",
             },
             {
               id: "reuse",
               label: "Same key twice",
-              why: "Same key, two doors. One leak opens both.",
+              why: "Same key, two doors. One leak and both swing open.",
             },
             {
               id: "pet",
               label: "Pet name",
-              why: "Biscuit is in Jake's posts. Rigs read posts.",
+              why: "Biscuit's all over Jake's posts. The rig reads posts too.",
             },
           ],
-          doneLine: "Three soft locks. The rig eats these for breakfast. The library one outlives it.",
+          doneLine: "Three soft locks, gone. The rig eats these for breakfast. That library one will still be standing.",
         },
       },
       checkpoint: {
@@ -146,12 +149,12 @@ export const mission03: MissionManifest = {
       instruction: "Pick which account Jake fixes first.",
       intel: {
         beats: [
-          "Last month a tiny game forum leaked its passwords.",
-          "SKELETON KEY bought the list.",
-          "Now he tries each stolen key on every other door.",
-          "Email. Games. School. Same key, same minute.",
+          "Last month a tiny game forum spilled its passwords.",
+          "SKELETON KEY bought the whole list. Cheap, apparently.",
+          "Now he tries every stolen key on every other door.",
+          "Email, games, school. Same key, same minute.",
           "A reused password isn't one problem.",
-          "It's every problem, all at once.",
+          "It's every problem at once, gift-wrapped.",
         ],
         prediction: {
           question: "A forum leaks your password. Which door does SK try first?",
@@ -161,8 +164,8 @@ export const mission03: MissionManifest = {
             "None: one site is one site",
           ],
           answer: 1,
-          right: "Right. Email is the master door. Reset any lock from inside it.",
-          wrong: "The forum is already done. Email is the master door. It resets everything.",
+          right: "Right. Email's the master door. From inside it he resets every other lock.",
+          wrong: "The forum's old news. Email is the master door, and it resets everything.",
         },
       },
       fieldwork: {
@@ -177,7 +180,7 @@ export const mission03: MissionManifest = {
               id: "game",
               label: "The game account: the leak came from there",
               outcome:
-                "The leak started there, but the damage moved on. His email is the master door, and SK is already at it.",
+                "The leak started there, sure, but SKELETON KEY already moved on. Email's the master door, and he's picking at it right now.",
             },
             {
               id: "email",
@@ -190,7 +193,7 @@ export const mission03: MissionManifest = {
               id: "social",
               label: "The socials: losing those would be so embarrassing",
               outcome:
-                "Embarrassing, sure. But email can take everything, including the socials. Master door first.",
+                "Embarrassing, yeah. But email can grab everything, socials included. Master door first.",
             },
           ],
         },
@@ -231,18 +234,18 @@ export const mission03: MissionManifest = {
       intel: {
         beats: [
           "So what actually survives the rig?",
-          "Not cleverness. Length.",
-          "P@ssw0rd! looks tough. Falls in minutes. Swaps are on the list.",
-          "Three random words beat one clever word.",
-          "banana-rocket-lampshade-9 gives the rig centuries of work.",
-          "Long. Random. Never reused. That's the whole spell.",
+          "Not cleverness. Boring old length.",
+          "P@ssw0rd! looks tough. Falls in minutes. The rig knows every letter-swap.",
+          "Three random words beat one clever word, every time.",
+          "banana-rocket-lampshade-9 buys you centuries of the rig's time.",
+          "Long, random, never reused. That's the whole trick.",
         ],
         prediction: {
           question: "Which password survives the rig longest?",
           options: ["P@ssw0rd!2026", "banana-rocket-lampshade-9", "Jake!!!"],
           answer: 1,
-          right: "Length wins. Twenty-five characters of nonsense is a wall.",
-          wrong: "Letter-swaps are on the rig's list too. Length and randomness win.",
+          right: "Length wins. Twenty-five characters of pure nonsense is a wall.",
+          wrong: "Letter-swaps are on the rig's list too. Length and randomness are what win.",
         },
       },
       fieldwork: {
@@ -263,7 +266,7 @@ export const mission03: MissionManifest = {
             { id: "capital", label: "Capitalize the first letter", matches: false },
           ],
           picks: 3,
-          doneLine: "Long, random, unique. The rig just became SKELETON KEY's problem.",
+          doneLine: "Long, random, unique. Now the rig is SKELETON KEY's problem, not yours.",
         },
       },
       checkpoint: {
@@ -302,13 +305,13 @@ export const mission03: MissionManifest = {
 
   debrief: {
     report: [
-      "One guessing rig dissected: lists first, patterns first, no magic anywhere.",
-      "Reuse chain broken: master door locked first, then down the list.",
-      "New wall built: long, random, unique. The rig bounced.",
+      "One guessing rig taken apart: lists first, patterns first, no magic anywhere.",
+      "Reuse chain snapped: master door locked first, then down the list.",
+      "New wall built, long, random, unique. The rig bounced right off it.",
     ],
     realWorldMove:
       "This week: find your one most-reused password and change it. Three random words, different everywhere. If the account is shared with family, do it together with a parent.",
-    wrenLine: "Ten thousand doors held. Your locks, your rules. Sign out.",
+    wrenLine: "Ten thousand doors, all still locked. Your rules now, not his. Sign out.",
   },
 
   voice: {
@@ -318,7 +321,7 @@ export const mission03: MissionManifest = {
   },
 
   dossier: {
-    mo: "Doesn't trick you. Guesses you. Names, pets, birthdays, then every stolen key on every door.",
-    defeatedBy: "Long random passphrases, never reused. His rig does the math and gives up.",
+    mo: "Doesn't trick you, he guesses you. Names, pets, birthdays, then every stolen key on every door. Swears every lock talks eventually.",
+    defeatedBy: "Long random passphrases, never reused. The rig does the math, sulks, and gives up.",
   },
 };

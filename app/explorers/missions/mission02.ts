@@ -7,6 +7,9 @@
  * the net, and YOU are the catch. Mechanism over slogan: Heroes taught
  * "free currency is a scam"; this teaches how the funnel is built and
  * therefore where to cut it.
+ *
+ * VOICE PASS v1: WREN wry-mentor + SIREN as a honeyed "collector" who
+ * makes every mark feel chosen; teaching, ids, answers all unchanged.
  */
 
 import Mission02Incident from "../incidents/Mission02Incident";
@@ -20,24 +23,24 @@ export const mission02: MissionManifest = {
   classification: "CONFIDENTIAL",
   actor: {
     codename: "SIREN",
-    mo: "Gives to get. Bait first, ask later.",
+    mo: "Gives to get. Gifts, flattery, and 'you're the special one,' then the ask.",
     portrait: "/explorers/actors/siren.png",
   },
 
-  hook: "Half your school is about to get scammed. Ready to stop it?",
+  hook: "Half your school just got told they're 'specially chosen.' Same message, every one of them. Let's spoil the surprise.",
   scene: "/explorers/scenes/m02-cold-open.jpg",
 
   transmission: {
     headline: "BAIT IN THE WATER",
     lines: [
-      "Operative. Half the school is talking about a giveaway: five hundred free skins, today only. The links are everywhere: group chats, stream chats, DMs.",
-      "Nobody gives away five hundred of anything. Find out what it costs.",
+      "Operative. Half the school is buzzing: five hundred free skins, today only, and every kid swears THEY got picked. Group chats, stream chats, DMs, all lit up.",
+      "Here's the thing. Nobody hands out five hundred of anything for love. Somebody's collecting. Find out what 'free' is really charging.",
     ],
   },
 
   briefing: {
     summary:
-      "A prize that finds YOU, in three different places at once, with a clock on it. That's not luck. That's equipment. Someone built this.",
+      "A prize that finds YOU, in three places at once, wrapped like it's just for you, with a clock ticking on it. That's not luck, and it isn't a gift. It's equipment. Somebody built this to collect.",
     objectives: [
       "Work out what 'free' is really charging",
       "Follow the trail and prove it's one operation",
@@ -56,11 +59,11 @@ export const mission02: MissionManifest = {
       instruction: "Find 3 clues. Tap anything that looks like bait.",
       intel: {
         beats: [
-          "Think about fishing for a second.",
-          "The worm is free, to the fish.",
-          "The fisher isn't being generous. The worm is equipment.",
-          "Online prizes work the same way. The prize is the worm.",
-          "One question breaks the spell: what do THEY get back?",
+          "Picture a fishing hook for a second.",
+          "That juicy little worm is totally free, if you're the fish.",
+          "The fisher isn't being kind. The worm is equipment.",
+          "SIREN's prizes work the exact same way. The prize is the worm.",
+          "One question snaps the spell: what does SHE get back?",
         ],
         prediction: {
           question: "Why would a stranger give 500 skins away for nothing?",
@@ -88,8 +91,8 @@ export const mission02: MissionManifest = {
           ],
           body: [
             [
-              { id: "b1", text: "EVERYONE WINS: first 500 claims get the drop. " },
-              { id: "b2", text: "No catch, no cost, 100% real.", tellId: "nocatch" },
+              { id: "b1", text: "EVERYONE'S A WINNER today, and yes, that means YOU 💖 first 500 claims get the drop. " },
+              { id: "b2", text: "No catch, no cost, 100% real, pinky promise.", tellId: "nocatch" },
             ],
             [
               {
@@ -118,7 +121,7 @@ export const mission02: MissionManifest = {
               why: "skinstorm-event.net isn't the game's site. Real drops live on the game's own domain. This is a stranger's net.",
             },
           ],
-          doneLine: "Three hooks in one post. Somebody's fishing your school.",
+          doneLine: "Three hooks in one post. SIREN's fishing your whole school, and calling every fish the chosen one.",
         },
       },
       checkpoint: {
@@ -158,7 +161,7 @@ export const mission02: MissionManifest = {
         beats: [
           "Here's a secret most people never spot.",
           "The chat post, the DM, the website: not three things.",
-          "One machine, wearing three costumes.",
+          "One SIREN, wearing three different costumes.",
           "Scammers forget to change small details. We call those fingerprints.",
           "Match the fingerprints, and the costumes stop working.",
         ],
@@ -193,7 +196,7 @@ export const mission02: MissionManifest = {
               id: "t2",
               surface: "DM",
               from: "@skins_mod_amy",
-              text: "hey! you're on the SKINSTORM winner list, claim in 2 hrs → skinstorm-event.net/claim",
+              text: "hiii! out of EVERYONE, you made the SKINSTORM winner list 💖 claim in 2 hrs → skinstorm-event.net/claim",
               inCampaign: true,
               clue: "same domain, same prize, new costume",
               order: 2,
@@ -307,7 +310,7 @@ export const mission02: MissionManifest = {
               label: "Answer his question: walk him through what the worst actually is",
               correct: true,
               outcome:
-                "That's the analyst move. The worst is: they log in AS him, spend his saved money, message all his friends as bait, and lock him out. Once he can see the price tag, he closes the tab himself. Skills beat warnings.",
+                "That's the analyst move. The worst is: they log in AS him, spend his saved money, message all his friends as bait, and lock him out. Once he can see the price tag, he closes the tab himself. The exit was open the whole time. Skills beat warnings.",
             },
             {
               id: "grab",
@@ -351,11 +354,11 @@ export const mission02: MissionManifest = {
   debrief: {
     report: [
       "One giveaway, dissected: bait post, costume-change DM, harvest form, countdown squeeze.",
-      "The trail proved it: three surfaces, one operation. Fingerprints don't lie.",
+      "The trail proved it: three surfaces, one SIREN, and every 'winner' got the identical message. Fingerprints don't lie.",
       "Factory shut at the hub, and the warning that went out had no link and no shame in it.",
     ],
     realWorldMove:
-      "This week: when any giveaway finds you, don't touch it. Go find IT. Open the game or brand's official site or app yourself and look for the event there. If it's not on their page, it was never real. And no prize, ever, costs a password.",
+      "This week: when any giveaway finds you, don't touch it. Go find IT. Open the game or brand's official site or app yourself and look for the event there. If it's not on their page, it was never real. And no prize, ever, costs a password. You were never the chosen one, everyone got the same message.",
     wrenLine: "Free bait costs the most. Clean sweep. Sign out.",
   },
 
@@ -366,7 +369,7 @@ export const mission02: MissionManifest = {
   },
 
   dossier: {
-    mo: "Gives to get. Prizes, flattery, and a ticking clock: bait first, ask later. Builds factories, not one-off tricks.",
-    defeatedBy: "Anyone who asks what the free thing costs, and checks the official page instead of the link that came to them.",
+    mo: "Gives to get. Prizes, flattery, and a ticking clock, and every mark is told they're 'the special one.' Bait first, ask later. Builds factories, not one-off tricks.",
+    defeatedBy: "Anyone who remembers they're one of a thousand 'chosen ones,' asks what the free thing really costs, and checks the official page instead of the link that came to them.",
   },
 };

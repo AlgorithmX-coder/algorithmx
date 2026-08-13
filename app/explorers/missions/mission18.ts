@@ -11,6 +11,11 @@
  *
  * Season arc — breadcrumb ⑤: the recruiter's channel signature
  * matches ①–④. This is the coordinator's first, veiled contact.
+ *
+ * VOICE PASS v1: ZERO gets the calm, quiet gravitas of the endgame
+ * mastermind (no jokes, no street patter); WREN a touch graver; the
+ * refusal stays clean and sincere. Strings only; teaching, ids,
+ * answers, flags, and structure unchanged.
  */
 
 import Mission18Incident from "../incidents/Mission18Incident";
@@ -28,28 +33,28 @@ export const mission18: MissionManifest = {
     portrait: "/explorers/actors/coordinator.png",
   },
 
-  hook: "You're good at this now. Someone noticed. They're not from ARC. Hear them out, then choose.",
+  hook: "You're good at this now, and someone has been watching. Not ARC. He has an offer, and he'll stay calm while he makes it. Hear him out, then draw your line.",
   scene: "/explorers/scenes/m18-cold-open.jpg",
 
   transmission: {
     headline: "UNSIGNED MESSAGE",
     lines: [
-      "A message reached you tonight. It did not come through ARC.",
-      "It admires your work. It has an… offer.",
-      "It's the first real contact with someone big.",
+      "A message reached you tonight. It did not come through ARC. Nothing from him ever does.",
+      "It admires your work. Calm, patient, sure of itself. And it has an offer.",
+      "This is the first real contact with the one the whole season has been circling.",
       "Read it like an analyst. Then make the only choice that matters.",
     ],
   },
 
   briefing: {
     summary:
-      "The same skills defend or attack. Tonight's lesson isn't a new trick. It's a line.",
+      "The same skills defend or attack. Tonight is not a new trick. It's a line, and only you can draw it.",
     objectives: [
       "See how skills cut both ways",
       "Practice reporting a weakness",
       "Read the recruiter's message",
     ],
-    wrenLine: "Skills pick no side, Operative. You do. That's the whole mission.",
+    wrenLine: "Skills pick no side, Operative. You do. That is the whole mission tonight.",
   },
 
   cycles: [
@@ -249,10 +254,10 @@ export const mission18: MissionManifest = {
             { label: "FROM:", seg: { id: "from", text: "a handle you don't know, no photo, no history" } },
           ],
           body: [
-            [{ id: "m1", text: "“Been watching your work. Honestly? You're wasted at ARC. You're better than them.”", tellId: "flattery" }],
-            [{ id: "m2", text: "“I run a little crew. Real work, real money. You'd fit.”", tellId: "money" }],
-            [{ id: "m3", text: "“Tiny first job. Just let me use your account for one transfer. Nothing to it.”", tellId: "favor" }],
-            [{ id: "m4", text: "“Offer's open till midnight. Your call, genius.”" }],
+            [{ id: "m1", text: "“I've watched you work for a while now. You see what the others miss. You're better than them, and I think you already know it.”", tellId: "flattery" }],
+            [{ id: "m2", text: "“I build things. Quiet, careful, and they pay. Real money, real work. There's room for someone like you.”", tellId: "money" }],
+            [{ id: "m3", text: "“We start small. Lend me your account for one transfer. Nothing to it. You'd barely feel it.”", tellId: "favor" }],
+            [{ id: "m4", text: "“The offer stays open until midnight. No pressure. Just think it over.”" }],
           ],
           tells: [
             {

@@ -7,6 +7,10 @@
  * grown into the capability model), updates are armor (what patching
  * actually fixes), and the fake-installer lure (malware wrapped in
  * Block-1 lure clothing).
+ *
+ * VOICE PASS v1: kid-voice + humour; GHOSTWRITER is a hollow ghost of
+ * borrowed words who writes a flawless label and hides a stranger under
+ * it. Teaching, ids, answers all unchanged.
  */
 
 import Mission14Incident from "../incidents/Mission14Incident";
@@ -20,32 +24,32 @@ export const mission14: MissionManifest = {
   classification: "TOP SECRET",
   actor: {
     codename: "GHOSTWRITER",
-    mo: "Wraps bad software in things you want.",
+    mo: "Writes a flawless label, then hides a stranger's app inside the download.",
     portrait: "/explorers/actors/ghostwriter.png",
   },
 
-  hook: "Every app you install gets a set of powers. One flashlight is asking for your contacts.",
+  hook: "Every app you install gets a set of powers. This “free flashlight” is quietly asking for your whole contact list. Why?",
   scene: "/explorers/scenes/m14-cold-open.jpg",
 
   transmission: {
     headline: "PENDING INSTALLS",
     lines: [
       "Five downloads are waiting on a student's tablet.",
-      "Four are gifts. One is a trojan horse.",
-      "GHOSTWRITER wrapped it himself.",
-      "Tonight: powers, patches, and presents you shouldn't open.",
+      "Four are the real thing. One is a horse packed with soldiers.",
+      "GHOSTWRITER wrapped that one himself. Beautiful label. Nothing real underneath.",
+      "Tonight: powers, patches, and the one present you do not open.",
     ],
   },
 
   briefing: {
     summary:
-      "Apps are sets of powers. Updates are armor. Some presents carry their own soldiers.",
+      "Apps are sets of powers. Updates are armor. And some presents come with soldiers already inside.",
     objectives: [
       "Read permissions as powers",
-      "Understand what patches plug",
-      "Spot the trojan",
+      "Learn what a patch plugs",
+      "Spot the wrapped horse",
     ],
-    wrenLine: "Check the powers before you grant them, Operative.",
+    wrenLine: "Read the powers before you hand them over, Operative. A pretty label proves nothing.",
   },
 
   cycles: [
@@ -58,23 +62,23 @@ export const mission14: MissionManifest = {
       instruction: "Tap the 3 powers this torch never needs.",
       intel: {
         beats: [
-          "Installing an app isn't like buying a toy.",
-          "It's like hiring a worker to live in your house.",
-          "Permissions are the powers you hand the worker.",
-          "See your messages. Hear your room. Know where you are.",
-          "The question is never “is the app fun?”",
-          "It's “why does a torch need my contact list?”",
+          "Installing an app isn't like grabbing a toy off a shelf.",
+          "It's more like hiring a worker to move into your house.",
+          "Permissions are the powers you hand that worker on day one.",
+          "Read your messages. Listen to your room. Always know where you are.",
+          "So the question is never “is this app fun?”",
+          "It's “why does a flashlight need my whole contact list?”",
         ],
         prediction: {
-          question: "A flashlight app requests your contact list. Why?",
+          question: "A flashlight app asks for your contact list. Why?",
           options: [
-            "Flashlights need friends",
-            "The app is free because your data is the price",
+            "Flashlights get lonely too",
+            "It's free because your data is the price",
             "It's a harmless glitch",
           ],
           answer: 1,
           right: "Right. When the app is free and hungry, YOU are the product.",
-          wrong: "No torch needs your friends. Powers it doesn't need are the real prize.",
+          wrong: "No torch needs your friends. The power it doesn't need is the whole point.",
         },
       },
       fieldwork: {
@@ -95,40 +99,40 @@ export const mission14: MissionManifest = {
             {
               id: "contacts",
               label: "The contact grab",
-              why: "A light has no reason to know your friends. That's grab number one.",
+              why: "A flashlight has no reason to know your friends. That's grab number one.",
             },
             {
               id: "mic",
               label: "Always-on ears",
-              why: "A microphone in a flashlight? That never makes sense.",
+              why: "An always-on microphone inside a torch? That never adds up.",
             },
             {
               id: "location",
               label: "The tracker",
-              why: "Light doesn't need to know where you are. A power it can't use is a warning.",
+              why: "Light doesn't need to know where you are. A power an app can't use is a warning.",
             },
           ],
-          doneLine: "Three powers a torch never needs. The real product was you.",
+          doneLine: "Three powers a torch never needs. It wasn't selling light. It was buying you.",
         },
       },
       checkpoint: {
         questions: [
           {
             id: "c1q1",
-            question: "The one question to ask any permission popup:",
+            question: "The one question to ask every permission popup:",
             options: [
               "Is this app popular?",
-              "Does this power match what the app DOES?",
+              "Does this power match what the app actually DOES?",
               "Is the icon cute?",
             ],
             answer: 1,
           },
           {
             id: "c1q2",
-            question: "A drawing app wants your messages. You:",
+            question: "A drawing app asks for your messages. You:",
             options: [
-              "Allow, it probably has a reason",
-              "Deny, drawing needs no messages",
+              "Allow it, there's probably a reason",
+              "Deny it, drawing needs no messages",
               "Uninstall your messages app",
             ],
             answer: 1,
@@ -146,12 +150,12 @@ export const mission14: MissionManifest = {
       instruction: "Pick when the update happens.",
       intel: {
         beats: [
-          "“Update available.” The most skipped message on earth.",
-          "Here's what an update actually is.",
+          "“Update available.” Probably the most-ignored message ever written.",
+          "So here's what an update actually is.",
           "Someone found a hole in the app's walls.",
-          "The update is the plug.",
-          "And here's the scary part: the hole is now PUBLIC.",
-          "Attackers list every device that skipped the fix. Don't be on it.",
+          "The update is the patch that plugs it.",
+          "And here's the part nobody mentions: that hole is now PUBLIC.",
+          "Attackers keep a list of every device that skipped the fix. Don't be on it.",
         ],
         prediction: {
           question: "Why do attackers love devices that skip updates?",
@@ -161,8 +165,8 @@ export const mission14: MissionManifest = {
             "They don't, updates don't matter",
           ],
           answer: 1,
-          right: "Right. A patched hole is shut. An open one goes on their list.",
-          wrong: "Every fix is announced, so the hole is public. Skip it and you're a target.",
+          right: "Right. A patched hole is shut. An open one goes straight on their list.",
+          wrong: "Every fix gets announced, so the hole is public. Skip it and you're a target.",
         },
       },
       fieldwork: {
@@ -184,13 +188,13 @@ export const mission14: MissionManifest = {
               label: "Tonight, while you sleep",
               correct: true,
               outcome:
-                "Perfect. The game pauses. The armor goes on overnight. Tomorrow that public hole isn't yours.",
+                "Perfect. The game pauses, the armor goes on overnight, and tomorrow that public hole isn't yours.",
             },
             {
               id: "never",
               label: "Never, updates change things I like",
               outcome:
-                "An update changes way less than an attacker would. A few things look different. The holes stay until you fix them.",
+                "An update changes way less than an attacker would. A few things look different. The holes just sit there until you fix them.",
             },
           ],
         },
@@ -201,9 +205,9 @@ export const mission14: MissionManifest = {
             id: "c2q1",
             question: "A security update exists because:",
             options: [
-              "The company was bored",
-              "A hole was found, the update is the plug",
-              "Your device was hacked already",
+              "The company got bored",
+              "A hole was found, and the update is the plug",
+              "Your device is already hacked",
             ],
             answer: 1,
           },
@@ -212,8 +216,8 @@ export const mission14: MissionManifest = {
             question: "The safest update habit:",
             options: [
               "Install overnight, automatically",
-              "Wait a year to be sure",
-              "Only update games",
+              "Wait a year to be safe",
+              "Only ever update games",
             ],
             answer: 0,
           },
@@ -230,12 +234,12 @@ export const mission14: MissionManifest = {
       instruction: "Predict the installer's next move. Three rounds.",
       intel: {
         beats: [
-          "GHOSTWRITER's specialty: wrapping.",
-          "The wrapper is always something you WANT.",
-          "A free game. A paid app, now free. An update you “need”.",
-          "The bait is the old trick: pressure, prizes, costumes.",
-          "The hidden part is new: an app with powers.",
-          "Into the simulator. Watch a present unwrap itself.",
+          "GHOSTWRITER's whole talent is the wrapping.",
+          "His pitch: “Don't check inside, love. Just admire the lovely label.”",
+          "A free game. A paid app, suddenly free. An update you totally “need”.",
+          "The pitch is the same old trick: pressure, prizes, costumes.",
+          "What's hidden is the new part: a whole app, stuffed with powers.",
+          "Into the range. Watch one of his presents unwrap itself.",
         ],
         prediction: {
           question: "Where do trojans hide?",
@@ -246,7 +250,7 @@ export const mission14: MissionManifest = {
           ],
           answer: 1,
           right: "Right. Stores check the wrapping. Random links don't.",
-          wrong: "Stores scan their shelves. The forum post promising free premium scans nothing.",
+          wrong: "Stores scan their shelves. A forum post promising free premium scans nothing.",
         },
       },
       fieldwork: {
@@ -265,7 +269,7 @@ export const mission14: MissionManifest = {
               ],
               answer: 1,
               reveal:
-                "“Turn off protection first.” The guard would spot it, so it wants the guard gone. No real game ever asks that.",
+                "“Turn off protection first.” The guard would catch him, so he needs the guard gone. No real game ever asks that.",
             },
             {
               scene:
@@ -278,7 +282,7 @@ export const mission14: MissionManifest = {
               ],
               answer: 1,
               reveal:
-                "Contacts, messages, your whole screen. A game needs none of that. The powers ARE the attack. The game is just a costume.",
+                "Contacts, messages, your whole screen. A game needs none of it. The powers ARE the attack. The game was only ever a costume.",
             },
             {
               scene:
@@ -291,7 +295,7 @@ export const mission14: MissionManifest = {
               ],
               answer: 1,
               reveal:
-                "It mails itself to everyone the student knows, using THEIR name. It copies real people to fool more. The loading bar never finishes. There was never a game.",
+                "It mails itself to everyone the student knows, signed with THEIR name. It borrows real people to fool more people. The loading bar never finishes. There was never a game.",
             },
           ],
           doneLine: "GUARD OFF, POWERS GRANTED, HORSE INSIDE. NOW YOU'VE SEEN THE WHOLE UNWRAPPING.",
@@ -303,9 +307,9 @@ export const mission14: MissionManifest = {
             id: "c3q1",
             question: "Any installer that says “turn off your protection first” is:",
             options: [
-              "Normal setup stuff",
+              "Just normal setup stuff",
               "Telling you exactly what it is",
-              "Just badly coded",
+              "Only badly coded",
             ],
             answer: 1,
           },
@@ -333,13 +337,13 @@ export const mission14: MissionManifest = {
 
   debrief: {
     report: [
-      "One torch exposed: three powers it never needed, denied.",
-      "Updates understood: a public hole gets fixed the same night.",
-      "The trojan unwrapped in the range: turn off the guard, grab the powers, mail itself out.",
+      "One torch exposed: three powers it never needed, all denied.",
+      "Updates understood: a public hole gets patched that same night.",
+      "The trojan unwrapped in the range: kill the guard, grab the powers, mail itself out.",
     ],
     realWorldMove:
-      "This week: run your waiting updates. Then open one app's permissions with a parent. Ask one question: why does it need that power?",
-    wrenLine: "Deliveries sorted, armor raised. The horse stays outside the walls. Sign out.",
+      "This week: run your waiting updates. Then open one app's permissions with a parent and ask one question: why does it need that power?",
+    wrenLine: "Deliveries sorted, armor up. The horse stays outside the walls. Sign out.",
   },
 
   voice: {
@@ -349,7 +353,7 @@ export const mission14: MissionManifest = {
   },
 
   dossier: {
-    mo: "Wraps bad software inside things you want: free games, paid apps for free, urgent installers.",
-    defeatedBy: "Anyone who reads the powers, keeps devices updated, and uses official stores only.",
+    mo: "Wraps bad software inside things you want: free games, paid apps for free, urgent installers. A perfect label, a stranger underneath.",
+    defeatedBy: "Anyone who reads the powers instead of the pitch, keeps devices updated, and installs only from official stores.",
   },
 };
