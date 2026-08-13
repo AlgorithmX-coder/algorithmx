@@ -7,6 +7,9 @@
  * store, one strong master passphrase), then 2FA — the second lock.
  * Codes are keys, and NOBODY gets asked for keys (M07 callback).
  * The landing page's "watch them hold" — delivered in the boss.
+ *
+ * VOICE PASS v1: kid-voice + humour; SKELETON KEY struts back with a
+ * bigger rig. Teaching, ids, answers all unchanged.
  */
 
 import Mission11Incident from "../incidents/Mission11Incident";
@@ -20,20 +23,20 @@ export const mission11: MissionManifest = {
   classification: "TOP SECRET",
   actor: {
     codename: "SKELETON KEY",
-    mo: "Back with the rig. Bigger lists this time.",
+    mo: "Back, and cockier. Bigger rig, bigger lists, same old brag.",
     portrait: "/explorers/actors/skeleton-key.png",
   },
 
-  hook: "Forty accounts, forty strong locks. No brain can do that. Tonight you build the machine that can.",
+  hook: "Forty accounts, forty strong locks. No brain can hold that. Tonight you build the machine that can.",
   scene: "/explorers/scenes/m11-cold-open.jpg",
 
   transmission: {
     headline: "THE RIG RETURNS",
     lines: [
-      "SKELETON KEY is back. New lists, faster rig.",
+      "SKELETON KEY is back, and smug about it. New lists, faster rig.",
       "In Case 3 you beat him with one good passphrase.",
       "But you own forty accounts, not one.",
-      "Brains can't hold forty strong locks. Tools can.",
+      "No brain holds forty strong locks. A tool can. Let's build it.",
     ],
   },
 
@@ -61,9 +64,9 @@ export const mission11: MissionManifest = {
           "Quick math, Operative.",
           "Every account needs a STRONG password.",
           "Every account needs a DIFFERENT one. That was Case 3.",
-          "You have about forty accounts.",
-          "Forty strong, unique passwords, memorized? Nobody can.",
-          "So people cheat and reuse. The rig loves cheaters.",
+          "You've got about forty accounts.",
+          "Forty strong, unique passwords, all memorized? Nobody alive can.",
+          "So people cave and reuse. And the rig adores a reuser.",
         ],
         prediction: {
           question: "Why do most people end up reusing passwords?",
@@ -73,8 +76,8 @@ export const mission11: MissionManifest = {
             "Reusing is actually fine",
           ],
           answer: 1,
-          right: "Right. It's not laziness. An impossible job needs a tool.",
-          wrong: "It's not laziness. The job really is impossible for brains. That's why tools exist.",
+          right: "Right. It's not laziness. An impossible job needs a tool, not more willpower.",
+          wrong: "It's not laziness. The job really is impossible for a brain. That's why tools exist.",
         },
       },
       fieldwork: {
@@ -82,27 +85,27 @@ export const mission11: MissionManifest = {
         payload: {
           intro: "Pick the plan that actually works.",
           situation:
-            "Jake's back. After Case 3 he fixed three passwords. But he has forty accounts and one brain.",
+            "Jake's back. After Case 3 he fixed three passwords, feeling pretty pleased. But he has forty accounts and one brain.",
           prompt: "YOUR CALL, OPERATIVE:",
           options: [
             {
               id: "memorize",
               label: "Train harder: memorize forty random passphrases",
               outcome:
-                "Nobody keeps that up. By week two he'll reuse. Then one leak opens forty doors again. Impossible plans turn into bad habits.",
+                "Nobody keeps that up. By week two he's reusing again. One leak, forty doors. Impossible plans just rot into bad habits.",
             },
             {
               id: "onegreat",
               label: "One AMAZING passphrase, used everywhere",
               outcome:
-                "One great key on forty doors is a master key. It works for whoever leaks it. The strength isn't the problem. The reuse is.",
+                "One great key on forty doors is a master key, and it works for whoever steals it. Strength isn't the problem here. The reuse is.",
             },
             {
               id: "manager",
               label: "A password manager: it remembers forty, he remembers one",
               correct: true,
               outcome:
-                "That's the tool. The manager makes and stores forty random monsters. Jake memorizes ONE master passphrase. Brains do one thing well. Let them.",
+                "That's the tool. The manager builds and stores forty random monsters. Jake memorizes ONE master passphrase. Brains do one thing well, so let them.",
             },
           ],
         },
@@ -145,9 +148,9 @@ export const mission11: MissionManifest = {
           "New tool unlocked: the WORKBENCH.",
           "Three slots make a vault.",
           "The master passphrase: the one key you'll actually remember.",
-          "The generator: where the forty monsters come from.",
-          "The storage: where they live, sealed.",
-          "Choose well. The rig gets a test run after.",
+          "The generator: where the forty monsters get built.",
+          "The storage: where they live, sealed tight.",
+          "Choose well. The rig gets a crack at it right after.",
         ],
         prediction: {
           question: "The master passphrase is the one password you memorize. It should be:",
@@ -157,7 +160,7 @@ export const mission11: MissionManifest = {
             "Your name plus the year",
           ],
           answer: 1,
-          right: "Right. It's the door to every door. Case 3 rules, at full strength.",
+          right: "Right. It's the door to every other door. Case 3 rules, cranked to full.",
           wrong: "It guards ALL the others. So it gets your strongest Case 3 passphrase, nothing less.",
         },
       },
@@ -196,7 +199,7 @@ export const mission11: MissionManifest = {
             },
           ],
           testLine: "STRESS TEST: RIG vs VAULT … 0 DOORS OPENED. PROJECTED CRACK TIME: CENTURIES.",
-          doneLine: "One key in his head, forty monsters in the vault. Jake just out-engineered the rig.",
+          doneLine: "One key in his head, forty monsters in the vault. Jake just out-engineered the whole rig.",
         },
       },
       checkpoint: {
@@ -230,12 +233,12 @@ export const mission11: MissionManifest = {
       instruction: "Tap the 3 accounts missing their second lock.",
       intel: {
         beats: [
-          "One more layer and this fortress is done.",
+          "One more layer and this fortress is finished.",
           "Two-factor authentication. 2FA.",
           "Lock one: something you KNOW, the password.",
-          "Lock two: something you HAVE, your phone's code.",
-          "A thief needs both. Stealing one gets nothing.",
-          "And remember Case 7: codes are keys. Nobody gets asked for keys.",
+          "Lock two: something you HAVE, the code on your phone.",
+          "A thief needs both. Grabbing just one gets him nowhere.",
+          "And remember Case 7: codes are keys. Nobody legit ever asks for your keys.",
         ],
         prediction: {
           question: "A thief has your password. 2FA is on. What happens?",
@@ -280,7 +283,7 @@ export const mission11: MissionManifest = {
               why: "These photos can't be replaced. Things you can't replace get the second lock.",
             },
           ],
-          doneLine: "Three doors upgraded to two locks. Now even a leaked password opens nothing.",
+          doneLine: "Three doors upgraded to two locks each. Now even a leaked password opens nothing.",
         },
       },
       checkpoint: {
@@ -320,12 +323,12 @@ export const mission11: MissionManifest = {
   debrief: {
     report: [
       "The forty-lock problem solved by engineering, not memory: one master key, forty monsters.",
-      "The vault built and stress-tested: zero doors opened, crack time in centuries.",
-      "Second locks installed on email, wallet, and memories. The rig retired mid-song.",
+      "The vault built and stress-tested: zero doors opened, crack time measured in centuries.",
+      "Second locks installed on email, wallet, and memories. The rig quit mid-brag.",
     ],
     realWorldMove:
       "This week, with a parent: turn on 2FA for your most important account. Email first. Ten minutes, one QR code. A leaked password becomes worthless.",
-    wrenLine: "Forty doors, eighty locks, zero worries. The locksmith's having a bad night. Sign out.",
+    wrenLine: "Forty doors, eighty locks, zero worries. The lock-picker's having a miserable night. Sign out.",
   },
 
   voice: {
@@ -335,7 +338,7 @@ export const mission11: MissionManifest = {
   },
 
   dossier: {
-    mo: "Nonstop guessing: bigger lists, faster rigs, and every stolen key tried everywhere.",
+    mo: "Nonstop guessing: bigger lists, faster rigs, every stolen key tried on every door. Still swears every lock talks.",
     defeatedBy: "A vault he can't guess and a second lock he can't hold. Engineering beats memory.",
   },
 };

@@ -8,6 +8,9 @@
  * door). Strategic answers (true is guessable, nonsense is safe),
  * recovery-contact freshness, and session hygiene (Heroes W18's rule
  * grown into the session concept).
+ *
+ * VOICE PASS v1: kid-voice + humour; SKELETON KEY gives up on the lock
+ * and sneaks the side door. Teaching, ids, answers all unchanged.
  */
 
 import Mission13Incident from "../incidents/Mission13Incident";
@@ -21,20 +24,20 @@ export const mission13: MissionManifest = {
   classification: "TOP SECRET",
   actor: {
     codename: "SKELETON KEY",
-    mo: "Skips your lock. Rings the recovery bell.",
+    mo: "Won't fight your lock. Strolls round to the side door instead.",
     portrait: "/explorers/actors/skeleton-key.png",
   },
 
-  hook: "Your password is perfect now. So SKELETON KEY stopped attacking it. Find his new door.",
+  hook: "Your password's perfect now. So SKELETON KEY quit attacking it. Time to find his new way in.",
   scene: "/explorers/scenes/m13-cold-open.jpg",
 
   transmission: {
     headline: "SIDE DOOR",
     lines: [
-      "Jake's vault held. The rig retired. Good work.",
-      "So SKELETON KEY changed doors.",
+      "Jake's vault held. The rig gave up. Good work.",
+      "So SKELETON KEY simply changed doors.",
       "Every account has a back door: the recovery path.",
-      "“Forgot password?” Tonight, that button is the battlefield.",
+      "“Forgot password?” Tonight, that little button is the battlefield.",
     ],
   },
 
@@ -60,11 +63,11 @@ export const mission13: MissionManifest = {
       intel: {
         beats: [
           "Remember CASE 004? Priya's crumbs. PACKRAT's file.",
-          "Watch what those crumbs are worth now.",
-          "“First pet's name?” Her posts answered that.",
-          "“First school?” The match-day photo answered that.",
-          "Security questions assume your life is private.",
-          "Your life is posted. That's the back door.",
+          "Watch what those little crumbs are worth now.",
+          "“First pet's name?” Her posts already answered that.",
+          "“First school?” The match-day photo answered that too.",
+          "Security questions assume your life is a secret.",
+          "But your life is posted. And that's his back door.",
         ],
         prediction: {
           question: "Why does SKELETON KEY love security questions?",
@@ -136,7 +139,7 @@ export const mission13: MissionManifest = {
             },
           ],
           stage2Prompt: "Order the break-in. No password was ever guessed.",
-          doneLine: "Question → crumb → answer → open door. The monster passphrase never even got a visit.",
+          doneLine: "Question → crumb → answer → open door. That monster passphrase never even got a knock.",
         },
       },
       checkpoint: {
@@ -172,10 +175,10 @@ export const mission13: MissionManifest = {
         beats: [
           "Here's the trick nobody tells you.",
           "Security answers don't have to be TRUE.",
-          "They have to be UNGUESSABLE.",
-          "First pet? “purple-staircase-42.” The robot doesn't care.",
-          "Store the nonsense in your vault, M11's machine.",
-          "And keep recovery email and phone CURRENT. Stale ones get stolen.",
+          "They just have to be UNGUESSABLE.",
+          "First pet? “purple-staircase-42.” The robot won't blink.",
+          "Stash the nonsense in your vault, the machine from Case 11.",
+          "And keep your recovery email and phone CURRENT. Stale ones get snatched.",
         ],
         prediction: {
           question: "Best answer to “What's your first pet's name?”",
@@ -262,11 +265,11 @@ export const mission13: MissionManifest = {
       instruction: "Pick the move that closes every door.",
       intel: {
         beats: [
-          "One more kind of door: the session.",
-          "Every device you've EVER logged in on holds one open.",
-          "The library computer. Your cousin's tablet. The old phone in a drawer.",
+          "One last kind of door: the session.",
+          "Every device you've EVER logged in on is holding one open.",
+          "The library computer. Your cousin's tablet. That old phone in a drawer.",
           "Logged in means open. Still. Right now.",
-          "Every account has a “logged-in devices” list.",
+          "Every account keeps a “logged-in devices” list.",
           "Analysts read that list like a door check at closing time.",
         ],
         prediction: {
@@ -347,13 +350,13 @@ export const mission13: MissionManifest = {
 
   debrief: {
     report: [
-      "One side-door break-in traced: question, crumb, answer, open door. Lock untouched.",
+      "One side-door break-in traced: question, crumb, answer, open door. The lock never got touched.",
       "Recovery path hardened: nonsense answers in the vault, fresh contacts, no stale doors.",
-      "Session sweep run: every forgotten login found and closed.",
+      "Session sweep run: every forgotten login found and shut.",
     ],
     realWorldMove:
       "This week: open one account's security questions. Swap the true answers for made-up nonsense. Save that nonsense in your password manager. True is guessable. Nonsense is safe.",
-    wrenLine: "Side door slammed, sessions swept. The building is finally all yours. Sign out.",
+    wrenLine: "Side door slammed, sessions swept. The whole building is finally yours, not his. Sign out.",
   },
 
   voice: {
@@ -363,7 +366,7 @@ export const mission13: MissionManifest = {
   },
 
   dossier: {
-    mo: "Skips strong locks and rings the recovery bell. Security questions answered from public posts.",
+    mo: "Won't waste time on a strong lock. Skips to the recovery bell, answering security questions straight off your public posts.",
     defeatedBy: "Made-up answers in the vault, fresh recovery contacts, and a clean device list.",
   },
 };

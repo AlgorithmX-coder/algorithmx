@@ -10,6 +10,10 @@
  * Season arc — breadcrumb ②: the spear-phish in the boss carries
  * personal details that match the file PACKRAT auctioned in M04.
  * The actors are connected.
+ *
+ * VOICE PASS v1: kid-voice + humour; PHANTOM HOOK is a smug master of
+ * disguise who brags he can cut a costume to fit anyone, then gets
+ * read by his own fingerprints. Teaching, ids, answers all unchanged.
  */
 
 import Mission05Incident from "../incidents/Mission05Incident";
@@ -23,32 +27,32 @@ export const mission05: MissionManifest = {
   classification: "CONFIDENTIAL",
   actor: {
     codename: "PHANTOM HOOK",
-    mo: "One trick, every channel, all at once.",
+    mo: "Same trick, a costume cut to fit you, fired at every channel at once.",
     portrait: "/explorers/actors/phantom-hook.png",
   },
 
-  hook: "Fake alerts are flooding every channel at once. Analysts don't panic. They triage.",
+  hook: "Fake alerts are flooding every channel at once, and one of them knows your name. Analysts don't panic. They triage.",
   scene: "/explorers/scenes/m05-cold-open.jpg",
 
   transmission: {
     headline: "STORM WARNING",
     lines: [
-      "PHANTOM HOOK is back, and done being subtle.",
-      "Texts. QR posters. DMs. All at once.",
-      "Volume is the weapon. Panic is the goal.",
-      "Analysts don't panic. They work the queue.",
+      "PHANTOM HOOK is back, and done being subtle. Now he's showing off.",
+      "Texts. QR posters. DMs. Every screen you own, all at once.",
+      "Volume is the weapon, panic is the plan. Tick tock, player, he says.",
+      "Here's the thing: analysts don't panic. They work the queue.",
     ],
   },
 
   briefing: {
     summary:
-      "Same trick, three costumes, three hundred targets. Read the fingerprints.",
+      "Same trick, three costumes, three hundred targets, and one costume cut to fit you. Read the fingerprints.",
     objectives: [
-      "Spot the shared fingerprints",
-      "Read senders at header level",
-      "Triage by severity",
+      "Match the shared fingerprints",
+      "Read the address, not the name tag",
+      "Triage by danger, not by volume",
     ],
-    wrenLine: "Storms pass, Operative. Queues get worked.",
+    wrenLine: "Three skills, then his storm is just one case. Eyes open.",
   },
 
   cycles: [
@@ -61,23 +65,23 @@ export const mission05: MissionManifest = {
       instruction: "Tap the 3 fingerprints the channels share.",
       intel: {
         beats: [
-          "A text. A QR poster. A DM.",
-          "Three channels. Three costumes.",
-          "Underneath: one author, running one play.",
-          "Attackers change the costume because it's cheap.",
-          "They keep the moves because moves are habits.",
-          "Match the fingerprints and the storm becomes one case.",
+          "A text. A QR poster. A DM. Three different screens.",
+          "Three channels. Three costumes. One quick-change artist.",
+          "Underneath every costume: one author, running one play.",
+          "He swaps costumes because costumes are cheap and easy.",
+          "He keeps the moves because moves are habits, and habits leave fingerprints.",
+          "Match the fingerprints and the whole storm becomes one case.",
         ],
         prediction: {
-          question: "The same scam hits texts, posters, and DMs. Why spread it?",
+          question: "The same scam hits texts, posters, and DMs. Why bother spreading it around?",
           options: [
             "Different channels reach different kids",
             "It's more fun to make posters",
             "Each channel is a different scammer",
           ],
           answer: 0,
-          right: "Right. Channels are fishing spots. The net is the same.",
-          wrong: "One author, many spots. Wherever you are, a costume is waiting.",
+          right: "Right. Every channel is just another fishing spot. The net is the same.",
+          wrong: "One author, many spots. Wherever you scroll, a costume is waiting.",
         },
       },
       fieldwork: {
@@ -98,27 +102,27 @@ export const mission05: MissionManifest = {
             {
               id: "clock",
               label: "The countdown",
-              why: "Every channel, the same ticking clock. One author.",
+              why: "Every channel, the same ticking clock. That's one author, not three.",
             },
             {
               id: "domain",
               label: "The verify-domain",
-              why: "Same weird verify-site family in every costume.",
+              why: "The same weird verify-site family shows up under every costume.",
             },
             {
               id: "ask",
               label: "The ask",
-              why: "Three channels, one ask: your login. That's the M.O.",
+              why: "Three channels, one ask: hand over your login. That's the whole M.O.",
             },
           ],
-          doneLine: "Three costumes, one signature. The storm is one case now.",
+          doneLine: "Three costumes, one signature. Tick tock, player: your storm is one case now.",
         },
       },
       checkpoint: {
         questions: [
           {
             id: "c1q1",
-            question: "A scary text AND a matching poster appear the same day. Read?",
+            question: "A scary text AND a matching poster land the same day. How do you read it?",
             options: [
               "Two problems, two scammers",
               "One campaign wearing two costumes",
@@ -128,7 +132,7 @@ export const mission05: MissionManifest = {
           },
           {
             id: "c1q2",
-            question: "What stays the SAME when the costume changes?",
+            question: "When the costume changes, what stays exactly the SAME?",
             options: [
               "The colors and logos",
               "The pressure, the domain, the ask",
@@ -149,15 +153,15 @@ export const mission05: MissionManifest = {
       instruction: "Pick the 3 sender moves in this actor's M.O.",
       intel: {
         beats: [
-          "Every message wears a name tag.",
+          "Every message shows up wearing a name tag.",
           "“GameHub Support.” “Library Desk.” Even “Mrs. Cole.”",
-          "The name tag is typed by the SENDER.",
-          "Anyone can type anything.",
-          "The address underneath is harder to fake.",
-          "Analysts read the address. Names are for costumes.",
+          "Here's the catch: the name tag is typed by the SENDER.",
+          "Anyone can type anything. Phantom Hook types whatever fits you.",
+          "The address underneath is much harder to fake.",
+          "So analysts read the address. Names are just costume.",
         ],
         prediction: {
-          question: "A message says it's from your head teacher. What proves it?",
+          question: "A message swears it's from your head teacher. What actually proves that?",
           options: [
             "The name looks official",
             "Nothing yet, check the address underneath",
@@ -178,22 +182,22 @@ export const mission05: MissionManifest = {
             "“Mrs. Cole (Head)”: actually sent from head-office-mail.net",
           ],
           behaviors: [
-            { id: "borrow", label: "Borrows a trusted display name", matches: true },
+            { id: "borrow", label: "Borrows a trusted name for the tag", matches: true },
             { id: "mismatch", label: "Address never matches the name", matches: true },
-            { id: "login", label: "Always asks for a login", matches: true },
+            { id: "login", label: "Always, always asks for a login", matches: true },
             { id: "guess", label: "Guesses passwords over and over", matches: false },
             { id: "hijack", label: "Steals a friend's real account", matches: false },
-            { id: "prize", label: "Gives away free prizes", matches: false },
+            { id: "prize", label: "Hands out free prizes, no strings", matches: false },
           ],
           picks: 3,
-          doneLine: "Names are costumes. Addresses are fingerprints. Filed.",
+          doneLine: "Names are costume. Addresses are fingerprints. Filed, and he hates that.",
         },
       },
       checkpoint: {
         questions: [
           {
             id: "c2q1",
-            question: "Who controls the display name on a message?",
+            question: "Who actually controls the display name on a message?",
             options: ["The phone company", "Whoever sent it", "The school"],
             answer: 1,
           },
@@ -220,15 +224,15 @@ export const mission05: MissionManifest = {
       instruction: "Pick which flagged message you handle first.",
       intel: {
         beats: [
-          "In a storm, everything screams for attention.",
+          "In a storm, every message is screaming for attention.",
           "Analysts don't answer screams. They rank them.",
-          "Loud isn't the same as dangerous.",
-          "A message sent to everyone is spray. It's guessing.",
-          "A message that knows YOU did research.",
-          "Targeted beats loud. Every time.",
+          "Loud is not the same as dangerous.",
+          "A message blasted to everyone is spray. It's just guessing.",
+          "A message that knows YOUR name and YOUR club took real research.",
+          "Targeted beats loud. Every single time.",
         ],
         prediction: {
-          question: "Which message is more dangerous?",
+          question: "Two threats land at once. Which one is actually more dangerous?",
           options: [
             "One blasted to the whole school",
             "One that knows your name and your club",
@@ -244,27 +248,27 @@ export const mission05: MissionManifest = {
         payload: {
           intro: "Pick which flagged message you handle first.",
           situation:
-            "Three flagged messages, one of you. The storm is live and the queue is yours.",
+            "Three flagged messages, one of you. The storm is live, and the queue is yours, Operative.",
           prompt: "YOUR CALL, OPERATIVE:",
           options: [
             {
               id: "spray",
               label: "The blast sent to every inbox in school",
               outcome:
-                "Dangerous but shallow, that's spray. It guesses. The one that KNOWS things outranks it.",
+                "Dangerous but shallow: that's spray, and spray is guessing. The one that KNOWS things about you outranks it.",
             },
             {
               id: "spear",
               label: "The one that names your form class and your teacher",
               correct: true,
               outcome:
-                "Correct. Personal details mean research. That's a spear, not spray. It goes to the top of the queue.",
+                "Correct. Personal details mean someone did homework on you. That's a spear, not spray. Straight to the top of the queue.",
             },
             {
               id: "typos",
               label: "The one full of typos promising a free jetpack",
               outcome:
-                "Almost funny. Log it, move on. Severity first: the queue doesn't care what's entertaining.",
+                "Almost funny, that free jetpack. Log it, move on. Severity first: the queue doesn't care what's entertaining.",
             },
           ],
         },
@@ -306,12 +310,12 @@ export const mission05: MissionManifest = {
   debrief: {
     report: [
       "One storm reduced to one case: shared clock, shared domains, shared ask.",
-      "Senders read at header level: names treated as costumes, addresses as fingerprints.",
+      "Senders read at header level: names treated as costume, addresses as fingerprints.",
       "The spear found, traced, and filed. Block One closed: CONFIDENTIAL clearance confirmed.",
     ],
     realWorldMove:
-      "This week: when an urgent message lands, check one thing first: does the address match the name? Then check the real app. Two checks, ten seconds.",
-    wrenLine: "Block One closed. CONFIDENTIAL clearance, confirmed. Wear it well, Operative.",
+      "This week: when an urgent message lands, check one thing first. Does the address match the name? Then open the real app yourself and check there. Two checks, ten seconds. Still feels off? Tell an adult you trust.",
+    wrenLine: "Block One closed. Phantom Hook's storm is one filed case. CONFIDENTIAL clearance, confirmed. Wear it well, Operative.",
   },
 
   voice: {
@@ -321,8 +325,8 @@ export const mission05: MissionManifest = {
   },
 
   dossier: {
-    mo: "One trick, every channel, all at once, and a spear hidden in the spray.",
-    defeatedBy: "Anyone who matches fingerprints across channels and triages instead of panicking.",
+    mo: "One trick, a costume cut to fit each target, fired at every channel at once, with a spear hidden in the spray.",
+    defeatedBy: "Anyone who matches the fingerprints across every costume and triages instead of panicking. Reads the tells, ruins his whole show.",
     breadcrumb:
       "CROSS-REF: the spear's personal lines match the file PACKRAT auctioned in CASE 004. Two actors, one supply chain, relaying through that same ZERO tag. Filed as breadcrumb ②.",
   },

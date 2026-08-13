@@ -6,6 +6,10 @@
  * about you and trade it. Spy on your own trail (Case 4's trick aimed
  * at yourself), then clean it up: cut links, close dead accounts, and
  * leave GOOD tracks on purpose (choosing your story, not hiding).
+ *
+ * VOICE PASS v1: WREN wry-mentor voice; PACKRAT is a comic data-hoarding
+ * magpie, now the market's best customer ("you left it out, I picked it up").
+ * Teaching, ids, answers all unchanged.
  */
 
 import Mission16Incident from "../incidents/Mission16Incident";
@@ -19,17 +23,17 @@ export const mission16: MissionManifest = {
   classification: "ULTRA",
   actor: {
     codename: "PACKRAT",
-    mo: "The data market's best customer.",
+    mo: "Never breaks in. He's just the data market's best customer.",
     portrait: "/explorers/actors/packrat.png",
   },
 
-  hook: "Companies keep a file about you and trade it. Tonight you see yours, and shrink it.",
+  hook: "Companies keep a file on you and trade it like cards. Tonight you see yours, and shrink it.",
   scene: "/explorers/scenes/m16-cold-open.jpg",
 
   transmission: {
     headline: "LOT 47",
     lines: [
-      "PACKRAT's biggest sale yet is tonight.",
+      "PACKRAT's biggest sale yet goes down tonight.",
       "What's for sale? A full file on one kid. Years of tiny clues.",
       "Not stolen. Collected, bit by bit. And mostly legal.",
       "Time you saw how this market works, from the inside.",
@@ -60,7 +64,7 @@ export const mission16: MissionManifest = {
           "You already know: everything online leaves tracks.",
           "Here's the bigger-kid truth: those tracks get SOLD.",
           "Free apps have trackers that watch what you do.",
-          "Collectors buy those logs and build a file on you.",
+          "Collectors like PACKRAT buy those logs and build a file on you.",
           "That file follows you: ads, offers, and worse.",
           "A free app isn't a gift. You are what it sells.",
         ],
@@ -365,7 +369,7 @@ export const mission16: MissionManifest = {
   },
 
   dossier: {
-    mo: "The data market's best customer. Buys tracker logs and files, then links them into masterpieces.",
+    mo: "The data market's best customer. Never breaks in, just buys the tracker logs and files you leave lying around, then links them into masterpieces. Same magpie, deeper pockets: you left it out, he bought it up.",
     defeatedBy: "Cut links: different names, private settings, closed doors. Plus good tracks on purpose.",
   },
 };

@@ -6,6 +6,9 @@
  * six pressure levers (hurry, scarcity, authority, liking, fear,
  * payback). Attackers aim at brains, not machines. Anticipation is
  * defense (SIMULATE), and naming the lever out loud kills it.
+ *
+ * VOICE PASS v1: WREN wry-mentor + SIREN as a honeyed, patient charmer
+ * who builds fake friendship before the ask; teaching/ids/answers intact.
  */
 
 import Mission06Incident from "../incidents/Mission06Incident";
@@ -19,7 +22,7 @@ export const mission06: MissionManifest = {
   classification: "SECRET",
   actor: {
     codename: "SIREN",
-    mo: "Doesn't hack machines. Pulls levers in brains.",
+    mo: "Doesn't hack machines. Pulls the levers in your heart, sweetly, patiently, until you say yes.",
     portrait: "/explorers/actors/siren.png",
   },
 
@@ -30,9 +33,9 @@ export const mission06: MissionManifest = {
     headline: "NEW CLEARANCE, NEW GAME",
     lines: [
       "Block Two, Operative. The machines were the warm-up.",
-      "SIREN's real target has always been a brain.",
-      "She pulls levers: feelings that make people click.",
-      "There are six. Tonight you learn them all.",
+      "SIREN never wanted your machine. She wants YOU, and she'll be lovely about it.",
+      "She pulls levers: the feelings that make good people click.",
+      "There are six. Tonight, you learn every one.",
     ],
   },
 
@@ -107,7 +110,7 @@ export const mission06: MissionManifest = {
               why: "“I'm a mod” is just a title. It makes the password ask feel normal.",
             },
           ],
-          doneLine: "Three levers in four lines. That's a professional pull.",
+          doneLine: "Three levers in four lines, and a compliment for dessert. That's SIREN-grade work.",
         },
       },
       checkpoint: {
@@ -340,7 +343,7 @@ export const mission06: MissionManifest = {
   },
 
   dossier: {
-    mo: "Pulls six levers in brains: hurry, scarcity, authority, liking, fear, payback.",
-    defeatedBy: "Anyone who names the lever out loud. Named levers look silly.",
+    mo: "Pulls six levers in brains, sweetly: hurry, scarcity, authority, liking, fear, payback. Makes every mark feel like the one true friend.",
+    defeatedBy: "Anyone who names the lever out loud, and remembers a real friend never needs your password or your code. Named levers look silly.",
   },
 };

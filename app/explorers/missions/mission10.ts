@@ -11,6 +11,10 @@
  * Season arc — breadcrumb ③: the clone trained on audio PACKRAT
  * scraped, reading lines GHOSTWRITER wrote. Three actors, one
  * supply chain.
+ *
+ * VOICE PASS v1: WREN wry-mentor voice; MIMIC is a vain, faceless
+ * copycat who now wears voices too. Teaching, ids, answers all
+ * unchanged; scam-call scenes kept realistic on purpose.
  */
 
 import Mission10Incident from "../incidents/Mission10Incident";
@@ -24,28 +28,28 @@ export const mission10: MissionManifest = {
   classification: "SECRET",
   actor: {
     codename: "MIMIC",
-    mo: "Clones voices from seconds of audio.",
+    mo: "Clones any voice from seconds of audio. Sounds exactly like someone you love.",
     portrait: "/explorers/actors/mimic.png",
   },
 
-  hook: "A voice you love asks for help. Voices can be copied now. Your family needs a code word.",
+  hook: "A voice you love calls, begging for help. Voices can be copied now. Your family needs a code word.",
   scene: "/explorers/scenes/m10-cold-open.jpg",
 
   transmission: {
     headline: "VOICE PRINT ALERT",
     lines: [
-      "Tonight's threat sounds like someone you love.",
-      "A phone call, in a voice you know by heart.",
-      "Except nobody you love is on the line.",
-      "Seconds of audio is all a clone needs now.",
+      "Tonight's threat sounds exactly like someone you love.",
+      "A phone call, in a voice you know by heart. Every wobble, every laugh.",
+      "Except nobody you love is on the line. It's MIMIC, wearing a voice.",
+      "“Do I sound like someone you trust?” Seconds of audio is all his clone needs now.",
     ],
   },
 
   briefing: {
     summary:
-      "MIMIC's upgrade: cloned voices, faked faces. Spotting fails eventually. Verification never does.",
+      "MIMIC's newest costume is a voice. Cloned calls, faked faces. Spotting the fake fails eventually. Verifying the source never does.",
     objectives: [
-      "Hear how cloning works",
+      "Hear how voice cloning works",
       "Watch the tells decay",
       "Set the family code word",
     ],
@@ -62,29 +66,29 @@ export const mission10: MissionManifest = {
       instruction: "Predict the clone's next move. Three rounds.",
       intel: {
         beats: [
-          "How much audio does a voice clone need?",
+          "How much audio does MIMIC need to clone a voice?",
           "Not hours. Seconds.",
-          "One birthday video. One school assembly clip.",
-          "The copy laughs like her. Pauses like her.",
-          "Your ears will say it's really her.",
-          "Your ears are wrong. Into the simulator.",
+          "One birthday video. One clip from the school assembly. Done.",
+          "The copy laughs like her. Pauses like her. Nails the little sigh.",
+          "Your ears will swear it's really her.",
+          "Your ears are wrong tonight. Into the simulator.",
         ],
         prediction: {
-          question: "Where would a cloner get seconds of a parent's voice?",
+          question: "Where would MIMIC get seconds of a parent's voice?",
           options: [
-            "Breaking into the phone company",
+            "By breaking into the phone company",
             "Public videos: birthdays, sports day, group chats",
-            "You can't get voices online",
+            "You can't get voices online at all",
           ],
           answer: 1,
-          right: "Right. The training data was posted as memories.",
-          wrong: "No break-in needed. Family videos online carry all the voice a clone needs.",
+          right: "Right. The training data got posted as happy memories.",
+          wrong: "No break-in needed. Family videos online hand a clone all the voice it needs.",
         },
       },
       fieldwork: {
         verb: "SIMULATE",
         payload: {
-          intro: "Range playback: a cloned call, move by move",
+          intro: "Range playback: one cloned call, move by move",
           steps: [
             {
               scene:
@@ -92,38 +96,38 @@ export const mission10: MissionManifest = {
               question: "what's the next move?",
               options: [
                 "A calm chat about your day",
-                "Build urgency: a crisis with a clock on it",
-                "Hang up on you",
+                "Build urgency: a crisis with a clock ticking on it",
+                "Just hang up on you",
               ],
               answer: 1,
               reveal:
-                "“I need you to do something RIGHT NOW. There's no time to explain.” Urgency first, always. Thinking is the clone's enemy.",
+                "“I need you to do something RIGHT NOW. There's no time to explain.” Urgency first, always. Thinking is the clone's worst enemy.",
             },
             {
               scene:
                 "“The bank needs the code that just went to your phone. Read it to me quick, before it expires. Please, love.”",
               question: "what is the clone really after?",
               options: [
-                "The 6-digit code: a key to an account",
+                "The 6-digit code: it's a key to an account",
                 "A nice long chat",
                 "Your homework answers",
               ],
               answer: 0,
               reveal:
-                "Always the code, the money, or the secret. The voice is brand new technology. The ask is ancient.",
+                "Always the code, the money, or the secret. The voice is shiny new tech. The ask is ancient.",
             },
             {
               scene:
                 "You hesitate. The voice goes soft and hurt: “Darling… it's ME. Don't you recognize me?”",
               question: "what's really happening?",
               options: [
-                "The recognition trap: ears can't verify anymore",
+                "The recognition trap: ears can't verify a voice anymore",
                 "It's definitely her now",
-                "The call is ending",
+                "The call is about to end",
               ],
               answer: 0,
               reveal:
-                "That line lands because it always used to be true. Ears verified people for a million years. Machines just broke that. Protocol replaces ears.",
+                "That line lands because it always used to be true. Ears verified people for a million years. Machines just broke that. Protocol takes over from ears.",
             },
           ],
           doneLine: "URGENCY, THE ASK, THE RECOGNITION TRAP. NEW VOICE, ANCIENT CON.",
@@ -133,11 +137,11 @@ export const mission10: MissionManifest = {
         questions: [
           {
             id: "c1q1",
-            question: "How much audio does a voice clone need?",
+            question: "How much audio does a voice clone actually need?",
             options: [
               "Hours of clean speeches",
               "Seconds: one birthday video is plenty",
-              "It isn't possible yet",
+              "It still isn't possible",
             ],
             answer: 1,
           },
@@ -145,9 +149,9 @@ export const mission10: MissionManifest = {
             id: "c1q2",
             question: "“Don't you recognize me?” works because:",
             options: [
-              "Not recognizing family is rude",
-              "Ears used to be proof, machines broke that",
-              "It's a trick question",
+              "Not recognizing family feels rude",
+              "Ears used to be proof, and machines broke that",
+              "It's just a trick question",
             ],
             answer: 1,
           },
@@ -164,23 +168,23 @@ export const mission10: MissionManifest = {
       instruction: "Tap the 3 tells in this video call.",
       intel: {
         beats: [
-          "Deepfake video has tells. Today.",
-          "Mouths that lag the words. Jewelry that flickers.",
-          "Here's the honest part: those tells DECAY.",
-          "Every month, the fakes get cleaner.",
-          "One tell never decays: what the caller ASKS for.",
+          "Deepfake video has tells. For now.",
+          "Mouths that lag the words. Earrings that flicker.",
+          "Here's the honest bit: those tells DECAY.",
+          "Every month, MIMIC's fakes get a little cleaner.",
+          "One tell never decays: what the caller ASKS you for.",
           "Spot with your eyes today. Verify with protocol forever.",
         ],
         prediction: {
-          question: "Why can't we just learn to spot deepfakes forever?",
+          question: "Why can't we just learn to spot deepfakes and be done forever?",
           options: [
             "We can, eyes always win",
-            "The tells decay as the fakes improve",
+            "The tells decay as the fakes keep improving",
             "Deepfakes are already illegal",
           ],
           answer: 1,
           right: "Right. Today's glitch is next month's patch. Build on what doesn't decay.",
-          wrong: "Eyes lose this race. The fakes improve monthly. The ASK is the tell that stays.",
+          wrong: "Eyes lose this race. The fakes get better every month. The ASK is the tell that stays put.",
         },
       },
       fieldwork: {
@@ -201,17 +205,17 @@ export const mission10: MissionManifest = {
             {
               id: "sync",
               label: "Mouth lag",
-              why: "Today's tell. Next year's models will fix it. A clue, not proof.",
+              why: "Today's tell. Next year's models patch it out. A clue, not proof.",
             },
             {
               id: "artifact",
               label: "Flicker glitch",
-              why: "Glitches fade too. Every update cleans them up.",
+              why: "Glitches fade too. Every update scrubs a few away.",
             },
             {
               id: "ask",
               label: "The ask",
-              why: "The forever-tell. Codes, money, secrets: no update removes the ask.",
+              why: "The forever-tell. Codes, money, secrets: no update ever removes the ask.",
             },
           ],
           doneLine: "Two fading tells, one forever-tell. Bank on the forever one.",
@@ -224,8 +228,8 @@ export const mission10: MissionManifest = {
             question: "Deepfake tells like lag and flicker are:",
             options: [
               "Reliable forever",
-              "Clues that decay as models improve",
-              "Urban legends",
+              "Clues that decay as the models improve",
+              "Just urban legends",
             ],
             answer: 1,
           },
@@ -252,23 +256,23 @@ export const mission10: MissionManifest = {
       instruction: "Pick the code-word system that holds.",
       intel: {
         beats: [
-          "Now the best defense this course will ever hand you.",
+          "Now, the best defense this whole course will ever hand you.",
           "The family code word.",
-          "A phrase only your family knows.",
-          "Never typed. Never posted. Rehearsed once.",
-          "Any emergency call, any voice: ask for the word.",
-          "Real family answers or laughs. Clones go quiet.",
+          "A phrase only your family knows, and nobody else.",
+          "Never typed. Never posted. Just rehearsed once out loud.",
+          "Any emergency call, any voice, no matter how perfect: ask for the word.",
+          "Real family answers, or laughs at you. MIMIC's clone goes dead quiet.",
         ],
         prediction: {
-          question: "Why does a code word beat a perfect voice clone?",
+          question: "Why does one code word beat a flawless voice clone?",
           options: [
-            "Clones can't speak twice",
-            "The clone copied a voice, not a secret that never went online",
-            "It doesn't, really",
+            "Clones can't talk twice",
+            "MIMIC copied a voice, not a secret that never went online",
+            "It doesn't, honestly",
           ],
           answer: 1,
           right: "Exactly. Clones are built from what's online. The word never was.",
-          wrong: "The clone knows everything ever posted. The code word never was posted. That's the wall.",
+          wrong: "MIMIC knows everything ever posted. The code word was never posted. That's the wall he can't climb.",
         },
       },
       fieldwork: {
@@ -276,27 +280,27 @@ export const mission10: MissionManifest = {
         payload: {
           intro: "Pick the code-word system that holds.",
           situation:
-            "Family meeting. You're the analyst now. You set the family's emergency check.",
+            "Family meeting, and you're the analyst in the room. You set the family's emergency check.",
           prompt: "YOUR CALL, OPERATIVE:",
           options: [
             {
               id: "pet",
               label: "Use the dog's name, everyone remembers it",
               outcome:
-                "Biscuit is in forty of your family's posts. A word that ever went online isn't a code word. It's training data.",
+                "Biscuit shows up in forty of your family's posts. Any word that ever went online isn't a code word. It's training data for MIMIC.",
             },
             {
               id: "silly",
               label: "A silly private phrase, never typed anywhere, rehearsed once",
               correct: true,
               outcome:
-                "Perfect. Never posted, easy to remember, impossible to scrape. One practice run at dinner. Every clone on earth is locked out of your family.",
+                "Perfect. Never posted, easy to remember, impossible to scrape. One practice run at dinner and every clone on earth is locked out of your family.",
             },
             {
               id: "bio",
               label: "Write it in everyone's bio so nobody forgets it",
               outcome:
-                "Public defeats the point. PACKRAT reads bios for a living. The word lives in heads, nowhere else.",
+                "Public defeats the whole point. PACKRAT reads bios for a living. The word lives in your heads and nowhere else.",
             },
           ],
         },
@@ -318,8 +322,8 @@ export const mission10: MissionManifest = {
             question: "A REAL family member hears the code-word question and:",
             options: [
               "Gets angry and hangs up",
-              "Answers easily, or laughs at you",
-              "Asks what a code word is",
+              "Answers it easily, or laughs at you",
+              "Asks what a code word even is",
             ],
             answer: 1,
           },
@@ -337,12 +341,12 @@ export const mission10: MissionManifest = {
 
   debrief: {
     report: [
-      "One cloned call survived: urgency named, ask refused, recognition trap seen through.",
-      "The fading tells filed as clues. The forever-tell, the ask, banked as proof.",
+      "One cloned call survived: urgency named, the ask refused, the recognition trap seen straight through.",
+      "Fading tells filed as clues. The forever-tell, the ask, banked as proof.",
       "Family code word designed and rehearsed. Block Two closed: SECRET clearance confirmed.",
     ],
     realWorldMove:
-      "This week, with your family: set the code word. A silly phrase nobody ever posted. Rehearse it once at dinner. It beats every clone ever made.",
+      "This week, with your family: set your code word. A silly phrase nobody ever posted online. Rehearse it once at dinner. It beats every clone ever made.",
     wrenLine: "Block Two closed. SECRET clearance, confirmed. Go give your family the code word, Operative.",
     },
 
@@ -353,8 +357,8 @@ export const mission10: MissionManifest = {
   },
 
   dossier: {
-    mo: "Clones voices from seconds of audio and faces from photos. Sounds exactly like love.",
-    defeatedBy: "The family code word, and calling the real number back.",
+    mo: "Clones voices from seconds of audio and faces from a few photos. Sounds exactly like someone you love. Never actually is.",
+    defeatedBy: "The family code word, and calling the real number back yourself. A copycat can't fake a secret he was never told.",
     breadcrumb:
       "TRACE: the clone trained on audio PACKRAT scraped, reading lines GHOSTWRITER wrote. Three actors, one supply chain, all routing through ZERO. Filed as breadcrumb ③.",
   },

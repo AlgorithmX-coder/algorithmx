@@ -7,6 +7,10 @@
  * padlock as sealed-envelope-vs-postcard, and who can read your
  * messages (in-transit vs end-to-end, lite) — why sketchy public
  * Wi-Fi is a postcard party.
+ *
+ * VOICE PASS v1: WREN wry-mentor voice; PACKRAT is a comic magpie who never
+ * hacks, just reads and hoards whatever travels unsealed ("you left it out,
+ * I picked it up"). Teaching, ids, answers all unchanged.
  */
 
 import Mission12Incident from "../incidents/Mission12Incident";
@@ -20,19 +24,19 @@ export const mission12: MissionManifest = {
   classification: "TOP SECRET",
   actor: {
     codename: "PACKRAT",
-    mo: "Reads everything sent unsealed. Keeps it.",
+    mo: "Never hacks. Reads every message sent unsealed, and keeps it.",
     portrait: "/explorers/actors/packrat.png",
   },
 
-  hook: "Anyone between you and a website can read your messages. Unless you seal them.",
+  hook: "Anyone sitting between you and a website can read your messages. Unless you seal them.",
   scene: "/explorers/scenes/m12-cold-open.jpg",
 
   transmission: {
     headline: "OPEN MAIL",
     lines: [
-      "PACKRAT found a new nest: a café's free Wi-Fi.",
-      "Every unsealed message drifts right through his claws.",
-      "He doesn't hack anything. He just… reads.",
+      "PACKRAT found himself a new nest: a café's free Wi-Fi.",
+      "Every unsealed message drifts right past his claws.",
+      "He doesn't hack a thing. He just… reads. And keeps.",
       "Tonight you learn sealing. Two thousand years of it.",
     ],
   },
@@ -226,7 +230,7 @@ export const mission12: MissionManifest = {
           "Free public Wi-Fi is a room full of strangers.",
           "Whoever runs the network sits on the road itself.",
           "Sealed traffic? Still safe. They see gibberish.",
-          "Unsealed traffic? They're READING your postcards.",
+          "Unsealed traffic? PACKRAT is reading your postcards from the comfy chair.",
           "And a network named FREE_COFFEE could be anyone's laptop.",
           "Rule: unknown network plus no padlock, never both at once.",
         ],
@@ -324,7 +328,7 @@ export const mission12: MissionManifest = {
   },
 
   dossier: {
-    mo: "Sits on the road and reads every postcard. Never hacks, just collects what travels unsealed.",
+    mo: "Sits on the road and reads every postcard that passes. Never hacks a thing. You sent it unsealed, so he picked it up.",
     defeatedBy: "Sealed envelopes. The padlock, end-to-end chats, and phone data on strange networks.",
   },
 };

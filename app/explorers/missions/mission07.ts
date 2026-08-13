@@ -6,6 +6,10 @@
  * fake PROFILES; this teaches compromised REAL ones — the account is
  * genuine, the hands aren't. Trust doesn't transfer with a login.
  * Home of the tier's most-used protocol: out-of-band verification.
+ *
+ * VOICE PASS v1: WREN wry-mentor voice; MIMIC is a vain, faceless
+ * copycat who wears other people's accounts. Teaching, ids, answers
+ * all unchanged.
  */
 
 import Mission07Incident from "../incidents/Mission07Incident";
@@ -19,28 +23,28 @@ export const mission07: MissionManifest = {
   classification: "SECRET",
   actor: {
     codename: "MIMIC",
-    mo: "Steals real accounts and wears them.",
+    mo: "Steals real accounts and wears them like costumes. No face of his own, so he borrows yours.",
     portrait: "/explorers/actors/mimic.png",
   },
 
-  hook: "Your best friend's account just asked for something weird. Is it still your friend?",
+  hook: "Your best friend's account just messaged you something weird. Same name, same face. So is it still your friend behind it?",
   scene: "/explorers/scenes/m07-cold-open.jpg",
 
   transmission: {
     headline: "TWO SIGNALS, ONE NAME",
     lines: [
-      "Leo's account just messaged you.",
-      "Same name. Same photo. Same typing style.",
-      "But something about it reads wrong.",
-      "Reading won't settle this. Protocol will.",
+      "Leo's account just messaged you. It really is his account, that part checks out.",
+      "Same name, same photo, same little typing quirks. A flawless impression.",
+      "That's MIMIC's whole act: he wears someone you trust and hopes you never look past the costume.",
+      "So we won't read the message harder. We'll check the source. Protocol beats a hunch.",
     ],
   },
 
   briefing: {
     summary:
-      "MIMIC doesn't fake accounts. He takes real ones. Trust the protocol, not the face.",
+      "MIMIC doesn't build fake accounts. He steals real ones and wears them. So we trust the protocol, never the face.",
     objectives: [
-      "See how hijacks work",
+      "See how a hijack really works",
       "Learn the switch-channel check",
       "Install the weird-ask alarm",
     ],
@@ -57,29 +61,29 @@ export const mission07: MissionManifest = {
       instruction: "Tap the 3 signs the hands aren't Leo's.",
       intel: {
         beats: [
-          "This isn't a fake profile. Those are easy.",
-          "This is Leo's REAL account.",
-          "Real photo, real history, real friends list.",
-          "Accounts get stolen. Trust doesn't come with them.",
-          "The face is your friend's.",
-          "The hands on the keyboard might not be.",
+          "This isn't some clumsy fake profile. MIMIC is fancier than that.",
+          "This is Leo's REAL account. The genuine article.",
+          "Real photo, real history, real friends list, all of it true.",
+          "MIMIC didn't copy the account. He walked in and put it on.",
+          "The face is your friend's. No argument there.",
+          "The hands on the keyboard? Those might belong to a copycat.",
         ],
         prediction: {
-          question: "The message truly comes from Leo's account. What does that prove?",
+          question: "The message really does come from Leo's account. What does that actually prove?",
           options: [
-            "It's definitely Leo",
-            "Only that the ACCOUNT is Leo's, not the hands",
-            "Accounts can't be stolen",
+            "It's a hundred percent Leo",
+            "Only that the ACCOUNT is Leo's, not the hands typing",
+            "Accounts can't be stolen, so it's fine",
           ],
           answer: 1,
-          right: "Exactly. The account is real. The question is who's holding it.",
-          wrong: "Accounts get stolen every day. The account is real. The hands are the question.",
+          right: "Exactly. The account is real. The only question left is who's holding it.",
+          wrong: "Accounts get borrowed every day. Real account, sure. The hands are the whole question.",
         },
       },
       fieldwork: {
         verb: "INSPECT",
         payload: {
-          intro: "Tap the 3 signs the hands aren't Leo's.",
+          intro: "Tap the 3 signs the hands aren't really Leo's.",
           device: { app: "CHAT", owner: "LEO ⚡ · friends since Year 3" },
           header: [
             { label: "FROM:", seg: { id: "from", text: "Leo: real account, real history" } },
@@ -94,17 +98,17 @@ export const mission07: MissionManifest = {
             {
               id: "urgency",
               label: "The panic open",
-              why: "Leo never opens with panic. A sudden rush is a borrowed voice.",
+              why: "Leo never opens with a panic alarm. A sudden rush is the costume talking, not him.",
             },
             {
               id: "secrecy",
               label: "The keep-it-secret push",
-              why: "“Tell no one” cuts off the people who'd catch this.",
+              why: "“Tell no one” quietly unplugs every person who'd catch this.",
             },
             {
               id: "code",
               label: "The code ask",
-              why: "Codes are keys. Real friends never ask for keys.",
+              why: "Codes are keys to your account. Real friends never ask you to hand over a key.",
             },
           ],
           doneLine: "Right face, wrong hands. Three signs say Leo isn't home.",
@@ -114,17 +118,17 @@ export const mission07: MissionManifest = {
         questions: [
           {
             id: "c1q1",
-            question: "A stolen account still shows real photos and history. Why?",
+            question: "A hijacked account still shows all the real photos and history. Why?",
             options: [
-              "The thief made copies",
-              "It IS the real account, that's what stolen means",
-              "Photos can't be real online",
+              "The copycat made copies of everything",
+              "It IS the real account, that's what hijacked means",
+              "Photos are never real online",
             ],
             answer: 1,
           },
           {
             id: "c1q2",
-            question: "Which line should stop you INSTANTLY?",
+            question: "Which line should freeze you on the spot?",
             options: [
               "“did you watch the match”",
               "“send me the code fast”",
@@ -145,23 +149,23 @@ export const mission07: MissionManifest = {
       instruction: "Pick the move that settles it for sure.",
       intel: {
         beats: [
-          "Here's the protocol. It never fails.",
-          "A thief steals ONE channel: the chat.",
-          "So step OUT of it.",
-          "Call the real number. Find them at school. Knock on the door.",
-          "ARC calls it out-of-band: a channel the thief doesn't hold.",
-          "The costume only covers one channel. Always.",
+          "Here's the protocol. Boring name, unbeatable move.",
+          "MIMIC only ever grabs ONE channel: this chat.",
+          "So we step clean OUT of it.",
+          "Call the real number. Catch them at school. Knock on the actual door.",
+          "ARC calls it out-of-band: a channel the copycat was never handed.",
+          "The costume only ever covers one channel. Every single time.",
         ],
         prediction: {
-          question: "Why not just ask in the chat: “is this really you?”",
+          question: "Why not just ask right there in the chat: “is this really you?”",
           options: [
-            "It's rude to ask",
-            "The thief is holding that chat, they'll just say yes",
-            "Chats delete questions",
+            "Asking would be rude",
+            "MIMIC is holding that chat, so of course he'll say yes",
+            "Chats delete your questions",
           ],
           answer: 1,
-          right: "Right. You'd be asking the thief to grade their own costume.",
-          wrong: "Whoever holds the chat answers the chat. Ask where the thief ISN'T.",
+          right: "Right. That's asking the copycat to grade his own costume. He'll give it top marks.",
+          wrong: "Whoever holds the chat answers the chat. Ask somewhere MIMIC isn't standing.",
         },
       },
       fieldwork: {
@@ -169,27 +173,27 @@ export const mission07: MissionManifest = {
         payload: {
           intro: "Pick the move that settles it for sure.",
           situation:
-            "“Leo” is pushing harder. The code runs out in two minutes. Then your phone buzzes: a login code just arrived.",
+            "“Leo” is pushing harder now. The code expires in two minutes, he says. Then your phone buzzes: a login code just landed.",
           prompt: "YOUR CALL, OPERATIVE:",
           options: [
             {
               id: "send",
               label: "Send the code, it's Leo and he's in trouble",
               outcome:
-                "That code unlocks YOUR account. Send it and the thief walks in as you. Two accounts stolen with one favor.",
+                "That code is the key to YOUR account. Send it, and MIMIC strolls in wearing you next. Two accounts stolen with one little favor.",
             },
             {
               id: "ask",
               label: "Ask in the chat: “prove it's really you”",
               outcome:
-                "The thief has Leo's whole chat history to look up answers. You're quizzing someone holding the answer sheet.",
+                "MIMIC has Leo's whole chat history to crib from. You'd be quizzing a copycat who's holding the answer sheet.",
             },
             {
               id: "call",
               label: "Step out of the chat: call Leo's real number",
               correct: true,
               outcome:
-                "Out-of-band. Real Leo picks up at school, confused. He never messaged you. Hijack confirmed in ten seconds. Your code stays yours.",
+                "Out-of-band, textbook. Real Leo picks up at school, totally confused. He never messaged you. Hijack confirmed in ten seconds, and your code stays yours.",
             },
           ],
         },
@@ -200,19 +204,19 @@ export const mission07: MissionManifest = {
             id: "c2q1",
             question: "The out-of-band check means:",
             options: [
-              "Asking politely in the same chat",
-              "Checking on a channel the thief doesn't hold",
-              "Waiting a day to reply",
+              "Asking nicely in the very same chat",
+              "Checking on a channel the copycat doesn't hold",
+              "Waiting a day before you reply",
             ],
             answer: 1,
           },
           {
             id: "c2q2",
-            question: "A login code arrives that you never asked for. It means:",
+            question: "A login code shows up that you never asked for. That means:",
             options: [
-              "A free bonus code",
-              "Someone is trying to enter YOUR account right now",
-              "The app is broken",
+              "A free bonus code, nice",
+              "Someone is trying to get into YOUR account right now",
+              "The app glitched",
             ],
             answer: 1,
           },
@@ -229,23 +233,23 @@ export const mission07: MissionManifest = {
       instruction: "Pick the 3 asks that trip the alarm.",
       intel: {
         beats: [
-          "One alarm covers every borrowed face.",
-          "Real friends ask for memes. Homework. Backup in a game.",
-          "Thieves ask for three things.",
+          "One alarm covers every borrowed face MIMIC will ever wear.",
+          "Real friends ask for memes. Homework. Backup in a boss fight.",
+          "Copycats ask for three things, always the same three.",
           "Codes. Money. Secrecy.",
-          "Any one of those, from ANY account: alarm.",
-          "Even if the face is your best friend's. Especially then.",
+          "Any one of those, from ANY account: alarm goes off.",
+          "Even when the face is your best friend's. Especially then.",
         ],
         prediction: {
-          question: "Why do thieves always add “don't tell anyone”?",
+          question: "Why do copycats always slip in “don't tell anyone”?",
           options: [
-            "They're shy",
+            "They're a bit shy",
             "Secrecy switches off the people who'd catch them",
             "It makes the favor feel special",
           ],
           answer: 1,
-          right: "Exactly. Your friends and adults are the alarm system. Secrecy unplugs it.",
-          wrong: "Secrecy isn't about the surprise. It unplugs everyone who'd spot the con.",
+          right: "Exactly. Your friends and trusted adults ARE the alarm system. Secrecy quietly unplugs it.",
+          wrong: "This was never about a surprise. Secrecy unplugs everyone who'd spot the con.",
         },
       },
       fieldwork: {
@@ -273,19 +277,19 @@ export const mission07: MissionManifest = {
         questions: [
           {
             id: "c3q1",
-            question: "“Don't tell anyone” inside a favor message is:",
+            question: "“Don't tell anyone” tucked inside a favor message is:",
             options: [
-              "Normal between friends",
-              "The thief unplugging your safety net",
-              "Just being dramatic",
+              "Totally normal between friends",
+              "The copycat unplugging your safety net",
+              "Just someone being dramatic",
             ],
             answer: 1,
           },
           {
             id: "c3q2",
-            question: "A friend suddenly asks for money. First move?",
+            question: "A friend suddenly asks you for money. First move?",
             options: [
-              "Send a small amount to be kind",
+              "Send a little, just to be kind",
               "Check on another channel first",
               "Block them forever, no questions",
             ],
@@ -305,13 +309,13 @@ export const mission07: MissionManifest = {
 
   debrief: {
     report: [
-      "One hijack read right: real account, borrowed hands, three signs.",
-      "The protocol run in ten seconds: hijack confirmed, code kept.",
-      "Leo's account recovered and the warning sent clean: no link, no shame.",
+      "One hijack read correctly: real account, borrowed hands, three tells.",
+      "Protocol run in ten seconds flat: hijack confirmed, code kept.",
+      "Leo's account recovered, warning sent clean. No link clicked, no shame.",
     ],
     realWorldMove:
-      "This week: agree a secret check-question with your best friend. Pick one only you two know. If either account ever acts weird, switch channels and ask it.",
-    wrenLine: "Right face found. Protocol beats a hunch. Filed. Sign out.",
+      "This week: agree a secret check-question with your best friend, something only the two of you know. If either account ever acts strange, switch channels and ask it.",
+    wrenLine: "Right face, wrong hands, case closed. Protocol beats a hunch every time. Filed. Sign out.",
   },
 
   voice: {
@@ -321,7 +325,7 @@ export const mission07: MissionManifest = {
   },
 
   dossier: {
-    mo: "Steals real accounts and wears them. The face is real; the hands aren't.",
-    defeatedBy: "Anyone who checks on a second channel. The costume only covers one.",
+    mo: "Steals real accounts and wears them like costumes. The face is genuine; the hands are the copycat's. No face of his own, so he borrows someone you trust.",
+    defeatedBy: "Anyone who checks on a second channel, one MIMIC doesn't hold. The costume only ever covers one.",
   },
 };

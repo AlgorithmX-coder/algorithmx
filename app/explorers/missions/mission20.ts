@@ -9,6 +9,10 @@
  * tier; (3) the handoff — you document and hand to adults + the
  * platform (escalation modeled at mastery). Coordinator unmasked as
  * an ex-ARC analyst. ARC chrome never corrupts, even now.
+ *
+ * VOICE PASS v1: the capstone reads as an earned graduation, a little
+ * epic; ZERO stays quiet and grown-up, unmasked with weight not jokes.
+ * Strings only; teaching, ids, answers, order, and flags unchanged.
  */
 
 import Mission20Incident from "../incidents/Mission20Incident";
@@ -34,7 +38,7 @@ export const mission20: MissionManifest = {
     lines: [
       "This is the last one, Operative. No new tricks.",
       "Only everything you already know, at once.",
-      "The coordinator is cornered, and desperate.",
+      "The coordinator is cornered at last. The calm is gone, and that is when he is most dangerous.",
       "Finish the board. Read the final lure. Hand it over clean.",
     ],
   },
@@ -47,7 +51,7 @@ export const mission20: MissionManifest = {
       "Beat the perfect lure",
       "Make the handoff",
     ],
-    wrenLine: "Everything you know, Operative. That's the whole test. And you know a lot.",
+    wrenLine: "Everything you know, Operative, all at once. That is the whole test. And you know so much now.",
   },
 
   cycles: [

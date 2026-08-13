@@ -28,28 +28,28 @@ export const mission08: MissionManifest = {
     portrait: "/explorers/actors/ghostwriter.png",
   },
 
-  hook: "A stranger online sounds like your perfect friend. Too perfect. Let's check the writer.",
+  hook: "A new online friend is funny, kind, likes everything you like. Perfect, really. Way too perfect. Let's meet the ghost doing the typing.",
   scene: "/explorers/scenes/m08-cold-open.jpg",
 
   transmission: {
     headline: "NEW PEN PAL",
     lines: [
-      "A student's been chatting to a new online friend for two weeks.",
-      "The friend is funny, kind, and loves everything she loves.",
-      "Yesterday, the friend asked for a small favor.",
-      "Today we find out who's really typing.",
+      "A student's had a shiny new online friend for two weeks now.",
+      "Funny, kind, loves every single thing she loves. What are the odds?",
+      "Yesterday, this “friend” asked for a small favour.",
+      "Time to meet the ghost doing the typing.",
     ],
   },
 
   briefing: {
     summary:
-      "GHOSTWRITER's scams have perfect spelling and perfect warmth. Style can't prove anyone safe now.",
+      "Ghostwriter writes flawless fakes: perfect spelling, perfect warmth, and nobody actually behind them. Nice writing proves nothing now.",
     objectives: [
       "Forget the old typo clues",
       "Read the machine's clues",
       "Check the writer, not the writing",
     ],
-    wrenLine: "If it sounds too right, check who's writing, Operative.",
+    wrenLine: "If it sounds too perfect, don't check the writing. Check the writer.",
   },
 
   cycles: [
@@ -62,12 +62,12 @@ export const mission08: MissionManifest = {
       instruction: "Tap the 3 whispers under the perfect writing.",
       intel: {
         beats: [
-          "Maybe someone taught you: scams have typos.",
-          "That time is over.",
-          "Machines write the scams now. Perfectly. For free.",
-          "Perfect spelling proves exactly nothing.",
-          "But listen closer. Patterns still whisper.",
-          "Three whispers, coming up.",
+          "Someone probably told you: scams are full of typos.",
+          "Yeah, that rule is dead.",
+          "Ghostwriter lets a machine write his scams now. Perfectly. For free.",
+          "So perfect spelling? Proves absolutely nothing.",
+          "But lean in close. The fake still whispers a few tells.",
+          "Three of them, coming up.",
         ],
         prediction: {
           question: "Why don't typos give scams away now?",
@@ -353,7 +353,7 @@ export const mission08: MissionManifest = {
   },
 
   dossier: {
-    mo: "Writes perfect fakes: warm, funny, perfectly spelled. The writer never existed.",
-    defeatedBy: "Anyone who checks the source, not the style. Machines write words, not lives.",
+    mo: "Writes flawless fakes: warm, funny, perfectly spelled. “I can be anyone you want.” Trouble is, nobody's actually there.",
+    defeatedBy: "Anyone who checks the real life behind the words, not the writing. A machine can write a person. It can't be one.",
   },
 };

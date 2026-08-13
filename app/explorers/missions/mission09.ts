@@ -27,22 +27,22 @@ export const mission09: MissionManifest = {
     portrait: "/explorers/actors/siren.png",
   },
 
-  hook: "Some cons take weeks. The trap is kindness. The exit is always open.",
+  hook: "Some cons take weeks, all smiles and free gifts. The trap is kindness. And the exit was open the whole time.",
   scene: "/explorers/scenes/m09-cold-open.jpg",
 
   transmission: {
     headline: "THE COLLECTOR",
     lines: [
-      "There's an account being VERY generous on a game server.",
-      "Free skins. Compliments. Weeks of it.",
+      "There's an account on a game server being SO generous it's suspicious.",
+      "Free skins. Endless compliments. Weeks of it.",
       "Nobody's been asked for anything back. Yet.",
-      "That “yet” is tonight's lesson.",
+      "That little “yet” is Siren's whole game. Let's read it.",
     ],
   },
 
   briefing: {
     summary:
-      "SIREN plays the long game. Gifts first, then weeks of warmth. The ask comes when leaving feels too hard.",
+      "Siren plays the long game: gifts first, then weeks of warmth, and the ask lands right when leaving feels too hard.",
     objectives: [
       "See the business behind cons",
       "Trace the trust farm",
@@ -61,12 +61,12 @@ export const mission09: MissionManifest = {
       instruction: "Pick the 3 moves that prove it's a business.",
       intel: {
         beats: [
-          "Here's the secret that breaks long cons.",
-          "They're not personal. They're a business.",
-          "Hundreds of targets. Scripts that get reused.",
-          "Numbers that get tracked.",
-          "You're not the special one. You're a row in a spreadsheet.",
-          "Which means none of it was ever about you. Freeing, right?",
+          "Here's the secret that breaks every long con.",
+          "It's not personal. It's a business.",
+          "Siren runs hundreds of targets at once. Same scripts, copy-pasted.",
+          "Little numbers tracked in a spreadsheet.",
+          "So you're not her special one. You're a row. Row 37, maybe.",
+          "Which means none of it was ever really about you. Kind of freeing, right?",
         ],
         prediction: {
           question: "Why does it HELP to know you're one of hundreds?",
@@ -352,7 +352,7 @@ export const mission09: MissionManifest = {
   },
 
   dossier: {
-    mo: "Plays the long game: gifts, warmth, weeks of patience. Then the ask you feel you owe.",
-    defeatedBy: "Anyone who knows the exit is always open. The con is the con's fault.",
+    mo: "Plays the long game: gifts, flattery, weeks of patience. “You're special… just us.” Then the ask you feel you owe.",
+    defeatedBy: "Anyone who knows they're one of many and the exit's always open. The con is the con's fault. Every time.",
   },
 };

@@ -7,6 +7,9 @@
  * with a trusted adult." This mission teaches the MECHANISM — how the
  * lure works (urgency), how the costume works (domains), and how the
  * pattern repeats (M.O.) — with supported-autonomy escalation.
+ *
+ * VOICE PASS v1: kid-voice + humour; PHANTOM HOOK is a smug show-off who
+ * brags that "everyone clicks". Teaching, ids, answers all unchanged.
  */
 
 import Mission01Incident from "../incidents/Mission01Incident";
@@ -24,28 +27,28 @@ export const mission01: MissionManifest = {
     portrait: "/explorers/actors/phantom-hook.png",
   },
 
-  hook: "A fake email almost got Maya's account. Find out how it works.",
+  hook: "A fake email nearly grabbed Maya's game account. Let's catch how it works, and the show-off who sent it.",
   scene: "/explorers/scenes/m01-cold-open.jpg",
 
   transmission: {
     headline: "SIGNAL DETECTED",
     lines: [
-      "A message just hit Maya's inbox.",
-      "It says her game account gets deleted in 24 hours.",
-      "She almost clicked.",
-      "Something about it reads wrong. Find out what.",
+      "A message just pinged Maya's inbox.",
+      "“Your account will be DELETED in 24 hours!” Scary. Bold. All caps.",
+      "She nearly clicked. Almost everyone does. That's the whole point.",
+      "But it's a fake, and the show-off who sent it got sloppy. Let's prove it.",
     ],
   },
 
   briefing: {
     summary:
-      "One fake email. It wants a password before anyone slows down to read.",
+      "One fake email, built to grab a password before anyone slows down to read it.",
     objectives: [
       "Spot the pressure trick",
       "Read the real address",
-      "File the actor's M.O.",
+      "Log the villain's M.O.",
     ],
-    wrenLine: "Three skills, then the boss. Work clean.",
+    wrenLine: "Three skills, then we corner the culprit. Eyes open.",
   },
 
   cycles: [
@@ -53,34 +56,34 @@ export const mission01: MissionManifest = {
     {
       id: "lure",
       title: "Read the lure",
-      concept: "Urgency is a tool aimed at you",
-      promise: "You'll learn why scary deadlines are a trick.",
-      instruction: "Tap the 3 clues that don't belong.",
+      concept: "Urgency is a trick aimed at you",
+      promise: "You'll learn why scary countdowns are pure bluff.",
+      instruction: "Tap the 3 clues that give the fake away.",
       intel: {
         beats: [
-          "Every PHANTOM HOOK trick starts the same way.",
-          "Not with a fact. With a feeling.",
-          "The feeling is hurry.",
-          "A deadline flips your brain from thinking to reacting.",
-          "Attackers know that.",
-          "Pressure in a message isn't drama. It's a tool, aimed at you.",
+          "Every Phantom Hook scam opens the exact same way: a countdown.",
+          "Not a fact. A feeling. And that feeling is HURRY.",
+          "A ticking clock flips your brain from “think it through” to “panic and click.”",
+          "That's the whole trick. No magic, just pressure.",
+          "Phantom Hook is basically yelling “don't think, just click!”",
+          "So we do the rudest thing you can do to a scammer. We slow right down.",
         ],
         prediction: {
-          question: "Why put a 24-hour deadline in a message?",
+          question: "Why slap a 24-hour deadline on a message?",
           options: [
-            "Accounts really get deleted that fast",
+            "Accounts really do vanish that fast",
             "To make you act before you think",
-            "The attacker is in a hurry",
+            "The scammer is just in a hurry",
           ],
           answer: 1,
-          right: "Right. The deadline is pressure, not information.",
-          wrong: "No. The deadline targets your reflexes, not your calendar.",
+          right: "Right. The countdown is pressure, not information.",
+          wrong: "Nope. The clock is aimed at your reflexes, not your calendar.",
         },
       },
       fieldwork: {
         verb: "INSPECT",
         payload: {
-          intro: "Tap the 3 clues that don't belong.",
+          intro: "Tap the 3 clues that give the fake away.",
           device: { app: "MAIL", owner: "MAYA'S PHONE" },
           header: [
             {
@@ -113,20 +116,20 @@ export const mission01: MissionManifest = {
             {
               id: "sender",
               label: "Sender address",
-              why: "It ends in gamehub-rewards-center.com. The real domain is gamehub.com. Close isn't same.",
+              why: "It ends in gamehub-rewards-center.com. The real one is just gamehub.com. Close is not the same.",
             },
             {
               id: "urgency",
               label: "Pressure line",
-              why: "A countdown threat is a rush tactic. Real companies don't do countdowns.",
+              why: "A countdown threat is pure rush tactic. Real companies never run an “or else” timer.",
             },
             {
               id: "link",
               label: "Link target",
-              why: "The button says GameHub. The link goes to support-verify.net. A costume.",
+              why: "The button brags “GameHub”. The link sneaks off to support-verify.net. Classic costume.",
             },
           ],
-          doneLine: "All three. Nicely done, Operative.",
+          doneLine: "All three, clean. Phantom Hook is not as slick as he thinks.",
         },
       },
       checkpoint: {
@@ -145,7 +148,7 @@ export const mission01: MissionManifest = {
           {
             id: "c1q2",
             question:
-              "Your friend starts typing his password for a “24 hours” email. You say:",
+              "Your friend starts typing his password into a “24 hours!” email. You say:",
             options: [
               "Type faster, beat the clock",
               "Stop. Check in the official app",
@@ -162,22 +165,22 @@ export const mission01: MissionManifest = {
       id: "address",
       title: "Read the address",
       concept: "The domain is who you're really talking to",
-      promise: "You'll learn who a web address really belongs to.",
+      promise: "You'll learn who a web address actually belongs to.",
       instruction: "Pick the safest move for Maya.",
       intel: {
         beats: [
-          "Web addresses read right to left.",
-          "The words just before the first slash: that's who you're visiting.",
-          "Everything in front is decoration.",
-          "So gamehub.support-verify.net isn't GameHub.",
-          "It's support-verify.net, wearing a GameHub costume.",
+          "Web addresses read right to left. Weird, but true.",
+          "The words just before the first slash? That's who you're really visiting.",
+          "Everything in front of that is just decoration.",
+          "So gamehub.support-verify.net is NOT GameHub.",
+          "It's support-verify.net, wearing a GameHub costume. Phantom Hook loves a costume.",
         ],
         prediction: {
           question: "Which address really belongs to GameHub?",
           options: ["gamehub.support-verify.net", "gamehub.com/account", "secure-gamehub-login.net"],
           answer: 1,
-          right: "Yes. gamehub.com is the destination. /account is just a room inside it.",
-          wrong: "Costume. The real owner sits just before the first slash.",
+          right: "Yes. gamehub.com is the real place. /account is just a room inside it.",
+          wrong: "Costume. The real owner sits right before that first slash.",
         },
       },
       fieldwork: {
@@ -185,27 +188,27 @@ export const mission01: MissionManifest = {
         payload: {
           intro: "Pick the safest move for Maya.",
           situation:
-            "Maya's email is locked away. But she's worried: what if the problem is real?",
+            "Maya's locked out and nervous: what if the problem is actually real?",
           prompt: "YOUR CALL, OPERATIVE:",
           options: [
             {
               id: "click",
               label: "Click the link and check",
               outcome:
-                "That's the hook. Everything she types goes straight to PHANTOM HOOK.",
+                "That's the hook. Everything she types drops straight into Phantom Hook's lap.",
             },
             {
               id: "reply",
               label: "Reply and ask if it's real",
               outcome:
-                "The sender IS the attacker. A reply invites twice the bait tomorrow.",
+                "The sender IS the scammer. Reply, and tomorrow he sends double the bait.",
             },
             {
               id: "official",
               label: "Check in the official app, then report",
               correct: true,
               outcome:
-                "Clean. The real app is ground truth, and the report protects the next kid.",
+                "Clean. The real app is the truth, and the report protects the next kid in line.",
             },
           ],
         },
@@ -237,28 +240,28 @@ export const mission01: MissionManifest = {
       id: "actor",
       title: "Know the actor",
       concept: "The costume changes; the moves don't",
-      promise: "You'll learn how one pattern exposes every disguise.",
-      instruction: "Pick this actor's 3 signature moves.",
+      promise: "You'll learn how one pattern unmasks every disguise.",
+      instruction: "Tag this actor's 3 signature moves.",
       intel: {
         beats: [
-          "Attackers repeat themselves.",
-          "The costume changes. The moves don't.",
-          "Spot the pattern once. You'll recognize every disguise.",
-          "ARC files each actor's moves as an M.O.",
-          "One closed case protects a thousand inboxes.",
+          "Scammers are repeat offenders. They reuse their best tricks.",
+          "The costume changes. The moves never do.",
+          "Spot the pattern once, and you'll clock every disguise after.",
+          "ARC files each villain's moves as an M.O.",
+          "One closed case protects a thousand inboxes. Yours included.",
         ],
         prediction: {
-          question: "Next month PHANTOM HOOK targets a homework app. What stays the same?",
+          question: "Next month Phantom Hook targets a homework app. What stays the same?",
           options: ["The logo on the email", "The pressure and the costume link", "The color of the button"],
           answer: 1,
-          right: "Exactly. The deadline and the fake address are the signature.",
-          wrong: "Those are costume. The signature is the pressure and the lying address.",
+          right: "Exactly. The countdown and the fake address are his signature.",
+          wrong: "Those are just costume. The signature is the pressure and the lying address.",
         },
       },
       fieldwork: {
         verb: "PROFILE",
         payload: {
-          intro: "Pick this actor's 3 signature moves.",
+          intro: "Tag Phantom Hook's 3 signature moves.",
           evidence: [
             "Invented a 24-hour deadline to rush the target",
             "Sent from gamehub-rewards-center.com dressed as GameHub",
@@ -267,13 +270,13 @@ export const mission01: MissionManifest = {
           behaviors: [
             { id: "deadline", label: "Invents a deadline to rush you", matches: true },
             { id: "costume", label: "Wears a trusted name over a stranger's address", matches: true },
-            { id: "mislink", label: "Sends links that lie about their target", matches: true },
+            { id: "mislink", label: "Sends links that lie about where they go", matches: true },
             { id: "guess", label: "Guesses passwords over and over", matches: false },
             { id: "voice", label: "Fakes a friend's voice on a call", matches: false },
             { id: "meet", label: "Asks to meet you in person", matches: false },
           ],
           picks: 3,
-          doneLine: "That's the pattern. You'll see it again wearing a different logo.",
+          doneLine: "That's his pattern. Next time he'll just be wearing a different logo.",
         },
       },
       checkpoint: {
@@ -309,13 +312,13 @@ export const mission01: MissionManifest = {
 
   debrief: {
     report: [
-      "One lure dissected: deadline pressure, look-alike sender, costume link.",
-      "Field call: official app for ground truth. Report filed. No link touched.",
-      "Second wave triaged. Campaign contained and on the record.",
+      "One lure taken apart: countdown pressure, look-alike sender, costume link.",
+      "Right call made: open the real app, report it, touch zero links.",
+      "Second wave sorted. Phantom Hook's campaign is contained and on the record.",
     ],
     realWorldMove:
-      "This week: if a message rushes you, don't touch its links. Open the real app and check there. Still feels wrong? Report it and tell an adult you trust.",
-    wrenLine: "Four lures, zero clicks in your lane. Read the report, sign out.",
+      "This week: if a message rushes you, don't touch its links. Open the real app and check there yourself. Still feels off? Tell an adult you trust and report it.",
+    wrenLine: "Four lures, zero clicks on your watch. Read the report, sign out.",
   },
 
   voice: {
@@ -325,8 +328,8 @@ export const mission01: MissionManifest = {
   },
 
   dossier: {
-    mo: "Fake “urgent” messages dressed as companies you trust. Wants the click before the think.",
-    defeatedBy: "Anyone who slows down, reads the address, and checks the official app.",
+    mo: "Fake “urgent” messages dressed as apps you trust. Wants the click before you think.",
+    defeatedBy: "Anyone who slows down, reads the address, and checks the official app. Ruins his whole night.",
     breadcrumb:
       "ROUTING NOTE: this campaign relayed through a node tagged ZERO. First time that tag has surfaced. Filed as breadcrumb ①.",
   },
