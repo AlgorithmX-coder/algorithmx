@@ -42,12 +42,17 @@ build prompt may cite a decision that is not in this document.
    CyBOK and Security+ objectives; reference the UKCSC framework and ACSP
    descriptively; zero NCSC marketing presence; no job guarantees; no debunked
    market stats. Full policy in section 9.
-8. **Fiction - DECIDE.** The drafted trailer borrowed "ARC SECURE NET", which is
-   Explorers canon (WREN's network, the 10-13 tier). Recommendation: Pro runs
-   fiction-free (section 10).
-9. **Canonical product record - DECIDE.** Seed still says "CyberStart Pro",
-   16-18+, £149, 75 min/week, 0 weeks. Needs one surgical alignment PR
-   (section 11).
+8. **Fiction - LOCKED (owner, 2026-08-13).** Fiction-free. No employer wrapper;
+   the learner is an analyst in training and the incidents are realistic but
+   unbranded. ARC stays Explorers canon; Redoubt stays Ops. See section 10.
+9. **Canonical product record - RESOLVED 2026-08-13.** Aligned via PR #152
+   (name "Cyber Pro", 18+, £99, 2 hrs/week; slug unchanged). The slug rename
+   `cyberstart-pro` -> `cyber-pro` remains a separate open decision.
+10. **First build - LOCKED (owner, 2026-08-13).** The analyst console walking
+   skeleton: alert queue, log viewer, enrichment, ticket editor, plus ONE
+   complete playable alert end to end, before any week authoring. The
+   portfolio system rides in the skeleton from day one, even in crude form.
+   Ops precedent (engine-first, walking-skeleton-first) carried over.
 
 ---
 
@@ -251,17 +256,19 @@ landing page drops the £99 line.
 
 ---
 
-## 10. Fiction - DECIDE
+## 10. Fiction - LOCKED: fiction-free (owner, 2026-08-13)
 
-The drafted trailer used "ARC SECURE NET // FIELD FEED" and "CLASSIFIED //
-ARC-EYES-ONLY". ARC is Explorers canon (the 10-13 tier). Options:
+Pro runs without an employer fiction. The learner is an analyst in training;
+alerts and incidents are realistic but unbranded. HUD chrome stays as
+*aesthetic* ("CYBER PRO // CAREER TRACK") without an in-universe employer, and
+trust beats read plain. Rationale: the tier's whole differentiator is honesty
+and adulthood; a fictional employer wrapper undercuts the straight-talk tone.
 
-- **DEFAULT (recommended): fiction-free.** Pro's whole differentiator is
-  honesty and adulthood; HUD chrome can stay as *aesthetic* ("CYBER PRO //
-  CAREER TRACK") without an in-universe employer. Trust beats read plain.
-- Alternative: a light employer fiction a la Redoubt, if the range engine from
-  Ops is reused for Pro sims and wants a client frame. If chosen, it must be a
-  new name; not ARC, not Redoubt.
+History: the drafted trailer had borrowed "ARC SECURE NET // FIELD FEED" and
+"CLASSIFIED // ARC-EYES-ONLY"; ARC is Explorers canon (the 10-13 tier) and
+Redoubt is Ops canon. Neither appears in Pro. The rejected alternative (a
+defensive Redoubt-equivalent with a new name) is on record in case the sim
+engine ever needs a client frame; re-open only with owner sign-off.
 
 Trailer trust-beat replacement (built 2026-08-13, "Cyber Pro - Trust Beat"
 artifact): kicker "BUILT FOR THE REAL JOB MARKET"; ticks = CyBOK mapping,
