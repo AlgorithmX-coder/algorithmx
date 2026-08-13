@@ -53,7 +53,7 @@ export const mission10: MissionManifest = {
       "Watch the tells decay",
       "Set the family code word",
     ],
-    wrenLine: "Trust the protocol over your own ears, Operative. Tonight, that's the skill.",
+    wrenLine: "Trust the protocol over your own ears, Agent. Tonight, that's the skill.",
   },
 
   cycles: [
@@ -281,7 +281,7 @@ export const mission10: MissionManifest = {
           intro: "Pick the code-word system that holds.",
           situation:
             "Family meeting, and you're the analyst in the room. You set the family's emergency check.",
-          prompt: "YOUR CALL, OPERATIVE:",
+          prompt: "YOUR CALL, AGENT:",
           options: [
             {
               id: "pet",
@@ -347,7 +347,7 @@ export const mission10: MissionManifest = {
     ],
     realWorldMove:
       "This week, with your family: set your code word. A silly phrase nobody ever posted online. Rehearse it once at dinner. It beats every clone ever made.",
-    wrenLine: "Block Two closed. SECRET clearance, confirmed. Go give your family the code word, Operative.",
+    wrenLine: "Block Two closed. SECRET clearance, confirmed. Go give your family the code word, Agent.",
     },
 
   voice: {

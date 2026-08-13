@@ -48,7 +48,7 @@ export const mission09: MissionManifest = {
       "Trace the trust farm",
       "Learn the clean exit",
     ],
-    wrenLine: "The door's never locked, Operative. Cons just paint it shut.",
+    wrenLine: "The door's never locked, Agent. Cons just paint it shut.",
   },
 
   cycles: [
@@ -276,7 +276,7 @@ export const mission09: MissionManifest = {
           intro: "Pick the exit that actually works.",
           situation:
             "Week 3. You've realized it's a con. But you took the gifts. The message reads: “after everything I've given you, you owe me this.”",
-          prompt: "YOUR CALL, OPERATIVE:",
+          prompt: "YOUR CALL, AGENT:",
           options: [
             {
               id: "stay",

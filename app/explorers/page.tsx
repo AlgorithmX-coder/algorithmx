@@ -136,12 +136,12 @@ export default function ExplorersPage() {
   if (active) return <MissionRuntime manifest={active} devStartBeat={devBoss ? "incident" : undefined} />;
 
   const continueLabel = !nextCase
-    ? "ALL CASES CLOSED"
+    ? "ALL CASES SOLVED"
     : status[nextCase.id] === "IN PROGRESS"
-      ? `CONTINUE // ${nextCase.caseNumber.replace(" ", "_")}`
+      ? `CONTINUE · ${nextCase.caseNumber}`
       : closedCount === 0
-        ? `START // ${nextCase.caseNumber.replace(" ", "_")}`
-        : `NEXT // ${nextCase.caseNumber.replace(" ", "_")}`;
+        ? `START · ${nextCase.caseNumber}`
+        : `NEXT · ${nextCase.caseNumber}`;
 
   return (
     <main style={{ minHeight: "100vh", background: BG, color: TXT, fontFamily: MONO, position: "relative", overflow: "hidden" }}>
@@ -168,7 +168,7 @@ export default function ExplorersPage() {
         @media (prefers-reduced-motion: reduce){.tc-cur,.tc-blink{animation:none}.tc-card:hover,.tc-cta:hover{transform:none}}
       `}</style>
 
-      <MatrixRain reduced={reduced} opacity={0.45} colors={RAIN_COLORS} />
+      <MatrixRain reduced={reduced} opacity={0.24} colors={RAIN_COLORS} />
       <div className="tc-scan" aria-hidden />
       <div className="tc-vig" aria-hidden />
 
@@ -178,22 +178,22 @@ export default function ExplorersPage() {
           <span className="tc-dot" style={{ background: "#ff5f56" }} />
           <span className="tc-dot" style={{ background: "#ffbd2e" }} />
           <span className="tc-dot" style={{ background: "#27c93f" }} />
-          <span style={{ marginLeft: 10, color: DIM }}>arc@secure-net: ~/missions</span>
-          <span style={{ marginLeft: "auto", color: DIM }}>SECURE SHELL // ENCRYPTED</span>
+          <span style={{ marginLeft: 10, color: DIM }}>ARC · MISSION BOARD</span>
+          <span style={{ marginLeft: "auto", color: DIM }}>SECURE · ENCRYPTED</span>
         </div>
 
         <div className="tc-win">
           {/* hero */}
           <div style={{ color: SYS, fontSize: 12.5, letterSpacing: "0.06em" }}>
-            arc@secure-net:~$ ./mission-map --list<span className="tc-cur" style={{ color: SYS }}>▊</span>
+            AGENT, YOUR MISSIONS<span className="tc-cur" style={{ color: SYS }}>▊</span>
           </div>
           <h1 className="tc-h1">
-            PICK YOUR CASE, <span style={{ color: SYS }}>OPERATIVE</span>
+            PICK YOUR CASE, <span style={{ color: SYS }}>AGENT</span>
           </h1>
           <div style={{ color: TXT, opacity: 0.9, fontSize: 13, marginTop: 8 }}>
-            <span style={{ color: DIM }}>{"//"}</span> operative: <span style={{ color: SYS }}>TRAINEE</span> &nbsp;·&nbsp; cases_closed:{" "}
+            agent: <span style={{ color: SYS }}>TRAINEE</span> &nbsp;·&nbsp; cases solved:{" "}
             <span style={{ color: "#3BF57E" }}>{closedCount}</span>
-            <span style={{ color: DIM }}>/20</span> &nbsp;·&nbsp; xp: <span style={{ color: AMBER }}>{totalXp}</span> &nbsp;·&nbsp; clearance:{" "}
+            <span style={{ color: DIM }}>/20</span> &nbsp;·&nbsp; xp: <span style={{ color: AMBER }}>{totalXp}</span> &nbsp;·&nbsp; rank:{" "}
             <span style={{ color: SYS, letterSpacing: "0.18em" }}>{ladder}</span>
           </div>
 
@@ -207,9 +207,6 @@ export default function ExplorersPage() {
           {/* blocks */}
           {blockStats.map((b) => (
             <section key={b.n} style={{ marginTop: 40 }}>
-              <div style={{ fontSize: 12, color: DIM }}>
-                arc@secure-net:~$ ls ./block_{b.n}_{b.slug} --classified
-              </div>
               <div style={{ display: "flex", alignItems: "baseline", gap: 12, flexWrap: "wrap", marginTop: 8 }}>
                 <span style={{ fontSize: 18, fontWeight: 700, color: b.color }}>[{String(b.n).padStart(2, "0")}]</span>
                 <span style={{ fontSize: "clamp(18px,3vw,24px)", fontWeight: 700, letterSpacing: "0.04em", color: TXT, textShadow: `0 0 14px ${b.color}66` }}>
@@ -222,7 +219,7 @@ export default function ExplorersPage() {
                   [{b.closed}/{b.total} CLOSED]
                 </span>
               </div>
-              <div style={{ fontSize: 12.5, color: DIM, marginTop: 4 }}>{"// "}{b.blurb}</div>
+              <div style={{ fontSize: 12.5, color: DIM, marginTop: 4 }}>{b.blurb}</div>
 
               <div className="tc-grid">
                 {b.cases.map((m) => {
@@ -242,11 +239,11 @@ export default function ExplorersPage() {
                       style={{ ["--accent"]: accent } as CSSProperties}
                     >
                       <div className="tc-cardbar">
-                        <span style={{ color: isNext ? AMBER : b.color }}>{m.caseNumber.replace(" ", "_")}</span>
+                        <span style={{ color: isNext ? AMBER : b.color }}>{m.caseNumber}</span>
                         {isClosed ? (
                           <span style={{ color: DIM }}>{"✓"} CLOSED</span>
                         ) : isNext ? (
-                          <span className="tc-blink" style={{ color: AMBER }}>{"●"} {st === "IN PROGRESS" ? "RESUME" : "RUN"}</span>
+                          <span className="tc-blink" style={{ color: AMBER }}>{"●"} {st === "IN PROGRESS" ? "RESUME" : "PLAY"}</span>
                         ) : st === "IN PROGRESS" ? (
                           <span style={{ color: b.color }}>{"◐"} STARTED</span>
                         ) : (
@@ -269,10 +266,10 @@ export default function ExplorersPage() {
                         <div className="tc-title" style={{ color: titleColor, textShadow: `0 0 12px ${titleColor}66` }}>
                           {m.title}
                         </div>
-                        <div style={{ fontSize: 11, color: TXT, opacity: 0.7, marginTop: 4 }}>{"// "}{TOPICS[m.id] ?? ""}</div>
+                        <div style={{ fontSize: 11, color: TXT, opacity: 0.7, marginTop: 4 }}>{TOPICS[m.id] ?? ""}</div>
                         <div style={{ fontSize: 10.5, color: AMBER, opacity: 0.85, marginTop: 9 }}>
-                          {"> target: "}
-                          {m.actor.codename.replace(/ /g, "_")}
+                          {"Villain: "}
+                          {m.actor.codename}
                         </div>
                       </div>
                     </button>
@@ -283,7 +280,7 @@ export default function ExplorersPage() {
           ))}
 
           <div style={{ marginTop: 40, fontSize: 12.5, color: DIM }}>
-            arc@secure-net:~$ <span style={{ color: SYS }}>close all 20 cases to reach ULTRA clearance</span>
+            <span style={{ color: SYS }}>Solve all 20 cases to reach ULTRA rank</span>
             <span className="tc-cur" style={{ color: SYS }}>▊</span>
           </div>
         </div>

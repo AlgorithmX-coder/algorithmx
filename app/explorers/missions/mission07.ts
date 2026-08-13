@@ -48,7 +48,7 @@ export const mission07: MissionManifest = {
       "Learn the switch-channel check",
       "Install the weird-ask alarm",
     ],
-    wrenLine: "Faces lie, Operative. Channels don't.",
+    wrenLine: "Faces lie, Agent. Channels don't.",
   },
 
   cycles: [
@@ -174,7 +174,7 @@ export const mission07: MissionManifest = {
           intro: "Pick the move that settles it for sure.",
           situation:
             "“Leo” is pushing harder now. The code expires in two minutes, he says. Then your phone buzzes: a login code just landed.",
-          prompt: "YOUR CALL, OPERATIVE:",
+          prompt: "YOUR CALL, AGENT:",
           options: [
             {
               id: "send",

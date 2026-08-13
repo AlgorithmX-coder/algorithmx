@@ -49,7 +49,7 @@ export const mission13: MissionManifest = {
       "Harden the recovery path",
       "Sweep your sessions",
     ],
-    wrenLine: "Strong front doors make busy side doors, Operative.",
+    wrenLine: "Strong front doors make busy side doors, Agent.",
   },
 
   cycles: [
@@ -290,7 +290,7 @@ export const mission13: MissionManifest = {
           intro: "Pick the move that closes every door.",
           situation:
             "The bell rings mid-homework. You're logged into email on a library computer. Everyone's packing up.",
-          prompt: "YOUR CALL, OPERATIVE:",
+          prompt: "YOUR CALL, AGENT:",
           options: [
             {
               id: "walk",

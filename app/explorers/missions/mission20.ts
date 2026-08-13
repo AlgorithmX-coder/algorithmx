@@ -36,7 +36,7 @@ export const mission20: MissionManifest = {
   transmission: {
     headline: "SIGNAL ZERO",
     lines: [
-      "This is the last one, Operative. No new tricks.",
+      "This is the last one, Agent. No new tricks.",
       "Only everything you already know, at once.",
       "The coordinator is cornered at last. The calm is gone, and that is when he is most dangerous.",
       "Finish the board. Read the final lure. Hand it over clean.",
@@ -51,7 +51,7 @@ export const mission20: MissionManifest = {
       "Beat the perfect lure",
       "Make the handoff",
     ],
-    wrenLine: "Everything you know, Operative, all at once. That is the whole test. And you know so much now.",
+    wrenLine: "Everything you know, Agent, all at once. That is the whole test. And you know so much now.",
   },
 
   cycles: [
@@ -208,13 +208,13 @@ export const mission20: MissionManifest = {
               label: "FROM:",
               seg: { id: "from", text: "“ARC Command <ops@arc-command-secure.net>”", tellId: "domain" },
             },
-            { label: "SUBJ:", seg: { id: "subj", text: "Operative: final clearance code required" } },
+            { label: "SUBJ:", seg: { id: "subj", text: "Agent: final clearance code required" } },
           ],
           body: [
             [{ id: "b1", text: "“Your ULTRA promotion is approved. WREN is proud.”" }],
             [{ id: "b2", text: "“One step left: confirm your identity with your account code.”", tellId: "ask" }],
             [{ id: "b3", text: "“Reply within 10 minutes or clearance resets.”", tellId: "urgency" }],
-            [{ id: "b4", text: "“You've earned this, Operative. Signed, ARC.”" }],
+            [{ id: "b4", text: "“You've earned this, Agent. Signed, ARC.”" }],
           ],
           tells: [
             {
@@ -295,8 +295,8 @@ export const mission20: MissionManifest = {
         payload: {
           intro: "Pick how the analyst closes it.",
           situation:
-            "The coordinator's identity is proven. You have every receipt. WREN asks: “Your call, Operative. How does this end?”",
-          prompt: "YOUR CALL, OPERATIVE:",
+            "The coordinator's identity is proven. You have every receipt. WREN asks: “Your call, Agent. How does this end?”",
+          prompt: "YOUR CALL, AGENT:",
           options: [
             {
               id: "hack",
@@ -362,7 +362,7 @@ export const mission20: MissionManifest = {
     ],
     realWorldMove:
       "You're the family's analyst now. Run a family security night: code word, password manager, 2FA, a privacy audit. Teach one person one thing you learned. That's how a whole community gets safer.",
-    wrenLine: "Signal Zero, silenced. You started as a trainee, Operative. You finish as ULTRA, the best analyst I've worked with. Case closed.",
+    wrenLine: "Signal Zero, silenced. You started as a trainee, Agent. You finish as ULTRA, the best analyst I've worked with. Case closed.",
   },
 
   voice: {

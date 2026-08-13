@@ -32,7 +32,7 @@ export const mission06: MissionManifest = {
   transmission: {
     headline: "NEW CLEARANCE, NEW GAME",
     lines: [
-      "Block Two, Operative. The machines were the warm-up.",
+      "Block Two, Agent. The machines were the warm-up.",
       "SIREN never wanted your machine. She wants YOU, and she'll be lovely about it.",
       "She pulls levers: the feelings that make good people click.",
       "There are six. Tonight, you learn every one.",
@@ -47,7 +47,7 @@ export const mission06: MissionManifest = {
       "Predict the next pull",
       "Call it out and kill it",
     ],
-    wrenLine: "Feelings aren't weaknesses, Operative. Unnamed ones are.",
+    wrenLine: "Feelings aren't weaknesses, Agent. Unnamed ones are.",
   },
 
   cycles: [
@@ -267,7 +267,7 @@ export const mission06: MissionManifest = {
           intro: "Pick the counter-move that kills the con.",
           situation:
             "Your friend Zaid is typing his login. “The mod says slots close in ten minutes and there's only two left!!”",
-          prompt: "YOUR CALL, OPERATIVE:",
+          prompt: "YOUR CALL, AGENT:",
           options: [
             {
               id: "grab",
@@ -333,7 +333,7 @@ export const mission06: MissionManifest = {
     ],
     realWorldMove:
       "This week: name one lever out loud when you see it. Ads count. “Only 2 left”? That's SCARCITY. Say it and watch it shrink.",
-    wrenLine: "Six levers, zero surprises. The carnival's closed, Operative. Sign out.",
+    wrenLine: "Six levers, zero surprises. The carnival's closed, Agent. Sign out.",
   },
 
   voice: {
