@@ -50,7 +50,7 @@ export const mission19: MissionManifest = {
       "See defense in depth",
       "Run incident command",
     ],
-    wrenLine: "One layer fails sometimes, Operative. That's why we build many.",
+    wrenLine: "One layer fails sometimes, Agent. That's why we build many.",
   },
 
   cycles: [
@@ -375,7 +375,7 @@ export const mission19: MissionManifest = {
     ],
     realWorldMove:
       "This week: pick your three layers and check them. Trained eyes, a password manager, 2FA on your top account. One layer can fail. Three is a wall.",
-    wrenLine: "The whole network threw everything at us and the line held. One case left, Operative. Sign out.",
+    wrenLine: "The whole network threw everything at us and the line held. One case left, Agent. Sign out.",
   },
 
   voice: {

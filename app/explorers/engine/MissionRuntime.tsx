@@ -367,8 +367,8 @@ export default function MissionRuntime({ manifest, devStartBeat }: { manifest: M
               <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#ffbd2e" }} />
               <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#27c93f" }} />
             </span>
-            <span style={{ color: T.textDisabled }}>arc@secure-net:~/{manifest.caseNumber.replace(" ", "_").toLowerCase()} $</span>{" "}
-            <span style={{ color: T.arcCyan, fontWeight: 600 }}>{manifest.title.toLowerCase().replace(/ /g, "-")}</span>
+            <span style={{ color: T.textDisabled }}>ARC · {manifest.caseNumber} ·</span>{" "}
+            <span style={{ color: T.arcCyan, fontWeight: 600 }}>{manifest.title}</span>
             <button
               onClick={toggleVoice}
               aria-label={voiceOn ? "Turn WREN's voice off" : "Turn WREN's voice on"}
@@ -1005,7 +1005,7 @@ function RewardsScene({ manifest, reduced, audio, emit, xp }: { manifest: Missio
             {xp}
           </div>
           <p style={{ marginTop: 20, fontFamily: MONO, fontSize: 13.5, color: T.textSecondary, letterSpacing: "0.06em" }}>
-            That&rsquo;s the mission, Operative. ARC out.
+            That&rsquo;s the mission, Agent. ARC out.
           </p>
         </div>
       )}

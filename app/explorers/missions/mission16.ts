@@ -48,7 +48,7 @@ export const mission16: MissionManifest = {
       "Spy on your own trail",
       "Cut the links",
     ],
-    wrenLine: "You can't erase every track, Operative. Just make the ones you leave worth reading.",
+    wrenLine: "You can't erase every track, Agent. Just make the ones you leave worth reading.",
   },
 
   cycles: [
@@ -86,7 +86,7 @@ export const mission16: MissionManifest = {
           intro: "Pick the smart call on tracking.",
           situation:
             "A free game pops up: “Allow tracking across all your apps? It helps the game!”",
-          prompt: "YOUR CALL, OPERATIVE:",
+          prompt: "YOUR CALL, AGENT:",
           options: [
             {
               id: "allow",

@@ -53,7 +53,7 @@ export const mission17: MissionManifest = {
       "Read sideways",
       "Stop it without spreading it",
     ],
-    wrenLine: "Check in a second tab, Operative. The first one belongs to the storyteller.",
+    wrenLine: "Check in a second tab, Agent. The first one belongs to the storyteller.",
   },
 
   cycles: [

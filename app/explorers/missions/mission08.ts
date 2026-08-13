@@ -277,7 +277,7 @@ export const mission08: MissionManifest = {
           intro: "Pick the move that unmasks the writer.",
           situation:
             "The pen pal wants to move to a private app: “just us 💛”. They ask again about that gift card. Softly. Kindly.",
-          prompt: "YOUR CALL, OPERATIVE:",
+          prompt: "YOUR CALL, AGENT:",
           options: [
             {
               id: "kind",

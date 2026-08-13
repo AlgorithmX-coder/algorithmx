@@ -33,7 +33,7 @@ export const mission02: MissionManifest = {
   transmission: {
     headline: "BAIT IN THE WATER",
     lines: [
-      "Operative. Half the school is buzzing: five hundred free skins, today only, and every kid swears THEY got picked. Group chats, stream chats, DMs, all lit up.",
+      "Agent. Half the school is buzzing: five hundred free skins, today only, and every kid swears THEY got picked. Group chats, stream chats, DMs, all lit up.",
       "Here's the thing. Nobody hands out five hundred of anything for love. Somebody's collecting. Find out what 'free' is really charging.",
     ],
   },
@@ -46,7 +46,7 @@ export const mission02: MissionManifest = {
       "Follow the trail and prove it's one operation",
       "Find the net and shut the factory down",
     ],
-    wrenLine: "Rule of the water, Operative: if you can't spot the catch, you're the catch.",
+    wrenLine: "Rule of the water, Agent: if you can't spot the catch, you're the catch.",
   },
 
   cycles: [
@@ -297,7 +297,7 @@ export const mission02: MissionManifest = {
           intro: "Field decision: Leo is on the claim page RIGHT NOW",
           situation:
             "Your friend Leo has the SKINSTORM form open. He's typed his username and he's about to type his password. He says: “It's only skins, what's the worst that happens?”",
-          prompt: "YOUR CALL, OPERATIVE:",
+          prompt: "YOUR CALL, AGENT:",
           options: [
             {
               id: "half",
