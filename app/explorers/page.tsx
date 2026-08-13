@@ -151,7 +151,7 @@ export default function ExplorersPage() {
         @keyframes tcBlink{50%{opacity:0}}
         .tc-scan{position:fixed;inset:0;z-index:1;pointer-events:none;background:repeating-linear-gradient(0deg, rgba(0,0,0,0.24) 0 1px, transparent 1px 3px);opacity:.5}
         .tc-vig{position:fixed;inset:0;z-index:1;pointer-events:none;background:radial-gradient(ellipse 80% 70% at 50% 36%, transparent 44%, rgba(3,5,12,0.82) 100%)}
-        .tc-h1{font-size:clamp(30px,6vw,56px);font-weight:700;letter-spacing:.04em;margin:8px 0 2px;color:${TXT};text-shadow:0 0 22px ${SYS}66}
+        .tc-h1{font-family:var(--font-inter),system-ui,-apple-system,sans-serif;font-size:clamp(30px,6vw,56px);font-weight:800;letter-spacing:.005em;margin:8px 0 2px;color:${TXT};text-shadow:0 0 22px ${SYS}66}
         .tc-cta{font-family:inherit;font-size:14px;font-weight:700;letter-spacing:.06em;color:#101006;background:${AMBER};border:none;border-radius:3px;padding:12px 22px;cursor:pointer;box-shadow:0 0 22px ${AMBER}66;transition:box-shadow .15s, transform .15s}
         .tc-cta:hover{box-shadow:0 0 34px ${AMBER}AA;transform:translateY(-1px)}
         .tc-bar{display:flex;align-items:center;gap:7px;font-size:11px;padding:8px 12px;border:1px solid ${SYS}33;border-bottom:none;border-radius:7px 7px 0 0;background:rgba(8,14,26,0.72)}
@@ -163,7 +163,7 @@ export default function ExplorersPage() {
         .tc-next{border-color:var(--accent);box-shadow:0 0 24px color-mix(in srgb, var(--accent) 46%, transparent)}
         .tc-cardbar{display:flex;justify-content:space-between;align-items:center;font-size:10.5px;letter-spacing:.06em;padding:6px 10px;border-bottom:1px solid color-mix(in srgb, var(--accent) 22%, transparent);background:rgba(3,6,14,0.55)}
         .tc-glyph{display:inline-flex;align-items:center;justify-content:center;width:46px;height:46px;border-radius:6px;border:1px solid;background:rgba(255,255,255,0.03)}
-        .tc-title{font-size:17px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;line-height:1.15;margin-top:12px}
+        .tc-title{font-family:var(--font-inter),system-ui,-apple-system,sans-serif;font-size:17px;font-weight:800;letter-spacing:.02em;text-transform:uppercase;line-height:1.15;margin-top:12px}
         .tc-chip{font-size:9.5px;letter-spacing:.14em;border:1px solid;border-radius:2px;padding:2px 7px}
         @media (prefers-reduced-motion: reduce){.tc-cur,.tc-blink{animation:none}.tc-card:hover,.tc-cta:hover{transform:none}}
       `}</style>
@@ -209,7 +209,7 @@ export default function ExplorersPage() {
             <section key={b.n} style={{ marginTop: 40 }}>
               <div style={{ display: "flex", alignItems: "baseline", gap: 12, flexWrap: "wrap", marginTop: 8 }}>
                 <span style={{ fontSize: 18, fontWeight: 700, color: b.color }}>[{String(b.n).padStart(2, "0")}]</span>
-                <span style={{ fontSize: "clamp(18px,3vw,24px)", fontWeight: 700, letterSpacing: "0.04em", color: TXT, textShadow: `0 0 14px ${b.color}66` }}>
+                <span style={{ fontFamily: "var(--font-inter),system-ui,-apple-system,sans-serif", fontSize: "clamp(18px,3vw,24px)", fontWeight: 800, letterSpacing: "0.02em", color: TXT, textShadow: `0 0 14px ${b.color}66` }}>
                   {b.name}
                 </span>
                 <span className="tc-chip" style={{ color: b.color, borderColor: `${b.color}88` }}>
