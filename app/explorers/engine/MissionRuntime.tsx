@@ -151,7 +151,7 @@ function MissionMap({ manifest, pos, stampNew }: { manifest: MissionManifest; po
               {isDone ? "✓" : boss ? "!" : r.idx < 3 ? r.idx + 1 : "★"}
             </span>
             <div style={{ flex: 1 }}>
-              <div style={{ fontFamily: MONO, fontSize: 14.5, fontWeight: 600, color: isDone ? T.confirmedGreen : isCurrent ? T.textPrimary : T.textSecondary }}>
+              <div style={{ fontFamily: BODY, fontSize: 15, fontWeight: 700, color: isDone ? T.confirmedGreen : isCurrent ? T.textPrimary : T.textSecondary }}>
                 {r.label}
               </div>
               <div style={{ fontSize: 13, color: T.textSecondary, marginTop: 2 }}>{r.sub}</div>
@@ -466,7 +466,7 @@ function ResumeScene({ cp, onResume, onRestart }: { cp: MissionCheckpoint; onRes
   return (
     <section style={{ maxWidth: 520, margin: "70px auto 0" }}>
       <Eyebrow text="Welcome back" color={T.arcCyan} />
-      <h1 style={{ fontFamily: MONO, fontSize: 28, fontWeight: 600, margin: "14px 0 8px" }}>Your case is saved.</h1>
+      <h1 style={{ fontFamily: BODY, fontSize: 28, fontWeight: 800, margin: "14px 0 8px" }}>Your case is saved.</h1>
       <p style={{ fontSize: 16, lineHeight: 1.6, color: T.textSecondary, margin: "0 0 22px" }}>
         {cp.pos.beat === "closed" ? "This case is finished. Reopen it for a fresh run." : "Jump back in right where you left off."}
       </p>
@@ -489,12 +489,12 @@ function MissionStartScene({ manifest, reduced, onBegin }: { manifest: MissionMa
       {manifest.scene && (
         <div className="sr-scanin" style={{ position: "relative", borderRadius: 6, overflow: "hidden", border: `1px solid ${T.hairline}`, marginBottom: 18, boxShadow: "0 24px 60px -24px rgba(0,0,0,0.9)" }}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={manifest.scene} alt="" style={{ width: "100%", aspectRatio: "21/8", objectFit: "cover", display: "block" }} />
-          <div aria-hidden style={{ position: "absolute", inset: 0, background: `linear-gradient(180deg, transparent 30%, ${T.inkBlack}E6 92%), linear-gradient(90deg, ${T.inkBlack}66, transparent 30%)` }} />
+          <img src={manifest.scene} alt="" style={{ width: "100%", aspectRatio: "21/8", objectFit: "cover", display: "block", filter: "brightness(1.18) saturate(1.05)" }} />
+          <div aria-hidden style={{ position: "absolute", inset: 0, background: `linear-gradient(180deg, transparent 38%, ${T.inkBlack}C8 94%), linear-gradient(90deg, ${T.inkBlack}30, transparent 26%)` }} />
           <div style={{ position: "absolute", left: 22, right: 22, bottom: 14, display: "flex", justifyContent: "space-between", alignItems: "flex-end", gap: 12, flexWrap: "wrap" }}>
             <div>
               <Eyebrow text={`Mission ${missionNo}`} color={T.arcCyan} />
-              <h1 style={{ fontFamily: MONO, fontSize: "clamp(28px, 5vw, 44px)", fontWeight: 600, margin: "6px 0 0", textShadow: "0 2px 20px rgba(0,0,0,0.9)" }}>
+              <h1 style={{ fontFamily: BODY, fontSize: "clamp(28px, 5vw, 44px)", fontWeight: 800, letterSpacing: "-0.01em", margin: "6px 0 0", textShadow: "0 2px 20px rgba(0,0,0,0.9)" }}>
                 <Resolve text={manifest.title} reduced={reduced} />
               </h1>
             </div>
@@ -505,7 +505,7 @@ function MissionStartScene({ manifest, reduced, onBegin }: { manifest: MissionMa
         </div>
       )}
       {!manifest.scene && (
-        <h1 style={{ fontFamily: MONO, fontSize: "clamp(30px, 5.4vw, 46px)", fontWeight: 600, margin: "0 0 16px", textShadow: `0 0 40px ${T.arcCyan}33` }}>
+        <h1 style={{ fontFamily: BODY, fontSize: "clamp(30px, 5.4vw, 46px)", fontWeight: 800, letterSpacing: "-0.01em", margin: "0 0 16px", textShadow: `0 0 40px ${T.arcCyan}33` }}>
           <Resolve text={manifest.title} reduced={reduced} />
         </h1>
       )}
@@ -557,7 +557,7 @@ function MapMomentScene({ manifest, pos, stamped, xp, audio, onContinue }: { man
   return (
     <section style={{ maxWidth: 660, margin: "0 auto" }}>
       <Eyebrow text={stamped === 3 ? "Boss defeated" : `Skill ${stamped + 1} complete`} color={T.confirmedGreen} />
-      <h1 style={{ fontFamily: MONO, fontSize: "clamp(26px, 4.6vw, 38px)", fontWeight: 600, margin: "12px 0 18px" }}>
+      <h1 style={{ fontFamily: BODY, fontSize: "clamp(26px, 4.6vw, 38px)", fontWeight: 800, margin: "12px 0 18px" }}>
         {stamped === 3 ? "You beat the boss." : "Nice work. One box down."}
       </h1>
       <div className="sr-panel sr-brackets" style={{ background: `${T.panelRaised}D9`, border: `1px solid ${T.confirmedGreen}44`, padding: "18px 20px 20px" }}>
@@ -589,7 +589,7 @@ function CycleScene({ cycle, cycleIndex, stage, reduced, audio, emit, onNext }: 
             <div style={{ fontFamily: MONO, fontSize: 10.5, letterSpacing: "0.14em", color: stageTones[stageIndex] }}>
               SKILL {cycleIndex + 1} OF 3
             </div>
-            <div style={{ fontFamily: MONO, fontSize: "clamp(17px, 2.6vw, 22px)", fontWeight: 600, margin: "4px 0 2px" }}>{cycle.title}</div>
+            <div style={{ fontFamily: BODY, fontSize: "clamp(17px, 2.6vw, 22px)", fontWeight: 700, margin: "4px 0 2px" }}>{cycle.title}</div>
             <div style={{ fontSize: 13, color: T.textSecondary }}>{cycle.promise ?? cycle.concept}</div>
           </div>
           <div style={{ display: "flex", gap: 8 }}>
@@ -838,7 +838,7 @@ function BossScene({ manifest, reduced, audio, emit, onNext }: { manifest: Missi
       <section style={{ maxWidth: 640, margin: "0 auto" }}>
         {!reduced && <div className="sr-alert-edge" aria-hidden />}
         <Eyebrow text="Boss: live case" color={T.threatRed} />
-        <h1 style={{ fontFamily: MONO, fontSize: "clamp(28px, 5vw, 44px)", fontWeight: 600, margin: "12px 0 16px", textShadow: `0 0 40px ${T.threatRed}33` }}>
+        <h1 style={{ fontFamily: BODY, fontSize: "clamp(28px, 5vw, 44px)", fontWeight: 800, letterSpacing: "-0.01em", margin: "12px 0 16px", textShadow: `0 0 40px ${T.threatRed}33` }}>
           <Resolve text={manifest.incident.title} reduced={reduced} />
         </h1>
         <div className="sr-panel sr-brackets" style={{ background: `${T.panelRaised}D9`, border: `1px solid ${T.threatRed}44`, padding: "18px 20px 20px" }}>
@@ -913,7 +913,7 @@ function ReportScene({ manifest, reduced, onNext }: { manifest: MissionManifest;
   return (
     <section style={{ maxWidth: 640 }}>
       <Eyebrow text="Mission report" color={T.confirmedGreen} />
-      <h1 style={{ fontFamily: MONO, fontSize: "clamp(26px, 4.6vw, 38px)", fontWeight: 600, margin: "12px 0 18px" }}>You learned 3 skills today.</h1>
+      <h1 style={{ fontFamily: BODY, fontSize: "clamp(26px, 4.6vw, 38px)", fontWeight: 800, margin: "12px 0 18px" }}>You learned 3 skills today.</h1>
       <div style={{ display: "grid", gap: 10, marginBottom: 18 }}>
         {manifest.cycles.map((c, i) => (
           <div key={c.id} style={{ display: "flex", gap: 14, alignItems: "center", background: `${T.confirmedGreen}0A`, border: `1px solid ${T.confirmedGreen}55`, borderRadius: 4, padding: "13px 16px" }}>
@@ -921,7 +921,7 @@ function ReportScene({ manifest, reduced, onNext }: { manifest: MissionManifest;
               ✓
             </span>
             <div>
-              <div style={{ fontFamily: MONO, fontSize: 14.5, fontWeight: 600 }}>{c.title}</div>
+              <div style={{ fontFamily: BODY, fontSize: 15, fontWeight: 700 }}>{c.title}</div>
               <div style={{ fontSize: 13.5, color: T.textSecondary, marginTop: 2 }}>{c.promise ?? c.concept}</div>
             </div>
           </div>
