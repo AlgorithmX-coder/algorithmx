@@ -336,9 +336,9 @@ export default function MissionRuntime({ manifest, devStartBeat }: { manifest: M
   return (
     <main style={{ minHeight: "100vh", background: T.inkBlack, color: T.textPrimary, fontFamily: BODY, position: "relative", overflow: "hidden" }}>
       <EngineStyles />
-      {/* matrix-terminal backdrop, consistent with the /explorers map */}
-      <MatrixRain reduced={reduced} opacity={0.32} />
-      <div aria-hidden style={{ position: "fixed", inset: 0, zIndex: 0, pointerEvents: "none", background: "repeating-linear-gradient(0deg, rgba(0,0,0,0.24) 0 1px, transparent 1px 3px)", opacity: 0.5 }} />
+      {/* matrix-terminal backdrop, dimmed in-mission so it never fights the reading (kept for identity) */}
+      <MatrixRain reduced={reduced} opacity={0.16} />
+      <div aria-hidden style={{ position: "fixed", inset: 0, zIndex: 0, pointerEvents: "none", background: "repeating-linear-gradient(0deg, rgba(0,0,0,0.24) 0 1px, transparent 1px 3px)", opacity: 0.32 }} />
       <div aria-hidden style={{ position: "fixed", inset: 0, zIndex: 0, pointerEvents: "none", background: `radial-gradient(ellipse 82% 72% at 50% 34%, transparent 44%, ${tone}12 74%, rgba(3,5,12,0.9) 100%)`, transition: "background 700ms" }} />
 
       {filmToPlay &&
@@ -434,7 +434,8 @@ export default function MissionRuntime({ manifest, devStartBeat }: { manifest: M
         )}
       </div>
 
-      {/* dev ledger */}
+      {/* dev tools (event ledger + restart) — hidden in production so kids never see them */}
+      {process.env.NODE_ENV !== "production" && (
       <div style={{ position: "fixed", bottom: 14, left: 16, zIndex: 3 }}>
         <button onClick={() => setLedgerOpen((o) => !o)} style={{ fontFamily: MONO, fontSize: 10, letterSpacing: "0.06em", color: T.textDisabled, background: "transparent", border: `1px solid ${T.hairline}`, borderRadius: 2, padding: "4px 8px", cursor: "pointer" }}>
           EVENT LEDGER (DEV): {events.length}
@@ -449,7 +450,8 @@ export default function MissionRuntime({ manifest, devStartBeat }: { manifest: M
           </div>
         )}
       </div>
-      {!atStart && !resumeOffer && (
+      )}
+      {process.env.NODE_ENV !== "production" && !atStart && !resumeOffer && (
         <button onClick={restart} style={{ position: "fixed", bottom: 14, right: 16, zIndex: 3, fontFamily: MONO, fontSize: 10, letterSpacing: "0.06em", color: T.textDisabled, background: "transparent", border: `1px solid ${T.hairline}`, borderRadius: 2, padding: "4px 8px", cursor: "pointer" }}>
           ↺ RESTART CASE (DEV)
         </button>
