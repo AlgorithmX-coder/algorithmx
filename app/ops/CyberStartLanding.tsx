@@ -333,6 +333,23 @@ export default function CyberStartLanding() {
     };
   }, []);
 
+  // Forward the page's first interaction into the embedded film, so a click or
+  // tap ANYWHERE on the page turns its sound on (browsers still require that one
+  // gesture - this just means it doesn't have to land on the film itself).
+  useEffect(() => {
+    let done = false;
+    const evs = ["pointerdown", "keydown", "touchstart"] as const;
+    const tryUnmute = () => {
+      if (done) return;
+      const f = document.querySelector<HTMLIFrameElement>("iframe.reelframe");
+      const fn = f?.contentWindow && (f.contentWindow as unknown as { __unmute?: () => void }).__unmute;
+      if (typeof fn === "function") { fn(); done = true; cleanup(); }
+    };
+    const cleanup = () => evs.forEach((e) => window.removeEventListener(e, tryUnmute));
+    evs.forEach((e) => window.addEventListener(e, tryUnmute, { passive: true }));
+    return cleanup;
+  }, []);
+
   return (
     <div className="cyops-root">
       <style>{CSS}</style>
