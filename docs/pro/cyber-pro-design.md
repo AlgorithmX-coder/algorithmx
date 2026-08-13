@@ -1,14 +1,14 @@
-# AlgorithmX - Cyber Pro Design Spine (v2)
+# AlgorithmX - Cyber Pro Design Spine (v3)
 
 ## The 18+ tier (public brand: "Cyber Pro"; DB slug still `cyberstart-pro`)
 
-**Status:** Founding canon. v1 (2026-08-12) framed Pro as a career-transition
-job-simulation course; **the owner rejected that on 2026-08-13 and repositioned
-it** as a from-zero introduction for curious non-technical adults: theory taught
-well, through real-world stories, with a hands-on play area. This v2 is the
-live canon. Parallel to `docs/operators/cyber-operators-design.md` (Ops) and the
-Explorers docs. Single source of truth for product, positioning, curriculum,
-claims, and copy.
+**Status:** Founding canon. Two prior framings were superseded on 2026-08-13:
+v1 (career-transition job-simulation) and v2 (gentle taught intro). This **v3**
+is the live canon: a **from-zero-to-hired course built entirely on real systems,
+real data, and real organisations**, that starts as a taught non-technical
+introduction and ramps to serious hands-on defensive and offensive work with a
+real-artefact portfolio. Parallel to `docs/operators/cyber-operators-design.md`
+(Ops) and the Explorers docs. Single source of truth for the adult tier.
 
 **Markers:** `LOCKED` = owner-decided, do not change without explicit sign-off.
 `DEFAULT` = recommendation, override freely. `DECIDE` = open, recommendation
@@ -19,315 +19,348 @@ build prompt may cite a decision that is not in this document.
 
 ---
 
-## 1. Fork record
+## 1. Fork record (owner decisions, 2026-08-13)
 
-1. **Audience - LOCKED (owner, 2026-08-13).** Adults, 18+, **absolutely new to
-   cyber and curious about it.** Non-technical: a nurse, an accountant, a retail
-   manager who reads about hacks in the news and wants to understand the field
-   and maybe enter it. NOT people already in IT retraining for a SOC seat (that
-   was the rejected v1 buyer).
-2. **Teaching model - LOCKED (owner, 2026-08-13).** Theory-based and *taught*:
-   concepts explained properly, with good examples, then a coding/interactive
-   play area to test and experiment. "It needs to be explained to them and given
-   good examples for them to understand."
-3. **Real stories + real projects - LOCKED (owner, 2026-08-13).** Every measure
-   we teach is anchored to a real incident where a real company skipped that
-   measure and paid for it. Learners do real, measurable projects (starting with
-   auditing their own security). "Mention real stories that have happened to
-   companies due to them not enacting on certain measures."
-4. **Price - LOCKED (owner, 2026-08-13).** £99, one-time. (Record aligned via
-   PR #152.)
-5. **Fiction - LOCKED (owner, 2026-08-13).** Fiction-free. No employer wrapper.
-   (Detail in section 10.)
-6. **Course shape - DEFAULT.** 20 weeks, four acts (section 6), ~2 hrs/week.
-   Every concept runs the Learn -> See -> Try -> Check loop (section 4).
-7. **Claims policy - binding.** Unchanged from v1 and now fits *better*: Security+
-   is a beginner theory cert, so "aligned to Security+ objectives" is a natural
-   backbone for a taught course. Full policy in section 9.
-8. **The play area - DEFAULT.** A safe sandbox that grows from three buttons in
-   week 1 to a real playground by week 20, including a gentle in-browser coding
-   thread. Section 5.
-9. **Career content - DEFAULT.** Survives from the v1 research, but demoted to
-   Act 4 ("you, in this field"): the exit ramp for those who catch the bug, not
-   the spine. The five-stream research artifact remains the source for salaries,
-   certs, and the honest market picture.
+1. **Audience - LOCKED.** Adults, 18+, **starting absolutely new and
+   non-technical**, curious about cyber. The course ramps them to job-ready. Not
+   assumed-technical retrainers (v1); not a stay-curious intro that never gets
+   serious (v2). It is **0-to-hired**.
+2. **Realism principle - LOCKED.** Everything runs on **real systems, real data,
+   and real organisations. No invented companies, no made-up scenarios.** Play
+   areas recreate real conditions and use real data (real breach CVEs, real
+   malware captures, real attack traffic), never fictional toys.
+3. **Teaching model - LOCKED.** Theory *taught* properly, then hands-on. Every
+   concept runs **Learn -> See (a real case) -> Try (real lab) -> Check (explain
+   it back)** (section 7).
+4. **Core vs premium split - LOCKED.** The **£99 self-paced software** is the
+   core: taught lessons + self-directed real labs + a real-artefact portfolio +
+   the job-hunt machinery. The **human-services layer** (supervised real-client
+   work, live mentored cohorts, practitioner office hours, an employer/MSP hiring
+   pipeline) is a **separate premium tier / Phase 2**, because it needs staff,
+   professional indemnity insurance, and partnerships that £99 self-paced cannot
+   fund or safely deliver. Section 5.
+5. **Price - LOCKED.** £99, one-time, for the core. Premium tier priced
+   separately if/when built.
+6. **Fiction - LOCKED.** Fiction-free. Real orgs and real data are the content;
+   no employer wrapper. Section 17.
+7. **Coding thread - LOCKED.** Real tools, including tiny in-browser Python
+   (Pyodide) used as one real tool among many (honeypot, SIEM, sandbox). Not
+   "learn to program"; "use code to do a real security task."
+8. **Format - LOCKED.** Designed for **5-8 hours a week**, evenings and
+   weekends, with proper save/resume. (Cohort deadlines + community = premium.)
 
 ---
 
 ## 2. North star and the four-tier ladder
 
-**You are curious about cybersecurity and think you're "not technical enough."
-By the end you understand how it all works, you have done it with your own
-hands, and you can explain it to someone else.**
+**You start knowing nothing technical. You finish able to do the real defensive
+job, with a portfolio of real work and the machinery to get hired.**
 
-The defining emotion of this learner is *"I'm probably not technical enough for
-this."* Every design decision answers that fear. The feeling we engineer, every
-week: *"I understood that. And then I actually did it."* Being able to explain a
-concept back is the real test of understanding, and it is also the first thing
-"getting into the field" actually requires.
+The learner's defining fear at the start is *"I'm not technical enough."* Early
+weeks answer that with taught fundamentals and real stories; later weeks turn
+them into someone who has deployed a honeypot, triaged real attack traffic in a
+SIEM, and rebuilt a famous breach in a lab. The emotional arc: *"I understand
+this"* -> *"I did this on a real system"* -> *"I can show an employer."*
 
-Where the v1 job-sim framing sat awkwardly below Ops (which already does
-professional simulation for 14-17s), the intro framing completes the ladder:
-every tier teaches understanding at its audience's level, and the adult on-ramp
-is a space nobody else serves well.
-
-| Tier | Ages | Fantasy | Verb | What they leave with |
-|---|---|---|---|---|
-| Cyber Heroes | 6-9 | Power | Play | Confidence |
-| Cyber Explorers | 10-13 | Competence | Explore | Skills |
-| Cyber Ops | 14-17 | Professional | Operate | Portfolio (simulated) |
-| Cyber Pro | 18+ | Understanding | Understand + try | "I get it, I did it, I can explain it" |
+| Tier | Ages | Verb | What they leave with |
+|---|---|---|---|
+| Cyber Heroes | 6-9 | Play | Confidence |
+| Cyber Explorers | 10-13 | Explore | Skills |
+| Cyber Ops | 14-17 | Operate | Portfolio (simulated) |
+| Cyber Pro | 18+ | Do it for real | A real-artefact portfolio + a route to hired |
 
 ---
 
-## 3. The buyer, and why this lane is open
+## 3. The buyer and the lane
 
-The learner is smart but non-technical and slightly intimidated. The market
-evidence that this is the real opportunity: ISC2's free beginner cert drew
-**1,000,000 sign-ups but only ~65,000 completions (6.5%)** - the funnel for
-curiosity is enormous; the failure point is that nobody actually *teaches* the
-curious. TryHackMe assumes you'll fight through a terminal. Coursera/Google
-drown you in video. Bootcamps cost £9k and assume commitment before
-understanding. A £99 course that *teaches a beginner properly, with stories and
-a safe playground*, occupies empty ground.
+Smart, non-technical, curious, slightly intimidated at the start; motivated by a
+real career change. Evidence the funnel is real: ISC2's free beginner cert drew
+~1,000,000 sign-ups but only ~65,000 completions (6.5%) - huge curiosity, and
+the failure point is that nobody teaches the curious *and* carries them to
+job-ready.
 
-This does not compete on lab depth or job guarantees. It competes on being the
-clearest, warmest, best-told introduction to the field, with real stakes made
-real through real events.
+**The lane, explicitly positioned between two options:**
+- **Free routes** (TryHackMe, PicoCTF, Professor Messer): rich content, no
+  teaching scaffold, no portfolio machinery, no job layer, easy to stall in.
+- **£4,000-8,000 bootcamps**: cohorts, mentors, outcomes - at a price and
+  commitment most cannot make.
 
----
-
-## 4. The teaching loop: Learn -> See -> Try -> Check
-
-Every concept in the course runs this four-beat loop. This is the heart of the
-product.
-
-- **LEARN - the concept, taught properly.** Plain English first, then one
-  everyday analogy, then the real term. A hash is a fingerprint (not a lock); a
-  firewall is a bouncer with a guest list; encryption is a locked diary only two
-  people have the key to. Short interactive segments with clear diagrams. Never
-  hour-long videos. Adult voice: "explained like you're smart but new," never
-  babied, never assuming prior knowledge.
-- **SEE - a real story where this measure decided the outcome.** This is the
-  spine (section 7). The concept is shown deciding a real company's fate. Theory
-  taught through a true story is theory that sticks.
-- **TRY - the play area.** Within minutes of learning a concept, the learner
-  touches it (section 5). Understanding becomes experience.
-- **CHECK - explain it back.** Not only a quiz. An "explain it to a friend"
-  prompt ("how would you tell your mum why reusing one password is dangerous?").
-  Explaining it is the real test, and it builds the confidence to talk about the
-  field, which is where entering it begins.
+**Our wedge:** taught fundamentals + real-world hands-on projects on real data +
+the job machinery, at £99 self-paced, with a documented premium layer for those
+who want mentored real-client work. We beat free on structure and outcomes; we
+beat bootcamps on price and access.
 
 ---
 
-## 5. The play area (the "coding play area" the owner asked for)
+## 4. Job roles as the map - LOCKED framing
 
-A safe lab that **grows with the learner.** Big framing rule printed on it:
-*"You cannot break anything here."*
+Modules map to **real job roles and their daily workflows**, balanced
+**blue-team-heavy because most real entry jobs are defensive**:
+- **SOC analyst** (primary target role): monitoring, alert triage, SIEM, log
+  analysis, escalation.
+- **Incident responder**: the response lifecycle, malware/traffic analysis,
+  writing the incident report.
+- **GRC / risk & audit**: Cyber Essentials, risk registers, frameworks, awareness.
+- **Penetration tester** (minority, later, ethics-gated): OWASP Top 10, finding
+  and exploiting a real CVE in a lab, responsible disclosure.
 
-- **Progressive disclosure.** Week 1 it has three buttons; week 20 it is a real
-  playground. Never a blank, intimidating terminal.
-- **Concept toys, one per topic.** A password strength + time-to-crack simulator
-  that shows the hash avalanche when you change one character; a visual packet
-  journey (type a URL, watch DNS -> TCP -> HTTPS hop by hop); a phishing inbox to
-  dissect; Caesar ciphers to break by hand then a demo of why real crypto
-  differs; a toy shop website the learner SQL-injects. The Ops range already
-  proves real `' OR 1=1--` injection runs in-browser via sql.js with zero
-  network egress; reuse that architecture at a gentler pace.
-- **The gentle coding thread - DEFAULT (scope is an open owner question).**
-  In-browser Python (Pyodide, same zero-egress philosophy), woven in from ~week
-  4 in tiny doses. Never "learn Python"; always "write 5 lines that DO
-  something": a password checker, a Caesar cracker, a log-line counter, a toy
-  port scanner against a fake network. Fully scaffolded: copy the command, then
-  change one thing, then write your own line. By the end the learner has built
-  ~5 tiny security tools - real "I wrote code that did something" moments.
-- **The analyst console** (built then parked as PR #163, branch
-  `feat/pro-console-skeleton`) is NOT the spine. It re-enters late (Act 3, ~week
-  14) as the detection/logs play surface, *after* the learner has been taught
-  what a log, an IP, and an event are. Deep end at the end.
+Honest framing throughout: the realistic first job is **IT support or SOC analyst
+(~£25-32k UK)**, not pen testing. Roles are taught as "here is the job, here is a
+day in it, here is you doing a slice of it."
 
 ---
 
-## 6. The 20-week arc: four acts - DEFAULT
+## 5. Core (£99 software) vs Premium (Phase 2) - LOCKED split
 
-Story-driven throughout. Each concept names the measure, tells the company that
-skipped it, states the cost, then hands the learner the play area. The recurring
-device is the **Cyber Essentials five-controls scorecard** (firewalls, secure
-configuration, access control, malware protection, patching): every story ends
-with "which of the five would have stopped this?", so by week 20 the learner has
-scored twenty real disasters against the same five measures.
+**In the £99 self-paced core (I build this):**
+- Taught lessons (Learn -> See -> Try -> Check).
+- Self-directed real labs the learner runs themselves: honeypot on their own
+  cheap VPS, SIEM (Wazuh/Elastic/Splunk) on their own data, real malware-traffic
+  captures, a documented home lab, breach recreations of real CVEs.
+- The case-study engine ("find the decision point", section 8).
+- A real-artefact portfolio (section 11).
+- The full job-hunt machinery (section 13).
+- Bug bounty / vuln-disclosure and passive OSINT taught as **self-directed**
+  legal work within published scope on the learner's own initiative - no
+  AlgorithmX brokering, so no AlgorithmX liability.
 
-**Act 1 - The digital world you already live in (wks 1-5).** How the internet
-actually works; where your data really lives; passwords and hashing; encryption
-all around you; who attackers really are (kill the hoodie myth, show the real
-cybercrime economy). *Project: Personal Security Audit.*
+**Premium tier / Phase 2 (NOT in the £99 core; documented, not built):**
+- **Supervised real-client work**: Cyber Essentials readiness assessments,
+  audits, staff awareness sessions, phishing simulations for consenting
+  businesses - each with written authorisation, tight scoping, instructor
+  supervision, and professional indemnity insurance.
+- **Live cohorts** with deadlines and a community space; practitioner office
+  hours; mentor access; guest practitioners reviewing learner reports.
+- **Hiring pipeline**: relationships with MSPs and SOC teams willing to interview
+  grads; success measured as "did they get hired."
 
-**Act 2 - How attacks actually happen (wks 6-11).** Phishing and social
-engineering; malware families through famous cases; web attacks in the toy
-range; Wi-Fi and network tricks; the anatomy of a data breach; ransomware.
-*Project: Phishing Field Guide + first Breach Post-Mortem.*
-
-**Act 3 - How defenders fight back (wks 12-16).** Defence in depth; detection
-and logs (the console enters); incident response as a story; backups and
-segmentation; the tools of the trade. *Project: Small-Business Risk Assessment
-against the five controls.*
-
-**Act 4 - You, in this field (wks 17-20).** Day-in-the-life tasters (analyst,
-pen tester, GRC); the honest UK career map (salaries, the cert roadmap, the next
-90 days - all from the research artifact); then a capstone: investigate one full
-toy breach end to end and write both a post-mortem and a plain-English board
-briefing. Full circle - arrived non-technical, leaves able to explain it to the
-non-technical.
-
-Detailed week-by-week buildsheet is a follow-up doc (`docs/pro/buildsheet.md`),
-authored act by act once the Week 1 loop prototype is signed off.
+Rationale: the premium items require staff, insurance, and partnerships - the
+£4-8k bootcamp's cost base. Keeping them out of the £99 core keeps the price
+honest and the liability contained; offering them as a premium tier captures the
+learners who want the full outcome machinery.
 
 ---
 
-## 7. The story bank (the teaching spine)
+## 6. Realism principle in practice - LOCKED
 
-Every measure is anchored to a real, publicly-documented incident. **Authoring
-rule - LOCKED discipline:** every story is source-verified at authoring time
+No invented companies, no made-up scenarios. Concretely:
+- **Real data**: real breach password dumps for the hashing lesson (e.g. the
+  public RockYou list as a teaching artefact), real PCAPs from
+  malware-traffic-analysis.net, real attack traffic from the learner's own
+  honeypot, real CVEs.
+- **Real conditions recreated**: install the actual vulnerable software version
+  behind a famous breach (e.g. the Apache Struts build behind Equifax) and work
+  the real CVE.
+- **Real frameworks** as the spine (section 14): MITRE ATT&CK, OWASP Top 10,
+  Cyber Essentials, NCSC guidance.
+- **Browser toys allowed** only when they compute on real primitives (a real
+  SHA-256 via the browser crypto API, a real SQL engine via sql.js) - real
+  mechanisms at a gentle pace, not invented fictions.
+
+---
+
+## 7. The teaching loop: Learn -> See -> Try -> Check
+
+Every concept runs this loop.
+- **LEARN** - taught properly: plain English, one everyday analogy, then the real
+  term and why it matters. Short interactive segments and clear diagrams, never
+  hour-long video. Adult voice: smart but new, never babied.
+- **SEE** - a real case where this measure decided a real organisation's fate
+  (sections 8-9).
+- **TRY** - the real lab or play area (section 10): touch the real mechanism
+  within minutes of learning it.
+- **CHECK** - explain it back ("how would you tell a colleague why this
+  happened?"), plus scenario/CTF assessment, not multiple choice (section 14).
+
+---
+
+## 8. Case-study method: "find the decision point" - LOCKED
+
+Each breach is taught as a decision that was missed, in three moves:
+1. **Recreate the real technical conditions** in the lab (the real vulnerable
+   version, the real misconfiguration).
+2. **Let the learner hunt** for the flaw themselves.
+3. **Reveal what the company actually did** - and the full adult consequences:
+   ICO fine, breach cost, board accountability, insurance fallout.
+
+A recurring **"this month's breach"** slot keeps the material current.
+
+---
+
+## 9. The story bank (sourced spine)
+
+**Authoring rule - LOCKED:** every case is source-verified at authoring time
 against primary documents (ICO enforcement notices, official company
-post-mortems, court records, regulator findings). We state only the public
-record. This mirrors the landing's sourced-stats rule and keeps us legally
-clean. The bank below is the starting set; expand with the same discipline.
+post-mortems, court records, regulator findings). State only the public record.
 
-**Passwords / storage:** RockYou 2009 (32M plaintext, the origin of
-`rockyou.txt`); LinkedIn 2012 (117M unsalted hashes cracked).
-
-**MFA / access control:** Colonial Pipeline 2021 (one legacy VPN account, no
-MFA, US East Coast fuel panic); British Library 2023 (no MFA on one server ->
-ransomware; their own public post-mortem names it - quote their report);
-Change Healthcare 2024 (no MFA on a Citrix portal, >$2bn, US healthcare chaos).
-
-**Phishing / BEC:** Google + Facebook (~$100M to fake invoices); Twitter 2020
-(a phone call -> Obama/Musk accounts).
-
-**Helpdesk social engineering (current, UK):** M&S 2025 (helpdesk talked into a
-reset, ~six weeks of dead online orders, ~£300M); MGM Resorts 2023 (a ten-minute
-call, ~$100M). Measure: identity verification before resets.
-
-**Patching:** Equifax 2017 (known fix delayed, 147M people, ~$700M); WannaCry vs
-the NHS 2017 (patch existed two months, 19,000 appointments cancelled).
-
-**Web attacks (SQLi):** TalkTalk 2015 UK (injection via a forgotten legacy page,
-teenagers, £77M, CEO on national TV) - taught right after the learner performs
-the same injection in the sandbox.
-
-**Detection / monitoring:** Target 2013 (the alert fired, nobody acted, 40M
-cards, CEO out); Marriott (intruders inside four years, £18.4M UK fine).
-
-**Segmentation + backups:** Maersk / NotPetya 2017 (flat network, $300M, 45,000
-PCs, saved by one offline office in Ghana).
-
-**Posture / honesty (the positive case):** Norsk Hydro 2019 (refused to pay,
-communicated honestly daily, reputation enhanced) vs Uber 2016 (hid the breach,
-security chief criminally convicted).
-
-**Regulator is real (UK layer, Act 4):** ICO fines mapped to the failure - BA
-£20M (script skimming), Marriott £18.4M (detection), TalkTalk £400k, Advanced/NHS
-£3M (an account without MFA - again).
+Anchor cases (each taught as a missed decision, tagged to the Cyber Essentials
+five controls):
+- **Equifax 2017** - a known Apache Struts patch (CVE-2017-5638) not applied;
+  147M people; ~$700M; recreate the vulnerable Struts build and work the CVE.
+- **NHS / WannaCry 2017** - unpatched legacy Windows; ~19,000 appointments lost.
+- **TalkTalk 2015 (UK)** - SQL injection via a legacy page; ICO fine £400k;
+  learners perform the injection in the lab first.
+- **Colonial Pipeline 2021** - one account, no MFA; US East Coast fuel panic.
+- **M&S and Co-op 2025 (UK)** - help-desk social engineering; weeks of outage.
+- **British Library 2023** - ransomware; **they published their own
+  lessons-learned report**, a real post-mortem written by the victim; use it
+  directly.
+- **British Airways 2018** - card-skimming script; ICO fine £20M.
+- Growing bank: LinkedIn 2012 (unsalted hashes), Target 2013 (the alarm that
+  rang), Maersk/NotPetya 2017 (flat network), Norsk Hydro 2019 (the positive
+  case: refused to pay, communicated honestly, reputation enhanced).
 
 ---
 
-## 8. Real-life projects (the learner's measurable work)
+## 10. The play area and real labs
 
-The reward economy of this tier is *understanding made visible through real
-work*, not XP or badges. Five projects, each measurable:
-
-1. **Personal Security Audit** (Act 1): run the measures on their own life -
-   breach-exposure check, password manager migration, MFA on their top five
-   accounts. Before/after scorecard. Immediately valuable.
-2. **Phishing Field Guide** (Act 2): dissect defanged real samples, produce a
-   one-page "tells" guide fit to hand a relative.
-3. **Breach Post-Mortems** (recurring, one per act): pick an incident from the
-   bank, write one page - what happened, which measure was missing, what it
-   cost, what you would have done. Rubric-checked.
-4. **Small-Business Risk Assessment** (Act 3): map a real small business they
-   know against the five controls.
-5. **Capstone** (Act 4): investigate one full simulated breach end to end, then
-   write the post-mortem *and* a one-page plain-English board briefing.
-
----
-
-## 9. Claims policy (binding for all Pro copy)
-
-**Safe and encouraged:**
-- "Aligned to CompTIA Security+ (SY0-701) exam objectives" - and it fits this
-  taught beginner course better than it fit the v1 job-sim.
-- "Mapped to CyBOK" with a published per-module knowledge-area table.
-- "Built around the UK Cyber Security Council's Cyber Career Framework
-  specialisms" (descriptive; no logo, no "endorsed/recognised/accredited").
-- "Prepares you to apply for Associate Cyber Security Professional (ACSP)
-  registration" (verify fees/windows on the Council site before each copy ship).
-- The honest market stats (sourced) when Act 4 career content appears.
-
-**Banned:**
-- Any NCSC marketing presence (badges, "aligned with" rows). NCSC appears in
-  course *content* only (Cyber Essentials, guidance). The current landing's NCSC
-  badge was removed in the rebuild (PR #159) - keep it off.
-- Job guarantees or placement-rate claims.
-- "3.5M unfilled jobs", the 11,100 UK shortfall, "record vacancies".
-- "Certification included", "certified by AlgorithmX".
-- Any real incident detail beyond the sourced public record (see section 7
-  authoring rule). No naming of individuals not already public; no unproven
-  causal claims - state what the regulator/company/court stated.
-
-**House rules:** no em-dashes in site copy; pricing appears on the course
-landing page only (marketing-vs-info rule).
+Grows from taught browser toys in early weeks to real infrastructure the learner
+runs themselves, with a framing rule on the early toys: *"You cannot break
+anything here."*
+- **Early (taught, in-browser, real primitives):** password strength +
+  time-to-crack + real SHA-256 avalanche; a visual packet journey; a phishing
+  inbox to dissect; SQL-inject a real in-browser SQL engine (sql.js, zero egress).
+- **Coding thread:** tiny in-browser Python (Pyodide) doing real tasks (a
+  password checker, a log-line parser).
+- **Real infrastructure (self-directed, guided):** deploy a honeypot on a cheap
+  VPS and analyse genuine attack traffic; stand up a SIEM (Wazuh/Elastic/Splunk)
+  and triage the real alerts; work real PCAPs from malware-traffic-analysis.net;
+  detonate real samples in an isolated sandbox; build and document a home lab.
+- **The analyst console** (built then parked, PR #163, branch
+  `feat/pro-console-skeleton`) re-enters as a **guided detection/triage surface**
+  in the SOC/SIEM module, after the learner knows what a log and an alert are.
 
 ---
 
-## 10. Fiction - LOCKED: fiction-free (owner, 2026-08-13)
+## 11. Real projects = the portfolio (the reward economy)
 
-Pro runs without an employer fiction. The learner is a curious adult being
-taught, not a character in a story. HUD/aesthetic chrome is fine ("CYBER PRO //
-INTRO TRACK") but there is no in-universe employer. Rationale: the differentiator
-is clarity and honesty; a fictional wrapper fights the "explained plainly to a
-real beginner" tone. ARC stays Explorers canon; Redoubt stays Ops canon; neither
-appears in Pro.
+Not XP/badges. The learner accumulates **real artefacts** an employer respects:
+- **Personal Security Audit** (early): run the measures on their own life;
+  before/after scorecard.
+- **Honeypot capture + analysis**: real attacker traffic, written up.
+- **SIEM triage report**: real alerts triaged and documented.
+- **Malware traffic / sandbox incident report**: from a real PCAP or detonation.
+- **Breach recreation write-up**: found, exploited, and patched a real CVE.
+- **Risk register / audit report / playbook**: the GRC artefacts.
+- **Capstone**: a full incident investigated end to end, plus a plain-English
+  board briefing. Full circle - arrived non-technical, leaves able to brief the
+  non-technical. (Premium adds a *real* risk briefing to invited practitioners.)
 
-Note: the drafted trailer's trust beat ("Cyber Pro - Trust Beat" artifact) and
-its "real job market" framing were built for the v1 positioning and need
-re-shooting for the intro course. Trailer deck source is still not in the repo -
-owner builds it elsewhere.
+Every deliverable is a real artefact forming an employability portfolio.
 
 ---
 
-## 11. Landing + data state
+## 12. Legal and ethics - LOCKED, taught from lesson one
+
+- **Computer Misuse Act 1990** introduced in the first lessons; responsible
+  disclosure taught explicitly.
+- Anything touching a real system requires **written authorisation and tight
+  scoping**. Offensive work stays inside sandboxed labs or **published bug bounty
+  scope** (HackerOne/Bugcrowd) only.
+- Passive OSINT uses **public data only**, against a consenting organisation.
+- The premium real-client layer additionally requires **professional indemnity
+  insurance and instructor supervision** (section 5).
+
+---
+
+## 13. Career transition machinery (in the core)
+
+- Success framed honestly as **getting hired**, with realistic expectations:
+  first role is IT support or SOC analyst (~£25-32k UK), not pen testing.
+- **Security+ objectives** as the alignment backbone; **ISC2 CC** as a cheap
+  early win.
+- A module on **positioning a prior career as an asset** (finance -> GRC,
+  teaching -> awareness training, IT support -> SOC).
+- **CV and LinkedIn tailoring**, ATS-friendly wording, **mock interviews** with
+  scenario questions.
+- Signpost **BSides and local meetups** for networking.
+- (Premium builds the MSP/SOC interview pipeline; the core teaches the learner to
+  work it themselves.)
+
+---
+
+## 14. Assessment and credibility
+
+- **Assess by doing**: scenario performance, CTF-style challenges, portfolio
+  review. **Not multiple choice** as the spine (short knowledge checks are fine
+  inside the Learn loop).
+- **Recognised frameworks as the credibility spine**: MITRE ATT&CK, OWASP Top 10,
+  Cyber Essentials, NCSC guidance. Publish a per-module mapping.
+
+---
+
+## 15. The 0-to-hired arc (four acts) - DEFAULT
+
+Fundamentals (networking, Linux, operating systems) are **interleaved with
+hands-on work from week one**, never front-loaded as dry theory.
+
+- **Act 1 - Foundations you can touch.** How the internet/OS/networks actually
+  work, taught through immediate hands-on; passwords/hashing; encryption; who
+  attackers really are; CMA 1990 and ethics. *Artefact: Personal Security Audit.*
+- **Act 2 - How attacks happen (blue lens first).** Phishing/social engineering
+  (M&S/Co-op, British Library); malware and traffic analysis (real PCAPs); web
+  attacks (TalkTalk SQLi in the lab); the anatomy of a breach; ransomware.
+  *Artefacts: phishing field guide, malware incident report.*
+- **Act 3 - Defence for real.** SOC workflow + SIEM (honeypot -> SIEM ->
+  triage); detection and logs (console enters); incident response; breach
+  recreation (Equifax Struts CVE, found/exploited/patched); Cyber Essentials +
+  risk. *Artefacts: SIEM triage report, breach recreation, risk register.*
+- **Act 4 - Get hired.** Role tasters (SOC/IR/GRC/pentest); the honest UK career
+  map; Security+/CC roadmap; prior-career positioning; CV/LinkedIn/ATS; mock
+  interviews; the capstone + board briefing.
+
+Week-by-week buildsheet is a follow-up doc, authored act by act once the Week 1
+loop prototype is signed off.
+
+---
+
+## 16. Claims policy (binding for all Pro copy)
+
+**Safe:** "Aligned to CompTIA Security+ (SY0-701) objectives"; "Mapped to CyBOK"
+(published table); "Built around the UK Cyber Security Council Career Framework
+specialisms" (descriptive); "Prepares you to apply for ACSP registration" (verify
+before ship); mapping to ATT&CK/OWASP/Cyber Essentials/NCSC guidance; honest,
+sourced market stats.
+
+**Banned:** any NCSC marketing badge/"aligned with" row (NCSC only as course
+*content*: Cyber Essentials, guidance); job guarantees or placement-rate claims;
+"3.5M unfilled jobs", the 11,100 UK shortfall, "record vacancies";
+"certification included"/"certified by AlgorithmX"; any real-incident detail
+beyond the sourced public record (section 9 rule).
+
+**House rules:** no em-dashes in site copy; pricing only on the course landing
+page (marketing-vs-info rule).
+
+---
+
+## 17. Fiction - LOCKED: fiction-free
+
+Real organisations and real data are the content; there is no fictional employer
+wrapper. ARC stays Explorers canon; Redoubt stays Ops canon; neither appears in
+Pro. The drafted trailer trust beat and its "real job market" framing predate v3
+and need re-shooting for the 0-to-hired story. Trailer deck source is still not
+in the repo.
+
+---
+
+## 18. Landing + data state
 
 - **Landing** (`app/cyberstart-pro/`): rebuilt in PR #159 for the v1 job-sim
-  positioning (Straight Answers, six analyst-skill cards, Finish With a
-  Portfolio). **This now overshoots the intro audience** - it reads as a job
-  course. Needs a copy pass to the intro promise: "understand it, then try it
-  yourself," beginner-friendly, stories-and-play-area led. Alignment trio (CyBOK
-  / Security+ / hands-on) still valid; NCSC badge stays off.
-- **Product record**: aligned via PR #152 (Cyber Pro, 18+, £99, 2 hrs/week).
-  **Prod DB row still shows the old values** until the owner runs `npm run seed`
-  or the one-row SQL in #152 - hero/facts read £149 / CyberStart Pro until then.
-- **Slug rename** `cyberstart-pro` -> `cyber-pro`: still a separate open decision
-  (routing + Stripe).
+  framing. Under v3 it is closer to right (career outcomes are back in scope) but
+  still needs a copy pass to the **0-to-hired, real-systems, taught** promise and
+  the beginner on-ramp. Alignment trio (Security+/CyBOK/hands-on) valid; NCSC
+  badge stays off.
+- **Product record**: aligned via PR #152 (Cyber Pro, 18+, £99, 2 hrs/week -
+  note the marketing "2 hrs/week" vs the design target "5-8 hrs/week"; reconcile
+  the public figure in the landing copy pass). **Prod DB row still shows old
+  £149 values** until the owner runs `npm run seed` or the #152 SQL.
+- **Slug rename** `cyberstart-pro` -> `cyber-pro`: still a separate open decision.
 
 ---
 
-## 12. What carried over from v1, what changed
+## 19. Sources
 
-- **Kept:** the £99 price, fiction-free, the claims policy, Security+/CyBOK/ACSP
-  alignment, the honest-tone rule, the five Cyber Essentials controls as a
-  teaching device, and all the market research (now Act 4 material).
-- **Changed:** buyer (curious non-technical beginner, not IT retrainer); spine
-  (teach theory through real stories + play area, not simulate a SOC job);
-  reward economy (measurable real projects, not a job portfolio); the analyst
-  console demoted from spine to a late-course play surface (PR #163 parked).
-- **Superseded:** the v1 "curriculum spine" (SOC triage/SIEM/EDR/ATT&CK as the
-  core) and the v1 20-week arc. Those skills now appear as *understanding*, not
-  job drills, and mostly in Act 3.
-
----
-
-## 13. Sources
-
-Full sourced market findings: "Cyber Pro: Career-Entry Research Brief" artifact
-(2026-08-12). Story-bank incidents to be re-verified against primaries at
-authoring time (ICO notices, company post-mortems, court records) per section 7.
+Market findings: "Cyber Pro: Career-Entry Research Brief" artifact (2026-08-12).
+Story-bank incidents to be re-verified against primaries at authoring time per
+section 9. Frameworks: MITRE ATT&CK, OWASP Top 10, Cyber Essentials (NCSC/IASME),
+NCSC guidance, CyBOK, CompTIA Security+ SY0-701 objectives.
