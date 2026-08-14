@@ -1,25 +1,17 @@
-import type { LessonManifest } from "../learn/types";
-import PasswordLab from "../learn/PasswordLab";
+import type { TopicManifest } from "../../learn/types";
+import PasswordLab from "../../learn/PasswordLab";
 
-/* Week 1 - Passwords and hashing. The strongest from-zero hook: it is
- * personal, it uses real data and a real primitive (browser SHA-256),
- * and it kicks off the Personal Security Audit project. Both cases are
- * real and source-verified (public record only, per canon section 9).
- *
- * Sources checked at authoring:
- *  - RockYou 2009: ~32.6M passwords stored in plaintext, exposed via
- *    SQL injection Dec 2009; the list became `rockyou.txt`. (Widely
- *    documented; Imperva analysis 2010, the origin of the wordlist.)
- *  - LinkedIn 2012: password hashes stored as unsalted SHA-1; ~6.5M
- *    posted in 2012, revealed in 2016 to total ~117M+ accounts. */
-const week01: LessonManifest = {
-  id: "week-01",
+/* Week 1 - Topic 1: how a password is really stored (hashing). The
+ * from-zero hook: personal, real data, a real primitive (browser
+ * SHA-256). Cases are real, source-verified public record only. */
+const topic1: TopicManifest = {
+  id: "w1t1",
   weekLabel: "Week 1",
   act: "Act 1 - Foundations you can touch",
-  title: "Passwords: the lock everyone picks first",
+  title: "How your password is really stored",
   role: "Every role starts here. SOC analysts, incident responders and pen testers all reason about credentials daily.",
-  minutes: 35,
-  promise: "Understand how passwords are really stored, see two real companies that got it wrong, then break some yourself.",
+  minutes: 22,
+  promise: "See how good websites store your password without ever keeping the password itself, and meet two companies that got it badly wrong.",
 
   learn: [
     {
@@ -169,11 +161,11 @@ const week01: LessonManifest = {
       "You control the two measures that beat both mistakes: unique passwords and MFA.",
     ],
     project: {
-      name: "Personal Security Audit (starts now)",
-      blurb: "Your first real portfolio piece. Over Act 1 you will audit your own security: check which of your accounts have appeared in known breaches, move to a password manager, and turn on MFA for your five most important accounts. This week: list those five accounts and check them. You will record a before-and-after at the end of the act.",
+      name: "Start your Personal Security Audit",
+      blurb: "This week's portfolio piece begins now. Make a list of your five most important accounts (email, banking, main logins). You will secure them properly across the next four topics and record a before-and-after at the end.",
     },
-    ethicsNote: "One rule from day one: everything you learn here is for defending and for systems you own or are authorised to test. In the UK, accessing an account or system without permission is a criminal offence under the Computer Misuse Act 1990. We will treat this seriously throughout the course.",
+    ethicsNote: "One rule from day one: everything you learn here is for defending and for systems you own or are authorised to test. In the UK, accessing an account or system without permission is a criminal offence under the Computer Misuse Act 1990.",
   },
 };
 
-export default week01;
+export default topic1;
