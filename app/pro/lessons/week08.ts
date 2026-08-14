@@ -26,6 +26,11 @@ const week08: LessonManifest = {
         "When you log in, the website takes your username and password and builds a question for its database, in a language called SQL. Something like: 'is there a customer whose username is sarah.k and whose password is Summer2015?' If the database says yes, you are in.",
         "The danger is in how the website builds that question. If it glues your typed-in text straight into the sentence, then what you type can change the question itself.",
       ],
+      examples: [
+        "Searching a shop for 'phone' asks the database: 'show me every product whose name contains phone'.",
+        "Logging in asks: 'is there an account with this username and this password?'",
+        "Your bank statement page asks: 'show me the transactions for this account number', with the number coming from you.",
+      ],
       analogy: {
         plain: "It is like a form that says 'I would like to withdraw ___ from account ___', and you are allowed to write anything in the blanks. If nobody checks, you can write 'everything' and 'every account'.",
         realTerm: "SQL injection",
@@ -37,6 +42,11 @@ const week08: LessonManifest = {
         "The website's question is: username = 'what you typed' AND password = 'what you typed'. Normally both have to match. But watch what happens if, in the password box, you type: ' OR '1'='1",
         "That closes the password text early with a quote, then adds OR '1'='1'. And 1 always equals 1. So the question becomes 'match this exact account, OR anything where 1 equals 1', which is every account. The login lets you in, and a search can dump the whole table. You will do exactly this in a moment, for real.",
       ],
+      examples: [
+        "In a login box, it turns 'is the password X?' into 'is the password X, OR is 1 equal to 1?', and 1 is always 1.",
+        "In a shop search, the same trick can turn 'show phones' into 'show every customer record'.",
+        "Attackers often add -- (a comment) to chop off the rest of the query so it does not error.",
+      ],
     },
     {
       heading: "The fix is one idea: keep the user's input as data, never as code",
@@ -44,7 +54,20 @@ const week08: LessonManifest = {
         "The flaw exists only because the website treats what you typed as part of its SQL sentence. The fix, called a parameterised query (or prepared statement), sends the query and your input to the database separately. The database is told 'here is the question, and here, separately, is the data to slot in'.",
         "Now ' OR '1'='1 is just a (wrong) password. It can never become part of the question. This single change defeats the entire attack, and you will see it defeat your own injection at the end.",
       ],
+      examples: [
+        "Think of it as a form with labelled boxes: your text can only go in the boxes, never rewrite the form.",
+        "With the fix, the database is told 'the password is exactly these characters', symbols and all, so ' OR '1'='1 is just a wrong password.",
+        "Every mainstream programming language has this built in; the flaw is almost always old code that never used it.",
+      ],
     },
+  ],
+
+  glossary: [
+    { term: "SQL", definition: "The language websites use to ask their database questions, such as 'find this user' or 'list these orders'." },
+    { term: "SQL injection", definition: "An attack that types database commands into an ordinary input box, so the attacker's text changes the website's question to the database." },
+    { term: "parameterised query", definition: "A safe way to build a database question that keeps the user's input as data only, so it can never become part of the command. Also called a prepared statement." },
+    { term: "database", definition: "The organised store where a website keeps its data, such as user accounts, passwords and orders." },
+    { term: "OWASP Top 10", definition: "A widely used industry list of the ten most important web application security risks to check for. Injection has been on it for over twenty years." },
   ],
 
   seeHeading: "What this did to a real company",

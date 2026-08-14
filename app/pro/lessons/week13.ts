@@ -27,6 +27,11 @@ const week13: LessonManifest = {
         "Everything a computer does leaves a log: who connected, who tried to log in, what command they ran. One server makes thousands of log lines an hour. A busy company makes billions a day. No human can read that.",
         "A SIEM (Security Information and Event Management) is the tool that collects all those logs in one place and lets you search them fast. Learning to defend is, more than anything, learning to ask a pile of logs the right question.",
       ],
+      examples: [
+        "One login attempt is one log line; a busy company can produce billions of them a day.",
+        "A SIEM lets you type 'show every failed login from this address between 2am and 3am' and get the answer in seconds.",
+        "The same tool spots patterns a human would miss, like the same password tried against 500 accounts in a minute.",
+      ],
       analogy: {
         plain: "A SIEM is like CCTV for your whole network, with a search box. You do not watch every camera; you type 'show me everyone who tried the back door at 2am' and it pulls the clips.",
         realTerm: "SIEM (Splunk, Microsoft Sentinel, Elastic)",
@@ -38,6 +43,11 @@ const week13: LessonManifest = {
         "A honeypot is a decoy computer you put on the internet on purpose, to watch who attacks it and how. The moment it goes online, it is found. Automated bots scan the entire internet and try to break into anything that answers.",
         "You are about to read a real two-minute slice from an SSH honeypot. Bots try to log in with lists of factory-default passwords. Most fail. But you only have to leave one device on a default password, and the bot is in.",
       ],
+      examples: [
+        "A brand-new server with no website on it still gets thousands of break-in attempts within minutes of going online.",
+        "The bots try factory defaults like root/root and admin/admin, over and over, from hundreds of addresses at once.",
+        "This constant background noise is why the skill is spotting the one success in a sea of failures.",
+      ],
     },
     {
       heading: "What the attackers are really doing",
@@ -45,7 +55,21 @@ const week13: LessonManifest = {
         "In your capture, one login succeeds with root / xc3511, a real CCTV camera's default password and the first entry on the Mirai botnet's built-in list. The instant it is in, it runs '/bin/busybox MIRAI' to check it landed on a device it can infect, then downloads and runs a script that recruits the machine into the botnet.",
         "This is the botnet that knocked half the US internet offline in 2016 by turning hundreds of thousands of cameras and routers into a weapon. It still spreads exactly this way, right now, against every unprotected device. Your job as an analyst is to see it in the logs and act before the script runs.",
       ],
+      examples: [
+        "The check '/bin/busybox MIRAI' is the bot asking 'is this a device I can actually infect?'",
+        "The wget line downloads the bot's code, runs it, then deletes the file to hide the evidence.",
+        "Once infected, your device quietly joins attacks on other targets, and you would never notice.",
+      ],
     },
+  ],
+
+  glossary: [
+    { term: "SIEM", definition: "Security Information and Event Management: a tool that collects logs from everywhere and lets you search them fast to spot attacks." },
+    { term: "honeypot", definition: "A decoy computer put on the internet on purpose to watch who attacks it and how, without risking anything real." },
+    { term: "log", definition: "A record a computer writes of something that happened, such as a login attempt, a connection, or a command that was run." },
+    { term: "brute force", definition: "Trying many passwords or codes in a row, very fast, until one works." },
+    { term: "botnet", definition: "A network of hijacked devices an attacker controls remotely, often used together to launch large attacks." },
+    { term: "Mirai", definition: "A famous botnet that spreads by trying factory-default passwords on internet-connected devices like cameras and routers." },
   ],
 
   seeHeading: "The same attack, at full scale",

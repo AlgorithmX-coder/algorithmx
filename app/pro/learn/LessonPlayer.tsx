@@ -1,11 +1,12 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState, type ReactNode } from "react";
 import { T } from "./tokens";
 import {
   FIVE_CONTROLS,
   lessonCheckpointKey,
   type CaseCard,
+  type GlossaryEntry,
   type LearnCard,
   type LessonCheckpoint,
   type LessonManifest,
@@ -19,13 +20,23 @@ import {
  * A persistent outline rail (desktop) shows the four stages and the
  * learner's place, so it reads as a course, not a slideshow. */
 
-const STAGES: { key: Exclude<LessonPhase, "intro" | "done">; label: string; sub: string }[] = [
-  { key: "learn", label: "Learn", sub: "the idea" },
-  { key: "see", label: "See", sub: "a real case" },
-  { key: "try", label: "Try", sub: "hands on" },
-  { key: "check", label: "Check", sub: "prove it" },
+type StageKey = Exclude<LessonPhase, "intro" | "done">;
+const STAGES: { key: StageKey; label: string; sub: string; desc: string }[] = [
+  { key: "learn", label: "Learn", sub: "the idea", desc: "The concept in plain English, with everyday examples and a real analogy." },
+  { key: "see", label: "See", sub: "a real case", desc: "A real company this happened to, what went wrong, and what it cost them." },
+  { key: "try", label: "Try", sub: "hands on", desc: "Do it yourself in a safe lab that runs entirely in your own browser." },
+  { key: "check", label: "Check", sub: "prove it", desc: "Explain it back in your own words, then a couple of quick questions." },
 ];
 const STAGE_ORDER = STAGES.map((s) => s.key);
+
+/* Line icons for the four stages (24x24, inherit stroke via currentColor). */
+function StageIcon({ kind, size = 22 }: { kind: StageKey; size?: number }) {
+  const common = { width: size, height: size, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 1.7, strokeLinecap: "round" as const, strokeLinejoin: "round" as const, "aria-hidden": true };
+  if (kind === "learn") return <svg {...common}><path d="M12 6C10.6 4.9 8.8 4.3 6.7 4.3c-1 0-1.9.1-2.7.4v12.6c.8-.3 1.7-.4 2.7-.4 2.1 0 3.9.6 5.3 1.7M12 6c1.4-1.1 3.2-1.7 5.3-1.7 1 0 1.9.1 2.7.4v12.6c-.8-.3-1.7-.4-2.7-.4-2.1 0-3.9.6-5.3 1.7M12 6v12.6" /></svg>;
+  if (kind === "see") return <svg {...common}><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z" /><circle cx="12" cy="12" r="3" /></svg>;
+  if (kind === "try") return <svg {...common}><path d="M9 3.5h6M10 4v4.7L5.5 17c-.7 1.3.2 2.9 1.7 2.9h9.6c1.5 0 2.4-1.6 1.7-2.9L14 8.7V4" /><path d="M8 14.5h8" /></svg>;
+  return <svg {...common}><path d="M12 3.5l7 2.6v5.3c0 4.2-3 6.9-7 8.4-4-1.5-7-4.2-7-8.4V6.1l7-2.6z" /><path d="M9 12l2 2 4-4.4" /></svg>;
+}
 
 /* --- the outline rail --- */
 function TickDot({ state }: { state: "done" | "current" | "upcoming" }) {
@@ -83,31 +94,68 @@ function Rail({ phase, learnIdx, learnCount, onGo }: { phase: LessonPhase; learn
 function Diagram({ kind }: { kind: NonNullable<LearnCard["diagram"]> }) {
   if (kind === "hash-oneway") {
     return (
-      <svg viewBox="0 0 420 96" role="img" aria-label="A password goes one way through a hash into a fingerprint; the reverse is blocked" style={{ width: "100%", maxWidth: 420, height: "auto" }}>
-        <rect x="4" y="30" width="120" height="36" rx="8" fill={T.primarySoft} stroke={T.primary} />
-        <text x="64" y="53" fill={T.ink} fontFamily="monospace" fontSize="13" textAnchor="middle">hunter2</text>
-        <rect x="164" y="24" width="92" height="48" rx="8" fill={T.panel} stroke={T.edge} />
-        <text x="210" y="46" fill={T.muted} fontFamily="monospace" fontSize="10" textAnchor="middle">hash()</text>
-        <text x="210" y="60" fill={T.faint} fontFamily="monospace" fontSize="9" textAnchor="middle">one way</text>
-        <rect x="296" y="30" width="120" height="36" rx="8" fill={T.cyanSoft} stroke={T.cyan} />
-        <text x="356" y="53" fill={T.ink} fontFamily="monospace" fontSize="12" textAnchor="middle">f52e9a...</text>
-        <path d="M124 48 H164" stroke={T.green} strokeWidth="2" markerEnd="url(#ar)" />
-        <path d="M296 48 H256" stroke={T.red} strokeWidth="2" strokeDasharray="4 4" />
-        <line x1="270" y1="40" x2="282" y2="56" stroke={T.red} strokeWidth="2" />
+      <svg viewBox="0 0 480 186" role="img" aria-label="Your password runs one way through a hash function into the value the website stores; there is no way back to the password" style={{ width: "100%", maxWidth: 480, height: "auto" }}>
+        {/* the three boxes */}
+        <rect x="8" y="26" width="134" height="46" rx="9" fill={T.primarySoft} stroke={T.primary} />
+        <text x="75" y="55" fill={T.ink} fontFamily="monospace" fontSize="15" textAnchor="middle">hunter2</text>
+
+        <rect x="173" y="26" width="134" height="46" rx="9" fill={T.panel} stroke={T.edge} />
+        <text x="240" y="49" fill={T.body} fontFamily="monospace" fontSize="14" textAnchor="middle">hash( )</text>
+        <text x="240" y="64" fill={T.faint} fontFamily="monospace" fontSize="10" textAnchor="middle">one-way</text>
+
+        <rect x="338" y="26" width="134" height="46" rx="9" fill={T.cyanSoft} stroke={T.cyan} />
+        <text x="405" y="55" fill={T.ink} fontFamily="monospace" fontSize="15" textAnchor="middle">f52e9a…</text>
+
+        {/* forward arrows */}
+        <path d="M142 49 H171" stroke={T.green} strokeWidth="2.5" markerEnd="url(#fg)" />
+        <path d="M307 49 H336" stroke={T.green} strokeWidth="2.5" markerEnd="url(#fg)" />
+
+        {/* plain-English labels under each box */}
+        <g fontFamily={T.sans} textAnchor="middle" fontSize="11.5">
+          <text x="75" y="92" fill={T.muted}>The password</text>
+          <text x="75" y="107" fill={T.muted}>you type</text>
+          <text x="240" y="92" fill={T.muted}>A one-way</text>
+          <text x="240" y="107" fill={T.muted}>scrambler</text>
+          <text x="405" y="92" fill={T.muted}>What the website</text>
+          <text x="405" y="107" fill={T.muted}>actually stores</text>
+        </g>
+
+        {/* the key point: no reverse */}
+        <path d="M405 146 H91" stroke={T.red} strokeWidth="2" strokeDasharray="5 5" markerEnd="url(#rd)" />
+        <g stroke={T.red} strokeWidth="2.4">
+          <line x1="234" y1="140" x2="246" y2="152" />
+          <line x1="246" y1="140" x2="234" y2="152" />
+        </g>
+        <text x="240" y="176" fill={T.red} fontFamily={T.sans} fontSize="12" fontWeight="700" textAnchor="middle">No way back to your password</text>
+
         <defs>
-          <marker id="ar" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-            <path d="M0 0 L6 3 L0 6 Z" fill={T.green} />
-          </marker>
+          <marker id="fg" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0 0 L6 3 L0 6 Z" fill={T.green} /></marker>
+          <marker id="rd" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0 0 L6 3 L0 6 Z" fill={T.red} /></marker>
         </defs>
       </svg>
     );
   }
   return (
-    <svg viewBox="0 0 420 96" role="img" aria-label="Changing one letter of the input changes the entire fingerprint" style={{ width: "100%", maxWidth: 420, height: "auto" }}>
-      <text x="10" y="30" fill={T.body} fontFamily="monospace" fontSize="12">hunter2  {"->"}  f52e9a1c...</text>
-      <text x="10" y="66" fill={T.body} fontFamily="monospace" fontSize="12">hunter3  {"->"}  </text>
-      <text x="150" y="66" fill={T.cyan} fontFamily="monospace" fontSize="12" fontWeight="700">9b0c74ef...</text>
-      <text x="10" y="88" fill={T.faint} fontFamily="monospace" fontSize="10">one character changed, the whole fingerprint changed</text>
+    <svg viewBox="0 0 480 150" role="img" aria-label="Changing one character of the password completely changes the fingerprint it produces" style={{ width: "100%", maxWidth: 480, height: "auto" }}>
+      {/* column headers */}
+      <text x="90" y="16" fill={T.faint} fontFamily={T.mono} fontSize="10" textAnchor="middle">THE PASSWORD</text>
+      <text x="336" y="16" fill={T.faint} fontFamily={T.mono} fontSize="10" textAnchor="middle">THE FINGERPRINT IT PRODUCES</text>
+
+      {/* row 1: original */}
+      <rect x="20" y="28" width="140" height="36" rx="8" fill={T.primarySoft} stroke={T.primary} />
+      <text x="90" y="51" fill={T.ink} fontFamily="monospace" fontSize="15" textAnchor="middle">hunter2</text>
+      <path d="M166 46 H196" stroke={T.green} strokeWidth="2.5" markerEnd="url(#av)" />
+      <text x="336" y="51" fill={T.body} fontFamily="monospace" fontSize="15" textAnchor="middle">f52e9a1c 4b7d…</text>
+
+      {/* row 2: one character different */}
+      <rect x="20" y="82" width="140" height="36" rx="8" fill={T.primarySoft} stroke={T.primary} />
+      <text x="90" y="105" fontFamily="monospace" fontSize="15" textAnchor="middle"><tspan fill={T.ink}>hunter</tspan><tspan fill={T.amber} fontWeight="700">3</tspan></text>
+      <path d="M166 100 H196" stroke={T.green} strokeWidth="2.5" markerEnd="url(#av)" />
+      <text x="336" y="105" fill={T.cyan} fontFamily="monospace" fontSize="15" fontWeight="700" textAnchor="middle">9b0c74ef a1c2…</text>
+
+      <text x="240" y="142" fill={T.muted} fontFamily={T.sans} fontSize="12" textAnchor="middle">Change one character, and the whole fingerprint changes.</text>
+
+      <defs><marker id="av" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0 0 L6 3 L0 6 Z" fill={T.green} /></marker></defs>
     </svg>
   );
 }
@@ -120,14 +168,52 @@ function ControlTag({ control }: { control: CaseCard["control"] }) {
   );
 }
 
-/* A clean company identity mark (monogram in the brand colour). Scales
- * to any company incl. those with no usable logo; real brand SVGs can
- * be swapped in per case later. */
-function CaseLogo({ org, color, size = 40 }: { org: string; color?: string; size?: number }) {
-  const initial = (org.replace(/[^A-Za-z0-9]/g, "")[0] ?? "?").toUpperCase();
+/* --- company identity ---
+ * A proper brand lockup: an authentic icon where the brand has a simple
+ * reproducible one (LinkedIn), otherwise a wordmark set in the brand's
+ * real colour. Real logos are used only to identify the real company a
+ * documented case is about (editorial / nominative use); we never draw
+ * an inaccurate mark. Official SVGs can be dropped in via BRAND_SVG. */
+type BrandSpec = { name: string; color: string; lower?: boolean; icon?: (s: number) => ReactNode };
+
+/* Slot for future official brand SVGs, keyed by lower-cased match token. */
+const BRAND_SVG: Record<string, (s: number) => ReactNode> = {
+  linkedin: (s) => (
+    <svg width={s} height={s} viewBox="0 0 32 32" aria-hidden style={{ flexShrink: 0 }}>
+      <rect width="32" height="32" rx="6" fill="#0A66C2" />
+      <circle cx="9.4" cy="9.1" r="2" fill="#fff" />
+      <rect x="7.5" y="12.4" width="3.8" height="12.1" fill="#fff" />
+      <path d="M13.6 12.4h3.65v1.65h.05c.51-.9 1.75-1.85 3.6-1.85 3.85 0 4.56 2.4 4.56 5.52v6.79h-3.8v-6.02c0-1.44-.03-3.28-2.05-3.28-2.05 0-2.36 1.56-2.36 3.17v6.13h-3.8V12.4z" fill="#fff" />
+    </svg>
+  ),
+};
+
+const BRANDS: { test: RegExp; spec: BrandSpec }[] = [
+  { test: /linkedin/i, spec: { name: "LinkedIn", color: "#0A66C2", icon: BRAND_SVG.linkedin } },
+  { test: /talktalk/i, spec: { name: "talktalk", color: "#E6007E", lower: true } },
+  { test: /rockyou/i, spec: { name: "RockYou", color: "#E0524A" } },
+  { test: /\bdyn\b|mirai/i, spec: { name: "Dyn", color: "#F2681C" } },
+];
+
+function brandFor(org: string, color?: string): BrandSpec {
+  const hit = BRANDS.find((b) => b.test.test(org));
+  if (hit) return hit.spec;
+  return { name: org, color: color ?? T.primary };
+}
+
+/* The identity lockup: [mark] Wordmark. `mark` is the authentic icon
+ * where we have one, else a brand-coloured tab that anchors the wordmark
+ * so it reads as a logo, not just coloured text. */
+function BrandLockup({ org, color, size = "md" }: { org: string; color?: string; size?: "sm" | "md" | "lg" }) {
+  const b = brandFor(org, color);
+  const fs = size === "lg" ? 23 : size === "md" ? 18 : 15;
+  const iconPx = Math.round(fs * 1.4);
   return (
-    <span aria-hidden style={{ width: size, height: size, borderRadius: size * 0.24, background: color ?? T.primary, color: "#fff", fontFamily: T.display, fontWeight: 700, fontSize: size * 0.44, display: "inline-flex", alignItems: "center", justifyContent: "center", flexShrink: 0, boxShadow: "inset 0 1px 0 rgba(255,255,255,0.18)" }}>
-      {initial}
+    <span style={{ display: "inline-flex", alignItems: "center", gap: 9 }}>
+      {b.icon ? b.icon(iconPx) : (
+        <span aria-hidden style={{ width: Math.round(fs * 0.34), height: iconPx, borderRadius: 3, background: `linear-gradient(${b.color}, ${b.color}bb)`, boxShadow: `0 0 0 4px ${b.color}1f`, flexShrink: 0 }} />
+      )}
+      <span style={{ fontFamily: T.display, fontWeight: 800, fontSize: fs, letterSpacing: "-0.01em", color: b.color, textTransform: b.lower ? "lowercase" : "none", whiteSpace: "nowrap" }}>{b.name}</span>
     </span>
   );
 }
@@ -146,6 +232,57 @@ function NewsCard({ news }: { news: NonNullable<CaseCard["news"]> }) {
   return news.url
     ? <a href={news.url} target="_blank" rel="noopener noreferrer" style={style}>{inner}</a>
     : <div style={style}>{inner}</div>;
+}
+
+/* A key term the learner can hover (desktop) or tap (mobile) to see a
+ * plain-language meaning. */
+function GlossaryTerm({ term, definition }: { term: string; definition: string }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <span style={{ position: "relative", display: "inline-block" }}>
+      <button type="button"
+        onClick={() => setOpen((o) => !o)}
+        onMouseEnter={() => setOpen(true)} onMouseLeave={() => setOpen(false)}
+        onFocus={() => setOpen(true)} onBlur={() => setOpen(false)}
+        aria-expanded={open}
+        style={{ font: "inherit", color: T.cyan, background: "transparent", border: "none", padding: 0, cursor: "help", borderBottom: `1.5px dotted ${T.cyan}99` }}>
+        {term}
+      </button>
+      {open && (
+        <span role="tooltip" style={{ position: "absolute", left: 0, bottom: "calc(100% + 8px)", zIndex: 30, width: 268, maxWidth: "80vw", background: T.panel, border: `1px solid ${T.cyan}66`, borderRadius: 10, padding: "11px 13px", boxShadow: "0 10px 28px rgba(0,0,0,0.55)", fontFamily: T.sans, fontSize: 13.5, fontWeight: 400, lineHeight: 1.55, color: T.body, whiteSpace: "normal", letterSpacing: "normal", textTransform: "none" }}>
+          <span style={{ display: "block", fontFamily: T.mono, fontSize: 11, fontWeight: 700, letterSpacing: "0.06em", color: T.cyan, marginBottom: 5 }}>{term.toUpperCase()}</span>
+          {definition}
+        </span>
+      )}
+    </span>
+  );
+}
+
+function escapeRegExp(s: string): string {
+  return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+/* Wraps the first unseen occurrence of each glossary term (across the
+ * shared `seen` set, so a term lights up once per card, not per line). */
+function renderWithGlossary(text: string, glossary: GlossaryEntry[] | undefined, seen: Set<string>, keyPrefix: string): ReactNode {
+  if (!glossary || glossary.length === 0) return text;
+  const sorted = [...glossary].sort((a, b) => b.term.length - a.term.length);
+  const pattern = new RegExp(`\\b(${sorted.map((g) => escapeRegExp(g.term)).join("|")})\\b`, "gi");
+  const out: ReactNode[] = [];
+  let last = 0;
+  let m: RegExpExecArray | null;
+  while ((m = pattern.exec(text)) !== null) {
+    const matched = m[0];
+    const key = matched.toLowerCase();
+    const entry = sorted.find((g) => g.term.toLowerCase() === key);
+    if (!entry || seen.has(key)) continue;
+    seen.add(key);
+    if (m.index > last) out.push(text.slice(last, m.index));
+    out.push(<GlossaryTerm key={`${keyPrefix}-${m.index}`} term={matched} definition={entry.definition} />);
+    last = m.index + matched.length;
+  }
+  if (last < text.length) out.push(text.slice(last));
+  return out.length ? out : text;
 }
 
 export default function LessonPlayer({ lesson }: { lesson: LessonManifest }) {
@@ -205,8 +342,14 @@ export default function LessonPlayer({ lesson }: { lesson: LessonManifest }) {
   );
 
   return (
-    <div className="pro-learn" style={{ minHeight: "100vh", background: T.bg, color: T.body, fontFamily: T.sans }}>
+    <div className="pro-learn" style={{ minHeight: "100vh", color: T.body, fontFamily: T.sans }}>
       <style>{`
+        .pro-learn {
+          background:
+            radial-gradient(1100px 560px at 50% -8%, rgba(139,109,255,0.13), transparent 60%),
+            radial-gradient(820px 460px at 90% 2%, rgba(53,214,240,0.08), transparent 55%),
+            ${T.bg};
+        }
         .pro-learn :focus-visible { outline: 2px solid ${T.cyan}; outline-offset: 2px; }
         .pro-learn ::selection { background: ${T.primary}; color: #fff; }
         .pro-learn textarea::placeholder, .pro-learn input::placeholder { color: ${T.muted}; }
@@ -221,6 +364,50 @@ export default function LessonPlayer({ lesson }: { lesson: LessonManifest }) {
           .pro-rail { display: block; width: 208px; flex-shrink: 0; }
           .pro-topbar { display: none; }
         }
+
+        /* ---- intro ---- */
+        .pro-intro { padding-top: 40px; }
+        .pro-eyebrow { display: inline-flex; align-items: center; gap: 9px; font-family: ${T.mono}; font-size: 11px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: ${T.primary}; margin-bottom: 16px; }
+        .pro-eyebrow-dot { width: 6px; height: 6px; border-radius: 50%; background: ${T.primary}; box-shadow: 0 0 10px ${T.primary}; }
+        .pro-h1 { font-family: ${T.display}; font-size: 40px; font-weight: 700; line-height: 1.12; letter-spacing: -0.01em; margin: 0 0 16px; color: ${T.ink}; text-wrap: balance; }
+        .pro-promise { font-size: 18px; line-height: 1.65; color: ${T.muted}; max-width: 60ch; margin: 0 0 6px; }
+
+        .pro-intro-grid { display: grid; grid-template-columns: 1fr; gap: 22px; margin: 30px 0 26px; }
+        @media (min-width: 720px) { .pro-intro-grid { grid-template-columns: 1.12fr 0.88fr; gap: 30px; align-items: start; } }
+
+        .pro-kicker { font-family: ${T.mono}; font-size: 10.5px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: ${T.faint}; margin-bottom: 14px; }
+        .pro-steps { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
+        .pro-step { display: flex; gap: 15px; padding: 4px 0 18px; position: relative; }
+        .pro-step:last-child { padding-bottom: 0; }
+        .pro-step:not(:last-child)::before { content: ""; position: absolute; left: 18px; top: 40px; bottom: 4px; width: 2px; background: linear-gradient(${T.primary}66, ${T.edge}); }
+        .pro-step-mark { position: relative; z-index: 1; width: 38px; height: 38px; flex-shrink: 0; border-radius: 11px; display: inline-flex; align-items: center; justify-content: center; color: ${T.cyan}; background: ${T.panel}; border: 1px solid ${T.edge}; box-shadow: inset 0 1px 0 rgba(255,255,255,0.04); }
+        .pro-step-head { display: flex; align-items: baseline; gap: 9px; }
+        .pro-step-n { font-family: ${T.mono}; font-size: 11px; font-weight: 700; color: ${T.primary}; }
+        .pro-step-label { font-family: ${T.display}; font-size: 16px; font-weight: 700; color: ${T.ink}; }
+        .pro-step-sub { font-size: 12.5px; color: ${T.faint}; }
+        .pro-step-desc { font-size: 14px; line-height: 1.5; color: ${T.muted}; margin-top: 3px; max-width: 42ch; }
+        .pro-facts { display: flex; align-items: center; flex-wrap: wrap; gap: 12px; margin-top: 22px; padding-top: 16px; border-top: 1px solid ${T.edge}; font-size: 13px; color: ${T.muted}; }
+        .pro-fact b { color: ${T.ink}; font-weight: 700; }
+        .pro-fact-sep { width: 3px; height: 3px; border-radius: 50%; background: ${T.faint}; }
+
+        .pro-story { position: relative; overflow: hidden; background: linear-gradient(180deg, ${T.panel}, ${T.bgRaise}); border: 1px solid ${T.edge}; border-radius: 16px; padding: 20px 22px; }
+        .pro-story-accent { position: absolute; left: 0; top: 0; bottom: 0; width: 4px; }
+        .pro-story-tag { font-family: ${T.mono}; font-size: 10px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: ${T.red}; margin-bottom: 14px; }
+        .pro-story-brandrow { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 12px; }
+        .pro-story-year { font-family: ${T.mono}; font-size: 13px; color: ${T.muted}; }
+        .pro-story-hook { font-family: ${T.display}; font-size: 18px; font-weight: 700; line-height: 1.35; color: ${T.ink}; }
+        .pro-story-sub { font-size: 14px; line-height: 1.55; color: ${T.muted}; margin-top: 8px; }
+
+        .pro-why { max-width: 66ch; font-size: 15px; line-height: 1.6; color: ${T.body}; margin: 4px 0 28px; }
+        .pro-why-label { display: block; font-family: ${T.mono}; font-size: 10.5px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: ${T.cyan}; margin-bottom: 6px; }
+        .pro-cta-row { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; }
+        .pro-cta { display: inline-flex; align-items: center; gap: 10px; font-family: ${T.display}; font-size: 16px; font-weight: 700; letter-spacing: 0.01em; color: #fff; background: linear-gradient(135deg, ${T.primary}, ${T.cyan}); border: none; border-radius: 12px; padding: 15px 28px; cursor: pointer; box-shadow: 0 8px 26px rgba(139,109,255,0.34); transition: transform 160ms ease, box-shadow 160ms ease; }
+        .pro-cta:hover { transform: translateY(-1px); box-shadow: 0 12px 32px rgba(139,109,255,0.44); }
+        .pro-cta svg { transition: transform 160ms ease; }
+        .pro-cta:hover svg { transform: translateX(3px); }
+        .pro-cta-note { font-size: 13px; color: ${T.faint}; max-width: 34ch; line-height: 1.45; }
+        @media (prefers-reduced-motion: reduce) { .pro-cta, .pro-cta svg { transition: none; } .pro-cta:hover { transform: none; } .pro-cta:hover svg { transform: none; } }
+        @media (max-width: 520px) { .pro-h1 { font-size: 31px; } .pro-intro { padding-top: 24px; } }
       `}</style>
 
       <div className={`pro-shell${inLesson ? " with-rail" : ""}`}>
@@ -253,42 +440,65 @@ export default function LessonPlayer({ lesson }: { lesson: LessonManifest }) {
 
           {/* INTRO */}
           {phase === "intro" && (
-            <main style={{ marginTop: "5vh" }}>
-              <div style={{ fontFamily: T.mono, fontSize: 11, letterSpacing: "0.2em", textTransform: "uppercase", color: T.primary, marginBottom: 14 }}>{lesson.act}</div>
-              <h1 style={{ fontFamily: T.display, fontSize: 34, fontWeight: 700, lineHeight: 1.2, margin: "0 0 16px", color: T.ink }}>{lesson.title}</h1>
-              <p style={{ fontSize: 17, lineHeight: 1.7, color: T.body, maxWidth: "60ch" }}>{lesson.promise}</p>
+            <main className="pro-intro">
+              {/* hero */}
+              <div className="pro-eyebrow"><span className="pro-eyebrow-dot" />{lesson.act}</div>
+              <h1 className="pro-h1">{lesson.title}</h1>
+              <p className="pro-promise">{lesson.promise}</p>
 
-              {/* the hook: a real company teased up front, with its logo and press coverage */}
-              {heroCase && (
-                <div style={{ background: T.panel, border: `1px solid ${T.edge}`, borderLeft: `3px solid ${T.red}`, borderRadius: "0 12px 12px 0", padding: "16px 20px", margin: "24px 0", maxWidth: "62ch" }}>
-                  <div style={{ fontFamily: T.mono, fontSize: 10, fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: T.red, marginBottom: 12 }}>This week&apos;s true story</div>
-                  <div style={{ display: "flex", gap: 14, alignItems: "flex-start" }}>
-                    <CaseLogo org={heroCase.org} color={heroCase.brandColor} />
-                    <div style={{ flex: 1 }}>
-                      <div style={{ fontSize: 16, fontWeight: 700, color: T.ink, lineHeight: 1.4 }}>{heroCase.org} <span style={{ color: T.muted, fontWeight: 400, fontFamily: T.mono, fontSize: 13 }}>{heroCase.year}</span></div>
-                      <div style={{ fontSize: 14.5, color: T.body, marginTop: 4, lineHeight: 1.5 }}>{heroCase.headline}. You will see exactly how, and how one measure would have stopped it.</div>
+              <div className="pro-intro-grid">
+                {/* LEFT: how this lesson works */}
+                <section>
+                  <div className="pro-kicker">How this lesson works</div>
+                  <ol className="pro-steps">
+                    {STAGES.map((s, i) => (
+                      <li key={s.key} className="pro-step">
+                        <span className="pro-step-mark"><StageIcon kind={s.key} /></span>
+                        <div>
+                          <div className="pro-step-head">
+                            <span className="pro-step-n">{i + 1}</span>
+                            <span className="pro-step-label">{s.label}</span>
+                            <span className="pro-step-sub">{s.sub}</span>
+                          </div>
+                          <div className="pro-step-desc">{s.desc}</div>
+                        </div>
+                      </li>
+                    ))}
+                  </ol>
+                  <div className="pro-facts">
+                    <span className="pro-fact"><b>~{lesson.minutes} min</b> this session</span>
+                    <span className="pro-fact-sep" />
+                    <span className="pro-fact"><b>4 steps</b></span>
+                    <span className="pro-fact-sep" />
+                    <span className="pro-fact"><b>nothing to install</b></span>
+                  </div>
+                </section>
+
+                {/* RIGHT: this week's true story */}
+                {heroCase && (
+                  <aside className="pro-story">
+                    <div className="pro-story-accent" style={{ background: `linear-gradient(${brandFor(heroCase.org, heroCase.brandColor).color}, ${T.red})` }} />
+                    <div className="pro-story-tag">This week&apos;s true story</div>
+                    <div className="pro-story-brandrow">
+                      <BrandLockup org={heroCase.org} color={heroCase.brandColor} size="lg" />
+                      <span className="pro-story-year">{heroCase.year}</span>
                     </div>
-                  </div>
-                  {heroCase.news && <div style={{ marginTop: 14 }}><NewsCard news={heroCase.news} /></div>}
-                </div>
-              )}
-
-              {/* how this works: the four steps, so they know the shape */}
-              <div style={{ display: "flex", flexWrap: "wrap", gap: 10, margin: "8px 0 26px", maxWidth: "62ch" }}>
-                {STAGES.map((s, i) => (
-                  <div key={s.key} style={{ display: "flex", alignItems: "center", gap: 8, background: T.panelSoft, border: `1px solid ${T.edge}`, borderRadius: 9, padding: "8px 13px" }}>
-                    <span style={{ fontFamily: T.mono, fontSize: 11, fontWeight: 700, color: T.primary }}>{i + 1}</span>
-                    <span style={{ fontFamily: T.display, fontSize: 13.5, fontWeight: 700, color: T.ink }}>{s.label}</span>
-                    <span style={{ fontSize: 12, color: T.muted }}>{s.sub}</span>
-                  </div>
-                ))}
+                    <div className="pro-story-hook">{heroCase.headline}.</div>
+                    <div className="pro-story-sub">You&apos;ll investigate exactly how it happened, and find the one measure that would have stopped it.</div>
+                    {heroCase.news && <div style={{ marginTop: 14 }}><NewsCard news={heroCase.news} /></div>}
+                  </aside>
+                )}
               </div>
 
-              <div style={{ display: "flex", flexWrap: "wrap", gap: 20, margin: "0 0 30px", fontSize: 13.5, color: T.muted }}>
-                <span><b style={{ color: T.ink }}>~{lesson.minutes} min</b> this session</span>
-                <span style={{ maxWidth: "48ch" }}><b style={{ color: T.ink }}>Why it matters:</b> {lesson.role}</span>
+              {/* why it matters + CTA */}
+              <div className="pro-why"><span className="pro-why-label">Why this matters</span>{lesson.role}</div>
+              <div className="pro-cta-row">
+                <button className="pro-cta" onClick={() => setPhase("learn")}>
+                  Start the lesson
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+                </button>
+                <span className="pro-cta-note">Begins with the idea, in plain English. Pick up where you left off any time.</span>
               </div>
-              {btn("Start the lesson", () => setPhase("learn"))}
             </main>
           )}
 
@@ -296,11 +506,23 @@ export default function LessonPlayer({ lesson }: { lesson: LessonManifest }) {
           {phase === "learn" && (() => {
             const card = lesson.learn[learnIdx];
             const last = learnIdx === lesson.learn.length - 1;
+            const seen = new Set<string>(); // glossary terms light up once per card
             return (
               <main style={{ marginTop: 26 }}>
                 <div style={{ fontFamily: T.mono, fontSize: 11, color: T.muted, marginBottom: 10 }}>Idea {learnIdx + 1} of {lesson.learn.length}</div>
                 <h2 style={{ fontFamily: T.display, fontSize: 25, fontWeight: 700, lineHeight: 1.25, margin: "0 0 16px", color: T.ink }}>{card.heading}</h2>
-                {card.body.map((p, i) => <p key={i} style={{ fontSize: 16.5, lineHeight: 1.75, color: T.body, maxWidth: "62ch" }}>{p}</p>)}
+                {card.body.map((p, i) => <p key={i} style={{ fontSize: 16.5, lineHeight: 1.75, color: T.body, maxWidth: "62ch" }}>{renderWithGlossary(p, lesson.glossary, seen, `l${learnIdx}b${i}`)}</p>)}
+                {card.examples && card.examples.length > 0 && (
+                  <div style={{ margin: "2px 0 6px", maxWidth: "62ch", display: "flex", flexDirection: "column", gap: 8 }}>
+                    <div style={{ fontFamily: T.mono, fontSize: 10.5, fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase", color: T.faint }}>A few examples</div>
+                    {card.examples.map((ex, i) => (
+                      <div key={i} style={{ display: "flex", gap: 10, fontSize: 15, color: T.body, lineHeight: 1.55 }}>
+                        <span aria-hidden style={{ color: T.cyan, flexShrink: 0, fontWeight: 700 }}>&rsaquo;</span>
+                        <span>{renderWithGlossary(ex, lesson.glossary, seen, `l${learnIdx}e${i}`)}</span>
+                      </div>
+                    ))}
+                  </div>
+                )}
                 {card.analogy && (
                   <div style={{ background: T.primarySoft, borderLeft: `3px solid ${T.primary}`, borderRadius: "0 10px 10px 0", padding: "14px 18px", margin: "18px 0", maxWidth: "62ch" }}>
                     <div style={{ fontSize: 16, color: T.ink, lineHeight: 1.6 }}>{card.analogy.plain}</div>
@@ -329,15 +551,12 @@ export default function LessonPlayer({ lesson }: { lesson: LessonManifest }) {
               <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
                 {lesson.cases.map((c, i) => (
                   <article key={i} style={{ background: T.panel, border: `1px solid ${T.edge}`, borderRadius: 12, padding: "20px 22px" }}>
-                    <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 12 }}>
-                      <CaseLogo org={c.org} color={c.brandColor} size={34} />
-                      <div>
-                        <div style={{ display: "flex", alignItems: "baseline", gap: 10 }}>
-                          <span style={{ fontFamily: T.display, fontSize: 19, fontWeight: 700, color: T.ink }}>{c.org}</span>
-                          <span style={{ fontFamily: T.mono, fontSize: 12, color: T.muted }}>{c.year}</span>
-                        </div>
-                        <div style={{ fontSize: 15, fontWeight: 700, color: T.cyan, marginTop: 1 }}>{c.headline}</div>
+                    <div style={{ marginBottom: 12 }}>
+                      <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
+                        <BrandLockup org={c.org} color={c.brandColor} size="md" />
+                        <span style={{ fontFamily: T.mono, fontSize: 12, color: T.muted }}>{c.year}</span>
                       </div>
+                      <div style={{ fontSize: 15, fontWeight: 700, color: T.cyan, marginTop: 6 }}>{c.headline}</div>
                     </div>
                     <p style={{ fontSize: 15, lineHeight: 1.65, color: T.body }}>{c.whatHappened}</p>
                     <div style={{ background: T.redSoft, borderRadius: 8, padding: "10px 14px", margin: "6px 0 12px" }}>
